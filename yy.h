@@ -81,6 +81,7 @@ extern double        yyErrDef;
 extern int           yyNumberPulls;
 extern int           yyMaxCallsSimAnn;
 extern double        yyTempRedSimAnn;
+extern double        yyInitTempSimAnn;
 extern double        yyXscanlow;
 extern double        yyXscanhigh;
 

@@ -60,7 +60,13 @@ input:
 		  if ($3>0) {
                     yyTempRedSimAnn = $3;
                   }
-                } 	        
+                } 	// yyInitTempSimAnn        
+	        else if (!strcmp($2,"InitTempSimAnn")) {
+		  // cout << "FOUND TempRedSimAnn "<<$3<<endl;
+		  if ($3>0) {
+                    yyInitTempSimAnn = $3;
+                  }
+                } 	
                 else if (!strcmp($2,"NumberPulls")) {
 		  // cout << "FOUND NumberPulls "<<$3<<endl;
 		  if ($3>0) {
@@ -1312,7 +1318,7 @@ vector <parameter_t> yyFixedPar;
 vector <parameter_t> yyFittedPar;
 vector <parameter_t> indchisq_vec;
  
-bool          yyUseLoopCorrections;
+bool          yyUseLoopCorrections = true;
 bool          yyCalcPullDist;
 bool          yyScanParameters;
 bool          yyISR;
@@ -1342,6 +1348,7 @@ int           yyNumberOfMinimizations = 1;
 double        yyErrDef = 1.;
 int           yyMaxCallsSimAnn = 300000;
 double        yyTempRedSimAnn = 0.4;
+double        yyInitTempSimAnn = -1.;
 int           yyNumberPulls = 0;
 
 double        yyXscanlow = -6000.;
