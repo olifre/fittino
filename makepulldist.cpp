@@ -132,6 +132,8 @@ void MakePullDist::CalcPullDist()
     tree->Branch(yyFittedPar[k].name.c_str(), &(leafVec[k].value), str.c_str());
     str.erase();
   }
+  cout << "Adding branch Chi2 to tree" << endl;
+  tree->Branch("Chi2", &gchisq, "Chi2/D");
 
   // loop 
   for (unsigned int  i = 0; i < npulls; i++) {
