@@ -86,6 +86,7 @@ extern "C" { void call_suspect_free_(int *,int *,double *,double *,double *,
 //extern "C" { void get_suspect_(double [],double [],double *,double [],double [2][2],double [2][2],double [4][4],double []);}
 void callSuspect();
 int callSPheno();
+int checkcall(char programpath[1024], unsigned int runtime);
 void WriteLesHouches(double* x);
 void fitterFCN(int &npar, double *gin, double &f, double *x, int iflag); 
 void chi2Function(int& npar, double* gin, double& f, double* x, int iflag);
@@ -2235,8 +2236,11 @@ int callSPheno()
 // ************************************************************
 int checkcall(char programpath[1024], unsigned int runtime) 
 {
+  int rc;
 
-  
+  // preliminary: do nothing
+  rc = system (programpath);
+  return rc;
 
 }
 
@@ -3402,6 +3406,23 @@ void   ReadLesHouches()
       }
     }
   }
+  // check for xsbr
+  for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+    if (yyMeasuredVec[i].type == xsbr) {
+      yyMeasuredVec[i].theovalue = 1.;
+      for (unsigned int j=0; j<yyMeasuredVec[i].daughters.size(); j++) {
+	// cout << "multiplying br " << yyMeasuredVec[yyMeasuredVec[i].daughters[j]].name << " = " << 
+	//   yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue << endl;
+	yyMeasuredVec[i].theovalue *= yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue;
+      } 
+      for (unsigned int j=0; j<yyMeasuredVec[i].products.size(); j++) {
+	// cout << "multiplying xs " << yyMeasuredVec[yyMeasuredVec[i].products[j]].name << " = " << 
+	//   yyMeasuredVec[yyMeasuredVec[i].products[j]].theovalue << endl;
+	yyMeasuredVec[i].theovalue *= yyMeasuredVec[yyMeasuredVec[i].products[j]].theovalue;
+      }        
+      yyMeasuredVec[i].theoset = true;
+    }
+  }  
   // check whether all has been found
   for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
     if ((yyMeasuredVec[i].theoset == false) && (yyMeasuredVec[i].nofit == false)) {

@@ -103,7 +103,7 @@ using namespace std;
 
 enum SwitchState    { off, on };
 enum Generator      { SPHENO, SUSPECT, SPHENO_FH };
-enum ObservableType { mass, Pwidth, xsection, br, xsectionbr, Pedge, other };
+enum ObservableType { mass, Pwidth, xsection, br, xsectionbr, Pedge, xsbr, other };
 
 extern bool          yyUseOneLoopCorrections;
 extern bool          yyCalcPullDist;

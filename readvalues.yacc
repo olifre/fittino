@@ -18,7 +18,7 @@
 %token <real> T_NUMBER
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
 %token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS
-%token T_BLOCK T_SCALE T_DECAY T_NEWLINE T_XS T_GENERATOR
+%token T_BLOCK T_SCALE T_DECAY T_NEWLINE T_XS T_GENERATOR T_XSBR
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH
  
 %type <name> sentence
@@ -586,7 +586,7 @@ input:
 		  tmpValue.value = $14;
 		  tmpValue.error = $15;
 		  tmpValue.alias = (int)$17;
-		  tmpValue.bound_up = 1e+6;
+		  tmpValue.bound_up = 1e+9;
 		  tmpValue.bound_low = 0.;
 		  yyMeasuredVec.push_back(tmpValue);
 //		  cout << "Added cross section " << tmpValue.name << endl;
@@ -596,6 +596,81 @@ input:
 	          strcpy($4,"");
 		  strcpy($6,"                     ");
 	          strcpy($6,"");
+	      }
+	     | input T_KEY T_BRA sentence T_KET  value err T_ALIAS T_NUMBER
+	      {
+		if (!strcmp($2,"xsbr")) {
+		  int i = 0;
+		  int j = 0;
+		  int aliasnumber;
+		  char* charnumber;
+		  MeasuredValue tmpValue;
+                  tmpValue.nofit = false;
+		  tmpValue.name.erase();
+		  tmpValue.type  = xsbr;
+		  tmpValue.theovalue  = 0;
+		  tmpValue.value = $6;
+		  tmpValue.error = $7;
+		  tmpValue.name  = $4;
+		  tmpValue.alias = (int)$9;
+		  tmpValue.bound_up = 1e+9;
+		  tmpValue.bound_low = 0.;
+		  cout << "xsbr found" << endl;
+		  // break sentence in pieces:
+		  string str;
+	          str.erase();
+		  str = $4;
+		  char tmpstr3[255];
+		  unsigned int pos = 0, newpos = 0;
+		  int anti = 1;
+		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		    str.copy(tmpstr3, newpos - pos, pos);
+		    if (tmpstr3[newpos-pos-1] == '~') {
+		      tmpstr3[newpos-pos-1] = '\0';
+		      anti = -1;
+		    }
+		    else {
+		      tmpstr3[newpos-pos] = '\0';
+		      anti = 1;
+		    }
+		    pos = newpos + 1;
+		    // break up:
+		    if (!strncmp(tmpstr3,"sigma",5)) {
+		      charnumber = strchr(tmpstr3,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atof((charnumber+1));
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == xsection) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  cout << "found xs " <<  yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      // remove cross section from the list
+		      cout << "removing xs from the list" << endl;
+		      yyMeasuredVec[k].nofit = true;
+		      tmpValue.sqrts = yyMeasuredVec[k].sqrts;
+		      tmpValue.products.push_back(k);
+		    }
+		    else if (!strncmp(tmpstr3,"br",2)) {
+		      charnumber = strchr(tmpstr3,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atof((charnumber+1));
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  cout << "found br " <<  yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      // remove br from the list
+		      cout << "removing br from the list" << endl;
+		      yyMeasuredVec[k].nofit = true;
+		      tmpValue.daughters.push_back(k);
+		    }
+		  }
+		  yyMeasuredVec.push_back(tmpValue);
+		}
 	      }
             ;
 

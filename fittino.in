@@ -112,13 +112,15 @@ sigma ( ee -> SmuL  SmuL~, 500.,0.8,-0.6 )                16.1221 fb +- 0.25 fb 
 sigma ( ee -> SmuL  SmuL~, 400.,-0.8,0.6 )                10.4445 fb +- 0.2 fb alias 37
 sigma ( ee -> SmuL  SmuL~, 400.,0.8,-0.6 )                2.16495 fb +- 0.15 fb alias 38
 
-
 BR 1 ( h0 -> Bottom Bottom~ )                       0.762101   +- 0.019      alias 1
 BR 2 ( h0 -> Charm  Charm~ )                        0.0369497   +- 0.0033      alias 2
 BR 3 ( h0 -> Tau  Tau~ )                            0.104958    +- 0.0067      alias 3
 
 BR 4 ( Stop1 -> Neutralino1 Top )                   0.219884 +- 0.02    alias 4
 BR 5 ( Stop1 -> Chargino1 Bottom )                  0.733074 +- 0.04    alias 5
+
+xsbr ( sigma_7 br_1 ) 32.874 +- 0.5 alias 1
+
 
 
 ###################################################################
@@ -270,8 +272,8 @@ universality MSupL MScharmL
 OneLoopCorrections    on
 ISR                   on			       
 				       
-UseGivenStartValues   off
-FitAllDirectly        off
+UseGivenStartValues   on
+FitAllDirectly        on
 BoundsOnX             off
 SepFitTanbX           off
 SepFitTanbMu          off
