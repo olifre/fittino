@@ -4362,7 +4362,7 @@ void Fittino::simulated_annealing_uncertainties (TNtuple *ntuple)
   int upper_opt;
   int lower_opt_before;
   int upper_opt_before;
-  int number_stored = 100;
+  int number_stored = 30;
   bool start_pushaway = false;
   bool start_pushaway_now = false;
   int soon_start_pushaway = 0;
@@ -4556,7 +4556,7 @@ void Fittino::simulated_annealing_uncertainties (TNtuple *ntuple)
 	    }
 	  }
 	  fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
-	  cout << "fminimum = " << fminimum << " fgoal = " << fgoal << " fp = " << fp << endl;
+	  cout << "fminimum = " << fminimum << " fgoal = " << fgoal << " fp = " << fp << " with up to now " << nacc << " accepted points" << endl;
 	  delta1 = TMath::Abs(fp-fgoal);
 	  fp = steepness*sqr(fp-fgoal);
 	  if (start_pushaway) {
@@ -4581,10 +4581,10 @@ void Fittino::simulated_annealing_uncertainties (TNtuple *ntuple)
 	      cerr << "WARNING: fadd == 0" << endl;
 	    }
 	    if (start_pushaway_now == false) {
-	      f = f + fadd;
+	      f = f - 2.*fadd - 1.; // make sure it is accepted on the first time
 	      start_pushaway_now = true;
 	    }
-	    cout << "adding " << fadd << " to the potential" << endl;
+	    cout << "adding " << fadd << " to the potential, with f = " << f << endl;
 	    fp = fp + fadd;
 	  }
 	  cout << "hyperbolical chisq = " << fp << endl;
@@ -4603,7 +4603,9 @@ void Fittino::simulated_annealing_uncertainties (TNtuple *ntuple)
 	    return;
 	  }
 	  //  Accept new point if better chisq
+	  cout << " f = " << f << " fp = " << fp << endl; 
 	  if (fp >= f) {
+	    cout << "accept point because better" << endl;
 	    for (i = 0; i < n; ++i) {
 	      x[i] = xp[i];
 	    }
@@ -4630,6 +4632,7 @@ void Fittino::simulated_annealing_uncertainties (TNtuple *ntuple)
 	    }
 	    //  Metropolis criteria to decide whether point is accepted if chisq is worse than before 
 	  } else {
+	    cout << "point is worse, contemplate acceptance..." << endl;
 	    accbetter = 0;
 	    d1 = (fp - f) / t;
 	    p = TMath::Exp(d1);
@@ -4643,7 +4646,9 @@ void Fittino::simulated_annealing_uncertainties (TNtuple *ntuple)
 	      ++nacp[h];
 	      ++ndown;
 	      accpoint = 1;
+	      cout << "accept anyway" << endl;
 	    } else {
+	      cout << "reject" << endl;
 	      ++nrej;
 	      accpoint = 0;
 	    }
