@@ -2062,6 +2062,12 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
     cout << "SIGINT received in SPheno, exiting" << endl;
     exit (2);
   }
+  if (rc > 0) {
+    cerr << "Exiting fitterFCN because of problem in SPheno run" << endl;
+    f = 111111111111.;
+    cout << " f = " << f << endl;
+    return;        
+  }
   
   // HERE: READ THE LES HOUCHES FILE
   ReadLesHouches();
@@ -3492,7 +3498,7 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
   vector <double> x; 
   vector <double> xvar; 
   bool max = false; 
-  double rt = 0.75; 
+  double rt = 0.5; 
   double eps = 0.0001; 
   int ns = 20; 
   int nt; 
