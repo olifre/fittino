@@ -44,7 +44,6 @@ massChargino1		 184.132 GeV +- 0.55 GeV #  +- 1.0 GeV  # ~chi_1+
 massChargino2		 418.495 GeV +- 3.0 GeV  #  +- 3.4 GeV  # ~chi_2+
 
 
-
 		   
 # cos2PhiL                 0.6386515 +- 0.05       # rough estimate
 # cos2PhiR                 0.9051529 +- 0.05       # rough estimate
@@ -119,8 +118,11 @@ BR 3 ( h0 -> Tau  Tau~ )                            0.104958    +- 0.0067      a
 BR 4 ( Stop1 -> Neutralino1 Top )                   0.219884 +- 0.02    alias 4
 BR 5 ( Stop1 -> Chargino1 Bottom )                  0.733074 +- 0.04    alias 5
 
-xsbr ( sigma_7 br_1 ) 32.874 +- 0.5 alias 1
-brratio ( br_1 br_2 ) 20.6259 +- 0.5 alias 1
+brsum   ( br_1 br_2 ) 0.79 +- 0.02 alias 1
+
+
+xsbr ( sigma_7 brsum_1 ) 32.874 +- 0.5 alias 1
+brratio ( br_1 brsum_1 ) 20.6259 +- 0.5 alias 1
 
 #edge 1 massNeutralino1 massNeutralino2   253.5 GeV +- 2.3 GeV alias 1
 #edge 2 massNeutralino1 massNeutralino2    79.3 GeV +- 1.3 GeV alias 2
@@ -288,7 +290,7 @@ ScanParameters        off
 CalcPullDist          off
 NumberPulls           1
 
-Calculator             SPHENO  ../SPheno2.2.2/SPheno
+Calculator             SPHENO  ../../SPheno2.2.2/SPheno
 
 UseMinos              off
 UseHesse              off

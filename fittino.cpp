@@ -3406,6 +3406,18 @@ void   ReadLesHouches()
       }
     }
   }
+  // check for brsum
+  for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+    if (yyMeasuredVec[i].type == brsum) {
+      yyMeasuredVec[i].theovalue = 0.;
+      for (unsigned int j=0; j<yyMeasuredVec[i].daughters.size(); j++) {
+	// cout << "multiplying br " << yyMeasuredVec[yyMeasuredVec[i].daughters[j]].name << " = " << 
+	//   yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue << endl;
+	yyMeasuredVec[i].theovalue += yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue;
+      } 
+      yyMeasuredVec[i].theoset = true;
+    }
+  }  
   // check for xsbr
   for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
     if (yyMeasuredVec[i].type == xsbr) {
@@ -3473,6 +3485,7 @@ void   ParseLesHouches()
       yyparse();
       fclose(yyin);
       system ("rm SPheno.spc");
+      // exit (0);
     }
     else {
       cerr<<"Only SPHENO is implemented"<<endl;
