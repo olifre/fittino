@@ -59,6 +59,7 @@ extern int              yyNumberOfMinimizations;
 extern bool             yyCalcIndChisqContr;
 extern bool             yyBoundsOnX;
 extern bool             yySepFitTanbX;
+extern bool             yySepFitTanbMu;
 extern bool             yyScanX;
 
 typedef struct {

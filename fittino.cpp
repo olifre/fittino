@@ -1176,6 +1176,46 @@ void Fittino::calculateLoopLevelValues()
   // fit everything directly or first do some subsample fits?
   if (!yyFitAllDirectly) {
 
+    //-------------------------------------------------------------------------
+    // first fit just tanb and mu
+    if (yySepFitTanbMu) {
+      for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
+	if ( !( !yyMeasuredVec[i].name.compare("massChargino1") || !yyMeasuredVec[i].name.compare("massChargino2") ||
+		!yyMeasuredVec[i].name.compare("massNeutralino1") || !yyMeasuredVec[i].name.compare("massNeutralino2") || 
+		!yyMeasuredVec[i].name.compare("massNeutralino3") || !yyMeasuredVec[i].name.compare("massNeutralino4") || 
+		((yyMeasuredVec[i].type == xsection) && ((TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Neutralino1"]) || 
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Neutralino2"]) || 
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Chargino1"]) || 
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Chargino2"]) ) ) ) ) {
+	  yyMeasuredVec[i].temp_nofit = true;
+	}
+      }        
+      for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+	if ( !( !yyFittedVec[i].name.compare("TanBeta") || !yyFittedVec[i].name.compare("Mu") ) ) {
+	  arguments[0] = i+1;
+	  cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
+	  fitter->mnexcm("FIX", arguments, 1,ierr);
+	}
+      }
+      
+      arguments[0] = 2;
+      fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
+      arguments[0] = 2000;
+      arguments[1] = 0.1;
+      fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
+      
+      for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
+	yyMeasuredVec[i].temp_nofit = false;
+      }  
+      for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+	if ( !( !yyFittedVec[i].name.compare("TanBeta") || !yyFittedVec[i].name.compare("Mu") ) ) {
+	  arguments[0] = i+1;
+	  fitter->mnexcm("RELEASE", arguments, 1,ierr);
+	}
+      }
+      
+    }
+
 
 //  //-------------------------------------------------------------------------
 //  // Perform the fit
@@ -2529,14 +2569,14 @@ void WriteLesHouches(double* x)
     }
 
     if (FindInFixed("massA0")) {
-      LesHouchesOutfile << "   24 "<< ReturnFixedValue("massA0")->value <<" # mA (fixed)"<< endl;
+      LesHouchesOutfile << "   24 "<< sqr(ReturnFixedValue("massA0")->value) <<" # mA (fixed)"<< endl;
     }    
     else if (FindInFitted("massA0")) {
-      LesHouchesOutfile << "   24 "<< x[ReturnFittedPosition("massA0")]<<" # mA"<< endl;
+      LesHouchesOutfile << "   24 "<< sqr(x[ReturnFittedPosition("massA0")])<<" # mA"<< endl;
       cout << "Fitting mA " << x[ReturnFittedPosition("massA0")] << endl;
     } 
     else if (FindInUniversality("massA0")) {
-      LesHouchesOutfile << "   24 "<<x[ReturnFittedPosition(ReturnUniversality("massA0")->universality)]<<" # massA0"<<endl;
+      LesHouchesOutfile << "   24 "<<sqr(x[ReturnFittedPosition(ReturnUniversality("massA0")->universality)])<<" # massA0"<<endl;
       cout << "fitting " << ReturnUniversality("massA0")->universality << " instead of massA0" << endl;
     }
     else {
@@ -3245,7 +3285,7 @@ void   ParseLesHouches()
       }
       yyparse();
       fclose(yyin);
-      //      system ("rm SPheno.spc");
+      system ("rm SPheno.spc");
     }
     else {
       cerr<<"Only SPHENO is implemented"<<endl;

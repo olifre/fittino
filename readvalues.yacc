@@ -322,6 +322,10 @@ input:
 		      if ($3 == on) yySepFitTanbX = true;
 		      else yySepFitTanbX = false;
 		  }
+		  if (!strcmp($2, "SepFitTanbMu")) {
+		      if ($3 == on) yySepFitTanbMu = true;
+		      else yySepFitTanbMu = false;
+		  }
 		  if (!strcmp($2, "ScanX")) {
 		      if ($3 == on) yyScanX = true;
 		      else yyScanX = false;
@@ -1126,6 +1130,7 @@ bool          yyFitAllDirectly;
 bool          yyCalcIndChisqContr;
 bool          yyBoundsOnX = true;
 bool          yySepFitTanbX = true;
+bool          yySepFitTanbMu = false;
 bool          yyScanX = true;
 
 unsigned int yyGenerator;
