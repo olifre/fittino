@@ -86,7 +86,7 @@ extern "C" { void call_suspect_free_(int *,int *,double *,double *,double *,
 //extern "C" { void get_suspect_(double [],double [],double *,double [],double [2][2],double [2][2],double [4][4],double []);}
 void callSuspect();
 int callSPheno();
-void WriteLesHouches(double* x, int count);
+void WriteLesHouches(double* x);
 void fitterFCN(int &npar, double *gin, double &f, double *x, int iflag); 
 void chi2Function(int& npar, double* gin, double& f, double* x, int iflag);
 MeasuredValue* ReturnMeasuredValue (string name);
@@ -1890,10 +1890,11 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
   for (unsigned int i = 0; i < yyMeasuredVec.size(); i++) {
     yyMeasuredVec[i].theoset = false;
   }
-  cout << "having to call Generator " <<  CrossSectionProduction.size() << " times" << endl; 
-  for (unsigned int j = 0; j < CrossSectionProduction.size(); j++) {
+  // start loop over cross sections and polarisations
+  // cout << "having to call Generator " <<  CrossSectionProduction.size() << " times" << endl; 
+  // for (unsigned int j = 0; j < CrossSectionProduction.size(); j++) {
     // HERE: WRITE THE LES HOUCHES FILE
-    WriteLesHouches(x,j);
+  WriteLesHouches(x);
     
 
 //  fitterMassA0.value =  436.2;
@@ -1904,41 +1905,41 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 //  fitterMassSupR.value = 429.6; // x[9];
 //  fitterA.value        = -500.0;// x[10];
 
-    if (yyGenerator == SUSPECT) {
-      callSuspect();
-    }
-    else if (yyGenerator == SPHENO) {
-      rc = callSPheno();
-    }
-    if (rc == 2) {
-      cout << "SIGINT received in SPheno, exiting" << endl;
-      exit (2);
-    }
-
-    // HERE: READ THE LES HOUCHES FILE
-    ReadLesHouches();
-
-    if (yyGeneratorError) {
-      cerr << "Exiting fitterFCN because LesHouches outfile did not exist" << endl;
-      f = 111111111111.;
-      cout << " f = " << f << endl;
-      return;    
-    }
-    if (yyParseError) {
-      cerr << "Exiting fitterFCN because of a parse error in yacc" << endl;
-      f = 111111111111.;
-      cout << " f = " << f << endl;
-      return;
-    }
-    if (rc > 0) {
-      cerr << "Exiting fitterFCN because of return value "<< rc << " from the Generator" << endl;
-      f = 111111111111.;
-      cout << " f = " << f << endl;
-      return;
-    }
-
-     
+  if (yyGenerator == SUSPECT) {
+    callSuspect();
   }
+  else if (yyGenerator == SPHENO) {
+    rc = callSPheno();
+  }
+  if (rc == 2) {
+    cout << "SIGINT received in SPheno, exiting" << endl;
+    exit (2);
+  }
+  
+  // HERE: READ THE LES HOUCHES FILE
+  ReadLesHouches();
+  
+  if (yyGeneratorError) {
+    cerr << "Exiting fitterFCN because LesHouches outfile did not exist" << endl;
+    f = 111111111111.;
+    cout << " f = " << f << endl;
+    return;    
+  }
+  if (yyParseError) {
+    cerr << "Exiting fitterFCN because of a parse error in yacc" << endl;
+    f = 111111111111.;
+    cout << " f = " << f << endl;
+    return;
+  }
+  if (rc > 0) {
+    cerr << "Exiting fitterFCN because of return value "<< rc << " from the Generator" << endl;
+    f = 111111111111.;
+    cout << " f = " << f << endl;
+    return;
+  }
+
+    // end loop over crosssections and polarisations:
+    //  }
 
   // HERE: FIND OBSERVABLES BELONGING TO THE MEASUREMENTS IN yyMeasuredVec
   // CALCULATE CHISQ
@@ -1958,7 +1959,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	      (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)<-1.E-12)) {
 	    cout << i << " " << j << "using obs " << yyMeasuredVec[i].name << " = " << yyMeasuredVec[i].value
 		 << "+-" << sqrt(yyMeasuredCorrelationMatrix.GetCovariance(i,j)) 
-		 << " (" << yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j) << ") " << " at theovalue = " 
+		 << " (" << (TMath::Abs(yyMeasuredVec[i].value-yyMeasuredVec[i].theovalue))*sqrt(yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)) << ") " << " at theovalue = " 
 		 << yyMeasuredVec[i].theovalue<< endl;
 	  }
 	} else {
@@ -2159,7 +2160,7 @@ void callSuspect()
 // P. Bechtle, P. Wienemann, 06.02.04
 //
 // ************************************************************
-void WriteLesHouches(double* x, int count) 
+void WriteLesHouches(double* x) 
 {
   double local_mu, local_tanb;
 
@@ -2204,25 +2205,54 @@ void WriteLesHouches(double* x, int count)
   fstream LesHouchesOutfile;
   LesHouchesOutfile.open ("LesHouches.in",ofstream::out);
   LesHouchesOutfile.setf(ios::scientific, ios::floatfield);
+
+//  1  -1                  # error level
+//  2   0                  # if 1, then SPA conventions are used
+// 11   1                  # calculate branching ratios
+// 12   1.00000000E-04     # write only branching ratios larger than this value
+// 21   1                  # calculate cross section
+// 22   5.00000000E+02     # cms energy in GeV
+// 23   0.00000000E+00     # polarisation of incoming e- beam
+// 24   0.00000000E+00     # polarisation of incoming e+ beam
+// 25   0                  # if 0 no ISR is calculated, if 1 ISR is caculated
+// 26   1.00000000E-04     # write only cross sections larger than this value [fb]
+// 31  -1.00000000E+00     # m_GUT, if < 0 than it determined via g_1=g_2
+// 32   0                  # require strict unification g_1=g_2=g_3 if '1' is set
+// 33  -1.00000000E+00     # Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2)
+// 41   2.49520000E+00     # width of the Z-boson
+// 42   2.11800000E+00     # width of the W-boson
+// 51   5.10998900E-04     # electron mass
+// 52   1.05658357E-01     # muon mass
+// 61   2.00000000E+00     # scale where quark masses of first 2 gen. are defined
+// 62   3.00000000E-03     # m_u(Q)
+// 63   1.20000000E+00     # m_c(Q)
+// 64   7.00000000E-03     # m_d(Q)
+// 65   1.20000000E-01     # m_s(Q)
+
   if (LesHouchesOutfile.is_open()) {
 
     LesHouchesOutfile << "BLOCK MODSEL" << endl;
     LesHouchesOutfile << "    1 0 # general MSSM" << endl;
     LesHouchesOutfile << "BLOCK SPhenoInput" << endl;
     LesHouchesOutfile << "    1  0                  # error level" << endl;
+    LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
     LesHouchesOutfile << "   11  1                  # calculate branching ratios" << endl;
     LesHouchesOutfile << "   12  1.00000000E-04     # write only branching ratios larger than this value" << endl;
     LesHouchesOutfile << "   21  1                  # calculate cross section" << endl;
-    LesHouchesOutfile << "   22  " << CrossSectionProduction[count][0] << "     # cms energy in GeV" << endl;
-    LesHouchesOutfile << "   23  " << CrossSectionProduction[count][1] << "     # polarisation of incoming e- beam" << endl;
-    LesHouchesOutfile << "   24  " << CrossSectionProduction[count][2] << "     # polarisation of incoming e+ beam" << endl;
-    LesHouchesOutfile << "   25  1.00000000E-05     # write only cross sections larger than this value [fb]" << endl;
-    if (!yyISR) {
-      LesHouchesOutfile << "   26  0                  # no ISR is calculated" << endl;
-    } else {
-      LesHouchesOutfile << "   26  1                  # ISR is calculated" << endl;
+    for (unsigned int j = 0; j < CrossSectionProduction.size(); j++) {
+      LesHouchesOutfile << "   22  " << CrossSectionProduction[j][0] << "     # cms energy in GeV" << endl;
+      LesHouchesOutfile << "   23  " << CrossSectionProduction[j][1] << "     # polarisation of incoming e- beam" << endl;
+      LesHouchesOutfile << "   24  " << CrossSectionProduction[j][2] << "     # polarisation of incoming e+ beam" << endl;
+      if (!yyISR) {
+	LesHouchesOutfile << "   25  0                  # no ISR is calculated" << endl;
+      } else {
+	LesHouchesOutfile << "   25  1                  # ISR is calculated" << endl;
+      }
     }
+    LesHouchesOutfile << "   26  1.00000000E-05     # write only cross sections larger than this value [fb]" << endl;
     LesHouchesOutfile << "   31 -1.00000000E+00     # m_GUT, if < 0 than it determined via g_1=g_2" << endl;
+    LesHouchesOutfile << "   32  0                  # require strict unification g_1=g_2=g_3 if '1' is set " << endl;
+    LesHouchesOutfile << "   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
     if (FindInFixed("massCharm")) {
       LesHouchesOutfile << "   63 "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
     }
@@ -2238,7 +2268,7 @@ void WriteLesHouches(double* x, int count)
       LesHouchesOutfile << "   63 "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
     }
     
-
+    //--------------------------------------------------------------------
     LesHouchesOutfile << "BLOCK SMINPUTS" << endl;
     if (FindInFixed("alphaem")) {
       LesHouchesOutfile << "    1 "<<ReturnFixedValue("alphaem")->value<<" # 1/alpha_em (fixed)"<<endl;
@@ -3124,7 +3154,8 @@ void   ReadLesHouches()
 		continue;
 	      }
 	      //	      cout << " comparing " << yyMeasuredVec[i].products[m] << " with " << (int)give_xs(tmp, j, k) << endl;
-	      if (TMath::Abs(yyMeasuredVec[i].products[m]) == TMath::Abs((int)give_xs(tmp, j, k)) ) {
+	      //	      if (TMath::Abs(yyMeasuredVec[i].products[m]) == TMath::Abs((int)give_xs(tmp, j, k)) ) {
+	      if (yyMeasuredVec[i].products[m] == (int)give_xs(tmp, j, k) ) {
 		found_prod++;
 		used_products.push_back(m);
 		break;
@@ -3204,20 +3235,21 @@ void   ParseLesHouches()
     counter++;
 
     if (yyGenerator == SPHENO) {
-	yyin = fopen("SPheno.spc", "r");
-	//	yyin = fopen("leshouches.in", "r");
-	if (!yyin) {
-	    cerr<<"SPheno.spc does not exist"<<endl;
-	    yyGeneratorError = true;
-	    return;
-	}
-	yyparse();
-	fclose(yyin);
-	system ("rm SPheno.spc");
+      //      system("cp SPheno.spc.test SPheno.spc");
+      yyin = fopen("SPheno.spc", "r");
+      //	yyin = fopen("leshouches.in", "r");
+      if (!yyin) {
+	cerr<<"SPheno.spc does not exist"<<endl;
+	yyGeneratorError = true;
+	return;
+      }
+      yyparse();
+      fclose(yyin);
+      //      system ("rm SPheno.spc");
     }
     else {
-	cerr<<"Only SPHENO is implemented"<<endl;
-	exit(EXIT_FAILURE);
+      cerr<<"Only SPHENO is implemented"<<endl;
+      exit(EXIT_FAILURE);
     }
 
     cout<<counter<<" ###########################################################"<<endl;

@@ -678,6 +678,10 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 //		      cout << "after clear: tmpStrings.size()" << tmpStrings.size() << endl;
                   }
 //========================================================================
+                  if (!strcmp($2, "SPhenoINFO")) {
+		    cout << "reading SPhenoINFO " << endl;
+		  }
+//========================================================================
                   if (!strcmp($2, "EXTPAR")) {
                       for (unsigned int i=0; i<tmpParams.size(); i++) {
             
@@ -782,8 +786,26 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
                       }
                   }
 
+		  // SPhenoLowEnergy 
+//========================================================================
+                  if (!strcmp($2, "SPhenoLowEnergy")) {
+                      for (unsigned int i=0; i<tmpParams.size(); i++) {
+			if ((unsigned int)tmpParams[i][0]==1) {
+     			  yybsg=tmpParams[i][1];     
+			}
+			else if ((unsigned int)tmpParams[i][0]==2) {
+     			  yygmin2=tmpParams[i][1];     
+			}
+			else if ((unsigned int)tmpParams[i][0]==3) {
+     			  yydrho=tmpParams[i][1];     
+			}
+                      }
+                  }
 
-
+//========================================================================
+                  if (!strcmp($2, "SPhenoCrossSections")) {
+		    cout << "starting to read XS..." << endl;
+                  }
 
                   tmpParams.clear();
               }
@@ -841,7 +863,7 @@ decay:      T_DECAY T_NUMBER T_NUMBER T_NEWLINE parameters
 //========================================================================
 xs:         T_XS T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NEWLINE parameters
               {
-//                  printf("Reading xs %i...\n", (int)$2);
+                  printf("Reading xs %i...\n", (int)$2);
 
                   tmp_xs.xs.clear();
 //                  cout << "branch cleared, tmpParams.size() = "<<tmpParams.size() << endl;
@@ -1119,3 +1141,7 @@ int           yyNumberPulls = 0;
 
 double        yyXscanlow = -6000.;
 double        yyXscanhigh = 2000.;
+
+double        yybsg = -10000.;
+double        yygmin2 = -10000.;
+double        yydrho  = -10000.;

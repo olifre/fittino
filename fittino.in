@@ -1,174 +1,202 @@
 #########################################################################
 ###                         Fittino input file                        ###
-###                         ------------------                        ###
-### $Id$             ###
-### $Name$                                                         ###
 #########################################################################
 
-massW                    80.3382  GeV +- 0.039  GeV
+massW                    80.35612  GeV +- 0.039  GeV
 massZ                    91.1187 GeV +- 0.0021 GeV
-massTop                  174.3   GeV +- 0.3    GeV
+massTop                  178.0   GeV +- 0.3    GeV
 massBottom	         4.2     GeV +- 0.5    GeV
 
 sin2ThetaW               0.23113 +- 0.00015
 		   
-massh0                   110.211 GeV +- 0.05 GeV +- 0.5 GeV # Degrassi et al
-massA0                   399.767 GeV +- 1.3 GeV      # not in LHC
-massH0                   400.803 GeV +- 1.3 GeV # not in LHC
-massHplus                407.695 GeV +- 1.1 GeV # not in LHC
+massh0                   112.862 GeV +- 0.05 GeV +- 0.5 GeV # Degrassi et al
+massA0                   374.95 GeV +- 1.3 GeV      # not in LHC
+massH0                   375.823 GeV +- 1.3 GeV # not in LHC
+massHplus                383.733 GeV +- 1.1 GeV # not in LHC
 
-massSdownL               586.734   GeV +- 9.8 GeV
-massSdownR               566.257  GeV +- 23.6 GeV
-massSupL                 583.546   GeV +- 9.8 GeV
-massSupR                 566.516   GeV +- 23.6 GeV
-massSstrangeL            586.736 GeV +- 9.8 GeV
-massSstrangeR            566.254 GeV +- 23.6 GeV
-massScharmL	       583.552 GeV +- 9.8 GeV # ~c_L	
-massScharmR	       566.510 GeV +- 23.6 GeV # ~c_R	
-massSbottom1	       532.146 GeV +- 5.7  GeV # ~b_1	
-massSbottom2	       565.561 GeV +- 6.2  GeV # ~b_2	
-massStop1                417.516 GeV +- 2.0 GeV  # ~t_1	# not at LHC
+massSdownL               561.485   GeV +- 9.8 GeV
+massSdownR               539.832  GeV +- 23.6 GeV
+massSupL                 557.981   GeV +- 9.8 GeV
+massSupR                 540.162   GeV +- 23.6 GeV
+massSstrangeL            561.488 GeV +- 9.8 GeV
+massSstrangeR            539.828 GeV +- 23.6 GeV
+massScharmL	       557.988 GeV +- 9.8 GeV # ~c_L	
+massScharmR	       540.155 GeV +- 23.6 GeV # ~c_R	
+massSbottom1	       499.506 GeV +- 5.7  GeV # ~b_1	
+massSbottom2	       538.937 GeV +- 6.2  GeV # ~b_2	
+massStop1                359.6832 GeV +- 2.0 GeV  # ~t_1	# not at LHC
 nofit massStop2		 600.037 GeV +- 20.0 GeV # ~t_2	# not at LHC
-massSelectronL		 208.002 GeV +- 0.2 GeV # ~e_L-	
-massSelectronR		 143.906 GeV +- 0.05 GeV # ~e_R-	
-massSnueL		 192.300 GeV +- 0.7 GeV # ~nu_eL	# not at LHC
-massSmuL		 208.02 GeV +- 0.5 GeV # ~mu_L-	
-massSmuR		 143.878 GeV +- 0.2 GeV # ~mu_R-	
+massSelectronL		 195.122 GeV +- 0.2 GeV # ~e_L-	
+massSelectronR		 124.862 GeV +- 0.05 GeV # ~e_R-	
+nofit massSnueL		 178.422 GeV +- 0.7 GeV # ~nu_eL	# not at LHC
+massSmuL		 195.147 GeV +- 0.5 GeV # ~mu_L-	
+massSmuR		 124.819 GeV +- 0.2 GeV # ~mu_R-	
 # massSnumuL		 192.3152641987 GeV +-  # ~nu_muL
-massStau1		 134.283 GeV +- 0.3 GeV # ~tau_1-
-massStau2		 211.792 GeV +- 1.1 GeV # ~tau_2- # not at LHC
+massStau1		 108.009 GeV +- 0.3 GeV # ~tau_1-
+massStau2		 199.7123 GeV +- 1.1 GeV # ~tau_2- # not at LHC
 # massSnutau1		 191.3925736236 GeV +-  # ~nu_tau
-massGluino               630.449 GeV +- 6.4 GeV # ~g	
-massNeutralino1		 95.7412 GeV +- 0.05 GeV # ~chi_10
-massNeutralino2		 182.396 GeV +- 0.08 GeV # ~chi_20
+massGluino               608.0583 GeV +- 6.4 GeV # ~g	
+massNeutralino1		 97.63483 GeV +- 0.05 GeV # ~chi_10
+massNeutralino2		 186.242 GeV +- 0.08 GeV # ~chi_20
 # massNeutralino3		 363.638242820014 GeV +-  # ~chi_30
 # massNeutralino4          380.595802224170 GeV +- 5.1 GeV # ~chi_40
-massChargino1		 180.461 GeV +- 0.55 GeV# ~chi_1+
-massChargino2		 379.967 GeV +- 3.0 GeV # ~chi_2+
+massChargino1		 184.491 GeV +- 0.55 GeV# ~chi_1+
+massChargino2		 416.505 GeV +- 3.0 GeV # ~chi_2+
 
 
 
 		   
 # cos2PhiL                 0.6386515 +- 0.05       # rough estimate
 # cos2PhiR                 0.9051529 +- 0.05       # rough estimate
-nofit cos2PhiL                 0.6737 +- 0.0005       # rough estimate
-nofit cos2PhiR                 0.8978 +- 0.0005       # rough estimate
+nofit cos2PhiL                 0.76 +- 0.0005       # rough estimate
+nofit cos2PhiR                 0.94 +- 0.0005       # rough estimate
 
 
 
-sigma ( ee -> Neutralino1 Neutralino2, 500.,0.8,0.6 )    22.7048 fb +- 0.3 fb alias 1
-sigma ( ee -> Neutralino2 Neutralino2, 500.,0.8,0.6 )    19.4676 fb +- 0.28 fb alias 2
-sigma ( ee -> SelectronL  SelectronL~, 500.,0.8,0.6 )   204.974 fb +- 2.0 fb alias 3
-sigma ( ee -> SmuL  SmuL~, 500.,0.8,0.6 )               36.8348 fb +- 0.4 fb alias 4
-sigma ( ee -> Stau1 Stau1~, 500.,-0.8,0.6 )              45.4683 fb +- 0.46 fb alias 5
-sigma ( ee -> Stau1 Stau1~, 500.,0.8,-0.6 )              139.109 fb +- 1.4 fb alias 44
-sigma ( ee -> Chargino1 Chargino1, 500.,0.8,0.6 )    46.6626 fb +- 0.46 fb alias 6
-sigma ( ee -> Z h0, 500., -0.8, 0.6 )                  38.3684 fb +- 0.38 fb   alias 7
-sigma ( ee -> Z h0, 500., 0.8, -0.6 )                  28.9897 fb +- 0.35 fb   alias 43
+sigma ( ee -> Neutralino1 Neutralino2, 500.,0.8,0.6 )    23.1297 fb +- 0.3 fb alias 1
+sigma ( ee -> Neutralino2 Neutralino2, 500.,0.8,0.6 )     20.4722 fb +- 0.28 fb alias 2
+sigma ( ee -> SelectronL  SelectronL~, 500.,0.8,0.6 )   2.86753300E+01 fb +- 2.0 fb alias 3
+sigma ( ee -> SelectronR  SelectronL~, 500.,0.8,0.6 )   7.65443132E+00 fb +- 2.0 fb alias 101
+sigma ( ee -> SelectronL  SelectronR~, 500.,0.8,0.6 )   2.75559295E+02 fb +- 2.0 fb alias 102
+sigma ( ee -> SelectronR  SelectronR~, 500.,0.8,0.6 )   2.51104687E+02 fb +- 2.0 fb alias 103
+sigma ( ee -> SmuL  SmuL~, 500.,0.8,0.6 )               45.26534 fb +- 0.4 fb alias 4
 
-sigma ( ee -> Chargino1 Chargino1, 500.,-0.8,-0.6 )       104.746 fb +- 1.0 fb alias 8
-sigma ( ee -> Neutralino1 Neutralino2, 500.,-0.8,-0.6 )   43.9503  fb +- 0.4 fb alias 9
-sigma ( ee -> Neutralino2 Neutralino2, 500.,-0.8,-0.6 )    43.7745 fb +- 0.4 fb alias 10
-sigma ( ee -> SelectronL  SelectronL~, 500.,-0.8,-0.6 )   97.4164 fb +- 1.0 fb alias 11
-sigma ( ee -> SelectronL  SelectronR~, 500.,-0.8,-0.6 )   223.676 fb +- 2.2 fb alias 12
-sigma ( ee -> SelectronR  SelectronR~, 500.,-0.8,-0.6 )   28.9840 fb +- 0.35 fb alias 13
-sigma ( ee -> SmuL  SmuL~, 500.,-0.8,-0.6 )               22.6951 fb +- 0.3 fb alias 14
-sigma ( ee -> Stau1 Stau1~, 500.,-0.8,-0.6 )              25.7371  fb +- 0.32 fb alias 15
+#     2.51104687E+02    2     2000011  -2000011    # ~e_R-      ~e_R+
+#     7.65443132E+00    2     2000011  -1000011    # ~e_R-      ~e_L+
+#     2.75559295E+02    2     1000011  -2000011    # ~e_L-      ~e_R+
+#     2.86753300E+01    2     1000011  -1000011    # ~e_L-      ~e_L+
 
-sigma ( ee -> Chargino1 Chargino1, 1000.,0.8,-0.6 )     11.8156 fb +- 0.2 fb alias 16
-sigma ( ee -> Chargino1 Chargino1, 1000.,-0.8,0.6 )     405.536 fb +- 4.0 fb alias 17
-sigma ( ee -> Chargino1 Chargino2, 1000.,0.8,-0.6 )     6.44726 fb +- 0.15 fb alias 18
-sigma ( ee -> Chargino1 Chargino2, 1000.,-0.8,0.6 )     41.7643 fb +- 0.4 fb alias 19
-sigma ( ee -> Chargino2 Chargino2, 1000.,0.8,-0.6 )     43.7696 fb +- 0.4 fb alias 20
-sigma ( ee -> Chargino2 Chargino2, 1000.,-0.8,0.6 )     206.527 fb +- 2.0 fb alias 21
+sigma ( ee -> Stau1 Stau1~, 500.,-0.8,0.6 )              59.9645 fb +- 0.5 fb alias 5
+sigma ( ee -> Stau1 Stau1~, 500.,0.8,-0.6 )              174.762 fb +- 1.6 fb alias 44
+sigma ( ee -> Chargino1 Chargino1, 500.,0.8,0.6 )    48.1199 fb +- 0.46 fb alias 6
+sigma ( ee -> Z h0, 500., -0.8, 0.6 )                  37.88194 fb +- 0.38 fb   alias 7
+sigma ( ee -> Z h0, 500., 0.8, -0.6 )                  28.6221 fb +- 0.35 fb   alias 43
+# 
+# sigma ( ee -> Chargino1 Chargino1, 500.,-0.8,-0.6 )       108.207 fb +- 1.0 fb alias 8
+# sigma ( ee -> Neutralino1 Neutralino2, 500.,-0.8,-0.6 )   46.8828  fb +- 0.4 fb alias 9
+# sigma ( ee -> Neutralino2 Neutralino2, 500.,-0.8,-0.6 )   46.0427  fb +- 0.4 fb alias 10
+# sigma ( ee -> SelectronL  SelectronL~, 500.,-0.8,-0.6 )   113.0435 fb +- 1.0 fb alias 11
+# sigma ( ee -> SelectronL  SelectronR~, 500.,-0.8,-0.6 )   266.133 fb +- 2.2 fb alias 12
+# sigma ( ee -> SelectronR  SelectronR~, 500.,-0.8,-0.6 )   41.2243 fb +- 0.35 fb alias 13
+# sigma ( ee -> SmuL  SmuL~, 500.,-0.8,-0.6 )               27.8808 fb +- 0.3 fb alias 14
+# sigma ( ee -> Stau1 Stau1~, 500.,-0.8,-0.6 )              33.0359 fb +- 0.32 fb alias 15
+# 
+# sigma ( ee -> Chargino1 Chargino1, 1000.,0.8,-0.6 )     12.2953 fb +- 0.2 fb alias 16
+# sigma ( ee -> Chargino1 Chargino1, 1000.,-0.8,0.6 )     433.474 fb +- 4.0 fb alias 17
+# sigma ( ee -> Chargino1 Chargino2, 1000.,0.8,-0.6 )     4.63517 fb +- 0.15 fb alias 18
+# sigma ( ee -> Chargino1 Chargino2, 1000.,-0.8,0.6 )     31.635 fb +- 0.4 fb alias 19
+# sigma ( ee -> Chargino2 Chargino2, 1000.,0.8,-0.6 )     39.1362 fb +- 0.4 fb alias 20
+# sigma ( ee -> Chargino2 Chargino2, 1000.,-0.8,0.6 )     180.075  fb +- 2.0 fb alias 21
+# 
+# sigma ( ee -> Chargino1 Chargino1, 500.,-0.8,0.6 )    432.77  fb +- 4.2 fb alias 22
+# sigma ( ee -> Chargino1 Chargino1, 500.,0.8,-0.6 )     12.1607  fb +- 0.22 fb alias 23
+# sigma ( ee -> Neutralino1 Neutralino2, 500.,-0.8,0.6 )   182.769 fb +- 1.7 fb alias 24
+# sigma ( ee -> Neutralino2 Neutralino2, 500.,0.8,-0.6 )    5.15888 fb +- 0.15 fb alias 25
+# sigma ( ee -> Neutralino1 Neutralino2, 500.,0.8,-0.6 )   16.4972 fb +- 0.3 fb alias 26
+# sigma ( ee -> Neutralino2 Neutralino2, 500.,-0.8,0.6 )   184.153  fb +- 1.8 fb alias 27
+# 
+# sigma ( ee -> Chargino1 Chargino1, 400.,-0.8,0.6 )     94.9663  fb +- 1.0 fb alias 28
+# sigma ( ee -> Chargino1 Chargino1, 400.,0.8,-0.6 )     2.7024 fb +- 0.12 fb alias 29
+# sigma ( ee -> Neutralino1 Neutralino2, 400.,-0.8,0.6 )   144.896 fb +- 1.4 fb alias 30
+# sigma ( ee -> Neutralino2 Neutralino2, 400.,0.8,-0.6 )   1.00166  fb +- 0.1 fb alias 31
+# sigma ( ee -> Neutralino1 Neutralino2, 400.,0.8,-0.6 )   14.4521  fb +- 0.3 fb alias 32
+# sigma ( ee -> Neutralino2 Neutralino2, 400.,-0.8,0.6 )   35.6568  fb +- 0.4 fb alias 33
+# 
+# sigma ( ee -> SelectronL  SelectronL~, 500.,0.8,-0.6 )  931.532   fb +- 9.0 fb alias 31
+# sigma ( ee -> SelectronL  SelectronL~, 500.,-0.8,0.6 )  64.4825  fb +- 0.64 fb alias 32
+# sigma ( ee -> SelectronL  SelectronL~, 400.,0.8,-0.6 )  762.537 fb +- 7.6 fb alias 33
+# sigma ( ee -> SelectronL  SelectronL~, 400.,-0.8,0.6 )   62.08 fb +- 0.6 fb alias 34
+# 
+# sigma ( ee -> SmuL  SmuL~, 500.,-0.8,0.6 )                43.2469 fb +- 0.43 fb alias 35
+# sigma ( ee -> SmuL  SmuL~, 500.,0.8,-0.6 )                164.938 fb +- 1.6 fb alias 36
+# sigma ( ee -> SmuL  SmuL~, 400.,-0.8,0.6 )                45.9844 fb +- 0.45 fb alias 37
+# sigma ( ee -> SmuL  SmuL~, 400.,0.8,-0.6 )                180.312 fb +- 1.8 fb alias 38
+# 
+# 
+# sigma ( ee -> SelectronR  SelectronR~, 500.,0.8,-0.6 )  17.1094  fb +- 0.3 fb alias 41
+# sigma ( ee -> SelectronR  SelectronR~, 500.,-0.8,0.6 )  159.612 fb +- 1.6 fb alias 42
+# 
 
-sigma ( ee -> Chargino1 Chargino1, 500.,-0.8,0.6 )    418.759 fb +- 4.2 fb alias 22
-sigma ( ee -> Chargino1 Chargino1, 500.,0.8,-0.6 )     12.1741 fb +- 0.22 fb alias 23
-sigma ( ee -> Neutralino1 Neutralino2, 500.,-0.8,0.6 )   169.215 fb +- 1.7 fb alias 24
-sigma ( ee -> Neutralino2 Neutralino2, 500.,0.8,-0.6 )    4.92392 fb +- 0.15 fb alias 25
-sigma ( ee -> Neutralino1 Neutralino2, 500.,0.8,-0.6 )   20.4959 fb +- 0.3 fb alias 26
-sigma ( ee -> Neutralino2 Neutralino2, 500.,-0.8,0.6 )   175.073  fb +- 1.8 fb alias 27
-
-sigma ( ee -> Chargino1 Chargino1, 400.,-0.8,0.6 )    135.403 fb +- 1.4 fb alias 28
-sigma ( ee -> Chargino1 Chargino1, 400.,0.8,-0.6 )     3.8592 fb +- 0.13 fb alias 29
-sigma ( ee -> Neutralino1 Neutralino2, 400.,-0.8,0.6 )   135.518 fb +- 1.4 fb alias 30
-sigma ( ee -> Neutralino2 Neutralino2, 400.,0.8,-0.6 )   1.24456 fb +- 0.1 fb alias 31
-sigma ( ee -> Neutralino1 Neutralino2, 400.,0.8,-0.6 )   18.0209 fb +- 0.3 fb alias 32
-sigma ( ee -> Neutralino2 Neutralino2, 400.,-0.8,0.6 )   44.0553  fb +- 0.4 fb alias 33
-
-sigma ( ee -> SelectronL  SelectronL~, 500.,0.8,-0.6 )  806.778 fb +- 8.0 fb alias 31
-sigma ( ee -> SelectronL  SelectronL~, 500.,-0.8,0.6 )  53.8728 fb +- 0.54 fb alias 32
-sigma ( ee -> SelectronL  SelectronL~, 400.,0.8,-0.6 )  549.688 fb +- 5.5 fb alias 33
-sigma ( ee -> SelectronL  SelectronL~, 400.,-0.8,0.6 )  42.7344 fb +- 0.4 fb alias 34
-
-sigma ( ee -> SmuL  SmuL~, 500.,-0.8,0.6 )                35.2265 fb +- 0.35 fb alias 35
-sigma ( ee -> SmuL  SmuL~, 500.,0.8,-0.6 )                134.205 fb +- 1.4 fb alias 36
-sigma ( ee -> SmuL  SmuL~, 400.,-0.8,0.6 )                30.8649 fb +- 0.35 fb alias 37
-sigma ( ee -> SmuL  SmuL~, 400.,0.8,-0.6 )                120.872 fb +- 1.2 fb alias 38
-
-sigma ( ee -> SnueL  SnueL~, 500.,0.8,-0.6 )  46.4731 fb +- 0.5 fb alias 39
-sigma ( ee -> SnueL  SnueL~, 500.,-0.8,0.6 )  1132.59 fb +- 12.0 fb alias 40
-
-sigma ( ee -> SelectronR  SelectronR~, 500.,0.8,-0.6 )  11.655 fb +- 0.2 fb alias 41
-sigma ( ee -> SelectronR  SelectronR~, 500.,-0.8,0.6 )  112.377 fb +- 1.2 fb alias 42
-
-
-BR 1 ( h0 -> Bottom Bottom~ )                       0.824057   +- 0.019      alias 1
-BR 2 ( h0 -> Charm  Charm~ )                        0.0405547  +- 0.0033      alias 2
-BR 3 ( h0 -> Tau  Tau~ )                            0.134444   +- 0.0067      alias 3
+BR 1 ( h0 -> Bottom Bottom~ )                       0.824327   +- 0.019      alias 1
+BR 2 ( h0 -> Charm  Charm~ )                        0.039964   +- 0.0033      alias 2
+BR 3 ( h0 -> Tau  Tau~ )                            0.13477    +- 0.0067      alias 3
 
 ###################################################################
 # Parameters: 27
 ###################################################################
 
-fitParameter  TanBeta          10.1929     #  10.0 # 1.0281e+01    # 10.0
-fitParameter  Mu               358.694 GeV #  358.645629165085 GeV # 3.58722e+02  GeV  # 358.645629165085 GeV
-fitParameter  Xtau            -4003.31 GeV #  -3837.23 GeV # -1.80739e+02 GeV # -250.773469851269 GeV
-fitParameter  MSelectronR      135.763 GeV #  135.76 GeV # 1.35760e+02 GeV # 135.76 GeV
-fitParameter  MStauR           134.127 GeV #  133.33 GeV # 1.33458e+02 GeV # 133.33 GeV
-fitParameter  MSelectronL      195.202 GeV #  195.21 GeV # 1.95199e+02 GeV # 195.21 GeV
-fitParameter  MStauL           193.926 GeV #  194.39 GeV # 1.94261e+02 GeV # 194.39 GeV
-fitParameter  Xtop            -503.095 GeV #  -506.388 GeV # -5.01217e+02 GeV # 	-506.0 GeV
-fitParameter  Xbottom         -4465.52 GeV # -4441. GeV # -5.01217e+02 GeV # 	  -800.0 GeV
-fitParameter  MSdownR          528.127 GeV #  528.14 GeV # 5.28134e+02 GeV # 528.14 GeV
-fitParameter  MSbottomR        524.646 GeV #  524.718 GeV  # 5.24869e+02 GeV # 524.718 GeV  
-fitParameter  MSupR            530.342 GeV #  530.253 GeV  # 5.30270e+02 GeV # 530.253 GeV  
-fitParameter  MStopR           423.554 GeV #  424.382 GeV  # 4.23129e+02 GeV # 424.382 GeV  
-fitParameter  MSupL            548.702 GeV #  548.705 GeV  # 5.48702e+02 GeV # 548.705 GeV  
-fitParameter  MStopL           499.969 GeV #  499.972 GeV  # 4.99487e+02 GeV # 499.972 GeV  
-fitParameter  M1               101.782 GeV #  101.809 GeV  # 1.01769e+02 GeV # 101.809 GeV  
-fitParameter  M2               191.671 GeV #  191.7556 GeV # 1.91631e+02 GeV # 191.7556 GeV 
-fitParameter  M3               588.788 GeV #  588.797 GeV  # 5.88821e+02 GeV # 588.797 GeV  
-fitParameter  massA0           399.786 GeV #  399.767 GeV  # 3.99806e+02 GeV # 399.767 GeV  
+ # fitParameter  TanBeta          10.1929     #  10.0 # 1.0281e+01    # 10.0
+ # fitParameter  Mu               358.694 GeV #  358.645629165085 GeV # 3.58722e+02  GeV  # 358.645629165085 GeV
+ # fitParameter  Xtau            -4003.31 GeV #  -3837.23 GeV # -1.80739e+02 GeV # -250.773469851269 GeV
+ # fitParameter  MSelectronR      135.763 GeV #  135.76 GeV # 1.35760e+02 GeV # 135.76 GeV
+ # fitParameter  MStauR           134.127 GeV #  133.33 GeV # 1.33458e+02 GeV # 133.33 GeV
+ # fitParameter  MSelectronL      195.202 GeV #  195.21 GeV # 1.95199e+02 GeV # 195.21 GeV
+ # fitParameter  MStauL           193.926 GeV #  194.39 GeV # 1.94261e+02 GeV # 194.39 GeV
+ # fitParameter  Xtop            -503.095 GeV #  -506.388 GeV # -5.01217e+02 GeV # 	-506.0 GeV
+ # fitParameter  Xbottom         -4465.52 GeV # -4441. GeV # -5.01217e+02 GeV # 	  -800.0 GeV
+ # fitParameter  MSdownR          528.127 GeV #  528.14 GeV # 5.28134e+02 GeV # 528.14 GeV
+ # fitParameter  MSbottomR        524.646 GeV #  524.718 GeV  # 5.24869e+02 GeV # 524.718 GeV  
+ # fitParameter  MSupR            530.342 GeV #  530.253 GeV  # 5.30270e+02 GeV # 530.253 GeV  
+ # fitParameter  MStopR           423.554 GeV #  424.382 GeV  # 4.23129e+02 GeV # 424.382 GeV  
+ # fitParameter  MSupL            548.702 GeV #  548.705 GeV  # 5.48702e+02 GeV # 548.705 GeV  
+ # fitParameter  MStopL           499.969 GeV #  499.972 GeV  # 4.99487e+02 GeV # 499.972 GeV  
+ # fitParameter  M1               101.782 GeV #  101.809 GeV  # 1.01769e+02 GeV # 101.809 GeV  
+ # fitParameter  M2               191.671 GeV #  191.7556 GeV # 1.91631e+02 GeV # 191.7556 GeV 
+ # fitParameter  M3               588.788 GeV #  588.797 GeV  # 5.88821e+02 GeV # 588.797 GeV  
+ # fitParameter  massA0           399.786 GeV #  399.767 GeV  # 3.99806e+02 GeV # 399.767 GeV  
 
-# fitParameter  TanBeta          10.0 # 1.0281e+01    # 10.0
-# fitParameter  Mu               358.645629165085 GeV # 3.58722e+02  GeV  # 358.645629165085 GeV
-# fitParameter  Xtau             -3837.23 GeV # -1.80739e+02 GeV # -250.773469851269 GeV
-# fitParameter  MSelectronR      135.76 GeV # 1.35760e+02 GeV # 135.76 GeV
-# fitParameter  MStauR           133.33 GeV # 1.33458e+02 GeV # 133.33 GeV
-# fitParameter  MSelectronL      195.21 GeV # 1.95199e+02 GeV # 195.21 GeV
-# fitParameter  MStauL           194.39 GeV # 1.94261e+02 GeV # 194.39 GeV
-# fitParameter  Xtop             -506.388 GeV # -5.01217e+02 GeV # 	-506.0 GeV
-# fitParameter  Xbottom         -4441. GeV # -5.01217e+02 GeV # 	  -800.0 GeV
-# fitParameter  MSdownR          528.14 GeV # 5.28134e+02 GeV # 528.14 GeV
-# fitParameter  MSbottomR        524.718 GeV  # 5.24869e+02 GeV # 524.718 GeV  
-# fitParameter  MSupR            530.253 GeV  # 5.30270e+02 GeV # 530.253 GeV  
-# fitParameter  MStopR           424.382 GeV  # 4.23129e+02 GeV # 424.382 GeV  
-# fitParameter  MSupL            548.705 GeV  # 5.48702e+02 GeV # 548.705 GeV  
-# fitParameter  MStopL           499.972 GeV  # 4.99487e+02 GeV # 499.972 GeV  
-# fitParameter  M1               101.809 GeV  # 1.01769e+02 GeV # 101.809 GeV  
-# fitParameter  M2               191.7556 GeV # 1.91631e+02 GeV # 191.7556 GeV 
-# fitParameter  M3               588.797 GeV  # 5.88821e+02 GeV # 588.797 GeV  
-# fitParameter  massA0           399.767 GeV  # 3.99806e+02 GeV # 399.767 GeV  
+fitParameter  TanBeta         10.0               #     10.0 # 1.0281e+01    # 10.0
+fitParameter  Mu              4.00391601E+02 GeV #     358.645629165085 GeV # 3.58722e+02  GeV  # 358.645629165085 GeV
+fitParameter  Xtau            -4449.2464     GeV #     -3837.23 GeV # -1.80739e+02 GeV # -250.773469851269 GeV
+fitParameter  MSelectronR     1.15601432E+02 GeV  #     135.76 GeV # 1.35760e+02 GeV # 135.76 GeV
+fitParameter  MStauR          1.09886191E+02 GeV  #     133.33 GeV # 1.33458e+02 GeV # 133.33 GeV
+fitParameter  MSelectronL     1.81303904E+02 GeV  #     195.21 GeV # 1.95199e+02 GeV # 195.21 GeV
+fitParameter  MStauL          1.79542181E+02 GeV  #     194.39 GeV # 1.94261e+02 GeV # 194.39 GeV
+fitParameter  Xtop            -565.6667  GeV      #     -506.388 GeV # -5.01217e+02 GeV # 	-506.0 GeV
+fitParameter  Xbottom         -4934.7555 GeV      #    -4441. GeV # -5.01217e+02 GeV # 	  -800.0 GeV
+fitParameter  MSdownR         5.01633868E+02 Gev  #     528.14 GeV # 5.28134e+02 GeV # 528.14 GeV
+fitParameter  MSbottomR       4.97407092E+02 GeV  #     524.718 GeV  # 5.24869e+02 GeV # 524.718 GeV  
+fitParameter  MSupR           5.03870507E+02 GeV  #     530.253 GeV  # 5.30270e+02 GeV # 530.253 GeV  
+fitParameter  MStopR          3.80875693E+02 GeV  #     424.382 GeV  # 4.23129e+02 GeV # 424.382 GeV  
+fitParameter  MSupL           5.23239070E+02 GeV  #     548.705 GeV  # 5.48702e+02 GeV # 548.705 GeV  
+fitParameter  MStopL          4.67710781E+02 GeV  #     499.972 GeV  # 4.99487e+02 GeV # 499.972 GeV  
+fitParameter  M1              1.03270551E+02 GeV  #     101.809 GeV  # 1.01769e+02 GeV # 101.809 GeV  
+fitParameter  M2              1.93445550E+02 GeV  #     191.7556 GeV # 1.91631e+02 GeV # 191.7556 GeV 
+fitParameter  M3              5.68863225E+02 GeV  #     588.797 GeV  # 5.88821e+02 GeV # 588.797 GeV  
+fitParameter  massA0          174.95 GeV          #     399.767 GeV  # 3.99806e+02 GeV # 399.767 GeV  
 
-# fixParameter  MSmuR          135.76 GeV # 1.35760e+02 GeV # 	 135.76 GeV
-# fixParameter  MSmuL          195.21 GeV # 1.95199e+02 GeV # 	 195.21 GeV
-# fixParameter  MSstrangeR     528.14 GeV   # 5.28134e+02 GeV # 528.14 GeV   
-# fixParameter  MScharmR       530.253 GeV  # 5.30270e+02 GeV # 530.253 GeV  
-# fixParameter  MScharmL       548.705 GeV  # 5.48702e+02 GeV # 548.705 GeV  
+#  3  3    -4.45330426E+02   # A_tau(Q)^DRbar   
+#  3  3    -9.30839473E+02   # A_b(Q)^DRbar   
+#  3  3    -5.25627893E+02   # A_t(Q)^DRbar    
+#    1    1.03270551E+02  # M_1
+#    2    1.93445550E+02  # M_2
+#    3    5.68863225E+02  # M_3
+#   21    2.55123163E+04  # M^2_(H,d)
+#   22   -1.46474523E+05  # M^2_(H,u)
+#   31    1.81303904E+02  # M_(L,11)
+#   32    1.81297662E+02  # M_(L,22)
+#   33    1.79542181E+02  # M_(L,33)
+#   34    1.15601432E+02  # M_(E,11)
+#   35    1.15581589E+02  # M_(E,22)
+#   36    1.09886191E+02  # M_(E,33)
+#   41    5.23239070E+02  # M_(Q,11)
+#   42    5.23236799E+02  # M_(Q,22)
+#   43    4.67710781E+02  # M_(Q,33)
+#   44    5.03870507E+02  # M_(U,11)
+#   45    5.03868294E+02  # M_(U,22)
+#   46    3.80875693E+02  # M_(U,33)
+#   47    5.01633868E+02  # M_(D,11)
+#   48    5.01631298E+02  # M_(D,22)
+#   49    4.97407092E+02  # M_(D,33)
+
+# fitParameter  MSmuR          135.76 GeV # 1.35760e+02 GeV # 	 135.76 GeV
+# fitParameter  MSmuL          195.21 GeV # 1.95199e+02 GeV # 	 195.21 GeV
+# fitParameter  MSstrangeR     528.14 GeV   # 5.28134e+02 GeV # 528.14 GeV   
+# fitParameter  MScharmR       530.253 GeV  # 5.30270e+02 GeV # 530.253 GeV  
+# fitParameter  MScharmL       548.705 GeV  # 5.48702e+02 GeV # 548.705 GeV  
 
 			       
-fitParameter  massTop         1.743e+02   GeV
+fitParameter  massTop         1.78e+02   GeV
 fixParameter  massBottom      4.2000e+00   GeV
 fixParameter  massCharm       1.2e+00   GeV
 
@@ -239,21 +267,21 @@ universality MSupL MScharmL
 OneLoopCorrections    on
 ISR                   on			       
 				       
-UseGivenStartValues   off
-FitAllDirectly        off
+UseGivenStartValues   on
+FitAllDirectly        on
 BoundsOnX             off
-ScanX                 on
-XScanRange            -5000. GeV  -100. GeV
 SepFitTanbX           off
+XScanRange            -6000. GeV  -300. GeV
+ScanX                 on
 
 ScanParameters        off
 CalcPullDist          off
 
-Generator             SPHENO  /home/bechtle/FLC/programs/SPheno2.2.1/SPheno
+Generator             SPHENO  ../SPheno2.2.2/SPheno
 
 UseMinos              on
 UseHesse              off
 
-NumberOfMinimizations  3
+NumberOfMinimizations  1
 ErrDef                 1.0
 

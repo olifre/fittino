@@ -77,4 +77,8 @@ extern int           yyNumberPulls;
 extern double        yyXscanlow;
 extern double        yyXscanhigh;
 
+extern double        yybsg;
+extern double        yygmin2;
+extern double        yydrho;
+
 #endif
