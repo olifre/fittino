@@ -18,7 +18,7 @@
 %token <real> T_NUMBER
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
 %token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS
-%token T_BLOCK T_SCALE T_DECAY T_NEWLINE T_XS T_GENERATOR T_XSBR
+%token T_BLOCK T_SCALE T_DECAY T_NEWLINE T_XS T_GENERATOR T_XSBR T_BRRATIO
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH
  
 %type <name> sentence
@@ -622,6 +622,7 @@ input:
 		  str = $4;
 		  char tmpstr3[255];
 		  unsigned int pos = 0, newpos = 0;
+		  bool found_br = false;
 		  int anti = 1;
 		  while ((newpos = str.find(" ", pos)) != string::npos) {
 		    str.copy(tmpstr3, newpos - pos, pos);
@@ -639,12 +640,18 @@ input:
 		      charnumber = strchr(tmpstr3,'_');
 		      if (charnumber == 0) yyerror ("Underscore not found");
 		      aliasnumber = atof((charnumber+1));
+		      found_br = false;
 		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
 			if ((yyMeasuredVec[k].type == xsection) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			  i = k;
+			  found_br = true;
 			  cout << "found xs " <<  yyMeasuredVec[k].name << endl;
 			  break;
 			}
+		      }
+		      if (!found_br) {
+			cout << "sigma " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
 		      }
 		      // remove cross section from the list
 		      cout << "removing xs from the list" << endl;
@@ -656,18 +663,100 @@ input:
 		      charnumber = strchr(tmpstr3,'_');
 		      if (charnumber == 0) yyerror ("Underscore not found");
 		      aliasnumber = atof((charnumber+1));
+		      found_br = false;
 		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
 			if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			  i = k;
+			  found_br = true;
 			  cout << "found br " <<  yyMeasuredVec[k].name << endl;
 			  break;
 			}
+		      }
+		      if (!found_br) {
+			cout << "br " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
 		      }
 		      // remove br from the list
 		      cout << "removing br from the list" << endl;
 		      yyMeasuredVec[k].nofit = true;
 		      tmpValue.daughters.push_back(k);
 		    }
+		  }
+		  yyMeasuredVec.push_back(tmpValue);
+		}
+		else if (!strcmp($2,"brratio")) {
+		  int i = 0;
+		  int j = 0;
+		  int aliasnumber;
+		  char* charnumber;
+		  MeasuredValue tmpValue;
+                  tmpValue.nofit = false;
+		  tmpValue.name.erase();
+		  tmpValue.type  = brratio;
+		  tmpValue.theovalue  = 0;
+		  tmpValue.value = $6;
+		  tmpValue.error = $7;
+		  tmpValue.name  = $4;
+		  tmpValue.alias = (int)$9;
+		  tmpValue.bound_up = 1e+9;
+		  tmpValue.bound_low = 0.;
+		  cout << "brratio found" << endl;
+		  // break sentence in pieces:
+		  string str;
+	          str.erase();
+		  str = $4;
+		  char tmpstr3[255];
+		  unsigned int pos = 0, newpos = 0;
+		  int anti = 1;
+		  bool found_br = false;
+		  int countbrs = 0;
+		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		    countbrs++;
+		    if (countbrs>=3) {
+		      cout << "syntax error in brratio: too many br, alias: " << tmpValue.alias <<  endl;
+		      yyerror (" ");		      
+		    }
+		    str.copy(tmpstr3, newpos - pos, pos);
+		    if (tmpstr3[newpos-pos-1] == '~') {
+		      tmpstr3[newpos-pos-1] = '\0';
+		      anti = -1;
+		    }
+		    else {
+		      tmpstr3[newpos-pos] = '\0';
+		      anti = 1;
+		    }
+		    pos = newpos + 1;
+		    // break up:
+		    if (!strncmp(tmpstr3,"br",2)) {
+		      charnumber = strchr(tmpstr3,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atof((charnumber+1));
+		      found_br = false;
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  found_br = true;
+			  cout << "found br " <<  yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      if (!found_br) {
+			cout << "br " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
+		      }
+		      // remove br from the list
+		      cout << "removing br from the list" << endl;
+		      yyMeasuredVec[k].nofit = true;
+		      tmpValue.daughters.push_back(k);
+		    }
+		    else {
+		      cout << "syntax error in brratio, alias: " << tmpValue.alias <<  endl;
+		      yyerror (" ");
+		    }
+		  }
+		  if (countbrs<2) {
+		      cout << "syntax error in brratio: not enough br, alias: " << tmpValue.alias <<  endl;
+		      yyerror (" ");		      		    
 		  }
 		  yyMeasuredVec.push_back(tmpValue);
 		}

@@ -120,6 +120,7 @@ BR 4 ( Stop1 -> Neutralino1 Top )                   0.219884 +- 0.02    alias 4
 BR 5 ( Stop1 -> Chargino1 Bottom )                  0.733074 +- 0.04    alias 5
 
 xsbr ( sigma_7 br_1 ) 32.874 +- 0.5 alias 1
+brratio ( br_1 br_2 ) 20.6259 +- 0.5 alias 1
 
 
 

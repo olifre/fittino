@@ -3423,6 +3423,14 @@ void   ReadLesHouches()
       yyMeasuredVec[i].theoset = true;
     }
   }  
+  // check for brratio
+  for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+    if (yyMeasuredVec[i].type == brratio) {
+      yyMeasuredVec[i].theovalue = yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue / 
+	yyMeasuredVec[yyMeasuredVec[i].daughters[1]].theovalue;
+      yyMeasuredVec[i].theoset = true;
+    }
+  }  
   // check whether all has been found
   for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
     if ((yyMeasuredVec[i].theoset == false) && (yyMeasuredVec[i].nofit == false)) {
