@@ -1876,7 +1876,7 @@ void Fittino::writeResults(const char* filename)
 
 
     fprintf(file,"#################### Fittino Fit Summary ####################\n");
-    fprintf(file,"created by Fittino version 0.0.1\n");
+    fprintf(file,"created by Fittino version 1.0.0\n");
     fprintf(file,"on %s, %s %02d, %d at %02d:%02d:%02d\n", weekday.c_str(), month.c_str(),
 	      mday, year, hour, min, sec);
     fprintf(file,"\n");
