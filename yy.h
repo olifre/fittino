@@ -71,6 +71,7 @@ extern bool             yyAdaptiveSimAnn;
 extern bool             yyNoBoundsAtAll;
 extern bool          yySimAnnUncertainty;
 extern bool          yySimAnnUncertaintyRunDown;
+extern bool          yyRandomDirUncertainties;
 
 
 typedef struct {
@@ -89,6 +90,7 @@ extern double        yyErrDef;
 extern int           yyNumberPulls;
 extern int           yyMaxCallsSimAnn;
 extern int           yyRandomGeneratorSeed;
+extern int           yyNumberOfDirections;
 extern double        yyTempRedSimAnn;
 extern double        yyInitTempSimAnn;
 extern double        yyXscanlow;

@@ -480,6 +480,9 @@ CalcPullDist          off
 NumberPulls           1
 RandomGeneratorSeed   -1 # < 0 means use random seed (default), else take given seed
 
+RandomDirUncertainties off
+NumberOfDirections    10000
+
 UseSimAnnBefore       off
 UseSimAnnWhile        off
 SimAnnUncertainty     off

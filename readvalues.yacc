@@ -130,6 +130,7 @@ bool          yyAdaptiveSimAnn = false;
 bool          yyNoBoundsAtAll = false;
 bool          yySimAnnUncertainty = false;
 bool          yySimAnnUncertaintyRunDown = false;
+bool          yyRandomDirUncertainties = false;
 
 unsigned int yyCalculator;
 string       yyCalculatorPath = "";
@@ -144,6 +145,8 @@ int           yyMaxCallsSimAnn = 300000;
 double        yyTempRedSimAnn = 0.4;
 double        yyInitTempSimAnn = -1.;
 int           yyNumberPulls = 0;
+
+int           yyNumberOfDirections = 10000;
 
 int           yyRandomGeneratorSeed = -1;
 
@@ -218,6 +221,10 @@ input:
 		else if (!strcmp($2,"RandomGeneratorSeed")) {
 		  // cout << "FOUND RandomGeneratorSeed "<<$3<<endl;
 		  yyRandomGeneratorSeed = $3;
+                }
+		else if (!strcmp($2,"NumberOfDirections")) {
+		  // cout << "FOUND NumberOfDirections "<<$3<<endl;
+		  yyNumberOfDirections = $3;
                 }
                 else if (!strcmp($2,"NumberPulls")) {
 		  // cout << "FOUND NumberPulls "<<$3<<endl;
@@ -551,6 +558,10 @@ input:
 		  if (!strcmp($2, "SimAnnUncertaintyRunDown")) {
 		      if ($3 == on) yySimAnnUncertaintyRunDown = true;
 		      else yySimAnnUncertaintyRunDown = false;
+		  }
+		  if (!strcmp($2, "RandomDirUncertainties")) {
+		      if ($3 == on) yyRandomDirUncertainties = true;
+		      else yyRandomDirUncertainties = false;
 		  }
 	      }
 	    | input T_CALCULATOR T_WORD

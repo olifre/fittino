@@ -1863,7 +1863,9 @@ void Fittino::calculateLoopLevelValues()
     SimAnnNtupFile->Close();
   }
 
-
+  if (yyRandomDirUncertainties) {
+    randomDirectionUncertainties();
+  }
 
   cout << "write the preliminay output file" << endl;
   writeResults("fittino.out.intermediate");
@@ -5248,8 +5250,7 @@ void Fittino::randomDirectionUncertainties()
 {
     cout<<"Using randomDirectionUncertainties"<<endl;
 
-    const int maxdirs = 1000;
-    const double eps = 0.001;
+    const double eps = 0.005;
     double* optpar = new double[yyFittedVec.size()];
 
     for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
@@ -5258,15 +5259,55 @@ void Fittino::randomDirectionUncertainties()
 
     int npar, iflag;
     double* gin;
+    double minChi2;
+    fitterFCN(npar, gin, minChi2, optpar, iflag);
+
+    time_t systime;
+    int seed;
+    struct sysinfo sinfo; 
+    // set the random number generator
+    time (&systime);
+    sysinfo(&sinfo);
+    if (yyRandomGeneratorSeed < 0) {
+      seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
+      cout<<"uptime = "<<sinfo.uptime<<endl;
+      cout<<"freeswap = "<<sinfo.freeswap<<endl;
+      cout<<"pid = "<<getpid()<<endl;
+      cout << "systime " << systime << endl; 
+    }
+    else {
+      cout<<"using seed from input file"<<endl;
+      seed = yyRandomGeneratorSeed;
+    }
+    cout << "seed = " << seed << endl;
+    gRandom->SetSeed(seed);
+
     double* par = new double[yyFittedVec.size()];
     double* unitvec = new double[yyFittedVec.size()];
-    double val;
+    double chi2;
+    double deltaChi2;
 
-    for (int idir=0; idir<maxdirs; idir++) {
+    TFile* file = new TFile("RandomDirUncertainties.root", "recreate");
+    TTree* tree = new TTree("tree", "Tree containing fitted parameters");
+    vector<MeasuredValue> leafVec(yyFittedPar.size());
+    cout<<"Creating RandomDirectionUncertainties tree"<<endl;
+    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+      leafVec[k].name = yyFittedVec[k].name;
+      leafVec[k].value = -1;
+      string str = yyFittedVec[k].name;
+      str.append("/D");
+      cout << "Adding branch " << yyFittedVec[k].name.c_str() << " to tree" << endl;
+      tree->Branch(yyFittedVec[k].name.c_str(), &(leafVec[k].value), str.c_str());
+      str.erase();
+    }
+    cout << "Adding branch DeltaChi2 to tree" << endl;
+    tree->Branch("DeltaChi2", &deltaChi2, "DeltaChi2/D");
+
+    for (int idir=0; idir<yyNumberOfDirections; idir++) {
 
 	double d = 0;
 	for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-	    par[k] = gRandom->Gaus(1, 0.05) * optpar[k];
+	    par[k] = gRandom->Uniform(0.99, 1.01) * optpar[k];
 	    unitvec[k] = par[k] - optpar[k];
 	    d += (par[k] - optpar[k]) * (par[k] - optpar[k]);
 	}
@@ -5276,23 +5317,80 @@ void Fittino::randomDirectionUncertainties()
 	    unitvec[k] /= d;
 	}
 
+	unsigned int ncalls = 0;
+	double prevd = 0;
+	/*
+	double dinit[3];
+	double finit[3];
+	*/
 	while (1) {
-	    fitterFCN(npar, gin, val, par, iflag);
-	    cout<<"f = "<<val<<endl;
-	    if (TMath::Abs(val - yyErrDef) < eps) break;
-	    if (val > 1) d *= 0.5;
-	    else d *= 2.0;
+	    fitterFCN(npar, gin, chi2, par, iflag);
+	    ncalls++;
+	    deltaChi2 = chi2 - minChi2;
+	    cout<<"f = "<<deltaChi2<<endl;
+	    cout<<"d = "<<d<<endl;
+	    if (deltaChi2 < 0) cerr<<"WARNING: Minimization did not yield global minimum"<<endl;
+	    if (TMath::Abs(deltaChi2 - yyErrDef) < eps || ncalls > 50) break;
+	    /*
+	    if (ncalls < 4) {
+  	        dinit[ncalls-1] = d;
+	        finit[ncalls-1] = deltaChi2;
+	    }
+	    if (ncalls == 3) {
+	        double x1 = dinit[0];
+		double x2 = dinit[1];
+		double x3 = dinit[2];
+	        double y1 = finit[0];
+		double y2 = finit[1];
+		double y3 = finit[2];
+		double denominator = ( -x3 * sqr(x1) + x3 * sqr(x2) + x2 * sqr(x1) + x1 * sqr(x3)
+				       - x1 * sqr(x2) - x2 * sqr(x3) );
+		double a2 = ( -x3 * y1 + x3 * y2 + x2 * y1 + x1 * y3 - x1 * y2 - x2 * y3 ) / denominator;
+		double a1 = - ( sqr(x2) * y1 - sqr(x2) * y3 + y2 * sqr(x3) + y3 * sqr(x1)
+				- sqr(x3) * y1 - y2 * sqr(x1) ) / denominator;
+		double a0 = ( -y2 * x3 * sqr(x1) + sqr(x3) * x1 * y2 + sqr(x2) * x3 * y1
+			      - sqr(x2) * x1 * y3 + y3 * x2 * sqr(x1) - sqr(x3) * x2 * y1 ) / denominator;
+		double sol1 = 0.5 * ( -a1 + TMath::Sqrt( sqr(a1) + 4 * a2 - 4 * a2 * a0 ) ) / a2;
+		double sol2 = 0.5 * ( -a1 - TMath::Sqrt( sqr(a1) + 4 * a2 - 4 * a2 * a0 ) ) / a2;
+		cout<<"sol1 = "<<sol1<<"     sol2 = "<<sol2<<endl;
+		d = (sol1 > 0) ? sol1 : sol2; 
+	    }
+	    else {
+	      if (ncalls == 4) {
+		  prevd = deltaChi2;
+	      }
+	    */
+	    if (deltaChi2 > 1) {
+		double tmp = d;
+		d = d - TMath::Abs(d - prevd) * 0.5;
+		prevd = tmp;
+	    }
+	    else {
+		double tmp = d;
+		d = d + TMath::Abs(d - prevd) * 0.5;
+		prevd = tmp;
+	    }
+	      /*
+	    }
+	      */
 	    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
 		par[k] = optpar[k] + d * unitvec[k];
 	    }
 	}
 
 	cout<<"Found interception with uncertainty countour (ErrDef = "
-	    <<yyErrDef<<") at"<<endl;
+	    <<yyErrDef<<", f = "<<deltaChi2<<") at"<<endl;
 	for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
 	    cout<<yyFittedVec[k].name<<" = "<<par[k]<<endl;
+	    leafVec[k].name = yyFittedVec[k].name;
+	    leafVec[k].value = par[k];
 	}
+
+	tree->Fill();
     }
+
+    tree->Write();
+    file->Close();
 
     if (optpar) delete[] optpar;
     if (par) delete[] par;
