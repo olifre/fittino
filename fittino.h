@@ -120,6 +120,7 @@ private:
     TMatrixD* fSavedFittedCorrelationMatrix;
 
     void simulated_annealing (int iteration, TNtuple *ntuple);
+    void simulated_annealing_uncertainties (TNtuple *ntuple);
 
 };
 

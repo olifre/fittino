@@ -423,31 +423,38 @@ xsbr ( sigma_717 br_42 br_42 )                1.54945 +- 0.1 alias 819   # H+ H-
 
 fitParameter  TanBeta       10.0                 +-     0.106839      
 fitParameter  Mu            4.00391601E+02 GeV   +-      1.31431  GeV
-fitParameter  Xtau          -4449.2464     GeV   +-      20.6217  GeV
-fitParameter  MSelectronR   1.15601432E+02 GeV   +-     0.047222  GeV 
-fitParameter  MStauR        1.09886191E+02 GeV   +-     0.305381  GeV 
-fitParameter  MSelectronL   1.81303904E+02 GeV   +-    0.0657697  GeV 
-fitParameter  MStauL        1.79542181E+02 GeV   +-     0.125402  GeV 
-fitParameter  Xtop          -565.6667  GeV       +-      3.06945  GeV 
-fitParameter  Xbottom       -4934.7555 GeV       +-      1025.51  GeV
-fitParameter  MSupR         5.03870507E+02 GeV   +-      7.09704  GeV 
-fitParameter  MSbottomR     4.97407092E+02 GeV   +-      7.15023  GeV 
-fitParameter  MStopR        3.80875693E+02 GeV   +-      2.45254  GeV 
-fitParameter  MSupL         5.23239070E+02 GeV   +-      7.50972  GeV 
-fitParameter  MStopL        4.67710781E+02 GeV   +-      3.00352  GeV 
-fitParameter  M1            1.03270551E+02 GeV   +-    0.0517654  GeV 
-fitParameter  M2            1.93445550E+02 GeV   +-    0.0876525  GeV 
-fitParameter  M3            5.68863225E+02 GeV   +-      7.24919  GeV 
-fitParameter  massA0        311.95 GeV           +-      3.73973  GeV 
+fixParameter  Xtau          -4449.2464     GeV   +-      20.6217  GeV
+fixParameter  MSelectronR   1.15601432E+02 GeV   +-     0.047222  GeV 
+fixParameter  MStauR        1.09886191E+02 GeV   +-     0.305381  GeV 
+fixParameter  MSelectronL   1.81303904E+02 GeV   +-    0.0657697  GeV 
+fixParameter  MStauL        1.79542181E+02 GeV   +-     0.125402  GeV 
+fixParameter  Xtop          -565.6667  GeV       +-      3.06945  GeV 
+fixParameter  Xbottom       -4934.7555 GeV       +-      1025.51  GeV
+fixParameter  MSupR         5.03870507E+02 GeV   +-      7.09704  GeV 
+fixParameter  MSbottomR     4.97407092E+02 GeV   +-      7.15023  GeV 
+fixParameter  MStopR        3.80875693E+02 GeV   +-      2.45254  GeV 
+fixParameter  MSupL         5.23239070E+02 GeV   +-      7.50972  GeV 
+fixParameter  MStopL        4.67710781E+02 GeV   +-      3.00352  GeV 
+fixParameter  M1            1.03270551E+02 GeV   +-    0.0517654  GeV 
+fixParameter  M2            1.93445550E+02 GeV   +-    0.0876525  GeV 
+fixParameter  M3            5.68863225E+02 GeV   +-      7.24919  GeV 
+fixParameter  massA0        311.95 GeV           +-      3.73973  GeV 
 			       
-fitParameter  massTop       1.78e+02   GeV       +-    0.0423333   GeV 
+fixParameter  massTop       1.78e+02   GeV       +-    0.0423333   GeV 
 fixParameter  massBottom    4.2000e+00   GeV
 fixParameter  massCharm     1.2e+00   GeV
 
-universality MSelectronR MSmuR
-universality MSelectronL MSmuL
-universality MSupR MScharmR MSdownR MSstrangeR
-universality MSupL MScharmL
+fixParameter  MSmuR        1.15601432E+02 GeV   +-     0.047222  GeV 
+fixParameter  MSmuL        1.81303904E+02 GeV   +-    0.0657697  GeV 
+fixParameter  MScharmR     5.03870507E+02 GeV   +-      7.09704  GeV 
+fixParameter  MSdownR      5.03870507E+02 GeV   +-      7.09704  GeV 
+fixParameter  MSstrangeR   5.03870507E+02 GeV   +-      7.09704  GeV 
+fixParameter  MScharmL     5.23239070E+02 GeV   +-      7.50972  GeV 
+
+# universality MSelectronR MSmuR
+# universality MSelectronL MSmuL
+# universality MSupR MScharmR MSdownR MSstrangeR
+# universality MSupL MScharmL
 
 #scanParameter  MSelectronR  115.1 GeV  116.1 GeV  20
 #scanParameter  MSupR        450   GeV  550   GeV  20
@@ -469,21 +476,23 @@ ScanX                 on
 
 ScanParameters        off
 CalcPullDist          off
+
 NumberPulls           1
 RandomGeneratorSeed   -1 # < 0 means use random seed (default), else take given seed
 
-UseSimAnnBefore       on
+UseSimAnnBefore       off
 UseSimAnnWhile        off
+SimAnnUncertainty     on
 TempRedSimAnn         0.5
-MaxCallsSimAnn        450000
+MaxCallsSimAnn        20000
 InitTempSimAnn        5000
 AdaptiveSimAnn        on
 
-NoBoundsAtAll         on
+NoBoundsAtAll         off
 
 Calculator            SPHENO  ./SPheno
 
-UseMinos              on
+UseMinos              off
 UseHesse              off
 
 NumberOfMinimizations  1

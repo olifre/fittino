@@ -69,6 +69,7 @@ extern bool             yyScanX;
 extern bool             yyVerbose;
 extern bool             yyAdaptiveSimAnn;
 extern bool             yyNoBoundsAtAll;
+extern bool          yySimAnnUncertainty;
 
 typedef struct {
   string name;

@@ -128,6 +128,7 @@ bool          yyScanX = true;
 bool          yyVerbose = true;
 bool          yyAdaptiveSimAnn = false;
 bool          yyNoBoundsAtAll = false;
+bool          yySimAnnUncertainty = false;
 
 unsigned int yyCalculator;
 string       yyCalculatorPath = "";
@@ -494,7 +495,7 @@ input:
 		      else yyUseHesse = false;
 		  }
 		  if (!strcmp($2, "UseSimAnnBefore")) {
-		      if ($3 == on) yyUseSimAnnBefore = true;
+		    if ($3 == on) yyUseSimAnnBefore = true;
 		      else yyUseSimAnnBefore = false;
 		  }
 		  if (!strcmp($2, "UseSimAnnWhile")) {
@@ -541,6 +542,10 @@ input:
 		  if (!strcmp($2, "NoBoundsAtAll")) {
 		      if ($3 == on) yyNoBoundsAtAll = true;
 		      else yyNoBoundsAtAll = false;
+		  } // yySimAnnUncertainty
+		  if (!strcmp($2, "SimAnnUncertainty")) {
+		      if ($3 == on) yySimAnnUncertainty = true;
+		      else yySimAnnUncertainty = false;
 		  }
 	      }
 	    | input T_CALCULATOR T_WORD
