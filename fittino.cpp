@@ -2019,6 +2019,39 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 //  fitterMassSupR.value = 429.6; // x[9];
 //  fitterA.value        = -500.0;// x[10];
 
+    if (yyGenerator == SUSPECT) {
+      callSuspect();
+    }
+    else if (yyGenerator == SPHENO) {
+      rc = callSPheno();
+    }
+    if (rc == 2) {
+      cout << "SIGINT received in SPheno, exiting" << endl;
+      exit (2);
+    }
+
+    // HERE: READ THE LES HOUCHES FILE
+    ReadLesHouches();
+
+    if (yyGeneratorError) {
+      cerr << "Exiting fitterFCN because LesHouches outfile did not exist" << endl;
+      f = 111111111111.;
+      cout << " f = " << f << endl;
+      return;    
+    }
+    if (yyParseError) {
+      cerr << "Exiting fitterFCN because of a parse error in yacc" << endl;
+      f = 111111111111.;
+      cout << " f = " << f << endl;
+      return;
+    }
+    if (rc > 0) {
+      cerr << "Exiting fitterFCN because of return value "<< rc << " from the Generator" << endl;
+      f = 111111111111.;
+      cout << " f = " << f << endl;
+      return;
+    }
+
   if (yyGenerator == SUSPECT) {
     callSuspect();
   }
@@ -2306,7 +2339,7 @@ void WriteLesHouches(double* x)
   //  cout << "writeLesHouches: local_tanb = "<< local_tanb << endl;
   //  cout << "writeLesHouches: local_mu = "<< local_mu << endl;
 
-//  // open file CrossSections.in
+  // open file CrossSections.in
 //  fstream CrossSectionsOutfile;
 //  CrossSectionsOutfile.open ("CrossSections.in",ofstream::out);
 //  //  CrossSectionsOutfile.setf(ios::scientific, ios::floatfield);
@@ -2315,9 +2348,9 @@ void WriteLesHouches(double* x)
 //    CrossSectionsOutfile << CrossSectionProduction[count][1] << endl;
 //    CrossSectionsOutfile << CrossSectionProduction[count][2] << endl;
 //    if (yyISR) {
-//      CrossSectionsOutfile << ".TRUE." << endl;
+//	CrossSectionsOutfile << ".TRUE." << endl;
 //    } else {
-//      CrossSectionsOutfile << ".FALSE." << endl;
+//	CrossSectionsOutfile << ".FALSE." << endl;
 //    }
 //  }
 //  CrossSectionsOutfile.close();
@@ -2354,6 +2387,35 @@ void WriteLesHouches(double* x)
 
     LesHouchesOutfile << "BLOCK MODSEL" << endl;
     LesHouchesOutfile << "    1 0 # general MSSM" << endl;
+//    LesHouchesOutfile << "BLOCK SPhenoInput" << endl;
+//    LesHouchesOutfile << "    1  0                  # error level" << endl;
+//    LesHouchesOutfile << "   11  1                  # calculate branching ratios" << endl;
+//    LesHouchesOutfile << "   12  1.00000000E-04     # write only branching ratios larger than this value" << endl;
+//    LesHouchesOutfile << "   21  1                  # calculate cross section" << endl;
+//    LesHouchesOutfile << "   22  " << CrossSectionProduction[count][0] << "     # cms energy in GeV" << endl;
+//    LesHouchesOutfile << "   23  " << CrossSectionProduction[count][1] << "     # polarisation of incoming e- beam" << endl;
+//    LesHouchesOutfile << "   24  " << CrossSectionProduction[count][2] << "     # polarisation of incoming e+ beam" << endl;
+//    LesHouchesOutfile << "   25  1.00000000E-05     # write only cross sections larger than this value [fb]" << endl;
+//    if (!yyISR) {
+//	LesHouchesOutfile << "   26  0                  # no ISR is calculated" << endl;
+//    } else {
+//	LesHouchesOutfile << "   26  1                  # ISR is calculated" << endl;
+//    }
+//    LesHouchesOutfile << "   31 -1.00000000E+00     # m_GUT, if < 0 than it determined via g_1=g_2" << endl;
+//    if (FindInFixed("massCharm")) {
+//	LesHouchesOutfile << "   63 "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+//    }
+//    else if (FindInFitted("massCharm")) {
+//	LesHouchesOutfile << "   63 "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
+//	cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
+//    } 
+//    else if (FindInUniversality("massCharm")) {
+//	LesHouchesOutfile << "   63 "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
+//	cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
+//    }
+//    else {
+//	LesHouchesOutfile << "   63 "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+//    }
     LesHouchesOutfile << "BLOCK SPhenoInput" << endl;
     LesHouchesOutfile << "    1  0                  # error level" << endl;
     LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
