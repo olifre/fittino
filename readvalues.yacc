@@ -366,6 +366,10 @@ input:
 		      if ($3 == on) yyScanX = true;
 		      else yyScanX = false;
 		  }
+		  if (!strcmp($2, "Verbose")) {
+		      if ($3 == on) yyVerbose = true;
+		      else yyVerbose = false;
+		  }
 	      }
 	    | input T_CALCULATOR T_WORD
 	      {
@@ -1164,7 +1168,7 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
                   }
 //========================================================================
                   if (!strcmp($2, "SPhenoINFO")) {
-		    cout << "reading SPhenoINFO " << endl;
+		    // cout << "reading SPhenoINFO " << endl;
 		  }
 //========================================================================
                   if (!strcmp($2, "EXTPAR")) {
@@ -1289,7 +1293,7 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 
 //========================================================================
                   if (!strcmp($2, "SPhenoCrossSections")) {
-		    cout << "starting to read XS..." << endl;
+		    // cout << "starting to read XS..." << endl;
                   }
 
                   tmpParams.clear();
@@ -1348,7 +1352,7 @@ decay:      T_DECAY T_NUMBER T_NUMBER T_NEWLINE parameters
 //========================================================================
 xs:         T_XS T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NEWLINE parameters
               {
-                  printf("Reading xs %i...\n", (int)$2);
+		// printf("Reading xs %i...\n", (int)$2);
 
                   tmp_xs.xs.clear();
 //                  cout << "branch cleared, tmpParams.size() = "<<tmpParams.size() << endl;
@@ -1617,6 +1621,7 @@ bool          yySepFitTanbX = true;
 bool          yySepFitTanbMu = false;
 bool          yySepFitmA = false;
 bool          yyScanX = true;
+bool          yyVerbose = true;
 
 unsigned int yyCalculator;
 string       yyCalculatorPath = "";

@@ -35,6 +35,7 @@ class SmearedInput;
 extern void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag) ;
 extern double gchisq;
 extern int    gstat;
+extern int n_printouts;
 
 class Fittino {
 public:

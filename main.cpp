@@ -36,6 +36,7 @@ using namespace std;
 int main(int argc, char** argv) 
 {
   //===============================================
+  n_printouts = 0;
   char* inputfilename = 0;
   if (argc > 1) {
       inputfilename = new char[strlen(argv[1])+1];

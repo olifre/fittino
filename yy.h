@@ -65,6 +65,7 @@ extern bool             yySepFitTanbX;
 extern bool             yySepFitTanbMu;
 extern bool             yySepFitmA;
 extern bool             yyScanX;
+extern bool             yyVerbose;
 
 typedef struct {
   string name;
