@@ -482,7 +482,8 @@ RandomGeneratorSeed   -1 # < 0 means use random seed (default), else take given 
 
 UseSimAnnBefore       off
 UseSimAnnWhile        off
-SimAnnUncertainty     on
+SimAnnUncertainty     off
+SimAnnUncertaintyRunDown     on
 TempRedSimAnn         0.5
 MaxCallsSimAnn        20000
 InitTempSimAnn        5000

@@ -70,6 +70,8 @@ extern bool             yyVerbose;
 extern bool             yyAdaptiveSimAnn;
 extern bool             yyNoBoundsAtAll;
 extern bool          yySimAnnUncertainty;
+extern bool          yySimAnnUncertaintyRunDown;
+
 
 typedef struct {
   string name;

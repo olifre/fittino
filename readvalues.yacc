@@ -129,6 +129,7 @@ bool          yyVerbose = true;
 bool          yyAdaptiveSimAnn = false;
 bool          yyNoBoundsAtAll = false;
 bool          yySimAnnUncertainty = false;
+bool          yySimAnnUncertaintyRunDown = false;
 
 unsigned int yyCalculator;
 string       yyCalculatorPath = "";
@@ -546,6 +547,10 @@ input:
 		  if (!strcmp($2, "SimAnnUncertainty")) {
 		      if ($3 == on) yySimAnnUncertainty = true;
 		      else yySimAnnUncertainty = false;
+		  }
+		  if (!strcmp($2, "SimAnnUncertaintyRunDown")) {
+		      if ($3 == on) yySimAnnUncertaintyRunDown = true;
+		      else yySimAnnUncertaintyRunDown = false;
 		  }
 	      }
 	    | input T_CALCULATOR T_WORD
