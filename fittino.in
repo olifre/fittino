@@ -159,8 +159,8 @@ sigma ( ee -> Stau1 Stau2~, 1 TeV,-0.8,0.6 )              alias 612
 sigma ( ee -> Stau2 Stau2~, 1 TeV,-0.8,0.6 )              alias 613 
 sigma ( ee -> Stop1 Stop1~, 1 TeV,-0.8,0.6 )              alias 614 
 sigma ( ee -> Z h0, 1 TeV, -0.8, 0.6 )                    10.73 fb +- 0.2 fb alias 615 
-sigma ( ee -> H0 A0, 1 TeV, -0.8, 0.6 )                   43.135 fb +- 0.43 fb alias 616 
-sigma ( ee -> Hplus Hplus~, 1 TeV, -0.8, 0.6 )            10.73 fb +- 0.43 fb alias 617 
+sigma ( ee -> H0 A0, 1 TeV, -0.8, 0.6 )                   alias 616 
+sigma ( ee -> Hplus Hplus~, 1 TeV, -0.8, 0.6 )            alias 617 
 # RL 1000
 sigma ( ee -> Chargino1 Chargino1~, 1 TeV,0.8,-0.6 )         alias 701
 # nofit sigma ( ee -> Chargino1 Chargino2~, 1 TeV,0.8,-0.6 ) alias 702
@@ -177,8 +177,8 @@ sigma ( ee -> Stau1 Stau2~, 1 TeV,0.8,-0.6 )                 alias 712
 sigma ( ee -> Stau2 Stau2~, 1 TeV,0.8,-0.6 )                 alias 713
 sigma ( ee -> Stop1 Stop1~, 1 TeV,0.8,-0.6 )                 alias 714
 sigma ( ee -> Z h0, 1 TeV, 0.8, -0.6 )                       7.08592 fb +- 0.17 fb alias 715
-sigma ( ee -> H0 A0, 1 TeV, 0.8, -0.6 )                      43.135 fb +- 0.43 fb alias 716 
-sigma ( ee -> Hplus Hplus~, 1 TeV, 0.8, -0.6 )               7.08592 fb +- 0.43 fb alias 717 
+sigma ( ee -> H0 A0, 1 TeV, 0.8, -0.6 )                      alias 716 
+sigma ( ee -> Hplus Hplus~, 1 TeV, 0.8, -0.6 )               alias 717 
 										       
 #########################################################################################
 # Branching ratios                                                                      #
