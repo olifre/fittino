@@ -489,7 +489,7 @@ TempRedSimAnn         0.5
 MaxCallsSimAnn        450000
 InitTempSimAnn        10000
 
-# Generator             SPHENO  ./SPheno
+# Calculator             SPHENO  ./SPheno
 
 UseMinos              on
 UseHesse              off
