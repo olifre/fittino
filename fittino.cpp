@@ -3622,40 +3622,75 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
   fopt = f;
   fstar[1] = f;
 
-  //-------------------------------------------
-  // first adjust the temperature to the variance for variations within vm?
-  nvalid = 0;
-  fsum = 0.;
-  fcubed = 0.;
-  for (m = 0; m < 10; m++) {
-    for (i = 0; i < n; i++) {
-      xp[i] = xvar[i] + gRandom->Uniform(-1.,1.) * vm[i];
-      //  If XP is out of bounds, select a point in bounds for the trial
-      while ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
-	xp[i] = gRandom->Uniform(-1.,1.) * vm[i] + yyFittedVec[i].value;
-      }
-      // Evaluate the function with the trial point XP
-      for (unsigned int ii = 0; ii < xp.size(); ii++) {
-	xdummy[ii] = xp[ii];
-      }
-      fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
-      fp = -fp;
-      cout << "fp = " << fp << endl;
-      if (fp > -1e10) {
-	//	fopt = 0.;
-	//      fp = 5.;
-	fsum = fsum + TMath::Abs(fopt - fp);
-	fcubed = fcubed + sqr((fopt - fp));
-	nvalid++;
-      }
-      xp[i] = xvar[i];
+  // ------------------------------------------------------------------
+  // if already very close to the minimum:
+  if (TMath::Abs(f)<0.1) {
+    t = 0.1;
+    if (rt<0.6) {
+      rt = 0.6;
     }
-    for (i = 0; i < n; i++) {
-      xvar[i] = xp[i];
+  } else if (TMath::Abs(f)<1.) {
+    t = 1.;
+    if (rt<0.6) {
+      rt = 0.6;
     }
+  } else if (TMath::Abs(f)<5.) {
+    t = 5.;
+    if (rt<0.6) {
+      rt = 0.6;
+    }    
+  } else if (TMath::Abs(f)<10.) {
+    t = 10.;
+    if (rt<0.6) {
+      rt = 0.6;
+    }    
+  } else if (TMath::Abs(f)<100.) {
+    t = 100.;
+    if (rt<0.6) {
+      rt = 0.6;
+    }    
+  } else if (TMath::Abs(f)<200.) {
+    t = 200.;
+    if (rt<0.5) {
+      rt = 0.5;
+    }    
+  } else {
+    //-------------------------------------------
+    // if not very close to the minimum:
+    // first adjust the temperature to the variance for variations within vm?
+    nvalid = 0;
+    fsum = 0.;
+    fcubed = 0.;
+    for (m = 0; m < 10; m++) {
+      for (i = 0; i < n; i++) {
+	xp[i] = xvar[i] + gRandom->Uniform(-1.,1.) * vm[i];
+	//  If XP is out of bounds, select a point in bounds for the trial
+	while ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
+	  xp[i] = gRandom->Uniform(-1.,1.) * vm[i] + yyFittedVec[i].value;
+	}
+	// Evaluate the function with the trial point XP
+	for (unsigned int ii = 0; ii < xp.size(); ii++) {
+	  xdummy[ii] = xp[ii];
+	}
+	fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
+	fp = -fp;
+	cout << "fp = " << fp << endl;
+	if (fp > -1e10) {
+	  //	fopt = 0.;
+	  //      fp = 5.;
+	  fsum = fsum + TMath::Abs(fopt - fp);
+	  fcubed = fcubed + sqr((fopt - fp));
+	  nvalid++;
+	}
+	xp[i] = xvar[i];
+      }
+      for (i = 0; i < n; i++) {
+	xvar[i] = xp[i];
+      }
+    }
+    // set t to half of the variance
+    t = TMath::Sqrt(fcubed/double(nvalid) - sqr(fsum/double(nvalid)))/2.;
   }
-  // set t to half of the variance
-  t = TMath::Sqrt(fcubed/double(nvalid) - sqr(fsum/double(nvalid)))/2.;
   cout << "temperature chosen " << t << endl;
 
   //-------------------------------------------
