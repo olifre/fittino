@@ -270,16 +270,17 @@ universality MSupL MScharmL
 OneLoopCorrections    on
 ISR                   on			       
 				       
-UseGivenStartValues   on
-FitAllDirectly        on
+UseGivenStartValues   off
+FitAllDirectly        off
 BoundsOnX             off
 SepFitTanbX           off
 SepFitTanbMu          off
+SepFitmA              on
 XScanRange            -6000. GeV  -300. GeV
 ScanX                 on
 
 ScanParameters        off
-CalcPullDist          on
+CalcPullDist          off
 NumberPulls           1
 
 Generator             SPHENO  ../SPheno2.2.2/SPheno

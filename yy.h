@@ -63,6 +63,7 @@ extern bool             yyCalcIndChisqContr;
 extern bool             yyBoundsOnX;
 extern bool             yySepFitTanbX;
 extern bool             yySepFitTanbMu;
+extern bool             yySepFitmA;
 extern bool             yyScanX;
 
 typedef struct {
@@ -78,6 +79,8 @@ extern string yyGeneratorPath;
 extern int    yyParseError;
 extern double        yyErrDef;
 extern int           yyNumberPulls;
+extern int           yyMaxCallsSimAnn;
+extern double        yyTempRedSimAnn;
 extern double        yyXscanlow;
 extern double        yyXscanhigh;
 

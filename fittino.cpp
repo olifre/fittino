@@ -1206,6 +1206,38 @@ void Fittino::calculateLoopLevelValues()
   if (!yyFitAllDirectly) {
 
     //-------------------------------------------------------------------------
+    // first fit just mA to mA
+    if (yySepFitmA) {
+      for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
+	if ( !( !yyMeasuredVec[i].name.compare("massA0") || !yyMeasuredVec[i].name.compare("massh0") ) ) {
+	  yyMeasuredVec[i].temp_nofit = true;
+	}
+      }        
+      for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+	if ( yyFittedVec[i].name.compare("massA0") ) {
+	  arguments[0] = i+1;
+	  cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
+	  fitter->mnexcm("FIX", arguments, 1,ierr);
+	}
+      }
+      
+      arguments[0] = 2;
+      fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
+      arguments[0] = 2000;
+      arguments[1] = 0.1;
+      fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
+      
+      for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
+	yyMeasuredVec[i].temp_nofit = false;
+      }  
+      for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+	if ( yyFittedVec[i].name.compare("massA0") ) {
+	  arguments[0] = i+1;
+	  fitter->mnexcm("RELEASE", arguments, 1,ierr);
+	}
+      }
+    }
+    //-------------------------------------------------------------------------
     // first fit just tanb and mu
     if (yySepFitTanbMu) {
       for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
@@ -2179,14 +2211,32 @@ int callSPheno()
 //  pclose (SPheno);
 
   if (!yyGeneratorPath.compare(""))
-    return_value = system("./SPheno");
+    //return_value = system("./SPheno");
+    return_value = checkcall("./SPheno",20);
   else
-    return_value = system(yyGeneratorPath.c_str());
+    //return_value = system(yyGeneratorPath.c_str());
+    return_value = checkcall(yyGeneratorPath.c_str(),20);
   if (return_value > 0) {
     return(return_value);
   }
   
   return 0;
+
+}
+
+// ************************************************************
+// checkcall
+//
+// performs:   fork of SPheno, check of runtime of SPheno
+// needs:      all
+//
+// P. Bechtle, P. Wienemann, 21.10.04
+//
+// ************************************************************
+int checkcall(char programpath[1024], unsigned int runtime) 
+{
+
+  
 
 }
 
@@ -3457,12 +3507,12 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
   vector <double> x; 
   vector <double> xvar; 
   bool max = false; 
-  double rt = 0.5; 
+  double rt; 
   double eps = 0.0001; 
   int ns = 20; 
   int nt; 
   int neps = 4;
-  int maxevl = 150000; 
+  int maxevl; 
   vector <double> lb; 
   vector <double> ub;
   vector <double> c; 
@@ -3511,6 +3561,8 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
   Float_t ntupvars[50];
 
   // set values
+  maxevl = yyMaxCallsSimAnn;
+  rt = yyTempRedSimAnn;
   nup = 0;
   nrej = 0;
   nnew = 0;
@@ -3581,7 +3633,8 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
       xvar[i] = xp[i];
     }
   }
-  t = TMath::Sqrt(fcubed/double(nvalid) - sqr(fsum/double(nvalid)));
+  // set t to half of the variance
+  t = TMath::Sqrt(fcubed/double(nvalid) - sqr(fsum/double(nvalid)))/2.;
   cout << "temperature chosen " << t << endl;
 
   //-------------------------------------------

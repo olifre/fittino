@@ -49,6 +49,18 @@ input:
                     yyErrDef = $3;
                   }
                 } 	        
+	        else if (!strcmp($2,"MaxCallsSimAnn")) {
+		  // cout << "FOUND MaxCallsSimAnn "<<$3<<endl;
+		  if ($3>0) {
+                    yyMaxCallsSimAnn = $3;
+                  }
+                } 	        
+	        else if (!strcmp($2,"TempRedSimAnn")) {
+		  // cout << "FOUND TempRedSimAnn "<<$3<<endl;
+		  if ($3>0) {
+                    yyTempRedSimAnn = $3;
+                  }
+                } 	        
                 else if (!strcmp($2,"NumberPulls")) {
 		  // cout << "FOUND NumberPulls "<<$3<<endl;
 		  if ($3>0) {
@@ -338,7 +350,12 @@ input:
 		  if (!strcmp($2, "SepFitTanbMu")) {
 		      if ($3 == on) yySepFitTanbMu = true;
 		      else yySepFitTanbMu = false;
-		  }
+		  } 
+		  // yySepFitmA
+		  if (!strcmp($2, "SepFitmA")) {
+		      if ($3 == on) yySepFitmA = true;
+		      else yySepFitmA = false;
+		  } 		  
 		  if (!strcmp($2, "ScanX")) {
 		      if ($3 == on) yyScanX = true;
 		      else yyScanX = false;
@@ -1147,6 +1164,7 @@ bool          yyCalcIndChisqContr;
 bool          yyBoundsOnX = true;
 bool          yySepFitTanbX = true;
 bool          yySepFitTanbMu = false;
+bool          yySepFitmA = false;
 bool          yyScanX = true;
 
 unsigned int yyGenerator;
@@ -1158,6 +1176,8 @@ map<string,int> yyParticleIDs;
 int           yyParseError = 0;
 int           yyNumberOfMinimizations = 1;
 double        yyErrDef = 1.;
+int           yyMaxCallsSimAnn = 150000;
+double        yyTempRedSimAnn = 0.25;
 int           yyNumberPulls = 0;
 
 double        yyXscanlow = -6000.;
