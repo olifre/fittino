@@ -311,6 +311,14 @@ input:
 		      if ($3 == on) yyUseHesse = true;
 		      else yyUseHesse = false;
 		  }
+		  if (!strcmp($2, "UseSimAnnBefore")) {
+		      if ($3 == on) yyUseSimAnnBefore = true;
+		      else yyUseSimAnnBefore = false;
+		  }
+		  if (!strcmp($2, "UseSimAnnWhile")) {
+		      if ($3 == on) yyUseSimAnnWhile = true;
+		      else yyUseSimAnnWhile = false;
+		  }
 		  if (!strcmp($2, "UseGivenStartValues")) {
 		      if ($3 == on) yyUseGivenStartValues = true;
 		      else yyUseGivenStartValues = false;
@@ -1131,6 +1139,8 @@ bool          yyGeneratorError;
 bool          yyUseMinos;
 bool          yyGetContours = false;
 bool          yyUseHesse;
+bool          yyUseSimAnnBefore = false;
+bool          yyUseSimAnnWhile = false;
 bool          yyUseGivenStartValues;
 bool          yyFitAllDirectly;
 bool          yyCalcIndChisqContr;

@@ -1146,7 +1146,9 @@ void Fittino::calculateLoopLevelValues()
 
   //-------------------------------------------------------------------------
   // eventuaslly call simulated annealing
-  simulated_annealing();
+  if (yyUseSimAnnBefore) {
+    simulated_annealing();
+  }
 
   //-------------------------------------------------------------------------
   // Set Up TMinuit
@@ -1486,6 +1488,11 @@ void Fittino::calculateLoopLevelValues()
   arguments[1] = 0.1;
   for (unsigned int i=0; i<yyNumberOfMinimizations; i++) {
     if (i>0) {
+      //-------------------------------------------------------------------------
+      // eventuaslly call simulated annealing
+      if (yyUseSimAnnWhile) {
+	simulated_annealing();
+      }
       // reset the uncertainties
       for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
 	fitter->mnpout(j,parname,yyFittedVec[j].value,yyFittedVec[j].error,vlow,vhigh,ierr);
