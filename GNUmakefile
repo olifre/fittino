@@ -51,11 +51,22 @@ TARGET            = fittino
 
 all: 	$(TARGET)
 
+## Include dependency files
+-include $(SOURCES:.cpp=.d)
+
+%.d: %.cpp
+	@echo Generating dependency file ---------- $@ ----------
+	@$(SHELL) -ec '$(CXX) -MM $(CXXFLAGS) $< \
+	              | sed '\''s/\($*\)\.o[ :]*/\1.o $@ : /g'\'' > $@; \
+	              [ -s $@ ] || rm -f $@'
+#	-rm -f $@
+#	$(CXX) -MM $(CXXFLAGS) $< > $@ 
+
 fittino: $(OBJECTS_BASENAME) 
 	$(CXX) -o fittino $(LDFLAGS) $(OBJECTS_BASENAME) $(LIBS)
 
 
-%.o: %.cpp
+%.o: %.cpp 
 	$(CXX) -c -o $@ $< $(CXXFLAGS)
 
 lex.yy.o: y.tab.c lex.yy.c
@@ -74,4 +85,4 @@ libsusygen_call_test.a: susygen_call_test.f
 	ar -ruc libsusygen_call_test.a susygen_call_test.o
 
 clean:
-	rm -f *.o *~ lex.yy.c y.tab.h y.tab.c fittino
+	-rm -f *.o *.d *~ lex.yy.c y.tab.h y.tab.c fittino
