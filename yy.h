@@ -85,6 +85,7 @@ extern int    yyParseError;
 extern double        yyErrDef;
 extern int           yyNumberPulls;
 extern int           yyMaxCallsSimAnn;
+extern int           yyRandomGeneratorSeed;
 extern double        yyTempRedSimAnn;
 extern double        yyInitTempSimAnn;
 extern double        yyXscanlow;

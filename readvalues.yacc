@@ -143,6 +143,8 @@ double        yyTempRedSimAnn = 0.4;
 double        yyInitTempSimAnn = -1.;
 int           yyNumberPulls = 0;
 
+int           yyRandomGeneratorSeed = -1;
+
 double        yyXscanlow = -6000.;
 double        yyXscanhigh = 2000.;
 
@@ -211,6 +213,10 @@ input:
                     yyInitTempSimAnn = $3;
                   }
                 } 	
+		else if (!strcmp($2,"RandomGeneratorSeed")) {
+		  // cout << "FOUND RandomGeneratorSeed "<<$3<<endl;
+		  yyRandomGeneratorSeed = $3;
+                }
                 else if (!strcmp($2,"NumberPulls")) {
 		  // cout << "FOUND NumberPulls "<<$3<<endl;
 		  if ($3>0) {

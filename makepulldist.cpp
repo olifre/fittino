@@ -94,11 +94,18 @@ void MakePullDist::CalcPullDist()
   time (&systime);
   struct sysinfo sinfo; 
   sysinfo(&sinfo);
-  seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
-  cout<<"uptime = "<<sinfo.uptime<<endl;
-  cout<<"freeswap = "<<sinfo.freeswap<<endl;
-  cout<<"pid = "<<getpid()<<endl;
-  cout << "systime " << systime << endl; 
+  if (yyRandomGeneratorSeed < 0) {
+    seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
+    cout<<"uptime = "<<sinfo.uptime<<endl;
+    cout<<"freeswap = "<<sinfo.freeswap<<endl;
+    cout<<"pid = "<<getpid()<<endl;
+    cout << "systime " << systime << endl; 
+  }
+  else {
+    cout<<"using seed from input file"<<endl;
+    seed = yyRandomGeneratorSeed;
+  }
+  cout << "seed = " << seed << endl;
   gRandom->SetSeed(seed);
 
 
@@ -158,6 +165,15 @@ void MakePullDist::CalcPullDist()
 	}
       }
     }
+
+    cout<<"---------------------------------------------------------"<<endl;
+    cout<<"Thrown set of observables for pull fit no "<<i<<":"<<endl;
+    for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
+      cout<<yyMeasuredVec[j].name<<": "<<yyMeasuredVec[j].value<<" (mean value: "
+	  <<savedMeasuredValues[j].value<<")"<<endl;
+    }
+    cout<<"---------------------------------------------------------"<<endl;
+
     //   calculate new Fit result...
     Fittino* fittino = new Fittino(fInput);
     fittino->calculateTreeLevelValues(10000);
