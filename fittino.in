@@ -249,7 +249,7 @@ SepFitTanbX           off
 ScanParameters        off
 CalcPullDist          off
 
-Generator             SPHENO  /flc/lc2/pool/bechtle/programs/SPheno2.2.0/SPheno
+Generator             SPHENO  /home/bechtle/FLC/programs/SPheno2.2.1/SPheno
 
 UseMinos              on
 UseHesse              off

@@ -2184,21 +2184,21 @@ void WriteLesHouches(double* x, int count)
   //  cout << "writeLesHouches: local_tanb = "<< local_tanb << endl;
   //  cout << "writeLesHouches: local_mu = "<< local_mu << endl;
 
-  // open file CrossSections.in
-  fstream CrossSectionsOutfile;
-  CrossSectionsOutfile.open ("CrossSections.in",ofstream::out);
-  //  CrossSectionsOutfile.setf(ios::scientific, ios::floatfield);
-  if (CrossSectionsOutfile.is_open()) {
-    CrossSectionsOutfile << CrossSectionProduction[count][0] << endl;
-    CrossSectionsOutfile << CrossSectionProduction[count][1] << endl;
-    CrossSectionsOutfile << CrossSectionProduction[count][2] << endl;
-    if (yyISR) {
-      CrossSectionsOutfile << ".TRUE." << endl;
-    } else {
-      CrossSectionsOutfile << ".FALSE." << endl;
-    }
-  }
-  CrossSectionsOutfile.close();
+//  // open file CrossSections.in
+//  fstream CrossSectionsOutfile;
+//  CrossSectionsOutfile.open ("CrossSections.in",ofstream::out);
+//  //  CrossSectionsOutfile.setf(ios::scientific, ios::floatfield);
+//  if (CrossSectionsOutfile.is_open()) {
+//    CrossSectionsOutfile << CrossSectionProduction[count][0] << endl;
+//    CrossSectionsOutfile << CrossSectionProduction[count][1] << endl;
+//    CrossSectionsOutfile << CrossSectionProduction[count][2] << endl;
+//    if (yyISR) {
+//      CrossSectionsOutfile << ".TRUE." << endl;
+//    } else {
+//      CrossSectionsOutfile << ".FALSE." << endl;
+//    }
+//  }
+//  CrossSectionsOutfile.close();
   //  system ("cat CrossSections.in");
   // open file LesHouches.in
   fstream LesHouchesOutfile;
@@ -2208,6 +2208,37 @@ void WriteLesHouches(double* x, int count)
 
     LesHouchesOutfile << "BLOCK MODSEL" << endl;
     LesHouchesOutfile << "    1 0 # general MSSM" << endl;
+    LesHouchesOutfile << "BLOCK SPhenoInput" << endl;
+    LesHouchesOutfile << "    1  0                  # error level" << endl;
+    LesHouchesOutfile << "   11  1                  # calculate branching ratios" << endl;
+    LesHouchesOutfile << "   12  1.00000000E-04     # write only branching ratios larger than this value" << endl;
+    LesHouchesOutfile << "   21  1                  # calculate cross section" << endl;
+    LesHouchesOutfile << "   22  " << CrossSectionProduction[count][0] << "     # cms energy in GeV" << endl;
+    LesHouchesOutfile << "   23  " << CrossSectionProduction[count][1] << "     # polarisation of incoming e- beam" << endl;
+    LesHouchesOutfile << "   24  " << CrossSectionProduction[count][2] << "     # polarisation of incoming e+ beam" << endl;
+    LesHouchesOutfile << "   25  1.00000000E-05     # write only cross sections larger than this value [fb]" << endl;
+    if (!yyISR) {
+      LesHouchesOutfile << "   26  0                  # no ISR is calculated" << endl;
+    } else {
+      LesHouchesOutfile << "   26  1                  # ISR is calculated" << endl;
+    }
+    LesHouchesOutfile << "   31 -1.00000000E+00     # m_GUT, if < 0 than it determined via g_1=g_2" << endl;
+    if (FindInFixed("massCharm")) {
+      LesHouchesOutfile << "   63 "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+    }
+    else if (FindInFitted("massCharm")) {
+      LesHouchesOutfile << "   63 "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
+      cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
+    } 
+    else if (FindInUniversality("massCharm")) {
+      LesHouchesOutfile << "   63 "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
+      cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
+    }
+    else {
+      LesHouchesOutfile << "   63 "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+    }
+    
+
     LesHouchesOutfile << "BLOCK SMINPUTS" << endl;
     if (FindInFixed("alphaem")) {
       LesHouchesOutfile << "    1 "<<ReturnFixedValue("alphaem")->value<<" # 1/alpha_em (fixed)"<<endl;
@@ -2317,20 +2348,20 @@ void WriteLesHouches(double* x, int count)
     }
 
 
-    if (FindInFixed("massCharm")) {
-      LesHouchesOutfile << "    8 "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-    }
-    else if (FindInFitted("massCharm")) {
-      LesHouchesOutfile << "    8 "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-      cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
-    } 
-    else if (FindInUniversality("massCharm")) {
-      LesHouchesOutfile << "    8 "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-      cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
-    }
-    else {
-      LesHouchesOutfile << "    8 "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-    }
+//    if (FindInFixed("massCharm")) {
+//      LesHouchesOutfile << "    8 "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+//    }
+//    else if (FindInFitted("massCharm")) {
+//      LesHouchesOutfile << "    8 "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
+//      cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
+//    } 
+//    else if (FindInUniversality("massCharm")) {
+//      LesHouchesOutfile << "    8 "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
+//      cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
+//    }
+//    else {
+//      LesHouchesOutfile << "    8 "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+//    }
 
 
     // MINPAR
@@ -2352,6 +2383,7 @@ void WriteLesHouches(double* x, int count)
     }
     // EXTPAR
     LesHouchesOutfile << "BLOCK EXTPAR" << endl;
+    //    LesHouchesOutfile << "BLOCK MSOFT" << endl;
     LesHouchesOutfile << "    0 1000. # Input scale for mSUGRA" << endl;
     if (FindInFixed("M1")) {
       LesHouchesOutfile << "    1 "<< ReturnFixedValue("M1")->value <<" # M1 (fixed)"<< endl;
@@ -2403,14 +2435,14 @@ void WriteLesHouches(double* x, int count)
 
 
     if (FindInFixed("Xtop")) {
-      LesHouchesOutfile << "   11 "<< ReturnFixedValue("Xtop")->value+local_mu/local_tanb <<" # Xtop (fixed)"<< endl;
+      LesHouchesOutfile << "   11 "<< ReturnFixedValue("Xtop")->value+local_mu/local_tanb <<" # Atop (fixed)"<< endl;
     }    
     else if (FindInFitted("Xtop")) {
-      LesHouchesOutfile << "   11 "<< x[ReturnFittedPosition("Xtop")]+local_mu/local_tanb<<" # Xtop"<< endl;
+      LesHouchesOutfile << "   11 "<< x[ReturnFittedPosition("Xtop")]+local_mu/local_tanb<<" # Atop"<< endl;
       cout << "Fitting Xtop " << x[ReturnFittedPosition("Xtop")] << endl;
     } 
     else if (FindInUniversality("Xtop")) {
-      LesHouchesOutfile << "   11 "<<x[ReturnFittedPosition(ReturnUniversality("Xtop")->universality)]+local_mu/local_tanb<<" # Xtop"<<endl;
+      LesHouchesOutfile << "   11 "<<x[ReturnFittedPosition(ReturnUniversality("Xtop")->universality)]+local_mu/local_tanb<<" # Atop"<<endl;
       cout << "fitting " << ReturnUniversality("Xtop")->universality << " instead of Xtop" << endl;
     }
     else {
@@ -2419,14 +2451,14 @@ void WriteLesHouches(double* x, int count)
     }
 
     if (FindInFixed("Xbottom")) {
-      LesHouchesOutfile << "   12 "<< ReturnFixedValue("Xbottom")->value+local_mu*local_tanb <<" # Xbottom (fixed)"<< endl;
+      LesHouchesOutfile << "   12 "<< ReturnFixedValue("Xbottom")->value+local_mu*local_tanb <<" # Abottom (fixed)"<< endl;
     }    
     else if (FindInFitted("Xbottom")) {
-      LesHouchesOutfile << "   12 "<< x[ReturnFittedPosition("Xbottom")]+local_mu*local_tanb<<" # Xbottom"<< endl;
+      LesHouchesOutfile << "   12 "<< x[ReturnFittedPosition("Xbottom")]+local_mu*local_tanb<<" # Abottom"<< endl;
       cout << "Fitting Xbottom " << x[ReturnFittedPosition("Xbottom")] << endl;
     }  
     else if (FindInUniversality("Xbottom")) {
-      LesHouchesOutfile << "   12 "<<x[ReturnFittedPosition(ReturnUniversality("Xbottom")->universality)]+local_mu*local_tanb<<" # Xbottom"<<endl;
+      LesHouchesOutfile << "   12 "<<x[ReturnFittedPosition(ReturnUniversality("Xbottom")->universality)]+local_mu*local_tanb<<" # Abottom"<<endl;
       cout << "fitting " << ReturnUniversality("Xbottom")->universality << " instead of Xbottom" << endl;
     }
     else {
@@ -2435,14 +2467,14 @@ void WriteLesHouches(double* x, int count)
     }
 
     if (FindInFixed("Xtau")) {
-      LesHouchesOutfile << "   13 "<< ReturnFixedValue("Xtau")->value+local_mu*local_tanb <<" # Xtau (fixed)"<< endl;
+      LesHouchesOutfile << "   13 "<< ReturnFixedValue("Xtau")->value+local_mu*local_tanb <<" # Atau (fixed)"<< endl;
     }    
     else if (FindInFitted("Xtau")) {
-      LesHouchesOutfile << "   13 "<< x[ReturnFittedPosition("Xtau")]+local_mu*local_tanb<<" # Xtau"<< endl;
+      LesHouchesOutfile << "   13 "<< x[ReturnFittedPosition("Xtau")]+local_mu*local_tanb<<" # Atau"<< endl;
       cout << "Fitting Xtau " << x[ReturnFittedPosition("Xtau")] << endl;
     }  
     else if (FindInUniversality("Xtau")) {
-      LesHouchesOutfile << "   13 "<<x[ReturnFittedPosition(ReturnUniversality("Xtau")->universality)]+local_mu*local_tanb<<" # Xtau"<<endl;
+      LesHouchesOutfile << "   13 "<<x[ReturnFittedPosition(ReturnUniversality("Xtau")->universality)]+local_mu*local_tanb<<" # Atau"<<endl;
       cout << "fitting " << ReturnUniversality("Xtau")->universality << " instead of Xtau" << endl;
     }
     else {
