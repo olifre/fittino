@@ -121,6 +121,19 @@ void MakePullDist::CalcPullDist()
     ndof = 1;
   }
   TH1F* chisq_hist = new TH1F("chisq_hist","chisq distribution",3*ndof,0.,(double)(3*ndof));
+  TTree* tree = new TTree("tree", "Tree containing fitted parameters");
+  vector<MeasuredValue> leafVec;
+  for (unsigned int k = 0; k < yyFittedPar.size(); k++ ) {
+    MeasuredValue tmp;
+    tmp.name = yyFittedPar[k].name;
+    tmp.value = -1;
+    leafVec.push_back(tmp);
+    string str = yyFittedPar[k].name;
+    str.append("/D");
+    cout << "Adding branch " << yyFittedPar[k].name.c_str() << " to tree" << endl;
+    tree->Branch(yyFittedPar[k].name.c_str(), &(leafVec[k].value), str.c_str());
+    str.erase();
+  }
 
   // loop 
   for (unsigned int  i = 0; i < npulls; i++) {
@@ -157,12 +170,21 @@ void MakePullDist::CalcPullDist()
 	  cout << "Parameter " << yyFittedVec[j].name << " is off by " << (yyFittedVec[j].value-yyFittedPar[k].value)/yyFittedPar[k].error << endl;
 	  histomap[k]->Fill((yyFittedVec[j].value-yyFittedPar[k].value)/yyFittedPar[k].error);
 	  cout << "filled..." << endl;
+	  cout << "Copying fitted values into leafVec..." << endl;
+	  if (leafVec[k].name == yyFittedVec[j].name) {
+	    leafVec[k].value = yyFittedVec[j].value;
+	  }
+	  else {
+	    cout<<"Messy leafVec"<<endl;
+	  }
 	  break;
 	}
       }
     }
     cout << "filling chisq hist " << endl;
     chisq_hist->Fill(gchisq);
+    cout << "filling tree " << endl;
+    tree->Fill();
     cout << "deleting fittino" << endl;
     delete fittino;
     cout << "having deleted fittino" << endl;
@@ -177,6 +199,7 @@ void MakePullDist::CalcPullDist()
     histomap[i]->Write();
   }  
   chisq_hist->Write();
+  tree->Write();
 
   hfile1->Write();
   hfile1->Close();
