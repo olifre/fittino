@@ -46,7 +46,7 @@ extern vector<MeasuredValue> yyFixedVec;  // contains mu, M1, M2 ...
 extern CorrelationMatrix     yyMeasuredCorrelationMatrix;
 extern CorrelationMatrix     yyFittedCorrelationMatrix;
 		        
-extern bool             yyUseOneLoopCorrections;
+extern bool             yyUseLoopCorrections;
 extern bool             yyCalcPullDist;
 extern bool             yyScanParameters;
 extern bool             yyISR;

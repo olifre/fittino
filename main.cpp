@@ -79,7 +79,7 @@ int main(int argc, char** argv)
     cout << "calculating tree level values" << endl;
     fittino->calculateTreeLevelValues(10000);
     
-    if (yyUseOneLoopCorrections) {
+    if (yyUseLoopCorrections) {
       cout << "calculating loop level values" << endl;
       fittino->calculateLoopLevelValues();
     }

@@ -289,9 +289,9 @@ input:
 	      }
 	    | input T_KEY T_SWITCHSTATE
 	      {
-		  if (!strcmp($2, "OneLoopCorrections")) {
-		      if ($3 == on) yyUseOneLoopCorrections = true;
-		      else yyUseOneLoopCorrections = false;
+		  if (!strcmp($2, "LoopCorrections")) {
+		      if ($3 == on) yyUseLoopCorrections = true;
+		      else yyUseLoopCorrections = false;
 
 		  }
 		  if (!strcmp($2, "CalcPullDist")) {
@@ -1312,7 +1312,7 @@ vector <parameter_t> yyFixedPar;
 vector <parameter_t> yyFittedPar;
 vector <parameter_t> indchisq_vec;
  
-bool          yyUseOneLoopCorrections;
+bool          yyUseLoopCorrections;
 bool          yyCalcPullDist;
 bool          yyScanParameters;
 bool          yyISR;

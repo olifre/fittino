@@ -91,7 +91,7 @@ void IndChisq::CalcIndChisq()
   // make settings
   yyUseGivenStartValues = true;
   yyFitAllDirectly = true;
-  yyUseOneLoopCorrections = true;
+  yyUseLoopCorrections    = true;
   yyUseSimAnnWhile        = false;
   yyUseSimAnnBefore       = false;
 

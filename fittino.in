@@ -270,7 +270,7 @@ universality MSupL MScharmL
 # correlationCoefficient massChargino2 edge_2 0.03
 
 
-OneLoopCorrections    on
+LoopCorrections       on
 ISR                   on			       
 				       
 UseGivenStartValues   on

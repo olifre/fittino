@@ -105,7 +105,7 @@ enum SwitchState    { off, on };
 enum Generator      { SPHENO, SUSPECT, SPHENO_FH };
 enum ObservableType { mass, Pwidth, xsection, br, xsectionbr, Pedge, xsbr, brratio, other };
 
-extern bool          yyUseOneLoopCorrections;
+extern bool          yyUseLoopCorrections;
 extern bool          yyCalcPullDist;
 extern bool          yyScanParameters;
 extern unsigned int yyGenerator;
