@@ -156,8 +156,13 @@ void IndChisq::CalcIndChisq()
 	  }
 	  pairsort(ind_chisq_array, ind_delta_chisq_array_size);
 	  fprintf (file, "=========== percentage of strongest contributions: =============\n");
-	  for (unsigned int k = 0; k < 5; k++ ) {
-	    fprintf (file, "%31s (%i): %20g\n",ind_chisq_array[k].name.c_str(),ind_chisq_array[k].alias,ind_chisq_array[k].chisq/delta_chisq);
+	  { 
+	    unsigned int k = 0;
+	    while ( ( k < individ_delta_chisq_start.size() ) && ( ind_chisq_array[k].chisq/delta_chisq > 0.01 ) ) {
+	      //	  for (unsigned int k = 0; k < 5; k++ ) {
+	      fprintf (file, "%31s (%i): %20g\n",ind_chisq_array[k].name.c_str(),ind_chisq_array[k].alias,ind_chisq_array[k].chisq/delta_chisq);
+	      k++;
+	    }
 	  }
 	  fprintf (file, "              total Delta Chisq :      %f\n",delta_chisq);
 	  indchisq_vec.clear();

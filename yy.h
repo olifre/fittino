@@ -52,6 +52,7 @@ extern bool             yyScanParameters;
 extern bool             yyISR;
 extern bool             yyGeneratorError;
 extern bool             yyUseMinos;
+extern bool             yyGetContours;
 extern bool             yyUseHesse;
 extern bool             yyUseGivenStartValues;
 extern bool             yyFitAllDirectly;

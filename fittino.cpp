@@ -1135,6 +1135,7 @@ void Fittino::calculateLoopLevelValues()
   double closedyarray[npoints+1];
   int ierr = 0;
   char GraphName[255];
+  vector <double> saved_uncertainties;
 
   //-------------------------------------------------------------------------
   // switch all temp_nofits on
@@ -1160,12 +1161,14 @@ void Fittino::calculateLoopLevelValues()
     cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
     if ( yyFittedVec[i].error <= 0. ) {
       fitter->mnparm(i, yyFittedVec[i].name.c_str(),
-      			   yyFittedVec[i].value, yyFittedVec[i].value/10., 
-      			   yyFittedVec[i].bound_low, yyFittedVec[i].bound_up,ierr);      
+      			   yyFittedVec[i].value, TMath::Abs(yyFittedVec[i].value/10.), 
+      			   yyFittedVec[i].bound_low, yyFittedVec[i].bound_up,ierr);
+      saved_uncertainties.push_back(TMath::Abs(yyFittedVec[i].value/10.));
     } else {
       fitter->mnparm(i, yyFittedVec[i].name.c_str(),
 			   yyFittedVec[i].value, yyFittedVec[i].error, 
 			   yyFittedVec[i].bound_low, yyFittedVec[i].bound_up,ierr);
+      saved_uncertainties.push_back(yyFittedVec[i].error);
     }
   }
   
@@ -1478,6 +1481,20 @@ void Fittino::calculateLoopLevelValues()
   arguments[0] = 200000;
   arguments[1] = 0.1;
   for (unsigned int i=0; i<yyNumberOfMinimizations; i++) {
+    if (i>0) {
+      // reset the uncertainties
+      for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
+	fitter->mnpout(j,parname,yyFittedVec[j].value,yyFittedVec[j].error,vlow,vhigh,ierr);
+      }      
+      for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
+	cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+	cout << "resetting parameter errors " << yyFittedVec[j].name << endl;
+	cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+	fitter->mnparm(j, yyFittedVec[j].name.c_str(),
+		       yyFittedVec[j].value, saved_uncertainties[j], 
+		       yyFittedVec[j].bound_low, yyFittedVec[j].bound_up,ierr);
+      }
+    }
     fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
   }
   cout << "returning from MINIMIZE, return value "<< ierr << endl;
@@ -1555,7 +1572,7 @@ void Fittino::calculateLoopLevelValues()
   cout << "eventually get the contours " << endl;
   //-------------------------------------------------------------------------
   // Get the contours with only two parameters free
-  if (yyUseMinos) {
+  if (yyGetContours) {
     TFile* hfile1 = 0;
     hfile1 = new TFile("FitContours_2params_free.root","RECREATE","Fit Contours of the SUSY Paramater Fit with only two params free");
 
@@ -1622,7 +1639,7 @@ void Fittino::calculateLoopLevelValues()
 
   //-------------------------------------------------------------------------
   // Get Contours
-  if (yyUseMinos) {
+  if (yyGetContours) {
     TFile* hfile = 0;
     hfile = new TFile("FitContours.root","RECREATE","Fit Contours of the SUSY Paramater Fit");
 

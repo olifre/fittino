@@ -301,7 +301,12 @@ input:
 		  if (!strcmp($2, "UseMinos")) {
 		      if ($3 == on) yyUseMinos = true;
 		      else yyUseMinos = false;
-		  }
+		  } 
+		  //yyGetContours
+		  if (!strcmp($2, "GetContours")) {
+		      if ($3 == on) yyGetContours = true;
+		      else yyGetContours = false;
+		  } 		  
 		  if (!strcmp($2, "UseHesse")) {
 		      if ($3 == on) yyUseHesse = true;
 		      else yyUseHesse = false;
@@ -1124,6 +1129,7 @@ bool          yyScanParameters;
 bool          yyISR;
 bool          yyGeneratorError;
 bool          yyUseMinos;
+bool          yyGetContours = false;
 bool          yyUseHesse;
 bool          yyUseGivenStartValues;
 bool          yyFitAllDirectly;
