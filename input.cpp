@@ -45,7 +45,9 @@ Input::Input(const char* inputfile)
   CheckDefault("massTop", ID_t  , 174.3    , 5.1     );
   CheckDefault("massTau", ID_tau,   1.77699, 0.00029 );
   CheckDefault("alphas" , 0     ,   0.1172 , 0.0002  );
-  CheckDefault("G_F"    , 0     ,   1.16639E-5, 0.000001E-5);
+// G_F is skipped because its small uncertainty causes numerical problems with
+// covariance matrix inversion.
+//  CheckDefault("G_F"    , 0     ,   1.16639E-5, 0.000001E-5);
   CheckDefault("alphaem", 0     , 127.934  , 0.027   );
 
   cout << "mass = " << mass << endl; 
@@ -334,12 +336,12 @@ void Input::DumpMeasuredVector()
     cout<<"    pol1      = "<<yyMeasuredVec[i].polarisation1<<endl;
     cout<<"    pol2      = "<<yyMeasuredVec[i].polarisation2<<endl;
     cout<<"    daughter  = ";
-    for (int j=0; j<yyMeasuredVec[i].daughters.size(); j++) {
+    for (unsigned int j=0; j<yyMeasuredVec[i].daughters.size(); j++) {
       cout<<yyMeasuredVec[i].daughters[j]<<" ";
     }
     cout<<endl;
     cout<<"    products  = ";
-    for (int j=0; j<yyMeasuredVec[i].products.size(); j++) {
+    for (unsigned int j=0; j<yyMeasuredVec[i].products.size(); j++) {
 	cout<<yyMeasuredVec[i].products[j]<<" ";
     }
 

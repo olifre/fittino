@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <stdlib.h>
-#include <map.h>
+#include <map>
 #include <leshouches.h>
 #include <yy.h>
 #include <misc.h>
@@ -89,7 +89,7 @@ map<doubleVec_t,xs_element_t> cross_sections;
 doubleVec_t tmpVec, tmp2Vec;
 vector<doubleVec_t> tmpParams;
 
-int found;
+int found, skip;
  
 vector<MeasuredValue> yyMeasuredVec; // contains measured observables
 vector<MeasuredValue> yyThrownVec;   // contains smeared observables
@@ -133,7 +133,7 @@ map<int,string> yyParticleNames;
 map<string,int> yyParticleIDs;
 
 int           yyParseError = 0;
-int           yyNumberOfMinimizations = 1;
+unsigned int  yyNumberOfMinimizations = 1;
 double        yyErrDef = 1.;
 int           yyMaxCallsSimAnn = 300000;
 double        yyTempRedSimAnn = 0.4;
@@ -181,7 +181,7 @@ input:
 	        if (!strcmp($2,"NumberOfMinimizations")) {
 		  // cout << "FOUND NUMBER OF MINIMIZATIONS "<<$3<<endl;
 		  if ($3>0) {
-                    yyNumberOfMinimizations = $3;
+                    yyNumberOfMinimizations = (int)$3;
                   }
 		}
 	        else if (!strcmp($2,"ErrDef")) {
@@ -193,7 +193,7 @@ input:
 	        else if (!strcmp($2,"MaxCallsSimAnn")) {
 		  // cout << "FOUND MaxCallsSimAnn "<<$3<<endl;
 		  if ($3>0) {
-                    yyMaxCallsSimAnn = $3;
+                    yyMaxCallsSimAnn = (int)$3;
                   }
                 } 	        
 	        else if (!strcmp($2,"TempRedSimAnn")) {
@@ -211,7 +211,7 @@ input:
                 else if (!strcmp($2,"NumberPulls")) {
 		  // cout << "FOUND NumberPulls "<<$3<<endl;
 		  if ($3>0) {
-                    yyNumberPulls = $3;
+                    yyNumberPulls = (int)$3;
                   }
                 } else {
 		  found = 0;
@@ -244,29 +244,39 @@ input:
 	    | input T_KEY value err
 	      {
 		  found = 0;
-		  for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
-		    if (!yyMeasuredVec[i].name.compare($2)) {
-		      found = 1;
-		      yyMeasuredVec[i].value = $3;
-		      yyMeasuredVec[i].error = $4;
-		      break;
-		    }
-		  }
-		  if (found == 0) {
-		      MeasuredValue tmpValue;
-                      tmpValue.nofit = false;
-		      tmpValue.name = $2;
-		      tmpValue.value = $3;
-		      tmpValue.error = $4;
-		      tmpValue.type = mass;
-		      tmpValue.theovalue  = 0;
-		      tmpValue.bound_low = 0.;
-		      tmpValue.bound_up = 0.;
-		      tmpValue.alias = 0;
-		      if (!strncmp($2, "mass", 4))tmpValue.type = mass;
-		      else tmpValue.type = other;
-		      yyMeasuredVec.push_back(tmpValue);
-		  }
+		  skip = 0;
+		  if ($4*$4 < 2.2204e-16) {
+                      cout<<"WARNING: Measurement of "<<$2<<" will not be used in fit. Uncertainty too small."<<endl;
+		      cout<<"         Too small uncertainties cause numerical problems with covariance matrix inversion."<<endl;
+		      cout<<"         Press any key to continue."<<endl;
+                      getchar();
+		      skip = 1;
+                  }
+		  if (!skip) {
+		      for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+			if (!yyMeasuredVec[i].name.compare($2)) {
+			  found = 1;
+			  yyMeasuredVec[i].value = $3;
+			  yyMeasuredVec[i].error = $4;
+			  break;
+			}
+		      }
+		      if (found == 0) {
+			  MeasuredValue tmpValue;
+			  tmpValue.nofit = false;
+			  tmpValue.name = $2;
+			  tmpValue.value = $3;
+			  tmpValue.error = $4;
+			  tmpValue.type = mass;
+			  tmpValue.theovalue  = 0;
+			  tmpValue.bound_low = 0.;
+			  tmpValue.bound_up = 0.;
+			  tmpValue.alias = 0;
+			  if (!strncmp($2, "mass", 4))tmpValue.type = mass;
+			  else tmpValue.type = other;
+			  yyMeasuredVec.push_back(tmpValue);
+		      }
+                  }
 	      }
 	    | input T_UNIVERSALITY sentence
 	      {
@@ -277,8 +287,8 @@ input:
 //		 cout << "decompositing string "<<str<< endl;
 		 char tmpstr5[255];
 		 unsigned int pos = 0, newpos = 0;
-		 int anti = 1;
-	         int i = 0;
+//		 int anti = 1;
+//	         int i = 0;
 	         MeasuredValue tmpval;
 	         string        firstname;
 		 while ((newpos = str.find(" ", pos)) != string::npos) {
@@ -309,7 +319,7 @@ input:
 		      if (!strncmp($3,"sigma",5)) {
                         charnumber = strchr($3,'_');
                         if (charnumber == 0) yyerror ("Underscore not found");
-		        aliasnumber = atof((charnumber+1));
+		        aliasnumber = atoi((charnumber+1));
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if ((yyMeasuredVec[k].type == xsection) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    i = k;
@@ -321,7 +331,7 @@ input:
 		      else if (!strncmp($3,"br",2)) {
                         charnumber = strchr($3,'_');
                         if (charnumber == 0) yyerror ("Underscore not found");
-		        aliasnumber = atof((charnumber+1));
+		        aliasnumber = atoi((charnumber+1));
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    i = k;
@@ -333,7 +343,7 @@ input:
 		      else if (!strncmp($3,"edge",2)) {
                         charnumber = strchr($3,'_');
                         if (charnumber == 0) yyerror ("Underscore not found");
-		        aliasnumber = atof((charnumber+1));
+		        aliasnumber = atoi((charnumber+1));
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if ((yyMeasuredVec[k].type == Pedge) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    i = k;
@@ -345,7 +355,7 @@ input:
 		      else if (!strncmp($3,"width",2)) {
                         charnumber = strchr($3,'_');
                         if (charnumber == 0) yyerror ("Underscore not found");
-		        aliasnumber = atof((charnumber+1));
+		        aliasnumber = atoi((charnumber+1));
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if ((yyMeasuredVec[k].type == Pwidth) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    i = k;
@@ -366,7 +376,7 @@ input:
 		      if (!strncmp($4,"sigma",5)) {
                         charnumber = strchr($4,'_');
                         if (charnumber == 0) yyerror ("Underscore not found");
-		        aliasnumber = atof((charnumber+1));
+		        aliasnumber = atoi((charnumber+1));
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if ((yyMeasuredVec[k].type == xsection) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    j = k;
@@ -378,7 +388,7 @@ input:
 		      else if (!strncmp($4,"br",2)) {
                         charnumber = strchr($4,'_');
                         if (charnumber == 0) yyerror ("Underscore not found");
-		        aliasnumber = atof((charnumber+1));
+		        aliasnumber = atoi((charnumber+1));
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    j = k;
@@ -390,7 +400,7 @@ input:
 		      else if (!strncmp($4,"edge",2)) {
                         charnumber = strchr($4,'_');
                         if (charnumber == 0) yyerror ("Underscore not found");
-		        aliasnumber = atof((charnumber+1));
+		        aliasnumber = atoi((charnumber+1));
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if ((yyMeasuredVec[k].type == Pedge) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    j = k;
@@ -402,7 +412,7 @@ input:
 		      else if (!strncmp($4,"width",2)) {
                         charnumber = strchr($4,'_');
                         if (charnumber == 0) yyerror ("Underscore not found");
-		        aliasnumber = atof((charnumber+1));
+		        aliasnumber = atoi((charnumber+1));
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if ((yyMeasuredVec[k].type == Pwidth) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    j = k;
@@ -616,7 +626,7 @@ input:
 		  tmpValue.name = "edge ";
 		  tmpValue.name.append($4);
 		  tmpValue.type  = Pedge;
-		  tmpValue.id    = $3;
+		  tmpValue.id    = (int)$3;
 		  if (tmpValue.id==1) {
                     tmpValue.name.append("+ ");
                   } 
@@ -631,7 +641,7 @@ input:
 //		  cout << "decompositing string "<<str<< endl;
 		  char tmpstr2[255];
 		  unsigned int pos = 0, newpos = 0;
-		  int anti = 1;
+//		  int anti = 1;
 	          int i = 0;
 		  while ((newpos = str.find(" ", pos)) != string::npos) {
 		      str.copy(tmpstr2, newpos - pos, pos);
@@ -842,7 +852,7 @@ input:
 	      {
 		if (!strcmp($2,"xsbr")) {
 		  int i = 0;
-		  int j = 0;
+//		  int j = 0;
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
@@ -880,7 +890,7 @@ input:
 		    if (!strncmp(tmpstr3,"sigma",5)) {
 		      charnumber = strchr(tmpstr3,'_');
 		      if (charnumber == 0) yyerror ("Underscore not found");
-		      aliasnumber = atof((charnumber+1));
+		      aliasnumber = atoi((charnumber+1));
 		      found_br = false;
 		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
 			if ((yyMeasuredVec[k].type == xsection) && (yyMeasuredVec[k].alias == aliasnumber)) {
@@ -903,7 +913,7 @@ input:
 		    else if (!strncmp(tmpstr3,"brsum",5)) {
 		      charnumber = strchr(tmpstr3,'_');
 		      if (charnumber == 0) yyerror ("Underscore not found");
-		      aliasnumber = atof((charnumber+1));
+		      aliasnumber = atoi((charnumber+1));
 		      found_br = false;
 		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
 			if ((yyMeasuredVec[k].type == brsum) && (yyMeasuredVec[k].alias == aliasnumber)) {
@@ -925,7 +935,7 @@ input:
 		    else if (!strncmp(tmpstr3,"br",2)) {
 		      charnumber = strchr(tmpstr3,'_');
 		      if (charnumber == 0) yyerror ("Underscore not found");
-		      aliasnumber = atof((charnumber+1));
+		      aliasnumber = atoi((charnumber+1));
 		      found_br = false;
 		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
 			if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
@@ -949,7 +959,7 @@ input:
 		}
 		else if (!strcmp($2,"brratio")) {
 		  int i = 0;
-		  int j = 0;
+//		  int j = 0;
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
@@ -993,7 +1003,7 @@ input:
 		    if (!strncmp(tmpstr3,"brsum",5)) {
 		      charnumber = strchr(tmpstr3,'_');
 		      if (charnumber == 0) yyerror ("Underscore not found");
-		      aliasnumber = atof((charnumber+1));
+		      aliasnumber = atoi((charnumber+1));
 		      found_br = false;
 		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
 			if ((yyMeasuredVec[k].type == brsum) && (yyMeasuredVec[k].alias == aliasnumber)) {
@@ -1015,7 +1025,7 @@ input:
 		    else if (!strncmp(tmpstr3,"br",2)) {
 		      charnumber = strchr(tmpstr3,'_');
 		      if (charnumber == 0) yyerror ("Underscore not found");
-		      aliasnumber = atof((charnumber+1));
+		      aliasnumber = atoi((charnumber+1));
 		      found_br = false;
 		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
 			if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
@@ -1047,7 +1057,7 @@ input:
 		}
 		else if (!strcmp($2,"brsum")) {
 		  int i = 0;
-		  int j = 0;
+//		  int j = 0;
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
@@ -1087,7 +1097,7 @@ input:
 		    if (!strncmp(tmpstr3,"br",2)) {
 		      charnumber = strchr(tmpstr3,'_');
 		      if (charnumber == 0) yyerror ("Underscore not found");
-		      aliasnumber = atof((charnumber+1));
+		      aliasnumber = atoi((charnumber+1));
 		      found_br = false;
 		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
 			if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
@@ -1122,7 +1132,7 @@ input:
 	      {
 		if (!strcmp($2,"brsum")) {
 		  int i = 0;
-		  int j = 0;
+//		  int j = 0;
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
@@ -1162,7 +1172,7 @@ input:
 		    if (!strncmp(tmpstr3,"br",2)) {
 		      charnumber = strchr(tmpstr3,'_');
 		      if (charnumber == 0) yyerror ("Underscore not found");
-		      aliasnumber = atof((charnumber+1));
+		      aliasnumber = atoi((charnumber+1));
 		      found_br = false;
 		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
 			if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {

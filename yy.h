@@ -58,7 +58,7 @@ extern bool             yyUseSimAnnBefore;
 extern bool             yyUseSimAnnWhile;
 extern bool             yyUseGivenStartValues;
 extern bool             yyFitAllDirectly;
-extern int              yyNumberOfMinimizations;
+extern unsigned int     yyNumberOfMinimizations;
 extern bool             yyCalcIndChisqContr;
 extern bool             yyBoundsOnX;
 extern bool             yySepFitTanbX;

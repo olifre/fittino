@@ -1682,7 +1682,7 @@ void Fittino::calculateLoopLevelValues()
 	    }
 	  }
 	  // now get the contour
-	  Int_t ncontpoints = 0;
+	  UInt_t ncontpoints = 0;
 	  fitter->mncont(i,j,npoints,xarray,yarray,ierr);
 	  if (ierr < 4) {
   	      cerr<<"ierr returned from mncont = "<<ierr<<endl;
@@ -1740,7 +1740,7 @@ void Fittino::calculateLoopLevelValues()
     for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
       for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
 	if (i < j) {
-	  Int_t ncontpoints = 0;
+	  UInt_t ncontpoints = 0;
 	  fitter->mncont(i,j,npoints,xarray,yarray,ierr);
 	  if (ierr < 4) {
   	      cerr<<"ierr returned from mncont = "<<ierr<<endl;
@@ -1884,7 +1884,7 @@ void Fittino::writeResults(const char* filename)
     fprintf(file,"\n");
     fprintf(file,"Input values:\n");
     fprintf(file,"=============\n");
-    for (int i=0; i<yyMeasuredVec.size(); i++) {
+    for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
         if (yyMeasuredVec[i].nofit) continue;
         if (yyMeasuredVec[i].name.length() < 20)
  	    fprintf(file,"%20s   %12g +- %12g\n", yyMeasuredVec[i].name.c_str(), yyMeasuredVec[i].value,
@@ -1897,16 +1897,16 @@ void Fittino::writeResults(const char* filename)
     fprintf(file,"Covariance matrix for input value:\n");
     fprintf(file,"==================================\n");
     fprintf(file,"                     ");
-    for (int i=0; i<yyMeasuredVec.size(); i++) {
+    for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
       if (!yyMeasuredVec[i].nofit) {
 	fprintf(file,"%12s", yyMeasuredVec[i].name.c_str());
       }
     }
     fprintf(file,"\n");
-    for (int i=0; i<yyMeasuredVec.size(); i++) {
+    for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
       if (!yyMeasuredVec[i].nofit) {
       fprintf(file,"%20s ", yyMeasuredVec[i].name.c_str());
-      for (int j=0; j<yyMeasuredVec.size(); j++) {
+      for (unsigned int j=0; j<yyMeasuredVec.size(); j++) {
 	if (!yyMeasuredVec[j].nofit) {
 	  fprintf(file,"%12f", fInput->GetMeasuredCorrelationMatrix().GetCovariance(i, j));
 	}
@@ -1917,7 +1917,7 @@ void Fittino::writeResults(const char* filename)
     fprintf(file,"\n");
     fprintf(file,"Fixed values: \n");
     fprintf(file,"=============\n");
-    for (int i=0; i<yyFixedPar.size(); i++) {
+    for (unsigned int i=0; i<yyFixedPar.size(); i++) {
         if (yyFixedPar[i].name.length() < 20)
  	    fprintf(file,"%20s   %12g\n", yyFixedPar[i].name.c_str(), yyFixedPar[i].value);
 	else
@@ -1926,7 +1926,7 @@ void Fittino::writeResults(const char* filename)
     fprintf(file,"\n");
     fprintf(file,"Fitted values:\n");
     fprintf(file,"==============\n");
-    for (int i=0; i<yyFittedVec.size(); i++) {
+    for (unsigned int i=0; i<yyFittedVec.size(); i++) {
       if (yyFittedVec[i].name.length() < 20) {
 	fprintf(file,"%20s   %12g +- %12g", yyFittedVec[i].name.c_str(), yyFittedVec[i].value,
 		yyFittedVec[i].error);
@@ -1951,13 +1951,13 @@ void Fittino::writeResults(const char* filename)
 	fprintf(file,"========================================\n");
         fprintf(file,"\n");
 	fprintf(file,"                   ");
-	for (int i=0; i<yyFittedVec.size(); i++) {
+	for (unsigned int i=0; i<yyFittedVec.size(); i++) {
 	  fprintf(file, "%12s", yyFittedVec[i].name.c_str());
 	}
 	fprintf(file,"\n");
-	for (int i=0; i<yyFittedVec.size(); i++) {
+	for (unsigned int i=0; i<yyFittedVec.size(); i++) {
 	  fprintf(file,"%20s ", yyFittedVec[i].name.c_str());
-	  for (int j=0; j<yyFittedVec.size(); j++) {
+	  for (unsigned int j=0; j<yyFittedVec.size(); j++) {
 	    fprintf(file, "%12g", (*fSavedFittedCovarianceMatrix)(i,j) );
 	  }
 	  fprintf(file, " \n");
@@ -1970,13 +1970,13 @@ void Fittino::writeResults(const char* filename)
 	fprintf(file,"=========================================\n");
         fprintf(file,"\n");
 	fprintf(file,"                   ");
-	for (int i=0; i<yyFittedVec.size(); i++) {
+	for (unsigned int i=0; i<yyFittedVec.size(); i++) {
 	  fprintf(file, "%12s", yyFittedVec[i].name.c_str());
 	}
 	fprintf(file,"\n");
-	for (int i=0; i<yyFittedVec.size(); i++) {
+	for (unsigned int i=0; i<yyFittedVec.size(); i++) {
 	  fprintf(file,"%20s ", yyFittedVec[i].name.c_str());
-	  for (int j=0; j<yyFittedVec.size(); j++) {
+	  for (unsigned int j=0; j<yyFittedVec.size(); j++) {
 	    fprintf(file, "%12g", (*fSavedFittedCorrelationMatrix)(i,j) );
 	  }
 	  fprintf(file, " \n");
@@ -2486,7 +2486,7 @@ void WriteLesHouches(double* x)
       LesHouchesOutfile << "    1  "<<ReturnMeasuredValue("alphaem")->value<<" # 1/alpha_em(M_Z) (fixed)"<<endl;
     }
 
-
+/*
     if (FindInFixed("G_F")) {
       LesHouchesOutfile << "    2  "<<ReturnFixedValue("G_F")->value<<" # G_F (fixed)"<<endl;
     }
@@ -2505,7 +2505,7 @@ void WriteLesHouches(double* x)
     else {
       LesHouchesOutfile << "    2  "<<ReturnMeasuredValue("G_F")->value<<" # G_F (fixed)"<<endl;
     }
-
+*/
     if (FindInFixed("alphas")) {
       LesHouchesOutfile << "    3  "<<ReturnFixedValue("alphas")->value<<" # alpha_s (fixed)"<<endl;
     }
@@ -3716,7 +3716,7 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
   int n;
   vector <double> x; 
   vector <double> xvar; 
-  bool max = false; 
+//  bool max = false; 
   double rt; 
   double eps = 0.0001; 
   int ns = 20; 
@@ -3726,9 +3726,9 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
   vector <double> lb; 
   vector <double> ub;
   vector <double> c; 
-  int iprint = 0;
-  int iseed1 = 31327; 
-  int iseed2 = 30080; 
+//  int iprint = 0;
+//  int iseed1 = 31327; 
+//  int iseed2 = 30080; 
   double t = 5.0; // initial temperature
   vector <double> vm;
   vector <double> xopt;
@@ -3742,7 +3742,7 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
   vector <int> nacp;
   
   /* System generated locals */
-  int i1, i2, i3, i4;
+//  int i1, i2, i3, i4;
   double d1;
   Double_t dummyfloat = 5.;
   Int_t dummyint = 1;
@@ -3759,7 +3759,7 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
   static int nup;
   static double fp, pp;
   static int lnobds;
-  double fvar = 0.;
+//  double fvar = 0.;
   double fcubed = 0.;
   double fsum = 0.;
   int nvalid = 0;

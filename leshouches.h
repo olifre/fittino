@@ -23,9 +23,11 @@
 #ifndef LESHOUCHES_H
 #define LESHOUCHES_H
 
+using namespace std;
+
 #include <stdio.h>
-#include <vector.h>
-#include <map.h>
+#include <vector>
+#include <map>
 extern FILE* yyin;
 
 extern "C" {

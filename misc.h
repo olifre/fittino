@@ -201,7 +201,7 @@ public:
 
     CorrelationMatrix& operator=(const CorrelationMatrix& source);
     const double& operator()(int rown, int coln) const
-                  { return (const double&)((*(const TMatrixD *)fCorrelationMatrix)(rown, coln)); }
+                  { return (const double&)((*fCorrelationMatrix)(rown, coln)); }
 };
 
 #endif
