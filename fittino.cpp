@@ -3766,6 +3766,11 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
   int xoptflag = 0;
   int niter = 0;
   int accbetter = 0;
+  int lower_opt;
+  int upper_opt;
+  int lower_opt_before;
+  int upper_opt_before;
+  
 
   Float_t ntupvars[50];
 
@@ -3777,6 +3782,10 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
   nnew = 0;
   ndown = 0;
   lnobds = 0;
+  lower_opt = 0;
+  upper_opt = 0;
+  lower_opt_before = 0;
+  upper_opt_before = 0;
   n = yyFittedVec.size();
   if (n<20) {
     nt = 60;
@@ -3899,9 +3908,27 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
     nnew = 0;
     ndown = 0;
     lnobds = 0;
+    if (yyAdaptiveSimAnn) {
+      if (niter>0 && ( TMath::Abs( ( (float)niter/2. ) - niter/2 ) < 0.01 ) ) {
+	if (lower_opt>0 && upper_opt==0 && lower_opt_before>0 && upper_opt_before==0) {
+	  if (nt>20) {
+	    cout << "resetting the temperature reduction factor from " << rt;
+	    rt = TMath::Sqrt(rt);
+	    cout  << " to " << rt << endl;
+	    cout << "resetting the temperature step width from " << nt;
+	    nt = nt/2;
+	    cout  << " to " << nt << endl;
+	  }
+	}
+      }
+    }
     niter++;
     // loop over the iterations before temperature reduction:
     for (m = 0; m < nt; m++) {
+      lower_opt_before = lower_opt;
+      upper_opt_before = upper_opt;
+      lower_opt=0;
+      upper_opt=0;
       // loop over the accepted function evaluations:
       for (j = 0; j < ns; j++) {
 	// loop over the variables:
@@ -3967,6 +3994,11 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
 	    if (fp > fopt) {
 	      for (i = 0; i < n; ++i) {
 		xopt[i] = xp[i];
+	      }
+	      if (m <= nt/2) {
+		lower_opt++;
+	      } else {
+		upper_opt++;
 	      }
 	      fopt = fp;
 	      ++nnew;

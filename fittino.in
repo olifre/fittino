@@ -481,11 +481,12 @@ ScanX                 on
 ScanParameters        off
 CalcPullDist          off
 
-UseSimAnnBefore       off
+UseSimAnnBefore       on
 UseSimAnnWhile        off
-TempRedSimAnn         0.6
+TempRedSimAnn         0.5
 MaxCallsSimAnn        450000
-InitTempSimAnn        10000
+InitTempSimAnn        5000
+AdaptiveSimAnn        on
 
 # Calculator             SPHENO  ./SPheno
 

@@ -369,7 +369,11 @@ input:
 		  if (!strcmp($2, "Verbose")) {
 		      if ($3 == on) yyVerbose = true;
 		      else yyVerbose = false;
-		  }
+		  } // yyAdaptiveSimAnn
+		  if (!strcmp($2, "AdaptiveSimAnn")) {
+		      if ($3 == on) yyAdaptiveSimAnn = true;
+		      else yyAdaptiveSimAnn = false;
+		  } // yyAdaptiveSimAnn
 	      }
 	    | input T_CALCULATOR T_WORD
 	      {
@@ -1622,6 +1626,7 @@ bool          yySepFitTanbMu = false;
 bool          yySepFitmA = false;
 bool          yyScanX = true;
 bool          yyVerbose = true;
+bool          yyAdaptiveSimAnn = false;
 
 unsigned int yyCalculator;
 string       yyCalculatorPath = "";
