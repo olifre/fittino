@@ -32,6 +32,9 @@
 class Input;
 class SmearedInput;
 
+typedef struct {
+  vector <double> value;
+} vector_type;
 extern void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag) ;
 extern double gchisq;
 extern int    gstat;

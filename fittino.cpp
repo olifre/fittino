@@ -1159,6 +1159,7 @@ void Fittino::calculateLoopLevelValues()
   if (yyNoBoundsAtAll) {
     yyUseSimAnnBefore = false;
     yyUseSimAnnWhile = false;
+    yySimAnnUncertainty = false;
     for (unsigned int j=0; j < yyFittedVec.size(); j++ ) {
       yyFittedVec[j].bound_up = 0.;
       yyFittedVec[j].bound_low = 0.;
@@ -4316,6 +4317,7 @@ void Fittino::simulated_annealing_uncertainties (TNtuple *ntuple)
   vector <double> vm;
   vector <double> xopt;
   double fopt = 11111111111.0;
+  double fadd = 0.;	
   int nacc = 0; 
   int nfcnev = 0; 
   int nobds = 0;
@@ -4346,6 +4348,10 @@ void Fittino::simulated_annealing_uncertainties (TNtuple *ntuple)
   static int nup;
   static double fp, pp;
   static int lnobds;
+  vector_type fill_vector;
+  vector <vector_type> saved_x;
+  vector <double> p_mean;
+  vector <double> x_min;
 //  double fvar = 0.;
   bool firstfalse;
   int accpoint = 0;
@@ -4356,7 +4362,10 @@ void Fittino::simulated_annealing_uncertainties (TNtuple *ntuple)
   int upper_opt;
   int lower_opt_before;
   int upper_opt_before;
-  
+  int number_stored = 100;
+  bool start_pushaway = false;
+  bool start_pushaway_now = false;
+  int soon_start_pushaway = 0;
 
   Float_t ntupvars[50];
 
@@ -4386,6 +4395,9 @@ void Fittino::simulated_annealing_uncertainties (TNtuple *ntuple)
   // fill vector of parameters
   for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
     x.push_back(yyFittedVec[k].value);
+    x_min.push_back(yyFittedVec[k].value);
+    p_mean.push_back(yyFittedVec[k].value);
+    fill_vector.value.push_back(yyFittedVec[k].value);
     xp.push_back(yyFittedVec[k].value);
     xvar.push_back(yyFittedVec[k].value);
     xopt.push_back(yyFittedVec[k].value);
@@ -4395,6 +4407,9 @@ void Fittino::simulated_annealing_uncertainties (TNtuple *ntuple)
     c.push_back(2.0);
     nacp.push_back(0);
   }
+  for (unsigned int k = 0; k < (unsigned int)number_stored; k++ ) {
+    saved_x.push_back(fill_vector);
+  }  
 
   /*  Evaluate function to be minimized at the starting point */
   for (unsigned int ii = 0; ii < xp.size(); ii++) {
@@ -4543,9 +4558,37 @@ void Fittino::simulated_annealing_uncertainties (TNtuple *ntuple)
 	  fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
 	  cout << "fminimum = " << fminimum << " fgoal = " << fgoal << " fp = " << fp << endl;
 	  delta1 = TMath::Abs(fp-fgoal);
-	  fp = -steepness*sqr(fp-fgoal);
-	  cout << "hyperbolical chisq = " << -fp << endl;
-	  // fp = -fp;
+	  fp = steepness*sqr(fp-fgoal);
+	  if (start_pushaway) {
+	    // calculate mean
+	    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	      p_mean[k] = 0.;
+	      for (unsigned int kk = 0; kk < (unsigned int)number_stored; kk++ ) {
+		p_mean[k] = p_mean[k] + saved_x[kk].value[k];
+	      }
+	      p_mean[k] = p_mean[k] / (double) number_stored;
+	    }	    
+	    cout << "p_mean[0] = " << p_mean[0] << " xp[0] = " << xp[0]  << endl;
+	    // add something to fp
+	    fadd = 0.;
+	    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	      fadd = fadd + sqr((xp[k]-p_mean[k])/((double)steepness*0.003*(xp[k]-x_min[k])));
+	    }	    
+	    if (fadd > 0.) {
+	      fadd = 1./fadd;
+	    } else {
+	      fadd = 0.;
+	      cerr << "WARNING: fadd == 0" << endl;
+	    }
+	    if (start_pushaway_now == false) {
+	      f = f + fadd;
+	      start_pushaway_now = true;
+	    }
+	    cout << "adding " << fadd << " to the potential" << endl;
+	    fp = fp + fadd;
+	  }
+	  cout << "hyperbolical chisq = " << fp << endl;
+	  fp = -fp;
 	  ++nfcnev;
 	  xoptflag = 0;
 	  // For too many function evaluations, terminate:
@@ -4604,6 +4647,27 @@ void Fittino::simulated_annealing_uncertainties (TNtuple *ntuple)
 	      ++nrej;
 	      accpoint = 0;
 	    }
+	  }
+	  // store info for pushaway
+	  if ( soon_start_pushaway == 0 && nacc > number_stored && TMath::Abs(fopt) < 0.1 ) {
+	    soon_start_pushaway = nacc;
+	  }
+	  if ( ( soon_start_pushaway > 0 ) && ( nacc > number_stored + soon_start_pushaway ) ) {
+	    start_pushaway = true;
+	  }
+	  if (accpoint > 0.5) {
+	    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	      fill_vector.value[k] = xp[k];
+	    }
+	    for (unsigned int k = number_stored-1; k > 0; k-- ) {
+	      saved_x[k].value = saved_x[k-1].value;
+	    }	    
+	    saved_x[0] = fill_vector;
+	    cout << " 0: " << saved_x[0].value[0] <<  
+	      " 1: " << saved_x[1].value[0] <<  
+	      " 2: " << saved_x[2].value[0] <<  
+	      " 3: " << saved_x[3].value[0] <<
+	      " 4: " << saved_x[4].value[0] << endl;
 	  }
 	  // write point to ntuple
 	  ntupvars[0] = (Float_t)nfcnev;
