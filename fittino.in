@@ -280,7 +280,7 @@ ScanX                 on
 
 ScanParameters        off
 CalcIndChisqContr     off
-CalcPullDist          off
+CalcPullDist          on
 NumberPulls           1
 
 UseSimAnnWhile        on

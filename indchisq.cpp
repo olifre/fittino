@@ -92,6 +92,8 @@ void IndChisq::CalcIndChisq()
   yyUseGivenStartValues = true;
   yyFitAllDirectly = true;
   yyUseOneLoopCorrections = true;
+  yyUseSimAnnWhile        = false;
+  yyUseSimAnnBefore       = false;
 
   //construct fittino
   Fittino* fittino = new Fittino(fInput);

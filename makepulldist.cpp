@@ -30,10 +30,12 @@
 #include <iostream>
 #include <fstream>
 #include <time.h>
+#include <unistd.h>
 #include <yy.h>
 #include <fstream>
 #include <stdio.h>
 #include <leshouches.h>
+#include <sys/sysinfo.h>
 
 #include <TRandom.h>
 #include <TMath.h>
@@ -83,13 +85,20 @@ void MakePullDist::CalcPullDist()
   yyUseGivenStartValues   = true;
   yyFitAllDirectly        = true;
   yyUseOneLoopCorrections = true;
+  yyUseSimAnnWhile        = false;
+  yyUseSimAnnBefore       = false;
   yyUseMinos              = false;
   yyUseHesse              = false;
 
   // set the random number generator
   time (&systime);
-  seed = systime;
-  cout << "time " << seed << endl; 
+  struct sysinfo sinfo; 
+  sysinfo(&sinfo);
+  seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
+  cout<<"uptime = "<<sinfo.uptime<<endl;
+  cout<<"freeswap = "<<sinfo.freeswap<<endl;
+  cout<<"pid = "<<getpid()<<endl;
+  cout << "systime " << systime << endl; 
   gRandom->SetSeed(seed);
 
 

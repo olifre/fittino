@@ -3420,12 +3420,12 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
   vector <double> x; 
   vector <double> xvar; 
   bool max = false; 
-  double rt = 0.85; 
+  double rt = 0.75; 
   double eps = 0.0001; 
   int ns = 20; 
   int nt; 
   int neps = 4;
-  int maxevl = 80000; 
+  int maxevl = 100000; 
   vector <double> lb; 
   vector <double> ub;
   vector <double> c; 
