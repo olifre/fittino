@@ -1,11 +1,11 @@
 #########################################################################
 ###                         Fittino input file                        ###
+###                             for SPS1a'                            ###
 #########################################################################
 
-#########################################################################################
-# Masses                                                                                #
-#########################################################################################
-
+#########################################################################
+# Masses                                                                #
+#########################################################################
 
 massW                    80.3371  GeV +- 0.039  GeV
 massZ                    91.1187 GeV +- 0.0021 GeV
@@ -55,9 +55,9 @@ massChargino2		 418.495 GeV +- 3.0 GeV  #  +- 3.4 GeV  # ~chi_2+
 nofit cos2PhiL                 0.763 +- 0.0005       # rough estimate
 nofit cos2PhiR                 0.94 +- 0.0005       # rough estimate
 
-#########################################################################################
-# Cross sections                                                                        #
-#########################################################################################
+#########################################################################
+# Cross sections                                                        #
+#########################################################################
 
 # RR 500
 sigma ( ee -> Chargino1 Chargino1~, 500 GeV,-0.8,-0.6 )      alias   1
@@ -180,9 +180,10 @@ sigma ( ee -> Z h0, 1 TeV, 0.8, -0.6 )                       7.08592 fb +- 0.17 
 sigma ( ee -> H0 A0, 1 TeV, 0.8, -0.6 )                      alias 716 
 sigma ( ee -> Hplus Hplus~, 1 TeV, 0.8, -0.6 )               alias 717 
 										       
-#########################################################################################
-# Branching ratios                                                                      #
-#########################################################################################
+
+#########################################################################
+# Branching ratios                                                      #
+#########################################################################
 
 # Selectron Branching Ratios
 BR ( SelectronR -> Neutralino1 Electron )        alias 1
@@ -200,7 +201,7 @@ BR ( Stau2 -> Neutralino1 Tau )                  alias 10
 # BR ( Stau2 -> Neutralino2 Tau )                 alias 11
 # BR ( Stau2 -> Chargino1 Nutau )                 alias 12
 
-#########################################################################################
+#########################################################################
 
 # Chargino 1 Branching ratios
 BR ( Chargino1 -> Stau1 Nutau )                   alias 13
@@ -218,10 +219,10 @@ BR ( Chargino2 -> Neutralino2 W )                 alias 19
 # BR ( Chargino2 -> SmuL~ Numu )                   alias 24
 # BR ( Chargino2 -> Stau2~ Nutau )                 alias 25
 # Neutralino 2 Branching ratios			
-BR ( Neutralino2 -> ~Stau1 Tau )                  alias 26
-BR ( Neutralino2 -> Stau1 ~Tau )                  alias 27
+BR ( Neutralino2 -> Stau1~ Tau )                  alias 26
+BR ( Neutralino2 -> Stau1 Tau~ )                  alias 27
 
-#########################################################################################
+#########################################################################
 
 # h0 Branching ratios
 BR ( h0 -> Bottom Bottom~ )                       0.7621    +- 0.019    alias 30
@@ -243,21 +244,21 @@ BR ( Hplus -> Top Bottom~ )                       0.622101  +- 0.019    alias 42
 # BR ( Hplus -> Nutau Tau )                        alias 43
 # BR ( Hplus -> Chargino1 Neutralino1 )            alias 44
 
-#########################################################################################
+#########################################################################
 
 # stop branching ratios
 BR ( Stop1 -> Neutralino1 Top )                   alias 50
 BR ( Stop1 -> Chargino1 Bottom )                  alias 51
 
-#########################################################################################
-# brsums                                                                                #
-#########################################################################################
+#########################################################################
+# brsums                                                                #
+#########################################################################
 
 brsum ( br_26 br_27 )                        alias 1  # Neutralino2 -> Stau- Tau+ + Neutralino2 -> Stau+ Tau- 
 
-#########################################################################################
-# xsbr                                                                                  #
-#########################################################################################
+#########################################################################
+# xsbr                                                                  #
+#########################################################################
 
 # RR 500
 xsbr ( sigma_1 br_13 br_13 )                 34.9838 +- 0.37 alias 101   # Chargino1 Chargino1~ -> (Stau1 Nutau)^2
@@ -275,7 +276,6 @@ xsbr ( sigma_9 br_5 br_5 )                   27.2318 +- 0.33 alias 112   # SmuR 
 xsbr ( sigma_10 br_9 br_9 )                  32.7937 +- 0.37 alias 113   # Stau1 Stau1~ -> (Neutralino1 Tau)^2
 xsbr ( sigma_11 br_9 br_10 )                 1.1691 +- 0.1 alias 114   # Stau1 Stau2~ -> (Neutralino1 Tau)^2
 xsbr ( sigma_12 br_10 br_10 )                12.3781 +- 0.21 alias 115   # Stau2 Stau2~ -> (Neutralino1 Tau)^2
-# eventually plus Higgs
 
 # LL 500
 xsbr ( sigma_101 br_13 br_13 )               15.5638  +- 0.25 alias 201   # Chargino1 Chargino1~ -> (Stau1 Nutau)^2
@@ -293,7 +293,6 @@ xsbr ( sigma_109 br_5 br_5 )                 44.2151   +- 0.44 alias 212   # Smu
 xsbr ( sigma_110 br_9 br_9 )                 48.3143   +- 0.48 alias 213   # Stau1 Stau1~ -> (Neutralino1 Tau)^2
 # xsbr ( sigma_111 br_9 br_10 )              7.78966   +- 0.17 alias 214   # Stau1 Stau2~ -> (Neutralino1 Tau)^2
 xsbr ( sigma_112 br_10 br_10 )               7.78966   +- 0.17 alias 215   # Stau2 Stau2~ -> (Neutralino1 Tau)^2
-# eventually plus Higgs
 
 # LR 500
 xsbr ( sigma_201 br_13 br_13 )               139.903   +- 1.4 alias 301   # Chargino1 Chargino1~ -> (Stau1 Nutau)^2
@@ -311,7 +310,6 @@ xsbr ( sigma_209 br_5 br_5 )                 42.2328   +- 0.42 alias 312   # Smu
 xsbr ( sigma_210 br_9 br_9 )                 61.101   +- 0.61 alias 313   # Stau1 Stau1~ -> (Neutralino1 Tau)^2
 xsbr ( sigma_211 br_9 br_10 )                3.70031   +- 0.12 alias 314   # Stau1 Stau2~ -> (Neutralino1 Tau)^2
 xsbr ( sigma_212 br_10 br_10 )               44.7597   +- 0.44 alias 315   # Stau2 Stau2~ -> (Neutralino1 Tau)^2
-# eventually plus Higgs
 
 # RL 500
 xsbr ( sigma_301 br_13 br_13 )                3.96312  +- 0.13 alias 401   # Chargino1 Chargino1~ -> (Stau1 Nutau)^2
@@ -329,7 +327,6 @@ xsbr ( sigma_309 br_5 br_5 )                  161.116  +- 1.61 alias 412   # Smu
 xsbr ( sigma_310 br_9 br_9 )                  169.745  +- 1.69 alias 413   # Stau1 Stau1~ -> (Neutralino1 Tau)^2
 xsbr ( sigma_311 br_9 br_10 )                 2.44363  +- 0.1 alias 414   # Stau1 Stau2~ -> (Neutralino1 Tau)^2
 xsbr ( sigma_312 br_10 br_10 )                12.6408  +- 0.21 alias 415   # Stau2 Stau2~ -> (Neutralino1 Tau)^2
-# eventually plus Higgs
 
 # LR 400
 xsbr ( sigma_401 br_13 br_13 )                32.093  +- 0.35 alias 501   # Chargino1 Chargino1~ -> (Stau1 Nutau)^2
@@ -347,7 +344,6 @@ xsbr ( sigma_409 br_5 br_5 )                  44.8632  +- 0.44 alias 512   # Smu
 xsbr ( sigma_410 br_9 br_9 )                  73.2046  +- 0.73 alias 513   # Stau1 Stau1~ -> (Neutralino1 Tau)^2
 xsbr ( sigma_411 br_9 br_10 )                 2.99987  +- 0.11 alias 514   # Stau1 Stau2~ -> (Neutralino1 Tau)^2
 # xsbr ( sigma_412 br_10 br_10 )                2.19228  +- 0.11 alias 515   # Stau2 Stau2~ -> (Neutralino1 Tau)^2
-# eventually plus Higgs
 
 # RL 400
 # xsbr ( sigma_501 br_13 br_13 )               +- 0.1 alias 601   # Chargino1 Chargino1~ -> (Stau1 Nutau)^2
@@ -365,7 +361,6 @@ xsbr ( sigma_509 br_5 br_5 )                  176.026 +- 1.7 alias 612   # SmuR 
 xsbr ( sigma_510 br_9 br_9 )                  207.691 +- 2.0 alias 613   # Stau1 Stau1~ -> (Neutralino1 Tau)^2
 xsbr ( sigma_511 br_9 br_10 )                 1.98107 +- 0.1 alias 614   # Stau1 Stau2~ -> (Neutralino1 Tau)^2
 # xsbr ( sigma_512 br_10 br_10 )               +- 0.1 alias 615   # Stau2 Stau2~ -> (Neutralino1 Tau)^2
-# eventually plus Higgs
 
 # LR 1000
 xsbr ( sigma_601 br_13 br_13 )                135.732 +- 1.35 alias 701   # Chargino1 Chargino1~ -> (Stau1 Nutau)^2
@@ -415,60 +410,54 @@ xsbr ( sigma_717 br_42 br_42 )                1.54945 +- 0.1 alias 819   # H+ H-
 
 
 
-# eventually plus Higgs
-
-
-
-#########################################################################################
-# brratios                                                                              #
-#########################################################################################
+#########################################################################
+# brratios                                                              #
+#########################################################################
 
 # brratio ( br_50 br_51 )                            0.3 +- 0.01   alias 1
 
 
-###################################################################
-# Parameters: 27
-###################################################################
+#########################################################################
+# Parameters                                                            #
+#########################################################################
 
-fitParameter  TanBeta       10.0               #     10.0 # 1.0281e+01    # 10.0
-fitParameter  Mu            4.00391601E+02 GeV #     358.645629165085 GeV # 3.58722e+02  GeV  # 358.645629165085 GeV
-fitParameter  Xtau          -4449.2464     GeV #     -3837.23 GeV # -1.80739e+02 GeV # -250.773469851269 GeV
-fitParameter  MSelectronR   1.15601432E+02 GeV  #     135.76 GeV # 1.35760e+02 GeV # 135.76 GeV
-fitParameter  MStauR        1.09886191E+02 GeV  #     133.33 GeV # 1.33458e+02 GeV # 133.33 GeV
-fitParameter  MSelectronL   1.81303904E+02 GeV  #     195.21 GeV # 1.95199e+02 GeV # 195.21 GeV
-fitParameter  MStauL        1.79542181E+02 GeV  #     194.39 GeV # 1.94261e+02 GeV # 194.39 GeV
-fitParameter  Xtop          -565.6667  GeV      #     -506.388 GeV # -5.01217e+02 GeV # 	-506.0 GeV
-fitParameter  Xbottom       -4934.7555 GeV      #    -4441. GeV # -5.01217e+02 GeV # 	  -800.0 GeV
-fitParameter  MSupR         5.03870507E+02 GeV  #     530.253 GeV  # 5.30270e+02 GeV # 530.253 GeV  
-fitParameter  MSbottomR     4.97407092E+02 GeV  #     524.718 GeV  # 5.24869e+02 GeV # 524.718 GeV  
-fitParameter  MStopR        3.80875693E+02 GeV  #     424.382 GeV  # 4.23129e+02 GeV # 424.382 GeV  
-fitParameter  MSupL         5.23239070E+02 GeV  #     548.705 GeV  # 5.48702e+02 GeV # 548.705 GeV  
-fitParameter  MStopL        4.67710781E+02 GeV  #     499.972 GeV  # 4.99487e+02 GeV # 499.972 GeV  
-fitParameter  M1            1.03270551E+02 GeV  #     101.809 GeV  # 1.01769e+02 GeV # 101.809 GeV  
-fitParameter  M2            1.93445550E+02 GeV  #     191.7556 GeV # 1.91631e+02 GeV # 191.7556 GeV 
-fitParameter  M3            5.68863225E+02 GeV  #     588.797 GeV  # 5.88821e+02 GeV # 588.797 GeV  
-fitParameter  massA0        311.95 GeV          #     399.767 GeV  # 3.99806e+02 GeV # 399.767 GeV  
-
-# fitParameter  MSmuR          135.76 GeV # 1.35760e+02 GeV # 	 135.76 GeV
-# fitParameter  MSmuL          195.21 GeV # 1.95199e+02 GeV # 	 195.21 GeV
-# fitParameter  MSstrangeR     528.14 GeV   # 5.28134e+02 GeV # 528.14 GeV   
-# fitParameter  MScharmR       530.253 GeV  # 5.30270e+02 GeV # 530.253 GeV  
-# fitParameter  MScharmL       548.705 GeV  # 5.48702e+02 GeV # 548.705 GeV  
-# fitParameter  MSdownR       5.01633868E+02 Gev  #     528.14 GeV # 5.28134e+02 GeV # 528.14 GeV
-
+fitParameter  TanBeta       10.0                 +-     0.106839      
+fitParameter  Mu            4.00391601E+02 GeV   +-      1.31431  GeV
+fitParameter  Xtau          -4449.2464     GeV   +-      20.6217  GeV
+fitParameter  MSelectronR   1.15601432E+02 GeV   +-     0.047222  GeV 
+fitParameter  MStauR        1.09886191E+02 GeV   +-     0.305381  GeV 
+fitParameter  MSelectronL   1.81303904E+02 GeV   +-    0.0657697  GeV 
+fitParameter  MStauL        1.79542181E+02 GeV   +-     0.125402  GeV 
+fitParameter  Xtop          -565.6667  GeV       +-      3.06945  GeV 
+fitParameter  Xbottom       -4934.7555 GeV       +-      1025.51  GeV
+fitParameter  MSupR         5.03870507E+02 GeV   +-      7.09704  GeV 
+fitParameter  MSbottomR     4.97407092E+02 GeV   +-      7.15023  GeV 
+fitParameter  MStopR        3.80875693E+02 GeV   +-      2.45254  GeV 
+fitParameter  MSupL         5.23239070E+02 GeV   +-      7.50972  GeV 
+fitParameter  MStopL        4.67710781E+02 GeV   +-      3.00352  GeV 
+fitParameter  M1            1.03270551E+02 GeV   +-    0.0517654  GeV 
+fitParameter  M2            1.93445550E+02 GeV   +-    0.0876525  GeV 
+fitParameter  M3            5.68863225E+02 GeV   +-      7.24919  GeV 
+fitParameter  massA0        311.95 GeV           +-      3.73973  GeV 
 			       
-fitParameter  massTop         1.78e+02   GeV
-fixParameter  massBottom      4.2000e+00   GeV
-fixParameter  massCharm       1.2e+00   GeV
+fitParameter  massTop       1.78e+02   GeV       +-    0.0423333   GeV 
+fixParameter  massBottom    4.2000e+00   GeV
+fixParameter  massCharm     1.2e+00   GeV
 
 universality MSelectronR MSmuR
 universality MSelectronL MSmuL
 universality MSupR MScharmR MSdownR MSstrangeR
 universality MSupL MScharmL
 
+#scanParameter  MSelectronR  115.1 GeV  116.1 GeV  20
+#scanParameter  MSupR        450   GeV  550   GeV  20
+
 LoopCorrections       on
 ISR                   on			       
-				       
+
+Verbose               off
+
+PerformFit            on				       
 UseGivenStartValues   on
 FitAllDirectly        on
 BoundsOnX             off
@@ -480,6 +469,7 @@ ScanX                 on
 
 ScanParameters        off
 CalcPullDist          off
+NumberPulls           1
 
 UseSimAnnBefore       on
 UseSimAnnWhile        off
@@ -490,11 +480,10 @@ AdaptiveSimAnn        on
 
 NoBoundsAtAll         on
 
-# Calculator             SPHENO  ./SPheno
+Calculator            SPHENO  ./SPheno
 
 UseMinos              on
 UseHesse              off
 
 NumberOfMinimizations  1
 ErrDef                 1.0
-
