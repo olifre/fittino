@@ -1145,11 +1145,13 @@ void Fittino::calculateLoopLevelValues()
   // switch all temp_nofits on
   for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
     yyMeasuredVec[i].temp_nofit = false;
+    yyMeasuredVec[i].first = true;
+    yyMeasuredVec[i].hasbeenset = false;
   }  
 
 
   //-------------------------------------------------------------------------
-  // eventuaslly call simulated annealing
+  // eventually call simulated annealing
   system ("rm SimAnnNtupFile.root");
   if (yyUseSimAnnBefore) {
     unsigned int i = 0;
@@ -3350,6 +3352,25 @@ void   ReadLesHouches()
       }
     }
   }
+  // check whether all has been found
+  for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+    if ((yyMeasuredVec[i].theoset == false) && (yyMeasuredVec[i].nofit == false)) {
+      cout << "WARNING: observable " << yyMeasuredVec[i].name << " not found!" << endl;
+    }
+    if (yyMeasuredVec[i].first == true) {
+      yyMeasuredVec[i].first = false;
+      if (yyMeasuredVec[i].theoset == true) {
+	yyMeasuredVec[i].hasbeenset = true;
+      }
+    }
+    if ((yyMeasuredVec[i].theoset == true) && (yyMeasuredVec[i].hasbeenset == false)) {
+      yyMeasuredVec[i].hasbeenset = true;
+    }
+    if ((yyMeasuredVec[i].hasbeenset == true) && (yyMeasuredVec[i].theoset == false)) {
+      yyMeasuredVec[i].theovalue = 11111111111.;
+      yyMeasuredVec[i].theoset = true;
+    }
+  }
 
   return;
 
@@ -3441,7 +3462,7 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
   int ns = 20; 
   int nt; 
   int neps = 4;
-  int maxevl = 100000; 
+  int maxevl = 150000; 
   vector <double> lb; 
   vector <double> ub;
   vector <double> c; 
@@ -3636,6 +3657,7 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
 	      fopt = fp;
 	      ++nnew;
 	      xoptflag = 1;
+	      cout << "found new optimum at chisq = " << fopt << endl;
 	    }
 	    //  If the point is lower, use the Metropolis criteria to decide on 
 	    //  acceptance or rejection

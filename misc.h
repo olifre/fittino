@@ -119,6 +119,8 @@ struct MeasuredValue {
   double          error;
   double          theovalue;
   bool            theoset;
+  bool            first;
+  bool            hasbeenset;
   operator        double() const { return value; }
   string          name;
   int             id;
