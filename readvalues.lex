@@ -110,6 +110,9 @@ Q[ \t]*=                  {
 			      if (!strcmp(yytext, "Calculator")) { 
 				  return T_CALCULATOR;
                               }
+			      if (!strcmp(yytext, "BR")) {
+				  return T_BR;
+			      }
                               strcpy(yylval.name, yytext);
                               return T_KEY;
                           }

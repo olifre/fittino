@@ -18,7 +18,7 @@
 %token <real> T_NUMBER
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
 %token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS
-%token T_BLOCK T_SCALE T_DECAY T_NEWLINE T_XS T_CALCULATOR T_XSBR T_BRRATIO
+%token T_BLOCK T_SCALE T_DECAY T_NEWLINE T_BR T_XS T_CALCULATOR T_XSBR T_BRRATIO
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH
  
 %type <name> sentence
@@ -517,19 +517,19 @@ input:
 		}
 		
               }
-	     | input T_KEY T_NUMBER T_BRA T_WORD T_GOESTO sentence T_KET value err T_ALIAS T_NUMBER
+	     | input T_BR T_BRA T_WORD T_GOESTO sentence T_KET value err T_ALIAS T_NUMBER
 	      {
 		  MeasuredValue tmpValue;
                   tmpValue.nofit = false;
 		  tmpValue.type  = br;
 		  tmpValue.theovalue  = 0;
-		  tmpValue.name  = $5;
-		  tmpValue.id    = yyParticleIDs[$5];
+		  tmpValue.name  = $4;
+		  tmpValue.id    = yyParticleIDs[$4];
 		  tmpValue.name.append(" -> ");
-		  tmpValue.name.append($7);
+		  tmpValue.name.append($6);
 		  string str;
 	          str.erase();
-		  str = $7;
+		  str = $6;
 		  char tmpstr3[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
@@ -546,14 +546,14 @@ input:
 		      pos = newpos + 1;
 		      tmpValue.daughters.push_back(anti * yyParticleIDs[tmpstr3]);
 		  }
-		  tmpValue.value = $9;
-		  tmpValue.error = $10;
-		  tmpValue.alias = (int)$12;
+		  tmpValue.value = $8;
+		  tmpValue.error = $9;
+		  tmpValue.alias = (int)$11;
 		  tmpValue.bound_up = 1e+6;
 		  tmpValue.bound_low = 0.;
 		  yyMeasuredVec.push_back(tmpValue);
 //		  cout << "Added branching ratio " << tmpValue.name << endl;
-	          strcpy($7,"");
+	          strcpy($6,"");
 	      }
 	     | input T_KEY T_BRA sentence T_GOESTO sentence T_COMMA value T_COMMA value T_COMMA value T_KET value err T_ALIAS T_NUMBER
 	      {
