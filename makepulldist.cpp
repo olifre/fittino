@@ -122,12 +122,10 @@ void MakePullDist::CalcPullDist()
   }
   TH1F* chisq_hist = new TH1F("chisq_hist","chisq distribution",3*ndof,0.,(double)(3*ndof));
   TTree* tree = new TTree("tree", "Tree containing fitted parameters");
-  vector<MeasuredValue> leafVec;
+  vector<MeasuredValue> leafVec(yyFittedPar.size());
   for (unsigned int k = 0; k < yyFittedPar.size(); k++ ) {
-    MeasuredValue tmp;
-    tmp.name = yyFittedPar[k].name;
-    tmp.value = -1;
-    leafVec.push_back(tmp);
+    leafVec[k].name = yyFittedPar[k].name;
+    leafVec[k].value = -1;
     string str = yyFittedPar[k].name;
     str.append("/D");
     cout << "Adding branch " << yyFittedPar[k].name.c_str() << " to tree" << endl;
@@ -191,7 +189,7 @@ void MakePullDist::CalcPullDist()
 
     // deleting yyFittedVec
     yyFittedVec.clear();
-
+    leafVec.clear();
   }
 
   // write Histos to file
