@@ -1251,8 +1251,8 @@ map<string,int> yyParticleIDs;
 int           yyParseError = 0;
 int           yyNumberOfMinimizations = 1;
 double        yyErrDef = 1.;
-int           yyMaxCallsSimAnn = 150000;
-double        yyTempRedSimAnn = 0.25;
+int           yyMaxCallsSimAnn = 300000;
+double        yyTempRedSimAnn = 0.4;
 int           yyNumberPulls = 0;
 
 double        yyXscanlow = -6000.;
