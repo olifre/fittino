@@ -556,6 +556,14 @@ input:
 		   }
 	           yyCalculatorPath = $4;
 	      }
+	    | input T_KEY T_WORD
+	      {
+		  if (!strcmp($2, "fitParameter")) {
+		     parameter_t tmpparam;
+		     tmpparam.name = $3;
+		     yyFittedPar.push_back(tmpparam);
+		  }  
+	      }
 	    | input T_KEY T_WORD value
 	      {
 		  if (!strcmp($2, "fixParameter")) {
