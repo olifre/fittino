@@ -49,6 +49,7 @@ extern CorrelationMatrix     yyFittedCorrelationMatrix;
 extern bool             yyUseLoopCorrections;
 extern bool             yyCalcPullDist;
 extern bool             yyScanParameters;
+extern bool             yyPerformFit;
 extern bool             yyISR;
 extern bool             yyCalculatorError;
 extern bool             yyUseMinos;
@@ -77,6 +78,7 @@ typedef struct {
 
 extern vector <parameter_t> yyFixedPar;
 extern vector <parameter_t> yyFittedPar;
+extern vector<ScanParameter> yyScanPar;
 
 extern string yyCalculatorPath;
 extern int    yyParseError;

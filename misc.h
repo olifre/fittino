@@ -140,6 +140,13 @@ struct MeasuredValue {
   bool            temp_nofit;
 };
 
+struct ScanParameter {
+  string          name;
+  double          min;
+  double          max;
+  unsigned int    numberOfSteps;
+};
+
 extern MeasuredValue fitterM1;
 extern MeasuredValue fitterM2;
 extern MeasuredValue fitterAbsM3;

@@ -36,6 +36,8 @@ extern void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag
 extern double gchisq;
 extern int    gstat;
 extern int n_printouts;
+extern bool FindInFixed(string name);
+extern void FillFixedParameters();
 
 class Fittino {
 public:
@@ -113,7 +115,6 @@ private:
     void          calculateXtau(const SmearedInput* input);
     void          calculateXtop(const SmearedInput* input);
     void          calculateXbottom(const SmearedInput* input);
-    void          FillFixedParameters();
 
     TMatrixD* fSavedFittedCovarianceMatrix;
     TMatrixD* fSavedFittedCorrelationMatrix;

@@ -39,6 +39,7 @@
 #include <TFitter.h>
 #include <TMinuit.h>
 #include <TGraph.h>
+#include <TGraph2D.h>
 
 #include <TFile.h>
 #include <TH1.h>
@@ -95,7 +96,7 @@ MeasuredValue* ReturnFittedValue (string name);
 MeasuredValue* ReturnFixedValue (string name);
 int ReturnFittedPosition (string name);
 bool FindInFitted (string name);
-bool FindInFixed (string name);
+//bool FindInFixed (string name);
 bool FindInUniversality(string name);
 MeasuredValue* ReturnUniversality (string name);
 void  ReadLesHouches();
@@ -1181,318 +1182,362 @@ void Fittino::calculateLoopLevelValues()
     SimAnnNtupFile->Close();
   }
 
-  //-------------------------------------------------------------------------
-  // Set Up TMinuit
-  //  TFitter* fitter = new TFitter(yyFittedVec.size());
-  TMinuit* fitter = new TMinuit (yyFittedVec.size());
-  fitter->SetFCN(fitterFCN);
-  
-  arguments[0] = 0;
-  fitter->mnexcm("SET PRI", arguments, 1,ierr);
-  arguments[0] = 1.;
-  fitter->mnexcm("SET ERR", arguments, 1,ierr);
-  
-  for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-    cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
-    cout << "adding parameter " << yyFittedVec[i].name << endl;
-    cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
-    if ( yyFittedVec[i].error <= 0. ) {
-      fitter->mnparm(i, yyFittedVec[i].name.c_str(),
-      			   yyFittedVec[i].value, TMath::Abs(yyFittedVec[i].value/10.), 
-      			   yyFittedVec[i].bound_low, yyFittedVec[i].bound_up,ierr);
-      saved_uncertainties.push_back(TMath::Abs(yyFittedVec[i].value/10.));
-    } else {
-      fitter->mnparm(i, yyFittedVec[i].name.c_str(),
-			   yyFittedVec[i].value, yyFittedVec[i].error, 
-			   yyFittedVec[i].bound_low, yyFittedVec[i].bound_up,ierr);
-      saved_uncertainties.push_back(yyFittedVec[i].error);
-    }
-  }
-  
+  TMinuit* fitter = 0;
 
-  //==================================================================================
-  //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  //==================================================================================
-  // fit everything directly or first do some subsample fits?
-  if (!yyFitAllDirectly) {
-
+  if (yyPerformFit) {
     //-------------------------------------------------------------------------
-    // first fit just mA to mA
-    if (yySepFitmA) {
+    // Set Up TMinuit
+    //  TFitter* fitter = new TFitter(yyFittedVec.size());
+    fitter = new TMinuit (yyFittedVec.size());
+    fitter->SetFCN(fitterFCN);
+
+    arguments[0] = 0;
+    fitter->mnexcm("SET PRI", arguments, 1,ierr);
+    arguments[0] = 1.;
+    fitter->mnexcm("SET ERR", arguments, 1,ierr);
+
+    for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+      cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+      cout << "adding parameter " << yyFittedVec[i].name << endl;
+      cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+      if ( yyFittedVec[i].error <= 0. ) {
+	fitter->mnparm(i, yyFittedVec[i].name.c_str(),
+			     yyFittedVec[i].value, TMath::Abs(yyFittedVec[i].value/10.), 
+			     yyFittedVec[i].bound_low, yyFittedVec[i].bound_up,ierr);
+	saved_uncertainties.push_back(TMath::Abs(yyFittedVec[i].value/10.));
+      } else {
+	fitter->mnparm(i, yyFittedVec[i].name.c_str(),
+			     yyFittedVec[i].value, yyFittedVec[i].error, 
+			     yyFittedVec[i].bound_low, yyFittedVec[i].bound_up,ierr);
+	saved_uncertainties.push_back(yyFittedVec[i].error);
+      }
+    }
+
+
+    //==================================================================================
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    //==================================================================================
+    // fit everything directly or first do some subsample fits?
+    if (!yyFitAllDirectly) {
+
+      //-------------------------------------------------------------------------
+      // first fit just mA to mA
+      if (yySepFitmA) {
+	for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
+	  if ( !( !yyMeasuredVec[i].name.compare("massA0") || !yyMeasuredVec[i].name.compare("massh0") ) ) {
+	    yyMeasuredVec[i].temp_nofit = true;
+	  }
+	}        
+	for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+	  if ( yyFittedVec[i].name.compare("massA0") ) {
+	    arguments[0] = i+1;
+	    cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
+	    fitter->mnexcm("FIX", arguments, 1,ierr);
+	  }
+	}
+
+	arguments[0] = 2;
+	fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
+	arguments[0] = 2000;
+	arguments[1] = 0.1;
+	fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
+
+	for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
+	  yyMeasuredVec[i].temp_nofit = false;
+	}  
+	for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+	  if ( yyFittedVec[i].name.compare("massA0") ) {
+	    arguments[0] = i+1;
+	    fitter->mnexcm("RELEASE", arguments, 1,ierr);
+	  }
+	}
+      }
+      //-------------------------------------------------------------------------
+      // first fit just tanb and mu
+      if (yySepFitTanbMu) {
+	for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
+	  if ( !( !yyMeasuredVec[i].name.compare("massChargino1") || !yyMeasuredVec[i].name.compare("massChargino2") ||
+		  !yyMeasuredVec[i].name.compare("massNeutralino1") || !yyMeasuredVec[i].name.compare("massNeutralino2") || 
+		  !yyMeasuredVec[i].name.compare("massNeutralino3") || !yyMeasuredVec[i].name.compare("massNeutralino4") || 
+		  ((yyMeasuredVec[i].type == xsection) && ((TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Neutralino1"]) || 
+							   (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Neutralino2"]) || 
+							   (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Chargino1"]) || 
+							   (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Chargino2"]) ) ) ) ) {
+	    yyMeasuredVec[i].temp_nofit = true;
+	  }
+	}        
+	for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+	  if ( !( !yyFittedVec[i].name.compare("TanBeta") || !yyFittedVec[i].name.compare("Mu") ) ) {
+	    arguments[0] = i+1;
+	    cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
+	    fitter->mnexcm("FIX", arguments, 1,ierr);
+	  }
+	}
+
+	arguments[0] = 2;
+	fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
+	arguments[0] = 2000;
+	arguments[1] = 0.1;
+	fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
+
+	for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
+	  yyMeasuredVec[i].temp_nofit = false;
+	}  
+	for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+	  if ( !( !yyFittedVec[i].name.compare("TanBeta") || !yyFittedVec[i].name.compare("Mu") ) ) {
+	    arguments[0] = i+1;
+	    fitter->mnexcm("RELEASE", arguments, 1,ierr);
+	  }
+	}
+
+      }
+
+
+  //  //-------------------------------------------------------------------------
+  //  // Perform the fit
+  //  // first fix everything but TanBeta, Mu, M1, M2, M3, massA0
+  //  for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+  //    if ( !( !yyFittedVec[i].name.compare("TanBeta") || !yyFittedVec[i].name.compare("Mu") 
+  //	    || !yyFittedVec[i].name.compare("M1") || !yyFittedVec[i].name.compare("M2")
+  //	    || !yyFittedVec[i].name.compare("M3") || !yyFittedVec[i].name.compare("massA0") ) ) {
+  //      arguments[0] = i+1;
+  //      cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
+  //      fitter->mnexcm("FIX", arguments, 1,ierr);
+  //    }
+  //  }
+  //  for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
+  //    if ( !( !yyMeasuredVec[i].name.compare("massChargino1") || !yyMeasuredVec[i].name.compare("massChargino2") ||
+  //	    !yyMeasuredVec[i].name.compare("massNeutralino1") || !yyMeasuredVec[i].name.compare("massNeutralino2") || 
+  //	    !yyMeasuredVec[i].name.compare("massGluino") || !yyMeasuredVec[i].name.compare("massA0") ||  
+  //	    !yyMeasuredVec[i].name.compare("massh0") || 
+  //	    ((yyMeasuredVec[i].type == xsection) && ((TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Neutralino1"]) || 
+  //						     (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Neutralino2"]) || 
+  //						     (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Chargino1"]) || 
+  //						     (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Chargino2"]) ) ) ) ) {
+  //      yyMeasuredVec[i].temp_nofit = true;
+  //    }
+  //  }  
+  //  
+  //  arguments[0] = 2000;
+  //  arguments[1] = 0.1;
+  //  fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
+  //  for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+  //    if ( !( !yyFittedVec[i].name.compare("TanBeta") || !yyFittedVec[i].name.compare("Mu") 
+  //	    || !yyFittedVec[i].name.compare("M1") || !yyFittedVec[i].name.compare("M2")
+  //	    || !yyFittedVec[i].name.compare("M3") || !yyFittedVec[i].name.compare("massA0") ) ) {
+  //      arguments[0] = i+1;
+  //      fitter->mnexcm("RELEASE", arguments, 1,ierr);
+  //    }
+  //  }
+  //
+  //  for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
+  //    yyMeasuredVec[i].temp_nofit = false;
+  //  }  
+
       for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
-	if ( !( !yyMeasuredVec[i].name.compare("massA0") || !yyMeasuredVec[i].name.compare("massh0") ) ) {
+	if ( !( !yyMeasuredVec[i].name.compare("massSelectronL") ||  !yyMeasuredVec[i].name.compare("massSelectronR") || 
+		!yyMeasuredVec[i].name.compare("massSmuL") ||  !yyMeasuredVec[i].name.compare("massSmuR") || 
+		!yyMeasuredVec[i].name.compare("massStau1") ||  !yyMeasuredVec[i].name.compare("massStau2") ||
+		!yyMeasuredVec[i].name.compare("massSnueL") || !yyMeasuredVec[i].name.compare("massSnumuL") || 
+		!yyMeasuredVec[i].name.compare("massSnutauL") || 
+		((yyMeasuredVec[i].type == xsection) && ((TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SelectronL"]) ||
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SelectronR"]) ||
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SmuL"]) ||
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SmuR"]) ||
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Stau1"]) ||
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Stau2"]) ) ) ) ) {
 	  yyMeasuredVec[i].temp_nofit = true;
 	}
-      }        
+      } 
+
+  //    //-------------------------------------------------------------------------
+  //    // scan Xtau
+  //    for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+  //	if (   !yyFittedVec[i].name.compare("Xtau") ) {
+  //	  arguments[0] = i+1;
+  //	  cout << "scanning parameter no " << i+1 << " " << yyFittedVec[i].name << endl;
+  //	  arguments[1] = 100;
+  //	  arguments[2] = yyFittedVec[i].bound_low;
+  //	  arguments[3] = yyFittedVec[i].bound_up;
+  //	  fitter->mnexcm("SCAN", arguments, 4,ierr);
+  //	  break;
+  //	}
+  //    }
+
+      //-------------------------------------------------------------------------
+      // Perform the fit
+      // Then fix everything but the SLepton Sector
       for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-	if ( yyFittedVec[i].name.compare("massA0") ) {
+	if ( !( !yyFittedVec[i].name.compare("Xtau") || !yyFittedVec[i].name.compare("MSelectronL") 
+		|| !yyFittedVec[i].name.compare("MSmuL") || !yyFittedVec[i].name.compare("MStauL")
+		|| !yyFittedVec[i].name.compare("MSelectronR") || !yyFittedVec[i].name.compare("MSmuR")
+		|| !yyFittedVec[i].name.compare("MStauR") ) ) {
 	  arguments[0] = i+1;
 	  cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
 	  fitter->mnexcm("FIX", arguments, 1,ierr);
 	}
       }
-      
       arguments[0] = 2;
       fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
       arguments[0] = 2000;
       arguments[1] = 0.1;
       fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
-      
-      for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
-	yyMeasuredVec[i].temp_nofit = false;
-      }  
       for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-	if ( yyFittedVec[i].name.compare("massA0") ) {
+	if ( !( !yyFittedVec[i].name.compare("Xtau") || !yyFittedVec[i].name.compare("MSelectronL") 
+		|| !yyFittedVec[i].name.compare("MSmuL") || !yyFittedVec[i].name.compare("MStauL")
+		|| !yyFittedVec[i].name.compare("MSelectronR") || !yyFittedVec[i].name.compare("MSmuR")
+		|| !yyFittedVec[i].name.compare("MStauR") ) ) {
 	  arguments[0] = i+1;
 	  fitter->mnexcm("RELEASE", arguments, 1,ierr);
 	}
       }
-    }
-    //-------------------------------------------------------------------------
-    // first fit just tanb and mu
-    if (yySepFitTanbMu) {
+
       for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
-	if ( !( !yyMeasuredVec[i].name.compare("massChargino1") || !yyMeasuredVec[i].name.compare("massChargino2") ||
-		!yyMeasuredVec[i].name.compare("massNeutralino1") || !yyMeasuredVec[i].name.compare("massNeutralino2") || 
-		!yyMeasuredVec[i].name.compare("massNeutralino3") || !yyMeasuredVec[i].name.compare("massNeutralino4") || 
-		((yyMeasuredVec[i].type == xsection) && ((TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Neutralino1"]) || 
-							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Neutralino2"]) || 
-							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Chargino1"]) || 
-							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Chargino2"]) ) ) ) ) {
+	yyMeasuredVec[i].temp_nofit = false;
+      }  
+
+
+
+      for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
+	if ( !( !yyMeasuredVec[i].name.compare("massSupL") ||  !yyMeasuredVec[i].name.compare("massSupR") || 
+		!yyMeasuredVec[i].name.compare("massScharmL") ||  !yyMeasuredVec[i].name.compare("massScharmR") || 
+		!yyMeasuredVec[i].name.compare("massStop1") ||  !yyMeasuredVec[i].name.compare("massStop2") ||
+		!yyMeasuredVec[i].name.compare("massSdownL") || !yyMeasuredVec[i].name.compare("massSdownR") || 
+		!yyMeasuredVec[i].name.compare("massSstrangeL") || !yyMeasuredVec[i].name.compare("massSstrangeR") || 
+		!yyMeasuredVec[i].name.compare("massSbottom1") || !yyMeasuredVec[i].name.compare("massSbottom2") || 
+		((yyMeasuredVec[i].type == xsection) && ((TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SupL"]) ||
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SupR"]) ||
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SdownL"]) ||
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SdownR"]) ||
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["ScharmL"]) ||
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["ScharmR"]) || 
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SstrangeL"]) ||
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SstrangeR"]) || 
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Stop1"]) ||
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Stop2"]) || 
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Sbottom1"]) ||
+							 (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Sbottom2"]) ) ) ) ) {
 	  yyMeasuredVec[i].temp_nofit = true;
 	}
-      }        
+      } 
+
+
+      if (yyScanX) {
+	//-------------------------------------------------------------------------
+	// scan Xtop
+	for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+	  if (  !yyFittedVec[i].name.compare("Xtop") ) {
+	    arguments[0] = i+1;
+	    cout << "scanning parameter no " << i+1 << " " << yyFittedVec[i].name << endl;
+	    arguments[1] = 100;
+	    if (yyBoundsOnX) {
+	      arguments[2] = yyFittedVec[i].bound_low;
+	      arguments[3] = yyFittedVec[i].bound_up;
+	    } else {
+	      arguments[2] = yyXscanlow;
+	      arguments[3] = yyXscanhigh;	    
+	    }
+	    fitter->mnexcm("SCAN", arguments, 4,ierr);
+	    break;
+	  }
+	}
+
+	//-------------------------------------------------------------------------
+	// scan Xbottom
+	for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+	  if (  !yyFittedVec[i].name.compare("Xbottom") ) {
+	    arguments[0] = i+1;
+	    cout << "scanning parameter no " << i+1 << " " << yyFittedVec[i].name << endl;
+	    arguments[1] = 100;
+	    if (yyBoundsOnX) {
+	      arguments[2] = yyFittedVec[i].bound_low;
+	      arguments[3] = yyFittedVec[i].bound_up;
+	    } else {
+	      arguments[2] = yyXscanlow;
+	      arguments[3] = yyXscanhigh;	    
+	    }
+	    fitter->mnexcm("SCAN", arguments, 4,ierr);
+	    break;
+	  }
+	}
+      }
+
+      //-------------------------------------------------------------------------
+      // Perform the fit
+      // Then fix everything but the SQuark Sector
       for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-	if ( !( !yyFittedVec[i].name.compare("TanBeta") || !yyFittedVec[i].name.compare("Mu") ) ) {
+	if ( !( !yyFittedVec[i].name.compare("Xtop") || !yyFittedVec[i].name.compare("Xbottom")   
+		|| !yyFittedVec[i].name.compare("MSupL") || !yyFittedVec[i].name.compare("MScharmL")
+		|| !yyFittedVec[i].name.compare("MStopL") || !yyFittedVec[i].name.compare("MSupR")
+		|| !yyFittedVec[i].name.compare("MScharmR") || !yyFittedVec[i].name.compare("MStopR") 
+		|| !yyFittedVec[i].name.compare("MSdownR")
+		|| !yyFittedVec[i].name.compare("MSstrangeR") || !yyFittedVec[i].name.compare("MSbottomR") ) ) {
 	  arguments[0] = i+1;
 	  cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
 	  fitter->mnexcm("FIX", arguments, 1,ierr);
 	}
       }
-      
       arguments[0] = 2;
       fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
       arguments[0] = 2000;
       arguments[1] = 0.1;
       fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
-      
-      for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
-	yyMeasuredVec[i].temp_nofit = false;
-      }  
       for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-	if ( !( !yyFittedVec[i].name.compare("TanBeta") || !yyFittedVec[i].name.compare("Mu") ) ) {
+	if ( !( !yyFittedVec[i].name.compare("Xtop") || !yyFittedVec[i].name.compare("Xbottom")  
+		|| !yyFittedVec[i].name.compare("MSupL") || !yyFittedVec[i].name.compare("MScharmL")
+		|| !yyFittedVec[i].name.compare("MStopL") || !yyFittedVec[i].name.compare("MSupR")
+		|| !yyFittedVec[i].name.compare("MScharmR") || !yyFittedVec[i].name.compare("MStopR") 
+		|| !yyFittedVec[i].name.compare("MSdownR")
+		|| !yyFittedVec[i].name.compare("MSstrangeR") || !yyFittedVec[i].name.compare("MSbottomR") ) ) {
 	  arguments[0] = i+1;
 	  fitter->mnexcm("RELEASE", arguments, 1,ierr);
 	}
       }
-      
-    }
 
-
-//  //-------------------------------------------------------------------------
-//  // Perform the fit
-//  // first fix everything but TanBeta, Mu, M1, M2, M3, massA0
-//  for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-//    if ( !( !yyFittedVec[i].name.compare("TanBeta") || !yyFittedVec[i].name.compare("Mu") 
-//	    || !yyFittedVec[i].name.compare("M1") || !yyFittedVec[i].name.compare("M2")
-//	    || !yyFittedVec[i].name.compare("M3") || !yyFittedVec[i].name.compare("massA0") ) ) {
-//      arguments[0] = i+1;
-//      cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
-//      fitter->mnexcm("FIX", arguments, 1,ierr);
-//    }
-//  }
-//  for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
-//    if ( !( !yyMeasuredVec[i].name.compare("massChargino1") || !yyMeasuredVec[i].name.compare("massChargino2") ||
-//	    !yyMeasuredVec[i].name.compare("massNeutralino1") || !yyMeasuredVec[i].name.compare("massNeutralino2") || 
-//	    !yyMeasuredVec[i].name.compare("massGluino") || !yyMeasuredVec[i].name.compare("massA0") ||  
-//	    !yyMeasuredVec[i].name.compare("massh0") || 
-//	    ((yyMeasuredVec[i].type == xsection) && ((TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Neutralino1"]) || 
-//						     (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Neutralino2"]) || 
-//						     (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Chargino1"]) || 
-//						     (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Chargino2"]) ) ) ) ) {
-//      yyMeasuredVec[i].temp_nofit = true;
-//    }
-//  }  
-//  
-//  arguments[0] = 2000;
-//  arguments[1] = 0.1;
-//  fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
-//  for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-//    if ( !( !yyFittedVec[i].name.compare("TanBeta") || !yyFittedVec[i].name.compare("Mu") 
-//	    || !yyFittedVec[i].name.compare("M1") || !yyFittedVec[i].name.compare("M2")
-//	    || !yyFittedVec[i].name.compare("M3") || !yyFittedVec[i].name.compare("massA0") ) ) {
-//      arguments[0] = i+1;
-//      fitter->mnexcm("RELEASE", arguments, 1,ierr);
-//    }
-//  }
-//
-//  for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
-//    yyMeasuredVec[i].temp_nofit = false;
-//  }  
-  
-    for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
-      if ( !( !yyMeasuredVec[i].name.compare("massSelectronL") ||  !yyMeasuredVec[i].name.compare("massSelectronR") || 
-	      !yyMeasuredVec[i].name.compare("massSmuL") ||  !yyMeasuredVec[i].name.compare("massSmuR") || 
-	      !yyMeasuredVec[i].name.compare("massStau1") ||  !yyMeasuredVec[i].name.compare("massStau2") ||
-	      !yyMeasuredVec[i].name.compare("massSnueL") || !yyMeasuredVec[i].name.compare("massSnumuL") || 
-	      !yyMeasuredVec[i].name.compare("massSnutauL") || 
-	      ((yyMeasuredVec[i].type == xsection) && ((TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SelectronL"]) ||
-						       (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SelectronR"]) ||
-						       (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SmuL"]) ||
-						       (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SmuR"]) ||
-						       (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Stau1"]) ||
-						       (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Stau2"]) ) ) ) ) {
-	yyMeasuredVec[i].temp_nofit = true;
-      }
-    } 
-    
-//    //-------------------------------------------------------------------------
-//    // scan Xtau
-//    for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-//	if (   !yyFittedVec[i].name.compare("Xtau") ) {
-//	  arguments[0] = i+1;
-//	  cout << "scanning parameter no " << i+1 << " " << yyFittedVec[i].name << endl;
-//	  arguments[1] = 100;
-//	  arguments[2] = yyFittedVec[i].bound_low;
-//	  arguments[3] = yyFittedVec[i].bound_up;
-//	  fitter->mnexcm("SCAN", arguments, 4,ierr);
-//	  break;
-//	}
-//    }
-    
-    //-------------------------------------------------------------------------
-    // Perform the fit
-    // Then fix everything but the SLepton Sector
-    for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-      if ( !( !yyFittedVec[i].name.compare("Xtau") || !yyFittedVec[i].name.compare("MSelectronL") 
-	      || !yyFittedVec[i].name.compare("MSmuL") || !yyFittedVec[i].name.compare("MStauL")
-	      || !yyFittedVec[i].name.compare("MSelectronR") || !yyFittedVec[i].name.compare("MSmuR")
-	      || !yyFittedVec[i].name.compare("MStauR") ) ) {
-	arguments[0] = i+1;
-	cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
-	fitter->mnexcm("FIX", arguments, 1,ierr);
-      }
-    }
-    arguments[0] = 2;
-    fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
-    arguments[0] = 2000;
-    arguments[1] = 0.1;
-    fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
-    for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-      if ( !( !yyFittedVec[i].name.compare("Xtau") || !yyFittedVec[i].name.compare("MSelectronL") 
-	      || !yyFittedVec[i].name.compare("MSmuL") || !yyFittedVec[i].name.compare("MStauL")
-	      || !yyFittedVec[i].name.compare("MSelectronR") || !yyFittedVec[i].name.compare("MSmuR")
-	      || !yyFittedVec[i].name.compare("MStauR") ) ) {
+      //==================================================================================================
+      //==================================================================================================
+      // now release all
+      for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
 	arguments[0] = i+1;
 	fitter->mnexcm("RELEASE", arguments, 1,ierr);
       }
-    }
-    
-    for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
-      yyMeasuredVec[i].temp_nofit = false;
-    }  
-    
-    
-    
-    for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
-      if ( !( !yyMeasuredVec[i].name.compare("massSupL") ||  !yyMeasuredVec[i].name.compare("massSupR") || 
-	      !yyMeasuredVec[i].name.compare("massScharmL") ||  !yyMeasuredVec[i].name.compare("massScharmR") || 
-	      !yyMeasuredVec[i].name.compare("massStop1") ||  !yyMeasuredVec[i].name.compare("massStop2") ||
-	      !yyMeasuredVec[i].name.compare("massSdownL") || !yyMeasuredVec[i].name.compare("massSdownR") || 
-	      !yyMeasuredVec[i].name.compare("massSstrangeL") || !yyMeasuredVec[i].name.compare("massSstrangeR") || 
-	      !yyMeasuredVec[i].name.compare("massSbottom1") || !yyMeasuredVec[i].name.compare("massSbottom2") || 
-	      ((yyMeasuredVec[i].type == xsection) && ((TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SupL"]) ||
-						       (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SupR"]) ||
-						       (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SdownL"]) ||
-						       (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SdownR"]) ||
-						       (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["ScharmL"]) ||
-						       (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["ScharmR"]) || 
-						       (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SstrangeL"]) ||
-						       (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["SstrangeR"]) || 
-						       (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Stop1"]) ||
-						       (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Stop2"]) || 
-						       (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Sbottom1"]) ||
-						       (TMath::Abs(yyMeasuredVec[i].products[0])==yyParticleIDs["Sbottom2"]) ) ) ) ) {
-	yyMeasuredVec[i].temp_nofit = true;
-      }
-    } 
-    
-    
-    if (yyScanX) {
-      //-------------------------------------------------------------------------
-      // scan Xtop
-      for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-	if (  !yyFittedVec[i].name.compare("Xtop") ) {
-	  arguments[0] = i+1;
-	  cout << "scanning parameter no " << i+1 << " " << yyFittedVec[i].name << endl;
-	  arguments[1] = 100;
-	  if (yyBoundsOnX) {
-	    arguments[2] = yyFittedVec[i].bound_low;
-	    arguments[3] = yyFittedVec[i].bound_up;
-	  } else {
-	    arguments[2] = yyXscanlow;
-	    arguments[3] = yyXscanhigh;	    
-	  }
-	  fitter->mnexcm("SCAN", arguments, 4,ierr);
-	  break;
-	}
-      }
-      
-      //-------------------------------------------------------------------------
-      // scan Xbottom
-      for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-	if (  !yyFittedVec[i].name.compare("Xbottom") ) {
-	  arguments[0] = i+1;
-	  cout << "scanning parameter no " << i+1 << " " << yyFittedVec[i].name << endl;
-	  arguments[1] = 100;
-	  if (yyBoundsOnX) {
-	    arguments[2] = yyFittedVec[i].bound_low;
-	    arguments[3] = yyFittedVec[i].bound_up;
-	  } else {
-	    arguments[2] = yyXscanlow;
-	    arguments[3] = yyXscanhigh;	    
-	  }
-	  fitter->mnexcm("SCAN", arguments, 4,ierr);
-	  break;
-	}
-      }
-    }
+      for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
+	yyMeasuredVec[i].temp_nofit = false;
+      }  
 
-    //-------------------------------------------------------------------------
-    // Perform the fit
-    // Then fix everything but the SQuark Sector
-    for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-      if ( !( !yyFittedVec[i].name.compare("Xtop") || !yyFittedVec[i].name.compare("Xbottom")   
-	      || !yyFittedVec[i].name.compare("MSupL") || !yyFittedVec[i].name.compare("MScharmL")
-	      || !yyFittedVec[i].name.compare("MStopL") || !yyFittedVec[i].name.compare("MSupR")
-	      || !yyFittedVec[i].name.compare("MScharmR") || !yyFittedVec[i].name.compare("MStopR") 
-	      || !yyFittedVec[i].name.compare("MSdownR")
-	      || !yyFittedVec[i].name.compare("MSstrangeR") || !yyFittedVec[i].name.compare("MSbottomR") ) ) {
-	arguments[0] = i+1;
-	cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
-	fitter->mnexcm("FIX", arguments, 1,ierr);
+      if (yySepFitTanbX) {
+	//-------------------------------------------------------------------------
+	// Perform the fit
+	// Then fix everything but the A's and MStop and TanBeta
+	for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+	  if ( !( !yyFittedVec[i].name.compare("Xtop") || !yyFittedVec[i].name.compare("Xbottom") || !yyFittedVec[i].name.compare("TanBeta") 
+		  || !yyFittedVec[i].name.compare("MStopL") || !yyFittedVec[i].name.compare("MStopR") ) ) { 
+	    arguments[0] = i+1;
+	    cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
+	    fitter->mnexcm("FIX", arguments, 1,ierr);
+	  }
+	}
+	arguments[0] = 2;
+	fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
+	arguments[0] = 20000;
+	arguments[1] = 0.1;
+	fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
+	for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+	  if ( !( !yyFittedVec[i].name.compare("Xtop") || !yyFittedVec[i].name.compare("Xbottom") || !yyFittedVec[i].name.compare("TanBeta") 
+		  || !yyFittedVec[i].name.compare("MStopL") || !yyFittedVec[i].name.compare("MStopR") ) ) {
+	    arguments[0] = i+1;
+	    fitter->mnexcm("RELEASE", arguments, 1,ierr);
+	  }
+	}
       }
-    }
-    arguments[0] = 2;
-    fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
-    arguments[0] = 2000;
-    arguments[1] = 0.1;
-    fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
-    for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-      if ( !( !yyFittedVec[i].name.compare("Xtop") || !yyFittedVec[i].name.compare("Xbottom")  
-	      || !yyFittedVec[i].name.compare("MSupL") || !yyFittedVec[i].name.compare("MScharmL")
-	      || !yyFittedVec[i].name.compare("MStopL") || !yyFittedVec[i].name.compare("MSupR")
-	      || !yyFittedVec[i].name.compare("MScharmR") || !yyFittedVec[i].name.compare("MStopR") 
-	      || !yyFittedVec[i].name.compare("MSdownR")
-	      || !yyFittedVec[i].name.compare("MSstrangeR") || !yyFittedVec[i].name.compare("MSbottomR") ) ) {
-	arguments[0] = i+1;
-	fitter->mnexcm("RELEASE", arguments, 1,ierr);
-      }
-    }
-    
+
+    } // end of if(!yyFitAllDirectly)
+
+
     //==================================================================================================
     //==================================================================================================
-    // now release all
+    //--------------------------------------------------------------------------
+    // then release all the fixed parameters
     for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
       arguments[0] = i+1;
       fitter->mnexcm("RELEASE", arguments, 1,ierr);
@@ -1500,159 +1545,240 @@ void Fittino::calculateLoopLevelValues()
     for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
       yyMeasuredVec[i].temp_nofit = false;
     }  
-    
-    if (yySepFitTanbX) {
-      //-------------------------------------------------------------------------
-      // Perform the fit
-      // Then fix everything but the A's and MStop and TanBeta
-      for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-	if ( !( !yyFittedVec[i].name.compare("Xtop") || !yyFittedVec[i].name.compare("Xbottom") || !yyFittedVec[i].name.compare("TanBeta") 
-		|| !yyFittedVec[i].name.compare("MStopL") || !yyFittedVec[i].name.compare("MStopR") ) ) { 
-	  arguments[0] = i+1;
-	  cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
-	  fitter->mnexcm("FIX", arguments, 1,ierr);
-	}
-      }
-      arguments[0] = 2;
-      fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
-      arguments[0] = 20000;
-      arguments[1] = 0.1;
-      fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
-      for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-	if ( !( !yyFittedVec[i].name.compare("Xtop") || !yyFittedVec[i].name.compare("Xbottom") || !yyFittedVec[i].name.compare("TanBeta") 
-		|| !yyFittedVec[i].name.compare("MStopL") || !yyFittedVec[i].name.compare("MStopR") ) ) {
-	  arguments[0] = i+1;
-	  fitter->mnexcm("RELEASE", arguments, 1,ierr);
-	}
-      }
-    }
-    
-  } // end of if(!yyFitAllDirectly)
 
 
-  //==================================================================================================
-  //==================================================================================================
-  //--------------------------------------------------------------------------
-  // then release all the fixed parameters
-  for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-    arguments[0] = i+1;
-    fitter->mnexcm("RELEASE", arguments, 1,ierr);
-  }
-  for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
-    yyMeasuredVec[i].temp_nofit = false;
-  }  
-
-
-  //--------------------------------------------------------------------------
-  // perform the final fit with all parameters free
-  arguments[0] = 2;
-  fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
-  arguments[0] = 200000;
-  arguments[1] = 0.1;
-  for (unsigned int i=0; i<yyNumberOfMinimizations; i++) {
-    if (i>0) {
-      // read the central values and uncertainties
-      for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
-	fitter->mnpout(j,parname,yyFittedVec[j].value,yyFittedVec[j].error,vlow,vhigh,ierr);
-      }      
-      //-------------------------------------------------------------------------
-      // eventuaslly call simulated annealing
-      if (yyUseSimAnnWhile) {
-	// open the ntuple file
-	TFile *SimAnnNtupFile = new TFile("SimAnnNtupFile.root","UPDATE");
-	sprintf ( ntuplename, "ntuple%i", i );
-	sprintf ( ntupletext, "path of the simulated annealing No. %i", i );
-	sprintf ( ntuplevars, "n:t:f:acc:xopt" );
-	for (unsigned int j=0; j < yyFittedVec.size(); j++ ) {
-	  sprintf ( ntuplevars, "%s:%s", ntuplevars, yyFittedVec[j].name.c_str() );
-	}
-	TNtuple *simannntuple = new TNtuple(ntuplename,ntupletext,ntuplevars);
-	// check the status of the minimization
-	fitter->mnstat(amin, edm, errdef, nvpar, nparx, ierr);	
-	if (ierr == 3) {
-	  for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
-	    yyFittedVec[j].error = 2.*yyFittedVec[j].error;
-	  }
-	} else {
-	  // error matrix is not accurate
-	  for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
-	    yyFittedVec[j].error = saved_uncertainties[j];
-	  }
-	}
-	simulated_annealing(i,simannntuple);
-	// close the ntuple
-	SimAnnNtupFile->Write();
-	SimAnnNtupFile->Close();
-      }
-      // reset the uncertainties
-      for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
-	cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
-	cout << "resetting parameter errors " << yyFittedVec[j].name << endl;
-	cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
-	fitter->mnparm(j, yyFittedVec[j].name.c_str(),
-		       yyFittedVec[j].value, saved_uncertainties[j], 
-		       yyFittedVec[j].bound_low, yyFittedVec[j].bound_up,ierr);
-      }
-    }
-    fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
-  }
-  cout << "returning from MINIMIZE, return value "<< ierr << endl;
-  if (yyUseHesse && !yyUseMinos) {
-    fitter->mnexcm("HESSE", arguments, 1,ierr);
-    cout << "returning from HESSE, return value "<< ierr << endl;
-  }
-  if (yyUseMinos) {
-    fitter->mnexcm("HESSE", arguments, 1,ierr);
-    arguments[0] = yyErrDef;
-    fitter->mnexcm("SET ERR", arguments, 1,ierr);
+    //--------------------------------------------------------------------------
+    // perform the final fit with all parameters free
+    arguments[0] = 2;
+    fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
     arguments[0] = 200000;
-    fitter->mnexcm("MINOS", arguments, 1,ierr);
-  }  
-
-  //-------------------------------------------------------------------------
-  // Get Results
-  fitter->mnstat(amin, edm, errdef, nvpar, nparx, ierr);
-  fchisq = amin;
-  gchisq = amin;
-  gstat  = ierr;
-  fFittedCovarianceMatrix = new double[yyFittedVec.size()*yyFittedVec.size()];
-  fitter->mnemat(fFittedCovarianceMatrix,yyFittedVec.size());
-  //fitter->PrintResults(3, amin);
-  
-  fSavedFittedCovarianceMatrix = new TMatrixD(yyFittedVec.size(),yyFittedVec.size());
-  fSavedFittedCorrelationMatrix = new TMatrixD(yyFittedVec.size(),yyFittedVec.size());
-  
-
-  cout << "calculating the covariance and correlation matrix "<<endl;
-   //-------------------------------------------------------------------------
-  // Calculate Covariance Matrix
-  for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-    for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
-      (*fSavedFittedCovarianceMatrix)(i,j) = fFittedCovarianceMatrix[i*yyFittedVec.size()+j];
+    arguments[1] = 0.1;
+    for (unsigned int i=0; i<yyNumberOfMinimizations; i++) {
+      if (i>0) {
+	// read the central values and uncertainties
+	for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
+	  fitter->mnpout(j,parname,yyFittedVec[j].value,yyFittedVec[j].error,vlow,vhigh,ierr);
+	}      
+	//-------------------------------------------------------------------------
+	// eventuaslly call simulated annealing
+	if (yyUseSimAnnWhile) {
+	  // open the ntuple file
+	  TFile *SimAnnNtupFile = new TFile("SimAnnNtupFile.root","UPDATE");
+	  sprintf ( ntuplename, "ntuple%i", i );
+	  sprintf ( ntupletext, "path of the simulated annealing No. %i", i );
+	  sprintf ( ntuplevars, "n:t:f:acc:xopt" );
+	  for (unsigned int j=0; j < yyFittedVec.size(); j++ ) {
+	    sprintf ( ntuplevars, "%s:%s", ntuplevars, yyFittedVec[j].name.c_str() );
+	  }
+	  TNtuple *simannntuple = new TNtuple(ntuplename,ntupletext,ntuplevars);
+	  // check the status of the minimization
+	  fitter->mnstat(amin, edm, errdef, nvpar, nparx, ierr);	
+	  if (ierr == 3) {
+	    for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
+	      yyFittedVec[j].error = 2.*yyFittedVec[j].error;
+	    }
+	  } else {
+	    // error matrix is not accurate
+	    for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
+	      yyFittedVec[j].error = saved_uncertainties[j];
+	    }
+	  }
+	  simulated_annealing(i,simannntuple);
+	  // close the ntuple
+	  SimAnnNtupFile->Write();
+	  SimAnnNtupFile->Close();
+	}
+	// reset the uncertainties
+	for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
+	  cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+	  cout << "resetting parameter errors " << yyFittedVec[j].name << endl;
+	  cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+	  fitter->mnparm(j, yyFittedVec[j].name.c_str(),
+			 yyFittedVec[j].value, saved_uncertainties[j], 
+			 yyFittedVec[j].bound_low, yyFittedVec[j].bound_up,ierr);
+	}
+      }
+      fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
     }
-  }
-  for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-    for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
-      (*fSavedFittedCorrelationMatrix)(i,j) = (*fSavedFittedCovarianceMatrix)(i,j)/
-	(TMath::Sqrt((*fSavedFittedCovarianceMatrix)(i,i)*(*fSavedFittedCovarianceMatrix)(j,j)));
+    cout << "returning from MINIMIZE, return value "<< ierr << endl;
+    if (yyUseHesse && !yyUseMinos) {
+      fitter->mnexcm("HESSE", arguments, 1,ierr);
+      cout << "returning from HESSE, return value "<< ierr << endl;
     }
-  }
-
-  cout << "get the errors" << endl;
-  //-------------------------------------------------------------------------
-  // Get Errors
-  // return values
-  for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-    fitter->mnpout(i,parname,yyFittedVec[i].value,yyFittedVec[i].error,vlow,vhigh,ierr);
     if (yyUseMinos) {
-      fitter->mnerrs(i, eplus, eminus, eparab, globcc);
-      //      yyFittedVec[i].error = TMath::Max(TMath::Abs(eplus), TMath::Abs(eminus));
-      yyFittedVec[i].positive_error = eplus;
-      yyFittedVec[i].negative_error = eminus;
-      // recalculate Error because of yyErrDef
-      yyFittedVec[i].error = yyFittedVec[i].error / sqrt(yyErrDef);
-      yyFittedVec[i].positive_error = yyFittedVec[i].positive_error / sqrt(yyErrDef);
-      yyFittedVec[i].negative_error = yyFittedVec[i].negative_error / sqrt(yyErrDef);
+      fitter->mnexcm("HESSE", arguments, 1,ierr);
+      arguments[0] = yyErrDef;
+      fitter->mnexcm("SET ERR", arguments, 1,ierr);
+      arguments[0] = 200000;
+      fitter->mnexcm("MINOS", arguments, 1,ierr);
+    }  
+  }
+
+  if (yyScanParameters) {
+
+    int npar, iflag;
+    double chi2;
+    double *gin;
+    double* par = new double[yyFittedVec.size()];
+
+    int par1pos,par2pos;
+
+    double* x = 0;
+    double* y = 0;
+    double* z = 0;
+
+    cout<<"Starting parameter scan with:"<<endl;
+
+    if (yyPerformFit) {
+      for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+	fitter->mnpout(i,parname,yyFittedVec[i].value,yyFittedVec[i].error,vlow,vhigh,ierr);
+      }
+    }
+
+    for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
+      par[j] = yyFittedVec[j].value;
+      cout<<yyFittedVec[j].name<<" = "<<yyFittedVec[j].value<<endl;
+    }
+
+    
+
+    if (yyScanPar.size() == 1) {
+      
+      for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
+	if (!yyFittedVec[j].name.compare(yyScanPar[0].name)) {
+	  par1pos = j;
+	  break;
+	}
+      }
+
+      x = new double[yyScanPar[0].numberOfSteps];
+      z = new double[yyScanPar[0].numberOfSteps];
+      
+      for (unsigned int j=0; j<yyScanPar[0].numberOfSteps; j++) {
+	double value = yyScanPar[0].min + (yyScanPar[0].max - yyScanPar[0].min)
+	  * double(j) / (yyScanPar[0].numberOfSteps - 1);
+
+	par[par1pos] = value;
+
+	fitterFCN(npar, gin, chi2, par, iflag);
+	
+	x[j] = value;
+	z[j] = chi2;
+	
+      }
+    }
+    else if (yyScanPar.size() == 2) {
+      
+      for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
+	if (!yyFittedVec[j].name.compare(yyScanPar[0].name)) {
+	  par1pos = j;
+	}
+	if (!yyFittedVec[j].name.compare(yyScanPar[1].name)) {
+	  par2pos = j;
+	}	
+      }
+
+      x = new double[yyScanPar[0].numberOfSteps*yyScanPar[1].numberOfSteps];
+      y = new double[yyScanPar[0].numberOfSteps*yyScanPar[1].numberOfSteps];
+      z = new double[yyScanPar[0].numberOfSteps*yyScanPar[1].numberOfSteps];
+      
+      for (unsigned int i=0; i<yyScanPar[0].numberOfSteps; i++) {
+	double value1 = yyScanPar[0].min + (yyScanPar[0].max - yyScanPar[0].min)
+	  * double(i) / (yyScanPar[0].numberOfSteps - 1);
+	
+	for (unsigned int j=0; j<yyScanPar[1].numberOfSteps; j++) {
+	  double value2 = yyScanPar[1].min + (yyScanPar[1].max - yyScanPar[1].min)
+	    * double(j) / (yyScanPar[1].numberOfSteps - 1);
+	  
+	  par[par1pos] = value1;
+	  par[par2pos] = value2;
+
+	  fitterFCN(npar, gin, chi2, par, iflag);
+	  
+	  x[i*yyScanPar[1].numberOfSteps+j] = value1;
+	  y[i*yyScanPar[1].numberOfSteps+j] = value2;
+	  z[i*yyScanPar[1].numberOfSteps+j] = chi2;
+	  
+	}
+      }
+      
+    }
+    
+    TFile* file = new TFile("ParameterScan.root", "recreate");
+    
+    TGraph* graph1d = 0;
+    TGraph2D* graph2d = 0;
+    
+    if (yyScanPar.size() == 1) {
+      graph1d = new TGraph(yyScanPar[0].numberOfSteps, x, z);
+      graph1d->GetHistogram()->SetXTitle(yyScanPar[0].name.c_str());
+      graph1d->GetHistogram()->SetYTitle("#chi^{2}");
+      graph1d->Write();
+    }
+    else if (yyScanPar.size() == 2) {
+      graph2d = new TGraph2D(yyScanPar[0].numberOfSteps*yyScanPar[1].numberOfSteps, x, y, z);
+      graph2d->GetHistogram()->SetXTitle(yyScanPar[0].name.c_str());
+      graph2d->GetHistogram()->SetYTitle(yyScanPar[1].name.c_str());
+      graph2d->GetHistogram()->SetZTitle("#chi^{2}");
+      graph2d->Write();
+    }
+    
+    file->Close();
+
+    if (x) delete[] x;
+    if (y) delete[] y;
+    if (z) delete[] z;
+    
+  //      fitterFCN(dummyint, &dummyfloat, store_chisq[0], x, 10);
+
+  }
+
+  if (yyPerformFit) {
+    //-------------------------------------------------------------------------
+    // Get Results
+    fitter->mnstat(amin, edm, errdef, nvpar, nparx, ierr);
+    fchisq = amin;
+    gchisq = amin;
+    gstat  = ierr;
+    fFittedCovarianceMatrix = new double[yyFittedVec.size()*yyFittedVec.size()];
+    fitter->mnemat(fFittedCovarianceMatrix,yyFittedVec.size());
+    //fitter->PrintResults(3, amin);
+
+    fSavedFittedCovarianceMatrix = new TMatrixD(yyFittedVec.size(),yyFittedVec.size());
+    fSavedFittedCorrelationMatrix = new TMatrixD(yyFittedVec.size(),yyFittedVec.size());
+
+
+    cout << "calculating the covariance and correlation matrix "<<endl;
+     //-------------------------------------------------------------------------
+    // Calculate Covariance Matrix
+    for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+      for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
+	(*fSavedFittedCovarianceMatrix)(i,j) = fFittedCovarianceMatrix[i*yyFittedVec.size()+j];
+      }
+    }
+    for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+      for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
+	(*fSavedFittedCorrelationMatrix)(i,j) = (*fSavedFittedCovarianceMatrix)(i,j)/
+	  (TMath::Sqrt((*fSavedFittedCovarianceMatrix)(i,i)*(*fSavedFittedCovarianceMatrix)(j,j)));
+      }
+    }
+
+    cout << "get the errors" << endl;
+    //-------------------------------------------------------------------------
+    // Get Errors
+    // return values
+    for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+      fitter->mnpout(i,parname,yyFittedVec[i].value,yyFittedVec[i].error,vlow,vhigh,ierr);
+      if (yyUseMinos) {
+	fitter->mnerrs(i, eplus, eminus, eparab, globcc);
+	//      yyFittedVec[i].error = TMath::Max(TMath::Abs(eplus), TMath::Abs(eminus));
+	yyFittedVec[i].positive_error = eplus;
+	yyFittedVec[i].negative_error = eminus;
+	// recalculate Error because of yyErrDef
+	yyFittedVec[i].error = yyFittedVec[i].error / sqrt(yyErrDef);
+	yyFittedVec[i].positive_error = yyFittedVec[i].positive_error / sqrt(yyErrDef);
+	yyFittedVec[i].negative_error = yyFittedVec[i].negative_error / sqrt(yyErrDef);
+      }
     }
   }
 
@@ -1790,7 +1916,7 @@ void Fittino::calculateLoopLevelValues()
 
   cout << "do not delete fitter" << endl;
 
-  // delete fitter;
+  // if (fitter) delete fitter;
   // cout << "fitter deleted" << endl;
 }
 
@@ -3208,7 +3334,7 @@ bool FindInUniversality (string name)
   
 }
 
-void Fittino::FillFixedParameters()
+void FillFixedParameters()
 {
   MeasuredValue tmpValue;
 
@@ -3244,6 +3370,7 @@ void Fittino::FillFixedParameters()
     tmpValue.error = -1.;
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
   if (!FindInFitted("Xbottom") && !FindInFixed("Xbottom") && !FindInUniversality("Xbottom")) {  
@@ -3252,6 +3379,7 @@ void Fittino::FillFixedParameters()
     tmpValue.error = -1.;
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
   if (!FindInFitted("Xtau") && !FindInFixed("Xtau") && !FindInUniversality("Xtau")) {  
@@ -3260,6 +3388,7 @@ void Fittino::FillFixedParameters()
     tmpValue.error = -1.;
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
   if (!FindInFitted("massA0") && !FindInFixed("massA0") && !FindInUniversality("massA0")) {  
@@ -3269,6 +3398,7 @@ void Fittino::FillFixedParameters()
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
     tmpValue.id = ID_A;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
   if (!FindInFitted("Mu") && !FindInFixed("Mu") && !FindInUniversality("Mu")) {  
@@ -3277,6 +3407,7 @@ void Fittino::FillFixedParameters()
     tmpValue.error = -1.;
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
   if (!FindInFitted("MSelectronL") && !FindInFixed("MSelectronL") && !FindInUniversality("MSelectronL")) {  
@@ -3286,6 +3417,7 @@ void Fittino::FillFixedParameters()
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
     tmpValue.id = 0;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
   if (!FindInFitted("MSmuL") && !FindInFixed("MSmuL") && !FindInUniversality("MSmuL")) {  
@@ -3295,6 +3427,7 @@ void Fittino::FillFixedParameters()
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
     tmpValue.id = 0;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
   if (!FindInFitted("MStauL") && !FindInFixed("MStauL") && !FindInUniversality("MStauL")) {  
@@ -3304,6 +3437,7 @@ void Fittino::FillFixedParameters()
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
     tmpValue.id = 0;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
   if (!FindInFitted("MSelectronR") && !FindInFixed("MSelectronR") && !FindInUniversality("MSelectronR")) {  
@@ -3313,6 +3447,7 @@ void Fittino::FillFixedParameters()
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
     tmpValue.id = 0;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
   if (!FindInFitted("MSmuR") && !FindInFixed("MSmuR") && !FindInUniversality("MSmuR")) {  
@@ -3322,6 +3457,7 @@ void Fittino::FillFixedParameters()
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
     tmpValue.id = 0;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
   if (!FindInFitted("MStauR") && !FindInFixed("MStauR") && !FindInUniversality("MStauR")) {  
@@ -3331,6 +3467,7 @@ void Fittino::FillFixedParameters()
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
     tmpValue.id = 0;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
 
@@ -3341,6 +3478,7 @@ void Fittino::FillFixedParameters()
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
     tmpValue.id = 0;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
   if (!FindInFitted("MScharmL") && !FindInFixed("MScharmL") && !FindInUniversality("MScharmL")) {  
@@ -3350,6 +3488,7 @@ void Fittino::FillFixedParameters()
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
     tmpValue.id = 0;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
   if (!FindInFitted("MStopL") && !FindInFixed("MStopL") && !FindInUniversality("MStopL")) {  
@@ -3359,6 +3498,7 @@ void Fittino::FillFixedParameters()
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
     tmpValue.id = 0;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
 
@@ -3369,6 +3509,7 @@ void Fittino::FillFixedParameters()
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
     tmpValue.id = 0;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
   if (!FindInFitted("MScharmR") && !FindInFixed("MScharmR") && !FindInUniversality("MScharmR")) {  
@@ -3378,6 +3519,7 @@ void Fittino::FillFixedParameters()
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
     tmpValue.id = 0;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
   if (!FindInFitted("MStopR") && !FindInFixed("MStopR") && !FindInUniversality("MStopR")) {  
@@ -3387,6 +3529,7 @@ void Fittino::FillFixedParameters()
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
     tmpValue.id = 0;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
 
@@ -3397,6 +3540,7 @@ void Fittino::FillFixedParameters()
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
     tmpValue.id = 0;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
   if (!FindInFitted("MSstrangeR") && !FindInFixed("MSstrangeR") && !FindInUniversality("MSstrangeR")) {  
@@ -3406,6 +3550,7 @@ void Fittino::FillFixedParameters()
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
     tmpValue.id = 0;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
   if (!FindInFitted("MSbottomR") && !FindInFixed("MSbottomR") && !FindInUniversality("MSbottomR")) {  
@@ -3415,6 +3560,7 @@ void Fittino::FillFixedParameters()
     tmpValue.bound_low = -1E+6;
     tmpValue.bound_up = 1E+6;
     tmpValue.id = 0;
+    cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
     yyFixedVec.push_back(tmpValue);
   }
 

@@ -103,11 +103,13 @@ CorrelationMatrix     yyFittedCorrelationMatrix(&yyFittedVec);
 
 vector <parameter_t> yyFixedPar;
 vector <parameter_t> yyFittedPar;
+vector<ScanParameter> yyScanPar; // contains parameters to scan
 vector <parameter_t> indchisq_vec;
  
 bool          yyUseLoopCorrections = true;
 bool          yyCalcPullDist;
-bool          yyScanParameters;
+bool          yyScanParameters = false;
+bool          yyPerformFit = true;
 bool          yyISR;
 bool          yyCalculatorError;
 bool          yyUseMinos;
@@ -460,6 +462,10 @@ input:
 		      if ($3 == on) yyScanParameters = true;
 		      else yyScanParameters = false;
 		  }
+		  if (!strcmp($2, "PerformFit")) {
+		      if ($3 == on) yyPerformFit = true;
+		      else yyPerformFit = false;
+		  }
 		  if (!strcmp($2, "CalcIndChisqContr")) {
 		      if ($3 == on) yyCalcIndChisqContr = true;
 		      else yyCalcIndChisqContr = false;
@@ -566,6 +572,27 @@ input:
 		  }
                   else {
                      yyerror ("Syntax error in Fixed or Fitted Par 1");
+                  }
+	      }
+	    | input T_KEY T_WORD value value T_NUMBER
+	      {
+		  if (!strcmp($2, "scanParameter")) {
+		    if (yyScanPar.size() == 2) {
+		       cout<<"At most two-dimensinal parameter scans can be performed"<<endl;
+		       exit(EXIT_FAILURE);
+                    }
+	            ScanParameter tmpscanpar;
+                    tmpscanpar.name = $3;
+                    tmpscanpar.min = $4;
+                    tmpscanpar.max = $5;
+                    tmpscanpar.numberOfSteps = (unsigned int)$6;
+		    if (tmpscanpar.numberOfSteps < 2) {
+		       yyerror("Number of scan steps must be at least 2");
+                    }
+                    yyScanPar.push_back(tmpscanpar);
+		  }
+                  else {
+                     yyerror ("Syntax error in scanParameter");
                   }
 	      }
 	    | input T_KEY T_WORD T_COMPARATOR value
