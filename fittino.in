@@ -279,12 +279,8 @@ XScanRange            -6000. GeV  -300. GeV
 ScanX                 on
 
 ScanParameters        off
-CalcIndChisqContr     off
 CalcPullDist          on
 NumberPulls           1
-
-UseSimAnnWhile        on
-UseSimAnnBefore       on
 
 Generator             SPHENO  ../SPheno2.2.2/SPheno
 

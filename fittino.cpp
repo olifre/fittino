@@ -1991,6 +1991,9 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
   // cout<<"fitterFCN called"<<endl;
   //  niterations++;
   int rc = 0;
+  int nobs = 0;
+  int ncorr = 0;
+  int nbound = 0;
 
   f = 0.;
 
@@ -2066,6 +2069,11 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	  f += (yyMeasuredVec[i].theovalue-yyMeasuredVec[i].value)
 	    * yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)
 	    * (yyMeasuredVec[j].theovalue-yyMeasuredVec[j].value);
+	  if ( (i==j) && (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j) > 1.E-12) ) {
+	    nobs++;
+	  } else if (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j) > 1.E-12) {
+	    ncorr++;
+	  }
 	  if ((yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)>1.E-12) || 
 	      (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)<-1.E-12)) {
 	    cout << i << " " << j << "using obs " << yyMeasuredVec[i].name << " = " << yyMeasuredVec[i].value
@@ -2080,13 +2088,15 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	    } else if (yyMeasuredVec[i].theovalue>yyMeasuredVec[i].bound_up ) {
 	      f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].bound_up)/(0.01*yyMeasuredVec[i].bound_up));
 	    }
+	    nbound++;
 	  }
 	}
       }
     }
   }
 
-  cout << " f = " << f << endl;
+  cout << " chisq = " << f << " with " << nobs << " observables (" << ncorr/2 << " correlated), "
+       << yyFittedVec.size() << " parameters and " << nbound << " bounds" << endl;
 
 //  f = ( sqr(sRecMassChargino1-fMassChargino1)/sqr(fMassChargino1.error)
 //	+ sqr(sRecMassChargino2-fMassChargino2)/sqr(fMassChargino2.error)
