@@ -51,8 +51,6 @@ int main(int argc, char** argv)
 
   delete[] inputfilename;
 
-  return 0;
-  
   input->DumpMeasuredVector();
 
   if (yyCalcIndChisqContr) {
