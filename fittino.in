@@ -1,8 +1,8 @@
 #########################################################################
 ###                         Fittino input file                        ###
 ###                         ------------------                        ###
-### $Id$                                                              ###
-### $Name$                                                            ###
+### $Id$             ###
+### $Name$                                                         ###
 #########################################################################
 
 massW                    80.3382  GeV +- 0.039  GeV
@@ -161,11 +161,11 @@ fitParameter  massA0           399.786 GeV #  399.767 GeV  # 3.99806e+02 GeV # 3
 # fitParameter  M3               588.797 GeV  # 5.88821e+02 GeV # 588.797 GeV  
 # fitParameter  massA0           399.767 GeV  # 3.99806e+02 GeV # 399.767 GeV  
 
-# fitParameter  MSmuR          135.76 GeV # 1.35760e+02 GeV # 	 135.76 GeV
-# fitParameter  MSmuL          195.21 GeV # 1.95199e+02 GeV # 	 195.21 GeV
-# fitParameter  MSstrangeR     528.14 GeV   # 5.28134e+02 GeV # 528.14 GeV   
-# fitParameter  MScharmR       530.253 GeV  # 5.30270e+02 GeV # 530.253 GeV  
-# fitParameter  MScharmL       548.705 GeV  # 5.48702e+02 GeV # 548.705 GeV  
+# fixParameter  MSmuR          135.76 GeV # 1.35760e+02 GeV # 	 135.76 GeV
+# fixParameter  MSmuL          195.21 GeV # 1.95199e+02 GeV # 	 195.21 GeV
+# fixParameter  MSstrangeR     528.14 GeV   # 5.28134e+02 GeV # 528.14 GeV   
+# fixParameter  MScharmR       530.253 GeV  # 5.30270e+02 GeV # 530.253 GeV  
+# fixParameter  MScharmL       548.705 GeV  # 5.48702e+02 GeV # 548.705 GeV  
 
 			       
 fitParameter  massTop         1.743e+02   GeV
@@ -242,6 +242,8 @@ ISR                   on
 UseGivenStartValues   off
 FitAllDirectly        off
 BoundsOnX             off
+ScanX                 on
+XScanRange            -5000. GeV  -100. GeV
 SepFitTanbX           off
 
 ScanParameters        off

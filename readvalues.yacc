@@ -266,6 +266,15 @@ input:
 		      yyMeasuredCorrelationMatrix.add(i, j, $5);
 		  }
 	      }
+	    | input T_KEY value value
+	      {
+		  if (!strcmp($2, "XScanRange")) {
+		    yyXscanlow = $3;
+		    cout << "yyXscanlow = " << yyXscanlow << endl;
+		    yyXscanhigh = $4;
+		    cout << "yyXscanhigh = " << yyXscanhigh << endl;
+		  }
+	      }
 	    | input T_KEY T_SWITCHSTATE
 	      {
 		  if (!strcmp($2, "OneLoopCorrections")) {
@@ -312,6 +321,10 @@ input:
 		  if (!strcmp($2, "SepFitTanbX")) {
 		      if ($3 == on) yySepFitTanbX = true;
 		      else yySepFitTanbX = false;
+		  }
+		  if (!strcmp($2, "ScanX")) {
+		      if ($3 == on) yyScanX = true;
+		      else yyScanX = false;
 		  }
 	      }
 	    | input T_GENERATOR T_WORD
@@ -1091,6 +1104,7 @@ bool          yyFitAllDirectly;
 bool          yyCalcIndChisqContr;
 bool          yyBoundsOnX = true;
 bool          yySepFitTanbX = true;
+bool          yyScanX = true;
 
 unsigned int yyGenerator;
 string       yyGeneratorPath = "";
@@ -1102,3 +1116,6 @@ int           yyParseError = 0;
 int           yyNumberOfMinimizations = 1;
 double        yyErrDef = 1.;
 int           yyNumberPulls = 0;
+
+double        yyXscanlow = -6000.;
+double        yyXscanhigh = 2000.;

@@ -6,6 +6,7 @@
     $Id$
     $Name$
                              -------------------
+
     begin                : September 10, 2003
     authors              : Philip Bechtle, Peter Wienemann
     email                : philip.bechtle@desy.de, peter.wienemann@desy.de
@@ -893,8 +894,8 @@ void Fittino::calculateTreeLevelValues(int nthrows)
     fXtau.error = 100.;
     if (yyUseGivenStartValues && (FindInFittedPar("Xtau") >= 0)) fXtau.value = yyFittedPar[FindInFittedPar("Xtau")].value ;
     if (yyBoundsOnX) {
-      fXtau.bound_low = -5000.;
-      fXtau.bound_up = 1000.;
+      fXtau.bound_low = yyXscanlow;
+      fXtau.bound_up = yyXscanhigh;
     } else {
       fXtau.bound_low = -10000.;
       fXtau.bound_up = 10000.;
@@ -912,11 +913,17 @@ void Fittino::calculateTreeLevelValues(int nthrows)
     fXtop.error = 100.;
     if (yyUseGivenStartValues && (FindInFittedPar("Xtop") >= 0)) fXtop.value = yyFittedPar[FindInFittedPar("Xtop")].value ;
     if (yyBoundsOnX) {
-      fXtop.bound_low = -3000.;
-      fXtop.bound_up = 1000.;
+      fXtop.bound_low = yyXscanlow;
+      fXtop.bound_up = yyXscanhigh;
     } else {
       fXtop.bound_low = -10000.;
       fXtop.bound_up = 10000.;
+    }
+    if (yyScanX && (fXtop.value > yyXscanhigh)) { 
+      fXtop.value = yyXscanhigh;
+    }
+    if (yyScanX && (fXtop.value < yyXscanlow)) { 
+      fXtop.value = yyXscanlow;
     }
 
     fXbottom.name = "Xbottom";
@@ -931,11 +938,17 @@ void Fittino::calculateTreeLevelValues(int nthrows)
     fXbottom.error = 100.;
     if (yyUseGivenStartValues && (FindInFittedPar("Xbottom") >= 0)) fXbottom.value = yyFittedPar[FindInFittedPar("Xbottom")].value ;
     if (yyBoundsOnX) {
-      fXbottom.bound_low = -6000.;
-      fXbottom.bound_up = 2000.;
+      fXbottom.bound_low = yyXscanlow;
+      fXbottom.bound_up = yyXscanhigh;
     } else {
       fXbottom.bound_low = -10000.;
       fXbottom.bound_up = 10000.;
+    }
+    if (yyScanX && (fXbottom.value > yyXscanhigh)) { 
+      fXbottom.value = yyXscanhigh;
+    }
+    if (yyScanX && (fXbottom.value < yyXscanlow)) { 
+      fXbottom.value = yyXscanlow;
     }
 
 //    cout << "MSelectronL = " << fMSelL.value << " +- " << fMSelL.error << endl;
@@ -1292,7 +1305,7 @@ void Fittino::calculateLoopLevelValues()
     } 
     
     
-    if (yyBoundsOnX) {
+    if (yyScanX) {
       //-------------------------------------------------------------------------
       // scan Xtop
       for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
@@ -1300,8 +1313,13 @@ void Fittino::calculateLoopLevelValues()
 	  arguments[0] = i+1;
 	  cout << "scanning parameter no " << i+1 << " " << yyFittedVec[i].name << endl;
 	  arguments[1] = 100;
-	  arguments[2] = yyFittedVec[i].bound_low;
-	  arguments[3] = yyFittedVec[i].bound_up;
+	  if (yyBoundsOnX) {
+	    arguments[2] = yyFittedVec[i].bound_low;
+	    arguments[3] = yyFittedVec[i].bound_up;
+	  } else {
+	    arguments[2] = yyXscanlow;
+	    arguments[3] = yyXscanhigh;	    
+	  }
 	  fitter->mnexcm("SCAN", arguments, 4,ierr);
 	  break;
 	}
@@ -1314,8 +1332,13 @@ void Fittino::calculateLoopLevelValues()
 	  arguments[0] = i+1;
 	  cout << "scanning parameter no " << i+1 << " " << yyFittedVec[i].name << endl;
 	  arguments[1] = 100;
-	  arguments[2] = yyFittedVec[i].bound_low;
-	  arguments[3] = yyFittedVec[i].bound_up;
+	  if (yyBoundsOnX) {
+	    arguments[2] = yyFittedVec[i].bound_low;
+	    arguments[3] = yyFittedVec[i].bound_up;
+	  } else {
+	    arguments[2] = yyXscanlow;
+	    arguments[3] = yyXscanhigh;	    
+	  }
 	  fitter->mnexcm("SCAN", arguments, 4,ierr);
 	  break;
 	}

@@ -59,6 +59,7 @@ extern int              yyNumberOfMinimizations;
 extern bool             yyCalcIndChisqContr;
 extern bool             yyBoundsOnX;
 extern bool             yySepFitTanbX;
+extern bool             yyScanX;
 
 typedef struct {
   string name;
@@ -73,4 +74,7 @@ extern string yyGeneratorPath;
 extern int    yyParseError;
 extern double        yyErrDef;
 extern int           yyNumberPulls;
+extern double        yyXscanlow;
+extern double        yyXscanhigh;
+
 #endif
