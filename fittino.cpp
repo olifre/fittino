@@ -2214,17 +2214,19 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 int callSPheno() 
 {
   int return_value;
+  // char programname[1024];
 
 //  FILE * SPheno;
 //  SPheno = popen("./SPheno", "r"); 
 //  pclose (SPheno);
 
   if (!yyCalculatorPath.compare(""))
-    //return_value = system("./SPheno");
-    return_value = checkcall("./SPheno",20);
+    return_value = system("./SPheno");
+    //    strcpy(programname,"./SPheno");
+    // return_value = checkcall(programname,20);
   else
-    //return_value = system(yyCalculatorPath.c_str());
-    return_value = checkcall(yyCalculatorPath.c_str(),20);
+    return_value = system(yyCalculatorPath.c_str());
+    // return_value = checkcall(yyCalculatorPath.c_str(),20);
   if (return_value > 0) {
     return(return_value);
   }
@@ -2242,7 +2244,7 @@ int callSPheno()
 // P. Bechtle, P. Wienemann, 21.10.04
 //
 // ************************************************************
-int checkcall(char programpath[1024], unsigned int runtime) 
+int checkcall(char* programpath, unsigned int runtime) 
 {
   int rc;
 

@@ -35,6 +35,7 @@ CXXFLAGS          = -g -Wall -pedantic -ansi -Wno-long-long \
                     -Wshadow -fPIC -I. -I$(ROOTSYS)/include
 LD                = g++
 LDFLAGS           = -g -Wall -pedantic -ansi -Wno-long-long -Wshadow
+# -pedantic -ansi
 
 # LIBS             = $(ROOTLIBS) -lfl libsusygen_call_test.a susygen/libsusygen.a  suspect/libsuspect.a ${CERNLIB}
 # LIBS             = $(ROOTLIBS) -lfl libsusygen_call_test.a suspect/libsuspect.a ${CERNLIB} 

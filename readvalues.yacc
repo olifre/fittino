@@ -6,6 +6,147 @@
 #include <leshouches.h>
 #include <yy.h>
 #include <misc.h>
+
+char yyBlockName[255];
+double yyScale;
+// SMINPUTS
+double yyG_F;		     
+double yyoneoveralpha_em_mz; 
+double yyalpha_s_mz;	     
+double yyMassZ;		     
+double yyMass_b;	     
+double yyMass_t;	     
+double yyMass_tau;              
+//MODEL
+int    yyModel;
+// MINPAR
+double yy_Qmax;
+double yytanb;
+double yy_m0;
+double yy_m12;
+double yy_signmu;
+double yy_A;
+// EXTPAR
+double yyMinput;
+double yyM1;
+double yyM2;
+double yyM3;
+double yy_At;
+double yy_Ab;
+double yy_Atau;
+double yy_m2Hd;
+double yy_m2Hu;
+double yy_mu;
+double yy_MassA;
+double yy_mse1L;
+double yy_mse2L;
+double yy_mse3L;
+double yy_mse1R;
+double yy_mse2R;
+double yy_mse3R;
+double yy_msq1L;
+double yy_msq2L;
+double yy_msq3L;
+double yy_msu1R;
+double yy_msu2R;
+double yy_msu3R;
+double yy_msd1R;
+double yy_msd2R;
+double yy_msd3R;
+double yy_N51;
+double yy_N52;
+double yy_N53;
+
+// SPINFO
+char yy_spectrum_calc_name[256];
+char yy_spectrum_calc_version[256];
+char yy_warnings[1024];
+char yy_errors[1024];
+char yy_error_codes[1024];
+typedef struct {
+    char tmpname[256];
+} tmpstr_t;
+tmpstr_t tmpstr;
+vector<tmpstr_t> tmpStrings;
+vector<int> tmpNumbers;
+
+
+// MASS
+map<int,double> yyMass;
+
+
+// DECAY
+decay_element_t tmp_branch;
+map<int,decay_element_t> branching_ratios;
+
+
+// XS
+xs_element_t tmp_xs;
+map<doubleVec_t,xs_element_t> cross_sections;
+
+
+
+doubleVec_t tmpVec, tmp2Vec;
+vector<doubleVec_t> tmpParams;
+
+int found;
+ 
+vector<MeasuredValue> yyMeasuredVec; // contains measured observables
+vector<MeasuredValue> yyThrownVec;   // contains smeared observables
+ 
+vector<MeasuredValue> yyFittedVec; // contains mu, M1, M2 ...
+vector<MeasuredValue> yyUniversalityVec;
+vector<MeasuredValue> yyFixedVec;  // contains mu, M1, M2 ...
+ 
+CorrelationMatrix     yyMeasuredCorrelationMatrix(&yyMeasuredVec);
+CorrelationMatrix     yyFittedCorrelationMatrix(&yyFittedVec);
+
+vector <parameter_t> yyFixedPar;
+vector <parameter_t> yyFittedPar;
+vector <parameter_t> indchisq_vec;
+ 
+bool          yyUseLoopCorrections = true;
+bool          yyCalcPullDist;
+bool          yyScanParameters;
+bool          yyISR;
+bool          yyCalculatorError;
+bool          yyUseMinos;
+bool          yyGetContours = false;
+bool          yyUseHesse;
+bool          yyUseSimAnnBefore = false;
+bool          yyUseSimAnnWhile = false;
+bool          yyUseGivenStartValues;
+bool          yyFitAllDirectly;
+bool          yyCalcIndChisqContr;
+bool          yyBoundsOnX = true;
+bool          yySepFitTanbX = true;
+bool          yySepFitTanbMu = false;
+bool          yySepFitmA = false;
+bool          yyScanX = true;
+bool          yyVerbose = true;
+bool          yyAdaptiveSimAnn = false;
+
+unsigned int yyCalculator;
+string       yyCalculatorPath = "";
+ 
+map<int,string> yyParticleNames;
+map<string,int> yyParticleIDs;
+
+int           yyParseError = 0;
+int           yyNumberOfMinimizations = 1;
+double        yyErrDef = 1.;
+int           yyMaxCallsSimAnn = 300000;
+double        yyTempRedSimAnn = 0.4;
+double        yyInitTempSimAnn = -1.;
+int           yyNumberPulls = 0;
+
+double        yyXscanlow = -6000.;
+double        yyXscanhigh = 2000.;
+
+double        yybsg = -10000.;
+double        yygmin2 = -10000.;
+double        yydrho  = -10000.;
+
 %}
 
 %union {
@@ -755,9 +896,9 @@ input:
 		      }
 		      // remove cross section from the list
 		      cout << "removing xs from the list" << endl;
-		      yyMeasuredVec[k].nofit = true;
-		      tmpValue.sqrts = yyMeasuredVec[k].sqrts;
-		      tmpValue.products.push_back(k);
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.sqrts = yyMeasuredVec[i].sqrts;
+		      tmpValue.products.push_back(i);
 		    }
 		    else if (!strncmp(tmpstr3,"brsum",5)) {
 		      charnumber = strchr(tmpstr3,'_');
@@ -778,8 +919,8 @@ input:
 		      }
 		      // remove br from the list
 		      cout << "removing br from the list" << endl;
-		      yyMeasuredVec[k].nofit = true;
-		      tmpValue.daughters.push_back(k);
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
 		    }
 		    else if (!strncmp(tmpstr3,"br",2)) {
 		      charnumber = strchr(tmpstr3,'_');
@@ -800,8 +941,8 @@ input:
 		      }
 		      // remove br from the list
 		      cout << "removing br from the list" << endl;
-		      yyMeasuredVec[k].nofit = true;
-		      tmpValue.daughters.push_back(k);
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
 		    }
 		  }
 		  yyMeasuredVec.push_back(tmpValue);
@@ -868,8 +1009,8 @@ input:
 		      }
 		      // remove br from the list
 		      cout << "removing br from the list" << endl;
-		      yyMeasuredVec[k].nofit = true;
-		      tmpValue.daughters.push_back(k);
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
 		    }
 		    else if (!strncmp(tmpstr3,"br",2)) {
 		      charnumber = strchr(tmpstr3,'_');
@@ -890,8 +1031,8 @@ input:
 		      }
 		      // remove br from the list
 		      cout << "removing br from the list" << endl;
-		      yyMeasuredVec[k].nofit = true;
-		      tmpValue.daughters.push_back(k);
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
 		    }
 		    else {
 		      cout << "syntax error in brratio, alias: " << tmpValue.alias <<  endl;
@@ -962,8 +1103,8 @@ input:
 		      }
 		      // remove br from the list
 		      cout << "removing br from the list" << endl;
-		      yyMeasuredVec[k].nofit = true;
-		      tmpValue.daughters.push_back(k);
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
 		    }
 		    else {
 		      cout << "syntax error in brsum, alias: " << tmpValue.alias <<  endl;
@@ -1037,8 +1178,8 @@ input:
 		      }
 		      // remove br from the list
 		      cout << "removing br from the list" << endl;
-		      yyMeasuredVec[k].nofit = true;
-		      tmpValue.daughters.push_back(k);
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
 		    }
 		    else {
 		      cout << "syntax error in brsum, alias: " << tmpValue.alias <<  endl;
@@ -1509,142 +1650,3 @@ void yyerror(char* s) {
     exit(EXIT_FAILURE);
 }
 
-char yyBlockName[255];
-double yyScale;
-// SMINPUTS
-double yyG_F;		     
-double yyoneoveralpha_em_mz; 
-double yyalpha_s_mz;	     
-double yyMassZ;		     
-double yyMass_b;	     
-double yyMass_t;	     
-double yyMass_tau;              
-//MODEL
-int    yyModel;
-// MINPAR
-double yy_Qmax;
-double yytanb;
-double yy_m0;
-double yy_m12;
-double yy_signmu;
-double yy_A;
-// EXTPAR
-double yyMinput;
-double yyM1;
-double yyM2;
-double yyM3;
-double yy_At;
-double yy_Ab;
-double yy_Atau;
-double yy_m2Hd;
-double yy_m2Hu;
-double yy_mu;
-double yy_MassA;
-double yy_mse1L;
-double yy_mse2L;
-double yy_mse3L;
-double yy_mse1R;
-double yy_mse2R;
-double yy_mse3R;
-double yy_msq1L;
-double yy_msq2L;
-double yy_msq3L;
-double yy_msu1R;
-double yy_msu2R;
-double yy_msu3R;
-double yy_msd1R;
-double yy_msd2R;
-double yy_msd3R;
-double yy_N51;
-double yy_N52;
-double yy_N53;
-
-// SPINFO
-char yy_spectrum_calc_name[256];
-char yy_spectrum_calc_version[256];
-char yy_warnings[1024];
-char yy_errors[1024];
-char yy_error_codes[1024];
-typedef struct {
-    char tmpname[256];
-} tmpstr_t;
-tmpstr_t tmpstr;
-vector<tmpstr_t> tmpStrings;
-vector<int> tmpNumbers;
-
-
-// MASS
-map<int,double> yyMass;
-
-
-// DECAY
-decay_element_t tmp_branch;
-map<int,decay_element_t> branching_ratios;
-
-
-// XS
-xs_element_t tmp_xs;
-map<doubleVec_t,xs_element_t> cross_sections;
-
-
-
-doubleVec_t tmpVec, tmp2Vec;
-vector<doubleVec_t> tmpParams;
-
-int found;
- 
-vector<MeasuredValue> yyMeasuredVec; // contains measured observables
-vector<MeasuredValue> yyThrownVec;   // contains smeared observables
- 
-vector<MeasuredValue> yyFittedVec; // contains mu, M1, M2 ...
-vector<MeasuredValue> yyUniversalityVec;
-vector<MeasuredValue> yyFixedVec;  // contains mu, M1, M2 ...
- 
-CorrelationMatrix     yyMeasuredCorrelationMatrix(&yyMeasuredVec);
-CorrelationMatrix     yyFittedCorrelationMatrix(&yyFittedVec);
-
-vector <parameter_t> yyFixedPar;
-vector <parameter_t> yyFittedPar;
-vector <parameter_t> indchisq_vec;
- 
-bool          yyUseLoopCorrections = true;
-bool          yyCalcPullDist;
-bool          yyScanParameters;
-bool          yyISR;
-bool          yyCalculatorError;
-bool          yyUseMinos;
-bool          yyGetContours = false;
-bool          yyUseHesse;
-bool          yyUseSimAnnBefore = false;
-bool          yyUseSimAnnWhile = false;
-bool          yyUseGivenStartValues;
-bool          yyFitAllDirectly;
-bool          yyCalcIndChisqContr;
-bool          yyBoundsOnX = true;
-bool          yySepFitTanbX = true;
-bool          yySepFitTanbMu = false;
-bool          yySepFitmA = false;
-bool          yyScanX = true;
-bool          yyVerbose = true;
-bool          yyAdaptiveSimAnn = false;
-
-unsigned int yyCalculator;
-string       yyCalculatorPath = "";
- 
-map<int,string> yyParticleNames;
-map<string,int> yyParticleIDs;
-
-int           yyParseError = 0;
-int           yyNumberOfMinimizations = 1;
-double        yyErrDef = 1.;
-int           yyMaxCallsSimAnn = 300000;
-double        yyTempRedSimAnn = 0.4;
-double        yyInitTempSimAnn = -1.;
-int           yyNumberPulls = 0;
-
-double        yyXscanlow = -6000.;
-double        yyXscanhigh = 2000.;
-
-double        yybsg = -10000.;
-double        yygmin2 = -10000.;
-double        yydrho  = -10000.;
