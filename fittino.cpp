@@ -1708,6 +1708,8 @@ void Fittino::calculateLoopLevelValues()
       
     }
     
+    if (par) delete[] par;
+
     TFile* file = new TFile("ParameterScan.root", "recreate");
     
     TGraph* graph1d = 0;
@@ -5239,4 +5241,59 @@ void Fittino::simulated_annealing_uncertainties_run_down (TNtuple *ntuple)
   }
   cout << "optimal function value " << fopt << " after " << nacc << " evaluations" << endl;
 
+}
+
+
+void Fittino::randomDirectionUncertainties()
+{
+    cout<<"Using randomDirectionUncertainties"<<endl;
+
+    const int maxdirs = 1000;
+    const double eps = 0.001;
+    double* optpar = new double[yyFittedVec.size()];
+
+    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	optpar[k] = yyFittedVec[k].value;
+    }
+
+    int npar, iflag;
+    double* gin;
+    double* par = new double[yyFittedVec.size()];
+    double* unitvec = new double[yyFittedVec.size()];
+    double val;
+
+    for (int idir=0; idir<maxdirs; idir++) {
+
+	double d = 0;
+	for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	    par[k] = gRandom->Gaus(1, 0.05) * optpar[k];
+	    unitvec[k] = par[k] - optpar[k];
+	    d += (par[k] - optpar[k]) * (par[k] - optpar[k]);
+	}
+	d = TMath::Sqrt(d);
+
+	for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	    unitvec[k] /= d;
+	}
+
+	while (1) {
+	    fitterFCN(npar, gin, val, par, iflag);
+	    cout<<"f = "<<val<<endl;
+	    if (TMath::Abs(val - yyErrDef) < eps) break;
+	    if (val > 1) d *= 0.5;
+	    else d *= 2.0;
+	    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+		par[k] = optpar[k] + d * unitvec[k];
+	    }
+	}
+
+	cout<<"Found interception with uncertainty countour (ErrDef = "
+	    <<yyErrDef<<") at"<<endl;
+	for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	    cout<<yyFittedVec[k].name<<" = "<<par[k]<<endl;
+	}
+    }
+
+    if (optpar) delete[] optpar;
+    if (par) delete[] par;
 }

@@ -126,6 +126,7 @@ private:
     void simulated_annealing_uncertainties (TNtuple *ntuple);
     void simulated_annealing_uncertainties_run_down (TNtuple *ntuple);
 
+    void randomDirectionUncertainties();
 };
 
 #endif
