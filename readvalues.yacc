@@ -555,6 +555,44 @@ input:
 //		  cout << "Added branching ratio " << tmpValue.name << endl;
 	          strcpy($6,"");
 	      }
+	     | input T_BR T_BRA T_WORD T_GOESTO sentence T_KET T_ALIAS T_NUMBER
+	      {
+		  MeasuredValue tmpValue;
+                  tmpValue.nofit = true;
+		  tmpValue.type  = br;
+		  tmpValue.theovalue  = -1;
+		  tmpValue.name  = $4;
+		  tmpValue.id    = yyParticleIDs[$4];
+		  tmpValue.name.append(" -> ");
+		  tmpValue.name.append($6);
+		  string str;
+	          str.erase();
+		  str = $6;
+		  char tmpstr3[255];
+		  unsigned int pos = 0, newpos = 0;
+		  int anti = 1;
+		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		      str.copy(tmpstr3, newpos - pos, pos);
+		      if (tmpstr3[newpos-pos-1] == '~') {
+			  tmpstr3[newpos-pos-1] = '\0';
+			  anti = -1;
+		      }
+		      else {
+			  tmpstr3[newpos-pos] = '\0';
+			  anti = 1;
+		      }
+		      pos = newpos + 1;
+		      tmpValue.daughters.push_back(anti * yyParticleIDs[tmpstr3]);
+		  }
+		  tmpValue.value = -1;
+		  tmpValue.error = -1;
+		  tmpValue.alias = (int)$9;
+		  tmpValue.bound_up = 1e+6;
+		  tmpValue.bound_low = 0.;
+		  yyMeasuredVec.push_back(tmpValue);
+//		  cout << "Added branching ratio alias for " << tmpValue.name << endl;
+	          strcpy($6,"");
+	      }
 	     | input T_KEY T_BRA sentence T_GOESTO sentence T_COMMA value T_COMMA value T_COMMA value T_KET value err T_ALIAS T_NUMBER
 	      {
 		  MeasuredValue tmpValue;
@@ -603,7 +641,55 @@ input:
 		  strcpy($6,"                     ");
 	          strcpy($6,"");
 	      }
-	     | input T_KEY T_BRA sentence T_KET  value err T_ALIAS T_NUMBER
+	     | input T_KEY T_BRA sentence T_GOESTO sentence T_COMMA value T_COMMA value T_COMMA value T_KET T_ALIAS T_NUMBER
+	      {
+		  MeasuredValue tmpValue;
+                  tmpValue.nofit = true;
+		  tmpValue.name.erase();
+		  tmpValue.type  = xsection;
+		  tmpValue.theovalue  = -1;
+		  tmpValue.name  = $4;
+//	          cout << "in xs: $4 = " << $4 << endl;
+		  tmpValue.id    = 11;
+		  tmpValue.name.append(" -> ");
+		  tmpValue.name.append($6);
+		  string str;
+	          str.erase();
+	          str = $6;
+		  char tmpstr4[255];
+		  unsigned int pos = 0, newpos = 0;
+		  int anti = 1;
+		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		      str.copy(tmpstr4, newpos - pos, pos);
+		      if (tmpstr4[newpos-pos-1] == '~') {
+			  tmpstr4[newpos-pos-1] = '\0';
+			  anti = -1;
+		      }
+		      else {
+			  tmpstr4[newpos-pos] = '\0';
+			  anti = 1;
+		      }
+		      pos = newpos + 1;
+		      tmpValue.products.push_back(anti * yyParticleIDs[tmpstr4]);
+		  }
+		  tmpValue.sqrts = $8;
+		  tmpValue.polarisation1 = $10;
+		  tmpValue.polarisation2 = $12;
+		  tmpValue.value = -1;
+		  tmpValue.error = -1;
+		  tmpValue.alias = (int)$15;
+		  tmpValue.bound_up = 1e+9;
+		  tmpValue.bound_low = 0.;
+		  yyMeasuredVec.push_back(tmpValue);
+//		  cout << "Added cross section alias for " << tmpValue.name << endl;
+		  tmpStrings.clear();
+	          tmpNumbers.clear();
+		  strcpy($4,"                     ");
+	          strcpy($4,"");
+		  strcpy($6,"                     ");
+	          strcpy($6,"");
+	      }
+	     | input T_KEY T_BRA sentence T_KET value err T_ALIAS T_NUMBER
 	      {
 		if (!strcmp($2,"xsbr")) {
 		  int i = 0;
@@ -882,6 +968,85 @@ input:
 		  }
 		  yyMeasuredVec.push_back(tmpValue);
 		}
+	      }
+	     | input T_KEY T_BRA sentence T_KET T_ALIAS T_NUMBER
+	      {
+		if (!strcmp($2,"brsum")) {
+		  int i = 0;
+		  int j = 0;
+		  int aliasnumber;
+		  char* charnumber;
+		  MeasuredValue tmpValue;
+                  tmpValue.nofit = true;
+		  tmpValue.name.erase();
+		  tmpValue.type  = brsum;
+		  tmpValue.theovalue  = 0;
+		  tmpValue.value = -1;
+		  tmpValue.error = -1;
+		  tmpValue.name  = $4;
+		  tmpValue.alias = (int)$7;
+		  tmpValue.bound_up = 1e+9;
+		  tmpValue.bound_low = 0.;
+                  //cout << "alias for brratio found" << endl;
+		  // break sentence in pieces:
+		  string str;
+	          str.erase();
+		  str = $4;
+		  char tmpstr3[255];
+		  unsigned int pos = 0, newpos = 0;
+		  int anti = 1;
+		  bool found_br = false;
+		  int countbrs = 0;
+		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		    countbrs++;
+		    str.copy(tmpstr3, newpos - pos, pos);
+		    if (tmpstr3[newpos-pos-1] == '~') {
+		      tmpstr3[newpos-pos-1] = '\0';
+		      anti = -1;
+		    }
+		    else {
+		      tmpstr3[newpos-pos] = '\0';
+		      anti = 1;
+		    }
+		    pos = newpos + 1;
+		    // break up:
+		    if (!strncmp(tmpstr3,"br",2)) {
+		      charnumber = strchr(tmpstr3,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atof((charnumber+1));
+		      found_br = false;
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  found_br = true;
+			  cout << "found br " <<  yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      if (!found_br) {
+			cout << "br " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
+		      }
+		      // remove br from the list
+		      cout << "removing br from the list" << endl;
+		      yyMeasuredVec[k].nofit = true;
+		      tmpValue.daughters.push_back(k);
+		    }
+		    else {
+		      cout << "syntax error in brsum, alias: " << tmpValue.alias <<  endl;
+		      yyerror (" ");
+		    }
+		  }
+		  if (countbrs<2) {
+		      cout << "syntax error in brsum: not enough br, alias: " << tmpValue.alias <<  endl;
+		      yyerror (" ");		      		    
+		  }
+		  yyMeasuredVec.push_back(tmpValue);
+		}
+		else {
+		  cout<<"No value and error given for "<<$2<<" ( "<<$4<<" )"<<endl;
+		  yyerror("");
+                }
 	      }
             ;
 
