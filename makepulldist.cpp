@@ -85,8 +85,8 @@ void MakePullDist::CalcPullDist()
   yyUseGivenStartValues   = true;
   yyFitAllDirectly        = true;
   yyUseLoopCorrections    = true;
-  yyUseSimAnnWhile        = false;
-  yyUseSimAnnBefore       = false;
+  //  yyUseSimAnnWhile        = false;
+  //  yyUseSimAnnBefore       = false;
   yyUseMinos              = false;
   yyUseHesse              = false;
 
