@@ -50,7 +50,7 @@ extern bool             yyUseLoopCorrections;
 extern bool             yyCalcPullDist;
 extern bool             yyScanParameters;
 extern bool             yyISR;
-extern bool             yyGeneratorError;
+extern bool             yyCalculatorError;
 extern bool             yyUseMinos;
 extern bool             yyGetContours;
 extern bool             yyUseHesse;
@@ -75,7 +75,7 @@ typedef struct {
 extern vector <parameter_t> yyFixedPar;
 extern vector <parameter_t> yyFittedPar;
 
-extern string yyGeneratorPath;
+extern string yyCalculatorPath;
 extern int    yyParseError;
 extern double        yyErrDef;
 extern int           yyNumberPulls;

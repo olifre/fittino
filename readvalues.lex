@@ -107,8 +107,8 @@ Q[ \t]*=                  {
 				  printf("universality found\n");
 				  return T_UNIVERSALITY;
                               }
-			      if (!strcmp(yytext, "Generator")) { 
-				  return T_GENERATOR;
+			      if (!strcmp(yytext, "Calculator")) { 
+				  return T_CALCULATOR;
                               }
                               strcpy(yylval.name, yytext);
                               return T_KEY;

@@ -102,13 +102,13 @@ using namespace std;
 
 
 enum SwitchState    { off, on };
-enum Generator      { SPHENO, SUSPECT, SPHENO_FH };
+enum Calculator     { SPHENO, SUSPECT, SPHENO_FH };
 enum ObservableType { mass, Pwidth, xsection, br, xsectionbr, Pedge, xsbr, brratio, other };
 
 extern bool          yyUseLoopCorrections;
 extern bool          yyCalcPullDist;
 extern bool          yyScanParameters;
-extern unsigned int yyGenerator;
+extern unsigned int yyCalculator;
 extern map<int,string> yyParticleNames;
 extern map<string,int> yyParticleIDs;
 

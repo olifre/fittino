@@ -18,7 +18,7 @@
 %token <real> T_NUMBER
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
 %token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS
-%token T_BLOCK T_SCALE T_DECAY T_NEWLINE T_XS T_GENERATOR T_XSBR T_BRRATIO
+%token T_BLOCK T_SCALE T_DECAY T_NEWLINE T_XS T_CALCULATOR T_XSBR T_BRRATIO
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH
  
 %type <name> sentence
@@ -367,24 +367,24 @@ input:
 		      else yyScanX = false;
 		  }
 	      }
-	    | input T_GENERATOR T_WORD
+	    | input T_CALCULATOR T_WORD
 	      {
 		   if (!strcmp($3, "SPHENO")) {
-		      yyGenerator = SPHENO;
+		      yyCalculator = SPHENO;
 		   }
 		   if (!strcmp($3, "SUSPECT")) {
-		      yyGenerator = SUSPECT;
+		      yyCalculator = SUSPECT;
 		   }
 	      }
-	    | input T_GENERATOR T_WORD T_PATH
+	    | input T_CALCULATOR T_WORD T_PATH
 	      {
 		   if (!strcmp($3, "SPHENO")) {
-		      yyGenerator = SPHENO;
+		      yyCalculator = SPHENO;
 		   }
 		   if (!strcmp($3, "SUSPECT")) {
-		      yyGenerator = SUSPECT;
+		      yyCalculator = SUSPECT;
 		   }
-	           yyGeneratorPath = $4;
+	           yyCalculatorPath = $4;
 	      }
 	    | input T_KEY T_WORD value
 	      {
@@ -458,16 +458,16 @@ input:
                   }
 
 	      }
-	    | input T_KEY T_NUMBER T_NUMBER sentence value err
+	    | input T_KEY T_NUMBER sentence value err T_ALIAS T_NUMBER
 	      {
 		if (!strcmp($2, "edge")) {
 		  MeasuredValue tmpValue;
                   tmpValue.nofit = false;
 		  tmpValue.theovalue  = 0;
 		  tmpValue.name = "edge ";
-		  tmpValue.name.append($5);
+		  tmpValue.name.append($4);
 		  tmpValue.type  = Pedge;
-		  tmpValue.id    = $4;
+		  tmpValue.id    = $3;
 		  if (tmpValue.id==1) {
                     tmpValue.name.append("+ ");
                   } 
@@ -478,7 +478,7 @@ input:
 		  }
 		  string str;
 	          str.erase();
-		  str = $5;
+		  str = $4;
 //		  cout << "decompositing string "<<str<< endl;
 		  char tmpstr2[255];
 		  unsigned int pos = 0, newpos = 0;
@@ -506,9 +506,9 @@ input:
 //		      cout << "Adding Element: " << tmpstr2 << " with ID " <<  yyParticleIDs[tmpstr2] << endl;
 		      tmpValue.daughters.push_back(yyParticleIDs[tmpstr2]);
 		  }
-		  tmpValue.value = $6;
-		  tmpValue.error = $7;
-		  tmpValue.alias = (int)$3;
+		  tmpValue.value = $5;
+		  tmpValue.error = $6;
+		  tmpValue.alias = (int)$8;
 		  tmpValue.bound_up = 1e+6;
 		  tmpValue.bound_low = 0.;
 		  yyMeasuredVec.push_back(tmpValue);
@@ -1322,7 +1322,7 @@ bool          yyUseLoopCorrections = true;
 bool          yyCalcPullDist;
 bool          yyScanParameters;
 bool          yyISR;
-bool          yyGeneratorError;
+bool          yyCalculatorError;
 bool          yyUseMinos;
 bool          yyGetContours = false;
 bool          yyUseHesse;
@@ -1337,8 +1337,8 @@ bool          yySepFitTanbMu = false;
 bool          yySepFitmA = false;
 bool          yyScanX = true;
 
-unsigned int yyGenerator;
-string       yyGeneratorPath = "";
+unsigned int yyCalculator;
+string       yyCalculatorPath = "";
  
 map<int,string> yyParticleNames;
 map<string,int> yyParticleIDs;

@@ -2033,14 +2033,14 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
   f = 0.;
 
   // set values
-  yyGeneratorError = false;
+  yyCalculatorError = false;
   yyParseError     = 0;
 
   for (unsigned int i = 0; i < yyMeasuredVec.size(); i++) {
     yyMeasuredVec[i].theoset = false;
   }
   // start loop over cross sections and polarisations
-  // cout << "having to call Generator " <<  CrossSectionProduction.size() << " times" << endl; 
+  // cout << "having to call Calculator " <<  CrossSectionProduction.size() << " times" << endl; 
   // for (unsigned int j = 0; j < CrossSectionProduction.size(); j++) {
     // HERE: WRITE THE LES HOUCHES FILE
   WriteLesHouches(x);
@@ -2054,10 +2054,10 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 //  fitterMassSupR.value = 429.6; // x[9];
 //  fitterA.value        = -500.0;// x[10];
 
-  if (yyGenerator == SUSPECT) {
+  if (yyCalculator == SUSPECT) {
     callSuspect();
   }
-  else if (yyGenerator == SPHENO) {
+  else if (yyCalculator == SPHENO) {
     rc = callSPheno();
   }
   if (rc == 2) {
@@ -2074,7 +2074,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
   // HERE: READ THE LES HOUCHES FILE
   ReadLesHouches();
   
-  if (yyGeneratorError) {
+  if (yyCalculatorError) {
     cerr << "Exiting fitterFCN because LesHouches outfile did not exist" << endl;
     f = 111111111111.;
     cout << " f = " << f << endl;
@@ -2087,7 +2087,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
     return;
   }
   if (rc > 0) {
-    cerr << "Exiting fitterFCN because of return value "<< rc << " from the Generator" << endl;
+    cerr << "Exiting fitterFCN because of return value "<< rc << " from the Calculator" << endl;
     f = 111111111111.;
     cout << " f = " << f << endl;
     return;
@@ -2211,12 +2211,12 @@ int callSPheno()
 //  SPheno = popen("./SPheno", "r"); 
 //  pclose (SPheno);
 
-  if (!yyGeneratorPath.compare(""))
+  if (!yyCalculatorPath.compare(""))
     //return_value = system("./SPheno");
     return_value = checkcall("./SPheno",20);
   else
-    //return_value = system(yyGeneratorPath.c_str());
-    return_value = checkcall(yyGeneratorPath.c_str(),20);
+    //return_value = system(yyCalculatorPath.c_str());
+    return_value = checkcall(yyCalculatorPath.c_str(),20);
   if (return_value > 0) {
     return(return_value);
   }
@@ -3286,7 +3286,7 @@ void   ReadLesHouches()
   // first parse the LesHouches outfile and load predictions to maps
   cout << "parsing the les houches file" << endl;
   ParseLesHouches();
-  if (yyGeneratorError) {
+  if (yyCalculatorError) {
     cerr << "Error in ParseLesHouches, exiting ReadLesHouches" << endl;
     return;
   }
@@ -3461,13 +3461,13 @@ void   ParseLesHouches()
 
     counter++;
 
-    if (yyGenerator == SPHENO) {
+    if (yyCalculator == SPHENO) {
       //      system("cp SPheno.spc.test SPheno.spc");
       yyin = fopen("SPheno.spc", "r");
       //	yyin = fopen("leshouches.in", "r");
       if (!yyin) {
 	cerr<<"SPheno.spc does not exist"<<endl;
-	yyGeneratorError = true;
+	yyCalculatorError = true;
 	return;
       }
       yyparse();

@@ -33,7 +33,7 @@ vector<doubleVec_t> CrossSectionProduction;
 Input::Input(const char* inputfile)
 {
   // Set defaults
-  yyGenerator = SPHENO;
+  yyCalculator = SPHENO;
   yyISR       = true;
   FillNameMap();
   
