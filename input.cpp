@@ -54,6 +54,10 @@ Input::Input(const char* inputfile)
   
   // Open input file and parse it
   yyin = fopen(inputfile, "r");
+  if (!yyin) {
+      cerr<<"Input file "<<inputfile<<" not found"<<endl;
+      exit(EXIT_FAILURE);
+  }
   yyparse();
   fclose(yyin);
 
