@@ -3425,7 +3425,7 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
   int ns = 20; 
   int nt; 
   int neps = 4;
-  int maxevl = 20000; 
+  int maxevl = 80000; 
   vector <double> lb; 
   vector <double> ub;
   vector <double> c; 
@@ -3469,6 +3469,7 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
   bool firstfalse;
   int accpoint = 0;
   int xoptflag = 0;
+  int niter = 0;
 
   Float_t ntupvars[50];
 
@@ -3480,9 +3481,9 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
   lnobds = 0;
   n = yyFittedVec.size();
   if (n<20) {
-    nt = 100;
+    nt = 60;
   } else {
-    nt = 5*n;
+    nt = 3*n;
   }
   for (i = 0; i < neps; ++i) {
     fstar.push_back(1e20);
@@ -3548,6 +3549,7 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
 
   //-------------------------------------------
   // perform the optimization
+  niter = 0;
 
   // begin new temperature era
   while (!quit_while_loop) {
@@ -3556,6 +3558,7 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
     nnew = 0;
     ndown = 0;
     lnobds = 0;
+    niter++;
     // loop over the iterations before temperature reduction:
     for (m = 0; m < nt; m++) {
       // loop over the accepted function evaluations:
@@ -3587,7 +3590,7 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
 	  fp = -fp;
 	  ++nfcnev;
 	  xoptflag = 0;
-	  cout << "running simulated annealing at t = " << t << endl;
+	  cout << "running simulated annealing at t = " << t << " m(<"<<nt<<") = " << m << " j(<"<<ns<<") = " << j << " h(<"<<n<<") = " << h << " in niter = " << niter << endl;
 	  //  If too many function evaluations occur, terminate the algorithm
 	  if (nfcnev >= maxevl) {
 	    cout << "terminating simulated annealing prematurely due to number of calls" << endl;
@@ -3651,7 +3654,7 @@ void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
 	} // close the outer variable loop
       } // close the loop over the accepted function evaluations
       // go on to adjust vm and t
-      /*  Adjust VM such that approximately half of all evaluations are accepted. */
+      // Adjust VM such that approximately half of all evaluations are accepted
       for (i = 0; i < n; ++i) {
 	ratio = (double) nacp[i] / (double) (ns);
 	if (ratio > 0.6) {
