@@ -1142,7 +1142,11 @@ void Fittino::calculateLoopLevelValues()
   for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
     yyMeasuredVec[i].temp_nofit = false;
   }  
-  
+
+
+  //-------------------------------------------------------------------------
+  // eventuaslly call simulated annealing
+  simulated_annealing();
 
   //-------------------------------------------------------------------------
   // Set Up TMinuit
@@ -3364,6 +3368,7 @@ void Fittino::simulated_annealing ()
   Double_t xdummy[100];
   int n;
   vector <double> x; 
+  vector <double> xvar; 
   bool max = false; 
   double rt = 0.85; 
   double eps = 0.0001; 
@@ -3407,6 +3412,11 @@ void Fittino::simulated_annealing ()
   static int nup;
   static double fp, pp;
   static int lnobds;
+  double fvar = 0.;
+  double fcubed = 0.;
+  double fsum = 0.;
+  int nvalid = 0;
+  bool firstfalse;
 
   // set values
   nup = 0;
@@ -3428,6 +3438,7 @@ void Fittino::simulated_annealing ()
   for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
     x.push_back(yyFittedVec[k].value);
     xp.push_back(yyFittedVec[k].value);
+    xvar.push_back(yyFittedVec[k].value);
     xopt.push_back(yyFittedVec[k].value);
     vm.push_back(yyFittedVec[k].error);
     lb.push_back(yyFittedVec[k].bound_low);
@@ -3435,12 +3446,6 @@ void Fittino::simulated_annealing ()
     c.push_back(2.0);
     nacp.push_back(0);
   }
-
-  //-------------------------------------------
-  // first adjust the temperature?
-
-  //-------------------------------------------
-  // perform the optimization
 
   /*  Evaluate the function at the starting point */
   for (unsigned int ii = 0; ii < xp.size(); ii++) {
@@ -3451,6 +3456,46 @@ void Fittino::simulated_annealing ()
   ++nfcnev;
   fopt = f;
   fstar[1] = f;
+
+  //-------------------------------------------
+  // first adjust the temperature to the variance for variations within vm?
+  nvalid = 0;
+  fsum = 0.;
+  fcubed = 0.;
+  for (m = 0; m < 10; m++) {
+    for (i = 0; i < n; i++) {
+      xp[i] = xvar[i] + gRandom->Uniform(-1.,1.) * vm[i];
+      //  If XP is out of bounds, select a point in bounds for the trial. 
+      while ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
+	xp[i] = gRandom->Uniform(-2.,2.) * vm[i] + yyFittedVec[i].value;
+      }
+      // Evaluate the function with the trial point XP
+      for (unsigned int ii = 0; ii < xp.size(); ii++) {
+	xdummy[ii] = xp[ii];
+      }
+      fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
+      fp = -fp;
+      cout << "fp = " << fp << endl;
+      if (fp > -1e10) {
+	//	fopt = 0.;
+	//      fp = 5.;
+	fsum = fsum + TMath::Abs(fopt - fp);
+	fcubed = fcubed + sqr((fopt - fp));
+	nvalid++;
+      }
+      xp[i] = xvar[i];
+    }
+    for (i = 0; i < n; i++) {
+      xvar[i] = xp[i];
+    }
+  }
+  t = TMath::Sqrt(fcubed/double(nvalid) - sqr(fsum/double(nvalid)));
+  cout << "temperature chosen " << t << endl;
+
+  return;
+
+  //-------------------------------------------
+  // perform the optimization
 
   // begin new temperature era
   while (!quit_while_loop) {
@@ -3467,10 +3512,14 @@ void Fittino::simulated_annealing ()
 	      xp[i] = x[i];
 	    }
 	    /*  If XP is out of bounds, select a point in bounds for the trial. */
-	    if ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
-	      xp[i] = gRandom->Uniform(-5.,5.) * vm[i] + yyFittedVec[i].value;
-	      ++lnobds;
-	      ++(nobds);
+	    firstfalse = true;
+	    while ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
+	      xp[i] = gRandom->Uniform(-2.,2.) * vm[i] + yyFittedVec[i].value;
+	      if (firstfalse) {
+		++lnobds;
+		++(nobds);
+	      }
+	      firstfalse = false;
 	    }
 	  }
 	  /*  Evaluate the function with the trial point XP and return as FP. */
