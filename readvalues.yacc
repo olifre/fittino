@@ -125,6 +125,7 @@ bool          yySepFitmA = false;
 bool          yyScanX = true;
 bool          yyVerbose = true;
 bool          yyAdaptiveSimAnn = false;
+bool          yyNoBoundsAtAll = false;
 
 unsigned int yyCalculator;
 string       yyCalculatorPath = "";
@@ -524,7 +525,11 @@ input:
 		  if (!strcmp($2, "AdaptiveSimAnn")) {
 		      if ($3 == on) yyAdaptiveSimAnn = true;
 		      else yyAdaptiveSimAnn = false;
-		  } // yyAdaptiveSimAnn
+		  } // yyAdaptiveSimAnn yyNoBoundsAtAll
+		  if (!strcmp($2, "NoBoundsAtAll")) {
+		      if ($3 == on) yyNoBoundsAtAll = true;
+		      else yyNoBoundsAtAll = false;
+		  }
 	      }
 	    | input T_CALCULATOR T_WORD
 	      {

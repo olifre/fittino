@@ -488,6 +488,8 @@ MaxCallsSimAnn        450000
 InitTempSimAnn        5000
 AdaptiveSimAnn        on
 
+NoBoundsAtAll         on
+
 # Calculator             SPHENO  ./SPheno
 
 UseMinos              on

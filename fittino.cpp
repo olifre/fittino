@@ -1152,6 +1152,14 @@ void Fittino::calculateLoopLevelValues()
     yyMeasuredVec[i].hasbeenset = false;
   }  
 
+  if (yyNoBoundsAtAll) {
+    yyUseSimAnnBefore = false;
+    yyUseSimAnnWhile = false;
+    for (unsigned int j=0; j < yyFittedVec.size(); j++ ) {
+      yyFittedVec[j].bound_up = 0.;
+      yyFittedVec[j].bound_low = 0.;
+    }    
+  }
 
   //-------------------------------------------------------------------------
   // eventually call simulated annealing
