@@ -115,6 +115,8 @@ private:
     TMatrixD* fSavedFittedCovarianceMatrix;
     TMatrixD* fSavedFittedCorrelationMatrix;
 
+    void simulated_annealing ();
+
 };
 
 #endif

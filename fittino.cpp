@@ -3354,3 +3354,198 @@ double give_xs (doubleVec_t initial, int channel, int element )
   }
  
 }
+
+
+// test simulated annealing
+
+void Fittino::simulated_annealing ()
+{
+
+  Double_t xdummy[100];
+  int n;
+  vector <double> x; 
+  bool max = false; 
+  double rt = 0.85; 
+  double eps = 0.0001; 
+  int ns = 20; 
+  int nt; 
+  int neps = 4;
+  int maxevl = 20000; 
+  vector <double> lb; 
+  vector <double> ub;
+  vector <double> c; 
+  int iprint = 0;
+  int iseed1 = 31327; 
+  int iseed2 = 30080; 
+  double t = 5.0; // initial temperature
+  vector <double> vm;
+  vector <double> xopt;
+  double fopt = 11111111111.0;
+  int nacc = 0; 
+  int nfcnev = 0; 
+  int nobds = 0;
+  int ier = 0; 
+  vector <double> fstar; 
+  vector <double> xp;
+  vector <int> nacp;
+  
+  /* System generated locals */
+  int i1, i2, i3, i4;
+  double d1;
+  Double_t dummyfloat = 5.;
+  Int_t dummyint = 1;
+  
+  /* Local variables */
+  static int nrej;
+  static int nnew;
+  static bool quit = false;
+  bool quit_while_loop = false;
+  static double f;
+  static int h, i, j, m;
+  static double p, ratio;
+  static int ndown;
+  static int nup;
+  static double fp, pp;
+  static int lnobds;
+
+  // set values
+  nup = 0;
+  nrej = 0;
+  nnew = 0;
+  ndown = 0;
+  lnobds = 0;
+  n = yyFittedVec.size();
+  if (n<20) {
+    nt = 100;
+  } else {
+    nt = 5*n;
+  }
+  for (i = 0; i < neps; ++i) {
+    fstar.push_back(1e20);
+  }
+
+  // fill vector of parameters
+  for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+    x.push_back(yyFittedVec[k].value);
+    xp.push_back(yyFittedVec[k].value);
+    xopt.push_back(yyFittedVec[k].value);
+    vm.push_back(yyFittedVec[k].error);
+    lb.push_back(yyFittedVec[k].bound_low);
+    ub.push_back(yyFittedVec[k].bound_up);
+    c.push_back(2.0);
+    nacp.push_back(0);
+  }
+
+  //-------------------------------------------
+  // first adjust the temperature?
+
+  //-------------------------------------------
+  // perform the optimization
+
+  /*  Evaluate the function at the starting point */
+  for (unsigned int ii = 0; ii < xp.size(); ii++) {
+    xdummy[ii] = x[ii];
+  }
+  fitterFCN(dummyint, &dummyfloat, f, xdummy, 0);
+  f = -f;
+  ++nfcnev;
+  fopt = f;
+  fstar[1] = f;
+
+  // begin new temperature era
+  while (!quit_while_loop) {
+    // loop over the iterations before temperature reduction:
+    for (m = 0; m < nt; m++) {
+      // loop over the accepted function evaluations:
+      for (j = 0; j < ns; j++) {
+	// loop over the variables:
+	for (h = 0; h < n; h++) {
+	  for (i = 0; i < n; i++) {
+	    if (i == h) {
+	      xp[i] = x[i] + gRandom->Uniform(-1.,1.) * vm[i];
+	    } else {
+	      xp[i] = x[i];
+	    }
+	    /*  If XP is out of bounds, select a point in bounds for the trial. */
+	    if ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
+	      xp[i] = gRandom->Uniform(-5.,5.) * vm[i] + yyFittedVec[i].value;
+	      ++lnobds;
+	      ++(nobds);
+	    }
+	  }
+	  /*  Evaluate the function with the trial point XP and return as FP. */
+	  for (unsigned int ii = 0; ii < xp.size(); ii++) {
+	    xdummy[ii] = xp[ii];
+	  }
+	  fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
+	  fp = -fp;
+	  ++nfcnev;
+	  /*  If too many function evaluations occur, terminate the algorithm. */
+	  if (nfcnev >= maxevl) {
+	    cout << "terminating simulated annealing prematurely due to number of calls" << endl;
+	    fopt = -fopt;
+	    ier = 1;
+	    quit_while_loop = true;
+	  }
+	  /*  Accept the new point if the function value increases. */
+	  if (fp >= f) {
+	    for (i = 0; i < n; ++i) {
+	      x[i] = xp[i];
+	    }
+	    f = fp;
+	    ++nacc;
+	    ++nacp[h];
+	    ++nup;
+	    /*  If greater than any other point, record as new optimum. */
+	    if (fp > fopt) {
+	      for (i = 0; i < n; ++i) {
+		xopt[i] = xp[i];
+		/* L130: */
+	      }
+	      fopt = fp;
+	      ++nnew;
+	    }
+	    /*  If the point is lower, use the Metropolis criteria to decide on */
+	    /*  acceptance or rejection. */
+	  } else {
+	    d1 = (fp - f) / t;
+	    p = TMath::Exp(d1);
+	    pp = gRandom->Uniform(1.);
+	    if (pp < p) {
+	      for (i = 1; i < n; ++i) {
+		x[i] = xp[i];
+		/* L140: */
+	      }
+	      f = fp;
+	      ++nacc;
+	      ++nacp[h];
+	      ++ndown;
+	    } else {
+	      ++nrej;
+	    }
+	  }
+	} // close the outer variable loop
+      } // close the loop over the accepted function evaluations
+      // go on to adjust vm and t
+      /*  Adjust VM such that approximately half of all evaluations are accepted. */
+      for (i = 0; i < n; ++i) {
+	
+      }
+      
+    } // close the loop over the iterations before temperature reduction
+
+
+  } // close the while loop 
+
+
+
+
+  //--------------------------------------------
+  // write output
+    
+  for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+    yyFittedVec[k].value = xopt[k];
+  }
+  cout << "optimal function value " << fopt << " after " << nacc << " evaluations" << endl;
+
+}
