@@ -1137,6 +1137,10 @@ void Fittino::calculateLoopLevelValues()
   char GraphName[255];
   vector <double> saved_uncertainties;
 
+  char ntuplename[256];
+  char ntupletext[256];
+  char ntuplevars[2048];
+
   //-------------------------------------------------------------------------
   // switch all temp_nofits on
   for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
@@ -1146,8 +1150,22 @@ void Fittino::calculateLoopLevelValues()
 
   //-------------------------------------------------------------------------
   // eventuaslly call simulated annealing
+  system ("rm SimAnnNtupFile.root");
   if (yyUseSimAnnBefore) {
-    simulated_annealing();
+    unsigned int i = 0;
+    // open the ntuple file
+    TFile *SimAnnNtupFile = new TFile("SimAnnNtupFile.root","UPDATE");
+    sprintf ( ntuplename, "ntuple%i", i );
+    sprintf ( ntupletext, "path of the simulated annealing No. %i", i );
+    sprintf ( ntuplevars, "n:t:f:acc:xopt" );
+    for (unsigned int j=0; j < yyFittedVec.size(); j++ ) {
+      sprintf ( ntuplevars, "%s:%s", ntuplevars, yyFittedVec[j].name.c_str() );
+    }
+    TNtuple *simannntuple = new TNtuple(ntuplename,ntupletext,ntuplevars);
+    
+    simulated_annealing(0,simannntuple);
+    SimAnnNtupFile->Write();
+    SimAnnNtupFile->Close();
   }
 
   //-------------------------------------------------------------------------
@@ -1488,15 +1506,40 @@ void Fittino::calculateLoopLevelValues()
   arguments[1] = 0.1;
   for (unsigned int i=0; i<yyNumberOfMinimizations; i++) {
     if (i>0) {
-      //-------------------------------------------------------------------------
-      // eventuaslly call simulated annealing
-      if (yyUseSimAnnWhile) {
-	simulated_annealing();
-      }
-      // reset the uncertainties
+      // read the central values and uncertainties
       for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
 	fitter->mnpout(j,parname,yyFittedVec[j].value,yyFittedVec[j].error,vlow,vhigh,ierr);
       }      
+      //-------------------------------------------------------------------------
+      // eventuaslly call simulated annealing
+      if (yyUseSimAnnWhile) {
+	// open the ntuple file
+	TFile *SimAnnNtupFile = new TFile("SimAnnNtupFile.root","UPDATE");
+	sprintf ( ntuplename, "ntuple%i", i );
+	sprintf ( ntupletext, "path of the simulated annealing No. %i", i );
+	sprintf ( ntuplevars, "n:t:f:acc:xopt" );
+	for (unsigned int j=0; j < yyFittedVec.size(); j++ ) {
+	  sprintf ( ntuplevars, "%s:%s", ntuplevars, yyFittedVec[j].name.c_str() );
+	}
+	TNtuple *simannntuple = new TNtuple(ntuplename,ntupletext,ntuplevars);
+	// check the status of the minimization
+	fitter->mnstat(amin, edm, errdef, nvpar, nparx, ierr);	
+	if (ierr == 3) {
+	  for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
+	    yyFittedVec[j].error = 2.*yyFittedVec[j].error;
+	  }
+	} else {
+	  // error matrix is not accurate
+	  for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
+	    yyFittedVec[j].error = saved_uncertainties[j];
+	  }
+	}
+	simulated_annealing(i,simannntuple);
+	// close the ntuple
+	SimAnnNtupFile->Write();
+	SimAnnNtupFile->Close();
+      }
+      // reset the uncertainties
       for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
 	cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
 	cout << "resetting parameter errors " << yyFittedVec[j].name << endl;
@@ -3369,7 +3412,7 @@ double give_xs (doubleVec_t initial, int channel, int element )
 
 // test simulated annealing
 
-void Fittino::simulated_annealing ()
+void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
 {
 
   Double_t xdummy[100];
@@ -3424,6 +3467,10 @@ void Fittino::simulated_annealing ()
   double fsum = 0.;
   int nvalid = 0;
   bool firstfalse;
+  int accpoint = 0;
+  int xoptflag = 0;
+
+  Float_t ntupvars[50];
 
   // set values
   nup = 0;
@@ -3472,9 +3519,9 @@ void Fittino::simulated_annealing ()
   for (m = 0; m < 10; m++) {
     for (i = 0; i < n; i++) {
       xp[i] = xvar[i] + gRandom->Uniform(-1.,1.) * vm[i];
-      //  If XP is out of bounds, select a point in bounds for the trial. 
+      //  If XP is out of bounds, select a point in bounds for the trial
       while ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
-	xp[i] = gRandom->Uniform(-2.,2.) * vm[i] + yyFittedVec[i].value;
+	xp[i] = gRandom->Uniform(-1.,1.) * vm[i] + yyFittedVec[i].value;
       }
       // Evaluate the function with the trial point XP
       for (unsigned int ii = 0; ii < xp.size(); ii++) {
@@ -3499,13 +3546,16 @@ void Fittino::simulated_annealing ()
   t = TMath::Sqrt(fcubed/double(nvalid) - sqr(fsum/double(nvalid)));
   cout << "temperature chosen " << t << endl;
 
-  return;
-
   //-------------------------------------------
   // perform the optimization
 
   // begin new temperature era
   while (!quit_while_loop) {
+    nup = 0;
+    nrej = 0;
+    nnew = 0;
+    ndown = 0;
+    lnobds = 0;
     // loop over the iterations before temperature reduction:
     for (m = 0; m < nt; m++) {
       // loop over the accepted function evaluations:
@@ -3518,7 +3568,7 @@ void Fittino::simulated_annealing ()
 	    } else {
 	      xp[i] = x[i];
 	    }
-	    /*  If XP is out of bounds, select a point in bounds for the trial. */
+	    // If XP is out of bounds, select a point in bounds for the trial
 	    firstfalse = true;
 	    while ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
 	      xp[i] = gRandom->Uniform(-2.,2.) * vm[i] + yyFittedVec[i].value;
@@ -3529,21 +3579,27 @@ void Fittino::simulated_annealing ()
 	      firstfalse = false;
 	    }
 	  }
-	  /*  Evaluate the function with the trial point XP and return as FP. */
+	  //  Evaluate the function with the trial point XP and return as FP
 	  for (unsigned int ii = 0; ii < xp.size(); ii++) {
 	    xdummy[ii] = xp[ii];
 	  }
 	  fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
 	  fp = -fp;
 	  ++nfcnev;
-	  /*  If too many function evaluations occur, terminate the algorithm. */
+	  xoptflag = 0;
+	  cout << "running simulated annealing at t = " << t << endl;
+	  //  If too many function evaluations occur, terminate the algorithm
 	  if (nfcnev >= maxevl) {
 	    cout << "terminating simulated annealing prematurely due to number of calls" << endl;
 	    fopt = -fopt;
 	    ier = 1;
+	    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	      yyFittedVec[k].value = xopt[k];
+	    }
 	    quit_while_loop = true;
+	    return;
 	  }
-	  /*  Accept the new point if the function value increases. */
+	  //  Accept the new point if the function value increases
 	  if (fp >= f) {
 	    for (i = 0; i < n; ++i) {
 	      x[i] = xp[i];
@@ -3552,17 +3608,18 @@ void Fittino::simulated_annealing ()
 	    ++nacc;
 	    ++nacp[h];
 	    ++nup;
-	    /*  If greater than any other point, record as new optimum. */
+	    accpoint = 1;
+	    //  If greater than any other point, record as new optimum
 	    if (fp > fopt) {
 	      for (i = 0; i < n; ++i) {
 		xopt[i] = xp[i];
-		/* L130: */
 	      }
 	      fopt = fp;
 	      ++nnew;
+	      xoptflag = 1;
 	    }
-	    /*  If the point is lower, use the Metropolis criteria to decide on */
-	    /*  acceptance or rejection. */
+	    //  If the point is lower, use the Metropolis criteria to decide on 
+	    //  acceptance or rejection
 	  } else {
 	    d1 = (fp - f) / t;
 	    p = TMath::Exp(d1);
@@ -3570,31 +3627,78 @@ void Fittino::simulated_annealing ()
 	    if (pp < p) {
 	      for (i = 1; i < n; ++i) {
 		x[i] = xp[i];
-		/* L140: */
 	      }
 	      f = fp;
 	      ++nacc;
 	      ++nacp[h];
 	      ++ndown;
+	      accpoint = 1;
 	    } else {
 	      ++nrej;
+	      accpoint = 0;
 	    }
 	  }
+	  // write point to ntuple
+	  ntupvars[0] = (Float_t)nfcnev;
+	  ntupvars[1] = (Float_t)t;
+	  ntupvars[2] = -(Float_t)fp;
+	  ntupvars[3] = (Float_t)accpoint;
+	  ntupvars[4] = (Float_t)xoptflag;
+	  for (unsigned int ii = 5; ii < 5+yyFittedVec.size(); ii++) {
+	    ntupvars[ii] = xp[ii-5];
+	  }
+	  ntuple->Fill(ntupvars);
 	} // close the outer variable loop
       } // close the loop over the accepted function evaluations
       // go on to adjust vm and t
       /*  Adjust VM such that approximately half of all evaluations are accepted. */
       for (i = 0; i < n; ++i) {
-	
+	ratio = (double) nacp[i] / (double) (ns);
+	if (ratio > 0.6) {
+	  vm[i] *= c[i] * (ratio - 0.6) / 0.4 + 1.;
+	} else if (ratio < 0.4) {
+	  vm[i] /= c[i] * (0.4 - ratio) / 0.4 + 1.;
+	}
+	if (vm[i] > ub[i] - lb[i]) {
+	  vm[i] = ub[i] - lb[i];
+	}	
       }
-      
+      for (i = 0; i < n; ++i) {
+	nacp[i] = 0;
+      }
     } // close the loop over the iterations before temperature reduction
-
-
+    // check termination criteria
+    quit = false;
+    fstar[1] = f;
+    if (fopt - fstar[1] <= eps) {
+      quit = true;
+    }
+    for (i = 0; i < neps; ++i) {
+      if (TMath::Abs(f - fstar[i]) > eps) {
+	quit = false;
+      }
+    }
+    //  Terminate simulated annealing if appropriate 
+    if (quit) {
+      for (i = 0; i < n; ++i) {
+	x[i] = xopt[i];
+      }
+      ier = 0;
+      fopt = -fopt;
+      quit_while_loop = true;
+    } else {
+      // If termination criteria is not met, prepare t
+      cout << "starting new temperature loop at t = " << rt * t <<  endl;
+      t = rt * t;
+      for (i = neps-1; i >= 1; --i) {
+	fstar[i] = fstar[i - 1];
+      }
+      f = fopt;
+      for (i = 0; i < n; ++i) {
+	x[i] = xopt[i];
+      }
+    }
   } // close the while loop 
-
-
-
 
   //--------------------------------------------
   // write output

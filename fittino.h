@@ -26,6 +26,8 @@
 #include <misc.h>
 #include <TMath.h>
 #include <TMatrixD.h>
+#include <TTree.h>
+#include <TNtuple.h>
 
 class Input;
 class SmearedInput;
@@ -115,7 +117,7 @@ private:
     TMatrixD* fSavedFittedCovarianceMatrix;
     TMatrixD* fSavedFittedCorrelationMatrix;
 
-    void simulated_annealing ();
+    void simulated_annealing (int iteration, TNtuple *ntuple);
 
 };
 
