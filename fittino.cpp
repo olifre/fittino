@@ -45,7 +45,7 @@
 #include <TH1.h>
 #include <sys/sysinfo.h>
 #include <sys/time.h>
-
+#include <unistd.h>
 
 MeasuredValue fitterM1;
 MeasuredValue fitterM2;
