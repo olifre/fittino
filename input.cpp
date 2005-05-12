@@ -44,7 +44,7 @@ Input::Input(const char* inputfile)
   CheckDefault("massBottom", ID_b,  4.5    , 0.25    );
   CheckDefault("massTop", ID_t  , 174.3    , 5.1     );
   CheckDefault("massTau", ID_tau,   1.77699, 0.00029 );
-  CheckDefault("alphas" , 0     ,   0.1172 , 0.0002  );
+  CheckDefault("alphas" , 0     ,   0.1187 , 0.002  );
 // G_F is skipped because its small uncertainty causes numerical problems with
 // covariance matrix inversion.
 //  CheckDefault("G_F"    , 0     ,   1.16639E-5, 0.000001E-5);
