@@ -211,4 +211,9 @@ public:
                   { return (const double&)((*fCorrelationMatrix)(rown, coln)); }
 };
 
+class TVectorD;
+class TMatrixDSym;
+
+TVectorD getCorrelatedRandomNumbers(const TVectorD& mean, const TMatrixDSym& covarianceMatrix);
+
 #endif

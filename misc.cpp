@@ -20,6 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <TVectorD.h>
+#include <TMatrixDSym.h>
+#include <TMatrixDSymEigen.h>
+#include <TRandom.h>
+
 #include <misc.h>
 
 CorrelationMatrix::CorrelationMatrix(const vector<MeasuredValue>* vec)
@@ -200,4 +205,29 @@ void CorrelationMatrix::CalculateCovarianceMatrix()
 //    }
 //  }
 
+}
+
+
+TVectorD getCorrelatedRandomNumbers(const TVectorD& mean, const TMatrixDSym& covarianceMatrix)
+{
+  int n = mean.GetNoElements();
+
+  const TMatrixDSymEigen matrix(covarianceMatrix);
+  TMatrixD eigenVecMatrix = matrix.GetEigenVectors();
+  TVectorD eigenValueVec = matrix.GetEigenValues();
+
+  TVectorD y(n);
+  for (int i=0; i<n; i++) {
+    if (eigenValueVec(i) < 0) {
+      cerr << "getCorrelatedRandomNumbers: Covariance matrix is not non-negative definite" << endl;
+      exit(EXIT_FAILURE);
+    }
+    y(i) = gRandom->Gaus(0, TMath::Sqrt(eigenValueVec(i)));
+  }
+
+  TVectorD x(y);
+  x *= eigenVecMatrix;
+  x += mean;
+
+  return x;
 }
