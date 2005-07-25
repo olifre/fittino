@@ -421,6 +421,8 @@ xsbr ( sigma_717 br_42 br_42 )                1.54945 +- 0.1 alias 819   # H+ H-
 # Parameters                                                            #
 #########################################################################
 
+fitModel MSSM
+
 fitParameter  TanBeta       10.0                 +-     0.106839      
 fitParameter  Mu            4.00391601E+02 GeV   +-      1.31431  GeV
 fixParameter  Xtau          -4449.2464     GeV   +-      20.6217  GeV
@@ -494,7 +496,7 @@ AdaptiveSimAnn        on
 
 NoBoundsAtAll         off
 
-Calculator            SPHENO  ./SPheno
+Calculator            SPHENO  ../theorycodes/SPheno2.2.2/SPheno
 
 UseMinos              off
 UseHesse              off

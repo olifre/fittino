@@ -96,6 +96,8 @@ extern double        yyInitTempSimAnn;
 extern double        yyXscanlow;
 extern double        yyXscanhigh;
 
+extern unsigned int  yyFitModel;
+
 extern double        yybsg;
 extern double        yygmin2;
 extern double        yydrho;

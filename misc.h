@@ -104,6 +104,7 @@ using namespace std;
 enum SwitchState    { off, on };
 enum Calculator     { SPHENO, SUSPECT, SPHENO_FH };
 enum ObservableType { mass, Pwidth, xsection, br, xsectionbr, Pedge, xsbr, brratio, brsum, other };
+enum FitModel       { MSSM, mSUGRA };
 
 extern bool          yyUseLoopCorrections;
 extern bool          yyCalcPullDist;

@@ -134,6 +134,8 @@ bool          yyRandomDirUncertainties = false;
 
 unsigned int yyCalculator;
 string       yyCalculatorPath = "";
+
+unsigned int yyFitModel = MSSM;
  
 map<int,string> yyParticleNames;
 map<string,int> yyParticleIDs;
@@ -220,18 +222,19 @@ input:
                 } 	
 		else if (!strcmp($2,"RandomGeneratorSeed")) {
 		  // cout << "FOUND RandomGeneratorSeed "<<$3<<endl;
-		  yyRandomGeneratorSeed = $3;
+		  yyRandomGeneratorSeed = (int)$3;
                 }
 		else if (!strcmp($2,"NumberOfDirections")) {
 		  // cout << "FOUND NumberOfDirections "<<$3<<endl;
-		  yyNumberOfDirections = $3;
+		  yyNumberOfDirections = (int)$3;
                 }
                 else if (!strcmp($2,"NumberPulls")) {
 		  // cout << "FOUND NumberPulls "<<$3<<endl;
 		  if ($3>0) {
                     yyNumberPulls = (int)$3;
                   }
-                } else {
+       		}
+                else {
 		  found = 0;
 		  for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
 		    if (!yyMeasuredVec[i].name.compare($2)) {
@@ -590,6 +593,17 @@ input:
 		     tmpparam.name = $3;
 		     yyFittedPar.push_back(tmpparam);
 		  }  
+		  else if (!strcmp($2,"fitModel")) {
+		    cout<<"Fitting "<<$3<<" model"<<endl;
+		    if (!strcmp($3, "MSSM"))
+		      yyFitModel = MSSM;
+		    else if (!strcmp($3, "mSUGRA"))
+		      yyFitModel = mSUGRA;
+		    else {
+		      cerr<<"Unknown fit model: "<<$3<<endl;
+		      exit(EXIT_FAILURE);
+		    }
+		  }
 	      }
 	    | input T_KEY T_WORD value
 	      {
