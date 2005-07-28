@@ -421,37 +421,45 @@ xsbr ( sigma_717 br_42 br_42 )                1.54945 +- 0.1 alias 819   # H+ H-
 # Parameters                                                            #
 #########################################################################
 
-fitModel MSSM
+fitModel mSUGRA
 
-fitParameter  TanBeta       10.0                 +-     0.106839      
-fitParameter  Mu            4.00391601E+02 GeV   +-      1.31431  GeV
-fixParameter  Xtau          -4449.2464     GeV   +-      20.6217  GeV
-fixParameter  MSelectronR   1.15601432E+02 GeV   +-     0.047222  GeV 
-fixParameter  MStauR        1.09886191E+02 GeV   +-     0.305381  GeV 
-fixParameter  MSelectronL   1.81303904E+02 GeV   +-    0.0657697  GeV 
-fixParameter  MStauL        1.79542181E+02 GeV   +-     0.125402  GeV 
-fixParameter  Xtop          -565.6667  GeV       +-      3.06945  GeV 
-fixParameter  Xbottom       -4934.7555 GeV       +-      1025.51  GeV
-fixParameter  MSupR         5.03870507E+02 GeV   +-      7.09704  GeV 
-fixParameter  MSbottomR     4.97407092E+02 GeV   +-      7.15023  GeV 
-fixParameter  MStopR        3.80875693E+02 GeV   +-      2.45254  GeV 
-fixParameter  MSupL         5.23239070E+02 GeV   +-      7.50972  GeV 
-fixParameter  MStopL        4.67710781E+02 GeV   +-      3.00352  GeV 
-fixParameter  M1            1.03270551E+02 GeV   +-    0.0517654  GeV 
-fixParameter  M2            1.93445550E+02 GeV   +-    0.0876525  GeV 
-fixParameter  M3            5.68863225E+02 GeV   +-      7.24919  GeV 
-fixParameter  massA0        311.95 GeV           +-      3.73973  GeV 
-			       
-fixParameter  massTop       1.78e+02   GeV       +-    0.0423333   GeV 
-fixParameter  massBottom    4.2000e+00   GeV
-fixParameter  massCharm     1.2e+00   GeV
+fitParameter TanBeta 10 +- 5
+fitParameter M0 100 +- 50
+fitParameter M12 250 +- 50
+fitParameter A0 -100 +- 50
+fixParameter SignMu 1
 
-fixParameter  MSmuR        1.15601432E+02 GeV   +-     0.047222  GeV 
-fixParameter  MSmuL        1.81303904E+02 GeV   +-    0.0657697  GeV 
-fixParameter  MScharmR     5.03870507E+02 GeV   +-      7.09704  GeV 
-fixParameter  MSdownR      5.03870507E+02 GeV   +-      7.09704  GeV 
-fixParameter  MSstrangeR   5.03870507E+02 GeV   +-      7.09704  GeV 
-fixParameter  MScharmL     5.23239070E+02 GeV   +-      7.50972  GeV 
+#fitModel MSSM
+
+#fitParameter  TanBeta       10.0                 +-     0.106839      
+#fitParameter  Mu            4.00391601E+02 GeV   +-      1.31431  GeV
+#fixParameter  Xtau          -4449.2464     GeV   +-      20.6217  GeV
+#fixParameter  MSelectronR   1.15601432E+02 GeV   +-     0.047222  GeV 
+#fixParameter  MStauR        1.09886191E+02 GeV   +-     0.305381  GeV 
+#fixParameter  MSelectronL   1.81303904E+02 GeV   +-    0.0657697  GeV 
+#fixParameter  MStauL        1.79542181E+02 GeV   +-     0.125402  GeV 
+#fixParameter  Xtop          -565.6667  GeV       +-      3.06945  GeV 
+#fixParameter  Xbottom       -4934.7555 GeV       +-      1025.51  GeV
+#fixParameter  MSupR         5.03870507E+02 GeV   +-      7.09704  GeV 
+#fixParameter  MSbottomR     4.97407092E+02 GeV   +-      7.15023  GeV 
+#fixParameter  MStopR        3.80875693E+02 GeV   +-      2.45254  GeV 
+#fixParameter  MSupL         5.23239070E+02 GeV   +-      7.50972  GeV 
+#fixParameter  MStopL        4.67710781E+02 GeV   +-      3.00352  GeV 
+#fixParameter  M1            1.03270551E+02 GeV   +-    0.0517654  GeV 
+#fixParameter  M2            1.93445550E+02 GeV   +-    0.0876525  GeV 
+#fixParameter  M3            5.68863225E+02 GeV   +-      7.24919  GeV 
+#fixParameter  massA0        311.95 GeV           +-      3.73973  GeV 
+#			       
+#fixParameter  massTop       1.78e+02   GeV       +-    0.0423333   GeV 
+#fixParameter  massBottom    4.2000e+00   GeV
+#fixParameter  massCharm     1.2e+00   GeV
+#
+#fixParameter  MSmuR        1.15601432E+02 GeV   +-     0.047222  GeV 
+#fixParameter  MSmuL        1.81303904E+02 GeV   +-    0.0657697  GeV 
+#fixParameter  MScharmR     5.03870507E+02 GeV   +-      7.09704  GeV 
+#fixParameter  MSdownR      5.03870507E+02 GeV   +-      7.09704  GeV 
+#fixParameter  MSstrangeR   5.03870507E+02 GeV   +-      7.09704  GeV 
+#fixParameter  MScharmL     5.23239070E+02 GeV   +-      7.50972  GeV 
 
 # universality MSelectronR MSmuR
 # universality MSelectronL MSmuL
@@ -472,9 +480,9 @@ FitAllDirectly        on
 BoundsOnX             off
 SepFitTanbX           off
 SepFitTanbMu          off
-SepFitmA	      on
+SepFitmA	      off
 XScanRange            -6000. GeV  -300. GeV
-ScanX                 on
+ScanX                 off
 
 ScanParameters        off
 CalcPullDist          off
@@ -488,7 +496,7 @@ NumberOfDirections    10000
 UseSimAnnBefore       off
 UseSimAnnWhile        off
 SimAnnUncertainty     off
-SimAnnUncertaintyRunDown     on
+SimAnnUncertaintyRunDown     off
 TempRedSimAnn         0.5
 MaxCallsSimAnn        20000
 InitTempSimAnn        5000
@@ -498,8 +506,8 @@ NoBoundsAtAll         off
 
 Calculator            SPHENO  ../theorycodes/SPheno2.2.2/SPheno
 
-UseMinos              off
-UseHesse              off
+UseMinos              on
+UseHesse              on
 
 NumberOfMinimizations  1
 ErrDef                 1.0

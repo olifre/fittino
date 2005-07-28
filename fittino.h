@@ -50,6 +50,8 @@ public:
     void calculateTreeLevelValues(int nthrows = 100000);
     void calculateLoopLevelValues();
 
+    void setStartValues();
+
     void writeResults(const char* filename);
 
     const MeasuredValue& getM0() const      { return fM0; }
@@ -66,6 +68,8 @@ private:
     double fchisq;
 
     MeasuredValue fM0;
+    MeasuredValue fM12;
+
     MeasuredValue fM1;
     MeasuredValue fM2;
     MeasuredValue fAbsM3;

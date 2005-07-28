@@ -52,7 +52,7 @@ int main(int argc, char** argv)
 
   delete[] inputfilename;
 
-  input->DumpMeasuredVector();
+  //  input->DumpMeasuredVector();
 
   if (yyCalcIndChisqContr) {
 
@@ -68,8 +68,14 @@ int main(int argc, char** argv)
     cout << "constructing fittino" << endl;
     Fittino* fittino = new Fittino(input);
     
-    cout << "calculating tree level values" << endl;
-    fittino->calculateTreeLevelValues(10000);
+    if (yyFitModel == MSSM) {
+      cout << "calculating tree level values" << endl;
+      fittino->calculateTreeLevelValues(10000);
+    }
+    else if (yyFitModel == mSUGRA) {
+      cout << "setting fit start values" << endl;
+      fittino->setStartValues();
+    }
     
     if (yyUseLoopCorrections) {
       cout << "calculating loop level values" << endl;
