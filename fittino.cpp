@@ -1165,7 +1165,7 @@ void Fittino::setStartValues()
       fA0.value = yyFittedPar[FindInFittedPar("A0")].value;
       fA0.error = yyFittedPar[FindInFittedPar("A0")].error;
     }
-    fA0.bound_low = 0.;
+    fA0.bound_low = -10000.;
     fA0.bound_up = 10000.;
 
     bool par_already_found;
@@ -1174,6 +1174,13 @@ void Fittino::setStartValues()
 //    cout<<"M0 = "<<fM0.value<<" +- "<<fM0.error<<endl;
 //    cout<<"M12 = "<<fM12.value<<" +- "<<fM12.error<<endl;
 //    cout<<"A0 = "<<fA0.value<<" +- "<<fA0.error<<endl;
+
+//    cout<<"Contents of yyFittedPar:"<<endl;
+//    for (unsigned int  i=0; i < yyFittedPar.size(); i++ ) {
+//      cout<<yyFittedPar[i].name<<" "<<yyFittedPar[i].value<<" "<<yyFittedPar[i].error<<endl;
+//    }
+//
+//    exit(1);
 
     for (unsigned int  i=0; i < yyFittedPar.size(); i++ ) {
       par_already_found = false;
@@ -3561,13 +3568,13 @@ void WriteLesHouches(double* x)
     }
 
     if (FindInFixed("M0")) {
-      LesHouchesOutfile << "    1  "<< ReturnFixedValue("M0")->value <<" # tanb (fixed)"<< endl;
+      LesHouchesOutfile << "    1  "<< ReturnFixedValue("M0")->value <<" # M0 (fixed)"<< endl;
     }
     else if (FindInFitted("M0")) {
       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-	cout << "Fitting tanb " << x[ReturnFittedPosition("M0")] << endl;
+	cout << "Fitting M0 " << x[ReturnFittedPosition("M0")] << endl;
       }
-      LesHouchesOutfile << "    1  "<< x[ReturnFittedPosition("M0")]<<" # tanb"<< endl;
+      LesHouchesOutfile << "    1  "<< x[ReturnFittedPosition("M0")]<<" # M0"<< endl;
     } 
     else if (FindInUniversality("M0")) {
       LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition(ReturnUniversality("M0")->universality)]<<" # M0"<<endl;
@@ -3581,13 +3588,13 @@ void WriteLesHouches(double* x)
     }
 
     if (FindInFixed("M12")) {
-      LesHouchesOutfile << "    2  "<< ReturnFixedValue("M12")->value <<" # tanb (fixed)"<< endl;
+      LesHouchesOutfile << "    2  "<< ReturnFixedValue("M12")->value <<" # M12 (fixed)"<< endl;
     }
     else if (FindInFitted("M12")) {
       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-	cout << "Fitting tanb " << x[ReturnFittedPosition("M12")] << endl;
+	cout << "Fitting M12 " << x[ReturnFittedPosition("M12")] << endl;
       }
-      LesHouchesOutfile << "    2  "<< x[ReturnFittedPosition("M12")]<<" # tanb"<< endl;
+      LesHouchesOutfile << "    2  "<< x[ReturnFittedPosition("M12")]<<" # M12"<< endl;
     } 
     else if (FindInUniversality("M12")) {
       LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("M12")->universality)]<<" # M12"<<endl;
@@ -3601,13 +3608,13 @@ void WriteLesHouches(double* x)
     }
 
     if (FindInFixed("A0")) {
-      LesHouchesOutfile << "    5  "<< ReturnFixedValue("A0")->value <<" # tanb (fixed)"<< endl;
+      LesHouchesOutfile << "    5  "<< ReturnFixedValue("A0")->value <<" # A0 (fixed)"<< endl;
     }
     else if (FindInFitted("A0")) {
       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-	cout << "Fitting tanb " << x[ReturnFittedPosition("A0")] << endl;
+	cout << "Fitting A0 " << x[ReturnFittedPosition("A0")] << endl;
       }
-      LesHouchesOutfile << "    5  "<< x[ReturnFittedPosition("A0")]<<" # tanb"<< endl;
+      LesHouchesOutfile << "    5  "<< x[ReturnFittedPosition("A0")]<<" # A0"<< endl;
     } 
     else if (FindInUniversality("A0")) {
       LesHouchesOutfile << "    5  "<<x[ReturnFittedPosition(ReturnUniversality("A0")->universality)]<<" # A0"<<endl;
