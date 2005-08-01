@@ -1932,7 +1932,7 @@ void Fittino::calculateLoopLevelValues()
     }
   }
 
-  if (yyUseMinos) {
+  if (yyPerformFit && yyUseMinos) {
     // recalculate Covariance Matrix because of yyErrDef
     for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
       for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
@@ -2011,13 +2011,14 @@ void Fittino::calculateLoopLevelValues()
     randomDirectionUncertainties();
   }
 
-  cout << "write the preliminay output file" << endl;
-  writeResults("fittino.out.intermediate");
-
+  if (yyPerformFit) {
+    cout << "write the preliminay output file" << endl;
+    writeResults("fittino.out.intermediate");
+  }
   cout << "eventually get the contours " << endl;
   //-------------------------------------------------------------------------
   // Get the contours with only two parameters free
-  if (yyGetContours) {
+  if (yyPerformFit && yyGetContours) {
     TFile* hfile1 = 0;
     hfile1 = new TFile("FitContours_2params_free.root","RECREATE","Fit Contours of the SUSY Paramater Fit with only two params free");
 
@@ -2084,7 +2085,7 @@ void Fittino::calculateLoopLevelValues()
 
   //-------------------------------------------------------------------------
   // Get Contours
-  if (yyGetContours) {
+  if (yyPerformFit && yyGetContours) {
     TFile* hfile = 0;
     hfile = new TFile("FitContours.root","RECREATE","Fit Contours of the SUSY Paramater Fit");
 
@@ -5560,10 +5561,11 @@ void Fittino::simulated_annealing_uncertainties_run_down (TNtuple *ntuple)
 	    n_found = 0;
             for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
 	      cout << yyFittedVec[k].name << " = " << x_min[k] << endl; 
+	      vm[k] = TMath::Abs(xopt[k]-x_min[k]);
               x[k] = x_min[k];
 	      xopt[k] = x_min[k];
 	      xp[k] = x_min[k];
-	      vm[k] = vm_orig[k];
+	      //	      vm[k] = vm_orig[k];
             }	
 	    cout << endl << endl << endl ;
 	    f = -111111111.;

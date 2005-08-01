@@ -424,9 +424,9 @@ xsbr ( sigma_717 br_42 br_42 )                1.54945 +- 0.1 alias 819   # H+ H-
 fitModel mSUGRA
 
 fitParameter TanBeta 10 +- 5
-fitParameter M0 100 +- 50
+fitParameter M0 70 +- 50
 fitParameter M12 250 +- 50
-fitParameter A0 -100 +- 50
+fitParameter A0 -300 +- 50
 fixParameter SignMu 1
 
 #fitModel MSSM
@@ -504,7 +504,7 @@ AdaptiveSimAnn        on
 
 NoBoundsAtAll         off
 
-Calculator            SPHENO  ../theorycodes/SPheno2.2.2/SPheno
+Calculator            SPHENO  ../SPheno2.2.2/SPheno
 
 UseMinos              on
 UseHesse              on

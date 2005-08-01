@@ -82,8 +82,9 @@ int main(int argc, char** argv)
       fittino->calculateLoopLevelValues();
     }
     
-    fittino->writeResults("fittino.out");
-
+    if (yyPerformFit) {
+      fittino->writeResults("fittino.out");
+    }
   }
 
   return 0;
