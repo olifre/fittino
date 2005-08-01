@@ -95,6 +95,7 @@ extern double        yyTempRedSimAnn;
 extern double        yyInitTempSimAnn;
 extern double        yyXscanlow;
 extern double        yyXscanhigh;
+extern double        yyMaxCalculatorTime;
 
 extern unsigned int  yyFitModel;
 

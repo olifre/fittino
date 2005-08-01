@@ -33,6 +33,7 @@
 #include <fstream>
 #include <stdio.h>
 #include <leshouches.h>
+#include <sys/wait.h>
 
 #include <TRandom.h>
 #include <TMath.h>
@@ -2575,13 +2576,80 @@ int callSPheno()
 //  SPheno = popen("./SPheno", "r"); 
 //  pclose (SPheno);
 
-  if (!yyCalculatorPath.compare(""))
-    return_value = system("./SPheno");
-    //    strcpy(programname,"./SPheno");
-    // return_value = checkcall(programname,20);
-  else
-    return_value = system(yyCalculatorPath.c_str());
-    // return_value = checkcall(yyCalculatorPath.c_str(),20);
+
+  int pid = -2;
+  int status = 0;
+  int parent_pid = getpid();
+  int child_pid = 0;
+  // printf("Process %d about to fork a child.\n", parent_pid  );
+
+  /*
+   * Get a child process.
+   */
+  if ((pid = fork()) < 0) {
+    perror("fork");
+    exit(1);
+    /* NOTE: perror() produces a short  error  message  on  the  standard
+       error describing the last error encountered during a call to
+       a system or library function.
+    */
+  }
+  
+  if (pid == 0) {
+    /*
+     * The child executes the code inside this if.
+     */
+    child_pid = getpid();
+    // printf("Process %d has forked a child process with pid %d\n", parent_pid, child_pid  );
+    if (!yyCalculatorPath.compare(""))
+      return_value = system("./SPheno");
+    else
+      return_value = system(yyCalculatorPath.c_str());
+//    for ( unsigned int i = 0; i < 5; i++ ) {
+//      sleep (1);
+//      cout << "child is doing nothing but making noise..." << endl;
+//    }
+//    return_value = 250;
+//    sleep (15);
+    exit (return_value);
+  }
+  else {
+    /*
+     * The parent executes this
+     */
+    int spheno_counter = 0;
+    while (1) {
+      usleep (100000);
+      spheno_counter++;
+      //      printf("waiting for SPheno with status = %d and pid = %d\n",status, pid);
+      if (waitpid (pid, &status, WNOHANG) == pid) {
+	// printf("child process finished, status = %d\n", WEXITSTATUS(status));
+	sleep (1);
+	break;
+      } 
+      if ( yyMaxCalculatorTime < (float)spheno_counter/10. ) {
+	printf("killing child process %d due to too much time\n",pid);
+	kill (pid, 9);
+	waitpid (-1, &status, 0);
+	return(1);
+      }
+    }
+    // while (waitpid (-1, &status, 0) != pid) {
+    //   sleep (2);
+    //   printf("waiting for SPheno with status = %d and pid = %d\n",status, pid);
+    // }
+  }
+
+  return_value = WEXITSTATUS(status);
+  cout << "SPheno returned with return value " << return_value << endl;
+
+
+//  if (!yyCalculatorPath.compare(""))
+//    return_value = system("./SPheno");
+//  //    strcpy(programname,"./SPheno");
+//  // return_value = checkcall(programname,20);
+//  else
+//    return_value = system(yyCalculatorPath.c_str());
   if (return_value > 0) {
     return(return_value);
   }

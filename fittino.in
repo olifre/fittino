@@ -504,7 +504,7 @@ AdaptiveSimAnn        on
 
 NoBoundsAtAll         off
 
-Calculator            SPHENO  ../SPheno2.2.2/SPheno
+Calculator            SPHENO  ./SPheno
 
 UseMinos              on
 UseHesse              on

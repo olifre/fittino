@@ -159,6 +159,9 @@ double        yybsg = -10000.;
 double        yygmin2 = -10000.;
 double        yydrho  = -10000.;
 
+double        yyMaxCalculatorTime = 20.;
+
+
 %}
 
 %union {
@@ -227,6 +230,10 @@ input:
 		else if (!strcmp($2,"NumberOfDirections")) {
 		  // cout << "FOUND NumberOfDirections "<<$3<<endl;
 		  yyNumberOfDirections = (int)$3;
+                }
+                // yyMaxCalculatorTime
+		else if (!strcmp($2,"MaxCalculatorTime")) {
+		  yyMaxCalculatorTime = (double)$3;
                 }
                 else if (!strcmp($2,"NumberPulls")) {
 		  // cout << "FOUND NumberPulls "<<$3<<endl;
