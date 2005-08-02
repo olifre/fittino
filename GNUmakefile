@@ -32,7 +32,7 @@ ROOTGLIBS         = $(shell root-config --glibs)
 
 CXX               = g++
 CXXFLAGS          = -g -Wall -pedantic -ansi -Wno-long-long \
-                    -Wshadow -fPIC -I. -I$(ROOTSYS)/include
+                    -Wshadow -fPIC -I. -I$(ROOTSYS)/include 
 LD                = g++
 LDFLAGS           = -g -Wall -pedantic -ansi -Wno-long-long -Wshadow
 # -pedantic -ansi

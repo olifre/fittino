@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include <leshouches.h>
 #include <sys/wait.h>
+#include <signal.h>
 
 #include <TRandom.h>
 #include <TMath.h>
@@ -47,6 +48,8 @@
 #include <sys/sysinfo.h>
 #include <sys/time.h>
 #include <unistd.h>
+// #include <sys/types.h>
+
 
 MeasuredValue fitterM1;
 MeasuredValue fitterM2;
@@ -2579,7 +2582,6 @@ int callSPheno()
 
   int pid = -2;
   int status = 0;
-  int parent_pid = getpid();
   int child_pid = 0;
   // printf("Process %d about to fork a child.\n", parent_pid  );
 
@@ -2600,17 +2602,24 @@ int callSPheno()
      * The child executes the code inside this if.
      */
     child_pid = getpid();
+    char *argv[2];
+    argv[0] = "SPheno";
+    argv[1] = 0;
     // printf("Process %d has forked a child process with pid %d\n", parent_pid, child_pid  );
-    if (!yyCalculatorPath.compare(""))
-      return_value = system("./SPheno");
-    else
-      return_value = system(yyCalculatorPath.c_str());
-//    for ( unsigned int i = 0; i < 5; i++ ) {
-//      sleep (1);
-//      cout << "child is doing nothing but making noise..." << endl;
-//    }
-//    return_value = 250;
-//    sleep (15);
+    if (!yyCalculatorPath.compare("")) {
+      // return_value = system("./SPheno");
+      return_value = execve("./SPheno", argv, environ );
+    }
+    else {
+      return_value = execve(yyCalculatorPath.c_str(), argv, environ );
+      // return_value = system(yyCalculatorPath.c_str());
+    }
+    //    for ( unsigned int i = 0; i < 5; i++ ) {
+    //      sleep (1);
+    //      cout << "child is doing nothing but making noise..." << endl;
+    //    }
+    //    return_value = 250;
+    //    sleep (15);
     exit (return_value);
   }
   else {
