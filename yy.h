@@ -72,7 +72,7 @@ extern bool             yyNoBoundsAtAll;
 extern bool          yySimAnnUncertainty;
 extern bool          yySimAnnUncertaintyRunDown;
 extern bool          yyRandomDirUncertainties;
-
+extern bool          yyPerformSingleFits;
 
 typedef struct {
   string name;

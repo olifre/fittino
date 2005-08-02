@@ -131,6 +131,7 @@ bool          yyNoBoundsAtAll = false;
 bool          yySimAnnUncertainty = false;
 bool          yySimAnnUncertaintyRunDown = false;
 bool          yyRandomDirUncertainties = false;
+bool          yyPerformSingleFits = false;
 
 unsigned int yyCalculator;
 string       yyCalculatorPath = "";
@@ -174,7 +175,7 @@ double        yyMaxCalculatorTime = 20.;
 %token <real> T_NUMBER
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
 %token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS
-%token T_BLOCK T_SCALE T_DECAY T_NEWLINE T_BR T_XS T_CALCULATOR T_XSBR T_BRRATIO
+%token T_BLOCK T_SCALE T_DECAY T_NEWLINE T_BR T_LEO T_XS T_CALCULATOR T_XSBR T_BRRATIO
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH
  
 %type <name> sentence
@@ -572,7 +573,11 @@ input:
 		  if (!strcmp($2, "RandomDirUncertainties")) {
 		      if ($3 == on) yyRandomDirUncertainties = true;
 		      else yyRandomDirUncertainties = false;
-		  }
+		  } // yyPerformSingleFits
+ 		  if (!strcmp($2, "PerformSingleFits")) {
+		      if ($3 == on) yyPerformSingleFits = true;
+		      else yyPerformSingleFits = false;
+		  } 
 	      }
 	    | input T_CALCULATOR T_WORD
 	      {
@@ -801,6 +806,28 @@ input:
 		  yyMeasuredVec.push_back(tmpValue);
 //		  cout << "Added branching ratio " << tmpValue.name << endl;
 	          strcpy($6,"");
+	      }
+	     | input T_LEO T_BRA T_WORD T_KET value err T_ALIAS T_NUMBER
+	      {
+		  MeasuredValue tmpValue;
+                  tmpValue.nofit = false;
+		  tmpValue.type  = LEObs;
+		  tmpValue.theovalue  = 0;
+		  tmpValue.name  = $4;
+		  if (!strcmp($4, "bsg")) {
+		    tmpValue.id    = bsg;
+		  } else if (!strcmp($4, "gmin2")) {
+		    tmpValue.id    = gmin2;
+		  } else if (!strcmp($4, "drho")) {
+		    tmpValue.id    = drho;
+		  }
+		  tmpValue.value = $6*1E9;
+		  tmpValue.error = $7*1E9;
+		  tmpValue.alias = (int)$9;
+		  tmpValue.bound_up = 1e+6;
+		  tmpValue.bound_low = -1e+6;
+		  yyMeasuredVec.push_back(tmpValue);
+		  //		  cout << "Added le obs " << tmpValue.name << " = " << tmpValue.value << endl;
 	      }
 	     | input T_BR T_BRA T_WORD T_GOESTO sentence T_KET T_ALIAS T_NUMBER
 	      {
@@ -1523,7 +1550,7 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
                   if (!strcmp($2, "SPhenoLowEnergy")) {
                       for (unsigned int i=0; i<tmpParams.size(); i++) {
 			if ((unsigned int)tmpParams[i][0]==1) {
-     			  yybsg=tmpParams[i][1];     
+     			  yybsg=tmpParams[i][1]/10000.;     
 			}
 			else if ((unsigned int)tmpParams[i][0]==2) {
      			  yygmin2=tmpParams[i][1];     

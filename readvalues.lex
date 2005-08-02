@@ -113,6 +113,9 @@ Q[ \t]*=                  {
 			      if (!strcmp(yytext, "BR")) {
 				  return T_BR;
 			      }
+			      if (!strcmp(yytext, "LEObs")) {
+				  return T_LEO;
+			      }
                               strcpy(yylval.name, yytext);
                               return T_KEY;
                           }

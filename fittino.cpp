@@ -1654,7 +1654,7 @@ void Fittino::calculateLoopLevelValues()
 	fitter->mnexcm("RELEASE", arguments, 1,ierr);
       }
       for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
-	yyMeasuredVec[i].temp_nofit = false;
+	yyMeasuredVec[i].temp_nofit = false;  
       }  
 
       if (yySepFitTanbX) {
@@ -1764,6 +1764,124 @@ void Fittino::calculateLoopLevelValues()
       arguments[0] = 200000;
       fitter->mnexcm("MINOS", arguments, 1,ierr);
     }  
+  }
+
+  if (yyPerformSingleFits) {
+    fstream singleFitsFile;
+    cout << "Starting single Fits" << endl;
+
+    if (!yyPerformFit) {
+      fitter = new TMinuit (yyFittedVec.size());
+      fitter->SetFCN(fitterFCN);
+      
+      arguments[0] = 0;
+      fitter->mnexcm("SET PRI", arguments, 1,ierr);
+      arguments[0] = 1.;
+      fitter->mnexcm("SET ERR", arguments, 1,ierr);
+      
+      for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+	cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+	cout << "adding parameter " << yyFittedVec[i].name << endl;
+	cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+	if ( yyFittedVec[i].error <= 0. ) {
+	  fitter->mnparm(i, yyFittedVec[i].name.c_str(),
+			 yyFittedVec[i].value, TMath::Abs(yyFittedVec[i].value/10.), 
+			 yyFittedVec[i].bound_low, yyFittedVec[i].bound_up,ierr);
+	  saved_uncertainties.push_back(TMath::Abs(yyFittedVec[i].value/10.));
+	} else {
+	  fitter->mnparm(i, yyFittedVec[i].name.c_str(),
+			 yyFittedVec[i].value, yyFittedVec[i].error, 
+			 yyFittedVec[i].bound_low, yyFittedVec[i].bound_up,ierr);
+	  saved_uncertainties.push_back(yyFittedVec[i].error);
+	}
+      }
+    }
+
+    singleFitsFile.open ("singleFitsResults.txt",ofstream::out);
+
+    Double_t fittedPar[30];
+    Double_t fittedParErr[30][300];
+    for (unsigned int ipar = 0; ipar < yyFittedVec.size(); ipar++) {
+      singleFitsFile << endl << "======================================="<< endl;
+      singleFitsFile << "Testing Parameter " << yyFittedVec[ipar].name << endl << endl;
+      // fix all other parameters
+      for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+	if ( i != ipar ) { 
+	  arguments[0] = i+1;
+	  cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
+	  fitter->mnexcm("FIX", arguments, 1,ierr);
+	  cout << "fixing done" << endl;
+	}
+      }
+      Double_t fivelargest[5];
+      Int_t fivelargestint[5];
+      for (unsigned int j = 0; j < 5; j++) {
+	fivelargest[j] = 10000000000.;
+	fivelargestint[j] = 100000000000;
+      }
+      // loop over obersvables
+      for (unsigned int iobs = 0; iobs < yyMeasuredVec.size(); iobs++) {
+	// fix unneeded observables
+	if ( !yyMeasuredVec[iobs].name.compare("alphas")
+	     || !yyMeasuredVec[iobs].name.compare("alphaem")
+	     || !yyMeasuredVec[iobs].name.compare("sin2ThetaW") 
+	     || !yyMeasuredVec[iobs].name.compare("massZ")
+	     || !yyMeasuredVec[iobs].name.compare("massTau")
+	     || !yyMeasuredVec[iobs].name.compare("massCharm") 
+ 	     || !yyMeasuredVec[iobs].name.compare("massBottom") ) {
+	  continue;
+	} 
+	for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
+	  if ( i != iobs ) {
+	    yyMeasuredVec[i].temp_nofit = true;
+	  }
+	}
+	// fit
+	arguments[0] = 2;
+	fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
+	arguments[0] = 20000;
+	arguments[1] = 0.1;
+	fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
+	// get result
+	fitter->mnstat(amin, edm, errdef, nvpar, nparx, ierr);
+	if (ierr == 3) {
+	  fitter->mnpout(ipar,parname,fittedPar[ipar],fittedParErr[ipar][iobs],vlow,vhigh,ierr);
+	} else {
+	  fittedParErr[ipar][iobs] = 10000000.;
+	  fittedPar[ipar] = yyFittedVec[ipar].value;
+	}
+	singleFitsFile << yyMeasuredVec[iobs].name << " " << yyMeasuredVec[iobs].alias << " :   " << fittedParErr[ipar][iobs] << endl; 
+	for (int k = 4; k > -1; k--) {
+	  if (fabs(fittedParErr[ipar][iobs])<fivelargest[k]) {
+	    // fprintf (stderr, "correlation from %s is stronger than previous on pos %d\n",obsnames[j],k);
+	    for (unsigned int l = 0; l < k; l++) {
+	      fivelargest[l]=fivelargest[l+1];
+	      fivelargestint[l]=fivelargestint[l+1];
+	    }
+	    fivelargest[k]=fabs(fittedParErr[ipar][iobs]);
+	    fivelargestint[k]=iobs;
+	    break;
+	  }
+	}
+	// unfix observables
+	for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
+	  yyMeasuredVec[i].temp_nofit = false;
+	}  
+      }
+      // release all other parameters
+      for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+	if ( i != ipar ) {
+	  arguments[0] = i+1;
+	  fitter->mnexcm("RELEASE", arguments, 1,ierr);
+	}
+      }
+      // evaluate results
+      singleFitsFile << "======================================="<< endl;
+      for (int k = 4; k > -1; k--) {
+	singleFitsFile << yyMeasuredVec[fivelargestint[k]].name << " " << yyMeasuredVec[fivelargestint[k]].alias << " :   " << fittedParErr[ipar][fivelargestint[k]] << endl; ;
+      }
+    }
+    singleFitsFile.close();
   }
 
   if (yyScanParameters) {
@@ -4130,6 +4248,11 @@ void   ReadLesHouches()
   bool already_used = false;
   bool dependencies_theoset = false;
 
+  // test reading of low energy measurements
+  // cout << "yybsg from SPheno: " << yybsg << endl;
+  // cout << "yygmin2 from SPheno: " << yygmin2 << endl;
+  // cout << "yydrho from SPheno: " << yydrho << endl;
+
   used_products.clear();
   // loop over yyMeasuredVec and fill theovalue
   if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
@@ -4140,6 +4263,21 @@ void   ReadLesHouches()
       //      cout << "foubd a mass" << endl;
       yyMeasuredVec[i].theovalue = yyMass[yyMeasuredVec[i].id];
       yyMeasuredVec[i].theoset = true;
+    }
+    else if (yyMeasuredVec[i].type == LEObs) {
+      if (yyMeasuredVec[i].id == bsg) {
+	yyMeasuredVec[i].theovalue = yybsg;
+	yyMeasuredVec[i].theoset = true;
+	//	cout << "bsg "  << yyMeasuredVec[i].theovalue <<  " " << yyMeasuredVec[i].value  << " +- "  << yyMeasuredVec[i].error << endl;
+      }
+      else if (yyMeasuredVec[i].id == gmin2) {
+	yyMeasuredVec[i].theovalue = yygmin2*1E9; 
+	yyMeasuredVec[i].theoset = true;
+      }
+      else if (yyMeasuredVec[i].id == drho) {
+	yyMeasuredVec[i].theovalue = yydrho;
+	yyMeasuredVec[i].theoset = true;
+      }
     }
     else if (yyMeasuredVec[i].type == Pwidth) {
       yyMeasuredVec[i].theovalue = branching_ratios[yyMeasuredVec[i].id].TWidth;
