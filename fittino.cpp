@@ -34,7 +34,7 @@
 #include <stdio.h>
 #include <leshouches.h>
 #include <sys/wait.h>
-#include <signal.h>
+#include <sys/signal.h>
 
 #include <TRandom.h>
 #include <TMath.h>
@@ -47,9 +47,9 @@
 #include <TH1.h>
 #include <sys/sysinfo.h>
 #include <sys/time.h>
-#include <unistd.h>
+#include <sys/unistd.h>
 // #include <sys/types.h>
-
+extern char **environ;
 
 MeasuredValue fitterM1;
 MeasuredValue fitterM2;
@@ -2628,12 +2628,11 @@ int callSPheno()
      */
     int spheno_counter = 0;
     while (1) {
-      usleep (100000);
       spheno_counter++;
       //      printf("waiting for SPheno with status = %d and pid = %d\n",status, pid);
       if (waitpid (pid, &status, WNOHANG) == pid) {
 	// printf("child process finished, status = %d\n", WEXITSTATUS(status));
-	sleep (1);
+	// sleep (1);
 	break;
       } 
       if ( yyMaxCalculatorTime < (float)spheno_counter/10. ) {
@@ -2642,6 +2641,7 @@ int callSPheno()
 	waitpid (-1, &status, 0);
 	return(1);
       }
+      usleep (100000);
     }
     // while (waitpid (-1, &status, 0) != pid) {
     //   sleep (2);

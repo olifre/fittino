@@ -31,10 +31,10 @@ ROOTGLIBS         = $(shell root-config --glibs)
 
 
 CXX               = g++
-CXXFLAGS          = -g -Wall -pedantic -ansi -Wno-long-long \
+CXXFLAGS          = -g -Wall -pedantic -Wno-long-long \
                     -Wshadow -fPIC -I. -I$(ROOTSYS)/include 
 LD                = g++
-LDFLAGS           = -g -Wall -pedantic -ansi -Wno-long-long -Wshadow
+LDFLAGS           = -g -Wall -pedantic -Wno-long-long -Wshadow
 # -pedantic -ansi
 
 # LIBS             = $(ROOTLIBS) -lfl libsusygen_call_test.a susygen/libsusygen.a  suspect/libsuspect.a ${CERNLIB}
