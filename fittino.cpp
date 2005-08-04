@@ -1831,6 +1831,9 @@ void Fittino::calculateLoopLevelValues()
  	     || !yyMeasuredVec[iobs].name.compare("massBottom") ) {
 	  continue;
 	} 
+	if (yyMeasuredVec[iobs].nofit) {
+	  continue;
+	}
 	for (unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
 	  if ( i != iobs ) {
 	    yyMeasuredVec[i].temp_nofit = true;
@@ -1850,6 +1853,10 @@ void Fittino::calculateLoopLevelValues()
 	  fittedParErr[ipar][iobs] = 10000000.;
 	  fittedPar[ipar] = yyFittedVec[ipar].value;
 	}
+	// reset value
+	fitter->mnparm(ipar, yyFittedVec[ipar].name.c_str(),
+			 yyFittedVec[ipar].value, yyFittedVec[ipar].error, 
+			 yyFittedVec[ipar].bound_low, yyFittedVec[ipar].bound_up,ierr);
 	singleFitsFile << yyMeasuredVec[iobs].name << " " << yyMeasuredVec[iobs].alias << " :   " << fittedParErr[ipar][iobs] << endl; 
 	for (int k = 4; k > -1; k--) {
 	  if (fabs(fittedParErr[ipar][iobs])<fivelargest[k]) {
