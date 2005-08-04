@@ -1817,7 +1817,7 @@ void Fittino::calculateLoopLevelValues()
       Int_t fivelargestint[5];
       for (unsigned int j = 0; j < 5; j++) {
 	fivelargest[j] = 10000000000.;
-	fivelargestint[j] = 100000000000;
+	fivelargestint[j] = 1000000000;
       }
       // loop over obersvables
       for (unsigned int iobs = 0; iobs < yyMeasuredVec.size(); iobs++) {
