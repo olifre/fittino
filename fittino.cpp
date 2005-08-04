@@ -4392,41 +4392,51 @@ void   ReadLesHouches()
       }
       // real edge 1: m_ll, m_qll, mqledgemin; m_chi01 m_chi02 m_lR (see LHCILC, page 214) (5.9, 5.10, 5.11)
       else if (yyMeasuredVec[i].id == 3) {
-	cout << "edge: " << yyMeasuredVec[i].name << " " 
-	     << yyMeasuredVec[i].type << " " 
-	     << yyMeasuredVec[i].id << " " 
-	     << yyMeasuredVec[i].value  << " " 
-	     << yyMeasuredVec[i].error << " " 
-	     << yyMeasuredVec[i].alias << " " << endl;
-	cout << "evaluating edge 3:" << yyMass[yyMeasuredVec[i].daughters[0]] << " "
-	     << yyMass[yyMeasuredVec[i].daughters[1]] << " " 
-	     << yyMass[yyMeasuredVec[i].daughters[2]] << " "<< endl;
-	yyMeasuredVec[i].theovalue = TMath::Sqrt((sqr(yyMass[yyMeasuredVec[i].daughters[1]])
-						  - sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
-						 *(sqr(yyMass[yyMeasuredVec[i].daughters[2]])
-						  - sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
-						 /(sqr(yyMass[yyMeasuredVec[i].daughters[2]])));
-	cout << "edge = " << yyMeasuredVec[i].theovalue << endl;
+	// cout << "edge: " << yyMeasuredVec[i].name << " " 
+	//      << yyMeasuredVec[i].type << " " 
+	//      << yyMeasuredVec[i].id << " " 
+	//      << yyMeasuredVec[i].value  << " " 
+	//      << yyMeasuredVec[i].error << " " 
+	//      << yyMeasuredVec[i].alias << " " << endl;
+	// cout << "evaluating edge 3:" << yyMass[yyMeasuredVec[i].daughters[0]] << " "
+	//      << yyMass[yyMeasuredVec[i].daughters[1]] << " " 
+	//      << yyMass[yyMeasuredVec[i].daughters[2]] << " "<< endl;
+	double tmpvalue = ((sqr(yyMass[yyMeasuredVec[i].daughters[1]])
+			   - sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
+			   *(sqr(yyMass[yyMeasuredVec[i].daughters[2]])
+			     - sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
+			   /(sqr(yyMass[yyMeasuredVec[i].daughters[2]])));
+	if (tmpvalue > 0) {
+	  yyMeasuredVec[i].theovalue = TMath::Sqrt(tmpvalue);
+	} else {
+	  yyMeasuredVec[i].theovalue = 1.1E11;
+	}
+	// cout << "edge = " << yyMeasuredVec[i].theovalue << endl;
 	yyMeasuredVec[i].theoset = true;
       } 
-      // real edge 2: mqledgemax; m_chi01 m_chi02 m_lR m_qL (see LHCILC, page 214) (5.12)
+      // real edge 3: mqledgemax; m_chi01 m_chi02 m_lR m_qL (see LHCILC, page 214) (5.13)
       else if (yyMeasuredVec[i].id == 4) {
-	cout << "edge: " << yyMeasuredVec[i].name << " " 
-	     << yyMeasuredVec[i].type << " " 
-	     << yyMeasuredVec[i].id << " " 
-	     << yyMeasuredVec[i].value  << " " 
-	     << yyMeasuredVec[i].error << " " 
-	     << yyMeasuredVec[i].alias << " " << endl;
-	cout << "evaluating edge 4:" << yyMass[yyMeasuredVec[i].daughters[0]] << " "
-	     << yyMass[yyMeasuredVec[i].daughters[1]] << " " 
-	     << yyMass[yyMeasuredVec[i].daughters[2]] << " "
-	     << yyMass[yyMeasuredVec[i].daughters[3]] << " " << endl;
-	yyMeasuredVec[i].theovalue = TMath::Sqrt((sqr(yyMass[yyMeasuredVec[i].daughters[3]])
-						  - sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
-						 *(sqr(yyMass[yyMeasuredVec[i].daughters[2]])
-						  - sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
-						 /(sqr(yyMass[yyMeasuredVec[i].daughters[2]])));
-	cout << "edge = " << yyMeasuredVec[i].theovalue << endl;
+	// cout << "edge: " << yyMeasuredVec[i].name << " " 
+	//     << yyMeasuredVec[i].type << " " 
+	//      << yyMeasuredVec[i].id << " " 
+	//     << yyMeasuredVec[i].value  << " " 
+	//     << yyMeasuredVec[i].error << " " 
+	//      << yyMeasuredVec[i].alias << " " << endl;
+	// cout << "evaluating edge 4:" << yyMass[yyMeasuredVec[i].daughters[0]] << " "
+	//      << yyMass[yyMeasuredVec[i].daughters[1]] << " " 
+	//      << yyMass[yyMeasuredVec[i].daughters[2]] << " "
+	//      << yyMass[yyMeasuredVec[i].daughters[3]] << " " << endl;
+	double tmpvalue = ((sqr(yyMass[yyMeasuredVec[i].daughters[3]])
+			    - sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
+			   *(sqr(yyMass[yyMeasuredVec[i].daughters[2]])
+			     - sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
+			   /(sqr(yyMass[yyMeasuredVec[i].daughters[2]])));
+	if (tmpvalue > 0) {
+	  yyMeasuredVec[i].theovalue = TMath::Sqrt(tmpvalue);
+	} else {
+	  yyMeasuredVec[i].theovalue = 1.1E11;
+	}
+	// cout << "edge = " << yyMeasuredVec[i].theovalue << endl;
 	yyMeasuredVec[i].theoset = true;
       }      
       else if (yyMeasuredVec[i].id == 5) {
@@ -4440,34 +4450,39 @@ void   ReadLesHouches()
 	//     << yyMass[yyMeasuredVec[i].daughters[1]] << " " 
 	//     << yyMass[yyMeasuredVec[i].daughters[2]] << " "
 	//     << yyMass[yyMeasuredVec[i].daughters[3]] << " " << endl;
-	yyMeasuredVec[i].theovalue = TMath::Sqrt(
-						 (
-						  (sqr(yyMass[yyMeasuredVec[i].daughters[3]])
-						   + sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
-						  *(sqr(yyMass[yyMeasuredVec[i].daughters[1]])
-						    - sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
-						  *(sqr(yyMass[yyMeasuredVec[i].daughters[2]])
-						    - sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
-						  - (sqr(yyMass[yyMeasuredVec[i].daughters[3]])
-						     - sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
-						  *TMath::Sqrt(
-							       sqr((sqr(yyMass[yyMeasuredVec[i].daughters[1]])
-								    + sqr(yyMass[yyMeasuredVec[i].daughters[2]])))
-							       *sqr((sqr(yyMass[yyMeasuredVec[i].daughters[2]])
-								     + sqr(yyMass[yyMeasuredVec[i].daughters[0]])))
-							       -16.*sqr(yyMass[yyMeasuredVec[i].daughters[1]])
-							       *sqr(sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
-							       *sqr(yyMass[yyMeasuredVec[i].daughters[0]])
-							       )
-						  + 2.*sqr(yyMass[yyMeasuredVec[i].daughters[2]])
-						  *(sqr(yyMass[yyMeasuredVec[i].daughters[3]])
-						    - sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
-						  *(sqr(yyMass[yyMeasuredVec[i].daughters[1]])
-						    - sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
-						  )
-						 /(4.*sqr(yyMass[yyMeasuredVec[i].daughters[2]]
-							  *yyMass[yyMeasuredVec[i].daughters[1]]))
-						 );
+	double tmpvalue = (
+			   (
+			    (sqr(yyMass[yyMeasuredVec[i].daughters[3]])
+			     + sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
+			    *(sqr(yyMass[yyMeasuredVec[i].daughters[1]])
+			      - sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
+			    *(sqr(yyMass[yyMeasuredVec[i].daughters[2]])
+			      - sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
+			    - (sqr(yyMass[yyMeasuredVec[i].daughters[3]])
+			       - sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
+			    *TMath::Sqrt(
+					 sqr((sqr(yyMass[yyMeasuredVec[i].daughters[1]])
+					      + sqr(yyMass[yyMeasuredVec[i].daughters[2]])))
+					 *sqr((sqr(yyMass[yyMeasuredVec[i].daughters[2]])
+					       + sqr(yyMass[yyMeasuredVec[i].daughters[0]])))
+					 -16.*sqr(yyMass[yyMeasuredVec[i].daughters[1]])
+					 *sqr(sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
+					 *sqr(yyMass[yyMeasuredVec[i].daughters[0]])
+					 )
+			    + 2.*sqr(yyMass[yyMeasuredVec[i].daughters[2]])
+			    *(sqr(yyMass[yyMeasuredVec[i].daughters[3]])
+			      - sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
+			    *(sqr(yyMass[yyMeasuredVec[i].daughters[1]])
+			      - sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
+			    )
+			   /(4.*sqr(yyMass[yyMeasuredVec[i].daughters[2]]
+				    *yyMass[yyMeasuredVec[i].daughters[1]]))
+			   );
+	if (tmpvalue > 0) {
+	  yyMeasuredVec[i].theovalue = TMath::Sqrt(tmpvalue);
+	} else {
+	  yyMeasuredVec[i].theovalue = 1.1E11;
+	}
 	// cout << "edge = " << yyMeasuredVec[i].theovalue << endl;
 	yyMeasuredVec[i].theoset = true;
       }            
