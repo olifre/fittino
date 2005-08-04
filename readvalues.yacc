@@ -261,11 +261,16 @@ input:
 		      tmpValue.error = -1;
 		      tmpValue.theovalue  = 0;
 		      tmpValue.alias = 0;
+		      tmpValue.id = 0;
 		      tmpValue.bound_low = 0.;
 		      tmpValue.bound_up = 0.;
 		      if (!strncmp($2, "mass", 4))tmpValue.type = mass;
 		      else tmpValue.type = other;
 		      yyMeasuredVec.push_back(tmpValue);
+		      if (!strncmp($2, "cos", 3)) {
+			cout << "COS: " << tmpValue.name << " " << tmpValue.type << 
+			  " " << other << " " << Pedge << endl;
+		      }
 //		      cout << "filling "<< $2 <<endl;
 		  }
                 }
@@ -301,9 +306,13 @@ input:
 			  tmpValue.bound_low = 0.;
 			  tmpValue.bound_up = 0.;
 			  tmpValue.alias = 0;
+			  tmpValue.id = 0;
 			  if (!strncmp($2, "mass", 4))tmpValue.type = mass;
 			  else tmpValue.type = other;
 			  yyMeasuredVec.push_back(tmpValue);
+			  if (!strncmp($2, "cos", 3)) {
+			    cout << "COS: " << tmpValue.name << " " << tmpValue.type << endl;
+			  }
 		      }
                   }
 	      }
@@ -686,9 +695,12 @@ input:
 		      tmpValue.name = $3;
 		      tmpValue.value = $4;
 		      tmpValue.error = $5;
+		      tmpValue.id = 0;
 	              tmpValue.bound_low = -1.E+6;
 	              tmpValue.bound_up = 1.E+6;
                       tmpValue.nofit = true;
+		      if (!strncmp($3, "mass", 4)) tmpValue.type = mass;
+		      else if (!strncmp($3, "cos", 3)) tmpValue.type = other;
 		      yyMeasuredVec.push_back(tmpValue);
 		  }
 		  else if (!strcmp($2, "fitParameter")) {
@@ -716,18 +728,18 @@ input:
 		  MeasuredValue tmpValue;
                   tmpValue.nofit = false;
 		  tmpValue.theovalue  = 0;
-		  tmpValue.name = "edge ";
-		  tmpValue.name.append($4);
+		  tmpValue.name = "edge type ";
+		  char srtt[20];
+		  sprintf(srtt,"%d",(int)$3);
+		  tmpValue.name.append(srtt);
+		  tmpValue.name.append(" alias ");
+		  sprintf(srtt,"%d:",(int)$8);
+		  tmpValue.name.append(srtt);
 		  tmpValue.type  = Pedge;
 		  tmpValue.id    = (int)$3;
-		  if (tmpValue.id==1) {
-                    tmpValue.name.append("+ ");
-                  } 
-	          else if (tmpValue.id==2) {
-		    tmpValue.name.append("- ");
-                  } else {
+		  if (tmpValue.id<1 || tmpValue.id>5) {
                     yyerror("edge type not implemented");
-		  }
+                  } 
 		  string str;
 	          str.erase();
 		  str = $4;
@@ -765,7 +777,7 @@ input:
 		  tmpValue.bound_low = 0.;
 		  yyMeasuredVec.push_back(tmpValue);
 		  cout << "added edge" << endl;
-
+		  strcpy($4,"");
 		}
 		
               }
