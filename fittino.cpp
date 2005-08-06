@@ -2559,7 +2559,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
   
   // HERE: READ THE LES HOUCHES FILE
   ReadLesHouches();
-  
+
   if (yyCalculatorError) {
     cerr << "Exiting fitterFCN because LesHouches outfile did not exist" << endl;
     f = 111111111111.;
@@ -2946,7 +2946,6 @@ void WriteLesHouches(double* x)
     }
     //  cout << "writeLesHouches: local_tanb = "<< local_tanb << endl;
     //  cout << "writeLesHouches: local_mu = "<< local_mu << endl;
-
 
     LesHouchesOutfile << "BLOCK MODSEL" << endl;
     LesHouchesOutfile << "    1 0 # general MSSM" << endl;

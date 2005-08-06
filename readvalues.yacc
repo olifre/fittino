@@ -361,7 +361,7 @@ input:
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if ((yyMeasuredVec[k].type == xsection) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    i = k;
-                            cout << "found correlation with xs " <<  yyMeasuredVec[k].name << endl;
+//                            cout << "found correlation with xs " <<  yyMeasuredVec[k].name << endl;
 			    break;
 			  }
                         }
@@ -373,7 +373,7 @@ input:
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    i = k;
-                            cout << "found correlation with br " <<  yyMeasuredVec[k].name << endl;
+//                            cout << "found correlation with br " <<  yyMeasuredVec[k].name << endl;
 			    break;
 			  }
                         }
@@ -385,7 +385,7 @@ input:
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if ((yyMeasuredVec[k].type == Pedge) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    i = k;
-                            cout << "found correlation with edge " <<  yyMeasuredVec[k].name << endl;
+//                            cout << "found correlation with edge " <<  yyMeasuredVec[k].name << endl;
 			    break;
 			  }
                         }
@@ -397,7 +397,7 @@ input:
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if ((yyMeasuredVec[k].type == Pwidth) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    i = k;
-                            cout << "found correlation with width " <<  yyMeasuredVec[k].name << endl;
+//                            cout << "found correlation with width " <<  yyMeasuredVec[k].name << endl;
 			    break;
 			  }
                         }
@@ -406,7 +406,7 @@ input:
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if (!yyMeasuredVec[k].name.compare($3)) {
 			    i = k;
-                            cout << "found correlation with " <<  yyMeasuredVec[k].name << endl;
+//                            cout << "found correlation with " <<  yyMeasuredVec[k].name << endl;
 			    break;
 			  }
                         }			
@@ -418,7 +418,7 @@ input:
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if ((yyMeasuredVec[k].type == xsection) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    j = k;
-                            cout << "found correlation with xs " <<  yyMeasuredVec[k].name << endl;
+//                            cout << "found correlation with xs " <<  yyMeasuredVec[k].name << endl;
 			    break;
 			  }
                         }
@@ -430,7 +430,7 @@ input:
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    j = k;
-                            cout << "found correlation with br " <<  yyMeasuredVec[k].name << endl;
+//                            cout << "found correlation with br " <<  yyMeasuredVec[k].name << endl;
 			    break;
 			  }
                         }
@@ -442,7 +442,7 @@ input:
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if ((yyMeasuredVec[k].type == Pedge) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    j = k;
-                            cout << "found correlation with edge " <<  yyMeasuredVec[k].name << endl;
+//                            cout << "found correlation with edge " <<  yyMeasuredVec[k].name << endl;
 			    break;
 			  }
                         }
@@ -454,7 +454,7 @@ input:
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if ((yyMeasuredVec[k].type == Pwidth) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    j = k;
-                            cout << "found correlation with width " <<  yyMeasuredVec[k].name << endl;
+//                            cout << "found correlation with width " <<  yyMeasuredVec[k].name << endl;
 			    break;
 			  }
                         }
@@ -463,7 +463,7 @@ input:
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if (!yyMeasuredVec[k].name.compare($4)) {
 			    j = k;
-                            cout << "found correlation with " <<  yyMeasuredVec[k].name << endl;
+//                            cout << "found correlation with " <<  yyMeasuredVec[k].name << endl;
 			    break;
 			  }
                         }			
@@ -477,9 +477,9 @@ input:
 	      {
 		  if (!strcmp($2, "XScanRange")) {
 		    yyXscanlow = $3;
-		    cout << "yyXscanlow = " << yyXscanlow << endl;
+//		    cout << "yyXscanlow = " << yyXscanlow << endl;
 		    yyXscanhigh = $4;
-		    cout << "yyXscanhigh = " << yyXscanhigh << endl;
+//		    cout << "yyXscanhigh = " << yyXscanhigh << endl;
 		  }
 	      }
 	    | input T_KEY T_SWITCHSTATE
@@ -993,7 +993,7 @@ input:
 		  tmpValue.alias = (int)$9;
 		  tmpValue.bound_up = 1e+9;
 		  tmpValue.bound_low = 0.;
-		  cout << "xsbr found" << endl;
+//		  cout << "xsbr found" << endl;
 		  // break sentence in pieces:
 		  string str;
 	          str.erase();
@@ -1023,7 +1023,7 @@ input:
 			if ((yyMeasuredVec[k].type == xsection) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			  i = k;
 			  found_br = true;
-			  cout << "found xs " <<  yyMeasuredVec[k].name << endl;
+//			  cout << "found xs " <<  yyMeasuredVec[k].name << endl;
 			  break;
 			}
 		      }
@@ -1032,7 +1032,7 @@ input:
 			yyerror (" ");			
 		      }
 		      // remove cross section from the list
-		      cout << "removing xs from the list" << endl;
+//		      cout << "removing xs from the list" << endl;
 		      yyMeasuredVec[i].nofit = true;
 		      tmpValue.sqrts = yyMeasuredVec[i].sqrts;
 		      tmpValue.products.push_back(i);
@@ -1046,7 +1046,7 @@ input:
 			if ((yyMeasuredVec[k].type == brsum) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			  i = k;
 			  found_br = true;
-			  cout << "found brsum " <<  yyMeasuredVec[k].name << endl;
+//			  cout << "found brsum " <<  yyMeasuredVec[k].name << endl;
 			  break;
 			}
 		      }
@@ -1055,7 +1055,7 @@ input:
 			yyerror (" ");			
 		      }
 		      // remove br from the list
-		      cout << "removing br from the list" << endl;
+//		      cout << "removing br from the list" << endl;
 		      yyMeasuredVec[i].nofit = true;
 		      tmpValue.daughters.push_back(i);
 		    }
@@ -1068,7 +1068,7 @@ input:
 			if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			  i = k;
 			  found_br = true;
-			  cout << "found br " <<  yyMeasuredVec[k].name << endl;
+//			  cout << "found br " <<  yyMeasuredVec[k].name << endl;
 			  break;
 			}
 		      }
@@ -1077,7 +1077,7 @@ input:
 			yyerror (" ");			
 		      }
 		      // remove br from the list
-		      cout << "removing br from the list" << endl;
+//		      cout << "removing br from the list" << endl;
 		      yyMeasuredVec[i].nofit = true;
 		      tmpValue.daughters.push_back(i);
 		    }
@@ -1100,7 +1100,7 @@ input:
 		  tmpValue.alias = (int)$9;
 		  tmpValue.bound_up = 1e+9;
 		  tmpValue.bound_low = 0.;
-		  cout << "brratio found" << endl;
+//		  cout << "brratio found" << endl;
 		  // break sentence in pieces:
 		  string str;
 	          str.erase();
@@ -1136,7 +1136,7 @@ input:
 			if ((yyMeasuredVec[k].type == brsum) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			  i = k;
 			  found_br = true;
-			  cout << "found brsum " <<  yyMeasuredVec[k].name << endl;
+//			  cout << "found brsum " <<  yyMeasuredVec[k].name << endl;
 			  break;
 			}
 		      }
@@ -1145,7 +1145,7 @@ input:
 			yyerror (" ");			
 		      }
 		      // remove br from the list
-		      cout << "removing br from the list" << endl;
+//		      cout << "removing br from the list" << endl;
 		      yyMeasuredVec[i].nofit = true;
 		      tmpValue.daughters.push_back(i);
 		    }
@@ -1158,7 +1158,7 @@ input:
 			if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			  i = k;
 			  found_br = true;
-			  cout << "found br " <<  yyMeasuredVec[k].name << endl;
+//			  cout << "found br " <<  yyMeasuredVec[k].name << endl;
 			  break;
 			}
 		      }
@@ -1167,7 +1167,7 @@ input:
 			yyerror (" ");			
 		      }
 		      // remove br from the list
-		      cout << "removing br from the list" << endl;
+//		      cout << "removing br from the list" << endl;
 		      yyMeasuredVec[i].nofit = true;
 		      tmpValue.daughters.push_back(i);
 		    }
@@ -1198,7 +1198,7 @@ input:
 		  tmpValue.alias = (int)$9;
 		  tmpValue.bound_up = 1e+9;
 		  tmpValue.bound_low = 0.;
-		  cout << "brratio found" << endl;
+//		  cout << "brratio found" << endl;
 		  // break sentence in pieces:
 		  string str;
 	          str.erase();
@@ -1230,7 +1230,7 @@ input:
 			if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			  i = k;
 			  found_br = true;
-			  cout << "found br " <<  yyMeasuredVec[k].name << endl;
+//			  cout << "found br " <<  yyMeasuredVec[k].name << endl;
 			  break;
 			}
 		      }
@@ -1239,7 +1239,7 @@ input:
 			yyerror (" ");			
 		      }
 		      // remove br from the list
-		      cout << "removing br from the list" << endl;
+//		      cout << "removing br from the list" << endl;
 		      yyMeasuredVec[i].nofit = true;
 		      tmpValue.daughters.push_back(i);
 		    }
@@ -1305,7 +1305,7 @@ input:
 			if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			  i = k;
 			  found_br = true;
-			  cout << "found br " <<  yyMeasuredVec[k].name << endl;
+//			  cout << "found br " <<  yyMeasuredVec[k].name << endl;
 			  break;
 			}
 		      }
@@ -1314,7 +1314,7 @@ input:
 			yyerror (" ");			
 		      }
 		      // remove br from the list
-		      cout << "removing br from the list" << endl;
+//		      cout << "removing br from the list" << endl;
 		      yyMeasuredVec[i].nofit = true;
 		      tmpValue.daughters.push_back(i);
 		    }

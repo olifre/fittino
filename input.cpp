@@ -145,7 +145,7 @@ void Input::CheckDefault(string name, int ID, double value, double error)
     tmpVec.bound_up = 1.e+6;
     if (!strncmp(name.c_str(), "mass", 4)) {
       tmpVec.type = mass;
-      cout << "assigning type mass " << mass << " to " << name << endl; 
+      //      cout << "assigning type mass " << mass << " to " << name << endl; 
       tmpVec.bound_low = 0.;
       tmpVec.bound_up = 10.*tmpVec.value;	
     }
