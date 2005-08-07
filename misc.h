@@ -149,6 +149,13 @@ struct ScanParameter {
   unsigned int    numberOfSteps;
 };
 
+struct InputFileLine {
+  string          prevalue;
+  string          postvalue;
+  double          value;
+  double          error; // only first error value
+};
+
 extern MeasuredValue fitterM1;
 extern MeasuredValue fitterM2;
 extern MeasuredValue fitterAbsM3;

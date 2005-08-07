@@ -162,6 +162,8 @@ double        yydrho  = -10000.;
 
 double        yyMaxCalculatorTime = 20.;
 
+std::vector<InputFileLine> yyInputFile;
+struct InputFileLine yyInputFileLine;
 
 %}
 
@@ -186,6 +188,13 @@ double        yyMaxCalculatorTime = 20.;
 input:
             /* empty */
             | input T_NEWLINE
+              {
+		yyInputFileLine.postvalue += '\n';
+		yyInputFile.push_back(yyInputFileLine);
+		yyInputFileLine.prevalue.clear();
+		yyInputFileLine.error = -1;
+		yyInputFileLine.postvalue.clear();
+              }
             | input block
             | input decay
             | input xs
@@ -194,6 +203,8 @@ input:
               }
 	    | input T_KEY value
 	      {
+		yyInputFileLine.prevalue = "$2\t$3";
+
 	        if (!strcmp($2,"NumberOfMinimizations")) {
 		  // cout << "FOUND NUMBER OF MINIMIZATIONS "<<$3<<endl;
 		  if ($3>0) {
@@ -277,6 +288,10 @@ input:
 	      }
 	    | input T_KEY value err
 	      {
+		  yyInputFileLine.prevalue = $2;
+		  yyInputFileLine.value = $3;
+		  yyInputFileLine.error = $4;
+
 		  found = 0;
 		  skip = 0;
 		  if ($4*$4 < 2.2204e-16) {
@@ -318,6 +333,8 @@ input:
 	      }
 	    | input T_UNIVERSALITY sentence
 	      {
+		 yyInputFileLine.prevalue = "$2\t$3";
+
 		 MeasuredValue tmpValue;
         	 string str;
 	         str.erase();
@@ -349,6 +366,8 @@ input:
               }	
 	    | input T_KEY T_WORD T_WORD value
 	      {
+		  yyInputFileLine.prevalue = "$2\t$3\t$4\t$5";
+
 		  if (!strcmp($2, "correlationCoefficient")) {
 	              int i = 0;
 		      int j = 0;
@@ -475,6 +494,8 @@ input:
 	      }
 	    | input T_KEY value value
 	      {
+		  yyInputFileLine.prevalue = "$2\t$3\t$4";
+
 		  if (!strcmp($2, "XScanRange")) {
 		    yyXscanlow = $3;
 //		    cout << "yyXscanlow = " << yyXscanlow << endl;
@@ -484,6 +505,8 @@ input:
 	      }
 	    | input T_KEY T_SWITCHSTATE
 	      {
+		  yyInputFileLine.prevalue = "$2\t$3";
+
 		  if (!strcmp($2, "LoopCorrections")) {
 		      if ($3 == on) yyUseLoopCorrections = true;
 		      else yyUseLoopCorrections = false;
@@ -590,6 +613,8 @@ input:
 	      }
 	    | input T_CALCULATOR T_WORD
 	      {
+                   yyInputFileLine.prevalue = "$2\t$3";
+
 		   if (!strcmp($3, "SPHENO")) {
 		      yyCalculator = SPHENO;
 		   }
@@ -599,6 +624,8 @@ input:
 	      }
 	    | input T_CALCULATOR T_WORD T_PATH
 	      {
+                   yyInputFileLine.prevalue = "$2\t$3\t$4";
+
 		   if (!strcmp($3, "SPHENO")) {
 		      yyCalculator = SPHENO;
 		   }
@@ -609,6 +636,8 @@ input:
 	      }
 	    | input T_KEY T_WORD
 	      {
+                  yyInputFileLine.prevalue = "$2\t$3";
+
 		  if (!strcmp($2, "fitParameter")) {
 		     parameter_t tmpparam;
 		     tmpparam.name = $3;
@@ -628,6 +657,8 @@ input:
 	      }
 	    | input T_KEY T_WORD value
 	      {
+                  yyInputFileLine.prevalue = "$2\t$3\t$4";
+
 		  if (!strcmp($2, "fixParameter")) {
 	            parameter_t tmpparam;
                     tmpparam.name = $3;
@@ -646,6 +677,8 @@ input:
 	      }
 	    | input T_KEY T_WORD value value T_NUMBER
 	      {
+                  yyInputFileLine.prevalue = "$2\t$3\t$4\t$5\t$6";
+
 		  if (!strcmp($2, "scanParameter")) {
 		    if (yyScanPar.size() == 2) {
 		       cout<<"At most two-dimensinal parameter scans can be performed"<<endl;
@@ -667,6 +700,8 @@ input:
 	      }
 	    | input T_KEY T_WORD T_COMPARATOR value
 	      {
+                  yyInputFileLine.prevalue = "$2\t$3\t$4\t$5";
+
 		  if (!strcmp($2, "limit")) {
 		      MeasuredValue tmpValue;
                       tmpValue.nofit = false;
