@@ -103,4 +103,6 @@ extern double        yybsg;
 extern double        yygmin2;
 extern double        yydrho;
 
+extern std::vector<InputFileLine> yyInputFile;
+
 #endif

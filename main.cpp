@@ -54,6 +54,17 @@ int main(int argc, char** argv)
 
   //  input->DumpMeasuredVector();
 
+  /*
+  // Dumping input file
+  for (unsigned int i=0; i<yyInputFile.size(); i++) {
+    cout<<yyInputFile[i].prevalue;
+    if (yyInputFile[i].error >= 0) {
+      cout<<"\t"<<yyInputFile[i].value<<" +- "<<yyInputFile[i].error;
+    }
+    cout<<yyInputFile[i].postvalue;
+  }
+  */
+
   if (yyCalcIndChisqContr) {
 
     IndChisq* indchisq = new IndChisq(input);

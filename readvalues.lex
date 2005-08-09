@@ -27,6 +27,7 @@ PATH             ["./""/"][a-zA-Z0-9"+""-""~"".""_""/"]*
 {COMMENT}                 {
                               BEGIN(newline);
 /*                              printf("Read comment: %s\n", yytext); */
+			      sprintf(yylval.name, "%s\n", yytext);
                               return T_NEWLINE;
                           }
 
@@ -210,6 +211,7 @@ alias                     {
 
 \n                        {
                               BEGIN(newline);
+			      strcpy(yylval.name, "\n");
                               return T_NEWLINE;
                           }
 

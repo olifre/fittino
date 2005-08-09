@@ -178,7 +178,7 @@ struct InputFileLine yyInputFileLine;
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
 %token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS
 %token T_BLOCK T_SCALE T_DECAY T_NEWLINE T_BR T_LEO T_XS T_CALCULATOR T_XSBR T_BRRATIO
-%token <name> T_COMPARATOR T_UNIVERSALITY T_PATH
+%token <name> T_COMPARATOR T_UNIVERSALITY T_PATH T_NEWLINE
  
 %type <name> sentence
 %type <real> value err
@@ -189,7 +189,8 @@ input:
             /* empty */
             | input T_NEWLINE
               {
-		yyInputFileLine.postvalue += '\n';
+	        if (yyInputFileLine.prevalue.size()) yyInputFileLine.postvalue += "\t";
+		yyInputFileLine.postvalue += $2;
 		yyInputFile.push_back(yyInputFileLine);
 		yyInputFileLine.prevalue.clear();
 		yyInputFileLine.error = -1;
@@ -203,7 +204,11 @@ input:
               }
 	    | input T_KEY value
 	      {
-		yyInputFileLine.prevalue = "$2\t$3";
+		char c[1000];
+		yyInputFileLine.prevalue  = $2;
+                yyInputFileLine.prevalue += "\t";
+		sprintf(c, "%f", $3);
+                yyInputFileLine.prevalue += c;
 
 	        if (!strcmp($2,"NumberOfMinimizations")) {
 		  // cout << "FOUND NUMBER OF MINIMIZATIONS "<<$3<<endl;
@@ -333,7 +338,9 @@ input:
 	      }
 	    | input T_UNIVERSALITY sentence
 	      {
-		 yyInputFileLine.prevalue = "$2\t$3";
+		 yyInputFileLine.prevalue  = $2;
+		 yyInputFileLine.prevalue += "\t";
+	         yyInputFileLine.prevalue += $3;
 
 		 MeasuredValue tmpValue;
         	 string str;
@@ -366,7 +373,15 @@ input:
               }	
 	    | input T_KEY T_WORD T_WORD value
 	      {
-		  yyInputFileLine.prevalue = "$2\t$3\t$4\t$5";
+		  char c[1000];
+		  yyInputFileLine.prevalue  = $2;
+		  yyInputFileLine.prevalue += "\t";
+		  yyInputFileLine.prevalue += $3;
+		  yyInputFileLine.prevalue += "\t";
+		  yyInputFileLine.prevalue += $4;
+		  yyInputFileLine.prevalue += "\t";
+	 	  sprintf(c, "%f", $5);
+		  yyInputFileLine.prevalue += c;
 
 		  if (!strcmp($2, "correlationCoefficient")) {
 	              int i = 0;
@@ -494,7 +509,14 @@ input:
 	      }
 	    | input T_KEY value value
 	      {
-		  yyInputFileLine.prevalue = "$2\t$3\t$4";
+		  char c[1000];
+		  yyInputFileLine.prevalue  = $2;
+		  yyInputFileLine.prevalue += "\t";
+		  sprintf(c, "%f", $3);
+		  yyInputFileLine.prevalue += c;
+		  yyInputFileLine.prevalue += " ";
+		  sprintf(c, "%f", $4);
+		  yyInputFileLine.prevalue += c;
 
 		  if (!strcmp($2, "XScanRange")) {
 		    yyXscanlow = $3;
@@ -505,7 +527,10 @@ input:
 	      }
 	    | input T_KEY T_SWITCHSTATE
 	      {
-		  yyInputFileLine.prevalue = "$2\t$3";
+		  yyInputFileLine.prevalue  = $2;
+		  yyInputFileLine.prevalue += "\t";
+		  if ($3 == on) yyInputFileLine.prevalue += "on";
+	  	  else yyInputFileLine.prevalue += "off";
 
 		  if (!strcmp($2, "LoopCorrections")) {
 		      if ($3 == on) yyUseLoopCorrections = true;
@@ -613,7 +638,9 @@ input:
 	      }
 	    | input T_CALCULATOR T_WORD
 	      {
-                   yyInputFileLine.prevalue = "$2\t$3";
+                   yyInputFileLine.prevalue  = "Calculator";
+		   yyInputFileLine.prevalue += "\t";
+		   yyInputFileLine.prevalue += $3;
 
 		   if (!strcmp($3, "SPHENO")) {
 		      yyCalculator = SPHENO;
@@ -624,7 +651,11 @@ input:
 	      }
 	    | input T_CALCULATOR T_WORD T_PATH
 	      {
-                   yyInputFileLine.prevalue = "$2\t$3\t$4";
+                   yyInputFileLine.prevalue  = "Calculator";
+		   yyInputFileLine.prevalue += "\t";
+		   yyInputFileLine.prevalue += $3;
+		   yyInputFileLine.prevalue += " ";
+                   yyInputFileLine.prevalue += $4;
 
 		   if (!strcmp($3, "SPHENO")) {
 		      yyCalculator = SPHENO;
@@ -636,7 +667,9 @@ input:
 	      }
 	    | input T_KEY T_WORD
 	      {
-                  yyInputFileLine.prevalue = "$2\t$3";
+		  yyInputFileLine.prevalue  = $2;
+		  yyInputFileLine.prevalue += "\t";
+		  yyInputFileLine.prevalue += $3;
 
 		  if (!strcmp($2, "fitParameter")) {
 		     parameter_t tmpparam;
@@ -657,7 +690,13 @@ input:
 	      }
 	    | input T_KEY T_WORD value
 	      {
-                  yyInputFileLine.prevalue = "$2\t$3\t$4";
+		  char c[1000];
+		  yyInputFileLine.prevalue  = $2;
+		  yyInputFileLine.prevalue += "\t";
+		  yyInputFileLine.prevalue += $3;
+		  yyInputFileLine.prevalue += "\t";
+		  sprintf(c, "%f", $4);
+		  yyInputFileLine.prevalue += c;
 
 		  if (!strcmp($2, "fixParameter")) {
 	            parameter_t tmpparam;
@@ -677,7 +716,19 @@ input:
 	      }
 	    | input T_KEY T_WORD value value T_NUMBER
 	      {
-                  yyInputFileLine.prevalue = "$2\t$3\t$4\t$5\t$6";
+		  char c[1000];
+		  yyInputFileLine.prevalue  = $2;
+		  yyInputFileLine.prevalue += "\t";
+		  yyInputFileLine.prevalue += $3;
+		  yyInputFileLine.prevalue += "\t";
+		  sprintf(c, "%f", $4);
+		  yyInputFileLine.prevalue += c;
+		  yyInputFileLine.prevalue += "\t";
+		  sprintf(c, "%f", $5);
+		  yyInputFileLine.prevalue += c;
+		  yyInputFileLine.prevalue += "\t";
+		  sprintf(c, "%f", $6);
+		  yyInputFileLine.prevalue += c;
 
 		  if (!strcmp($2, "scanParameter")) {
 		    if (yyScanPar.size() == 2) {
@@ -700,7 +751,14 @@ input:
 	      }
 	    | input T_KEY T_WORD T_COMPARATOR value
 	      {
-                  yyInputFileLine.prevalue = "$2\t$3\t$4\t$5";
+		  char c[1000];
+                  yyInputFileLine.prevalue  = $2;
+                  yyInputFileLine.prevalue += "\t";
+                  yyInputFileLine.prevalue += $3;
+                  yyInputFileLine.prevalue += "\t";
+                  yyInputFileLine.prevalue += $4;
+		  sprintf(c, "%f", $5);
+		  yyInputFileLine.prevalue += c;
 
 		  if (!strcmp($2, "limit")) {
 		      MeasuredValue tmpValue;
@@ -723,8 +781,13 @@ input:
 	      }
 	    | input T_KEY T_WORD value err
 	      {
-
 		  if (!strcmp($2, "nofit")) {
+                      yyInputFileLine.prevalue  = $2;
+                      yyInputFileLine.prevalue += "\t";
+                      yyInputFileLine.prevalue += $3;
+	              yyInputFileLine.value = $4;
+	              yyInputFileLine.error = $5;
+
 		      MeasuredValue tmpValue;
 		      tmpValue.theovalue  = 0;
 		      tmpValue.name = $3;
@@ -739,6 +802,16 @@ input:
 		      yyMeasuredVec.push_back(tmpValue);
 		  }
 		  else if (!strcmp($2, "fitParameter")) {
+		    char c[1000];
+		    yyInputFileLine.prevalue  = $2;
+		    yyInputFileLine.prevalue += "\t";
+		    yyInputFileLine.prevalue += $3;
+		    yyInputFileLine.prevalue += "\t";
+		    sprintf(c, "%f", $4);
+		    yyInputFileLine.prevalue += c;
+		    yyInputFileLine.prevalue += "\t";
+		    sprintf(c, "%f", $5);
+		    yyInputFileLine.prevalue += c;
 	            parameter_t tmpparam;
                     tmpparam.name = $3;
                     tmpparam.value = $4;
@@ -746,6 +819,15 @@ input:
                     yyFittedPar.push_back(tmpparam);
 		  }
 		  else if (!strcmp($2, "fixParameter")) {
+		    char c[1000];
+		    yyInputFileLine.prevalue  = $2;
+		    yyInputFileLine.prevalue += "\t";
+		    yyInputFileLine.prevalue += $3;
+		    sprintf(c, "%f", $4);
+		    yyInputFileLine.prevalue += c;
+		    yyInputFileLine.prevalue += "\t";
+		    sprintf(c, "%f", $5);
+		    yyInputFileLine.prevalue += c;
 	            parameter_t tmpparam;
                     tmpparam.name = $3;
                     tmpparam.value = $4;
@@ -759,6 +841,19 @@ input:
 	      }
 	    | input T_KEY T_NUMBER sentence value err T_ALIAS T_NUMBER
 	      {
+		char c[1000];
+		yyInputFileLine.prevalue  = $2;
+		yyInputFileLine.prevalue += " ";
+		sprintf(c, "%d", (int)$3);
+		yyInputFileLine.prevalue += c;
+		yyInputFileLine.prevalue += " ";
+		yyInputFileLine.prevalue += $4;
+                yyInputFileLine.value = $5;
+                yyInputFileLine.error = $6;
+		yyInputFileLine.postvalue = "\talias ";
+		sprintf(c, "%d", (int)$8);
+		yyInputFileLine.postvalue += c;
+
 		if (!strcmp($2, "edge")) {
 		  MeasuredValue tmpValue;
                   tmpValue.nofit = false;
@@ -818,6 +913,18 @@ input:
               }
 	     | input T_BR T_BRA T_WORD T_GOESTO sentence T_KET value err T_ALIAS T_NUMBER
 	      {
+		  char c[1000];
+		  yyInputFileLine.prevalue  = "BR(";
+		  yyInputFileLine.prevalue += $4;
+		  yyInputFileLine.prevalue += " -> ";
+		  yyInputFileLine.prevalue += $6;
+		  yyInputFileLine.prevalue += ")";
+		  yyInputFileLine.value = $8;
+		  yyInputFileLine.error = $9;
+		  yyInputFileLine.postvalue = "\talias ";
+		  sprintf(c, "%d", (int)$11);
+		  yyInputFileLine.postvalue += c;
+
 		  MeasuredValue tmpValue;
                   tmpValue.nofit = false;
 		  tmpValue.type  = br;
@@ -856,6 +963,16 @@ input:
 	      }
 	     | input T_LEO T_BRA T_WORD T_KET value err T_ALIAS T_NUMBER
 	      {
+		  char c[1000];
+		  yyInputFileLine.prevalue  = "LEObs ( ";
+		  yyInputFileLine.prevalue += $4;
+		  yyInputFileLine.prevalue += " ) ";
+		  yyInputFileLine.value = $6;
+		  yyInputFileLine.error = $7;
+		  yyInputFileLine.postvalue = "\talias ";
+		  sprintf(c, "%d", (int)$9);
+		  yyInputFileLine.postvalue += c;
+
 		  MeasuredValue tmpValue;
                   tmpValue.nofit = false;
 		  tmpValue.type  = LEObs;
@@ -878,6 +995,16 @@ input:
 	      }
 	     | input T_BR T_BRA T_WORD T_GOESTO sentence T_KET T_ALIAS T_NUMBER
 	      {
+		  char c[1000];
+		  yyInputFileLine.prevalue  = "BR ( ";
+		  yyInputFileLine.prevalue += $4;
+		  yyInputFileLine.prevalue += " -> ";
+		  yyInputFileLine.prevalue += $6;
+		  yyInputFileLine.prevalue += " ) ";
+		  yyInputFileLine.prevalue += "\talias ";
+		  sprintf(c, "%d", (int)$9);
+		  yyInputFileLine.prevalue += c;
+
 		  MeasuredValue tmpValue;
                   tmpValue.nofit = true;
 		  tmpValue.type  = br;
@@ -916,6 +1043,28 @@ input:
 	      }
 	     | input T_KEY T_BRA sentence T_GOESTO sentence T_COMMA value T_COMMA value T_COMMA value T_KET value err T_ALIAS T_NUMBER
 	      {
+		  char c[1000];
+		  yyInputFileLine.prevalue  = $2;
+		  yyInputFileLine.prevalue += " ( ";
+		  yyInputFileLine.prevalue += $4;
+		  yyInputFileLine.prevalue += " -> ";
+		  yyInputFileLine.prevalue += $6;
+		  yyInputFileLine.prevalue += ", ";
+		  sprintf(c, "%f GeV", $8);
+		  yyInputFileLine.prevalue += c;
+		  yyInputFileLine.prevalue += ", ";
+		  sprintf(c, "%f", $10);
+		  yyInputFileLine.prevalue += c;
+		  yyInputFileLine.prevalue += ", ";
+		  sprintf(c, "%f", $12);
+		  yyInputFileLine.prevalue += c;
+		  yyInputFileLine.prevalue += " ) ";
+		  yyInputFileLine.value = $14;
+		  yyInputFileLine.error = $15;
+		  yyInputFileLine.postvalue  = "\talias ";
+		  sprintf(c, "%d", (int)$17);
+		  yyInputFileLine.postvalue += c;
+
 		  MeasuredValue tmpValue;
                   tmpValue.nofit = false;
 		  tmpValue.name.erase();
@@ -964,6 +1113,26 @@ input:
 	      }
 	     | input T_KEY T_BRA sentence T_GOESTO sentence T_COMMA value T_COMMA value T_COMMA value T_KET T_ALIAS T_NUMBER
 	      {
+		  char c[1000];
+		  yyInputFileLine.prevalue  = $2;
+		  yyInputFileLine.prevalue += " ( ";
+		  yyInputFileLine.prevalue += $4;
+		  yyInputFileLine.prevalue += " -> ";
+		  yyInputFileLine.prevalue += $6;
+		  yyInputFileLine.prevalue += ", ";
+		  sprintf(c, "%f GeV", $8);
+		  yyInputFileLine.prevalue += c;
+		  yyInputFileLine.prevalue += ", ";
+		  sprintf(c, "%f", $10);
+		  yyInputFileLine.prevalue += c;
+		  yyInputFileLine.prevalue += ", ";
+		  sprintf(c, "%f", $12);
+		  yyInputFileLine.prevalue += c;
+		  yyInputFileLine.prevalue += " ) ";
+		  yyInputFileLine.prevalue += "\talias ";
+		  sprintf(c, "%d", (int)$15);
+		  yyInputFileLine.prevalue += c;
+
 		  MeasuredValue tmpValue;
                   tmpValue.nofit = true;
 		  tmpValue.name.erase();
@@ -1012,6 +1181,17 @@ input:
 	      }
 	     | input T_KEY T_BRA sentence T_KET value err T_ALIAS T_NUMBER
 	      {
+		char c[1000];
+		yyInputFileLine.prevalue  = $2;
+		yyInputFileLine.prevalue += " ( ";
+		yyInputFileLine.prevalue += $4;
+		yyInputFileLine.prevalue += " ) ";
+		yyInputFileLine.value = $6;
+		yyInputFileLine.error = $7;
+		yyInputFileLine.postvalue  = "\talias ";
+		sprintf(c, "%d", (int)$9);
+		yyInputFileLine.postvalue += c;
+
 		if (!strcmp($2,"xsbr")) {
 		  int i = 0;
 //		  int j = 0;
@@ -1292,6 +1472,15 @@ input:
 	      }
 	     | input T_KEY T_BRA sentence T_KET T_ALIAS T_NUMBER
 	      {
+		char c[1000];
+		yyInputFileLine.prevalue  = $2;
+		yyInputFileLine.prevalue += " ( ";
+		yyInputFileLine.prevalue += $4;
+		yyInputFileLine.prevalue += " ) ";
+		yyInputFileLine.prevalue  = "\talias ";
+		sprintf(c, "%d", (int)$7);
+		yyInputFileLine.prevalue += c;
+
 		if (!strcmp($2,"brsum")) {
 		  int i = 0;
 //		  int j = 0;

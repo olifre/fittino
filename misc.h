@@ -153,7 +153,7 @@ struct InputFileLine {
   string          prevalue;
   string          postvalue;
   double          value;
-  double          error; // only first error value
+  double          error;
 };
 
 extern MeasuredValue fitterM1;
