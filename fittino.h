@@ -75,6 +75,8 @@ private:
     MeasuredValue fN5;
     MeasuredValue fcGrav;
 
+    MeasuredValue fM32;
+
     MeasuredValue fM1;
     MeasuredValue fM2;
     MeasuredValue fAbsM3;

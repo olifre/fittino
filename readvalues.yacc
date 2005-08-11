@@ -684,6 +684,8 @@ input:
 		      yyFitModel = mSUGRA;
 		    else if (!strcmp($3, "GMSB"))
 		      yyFitModel = GMSB;
+		    else if (!strcmp($3, "AMSB"))
+		      yyFitModel = AMSB;
 		    else {
 		      cerr<<"Unknown fit model: "<<$3<<endl;
 		      exit(EXIT_FAILURE);

@@ -105,7 +105,7 @@ enum SwitchState    { off, on };
 enum Calculator     { SPHENO, SUSPECT, SPHENO_FH };
 enum ObservableType { mass, Pwidth, xsection, br, xsectionbr, Pedge, xsbr, brratio, brsum, LEObs, other };
 enum LEObservables  { bsg, gmin2, drho };
-enum FitModel       { MSSM, mSUGRA, GMSB };
+enum FitModel       { MSSM, mSUGRA, GMSB, AMSB };
 
 extern bool          yyUseLoopCorrections;
 extern bool          yyCalcPullDist;
