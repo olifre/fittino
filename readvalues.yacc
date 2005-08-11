@@ -192,9 +192,11 @@ input:
 	        if (yyInputFileLine.prevalue.size()) yyInputFileLine.postvalue += "\t";
 		yyInputFileLine.postvalue += $2;
 		yyInputFile.push_back(yyInputFileLine);
-		yyInputFileLine.prevalue.clear();
+		//		yyInputFileLine.prevalue.clear();
+		yyInputFileLine.prevalue = "";
 		yyInputFileLine.error = -1;
-		yyInputFileLine.postvalue.clear();
+		//		yyInputFileLine.postvalue.clear();
+		yyInputFileLine.postvalue = "";
               }
             | input block
             | input decay
