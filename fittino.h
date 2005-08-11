@@ -70,6 +70,11 @@ private:
     MeasuredValue fM0;
     MeasuredValue fM12;
 
+    MeasuredValue fLambda;
+    MeasuredValue fMmess;
+    MeasuredValue fN5;
+    MeasuredValue fcGrav;
+
     MeasuredValue fM1;
     MeasuredValue fM2;
     MeasuredValue fAbsM3;
