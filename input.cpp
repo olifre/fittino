@@ -102,6 +102,22 @@ Input::Input(const char* inputfile)
 
   FillCrossSectionProduction();
 
+  // Check that each alias number occurs only once per observable type
+  for (unsigned int itype = 1; itype<10; itype++) { // loop over ObservableType (excluding masses = 0)
+    for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+      if (yyMeasuredVec[i].type == itype) {
+	for (unsigned int j=0; j<yyMeasuredVec.size(); j++) {
+	  if (i != j && yyMeasuredVec[j].type == itype &&
+	      yyMeasuredVec[i].alias == yyMeasuredVec[j].alias) {
+	    cerr<<"ERROR: Alias "<<yyMeasuredVec[i].alias<<" is used for "
+		<<yyMeasuredVec[i].name<<" and "<<yyMeasuredVec[j].name<<endl;
+	    exit(EXIT_FAILURE);
+	  }
+	}
+      }
+    }
+  }
+
   //  cout << "after Fill Cross SectionProd" << endl;
   //DumpMeasuredVector();
 
