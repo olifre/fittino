@@ -378,6 +378,8 @@ xsbr ( sigma_717 br_42 br_42 )                1.5494 fb +- 0.1  fb alias 819 # H
 # fit parameters                                                                        #
 #########################################################################################
 
+fitModel      MSSM
+
 fitParameter  TanBeta       10.0
 fitParameter  Mu            4.00391601E+02 GeV
 fitParameter  Xtau          -4449.2464     GeV
