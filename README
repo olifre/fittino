@@ -1,0 +1,44 @@
+###############################################################
+###                         README                          ###
+###############################################################
+
+$Id$
+$Name$
+
+1. Installation
+---------------
+
+- Untar the Fittino source code tarball with the command
+
+  tar xvjf fittino-x.y.z.tar.bz2
+
+- In order to compile Fittino, a C++ compiler like g++, make,
+  a lexical analyzer generator like flex, a parser generator
+  like bison and the ROOT data analysis framework are required.
+  In addition to Fittino the SUSY spectrum calculator SPheno is
+  required. Links to sites where these packages can be downloaded
+  are provided on the Fittino web page http://www-flc.desy.de/fittino
+  (click on "Source Code"). If these prerequisites are fulfilled
+  just type
+
+  cd fittino
+  make
+
+- If the compilation is successful, an executable file called
+  "fittino" is produced.
+
+
+2. Example Run
+--------------
+
+- Example input files are provided in the "inputs" directory
+  of the Fittino distribution. DO NOT FORGET TO MODIFY THE
+  "Calculator" VARIABLE IN THE INPUT FILE TO POINT TO YOUR
+  SPHENO EXECUTABLE. With the example file "fittino.in.shortexample"
+  the result of a short toy fit should be obtained within a few
+  minutes.
+
+- Input files are provided to Fittino as program parameter.
+  Thus Fittino can be started with
+
+  ./fittino inputs/fittino.in.shortexample
