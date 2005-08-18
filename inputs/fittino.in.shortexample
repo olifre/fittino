@@ -1,0 +1,415 @@
+#########################################################################################
+###                           Fittino example input file                              ###
+###                           for a short toy fit                                     ###
+#########################################################################################
+
+# $Id$
+# $Name$
+
+
+#########################################################################################
+# Masses                                                                                #
+#########################################################################################
+
+massW                     80.3353 GeV +- 0.039  GeV
+massZ                     91.1187 GeV +- 0.0021 GeV
+massTop                  178.0    GeV +- 0.05   GeV
+massBottom	           4.2    GeV +- 0.5    GeV
+
+sin2ThetaW                 0.23113    +- 0.00015
+
+massh0                   112.880 GeV +- 0.05 GeV # +- 0.5 GeV # Degrassi et al
+massA0                   430.676 GeV +- 1.3  GeV # +- 0.6 GeV # not at LHC
+massH0                   430.802 GeV +- 1.3  GeV # +- 0.6 GeV # not at LHC
+massHplus                438.416 GeV +- 1.1  GeV # +- 0.6 GeV # not at LHC
+
+nofit massSdownL         561.54  GeV +-  9.8 GeV # +- 10.0 GeV
+nofit massSdownR         543.348 GeV +- 23.6 GeV # +- 9.4 GeV 
+nofit massSstrangeL      561.54  GeV +-  9.8 GeV # +- 10.0 GeV
+nofit massSstrangeR      543.348 GeV +- 23.6 GeV # +- 9.4 GeV 
+nofit massScharmL        561.54  GeV +-  9.8 GeV # +- 10.0 GeV
+nofit massScharmR        543.348 GeV +- 23.6 GeV # +- 9.4 GeV 
+
+massSupL                 563.717 GeV +-  9.8  GeV # +- 10.0 GeV
+massSupR                 545.659 GeV +- 23.6  GeV # +-  9.4 GeV 
+massSbottom1	         504.882 GeV +-  5.7  GeV # +-  5.4 GeV
+massSbottom2	         544.374 GeV +-  6.2  GeV # +-  8.5 GeV
+massStop1                367.279 GeV +-  2.0  GeV # +-  5.4 GeV # not at LHC
+nofit massStop2		 600.037 GeV +- 20.0  GeV               # not at LHC
+massSelectronL		 189.726 GeV +-  0.2  GeV # +-  0.4 GeV
+massSelectronR		 125.15  GeV +-  0.05 GeV # +-  1.2 GeV
+massSnueL		 172.443 GeV +-  0.7  GeV               # not at LHC
+massSmuL		 189.747 GeV +-  0.5  GeV # +-  0.4 GeV
+massSmuR		 125.09  GeV +-  0.2  GeV # +-  1.2 GeV
+massStau1		 108.674 GeV +-  0.3  GeV # +-  0.5 GeV
+massStau2		 194.636 GeV +-  1.1  GeV # +-  0.5 GeV # not at LHC
+massGluino               605.716 GeV +-  6.4  GeV # +-  1.4 GeV
+massNeutralino1		 98.1253 GeV +-  0.05 GeV # +-  0.4 GeV
+massNeutralino2		 184.537 GeV +-  0.08 GeV # +-  1.2 GeV
+massNeutralino3		-405.561 GeV +-  4.0  GeV # +-  1.1 GeV
+massNeutralino4          418.57  GeV +-  2.3  GeV # +-  1.1 GeV
+massChargino1		 184.315 GeV +-  0.55 GeV # +-  1.0 GeV
+massChargino2		 419.995 GeV +-  3.0  GeV # +-  3.4 GeV
+
+		   
+nofit cos2PhiL           0.763 +- 0.0005 # rough estimate
+nofit cos2PhiR           0.94  +- 0.0005 # rough estimate
+
+
+#########################################################################################
+# Cross sections                                                                        #
+#########################################################################################
+
+# LL 500
+sigma ( ee -> Chargino1 Chargino1~, 500 GeV,-0.8,-0.6 )      alias   1
+sigma ( ee -> Neutralino1 Neutralino2, 500 GeV,-0.8,-0.6 )   alias   2
+sigma ( ee -> Neutralino2 Neutralino2, 500 GeV,-0.8,-0.6 )   alias   3
+sigma ( ee -> SelectronL  SelectronL~, 500 GeV,-0.8,-0.6 )   alias   4
+sigma ( ee -> SelectronL  SelectronR~, 500 GeV,-0.8,-0.6 )   alias   5
+sigma ( ee -> SelectronR  SelectronL~, 500 GeV,-0.8,-0.6 )   alias   6
+sigma ( ee -> SelectronR  SelectronR~, 500 GeV,-0.8,-0.6 )   alias   7
+sigma ( ee -> SmuL  SmuL~, 500 GeV,-0.8,-0.6 )               alias   8
+sigma ( ee -> SmuR  SmuR~, 500 GeV,-0.8,-0.6 )               alias   9
+sigma ( ee -> Stau1 Stau1~, 500 GeV,-0.8,-0.6 )              alias  10
+sigma ( ee -> Stau1 Stau2~, 500 GeV,-0.8,-0.6 )              alias  11
+sigma ( ee -> Stau2 Stau2~, 500 GeV,-0.8,-0.6 )              alias  12
+sigma ( ee -> Z h0, 500 GeV, -0.8, -0.6 )                    13.6324 fb +- 0.23 fb alias  13
+
+# RR 500
+sigma ( ee -> Chargino1 Chargino1~, 500 GeV,0.8,0.6 )        alias 101
+sigma ( ee -> Neutralino1 Neutralino2, 500 GeV,0.8,0.6 )     alias 102 
+sigma ( ee -> Neutralino2 Neutralino2, 500 GeV,0.8,0.6 )     alias 103
+sigma ( ee -> SelectronL  SelectronL~, 500 GeV,0.8,0.6 )     alias 104
+sigma ( ee -> SelectronL  SelectronR~, 500 GeV,0.8,0.6 )     alias 105
+sigma ( ee -> SelectronR  SelectronL~, 500 GeV,0.8,0.6 )     alias 106
+sigma ( ee -> SelectronR  SelectronR~, 500 GeV,0.8,0.6 )     alias 107
+sigma ( ee -> SmuL  SmuL~, 500 GeV,0.8,0.6 )                 alias 108
+sigma ( ee -> SmuR  SmuR~, 500 GeV,0.8,0.6 )                 alias 109
+sigma ( ee -> Stau1 Stau1~, 500 GeV,0.8,0.6 )                alias 110
+sigma ( ee -> Stau2 Stau2~, 500 GeV,0.8,0.6 )                alias 112
+sigma ( ee -> Z h0, 500 GeV, 0.8, 0.6 )                      11.5389 fb +- 0.21 fb alias 113
+
+# LR 500
+sigma ( ee -> Chargino1 Chargino1~, 500 GeV,-0.8,0.6 )       alias 201
+sigma ( ee -> Neutralino1 Neutralino2, 500 GeV,-0.8,0.6 )    alias 202
+sigma ( ee -> Neutralino2 Neutralino2, 500 GeV,-0.8,0.6 )    alias 203
+sigma ( ee -> SelectronL  SelectronL~, 500 GeV,-0.8,0.6 )    alias 204
+sigma ( ee -> SelectronL  SelectronR~, 500 GeV,-0.8,0.6 )    alias 205
+sigma ( ee -> SelectronR  SelectronL~, 500 GeV,-0.8,0.6 )    alias 206
+sigma ( ee -> SelectronR  SelectronR~, 500 GeV,-0.8,0.6 )    alias 207
+sigma ( ee -> SmuL  SmuL~, 500 GeV,-0.8,0.6 )                alias 208
+sigma ( ee -> SmuR  SmuR~, 500 GeV,-0.8,0.6 )                alias 209
+sigma ( ee -> Stau1 Stau1~, 500 GeV,-0.8,0.6 )               alias 210
+sigma ( ee -> Stau1 Stau2~, 500 GeV,-0.8,0.6 )               alias 211
+sigma ( ee -> Stau2 Stau2~, 500 GeV,-0.8,0.6 )               alias 212
+sigma ( ee -> Z h0, 500 GeV, -0.8, 0.6 )                     43.1481 fb +- 0.43 fb alias 213
+
+# RL 500
+sigma ( ee -> Chargino1 Chargino1~, 500 GeV,0.8,-0.6 )       alias 301
+sigma ( ee -> Neutralino1 Neutralino2, 500 GeV,0.8,-0.6 )    alias 302
+sigma ( ee -> Neutralino2 Neutralino2, 500 GeV,0.8,-0.6 )    alias 303
+sigma ( ee -> SelectronL  SelectronL~, 500 GeV,0.8,-0.6 )    alias 304
+sigma ( ee -> SelectronL  SelectronR~, 500 GeV,0.8,-0.6 )    alias 305
+sigma ( ee -> SelectronR  SelectronL~, 500 GeV,0.8,-0.6 )    alias 306
+sigma ( ee -> SelectronR  SelectronR~, 500 GeV,0.8,-0.6 )    alias 307
+sigma ( ee -> SmuL  SmuL~, 500 GeV,0.8,-0.6 )                alias 308
+sigma ( ee -> SmuR  SmuR~, 500 GeV,0.8,-0.6 )                alias 309
+sigma ( ee -> Stau1 Stau1~, 500 GeV,0.8,-0.6 )               alias 310
+sigma ( ee -> Stau1 Stau2~, 500 GeV,0.8,-0.6 )               alias 311
+sigma ( ee -> Stau2 Stau2~, 500 GeV,0.8,-0.6 )               alias 312
+sigma ( ee -> Z h0, 500 GeV, 0.8, -0.6 )                     28.4933 fb +- 0.33 fb alias 313
+
+# LR 400
+sigma ( ee -> Chargino1 Chargino1~, 400 GeV,-0.8,0.6 )       alias 401
+sigma ( ee -> Neutralino1 Neutralino2, 400 GeV,-0.8,0.6 )    alias 402
+sigma ( ee -> Neutralino2 Neutralino2, 400 GeV,-0.8,0.6 )    alias 403
+sigma ( ee -> SelectronL  SelectronL~, 400 GeV,-0.8,0.6 )    alias 404
+sigma ( ee -> SelectronL  SelectronR~, 400 GeV,-0.8,0.6 )    alias 405
+sigma ( ee -> SelectronR  SelectronL~, 400 GeV,-0.8,0.6 )    alias 406
+sigma ( ee -> SelectronR  SelectronR~, 400 GeV,-0.8,0.6 )    alias 407
+sigma ( ee -> SmuL  SmuL~, 400 GeV,-0.8,0.6 )                alias 408
+sigma ( ee -> SmuR  SmuR~, 400 GeV,-0.8,0.6 )                alias 409
+sigma ( ee -> Stau1 Stau1~, 400 GeV,-0.8,0.6 )               alias 410
+sigma ( ee -> Stau1 Stau2~, 400 GeV,-0.8,0.6 )               alias 411
+sigma ( ee -> Z h0, 400 GeV, -0.8, 0.6 )                     69.2061 fb +- 0.69 fb alias 413
+
+# RL 400
+sigma ( ee -> Neutralino1 Neutralino2, 400 GeV,0.8,-0.6 )    alias 502
+sigma ( ee -> SelectronL  SelectronL~, 400 GeV,0.8,-0.6 )    alias 504
+sigma ( ee -> SelectronL  SelectronR~, 400 GeV,0.8,-0.6 )    alias 505
+sigma ( ee -> SelectronR  SelectronL~, 400 GeV,0.8,-0.6 )    alias 506
+sigma ( ee -> SelectronR  SelectronR~, 400 GeV,0.8,-0.6 )    alias 507
+sigma ( ee -> SmuL  SmuL~, 400 GeV,0.8,-0.6 )                alias 508
+sigma ( ee -> SmuR  SmuR~, 400 GeV,0.8,-0.6 )                alias 509
+sigma ( ee -> Stau1 Stau1~, 400 GeV,0.8,-0.6 )               alias 510
+sigma ( ee -> Stau1 Stau2~, 400 GeV,0.8,-0.6 )               alias 511
+sigma ( ee -> Z h0, 400 GeV, 0.8, -0.6 )                     45.7011 fb +- 0.45 fb alias 513
+
+# LR 1000
+sigma ( ee -> Chargino1 Chargino1~, 1000 GeV,-0.8,0.6 )      alias 601 
+sigma ( ee -> Chargino1 Chargino2~, 1000 GeV,-0.8,0.6 )      alias 602 
+sigma ( ee -> Neutralino1 Neutralino2, 1000 GeV,-0.8,0.6 )   alias 603 
+sigma ( ee -> Neutralino2 Neutralino2, 1000 GeV,-0.8,0.6 )   alias 604 
+sigma ( ee -> SelectronL  SelectronL~, 1000 GeV,-0.8,0.6 )   alias 605 
+sigma ( ee -> SelectronL  SelectronR~, 1000 GeV,-0.8,0.6 )   alias 606 
+sigma ( ee -> SelectronR  SelectronL~, 1000 GeV,-0.8,0.6 )   alias 607 
+sigma ( ee -> SelectronR  SelectronR~, 1000 GeV,-0.8,0.6 )   alias 608 
+sigma ( ee -> SmuL  SmuL~, 1000 GeV,-0.8,0.6 )               alias 609 
+sigma ( ee -> SmuR  SmuR~, 1000 GeV,-0.8,0.6 )               alias 610 
+sigma ( ee -> Stau1 Stau1~, 1000 GeV,-0.8,0.6 )              alias 611 
+sigma ( ee -> Stau1 Stau2~, 1000 GeV,-0.8,0.6 )              alias 612 
+sigma ( ee -> Stau2 Stau2~, 1000 GeV,-0.8,0.6 )              alias 613 
+sigma ( ee -> Stop1 Stop1~, 1000 GeV,-0.8,0.6 )              alias 614 
+sigma ( ee -> Z h0, 1000 GeV, -0.8, 0.6 )                    10.7331 fb +- 0.2 fb alias 615 
+sigma ( ee -> H0 A0, 1000 GeV, -0.8, 0.6 )                   alias 616 
+sigma ( ee -> Hplus Hplus~, 1000 GeV, -0.8, 0.6 )            alias 617 
+
+# RL 1000
+sigma ( ee -> Chargino1 Chargino1~, 1000 GeV,0.8,-0.6 )      alias 701
+sigma ( ee -> Neutralino1 Neutralino2, 1000 GeV,0.8,-0.6 )   alias 703
+sigma ( ee -> Neutralino2 Neutralino2, 1000 GeV,0.8,-0.6 )   alias 704
+sigma ( ee -> SelectronL  SelectronL~, 1000 GeV,0.8,-0.6 )   alias 705
+sigma ( ee -> SelectronL  SelectronR~, 1000 GeV,0.8,-0.6 )   alias 706
+sigma ( ee -> SelectronR  SelectronL~, 1000 GeV,0.8,-0.6 )   alias 707
+sigma ( ee -> SelectronR  SelectronR~, 1000 GeV,0.8,-0.6 )   alias 708
+sigma ( ee -> SmuL  SmuL~, 1000 GeV,0.8,-0.6 )               alias 709
+sigma ( ee -> SmuR  SmuR~, 1000 GeV,0.8,-0.6 )               alias 710
+sigma ( ee -> Stau1 Stau1~, 1000 GeV,0.8,-0.6 )              alias 711
+sigma ( ee -> Stau1 Stau2~, 1000 GeV,0.8,-0.6 )              alias 712
+sigma ( ee -> Stau2 Stau2~, 1000 GeV,0.8,-0.6 )              alias 713
+sigma ( ee -> Stop1 Stop1~, 1000 GeV,0.8,-0.6 )              alias 714
+sigma ( ee -> Z h0, 1000 GeV, 0.8, -0.6 )                    7.08771 fb +- 0.17 fb alias 715
+sigma ( ee -> H0 A0, 1000 GeV, 0.8, -0.6 )                   alias 716 
+sigma ( ee -> Hplus Hplus~, 1000 GeV, 0.8, -0.6 )            alias 717 
+
+										       
+#########################################################################################
+# Branching ratios                                                                      #
+#########################################################################################
+
+# Selectron Branching Ratios
+BR ( SelectronR -> Neutralino1 Electron )                    alias  1
+BR ( SelectronL -> Neutralino1 Electron )                    alias  2
+
+# Smuon Branching Ratios
+BR ( SmuR -> Neutralino1 Muon )                              alias  5
+BR ( SmuL -> Neutralino1 Muon )                              alias  6
+
+# Stau Branching Ratios
+BR ( Stau1 -> Neutralino1 Tau )                              alias  9
+BR ( Stau2 -> Neutralino1 Tau )                              alias 10
+
+# Chargino1 Branching ratios
+BR ( Chargino1 -> Stau1 Nutau )                              alias 13
+BR ( Chargino1 -> Neutralino1 W )                            alias 17
+
+# Chargino2 Branching ratios
+BR ( Chargino2 -> Neutralino2 W )                            alias 19
+
+# Neutralino 2 Branching ratios
+BR ( Neutralino2 -> Stau1~ Tau )                             alias 26
+BR ( Neutralino2 -> Stau1 Tau~ )                             alias 27
+
+# h0 Branching ratios
+BR ( h0 -> Bottom Bottom~ )                                  0.753965  +- 0.019    alias 30
+BR ( h0 -> Charm  Charm~ )                                   0.0378069 +- 0.0033   alias 31
+BR ( h0 -> Tau  Tau~ )                                       0.105316  +- 0.0067   alias 32
+BR ( h0 -> Gluon Gluon )                                     0.0422473 +- 0.004    alias 33
+
+# H0 Branching ratios
+BR ( H0 -> Bottom Bottom~ )                                  alias 34
+
+# A0 Branching ratios
+BR ( A0 -> Bottom Bottom~ )                                  alias 38
+
+# H+ Branching ratios
+BR ( Hplus -> Top Bottom~ )                                  alias 42
+
+# stop branching ratios
+BR ( Stop1 -> Neutralino1 Top )                              alias 50
+BR ( Stop1 -> Chargino1 Bottom )                             alias 51
+
+
+#########################################################################################
+# brsums                                                                                #
+#########################################################################################
+
+brsum ( br_26 br_27 )                        alias 1  # Neutralino2 -> Stau- Tau+ + Neutralino2 -> Stau+ Tau- 
+
+
+#########################################################################################
+# xsbr                                                                                  #
+#########################################################################################
+
+# LL 500
+xsbr ( sigma_1 br_13 br_13 )                  30.1831 fb +- 0.37 fb alias 101 # Chargino1 Chargino1~ -> (Stau1 Nutau)^2
+xsbr ( sigma_2 brsum_1 )                      26.999  fb +- 0.33 fb alias 105 # Neutralino1 Neutralino2 -> Stau+ tau-
+xsbr ( sigma_3 brsum_1 brsum_1 )              15.6853 fb +- 0.26 fb alias 106 # Neutralino2 Neutralino2 -> (Stau+ tau-)^2
+xsbr ( sigma_4 br_2 br_2 )                    44.1274 fb +- 0.42 fb alias 107 # SelectronL SelectronL~ -> (Neutralino1 Electron)^2
+xsbr ( sigma_5 br_2 )                          7.1362 fb +- 0.17 fb alias 108 # SelectronL SelectronR~ -> (Neutralino1 Electron)
+xsbr ( sigma_6 br_2 )                        256.904  fb +- 2.5  fb alias 109 # SelectronR SelectronL~ -> (Neutralino1 Electron)
+xsbr ( sigma_7 br_1 br_1 )                   112.705  fb +- 1.1  fb alias 110 # SelectronR SelectronR~ -> (Neutralino1 Electron)^2
+xsbr ( sigma_8 br_6 br_6 )                    18.2467 fb +- 0.26 fb alias 111 # SmuL SmuL~ -> (Neutralino1 Muon)^2
+xsbr ( sigma_9 br_5 br_5 )                    27.1664 fb +- 0.33 fb alias 112 # SmuR SmuR~ -> (Neutralino1 Muon)^2
+xsbr ( sigma_10 br_9 br_9 )                   32.3984 fb +- 0.37 fb alias 113 # Stau1 Stau1~ -> (Neutralino1 Tau)^2
+xsbr ( sigma_11 br_9 br_10 )                   1.1559 fb +- 0.1  fb alias 114 # Stau1 Stau2~ -> (Neutralino1 Tau)^2
+xsbr ( sigma_12 br_10 br_10 )                 13.0195 fb +- 0.21 fb alias 115 # Stau2 Stau2~ -> (Neutralino1 Tau)^2
+						      		    							
+# RR 500					      		    							
+xsbr ( sigma_101 br_13 br_13 )                13.4277 fb +- 0.25 fb alias 201 # Chargino1 Chargino1~ -> (Stau1 Nutau)^2
+xsbr ( sigma_102 brsum_1 )                    13.3018 fb +- 0.25 fb alias 205 # Neutralino1 Neutralino2 -> Stau+ tau-
+xsbr ( sigma_103 brsum_1 brsum_1 )             6.9738 fb +- 0.18 fb alias 206 # Neutralino2 Neutralino2 -> (Stau+ tau-)^2
+xsbr ( sigma_104 br_2 br_2 )                  22.1378 fb +- 0.29 fb alias 207 # SelectronL SelectronL~ -> (Neutralino1 Electron)^2
+xsbr ( sigma_105 br_2 )                      256.904  fb +- 2.5  fb alias 208 # SelectronL SelectronR~ -> (Neutralino1 Electron)
+xsbr ( sigma_106 br_2 )                        7.1362 fb +- 0.17 fb alias 209 # SelectronR SelectronL~ -> (Neutralino1 Electron)
+xsbr ( sigma_107 br_1 br_1 )                 236.605  fb +- 2.4  fb alias 210 # SelectronR SelectronR~ -> (Neutralino1 Electron)^2
+xsbr ( sigma_108 br_6 br_6 )                  10.6352 fb +- 0.2  fb alias 211 # SmuL SmuL~ -> (Neutralino1 Muon)^2
+xsbr ( sigma_109 br_5 br_5 )                  44.1095 fb +- 0.44 fb alias 212 # SmuR SmuR~ -> (Neutralino1 Muon)^2
+xsbr ( sigma_110 br_9 br_9 )                  47.8622 fb +- 0.48 fb alias 213 # Stau1 Stau1~ -> (Neutralino1 Tau)^2
+xsbr ( sigma_112 br_10 br_10 )                 8.1750 fb +- 0.17 fb alias 215 # Stau2 Stau2~ -> (Neutralino1 Tau)^2
+
+# LR 500
+xsbr ( sigma_201 br_13 br_13 )               120.705  fb +- 1.4  fb alias 301 # Chargino1 Chargino1~ -> (Stau1 Nutau)^2
+xsbr ( sigma_201 br_17 br_13 )                 3.1666 fb +- 0.11 fb alias 302 # Chargino1 Chargino1~ -> (Stau1 Nutau)(Neutralino1 W)
+xsbr ( sigma_201 br_13 br_17 )                 3.1666 fb +- 0.11 fb alias 303 # Chargino1 Chargino1~ -> (Stau1 Nutau)(Neutralino1 W)
+xsbr ( sigma_202 brsum_1 )                   105.291  fb +- 1.1  fb alias 305 # Neutralino1 Neutralino2 -> Stau+ tau-
+xsbr ( sigma_203 brsum_1 brsum_1 )            62.736  fb +- 0.7  fb alias 306 # Neutralino2 Neutralino2 -> (Stau+ tau-)^2
+xsbr ( sigma_204 br_2 br_2 )                 171.264  fb +- 1.6  fb alias 307 # SelectronL SelectronL~ -> (Neutralino1 Electron)^2
+xsbr ( sigma_205 br_2 )                       28.5449 fb +- 0.33 fb alias 308 # SelectronL SelectronR~ -> (Neutralino1 Electron)
+xsbr ( sigma_206 br_2 )                       64.2259 fb +- 0.63 fb alias 309 # SelectronR SelectronL~ -> (Neutralino1 Electron)
+xsbr ( sigma_207 br_1 br_1 )                  63.4465 fb +- 0.63 fb alias 310 # SelectronR SelectronR~ -> (Neutralino1 Electron)^2
+xsbr ( sigma_208 br_6 br_6 )                  67.7414 fb +- 0.65 fb alias 311 # SmuL SmuL~ -> (Neutralino1 Muon)^2
+xsbr ( sigma_209 br_5 br_5 )                  42.1302 fb +- 0.42 fb alias 312 # SmuR SmuR~ -> (Neutralino1 Muon)^2
+xsbr ( sigma_210 br_9 br_9 )                  60.0936 fb +- 0.61 fb alias 313 # Stau1 Stau1~ -> (Neutralino1 Tau)^2
+xsbr ( sigma_211 br_9 br_10 )                  3.6585 fb +- 0.12 fb alias 314 # Stau1 Stau2~ -> (Neutralino1 Tau)^2
+xsbr ( sigma_212 br_10 br_10 )                47.1169 fb +- 0.44 fb alias 315 # Stau2 Stau2~ -> (Neutralino1 Tau)^2
+
+# RL 500
+xsbr ( sigma_301 br_13 br_13 )                 3.4175 fb +- 0.13 fb alias 401 # Chargino1 Chargino1~ -> (Stau1 Nutau)^2
+xsbr ( sigma_302 brsum_1 )                     9.4107 fb +- 0.2  fb alias 405 # Neutralino1 Neutralino2 -> Stau+ tau-
+xsbr ( sigma_303 brsum_1 brsum_1 )             1.7554 fb +- 0.1  fb alias 406 # Neutralino2 Neutralino2 -> (Stau+ tau-)^2
+xsbr ( sigma_304 br_2 br_2 )                  17.3367 fb +- 0.25 fb alias 407 # SelectronL SelectronL~ -> (Neutralino1 Electron)^2
+xsbr ( sigma_305 br_2 )                       64.2259 fb +- 0.63 fb alias 408 # SelectronL SelectronR~ -> (Neutralino1 Electron)
+xsbr ( sigma_306 br_2 )                       28.5449 fb +- 0.33 fb alias 409 # SelectronR SelectronL~ -> (Neutralino1 Electron)
+xsbr ( sigma_307 br_1 br_1 )                 930.742  fb +- 9.37 fb alias 410 # SelectronR SelectronR~ -> (Neutralino1 Electron)^2
+xsbr ( sigma_308 br_6 br_6 )                  14.461  fb +- 0.22 fb alias 411 # SmuL SmuL~ -> (Neutralino1 Muon)^2
+xsbr ( sigma_309 br_5 br_5 )                 160.732  fb +- 1.61 fb alias 412 # SmuR SmuR~ -> (Neutralino1 Muon)^2
+xsbr ( sigma_310 br_9 br_9 )                 168.34   fb +- 1.69 fb alias 413 # Stau1 Stau1~ -> (Neutralino1 Tau)^2
+xsbr ( sigma_311 br_9 br_10 )                  2.4159 fb +- 0.1  fb alias 414 # Stau1 Stau2~ -> (Neutralino1 Tau)^2
+xsbr ( sigma_312 br_10 br_10 )                13.206  fb +- 0.21 fb alias 415 # Stau2 Stau2~ -> (Neutralino1 Tau)^2
+						      		    	      						
+# LR 400					      		    	      						
+xsbr ( sigma_401 br_13 br_13 )                27.4083 fb +- 0.35 fb alias 501 # Chargino1 Chargino1~ -> (Stau1 Nutau)^2
+xsbr ( sigma_402 brsum_1 )                    84.7623 fb +- 0.9  fb alias 505 # Neutralino1 Neutralino2 -> Stau+ tau-
+xsbr ( sigma_403 brsum_1 brsum_1 )            14.1989 fb +- 0.25 fb alias 506 # Neutralino2 Neutralino2 -> (Stau+ tau-)^2
+xsbr ( sigma_404 br_2 br_2 )                  15.6046 fb +- 0.22 fb alias 507 # SelectronL SelectronL~ -> (Neutralino1 Electron)^2
+xsbr ( sigma_405 br_2 )                       31.8136 fb +- 0.34 fb alias 508 # SelectronL SelectronR~ -> (Neutralino1 Electron)
+xsbr ( sigma_406 br_2 )                       71.5807 fb +- 0.7  fb alias 509  # SelectronR SelectronL~ -> (Neutralino1 Electron)
+xsbr ( sigma_407 br_1 br_1 )                  60.8271 fb +- 0.61 fb alias 510 # SelectronR SelectronR~ -> (Neutralino1 Electron)^2
+xsbr ( sigma_408 br_6 br_6 )                   9.9979 fb +- 0.18 fb alias 511 # SmuL SmuL~ -> (Neutralino1 Muon)^2
+xsbr ( sigma_409 br_5 br_5 )                  44.6641 fb +- 0.44 fb alias 512 # SmuR SmuR~ -> (Neutralino1 Muon)^2
+xsbr ( sigma_410 br_9 br_9 )                  71.4476 fb +- 0.73 fb alias 513 # Stau1 Stau1~ -> (Neutralino1 Tau)^2
+xsbr ( sigma_411 br_9 br_10 )                  2.9521 fb +- 0.11 fb alias 514 # Stau1 Stau2~ -> (Neutralino1 Tau)^2
+						      		    	      						
+# RL 400					      		    	      						
+xsbr ( sigma_502 brsum_1 )                     8.3031 fb +- 0.18 fb alias 605 # Neutralino1 Neutralino2 -> Stau+ tau-
+xsbr ( sigma_504 br_2 br_2 )                   2.2328 fb +- 0.1  fb alias 607 # SelectronL SelectronL~ -> (Neutralino1 Electron)^2
+xsbr ( sigma_505 br_2 )                       71.5807 fb +- 0.7  fb alias 608 # SelectronL SelectronR~ -> (Neutralino1 Electron)
+xsbr ( sigma_506 br_2 )                       31.8136 fb +- 0.35 fb alias 609 # SelectronR SelectronL~ -> (Neutralino1 Electron)
+xsbr ( sigma_507 br_1 br_1 )                 760.637  fb +- 7.7  fb alias 610 # SelectronR SelectronR~ -> (Neutralino1 Electron)^2
+xsbr ( sigma_508 br_6 br_6 )                   2.0721 fb +- 0.1  fb alias 611 # SmuL SmuL~ -> (Neutralino1 Muon)^2
+xsbr ( sigma_509 br_5 br_5 )                 175.252  fb +- 1.7  fb alias 612 # SmuR SmuR~ -> (Neutralino1 Muon)^2
+xsbr ( sigma_510 br_9 br_9 )                 204.434  fb +- 2.0  fb alias 613 # Stau1 Stau1~ -> (Neutralino1 Tau)^2
+xsbr ( sigma_511 br_9 br_10 )                  1.9494 fb +- 0.1  fb alias 614 # Stau1 Stau2~ -> (Neutralino1 Tau)^2
+						      		    	      						
+# LR 1000					      		    	      						
+xsbr ( sigma_601 br_13 br_13 )               117.116  fb +- 1.35 fb alias 701 # Chargino1 Chargino1~ -> (Stau1 Nutau)^2
+xsbr ( sigma_601 br_17 br_13 )                 3.0724 fb +- 0.12 fb alias 702 # Chargino1 Chargino1~ -> (Stau1 Nutau)(Neutralino1 W)
+xsbr ( sigma_601 br_13 br_17 )                 3.0724 fb +- 0.12 fb alias 703 # Chargino1 Chargino1~ -> (Stau1 Nutau)(Neutralino1 W)
+xsbr ( sigma_602 br_13 br_19 brsum_1 )         2.1139 fb +- 0.1  fb alias 705 # Chargino1 Chargino2~ -> (Stau1 Nutau)(Neutralino2 W -> Stau Tau)
+xsbr ( sigma_603 brsum_1 )                    61.3434 fb +- 0.65 fb alias 706 # Neutralino1 Neutralino2 -> Stau+ tau-
+xsbr ( sigma_604 brsum_1 brsum_1 )            58.8677 fb +- 0.66 fb alias 707 # Neutralino2 Neutralino2 -> (Stau+ tau-)^2
+xsbr ( sigma_605 br_2 br_2 )                 386.822  fb +- 3.7  fb alias 708 # SelectronL SelectronL~ -> (Neutralino1 Electron)^2
+xsbr ( sigma_606 br_2 )                       10.4594 fb +- 0.2  fb alias 709 # SelectronL SelectronR~ -> (Neutralino1 Electron)
+xsbr ( sigma_607 br_2 )                       23.5335 fb +- 0.3  fb alias 710 # SelectronR SelectronL~ -> (Neutralino1 Electron)
+xsbr ( sigma_608 br_1 br_1 )                  35.0221 fb +- 0.37 fb alias 711 # SelectronR SelectronR~ -> (Neutralino1 Electron)^2
+xsbr ( sigma_609 br_6 br_6 )                  57.6876 fb +- 0.55 fb alias 712 # SmuL SmuL~ -> (Neutralino1 Muon)^2
+xsbr ( sigma_610 br_5 br_5 )                  17.2165 fb +- 0.25 fb alias 713 # SmuR SmuR~ -> (Neutralino1 Muon)^2
+xsbr ( sigma_611 br_9 br_9 )                  22.0778 fb +- 0.29 fb alias 714 # Stau1 Stau1~ -> (Neutralino1 Tau)^2
+xsbr ( sigma_612 br_9 br_10 )                  1.7936 fb +- 0.1  fb alias 715 # Stau1 Stau2~ -> (Neutralino1 Tau)^2
+xsbr ( sigma_613 br_10 br_10 )                44.6509 fb +- 0.43 fb alias 716 # Stau2 Stau2~ -> (Neutralino1 Tau)^2
+xsbr ( sigma_614 br_51 br_51 br_13 br_13)      2.3855 fb +- 0.1  fb alias 717 # Stop1 Stop1~ -> (Chargino1 b -> Stau1 NuTau)(Chargino1~ b~ -> Stau1~ NuTau~)
+xsbr ( sigma_614 br_50 br_51 br_13)            1.4448 fb +- 0.1  fb alias 720 # Stop1 Stop1~ -> (Chargino1 b -> Stau1 NuTau)(Neutralino1 Top)
+xsbr ( sigma_616 br_34 br_38 )                 0.7023 fb +- 0.1  fb alias 718 # H0 A0 -> bb bb 
+xsbr ( sigma_617 br_42 br_42 )                 2.7279 fb +- 0.18 fb alias 719 # H+ H- -> tb tb
+						      		    	      						
+# LR 1000
+xsbr ( sigma_701 br_13 br_13 )                 3.3432 fb +- 0.12 fb alias 801 # Chargino1 Chargino1~ -> (Stau1 Nutau)^2
+xsbr ( sigma_703 brsum_1 )                     4.7592 fb +- 0.14 fb alias 806 # Neutralino1 Neutralino2 -> Stau+ tau-
+xsbr ( sigma_704 brsum_1 brsum_1 )             1.6419 fb +- 0.1  fb alias 807 # Neutralino2 Neutralino2 -> (Stau+ tau-)^2
+xsbr ( sigma_705 br_2 br_2 )                  21.9332 fb +- 0.29 fb alias 808 # SelectronL SelectronL~ -> (Neutralino1 Electron)^2
+xsbr ( sigma_706 br_2 )                       23.5335 fb +- 0.3  fb alias 809 # SelectronL SelectronR~ -> (Neutralino1 Electron)
+xsbr ( sigma_707 br_2 )                       10.4594 fb +- 0.2  fb alias 810 # SelectronR SelectronL~ -> (Neutralino1 Electron)
+xsbr ( sigma_708 br_1 br_1 )                 705.199  fb +- 7.1  fb alias 811 # SelectronR SelectronR~ -> (Neutralino1 Electron)^2
+xsbr ( sigma_709 br_6 br_6 )                  12.7949 fb +- 0.21 fb alias 812 # SmuL SmuL~ -> (Neutralino1 Muon)^2
+xsbr ( sigma_710 br_5 br_5 )                  63.381  fb +- 0.63 fb alias 813 # SmuR SmuR~ -> (Neutralino1 Muon)^2
+xsbr ( sigma_711 br_9 br_9 )                  60.217  fb +- 0.60 fb alias 814 # Stau1 Stau1~ -> (Neutralino1 Tau)^2
+xsbr ( sigma_712 br_9 br_10 )                  1.1844 fb +- 0.1  fb alias 815 # Stau1 Stau2~ -> (Neutralino1 Tau)^2
+xsbr ( sigma_713 br_10 br_10 )                12.9124 fb +- 0.21 fb alias 816 # Stau2 Stau2~ -> (Neutralino1 Tau)^2
+xsbr ( sigma_714 br_51 br_51 br_13 br_13)      2.2762 fb +- 0.1  fb alias 817 # Stop1 Stop1~ -> (Chargino1 b -> Stau1 NuTau)(Chargino1~ b~ -> Stau1~ NuTau~)
+xsbr ( sigma_714 br_50 br_51 br_13)            1.3786 fb +- 0.1  fb alias 820 # Stop1 Stop1~ -> (Chargino1 b -> Stau1 NuTau)(Neutralino1 Top)
+xsbr ( sigma_716 br_34 br_38 )                 0.4638 fb +- 0.1  fb alias 818 # H0 A0 -> bb bb 
+xsbr ( sigma_717 br_42 br_42 )                 0.6055 fb +- 0.1  fb alias 819 # H+ H- -> tb tb
+
+
+#########################################################################################
+# brratios                                                                              #
+#########################################################################################
+
+# brratio ( br_50 br_51 )                            0.3 +- 0.01 alias 1
+
+
+#########################################################################################
+# fit parameters                                                                        #
+#########################################################################################
+
+fitModel mSUGRA
+
+fitParameter TanBeta     10     +-  10
+fitParameter M0          70 GeV +-  40 GeV
+fixParameter M12        250 GeV
+fixParameter A0        -300 GeV
+fixParameter SignMu       1
+
+LoopCorrections       on
+ISR                   on			       
+
+Verbose               off
+				       
+UseGivenStartValues   on
+FitAllDirectly        on
+BoundsOnX             off
+SepFitTanbX           off
+SepFitTanbMu          off
+SepFitmA	      off
+XScanRange            -6000. GeV  -300. GeV
+ScanX                 off
+
+ScanParameters        off
+CalcPullDist          off
+
+UseSimAnnBefore       off
+UseSimAnnWhile        off
+TempRedSimAnn         0.6
+MaxCallsSimAnn        450000
+InitTempSimAnn        10000
+
+NoBoundsAtAll         off
+
+Calculator            SPHENO  ../theorycodes/SPheno2.2.2/SPheno
+
+UseMinos              on
+UseHesse              off
+
+NumberOfMinimizations  1
+ErrDef                 1.0
