@@ -5,6 +5,7 @@
 #include <y.tab.h>
 void yyerror(char*);
 extern int yyParseError;
+extern int yyInputFileLineNo;
 %}
 
 %s newline
@@ -70,7 +71,7 @@ Q[ \t]*=                  {
                                   return T_CROSSSECTIONUNIT;
                               }
                               else {
-				fprintf(stderr, "Unknown cross section unit" );
+			        fprintf(stderr, "Unknown cross section unit in input file line %d", yyInputFileLineNo);
 				yyParseError = 1;
 				/* yyerror("Unknown cross section unit"); */
                               }
@@ -100,12 +101,11 @@ Q[ \t]*=                  {
 <newline>{WORD}           {
                               BEGIN(INITIAL);
                               if (strlen(yytext) > 254) {
-				fprintf ( stderr, "Key too long" );
+				fprintf(stderr, "Key too long in input file line %d", yyInputFileLineNo);
 				yyParseError = 1;
                                 /*  yyerror("Key too long"); */
                               }
 			      if (!strcmp(yytext, "universality")) { 
-				  printf("universality found\n");
 				  return T_UNIVERSALITY;
                               }
 			      if (!strcmp(yytext, "Calculator")) { 
@@ -151,7 +151,7 @@ Q[ \t]*=                  {
                                   return T_ENERGYUNIT;
                               }
                               else {
-				fprintf(stderr, "Unknown energy unit" );
+			        fprintf(stderr, "Unknown energy unit in input file line %d", yyInputFileLineNo);
 				yyParseError = 1;
                                 /*  yyerror("Unknown energy unit"); */
                               }
@@ -177,7 +177,7 @@ on|off                    {
                               else if (!strcmp(yytext, "off")) yylval.integer = 0;
                               else               
 				{
-				  fprintf(stderr, "Unknown switch state" );
+				  fprintf(stderr, "Unknown switch state in input file line %d", yyInputFileLineNo);
 				  yyParseError = 1;
 				  /* yyerror("Unknown switch state"); */ }
                               return T_SWITCHSTATE;
@@ -191,7 +191,7 @@ alias                     {
                               BEGIN(INITIAL);
                               if (strlen(yytext) > 254) {
 				yyParseError = 1;
-				fprintf(stderr, "Word too long" );
+				fprintf(stderr, "Path too long in input file line %d", yyInputFileLineNo);
 	                        /*  yyerror("Word too long"); */
 			      }
                               strcpy(yylval.name, yytext);
@@ -202,7 +202,7 @@ alias                     {
                               BEGIN(INITIAL);
                               if (strlen(yytext) > 254) {
 				yyParseError = 1;
-				fprintf(stderr, "Path too long" );
+				fprintf(stderr, "Path too long in input file line %d", yyInputFileLineNo);
 	                        /*  yyerror("Path too long"); */
 			      }
                               strcpy(yylval.name, yytext);
@@ -218,7 +218,7 @@ alias                     {
 {WHITESPACE}              /* Eat up whitespace */
 
 .                         {
-                              fprintf(stderr, "Unrecognized character: %s",yytext);
+                              fprintf(stderr, "Unrecognized character in input file line %d: %s\n", yyInputFileLineNo, yytext);
 			      yyParseError = 1;
                               /* yyerror("Unrecognized character"); */
                           }

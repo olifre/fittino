@@ -63,6 +63,12 @@ Input::Input(const char* inputfile)
   yyparse();
   fclose(yyin);
 
+  if (yyParseError) {
+    cerr<<"ERROR: Syntax error in Fittino input file "<<inputfile<<endl;
+    cerr<<"       Check above messages for details"<<endl;
+    exit(EXIT_FAILURE);
+  }
+
   //  cout << "after yyparse" << endl;
   //  DumpMeasuredVector();
 
@@ -125,7 +131,7 @@ Input::Input(const char* inputfile)
   for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
     cout << yyMeasuredVec[i].name << " " << yyMeasuredVec[i].value << " +- " << yyMeasuredVec[i].error << endl;
   }
-  
+
   //cout << "before End" << endl;
   //DumpMeasuredVector();
   

@@ -27,19 +27,14 @@ ROOTLIBS          = $(shell root-config --libs)
 ROOTLIBS         += -lMinuit
 ROOTGLIBS         = $(shell root-config --glibs)
 
-#CERNLIB = -L/cern/pro/lib  -lpythia6152 -lpdflib -lmathlib -lphotos -lpdflib -lkernlib -lpacklib -lm -lc -lstdc++ -lg2c
-
 
 CXX               = g++
 CXXFLAGS          = -g -Wall -pedantic -Wno-long-long \
-                    -Wshadow -fPIC -I. -I$(ROOTSYS)/include 
+                    -Wshadow -fPIC -I. $(ROOTCFLAGS) 
 LD                = g++
 LDFLAGS           = -g -Wall -pedantic -Wno-long-long -Wshadow
 # -pedantic -ansi
 
-# LIBS             = $(ROOTLIBS) -lfl libsusygen_call_test.a susygen/libsusygen.a  suspect/libsuspect.a ${CERNLIB}
-# LIBS             = $(ROOTLIBS) -lfl libsusygen_call_test.a suspect/libsuspect.a ${CERNLIB} 
-#LIBS              = $(ROOTLIBS) suspect/libsuspect.a ${CERNLIB} 
 LIBS              = $(ROOTLIBS)
 
 SOURCES           = $(wildcard *.cpp)

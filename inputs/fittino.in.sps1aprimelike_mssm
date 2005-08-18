@@ -209,8 +209,8 @@ BR ( Chargino1 -> Neutralino1 W )                            alias 17
 BR ( Chargino2 -> Neutralino2 W )                            alias 19
 
 # Neutralino 2 Branching ratios
-BR ( Neutralino2 -> ~Stau1 Tau )                             alias 26
-BR ( Neutralino2 -> Stau1 ~Tau )                             alias 27
+BR ( Neutralino2 -> Stau1~ Tau )                             alias 26
+BR ( Neutralino2 -> Stau1 Tau~ )                             alias 27
 
 # h0 Branching ratios
 BR ( h0 -> Bottom Bottom~ )                                  0.7621    +- 0.019  alias 30
@@ -411,6 +411,8 @@ universality MSupL MScharmL
 LoopCorrections       on
 ISR                   on			       
 				
+Verbose               off
+
 PerformFit            on
 PerformSingleFits     off
        

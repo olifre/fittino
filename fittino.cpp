@@ -2608,7 +2608,7 @@ void Fittino::writeResults(const char* filename)
 
 
     fprintf(file,"#################### Fittino Fit Summary ####################\n");
-    fprintf(file,"created by Fittino version 1.1.0\n");
+    fprintf(file,"created by Fittino version 1.1.1\n");
     fprintf(file,"on %s, %s %02d, %d at %02d:%02d:%02d\n", weekday.c_str(), month.c_str(),
 	      mday, year, hour, min, sec);
     fprintf(file,"\n");
@@ -3591,6 +3591,7 @@ void WriteLesHouches(double* x)
       cerr << "Parameter MSelectronL not declared" << endl;
       exit (EXIT_FAILURE);
     }
+
 
     if (FindInFixed("MSmuL")) {
       LesHouchesOutfile << "   32  "<< ReturnFixedValue("MSmuL")->value <<" # MSmuL (fixed)"<< endl;

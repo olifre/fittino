@@ -164,6 +164,7 @@ double        yyMaxCalculatorTime = 20.;
 
 std::vector<InputFileLine> yyInputFile;
 struct InputFileLine yyInputFileLine;
+int           yyInputFileLineNo = 1;
 
 %}
 
@@ -195,6 +196,7 @@ input:
 		yyInputFileLine.prevalue.erase();
 		yyInputFileLine.error = -1;
 		yyInputFileLine.postvalue.erase();
+		yyInputFileLineNo++;
               }
             | input block
             | input decay
@@ -356,7 +358,6 @@ input:
 		 while ((newpos = str.find(" ", pos)) != string::npos) {
 		      str.copy(tmpstr5, newpos - pos, pos);
 	              tmpstr5[newpos-pos] = '\0';
-	              cout << "tmpstr5 after str.copy "<<tmpstr5<< endl;
                       if (!pos) {
                           firstname.erase();
                           firstname.append(tmpstr5);
@@ -367,7 +368,6 @@ input:
                           tmpval.universality = firstname;
                           yyUniversalityVec.push_back(tmpval);
                       }
-//                      cout<<"pos = "<<pos<<"   newpos = "<<newpos<<endl;
 		      pos = newpos + 1;
                  }		 					
               }	
@@ -910,7 +910,6 @@ input:
 		  tmpValue.bound_up = 1e+6;
 		  tmpValue.bound_low = 0.;
 		  yyMeasuredVec.push_back(tmpValue);
-		  cout << "added edge" << endl;
 		  strcpy($4,"");
 		}
 		
