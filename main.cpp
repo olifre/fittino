@@ -37,14 +37,68 @@ int main(int argc, char** argv)
 {
   //===============================================
   n_printouts = 0;
+
   char* inputfilename = 0;
-  if (argc > 1) {
-      inputfilename = new char[strlen(argv[1])+1];
-      strcpy(inputfilename, argv[1]);
-  }
-  else {
+
+  if (argc == 1) {
       inputfilename = new char[strlen("fittino.in")+1];
       strcpy(inputfilename, "fittino.in");
+  }
+  else if (argc == 2) {
+      if (!strcmp(argv[1], "--help")) {
+   	  cout<<endl;
+	  cout<<"Usage: fittino [<parameters>]"<<endl;
+	  cout<<endl;
+	  cout<<"If Fittino is started without parameters, \"fittino.in\" is "
+	        "used as input file name."<<endl;
+	  cout<<"Possible optional program parameters are:"<<endl;
+	  cout<<endl;
+	  cout<<"  --help"<<endl;
+	  cout<<"      Fittino prints this message."<<endl;
+	  cout<<endl;
+	  cout<<"  <inputfile>"<<endl;
+	  cout<<"      If only a single parameter is given (different from \"--help\"), Fittino reads in "<<endl;
+	  cout<<"      input file <inputfile> instead of \"fittino.in\"."<<endl;
+	  cout<<endl;
+	  cout<<"  -i <inputfile>"<<endl;
+	  cout<<"      Fittino uses input file <inputfile>."<<endl;
+	  cout<<endl;
+	  cout<<"  -g <inputfile>"<<endl;
+	  cout<<"      Fittino generates an input file <inputfile> for the scenario provided with the -l option."<<endl;
+	  cout<<"      A template input file must be provided with the -i option."<<endl;
+	  cout<<endl;
+	  cout<<"  -l <leshouchesfile>"<<endl;
+	  cout<<"      Fittino generates the input file (see -g option) using the scenario described"<<endl;
+	  cout<<"      in SUSY Les Houches Accord file <leshouchesfile>."<<endl;
+	  cout<<endl;
+	  return 0;
+      }
+      else {
+	  inputfilename = new char[strlen(argv[1])+1];
+	  strcpy(inputfilename, argv[1]);
+      }
+  }
+  else {
+      for (int i=1; i<argc; i++) {
+  	  if (!strcmp(argv[i], "-i")) {
+	      i++;
+	      inputfilename = new char[strlen(argv[i])+1];
+	      strcpy(inputfilename, argv[i]);
+	      continue;
+	  }
+  	  if (!strcmp(argv[i], "-g")) {
+	      i++;
+	      cerr<<"Option -g not yet implemented"<<endl;
+	      exit(EXIT_FAILURE);
+	      continue;
+	  }
+  	  if (!strcmp(argv[i], "-l")) {
+	      i++;
+	      cerr<<"Option -l not yet implemented"<<endl;
+	      exit(EXIT_FAILURE);
+	      continue;
+	  }
+      }
   }
 
   cout << "reading input from file " << inputfilename << endl;
@@ -54,16 +108,21 @@ int main(int argc, char** argv)
 
   //  input->DumpMeasuredVector();
 
-  /*
+
   // Dumping input file
   for (unsigned int i=0; i<yyInputFile.size(); i++) {
     cout<<yyInputFile[i].prevalue;
-    if (yyInputFile[i].error >= 0) {
-      cout<<"\t"<<yyInputFile[i].value<<" +- "<<yyInputFile[i].error;
+    //    if (yyInputFile[i].error >= 0) {
+    if (yyInputFile[i].error.size()) {
+      cout<<"size = "<<yyInputFile[i].error.size()<<endl;
+      cout<<"\t"<<yyInputFile[i].value;
+      for (int q=0; q < yyInputFile[i].error.size(); q++) {
+	cout<<" +- "<<yyInputFile[i].error[q];
+      }
     }
     cout<<yyInputFile[i].postvalue;
   }
-  */
+
 
   if (yyCalcIndChisqContr) {
 

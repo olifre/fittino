@@ -177,7 +177,7 @@ int           yyInputFileLineNo = 1;
 %token <name> T_KEY T_WORD
 %token <real> T_NUMBER
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
-%token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS
+%token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS T_NOFIT
 %token T_BLOCK T_SCALE T_DECAY T_NEWLINE T_BR T_LEO T_XS T_CALCULATOR T_XSBR T_BRRATIO
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH T_NEWLINE
  
@@ -194,7 +194,8 @@ input:
 		yyInputFileLine.postvalue += $2;
 		yyInputFile.push_back(yyInputFileLine);
 		yyInputFileLine.prevalue.erase();
-		yyInputFileLine.error = -1;
+//		yyInputFileLine.error = -1;
+		yyInputFileLine.error.clear();
 		yyInputFileLine.postvalue.erase();
 		yyInputFileLineNo++;
               }
@@ -297,7 +298,7 @@ input:
 	      {
 		  yyInputFileLine.prevalue = $2;
 		  yyInputFileLine.value = $3;
-		  yyInputFileLine.error = $4;
+//		  yyInputFileLine.error = $4;
 
 		  found = 0;
 		  skip = 0;
@@ -783,29 +784,30 @@ input:
 		      yyMeasuredVec.push_back(tmpValue);
 		  }
 	      }
-	    | input T_KEY T_WORD value err
+	    | input T_NOFIT T_WORD value err
 	      {
-		  if (!strcmp($2, "nofit")) {
-                      yyInputFileLine.prevalue  = $2;
-                      yyInputFileLine.prevalue += "\t";
-                      yyInputFileLine.prevalue += $3;
-	              yyInputFileLine.value = $4;
-	              yyInputFileLine.error = $5;
+                  yyInputFileLine.prevalue  = "nofit";
+                  yyInputFileLine.prevalue += "\t";
+                  yyInputFileLine.prevalue += $3;
+	          yyInputFileLine.value = $4;
+//	          yyInputFileLine.error = $5;
 
-		      MeasuredValue tmpValue;
-		      tmpValue.theovalue  = 0;
-		      tmpValue.name = $3;
-		      tmpValue.value = $4;
-		      tmpValue.error = $5;
-		      tmpValue.id = 0;
-	              tmpValue.bound_low = -1.E+6;
-	              tmpValue.bound_up = 1.E+6;
-                      tmpValue.nofit = true;
-		      if (!strncmp($3, "mass", 4)) tmpValue.type = mass;
-		      else if (!strncmp($3, "cos", 3)) tmpValue.type = other;
-		      yyMeasuredVec.push_back(tmpValue);
-		  }
-		  else if (!strcmp($2, "fitParameter")) {
+		  MeasuredValue tmpValue;
+		  tmpValue.theovalue  = 0;
+		  tmpValue.name = $3;
+		  tmpValue.value = $4;
+		  tmpValue.error = $5;
+		  tmpValue.id = 0;
+	          tmpValue.bound_low = -1.E+6;
+	          tmpValue.bound_up = 1.E+6;
+                  tmpValue.nofit = true;
+		  if (!strncmp($3, "mass", 4)) tmpValue.type = mass;
+		  else if (!strncmp($3, "cos", 3)) tmpValue.type = other;
+		  yyMeasuredVec.push_back(tmpValue);
+              }
+	    | input T_KEY T_WORD value T_ERRORSIGN value
+	      {
+		  if (!strcmp($2, "fitParameter")) {
 		    char c[1000];
 		    yyInputFileLine.prevalue  = $2;
 		    yyInputFileLine.prevalue += "\t";
@@ -813,15 +815,16 @@ input:
 		    yyInputFileLine.prevalue += "\t";
 		    sprintf(c, "%f", $4);
 		    yyInputFileLine.prevalue += c;
-		    yyInputFileLine.prevalue += "\t";
-		    sprintf(c, "%f", $5);
+		    yyInputFileLine.prevalue += "\t+-\t";
+		    sprintf(c, "%f", $6);
 		    yyInputFileLine.prevalue += c;
 	            parameter_t tmpparam;
                     tmpparam.name = $3;
                     tmpparam.value = $4;
-                    tmpparam.error = $5;
+                    tmpparam.error = $6;
                     yyFittedPar.push_back(tmpparam);
 		  }
+/*
 		  else if (!strcmp($2, "fixParameter")) {
 		    char c[1000];
 		    yyInputFileLine.prevalue  = $2;
@@ -830,13 +833,14 @@ input:
 		    sprintf(c, "%f", $4);
 		    yyInputFileLine.prevalue += c;
 		    yyInputFileLine.prevalue += "\t";
-		    sprintf(c, "%f", $5);
+		    sprintf(c, "%f", $6);
 		    yyInputFileLine.prevalue += c;
 	            parameter_t tmpparam;
                     tmpparam.name = $3;
                     tmpparam.value = $4;
                     yyFixedPar.push_back(tmpparam);
 		  }
+*/
                   else {
 		     cout << "name = " << $3 << endl;
                      yyerror ("Syntax error in Fixed or Fitted Par 2");
@@ -853,7 +857,7 @@ input:
 		yyInputFileLine.prevalue += " ";
 		yyInputFileLine.prevalue += $4;
                 yyInputFileLine.value = $5;
-                yyInputFileLine.error = $6;
+//                yyInputFileLine.error = $6;
 		yyInputFileLine.postvalue = "\talias ";
 		sprintf(c, "%d", (int)$8);
 		yyInputFileLine.postvalue += c;
@@ -923,7 +927,7 @@ input:
 		  yyInputFileLine.prevalue += $6;
 		  yyInputFileLine.prevalue += ")";
 		  yyInputFileLine.value = $8;
-		  yyInputFileLine.error = $9;
+//		  yyInputFileLine.error = $9;
 		  yyInputFileLine.postvalue = "\talias ";
 		  sprintf(c, "%d", (int)$11);
 		  yyInputFileLine.postvalue += c;
@@ -971,7 +975,7 @@ input:
 		  yyInputFileLine.prevalue += $4;
 		  yyInputFileLine.prevalue += " ) ";
 		  yyInputFileLine.value = $6;
-		  yyInputFileLine.error = $7;
+//		  yyInputFileLine.error = $7;
 		  yyInputFileLine.postvalue = "\talias ";
 		  sprintf(c, "%d", (int)$9);
 		  yyInputFileLine.postvalue += c;
@@ -1063,7 +1067,7 @@ input:
 		  yyInputFileLine.prevalue += c;
 		  yyInputFileLine.prevalue += " ) ";
 		  yyInputFileLine.value = $14;
-		  yyInputFileLine.error = $15;
+//		  yyInputFileLine.error = $15;
 		  yyInputFileLine.postvalue  = "\talias ";
 		  sprintf(c, "%d", (int)$17);
 		  yyInputFileLine.postvalue += c;
@@ -1190,7 +1194,7 @@ input:
 		yyInputFileLine.prevalue += $4;
 		yyInputFileLine.prevalue += " ) ";
 		yyInputFileLine.value = $6;
-		yyInputFileLine.error = $7;
+//		yyInputFileLine.error = $7;
 		yyInputFileLine.postvalue  = "\talias ";
 		sprintf(c, "%d", (int)$9);
 		yyInputFileLine.postvalue += c;
@@ -1995,10 +1999,12 @@ sentence:   T_WORD
 err:       T_ERRORSIGN value
              {
                  $$ = $2;
+		 yyInputFileLine.error.push_back($2);
              }
            | err T_ERRORSIGN value
              {
                  $$ = TMath::Sqrt($1 * $1 + $3 * $3);
+		 yyInputFileLine.error.push_back($3);
              }
            ;
  

@@ -117,6 +117,9 @@ Q[ \t]*=                  {
 			      if (!strcmp(yytext, "LEObs")) {
 				  return T_LEO;
 			      }
+			      if (!strcmp(yytext, "nofit")) {
+				  return T_NOFIT;
+			      }
                               strcpy(yylval.name, yytext);
                               return T_KEY;
                           }
