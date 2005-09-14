@@ -119,7 +119,7 @@ void CalculateCovarianceMatrix(const char* filename = "TreeSum.root", const char
     const TMatrixDEigen matrix(covMatrix);
     TVectorD eigenValueVec = matrix.GetEigenValues();
     for (Int_t v=0; v<eigenValueVec.GetNoElements(); v++) {
-        if (eigenValueVec(v) < 0) cerr<<"WARNING: Covariance matrix is not non-negative definite"<<endl;
+        if (eigenValueVec(v) < 0) printf(stderr, "WARNING: Covariance matrix is not non-negative definite\n");
     }
 
     FILE* outFile = fopen("covarianceMatrix.txt", "w+");
