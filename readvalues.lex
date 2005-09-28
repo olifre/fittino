@@ -83,6 +83,7 @@ Q[ \t]*=                  {
  
  
 {COMPARATOR}              {
+                              strcpy(yylval.name, yytext);
                               return T_COMPARATOR;
                           }
  

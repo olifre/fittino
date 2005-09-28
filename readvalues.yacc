@@ -132,6 +132,7 @@ bool          yySimAnnUncertainty = false;
 bool          yySimAnnUncertaintyRunDown = false;
 bool          yyRandomDirUncertainties = false;
 bool          yyPerformSingleFits = false;
+bool          yyUseMicrOmegas = false;
 
 unsigned int yyCalculator;
 string       yyCalculatorPath = "";
@@ -159,6 +160,7 @@ double        yyXscanhigh = 2000.;
 double        yybsg = -10000.;
 double        yygmin2 = -10000.;
 double        yydrho  = -10000.;
+double        yyOmega = -10000.;
 
 double        yyMaxCalculatorTime = 20.;
 
@@ -636,7 +638,10 @@ input:
 		      if ($3 == on) yyPerformSingleFits = true;
 		      else yyPerformSingleFits = false;
 		  } 
-	      }
+ 		  if (!strcmp($2, "UseMicrOmegas")) {
+		      if ($3 == on) yyUseMicrOmegas = true;
+		      else yyUseMicrOmegas = false;
+		  } 	      }
 	    | input T_CALCULATOR T_WORD
 	      {
                    yyInputFileLine.prevalue  = "Calculator";
@@ -991,12 +996,59 @@ input:
 		    tmpValue.id    = gmin2;
 		  } else if (!strcmp($4, "drho")) {
 		    tmpValue.id    = drho;
+		  } else if (!strcmp($4, "omega")) {
+		    tmpValue.id    = omega;
 		  }
-		  tmpValue.value = $6*1E9;
-		  tmpValue.error = $7*1E9;
+		  tmpValue.value = $6;
+		  tmpValue.error = $7;
 		  tmpValue.alias = (int)$9;
 		  tmpValue.bound_up = 1e+6;
 		  tmpValue.bound_low = -1e+6;
+		  yyMeasuredVec.push_back(tmpValue);
+		  //		  cout << "Added le obs " << tmpValue.name << " = " << tmpValue.value << endl;
+	      }
+	     | input T_LEO T_BRA T_WORD T_KET T_COMPARATOR value T_ALIAS T_NUMBER
+	      {
+		  char c[1000];
+		  yyInputFileLine.prevalue  = "bound on LEObs ( ";
+		  yyInputFileLine.prevalue += $4;
+		  yyInputFileLine.prevalue += " ) ";
+		  yyInputFileLine.value = $7;
+		  //		  yyInputFileLine.error = 0.01*$7;
+		  yyInputFileLine.postvalue = "\talias ";
+		  sprintf(c, "%d", (int)$9);
+		  yyInputFileLine.postvalue += c;
+		  
+		  MeasuredValue tmpValue;
+		  tmpValue.nofit = false;
+		  tmpValue.type  = LEObs;
+		  tmpValue.theovalue  = 0;
+		  tmpValue.name  = $4;
+		  if (!strcmp($4, "bsg")) {
+		    tmpValue.id    = bsg;
+		  } else if (!strcmp($4, "gmin2")) {
+		    tmpValue.id    = gmin2;
+		  } else if (!strcmp($4, "drho")) {
+		    tmpValue.id    = drho;
+		  } else if (!strcmp($4, "omega")) {
+		    tmpValue.id    = omega;
+		  }
+		  cout << "T_COMPARATOR " << $4 << " " << $6 << " " << $7 << endl;
+		  if (!strcmp($6, ">")) {
+		    tmpValue.value = 1.2*$7;
+		    tmpValue.error = -1.;
+		    tmpValue.bound_up = 1e+6;
+		    tmpValue.bound_low = $7;
+		  }
+		  else if (!strcmp($6, "<")) {
+		    tmpValue.value = 0.8*$7;
+		    tmpValue.error = -1.;
+		    tmpValue.bound_up = $7;
+		    tmpValue.bound_low = -1e+6;
+		  } else {
+		    yyerror ("Syntax Error in LEObs");
+		  }
+		  tmpValue.alias = (int)$9;
 		  yyMeasuredVec.push_back(tmpValue);
 		  //		  cout << "Added le obs " << tmpValue.name << " = " << tmpValue.value << endl;
 	      }
@@ -1803,7 +1855,15 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 			}
                       }
                   }
-
+		  // MicrOmegas 
+//========================================================================
+                  if (!strcmp($2, "MicrOmegas")) {
+		    for (unsigned int i=0; i<tmpParams.size(); i++) {
+		      if ((unsigned int)tmpParams[i][0]==1) {
+			yyOmega=tmpParams[i][1];     
+		      }
+		    }
+                  }
 //========================================================================
                   if (!strcmp($2, "SPhenoCrossSections")) {
 		    // cout << "starting to read XS..." << endl;

@@ -73,6 +73,7 @@ extern bool          yySimAnnUncertainty;
 extern bool          yySimAnnUncertaintyRunDown;
 extern bool          yyRandomDirUncertainties;
 extern bool          yyPerformSingleFits;
+extern bool          yyUseMicrOmegas;
 
 typedef struct {
   string name;
@@ -102,6 +103,7 @@ extern unsigned int  yyFitModel;
 extern double        yybsg;
 extern double        yygmin2;
 extern double        yydrho;
+extern double        yyOmega;
 
 extern std::vector<InputFileLine> yyInputFile;
 

@@ -2775,7 +2775,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
   // cout << "having to call Calculator " <<  CrossSectionProduction.size() << " times" << endl; 
   // for (unsigned int j = 0; j < CrossSectionProduction.size(); j++) {
     // HERE: WRITE THE LES HOUCHES FILE
-  WriteLesHouches(x);
+  //  WriteLesHouches(x);
     
 
 //  fitterMassA0.value =  436.2;
@@ -2785,6 +2785,8 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 //  fitterMassSupL.value = 519.1; // x[8];
 //  fitterMassSupR.value = 429.6; // x[9];
 //  fitterA.value        = -500.0;// x[10];
+
+  WriteLesHouches(x);
 
   if (yyCalculator == SUSPECT) {
     callSuspect();
@@ -2801,6 +2803,20 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
     f = 111111111111.;
     cout << " f = " << f << endl;
     return;        
+  }
+  
+  if (yyUseMicrOmegas) {
+    rc = callMicrOmegas(x);
+    if (rc == 2) {
+      cout << "SIGINT received in MicrOmegas, exiting" << endl;
+      exit (2);
+    }    
+    if (rc > 0) {
+      cerr << "Exiting fitterFCN because of problem in MicrOmegas run" << endl;
+      f = 111111111111.;
+      cout << " f = " << f << endl;
+      return;              
+    }
   }
   
   // HERE: READ THE LES HOUCHES FILE
@@ -2864,8 +2880,12 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	  if (i == j) {
 	    if (yyMeasuredVec[i].theovalue<yyMeasuredVec[i].bound_low ) {
 	      f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].bound_low)/(0.01*yyMeasuredVec[i].bound_low));
+	      cout << i << "using lower bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_low << " > " << 
+		yyMeasuredVec[i].theovalue << endl;
 	    } else if (yyMeasuredVec[i].theovalue>yyMeasuredVec[i].bound_up ) {
 	      f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].bound_up)/(0.01*yyMeasuredVec[i].bound_up));
+	      cout << i << "using upper bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_up << " < " << 
+		yyMeasuredVec[i].theovalue << endl;
 	    }
 	    nbound++;
 	  }
@@ -2930,6 +2950,63 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
   return;
 } 
 
+int callMicrOmegas (double* x)
+{
+
+  string commandString = "sugomg";
+  char value[256];
+
+  if (FindInFixed("M0")) {
+    sprintf (value, " %f", ReturnFixedValue("M0")->value);
+    commandString.append(value);
+  }    
+  else if (FindInFitted("M0")) {
+    sprintf (value, " %f", x[ReturnFittedPosition("M0")]);
+    commandString.append(value);
+  } 
+  if (FindInFixed("M12")) {
+    sprintf (value, " %f", ReturnFixedValue("M12")->value);
+    commandString.append(value);
+  }    
+  else if (FindInFitted("M12")) {
+    sprintf (value, " %f", x[ReturnFittedPosition("M12")]);
+    commandString.append(value);
+  } 
+  if (FindInFixed("A0")) {
+    sprintf (value, " %f", ReturnFixedValue("A0")->value);
+    commandString.append(value);
+  }    
+  else if (FindInFitted("A0")) {
+    sprintf (value, " %f", x[ReturnFittedPosition("A0")]);
+    commandString.append(value);
+  } 
+  if (FindInFixed("TanBeta")) {
+    sprintf (value, " %f", ReturnFixedValue("TanBeta")->value);
+    commandString.append(value);
+  }    
+  else if (FindInFitted("TanBeta")) {
+    sprintf (value, " %f", x[ReturnFittedPosition("TanBeta")]);
+    commandString.append(value);
+  } 
+  if (FindInFixed("SignMu")) {
+    sprintf (value, " %f", ReturnFixedValue("SignMu")->value);
+    commandString.append(value);
+  }    
+  else if (FindInFitted("SignMu")) {
+    sprintf (value, " %f", x[ReturnFittedPosition("SignMu")]);
+    commandString.append(value);
+  } 
+
+  system ("cp SPheno.spc SPheno.spc.saved_fittino");
+  cout << "command string:" << commandString << endl;
+  int rc = system (commandString.c_str());
+  system ("mv SPheno.spc.saved_fittino SPheno.spc");
+  if (rc == 0) {
+    system ("cat slha.out >> SPheno.spc");
+  }
+  return rc;
+
+}
 
 // ************************************************************
 // callSPheno
@@ -5086,6 +5163,10 @@ void   ReadLesHouches()
       }
       else if (yyMeasuredVec[i].id == drho) {
 	yyMeasuredVec[i].theovalue = yydrho;
+	yyMeasuredVec[i].theoset = true;
+      }
+      else if (yyMeasuredVec[i].id == omega) {
+	yyMeasuredVec[i].theovalue = yyOmega;
 	yyMeasuredVec[i].theoset = true;
       }
     }
