@@ -51,6 +51,8 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "TreeSum.root",
     Int_t nLeaves = tree->GetListOfLeaves()->GetEntriesFast();
 
     Double_t* par   = new Double_t[nLeaves];
+    Double_t* sum   = new Double_t[nLeaves];
+    Double_t* sum2  = new Double_t[nLeaves];
     TH1F**    histo = new TH1F[nLeaves];
     TF1**     gauss = new TF1[nLeaves];
     TF1*      chi2  = 0;
@@ -60,6 +62,9 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "TreeSum.root",
     for (Int_t iLeaf=0; iLeaf<nLeaves; iLeaf++) {
         TLeafD* leaf = (TLeafD*)tree->GetListOfLeaves()->At(iLeaf);
         leaf->SetAddress(&par[iLeaf]);
+
+	sum[iLeaf]  = 0;
+	sum2[iLeaf] = 0;
 
 	Double_t mintree = tree->GetMinimum(leaf->GetName());
 	Double_t maxtree = tree->GetMaximum(leaf->GetName());
@@ -127,6 +132,9 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "TreeSum.root",
             TLeafD* leaf = (TLeafD*)tree->GetListOfLeaves()->At(iLeaf);
 
 	    histo[iLeaf]->Fill(par[iLeaf]);
+
+	    sum[iLeaf]  += par[iLeaf];
+	    sum2[iLeaf] += par[iLeaf] * par[iLeaf];
 	}
 
     }
@@ -139,7 +147,14 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "TreeSum.root",
         TLeafD* leaf = (TLeafD*)tree->GetListOfLeaves()->At(iLeaf);
 
 	if (!strcmp(leaf->GetName(), "Chi2")) histo[iLeaf]->Fit(chi2, "r");
-	else histo[iLeaf]->Fit(gauss[iLeaf], "r");
+	else {
+	    histo[iLeaf]->Fit(gauss[iLeaf], "r");
+	    Double_t rms = TMath::Sqrt((sum2[iLeaf] - sum[iLeaf] * sum[iLeaf] 
+                           / nEntries ) / nEntries);
+	    Double_t sigma = gauss[iLeaf]->GetParameter(2);
+	    printf("%s: (RMS - Sigma) / Sigma = %f\n", leaf->GetName(),
+		   (rms - sigma) / sigma);
+	}
 
 	sprintf(epsfilename, "%s.eps", leaf->GetName());
 	c->Print(epsfilename);
