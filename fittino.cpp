@@ -2807,10 +2807,12 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
   
   if (yyUseMicrOmegas) {
     rc = callMicrOmegas(x);
-    if (rc == 2) {
-      cout << "SIGINT received in MicrOmegas, exiting" << endl;
-      exit (2);
-    }    
+    // disable this, since MicOmegas has the annoying feature of returning 2 if 
+    // neutralino1 is not LSP
+    // if (rc == 2) {
+    //  cout << "SIGINT received in MicrOmegas, exiting" << endl;
+    //  exit (2);
+    // }    
     if (rc > 0) {
       cerr << "Exiting fitterFCN because of problem in MicrOmegas run" << endl;
       f = 111111111111.;
