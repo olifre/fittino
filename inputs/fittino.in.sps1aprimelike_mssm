@@ -411,7 +411,7 @@ universality MSupL MScharmL
 LoopCorrections       on
 ISR                   on			       
 				
-Verbose               off
+Verbose               on
 
 PerformFit            on
 PerformSingleFits     off
@@ -434,7 +434,7 @@ TempRedSimAnn         0.6
 MaxCallsSimAnn        450000
 InitTempSimAnn        10000
 
-Calculator            SPHENO  ../theorycodes/SPheno2.2.2/SPheno
+Calculator            SPHENO  ../SPheno2.2.2/SPheno
 
 UseMinos              off
 UseHesse              off

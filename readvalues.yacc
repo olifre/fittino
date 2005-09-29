@@ -1724,6 +1724,7 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
                               break;
 			  default:
 //			      cout << "tmpNumbers["<<i<<"]: "<< int(tmpNumbers[i]) << endl;
+			    return 1;
                               yyerror("Parameter in SPINFO not known");
                           }
                       }

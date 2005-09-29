@@ -106,8 +106,8 @@ bool FindInFitted (string name);
 //bool FindInFixed (string name);
 bool FindInUniversality(string name);
 MeasuredValue* ReturnUniversality (string name);
-void  ReadLesHouches();
-void  ParseLesHouches();
+int   ReadLesHouches();
+int   ParseLesHouches();
 double give_xs (doubleVec_t initial, int channel, int element );
 double give_br ( int id, int decay, int element );
 int FindInFittedPar (string name);
@@ -2820,8 +2820,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
   }
   
   // HERE: READ THE LES HOUCHES FILE
-  ReadLesHouches();
-
+  rc = ReadLesHouches();
   if (yyCalculatorError) {
     cerr << "Exiting fitterFCN because LesHouches outfile did not exist" << endl;
     f = 111111111111.;
@@ -2955,51 +2954,164 @@ int callMicrOmegas (double* x)
 
   string commandString = "sugomg";
   char value[256];
+  int rc;
 
-  if (FindInFixed("M0")) {
-    sprintf (value, " %f", ReturnFixedValue("M0")->value);
-    commandString.append(value);
-  }    
-  else if (FindInFitted("M0")) {
-    sprintf (value, " %f", x[ReturnFittedPosition("M0")]);
-    commandString.append(value);
-  } 
-  if (FindInFixed("M12")) {
-    sprintf (value, " %f", ReturnFixedValue("M12")->value);
-    commandString.append(value);
-  }    
-  else if (FindInFitted("M12")) {
-    sprintf (value, " %f", x[ReturnFittedPosition("M12")]);
-    commandString.append(value);
-  } 
-  if (FindInFixed("A0")) {
-    sprintf (value, " %f", ReturnFixedValue("A0")->value);
-    commandString.append(value);
-  }    
-  else if (FindInFitted("A0")) {
-    sprintf (value, " %f", x[ReturnFittedPosition("A0")]);
-    commandString.append(value);
-  } 
-  if (FindInFixed("TanBeta")) {
-    sprintf (value, " %f", ReturnFixedValue("TanBeta")->value);
-    commandString.append(value);
-  }    
-  else if (FindInFitted("TanBeta")) {
-    sprintf (value, " %f", x[ReturnFittedPosition("TanBeta")]);
-    commandString.append(value);
-  } 
-  if (FindInFixed("SignMu")) {
-    sprintf (value, " %f", ReturnFixedValue("SignMu")->value);
-    commandString.append(value);
-  }    
-  else if (FindInFitted("SignMu")) {
-    sprintf (value, " %f", x[ReturnFittedPosition("SignMu")]);
-    commandString.append(value);
-  } 
+//  if (FindInFixed("M0")) {
+//    sprintf (value, " %f", ReturnFixedValue("M0")->value);
+//    commandString.append(value);
+//  }    
+//  else if (FindInFitted("M0")) {
+//    sprintf (value, " %f", x[ReturnFittedPosition("M0")]);
+//    commandString.append(value);
+//  } 
+//  if (FindInFixed("M12")) {
+//    sprintf (value, " %f", ReturnFixedValue("M12")->value);
+//    commandString.append(value);
+//  }    
+//  else if (FindInFitted("M12")) {
+//    sprintf (value, " %f", x[ReturnFittedPosition("M12")]);
+//    commandString.append(value);
+//  } 
+//  if (FindInFixed("A0")) {
+//    sprintf (value, " %f", ReturnFixedValue("A0")->value);
+//    commandString.append(value);
+//  }    
+//  else if (FindInFitted("A0")) {
+//    sprintf (value, " %f", x[ReturnFittedPosition("A0")]);
+//    commandString.append(value);
+//  } 
+//  if (FindInFixed("TanBeta")) {
+//    sprintf (value, " %f", ReturnFixedValue("TanBeta")->value);
+//    commandString.append(value);
+//  }    
+//  else if (FindInFitted("TanBeta")) {
+//    sprintf (value, " %f", x[ReturnFittedPosition("TanBeta")]);
+//    commandString.append(value);
+//  } 
+//  if (FindInFixed("SignMu")) {
+//    sprintf (value, " %f", ReturnFixedValue("SignMu")->value);
+//    commandString.append(value);
+//  }    
+//  else if (FindInFitted("SignMu")) {
+//    sprintf (value, " %f", x[ReturnFittedPosition("SignMu")]);
+//    commandString.append(value);
+//  } 
 
   system ("cp SPheno.spc SPheno.spc.saved_fittino");
   cout << "command string:" << commandString << endl;
-  int rc = system (commandString.c_str());
+
+  int pid = -2;
+  int status = 0;
+  int child_pid = 0;
+  // printf("Process %d about to fork a child.\n", parent_pid  );
+
+  /*
+   * Get a child process.
+   */
+  if ((pid = fork()) < 0) {
+    perror("fork");
+    exit(1);
+    /* NOTE: perror() produces a short  error  message  on  the  standard
+       error describing the last error encountered during a call to
+       a system or library function.
+    */
+  }
+  
+  if (pid == 0) {
+    /*
+     * The child executes the code inside this if.
+     */
+    child_pid = getpid();
+    char *argv[7];
+    argv[0] = "sugomg";
+    argv[6] = 0;
+
+    char value1[256];
+    char value2[256];
+    char value3[256];
+    char value4[256];
+    char value5[256];
+    if (FindInFixed("M0")) {
+      sprintf (value1, " %f", ReturnFixedValue("M0")->value);
+      argv[1] = value1;
+    }    
+    else if (FindInFitted("M0")) {
+      sprintf (value1, " %f", x[ReturnFittedPosition("M0")]);
+      argv[1] = value1;
+    } 
+    if (FindInFixed("M12")) {
+      sprintf (value2, " %f", ReturnFixedValue("M12")->value);
+      argv[2] = value2;
+    }    
+    else if (FindInFitted("M12")) {
+      sprintf (value2, " %f", x[ReturnFittedPosition("M12")]);
+      argv[2] = value2;
+    } 
+    if (FindInFixed("A0")) {
+      sprintf (value3, " %f", ReturnFixedValue("A0")->value);
+      argv[3] = value3;
+    }    
+    else if (FindInFitted("A0")) {
+      sprintf (value3, " %f", x[ReturnFittedPosition("A0")]);
+      argv[3] = value3;
+    } 
+    if (FindInFixed("TanBeta")) {
+      sprintf (value4, " %f", ReturnFixedValue("TanBeta")->value);
+      argv[4] = value4;
+    }    
+    else if (FindInFitted("TanBeta")) {
+      sprintf (value4, " %f", x[ReturnFittedPosition("TanBeta")]);
+      argv[4] = value4;
+    } 
+    if (FindInFixed("SignMu")) {
+      sprintf (value5, " %f", ReturnFixedValue("SignMu")->value);
+      argv[5] = value5;
+    }    
+    else if (FindInFitted("SignMu")) {
+      sprintf (value5, " %f", x[ReturnFittedPosition("SignMu")]);
+      argv[5] = value5;
+    } 
+
+
+    cerr << "calling " << commandString 
+	 << argv[1] << ", " 
+	 << argv[2] << ", " 
+	 << argv[3] << ", " 
+	 << argv[4] << ", " 
+	 << argv[5] << ", " 
+	 << argv[6] << ", " 
+	 << endl;
+    rc = execve("./sugomg", argv, environ );
+    cout << "retourning from execve "<< rc<< endl;
+    exit (rc);
+  }
+  else {
+    /*
+     * The parent executes this
+     */
+    int spheno_counter = 0;
+    while (1) {
+      spheno_counter++;
+      if (waitpid (pid, &status, WNOHANG) == pid) {
+	break;
+      } 
+      if ( yyMaxCalculatorTime < (float)spheno_counter/10. ) {
+	printf("killing child process %d due to too much time\n",pid);
+	kill (pid, 9);
+	waitpid (-1, &status, 0);
+	return(1);
+      }
+      usleep (100000);
+    }
+    // while (waitpid (-1, &status, 0) != pid) {
+    //   sleep (2);
+    //   printf("waiting for SPheno with status = %d and pid = %d\n",status, pid);
+    // }
+  }
+
+  rc = WEXITSTATUS(status);
+  cout << "MicrOmegas returned with return value " << rc << endl;
+
   system ("mv SPheno.spc.saved_fittino SPheno.spc");
   if (rc == 0) {
     system ("cat slha.out >> SPheno.spc");
@@ -5119,17 +5231,20 @@ void FillFixedParameters()
 
 }
 
-void   ReadLesHouches()
+int   ReadLesHouches()
 {
   unsigned int found_prod;
   // first parse the LesHouches outfile and load predictions to maps
   if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
     cout << "parsing the les houches file" << endl;
   }
-  ParseLesHouches();
+  int rc = ParseLesHouches();
   if (yyCalculatorError) {
     cerr << "Error in ParseLesHouches, exiting ReadLesHouches" << endl;
-    return;
+    return 1;
+  }
+  if (rc > 0) {
+    return rc;
   }
   vector <unsigned int> used_products;
   bool already_used = false;
@@ -5457,15 +5572,17 @@ void   ReadLesHouches()
     }
   }
 
-  return;
+  return 0;
 
 }
 
-void   ParseLesHouches()
+int   ParseLesHouches()
 {
     static int counter = 0;
 
     counter++;
+
+    int rc = 0;
 
     if (yyCalculator == SPHENO) {
       //      system("cp SPheno.spc.test SPheno.spc");
@@ -5474,9 +5591,9 @@ void   ParseLesHouches()
       if (!yyin) {
 	cerr<<"SPheno.spc does not exist"<<endl;
 	yyCalculatorError = true;
-	return;
+	return 1;
       }
-      yyparse();
+      rc = yyparse();
       fclose(yyin);
       system ("rm SPheno.spc");
       // exit (0);
@@ -5489,7 +5606,7 @@ void   ParseLesHouches()
     cout<<counter<<" ###########################################################"<<endl;
 
 
-    return;
+    return rc;
 
 }
 
