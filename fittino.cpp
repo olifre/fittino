@@ -2556,7 +2556,7 @@ void Fittino::writeResults(const char* filename)
 	    weekday = "Friday";
 	    break;
 	case 6:
-	    weekday = "Saterday";
+	    weekday = "Saturday";
 	    break;
 	default:
 	    cerr<<"Unknown weekday"<<endl;
