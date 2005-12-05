@@ -103,7 +103,7 @@ using namespace std;
 
 enum SwitchState    { off, on };
 enum Calculator     { SPHENO, SUSPECT, SPHENO_FH };
-enum ObservableType { mass, Pwidth, xsection, br, xsectionbr, Pedge, xsbr, brratio, brsum, LEObs, other };
+enum ObservableType { mass, Pwidth, xsection, br, xsectionbr, Pedge, xsbr, brratio, brsum, LEObs, brprod, other };
 enum LEObservables  { bsg, gmin2, drho, omega };
 enum FitModel       { MSSM, mSUGRA, GMSB, AMSB };
 

@@ -1333,6 +1333,28 @@ input:
 		      yyMeasuredVec[i].nofit = true;
 		      tmpValue.daughters.push_back(i);
 		    }
+		    else if (!strncmp(tmpstr3,"brprod",6)) {
+		      charnumber = strchr(tmpstr3,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atoi((charnumber+1));
+		      found_br = false;
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == brprod) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  found_br = true;
+//			  cout << "found brprod " <<  yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      if (!found_br) {
+			cout << "brprod " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
+		      }
+		      // remove br from the list
+//		      cout << "removing br from the list" << endl;
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
+		    }
 		    else if (!strncmp(tmpstr3,"br",2)) {
 		      charnumber = strchr(tmpstr3,'_');
 		      if (charnumber == 0) yyerror ("Underscore not found");
@@ -1416,6 +1438,28 @@ input:
 		      }
 		      if (!found_br) {
 			cout << "brsum " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
+		      }
+		      // remove br from the list
+//		      cout << "removing br from the list" << endl;
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
+		    }
+		    else if (!strncmp(tmpstr3,"brprod",6)) {
+		      charnumber = strchr(tmpstr3,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atoi((charnumber+1));
+		      found_br = false;
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == brprod) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  found_br = true;
+//			  cout << "found brprod " <<  yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      if (!found_br) {
+			cout << "brprod " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
 			yyerror (" ");			
 		      }
 		      // remove br from the list
@@ -1528,6 +1572,78 @@ input:
 		  }
 		  yyMeasuredVec.push_back(tmpValue);
 		}
+		else if (!strcmp($2,"brprod")) {
+		  int i = 0;
+//		  int j = 0;
+		  int aliasnumber;
+		  char* charnumber;
+		  MeasuredValue tmpValue;
+                  tmpValue.nofit = false;
+		  tmpValue.name.erase();
+		  tmpValue.type  = brprod;
+		  tmpValue.theovalue  = 0;
+		  tmpValue.value = $6;
+		  tmpValue.error = $7;
+		  tmpValue.name  = $4;
+		  tmpValue.alias = (int)$9;
+		  tmpValue.bound_up = 1e+9;
+		  tmpValue.bound_low = 0.;
+//		  cout << "brprod found" << endl;
+		  // break sentence in pieces:
+		  string str;
+	          str.erase();
+		  str = $4;
+		  char tmpstr3[255];
+		  unsigned int pos = 0, newpos = 0;
+		  int anti = 1;
+		  bool found_br = false;
+		  int countbrs = 0;
+		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		    countbrs++;
+		    str.copy(tmpstr3, newpos - pos, pos);
+		    if (tmpstr3[newpos-pos-1] == '~') {
+		      tmpstr3[newpos-pos-1] = '\0';
+		      anti = -1;
+		    }
+		    else {
+		      tmpstr3[newpos-pos] = '\0';
+		      anti = 1;
+		    }
+		    pos = newpos + 1;
+		    // break up:
+		    if (!strncmp(tmpstr3,"br",2)) {
+		      charnumber = strchr(tmpstr3,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atoi((charnumber+1));
+		      found_br = false;
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  found_br = true;
+//			  cout << "found br " <<  yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      if (!found_br) {
+			cout << "br " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
+		      }
+		      // remove br from the list
+//		      cout << "removing br from the list" << endl;
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
+		    }
+		    else {
+		      cout << "syntax error in brprod, alias: " << tmpValue.alias <<  endl;
+		      yyerror (" ");
+		    }
+		  }
+		  if (countbrs<2) {
+		      cout << "syntax error in brprod: not enough br, alias: " << tmpValue.alias <<  endl;
+		      yyerror (" ");		      		    
+		  }
+		  yyMeasuredVec.push_back(tmpValue);
+		}
 	      }
 	     | input T_KEY T_BRA sentence T_KET T_ALIAS T_NUMBER
 	      {
@@ -1608,6 +1724,78 @@ input:
 		  }
 		  if (countbrs<2) {
 		      cout << "syntax error in brsum: not enough br, alias: " << tmpValue.alias <<  endl;
+		      yyerror (" ");		      		    
+		  }
+		  yyMeasuredVec.push_back(tmpValue);
+		}
+		else if (!strcmp($2,"brprod")) {
+		  int i = 0;
+//		  int j = 0;
+		  int aliasnumber;
+		  char* charnumber;
+		  MeasuredValue tmpValue;
+                  tmpValue.nofit = true;
+		  tmpValue.name.erase();
+		  tmpValue.type  = brprod;
+		  tmpValue.theovalue  = 0;
+		  tmpValue.value = -1;
+		  tmpValue.error = -1;
+		  tmpValue.name  = $4;
+		  tmpValue.alias = (int)$7;
+		  tmpValue.bound_up = 1e+9;
+		  tmpValue.bound_low = 0.;
+                  //cout << "alias for brratio found" << endl;
+		  // break sentence in pieces:
+		  string str;
+	          str.erase();
+		  str = $4;
+		  char tmpstr3[255];
+		  unsigned int pos = 0, newpos = 0;
+		  int anti = 1;
+		  bool found_br = false;
+		  int countbrs = 0;
+		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		    countbrs++;
+		    str.copy(tmpstr3, newpos - pos, pos);
+		    if (tmpstr3[newpos-pos-1] == '~') {
+		      tmpstr3[newpos-pos-1] = '\0';
+		      anti = -1;
+		    }
+		    else {
+		      tmpstr3[newpos-pos] = '\0';
+		      anti = 1;
+		    }
+		    pos = newpos + 1;
+		    // break up:
+		    if (!strncmp(tmpstr3,"br",2)) {
+		      charnumber = strchr(tmpstr3,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atoi((charnumber+1));
+		      found_br = false;
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  found_br = true;
+//			  cout << "found br " <<  yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      if (!found_br) {
+			cout << "br " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
+		      }
+		      // remove br from the list
+//		      cout << "removing br from the list" << endl;
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
+		    }
+		    else {
+		      cout << "syntax error in brprod, alias: " << tmpValue.alias <<  endl;
+		      yyerror (" ");
+		    }
+		  }
+		  if (countbrs<2) {
+		      cout << "syntax error in brprod: not enough br, alias: " << tmpValue.alias <<  endl;
 		      yyerror (" ");		      		    
 		  }
 		  yyMeasuredVec.push_back(tmpValue);

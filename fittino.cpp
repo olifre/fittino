@@ -2804,7 +2804,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
     cout << " f = " << f << endl;
     return;        
   }
-  
+
   if (yyUseMicrOmegas) {
     rc = callMicrOmegas(x);
     // disable this, since MicOmegas has the annoying feature of returning 2 if 
@@ -2820,7 +2820,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
       return;              
     }
   }
-  
+
   // HERE: READ THE LES HOUCHES FILE
   rc = ReadLesHouches();
   if (yyCalculatorError) {
@@ -2841,6 +2841,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
     cout << " f = " << f << endl;
     return;
   }
+
 
     // end loop over crosssections and polarisations:
     //  }
@@ -5498,6 +5499,27 @@ int   ReadLesHouches()
 	// cout << "multiplying br " << yyMeasuredVec[yyMeasuredVec[i].daughters[j]].name << " = " << 
 	//   yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue << endl;
 	yyMeasuredVec[i].theovalue += yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue;
+	if (yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theoset == false) {
+	  dependencies_theoset = false;
+	}
+      } 
+      if (dependencies_theoset) {
+	yyMeasuredVec[i].theoset = true;
+      }
+      else { 
+	yyMeasuredVec[i].theoset = false;
+      }
+    }
+  }  
+  // check for brprod
+  for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+    if (yyMeasuredVec[i].type == brprod) {
+      yyMeasuredVec[i].theovalue = 1.;
+      dependencies_theoset = true;
+      for (unsigned int j=0; j<yyMeasuredVec[i].daughters.size(); j++) {
+	// cout << "multiplying br " << yyMeasuredVec[yyMeasuredVec[i].daughters[j]].name << " = " << 
+	//   yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue << endl;
+	yyMeasuredVec[i].theovalue *= yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue;
 	if (yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theoset == false) {
 	  dependencies_theoset = false;
 	}
