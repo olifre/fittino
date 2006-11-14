@@ -2959,6 +2959,8 @@ int callMicrOmegas (double* x)
   char value[256];
   int rc;
 
+  cout << "using micromegas" << endl;
+
 //  if (FindInFixed("M0")) {
 //    sprintf (value, " %f", ReturnFixedValue("M0")->value);
 //    commandString.append(value);

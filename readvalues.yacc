@@ -2034,13 +2034,13 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
                   if (!strcmp($2, "SPhenoLowEnergy")) {
                       for (unsigned int i=0; i<tmpParams.size(); i++) {
 			if ((unsigned int)tmpParams[i][0]==1) {
-     			  yybsg=tmpParams[i][1]/10000.;     
+     			  yybsg=tmpParams[i][1];     
 			}
 			else if ((unsigned int)tmpParams[i][0]==2) {
      			  yygmin2=tmpParams[i][1];     
 			}
 			else if ((unsigned int)tmpParams[i][0]==3) {
-     			  yydrho=tmpParams[i][1];     
+     			  yydrho=tmpParams[i][1]/1E-9;     
 			}
                       }
                   }
