@@ -28,8 +28,9 @@
 //#include <stream.h>
 #include <vector>
 #include <map>
+#include <TVectorD.h>
 #include <TMatrixD.h>
-//#include <TMatrixDSym.h>
+#include <TMatrixDSym.h>
 #include<leshouches.h>
 
 using namespace std;
@@ -104,7 +105,8 @@ using namespace std;
 enum SwitchState    { off, on };
 enum Calculator     { SPHENO, SUSPECT, SPHENO_FH };
 enum ObservableType { mass, Pwidth, xsection, br, xsectionbr, Pedge, xsbr, brratio, brsum, LEObs, brprod, other };
-enum LEObservables  { bsg, gmin2, drho, omega };
+//   LEObservables  { bsg,                                           gmin2,          drho, omega };
+enum LEObservables  { bsg, bsmm, B_smm, B_utn, dMB_d, dMB_s, gmin2e, gmin2m, gmin2t, drho, omega };
 enum FitModel       { MSSM, mSUGRA, GMSB, AMSB };
 
 extern bool          yyUseLoopCorrections;
@@ -220,8 +222,6 @@ public:
                   { return (const double&)((*fCorrelationMatrix)(rown, coln)); }
 };
 
-class TVectorD;
-class TMatrixDSym;
 
 TVectorD getCorrelatedRandomNumbers(const TVectorD& mean, const TMatrixDSym& covarianceMatrix);
 

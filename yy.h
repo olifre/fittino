@@ -100,10 +100,21 @@ extern double        yyMaxCalculatorTime;
 
 extern unsigned int  yyFitModel;
 
-extern double        yybsg;
-extern double        yygmin2;
-extern double        yydrho;
-extern double        yyOmega;
+//==========================================================
+// Low Energy Observables: (SPhenoLowEnergy)
+extern double        yybsg;     //  1  BR(b -> s gamma) 
+extern double        yybsmm;    //  2  BR(b -> s mu+ mu-)
+extern double        yyB_smm;   //  3  BR(Bs -> mu+ mu-)
+extern double        yyB_utn;   //  4  BR(B_u -> tau nu)
+extern double        yydMB_d;   //  5  |Delta(M_Bd)| [ps^-1]
+extern double        yydMB_s;   //  6  |Delta(M_Bs)| [ps^-1]
+extern double        yygmin2e;  // 10  Delta(g-2)_electron
+extern double        yygmin2m;  // 11  Delta(g-2)_muon
+extern double        yygmin2t;  // 12  Delta(g-2)_tau
+extern double        yydrho;    // 30  Delta(rho_parameter)
+//---------------------------------------------------------
+extern double        yyOmega;   //     relic density
+//==========================================================
 
 extern std::vector<InputFileLine> yyInputFile;
 

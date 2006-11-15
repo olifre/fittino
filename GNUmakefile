@@ -22,10 +22,10 @@
 
 ARCH              = $(shell uname)
 
-ROOTCFLAGS        = $(shell root-config --cflags)
-ROOTLIBS          = $(shell root-config --libs)
+ROOTCFLAGS        = $(shell $(ROOTSYS)/bin/root-config --cflags)
+ROOTLIBS          = $(shell $(ROOTSYS)/bin/root-config --libs)
 ROOTLIBS         += -lMinuit
-ROOTGLIBS         = $(shell root-config --glibs)
+ROOTGLIBS         = $(shell $(ROOTSYS)/bin/root-config --glibs)
 
 
 CXX               = g++

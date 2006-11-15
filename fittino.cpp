@@ -2872,7 +2872,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	      (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)<-1.E-12)) {
 	    //	    cout << (float)n_printouts/10. << " " << n_printouts/10 << endl;
 	    if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { // ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) (TMath::Mod(n_printouts,10)==0)
-	      cout << i << " " << j << "using obs " << yyMeasuredVec[i].name << " = " << yyMeasuredVec[i].value
+	      cout << i << " " << j << " using obs " << yyMeasuredVec[i].name << " = " << yyMeasuredVec[i].value
 		   << "+-" << sqrt(yyMeasuredCorrelationMatrix.GetCovariance(i,j)) 
 		   << " (" << (TMath::Abs(yyMeasuredVec[i].value-yyMeasuredVec[i].theovalue))*sqrt(yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)) << ") " << " at theovalue = " 
 		   << yyMeasuredVec[i].theovalue<< endl;
@@ -2882,11 +2882,11 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	  if (i == j) {
 	    if (yyMeasuredVec[i].theovalue<yyMeasuredVec[i].bound_low ) {
 	      f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].bound_low)/(0.01*yyMeasuredVec[i].bound_low));
-	      cout << i << "using lower bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_low << " > " << 
+	      cout << i << " using lower bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_low << " > " << 
 		yyMeasuredVec[i].theovalue << endl;
 	    } else if (yyMeasuredVec[i].theovalue>yyMeasuredVec[i].bound_up ) {
 	      f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].bound_up)/(0.01*yyMeasuredVec[i].bound_up));
-	      cout << i << "using upper bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_up << " < " << 
+	      cout << i << " using upper bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_up << " < " << 
 		yyMeasuredVec[i].theovalue << endl;
 	    }
 	    nbound++;
@@ -5256,9 +5256,19 @@ int   ReadLesHouches()
   bool dependencies_theoset = false;
 
   // test reading of low energy measurements
-  // cout << "yybsg from SPheno: " << yybsg << endl;
-  // cout << "yygmin2 from SPheno: " << yygmin2 << endl;
-  // cout << "yydrho from SPheno: " << yydrho << endl;
+  //========================================
+  cout << "  --->  yybsg    from SPheno: " << yybsg    << endl;   //  1  BR(b -> s gamma) 
+  cout << "  --->  yybsmm   from SPheno: " << yybsmm   << endl;   //  2  BR(b -> s mu+ mu-)
+  cout << "  --->  yyB_smm  from SPheno: " << yyB_smm  << endl;   //  3  BR(Bs -> mu+ mu-)
+  cout << "  --->  yyB_utn  from SPheno: " << yyB_utn  << endl;   //  4  BR(B_u -> tau nu)
+  cout << "  --->  yydMB_d  from SPheno: " << yydMB_d  << endl;   //  5  |Delta(M_Bd)| [ps^-1]
+  cout << "  --->  yydMB_s  from SPheno: " << yydMB_s  << endl;   //  6  |Delta(M_Bs)| [ps^-1]
+  cout << "  --->  yygmin2e from SPheno: " << yygmin2e << endl;   // 10  Delta(g-2)_electron
+  cout << "  --->  yygmin2m from SPheno: " << yygmin2m << endl;   // 11  Delta(g-2)_muon
+  cout << "  --->  yygmin2t from SPheno: " << yygmin2t << endl;   // 12  Delta(g-2)_tau
+  cout << "  --->  yydrho   from SPheno: " << yydrho   << endl;   // 30  Delta(rho_parameter)
+  //------------------------------------------------------------------------------------------
+  cout << "  --->  yyOmega  from MicrOmegas: " << yyOmega  << endl;   //     relic density
 
   used_products.clear();
   // loop over yyMeasuredVec and fill theovalue
@@ -5271,14 +5281,45 @@ int   ReadLesHouches()
       yyMeasuredVec[i].theovalue = yyMass[yyMeasuredVec[i].id];
       yyMeasuredVec[i].theoset = true;
     }
+    //################################################
     else if (yyMeasuredVec[i].type == LEObs) {
       if (yyMeasuredVec[i].id == bsg) {
 	yyMeasuredVec[i].theovalue = yybsg;
 	yyMeasuredVec[i].theoset = true;
-	//	cout << "bsg "  << yyMeasuredVec[i].theovalue <<  " " << yyMeasuredVec[i].value  << " +- "  << yyMeasuredVec[i].error << endl;
+	cout << "bsg " << yyMeasuredVec[i].theovalue 
+	     << " "    << yyMeasuredVec[i].value  
+	     << " +- " << yyMeasuredVec[i].error << endl;
       }
-      else if (yyMeasuredVec[i].id == gmin2) {
-	yyMeasuredVec[i].theovalue = yygmin2*1E9; 
+      else if (yyMeasuredVec[i].id == bsmm) {
+	yyMeasuredVec[i].theovalue = yybsmm; 
+	yyMeasuredVec[i].theoset = true;
+      }
+      else if (yyMeasuredVec[i].id == B_smm) {
+	yyMeasuredVec[i].theovalue = yyB_smm; 
+	yyMeasuredVec[i].theoset = true;
+      }
+      else if (yyMeasuredVec[i].id == B_utn) {
+	yyMeasuredVec[i].theovalue = yyB_utn; 
+	yyMeasuredVec[i].theoset = true;
+      }
+      else if (yyMeasuredVec[i].id == dMB_d) {
+	yyMeasuredVec[i].theovalue = yydMB_d;
+	yyMeasuredVec[i].theoset = true;
+      }
+      else if (yyMeasuredVec[i].id == dMB_s) {
+	yyMeasuredVec[i].theovalue = yydMB_s;
+	yyMeasuredVec[i].theoset = true;
+      }
+      else if (yyMeasuredVec[i].id == gmin2e) {
+	yyMeasuredVec[i].theovalue = yygmin2e;
+	yyMeasuredVec[i].theoset = true;
+      }
+      else if (yyMeasuredVec[i].id == gmin2m) {
+	yyMeasuredVec[i].theovalue = yygmin2m;
+	yyMeasuredVec[i].theoset = true;
+      }
+      else if (yyMeasuredVec[i].id == gmin2t) {
+	yyMeasuredVec[i].theovalue = yygmin2t;
 	yyMeasuredVec[i].theoset = true;
       }
       else if (yyMeasuredVec[i].id == drho) {
@@ -5290,6 +5331,7 @@ int   ReadLesHouches()
 	yyMeasuredVec[i].theoset = true;
       }
     }
+    //################################################
     else if (yyMeasuredVec[i].type == Pwidth) {
       yyMeasuredVec[i].theovalue = branching_ratios[yyMeasuredVec[i].id].TWidth;
       yyMeasuredVec[i].theoset = true;

@@ -157,10 +157,20 @@ int           yyRandomGeneratorSeed = -1;
 double        yyXscanlow = -6000.;
 double        yyXscanhigh = 2000.;
 
-double        yybsg = -10000.;
-double        yygmin2 = -10000.;
-double        yydrho  = -10000.;
-double        yyOmega = -10000.;
+//##############################################################
+double        yybsg    = -10000.;   //  1   BR(b -> s gamma) 
+double        yybsmm   = -10000.;   //  2   BR(b -> s mu+ mu-)
+double        yyB_smm  = -10000.;   //  3   BR(Bs -> mu+ mu-)
+double        yyB_utn  = -10000.;   //  4   BR(B_u -> tau nu)
+double        yydMB_d  = -10000.;   //  5   |Delta(M_Bd)| [ps^-1]
+double        yydMB_s  = -10000.;   //  6   |Delta(M_Bs)| [ps^-1]
+double        yygmin2e = -10000.;   // 10   Delta(g-2)_electron
+double        yygmin2m = -10000.;   // 11   Delta(g-2)_muon
+double        yygmin2t = -10000.;   // 12   Delta(g-2)_tau
+double        yydrho   = -10000.;   // 30   Delta(rho_parameter)
+//==============================================================
+double        yyOmega  = -10000.;   //      relic density
+//##############################################################
 
 double        yyMaxCalculatorTime = 20.;
 
@@ -990,15 +1000,31 @@ input:
 		  tmpValue.type  = LEObs;
 		  tmpValue.theovalue  = 0;
 		  tmpValue.name  = $4;
+                  //=================================
 		  if (!strcmp($4, "bsg")) {
 		    tmpValue.id    = bsg;
-		  } else if (!strcmp($4, "gmin2")) {
-		    tmpValue.id    = gmin2;
+		  } else if (!strcmp($4, "bsmm")) {
+		    tmpValue.id    = bsmm;
+		  } else if (!strcmp($4, "B_smm")) {
+		    tmpValue.id    = B_smm;
+		  } else if (!strcmp($4, "B_utn")) {
+		    tmpValue.id    = B_utn;
+		  } else if (!strcmp($4, "dMB_d")) {
+		    tmpValue.id    = dMB_d;
+		  } else if (!strcmp($4, "dMB_s")) {
+		    tmpValue.id    = dMB_s;
+		  } else if (!strcmp($4, "gmin2e")) {
+		    tmpValue.id    = gmin2e;
+		  } else if (!strcmp($4, "gmin2m")) {
+		    tmpValue.id    = gmin2m;
+		  } else if (!strcmp($4, "gmin2t")) {
+		    tmpValue.id    = gmin2t;
 		  } else if (!strcmp($4, "drho")) {
 		    tmpValue.id    = drho;
 		  } else if (!strcmp($4, "omega")) {
 		    tmpValue.id    = omega;
 		  }
+                  //=================================
 		  tmpValue.value = $6;
 		  tmpValue.error = $7;
 		  tmpValue.alias = (int)$9;
@@ -1024,15 +1050,31 @@ input:
 		  tmpValue.type  = LEObs;
 		  tmpValue.theovalue  = 0;
 		  tmpValue.name  = $4;
+                  //==================================
 		  if (!strcmp($4, "bsg")) {
 		    tmpValue.id    = bsg;
-		  } else if (!strcmp($4, "gmin2")) {
-		    tmpValue.id    = gmin2;
+		  } else if (!strcmp($4, "bsmm")) {
+		    tmpValue.id    = bsmm;
+		  } else if (!strcmp($4, "B_smm")) {
+		    tmpValue.id    = B_smm;
+		  } else if (!strcmp($4, "B_utn")) {
+		    tmpValue.id    = B_utn;
+		  } else if (!strcmp($4, "dMB_d")) {
+		    tmpValue.id    = dMB_d;
+		  } else if (!strcmp($4, "dMB_s")) {
+		    tmpValue.id    = dMB_s;
+		  } else if (!strcmp($4, "gmin2e")) {
+		    tmpValue.id    = gmin2e;
+		  } else if (!strcmp($4, "gmin2m")) {
+		    tmpValue.id    = gmin2m;
+		  } else if (!strcmp($4, "gmin2t")) {
+		    tmpValue.id    = gmin2t;
 		  } else if (!strcmp($4, "drho")) {
 		    tmpValue.id    = drho;
 		  } else if (!strcmp($4, "omega")) {
 		    tmpValue.id    = omega;
 		  }
+                  //==================================
 		  cout << "T_COMPARATOR " << $4 << " " << $6 << " " << $7 << endl;
 		  if (!strcmp($6, ">")) {
 		    tmpValue.value = 1.2*$7;
@@ -2031,25 +2073,48 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 
 		  // SPhenoLowEnergy 
 //========================================================================
+                  //==========================================
                   if (!strcmp($2, "SPhenoLowEnergy")) {
                       for (unsigned int i=0; i<tmpParams.size(); i++) {
 			if ((unsigned int)tmpParams[i][0]==1) {
-     			  yybsg=tmpParams[i][1];     
+     			  yybsg=tmpParams[i][1];
 			}
 			else if ((unsigned int)tmpParams[i][0]==2) {
-     			  yygmin2=tmpParams[i][1];     
+     			  yybsmm=tmpParams[i][1]*1E6;
 			}
 			else if ((unsigned int)tmpParams[i][0]==3) {
-     			  yydrho=tmpParams[i][1]/1E-9;     
+     			  yyB_smm=tmpParams[i][1]*1E9;
+			}
+			else if ((unsigned int)tmpParams[i][0]==4) {
+     			  yyB_utn=tmpParams[i][1];
+			}
+			else if ((unsigned int)tmpParams[i][0]==5) {
+     			  yydMB_d=tmpParams[i][1];
+			}
+			else if ((unsigned int)tmpParams[i][0]==6) {
+     			  yydMB_s=tmpParams[i][1];
+			}
+			else if ((unsigned int)tmpParams[i][0]==10) {
+     			  yygmin2e=tmpParams[i][1]*1E12;
+			}
+			else if ((unsigned int)tmpParams[i][0]==11) {
+     			  yygmin2m=tmpParams[i][1]*1E9;
+			}
+			else if ((unsigned int)tmpParams[i][0]==12) {
+     			  yygmin2t=tmpParams[i][1]*1E9;
+			}
+			else if ((unsigned int)tmpParams[i][0]==30) {
+     			  yydrho=tmpParams[i][1];
 			}
                       }
                   }
+                  //==========================================
 		  // MicrOmegas 
 //========================================================================
                   if (!strcmp($2, "MicrOmegas")) {
 		    for (unsigned int i=0; i<tmpParams.size(); i++) {
 		      if ((unsigned int)tmpParams[i][0]==1) {
-			yyOmega=tmpParams[i][1];     
+			yyOmega=tmpParams[i][1];
 		      }
 		    }
                   }
