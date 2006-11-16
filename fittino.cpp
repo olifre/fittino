@@ -2881,11 +2881,11 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	} else {
 	  if (i == j) {
 	    if (yyMeasuredVec[i].theovalue<yyMeasuredVec[i].bound_low ) {
-	      f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].bound_low)/(0.01*yyMeasuredVec[i].bound_low));
+	      f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].bound_low)/(yyLimitSlope*yyMeasuredVec[i].bound_low));
 	      cout << i << " using lower bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_low << " > " << 
 		yyMeasuredVec[i].theovalue << endl;
 	    } else if (yyMeasuredVec[i].theovalue>yyMeasuredVec[i].bound_up ) {
-	      f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].bound_up)/(0.01*yyMeasuredVec[i].bound_up));
+	      f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].bound_up)/(yyLimitSlope*yyMeasuredVec[i].bound_up));
 	      cout << i << " using upper bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_up << " < " << 
 		yyMeasuredVec[i].theovalue << endl;
 	    }
@@ -2894,6 +2894,13 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	}
       }
     }
+  }
+
+  // Higgs Bounds here
+  if (yyUseHiggsLimits) {
+    cout << "Starting Higgs limits" << endl;
+    f += higgsLimit();
+    cout << "ending Higgs limits" << endl;
   }
 
   cout << " chisq = " << f << " with " << nobs << " observables (" << ncorr/2 << " correlated), "
@@ -3123,6 +3130,15 @@ int callMicrOmegas (double* x)
   }
   return rc;
 
+}
+
+double higgsLimit ()
+{
+  double higgsLimit = 0.;
+
+
+  
+  return higgsLimit;
 }
 
 // ************************************************************
@@ -5286,9 +5302,6 @@ int   ReadLesHouches()
       if (yyMeasuredVec[i].id == bsg) {
 	yyMeasuredVec[i].theovalue = yybsg;
 	yyMeasuredVec[i].theoset = true;
-	cout << "bsg " << yyMeasuredVec[i].theovalue 
-	     << " "    << yyMeasuredVec[i].value  
-	     << " +- " << yyMeasuredVec[i].error << endl;
       }
       else if (yyMeasuredVec[i].id == bsmm) {
 	yyMeasuredVec[i].theovalue = yybsmm; 

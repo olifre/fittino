@@ -42,6 +42,7 @@ extern int n_printouts;
 extern bool FindInFixed(string name);
 extern void FillFixedParameters();
 extern int callMicrOmegas (double *x);
+extern double higgsLimit ();
 
 class Fittino {
 public:

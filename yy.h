@@ -74,6 +74,7 @@ extern bool          yySimAnnUncertaintyRunDown;
 extern bool          yyRandomDirUncertainties;
 extern bool          yyPerformSingleFits;
 extern bool          yyUseMicrOmegas;
+extern bool          yyUseHiggsLimits;
 
 typedef struct {
   string name;
@@ -97,6 +98,7 @@ extern double        yyInitTempSimAnn;
 extern double        yyXscanlow;
 extern double        yyXscanhigh;
 extern double        yyMaxCalculatorTime;
+extern double        yyLimitSlope;
 
 extern unsigned int  yyFitModel;
 
@@ -114,6 +116,8 @@ extern double        yygmin2t;  // 12  Delta(g-2)_tau
 extern double        yydrho;    // 30  Delta(rho_parameter)
 //---------------------------------------------------------
 extern double        yyOmega;   //     relic density
+extern double        yygSquaredAh;  // hAZ coupling correction
+extern double        yygSquaredZh;  // hZZ coupling correction
 //==========================================================
 
 extern std::vector<InputFileLine> yyInputFile;

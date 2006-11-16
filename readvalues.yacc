@@ -133,6 +133,7 @@ bool          yySimAnnUncertaintyRunDown = false;
 bool          yyRandomDirUncertainties = false;
 bool          yyPerformSingleFits = false;
 bool          yyUseMicrOmegas = false;
+bool          yyUseHiggsLimits = false;
 
 unsigned int yyCalculator;
 string       yyCalculatorPath = "";
@@ -157,7 +158,10 @@ int           yyRandomGeneratorSeed = -1;
 double        yyXscanlow = -6000.;
 double        yyXscanhigh = 2000.;
 
+double        yyLimitSlope = 0.01;
+
 //##############################################################
+// BLOCK SPhenoLowEnergy
 double        yybsg    = -10000.;   //  1   BR(b -> s gamma) 
 double        yybsmm   = -10000.;   //  2   BR(b -> s mu+ mu-)
 double        yyB_smm  = -10000.;   //  3   BR(Bs -> mu+ mu-)
@@ -169,7 +173,11 @@ double        yygmin2m = -10000.;   // 11   Delta(g-2)_muon
 double        yygmin2t = -10000.;   // 12   Delta(g-2)_tau
 double        yydrho   = -10000.;   // 30   Delta(rho_parameter)
 //==============================================================
-double        yyOmega  = -10000.;   //      relic density
+// BLOCK MicrOmegas
+double        yyOmega  = -10000.;   //  1   relic density
+//==============================================================
+double        yygSquaredAh  = -10000.;   // hAZ coupling correction
+double        yygSquaredZh  = -10000.;   // hZZ coupling correction
 //##############################################################
 
 double        yyMaxCalculatorTime = 20.;
@@ -271,6 +279,11 @@ input:
 		  // cout << "FOUND NumberPulls "<<$3<<endl;
 		  if ($3>0) {
                     yyNumberPulls = (int)$3;
+                  }
+       		}
+                else if (!strcmp($2,"yyLimitSlope")) {
+		  if ($3>0) {
+                    yyLimitSlope = $3;
                   }
        		}
                 else {
@@ -651,7 +664,12 @@ input:
  		  if (!strcmp($2, "UseMicrOmegas")) {
 		      if ($3 == on) yyUseMicrOmegas = true;
 		      else yyUseMicrOmegas = false;
-		  } 	      }
+		  } 	      
+ 		  if (!strcmp($2, "UseHiggsLimits")) {
+		      if ($3 == on) yyUseHiggsLimits = true;
+		      else yyUseHiggsLimits = false;
+		  } 	      
+	      }
 	    | input T_CALCULATOR T_WORD
 	      {
                    yyInputFileLine.prevalue  = "Calculator";
@@ -2105,6 +2123,12 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 			}
 			else if ((unsigned int)tmpParams[i][0]==30) {
      			  yydrho=tmpParams[i][1];
+			}
+			else if ((unsigned int)tmpParams[i][0]==50) {
+     			  yygSquaredAh=tmpParams[i][1];
+			}
+			else if ((unsigned int)tmpParams[i][0]==51) {
+     			  yygSquaredZh=tmpParams[i][1];
 			}
                       }
                   }
