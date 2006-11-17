@@ -43,6 +43,7 @@ extern bool FindInFixed(string name);
 extern void FillFixedParameters();
 extern int callMicrOmegas (double *x);
 extern double higgsLimit ();
+extern double higgsBR(int id, vector<int> daughter_list);
 
 class Fittino {
 public:

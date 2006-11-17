@@ -130,6 +130,11 @@ Input::Input(const char* inputfile)
     cout << yyMeasuredVec[i].name << " " << yyMeasuredVec[i].value << " +- " << yyMeasuredVec[i].error << endl;
   }
 
+  if (yyUseHiggsLimits) {
+    // read tables
+
+  }
+
   //cout << "before End" << endl;
   //DumpMeasuredVector();
   
@@ -399,7 +404,7 @@ void Input::FillCrossSectionProduction()
   }
   if (CrossSectionProduction.size()==0) {
     tmpVec.clear();
-    tmpVec.push_back(500.);
+    tmpVec.push_back(1000.);
     tmpVec.push_back(0.0);
     tmpVec.push_back(0.0);
     CrossSectionProduction.push_back(tmpVec);    

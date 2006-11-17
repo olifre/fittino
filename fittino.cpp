@@ -3136,9 +3136,96 @@ double higgsLimit ()
 {
   double higgsLimit = 0.;
 
+  // get masses
+  double mh = yyMass[ID_h];
+  double mA = yyMass[ID_A];
 
-  
+  // get BR
+  vector<int> daughter_list;
+  daughter_list.push_back(ID_b);
+  daughter_list.push_back(-ID_b);
+  double higgsToBB = higgsBR(ID_h,daughter_list);
+  daughter_list.clear();
+  daughter_list.push_back(ID_tau);
+  daughter_list.push_back(-ID_tau);
+  double higgsToTauTau = higgsBR(ID_h,daughter_list);  
+
+  daughter_list.clear();
+  daughter_list.push_back(ID_A);
+  daughter_list.push_back(-ID_A);
+  double higgsToAA = higgsBR(ID_h,daughter_list);
+
+  daughter_list.clear();
+  daughter_list.push_back(ID_b);
+  daughter_list.push_back(-ID_b);
+  double AToBB = higgsBR(ID_A,daughter_list);
+  daughter_list.clear();
+  daughter_list.push_back(ID_tau);
+  daughter_list.push_back(-ID_tau);
+  double AToTauTau = higgsBR(ID_A,daughter_list);  
+
+  // calculate scaling factors  
+  vector<double> sf(higgsLimitProcessesLast);
+  sf[Zh_Zbb] = yygSquaredZh * higgsToBB;
+  sf[Ah_bbbb] = yygSquaredAh * higgsToBB * AToBB;
+
   return higgsLimit;
+}
+
+//int higgsFindBestExpectedLimit(vector<double> sf, double mh, double mA) {
+//  int best = 0;
+//
+//
+//  return best;
+//}
+//
+//double higgsLimitRatio(int process, double sf, double mh, double mA, int exp) {
+//
+//  double ration = 0.;
+//
+//  
+//
+//  //  higgsS95[process][exp][mh][mA]
+//
+//  
+//
+//  
+//  return ratio;
+//}
+
+
+double higgsBR(int id, vector<int> daughter_list) {
+  double br = 0.;
+  vector<int> used_products;
+  bool already_used = false;
+  int found_prod = 0;
+  for (unsigned int i = 0; 1; i++ ) { // loop over all Higgs BR
+    if (give_br(id, i, 1) == 0) break;
+    for (unsigned int j = 0; j < (2+give_br(id, i, 1)); j++ ) { // loop over all entries in one BR line
+      for (unsigned int k = 0; k < daughter_list.size(); k++ ) {
+	for (unsigned int n=0;n< used_products.size();n++) {
+	  if (k==used_products[n]) {
+	    already_used = true;
+	    break;
+	  }
+	}
+	if (already_used) {
+	  already_used = false;
+	  continue;
+	}
+	if (TMath::Abs(daughter_list[k])==TMath::Abs(give_br(id, i, j))) {
+	  used_products.push_back(k);
+	  found_prod++;
+	  break;
+	}
+      }
+    }
+    if (found_prod == daughter_list.size()) {
+      br = give_br(id, i, 0);
+      break;
+    }
+  }
+  return br;
 }
 
 // ************************************************************
@@ -5676,7 +5763,7 @@ int   ParseLesHouches()
       }
       rc = yyparse();
       fclose(yyin);
-      system ("rm SPheno.spc");
+      system ("mv SPheno.spc SPheno.spc.last");
       // exit (0);
     }
     else {

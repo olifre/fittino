@@ -108,6 +108,19 @@ enum ObservableType { mass, Pwidth, xsection, br, xsectionbr, Pedge, xsbr, brrat
 //   LEObservables  { bsg,                                           gmin2,          drho, omega };
 enum LEObservables  { bsg, bsmm, B_smm, B_utn, dMB_d, dMB_s, gmin2e, gmin2m, gmin2t, drho, omega };
 enum FitModel       { MSSM, mSUGRA, GMSB, AMSB };
+enum higgsLimitProcesses 
+  { Zh_Zbb, 
+    Zh_Ztt,
+    Zh_ZAA_Zbbbb,
+    Zh_ZAA_Ztttt,
+    Ah_bbbb,
+    Ah_bbtt,
+    Ah_ttbb,
+    Ah_tttt,
+    Ah_AAA_bbbbbb,
+    Ah_AAA_tttttt,
+    higgsLimitProcessesLast
+  };
 
 extern bool          yyUseLoopCorrections;
 extern bool          yyCalcPullDist;

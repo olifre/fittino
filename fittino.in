@@ -170,6 +170,7 @@ UseMinos              on
 UseHesse              on
 
 UseMicrOmegas         on
+UseHiggsLimits        on
 
 NumberOfMinimizations  1
 ErrDef                 1.0
