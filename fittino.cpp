@@ -3467,7 +3467,7 @@ void WriteLesHouches(double* x)
     exit(EXIT_FAILURE);
   }
 
-  if (yyFitModel == MSSM) {
+  if (yyFitModel == MSSM || yyFitModel == NMSSM) {
 
     if (FindInFixed("Mu")) {
       local_mu = ReturnFixedValue("Mu")->value;
@@ -3491,7 +3491,8 @@ void WriteLesHouches(double* x)
     //  cout << "writeLesHouches: local_mu = "<< local_mu << endl;
 
     LesHouchesOutfile << "BLOCK MODSEL" << endl;
-    LesHouchesOutfile << "    1 0 # general MSSM" << endl;
+    if (yyFitModel == MSSM) LesHouchesOutfile << "    1 0 # general MSSM" << endl;
+    else if (yyFitModel == NMSSM) LesHouchesOutfile << "    3 1 # NMSSM" << endl;
     LesHouchesOutfile << "BLOCK SPhenoInput" << endl;
     LesHouchesOutfile << "    1  0                  # error level" << endl;
     LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
@@ -5372,6 +5373,7 @@ int   ReadLesHouches()
   cout << "  --->  yydrho   from SPheno: " << yydrho   << endl;   // 30  Delta(rho_parameter)
   //------------------------------------------------------------------------------------------
   cout << "  --->  yyOmega  from MicrOmegas: " << yyOmega  << endl;   //     relic density
+
 
   used_products.clear();
   // loop over yyMeasuredVec and fill theovalue

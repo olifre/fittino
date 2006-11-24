@@ -56,6 +56,11 @@ double yy_msd3R;
 double yy_N51;
 double yy_N52;
 double yy_N53;
+double yyLambda;
+double yyKappa;
+double yyAlambda;
+double yyAkappa;
+double yyMuEff;
 
 // SPINFO
 char yy_spectrum_calc_name[256];
@@ -720,6 +725,8 @@ input:
 		      yyFitModel = GMSB;
 		    else if (!strcmp($3, "AMSB"))
 		      yyFitModel = AMSB;
+		    else if (!strcmp($3, "NMSSM"))
+		      yyFitModel = NMSSM;
 		    else {
 		      cerr<<"Unknown fit model: "<<$3<<endl;
 		      exit(EXIT_FAILURE);
