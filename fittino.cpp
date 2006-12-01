@@ -963,6 +963,38 @@ void Fittino::calculateTreeLevelValues(int nthrows)
     }
 
 
+    // FIXME: Find a more intelligent way to get start values and errors
+    if (yyFitModel == NMSSM) {
+      fNmssmLambda.name  = "lambda";
+      fNmssmLambda.value = 0;
+      fNmssmLambda.error = 1;
+      if (yyUseGivenStartValues && (FindInFittedPar("lambda") >= 0)) fNmssmLambda.value = yyFittedPar[FindInFittedPar("lambda")].value ;
+      fNmssmLambda.bound_low = -10000.;
+      fNmssmLambda.bound_up = 10000.;
+
+      fKappa.name  = "kappa";
+      fKappa.value = 0;
+      fKappa.error = 1;
+      if (yyUseGivenStartValues && (FindInFittedPar("kappa") >= 0)) fKappa.value = yyFittedPar[FindInFittedPar("kappa")].value ;
+      fKappa.bound_low = -10000.;
+      fKappa.bound_up = 10000.;
+
+      fALambda.name  = "ALambda";
+      fALambda.value = 0;
+      fALambda.error = 10;
+      if (yyUseGivenStartValues && (FindInFittedPar("ALambda") >= 0)) fALambda.value = yyFittedPar[FindInFittedPar("ALambda")].value ;
+      fALambda.bound_low = -10000.;
+      fALambda.bound_up = 10000.;
+
+      fAKappa.name  = "AKappa";
+      fAKappa.value = 0;
+      fAKappa.error = 10;
+      if (yyUseGivenStartValues && (FindInFittedPar("AKappa") >= 0)) fAKappa.value = yyFittedPar[FindInFittedPar("AKappa")].value ;
+      fAKappa.bound_low = -10000.;
+      fAKappa.bound_up = 10000.;
+    }
+
+
 //    cout << "MSelectronL = " << fMSelL.value << " +- " << fMSelL.error << endl;
 //    cout << "MSmuL = " << fMSmuL.value << " +- " << fMSmuL.error << endl;
 //    cout << "MStauL = " << fMStauL.value << " +- " << fMStauL.error << endl;
@@ -1507,8 +1539,8 @@ void Fittino::setStartValues()
     cout << "=======================================================" << endl;
 
   }
-  else if (yyFitModel == MSSM) {
-    cerr<<"Fittino::setStartValues: Use Fittino::calculateTreeLevelValues() for MSSM fits to "
+  else if (yyFitModel == MSSM || yyFitModel == NMSSM) {
+    cerr<<"Fittino::setStartValues: Use Fittino::calculateTreeLevelValues() for (N)MSSM fits to "
       "set fit start values"<<endl;
     exit(EXIT_FAILURE);
   }
@@ -3491,8 +3523,8 @@ void WriteLesHouches(double* x)
     //  cout << "writeLesHouches: local_mu = "<< local_mu << endl;
 
     LesHouchesOutfile << "BLOCK MODSEL" << endl;
-    if (yyFitModel == MSSM) LesHouchesOutfile << "    1 0 # MSSM particle content" << endl;
-    else if (yyFitModel == NMSSM) LesHouchesOutfile << "    3 1 # NMSSM particle content" << endl;
+    if (yyFitModel == MSSM) LesHouchesOutfile << "    1  0 # MSSM particle content" << endl;
+    else if (yyFitModel == NMSSM) LesHouchesOutfile << "    3  1 # NMSSM particle content" << endl;
     LesHouchesOutfile << "BLOCK SPhenoInput" << endl;
     LesHouchesOutfile << "    1  0                  # error level" << endl;
     LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;

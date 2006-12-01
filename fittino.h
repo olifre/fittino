@@ -107,6 +107,11 @@ private:
     MeasuredValue fXtop;
     MeasuredValue fXtau;
 
+    MeasuredValue fNmssmLambda;
+    MeasuredValue fKappa;
+    MeasuredValue fALambda;
+    MeasuredValue fAKappa;
+
     void          calculateM1(const SmearedInput* input);
     void          calculateM2(const SmearedInput* input);
     void          calculateAbsM3(const SmearedInput* input);
