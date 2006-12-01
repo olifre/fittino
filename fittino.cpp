@@ -3491,8 +3491,8 @@ void WriteLesHouches(double* x)
     //  cout << "writeLesHouches: local_mu = "<< local_mu << endl;
 
     LesHouchesOutfile << "BLOCK MODSEL" << endl;
-    if (yyFitModel == MSSM) LesHouchesOutfile << "    1 0 # general MSSM" << endl;
-    else if (yyFitModel == NMSSM) LesHouchesOutfile << "    3 1 # NMSSM" << endl;
+    if (yyFitModel == MSSM) LesHouchesOutfile << "    1 0 # MSSM particle content" << endl;
+    else if (yyFitModel == NMSSM) LesHouchesOutfile << "    3 1 # NMSSM particle content" << endl;
     LesHouchesOutfile << "BLOCK SPhenoInput" << endl;
     LesHouchesOutfile << "    1  0                  # error level" << endl;
     LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
@@ -4136,6 +4136,75 @@ void WriteLesHouches(double* x)
 	cout << "fitting " << ReturnUniversality("MSbottomR")->universality << " instead of MSbottomR" << endl;
       }
     }
+
+    if (yyFitModel == NMSSM) {
+
+      if (FindInFixed("lambda")) {
+	LesHouchesOutfile << "   61  "<< ReturnFixedValue("lambda")->value <<" # lambda (fixed)"<< endl;
+      }    
+      else if (FindInFitted("lambda")) {
+	LesHouchesOutfile << "   61  "<< x[ReturnFittedPosition("lambda")]<<" # lambda"<< endl;
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	  cout << "Fitting lambda " << x[ReturnFittedPosition("lambda")] << endl;
+	}
+      } 
+      else if (FindInUniversality("lambda")) {
+	LesHouchesOutfile << "   61  "<<x[ReturnFittedPosition(ReturnUniversality("lambda")->universality)]<<" # lambda"<<endl;
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	  cout << "fitting " << ReturnUniversality("lambda")->universality << " instead of lambda" << endl;
+	}
+      }
+
+      if (FindInFixed("kappa")) {
+	LesHouchesOutfile << "   62  "<< ReturnFixedValue("kappa")->value <<" # kappa (fixed)"<< endl;
+      }    
+      else if (FindInFitted("kappa")) {
+	LesHouchesOutfile << "   62  "<< x[ReturnFittedPosition("kappa")]<<" # kappa"<< endl;
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	  cout << "Fitting kappa " << x[ReturnFittedPosition("kappa")] << endl;
+	}
+      } 
+      else if (FindInUniversality("kappa")) {
+	LesHouchesOutfile << "   62  "<<x[ReturnFittedPosition(ReturnUniversality("kappa")->universality)]<<" # kappa"<<endl;
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	  cout << "fitting " << ReturnUniversality("kappa")->universality << " instead of kappa" << endl;
+	}
+      }
+
+      if (FindInFixed("ALambda")) {
+	LesHouchesOutfile << "   63  "<< ReturnFixedValue("ALambda")->value <<" # ALambda (fixed)"<< endl;
+      }    
+      else if (FindInFitted("ALambda")) {
+	LesHouchesOutfile << "   63  "<< x[ReturnFittedPosition("ALambda")]<<" # ALambda"<< endl;
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	  cout << "Fitting ALambda " << x[ReturnFittedPosition("ALambda")] << endl;
+	}
+      } 
+      else if (FindInUniversality("ALambda")) {
+	LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("ALambda")->universality)]<<" # ALambda"<<endl;
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	  cout << "fitting " << ReturnUniversality("ALambda")->universality << " instead of ALambda" << endl;
+	}
+      }
+
+      if (FindInFixed("AKappa")) {
+	LesHouchesOutfile << "   64  "<< ReturnFixedValue("AKappa")->value <<" # AKappa (fixed)"<< endl;
+      }    
+      else if (FindInFitted("AKappa")) {
+	LesHouchesOutfile << "   64  "<< x[ReturnFittedPosition("AKappa")]<<" # AKappa"<< endl;
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	  cout << "Fitting AKappa " << x[ReturnFittedPosition("AKappa")] << endl;
+	}
+      } 
+      else if (FindInUniversality("AKappa")) {
+	LesHouchesOutfile << "   64  "<<x[ReturnFittedPosition(ReturnUniversality("AKappa")->universality)]<<" # AKappa"<<endl;
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	  cout << "fitting " << ReturnUniversality("AKappa")->universality << " instead of AKappa" << endl;
+	}
+      }
+
+    }
+
   }
 
   else if (yyFitModel == mSUGRA) {
