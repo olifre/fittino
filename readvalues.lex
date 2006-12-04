@@ -32,7 +32,7 @@ PATH             ["./""/"][a-zA-Z0-9"+""-""~"".""_""/"]*
                               return T_NEWLINE;
                           }
 
-BLOCK                     {
+BLOCK|Block               {
                               BEGIN(INITIAL);
                               return T_BLOCK;
                           }

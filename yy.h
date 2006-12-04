@@ -121,5 +121,6 @@ extern double        yygSquaredZh;  // hZZ coupling correction
 //==========================================================
 
 extern std::vector<InputFileLine> yyInputFile;
+extern int yyInputFileLineNo;
 
 #endif

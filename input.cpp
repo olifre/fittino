@@ -43,6 +43,7 @@ Input::Input(const char* inputfile)
       cerr<<"Input file "<<inputfile<<" not found"<<endl;
       exit(EXIT_FAILURE);
   }
+  yyInputFileLineNo = 1;
   yyparse();
   fclose(yyin);
 

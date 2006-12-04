@@ -19,6 +19,7 @@ double yyMass_t;
 double yyMass_tau;              
 //MODEL
 int    yyModel;
+int    yyParticleContent;
 // MINPAR
 double yy_Qmax;
 double yytanb;
@@ -1880,7 +1881,7 @@ input:
 //========================================================================
 block:      T_BLOCK T_WORD T_NEWLINE parameters
               {
-//                  printf("Reading block %s...\n", $2);
+                  printf("Reading block %s...\n", $2);
 
 //========================================================================
                   if (!strcmp($2, "MODSEL")) {
@@ -1890,13 +1891,16 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
                           case 1:
                               yyModel = (int)tmpParams[i][1];
                               break;
+                          case 3:
+                              yyParticleContent = (int)tmpParams[i][1];
+                              break;
 			  default:
                               yyerror("Parameter in MODSEL not known");
                           }
                       }
                   }
 //========================================================================
-                  if (!strcmp($2, "SMINPUTS")) {
+                  else if (!strcmp($2, "SMINPUTS")) {
                       for (unsigned int i=0; i<tmpParams.size(); i++) {
             
                           switch (int(tmpParams[i][0])) {
@@ -1927,7 +1931,7 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
                       }
                   }
 //========================================================================
-                  if (!strcmp($2, "MINPAR")) {
+                  else if (!strcmp($2, "MINPAR")) {
                       for (unsigned int i=0; i<tmpParams.size(); i++) {
             		  if (int(tmpParams[i][0])==3) {
                               yytanb =  tmpParams[i][1];
@@ -1957,16 +1961,18 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
                       }
                   }
 //========================================================================
-                  if (!strcmp($2, "SPINFO")) {
+                  else if (!strcmp($2, "SPINFO")) {
 //		      cout << "tmpStrings.size()" << tmpStrings.size() << endl;
                       for (unsigned int i=0; i<tmpStrings.size(); i++) {
             
                           switch (int(tmpNumbers[i])) {
                           case 1:
                               strcpy(yy_spectrum_calc_name,tmpStrings[i].tmpname);
+//			      printf("calculator name = %s\n", yy_spectrum_calc_name);
                               break;
                           case 2:
                               strcpy(yy_spectrum_calc_version,tmpStrings[i].tmpname);
+//			      printf("calculator version = %s\n", yy_spectrum_calc_version);
                               break;
                           case 3:
                               strcat(yy_warnings,tmpStrings[i].tmpname);
@@ -1978,7 +1984,7 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
                               strcpy(yy_error_codes,tmpStrings[i].tmpname);
                               break;
 			  default:
-//			      cout << "tmpNumbers["<<i<<"]: "<< int(tmpNumbers[i]) << endl;
+			      cout << "tmpNumbers["<<i<<"]: "<< int(tmpNumbers[i]) << endl;
 			    return 1;
                               yyerror("Parameter in SPINFO not known");
                           }
@@ -1988,11 +1994,11 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 //		      cout << "after clear: tmpStrings.size()" << tmpStrings.size() << endl;
                   }
 //========================================================================
-                  if (!strcmp($2, "SPhenoINFO")) {
+                  else if (!strcmp($2, "SPhenoINFO")) {
 		    // cout << "reading SPhenoINFO " << endl;
 		  }
 //========================================================================
-                  if (!strcmp($2, "EXTPAR")) {
+                  else if (!strcmp($2, "EXTPAR")) {
                       for (unsigned int i=0; i<tmpParams.size(); i++) {
             
                           switch (int(tmpParams[i][0])) {
@@ -2083,14 +2089,28 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
                           case 53:
                               yy_N53 =  tmpParams[i][1];
                               break;
-			  
+                          case 61:
+                              yyLambda =  tmpParams[i][1];
+                              break;
+                          case 62:
+                              yyKappa =  tmpParams[i][1];
+                              break;			  
+                          case 63:
+                              yyAlambda =  tmpParams[i][1];
+                              break;
+                          case 64:
+                              yyAkappa =  tmpParams[i][1];
+                              break;			  
+                          case 65:
+                              yyMuEff =  tmpParams[i][1];
+                              break;
 			  default:
                               yyerror("Parameter in EXTPAR not known");
                           }
                       }
                   }
 //========================================================================
-                  if (!strcmp($2, "MASS")) {
+                  else if (!strcmp($2, "MASS")) {
                       for (unsigned int i=0; i<tmpParams.size(); i++) {
      			  yyMass[(unsigned int)tmpParams[i][0]]=tmpParams[i][1];     
                       }
@@ -2099,7 +2119,7 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 		  // SPhenoLowEnergy 
 //========================================================================
                   //==========================================
-                  if (!strcmp($2, "SPhenoLowEnergy")) {
+                  else if (!strcmp($2, "SPhenoLowEnergy")) {
                       for (unsigned int i=0; i<tmpParams.size(); i++) {
 			if ((unsigned int)tmpParams[i][0]==1) {
      			  yybsg=tmpParams[i][1];
@@ -2142,7 +2162,7 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
                   //==========================================
 		  // MicrOmegas 
 //========================================================================
-                  if (!strcmp($2, "MicrOmegas")) {
+                  else if (!strcmp($2, "MicrOmegas")) {
 		    for (unsigned int i=0; i<tmpParams.size(); i++) {
 		      if ((unsigned int)tmpParams[i][0]==1) {
 			yyOmega=tmpParams[i][1];
@@ -2150,8 +2170,42 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 		    }
                   }
 //========================================================================
-                  if (!strcmp($2, "SPhenoCrossSections")) {
+                  else if (!strcmp($2, "stopmix")) {
+//		    for (unsigned int i=0; i<tmpParams.size(); i++) {
+
+//		    }
+                  }
+                  else if (!strcmp($2, "sbotmix")) {
+//		    for (unsigned int i=0; i<tmpParams.size(); i++) {
+
+//		    }
+                  }
+                  else if (!strcmp($2, "staumix")) {
+//		    for (unsigned int i=0; i<tmpParams.size(); i++) {
+
+//		    }
+                  }
+                  else if (!strcmp($2, "Nmix")) {
+//		    for (unsigned int i=0; i<tmpParams.size(); i++) {
+
+//		    }
+                  }
+                  else if (!strcmp($2, "Umix")) {
+//		    for (unsigned int i=0; i<tmpParams.size(); i++) {
+
+//		    }
+                  }
+                  else if (!strcmp($2, "Vmix")) {
+//		    for (unsigned int i=0; i<tmpParams.size(); i++) {
+
+//		    }
+                  }
+                  else if (!strcmp($2, "SPhenoCrossSections")) {
 		    // cout << "starting to read XS..." << endl;
+                  }
+	          else {
+	            printf("Unknown block: %s\n", $2);
+                    yyerror("");
                   }
 
                   tmpParams.clear();
@@ -2162,7 +2216,14 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
             | T_BLOCK T_WORD T_SCALE T_NUMBER T_NEWLINE parameters
               {
                   yyScale = $4;
-//                  printf("Reading block %s at scale %f...\n", $2, $4);
+                  printf("Reading block %s at scale %f...\n", $2, $4);
+
+                  tmpParams.clear();
+              }
+            | T_BLOCK T_WORD T_NUMBER T_NEWLINE parameters
+              {
+                  yyScale = $3;
+                  printf("Reading block %s at scale %f...\n", $2, $3);
 
                   tmpParams.clear();
               }
@@ -2361,6 +2422,8 @@ value:     T_NUMBER                        { $$ = $1; }
 %%
 
 void yyerror(char* s) {
+//    fprintf(stderr, "Error while reading input file (line %d): %s\n",
+//	yyInputFileLineNo, s);
     fprintf(stderr, "Error while reading input file: %s\n", s);
     exit(EXIT_FAILURE);
 }

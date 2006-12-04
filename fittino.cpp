@@ -5864,6 +5864,7 @@ int   ParseLesHouches()
 	yyCalculatorError = true;
 	return 1;
       }
+      yyInputFileLineNo = 1;
       rc = yyparse();
       fclose(yyin);
       system ("mv SPheno.spc SPheno.spc.last");
