@@ -58,6 +58,13 @@ using namespace std;
 #define ID_Z     23
 #define ID_W     24
 
+// for NMSSM
+#define ID_H1    25
+#define ID_H2    35
+#define ID_H3    45
+#define ID_A1    36
+#define ID_A2    46
+// else
 #define ID_h     25
 #define ID_H     35
 #define ID_A     36
@@ -98,6 +105,7 @@ using namespace std;
 #define ID_chip1   1000024
 #define ID_chi03   1000025
 #define ID_chi04   1000035
+#define ID_chi05   1000045 // for NMSSM
 #define ID_chip2   1000037
 #define ID_gravitino   1000039
 

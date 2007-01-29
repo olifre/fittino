@@ -223,10 +223,20 @@ void Input::FillNameMap()
   yyParticleNames[ID_Z       ] = "Z"		    ;
   yyParticleNames[ID_W       ] = "W"		    ;
 			          			    
-  yyParticleNames[ID_h       ] = "h0"		    ;
-  yyParticleNames[ID_H       ] = "H0"		    ;
-  yyParticleNames[ID_A       ] = "A0"		    ;
-  yyParticleNames[ID_Hplus   ] = "Hplus"	    ;
+  if ( yyFitModel == NMSSM ) {
+    yyParticleNames[ID_H1      ] = "H1"		    ;
+    yyParticleNames[ID_H2      ] = "H2"		    ;
+    yyParticleNames[ID_H3      ] = "H3"		    ;
+    yyParticleNames[ID_A1      ] = "A1"		    ;
+    yyParticleNames[ID_A2      ] = "A2"		    ;
+    yyParticleNames[ID_Hplus   ] = "Hplus"	    ;
+  }
+  else {
+    yyParticleNames[ID_h       ] = "h0"		    ;
+    yyParticleNames[ID_H       ] = "H0"		    ;
+    yyParticleNames[ID_A       ] = "A0"		    ;
+    yyParticleNames[ID_Hplus   ] = "Hplus"	    ;
+  }
   yyParticleNames[ID_G       ] = "Graviton"	    ;
 			          			    
   yyParticleNames[ID_sdL     ] = "SdownL"         ;
@@ -263,6 +273,7 @@ void Input::FillNameMap()
   yyParticleNames[ID_chip1   ] = "Chargino1"      ;
   yyParticleNames[ID_chi03   ] = "Neutralino3"    ;
   yyParticleNames[ID_chi04   ] = "Neutralino4"    ;
+  yyParticleNames[ID_chi05   ] = "Neutralino5"    ; // for NMSSM
   yyParticleNames[ID_chip2   ] = "Chargino2" 	    ;
   yyParticleNames[ID_gravitino ] = "Gravitino"  ;
 
@@ -288,10 +299,20 @@ void Input::FillNameMap()
   yyParticleIDs["Z"		 ] = ID_Z          ;
   yyParticleIDs["W"		 ] = ID_W          ;
 		 		     	              
-  yyParticleIDs["h0"	 ] = ID_h          ;
-  yyParticleIDs["H0"	 ] = ID_H          ;
-  yyParticleIDs["A0"	 ] = ID_A          ;
-  yyParticleIDs["Hplus"	 ] = ID_Hplus      ;
+  if ( yyFitModel == NMSSM ) {
+    yyParticleIDs["H1"	 ] = ID_H1          ;
+    yyParticleIDs["H2"	 ] = ID_H2          ;
+    yyParticleIDs["H3"	 ] = ID_H3          ;
+    yyParticleIDs["A1"	 ] = ID_A1          ;
+    yyParticleIDs["A2"	 ] = ID_A2          ;
+    yyParticleIDs["Hplus"	 ] = ID_Hplus      ;
+  }
+  else {
+    yyParticleIDs["h0"	 ] = ID_h          ;
+    yyParticleIDs["H0"	 ] = ID_H          ;
+    yyParticleIDs["A0"	 ] = ID_A          ;
+    yyParticleIDs["Hplus"	 ] = ID_Hplus      ;
+  }
   yyParticleIDs["Graviton"	 ] = ID_G          ;
 		 		 	                  
   yyParticleIDs["SdownL"       ] = ID_sdL       ;
