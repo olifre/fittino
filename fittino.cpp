@@ -2820,6 +2820,8 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
   WriteLesHouches(x);
 
+  //  exit(0);
+
   if (yyCalculator == SUSPECT) {
     callSuspect();
   }
@@ -3882,24 +3884,26 @@ void WriteLesHouches(double* x)
       exit (EXIT_FAILURE);
     }
 
-    if (FindInFixed("massA0")) {
-      LesHouchesOutfile << "   24  "<< sqr(ReturnFixedValue("massA0")->value) <<" # mA (fixed)"<< endl;
-    }    
-    else if (FindInFitted("massA0")) {
-      LesHouchesOutfile << "   24  "<< sqr(x[ReturnFittedPosition("massA0")])<<" # mA"<< endl;
-      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-	cout << "Fitting mA " << x[ReturnFittedPosition("massA0")] << endl;
-      }
-    } 
-    else if (FindInUniversality("massA0")) {
-      LesHouchesOutfile << "   24  "<<sqr(x[ReturnFittedPosition(ReturnUniversality("massA0")->universality)])<<" # massA0"<<endl;
-      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-	cout << "fitting " << ReturnUniversality("massA0")->universality << " instead of massA0" << endl;
-      }
-    }
-    else {
-      cerr << "Parameter massA0 not declared" << endl;
-      exit (EXIT_FAILURE);
+    if ( yyFitModel != NMSSM ) {
+	if (FindInFixed("massA0")) {
+	  LesHouchesOutfile << "   24  "<< sqr(ReturnFixedValue("massA0")->value) <<" # mA (fixed)"<< endl;
+	}    
+	else if (FindInFitted("massA0")) {
+	  LesHouchesOutfile << "   24  "<< sqr(x[ReturnFittedPosition("massA0")])<<" # mA"<< endl;
+	  if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Fitting mA " << x[ReturnFittedPosition("massA0")] << endl;
+	  }
+	} 
+	else if (FindInUniversality("massA0")) {
+	  LesHouchesOutfile << "   24  "<<sqr(x[ReturnFittedPosition(ReturnUniversality("massA0")->universality)])<<" # massA0"<<endl;
+	  if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fitting " << ReturnUniversality("massA0")->universality << " instead of massA0" << endl;
+	  }
+	}
+	else {
+	  cerr << "Parameter massA0 not declared" << endl;
+	  exit (EXIT_FAILURE);
+	}
     }
 
     if (FindInFixed("MSelectronL")) {
@@ -4232,6 +4236,22 @@ void WriteLesHouches(double* x)
 	LesHouchesOutfile << "   64  "<<x[ReturnFittedPosition(ReturnUniversality("AKappa")->universality)]<<" # AKappa"<<endl;
 	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
 	  cout << "fitting " << ReturnUniversality("AKappa")->universality << " instead of AKappa" << endl;
+	}
+      }
+
+      if (FindInFixed("MuEff")) {
+	LesHouchesOutfile << "   65  "<< ReturnFixedValue("MuEff")->value <<" # MuEff (fixed)"<< endl;
+      }    
+      else if (FindInFitted("MuEff")) {
+	LesHouchesOutfile << "   65  "<< x[ReturnFittedPosition("MuEff")]<<" # MuEff"<< endl;
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	  cout << "Fitting MuEff " << x[ReturnFittedPosition("MuEff")] << endl;
+	}
+      } 
+      else if (FindInUniversality("MuEff")) {
+	LesHouchesOutfile << "   65  "<<x[ReturnFittedPosition(ReturnUniversality("MuEff")->universality)]<<" # MuEff"<<endl;
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	  cout << "fitting " << ReturnUniversality("MuEff")->universality << " instead of MuEff" << endl;
 	}
       }
 
@@ -5483,7 +5503,11 @@ int   ReadLesHouches()
   }  
   for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
     if (yyMeasuredVec[i].type == mass) {
-      //      cout << "foubd a mass" << endl;
+      //      cout << "found mass of particle " << yyMeasuredVec[i].id << endl;
+//      if ( yyMeasuredVec[i].id == 25 || yyMeasuredVec[i].id == 35 ||
+//	   yyMeasuredVec[i].id == 45 ) {
+//	cout << "################ H1 or H2 or H3 found" << endl;
+//      }
       yyMeasuredVec[i].theovalue = yyMass[yyMeasuredVec[i].id];
       yyMeasuredVec[i].theoset = true;
     }

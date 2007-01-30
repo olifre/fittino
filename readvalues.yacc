@@ -2112,6 +2112,11 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 //========================================================================
                   else if (!strcmp($2, "MASS")) {
                       for (unsigned int i=0; i<tmpParams.size(); i++) {
+/*
+			  printf("pid = %d   mass = %f\n",
+		                 (unsigned int)tmpParams[i][0],
+				 tmpParams[i][1]);
+*/
      			  yyMass[(unsigned int)tmpParams[i][0]]=tmpParams[i][1];     
                       }
                   }

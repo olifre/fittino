@@ -194,6 +194,7 @@ void Input::Fill_IDs()
       tmpname = yyMeasuredVec[i].name;
       tmpname.erase(0,4);
       yyMeasuredVec[i].id = yyParticleIDs[tmpname];
+      cout << " FILLIDS: " << tmpname << " id = " << yyMeasuredVec[i].id << endl;
     }
   }
 
@@ -203,7 +204,8 @@ void Input::Fill_IDs()
 
 void Input::FillNameMap()
 {
-  
+  /*  
+  // THIS PART IS DISABLED: NMSSM STUFF PARTLY OVERWRITTEN BY NON-NMSSM STUFF 
   yyParticleNames[ID_d       ] = "Down";
   yyParticleNames[ID_u       ] = "Up"             ;   
   yyParticleNames[ID_s       ] = "Strange"	    ;
@@ -223,20 +225,18 @@ void Input::FillNameMap()
   yyParticleNames[ID_Z       ] = "Z"		    ;
   yyParticleNames[ID_W       ] = "W"		    ;
 			          			    
-  if ( yyFitModel == NMSSM ) {
-    yyParticleNames[ID_H1      ] = "H1"		    ;
-    yyParticleNames[ID_H2      ] = "H2"		    ;
-    yyParticleNames[ID_H3      ] = "H3"		    ;
-    yyParticleNames[ID_A1      ] = "A1"		    ;
-    yyParticleNames[ID_A2      ] = "A2"		    ;
-    yyParticleNames[ID_Hplus   ] = "Hplus"	    ;
-  }
-  else {
-    yyParticleNames[ID_h       ] = "h0"		    ;
-    yyParticleNames[ID_H       ] = "H0"		    ;
-    yyParticleNames[ID_A       ] = "A0"		    ;
-    yyParticleNames[ID_Hplus   ] = "Hplus"	    ;
-  }
+  // ATTENTION: NMSSM STUFF PARTLY OVERWRITTEN BY NON-NMSSM STUFF 
+  yyParticleNames[ID_H1      ] = "H1"		    ; // NMSSM
+  yyParticleNames[ID_H2      ] = "H2"		    ; // NMSSM
+  yyParticleNames[ID_H3      ] = "H3"		    ; // NMSSM
+  yyParticleNames[ID_A1      ] = "A1"		    ; // NMSSM
+  yyParticleNames[ID_A2      ] = "A2"		    ; // NMSSM
+
+  yyParticleNames[ID_h       ] = "h0"		    ;
+  yyParticleNames[ID_H       ] = "H0"		    ;
+  yyParticleNames[ID_A       ] = "A0"		    ;
+  yyParticleNames[ID_Hplus   ] = "Hplus"	    ;
+
   yyParticleNames[ID_G       ] = "Graviton"	    ;
 			          			    
   yyParticleNames[ID_sdL     ] = "SdownL"         ;
@@ -276,7 +276,7 @@ void Input::FillNameMap()
   yyParticleNames[ID_chi05   ] = "Neutralino5"    ; // for NMSSM
   yyParticleNames[ID_chip2   ] = "Chargino2" 	    ;
   yyParticleNames[ID_gravitino ] = "Gravitino"  ;
-
+  */
 //---------------------------------------------------
 //---------------------------------------------------
 
@@ -299,20 +299,17 @@ void Input::FillNameMap()
   yyParticleIDs["Z"		 ] = ID_Z          ;
   yyParticleIDs["W"		 ] = ID_W          ;
 		 		     	              
-  if ( yyFitModel == NMSSM ) {
-    yyParticleIDs["H1"	 ] = ID_H1          ;
-    yyParticleIDs["H2"	 ] = ID_H2          ;
-    yyParticleIDs["H3"	 ] = ID_H3          ;
-    yyParticleIDs["A1"	 ] = ID_A1          ;
-    yyParticleIDs["A2"	 ] = ID_A2          ;
-    yyParticleIDs["Hplus"	 ] = ID_Hplus      ;
-  }
-  else {
-    yyParticleIDs["h0"	 ] = ID_h          ;
-    yyParticleIDs["H0"	 ] = ID_H          ;
-    yyParticleIDs["A0"	 ] = ID_A          ;
-    yyParticleIDs["Hplus"	 ] = ID_Hplus      ;
-  }
+  yyParticleIDs["h0"	 ] = ID_h          ;
+  yyParticleIDs["H0"	 ] = ID_H          ;
+  yyParticleIDs["A0"	 ] = ID_A          ;
+  yyParticleIDs["Hplus"	 ] = ID_Hplus      ;
+
+  yyParticleIDs["H1"	 ] = ID_H1          ; // NMSSM
+  yyParticleIDs["H2"	 ] = ID_H2          ; // NMSSM
+  yyParticleIDs["H3"	 ] = ID_H3          ; // NMSSM
+  yyParticleIDs["A1"	 ] = ID_A1          ; // NMSSM
+  yyParticleIDs["A2"	 ] = ID_A2          ; // NMSSM
+
   yyParticleIDs["Graviton"	 ] = ID_G          ;
 		 		 	                  
   yyParticleIDs["SdownL"       ] = ID_sdL       ;
@@ -362,9 +359,13 @@ int Input::ReturnParticleID(string name)
   return yyParticleIDs[name];
 }
 
+
 string Input::ReturnParticleName(int ID)
 {
-  return yyParticleNames[ID];
+  cerr << "ReturnParticleName has been disabled due to NMSSM name clash" << endl;
+  cerr << "(see warning in implementation of Input::FillNameMap)" << endl;
+  exit(EXIT_FAILURE);
+  //  return yyParticleNames[ID];
 }
 
 
