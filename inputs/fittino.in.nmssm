@@ -19,41 +19,42 @@ alphas                    0.1172     +- 0.002
 
 sin2ThetaW                0.23113    +- 0.00015
 
-massH1                  112.888 GeV  +- 0.05 GeV # +- 0.5 GeV # Degrassi et al
-massH2                  374.465 GeV  +- 1.3  GeV # +- 0.6 GeV # not at LHC
-massA1                  374.228 GeV  +- 1.3  GeV # +- 0.6 GeV # not at LHC
-massA2                  374.228 GeV  +- 1.3  GeV # +- 0.6 GeV # not at LHC
-massHplus               383.131 GeV  +- 1.1  GeV # +- 0.6 GeV # not at LHC
+massH1                  123.516 GeV  +- 0.05 GeV # +- 0.5 GeV # Degrassi et al
+massH2                  292.952 GeV  +- 1.3  GeV # +- 0.6 GeV # not at LHC
+massA1                  333.238 GeV  +- 1.3  GeV # +- 0.6 GeV # not at LHC
+massA2                  4413.07 GeV  +- 1.3  GeV # +- 0.6 GeV # not at LHC
+massHplus               4414.82 GeV  +- 1.1  GeV # +- 0.6 GeV # not at LHC
 
 nofit massSdownR        543.348 GeV +- 23.6  GeV # +-  9.4 GeV 
 nofit massSstrangeR     543.348 GeV +- 23.6  GeV # +-  9.4 GeV 
 nofit massScharmL       561.54  GeV +-  9.8  GeV # +- 10.0 GeV
 nofit massScharmR       543.348 GeV +- 23.6  GeV # +-  9.4 GeV 
 nofit massSupL          561.539 GeV +-  9.8  GeV # +- 10.0 GeV # replaced by edges
-massSupR                543.35  GeV +- 11.0  GeV # +-  9.4 GeV 
-massSbottom1	        502.059 GeV +-  5.7  GeV # +-  5.4 GeV
-massSbottom2	        541.81  GeV +-  6.2  GeV # +-  8.5 GeV
-massStop1               365.819 GeV +-  2.0  GeV # +-  5.4 GeV # not at LHC
+massSupR                799.246  GeV +- 11.0  GeV # +-  9.4 GeV 
+massSbottom1	        795.637 GeV +-  5.7  GeV # +-  5.4 GeV
+massSbottom2	        806.879  GeV +-  6.2  GeV # +-  8.5 GeV
+massStop1               646.076 GeV +-  2.0  GeV # +-  5.4 GeV # not at LHC
 nofit massStop2		600.037 GeV +- 20.0  GeV               # not at LHC
-massSelectronL		190.209 GeV +-  0.2  GeV # +-  0.4 GeV
-massSelectronR		124.883 GeV +-  0.05 GeV # +-  1.2 GeV
-massSnueL		172.947 GeV +-  0.7  GeV               # not at LHC
-massSmuL		190.237 GeV +-  0.5  GeV # +-  0.4 GeV
-massSmuR		124.837 GeV +-  0.2  GeV # +-  1.2 GeV
-massStau1		107.292 GeV +-  0.3  GeV # +-  0.5 GeV
-massStau2		195.290 GeV +-  1.1  GeV # +-  0.5 GeV # not at LHC
-massGluino              603.639 GeV +-  6.4  GeV # +-  1.4 GeV
-massNeutralino1		97.7662 GeV +-  0.05 GeV # +-  0.4 GeV
-massNeutralino2		184.345 GeV +-  0.08 GeV # +-  1.2 GeV
-massNeutralino3	       -404.134 GeV +-  4.0  GeV # +-  1.1 GeV
-massNeutralino4         417.037 GeV +-  2.3  GeV # +-  1.1 GeV
-massChargino1		184.132 GeV +-  0.55 GeV # +-  1.0 GeV
-massChargino2		418.495 GeV +-  3.0  GeV # +-  3.4 GeV
+massSelectronL		240.262 GeV +-  0.2  GeV # +-  0.4 GeV
+massSelectronR		220.247 GeV +-  0.05 GeV # +-  1.2 GeV
+massSnueL		226.683 GeV +-  0.7  GeV               # not at LHC
+massSmuL	        240.285 GeV +-  0.5  GeV # +-  0.4 GeV
+massSmuR	        220.222 GeV +-  0.2  GeV # +-  1.2 GeV
+massStau1		214.568 GeV +-  0.3  GeV # +-  0.5 GeV
+massStau2		245.36 GeV +-  1.1  GeV # +-  0.5 GeV # not at LHC
+massGluino              800 GeV +-  6.4  GeV # +-  1.4 GeV
+massNeutralino1		137.964 GeV +-  0.05 GeV # +-  0.4 GeV
+massNeutralino2		337.361 GeV +-  0.08 GeV # +-  1.2 GeV
+massNeutralino3	        366.822 GeV +-  4.0  GeV # +-  1.1 GeV
+massNeutralino4        -467.869 GeV +-  2.3  GeV # +-  1.1 GeV
+massNeutralino5         498.722 GeV +-  2.3  GeV # +-  1.1 GeV
+massChargino1		139.246 GeV +-  0.55 GeV # +-  1.0 GeV
+massChargino2		473.776 GeV +-  3.0  GeV # +-  3.4 GeV
 
-edge 3 massNeutralino1 massSupL        massNeutralino2              449.679 GeV +- 4.9  GeV alias 1
-edge 3 massSmuR        massSupL        massNeutralino2              390.285 GeV +- 3.35 GeV alias 2
-edge 4 massNeutralino1 massNeutralino2 massSmuR          massSupL   329.831 GeV +- 4.2  GeV alias 3
-edge 5 massNeutralino1 massNeutralino2 massSmuR          massSupL   218.529 GeV +- 3.44 GeV alias 4
+edge 3 massNeutralino1 massSupL        massNeutralino2              660.15 GeV +- 4.9  GeV alias 1
+edge 3 massSmuR        massSupL        massNeutralino2              548.016 GeV +- 3.35 GeV alias 2
+edge 4 massNeutralino1 massNeutralino2 massSmuR          massSupL   563.852 GeV +- 4.2  GeV alias 3
+edge 5 massNeutralino1 massNeutralino2 massSmuR          massSupL   368.849 GeV +- 3.44 GeV alias 4
 		   
 nofit cos2PhiL            0.763 +- 0.0005 # rough estimate
 nofit cos2PhiR            0.94  +- 0.0005 # rough estimate

@@ -346,6 +346,7 @@ void Input::FillNameMap()
   yyParticleIDs["Chargino1"    ] = ID_chip1     ;
   yyParticleIDs["Neutralino3"  ] = ID_chi03     ;
   yyParticleIDs["Neutralino4"  ] = ID_chi04     ;
+  yyParticleIDs["Neutralino5"  ] = ID_chi05     ; // NMSSM
   yyParticleIDs["Chargino2"    ] = ID_chip2     ;
   yyParticleIDs["Gravitino"    ] = ID_gravitino ;
 
