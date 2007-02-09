@@ -138,7 +138,8 @@ int main(int argc, char** argv)
     cout << "constructing fittino" << endl;
     Fittino* fittino = new Fittino(input);
     
-    if (yyFitModel == MSSM || yyFitModel == NMSSM) {
+    //    if ( ( yyFitModel == MSSM || yyFitModel == NMSSM ) && ! yyUseGivenStartValues ) {
+    if ( yyFitModel == MSSM || yyFitModel == NMSSM ) {
       cout << "calculating tree level values" << endl;
       fittino->calculateTreeLevelValues(10000);
     }
