@@ -11,26 +11,64 @@
 # Masses                                                                                #
 #########################################################################################
 
-#nofit cos2PhiL                    0.763     +-  0.0005    # rough estimate
-#nofit cos2PhiR                    0.94      +-  0.0005    # rough estimate
-#nofit massNeutralino1	        137.964 GeV +-  0.05 GeV
-#nofit massNeutralino2	        337.361 GeV +-  0.08 GeV
-#nofit massChargino1		139.246 GeV +-  0.55 GeV
-#nofit massChargino2		473.776 GeV +-  3.0  GeV
-#nofit massGluino                800     GeV +-  6.4  GeV
-#nofit massSelectronL		240.262 GeV +-  0.2  GeV
-#nofit massSmuL	                240.285 GeV +-  0.5  GeV
-#nofit massStau2	  	        245.36  GeV +-  1.1  GeV
-#nofit massSelectronR		220.247 GeV +-  0.05 GeV
-#
-#sin2ThetaW                        0.23113   +- 0.00015
+nofit cos2PhiL                    0.763     +-  0.0005    # rough estimate
+nofit cos2PhiR                    0.94      +-  0.0005    # rough estimate
+nofit massNeutralino1	        137.964 GeV +-  0.05 GeV
+nofit massNeutralino2	        337.361 GeV +-  0.08 GeV
+nofit massChargino1		139.246 GeV +-  0.55 GeV
+nofit massChargino2		473.776 GeV +-  3.0  GeV
+nofit massGluino                800     GeV +-  6.4  GeV
+nofit massSelectronL		240.262 GeV +-  0.2  GeV
+nofit massSmuL	                240.285 GeV +-  0.5  GeV
+nofit massStau2	  	        245.36  GeV +-  1.1  GeV
+nofit massSelectronR		220.247 GeV +-  0.05 GeV
+nofit massSmuR                  220.222 GeV +-  0.2  GeV
+nofit massStau1                 214.568 GeV +-  0.3  GeV
+nofit massSupL                  561.539 GeV +-  9.8  GeV
+nofit massScharmL               561.54  GeV +-  9.8  GeV
+nofit massStop2                 600.037 GeV +- 20.0  GeV
+nofit massSupR                  799.246 GeV +- 11.0  GeV
+nofit massScharmR               543.348 GeV +- 23.6  GeV
+nofit massStop1                 646.076 GeV +-  2.0  GeV
+nofit massSdownR                543.348 GeV +- 23.6  GeV
+nofit massSstrangeR             543.348 GeV +- 23.6  GeV
+nofit massSbottom2              806.879 GeV +-  6.2  GeV
 
-edge 3 massNeutralino1 massNeutralino2 massSelectronR   0 GeV +- 0.03 +- 0.08 GeV alias 1
-edge 3 massNeutralino1 massNeutralino2 massSelectronL   0 GeV +- 0.03 +- 0.08 GeV alias 2
-edge 3 massNeutralino1 massSupL massNeutralino2         0 GeV +- 1.4  +- 2.1  GeV alias 3
-edge 3 massSelectronR massSupL massNeutralino2          0 GeV +- 0.9  +- 1.3  GeV alias 4
-edge 3 massSelectronL massSupL massNeutralino2          0 GeV +- 0.9  +- 1.3  GeV alias 5
+sin2ThetaW                        0.23113    +- 0.00015
+massW                            80.4302 GeV +- 0.039  GeV
+massTop                         172.0    GeV +- 0.05   GeV
+massBottom                        4.2    GeV +- 0.5    GeV
 
+# most important decay modes at LHC:
+# ----------------------------------
+# ~q_R  ->(55 %)  chi_3^0 q  ->(11 %) ~l_R l, ~tau_1 tau ->  chi_1^0 l, chi_1^0 tau
+# ~q_R  ->(42 %)  chi_2^0 q  ->( 7 %) ~l_R l, ~tau_1 tau ->  chi_1^0 l, chi_1^0 tau
+
+# decays involving chi_2^0
+edge 3 massNeutralino1 massNeutralino2 massSelectronR 199.197 GeV +- 0.03 GeV +- 0.08 GeV alias 1
+edge 3 massNeutralino1 massSupR massNeutralino2       661.198  GeV +- 1.4  GeV +- 2.1  GeV alias 2
+edge 3 massSelectronR massSupR massNeutralino2        548.84  GeV +- 0.9  GeV +- 1.3  GeV alias 3
+edge 4 massNeutralino1 massNeutralino2 massSelectronR massSupR 564.789  GeV +- 0.9  GeV +- 1.3  GeV alias 4
+edge 5 massNeutralino1 massNeutralino2 massSelectronR massSupR 369.345  GeV +- 0.9  GeV +- 1.3  GeV alias 5
+edge 3 massNeutralino1 massNeutralino2 massStau1      199.383 GeV +- 0.03 GeV +- 0.08 GeV alias 6
+
+# decays involving chi_3^0
+edge 3 massNeutralino1 massNeutralino3 massSelectronR 228.659 GeV +- 0.03 GeV +- 0.08 GeV alias 7
+edge 3 massNeutralino1 massSupR massNeutralino3       657.957 GeV +- 1.4  GeV +- 2.1  GeV alias 8
+edge 3 massSelectronR massSupR massNeutralino3        567.852 GeV +- 0.9  GeV +- 1.3  GeV alias 9
+edge 4 massNeutralino1 massNeutralino3 massSelectronR massSupR 553.517  GeV +- 0.9  GeV +- 1.3  GeV alias 10
+edge 5 massNeutralino1 massNeutralino3 massSelectronR massSupR 382.702  GeV +- 0.9  GeV +- 1.3  GeV alias 11
+edge 3 massNeutralino1 massNeutralino3 massStau1      227.865 GeV +- 0.03 GeV +- 0.08 GeV alias 12
+
+# chi_5^0 (is edge really measurable?)
+edge 3 massNeutralino1 massNeutralino5 massSelectronR 348.789 GeV +- 0.03 GeV +- 0.08 GeV alias 13
+
+massH1                  123.353 GeV  +- 0.5 GeV 
+
+BR ( Neutralino2 -> SelectronR~ Electron )                   alias 1
+BR ( Neutralino2 -> Stau1~ Tau )                             alias 2
+
+brratio ( br_1 br_2 )      0.990309 +- 0.1    alias 1
 
 #massW                    80.4294 GeV +- 0.039  GeV
 #massZ                    91.187 GeV +- 0.0021 GeV
