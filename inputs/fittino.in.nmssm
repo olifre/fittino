@@ -13,15 +13,15 @@
 
 nofit cos2PhiL                    0.763     +-  0.0005    # rough estimate
 nofit cos2PhiR                    0.94      +-  0.0005    # rough estimate
-nofit massNeutralino1	        137.964 GeV +-  0.05 GeV
-nofit massNeutralino2	        337.361 GeV +-  0.08 GeV
-nofit massChargino1		139.246 GeV +-  0.55 GeV
-nofit massChargino2		473.776 GeV +-  3.0  GeV
+#nofit massNeutralino1	        137.964 GeV +-  0.05 GeV
+#nofit massNeutralino2	        337.361 GeV +-  0.08 GeV
+#nofit massChargino1		139.246 GeV +-  0.55 GeV
+#nofit massChargino2		473.776 GeV +-  3.0  GeV
 nofit massGluino                800     GeV +-  6.4  GeV
-nofit massSelectronL		240.262 GeV +-  0.2  GeV
+#nofit massSelectronL		240.262 GeV +-  0.2  GeV
 nofit massSmuL	                240.285 GeV +-  0.5  GeV
 nofit massStau2	  	        245.36  GeV +-  1.1  GeV
-nofit massSelectronR		220.247 GeV +-  0.05 GeV
+#nofit massSelectronR		220.247 GeV +-  0.05 GeV
 nofit massSmuR                  220.222 GeV +-  0.2  GeV
 nofit massStau1                 214.568 GeV +-  0.3  GeV
 nofit massSupL                  561.539 GeV +-  9.8  GeV
@@ -44,31 +44,75 @@ massBottom                        4.2    GeV +- 0.5    GeV
 # ~q_R  ->(55 %)  chi_3^0 q  ->(11 %) ~l_R l, ~tau_1 tau ->  chi_1^0 l, chi_1^0 tau
 # ~q_R  ->(42 %)  chi_2^0 q  ->( 7 %) ~l_R l, ~tau_1 tau ->  chi_1^0 l, chi_1^0 tau
 
-# decays involving chi_2^0
-edge 3 massNeutralino1 massNeutralino2 massSelectronR 199.197 GeV +- 0.03 GeV +- 0.08 GeV alias 1
-edge 3 massNeutralino1 massSupR massNeutralino2       661.198  GeV +- 1.4  GeV +- 2.1  GeV alias 2
-edge 3 massSelectronR massSupR massNeutralino2        548.84  GeV +- 0.9  GeV +- 1.3  GeV alias 3
-edge 4 massNeutralino1 massNeutralino2 massSelectronR massSupR 564.789  GeV +- 0.9  GeV +- 1.3  GeV alias 4
-edge 5 massNeutralino1 massNeutralino2 massSelectronR massSupR 369.345  GeV +- 0.9  GeV +- 1.3  GeV alias 5
-edge 3 massNeutralino1 massNeutralino2 massStau1      199.383 GeV +- 0.03 GeV +- 0.08 GeV alias 6
+# inputs need more detailed study
+## decays involving chi_2^0
+#edge 3 massNeutralino1 massNeutralino2 massSelectronR 199.197 GeV +- 0.03 GeV +- 0.08 GeV alias 1
+#edge 3 massNeutralino1 massSupR massNeutralino2       661.198  GeV +- 1.4  GeV +- 2.1  GeV alias 2
+#edge 3 massSelectronR massSupR massNeutralino2        548.84  GeV +- 0.9  GeV +- 1.3  GeV alias 3
+#edge 4 massNeutralino1 massNeutralino2 massSelectronR massSupR 564.789  GeV +- 0.9  GeV +- 1.3  GeV alias 4
+#edge 5 massNeutralino1 massNeutralino2 massSelectronR massSupR 369.345  GeV +- 0.9  GeV +- 1.3  GeV alias 5
+#edge 3 massNeutralino1 massNeutralino2 massStau1      199.383 GeV +- 0.03 GeV +- 0.08 GeV alias 6
+#
+## decays involving chi_3^0
+#edge 3 massNeutralino1 massNeutralino3 massSelectronR 228.659 GeV +- 0.03 GeV +- 0.08 GeV alias 7
+#edge 3 massNeutralino1 massSupR massNeutralino3       657.957 GeV +- 1.4  GeV +- 2.1  GeV alias 8
+#edge 3 massSelectronR massSupR massNeutralino3        567.852 GeV +- 0.9  GeV +- 1.3  GeV alias 9
+#edge 4 massNeutralino1 massNeutralino3 massSelectronR massSupR 553.517  GeV +- 0.9  GeV +- 1.3  GeV alias 10
+#edge 5 massNeutralino1 massNeutralino3 massSelectronR massSupR 382.702  GeV +- 0.9  GeV +- 1.3  GeV alias 11
+#edge 3 massNeutralino1 massNeutralino3 massStau1      227.865 GeV +- 0.03 GeV +- 0.08 GeV alias 12
+#
+## chi_5^0 (is edge really measurable?)
+#edge 3 massNeutralino1 massNeutralino5 massSelectronR 348.789 GeV +- 0.03 GeV +- 0.08 GeV alias 13
+#
+#massH1                  123.353 GeV  +- 0.5 GeV 
+#
+#BR ( Neutralino2 -> SelectronR~ Electron )                   alias 1
+#BR ( Neutralino2 -> Stau1~ Tau )                             alias 2
+#
+#brratio ( br_1 br_2 )      0.990309 +- 0.1    alias 1
 
-# decays involving chi_3^0
-edge 3 massNeutralino1 massNeutralino3 massSelectronR 228.659 GeV +- 0.03 GeV +- 0.08 GeV alias 7
-edge 3 massNeutralino1 massSupR massNeutralino3       657.957 GeV +- 1.4  GeV +- 2.1  GeV alias 8
-edge 3 massSelectronR massSupR massNeutralino3        567.852 GeV +- 0.9  GeV +- 1.3  GeV alias 9
-edge 4 massNeutralino1 massNeutralino3 massSelectronR massSupR 553.517  GeV +- 0.9  GeV +- 1.3  GeV alias 10
-edge 5 massNeutralino1 massNeutralino3 massSelectronR massSupR 382.702  GeV +- 0.9  GeV +- 1.3  GeV alias 11
-edge 3 massNeutralino1 massNeutralino3 massStau1      227.865 GeV +- 0.03 GeV +- 0.08 GeV alias 12
+###########################################################################################
 
-# chi_5^0 (is edge really measurable?)
-edge 3 massNeutralino1 massNeutralino5 massSelectronR 348.789 GeV +- 0.03 GeV +- 0.08 GeV alias 13
+# inputs from hep-ph/0502036
 
-massH1                  123.353 GeV  +- 0.5 GeV 
+massChargino1		139.246 GeV +-  2.8  GeV
+massChargino2		473.776 GeV +-  7.0  GeV
+massNeutralino1		137.964 GeV +-  2.8  GeV
+massNeutralino2		337.361 GeV +-  5.1  GeV
+massNeutralino3		366.822 GeV +-  7.0  GeV
+massNeutralino4        -467.869 GeV +-  7.0  GeV
+massSnueL		226.683 GeV +-  3.4  GeV
+massSelectronL		240.262 GeV +-  3.6  GeV
+massSelectronR		220.247 GeV +-  3.3  GeV
 
-BR ( Neutralino2 -> SelectronR~ Electron )                   alias 1
-BR ( Neutralino2 -> Stau1~ Tau )                             alias 2
+# 400 GeV
+sigma ( ee -> Chargino1 Chargino1~, 400 GeV,  0.0,  0.0 )   344.412  fb +-  33.5 fb alias 1
+sigma ( ee -> Chargino1 Chargino1~, 400 GeV, -0.9,  0.6 )  1046.04   fb +- 101.6 fb alias 2
+sigma ( ee -> Chargino1 Chargino1~, 400 GeV,  0.9, -0.6 )    14.7513 fb +-   1.6 fb alias 3
 
-brratio ( br_1 br_2 )      0.990309 +- 0.1    alias 1
+# 500 GeV
+sigma ( ee -> Chargino1 Chargino1~, 500 GeV,  0.0,  0.0 )   315.587  fb +-  16.5 fb alias 4
+sigma ( ee -> Chargino1 Chargino1~, 500 GeV, -0.9,  0.6 )   959.078  fb +-  50.1 fb alias 5
+sigma ( ee -> Chargino1 Chargino1~, 500 GeV,  0.9, -0.6 )    12.9296 fb +-   1.2 fb alias 6
+
+sigma ( ee -> Neutralino1 Neutralino2, 500 GeV,  0.0,  0.0 )  3.09435 fb +- 1.2 fb alias 7
+sigma ( ee -> Neutralino1 Neutralino2, 500 GeV, -0.9,  0.6 )  9.40078 fb +- 3.8 fb alias 8
+sigma ( ee -> Neutralino1 Neutralino2, 500 GeV,  0.9, -0.6 )  0.12981 fb +- 0.1 fb alias 9
+
+# 650 GeV
+sigma ( ee -> Chargino1~ Chargino2, 650 GeV,  0.0,  0.0 )     2.07872 fb +- 0.3 fb alias 10
+sigma ( ee -> Chargino1~ Chargino2, 650 GeV, -0.9,  0.6 )     5.00174 fb +- 0.4 fb alias 11
+sigma ( ee -> Chargino1~ Chargino2, 650 GeV,  0.9, -0.6 )     1.40072 fb +- 0.2 fb alias 12
+
+sigma ( ee -> Neutralino1 Neutralino3, 650 GeV,  0.0,  0.0 )  11.7461 fb +- 0.6 fb alias 13
+sigma ( ee -> Neutralino1 Neutralino3, 650 GeV, -0.9,  0.6 )  35.6230 fb +- 1.1 fb alias 14
+sigma ( ee -> Neutralino1 Neutralino3, 650 GeV,  0.9, -0.6 )   0.5548 fb +- 0.1 fb alias 15
+
+sigma ( ee -> Neutralino1 Neutralino4, 650 GeV,  0.0,  0.0 )   4.8336 fb +- 0.4 fb alias 16
+sigma ( ee -> Neutralino1 Neutralino4, 650 GeV, -0.9,  0.6 )  12.8606 fb +- 0.7 fb alias 17
+sigma ( ee -> Neutralino1 Neutralino4, 650 GeV,  0.9, -0.6 )   2.0270 fb +- 0.3 fb alias 18
+
+
 
 #massW                    80.4294 GeV +- 0.039  GeV
 #massZ                    91.187 GeV +- 0.0021 GeV
@@ -477,7 +521,7 @@ universality MSupL MScharmL
 LoopCorrections       on
 ISR                   on			       
 				
-Verbose               on
+Verbose               off
 
 PerformFit            on
 PerformSingleFits     off
@@ -492,7 +536,7 @@ XScanRange            -6000. GeV  -300. GeV
 ScanX                 off
 
 ScanParameters        off
-CalcPullDist          off
+CalcPullDist          on
 
 UseSimAnnBefore       off
 UseSimAnnWhile        off
@@ -500,7 +544,8 @@ TempRedSimAnn         0.6
 MaxCallsSimAnn        450000
 InitTempSimAnn        10000
 
-Calculator            SPHENO  ../theorycodes/SPheno3.0.beta/SPheno3
+#Calculator            SPHENO  ../theorycodes/SPheno3.0.beta/SPheno3
+Calculator            SPHENO   ./SPheno3
 
 UseMinos              off
 UseHesse              off
