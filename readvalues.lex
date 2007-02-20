@@ -6,6 +6,7 @@
 void yyerror(char*);
 extern int yyParseError;
 extern int yyNaN;
+extern int yyInfinity;
 extern int yyInputFileLineNo;
 %}
 
@@ -166,7 +167,7 @@ Q[ \t]*=                  {
                               return T_ERRORSIGN;
                           }
 
-{NUMBER}|"++++++++++++++++"|"????????????????"|"NaN" { /* Number, SPheno junk or NaN */
+{NUMBER}|"++++++++++++++++"|"????????????????"|"NaN"|"+Inf"|"-Inf" { /* Number, SPheno junk, NaN or infinity */
                               BEGIN(INITIAL);
                               if (!strcmp(yytext, "++++++++++++++++") ||
 				  !strcmp(yytext, "????????????????")) {
@@ -175,6 +176,11 @@ Q[ \t]*=                  {
 			      }
 			      else if (!strcmp(yytext, "NaN")) {
 				  yyNaN = 1;
+                                  yylval.real = 0;
+			      }
+			      else if (!strcmp(yytext, "+Inf") ||
+				       !strcmp(yytext, "-Inf")) {
+				  yyInfinity = 1;
                                   yylval.real = 0;
 			      }
                               else yylval.real = atof(yytext);

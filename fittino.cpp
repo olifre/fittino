@@ -2800,6 +2800,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
   yyCalculatorError = false;
   yyParseError      = 0;
   yyNaN             = 0;
+  yyInfinity        = 0;
 
   for (unsigned int i = 0; i < yyMeasuredVec.size(); i++) {
     yyMeasuredVec[i].theoset = false;
@@ -2872,6 +2873,12 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
   }
   if (yyNaN) {
     cerr << "Exiting fitterFCN because of NaN in Les Houches ouput file" << endl;
+    f = 111111111111.;
+    cout << " f = " << f << endl;
+    return;
+  }
+  if (yyInfinity) {
+    cerr << "Exiting fitterFCN because of infinity in Les Houches ouput file" << endl;
     f = 111111111111.;
     cout << " f = " << f << endl;
     return;

@@ -151,6 +151,7 @@ map<string,int> yyParticleIDs;
 
 int           yyParseError = 0;
 int           yyNaN = 0;
+int           yyInfinity = 0;
 unsigned int  yyNumberOfMinimizations = 1;
 double        yyErrDef = 1.;
 int           yyMaxCallsSimAnn = 300000;

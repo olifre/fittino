@@ -89,6 +89,7 @@ extern vector<ScanParameter> yyScanPar;
 extern string yyCalculatorPath;
 extern int    yyParseError;
 extern int    yyNaN;
+extern int    yyInfinity;
 extern double        yyErrDef;
 extern int           yyNumberPulls;
 extern int           yyMaxCallsSimAnn;
