@@ -5,6 +5,7 @@
 #include <y.tab.h>
 void yyerror(char*);
 extern int yyParseError;
+extern int yyNaN;
 extern int yyInputFileLineNo;
 %}
 
@@ -165,11 +166,15 @@ Q[ \t]*=                  {
                               return T_ERRORSIGN;
                           }
 
-{NUMBER}|"++++++++++++++++"|"????????????????" { /* Number or SPheno junk */
+{NUMBER}|"++++++++++++++++"|"????????????????"|"NaN" { /* Number, SPheno junk or NaN */
                               BEGIN(INITIAL);
                               if (!strcmp(yytext, "++++++++++++++++") ||
 				  !strcmp(yytext, "????????????????")) {
 				  yyParseError = 1;
+                                  yylval.real = 0;
+			      }
+			      else if (!strcmp(yytext, "NaN")) {
+				  yyNaN = 1;
                                   yylval.real = 0;
 			      }
                               else yylval.real = atof(yytext);

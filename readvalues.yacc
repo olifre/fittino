@@ -150,6 +150,7 @@ map<int,string> yyParticleNames;
 map<string,int> yyParticleIDs;
 
 int           yyParseError = 0;
+int           yyNaN = 0;
 unsigned int  yyNumberOfMinimizations = 1;
 double        yyErrDef = 1.;
 int           yyMaxCallsSimAnn = 300000;
@@ -2432,4 +2433,3 @@ void yyerror(char* s) {
     fprintf(stderr, "Error while reading input file: %s\n", s);
     exit(EXIT_FAILURE);
 }
-
