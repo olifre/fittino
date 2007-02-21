@@ -967,14 +967,14 @@ void Fittino::calculateTreeLevelValues(int nthrows)
     if (yyFitModel == NMSSM) {
       fNmssmLambda.name  = "lambda";
       fNmssmLambda.value = 0;
-      fNmssmLambda.error = 1;
+      fNmssmLambda.error = 0.1;
       if (yyUseGivenStartValues && (FindInFittedPar("lambda") >= 0)) fNmssmLambda.value = yyFittedPar[FindInFittedPar("lambda")].value ;
       fNmssmLambda.bound_low = -10000.;
       fNmssmLambda.bound_up = 10000.;
 
       fKappa.name  = "kappa";
       fKappa.value = 0;
-      fKappa.error = 1;
+      fKappa.error = 0.1;
       if (yyUseGivenStartValues && (FindInFittedPar("kappa") >= 0)) fKappa.value = yyFittedPar[FindInFittedPar("kappa")].value ;
       fKappa.bound_low = -10000.;
       fKappa.bound_up = 10000.;
