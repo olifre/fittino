@@ -550,5 +550,7 @@ Calculator            SPHENO   ./SPheno3
 UseMinos              off
 UseHesse              off
 
+NumberPulls           1
+
 NumberOfMinimizations 1
 ErrDef                1.
