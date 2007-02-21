@@ -41,7 +41,7 @@ Double_t chi2Function(Double_t *x, Double_t *par)
 
 
 void DrawParDists(const Int_t nbins = 50, const char* filename = "TreeSum.root",
-		  const char* treename = "tree")
+		  const char* treename = "tree", const Double_t chi2cut = -1)
 {
     TFile* file = new TFile(filename, "read");
     TTree* tree = (TTree*)file->Get(treename);
@@ -49,6 +49,8 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "TreeSum.root",
     Int_t nEntries = tree->GetEntries();
 
     Int_t nLeaves = tree->GetListOfLeaves()->GetEntriesFast();
+
+    Int_t iChi2Leaf = -1; // leaf index of chi2 leaf
 
     Double_t* par   = new Double_t[nLeaves];
     Double_t* sum   = new Double_t[nLeaves];
@@ -78,6 +80,7 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "TreeSum.root",
 	histo[iLeaf]->SetOption("marker");
 	if (!strcmp(leaf->GetName(), "TanBeta")) strcpy(xtitle, "tan #beta");
 	else if (!strcmp(leaf->GetName(), "Mu")) strcpy(xtitle, "#mu (GeV)");
+	else if (!strcmp(leaf->GetName(), "MuEff")) strcpy(xtitle, "#mu_{eff} (GeV)");
 	else if (!strcmp(leaf->GetName(), "Xtau")) strcpy(xtitle, "X_{#tau} (GeV)");
 	else if (!strcmp(leaf->GetName(), "MSelectronR")) strcpy(xtitle, "M_{#tilde{e}_{R}} (GeV)");
 	else if (!strcmp(leaf->GetName(), "MStauR")) strcpy(xtitle, "M_{#tilde{#tau}_{R}} (GeV)");
@@ -96,6 +99,10 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "TreeSum.root",
 	else if (!strcmp(leaf->GetName(), "M3")) strcpy(xtitle, "M_{3} (GeV)");
 	else if (!strcmp(leaf->GetName(), "massA0")) strcpy(xtitle, "m_{A} (GeV)");
 	else if (!strcmp(leaf->GetName(), "massTop")) strcpy(xtitle, "m_{t} (GeV)");
+	else if (!strcmp(leaf->GetName(), "lambda")) strcpy(xtitle, "#lambda");
+	else if (!strcmp(leaf->GetName(), "kappa")) strcpy(xtitle, "#kappa");
+	else if (!strcmp(leaf->GetName(), "ALambda")) strcpy(xtitle, "A_{#lambda} (GeV)");
+	else if (!strcmp(leaf->GetName(), "AKappa")) strcpy(xtitle, "A_{#kappa} (GeV)");
 	else if (!strcmp(leaf->GetName(), "Chi2")) strcpy(xtitle, "#chi^{2}");
 	else strcpy(xtitle, leaf->GetName());
 	histo[iLeaf]->SetXTitle(xtitle);
@@ -122,19 +129,33 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "TreeSum.root",
 	    chi2->SetParameter(0, 0.1 * histo[iLeaf]->Integral());
 	    chi2->SetParameter(1, 10);
 	    chi2->SetLineColor(kRed);
+
+	    iChi2Leaf = iLeaf;
 	}
+    }
+
+    if (!(chi2cut < 0) && iChi2Leaf < 0) {
+        printf("Cannot apply chi2 cut because tree does not contain Chi2 leaf\n");
+	return;
     }
 
     for (Int_t i=0; i<nEntries; i++) {
         tree->GetEntry(i);
 
+	Double_t chi2val = -1; 
+	if (!(iChi2Leaf < 0)) {
+	    chi2val = par[iChi2Leaf];
+	}
+
 	for (Int_t iLeaf=0; iLeaf<nLeaves; iLeaf++) {
             TLeafD* leaf = (TLeafD*)tree->GetListOfLeaves()->At(iLeaf);
 
-	    histo[iLeaf]->Fill(par[iLeaf]);
+	    if (chi2cut < 0 || ( !(chi2cut < 0) && chi2val < chi2cut ) ) {
+	        histo[iLeaf]->Fill(par[iLeaf]);
 
-	    sum[iLeaf]  += par[iLeaf];
-	    sum2[iLeaf] += par[iLeaf] * par[iLeaf];
+		sum[iLeaf]  += par[iLeaf];
+		sum2[iLeaf] += par[iLeaf] * par[iLeaf];
+	    }
 	}
 
     }
@@ -146,9 +167,13 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "TreeSum.root",
 
         TLeafD* leaf = (TLeafD*)tree->GetListOfLeaves()->At(iLeaf);
 
-	if (!strcmp(leaf->GetName(), "Chi2")) histo[iLeaf]->Fit(chi2, "r");
+	if (!strcmp(leaf->GetName(), "Chi2")) {
+	    histo[iLeaf]->Fit(chi2, "r");
+	    histo[iLeaf]->Draw("ep");
+	}
 	else {
 	    histo[iLeaf]->Fit(gauss[iLeaf], "r");
+	    histo[iLeaf]->Draw("ep");
 	    Double_t rms = TMath::Sqrt((sum2[iLeaf] - sum[iLeaf] * sum[iLeaf] 
                            / nEntries ) / nEntries);
 	    Double_t sigma = gauss[iLeaf]->GetParameter(2);

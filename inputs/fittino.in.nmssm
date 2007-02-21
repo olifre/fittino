@@ -46,32 +46,32 @@ massBottom                        4.2    GeV +- 0.5    GeV
 
 # inputs need more detailed study
 # decays involving chi_2^0
-edge 3 massNeutralino1 massNeutralino2 massSelectronR 199.197 GeV +- 0.05 GeV +- 0.1 GeV alias 1
-edge 3 massNeutralino1 massSupR massNeutralino2       661.198  GeV +- 2  GeV +- 2  GeV alias 2
-edge 3 massSelectronR massSupR massNeutralino2        548.84  GeV +- 1  GeV +- 2  GeV alias 3
-edge 4 massNeutralino1 massNeutralino2 massSelectronR massSupR 564.789  GeV +- 1.0  GeV +- 2  GeV alias 4
-edge 5 massNeutralino1 massNeutralino2 massSelectronR massSupR 369.345  GeV +- 2  GeV +- 2  GeV alias 5
-edge 3 massNeutralino1 massNeutralino2 massStau1      199.383 GeV +- 10 GeV +- 5 GeV alias 6
-
-# decays involving chi_3^0
-edge 3 massNeutralino1 massNeutralino3 massSelectronR 228.659 GeV +- 0.05 GeV +- 0.1 GeV alias 7
-edge 3 massNeutralino1 massSupR massNeutralino3       657.957 GeV +- 2  GeV +- 2  GeV alias 8
-edge 3 massSelectronR massSupR massNeutralino3        567.852 GeV +- 1  GeV +- 2  GeV alias 9
-edge 4 massNeutralino1 massNeutralino3 massSelectronR massSupR 553.517  GeV +- 1  GeV +- 2  GeV alias 10
-edge 5 massNeutralino1 massNeutralino3 massSelectronR massSupR 382.702  GeV +- 2  GeV +- 2  GeV alias 11
-edge 3 massNeutralino1 massNeutralino3 massStau1      227.865 GeV +- 10 GeV +- 5 GeV alias 12
-
-# chi_5^0 (is edge really measurable?)
-edge 3 massNeutralino1 massNeutralino5 massSelectronR 348.789 GeV +- 0.03 GeV +- 0.08 GeV alias 13
-
-massH1                  123.353 GeV +- 1.0 GeV 
-massH2                  292.952 GeV +- 5.0 GeV
-massA1                  333.238 GeV +- 5.0 GeV
-
-BR ( Neutralino2 -> SelectronR~ Electron )                   alias 1
-BR ( Neutralino2 -> Stau1~ Tau )                             alias 2
-
-brratio ( br_1 br_2 )      0.990309 +- 0.1    alias 1
+#edge 3 massNeutralino1 massNeutralino2 massSelectronR 199.197 GeV +- 0.05 GeV +- 0.1 GeV alias 1
+#edge 3 massNeutralino1 massSupR massNeutralino2       661.198  GeV +- 2  GeV +- 2  GeV alias 2
+#edge 3 massSelectronR massSupR massNeutralino2        548.84  GeV +- 1  GeV +- 2  GeV alias 3
+#edge 4 massNeutralino1 massNeutralino2 massSelectronR massSupR 564.789  GeV +- 1.0  GeV +- 2  GeV alias 4
+#edge 5 massNeutralino1 massNeutralino2 massSelectronR massSupR 369.345  GeV +- 2  GeV +- 2  GeV alias 5
+#edge 3 massNeutralino1 massNeutralino2 massStau1      199.383 GeV +- 10 GeV +- 5 GeV alias 6
+#
+## decays involving chi_3^0
+#edge 3 massNeutralino1 massNeutralino3 massSelectronR 228.659 GeV +- 0.05 GeV +- 0.1 GeV alias 7
+#edge 3 massNeutralino1 massSupR massNeutralino3       657.957 GeV +- 2  GeV +- 2  GeV alias 8
+#edge 3 massSelectronR massSupR massNeutralino3        567.852 GeV +- 1  GeV +- 2  GeV alias 9
+#edge 4 massNeutralino1 massNeutralino3 massSelectronR massSupR 553.517  GeV +- 1  GeV +- 2  GeV alias 10
+#edge 5 massNeutralino1 massNeutralino3 massSelectronR massSupR 382.702  GeV +- 2  GeV +- 2  GeV alias 11
+#edge 3 massNeutralino1 massNeutralino3 massStau1      227.865 GeV +- 10 GeV +- 5 GeV alias 12
+#
+## chi_5^0 (is edge really measurable?)
+#edge 3 massNeutralino1 massNeutralino5 massSelectronR 348.789 GeV +- 0.03 GeV +- 0.08 GeV alias 13
+#
+#massH1                  123.353 GeV +- 1.0 GeV 
+#massH2                  292.952 GeV +- 5.0 GeV
+#massA1                  333.238 GeV +- 5.0 GeV
+#
+#BR ( Neutralino2 -> SelectronR~ Electron )                   alias 1
+#BR ( Neutralino2 -> Stau1~ Tau )                             alias 2
+#
+#brratio ( br_1 br_2 )      0.990309 +- 0.1    alias 1
 
 ###########################################################################################
 
@@ -487,12 +487,12 @@ sigma ( ee -> Neutralino1 Neutralino4, 650 GeV,  0.9, -0.6 )   2.0270 fb +- 0.3 
 
 fitModel      NMSSM
 
-fixParameter  TanBeta       10.0
+fitParameter  TanBeta       10.0
 fixParameter  Mu            0 GeV
 fixParameter  Xtau          1500     GeV
-fixParameter  MSelectronR   2.16100000E+02 GeV
+fitParameter  MSelectronR   2.16100000E+02 GeV
 fixParameter  MStauR        2.16100000E+02 GeV
-fixParameter  MSelectronL   2.35500000E+02 GeV
+fitParameter  MSelectronL   2.35500000E+02 GeV
 fixParameter  MStauL        2.35500000E+02 GeV
 fixParameter  Xtop          1.50000000E+03 GeV
 fixParameter  Xbottom       1.50000000E+03 GeV
@@ -501,8 +501,8 @@ fixParameter  MSbottomR     8.00000000E+02 GeV
 fixParameter  MStopR        8.00000000E+02 GeV
 fixParameter  MSupL         8.00000000E+02 GeV
 fixParameter  MStopL        8.00000000E+02 GeV
-fixParameter  M1            3.60000000E+02 GeV
-fixParameter  M2            1.47000000E+02 GeV
+fitParameter  M1            3.60000000E+02 GeV
+fitParameter  M2            1.47000000E+02 GeV
 fixParameter  M3            8.00000000E+02 GeV
 #fitParameter  massA0        GeV
 
@@ -515,8 +515,8 @@ fitParameter  MuEff         4.57500000E+02 GeV
 fixParameter  massBottom    4.2000e+00     GeV
 fixParameter  massCharm     1.2e+00        GeV
 
-#universality MSelectronR MSmuR
-#universality MSelectronL MSmuL
+universality MSelectronR MSmuR
+universality MSelectronL MSmuL
 #universality MSupR MScharmR MSdownR MSstrangeR
 #universality MSupL MScharmL
 
