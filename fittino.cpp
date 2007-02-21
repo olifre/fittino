@@ -3940,7 +3940,6 @@ void WriteLesHouches(double* x)
       exit (EXIT_FAILURE);
     }
 
-
     if (FindInFixed("MSmuL")) {
       LesHouchesOutfile << "   32  "<< ReturnFixedValue("MSmuL")->value <<" # MSmuL (fixed)"<< endl;
     }    
