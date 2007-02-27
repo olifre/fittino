@@ -25,6 +25,8 @@ KET              ")"
 COMMA            ","
 WHITESPACE       [ \t]+
 PATH             ["./""/""~"][a-zA-Z0-9"+""-""~"".""_""/"]*
+ERRORSIGN        ("+-"|"-+")({BRA}{WORD}{KET})?
+
 
 %%
 {COMMENT}                 {
@@ -163,7 +165,7 @@ Q[ \t]*=                  {
                               }
                           }
  
-"+-"|"-+"                 {
+{ERRORSIGN}               {
                               return T_ERRORSIGN;
                           }
 

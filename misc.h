@@ -28,6 +28,7 @@
 //#include <stream.h>
 #include <vector>
 #include <map>
+#include <utility>
 #include <TVectorD.h>
 #include <TMatrixD.h>
 #include <TMatrixDSym.h>
@@ -141,7 +142,9 @@ extern vector<doubleVec_t> CrossSectionProduction;
 
 struct MeasuredValue {
   double          value;
-  double          error;
+  double          error;  // total error (added in quadrature)
+  double          staterr; // statistical error
+  vector< pair<int, double> > correrr; // 100 % correlated errors
   double          theovalue;
   bool            theoset;
   bool            first;

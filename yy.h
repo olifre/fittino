@@ -86,6 +86,8 @@ extern vector <parameter_t> yyFixedPar;
 extern vector <parameter_t> yyFittedPar;
 extern vector<ScanParameter> yyScanPar;
 
+extern vector<parameter_t> yyCorrelatedErr;
+
 extern string yyCalculatorPath;
 extern int    yyParseError;
 extern int    yyNaN;

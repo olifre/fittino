@@ -107,6 +107,8 @@ vector<MeasuredValue> yyFixedVec;  // contains mu, M1, M2 ...
 CorrelationMatrix     yyMeasuredCorrelationMatrix(&yyMeasuredVec);
 CorrelationMatrix     yyFittedCorrelationMatrix(&yyFittedVec);
 
+vector<parameter_t>   yyCorrelatedErr; // 100 % correlated errors
+
 vector <parameter_t> yyFixedPar;
 vector <parameter_t> yyFittedPar;
 vector<ScanParameter> yyScanPar; // contains parameters to scan
