@@ -98,6 +98,7 @@ int checkcall(char programpath[1024], unsigned int runtime);
 void WriteLesHouches(double* x);
 void fitterFCN(int &npar, double *gin, double &f, double *x, int iflag); 
 void chi2Function(int& npar, double* gin, double& f, double* x, int iflag);
+double hamiltonian(int n, double* q, double* p);
 MeasuredValue* ReturnMeasuredValue (string name);
 MeasuredValue* ReturnFittedValue (string name);
 MeasuredValue* ReturnFixedValue (string name);
@@ -2773,6 +2774,28 @@ void Fittino::writeResults(const char* filename)
     cout << "closing output file" << endl;
     fclose(file);
 }
+
+
+// hamiltonian
+//
+// calculates hamiltonian for hybrid MC method
+//
+// P. Wienemann, March 30, 2007
+double hamiltonian(int n, double* q, double* p)
+{
+  int dummyint = 1;
+  double dummyfloat = 5;
+  double chi2;
+  fitterFCN(dummyint, &dummyfloat, chi2, q, 0);
+
+  double p2 = 0;
+  for (int i = 0; i < n; i++) {
+    p2 += p[i] * p[i];
+  }
+
+  return 0.5 * p2 + TMath::Exp(- 0.5 * chi2);
+}
+
 
 
 // ************************************************************
@@ -5956,6 +5979,44 @@ double give_xs (doubleVec_t initial, int channel, int element )
     return 0.;
   }
  
+}
+
+
+// Fittino::hybridMonteCarlo
+//
+// Scan parameter space using hybrid monte carlo
+//
+// P. Wienemann, March 30, 2007
+void Fittino::hybridMonteCarlo()
+{
+  const int ncycles = 10000;
+
+  double* q0 = new double[yyFittedVec.size()];
+  double* p0 = new double[yyFittedVec.size()];
+  double* q1 = new double[yyFittedVec.size()];
+  double* p1 = new double[yyFittedVec.size()];
+  // fill vector of parameters
+  for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+    q0[i] = yyFittedVec[i].value;
+  }
+
+  for (int cycle = 0; cycle < ncycles; cycle++) {
+    for (int i=0; i < yyFittedVec.size(); i++ ) {
+      p0[i] = gRandom->Gaus(0, 1);
+    }
+    double H0 = hamiltonian(yyFittedVec.size(), q0, p0);
+
+    // integrate Hamilton equations here using leapfrog algorithm
+
+    double H1 = hamiltonian(yyFittedVec.size(), q1, p1);
+
+    double acceptprob = TMath::Min( 1., TMath::Exp( H0 - H1 ) );
+  }
+
+  delete[] q0;
+  delete[] p0;
+  delete[] q1;
+  delete[] p1;
 }
 
 
