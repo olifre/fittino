@@ -53,6 +53,8 @@ Input::Input(const char* inputfile)
     exit(EXIT_FAILURE);
   }
 
+  yyInputFileLineNo = 1;
+
   /* check whether defaults are given */
   CheckDefault("massZ"  , ID_Z  ,  91.1876 , 0.0021  );
   CheckDefault("massW"  , ID_W  ,  80.423  , 0.039   );

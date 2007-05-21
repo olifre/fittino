@@ -5502,7 +5502,7 @@ int   ReadLesHouches()
   unsigned int found_prod;
   // first parse the LesHouches outfile and load predictions to maps
   if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
-    cout << "parsing the les houches file" << endl;
+    cout << "parsing the les houches file " << endl;
   }
   int rc = ParseLesHouches();
   if (yyCalculatorError) {
@@ -5934,6 +5934,8 @@ int   ParseLesHouches()
       cerr<<"Only SPHENO is implemented"<<endl;
       exit(EXIT_FAILURE);
     }
+
+    yyInputFileLineNo = 1;
 
     cout<<counter<<" ###########################################################"<<endl;
 

@@ -2002,6 +2002,10 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 		    // cout << "reading SPhenoINFO " << endl;
 		  }
 //========================================================================
+                  else if (!strcmp($2, "alpha")) {
+		      cout << "ignoring block alpha" << endl;
+		  }
+//========================================================================
                   else if (!strcmp($2, "EXTPAR")) {
                       for (unsigned int i=0; i<tmpParams.size(); i++) {
             
@@ -2431,8 +2435,8 @@ value:     T_NUMBER                        { $$ = $1; }
 %%
 
 void yyerror(char* s) {
-//    fprintf(stderr, "Error while reading input file (line %d): %s\n",
-//	yyInputFileLineNo, s);
-    fprintf(stderr, "Error while reading input file: %s\n", s);
+    fprintf(stderr, "Error while reading input file (line %d): %s\n",
+	yyInputFileLineNo, s);
+//    fprintf(stderr, "Error while reading input file: %s\n", s);
     exit(EXIT_FAILURE);
 }
