@@ -35,6 +35,7 @@
 #include <leshouches.h>
 #include <sys/wait.h>
 #include <sys/signal.h>
+#include <unistd.h>
 
 #include <TRandom.h>
 #include <TMath.h>
@@ -2846,6 +2847,14 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
   WriteLesHouches(x);
 
   //  exit(0);
+
+  if ( yyCalculatorPath.compare("") ) {
+      if ( access( yyCalculatorPath.c_str(), X_OK ) ) {
+	  cerr << "Cannot find calculator " << yyCalculatorPath << endl;
+	  cerr << "Check path in input file." << endl;
+	  exit(EXIT_FAILURE);
+      }
+  }
 
   if (yyCalculator == SUSPECT) {
     callSuspect();
