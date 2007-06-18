@@ -920,7 +920,7 @@ input:
 		  tmpValue.name.append(srtt);
 		  tmpValue.type  = Pedge;
 		  tmpValue.id    = (int)$3;
-		  if (tmpValue.id<1 || tmpValue.id>5) {
+		  if (tmpValue.id<1 || tmpValue.id>7) {      // line changed by Mathias Uhlenbrock to allow edge types 6 and 7
                     yyerror("edge type not implemented");
                   } 
 		  string str;
