@@ -170,6 +170,9 @@ double        yyXscanhigh = 2000.;
 
 double        yyLimitSlope = 0.01;
 
+int           yyMinuitStrategy = 2;
+double        yyMachinePrecision = 1e-8; // Les Houches standard only uses 8 digits
+
 //##############################################################
 // BLOCK SPhenoLowEnergy
 double        yybsg    = -10000.;   //  1   BR(b -> s gamma) 
@@ -291,11 +294,17 @@ input:
                     yyNumberPulls = (int)$3;
                   }
        		}
-                else if (!strcmp($2,"yyLimitSlope")) {
+                else if (!strcmp($2,"LimitSlope")) {
 		  if ($3>0) {
                     yyLimitSlope = $3;
                   }
        		}
+		else if (!strcmp($2, "MinuitStrategy")) {
+		  yyMinuitStrategy = $3;
+		}
+		else if (!strcmp($2, "MachinePrecision")) {
+		  yyMachinePrecision = $3;
+		}
                 else {
 		  found = 0;
 		  for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {

@@ -1627,6 +1627,8 @@ void Fittino::calculateLoopLevelValues()
     fitter->mnexcm("SET PRI", arguments, 1,ierr);
     arguments[0] = 1.;
     fitter->mnexcm("SET ERR", arguments, 1,ierr);
+    arguments[0] = yyMachinePrecision;
+    fitter->mnexcm("SET EPS", arguments, 1,ierr);
 
     for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
       cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
@@ -1668,7 +1670,7 @@ void Fittino::calculateLoopLevelValues()
 	  }
 	}
 
-	arguments[0] = 2;
+	arguments[0] = yyMinuitStrategy;
 	fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
 	arguments[0] = 2000;
 	arguments[1] = 0.1;
@@ -1706,8 +1708,6 @@ void Fittino::calculateLoopLevelValues()
 	  }
 	}
 
-	arguments[0] = 2;
-	fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
 	arguments[0] = 2000;
 	arguments[1] = 0.1;
 	fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
@@ -1809,8 +1809,6 @@ void Fittino::calculateLoopLevelValues()
 	  fitter->mnexcm("FIX", arguments, 1,ierr);
 	}
       }
-      arguments[0] = 2;
-      fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
       arguments[0] = 2000;
       arguments[1] = 0.1;
       fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
@@ -1909,8 +1907,6 @@ void Fittino::calculateLoopLevelValues()
 	  fitter->mnexcm("FIX", arguments, 1,ierr);
 	}
       }
-      arguments[0] = 2;
-      fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
       arguments[0] = 2000;
       arguments[1] = 0.1;
       fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
@@ -1949,8 +1945,6 @@ void Fittino::calculateLoopLevelValues()
 	    fitter->mnexcm("FIX", arguments, 1,ierr);
 	  }
 	}
-	arguments[0] = 2;
-	fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
 	arguments[0] = 20000;
 	arguments[1] = 0.1;
 	fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
@@ -1981,8 +1975,6 @@ void Fittino::calculateLoopLevelValues()
 
     //--------------------------------------------------------------------------
     // perform the final fit with all parameters free
-    arguments[0] = 2;
-    fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
     arguments[0] = 200000;
     arguments[1] = 0.1;
     for (unsigned int i=0; i<yyNumberOfMinimizations; i++) {
@@ -2120,8 +2112,6 @@ void Fittino::calculateLoopLevelValues()
 	  }
 	}
 	// fit
-	arguments[0] = 2;
-	fitter->mnexcm("SET STRATEGY", arguments, 1, ierr);
 	arguments[0] = 20000;
 	arguments[1] = 0.1;
 	fitter->mnexcm("MINIMIZE", arguments, 2,ierr);

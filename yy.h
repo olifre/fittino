@@ -104,6 +104,9 @@ extern double        yyXscanhigh;
 extern double        yyMaxCalculatorTime;
 extern double        yyLimitSlope;
 
+extern int           yyMinuitStrategy;
+extern double        yyMachinePrecision;
+
 extern unsigned int  yyFitModel;
 
 //==========================================================
