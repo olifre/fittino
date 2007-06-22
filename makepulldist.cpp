@@ -176,7 +176,12 @@ void MakePullDist::CalcPullDist()
 
     //   calculate new Fit result...
     Fittino* fittino = new Fittino(fInput);
-    fittino->calculateTreeLevelValues(10000);
+    if ( yyFitModel == MSSM || yyFitModel == NMSSM ) {
+        fittino->calculateTreeLevelValues(10000);
+    }
+    else {
+        fittino->setStartValues();
+    }
     fittino->calculateLoopLevelValues();
     cout << "returned from CalculateLoopLevelValues" << endl;
     // write results
