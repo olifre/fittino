@@ -43,6 +43,9 @@ Double_t chi2Function(Double_t *x, Double_t *par)
 void DrawParDists(const Int_t nbins = 50, const char* filename = "TreeSum.root",
 		  const char* treename = "tree", const Double_t chi2cut = -1)
 {
+    gStyle->SetOptStat(0);
+    gStyle->SetOptFit(111111);
+
     TFile* file = new TFile(filename, "read");
     TTree* tree = (TTree*)file->Get(treename);
 
