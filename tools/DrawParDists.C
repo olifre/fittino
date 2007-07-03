@@ -47,7 +47,18 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "TreeSum.root",
     gStyle->SetOptFit(111111);
 
     TFile* file = new TFile(filename, "read");
+
+    if ( !file ) {
+        printf("Problem accessing file %s\n", filename);
+	return;
+    }
+
     TTree* tree = (TTree*)file->Get(treename);
+
+    if ( !tree ) {
+        printf("Problem accessing tree %s\n", treename);
+        return;
+    }
 
     Int_t nEntries = tree->GetEntries();
 
