@@ -7668,7 +7668,8 @@ void Fittino::markovChain (TNtuple *ntuple)
 		    {
 		      first = false; 
 		      outOfBounds = false;
-		      xp[iiVariable] = x[iiVariable] + gRandom->Uniform(-1.,1.) * vm[iiVariable];
+		      xp[iiVariable] = x[iiVariable] + gRandom->Gaus(vm[iiVariable]);
+		      //		      xp[iiVariable] = x[iiVariable] + gRandom->Uniform(-1.,1.) * vm[iiVariable];
 		      if ( ( xp[iiVariable] < lb[iiVariable] ) || ( xp[iiVariable] > ub[iiVariable] ) )
 			{			  
 			  outOfBounds = true;
@@ -7699,11 +7700,11 @@ void Fittino::markovChain (TNtuple *ntuple)
 	    xdummy[i] = xp[i];
 	  }
 	  fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
-	  chi2 = -chi2;
+	  // chi2 = -chi2;
 	  std::cout << "chi^2 = " << chi2 << std::endl;
 	  
 	  // calculate likelihood
-	  double likelihood = TMath::Exp(chi2/2.);
+	  double likelihood = TMath::Exp(-chi2/2.);
 	  std::cout << "L = " << likelihood << std::endl;
 	  
 	  // calculate Q
@@ -7806,7 +7807,7 @@ double Fittino::calculateQ(vector<double> x, vector<double> xk, vector<double> v
   for (int iVariable = 0; iVariable < x.size(); iVariable++) 
     {
       Q = Q * 1/(TMath::Sqrt(2.*3.1412759)*vm[iVariable])*
-	TMath::Exp(-sqr(x[iVariable]-xk[iVariable])/2.*sqr(vm[iVariable]));
+	TMath::Exp(-sqr(x[iVariable]-xk[iVariable])/(2.*sqr(vm[iVariable])));
     }
   return Q;
 }
