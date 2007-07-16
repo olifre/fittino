@@ -7615,6 +7615,7 @@ void Fittino::markovChain (TNtuple *ntuple)
   Int_t dummyint = 1;
   Double_t xdummy[100];
   vector <int> nacp;
+  vector <int> ntest;
   vector <double> c; 
 
 
@@ -7627,6 +7628,7 @@ void Fittino::markovChain (TNtuple *ntuple)
     ub.push_back(yyFittedVec[k].bound_up);
     c.push_back(2.0);
     nacp.push_back(0);
+    ntest.push_back(0);
   }
 
 
@@ -7733,7 +7735,8 @@ void Fittino::markovChain (TNtuple *ntuple)
 	    }
 	  } 
 	  std::cout << "accpoint = " << accpoint << std::endl;
-	  
+
+	  ++ntest[iVariable];
 	  // write into ntuple
 	  if (accpoint == 1) {
 	    ++nacp[iVariable];
@@ -7756,24 +7759,27 @@ void Fittino::markovChain (TNtuple *ntuple)
 	  ntuple->Fill(ntupvars);
 	  
 	  // if necessary: readjust width
-	  if (yyMarkovChainReadjustWidth) {
-	    if (niter%yyMarkovChainReadjustWidthPeriod==0 && niter>0)
-	      {
-		for (int i = 0; i < x.size(); ++i) {
-		  double ratio = (double) nacp[iVariable] / (double) (yyMarkovChainReadjustWidthPeriod);
-		  if (ratio > 0.6) {
-		    vm[iVariable] *= c[iVariable] * (ratio - 0.6) / 0.4 + 1.;
-		  } else if (ratio < 0.4) {
-		    vm[iVariable] /= c[iVariable] * (0.4 - ratio) / 0.4 + 1.;
-		  }
-		  if (vm[iVariable] > ub[iVariable] - lb[iVariable]) {
-		    vm[iVariable] = ub[iVariable] - lb[iVariable];
-		  }	
+	  if (yyMarkovChainReadjustWidth) 
+	    {
+	      if (niter%yyMarkovChainReadjustWidthPeriod==0 && niter>0)
+		{
+		  for (int iiiVariable = 0; iiiVariable < x.size(); iiiVariable++) 
+		    {		
+		      double ratio = (double) nacp[iiiVariable] / (double) ntest[iiiVariable] ;
+		      if (ratio > 0.6) {
+			vm[iiiVariable] *= c[iiiVariable] * (ratio - 0.6) / 0.4 + 1.;
+		      } else if (ratio < 0.4) {
+			vm[iiiVariable] /= c[iiiVariable] * (0.4 - ratio) / 0.4 + 1.;
+		      }
+		      if (vm[iiiVariable] > ub[iiiVariable] - lb[iiiVariable]) {
+			vm[iiiVariable] = ub[iiiVariable] - lb[iiiVariable];
+		      }	
+		    }
+		  for (int iiiVariable = 0; iiiVariable < x.size(); ++iiiVariable) {
+		    nacp[iiiVariable] = 0;
+		    ntest[iiiVariable] = 0;
+		  }		
 		}
-		for (int i = 0; i < x.size(); ++i) {
-		  nacp[iVariable] = 0;
-		}		
-	      }
 	  }
 	  
 	  // save variables 

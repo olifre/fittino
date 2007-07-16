@@ -74,7 +74,7 @@ LEObs ( gmin2m )  2.46463    +- 2      alias 11  # PDG 2006: magn.moment = 1.001
 						 # Observable according to above formula: 4E-9 +- 6E-9 +- 8E-9
 # LEObs ( gmin2t )  511.718    +- 3.2E7  alias 12  # PDF 2006: 0.013 > magnetic moment > -0.052 
 LEObs ( drho   )  8.64968E-3 +- 0.0007 alias 30  # PDG 2006: 0.0002 + 0.0007 - 0.0004
-LEObs ( omega  )  0.115186   +- 0.006  alias 31  # PDG 2006: 0.111 +- 0.006  
+LEObs ( omega  )  0.101501   +- 0.006  alias 31  # PDG 2006: 0.111 +- 0.006  
 
 
 #########################################################################
