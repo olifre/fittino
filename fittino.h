@@ -144,7 +144,8 @@ private:
     void simulated_annealing (int iteration, TNtuple *ntuple);
     void simulated_annealing_uncertainties (TNtuple *ntuple);
     void simulated_annealing_uncertainties_run_down (TNtuple *ntuple);
-
+    void markovChain (TNtuple *ntuple);
+    double calculateQ(std::vector<double> x, std::vector<double> xk, std::vector<double> vm);
     void hybridMonteCarlo();
 
     void randomDirectionUncertainties();

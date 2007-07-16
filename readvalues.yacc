@@ -126,6 +126,8 @@ bool          yyGetContours = false;
 bool          yyUseHesse;
 bool          yyUseSimAnnBefore = false;
 bool          yyUseSimAnnWhile = false;
+bool          yyUseMarkovChains = false;
+bool          yyMarkovChainReadjustWidth = false;
 bool          yyUseGivenStartValues;
 bool          yyFitAllDirectly;
 bool          yyCalcIndChisqContr;
@@ -163,6 +165,8 @@ double        yyInitTempSimAnn = -1.;
 int           yyNumberPulls = 0;
 
 int           yyNumberOfDirections = 10000;
+int           yyMaxMarkovChain = 10000;
+int           yyMarkovChainReadjustWidthPeriod = 500;
 
 int           yyRandomGeneratorSeed = -1;
 
@@ -285,7 +289,14 @@ input:
 		  // cout << "FOUND NumberOfDirections "<<$3<<endl;
 		  yyNumberOfDirections = (int)$3;
                 }
-                // yyMaxCalculatorTime
+		else if (!strcmp($2,"MaxMarkovChain")) {
+		  // cout << "FOUND NumberOfDirections "<<$3<<endl;
+		  yyMaxMarkovChain = (int)$3;
+                }
+		else if (!strcmp($2,"MarkovChainReadjustWidthPeriod")) {
+		  // cout << "FOUND NumberOfDirections "<<$3<<endl;
+		  yyMarkovChainReadjustWidthPeriod = (int)$3;
+                }                // yyMaxCalculatorTime
 		else if (!strcmp($2,"MaxCalculatorTime")) {
 		  yyMaxCalculatorTime = (double)$3;
                 }
@@ -620,7 +631,14 @@ input:
 		    if ($3 == on) yyUseSimAnnBefore = true;
 		      else yyUseSimAnnBefore = false;
 		  }
-		  if (!strcmp($2, "UseSimAnnWhile")) {
+		  if (!strcmp($2, "UseMarkovChains")) {
+		    if ($3 == on) yyUseMarkovChains = true;
+		      else yyUseMarkovChains = false;
+		  }
+		  if (!strcmp($2, "MarkovChainReadjustWidth")) {
+		    if ($3 == on) yyMarkovChainReadjustWidth = true;
+		      else yyMarkovChainReadjustWidth = false;
+		  }		  if (!strcmp($2, "UseSimAnnWhile")) {
 		      if ($3 == on) yyUseSimAnnWhile = true;
 		      else yyUseSimAnnWhile = false;
 		  }
