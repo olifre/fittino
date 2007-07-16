@@ -30,12 +30,12 @@ using namespace std;
 #include <map>
 extern FILE* yyin;
 
-extern "C" {
-int yylex(void);
-void yyerror(char*);
-int yyparse(void);
-int yywrap(void);
-}
+// extern "C" {
+extern int yylex(void);
+extern void yyerror(char*);
+extern int yyparse(void);
+extern int yywrap(void);
+// }
 
 
 extern double yyScale;

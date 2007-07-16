@@ -46,6 +46,8 @@
 
 #include <TFile.h>
 #include <TH1.h>
+#include <TH1D.h>
+#include <TH2D.h>
 #include <sys/sysinfo.h>
 #include <sys/time.h>
 #include <sys/unistd.h>

@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <TMath.h>
 #include <TVectorD.h>
 #include <TMatrixDSym.h>
 #include <TMatrixDSymEigen.h>

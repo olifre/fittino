@@ -66,7 +66,7 @@ fittino: $(OBJECTS_BASENAME)
 	$(CXX) -c -o $@ $< $(CXXFLAGS)
 
 lex.yy.o: y.tab.c lex.yy.c
-	gcc -I. -c -o lex.yy.o lex.yy.c
+	$(CXX) -I. -c -o lex.yy.o lex.yy.c
 
 y.tab.o:  y.tab.c lex.yy.c
 	$(CXX) $(CXXFLAGS) -c -o y.tab.o y.tab.c

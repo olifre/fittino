@@ -21,6 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <TMath.h>
 #include <smearedinput.h>
 #include <input.h>
 
