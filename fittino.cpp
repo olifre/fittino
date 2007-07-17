@@ -1604,7 +1604,7 @@ void Fittino::calculateLoopLevelValues()
     TFile *MarkovNtupFile = new TFile("MarkovChainNtupFile.root","RECREATE");
     sprintf ( ntuplename, "markovChain" );
     sprintf ( ntupletext, "path of the Markov Chain" );
-    sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint" );
+    sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n" );
     for (unsigned int j=0; j < yyFittedVec.size(); j++ ) {
       sprintf ( ntuplevars, "%s:%s", ntuplevars, yyFittedVec[j].name.c_str() );
     }
@@ -7609,7 +7609,6 @@ void Fittino::markovChain (TNtuple *ntuple)
   vector <double> xp;
   vector <double> lb; 
   vector <double> ub;
-  int accpoint = 0;
   Float_t ntupvars[50];
   Double_t dummyfloat = 5.;
   Int_t dummyint = 1;
@@ -7631,7 +7630,25 @@ void Fittino::markovChain (TNtuple *ntuple)
     ntest.push_back(0);
   }
 
-
+  time_t systime;
+  int seed;
+  struct sysinfo sinfo; 
+  // set the random number generator
+  time (&systime);
+  sysinfo(&sinfo);
+  if (yyRandomGeneratorSeed < 0) {
+    seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
+    cout<<"uptime = "<<sinfo.uptime<<endl;
+    cout<<"freeswap = "<<sinfo.freeswap<<endl;
+    cout<<"pid = "<<getpid()<<endl;
+    cout << "systime " << systime << endl; 
+  }
+  else {
+    cout<<"using seed from input file"<<endl;
+    seed = yyRandomGeneratorSeed;
+  }
+  cout << "seed = " << seed << endl;
+  gRandom->SetSeed(seed);
 
   // ====================================================================
   // ====================================================================
@@ -7653,16 +7670,16 @@ void Fittino::markovChain (TNtuple *ntuple)
 
   while (1)
     {
-
+      bool stop = false;
       for (int iVariable = 0; iVariable < x.size(); iVariable++) 
 	{
 
 	  niter++;
       
 	  // choose new point
-	  for (int iiVariable = 0; iiVariable < x.size(); iiVariable++) 
+	  if (!yyMarkovChainReadjustWidth)
 	    {
-	      if (iiVariable == iVariable) 
+	      for (int iiVariable = 0; iiVariable < x.size(); iiVariable++) 
 		{
 		  bool outOfBounds = false;
 		  bool first = true;
@@ -7670,21 +7687,44 @@ void Fittino::markovChain (TNtuple *ntuple)
 		    {
 		      first = false; 
 		      outOfBounds = false;
-		      xp[iiVariable] = x[iiVariable] + gRandom->Gaus(vm[iiVariable]);
+		      xp[iiVariable] = x[iiVariable] + gRandom->Gaus(0.,vm[iiVariable]);
 		      //		      xp[iiVariable] = x[iiVariable] + gRandom->Uniform(-1.,1.) * vm[iiVariable];
 		      if ( ( xp[iiVariable] < lb[iiVariable] ) || ( xp[iiVariable] > ub[iiVariable] ) )
 			{			  
 			  outOfBounds = true;
-			} 
+			}
 		    }
-		}
-	      else 
+		} 
+	    }
+	  else
+	    {
+	      for (int iiVariable = 0; iiVariable < x.size(); iiVariable++) 
 		{
-		  xp[iiVariable] = x[iiVariable];
+		  if (iiVariable == iVariable) 
+		    {
+		      bool outOfBounds = false;
+		      bool first = true;
+		      while (outOfBounds==true || first==true)
+			{
+			  first = false; 
+			  outOfBounds = false;
+			  xp[iiVariable] = x[iiVariable] + gRandom->Gaus(0.,vm[iiVariable]);
+			  //		      xp[iiVariable] = x[iiVariable] + gRandom->Uniform(-1.,1.) * vm[iiVariable];
+			  if ( ( xp[iiVariable] < lb[iiVariable] ) || ( xp[iiVariable] > ub[iiVariable] ) )
+			    {			  
+			      outOfBounds = true;
+			    } 
+			}
+		    }
+		  else 
+		    {
+		      xp[iiVariable] = x[iiVariable];
+		    }
 		}
 	    }
 	  
-	  std::cout << "looking at Markov Chain for variable " << iVariable << std::endl;
+	  std::cout << "looking at Markov Chain for variable " << iVariable 
+		    << " in step " << niter << std::endl;
 	  for (int iiiVariable = 0; iiiVariable < x.size(); iiiVariable++) 
 	    {
 	      std::cout 
@@ -7744,16 +7784,18 @@ void Fittino::markovChain (TNtuple *ntuple)
 	    ntupvars[1] = (Float_t)rho;
 	    ntupvars[2] = (Float_t)chi2;
 	    ntupvars[3] = (Float_t)accpoint;
-	    for (unsigned int ii = 4; ii < 4+yyFittedVec.size(); ii++) {
-	      ntupvars[ii] = xp[ii-4];
+	    ntupvars[4] = (Float_t)niter;
+	    for (unsigned int ii = 5; ii < 5+yyFittedVec.size(); ii++) {
+	      ntupvars[ii] = xp[ii-5];
 	    }
 	  } else {
 	    ntupvars[0] = (Float_t)previousLikelihood;
 	    ntupvars[1] = (Float_t)previousRho;
 	    ntupvars[2] = (Float_t)previousChi2;
 	    ntupvars[3] = 0.;
-	    for (unsigned int ii = 4; ii < 4+yyFittedVec.size(); ii++) {
-	      ntupvars[ii] = x[ii-4];
+	    ntupvars[4] = (Float_t)niter;
+	    for (unsigned int ii = 5; ii < 5+yyFittedVec.size(); ii++) {
+	      ntupvars[ii] = x[ii-5];
 	    }
 	  }
 	  ntuple->Fill(ntupvars);
@@ -7798,8 +7840,13 @@ void Fittino::markovChain (TNtuple *ntuple)
 	  chainCount++;
 	  if (chainCount > yyMaxMarkovChain)
 	    {
+	      stop = true;
 	      break;
 	    }
+	}
+      if (stop)
+	{
+	  break;
 	}
     }
 

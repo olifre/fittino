@@ -83,10 +83,10 @@ LEObs ( omega  )  0.101501   +- 0.006  alias 31  # PDG 2006: 0.111 +- 0.006
 
 fitModel mSUGRA
 
-fitParameter TanBeta 10 +- 1
-fitParameter M0 70 +- 2
-fitParameter M12 250 +- 20
-fitParameter A0 -300 +- 70
+fitParameter TanBeta 10 +- 0.5
+fitParameter M0 70 +- 1
+fitParameter M12 250 +- 5
+fitParameter A0 -300 +- 20
 fixParameter SignMu 1
 
 #fitModel MSSM
@@ -169,9 +169,9 @@ NoBoundsAtAll         off
 Calculator            SPHENO  ./SPheno
 
 UseMarkovChains                on
-MarkovChainReadjustWidth       on
+MarkovChainReadjustWidth       off
 MarkovChainReadjustWidthPeriod 500
-MaxMarkovChain                 10000
+MaxMarkovChain                 100
 
 UseMinos              on
 UseHesse              on
