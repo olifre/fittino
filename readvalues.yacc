@@ -746,6 +746,7 @@ input:
 		  if (!strcmp($2, "fitParameter")) {
 		     parameter_t tmpparam;
 		     tmpparam.name = $3;
+		     tmpparam.error = 0.;
 		     yyFittedPar.push_back(tmpparam);
 		  }  
 		  else if (!strcmp($2,"fitModel")) {
@@ -786,6 +787,7 @@ input:
 	            parameter_t tmpparam;
                     tmpparam.name = $3;
                     tmpparam.value = $4;
+		    tmpparam.error = 0.;
                     yyFittedPar.push_back(tmpparam);
 		  }
                   else {

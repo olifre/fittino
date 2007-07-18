@@ -698,21 +698,36 @@ void Fittino::calculateTreeLevelValues(int nthrows)
     fM1.name  = "M1";
     fM1.value = sumM1 / double(nvalid);
     fM1.error = TMath::Sqrt(sum2M1 / double(nvalid) - sqr(fM1.value));
-    if (yyUseGivenStartValues && (FindInFittedPar("M1") >= 0)) fM1.value = yyFittedPar[FindInFittedPar("M1")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("M1") >= 0)) {
+      fM1.value = yyFittedPar[FindInFittedPar("M1")].value ;
+      if (yyFittedPar[FindInFittedPar("M1")].error > 0.) {
+	fM1.error = yyFittedPar[FindInFittedPar("M1")].error ;
+      }
+    }
     fM1.bound_low = 0.;
     fM1.bound_up = 10000.;
 
     fM2.name  = "M2";
     fM2.value = sumM2 / double(nvalid);
     fM2.error = TMath::Sqrt(sum2M2 / double(nvalid) - sqr(fM2.value));
-    if (yyUseGivenStartValues && (FindInFittedPar("M2") >= 0)) fM2.value = yyFittedPar[FindInFittedPar("M2")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("M2") >= 0)) { 
+      fM2.value = yyFittedPar[FindInFittedPar("M2")].value ;
+      if (yyFittedPar[FindInFittedPar("M2")].error > 0.) {
+	fM2.error = yyFittedPar[FindInFittedPar("M2")].error ;
+      }
+    }
     fM2.bound_low = 0.;
     fM2.bound_up = 10000.;
 
     fAbsM3.name  = "M3";
     fAbsM3.value = sumM3 / double(nvalid);
     fAbsM3.error = TMath::Sqrt(sum2M3 / double(nvalid) - sqr(fAbsM3.value));
-    if (yyUseGivenStartValues && (FindInFittedPar("M3") >= 0)) fAbsM3.value = yyFittedPar[FindInFittedPar("M3")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("M3") >= 0)) { 
+      fAbsM3.value = yyFittedPar[FindInFittedPar("M3")].value ;
+      if (yyFittedPar[FindInFittedPar("M3")].error > 0.) {
+	fAbsM3.error = yyFittedPar[FindInFittedPar("M3")].error ;
+      }
+    }
     fAbsM3.bound_low = 0.;
     fAbsM3.bound_up = 10000.;
 
@@ -720,14 +735,24 @@ void Fittino::calculateTreeLevelValues(int nthrows)
     fTanBeta.value = sumTanBeta / double(nvalid);
     fTanBeta.error = TMath::Sqrt(sum2TanBeta / double(nvalid)
 				 - sqr(fTanBeta.value));
-    if (yyUseGivenStartValues && (FindInFittedPar("TanBeta") >= 0)) fTanBeta.value = yyFittedPar[FindInFittedPar("TanBeta")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("TanBeta") >= 0)) { 
+      fTanBeta.value = yyFittedPar[FindInFittedPar("TanBeta")].value ;
+      if (yyFittedPar[FindInFittedPar("TanBeta")].error > 0.) {
+	fTanBeta.error = yyFittedPar[FindInFittedPar("TanBeta")].error ;
+      }
+    }
     fTanBeta.bound_low = 0.;
     fTanBeta.bound_up = 1000.;
 
     fMu.name = "Mu";
     fMu.value = sumMu / double(nvalid);
     fMu.error = TMath::Sqrt(sum2Mu / double(nvalid) - sqr(fMu.value));
-    if (yyUseGivenStartValues && (FindInFittedPar("Mu") >= 0)) fMu.value = yyFittedPar[FindInFittedPar("Mu")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("Mu") >= 0)) { 
+      fMu.value = yyFittedPar[FindInFittedPar("Mu")].value ;
+      if (yyFittedPar[FindInFittedPar("Mu")].error > 0.) {
+	fMu.error = yyFittedPar[FindInFittedPar("Mu")].error ;
+      }
+    }
     fMu.bound_low = 0.;
     fMu.bound_up = 10000.;
 
@@ -738,7 +763,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	(TMath::Abs(fMSelL.error)<TMath::Abs(fMSelL.value/10.))) {
       fMSelL.error = TMath::Abs(fMSelL.value/10.);
     }
-    if (yyUseGivenStartValues && (FindInFittedPar("MSelectronL") >= 0)) fMSelL.value = yyFittedPar[FindInFittedPar("MSelectronL")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("MSelectronL") >= 0)) { 
+      fMSelL.value = yyFittedPar[FindInFittedPar("MSelectronL")].value ;
+    }
     fMSelL.bound_low = 0.;
     fMSelL.bound_up = 10000.;
 
@@ -749,7 +776,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	(TMath::Abs(fMSmuL.error)<TMath::Abs(fMSmuL.value/10.))) {
       fMSmuL.error = TMath::Abs(fMSmuL.value/10.);
     }
-    if (yyUseGivenStartValues && (FindInFittedPar("MSmuL") >= 0)) fMSmuL.value = yyFittedPar[FindInFittedPar("MSmuL")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("MSmuL") >= 0)) { 
+      fMSmuL.value = yyFittedPar[FindInFittedPar("MSmuL")].value ;
+    }
     fMSmuL.bound_low = 0.;
     fMSmuL.bound_up = 10000.;
 
@@ -760,7 +789,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	(TMath::Abs(fMStauL.error)<TMath::Abs(fMStauL.value/10.))) {
       fMStauL.error = TMath::Abs(fMStauL.value/10.);
     }
-    if (yyUseGivenStartValues && (FindInFittedPar("MStauL") >= 0)) fMStauL.value = yyFittedPar[FindInFittedPar("MStauL")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("MStauL") >= 0)) { 
+      fMStauL.value = yyFittedPar[FindInFittedPar("MStauL")].value ;
+    }
     fMStauL.bound_low = 0.;
     fMStauL.bound_up = 10000.;
     
@@ -771,7 +802,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	(TMath::Abs(fMSelR.error)<TMath::Abs(fMSelR.value/10.))) {
       fMSelR.error = TMath::Abs(fMSelR.value/10.);
     }
-    if (yyUseGivenStartValues && (FindInFittedPar("MSelectronR") >= 0)) fMSelR.value = yyFittedPar[FindInFittedPar("MSelectronR")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("MSelectronR") >= 0)) { 
+      fMSelR.value = yyFittedPar[FindInFittedPar("MSelectronR")].value ;
+    }
     fMSelR.bound_low = 0.;
     fMSelR.bound_up = 10000.;
 
@@ -782,7 +815,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	(TMath::Abs(fMSmuR.error)<TMath::Abs(fMSmuR.value/10.))) {
       fMSmuR.error = TMath::Abs(fMSmuR.value/10.);
     }
-    if (yyUseGivenStartValues && (FindInFittedPar("MSmuR") >= 0)) fMSmuR.value = yyFittedPar[FindInFittedPar("MSmuR")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("MSmuR") >= 0)) { 
+      fMSmuR.value = yyFittedPar[FindInFittedPar("MSmuR")].value ;
+    }
     fMSmuR.bound_low = 0.;
     fMSmuR.bound_up = 10000.;
 
@@ -793,7 +828,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	(TMath::Abs(fMStauR.error)<TMath::Abs(fMStauR.value/10.))) {
       fMStauR.error = TMath::Abs(fMStauR.value/10.);
     }
-    if (yyUseGivenStartValues && (FindInFittedPar("MStauR") >= 0)) fMStauR.value = yyFittedPar[FindInFittedPar("MStauR")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("MStauR") >= 0)) { 
+      fMStauR.value = yyFittedPar[FindInFittedPar("MStauR")].value ;
+    }
     fMStauR.bound_low = 0.;
     fMStauR.bound_up = 10000.;
     
@@ -804,7 +841,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	(TMath::Abs(fMSupL.error)<TMath::Abs(fMSupL.value/10.))) {
       fMSupL.error = TMath::Abs(fMSupL.value/10.);
     }
-    if (yyUseGivenStartValues && (FindInFittedPar("MSupL") >= 0)) fMSupL.value = yyFittedPar[FindInFittedPar("MSupL")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("MSupL") >= 0)) { 
+      fMSupL.value = yyFittedPar[FindInFittedPar("MSupL")].value ;
+    }
     fMSupL.bound_low = 0.;
     fMSupL.bound_up = 10000.;
 
@@ -815,7 +854,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	(TMath::Abs(fMScharmL.error)<TMath::Abs(fMScharmL.value/10.))) {
       fMScharmL.error = TMath::Abs(fMScharmL.value/10.);
     }
-    if (yyUseGivenStartValues && (FindInFittedPar("MScharmL") >= 0)) fMScharmL.value = yyFittedPar[FindInFittedPar("MScharmL")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("MScharmL") >= 0)) { 
+      fMScharmL.value = yyFittedPar[FindInFittedPar("MScharmL")].value ;
+    }
     fMScharmL.bound_low = 0.;
     fMScharmL.bound_up = 10000.;
 
@@ -826,7 +867,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	(TMath::Abs(fMStopL.error)<TMath::Abs(fMStopL.value/10.))) {
       fMStopL.error = TMath::Abs(fMStopL.value/10.);
     }
-    if (yyUseGivenStartValues && (FindInFittedPar("MStopL") >= 0)) fMStopL.value = yyFittedPar[FindInFittedPar("MStopL")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("MStopL") >= 0)) { 
+      fMStopL.value = yyFittedPar[FindInFittedPar("MStopL")].value ;
+    }
     fMStopL.bound_low = 0.;
     fMStopL.bound_up = 10000.;
 
@@ -837,7 +880,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	(TMath::Abs(fMSupR.error)<TMath::Abs(fMSupR.value/10.))) {
       fMSupR.error = TMath::Abs(fMSupR.value/10.);
     }
-    if (yyUseGivenStartValues && (FindInFittedPar("MSupR") >= 0)) fMSupR.value = yyFittedPar[FindInFittedPar("MSupR")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("MSupR") >= 0)) { 
+      fMSupR.value = yyFittedPar[FindInFittedPar("MSupR")].value ;
+    }
     fMSupR.bound_low = 0.;
     fMSupR.bound_up = 10000.;
 
@@ -848,7 +893,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	(TMath::Abs(fMScharmR.error)<TMath::Abs(fMScharmR.value/10.))) {
       fMScharmR.error = TMath::Abs(fMScharmR.value/10.);
     }
-    if (yyUseGivenStartValues && (FindInFittedPar("MScharmR") >= 0)) fMScharmR.value = yyFittedPar[FindInFittedPar("MScharmR")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("MScharmR") >= 0)) { 
+      fMScharmR.value = yyFittedPar[FindInFittedPar("MScharmR")].value ;
+    }
     fMScharmR.bound_low = 0.;
     fMScharmR.bound_up = 10000.;
 
@@ -859,7 +906,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	(TMath::Abs(fMStopR.error)<TMath::Abs(fMStopR.value/10.))) {
       fMStopR.error = TMath::Abs(fMStopR.value/10.);
     }
-    if (yyUseGivenStartValues && (FindInFittedPar("MStopR") >= 0)) fMStopR.value = yyFittedPar[FindInFittedPar("MStopR")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("MStopR") >= 0)) { 
+      fMStopR.value = yyFittedPar[FindInFittedPar("MStopR")].value ;
+    }
     fMStopR.bound_low = 0.;
     fMStopR.bound_up = 10000.;
 
@@ -870,7 +919,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	(TMath::Abs(fMSdownR.error)<TMath::Abs(fMSdownR.value/10.))) {
       fMSdownR.error = TMath::Abs(fMSdownR.value/10.);
     }
-    if (yyUseGivenStartValues && (FindInFittedPar("MSdownR") >= 0)) fMSdownR.value = yyFittedPar[FindInFittedPar("MSdownR")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("MSdownR") >= 0)) { 
+      fMSdownR.value = yyFittedPar[FindInFittedPar("MSdownR")].value ;
+    }
     fMSdownR.bound_low = 0.;
     fMSdownR.bound_up = 10000.;
 
@@ -881,7 +932,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	(TMath::Abs(fMSstrangeR.error)<TMath::Abs(fMSstrangeR.value/10.))) {
       fMSstrangeR.error = TMath::Abs(fMSstrangeR.value/10.);
     }
-    if (yyUseGivenStartValues && (FindInFittedPar("MSstrangeR") >= 0)) fMSstrangeR.value = yyFittedPar[FindInFittedPar("MSstrangeR")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("MSstrangeR") >= 0)) { 
+      fMSstrangeR.value = yyFittedPar[FindInFittedPar("MSstrangeR")].value ;
+    }
     fMSstrangeR.bound_low = 0.;
     fMSstrangeR.bound_up = 10000.;
 
@@ -892,7 +945,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	(TMath::Abs(fMSbottomR.error)<TMath::Abs(fMSbottomR.value/10.))) {
       fMSbottomR.error = TMath::Abs(fMSbottomR.value/10.);
     }
-    if (yyUseGivenStartValues && (FindInFittedPar("MSbottomR") >= 0)) fMSbottomR.value = yyFittedPar[FindInFittedPar("MSbottomR")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("MSbottomR") >= 0)) { 
+      fMSbottomR.value = yyFittedPar[FindInFittedPar("MSbottomR")].value ;
+    }
     fMSbottomR.bound_low = 0.;
     fMSbottomR.bound_up = 10000.;
 
@@ -907,7 +962,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
       fXtau.error = TMath::Abs(fXtau.value/10.);
     }
     fXtau.error = 100.;
-    if (yyUseGivenStartValues && (FindInFittedPar("Xtau") >= 0)) fXtau.value = yyFittedPar[FindInFittedPar("Xtau")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("Xtau") >= 0)) { 
+      fXtau.value = yyFittedPar[FindInFittedPar("Xtau")].value ;
+    }
     if (yyBoundsOnX) {
       fXtau.bound_low = yyXscanlow;
       fXtau.bound_up = yyXscanhigh;
@@ -926,7 +983,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
       fXtop.error = TMath::Abs(fXtop.value/10.);
     }
     fXtop.error = 100.;
-    if (yyUseGivenStartValues && (FindInFittedPar("Xtop") >= 0)) fXtop.value = yyFittedPar[FindInFittedPar("Xtop")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("Xtop") >= 0)) { 
+      fXtop.value = yyFittedPar[FindInFittedPar("Xtop")].value ;
+    }
     if (yyBoundsOnX) {
       fXtop.bound_low = yyXscanlow;
       fXtop.bound_up = yyXscanhigh;
@@ -951,7 +1010,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
       fXbottom.error = TMath::Abs(fXbottom.value/10.);
     }
     fXbottom.error = 100.;
-    if (yyUseGivenStartValues && (FindInFittedPar("Xbottom") >= 0)) fXbottom.value = yyFittedPar[FindInFittedPar("Xbottom")].value ;
+    if (yyUseGivenStartValues && (FindInFittedPar("Xbottom") >= 0)) { 
+      fXbottom.value = yyFittedPar[FindInFittedPar("Xbottom")].value ;
+    }
     if (yyBoundsOnX) {
       fXbottom.bound_low = yyXscanlow;
       fXbottom.bound_up = yyXscanhigh;
@@ -972,28 +1033,36 @@ void Fittino::calculateTreeLevelValues(int nthrows)
       fNmssmLambda.name  = "lambda";
       fNmssmLambda.value = 0;
       fNmssmLambda.error = 0.1;
-      if (yyUseGivenStartValues && (FindInFittedPar("lambda") >= 0)) fNmssmLambda.value = yyFittedPar[FindInFittedPar("lambda")].value ;
+      if (yyUseGivenStartValues && (FindInFittedPar("lambda") >= 0)) { 
+	fNmssmLambda.value = yyFittedPar[FindInFittedPar("lambda")].value ;
+      }
       fNmssmLambda.bound_low = -10000.;
       fNmssmLambda.bound_up = 10000.;
 
       fKappa.name  = "kappa";
       fKappa.value = 0;
       fKappa.error = 0.1;
-      if (yyUseGivenStartValues && (FindInFittedPar("kappa") >= 0)) fKappa.value = yyFittedPar[FindInFittedPar("kappa")].value ;
+      if (yyUseGivenStartValues && (FindInFittedPar("kappa") >= 0)) {
+	fKappa.value = yyFittedPar[FindInFittedPar("kappa")].value ;
+      }
       fKappa.bound_low = -10000.;
       fKappa.bound_up = 10000.;
 
       fALambda.name  = "ALambda";
       fALambda.value = 0;
       fALambda.error = 10;
-      if (yyUseGivenStartValues && (FindInFittedPar("ALambda") >= 0)) fALambda.value = yyFittedPar[FindInFittedPar("ALambda")].value ;
+      if (yyUseGivenStartValues && (FindInFittedPar("ALambda") >= 0)) { 
+	fALambda.value = yyFittedPar[FindInFittedPar("ALambda")].value ;
+      }
       fALambda.bound_low = -10000.;
       fALambda.bound_up = 10000.;
 
       fAKappa.name  = "AKappa";
       fAKappa.value = 0;
       fAKappa.error = 10;
-      if (yyUseGivenStartValues && (FindInFittedPar("AKappa") >= 0)) fAKappa.value = yyFittedPar[FindInFittedPar("AKappa")].value ;
+      if (yyUseGivenStartValues && (FindInFittedPar("AKappa") >= 0)) { 
+	fAKappa.value = yyFittedPar[FindInFittedPar("AKappa")].value ;
+      }
       fAKappa.bound_low = -10000.;
       fAKappa.bound_up = 10000.;
     }

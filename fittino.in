@@ -171,7 +171,7 @@ Calculator            SPHENO  ./SPheno
 UseMarkovChains                on
 MarkovChainReadjustWidth       off
 MarkovChainReadjustWidthPeriod 500
-MaxMarkovChain                 100
+MaxMarkovChain                 20000
 
 UseMinos              on
 UseHesse              on
