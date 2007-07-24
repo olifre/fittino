@@ -149,22 +149,35 @@ void MakePullDist::CalcPullDist()
 //      yyMeasuredVec[j].value = gRandom->Gaus(savedMeasuredValues[j].value, 
 //					     TMath::Sqrt(fInput->GetMeasuredCorrelationMatrix().GetCovariance(j, j)));
 //    }
+
+    TVectorD mean(yyMeasuredVec.size());
+
     for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
       yyMeasuredVec[j].value = savedMeasuredValues[j].value;
+      mean(j) = yyMeasuredVec[j].value;
     }
+
+    TVectorD thrown(yyMeasuredVec.size());
+
+    thrown = getCorrelatedRandomNumbers( mean, fInput->GetMeasuredCorrelationMatrix().GetCovarianceMatrix() );
+
     for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
-      for (unsigned int k = j; k < yyMeasuredVec.size(); k++) {  
-	correction = gRandom->Gaus(0., 
-				    TMath::Sqrt(TMath::Abs(fInput->GetMeasuredCorrelationMatrix().GetCovariance(j, k))));
-	if (fInput->GetMeasuredCorrelationMatrix().GetCovariance(j, k)>0.) {
-	  yyMeasuredVec[j].value += 0.5 * correction;
-	  yyMeasuredVec[k].value += 0.5 * correction;
-	} else {
-	  yyMeasuredVec[j].value += 0.5 * correction;
-	  yyMeasuredVec[k].value -= 0.5 * correction;	  
-	}
-      }
+      yyMeasuredVec[j].value = thrown(j);
     }
+
+//    for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
+//      for (unsigned int k = j; k < yyMeasuredVec.size(); k++) {  
+//	correction = gRandom->Gaus(0., 
+//				    TMath::Sqrt(TMath::Abs(fInput->GetMeasuredCorrelationMatrix().GetCovariance(j, k))));
+//	if (fInput->GetMeasuredCorrelationMatrix().GetCovariance(j, k)>0.) {
+//	  yyMeasuredVec[j].value += 0.5 * correction;
+//	  yyMeasuredVec[k].value += 0.5 * correction;
+//	} else {
+//	  yyMeasuredVec[j].value += 0.5 * correction;
+//	  yyMeasuredVec[k].value -= 0.5 * correction;	  
+//	}
+//      }
+//    }
 
     cout<<"---------------------------------------------------------"<<endl;
     cout<<"Thrown set of observables for pull fit no "<<i<<":"<<endl;

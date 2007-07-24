@@ -57,7 +57,7 @@ CorrelationMatrix::~CorrelationMatrix()
 
 void CorrelationMatrix::add(unsigned int index1, unsigned int index2, double entry)
 {
-    if (!fCorrelationMatrix) fCorrelationMatrix = new TMatrixD(fVector->size(), fVector->size());
+    if (!fCorrelationMatrix) fCorrelationMatrix = new TMatrixDSym(fVector->size());
 
     if (index1 >= fVector->size() || index2 >= fVector->size()) {
         cerr<<"CorrelationMatrix index out of range"<<endl;
@@ -93,9 +93,9 @@ void CorrelationMatrix::add(const string& name1, const string& name2,
 
 CorrelationMatrix& CorrelationMatrix::operator=(const CorrelationMatrix& source)
 {
-    fCorrelationMatrix = new TMatrixD(source.fVector->size(), source.fVector->size());
-    fCovarianceMatrix = new TMatrixD(source.fVector->size(), source.fVector->size());
-    fInverseCovarianceMatrix = new TMatrixD(source.fVector->size(), source.fVector->size());
+    fCorrelationMatrix = new TMatrixDSym(source.fVector->size());
+    fCovarianceMatrix = new TMatrixDSym(source.fVector->size());
+    fInverseCovarianceMatrix = new TMatrixDSym(source.fVector->size());
 
     fVector = source.fVector;
     *fCorrelationMatrix       = *(source.fCorrelationMatrix);
@@ -175,10 +175,10 @@ void CorrelationMatrix::CalculateCovarianceMatrix()
 
   //cout << (*fVector)[0].value << endl;
   if (!fCovarianceMatrix) {
-    fCovarianceMatrix = new TMatrixD(fVector->size(), fVector->size());
+    fCovarianceMatrix = new TMatrixDSym(fVector->size());
   }
   if (!fInverseCovarianceMatrix) {
-    fInverseCovarianceMatrix = new TMatrixD(fVector->size(), fVector->size());
+    fInverseCovarianceMatrix = new TMatrixDSym(fVector->size());
   } 
   
   for (unsigned int i=0; i<fVector->size(); i++) {

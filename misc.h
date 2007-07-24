@@ -220,9 +220,9 @@ class CorrelationMatrix {
 protected:
     const vector<MeasuredValue>*    fVector;
 
-    TMatrixD*                 fCorrelationMatrix;
-    TMatrixD*                 fCovarianceMatrix;
-    TMatrixD*                 fInverseCovarianceMatrix;
+    TMatrixDSym*                 fCorrelationMatrix;
+    TMatrixDSym*                 fCovarianceMatrix;
+    TMatrixDSym*                 fInverseCovarianceMatrix;
 
 public:
     CorrelationMatrix() { fVector = 0; fCorrelationMatrix = 0, fCovarianceMatrix = 0, fInverseCovarianceMatrix = 0; }
@@ -244,6 +244,8 @@ public:
     CorrelationMatrix& operator=(const CorrelationMatrix& source);
     const double& operator()(int rown, int coln) const
                   { return (const double&)((*fCorrelationMatrix)(rown, coln)); }
+
+    const TMatrixDSym&      GetCovarianceMatrix() const { return *fCovarianceMatrix; }
 };
 
 
