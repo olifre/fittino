@@ -7726,9 +7726,12 @@ void Fittino::markovChain (TNtuple *ntuple)
   // perform the optimization
   int niter = 0;
   int chainCount = 0;
-  double previousLikelihood = 1.;
+  double previousLikelihood = 1.E-5;
   double previousRho = 1.;
   double previousChi2 = 1.E10;
+
+  bool firstChi2 = true;
+
 
   std::cout << "Starting Markov Chain algorithm" << std::endl;
   std::cout << "Starting with the following variables and bounds" << std::endl;
@@ -7813,10 +7816,29 @@ void Fittino::markovChain (TNtuple *ntuple)
 	  fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
 	  // chi2 = -chi2;
 	  std::cout << "chi^2 = " << chi2 << std::endl;
-	  
+
+	  double firstChi2Value = chi2;
+
+	  if (firstChi2) {
+	    if (yyMarkovChainChi2Scale < 0.) {
+	      if (firstChi2Value>10.) {
+		yyMarkovChainChi2Scale = firstChi2Value/10.;
+	      }
+	      else {
+		yyMarkovChainChi2Scale = 1.;
+	      }
+	    } 
+	  }
+
 	  // calculate likelihood
-	  double likelihood = TMath::Exp(-chi2/2.);
+	  double likelihood = TMath::Exp(-chi2/(2.*yyMarkovChainChi2Scale));
 	  std::cout << "L = " << likelihood << std::endl;
+
+
+	  if (firstChi2) {
+	    firstChi2 = false;
+	    previousLikelihood = likelihood*2.;
+	  }
 	  
 	  // calculate Q
 	  double Qupper = calculateQ(x,xp,vm);

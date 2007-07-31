@@ -167,6 +167,7 @@ int           yyNumberPulls = 0;
 int           yyNumberOfDirections = 10000;
 int           yyMaxMarkovChain = 10000;
 int           yyMarkovChainReadjustWidthPeriod = 500;
+double        yyMarkovChainChi2Scale = 1.;
 
 int           yyRandomGeneratorSeed = -1;
 
@@ -296,7 +297,11 @@ input:
 		else if (!strcmp($2,"MarkovChainReadjustWidthPeriod")) {
 		  // cout << "FOUND NumberOfDirections "<<$3<<endl;
 		  yyMarkovChainReadjustWidthPeriod = (int)$3;
-                }                // yyMaxCalculatorTime
+                }                // yyMaxCalculatorTime yyMarkovChainChi2Scale
+		else if (!strcmp($2,"MarkovChainChi2Scale")) {
+		  // cout << "FOUND NumberOfDirections "<<$3<<endl;
+		  yyMarkovChainChi2Scale = (double)$3;
+                } 
 		else if (!strcmp($2,"MaxCalculatorTime")) {
 		  yyMaxCalculatorTime = (double)$3;
                 }

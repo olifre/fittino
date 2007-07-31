@@ -101,6 +101,7 @@ extern int           yyRandomGeneratorSeed;
 extern int           yyNumberOfDirections;
 extern int           yyMaxMarkovChain;
 extern int           yyMarkovChainReadjustWidthPeriod;
+extern double        yyMarkovChainChi2Scale;
 extern double        yyTempRedSimAnn;
 extern double        yyInitTempSimAnn;
 extern double        yyXscanlow;

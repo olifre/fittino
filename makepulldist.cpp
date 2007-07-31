@@ -145,10 +145,10 @@ void MakePullDist::CalcPullDist()
   // loop 
   for (unsigned int  i = 0; i < npulls; i++) {
     //   smear the observables
-//    for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {  
-//      yyMeasuredVec[j].value = gRandom->Gaus(savedMeasuredValues[j].value, 
-//					     TMath::Sqrt(fInput->GetMeasuredCorrelationMatrix().GetCovariance(j, j)));
-//    }
+    //    for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {  
+    //      yyMeasuredVec[j].value = gRandom->Gaus(savedMeasuredValues[j].value, 
+    //					     TMath::Sqrt(fInput->GetMeasuredCorrelationMatrix().GetCovariance(j, j)));
+    //    }
 
     TVectorD mean(yyMeasuredVec.size());
 
