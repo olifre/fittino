@@ -116,13 +116,12 @@ int main(int argc, char** argv)
     if (yyInputFile[i].error.size()) {
       cout<<"size = "<<yyInputFile[i].error.size()<<endl;
       cout<<"\t"<<yyInputFile[i].value;
-      for (int q=0; q < yyInputFile[i].error.size(); q++) {
+      for (unsigned int q=0; q < yyInputFile[i].error.size(); q++) {
 	cout<<" +- "<<yyInputFile[i].error[q];
       }
     }
     cout<<yyInputFile[i].postvalue;
   }
-
 
   if (yyCalcIndChisqContr) {
 

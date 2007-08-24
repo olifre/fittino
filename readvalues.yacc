@@ -205,12 +205,22 @@ std::vector<InputFileLine> yyInputFile;
 struct InputFileLine yyInputFileLine;
 int           yyInputFileLineNo = 1;
 
+typedef struct { 
+   char keyname[255]; 
+} keyname;
+
+struct correrrorstruct {
+   keyname key[10];
+   double value[10];
+};
+
 %}
 
 %union {
-    int      integer;
-    double   real;
-    char     name[255];
+    struct correrrorstruct *correrrorptr;
+    int                integer;
+    double             real;
+    char               name[255];
 };
 
 %token <name> T_KEY T_WORD
@@ -220,8 +230,9 @@ int           yyInputFileLineNo = 1;
 %token T_BLOCK T_SCALE T_DECAY T_NEWLINE T_BR T_LEO T_XS T_CALCULATOR T_XSBR T_BRRATIO
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH T_NEWLINE
  
-%type <name> sentence
-%type <real> value err
+%type <name>   sentence
+%type <real>   value err
+%type <correrrorptr> correrr
 
 %%
 
@@ -317,7 +328,7 @@ input:
                   }
        		}
 		else if (!strcmp($2, "MinuitStrategy")) {
-		  yyMinuitStrategy = $3;
+		  yyMinuitStrategy = (int)$3;
 		}
 		else if (!strcmp($2, "MachinePrecision")) {
 		  yyMachinePrecision = $3;
@@ -568,6 +579,67 @@ input:
 //	              cout << "filling correlation coefficient for " << $3 << " " << $4 << " " << $5 << endl;
 		      yyMeasuredCorrelationMatrix.add(i, j, $5);
 		  }
+	      }
+            | input T_KEY value err correrr // modified by Mathias Uhlenbrock
+	      {
+//		  yyInputFileLine.prevalue  = $4;
+//		  yyInputFileLine.prevalue += "\t";
+//		  yyInputFileLine.prevalue  = $6;
+
+		  found = 0;
+		  skip = 0;
+		  if ($4*$4 < 2.2204e-16) {
+                      cout<<"WARNING: Measurement of "<<$2<<" will not be used in fit. Uncertainty too small."<<endl;
+		      cout<<"         Too small uncertainties cause numerical problems with covariance matrix inversion."<<endl;
+		      cout<<"         Press any key to continue."<<endl;
+                      getchar();
+		      skip = 1;
+                  }
+		  if (!skip) {
+		      for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+			if (!yyMeasuredVec[i].name.compare($2)) {
+			  found = 1;
+			  yyMeasuredVec[i].value = $3;
+			  yyMeasuredVec[i].error = $4;
+			  struct correrrorstruct *tagmap = $5;
+			  for (unsigned int j=0; j<10; j++) {
+			     string tmpString = (*tagmap).key[j].keyname;
+			     double tmpDouble = (*tagmap).value[j];
+		             pair<string, double> tmpPair(tmpString, tmpDouble);
+			     yyMeasuredVec[i].correrror.insert(tmpPair);
+			  }
+			  yyMeasuredVec[i].correrror.erase("0");
+			  break;
+			}
+		      }
+		      if (found == 0) {
+			  MeasuredValue tmpValue;
+			  tmpValue.nofit = false;
+			  tmpValue.name = $2;
+			  tmpValue.value = $3;
+			  tmpValue.error = $4;
+                          struct correrrorstruct *tagmap = $5;
+			  for (unsigned int j=0; j<10; j++) {
+			     string tmpString = (*tagmap).key[j].keyname;
+			     double tmpDouble = (*tagmap).value[j];
+		             pair<string, double> tmpPair(tmpString, tmpDouble);
+			     tmpValue.correrror.insert(tmpPair);
+			  }
+			  tmpValue.correrror.erase("0");
+			  tmpValue.type = mass;
+			  tmpValue.theovalue  = 0;
+			  tmpValue.bound_low = 0.;
+			  tmpValue.bound_up = 0.;
+			  tmpValue.alias = 0;
+			  tmpValue.id = 0;
+			  if (!strncmp($2, "mass", 4))tmpValue.type = mass;
+			  else tmpValue.type = other;
+			  yyMeasuredVec.push_back(tmpValue);
+			  if (!strncmp($2, "cos", 3)) {
+			    cout << "COS: " << tmpValue.name << " " << tmpValue.type << endl;
+			  }
+		      }
+                  }
 	      }
 	    | input T_KEY value value
 	      {
@@ -955,7 +1027,7 @@ input:
 		  tmpValue.name.append(srtt);
 		  tmpValue.type  = Pedge;
 		  tmpValue.id    = (int)$3;
-		  if (tmpValue.id<1 || tmpValue.id>7) {      // line changed by Mathias Uhlenbrock to allow edge types 6 and 7
+		  if (tmpValue.id<1 || tmpValue.id>7) {
                     yyerror("edge type not implemented");
                   } 
 		  string str;
@@ -2466,6 +2538,41 @@ value:     T_NUMBER                        { $$ = $1; }
            | T_NUMBER T_ENERGYUNIT         { $$ = $1 * TMath::Power(10, $2); }
            | T_NUMBER T_CROSSSECTIONUNIT   { $$ = $1 * TMath::Power(10, $2); }
            ;
+
+correrr:   T_ERRORSIGN T_BRA T_WORD T_KET value 
+              {
+		 struct correrrorstruct tagmap;
+		 strcpy(tagmap.key[0].keyname, $3);
+		 tagmap.value[0] = $5;
+		 unsigned int i;
+		 for (i=1; i<10; i++) {
+		    strcpy(tagmap.key[i].keyname, "0");
+		    tagmap.value[i] = 0;
+		 }
+		 struct correrrorstruct *correrrorptr = &tagmap;
+ 		 $$ = correrrorptr;
+ 	      }
+           | correrr T_ERRORSIGN T_BRA T_WORD T_KET value
+	      {
+		 struct correrrorstruct *tmpcorrerrorptr = $1;
+		 struct correrrorstruct tagmap;
+		 unsigned int i;
+		 for (i=0; i<10; i++) {
+		    tagmap.value[i] = (*tmpcorrerrorptr).value[i];
+		    strcpy(tagmap.key[i].keyname, (*tmpcorrerrorptr).key[i].keyname);
+		 }
+		 unsigned int j;
+		 for (j=0; j<10; j++) { 
+		    if (tagmap.value[j] == 0) {
+		       tagmap.value[j] = $6;
+                       strcpy(tagmap.key[j].keyname, $4);
+		       break;
+		    }
+		 }
+		 struct correrrorstruct *correrrorptr = &tagmap;
+		 $$ = correrrorptr;
+	      }
+            ;
 
 %%
 

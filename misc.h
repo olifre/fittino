@@ -144,7 +144,8 @@ struct MeasuredValue {
   double          value;
   double          error;  // total error (added in quadrature)
   double          staterr; // statistical error
-  vector< pair<int, double> > correrr; // 100 % correlated errors
+  map<string, double> correrror; // modified by Mathias Uhlenbrock
+  unsigned int    position;
   double          theovalue;
   bool            theoset;
   bool            first;
@@ -215,39 +216,45 @@ extern double        sRecCos2PhiL;
 extern double        sRecCos2PhiR;
 extern double        sRecMassTop;
 
-
-class CorrelationMatrix {
-protected:
-    const vector<MeasuredValue>*    fVector;
-
-    TMatrixDSym*                 fCorrelationMatrix;
-    TMatrixDSym*                 fCovarianceMatrix;
-    TMatrixDSym*                 fInverseCovarianceMatrix;
-
-public:
-    CorrelationMatrix() { fVector = 0; fCorrelationMatrix = 0, fCovarianceMatrix = 0, fInverseCovarianceMatrix = 0; }
-    CorrelationMatrix(const vector<MeasuredValue>* vec);
-    CorrelationMatrix(const CorrelationMatrix& other);
-    virtual ~CorrelationMatrix();
-
-    void     add(unsigned int index1, unsigned int index2, double entry);
-    void     add(const string& name1, const string& name2, double entry);
-    double   GetCorrelation(int index1, int index2) const  { return (*fCorrelationMatrix)(index1,index2); }
-    double   GetCorrelation(const string& name1, const string& name2) const;
-    double   GetCovariance(int index1, int index2) const { return (*fCovarianceMatrix)(index1, index2); }
-    double   GetCovariance(const string& name1, const string& name2) const;
-    double   GetInverseCovariance(int index1, int index2) const { return (*fInverseCovarianceMatrix)(index1, index2); }
-    double   GetInverseCovariance(const string& name1, const string& name2) const;
-
-    void     CalculateCovarianceMatrix();
-
-    CorrelationMatrix& operator=(const CorrelationMatrix& source);
-    const double& operator()(int rown, int coln) const
-                  { return (const double&)((*fCorrelationMatrix)(rown, coln)); }
-
-    const TMatrixDSym&      GetCovarianceMatrix() const { return *fCovarianceMatrix; }
+class TagMap : public map<string, vector<MeasuredValue*> > {
+   private:
+      vector<MeasuredValue>* fMeasuredVector;
+   public:
+      TagMap(vector<MeasuredValue>* measuredvector);
+      void print();
 };
 
+class CorrelationMatrix {
+   protected:
+      const vector<MeasuredValue>* fMeasuredVector;
+      TagMap*                      fTagMap;
+      TMatrixDSym*                 fInverseCovarianceMatrix;
+      TMatrixDSym*                 fCorrelationMatrix;
+      TMatrixDSym*                 fCovarianceMatrix;
+   public:
+      CorrelationMatrix(); 
+      CorrelationMatrix(const vector<MeasuredValue>* measuredvector);
+      CorrelationMatrix(const vector<MeasuredValue>* measuredvector, TagMap* tagmap);
+      CorrelationMatrix(const CorrelationMatrix& another);
+
+      virtual ~CorrelationMatrix();
+
+      const double& operator()(int rown, int coln) const;
+      CorrelationMatrix& operator=(const CorrelationMatrix& source);
+
+      const TMatrixDSym& GetCovarianceMatrix() const;
+      double GetCorrelation(const string& name1, const string& name2) const;
+      double GetCorrelation(unsigned int index1, unsigned int index2) const;
+      double GetCovariance(const string& name1, const string& name2) const;
+      double GetCovariance(unsigned int index1, unsigned int index2) const;
+      double GetInverseCovariance(const string& name1, const string& name2) const;
+      double GetInverseCovariance(unsigned int index1, unsigned int index2) const;
+      void add(const string& name1, const string& name2, double entry);
+      void add(unsigned int index1, unsigned int index2, double entry);
+      void calculate();
+      void CalculateCovarianceMatrix();
+      void print();
+};
 
 TVectorD getCorrelatedRandomNumbers(const TVectorD& mean, const TMatrixDSym& covarianceMatrix);
 

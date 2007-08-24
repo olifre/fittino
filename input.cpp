@@ -73,8 +73,7 @@ Input::Input(const char* inputfile)
   //  cout << "after yyparse" << endl;
   //  DumpMeasuredVector();
 
-
-  /* Fill IDs, bounds*/
+  /* Fill IDs, bounds, positions */
   for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
     if ( yyMeasuredVec[i].bound_low == 0. && yyMeasuredVec[i].bound_up == 0. ) {
       yyMeasuredVec[i].bound_low = -1.e+6; // MINDOUBLE;
@@ -89,15 +88,33 @@ Input::Input(const char* inputfile)
   /* fill IDs */
   Fill_IDs();
 
+  //filling positions
+  for(unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+     yyMeasuredVec[i].position = i;
+  }
+
   //  cout << "after Fill_IDs" << endl;
   //  DumpMeasuredVector();
- 
-
 
   /* fill diagonal elements of correlation matrix, calculate covariance matrix and its inverse */
   for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
     yyMeasuredCorrelationMatrix.add(i, i, 1);
   }
+
+  TagMap* yyTagMap = new TagMap(&yyMeasuredVec);
+  //yyTagMap->print();
+
+  if (!yyTagMap->empty()) {
+     CorrelationMatrix* yyCorrelationMatrix = new CorrelationMatrix(&yyMeasuredVec, yyTagMap);
+     yyCorrelationMatrix->calculate();
+
+     for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+	for (unsigned int j=i; j<yyMeasuredVec.size(); j++) {
+	   yyMeasuredCorrelationMatrix.add(i,j,yyCorrelationMatrix->GetCorrelation(i,j));
+	}
+     }
+  }
+ 
   cout << "filling measured covariances "<< endl;
   yyMeasuredCorrelationMatrix.CalculateCovarianceMatrix();
   
@@ -140,8 +157,6 @@ Input::Input(const char* inputfile)
 
   //cout << "before End" << endl;
   //DumpMeasuredVector();
-  
-  
 }
 
 
