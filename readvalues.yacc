@@ -580,7 +580,7 @@ input:
 		      yyMeasuredCorrelationMatrix.add(i, j, $5);
 		  }
 	      }
-            | input T_KEY value err correrr // modified by Mathias Uhlenbrock
+            | input T_KEY value err correrr
 	      {
 //		  yyInputFileLine.prevalue  = $4;
 //		  yyInputFileLine.prevalue += "\t";
@@ -641,6 +641,84 @@ input:
 		      }
                   }
 	      }
+	    | input T_KEY T_NUMBER sentence value err correrr T_ALIAS T_NUMBER // modified by Mathias Uhlenbrock
+	      {
+		//char c[1000];
+		//yyInputFileLine.prevalue  = $2;
+		//yyInputFileLine.prevalue += " ";
+		//sprintf(c, "%d", (int)$3);
+		//yyInputFileLine.prevalue += c;
+		//yyInputFileLine.prevalue += " ";
+		//yyInputFileLine.prevalue += $4;
+                //yyInputFileLine.value = $5;
+                //yyInputFileLine.error = $6;
+		//yyInputFileLine.postvalue = "\talias ";
+		//sprintf(c, "%d", (int)$8);
+		//yyInputFileLine.postvalue += c;
+
+		if (!strcmp($2, "edge")) {
+		  MeasuredValue tmpValue;
+                  tmpValue.nofit = false;
+		  tmpValue.theovalue  = 0;
+		  tmpValue.name = "edge type ";
+		  char srtt[20];
+		  sprintf(srtt,"%d",(int)$3);
+		  tmpValue.name.append(srtt);
+		  tmpValue.name.append(" alias ");
+		  sprintf(srtt,"%d:",(int)$9);
+		  tmpValue.name.append(srtt);
+		  tmpValue.type  = Pedge;
+		  tmpValue.id    = (int)$3;
+		  if (tmpValue.id<1 || tmpValue.id>7) {
+                    yyerror("edge type not implemented");
+                  } 
+		  string str;
+	          str.erase();
+		  str = $4;
+//		  cout << "decompositing string "<<str<< endl;
+		  char tmpstr2[255];
+		  unsigned int pos = 0, newpos = 0;
+//		  int anti = 1;
+	          int i = 0;
+		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		      str.copy(tmpstr2, newpos - pos, pos);
+//	              cout << "tmpstr2 after str.copy "<<tmpstr2<< endl;
+	              tmpstr2[newpos-pos] = '\0';
+		      if (tmpstr2[newpos-pos-1] == '~') {
+			  tmpstr2[newpos-pos-1] = '\0';
+		      }
+                      if (!strncmp(tmpstr2,"mass",4)) {
+//			cout << "substracting mass" << endl;
+                        while (tmpstr2[i] != '\0') {
+                          tmpstr2[i] = tmpstr2[i+4];
+			  i++;
+                        }
+                        i = 0;
+                      }
+		      else {
+			  tmpstr2[newpos-pos] = '\0';
+		      }
+		      pos = newpos + 1;
+//		      cout << "Adding Element: " << tmpstr2 << " with ID " <<  yyParticleIDs[tmpstr2] << endl;
+		      tmpValue.daughters.push_back(yyParticleIDs[tmpstr2]);
+		  }
+		  tmpValue.value = $5;
+		  tmpValue.error = $6;
+                  struct correrrorstruct *tagmap = $7;
+		  for (unsigned int j=0; j<10; j++) {
+		     string tmpString = (*tagmap).key[j].keyname;
+		     double tmpDouble = (*tagmap).value[j];
+		     pair<string, double> tmpPair(tmpString, tmpDouble);
+		     tmpValue.correrror.insert(tmpPair);
+		  }
+		  tmpValue.correrror.erase("0");
+		  tmpValue.alias = (int)$9;
+		  tmpValue.bound_up = 1e+6;
+		  tmpValue.bound_low = 0.;
+		  yyMeasuredVec.push_back(tmpValue);
+		  strcpy($4,"");
+		}
+              }
 	    | input T_KEY value value
 	      {
 		  char c[1000];
