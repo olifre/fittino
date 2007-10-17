@@ -600,11 +600,15 @@ input:
 			if (!yyMeasuredVec[i].name.compare($2)) {
 			  found = 1;
 			  yyMeasuredVec[i].value = $3;
-			  yyMeasuredVec[i].error = $4;
 			  struct correrrorstruct *tagmap = $5;
+			  double tmpError = $4*$4;
 			  for (unsigned int j=0; j<10; j++) {
-			     string tmpString = (*tagmap).key[j].keyname;
-			     double tmpDouble = (*tagmap).value[j];
+			     tmpError += (*tagmap).value[j]*(*tagmap).value[j];
+			  }
+			  yyMeasuredVec[i].error = TMath::Sqrt(tmpError);
+			  for (unsigned int k=0; k<10; k++) {
+			     string tmpString = (*tagmap).key[k].keyname;
+			     double tmpDouble = (*tagmap).value[k];
 		             pair<string, double> tmpPair(tmpString, tmpDouble);
 			     yyMeasuredVec[i].correrror.insert(tmpPair);
 			  }
@@ -617,11 +621,15 @@ input:
 			  tmpValue.nofit = false;
 			  tmpValue.name = $2;
 			  tmpValue.value = $3;
-			  tmpValue.error = $4;
                           struct correrrorstruct *tagmap = $5;
+			  double tmpError = $4*$4;
 			  for (unsigned int j=0; j<10; j++) {
-			     string tmpString = (*tagmap).key[j].keyname;
-			     double tmpDouble = (*tagmap).value[j];
+			     tmpError += (*tagmap).value[j]*(*tagmap).value[j];
+			  }
+			  tmpValue.error = TMath::Sqrt(tmpError);
+			  for (unsigned int k=0; k<10; k++) {
+			     string tmpString = (*tagmap).key[k].keyname;
+			     double tmpDouble = (*tagmap).value[k];
 		             pair<string, double> tmpPair(tmpString, tmpDouble);
 			     tmpValue.correrror.insert(tmpPair);
 			  }
@@ -703,11 +711,15 @@ input:
 		      tmpValue.daughters.push_back(yyParticleIDs[tmpstr2]);
 		  }
 		  tmpValue.value = $5;
-		  tmpValue.error = $6;
                   struct correrrorstruct *tagmap = $7;
+		  double tmpError = $6*$6;
 		  for (unsigned int j=0; j<10; j++) {
-		     string tmpString = (*tagmap).key[j].keyname;
-		     double tmpDouble = (*tagmap).value[j];
+		     tmpError += (*tagmap).value[j]*(*tagmap).value[j];
+		  }
+		  tmpValue.error = TMath::Sqrt(tmpError);
+		  for (unsigned int k=0; k<10; k++) {
+		     string tmpString = (*tagmap).key[k].keyname;
+		     double tmpDouble = (*tagmap).value[k];
 		     pair<string, double> tmpPair(tmpString, tmpDouble);
 		     tmpValue.correrror.insert(tmpPair);
 		  }

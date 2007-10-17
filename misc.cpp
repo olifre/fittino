@@ -201,9 +201,6 @@ void CorrelationMatrix::calculate() {
    /* calculating diagonal entries of covariance matrix */
    for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
       (*fCovarianceMatrix)(i, i) = ((*fMeasuredVector)[i].error)*((*fMeasuredVector)[i].error);
-      for (map<string, double>::const_iterator correrrorentry = (*fMeasuredVector)[i].correrror.begin(); correrrorentry != (*fMeasuredVector)[i].correrror.end(); correrrorentry++) {
-	 (*fCovarianceMatrix)(i, i) += (correrrorentry->second)*(correrrorentry->second);
-      }
    }
 
    /* calculating next to diagonal elements of covariance matrix */
