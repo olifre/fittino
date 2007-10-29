@@ -136,10 +136,11 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "TreeSum.root",
 	gauss[iLeaf]->SetLineColor(kRed);
 
 	if (!strcmp(leaf->GetName(), "Chi2")) {
-	    chi2 = new TF1("chi2", chi2Function,  histo[iLeaf]->GetXaxis()->GetXmin(),
+	    chi2 = new TF1("chi2", chi2Function,
+			   TMath::Max( histo[iLeaf]->GetXaxis()->GetXmin(), 0.0),
 			   histo[iLeaf]->GetXaxis()->GetXmax(), 2);
 
-	    chi2->SetParNames("Norm", "ndof");
+	    chi2->SetParNames("norm", "ndf");
 	    chi2->SetParameter(0, 0.1 * histo[iLeaf]->Integral());
 	    chi2->SetParameter(1, 10);
 	    chi2->SetLineColor(kRed);
