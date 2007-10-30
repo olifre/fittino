@@ -115,6 +115,9 @@ Q[ \t]*=                  {
 			      if (!strcmp(yytext, "Calculator")) { 
 				  return T_CALCULATOR;
                               }
+			      if (!strcmp(yytext, "RelicDensityCalculator")) { 
+				  return T_RELICDENSITYCALCULATOR;
+			      }
 			      if (!strcmp(yytext, "BR")) {
 				  return T_BR;
 			      }

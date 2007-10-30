@@ -143,11 +143,12 @@ bool          yySimAnnUncertainty = false;
 bool          yySimAnnUncertaintyRunDown = false;
 bool          yyRandomDirUncertainties = false;
 bool          yyPerformSingleFits = false;
-bool          yyUseMicrOmegas = false;
 bool          yyUseHiggsLimits = false;
 
 unsigned int yyCalculator;
+unsigned int yyRelicDensityCalculator;
 string       yyCalculatorPath = "";
+string       yyRelicDensityCalculatorPath = "";
 
 unsigned int yyFitModel = MSSM;
  
@@ -227,7 +228,7 @@ struct correrrorstruct {
 %token <real> T_NUMBER
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
 %token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS T_NOFIT
-%token T_BLOCK T_SCALE T_DECAY T_NEWLINE T_BR T_LEO T_XS T_CALCULATOR T_XSBR T_BRRATIO
+%token T_BLOCK T_SCALE T_DECAY T_NEWLINE T_BR T_LEO T_XS T_CALCULATOR T_RELICDENSITYCALCULATOR T_XSBR T_BRRATIO
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH T_NEWLINE
  
 %type <name>   sentence
@@ -866,10 +867,6 @@ input:
 		      if ($3 == on) yyPerformSingleFits = true;
 		      else yyPerformSingleFits = false;
 		  } 
- 		  if (!strcmp($2, "UseMicrOmegas")) {
-		      if ($3 == on) yyUseMicrOmegas = true;
-		      else yyUseMicrOmegas = false;
-		  } 	      
  		  if (!strcmp($2, "UseHiggsLimits")) {
 		      if ($3 == on) yyUseHiggsLimits = true;
 		      else yyUseHiggsLimits = false;
@@ -903,6 +900,29 @@ input:
 		      yyCalculator = SUSPECT;
 		   }
 	           yyCalculatorPath = $4;
+	      }
+	    | input T_RELICDENSITYCALCULATOR T_WORD
+	      {
+                   yyInputFileLine.prevalue  = "RelicDensityCalculator";
+		   yyInputFileLine.prevalue += "\t";
+		   yyInputFileLine.prevalue += $3;
+
+		   if (!strcmp($3, "MICROMEGAS")) {
+		      yyRelicDensityCalculator = MICROMEGAS;
+		   }
+	      }
+	    | input T_RELICDENSITYCALCULATOR T_WORD T_PATH
+	      {
+                   yyInputFileLine.prevalue  = "RelicDensityCalculator";
+		   yyInputFileLine.prevalue += "\t";
+		   yyInputFileLine.prevalue += $3;
+		   yyInputFileLine.prevalue += " ";
+                   yyInputFileLine.prevalue += $4;
+
+		   if (!strcmp($3, "MICROMEGAS")) {
+		      yyRelicDensityCalculator = MICROMEGAS;
+		   }
+	           yyRelicDensityCalculatorPath = $4;
 	      }
 	    | input T_KEY T_WORD
 	      {

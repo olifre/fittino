@@ -2245,7 +2245,7 @@ void Fittino::calculateLoopLevelValues()
 	for (int k = 4; k > -1; k--) {
 	  if (fabs(fittedParErr[ipar][iobs])<fivelargest[k]) {
 	    // fprintf (stderr, "correlation from %s is stronger than previous on pos %d\n",obsnames[j],k);
-	    for (unsigned int l = 0; l < k; l++) {
+	    for (int l = 0; l < k; l++) {
 	      fivelargest[l]=fivelargest[l+1];
 	      fivelargestint[l]=fivelargestint[l+1];
 	    }
@@ -2977,7 +2977,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
     return;        
   }
 
-  if (yyUseMicrOmegas) {
+  if (yyRelicDensityCalculator == MICROMEGAS) {
     rc = callMicrOmegas(x);
     // disable this, since MicOmegas has the annoying feature of returning 2 if 
     // neutralino1 is not LSP
@@ -2989,7 +2989,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
       cerr << "Exiting fitterFCN because of problem in MicrOmegas run" << endl;
       f = 111111111111.;
       cout << " f = " << f << endl;
-      return;              
+      return;
     }
   }
 
@@ -3150,7 +3150,7 @@ int callMicrOmegas (double* x)
   char value[256];
   int rc;
 
-  cout << "using micromegas" << endl;
+  cout << "using relic density calculator MicrOmegas" << endl;
 
 //  if (FindInFixed("M0")) {
 //    sprintf (value, " %f", ReturnFixedValue("M0")->value);
@@ -3277,7 +3277,7 @@ int callMicrOmegas (double* x)
 	 << argv[5] << ", " 
 	 << argv[6] << ", " 
 	 << endl;
-    rc = execve("./sugomg", argv, environ );
+    rc = execve(yyRelicDensityCalculatorPath.c_str(), argv, environ);
     cout << "retourning from execve "<< rc<< endl;
     exit (rc);
   }
@@ -6190,7 +6190,7 @@ void Fittino::hybridMonteCarlo()
   }
 
   for (int cycle = 0; cycle < ncycles; cycle++) {
-    for (int i=0; i < yyFittedVec.size(); i++ ) {
+    for (unsigned int i=0; i < yyFittedVec.size(); i++ ) {
       p0[i] = gRandom->Gaus(0, 1);
     }
     double H0 = hamiltonian(yyFittedVec.size(), q0, p0);
@@ -7735,7 +7735,7 @@ void Fittino::markovChain (TNtuple *ntuple)
 
   std::cout << "Starting Markov Chain algorithm" << std::endl;
   std::cout << "Starting with the following variables and bounds" << std::endl;
-  for (int iVariable = 0; iVariable < x.size(); iVariable++) 
+  for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) 
     {
       std::cout << iVariable << " " << x[iVariable] << " [" << lb[iVariable] << "," << ub[iVariable] << "]" << std::endl;
     }
@@ -7743,7 +7743,7 @@ void Fittino::markovChain (TNtuple *ntuple)
   while (1)
     {
       bool stop = false;
-      for (int iVariable = 0; iVariable < x.size(); iVariable++) 
+      for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) 
 	{
 
 	  niter++;
@@ -7751,7 +7751,7 @@ void Fittino::markovChain (TNtuple *ntuple)
 	  // choose new point
 	  if (!yyMarkovChainReadjustWidth)
 	    {
-	      for (int iiVariable = 0; iiVariable < x.size(); iiVariable++) 
+	      for (unsigned int iiVariable = 0; iiVariable < x.size(); iiVariable++) 
 		{
 		  bool outOfBounds = false;
 		  bool first = true;
@@ -7770,7 +7770,7 @@ void Fittino::markovChain (TNtuple *ntuple)
 	    }
 	  else
 	    {
-	      for (int iiVariable = 0; iiVariable < x.size(); iiVariable++) 
+	      for (unsigned int iiVariable = 0; iiVariable < x.size(); iiVariable++) 
 		{
 		  if (iiVariable == iVariable) 
 		    {
@@ -7797,7 +7797,7 @@ void Fittino::markovChain (TNtuple *ntuple)
 	  
 	  std::cout << "looking at Markov Chain for variable " << iVariable 
 		    << " in step " << niter << std::endl;
-	  for (int iiiVariable = 0; iiiVariable < x.size(); iiiVariable++) 
+	  for (unsigned int iiiVariable = 0; iiiVariable < x.size(); iiiVariable++) 
 	    {
 	      std::cout 
 		<< iiiVariable << " " 
@@ -7896,7 +7896,7 @@ void Fittino::markovChain (TNtuple *ntuple)
 	    {
 	      if (niter%yyMarkovChainReadjustWidthPeriod==0 && niter>0)
 		{
-		  for (int iiiVariable = 0; iiiVariable < x.size(); iiiVariable++) 
+		  for (unsigned int iiiVariable = 0; iiiVariable < x.size(); iiiVariable++) 
 		    {		
 		      double ratio = (double) nacp[iiiVariable] / (double) ntest[iiiVariable] ;
 		      if (ratio > 0.6) {
@@ -7908,7 +7908,7 @@ void Fittino::markovChain (TNtuple *ntuple)
 			vm[iiiVariable] = ub[iiiVariable] - lb[iiiVariable];
 		      }	
 		    }
-		  for (int iiiVariable = 0; iiiVariable < x.size(); ++iiiVariable) {
+		  for (unsigned int iiiVariable = 0; iiiVariable < x.size(); ++iiiVariable) {
 		    nacp[iiiVariable] = 0;
 		    ntest[iiiVariable] = 0;
 		  }		
@@ -7918,7 +7918,7 @@ void Fittino::markovChain (TNtuple *ntuple)
 	  // save variables 
 	  if (accpoint == 1)
 	    {
-	      for (int i = 0; i < x.size(); ++i) {
+	      for (unsigned int i = 0; i < x.size(); ++i) {
 		x[i] = xp[i];
 	      }
 	      previousRho        = rho;
@@ -7948,7 +7948,7 @@ void Fittino::markovChain (TNtuple *ntuple)
 double Fittino::calculateQ(vector<double> x, vector<double> xk, vector<double> vm)
 {
   double Q = 1.;
-  for (int iVariable = 0; iVariable < x.size(); iVariable++) 
+  for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) 
     {
       Q = Q * 1/(TMath::Sqrt(2.*3.1412759)*vm[iVariable])*
 	TMath::Exp(-sqr(x[iVariable]-xk[iVariable])/(2.*sqr(vm[iVariable])));

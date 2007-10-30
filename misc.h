@@ -113,6 +113,7 @@ using namespace std;
 
 enum SwitchState    { off, on };
 enum Calculator     { SPHENO, SUSPECT, SPHENO_FH };
+enum RelicDensityCalculator { NONE, MICROMEGAS };
 enum ObservableType { mass, Pwidth, xsection, br, xsectionbr, Pedge, xsbr, brratio, brsum, LEObs, brprod, other };
 //   LEObservables  { bsg,                                           gmin2,          drho, omega };
 enum LEObservables  { bsg, bsmm, B_smm, B_utn, dMB_d, dMB_s, gmin2e, gmin2m, gmin2t, drho, omega };
@@ -131,10 +132,11 @@ enum higgsLimitProcesses
     higgsLimitProcessesLast
   };
 
-extern bool          yyUseLoopCorrections;
-extern bool          yyCalcPullDist;
-extern bool          yyScanParameters;
+extern bool         yyUseLoopCorrections;
+extern bool         yyCalcPullDist;
+extern bool         yyScanParameters;
 extern unsigned int yyCalculator;
+extern unsigned int yyRelicDensityCalculator;
 extern map<int,string> yyParticleNames;
 extern map<string,int> yyParticleIDs;
 
@@ -221,7 +223,7 @@ class TagMap : public map<string, vector<MeasuredValue*> > {
       vector<MeasuredValue>* fMeasuredVector;
    public:
       TagMap(vector<MeasuredValue>* measuredvector);
-      void print();
+      void Print();
 };
 
 class CorrelationMatrix {
@@ -251,9 +253,9 @@ class CorrelationMatrix {
       double GetInverseCovariance(unsigned int index1, unsigned int index2) const;
       void add(const string& name1, const string& name2, double entry);
       void add(unsigned int index1, unsigned int index2, double entry);
-      void calculate();
+      void Calculate();
       void CalculateCovarianceMatrix();
-      void print();
+      void Print();
 };
 
 TVectorD getCorrelatedRandomNumbers(const TVectorD& mean, const TMatrixDSym& covarianceMatrix);

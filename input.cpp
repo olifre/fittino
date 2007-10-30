@@ -34,6 +34,7 @@ Input::Input(const char* inputfile)
 {
   // Set defaults
   yyCalculator = SPHENO;
+  yyRelicDensityCalculator = NONE;
   yyISR       = true;
   FillNameMap();
   
@@ -102,11 +103,11 @@ Input::Input(const char* inputfile)
   }
 
   TagMap* yyTagMap = new TagMap(&yyMeasuredVec);
-  //yyTagMap->print();
+  //yyTagMap->Print();
 
   if (!yyTagMap->empty()) {
      CorrelationMatrix* yyCorrelationMatrix = new CorrelationMatrix(&yyMeasuredVec, yyTagMap);
-     yyCorrelationMatrix->calculate();
+     yyCorrelationMatrix->Calculate();
 
      for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
 	for (unsigned int j=i; j<yyMeasuredVec.size(); j++) {

@@ -189,7 +189,7 @@ void pairsort (ind_chisq_T* array, int length)
 
   while (sorted==0) {
     sorted = 1;
-    for (unsigned int i = 0; i < (length-1); i++) {
+    for (int i = 0; i < (length-1); i++) {
       if (array[i].chisq<array[i+1].chisq) {
 	sorted = 0;
 	intermediate_array_element.name = array[i].name;

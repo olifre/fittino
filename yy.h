@@ -75,7 +75,6 @@ extern bool          yySimAnnUncertainty;
 extern bool          yySimAnnUncertaintyRunDown;
 extern bool          yyRandomDirUncertainties;
 extern bool          yyPerformSingleFits;
-extern bool          yyUseMicrOmegas;
 extern bool          yyUseHiggsLimits;
 
 typedef struct {
@@ -91,6 +90,7 @@ extern vector<ScanParameter> yyScanPar;
 extern vector<parameter_t> yyCorrelatedErr;
 
 extern string yyCalculatorPath;
+extern string yyRelicDensityCalculatorPath;
 extern int    yyParseError;
 extern int    yyNaN;
 extern int    yyInfinity;

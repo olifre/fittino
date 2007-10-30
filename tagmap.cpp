@@ -45,7 +45,7 @@ TagMap::TagMap(vector<MeasuredValue>* measuredvector) {
    }
 }
 
-void TagMap::print() {
+void TagMap::Print() {
    cout << "printing tagmap information:" << endl;
    cout << "tagmap size: " << this->size() << endl;
    cout << "tagmap structure:" << endl;

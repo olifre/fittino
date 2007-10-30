@@ -189,7 +189,7 @@ void CorrelationMatrix::add(unsigned int index1, unsigned int index2, double ent
    (*fCorrelationMatrix)(index2, index1) = entry;
 }
 
-void CorrelationMatrix::calculate() {
+void CorrelationMatrix::Calculate() {
    fCovarianceMatrix = new TMatrixDSym(fMeasuredVector->size());
    /* filling covariance matrix with zeros */
    for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
@@ -258,7 +258,7 @@ void CorrelationMatrix::CalculateCovarianceMatrix() {
 
 }
 
-void CorrelationMatrix::print() {
+void CorrelationMatrix::Print() {
    cout << "printing correlation matrix:" << endl;
    for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
       for (unsigned int j=0; j<fMeasuredVector->size(); j++) {
