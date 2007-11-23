@@ -2115,6 +2115,8 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
                           case 3:
                               yyParticleContent = (int)tmpParams[i][1];
                               break;
+                          case 6:
+                              break;
 			  default:
                               yyerror("Parameter in MODSEL not known");
                           }
@@ -2221,6 +2223,38 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 //========================================================================
                   else if (!strcmp($2, "alpha")) {
 		      cout << "ignoring block alpha" << endl;
+		  }
+//========================================================================
+                  else if (!strcmp($2, "USQmix")) {
+		      cout << "ignoring block USQmix" << endl;
+		  }
+//========================================================================
+                  else if (!strcmp($2, "DSQmix")) {
+		      cout << "ignoring block DSQmix" << endl;
+		  }
+//========================================================================
+                  else if (!strcmp($2, "IMUSQmix")) {
+		      cout << "ignoring block IMUSQmix" << endl;
+		  }
+//========================================================================
+                  else if (!strcmp($2, "IMDSQmix")) {
+		      cout << "ignoring block IMDSQmix" << endl;
+		  }
+//========================================================================
+                  else if (!strcmp($2, "SLmix")) {
+		      cout << "ignoring block SLmix" << endl;
+		  }
+//========================================================================
+                  else if (!strcmp($2, "IMSLmix")) {
+		      cout << "ignoring block IMSLmix" << endl;
+		  }
+//========================================================================
+                  else if (!strcmp($2, "SNmix")) {
+		      cout << "ignoring block SNmix" << endl;
+		  }
+//========================================================================
+                  else if (!strcmp($2, "IMSNmix")) {
+		      cout << "ignoring block IMSNmix" << endl;
 		  }
 //========================================================================
                   else if (!strcmp($2, "EXTPAR")) {
@@ -2357,16 +2391,16 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 			else if ((unsigned int)tmpParams[i][0]==2) {
      			  yybsmm=tmpParams[i][1]*1E6;
 			}
-			else if ((unsigned int)tmpParams[i][0]==3) {
+			else if ((unsigned int)tmpParams[i][0]==4) {
      			  yyB_smm=tmpParams[i][1]*1E9;
 			}
-			else if ((unsigned int)tmpParams[i][0]==4) {
+			else if ((unsigned int)tmpParams[i][0]==5) {
      			  yyB_utn=tmpParams[i][1];
 			}
-			else if ((unsigned int)tmpParams[i][0]==5) {
+			else if ((unsigned int)tmpParams[i][0]==6) {
      			  yydMB_d=tmpParams[i][1];
 			}
-			else if ((unsigned int)tmpParams[i][0]==6) {
+			else if ((unsigned int)tmpParams[i][0]==7) {
      			  yydMB_s=tmpParams[i][1];
 			}
 			else if ((unsigned int)tmpParams[i][0]==10) {

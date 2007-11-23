@@ -3867,7 +3867,6 @@ void WriteLesHouches(double* x)
 //      LesHouchesOutfile << "    8  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
 //    }
 
-
     // MINPAR
     LesHouchesOutfile << "BLOCK MINPAR" << endl;
     if (FindInFixed("TanBeta")) {
@@ -3889,6 +3888,7 @@ void WriteLesHouches(double* x)
       cerr << "Parameter TanBeta not declared" << endl;
       exit (EXIT_FAILURE);
     }
+
     // EXTPAR
     LesHouchesOutfile << "BLOCK EXTPAR" << endl;
     //    LesHouchesOutfile << "BLOCK MSOFT" << endl;
@@ -4412,6 +4412,7 @@ void WriteLesHouches(double* x)
 
     LesHouchesOutfile<<"Block MODSEL                 # Select model"<<endl;
     LesHouchesOutfile<<" 1    1                      # mSugra"<<endl;
+    LesHouchesOutfile<<" 6    1                      # Flavour violation in quark sector"<<endl;
     LesHouchesOutfile<<"Block SMINPUTS               # Standard Model inputs"<<endl;
     if (FindInFixed("alphaem")) {
       LesHouchesOutfile << "    1 "<<ReturnFixedValue("alphaem")->value<<" # 1/alpha_em (fixed)"<<endl;
@@ -4561,6 +4562,14 @@ void WriteLesHouches(double* x)
 //    else {
 //      LesHouchesOutfile << "    8  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
 //    }
+
+    // VCKM
+    LesHouchesOutfile << "BLOCK VCKMIN" << endl;
+    LesHouchesOutfile << "    1  0.2292 # theta12" << endl;
+    LesHouchesOutfile << "    2  0.04224 # theta23" << endl;
+    LesHouchesOutfile << "    3  0.0038903 # theta13" << endl;
+    LesHouchesOutfile << "    4  0.9944 # delta" << endl; // set CKM phase (rad), SPheno default value = 0
+    //    LesHouchesOutfile << "    4  0.0 # delta" << endl; // set CKM phase (rad), SPheno default value = 0
 
     LesHouchesOutfile<<"Block MINPAR                 # Input parameters"<<endl;
 
@@ -5252,7 +5261,6 @@ void WriteLesHouches(double* x)
     cerr<<"Unknown fit model in WriteLesHouches"<<endl;
     exit(EXIT_FAILURE);
   }
-
 
   //close file
   LesHouchesOutfile.close();
