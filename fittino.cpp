@@ -3052,10 +3052,10 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	  } else if (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j) > 1.E-12) {
 	    ncorr++;
 	  }
-	  if ((yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)>1.E-12) || 
-	      (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)<-1.E-12)) {
-	    //	    cout << (float)n_printouts/10. << " " << n_printouts/10 << endl;
-	    if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { // ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) (TMath::Mod(n_printouts,10)==0)
+	  if ( i == j && ( (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)>1.E-12) || 
+	      (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)<-1.E-12) ) ) {
+	    //	    cout << (float)n_printouts/10. << " " << n_printouts/11 << endl;
+	    if ( yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { // ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) (TMath::Mod(n_printouts,10)==0)
 	      cout << i << " " << j << " using obs " << yyMeasuredVec[i].name << " = " << yyMeasuredVec[i].value
 		   << "+-" << sqrt(yyMeasuredCorrelationMatrix.GetCovariance(i,j)) 
 		   << " (" << (TMath::Abs(yyMeasuredVec[i].value-yyMeasuredVec[i].theovalue))*sqrt(yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)) << ") " << " at theovalue = " 
