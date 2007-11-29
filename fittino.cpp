@@ -4412,7 +4412,9 @@ void WriteLesHouches(double* x)
 
     LesHouchesOutfile<<"Block MODSEL                 # Select model"<<endl;
     LesHouchesOutfile<<" 1    1                      # mSugra"<<endl;
-    LesHouchesOutfile<<" 6    1                      # Flavour violation in quark sector"<<endl;
+    if ( yyQuarkFlavourViolation ) {
+      LesHouchesOutfile<<" 6    1                      # Flavour violation in quark sector"<<endl;
+    }
     LesHouchesOutfile<<"Block SMINPUTS               # Standard Model inputs"<<endl;
     if (FindInFixed("alphaem")) {
       LesHouchesOutfile << "    1 "<<ReturnFixedValue("alphaem")->value<<" # 1/alpha_em (fixed)"<<endl;
@@ -4563,13 +4565,15 @@ void WriteLesHouches(double* x)
 //      LesHouchesOutfile << "    8  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
 //    }
 
-    // VCKM
-    LesHouchesOutfile << "BLOCK VCKMIN" << endl;
-    LesHouchesOutfile << "    1  0.2292 # theta12" << endl;
-    LesHouchesOutfile << "    2  0.04224 # theta23" << endl;
-    LesHouchesOutfile << "    3  0.0038903 # theta13" << endl;
-    LesHouchesOutfile << "    4  0.9944 # delta" << endl; // set CKM phase (rad), SPheno default value = 0
-    //    LesHouchesOutfile << "    4  0.0 # delta" << endl; // set CKM phase (rad), SPheno default value = 0
+    if ( yyQuarkFlavourViolation ) {
+      // VCKM
+      LesHouchesOutfile << "BLOCK VCKMIN" << endl;
+      LesHouchesOutfile << "    1  0.2292 # theta12" << endl;
+      LesHouchesOutfile << "    2  0.04224 # theta23" << endl;
+      LesHouchesOutfile << "    3  0.0038903 # theta13" << endl;
+      LesHouchesOutfile << "    4  0.9944 # delta" << endl; // set CKM phase (rad), SPheno default value = 0
+      //    LesHouchesOutfile << "    4  0.0 # delta" << endl; // set CKM phase (rad), SPheno default value = 0
+    }
 
     LesHouchesOutfile<<"Block MINPAR                 # Input parameters"<<endl;
 

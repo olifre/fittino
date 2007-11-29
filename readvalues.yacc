@@ -144,6 +144,7 @@ bool          yySimAnnUncertaintyRunDown = false;
 bool          yyRandomDirUncertainties = false;
 bool          yyPerformSingleFits = false;
 bool          yyUseHiggsLimits = false;
+bool          yyQuarkFlavourViolation = false;
 
 unsigned int yyCalculator;
 unsigned int yyRelicDensityCalculator;
@@ -870,6 +871,10 @@ input:
  		  if (!strcmp($2, "UseHiggsLimits")) {
 		      if ($3 == on) yyUseHiggsLimits = true;
 		      else yyUseHiggsLimits = false;
+		  } 	      
+ 		  if (!strcmp($2, "QuarkFlavourViolation")) {
+		      if ($3 == on) yyQuarkFlavourViolation = true;
+		      else yyQuarkFlavourViolation = false;
 		  } 	      
 	      }
 	    | input T_CALCULATOR T_WORD

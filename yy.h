@@ -76,6 +76,7 @@ extern bool          yySimAnnUncertaintyRunDown;
 extern bool          yyRandomDirUncertainties;
 extern bool          yyPerformSingleFits;
 extern bool          yyUseHiggsLimits;
+extern bool          yyQuarkFlavourViolation;
 
 typedef struct {
   string name;
