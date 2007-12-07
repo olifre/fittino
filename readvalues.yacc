@@ -413,7 +413,7 @@ input:
 			  tmpValue.alias = 0;
 			  tmpValue.id = 0;
 			  if (!strncmp($2, "mass", 4))tmpValue.type = mass;
-		          else if (!strcmp($2, "tauFromStauPolarisation")) tmpValue.type = tauFromStauPolarisation;
+		          else if (!strcmp($2, "tauFromStau1Polarisation")) tmpValue.type = tauFromStau1Polarisation;
 			  else tmpValue.type = other;
 			  yyMeasuredVec.push_back(tmpValue);
 			  if (!strncmp($2, "cos", 3)) {

@@ -5811,18 +5811,18 @@ int   ReadLesHouches()
 	yyMeasuredVec[i].theoset = true;
       }
     }
-    else if (yyMeasuredVec[i].type == tauFromStauPolarisation) {
+    else if (yyMeasuredVec[i].type == tauFromStau1Polarisation) {
       double a11R = - 2 * yyg / TMath::Sqrt(2) * yyN11 * yygprime / yyg * TMath::Sin(yyThetaStau) - yyYtau * yyN13 * TMath::Cos(yyThetaStau);
       double a11L = yyg / TMath::Sqrt(2) * ( yyN12 + yyN11 * yygprime / yyg ) * TMath::Cos(yyThetaStau) - yyYtau * yyN13 * TMath::Sin(yyThetaStau);
       yyMeasuredVec[i].theovalue = ( a11R * a11R - a11L * a11L ) / ( a11R * a11R + a11L * a11L );
-      cout << "g = " << yyg <<endl;
-      cout << "g' = " << yygprime <<endl;
-      cout << "N11 = " << yyN11 <<endl;
-      cout << "N12 = " << yyN12 <<endl;
-      cout << "N13 = " << yyN13 <<endl;
-      cout << "thetaStau = " << yyThetaStau <<endl;
-      cout << "Ytau = " << yyYtau <<endl;
-      cout << "pol = " << yyMeasuredVec[i].theovalue <<endl;
+//      cout << "g = " << yyg <<endl;
+//      cout << "g' = " << yygprime <<endl;
+//      cout << "N11 = " << yyN11 <<endl;
+//      cout << "N12 = " << yyN12 <<endl;
+//      cout << "N13 = " << yyN13 <<endl;
+//      cout << "thetaStau = " << yyThetaStau <<endl;
+//      cout << "Ytau = " << yyYtau <<endl;
+//      cout << "pol = " << yyMeasuredVec[i].theovalue <<endl;
       yyMeasuredVec[i].theoset = true;
     }
     else if (yyMeasuredVec[i].type == Pedge) {
