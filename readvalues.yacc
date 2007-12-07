@@ -64,6 +64,14 @@ double yyAlambda;
 double yyAkappa;
 double yyMuEff;
 
+double yyYtau;
+double yyg;
+double yygprime;
+double yyN11;
+double yyN12;
+double yyN13;
+double yyThetaStau;
+
 // SPINFO
 char yy_spectrum_calc_name[256];
 char yy_spectrum_calc_version[256];
@@ -405,6 +413,7 @@ input:
 			  tmpValue.alias = 0;
 			  tmpValue.id = 0;
 			  if (!strncmp($2, "mass", 4))tmpValue.type = mass;
+		          else if (!strcmp($2, "tauFromStauPolarisation")) tmpValue.type = tauFromStauPolarisation;
 			  else tmpValue.type = other;
 			  yyMeasuredVec.push_back(tmpValue);
 			  if (!strncmp($2, "cos", 3)) {
@@ -2450,11 +2459,17 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 //		    }
                   }
                   else if (!strcmp($2, "staumix")) {
+	            yyThetaStau = TMath::ACos(tmpParams[0][2]);
+
 //		    for (unsigned int i=0; i<tmpParams.size(); i++) {
 
 //		    }
                   }
                   else if (!strcmp($2, "Nmix")) {
+	            yyN11 = tmpParams[0][2];
+	            yyN12 = tmpParams[1][2];
+	            yyN13 = tmpParams[2][2];
+
 //		    for (unsigned int i=0; i<tmpParams.size(); i++) {
 
 //		    }
@@ -2486,6 +2501,14 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
               {
                   yyScale = $4;
                   printf("Reading block %s at scale %f...\n", $2, $4);
+
+		  if ( !strcmp( $2, "Ye" ) ) {
+		      yyYtau = tmpParams[2][2];
+                  }
+		  if ( !strcmp( $2, "gauge" ) ) {
+		      yygprime = tmpParams[0][1];
+		      yyg = tmpParams[1][1];
+                  }
 
                   tmpParams.clear();
               }

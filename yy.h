@@ -133,6 +133,14 @@ extern double        yygSquaredAh;  // hAZ coupling correction
 extern double        yygSquaredZh;  // hZZ coupling correction
 //==========================================================
 
+extern double        yyYtau; // tau Yukawa coupling
+extern double        yyg; // SU2 coupling constant
+extern double        yygprime; // U1 coupling constant
+extern double        yyN11; // neutralino mixing matrix element
+extern double        yyN12; // neutralino mixing matrix element
+extern double        yyN13; // neutralino mixing matrix element
+extern double        yyThetaStau; // stau mixing angle
+
 extern std::vector<InputFileLine> yyInputFile;
 extern int yyInputFileLineNo;
 
