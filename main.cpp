@@ -146,7 +146,7 @@ int main(int argc, char** argv)
       cout << "calculating tree level values" << endl;
       fittino->calculateTreeLevelValues(10000);
     }
-    else if (yyFitModel == mSUGRA || /*yyFitModel == XMSUGRA ||*/ yyFitModel == GMSB || yyFitModel == AMSB) {
+    else if (yyFitModel == mSUGRA || yyFitModel == XMSUGRA || yyFitModel == GMSB || yyFitModel == AMSB) {
       cout << "setting fit start values" << endl;
       fittino->setStartValues();
     }

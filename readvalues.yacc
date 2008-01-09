@@ -962,8 +962,8 @@ input:
 		      yyFitModel = MSSM;
 		    else if (!strcmp($3, "mSUGRA"))
 		      yyFitModel = mSUGRA;
-                    //else if (!strcmp($3, "XMSUGRA"))
-		    //  yyFitModel = XMSUGRA;
+                    else if (!strcmp($3, "XMSUGRA"))
+		      yyFitModel = XMSUGRA;
 		    else if (!strcmp($3, "GMSB"))
 		      yyFitModel = GMSB;
 		    else if (!strcmp($3, "AMSB"))
