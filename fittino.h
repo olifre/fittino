@@ -52,6 +52,7 @@ public:
 
     void calculateTreeLevelValues(int nthrows = 100000);
     void calculateLoopLevelValues();
+    void CalcFromRandPars(unsigned int nruns);
 
     void setStartValues();
 

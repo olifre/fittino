@@ -120,6 +120,7 @@ vector<parameter_t>   yyCorrelatedErr; // 100 % correlated errors
 
 vector <parameter_t> yyFixedPar;
 vector <parameter_t> yyFittedPar;
+vector <parameter_t> yyRandomPar;
 vector<ScanParameter> yyScanPar; // contains parameters to scan
 vector <parameter_t> indchisq_vec;
  
@@ -153,6 +154,7 @@ bool          yyRandomDirUncertainties = false;
 bool          yyPerformSingleFits = false;
 bool          yyUseHiggsLimits = false;
 bool          yyQuarkFlavourViolation = false;
+bool          yyRandomParameters = false;
 
 unsigned int yyCalculator;
 unsigned int yyRelicDensityCalculator;
@@ -660,7 +662,7 @@ input:
 		      }
                   }
 	      }
-	    | input T_KEY T_NUMBER sentence value err correrr T_ALIAS T_NUMBER // modified by Mathias Uhlenbrock
+	    | input T_KEY T_NUMBER sentence value err correrr T_ALIAS T_NUMBER
 	      {
 		//char c[1000];
 		//yyInputFileLine.prevalue  = $2;
@@ -679,12 +681,12 @@ input:
 		  MeasuredValue tmpValue;
                   tmpValue.nofit = false;
 		  tmpValue.theovalue  = 0;
-		  tmpValue.name = "edge type ";
+		  tmpValue.name = "edge_type_";
 		  char srtt[20];
 		  sprintf(srtt,"%d",(int)$3);
 		  tmpValue.name.append(srtt);
-		  tmpValue.name.append(" alias ");
-		  sprintf(srtt,"%d:",(int)$9);
+		  tmpValue.name.append("_alias_");
+		  sprintf(srtt,"%d",(int)$9);
 		  tmpValue.name.append(srtt);
 		  tmpValue.type  = Pedge;
 		  tmpValue.id    = (int)$3;
@@ -885,6 +887,10 @@ input:
 		      if ($3 == on) yyQuarkFlavourViolation = true;
 		      else yyQuarkFlavourViolation = false;
 		  } 	      
+                  if (!strcmp($2, "RandomParameters")) {
+		      if ($3 == on) yyRandomParameters = true;
+		      else yyRandomParameters = false;
+		  }
 	      }
 	    | input T_CALCULATOR T_WORD
 	      {
@@ -956,6 +962,8 @@ input:
 		      yyFitModel = MSSM;
 		    else if (!strcmp($3, "mSUGRA"))
 		      yyFitModel = mSUGRA;
+                    //else if (!strcmp($3, "XMSUGRA"))
+		    //  yyFitModel = XMSUGRA;
 		    else if (!strcmp($3, "GMSB"))
 		      yyFitModel = GMSB;
 		    else if (!strcmp($3, "AMSB"))
@@ -991,8 +999,15 @@ input:
 		    tmpparam.error = 0.;
                     yyFittedPar.push_back(tmpparam);
 		  }
+                  else if (!strcmp($2, "randomParameter")) {
+	            parameter_t tmpparam;
+                    tmpparam.name = $3;
+                    tmpparam.value = $4;
+		    tmpparam.error = 0.;
+                    yyRandomPar.push_back(tmpparam);
+		  }
                   else {
-                     yyerror ("Syntax error in Fixed or Fitted Par 1");
+                     yyerror ("Syntax error in Fixed, Fitted or Random Par 1");
                   }
 	      }
 	    | input T_KEY T_WORD value value T_NUMBER
@@ -1117,9 +1132,25 @@ input:
                     yyFixedPar.push_back(tmpparam);
 		  }
 */
+		  else if (!strcmp($2, "randomParameter")) {
+		    char c[1000];
+		    yyInputFileLine.prevalue  = $2;
+		    yyInputFileLine.prevalue += "\t";
+		    yyInputFileLine.prevalue += $3;
+		    sprintf(c, "%f", $4);
+		    yyInputFileLine.prevalue += c;
+		    yyInputFileLine.prevalue += "\t";
+		    sprintf(c, "%f", $6);
+		    yyInputFileLine.prevalue += c;
+	            parameter_t tmpparam;
+                    tmpparam.name = $3;
+                    tmpparam.value = $4;
+		    tmpparam.error = $6;
+                    yyRandomPar.push_back(tmpparam);
+		  }
                   else {
 		     cout << "name = " << $3 << endl;
-                     yyerror ("Syntax error in Fixed or Fitted Par 2");
+                     yyerror ("Syntax error in Fixed, Fitted or Random Par 2");
                   }
 
 	      }
@@ -1142,12 +1173,12 @@ input:
 		  MeasuredValue tmpValue;
                   tmpValue.nofit = false;
 		  tmpValue.theovalue  = 0;
-		  tmpValue.name = "edge type ";
+		  tmpValue.name = "edge_type_";
 		  char srtt[20];
 		  sprintf(srtt,"%d",(int)$3);
 		  tmpValue.name.append(srtt);
-		  tmpValue.name.append(" alias ");
-		  sprintf(srtt,"%d:",(int)$8);
+		  tmpValue.name.append("_alias_");
+		  sprintf(srtt,"%d",(int)$8);
 		  tmpValue.name.append(srtt);
 		  tmpValue.type  = Pedge;
 		  tmpValue.id    = (int)$3;

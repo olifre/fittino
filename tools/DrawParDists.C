@@ -176,6 +176,12 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "TreeSum.root",
     }
 
     TCanvas* c = new TCanvas("c", "Fittino Parameter Distribution", 0, 0, 700, 700);
+    c->SetBorderMode(0);
+    c->SetTopMargin(0.15);
+    c->SetBottomMargin(0.15);
+    c->SetLeftMargin(0.15);
+    c->SetRightMargin(0.15);
+    
     char epsfilename[256];
 
     for (Int_t iLeaf=0; iLeaf<nLeaves; iLeaf++) {

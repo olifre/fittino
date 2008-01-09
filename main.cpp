@@ -123,6 +123,10 @@ int main(int argc, char** argv)
     cout<<yyInputFile[i].postvalue;
   }
 
+  for (unsigned int i=0; i<yyRandomPar.size(); i++) {
+     cout << yyRandomPar[i].name << endl;
+  }
+
   if (yyCalcIndChisqContr) {
 
     IndChisq* indchisq = new IndChisq(input);
@@ -132,6 +136,7 @@ int main(int argc, char** argv)
     MakePullDist* makepulldist = new MakePullDist(input);
     makepulldist->CalcPullDist();
   }
+  
   else {
 
     cout << "constructing fittino" << endl;
@@ -141,18 +146,22 @@ int main(int argc, char** argv)
       cout << "calculating tree level values" << endl;
       fittino->calculateTreeLevelValues(10000);
     }
-    else if (yyFitModel == mSUGRA || yyFitModel == GMSB || yyFitModel == AMSB) {
+    else if (yyFitModel == mSUGRA || /*yyFitModel == XMSUGRA ||*/ yyFitModel == GMSB || yyFitModel == AMSB) {
       cout << "setting fit start values" << endl;
       fittino->setStartValues();
     }
-    
-    if (yyUseLoopCorrections) {
-      cout << "calculating loop level values" << endl;
-      fittino->calculateLoopLevelValues();
+    if (yyRandomParameters) {
+       fittino->CalcFromRandPars(1000);
     }
-    
-    if (yyPerformFit) {
-      fittino->writeResults("fittino.out");
+    else {
+       if (yyUseLoopCorrections) {
+	  cout << "calculating loop level values" << endl;
+	  fittino->calculateLoopLevelValues();
+       }
+
+       if (yyPerformFit) {
+	  fittino->writeResults("fittino.out");
+       }
     }
   }
 

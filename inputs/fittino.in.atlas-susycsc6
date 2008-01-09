@@ -55,11 +55,11 @@ alphaem    127.934   GeV +- 0.027   GeV
 #########################################################################
 
 ### mSUGRA SPS 1a benchmark point
-fitParameter M0       100
-fitParameter M12      300
-fitParameter A0      -300
-fitParameter TanBeta    6
-fixParameter SignMu     1
+randomParameter M0       100 GeV +-  0.5 GeV
+randomParameter M12      300 GeV +-  1   GeV 
+randomParameter A0      -300 GeV +- 20   GeV
+randomParameter TanBeta    6     +-  0.5
+fixParameter SignMu        1
 
 #########################################################################
 ### Switches                                                          ###
@@ -67,6 +67,7 @@ fixParameter SignMu     1
 
 fitModel                       mSUGRA
 
+RandomParameters               on
 LoopCorrections                on
 ISR                            on
 QuarkFlavourViolation          off
@@ -79,9 +80,9 @@ ScanX                          off
 SepFitTanbX                    off
 SepFitTanbMu                   off
 SepFitmA	               off
-Calculator                     SPHENO ../theorycodes/SPheno.3.beta20/bin/SPheno3
+Calculator                     SPHENO ./SPheno3
 UseMicrOmegas                  off
-UseMinos                       on
+UseMinos                       off
 UseHesse                       off
 NumberOfMinimizations          1
 ErrDef                         1.0

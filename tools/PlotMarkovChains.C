@@ -55,6 +55,7 @@ void PlotMarkovChains ()
 	  thisHist->GetYaxis()->SetTitleOffset(0.04);
 	  thisHist->GetXaxis()->SetTitleSize(0.04);
 	  thisHist->GetYaxis()->SetTitleSize(0.04);
+          gStyle->SetPalette(1,0);
 	  thisHist->Draw("colz");
 	  string fileName = variables[fVariable] + 
 	    variables[sVariable] +

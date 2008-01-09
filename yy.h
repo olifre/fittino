@@ -46,37 +46,39 @@ extern vector<MeasuredValue> yyFixedVec;  // contains mu, M1, M2 ...
 extern CorrelationMatrix     yyMeasuredCorrelationMatrix;
 extern CorrelationMatrix     yyFittedCorrelationMatrix;
 		        
-extern bool             yyUseLoopCorrections;
-extern bool             yyCalcPullDist;
-extern bool             yyScanParameters;
-extern bool             yyPerformFit;
-extern bool             yyISR;
-extern bool             yyCalculatorError;
-extern bool             yyUseMinos;
-extern bool             yyGetContours;
-extern bool             yyUseHesse;
-extern bool             yyUseSimAnnBefore;
-extern bool             yyUseSimAnnWhile;
-extern bool          yyUseMarkovChains;
-extern bool          yyMarkovChainReadjustWidth;
-extern bool             yyUseGivenStartValues;
-extern bool             yyFitAllDirectly;
-extern unsigned int     yyNumberOfMinimizations;
-extern bool             yyCalcIndChisqContr;
-extern bool             yyBoundsOnX;
-extern bool             yySepFitTanbX;
-extern bool             yySepFitTanbMu;
-extern bool             yySepFitmA;
-extern bool             yyScanX;
-extern bool             yyVerbose;
-extern bool             yyAdaptiveSimAnn;
-extern bool             yyNoBoundsAtAll;
-extern bool          yySimAnnUncertainty;
-extern bool          yySimAnnUncertaintyRunDown;
-extern bool          yyRandomDirUncertainties;
-extern bool          yyPerformSingleFits;
-extern bool          yyUseHiggsLimits;
-extern bool          yyQuarkFlavourViolation;
+extern bool yyUseLoopCorrections;
+extern bool yyCalcPullDist;
+extern bool yyScanParameters;
+extern bool yyPerformFit;
+extern bool yyISR;
+extern bool yyCalculatorError;
+extern bool yyUseMinos;
+extern bool yyGetContours;
+extern bool yyUseHesse;
+extern bool yyUseSimAnnBefore;
+extern bool yyUseSimAnnWhile;
+extern bool yyUseMarkovChains;
+extern bool yyMarkovChainReadjustWidth;
+extern bool yyUseGivenStartValues;
+extern bool yyFitAllDirectly;
+extern bool yyCalcIndChisqContr;
+extern bool yyBoundsOnX;
+extern bool yySepFitTanbX;
+extern bool yySepFitTanbMu;
+extern bool yySepFitmA;
+extern bool yyScanX;
+extern bool yyVerbose;
+extern bool yyAdaptiveSimAnn;
+extern bool yyNoBoundsAtAll;
+extern bool yySimAnnUncertainty;
+extern bool yySimAnnUncertaintyRunDown;
+extern bool yyRandomDirUncertainties;
+extern bool yyPerformSingleFits;
+extern bool yyUseHiggsLimits;
+extern bool yyQuarkFlavourViolation;
+extern bool yyRandomParameters;
+
+extern unsigned int yyNumberOfMinimizations;
 
 typedef struct {
   string name;
@@ -86,6 +88,7 @@ typedef struct {
 
 extern vector <parameter_t> yyFixedPar;
 extern vector <parameter_t> yyFittedPar;
+extern vector <parameter_t> yyRandomPar;
 extern vector<ScanParameter> yyScanPar;
 
 extern vector<parameter_t> yyCorrelatedErr;
