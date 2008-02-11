@@ -6950,15 +6950,15 @@ int   ReadLesHouches()
 	    }
 	 }
       }
-      // check for brsum
+     // check for brprod
       for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
-	 if (yyMeasuredVec[i].type == brsum) {
-	    yyMeasuredVec[i].theovalue = 0.;
+	 if (yyMeasuredVec[i].type == brprod) {
+	    yyMeasuredVec[i].theovalue = 1.;
 	    dependencies_theoset = true;
 	    for (unsigned int j=0; j<yyMeasuredVec[i].daughters.size(); j++) {
 	       // cout << "multiplying br " << yyMeasuredVec[yyMeasuredVec[i].daughters[j]].name << " = " << 
 	       //   yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue << endl;
-	       yyMeasuredVec[i].theovalue += yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue;
+	       yyMeasuredVec[i].theovalue *= yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue;
 	       if (yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theoset == false) {
 		  dependencies_theoset = false;
 	       }
@@ -6971,15 +6971,15 @@ int   ReadLesHouches()
 	    }
 	 }
       }  
-      // check for brprod
+      // check for brsum
       for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
-	 if (yyMeasuredVec[i].type == brprod) {
-	    yyMeasuredVec[i].theovalue = 1.;
+	 if (yyMeasuredVec[i].type == brsum) {
+	    yyMeasuredVec[i].theovalue = 0.;
 	    dependencies_theoset = true;
 	    for (unsigned int j=0; j<yyMeasuredVec[i].daughters.size(); j++) {
 	       // cout << "multiplying br " << yyMeasuredVec[yyMeasuredVec[i].daughters[j]].name << " = " << 
 	       //   yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue << endl;
-	       yyMeasuredVec[i].theovalue *= yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue;
+	       yyMeasuredVec[i].theovalue += yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue;
 	       if (yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theoset == false) {
 		  dependencies_theoset = false;
 	       }

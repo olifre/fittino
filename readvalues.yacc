@@ -1850,7 +1850,7 @@ input:
 		  tmpValue.alias = (int)$9;
 		  tmpValue.bound_up = 1e+9;
 		  tmpValue.bound_low = 0.;
-//		  cout << "brratio found" << endl;
+//		  cout << "brsum found" << endl;
 		  // break sentence in pieces:
 		  string str;
 	          str.erase();
@@ -1873,7 +1873,29 @@ input:
 		    }
 		    pos = newpos + 1;
 		    // break up:
-		    if (!strncmp(tmpstr3,"br",2)) {
+                    if (!strncmp(tmpstr3,"brprod",6)) {
+		      charnumber = strchr(tmpstr3,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atoi((charnumber+1));
+		      found_br = false;
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == brprod) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  found_br = true;
+//			  cout << "found brprod " <<  yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      if (!found_br) {
+			cout << "brprod " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
+		      }
+		      // remove br from the list
+//		      cout << "removing br from the list" << endl;
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
+		    }
+		    else if (!strncmp(tmpstr3,"br",2)) {
 		      charnumber = strchr(tmpstr3,'_');
 		      if (charnumber == 0) yyerror ("Underscore not found");
 		      aliasnumber = atoi((charnumber+1));
