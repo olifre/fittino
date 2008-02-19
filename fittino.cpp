@@ -3375,7 +3375,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
    if ((!(f<0.))&&(!(f>=0.))) {
 
-      f = 10000000.;
+      f = 1.E99;
       cout << "detected nan!" << endl;
 
    }
@@ -3403,7 +3403,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
       f = sRecMassChargino1 + sRecMassChargino2 + sRecMassNeutralino1 + sRecMassNeutralino2 +
 	 sRecMassA0 + sRecMassh0 + sRecMassGluino + sRecCos2PhiL + sRecCos2PhiR;
       if ((!(f<0.))&&(!(f>=0.))) {
-	 f = 10000000.;
+	 f = 1.E99;
 	 cout << "detected nan in return!" << endl;
       }
    }
@@ -8675,288 +8675,305 @@ int   ReadLesHouches()
    }
 
 
-   void Fittino::markovChain (TNtuple *ntuple)
-   {
-
-      vector <double> x; 
-      vector <double> vm;
-      vector <double> xp;
-      vector <double> lb; 
-      vector <double> ub;
-      Float_t ntupvars[50];
-      Double_t dummyfloat = 5.;
-      Int_t dummyint = 1;
-      Double_t xdummy[100];
-      vector <int> nacp;
-      vector <int> ntest;
-      vector <double> c; 
-
-
-      // fill vector of parameters
-      for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-	 x.push_back(yyFittedVec[k].value);
-	 xp.push_back(yyFittedVec[k].value);
-	 vm.push_back(yyFittedVec[k].error);
-	 lb.push_back(yyFittedVec[k].bound_low);
-	 ub.push_back(yyFittedVec[k].bound_up);
-	 c.push_back(2.0);
-	 nacp.push_back(0);
-	 ntest.push_back(0);
-      }
-
-      time_t systime;
-      int seed;
-      struct sysinfo sinfo; 
-      // set the random number generator
-      time (&systime);
-      sysinfo(&sinfo);
-      if (yyRandomGeneratorSeed < 0) {
-	 seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
-	 cout<<"uptime = "<<sinfo.uptime<<endl;
-	 cout<<"freeswap = "<<sinfo.freeswap<<endl;
-	 cout<<"pid = "<<getpid()<<endl;
-	 cout << "systime " << systime << endl; 
-      }
-      else {
-	 cout<<"using seed from input file"<<endl;
-	 seed = yyRandomGeneratorSeed;
-      }
-      cout << "seed = " << seed << endl;
-      gRandom->SetSeed(seed);
-
-      // ====================================================================
-      // ====================================================================
-
-      //-------------------------------------------
-      // perform the optimization
-      int niter = 0;
-      int chainCount = 0;
-      double previousLikelihood = 1.E-5;
-      double previousRho = 1.;
-      double previousChi2 = 1.E10;
-
-      bool firstChi2 = true;
-
-
-      std::cout << "Starting Markov Chain algorithm" << std::endl;
-      std::cout << "Starting with the following variables and bounds" << std::endl;
+void Fittino::markovChain (TNtuple *ntuple)
+{
+  
+  vector <double> x; 
+  vector <double> vm;
+  vector <double> xp;
+  vector <double> lb; 
+  vector <double> ub;
+  Float_t ntupvars[50];
+  Double_t dummyfloat = 5.;
+  Int_t dummyint = 1;
+  Double_t xdummy[100];
+  vector <int> nacp;
+  vector <int> ntest;
+  vector <double> c; 
+  
+  
+  // fill vector of parameters
+  for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+    x.push_back(yyFittedVec[k].value);
+    xp.push_back(yyFittedVec[k].value);
+    vm.push_back(yyFittedVec[k].error);
+    lb.push_back(yyFittedVec[k].bound_low);
+    ub.push_back(yyFittedVec[k].bound_up);
+    c.push_back(2.0);
+    nacp.push_back(0);
+    ntest.push_back(0);
+  }
+  
+  time_t systime;
+  int seed;
+  struct sysinfo sinfo; 
+  // set the random number generator
+  time (&systime);
+  sysinfo(&sinfo);
+  if (yyRandomGeneratorSeed < 0) {
+    seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
+    cout<<"uptime = "<<sinfo.uptime<<endl;
+    cout<<"freeswap = "<<sinfo.freeswap<<endl;
+    cout<<"pid = "<<getpid()<<endl;
+    cout << "systime " << systime << endl; 
+  }
+  else {
+    cout<<"using seed from input file"<<endl;
+    seed = yyRandomGeneratorSeed;
+  }
+  cout << "seed = " << seed << endl;
+  gRandom->SetSeed(seed);
+  
+  // ====================================================================
+  // ====================================================================
+  
+  //-------------------------------------------
+  // perform the optimization
+  int niter = 0;
+  int chainCount = 0;
+  double previousLikelihood = 1.E-99;
+  double previousRho = 1.;
+  double previousChi2 = 1.E10;
+  
+  bool firstChi2 = true;
+  bool haveAcceptedAtLeastOne = false;
+  
+  std::cout << "Starting Markov Chain algorithm" << std::endl;
+  std::cout << "Starting with the following variables and bounds" << std::endl;
+  for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) 
+    {
+      std::cout << iVariable << " " << x[iVariable] << " [" << lb[iVariable] << "," << ub[iVariable] << "]" << std::endl;
+    }
+  
+  while (1)
+    {
+      bool stop = false;
       for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) 
-      {
-	 std::cout << iVariable << " " << x[iVariable] << " [" << lb[iVariable] << "," << ub[iVariable] << "]" << std::endl;
-      }
+	{
 
-      while (1)
-      {
-	 bool stop = false;
-	 for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) 
-	 {
+	  niter++;
 
-	    niter++;
-
-	    // choose new point
-	    if (!yyMarkovChainReadjustWidth)
+	  // choose new point
+	  if (!yyMarkovChainReadjustWidth)
 	    {
-	       for (unsigned int iiVariable = 0; iiVariable < x.size(); iiVariable++) 
-	       {
+	      for (unsigned int iiVariable = 0; iiVariable < x.size(); iiVariable++) 
+		{
 		  bool outOfBounds = false;
 		  bool first = true;
 		  while (outOfBounds==true || first==true)
-		  {
-		     first = false; 
-		     outOfBounds = false;
-		     xp[iiVariable] = x[iiVariable] + gRandom->Gaus(0.,vm[iiVariable]);
-		     //		      xp[iiVariable] = x[iiVariable] + gRandom->Uniform(-1.,1.) * vm[iiVariable];
-		     if ( ( xp[iiVariable] < lb[iiVariable] ) || ( xp[iiVariable] > ub[iiVariable] ) )
-		     {			  
-			outOfBounds = true;
-		     }
-		  }
-	       } 
-	    }
-	    else
-	    {
-	       for (unsigned int iiVariable = 0; iiVariable < x.size(); iiVariable++) 
-	       {
-		  if (iiVariable == iVariable) 
-		  {
-		     bool outOfBounds = false;
-		     bool first = true;
-		     while (outOfBounds==true || first==true)
-		     {
-			first = false; 
-			outOfBounds = false;
-			xp[iiVariable] = x[iiVariable] + gRandom->Gaus(0.,vm[iiVariable]);
-			//		      xp[iiVariable] = x[iiVariable] + gRandom->Uniform(-1.,1.) * vm[iiVariable];
-			if ( ( xp[iiVariable] < lb[iiVariable] ) || ( xp[iiVariable] > ub[iiVariable] ) )
+		    {
+		      first = false; 
+		      outOfBounds = false;
+		      xp[iiVariable] = x[iiVariable] + gRandom->Gaus(0.,vm[iiVariable]);
+		      //		      xp[iiVariable] = x[iiVariable] + gRandom->Uniform(-1.,1.) * vm[iiVariable];
+		      if ( ( xp[iiVariable] < lb[iiVariable] ) || ( xp[iiVariable] > ub[iiVariable] ) )
 			{			  
-			   outOfBounds = true;
-			} 
-		     }
-		  }
+			  outOfBounds = true;
+			}
+		    }
+		} 
+	    }
+	  else
+	    {
+	      for (unsigned int iiVariable = 0; iiVariable < x.size(); iiVariable++) 
+		{
+		  if (iiVariable == iVariable) 
+		    {
+		      bool outOfBounds = false;
+		      bool first = true;
+		      while (outOfBounds==true || first==true)
+			{
+			  first = false; 
+			  outOfBounds = false;
+			  xp[iiVariable] = x[iiVariable] + gRandom->Gaus(0.,vm[iiVariable]);
+			  //		      xp[iiVariable] = x[iiVariable] + gRandom->Uniform(-1.,1.) * vm[iiVariable];
+			  if ( ( xp[iiVariable] < lb[iiVariable] ) || ( xp[iiVariable] > ub[iiVariable] ) )
+			    {			  
+			      outOfBounds = true;
+			    } 
+			}
+		    }
 		  else 
-		  {
-		     xp[iiVariable] = x[iiVariable];
-		  }
-	       }
+		    {
+		      xp[iiVariable] = x[iiVariable];
+		    }
+		}
 	    }
 
-	    std::cout << "looking at Markov Chain for variable " << iVariable 
-	       << " in step " << niter << std::endl;
-	    for (unsigned int iiiVariable = 0; iiiVariable < x.size(); iiiVariable++) 
+	  std::cout << "looking at Markov Chain for variable " << iVariable 
+		    << " in step " << niter << std::endl;
+	  for (unsigned int iiiVariable = 0; iiiVariable < x.size(); iiiVariable++) 
 	    {
-	       std::cout 
-		  << iiiVariable << " " 
-		  << xp[iiiVariable] << " +- " 
-		  << vm[iiiVariable] << " [" 
-		  << lb[iiiVariable] << "," 
-		  << ub[iiiVariable] << "]" 
-		  << std::endl;
+	      std::cout 
+		<< iiiVariable << " " 
+		<< xp[iiiVariable] << " +- " 
+		<< vm[iiiVariable] << " [" 
+		<< lb[iiiVariable] << "," 
+		<< ub[iiiVariable] << "]" 
+		<< std::endl;
 	    }
 
-	    // calclate chi^2
-	    double chi2 = 1.E10;
-	    for (unsigned int i = 0; i < xp.size(); i++) {
-	       xdummy[i] = xp[i];
-	    }
-	    fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
-	    // chi2 = -chi2;
-	    std::cout << "chi^2 = " << chi2 << std::endl;
+	  // calclate chi^2
+	  double chi2 = 1.E10;
+	  for (unsigned int i = 0; i < xp.size(); i++) {
+	    xdummy[i] = xp[i];
+	  }
+	  fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
+	  // chi2 = -chi2;
+	  std::cout << "chi^2 = " << chi2 << std::endl;
 
-	    double firstChi2Value = chi2;
+	  double firstChi2Value = chi2;
 
-	    if (firstChi2) {
-	       if (yyMarkovChainChi2Scale < 0.) {
-		  if (firstChi2Value>10.) {
-		     yyMarkovChainChi2Scale = firstChi2Value/10.;
-		  }
-		  else {
-		     yyMarkovChainChi2Scale = 1.;
-		  }
-	       } 
-	    }
-
-	    // calculate likelihood
-	    double likelihood = TMath::Exp(-chi2/(2.*yyMarkovChainChi2Scale));
-	    std::cout << "L = " << likelihood << std::endl;
-
-
-	    if (firstChi2) {
-	       firstChi2 = false;
-	       previousLikelihood = likelihood*2.;
-	    }
-
-	    // calculate Q
-	    double Qupper = calculateQ(x,xp,vm);
-	    double Qlower = calculateQ(xp,x,vm);
-	    std::cout << "Qlower = " << Qlower << std::endl;
-	    std::cout << "Qupper = " << Qupper << std::endl;
-
-	    // calculate rho
-	    double rho = 0.;
-	    if (previousLikelihood*Qlower>0.) {
-	       rho = likelihood*Qupper/(previousLikelihood*Qlower);
-	    } else {
-	       continue;
-	    }
-	    std::cout << "rho = " << rho << std::endl;
-
-	    // decide whether point shall be accepted
-	    float accpoint = 0;
-	    if (rho > 1.) {
-	       accpoint = 1;
-	    } else {
-	       double p = gRandom->Uniform(0.,1.);
-	       if (p < rho) {
-		  accpoint = 1;
-	       }
+	  if (firstChi2) {
+	    if (yyMarkovChainChi2Scale < 0.) {
+	      if (firstChi2Value>10.) {
+		yyMarkovChainChi2Scale = firstChi2Value/10.;
+	      }
+	      else {
+		yyMarkovChainChi2Scale = 1.;
+	      }
 	    } 
-	    std::cout << "accpoint = " << accpoint << std::endl;
+	  }
 
-	    ++ntest[iVariable];
-	    // write into ntuple
-	    if (accpoint == 1) {
-	       ++nacp[iVariable];
-	       ntupvars[0] = (Float_t)likelihood;
-	       ntupvars[1] = (Float_t)rho;
-	       ntupvars[2] = (Float_t)chi2;
-	       ntupvars[3] = (Float_t)accpoint;
-	       ntupvars[4] = (Float_t)niter;
-	       for (unsigned int ii = 5; ii < 5+yyFittedVec.size(); ii++) {
-		  ntupvars[ii] = xp[ii-5];
-	       }
-	    } else {
-	       ntupvars[0] = (Float_t)previousLikelihood;
-	       ntupvars[1] = (Float_t)previousRho;
-	       ntupvars[2] = (Float_t)previousChi2;
-	       ntupvars[3] = 0.;
-	       ntupvars[4] = (Float_t)niter;
-	       for (unsigned int ii = 5; ii < 5+yyFittedVec.size(); ii++) {
-		  ntupvars[ii] = x[ii-5];
-	       }
+	  std::cout << "Using yyMarkovChainChi2Scale = " << yyMarkovChainChi2Scale << std::endl;
+
+	  // calculate likelihood
+	  double likelihood = TMath::Exp(-chi2/(2.*yyMarkovChainChi2Scale));
+	  std::cout << "L = " << likelihood << std::endl;
+
+
+	  if (firstChi2) {
+	    firstChi2 = false;
+	    if (likelihood>0.)
+	    previousLikelihood = likelihood*2.;
+	  }
+
+	  // calculate Q
+	  double Qupper = calculateQ(x,xp,vm);
+	  double Qlower = calculateQ(xp,x,vm);
+	  std::cout << "Qlower = " << Qlower << std::endl;
+	  std::cout << "Qupper = " << Qupper << std::endl;
+
+//	  if (haveAcceptedAtLeastOne==false) {
+//	    if (previousLikelihood==0) {
+//	      previousLikelihood = 1E-10;
+//	    }
+//	    if (Qlower==0.) {
+//	      Qlower = 1E-10;
+//	      Qupper = 1E-10;
+//	    }
+//	  } 
+
+	  std::cout << "calculating rho = " << likelihood << "*" << Qupper << "/" << previousLikelihood << "*" << Qlower<< std::endl;
+
+	  // calculate rho
+	  double rho = 0.;
+	  if (previousLikelihood*Qlower>0.) {
+	    rho = likelihood*Qupper/(previousLikelihood*Qlower);
+	  } else {
+	    continue;
+	  }
+	  std::cout << "rho = " << rho << std::endl;
+
+	  // decide whether point shall be accepted
+	  float accpoint = 0;
+	  if (rho > 1.) {
+	    accpoint = 1;
+	  } else {
+	    double p = gRandom->Uniform(0.,1.);
+	    if (p < rho) {
+	      accpoint = 1;
 	    }
-	    ntuple->Fill(ntupvars);
+	  } 
+	  std::cout << "accpoint = " << accpoint << std::endl;
 
-	    // if necessary: readjust width
-	    if (yyMarkovChainReadjustWidth) 
+	  if (accpoint==1) haveAcceptedAtLeastOne = true;
+
+	  ++ntest[iVariable];
+	  // write into ntuple
+	  if (accpoint == 1) {
+	    ++nacp[iVariable];
+	    ntupvars[0] = (Float_t)likelihood;
+	    ntupvars[1] = (Float_t)rho;
+	    ntupvars[2] = (Float_t)chi2;
+	    ntupvars[3] = (Float_t)accpoint;
+	    ntupvars[4] = (Float_t)niter;
+	    for (unsigned int ii = 5; ii < 5+yyFittedVec.size(); ii++) {
+	      ntupvars[ii] = xp[ii-5];
+	    }
+	  } else {
+	    ntupvars[0] = (Float_t)previousLikelihood;
+	    ntupvars[1] = (Float_t)previousRho;
+	    ntupvars[2] = (Float_t)previousChi2;
+	    ntupvars[3] = 0.;
+	    ntupvars[4] = (Float_t)niter;
+	    for (unsigned int ii = 5; ii < 5+yyFittedVec.size(); ii++) {
+	      ntupvars[ii] = x[ii-5];
+	    }
+	  }
+	  ntuple->Fill(ntupvars);
+
+	  // if necessary: readjust width
+	  if (yyMarkovChainReadjustWidth) 
 	    {
-	       if (niter%yyMarkovChainReadjustWidthPeriod==0 && niter>0)
-	       {
+	      if (niter%yyMarkovChainReadjustWidthPeriod==0 && niter>0)
+		{
 		  for (unsigned int iiiVariable = 0; iiiVariable < x.size(); iiiVariable++) 
-		  {		
-		     double ratio = (double) nacp[iiiVariable] / (double) ntest[iiiVariable] ;
-		     if (ratio > 0.6) {
+		    {		
+		      double ratio = (double) nacp[iiiVariable] / (double) ntest[iiiVariable] ;
+		      if (ratio > 0.6) {
 			vm[iiiVariable] *= c[iiiVariable] * (ratio - 0.6) / 0.4 + 1.;
-		     } else if (ratio < 0.4) {
+		      } else if (ratio < 0.4) {
 			vm[iiiVariable] /= c[iiiVariable] * (0.4 - ratio) / 0.4 + 1.;
-		     }
-		     if (vm[iiiVariable] > ub[iiiVariable] - lb[iiiVariable]) {
+		      }
+		      if (vm[iiiVariable] > ub[iiiVariable] - lb[iiiVariable]) {
 			vm[iiiVariable] = ub[iiiVariable] - lb[iiiVariable];
-		     }	
-		  }
+		      }	
+		    }
 		  for (unsigned int iiiVariable = 0; iiiVariable < x.size(); ++iiiVariable) {
-		     nacp[iiiVariable] = 0;
-		     ntest[iiiVariable] = 0;
+		    nacp[iiiVariable] = 0;
+		    ntest[iiiVariable] = 0;
 		  }		
-	       }
+		}
 	    }
 
-	    // save variables 
-	    if (accpoint == 1)
+	  // save variables 
+	  if (accpoint == 1)
 	    {
-	       for (unsigned int i = 0; i < x.size(); ++i) {
-		  x[i] = xp[i];
-	       }
-	       previousRho        = rho;
-	       previousChi2       = chi2;
-	       previousLikelihood = likelihood;
+	      for (unsigned int i = 0; i < x.size(); ++i) {
+		x[i] = xp[i];
+	      }
+	      previousRho        = rho;
+	      previousChi2       = chi2;
+	      previousLikelihood = likelihood;
 	    }
 
 
 
-	    chainCount++;
-	    if (chainCount > yyMaxMarkovChain)
+	  chainCount++;
+	  if (chainCount > yyMaxMarkovChain)
 	    {
-	       stop = true;
-	       break;
+	      stop = true;
+	      break;
 	    }
-	 }
-	 if (stop)
-	 {
-	    break;
-	 }
-      }
+	}
+      if (stop)
+	{
+	  break;
+	}
+    }
 
-      return;
+  return;
 
-   }
+}
 
-   double Fittino::calculateQ(vector<double> x, vector<double> xk, vector<double> vm)
-   {
-      double Q = 1.;
-      for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) 
-      {
-	 Q = Q * 1/(TMath::Sqrt(2.*3.1412759)*vm[iVariable])*
-	    TMath::Exp(-sqr(x[iVariable]-xk[iVariable])/(2.*sqr(vm[iVariable])));
-      }
-      return Q;
-   }
+double Fittino::calculateQ(vector<double> x, vector<double> xk, vector<double> vm)
+{
+  double Q = 1.;
+  for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) 
+    {
+      Q = Q * 1/(TMath::Sqrt(2.*3.1412759)*vm[iVariable])*
+	TMath::Exp(-sqr(x[iVariable]-xk[iVariable])/(2.*sqr(vm[iVariable])));
+    }
+  return Q;
+}
