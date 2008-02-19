@@ -150,6 +150,7 @@ bool          yyAdaptiveSimAnn = false;
 bool          yyNoBoundsAtAll = false;
 bool          yySimAnnUncertainty = false;
 bool          yySimAnnUncertaintyRunDown = false;
+bool          yyGetTempFromFirstChiSqr = false;
 bool          yyRandomDirUncertainties = false;
 bool          yyPerformSingleFits = false;
 bool          yyUseHiggsLimits = false;
@@ -920,6 +921,10 @@ input:
 		  if (!strcmp($2, "SimAnnUncertaintyRunDown")) {
 		      if ($3 == on) yySimAnnUncertaintyRunDown = true;
 		      else yySimAnnUncertaintyRunDown = false;
+		  }
+		  if (!strcmp($2, "GetTempFromFirstChiSqr")) {
+		      if ($3 == on) yyGetTempFromFirstChiSqr = true;
+		      else yyGetTempFromFirstChiSqr = false;
 		  }
 		  if (!strcmp($2, "RandomDirUncertainties")) {
 		      if ($3 == on) yyRandomDirUncertainties = true;

@@ -7388,6 +7388,22 @@ int   ReadLesHouches()
 	    t = TMath::Sqrt(fcubed/double(nvalid) - sqr(fsum/double(nvalid)))/2.;
 	 }
       }
+
+      // simple temperature adaption
+      if (yyGetTempFromFirstChiSqr) {
+
+	cout << "determining initial temperature from first chi2 " << fopt << endl;
+	double firstChi2 = TMath::Abs(fopt);
+	if (firstChi2<yyInitTempSimAnn*10.) {
+	  t = yyInitTempSimAnn;
+	} else {
+	  t = (double)TMath::Nint(firstChi2/10.);
+	} 
+
+      }
+
+
+
       cout << "temperature chosen " << t << endl;
 
       //-------------------------------------------

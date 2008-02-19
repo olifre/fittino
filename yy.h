@@ -72,6 +72,7 @@ extern bool yyAdaptiveSimAnn;
 extern bool yyNoBoundsAtAll;
 extern bool yySimAnnUncertainty;
 extern bool yySimAnnUncertaintyRunDown;
+extern bool yyGetTempFromFirstChiSqr;
 extern bool yyRandomDirUncertainties;
 extern bool yyPerformSingleFits;
 extern bool yyUseHiggsLimits;
