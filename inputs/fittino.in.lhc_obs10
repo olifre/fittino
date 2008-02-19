@@ -84,6 +84,14 @@ massTau      1.77699 GeV +- 0.00029 GeV
 alphas       0.1187  GeV +- 0.002   GeV
 alphaem    127.934   GeV +- 0.027   GeV
 
+fixParameter massW       80.3713  GeV
+fixParameter massZ       91.1876  GeV
+fixParameter massCharm    1.2     GeV
+fixParameter massBottom   4.5     GeV
+fixParameter massTau      1.77699 GeV
+fixParameter alphas       0.1187  GeV
+fixParameter alphaem    127.934   GeV
+
 ### low energy observables
 #LEObs ( bsg    )   0.000352084 +- 0.000042 alias 10 # HFAG summer 2006:  3.55E-4 +- 4E-5
 #LEObs ( bsmm   )   1.83297     +- 1.0      alias 11 # HFAG summer 2006:  4.5E-6  +- 1.0E-6
@@ -119,10 +127,10 @@ alphaem    127.934   GeV +- 0.027   GeV
 #########################################################################
 
 ### mSUGRA SPS 1a benchmark point
-fitParameter M0       100 GeV
-fitParameter M12      250 GeV
-fitParameter A0      -100 GeV
-fitParameter TanBeta   10
+fitParameter M0       100 GeV +- 1.5 GeV
+fitParameter M12      250 GeV +- 2.5 GeV
+fitParameter A0      -100 GeV +- 10 GeV
+fitParameter TanBeta   10     +- 1
 fixParameter SignMu        1
 
 #########################################################################
@@ -157,10 +165,11 @@ UseSimAnnBefore                off
 UseSimAnnWhile                 off
 AdaptiveSimAnn                 off
 TempRedSimAnn                  0.4
-MaxCallsSimAnn                 300000
-InitTempSimAnn                 5000
+MaxCallsSimAnn                 15000
+InitTempSimAnn                 2
 SimAnnUncertainty              off
 SimAnnUncertaintyRunDown       off
+GetTempFromFirstChiSqr         on
 
 UseMarkovChains                off
 MarkovChainReadjustWidth       off
