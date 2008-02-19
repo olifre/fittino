@@ -68,7 +68,7 @@ SepFitTanbMu                   off
 SepFitmA	               off
 Calculator                     SPHENO ../theorycodes/SPheno3.0.beta/bin/SPheno
 #RelicDensityCalculator         MICROMEGAS ../theorycodes/micromegas_2.0.6/MSSM/sugomg
-UseMinos                       off
+UseMinos                       on
 UseHesse                       off
 NumberOfMinimizations          1
 ErrDef                         1.0
@@ -97,9 +97,8 @@ Verbose                        on
 ScanParameters                 off
 # scanParameter
 
-
-UseHiggsLimits                 on
-RandomDirUncertainties         on
+UseHiggsLimits                 off
+RandomDirUncertainties         off
 PerformFit                     on
 RandomGeneratorSeed            -1 # < 0 means use random seed (default), else take given seed
 # MaxCalculatorTime              20
