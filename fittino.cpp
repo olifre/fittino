@@ -7034,6 +7034,29 @@ int   ReadLesHouches()
 	    }
 	 }
       }  
+      // check for weighted
+      for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+	 if (yyMeasuredVec[i].type == weighted) {
+	    yyMeasuredVec[i].theovalue = 0.;
+	    dependencies_theoset = true;
+	    cout << yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue << endl;
+            cout << yyMeasuredVec[yyMeasuredVec[i].daughters[1]].theovalue << endl;
+            cout << yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue << endl;
+            cout << yyMeasuredVec[yyMeasuredVec[i].daughters[3]].theovalue << endl;
+	    yyMeasuredVec[i].theovalue = (yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue*yyMeasuredVec[yyMeasuredVec[i].daughters[1]].theovalue+yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue*yyMeasuredVec[yyMeasuredVec[i].daughters[3]].theovalue)/(yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue+yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue);
+	    for (unsigned int j=0; j<4; j++) {
+	       if (yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theoset == false) {
+	          dependencies_theoset = false;
+	       }
+	    } 
+	    if (dependencies_theoset) {
+	       yyMeasuredVec[i].theoset = true;
+	    }
+	    else {
+	       yyMeasuredVec[i].theoset = false;
+	    }
+         }
+      }
       // check whether all has been found
       for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
 	 if ((yyMeasuredVec[i].theoset == false) && (yyMeasuredVec[i].nofit == false)) {

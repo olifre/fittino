@@ -218,7 +218,7 @@ struct InputFileLine yyInputFileLine;
 int           yyInputFileLineNo = 1;
 
 typedef struct { 
-   char keyname[255]; 
+   char keyname[4]; 
 } keyname;
 
 struct correrrorstruct {
@@ -422,6 +422,56 @@ input:
 			    cout << "COS: " << tmpValue.name << " " << tmpValue.type << endl;
 			  }
 		      }
+                  }
+	      }
+	    | input T_KEY value err T_ALIAS T_NUMBER
+	      {
+                  char c[1000];
+	          yyInputFileLine.prevalue = $2;
+	          yyInputFileLine.value = $3;
+//	          yyInputFileLine.error = $4;
+ 	          yyInputFileLine.postvalue = "\talias ";
+	          sprintf(c, "%d", (int)$6);
+	          yyInputFileLine.postvalue += c;
+
+	          found = 0;
+	          skip = 0;
+	          if ($4*$4 < 2.2204e-16) {
+                      cout<<"WARNING: Measurement of "<<$2<<" will not be used in fit. Uncertainty too small."<<endl;
+	              cout<<"         Too small uncertainties cause numerical problems with covariance matrix inversion."<<endl;
+	              cout<<"         Press any key to continue."<<endl;
+                      getchar();
+	              skip = 1;
+                  }
+	          if (!skip) {
+	              for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+	        	if (!yyMeasuredVec[i].name.compare($2)) {
+	        	  found = 1;
+	        	  yyMeasuredVec[i].value = $3;
+	        	  yyMeasuredVec[i].error = $4;
+	        	  break;
+	        	}
+	              }
+	              if (found == 0) {
+	        	  MeasuredValue tmpValue;
+	        	  tmpValue.nofit = false;
+	        	  tmpValue.name = $2;
+	        	  tmpValue.value = $3;
+	        	  tmpValue.error = $4;
+	        	  tmpValue.type = mass;
+	        	  tmpValue.theovalue  = 0;
+	        	  tmpValue.bound_low = 0.;
+	        	  tmpValue.bound_up = 0.;
+	        	  tmpValue.alias = $6;
+	        	  tmpValue.id = 0;
+	        	  if (!strncmp($2, "mass", 4))tmpValue.type = mass;
+	                  else if (!strcmp($2, "tauFromStau1Polarisation")) tmpValue.type = tauFromStau1Polarisation;
+	        	  else tmpValue.type = other;
+	        	  yyMeasuredVec.push_back(tmpValue);
+	        	  if (!strncmp($2, "cos", 3)) {
+	        	    cout << "COS: " << tmpValue.name << " " << tmpValue.type << endl;
+	        	  }
+	              }
                   }
 	      }
 	    | input T_UNIVERSALITY sentence
@@ -673,8 +723,8 @@ input:
 		//yyInputFileLine.prevalue += $4;
                 //yyInputFileLine.value = $5;
                 //yyInputFileLine.error = $6;
-		//yyInputFileLine.postvalue = "\talias ";
-		//sprintf(c, "%d", (int)$8);
+ 		//yyInputFileLine.postvalue = "\talias ";
+		//sprintf(c, "%d", (int)$9);
 		//yyInputFileLine.postvalue += c;
 
 		if (!strcmp($2, "edge")) {
@@ -1225,6 +1275,72 @@ input:
 		}
 		
               }
+             | input T_KEY T_NUMBER sentence T_ALIAS T_NUMBER
+	      {
+		char c[1000];
+		yyInputFileLine.prevalue  = $2;
+		yyInputFileLine.prevalue += " ";
+		sprintf(c, "%d", (int)$3);
+		yyInputFileLine.prevalue += c;
+		yyInputFileLine.prevalue += " ";
+		yyInputFileLine.prevalue += $4;
+		yyInputFileLine.postvalue = "\talias ";
+		sprintf(c, "%d", (int)$6);
+		yyInputFileLine.postvalue += c;
+
+		if (!strcmp($2, "edge")) {
+		  MeasuredValue tmpValue;
+                  tmpValue.nofit = false;
+		  tmpValue.theovalue  = 0;
+		  tmpValue.name = "edge_type_";
+		  char srtt[20];
+		  sprintf(srtt,"%d",(int)$3);
+		  tmpValue.name.append(srtt);
+		  tmpValue.name.append("_alias_");
+		  sprintf(srtt,"%d",(int)$6);
+		  tmpValue.name.append(srtt);
+		  tmpValue.type  = Pedge;
+		  tmpValue.id    = (int)$3;
+		  if (tmpValue.id<1 || tmpValue.id>7) {
+                    yyerror("edge type not implemented");
+                  } 
+		  string str;
+	          str.erase();
+		  str = $4;
+//		  cout << "decompositing string "<<str<< endl;
+		  char tmpstr2[255];
+		  unsigned int pos = 0, newpos = 0;
+//		  int anti = 1;
+	          int i = 0;
+		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		      str.copy(tmpstr2, newpos - pos, pos);
+//	              cout << "tmpstr2 after str.copy "<<tmpstr2<< endl;
+	              tmpstr2[newpos-pos] = '\0';
+		      if (tmpstr2[newpos-pos-1] == '~') {
+			  tmpstr2[newpos-pos-1] = '\0';
+		      }
+                      if (!strncmp(tmpstr2,"mass",4)) {
+//			cout << "substracting mass" << endl;
+                        while (tmpstr2[i] != '\0') {
+                          tmpstr2[i] = tmpstr2[i+4];
+			  i++;
+                        }
+                        i = 0;
+                      }
+		      else {
+			  tmpstr2[newpos-pos] = '\0';
+		      }
+		      pos = newpos + 1;
+//		      cout << "Adding Element: " << tmpstr2 << " with ID " <<  yyParticleIDs[tmpstr2] << endl;
+		      tmpValue.daughters.push_back(yyParticleIDs[tmpstr2]);
+		  }
+		  tmpValue.alias = (int)$6;
+		  tmpValue.bound_up = 1e+6;
+		  tmpValue.bound_low = 0.;
+		  yyMeasuredVec.push_back(tmpValue);
+		  strcpy($4,"");
+		}
+              }
 	     | input T_BR T_BRA T_WORD T_GOESTO sentence T_KET value err T_ALIAS T_NUMBER
 	      {
 		  char c[1000];
@@ -1572,6 +1688,202 @@ input:
 		  strcpy($6,"                     ");
 	          strcpy($6,"");
 	      }
+             | input T_KEY T_BRA sentence T_KET value err correrr T_ALIAS T_NUMBER
+	      {
+//		char c[1000];
+//		yyInputFileLine.prevalue  = $2;
+//		yyInputFileLine.prevalue += " ( ";
+//		yyInputFileLine.prevalue += $4;
+//		yyInputFileLine.prevalue += " ) ";
+//		yyInputFileLine.value = $6;
+//		yyInputFileLine.error = $7;
+//		yyInputFileLine.postvalue  = "\talias ";
+//		sprintf(c, "%d", (int)$10);
+//		yyInputFileLine.postvalue += c;
+
+		if (!strcmp($2,"weighted")) {
+		  int i = 0;
+//		  int j = 0;
+		  int aliasnumber;
+		  char* charnumber;
+		  MeasuredValue tmpValue;
+                  tmpValue.nofit = false;
+		  tmpValue.name.erase();
+		  tmpValue.type  = weighted;
+		  tmpValue.theovalue  = 0;
+		  tmpValue.value = $6;
+		  //tmpValue.error = $7;
+		  //tmpValue.name  = $4;
+                  tmpValue.name = "weighted_";
+		  char srtt[20];
+		  sprintf(srtt,"%d",(int)$10);
+		  tmpValue.name.append(srtt);
+		  tmpValue.alias = (int)$10;
+		  tmpValue.bound_up = 1e+9;
+		  tmpValue.bound_low = 0.;
+//		  cout << "weighted found" << endl;
+		  // break sentence in pieces:
+		  string str;
+	          str.erase();
+		  str = $4;
+		  char tmpstr4[255];
+		  unsigned int pos = 0, newpos = 0;
+		  int anti = 1;
+		  bool found_br = false;
+                  int countbrs = 0;
+		  while ((newpos = str.find(" ", pos)) != string::npos) {
+                    countbrs++;
+		    if (countbrs>=5) {
+		      cout << "syntax error in weighted: too many arguments, alias: " << tmpValue.alias <<  endl;
+		      yyerror (" ");		      
+		    }
+		    str.copy(tmpstr4, newpos - pos, pos);
+		    if (tmpstr4[newpos-pos-1] == '~') {
+		      tmpstr4[newpos-pos-1] = '\0';
+		      anti = -1;
+		    }
+		    else {
+		      tmpstr4[newpos-pos] = '\0';
+		      anti = 1;
+		    }
+		    pos = newpos + 1;
+		    // break up:
+		    if (!strncmp(tmpstr4,"brsum",5)) {
+		      charnumber = strchr(tmpstr4,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atoi((charnumber+1));
+		      found_br = false;
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == brsum) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  found_br = true;
+//			  cout << "found brsum " <<  yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      if (!found_br) {
+			cout << "brsum " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
+		      }
+		      // remove br from the list
+//		      cout << "removing br from the list" << endl;
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
+		    }
+		    else if (!strncmp(tmpstr4,"brprod",6)) {
+		      charnumber = strchr(tmpstr4,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atoi((charnumber+1));
+		      found_br = false;
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == brprod) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  found_br = true;
+//			  cout << "found brprod " <<  yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      if (!found_br) {
+			cout << "brprod " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
+		      }
+		      // remove br from the list
+//		      cout << "removing br from the list" << endl;
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
+		    }
+		    else if (!strncmp(tmpstr4,"br",2)) {
+		      charnumber = strchr(tmpstr4,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atoi((charnumber+1));
+		      found_br = false;
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  found_br = true;
+//			  cout << "found br " <<  yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      if (!found_br) {
+			cout << "br " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
+		      }
+		      // remove br from the list
+//		      cout << "removing br from the list" << endl;
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
+		    }
+                    else if (!strncmp(tmpstr4,"edge",4)) {
+		      charnumber = strchr(tmpstr4,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atoi((charnumber+1));
+		      found_br = false;
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == Pedge) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  found_br = true;
+//			  cout << "found edge " <<  yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      if (!found_br) {
+			cout << "edge " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
+		      }
+		      // remove br from the list
+//		      cout << "removing edge from the list" << endl;
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
+		    }
+                    else if (!strncmp(tmpstr4,"mass",4)) {
+		      charnumber = strchr(tmpstr4,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atoi((charnumber+1));
+		      found_br = false;
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == mass) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  found_br = true;
+//			  cout << yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      if (!found_br) {
+			cout << "mass " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
+		      }
+		      // remove mass from the list
+//		      cout << "removing mass from the list" << endl;
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
+		    }
+		    else {
+		      cout << "syntax error in weighted, alias: " << tmpValue.alias <<  endl;
+		      yyerror (" ");
+		    }
+		  }
+		  if (countbrs<2) {
+		      cout << "syntax error in weighted: not enough arguments, alias: " << tmpValue.alias <<  endl;
+		      yyerror (" ");		      		    
+		  }
+                  struct correrrorstruct *tagmap = $8;
+	          double tmpError = $7*$7;
+		  for (unsigned int j=0; j<10; j++) {
+		     tmpError += (*tagmap).value[j]*(*tagmap).value[j];
+		  }
+		  //yyMeasuredVec[i].error = TMath::Sqrt(tmpError);
+		  tmpValue.error = TMath::Sqrt(tmpError);
+		  for (unsigned int k=0; k<10; k++) {
+		     string tmpString = (*tagmap).key[k].keyname;
+		     double tmpDouble = (*tagmap).value[k];
+	             pair<string, double> tmpPair(tmpString, tmpDouble);
+                     tmpValue.correrror.insert(tmpPair);
+		  }
+                  tmpValue.correrror.erase("0");
+		  yyMeasuredVec.push_back(tmpValue);
+		}
+	      }
 	     | input T_KEY T_BRA sentence T_KET value err T_ALIAS T_NUMBER
 	      {
 		char c[1000];
@@ -1597,7 +1909,10 @@ input:
 		  tmpValue.theovalue  = 0;
 		  tmpValue.value = $6;
 		  tmpValue.error = $7;
-		  tmpValue.name  = $4;
+		  tmpValue.name = "xsbr_";
+		  char srtt[20];
+		  sprintf(srtt,"%d",(int)$9);
+		  tmpValue.name.append(srtt);
 		  tmpValue.alias = (int)$9;
 		  tmpValue.bound_up = 1e+9;
 		  tmpValue.bound_low = 0.;
@@ -1726,7 +2041,10 @@ input:
 		  tmpValue.theovalue  = 0;
 		  tmpValue.value = $6;
 		  tmpValue.error = $7;
-		  tmpValue.name  = $4;
+		  tmpValue.name = "brratio_";
+		  char srtt[20];
+		  sprintf(srtt,"%d",(int)$9);
+		  tmpValue.name.append(srtt);
 		  tmpValue.alias = (int)$9;
 		  tmpValue.bound_up = 1e+9;
 		  tmpValue.bound_low = 0.;
@@ -1846,7 +2164,10 @@ input:
 		  tmpValue.theovalue  = 0;
 		  tmpValue.value = $6;
 		  tmpValue.error = $7;
-		  tmpValue.name  = $4;
+		  tmpValue.name = "brsum_";
+		  char srtt[20];
+		  sprintf(srtt,"%d",(int)$9);
+		  tmpValue.name.append(srtt);
 		  tmpValue.alias = (int)$9;
 		  tmpValue.bound_up = 1e+9;
 		  tmpValue.bound_low = 0.;
@@ -1940,7 +2261,10 @@ input:
 		  tmpValue.theovalue  = 0;
 		  tmpValue.value = $6;
 		  tmpValue.error = $7;
-		  tmpValue.name  = $4;
+		  tmpValue.name = "brprod_";
+		  char srtt[20];
+		  sprintf(srtt,"%d",(int)$9);
+		  tmpValue.name.append(srtt);
 		  tmpValue.alias = (int)$9;
 		  tmpValue.bound_up = 1e+9;
 		  tmpValue.bound_low = 0.;
@@ -2000,59 +2324,98 @@ input:
 		  }
 		  yyMeasuredVec.push_back(tmpValue);
 		}
-	      }
-	     | input T_KEY T_BRA sentence T_KET T_ALIAS T_NUMBER
-	      {
-		char c[1000];
-		yyInputFileLine.prevalue  = $2;
-		yyInputFileLine.prevalue += " ( ";
-		yyInputFileLine.prevalue += $4;
-		yyInputFileLine.prevalue += " ) ";
-		yyInputFileLine.prevalue  = "\talias ";
-		sprintf(c, "%d", (int)$7);
-		yyInputFileLine.prevalue += c;
-
-		if (!strcmp($2,"brsum")) {
+		else if (!strcmp($2,"weighted")) {
 		  int i = 0;
 //		  int j = 0;
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
-                  tmpValue.nofit = true;
+                  tmpValue.nofit = false;
 		  tmpValue.name.erase();
-		  tmpValue.type  = brsum;
+		  tmpValue.type  = weighted;
 		  tmpValue.theovalue  = 0;
-		  tmpValue.value = -1;
-		  tmpValue.error = -1;
-		  tmpValue.name  = $4;
-		  tmpValue.alias = (int)$7;
+		  tmpValue.value = $6;
+		  tmpValue.error = $7;
+		  tmpValue.name = "weighted_";
+		  char srtt[20];
+		  sprintf(srtt,"%d",(int)$9);
+		  tmpValue.name.append(srtt);
+		  tmpValue.alias = (int)$9;
 		  tmpValue.bound_up = 1e+9;
 		  tmpValue.bound_low = 0.;
-                  //cout << "alias for brratio found" << endl;
+//		  cout << "weighted found" << endl;
 		  // break sentence in pieces:
 		  string str;
 	          str.erase();
 		  str = $4;
-		  char tmpstr3[255];
+		  char tmpstr4[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
 		  bool found_br = false;
-		  int countbrs = 0;
+                  int countbrs = 0;
 		  while ((newpos = str.find(" ", pos)) != string::npos) {
-		    countbrs++;
-		    str.copy(tmpstr3, newpos - pos, pos);
-		    if (tmpstr3[newpos-pos-1] == '~') {
-		      tmpstr3[newpos-pos-1] = '\0';
+                    countbrs++;
+		    if (countbrs>=5) {
+		      cout << "syntax error in weighted: too many arguments, alias: " << tmpValue.alias <<  endl;
+		      yyerror (" ");		      
+		    }
+		    str.copy(tmpstr4, newpos - pos, pos);
+		    if (tmpstr4[newpos-pos-1] == '~') {
+		      tmpstr4[newpos-pos-1] = '\0';
 		      anti = -1;
 		    }
 		    else {
-		      tmpstr3[newpos-pos] = '\0';
+		      tmpstr4[newpos-pos] = '\0';
 		      anti = 1;
 		    }
 		    pos = newpos + 1;
 		    // break up:
-		    if (!strncmp(tmpstr3,"br",2)) {
-		      charnumber = strchr(tmpstr3,'_');
+		    if (!strncmp(tmpstr4,"brsum",5)) {
+		      charnumber = strchr(tmpstr4,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atoi((charnumber+1));
+		      found_br = false;
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == brsum) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  found_br = true;
+//			  cout << "found brsum " <<  yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      if (!found_br) {
+			cout << "brsum " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
+		      }
+		      // remove br from the list
+//		      cout << "removing br from the list" << endl;
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
+		    }
+		    else if (!strncmp(tmpstr4,"brprod",6)) {
+		      charnumber = strchr(tmpstr4,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atoi((charnumber+1));
+		      found_br = false;
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == brprod) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  found_br = true;
+//			  cout << "found brprod " <<  yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      if (!found_br) {
+			cout << "brprod " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
+		      }
+		      // remove br from the list
+//		      cout << "removing br from the list" << endl;
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
+		    }
+		    else if (!strncmp(tmpstr4,"br",2)) {
+		      charnumber = strchr(tmpstr4,'_');
 		      if (charnumber == 0) yyerror ("Underscore not found");
 		      aliasnumber = atoi((charnumber+1));
 		      found_br = false;
@@ -2073,18 +2436,74 @@ input:
 		      yyMeasuredVec[i].nofit = true;
 		      tmpValue.daughters.push_back(i);
 		    }
+                    else if (!strncmp(tmpstr4,"edge",4)) {
+		      charnumber = strchr(tmpstr4,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atoi((charnumber+1));
+		      found_br = false;
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == Pedge) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  found_br = true;
+//			  cout << "found edge " <<  yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      if (!found_br) {
+			cout << "edge " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
+		      }
+		      // remove br from the list
+//		      cout << "removing edge from the list" << endl;
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
+		    }
+                    else if (!strncmp(tmpstr4,"mass",4)) {
+		      charnumber = strchr(tmpstr4,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atoi((charnumber+1));
+		      found_br = false;
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == mass) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  found_br = true;
+//			  cout << yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      if (!found_br) {
+			cout << "mass " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
+		      }
+		      // remove mass from the list
+//		      cout << "removing mass from the list" << endl;
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
+		    }
 		    else {
-		      cout << "syntax error in brsum, alias: " << tmpValue.alias <<  endl;
+		      cout << "syntax error in weighted, alias: " << tmpValue.alias <<  endl;
 		      yyerror (" ");
 		    }
 		  }
 		  if (countbrs<2) {
-		      cout << "syntax error in brsum: not enough br, alias: " << tmpValue.alias <<  endl;
+		      cout << "syntax error in weighted: not enough arguments, alias: " << tmpValue.alias <<  endl;
 		      yyerror (" ");		      		    
 		  }
 		  yyMeasuredVec.push_back(tmpValue);
 		}
-		else if (!strcmp($2,"brprod")) {
+	      }
+	     | input T_KEY T_BRA sentence T_KET T_ALIAS T_NUMBER
+	      {
+		char c[1000];
+		yyInputFileLine.prevalue  = $2;
+		yyInputFileLine.prevalue += " ( ";
+		yyInputFileLine.prevalue += $4;
+		yyInputFileLine.prevalue += " ) ";
+		yyInputFileLine.prevalue  = "\talias ";
+		sprintf(c, "%d", (int)$7);
+		yyInputFileLine.prevalue += c;
+
+                if (!strcmp($2,"brprod")) {
 		  int i = 0;
 //		  int j = 0;
 		  int aliasnumber;
@@ -2096,7 +2515,10 @@ input:
 		  tmpValue.theovalue  = 0;
 		  tmpValue.value = -1;
 		  tmpValue.error = -1;
-		  tmpValue.name  = $4;
+		  tmpValue.name = "brprod_";
+		  char srtt[20];
+		  sprintf(srtt,"%d",(int)$7);
+		  tmpValue.name.append(srtt);
 		  tmpValue.alias = (int)$7;
 		  tmpValue.bound_up = 1e+9;
 		  tmpValue.bound_low = 0.;
@@ -2152,6 +2574,103 @@ input:
 		  }
 		  if (countbrs<2) {
 		      cout << "syntax error in brprod: not enough br, alias: " << tmpValue.alias <<  endl;
+		      yyerror (" ");		      		    
+		  }
+		  yyMeasuredVec.push_back(tmpValue);
+		}
+		else if (!strcmp($2,"brsum")) {
+		  int i = 0;
+//		  int j = 0;
+		  int aliasnumber;
+		  char* charnumber;
+		  MeasuredValue tmpValue;
+                  tmpValue.nofit = true;
+		  tmpValue.name.erase();
+		  tmpValue.type  = brsum;
+		  tmpValue.theovalue  = 0;
+		  tmpValue.value = -1;
+		  tmpValue.error = -1;
+		  tmpValue.name = "brsum_";
+		  char srtt[20];
+		  sprintf(srtt,"%d",(int)$7);
+		  tmpValue.name.append(srtt);
+		  tmpValue.alias = (int)$7;
+		  tmpValue.bound_up = 1e+9;
+		  tmpValue.bound_low = 0.;
+                  //cout << "alias for brratio found" << endl;
+		  // break sentence in pieces:
+		  string str;
+	          str.erase();
+		  str = $4;
+		  char tmpstr3[255];
+		  unsigned int pos = 0, newpos = 0;
+		  int anti = 1;
+		  bool found_br = false;
+		  int countbrs = 0;
+		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		    countbrs++;
+		    str.copy(tmpstr3, newpos - pos, pos);
+		    if (tmpstr3[newpos-pos-1] == '~') {
+		      tmpstr3[newpos-pos-1] = '\0';
+		      anti = -1;
+		    }
+		    else {
+		      tmpstr3[newpos-pos] = '\0';
+		      anti = 1;
+		    }
+		    pos = newpos + 1;
+		    // break up:
+                    if (!strncmp(tmpstr3,"brprod",6)) {
+		      charnumber = strchr(tmpstr3,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atoi((charnumber+1));
+		      found_br = false;
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == brprod) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  found_br = true;
+//			  cout << "found brprod " <<  yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      if (!found_br) {
+			cout << "brprod " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
+		      }
+		      // remove br from the list
+//		      cout << "removing br from the list" << endl;
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
+		    }
+		    else if (!strncmp(tmpstr3,"br",2)) {
+		      charnumber = strchr(tmpstr3,'_');
+		      if (charnumber == 0) yyerror ("Underscore not found");
+		      aliasnumber = atoi((charnumber+1));
+		      found_br = false;
+		      for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+			if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			  i = k;
+			  found_br = true;
+//			  cout << "found br " <<  yyMeasuredVec[k].name << endl;
+			  break;
+			}
+		      }
+		      if (!found_br) {
+			cout << "br " << aliasnumber << " not found, alias: " << tmpValue.alias <<  endl;
+			yyerror (" ");			
+		      }
+		      // remove br from the list
+//		      cout << "removing br from the list" << endl;
+		      yyMeasuredVec[i].nofit = true;
+		      tmpValue.daughters.push_back(i);
+		    }
+		    else {
+		      cout << "syntax error in brsum, alias: " << tmpValue.alias <<  endl;
+		      yyerror (" ");
+		    }
+		  }
+		  if (countbrs<2) {
+		      cout << "syntax error in brsum: not enough br, alias: " << tmpValue.alias <<  endl;
 		      yyerror (" ");		      		    
 		  }
 		  yyMeasuredVec.push_back(tmpValue);

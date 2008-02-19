@@ -114,7 +114,7 @@ using namespace std;
 enum SwitchState    { off, on };
 enum Calculator     { SPHENO, SUSPECT, SPHENO_FH };
 enum RelicDensityCalculator { NONE, MICROMEGAS };
-enum ObservableType { mass, Pwidth, xsection, br, xsectionbr, Pedge, xsbr, brratio, brsum, LEObs, brprod, tauFromStau1Polarisation, other };
+enum ObservableType { mass, Pwidth, xsection, br, xsectionbr, Pedge, xsbr, brratio, brsum, LEObs, brprod, tauFromStau1Polarisation, other, weighted };
 //   LEObservables  { bsg,                                           gmin2,          drho, omega };
 enum LEObservables  { bsg, bsmm, B_smm, B_utn, dMB_d, dMB_s, gmin2e, gmin2m, gmin2t, drho, omega };
 enum FitModel       { MSSM, mSUGRA, GMSB, AMSB, NMSSM, XMSUGRA };
@@ -146,8 +146,8 @@ struct MeasuredValue {
   double          value;
   double          error;  // total error (added in quadrature)
   double          staterr; // statistical error
-  map<string, double> correrror; // modified by Mathias Uhlenbrock
-  unsigned int    position;
+  map<string, double> correrror;
+  int             position;
   double          theovalue;
   bool            theoset;
   bool            first;
