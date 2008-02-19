@@ -5,7 +5,7 @@
 #########################################################################
 ###                 Fit of LHC observables to the                     ###
 ###                 mSUGRA SPS 1a benchmark point                     ###
-###                          for 300 fb-1                             ###
+###                          for 1 fb-1                               ###
 #########################################################################
 
 #########################################################################
@@ -13,30 +13,30 @@
 #########################################################################
 
 ### masses
-massh0         109.075 GeV +-  0.1  GeV +- (LES) 0.1   GeV # errors from [11]
-massTop        170.9   GeV +-  0.01 GeV +- (JES)   1   GeV # errors from []
-massChargino1  179.917 GeV +- 11.4  GeV +- (JES)   1.8 GeV # errors from [6] (scaled)
+#massh0         109.075 GeV +-  1.4  GeV +- (LES) 0.2 GeV # errors from [11]
+massTop        170.9   GeV +-  1.1 GeV +- (JES) 1.5 GeV # errors from []
+#massChargino1  179.917 GeV +- 11.4  GeV                  # errors from [6] (scaled)
 
 #massSbottom1   500 GeV +- 50 GeV alias 1
 #massSbottom2   500 GeV +- 50 GeV alias 2
 
 ### edges
-edge 2 massSelectronL massNeutralino1                               105.413  GeV +- 1.7  GeV +-  6   GeV +- (LES) 0.1  GeV alias  1 # errors from [1] (scaled)
-edge 2 massGluino     massNeutralino1                               510.189  GeV +- 2.5  GeV +- 10   GeV +- (JES) 5.1  GeV alias  2 # errors from [1]
-edge 2 massSupR       massNeutralino1                               454.046  GeV +- 1.1  GeV +- 10   GeV +- (JES) 4.5  GeV alias  3 # errors from [1] (scaled)
-edge 2 massGluino     massSbottom1                                   89.0447 GeV +- 1.5  GeV             +- (JES) 0.9  GeV alias  4 # errors from [1]
-edge 2 massGluino     massSbottom2                                   56.6814 GeV +- 2.5  GeV             +- (JES) 0.6  GeV alias  5 # errors from [1]
+#edge 2 massSelectronL massNeutralino1                               105.413  GeV +- 1.7  GeV +-  6   GeV +- (LES) 0.1  GeV alias  1 # errors from [1] (scaled)
+#edge 2 massGluino     massNeutralino1                               510.189  GeV +- 13.7  GeV +- 10   GeV +- (JES) 5.1  GeV alias  2 # errors from [1]
+edge 2 massSupR       massNeutralino1                               454.046  GeV +-  19.6  GeV +- 10   GeV +- (JES) 22.7  GeV alias  3 # errors from [1] (scaled)
+#edge 2 massGluino     massSbottom1                                   89.0447 GeV +-  1.5  GeV             +- (JES) 0.9  GeV alias  4 # errors from [1]
+#edge 2 massGluino     massSbottom2                                   56.6814 GeV +-  2.5  GeV             +- (JES) 0.6  GeV alias  5 # errors from [1]
 
-edge 3 massNeutralino1 massNeutralino2 massSelectronR                80.1768 GeV +- 0.03 GeV             +- (LES) 0.08 GeV alias  6 # errors from [1]
-edge 3 massNeutralino1 massNeutralino4 massSelectronL               279.074  GeV +- 2.3  GeV             +- (LES) 0.28 GeV alias  7 # errors from [3]
-edge 3 massNeutralino1 massNeutralino2 massStau1                     83.1574 GeV +- 0.73 GeV +-  5.7 GeV +- (JES) 0.8  GeV alias  8 # errors from [2]
-edge 3 massNeutralino1 massSupL        massNeutralino2              454.267  GeV +- 1.4  GeV             +- (JES) 4.5  GeV alias  9 # errors from [1]
-edge 3 massSelectronR  massSupL        massNeutralino2              324.245  GeV +- 0.9  GeV             +- (JES) 3.2  GeV alias 10 # errors from [1]
+edge 3 massNeutralino1 massNeutralino2 massSelectronR                80.1768 GeV +-  1.7  GeV             +- (LES) 0.16 GeV alias  6 # errors from [1]
+#edge 3 massNeutralino1 massNeutralino4 massSelectronL               279.074  GeV +- 12.6  GeV             +- (LES) 0.28 GeV alias  7 # errors from [3]
+edge 3 massNeutralino1 massNeutralino2 massStau1                     83.1574 GeV +- 12.6  GeV +-  5.7 GeV +- (JES) 4.2 GeV alias  8 # errors from [2]
+edge 3 massNeutralino1 massSupL        massNeutralino2              454.267  GeV +- 13.9  GeV             +- (JES) 22.7  GeV alias  9 # errors from [1]
+edge 3 massSelectronR  massSupL        massNeutralino2              324.245  GeV +-  7.6  GeV             +- (JES) 16.2  GeV alias 10 # errors from [1]
 
-edge 4 massNeutralino1 massNeutralino2 massSelectronR  massSupL     398.286  GeV +- 1.0  GeV             +- (JES) 4.0  GeV alias 11 # errors from [1]
+edge 4 massNeutralino1 massNeutralino2 massSelectronR  massSupL     398.286  GeV +-  5.2  GeV             +- (JES) 19.9  GeV alias 11 # errors from [1]
 
-edge 5 massNeutralino1 massNeutralino2 massSelectronR  massSupL     216.227  GeV +- 1.6  GeV             +- (JES) 2.2  GeV alias 12 # errors from [1]
-edge 5 massNeutralino1 massNeutralino2 massSelectronR  massSbottom1 196.435  GeV +- 3.6  GeV             +- (JES) 2.0  GeV alias 13 # errors from [1]
+edge 5 massNeutralino1 massNeutralino2 massSelectronR  massSupL     216.227  GeV +- 26.5  GeV             +- (JES) 10.8  GeV alias 12 # errors from [1]
+#edge 5 massNeutralino1 massNeutralino2 massSelectronR  massSbottom1 196.435  GeV +- 19.7  GeV             +- (JES) 2.0  GeV alias 13 # errors from [1]
 
 edge 6 massTop massStop1 massChargino1 massGluino                                                                          alias 14 
 
@@ -67,13 +67,13 @@ brprod ( br_6 br_11 br_10 ) alias 6
 brprod ( br_5 br_12 br_13 ) alias 7
 brprod ( br_6 br_14       ) alias 8
 
-brratio ( brprod_1 brprod_2 ) 0.0778613 +- 0.001 +- 0.008 alias 1 #
-brratio ( brprod_3 brprod_4 ) 0.157666  +- 0.078          alias 2 #
+brratio ( brprod_1 brprod_2 ) 0.0778613 +- 0.009 +- 0.008 alias 1 #
+#brratio ( brprod_3 brprod_4 ) 0.157666  +- 0.078          alias 2 #
 
 brsum ( brprod_5 brprod_6 brprod_7 ) alias 1
  
-weighted ( brsum_1 edge_14 brprod_8 edge_15 ) 360.89  GeV +- 2.5 GeV +- (JES) 3.6 GeV alias 1
-#weighted ( brprod_4 mass_1 brprod_3 mass_2 )  522.626 GeV +- 5.4 GeV +- (JES) 5.2 GeV alias 2
+weighted ( brsum_1 edge_14 brprod_8 edge_15 ) 360.89  GeV +- 43.0 GeV +- (JES) 18.0 GeV alias 1
+#weighted ( brprod_4 mass_1 brprod_3 mass_2 )  522.626 GeV +-  5.4 GeV +- (JES) 5.2 GeV alias 2
 
 ### SM observables
 massW       80.3713  GeV +- 0.039   GeV
@@ -83,15 +83,6 @@ massBottom   4.5     GeV +- 0.25    GeV
 massTau      1.77699 GeV +- 0.00029 GeV
 alphas       0.1187  GeV +- 0.002   GeV
 alphaem    127.934   GeV +- 0.027   GeV
-
-fixParameter massTop      170.9   GeV
-fixParameter massW       80.3713  GeV
-fixParameter massZ       91.1876  GeV
-fixParameter massCharm    1.2     GeV
-fixParameter massBottom   4.5     GeV
-fixParameter massTau      1.77699 GeV
-fixParameter alphas       0.1187  GeV
-fixParameter alphaem    127.934   GeV
 
 ### low energy observables
 #LEObs ( bsg    )   0.000352084 +- 0.000042 alias 10 # HFAG summer 2006:  3.55E-4 +- 4E-5
@@ -128,10 +119,10 @@ fixParameter alphaem    127.934   GeV
 #########################################################################
 
 ### mSUGRA SPS 1a benchmark point
-fitParameter M0       100 GeV +- 1.5 GeV
-fitParameter M12      250 GeV +- 2.5 GeV
-fitParameter A0      -100 GeV +- 10 GeV
-fitParameter TanBeta   10     +-  1 GeV
+fitParameter M0       100 GeV
+fitParameter M12      250 GeV
+fitParameter A0      -100 GeV
+fitParameter TanBeta   10
 fixParameter SignMu        1
 
 #########################################################################
@@ -152,7 +143,7 @@ ScanX                          off
 SepFitTanbX                    off
 SepFitTanbMu                   off
 SepFitmA	               off
-Calculator                     SPHENO ./SPheno
+Calculator                     SPHENO ./SPheno3
 #UseMicrOmegas                  off
 QuarkFlavourViolation          off
 UseMinos                       off
@@ -166,11 +157,10 @@ UseSimAnnBefore                off
 UseSimAnnWhile                 off
 AdaptiveSimAnn                 off
 TempRedSimAnn                  0.4
-MaxCallsSimAnn                 15000
-InitTempSimAnn                 4
+MaxCallsSimAnn                 300000
+InitTempSimAnn                 5000
 SimAnnUncertainty              off
 SimAnnUncertaintyRunDown       off
-GetTempFromFirstChiSqr         on
 
 UseMarkovChains                off
 MarkovChainReadjustWidth       off
