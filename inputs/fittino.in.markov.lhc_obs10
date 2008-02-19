@@ -13,7 +13,7 @@
 #########################################################################
 
 ### masses
-massh0         109.075 GeV +-  1.4  GeV +- (LES) 0.2 GeV # errors from [11]
+massh0         109.075 GeV +-  1.4  GeV +- (LES) 0.1 GeV # errors from [11]
 massTop        170.9   GeV +-  0.05 GeV +- (JES)   1 GeV # errors from []
 #massChargino1  179.917 GeV +- 11.4  GeV                  # errors from [6] (scaled)
 
