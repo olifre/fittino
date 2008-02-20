@@ -66,7 +66,7 @@ ScanX                          off
 SepFitTanbX                    off
 SepFitTanbMu                   off
 SepFitmA	               off
-Calculator                     SPHENO ./SPheno3
+Calculator                     SPHENO ./SPheno
 #RelicDensityCalculator         MICROMEGAS ../theorycodes/micromegas_2.0.6/MSSM/sugomg
 UseMinos                       on
 UseHesse                       off
@@ -75,14 +75,15 @@ ErrDef                         1.0
 NumberPulls                    5
 GetContours                    off
 
-UseSimAnnBefore                off
+UseSimAnnBefore                on
 UseSimAnnWhile                 off
 AdaptiveSimAnn                 off
 TempRedSimAnn                  0.4
-MaxCallsSimAnn                 300000
-InitTempSimAnn                 5000
+MaxCallsSimAnn                 15000
+InitTempSimAnn                 2
 SimAnnUncertainty              off
 SimAnnUncertaintyRunDown       off
+GetTempFromFirstChiSqr         on
 
 UseMarkovChains                off
 MarkovChainReadjustWidth       off
