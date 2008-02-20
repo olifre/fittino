@@ -152,7 +152,7 @@ ScanX                          off
 SepFitTanbX                    off
 SepFitTanbMu                   off
 SepFitmA	               off
-Calculator                     SPHENO ./SPheno3
+Calculator                     SPHENO ./SPheno
 #UseMicrOmegas                  off
 QuarkFlavourViolation          off
 UseMinos                       off
