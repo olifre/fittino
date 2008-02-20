@@ -72,7 +72,7 @@ UseMinos                       on
 UseHesse                       off
 NumberOfMinimizations          1
 ErrDef                         1.0
-NumberPulls                    5
+NumberPulls                    1
 GetContours                    off
 
 UseSimAnnBefore                on
