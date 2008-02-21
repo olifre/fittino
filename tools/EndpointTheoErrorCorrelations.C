@@ -169,7 +169,7 @@ void EndpointTheoErrorCorrelations() {
     rmSleptonL = rand.Gaus(mSleptonL, mSleptonL*0.005);
     rmSleptonR = rand.Gaus(mSleptonR, mSleptonR*0.005);
     rmStau1 = rand.Gaus(mStau1, mStau1*0.005);
-    rmGluino = rand.Gaus(mGluino, mGluino*0.005);
+    rmGluino = rand.Gaus(mGluino, mGluino*0.01);
     rmNeutralino1 = rand.Gaus(mNeutralino1, mNeutralino1*0.005);
     rmNeutralino2 = rand.Gaus(mNeutralino2, mNeutralino2*0.005);
     rmNeutralino4 = rand.Gaus(mNeutralino4, mNeutralino4*0.005);
