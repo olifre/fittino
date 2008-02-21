@@ -111,19 +111,43 @@ Input::Input(const char* inputfile)
   //yyTagMap->Print();
 
   if (!yyTagMap->empty()) {
-     CorrelationMatrix* yyCorrelationMatrix = new CorrelationMatrix(&yyMeasuredVec, yyTagMap);
-     yyCorrelationMatrix->Calculate();
+     CorrelationMatrix* correlationMatrix = new CorrelationMatrix(&yyMeasuredVec, yyTagMap);
+     correlationMatrix->Calculate();
 
      for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
 	for (unsigned int j=i; j<yyMeasuredVec.size(); j++) {
-	   yyMeasuredCorrelationMatrix.add(i,j,yyCorrelationMatrix->GetCorrelation(i,j));
+	   yyMeasuredCorrelationMatrix.add(i,j,correlationMatrix->GetCorrelation(i,j));
 	}
      }
   }
 
-  cout << "filling measured covariances "<< endl;
+  //cout << "filling measured covariances "<< endl;
   yyMeasuredCorrelationMatrix.CalculateCovarianceMatrix();
+  //cout << endl << "correlation and covariance matrix before introducing direct input covariance:" << endl;
   //yyMeasuredCorrelationMatrix.Print();
+  //yyMeasuredCorrelationMatrix.PrintCovariance();
+  //yyMeasuredCorrelationMatrix.PrintInverseCovariance();
+
+  // cout << "calling AddFullCovarianceMatrix" << endl;
+  // TODO: add DirectInputCovariance Matrix here
+  if (yyDirectInputCovarianceMatrix.TestCovarianceMatrixExistence()) {
+    yyMeasuredCorrelationMatrix.AddFullCovarianceMatrix(yyDirectInputCovarianceMatrix);
+
+    // test
+    // cout << endl << "correlation and covariance matrix after adding direct input covariance matrix to yyMeasuredCorrelationMatrix:" << endl;
+    //yyMeasuredCorrelationMatrix.Print();
+    //yyMeasuredCorrelationMatrix.PrintCovariance();
+    
+    // TODO: calculate correlation matrix again
+    yyMeasuredCorrelationMatrix.CalculateInverseCovarianceMatrix();
+    yyMeasuredCorrelationMatrix.TransformCovarianceMatrixIntoCorrelationMatrix();
+  }
+
+  // test
+  //cout << endl << "correlation and covariance matrix after calculating correlation and inverse covariance matrix::" << endl;
+  // yyMeasuredCorrelationMatrix.Print();
+  //yyMeasuredCorrelationMatrix.PrintCovariance();
+  //yyMeasuredCorrelationMatrix.PrintInverseCovariance();
 
   fMeasuredVec = yyMeasuredVec;
   fMeasuredCorrelationMatrix = yyMeasuredCorrelationMatrix;

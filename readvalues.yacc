@@ -114,6 +114,7 @@ vector<MeasuredValue> yyUniversalityVec;
 vector<MeasuredValue> yyFixedVec;  // contains mu, M1, M2 ...
  
 CorrelationMatrix     yyMeasuredCorrelationMatrix(&yyMeasuredVec);
+CorrelationMatrix     yyDirectInputCovarianceMatrix(&yyMeasuredVec);
 CorrelationMatrix     yyFittedCorrelationMatrix(&yyFittedVec);
 
 vector<parameter_t>   yyCorrelatedErr; // 100 % correlated errors
@@ -644,6 +645,130 @@ input:
 
 //	              cout << "filling correlation coefficient for " << $3 << " " << $4 << " " << $5 << endl;
 		      yyMeasuredCorrelationMatrix.add(i, j, $5);
+		  }
+		  //
+		  if (!strcmp($2, "covarianceCoefficient")) {
+	              int i = 0;
+		      int j = 0;
+                      int aliasnumber;
+                      char* charnumber;
+		      if (!strncmp($3,"sigma",5)) {
+                        charnumber = strchr($3,'_');
+                        if (charnumber == 0) yyerror ("Underscore not found");
+		        aliasnumber = atoi((charnumber+1));
+                        for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+                          if ((yyMeasuredVec[k].type == xsection) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			    i = k;
+//                            cout << "found correlation with xs " <<  yyMeasuredVec[k].name << endl;
+			    break;
+			  }
+                        }
+                      }
+		      else if (!strncmp($3,"br",2)) {
+                        charnumber = strchr($3,'_');
+                        if (charnumber == 0) yyerror ("Underscore not found");
+		        aliasnumber = atoi((charnumber+1));
+                        for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+                          if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			    i = k;
+//                            cout << "found correlation with br " <<  yyMeasuredVec[k].name << endl;
+			    break;
+			  }
+                        }
+                      }
+		      else if (!strncmp($3,"edge",2)) {
+                        charnumber = strchr($3,'_');
+                        if (charnumber == 0) yyerror ("Underscore not found");
+		        aliasnumber = atoi((charnumber+1));
+                        for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+                          if ((yyMeasuredVec[k].type == Pedge) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			    i = k;
+			    //                            cout << "found correlation with edge " <<  yyMeasuredVec[k].name << endl;
+			    break;
+			  }
+                        }
+                      }
+		      else if (!strncmp($3,"width",2)) {
+                        charnumber = strchr($3,'_');
+                        if (charnumber == 0) yyerror ("Underscore not found");
+		        aliasnumber = atoi((charnumber+1));
+                        for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+                          if ((yyMeasuredVec[k].type == Pwidth) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			    i = k;
+//                            cout << "found correlation with width " <<  yyMeasuredVec[k].name << endl;
+			    break;
+			  }
+                        }
+                      }
+                      else {
+                        for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+                          if (!yyMeasuredVec[k].name.compare($3)) {
+			    i = k;
+//                            cout << "found correlation with " <<  yyMeasuredVec[k].name << endl;
+			    break;
+			  }
+                        }			
+                      }
+		      if (!strncmp($4,"sigma",5)) {
+                        charnumber = strchr($4,'_');
+                        if (charnumber == 0) yyerror ("Underscore not found");
+		        aliasnumber = atoi((charnumber+1));
+                        for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+                          if ((yyMeasuredVec[k].type == xsection) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			    j = k;
+//                            cout << "found correlation with xs " <<  yyMeasuredVec[k].name << endl;
+			    break;
+			  }
+                        }
+                      }
+		      else if (!strncmp($4,"br",2)) {
+                        charnumber = strchr($4,'_');
+                        if (charnumber == 0) yyerror ("Underscore not found");
+		        aliasnumber = atoi((charnumber+1));
+                        for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+                          if ((yyMeasuredVec[k].type == br) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			    j = k;
+//                            cout << "found correlation with br " <<  yyMeasuredVec[k].name << endl;
+			    break;
+			  }
+                        }
+                      }
+		      else if (!strncmp($4,"edge",2)) {
+                        charnumber = strchr($4,'_');
+                        if (charnumber == 0) yyerror ("Underscore not found");
+		        aliasnumber = atoi((charnumber+1));
+                        for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+                          if ((yyMeasuredVec[k].type == Pedge) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			    j = k;
+//                            cout << "found correlation with edge " <<  yyMeasuredVec[k].name << endl;
+			    break;
+			  }
+                        }
+                      }
+		      else if (!strncmp($4,"width",2)) {
+                        charnumber = strchr($4,'_');
+                        if (charnumber == 0) yyerror ("Underscore not found");
+		        aliasnumber = atoi((charnumber+1));
+                        for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+                          if ((yyMeasuredVec[k].type == Pwidth) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			    j = k;
+//                            cout << "found correlation with width " <<  yyMeasuredVec[k].name << endl;
+			    break;
+			  }
+                        }
+                      }
+                      else {
+                        for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+                          if (!yyMeasuredVec[k].name.compare($4)) {
+			    j = k;
+//                            cout << "found correlation with " <<  yyMeasuredVec[k].name << endl;
+			    break;
+			  }
+                        }			
+                      }
+
+//	              cout << "filling correlation coefficient for " << $3 << " " << $4 << " " << $5 << endl;
+		      yyDirectInputCovarianceMatrix.AddCovariance(i, j, $5);
 		  }
 	      }
             | input T_KEY value err correrr

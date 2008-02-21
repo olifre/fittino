@@ -253,9 +253,17 @@ class CorrelationMatrix {
       double GetInverseCovariance(unsigned int index1, unsigned int index2) const;
       void add(const string& name1, const string& name2, double entry);
       void add(unsigned int index1, unsigned int index2, double entry);
+      void AddCovariance(const string& name1, const string& name2, double entry);
+      void AddCovariance(unsigned int index1, unsigned int index2, double entry);
       void Calculate();
       void CalculateCovarianceMatrix();
       void Print();
+      void PrintCovariance();
+      void PrintInverseCovariance();
+      void AddFullCovarianceMatrix(const CorrelationMatrix& addedCovarianceMatrix);
+      void TransformCovarianceMatrixIntoCorrelationMatrix();
+      void CalculateInverseCovarianceMatrix();
+      bool TestCovarianceMatrixExistence();
 };
 
 TVectorD getCorrelatedRandomNumbers(const TVectorD& mean, const TMatrixDSym& covarianceMatrix);

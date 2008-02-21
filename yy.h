@@ -44,6 +44,7 @@ extern vector<MeasuredValue> yyUniversalityVec;
 extern vector<MeasuredValue> yyFixedVec;  // contains mu, M1, M2 ...
 
 extern CorrelationMatrix     yyMeasuredCorrelationMatrix;
+extern CorrelationMatrix     yyDirectInputCovarianceMatrix;
 extern CorrelationMatrix     yyFittedCorrelationMatrix;
 		        
 extern bool yyUseLoopCorrections;

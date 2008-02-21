@@ -29,6 +29,9 @@ massTau      1.77699 GeV +- 0.00029 GeV
 alphas       0.1187  GeV +- 0.002   GeV
 alphaem    127.934   GeV +- 0.027   GeV
 
+covarianceCoefficient edge_1 edge_2 2.
+
+
 fixParameter massW       80.3663   GeV
 fixParameter massZ       91.1876   GeV
 fixParameter massCharm    1.2      GeV
