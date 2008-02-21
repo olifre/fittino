@@ -43,10 +43,10 @@ fixParameter alphaem    127.934
 #########################################################################
 
 ### mSUGRA SPS 1a benchmark point
-fitParameter M0       100
-fitParameter M12      300
-fitParameter A0      -300
-fitParameter TanBeta    6
+fitParameter M0       100 GeV +- 3 GeV
+fitParameter M12      300 GeV +- 4 GeV
+fitParameter A0      -300 GeV +- 20 GeV
+fitParameter TanBeta    6     +- 0.5
 fixParameter SignMu     1
 
 #########################################################################
