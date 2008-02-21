@@ -56,24 +56,27 @@ nofit massChargino2	418.495 GeV +- 3.0 GeV   #  +- 3.4 GeV  # ~chi_2+
 nofit cos2PhiL            0.763 +- 0.0005       # rough estimate
 nofit cos2PhiR            0.94 +- 0.0005        # rough estimate
 
+# edge 3 massNeutralino1 massNeutralino2 massSelectronR                 104.024 GeV +- 1.7  GeV alias 100
+
 #########################################################################
 # LE Observables                                                        #
 #########################################################################
 LEObs ( bsg    )  3.26799E-4 +- 4.2E-5 alias  1  # HFAG summer 2006:  3.55E-4 +- 4E-5
-LEObs ( bsmm   )  1.89357    +- 1.0    alias  2  # HFAG summer 2006:  4.5E-6  +- 1.0E-6 
+LEObs ( bsmm   )  1.89357    +- 0.5    alias  2  # Misiak WA: B->Xsll = 1.6 +- 0.5 x10-6 # HFAG summer 2006:  4.5E-6  +- 1.0E-6 
 LEObs ( B_smm  ) < 7.0                 alias  3  # HFAG summer 2006: < 0.08E-6
 LEObs ( B_utn  )  1.25338E-4 +- 4.8E-5 alias  4  # HFAG summer 2006:  1.34E-4 +- 0.48
-LEObs ( dMB_d  )  0.281021   +- 0.004  alias  5  # HFAG winter 2006:  0.507 +- 0.004
-LEObs ( dMB_s  ) 24.2673     +- 0.13   alias  6  # CDF Sep. 2006:    17.77 +- 0.10(stat) +- 0.07(sys)
+LEObs ( dMB_d  )  0.281021   +- 0.004  alias  5  # HFAG winter 2006:  0.507 +- 0.004  #!!! to be repaired with next version 3.16
+LEObs ( dMB_s  ) 24.2673     +- 0.13   alias  6  # CDF Sep. 2006:    17.77 +- 0.10(stat) +- 0.07(sys)  #!!! to be repaired with next version 3.16
 # LEObs ( gmin2e )  0.0489534  +- 7.6    alias 10  # PDG 2006: magn.moment = 1.0011596521859 +- 0.0000000000038 (e hbar / 2 m_e)
 						 # 
 LEObs ( gmin2m )  2.46463    +- 2      alias 11  # PDG 2006: magn.moment = 1.0011659208 +- 0.0000000006 (e hbar / 2 m_e)
-						 # We assume: SPheno tells us (g-2)SUSY
+						 # We assume: SPheno tells us (g-2)SUSY/2.
+                                                 # calculate again:
 	 					 # Observable: 2*(1 - exp. PDG value) - (g-2)SM
 						 # uncertainty: 2*PDG value
 						 # Observable according to above formula: 4E-9 +- 6E-9 +- 8E-9
 # LEObs ( gmin2t )  511.718    +- 3.2E7  alias 12  # PDF 2006: 0.013 > magnetic moment > -0.052 
-LEObs ( drho   )  8.64968E-3 +- 0.0007 alias 30  # PDG 2006: 0.0002 + 0.0007 - 0.0004
+LEObs ( drho   )  8.64968E-3 +- 0.0007 alias 30  # PDG 2006: 0.0002 + 0.0007 - 0.0004   #!!! extract top contribution, to be repaired in 3.l6
 LEObs ( omega  )  0.101501   +- 0.006  alias 31  # PDG 2006: 0.111 +- 0.006  
 
 
@@ -168,7 +171,7 @@ NoBoundsAtAll         off
 
 Calculator            SPHENO  ./SPheno
 
-UseMarkovChains                on
+UseMarkovChains                off
 MarkovChainReadjustWidth       off
 MarkovChainReadjustWidthPeriod 500
 MaxMarkovChain                 20000

@@ -1,18 +1,18 @@
-#########################################################################
-###                         Fittino input file                        ###
-#########################################################################
-###                           P. Wienemann                            ###
-#########################################################################
-###                 Fit of observables to the Atlas                   ###
-###              mSUGRA SU3 benchmark point with 1 fb-1               ###
-#########################################################################
-
-#########################################################################
-### Observables                                                       ###
-#########################################################################
-
+# #########################################################################
+# ###                         Fittino input file                        ###
+# #########################################################################
+# ###                           P. Wienemann                            ###
+# #########################################################################
+# ###                 Fit of observables to the Atlas                   ###
+# ###              mSUGRA SU3 benchmark point with 1 fb-1               ###
+# #########################################################################
+# 
+# #########################################################################
+# ### Observables                                                       ###
+# #########################################################################
+# 
 ### edges
-edge 3 massNeutralino1 massNeutralino2 massSelectronR               104.024 GeV +- 1.7  GeV +- (LES) 0.2  GeV alias 1
+edge 3 massNeutralino1 massNeutralino2 massSelectronR                 104.024 GeV +- 1.7  GeV +- (LES) 0.2  GeV alias 1
 edge 3 massNeutralino1 massSupL        massNeutralino2              535.256 GeV +- 13.9 GeV +- (JES) 22.7 GeV alias 2
 edge 5 massNeutralino1 massNeutralino2 massSelectronR  massSupL     266.119 GeV +- 26.5 GeV +- (JES) 10.9 GeV alias 3
 edge 3 massSelectronR  massSupL        massNeutralino2              449.054 GeV +- 7.6  GeV +- (JES) 16.3 GeV alias 4
@@ -55,7 +55,7 @@ fixParameter SignMu     1
 
 fitModel                       mSUGRA
 
-LoopCorrections                on
+# LoopCorrections                on
 ISR                            on
 UseGivenStartValues            on
 FitAllDirectly                 on

@@ -98,7 +98,7 @@ ScanX                          off
 SepFitTanbX                    off
 SepFitTanbMu                   off
 SepFitmA	               off
-Calculator                     SPHENO ../theorycodes/SPheno.3.beta20/bin/SPheno3
+Calculator                     SPHENO ./SPheno
 #Calculator                     SPHENO ../theorycodes/SPheno3.0.beta/SPheno3
 #RelicDensityCalculator         MICROMEGAS ../../Programme/micromegas_2.0.6/MSSM/sugomg
 MaxCalculatorTime              60

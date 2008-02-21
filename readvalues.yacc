@@ -486,13 +486,15 @@ input:
 	         str.erase();
 		 str = $3;
 //		 cout << "decompositing string "<<str<< endl;
+		 int stringsize = str.size();
 		 char tmpstr5[255];
 		 unsigned int pos = 0, newpos = 0;
 //		 int anti = 1;
 //	         int i = 0;
 	         MeasuredValue tmpval;
 	         string        firstname;
-		 while ((newpos = str.find(" ", pos)) != string::npos) {
+		 //		 while ((newpos = str.find(" ", pos)) != string::npos) {
+		 while ((newpos = str.find(" ", pos)) <= stringsize ) {
 		      str.copy(tmpstr5, newpos - pos, pos);
 	              tmpstr5[newpos-pos] = '\0';
                       if (!pos) {
@@ -556,7 +558,7 @@ input:
                         for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
                           if ((yyMeasuredVec[k].type == Pedge) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    i = k;
-//                            cout << "found correlation with edge " <<  yyMeasuredVec[k].name << endl;
+			    //                            cout << "found correlation with edge " <<  yyMeasuredVec[k].name << endl;
 			    break;
 			  }
                         }
@@ -747,39 +749,53 @@ input:
 		  string str;
 	          str.erase();
 		  str = $4;
-//		  cout << "decompositing string "<<str<< endl;
+		  //		  cout << "decompositing string |"<<str<< "|"<< endl;
+		  int stringsize = str.size();
+		  // cout << "string size = " << stringsize << endl;
 		  char tmpstr2[255];
 		  unsigned int pos = 0, newpos = 0;
 //		  int anti = 1;
 	          int i = 0;
-		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  int firstnewpos = str.find(" ", pos);
+		  //cout << "firstnewpos = " << firstnewpos << endl;
+		  //		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  while ((newpos = str.find(" ", pos)) <= stringsize) {
+		    //cout << "t0" << endl;
 		      str.copy(tmpstr2, newpos - pos, pos);
-//	              cout << "tmpstr2 after str.copy "<<tmpstr2<< endl;
+	              //cout << "tmpstr2 after str.copy "<<tmpstr2<< " newpos = " << newpos << " pos = " << pos << " string::npos = " << string::npos <<  endl;
 	              tmpstr2[newpos-pos] = '\0';
+		      //cout << "t0a" << endl;
 		      if (tmpstr2[newpos-pos-1] == '~') {
 			  tmpstr2[newpos-pos-1] = '\0';
 		      }
+		      //cout << "t1" << endl;
                       if (!strncmp(tmpstr2,"mass",4)) {
-//			cout << "substracting mass" << endl;
+			//cout << "substracting mass" << endl;
                         while (tmpstr2[i] != '\0') {
                           tmpstr2[i] = tmpstr2[i+4];
 			  i++;
                         }
+			//cout << "t1a" << endl;
                         i = 0;
                       }
 		      else {
-			  tmpstr2[newpos-pos] = '\0';
+			//cout << "t1b" << endl;
+			tmpstr2[newpos-pos] = '\0';
 		      }
+		      //cout << "t2" << endl;
 		      pos = newpos + 1;
-//		      cout << "Adding Element: " << tmpstr2 << " with ID " <<  yyParticleIDs[tmpstr2] << endl;
+		      //cout << "Adding Element: " << tmpstr2 << " with ID " <<  yyParticleIDs[tmpstr2] << endl;
 		      tmpValue.daughters.push_back(yyParticleIDs[tmpstr2]);
+		      //cout << "t3" << endl;
 		  }
+		  //cout << "h0" << endl;
 		  tmpValue.value = $5;
                   struct correrrorstruct *tagmap = $7;
 		  double tmpError = $6*$6;
 		  for (unsigned int j=0; j<10; j++) {
 		     tmpError += (*tagmap).value[j]*(*tagmap).value[j];
 		  }
+		  //cout << "h1" << endl;
 		  tmpValue.error = TMath::Sqrt(tmpError);
 		  for (unsigned int k=0; k<10; k++) {
 		     string tmpString = (*tagmap).key[k].keyname;
@@ -787,12 +803,14 @@ input:
 		     pair<string, double> tmpPair(tmpString, tmpDouble);
 		     tmpValue.correrror.insert(tmpPair);
 		  }
+		  //cout << "h2" << endl;
 		  tmpValue.correrror.erase("0");
 		  tmpValue.alias = (int)$9;
 		  tmpValue.bound_up = 1e+6;
 		  tmpValue.bound_low = 0.;
 		  yyMeasuredVec.push_back(tmpValue);
 		  strcpy($4,"");
+		  //cout << "done" << endl;
 		}
               }
 	    | input T_KEY value value
@@ -1244,11 +1262,13 @@ input:
 	          str.erase();
 		  str = $4;
 //		  cout << "decompositing string "<<str<< endl;
+		  int stringsize = str.size();
 		  char tmpstr2[255];
 		  unsigned int pos = 0, newpos = 0;
 //		  int anti = 1;
 	          int i = 0;
-		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  //		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  while ((newpos = str.find(" ", pos)) <= stringsize) {
 		      str.copy(tmpstr2, newpos - pos, pos);
 //	              cout << "tmpstr2 after str.copy "<<tmpstr2<< endl;
 	              tmpstr2[newpos-pos] = '\0';
@@ -1313,11 +1333,13 @@ input:
 	          str.erase();
 		  str = $4;
 //		  cout << "decompositing string "<<str<< endl;
+		  int stringsize = str.size();
 		  char tmpstr2[255];
 		  unsigned int pos = 0, newpos = 0;
 //		  int anti = 1;
 	          int i = 0;
-		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  //		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  while ((newpos = str.find(" ", pos)) <= stringsize) {
 		      str.copy(tmpstr2, newpos - pos, pos);
 //	              cout << "tmpstr2 after str.copy "<<tmpstr2<< endl;
 	              tmpstr2[newpos-pos] = '\0';
@@ -1371,10 +1393,12 @@ input:
 		  string str;
 	          str.erase();
 		  str = $6;
+		  int stringsize = str.size();
 		  char tmpstr3[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
-		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  //		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  while ((newpos = str.find(" ", pos)) <= stringsize ) {
 		      str.copy(tmpstr3, newpos - pos, pos);
 		      if (tmpstr3[newpos-pos-1] == '~') {
 			  tmpstr3[newpos-pos-1] = '\0';
@@ -1530,10 +1554,12 @@ input:
 		  string str;
 	          str.erase();
 		  str = $6;
+		  int stringsize = str.size();
 		  char tmpstr3[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
-		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  //		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  while ((newpos = str.find(" ", pos)) <= stringsize ) {
 		      str.copy(tmpstr3, newpos - pos, pos);
 		      if (tmpstr3[newpos-pos-1] == '~') {
 			  tmpstr3[newpos-pos-1] = '\0';
@@ -1592,10 +1618,12 @@ input:
 		  string str;
 	          str.erase();
 	          str = $6;
+		  int stringsize = str.size();
 		  char tmpstr4[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
-		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  //		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  while ((newpos = str.find(" ", pos)) <= stringsize ) {
 		      str.copy(tmpstr4, newpos - pos, pos);
 		      if (tmpstr4[newpos-pos-1] == '~') {
 			  tmpstr4[newpos-pos-1] = '\0';
@@ -1660,10 +1688,12 @@ input:
 		  string str;
 	          str.erase();
 	          str = $6;
+		  int stringsize = str.size();
 		  char tmpstr4[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
-		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  //		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  while ((newpos = str.find(" ", pos)) <= stringsize ) {
 		      str.copy(tmpstr4, newpos - pos, pos);
 		      if (tmpstr4[newpos-pos-1] == '~') {
 			  tmpstr4[newpos-pos-1] = '\0';
@@ -1731,12 +1761,14 @@ input:
 		  string str;
 	          str.erase();
 		  str = $4;
+		  int stringsize = str.size();
 		  char tmpstr4[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
 		  bool found_br = false;
                   int countbrs = 0;
-		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  //		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  while ((newpos = str.find(" ", pos)) <= stringsize ) {
                     countbrs++;
 		    if (countbrs>=5) {
 		      cout << "syntax error in weighted: too many arguments, alias: " << tmpValue.alias <<  endl;
@@ -1926,11 +1958,13 @@ input:
 		  string str;
 	          str.erase();
 		  str = $4;
+		  int stringsize = str.size();
 		  char tmpstr3[255];
 		  unsigned int pos = 0, newpos = 0;
 		  bool found_br = false;
 		  int anti = 1;
-		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  //		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  while ((newpos = str.find(" ", pos)) <= stringsize ) {
 		    str.copy(tmpstr3, newpos - pos, pos);
 		    if (tmpstr3[newpos-pos-1] == '~') {
 		      tmpstr3[newpos-pos-1] = '\0';
@@ -2058,12 +2092,14 @@ input:
 		  string str;
 	          str.erase();
 		  str = $4;
+		  int stringsize = str.size();
 		  char tmpstr3[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
 		  bool found_br = false;
 		  int countbrs = 0;
-		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  //		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  while ((newpos = str.find(" ", pos)) <= stringsize ) {
 		    countbrs++;
 		    if (countbrs>=3) {
 		      cout << "syntax error in brratio: too many br, alias: " << tmpValue.alias <<  endl;
@@ -2181,12 +2217,14 @@ input:
 		  string str;
 	          str.erase();
 		  str = $4;
+		  int stringsize = str.size();
 		  char tmpstr3[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
 		  bool found_br = false;
 		  int countbrs = 0;
-		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  //		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  while ((newpos = str.find(" ", pos)) <= stringsize ) {
 		    countbrs++;
 		    str.copy(tmpstr3, newpos - pos, pos);
 		    if (tmpstr3[newpos-pos-1] == '~') {
@@ -2278,12 +2316,14 @@ input:
 		  string str;
 	          str.erase();
 		  str = $4;
+		  int stringsize = str.size();
 		  char tmpstr3[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
 		  bool found_br = false;
 		  int countbrs = 0;
-		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  //		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  while ((newpos = str.find(" ", pos)) <= stringsize ) {
 		    countbrs++;
 		    str.copy(tmpstr3, newpos - pos, pos);
 		    if (tmpstr3[newpos-pos-1] == '~') {
@@ -2353,12 +2393,14 @@ input:
 		  string str;
 	          str.erase();
 		  str = $4;
+		  int stringsize = str.size();
 		  char tmpstr4[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
 		  bool found_br = false;
                   int countbrs = 0;
-		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  //		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  while ((newpos = str.find(" ", pos)) <= stringsize ) {
                     countbrs++;
 		    if (countbrs>=5) {
 		      cout << "syntax error in weighted: too many arguments, alias: " << tmpValue.alias <<  endl;
@@ -2532,12 +2574,14 @@ input:
 		  string str;
 	          str.erase();
 		  str = $4;
+		  int stringsize = str.size();
 		  char tmpstr3[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
 		  bool found_br = false;
 		  int countbrs = 0;
-		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  //		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  while ((newpos = str.find(" ", pos)) <= stringsize ) {
 		    countbrs++;
 		    str.copy(tmpstr3, newpos - pos, pos);
 		    if (tmpstr3[newpos-pos-1] == '~') {
@@ -2607,12 +2651,14 @@ input:
 		  string str;
 	          str.erase();
 		  str = $4;
+		  int stringsize = str.size();
 		  char tmpstr3[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
 		  bool found_br = false;
 		  int countbrs = 0;
-		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  //		  while ((newpos = str.find(" ", pos)) != string::npos) {
+		  while ((newpos = str.find(" ", pos)) <= stringsize ) {
 		    countbrs++;
 		    str.copy(tmpstr3, newpos - pos, pos);
 		    if (tmpstr3[newpos-pos-1] == '~') {
