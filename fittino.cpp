@@ -6564,708 +6564,708 @@ void FillFixedParameters()
 
 int   ReadLesHouches()
 {
-   unsigned int found_prod;
-   // first parse the LesHouches outfile and load predictions to maps
-   if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
-      cout << "parsing the les houches file " << endl;
-   }
-   int rc = ParseLesHouches();
-   if (yyCalculatorError) {
-      cerr << "Error in ParseLesHouches, exiting ReadLesHouches" << endl;
-      return 1;
-   }
-   if (rc > 0) {
-      return rc;
-   }
-   vector <unsigned int> used_products;
-   bool already_used = false;
-   bool dependencies_theoset = false;
+  unsigned int found_prod;
+  // first parse the LesHouches outfile and load predictions to maps
+  if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
+    cout << "parsing the les houches file " << endl;
+  }
+  int rc = ParseLesHouches();
+  if (yyCalculatorError) {
+    cerr << "Error in ParseLesHouches, exiting ReadLesHouches" << endl;
+    return 1;
+  }
+  if (rc > 0) {
+    return rc;
+  }
+  vector <unsigned int> used_products;
+  bool already_used = false;
+  bool dependencies_theoset = false;
 
-   // test reading of low energy measurements
-   //========================================
-   cout << "  --->  yybsg    from SPheno: " << yybsg    << endl;   //  1  BR(b -> s gamma) 
-   cout << "  --->  yybsmm   from SPheno: " << yybsmm   << endl;   //  2  BR(b -> s mu+ mu-)
-   cout << "  --->  yyB_smm  from SPheno: " << yyB_smm  << endl;   //  3  BR(Bs -> mu+ mu-)
-   cout << "  --->  yyB_utn  from SPheno: " << yyB_utn  << endl;   //  4  BR(B_u -> tau nu)
-   cout << "  --->  yydMB_d  from SPheno: " << yydMB_d  << endl;   //  5  |Delta(M_Bd)| [ps^-1]
-   cout << "  --->  yydMB_s  from SPheno: " << yydMB_s  << endl;   //  6  |Delta(M_Bs)| [ps^-1]
-   cout << "  --->  yygmin2e from SPheno: " << yygmin2e << endl;   // 10  Delta(g-2)_electron
-   cout << "  --->  yygmin2m from SPheno: " << yygmin2m << endl;   // 11  Delta(g-2)_muon
-   cout << "  --->  yygmin2t from SPheno: " << yygmin2t << endl;   // 12  Delta(g-2)_tau
-   cout << "  --->  yydrho   from SPheno: " << yydrho   << endl;   // 30  Delta(rho_parameter)
-   //------------------------------------------------------------------------------------------
-   cout << "  --->  yyOmega  from MicrOmegas: " << yyOmega  << endl;   //     relic density
+  // test reading of low energy measurements
+  //========================================
+  cout << "  --->  yybsg    from SPheno: " << yybsg    << endl;   //  1  BR(b -> s gamma) 
+  cout << "  --->  yybsmm   from SPheno: " << yybsmm   << endl;   //  2  BR(b -> s mu+ mu-)
+  cout << "  --->  yyB_smm  from SPheno: " << yyB_smm  << endl;   //  3  BR(Bs -> mu+ mu-)
+  cout << "  --->  yyB_utn  from SPheno: " << yyB_utn  << endl;   //  4  BR(B_u -> tau nu)
+  cout << "  --->  yydMB_d  from SPheno: " << yydMB_d  << endl;   //  5  |Delta(M_Bd)| [ps^-1]
+  cout << "  --->  yydMB_s  from SPheno: " << yydMB_s  << endl;   //  6  |Delta(M_Bs)| [ps^-1]
+  cout << "  --->  yygmin2e from SPheno: " << yygmin2e << endl;   // 10  Delta(g-2)_electron
+  cout << "  --->  yygmin2m from SPheno: " << yygmin2m << endl;   // 11  Delta(g-2)_muon
+  cout << "  --->  yygmin2t from SPheno: " << yygmin2t << endl;   // 12  Delta(g-2)_tau
+  cout << "  --->  yydrho   from SPheno: " << yydrho   << endl;   // 30  Delta(rho_parameter)
+  //------------------------------------------------------------------------------------------
+  cout << "  --->  yyOmega  from MicrOmegas: " << yyOmega  << endl;   //     relic density
 
 
-   used_products.clear();
-   // loop over yyMeasuredVec and fill theovalue
-   if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
-      cout << "interpreting the les houches output " << endl;
-   }  
-   for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
-      if (yyMeasuredVec[i].type == mass) {
-	 //      cout << "found mass of particle " << yyMeasuredVec[i].id << endl;
-	 //      if ( yyMeasuredVec[i].id == 25 || yyMeasuredVec[i].id == 35 ||
-	 //	   yyMeasuredVec[i].id == 45 ) {
-	 //	cout << "################ H1 or H2 or H3 found" << endl;
-	 //      }
-	 yyMeasuredVec[i].theovalue = yyMass[yyMeasuredVec[i].id];
-	 yyMeasuredVec[i].theoset = true;
+  used_products.clear();
+  // loop over yyMeasuredVec and fill theovalue
+  if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
+    cout << "interpreting the les houches output " << endl;
+  }  
+  for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+    if (yyMeasuredVec[i].type == mass) {
+      //      cout << "found mass of particle " << yyMeasuredVec[i].id << endl;
+      //      if ( yyMeasuredVec[i].id == 25 || yyMeasuredVec[i].id == 35 ||
+      //	   yyMeasuredVec[i].id == 45 ) {
+      //	cout << "################ H1 or H2 or H3 found" << endl;
+      //      }
+      yyMeasuredVec[i].theovalue = yyMass[yyMeasuredVec[i].id];
+      yyMeasuredVec[i].theoset = true;
+    }
+    //################################################
+    else if (yyMeasuredVec[i].type == LEObs) {
+      if (yyMeasuredVec[i].id == bsg) {
+	yyMeasuredVec[i].theovalue = yybsg;
+	yyMeasuredVec[i].theoset = true;
       }
-      //################################################
-      else if (yyMeasuredVec[i].type == LEObs) {
-	 if (yyMeasuredVec[i].id == bsg) {
-	    yyMeasuredVec[i].theovalue = yybsg;
-	    yyMeasuredVec[i].theoset = true;
-	 }
-	 else if (yyMeasuredVec[i].id == bsmm) {
-	    yyMeasuredVec[i].theovalue = yybsmm; 
-	    yyMeasuredVec[i].theoset = true;
-	 }
-	 else if (yyMeasuredVec[i].id == B_smm) {
-	    yyMeasuredVec[i].theovalue = yyB_smm; 
-	    yyMeasuredVec[i].theoset = true;
-	 }
-	 else if (yyMeasuredVec[i].id == B_utn) {
-	    yyMeasuredVec[i].theovalue = yyB_utn; 
-	    yyMeasuredVec[i].theoset = true;
-	 }
-	 else if (yyMeasuredVec[i].id == dMB_d) {
-	    yyMeasuredVec[i].theovalue = yydMB_d;
-	    yyMeasuredVec[i].theoset = true;
-	 }
-	 else if (yyMeasuredVec[i].id == dMB_s) {
-	    yyMeasuredVec[i].theovalue = yydMB_s;
-	    yyMeasuredVec[i].theoset = true;
-	 }
-	 else if (yyMeasuredVec[i].id == gmin2e) {
-	    yyMeasuredVec[i].theovalue = yygmin2e;
-	    yyMeasuredVec[i].theoset = true;
-	 }
-	 else if (yyMeasuredVec[i].id == gmin2m) {
-	    yyMeasuredVec[i].theovalue = yygmin2m;
-	    yyMeasuredVec[i].theoset = true;
-	 }
-	 else if (yyMeasuredVec[i].id == gmin2t) {
-	    yyMeasuredVec[i].theovalue = yygmin2t;
-	    yyMeasuredVec[i].theoset = true;
-	 }
-	 else if (yyMeasuredVec[i].id == drho) {
-	    yyMeasuredVec[i].theovalue = yydrho;
-	    yyMeasuredVec[i].theoset = true;
-	 }
-	 else if (yyMeasuredVec[i].id == omega) {
-	    yyMeasuredVec[i].theovalue = yyOmega;
-	    yyMeasuredVec[i].theoset = true;
-	 }
+      else if (yyMeasuredVec[i].id == bsmm) {
+	yyMeasuredVec[i].theovalue = yybsmm; 
+	yyMeasuredVec[i].theoset = true;
       }
-      //################################################
-      else if (yyMeasuredVec[i].type == Pwidth) {
-	 yyMeasuredVec[i].theovalue = branching_ratios[yyMeasuredVec[i].id].TWidth;
-	 yyMeasuredVec[i].theoset = true;
+      else if (yyMeasuredVec[i].id == B_smm) {
+	yyMeasuredVec[i].theovalue = yyB_smm; 
+	yyMeasuredVec[i].theoset = true;
       }
-      else if (yyMeasuredVec[i].type == xsection) {
-	 //      cout << " looking for xs " << yyMeasuredVec[i].name << endl; 
-	 doubleVec_t tmp;
-	 tmp.clear();
-	 tmp.push_back(yyMeasuredVec[i].id);
-	 tmp.push_back(yyMeasuredVec[i].sqrts);
-	 tmp.push_back(yyMeasuredVec[i].polarisation1);
-	 tmp.push_back(yyMeasuredVec[i].polarisation2);
-	 if( cross_sections.find(tmp) != cross_sections.end() ) {
-	    //	cout << " map element found " << yyMeasuredVec[i].id << " " 
-	    //	     << yyMeasuredVec[i].polarisation1 << " " << yyMeasuredVec[i].polarisation2 << endl; 
-	    for (unsigned int j=0; 1; j++) {
-	       found_prod = 0;
-	       used_products.clear();
-	       //          cout << " j = " << j << " products " << (int)give_xs(tmp, j, 2) << " " <<  (int)give_xs(tmp, j, 3) << endl;
-	       if (give_xs(tmp, j, 1) == 0) break;
-	       //          cout << "looping over cross_sections from 2 to " << give_xs(tmp, j, 1)+1 << endl;
-	       for (unsigned int k=2; k<(2+give_xs(tmp, j, 1)); k++) {
-		  for (unsigned int m=0;m<yyMeasuredVec[i].products.size();m++) {
-		     for (unsigned int n=0;n< used_products.size();n++) {
-			if (m==used_products[n]) {
-			   already_used = true;
-			   break;
-			}
-		     }
-		     if (already_used) {
-			already_used = false;
-			continue;
-		     }
-		     //	      cout << " comparing " << yyMeasuredVec[i].products[m] << " with " << (int)give_xs(tmp, j, k) << endl;
-		     //	      if (TMath::Abs(yyMeasuredVec[i].products[m]) == TMath::Abs((int)give_xs(tmp, j, k)) ) {
-		     if (yyMeasuredVec[i].products[m] == (int)give_xs(tmp, j, k) ) {
-			found_prod++;
-			used_products.push_back(m);
-			break;
-		     }
-		  }  
-		  }
-		  //          cout << "found_prod = " << found_prod << endl;
-		  if ((found_prod == yyMeasuredVec[i].products.size()) && (found_prod == give_xs(tmp, j, 1))) {
-		     //     	    cout << "cross section " << yyMeasuredVec[i].name << " with Ecm " << cross_sections[tmp].ecm << " "  << yyMeasuredVec[i].sqrts << endl;
-		     if ((cross_sections[tmp].ecm == yyMeasuredVec[i].sqrts) && 
-			   (cross_sections[tmp].polarisation[0] == yyMeasuredVec[i].polarisation1) && 
-			   (cross_sections[tmp].polarisation[1] == yyMeasuredVec[i].polarisation2) ) {
-			yyMeasuredVec[i].theovalue = give_xs(tmp, j, 0);
-			yyMeasuredVec[i].theoset = true;
-			break;
-		     }
-		  } 
-	       }
-	    }
-	 }
-	 else if (yyMeasuredVec[i].type == br) {
-	    for (unsigned int j = 0; 1; j++ ) {
-	       used_products.clear();
-	       found_prod = 0;
-	       if (give_br(yyMeasuredVec[i].id, j, 1) == 0) break;
-	       for (unsigned int k=2; k<(2+give_br(yyMeasuredVec[i].id, j, 1)); k++) {
-		  for (unsigned int m=0;m<yyMeasuredVec[i].daughters.size();m++) {
-		     for (unsigned int n=0;n< used_products.size();n++) {
-			if (m==used_products[n]) {
-			   already_used = true;
-			   break;
-			}
-		     }
-		     if (already_used) {
-			already_used = false;
-			continue;
-		     }
-		     if (TMath::Abs(yyMeasuredVec[i].daughters[m]) == TMath::Abs((int)give_br(yyMeasuredVec[i].id, j, k)) ) {
-			used_products.push_back(m);
-			found_prod++;
-			break;
-		     }	    
-		  }
-	       }
-	       if ((found_prod == yyMeasuredVec[i].daughters.size()) && (found_prod == give_br(yyMeasuredVec[i].id, j, 1))) {
-		  yyMeasuredVec[i].theovalue = give_br(yyMeasuredVec[i].id, j, 0);
-		  yyMeasuredVec[i].theoset = true;
+      else if (yyMeasuredVec[i].id == B_utn) {
+	yyMeasuredVec[i].theovalue = yyB_utn; 
+	yyMeasuredVec[i].theoset = true;
+      }
+      else if (yyMeasuredVec[i].id == dMB_d) {
+	yyMeasuredVec[i].theovalue = yydMB_d;
+	yyMeasuredVec[i].theoset = true;
+      }
+      else if (yyMeasuredVec[i].id == dMB_s) {
+	yyMeasuredVec[i].theovalue = yydMB_s;
+	yyMeasuredVec[i].theoset = true;
+      }
+      else if (yyMeasuredVec[i].id == gmin2e) {
+	yyMeasuredVec[i].theovalue = yygmin2e;
+	yyMeasuredVec[i].theoset = true;
+      }
+      else if (yyMeasuredVec[i].id == gmin2m) {
+	yyMeasuredVec[i].theovalue = yygmin2m;
+	yyMeasuredVec[i].theoset = true;
+      }
+      else if (yyMeasuredVec[i].id == gmin2t) {
+	yyMeasuredVec[i].theovalue = yygmin2t;
+	yyMeasuredVec[i].theoset = true;
+      }
+      else if (yyMeasuredVec[i].id == drho) {
+	yyMeasuredVec[i].theovalue = yydrho;
+	yyMeasuredVec[i].theoset = true;
+      }
+      else if (yyMeasuredVec[i].id == omega) {
+	yyMeasuredVec[i].theovalue = yyOmega;
+	yyMeasuredVec[i].theoset = true;
+      }
+    }
+    //################################################
+    else if (yyMeasuredVec[i].type == Pwidth) {
+      yyMeasuredVec[i].theovalue = branching_ratios[yyMeasuredVec[i].id].TWidth;
+      yyMeasuredVec[i].theoset = true;
+    }
+    else if (yyMeasuredVec[i].type == xsection) {
+      //      cout << " looking for xs " << yyMeasuredVec[i].name << endl; 
+      doubleVec_t tmp;
+      tmp.clear();
+      tmp.push_back(yyMeasuredVec[i].id);
+      tmp.push_back(yyMeasuredVec[i].sqrts);
+      tmp.push_back(yyMeasuredVec[i].polarisation1);
+      tmp.push_back(yyMeasuredVec[i].polarisation2);
+      if( cross_sections.find(tmp) != cross_sections.end() ) {
+	//	cout << " map element found " << yyMeasuredVec[i].id << " " 
+	//	     << yyMeasuredVec[i].polarisation1 << " " << yyMeasuredVec[i].polarisation2 << endl; 
+	for (unsigned int j=0; 1; j++) {
+	  found_prod = 0;
+	  used_products.clear();
+	  //          cout << " j = " << j << " products " << (int)give_xs(tmp, j, 2) << " " <<  (int)give_xs(tmp, j, 3) << endl;
+	  if (give_xs(tmp, j, 1) == 0) break;
+	  //          cout << "looping over cross_sections from 2 to " << give_xs(tmp, j, 1)+1 << endl;
+	  for (unsigned int k=2; k<(2+give_xs(tmp, j, 1)); k++) {
+	    for (unsigned int m=0;m<yyMeasuredVec[i].products.size();m++) {
+	      for (unsigned int n=0;n< used_products.size();n++) {
+		if (m==used_products[n]) {
+		  already_used = true;
 		  break;
-	       } 
+		}
+	      }
+	      if (already_used) {
+		already_used = false;
+		continue;
+	      }
+	      //	      cout << " comparing " << yyMeasuredVec[i].products[m] << " with " << (int)give_xs(tmp, j, k) << endl;
+	      //	      if (TMath::Abs(yyMeasuredVec[i].products[m]) == TMath::Abs((int)give_xs(tmp, j, k)) ) {
+	      if (yyMeasuredVec[i].products[m] == (int)give_xs(tmp, j, k) ) {
+		found_prod++;
+		used_products.push_back(m);
+		break;
+	      }
+	    }  
+	  }
+	  //          cout << "found_prod = " << found_prod << endl;
+	  if ((found_prod == yyMeasuredVec[i].products.size()) && (found_prod == give_xs(tmp, j, 1))) {
+	    //     	    cout << "cross section " << yyMeasuredVec[i].name << " with Ecm " << cross_sections[tmp].ecm << " "  << yyMeasuredVec[i].sqrts << endl;
+	    if ((cross_sections[tmp].ecm == yyMeasuredVec[i].sqrts) && 
+		(cross_sections[tmp].polarisation[0] == yyMeasuredVec[i].polarisation1) && 
+		(cross_sections[tmp].polarisation[1] == yyMeasuredVec[i].polarisation2) ) {
+	      yyMeasuredVec[i].theovalue = give_xs(tmp, j, 0);
+	      yyMeasuredVec[i].theoset = true;
+	      break;
 	    }
-	    if (yyMeasuredVec[i].theoset == false) {
-	       yyMeasuredVec[i].theovalue = 0.0;
-	       yyMeasuredVec[i].theoset = true;
+	  } 
+	}
+      }
+    }
+    else if (yyMeasuredVec[i].type == br) {
+      for (unsigned int j = 0; 1; j++ ) {
+	used_products.clear();
+	found_prod = 0;
+	if (give_br(yyMeasuredVec[i].id, j, 1) == 0) break;
+	for (unsigned int k=2; k<(2+give_br(yyMeasuredVec[i].id, j, 1)); k++) {
+	  for (unsigned int m=0;m<yyMeasuredVec[i].daughters.size();m++) {
+	    for (unsigned int n=0;n< used_products.size();n++) {
+	      if (m==used_products[n]) {
+		already_used = true;
+		break;
+	      }
 	    }
-	 }
-	 else if (yyMeasuredVec[i].type == tauFromStau1Polarisation) {
-	    double a11R = - 2 * yyg / TMath::Sqrt(2) * yyN11 * yygprime / yyg * TMath::Sin(yyThetaStau) - yyYtau * yyN13 * TMath::Cos(yyThetaStau);
-	    double a11L = yyg / TMath::Sqrt(2) * ( yyN12 + yyN11 * yygprime / yyg ) * TMath::Cos(yyThetaStau) - yyYtau * yyN13 * TMath::Sin(yyThetaStau);
-	    yyMeasuredVec[i].theovalue = ( a11R * a11R - a11L * a11L ) / ( a11R * a11R + a11L * a11L );
-	    //      cout << "g = " << yyg <<endl;
-	    //      cout << "g' = " << yygprime <<endl;
-	    //      cout << "N11 = " << yyN11 <<endl;
-	    //      cout << "N12 = " << yyN12 <<endl;
-	    //      cout << "N13 = " << yyN13 <<endl;
-	    //      cout << "thetaStau = " << yyThetaStau <<endl;
-	    //      cout << "Ytau = " << yyYtau <<endl;
-	    //      cout << "pol = " << yyMeasuredVec[i].theovalue <<endl;
-	    yyMeasuredVec[i].theoset = true;
-	 }
-	 else if (yyMeasuredVec[i].type == Pedge) {
-	    // implement edge types here
-	    //      cout << "in theory fitting edge " << yyMeasuredVec[i].name << endl;
-	    // dummy edge 1
-	    if (yyMeasuredVec[i].id == 1) {
-	       yyMeasuredVec[i].theovalue = yyMass[yyMeasuredVec[i].daughters[0]] + yyMass[yyMeasuredVec[i].daughters[1]];
-	       yyMeasuredVec[i].theoset = true;
+	    if (already_used) {
+	      already_used = false;
+	      continue;
 	    }
-	    // dummy edge 2
-	    else if (yyMeasuredVec[i].id == 2) {
-	       yyMeasuredVec[i].theovalue = TMath::Abs(yyMass[yyMeasuredVec[i].daughters[0]] - yyMass[yyMeasuredVec[i].daughters[1]]);
-	       yyMeasuredVec[i].theoset = true;
-	    }
-	    // real edge 1: m_ll, m_qll, mqledgemin; m_chi01 m_chi02 m_lR (see LHCILC, page 214) (5.9, 5.10, 5.11)
-	    else if (yyMeasuredVec[i].id == 3) {
-	       // cout << "edge: " << yyMeasuredVec[i].name << " " 
-	       //      << yyMeasuredVec[i].type << " " 
-	       //      << yyMeasuredVec[i].id << " " 
-	       //      << yyMeasuredVec[i].value  << " " 
-	       //      << yyMeasuredVec[i].error << " " 
-	       //      << yyMeasuredVec[i].alias << " " << endl;
-	       // cout << "evaluating edge 3:" << yyMass[yyMeasuredVec[i].daughters[0]] << " "
-	       //      << yyMass[yyMeasuredVec[i].daughters[1]] << " " 
-	       //      << yyMass[yyMeasuredVec[i].daughters[2]] << " "<< endl;
-	       double tmpvalue = ((sqr(yyMass[yyMeasuredVec[i].daughters[1]])
-			- sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
-		     *(sqr(yyMass[yyMeasuredVec[i].daughters[2]])
-			- sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
-		     /(sqr(yyMass[yyMeasuredVec[i].daughters[2]])));
-	       if (tmpvalue > 0) {
-		  yyMeasuredVec[i].theovalue = TMath::Sqrt(tmpvalue);
-	       } else {
-		  yyMeasuredVec[i].theovalue = 1.1E11;
-	       }
-	       // cout << "edge = " << yyMeasuredVec[i].theovalue << endl;
-	       yyMeasuredVec[i].theoset = true;
-	    } 
-	    // real edge 3: mqledgemax; m_chi01 m_chi02 m_lR m_qL (see LHCILC, page 214) (5.13)
-	    else if (yyMeasuredVec[i].id == 4) {
-	       // cout << "edge: " << yyMeasuredVec[i].name << " " 
-	       //     << yyMeasuredVec[i].type << " " 
-	       //      << yyMeasuredVec[i].id << " " 
-	       //     << yyMeasuredVec[i].value  << " " 
-	       //     << yyMeasuredVec[i].error << " " 
-	       //      << yyMeasuredVec[i].alias << " " << endl;
-	       // cout << "evaluating edge 4:" << yyMass[yyMeasuredVec[i].daughters[0]] << " "
-	       //      << yyMass[yyMeasuredVec[i].daughters[1]] << " " 
-	       //      << yyMass[yyMeasuredVec[i].daughters[2]] << " "
-	       //      << yyMass[yyMeasuredVec[i].daughters[3]] << " " << endl;
-	       double tmpvalue = ((sqr(yyMass[yyMeasuredVec[i].daughters[3]])
-			- sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
-		     *(sqr(yyMass[yyMeasuredVec[i].daughters[2]])
-			- sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
-		     /(sqr(yyMass[yyMeasuredVec[i].daughters[2]])));
-	       if (tmpvalue > 0) {
-		  yyMeasuredVec[i].theovalue = TMath::Sqrt(tmpvalue);
-	       } else {
-		  yyMeasuredVec[i].theovalue = 1.1E11;
-	       }
-	       // cout << "edge = " << yyMeasuredVec[i].theovalue << endl;
-	       yyMeasuredVec[i].theoset = true;
-	    }      
-	    else if (yyMeasuredVec[i].id == 5) {
-	       //	cout << "edge: " << yyMeasuredVec[i].name << " " 
-	       //     << yyMeasuredVec[i].type << " " 
-	       //     << yyMeasuredVec[i].id << " " 
-	       //     << yyMeasuredVec[i].value  << " " 
-	       //     << yyMeasuredVec[i].error << " " 
-	       //     << yyMeasuredVec[i].alias << " " << endl;
-	       // cout << "evaluating edge 5:" << yyMass[yyMeasuredVec[i].daughters[0]] << " "
-	       //     << yyMass[yyMeasuredVec[i].daughters[1]] << " " 
-	       //     << yyMass[yyMeasuredVec[i].daughters[2]] << " "
-	       //     << yyMass[yyMeasuredVec[i].daughters[3]] << " " << endl;
-	       double tmpvalue = (
-		     (
-		      (sqr(yyMass[yyMeasuredVec[i].daughters[3]])
-		       + sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
-		      *(sqr(yyMass[yyMeasuredVec[i].daughters[1]])
-			 - sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
-		      *(sqr(yyMass[yyMeasuredVec[i].daughters[2]])
-			 - sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
-		      - (sqr(yyMass[yyMeasuredVec[i].daughters[3]])
-			 - sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
-		      *TMath::Sqrt(
-			 sqr((sqr(yyMass[yyMeasuredVec[i].daughters[1]])
-			       + sqr(yyMass[yyMeasuredVec[i].daughters[2]])))
-			 *sqr((sqr(yyMass[yyMeasuredVec[i].daughters[2]])
-			       + sqr(yyMass[yyMeasuredVec[i].daughters[0]])))
-			 -16.*sqr(yyMass[yyMeasuredVec[i].daughters[1]])
-			 *sqr(sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
-			 *sqr(yyMass[yyMeasuredVec[i].daughters[0]])
-			 )
-		      + 2.*sqr(yyMass[yyMeasuredVec[i].daughters[2]])
-		      *(sqr(yyMass[yyMeasuredVec[i].daughters[3]])
-			 - sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
-		      *(sqr(yyMass[yyMeasuredVec[i].daughters[1]])
-			    - sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
-		      )
-		      /(4.*sqr(yyMass[yyMeasuredVec[i].daughters[2]]
-			       *yyMass[yyMeasuredVec[i].daughters[1]]))
-		      );
-	       if (tmpvalue > 0) {
-		  yyMeasuredVec[i].theovalue = TMath::Sqrt(tmpvalue);
-	       } else {
-		  yyMeasuredVec[i].theovalue = 1.1E11;
-	       }
-	       // cout << "edge = " << yyMeasuredVec[i].theovalue << endl;
-	       yyMeasuredVec[i].theoset = true;
-	    }
-
-	    /* implementation of "edge 6" M^2_tb(III)j written by Mathias Uhlenbrock (ll 5809-5844) */
-	    else if (yyMeasuredVec[i].id == 6) {
-	       //	cout << "edge: " << yyMeasuredVec[i].name << " " 
-	       //     << yyMeasuredVec[i].type << " " 
-	       //     << yyMeasuredVec[i].id << " " 
-	       //     << yyMeasuredVec[i].value  << " " 
-	       //     << yyMeasuredVec[i].error << " " 
-	       //     << yyMeasuredVec[i].alias << " " << endl;
-	       // cout << "evaluating edge 6:" << yyMass[yyMeasuredVec[i].daughters[0]] << " "
-	       //     << yyMass[yyMeasuredVec[i].daughters[1]] << " " 
-	       //     << yyMass[yyMeasuredVec[i].daughters[2]] << " "
-	       //     << yyMass[yyMeasuredVec[i].daughters[3]] << " " << endl;
-
-	       double tmpvalue = (
-		     sqr(yyMass[yyMeasuredVec[i].daughters[0]])
-		     +(sqr(yyMass[yyMeasuredVec[i].daughters[1]])
-			-sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
-		     /(2*sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
-		     *((sqr(yyMass[yyMeasuredVec[i].daughters[3]])
-			   -sqr(yyMass[yyMeasuredVec[i].daughters[1]])
-			   -sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
-			+TMath::Sqrt((sqr(yyMass[yyMeasuredVec[i].daughters[3]])
-			      -sqr((yyMass[yyMeasuredVec[i].daughters[1]]
-				    -yyMass[yyMeasuredVec[i].daughters[0]])))
-			   *(sqr(yyMass[yyMeasuredVec[i].daughters[3]])
-			      -sqr((yyMass[yyMeasuredVec[i].daughters[1]]
-				    +yyMass[yyMeasuredVec[i].daughters[0]])))))
-
-		     );
-	       if (tmpvalue > 0) {
-		  yyMeasuredVec[i].theovalue = TMath::Sqrt(tmpvalue);
-	       } else {
-		  yyMeasuredVec[i].theovalue = 1.1E11;
-	       }
-	       // cout << "edge = " << yyMeasuredVec[i].theovalue << endl;
-	       yyMeasuredVec[i].theoset = true;
-	    }
-	    /* implementation of "edge 7" M^2_tb(IV)ij written by Mathias Uhlenbrock (ll 5846-5880) */
-	    else if (yyMeasuredVec[i].id == 7) {
-	       //	cout << "edge: " << yyMeasuredVec[i].name << " " 
-	       //     << yyMeasuredVec[i].type << " " 
-	       //     << yyMeasuredVec[i].id << " " 
-	       //     << yyMeasuredVec[i].value  << " " 
-	       //     << yyMeasuredVec[i].error << " " 
-	       //     << yyMeasuredVec[i].alias << " " << endl;
-	       // cout << "evaluating edge 7:" << yyMass[yyMeasuredVec[i].daughters[0]] << " "
-	       //     << yyMass[yyMeasuredVec[i].daughters[1]] << " " 
-	       //     << yyMass[yyMeasuredVec[i].daughters[2]] << " "
-	       //     << yyMass[yyMeasuredVec[i].daughters[3]] << " " << endl;
-
-	       double tmpvalue = (
-		     sqr(yyMass[yyMeasuredVec[i].daughters[0]])
-		     +(sqr(yyMass[yyMeasuredVec[i].daughters[1]])
-			-sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
-		     /(2*sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
-		     *((sqr(yyMass[yyMeasuredVec[i].daughters[2]])
-			   -sqr(yyMass[yyMeasuredVec[i].daughters[3]])
-			   +sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
-			+TMath::Sqrt((sqr(yyMass[yyMeasuredVec[i].daughters[2]])
-			      -sqr((yyMass[yyMeasuredVec[i].daughters[3]]
-				    -yyMass[yyMeasuredVec[i].daughters[0]])))
+	    if (TMath::Abs(yyMeasuredVec[i].daughters[m]) == TMath::Abs((int)give_br(yyMeasuredVec[i].id, j, k)) ) {
+	      used_products.push_back(m);
+	      found_prod++;
+	      break;
+	    }	    
+	  }
+	}
+	if ((found_prod == yyMeasuredVec[i].daughters.size()) && (found_prod == give_br(yyMeasuredVec[i].id, j, 1))) {
+	  yyMeasuredVec[i].theovalue = give_br(yyMeasuredVec[i].id, j, 0);
+	  yyMeasuredVec[i].theoset = true;
+	  break;
+	} 
+      }
+      if (yyMeasuredVec[i].theoset == false) {
+	yyMeasuredVec[i].theovalue = 0.0;
+	yyMeasuredVec[i].theoset = true;
+      }
+    }
+    else if (yyMeasuredVec[i].type == tauFromStau1Polarisation) {
+      double a11R = - 2 * yyg / TMath::Sqrt(2) * yyN11 * yygprime / yyg * TMath::Sin(yyThetaStau) - yyYtau * yyN13 * TMath::Cos(yyThetaStau);
+      double a11L = yyg / TMath::Sqrt(2) * ( yyN12 + yyN11 * yygprime / yyg ) * TMath::Cos(yyThetaStau) - yyYtau * yyN13 * TMath::Sin(yyThetaStau);
+      yyMeasuredVec[i].theovalue = ( a11R * a11R - a11L * a11L ) / ( a11R * a11R + a11L * a11L );
+      //      cout << "g = " << yyg <<endl;
+      //      cout << "g' = " << yygprime <<endl;
+      //      cout << "N11 = " << yyN11 <<endl;
+      //      cout << "N12 = " << yyN12 <<endl;
+      //      cout << "N13 = " << yyN13 <<endl;
+      //      cout << "thetaStau = " << yyThetaStau <<endl;
+      //      cout << "Ytau = " << yyYtau <<endl;
+      //      cout << "pol = " << yyMeasuredVec[i].theovalue <<endl;
+      yyMeasuredVec[i].theoset = true;
+    }
+    else if (yyMeasuredVec[i].type == Pedge) {
+      // implement edge types here
+      //      cout << "in theory fitting edge " << yyMeasuredVec[i].name << endl;
+      // dummy edge 1
+      if (yyMeasuredVec[i].id == 1) {
+	yyMeasuredVec[i].theovalue = yyMass[yyMeasuredVec[i].daughters[0]] + yyMass[yyMeasuredVec[i].daughters[1]];
+	yyMeasuredVec[i].theoset = true;
+      }
+      // dummy edge 2
+      else if (yyMeasuredVec[i].id == 2) {
+	yyMeasuredVec[i].theovalue = TMath::Abs(yyMass[yyMeasuredVec[i].daughters[0]] - yyMass[yyMeasuredVec[i].daughters[1]]);
+	yyMeasuredVec[i].theoset = true;
+      }
+      // real edge 1: m_ll, m_qll, mqledgemin; m_chi01 m_chi02 m_lR (see LHCILC, page 214) (5.9, 5.10, 5.11)
+      else if (yyMeasuredVec[i].id == 3) {
+	// cout << "edge: " << yyMeasuredVec[i].name << " " 
+	//      << yyMeasuredVec[i].type << " " 
+	//      << yyMeasuredVec[i].id << " " 
+	//      << yyMeasuredVec[i].value  << " " 
+	//      << yyMeasuredVec[i].error << " " 
+	//      << yyMeasuredVec[i].alias << " " << endl;
+	// cout << "evaluating edge 3:" << yyMass[yyMeasuredVec[i].daughters[0]] << " "
+	//      << yyMass[yyMeasuredVec[i].daughters[1]] << " " 
+	//      << yyMass[yyMeasuredVec[i].daughters[2]] << " "<< endl;
+	double tmpvalue = ((sqr(yyMass[yyMeasuredVec[i].daughters[1]])
+			    - sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
 			   *(sqr(yyMass[yyMeasuredVec[i].daughters[2]])
-			      -sqr((yyMass[yyMeasuredVec[i].daughters[3]]
-				    +yyMass[yyMeasuredVec[i].daughters[0]])))))
-		     );
-	       if (tmpvalue > 0) {
-		  yyMeasuredVec[i].theovalue = TMath::Sqrt(tmpvalue);
-	       } else {
-		  yyMeasuredVec[i].theovalue = 1.1E11;
-	       }
-	       // cout << "edge = " << yyMeasuredVec[i].theovalue << endl;
-	       yyMeasuredVec[i].theoset = true;
-	    }
-	 }
-      }
-     // check for brprod
-      for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
-	 if (yyMeasuredVec[i].type == brprod) {
-	    yyMeasuredVec[i].theovalue = 1.;
-	    dependencies_theoset = true;
-	    for (unsigned int j=0; j<yyMeasuredVec[i].daughters.size(); j++) {
-	       // cout << "multiplying br " << yyMeasuredVec[yyMeasuredVec[i].daughters[j]].name << " = " << 
-	       //   yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue << endl;
-	       yyMeasuredVec[i].theovalue *= yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue;
-	       if (yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theoset == false) {
-		  dependencies_theoset = false;
-	       }
-	    } 
-	    if (dependencies_theoset) {
-	       yyMeasuredVec[i].theoset = true;
-	    }
-	    else { 
-	       yyMeasuredVec[i].theoset = false;
-	    }
-	 }
-      }  
-      // check for brsum
-      for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
-	 if (yyMeasuredVec[i].type == brsum) {
-	    yyMeasuredVec[i].theovalue = 0.;
-	    dependencies_theoset = true;
-	    for (unsigned int j=0; j<yyMeasuredVec[i].daughters.size(); j++) {
-	       // cout << "multiplying br " << yyMeasuredVec[yyMeasuredVec[i].daughters[j]].name << " = " << 
-	       //   yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue << endl;
-	       yyMeasuredVec[i].theovalue += yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue;
-	       if (yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theoset == false) {
-		  dependencies_theoset = false;
-	       }
-	    } 
-	    if (dependencies_theoset) {
-	       yyMeasuredVec[i].theoset = true;
-	    }
-	    else { 
-	       yyMeasuredVec[i].theoset = false;
-	    }
-	 }
-      }  
-      // check for xsbr
-      for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
-	 if (yyMeasuredVec[i].type == xsbr) {
-	    yyMeasuredVec[i].theovalue = 1.;
-	    dependencies_theoset = true;
-	    for (unsigned int j=0; j<yyMeasuredVec[i].daughters.size(); j++) {
-	       // cout << "multiplying br " << yyMeasuredVec[yyMeasuredVec[i].daughters[j]].name << " = " << 
-	       //   yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue << endl;
-	       yyMeasuredVec[i].theovalue *= yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue;
-	       if (yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theoset == false) {
-		  dependencies_theoset = false;
-	       }
-	    } 
-	    for (unsigned int j=0; j<yyMeasuredVec[i].products.size(); j++) {
-	       // cout << "multiplying xs " << yyMeasuredVec[yyMeasuredVec[i].products[j]].name << " = " << 
-	       //   yyMeasuredVec[yyMeasuredVec[i].products[j]].theovalue << endl;
-	       yyMeasuredVec[i].theovalue *= yyMeasuredVec[yyMeasuredVec[i].products[j]].theovalue;
-	       if (yyMeasuredVec[yyMeasuredVec[i].products[j]].theoset == false) {
-		  dependencies_theoset = false;
-	       }
-	    }        
-	    if (dependencies_theoset) {
-	       yyMeasuredVec[i].theoset = true;
-	    }
-	    else { 
-	       yyMeasuredVec[i].theoset = false;
-	    }
-	 }
-      }  
-      // check for brratio
-      for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
-	 if (yyMeasuredVec[i].type == brratio) {
-	    yyMeasuredVec[i].theovalue = yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue / 
-	       yyMeasuredVec[yyMeasuredVec[i].daughters[1]].theovalue;
-	    if (yyMeasuredVec[yyMeasuredVec[i].daughters[1]].theoset && yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theoset) {
-	       yyMeasuredVec[i].theoset = true;
-	    }
-	    else {
-	       yyMeasuredVec[i].theoset = false;
-	    }
-	 }
-      }  
-      // check for weighted
-      for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
-	 if (yyMeasuredVec[i].type == weighted) {
-	    yyMeasuredVec[i].theovalue = 0.;
-	    dependencies_theoset = true;
-	    cout << yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue << endl;
-            cout << yyMeasuredVec[yyMeasuredVec[i].daughters[1]].theovalue << endl;
-            cout << yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue << endl;
-            cout << yyMeasuredVec[yyMeasuredVec[i].daughters[3]].theovalue << endl;
-	    yyMeasuredVec[i].theovalue = (yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue*yyMeasuredVec[yyMeasuredVec[i].daughters[1]].theovalue+yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue*yyMeasuredVec[yyMeasuredVec[i].daughters[3]].theovalue)/(yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue+yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue);
-	    for (unsigned int j=0; j<4; j++) {
-	       if (yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theoset == false) {
-	          dependencies_theoset = false;
-	       }
-	    } 
-	    if (dependencies_theoset) {
-	       yyMeasuredVec[i].theoset = true;
-	    }
-	    else {
-	       yyMeasuredVec[i].theoset = false;
-	    }
-         }
-      }
-      // check whether all has been found
-      for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
-	 if ((yyMeasuredVec[i].theoset == false) && (yyMeasuredVec[i].nofit == false)) {
-	    if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) {       
-	       cout << "WARNING: observable " << yyMeasuredVec[i].name << " not found!" << endl;
-	    }
-	 }
-	 if (yyMeasuredVec[i].first == true) {
-	    yyMeasuredVec[i].first = false;
-	    if (yyMeasuredVec[i].theoset == true) {
-	       yyMeasuredVec[i].hasbeenset = true;
-	    }
-	 }
-	 if ((yyMeasuredVec[i].theoset == true) && (yyMeasuredVec[i].hasbeenset == false)) {
-	    yyMeasuredVec[i].hasbeenset = true;
-	 }
-	 if ((yyMeasuredVec[i].hasbeenset == true) && (yyMeasuredVec[i].theoset == false)) {
-	    yyMeasuredVec[i].theovalue = 11111111111.;
-	    yyMeasuredVec[i].theoset = true;
-	 }
+			     - sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
+			   /(sqr(yyMass[yyMeasuredVec[i].daughters[2]])));
+	if (tmpvalue > 0) {
+	  yyMeasuredVec[i].theovalue = TMath::Sqrt(tmpvalue);
+	} else {
+	  yyMeasuredVec[i].theovalue = 1.1E11;
+	}
+	// cout << "edge = " << yyMeasuredVec[i].theovalue << endl;
+	yyMeasuredVec[i].theoset = true;
+      } 
+      // real edge 3: mqledgemax; m_chi01 m_chi02 m_lR m_qL (see LHCILC, page 214) (5.13)
+      else if (yyMeasuredVec[i].id == 4) {
+	// cout << "edge: " << yyMeasuredVec[i].name << " " 
+	//     << yyMeasuredVec[i].type << " " 
+	//      << yyMeasuredVec[i].id << " " 
+	//     << yyMeasuredVec[i].value  << " " 
+	//     << yyMeasuredVec[i].error << " " 
+	//      << yyMeasuredVec[i].alias << " " << endl;
+	// cout << "evaluating edge 4:" << yyMass[yyMeasuredVec[i].daughters[0]] << " "
+	//      << yyMass[yyMeasuredVec[i].daughters[1]] << " " 
+	//      << yyMass[yyMeasuredVec[i].daughters[2]] << " "
+	//      << yyMass[yyMeasuredVec[i].daughters[3]] << " " << endl;
+	double tmpvalue = ((sqr(yyMass[yyMeasuredVec[i].daughters[3]])
+			    - sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
+			   *(sqr(yyMass[yyMeasuredVec[i].daughters[2]])
+			     - sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
+			   /(sqr(yyMass[yyMeasuredVec[i].daughters[2]])));
+	if (tmpvalue > 0) {
+	  yyMeasuredVec[i].theovalue = TMath::Sqrt(tmpvalue);
+	} else {
+	  yyMeasuredVec[i].theovalue = 1.1E11;
+	}
+	// cout << "edge = " << yyMeasuredVec[i].theovalue << endl;
+	yyMeasuredVec[i].theoset = true;
+      }      
+      else if (yyMeasuredVec[i].id == 5) {
+	//	cout << "edge: " << yyMeasuredVec[i].name << " " 
+	//     << yyMeasuredVec[i].type << " " 
+	//     << yyMeasuredVec[i].id << " " 
+	//     << yyMeasuredVec[i].value  << " " 
+	//     << yyMeasuredVec[i].error << " " 
+	//     << yyMeasuredVec[i].alias << " " << endl;
+	// cout << "evaluating edge 5:" << yyMass[yyMeasuredVec[i].daughters[0]] << " "
+	//     << yyMass[yyMeasuredVec[i].daughters[1]] << " " 
+	//     << yyMass[yyMeasuredVec[i].daughters[2]] << " "
+	//     << yyMass[yyMeasuredVec[i].daughters[3]] << " " << endl;
+	double tmpvalue = (
+			   (
+			    (sqr(yyMass[yyMeasuredVec[i].daughters[3]])
+			     + sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
+			    *(sqr(yyMass[yyMeasuredVec[i].daughters[1]])
+			      - sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
+			    *(sqr(yyMass[yyMeasuredVec[i].daughters[2]])
+			      - sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
+			    - (sqr(yyMass[yyMeasuredVec[i].daughters[3]])
+			       - sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
+			    *TMath::Sqrt(
+					 sqr((sqr(yyMass[yyMeasuredVec[i].daughters[1]])
+					      + sqr(yyMass[yyMeasuredVec[i].daughters[2]])))
+					 *sqr((sqr(yyMass[yyMeasuredVec[i].daughters[2]])
+					       + sqr(yyMass[yyMeasuredVec[i].daughters[0]])))
+					 -16.*sqr(yyMass[yyMeasuredVec[i].daughters[1]])
+					 *sqr(sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
+					 *sqr(yyMass[yyMeasuredVec[i].daughters[0]])
+					 )
+			    + 2.*sqr(yyMass[yyMeasuredVec[i].daughters[2]])
+			    *(sqr(yyMass[yyMeasuredVec[i].daughters[3]])
+			      - sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
+			    *(sqr(yyMass[yyMeasuredVec[i].daughters[1]])
+			      - sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
+			    )
+			   /(4.*sqr(yyMass[yyMeasuredVec[i].daughters[2]]
+				    *yyMass[yyMeasuredVec[i].daughters[1]]))
+			   );
+	if (tmpvalue > 0) {
+	  yyMeasuredVec[i].theovalue = TMath::Sqrt(tmpvalue);
+	} else {
+	  yyMeasuredVec[i].theovalue = 1.1E11;
+	}
+	// cout << "edge = " << yyMeasuredVec[i].theovalue << endl;
+	yyMeasuredVec[i].theoset = true;
       }
 
-      return 0;
+      /* implementation of "edge 6" M^2_tb(III)j written by Mathias Uhlenbrock (ll 5809-5844) */
+      else if (yyMeasuredVec[i].id == 6) {
+	//	cout << "edge: " << yyMeasuredVec[i].name << " " 
+	//     << yyMeasuredVec[i].type << " " 
+	//     << yyMeasuredVec[i].id << " " 
+	//     << yyMeasuredVec[i].value  << " " 
+	//     << yyMeasuredVec[i].error << " " 
+	//     << yyMeasuredVec[i].alias << " " << endl;
+	// cout << "evaluating edge 6:" << yyMass[yyMeasuredVec[i].daughters[0]] << " "
+	//     << yyMass[yyMeasuredVec[i].daughters[1]] << " " 
+	//     << yyMass[yyMeasuredVec[i].daughters[2]] << " "
+	//     << yyMass[yyMeasuredVec[i].daughters[3]] << " " << endl;
 
-   }
+	double tmpvalue = (
+			   sqr(yyMass[yyMeasuredVec[i].daughters[0]])
+			   +(sqr(yyMass[yyMeasuredVec[i].daughters[1]])
+			     -sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
+			   /(2*sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
+			   *((sqr(yyMass[yyMeasuredVec[i].daughters[3]])
+			      -sqr(yyMass[yyMeasuredVec[i].daughters[1]])
+			      -sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
+			     +TMath::Sqrt((sqr(yyMass[yyMeasuredVec[i].daughters[3]])
+					   -sqr((yyMass[yyMeasuredVec[i].daughters[1]]
+						 -yyMass[yyMeasuredVec[i].daughters[0]])))
+					  *(sqr(yyMass[yyMeasuredVec[i].daughters[3]])
+					    -sqr((yyMass[yyMeasuredVec[i].daughters[1]]
+						  +yyMass[yyMeasuredVec[i].daughters[0]])))))
 
-   int   ParseLesHouches()
-   {
-      static int counter = 0;
+			   );
+	if (tmpvalue > 0) {
+	  yyMeasuredVec[i].theovalue = TMath::Sqrt(tmpvalue);
+	} else {
+	  yyMeasuredVec[i].theovalue = 1.1E11;
+	}
+	// cout << "edge = " << yyMeasuredVec[i].theovalue << endl;
+	yyMeasuredVec[i].theoset = true;
+      }
+      /* implementation of "edge 7" M^2_tb(IV)ij written by Mathias Uhlenbrock (ll 5846-5880) */
+      else if (yyMeasuredVec[i].id == 7) {
+	//	cout << "edge: " << yyMeasuredVec[i].name << " " 
+	//     << yyMeasuredVec[i].type << " " 
+	//     << yyMeasuredVec[i].id << " " 
+	//     << yyMeasuredVec[i].value  << " " 
+	//     << yyMeasuredVec[i].error << " " 
+	//     << yyMeasuredVec[i].alias << " " << endl;
+	// cout << "evaluating edge 7:" << yyMass[yyMeasuredVec[i].daughters[0]] << " "
+	//     << yyMass[yyMeasuredVec[i].daughters[1]] << " " 
+	//     << yyMass[yyMeasuredVec[i].daughters[2]] << " "
+	//     << yyMass[yyMeasuredVec[i].daughters[3]] << " " << endl;
 
-      counter++;
-
-      int rc = 0;
-
-      if (yyCalculator == SPHENO) {
-	 //      system("cp SPheno.spc.test SPheno.spc");
-	 yyin = fopen("SPheno.spc", "r");
-	 //	yyin = fopen("leshouches.in", "r");
-	 if (!yyin) {
-	    cerr<<"SPheno.spc does not exist"<<endl;
-	    yyCalculatorError = true;
-	    return 1;
-	 }
-	 yyInputFileLineNo = 1;
-	 rc = yyparse();
-	 fclose(yyin);
-	 system ("mv SPheno.spc SPheno.spc.last");
-	 // exit (0);
+	double tmpvalue = (
+			   sqr(yyMass[yyMeasuredVec[i].daughters[0]])
+			   +(sqr(yyMass[yyMeasuredVec[i].daughters[1]])
+			     -sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
+			   /(2*sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
+			   *((sqr(yyMass[yyMeasuredVec[i].daughters[2]])
+			      -sqr(yyMass[yyMeasuredVec[i].daughters[3]])
+			      +sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
+			     +TMath::Sqrt((sqr(yyMass[yyMeasuredVec[i].daughters[2]])
+					   -sqr((yyMass[yyMeasuredVec[i].daughters[3]]
+						 -yyMass[yyMeasuredVec[i].daughters[0]])))
+					  *(sqr(yyMass[yyMeasuredVec[i].daughters[2]])
+					    -sqr((yyMass[yyMeasuredVec[i].daughters[3]]
+						  +yyMass[yyMeasuredVec[i].daughters[0]])))))
+			   );
+	if (tmpvalue > 0) {
+	  yyMeasuredVec[i].theovalue = TMath::Sqrt(tmpvalue);
+	} else {
+	  yyMeasuredVec[i].theovalue = 1.1E11;
+	}
+	// cout << "edge = " << yyMeasuredVec[i].theovalue << endl;
+	yyMeasuredVec[i].theoset = true;
+      }
+    }
+  }
+  // check for brprod
+  for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+    if (yyMeasuredVec[i].type == brprod) {
+      yyMeasuredVec[i].theovalue = 1.;
+      dependencies_theoset = true;
+      for (unsigned int j=0; j<yyMeasuredVec[i].daughters.size(); j++) {
+	// cout << "multiplying br " << yyMeasuredVec[yyMeasuredVec[i].daughters[j]].name << " = " << 
+	//   yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue << endl;
+	yyMeasuredVec[i].theovalue *= yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue;
+	if (yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theoset == false) {
+	  dependencies_theoset = false;
+	}
+      } 
+      if (dependencies_theoset) {
+	yyMeasuredVec[i].theoset = true;
+      }
+      else { 
+	yyMeasuredVec[i].theoset = false;
+      }
+    }
+  }  
+  // check for brsum
+  for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+    if (yyMeasuredVec[i].type == brsum) {
+      yyMeasuredVec[i].theovalue = 0.;
+      dependencies_theoset = true;
+      for (unsigned int j=0; j<yyMeasuredVec[i].daughters.size(); j++) {
+	// cout << "multiplying br " << yyMeasuredVec[yyMeasuredVec[i].daughters[j]].name << " = " << 
+	//   yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue << endl;
+	yyMeasuredVec[i].theovalue += yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue;
+	if (yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theoset == false) {
+	  dependencies_theoset = false;
+	}
+      } 
+      if (dependencies_theoset) {
+	yyMeasuredVec[i].theoset = true;
+      }
+      else { 
+	yyMeasuredVec[i].theoset = false;
+      }
+    }
+  }  
+  // check for xsbr
+  for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+    if (yyMeasuredVec[i].type == xsbr) {
+      yyMeasuredVec[i].theovalue = 1.;
+      dependencies_theoset = true;
+      for (unsigned int j=0; j<yyMeasuredVec[i].daughters.size(); j++) {
+	// cout << "multiplying br " << yyMeasuredVec[yyMeasuredVec[i].daughters[j]].name << " = " << 
+	//   yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue << endl;
+	yyMeasuredVec[i].theovalue *= yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theovalue;
+	if (yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theoset == false) {
+	  dependencies_theoset = false;
+	}
+      } 
+      for (unsigned int j=0; j<yyMeasuredVec[i].products.size(); j++) {
+	// cout << "multiplying xs " << yyMeasuredVec[yyMeasuredVec[i].products[j]].name << " = " << 
+	//   yyMeasuredVec[yyMeasuredVec[i].products[j]].theovalue << endl;
+	yyMeasuredVec[i].theovalue *= yyMeasuredVec[yyMeasuredVec[i].products[j]].theovalue;
+	if (yyMeasuredVec[yyMeasuredVec[i].products[j]].theoset == false) {
+	  dependencies_theoset = false;
+	}
+      }        
+      if (dependencies_theoset) {
+	yyMeasuredVec[i].theoset = true;
+      }
+      else { 
+	yyMeasuredVec[i].theoset = false;
+      }
+    }
+  }  
+  // check for brratio
+  for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+    if (yyMeasuredVec[i].type == brratio) {
+      yyMeasuredVec[i].theovalue = yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue / 
+	yyMeasuredVec[yyMeasuredVec[i].daughters[1]].theovalue;
+      if (yyMeasuredVec[yyMeasuredVec[i].daughters[1]].theoset && yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theoset) {
+	yyMeasuredVec[i].theoset = true;
       }
       else {
-	 cerr<<"Only SPHENO is implemented"<<endl;
-	 exit(EXIT_FAILURE);
+	yyMeasuredVec[i].theoset = false;
       }
+    }
+  }  
+  // check for weighted
+  for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+    if (yyMeasuredVec[i].type == weighted) {
+      yyMeasuredVec[i].theovalue = 0.;
+      dependencies_theoset = true;
+      cout << yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue << endl;
+      cout << yyMeasuredVec[yyMeasuredVec[i].daughters[1]].theovalue << endl;
+      cout << yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue << endl;
+      cout << yyMeasuredVec[yyMeasuredVec[i].daughters[3]].theovalue << endl;
+      yyMeasuredVec[i].theovalue = (yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue*yyMeasuredVec[yyMeasuredVec[i].daughters[1]].theovalue+yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue*yyMeasuredVec[yyMeasuredVec[i].daughters[3]].theovalue)/(yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue+yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue);
+      for (unsigned int j=0; j<4; j++) {
+	if (yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theoset == false) {
+	  dependencies_theoset = false;
+	}
+      } 
+      if (dependencies_theoset) {
+	yyMeasuredVec[i].theoset = true;
+      }
+      else {
+	yyMeasuredVec[i].theoset = false;
+      }
+    }
+  }
+  // check whether all has been found
+  for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+    if ((yyMeasuredVec[i].theoset == false) && (yyMeasuredVec[i].nofit == false)) {
+      if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) {       
+	cout << "WARNING: observable " << yyMeasuredVec[i].name << " not found!" << endl;
+      }
+    }
+    if (yyMeasuredVec[i].first == true) {
+      yyMeasuredVec[i].first = false;
+      if (yyMeasuredVec[i].theoset == true) {
+	yyMeasuredVec[i].hasbeenset = true;
+      }
+    }
+    if ((yyMeasuredVec[i].theoset == true) && (yyMeasuredVec[i].hasbeenset == false)) {
+      yyMeasuredVec[i].hasbeenset = true;
+    }
+    if ((yyMeasuredVec[i].hasbeenset == true) && (yyMeasuredVec[i].theoset == false)) {
+      yyMeasuredVec[i].theovalue = 11111111111.;
+      yyMeasuredVec[i].theoset = true;
+    }
+  }
 
-      yyInputFileLineNo = 1;
+  return 0;
 
-      cout<<counter<<" ###########################################################"<<endl;
+}
+
+int   ParseLesHouches()
+{
+  static int counter = 0;
+
+  counter++;
+
+  int rc = 0;
+
+  if (yyCalculator == SPHENO) {
+    //      system("cp SPheno.spc.test SPheno.spc");
+    yyin = fopen("SPheno.spc", "r");
+    //	yyin = fopen("leshouches.in", "r");
+    if (!yyin) {
+      cerr<<"SPheno.spc does not exist"<<endl;
+      yyCalculatorError = true;
+      return 1;
+    }
+    yyInputFileLineNo = 1;
+    rc = yyparse();
+    fclose(yyin);
+    system ("mv SPheno.spc SPheno.spc.last");
+    // exit (0);
+  }
+  else {
+    cerr<<"Only SPHENO is implemented"<<endl;
+    exit(EXIT_FAILURE);
+  }
+
+  yyInputFileLineNo = 1;
+
+  cout<<counter<<" ###########################################################"<<endl;
 
 
-      return rc;
+  return rc;
 
-   }
+}
 
 
-   double give_br ( int id, int decay, int element )
-   {
+double give_br ( int id, int decay, int element )
+{
 
-      if( branching_ratios.find( id ) != branching_ratios.end() ) {
-	 if (branching_ratios[id].decays.size() > (unsigned int)decay ) {
-	    if (branching_ratios[id].decays[decay].size() > (unsigned int)element) {
-	       return branching_ratios[id].decays[decay][element];
-	    } else {
-	       return 0.;
-	    }
-	 } else {
-	    return 0.;
-	 }
+  if( branching_ratios.find( id ) != branching_ratios.end() ) {
+    if (branching_ratios[id].decays.size() > (unsigned int)decay ) {
+      if (branching_ratios[id].decays[decay].size() > (unsigned int)element) {
+	return branching_ratios[id].decays[decay][element];
       } else {
-	 return 0.;
+	return 0.;
       }
+    } else {
+      return 0.;
+    }
+  } else {
+    return 0.;
+  }
 
-   }
+}
 
-   double give_xs (doubleVec_t initial, int channel, int element )
-   {
+double give_xs (doubleVec_t initial, int channel, int element )
+{
 
-      if( cross_sections.find( initial ) != cross_sections.end() ) {
-	 if (cross_sections[initial].xs.size() > (unsigned int)channel ) {
-	    if (cross_sections[initial].xs[channel].size() > (unsigned int)element) {
-	       return cross_sections[initial].xs[channel][element];
-	    } else {
-	       return 0.;
-	    }
-	 } else {
-	    return 0.;
-	 }
+  if( cross_sections.find( initial ) != cross_sections.end() ) {
+    if (cross_sections[initial].xs.size() > (unsigned int)channel ) {
+      if (cross_sections[initial].xs[channel].size() > (unsigned int)element) {
+	return cross_sections[initial].xs[channel][element];
       } else {
-	 return 0.;
+	return 0.;
       }
+    } else {
+      return 0.;
+    }
+  } else {
+    return 0.;
+  }
 
-   }
-
-
-   // Fittino::hybridMonteCarlo
-   //
-   // Scan parameter space using hybrid monte carlo
-   //
-   // P. Wienemann, March 30, 2007
-   void Fittino::hybridMonteCarlo()
-   {
-      const int ncycles = 10000;
-
-      double* q0 = new double[yyFittedVec.size()];
-      double* p0 = new double[yyFittedVec.size()];
-      double* q1 = new double[yyFittedVec.size()];
-      double* p1 = new double[yyFittedVec.size()];
-      // fill vector of parameters
-      for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
-	 q0[i] = yyFittedVec[i].value;
-      }
-
-      for (int cycle = 0; cycle < ncycles; cycle++) {
-	 for (unsigned int i=0; i < yyFittedVec.size(); i++ ) {
-	    p0[i] = gRandom->Gaus(0, 1);
-	 }
-	 double H0 = hamiltonian(yyFittedVec.size(), q0, p0);
-
-	 // integrate Hamilton equations here using leapfrog algorithm
-
-	 double H1 = hamiltonian(yyFittedVec.size(), q1, p1);
-
-	 double acceptprob = TMath::Min( 1., TMath::Exp( H0 - H1 ) );
-      }
-
-      delete[] q0;
-      delete[] p0;
-      delete[] q1;
-      delete[] p1;
-   }
+}
 
 
-   // test simulated annealing
+// Fittino::hybridMonteCarlo
+//
+// Scan parameter space using hybrid monte carlo
+//
+// P. Wienemann, March 30, 2007
+void Fittino::hybridMonteCarlo()
+{
+  const int ncycles = 10000;
 
-   void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
-   {
+  double* q0 = new double[yyFittedVec.size()];
+  double* p0 = new double[yyFittedVec.size()];
+  double* q1 = new double[yyFittedVec.size()];
+  double* p1 = new double[yyFittedVec.size()];
+  // fill vector of parameters
+  for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+    q0[i] = yyFittedVec[i].value;
+  }
 
-      Double_t xdummy[100];
-      int n;
-      vector <double> x; 
-      vector <double> xvar; 
-      //  bool max = false; 
-      double rt; 
-      double eps = 0.0001; 
-      int ns = 20; 
-      int nt; 
-      int neps = 4;
-      int maxevl; 
-      vector <double> lb; 
-      vector <double> ub;
-      vector <double> c; 
-      //  int iprint = 0;
-      //  int iseed1 = 31327; 
-      //  int iseed2 = 30080; 
-      double t = 5.0; // initial temperature
-      vector <double> vm;
-      vector <double> xopt;
-      double fopt = 11111111111.0;
-      int nacc = 0; 
-      int nfcnev = 0; 
-      int nobds = 0;
-      int ier = 0; 
-      vector <double> fstar; 
-      vector <double> xp;
-      vector <int> nacp;
+  for (int cycle = 0; cycle < ncycles; cycle++) {
+    for (unsigned int i=0; i < yyFittedVec.size(); i++ ) {
+      p0[i] = gRandom->Gaus(0, 1);
+    }
+    double H0 = hamiltonian(yyFittedVec.size(), q0, p0);
 
-      /* System generated locals */
-      //  int i1, i2, i3, i4;
-      double d1;
-      Double_t dummyfloat = 5.;
-      Int_t dummyint = 1;
+    // integrate Hamilton equations here using leapfrog algorithm
 
-      /* Local variables */
-      static int nrej;
-      static int nnew;
-      static bool quit = false;
-      bool quit_while_loop = false;
-      static double f;
-      static int h, i, j, m;
-      static double p, ratio;
-      static int ndown;
-      static int nup;
-      static double fp, pp;
-      static int lnobds;
-      //  double fvar = 0.;
-      double fcubed = 0.;
-      double fsum = 0.;
-      int nvalid = 0;
-      bool firstfalse;
-      int accpoint = 0;
-      int xoptflag = 0;
-      int niter = 0;
-      int accbetter = 0;
-      int lower_opt;
-      int upper_opt;
-      int lower_opt_before;
-      int upper_opt_before;
+    double H1 = hamiltonian(yyFittedVec.size(), q1, p1);
+
+    double acceptprob = TMath::Min( 1., TMath::Exp( H0 - H1 ) );
+  }
+
+  delete[] q0;
+  delete[] p0;
+  delete[] q1;
+  delete[] p1;
+}
 
 
-      Float_t ntupvars[50];
+// test simulated annealing
+
+void Fittino::simulated_annealing (int iteration, TNtuple *ntuple)
+{
+
+  Double_t xdummy[100];
+  int n;
+  vector <double> x; 
+  vector <double> xvar; 
+  //  bool max = false; 
+  double rt; 
+  double eps = 0.0001; 
+  int ns = 20; 
+  int nt; 
+  int neps = 4;
+  int maxevl; 
+  vector <double> lb; 
+  vector <double> ub;
+  vector <double> c; 
+  //  int iprint = 0;
+  //  int iseed1 = 31327; 
+  //  int iseed2 = 30080; 
+  double t = 5.0; // initial temperature
+  vector <double> vm;
+  vector <double> xopt;
+  double fopt = 11111111111.0;
+  int nacc = 0; 
+  int nfcnev = 0; 
+  int nobds = 0;
+  int ier = 0; 
+  vector <double> fstar; 
+  vector <double> xp;
+  vector <int> nacp;
+
+  /* System generated locals */
+  //  int i1, i2, i3, i4;
+  double d1;
+  Double_t dummyfloat = 5.;
+  Int_t dummyint = 1;
+
+  /* Local variables */
+  static int nrej;
+  static int nnew;
+  static bool quit = false;
+  bool quit_while_loop = false;
+  static double f;
+  static int h, i, j, m;
+  static double p, ratio;
+  static int ndown;
+  static int nup;
+  static double fp, pp;
+  static int lnobds;
+  //  double fvar = 0.;
+  double fcubed = 0.;
+  double fsum = 0.;
+  int nvalid = 0;
+  bool firstfalse;
+  int accpoint = 0;
+  int xoptflag = 0;
+  int niter = 0;
+  int accbetter = 0;
+  int lower_opt;
+  int upper_opt;
+  int lower_opt_before;
+  int upper_opt_before;
+
+
+  Float_t ntupvars[50];
 
   time_t systime;
   int seed;
@@ -7288,1412 +7288,1412 @@ int   ReadLesHouches()
   gRandom->SetSeed(seed);
   
 
-      // set values
-      maxevl = yyMaxCallsSimAnn;
-      rt = yyTempRedSimAnn;
-      nup = 0;
-      nrej = 0;
-      nnew = 0;
-      ndown = 0;
-      lnobds = 0;
-      lower_opt = 0;
-      upper_opt = 0;
-      lower_opt_before = 0;
-      upper_opt_before = 0;
-      n = yyFittedVec.size();
-      if (n<20) {
-	 nt = 60;
-      } else {
-	 nt = 3*n;
+  // set values
+  maxevl = yyMaxCallsSimAnn;
+  rt = yyTempRedSimAnn;
+  nup = 0;
+  nrej = 0;
+  nnew = 0;
+  ndown = 0;
+  lnobds = 0;
+  lower_opt = 0;
+  upper_opt = 0;
+  lower_opt_before = 0;
+  upper_opt_before = 0;
+  n = yyFittedVec.size();
+  if (n<20) {
+    nt = 60;
+  } else {
+    nt = 3*n;
+  }
+  for (i = 0; i < neps; ++i) {
+    fstar.push_back(1e20);
+  }
+
+  // fill vector of parameters
+  for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+    x.push_back(yyFittedVec[k].value);
+    xp.push_back(yyFittedVec[k].value);
+    xvar.push_back(yyFittedVec[k].value);
+    xopt.push_back(yyFittedVec[k].value);
+    vm.push_back(yyFittedVec[k].error);
+    lb.push_back(yyFittedVec[k].bound_low);
+    ub.push_back(yyFittedVec[k].bound_up);
+    c.push_back(2.0);
+    nacp.push_back(0);
+  }
+
+  /*  Evaluate function to be minimized at the starting point */
+  for (unsigned int ii = 0; ii < xp.size(); ii++) {
+    xdummy[ii] = x[ii];
+  }
+  fitterFCN(dummyint, &dummyfloat, f, xdummy, 0);
+  f = -f;
+  ++nfcnev;
+  fopt = f;
+  fstar[1] = f;
+
+  // ------------------------------------------------------------------
+  // if initial temperature is given:
+  if (yyInitTempSimAnn>0.) {
+    t = yyInitTempSimAnn;
+  }
+  else {
+    // ------------------------------------------------------------------
+    // if already very close to the minimum:
+    if (TMath::Abs(f)<0.1) {
+      t = 0.1;
+      if (rt<0.6) {
+	rt = 0.6;
       }
-      for (i = 0; i < neps; ++i) {
-	 fstar.push_back(1e20);
+    } else if (TMath::Abs(f)<1.) {
+      t = 1.;
+      if (rt<0.6) {
+	rt = 0.6;
       }
-
-      // fill vector of parameters
-      for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-	 x.push_back(yyFittedVec[k].value);
-	 xp.push_back(yyFittedVec[k].value);
-	 xvar.push_back(yyFittedVec[k].value);
-	 xopt.push_back(yyFittedVec[k].value);
-	 vm.push_back(yyFittedVec[k].error);
-	 lb.push_back(yyFittedVec[k].bound_low);
-	 ub.push_back(yyFittedVec[k].bound_up);
-	 c.push_back(2.0);
-	 nacp.push_back(0);
-      }
-
-      /*  Evaluate function to be minimized at the starting point */
-      for (unsigned int ii = 0; ii < xp.size(); ii++) {
-	 xdummy[ii] = x[ii];
-      }
-      fitterFCN(dummyint, &dummyfloat, f, xdummy, 0);
-      f = -f;
-      ++nfcnev;
-      fopt = f;
-      fstar[1] = f;
-
-      // ------------------------------------------------------------------
-      // if initial temperature is given:
-      if (yyInitTempSimAnn>0.) {
-	 t = yyInitTempSimAnn;
-      }
-      else {
-	 // ------------------------------------------------------------------
-	 // if already very close to the minimum:
-	 if (TMath::Abs(f)<0.1) {
-	    t = 0.1;
-	    if (rt<0.6) {
-	       rt = 0.6;
-	    }
-	 } else if (TMath::Abs(f)<1.) {
-	    t = 1.;
-	    if (rt<0.6) {
-	       rt = 0.6;
-	    }
-	 } else if (TMath::Abs(f)<5.) {
-	    t = 5.;
-	    if (rt<0.6) {
-	       rt = 0.6;
-	    }    
-	 } else if (TMath::Abs(f)<10.) {
-	    t = 10.;
-	    if (rt<0.6) {
-	       rt = 0.6;
-	    }    
-	 } else if (TMath::Abs(f)<100.) {
-	    t = 100.;
-	    if (rt<0.6) {
-	       rt = 0.6;
-	    }    
-	 } else if (TMath::Abs(f)<200.) {
-	    t = 200.;
-	    if (rt<0.5) {
-	       rt = 0.5;
-	    }    
-	 } else {
-	    //-------------------------------------------
-	    // if not very close to the minimum:
-	    // first adjust the temperature to the variance for variations within vm?
-	    nvalid = 0;
-	    fsum = 0.;
-	    fcubed = 0.;
-	    for (m = 0; m < 10; m++) {
-	       for (i = 0; i < n; i++) {
-		  xp[i] = xvar[i] + gRandom->Uniform(-1.,1.) * vm[i];
-		  //  If variation has led xp out of bounds:
-		  while ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
-		     xp[i] = gRandom->Uniform(-1.,1.) * vm[i] + yyFittedVec[i].value;
-		  }
-		  // Then call the function to be minimized at the starting point
-		  for (unsigned int ii = 0; ii < xp.size(); ii++) {
-		     xdummy[ii] = xp[ii];
-		  }
-		  fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
-		  fp = -fp;
-		  cout << "fp = " << fp << endl;
-		  if (fp > -1e10) {
-		     //	fopt = 0.;
-		     //      fp = 5.;
-		     fsum = fsum + TMath::Abs(fopt - fp);
-		     fcubed = fcubed + sqr((fopt - fp));
-		     nvalid++;
-		  }
-		  xp[i] = xvar[i];
-	       }
-	       for (i = 0; i < n; i++) {
-		  xvar[i] = xp[i];
-	       }
-	    }
-	    // set t to half of the variance
-	    t = TMath::Sqrt(fcubed/double(nvalid) - sqr(fsum/double(nvalid)))/2.;
-	 }
-      }
-
-      // simple temperature adaption
-      if (yyGetTempFromFirstChiSqr) {
-
-	cout << "determining initial temperature from first chi2 " << fopt << endl;
-	double firstChi2 = TMath::Abs(fopt);
-	if (firstChi2<yyInitTempSimAnn*10.) {
-	  t = yyInitTempSimAnn;
-	} else {
-	  t = (double)TMath::Nint(firstChi2/10.);
-	} 
-
-      }
-
-
-
-      cout << "temperature chosen " << t << endl;
-
+    } else if (TMath::Abs(f)<5.) {
+      t = 5.;
+      if (rt<0.6) {
+	rt = 0.6;
+      }    
+    } else if (TMath::Abs(f)<10.) {
+      t = 10.;
+      if (rt<0.6) {
+	rt = 0.6;
+      }    
+    } else if (TMath::Abs(f)<100.) {
+      t = 100.;
+      if (rt<0.6) {
+	rt = 0.6;
+      }    
+    } else if (TMath::Abs(f)<200.) {
+      t = 200.;
+      if (rt<0.5) {
+	rt = 0.5;
+      }    
+    } else {
       //-------------------------------------------
-      // perform the optimization
-      niter = 0;
+      // if not very close to the minimum:
+      // first adjust the temperature to the variance for variations within vm?
+      nvalid = 0;
+      fsum = 0.;
+      fcubed = 0.;
+      for (m = 0; m < 10; m++) {
+	for (i = 0; i < n; i++) {
+	  xp[i] = xvar[i] + gRandom->Uniform(-1.,1.) * vm[i];
+	  //  If variation has led xp out of bounds:
+	  while ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
+	    xp[i] = gRandom->Uniform(-1.,1.) * vm[i] + yyFittedVec[i].value;
+	  }
+	  // Then call the function to be minimized at the starting point
+	  for (unsigned int ii = 0; ii < xp.size(); ii++) {
+	    xdummy[ii] = xp[ii];
+	  }
+	  fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
+	  fp = -fp;
+	  cout << "fp = " << fp << endl;
+	  if (fp > -1e10) {
+	    //	fopt = 0.;
+	    //      fp = 5.;
+	    fsum = fsum + TMath::Abs(fopt - fp);
+	    fcubed = fcubed + sqr((fopt - fp));
+	    nvalid++;
+	  }
+	  xp[i] = xvar[i];
+	}
+	for (i = 0; i < n; i++) {
+	  xvar[i] = xp[i];
+	}
+      }
+      // set t to half of the variance
+      t = TMath::Sqrt(fcubed/double(nvalid) - sqr(fsum/double(nvalid)))/2.;
+    }
+  }
 
-      // begin new temperature era
-      while (!quit_while_loop) {
-	 nup = 0;
-	 nrej = 0;
-	 nnew = 0;
-	 ndown = 0;
-	 lnobds = 0;
-	 if (yyAdaptiveSimAnn) {
-	    if (niter>0 && ( TMath::Abs( ( (float)niter/2. ) - niter/2 ) < 0.01 ) ) {
-	       if (lower_opt>0 && upper_opt==0 && lower_opt_before>0 && upper_opt_before==0) {
-		  if (nt>20) {
-		     cout << "resetting the temperature reduction factor from " << rt;
-		     rt = TMath::Sqrt(rt);
-		     cout  << " to " << rt << endl;
-		     cout << "resetting the temperature step width from " << nt;
-		     nt = nt/2;
-		     cout  << " to " << nt << endl;
-		  }
-	       }
+  // simple temperature adaption
+  if (yyGetTempFromFirstChiSqr) {
+
+    cout << "determining initial temperature from first chi2 " << fopt << endl;
+    double firstChi2 = TMath::Abs(fopt);
+    if (firstChi2<yyInitTempSimAnn*10.) {
+      t = yyInitTempSimAnn;
+    } else {
+      t = (double)TMath::Nint(firstChi2/10.);
+    } 
+
+  }
+
+
+
+  cout << "temperature chosen " << t << endl;
+
+  //-------------------------------------------
+  // perform the optimization
+  niter = 0;
+
+  // begin new temperature era
+  while (!quit_while_loop) {
+    nup = 0;
+    nrej = 0;
+    nnew = 0;
+    ndown = 0;
+    lnobds = 0;
+    if (yyAdaptiveSimAnn) {
+      if (niter>0 && ( TMath::Abs( ( (float)niter/2. ) - niter/2 ) < 0.01 ) ) {
+	if (lower_opt>0 && upper_opt==0 && lower_opt_before>0 && upper_opt_before==0) {
+	  if (nt>20) {
+	    cout << "resetting the temperature reduction factor from " << rt;
+	    rt = TMath::Sqrt(rt);
+	    cout  << " to " << rt << endl;
+	    cout << "resetting the temperature step width from " << nt;
+	    nt = nt/2;
+	    cout  << " to " << nt << endl;
+	  }
+	}
+      }
+    }
+    niter++;
+    // loop over the iterations before temperature reduction:
+    for (m = 0; m < nt; m++) {
+      lower_opt_before = lower_opt;
+      upper_opt_before = upper_opt;
+      lower_opt=0;
+      upper_opt=0;
+      // loop over the accepted function evaluations:
+      for (j = 0; j < ns; j++) {
+	// loop over the variables:
+	for (h = 0; h < n; h++) {
+	  for (i = 0; i < n; i++) {
+	    if (i == h) {
+	      xp[i] = x[i] + gRandom->Uniform(-1.,1.) * vm[i];
+	    } else {
+	      xp[i] = x[i];
 	    }
-	 }
-	 niter++;
-	 // loop over the iterations before temperature reduction:
-	 for (m = 0; m < nt; m++) {
-	    lower_opt_before = lower_opt;
-	    upper_opt_before = upper_opt;
-	    lower_opt=0;
-	    upper_opt=0;
-	    // loop over the accepted function evaluations:
-	    for (j = 0; j < ns; j++) {
-	       // loop over the variables:
-	       for (h = 0; h < n; h++) {
-		  for (i = 0; i < n; i++) {
-		     if (i == h) {
-			xp[i] = x[i] + gRandom->Uniform(-1.,1.) * vm[i];
-		     } else {
-			xp[i] = x[i];
-		     }
-		     //  If variation has led xp out of bounds:
-		     firstfalse = true;
-		     while ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
-			xp[i] = gRandom->Uniform(-2.,2.) * vm[i] + yyFittedVec[i].value;
-			if (firstfalse) {
-			   ++lnobds;
-			   ++(nobds);
-			}
-			firstfalse = false;
-		     }
-		  }
-		  // Then call the function to be minimized at the starting point
-		  for (unsigned int ii = 0; ii < xp.size(); ii++) {
-		     xdummy[ii] = xp[ii];
-		  }
-		  if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
-		     cout << "running simulated annealing at t = " << t << " m(<"<<nt<<") = " << m << " j(<"<<ns<<") = " << j << 
-			" h(<"<<n<<") = " << h << " " << yyFittedVec[h].name << " in niter = " << niter <<  endl;
-		  }
-		  if (yyVerbose) {
-		     cout << "previous: accpoint = " << accpoint << " was better: " << accbetter <<  endl;
-		     if (accpoint==1 && accbetter== 0) {
-			cout << "d1 = " << d1 << " p = " << p << " pp = " << pp << endl;
-		     }
-		  }
-		  fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
-		  fp = -fp;
-		  ++nfcnev;
-		  xoptflag = 0;
-		  // For too many function evaluations, terminate:
-		  if (nfcnev >= maxevl) {
-		     cout << "terminating simulated annealing prematurely due to number of calls" << endl;
-		     fopt = -fopt;
-		     ier = 1;
-		     for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-			yyFittedVec[k].value = xopt[k];
-		     }
-		     quit_while_loop = true;
-		     return;
-		  }
-		  //  Accept new point if better chisq
-		  if (fp >= f) {
-		     for (i = 0; i < n; ++i) {
-			x[i] = xp[i];
-		     }
-		     f = fp;
-		     ++nacc;
-		     ++nacp[h];
-		     ++nup;
-		     accbetter = 1;
-		     accpoint = 1;
-		     //  If best chisq so far, record as new best parameter set:
-		     if (fp > fopt) {
-			for (i = 0; i < n; ++i) {
-			   xopt[i] = xp[i];
-			}
-			if (m <= nt/2) {
-			   lower_opt++;
-			} else {
-			   upper_opt++;
-			}
-			fopt = fp;
-			++nnew;
-			xoptflag = 1;
-			cout << "found new optimum at chisq = " << fopt << endl;
-		     }
-		     //  Metropolis criteria to decide whether point is accepted if chisq is worse than before 
-		  } else {
-		     accbetter = 0;
-		     d1 = (fp - f) / t;
-		     p = TMath::Exp(d1);
-		     pp = gRandom->Uniform(1.);
-		     if (pp < p) {
-			for (i = 1; i < n; ++i) {
-			   x[i] = xp[i];
-			}
-			f = fp;
-			++nacc;
-			++nacp[h];
-			++ndown;
-			accpoint = 1;
-		     } else {
-			++nrej;
-			accpoint = 0;
-		     }
-		  }
-		  // write point to ntuple
-		  ntupvars[0] = (Float_t)nfcnev;
-		  ntupvars[1] = (Float_t)t;
-		  ntupvars[2] = -(Float_t)fp;
-		  ntupvars[3] = (Float_t)accpoint;
-		  ntupvars[4] = (Float_t)xoptflag;
-		  for (unsigned int ii = 5; ii < 5+yyFittedVec.size(); ii++) {
-		     ntupvars[ii] = xp[ii-5];
-		  }
-		  ntuple->Fill(ntupvars);
-	       } // close the outer variable loop
-	    } // close the loop over the accepted function evaluations
-	    // go on to adjust vm and t
-	    // adjust vm to accept between 0.4 and 0.6 of the trial points at the given temperature
-	    for (i = 0; i < n; ++i) {
-	       ratio = (double) nacp[i] / (double) (ns);
-	       if (ratio > 0.6) {
-		  vm[i] *= c[i] * (ratio - 0.6) / 0.4 + 1.;
-	       } else if (ratio < 0.4) {
-		  vm[i] /= c[i] * (0.4 - ratio) / 0.4 + 1.;
-	       }
-	       if (vm[i] > ub[i] - lb[i]) {
-		  vm[i] = ub[i] - lb[i];
-	       }	
+	    //  If variation has led xp out of bounds:
+	    firstfalse = true;
+	    while ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
+	      xp[i] = gRandom->Uniform(-2.,2.) * vm[i] + yyFittedVec[i].value;
+	      if (firstfalse) {
+		++lnobds;
+		++(nobds);
+	      }
+	      firstfalse = false;
 	    }
-	    for (i = 0; i < n; ++i) {
-	       nacp[i] = 0;
+	  }
+	  // Then call the function to be minimized at the starting point
+	  for (unsigned int ii = 0; ii < xp.size(); ii++) {
+	    xdummy[ii] = xp[ii];
+	  }
+	  if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
+	    cout << "running simulated annealing at t = " << t << " m(<"<<nt<<") = " << m << " j(<"<<ns<<") = " << j << 
+	      " h(<"<<n<<") = " << h << " " << yyFittedVec[h].name << " in niter = " << niter <<  endl;
+	  }
+	  if (yyVerbose) {
+	    cout << "previous: accpoint = " << accpoint << " was better: " << accbetter <<  endl;
+	    if (accpoint==1 && accbetter== 0) {
+	      cout << "d1 = " << d1 << " p = " << p << " pp = " << pp << endl;
 	    }
-	 } // close the loop over the iterations before temperature reduction
-	 // check whether to terminate
-	 quit = false;
-	 fstar[1] = f;
-	 if (TMath::Abs(fopt - fstar[1]) <= eps) {
-	    quit = true;
-	 }
-	 for (i = 0; i < neps; ++i) {
-	    if (TMath::Abs(f - fstar[i]) > eps) {
-	       quit = false;
-	    }
-	 }
-	 //  Terminate simulated annealing if appropriate 
-	 if (quit) {
-	    for (i = 0; i < n; ++i) {
-	       x[i] = xopt[i];
-	    }
-	    ier = 0;
+	  }
+	  fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
+	  fp = -fp;
+	  ++nfcnev;
+	  xoptflag = 0;
+	  // For too many function evaluations, terminate:
+	  if (nfcnev >= maxevl) {
+	    cout << "terminating simulated annealing prematurely due to number of calls" << endl;
 	    fopt = -fopt;
-	    quit_while_loop = true;
-	 } else {
-	    // If not terminating, prepare t
-	    cout << "starting new temperature loop at t = " << rt * t <<  endl;
-	    t = rt * t;
-	    for (i = neps-1; i >= 1; --i) {
-	       fstar[i] = fstar[i - 1];
-	    }
-	    f = fopt;
-	    for (i = 0; i < n; ++i) {
-	       x[i] = xopt[i];
-	    }
-	 }
-      } // close the while loop 
-
-      //--------------------------------------------
-      // write output
-
-      for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-	 yyFittedVec[k].value = xopt[k];
-      }
-      cout << "optimal function value " << fopt << " after " << nacc << " evaluations" << endl;
-
-   }
-
-   void Fittino::simulated_annealing_uncertainties (TNtuple *ntuple)
-   {
-
-      Double_t xdummy[100];
-      int n;
-      vector <double> x; 
-      vector <double> xvar; 
-      //  bool max = false; 
-      double rt; 
-      double eps = 0.0001; 
-      int ns = 20; 
-      int nt; 
-      int neps = 4;
-      int maxevl; 
-      vector <double> lb; 
-      vector <double> ub;
-      vector <double> c; 
-      //  int iprint = 0;
-      //  int iseed1 = 31327; 
-      //  int iseed2 = 30080; 
-      double t = 5.0; // initial temperature
-      vector <double> vm;
-      vector <double> xopt;
-      double fopt = 11111111111.0;
-      double fadd = 0.;	
-      int nacc = 0; 
-      int nfcnev = 0; 
-      int nobds = 0;
-      int ier = 0; 
-      vector <double> fstar; 
-      vector <double> xp;
-      vector <int> nacp;
-
-      /* System generated locals */
-      //  int i1, i2, i3, i4;
-      double d1;
-      Double_t dummyfloat = 5.;
-      Int_t dummyint = 1;
-
-      /* Local variables */
-      static int nrej;
-      static int nnew;
-      static bool quit = false;
-      bool quit_while_loop = false;
-      static double f;
-      static double fminimum;
-      static double fgoal;
-      static double delta1;
-      static double steepness;
-      static int h, i, j, m;
-      static double p, ratio;
-      static int ndown;
-      static int nup;
-      static double fp, pp;
-      static int lnobds;
-      vector_type fill_vector;
-      vector <vector_type> saved_x;
-      vector <double> p_mean;
-      vector <double> x_min;
-      vector <double> x_dist;
-      //  double fvar = 0.;
-      bool firstfalse;
-      int accpoint = 0;
-      int xoptflag = 0;
-      int niter = 0;
-      int accbetter = 0;
-      int lower_opt;
-      int upper_opt;
-      int lower_opt_before;
-      int upper_opt_before;
-      int number_stored = 30;
-      bool start_pushaway = false;
-      bool start_pushaway_now = false;
-      int soon_start_pushaway = 0;
-
-      Float_t ntupvars[50];
-
-      // set values
-      maxevl = yyMaxCallsSimAnn;
-      rt = yyTempRedSimAnn;
-      steepness = 100.;
-      nup = 0;
-      nrej = 0;
-      nnew = 0;
-      ndown = 0;
-      lnobds = 0;
-      lower_opt = 0;
-      upper_opt = 0;
-      lower_opt_before = 0;
-      upper_opt_before = 0;
-      n = yyFittedVec.size();
-      if (n<20) {
-	 nt = 60;
-      } else {
-	 nt = 3*n;
-      }
-      for (i = 0; i < neps; ++i) {
-	 fstar.push_back(1e20);
-      }
-
-      // fill vector of parameters
-      for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-	 x.push_back(yyFittedVec[k].value);
-	 x_min.push_back(yyFittedVec[k].value);
-	 p_mean.push_back(yyFittedVec[k].value);
-	 fill_vector.value.push_back(yyFittedVec[k].value);
-	 xp.push_back(yyFittedVec[k].value);
-	 xvar.push_back(yyFittedVec[k].value);
-	 xopt.push_back(yyFittedVec[k].value);
-	 vm.push_back(yyFittedVec[k].error);
-	 lb.push_back(yyFittedVec[k].bound_low);
-	 ub.push_back(yyFittedVec[k].bound_up);
-	 c.push_back(2.0);
-	 nacp.push_back(0);
-      }
-      for (unsigned int k = 0; k < (unsigned int)number_stored; k++ ) {
-	 saved_x.push_back(fill_vector);
-      }  
-
-      /*  Evaluate function to be minimized at the starting point */
-      for (unsigned int ii = 0; ii < xp.size(); ii++) {
-	 xdummy[ii] = x[ii];
-      }
-      fitterFCN(dummyint, &dummyfloat, f, xdummy, 0);
-      fminimum = f;
-      fgoal = f+1.;
-      f = -steepness*sqr(f-fgoal);
-      ++nfcnev;
-      fopt = f;
-      fstar[1] = fopt;
-
-      // // ------------------------------------------------------------------
-      // // if initial temperature is given:
-      // if (yyInitTempSimAnn>0.) {
-      //   t = yyInitTempSimAnn;
-      // }
-      // else {
-      //   // ------------------------------------------------------------------
-      //   // if already very close to the minimum:
-      //   if (TMath::Abs(f)<0.1) {
-      //     t = 0.1;
-      //     if (rt<0.6) {
-      //       rt = 0.6;
-      //     }
-      //   } else if (TMath::Abs(f)<1.) {
-      //     t = 1.;
-      //     if (rt<0.6) {
-      //       rt = 0.6;
-      //     }
-      //   } else if (TMath::Abs(f)<5.) {
-      //     t = 5.;
-      //     if (rt<0.6) {
-      //       rt = 0.6;
-      //     }    
-      //   } else if (TMath::Abs(f)<10.) {
-      //     t = 10.;
-      //     if (rt<0.6) {
-      //       rt = 0.6;
-      //     }    
-      //   } else if (TMath::Abs(f)<100.) {
-      //     t = 100.;
-      //     if (rt<0.6) {
-      //       rt = 0.6;
-      //     }    
-      //   } else if (TMath::Abs(f)<200.) {
-      //     t = 200.;
-      //     if (rt<0.5) {
-      //       rt = 0.5;
-      //     }    
-      //   } else {
-      //     //-------------------------------------------
-      //     // if not very close to the minimum:
-      //     // first adjust the temperature to the variance for variations within vm?
-      //     nvalid = 0;
-      //     fsum = 0.;
-      //     fcubed = 0.;
-      //     for (m = 0; m < 10; m++) {
-      //       for (i = 0; i < n; i++) {
-      //         xp[i] = xvar[i] + gRandom->Uniform(-1.,1.) * vm[i];
-      //         //  If variation has led xp out of bounds:
-      //         while ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
-      //           xp[i] = gRandom->Uniform(-1.,1.) * vm[i] + yyFittedVec[i].value;
-      //         }
-      //         // Then call the function to be minimized at the starting point
-      //         for (unsigned int ii = 0; ii < xp.size(); ii++) {
-      //           xdummy[ii] = xp[ii];
-      //         }
-      //         fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
-      //         fp = -fp;
-      //         cout << "fp = " << fp << endl;
-      //         if (fp > -1e10) {
-      //           //	fopt = 0.;
-      //           //      fp = 5.;
-      //           fsum = fsum + TMath::Abs(fopt - fp);
-      //           fcubed = fcubed + sqr((fopt - fp));
-      //           nvalid++;
-      //         }
-      //         xp[i] = xvar[i];
-      //       }
-      //       for (i = 0; i < n; i++) {
-      //         xvar[i] = xp[i];
-      //       }
-      //     }
-      //     // set t to half of the variance
-      //     t = TMath::Sqrt(fcubed/double(nvalid) - sqr(fsum/double(nvalid)))/2.;
-      //   }
-      // }
-      t = 0.05;
-      cout << "temperature chosen " << t << endl;
-
-      //-------------------------------------------
-      // perform the optimization
-      niter = 0;
-
-      // begin new temperature era
-      while (!quit_while_loop) {
-	 nup = 0;
-	 nrej = 0;
-	 nnew = 0;
-	 ndown = 0;
-	 lnobds = 0;
-	 niter++;
-	 // loop over the iterations before temperature reduction:
-	 for (m = 0; m < nt; m++) {
-	    lower_opt_before = lower_opt;
-	    upper_opt_before = upper_opt;
-	    lower_opt=0;
-	    upper_opt=0;
-	    // loop over the accepted function evaluations:
-	    for (j = 0; j < ns; j++) {
-	       // loop over the variables:
-	       for (h = 0; h < n; h++) {
-		  for (i = 0; i < n; i++) {
-		     if (i == h) {
-			xp[i] = x[i] + gRandom->Uniform(-1.,1.) * vm[i];
-		     } else {
-			xp[i] = x[i];
-		     }
-		     //  If variation has led xp out of bounds:
-		     firstfalse = true;
-		     while ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
-			xp[i] = gRandom->Uniform(-2.,2.) * vm[i] + yyFittedVec[i].value;
-			if (firstfalse) {
-			   ++lnobds;
-			   ++(nobds);
-			}
-			firstfalse = false;
-		     }
-		  }
-		  // Then call the function to be minimized at the starting point
-		  for (unsigned int ii = 0; ii < xp.size(); ii++) {
-		     xdummy[ii] = xp[ii];
-		  }
-		  if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
-		     cout << "running simulated annealing at t = " << t << " m(<"<<nt<<") = " << m << " j(<"<<ns<<") = " << j << 
-			" h(<"<<n<<") = " << h << " " << yyFittedVec[h].name << " in niter = " << niter <<  endl;
-		  }
-		  if (yyVerbose) {
-		     cout << "previous: accpoint = " << accpoint << " was better: " << accbetter <<  endl;
-		     if (accpoint==1 && accbetter== 0) {
-			cout << "d1 = " << d1 << " p = " << p << " pp = " << pp << endl;
-		     }
-		  }
-		  fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
-		  cout << "fminimum = " << fminimum << " fgoal = " << fgoal << " fp = " << fp << " with up to now " << nacc << " accepted points" << endl;
-		  delta1 = TMath::Abs(fp-fgoal);
-		  fp = steepness*sqr(fp-fgoal);
-		  if (start_pushaway) {
-		     // calculate mean
-		     for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-			p_mean[k] = 0.;
-			for (unsigned int kk = 0; kk < (unsigned int)number_stored; kk++ ) {
-			   p_mean[k] = p_mean[k] + saved_x[kk].value[k];
-			}
-			p_mean[k] = p_mean[k] / (double) number_stored;
-		     }	    
-		     cout << "p_mean[0] = " << p_mean[0] << " xp[0] = " << xp[0]  << endl;
-		     // add something to fp
-		     fadd = 0.;
-		     for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-			//	      fadd = fadd + sqr((xp[k]-p_mean[k])/((double)steepness*0.003*(xp[k]-x_min[k])));
-			fadd = fadd + sqr((xp[k]-p_mean[k])/((double)steepness*0.003*(x_dist[k])));
-		     }	    
-		     if (fadd > 0.) {
-			fadd = 1./fadd;
-		     } else {
-			fadd = 0.;
-			cerr << "WARNING: fadd == 0" << endl;
-		     }
-		     if (start_pushaway_now == false) {
-			f = f - 2.*fadd - 1.; // make sure it is accepted on the first time
-			start_pushaway_now = true;
-		     }
-		     cout << "adding " << fadd << " to the potential, with f = " << f << endl;
-		     fp = fp + fadd;
-		  }
-		  cout << "hyperbolical chisq = " << fp << endl;
-		  fp = -fp;
-		  ++nfcnev;
-		  xoptflag = 0;
-		  // For too many function evaluations, terminate:
-		  if (nfcnev >= maxevl) {
-		     cout << "terminating simulated annealing uncertainty estimation due to number of calls" << endl;
-		     fopt = -fopt;
-		     ier = 1;
-		     for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-			yyFittedVec[k].value = xopt[k];
-		     }
-		     quit_while_loop = true;
-		     return;
-		  }
-		  //  Accept new point if better chisq
-		  cout << " f = " << f << " fp = " << fp << endl; 
-		  if (fp >= f) {
-		     cout << "accept point because better" << endl;
-		     for (i = 0; i < n; ++i) {
-			x[i] = xp[i];
-		     }
-		     f = fp;
-		     ++nacc;
-		     ++nacp[h];
-		     ++nup;
-		     accbetter = 1;
-		     accpoint = 1;
-		     //  If best chisq so far, record as new best parameter set:
-		     if (fp > fopt) {
-			for (i = 0; i < n; ++i) {
-			   xopt[i] = xp[i];
-			}
-			if (m <= nt/2) {
-			   lower_opt++;
-			} else {
-			   upper_opt++;
-			}
-			fopt = fp;
-			++nnew;
-			xoptflag = 1;
-			cout << "found new optimum at chisq = " << fopt << endl;
-		     }
-		     //  Metropolis criteria to decide whether point is accepted if chisq is worse than before 
-		  } else {
-		     cout << "point is worse, contemplate acceptance..." << endl;
-		     accbetter = 0;
-		     d1 = (fp - f) / t;
-		     p = TMath::Exp(d1);
-		     pp = gRandom->Uniform(1.);
-		     if (pp < p) {
-			for (i = 1; i < n; ++i) {
-			   x[i] = xp[i];
-			}
-			f = fp;
-			++nacc;
-			++nacp[h];
-			++ndown;
-			accpoint = 1;
-			cout << "accept anyway" << endl;
-		     } else {
-			cout << "reject" << endl;
-			++nrej;
-			accpoint = 0;
-		     }
-		  }
-		  // store info for pushaway
-		  if ( soon_start_pushaway == 0 && nacc > number_stored && TMath::Abs(fopt) < 0.1 ) {
-		     soon_start_pushaway = nacc;
-		  }
-		  if ( ( soon_start_pushaway > 0 ) && ( nacc > 2 * soon_start_pushaway ) ) {
-		     start_pushaway = true;
-		     for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-			x_dist.push_back(xopt[k]-x_min[k]);
-		     }
-		  }
-		  if (accpoint > 0.5) {
-		     for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-			fill_vector.value[k] = xp[k];
-		     }
-		     for (unsigned int k = number_stored-1; k > 0; k-- ) {
-			saved_x[k].value = saved_x[k-1].value;
-		     }	    
-		     saved_x[0] = fill_vector;
-		     cout << " 0: " << saved_x[0].value[0] <<  
-			" 1: " << saved_x[1].value[0] <<  
-			" 2: " << saved_x[2].value[0] <<  
-			" 3: " << saved_x[3].value[0] <<
-			" 4: " << saved_x[4].value[0] << endl;
-		  }
-		  // write point to ntuple
-		  ntupvars[0] = (Float_t)nfcnev;
-		  ntupvars[1] = (Float_t)t;
-		  ntupvars[2] = -(Float_t)fp;
-		  ntupvars[3] = (Float_t)accpoint;
-		  ntupvars[4] = (Float_t)xoptflag;
-		  ntupvars[5] = (Float_t)delta1;
-		  for (unsigned int ii = 6; ii < 6+yyFittedVec.size(); ii++) {
-		     ntupvars[ii] = xp[ii-6];
-		  }
-		  ntuple->Fill(ntupvars);
-	       } // close the outer variable loop
-	    } // close the loop over the accepted function evaluations
-	    // go on to adjust vm and t
-	    // adjust vm to accept between 0.4 and 0.6 of the trial points at the given temperature
-	    if (!start_pushaway) {
-	       for (i = 0; i < n; ++i) {
-		  ratio = (double) nacp[i] / (double) (ns);
-		  if (ratio > 0.6) {
-		     vm[i] *= c[i] * (ratio - 0.6) / 0.4 + 1.;
-		  } else if (ratio < 0.4) {
-		     vm[i] /= c[i] * (0.4 - ratio) / 0.4 + 1.;
-		  }
-		  if (vm[i] > ub[i] - lb[i]) {
-		     vm[i] = ub[i] - lb[i];
-		  }	
-	       }
-	       for (i = 0; i < n; ++i) {
-		  nacp[i] = 0;
-	       }
-	    }
-	 } // close the loop over the iterations before temperature reduction
-	 // check whether to terminate
-	 quit = false;
-	 fstar[1] = f;
-	 if (TMath::Abs(fopt - fstar[1]) <= eps) {
-	    quit = true;
-	 }
-	 for (i = 0; i < neps; ++i) {
-	    if (TMath::Abs(f - fstar[i]) > eps) {
-	       quit = false;
-	    }
-	 }
-	 //  Terminate simulated annealing if appropriate 
-	 if (quit) {
-	    for (i = 0; i < n; ++i) {
-	       x[i] = xopt[i];
-	    }
-	    ier = 0;
-	    fopt = -fopt;
-	    // quit_while_loop = true;
-	 } else {
-	    // If not terminating, prepare t
-	    cout << "starting new temperature loop at t = " << rt * t <<  endl;
-	    // t = rt * t;
-	    for (i = neps-1; i >= 1; --i) {
-	       fstar[i] = fstar[i - 1];
-	    }
-	    // f = fopt;
-	    // for (i = 0; i < n; ++i) {
-	    //	x[i] = xopt[i];
-	    // }
-	 }
-      } // close the while loop 
-
-      //--------------------------------------------
-      // write output
-
-      for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-	 yyFittedVec[k].value = xopt[k];
-      }
-      cout << "optimal function value " << fopt << " after " << nacc << " evaluations" << endl;
-
-   }
-
-
-   void Fittino::simulated_annealing_uncertainties_run_down (TNtuple *ntuple)
-   {
-
-      Double_t xdummy[100];
-      int n;
-      vector <double> x; 
-      vector <double> xvar; 
-      //  bool max = false; 
-      double rt; 
-      double eps = 0.0001; 
-      int ns = 20; 
-      int nt; 
-      int neps = 4;
-      int maxevl; 
-      vector <double> lb; 
-      vector <double> ub;
-      vector <double> c; 
-      //  int iprint = 0;
-      //  int iseed1 = 31327; 
-      //  int iseed2 = 30080; 
-      double t = 5.0; // initial temperature
-      vector <double> vm;
-      vector <double> vm_orig;
-      vector <double> xopt;
-      double fopt = 11111111111.0;
-      double fadd = 0.;	
-      int nacc = 0; 
-      int nfcnev = 0; 
-      int nobds = 0;
-      int ier = 0; 
-      vector <double> fstar; 
-      vector <double> xp;
-      vector <int> nacp;
-
-      /* System generated locals */
-      //  int i1, i2, i3, i4;
-      double d1;
-      Double_t dummyfloat = 5.;
-      Int_t dummyint = 1;
-
-      /* Local variables */
-      static int nrej;
-      static int nnew;
-      static bool quit = false;
-      bool quit_while_loop = false;
-      static double f;
-      static double fminimum;
-      static double fgoal;
-      static double delta1;
-      static double steepness;
-      static int h, i, j, m;
-      static double p, ratio;
-      static int ndown;
-      static int nup;
-      static double fp, pp;
-      static int lnobds;
-      vector_type fill_vector;
-      vector <vector_type> saved_x;
-      vector <double> p_mean;
-      vector <double> x_min;
-      vector <double> x_dist;
-      //  double fvar = 0.;
-      bool firstfalse;
-      int accpoint = 0;
-      int xoptflag = 0;
-      int niter = 0;
-      int accbetter = 0;
-      int lower_opt;
-      int upper_opt;
-      int lower_opt_before;
-      int upper_opt_before;
-      int number_stored = 30;
-      bool start_pushaway = false;
-      bool start_pushaway_now = false;
-      int n_found = 0;
-      int soon_start_pushaway = 0;
-
-      Float_t ntupvars[50];
-
-      // set values
-      maxevl = yyMaxCallsSimAnn;
-      rt = yyTempRedSimAnn;
-      steepness = 100.;
-      nup = 0;
-      nrej = 0;
-      nnew = 0;
-      ndown = 0;
-      lnobds = 0;
-      lower_opt = 0;
-      upper_opt = 0;
-      lower_opt_before = 0;
-      upper_opt_before = 0;
-      n = yyFittedVec.size();
-      if (n<20) {
-	 nt = 60;
-      } else {
-	 nt = 3*n;
-      }
-      for (i = 0; i < neps; ++i) {
-	 fstar.push_back(1e20);
-      }
-
-      // fill vector of parameters
-      for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-	 x.push_back(yyFittedVec[k].value);
-	 x_min.push_back(yyFittedVec[k].value);
-	 p_mean.push_back(yyFittedVec[k].value);
-	 fill_vector.value.push_back(yyFittedVec[k].value);
-	 xp.push_back(yyFittedVec[k].value);
-	 xvar.push_back(yyFittedVec[k].value);
-	 xopt.push_back(yyFittedVec[k].value);
-	 vm.push_back(yyFittedVec[k].error);
-	 vm_orig.push_back(yyFittedVec[k].error);
-	 lb.push_back(yyFittedVec[k].bound_low);
-	 ub.push_back(yyFittedVec[k].bound_up);
-	 c.push_back(2.0);
-	 nacp.push_back(0);
-      }
-      for (unsigned int k = 0; k < (unsigned int)number_stored; k++ ) {
-	 saved_x.push_back(fill_vector);
-      }  
-
-      /*  Evaluate function to be minimized at the starting point */
-      for (unsigned int ii = 0; ii < xp.size(); ii++) {
-	 xdummy[ii] = x[ii];
-      }
-      fitterFCN(dummyint, &dummyfloat, f, xdummy, 0);
-      fminimum = f;
-      fgoal = f+1.;
-      f = -steepness*sqr(f-fgoal);
-      ++nfcnev;
-      fopt = f;
-      fstar[1] = fopt;
-
-      // // ------------------------------------------------------------------
-      // // if initial temperature is given:
-      // if (yyInitTempSimAnn>0.) {
-      //   t = yyInitTempSimAnn;
-      // }
-      // else {
-      //   // ------------------------------------------------------------------
-      //   // if already very close to the minimum:
-      //   if (TMath::Abs(f)<0.1) {
-      //     t = 0.1;
-      //     if (rt<0.6) {
-      //       rt = 0.6;
-      //     }
-      //   } else if (TMath::Abs(f)<1.) {
-      //     t = 1.;
-      //     if (rt<0.6) {
-      //       rt = 0.6;
-      //     }
-      //   } else if (TMath::Abs(f)<5.) {
-      //     t = 5.;
-      //     if (rt<0.6) {
-      //       rt = 0.6;
-      //     }    
-      //   } else if (TMath::Abs(f)<10.) {
-      //     t = 10.;
-      //     if (rt<0.6) {
-      //       rt = 0.6;
-      //     }    
-      //   } else if (TMath::Abs(f)<100.) {
-      //     t = 100.;
-      //     if (rt<0.6) {
-      //       rt = 0.6;
-      //     }    
-      //   } else if (TMath::Abs(f)<200.) {
-      //     t = 200.;
-      //     if (rt<0.5) {
-      //       rt = 0.5;
-      //     }    
-      //   } else {
-      //     //-------------------------------------------
-      //     // if not very close to the minimum:
-      //     // first adjust the temperature to the variance for variations within vm?
-      //     nvalid = 0;
-      //     fsum = 0.;
-      //     fcubed = 0.;
-      //     for (m = 0; m < 10; m++) {
-      //       for (i = 0; i < n; i++) {
-      //         xp[i] = xvar[i] + gRandom->Uniform(-1.,1.) * vm[i];
-      //         //  If variation has led xp out of bounds:
-      //         while ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
-      //           xp[i] = gRandom->Uniform(-1.,1.) * vm[i] + yyFittedVec[i].value;
-      //         }
-      //         // Then call the function to be minimized at the starting point
-      //         for (unsigned int ii = 0; ii < xp.size(); ii++) {
-      //           xdummy[ii] = xp[ii];
-      //         }
-      //         fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
-      //         fp = -fp;
-      //         cout << "fp = " << fp << endl;
-      //         if (fp > -1e10) {
-      //           //	fopt = 0.;
-      //           //      fp = 5.;
-      //           fsum = fsum + TMath::Abs(fopt - fp);
-      //           fcubed = fcubed + sqr((fopt - fp));
-      //           nvalid++;
-      //         }
-      //         xp[i] = xvar[i];
-      //       }
-      //       for (i = 0; i < n; i++) {
-      //         xvar[i] = xp[i];
-      //       }
-      //     }
-      //     // set t to half of the variance
-      //     t = TMath::Sqrt(fcubed/double(nvalid) - sqr(fsum/double(nvalid)))/2.;
-      //   }
-      // }
-      t = 0.05;
-      cout << "temperature chosen " << t << endl;
-
-      //-------------------------------------------
-      // perform the optimization
-      niter = 0;
-
-      // begin new temperature era
-      while (!quit_while_loop) {
-	 nup = 0;
-	 nrej = 0;
-	 nnew = 0;
-	 ndown = 0;
-	 lnobds = 0;
-	 niter++;
-	 // loop over the iterations before temperature reduction:
-	 for (m = 0; m < nt; m++) {
-	    lower_opt_before = lower_opt;
-	    upper_opt_before = upper_opt;
-	    lower_opt=0;
-	    upper_opt=0;
-	    // loop over the accepted function evaluations:
-	    for (j = 0; j < ns; j++) {
-	       // loop over the variables:
-	       for (h = 0; h < n; h++) {
-		  for (i = 0; i < n; i++) {
-		     if (i == h) {
-			xp[i] = x[i] + gRandom->Uniform(-1.,1.) * vm[i];
-		     } else {
-			xp[i] = x[i];
-		     }
-		     //  If variation has led xp out of bounds:
-		     firstfalse = true;
-		     while ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
-			xp[i] = gRandom->Uniform(-2.,2.) * vm[i] + yyFittedVec[i].value;
-			if (firstfalse) {
-			   ++lnobds;
-			   ++(nobds);
-			}
-			firstfalse = false;
-		     }
-		  }
-		  // Then call the function to be minimized at the starting point
-		  for (unsigned int ii = 0; ii < xp.size(); ii++) {
-		     xdummy[ii] = xp[ii];
-		  }
-		  if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
-		     cout << "running simulated annealing at t = " << t << " m(<"<<nt<<") = " << m << " j(<"<<ns<<") = " << j << 
-			" h(<"<<n<<") = " << h << " " << yyFittedVec[h].name << " in niter = " << niter <<  endl;
-		  }
-		  if (yyVerbose) {
-		     cout << "previous: accpoint = " << accpoint << " was better: " << accbetter <<  endl;
-		     if (accpoint==1 && accbetter== 0) {
-			cout << "d1 = " << d1 << " p = " << p << " pp = " << pp << endl;
-		     }
-		  }
-		  fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
-		  cout << "fminimum = " << fminimum << " fgoal = " << fgoal << " fp = " << fp << " with up to now " << nacc << 
-		     " accepted points, n_found = " << n_found << endl;
-		  delta1 = TMath::Abs(fp-fgoal);
-		  fp = steepness*sqr(fp-fgoal);
-		  cout << "hyperbolical chisq = " << fp << endl;
-		  fp = -fp;
-		  ++nfcnev;
-		  xoptflag = 0;
-		  // For too many function evaluations, terminate:
-		  if (nfcnev >= maxevl) {
-		     cout << "terminating simulated annealing uncertainty estimation due to number of calls" << endl;
-		     fopt = -fopt;
-		     ier = 1;
-		     for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-			yyFittedVec[k].value = xopt[k];
-		     }
-		     quit_while_loop = true;
-		     return;
-		  }
-		  //  Accept new point if better chisq
-		  cout << " f = " << f << " fp = " << fp << endl; 
-		  if (fp >= f) {
-		     cout << "accept point because better" << endl;
-		     for (i = 0; i < n; ++i) {
-			x[i] = xp[i];
-		     }
-		     f = fp;
-		     ++nacc;
-		     ++nacp[h];
-		     ++nup;
-		     accbetter = 1;
-		     accpoint = 1;
-		     //  If best chisq so far, record as new best parameter set:
-		     if (fp > fopt) {
-			for (i = 0; i < n; ++i) {
-			   xopt[i] = xp[i];
-			}
-			if (m <= nt/2) {
-			   lower_opt++;
-			} else {
-			   upper_opt++;
-			}
-			fopt = fp;
-			++nnew;
-			xoptflag = 1;
-			cout << "found new optimum at chisq = " << fopt << endl;
-		     }
-		     //  Metropolis criteria to decide whether point is accepted if chisq is worse than before 
-		  } else {
-		     cout << "point is worse, contemplate acceptance..." << endl;
-		     accbetter = 0;
-		     d1 = (fp - f) / t;
-		     p = TMath::Exp(d1);
-		     pp = gRandom->Uniform(1.);
-		     if (pp < p) {
-			for (i = 1; i < n; ++i) {
-			   x[i] = xp[i];
-			}
-			f = fp;
-			++nacc;
-			++nacp[h];
-			++ndown;
-			accpoint = 1;
-			cout << "accept anyway" << endl;
-		     } else {
-			cout << "reject" << endl;
-			++nrej;
-			accpoint = 0;
-		     }
-		  }
-		  // 
-		  // 	     // store info for pushaway
-		  // 	     if ( soon_start_pushaway == 0 && nacc > number_stored && TMath::Abs(fopt) < 0.1 ) {
-		  // 	       soon_start_pushaway = nacc;
-		  // 	     }
-		  // 	     if ( ( soon_start_pushaway > 0 ) && ( nacc > 2 * soon_start_pushaway ) ) {
-		  // 	       start_pushaway = true;
-		  // 	       for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-		  // 		 x_dist.push_back(xopt[k]-x_min[k]);
-		  // 	       }
-		  // 	     }
-		  // 	     if (accpoint > 0.5) {
-		  // 	       for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-		  // 		 fill_vector.value[k] = xp[k];
-		  // 	       }
-		  // 	       for (unsigned int k = number_stored-1; k > 0; k-- ) {
-		  // 		 saved_x[k].value = saved_x[k-1].value;
-		  // 	       }	    
-		  // 	       saved_x[0] = fill_vector;
-		  // 	       cout << " 0: " << saved_x[0].value[0] <<  
-		  // 		 " 1: " << saved_x[1].value[0] <<  
-		  // 		 " 2: " << saved_x[2].value[0] <<  
-		  // 		 " 3: " << saved_x[3].value[0] <<
-		  // 		 " 4: " << saved_x[4].value[0] << endl;
-		  // 	     }
-		  // write point to ntuple
-		  ntupvars[0] = (Float_t)nfcnev;
-		  ntupvars[1] = (Float_t)t;
-		  ntupvars[2] = -(Float_t)fp;
-		  ntupvars[3] = (Float_t)accpoint;
-		  ntupvars[4] = (Float_t)xoptflag;
-		  ntupvars[5] = (Float_t)delta1;
-		  for (unsigned int ii = 6; ii < 6+yyFittedVec.size(); ii++) {
-		     ntupvars[ii] = xp[ii-6];
-		  }
-		  ntuple->Fill(ntupvars);
-		  if (n_found > 2.5 && delta1<0.05) {
-		     cout << endl << endl << endl << "restarting simann" << endl;
-		     // restart
-		     n_found = 0;
-		     for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-			cout << yyFittedVec[k].name << " = " << x_min[k] << endl; 
-			vm[k] = TMath::Abs(xopt[k]-x_min[k]);
-			x[k] = x_min[k];
-			xopt[k] = x_min[k];
-			xp[k] = x_min[k];
-			//	      vm[k] = vm_orig[k];
-		     }	
-		     cout << endl << endl << endl ;
-		     f = -111111111.;
-		     fopt = f;
-		     fp = f;
-		  }
-		  if (delta1<0.05) {
-		     n_found++;
-		  }
-	       } // close the outer variable loop
-	    } // close the loop over the accepted function evaluations
-	    // go on to adjust vm and t
-	    // adjust vm to accept between 0.4 and 0.6 of the trial points at the given temperature
-	    for (i = 0; i < n; ++i) {
-	       ratio = (double) nacp[i] / (double) (ns);
-	       if (ratio > 0.6) {
-		  vm[i] *= c[i] * (ratio - 0.6) / 0.4 + 1.;
-	       } else if (ratio < 0.4) {
-		  vm[i] /= c[i] * (0.4 - ratio) / 0.4 + 1.;
-	       }
-	       if (vm[i] > ub[i] - lb[i]) {
-		  vm[i] = ub[i] - lb[i];
-	       }	
-	    }
-	    for (i = 0; i < n; ++i) {
-	       nacp[i] = 0;
-	    }
-	 } // close the loop over the iterations before temperature reduction
-	 // check whether to terminate
-	 quit = false;
-	 fstar[1] = f;
-	 if (TMath::Abs(fopt - fstar[1]) <= eps) {
-	    quit = true;
-	 }
-	 for (i = 0; i < neps; ++i) {
-	    if (TMath::Abs(f - fstar[i]) > eps) {
-	       quit = false;
-	    }
-	 }
-	 //  Terminate simulated annealing if appropriate 
-	 if (quit) {
-	    for (i = 0; i < n; ++i) {
-	       x[i] = xopt[i];
-	    }
-	    ier = 0;
-	    fopt = -fopt;
-	    // quit_while_loop = true;
-	 } else {
-	    // If not terminating, prepare t
-	    cout << "starting new temperature loop at t = " << rt * t <<  endl;
-	    // t = rt * t;
-	    for (i = neps-1; i >= 1; --i) {
-	       fstar[i] = fstar[i - 1];
-	    }
-	    // f = fopt;
-	    // for (i = 0; i < n; ++i) {
-	    //	x[i] = xopt[i];
-	    // }
-	 }
-      } // close the while loop 
-
-      //--------------------------------------------
-      // write output
-
-      for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-	 yyFittedVec[k].value = xopt[k];
-      }
-      cout << "optimal function value " << fopt << " after " << nacc << " evaluations" << endl;
-
-   }
-
-
-   void Fittino::randomDirectionUncertainties()
-   {
-      cout<<"Using randomDirectionUncertainties"<<endl;
-
-      const double eps = 0.005;
-      double* optpar = new double[yyFittedVec.size()];
-
-      for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-	 optpar[k] = yyFittedVec[k].value;
-      }
-
-      int npar, iflag;
-      double* gin;
-      double minChi2;
-      fitterFCN(npar, gin, minChi2, optpar, iflag);
-
-      time_t systime;
-      int seed;
-      struct sysinfo sinfo; 
-      // set the random number generator
-      time (&systime);
-      sysinfo(&sinfo);
-      if (yyRandomGeneratorSeed < 0) {
-	 seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
-	 cout<<"uptime = "<<sinfo.uptime<<endl;
-	 cout<<"freeswap = "<<sinfo.freeswap<<endl;
-	 cout<<"pid = "<<getpid()<<endl;
-	 cout << "systime " << systime << endl; 
-      }
-      else {
-	 cout<<"using seed from input file"<<endl;
-	 seed = yyRandomGeneratorSeed;
-      }
-      cout << "seed = " << seed << endl;
-      gRandom->SetSeed(seed);
-
-      double* par = new double[yyFittedVec.size()];
-      double* unitvec = new double[yyFittedVec.size()];
-      double chi2;
-      double deltaChi2;
-
-      TFile* file = new TFile("RandomDirUncertainties.root", "recreate");
-      TTree* tree = new TTree("tree", "Tree containing fitted parameters");
-      vector<MeasuredValue> leafVec(yyFittedPar.size());
-      cout<<"Creating RandomDirectionUncertainties tree"<<endl;
-      for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-	 leafVec[k].name = yyFittedVec[k].name;
-	 leafVec[k].value = -1;
-	 string str = yyFittedVec[k].name;
-	 str.append("/D");
-	 cout << "Adding branch " << yyFittedVec[k].name.c_str() << " to tree" << endl;
-	 tree->Branch(yyFittedVec[k].name.c_str(), &(leafVec[k].value), str.c_str());
-	 str.erase();
-      }
-      cout << "Adding branch DeltaChi2 to tree" << endl;
-      tree->Branch("DeltaChi2", &deltaChi2, "DeltaChi2/D");
-
-      for (int idir=0; idir<yyNumberOfDirections; idir++) {
-
-	 double d = 0;
-	 for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-	    par[k] = gRandom->Uniform(0.99, 1.01) * optpar[k];
-	    unitvec[k] = par[k] - optpar[k];
-	    d += (par[k] - optpar[k]) * (par[k] - optpar[k]);
-	 }
-	 d = TMath::Sqrt(d);
-
-	 for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-	    unitvec[k] /= d;
-	 }
-
-	 unsigned int ncalls = 0;
-	 double prevd = 0;
-	 /*
-	    double dinit[3];
-	    double finit[3];
-	    */
-	 while (1) {
-	    fitterFCN(npar, gin, chi2, par, iflag);
-	    ncalls++;
-	    deltaChi2 = chi2 - minChi2;
-	    cout<<"f = "<<deltaChi2<<endl;
-	    cout<<"d = "<<d<<endl;
-	    if (deltaChi2 < 0) cerr<<"WARNING: Minimization did not yield global minimum"<<endl;
-	    if (TMath::Abs(deltaChi2 - yyErrDef) < eps || ncalls > 50) break;
-	    /*
-	       if (ncalls < 4) {
-	       dinit[ncalls-1] = d;
-	       finit[ncalls-1] = deltaChi2;
-	       }
-	       if (ncalls == 3) {
-	       double x1 = dinit[0];
-	       double x2 = dinit[1];
-	       double x3 = dinit[2];
-	       double y1 = finit[0];
-	       double y2 = finit[1];
-	       double y3 = finit[2];
-	       double denominator = ( -x3 * sqr(x1) + x3 * sqr(x2) + x2 * sqr(x1) + x1 * sqr(x3)
-	       - x1 * sqr(x2) - x2 * sqr(x3) );
-	       double a2 = ( -x3 * y1 + x3 * y2 + x2 * y1 + x1 * y3 - x1 * y2 - x2 * y3 ) / denominator;
-	       double a1 = - ( sqr(x2) * y1 - sqr(x2) * y3 + y2 * sqr(x3) + y3 * sqr(x1)
-	       - sqr(x3) * y1 - y2 * sqr(x1) ) / denominator;
-	       double a0 = ( -y2 * x3 * sqr(x1) + sqr(x3) * x1 * y2 + sqr(x2) * x3 * y1
-	       - sqr(x2) * x1 * y3 + y3 * x2 * sqr(x1) - sqr(x3) * x2 * y1 ) / denominator;
-	       double sol1 = 0.5 * ( -a1 + TMath::Sqrt( sqr(a1) + 4 * a2 - 4 * a2 * a0 ) ) / a2;
-	       double sol2 = 0.5 * ( -a1 - TMath::Sqrt( sqr(a1) + 4 * a2 - 4 * a2 * a0 ) ) / a2;
-	       cout<<"sol1 = "<<sol1<<"     sol2 = "<<sol2<<endl;
-	       d = (sol1 > 0) ? sol1 : sol2; 
-	       }
-	       else {
-	       if (ncalls == 4) {
-	       prevd = deltaChi2;
-	       }
-	       */
-	    if (deltaChi2 > 1) {
-	       double tmp = d;
-	       d = d - TMath::Abs(d - prevd) * 0.5;
-	       prevd = tmp;
-	    }
-	    else {
-	       double tmp = d;
-	       d = d + TMath::Abs(d - prevd) * 0.5;
-	       prevd = tmp;
-	    }
-	    /*
-	       }
-	       */
+	    ier = 1;
 	    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-	       par[k] = optpar[k] + d * unitvec[k];
+	      yyFittedVec[k].value = xopt[k];
 	    }
-	 }
-
-	 cout<<"Found interception with uncertainty countour (ErrDef = "
-	    <<yyErrDef<<", f = "<<deltaChi2<<") at"<<endl;
-	 for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-	    cout<<yyFittedVec[k].name<<" = "<<par[k]<<endl;
-	    leafVec[k].name = yyFittedVec[k].name;
-	    leafVec[k].value = par[k];
-	 }
-
-	 tree->Fill();
+	    quit_while_loop = true;
+	    return;
+	  }
+	  //  Accept new point if better chisq
+	  if (fp >= f) {
+	    for (i = 0; i < n; ++i) {
+	      x[i] = xp[i];
+	    }
+	    f = fp;
+	    ++nacc;
+	    ++nacp[h];
+	    ++nup;
+	    accbetter = 1;
+	    accpoint = 1;
+	    //  If best chisq so far, record as new best parameter set:
+	    if (fp > fopt) {
+	      for (i = 0; i < n; ++i) {
+		xopt[i] = xp[i];
+	      }
+	      if (m <= nt/2) {
+		lower_opt++;
+	      } else {
+		upper_opt++;
+	      }
+	      fopt = fp;
+	      ++nnew;
+	      xoptflag = 1;
+	      cout << "found new optimum at chisq = " << fopt << endl;
+	    }
+	    //  Metropolis criteria to decide whether point is accepted if chisq is worse than before 
+	  } else {
+	    accbetter = 0;
+	    d1 = (fp - f) / t;
+	    p = TMath::Exp(d1);
+	    pp = gRandom->Uniform(1.);
+	    if (pp < p) {
+	      for (i = 1; i < n; ++i) {
+		x[i] = xp[i];
+	      }
+	      f = fp;
+	      ++nacc;
+	      ++nacp[h];
+	      ++ndown;
+	      accpoint = 1;
+	    } else {
+	      ++nrej;
+	      accpoint = 0;
+	    }
+	  }
+	  // write point to ntuple
+	  ntupvars[0] = (Float_t)nfcnev;
+	  ntupvars[1] = (Float_t)t;
+	  ntupvars[2] = -(Float_t)fp;
+	  ntupvars[3] = (Float_t)accpoint;
+	  ntupvars[4] = (Float_t)xoptflag;
+	  for (unsigned int ii = 5; ii < 5+yyFittedVec.size(); ii++) {
+	    ntupvars[ii] = xp[ii-5];
+	  }
+	  ntuple->Fill(ntupvars);
+	} // close the outer variable loop
+      } // close the loop over the accepted function evaluations
+      // go on to adjust vm and t
+      // adjust vm to accept between 0.4 and 0.6 of the trial points at the given temperature
+      for (i = 0; i < n; ++i) {
+	ratio = (double) nacp[i] / (double) (ns);
+	if (ratio > 0.6) {
+	  vm[i] *= c[i] * (ratio - 0.6) / 0.4 + 1.;
+	} else if (ratio < 0.4) {
+	  vm[i] /= c[i] * (0.4 - ratio) / 0.4 + 1.;
+	}
+	if (vm[i] > ub[i] - lb[i]) {
+	  vm[i] = ub[i] - lb[i];
+	}	
       }
+      for (i = 0; i < n; ++i) {
+	nacp[i] = 0;
+      }
+    } // close the loop over the iterations before temperature reduction
+    // check whether to terminate
+    quit = false;
+    fstar[1] = f;
+    if (TMath::Abs(fopt - fstar[1]) <= eps) {
+      quit = true;
+    }
+    for (i = 0; i < neps; ++i) {
+      if (TMath::Abs(f - fstar[i]) > eps) {
+	quit = false;
+      }
+    }
+    //  Terminate simulated annealing if appropriate 
+    if (quit) {
+      for (i = 0; i < n; ++i) {
+	x[i] = xopt[i];
+      }
+      ier = 0;
+      fopt = -fopt;
+      quit_while_loop = true;
+    } else {
+      // If not terminating, prepare t
+      cout << "starting new temperature loop at t = " << rt * t <<  endl;
+      t = rt * t;
+      for (i = neps-1; i >= 1; --i) {
+	fstar[i] = fstar[i - 1];
+      }
+      f = fopt;
+      for (i = 0; i < n; ++i) {
+	x[i] = xopt[i];
+      }
+    }
+  } // close the while loop 
 
-      tree->Write();
-      file->Close();
+  //--------------------------------------------
+  // write output
 
-      if (optpar) delete[] optpar;
-      if (par) delete[] par;
-   }
+  for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+    yyFittedVec[k].value = xopt[k];
+  }
+  cout << "optimal function value " << fopt << " after " << nacc << " evaluations" << endl;
+
+}
+
+void Fittino::simulated_annealing_uncertainties (TNtuple *ntuple)
+{
+
+  Double_t xdummy[100];
+  int n;
+  vector <double> x; 
+  vector <double> xvar; 
+  //  bool max = false; 
+  double rt; 
+  double eps = 0.0001; 
+  int ns = 20; 
+  int nt; 
+  int neps = 4;
+  int maxevl; 
+  vector <double> lb; 
+  vector <double> ub;
+  vector <double> c; 
+  //  int iprint = 0;
+  //  int iseed1 = 31327; 
+  //  int iseed2 = 30080; 
+  double t = 5.0; // initial temperature
+  vector <double> vm;
+  vector <double> xopt;
+  double fopt = 11111111111.0;
+  double fadd = 0.;	
+  int nacc = 0; 
+  int nfcnev = 0; 
+  int nobds = 0;
+  int ier = 0; 
+  vector <double> fstar; 
+  vector <double> xp;
+  vector <int> nacp;
+
+  /* System generated locals */
+  //  int i1, i2, i3, i4;
+  double d1;
+  Double_t dummyfloat = 5.;
+  Int_t dummyint = 1;
+
+  /* Local variables */
+  static int nrej;
+  static int nnew;
+  static bool quit = false;
+  bool quit_while_loop = false;
+  static double f;
+  static double fminimum;
+  static double fgoal;
+  static double delta1;
+  static double steepness;
+  static int h, i, j, m;
+  static double p, ratio;
+  static int ndown;
+  static int nup;
+  static double fp, pp;
+  static int lnobds;
+  vector_type fill_vector;
+  vector <vector_type> saved_x;
+  vector <double> p_mean;
+  vector <double> x_min;
+  vector <double> x_dist;
+  //  double fvar = 0.;
+  bool firstfalse;
+  int accpoint = 0;
+  int xoptflag = 0;
+  int niter = 0;
+  int accbetter = 0;
+  int lower_opt;
+  int upper_opt;
+  int lower_opt_before;
+  int upper_opt_before;
+  int number_stored = 30;
+  bool start_pushaway = false;
+  bool start_pushaway_now = false;
+  int soon_start_pushaway = 0;
+
+  Float_t ntupvars[50];
+
+  // set values
+  maxevl = yyMaxCallsSimAnn;
+  rt = yyTempRedSimAnn;
+  steepness = 100.;
+  nup = 0;
+  nrej = 0;
+  nnew = 0;
+  ndown = 0;
+  lnobds = 0;
+  lower_opt = 0;
+  upper_opt = 0;
+  lower_opt_before = 0;
+  upper_opt_before = 0;
+  n = yyFittedVec.size();
+  if (n<20) {
+    nt = 60;
+  } else {
+    nt = 3*n;
+  }
+  for (i = 0; i < neps; ++i) {
+    fstar.push_back(1e20);
+  }
+
+  // fill vector of parameters
+  for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+    x.push_back(yyFittedVec[k].value);
+    x_min.push_back(yyFittedVec[k].value);
+    p_mean.push_back(yyFittedVec[k].value);
+    fill_vector.value.push_back(yyFittedVec[k].value);
+    xp.push_back(yyFittedVec[k].value);
+    xvar.push_back(yyFittedVec[k].value);
+    xopt.push_back(yyFittedVec[k].value);
+    vm.push_back(yyFittedVec[k].error);
+    lb.push_back(yyFittedVec[k].bound_low);
+    ub.push_back(yyFittedVec[k].bound_up);
+    c.push_back(2.0);
+    nacp.push_back(0);
+  }
+  for (unsigned int k = 0; k < (unsigned int)number_stored; k++ ) {
+    saved_x.push_back(fill_vector);
+  }  
+
+  /*  Evaluate function to be minimized at the starting point */
+  for (unsigned int ii = 0; ii < xp.size(); ii++) {
+    xdummy[ii] = x[ii];
+  }
+  fitterFCN(dummyint, &dummyfloat, f, xdummy, 0);
+  fminimum = f;
+  fgoal = f+1.;
+  f = -steepness*sqr(f-fgoal);
+  ++nfcnev;
+  fopt = f;
+  fstar[1] = fopt;
+
+  // // ------------------------------------------------------------------
+  // // if initial temperature is given:
+  // if (yyInitTempSimAnn>0.) {
+  //   t = yyInitTempSimAnn;
+  // }
+  // else {
+  //   // ------------------------------------------------------------------
+  //   // if already very close to the minimum:
+  //   if (TMath::Abs(f)<0.1) {
+  //     t = 0.1;
+  //     if (rt<0.6) {
+  //       rt = 0.6;
+  //     }
+  //   } else if (TMath::Abs(f)<1.) {
+  //     t = 1.;
+  //     if (rt<0.6) {
+  //       rt = 0.6;
+  //     }
+  //   } else if (TMath::Abs(f)<5.) {
+  //     t = 5.;
+  //     if (rt<0.6) {
+  //       rt = 0.6;
+  //     }    
+  //   } else if (TMath::Abs(f)<10.) {
+  //     t = 10.;
+  //     if (rt<0.6) {
+  //       rt = 0.6;
+  //     }    
+  //   } else if (TMath::Abs(f)<100.) {
+  //     t = 100.;
+  //     if (rt<0.6) {
+  //       rt = 0.6;
+  //     }    
+  //   } else if (TMath::Abs(f)<200.) {
+  //     t = 200.;
+  //     if (rt<0.5) {
+  //       rt = 0.5;
+  //     }    
+  //   } else {
+  //     //-------------------------------------------
+  //     // if not very close to the minimum:
+  //     // first adjust the temperature to the variance for variations within vm?
+  //     nvalid = 0;
+  //     fsum = 0.;
+  //     fcubed = 0.;
+  //     for (m = 0; m < 10; m++) {
+  //       for (i = 0; i < n; i++) {
+  //         xp[i] = xvar[i] + gRandom->Uniform(-1.,1.) * vm[i];
+  //         //  If variation has led xp out of bounds:
+  //         while ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
+  //           xp[i] = gRandom->Uniform(-1.,1.) * vm[i] + yyFittedVec[i].value;
+  //         }
+  //         // Then call the function to be minimized at the starting point
+  //         for (unsigned int ii = 0; ii < xp.size(); ii++) {
+  //           xdummy[ii] = xp[ii];
+  //         }
+  //         fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
+  //         fp = -fp;
+  //         cout << "fp = " << fp << endl;
+  //         if (fp > -1e10) {
+  //           //	fopt = 0.;
+  //           //      fp = 5.;
+  //           fsum = fsum + TMath::Abs(fopt - fp);
+  //           fcubed = fcubed + sqr((fopt - fp));
+  //           nvalid++;
+  //         }
+  //         xp[i] = xvar[i];
+  //       }
+  //       for (i = 0; i < n; i++) {
+  //         xvar[i] = xp[i];
+  //       }
+  //     }
+  //     // set t to half of the variance
+  //     t = TMath::Sqrt(fcubed/double(nvalid) - sqr(fsum/double(nvalid)))/2.;
+  //   }
+  // }
+  t = 0.05;
+  cout << "temperature chosen " << t << endl;
+
+  //-------------------------------------------
+  // perform the optimization
+  niter = 0;
+
+  // begin new temperature era
+  while (!quit_while_loop) {
+    nup = 0;
+    nrej = 0;
+    nnew = 0;
+    ndown = 0;
+    lnobds = 0;
+    niter++;
+    // loop over the iterations before temperature reduction:
+    for (m = 0; m < nt; m++) {
+      lower_opt_before = lower_opt;
+      upper_opt_before = upper_opt;
+      lower_opt=0;
+      upper_opt=0;
+      // loop over the accepted function evaluations:
+      for (j = 0; j < ns; j++) {
+	// loop over the variables:
+	for (h = 0; h < n; h++) {
+	  for (i = 0; i < n; i++) {
+	    if (i == h) {
+	      xp[i] = x[i] + gRandom->Uniform(-1.,1.) * vm[i];
+	    } else {
+	      xp[i] = x[i];
+	    }
+	    //  If variation has led xp out of bounds:
+	    firstfalse = true;
+	    while ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
+	      xp[i] = gRandom->Uniform(-2.,2.) * vm[i] + yyFittedVec[i].value;
+	      if (firstfalse) {
+		++lnobds;
+		++(nobds);
+	      }
+	      firstfalse = false;
+	    }
+	  }
+	  // Then call the function to be minimized at the starting point
+	  for (unsigned int ii = 0; ii < xp.size(); ii++) {
+	    xdummy[ii] = xp[ii];
+	  }
+	  if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
+	    cout << "running simulated annealing at t = " << t << " m(<"<<nt<<") = " << m << " j(<"<<ns<<") = " << j << 
+	      " h(<"<<n<<") = " << h << " " << yyFittedVec[h].name << " in niter = " << niter <<  endl;
+	  }
+	  if (yyVerbose) {
+	    cout << "previous: accpoint = " << accpoint << " was better: " << accbetter <<  endl;
+	    if (accpoint==1 && accbetter== 0) {
+	      cout << "d1 = " << d1 << " p = " << p << " pp = " << pp << endl;
+	    }
+	  }
+	  fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
+	  cout << "fminimum = " << fminimum << " fgoal = " << fgoal << " fp = " << fp << " with up to now " << nacc << " accepted points" << endl;
+	  delta1 = TMath::Abs(fp-fgoal);
+	  fp = steepness*sqr(fp-fgoal);
+	  if (start_pushaway) {
+	    // calculate mean
+	    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	      p_mean[k] = 0.;
+	      for (unsigned int kk = 0; kk < (unsigned int)number_stored; kk++ ) {
+		p_mean[k] = p_mean[k] + saved_x[kk].value[k];
+	      }
+	      p_mean[k] = p_mean[k] / (double) number_stored;
+	    }	    
+	    cout << "p_mean[0] = " << p_mean[0] << " xp[0] = " << xp[0]  << endl;
+	    // add something to fp
+	    fadd = 0.;
+	    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	      //	      fadd = fadd + sqr((xp[k]-p_mean[k])/((double)steepness*0.003*(xp[k]-x_min[k])));
+	      fadd = fadd + sqr((xp[k]-p_mean[k])/((double)steepness*0.003*(x_dist[k])));
+	    }	    
+	    if (fadd > 0.) {
+	      fadd = 1./fadd;
+	    } else {
+	      fadd = 0.;
+	      cerr << "WARNING: fadd == 0" << endl;
+	    }
+	    if (start_pushaway_now == false) {
+	      f = f - 2.*fadd - 1.; // make sure it is accepted on the first time
+	      start_pushaway_now = true;
+	    }
+	    cout << "adding " << fadd << " to the potential, with f = " << f << endl;
+	    fp = fp + fadd;
+	  }
+	  cout << "hyperbolical chisq = " << fp << endl;
+	  fp = -fp;
+	  ++nfcnev;
+	  xoptflag = 0;
+	  // For too many function evaluations, terminate:
+	  if (nfcnev >= maxevl) {
+	    cout << "terminating simulated annealing uncertainty estimation due to number of calls" << endl;
+	    fopt = -fopt;
+	    ier = 1;
+	    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	      yyFittedVec[k].value = xopt[k];
+	    }
+	    quit_while_loop = true;
+	    return;
+	  }
+	  //  Accept new point if better chisq
+	  cout << " f = " << f << " fp = " << fp << endl; 
+	  if (fp >= f) {
+	    cout << "accept point because better" << endl;
+	    for (i = 0; i < n; ++i) {
+	      x[i] = xp[i];
+	    }
+	    f = fp;
+	    ++nacc;
+	    ++nacp[h];
+	    ++nup;
+	    accbetter = 1;
+	    accpoint = 1;
+	    //  If best chisq so far, record as new best parameter set:
+	    if (fp > fopt) {
+	      for (i = 0; i < n; ++i) {
+		xopt[i] = xp[i];
+	      }
+	      if (m <= nt/2) {
+		lower_opt++;
+	      } else {
+		upper_opt++;
+	      }
+	      fopt = fp;
+	      ++nnew;
+	      xoptflag = 1;
+	      cout << "found new optimum at chisq = " << fopt << endl;
+	    }
+	    //  Metropolis criteria to decide whether point is accepted if chisq is worse than before 
+	  } else {
+	    cout << "point is worse, contemplate acceptance..." << endl;
+	    accbetter = 0;
+	    d1 = (fp - f) / t;
+	    p = TMath::Exp(d1);
+	    pp = gRandom->Uniform(1.);
+	    if (pp < p) {
+	      for (i = 1; i < n; ++i) {
+		x[i] = xp[i];
+	      }
+	      f = fp;
+	      ++nacc;
+	      ++nacp[h];
+	      ++ndown;
+	      accpoint = 1;
+	      cout << "accept anyway" << endl;
+	    } else {
+	      cout << "reject" << endl;
+	      ++nrej;
+	      accpoint = 0;
+	    }
+	  }
+	  // store info for pushaway
+	  if ( soon_start_pushaway == 0 && nacc > number_stored && TMath::Abs(fopt) < 0.1 ) {
+	    soon_start_pushaway = nacc;
+	  }
+	  if ( ( soon_start_pushaway > 0 ) && ( nacc > 2 * soon_start_pushaway ) ) {
+	    start_pushaway = true;
+	    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	      x_dist.push_back(xopt[k]-x_min[k]);
+	    }
+	  }
+	  if (accpoint > 0.5) {
+	    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	      fill_vector.value[k] = xp[k];
+	    }
+	    for (unsigned int k = number_stored-1; k > 0; k-- ) {
+	      saved_x[k].value = saved_x[k-1].value;
+	    }	    
+	    saved_x[0] = fill_vector;
+	    cout << " 0: " << saved_x[0].value[0] <<  
+	      " 1: " << saved_x[1].value[0] <<  
+	      " 2: " << saved_x[2].value[0] <<  
+	      " 3: " << saved_x[3].value[0] <<
+	      " 4: " << saved_x[4].value[0] << endl;
+	  }
+	  // write point to ntuple
+	  ntupvars[0] = (Float_t)nfcnev;
+	  ntupvars[1] = (Float_t)t;
+	  ntupvars[2] = -(Float_t)fp;
+	  ntupvars[3] = (Float_t)accpoint;
+	  ntupvars[4] = (Float_t)xoptflag;
+	  ntupvars[5] = (Float_t)delta1;
+	  for (unsigned int ii = 6; ii < 6+yyFittedVec.size(); ii++) {
+	    ntupvars[ii] = xp[ii-6];
+	  }
+	  ntuple->Fill(ntupvars);
+	} // close the outer variable loop
+      } // close the loop over the accepted function evaluations
+      // go on to adjust vm and t
+      // adjust vm to accept between 0.4 and 0.6 of the trial points at the given temperature
+      if (!start_pushaway) {
+	for (i = 0; i < n; ++i) {
+	  ratio = (double) nacp[i] / (double) (ns);
+	  if (ratio > 0.6) {
+	    vm[i] *= c[i] * (ratio - 0.6) / 0.4 + 1.;
+	  } else if (ratio < 0.4) {
+	    vm[i] /= c[i] * (0.4 - ratio) / 0.4 + 1.;
+	  }
+	  if (vm[i] > ub[i] - lb[i]) {
+	    vm[i] = ub[i] - lb[i];
+	  }	
+	}
+	for (i = 0; i < n; ++i) {
+	  nacp[i] = 0;
+	}
+      }
+    } // close the loop over the iterations before temperature reduction
+    // check whether to terminate
+    quit = false;
+    fstar[1] = f;
+    if (TMath::Abs(fopt - fstar[1]) <= eps) {
+      quit = true;
+    }
+    for (i = 0; i < neps; ++i) {
+      if (TMath::Abs(f - fstar[i]) > eps) {
+	quit = false;
+      }
+    }
+    //  Terminate simulated annealing if appropriate 
+    if (quit) {
+      for (i = 0; i < n; ++i) {
+	x[i] = xopt[i];
+      }
+      ier = 0;
+      fopt = -fopt;
+      // quit_while_loop = true;
+    } else {
+      // If not terminating, prepare t
+      cout << "starting new temperature loop at t = " << rt * t <<  endl;
+      // t = rt * t;
+      for (i = neps-1; i >= 1; --i) {
+	fstar[i] = fstar[i - 1];
+      }
+      // f = fopt;
+      // for (i = 0; i < n; ++i) {
+      //	x[i] = xopt[i];
+      // }
+    }
+  } // close the while loop 
+
+  //--------------------------------------------
+  // write output
+
+  for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+    yyFittedVec[k].value = xopt[k];
+  }
+  cout << "optimal function value " << fopt << " after " << nacc << " evaluations" << endl;
+
+}
+
+
+void Fittino::simulated_annealing_uncertainties_run_down (TNtuple *ntuple)
+{
+
+  Double_t xdummy[100];
+  int n;
+  vector <double> x; 
+  vector <double> xvar; 
+  //  bool max = false; 
+  double rt; 
+  double eps = 0.0001; 
+  int ns = 20; 
+  int nt; 
+  int neps = 4;
+  int maxevl; 
+  vector <double> lb; 
+  vector <double> ub;
+  vector <double> c; 
+  //  int iprint = 0;
+  //  int iseed1 = 31327; 
+  //  int iseed2 = 30080; 
+  double t = 5.0; // initial temperature
+  vector <double> vm;
+  vector <double> vm_orig;
+  vector <double> xopt;
+  double fopt = 11111111111.0;
+  double fadd = 0.;	
+  int nacc = 0; 
+  int nfcnev = 0; 
+  int nobds = 0;
+  int ier = 0; 
+  vector <double> fstar; 
+  vector <double> xp;
+  vector <int> nacp;
+
+  /* System generated locals */
+  //  int i1, i2, i3, i4;
+  double d1;
+  Double_t dummyfloat = 5.;
+  Int_t dummyint = 1;
+
+  /* Local variables */
+  static int nrej;
+  static int nnew;
+  static bool quit = false;
+  bool quit_while_loop = false;
+  static double f;
+  static double fminimum;
+  static double fgoal;
+  static double delta1;
+  static double steepness;
+  static int h, i, j, m;
+  static double p, ratio;
+  static int ndown;
+  static int nup;
+  static double fp, pp;
+  static int lnobds;
+  vector_type fill_vector;
+  vector <vector_type> saved_x;
+  vector <double> p_mean;
+  vector <double> x_min;
+  vector <double> x_dist;
+  //  double fvar = 0.;
+  bool firstfalse;
+  int accpoint = 0;
+  int xoptflag = 0;
+  int niter = 0;
+  int accbetter = 0;
+  int lower_opt;
+  int upper_opt;
+  int lower_opt_before;
+  int upper_opt_before;
+  int number_stored = 30;
+  bool start_pushaway = false;
+  bool start_pushaway_now = false;
+  int n_found = 0;
+  int soon_start_pushaway = 0;
+
+  Float_t ntupvars[50];
+
+  // set values
+  maxevl = yyMaxCallsSimAnn;
+  rt = yyTempRedSimAnn;
+  steepness = 100.;
+  nup = 0;
+  nrej = 0;
+  nnew = 0;
+  ndown = 0;
+  lnobds = 0;
+  lower_opt = 0;
+  upper_opt = 0;
+  lower_opt_before = 0;
+  upper_opt_before = 0;
+  n = yyFittedVec.size();
+  if (n<20) {
+    nt = 60;
+  } else {
+    nt = 3*n;
+  }
+  for (i = 0; i < neps; ++i) {
+    fstar.push_back(1e20);
+  }
+
+  // fill vector of parameters
+  for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+    x.push_back(yyFittedVec[k].value);
+    x_min.push_back(yyFittedVec[k].value);
+    p_mean.push_back(yyFittedVec[k].value);
+    fill_vector.value.push_back(yyFittedVec[k].value);
+    xp.push_back(yyFittedVec[k].value);
+    xvar.push_back(yyFittedVec[k].value);
+    xopt.push_back(yyFittedVec[k].value);
+    vm.push_back(yyFittedVec[k].error);
+    vm_orig.push_back(yyFittedVec[k].error);
+    lb.push_back(yyFittedVec[k].bound_low);
+    ub.push_back(yyFittedVec[k].bound_up);
+    c.push_back(2.0);
+    nacp.push_back(0);
+  }
+  for (unsigned int k = 0; k < (unsigned int)number_stored; k++ ) {
+    saved_x.push_back(fill_vector);
+  }  
+
+  /*  Evaluate function to be minimized at the starting point */
+  for (unsigned int ii = 0; ii < xp.size(); ii++) {
+    xdummy[ii] = x[ii];
+  }
+  fitterFCN(dummyint, &dummyfloat, f, xdummy, 0);
+  fminimum = f;
+  fgoal = f+1.;
+  f = -steepness*sqr(f-fgoal);
+  ++nfcnev;
+  fopt = f;
+  fstar[1] = fopt;
+
+  // // ------------------------------------------------------------------
+  // // if initial temperature is given:
+  // if (yyInitTempSimAnn>0.) {
+  //   t = yyInitTempSimAnn;
+  // }
+  // else {
+  //   // ------------------------------------------------------------------
+  //   // if already very close to the minimum:
+  //   if (TMath::Abs(f)<0.1) {
+  //     t = 0.1;
+  //     if (rt<0.6) {
+  //       rt = 0.6;
+  //     }
+  //   } else if (TMath::Abs(f)<1.) {
+  //     t = 1.;
+  //     if (rt<0.6) {
+  //       rt = 0.6;
+  //     }
+  //   } else if (TMath::Abs(f)<5.) {
+  //     t = 5.;
+  //     if (rt<0.6) {
+  //       rt = 0.6;
+  //     }    
+  //   } else if (TMath::Abs(f)<10.) {
+  //     t = 10.;
+  //     if (rt<0.6) {
+  //       rt = 0.6;
+  //     }    
+  //   } else if (TMath::Abs(f)<100.) {
+  //     t = 100.;
+  //     if (rt<0.6) {
+  //       rt = 0.6;
+  //     }    
+  //   } else if (TMath::Abs(f)<200.) {
+  //     t = 200.;
+  //     if (rt<0.5) {
+  //       rt = 0.5;
+  //     }    
+  //   } else {
+  //     //-------------------------------------------
+  //     // if not very close to the minimum:
+  //     // first adjust the temperature to the variance for variations within vm?
+  //     nvalid = 0;
+  //     fsum = 0.;
+  //     fcubed = 0.;
+  //     for (m = 0; m < 10; m++) {
+  //       for (i = 0; i < n; i++) {
+  //         xp[i] = xvar[i] + gRandom->Uniform(-1.,1.) * vm[i];
+  //         //  If variation has led xp out of bounds:
+  //         while ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
+  //           xp[i] = gRandom->Uniform(-1.,1.) * vm[i] + yyFittedVec[i].value;
+  //         }
+  //         // Then call the function to be minimized at the starting point
+  //         for (unsigned int ii = 0; ii < xp.size(); ii++) {
+  //           xdummy[ii] = xp[ii];
+  //         }
+  //         fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
+  //         fp = -fp;
+  //         cout << "fp = " << fp << endl;
+  //         if (fp > -1e10) {
+  //           //	fopt = 0.;
+  //           //      fp = 5.;
+  //           fsum = fsum + TMath::Abs(fopt - fp);
+  //           fcubed = fcubed + sqr((fopt - fp));
+  //           nvalid++;
+  //         }
+  //         xp[i] = xvar[i];
+  //       }
+  //       for (i = 0; i < n; i++) {
+  //         xvar[i] = xp[i];
+  //       }
+  //     }
+  //     // set t to half of the variance
+  //     t = TMath::Sqrt(fcubed/double(nvalid) - sqr(fsum/double(nvalid)))/2.;
+  //   }
+  // }
+  t = 0.05;
+  cout << "temperature chosen " << t << endl;
+
+  //-------------------------------------------
+  // perform the optimization
+  niter = 0;
+
+  // begin new temperature era
+  while (!quit_while_loop) {
+    nup = 0;
+    nrej = 0;
+    nnew = 0;
+    ndown = 0;
+    lnobds = 0;
+    niter++;
+    // loop over the iterations before temperature reduction:
+    for (m = 0; m < nt; m++) {
+      lower_opt_before = lower_opt;
+      upper_opt_before = upper_opt;
+      lower_opt=0;
+      upper_opt=0;
+      // loop over the accepted function evaluations:
+      for (j = 0; j < ns; j++) {
+	// loop over the variables:
+	for (h = 0; h < n; h++) {
+	  for (i = 0; i < n; i++) {
+	    if (i == h) {
+	      xp[i] = x[i] + gRandom->Uniform(-1.,1.) * vm[i];
+	    } else {
+	      xp[i] = x[i];
+	    }
+	    //  If variation has led xp out of bounds:
+	    firstfalse = true;
+	    while ( (xp[i] < lb[i]) || (xp[i] > ub[i]) ) {
+	      xp[i] = gRandom->Uniform(-2.,2.) * vm[i] + yyFittedVec[i].value;
+	      if (firstfalse) {
+		++lnobds;
+		++(nobds);
+	      }
+	      firstfalse = false;
+	    }
+	  }
+	  // Then call the function to be minimized at the starting point
+	  for (unsigned int ii = 0; ii < xp.size(); ii++) {
+	    xdummy[ii] = xp[ii];
+	  }
+	  if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
+	    cout << "running simulated annealing at t = " << t << " m(<"<<nt<<") = " << m << " j(<"<<ns<<") = " << j << 
+	      " h(<"<<n<<") = " << h << " " << yyFittedVec[h].name << " in niter = " << niter <<  endl;
+	  }
+	  if (yyVerbose) {
+	    cout << "previous: accpoint = " << accpoint << " was better: " << accbetter <<  endl;
+	    if (accpoint==1 && accbetter== 0) {
+	      cout << "d1 = " << d1 << " p = " << p << " pp = " << pp << endl;
+	    }
+	  }
+	  fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
+	  cout << "fminimum = " << fminimum << " fgoal = " << fgoal << " fp = " << fp << " with up to now " << nacc << 
+	    " accepted points, n_found = " << n_found << endl;
+	  delta1 = TMath::Abs(fp-fgoal);
+	  fp = steepness*sqr(fp-fgoal);
+	  cout << "hyperbolical chisq = " << fp << endl;
+	  fp = -fp;
+	  ++nfcnev;
+	  xoptflag = 0;
+	  // For too many function evaluations, terminate:
+	  if (nfcnev >= maxevl) {
+	    cout << "terminating simulated annealing uncertainty estimation due to number of calls" << endl;
+	    fopt = -fopt;
+	    ier = 1;
+	    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	      yyFittedVec[k].value = xopt[k];
+	    }
+	    quit_while_loop = true;
+	    return;
+	  }
+	  //  Accept new point if better chisq
+	  cout << " f = " << f << " fp = " << fp << endl; 
+	  if (fp >= f) {
+	    cout << "accept point because better" << endl;
+	    for (i = 0; i < n; ++i) {
+	      x[i] = xp[i];
+	    }
+	    f = fp;
+	    ++nacc;
+	    ++nacp[h];
+	    ++nup;
+	    accbetter = 1;
+	    accpoint = 1;
+	    //  If best chisq so far, record as new best parameter set:
+	    if (fp > fopt) {
+	      for (i = 0; i < n; ++i) {
+		xopt[i] = xp[i];
+	      }
+	      if (m <= nt/2) {
+		lower_opt++;
+	      } else {
+		upper_opt++;
+	      }
+	      fopt = fp;
+	      ++nnew;
+	      xoptflag = 1;
+	      cout << "found new optimum at chisq = " << fopt << endl;
+	    }
+	    //  Metropolis criteria to decide whether point is accepted if chisq is worse than before 
+	  } else {
+	    cout << "point is worse, contemplate acceptance..." << endl;
+	    accbetter = 0;
+	    d1 = (fp - f) / t;
+	    p = TMath::Exp(d1);
+	    pp = gRandom->Uniform(1.);
+	    if (pp < p) {
+	      for (i = 1; i < n; ++i) {
+		x[i] = xp[i];
+	      }
+	      f = fp;
+	      ++nacc;
+	      ++nacp[h];
+	      ++ndown;
+	      accpoint = 1;
+	      cout << "accept anyway" << endl;
+	    } else {
+	      cout << "reject" << endl;
+	      ++nrej;
+	      accpoint = 0;
+	    }
+	  }
+	  // 
+	  // 	     // store info for pushaway
+	  // 	     if ( soon_start_pushaway == 0 && nacc > number_stored && TMath::Abs(fopt) < 0.1 ) {
+	  // 	       soon_start_pushaway = nacc;
+	  // 	     }
+	  // 	     if ( ( soon_start_pushaway > 0 ) && ( nacc > 2 * soon_start_pushaway ) ) {
+	  // 	       start_pushaway = true;
+	  // 	       for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	  // 		 x_dist.push_back(xopt[k]-x_min[k]);
+	  // 	       }
+	  // 	     }
+	  // 	     if (accpoint > 0.5) {
+	  // 	       for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	  // 		 fill_vector.value[k] = xp[k];
+	  // 	       }
+	  // 	       for (unsigned int k = number_stored-1; k > 0; k-- ) {
+	  // 		 saved_x[k].value = saved_x[k-1].value;
+	  // 	       }	    
+	  // 	       saved_x[0] = fill_vector;
+	  // 	       cout << " 0: " << saved_x[0].value[0] <<  
+	  // 		 " 1: " << saved_x[1].value[0] <<  
+	  // 		 " 2: " << saved_x[2].value[0] <<  
+	  // 		 " 3: " << saved_x[3].value[0] <<
+	  // 		 " 4: " << saved_x[4].value[0] << endl;
+	  // 	     }
+	  // write point to ntuple
+	  ntupvars[0] = (Float_t)nfcnev;
+	  ntupvars[1] = (Float_t)t;
+	  ntupvars[2] = -(Float_t)fp;
+	  ntupvars[3] = (Float_t)accpoint;
+	  ntupvars[4] = (Float_t)xoptflag;
+	  ntupvars[5] = (Float_t)delta1;
+	  for (unsigned int ii = 6; ii < 6+yyFittedVec.size(); ii++) {
+	    ntupvars[ii] = xp[ii-6];
+	  }
+	  ntuple->Fill(ntupvars);
+	  if (n_found > 2.5 && delta1<0.05) {
+	    cout << endl << endl << endl << "restarting simann" << endl;
+	    // restart
+	    n_found = 0;
+	    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	      cout << yyFittedVec[k].name << " = " << x_min[k] << endl; 
+	      vm[k] = TMath::Abs(xopt[k]-x_min[k]);
+	      x[k] = x_min[k];
+	      xopt[k] = x_min[k];
+	      xp[k] = x_min[k];
+	      //	      vm[k] = vm_orig[k];
+	    }	
+	    cout << endl << endl << endl ;
+	    f = -111111111.;
+	    fopt = f;
+	    fp = f;
+	  }
+	  if (delta1<0.05) {
+	    n_found++;
+	  }
+	} // close the outer variable loop
+      } // close the loop over the accepted function evaluations
+      // go on to adjust vm and t
+      // adjust vm to accept between 0.4 and 0.6 of the trial points at the given temperature
+      for (i = 0; i < n; ++i) {
+	ratio = (double) nacp[i] / (double) (ns);
+	if (ratio > 0.6) {
+	  vm[i] *= c[i] * (ratio - 0.6) / 0.4 + 1.;
+	} else if (ratio < 0.4) {
+	  vm[i] /= c[i] * (0.4 - ratio) / 0.4 + 1.;
+	}
+	if (vm[i] > ub[i] - lb[i]) {
+	  vm[i] = ub[i] - lb[i];
+	}	
+      }
+      for (i = 0; i < n; ++i) {
+	nacp[i] = 0;
+      }
+    } // close the loop over the iterations before temperature reduction
+    // check whether to terminate
+    quit = false;
+    fstar[1] = f;
+    if (TMath::Abs(fopt - fstar[1]) <= eps) {
+      quit = true;
+    }
+    for (i = 0; i < neps; ++i) {
+      if (TMath::Abs(f - fstar[i]) > eps) {
+	quit = false;
+      }
+    }
+    //  Terminate simulated annealing if appropriate 
+    if (quit) {
+      for (i = 0; i < n; ++i) {
+	x[i] = xopt[i];
+      }
+      ier = 0;
+      fopt = -fopt;
+      // quit_while_loop = true;
+    } else {
+      // If not terminating, prepare t
+      cout << "starting new temperature loop at t = " << rt * t <<  endl;
+      // t = rt * t;
+      for (i = neps-1; i >= 1; --i) {
+	fstar[i] = fstar[i - 1];
+      }
+      // f = fopt;
+      // for (i = 0; i < n; ++i) {
+      //	x[i] = xopt[i];
+      // }
+    }
+  } // close the while loop 
+
+  //--------------------------------------------
+  // write output
+
+  for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+    yyFittedVec[k].value = xopt[k];
+  }
+  cout << "optimal function value " << fopt << " after " << nacc << " evaluations" << endl;
+
+}
+
+
+void Fittino::randomDirectionUncertainties()
+{
+  cout<<"Using randomDirectionUncertainties"<<endl;
+
+  const double eps = 0.005;
+  double* optpar = new double[yyFittedVec.size()];
+
+  for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+    optpar[k] = yyFittedVec[k].value;
+  }
+
+  int npar, iflag;
+  double* gin;
+  double minChi2;
+  fitterFCN(npar, gin, minChi2, optpar, iflag);
+
+  time_t systime;
+  int seed;
+  struct sysinfo sinfo; 
+  // set the random number generator
+  time (&systime);
+  sysinfo(&sinfo);
+  if (yyRandomGeneratorSeed < 0) {
+    seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
+    cout<<"uptime = "<<sinfo.uptime<<endl;
+    cout<<"freeswap = "<<sinfo.freeswap<<endl;
+    cout<<"pid = "<<getpid()<<endl;
+    cout << "systime " << systime << endl; 
+  }
+  else {
+    cout<<"using seed from input file"<<endl;
+    seed = yyRandomGeneratorSeed;
+  }
+  cout << "seed = " << seed << endl;
+  gRandom->SetSeed(seed);
+
+  double* par = new double[yyFittedVec.size()];
+  double* unitvec = new double[yyFittedVec.size()];
+  double chi2;
+  double deltaChi2;
+
+  TFile* file = new TFile("RandomDirUncertainties.root", "recreate");
+  TTree* tree = new TTree("tree", "Tree containing fitted parameters");
+  vector<MeasuredValue> leafVec(yyFittedPar.size());
+  cout<<"Creating RandomDirectionUncertainties tree"<<endl;
+  for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+    leafVec[k].name = yyFittedVec[k].name;
+    leafVec[k].value = -1;
+    string str = yyFittedVec[k].name;
+    str.append("/D");
+    cout << "Adding branch " << yyFittedVec[k].name.c_str() << " to tree" << endl;
+    tree->Branch(yyFittedVec[k].name.c_str(), &(leafVec[k].value), str.c_str());
+    str.erase();
+  }
+  cout << "Adding branch DeltaChi2 to tree" << endl;
+  tree->Branch("DeltaChi2", &deltaChi2, "DeltaChi2/D");
+
+  for (int idir=0; idir<yyNumberOfDirections; idir++) {
+
+    double d = 0;
+    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+      par[k] = gRandom->Uniform(0.99, 1.01) * optpar[k];
+      unitvec[k] = par[k] - optpar[k];
+      d += (par[k] - optpar[k]) * (par[k] - optpar[k]);
+    }
+    d = TMath::Sqrt(d);
+
+    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+      unitvec[k] /= d;
+    }
+
+    unsigned int ncalls = 0;
+    double prevd = 0;
+    /*
+      double dinit[3];
+      double finit[3];
+    */
+    while (1) {
+      fitterFCN(npar, gin, chi2, par, iflag);
+      ncalls++;
+      deltaChi2 = chi2 - minChi2;
+      cout<<"f = "<<deltaChi2<<endl;
+      cout<<"d = "<<d<<endl;
+      if (deltaChi2 < 0) cerr<<"WARNING: Minimization did not yield global minimum"<<endl;
+      if (TMath::Abs(deltaChi2 - yyErrDef) < eps || ncalls > 50) break;
+      /*
+	if (ncalls < 4) {
+	dinit[ncalls-1] = d;
+	finit[ncalls-1] = deltaChi2;
+	}
+	if (ncalls == 3) {
+	double x1 = dinit[0];
+	double x2 = dinit[1];
+	double x3 = dinit[2];
+	double y1 = finit[0];
+	double y2 = finit[1];
+	double y3 = finit[2];
+	double denominator = ( -x3 * sqr(x1) + x3 * sqr(x2) + x2 * sqr(x1) + x1 * sqr(x3)
+	- x1 * sqr(x2) - x2 * sqr(x3) );
+	double a2 = ( -x3 * y1 + x3 * y2 + x2 * y1 + x1 * y3 - x1 * y2 - x2 * y3 ) / denominator;
+	double a1 = - ( sqr(x2) * y1 - sqr(x2) * y3 + y2 * sqr(x3) + y3 * sqr(x1)
+	- sqr(x3) * y1 - y2 * sqr(x1) ) / denominator;
+	double a0 = ( -y2 * x3 * sqr(x1) + sqr(x3) * x1 * y2 + sqr(x2) * x3 * y1
+	- sqr(x2) * x1 * y3 + y3 * x2 * sqr(x1) - sqr(x3) * x2 * y1 ) / denominator;
+	double sol1 = 0.5 * ( -a1 + TMath::Sqrt( sqr(a1) + 4 * a2 - 4 * a2 * a0 ) ) / a2;
+	double sol2 = 0.5 * ( -a1 - TMath::Sqrt( sqr(a1) + 4 * a2 - 4 * a2 * a0 ) ) / a2;
+	cout<<"sol1 = "<<sol1<<"     sol2 = "<<sol2<<endl;
+	d = (sol1 > 0) ? sol1 : sol2; 
+	}
+	else {
+	if (ncalls == 4) {
+	prevd = deltaChi2;
+	}
+      */
+      if (deltaChi2 > 1) {
+	double tmp = d;
+	d = d - TMath::Abs(d - prevd) * 0.5;
+	prevd = tmp;
+      }
+      else {
+	double tmp = d;
+	d = d + TMath::Abs(d - prevd) * 0.5;
+	prevd = tmp;
+      }
+      /*
+	}
+      */
+      for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	par[k] = optpar[k] + d * unitvec[k];
+      }
+    }
+
+    cout<<"Found interception with uncertainty countour (ErrDef = "
+	<<yyErrDef<<", f = "<<deltaChi2<<") at"<<endl;
+    for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+      cout<<yyFittedVec[k].name<<" = "<<par[k]<<endl;
+      leafVec[k].name = yyFittedVec[k].name;
+      leafVec[k].value = par[k];
+    }
+
+    tree->Fill();
+  }
+
+  tree->Write();
+  file->Close();
+
+  if (optpar) delete[] optpar;
+  if (par) delete[] par;
+}
 
 
 void Fittino::markovChain (TNtuple *ntuple)
@@ -8866,7 +8866,7 @@ void Fittino::markovChain (TNtuple *ntuple)
 	  if (firstChi2) {
 	    firstChi2 = false;
 	    if (likelihood>0.)
-	    previousLikelihood = likelihood*2.;
+	      previousLikelihood = likelihood*2.;
 	  }
 
 	  // calculate Q
@@ -8875,15 +8875,15 @@ void Fittino::markovChain (TNtuple *ntuple)
 	  std::cout << "Qlower = " << Qlower << std::endl;
 	  std::cout << "Qupper = " << Qupper << std::endl;
 
-//	  if (haveAcceptedAtLeastOne==false) {
-//	    if (previousLikelihood==0) {
-//	      previousLikelihood = 1E-10;
-//	    }
-//	    if (Qlower==0.) {
-//	      Qlower = 1E-10;
-//	      Qupper = 1E-10;
-//	    }
-//	  } 
+	  //	  if (haveAcceptedAtLeastOne==false) {
+	  //	    if (previousLikelihood==0) {
+	  //	      previousLikelihood = 1E-10;
+	  //	    }
+	  //	    if (Qlower==0.) {
+	  //	      Qlower = 1E-10;
+	  //	      Qupper = 1E-10;
+	  //	    }
+	  //	  } 
 
 	  std::cout << "calculating rho = " << likelihood << "*" << Qupper << "/" << previousLikelihood << "*" << Qlower<< std::endl;
 
