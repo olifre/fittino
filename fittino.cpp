@@ -7267,6 +7267,27 @@ int   ReadLesHouches()
 
       Float_t ntupvars[50];
 
+  time_t systime;
+  int seed;
+  struct sysinfo sinfo; 
+  // set the random number generator
+  time (&systime);
+  sysinfo(&sinfo);
+  if (yyRandomGeneratorSeed < 0) {
+    seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
+    cout<<"uptime = "<<sinfo.uptime<<endl;
+    cout<<"freeswap = "<<sinfo.freeswap<<endl;
+    cout<<"pid = "<<getpid()<<endl;
+    cout << "systime " << systime << endl; 
+  }
+  else {
+    cout<<"using seed from input file"<<endl;
+    seed = yyRandomGeneratorSeed;
+  }
+  cout << "seed = " << seed << endl;
+  gRandom->SetSeed(seed);
+  
+
       // set values
       maxevl = yyMaxCallsSimAnn;
       rt = yyTempRedSimAnn;
