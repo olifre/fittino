@@ -78,9 +78,9 @@ GetContours                    off
 UseSimAnnBefore                on
 UseSimAnnWhile                 off
 AdaptiveSimAnn                 off
-TempRedSimAnn                  0.4
-MaxCallsSimAnn                 15000
-InitTempSimAnn                 2
+TempRedSimAnn                  0.5
+MaxCallsSimAnn                 30000
+InitTempSimAnn                 4
 SimAnnUncertainty              off
 SimAnnUncertaintyRunDown       off
 GetTempFromFirstChiSqr         on
