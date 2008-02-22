@@ -418,6 +418,18 @@ input:
 			  tmpValue.id = 0;
 			  if (!strncmp($2, "mass", 4))tmpValue.type = mass;
 		          else if (!strcmp($2, "tauFromStau1Polarisation")) tmpValue.type = tauFromStau1Polarisation;
+		          else if (!strcmp($2, "G_F")) {
+			      tmpValue.type = SMPrecision;
+			      tmpValue.id = gf;
+			  }
+		          else if (!strcmp($2, "alphas")) {
+			      tmpValue.type = SMPrecision;
+			      tmpValue.id = alphas;
+			  }
+		          else if (!strcmp($2, "alphaem")) {
+			      tmpValue.type = SMPrecision;
+			      tmpValue.id = alphaem;
+			  }
 			  else tmpValue.type = other;
 			  yyMeasuredVec.push_back(tmpValue);
 			  if (!strncmp($2, "cos", 3)) {
@@ -2893,7 +2905,7 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
                               yyoneoveralpha_em_mz =  tmpParams[i][1];
                               break;
                           case 2:
-                              yyG_F =  tmpParams[i][1];
+                              yyG_F =  tmpParams[i][1] * 1E6;
                               break;
                           case 3:
                               yyalpha_s_mz =  tmpParams[i][1];

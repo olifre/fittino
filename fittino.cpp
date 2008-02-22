@@ -1,7 +1,7 @@
 /***************************************************************************
   fittino.cpp
   -------------------    
-  Main class which does Fittino's calculations.
+
   -------------------
   $Id: fittino.cpp 199 2008-02-21 14:33:28Z bechtle $
   $Name$
@@ -3969,26 +3969,25 @@ void WriteLesHouches(double* x)
 	 LesHouchesOutfile << "    1  "<<ReturnMeasuredValue("alphaem")->value<<" # 1/alpha_em(M_Z) (fixed)"<<endl;
       }
 
-      /*
-	 if (FindInFixed("G_F")) {
-	 LesHouchesOutfile << "    2  "<<ReturnFixedValue("G_F")->value<<" # G_F (fixed)"<<endl;
-	 }
-	 else if (FindInFitted("G_F")) {
-	 LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition("G_F")]<<" # G_F"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-	 cout << "Fitting G_F " << x[ReturnFittedPosition("G_F")] << endl;
-	 }
-	 } 
-	 else if (FindInUniversality("G_F")) {
-	 LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("G_F")->universality)]<<" # G_F"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-	 cout << "fitting " << ReturnUniversality("G_F")->universality << " instead of G_F" << endl;
-	 }
-	 }
-	 else {
-	 LesHouchesOutfile << "    2  "<<ReturnMeasuredValue("G_F")->value<<" # G_F (fixed)"<<endl;
-	 }
-	 */
+      if (FindInFixed("G_F")) {
+	LesHouchesOutfile << "    2  "<<ReturnFixedValue("G_F")->value<<" # G_F (fixed)"<<endl;
+      }
+      else if (FindInFitted("G_F")) {
+	LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition("G_F")]<<" # G_F"<<endl;
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	  cout << "Fitting G_F " << x[ReturnFittedPosition("G_F")] << endl;
+	}
+      } 
+      else if (FindInUniversality("G_F")) {
+	LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("G_F")->universality)]<<" # G_F"<<endl;
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	  cout << "fitting " << ReturnUniversality("G_F")->universality << " instead of G_F" << endl;
+	}
+      }
+      else {
+	LesHouchesOutfile << "    2  "<<ReturnMeasuredValue("G_F")->value <<" # G_F"<<endl;
+      }
+
       if (FindInFixed("alphas")) {
 	 LesHouchesOutfile << "    3  "<<ReturnFixedValue("alphas")->value<<" # alpha_s (fixed)"<<endl;
       }
@@ -6593,6 +6592,8 @@ int   ReadLesHouches()
   cout << "  --->  yygmin2m from SPheno: " << yygmin2m << endl;   // 11  Delta(g-2)_muon
   cout << "  --->  yygmin2t from SPheno: " << yygmin2t << endl;   // 12  Delta(g-2)_tau
   cout << "  --->  yydrho   from SPheno: " << yydrho   << endl;   // 30  Delta(rho_parameter)
+  cout << "  --->  yyMassZ  from SPheno: " << yyMassZ   << endl;   //
+  cout << "  --->  yyG_F    from SPheno: " << yyG_F   << endl;   //
   //------------------------------------------------------------------------------------------
   cout << "  --->  yyOmega  from MicrOmegas: " << yyOmega  << endl;   //     relic density
 
@@ -6660,6 +6661,20 @@ int   ReadLesHouches()
       }
     }
     //################################################
+    else if (yyMeasuredVec[i].type == SMPrecision) {
+      if (yyMeasuredVec[i].id == gf) {
+	yyMeasuredVec[i].theovalue = yyG_F;
+	yyMeasuredVec[i].theoset = true;
+      }
+      else if (yyMeasuredVec[i].id == alphas) {
+	yyMeasuredVec[i].theovalue = yyalpha_s_mz;
+	yyMeasuredVec[i].theoset = true;
+      }
+      else if (yyMeasuredVec[i].id == alphaem) {
+	yyMeasuredVec[i].theovalue = yyoneoveralpha_em_mz;
+	yyMeasuredVec[i].theoset = true;
+      }
+    }
     else if (yyMeasuredVec[i].type == Pwidth) {
       yyMeasuredVec[i].theovalue = branching_ratios[yyMeasuredVec[i].id].TWidth;
       yyMeasuredVec[i].theoset = true;
