@@ -28,6 +28,7 @@ massTop    170.9     GeV +- 1.1     GeV +- 1.5 GeV
 massTau      1.77699 GeV +- 0.00029 GeV
 alphas       0.1187  GeV +- 0.002   GeV
 alphaem    127.934   GeV +- 0.027   GeV
+G_F        11.6637       +- 0.00001
 
 # covarianceCoefficient edge_1 edge_2 2.
 
@@ -38,8 +39,6 @@ fixParameter massCharm    1.2      GeV
 fixParameter massBottom   4.5      GeV
 fixParameter massTop    170.9      GeV
 fixParameter massTau      1.77699  GeV
-fixParameter alphas       0.1187   GeV
-fixParameter alphaem    127.934  
 
 #########################################################################
 ### Parameters                                                        ###
@@ -50,6 +49,9 @@ fitParameter M0       100
 fitParameter M12      300
 fitParameter A0      -300
 fitParameter TanBeta    6
+fitParameter G_F        1.16634e-5 +- 1e-11 
+fitParameter alphas       0.1187  GeV +- 0.002   GeV
+fitParameter alphaem    127.934   GeV +- 0.027   GeV
 fixParameter SignMu     1
 
 #########################################################################

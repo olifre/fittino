@@ -1085,15 +1085,22 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    // first fill in the measured parameters
    for (unsigned int  i=0; i < yyFittedPar.size(); i++ ) {
       par_already_found = false;
+      // cout << "filling yyFittedVec" << endl;
       for (unsigned int j = 0; j < fInput->GetMeasuredVector().size(); j++ ) {
-	 if (!yyFittedPar[i].name.compare(fInput->GetMeasuredVector()[j].name)) {
+	// cout << "looping over measured value " << fInput->GetMeasuredVector()[j].name << endl;
+ 	 if (!yyFittedPar[i].name.compare(fInput->GetMeasuredVector()[j].name)) {
+	   // cout << "filling contents of " << fInput->GetMeasuredVector()[j].name << endl;
 	    yyFittedVec.push_back((fInput->GetMeasuredVector())[j]);
 	    if (yyUseGivenStartValues) {
+	      // cout << "use given start values for " << fInput->GetMeasuredVector()[j].name << endl;
 	       unsigned int ilength;
 	       ilength = yyFittedVec.size();
 	       yyFittedVec[ilength-1].value = yyFittedPar[i].value;
-	       //    	    cout << " parameter " <<  yyFittedPar[i].name << " " << yyFittedVec[ilength-1].value << " " 
-	       //	 << " to value " << yyFittedPar[i].value << endl;	   
+	       if (yyFittedPar[i].error>0.) {
+		 yyFittedVec[ilength-1].error = yyFittedPar[i].error;
+	       }
+	       // cout << " parameter " <<  yyFittedPar[i].name << " " << yyFittedVec[ilength-1].value << " " 
+	       //    << " to value " << yyFittedPar[i].value << " +- " << yyFittedVec[ilength-1].error << endl;	   
 	    }
 	    par_already_found = true;
 	    break;
@@ -1305,6 +1312,9 @@ void Fittino::setStartValues()
 		  unsigned int ilength;
 		  ilength = yyFittedVec.size();
 		  yyFittedVec[ilength-1].value = yyFittedPar[i].value;
+		  if (yyFittedPar[i].error>0.) {
+		    yyFittedVec[ilength-1].error = yyFittedPar[i].error;
+		  }
 		  cout << " parameter " <<  yyFittedPar[i].name << " " 
 		     << yyFittedVec[ilength-1].value << " " 
 		     << " to value " << yyFittedPar[i].value << endl;	   
@@ -1468,7 +1478,10 @@ void Fittino::setStartValues()
         	  unsigned int ilength;
         	  ilength = yyFittedVec.size();
         	  yyFittedVec[ilength-1].value = yyFittedPar[i].value;
-        	  cout << " parameter " <<  yyFittedPar[i].name << " " 
+		  if (yyFittedPar[i].error>0.) {
+		    yyFittedVec[ilength-1].error = yyFittedPar[i].error;
+		  }
+		  cout << " parameter " <<  yyFittedPar[i].name << " " 
         	     << yyFittedVec[ilength-1].value << " " 
         	     << " to value " << yyFittedPar[i].value << endl;	   
                }
@@ -1611,6 +1624,9 @@ void Fittino::setStartValues()
 		  unsigned int ilength;
 		  ilength = yyFittedVec.size();
 		  yyFittedVec[ilength-1].value = yyFittedPar[i].value;
+		  if (yyFittedPar[i].error>0.) {
+		    yyFittedVec[ilength-1].error = yyFittedPar[i].error;
+		  }
 		  cout << " parameter " <<  yyFittedPar[i].name << " " 
 		     << yyFittedVec[ilength-1].value << " " 
 		     << " to value " << yyFittedPar[i].value << endl;	   
@@ -1731,6 +1747,9 @@ void Fittino::setStartValues()
 		  unsigned int ilength;
 		  ilength = yyFittedVec.size();
 		  yyFittedVec[ilength-1].value = yyFittedPar[i].value;
+		  if (yyFittedPar[i].error>0.) {
+		    yyFittedVec[ilength-1].error = yyFittedPar[i].error;
+		  }
 		  cout << " parameter " <<  yyFittedPar[i].name << " " 
 		     << yyFittedVec[ilength-1].value << " " 
 		     << " to value " << yyFittedPar[i].value << endl;	   
