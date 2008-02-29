@@ -65,10 +65,10 @@ covarianceCoefficient edge_6 edge_7  0.508416
 #########################################################################
 
 ### mSUGRA SPS 1a benchmark point
-fitParameter M0       100
-fitParameter M12      300
-fitParameter A0      -300
-fitParameter TanBeta    6
+fitParameter M0       100 GeV +- 3 GeV
+fitParameter M12      300 GeV +- 4 GeV
+fitParameter A0      -300 GeV +- 20 GeV
+fitParameter TanBeta    6     +- 0.5
 fixParameter SignMu     1
 
 #########################################################################
@@ -81,14 +81,14 @@ LoopCorrections                on
 ISR                            on
 UseGivenStartValues            on
 FitAllDirectly                 on
-CalcPullDist                   off
+CalcPullDist                   on
 CalcIndChisqContr              off
 BoundsOnX                      off
 ScanX                          off
 SepFitTanbX                    off
 SepFitTanbMu                   off
 SepFitmA	               off
-Calculator                     SPHENO ../theorycodes/SPheno3.0.beta/bin/SPheno
+Calculator                     SPHENO ./SPheno
 #RelicDensityCalculator         MICROMEGAS ../theorycodes/micromegas_2.0.6/MSSM/sugomg
 UseMinos                       on
 UseHesse                       off
@@ -97,14 +97,15 @@ ErrDef                         1.0
 NumberPulls                    1
 GetContours                    off
 
-UseSimAnnBefore                off
+UseSimAnnBefore                on
 UseSimAnnWhile                 off
 AdaptiveSimAnn                 off
-TempRedSimAnn                  0.4
-MaxCallsSimAnn                 300000
-InitTempSimAnn                 5000
+TempRedSimAnn                  0.5
+MaxCallsSimAnn                 30000
+InitTempSimAnn                 4
 SimAnnUncertainty              off
 SimAnnUncertaintyRunDown       off
+GetTempFromFirstChiSqr         on
 
 UseMarkovChains                off
 MarkovChainReadjustWidth       off
