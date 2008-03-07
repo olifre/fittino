@@ -40,7 +40,7 @@ Double_t chi2Function(Double_t *x, Double_t *par)
 }
 
 
-void DrawParDists(const Int_t nbins = 50, const char* filename = "TreeSum.root",
+void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributions.sum.root",
 		  const char* treename = "tree", const Double_t chi2cut = -1)
 {
     gStyle->SetOptStat(0);
@@ -118,13 +118,16 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "TreeSum.root",
 	else if (!strcmp(leaf->GetName(), "ALambda")) strcpy(xtitle, "A_{#lambda} (GeV)");
 	else if (!strcmp(leaf->GetName(), "AKappa")) strcpy(xtitle, "A_{#kappa} (GeV)");
 	else if (!strcmp(leaf->GetName(), "Chi2")) strcpy(xtitle, "#chi^{2}");
+	else if (!strcmp(leaf->GetName(), "M0")) strcpy(xtitle, "M_{0} (GeV)");
+	else if (!strcmp(leaf->GetName(), "M12")) strcpy(xtitle, "M_{1/2} (GeV)");
+	else if (!strcmp(leaf->GetName(), "A0")) strcpy(xtitle, "A_{0} (GeV)");
 	else strcpy(xtitle, leaf->GetName());
 	histo[iLeaf]->SetXTitle(xtitle);
 	histo[iLeaf]->GetXaxis()->CenterTitle();
 	histo[iLeaf]->GetXaxis()->SetTitleSize(0.05);
 	histo[iLeaf]->GetXaxis()->SetTitleOffset(1.2);
 	histo[iLeaf]->GetXaxis()->SetLabelSize(0.05);
-	histo[iLeaf]->SetYTitle("Entries");
+	histo[iLeaf]->SetYTitle("Toy fits");
 	histo[iLeaf]->GetYaxis()->SetLabelSize(0.05);
 	histo[iLeaf]->GetYaxis()->CenterTitle();
 	histo[iLeaf]->GetYaxis()->SetTitleSize(0.05);
