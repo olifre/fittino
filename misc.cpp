@@ -284,11 +284,29 @@ void CorrelationMatrix::CalculateCovarianceMatrix() {
    //cout << "correlation:" << (*fCorrelationMatrix)(0, 0) << endl;
    //cout << "covariance :" << (*fCovarianceMatrix)(0, 0) << endl;
 
+   for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
+      for (unsigned int j=0; j<fMeasuredVector->size(); j++) {
+         (*fCovarianceMatrix)(i,j) = (*fCovarianceMatrix)(i,j)*10000000; // rescale covariance matrix with 1e+7 to avoid problems with small entries during inversion 
+      }
+   }
+
    *fInverseCovarianceMatrix = *fCovarianceMatrix;
 
-   double det;
    //cout << "inverting covariancematrix:" << endl;
-   fInverseCovarianceMatrix->Invert(&det);
+   //double det;
+   fInverseCovarianceMatrix->Invert(/*&det*/);
+
+   for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
+      for (unsigned int j=0; j<fMeasuredVector->size(); j++) {
+         (*fInverseCovarianceMatrix)(i,j) = (*fInverseCovarianceMatrix)(i,j)*10000000; 
+      }
+   }
+   for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
+      for (unsigned int j=0; j<fMeasuredVector->size(); j++) {
+         (*fCovarianceMatrix)(i,j) = (*fCovarianceMatrix)(i,j)/10000000; 
+      }
+   }
+
    //cout << "covariancematrix inverted:" << endl;
    //  for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
    //    for (unsigned int j=0; j<fMeasuredVector->size(); j++) {
@@ -301,84 +319,84 @@ void CorrelationMatrix::CalculateCovarianceMatrix() {
 void CorrelationMatrix::AddFullCovarianceMatrix(const CorrelationMatrix& addedCovarianceMatrix)
 {
 
-  if (!fCovarianceMatrix) {
-    cout << "creating covariance matrix" << endl;
-    fCovarianceMatrix = new TMatrixDSym(fMeasuredVector->size());
-    for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
-      for (unsigned int j=0; j<fMeasuredVector->size(); j++) {
-	(*fCovarianceMatrix)(i, j) = 0.0;
+   if (!fCovarianceMatrix) {
+      cout << "creating covariance matrix" << endl;
+      fCovarianceMatrix = new TMatrixDSym(fMeasuredVector->size());
+      for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
+	 for (unsigned int j=0; j<fMeasuredVector->size(); j++) {
+	    (*fCovarianceMatrix)(i, j) = 0.0;
+	 }
       }
-    }
-  }
+   }
 
-  // cout << "adding covariance entries" << endl;
-  for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
-    for (unsigned int j=0; j<fMeasuredVector->size(); j++) {
-      // cout << "adding covariance " << i << " " << j << endl;
-      (*fCovarianceMatrix)(i,j) += addedCovarianceMatrix.GetCovariance(i,j);
-    }
-  }
-  
-  return;
+   // cout << "adding covariance entries" << endl;
+   for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
+      for (unsigned int j=0; j<fMeasuredVector->size(); j++) {
+	 // cout << "adding covariance " << i << " " << j << endl;
+	 (*fCovarianceMatrix)(i,j) += addedCovarianceMatrix.GetCovariance(i,j);
+      }
+   }
+
+   return;
 }
 
 void CorrelationMatrix::TransformCovarianceMatrixIntoCorrelationMatrix()
 {
-  
-  if (!fCorrelationMatrix) {
-    fCorrelationMatrix = new TMatrixDSym(fMeasuredVector->size());
-  }
-  if (!fCovarianceMatrix) {
-    cout << "Asking to transform non-existing covariance matrix into correlation matrix" << endl;
-    exit;
-  }
-  
-  for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
-    for (unsigned int j=0; j<fMeasuredVector->size(); j++) {
-      (*fCorrelationMatrix)(i, j) = (*fCovarianceMatrix)(i, j) /
-	((*fMeasuredVector)[i].error * (*fMeasuredVector)[j].error);
-      //      cout << "(" << i << "," << j << ")" << " " <<  (*fCovarianceMatrix)(i, j) << endl;
-    }
-    //    cout << endl;
-  }
-  
 
-  return;
+   if (!fCorrelationMatrix) {
+      fCorrelationMatrix = new TMatrixDSym(fMeasuredVector->size());
+   }
+   if (!fCovarianceMatrix) {
+      cout << "Asking to transform non-existing covariance matrix into correlation matrix" << endl;
+      exit;
+   }
+
+   for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
+      for (unsigned int j=0; j<fMeasuredVector->size(); j++) {
+	 (*fCorrelationMatrix)(i, j) = (*fCovarianceMatrix)(i, j) /
+	    ((*fMeasuredVector)[i].error * (*fMeasuredVector)[j].error);
+	 //      cout << "(" << i << "," << j << ")" << " " <<  (*fCovarianceMatrix)(i, j) << endl;
+      }
+      //    cout << endl;
+   }
+
+
+   return;
 }
 
 void CorrelationMatrix::CalculateInverseCovarianceMatrix() 
 {
-  if (!fInverseCovarianceMatrix) {
-    fInverseCovarianceMatrix = new TMatrixDSym(fMeasuredVector->size());
-  }
-  if (!fCovarianceMatrix) {
-    cout << "Asking to transform non-existing covariance matrix into inverse covariance matrix" << endl;
-    exit;
-  }
- 
-  *fInverseCovarianceMatrix = *fCovarianceMatrix;
-  
-  double det;
-  fInverseCovarianceMatrix->Invert(&det);
+   if (!fInverseCovarianceMatrix) {
+      fInverseCovarianceMatrix = new TMatrixDSym(fMeasuredVector->size());
+   }
+   if (!fCovarianceMatrix) {
+      cout << "Asking to transform non-existing covariance matrix into inverse covariance matrix" << endl;
+      exit;
+   }
 
-  return;
+   *fInverseCovarianceMatrix = *fCovarianceMatrix;
+
+   //double det;
+   fInverseCovarianceMatrix->Invert(/*&det*/);
+
+   return;
 }
 
 bool CorrelationMatrix::TestCovarianceMatrixExistence()
 {
-  if (!fCovarianceMatrix) {
-    return false;
-  } else {
-    return true;
-  }
-  
+   if (!fCovarianceMatrix) {
+      return false;
+   } else {
+      return true;
+   }
+
 }
 
 
 void CorrelationMatrix::Print() {
    if (!fCorrelationMatrix) {
-     cout << "Correlation matrix does not exist" << endl;
-     return;
+      cout << "Correlation matrix does not exist" << endl;
+      return;
    }
    cout << "printing correlation matrix:" << endl;
    for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
@@ -393,8 +411,8 @@ void CorrelationMatrix::Print() {
 
 void CorrelationMatrix::PrintCovariance() {
    if (!fCovarianceMatrix) {
-     cout << "Covariance matrix does not exist" << endl;
-     return;
+      cout << "Covariance matrix does not exist" << endl;
+      return;
    }
    cout << "printing covariance matrix:" << endl;
    for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
@@ -409,8 +427,8 @@ void CorrelationMatrix::PrintCovariance() {
 
 void CorrelationMatrix::PrintInverseCovariance() {
    if (!fInverseCovarianceMatrix) {
-     cout << "Inverse covariance matrix does not exist" << endl;
-     return;
+      cout << "Inverse covariance matrix does not exist" << endl;
+      return;
    }
    cout << "printing inverse covariance matrix:" << endl;
    for (unsigned int i=0; i<fMeasuredVector->size(); i++) {

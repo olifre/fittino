@@ -101,7 +101,7 @@ int main(int argc, char** argv)
       }
   }
 
-  cout << "reading input from file " << inputfilename << endl;
+  cout << "Reading input from file " << inputfilename << endl;
   Input* input = new Input(inputfilename);
 
   delete[] inputfilename;
@@ -110,18 +110,18 @@ int main(int argc, char** argv)
 
 
   // Dumping input file
-  for (unsigned int i=0; i<yyInputFile.size(); i++) {
-    cout<<yyInputFile[i].prevalue;
-    //    if (yyInputFile[i].error >= 0) {
-    if (yyInputFile[i].error.size()) {
-      cout<<"size = "<<yyInputFile[i].error.size()<<endl;
-      cout<<"\t"<<yyInputFile[i].value;
-      for (unsigned int q=0; q < yyInputFile[i].error.size(); q++) {
-	cout<<" +- "<<yyInputFile[i].error[q];
-      }
-    }
-    cout<<yyInputFile[i].postvalue;
-  }
+  //for (unsigned int i=0; i<yyInputFile.size(); i++) {
+  //  cout<<yyInputFile[i].prevalue;
+  //  //    if (yyInputFile[i].error >= 0) {
+  //  if (yyInputFile[i].error.size()) {
+  //    cout<<"size = "<<yyInputFile[i].error.size()<<endl;
+  //    cout<<"\t"<<yyInputFile[i].value;
+  //    for (unsigned int q=0; q < yyInputFile[i].error.size(); q++) {
+  //      cout<<" +- "<<yyInputFile[i].error[q];
+  //    }
+  //  }
+  //  cout<<yyInputFile[i].postvalue;
+  //}
 
   for (unsigned int i=0; i<yyRandomPar.size(); i++) {
      cout << yyRandomPar[i].name << endl;
@@ -139,15 +139,15 @@ int main(int argc, char** argv)
   
   else {
 
-    cout << "constructing fittino" << endl;
+    cout << "Constructing fittino" << endl;
     Fittino* fittino = new Fittino(input);
     
     if ( yyFitModel == MSSM || yyFitModel == NMSSM ) {
-      cout << "calculating tree level values" << endl;
+      cout << "Calculating tree level values" << endl;
       fittino->calculateTreeLevelValues(10000);
     }
     else if (yyFitModel == mSUGRA || yyFitModel == XMSUGRA || yyFitModel == GMSB || yyFitModel == AMSB) {
-      cout << "setting fit start values" << endl;
+      cout << "Setting fit start values" << endl;
       fittino->setStartValues();
     }
     if (yyRandomParameters) {
@@ -155,7 +155,7 @@ int main(int argc, char** argv)
     }
     else {
        if (yyUseLoopCorrections) {
-	  cout << "calculating loop level values" << endl;
+	  cout << "Calculating loop level values" << endl;
 	  fittino->calculateLoopLevelValues();
        }
 

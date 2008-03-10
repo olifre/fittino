@@ -388,13 +388,13 @@ input:
 
 		  found = 0;
 		  skip = 0;
-		  if ($4*$4 < 2.2204e-16) {
-                      cout<<"WARNING: Measurement of "<<$2<<" will not be used in fit. Uncertainty too small."<<endl;
-		      cout<<"         Too small uncertainties cause numerical problems with covariance matrix inversion."<<endl;
-		      cout<<"         Press any key to continue."<<endl;
-                      getchar();
-		      skip = 1;
-                  }
+//		  if ($4*$4 < 2.2204e-16) {
+//                      cout<<"WARNING: Measurement of "<<$2<<" will not be used in fit. Uncertainty too small."<<endl;
+//		      cout<<"         Too small uncertainties cause numerical problems with covariance matrix inversion."<<endl;
+//		      cout<<"         Press any key to continue."<<endl;
+//                      getchar();
+//		      skip = 1;
+//                  }
 		  if (!skip) {
 		      for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
 			if (!yyMeasuredVec[i].name.compare($2)) {
@@ -1605,7 +1605,7 @@ input:
 		  tmpValue.bound_up = 1e+6;
 		  tmpValue.bound_low = -1e+6;
 		  yyMeasuredVec.push_back(tmpValue);
-		  //		  cout << "Added le obs " << tmpValue.name << " = " << tmpValue.value << endl;
+		  // cout << "Added le obs " << tmpValue.name << " = " << tmpValue.value << endl;
 	      }
 	     | input T_LEO T_BRA T_WORD T_KET T_COMPARATOR value T_ALIAS T_NUMBER
 	      {
@@ -2905,7 +2905,7 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
                               yyoneoveralpha_em_mz =  tmpParams[i][1];
                               break;
                           case 2:
-                              yyG_F =  tmpParams[i][1] * 1E6;
+                              yyG_F =  tmpParams[i][1];
                               break;
                           case 3:
                               yyalpha_s_mz =  tmpParams[i][1];
