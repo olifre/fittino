@@ -27,6 +27,8 @@
 #include <units.h>
 #include <values.h>
 #include <misc.h>
+#include <TRandom.h>
+#include <TRandom3.h>
 
 vector<doubleVec_t> CrossSectionProduction;
 
@@ -176,7 +178,8 @@ Input::Input(const char* inputfile)
   //DumpMeasuredVector();
 
   // list vector
-  cout << "Listing input observable vector" << endl;
+  cout << "------------------------------------------------------------" << endl;
+  cout << "Listing input observables" << endl;
   for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
      if (yyMeasuredVec[i].nofit == false) {
 	cout << yyMeasuredVec[i].name << " " << yyMeasuredVec[i].value << " +- " << yyMeasuredVec[i].error << endl;
@@ -485,5 +488,34 @@ void Input::FillCrossSectionProduction()
    }
 
    return;
+
+}
+
+void Input::ScatterObservablesBefore() {
+
+   cout << "------------------------------------------------------------" << endl;
+   cout << "Scattering observables around their true value" << endl;
+
+   // fill local vector trueValueObservableVector with true observable values from input file
+   TVectorD trueValueObservableVector(yyMeasuredVec.size());
+   for (unsigned int j=0; j<yyMeasuredVec.size(); j++) {
+      trueValueObservableVector(j) = yyMeasuredVec[j].value;
+   }
+
+   // perform scattering
+   gRandom->SetSeed(yySeedForObservableScattering); // Use fixed seed here
+   TVectorD pseudoMeasuredObservableVector(yyMeasuredVec.size());
+   pseudoMeasuredObservableVector = getCorrelatedRandomNumbers( trueValueObservableVector, this->GetMeasuredCorrelationMatrix().GetCovarianceMatrix() );
+   for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
+      yyMeasuredVec[j].value = pseudoMeasuredObservableVector(j);
+   }
+
+   // test printouts for initial value scattering
+   cout << "new mean values for" << endl;
+   for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
+      if (yyMeasuredVec[j].nofit == false) {
+	 cout << yyMeasuredVec[j].name << ": " << yyMeasuredVec[j].value << " (deviation from true value " << trueValueObservableVector(j) << " within " << TMath::Ceil((TMath::Abs(yyMeasuredVec[j].value-trueValueObservableVector(j))/yyMeasuredVec[j].error)) <<" sigma)" <<endl;
+      }
+   }
 
 }

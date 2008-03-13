@@ -1231,14 +1231,14 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 
    FillFixedParameters();
 
-   cout << "=======================================================" << endl;
+   cout << "------------------------------------------------------------" << endl;
    cout << "nthrows " << nthrows << " nvalid " << nvalid << endl;
    cout << "Estimated Parameters:" << endl;
    for (unsigned int  i=0; i < yyFittedVec.size(); i++ ) {
       cout << i << " " << yyFittedVec[i].name << " = " << yyFittedVec[i].value << " +- " << yyFittedVec[i].error 
 	 << " bounds " << yyFittedVec[i].bound_low << " -- " <<  yyFittedVec[i].bound_up << endl;
    }
-   cout << "=======================================================" << endl;
+   cout << "------------------------------------------------------------" << endl;
 
 
 
@@ -3323,7 +3323,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    // CALCULATE CHISQ
    n_printouts++;
    if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
-      cout << "calculating chisq" << endl;
+      cout << "Calculating chisq" << endl;
    }
    for (unsigned int i = 0; i < yyMeasuredVec.size(); i++) {
       for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
@@ -4827,7 +4827,7 @@ void WriteLesHouches(double* x)
 	 }
       }
       // BLOCK SPhenoInput
-      LesHouchesOutfile << "BLOCK SPhenoInput" << endl;
+      LesHouchesOutfile << "BLOCK SPHENOINPUT" << endl;
       LesHouchesOutfile << "    1  0                  # error level" << endl;
       LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
       LesHouchesOutfile << "   11  1                  # calculate branching ratios" << endl;
@@ -5150,7 +5150,7 @@ void WriteLesHouches(double* x)
 	 exit(EXIT_FAILURE);
       }
 
-      LesHouchesOutfile << "BLOCK SPhenoInput" << endl;
+      LesHouchesOutfile << "BLOCK SPHENOINPUT" << endl;
       LesHouchesOutfile << "    1  0                  # error level" << endl;
       LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
       LesHouchesOutfile << "   11  1                  # calculate branching ratios" << endl;
@@ -5556,7 +5556,7 @@ void WriteLesHouches(double* x)
          exit (EXIT_FAILURE);
       }
       // BLOCK SPhenoInput
-      LesHouchesOutfile << "BLOCK SPhenoInput" << endl;
+      LesHouchesOutfile << "BLOCK SPHENOINPUT" << endl;
       LesHouchesOutfile << "    1  0                  # error level" << endl;
       LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
       LesHouchesOutfile << "   11  1                  # calculate branching ratios" << endl;
@@ -5872,7 +5872,7 @@ void WriteLesHouches(double* x)
 	 exit(EXIT_FAILURE);
       }
 
-      LesHouchesOutfile << "BLOCK SPhenoInput" << endl;
+      LesHouchesOutfile << "BLOCK SPHENOINPUT" << endl;
       LesHouchesOutfile << "    1  0                  # error level" << endl;
       LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
       LesHouchesOutfile << "   11  1                  # calculate branching ratios" << endl;
@@ -6154,7 +6154,7 @@ void WriteLesHouches(double* x)
 	 exit(EXIT_FAILURE);
       }
 
-      LesHouchesOutfile << "BLOCK SPhenoInput" << endl;
+      LesHouchesOutfile << "BLOCK SPHENOINPUT" << endl;
       LesHouchesOutfile << "    1  0                  # error level" << endl;
       LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
       LesHouchesOutfile << "   11  1                  # calculate branching ratios" << endl;
@@ -6619,7 +6619,7 @@ int   ReadLesHouches()
   used_products.clear();
   // loop over yyMeasuredVec and fill theovalue
   if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
-    cout << "interpreting the les houches output " << endl;
+    cout << "Interpreting the les houches output " << endl;
   }  
   for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
     if (yyMeasuredVec[i].type == mass) {
@@ -7072,10 +7072,6 @@ int   ReadLesHouches()
     if (yyMeasuredVec[i].type == weighted) {
       yyMeasuredVec[i].theovalue = 0.;
       dependencies_theoset = true;
-      cout << yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue << endl;
-      cout << yyMeasuredVec[yyMeasuredVec[i].daughters[1]].theovalue << endl;
-      cout << yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue << endl;
-      cout << yyMeasuredVec[yyMeasuredVec[i].daughters[3]].theovalue << endl;
       yyMeasuredVec[i].theovalue = (yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue*yyMeasuredVec[yyMeasuredVec[i].daughters[1]].theovalue+yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue*yyMeasuredVec[yyMeasuredVec[i].daughters[3]].theovalue)/(yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue+yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue);
       for (unsigned int j=0; j<4; j++) {
 	if (yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theoset == false) {

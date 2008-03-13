@@ -38,6 +38,7 @@
 #include <sys/sysinfo.h>
 
 #include <TRandom.h>
+#include <TRandom3.h>
 #include <TMath.h>
 #include <TFitter.h>
 #include <TMinuit.h>
@@ -96,16 +97,18 @@ void MakePullDist::CalcPullDist()
   sysinfo(&sinfo);
   if (yyRandomGeneratorSeed < 0) {
     seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
-    cout<<"uptime = "<<sinfo.uptime<<endl;
-    cout<<"freeswap = "<<sinfo.freeswap<<endl;
-    cout<<"pid = "<<getpid()<<endl;
-    cout << "systime " << systime << endl; 
+    
+    // Test printouts
+    //cout<<"uptime = "<<sinfo.uptime<<endl;
+    //cout<<"freeswap = "<<sinfo.freeswap<<endl;
+    //cout<<"pid = "<<getpid()<<endl;
+    //cout << "systime " << systime << endl; 
   }
   else {
-    cout<<"using seed from input file"<<endl;
+    cout<<"Using seed from input file"<<endl;
     seed = yyRandomGeneratorSeed;
   }
-  cout << "seed = " << seed << endl;
+  //cout << "Using seed = " << seed << endl;
   gRandom->SetSeed(seed);
 
 
@@ -118,119 +121,156 @@ void MakePullDist::CalcPullDist()
   // open output files
   TFile* hfile1 = 0;
   hfile1 = new TFile("PullDistributions.root","RECREATE","PullDistributions of the Fitted Parameters with respect to their true values");
+  // creating parameter histograms
   for (unsigned int i = 0; i < yyFittedPar.size(); i++) {
     sprintf(histogram_name,"%s Pull Distribution",yyFittedPar[i].name.c_str());
     TH1F* newhist = new TH1F(yyFittedPar[i].name.c_str(),histogram_name,40,-8.,8.);
     histomap.push_back(newhist);
   }
+  // creating observable histograms
+  for (unsigned int i = 0; i < yyMeasuredVec.size(); i++) {
+     sprintf(histogram_name,"%s Pull Distribution",yyMeasuredVec[i].name.c_str());
+     TH1F* newhist = new TH1F(yyMeasuredVec[i].name.c_str(),histogram_name,40,-8.,8.);
+     histomap.push_back(newhist);
+  }
   ndof = yyMeasuredVec.size() - yyFittedPar.size();
   if ( ndof <= 0 ) {
-    ndof = 1;
+     ndof = 1;
   }
   TH1F* chisq_hist = new TH1F("chisq_hist","chisq distribution",3*ndof,0.,(double)(3*ndof));
   TTree* tree = new TTree("tree", "Tree containing fitted parameters");
-  vector<MeasuredValue> leafVec(yyFittedPar.size());
+  vector<MeasuredValue> parLeafVec(yyFittedPar.size());
+
+  //cout << "Adding branch for each parameter to tree" << endl;
   for (unsigned int k = 0; k < yyFittedPar.size(); k++ ) {
-    leafVec[k].name = yyFittedPar[k].name;
-    leafVec[k].value = -1;
-    string str = yyFittedPar[k].name;
-    str.append("/D");
-    cout << "Adding branch " << yyFittedPar[k].name.c_str() << " to tree" << endl;
-    tree->Branch(yyFittedPar[k].name.c_str(), &(leafVec[k].value), str.c_str());
-    str.erase();
+     parLeafVec[k].name = yyFittedPar[k].name;
+     parLeafVec[k].value = -1;
+     string str = yyFittedPar[k].name;
+     str.append("/D");
+     //cout << "Adding branch " << yyFittedPar[k].name.c_str() << " to tree" << endl;
+     tree->Branch(yyFittedPar[k].name.c_str(), &(parLeafVec[k].value), str.c_str());
+     str.erase();
   }
-  cout << "Adding branch Chi2 to tree" << endl;
+
+  //cout << "Adding branch for each observable to tree" << endl;
+  vector<MeasuredValue> obsLeafVec(yyMeasuredVec.size());
+  for (unsigned int k = 0; k < yyMeasuredVec.size(); k++ ) {
+     if (yyMeasuredVec[k].nofit == false) {
+	obsLeafVec[k].name = yyMeasuredVec[k].name;
+	obsLeafVec[k].value = -1;
+	string str = yyMeasuredVec[k].name;
+	str.append("/D");
+	//cout << "Adding branch " << yyMeasuredVec[k].name.c_str() << " to tree" << endl;
+	tree->Branch(yyMeasuredVec[k].name.c_str(), &(obsLeafVec[k].value), str.c_str());
+	str.erase();
+     }
+  }
+
+  //cout << "Adding branch Chi2 to tree" << endl;
   tree->Branch("Chi2", &gchisq, "Chi2/D");
+
+  //for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
+  //   yyMeasuredVec[j].value = pseudoMeasuredObservableVector(j);
+  //}
 
   // loop 
   for (unsigned int  i = 0; i < npulls; i++) {
-    //   smear the observables
-    //    for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {  
-    //      yyMeasuredVec[j].value = gRandom->Gaus(savedMeasuredValues[j].value, 
-    //					     TMath::Sqrt(fInput->GetMeasuredCorrelationMatrix().GetCovariance(j, j)));
-    //    }
+     //   smear the observables
+     //    for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {  
+     //      yyMeasuredVec[j].value = gRandom->Gaus(savedMeasuredValues[j].value, 
+     //					     TMath::Sqrt(fInput->GetMeasuredCorrelationMatrix().GetCovariance(j, j)));
+     //    }
 
-    TVectorD mean(yyMeasuredVec.size());
+     TVectorD mean(yyMeasuredVec.size());
 
-    for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
-      yyMeasuredVec[j].value = savedMeasuredValues[j].value;
-      mean(j) = yyMeasuredVec[j].value;
-    }
+     for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
+	yyMeasuredVec[j].value = savedMeasuredValues[j].value;
+	mean(j) = yyMeasuredVec[j].value;
+     }
 
-    TVectorD thrown(yyMeasuredVec.size());
+     TVectorD thrown(yyMeasuredVec.size());
 
-    thrown = getCorrelatedRandomNumbers( mean, fInput->GetMeasuredCorrelationMatrix().GetCovarianceMatrix() );
+     // TODO Second scattering
 
-    for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
-      yyMeasuredVec[j].value = thrown(j);
-    }
+     thrown = getCorrelatedRandomNumbers( mean, fInput->GetMeasuredCorrelationMatrix().GetCovarianceMatrix() );
 
-//    for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
-//      for (unsigned int k = j; k < yyMeasuredVec.size(); k++) {  
-//	correction = gRandom->Gaus(0., 
-//				    TMath::Sqrt(TMath::Abs(fInput->GetMeasuredCorrelationMatrix().GetCovariance(j, k))));
-//	if (fInput->GetMeasuredCorrelationMatrix().GetCovariance(j, k)>0.) {
-//	  yyMeasuredVec[j].value += 0.5 * correction;
-//	  yyMeasuredVec[k].value += 0.5 * correction;
-//	} else {
-//	  yyMeasuredVec[j].value += 0.5 * correction;
-//	  yyMeasuredVec[k].value -= 0.5 * correction;	  
-//	}
-//      }
-//    }
+     for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
+	yyMeasuredVec[j].value = thrown(j);
+     }
 
-    cout<<"---------------------------------------------------------"<<endl;
-    cout<<"Thrown set of observables for pull fit no "<<i<<":"<<endl;
-    for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
-      cout<<yyMeasuredVec[j].name<<": "<<yyMeasuredVec[j].value<<" (mean value: "
-	  <<savedMeasuredValues[j].value<<")"<<endl;
-    }
-    cout<<"---------------------------------------------------------"<<endl;
+     //    for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
+     //      for (unsigned int k = j; k < yyMeasuredVec.size(); k++) {  
+     //	correction = gRandom->Gaus(0., 
+     //				    TMath::Sqrt(TMath::Abs(fInput->GetMeasuredCorrelationMatrix().GetCovariance(j, k))));
+     //	if (fInput->GetMeasuredCorrelationMatrix().GetCovariance(j, k)>0.) {
+     //	  yyMeasuredVec[j].value += 0.5 * correction;
+     //	  yyMeasuredVec[k].value += 0.5 * correction;
+     //	} else {
+     //	  yyMeasuredVec[j].value += 0.5 * correction;
+     //	  yyMeasuredVec[k].value -= 0.5 * correction;	  
+     //	}
+     //      }
+     //    }
 
-    //   calculate new Fit result...
-    Fittino* fittino = new Fittino(fInput);
-    if ( yyFitModel == MSSM || yyFitModel == NMSSM ) {
-        fittino->calculateTreeLevelValues(10000);
-    }
-    else {
-        fittino->setStartValues();
-    }
-    fittino->calculateLoopLevelValues();
-    cout << "returned from CalculateLoopLevelValues" << endl;
-    // write results
-    for (unsigned int j = 0; j < yyFittedVec.size(); j++) {
-      for (unsigned int k = 0; k < yyFittedPar.size(); k++ ) {
-	if (yyFittedPar[k].name == yyFittedVec[j].name) {
-	  cout << "Parameter " << yyFittedVec[j].name << " is off by " << (yyFittedVec[j].value-yyFittedPar[k].value)/yyFittedPar[k].error << endl;
-	  histomap[k]->Fill((yyFittedVec[j].value-yyFittedPar[k].value)/yyFittedPar[k].error);
-	  cout << "filled..." << endl;
-	  cout << "Copying fitted values into leafVec..." << endl;
-	  if (leafVec[k].name == yyFittedVec[j].name) {
-	    leafVec[k].value = yyFittedVec[j].value;
-	  }
-	  else {
-	    cout<<"Messy leafVec"<<endl;
-	  }
-	  break;
+     cout<<"------------------------------------------------------------"<<endl;
+     cout<<"Thrown set of observables for pull fit no "<<i<<":"<<endl;
+     for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
+	if (yyMeasuredVec[j].nofit == false) {
+	   cout<<yyMeasuredVec[j].name<<": "<<yyMeasuredVec[j].value<<" (mean value: "
+	      <<savedMeasuredValues[j].value<<")"<<endl;
 	}
-      }
-    }
-    cout << "filling chisq hist " << endl;
-    chisq_hist->Fill(gchisq);
-    cout << "filling tree " << endl;
-    tree->Fill();
-    cout << "deleting fittino" << endl;
-    delete fittino;
-    cout << "having deleted fittino" << endl;
+     }
+     cout<<"------------------------------------------------------------"<<endl;
 
-    // deleting yyFittedVec
-    yyFittedVec.clear();
-    leafVec.clear();
+     //   calculate new Fit result...
+     Fittino* fittino = new Fittino(fInput);
+     if ( yyFitModel == MSSM || yyFitModel == NMSSM ) {
+	fittino->calculateTreeLevelValues(10000);
+     }
+     else {
+	fittino->setStartValues();
+     }
+     fittino->calculateLoopLevelValues();
+     cout << "returned from CalculateLoopLevelValues" << endl;
+     // write results
+     for (unsigned int j = 0; j < yyFittedVec.size(); j++) {
+	for (unsigned int k = 0; k < yyFittedPar.size(); k++ ) {
+	   if (yyFittedPar[k].name == yyFittedVec[j].name) {
+	      cout << "Parameter " << yyFittedVec[j].name << " is off by " << (yyFittedVec[j].value-yyFittedPar[k].value)/yyFittedPar[k].error << endl;
+	      histomap[k]->Fill((yyFittedVec[j].value-yyFittedPar[k].value)/yyFittedPar[k].error);
+	      cout << "filled..." << endl;
+	      cout << "Copying fitted values into parLeafVec..." << endl;
+	      if (parLeafVec[k].name == yyFittedVec[j].name) {
+		 parLeafVec[k].value = yyFittedVec[j].value;
+	      }
+	      else {
+		 cout<<"Messy parLeafVec"<<endl;
+	      }
+	      break;
+	   }
+	}
+     }
+     cout << "Copying observables into obsLeafVec..." << endl;
+     for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
+	obsLeafVec[j].value = yyMeasuredVec[j].value;
+     }
+     cout << "filling chisq hist " << endl;
+     chisq_hist->Fill(gchisq);
+     cout << "filling tree " << endl;
+     tree->Fill();
+     cout << "deleting fittino" << endl;
+     delete fittino;
+     cout << "having deleted fittino" << endl;
+
+     // deleting yyFittedVec
+     yyFittedVec.clear();
+     parLeafVec.clear();
+     obsLeafVec.clear();
   }
 
   // write Histos to file
   for (unsigned int i = 0; i < yyFittedPar.size(); i++) {
-    histomap[i]->Write();
+     histomap[i]->Write();
   }  
   chisq_hist->Write();
   tree->Write();

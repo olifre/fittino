@@ -157,6 +157,7 @@ bool          yyPerformSingleFits = false;
 bool          yyUseHiggsLimits = false;
 bool          yyQuarkFlavourViolation = false;
 bool          yyRandomParameters = false;
+bool          yyUseObservableScatteringBefore = false;
 
 unsigned int yyCalculator;
 unsigned int yyRelicDensityCalculator;
@@ -164,6 +165,7 @@ string       yyCalculatorPath = "";
 string       yyRelicDensityCalculatorPath = "";
 
 unsigned int yyFitModel = MSSM;
+unsigned int yySeedForObservableScattering = 1;
  
 map<int,string> yyParticleNames;
 map<string,int> yyParticleIDs;
@@ -310,6 +312,10 @@ input:
 		else if (!strcmp($2,"RandomGeneratorSeed")) {
 		  // cout << "FOUND RandomGeneratorSeed "<<$3<<endl;
 		  yyRandomGeneratorSeed = (int)$3;
+                }
+		else if (!strcmp($2,"SeedForObservableScattering")) {
+		  // cout << "FOUND SeedForObservableScattering "<<$3<<endl;
+		  yySeedForObservableScattering = (int)$3;
                 }
 		else if (!strcmp($2,"NumberOfDirections")) {
 		  // cout << "FOUND NumberOfDirections "<<$3<<endl;
@@ -1101,6 +1107,10 @@ input:
 		      if ($3 == on) yyRandomParameters = true;
 		      else yyRandomParameters = false;
 		  }
+		  if (!strcmp($2, "UseObservableScatteringBefore")) {
+		      if ($3 == on) yyUseObservableScatteringBefore = true;
+		      else yyUseObservableScatteringBefore = false;
+		  }
 	      }
 	    | input T_CALCULATOR T_WORD
 	      {
@@ -1167,6 +1177,7 @@ input:
 		     yyFittedPar.push_back(tmpparam);
 		  }  
 		  else if (!strcmp($2,"fitModel")) {
+		    cout << "------------------------------------------------------------" << endl;
 		    cout<<"Fitting "<<$3<<" model"<<endl;
 		    if (!strcmp($3, "MSSM"))
 		      yyFitModel = MSSM;

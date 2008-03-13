@@ -79,8 +79,10 @@ extern bool yyPerformSingleFits;
 extern bool yyUseHiggsLimits;
 extern bool yyQuarkFlavourViolation;
 extern bool yyRandomParameters;
+extern bool yyUseObservableScatteringBefore;
 
 extern unsigned int yyNumberOfMinimizations;
+extern unsigned int yySeedForObservableScattering;
 
 typedef struct {
   string name;

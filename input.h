@@ -44,6 +44,7 @@ public:
     string ReturnParticleName(int ID);
     void FillNameMap();
     void DumpMeasuredVector();
+    void ScatterObservablesBefore();
 };
 
 #endif

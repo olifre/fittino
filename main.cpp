@@ -101,6 +101,7 @@ int main(int argc, char** argv)
       }
   }
 
+  cout << "------------------------------------------------------------" << endl;
   cout << "Reading input from file " << inputfilename << endl;
   Input* input = new Input(inputfilename);
 
@@ -122,9 +123,9 @@ int main(int argc, char** argv)
   //  }
   //  cout<<yyInputFile[i].postvalue;
   //}
-
-  for (unsigned int i=0; i<yyRandomPar.size(); i++) {
-     cout << yyRandomPar[i].name << endl;
+   
+  if (yyUseObservableScatteringBefore) {
+     input->ScatterObservablesBefore();
   }
 
   if (yyCalcIndChisqContr) {
@@ -139,30 +140,34 @@ int main(int argc, char** argv)
   
   else {
 
-    cout << "Constructing fittino" << endl;
-    Fittino* fittino = new Fittino(input);
-    
-    if ( yyFitModel == MSSM || yyFitModel == NMSSM ) {
-      cout << "Calculating tree level values" << endl;
-      fittino->calculateTreeLevelValues(10000);
-    }
-    else if (yyFitModel == mSUGRA || yyFitModel == XMSUGRA || yyFitModel == GMSB || yyFitModel == AMSB) {
-      cout << "Setting fit start values" << endl;
-      fittino->setStartValues();
-    }
-    if (yyRandomParameters) {
-       fittino->CalcFromRandPars(1000);
-    }
-    else {
-       if (yyUseLoopCorrections) {
-	  cout << "Calculating loop level values" << endl;
-	  fittino->calculateLoopLevelValues();
-       }
+     cout << "------------------------------------------------------------" << endl;
+     cout << "Constructing fittino" << endl;
+     Fittino* fittino = new Fittino(input);
 
-       if (yyPerformFit) {
-	  fittino->writeResults("fittino.out");
-       }
-    }
+     if ( yyFitModel == MSSM || yyFitModel == NMSSM ) {
+	cout << "------------------------------------------------------------" << endl;
+	cout << "Calculating tree level values" << endl;
+	fittino->calculateTreeLevelValues(10000);
+     }
+     else if (yyFitModel == mSUGRA || yyFitModel == XMSUGRA || yyFitModel == GMSB || yyFitModel == AMSB) {
+	cout << "------------------------------------------------------------" << endl;
+	cout << "Setting fit start values" << endl;
+	fittino->setStartValues();
+     }
+     if (yyRandomParameters) {
+	fittino->CalcFromRandPars(1000);
+     }
+     else {
+	if (yyUseLoopCorrections) {
+	   cout << "------------------------------------------------------------" << endl;
+	   cout << "Calculating loop level values" << endl;
+	   fittino->calculateLoopLevelValues();
+	}
+
+	if (yyPerformFit) {
+	   fittino->writeResults("fittino.out");
+	}
+     }
   }
 
   return 0;
