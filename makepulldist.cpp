@@ -212,15 +212,14 @@ void MakePullDist::CalcPullDist()
      //      }
      //    }
 
-     cout<<"------------------------------------------------------------"<<endl;
+     // test printouts for observable value scattering
+     cout << yyDashedLine << endl;
      cout<<"Thrown set of observables for pull fit no "<<i<<":"<<endl;
      for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
 	if (yyMeasuredVec[j].nofit == false) {
-	   cout<<yyMeasuredVec[j].name<<": "<<yyMeasuredVec[j].value<<" (mean value: "
-	      <<savedMeasuredValues[j].value<<")"<<endl;
+	   cout << yyMeasuredVec[j].name << ": " << yyMeasuredVec[j].value << " (deviation from mean value " << savedMeasuredValues[j].value << " within " << TMath::Ceil((TMath::Abs(yyMeasuredVec[j].value-savedMeasuredValues[j].value)/yyMeasuredVec[j].error)) <<" sigma)" <<endl;
 	}
      }
-     cout<<"------------------------------------------------------------"<<endl;
 
      //   calculate new Fit result...
      Fittino* fittino = new Fittino(fInput);
