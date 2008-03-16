@@ -101,7 +101,7 @@ int main(int argc, char** argv)
       }
   }
 
-  cout << "------------------------------------------------------------" << endl;
+  cout << yyDashedLine << endl;
   cout << "Reading input from file " << inputfilename << endl;
   Input* input = new Input(inputfilename);
 
@@ -140,17 +140,17 @@ int main(int argc, char** argv)
   
   else {
 
-     cout << "------------------------------------------------------------" << endl;
+     cout << yyDashedLine << endl;
      cout << "Constructing fittino" << endl;
      Fittino* fittino = new Fittino(input);
 
      if ( yyFitModel == MSSM || yyFitModel == NMSSM ) {
-	cout << "------------------------------------------------------------" << endl;
+	cout << yyDashedLine << endl;
 	cout << "Calculating tree level values" << endl;
 	fittino->calculateTreeLevelValues(10000);
      }
      else if (yyFitModel == mSUGRA || yyFitModel == XMSUGRA || yyFitModel == GMSB || yyFitModel == AMSB) {
-	cout << "------------------------------------------------------------" << endl;
+	cout << yyDashedLine << endl;
 	cout << "Setting fit start values" << endl;
 	fittino->setStartValues();
      }
@@ -159,7 +159,7 @@ int main(int argc, char** argv)
      }
      else {
 	if (yyUseLoopCorrections) {
-	   cout << "------------------------------------------------------------" << endl;
+	   cout << yyDashedLine << endl;
 	   cout << "Calculating loop level values" << endl;
 	   fittino->calculateLoopLevelValues();
 	}

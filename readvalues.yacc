@@ -161,8 +161,12 @@ bool          yyUseObservableScatteringBefore = false;
 
 unsigned int yyCalculator;
 unsigned int yyRelicDensityCalculator;
+unsigned int yyLEOCalculator;
+
 string       yyCalculatorPath = "";
 string       yyRelicDensityCalculatorPath = "";
+string       yyLEOCalculatorPath = "";
+string       yyDashedLine = "------------------------------------------------------------";
 
 unsigned int yyFitModel = MSSM;
 unsigned int yySeedForObservableScattering = 1;
@@ -213,6 +217,38 @@ double        yyOmega  = -10000.;   //  1   relic density
 //==============================================================
 double        yygSquaredAh  = -10000.;   // hAZ coupling correction
 double        yygSquaredZh  = -10000.;   // hZZ coupling correction
+//==============================================================
+// BLOCK PREDICT
+double        yyBsg_npf        = -10000.;  // R(B->s gamma)
+double        yydm_s_npf       = -10000.;  // R(Delta m_s)
+double        yyB_smm_npf      = -10000.;  // B(Bs->mumu)
+double        yyBtn_npf        = -10000.;  // R(B->tau nu)
+double        yyB_sXsll_npf    = -10000.;  // R(Bs->Xsll)
+double        yyKtn_npf        = -10000.;  // R(K->tau nu)
+double        yygmin2m_npf     = -10000.;  // D(g-2)
+double        yymassW_npf      = -10000.;  // m(W)
+double        yysin_th_eff_npf = -10000.;  // sin(th_eff(Qfb))
+double        yyGammaZ_npf     = -10000.;  // Gamma(Z)
+double        yyR_l_npf        = -10000.;  // R_l (l=e,mu)
+double        yyR_b_npf        = -10000.;  // R_b
+double        yyR_c_npf        = -10000.;  // R_c
+double        yyA_fbb_npf      = -10000.;  // A_fb(b)
+double        yyA_fbc_npf      = -10000.;  // A_fb(c)
+double        yyA_b_npf        = -10000.;  // A_b
+double        yyA_c_npf        = -10000.;  // A_c
+double        yyA_lSLD_npf     = -10000.;  // A_l(SLD)
+double        yymassh0_npf     = -10000.;  // m(h0)
+double        yyOmega_npf      = -10000.;  // Omega_h
+double        yyA_lP_tau_npf   = -10000.;  // A_l(P_tau)
+double        yyA_fbl_npf      = -10000.;  // A_fb(l)
+double        yysigma_had0_npf = -10000.;  // sigma_had^0
+double        yydm_d_npf       = -10000.;  // R(Delta m_d)
+double        yydm_k_npf       = -10000.;  // R(Delta m_k)
+double        yyKppinn_npf     = -10000.;  // R(Kp->pinn)
+double        yyB_dll_npf      = -10000.;  // B(Bd->ll)
+double        yyDmsDmd_npf     = -10000.;  // R(Dms)/R(Dmd)
+double        yyD_0_npf        = -10000.;  // D_0(K*gamma)
+double        yybsg_npf        = -10000.;  // B(b->sg)
 //##############################################################
 
 double        yyMaxCalculatorTime = 20.;
@@ -243,7 +279,7 @@ struct correrrorstruct {
 %token <real> T_NUMBER
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
 %token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS T_NOFIT
-%token T_BLOCK T_SCALE T_DECAY T_NEWLINE T_BR T_LEO T_XS T_CALCULATOR T_RELICDENSITYCALCULATOR T_XSBR T_BRRATIO
+%token T_BLOCK T_SCALE T_DECAY T_NEWLINE T_BR T_LEO T_XS T_CALCULATOR T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH T_NEWLINE
  
 %type <name>   sentence
@@ -1164,6 +1200,29 @@ input:
 		   }
 	           yyRelicDensityCalculatorPath = $4;
 	      }
+	    | input T_LEOCALCULATOR T_WORD
+	      {
+                   yyInputFileLine.prevalue  = "LEOCalculator";
+		   yyInputFileLine.prevalue += "\t";
+		   yyInputFileLine.prevalue += $3;
+
+		   if (!strcmp($3, "NPFITTER")) {
+		      yyLEOCalculator = NPFITTER;
+		   }
+	      }
+	    | input T_LEOCALCULATOR T_WORD T_PATH
+	      {
+                   yyInputFileLine.prevalue  = "LEOCalculator";
+		   yyInputFileLine.prevalue += "\t";
+		   yyInputFileLine.prevalue += $3;
+		   yyInputFileLine.prevalue += " ";
+                   yyInputFileLine.prevalue += $4;
+
+		   if (!strcmp($3, "NPFITTER")) {
+		      yyLEOCalculator = NPFITTER;
+		   }
+	           yyLEOCalculatorPath = $4;
+	      }
 	    | input T_KEY T_WORD
 	      {
 		  yyInputFileLine.prevalue  = $2;
@@ -1177,7 +1236,7 @@ input:
 		     yyFittedPar.push_back(tmpparam);
 		  }  
 		  else if (!strcmp($2,"fitModel")) {
-		    cout << "------------------------------------------------------------" << endl;
+		    cout << yyDashedLine << endl;
 		    cout<<"Fitting "<<$3<<" model"<<endl;
 		    if (!strcmp($3, "MSSM"))
 		      yyFitModel = MSSM;
@@ -1588,26 +1647,126 @@ input:
                   //=================================
 		  if (!strcmp($4, "bsg")) {
 		    tmpValue.id    = bsg;
-		  } else if (!strcmp($4, "bsmm")) {
+		  } 
+		  else if (!strcmp($4, "bsmm")) {
 		    tmpValue.id    = bsmm;
-		  } else if (!strcmp($4, "B_smm")) {
+		  } 
+		  else if (!strcmp($4, "B_smm")) {
 		    tmpValue.id    = B_smm;
-		  } else if (!strcmp($4, "B_utn")) {
+		  } 
+		  else if (!strcmp($4, "B_utn")) {
 		    tmpValue.id    = B_utn;
-		  } else if (!strcmp($4, "dMB_d")) {
+		  } 
+		  else if (!strcmp($4, "dMB_d")) {
 		    tmpValue.id    = dMB_d;
-		  } else if (!strcmp($4, "dMB_s")) {
+		  } 
+		  else if (!strcmp($4, "dMB_s")) {
 		    tmpValue.id    = dMB_s;
-		  } else if (!strcmp($4, "gmin2e")) {
+		  } 
+		  else if (!strcmp($4, "gmin2e")) {
 		    tmpValue.id    = gmin2e;
-		  } else if (!strcmp($4, "gmin2m")) {
+		  } 
+		  else if (!strcmp($4, "gmin2m")) {
 		    tmpValue.id    = gmin2m;
-		  } else if (!strcmp($4, "gmin2t")) {
+		  } 
+		  else if (!strcmp($4, "gmin2t")) {
 		    tmpValue.id    = gmin2t;
-		  } else if (!strcmp($4, "drho")) {
+		  } 
+		  else if (!strcmp($4, "drho")) {
 		    tmpValue.id    = drho;
-		  } else if (!strcmp($4, "omega")) {
+		  } 
+		  else if (!strcmp($4, "omega")) {
 		    tmpValue.id    = omega;
+		  }
+		  else if (!strcmp($4, "Bsg_npf")) {
+		    tmpValue.id    = Bsg_npf;
+		  }
+		  else if (!strcmp($4, "dm_s_npf")) {
+		    tmpValue.id    = dm_s_npf;
+		  }		  
+		  else if (!strcmp($4, "B_smm_npf")) {
+		    tmpValue.id    = B_smm_npf;
+		  }		  
+		  else if (!strcmp($4, "Btn_npf")) {
+		    tmpValue.id    = Btn_npf;
+		  }		  
+		  else if (!strcmp($4, "B_sXsll_npf")) {
+		    tmpValue.id    = B_sXsll_npf;
+		  }		  
+		  else if (!strcmp($4, "Ktn_npf")) {
+		    tmpValue.id    = Ktn_npf;
+		  }		  
+		  else if (!strcmp($4, "gmin2m_npf")) {
+		    tmpValue.id    = gmin2m_npf;
+		  }		  
+		  else if (!strcmp($4, "massW_npf")) {
+		    tmpValue.id    = massW_npf;
+		  }		  
+		  else if (!strcmp($4, "sin_th_eff_npf")) {
+		    tmpValue.id    = sin_th_eff_npf;
+		  }		  
+		  else if (!strcmp($4, "GammaZ_npf")) {
+		    tmpValue.id    = GammaZ_npf;
+		  }		  
+		  else if (!strcmp($4, "R_l_npf")) {
+		    tmpValue.id    = R_l_npf;
+		  }		  
+		  else if (!strcmp($4, "R_b_npf")) {
+		    tmpValue.id    = R_b_npf;
+		  }		  
+		  else if (!strcmp($4, "R_c_npf")) {
+		    tmpValue.id    = R_c_npf;
+		  }		  
+		  else if (!strcmp($4, "A_fbb_npf")) {
+		    tmpValue.id    = A_fbb_npf;
+		  }		  
+		  else if (!strcmp($4, "A_fbc_npf")) {
+		    tmpValue.id    = A_fbc_npf;
+		  }		  
+		  else if (!strcmp($4, "A_b_npf")) {
+		    tmpValue.id    = A_b_npf;
+		  }		  
+		  else if (!strcmp($4, "A_c_npf")) {
+		    tmpValue.id    = A_c_npf;
+		  }		  
+		  else if (!strcmp($4, "A_lSLD_npf")) {
+		    tmpValue.id    = A_lSLD_npf;
+		  }		  
+		  else if (!strcmp($4, "massh0_npf")) {
+		    tmpValue.id    = massh0_npf;
+		  }		  
+		  else if (!strcmp($4, "Omega_npf")) {
+		    tmpValue.id    = Omega_npf;
+		  }		  
+		  else if (!strcmp($4, "A_lP_tau_npf")) {
+		    tmpValue.id    = A_lP_tau_npf;
+		  }		  
+		  else if (!strcmp($4, "A_fbl_npf")) {
+		    tmpValue.id    = A_fbl_npf;
+		  }		  
+		  else if (!strcmp($4, "sigma_had0_npf")) {
+		    tmpValue.id    = sigma_had0_npf;
+		  }		  
+		  else if (!strcmp($4, "dm_d_npf")) {
+		    tmpValue.id    = dm_d_npf;
+		  }		  
+		  else if (!strcmp($4, "dm_k_npf")) {
+		    tmpValue.id    = dm_k_npf;
+		  }		  
+		  else if (!strcmp($4, "Kppinn_npf")) {
+		    tmpValue.id    = Kppinn_npf;
+		  }		  
+		  else if (!strcmp($4, "B_dll_npf")) {
+		    tmpValue.id    = B_dll_npf;
+		  }		  
+		  else if (!strcmp($4, "DmsDmd_npf")) {
+		    tmpValue.id    = DmsDmd_npf;
+		  }		  
+		  else if (!strcmp($4, "D_0_npf")) {
+		    tmpValue.id    = D_0_npf;
+		  }		  
+		  else if (!strcmp($4, "bsg_npf")) {
+		    tmpValue.id    = bsg_npf;
 		  }
                   //=================================
 		  tmpValue.value = $6;
@@ -1638,26 +1797,126 @@ input:
                   //==================================
 		  if (!strcmp($4, "bsg")) {
 		    tmpValue.id    = bsg;
-		  } else if (!strcmp($4, "bsmm")) {
+		  } 
+		  else if (!strcmp($4, "bsmm")) {
 		    tmpValue.id    = bsmm;
-		  } else if (!strcmp($4, "B_smm")) {
+		  } 
+		  else if (!strcmp($4, "B_smm")) {
 		    tmpValue.id    = B_smm;
-		  } else if (!strcmp($4, "B_utn")) {
+		  } 
+		  else if (!strcmp($4, "B_utn")) {
 		    tmpValue.id    = B_utn;
-		  } else if (!strcmp($4, "dMB_d")) {
+		  } 
+		  else if (!strcmp($4, "dMB_d")) {
 		    tmpValue.id    = dMB_d;
-		  } else if (!strcmp($4, "dMB_s")) {
+		  } 
+		  else if (!strcmp($4, "dMB_s")) {
 		    tmpValue.id    = dMB_s;
-		  } else if (!strcmp($4, "gmin2e")) {
+		  } 
+		  else if (!strcmp($4, "gmin2e")) {
 		    tmpValue.id    = gmin2e;
-		  } else if (!strcmp($4, "gmin2m")) {
+		  } 
+		  else if (!strcmp($4, "gmin2m")) {
 		    tmpValue.id    = gmin2m;
-		  } else if (!strcmp($4, "gmin2t")) {
+		  } 
+		  else if (!strcmp($4, "gmin2t")) {
 		    tmpValue.id    = gmin2t;
-		  } else if (!strcmp($4, "drho")) {
+		  } 
+		  else if (!strcmp($4, "drho")) {
 		    tmpValue.id    = drho;
-		  } else if (!strcmp($4, "omega")) {
+		  } 
+		  else if (!strcmp($4, "omega")) {
 		    tmpValue.id    = omega;
+		  }
+		  else if (!strcmp($4, "Bsg_npf")) {
+		    tmpValue.id    = Bsg_npf;
+		  }
+		  else if (!strcmp($4, "dm_s_npf")) {
+		    tmpValue.id    = dm_s_npf;
+		  }		  
+		  else if (!strcmp($4, "B_smm_npf")) {
+		    tmpValue.id    = B_smm_npf;
+		  }		  
+		  else if (!strcmp($4, "Btn_npf")) {
+		    tmpValue.id    = Btn_npf;
+		  }		  
+		  else if (!strcmp($4, "B_sXsll_npf")) {
+		    tmpValue.id    = B_sXsll_npf;
+		  }		  
+		  else if (!strcmp($4, "Ktn_npf")) {
+		    tmpValue.id    = Ktn_npf;
+		  }		  
+		  else if (!strcmp($4, "gmin2m_npf")) {
+		    tmpValue.id    = gmin2m_npf;
+		  }		  
+		  else if (!strcmp($4, "massW_npf")) {
+		    tmpValue.id    = massW_npf;
+		  }		  
+		  else if (!strcmp($4, "sin_th_eff_npf")) {
+		    tmpValue.id    = sin_th_eff_npf;
+		  }		  
+		  else if (!strcmp($4, "GammaZ_npf")) {
+		    tmpValue.id    = GammaZ_npf;
+		  }		  
+		  else if (!strcmp($4, "R_l_npf")) {
+		    tmpValue.id    = R_l_npf;
+		  }		  
+		  else if (!strcmp($4, "R_b_npf")) {
+		    tmpValue.id    = R_b_npf;
+		  }		  
+		  else if (!strcmp($4, "R_c_npf")) {
+		    tmpValue.id    = R_c_npf;
+		  }		  
+		  else if (!strcmp($4, "A_fbb_npf")) {
+		    tmpValue.id    = A_fbb_npf;
+		  }		  
+		  else if (!strcmp($4, "A_fbc_npf")) {
+		    tmpValue.id    = A_fbc_npf;
+		  }		  
+		  else if (!strcmp($4, "A_b_npf")) {
+		    tmpValue.id    = A_b_npf;
+		  }		  
+		  else if (!strcmp($4, "A_c_npf")) {
+		    tmpValue.id    = A_c_npf;
+		  }		  
+		  else if (!strcmp($4, "A_lSLD_npf")) {
+		    tmpValue.id    = A_lSLD_npf;
+		  }		  
+		  else if (!strcmp($4, "massh0_npf")) {
+		    tmpValue.id    = massh0_npf;
+		  }		  
+		  else if (!strcmp($4, "Omega_npf")) {
+		    tmpValue.id    = Omega_npf;
+		  }		  
+		  else if (!strcmp($4, "A_lP_tau_npf")) {
+		    tmpValue.id    = A_lP_tau_npf;
+		  }		  
+		  else if (!strcmp($4, "A_fbl_npf")) {
+		    tmpValue.id    = A_fbl_npf;
+		  }		  
+		  else if (!strcmp($4, "sigma_had0_npf")) {
+		    tmpValue.id    = sigma_had0_npf;
+		  }		  
+		  else if (!strcmp($4, "dm_d_npf")) {
+		    tmpValue.id    = dm_d_npf;
+		  }		  
+		  else if (!strcmp($4, "dm_k_npf")) {
+		    tmpValue.id    = dm_k_npf;
+		  }		  
+		  else if (!strcmp($4, "Kppinn_npf")) {
+		    tmpValue.id    = Kppinn_npf;
+		  }		  
+		  else if (!strcmp($4, "B_dll_npf")) {
+		    tmpValue.id    = B_dll_npf;
+		  }		  
+		  else if (!strcmp($4, "DmsDmd_npf")) {
+		    tmpValue.id    = DmsDmd_npf;
+		  }		  
+		  else if (!strcmp($4, "D_0_npf")) {
+		    tmpValue.id    = D_0_npf;
+		  }		  
+		  else if (!strcmp($4, "bsg_npf")) {
+		    tmpValue.id    = bsg_npf;
 		  }
                   //==================================
 		  cout << "T_COMPARATOR " << $4 << " " << $6 << " " << $7 << endl;
@@ -3003,43 +3262,43 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
                   }
 //========================================================================
                   else if (!strcmp($2, "SPhenoINFO")) {
-		    // cout << "reading SPhenoINFO " << endl;
+		    // cout << "Reading SPhenoINFO " << endl;
 		  }
 //========================================================================
                   else if (!strcmp($2, "alpha")) {
-		      cout << "ignoring block alpha" << endl;
+		      cout << "Ignoring block alpha" << endl;
 		  }
 //========================================================================
                   else if (!strcmp($2, "USQmix")) {
-		      cout << "ignoring block USQmix" << endl;
+		      cout << "Ignoring block USQmix" << endl;
 		  }
 //========================================================================
                   else if (!strcmp($2, "DSQmix")) {
-		      cout << "ignoring block DSQmix" << endl;
+		      cout << "Ignoring block DSQmix" << endl;
 		  }
 //========================================================================
                   else if (!strcmp($2, "IMUSQmix")) {
-		      cout << "ignoring block IMUSQmix" << endl;
+		      cout << "Ignoring block IMUSQmix" << endl;
 		  }
 //========================================================================
                   else if (!strcmp($2, "IMDSQmix")) {
-		      cout << "ignoring block IMDSQmix" << endl;
+		      cout << "Ignoring block IMDSQmix" << endl;
 		  }
 //========================================================================
                   else if (!strcmp($2, "SLmix")) {
-		      cout << "ignoring block SLmix" << endl;
+		      cout << "Ignoring block SLmix" << endl;
 		  }
 //========================================================================
                   else if (!strcmp($2, "IMSLmix")) {
-		      cout << "ignoring block IMSLmix" << endl;
+		      cout << "Ignoring block IMSLmix" << endl;
 		  }
 //========================================================================
                   else if (!strcmp($2, "SNmix")) {
-		      cout << "ignoring block SNmix" << endl;
+		      cout << "Ignoring block SNmix" << endl;
 		  }
 //========================================================================
                   else if (!strcmp($2, "IMSNmix")) {
-		      cout << "ignoring block IMSNmix" << endl;
+		      cout << "Ignoring block IMSNmix" << endl;
 		  }
 //========================================================================
                   else if (!strcmp($2, "EXTPAR")) {
@@ -3167,8 +3426,11 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 
 		  // SPhenoLowEnergy 
 //========================================================================
-                  //==========================================
                   else if (!strcmp($2, "SPhenoLowEnergy")) {
+		     if (yyLEOCalculator) {
+			cout << "Ignoring block SPhenoLowEnergy" << endl;
+		     }
+		     else 
                       for (unsigned int i=0; i<tmpParams.size(); i++) {
 			if ((unsigned int)tmpParams[i][0]==1) {
      			  yybsg=tmpParams[i][1];
@@ -3208,320 +3470,417 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 			}
                       }
                   }
-                  //==========================================
-		  // MicrOmegas 
+
+		  // PREDICT 
 //========================================================================
-                  else if (!strcmp($2, "MicrOmegas")) {
-		    for (unsigned int i=0; i<tmpParams.size(); i++) {
-		      if ((unsigned int)tmpParams[i][0]==1) {
-			yyOmega=tmpParams[i][1];
+                  else if (!strcmp($2, "PREDICT")) {
+                      for (unsigned int i=0; i<tmpParams.size(); i++) {
+			 if ((unsigned int)tmpParams[i][0]==1) {
+			    yyBsg_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==2) {
+			    yydm_s_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==3) {
+			    yyB_smm_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==4) {
+			    yyBtn_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==5) {
+			    yyB_sXsll_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==6) {
+			    yyKtn_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==7) {
+			    yygmin2m_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==8) {
+			    yymassW_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==9) {
+			    yysin_th_eff_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==10) {
+			    yyGammaZ_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==11) {
+			    yyR_l_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==12) {
+			    yyR_b_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==13) {
+			    yyR_c_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==14) {
+			    yyA_fbb_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==15) {
+			    yyA_fbc_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==16) {
+			    yyA_b_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==17) {
+			    yyA_c_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==18) {
+			    yyA_lSLD_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==19) {
+			    yymassh0_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==20) {
+			    yyOmega_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==21) {
+			    yyA_lP_tau_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==22) {
+			    yyA_fbl_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==23) {
+			    yysigma_had0_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==24) {
+			    yydm_d_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==25) {
+			    yydm_k_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==26) {
+			    yyKppinn_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==27) {
+			    yyB_dll_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==28) {
+			    yyDmsDmd_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==29) {
+			    yyD_0_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==30) {
+			    yybsg_npf=tmpParams[i][1];
+			 }
 		      }
-		    }
-                  }
+		  }
+
+                  // MicrOmegas 
 //========================================================================
-                  else if (!strcmp($2, "stopmix")) {
-//		    for (unsigned int i=0; i<tmpParams.size(); i++) {
-
-//		    }
-                  }
-                  else if (!strcmp($2, "sbotmix")) {
-//		    for (unsigned int i=0; i<tmpParams.size(); i++) {
-
-//		    }
-                  }
-                  else if (!strcmp($2, "staumix")) {
-	            yyThetaStau = TMath::ACos(tmpParams[0][2]);
-
-//		    for (unsigned int i=0; i<tmpParams.size(); i++) {
-
-//		    }
-                  }
-                  else if (!strcmp($2, "Nmix")) {
-	            yyN11 = tmpParams[0][2];
-	            yyN12 = tmpParams[1][2];
-	            yyN13 = tmpParams[2][2];
-
-//		    for (unsigned int i=0; i<tmpParams.size(); i++) {
-
-//		    }
-                  }
-                  else if (!strcmp($2, "Umix")) {
-//		    for (unsigned int i=0; i<tmpParams.size(); i++) {
-
-//		    }
-                  }
-                  else if (!strcmp($2, "Vmix")) {
-//		    for (unsigned int i=0; i<tmpParams.size(); i++) {
-
-//		    }
-                  }
-                  else if (!strcmp($2, "SPhenoCrossSections")) {
-		    // cout << "starting to read XS..." << endl;
-                  }
-	          else {
-	            printf("Unknown block: %s\n", $2);
-                    yyerror("");
-                  }
-
-                  tmpParams.clear();
-              }
-
+		  else if (!strcmp($2, "MicrOmegas")) {
+		     for (unsigned int i=0; i<tmpParams.size(); i++) {
+			if ((unsigned int)tmpParams[i][0]==1) {
+			   yyOmega=tmpParams[i][1];
+			}
+		     }
+		  }
 //========================================================================
-//========================================================================
-            | T_BLOCK T_WORD T_SCALE T_NUMBER T_NEWLINE parameters
-              {
-                  yyScale = $4;
-                  printf("Reading block %s at scale %f...\n", $2, $4);
+		  else if (!strcmp($2, "stopmix")) {
+		     //		    for (unsigned int i=0; i<tmpParams.size(); i++) {
 
-		  if ( !strcmp( $2, "Ye" ) ) {
-		      yyYtau = tmpParams[2][2];
-                  }
-		  if ( !strcmp( $2, "gauge" ) ) {
-		      yygprime = tmpParams[0][1];
-		      yyg = tmpParams[1][1];
-                  }
+		     //		    }
+		  }
+		  else if (!strcmp($2, "sbotmix")) {
+		     //		    for (unsigned int i=0; i<tmpParams.size(); i++) {
 
-                  tmpParams.clear();
-              }
-            | T_BLOCK T_WORD T_NUMBER T_NEWLINE parameters
-              {
-                  yyScale = $3;
-                  printf("Reading block %s at scale %f...\n", $2, $3);
+		     //		    }
+		  }
+		  else if (!strcmp($2, "staumix")) {
+		     yyThetaStau = TMath::ACos(tmpParams[0][2]);
 
-                  tmpParams.clear();
-              }
-            ;
+		     //		    for (unsigned int i=0; i<tmpParams.size(); i++) {
 
-//========================================================================
-//========================================================================
-//========================================================================
-//========================================================================
-decay:      T_DECAY T_NUMBER T_NUMBER T_NEWLINE parameters
-              {
-//                  printf("Reading decay %i...\n", (int)$2);
-                  tmp_branch.decays.clear();
-//                  cout << "branch cleared, tmpParams.size() = "<<tmpParams.size() << endl;
-		  if (tmpParams.size()>0) {
-                      for (unsigned int i=0; i<tmpParams.size(); i++) {
-//                         cout << "loop "<<i<<endl;
-                         tmpVec.clear();
-                         tmpVec.push_back(tmpParams[i][0]);
-                         tmpVec.push_back(tmpParams[i][1]);
-//                         cout << "filled BR and no of daughters" << endl;
-        	         for (unsigned int j=2; j<2+tmpParams[i][1]; j++) {
-//                             cout << "tmpParams["<<i<<"]["<<j<<"] = "<<tmpParams[i][j]<<endl;
-    		             tmpVec.push_back(tmpParams[i][j]);
-                         }
-                         tmp_branch.decays.push_back(tmpVec);
-                      }
-    		  tmp_branch.TWidth = $3;
-    		  branching_ratios[(int)$2] = tmp_branch;
-		  } else {
-    		      tmp_branch.TWidth = 0.;	
-		      tmpVec.clear();
-                      tmpVec.push_back(0.);
-                      tmpVec.push_back(0.);
-                      tmp_branch.decays.push_back(tmpVec);
-       		      branching_ratios[(int)$2] = tmp_branch;
-                  }
-		  tmpParams.clear();
-              }
-            ;	
+		     //		    }
+		  }
+		  else if (!strcmp($2, "Nmix")) {
+		     yyN11 = tmpParams[0][2];
+		     yyN12 = tmpParams[1][2];
+		     yyN13 = tmpParams[2][2];
 
-//========================================================================
-//========================================================================
-//========================================================================
-//========================================================================
-xs:         T_XS T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NEWLINE parameters
-              {
-		// printf("Reading xs %i...\n", (int)$2);
+		     //		    for (unsigned int i=0; i<tmpParams.size(); i++) {
 
-                  tmp_xs.xs.clear();
-//                  cout << "branch cleared, tmpParams.size() = "<<tmpParams.size() << endl;
-		  if (tmpParams.size()>0) {
-                      for (unsigned int i=0; i<tmpParams.size(); i++) {
-//                         cout << "loop "<<i<<endl;
-                         tmpVec.clear();
-                         tmpVec.push_back(tmpParams[i][0]);
-                         tmpVec.push_back(tmpParams[i][1]);
-//                         cout << "filled XS and no of primaries" << endl;
-	                 for (unsigned int j=2; j<2+tmpParams[i][1]; j++) {
-//                             cout << "tmpParams["<<i<<"]["<<j<<"] = "<<tmpParams[i][j]<<endl;
-		             tmpVec.push_back(tmpParams[i][j]);
-                         }
-                         tmp_xs.xs.push_back(tmpVec);
-                      }
-		      tmp_xs.initials[0] = (int)$2;
-		      tmp_xs.initials[1] = (int)$3;
-		      tmp_xs.ecm = $4;
-		      tmp_xs.polarisation[0] = $5;
-		      tmp_xs.polarisation[1] = $6;
-		      tmp_xs.isr = (int)$7;
-		      tmp2Vec.clear();
-		      tmp2Vec.push_back($2);
-		      tmp2Vec.push_back($4);
-		      tmp2Vec.push_back($5);
-		      tmp2Vec.push_back($6);
-		      cross_sections[tmp2Vec] = tmp_xs;
-//                      cout << "filling xs for " << $2 << " " << $5 << " " << $6 << endl;
-//		      for (unsigned int k=0; k<tmp_xs.xs.size();k++ ) {
-//		       cout <<  " k = " << k << " products " << tmp_xs.xs[k][2] << 
-//                              " " << tmp_xs.xs[k][3] << endl;
-//                      }
-		  } else {
-		      tmp_xs.initials[0] = (int)$2;
-		      tmp_xs.initials[1] = (int)$3;
-		      tmp_xs.ecm = $4;
-		      tmp_xs.polarisation[0] = $5;
-		      tmp_xs.polarisation[1] = $6;
-		      tmp_xs.isr = (int)$7;
-		      tmpVec.clear();
-                      tmpVec.push_back(0.);
-                      tmpVec.push_back(0.);
-                      tmp_xs.xs.push_back(tmpVec);
-		      tmp2Vec.clear();
-		      tmp2Vec.push_back($2);
-		      tmp2Vec.push_back($5);
-		      tmp2Vec.push_back($6);
-		      cross_sections[tmp2Vec] = tmp_xs;
-                  }
+		     //		    }
+		  }
+		  else if (!strcmp($2, "Umix")) {
+		     //		    for (unsigned int i=0; i<tmpParams.size(); i++) {
+
+		     //		    }
+		  }
+		  else if (!strcmp($2, "Vmix")) {
+		     //		    for (unsigned int i=0; i<tmpParams.size(); i++) {
+
+		     //		    }
+		  }
+		  else if (!strcmp($2, "SPhenoCrossSections")) {
+		     // cout << "starting to read XS..." << endl;
+		  }
+		  else {
+		     printf("Unknown block: %s\n", $2);
+		     yyerror("");
+		  }
 
 		  tmpParams.clear();
-              }
-            ;	
-
-//========================================================================
-//========================================================================
-//========================================================================
-//========================================================================
-parameters: /* empty */
-            | parameters T_NEWLINE
-            | parameters T_NUMBER T_NUMBER T_NEWLINE
-              {
-                  tmpVec.clear();
-                  tmpVec.push_back($2);
-                  tmpVec.push_back($3);                  
-                  tmpParams.push_back(tmpVec);
-              }
-            | parameters T_NUMBER T_NUMBER T_NUMBER T_NEWLINE
-              {
-                  tmpVec.clear();
-                  tmpVec.push_back($2);
-                  tmpVec.push_back($3);                  
-                  tmpVec.push_back($4);
-                  tmpParams.push_back(tmpVec);
-              }
-            | parameters T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NEWLINE
-              {
-                  tmpVec.clear();
-                  tmpVec.push_back($2);
-                  tmpVec.push_back($3);                  
-                  tmpVec.push_back($4);
-                  tmpVec.push_back($5);
-                  tmpParams.push_back(tmpVec);
-              }
-            | parameters T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NEWLINE
-              {
-                  tmpVec.clear();
-                  tmpVec.push_back($2);
-                  tmpVec.push_back($3);                  
-                  tmpVec.push_back($4);
-                  tmpVec.push_back($5);
-                  tmpVec.push_back($6);
-                  tmpParams.push_back(tmpVec);
-              }
-            | parameters T_NUMBER sentence T_NEWLINE
-              {
-//	         cout << "parsing string for tmpStrings" << endl;
-//                 cout << "$1 = " << $1 << "$2 = " << $2 << endl;
-		 strcpy(tmpstr.tmpname,$3);
-                 tmpStrings.push_back(tmpstr);
-                 tmpNumbers.push_back((int)$2);
-                 strcpy($3,"");
-              }
-           | parameters T_NUMBER T_NEWLINE
-              {
-	         
 	      }
-            ;
 
-//===================================================================
-//===================================================================
-//===================================================================
-//===================================================================
+//========================================================================
+//========================================================================
+    | T_BLOCK T_WORD T_SCALE T_NUMBER T_NEWLINE parameters
+	    {
+	       yyScale = $4;
+	       printf("Reading block %s at scale %f...\n", $2, $4);
+
+	       if ( !strcmp( $2, "Ye" ) ) {
+		  yyYtau = tmpParams[2][2];
+	       }
+	       if ( !strcmp( $2, "gauge" ) ) {
+		  yygprime = tmpParams[0][1];
+		  yyg = tmpParams[1][1];
+	       }
+
+	       tmpParams.clear();
+	    }
+	    | T_BLOCK T_WORD T_NUMBER T_NEWLINE parameters
+	    {
+	       yyScale = $3;
+	       printf("Reading block %s at scale %f...\n", $2, $3);
+
+	       tmpParams.clear();
+	    }
+	    ;
+
+	    //========================================================================
+	    //========================================================================
+	    //========================================================================
+	    //========================================================================
+decay:      T_DECAY T_NUMBER T_NUMBER T_NEWLINE parameters
+	    {
+	       //                  printf("Reading decay %i...\n", (int)$2);
+	       tmp_branch.decays.clear();
+	       //                  cout << "branch cleared, tmpParams.size() = "<<tmpParams.size() << endl;
+	       if (tmpParams.size()>0) {
+		  for (unsigned int i=0; i<tmpParams.size(); i++) {
+		     //                         cout << "loop "<<i<<endl;
+		     tmpVec.clear();
+		     tmpVec.push_back(tmpParams[i][0]);
+		     tmpVec.push_back(tmpParams[i][1]);
+		     //                         cout << "filled BR and no of daughters" << endl;
+		     for (unsigned int j=2; j<2+tmpParams[i][1]; j++) {
+			//                             cout << "tmpParams["<<i<<"]["<<j<<"] = "<<tmpParams[i][j]<<endl;
+			tmpVec.push_back(tmpParams[i][j]);
+		     }
+		     tmp_branch.decays.push_back(tmpVec);
+		  }
+		  tmp_branch.TWidth = $3;
+		  branching_ratios[(int)$2] = tmp_branch;
+	       } else {
+		  tmp_branch.TWidth = 0.;	
+		  tmpVec.clear();
+		  tmpVec.push_back(0.);
+		  tmpVec.push_back(0.);
+		  tmp_branch.decays.push_back(tmpVec);
+		  branching_ratios[(int)$2] = tmp_branch;
+	       }
+	       tmpParams.clear();
+	    }
+	    ;	
+
+	    //========================================================================
+	    //========================================================================
+	    //========================================================================
+	    //========================================================================
+xs:         T_XS T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NEWLINE parameters
+	    {
+	       // printf("Reading xs %i...\n", (int)$2);
+
+	       tmp_xs.xs.clear();
+	       //                  cout << "branch cleared, tmpParams.size() = "<<tmpParams.size() << endl;
+	       if (tmpParams.size()>0) {
+		  for (unsigned int i=0; i<tmpParams.size(); i++) {
+		     //                         cout << "loop "<<i<<endl;
+		     tmpVec.clear();
+		     tmpVec.push_back(tmpParams[i][0]);
+		     tmpVec.push_back(tmpParams[i][1]);
+		     //                         cout << "filled XS and no of primaries" << endl;
+		     for (unsigned int j=2; j<2+tmpParams[i][1]; j++) {
+			//                             cout << "tmpParams["<<i<<"]["<<j<<"] = "<<tmpParams[i][j]<<endl;
+			tmpVec.push_back(tmpParams[i][j]);
+		     }
+		     tmp_xs.xs.push_back(tmpVec);
+		  }
+		  tmp_xs.initials[0] = (int)$2;
+		  tmp_xs.initials[1] = (int)$3;
+		  tmp_xs.ecm = $4;
+		  tmp_xs.polarisation[0] = $5;
+		  tmp_xs.polarisation[1] = $6;
+		  tmp_xs.isr = (int)$7;
+		  tmp2Vec.clear();
+		  tmp2Vec.push_back($2);
+		  tmp2Vec.push_back($4);
+		  tmp2Vec.push_back($5);
+		  tmp2Vec.push_back($6);
+		  cross_sections[tmp2Vec] = tmp_xs;
+		  //                      cout << "filling xs for " << $2 << " " << $5 << " " << $6 << endl;
+		  //		      for (unsigned int k=0; k<tmp_xs.xs.size();k++ ) {
+		  //		       cout <<  " k = " << k << " products " << tmp_xs.xs[k][2] << 
+		  //                              " " << tmp_xs.xs[k][3] << endl;
+		  //                      }
+	       } else {
+		  tmp_xs.initials[0] = (int)$2;
+		  tmp_xs.initials[1] = (int)$3;
+		  tmp_xs.ecm = $4;
+		  tmp_xs.polarisation[0] = $5;
+		  tmp_xs.polarisation[1] = $6;
+		  tmp_xs.isr = (int)$7;
+		  tmpVec.clear();
+		  tmpVec.push_back(0.);
+		  tmpVec.push_back(0.);
+		  tmp_xs.xs.push_back(tmpVec);
+		  tmp2Vec.clear();
+		  tmp2Vec.push_back($2);
+		  tmp2Vec.push_back($5);
+		  tmp2Vec.push_back($6);
+		  cross_sections[tmp2Vec] = tmp_xs;
+	       }
+
+	       tmpParams.clear();
+	    }
+	    ;	
+
+	    //========================================================================
+	    //========================================================================
+	    //========================================================================
+	    //========================================================================
+parameters: /* empty */
+	    | parameters T_NEWLINE
+	       | parameters T_NUMBER T_NUMBER T_NEWLINE
+	       {
+		  tmpVec.clear();
+		  tmpVec.push_back($2);
+		  tmpVec.push_back($3);                  
+		  tmpParams.push_back(tmpVec);
+	       }
+	    | parameters T_NUMBER T_NUMBER T_NUMBER T_NEWLINE
+	    {
+	       tmpVec.clear();
+	       tmpVec.push_back($2);
+	       tmpVec.push_back($3);                  
+	       tmpVec.push_back($4);
+	       tmpParams.push_back(tmpVec);
+	    }
+	    | parameters T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NEWLINE
+	    {
+	       tmpVec.clear();
+	       tmpVec.push_back($2);
+	       tmpVec.push_back($3);                  
+	       tmpVec.push_back($4);
+	       tmpVec.push_back($5);
+	       tmpParams.push_back(tmpVec);
+	    }
+	    | parameters T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NEWLINE
+	    {
+	       tmpVec.clear();
+	       tmpVec.push_back($2);
+	       tmpVec.push_back($3);                  
+	       tmpVec.push_back($4);
+	       tmpVec.push_back($5);
+	       tmpVec.push_back($6);
+	       tmpParams.push_back(tmpVec);
+	    }
+	    | parameters T_NUMBER sentence T_NEWLINE
+	    {
+	       //	         cout << "parsing string for tmpStrings" << endl;
+	       //                 cout << "$1 = " << $1 << "$2 = " << $2 << endl;
+	       strcpy(tmpstr.tmpname,$3);
+	       tmpStrings.push_back(tmpstr);
+	       tmpNumbers.push_back((int)$2);
+	       strcpy($3,"");
+	    }
+	    | parameters T_NUMBER T_NEWLINE
+	    {
+
+	    }
+	    ;
+
+	    //===================================================================
+	    //===================================================================
+	    //===================================================================
+	    //===================================================================
 sentence:   T_WORD
-              {
-//                 cout << "found lonely word" << endl;
-                 strcpy($$,$1);			 
-                 strcat($$," ");			 
-              }
-            | sentence T_WORD 
-              {
-//                  cout << "appending string "<< $2 << " to string " << $$ << endl;
-                  strcat($$,$2);
-		  strcpy($2,"");
-                  strcat($$," ");
-//                  cout << "having appended "<< $2 << " to string " << $$ << endl;
-              }
-            ; 
+	    {
+	       //                 cout << "found lonely word" << endl;
+	       strcpy($$,$1);			 
+	       strcat($$," ");			 
+	    }
+	    | sentence T_WORD 
+	    {
+	       //                  cout << "appending string "<< $2 << " to string " << $$ << endl;
+	       strcat($$,$2);
+	       strcpy($2,"");
+	       strcat($$," ");
+	       //                  cout << "having appended "<< $2 << " to string " << $$ << endl;
+	    }
+	    ; 
 
 err:       T_ERRORSIGN value
-             {
-                 $$ = $2;
-		 yyInputFileLine.error.push_back($2);
-             }
-           | err T_ERRORSIGN value
-             {
-                 $$ = TMath::Sqrt($1 * $1 + $3 * $3);
-		 yyInputFileLine.error.push_back($3);
-             }
-           ;
- 
+	   {
+	      $$ = $2;
+	      yyInputFileLine.error.push_back($2);
+	   }
+	   | err T_ERRORSIGN value
+	   {
+	      $$ = TMath::Sqrt($1 * $1 + $3 * $3);
+	      yyInputFileLine.error.push_back($3);
+	   }
+	   ;
+
 value:     T_NUMBER                        { $$ = $1; }
-           | T_NUMBER T_ENERGYUNIT         { $$ = $1 * TMath::Power(10, $2); }
-           | T_NUMBER T_CROSSSECTIONUNIT   { $$ = $1 * TMath::Power(10, $2); }
-           ;
+	   | T_NUMBER T_ENERGYUNIT         { $$ = $1 * TMath::Power(10, $2); }
+	   | T_NUMBER T_CROSSSECTIONUNIT   { $$ = $1 * TMath::Power(10, $2); }
+	   ;
 
 correrr:   T_ERRORSIGN T_BRA T_WORD T_KET value 
-              {
-		 struct correrrorstruct tagmap;
-		 strcpy(tagmap.key[0].keyname, $3);
-		 tagmap.value[0] = $5;
-		 unsigned int i;
-		 for (i=1; i<10; i++) {
-		    strcpy(tagmap.key[i].keyname, "0");
-		    tagmap.value[i] = 0;
-		 }
-		 struct correrrorstruct *correrrorptr = &tagmap;
- 		 $$ = correrrorptr;
- 	      }
-           | correrr T_ERRORSIGN T_BRA T_WORD T_KET value
-	      {
-		 struct correrrorstruct *tmpcorrerrorptr = $1;
-		 struct correrrorstruct tagmap;
-		 unsigned int i;
-		 for (i=0; i<10; i++) {
-		    tagmap.value[i] = (*tmpcorrerrorptr).value[i];
-		    strcpy(tagmap.key[i].keyname, (*tmpcorrerrorptr).key[i].keyname);
-		 }
-		 unsigned int j;
-		 for (j=0; j<10; j++) { 
-		    if (tagmap.value[j] == 0) {
-		       tagmap.value[j] = $6;
-                       strcpy(tagmap.key[j].keyname, $4);
-		       break;
-		    }
-		 }
-		 struct correrrorstruct *correrrorptr = &tagmap;
-		 $$ = correrrorptr;
+	   {
+	      struct correrrorstruct tagmap;
+	      strcpy(tagmap.key[0].keyname, $3);
+	      tagmap.value[0] = $5;
+	      unsigned int i;
+	      for (i=1; i<10; i++) {
+		 strcpy(tagmap.key[i].keyname, "0");
+		 tagmap.value[i] = 0;
 	      }
-            ;
+	      struct correrrorstruct *correrrorptr = &tagmap;
+	      $$ = correrrorptr;
+	   }
+	   | correrr T_ERRORSIGN T_BRA T_WORD T_KET value
+	   {
+	      struct correrrorstruct *tmpcorrerrorptr = $1;
+	      struct correrrorstruct tagmap;
+	      unsigned int i;
+	      for (i=0; i<10; i++) {
+		 tagmap.value[i] = (*tmpcorrerrorptr).value[i];
+		 strcpy(tagmap.key[i].keyname, (*tmpcorrerrorptr).key[i].keyname);
+	      }
+	      unsigned int j;
+	      for (j=0; j<10; j++) { 
+		 if (tagmap.value[j] == 0) {
+		    tagmap.value[j] = $6;
+		    strcpy(tagmap.key[j].keyname, $4);
+		    break;
+		 }
+	      }
+	      struct correrrorstruct *correrrorptr = &tagmap;
+	      $$ = correrrorptr;
+	   }
+	   ;
 
-%%
+	   %%
 
-void yyerror(char* s) {
-    fprintf(stderr, "Error while reading input file (line %d): %s\n",
-	yyInputFileLineNo, s);
-//    fprintf(stderr, "Error while reading input file: %s\n", s);
-    exit(EXIT_FAILURE);
-}
+	      void yyerror(char* s) {
+		 fprintf(stderr, "Error while reading input file (line %d): %s\n",
+		       yyInputFileLineNo, s);
+		 //    fprintf(stderr, "Error while reading input file: %s\n", s);
+		 exit(EXIT_FAILURE);
+	      }

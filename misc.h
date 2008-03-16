@@ -113,10 +113,11 @@ using namespace std;
 
 enum SwitchState    { off, on };
 enum Calculator     { SPHENO, SUSPECT, SPHENO_FH };
-enum RelicDensityCalculator { NONE, MICROMEGAS };
+enum RelicDensityCalculator { NORELICDENSITYCALCULATOR, MICROMEGAS };
+enum LEOCalculator  { NOLEOCALCULATOR, NPFITTER};
 enum ObservableType { mass, Pwidth, xsection, br, xsectionbr, Pedge, xsbr, brratio, brsum, LEObs, brprod, tauFromStau1Polarisation, SMPrecision, other, weighted };
 //   LEObservables  { bsg,                                           gmin2,          drho, omega };
-enum LEObservables  { bsg, bsmm, B_smm, B_utn, dMB_d, dMB_s, gmin2e, gmin2m, gmin2t, drho, omega };
+enum LEObservables  { bsg, bsmm, B_smm, B_utn, dMB_d, dMB_s, gmin2e, gmin2m, gmin2t, drho, omega, Bsg_npf, dm_s_npf, B_smm_npf, Btn_npf, B_sXsll_npf, Ktn_npf, gmin2m_npf, massW_npf, sin_th_eff_npf, GammaZ_npf, R_l_npf, R_b_npf, R_c_npf, A_fbb_npf, A_fbc_npf, A_b_npf, A_c_npf, A_lSLD_npf, massh0_npf, Omega_npf, A_lP_tau_npf, A_fbl_npf, sigma_had0_npf, dm_d_npf, dm_k_npf, Kppinn_npf, B_dll_npf, DmsDmd_npf, D_0_npf, bsg_npf};
 enum SMPrecisionObservables { alphas, alphaem, gf };
 enum FitModel       { MSSM, mSUGRA, GMSB, AMSB, NMSSM, XMSUGRA };
 enum higgsLimitProcesses 
@@ -138,6 +139,7 @@ extern bool         yyCalcPullDist;
 extern bool         yyScanParameters;
 extern unsigned int yyCalculator;
 extern unsigned int yyRelicDensityCalculator;
+extern unsigned int yyLEOCalculator;
 extern map<int,string> yyParticleNames;
 extern map<string,int> yyParticleIDs;
 

@@ -36,7 +36,8 @@ Input::Input(const char* inputfile)
 {
   // Set defaults
   yyCalculator = SPHENO;
-  yyRelicDensityCalculator = NONE;
+  yyRelicDensityCalculator = NORELICDENSITYCALCULATOR;
+  yyLEOCalculator = NOLEOCALCULATOR;
   yyISR       = true;
   FillNameMap();
   
@@ -493,7 +494,7 @@ void Input::FillCrossSectionProduction()
 
 void Input::ScatterObservablesBefore() {
 
-   cout << "------------------------------------------------------------" << endl;
+   cout << yyDashedLine << endl;
    cout << "Scattering observables around their true value" << endl;
 
    // fill local vector trueValueObservableVector with true observable values from input file
@@ -511,11 +512,11 @@ void Input::ScatterObservablesBefore() {
    }
 
    // test printouts for initial value scattering
-   cout << "new mean values for" << endl;
-   for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
-      if (yyMeasuredVec[j].nofit == false) {
-	 cout << yyMeasuredVec[j].name << ": " << yyMeasuredVec[j].value << " (deviation from true value " << trueValueObservableVector(j) << " within " << TMath::Ceil((TMath::Abs(yyMeasuredVec[j].value-trueValueObservableVector(j))/yyMeasuredVec[j].error)) <<" sigma)" <<endl;
-      }
-   }
+   //cout << "new mean values for" << endl;
+   //for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
+   //   if (yyMeasuredVec[j].nofit == false) {
+   //      cout << yyMeasuredVec[j].name << ": " << yyMeasuredVec[j].value << " (deviation from true value " << trueValueObservableVector(j) << " within " << TMath::Ceil((TMath::Abs(yyMeasuredVec[j].value-trueValueObservableVector(j))/yyMeasuredVec[j].error)) <<" sigma)" <<endl;
+   //   }
+   //}
 
 }

@@ -99,6 +99,9 @@ extern vector<parameter_t> yyCorrelatedErr;
 
 extern string yyCalculatorPath;
 extern string yyRelicDensityCalculatorPath;
+extern string yyLEOCalculatorPath;
+extern string yyDashedLine;
+
 extern int    yyParseError;
 extern int    yyNaN;
 extern int    yyInfinity;
@@ -138,8 +141,8 @@ extern double        yydrho;    // 30  Delta(rho_parameter)
 extern double        yyOmega;   //     relic density
 extern double        yygSquaredAh;  // hAZ coupling correction
 extern double        yygSquaredZh;  // hZZ coupling correction
-//==========================================================
 
+//==========================================================
 extern double        yyYtau; // tau Yukawa coupling
 extern double        yyg; // SU2 coupling constant
 extern double        yygprime; // U1 coupling constant
@@ -147,6 +150,39 @@ extern double        yyN11; // neutralino mixing matrix element
 extern double        yyN12; // neutralino mixing matrix element
 extern double        yyN13; // neutralino mixing matrix element
 extern double        yyThetaStau; // stau mixing angle
+
+//==========================================================
+// Low Energy Observables: (PREDICT)
+extern double yyBsg_npf;         // R(B->s gamma)
+extern double yydm_s_npf;        // R(Delta m_s)
+extern double yyB_smm_npf;       // B(Bs->mumu)
+extern double yyBtn_npf;         // R(B->tau nu)
+extern double yyB_sXsll_npf;     // R(Bs->Xsll)
+extern double yyKtn_npf;         // R(K->tau nu)
+extern double yygmin2m_npf;      // D(g-2)
+extern double yymassW_npf;       // m(W)
+extern double yysin_th_eff_npf;  // sin(th_eff(Qfb))
+extern double yyGammaZ_npf;      // Gamma(Z)
+extern double yyR_l_npf;         // R_l (l=e,mu)
+extern double yyR_b_npf;         // R_b
+extern double yyR_c_npf;         // R_c
+extern double yyA_fbb_npf;       // A_fb(b)
+extern double yyA_fbc_npf;       // A_fb(c)
+extern double yyA_b_npf;         // A_b
+extern double yyA_c_npf;         // A_c
+extern double yyA_lSLD_npf;      // A_l(SLD)
+extern double yymassh0_npf;      // m(h0)
+extern double yyOmega_npf;       // Omega_h
+extern double yyA_lP_tau_npf;    // A_l(P_tau)
+extern double yyA_fbl_npf;       // A_fb(l)
+extern double yysigma_had0_npf;  // sigma_had^0
+extern double yydm_d_npf;        // R(Delta m_d)
+extern double yydm_k_npf;        // R(Delta m_k)
+extern double yyKppinn_npf;      // R(Kp->pinn)
+extern double yyB_dll_npf;       // B(Bd->ll)
+extern double yyDmsDmd_npf;      // R(Dms)/R(Dmd)
+extern double yyD_0_npf;         // D_0(K*gamma)
+extern double yybsg_npf;         // B(b->sg)
 
 extern std::vector<InputFileLine> yyInputFile;
 extern int yyInputFileLineNo;
