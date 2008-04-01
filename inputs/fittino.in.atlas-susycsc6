@@ -17,7 +17,7 @@ edge 3 massNeutralino1 massSupL        massNeutralino2              517 GeV +- 3
 edge 5 massNeutralino1 massNeutralino2 massSelectronR  massSupL     265 GeV +- 17 GeV +- 15 GeV +- (JES) 7 GeV alias 3
 edge 3 massSelectronR  massSupL        massNeutralino2              333 GeV +- 6  GeV +- 6 GeV +- (JES) 8 GeV alias 4
 edge 4 massNeutralino1 massNeutralino2 massSelectronR  massSupL     445 GeV +- 11 GeV +- 11 GeV +- (JES) 11 GeV alias 5
-edge 3 massNeutralino1 massNeutralino2 massStau1                    102 GeV +- 17 GeV +- 4.5 GeV +- 3.5 GeV +- (JES) 4.1  GeV alias 6
+edge 3 massNeutralino1 massNeutralino2 massStau1                    102 GeV +- 17 GeV +- 4.5 GeV +- 7 GeV +- (JES) 2.5  GeV alias 6
 edge 2 massSupR massNeutralino1                                     591 GeV +- 13 GeV +- (JES) 13 GeV alias 7
 
 massW       80.3663  GeV +- 0.039   GeV
@@ -28,7 +28,7 @@ massTop    170.9     GeV +- 1.1     GeV +- 1.5 GeV
 massTau      1.77699 GeV +- 0.00029 GeV
 alphas       0.1187  GeV +- 0.002   GeV
 alphaem    127.934   GeV +- 0.027   GeV
-G_F        11.6637       +- 0.00001
+#G_F        11.6637       +- 0.00001
 
 # covarianceCoefficient edge_1 edge_2 2.
 
@@ -49,9 +49,9 @@ fitParameter M0       100
 fitParameter M12      300
 fitParameter A0      -300
 fitParameter TanBeta    6
-fitParameter G_F        1.16634e-5 +- 1e-11 
-fitParameter alphas       0.1187  GeV +- 0.002   GeV
-fitParameter alphaem    127.934   GeV +- 0.027   GeV
+#fitParameter G_F        1.16634e-5 +- 1e-11 
+#fitParameter alphas       0.1187  GeV +- 0.002   GeV
+#fitParameter alphaem    127.934   GeV +- 0.027   GeV
 fixParameter SignMu     1
 
 #########################################################################
@@ -60,7 +60,7 @@ fixParameter SignMu     1
 
 fitModel                       mSUGRA
 
-# LoopCorrections                on
+LoopCorrections                on
 ISR                            on
 UseGivenStartValues            on
 FitAllDirectly                 on
