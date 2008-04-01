@@ -3081,6 +3081,7 @@ void Fittino::writeResults(const char* filename)
 }
 
 void Fittino::CalcFromRandPars(unsigned int nruns) {
+   cout << yyDashedLine << endl;
    cout << "Calcualting Observables from random parameter distribution" << endl;
 
    TFile *file = new TFile("Observables.root","RECREATE");
@@ -4221,7 +4222,7 @@ void WriteLesHouches(double* x)
       } 
       else if (FindInRandomPar("TanBeta")) {
 	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-	    cout << "Calculating random TanBeta " << x[ReturnRandomPosition("TanBeta")] << endl;
+	    cout << "Calculating random TanBeta " << x[ReturnRandomPosition("TanBeta")] << "(deviation from mean value " << yyFittedPar[2].value <<" within " << TMath::Ceil(TMath::Abs(x[ReturnRandomPosition("TanBeta")]-yyFittedPar[2].value)/yyFittedPar[2].error) << " sigma)"<<endl;
 	 }
 	 LesHouchesOutfile << "    3  " << x[ReturnRandomPosition("TanBeta")] << " # TanBeta (random)" << endl;
       }
@@ -5139,6 +5140,7 @@ void WriteLesHouches(double* x)
 	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
 	    cout << "Calculating random tanb " << x[ReturnRandomPosition("TanBeta")] << endl;
 	 }
+
 	 LesHouchesOutfile << "    3  "<< x[ReturnRandomPosition("TanBeta")]<<" # tanb (random)"<< endl;
       }
       else if (FindInUniversality("TanBeta")) {
@@ -6692,7 +6694,7 @@ int   ReadLesHouches()
 
    // test reading of low energy measurements
    //========================================
-   if (yyLEOCalculator == NOLEOCALCULATOR) {
+   //if (yyLEOCalculator == NOLEOCALCULATOR) {
       cout << "  --->  yybsg            from SPheno:     " << yybsg    << endl;   //  1  BR(b -> s gamma) 
       cout << "  --->  yybsmm           from SPheno:     " << yybsmm   << endl;   //  2  BR(b -> s mu+ mu-)
       cout << "  --->  yyB_smm          from SPheno:     " << yyB_smm  << endl;   //  3  BR(Bs -> mu+ mu-)
@@ -6705,7 +6707,7 @@ int   ReadLesHouches()
       cout << "  --->  yydrho           from SPheno:     " << yydrho   << endl;   // 30  Delta(rho_parameter)
       cout << "  --->  yyMassZ          from SPheno:     " << yyMassZ   << endl;   //
       cout << "  --->  yyG_F            from SPheno:     " << yyG_F   << endl;   //
-   }
+   //}
    //------------------------------------------------------------------------------------------
    if (yyRelicDensityCalculator == MICROMEGAS) {
       cout << "  --->  yyOmega          from MicrOmegas: " << yyOmega  << endl;   //     relic density
@@ -6729,10 +6731,10 @@ int   ReadLesHouches()
       cout << "  --->  yyA_fbc_npf      from NPFitter:   " << yyA_fbc_npf      << endl; // A_fb(c)
       cout << "  --->  yyA_b_npf        from NPFitter:   " << yyA_b_npf        << endl; // A_b
       cout << "  --->  yyA_c_npf        from NPFitter:   " << yyA_c_npf        << endl; // A_c
-      cout << "  --->  yyA_lSLD_npf     from NPFitter:   " << yyA_lSLD_npf     << endl; // A_l(SLD)
+      cout << "  --->  yyA_l_npf        from NPFitter:   " << yyA_l_npf        << endl; // A_l(SLD)
       cout << "  --->  yymassh0_npf     from NPFitter:   " << yymassh0_npf     << endl; // m(h0)
       cout << "  --->  yyOmega_npf      from NPFitter:   " << yyOmega_npf      << endl; // Omega_h
-      cout << "  --->  yyA_lP_tau_npf   from NPFitter:   " << yyA_lP_tau_npf   << endl; // A_l(P_tau)
+      cout << "  --->  yyA_tau_npf      from NPFitter:   " << yyA_tau_npf      << endl; // A_l(P_tau)
       cout << "  --->  yyA_fbl_npf      from NPFitter:   " << yyA_fbl_npf      << endl; // A_fb(l)
       cout << "  --->  yysigma_had0_npf from NPFitter:   " << yysigma_had0_npf << endl; // sigma_had^0
       cout << "  --->  yydm_d_npf       from NPFitter:   " << yydm_d_npf       << endl; // R(Delta m_d)
@@ -6875,8 +6877,8 @@ int   ReadLesHouches()
 	    yyMeasuredVec[i].theovalue = yyA_c_npf;
 	    yyMeasuredVec[i].theoset = true;
 	 }         
-	 else if (yyMeasuredVec[i].id == A_lSLD_npf) {
-	    yyMeasuredVec[i].theovalue = yyA_lSLD_npf;
+	 else if (yyMeasuredVec[i].id == A_l_npf) {
+	    yyMeasuredVec[i].theovalue = yyA_l_npf;
 	    yyMeasuredVec[i].theoset = true;
 	 }         
 	 else if (yyMeasuredVec[i].id == massh0_npf) {
@@ -6887,8 +6889,8 @@ int   ReadLesHouches()
 	    yyMeasuredVec[i].theovalue = yyOmega_npf;
 	    yyMeasuredVec[i].theoset = true;
 	 }         
-	 else if (yyMeasuredVec[i].id == A_lP_tau_npf) {
-	    yyMeasuredVec[i].theovalue = yyA_lP_tau_npf;
+	 else if (yyMeasuredVec[i].id == A_tau_npf) {
+	    yyMeasuredVec[i].theovalue = yyA_tau_npf;
 	    yyMeasuredVec[i].theoset = true;
 	 }         
 	 else if (yyMeasuredVec[i].id == A_fbl_npf) {
@@ -7171,23 +7173,30 @@ int   ReadLesHouches()
 	       //     << yyMass[yyMeasuredVec[i].daughters[2]] << " "
 	       //     << yyMass[yyMeasuredVec[i].daughters[3]] << " " << endl;
 
-	       double tmpvalue = (
-		     sqr(yyMass[yyMeasuredVec[i].daughters[0]])
-		     +(sqr(yyMass[yyMeasuredVec[i].daughters[1]])
-			-sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
-		     /(2*sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
-		     *((sqr(yyMass[yyMeasuredVec[i].daughters[3]])
-			   -sqr(yyMass[yyMeasuredVec[i].daughters[1]])
-			   -sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
-			+TMath::Sqrt((sqr(yyMass[yyMeasuredVec[i].daughters[3]])
-			      -sqr((yyMass[yyMeasuredVec[i].daughters[1]]
-				    -yyMass[yyMeasuredVec[i].daughters[0]])))
-			   *(sqr(yyMass[yyMeasuredVec[i].daughters[3]])
-			      -sqr((yyMass[yyMeasuredVec[i].daughters[1]]
-				    +yyMass[yyMeasuredVec[i].daughters[0]])))))
+	       double tmpvalue;
+               if ((sqr(yyMass[yyMeasuredVec[i].daughters[3]])-sqr((yyMass[yyMeasuredVec[i].daughters[1]]+yyMass[yyMeasuredVec[i].daughters[0]]))) < 0.) {
+                  tmpvalue = 0.;
+	       }
 
-		     );
-	       if (tmpvalue > 0) {
+	       else {
+		  tmpvalue = (
+			sqr(yyMass[yyMeasuredVec[i].daughters[0]])
+			+(sqr(yyMass[yyMeasuredVec[i].daughters[1]])
+			   -sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
+			/(2*sqr(yyMass[yyMeasuredVec[i].daughters[1]]))
+			*((sqr(yyMass[yyMeasuredVec[i].daughters[3]])
+			      -sqr(yyMass[yyMeasuredVec[i].daughters[1]])
+			      -sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
+			   +TMath::Sqrt((sqr(yyMass[yyMeasuredVec[i].daughters[3]])
+				 -sqr((yyMass[yyMeasuredVec[i].daughters[1]]
+				       -yyMass[yyMeasuredVec[i].daughters[0]])))
+			      *(sqr(yyMass[yyMeasuredVec[i].daughters[3]])
+				 -sqr((yyMass[yyMeasuredVec[i].daughters[1]]
+				       +yyMass[yyMeasuredVec[i].daughters[0]])))))
+
+			);
+	       }
+	       if (tmpvalue >= 0.) {
 		  yyMeasuredVec[i].theovalue = TMath::Sqrt(tmpvalue);
 	       } else {
 		  yyMeasuredVec[i].theovalue = 1.1E11;
@@ -7208,22 +7217,28 @@ int   ReadLesHouches()
 	       //     << yyMass[yyMeasuredVec[i].daughters[2]] << " "
 	       //     << yyMass[yyMeasuredVec[i].daughters[3]] << " " << endl;
 
-	       double tmpvalue = (
-		     sqr(yyMass[yyMeasuredVec[i].daughters[0]])
-		     +(sqr(yyMass[yyMeasuredVec[i].daughters[1]])
-			-sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
-		     /(2*sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
-		     *((sqr(yyMass[yyMeasuredVec[i].daughters[2]])
-			   -sqr(yyMass[yyMeasuredVec[i].daughters[3]])
-			   +sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
-			+TMath::Sqrt((sqr(yyMass[yyMeasuredVec[i].daughters[2]])
-			      -sqr((yyMass[yyMeasuredVec[i].daughters[3]]
-				    -yyMass[yyMeasuredVec[i].daughters[0]])))
-			   *(sqr(yyMass[yyMeasuredVec[i].daughters[2]])
-			      -sqr((yyMass[yyMeasuredVec[i].daughters[3]]
-				    +yyMass[yyMeasuredVec[i].daughters[0]])))))
-		     );
-	       if (tmpvalue > 0) {
+	       double tmpvalue;
+	       if ((sqr(yyMass[yyMeasuredVec[i].daughters[2]])-sqr((yyMass[yyMeasuredVec[i].daughters[3]]+yyMass[yyMeasuredVec[i].daughters[0]]))) < 0.) {
+		  tmpvalue = 0.;
+	       }
+	       else {
+		  tmpvalue = (
+			sqr(yyMass[yyMeasuredVec[i].daughters[0]])
+			+(sqr(yyMass[yyMeasuredVec[i].daughters[1]])
+			   -sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
+			/(2*sqr(yyMass[yyMeasuredVec[i].daughters[2]]))
+			*((sqr(yyMass[yyMeasuredVec[i].daughters[2]])
+			      -sqr(yyMass[yyMeasuredVec[i].daughters[3]])
+			      +sqr(yyMass[yyMeasuredVec[i].daughters[0]]))
+			   +TMath::Sqrt((sqr(yyMass[yyMeasuredVec[i].daughters[2]])
+				 -sqr((yyMass[yyMeasuredVec[i].daughters[3]]
+				       -yyMass[yyMeasuredVec[i].daughters[0]])))
+			      *(sqr(yyMass[yyMeasuredVec[i].daughters[2]])
+				 -sqr((yyMass[yyMeasuredVec[i].daughters[3]]
+				       +yyMass[yyMeasuredVec[i].daughters[0]])))))
+			);
+	       }
+	       if (tmpvalue >= 0.) {
 		  yyMeasuredVec[i].theovalue = TMath::Sqrt(tmpvalue);
 	       } else {
 		  yyMeasuredVec[i].theovalue = 1.1E11;
