@@ -87,11 +87,12 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
 	Double_t min = mintree - 0.15 * (maxtree - mintree);
 	Double_t max = maxtree + 0.15 * (maxtree - mintree);
 
-	histo[iLeaf] = new TH1F(leaf->GetName(), leaf->GetTitle(), nbins, min, max);
+	histo[iLeaf] = new TH1F(leaf->GetName(), "" /*leaf->GetTitle()*/, nbins, min, max);
 
 	histo[iLeaf]->SetMarkerStyle(8);
 	histo[iLeaf]->SetMarkerSize(1.2);
 	histo[iLeaf]->SetOption("marker");
+	//histo[iLeaf]->SetStats(kFALSE); // disable fit statistics display
 	if (!strcmp(leaf->GetName(), "TanBeta")) strcpy(xtitle, "tan #beta");
 	else if (!strcmp(leaf->GetName(), "Mu")) strcpy(xtitle, "#mu (GeV)");
 	else if (!strcmp(leaf->GetName(), "MuEff")) strcpy(xtitle, "#mu_{eff} (GeV)");
@@ -127,6 +128,7 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
 	histo[iLeaf]->GetXaxis()->SetTitleSize(0.05);
 	histo[iLeaf]->GetXaxis()->SetTitleOffset(1.2);
 	histo[iLeaf]->GetXaxis()->SetLabelSize(0.05);
+	//histo[iLeaf]->SetYTitle("Eintr#ddot{a}ge");
 	histo[iLeaf]->SetYTitle("Toy fits");
 	histo[iLeaf]->GetYaxis()->SetLabelSize(0.05);
 	histo[iLeaf]->GetYaxis()->CenterTitle();
@@ -180,10 +182,10 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
 
     TCanvas* c = new TCanvas("c", "Fittino Parameter Distribution", 0, 0, 700, 700);
     c->SetBorderMode(0);
-    c->SetTopMargin(0.15);
+    c->SetTopMargin(0.05);
     c->SetBottomMargin(0.15);
     c->SetLeftMargin(0.15);
-    c->SetRightMargin(0.15);
+    c->SetRightMargin(0.05);
     
     char epsfilename[256];
 
@@ -192,11 +194,11 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
         TLeafD* leaf = (TLeafD*)tree->GetListOfLeaves()->At(iLeaf);
 
 	if (!strcmp(leaf->GetName(), "Chi2")) {
-	    histo[iLeaf]->Fit(chi2, "r");
+	    histo[iLeaf]->Fit(chi2, "rem");
 	    histo[iLeaf]->Draw("ep");
 	}
 	else {
-	    histo[iLeaf]->Fit(gauss[iLeaf], "r");
+	    histo[iLeaf]->Fit(gauss[iLeaf], "rem");
 	    histo[iLeaf]->Draw("ep");
 	    Double_t rms = TMath::Sqrt((sum2[iLeaf] - sum[iLeaf] * sum[iLeaf] 
                            / nEntries ) / nEntries);
