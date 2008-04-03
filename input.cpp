@@ -148,7 +148,7 @@ Input::Input(const char* inputfile)
   //cout << endl << "correlation and covariance matrix after calculating correlation and inverse covariance matrix::" << endl;
   //yyTagMap->Print();
   //yyMeasuredCorrelationMatrix.Print();
-  //yyMeasuredCorrelationMatrix.PrintCovariance();
+  yyMeasuredCorrelationMatrix.PrintCovariance();
   //yyMeasuredCorrelationMatrix.PrintInverseCovariance();
 
   fMeasuredVec = yyMeasuredVec;
@@ -512,11 +512,11 @@ void Input::ScatterObservablesBefore() {
    }
 
    // test printouts for initial value scattering
-   //cout << "new mean values for" << endl;
-   //for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
-   //   if (yyMeasuredVec[j].nofit == false) {
-   //      cout << yyMeasuredVec[j].name << ": " << yyMeasuredVec[j].value << " (deviation from true value " << trueValueObservableVector(j) << " within " << TMath::Ceil((TMath::Abs(yyMeasuredVec[j].value-trueValueObservableVector(j))/yyMeasuredVec[j].error)) <<" sigma)" <<endl;
-   //   }
-   //}
+   cout << "new mean values for" << endl;
+   for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
+      if (yyMeasuredVec[j].nofit == false) {
+         cout << yyMeasuredVec[j].name << ": " << yyMeasuredVec[j].value << " (deviation from true value " << trueValueObservableVector(j) << " within " << TMath::Ceil((TMath::Abs(yyMeasuredVec[j].value-trueValueObservableVector(j))/yyMeasuredVec[j].error)) <<" sigma)" <<endl;
+      }
+   }
 
 }

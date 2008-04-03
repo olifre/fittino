@@ -180,7 +180,30 @@ void CalculateCovarianceMatrix(const char* filename = "TreeSum.root", const char
 		fprintf(outFile, "%.3f(%.3f)\t", corrMatrix(iLeaf2, iLeaf1),
 			corrUncertaintyMatrix(iLeaf2, iLeaf1));
 	}
+	fprintf(outFile, "\n\n");
+    }
+
+    fprintf(outFile, "Theory errors:\n");
+    fprintf(outFile, "==================\n");
+    fprintf(outFile, "\n");
+    for (Int_t iLeaf=0; iLeaf<nLeaves; iLeaf++) {
+	TLeafD* leaf = (TLeafD*)tree->GetListOfLeaves()->At(iLeaf);
+	fprintf(outFile, "%s %f\n", leaf->GetName(), TMath::Sqrt(covMatrix(iLeaf, iLeaf)));
+    }
+    fprintf(outFile, "\n");
+
+    fprintf(outFile, "Covariance matrix elements:\n");
+    fprintf(outFile, "==================\n");
+    fprintf(outFile, "\n");
+    for (Int_t iLeaf1=0; iLeaf1<nLeaves; iLeaf1++) {
+	TLeafD* leaf1 = (TLeafD*)tree->GetListOfLeaves()->At(iLeaf1);
+	for (Int_t iLeaf2=0; iLeaf2<nLeaves; iLeaf2++) {
+	    TLeafD* leaf2 = (TLeafD*)tree->GetListOfLeaves()->At(iLeaf2);
+	    if (iLeaf1 <= iLeaf2)
+		fprintf(outFile, "%s %s %f\n", leaf1->GetName(), leaf2->GetName(), covMatrix(iLeaf1, iLeaf2));
+	}
 	fprintf(outFile, "\n");
     }
+
     fclose(outFile);
 }

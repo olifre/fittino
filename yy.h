@@ -170,10 +170,10 @@ extern double yyA_fbb_npf;       // A_fb(b)
 extern double yyA_fbc_npf;       // A_fb(c)
 extern double yyA_b_npf;         // A_b
 extern double yyA_c_npf;         // A_c
-extern double yyA_lSLD_npf;      // A_l(SLD)
+extern double yyA_l_npf;         // A_l(SLD)
 extern double yymassh0_npf;      // m(h0)
 extern double yyOmega_npf;       // Omega_h
-extern double yyA_lP_tau_npf;    // A_l(P_tau)
+extern double yyA_tau_npf;       // A_l(P_tau)
 extern double yyA_fbl_npf;       // A_fb(l)
 extern double yysigma_had0_npf;  // sigma_had^0
 extern double yydm_d_npf;        // R(Delta m_d)

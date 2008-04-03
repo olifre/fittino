@@ -374,10 +374,27 @@ void CorrelationMatrix::CalculateInverseCovarianceMatrix()
       exit;
    }
 
+   for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
+      for (unsigned int j=0; j<fMeasuredVector->size(); j++) {
+         (*fCovarianceMatrix)(i,j) = (*fCovarianceMatrix)(i,j)*10000000; // rescale covariance matrix with 1e+7 to avoid problems with small entries during inversion 
+      }
+   }
+
    *fInverseCovarianceMatrix = *fCovarianceMatrix;
 
    //double det;
    fInverseCovarianceMatrix->Invert(/*&det*/);
+
+   for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
+      for (unsigned int j=0; j<fMeasuredVector->size(); j++) {
+         (*fInverseCovarianceMatrix)(i,j) = (*fInverseCovarianceMatrix)(i,j)*10000000; 
+      }
+   }
+   for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
+      for (unsigned int j=0; j<fMeasuredVector->size(); j++) {
+         (*fCovarianceMatrix)(i,j) = (*fCovarianceMatrix)(i,j)/10000000; 
+      }
+   }
 
    return;
 }
