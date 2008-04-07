@@ -7248,6 +7248,11 @@ int   ReadLesHouches()
 	       // cout << "edge = " << yyMeasuredVec[i].theovalue << endl;
 	       yyMeasuredVec[i].theoset = true;
 	    }
+	    else if (yyMeasuredVec[i].id == 8) {
+	      double tmpvalue = sqr(yyMass[yyMeasuredVec[i].daughters[0]]) - 2*sqr(yyMass[yyMeasuredVec[i].daughters[1]]);
+	      yyMeasuredVec[i].theovalue = (tmpvalue >= 0 ) ? TMath::Sqrt(tmpvalue) : 1.1E11;
+	      yyMeasuredVec[i].theoset = true;
+	    }
 	    else if (yyMeasuredVec[i].id >= 100 && yyMeasuredVec[i].id <= 121) {
 	        double epmasses[5];
 		epmasses[0] = yyMass[ID_chi01];

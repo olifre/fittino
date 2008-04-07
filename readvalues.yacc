@@ -922,7 +922,7 @@ input:
 		  tmpValue.name.append(srtt);
 		  tmpValue.type  = Pedge;
 		  tmpValue.id    = (int)$3;
-		  if (tmpValue.id<1 || (tmpValue.id>7 && tmpValue.id < 100) || tmpValue.id>121) {
+		  if (tmpValue.id<1 || (tmpValue.id>8 && tmpValue.id < 100) || tmpValue.id>121) {
                     yyerror("edge type not implemented");
                   } 
 		  string str;
@@ -1462,7 +1462,7 @@ input:
 		  tmpValue.name.append(srtt);
 		  tmpValue.type  = Pedge;
 		  tmpValue.id    = (int)$3;
-		  if (tmpValue.id<1 || (tmpValue.id>7 && tmpValue.id < 100) || tmpValue.id>121) {
+		  if (tmpValue.id<1 || (tmpValue.id>8 && tmpValue.id < 100) || tmpValue.id>121) {
                     yyerror("edge type not implemented");
                   } 
 		  string str;
@@ -1533,7 +1533,7 @@ input:
 		  tmpValue.name.append(srtt);
 		  tmpValue.type  = Pedge;
 		  tmpValue.id    = (int)$3;
-		  if (tmpValue.id<1 || (tmpValue.id>7 && tmpValue.id < 100) || tmpValue.id>121) {
+		  if (tmpValue.id<1 || (tmpValue.id>8 && tmpValue.id < 100) || tmpValue.id>121) {
                     yyerror("edge type not implemented");
                   } 
 		  string str;

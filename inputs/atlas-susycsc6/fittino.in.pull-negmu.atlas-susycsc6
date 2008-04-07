@@ -26,7 +26,7 @@ edge 102 massNeutralino1 massNeutralino2 massSelectronR  massSupL     282.119 Ge
 edge 105 massSelectronR  massSupL        massNeutralino2              354.366 GeV +- 6  GeV +- 6 GeV +- (JES) 8 GeV alias 4
 edge 106 massNeutralino1 massNeutralino2 massSelectronR  massSupL     476.054 GeV +- 11 GeV +- 11 GeV +- (JES) 11 GeV alias 5
 edge 3 massNeutralino1 massNeutralino2 massStau1                    106.165 GeV +- 17 GeV +- 5.5 GeV +- 7 GeV +- (JES) 2.5  GeV alias 6
-massSupR                                                            602.163 GeV +- 13 GeV +- (JES) 13 GeV
+edge 8 massSupR massNeutralino1                                      672.129 GeV +- 13 GeV +- (JES) 13 GeV  alias 8
 
 massW       80.3663  GeV +- 0.039   GeV
 massZ       91.1876  GeV +- 0.0021  GeV
