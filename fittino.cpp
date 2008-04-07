@@ -54,6 +54,8 @@ email                : philip.bechtle@desy.de, peter.wienemann@desy.de
 // #include <sys/types.h>
 extern char **environ;
 
+extern double Endpoint(int N, double mass[]);
+
 MeasuredValue fitterM1;
 MeasuredValue fitterM2;
 MeasuredValue fitterAbsM3;
@@ -7245,6 +7247,22 @@ int   ReadLesHouches()
 	       }
 	       // cout << "edge = " << yyMeasuredVec[i].theovalue << endl;
 	       yyMeasuredVec[i].theoset = true;
+	    }
+	    else if (yyMeasuredVec[i].id >= 100 && yyMeasuredVec[i].id <= 121) {
+	        double epmasses[5];
+		epmasses[0] = yyMass[ID_chi01];
+		epmasses[1] = yyMass[ID_seR];
+		epmasses[2] = yyMass[ID_chi02];
+		epmasses[3] = yyMass[ID_suL];
+		epmasses[4] = yyMass[ID_gluino];
+		std::cout << " endpoint number " << yyMeasuredVec[i].id - 100 << std::endl;
+		std::cout << " neutralino1 mass " << epmasses[0] << std::endl;
+		std::cout << " selectronR mass " << epmasses[1] << std::endl;
+		std::cout << " neutralino2 mass " << epmasses[2] << std::endl;
+		std::cout << " supL mass " << epmasses[3] << std::endl;
+		std::cout << " gluino mass " << epmasses[4] << std::endl;
+	        yyMeasuredVec[i].theovalue = Endpoint(yyMeasuredVec[i].id - 100, epmasses);
+		yyMeasuredVec[i].theoset = true;
 	    }
 	 }
       }

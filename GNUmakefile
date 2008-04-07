@@ -58,11 +58,14 @@ all: 	$(TARGET)
 #	-rm -f $@
 #	$(CXX) -MM $(CXXFLAGS) $< > $@ 
 
-fittino: $(OBJECTS_BASENAME) 
-	$(CXX) -o fittino $(LDFLAGS) $(OBJECTS_BASENAME) $(LIBS)
+fittino: $(OBJECTS_BASENAME) EndpointFormulas.o
+	$(CXX) -o fittino $(LDFLAGS) $(OBJECTS_BASENAME) EndpointFormulas.o $(LIBS)
 
 
 %.o: %.cpp 
+	$(CXX) -c -o $@ $< $(CXXFLAGS)
+
+%.o: %.C
 	$(CXX) -c -o $@ $< $(CXXFLAGS)
 
 lex.yy.o: y.tab.c lex.yy.c
