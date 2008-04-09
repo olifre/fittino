@@ -983,6 +983,7 @@ input:
 		     pair<string, double> tmpPair(tmpString, tmpDouble);
 		     tmpValue.correrror.insert(tmpPair);
 		  }
+		  delete tmpTagmap;
 		  //cout << "h2" << endl;
 		  tmpValue.correrror.erase("0");
 		  tmpValue.alias = (int)$9;
