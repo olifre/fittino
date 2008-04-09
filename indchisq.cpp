@@ -67,7 +67,7 @@ IndChisq::~IndChisq()
 void IndChisq::CalcIndChisq()
 {
   Double_t x[100];
-  Double_t chisquare;
+  //Double_t chisquare;
   Double_t dummyfloat = 5.;
   Int_t dummyint = 1;
   double chisq0;

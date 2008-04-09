@@ -66,7 +66,7 @@ MakePullDist::~MakePullDist()
 
 void MakePullDist::CalcPullDist()
 {
-  double correction;
+  //double correction;
   vector<MeasuredValue>  savedMeasuredValues;
   unsigned int npulls = 100;
   vector<TH1F*> histomap;

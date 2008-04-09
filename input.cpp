@@ -61,6 +61,7 @@ Input::Input(const char* inputfile)
   yyInputFileLineNo = 1;
 
   /* check whether defaults are given */
+  cout << yyDashedLine << endl;
   CheckDefault("massZ"     , ID_Z  ,  91.1876    , 0.0021     );
   CheckDefault("massW"     , ID_W  ,  80.423     , 0.039      );
   CheckDefault("massCharm" , ID_c  ,   1.2       , 0.2        );
@@ -163,9 +164,9 @@ Input::Input(const char* inputfile)
   // Check that each alias number occurs only once per observable type
   for (unsigned int itype = 1; itype<10; itype++) { // loop over ObservableType (excluding masses = 0)
      for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
-	if (yyMeasuredVec[i].type == itype) {
+	if (yyMeasuredVec[i].type == (int)itype) {
 	   for (unsigned int j=0; j<yyMeasuredVec.size(); j++) {
-	      if (i != j && yyMeasuredVec[j].type == itype &&
+	      if ((int)i != (int)j && yyMeasuredVec[j].type == (int)itype &&
 		    yyMeasuredVec[i].alias == yyMeasuredVec[j].alias) {
 		 cerr<<"ERROR: Alias "<<yyMeasuredVec[i].alias<<" is used for "
 		    <<yyMeasuredVec[i].name<<" and "<<yyMeasuredVec[j].name<<endl;
@@ -232,7 +233,7 @@ void Input::CheckDefault(string name, int ID, double value, double error)
       }
       else tmpVec.type = other;
       yyMeasuredVec.push_back(tmpVec);
-      cout << "added default value: "<<name<<" = "<<value<<" +- "<<error<<endl;
+      cout << "Adding default value: "<<name<<" = "<<value<<" +- "<<error<<endl;
    }
 
    return;

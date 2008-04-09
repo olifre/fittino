@@ -213,8 +213,8 @@ void CorrelationMatrix::AddCovariance(const string& name1, const string& name2, 
 void CorrelationMatrix::AddCovariance(unsigned int index1, unsigned int index2, double entry) {
   if (!fCovarianceMatrix) {
     fCovarianceMatrix = new TMatrixDSym(fMeasuredVector->size());
-    for (int i = 0; i < fMeasuredVector->size(); i++) {
-      for (int j = 0; j < fMeasuredVector->size(); j++) {
+    for (unsigned int i = 0; i < fMeasuredVector->size(); i++) {
+      for (unsigned int j = 0; j < fMeasuredVector->size(); j++) {
 	(*fCovarianceMatrix)(i, j) = 0.0;
       }
     }
@@ -348,7 +348,7 @@ void CorrelationMatrix::TransformCovarianceMatrixIntoCorrelationMatrix()
    }
    if (!fCovarianceMatrix) {
       cout << "Asking to transform non-existing covariance matrix into correlation matrix" << endl;
-      exit;
+      exit(EXIT_FAILURE);
    }
 
    for (unsigned int i=0; i<fMeasuredVector->size(); i++) {
@@ -371,7 +371,7 @@ void CorrelationMatrix::CalculateInverseCovarianceMatrix()
    }
    if (!fCovarianceMatrix) {
       cout << "Asking to transform non-existing covariance matrix into inverse covariance matrix" << endl;
-      exit;
+      exit(EXIT_FAILURE);
    }
 
    for (unsigned int i=0; i<fMeasuredVector->size(); i++) {

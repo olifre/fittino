@@ -280,7 +280,7 @@ struct correrrorstruct {
 %token <real> T_NUMBER
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
 %token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS T_NOFIT
-%token T_BLOCK T_SCALE T_DECAY T_NEWLINE T_BR T_LEO T_XS T_CALCULATOR T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO
+%token T_BLOCK T_SCALE T_DECAY T_BR T_LEO T_XS T_CALCULATOR T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH T_NEWLINE
  
 %type <name>   sentence
@@ -519,7 +519,7 @@ input:
 	        	  tmpValue.theovalue  = 0;
 	        	  tmpValue.bound_low = 0.;
 	        	  tmpValue.bound_up = 0.;
-	        	  tmpValue.alias = $6;
+	        	  tmpValue.alias = (int)$6;
 	        	  tmpValue.id = 0;
 	        	  if (!strncmp($2, "mass", 4))tmpValue.type = mass;
 	                  else if (!strcmp($2, "tauFromStau1Polarisation")) tmpValue.type = tauFromStau1Polarisation;
@@ -542,7 +542,7 @@ input:
 	         str.erase();
 		 str = $3;
 //		 cout << "decompositing string "<<str<< endl;
-		 int stringsize = str.size();
+		 unsigned int stringsize = str.size();
 		 char tmpstr5[255];
 		 unsigned int pos = 0, newpos = 0;
 //		 int anti = 1;
@@ -846,18 +846,19 @@ input:
 			if (!yyMeasuredVec[i].name.compare($2)) {
 			  found = 1;
 			  yyMeasuredVec[i].value = $3;
-			  struct correrrorstruct *tagmap = $5;
+			  struct correrrorstruct *tmpTagmap = $5;
 			  double tmpError = $4*$4;
 			  for (unsigned int j=0; j<10; j++) {
-			     tmpError += (*tagmap).value[j]*(*tagmap).value[j];
+			     tmpError += (*tmpTagmap).value[j]*(*tmpTagmap).value[j];
 			  }
 			  yyMeasuredVec[i].error = TMath::Sqrt(tmpError);
 			  for (unsigned int k=0; k<10; k++) {
-			     string tmpString = (*tagmap).key[k].keyname;
-			     double tmpDouble = (*tagmap).value[k];
+			     string tmpString = (*tmpTagmap).key[k].keyname;
+			     double tmpDouble = (*tmpTagmap).value[k];
 		             pair<string, double> tmpPair(tmpString, tmpDouble);
 			     yyMeasuredVec[i].correrror.insert(tmpPair);
 			  }
+			  delete tmpTagmap;
 			  yyMeasuredVec[i].correrror.erase("0");
 			  break;
 			}
@@ -867,18 +868,19 @@ input:
 			  tmpValue.nofit = false;
 			  tmpValue.name = $2;
 			  tmpValue.value = $3;
-                          struct correrrorstruct *tagmap = $5;
+                          struct correrrorstruct *tmpTagmap = $5;
 			  double tmpError = $4*$4;
 			  for (unsigned int j=0; j<10; j++) {
-			     tmpError += (*tagmap).value[j]*(*tagmap).value[j];
+			     tmpError += (*tmpTagmap).value[j]*(*tmpTagmap).value[j];
 			  }
 			  tmpValue.error = TMath::Sqrt(tmpError);
 			  for (unsigned int k=0; k<10; k++) {
-			     string tmpString = (*tagmap).key[k].keyname;
-			     double tmpDouble = (*tagmap).value[k];
+			     string tmpString = (*tmpTagmap).key[k].keyname;
+			     double tmpDouble = (*tmpTagmap).value[k];
 		             pair<string, double> tmpPair(tmpString, tmpDouble);
 			     tmpValue.correrror.insert(tmpPair);
 			  }
+			  delete tmpTagmap;
 			  tmpValue.correrror.erase("0");
 			  tmpValue.type = mass;
 			  tmpValue.theovalue  = 0;
@@ -930,13 +932,13 @@ input:
 	          str.erase();
 		  str = $4;
 		  //		  cout << "decompositing string |"<<str<< "|"<< endl;
-		  int stringsize = str.size();
+		  unsigned int stringsize = str.size();
 		  // cout << "string size = " << stringsize << endl;
 		  char tmpstr2[255];
 		  unsigned int pos = 0, newpos = 0;
 //		  int anti = 1;
 	          int i = 0;
-		  int firstnewpos = str.find(" ", pos);
+		  //int firstnewpos = str.find(" ", pos);
 		  //cout << "firstnewpos = " << firstnewpos << endl;
 		  //		  while ((newpos = str.find(" ", pos)) != string::npos) {
 		  while ((newpos = str.find(" ", pos)) <= stringsize) {
@@ -1471,7 +1473,7 @@ input:
 	          str.erase();
 		  str = $4;
 //		  cout << "decompositing string "<<str<< endl;
-		  int stringsize = str.size();
+		  unsigned int stringsize = str.size();
 		  char tmpstr2[255];
 		  unsigned int pos = 0, newpos = 0;
 //		  int anti = 1;
@@ -1542,7 +1544,7 @@ input:
 	          str.erase();
 		  str = $4;
 //		  cout << "decompositing string "<<str<< endl;
-		  int stringsize = str.size();
+		  unsigned int stringsize = str.size();
 		  char tmpstr2[255];
 		  unsigned int pos = 0, newpos = 0;
 //		  int anti = 1;
@@ -1602,7 +1604,7 @@ input:
 		  string str;
 	          str.erase();
 		  str = $6;
-		  int stringsize = str.size();
+		  unsigned int stringsize = str.size();
 		  char tmpstr3[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
@@ -2114,7 +2116,7 @@ input:
 		  string str;
 	          str.erase();
 		  str = $6;
-		  int stringsize = str.size();
+		  unsigned int stringsize = str.size();
 		  char tmpstr3[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
@@ -2178,7 +2180,7 @@ input:
 		  string str;
 	          str.erase();
 	          str = $6;
-		  int stringsize = str.size();
+		  unsigned int stringsize = str.size();
 		  char tmpstr4[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
@@ -2248,7 +2250,7 @@ input:
 		  string str;
 	          str.erase();
 	          str = $6;
-		  int stringsize = str.size();
+		  unsigned int stringsize = str.size();
 		  char tmpstr4[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
@@ -2321,7 +2323,7 @@ input:
 		  string str;
 	          str.erase();
 		  str = $4;
-		  int stringsize = str.size();
+		  unsigned int stringsize = str.size();
 		  char tmpstr4[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
@@ -2464,19 +2466,20 @@ input:
 		      cout << "syntax error in weighted: not enough arguments, alias: " << tmpValue.alias <<  endl;
 		      yyerror (" ");		      		    
 		  }
-                  struct correrrorstruct *tagmap = $8;
+                  struct correrrorstruct *tmpTagmap = $8;
 	          double tmpError = $7*$7;
 		  for (unsigned int j=0; j<10; j++) {
-		     tmpError += (*tagmap).value[j]*(*tagmap).value[j];
+		     tmpError += (*tmpTagmap).value[j]*(*tmpTagmap).value[j];
 		  }
 		  //yyMeasuredVec[i].error = TMath::Sqrt(tmpError);
 		  tmpValue.error = TMath::Sqrt(tmpError);
 		  for (unsigned int k=0; k<10; k++) {
-		     string tmpString = (*tagmap).key[k].keyname;
-		     double tmpDouble = (*tagmap).value[k];
+		     string tmpString = (*tmpTagmap).key[k].keyname;
+		     double tmpDouble = (*tmpTagmap).value[k];
 	             pair<string, double> tmpPair(tmpString, tmpDouble);
                      tmpValue.correrror.insert(tmpPair);
 		  }
+		  delete tmpTagmap;
                   tmpValue.correrror.erase("0");
 		  yyMeasuredVec.push_back(tmpValue);
 		}
@@ -2518,7 +2521,7 @@ input:
 		  string str;
 	          str.erase();
 		  str = $4;
-		  int stringsize = str.size();
+		  unsigned int stringsize = str.size();
 		  char tmpstr3[255];
 		  unsigned int pos = 0, newpos = 0;
 		  bool found_br = false;
@@ -2652,7 +2655,7 @@ input:
 		  string str;
 	          str.erase();
 		  str = $4;
-		  int stringsize = str.size();
+		  unsigned int stringsize = str.size();
 		  char tmpstr3[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
@@ -2777,7 +2780,7 @@ input:
 		  string str;
 	          str.erase();
 		  str = $4;
-		  int stringsize = str.size();
+		  unsigned int stringsize = str.size();
 		  char tmpstr3[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
@@ -2876,7 +2879,7 @@ input:
 		  string str;
 	          str.erase();
 		  str = $4;
-		  int stringsize = str.size();
+		  unsigned int stringsize = str.size();
 		  char tmpstr3[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
@@ -2953,7 +2956,7 @@ input:
 		  string str;
 	          str.erase();
 		  str = $4;
-		  int stringsize = str.size();
+		  unsigned int stringsize = str.size();
 		  char tmpstr4[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
@@ -3134,7 +3137,7 @@ input:
 		  string str;
 	          str.erase();
 		  str = $4;
-		  int stringsize = str.size();
+		  unsigned int stringsize = str.size();
 		  char tmpstr3[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
@@ -3211,7 +3214,7 @@ input:
 		  string str;
 	          str.erase();
 		  str = $4;
-		  int stringsize = str.size();
+		  unsigned int stringsize = str.size();
 		  char tmpstr3[255];
 		  unsigned int pos = 0, newpos = 0;
 		  int anti = 1;
