@@ -259,6 +259,7 @@ int           yyInputFileLineNo = 1;
 
 typedef struct { 
    char keyname[4]; 
+   //string keymame;
 } keyname;
 
 struct correrrorstruct {
@@ -969,16 +970,16 @@ input:
 		  }
 		  //cout << "h0" << endl;
 		  tmpValue.value = $5;
-                  struct correrrorstruct *tagmap = $7;
+                  struct correrrorstruct *tmpTagmap = $7;
 		  double tmpError = $6*$6;
 		  for (unsigned int j=0; j<10; j++) {
-		     tmpError += (*tagmap).value[j]*(*tagmap).value[j];
+		     tmpError += (*tmpTagmap).value[j]*(*tmpTagmap).value[j];
 		  }
 		  //cout << "h1" << endl;
 		  tmpValue.error = TMath::Sqrt(tmpError);
 		  for (unsigned int k=0; k<10; k++) {
-		     string tmpString = (*tagmap).key[k].keyname;
-		     double tmpDouble = (*tagmap).value[k];
+		     string tmpString = (*tmpTagmap).key[k].keyname;
+		     double tmpDouble = (*tmpTagmap).value[k];
 		     pair<string, double> tmpPair(tmpString, tmpDouble);
 		     tmpValue.correrror.insert(tmpPair);
 		  }
@@ -3994,37 +3995,33 @@ value:     T_NUMBER                        { $$ = $1; }
 
 correrr:   T_ERRORSIGN T_BRA T_WORD T_KET value 
 	   {
-	      struct correrrorstruct tagmap;
-	      strcpy(tagmap.key[0].keyname, $3);
-	      tagmap.value[0] = $5;
-	      unsigned int i;
-	      for (i=1; i<10; i++) {
-		 strcpy(tagmap.key[i].keyname, "0");
-		 tagmap.value[i] = 0;
+	      struct correrrorstruct *tagmap = new correrrorstruct;
+              strcpy(tagmap->key[0].keyname, $3);
+	      tagmap->value[0] = $5;
+	      for (unsigned int i=1; i<10; i++) {
+		 strcpy(tagmap->key[i].keyname, "0");
+		 tagmap->value[i] = 0;
 	      }
-	      struct correrrorstruct *correrrorptr = &tagmap;
-	      $$ = correrrorptr;
+	      $$ = tagmap;
 	   }
-	   | correrr T_ERRORSIGN T_BRA T_WORD T_KET value
-	   {
-	      struct correrrorstruct *tmpcorrerrorptr = $1;
-	      struct correrrorstruct tagmap;
-	      unsigned int i;
-	      for (i=0; i<10; i++) {
-		 tagmap.value[i] = (*tmpcorrerrorptr).value[i];
-		 strcpy(tagmap.key[i].keyname, (*tmpcorrerrorptr).key[i].keyname);
-	      }
-	      unsigned int j;
-	      for (j=0; j<10; j++) { 
-		 if (tagmap.value[j] == 0) {
-		    tagmap.value[j] = $6;
-		    strcpy(tagmap.key[j].keyname, $4);
-		    break;
-		 }
-	      }
-	      struct correrrorstruct *correrrorptr = &tagmap;
-	      $$ = correrrorptr;
-	   }
+	   //| correrr T_ERRORSIGN T_BRA T_WORD T_KET value
+	   //{
+	   //   struct correrrorstruct *tmpcorrerrorptr = $1;
+	   //   struct correrrorstruct tagmap;
+	   //   for (unsigned int i=0; i<10; i++) {
+	   //      tagmap.value[i] = (*tmpcorrerrorptr).value[i];
+	   //      strcpy(tagmap.key[i].keyname, (*tmpcorrerrorptr).key[i].keyname);
+	   //   }
+	   //   for (unsigned int j=0; j<10; j++) { 
+	   //      if (tagmap.value[j] == 0) {
+	   //         tagmap.value[j] = $6;
+	   //         strcpy(tagmap.key[j].keyname, $4);
+	   //         break;
+	   //      }
+	   //   }
+	   //   struct correrrorstruct *correrrorptr = &tagmap;
+	   //   $$ = correrrorptr;
+	   //}
 	   ;
 
 	   %%

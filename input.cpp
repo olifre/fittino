@@ -149,7 +149,7 @@ Input::Input(const char* inputfile)
   //cout << endl << "correlation and covariance matrix after calculating correlation and inverse covariance matrix::" << endl;
   //yyTagMap->Print();
   //yyMeasuredCorrelationMatrix.Print();
-  yyMeasuredCorrelationMatrix.PrintCovariance();
+  //yyMeasuredCorrelationMatrix.PrintCovariance();
   //yyMeasuredCorrelationMatrix.PrintInverseCovariance();
 
   fMeasuredVec = yyMeasuredVec;
