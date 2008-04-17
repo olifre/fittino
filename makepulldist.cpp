@@ -138,6 +138,9 @@ void MakePullDist::CalcPullDist()
      ndof = 1;
   }
   TH1F* chisq_hist = new TH1F("chisq_hist","chisq distribution",3*ndof,0.,(double)(3*ndof));
+
+  // create a vector of trees if MultiplePulls is set
+
   TTree* tree = new TTree("tree", "Tree containing fitted parameters");
   vector<MeasuredValue> parLeafVec(yyFittedPar.size());
 
@@ -198,20 +201,6 @@ void MakePullDist::CalcPullDist()
 	yyMeasuredVec[j].value = thrown(j);
      }
 
-     //    for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
-     //      for (unsigned int k = j; k < yyMeasuredVec.size(); k++) {  
-     //	correction = gRandom->Gaus(0., 
-     //				    TMath::Sqrt(TMath::Abs(fInput->GetMeasuredCorrelationMatrix().GetCovariance(j, k))));
-     //	if (fInput->GetMeasuredCorrelationMatrix().GetCovariance(j, k)>0.) {
-     //	  yyMeasuredVec[j].value += 0.5 * correction;
-     //	  yyMeasuredVec[k].value += 0.5 * correction;
-     //	} else {
-     //	  yyMeasuredVec[j].value += 0.5 * correction;
-     //	  yyMeasuredVec[k].value -= 0.5 * correction;	  
-     //	}
-     //      }
-     //    }
-
      // test printouts for observable value scattering
      cout << yyDashedLine << endl;
      cout<<"Thrown set of observables for pull fit no "<<i<<":"<<endl;
@@ -220,6 +209,10 @@ void MakePullDist::CalcPullDist()
 	   cout << yyMeasuredVec[j].name << ": " << yyMeasuredVec[j].value << " (deviation from mean value " << savedMeasuredValues[j].value << " within " << TMath::Ceil((TMath::Abs(yyMeasuredVec[j].value-savedMeasuredValues[j].value)/yyMeasuredVec[j].error)) <<" sigma)" <<endl;
 	}
      }
+
+
+     // loop here over varied 'digital' parameters
+     // (eg signmu=+1,-1)
 
      //   calculate new Fit result...
      Fittino* fittino = new Fittino(fInput);
@@ -256,10 +249,13 @@ void MakePullDist::CalcPullDist()
      cout << "filling chisq hist " << endl;
      chisq_hist->Fill(gchisq);
      cout << "filling tree " << endl;
+     // make sure the different model results are saved separately...
      tree->Fill();
      cout << "deleting fittino" << endl;
      delete fittino;
      cout << "having deleted fittino" << endl;
+
+     // stop loop over digital fixed parameters here
 
      // deleting yyFittedVec
      yyFittedVec.clear();
