@@ -169,8 +169,12 @@ void MakePullDist::CalcPullDist()
      }
   }
 
+  double randSeed = yyRandomGeneratorSeed;
+  int nToy = 0;
   //cout << "Adding branch Chi2 to tree" << endl;
   tree->Branch("Chi2", &gchisq, "Chi2/D");
+  tree->Branch("randSeed", &randSeed, "randSeed/D");
+  tree->Branch("nToy", &nToy, "nToy/I");
 
   //for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
   //   yyMeasuredVec[j].value = pseudoMeasuredObservableVector(j);
@@ -256,6 +260,10 @@ void MakePullDist::CalcPullDist()
      cout << "having deleted fittino" << endl;
 
      // stop loop over digital fixed parameters here
+
+
+    nToy++;
+
 
      // deleting yyFittedVec
      yyFittedVec.clear();
