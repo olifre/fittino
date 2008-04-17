@@ -200,11 +200,15 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
 	else {
 	    histo[iLeaf]->Fit(gauss[iLeaf], "rem");
 	    histo[iLeaf]->Draw("ep");
-	    Double_t rms = TMath::Sqrt((sum2[iLeaf] - sum[iLeaf] * sum[iLeaf] 
-                           / nEntries ) / nEntries);
-	    Double_t sigma = gauss[iLeaf]->GetParameter(2);
-	    printf("%s: (RMS - Sigma) / Sigma = %f\n", leaf->GetName(),
-		   (rms - sigma) / sigma);
+            Double_t mean = sum[iLeaf] / nEntries;
+            Double_t mu = gauss[iLeaf]->GetParameter(1);
+            Double_t rms = TMath::Sqrt((sum2[iLeaf] - sum[iLeaf] * sum[iLeaf]
+					/ nEntries ) / nEntries);
+            Double_t sigma = gauss[iLeaf]->GetParameter(2);
+            printf("mean = %f             mu    = %f\n", mean, mu);
+            printf("RMS  = %f             sigma = %f\n", rms, sigma);
+            printf("%s: (RMS - Sigma) / Sigma = %f\n", leaf->GetName(),
+                   (rms - sigma) / sigma);
 	}
 
 	sprintf(epsfilename, "%s.eps", leaf->GetName());
