@@ -348,6 +348,12 @@ input:
                 } 	
 		else if (!strcmp($2,"RandomGeneratorSeed")) {
 		  // cout << "FOUND RandomGeneratorSeed "<<$3<<endl;
+		  if ( yyRandomGeneratorSeed != -1 ) {
+		    cout << "Trying to overwrite random number generator seed given as program parameter" << endl;
+		    cout << "with value in input file. Please check what you want." << endl;
+		    cout << "Exiting." << endl;
+		    exit(EXIT_FAILURE);
+		  }
 		  yyRandomGeneratorSeed = (int)$3;
                 }
 		else if (!strcmp($2,"SeedForObservableScattering")) {

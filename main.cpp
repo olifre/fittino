@@ -71,6 +71,9 @@ int main(int argc, char** argv)
 	  cout<<"      Fittino generates the input file (see -g option) using the scenario described"<<endl;
 	  cout<<"      in SUSY Les Houches Accord file <leshouchesfile>."<<endl;
 	  cout<<endl;
+	  cout<<"  -s <seed>"<<endl;
+	  cout<<"      Fittino uses the given random number generator seed."<<endl;
+	  cout<<endl;
 	  return 0;
       }
       else {
@@ -96,6 +99,11 @@ int main(int argc, char** argv)
 	      i++;
 	      cerr<<"Option -l not yet implemented"<<endl;
 	      exit(EXIT_FAILURE);
+	      continue;
+	  }
+  	  if (!strcmp(argv[i], "-s")) {
+	      i++;
+	      yyRandomGeneratorSeed = atoi(argv[i]);
 	      continue;
 	  }
       }
