@@ -293,9 +293,23 @@ void CombinedPullDists (const Int_t nbins = 50,
     
   char epsfilename[256];
 
+  cout << "calculating and plotting results" << endl;
+
+  double wrongEff      = (double)nInverted/(double)nPoints;
+  double deltaWrongEff = sqrt(wrongEff*(1-wrongEff)/nPoints);
+
+  char effLine1[512];
+  char effLine2[512];
+  char effLine3[512];
+  char effLine4[512];
+  sprintf(effLine1,"probability to prefer");
+  sprintf(effLine2,"%s over",tag2);
+  sprintf(effLine3,"%s:",tag1);
+  sprintf(effLine4,"%f +- %f",wrongEff,deltaWrongEff);
+
   for (Int_t iLeaf=0; iLeaf<nLeaves1; iLeaf++) {
 
-    TLeafD* leaf  = (TLeafD*)tree->GetListOfLeaves()->At(iLeaf);
+    TLeafD* leaf  = (TLeafD*)tree1->GetListOfLeaves()->At(iLeaf);
     TLine*  line  = new TLine(minSave[iLeaf],minSave[iLeaf],maxSave[iLeaf],maxSave[iLeaf]); 
     line->SetLineColor(kRed);
 
@@ -303,13 +317,21 @@ void CombinedPullDists (const Int_t nbins = 50,
     line->Draw("same");
     histo[iLeaf]->Draw("boxsame");
 
+    if (!strcmp(leaf->GetName(),"Chi2")) {
+      TLatex* text1 = new TLatex((0.3*maxSave[iLeaf]+minSave[iLeaf]),(0.16*maxSave[iLeaf]+minSave[iLeaf]),effLine1);
+      TLatex* text2 = new TLatex((0.3*maxSave[iLeaf]+minSave[iLeaf]),(0.11*maxSave[iLeaf]+minSave[iLeaf]),effLine2);
+      TLatex* text3 = new TLatex((0.3*maxSave[iLeaf]+minSave[iLeaf]),(0.06*maxSave[iLeaf]+minSave[iLeaf]),effLine3);
+      TLatex* text4 = new TLatex((0.3*maxSave[iLeaf]+minSave[iLeaf]),(0.01*maxSave[iLeaf]+minSave[iLeaf]),effLine4);
+      text1->Draw("same");
+      text2->Draw("same");
+      text3->Draw("same");
+      text4->Draw("same");
+    }
+
     sprintf(epsfilename, "%s.eps", leaf->GetName());
     c->Print(epsfilename);
 
   }
-
-  double wrongEff      = (double)nInverted/(double)nPoints;
-  double deltaWrongEff = sqrt(wrongEff*(1-wrongEff)/nPoints);
 
   cout << "probability to prefer " << tag2 << " over " << tag1 << " = " << wrongEff << " +- " << deltaWrongEff << endl;
 
