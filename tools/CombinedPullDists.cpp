@@ -83,6 +83,8 @@ void CombinedPullDists (const Int_t nbins = 50,
 
   Double_t* par1  = new Double_t[nLeaves1];
   Double_t* par2  = new Double_t[nLeaves1];
+  Double_t* minSave  = new Double_t[nLeaves1];
+  Double_t* maxSave  = new Double_t[nLeaves1];
   Double_t* sum   = new Double_t[nLeaves1];
   Double_t* sum2  = new Double_t[nLeaves1];
   TH2D**    histo = new TH2D[nLeaves1];
@@ -119,6 +121,9 @@ void CombinedPullDists (const Int_t nbins = 50,
     }
     Double_t min = mintree - 0.15 * (maxtree - mintree);
     Double_t max = maxtree + 0.15 * (maxtree - mintree);
+
+    minSave[iLeaf] = min;
+    maxSave[iLeaf] = max;
       
     histo[iLeaf] = new TH2D(leaf1->GetName(), "" /*leaf->GetTitle()*/, nbins, min, max, nbins, min, max );
       
@@ -251,7 +256,7 @@ void CombinedPullDists (const Int_t nbins = 50,
 	  chi2val1 = par1[iChi2Leaf1];
 	}
 	if (!(iChi2Leaf2 < 0)) {
-	  chi2val2 = par1[iChi2Leaf2];
+	  chi2val2 = par2[iChi2Leaf2];
 	}
 
 	if ( chi2val1<0. || chi2val2<0. ) {
@@ -291,13 +296,13 @@ void CombinedPullDists (const Int_t nbins = 50,
   for (Int_t iLeaf=0; iLeaf<nLeaves1; iLeaf++) {
 
     TLeafD* leaf  = (TLeafD*)tree->GetListOfLeaves()->At(iLeaf);
-    TGraph* line = new TGraph(2);
-    line->SetPoint(0,0.,0.);
-    line->SetPoint(0,100.,100.);
+    TLine*  line  = new TLine(minSave[iLeaf],minSave[iLeaf],maxSave[iLeaf],maxSave[iLeaf]); 
+    line->SetLineColor(kRed);
 
     histo[iLeaf]->Draw("box");
     line->Draw("same");
- 
+    histo[iLeaf]->Draw("boxsame");
+
     sprintf(epsfilename, "%s.eps", leaf->GetName());
     c->Print(epsfilename);
 
@@ -306,7 +311,7 @@ void CombinedPullDists (const Int_t nbins = 50,
   double wrongEff      = (double)nInverted/(double)nPoints;
   double deltaWrongEff = sqrt(wrongEff*(1-wrongEff)/nPoints);
 
-  cout << "probability to prefer model 2 over model 1 = " << wrongEff << " +- " << deltaWrongEff << endl;
+  cout << "probability to prefer " << tag2 << " over " << tag1 << " = " << wrongEff << " +- " << deltaWrongEff << endl;
 
   delete[] par1;
   delete[] par2;
