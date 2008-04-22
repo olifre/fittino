@@ -23,19 +23,19 @@ massTop        170.9   GeV +-  1.1 GeV +- (JES) 1.5 GeV # errors from []
 ### edges
 #edge 2 massSelectronL massNeutralino1                               105.413  GeV +- 1.7  GeV +-  6   GeV +- (LES) 0.1  GeV alias  1 # errors from [1] (scaled)
 #edge 2 massGluino     massNeutralino1                               510.189  GeV +- 13.7  GeV +- 10   GeV +- (JES) 5.1  GeV alias  2 # errors from [1]
-edge 2 massSupR       massNeutralino1                               454.046  GeV +-  19.6  GeV +- 10   GeV +- (JES) 22.7  GeV alias  3 # errors from [1] (scaled)
+edge 8 massSupR       massNeutralino1                                533.748 GeV +-  19.6  GeV +- 10   GeV +- (JES) 22.7  GeV alias  3 # errors from [1] (scaled)
 #edge 2 massGluino     massSbottom1                                   89.0447 GeV +-  1.5  GeV             +- (JES) 0.9  GeV alias  4 # errors from [1]
 #edge 2 massGluino     massSbottom2                                   56.6814 GeV +-  2.5  GeV             +- (JES) 0.6  GeV alias  5 # errors from [1]
 
-edge 3 massNeutralino1 massNeutralino2 massSelectronR                80.1768 GeV +-  1.7  GeV             +- (LES) 0.16 GeV alias  6 # errors from [1]
+edge 100 massNeutralino1 massNeutralino2 massSelectronR                80.1768 GeV +-  1.7  GeV             +- (LES) 0.16 GeV alias  6 # errors from [1]
 #edge 3 massNeutralino1 massNeutralino4 massSelectronL               279.074  GeV +- 12.6  GeV             +- (LES) 0.28 GeV alias  7 # errors from [3]
 edge 3 massNeutralino1 massNeutralino2 massStau1                     83.1574 GeV +- 12.6  GeV +-  5.7 GeV +- (JES) 4.2 GeV alias  8 # errors from [2]
-edge 3 massNeutralino1 massSupL        massNeutralino2              454.267  GeV +- 13.9  GeV             +- (JES) 22.7  GeV alias  9 # errors from [1]
-edge 3 massSelectronR  massSupL        massNeutralino2              324.245  GeV +-  7.6  GeV             +- (JES) 16.2  GeV alias 10 # errors from [1]
+edge 101 massNeutralino1 massSupL        massNeutralino2              454.267  GeV +- 13.9  GeV             +- (JES) 22.7  GeV alias  9 # errors from [1]
+edge 105 massSelectronR  massSupL        massNeutralino2              320.321  GeV +-  7.6  GeV             +- (JES) 16.2  GeV alias 10 # errors from [1]
 
-edge 4 massNeutralino1 massNeutralino2 massSelectronR  massSupL     398.286  GeV +-  5.2  GeV             +- (JES) 19.9  GeV alias 11 # errors from [1]
+edge 106 massNeutralino1 massNeutralino2 massSelectronR  massSupL     398.286  GeV +-  5.2  GeV             +- (JES) 19.9  GeV alias 11 # errors from [1]
 
-edge 5 massNeutralino1 massNeutralino2 massSelectronR  massSupL     216.227  GeV +- 26.5  GeV             +- (JES) 10.8  GeV alias 12 # errors from [1]
+edge 102 massNeutralino1 massNeutralino2 massSelectronR  massSupL     216.227  GeV +- 26.5  GeV             +- (JES) 10.8  GeV alias 12 # errors from [1]
 #edge 5 massNeutralino1 massNeutralino2 massSelectronR  massSbottom1 196.435  GeV +- 19.7  GeV             +- (JES) 2.0  GeV alias 13 # errors from [1]
 
 edge 6 massTop massStop1 massChargino1 massGluino                                                                          alias 14 
@@ -152,7 +152,7 @@ ScanX                          off
 SepFitTanbX                    off
 SepFitTanbMu                   off
 SepFitmA	               off
-Calculator                     SPHENO ./SPheno3
+Calculator                     SPHENO ./SPheno
 #UseMicrOmegas                  off
 QuarkFlavourViolation          off
 UseMinos                       off
