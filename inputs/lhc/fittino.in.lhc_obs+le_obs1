@@ -1,0 +1,211 @@
+#########################################################################
+###                         Fittino input file                        ###
+#########################################################################
+###                           M. Uhlenbrock                           ###
+#########################################################################
+###                 Fit of LHC observables to the                     ###
+###                 mSUGRA SPS 1a benchmark point                     ###
+###                          for 1 fb-1                               ###
+#########################################################################
+
+#########################################################################
+### Observables                                                       ###
+#########################################################################
+
+### masses
+massTop        170.9   GeV +-  1.1 GeV +- (JES) 1.5 GeV # errors from []
+
+### edges
+edge   8 massSupR        massNeutralino1                                533.748 GeV +-  19.6  GeV +- 10  GeV +- (JES) 26.7  GeV alias 1 # errors from [1]
+edge 100 massNeutralino1 massNeutralino2 massSelectronR                 80.1768 GeV +-  1.7  GeV             +- (LES)  0.16 GeV alias 2 # errors from [1]
+edge   3 massNeutralino1 massNeutralino2 massStau1                      83.1574 GeV +- 12.6  GeV +-  5.7 GeV +- (JES)  4.2  GeV alias 3 # errors from [2]
+edge 101 massNeutralino1 massSupL        massNeutralino2               454.267  GeV +- 13.9  GeV             +- (JES) 11.4  GeV alias 4 # errors from [1]
+edge 105 massSelectronR  massSupL        massNeutralino2               320.321  GeV +-  7.6  GeV             +- (JES)  8.0  GeV alias 5 # errors from [1]
+edge 106 massNeutralino1 massNeutralino2 massSelectronR  massSupL      398.286  GeV +-  5.2  GeV             +- (JES) 10.0  GeV alias 6 # errors from [1]
+edge 102 massNeutralino1 massNeutralino2 massSelectronR  massSupL      216.227  GeV +- 26.5  GeV             +- (JES)  5.4  GeV alias 7 # errors from [1]
+edge   6 massTop         massStop1       massChargino1   massGluino                                                             alias 8 
+edge   7 massTop         massGluino      massSbottom1    massChargino1                                                          alias 9
+
+### branching ratios
+BR ( Neutralino2 -> Electron SelectronR  ) alias  1
+BR ( Neutralino2 -> Tau Stau1            ) alias  2
+BR ( SelectronR  -> Neutralino1 Electron ) alias  3
+BR ( Stau1       -> Neutralino1 Tau      ) alias  4
+BR ( Gluino      -> Bottom Sbottom2      ) alias  5
+BR ( Gluino      -> Bottom Sbottom1      ) alias  6
+BR ( Sbottom2    -> Neutralino2 Bottom   ) alias  7
+BR ( Sbottom1    -> Neutralino2 Bottom   ) alias  8
+BR ( Gluino      -> Stop1 Top            ) alias  9
+BR ( Stop1       -> Bottom Chargino1     ) alias 10
+BR ( Sbottom1    -> W Stop1              ) alias 11
+BR ( Sbottom2    -> W Stop1              ) alias 12
+BR ( Stop1       -> Bottom Chargino2     ) alias 13
+BR ( Sbottom1    -> Top Chargino1        ) alias 14
+
+brprod ( br_1 br_3        ) alias 1
+brprod ( br_2 br_4        ) alias 2
+brprod ( br_5 br_7        ) alias 3
+brprod ( br_6 br_8        ) alias 4
+brprod ( br_9 br_10       ) alias 5
+brprod ( br_6 br_11 br_10 ) alias 6
+brprod ( br_5 br_12 br_13 ) alias 7
+brprod ( br_6 br_14       ) alias 8
+
+brratio ( brprod_1 brprod_2 ) 0.0778612 +- 0.009 +- 0.008 alias 1
+
+brsum ( brprod_5 brprod_6 brprod_7 ) alias 1
+ 
+weighted ( brsum_1 edge_8 brprod_8 edge_9 ) 360.89  GeV +- 43.0 GeV +- (JES) 18.0 GeV alias 1
+
+### SM observables
+massW       80.3713  GeV +- 0.039   GeV
+massZ       91.1876  GeV +- 0.0021  GeV
+massCharm    1.2     GeV +- 0.2     GeV
+massBottom   4.5     GeV +- 0.25    GeV
+massTau      1.77699 GeV +- 0.00029 GeV
+alphas       0.1187  GeV +- 0.002   GeV
+alphaem    127.934   GeV +- 0.027   GeV
+
+fixParameter massTop      170.9   GeV
+fixParameter massW       80.3713  GeV
+fixParameter massZ       91.1876  GeV
+fixParameter massCharm    1.2     GeV
+fixParameter massBottom   4.5     GeV
+fixParameter massTau      1.77699 GeV
+fixParameter alphas       0.1187  GeV
+fixParameter alphaem    127.934   GeV
+
+### low energy observables
+LEObs ( Bsg_npf        )    0.914874    +- 0.12                 alias  1 # errors from Buch
+LEObs ( dm_s_npf       )    1.0489      +- 0.007     +- 0.34    alias  2 # errors from Buch
+LEObs ( B_smm_npf      )    3.08385e-09 +- 0.1E-9    +- 0.2E-9  alias  3 # errors from Buch
+LEObs ( Btn_npf        )    0.963462    +- 0.42                 alias  4 # errors from Buch
+LEObs ( B_sXsll_npf    )    0.982995                 +- 0.32    alias  5 # errors from Buch
+LEObs ( Ktn_npf        )    0.999673                 +- 0.017   alias  6 # errors from Buch
+LEObs ( gmin2m_npf     )    2.97589e-09 +- 8.7e-10   +- 2.0e-10 alias  7 # errors from Buch 
+#LEObs ( massW_npf      )   80.3792      +- 0.025     +- 0.010   alias  8 # errors from Buch
+LEObs ( sin_th_eff_npf )    0.231391    +- 0.0012               alias  9 # errors from Buch
+LEObs ( GammaZ_npf     ) 2493.29        +- 2.3       +- 1.0     alias 10 # errors from Buch 
+LEObs ( R_l_npf        )   20.788       +- 0.025                alias 11 # errors from Buch
+LEObs ( R_b_npf        )    0.215906    +- 0.00066              alias 12 # errors from Buch
+LEObs ( R_c_npf        )    0.172131    +- 0.003                alias 13 # errors from Buch
+LEObs ( A_fbb_npf      )    0.103822    +- 0.0016               alias 14 # errors from Buch
+LEObs ( A_fbc_npf      )    0.0742053   +- 0.0035               alias 15 # errors from Buch
+LEObs ( A_b_npf        )    0.935015    +- 0.020                alias 16 # errors from Buch
+LEObs ( A_c_npf        )    0.668287    +- 0.027                alias 17 # errors from Buch
+LEObs ( A_l_npf        )    0.148051    +- 0.0021               alias 18 # errors from Buch
+#LEObs ( massh0_npf     )  112.968       +- 1.1       +- 3.0     alias 19 # errors from Buch
+LEObs ( Omega_npf      )    0.193895    +- 0.009     +- 0.012   alias 20 # errors from Buch
+LEObs ( A_tau_npf      )    0.148051    +- 0.0032               alias 21 # errors from Buch
+LEObs ( A_fbl_npf      )    0.0164393   +- 0.00095              alias 22 # errors from Buch
+LEObs ( sigma_had0_npf )   41.4044      +- 0.037                alias 23 # errors from Buch
+LEObs ( dm_d_npf       )    1.04907     +- 0.01      +- 0.29    alias 24 # errors from Buch
+LEObs ( dm_k_npf       )    1.04838     +- 0.003     +- 0.32    alias 25 # errors from Buch
+LEObs ( Kppinn_npf     )    0.9953      +- 1.0                  alias 26 # errors from Buch
+LEObs ( B_dll_npf      )    1.78095e-10 +- 1.0       +- 0.2E-9  alias 27 # errors from Buch
+LEObs ( DmsDmd_npf     )    0.999841                 +- 0.08    alias 28 # errors from Buch
+#LEObs ( D_0_npf        )    4.11858e-15 +- 0.005                alias 29 # errors from Buch
+#LEObs ( bsg_npf        )    4.15794e+16 +- 0.12                 alias 30 # errors from Buch
+
+### low energy observables
+#LEObs ( bsg    )   0.000352084 +- 0.000042 alias 10 # HFAG summer 2006:  3.55E-4 +- 4E-5
+#LEObs ( bsmm   )   1.83297     +- 1.0      alias 11 # HFAG summer 2006:  4.5E-6  +- 1.0E-6
+#LEObs ( B_utn  )   0.000124874 +- 0.000048 alias 12 # HFAG summer 2006:  1.34E-4 +- 0.48
+#LEObs ( dMB_d  )   0.285299    +- 0.004    alias 13 # HFAG winter 2006:  0.507 +- 0.004
+#LEObs ( dMB_s  )  24.6435      +- 0.13     alias 14 # CDF Sep. 2006:    17.77 +- 0.10(stat) +- 0.07(sys)
+#LEObs ( gmin2m )   2.53187     +- 10.0     alias 15 # PDG 2006: magn.moment = 1.0011659208 +- 0.0000000006 (e hbar / 2 m_e)
+					          # We assume: SPheno tells us (g-2)SUSY
+	 				          # Observable: 2*(1 - exp. PDG value) - (g-2)SM
+					          # uncertainty: 2*PDG value
+					          # Observable according to above formula: 4E-9 +- 6E-9 +- 8E-9
+#LEObs ( drho   )   0.008825  +- 0.0007   alias 16 # PDG 2006: 0.0002 + 0.0007 - 0.0004
+#LEObs ( omega  )   0.191305  +- 0.006    alias 17 # errors from [10]  
+
+#LEObs ( B_smm  )  <0.08                  alias 18 # HFAG summer 2006: < 0.08E-6
+#LEObs ( gmin2e )   0.0489534 +- 7.6      alias 19 # PDG 2006: magn.moment = 1.0011596521859 +- 0.0000000000038 (e hbar / 2 m_e)
+#LEObs ( gmin2t ) 511.718     +- 3.2E7    alias 20 # PDF 2006: 0.013 > magnetic moment > -0.052 
+
+#  [1] hep-ph/0410364
+#  [2] Carolin's results
+#  [3] G. Polesello, Prospects for the detection of heavy charginos and neutralinos with the ATLAS detector at the LHC, J. Phys. G: Nucl. Part. Phys. 30 (2004) 1185-1199
+#  [4] hep-ph/0512204
+#  [5] Else Lytken, Prospects for Slepton Searches with Atlas, PhD Thesis, U. Copenhagen
+#  [6] hep-ph/0312318
+#  [7] HFAG summer 2006
+#  [8] HFAG winter 2006
+#  [9] CDF september 2006
+# [10] PDG 2006
+# [11] hep-ph/0111314
+
+#########################################################################
+### Parameters                                                        ###
+#########################################################################
+
+### mSUGRA SPS 1a benchmark point
+fitParameter M0       100 GeV +-  1.5 GeV
+fitParameter M12      250 GeV +-  2.5 GeV
+fitParameter A0      -100 GeV +- 10   GeV
+fitParameter TanBeta   10     +-  1
+fixParameter SignMu     1
+
+#########################################################################
+### Switches                                                          ###
+#########################################################################
+
+fitModel                       mSUGRA
+
+RandomParameters               off
+LoopCorrections                on
+ISR                            on
+UseGivenStartValues            on
+FitAllDirectly                 on
+CalcPullDist                   on
+CalcIndChisqContr              off
+BoundsOnX                      off
+ScanX                          off
+SepFitTanbX                    off
+SepFitTanbMu                   off
+SepFitmA	               off
+Calculator                     SPHENO ./SPheno
+LEOCalculator                  NPFITTER ../NPFitter/masterfitter/NPpredict.exe
+QuarkFlavourViolation          off
+UseMinos                       off
+UseHesse                       off
+NumberOfMinimizations          1
+ErrDef                         1.0
+NumberPulls                    1
+GetContours                    off
+
+UseSimAnnBefore                on
+UseSimAnnWhile                 off
+AdaptiveSimAnn                 off
+TempRedSimAnn                  0.5
+MaxCallsSimAnn                 20000
+InitTempSimAnn                 5
+SimAnnUncertainty              off
+SimAnnUncertaintyRunDown       off
+GetTempFromFirstChiSqr         on
+
+UseMarkovChains                off
+MarkovChainReadjustWidth       off
+MarkovChainReadjustWidthPeriod 500
+MaxMarkovChain                 20000
+
+MinuitStrategy	               2
+MachinePrecision               1e-8
+
+Verbose                        on
+
+ScanParameters                 off
+
+PerformFit                     on
+RandomGeneratorSeed            -1 # < 0 means use random seed (default), else take given seed
+# MaxCalculatorTime              20
+
+# weitere switches {{{
+# XScanRange                     -6000. GeV  -300. GeV
+# RandomDirUncertainties         off
+# NumberOfDirections             10000
+# NoBoundsAtAll                  off
+# UseHiggsLimits                 on
+# }}}
