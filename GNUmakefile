@@ -77,7 +77,7 @@ y.tab.o:  y.tab.c lex.yy.c
 lex.yy.c: readvalues.lex y.tab.c
 	flex -i readvalues.lex 
 y.tab.c: readvalues.yacc 
-	bison -d readvalues.yacc
+	bison -y -d readvalues.yacc
 
 libsusygen_call_test.a: susygen_call_test.f
 	fort susygen_call_test.f
