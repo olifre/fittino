@@ -75,9 +75,9 @@ y.tab.o:  y.tab.c lex.yy.c
 	$(CXX) $(CXXFLAGS) -c -o y.tab.o y.tab.c
 
 lex.yy.c: readvalues.lex y.tab.c
-	lex -i readvalues.lex 
+	flex -i readvalues.lex 
 y.tab.c: readvalues.yacc 
-	yacc -d readvalues.yacc
+	bison -d readvalues.yacc
 
 libsusygen_call_test.a: susygen_call_test.f
 	fort susygen_call_test.f
