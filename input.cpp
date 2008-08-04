@@ -70,7 +70,7 @@ Input::Input(const char* inputfile)
   CheckDefault("massTau"   , ID_tau,   1.77699   , 0.00029    );
   CheckDefault("alphas"    , 0     ,   0.1187    , 0.002      );
   // G_F is skipped because its small uncertainty causes numerical problems with covariance matrix inversion.
-  CheckDefault("G_F"       , 0     ,   1.16639e-5, 0.000001e-5);
+  //  CheckDefault("G_F"       , 0     ,   1.16639e-5, 0.000001e-5);
   CheckDefault("alphaem"   , 0     , 127.934     , 0.027      );
 
   // cout << "mass = " << mass << endl; 
