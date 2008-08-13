@@ -89,7 +89,7 @@ void PlotMarkovChains ()
 	  thisHist->GetXaxis()->SetTitleSize(0.04);
 	  thisHist->GetYaxis()->SetTitleSize(0.04);
 	  gStyle->SetPalette(1,0);
-	  thisHist->Draw("colz");
+	  thisHist->Draw("cont1z");
 	  string fileName = variables[fVariable] + 
 	     variables[sVariable] +
 	     "Markov.eps";
