@@ -52,49 +52,75 @@ void PlotMarkovChains ()
 	    ">>thisHist";
 	  markovChain.Draw(plotCommand.c_str(),"n>2000");
 	  TH2F *thisHist = (TH2F*)gDirectory->Get("thisHist");
-	  thisHist->SetStats(kFALSE);
-	  //thisHist->GetXaxis()->SetRangeUser(-2500,3000);
-	  //thisHist->GetXaxis()->SetRangeUser(-1000,2000);
-	  //thisHist->GetYaxis()->SetRangeUser(0,50);
-	  double thisHistIntegral = thisHist->Integral();
+          TH2F *loghist = new TH2F("loghist", "", thisHist->GetNbinsX(),
+				   thisHist->GetXaxis()->GetXmin(),
+                                   thisHist->GetXaxis()->GetXmax(),
+				   thisHist->GetNbinsY(),
+                                   thisHist->GetYaxis()->GetXmin(),
+				   thisHist->GetYaxis()->GetXmax());
+
+	  loghist->SetStats(kFALSE);
+	  //loghist->GetXaxis()->SetRangeUser(-2500,3000);
+	  //loghist->GetXaxis()->SetRangeUser(-1000,2000);
+	  //loghist->GetYaxis()->SetRangeUser(0,50);
+	  double thisHistIntegral = thisHist->GetEntries();
 	  thisHist->Scale(1./thisHistIntegral);
-	  //thisHist->Scale(0.0000001);
-	  thisHist->SetTitle("");
+
+          double thisHistMax = thisHist->GetMaximum();
+          double maxval = -1;
+          for (Int_t ix=1; ix<=thisHist->GetNbinsX(); ix++) {
+              for (Int_t iy=1; iy<=thisHist->GetNbinsY(); iy++) {
+                  if ( thisHist->GetBinContent(ix, iy) ) {
+                      double val = 2 * TMath::Log(thisHistMax)
+			           - 2 * TMath::Log( thisHist->GetBinContent(ix, iy) );
+                      if (val > maxval) maxval = val;
+                      loghist->SetBinContent(ix, iy, val);
+                  }
+                  else {
+                      loghist->SetBinContent(ix, iy, 1e99);
+                  }
+              }
+          }
+          loghist->SetMaximum(maxval);
+
+	  loghist->SetTitle("");
+
 	  if (!strcmp(variables[sVariable].c_str(), "A0")) {
-	     thisHist->SetXTitle("A_{0} (GeV)");
+	     loghist->SetXTitle("A_{0} (GeV)");
 	  }
 	  else if (!strcmp(variables[sVariable].c_str(), "M0")) {
-	     thisHist->SetXTitle("M_{0} (GeV)");
+	     loghist->SetXTitle("M_{0} (GeV)");
 	  }
 	  else if (!strcmp(variables[sVariable].c_str(), "TanBeta")) {
-	     thisHist->SetXTitle("tan(#beta)");
+	     loghist->SetXTitle("tan(#beta)");
 	  }
 	  else if (!strcmp(variables[sVariable].c_str(), "M12")) {
-	     thisHist->SetXTitle("M_{1/2} (GeV)");
+	     loghist->SetXTitle("M_{1/2} (GeV)");
 	  }
 	  if (!strcmp(variables[fVariable].c_str(), "A0")) {
-	     thisHist->SetYTitle("A_{0} (GeV)");
+	     loghist->SetYTitle("A_{0} (GeV)");
 	  }
 	  else if (!strcmp(variables[fVariable].c_str(), "M0")) {
-	     thisHist->SetYTitle("M_{0} (GeV)");
+	     loghist->SetYTitle("M_{0} (GeV)");
 	  }
 	  else if (!strcmp(variables[fVariable].c_str(), "TanBeta")) {
-	     thisHist->SetYTitle("tan(#beta)");
+	     loghist->SetYTitle("tan(#beta)");
 	  }
 	  else if (!strcmp(variables[fVariable].c_str(), "M12")) {
-	     thisHist->SetYTitle("M_{1/2} (GeV)");
+	     loghist->SetYTitle("M_{1/2} (GeV)");
 	  }
-	  thisHist->GetXaxis()->SetTitleOffset(0.04);
-	  thisHist->GetYaxis()->SetTitleOffset(0.04);
-	  thisHist->GetXaxis()->SetTitleSize(0.04);
-	  thisHist->GetYaxis()->SetTitleSize(0.04);
+	  loghist->GetXaxis()->SetTitleOffset(0.04);
+	  loghist->GetYaxis()->SetTitleOffset(0.04);
+	  loghist->GetXaxis()->SetTitleSize(0.04);
+	  loghist->GetYaxis()->SetTitleSize(0.04);
 	  gStyle->SetPalette(1,0);
-	  thisHist->Draw("cont1z");
+	  loghist->Draw("cont1z");
 	  string fileName = variables[fVariable] + 
 	     variables[sVariable] +
 	     "Markov.eps";
 	  canvas->Print(fileName.c_str());
 	  thisHist->Delete();
+	  loghist->Delete();
 	}
     }
 
