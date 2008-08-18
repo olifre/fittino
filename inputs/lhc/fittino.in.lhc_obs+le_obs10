@@ -15,8 +15,6 @@
 ### masses
 massh0         109.075 GeV +-  1.4  GeV +- (LES) 0.1 GeV # errors from [11]
 massTop        170.9   GeV +-  0.05 GeV +- (JES)   1 GeV # errors from []
-massSbottom1   500 GeV +- 50 GeV alias 1
-massSbottom2   500 GeV +- 50 GeV alias 2
 
 ### edges
 edge   2 massGluino      massNeutralino1                               510.189  GeV +- 13.7  GeV +- 10   GeV +- (JES) 2.6  GeV alias  1 # errors from [1]
