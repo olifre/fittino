@@ -13,7 +13,7 @@
 #include "vector"
 using namespace std;
 
-void PlotMarkovChains () 
+void PlotMarkovChains2D () 
 {
   //gROOT->SetStyle("MyStyle");
   //gROOT->ForceStyle();
