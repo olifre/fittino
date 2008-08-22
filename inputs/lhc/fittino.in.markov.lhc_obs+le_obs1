@@ -199,7 +199,7 @@ Verbose                        on
 ScanParameters                 off
 
 PerformFit                     on
-RandomGeneratorSeed            -1 # < 0 means use random seed (default), else take given seed
+#RandomGeneratorSeed            -1 # < 0 means use random seed (default), else take given seed
 # MaxCalculatorTime              20
 
 # weitere switches {{{
