@@ -50,7 +50,7 @@ void PlotMarkovChains ()
 	    ":" +
 	    variables[sVariable] +
 	    ">>thisHist";
-	  markovChain.Draw(plotCommand.c_str(),"n>2000");
+	  markovChain.Draw(plotCommand.c_str(),"n>2000 && haveAcceptedAtLeastOne == 1");
 	  TH2F *thisHist = (TH2F*)gDirectory->Get("thisHist");
           TH2F *loghist = new TH2F("loghist", "", thisHist->GetNbinsX(),
 				   thisHist->GetXaxis()->GetXmin(),
