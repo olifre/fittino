@@ -16,6 +16,10 @@
 massh0         109.075 GeV +-  1.4  GeV +- (LES) 0.1 GeV # errors from [11]
 massTop        170.9   GeV +-  0.05 GeV +- (JES)   1 GeV # errors from []
 
+massSbottom1   500 GeV +- 50 GeV alias 1
+massSbottom2   500 GeV +- 50 GeV alias 2
+
+
 ### edges
 edge   2 massGluino      massNeutralino1                               510.189  GeV +- 13.7  GeV +- 10   GeV +- (JES) 2.6  GeV alias  1 # errors from [1]
 edge   8 massSupR        massNeutralino1                               533.748  GeV +-  6.2  GeV +- 10   GeV +- (JES) 5.3  GeV alias  2 # errors from [1]
@@ -147,10 +151,10 @@ LEObs ( DmsDmd_npf     )    0.999841                 +- 0.08    alias 28 # error
 #########################################################################
 
 ### mSUGRA SPS 1a benchmark point
-fitParameter M0       100 GeV +-  1.5 GeV
-fitParameter M12      250 GeV +-  2.5 GeV
-fitParameter A0      -100 GeV +- 10   GeV
-fitParameter TanBeta   10     +-  1
+fitParameter M0       105 GeV +-  5 GeV
+fitParameter M12      240 GeV +- 10 GeV
+fitParameter A0      -80 GeV +- 20   GeV
+fitParameter TanBeta   11     +-  1
 fixParameter SignMu     1
 
 #########################################################################
@@ -195,6 +199,7 @@ UseMarkovChains                on
 MarkovChainReadjustWidth       off
 MarkovChainReadjustWidthPeriod 500
 MaxMarkovChain                 20000
+MarkovChainChi2Scale           -1.
 
 MinuitStrategy	               2
 MachinePrecision               1e-8
