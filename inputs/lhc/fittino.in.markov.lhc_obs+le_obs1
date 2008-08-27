@@ -142,10 +142,10 @@ LEObs ( DmsDmd_npf     )    0.999841                 +- 0.08    alias 28 # error
 #########################################################################
 
 ### mSUGRA SPS 1a benchmark point
-fitParameter M0       110 GeV +-  10 GeV
-fitParameter M12      220 GeV +-  20 GeV
-fitParameter A0      -70 GeV +- 40   GeV
-fitParameter TanBeta   15     +-  2
+fitParameter M0       100 GeV +-  10 GeV
+fitParameter M12      250 GeV +-  20 GeV
+fitParameter A0      -100 GeV +- 40   GeV
+fitParameter TanBeta   10     +-  5
 fixParameter SignMu     1
 
 #########################################################################
