@@ -72,6 +72,7 @@ massBottom   4.5     GeV +- 0.25    GeV
 massTau      1.77699 GeV +- 0.00029 GeV
 alphas       0.1187  GeV +- 0.002   GeV
 alphaem    127.934   GeV +- 0.027   GeV
+G_F        1.16637e-5    +- 0.000001e-5
 
 fixParameter massTop      170.9   GeV
 fixParameter massW       80.3713  GeV
@@ -81,6 +82,7 @@ fixParameter massBottom   4.5     GeV
 fixParameter massTau      1.77699 GeV
 fixParameter alphas       0.1187  GeV
 fixParameter alphaem    127.934   GeV
+fixParameter G_F         1.16637e-5
 
 ### low energy observables
 #LEObs ( bsg    )   0.000352084 +- 0.000042 alias 10 # HFAG summer 2006:  3.55E-4 +- 4E-5
@@ -134,7 +136,7 @@ LoopCorrections                on
 ISR                            on
 UseGivenStartValues            on
 FitAllDirectly                 on
-CalcPullDist                   on
+CalcPullDist                   off
 CalcIndChisqContr              off
 BoundsOnX                      off
 ScanX                          off

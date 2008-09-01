@@ -78,11 +78,11 @@ fixParameter alphaem    127.934   GeV
 ### low energy observables
 LEObs ( Bsg_npf        )    0.914874    +- 0.12                 alias  1 # errors from Buch
 LEObs ( dm_s_npf       )    1.0489      +- 0.007     +- 0.34    alias  2 # errors from Buch
-LEObs ( B_smm_npf      )    3.08385e-09 +- 0.1E-9    +- 0.2E-9  alias  3 # errors from Buch
+#LEObs ( B_smm_npf      )    3.08385e-09 +- 0.1E-9    +- 0.2E-9  alias  3 # errors from Buch
 LEObs ( Btn_npf        )    0.963462    +- 0.42                 alias  4 # errors from Buch
 LEObs ( B_sXsll_npf    )    0.982995                 +- 0.32    alias  5 # errors from Buch
 LEObs ( Ktn_npf        )    0.999673                 +- 0.017   alias  6 # errors from Buch
-LEObs ( gmin2m_npf     )    2.97589e-09 +- 8.7e-10   +- 2.0e-10 alias  7 # errors from Buch 
+#LEObs ( gmin2m_npf     )    2.97589e-09 +- 8.7e-10   +- 2.0e-10 alias  7 # errors from Buch 
 #LEObs ( massW_npf      )   80.3792      +- 0.025     +- 0.010   alias  8 # errors from Buch
 LEObs ( sin_th_eff_npf )    0.231391    +- 0.0012               alias  9 # errors from Buch
 LEObs ( GammaZ_npf     ) 2493.29        +- 2.3       +- 1.0     alias 10 # errors from Buch 
@@ -167,7 +167,7 @@ SepFitTanbX                    off
 SepFitTanbMu                   off
 SepFitmA	               off
 Calculator                     SPHENO ./SPheno
-LEOCalculator                  NPFITTER ../NPFitter/masterfitter/NPpredict.exe
+LEOCalculator                  NPFITTER ./NPpredict.exe
 QuarkFlavourViolation          off
 UseMinos                       off
 UseHesse                       off
