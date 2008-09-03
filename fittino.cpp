@@ -4082,24 +4082,24 @@ void WriteLesHouches(double* x)
 	 LesHouchesOutfile << "    1  "<<ReturnMeasuredValue("alphaem")->value<<" # 1/alpha_em(M_Z) (fixed)"<<endl;
       }
 
-      if (FindInFixed("G_F")) {
-	 LesHouchesOutfile << "    2  "<<ReturnFixedValue("G_F")->value<<" # G_F (fixed)"<<endl;
-      }
-      else if (FindInFitted("G_F")) {
-	 LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition("G_F")]<<" # G_F"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-	    cout << "Fitting G_F " << x[ReturnFittedPosition("G_F")] << endl;
-	 }
-      } 
-      else if (FindInUniversality("G_F")) {
-	 LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("G_F")->universality)]<<" # G_F"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-	    cout << "fitting " << ReturnUniversality("G_F")->universality << " instead of G_F" << endl;
-	 }
-      }
-      else {
-	 LesHouchesOutfile << "    2  "<<ReturnMeasuredValue("G_F")->value <<" # G_F"<<endl;
-      }
+      //if (FindInFixed("G_F")) {
+      //   LesHouchesOutfile << "    2  "<<ReturnFixedValue("G_F")->value<<" # G_F (fixed)"<<endl;
+      //}
+      //else if (FindInFitted("G_F")) {
+      //   LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition("G_F")]<<" # G_F"<<endl;
+      //   if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+      //      cout << "Fitting G_F " << x[ReturnFittedPosition("G_F")] << endl;
+      //   }
+      //} 
+      //else if (FindInUniversality("G_F")) {
+      //   LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("G_F")->universality)]<<" # G_F"<<endl;
+      //   if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+      //      cout << "fitting " << ReturnUniversality("G_F")->universality << " instead of G_F" << endl;
+      //   }
+      //}
+      //else {
+      //   LesHouchesOutfile << "    2  "<<ReturnMeasuredValue("G_F")->value <<" # G_F"<<endl;
+      //}
 
       if (FindInFixed("alphas")) {
 	 LesHouchesOutfile << "    3  "<<ReturnFixedValue("alphas")->value<<" # alpha_s (fixed)"<<endl;
