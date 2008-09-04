@@ -51,8 +51,8 @@ void PlotMarkovChains2D (bool bayes)
   for (int i = 0; i < variables.size(); i++) {
     varValues.push_back(0.);
   }
-  int haveAcceptedAtLeastOne;
-  int nStep;
+  float haveAcceptedAtLeastOne;
+  float nStep;
   float likelihood;
 
   // attach variables to ntuple
