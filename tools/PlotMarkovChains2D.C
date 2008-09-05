@@ -8,6 +8,10 @@
 #include "TCanvas.h"
 #include "TH1D.h"
 #include "TH2D.h"
+#include "TGraph.h"
+#include "TList.h"
+#include "TLine.h"
+#include "TObjArray.h"
 #include "iostream"
 #include "string"
 #include "vector"
@@ -39,8 +43,8 @@ void PlotMarkovChains2D (bool bayes)
 
   // markov chains
   vector<string> variables; 
-  //  variables.push_back("X");
-  //  variables.push_back("Y");
+  // variables.push_back("X");
+  // variables.push_back("Y");
   variables.push_back("TanBeta");
   variables.push_back("M0");
   variables.push_back("M12");
@@ -163,7 +167,11 @@ void PlotMarkovChains2D (bool bayes)
 	  if (bayes) {
 	    thisHist->Scale(1./thisHistIntegral);
 	  }
-	  
+
+	  double minF = 0.;
+	  double minS = 0.;
+	  double minVal = 100000000.;
+
 	  double thisHistMax = thisHist->GetMaximum();
 	  double maxval = -1;
 	  for (Int_t ix=1; ix<=thisHist->GetNbinsX(); ix++) {
@@ -172,6 +180,11 @@ void PlotMarkovChains2D (bool bayes)
 		double val = 2 * TMath::Log(thisHistMax)
 		  - 2 * TMath::Log( thisHist->GetBinContent(ix, iy) );
 		if (val > maxval) maxval = val;
+		if (val < minVal) {
+		  minVal = val;
+		  minF = ((double)ix+0.5)/(double)thisHist->GetNbinsX()*(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())+thisHist->GetXaxis()->GetXmin();
+		  minS = ((double)iy+0.5)/(double)thisHist->GetNbinsY()*(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())+thisHist->GetYaxis()->GetXmin();
+		}
 		loghist->SetBinContent(ix, iy, val);
 	      }
 	      else {
@@ -179,9 +192,32 @@ void PlotMarkovChains2D (bool bayes)
 	      }
 	    }
 	  }
+
+	  cout << "found minimum at " << minF << " " << minS << endl;
+
+	  // maxval = 10.;
 	  
+	  // make sure a contour line is drawn exactly at min+1,
+	  // provided the palette has 20 levels!!! How can we check that?
+	  int contourLineNo = 0;
+	  if (maxval>20.) {
+	    maxval = 20.;
+	  } else {
+	    int bestFit = 1;
+	    double bestDiff = 10000000.;
+	    for (int iFit = 1; iFit < 10; iFit++) {
+	      double thisDiff = TMath::Abs(20./TMath::Power(2,iFit-1)-maxval);
+	      if (thisDiff<bestDiff) {
+		bestDiff = thisDiff;
+		bestFit = iFit;
+		contourLineNo = (int)TMath::Abs(TMath::Power(2,iFit-1)-1);
+	      }
+	    }
+	    maxval = 20./TMath::Power(2,bestFit-1);
+	  }
           loghist->SetMaximum(maxval);
 
+	  // draw the plot
 	  loghist->SetTitle("");
 
 	  if (!strcmp(variables[sVariable].c_str(), "A0")) {
@@ -213,7 +249,52 @@ void PlotMarkovChains2D (bool bayes)
 	  loghist->GetXaxis()->SetTitleSize(0.04);
 	  loghist->GetYaxis()->SetTitleSize(0.04);
 	  // gStyle->SetPalette(1,0);
+	  loghist->Draw("CONTLIST");
+	  canvas->Update();
 	  loghist->Draw("cont1z");
+	  // draw a cross at the global minimum
+	  TLine* line1 = new TLine(minF-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+				   minS-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+				   minF+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+				   minS+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
+	  TLine* line2 = new TLine(minF-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+				   minS+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+				   minF+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+				   minS-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
+	  line1->SetLineWidth(3);
+	  line2->SetLineWidth(3);
+	  line1->Draw();
+	  line2->Draw();
+	  // draw a hatched contour line at min+1
+	  //double levels = 1.;
+	  //loghist->SetContour(1,&levels);
+	  //loghist->Draw("CONTLIST");
+	  TObjArray *contours = (TObjArray*)gROOT->GetListOfSpecials()->FindObject("contours");
+	  if (contours) {
+	    int ncontours = contours->GetSize();
+	    int theContourNumber = 0;
+	    if (maxval>15.) theContourNumber = 0;
+	    else theContourNumber = contourLineNo;
+	    cout << "plotting contour no. " << theContourNumber << endl; 
+	    if (theContourNumber<ncontours) {
+	      // get correct contour line
+	      TList *contourList = (TList*)contours->At(theContourNumber);
+	      int nGraphsPerContour = contourList->GetSize();
+	      for (int iGraph = 0; iGraph<nGraphsPerContour; iGraph++) {
+		cout << "drawing graph no. " << iGraph << endl;
+		TGraph* graph = (TGraph*)contourList->At(iGraph);
+		graph->SetLineColor(kBlack);
+		graph->SetLineWidth(3);
+		graph->SetLineStyle(3);
+		graph->Draw("");
+	      }
+	    } else {
+	      cout << "Error in contour counting" << endl;
+	    }
+	  } else {
+	    cout << "No Contour lines found!" << endl;
+	  }
+	  
 	  string fileName = variables[fVariable] + 
 	     variables[sVariable] +
 	     "Markov.eps";
