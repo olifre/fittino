@@ -3343,7 +3343,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	 if ((yyMeasuredVec[i].theoset && yyMeasuredVec[j].theoset) && (!yyMeasuredVec[i].nofit && !yyMeasuredVec[j].nofit )
 	       && (!yyMeasuredVec[i].temp_nofit && !yyMeasuredVec[j].temp_nofit ) ) {
 	    // cout << "theo ist set" << endl;
-	    if ((yyMeasuredVec[i].error > 0.) && (yyMeasuredVec[j].error > 0.) ) {
+	    if ((yyMeasuredVec[i].error > 0.) && (yyMeasuredVec[j].error > 0.) && !yyMeasuredVec[j].bound ) {
 	       // find corresponding measurement for prediction... 
 	       f += (yyMeasuredVec[i].theovalue-yyMeasuredVec[i].value)
 		  * yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)
@@ -3363,14 +3363,14 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 			<< yyMeasuredVec[i].theovalue<< endl;
 		  }
 	       }
-	    } else {
+	    } else if (yyMeasuredVec[j].bound) {
 	       if (i == j) {
 		  if (yyMeasuredVec[i].theovalue<yyMeasuredVec[i].bound_low ) {
-		     f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].bound_low)/(yyLimitSlope*yyMeasuredVec[i].bound_low));
+		     f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].value)/(yyMeasuredVec[i].error));
 		     cout << i << " using lower bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_low << " > " << 
 			yyMeasuredVec[i].theovalue << endl;
 		  } else if (yyMeasuredVec[i].theovalue>yyMeasuredVec[i].bound_up ) {
-		     f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].bound_up)/(yyLimitSlope*yyMeasuredVec[i].bound_up));
+		     f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].value)/(yyMeasuredVec[i].error));
 		     cout << i << " using upper bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_up << " < " << 
 			yyMeasuredVec[i].theovalue << endl;
 		  }

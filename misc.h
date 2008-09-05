@@ -158,6 +158,7 @@ struct MeasuredValue {
   operator        double() const { return value; }
   string          name;
   int             id;
+  bool            bound;
   double          bound_low;
   double          bound_up;
   ObservableType  type;

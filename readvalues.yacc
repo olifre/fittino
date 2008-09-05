@@ -408,7 +408,8 @@ input:
 		  }
 		  if (found == 0) {
 		      MeasuredValue tmpValue;
-                      tmpValue.nofit = false;
+		      tmpValue.bound = false;
+		      tmpValue.nofit = false;
 		      tmpValue.name = $2;
 		      tmpValue.type = mass;
 		      tmpValue.value = $3;
@@ -455,6 +456,7 @@ input:
 		      }
 		      if (found == 0) {
 			  MeasuredValue tmpValue;
+			  tmpValue.bound = false;
 			  tmpValue.nofit = false;
 			  tmpValue.name = $2;
 			  tmpValue.value = $3;
@@ -517,6 +519,7 @@ input:
 	              }
 	              if (found == 0) {
 	        	  MeasuredValue tmpValue;
+			  tmpValue.bound = false;
 	        	  tmpValue.nofit = false;
 	        	  tmpValue.name = $2;
 	        	  tmpValue.value = $3;
@@ -544,7 +547,8 @@ input:
 	         yyInputFileLine.prevalue += $3;
 
 		 MeasuredValue tmpValue;
-        	 string str;
+		 tmpValue.bound = false;
+		 string str;
 	         str.erase();
 		 str = $3;
 //		 cout << "decompositing string "<<str<< endl;
@@ -554,6 +558,7 @@ input:
 //		 int anti = 1;
 //	         int i = 0;
 	         MeasuredValue tmpval;
+		 tmpval.bound = false;
 	         string        firstname;
 		 //		 while ((newpos = str.find(" ", pos)) != string::npos) {
 		 while ((newpos = str.find(" ", pos)) <= stringsize ) {
@@ -871,6 +876,7 @@ input:
 		      }
 		      if (found == 0) {
 			  MeasuredValue tmpValue;
+			  tmpValue.bound = false;
 			  tmpValue.nofit = false;
 			  tmpValue.name = $2;
 			  tmpValue.value = $3;
@@ -920,6 +926,7 @@ input:
 
 		if (!strcmp($2, "edge")) {
 		  MeasuredValue tmpValue;
+		  tmpValue.bound = false;
                   tmpValue.nofit = false;
 		  tmpValue.theovalue  = 0;
 		  tmpValue.name = "edge_type_";
@@ -1335,7 +1342,7 @@ input:
                      yyerror ("Syntax error in scanParameter");
                   }
 	      }
-	    | input T_KEY T_WORD T_COMPARATOR value
+	    | input T_KEY T_WORD T_COMPARATOR value err
 	      {
 		  char c[1000];
                   yyInputFileLine.prevalue  = $2;
@@ -1348,17 +1355,19 @@ input:
 
 		  if (!strcmp($2, "limit")) {
 		      MeasuredValue tmpValue;
+		      tmpValue.bound = false;
                       tmpValue.nofit = false;
 		      tmpValue.theovalue  = 0;
 		      tmpValue.name = $3;
-		      tmpValue.error = -1.;
+		      tmpValue.error = $6;
                       tmpValue.nofit = false;
+		      tmpValue.bound = true;
 		      if (strcmp($4, ">")) {
-			  tmpValue.value = 1.2*$5;
+			  tmpValue.value = $5;
 			  tmpValue.bound_low = $5;
 			  tmpValue.bound_up = 1.E+6;
 		      } else {
-			  tmpValue.value = 0.8*$5;
+			  tmpValue.value = $5;
 			  tmpValue.bound_low = -1.E+6;
 			  tmpValue.bound_up = $5;
 		      }
@@ -1374,6 +1383,7 @@ input:
 //	          yyInputFileLine.error = $5;
 
 		  MeasuredValue tmpValue;
+		  tmpValue.bound = false;
 		  tmpValue.theovalue  = 0;
 		  tmpValue.name = $3;
 		  tmpValue.value = $4;
@@ -1461,6 +1471,7 @@ input:
 
 		if (!strcmp($2, "edge")) {
 		  MeasuredValue tmpValue;
+		  tmpValue.bound = false;
                   tmpValue.nofit = false;
 		  tmpValue.theovalue  = 0;
 		  tmpValue.name = "edge_type_";
@@ -1532,6 +1543,7 @@ input:
 
 		if (!strcmp($2, "edge")) {
 		  MeasuredValue tmpValue;
+		  tmpValue.bound = false;
                   tmpValue.nofit = false;
 		  tmpValue.theovalue  = 0;
 		  tmpValue.name = "edge_type_";
@@ -1600,6 +1612,7 @@ input:
 		  yyInputFileLine.postvalue += c;
 
 		  MeasuredValue tmpValue;
+		  tmpValue.bound = false;
                   tmpValue.nofit = false;
 		  tmpValue.type  = br;
 		  tmpValue.theovalue  = 0;
@@ -1650,6 +1663,7 @@ input:
 		  yyInputFileLine.postvalue += c;
 
 		  MeasuredValue tmpValue;
+		  tmpValue.bound = false;
                   tmpValue.nofit = false;
 		  tmpValue.type  = LEObs;
 		  tmpValue.theovalue  = 0;
@@ -1800,6 +1814,7 @@ input:
 		  yyInputFileLine.postvalue += c;
 
 		  MeasuredValue tmpValue;
+		  tmpValue.bound = false;
                   tmpValue.nofit = false;
 		  tmpValue.type  = LEObs;
 		  tmpValue.theovalue  = 0;
@@ -1938,7 +1953,7 @@ input:
 		  yyMeasuredVec.push_back(tmpValue);
 		  // cout << "Added le obs " << tmpValue.name << " = " << tmpValue.value << endl;
 	      }
-	     | input T_LEO T_BRA T_WORD T_KET T_COMPARATOR value T_ALIAS T_NUMBER
+	     | input T_LEO T_BRA T_WORD T_KET T_COMPARATOR value err T_ALIAS T_NUMBER
 	      {
 		  char c[1000];
 		  yyInputFileLine.prevalue  = "bound on LEObs ( ";
@@ -1947,10 +1962,11 @@ input:
 		  yyInputFileLine.value = $7;
 		  //		  yyInputFileLine.error = 0.01*$7;
 		  yyInputFileLine.postvalue = "\talias ";
-		  sprintf(c, "%d", (int)$9);
+		  sprintf(c, "%d", (int)$10);
 		  yyInputFileLine.postvalue += c;
 		  
 		  MeasuredValue tmpValue;
+		  tmpValue.bound = false;
 		  tmpValue.nofit = false;
 		  tmpValue.type  = LEObs;
 		  tmpValue.theovalue  = 0;
@@ -2082,20 +2098,22 @@ input:
                   //==================================
 		  cout << "T_COMPARATOR " << $4 << " " << $6 << " " << $7 << endl;
 		  if (!strcmp($6, ">")) {
-		    tmpValue.value = 1.2*$7;
-		    tmpValue.error = -1.;
+		    tmpValue.bound = true;
+		    tmpValue.value = $7;
+		    tmpValue.error = $8;
 		    tmpValue.bound_up = 1e+6;
 		    tmpValue.bound_low = $7;
 		  }
 		  else if (!strcmp($6, "<")) {
-		    tmpValue.value = 0.8*$7;
-		    tmpValue.error = -1.;
+		    tmpValue.bound = true;
+		    tmpValue.value = $7;
+		    tmpValue.error = $8;
 		    tmpValue.bound_up = $7;
 		    tmpValue.bound_low = -1e+6;
 		  } else {
 		    yyerror ("Syntax Error in LEObs");
 		  }
-		  tmpValue.alias = (int)$9;
+		  tmpValue.alias = (int)$10;
 		  yyMeasuredVec.push_back(tmpValue);
 		  //		  cout << "Added le obs " << tmpValue.name << " = " << tmpValue.value << endl;
 	      }
@@ -2112,7 +2130,8 @@ input:
 		  yyInputFileLine.prevalue += c;
 
 		  MeasuredValue tmpValue;
-                  tmpValue.nofit = true;
+ 		  tmpValue.bound = false;
+		  tmpValue.nofit = true;
 		  tmpValue.type  = br;
 		  tmpValue.theovalue  = -1;
 		  tmpValue.name  = $4;
@@ -2174,7 +2193,8 @@ input:
 		  yyInputFileLine.postvalue += c;
 
 		  MeasuredValue tmpValue;
-                  tmpValue.nofit = false;
+ 		  tmpValue.bound = false;
+		  tmpValue.nofit = false;
 		  tmpValue.name.erase();
 		  tmpValue.type  = xsection;
 		  tmpValue.theovalue  = 0;
@@ -2244,7 +2264,8 @@ input:
 		  yyInputFileLine.prevalue += c;
 
 		  MeasuredValue tmpValue;
-                  tmpValue.nofit = true;
+ 		  tmpValue.bound = false;
+		  tmpValue.nofit = true;
 		  tmpValue.name.erase();
 		  tmpValue.type  = xsection;
 		  tmpValue.theovalue  = -1;
@@ -2310,7 +2331,8 @@ input:
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
-                  tmpValue.nofit = false;
+ 		  tmpValue.bound = false;
+		  tmpValue.nofit = false;
 		  tmpValue.name.erase();
 		  tmpValue.type  = weighted;
 		  tmpValue.theovalue  = 0;
@@ -2509,7 +2531,8 @@ input:
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
-                  tmpValue.nofit = false;
+ 		  tmpValue.bound = false;
+		  tmpValue.nofit = false;
 		  tmpValue.name.erase();
 		  tmpValue.type  = xsbr;
 		  tmpValue.theovalue  = 0;
@@ -2643,7 +2666,8 @@ input:
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
-                  tmpValue.nofit = false;
+ 		  tmpValue.bound = false;
+		  tmpValue.nofit = false;
 		  tmpValue.name.erase();
 		  tmpValue.type  = brratio;
 		  tmpValue.theovalue  = 0;
@@ -2768,7 +2792,8 @@ input:
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
-                  tmpValue.nofit = false;
+ 		  tmpValue.bound = false;
+		  tmpValue.nofit = false;
 		  tmpValue.name.erase();
 		  tmpValue.type  = brsum;
 		  tmpValue.theovalue  = 0;
@@ -2867,7 +2892,8 @@ input:
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
-                  tmpValue.nofit = false;
+ 		  tmpValue.bound = false;
+		  tmpValue.nofit = false;
 		  tmpValue.name.erase();
 		  tmpValue.type  = brprod;
 		  tmpValue.theovalue  = 0;
@@ -2944,7 +2970,8 @@ input:
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
-                  tmpValue.nofit = false;
+ 		  tmpValue.bound = false;
+		  tmpValue.nofit = false;
 		  tmpValue.name.erase();
 		  tmpValue.type  = weighted;
 		  tmpValue.theovalue  = 0;
@@ -3125,7 +3152,8 @@ input:
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
-                  tmpValue.nofit = true;
+ 		  tmpValue.bound = false;
+		  tmpValue.nofit = true;
 		  tmpValue.name.erase();
 		  tmpValue.type  = brprod;
 		  tmpValue.theovalue  = 0;
@@ -3202,7 +3230,8 @@ input:
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
-                  tmpValue.nofit = true;
+ 		  tmpValue.bound = false;
+		  tmpValue.nofit = true;
 		  tmpValue.name.erase();
 		  tmpValue.type  = brsum;
 		  tmpValue.theovalue  = 0;
