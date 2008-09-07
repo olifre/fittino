@@ -160,7 +160,7 @@ extern double yyBtn_npf;         // R(B->tau nu)
 extern double yyB_sXsll_npf;     // R(Bs->Xsll)
 extern double yyKtn_npf;         // R(K->tau nu)
 extern double yygmin2m_npf;      // D(g-2)
-extern double yymassW_npf;       // m(W)
+extern double yyMassW_npf;       // m(W)
 extern double yysin_th_eff_npf;  // sin(th_eff(Qfb))
 extern double yyGammaZ_npf;      // Gamma(Z)
 extern double yyR_l_npf;         // R_l (l=e,mu)
@@ -171,7 +171,7 @@ extern double yyA_fbc_npf;       // A_fb(c)
 extern double yyA_b_npf;         // A_b
 extern double yyA_c_npf;         // A_c
 extern double yyA_l_npf;         // A_l(SLD)
-extern double yymassh0_npf;      // m(h0)
+extern double yyMassh0_npf;      // m(h0)
 extern double yyOmega_npf;       // Omega_h
 extern double yyA_tau_npf;       // A_l(P_tau)
 extern double yyA_fbl_npf;       // A_fb(l)

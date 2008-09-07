@@ -226,7 +226,7 @@ double        yyBtn_npf        = -10000.;  // R(B->tau nu)
 double        yyB_sXsll_npf    = -10000.;  // R(Bs->Xsll)
 double        yyKtn_npf        = -10000.;  // R(K->tau nu)
 double        yygmin2m_npf     = -10000.;  // D(g-2)
-double        yymassW_npf      = -10000.;  // m(W)
+double        yyMassW_npf      = -10000.;  // m(W)
 double        yysin_th_eff_npf = -10000.;  // sin(th_eff(Qfb))
 double        yyGammaZ_npf     = -10000.;  // Gamma(Z)
 double        yyR_l_npf        = -10000.;  // R_l (l=e,mu)
@@ -237,7 +237,7 @@ double        yyA_fbc_npf      = -10000.;  // A_fb(c)
 double        yyA_b_npf        = -10000.;  // A_b
 double        yyA_c_npf        = -10000.;  // A_c
 double        yyA_l_npf        = -10000.;  // A_l(SLD)
-double        yymassh0_npf     = -10000.;  // m(h0)
+double        yyMassh0_npf     = -10000.;  // m(h0)
 double        yyOmega_npf      = -10000.;  // Omega_h
 double        yyA_tau_npf      = -10000.;  // A_l(P_tau)
 double        yyA_fbl_npf      = -10000.;  // A_fb(l)
@@ -1723,8 +1723,8 @@ input:
 		  else if (!strcmp($4, "gmin2m_npf")) {
 		    tmpValue.id    = gmin2m_npf;
 		  }		  
-		  else if (!strcmp($4, "massW_npf")) {
-		    tmpValue.id    = massW_npf;
+		  else if (!strcmp($4, "MassW_npf")) {
+		    tmpValue.id    = MassW_npf;
 		  }		  
 		  else if (!strcmp($4, "sin_th_eff_npf")) {
 		    tmpValue.id    = sin_th_eff_npf;
@@ -1756,8 +1756,8 @@ input:
 		  else if (!strcmp($4, "A_l_npf")) {
 		    tmpValue.id    = A_l_npf;
 		  }		  
-		  else if (!strcmp($4, "massh0_npf")) {
-		    tmpValue.id    = massh0_npf;
+		  else if (!strcmp($4, "Massh0_npf")) {
+		    tmpValue.id    = Massh0_npf;
 		  }		  
 		  else if (!strcmp($4, "Omega_npf")) {
 		    tmpValue.id    = Omega_npf;
@@ -1874,8 +1874,8 @@ input:
 		  else if (!strcmp($4, "gmin2m_npf")) {
 		    tmpValue.id    = gmin2m_npf;
 		  }		  
-		  else if (!strcmp($4, "massW_npf")) {
-		    tmpValue.id    = massW_npf;
+		  else if (!strcmp($4, "MassW_npf")) {
+		    tmpValue.id    = MassW_npf;
 		  }		  
 		  else if (!strcmp($4, "sin_th_eff_npf")) {
 		    tmpValue.id    = sin_th_eff_npf;
@@ -1907,8 +1907,8 @@ input:
 		  else if (!strcmp($4, "A_l_npf")) {
 		    tmpValue.id    = A_l_npf;
 		  }		  
-		  else if (!strcmp($4, "massh0_npf")) {
-		    tmpValue.id    = massh0_npf;
+		  else if (!strcmp($4, "Massh0_npf")) {
+		    tmpValue.id    = Massh0_npf;
 		  }		  
 		  else if (!strcmp($4, "Omega_npf")) {
 		    tmpValue.id    = Omega_npf;
@@ -2026,8 +2026,8 @@ input:
 		  else if (!strcmp($4, "gmin2m_npf")) {
 		    tmpValue.id    = gmin2m_npf;
 		  }		  
-		  else if (!strcmp($4, "massW_npf")) {
-		    tmpValue.id    = massW_npf;
+		  else if (!strcmp($4, "MassW_npf")) {
+		    tmpValue.id    = MassW_npf;
 		  }		  
 		  else if (!strcmp($4, "sin_th_eff_npf")) {
 		    tmpValue.id    = sin_th_eff_npf;
@@ -2059,8 +2059,8 @@ input:
 		  else if (!strcmp($4, "A_l_npf")) {
 		    tmpValue.id    = A_l_npf;
 		  }		  
-		  else if (!strcmp($4, "massh0_npf")) {
-		    tmpValue.id    = massh0_npf;
+		  else if (!strcmp($4, "Massh0_npf")) {
+		    tmpValue.id    = Massh0_npf;
 		  }		  
 		  else if (!strcmp($4, "Omega_npf")) {
 		    tmpValue.id    = Omega_npf;
@@ -2096,7 +2096,7 @@ input:
 		    tmpValue.id    = bsg_npf;
 		  }
                   //==================================
-		  cout << "T_COMPARATOR " << $4 << " " << $6 << " " << $7 << endl;
+		  //cout << "T_COMPARATOR " << $4 << " " << $6 << " " << $7 << endl;
 		  if (!strcmp($6, ">")) {
 		    tmpValue.bound = true;
 		    tmpValue.value = $7;
@@ -3688,7 +3688,7 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 			    yygmin2m_npf=tmpParams[i][1];
 			 }
 			 else if ((unsigned int)tmpParams[i][0]==8) {
-			    yymassW_npf=tmpParams[i][1];
+			    yyMassW_npf=tmpParams[i][1];
 			 }
 			 else if ((unsigned int)tmpParams[i][0]==9) {
 			    yysin_th_eff_npf=tmpParams[i][1];
@@ -3721,7 +3721,7 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 			    yyA_l_npf=tmpParams[i][1];
 			 }
 			 else if ((unsigned int)tmpParams[i][0]==19) {
-			    yymassh0_npf=tmpParams[i][1];
+			    yyMassh0_npf=tmpParams[i][1];
 			 }
 			 else if ((unsigned int)tmpParams[i][0]==20) {
 			    yyOmega_npf=tmpParams[i][1];

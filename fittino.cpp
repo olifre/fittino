@@ -6724,7 +6724,7 @@ int   ReadLesHouches()
       cout << "  --->  yyB_sXsll_npf    from NPFitter:   " << yyB_sXsll_npf    << endl; // R(Bs->Xsll)
       cout << "  --->  yyKtn_npf        from NPFitter:   " << yyKtn_npf        << endl; // R(K->tau nu)
       cout << "  --->  yygmin2m_npf     from NPFitter:   " << yygmin2m_npf     << endl; // D(g-2)
-      cout << "  --->  yymassW_npf      from NPFitter:   " << yymassW_npf      << endl; // m(W)
+      cout << "  --->  yyMassW_npf      from NPFitter:   " << yyMassW_npf      << endl; // m(W)
       cout << "  --->  yysin_th_eff_npf from NPFitter:   " << yysin_th_eff_npf << endl; // sin(th_eff(Qfb))
       cout << "  --->  yyGammaZ_npf     from NPFitter:   " << yyGammaZ_npf     << endl; // Gamma(Z)
       cout << "  --->  yyR_l_npf        from NPFitter:   " << yyR_l_npf        << endl; // R_l (l=e,mu)
@@ -6735,7 +6735,7 @@ int   ReadLesHouches()
       cout << "  --->  yyA_b_npf        from NPFitter:   " << yyA_b_npf        << endl; // A_b
       cout << "  --->  yyA_c_npf        from NPFitter:   " << yyA_c_npf        << endl; // A_c
       cout << "  --->  yyA_l_npf        from NPFitter:   " << yyA_l_npf        << endl; // A_l(SLD)
-      cout << "  --->  yymassh0_npf     from NPFitter:   " << yymassh0_npf     << endl; // m(h0)
+      cout << "  --->  yyMassh0_npf     from NPFitter:   " << yyMassh0_npf     << endl; // m(h0)
       cout << "  --->  yyOmega_npf      from NPFitter:   " << yyOmega_npf      << endl; // Omega_h
       cout << "  --->  yyA_tau_npf      from NPFitter:   " << yyA_tau_npf      << endl; // A_l(P_tau)
       cout << "  --->  yyA_fbl_npf      from NPFitter:   " << yyA_fbl_npf      << endl; // A_fb(l)
@@ -6840,8 +6840,8 @@ int   ReadLesHouches()
 	    yyMeasuredVec[i].theovalue = yygmin2m_npf;
 	    yyMeasuredVec[i].theoset = true;
 	 }         
-	 else if (yyMeasuredVec[i].id == massW_npf) {
-	    yyMeasuredVec[i].theovalue = yymassW_npf;
+	 else if (yyMeasuredVec[i].id == MassW_npf) {
+	    yyMeasuredVec[i].theovalue = yyMassW_npf;
 	    yyMeasuredVec[i].theoset = true;
 	 }         
 	 else if (yyMeasuredVec[i].id == sin_th_eff_npf) {
@@ -6884,8 +6884,8 @@ int   ReadLesHouches()
 	    yyMeasuredVec[i].theovalue = yyA_l_npf;
 	    yyMeasuredVec[i].theoset = true;
 	 }         
-	 else if (yyMeasuredVec[i].id == massh0_npf) {
-	    yyMeasuredVec[i].theovalue = yymassh0_npf;
+	 else if (yyMeasuredVec[i].id == Massh0_npf) {
+	    yyMeasuredVec[i].theovalue = yyMassh0_npf;
 	    yyMeasuredVec[i].theoset = true;
 	 }         
 	 else if (yyMeasuredVec[i].id == Omega_npf) {
