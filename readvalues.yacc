@@ -221,11 +221,11 @@ double        yygSquaredZh  = -10000.;   // hZZ coupling correction
 // BLOCK PREDICT
 double        yyBsg_npf        = -10000.;  // R(B->s gamma)
 double        yydm_s_npf       = -10000.;  // R(Delta m_s)
-double        yyB_smm_npf      = -10000.;  // B(Bs->mumu)
+double        yyB_smm_npf      = -10000.;  // B(Bs->mu mu)
 double        yyBtn_npf        = -10000.;  // R(B->tau nu)
 double        yyB_sXsll_npf    = -10000.;  // R(Bs->Xsll)
-double        yyKtn_npf        = -10000.;  // R(K->tau nu)
-double        yygmin2m_npf     = -10000.;  // D(g-2)
+double        yyKlnu_npf       = -10000.;  // R(K->l nu)
+double        yygmin2m_npf     = -10000.;  // D(g-2)m
 double        yyMassW_npf      = -10000.;  // m(W)
 double        yysin_th_eff_npf = -10000.;  // sin(th_eff(Qfb))
 double        yyGammaZ_npf     = -10000.;  // Gamma(Z)
@@ -244,7 +244,7 @@ double        yyA_fbl_npf      = -10000.;  // A_fb(l)
 double        yysigma_had0_npf = -10000.;  // sigma_had^0
 double        yydm_d_npf       = -10000.;  // R(Delta m_d)
 double        yydm_k_npf       = -10000.;  // R(Delta m_k)
-double        yyKppinn_npf     = -10000.;  // R(Kp->pinn)
+double        yyKppinn_npf     = -10000.;  // R(K->pi nu nu)
 double        yyB_dll_npf      = -10000.;  // B(Bd->ll)
 double        yyDmsDmd_npf     = -10000.;  // R(Dms)/R(Dmd)
 double        yyD_0_npf        = -10000.;  // D_0(K*gamma)
@@ -1717,8 +1717,8 @@ input:
 		  else if (!strcmp($4, "B_sXsll_npf")) {
 		    tmpValue.id    = B_sXsll_npf;
 		  }		  
-		  else if (!strcmp($4, "Ktn_npf")) {
-		    tmpValue.id    = Ktn_npf;
+		  else if (!strcmp($4, "Klnu_npf")) {
+		    tmpValue.id    = Klnu_npf;
 		  }		  
 		  else if (!strcmp($4, "gmin2m_npf")) {
 		    tmpValue.id    = gmin2m_npf;
@@ -1868,8 +1868,8 @@ input:
 		  else if (!strcmp($4, "B_sXsll_npf")) {
 		    tmpValue.id    = B_sXsll_npf;
 		  }		  
-		  else if (!strcmp($4, "Ktn_npf")) {
-		    tmpValue.id    = Ktn_npf;
+		  else if (!strcmp($4, "Klnu_npf")) {
+		    tmpValue.id    = Klnu_npf;
 		  }		  
 		  else if (!strcmp($4, "gmin2m_npf")) {
 		    tmpValue.id    = gmin2m_npf;
@@ -2020,8 +2020,8 @@ input:
 		  else if (!strcmp($4, "B_sXsll_npf")) {
 		    tmpValue.id    = B_sXsll_npf;
 		  }		  
-		  else if (!strcmp($4, "Ktn_npf")) {
-		    tmpValue.id    = Ktn_npf;
+		  else if (!strcmp($4, "Klnu_npf")) {
+		    tmpValue.id    = Klnu_npf;
 		  }		  
 		  else if (!strcmp($4, "gmin2m_npf")) {
 		    tmpValue.id    = gmin2m_npf;
@@ -3682,7 +3682,7 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 			    yyB_sXsll_npf=tmpParams[i][1];
 			 }
 			 else if ((unsigned int)tmpParams[i][0]==6) {
-			    yyKtn_npf=tmpParams[i][1];
+			    yyKlnu_npf=tmpParams[i][1];
 			 }
 			 else if ((unsigned int)tmpParams[i][0]==7) {
 			    yygmin2m_npf=tmpParams[i][1];

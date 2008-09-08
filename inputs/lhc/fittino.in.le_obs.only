@@ -29,8 +29,8 @@ LEObs ( Bsg_npf        )      1.117   +- 0.076     +- 0.082   +- 0.050    alias 
 LEObs ( dm_s_npf       )      1.11    +- 0.01      +- 0.32                alias  2 # [3]
 LEObs ( B_smm_npf      ) <    4.7E-8                          +- 0.02E-8  alias  3 # [3]
 LEObs ( Btn_npf        )      1.15    +- 0.40                             alias  4 # [3]
-LEObs ( B_sXsll_npf    )      0.99         +- 0.32                        alias  5 # [2],[3]
-LEObs ( Ktn_npf        )      0.992        +- 0.017                       alias  6 # [2]     ?
+LEObs ( B_sXsll_npf    )      0.99    +- 0.32                             alias  5 # [2],[3]
+LEObs ( Klnu_npf       )      1.008   +- 0.014                            alias  6 # [3]
 LEObs ( gmin2m_npf     )     30.2E-10 +- 8.8E-10              +- 2.0E-10  alias  7 # [3]
 LEObs ( MassW_npf      )     80.399   +- 0.025                +- 0.010    alias  8 # [3]
 LEObs ( sin_th_eff_npf )      0.2324  +- 0.0012                           alias  9 # [2]

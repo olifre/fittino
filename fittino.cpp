@@ -6722,7 +6722,7 @@ int   ReadLesHouches()
       cout << "  --->  yyB_smm_npf      from NPFitter:   " << yyB_smm_npf      << endl; // B(Bs->mumu)
       cout << "  --->  yyBtn_npf        from NPFitter:   " << yyBtn_npf        << endl; // R(B->tau nu)
       cout << "  --->  yyB_sXsll_npf    from NPFitter:   " << yyB_sXsll_npf    << endl; // R(Bs->Xsll)
-      cout << "  --->  yyKtn_npf        from NPFitter:   " << yyKtn_npf        << endl; // R(K->tau nu)
+      cout << "  --->  yyKlnu_npf       from NPFitter:   " << yyKlnu_npf       << endl; // R(K->tau nu)
       cout << "  --->  yygmin2m_npf     from NPFitter:   " << yygmin2m_npf     << endl; // D(g-2)
       cout << "  --->  yyMassW_npf      from NPFitter:   " << yyMassW_npf      << endl; // m(W)
       cout << "  --->  yysin_th_eff_npf from NPFitter:   " << yysin_th_eff_npf << endl; // sin(th_eff(Qfb))
@@ -6832,8 +6832,8 @@ int   ReadLesHouches()
 	    yyMeasuredVec[i].theovalue = yyB_sXsll_npf;
 	    yyMeasuredVec[i].theoset = true;
 	 }         
-	 else if (yyMeasuredVec[i].id == Ktn_npf) {
-	    yyMeasuredVec[i].theovalue = yyKtn_npf;
+	 else if (yyMeasuredVec[i].id == Klnu_npf) {
+	    yyMeasuredVec[i].theovalue = yyKlnu_npf;
 	    yyMeasuredVec[i].theoset = true;
 	 }         
 	 else if (yyMeasuredVec[i].id == gmin2m_npf) {
