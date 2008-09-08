@@ -62,14 +62,14 @@ Input::Input(const char* inputfile)
 
   /* check whether defaults are given */
   CheckDefault("massZ"     , ID_Z  ,  91.1876    , 0.0021     );
-  CheckDefault("massW"     , ID_W  ,  80.423     , 0.039      );
+  //CheckDefault("massW"     , ID_W  ,  80.423     , 0.039      );
   CheckDefault("massCharm" , ID_c  ,   1.2       , 0.2        );
   CheckDefault("massBottom", ID_b  ,   4.5       , 0.25       );
   CheckDefault("massTop"   , ID_t  , 174.3       , 5.1        );
   CheckDefault("massTau"   , ID_tau,   1.77699   , 0.00029    );
   CheckDefault("alphas"    , 0     ,   0.1187    , 0.002      );
   // G_F is skipped because its small uncertainty causes numerical problems with covariance matrix inversion.
-  //  CheckDefault("G_F"       , 0     ,   1.16639e-5, 0.000001e-5);
+  CheckDefault("G_F"       , 0     ,   1.16639e-5, 0.000001e-5);
   CheckDefault("alphaem"   , 0     , 127.934     , 0.027      );
 
   // cout << "mass = " << mass << endl; 
