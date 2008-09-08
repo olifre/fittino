@@ -13,15 +13,18 @@
 
 ### SM observables
 
+alphaem    127.925   GeV +- 0.016   GeV # [1]
+G_F          1.16637e-5  +- 0.00001e-5  # [1]
+alphas       0.1176  GeV +- 0.0020  GeV # [1]
 massZ       91.1875  GeV +- 0.0021  GeV # [2]
-massCharm    1.27    GeV +- 0.2     GeV # [1]
 massBottom   4.20    GeV +- 0.25    GeV # [1]
 massTop    172.4     GeV +- 1.2     GeV # [3]
 massTau      1.77684 GeV +- 0.00017 GeV # [1]
-alphas       0.118   GeV +- 0.011   GeV # [1]
-alphaem    127.925   GeV +- 0.016   GeV # [1]
+
+massCharm    1.27    GeV +- 0.2     GeV # [1]
 
 ### low energy observables
+
 LEObs ( Bsg_npf        )      1.117   +- 0.076     +- 0.082   +- 0.050    alias  1 # [3]
 LEObs ( dm_s_npf       )      1.11    +- 0.01      +- 0.32                alias  2 # [3]
 LEObs ( B_smm_npf      ) <    4.7E-8                          +- 0.02E-8  alias  3 # [3]
@@ -58,20 +61,20 @@ LEObs ( DmsDmd_npf     )      1.09    +-0.01       +- 0.16                alias 
 ### Parameters                                                        ###
 #########################################################################
 
-### mSUGRA SPS 1a benchmark point
+### mSUGRA parameters at SPS 1a
+
+fixParameter alphaem     127.925   GeV
+fixParameter G_F           1.16637e-5
+fixParameter alphas        0.1176  GeV
+fixParameter massZ        91.1875  GeV
+fixParameter massBottom    4.20    GeV
+fixParameter massTop     172.4     GeV
+fixParameter massTau       1.77684 GeV
 fitParameter M0          100       GeV +-  1.  GeV
 fitParameter M12         250       GeV +-  2.5 GeV
 fitParameter A0         -100       GeV +- 10.  GeV
 fitParameter TanBeta      10           +-  1.
 fixParameter SignMu        1
-fixParameter massTop     172.925   GeV
-fixParameter massW        80.399   GeV
-fixParameter massZ        91.1875  GeV
-fixParameter massCharm     1.27    GeV
-fixParameter massBottom    4.20    GeV
-fixParameter massTau       1.77684 GeV
-fixParameter alphas        0.118   GeV
-fixParameter alphaem     127.925   GeV
 
 #########################################################################
 ### Switches                                                          ###
