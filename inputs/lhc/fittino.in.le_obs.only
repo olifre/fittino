@@ -11,51 +11,51 @@
 ### Observables                                                       ###
 #########################################################################
 
+### LE (low energy) observables
+
+LEObs ( Bsg_npf        )      1.117   +- 0.076   +- 0.082 +- 0.050    alias  1 # [2]
+LEObs ( dm_s_npf       )      1.11    +- 0.01    +- 0.32              alias  2 # [2]
+LEObs ( B_smm_npf      ) <    4.7E-8                      +- 0.02E-8  alias  3 # [2]
+LEObs ( Btn_npf        )      1.15    +- 0.40                         alias  4 # [2]
+LEObs ( B_sXsll_npf    )      0.99    +- 0.32                         alias  5 # [2]
+LEObs ( Klnu_npf       )      1.008   +- 0.014                        alias  6 # [2]
+LEObs ( gmin2m_npf     )     30.2E-10 +- 8.8E-10          +- 2.0E-10  alias  7 # [2]
+LEObs ( MassW_npf      )     80.399   +- 0.025            +- 0.010    alias  8 # [2]
+LEObs ( sin_th_eff_npf )      0.2324  +- 0.0012                       alias  9 # [1]
+LEObs ( GammaZ_npf     )   2495.2     +- 2.3              +- 1.0      alias 10 # [1]
+LEObs ( R_l_npf        )     20.767   +- 0.025                        alias 11 # [1]
+LEObs ( R_b_npf        )      0.21629 +- 0.00066                      alias 12 # [1]
+LEObs ( R_c_npf        )      0.1721  +- 0.003                        alias 13 # [1]
+LEObs ( A_fbb_npf      )      0.0992  +- 0.0016                       alias 14 # [1]
+LEObs ( A_fbc_npf      )      0.0707  +- 0.0035                       alias 15 # [1]
+LEObs ( A_b_npf        )      0.923   +- 0.020                        alias 16 # [1]
+LEObs ( A_c_npf        )      0.670   +- 0.027                        alias 17 # [1]
+LEObs ( A_l_npf        )      0.1513  +- 0.0021                       alias 18 # [1]
+LEObs ( Massh0_npf     ) >  114.4                         +- 3.0      alias 19 # [2]
+LEObs ( Omega_npf      )      0.1099  +- 0.0062           +- 0.012    alias 20 # [2]
+LEObs ( A_tau_npf      )      0.1465  +- 0.0032                       alias 21 # [1]
+LEObs ( A_fbl_npf      )      0.01714 +- 0.00095                      alias 22 # [1]
+LEObs ( sigma_had0_npf )     41.540   +- 0.037                        alias 23 # [1]
+LEObs ( dm_k_npf       )      0.92    +- 0.14                         alias 24 # [2]
+LEObs ( Kppinn_npf     ) <    4.5     +- 1.0E-10                      alias 25 # [2], added small error 1.0E-10
+LEObs ( B_dll_npf      ) <    2.3E-8                      +- 0.001E-8 alias 26 # [2]
+LEObs ( DmsDmd_npf     )      1.09    +- 0.01    +- 0.16              alias 27 # [2]
+
 ### SM observables
 
-alphaem    127.925   GeV +- 0.016   GeV # [1] ?
-G_F          1.16637E-5  +- 0.00001E-5  # [1] ?
-alphas       0.1176  GeV +- 0.0020  GeV # [1]
-massZ       91.1875  GeV +- 0.0021  GeV # [2]
-massBottom   4.20    GeV +- 0.25    GeV # [1] ? error +0.17 -0.07
-massTop    172.4     GeV +- 1.2     GeV # [3]
-massTau      1.77684 GeV +- 0.00017 GeV # [1] ?
+alphaem    127.925   GeV +- 0.016      GeV # [3] ?
+G_F          1.16637E-5  +- 0.00001E-5     # [3] ?
+alphas       0.1176  GeV +- 0.0020     GeV # [3] ?
+massZ       91.1875  GeV +- 0.0021     GeV # [1]
+massBottom   4.20    GeV +- 0.25       GeV # [3] ? error +0.17 -0.07
+massTop    172.4     GeV +- 1.2        GeV # [2]
+massTau      1.77684 GeV +- 0.00017    GeV # [3] ?
 
-massCharm    1.27    GeV +- 0.2     GeV # [1] ? error +0.07 -0.11, SPheno value ?
+massCharm    1.27    GeV +- 0.2        GeV # [1] ? error +0.07 -0.11, SPheno value ?
 
-### low energy observables
-
-LEObs ( Bsg_npf        )      1.117   +- 0.076     +- 0.082   +- 0.050    alias  1 # [3]
-LEObs ( dm_s_npf       )      1.11    +- 0.01      +- 0.32                alias  2 # [3]
-LEObs ( B_smm_npf      ) <    4.7E-8                          +- 0.02E-8  alias  3 # [3]
-LEObs ( Btn_npf        )      1.15    +- 0.40                             alias  4 # [3]
-LEObs ( B_sXsll_npf    )      0.99    +- 0.32                             alias  5 # [2],[3]
-LEObs ( Klnu_npf       )      1.008   +- 0.014                            alias  6 # [3]
-LEObs ( gmin2m_npf     )     30.2E-10 +- 8.8E-10              +- 2.0E-10  alias  7 # [3]
-LEObs ( MassW_npf      )     80.399   +- 0.025                +- 0.010    alias  8 # [3]
-LEObs ( sin_th_eff_npf )      0.2324  +- 0.0012                           alias  9 # [2]
-LEObs ( GammaZ_npf     )   2495.2     +- 2.3                  +- 1.0      alias 10 # [2]
-LEObs ( R_l_npf        )     20.767   +- 0.025                            alias 11 # [2]
-LEObs ( R_b_npf        )      0.21629 +- 0.00066                          alias 12 # [2]
-LEObs ( R_c_npf        )      0.1721  +- 0.003                            alias 13 # [2]
-LEObs ( A_fbb_npf      )      0.0992  +- 0.0016                           alias 14 # [2]
-LEObs ( A_fbc_npf      )      0.0707  +- 0.0035                           alias 15 # [2]
-LEObs ( A_b_npf        )      0.923   +- 0.020                            alias 16 # [2]
-LEObs ( A_c_npf        )      0.670   +- 0.027                            alias 17 # [2]
-LEObs ( A_l_npf        )      0.1513  +- 0.0021                           alias 18 # [2]
-LEObs ( Massh0_npf     ) >  114.4                             +- 3.0      alias 19 # [3]
-LEObs ( Omega_npf      )      0.1099  +- 0.00062              +- 0.012    alias 20 # [3]
-LEObs ( A_tau_npf      )      0.1465  +- 0.0032                           alias 21 # [2]
-LEObs ( A_fbl_npf      )      0.01714 +- 0.00095                          alias 22 # [2]
-LEObs ( sigma_had0_npf )     41.540   +- 0.037                            alias 23 # [2]
-LEObs ( dm_k_npf       )      0.92    +- 0.14                             alias 25 # [3]
-LEObs ( Kppinn_npf     ) <    4.5     +- 1.0E-10                          alias 26 # [3], added small error 1.0E-10
-LEObs ( B_dll_npf      ) <    2.3E-8                          +- 0.001E-8 alias 27 # [3]
-LEObs ( DmsDmd_npf     )      1.09    +-0.01       +- 0.16                alias 28 # [3]
-
-# [1] PDG 2008
-# [2] Buchmueller et al. arxiv:0707.3447v2
-# [3] Buchmueller et al. arxiv:0808.4128v1
+# [1] Buchmueller et al. arxiv:0707.3447v2
+# [2] Buchmueller et al. arxiv:0808.4128v1
+# [3] PDG 2008
 
 #########################################################################
 ### Parameters                                                        ###
@@ -63,18 +63,18 @@ LEObs ( DmsDmd_npf     )      1.09    +-0.01       +- 0.16                alias 
 
 ### mSUGRA parameters at SPS 1a
 
-fixParameter alphaem     127.925   GeV
+fixParameter alphaem     127.925      GeV
 fixParameter G_F           1.16637E-5
-fixParameter alphas        0.1176  GeV
-fixParameter massZ        91.1875  GeV
-fixParameter massBottom    4.20    GeV
-fixParameter massTop     172.4     GeV
-fixParameter massTau       1.77684 GeV
-fitParameter M0          100       GeV +-  1.  GeV
-fitParameter M12         250       GeV +-  2.5 GeV
-fitParameter A0         -100       GeV +- 10.  GeV
-fitParameter TanBeta      10           +-  1.
+fixParameter alphas        0.1176     GeV
+fixParameter massZ        91.1875     GeV
+fixParameter massBottom    4.20       GeV
+fixParameter massTop     172.4        GeV
+fixParameter massTau       1.77684    GeV
 fixParameter SignMu        1
+fitParameter M0          100          GeV +-  1.  GeV
+fitParameter M12         250          GeV +-  2.5 GeV
+fitParameter A0         -100          GeV +- 10.  GeV
+fitParameter TanBeta      10              +-  1.
 
 #########################################################################
 ### Switches                                                          ###
@@ -87,7 +87,7 @@ LoopCorrections                on
 ISR                            on
 UseGivenStartValues            on
 FitAllDirectly                 on
-CalcPullDist                   on
+CalcPullDist                   off
 CalcIndChisqContr              off
 BoundsOnX                      off
 ScanX                          off
@@ -104,7 +104,7 @@ ErrDef                         1.0
 NumberPulls                    1
 GetContours                    off
 
-UseSimAnnBefore                on
+UseSimAnnBefore                off
 UseSimAnnWhile                 off
 AdaptiveSimAnn                 off
 TempRedSimAnn                  0.5
