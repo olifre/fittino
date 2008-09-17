@@ -1,186 +1,170 @@
 #########################################################################
 ###                         Fittino input file                        ###
-###                             for SPS1a'                            ###
+#########################################################################
+###                           M. Uhlenbrock                           ###
+#########################################################################
+###                 Fit of LE observables to the                      ###
+###                 mSUGRA SPS 1a benchmark point                     ###
 #########################################################################
 
 #########################################################################
-# Masses                                                                #
+### Observables                                                       ###
 #########################################################################
 
-massW                    80.2927 GeV +- 0.039  GeV
-massZ                    91.1187 GeV +- 0.0021 GeV
-massTop                  172.5   GeV +- 2.3    GeV  # hep-ex/0603039 Tevatron Combi.
-massBottom	         4.2     GeV +- 0.5    GeV
-massCharm	         1.2     GeV +- 0.2    GeV
+### SM observables
+massTop        170.9   GeV +-  1.1 GeV +- (JES) 1.5 GeV # errors from []
+massW       80.3713  GeV +- 0.039   GeV
+massZ       91.1876  GeV +- 0.0021  GeV
+massCharm    1.2     GeV +- 0.2     GeV
+massBottom   4.5     GeV +- 0.25    GeV
+massTau      1.77699 GeV +- 0.00029 GeV
+alphas       0.1187  GeV +- 0.002   GeV
+alphaem    127.934   GeV +- 0.027   GeV
 
-sin2ThetaW               0.23113 +- 0.00015
+fixParameter massTop      170.9   GeV
+fixParameter massW       80.3713  GeV
+fixParameter massZ       91.1876  GeV
+fixParameter massCharm    1.2     GeV
+fixParameter massBottom   4.5     GeV
+fixParameter massTau      1.77699 GeV
+fixParameter alphas       0.1187  GeV
+fixParameter alphaem    127.934   GeV
 
-# massh0                112.888 GeV +- 0.05 GeV  # +- 0.5 GeV  # Degrassi et al
-# massA0                374.228 GeV +- 1.3  GeV  # +- 0.6 GeV  # not in LHC
-# massH0                374.465 GeV +- 1.3  GeV  # +- 0.6 GeV  # not in LHC
-# massHplus             383.131 GeV +- 1.1  GeV  # +- 0.6 GeV  # not in LHC
+# ### low energy observables
+# LEObs ( Bsg_npf        )    1.127   +- 0.12                 alias  1 # errors from Buch
+# LEObs ( dm_s_npf       )    1.04    +- 0.007     +- 0.34    alias  2 # errors from Buch
+# #LEObs ( B_smm_npf      )    4.7E-8  +- 0.1E-9    +- 0.2E-9  alias  3 # errors from Buch
+# LEObs ( Btn_npf        )    1.07     +- 0.42                 alias  4 # errors from Buch
+# LEObs ( B_sXsll_npf    )    0.99         +- 0.32    alias  5 # errors from Buch
+# LEObs ( Ktn_npf        )    0.992        +- 0.017   alias  6 # errors from Buch
+# #LEObs ( gmin2m_npf     )   29.5E-10 +- 8.7e-10   +- 2.0e-10 alias  7 # errors from Buch 
+# #LEObs ( massW_npf      )   80.398   +- 0.025     +- 0.010   alias  8 # errors from Buch
+# LEObs ( sin_th_eff_npf )    0.2324  +- 0.0012               alias  9 # errors from Buch
+# LEObs ( GammaZ_npf     ) 2495.2     +- 2.3       +- 1.0     alias 10 # errors from Buch 
+# LEObs ( R_l_npf        )   20.767   +- 0.025                alias 11 # errors from Buch
+# LEObs ( R_b_npf        )    0.21629 +- 0.00066              alias 12 # errors from Buch
+# LEObs ( R_c_npf        )    0.1721  +- 0.003                alias 13 # errors from Buch
+# LEObs ( A_fbb_npf      )    0.0992  +- 0.0016               alias 14 # errors from Buch
+# LEObs ( A_fbc_npf      )    0.0707  +- 0.0035               alias 15 # errors from Buch
+# LEObs ( A_b_npf        )    0.923   +- 0.020                alias 16 # errors from Buch
+# LEObs ( A_c_npf        )    0.670   +- 0.027                alias 17 # errors from Buch
+# LEObs ( A_l_npf        )    0.1513  +- 0.0021               alias 18 # errors from Buch
+# #LEObs ( massh0_npf     )  115.0     +- 1.1       +- 3.0     alias 19 # errors from Buch
+# LEObs ( Omega_npf      )    0.113   +- 0.009     +- 0.012   alias 20 # errors from Buch
+# LEObs ( A_tau_npf      )    0.1465  +- 0.0032               alias 21 # errors from Buch
+# LEObs ( A_fbl_npf      )    0.01714 +- 0.00095              alias 22 # errors from Buch
+# LEObs ( sigma_had0_npf )   41.540   +- 0.037                alias 23 # errors from Buch
+# LEObs ( dm_d_npf       )    1.04    +- 0.01      +- 0.29    alias 24 # errors from Buch
+# LEObs ( dm_k_npf       )    0.88    +- 0.003     +- 0.32    alias 25 # errors from Buch
+# LEObs ( Kppinn_npf     )    4.5     +- 1.0                  alias 26 # errors from Buch
+# LEObs ( B_dll_npf      )    2.3E-8  +- 1.0       +- 0.2E-9  alias 27 # errors from Buch
+# LEObs ( DmsDmd_npf     )    1.00                 +- 0.08    alias 28 # errors from Buch
+# #LEObs ( D_0_npf        )    0.028   +- 0.005                alias 29 # errors from Buch
+# #LEObs ( bsg_npf        )    1.127   +- 0.12                 alias 30 # errors from Buch
 
-nofit massSdownL        561.54  GeV +- 9.8  GeV  #  +- 10.0 GeV
-nofit massSdownR        543.348 GeV +- 23.6 GeV  #  +-  9.4 GeV
-nofit massSstrangeL     561.54  GeV +- 9.8  GeV  #  +- 10.0 GeV
-nofit massSstrangeR     543.348 GeV +- 23.6 GeV  #  +-  9.4 GeV
-nofit massScharmL       561.54  GeV +- 9.8  GeV  #  +- 10.0 GeV
-nofit massScharmR       543.348 GeV +- 23.6 GeV  #  +-  9.4 GeV
+nofit massh0   110. +- 3.
+nofit massA0   400. +- 10.
+nofit massNeutralino1 100. +- 1.
 
-nofit massSupL          561.539 GeV +-  9.8 GeV  #  +- 10.0 GeV
-nofit massSupR          543.35  GeV +- 23.6 GeV  #  +-  9.4 GeV
-nofit massSbottom1	502.059 GeV +-  5.7 GeV  #  +-  5.4 GeV # ~b_1
-nofit massSbottom2	541.81  GeV +-  6.2 GeV  #  +-  8.5 GeV # ~b_2
-nofit massStop1         365.819 GeV +-  2.0 GeV  #  +-  5.4 GeV # ~t_1  # not at LHC
-nofit massStop2		600.037 GeV +- 20.0 GeV  #              # ~t_2  # not at LHC
-nofit massSelectronL	190.209 GeV +- 0.2  GeV  #  +- 0.4 GeV  # ~e_L-
-nofit massSelectronR	124.883 GeV +- 0.05 GeV  #  +- 1.2 GeV  # ~e_R-
-nofit massSnueL		172.947 GeV +- 0.7  GeV  #              # ~nu_eL  # not at LHC
-nofit massSmuL		190.237 GeV +- 0.5  GeV  #  +- 0.4 GeV  # ~mu_L-
-nofit massSmuR		124.837 GeV +- 0.2  GeV  #  +- 1.2 GeV  # ~mu_R-
-# nofit # massSnumuL	  192.3152641987 GeV       #  +-          # ~nu_muL
-nofit massStau1		107.292 GeV +- 0.3 GeV   #  +- 0.5 GeV  # ~tau_1-
-nofit massStau2		195.290 GeV +- 1.1 GeV   #  +- 0.5 GeV  # ~tau_2- # not at LHC
-# nofit # massSnutau1	  191.3925736236 GeV       #  +-          # ~nu_tau
-nofit massGluino        603.639 GeV +- 6.4 GeV   #  +- 1.4 GeV  # ~g	
-nofit massNeutralino1	 97.7662 GeV +- 0.05 GeV #  +- 0.4 GeV  # ~chi_10
-nofit massNeutralino2	184.345 GeV +- 0.08 GeV  #  +- 1.2 GeV  # ~chi_20
-nofit massNeutralino3  -404.134 GeV +- 4.0 GeV   #  +- 1.1 GeV  # ~chi_30
-nofit massNeutralino4   417.037 GeV +- 2.3 GeV   #  +- 1.1 GeV  # ~chi_40
-nofit massChargino1	184.132 GeV +- 0.55 GeV  #  +- 1.0 GeV  # ~chi_1+
-nofit massChargino2	418.495 GeV +- 3.0 GeV   #  +- 3.4 GeV  # ~chi_2+
+### low energy observables
+#LEObs ( bsg    )   0.000352084 +- 0.000042 alias 10 # HFAG summer 2006:  3.55E-4 +- 4E-5
+#LEObs ( bsmm   )   1.83297     +- 1.0      alias 11 # HFAG summer 2006:  4.5E-6  +- 1.0E-6
+#LEObs ( B_utn  )   0.000124874 +- 0.000048 alias 12 # HFAG summer 2006:  1.34E-4 +- 0.48
+#LEObs ( dMB_d  )   0.285299    +- 0.004    alias 13 # HFAG winter 2006:  0.507 +- 0.004
+#LEObs ( dMB_s  )  24.6435      +- 0.13     alias 14 # CDF Sep. 2006:    17.77 +- 0.10(stat) +- 0.07(sys)
+#LEObs ( gmin2m )   2.53187     +- 10.0     alias 15 # PDG 2006: magn.moment = 1.0011659208 +- 0.0000000006 (e hbar / 2 m_e)
+					          # We assume: SPheno tells us (g-2)SUSY
+	 				          # Observable: 2*(1 - exp. PDG value) - (g-2)SM
+					          # uncertainty: 2*PDG value
+					          # Observable according to above formula: 4E-9 +- 6E-9 +- 8E-9
+#LEObs ( drho   )   0.008825  +- 0.0007   alias 16 # PDG 2006: 0.0002 + 0.0007 - 0.0004
+#LEObs ( omega  )   0.191305  +- 0.006    alias 17 # errors from [10]  
 
+#LEObs ( B_smm  )  <0.08                  alias 18 # HFAG summer 2006: < 0.08E-6
+#LEObs ( gmin2e )   0.0489534 +- 7.6      alias 19 # PDG 2006: magn.moment = 1.0011596521859 +- 0.0000000000038 (e hbar / 2 m_e)
+#LEObs ( gmin2t ) 511.718     +- 3.2E7    alias 20 # PDF 2006: 0.013 > magnetic moment > -0.052 
 
-# cos2PhiL                0.6386515 +- 0.05     # rough estimate
-# cos2PhiR                0.9051529 +- 0.05     # rough estimate
-nofit cos2PhiL            0.763 +- 0.0005       # rough estimate
-nofit cos2PhiR            0.94 +- 0.0005        # rough estimate
-
-# edge 3 massNeutralino1 massNeutralino2 massSelectronR                 104.024 GeV +- 1.7  GeV alias 100
+#  [1] hep-ph/0410364
+#  [2] Carolin's results
+#  [3] G. Polesello, Prospects for the detection of heavy charginos and neutralinos with the ATLAS detector at the LHC, J. Phys. G: Nucl. Part. Phys. 30 (2004) 1185-1199
+#  [4] hep-ph/0512204
+#  [5] Else Lytken, Prospects for Slepton Searches with Atlas, PhD Thesis, U. Copenhagen
+#  [6] hep-ph/0312318
+#  [7] HFAG summer 2006
+#  [8] HFAG winter 2006
+#  [9] CDF september 2006
+# [10] PDG 2006
+# [11] hep-ph/0111314
 
 #########################################################################
-# LE Observables                                                        #
-#########################################################################
-LEObs ( bsg    )  3.26799E-4 +- 4.2E-5 alias  1  # HFAG summer 2006:  3.55E-4 +- 4E-5
-LEObs ( bsmm   )  1.89357    +- 0.5    alias  2  # Misiak WA: B->Xsll = 1.6 +- 0.5 x10-6 # HFAG summer 2006:  4.5E-6  +- 1.0E-6 
-LEObs ( B_smm  ) < 7.0                 alias  3  # HFAG summer 2006: < 0.08E-6
-LEObs ( B_utn  )  1.25338E-4 +- 4.8E-5 alias  4  # HFAG summer 2006:  1.34E-4 +- 0.48
-LEObs ( dMB_d  )  0.281021   +- 0.004  alias  5  # HFAG winter 2006:  0.507 +- 0.004  #!!! to be repaired with next version 3.16
-LEObs ( dMB_s  ) 24.2673     +- 0.13   alias  6  # CDF Sep. 2006:    17.77 +- 0.10(stat) +- 0.07(sys)  #!!! to be repaired with next version 3.16
-# LEObs ( gmin2e )  0.0489534  +- 7.6    alias 10  # PDG 2006: magn.moment = 1.0011596521859 +- 0.0000000000038 (e hbar / 2 m_e)
-						 # 
-LEObs ( gmin2m )  2.46463    +- 2      alias 11  # PDG 2006: magn.moment = 1.0011659208 +- 0.0000000006 (e hbar / 2 m_e)
-						 # We assume: SPheno tells us (g-2)SUSY/2.
-                                                 # calculate again:
-	 					 # Observable: 2*(1 - exp. PDG value) - (g-2)SM
-						 # uncertainty: 2*PDG value
-						 # Observable according to above formula: 4E-9 +- 6E-9 +- 8E-9
-# LEObs ( gmin2t )  511.718    +- 3.2E7  alias 12  # PDF 2006: 0.013 > magnetic moment > -0.052 
-LEObs ( drho   )  8.64968E-3 +- 0.0007 alias 30  # PDG 2006: 0.0002 + 0.0007 - 0.0004   #!!! extract top contribution, to be repaired in 3.l6
-LEObs ( omega  )  0.101501   +- 0.006  alias 31  # PDG 2006: 0.111 +- 0.006  
-
-
-#########################################################################
-# Parameters                                                            #
+### Parameters                                                        ###
 #########################################################################
 
-fitModel mSUGRA
+### mSUGRA SPS 1a benchmark point
+fitParameter M0       100 GeV +-  1.5 GeV
+fixParameter M12      250 GeV # +-  2.5 GeV
+fixParameter A0      -100 GeV # +- 10   GeV
+fixParameter TanBeta   10     # +-  1
+fixParameter SignMu     1
 
-fitParameter TanBeta 10 +- 0.5
-fitParameter M0 70 +- 1
-fitParameter M12 250 +- 5
-fitParameter A0 -300 +- 20
-fixParameter SignMu 1
+#########################################################################
+### Switches                                                          ###
+#########################################################################
 
-#fitModel MSSM
+fitModel                       mSUGRA
 
-#fitParameter  TanBeta       10.0                 +-     0.106839   
-#fitParameter  Mu            4.00391601E+02 GeV   +-     1.31431    GeV
-#fixParameter  Xtau          -4449.2464     GeV   +-    20.6217     GeV
-#fixParameter  MSelectronR   1.15601432E+02 GeV   +-     0.047222   GeV
-#fixParameter  MStauR        1.09886191E+02 GeV   +-     0.305381   GeV
-#fixParameter  MSelectronL   1.81303904E+02 GeV   +-     0.0657697  GeV
-#fixParameter  MStauL        1.79542181E+02 GeV   +-     0.125402   GeV
-#fixParameter  Xtop          -565.6667  GeV       +-     3.06945    GeV
-#fixParameter  Xbottom       -4934.7555 GeV       +-  1025.51       GeV
-#fixParameter  MSupR         5.03870507E+02 GeV   +-     7.09704    GeV
-#fixParameter  MSbottomR     4.97407092E+02 GeV   +-     7.15023    GeV
-#fixParameter  MStopR        3.80875693E+02 GeV   +-     2.45254    GeV
-#fixParameter  MSupL         5.23239070E+02 GeV   +-     7.50972    GeV
-#fixParameter  MStopL        4.67710781E+02 GeV   +-     3.00352    GeV
-#fixParameter  M1            1.03270551E+02 GeV   +-     0.0517654  GeV
-#fixParameter  M2            1.93445550E+02 GeV   +-     0.0876525  GeV
-#fixParameter  M3            5.68863225E+02 GeV   +-     7.24919    GeV
-#fixParameter  massA0        311.95 GeV           +-     3.73973    GeV
-#			       
-#fixParameter  massTop       1.78e+02       GeV   +-     0.0423333  GeV
-#fixParameter  massBottom    4.2000e+00     GeV
-#fixParameter  massCharm     1.2e+00        GeV
-#
-#fixParameter  MSmuR         1.15601432E+02 GeV   +-     0.047222   GeV
-#fixParameter  MSmuL         1.81303904E+02 GeV   +-     0.0657697  GeV
-#fixParameter  MScharmR      5.03870507E+02 GeV   +-     7.09704    GeV
-#fixParameter  MSdownR       5.03870507E+02 GeV   +-     7.09704    GeV
-#fixParameter  MSstrangeR    5.03870507E+02 GeV   +-     7.09704    GeV
-#fixParameter  MScharmL      5.23239070E+02 GeV   +-     7.50972    GeV
+RandomParameters               off
+LoopCorrections                on
+ISR                            on
+UseGivenStartValues            on
+FitAllDirectly                 on
+CalcPullDist                   on
+CalcIndChisqContr              off
+BoundsOnX                      off
+ScanX                          off
+SepFitTanbX                    off
+SepFitTanbMu                   off
+SepFitmA	               off
+Calculator                     SPHENO ./SPheno
+LEOCalculator                  NPFITTER ./NPpredict.exe
+QuarkFlavourViolation          off
+UseMinos                       off
+UseHesse                       off
+NumberOfMinimizations          1
+ErrDef                         1.0
+NumberPulls                    1
+GetContours                    off
 
-# universality MSelectronR MSmuR
-# universality MSelectronL MSmuL
-# universality MSupR MScharmR MSdownR MSstrangeR
-# universality MSupL MScharmL
-
-#scanParameter  MSelectronR  115.1 GeV  116.1 GeV  20
-#scanParameter  MSupR        450   GeV  550   GeV  20
-
-LoopCorrections       on
-ISR                   on			       
-
-Verbose               on
-
-PerformFit            on				       
-UseGivenStartValues   on
-FitAllDirectly        on
-BoundsOnX             off
-SepFitTanbX           off
-SepFitTanbMu          off
-SepFitmA	      off
-XScanRange            -6000. GeV  -300. GeV
-ScanX                 off
-
-ScanParameters        off
-CalcPullDist          off
-
-NumberPulls           1
-RandomGeneratorSeed   -1 # < 0 means use random seed (default), else take given seed
-
-RandomDirUncertainties off
-NumberOfDirections    10000
-
-UseSimAnnBefore       off
-UseSimAnnWhile        off
-SimAnnUncertainty     off
-SimAnnUncertaintyRunDown     off
-TempRedSimAnn         0.5
-MaxCallsSimAnn        20000
-InitTempSimAnn        5000
-AdaptiveSimAnn        on
-
-MaxCalculatorTime     60
-
-NoBoundsAtAll         off
-
-Calculator            SPHENO  ./SPheno
+UseSimAnnBefore                off
+UseSimAnnWhile                 off
+AdaptiveSimAnn                 off
+TempRedSimAnn                  0.5
+MaxCallsSimAnn                 20000
+InitTempSimAnn                 5
+SimAnnUncertainty              off
+SimAnnUncertaintyRunDown       off
+GetTempFromFirstChiSqr         on
 
 UseMarkovChains                off
 MarkovChainReadjustWidth       off
 MarkovChainReadjustWidthPeriod 500
 MaxMarkovChain                 20000
 
-UseMinos              on
-UseHesse              on
+MinuitStrategy	               2
+MachinePrecision               1e-8
 
-UseMicrOmegas         on
-UseHiggsLimits        on
+Verbose                        on
 
-NumberOfMinimizations  1
-ErrDef                 1.0
+ScanParameters                 off
+
+PerformFit                     on
+RandomGeneratorSeed            -1 # < 0 means use random seed (default), else take given seed
+# MaxCalculatorTime              20
+
+# weitere switches {{{
+# XScanRange                     -6000. GeV  -300. GeV
+# RandomDirUncertainties         off
+# NumberOfDirections             10000
+# NoBoundsAtAll                  off
+# UseHiggsLimits                 on
+# }}}

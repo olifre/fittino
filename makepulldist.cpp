@@ -163,9 +163,17 @@ void MakePullDist::CalcPullDist()
 	obsLeafVec[k].value = -1;
 	string str = yyMeasuredVec[k].name;
 	str.append("/D");
-	//cout << "Adding branch " << yyMeasuredVec[k].name.c_str() << " to tree" << endl;
+	cout << "Adding branch for fitted observable " << yyMeasuredVec[k].name.c_str() << " to tree" << endl;
 	tree->Branch(yyMeasuredVec[k].name.c_str(), &(obsLeafVec[k].value), str.c_str());
 	str.erase();
+     } else {
+	obsLeafVec[k].name = yyMeasuredVec[k].name;
+	obsLeafVec[k].value = -1;
+	string str = yyMeasuredVec[k].name;
+	str.append("_nofit/D");
+	cout << "Adding branch for nofit observable " << yyMeasuredVec[k].name.c_str() << " to tree" << endl;
+	tree->Branch(yyMeasuredVec[k].name.c_str(), &(obsLeafVec[k].value), str.c_str());
+	str.erase();       
      }
   }
 
@@ -202,7 +210,9 @@ void MakePullDist::CalcPullDist()
      thrown = getCorrelatedRandomNumbers( mean, fInput->GetMeasuredCorrelationMatrix().GetCovarianceMatrix() );
 
      for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
-	yyMeasuredVec[j].value = thrown(j);
+       if (yyMeasuredVec[j].nofit == false) {
+	 yyMeasuredVec[j].value = thrown(j);
+       }
      }
 
      // test printouts for observable value scattering
@@ -248,7 +258,12 @@ void MakePullDist::CalcPullDist()
      }
      cout << "Copying observables into obsLeafVec..." << endl;
      for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
-	obsLeafVec[j].value = yyMeasuredVec[j].value;
+       if (yyMeasuredVec[j].nofit == false) {
+	 obsLeafVec[j].value = yyMeasuredVec[j].value;
+       } else {
+	 cout << "looking for fitted value of the unfitted observable " << yyMeasuredVec[j].name << " = " << yyMeasuredVec[j].theovalue << endl;
+	 obsLeafVec[j].value = yyMeasuredVec[j].theovalue;
+       }
      }
      cout << "filling chisq hist " << endl;
      chisq_hist->Fill(gchisq);

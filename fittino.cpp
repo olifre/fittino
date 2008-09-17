@@ -3199,7 +3199,7 @@ double hamiltonian(int n, double* q, double* p)
 // ************************************************************
 // fitterFCN
 //
-// calculates: The chi^2 from the measured values and the SUSPECT prediction
+// calculates: The chi^2 from the measured values and the predictions
 // needs:      all
 //
 // P. Bechtle, P. Wienemann, 18.09.03
