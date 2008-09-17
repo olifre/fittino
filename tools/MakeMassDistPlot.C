@@ -1,0 +1,153 @@
+#include "TStyle.h"
+#include "TH1D.h"
+#include "TH2D.h"
+#include "TColor.h"
+#include "TF1.h"
+#include "TCanvas.h"
+#include <string>
+#include <vector>
+using namespace std;
+
+void MakeMassDistPlot () {
+
+  TCanvas* canvas = new TCanvas();
+
+  vector<string> name;
+  vector<double> mass;
+  vector<double> error;
+
+  /////////////////////////////////////////////////////////
+
+  name.push_back ("Neutralino1");
+  mass.push_back (97.);
+  error.push_back(3.);
+  name.push_back ("Neutralino2");
+  mass.push_back (180.);
+  error.push_back(10.);
+  name.push_back ("Neutralino3");
+  mass.push_back (380.);
+  error.push_back(15.);
+  name.push_back ("Neutralino4");
+  mass.push_back (400.);
+  error.push_back(30.);
+
+  name.push_back ("Chargino1");
+  mass.push_back (175.);
+  error.push_back(5.);
+  name.push_back ("Chargino2");
+  mass.push_back (390.);
+  error.push_back(15.);
+
+  name.push_back ("SelectronL");
+  mass.push_back (150.);
+  error.push_back(10.);
+
+  name.push_back ("SupR");
+  mass.push_back (550.);
+  error.push_back(50.);
+
+  name.push_back ("h0");
+  mass.push_back (115.);
+  error.push_back(1.);
+
+  ////////////////////////////////////////////////////////////////
+  // Use the dummy data above to fill histograms 
+  ////////////////////////////////////////////////////////////////
+
+  const int nMass = mass.size();
+
+  // find the lowest and highest values
+  double lowestMass = 100000.;
+  double highestMass = 0.;
+  for (int iMass = 0; iMass < nMass; iMass++) {
+    if (mass[iMass]-4.*error[iMass]<lowestMass) {
+      lowestMass = mass[iMass]-4.*error[iMass];
+    }
+    if (mass[iMass]+4.*error[iMass]>highestMass) {
+      highestMass = mass[iMass]+4.*error[iMass];
+    }
+  }  
+
+  TH2D* massHist[nMass];
+
+  for (int iMass = 0; iMass < nMass; iMass++) {
+
+    massHist[iMass] = new TH2D(name[iMass].c_str(),"",
+			       4,
+			       0.,4.,
+			       1000,
+			       lowestMass,highestMass);
+    TF1* func  = new TF1("func","gaus",mass[iMass]-2.*error[iMass],mass[iMass]+2.*error[iMass]);
+    TH1D* hist = new TH1D("hist","",1000,
+			  lowestMass,highestMass);
+    func->SetParameter(0,1.);
+    func->SetParameter(1,mass[iMass]);
+    func->SetParameter(2,error[iMass]);
+    for (int i = 0; i < 10000000; i++) {
+      hist->Fill(func->GetRandom());
+    }
+    int nXbin = -1;
+    if (name[iMass]=="h0" || name[iMass]=="A0" || name[iMass]=="H0" || name[iMass]=="Hplus" ) nXbin = 1;
+    else if (name[iMass]=="Neutralino1" || name[iMass]=="Neutralino2" || name[iMass]=="Neutralino3" || 
+	     name[iMass]=="Neutralino4" || name[iMass]=="Chargino1" || name[iMass]=="Chargino2") nXbin = 2;    
+    else if (name[iMass]=="SelectronL" || name[iMass]=="SelectronR" || name[iMass]=="SmuL" || name[iMass]=="SmuR" || 
+	     name[iMass]=="Stau1" || name[iMass]=="Stau2" ) nXbin = 3;
+    else if (name[iMass]=="SupL" || name[iMass]=="SupR" || name[iMass]=="SdownL" || name[iMass]=="SdownR" || 
+	     name[iMass]=="SstrangeL" || name[iMass]=="SstrangeR" || name[iMass]=="ScharmL" || name[iMass]=="ScharmR" || 
+	     name[iMass]=="Sbottom1" || name[iMass]=="Sbottom2" || name[iMass]=="Stop1" || name[iMass]=="Stop2") nXbin = 4;
+    for (int i = 0; i < 1000; i++) {
+      massHist[iMass]->SetBinContent(nXbin, i, hist->GetBinContent(i));
+    }
+    func->Delete();
+    hist->Delete();
+  }
+  
+  for (int iMass = 0; iMass < nMass; iMass++) {
+    massHist[iMass]->Draw("col");
+    string thisName = name[iMass];
+    thisName = thisName + ".eps";
+    canvas->Print(thisName.c_str());
+  }  
+
+  ////////////////////////////////////////////////////////////////
+  // Make the real plot
+  ////////////////////////////////////////////////////////////////
+  
+  TH2D* theRealPlot = new TH2D("spectrum","Predicted SUSY Spectrum",
+			       4,
+			       0.,4.,
+			       1000,
+			       lowestMass,highestMass);
+  // make axis labels etc...
+  theRealPlot->Draw();
+
+  // now define the colors
+  TStyle* theStyle = new TStyle();
+  int theColors[5];
+  // first get the basic colors
+  //  TColor *colorBlue  = theStyle->GetColor(kBlue);
+  //  TColor *colorCyan  = theStyle->GetColor(kCyan);
+  //  TColor *colorMagen = theStyle->GetColor(kMagenta);
+  //  TColor *colorGreen = theStyle->GetColor(kGreen);
+
+  // now define the palette colors
+
+  // now overlay the individual distributions
+  for (int iMass = 0; iMass < nMass; iMass++) {
+    theColors[0] = kBlue+0;
+    theColors[1] = kBlue+1;
+    theColors[2] = kBlue+2;
+    theColors[3] = kBlue+3;
+    theColors[4] = kBlue+4;
+
+
+    theStyle->SetPalette(5,theColors);
+    
+    massHist[iMass]->Draw("samecol");
+  }
+
+  canvas->Print("PredictedSUSYSpectrum.eps");
+
+  return;
+
+}
