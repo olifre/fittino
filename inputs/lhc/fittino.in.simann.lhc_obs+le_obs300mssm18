@@ -244,8 +244,8 @@ UseSimAnnBefore                on
 UseSimAnnWhile                 off
 AdaptiveSimAnn                 off
 TempRedSimAnn                  0.5
-MaxCallsSimAnn                 20000
-InitTempSimAnn                 5
+MaxCallsSimAnn                 50000
+InitTempSimAnn                 18
 SimAnnUncertainty              off
 SimAnnUncertaintyRunDown       off
 GetTempFromFirstChiSqr         on
