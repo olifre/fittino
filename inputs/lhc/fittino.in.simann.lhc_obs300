@@ -31,7 +31,7 @@ massChargino1  180.176 GeV +- 11.4  GeV +- (JES) 1.8 GeV # [10]
 ### edges
 
 edge   8 massSelectronL  massNeutralino1                              148.816  GeV +- 1.7  GeV +-  6.0 GeV +- (LES) 0.1  GeV alias  1 # [11]
-edge   2 massGluino      massNeutralino1                              507.652  GeV +- 2.5  GeV +- 10.0 GeV +- (JES) 2.6  GeV alias  2 # [12]
+edge   2 massGluino      massNeutralino1                              507.652  GeV +- 2.5  GeV +- 10.0 GeV +- (JES) 2.5  GeV alias  2 # [12]
 edge   8 massSupR        massNeutralino1                              530.995  GeV +- 1.1  GeV +- 10.0 GeV +- (JES) 5.3  GeV alias  3 # [12]
 edge   2 massGluino      massSbottom1                                  88.6786 GeV +- 1.5  GeV             +- (JES) 0.4  GeV alias  4 # [12]
 edge   2 massGluino      massSbottom2                                  56.7889 GeV +- 2.5  GeV             +- (JES) 0.3  GeV alias  5 # [12]

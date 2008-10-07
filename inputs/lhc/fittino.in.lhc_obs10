@@ -31,7 +31,7 @@ massSbottom2 500 GeV +- 50 GeV alias 2
 
 ### edges
 
-edge   2 massGluino      massNeutralino1                               507.652  GeV +- 13.7  GeV +- 10.0 GeV +- (JES) 2.6  GeV alias  1 # [10]
+edge   2 massGluino      massNeutralino1                               507.652  GeV +- 13.7  GeV +- 10.0 GeV +- (JES) 2.5  GeV alias  1 # [10]
 edge   8 massSupR        massNeutralino1                               530.995  GeV +-  6.2  GeV +- 10.0 GeV +- (JES) 5.3  GeV alias  2 # [10]
 edge 100 massNeutralino1 massNeutralino2 massSelectronR                 80.4331 GeV +-  0.5  GeV             +- (LES) 0.08 GeV alias  3 # [10]
 edge   3 massNeutralino1 massNeutralino4 massSelectronL                280.578  GeV +- 12.6  GeV             +- (LES) 0.28 GeV alias  4 # [11]

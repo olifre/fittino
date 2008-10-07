@@ -1,40 +1,53 @@
-#########################################################################
-###                         Fittino input file                        ###
-#########################################################################
-###                           M. Uhlenbrock                           ###
-#########################################################################
-###                 Fit of LHC observables to the                     ###
-###                 mSUGRA SPS 1a benchmark point                     ###
-###                          for 300 fb-1                             ###
-#########################################################################
+################################################################################
+### Fittino input file                                                       ###
+################################################################################
 
-#########################################################################
-### Observables                                                       ###
-#########################################################################
+################################################################################
+### Fit of LHC observables to MSSM parameters for 300 fb-1                   ###
+################################################################################
 
-#### masses
-massh0         109.028 GeV +-  0.1  GeV +- (LES) 0.1   GeV # errors from [11]
-massTop        170.9   GeV +-  0.01 GeV +- (JES)   1   GeV # errors from []
-massChargino1  180.182 GeV +- 11.4  GeV +- (JES)   1.8 GeV # errors from [6]
+################################################################################
+### Observables                                                              ###
+################################################################################
+
+### SM observables
+
+alphaem    127.925      GeV +- 0.016      GeV                  # [1]
+G_F          1.16637E-5     +- 0.00001E-5                      # [2]
+alphas       0.1176     GeV +- 0.0020     GeV                  # [2]
+massZ       91.1875     GeV +- 0.0021     GeV                  # [3],[4]
+massBottom   4.20       GeV +- 0.17       GeV                  # [5]
+massTop    172.4        GeV +- 0.01       GeV +- (JES) 1.0 GeV # [6],[7]
+massTau      1.77684    GeV +- 0.00017    GeV                  # [8]
+
+massCharm    1.2        GeV +- 0.11       GeV                  # [5]
+massW       80.3789     GeV +- 0.025      GeV                  # [4]
+massh0     109.582      GeV +- 0.1        GeV +- (LES) 0.1 GeV # [9]
+
+### masses
+
+massChargino1  180.176 GeV +- 11.4  GeV +- (JES) 1.8 GeV # [10]
 
 ### edges
-edge   8 massSelectronL  massNeutralino1                              161.016   GeV +- 1.7  GeV +-  6   GeV +- (LES) 0.1  GeV alias  1 # errors from [1]
-edge   2 massGluino      massNeutralino1                              530.874   GeV +- 2.5  GeV +- 10   GeV +- (JES) 2.6  GeV alias  2 # errors from [1]
-edge   8 massSupR        massNeutralino1                              570.906   GeV +- 1.1  GeV +- 10   GeV +- (JES) 5.3  GeV alias  3 # errors from [1]
-edge   2 massGluino      massSbottom1                                  71.2783  GeV +- 1.5  GeV             +- (JES) 0.4  GeV alias  4 # errors from [1]
-edge   2 massGluino      massSbottom2                                   6.72841 GeV +- 2.5  GeV             +- (JES) 0.3  GeV alias  5 # errors from [1]
-edge 100 massNeutralino1 massNeutralino2 massSelectronR                76.072   GeV +- 0.03 GeV             +- (LES) 0.08 GeV alias  6 # errors from [1]
-edge   3 massNeutralino1 massNeutralino4 massSelectronL               283.185   GeV +- 2.3  GeV             +- (LES) 0.28 GeV alias  7 # errors from [3]
-edge   3 massNeutralino1 massNeutralino2 massStau1                     84.3272  GeV +- 0.73 GeV +-  5.7 GeV +- (JES) 0.8  GeV alias  8 # errors from [2]
-edge 101 massNeutralino1 massSupL        massNeutralino2              488.021   GeV +- 1.4  GeV             +- (JES) 2.3  GeV alias  9 # errors from [1]
-edge 105 massSelectronR  massSupL        massNeutralino2              313.047   GeV +- 0.9  GeV             +- (JES) 1.6  GeV alias 10 # errors from [1]
-edge 106 massNeutralino1 massNeutralino2 massSelectronR  massSupL     446.096   GeV +- 1.0  GeV             +- (JES) 2.0  GeV alias 11 # errors from [1]
-edge 102 massNeutralino1 massNeutralino2 massSelectronR  massSupL     215.435   GeV +- 1.6  GeV             +- (JES) 1.1  GeV alias 12 # errors from [1]
-edge   5 massNeutralino1 massNeutralino2 massSelectronR  massSbottom1 197.766   GeV +- 3.6  GeV             +- (JES) 1.0  GeV alias 13 # errors from [1]
-edge   6 massTop         massStop1       massChargino1   massGluino                                                           alias 14
-edge   7 massTop         massGluino      massSbottom1    massChargino1                                                        alias 15
+
+edge   8 massSelectronL  massNeutralino1                              148.816  GeV +- 1.7  GeV +-  6   GeV +- (LES) 0.1  GeV alias  1 # [11]
+edge   2 massGluino      massNeutralino1                              507.652  GeV +- 2.5  GeV +- 10   GeV +- (JES) 2.5  GeV alias  2 # [12]
+edge   8 massSupR        massNeutralino1                              530.995  GeV +- 1.1  GeV +- 10   GeV +- (JES) 5.3  GeV alias  3 # [12]
+edge   2 massGluino      massSbottom1                                  88.6786 GeV +- 1.5  GeV             +- (JES) 0.4  GeV alias  4 # [12]
+edge   2 massGluino      massSbottom2                                  56.7889 GeV +- 2.5  GeV             +- (JES) 0.3  GeV alias  5 # [12]
+edge 100 massNeutralino1 massNeutralino2 massSelectronR                80.4331 GeV +- 0.03 GeV             +- (LES) 0.08 GeV alias  6 # [12]
+edge   3 massNeutralino1 massNeutralino4 massSelectronL               280.578  GeV +- 2.3  GeV             +- (LES) 0.28 GeV alias  7 # [13]
+edge   3 massNeutralino1 massNeutralino2 massStau1                     83.3605 GeV +- 0.73 GeV +-  8.3 GeV +- (JES) 0.8  GeV alias  8 # [14]
+edge 101 massNeutralino1 massSupL        massNeutralino2              452.076  GeV +- 1.4  GeV             +- (JES) 2.3  GeV alias  9 # [12]
+edge 105 massSelectronR  massSupL        massNeutralino2              318.577  GeV +- 0.9  GeV             +- (JES) 1.6  GeV alias 10 # [12]
+edge 106 massNeutralino1 massNeutralino2 massSelectronR  massSupL     396.045  GeV +- 1.0  GeV             +- (JES) 2.0  GeV alias 11 # [12]
+edge 102 massNeutralino1 massNeutralino2 massSelectronR  massSupL     215.565  GeV +- 1.6  GeV             +- (JES) 1.1  GeV alias 12 # [12]
+edge   5 massNeutralino1 massNeutralino2 massSelectronR  massSbottom1 195.907  GeV +- 3.6  GeV             +- (JES) 1.0  GeV alias 13 # [12]
+edge   6 massTop         massStop1       massChargino1   massGluino                                                          alias 14
+edge   7 massTop         massGluino      massSbottom1    massChargino1                                                       alias 15
 
 ### branching ratios
+
 BR ( Neutralino2 -> Electron SelectronR  ) alias  1
 BR ( Neutralino2 -> Tau Stau1            ) alias  2
 BR ( SelectronR  -> Neutralino1 Electron ) alias  3
@@ -59,85 +72,56 @@ brprod ( br_6 br_11 br_10 ) alias 6
 brprod ( br_5 br_12 br_13 ) alias 7
 brprod ( br_6 br_14       ) alias 8
 
-brratio ( brprod_1 brprod_2 ) 0.0594102  +- 0.001 +- 0.008 alias 1
-brratio ( brprod_3 brprod_4 ) 0.00988538 +- 0.078          alias 2
+brratio ( brprod_1 brprod_2 ) 0.0762483 +- 0.001 +- 0.008 alias 1 # [15]
+brratio ( brprod_3 brprod_4 ) 0.168414  +- 0.078          alias 2 # [11]
 
 brsum ( brprod_5 brprod_6 brprod_7 ) alias 1
  
-weighted ( brsum_1 edge_14 brprod_8 edge_15 ) 376.366 GeV +- 2.5 GeV +- (JES) 3.6 GeV alias 1
+weighted ( brsum_1 edge_14 brprod_8 edge_15 ) 359.458 GeV +- 2.5 GeV +- (JES) 3.6 GeV alias 1 # [12]
 
-### SM observables
-massW       80.3666  GeV +- 0.039   GeV
-massZ       91.1876  GeV +- 0.0021  GeV
-massCharm    1.2     GeV +- 0.2     GeV
-massBottom   4.5     GeV +- 0.25    GeV
-massTau      1.77699 GeV +- 0.00029 GeV
-alphas       0.1187  GeV +- 0.002   GeV
-alphaem    127.934   GeV +- 0.027   GeV
-
-fixParameter massTop      170.9   GeV
-fixParameter massW       80.3713  GeV
-fixParameter massZ       91.1876  GeV
-fixParameter massCharm    1.2     GeV
-fixParameter massBottom   4.5     GeV
-fixParameter massTau      1.77699 GeV
-fixParameter alphas       0.1187  GeV
-fixParameter alphaem    127.934   GeV
-
-### low energy observables
-LEObs ( bsg    )   0.000376455 +- 0.000042 alias 10 # HFAG summer 2006:  3.55E-4 +- 4E-5
-LEObs ( bsmm   )   1.84333     +- 1.0      alias 11 # HFAG summer 2006:  4.5E-6  +- 1.0E-6
-LEObs ( B_utn  )   7.74867e-05 +- 0.000048 alias 12 # HFAG summer 2006:  1.34E-4 +- 0.48
-LEObs ( dMB_d  )   0.229884    +- 0.004    alias 13 # HFAG winter 2006:  0.507 +- 0.004
-LEObs ( dMB_s  )  16.6187      +- 0.13     alias 14 # CDF Sep. 2006:    17.77 +- 0.10(stat) +- 0.07(sys)
-LEObs ( gmin2m )   2.54928     +- 10.0     alias 15 # PDG 2006: magn.moment = 1.0011659208 +- 0.0000000006 (e hbar / 2 m_e)
-					          # We assume: SPheno tells us (g-2)SUSY
-	 				          # Observable: 2*(1 - exp. PDG value) - (g-2)SM
-					          # uncertainty: 2*PDG value
-					          # Observable according to above formula: 4E-9 +- 6E-9 +- 8E-9
-LEObs ( drho   )   0.000320488 +- 0.0007   alias 16 # PDG 2006: 0.0002 + 0.0007 - 0.0004
-#LEObs ( omega  )   0.191305  +- 0.006    alias 17 # errors from [10]  
-
-LEObs ( B_smm  )  <150                   alias 18 # HFAG summer 2006: < 0.08E-6
-LEObs ( gmin2e )   0.0514407 +- 7.6      alias 19 # PDG 2006: magn.moment = 1.0011596521859 +- 0.0000000000038 (e hbar / 2 m_e)
-#LEObs ( gmin2t ) 511.718     +- 3.2E7    alias 20 # PDF 2006: 0.013 > magnetic moment > -0.052 
-
-#  [1] hep-ph/0410364
-#  [2] Carolin's results
-#  [3] G. Polesello, Prospects for the detection of heavy charginos and neutralinos with the ATLAS detector at the LHC, J. Phys. G: Nucl. Part. Phys. 30 (2004) 1185-1199
-#  [4] hep-ph/0512204
-#  [5] Else Lytken, Prospects for Slepton Searches with Atlas, PhD Thesis, U. Copenhagen
-#  [6] hep-ph/0312318
-#  [7] HFAG summer 2006
-#  [8] HFAG winter 2006
-#  [9] CDF september 2006
-# [10] PDG 2006
-# [11] hep-ph/0111314
+#  [1] PDG 2008 Electroweak model and constraints on new physics (Rev.)
+#  [2] PDG 2008 Physical constants (Rev.)
+#  [3] Buchmueller et al. arXiv:0707.3447v2
+#  [4] PDG 2008 Summary Tables: Gauge and Higgs Bosons
+#  [5] PDG 2008 Summary Tables: Quarks
+#  [6] Buchmueller et al. arXiv:0808.4128v1
+#  [7] Borjanovic et al. arXiv:hep-ex/0403021
+#  [8] PDG 2008 Summary Tables: Leptons
+#  [9] Baur et al. arXiv:hep-ph/0111314
+# [10] Polesello et al. arXiv:hep-ph/0312318
+# [11] Else Lytken, Prospects for Slepton Searches with Atlas, PhD Thesis, U. Copenhagen
+# [12] LHC/LC Study Group arXiv:hep-ph/0410364
+# [13] Polesello et al. Prospects for the detection of heavy charginos and neutralinos with the ATLAS detector at the LHC
+# [14] Zendler et al. Measuring the endpoint of the di-tau mass spectrum in ~chi20 decays with the ATLAS detector at the LHC (Atlas note)
+# [15] Nojiri et al. arXiv:hep-ph/0512204
 
 # nofit observables {{{
-nofit massChargino2   383.3664204313631  GeV +- 0.5     GeV
+#nofit massChargino2   383.3664204313631  GeV +- 0.5     GeV
 nofit cos2PhiL          0.6737               +- 0.05
 nofit cos2PhiR          0.8978               +- 0.05
 nofit sin2ThetaW        0.23113              +- 0.00015
-nofit massNeutralino1  97.0674951023505  GeV +- 0.5     GeV
-nofit massNeutralino2 180.6957021412919  GeV +- 0.5     GeV
-nofit massSmuL        202.5150540620457  GeV +- 0.5     GeV
-nofit massSmuR        143.91010787293123 GeV +- 0.5     GeV
-nofit massStau1       134.30652089165565 GeV +- 0.5     GeV
-nofit massStau2       206.48395863874117 GeV +- 0.5     GeV
-nofit massSelectronR  143.94589318368523 GeV +- 0.5     GeV
-nofit massSupL        565.9028118911754  GeV +- 0.5     GeV
-nofit massStop1       399.89604267092045 GeV +- 0.5     GeV
-nofit massStop2       586.824473752012   GeV +- 0.5     GeV
-nofit massScharmL     565.9111390767031  GeV +- 0.5     GeV
-nofit massScharmR     548.1769638325353  GeV +- 0.5     GeV
-nofit massSstrangeR   547.9097160137168  GeV +- 0.5     GeV
-nofit massSdownR      547.9140892827983  GeV +- 0.5     GeV
-nofit massGluino      600. GeV +- 0.5 GeV 
-nofit massSelectronL  170  GeV +- 0.5 GeV
-nofit massSupR        530  GeV +- 0.5 GeV
-nofit massSbottom1    550  GeV +- 0.5 GeV
-nofit massSbottom2    550  GeV +- 0.5 GeV
+#nofit massNeutralino1  97.0674951023505  GeV +- 0.5     GeV
+#nofit massNeutralino2 180.6957021412919  GeV +- 0.5     GeV
+#nofit massSmuL        202.5150540620457  GeV +- 0.5     GeV
+#nofit massSmuR        143.91010787293123 GeV +- 0.5     GeV
+#nofit massStau1       134.30652089165565 GeV +- 0.5     GeV
+#nofit massStau2       206.48395863874117 GeV +- 0.5     GeV
+#massStau1       1.34677655E+02 GeV +- 0.5     GeV
+#massStau2       2.06377575E+02 GeV +- 0.5     GeV
+#nofit massSelectronR  143.94589318368523 GeV +- 0.5     GeV
+#massSelectronR  144.076151 GeV +- 0.5 GeV
+#nofit massSelectronL  202.483231 GeV +- 0.5 GeV
+#nofit massSupL        565.9028118911754  GeV +- 0.5     GeV
+#nofit massSupR        530  GeV +- 0.5 GeV
+#nofit massStop1       399.89604267092045 GeV +- 0.5     GeV
+#nofit massStop2       586.824473752012   GeV +- 0.5     GeV
+#nofit massScharmL     565.9111390767031  GeV +- 0.5     GeV
+#nofit massScharmR     548.1769638325353  GeV +- 0.5     GeV
+#nofit massSstrangeR   547.9097160137168  GeV +- 0.5     GeV
+#nofit massSdownR      547.9140892827983  GeV +- 0.5     GeV
+#nofit massGluino      600. GeV +- 0.5 GeV 
+#nofit massSbottom1    550  GeV +- 0.5 GeV
+#nofit massSbottom2    550  GeV +- 0.5 GeV
 # nofit massNeutralino3 365.06747913431445 GeV +- 0.5 GeV
 # nofit massNeutralino4 382.27611675814035 GeV +- 0.5 GeV
 # nofit massSnutau1
@@ -146,44 +130,78 @@ nofit massSbottom2    550  GeV +- 0.5 GeV
 # nofit massSstrangeL  571.3020370023355 GeV +- 0.5 GeV
 # nofit massSdownL     571.3017110478482 GeV +- 0.5 GeV
 # nofit massH0
-# nofit massA0
+massA0 393.186558   GeV +- 0.5 GeV
 # }}}
 
-#########################################################################
-### Parameters                                                        ###
-#########################################################################
+massSdownL       5.71265636E+02  GeV +- 0.5 GeV # ~d_L
+massSdownR       5.48186608E+02  GeV +- 0.5 GeV # ~d_R
+massSupL         5.65837422E+02  GeV +- 0.5 GeV # ~u_L
+massSupR         5.48477923E+02  GeV +- 0.5 GeV # ~u_R
+massSstrangeL    5.71265975E+02  GeV +- 0.5 GeV # ~s_L
+massSstrangeR    5.48182283E+02  GeV +- 0.5 GeV # ~s_R
+massScharmL      5.65846193E+02  GeV +- 0.5 GeV # ~c_L
+massScharmR      5.48465774E+02  GeV +- 0.5 GeV # ~c_R
+massSbottom1     5.16112074E+02  GeV +- 0.5 GeV # ~b_1
+massSbottom2     5.48001827E+02  GeV +- 0.5 GeV # ~b_2
+massStop1        3.99110224E+02  GeV +- 0.5 GeV # ~t_1
+massStop2        5.88456541E+02  GeV +- 0.5 GeV # ~t_2
+massSelectronL   2.02529284E+02  GeV +- 0.5 GeV # ~e_L-
+massSelectronR   1.44083610E+02  GeV +- 0.5 GeV # ~e_R-
+massSmuL         2.02545235E+02  GeV +- 0.5 GeV # ~mu_L-
+massSmuR         1.44048523E+02  GeV +- 0.5 GeV # ~mu_R-
+massStau1        1.34629990E+02  GeV +- 0.5 GeV # ~tau_1-
+massStau2        2.06454448E+02  GeV +- 0.5 GeV # ~tau_2-
+massGluino       6.04790720E+02  GeV +- 0.5 GeV # ~g
+massNeutralino1  9.71391015E+01  GeV +- 0.5 GeV # ~chi_10
+massNeutralino2  1.80611148E+02  GeV +- 0.5 GeV # ~chi_20
+massNeutralino3 -3.60683676E+02  GeV +- 0.5 GeV # ~chi_30
+massNeutralino4  3.78501515E+02  GeV +- 0.5 GeV # ~chi_40
+massChargino1    1.80176148E+02  GeV +- 0.5 GeV # ~chi_1+
+massChargino2    3.79500146E+02  GeV +- 0.5 GeV # ~chi_2+
+
+################################################################################
+### Parameters                                                               ###
+################################################################################
 
 ### mSUGRA SPS 1a benchmark point
-fitParameter MSelectronL   202.498826006611   GeV 
-fitParameter MSelectronR   143.94589318368523 GeV 
-fitParameter MStauL        206.48395863874117 GeV 
-fitParameter MStauR        134.30652089165565 GeV 
-fitParameter MSupL         565.9028118911754  GeV 
-fitParameter MSupR         548.1887408520521  GeV 
-fitParameter MSbottomR     515.6477904406447  GeV 
-fitParameter MStopL        586.824473752012   GeV 
-fitParameter MStopR        399.89604267092045 GeV 
-fitParameter TanBeta        10
-fitParameter Mu            357.75882775157856 GeV
-fitParameter Xtau        -3829.31099236       GeV
-fitParameter Xtop        -532.752996431       GeV   
-fitParameter Xbottom     -4369.00137042       GeV   
-fitParameter M1            101.54926011985242 GeV
-fitParameter M2            191.67816133422903 GeV
-fitParameter M3            585.3334452070656  GeV
-fitParameter massA0        399.82894212436696 GeV
 
-# Universalities
+fixParameter alphaem       127.925          GeV
+fixParameter G_F             1.16637E-5
+fixParameter alphas          0.1176         GeV
+fixParameter massZ          91.1875         GeV
+fixParameter massBottom      4.20           GeV
+fixParameter massTop       172.4            GeV
+fixParameter massTau         1.77684        GeV
+fitParameter MSelectronL   1.94317068E+02   GeV
+fitParameter MSelectronR   1.35763570E+02   GeV
+fitParameter MStauL        1.93521964E+02   GeV
+fitParameter MStauR        1.33435645E+02   GeV
+fitParameter MSupL         5.27578743E+02   GeV
+fitParameter MSupR         5.09146647E+02   GeV
+fitParameter MSbottomR     5.04016936E+02   GeV
+fitParameter MStopL        4.81693885E+02   GeV
+fitParameter MStopR        4.09126974E+02   GeV
+#fitParameter TanBeta       9.63875650E+00
+fitParameter TanBeta      10 
+fitParameter Mu            3.55049634E+02   GeV
+fitParameter Xtau      -3799.8856134        GeV
+fitParameter Xtop       -526.62940346       GeV
+fitParameter Xbottom   -4314.3389594        GeV
+fitParameter M1            1.03153128E+02   GeV
+fitParameter M2            1.92951297E+02   GeV
+fitParameter M3            5.68875737E+02   GeV
+fitParameter massA0      359.62538286       GeV
+
+### Universalities
 
 universality MSelectronR MSmuR
 universality MSelectronL MSmuL
 universality MSupR MScharmR MSdownR MSstrangeR
 universality MSupL MScharmL
 
-
-#########################################################################
-### Switches                                                          ###
-#########################################################################
+################################################################################
+### Switches                                                                 ###
+################################################################################
 
 fitModel                       MSSM
 
@@ -192,7 +210,7 @@ LoopCorrections                on
 ISR                            on
 UseGivenStartValues            on
 FitAllDirectly                 on
-CalcPullDist                   on
+CalcPullDist                   off
 CalcIndChisqContr              off
 BoundsOnX                      off
 ScanX                          off
@@ -208,7 +226,7 @@ ErrDef                         1.0
 NumberPulls                    1
 GetContours                    off
 
-UseSimAnnBefore                on
+UseSimAnnBefore                off
 UseSimAnnWhile                 off
 AdaptiveSimAnn                 off
 TempRedSimAnn                  0.5
@@ -231,13 +249,4 @@ Verbose                        on
 ScanParameters                 off
 
 PerformFit                     on
-RandomGeneratorSeed            -1 # < 0 means use random seed (default), else take given seed
-# MaxCalculatorTime              20
-
-# weitere switches {{{
-# XScanRange                     -6000. GeV  -300. GeV
-# RandomDirUncertainties         off
-# NumberOfDirections             10000
-# NoBoundsAtAll                  off
-# UseHiggsLimits                 on
-# }}}
+RandomGeneratorSeed            -1
