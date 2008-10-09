@@ -205,7 +205,7 @@ LoopCorrections                on
 ISR                            on
 UseGivenStartValues            on
 FitAllDirectly                 on
-CalcPullDist                   on
+CalcPullDist                   off
 CalcIndChisqContr              off
 BoundsOnX                      off
 ScanX                          off
@@ -222,7 +222,7 @@ ErrDef                         1.0
 NumberPulls                    1
 GetContours                    off
 
-UseSimAnnBefore                on
+UseSimAnnBefore                off
 UseSimAnnWhile                 off
 AdaptiveSimAnn                 off
 TempRedSimAnn                  0.5
