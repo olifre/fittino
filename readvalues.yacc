@@ -618,7 +618,7 @@ input:
 			  }
                         }
                       }
-		      else if (!strncmp($3,"edge",2)) {
+		      else if (!strncmp($3,"edge",4)) {
                         charnumber = strchr($3,'_');
                         if (charnumber == 0) yyerror ("Underscore not found");
 		        aliasnumber = atoi((charnumber+1));
@@ -630,7 +630,7 @@ input:
 			  }
                         }
                       }
-		      else if (!strncmp($3,"width",2)) {
+		      else if (!strncmp($3,"width",5)) {
                         charnumber = strchr($3,'_');
                         if (charnumber == 0) yyerror ("Underscore not found");
 		        aliasnumber = atoi((charnumber+1));
@@ -638,6 +638,18 @@ input:
                           if ((yyMeasuredVec[k].type == Pwidth) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    i = k;
 //                            cout << "found correlation with width " <<  yyMeasuredVec[k].name << endl;
+			    break;
+			  }
+                        }
+                      }
+                      else if (!strncmp($3,"LEObs",5)) {
+                        charnumber = strchr($3,'_');
+                        if (charnumber == 0) yyerror ("Underscore not found");
+		        aliasnumber = atoi((charnumber+1));
+                        for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+                          if ((yyMeasuredVec[k].type == LEObs) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			    i = k;
+//                            cout << "found correlation with LEOBs " <<  yyMeasuredVec[k].name << endl;
 			    break;
 			  }
                         }
@@ -675,7 +687,7 @@ input:
 			  }
                         }
                       }
-		      else if (!strncmp($4,"edge",2)) {
+		      else if (!strncmp($4,"edge",4)) {
                         charnumber = strchr($4,'_');
                         if (charnumber == 0) yyerror ("Underscore not found");
 		        aliasnumber = atoi((charnumber+1));
@@ -687,7 +699,7 @@ input:
 			  }
                         }
                       }
-		      else if (!strncmp($4,"width",2)) {
+		      else if (!strncmp($4,"width",5)) {
                         charnumber = strchr($4,'_');
                         if (charnumber == 0) yyerror ("Underscore not found");
 		        aliasnumber = atoi((charnumber+1));
@@ -695,6 +707,18 @@ input:
                           if ((yyMeasuredVec[k].type == Pwidth) && (yyMeasuredVec[k].alias == aliasnumber)) {
 			    j = k;
 //                            cout << "found correlation with width " <<  yyMeasuredVec[k].name << endl;
+			    break;
+			  }
+                        }
+                      }
+		      else if (!strncmp($4,"LEObs",5)) {
+                        charnumber = strchr($4,'_');
+                        if (charnumber == 0) yyerror ("Underscore not found");
+		        aliasnumber = atoi((charnumber+1));
+                        for (unsigned int k = 0; k<yyMeasuredVec.size();k++) {
+                          if ((yyMeasuredVec[k].type == LEObs) && (yyMeasuredVec[k].alias == aliasnumber)) {
+			    j = k;
+//                            cout << "found correlation with LEObs " <<  yyMeasuredVec[k].name << endl;
 			    break;
 			  }
                         }
