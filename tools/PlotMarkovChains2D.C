@@ -45,10 +45,32 @@ void PlotMarkovChains2D (bool bayes)
   vector<string> variables; 
   // variables.push_back("X");
   // variables.push_back("Y");
+
+  // mSUGRA
+  //variables.push_back("TanBeta");
+  //variables.push_back("M0");
+  //variables.push_back("M12");
+  //variables.push_back("A0");
+
+  // MSSM
+  variables.push_back("MSelectronL");
+  variables.push_back("MSelectronR");
+  variables.push_back("MStauL");
+  variables.push_back("MStauR");
+  variables.push_back("MSupL");
+  variables.push_back("MSupR");
+  variables.push_back("MSbottomR");
+  variables.push_back("MStopL");
+  variables.push_back("MStopR");
   variables.push_back("TanBeta");
-  variables.push_back("M0");
-  variables.push_back("M12");
-  variables.push_back("A0");
+  variables.push_back("Mu");
+  variables.push_back("Xtau");
+  variables.push_back("Xtop");
+  variables.push_back("Xbottom");
+  variables.push_back("M1");
+  variables.push_back("M2");
+  variables.push_back("M3");
+  variables.push_back("massA0");
 
   // create and initialize variables
   vector<float> varValues;
