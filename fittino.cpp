@@ -773,6 +773,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    }
    if (yyUseGivenStartValues && (FindInFittedPar("MSelectronL") >= 0)) { 
       fMSelL.value = yyFittedPar[FindInFittedPar("MSelectronL")].value ;
+      if (yyFittedPar[FindInFittedPar("MSelectronL")].error > 0.) {
+	 fMSelL.error = yyFittedPar[FindInFittedPar("MSelectronL")].error ;
+      }
    }
    fMSelL.bound_low = 0.;
    fMSelL.bound_up = 10000.;
@@ -786,6 +789,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    }
    if (yyUseGivenStartValues && (FindInFittedPar("MSmuL") >= 0)) { 
       fMSmuL.value = yyFittedPar[FindInFittedPar("MSmuL")].value ;
+      fMSmuL.error = yyFittedPar[FindInFittedPar("MSmuL")].error;
    }
    fMSmuL.bound_low = 0.;
    fMSmuL.bound_up = 10000.;
@@ -799,6 +803,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    }
    if (yyUseGivenStartValues && (FindInFittedPar("MStauL") >= 0)) { 
       fMStauL.value = yyFittedPar[FindInFittedPar("MStauL")].value ;
+      fMStauL.error = yyFittedPar[FindInFittedPar("MStauL")].error;
    }
    fMStauL.bound_low = 0.;
    fMStauL.bound_up = 10000.;
@@ -812,6 +817,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    }
    if (yyUseGivenStartValues && (FindInFittedPar("MSelectronR") >= 0)) { 
       fMSelR.value = yyFittedPar[FindInFittedPar("MSelectronR")].value ;
+      fMSelR.error = yyFittedPar[FindInFittedPar("MSelectronR")].error ;
    }
    fMSelR.bound_low = 0.;
    fMSelR.bound_up = 10000.;
@@ -825,6 +831,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    }
    if (yyUseGivenStartValues && (FindInFittedPar("MSmuR") >= 0)) { 
       fMSmuR.value = yyFittedPar[FindInFittedPar("MSmuR")].value ;
+      fMSmuR.error = yyFittedPar[FindInFittedPar("MSmuR")].error;
    }
    fMSmuR.bound_low = 0.;
    fMSmuR.bound_up = 10000.;
@@ -838,6 +845,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    }
    if (yyUseGivenStartValues && (FindInFittedPar("MStauR") >= 0)) { 
       fMStauR.value = yyFittedPar[FindInFittedPar("MStauR")].value ;
+      fMStauR.error = yyFittedPar[FindInFittedPar("MStauR")].error ;
    }
    fMStauR.bound_low = 0.;
    fMStauR.bound_up = 10000.;
@@ -851,6 +859,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    }
    if (yyUseGivenStartValues && (FindInFittedPar("MSupL") >= 0)) { 
       fMSupL.value = yyFittedPar[FindInFittedPar("MSupL")].value ;
+      fMSupL.error = yyFittedPar[FindInFittedPar("MSupL")].error ;
    }
    fMSupL.bound_low = 0.;
    fMSupL.bound_up = 10000.;
@@ -864,6 +873,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    }
    if (yyUseGivenStartValues && (FindInFittedPar("MScharmL") >= 0)) { 
       fMScharmL.value = yyFittedPar[FindInFittedPar("MScharmL")].value ;
+      fMScharmL.error = yyFittedPar[FindInFittedPar("MScharmL")].error ;
    }
    fMScharmL.bound_low = 0.;
    fMScharmL.bound_up = 10000.;
@@ -877,6 +887,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    }
    if (yyUseGivenStartValues && (FindInFittedPar("MStopL") >= 0)) { 
       fMStopL.value = yyFittedPar[FindInFittedPar("MStopL")].value ;
+      fMStopL.error = yyFittedPar[FindInFittedPar("MStopL")].error;
    }
    fMStopL.bound_low = 0.;
    fMStopL.bound_up = 10000.;
@@ -890,6 +901,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    }
    if (yyUseGivenStartValues && (FindInFittedPar("MSupR") >= 0)) { 
       fMSupR.value = yyFittedPar[FindInFittedPar("MSupR")].value ;
+      fMSupR.error = yyFittedPar[FindInFittedPar("MSupR")].error;
    }
    fMSupR.bound_low = 0.;
    fMSupR.bound_up = 10000.;
@@ -903,6 +915,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    }
    if (yyUseGivenStartValues && (FindInFittedPar("MScharmR") >= 0)) { 
       fMScharmR.value = yyFittedPar[FindInFittedPar("MScharmR")].value ;
+      fMScharmR.error = yyFittedPar[FindInFittedPar("MScharmR")].error;
    }
    fMScharmR.bound_low = 0.;
    fMScharmR.bound_up = 10000.;
@@ -916,6 +929,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    }
    if (yyUseGivenStartValues && (FindInFittedPar("MStopR") >= 0)) { 
       fMStopR.value = yyFittedPar[FindInFittedPar("MStopR")].value ;
+      fMStopR.error = yyFittedPar[FindInFittedPar("MStopR")].error ;
    }
    fMStopR.bound_low = 0.;
    fMStopR.bound_up = 10000.;
@@ -929,6 +943,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    }
    if (yyUseGivenStartValues && (FindInFittedPar("MSdownR") >= 0)) { 
       fMSdownR.value = yyFittedPar[FindInFittedPar("MSdownR")].value ;
+      fMSdownR.error= yyFittedPar[FindInFittedPar("MSdownR")].error;
    }
    fMSdownR.bound_low = 0.;
    fMSdownR.bound_up = 10000.;
@@ -942,6 +957,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    }
    if (yyUseGivenStartValues && (FindInFittedPar("MSstrangeR") >= 0)) { 
       fMSstrangeR.value = yyFittedPar[FindInFittedPar("MSstrangeR")].value ;
+      fMSstrangeR.error = yyFittedPar[FindInFittedPar("MSstrangeR")].error;
    }
    fMSstrangeR.bound_low = 0.;
    fMSstrangeR.bound_up = 10000.;
@@ -955,6 +971,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    }
    if (yyUseGivenStartValues && (FindInFittedPar("MSbottomR") >= 0)) { 
       fMSbottomR.value = yyFittedPar[FindInFittedPar("MSbottomR")].value ;
+      fMSbottomR.error= yyFittedPar[FindInFittedPar("MSbottomR")].error;
    }
    fMSbottomR.bound_low = 0.;
    fMSbottomR.bound_up = 10000.;
@@ -972,6 +989,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    fXtau.error = 100.;
    if (yyUseGivenStartValues && (FindInFittedPar("Xtau") >= 0)) { 
       fXtau.value = yyFittedPar[FindInFittedPar("Xtau")].value ;
+      fXtau.error = yyFittedPar[FindInFittedPar("Xtau")].error;
    }
    if (yyBoundsOnX) {
       fXtau.bound_low = yyXscanlow;
@@ -993,6 +1011,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    fXtop.error = 100.;
    if (yyUseGivenStartValues && (FindInFittedPar("Xtop") >= 0)) { 
       fXtop.value = yyFittedPar[FindInFittedPar("Xtop")].value ;
+      fXtop.error = yyFittedPar[FindInFittedPar("Xtop")].error;
    }
    if (yyBoundsOnX) {
       fXtop.bound_low = yyXscanlow;
@@ -1020,6 +1039,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    fXbottom.error = 100.;
    if (yyUseGivenStartValues && (FindInFittedPar("Xbottom") >= 0)) { 
       fXbottom.value = yyFittedPar[FindInFittedPar("Xbottom")].value ;
+      fXbottom.error = yyFittedPar[FindInFittedPar("Xbottom")].error ;
    }
    if (yyBoundsOnX) {
       fXbottom.bound_low = yyXscanlow;
@@ -1095,15 +1115,15 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	   // cout << "filling contents of " << fInput->GetMeasuredVector()[j].name << endl;
 	    yyFittedVec.push_back((fInput->GetMeasuredVector())[j]);
 	    if (yyUseGivenStartValues) {
-	      // cout << "use given start values for " << fInput->GetMeasuredVector()[j].name << endl;
+	       cout << "use given start values for " << fInput->GetMeasuredVector()[j].name << endl;
 	       unsigned int ilength;
 	       ilength = yyFittedVec.size();
 	       yyFittedVec[ilength-1].value = yyFittedPar[i].value;
 	       if (yyFittedPar[i].error>0.) {
 		 yyFittedVec[ilength-1].error = yyFittedPar[i].error;
 	       }
-	       // cout << " parameter " <<  yyFittedPar[i].name << " " << yyFittedVec[ilength-1].value << " " 
-	       //    << " to value " << yyFittedPar[i].value << " +- " << yyFittedVec[ilength-1].error << endl;	   
+	       cout << " parameter " <<  yyFittedPar[i].name << " " << yyFittedVec[ilength-1].value << " " 
+	       	    << " to value " << yyFittedPar[i].value << " +- " << yyFittedVec[ilength-1].error << endl;	   
 	    }
 	    par_already_found = true;
 	    break;
