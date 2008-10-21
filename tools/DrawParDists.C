@@ -128,8 +128,8 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
 	histo[iLeaf]->GetXaxis()->SetTitleSize(0.05);
 	histo[iLeaf]->GetXaxis()->SetTitleOffset(1.2);
 	histo[iLeaf]->GetXaxis()->SetLabelSize(0.05);
-	//histo[iLeaf]->SetYTitle("Eintr#ddot{a}ge");
-	histo[iLeaf]->SetYTitle("Toy fits");
+	histo[iLeaf]->SetYTitle("Eintr#ddot{a}ge");
+	//histo[iLeaf]->SetYTitle("Toy fits");
 	histo[iLeaf]->GetYaxis()->SetLabelSize(0.05);
 	histo[iLeaf]->GetYaxis()->CenterTitle();
 	histo[iLeaf]->GetYaxis()->SetTitleSize(0.05);
@@ -198,17 +198,19 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
 	    histo[iLeaf]->Draw("ep");
 	}
 	else {
-	    histo[iLeaf]->Fit(gauss[iLeaf], "rem");
-	    histo[iLeaf]->Draw("ep");
-            Double_t mean = sum[iLeaf] / nEntries;
-            Double_t mu = gauss[iLeaf]->GetParameter(1);
-            Double_t rms = TMath::Sqrt((sum2[iLeaf] - sum[iLeaf] * sum[iLeaf]
-					/ nEntries ) / nEntries);
-            Double_t sigma = gauss[iLeaf]->GetParameter(2);
-            printf("mean = %f             mu    = %f\n", mean, mu);
-            printf("RMS  = %f             sigma = %f\n", rms, sigma);
-            printf("%s: (RMS - Sigma) / Sigma = %f\n", leaf->GetName(),
-                   (rms - sigma) / sigma);
+            if (strcmp(leaf->GetName(), "Kppinn_npf")) {
+	       histo[iLeaf]->Fit(gauss[iLeaf], "rem");
+	       histo[iLeaf]->Draw("ep");
+	       Double_t mean = sum[iLeaf] / nEntries;
+	       Double_t mu = gauss[iLeaf]->GetParameter(1);
+	       Double_t rms = TMath::Sqrt((sum2[iLeaf] - sum[iLeaf] * sum[iLeaf]
+			/ nEntries ) / nEntries);
+	       Double_t sigma = gauss[iLeaf]->GetParameter(2);
+	       printf("mean = %f             mu    = %f\n", mean, mu);
+	       printf("RMS  = %f             sigma = %f\n", rms, sigma);
+	       printf("%s: (RMS - Sigma) / Sigma = %f\n", leaf->GetName(),
+		     (rms - sigma) / sigma);
+	    }
 	}
 
 	sprintf(epsfilename, "%s.eps", leaf->GetName());
@@ -218,7 +220,7 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
 
     delete[] par;
     for (Int_t iLeaf=0; iLeaf<nLeaves; iLeaf++) {
-        delete histo[iLeaf];
+       delete histo[iLeaf];
     }
     delete c;
 }

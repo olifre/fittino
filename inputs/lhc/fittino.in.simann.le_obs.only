@@ -148,7 +148,7 @@ UseSimAnnBefore                on
 UseSimAnnWhile                 off
 AdaptiveSimAnn                 off
 TempRedSimAnn                  0.5
-MaxCallsSimAnn                 20000
+MaxCallsSimAnn                 5
 InitTempSimAnn                 5
 SimAnnUncertainty              off
 SimAnnUncertaintyRunDown       off

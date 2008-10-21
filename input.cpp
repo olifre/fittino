@@ -126,7 +126,7 @@ Input::Input(const char* inputfile)
   //cout << "filling measured covariances "<< endl;
   yyMeasuredCorrelationMatrix.CalculateCovarianceMatrix();
   //cout << endl << "correlation and covariance matrix before introducing direct input covariance:" << endl;
-  //yyMeasuredCorrelationMatrix.Print();
+  yyMeasuredCorrelationMatrix.Print();
   //yyMeasuredCorrelationMatrix.PrintCovariance();
   //yyMeasuredCorrelationMatrix.PrintInverseCovariance();
 

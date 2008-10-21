@@ -120,6 +120,7 @@ void MakePullDist::CalcPullDist()
 
   // open output files
   TFile* hfile1 = 0;
+  cout << "opening ROOT output file, containing the Pull results" << endl;
   hfile1 = new TFile("PullDistributions.root","RECREATE","PullDistributions of the Fitted Parameters with respect to their true values");
   // creating parameter histograms
   for (unsigned int i = 0; i < yyFittedPar.size(); i++) {
@@ -141,6 +142,7 @@ void MakePullDist::CalcPullDist()
 
   // create a vector of trees if MultiplePulls is set
 
+  cout << "creating the pull tree" << endl;
   TTree* tree = new TTree("tree", "Tree containing fitted parameters");
   vector<MeasuredValue> parLeafVec(yyFittedPar.size());
 
@@ -163,16 +165,21 @@ void MakePullDist::CalcPullDist()
 	obsLeafVec[k].value = -1;
 	string str = yyMeasuredVec[k].name;
 	str.append("/D");
-	cout << "Adding branch for fitted observable " << yyMeasuredVec[k].name.c_str() << " to tree" << endl;
+	//	cout << "Adding branch for fitted observable " << yyMeasuredVec[k].name.c_str() << " to tree" << endl;
+	cout << "Writing Variable " << yyMeasuredVec[k].name.c_str() 
+	     << " to tree as " << str.c_str() << endl;
 	tree->Branch(yyMeasuredVec[k].name.c_str(), &(obsLeafVec[k].value), str.c_str());
 	str.erase();
      } else {
 	obsLeafVec[k].name = yyMeasuredVec[k].name;
 	obsLeafVec[k].value = -1;
 	string str = yyMeasuredVec[k].name;
+	string str2 = yyMeasuredVec[k].name;
 	str.append("_nofit/D");
-	cout << "Adding branch for nofit observable " << yyMeasuredVec[k].name.c_str() << " to tree" << endl;
-	tree->Branch(yyMeasuredVec[k].name.c_str(), &(obsLeafVec[k].value), str.c_str());
+	str2.append("_nofit");
+	cout << "Adding branch for nofit observable " << str2.c_str() << " to tree as " << str.c_str() << endl;
+        tree->Branch(str2.c_str(), &(obsLeafVec[k].value), str.c_str());
+	// tree->Branch(yyMeasuredVec[k].name.c_str(), &(obsLeafVec[k].value), str.c_str());
 	str.erase();       
      }
   }
@@ -291,8 +298,9 @@ void MakePullDist::CalcPullDist()
      histomap[i]->Write();
   }  
   chisq_hist->Write();
+  cout << "writing tree to file" << endl;
   tree->Write();
-
+  cout << "closing file" << endl;
   hfile1->Write();
   hfile1->Close();
 

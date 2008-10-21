@@ -1602,7 +1602,7 @@ void Fittino::setStartValues()
 	 fLambda.error = yyFittedPar[FindInFittedPar("Lambda")].error;
       }
       fLambda.bound_low = 1e3;
-      fLambda.bound_up = 1e10;
+      fLambda.bound_up = 1e6;
 
       fMmess.name  = "Mmess";
       fMmess.value = 2e5;
@@ -1612,7 +1612,7 @@ void Fittino::setStartValues()
 	 fMmess.error = yyFittedPar[FindInFittedPar("Mmess")].error;
       }
       fMmess.bound_low = 1e3;
-      fMmess.bound_up = 1e10;
+      fMmess.bound_up = 1e6;
 
       fcGrav.name  = "cGrav";
       fcGrav.value = 1;
@@ -1623,6 +1623,16 @@ void Fittino::setStartValues()
       }
       fcGrav.bound_low = 0;
       fcGrav.bound_up = 100;
+
+      //fN5.name  = "N5";
+      //fN5.value = 1;
+      //fN5.error = 1;
+      //if (yyUseGivenStartValues && (FindInFittedPar("N5") >= 0)) {
+      //   fN5.value = yyFittedPar[FindInFittedPar("N5")].value;
+      //   fN5.error = yyFittedPar[FindInFittedPar("N5")].error;
+      //}
+      //fcGrav.bound_low = 0;
+      //fcGrav.bound_up = 100;
 
       bool par_already_found;
 
@@ -5712,10 +5722,326 @@ void WriteLesHouches(double* x)
       }
    }
 
-	 else if (yyFitModel == GMSB) {
+   else if (yyFitModel == GMSB) {
+
+      LesHouchesOutfile<<"BLOCK MODSEL                 # Select model"<<endl;
+      LesHouchesOutfile<<" 1    2                      # GMSB"<<endl;
+      LesHouchesOutfile<<"BLOCK SMINPUTS               # Standard Model inputs"<<endl;
+      if (FindInFixed("alphaem")) {
+	 LesHouchesOutfile << "    1 "<<ReturnFixedValue("alphaem")->value<<" # 1/alpha_em (fixed)"<<endl;
+      }
+      else if (FindInFitted("alphaem")) {
+	 LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition("alphaem")]<<" # 1/alpha_em(M_Z)"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Fitting alphaem " << x[ReturnFittedPosition("alphaem")] << endl;
+	 }
+      } 
+      else if (FindInUniversality("alphaem")) {
+	 LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition(ReturnUniversality("alphaem")->universality)]<<" # 1/alpha_em(M_Z)"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fiting " << ReturnUniversality("alphaem")->universality << " instead of alphaem" << endl;
+	 }
+      }
+      else {
+	 LesHouchesOutfile << "    1  "<<ReturnMeasuredValue("alphaem")->value<<" # 1/alpha_em(M_Z) (fixed)"<<endl;
+      }
+
+      /*
+	 if (FindInFixed("G_F")) {
+	 LesHouchesOutfile << "    2  "<<ReturnFixedValue("G_F")->value<<" # G_F (fixed)"<<endl;
+	 }
+	 else if (FindInFitted("G_F")) {
+	 LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition("G_F")]<<" # G_F"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 cout << "Fitting G_F " << x[ReturnFittedPosition("G_F")] << endl;
+	 }
+	 } 
+	 else if (FindInUniversality("G_F")) {
+	 LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("G_F")->universality)]<<" # G_F"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 cout << "fitting " << ReturnUniversality("G_F")->universality << " instead of G_F" << endl;
+	 }
+	 }
+	 else {
+	 LesHouchesOutfile << "    2  "<<ReturnMeasuredValue("G_F")->value<<" # G_F (fixed)"<<endl;
+	 }
+	 */
+      if (FindInFixed("alphas")) {
+	 LesHouchesOutfile << "    3  "<<ReturnFixedValue("alphas")->value<<" # alpha_s (fixed)"<<endl;
+      }
+      else if (FindInFitted("alphas")) {
+	 LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition("alphas")]<<" # alpha_s"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Fitting alphas " << x[ReturnFittedPosition("alphas")] << endl;
+	 }
+      } 
+      else if (FindInUniversality("alphas")) {
+	 LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition(ReturnUniversality("alphas")->universality)]<<" # alpha_ss"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fitting " << ReturnUniversality("alphas")->universality << " instead of alphas" << endl;
+	 }
+      }
+      else {
+	 LesHouchesOutfile << "    3  "<<ReturnMeasuredValue("alphas")->value<<" # alpha_s (fixed)"<<endl;
+      }
+
+
+      if (FindInFixed("massZ")) {
+	 LesHouchesOutfile << "    4  "<<ReturnFixedValue("massZ")->value<<" # mZ (fixed)"<<endl;
+      }
+      else if (FindInFitted("massZ")) {
+	 LesHouchesOutfile << "    4  "<<x[ReturnFittedPosition("massZ")]<<" # mZ"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Fitting massZ " << x[ReturnFittedPosition("massZ")] << endl;
+	 }
+      } 
+      else if (FindInUniversality("massZ")) {
+	 LesHouchesOutfile << "    4  "<<x[ReturnFittedPosition(ReturnUniversality("massZ")->universality)]<<" # massZ"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fitting " << ReturnUniversality("massZ")->universality << " instead of massZ" << endl;
+	 }
+      }
+      else {
+	 LesHouchesOutfile << "    4  "<<ReturnMeasuredValue("massZ")->value<<" # mZ (fixed)"<<endl;
+      }
+
+      if (FindInFixed("massBottom")) {
+	 LesHouchesOutfile << "    5  "<<ReturnFixedValue("massBottom")->value<<" # mb(mb) (fixed)"<<endl;
+      }
+      else if (FindInFitted("massBottom")) {
+	 LesHouchesOutfile << "    5  "<<x[ReturnFittedPosition("massBottom")]<<" # mb(mb)"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Fitting mBottom " << x[ReturnFittedPosition("massBottom")] << endl;
+	 }
+      } 
+      else if (FindInUniversality("massBottom")) {
+	 LesHouchesOutfile << "    5  "<<x[ReturnFittedPosition(ReturnUniversality("massBottom")->universality)]<<" # massBottom"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fitting " << ReturnUniversality("massBottom")->universality << " instead of massBottom" << endl;
+	 }
+      }
+      else {
+	 LesHouchesOutfile << "    5  "<<ReturnMeasuredValue("massBottom")->value<<" # mb(mb) (fixed)"<<endl;
+      }
+
+
+      if (FindInFixed("massTop")) {
+	 LesHouchesOutfile << "    6  "<<ReturnFixedValue("massTop")->value<<" # mtop (fixed)"<<endl;
+      }
+      else if (FindInFitted("massTop")) {
+	 LesHouchesOutfile << "    6  "<<x[ReturnFittedPosition("massTop")]<<" # mtop"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Fitting mTop " << x[ReturnFittedPosition("massTop")] << endl;
+	 }
+      } 
+      else if (FindInUniversality("massTop")) {
+	 LesHouchesOutfile << "    6  "<<x[ReturnFittedPosition(ReturnUniversality("massTop")->universality)]<<" # massTop"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fitting " << ReturnUniversality("massTop")->universality << " instead of massTop" << endl;
+	 }
+      }
+      else {
+	 LesHouchesOutfile << "    6  "<<ReturnMeasuredValue("massTop")->value<<" # mtop (fixed)"<<endl;
+      }
+
+      if (FindInFixed("massTau")) {
+	 LesHouchesOutfile << "    7  "<<ReturnFixedValue("massTau")->value<<" # mtau (fixed)"<<endl;
+      }
+      else if (FindInFitted("massTau")) {
+	 LesHouchesOutfile << "    7  "<<x[ReturnFittedPosition("massTau")]<<" # mtau"<<endl;
+      } 
+      else if (FindInUniversality("massTau")) {
+	 LesHouchesOutfile << "    7  "<<x[ReturnFittedPosition(ReturnUniversality("massTau")->universality)]<<" # massTau"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fitting " << ReturnUniversality("massTau")->universality << " instead of massTau" << endl;
+	 }
+      }
+      else {
+	 LesHouchesOutfile << "    7  "<<ReturnMeasuredValue("massTau")->value<<" # mtau (fixed)"<<endl;
+      }
+
+
+      //    if (FindInFixed("massCharm")) {
+      //      LesHouchesOutfile << "    8  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+      //    }
+      //    else if (FindInFitted("massCharm")) {
+      //      LesHouchesOutfile << "    8  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
+      //      cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
+      //    } 
+      //    else if (FindInUniversality("massCharm")) {
+      //      LesHouchesOutfile << "    8  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
+      //      cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
+      //    }
+      //    else {
+      //      LesHouchesOutfile << "    8  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+      //    }
+
+      LesHouchesOutfile<<"BLOCK MINPAR                 # Input parameters"<<endl;
+
+      if (FindInFixed("TanBeta")) {
+	 LesHouchesOutfile << "    3  "<< ReturnFixedValue("TanBeta")->value <<" # tanb (fixed)"<< endl;
+      }
+      else if (FindInFitted("TanBeta")) {
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Fitting tanb " << x[ReturnFittedPosition("TanBeta")] << endl;
+	 }
+	 LesHouchesOutfile << "    3  "<< x[ReturnFittedPosition("TanBeta")]<<" # tanb"<< endl;
+      } 
+      else if (FindInRandomPar("TanBeta")) {
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Calculating random TanBeta " << x[ReturnRandomPosition("TanBeta")] << endl;
+	 }
+	 LesHouchesOutfile << "    3  " << x[ReturnRandomPosition("TanBeta")] << " # TanBeta (random)" << endl;
+      }
+      else if (FindInUniversality("TanBeta")) {
+	 LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition(ReturnUniversality("TanBeta")->universality)]<<" # TanBeta"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fitting " << ReturnUniversality("TanBeta")->universality << " instead of TanBeta" << endl;
+	 }
+      }
+      else {
+	 cerr << "Parameter TanBeta not declared" << endl;
+	 exit (EXIT_FAILURE);
+      }
+
+      if (FindInFixed("Lambda")) {
+	 LesHouchesOutfile << "    1  "<< ReturnFixedValue("Lambda")->value <<" # Lambda (fixed)"<< endl;
+      }
+      else if (FindInFitted("Lambda")) {
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Fitting Lambda " << x[ReturnFittedPosition("Lambda")] << endl;
+	 }
+	 LesHouchesOutfile << "    1  "<< x[ReturnFittedPosition("Lambda")]<<" # Lambda"<< endl;
+      } 
+      else if (FindInRandomPar("Lambda")) {
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Calculating random Lambda " << x[ReturnRandomPosition("Lambda")] << endl;
+	 }
+	 LesHouchesOutfile << "    1  " << x[ReturnRandomPosition("Lambda")] << " # Lambda (random)" << endl;
+      }
+      else if (FindInUniversality("Lambda")) {
+	 LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition(ReturnUniversality("Lambda")->universality)]<<" # Lambda"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fitting " << ReturnUniversality("Lambda")->universality << " instead of Lambda" << endl;
+	 }
+      }
+      else {
+	 cerr << "Parameter Lambda not declared" << endl;
+	 exit (EXIT_FAILURE);
+      }
+
+      if (FindInFixed("Mmess")) {
+	 LesHouchesOutfile << "    2  "<< ReturnFixedValue("Mmess")->value <<" # Mmess (fixed)"<< endl;
+      }
+      else if (FindInFitted("Mmess")) {
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Fitting Mmess " << x[ReturnFittedPosition("Mmess")] << endl;
+	 }
+	 LesHouchesOutfile << "    2  "<< x[ReturnFittedPosition("Mmess")]<<" # Mmess"<< endl;
+      } 
+      else if (FindInRandomPar("Mmess")) {
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Calculating random Mmess " << x[ReturnRandomPosition("Mmess")] << endl;
+	 }
+	 LesHouchesOutfile << "    2  " << x[ReturnRandomPosition("Mmess")] << " # Mmess (random)" << endl;
+      }
+      else if (FindInUniversality("Mmess")) {
+	 LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("Mmess")->universality)]<<" # Mmess"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fitting " << ReturnUniversality("Mmess")->universality << " instead of Mmess" << endl;
+	 }
+      }
+      else {
+	 cerr << "Parameter Mmess not declared" << endl;
+	 exit (EXIT_FAILURE);
+      }
+
+      if (FindInFixed("cGrav")) {
+	 LesHouchesOutfile << "    6  "<< ReturnFixedValue("cGrav")->value <<" # cGrav (fixed)"<< endl;
+      }
+      else if (FindInFitted("cGrav")) {
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Fitting cGrav " << x[ReturnFittedPosition("cGrav")] << endl;
+	 }
+	 LesHouchesOutfile << "    6  "<< x[ReturnFittedPosition("cGrav")]<<" # cGrav"<< endl;
+      } 
+      else if (FindInRandomPar("cGrav")) {
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Calculating random cGrav" << x[ReturnRandomPosition("cGrav")] << endl;
+	 }
+	 LesHouchesOutfile << "    6  " << x[ReturnRandomPosition("cGrav")] << " # cGrav (random)" << endl;
+      }
+      else if (FindInUniversality("cGrav")) {
+	 LesHouchesOutfile << "    6  "<<x[ReturnFittedPosition(ReturnUniversality("cGrav")->universality)]<<" # cGrav"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fitting " << ReturnUniversality("cGrav")->universality << " instead of cGrav" << endl;
+	 }
+      }
+      else {
+	 cerr << "Parameter cGrav not declared" << endl;
+	 exit (EXIT_FAILURE);
+      }
+
+      if (FindInFixed("SignMu") && TMath::Abs(ReturnFixedValue("SignMu")->value) == 1 ) {
+	 LesHouchesOutfile << "    4  "<< ReturnFixedValue("SignMu")->value <<" # sign(mu) (fixed)"<< endl;
+      }
+      else {
+	 cerr<<"SignMu must be fixed to either 1 or -1"<<endl;
+	 exit(EXIT_FAILURE);
+      }
+
+      if (FindInFixed("N5")) {
+	 LesHouchesOutfile << "    5  "<< ReturnFixedValue("N5")->value <<" # N5 (fixed)"<< endl;
+      }
+      else {
+	 cerr<<"N5 must be fixed to an integer number"<<endl;
+	 exit(EXIT_FAILURE);
+      }
+
+      LesHouchesOutfile << "BLOCK SPHENOINPUT" << endl;
+      LesHouchesOutfile << "    1  0                  # error level" << endl;
+      LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
+      LesHouchesOutfile << "   11  1                  # calculate branching ratios" << endl;
+      LesHouchesOutfile << "   12  1.00000000E-04     # write only branching ratios larger than this value" << endl;
+      LesHouchesOutfile << "   21  1                  # calculate cross section" << endl;
+      for (unsigned int j = 0; j < CrossSectionProduction.size(); j++) {
+	 LesHouchesOutfile << "   22  " << CrossSectionProduction[j][0] << "     # cms energy in GeV" << endl;
+	 LesHouchesOutfile << "   23  " << CrossSectionProduction[j][1] << "     # polarisation of incoming e- beam" << endl;
+	 LesHouchesOutfile << "   24  " << CrossSectionProduction[j][2] << "     # polarisation of incoming e+ beam" << endl;
+	 if (!yyISR) {
+	    LesHouchesOutfile << "   25  0                  # no ISR is calculated" << endl;
+	 } else {
+	    LesHouchesOutfile << "   25  1                  # ISR is calculated" << endl;
+	 }
+      }
+      LesHouchesOutfile << "   26  1.00000000E-05     # write only cross sections larger than this value [fb]" << endl;
+      LesHouchesOutfile << "   31  -1.00000000E+00     # m_GUT, if < 0 than it determined via g_1=g_2" << endl;
+      LesHouchesOutfile << "   32  0                  # require strict unification g_1=g_2=g_3 if '1' is set " << endl;
+      LesHouchesOutfile << "   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
+      if (FindInFixed("massCharm")) {
+	 LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+      }
+      else if (FindInFitted("massCharm")) {
+	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
+	 }
+      } 
+      else if (FindInUniversality("massCharm")) {
+	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
+	 }
+      }
+      else {
+	 LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+      }
+   }
+
+	 else if (yyFitModel == AMSB) {
 
 	    LesHouchesOutfile<<"BLOCK MODSEL                 # Select model"<<endl;
-	    LesHouchesOutfile<<" 1    2                      # GMSB"<<endl;
+	    LesHouchesOutfile<<" 1    3                      # AMSB"<<endl;
 	    LesHouchesOutfile<<"BLOCK SMINPUTS               # Standard Model inputs"<<endl;
 	    if (FindInFixed("alphaem")) {
 	       LesHouchesOutfile << "    1 "<<ReturnFixedValue("alphaem")->value<<" # 1/alpha_em (fixed)"<<endl;
@@ -5894,81 +6220,55 @@ void WriteLesHouches(double* x)
 	       exit (EXIT_FAILURE);
 	    }
 
-	    if (FindInFixed("Lambda")) {
-	       LesHouchesOutfile << "    1  "<< ReturnFixedValue("Lambda")->value <<" # Lambda (fixed)"<< endl;
+	    if (FindInFixed("M0")) {
+	       LesHouchesOutfile << "    1  "<< ReturnFixedValue("M0")->value <<" # M0 (fixed)"<< endl;
 	    }
-	    else if (FindInFitted("Lambda")) {
+	    else if (FindInFitted("M0")) {
 	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-		  cout << "Fitting Lambda " << x[ReturnFittedPosition("Lambda")] << endl;
+		  cout << "Fitting M0 " << x[ReturnFittedPosition("M0")] << endl;
 	       }
-	       LesHouchesOutfile << "    1  "<< x[ReturnFittedPosition("Lambda")]<<" # Lambda"<< endl;
+	       LesHouchesOutfile << "    1  "<< x[ReturnFittedPosition("M0")]<<" # M0"<< endl;
 	    } 
-	    else if (FindInRandomPar("Lambda")) {
+	    else if (FindInRandomPar("M0")) {
 	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-		  cout << "Calculating random Lambda " << x[ReturnRandomPosition("Lambda")] << endl;
+		  cout << "Calculating random M0 " << x[ReturnRandomPosition("M0")] << endl;
 	       }
-	       LesHouchesOutfile << "    1  " << x[ReturnRandomPosition("Lambda")] << " # Lambda (random)" << endl;
+	       LesHouchesOutfile << "    1  " << x[ReturnRandomPosition("M0")] << " # M0 (random)" << endl;
 	    }
-	    else if (FindInUniversality("Lambda")) {
-	       LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition(ReturnUniversality("Lambda")->universality)]<<" # Lambda"<<endl;
+	    else if (FindInUniversality("M0")) {
+	       LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition(ReturnUniversality("M0")->universality)]<<" # M0"<<endl;
 	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-		  cout << "fitting " << ReturnUniversality("Lambda")->universality << " instead of Lambda" << endl;
+		  cout << "fitting " << ReturnUniversality("M0")->universality << " instead of M0" << endl;
 	       }
 	    }
 	    else {
-	       cerr << "Parameter Lambda not declared" << endl;
+	       cerr << "Parameter M0 not declared" << endl;
 	       exit (EXIT_FAILURE);
 	    }
 
-	    if (FindInFixed("Mmess")) {
-	       LesHouchesOutfile << "    2  "<< ReturnFixedValue("Mmess")->value <<" # Mmess (fixed)"<< endl;
+	    if (FindInFixed("M32")) {
+	       LesHouchesOutfile << "    2  "<< ReturnFixedValue("M32")->value <<" # M32 (fixed)"<< endl;
 	    }
-	    else if (FindInFitted("Mmess")) {
+	    else if (FindInFitted("M32")) {
 	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-		  cout << "Fitting Mmess " << x[ReturnFittedPosition("Mmess")] << endl;
+		  cout << "Fitting M32 " << x[ReturnFittedPosition("M32")] << endl;
 	       }
-	       LesHouchesOutfile << "    2  "<< x[ReturnFittedPosition("Mmess")]<<" # Mmess"<< endl;
+	       LesHouchesOutfile << "    2  "<< x[ReturnFittedPosition("M32")]<<" # M32"<< endl;
 	    } 
-	    else if (FindInRandomPar("Mmess")) {
+	    else if (FindInRandomPar("M32")) {
 	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-		  cout << "Calculating random Mmess " << x[ReturnRandomPosition("Mmess")] << endl;
+		  cout << "Calculating random M32 " << x[ReturnRandomPosition("M32")] << endl;
 	       }
-	       LesHouchesOutfile << "    2  " << x[ReturnRandomPosition("Mmess")] << " # Mmess (random)" << endl;
+	       LesHouchesOutfile << "    2  " << x[ReturnRandomPosition("M32")] << " # M32 (random)" << endl;
 	    }
-	    else if (FindInUniversality("Mmess")) {
-	       LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("Mmess")->universality)]<<" # Mmess"<<endl;
+	    else if (FindInUniversality("M32")) {
+	       LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("M32")->universality)]<<" # M32"<<endl;
 	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-		  cout << "fitting " << ReturnUniversality("Mmess")->universality << " instead of Mmess" << endl;
+		  cout << "fitting " << ReturnUniversality("M32")->universality << " instead of M32" << endl;
 	       }
 	    }
 	    else {
-	       cerr << "Parameter Mmess not declared" << endl;
-	       exit (EXIT_FAILURE);
-	    }
-
-	    if (FindInFixed("cGrav")) {
-	       LesHouchesOutfile << "    6  "<< ReturnFixedValue("cGrav")->value <<" # cGrav (fixed)"<< endl;
-	    }
-	    else if (FindInFitted("cGrav")) {
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-		  cout << "Fitting cGrav " << x[ReturnFittedPosition("cGrav")] << endl;
-	       }
-	       LesHouchesOutfile << "    6  "<< x[ReturnFittedPosition("cGrav")]<<" # cGrav"<< endl;
-	    } 
-	    else if (FindInRandomPar("cGrav")) {
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-		  cout << "Calculating random cGrav" << x[ReturnRandomPosition("cGrav")] << endl;
-	       }
-	       LesHouchesOutfile << "    6  " << x[ReturnRandomPosition("cGrav")] << " # cGrav (random)" << endl;
-	    }
-	    else if (FindInUniversality("cGrav")) {
-	       LesHouchesOutfile << "    6  "<<x[ReturnFittedPosition(ReturnUniversality("cGrav")->universality)]<<" # cGrav"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-		  cout << "fitting " << ReturnUniversality("cGrav")->universality << " instead of cGrav" << endl;
-	       }
-	    }
-	    else {
-	       cerr << "Parameter cGrav not declared" << endl;
+	       cerr << "Parameter M32 not declared" << endl;
 	       exit (EXIT_FAILURE);
 	    }
 
@@ -5977,14 +6277,6 @@ void WriteLesHouches(double* x)
 	    }
 	    else {
 	       cerr<<"SignMu must be fixed to either 1 or -1"<<endl;
-	       exit(EXIT_FAILURE);
-	    }
-
-	    if (FindInFixed("N5")) {
-	       LesHouchesOutfile << "    5  "<< ReturnFixedValue("N5")->value <<" # N5 (fixed)"<< endl;
-	    }
-	    else {
-	       cerr<<"N5 must be fixed to an integer number"<<endl;
 	       exit(EXIT_FAILURE);
 	    }
 
@@ -6028,297 +6320,15 @@ void WriteLesHouches(double* x)
 	    }
 	 }
 
-	       else if (yyFitModel == AMSB) {
-
-		  LesHouchesOutfile<<"BLOCK MODSEL                 # Select model"<<endl;
-		  LesHouchesOutfile<<" 1    3                      # AMSB"<<endl;
-		  LesHouchesOutfile<<"BLOCK SMINPUTS               # Standard Model inputs"<<endl;
-		  if (FindInFixed("alphaem")) {
-		     LesHouchesOutfile << "    1 "<<ReturnFixedValue("alphaem")->value<<" # 1/alpha_em (fixed)"<<endl;
-		  }
-		  else if (FindInFitted("alphaem")) {
-		     LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition("alphaem")]<<" # 1/alpha_em(M_Z)"<<endl;
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "Fitting alphaem " << x[ReturnFittedPosition("alphaem")] << endl;
-		     }
-		  } 
-		  else if (FindInUniversality("alphaem")) {
-		     LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition(ReturnUniversality("alphaem")->universality)]<<" # 1/alpha_em(M_Z)"<<endl;
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "fiting " << ReturnUniversality("alphaem")->universality << " instead of alphaem" << endl;
-		     }
-		  }
-		  else {
-		     LesHouchesOutfile << "    1  "<<ReturnMeasuredValue("alphaem")->value<<" # 1/alpha_em(M_Z) (fixed)"<<endl;
-		  }
-
-		  /*
-		     if (FindInFixed("G_F")) {
-		     LesHouchesOutfile << "    2  "<<ReturnFixedValue("G_F")->value<<" # G_F (fixed)"<<endl;
-		     }
-		     else if (FindInFitted("G_F")) {
-		     LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition("G_F")]<<" # G_F"<<endl;
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-		     cout << "Fitting G_F " << x[ReturnFittedPosition("G_F")] << endl;
-		     }
-		     } 
-		     else if (FindInUniversality("G_F")) {
-		     LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("G_F")->universality)]<<" # G_F"<<endl;
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-		     cout << "fitting " << ReturnUniversality("G_F")->universality << " instead of G_F" << endl;
-		     }
-		     }
-		     else {
-		     LesHouchesOutfile << "    2  "<<ReturnMeasuredValue("G_F")->value<<" # G_F (fixed)"<<endl;
-		     }
-		     */
-		  if (FindInFixed("alphas")) {
-		     LesHouchesOutfile << "    3  "<<ReturnFixedValue("alphas")->value<<" # alpha_s (fixed)"<<endl;
-		  }
-		  else if (FindInFitted("alphas")) {
-		     LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition("alphas")]<<" # alpha_s"<<endl;
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "Fitting alphas " << x[ReturnFittedPosition("alphas")] << endl;
-		     }
-		  } 
-		  else if (FindInUniversality("alphas")) {
-		     LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition(ReturnUniversality("alphas")->universality)]<<" # alpha_ss"<<endl;
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "fitting " << ReturnUniversality("alphas")->universality << " instead of alphas" << endl;
-		     }
-		  }
-		  else {
-		     LesHouchesOutfile << "    3  "<<ReturnMeasuredValue("alphas")->value<<" # alpha_s (fixed)"<<endl;
-		  }
-
-
-		  if (FindInFixed("massZ")) {
-		     LesHouchesOutfile << "    4  "<<ReturnFixedValue("massZ")->value<<" # mZ (fixed)"<<endl;
-		  }
-		  else if (FindInFitted("massZ")) {
-		     LesHouchesOutfile << "    4  "<<x[ReturnFittedPosition("massZ")]<<" # mZ"<<endl;
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "Fitting massZ " << x[ReturnFittedPosition("massZ")] << endl;
-		     }
-		  } 
-		  else if (FindInUniversality("massZ")) {
-		     LesHouchesOutfile << "    4  "<<x[ReturnFittedPosition(ReturnUniversality("massZ")->universality)]<<" # massZ"<<endl;
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "fitting " << ReturnUniversality("massZ")->universality << " instead of massZ" << endl;
-		     }
-		  }
-		  else {
-		     LesHouchesOutfile << "    4  "<<ReturnMeasuredValue("massZ")->value<<" # mZ (fixed)"<<endl;
-		  }
-
-		  if (FindInFixed("massBottom")) {
-		     LesHouchesOutfile << "    5  "<<ReturnFixedValue("massBottom")->value<<" # mb(mb) (fixed)"<<endl;
-		  }
-		  else if (FindInFitted("massBottom")) {
-		     LesHouchesOutfile << "    5  "<<x[ReturnFittedPosition("massBottom")]<<" # mb(mb)"<<endl;
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "Fitting mBottom " << x[ReturnFittedPosition("massBottom")] << endl;
-		     }
-		  } 
-		  else if (FindInUniversality("massBottom")) {
-		     LesHouchesOutfile << "    5  "<<x[ReturnFittedPosition(ReturnUniversality("massBottom")->universality)]<<" # massBottom"<<endl;
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "fitting " << ReturnUniversality("massBottom")->universality << " instead of massBottom" << endl;
-		     }
-		  }
-		  else {
-		     LesHouchesOutfile << "    5  "<<ReturnMeasuredValue("massBottom")->value<<" # mb(mb) (fixed)"<<endl;
-		  }
-
-
-		  if (FindInFixed("massTop")) {
-		     LesHouchesOutfile << "    6  "<<ReturnFixedValue("massTop")->value<<" # mtop (fixed)"<<endl;
-		  }
-		  else if (FindInFitted("massTop")) {
-		     LesHouchesOutfile << "    6  "<<x[ReturnFittedPosition("massTop")]<<" # mtop"<<endl;
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "Fitting mTop " << x[ReturnFittedPosition("massTop")] << endl;
-		     }
-		  } 
-		  else if (FindInUniversality("massTop")) {
-		     LesHouchesOutfile << "    6  "<<x[ReturnFittedPosition(ReturnUniversality("massTop")->universality)]<<" # massTop"<<endl;
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "fitting " << ReturnUniversality("massTop")->universality << " instead of massTop" << endl;
-		     }
-		  }
-		  else {
-		     LesHouchesOutfile << "    6  "<<ReturnMeasuredValue("massTop")->value<<" # mtop (fixed)"<<endl;
-		  }
-
-		  if (FindInFixed("massTau")) {
-		     LesHouchesOutfile << "    7  "<<ReturnFixedValue("massTau")->value<<" # mtau (fixed)"<<endl;
-		  }
-		  else if (FindInFitted("massTau")) {
-		     LesHouchesOutfile << "    7  "<<x[ReturnFittedPosition("massTau")]<<" # mtau"<<endl;
-		  } 
-		  else if (FindInUniversality("massTau")) {
-		     LesHouchesOutfile << "    7  "<<x[ReturnFittedPosition(ReturnUniversality("massTau")->universality)]<<" # massTau"<<endl;
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "fitting " << ReturnUniversality("massTau")->universality << " instead of massTau" << endl;
-		     }
-		  }
-		  else {
-		     LesHouchesOutfile << "    7  "<<ReturnMeasuredValue("massTau")->value<<" # mtau (fixed)"<<endl;
-		  }
-
-
-		  //    if (FindInFixed("massCharm")) {
-		  //      LesHouchesOutfile << "    8  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-		  //    }
-		  //    else if (FindInFitted("massCharm")) {
-		  //      LesHouchesOutfile << "    8  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-		  //      cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
-		  //    } 
-		  //    else if (FindInUniversality("massCharm")) {
-		  //      LesHouchesOutfile << "    8  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-		  //      cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
-		  //    }
-		  //    else {
-		  //      LesHouchesOutfile << "    8  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-		  //    }
-
-		  LesHouchesOutfile<<"BLOCK MINPAR                 # Input parameters"<<endl;
-
-		  if (FindInFixed("TanBeta")) {
-		     LesHouchesOutfile << "    3  "<< ReturnFixedValue("TanBeta")->value <<" # tanb (fixed)"<< endl;
-		  }
-		  else if (FindInFitted("TanBeta")) {
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "Fitting tanb " << x[ReturnFittedPosition("TanBeta")] << endl;
-		     }
-		     LesHouchesOutfile << "    3  "<< x[ReturnFittedPosition("TanBeta")]<<" # tanb"<< endl;
-		  } 
-		  else if (FindInRandomPar("TanBeta")) {
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "Calculating random TanBeta " << x[ReturnRandomPosition("TanBeta")] << endl;
-		     }
-		     LesHouchesOutfile << "    3  " << x[ReturnRandomPosition("TanBeta")] << " # TanBeta (random)" << endl;
-		  }
-		  else if (FindInUniversality("TanBeta")) {
-		     LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition(ReturnUniversality("TanBeta")->universality)]<<" # TanBeta"<<endl;
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "fitting " << ReturnUniversality("TanBeta")->universality << " instead of TanBeta" << endl;
-		     }
-		  }
-		  else {
-		     cerr << "Parameter TanBeta not declared" << endl;
-		     exit (EXIT_FAILURE);
-		  }
-
-		  if (FindInFixed("M0")) {
-		     LesHouchesOutfile << "    1  "<< ReturnFixedValue("M0")->value <<" # M0 (fixed)"<< endl;
-		  }
-		  else if (FindInFitted("M0")) {
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "Fitting M0 " << x[ReturnFittedPosition("M0")] << endl;
-		     }
-		     LesHouchesOutfile << "    1  "<< x[ReturnFittedPosition("M0")]<<" # M0"<< endl;
-		  } 
-		  else if (FindInRandomPar("M0")) {
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "Calculating random M0 " << x[ReturnRandomPosition("M0")] << endl;
-		     }
-		     LesHouchesOutfile << "    1  " << x[ReturnRandomPosition("M0")] << " # M0 (random)" << endl;
-		  }
-		  else if (FindInUniversality("M0")) {
-		     LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition(ReturnUniversality("M0")->universality)]<<" # M0"<<endl;
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "fitting " << ReturnUniversality("M0")->universality << " instead of M0" << endl;
-		     }
-		  }
-		  else {
-		     cerr << "Parameter M0 not declared" << endl;
-		     exit (EXIT_FAILURE);
-		  }
-
-		  if (FindInFixed("M32")) {
-		     LesHouchesOutfile << "    2  "<< ReturnFixedValue("M32")->value <<" # M32 (fixed)"<< endl;
-		  }
-		  else if (FindInFitted("M32")) {
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "Fitting M32 " << x[ReturnFittedPosition("M32")] << endl;
-		     }
-		     LesHouchesOutfile << "    2  "<< x[ReturnFittedPosition("M32")]<<" # M32"<< endl;
-		  } 
-		  else if (FindInRandomPar("M32")) {
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "Calculating random M32 " << x[ReturnRandomPosition("M32")] << endl;
-		     }
-		     LesHouchesOutfile << "    2  " << x[ReturnRandomPosition("M32")] << " # M32 (random)" << endl;
-		  }
-		  else if (FindInUniversality("M32")) {
-		     LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("M32")->universality)]<<" # M32"<<endl;
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "fitting " << ReturnUniversality("M32")->universality << " instead of M32" << endl;
-		     }
-		  }
-		  else {
-		     cerr << "Parameter M32 not declared" << endl;
-		     exit (EXIT_FAILURE);
-		  }
-
-		  if (FindInFixed("SignMu") && TMath::Abs(ReturnFixedValue("SignMu")->value) == 1 ) {
-		     LesHouchesOutfile << "    4  "<< ReturnFixedValue("SignMu")->value <<" # sign(mu) (fixed)"<< endl;
-		  }
-		  else {
-		     cerr<<"SignMu must be fixed to either 1 or -1"<<endl;
-		     exit(EXIT_FAILURE);
-		  }
-
-		  LesHouchesOutfile << "BLOCK SPHENOINPUT" << endl;
-		  LesHouchesOutfile << "    1  0                  # error level" << endl;
-		  LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
-		  LesHouchesOutfile << "   11  1                  # calculate branching ratios" << endl;
-		  LesHouchesOutfile << "   12  1.00000000E-04     # write only branching ratios larger than this value" << endl;
-		  LesHouchesOutfile << "   21  1                  # calculate cross section" << endl;
-		  for (unsigned int j = 0; j < CrossSectionProduction.size(); j++) {
-		     LesHouchesOutfile << "   22  " << CrossSectionProduction[j][0] << "     # cms energy in GeV" << endl;
-		     LesHouchesOutfile << "   23  " << CrossSectionProduction[j][1] << "     # polarisation of incoming e- beam" << endl;
-		     LesHouchesOutfile << "   24  " << CrossSectionProduction[j][2] << "     # polarisation of incoming e+ beam" << endl;
-		     if (!yyISR) {
-			LesHouchesOutfile << "   25  0                  # no ISR is calculated" << endl;
-		     } else {
-			LesHouchesOutfile << "   25  1                  # ISR is calculated" << endl;
-		     }
-		  }
-		  LesHouchesOutfile << "   26  1.00000000E-05     # write only cross sections larger than this value [fb]" << endl;
-		  LesHouchesOutfile << "   31  -1.00000000E+00     # m_GUT, if < 0 than it determined via g_1=g_2" << endl;
-		  LesHouchesOutfile << "   32  0                  # require strict unification g_1=g_2=g_3 if '1' is set " << endl;
-		  LesHouchesOutfile << "   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
-		  if (FindInFixed("massCharm")) {
-		     LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-		  }
-		  else if (FindInFitted("massCharm")) {
-		     LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
-		     }
-		  } 
-		  else if (FindInUniversality("massCharm")) {
-		     LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-		     if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-			cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
-		     }
-		  }
-		  else {
-		     LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-		  }
+	       else {
+		  cerr << "Unknown fit model in WriteLesHouches" << endl;
+		  exit(EXIT_FAILURE);
 	       }
 
-		     else {
-			cerr << "Unknown fit model in WriteLesHouches" << endl;
-			exit(EXIT_FAILURE);
-		     }
+	       //close file
+	       LesHouchesOutfile.close();
 
-		     //close file
-		     LesHouchesOutfile.close();
-
-		     return;
+	       return;
 
 }
 
@@ -6718,18 +6728,18 @@ int   ReadLesHouches()
    // test reading of low energy measurements
    //========================================
    //if (yyLEOCalculator == NOLEOCALCULATOR) {
-      cout << "  --->  yybsg            from SPheno:     " << yybsg    << endl;   //  1  BR(b -> s gamma) 
-      cout << "  --->  yybsmm           from SPheno:     " << yybsmm   << endl;   //  2  BR(b -> s mu+ mu-)
-      cout << "  --->  yyB_smm          from SPheno:     " << yyB_smm  << endl;   //  3  BR(Bs -> mu+ mu-)
-      cout << "  --->  yyB_utn          from SPheno:     " << yyB_utn  << endl;   //  4  BR(B_u -> tau nu)
-      cout << "  --->  yydMB_d          from SPheno:     " << yydMB_d  << endl;   //  5  |Delta(M_Bd)| [ps^-1]
-      cout << "  --->  yydMB_s          from SPheno:     " << yydMB_s  << endl;   //  6  |Delta(M_Bs)| [ps^-1]
-      cout << "  --->  yygmin2e         from SPheno:     " << yygmin2e << endl;   // 10  Delta(g-2)_electron
-      cout << "  --->  yygmin2m         from SPheno:     " << yygmin2m << endl;   // 11  Delta(g-2)_muon
-      cout << "  --->  yygmin2t         from SPheno:     " << yygmin2t << endl;   // 12  Delta(g-2)_tau
-      cout << "  --->  yydrho           from SPheno:     " << yydrho   << endl;   // 30  Delta(rho_parameter)
-      cout << "  --->  yyMassZ          from SPheno:     " << yyMassZ   << endl;   //
-      cout << "  --->  yyG_F            from SPheno:     " << yyG_F   << endl;   //
+   cout << "  --->  yybsg            from SPheno:     " << yybsg    << endl;   //  1  BR(b -> s gamma) 
+   cout << "  --->  yybsmm           from SPheno:     " << yybsmm   << endl;   //  2  BR(b -> s mu+ mu-)
+   cout << "  --->  yyB_smm          from SPheno:     " << yyB_smm  << endl;   //  3  BR(Bs -> mu+ mu-)
+   cout << "  --->  yyB_utn          from SPheno:     " << yyB_utn  << endl;   //  4  BR(B_u -> tau nu)
+   cout << "  --->  yydMB_d          from SPheno:     " << yydMB_d  << endl;   //  5  |Delta(M_Bd)| [ps^-1]
+   cout << "  --->  yydMB_s          from SPheno:     " << yydMB_s  << endl;   //  6  |Delta(M_Bs)| [ps^-1]
+   cout << "  --->  yygmin2e         from SPheno:     " << yygmin2e << endl;   // 10  Delta(g-2)_electron
+   cout << "  --->  yygmin2m         from SPheno:     " << yygmin2m << endl;   // 11  Delta(g-2)_muon
+   cout << "  --->  yygmin2t         from SPheno:     " << yygmin2t << endl;   // 12  Delta(g-2)_tau
+   cout << "  --->  yydrho           from SPheno:     " << yydrho   << endl;   // 30  Delta(rho_parameter)
+   cout << "  --->  yyMassZ          from SPheno:     " << yyMassZ   << endl;   //
+   cout << "  --->  yyG_F            from SPheno:     " << yyG_F   << endl;   //
    //}
    //------------------------------------------------------------------------------------------
    if (yyRelicDensityCalculator == MICROMEGAS) {
@@ -7197,8 +7207,8 @@ int   ReadLesHouches()
 	       //     << yyMass[yyMeasuredVec[i].daughters[3]] << " " << endl;
 
 	       double tmpvalue;
-               if ((sqr(yyMass[yyMeasuredVec[i].daughters[3]])-sqr((yyMass[yyMeasuredVec[i].daughters[1]]+yyMass[yyMeasuredVec[i].daughters[0]]))) < 0.) {
-                  tmpvalue = 0.;
+	       if ((sqr(yyMass[yyMeasuredVec[i].daughters[3]])-sqr((yyMass[yyMeasuredVec[i].daughters[1]]+yyMass[yyMeasuredVec[i].daughters[0]]))) < 0.) {
+		  tmpvalue = 0.;
 	       }
 
 	       else {
@@ -7270,25 +7280,25 @@ int   ReadLesHouches()
 	       yyMeasuredVec[i].theoset = true;
 	    }
 	    else if (yyMeasuredVec[i].id == 8) {
-	      double tmpvalue = sqr(yyMass[yyMeasuredVec[i].daughters[0]]) - 2*sqr(yyMass[yyMeasuredVec[i].daughters[1]]);
-	      yyMeasuredVec[i].theovalue = (tmpvalue >= 0 ) ? TMath::Sqrt(tmpvalue) : 1.1E11;
-	      yyMeasuredVec[i].theoset = true;
+	       double tmpvalue = sqr(yyMass[yyMeasuredVec[i].daughters[0]]) - 2*sqr(yyMass[yyMeasuredVec[i].daughters[1]]);
+	       yyMeasuredVec[i].theovalue = (tmpvalue >= 0 ) ? TMath::Sqrt(tmpvalue) : 1.1E11;
+	       yyMeasuredVec[i].theoset = true;
 	    }
 	    else if (yyMeasuredVec[i].id >= 100 && yyMeasuredVec[i].id <= 121) {
-	        double epmasses[5];
-		epmasses[0] = yyMass[ID_chi01];
-		epmasses[1] = yyMass[ID_seR];
-		epmasses[2] = yyMass[ID_chi02];
-		epmasses[3] = yyMass[ID_suL];
-		epmasses[4] = yyMass[ID_gluino];
-		std::cout << " endpoint number " << yyMeasuredVec[i].id - 100 << std::endl;
-		std::cout << " neutralino1 mass " << epmasses[0] << std::endl;
-		std::cout << " selectronR mass " << epmasses[1] << std::endl;
-		std::cout << " neutralino2 mass " << epmasses[2] << std::endl;
-		std::cout << " supL mass " << epmasses[3] << std::endl;
-		std::cout << " gluino mass " << epmasses[4] << std::endl;
-	        yyMeasuredVec[i].theovalue = Endpoint(yyMeasuredVec[i].id - 100, epmasses);
-		yyMeasuredVec[i].theoset = true;
+	       double epmasses[5];
+	       epmasses[0] = yyMass[ID_chi01];
+	       epmasses[1] = yyMass[ID_seR];
+	       epmasses[2] = yyMass[ID_chi02];
+	       epmasses[3] = yyMass[ID_suL];
+	       epmasses[4] = yyMass[ID_gluino];
+	       std::cout << " endpoint number " << yyMeasuredVec[i].id - 100 << std::endl;
+	       std::cout << " neutralino1 mass " << epmasses[0] << std::endl;
+	       std::cout << " selectronR mass " << epmasses[1] << std::endl;
+	       std::cout << " neutralino2 mass " << epmasses[2] << std::endl;
+	       std::cout << " supL mass " << epmasses[3] << std::endl;
+	       std::cout << " gluino mass " << epmasses[4] << std::endl;
+	       yyMeasuredVec[i].theovalue = Endpoint(yyMeasuredVec[i].id - 100, epmasses);
+	       yyMeasuredVec[i].theoset = true;
 	    }
 	 }
       }
@@ -9105,122 +9115,122 @@ int   ReadLesHouches()
       }
 
       while (1)
-	{
+      {
 
-	  niter++;
+	 niter++;
 
-	  // choose new point
-	  for (unsigned int iiVariable = 0; iiVariable < x.size(); iiVariable++) 
+	 // choose new point
+	 for (unsigned int iiVariable = 0; iiVariable < x.size(); iiVariable++) 
+	 {
+	    bool outOfBounds = false;
+	    bool first = true;
+	    while (outOfBounds==true || first==true)
 	    {
-	      bool outOfBounds = false;
-	      bool first = true;
-	      while (outOfBounds==true || first==true)
-		{
-		  first = false; 
-		  outOfBounds = false;
-		  xp[iiVariable] = x[iiVariable] + gRandom->Gaus(0.,vm[iiVariable]);
-		  //		      xp[iiVariable] = x[iiVariable] + gRandom->Uniform(-1.,1.) * vm[iiVariable];
-		  if ( ( xp[iiVariable] < lb[iiVariable] ) || ( xp[iiVariable] > ub[iiVariable] ) )
-		    {			  
-		      outOfBounds = true;
-		    }
-		}
-	    } 
-	  
-	  
-	  std::cout << "looking at Markov Chain in step " << niter << std::endl;
-	  for (unsigned int iiiVariable = 0; iiiVariable < x.size(); iiiVariable++) 
-	    {
-	      std::cout 
-		<< iiiVariable << " " 
-		<< xp[iiiVariable] << " +- " 
-		<< vm[iiiVariable] << " [" 
-		<< lb[iiiVariable] << "," 
-		<< ub[iiiVariable] << "]" 
-		<< std::endl;
+	       first = false; 
+	       outOfBounds = false;
+	       xp[iiVariable] = x[iiVariable] + gRandom->Gaus(0.,vm[iiVariable]);
+	       //		      xp[iiVariable] = x[iiVariable] + gRandom->Uniform(-1.,1.) * vm[iiVariable];
+	       if ( ( xp[iiVariable] < lb[iiVariable] ) || ( xp[iiVariable] > ub[iiVariable] ) )
+	       {			  
+		  outOfBounds = true;
+	       }
 	    }
+	 } 
 
-	  // calclate chi^2
-	  double chi2 = 1.E10;
-	  for (unsigned int i = 0; i < xp.size(); i++) {
+
+	 std::cout << "looking at Markov Chain in step " << niter << std::endl;
+	 for (unsigned int iiiVariable = 0; iiiVariable < x.size(); iiiVariable++) 
+	 {
+	    std::cout 
+	       << iiiVariable << " " 
+	       << xp[iiiVariable] << " +- " 
+	       << vm[iiiVariable] << " [" 
+	       << lb[iiiVariable] << "," 
+	       << ub[iiiVariable] << "]" 
+	       << std::endl;
+	 }
+
+	 // calclate chi^2
+	 double chi2 = 1.E10;
+	 for (unsigned int i = 0; i < xp.size(); i++) {
 	    xdummy[i] = xp[i];
-	  }
-	  fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
-	  // chi2 = -chi2;
-	  std::cout << "chi^2 = " << chi2 << std::endl;
+	 }
+	 fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
+	 // chi2 = -chi2;
+	 std::cout << "chi^2 = " << chi2 << std::endl;
 
-	  //	  double firstChi2Value = chi2;
+	 //	  double firstChi2Value = chi2;
 
-	  //	    if (firstChi2) {
-	  //	       if (yyMarkovChainChi2Scale < 0.) {
-	  //		  if (firstChi2Value>10.) {
-	  //		     yyMarkovChainChi2Scale = firstChi2Value/10.;
-	  //		  }
-	  //		  else {
-	  //		     yyMarkovChainChi2Scale = 1.;
-	  //		  }
-	  //	       } 
-	  //	    }
-	  yyMarkovChainChi2Scale = 1.;
-	  std::cout << "Using yyMarkovChainChi2Scale = " << yyMarkovChainChi2Scale << std::endl;
+	 //	    if (firstChi2) {
+	 //	       if (yyMarkovChainChi2Scale < 0.) {
+	 //		  if (firstChi2Value>10.) {
+	 //		     yyMarkovChainChi2Scale = firstChi2Value/10.;
+	 //		  }
+	 //		  else {
+	 //		     yyMarkovChainChi2Scale = 1.;
+	 //		  }
+	 //	       } 
+	 //	    }
+	 yyMarkovChainChi2Scale = 1.;
+	 std::cout << "Using yyMarkovChainChi2Scale = " << yyMarkovChainChi2Scale << std::endl;
 
-	  // calculate likelihood
-	  double likelihood = TMath::Exp(-chi2/(2.*yyMarkovChainChi2Scale));
-	  std::cout << "L = " << likelihood << std::endl;
+	 // calculate likelihood
+	 double likelihood = TMath::Exp(-chi2/(2.*yyMarkovChainChi2Scale));
+	 std::cout << "L = " << likelihood << std::endl;
 
 
-	  if (firstChi2) {
+	 if (firstChi2) {
 	    firstChi2 = false;
 	    if (likelihood>0.)
-	      previousLikelihood = likelihood*2;
-	  }
+	       previousLikelihood = likelihood*2;
+	 }
 
-	  // calculate Q
-	  double Qupper = calculateQ(x,xp,vm);
-	  double Qlower = calculateQ(xp,x,vm);
-	  std::cout << "Qlower = " << Qlower << std::endl;
-	  std::cout << "Qupper = " << Qupper << std::endl;
+	 // calculate Q
+	 double Qupper = calculateQ(x,xp,vm);
+	 double Qlower = calculateQ(xp,x,vm);
+	 std::cout << "Qlower = " << Qlower << std::endl;
+	 std::cout << "Qupper = " << Qupper << std::endl;
 
-	  //	  if (haveAcceptedAtLeastOne==false) {
-	  //	    if (previousLikelihood==0) {
-	  //	      previousLikelihood = 1E-10;
-	  //	    }
-	  //	    if (Qlower==0.) {
-	  //	      Qlower = 1E-10;
-	  //	      Qupper = 1E-10;
-	  //	    }
-	  //	  } 
+	 //	  if (haveAcceptedAtLeastOne==false) {
+	 //	    if (previousLikelihood==0) {
+	 //	      previousLikelihood = 1E-10;
+	 //	    }
+	 //	    if (Qlower==0.) {
+	 //	      Qlower = 1E-10;
+	 //	      Qupper = 1E-10;
+	 //	    }
+	 //	  } 
 
-	  std::cout << "calculating rho = " << likelihood << "*" << Qupper << "/" << previousLikelihood << "*" << Qlower<< std::endl;
+	 std::cout << "calculating rho = " << likelihood << "*" << Qupper << "/" << previousLikelihood << "*" << Qlower<< std::endl;
 
-	  // calculate rho
-	  double rho = 0.;
-	  //	    if (previousLikelihood*Qlower>0.) {
-	  if (previousLikelihood>0.) {
+	 // calculate rho
+	 double rho = 0.;
+	 //	    if (previousLikelihood*Qlower>0.) {
+	 if (previousLikelihood>0.) {
 	    //	       rho = likelihood*Qupper/(previousLikelihood*Qlower);
 	    rho = likelihood/previousLikelihood;
-	  } else {
+	 } else {
 	    continue;
-	  }
-	  std::cout << "rho = " << rho << std::endl;
+	 }
+	 std::cout << "rho = " << rho << std::endl;
 
-	  // decide whether point shall be accepted
-	  float accpoint = 0;
-	  if (rho > 1.) {
+	 // decide whether point shall be accepted
+	 float accpoint = 0;
+	 if (rho > 1.) {
 	    accpoint = 1;
-	  } else {
+	 } else {
 	    double p = gRandom->Uniform(0.,1.);
 	    if (p < rho) {
-	      accpoint = 1;
+	       accpoint = 1;
 	    }
-	  } 
-	  std::cout << "accpoint = " << accpoint << std::endl;
+	 } 
+	 std::cout << "accpoint = " << accpoint << std::endl;
 
-	  if (accpoint==1) haveAcceptedAtLeastOne = true;
+	 if (accpoint==1) haveAcceptedAtLeastOne = true;
 
-	  // ++ntest[iVariable];
-	  // write into ntuple
-	  if (accpoint == 1) {
+	 // ++ntest[iVariable];
+	 // write into ntuple
+	 if (accpoint == 1) {
 	    // ++nacp[iVariable];
 	    ntupvars[0] = (Float_t)likelihood;
 	    ntupvars[1] = (Float_t)rho;
@@ -9229,9 +9239,9 @@ int   ReadLesHouches()
 	    ntupvars[4] = (Float_t)niter;
 	    ntupvars[5] = (haveAcceptedAtLeastOne) ? 1 : 0;
 	    for (unsigned int ii = 6; ii < 6+yyFittedVec.size(); ii++) {
-	      ntupvars[ii] = xp[ii-6];
+	       ntupvars[ii] = xp[ii-6];
 	    }
-	  } else {
+	 } else {
 	    ntupvars[0] = (Float_t)previousLikelihood;
 	    ntupvars[1] = (Float_t)previousRho;
 	    ntupvars[2] = (Float_t)previousChi2;
@@ -9239,43 +9249,43 @@ int   ReadLesHouches()
 	    ntupvars[4] = (Float_t)niter;
 	    ntupvars[5] = (haveAcceptedAtLeastOne) ? 1 : 0;
 	    for (unsigned int ii = 6; ii < 6+yyFittedVec.size(); ii++) {
-	      ntupvars[ii] = x[ii-6];
+	       ntupvars[ii] = x[ii-6];
 	    }
-	  }
-	  ntuple->Fill(ntupvars);
+	 }
+	 ntuple->Fill(ntupvars);
 
-	  // save variables 
-	  if (accpoint == 1)
-	    {
-	      for (unsigned int i = 0; i < x.size(); ++i) {
-		x[i] = xp[i];
-	      }
-	      previousRho        = rho;
-	      previousChi2       = chi2;
-	      previousLikelihood = likelihood;
+	 // save variables 
+	 if (accpoint == 1)
+	 {
+	    for (unsigned int i = 0; i < x.size(); ++i) {
+	       x[i] = xp[i];
 	    }
+	    previousRho        = rho;
+	    previousChi2       = chi2;
+	    previousLikelihood = likelihood;
+	 }
 
 
 
-	  chainCount++;
-	  if (chainCount > yyMaxMarkovChain)
-	    {
-	      break;
-	    }
+	 chainCount++;
+	 if (chainCount > yyMaxMarkovChain)
+	 {
+	    break;
+	 }
 
-	}
+      }
 
       return;
 
-   }
-
-   double Fittino::calculateQ(vector<double> x, vector<double> xk, vector<double> vm)
-   {
-      double Q = 1.;
-      for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) 
-      {
-	 Q = Q * 1/(TMath::Sqrt(2.*TMath::Pi())*vm[iVariable])*
-	    TMath::Exp(-sqr(x[iVariable]-xk[iVariable])/(2.*sqr(vm[iVariable])));
       }
-      return Q;
-   }
+
+      double Fittino::calculateQ(vector<double> x, vector<double> xk, vector<double> vm)
+      {
+	 double Q = 1.;
+	 for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) 
+	 {
+	    Q = Q * 1/(TMath::Sqrt(2.*TMath::Pi())*vm[iVariable])*
+	       TMath::Exp(-sqr(x[iVariable]-xk[iVariable])/(2.*sqr(vm[iVariable])));
+	 }
+	 return Q;
+      }

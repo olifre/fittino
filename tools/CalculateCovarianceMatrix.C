@@ -32,7 +32,8 @@ void CalculateCovarianceMatrix(const char* filename = "TreeSum.root", const char
 
     Int_t nEntries = tree->GetEntries();
 
-    Int_t nLeaves = tree->GetListOfLeaves()->GetEntriesFast();
+    //Int_t nLeaves = tree->GetListOfLeaves()->GetEntriesFast();
+    Int_t nLeaves = 4;
 
     Double_t* par = new Double_t[nLeaves];
 
