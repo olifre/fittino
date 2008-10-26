@@ -7836,6 +7836,9 @@ int   ReadLesHouches()
 		     cout << "running simulated annealing at t = " << t << " m(<"<<nt<<") = " << m << " j(<"<<ns<<") = " << j << 
 			" h(<"<<n<<") = " << h << " " << yyFittedVec[h].name << " in niter = " << niter <<  endl;
 		  }
+                  if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/100. ) - n_printouts/100 ) < 0.01 ) ) { 
+                     system("top -b -n 1 -u uhlenbro");
+		  }
 		  if (yyVerbose) {
 		     cout << "previous: accpoint = " << accpoint << " was better: " << accbetter <<  endl;
 		     if (accpoint==1 && accbetter== 0) {
