@@ -168,24 +168,24 @@ fixParameter massZ          91.1875         GeV
 fixParameter massBottom      4.20           GeV
 fixParameter massTop       172.4            GeV
 fixParameter massTau         1.77684        GeV
-fitParameter MSelectronL     1.94317068E+02 +-  19
-fitParameter MSelectronR     1.35763570E+02 +-  13
-fitParameter MStauL          1.93521964E+02 +-  19
-fitParameter MStauR          1.33435645E+02 +-  13
-fitParameter MSupL           5.27578743E+02 +-  53
-fitParameter MSupR           5.09146647E+02 +-  51
-fitParameter MSbottomR       5.04016936E+02 +-  50
-fitParameter MStopL          4.81693885E+02 +-  48
-fitParameter MStopR          4.09126974E+02 +-  41
-fitParameter TanBeta        10              +-   1
-fitParameter Mu              3.55049634E+02 +-  36
-fitParameter Xtau        -3799.8856134      +- 380
-fitParameter Xtop         -526.62940346     +-  53
-fitParameter Xbottom     -4314.3389594      +- 431
-fitParameter M1              1.03153128E+02 +-  10
-fitParameter M2              1.92951297E+02 +-  19
-fitParameter M3              5.68875737E+02 +-  57
-fitParameter massA0        359.62538286     +-  36
+fitParameter MSelectronL     1.94317068E+02 +- 0.19
+fitParameter MSelectronR     1.35763570E+02 +- 0.13
+fitParameter MStauL          1.93521964E+02 +- 0.19
+fitParameter MStauR          1.33435645E+02 +- 0.13
+fitParameter MSupL           5.27578743E+02 +- 0.53
+fitParameter MSupR           5.09146647E+02 +- 0.51
+fitParameter MSbottomR       5.04016936E+02 +- 0.50
+fitParameter MStopL          4.81693885E+02 +- 0.48
+fitParameter MStopR          4.09126974E+02 +- 0.41
+fitParameter TanBeta        10              +- 0.03
+fitParameter Mu              3.55049634E+02 +- 0.36
+fitParameter Xtau        -3799.8856134      +- 3.80
+fitParameter Xtop         -526.62940346     +- 0.53
+fitParameter Xbottom     -4314.3389594      +- 4.31
+fitParameter M1              1.03153128E+02 +- 0.10
+fitParameter M2              1.92951297E+02 +- 0.19
+fitParameter M3              5.68875737E+02 +- 0.57
+fitParameter massA0        359.62538286     +- 0.36
 
 ### Universalities
 
