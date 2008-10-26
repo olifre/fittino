@@ -169,7 +169,7 @@ GetTempFromFirstChiSqr         on
 UseMarkovChains                on
 MarkovChainReadjustWidth       off
 MarkovChainReadjustWidthPeriod 500
-MaxMarkovChain                 20000
+MaxMarkovChain                 40000
 
 MinuitStrategy	               2
 MachinePrecision               1e-8
