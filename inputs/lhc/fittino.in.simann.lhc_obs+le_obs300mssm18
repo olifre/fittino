@@ -14,7 +14,7 @@
 
 LEObs ( Bsg_npf        )      0.912458   +- 0.076   +- 0.082 +- 0.050    alias  1 # [1]
 LEObs ( dm_s_npf       )      1.04897    +- 0.01    +- 0.32              alias  2 # [1]
-LEObs ( B_smm_npf      ) <    4.7E-8                         +- 0.02E-8  alias  3 # [1]
+#LEObs ( B_smm_npf      ) <    4.7E-8                         +- 0.02E-8  alias  3 # [1]
 LEObs ( Btn_npf        )      0.964095   +- 0.40                         alias  4 # [1]
 LEObs ( B_sXsll_npf    )      0.982954   +- 0.32                         alias  5 # [1]
 LEObs ( Klnu_npf       )      0.999679   +- 0.014                        alias  6 # [1]
@@ -34,8 +34,8 @@ LEObs ( A_tau_npf      )      0.148399   +- 0.0032                       alias 1
 LEObs ( A_fbl_npf      )      0.0165167  +- 0.00095                      alias 20 # [2]
 LEObs ( sigma_had0_npf )     41.4862     +- 0.037                        alias 21 # [2]
 LEObs ( dm_k_npf       )      1.04844    +- 0.14                         alias 22 # [1]
-LEObs ( Kppinn_npf     ) <    4.5        +- 1.0E-10                      alias 23 # [1], added small error 1.0E-10
-LEObs ( B_dll_npf      ) <    2.3E-8                         +- 0.001E-8 alias 24 # [1]
+#LEObs ( Kppinn_npf     ) <    4.5        +- 1.0E-10                      alias 23 # [1], added small error 1.0E-10
+#LEObs ( B_dll_npf      ) <    2.3E-8                         +- 0.001E-8 alias 24 # [1]
 LEObs ( DmsDmd_npf     )      0.999848   +- 0.01    +- 0.16              alias 25 # [1]
 
 ### SM observables
@@ -225,9 +225,9 @@ GetContours                    off
 UseSimAnnBefore                on
 UseSimAnnWhile                 off
 AdaptiveSimAnn                 off
-TempRedSimAnn                  0.5
-MaxCallsSimAnn                 50000
-InitTempSimAnn                 15
+TempRedSimAnn                  0.6
+MaxCallsSimAnn                 65000
+InitTempSimAnn                 20
 SimAnnUncertainty              off
 SimAnnUncertaintyRunDown       off
 GetTempFromFirstChiSqr         on
