@@ -30,7 +30,7 @@ void PlotMarkovChains2D (bool bayes)
   markovChain.Print();
 
   int nEntries = markovChain.GetEntries();
-  // if (nEntries > 100000) nEntries = 100000;
+  //  if (nEntries > 100000) nEntries = 100000;
   int nBins = 25;
 
   std::cout << "number of entries " << nEntries << std::endl;
@@ -47,30 +47,30 @@ void PlotMarkovChains2D (bool bayes)
   // variables.push_back("Y");
 
   // mSUGRA
-  //variables.push_back("TanBeta");
-  //variables.push_back("M0");
-  //variables.push_back("M12");
-  //variables.push_back("A0");
+  variables.push_back("TanBeta");
+  variables.push_back("M0");
+  variables.push_back("M12");
+  variables.push_back("A0");
 
   // MSSM
-  variables.push_back("MSelectronL");
-  variables.push_back("MSelectronR");
-  variables.push_back("MStauL");
-  variables.push_back("MStauR");
-  variables.push_back("MSupL");
-  variables.push_back("MSupR");
-  variables.push_back("MSbottomR");
-  variables.push_back("MStopL");
-  variables.push_back("MStopR");
-  variables.push_back("TanBeta");
-  variables.push_back("Mu");
-  variables.push_back("Xtau");
-  variables.push_back("Xtop");
-  variables.push_back("Xbottom");
-  variables.push_back("M1");
-  variables.push_back("M2");
-  variables.push_back("M3");
-  variables.push_back("massA0");
+//  variables.push_back("MSelectronL");
+//  variables.push_back("MSelectronR");
+//  variables.push_back("MStauL");
+//  variables.push_back("MStauR");
+//  variables.push_back("MSupL");
+//  variables.push_back("MSupR");
+//  variables.push_back("MSbottomR");
+//  variables.push_back("MStopL");
+//  variables.push_back("MStopR");
+//  variables.push_back("TanBeta");
+//  variables.push_back("Mu");
+//  variables.push_back("Xtau");
+//  variables.push_back("Xtop");
+//  variables.push_back("Xbottom");
+//  variables.push_back("M1");
+//  variables.push_back("M2");
+//  variables.push_back("M3");
+//  variables.push_back("massA0");
 
   // create and initialize variables
   vector<float> varValues;
@@ -164,17 +164,20 @@ void PlotMarkovChains2D (bool bayes)
 		    }
 		  }
 		  if (foundAPoint) {
-		    cout << "filling thisHist at " << (sVarValueHig+sVarValueLow)/2. 
-			 << " " << (fVarValueHig+fVarValueLow)/2. 
-			 << " " << highestL << endl;
+//		    cout << "filling thisHist at " << (sVarValueHig+sVarValueLow)/2. 
+//			 << " " << (fVarValueHig+fVarValueLow)/2. 
+//			 << " " << highestL << endl;
 		    thisHist->Fill((sVarValueHig+sVarValueLow)/2.,(fVarValueHig+fVarValueLow)/2.,highestL);
 		  } else {
-		    cout << "No valid point at   " << (sVarValueHig+sVarValueLow)/2. 
-			 << " " << (fVarValueHig+fVarValueLow)/2. << endl;
+		    //		    cout << "No valid point at   " << (sVarValueHig+sVarValueLow)/2. 
+		    //			 << " " << (fVarValueHig+fVarValueLow)/2. << endl;
 		  }
 		}
 	      }
 	    }
+
+	  // common plotting for frequentist and bayesian interpretation
+
 	  TH2D *loghist = new TH2D("loghist", "", thisHist->GetNbinsX(),
 				   thisHist->GetXaxis()->GetXmin(),
 				   thisHist->GetXaxis()->GetXmax(),
@@ -204,8 +207,8 @@ void PlotMarkovChains2D (bool bayes)
 		if (val > maxval) maxval = val;
 		if (val < minVal) {
 		  minVal = val;
-		  minF = ((double)ix+0.5)/(double)thisHist->GetNbinsX()*(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())+thisHist->GetXaxis()->GetXmin();
-		  minS = ((double)iy+0.5)/(double)thisHist->GetNbinsY()*(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())+thisHist->GetYaxis()->GetXmin();
+		  minF = ((double)ix-0.5)/(double)thisHist->GetNbinsX()*(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())+thisHist->GetXaxis()->GetXmin();
+		  minS = ((double)iy-0.5)/(double)thisHist->GetNbinsY()*(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())+thisHist->GetYaxis()->GetXmin();
 		}
 		loghist->SetBinContent(ix, iy, val);
 	      }
@@ -319,7 +322,12 @@ void PlotMarkovChains2D (bool bayes)
 	  
 	  string fileName = variables[fVariable] + 
 	     variables[sVariable] +
-	     "Markov.eps";
+	     "Markov";
+	  if (bayes) {
+	    fileName = fileName + "Bayes.eps";
+	  } else {
+	    fileName = fileName + "Freq.eps";
+	  }
 	  canvas->Print(fileName.c_str());
 	  canvas->SetLogz();
 	  thisHist->Draw("cont1z");
@@ -327,6 +335,7 @@ void PlotMarkovChains2D (bool bayes)
 	     variables[sVariable] +
 	     "TestMarkov.eps";
 	  canvas->Print(fileName.c_str());	  
+	  canvas->SetLogz(0);
 	  thisHist->Delete();
 	  loghist->Delete();
 	}
