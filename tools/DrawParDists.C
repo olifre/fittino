@@ -73,6 +73,11 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
     TF1**     gauss = new TF1[nLeaves];
     TF1*      chi2  = 0;
 
+    // open text file
+    fstream pullFitsFile;
+    pullFitsFile.open ("pullFitsResults.txt",ofstream::out);
+
+
     Char_t xtitle[256];
 
     for (Int_t iLeaf=0; iLeaf<nLeaves; iLeaf++) {
@@ -210,6 +215,8 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
 	       printf("RMS  = %f             sigma = %f\n", rms, sigma);
 	       printf("%s: (RMS - Sigma) / Sigma = %f\n", leaf->GetName(),
 		     (rms - sigma) / sigma);
+	       // write ot the fit result to a file
+	       pullFitsFile << leaf->GetName() << " = " << mu << " +- " << sigma << " deviation from gaussian: " << (rms - sigma) / sigma << endl;
 	    }
 	}
 
@@ -223,4 +230,7 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
        delete histo[iLeaf];
     }
     delete c;
+
+    pullFitsFile.close();
+    
 }
