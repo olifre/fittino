@@ -7837,7 +7837,7 @@ int   ReadLesHouches()
 			" h(<"<<n<<") = " << h << " " << yyFittedVec[h].name << " in niter = " << niter <<  endl;
 		  }
                   if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/100. ) - n_printouts/100 ) < 0.01 ) ) { 
-                     system("top -b -n 1 -u uhlenbro");
+		    // system("top -b -n 1 -u uhlenbro");
 		  }
 		  if (yyVerbose) {
 		     cout << "previous: accpoint = " << accpoint << " was better: " << accbetter <<  endl;

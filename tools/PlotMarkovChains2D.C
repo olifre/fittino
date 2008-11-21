@@ -47,10 +47,10 @@ void PlotMarkovChains2D (bool bayes)
   // variables.push_back("Y");
 
   // mSUGRA
-  variables.push_back("TanBeta");
-  variables.push_back("M0");
-  variables.push_back("M12");
-  variables.push_back("A0");
+//  variables.push_back("TanBeta");
+//  variables.push_back("M0");
+//  variables.push_back("M12"); 
+//  variables.push_back("A0");
 
   // MSSM
 //  variables.push_back("MSelectronL");
@@ -62,9 +62,9 @@ void PlotMarkovChains2D (bool bayes)
 //  variables.push_back("MSbottomR");
 //  variables.push_back("MStopL");
 //  variables.push_back("MStopR");
-//  variables.push_back("TanBeta");
+  variables.push_back("TanBeta");
 //  variables.push_back("Mu");
-//  variables.push_back("Xtau");
+  variables.push_back("Xtau");
 //  variables.push_back("Xtop");
 //  variables.push_back("Xbottom");
 //  variables.push_back("M1");
@@ -329,12 +329,12 @@ void PlotMarkovChains2D (bool bayes)
 	    fileName = fileName + "Freq.eps";
 	  }
 	  canvas->Print(fileName.c_str());
-	  canvas->SetLogz();
-	  thisHist->Draw("cont1z");
-	  fileName = variables[fVariable] + 
-	     variables[sVariable] +
-	     "TestMarkov.eps";
-	  canvas->Print(fileName.c_str());	  
+	  //canvas->SetLogz();
+	  //thisHist->Draw("cont1z");
+	  //fileName = variables[fVariable] + 
+	  //   variables[sVariable] +
+	  //   "TestMarkov.eps";
+	  //canvas->Print(fileName.c_str());	  
 	  canvas->SetLogz(0);
 	  thisHist->Delete();
 	  loghist->Delete();
