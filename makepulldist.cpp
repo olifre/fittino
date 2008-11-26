@@ -235,6 +235,7 @@ void MakePullDist::CalcPullDist()
      // loop here over varied 'digital' parameters
      // (eg signmu=+1,-1)
 
+
      //   calculate new Fit result...
      Fittino* fittino = new Fittino(fInput);
      if ( yyFitModel == MSSM || yyFitModel == NMSSM ) {
@@ -243,6 +244,16 @@ void MakePullDist::CalcPullDist()
      else {
 	fittino->setStartValues();
      }
+
+     // maybe shake yyFittedVec
+     if (yyToyFitShakeFittedVecBeforeStart) {
+       for (unsigned int j = 0; j < yyFittedVec.size(); j++) {
+	 double shift = gRandom->Gaus(0.,yyFittedVec[j].error/5.);
+	 yyFittedVec[j].value += shift;
+	 std::cout << "smearing parameter " << yyFittedVec[j].name << " by " << shift << " to new start value " << yyFittedVec[j].value << std::endl;
+       }
+     }
+
      fittino->calculateLoopLevelValues();
      cout << "returned from CalculateLoopLevelValues" << endl;
      // write results

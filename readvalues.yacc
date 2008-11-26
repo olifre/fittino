@@ -158,6 +158,8 @@ bool          yyUseHiggsLimits = false;
 bool          yyQuarkFlavourViolation = false;
 bool          yyRandomParameters = false;
 bool          yyUseObservableScatteringBefore = false;
+bool          yyToyFitShakeFittedVecBeforeStart = false;
+bool          yySetErrorFlag = false;
 
 unsigned int yyCalculator;
 unsigned int yyRelicDensityCalculator;
@@ -1187,7 +1189,11 @@ input:
 		  if (!strcmp($2, "UseObservableScatteringBefore")) {
 		      if ($3 == on) yyUseObservableScatteringBefore = true;
 		      else yyUseObservableScatteringBefore = false;
-		  }
+		  } 
+		  if (!strcmp($2, "ToyFitShakeFittedVecBeforeStart")) {
+		      if ($3 == on) yyToyFitShakeFittedVecBeforeStart = true;
+		      else yyToyFitShakeFittedVecBeforeStart = false;
+		  } 
 	      }
 	    | input T_CALCULATOR T_WORD
 	      {
@@ -4093,5 +4099,6 @@ correrr:   T_ERRORSIGN T_BRA T_WORD T_KET value
 		 fprintf(stderr, "Error while reading input file (line %d): %s\n",
 		       yyInputFileLineNo, s);
 		 //    fprintf(stderr, "Error while reading input file: %s\n", s);
-		 exit(EXIT_FAILURE);
+		 yySetErrorFlag = true;
+		 // exit(EXIT_FAILURE);
 	      }

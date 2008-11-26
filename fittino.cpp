@@ -1124,6 +1124,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	       }
 	       cout << " parameter " <<  yyFittedPar[i].name << " " << yyFittedVec[ilength-1].value << " " 
 	       	    << " to value " << yyFittedPar[i].value << " +- " << yyFittedVec[ilength-1].error << endl;	   
+	       if (!yyFittedPar[i].name.compare("massA0")) {
+		 yyFittedVec[ilength-1].bound_low = 0.;
+	       }	    
 	    }
 	    par_already_found = true;
 	    break;
@@ -1225,12 +1228,16 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 
       }
       if (!par_already_found) {
-	 fnew.name  = yyFittedPar[i].name;
-	 fnew.value = yyFittedPar[i].value;
-	 fnew.error = yyFittedPar[i].value*0.05;
-	 fnew.bound_low = -1.E+6;
-	 fnew.bound_up = 1.E+6;
-	 yyFittedVec.push_back(fnew);
+	std::cout << "ParNotFound: " <<  yyFittedPar[i].name << std::endl;
+	fnew.name  = yyFittedPar[i].name;
+	fnew.value = yyFittedPar[i].value;
+	fnew.error = yyFittedPar[i].value*0.05;
+	fnew.bound_low = -1.E+6;
+	fnew.bound_up = 1.E+6;
+	if (!yyFittedPar[i].name.compare("massA0")) {
+	  fnew.bound_low = 0.;
+	}
+	yyFittedVec.push_back(fnew);
       }     
    }
 
@@ -3357,6 +3364,13 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
       return;
    }
 
+   if (yySetErrorFlag) {
+     cerr << "Exiting fitterFCN because of Syntax Error in the LesHouches File" << endl;                                                                      
+     f = 111111111111.;                                                                                                                                                
+     cout << " f = " << f << endl;                                                                                                                                     
+     return;  
+   }
+   yySetErrorFlag = false;
 
    // end loop over crosssections and polarisations:
    //  }
@@ -6530,7 +6544,7 @@ void FillFixedParameters()
       tmpValue.name = "massA0";
       tmpValue.value = 436.2;
       tmpValue.error = -1.;
-      tmpValue.bound_low = -1E+6;
+      tmpValue.bound_low = 0.0;
       tmpValue.bound_up = 1E+6;
       tmpValue.id = ID_A;
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
