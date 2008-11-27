@@ -57,6 +57,11 @@ Input::Input(const char* inputfile)
     cerr<<"       Check above messages for details"<<endl;
     exit(EXIT_FAILURE);
   }
+  if (yySetErrorFlag) {
+    cerr<<"ERROR: Syntax error in Fittino input file "<<inputfile<<endl;
+    cerr<<"       Check above messages for details"<<endl;
+    exit(EXIT_FAILURE);
+  }
 
   yyInputFileLineNo = 1;
 

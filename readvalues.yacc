@@ -4100,5 +4100,6 @@ correrr:   T_ERRORSIGN T_BRA T_WORD T_KET value
 		       yyInputFileLineNo, s);
 		 //    fprintf(stderr, "Error while reading input file: %s\n", s);
 		 yySetErrorFlag = true;
+		 return;
 		 // exit(EXIT_FAILURE);
 	      }
