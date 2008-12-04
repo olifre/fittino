@@ -380,8 +380,8 @@ xsbr ( sigma_717 br_42 br_42 )                1.5494 fb +- 0.1  fb alias 819 # H
 
 fitModel      MSSM
 
-fitParameter  TanBeta       10.0
-fitParameter  Mu            4.00391601E+02 GeV
+fitParameter  TanBeta       10.0           
+fitParameter  Mu            4.00391601E+02 GeV 
 fitParameter  Xtau          -4449.2464     GeV
 fitParameter  MSelectronR   1.15601432E+02 GeV
 fitParameter  MStauR        1.09886191E+02 GeV
@@ -434,7 +434,7 @@ TempRedSimAnn         0.6
 MaxCallsSimAnn        450000
 InitTempSimAnn        10000
 
-Calculator            SPHENO  ../SPheno2.2.2/SPheno
+Calculator            SPHENO  ./SPheno
 
 UseMinos              off
 UseHesse              off

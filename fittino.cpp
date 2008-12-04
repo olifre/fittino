@@ -3450,7 +3450,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
    if ((!(f<0.))&&(!(f>=0.))) {
 
-      f = 1.E99;
+      f = 111111111111.;
       cout << "detected nan!" << endl;
 
    }
@@ -7668,6 +7668,8 @@ int   ReadLesHouches()
       } else {
 	 nt = 3*n;
       }
+      // override this
+      nt=yySimAnnEpochLength;
       for (i = 0; i < neps; ++i) {
 	 fstar.push_back(1e20);
       }
@@ -7875,7 +7877,11 @@ int   ReadLesHouches()
 		     return;
 		  }
 		  //  Accept new point if better chisq
-		  if (fp >= f) {
+		  if (fp < -111111111110.) {
+		    ++nrej;
+		    accpoint = 0;
+		  }
+		  else if (fp >= f) {
 		     for (i = 0; i < n; ++i) {
 			x[i] = xp[i];
 		     }

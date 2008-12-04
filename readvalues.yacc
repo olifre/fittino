@@ -182,6 +182,7 @@ int           yyInfinity = 0;
 unsigned int  yyNumberOfMinimizations = 1;
 double        yyErrDef = 1.;
 int           yyMaxCallsSimAnn = 300000;
+int           yySimAnnEpochLength = 60;
 double        yyTempRedSimAnn = 0.4;
 double        yyInitTempSimAnn = -1.;
 int           yyNumberPulls = 0;
@@ -336,6 +337,12 @@ input:
                     yyMaxCallsSimAnn = (int)$3;
                   }
                 } 	        
+	        else if (!strcmp($2,"SimAnnEpochLength")) {
+		  // cout << "FOUND  SimAnnEpochLength "<<$3<<endl;
+		  if ($3>0) {
+                    yySimAnnEpochLength = (int)$3;
+                  }
+                } 
 	        else if (!strcmp($2,"TempRedSimAnn")) {
 		  // cout << "FOUND TempRedSimAnn "<<$3<<endl;
 		  if ($3>0) {

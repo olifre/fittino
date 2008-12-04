@@ -248,7 +248,7 @@ void MakePullDist::CalcPullDist()
      // maybe shake yyFittedVec
      if (yyToyFitShakeFittedVecBeforeStart) {
        for (unsigned int j = 0; j < yyFittedVec.size(); j++) {
-	 double shift = gRandom->Gaus(0.,yyFittedVec[j].error/5.);
+	 double shift = gRandom->Gaus(0.,yyFittedVec[j].error/7.);
 	 yyFittedVec[j].value += shift;
 	 std::cout << "smearing parameter " << yyFittedVec[j].name << " by " << shift << " to new start value " << yyFittedVec[j].value << std::endl;
        }

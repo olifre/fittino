@@ -110,6 +110,7 @@ extern int    yyInfinity;
 extern double        yyErrDef;
 extern int           yyNumberPulls;
 extern int           yyMaxCallsSimAnn;
+extern int           yySimAnnEpochLength;
 extern int           yyRandomGeneratorSeed;
 extern int           yyNumberOfDirections;
 extern int           yyMaxMarkovChain;
