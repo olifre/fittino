@@ -147,8 +147,8 @@ GetContours                    off
 UseSimAnnBefore                on
 UseSimAnnWhile                 off
 AdaptiveSimAnn                 off
-TempRedSimAnn                  0.5
-MaxCallsSimAnn                 5
+TempRedSimAnn                  0.7
+MaxCallsSimAnn                 70000
 InitTempSimAnn                 5
 SimAnnUncertainty              off
 SimAnnUncertaintyRunDown       off
