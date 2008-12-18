@@ -1056,6 +1056,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    }
 
 
+
    // FIXME: Find a more intelligent way to get start values and errors
    if (yyFitModel == NMSSM) {
       fNmssmLambda.name  = "lambda";
@@ -1238,7 +1239,7 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	  fnew.bound_low = 0.;
 	}
 	yyFittedVec.push_back(fnew);
-      }     
+      }
    }
 
    //    for (unsigned int  i=0; i < fInput->GetMeasuredVector().size(); i++ ) {

@@ -51,7 +51,7 @@ massBottom   4.20       GeV +- 0.17       GeV # [5]
 massTop    172.4        GeV +- 1.2        GeV # [1]
 massTau      1.77684    GeV +- 0.00017    GeV # [6]
 
-massCharm    1.27       GeV +- 0.11       GeV # [5]
+massCharm    1.2       GeV +- 0.11       GeV # [5]
 
 # [1] Buchmueller et al. arXiv:0808.4128v1
 # [2] Buchmueller et al. arXiv:0707.3447v2
@@ -103,13 +103,13 @@ nofit massChargino2    418.495 GeV +-  3.0  GeV
 
 ### mSUGRA parameters at SPS 1a
 
-fixParameter alphaem     127.925      GeV
-fixParameter G_F           1.16637E-5
-fixParameter alphas        0.1176     GeV
-fixParameter massZ        91.1875     GeV
-fixParameter massBottom    4.20       GeV
-fixParameter massTop     172.4        GeV
-fixParameter massTau       1.77684    GeV
+fitParameter alphaem     127.925      GeV +- 0.016      GeV
+fitParameter G_F           1.16637E-5	  +- 0.00001E-5    
+fitParameter alphas        0.1176     GeV +- 0.0020     GeV
+fitParameter massZ        91.1875     GeV +- 0.0021     GeV
+fitParameter massBottom    4.20       GeV +- 0.17       GeV
+fitParameter massTop     172.4        GeV +- 1.2        GeV
+fitParameter massTau       1.77684    GeV +- 0.00017    GeV
 fixParameter SignMu        1
 fitParameter M0          100          GeV +-  1.  GeV
 fitParameter M12         250          GeV +-  2.5 GeV
@@ -127,7 +127,7 @@ LoopCorrections                on
 ISR                            on
 UseGivenStartValues            on
 FitAllDirectly                 on
-CalcPullDist                   on
+CalcPullDist                   off
 CalcIndChisqContr              off
 BoundsOnX                      off
 ScanX                          off
@@ -147,12 +147,15 @@ GetContours                    off
 UseSimAnnBefore                on
 UseSimAnnWhile                 off
 AdaptiveSimAnn                 off
-TempRedSimAnn                  0.7
-MaxCallsSimAnn                 70000
+TempRedSimAnn                  0.6
+MaxCallsSimAnn                 30000
 InitTempSimAnn                 5
+SimAnnEpochLength              30
 SimAnnUncertainty              off
 SimAnnUncertaintyRunDown       off
 GetTempFromFirstChiSqr         on
+
+
 
 UseMarkovChains                off
 MarkovChainReadjustWidth       off
