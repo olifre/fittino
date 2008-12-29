@@ -5014,6 +5014,7 @@ void WriteLesHouches(double* x)
 	 LesHouchesOutfile << "    6 1                      # Flavour violation in quark sector" << endl;
       }
       LesHouchesOutfile << "BLOCK SMINPUTS               # Standard Model inputs" << endl;
+
       if (FindInFixed("alphaem")) {
 	 LesHouchesOutfile << "    1 " << ReturnFixedValue("alphaem")->value << " # 1/alpha_em (fixed)" << endl;
       }
@@ -5032,8 +5033,8 @@ void WriteLesHouches(double* x)
       else {
 	 LesHouchesOutfile << "    1  " << ReturnMeasuredValue("alphaem")->value << " # 1/alpha_em(M_Z) (fixed)" << endl;
       }
-//    Removed because of problems with small errors
-//    TODO: Fix problem in a smarter way
+
+      // TODO: Fix problem with small errors in a smarter way
       if (FindInFixed("G_F")) {
 	 LesHouchesOutfile << "    2  "<<ReturnFixedValue("G_F")->value<<" # G_F (fixed)"<<endl;
       }
@@ -5071,7 +5072,6 @@ void WriteLesHouches(double* x)
       else {
 	 LesHouchesOutfile << "    3  "<<ReturnMeasuredValue("alphas")->value<<" # alpha_s (fixed)"<<endl;
       }
-
 
       if (FindInFixed("massZ")) {
 	 LesHouchesOutfile << "    4  "<<ReturnFixedValue("massZ")->value<<" # mZ (fixed)"<<endl;
@@ -5118,7 +5118,7 @@ void WriteLesHouches(double* x)
       else if (FindInFitted("massTop")) {
 	 LesHouchesOutfile << "    6  "<<x[ReturnFittedPosition("massTop")]<<" # mtop"<<endl;
 	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-	    cout << "Fitting mTop " << x[ReturnFittedPosition("massTop")] << endl;
+	    cout << "Fitting massTop " << x[ReturnFittedPosition("massTop")] << endl;
 	 }
       } 
       else if (FindInUniversality("massTop")) {
@@ -5136,17 +5136,19 @@ void WriteLesHouches(double* x)
       }
       else if (FindInFitted("massTau")) {
 	 LesHouchesOutfile << "    7  "<<x[ReturnFittedPosition("massTau")]<<" # mtau"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) {
+	    cout << "Fitting massTau " << x[ReturnFittedPosition("massTau")] << endl;
+	 }
       } 
       else if (FindInUniversality("massTau")) {
 	 LesHouchesOutfile << "    7  "<<x[ReturnFittedPosition(ReturnUniversality("massTau")->universality)]<<" # massTau"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) {
 	    cout << "fitting " << ReturnUniversality("massTau")->universality << " instead of massTau" << endl;
 	 }
       }
       else {
 	 LesHouchesOutfile << "    7  "<<ReturnMeasuredValue("massTau")->value<<" # mtau (fixed)"<<endl;
       }
-
 
       //if (FindInFixed("massCharm")) {
       //  LesHouchesOutfile << "    8  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
