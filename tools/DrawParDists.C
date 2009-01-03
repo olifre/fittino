@@ -216,7 +216,7 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
 	       printf("%s: (RMS - Sigma) / Sigma = %f\n", leaf->GetName(),
 		     (rms - sigma) / sigma);
 	       // write ot the fit result to a file
-	       pullFitsFile << leaf->GetName() << " = " << mu << " +- " << sigma << " deviation from gaussian: " << (rms - sigma) / sigma << endl;
+	       pullFitsFile << leaf->GetName() << " = " << mu << " +- " << sigma << " (Mean+-Var: " << mean << "+-" << rms << ") deviation from gaussian: " << (rms - sigma) / sigma << endl;
 	    }
 	}
 
