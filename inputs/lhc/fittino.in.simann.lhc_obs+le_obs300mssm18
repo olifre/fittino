@@ -242,6 +242,8 @@ MachinePrecision               1e-8
 
 Verbose                        on
 
+MaxCalculatorTime	       20
+
 ScanParameters                 off
 
 PerformFit                     on

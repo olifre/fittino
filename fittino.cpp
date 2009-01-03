@@ -1610,7 +1610,7 @@ void Fittino::setStartValues()
 	 fLambda.error = yyFittedPar[FindInFittedPar("Lambda")].error;
       }
       fLambda.bound_low = 1e3;
-      fLambda.bound_up = 1e6;
+      fLambda.bound_up = 1e9;
 
       fMmess.name  = "Mmess";
       fMmess.value = 2e5;
@@ -1620,7 +1620,7 @@ void Fittino::setStartValues()
 	 fMmess.error = yyFittedPar[FindInFittedPar("Mmess")].error;
       }
       fMmess.bound_low = 1e3;
-      fMmess.bound_up = 1e6;
+      fMmess.bound_up = 1e9;
 
       fcGrav.name  = "cGrav";
       fcGrav.value = 1;
