@@ -39,9 +39,26 @@ Double_t chi2Function(Double_t *x, Double_t *par)
     return retval;
 }
 
+Double_t chi2Function2(Double_t *x, Double_t *par)
+{
+    Double_t retval = 0;
+
+    if ( TMath::Power(2, 0.5*par[1]) * TMath::Gamma(0.5*par[1]) ) {
+      retval = (par[0]*(TMath::Power(x[0], 0.5*par[1] - 1) * TMath::Exp(-0.5*x[0]) /
+			(TMath::Power(2, 0.5*par[1]) * TMath::Gamma(0.5*par[1]))));
+    }
+
+    if ( TMath::Power(2, 0.5*par[3]) * TMath::Gamma(0.5*par[3]) ) {
+      retval += (par[2]*(TMath::Power(x[0], 0.5*par[3] - 1) * TMath::Exp(-0.5*x[0]) /
+			(TMath::Power(2, 0.5*par[3]) * TMath::Gamma(0.5*par[3]))));
+    }
+
+    return retval;
+}
+
 
 void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributions.sum.root",
-		  const char* treename = "tree", const Double_t chi2cut = -1)
+		  const char* treename = "tree", const Double_t chi2cut = -1, const bool twoChi2Fit = false)
 {
     gStyle->SetOptStat(0);
     gStyle->SetOptFit(111111);
@@ -146,19 +163,32 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
 	gauss[iLeaf]->SetLineColor(kRed);
 
 	if (!strcmp(leaf->GetName(), "Chi2")) {
+	  if (!twoChi2Fit) {
 	    chi2 = new TF1("chi2", chi2Function,
 			   TMath::Max( histo[iLeaf]->GetXaxis()->GetXmin(), 0.0),
 			   histo[iLeaf]->GetXaxis()->GetXmax(), 2);
-
+	    
 	    chi2->SetParNames("norm", "ndf");
 	    chi2->SetParameter(0, 0.1 * histo[iLeaf]->Integral());
 	    chi2->SetParameter(1, 10);
-	    chi2->SetLineColor(kRed);
-
-	    iChi2Leaf = iLeaf;
+	  } else {
+	    chi2 = new TF1("chi2", chi2Function2,
+			   TMath::Max( histo[iLeaf]->GetXaxis()->GetXmin(), 0.0),
+			   histo[iLeaf]->GetXaxis()->GetXmax(), 4);
+	    
+	    chi2->SetParNames("norm1", "ndf1", "norm2", "ndf2" );
+	    chi2->SetParameter(0, 0.1 * histo[iLeaf]->Integral());
+	    chi2->SetParameter(1, 30);	    
+	    chi2->SetParameter(0, 0.01 * histo[iLeaf]->Integral());
+	    chi2->SetParameter(1, 60);	    
+	  }
+	  
+	  chi2->SetLineColor(kRed);
+	  
+	  iChi2Leaf = iLeaf;
 	}
     }
-
+    
     if (!(chi2cut < 0) && iChi2Leaf < 0) {
         printf("Cannot apply chi2 cut because tree does not contain Chi2 leaf\n");
 	return;
@@ -195,36 +225,63 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
     char epsfilename[256];
 
     for (Int_t iLeaf=0; iLeaf<nLeaves; iLeaf++) {
-
-        TLeafD* leaf = (TLeafD*)tree->GetListOfLeaves()->At(iLeaf);
-
-	if (!strcmp(leaf->GetName(), "Chi2")) {
-	    histo[iLeaf]->Fit(chi2, "rem");
-	    histo[iLeaf]->Draw("ep");
+      
+      TLeafD* leaf = (TLeafD*)tree->GetListOfLeaves()->At(iLeaf);
+      
+      if (!strcmp(leaf->GetName(), "Chi2")) {
+	histo[iLeaf]->Fit(chi2, "rem");
+	histo[iLeaf]->Draw("ep");
+	if (twoChi2Fit) {
+	  const double norm1 = chi2->GetParameter(0);
+	  const double norm2 = chi2->GetParameter(2);
+	  const double ndf1  = chi2->GetParameter(1);
+	  const double ndf2  = chi2->GetParameter(3);
+	  cout << norm1 << norm2 << ndf1 << ndf2 << endl;
+	  TF1* chi2draw1 = new TF1("chi2draw1", chi2Function,
+				   TMath::Max( histo[iLeaf]->GetXaxis()->GetXmin(), 0.0),
+				   histo[iLeaf]->GetXaxis()->GetXmax(), 2);
+	  chi2draw1->SetParNames("norm1", "ndf1");
+	  chi2draw1->SetParameter(0, norm1);
+	  chi2draw1->SetParameter(1, ndf1);
+	  chi2draw1->SetLineColor(kRed);
+	  chi2draw1->SetLineStyle(2);
+	  chi2draw1->SetLineWidth(1);
+	  chi2draw1->Draw("same");
+	  TF1* chi2draw2 = new TF1("chi2draw2", chi2Function,
+				   TMath::Max( histo[iLeaf]->GetXaxis()->GetXmin(), 0.0),
+				   histo[iLeaf]->GetXaxis()->GetXmax(), 2);
+	  chi2draw2->SetParNames("norm2", "ndf2");
+	  chi2draw2->SetParameter(0, norm2);
+	  chi2draw2->SetParameter(1, ndf2);
+	  chi2draw2->SetLineColor(kBlue);
+	  chi2draw2->SetLineStyle(2);
+	  chi2draw2->SetLineWidth(1);
+	  chi2draw2->Draw("same");
 	}
-	else {
-            if (strcmp(leaf->GetName(), "Kppinn_npf")) {
-	       histo[iLeaf]->Fit(gauss[iLeaf], "rem");
-	       histo[iLeaf]->Draw("ep");
-	       Double_t mean = sum[iLeaf] / nEntries;
-	       Double_t mu = gauss[iLeaf]->GetParameter(1);
-	       Double_t rms = TMath::Sqrt((sum2[iLeaf] - sum[iLeaf] * sum[iLeaf]
-			/ nEntries ) / nEntries);
-	       Double_t sigma = gauss[iLeaf]->GetParameter(2);
-	       printf("mean = %f             mu    = %f\n", mean, mu);
-	       printf("RMS  = %f             sigma = %f\n", rms, sigma);
-	       printf("%s: (RMS - Sigma) / Sigma = %f\n", leaf->GetName(),
-		     (rms - sigma) / sigma);
-	       // write ot the fit result to a file
-	       pullFitsFile << leaf->GetName() << " = " << mu << " +- " << sigma << " (Mean+-Var: " << mean << "+-" << rms << ") deviation from gaussian: " << (rms - sigma) / sigma << endl;
-	    }
+      }
+      else {
+	if (strcmp(leaf->GetName(), "Kppinn_npf")) {
+	  histo[iLeaf]->Fit(gauss[iLeaf], "rem");
+	  histo[iLeaf]->Draw("ep");
+	  Double_t mean = sum[iLeaf] / nEntries;
+	  Double_t mu = gauss[iLeaf]->GetParameter(1);
+	  Double_t rms = TMath::Sqrt((sum2[iLeaf] - sum[iLeaf] * sum[iLeaf]
+				      / nEntries ) / nEntries);
+	  Double_t sigma = gauss[iLeaf]->GetParameter(2);
+	  printf("mean = %f             mu    = %f\n", mean, mu);
+	  printf("RMS  = %f             sigma = %f\n", rms, sigma);
+	  printf("%s: (RMS - Sigma) / Sigma = %f\n", leaf->GetName(),
+		 (rms - sigma) / sigma);
+	  // write ot the fit result to a file
+	  pullFitsFile << leaf->GetName() << " = " << mu << " +- " << sigma << " (Mean+-Var: " << mean << "+-" << rms << ") deviation from gaussian: " << (rms - sigma) / sigma << endl;
 	}
-
-	sprintf(epsfilename, "%s.eps", leaf->GetName());
-	c->Print(epsfilename);
-
+      }
+      
+      sprintf(epsfilename, "%s.eps", leaf->GetName());
+      c->Print(epsfilename);
+      
     }
-
+    
     delete[] par;
     for (Int_t iLeaf=0; iLeaf<nLeaves; iLeaf++) {
        delete histo[iLeaf];
