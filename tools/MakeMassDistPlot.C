@@ -90,6 +90,9 @@ void MakeMassDistPlot () {
       hist->Fill(func->GetRandom());
     }
 
+
+
+
     int nFineXbin = -1;
 
     if (name[iMass]=="h0" || name[iMass]=="A0" || name[iMass]=="H0" || name[iMass]=="Hplus" ) nXbin[iMass] = 1;

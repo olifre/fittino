@@ -3256,6 +3256,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    f = 0.;
 
    // set values
+   yySetErrorFlag    = false;
    yyCalculatorError = false;
    yyParseError      = 0;
    yyNaN             = 0;
@@ -7468,7 +7469,12 @@ int   ReadLesHouches()
 	 yyInputFileLineNo = 1;
 	 rc = yyparse();
 	 fclose(yyin);
+	 system ("mv SPheno.spc.last SPheno.spc.last2");
 	 system ("mv SPheno.spc SPheno.spc.last");
+	 system ("mv Messages.out Messages.out.last");
+	 system ("mv LesHouches.in LesHouches.in.last");
+	 system ("mv SPheno.out SPheno.out.last");
+
 	 // exit (0);
       }
       else {

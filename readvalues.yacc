@@ -8,6 +8,8 @@
 #include <yy.h>
 #include <misc.h>
 
+// #define YYERROR_VERBOSE 1
+
 char yyBlockName[255];
 double yyScale;
 // SMINPUTS
@@ -304,6 +306,7 @@ input:
 		yyInputFileLine.error.clear();
 		yyInputFileLine.postvalue.erase();
 		yyInputFileLineNo++;
+		cout << "processing line " << yyInputFileLineNo << endl;
               }
             | input block
             | input decay
@@ -3458,8 +3461,9 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 //========================================================================
                   else if (!strcmp($2, "SPINFO")) {
 //		      cout << "tmpStrings.size()" << tmpStrings.size() << endl;
+//		      cout << "tmpNumbers.size()" << tmpNumbers.size() << endl;
                       for (unsigned int i=0; i<tmpStrings.size(); i++) {
-            
+//            		  cout << "looking at " << i << " " << tmpNumbers[i] << endl;
                           switch (int(tmpNumbers[i])) {
                           case 1:
                               strcpy(yy_spectrum_calc_name,tmpStrings[i].tmpname);
@@ -3480,8 +3484,10 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
                               break;
 			  default:
 			      cout << "tmpNumbers["<<i<<"]: "<< int(tmpNumbers[i]) << endl;
-			    return 1;
+		              tmpNumbers.clear();
+                              tmpStrings.clear();			      
                               yyerror("Parameter in SPINFO not known");
+	                      return 1;
                           }
                       }
 		      tmpNumbers.clear();
@@ -3794,6 +3800,8 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 			    yybsg_npf=tmpParams[i][1];
 			 }
 		      }
+		    tmpStrings.clear();
+		    tmpNumbers.clear();
 		  }
 
                   // MicrOmegas 
@@ -4019,8 +4027,8 @@ parameters: /* empty */
 	    }
 	    | parameters T_NUMBER sentence T_NEWLINE
 	    {
-	       //	         cout << "parsing string for tmpStrings" << endl;
-	       //                 cout << "$1 = " << $1 << "$2 = " << $2 << endl;
+//	       	         cout << "parsing string for tmpStrings" << endl;
+//	                        cout << "$3 = " << $3 << "$2 = " << $2 << endl;
 	       strcpy(tmpstr.tmpname,$3);
 	       tmpStrings.push_back(tmpstr);
 	       tmpNumbers.push_back((int)$2);
