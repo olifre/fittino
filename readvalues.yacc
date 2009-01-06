@@ -3703,6 +3703,8 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
      			  yygSquaredZh=tmpParams[i][1];
 			}
                       }
+		    tmpStrings.clear();
+		    tmpNumbers.clear();
                   }
 
 		  // PREDICT 
@@ -3812,6 +3814,8 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 			   yyOmega=tmpParams[i][1];
 			}
 		     }
+		    tmpStrings.clear();
+		    tmpNumbers.clear();
 		  }
 //========================================================================
 		  else if (!strcmp($2, "stopmix")) {
@@ -4029,10 +4033,19 @@ parameters: /* empty */
 	    {
 //	       	         cout << "parsing string for tmpStrings" << endl;
 //	                        cout << "$3 = " << $3 << "$2 = " << $2 << endl;
-	       strcpy(tmpstr.tmpname,$3);
-	       tmpStrings.push_back(tmpstr);
-	       tmpNumbers.push_back((int)$2);
-	       strcpy($3,"");
+	       if (!strncmp($3,"INF",3) || !strncmp($3,"inf",3) || !strncmp($3,"Inf",3)
+		   || !strncmp($3,"NAN",3) || !strncmp($3,"nan",3) || !strncmp($3,"Nan",3) )
+//               if (!strncmp($3,"INF",3))
+                  {
+		    cout << "do not fill tmpStrings!" << endl;
+		  }
+		else
+		  {	       
+	            strcpy(tmpstr.tmpname,$3);
+	            tmpStrings.push_back(tmpstr);
+	            tmpNumbers.push_back((int)$2);
+                  }
+	          strcpy($3,"");
 	    }
 	    | parameters T_NUMBER T_NEWLINE
 	    {
