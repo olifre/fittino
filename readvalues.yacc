@@ -306,7 +306,7 @@ input:
 		yyInputFileLine.error.clear();
 		yyInputFileLine.postvalue.erase();
 		yyInputFileLineNo++;
-		cout << "processing line " << yyInputFileLineNo << endl;
+//		cout << "processing line " << yyInputFileLineNo << endl;
               }
             | input block
             | input decay
