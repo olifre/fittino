@@ -130,6 +130,9 @@ Q[ \t]*=                  {
 			      if (!strcmp(yytext, "nofit")) {
 				  return T_NOFIT;
 			      }
+			      if (!strcmp(yytext, "nofitLEObs")) {
+				  return T_NOFITLEO;
+			      }
                               strcpy(yylval.name, yytext);
                               return T_KEY;
                           }

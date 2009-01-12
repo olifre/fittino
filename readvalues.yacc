@@ -284,7 +284,7 @@ struct correrrorstruct {
 %token <name> T_KEY T_WORD
 %token <real> T_NUMBER
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
-%token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS T_NOFIT
+%token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS T_NOFIT T_NOFITLEO
 %token T_BLOCK T_SCALE T_DECAY T_BR T_LEO T_XS T_CALCULATOR T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH T_NEWLINE
  
@@ -1841,10 +1841,317 @@ input:
 		  yyMeasuredVec.push_back(tmpValue);
 		  // cout << "Added le obs " << tmpValue.name << " = " << tmpValue.value << endl;
 	      }
+	     | input T_NOFITLEO T_BRA T_WORD T_KET value err T_ALIAS T_NUMBER
+	      {
+		  char c[1000];
+
+		  cout << "reading nofit line "<< endl;
+
+		  yyInputFileLine.prevalue  = "nofit LEObs ( ";
+		  yyInputFileLine.prevalue += $4;
+		  yyInputFileLine.prevalue += " ) ";
+		  yyInputFileLine.value = $6;
+//		  yyInputFileLine.error = $7;
+		  yyInputFileLine.postvalue = "\talias ";
+		  sprintf(c, "%d", (int)$9);
+		  yyInputFileLine.postvalue += c;
+
+		  MeasuredValue tmpValue;
+		  tmpValue.bound = false;
+                  tmpValue.nofit = true;
+		  tmpValue.type  = LEObs;
+		  tmpValue.theovalue  = 0;
+		  tmpValue.name  = $4;
+                  //=================================
+		  if (!strcmp($4, "bsg")) {
+		    tmpValue.id    = bsg;
+		  } 
+		  else if (!strcmp($4, "bsmm")) {
+		    tmpValue.id    = bsmm;
+		  } 
+		  else if (!strcmp($4, "B_smm")) {
+		    tmpValue.id    = B_smm;
+		  } 
+		  else if (!strcmp($4, "B_utn")) {
+		    tmpValue.id    = B_utn;
+		  } 
+		  else if (!strcmp($4, "dMB_d")) {
+		    tmpValue.id    = dMB_d;
+		  } 
+		  else if (!strcmp($4, "dMB_s")) {
+		    tmpValue.id    = dMB_s;
+		  } 
+		  else if (!strcmp($4, "gmin2e")) {
+		    tmpValue.id    = gmin2e;
+		  } 
+		  else if (!strcmp($4, "gmin2m")) {
+		    tmpValue.id    = gmin2m;
+		  } 
+		  else if (!strcmp($4, "gmin2t")) {
+		    tmpValue.id    = gmin2t;
+		  } 
+		  else if (!strcmp($4, "drho")) {
+		    tmpValue.id    = drho;
+		  } 
+		  else if (!strcmp($4, "omega")) {
+		    tmpValue.id    = omega;
+		  }
+		  else if (!strcmp($4, "Bsg_npf")) {
+		    tmpValue.id    = Bsg_npf;
+		  }
+		  else if (!strcmp($4, "dm_s_npf")) {
+		    tmpValue.id    = dm_s_npf;
+		  }		  
+		  else if (!strcmp($4, "B_smm_npf")) {
+		    tmpValue.id    = B_smm_npf;
+		  }		  
+		  else if (!strcmp($4, "Btn_npf")) {
+		    tmpValue.id    = Btn_npf;
+		  }		  
+		  else if (!strcmp($4, "B_sXsll_npf")) {
+		    tmpValue.id    = B_sXsll_npf;
+		  }		  
+		  else if (!strcmp($4, "Klnu_npf")) {
+		    tmpValue.id    = Klnu_npf;
+		  }		  
+		  else if (!strcmp($4, "gmin2m_npf")) {
+		    tmpValue.id    = gmin2m_npf;
+		  }		  
+		  else if (!strcmp($4, "MassW_npf")) {
+		    tmpValue.id    = MassW_npf;
+		  }		  
+		  else if (!strcmp($4, "sin_th_eff_npf")) {
+		    tmpValue.id    = sin_th_eff_npf;
+		  }		  
+		  else if (!strcmp($4, "GammaZ_npf")) {
+		    tmpValue.id    = GammaZ_npf;
+		  }		  
+		  else if (!strcmp($4, "R_l_npf")) {
+		    tmpValue.id    = R_l_npf;
+		  }		  
+		  else if (!strcmp($4, "R_b_npf")) {
+		    tmpValue.id    = R_b_npf;
+		  }		  
+		  else if (!strcmp($4, "R_c_npf")) {
+		    tmpValue.id    = R_c_npf;
+		  }		  
+		  else if (!strcmp($4, "A_fbb_npf")) {
+		    tmpValue.id    = A_fbb_npf;
+		  }		  
+		  else if (!strcmp($4, "A_fbc_npf")) {
+		    tmpValue.id    = A_fbc_npf;
+		  }		  
+		  else if (!strcmp($4, "A_b_npf")) {
+		    tmpValue.id    = A_b_npf;
+		  }		  
+		  else if (!strcmp($4, "A_c_npf")) {
+		    tmpValue.id    = A_c_npf;
+		  }		  
+		  else if (!strcmp($4, "A_l_npf")) {
+		    tmpValue.id    = A_l_npf;
+		  }		  
+		  else if (!strcmp($4, "Massh0_npf")) {
+		    tmpValue.id    = Massh0_npf;
+		  }		  
+		  else if (!strcmp($4, "Omega_npf")) {
+		    tmpValue.id    = Omega_npf;
+		  }		  
+		  else if (!strcmp($4, "A_tau_npf")) {
+		    tmpValue.id    = A_tau_npf;
+		  }		  
+		  else if (!strcmp($4, "A_fbl_npf")) {
+		    tmpValue.id    = A_fbl_npf;
+		  }		  
+		  else if (!strcmp($4, "sigma_had0_npf")) {
+		    tmpValue.id    = sigma_had0_npf;
+		  }		  
+		  else if (!strcmp($4, "dm_d_npf")) {
+		    tmpValue.id    = dm_d_npf;
+		  }		  
+		  else if (!strcmp($4, "dm_k_npf")) {
+		    tmpValue.id    = dm_k_npf;
+		  }		  
+		  else if (!strcmp($4, "Kppinn_npf")) {
+		    tmpValue.id    = Kppinn_npf;
+		  }		  
+		  else if (!strcmp($4, "B_dll_npf")) {
+		    tmpValue.id    = B_dll_npf;
+		  }		  
+		  else if (!strcmp($4, "DmsDmd_npf")) {
+		    tmpValue.id    = DmsDmd_npf;
+		  }		  
+		  else if (!strcmp($4, "D_0_npf")) {
+		    tmpValue.id    = D_0_npf;
+		  }		  
+		  else if (!strcmp($4, "bsg_npf")) {
+		    tmpValue.id    = bsg_npf;
+		  }
+                  //=================================
+		  tmpValue.value = $6;
+		  tmpValue.error = $7;
+		  tmpValue.alias = (int)$9;
+		  tmpValue.bound_up = 1e+6;
+		  tmpValue.bound_low = -1e+6;
+		  yyMeasuredVec.push_back(tmpValue);
+		  // cout << "Added le obs " << tmpValue.name << " = " << tmpValue.value << endl;
+	      }
 	     | input T_LEO T_BRA T_WORD T_KET value err T_WORD T_ALIAS T_NUMBER
 	      {
 		  char c[1000];
+
 		  yyInputFileLine.prevalue  = "LEObs ( ";
+		  yyInputFileLine.prevalue += $4;
+		  yyInputFileLine.prevalue += " ) ";
+		  yyInputFileLine.value = $6;
+//		  yyInputFileLine.error = $7;
+		  yyInputFileLine.postvalue = "\talias ";
+		  sprintf(c, "%d", (int)$10);
+		  yyInputFileLine.postvalue += c;
+
+		  MeasuredValue tmpValue;
+		  tmpValue.bound = false;
+                  tmpValue.nofit = false;
+		  tmpValue.type  = LEObs;
+		  tmpValue.theovalue  = 0;
+		  tmpValue.name  = $4;
+                  //=================================
+		  if (!strcmp($4, "bsg")) {
+		    tmpValue.id    = bsg;
+		  } 
+		  else if (!strcmp($4, "bsmm")) {
+		    tmpValue.id    = bsmm;
+		  } 
+		  else if (!strcmp($4, "B_smm")) {
+		    tmpValue.id    = B_smm;
+		  } 
+		  else if (!strcmp($4, "B_utn")) {
+		    tmpValue.id    = B_utn;
+		  } 
+		  else if (!strcmp($4, "dMB_d")) {
+		    tmpValue.id    = dMB_d;
+		  } 
+		  else if (!strcmp($4, "dMB_s")) {
+		    tmpValue.id    = dMB_s;
+		  } 
+		  else if (!strcmp($4, "gmin2e")) {
+		    tmpValue.id    = gmin2e;
+		  } 
+		  else if (!strcmp($4, "gmin2m")) {
+		    tmpValue.id    = gmin2m;
+		  } 
+		  else if (!strcmp($4, "gmin2t")) {
+		    tmpValue.id    = gmin2t;
+		  } 
+		  else if (!strcmp($4, "drho")) {
+		    tmpValue.id    = drho;
+		  } 
+		  else if (!strcmp($4, "omega")) {
+		    tmpValue.id    = omega;
+		  }
+		  else if (!strcmp($4, "Bsg_npf")) {
+		    tmpValue.id    = Bsg_npf;
+		  }
+		  else if (!strcmp($4, "dm_s_npf")) {
+		    tmpValue.id    = dm_s_npf;
+		  }		  
+		  else if (!strcmp($4, "B_smm_npf")) {
+		    tmpValue.id    = B_smm_npf;
+		  }		  
+		  else if (!strcmp($4, "Btn_npf")) {
+		    tmpValue.id    = Btn_npf;
+		  }		  
+		  else if (!strcmp($4, "B_sXsll_npf")) {
+		    tmpValue.id    = B_sXsll_npf;
+		  }		  
+		  else if (!strcmp($4, "Klnu_npf")) {
+		    tmpValue.id    = Klnu_npf;
+		  }		  
+		  else if (!strcmp($4, "gmin2m_npf")) {
+		    tmpValue.id    = gmin2m_npf;
+		  }		  
+		  else if (!strcmp($4, "MassW_npf")) {
+		    tmpValue.id    = MassW_npf;
+		  }		  
+		  else if (!strcmp($4, "sin_th_eff_npf")) {
+		    tmpValue.id    = sin_th_eff_npf;
+		  }		  
+		  else if (!strcmp($4, "GammaZ_npf")) {
+		    tmpValue.id    = GammaZ_npf;
+		  }		  
+		  else if (!strcmp($4, "R_l_npf")) {
+		    tmpValue.id    = R_l_npf;
+		  }		  
+		  else if (!strcmp($4, "R_b_npf")) {
+		    tmpValue.id    = R_b_npf;
+		  }		  
+		  else if (!strcmp($4, "R_c_npf")) {
+		    tmpValue.id    = R_c_npf;
+		  }		  
+		  else if (!strcmp($4, "A_fbb_npf")) {
+		    tmpValue.id    = A_fbb_npf;
+		  }		  
+		  else if (!strcmp($4, "A_fbc_npf")) {
+		    tmpValue.id    = A_fbc_npf;
+		  }		  
+		  else if (!strcmp($4, "A_b_npf")) {
+		    tmpValue.id    = A_b_npf;
+		  }		  
+		  else if (!strcmp($4, "A_c_npf")) {
+		    tmpValue.id    = A_c_npf;
+		  }		  
+		  else if (!strcmp($4, "A_l_npf")) {
+		    tmpValue.id    = A_l_npf;
+		  }		  
+		  else if (!strcmp($4, "Massh0_npf")) {
+		    tmpValue.id    = Massh0_npf;
+		  }		  
+		  else if (!strcmp($4, "Omega_npf")) {
+		    tmpValue.id    = Omega_npf;
+		  }		  
+		  else if (!strcmp($4, "A_tau_npf")) {
+		    tmpValue.id    = A_tau_npf;
+		  }		  
+		  else if (!strcmp($4, "A_fbl_npf")) {
+		    tmpValue.id    = A_fbl_npf;
+		  }		  
+		  else if (!strcmp($4, "sigma_had0_npf")) {
+		    tmpValue.id    = sigma_had0_npf;
+		  }		  
+		  else if (!strcmp($4, "dm_d_npf")) {
+		    tmpValue.id    = dm_d_npf;
+		  }		  
+		  else if (!strcmp($4, "dm_k_npf")) {
+		    tmpValue.id    = dm_k_npf;
+		  }		  
+		  else if (!strcmp($4, "Kppinn_npf")) {
+		    tmpValue.id    = Kppinn_npf;
+		  }		  
+		  else if (!strcmp($4, "B_dll_npf")) {
+		    tmpValue.id    = B_dll_npf;
+		  }		  
+		  else if (!strcmp($4, "DmsDmd_npf")) {
+		    tmpValue.id    = DmsDmd_npf;
+		  }		  
+		  else if (!strcmp($4, "D_0_npf")) {
+		    tmpValue.id    = D_0_npf;
+		  }		  
+		  else if (!strcmp($4, "bsg_npf")) {
+		    tmpValue.id    = bsg_npf;
+		  }
+                  //=================================
+		  tmpValue.value = $6;
+		  tmpValue.error = $7;
+		  tmpValue.calculator = $8;
+		  tmpValue.alias = (int)$10;
+		  tmpValue.bound_up = 1e+6;
+		  tmpValue.bound_low = -1e+6;
+		  yyMeasuredVec.push_back(tmpValue);
+		  // cout << "Added le obs " << tmpValue.name << " = " << tmpValue.value << endl;
+	      }
+	     | input T_NOFITLEO T_BRA T_WORD T_KET value err T_WORD T_ALIAS T_NUMBER
+	      {
+		  char c[1000];
+		  yyInputFileLine.prevalue  = "nofit LEObs ( ";
 		  yyInputFileLine.prevalue += $4;
 		  yyInputFileLine.prevalue += " ) ";
 		  yyInputFileLine.value = $6;
