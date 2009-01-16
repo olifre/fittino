@@ -212,6 +212,10 @@ alias                     {
                               return T_ALIAS;
                           }
 
+scaling                   {
+                              return T_SCALING;
+                          }
+
 {WORD}                    {
                               BEGIN(INITIAL);
                               if (strlen(yytext) > 254) {

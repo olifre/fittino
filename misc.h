@@ -174,6 +174,8 @@ struct MeasuredValue {
   string          universality;
   string          calculator;
   bool            temp_nofit;
+  double          scaling;
+  bool            setScaling;
 };
 
 struct ScanParameter {

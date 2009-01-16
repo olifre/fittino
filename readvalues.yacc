@@ -284,7 +284,7 @@ struct correrrorstruct {
 %token <name> T_KEY T_WORD
 %token <real> T_NUMBER
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
-%token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS T_NOFIT T_NOFITLEO
+%token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS T_NOFIT T_NOFITLEO T_SCALING
 %token T_BLOCK T_SCALE T_DECAY T_BR T_LEO T_XS T_CALCULATOR T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH T_NEWLINE
  
@@ -420,6 +420,7 @@ input:
 		  }
 		  if (found == 0) {
 		      MeasuredValue tmpValue;
+		      tmpValue.setScaling = false;
 		      tmpValue.bound = false;
 		      tmpValue.nofit = false;
 		      tmpValue.name = $2;
@@ -468,6 +469,7 @@ input:
 		      }
 		      if (found == 0) {
 			  MeasuredValue tmpValue;
+			  tmpValue.setScaling = false;
 			  tmpValue.bound = false;
 			  tmpValue.nofit = false;
 			  tmpValue.name = $2;
@@ -542,6 +544,7 @@ input:
 	              }
 	              if (found == 0) {
 	        	  MeasuredValue tmpValue;
+			  tmpValue.setScaling = false;
 			  tmpValue.bound = false;
 	        	  tmpValue.nofit = false;
 	        	  tmpValue.name = $2;
@@ -572,6 +575,71 @@ input:
 	              }
                   }
 	      }
+	    | input T_KEY value err T_SCALING T_NUMBER T_ALIAS T_NUMBER
+	      {
+                  char c[1000];
+	          yyInputFileLine.prevalue = $2;
+	          yyInputFileLine.value = $3;
+//	          yyInputFileLine.error = $4;
+ 	          yyInputFileLine.postvalue = "\talias ";
+	          sprintf(c, "%d", (int)$8);
+	          yyInputFileLine.postvalue += c;
+
+		  //		  cout << "T_KEY input line " << $2 << " " << $3 << " " << $4 << " alias " << $6 << endl;
+
+	          found = 0;
+	          skip = 0;
+	          if ($4*$4*$6*$6 < 2.2204e-16) {
+                      cout<<"WARNING: Measurement of "<<$2<<" will not be used in fit. Uncertainty too small."<<endl;
+	              cout<<"         Too small uncertainties cause numerical problems with covariance matrix inversion."<<endl;
+	              cout<<"         Press any key to continue."<<endl;
+                      getchar();
+	              skip = 1;
+                  }
+	          if (!skip) {
+	              for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
+	        	if (!yyMeasuredVec[i].name.compare($2)) {
+	        	  found = 1;
+	        	  yyMeasuredVec[i].value = $3;
+	        	  yyMeasuredVec[i].error = $4;
+	        	  break;
+	        	}
+	              }
+	              if (found == 0) {
+	        	  MeasuredValue tmpValue;
+                          tmpValue.setScaling = false;
+			  tmpValue.bound = false;
+	        	  tmpValue.nofit = false;
+	        	  tmpValue.name = $2;
+	        	  tmpValue.value = $3*$6;
+	        	  tmpValue.error = $4*$6;
+	        	  tmpValue.type = mass;
+	        	  tmpValue.theovalue  = 0;
+	        	  tmpValue.bound_low = 0.;
+	        	  tmpValue.bound_up = 0.;
+	        	  tmpValue.alias = (int)$8;
+	        	  tmpValue.id = 0;
+                          tmpValue.setScaling = true;
+			  tmpValue.scaling = $6;
+	        	  if (!strncmp($2, "mass", 4)) tmpValue.type = mass;
+	        	  else if (!strncmp($2, "width", 5)) { 
+			    tmpValue.type = Pwidth;
+			    char tmpstr5[256];
+			    strcpy(tmpstr5,$2);
+			    char* tmpstrpointer;
+			    tmpstrpointer = &tmpstr5[5];
+			    // cout << "setting the particle " << tmpstrpointer << " id to " << yyParticleIDs[tmpstrpointer] << " " << yyParticleIDs["Neutralino1"  ] << endl;
+			    tmpValue.id    = yyParticleIDs[tmpstrpointer];
+			  }
+	                  else if (!strcmp($2, "tauFromStau1Polarisation")) tmpValue.type = tauFromStau1Polarisation;
+	        	  else tmpValue.type = other;
+	        	  yyMeasuredVec.push_back(tmpValue);
+	        	  if (!strncmp($2, "cos", 3)) {
+	        	    cout << "COS: " << tmpValue.name << " " << tmpValue.type << endl;
+	        	  }
+	              }
+                  }
+	      }
 	    | input T_UNIVERSALITY sentence
 	      {
 		 yyInputFileLine.prevalue  = $2;
@@ -579,6 +647,7 @@ input:
 	         yyInputFileLine.prevalue += $3;
 
 		 MeasuredValue tmpValue;
+		 tmpValue.setScaling = false;
 		 tmpValue.bound = false;
 		 string str;
 	         str.erase();
@@ -932,6 +1001,7 @@ input:
 		      }
 		      if (found == 0) {
 			  MeasuredValue tmpValue;
+                          tmpValue.setScaling = false;
 			  tmpValue.bound = false;
 			  tmpValue.nofit = false;
 			  tmpValue.name = $2;
@@ -982,6 +1052,7 @@ input:
 
 		if (!strcmp($2, "edge")) {
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
 		  tmpValue.bound = false;
                   tmpValue.nofit = false;
 		  tmpValue.theovalue  = 0;
@@ -1415,6 +1486,7 @@ input:
 
 		  if (!strcmp($2, "limit")) {
 		      MeasuredValue tmpValue;
+		      tmpValue.setScaling = false;
 		      tmpValue.bound = false;
                       tmpValue.nofit = false;
 		      tmpValue.theovalue  = 0;
@@ -1443,6 +1515,7 @@ input:
 //	          yyInputFileLine.error = $5;
 
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
 		  tmpValue.bound = false;
 		  tmpValue.theovalue  = 0;
 		  tmpValue.name = $3;
@@ -1531,6 +1604,7 @@ input:
 
 		if (!strcmp($2, "edge")) {
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
 		  tmpValue.bound = false;
                   tmpValue.nofit = false;
 		  tmpValue.theovalue  = 0;
@@ -1603,6 +1677,7 @@ input:
 
 		if (!strcmp($2, "edge")) {
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
 		  tmpValue.bound = false;
                   tmpValue.nofit = false;
 		  tmpValue.theovalue  = 0;
@@ -1672,6 +1747,7 @@ input:
 		  yyInputFileLine.postvalue += c;
 
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
 		  tmpValue.bound = false;
                   tmpValue.nofit = false;
 		  tmpValue.type  = br;
@@ -1723,6 +1799,7 @@ input:
 		  yyInputFileLine.postvalue += c;
 
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
 		  tmpValue.bound = false;
                   tmpValue.nofit = false;
 		  tmpValue.type  = LEObs;
@@ -1877,6 +1954,7 @@ input:
 		  yyInputFileLine.postvalue += c;
 
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
 		  tmpValue.bound = false;
                   tmpValue.nofit = true;
 		  tmpValue.type  = LEObs;
@@ -2029,6 +2107,7 @@ input:
 		  yyInputFileLine.postvalue += c;
 
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
 		  tmpValue.bound = false;
                   tmpValue.nofit = false;
 		  tmpValue.type  = LEObs;
@@ -2181,6 +2260,7 @@ input:
 		  yyInputFileLine.postvalue += c;
 
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
 		  tmpValue.bound = false;
                   tmpValue.nofit = false;
 		  tmpValue.type  = LEObs;
@@ -2333,6 +2413,7 @@ input:
 		  yyInputFileLine.postvalue += c;
 		  
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
 		  tmpValue.bound = false;
 		  tmpValue.nofit = false;
 		  tmpValue.type  = LEObs;
@@ -2497,6 +2578,7 @@ input:
 		  yyInputFileLine.prevalue += c;
 
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
  		  tmpValue.bound = false;
 		  tmpValue.nofit = true;
 		  tmpValue.type  = br;
@@ -2560,6 +2642,7 @@ input:
 		  yyInputFileLine.postvalue += c;
 
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
  		  tmpValue.bound = false;
 		  tmpValue.nofit = false;
 		  tmpValue.name.erase();
@@ -2631,6 +2714,7 @@ input:
 		  yyInputFileLine.prevalue += c;
 
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
  		  tmpValue.bound = false;
 		  tmpValue.nofit = true;
 		  tmpValue.name.erase();
@@ -2698,6 +2782,7 @@ input:
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
  		  tmpValue.bound = false;
 		  tmpValue.nofit = false;
 		  tmpValue.name.erase();
@@ -2898,6 +2983,7 @@ input:
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
  		  tmpValue.bound = false;
 		  tmpValue.nofit = false;
 		  tmpValue.name.erase();
@@ -3033,6 +3119,7 @@ input:
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
  		  tmpValue.bound = false;
 		  tmpValue.nofit = false;
 		  tmpValue.name.erase();
@@ -3159,6 +3246,7 @@ input:
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
  		  tmpValue.bound = false;
 		  tmpValue.nofit = false;
 		  tmpValue.name.erase();
@@ -3259,6 +3347,7 @@ input:
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
  		  tmpValue.bound = false;
 		  tmpValue.nofit = false;
 		  tmpValue.name.erase();
@@ -3337,6 +3426,7 @@ input:
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
  		  tmpValue.bound = false;
 		  tmpValue.nofit = false;
 		  tmpValue.name.erase();
@@ -3519,6 +3609,7 @@ input:
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
  		  tmpValue.bound = false;
 		  tmpValue.nofit = true;
 		  tmpValue.name.erase();
@@ -3597,6 +3688,7 @@ input:
 		  int aliasnumber;
 		  char* charnumber;
 		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
  		  tmpValue.bound = false;
 		  tmpValue.nofit = true;
 		  tmpValue.name.erase();

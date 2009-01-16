@@ -7000,6 +7000,9 @@ int   ReadLesHouches()
 	//cout << "width of particle " << yyMeasuredVec[i].id << " is measured at " <<  yyMeasuredVec[i].value << " and predicted at " << branching_ratios[yyMeasuredVec[i].id].TWidth << endl;
 	 yyMeasuredVec[i].theovalue = branching_ratios[yyMeasuredVec[i].id].TWidth;
 	 yyMeasuredVec[i].theoset = true;
+	 if (yyMeasuredVec[i].setScaling == true) {
+	   yyMeasuredVec[i].theovalue = yyMeasuredVec[i].theovalue*yyMeasuredVec[i].scaling;
+	 }
       }
       else if (yyMeasuredVec[i].type == xsection) {
 	 //      cout << " looking for xs " << yyMeasuredVec[i].name << endl; 
