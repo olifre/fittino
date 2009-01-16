@@ -480,7 +480,15 @@ input:
 			  tmpValue.alias = 0;
 			  tmpValue.id = 0;
 			  if (!strncmp($2, "mass", 4))tmpValue.type = mass;
-	        	  else if (!strncmp($2, "width", 5)) tmpValue.type = Pwidth;
+	        	  else if (!strncmp($2, "width", 5)) { 
+			    tmpValue.type = Pwidth;
+			    char tmpstr5[256];
+			    strcpy(tmpstr5,$2);
+			    char* tmpstrpointer;
+			    tmpstrpointer = &tmpstr5[5];
+			    // cout << "setting the particle " << tmpstrpointer << " id to " << yyParticleIDs[tmpstrpointer] << " " << yyParticleIDs["Neutralino1"  ] << endl;
+			    tmpValue.id    = yyParticleIDs[tmpstrpointer];
+			  }
 		          else if (!strcmp($2, "tauFromStau1Polarisation")) tmpValue.type = tauFromStau1Polarisation;
 		          else if (!strcmp($2, "G_F")) {
 			      tmpValue.type = SMPrecision;
@@ -546,7 +554,15 @@ input:
 	        	  tmpValue.alias = (int)$6;
 	        	  tmpValue.id = 0;
 	        	  if (!strncmp($2, "mass", 4)) tmpValue.type = mass;
-	        	  else if (!strncmp($2, "width", 5)) tmpValue.type = Pwidth;
+	        	  else if (!strncmp($2, "width", 5)) { 
+			    tmpValue.type = Pwidth;
+			    char tmpstr5[256];
+			    strcpy(tmpstr5,$2);
+			    char* tmpstrpointer;
+			    tmpstrpointer = &tmpstr5[5];
+			    // cout << "setting the particle " << tmpstrpointer << " id to " << yyParticleIDs[tmpstrpointer] << " " << yyParticleIDs["Neutralino1"  ] << endl;
+			    tmpValue.id    = yyParticleIDs[tmpstrpointer];
+			  }
 	                  else if (!strcmp($2, "tauFromStau1Polarisation")) tmpValue.type = tauFromStau1Polarisation;
 	        	  else tmpValue.type = other;
 	        	  yyMeasuredVec.push_back(tmpValue);
@@ -4225,6 +4241,7 @@ decay:      T_DECAY T_NUMBER T_NUMBER T_NEWLINE parameters
 		     tmp_branch.decays.push_back(tmpVec);
 		  }
 		  tmp_branch.TWidth = $3;
+		  // cout << "filling width " << tmp_branch.TWidth << " for particle " << (int)$2 << endl;
 		  branching_ratios[(int)$2] = tmp_branch;
 	       } else {
 		  tmp_branch.TWidth = 0.;	
