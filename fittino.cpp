@@ -7306,6 +7306,26 @@ int   ReadLesHouches()
 	       yyMeasuredVec[i].theovalue = (tmpvalue >= 0 ) ? TMath::Sqrt(tmpvalue) : 1.1E11;
 	       yyMeasuredVec[i].theoset = true;
 	    }
+            else if (yyMeasuredVec[i].id == 9) {
+               double tmpvalue1 = 1 - sqr(yyMass[yyMeasuredVec[i].daughters[1]] / yyMass[yyMeasuredVec[i].daughters[2]]);
+               double tmpvalue2 = 1 - sqr(yyMass[yyMeasuredVec[i].daughters[0]] / yyMass[yyMeasuredVec[i].daughters[1]]);
+               double tmpvalue  = yyMass[yyMeasuredVec[i].daughters[2]] * TMath::Sqrt(tmpvalue1) * TMath::Sqrt(tmpvalue2);
+               if (tmpvalue > 0) {
+                  yyMeasuredVec[i].theovalue = tmpvalue;
+               } else {
+                  yyMeasuredVec[i].theovalue = 1.1E11;
+               }
+               yyMeasuredVec[i].theoset = true;
+            }
+            else if (yyMeasuredVec[i].id == 10) {
+               double tmpvalue = sqr(yyMass[yyMeasuredVec[i].daughters[0]]) - sqr(yyMass[yyMeasuredVec[i].daughters[1]]);
+               if (tmpvalue > 0) {
+                  yyMeasuredVec[i].theovalue = TMath::Sqrt(tmpvalue);
+               } else {
+                  yyMeasuredVec[i].theovalue = 1.1E11;
+               }
+               yyMeasuredVec[i].theoset = true;
+            }
 	    else if (yyMeasuredVec[i].id >= 100 && yyMeasuredVec[i].id <= 121) {
 	       double epmasses[5];
 	       epmasses[0] = yyMass[ID_chi01];
