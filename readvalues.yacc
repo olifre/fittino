@@ -480,6 +480,7 @@ input:
 			  tmpValue.alias = 0;
 			  tmpValue.id = 0;
 			  if (!strncmp($2, "mass", 4))tmpValue.type = mass;
+	        	  else if (!strncmp($2, "width", 5)) tmpValue.type = Pwidth;
 		          else if (!strcmp($2, "tauFromStau1Polarisation")) tmpValue.type = tauFromStau1Polarisation;
 		          else if (!strcmp($2, "G_F")) {
 			      tmpValue.type = SMPrecision;
@@ -510,6 +511,8 @@ input:
  	          yyInputFileLine.postvalue = "\talias ";
 	          sprintf(c, "%d", (int)$6);
 	          yyInputFileLine.postvalue += c;
+
+		  //		  cout << "T_KEY input line " << $2 << " " << $3 << " " << $4 << " alias " << $6 << endl;
 
 	          found = 0;
 	          skip = 0;
@@ -542,7 +545,8 @@ input:
 	        	  tmpValue.bound_up = 0.;
 	        	  tmpValue.alias = (int)$6;
 	        	  tmpValue.id = 0;
-	        	  if (!strncmp($2, "mass", 4))tmpValue.type = mass;
+	        	  if (!strncmp($2, "mass", 4)) tmpValue.type = mass;
+	        	  else if (!strncmp($2, "width", 5)) tmpValue.type = Pwidth;
 	                  else if (!strcmp($2, "tauFromStau1Polarisation")) tmpValue.type = tauFromStau1Polarisation;
 	        	  else tmpValue.type = other;
 	        	  yyMeasuredVec.push_back(tmpValue);
@@ -778,7 +782,7 @@ input:
 			  }
                         }
                       }
-		      else if (!strncmp($3,"edge",2)) {
+		      else if (!strncmp($3,"edge",4)) {
                         charnumber = strchr($3,'_');
                         if (charnumber == 0) yyerror ("Underscore not found");
 		        aliasnumber = atoi((charnumber+1));
@@ -790,7 +794,7 @@ input:
 			  }
                         }
                       }
-		      else if (!strncmp($3,"width",2)) {
+		      else if (!strncmp($3,"width",5)) {
                         charnumber = strchr($3,'_');
                         if (charnumber == 0) yyerror ("Underscore not found");
 		        aliasnumber = atoi((charnumber+1));
@@ -835,7 +839,7 @@ input:
 			  }
                         }
                       }
-		      else if (!strncmp($4,"edge",2)) {
+		      else if (!strncmp($4,"edge",4)) {
                         charnumber = strchr($4,'_');
                         if (charnumber == 0) yyerror ("Underscore not found");
 		        aliasnumber = atoi((charnumber+1));
@@ -847,7 +851,7 @@ input:
 			  }
                         }
                       }
-		      else if (!strncmp($4,"width",2)) {
+		      else if (!strncmp($4,"width",5)) {
                         charnumber = strchr($4,'_');
                         if (charnumber == 0) yyerror ("Underscore not found");
 		        aliasnumber = atoi((charnumber+1));
