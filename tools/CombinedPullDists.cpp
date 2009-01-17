@@ -30,10 +30,10 @@
 void CombinedPullDists (const Int_t nbins = 50, 
 			const char* filename1 = "PullDistributions1.sum.root",
 			const char* filename2 = "PullDistributions2.sum.root",
-			//const char* tag1      = "correct model",
-			const char* tag1      = "Modell korrekt",
-			//const char* tag2      = "wrong model",
-			const char* tag2      = "Modell falsch",
+			const char* tag1      = "correct model",
+			//			const char* tag1      = "Modell korrekt",
+			const char* tag2      = "wrong model",
+			//			const char* tag2      = "Modell falsch",
 			const char* treename1 = "tree", 
 			const char* treename2 = "tree", 
 			const Double_t chi2cut = -1)
@@ -304,10 +304,10 @@ void CombinedPullDists (const Int_t nbins = 50,
   char effLine2[512];
   char effLine3[512];
   char effLine4[512];
-  //sprintf(effLine1,"probability to prefer");
-  //sprintf(effLine2,"%s over",tag2);
-  //sprintf(effLine3,"%s:",tag1);
-  //sprintf(effLine4,"%f +- %f",wrongEff,deltaWrongEff);
+  sprintf(effLine1,"probability to prefer");
+  sprintf(effLine2,"%s over",tag2);
+  sprintf(effLine3,"%s:",tag1);
+  sprintf(effLine4,"%f +- %f",wrongEff,deltaWrongEff);
 
   for (Int_t iLeaf=0; iLeaf<nLeaves1; iLeaf++) {
 

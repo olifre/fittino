@@ -43,8 +43,8 @@ void DrawParDistsMulti(const char* filename1 = "file1",
                        const Int_t nbins1 = 50,
                        const char* filename2 = "file2",
                        const Int_t nbins2 = 50,
-                       //const char* filename3 = "file3",
-                       //const Int_t nbins3 = 50,
+                       const char* filename3 = "file3",
+                       const Int_t nbins3 = 50,
                        const char* treename = "tree",
 		       const Double_t chi2cut = -1) {
 
@@ -53,21 +53,22 @@ void DrawParDistsMulti(const char* filename1 = "file1",
 
    // ----- open input files and make trees accessible -----
 
-   const char* filename_arr[2];
-   //const char* filename_arr[3];
+   //   const char* filename_arr[2];
+   const char* filename_arr[3];
    filename_arr[0] = filename1;
    filename_arr[1] = filename2;
-   //filename_arr[2] = filename3;
+   filename_arr[2] = filename3;
 
-   //TFile** file = new TFile[3];
-   TFile** file = new TFile[2];
-   //TTree** tree = new TTree[3];
-   TTree** tree = new TTree[2];
+   TFile** file = new TFile[3];
+   //TFile** file = new TFile[2];
+   TTree** tree = new TTree[3];
+   //TTree** tree = new TTree[2];
 
-   //Int_t nEntries[3];
-   Int_t nEntries[2];
+   Int_t nEntries[3];
+   //Int_t nEntries[2];
 
-   for (unsigned int iFile=0; iFile<2; iFile++) {
+   //   for (unsigned int iFile=0; iFile<2; iFile++) {
+   for (unsigned int iFile=0; iFile<3; iFile++) {
 
       file[iFile] = new TFile(filename_arr[iFile], "read");
 
@@ -85,8 +86,8 @@ void DrawParDistsMulti(const char* filename1 = "file1",
 
       nEntries[iFile] = tree[iFile]->GetEntries();
 
-      //Int_t iChi2Leaf[3];
-      Int_t iChi2Leaf[2];
+      Int_t iChi2Leaf[3];
+      //      Int_t iChi2Leaf[2];
       iChi2Leaf[iFile] = -1; // leaf index of chi2 leaf
 
    }
@@ -97,20 +98,20 @@ void DrawParDistsMulti(const char* filename1 = "file1",
    Double_t* par   = new Double_t[nLeaves];
    Double_t* sum   = new Double_t[nLeaves];
    Double_t* sum2  = new Double_t[nLeaves];
-   //TH1F**    histo = new TH1F[3];
-   TH1F**    histo = new TH1F[2];
-   //TF1**     gauss = new TF1[3];
-   TF1**     gauss = new TF1[2];
-   //TF1**     chi2  = new TF1[3];
-   TF1**     chi2  = new TF1[2];
-   //Color_t   color[3] = {kRed, kGreen, kBlue};
-   Color_t   color[3] = {kRed, kBlue};
-   //Double_t  nbins[3] = {nbins1, nbins2, nbins3};
-   Double_t  nbins[2] = {nbins1, nbins2};
+   TH1F**    histo = new TH1F[3];
+   //TH1F**    histo = new TH1F[2];
+   TF1**     gauss = new TF1[3];
+   //TF1**     gauss = new TF1[2];
+   TF1**     chi2  = new TF1[3];
+   //TF1**     chi2  = new TF1[2];
+   Color_t   color[3] = {kRed, kGreen, kBlue};
+   //Color_t   color[3] = {kRed, kBlue};
+   Double_t  nbins[3] = {nbins1, nbins2, nbins3};
+   //Double_t  nbins[2] = {nbins1, nbins2};
 
    // ----- loop over leaves in tree -----
 
-   for (Int_t iLeaf=0; iLeaf<1; iLeaf++) {
+   for (Int_t iLeaf=0; iLeaf<nLeaves; iLeaf++) {
 
       TCanvas* c = new TCanvas("c", "Fittino Parameter Distribution", 0, 0, 700, 700);
       c->SetBorderMode(0);
@@ -119,10 +120,13 @@ void DrawParDistsMulti(const char* filename1 = "file1",
       c->SetLeftMargin(0.15);
       c->SetRightMargin(0.05);
 
-      for (unsigned int iFile=0; iFile<2; iFile++) {
+      //      for (unsigned int iFile=0; iFile<2; iFile++) {
+      for (unsigned int iFile=0; iFile<3; iFile++) {
 
-	 //TLeafD* leaf = (TLeafD*)tree[iFile]->GetListOfLeaves()->At(iLeaf);
-	 TLeafD* leaf = (TLeafD*)tree[iFile]->GetListOfLeaves()->FindObject("A0");
+	 TLeafD* leaf = (TLeafD*)tree[iFile]->GetListOfLeaves()->At(iLeaf);
+	//	 TLeafD* leaf = (TLeafD*)tree[iFile]->GetListOfLeaves()->FindObject("A0");
+	 if ( ! (!strcmp(leaf->GetName(), "M0") || !strcmp(leaf->GetName(), "M12") ||
+		 !strcmp(leaf->GetName(), "A0") || !strcmp(leaf->GetName(), "TanBeta")) ) continue;
 	 leaf->SetAddress(&par[iLeaf]);
 
 	 Double_t mintree = tree[iFile]->GetMinimum(leaf->GetName());
@@ -216,8 +220,8 @@ void DrawParDistsMulti(const char* filename1 = "file1",
 
 	 }
 
-	 //histo[iFile]->Draw("sameep");
-	 histo[iFile]->Draw("ep");
+	 if ( iFile == 0 ) histo[iFile]->Draw("ep");
+	 else histo[iFile]->Draw("epsame");
 
 	 if (!strcmp(leaf->GetName(), "Chi2")) {
 
@@ -256,8 +260,11 @@ void DrawParDistsMulti(const char* filename1 = "file1",
       legend->SetFillStyle(0);
       legend->AddEntry(gauss[0],"  300 fb^{-1}", "L");
       legend->AddEntry(gauss[1],"   10 fb^{-1}", "L");
-      //legend->AddEntry(gauss[2],"    1 fb^{-1}", "L");
+      legend->AddEntry(gauss[2],"    1 fb^{-1}", "L");
       legend->Draw();
+
+      if ( ! (!strcmp(leaf->GetName(), "M0") || !strcmp(leaf->GetName(), "M12") ||
+	      !strcmp(leaf->GetName(), "A0") || !strcmp(leaf->GetName(), "TanBeta")) ) continue;
 
       char epsfilename[256];
       sprintf(epsfilename, "%s.eps", leaf->GetName());
