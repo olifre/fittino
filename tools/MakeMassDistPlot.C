@@ -8,7 +8,260 @@
 #include <vector>
 using namespace std;
 
-void MakeMassDistPlot () {
+void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
+		       const double minHist = 0.,
+		       const double maxHist = 100000000.,
+		       const int nbins = 250,
+		       const int minEvents = 5,
+		       const char* treename = "tree" ) {
+
+  // set style
+  gStyle->SetPalette(1);
+  gStyle->SetOptStat(0);
+  gStyle->SetFrameFillColor(10);
+  gStyle->SetPadColor(10);
+  gStyle->SetCanvasColor(18);
+  TCanvas* canvas = new TCanvas();
+  canvas->SetBorderMode(0);
+  canvas->SetTopMargin(0.08);
+  canvas->SetBottomMargin(0.12);
+  canvas->SetLeftMargin(0.15);
+  canvas->SetRightMargin(0.05);
+
+  // set color scheme
+  const Int_t NRGBs = 5;
+  const Int_t NCont = 255;  
+  Double_t stops[NRGBs] = { 0.00, 0.34, 0.61, 0.84, 1.00 };
+  Double_t red[NRGBs]   = { 0.00, 0.00, 0.87, 1.00, 0.51 };
+  Double_t green[NRGBs] = { 0.00, 0.81, 1.00, 0.20, 0.00 };
+  Double_t blue[NRGBs]  = { 0.51, 1.00, 0.12, 0.00, 0.00 };
+  TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
+  gStyle->SetNumberContours(NCont);
+  
+  // and finally really start...
+
+  TFile* file = new TFile(filename, "read");
+  if ( !file ) {
+    printf("Problem accessing file %s\n", filename);
+    return;
+  }
+
+  TTree* tree = (TTree*)file->Get(treename);
+  if ( !tree ) {
+    printf("Problem accessing tree %s\n", treename);
+    return;
+  }
+  
+  int nEntries = tree->GetEntries();
+  int nLeaves = tree->GetListOfLeaves()->GetEntriesFast();
+  double* par   = new Double_t[nLeaves];
+
+  vector<string> name;
+  vector<string> binName;
+
+  name.push_back ("h0");
+  name.push_back ("A0");
+  name.push_back ("H0");
+  name.push_back ("Hplus");
+
+  name.push_back ("Neutralino1");
+  name.push_back ("Neutralino2");
+  name.push_back ("Neutralino3");
+  name.push_back ("Neutralino4");
+
+  name.push_back ("Chargino1");
+  name.push_back ("Chargino2");
+
+  name.push_back ("SelectronL");
+  name.push_back ("SelectronR");
+  //  name.push_back ("SmuL");
+  //  name.push_back ("SmuR");
+  name.push_back ("Stau1");
+  name.push_back ("Stau2");
+
+  //  name.push_back ("SdownL");
+  //  name.push_back ("SdownR");
+  name.push_back ("SupL");
+  name.push_back ("SupR");
+  //  name.push_back ("SstrangeL");
+  //  name.push_back ("SstrangeR");
+  //  name.push_back ("ScharmL");
+  //  name.push_back ("ScharmR");
+  name.push_back ("Sbottom1");
+  name.push_back ("Sbottom2");
+  name.push_back ("Stop1");
+  name.push_back ("Stop2");
+
+  name.push_back ("Gluino");
+
+  binName.push_back ("h^{0}");
+  binName.push_back ("A^{0}");
+  binName.push_back ("H^{0}");
+  binName.push_back ("H^{+}");
+  binName.push_back ("#chi^{0}_{1}");
+  binName.push_back ("#chi^{0}_{2}");
+  binName.push_back ("#chi^{0}_{3}");
+  binName.push_back ("#chi^{0}_{4}");
+  binName.push_back ("#chi^{+}_{1}");
+  binName.push_back ("#chi^{+}_{2}");
+  binName.push_back ("#tilde{l}_{L}");
+  binName.push_back ("#tilde{l}_{R}");
+  binName.push_back ("#tilde{#tau}_{1}");
+  binName.push_back ("#tilde{#tau}_{2}");
+  binName.push_back ("#tilde{q}_{L}");
+  binName.push_back ("#tilde{q}_{R}");
+  binName.push_back ("#tilde{b}_{1}");
+  binName.push_back ("#tilde{b}_{2}");
+  binName.push_back ("#tilde{t}_{1}");
+  binName.push_back ("#tilde{t}_{2}");
+  binName.push_back ("#tilde{g}");
+
+  const int nameSize = name.size();
+
+  bool nofitFound[nameSize];
+  bool alreadyFound[nameSize];
+  int leafPosition[nameSize];
+  for (int i = 0; i < nameSize; i++) {
+    nofitFound[i] = false;
+    alreadyFound[i] = false;
+    leafPosition[i] = 0;
+  }
+  double mintree = 1000000.;
+  double maxtree = -1000000.;
+
+
+  // find the correct leaves and figure out maximum and minimum of the histograms
+  for (int iname = 0; iname < nameSize; iname++) {
+    for (int iLeaf = 0; iLeaf < nLeaves; iLeaf++) {
+      const TLeafD* leaf = (TLeafD*)tree->GetListOfLeaves()->At(iLeaf);
+      //      leaf->SetAddress(&par[iLeaf]);
+      if (!strncmp("mass",leaf->GetName(),4)) {
+	char fullParticleName[256];
+	strcpy(fullParticleName,leaf->GetName());
+	char* particleName = &fullParticleName[4];
+	int particleNameLength = strcspn(particleName,"_");
+	int totalParticleNameLength = strcspn(particleName,"\0");
+	particleName[particleNameLength] = '\0';
+	if (!strncmp(name[iname].c_str(),particleName,name[iname].size())) {
+	  const double thisMin = tree->GetMinimum(leaf->GetName());
+	  const double thisMax = tree->GetMaximum(leaf->GetName());
+	  // cout << "leaf name = " << particleName  << " " << leaf->GetName() << " " << particleNameLength << " " << name[iname].c_str() << " " << name[iname].size() <<   endl;
+	  if (alreadyFound[iname]==true) {
+	    if (nofitFound[iname]==true) {
+	      continue;
+	    } else {
+	      if (particleNameLength > 0) {
+		nofitFound[iname] = true;
+		leafPosition[iname] = iLeaf;
+	      } else {
+		continue;
+	      }
+	    }
+	  } else {
+	    alreadyFound[iname] = true;
+	    leafPosition[iname] = iLeaf;
+	    if (particleNameLength < totalParticleNameLength) {
+	      nofitFound[iname] = true;
+	    } else {
+	      nofitFound[iname] = false;
+	    }
+	  }
+	  cout << "after check found " << name[iname] << " " << leaf->GetName() << " " << thisMin << " " << thisMax << endl;
+	  if (thisMin<mintree) mintree = thisMin;
+	  if (thisMax>maxtree) maxtree = thisMax;
+	}
+      }
+    }
+  }
+
+  double min = mintree - 0.1 * (maxtree - mintree);
+  double max = maxtree + 0.1 * (maxtree - mintree);
+  if (min < minHist) min = minHist;
+  if (max > maxHist) max = maxHist;
+
+  TH2D* massHistBeforeCleanup = new TH2D("massHistBeforeCleanup","Mass Spectrum of SUSY Particles",
+					 nameSize,
+					 0.,(double)nameSize,
+					 nbins,
+					 min,max);
+
+  // now loop over the leaves again and get the histograms
+  for (int iname = 0; iname < nameSize; iname++) {
+    if (alreadyFound[iname]) {
+      const TLeafD* leaf = (TLeafD*)tree->GetListOfLeaves()->At(leafPosition[iname]);
+      leaf->SetAddress(&par[leafPosition[iname]]);
+      cout << "looping over events of " << name[iname] << endl;
+      for (Int_t i=0; i<nEntries; i++) {
+	tree->GetEntry(i);
+	double mass = 0.;
+	if (par[leafPosition[iname]]>0) mass = par[leafPosition[iname]];
+	else mass = -par[leafPosition[iname]];
+	massHistBeforeCleanup->Fill((double)iname,mass);
+      }
+    } else {
+      if (name[iname]=="H0" || name[iname]=="Hplus") {
+	for (int jname = 0; jname < nameSize; jname++) {
+	  if (alreadyFound[jname]) {
+	    if (name[jname]=="A0") {
+	      const TLeafD* leaf = (TLeafD*)tree->GetListOfLeaves()->At(leafPosition[jname]);
+	      leaf->SetAddress(&par[leafPosition[jname]]);
+	      cout << "looping over events of " << name[iname] << endl;
+	      for (Int_t i=0; i<nEntries; i++) {
+		tree->GetEntry(i);
+		double massA0 = 0.;
+		double mass = 0.;
+		if (par[leafPosition[jname]]>0) massA0 = par[leafPosition[jname]];
+		else massA0 = -par[leafPosition[iname]];
+		if (name[iname]=="H0") {
+		  mass = sqrt(massA0*massA0+91.2*91.2);
+		} else if (name[iname]=="Hplus") {
+		  mass = sqrt(80.*80.+massA0*massA0);
+		}
+		massHistBeforeCleanup->Fill((double)iname,mass);
+	      }	      
+	    }
+	  }
+	}
+      }
+    }
+  }
+
+  TH2D* massHist = new TH2D("massHist","Predicted Mass Spectrum of SUSY Particles",
+			    nameSize,
+			    0.,(double)nameSize,
+			    nbins,
+			    min,max);
+
+  massHist->SetYTitle("Predicted Particle Mass [GeV]");
+  massHist->GetYaxis()->SetLabelSize(0.05);
+  massHist->GetYaxis()->CenterTitle();
+  massHist->GetYaxis()->SetTitleSize(0.05);
+  massHist->GetYaxis()->SetTitleOffset(1.3);
+
+  TAxis* theXAxis = massHist->GetXaxis();
+  theXAxis->SetLabelSize(0.07);
+  theXAxis->SetLabelOffset(0.01);
+  for (int i = 1; i <= nameSize; i++) {
+    theXAxis->SetBinLabel(i,binName[i-1].c_str());
+  }  
+  
+
+  for (int i = 1; i <= nameSize; i++) {
+    for (int j = 1; j <= nbins; j++) {
+      if (massHistBeforeCleanup->GetBinContent(i,j)>=minEvents) {
+	massHist->SetBinContent(i,j,massHistBeforeCleanup->GetBinContent(i,j));
+      }
+    }
+  }
+
+  canvas->SetLogz(1);
+  massHist->Draw("col");
+
+  canvas->Print("predictedSUSYMassSpectrum.eps");
+
+}
+
+void MakeMassDistPlotTemplate () {
 
   TCanvas* canvas = new TCanvas();
 
