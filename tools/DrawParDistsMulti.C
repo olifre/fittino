@@ -129,8 +129,8 @@ void DrawParDistsMulti(const char* filename1 = "file1",
 		 !strcmp(leaf->GetName(), "A0") || !strcmp(leaf->GetName(), "TanBeta")) ) continue;
 	 leaf->SetAddress(&par[iLeaf]);
 
-	 Double_t mintree = tree[iFile]->GetMinimum(leaf->GetName());
-	 Double_t maxtree = tree[iFile]->GetMaximum(leaf->GetName());
+	 Double_t mintree = tree[1]->GetMinimum(leaf->GetName());
+	 Double_t maxtree = tree[1]->GetMaximum(leaf->GetName());
 	 Double_t min = mintree - 0.15 * (maxtree - mintree);
 	 Double_t max = maxtree + 0.15 * (maxtree - mintree);
 
@@ -256,7 +256,7 @@ void DrawParDistsMulti(const char* filename1 = "file1",
 
       }
 
-      TLegend *legend = new TLegend(0.68,0.68,0.85,0.85,"          A_{0}"); 
+      TLegend *legend = new TLegend(0.68,0.68,0.85,0.85); 
       legend->SetFillStyle(0);
       legend->AddEntry(gauss[0],"  300 fb^{-1}", "L");
       legend->AddEntry(gauss[1],"   10 fb^{-1}", "L");
