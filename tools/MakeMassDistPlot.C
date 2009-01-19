@@ -268,8 +268,9 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
   for (int iname = 0; iname < nameSize; iname++) {
     cout << name[iname] << " original RMS = " << histo[iname]->GetRMS() 
 	 << " smoothed RMS = " << histoSmoothed[iname]->GetRMS() << endl;
-    histoSmoothed[iname]->Draw();
-    histo[iname]->Draw("same");
+    histo[iname]->Draw();
+    histoSmoothed[iname]->SetLineColor(kRed);
+    histoSmoothed[iname]->Draw("same");
     string plotName = name[iname] + "OneDSmoothed.eps";
     canvas->Print(plotName.c_str());
   }  
