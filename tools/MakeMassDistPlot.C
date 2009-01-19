@@ -229,7 +229,7 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
 	      leaf->SetAddress(&par[leafPosition[jname]]);
 	      cout << "looping over events of " << name[iname] << endl;
 	      string histoName = name[iname]+"RawHisto";
-	      histo[iname] = new TH1D(histoName.c_str(), "", nbins, min, max);
+	      histo[iname] = new TH1D(histoName.c_str(), histoName.c_str(), nbins, min, max);
 	      for (Int_t i=0; i<nEntries; i++) {
 		tree->GetEntry(i);
 		double massA0 = 0.;
@@ -261,8 +261,8 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
       double xValues[nbins];
       double yValues[nbins];
       for (int i = 1; i <= nbins; i++) {
-	xValues[i] = min+(double)i*(max-min)/(double)nbins;
-	yValues[i] = histo[iname]->GetBinContent(i);
+	xValues[i-1] = min+(double)(i-1)*(max-min)/(double)nbins;
+	yValues[i-1] = histo[iname]->GetBinContent(i);
       }
       TGraph* thisGraph = new TGraph(nbins,xValues,yValues);
       TGraphSmooth* smoother = new TGraphSmooth("normal");
@@ -271,15 +271,36 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
       TGraph* smoothedGraph = smoother->SmoothKern(thisGraph,"normal",smoothFactor);
       string smoothedHistoName = name[iname]+"SmoothedHisto";
       histoSmoothed[iname] = new TH1D(smoothedHistoName.c_str(), smoothedHistoName.c_str(), nbins, min, max);
-      for (int i = 1; i <= nbins; i++) {
-	if (histo[iname]->GetRMS()>(max-min)/(double)nbins && histo[iname]->GetRMS()>1.) {
-	  histoSmoothed[iname]->SetBinContent(i,smoothedGraph->Eval(min+(double)i*(max-min)/(double)nbins));
-	} else {
+      cout << " transferrring " << name[iname] << " with " << histo[iname]->GetRMS() << " " << (max-min)/(double)nbins << endl;
+      if (histo[iname]->GetRMS()>(max-min)/(double)nbins && histo[iname]->GetRMS()>1.) {
+	cout << "copying smoothed histogram" << endl;
+	for (int i = 1; i <= nbins; i++) {
+	  histoSmoothed[iname]->SetBinContent(i,smoothedGraph->Eval(min+(double)(i-1)*(max-min)/(double)nbins));
+	}
+      } else {
+	cout << "copying original histogram" << endl;
+	for (int i = 1; i <= nbins; i++) {	
 	  histoSmoothed[iname]->SetBinContent(i,histo[iname]->GetBinContent(i));
 	}
       }
     }
   }
+  
+  // compare histograms 
+  for (int iname = 0; iname < nameSize; iname++) {
+    if (alreadyFound[iname]) {
+      if (histo[iname]->GetRMS()>(max-min)/(double)nbins && histo[iname]->GetRMS()>1.) {
+      } else {
+	cout << "comparing " << name[iname] << " in detail " << endl;
+	for (int i = 1; i <= nbins; i++) {	
+	  if (!(histoSmoothed[iname]->GetBinContent(i)==histo[iname]->GetBinContent(i))) {
+	    cout << "difference! " << i << " " << histoSmoothed[iname]->GetBinContent(i) << " " << histo[iname]->GetBinContent(i) << endl;
+	  }
+	}	
+      }
+    }   
+  }  
+
 
   cout << "check that RMS doesnt change and plot control histograms" << endl;
   for (int iname = 0; iname < nameSize; iname++) {
@@ -397,7 +418,7 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
 	binmap[i] = histoSmoothed[iname]->GetBinContent(i);
       }    
       double largest = -1.;
-      double lastLargest = 1.;
+      double lastLargest = 2.;
       int largestI = 0;
       double sum1s = 0.;
       double sum2s = 0.;
