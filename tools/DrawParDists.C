@@ -268,12 +268,14 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
 	  Double_t rms = TMath::Sqrt((sum2[iLeaf] - sum[iLeaf] * sum[iLeaf]
 				      / nEntries ) / nEntries);
 	  Double_t sigma = gauss[iLeaf]->GetParameter(2);
+	  double rmsSigmaRatio = 100000.;
+	  if (sigma>0.) rmsSigmaRatio = (rms - sigma) / sigma;
 	  printf("mean = %f             mu    = %f\n", mean, mu);
 	  printf("RMS  = %f             sigma = %f\n", rms, sigma);
 	  printf("%s: (RMS - Sigma) / Sigma = %f\n", leaf->GetName(),
-		 (rms - sigma) / sigma);
+		 rmsSigmaRatio);
 	  // write ot the fit result to a file
-	  pullFitsFile << leaf->GetName() << " = " << mu << " +- " << sigma << " (Mean+-Var: " << mean << "+-" << rms << ") deviation from gaussian: " << (rms - sigma) / sigma << endl;
+	  pullFitsFile << leaf->GetName() << " = " << mu << " +- " << sigma << " (Mean+-Var: " << mean << "+-" << rms << ") deviation from gaussian: " << rmsSigmaRatio << endl;
 	}
       }
       

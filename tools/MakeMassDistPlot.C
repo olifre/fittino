@@ -9,6 +9,7 @@
 #include "TTree.h"
 #include "TCanvas.h"
 #include "TLeafD.h"
+#include "TImage.h"
 #include <string>
 #include <vector>
 #include <map>
@@ -19,7 +20,8 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
 		       const double maxHist = 100000000.,
 		       const int nbins = 1000,
 		       const int minEvents = 5,
-		       const char* treename = "tree" ) {
+		       const char* treename = "tree",
+		       const string logoPath = "./logo/fittinologo.eps" ) {
 
   // set style
   gStyle->SetPalette(1);
@@ -44,6 +46,15 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
   TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
   gStyle->SetNumberContours(NCont);
   
+  // get the fittino logo
+  TImage *fittinoLogo = TImage::Open(logoPath.c_str());
+  if (!fittinoLogo) {
+    printf("Could not open the fittino logo... exit\n");
+    return;
+  }
+  fittinoLogo->SetConstRatio(1);
+  fittinoLogo->SetImageQuality(TAttImage::kImgBest);
+
   // and finally really start...
 
   TFile* file = new TFile(filename, "read");
@@ -193,13 +204,14 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
   TH1D*  histo[nameSize];
   TH1D*  histoSmoothed[nameSize];
   // now loop over the leaves again and get the histograms
+  cout << "now loop over the leaves again and get the histograms" << endl;
   for (int iname = 0; iname < nameSize; iname++) {
     if (alreadyFound[iname]) {
       TLeafD* leaf = (TLeafD*)tree->GetListOfLeaves()->At(leafPosition[iname]);
       leaf->SetAddress(&par[leafPosition[iname]]);
+      cout << "looping over events of " << name[iname] << endl;
       string histoName = name[iname]+"RawHisto";
       histo[iname] = new TH1D(histoName.c_str(), "", nbins, min, max);
-      cout << "looping over events of " << name[iname] << endl;
       for (Int_t i=0; i<nEntries; i++) {
 	tree->GetEntry(i);
 	double mass = 0.;
@@ -215,9 +227,9 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
 	    if (name[jname]=="A0") {
 	      TLeafD* leaf = (TLeafD*)tree->GetListOfLeaves()->At(leafPosition[jname]);
 	      leaf->SetAddress(&par[leafPosition[jname]]);
+	      cout << "looping over events of " << name[iname] << endl;
 	      string histoName = name[iname]+"RawHisto";
 	      histo[iname] = new TH1D(histoName.c_str(), "", nbins, min, max);
-	      cout << "looping over events of " << name[iname] << endl;
 	      for (Int_t i=0; i<nEntries; i++) {
 		tree->GetEntry(i);
 		double massA0 = 0.;
@@ -231,6 +243,7 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
 		}
 		massHistBeforeCleanup->Fill((double)iname,mass);
 		histo[iname]->Fill(mass);
+		alreadyFound[iname] = true;
 	      }	      
 	    }
 	  }
@@ -240,55 +253,62 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
   }
 
   // smooth the oneD histograms
+  cout << "smooth the oneD histograms" << endl;
   for (int iname = 0; iname < nameSize; iname++) {
-    const double oneDHistNorm = histo[iname]->Integral();
-    histo[iname]->Scale(1./oneDHistNorm);
-    double xValues[nbins];
-    double yValues[nbins];
-    for (int i = 1; i <= nbins; i++) {
-      xValues[i] = min+(double)i*(max-min)/(double)nbins;
-      yValues[i] = histo[iname]->GetBinContent(i);
-    }
-    TGraph* thisGraph = new TGraph(nbins,xValues,yValues);
-    TGraphSmooth* smoother = new TGraphSmooth("normal");
-    double smoothFactor = 1.;
-    if (histo[iname]->GetRMS()/5.>1.) smoothFactor = histo[iname]->GetRMS()/5.;
-    TGraph* smoothedGraph = smoother->SmoothKern(thisGraph,"normal",smoothFactor);
-    string smoothedHistoName = name[iname]+"SmoothedHisto";
-    histoSmoothed[iname] = new TH1D(smoothedHistoName.c_str(), smoothedHistoName.c_str(), nbins, min, max);
-    for (int i = 1; i <= nbins; i++) {
-      if (histo[iname]->GetRMS()>(max-min)/(double)nbins && histo[iname]->GetRMS()>1.) {
-	histoSmoothed[iname]->SetBinContent(i,smoothedGraph->Eval(min+(double)i*(max-min)/(double)nbins));
-      } else {
-	histoSmoothed[iname]->SetBinContent(i,histo[iname]->GetBinContent(i));
+    if (alreadyFound[iname]) {
+      const double oneDHistNorm = histo[iname]->Integral();
+      histo[iname]->Scale(1./oneDHistNorm);
+      double xValues[nbins];
+      double yValues[nbins];
+      for (int i = 1; i <= nbins; i++) {
+	xValues[i] = min+(double)i*(max-min)/(double)nbins;
+	yValues[i] = histo[iname]->GetBinContent(i);
+      }
+      TGraph* thisGraph = new TGraph(nbins,xValues,yValues);
+      TGraphSmooth* smoother = new TGraphSmooth("normal");
+      double smoothFactor = 1.;
+      if (histo[iname]->GetRMS()/5.>1.) smoothFactor = histo[iname]->GetRMS()/5.;
+      TGraph* smoothedGraph = smoother->SmoothKern(thisGraph,"normal",smoothFactor);
+      string smoothedHistoName = name[iname]+"SmoothedHisto";
+      histoSmoothed[iname] = new TH1D(smoothedHistoName.c_str(), smoothedHistoName.c_str(), nbins, min, max);
+      for (int i = 1; i <= nbins; i++) {
+	if (histo[iname]->GetRMS()>(max-min)/(double)nbins && histo[iname]->GetRMS()>1.) {
+	  histoSmoothed[iname]->SetBinContent(i,smoothedGraph->Eval(min+(double)i*(max-min)/(double)nbins));
+	} else {
+	  histoSmoothed[iname]->SetBinContent(i,histo[iname]->GetBinContent(i));
+	}
       }
     }
   }
 
+  cout << "check that RMS doesnt change and plot control histograms" << endl;
   for (int iname = 0; iname < nameSize; iname++) {
-    cout << name[iname] << " original RMS = " << histo[iname]->GetRMS() 
-	 << " smoothed RMS = " << histoSmoothed[iname]->GetRMS() << endl;
-    histo[iname]->Draw();
-    histoSmoothed[iname]->SetLineColor(kRed);
-    histoSmoothed[iname]->Draw("same");
-    string plotName = name[iname] + "OneDSmoothed.eps";
-    canvas->Print(plotName.c_str());
+    if (alreadyFound[iname]) {
+      cout << name[iname] << " original RMS = " << histo[iname]->GetRMS() 
+	   << " smoothed RMS = " << histoSmoothed[iname]->GetRMS() << endl;
+      histo[iname]->Draw();
+      histoSmoothed[iname]->SetLineColor(kRed);
+      histoSmoothed[iname]->Draw("same");
+      string plotName = name[iname] + "OneDSmoothed.eps";
+      canvas->Print(plotName.c_str());
+    }
   }  
 
   // now make the final histogram
-  TH2D* massHist = new TH2D("massHist","Predicted Mass Spectrum of SUSY Particles",
+  cout << "now make the final 2D histograms of the distributions" << endl;
+  TH2D* massHist = new TH2D("massHist","Derived Mass Spectrum of SUSY Particles",
 			    nameSize,
 			    0.,(double)nameSize,
 			    nbins,
 			    min,max);
 
-  TH2D* massHistAll = new TH2D("massHistAll","Predicted Mass Spectrum of SUSY Particles",
+  TH2D* massHistAll = new TH2D("massHistAll","Derived Mass Spectrum of SUSY Particles",
 			       nameSize,
 			       0.,(double)nameSize,
 			       nbins,
 			       min,max);
 
-  massHist->SetYTitle("Predicted Particle Mass [GeV]");
+  massHist->SetYTitle("Derived Particle Mass [GeV]");
   massHist->GetYaxis()->SetLabelSize(0.05);
   massHist->GetYaxis()->CenterTitle();
   massHist->GetYaxis()->SetTitleSize(0.05);
@@ -301,7 +321,7 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
     theXAxis->SetBinLabel(i,binName[i-1].c_str());
   }  
   
-  massHistAll->SetYTitle("Predicted Particle Mass [GeV]");
+  massHistAll->SetYTitle("Derived Particle Mass [GeV]");
   massHistAll->GetYaxis()->SetLabelSize(0.05);
   massHistAll->GetYaxis()->CenterTitle();
   massHistAll->GetYaxis()->SetTitleSize(0.05);
@@ -316,11 +336,13 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
   
 
   for (int iname = 1; iname <= nameSize; iname++) {
-    for (int j = 1; j <= nbins; j++) {
-      //      massHistAll->SetBinContent(iname,j,massHistBeforeCleanup->GetBinContent(iname,j));
-      massHistAll->SetBinContent(iname,j,histoSmoothed[iname-1]->GetBinContent(j));
-      if (massHistBeforeCleanup->GetBinContent(iname,j)>=minEvents) {
-	massHist->SetBinContent(iname,j,massHistBeforeCleanup->GetBinContent(iname,j));
+    if (alreadyFound[iname-1]) {
+      for (int j = 1; j <= nbins; j++) {
+	//      massHistAll->SetBinContent(iname,j,massHistBeforeCleanup->GetBinContent(iname,j));
+	massHistAll->SetBinContent(iname,j,histoSmoothed[iname-1]->GetBinContent(j));
+	if (massHistBeforeCleanup->GetBinContent(iname,j)>=minEvents) {
+	  massHist->SetBinContent(iname,j,massHistBeforeCleanup->GetBinContent(iname,j));
+	}
       }
     }
   }
@@ -342,7 +364,12 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
   massHistAll->Draw("col");
   canvas->Print("predictedSUSYMassAllSpectrumLin.eps");
 
+
+
   // find the 1,2,3,all sigma contours
+  
+  cout << "plot 1,2,3 sigma contours" << endl;
+
 
   TH1D*  histo0s[nameSize];
   TH1D*  histo1s[nameSize];
@@ -351,110 +378,114 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
   TH1D*  histoAs[nameSize];
   
   for (int iname = 0; iname < nameSize; iname++) {
-    const double oneDHistNorm = histoSmoothed[iname]->Integral();
-    cout << "integral of " << name[iname] << " " << oneDHistNorm << endl;
-    histoSmoothed[iname]->Scale(1./oneDHistNorm);
-    map<int,double> binmap;
-    string histo0sName = name[iname]+"0s";
-    histo0s[iname] = new TH1D(histo0sName.c_str(), histo0sName.c_str(), nbins, min, max);
-    string histo1sName = name[iname]+"1s";
-    histo1s[iname] = new TH1D(histo1sName.c_str(), histo1sName.c_str(), nbins, min, max);
-    string histo2sName = name[iname]+"2s";
-    histo2s[iname] = new TH1D(histo2sName.c_str(), histo2sName.c_str(), nbins, min, max);
-    string histo3sName = name[iname]+"3s";
-    histo3s[iname] = new TH1D(histo3sName.c_str(), histo3sName.c_str(), nbins, min, max);
-    string histoAsName = name[iname]+"As";
-    histoAs[iname] = new TH1D(histoAsName.c_str(), histoAsName.c_str(), nbins, min, max);
-    for (int i = 1; i <= nbins; i++) {
-      binmap[i] = histoSmoothed[iname]->GetBinContent(i);
-    }    
-    double largest = -1.;
-    double lastLargest = 1.;
-    int largestI = 0;
-    double sum1s = 0.;
-    double sum2s = 0.;
-    double sum3s = 0.;
-    double sumAs = 0.;    
-    bool first = true;
-    bool stopCount1s = false;
-    bool stopCount2s = false;
-    bool stopCount3s = false;
-    for (int iBin = 1; iBin <= nbins; iBin++) {
-      largest = -1.;
+    if (alreadyFound[iname]) {
+      const double oneDHistNorm = histoSmoothed[iname]->Integral();
+      cout << "integral of " << name[iname] << " " << oneDHistNorm << endl;
+      histoSmoothed[iname]->Scale(1./oneDHistNorm);
+      map<int,double> binmap;
+      string histo0sName = name[iname]+"0s";
+      histo0s[iname] = new TH1D(histo0sName.c_str(), histo0sName.c_str(), nbins, min, max);
+      string histo1sName = name[iname]+"1s";
+      histo1s[iname] = new TH1D(histo1sName.c_str(), histo1sName.c_str(), nbins, min, max);
+      string histo2sName = name[iname]+"2s";
+      histo2s[iname] = new TH1D(histo2sName.c_str(), histo2sName.c_str(), nbins, min, max);
+      string histo3sName = name[iname]+"3s";
+      histo3s[iname] = new TH1D(histo3sName.c_str(), histo3sName.c_str(), nbins, min, max);
+      string histoAsName = name[iname]+"As";
+      histoAs[iname] = new TH1D(histoAsName.c_str(), histoAsName.c_str(), nbins, min, max);
       for (int i = 1; i <= nbins; i++) {
-	if (binmap[i]>largest && binmap[i]<lastLargest) {
-	  largestI = i;
-	  largest = binmap[i];
+	binmap[i] = histoSmoothed[iname]->GetBinContent(i);
+      }    
+      double largest = -1.;
+      double lastLargest = 1.;
+      int largestI = 0;
+      double sum1s = 0.;
+      double sum2s = 0.;
+      double sum3s = 0.;
+      double sumAs = 0.;    
+      bool first = true;
+      bool stopCount1s = false;
+      bool stopCount2s = false;
+      bool stopCount3s = false;
+      for (int iBin = 1; iBin <= nbins; iBin++) {
+	largest = -1.;
+	for (int i = 1; i <= nbins; i++) {
+	  if (binmap[i]>largest && binmap[i]<lastLargest) {
+	    largestI = i;
+	    largest = binmap[i];
+	  }
 	}
+	if (sum1s+binmap[largestI]<0.68 && !stopCount1s) {
+	  sum1s+=binmap[largestI];
+	  histo1s[iname]->SetBinContent(largestI,1.);
+	} else {
+	  stopCount1s = true;
+	}
+	if (sum2s+binmap[largestI]<0.95 && !stopCount2s) { 
+	  sum2s+=binmap[largestI];
+	  histo2s[iname]->SetBinContent(largestI,1.);
+	} else {
+	  stopCount2s = true;
+	}
+	if (sum3s+binmap[largestI]<0.99 && !stopCount3s) { 
+	  sum3s+=binmap[largestI];
+	  histo3s[iname]->SetBinContent(largestI,1.);
+	} else {
+	  stopCount3s = true;
+	}
+	sumAs+=binmap[largestI];
+	histoAs[iname]->SetBinContent(largestI,1.);
+	if (first)  { 
+	  histo0s[iname]->SetBinContent(largestI,2.);
+	  histo0s[iname]->SetBinContent(largestI-1,2.);
+	  histo0s[iname]->SetBinContent(largestI+1,2.);	
+	}
+	lastLargest = largest;
+	first = false;
       }
-      if (sum1s+binmap[largestI]<0.68 && !stopCount1s) {
-	sum1s+=binmap[largestI];
-	histo1s[iname]->SetBinContent(largestI,1.);
-      } else {
-	stopCount1s = true;
-      }
-      if (sum2s+binmap[largestI]<0.95 && !stopCount2s) { 
-	sum2s+=binmap[largestI];
-	histo2s[iname]->SetBinContent(largestI,1.);
-      } else {
-	stopCount2s = true;
-      }
-      if (sum3s+binmap[largestI]<0.99 && !stopCount3s) { 
-	sum3s+=binmap[largestI];
-	histo3s[iname]->SetBinContent(largestI,1.);
-      } else {
-	stopCount3s = true;
-      }
-      sumAs+=binmap[largestI];
-      histoAs[iname]->SetBinContent(largestI,1.);
-      if (first)  { 
-	histo0s[iname]->SetBinContent(largestI,2.);
-	histo0s[iname]->SetBinContent(largestI-1,2.);
-	histo0s[iname]->SetBinContent(largestI+1,2.);	
-      }
-      lastLargest = largest;
-      first = false;
+      cout << "test of sumAs for " << name[iname] << " " << sumAs << endl;
+      histo0s[iname]->Draw();
+      histo1s[iname]->SetLineColor(kRed);
+      histo1s[iname]->Draw("same");
+      histo2s[iname]->SetLineColor(kGreen);
+      histo2s[iname]->Draw("same");
+      histo3s[iname]->SetLineColor(kBlue);
+      histo3s[iname]->Draw("same");
+      histoAs[iname]->SetLineColor(kYellow);
+      histoAs[iname]->Draw("same");
+      string plotName = name[iname] + "OneDSigmas.eps";
+      canvas->Print(plotName.c_str());    
     }
-    cout << "test of sumAs for " << name[iname] << " " << sumAs << endl;
-    histo0s[iname]->Draw();
-    histo1s[iname]->SetLineColor(kRed);
-    histo1s[iname]->Draw("same");
-    histo2s[iname]->SetLineColor(kGreen);
-    histo2s[iname]->Draw("same");
-    histo3s[iname]->SetLineColor(kBlue);
-    histo3s[iname]->Draw("same");
-    histoAs[iname]->SetLineColor(kYellow);
-    histoAs[iname]->Draw("same");
-    string plotName = name[iname] + "OneDSigmas.eps";
-    canvas->Print(plotName.c_str());    
   }  
-
-  TH2D* massHistSigmaRanges = new TH2D("massHistSigmaRanges","Predicted Mass Spectrum of SUSY Particles",
+  
+  TH2D* massHistSigmaRanges = new TH2D("massHistSigmaRanges","Derived Mass Spectrum of SUSY Particles",
 				       nameSize,
 				       0.,(double)nameSize,
 				       nbins,
 				       min,max);
-
-  massHistSigmaRanges->SetYTitle("Predicted Particle Mass [GeV]");
+  
+  massHistSigmaRanges->SetYTitle("Derived Particle Mass [GeV]");
   massHistSigmaRanges->GetYaxis()->SetLabelSize(0.05);
   massHistSigmaRanges->GetYaxis()->CenterTitle();
   massHistSigmaRanges->GetYaxis()->SetTitleSize(0.05);
   massHistSigmaRanges->GetYaxis()->SetTitleOffset(1.3);
-
+  
   TAxis* theXAxisSigmaRanges = massHistSigmaRanges->GetXaxis();
   theXAxisSigmaRanges->SetLabelSize(0.07);
   theXAxisSigmaRanges->SetLabelOffset(0.01);
   for (int i = 1; i <= nameSize; i++) {
     theXAxisSigmaRanges->SetBinLabel(i,binName[i-1].c_str());
   }  
-
+  
   for (int iname = 1; iname <= nameSize; iname++) {
-    for (int j = 1; j <= nbins; j++) {
-      massHistSigmaRanges->SetBinContent(iname,j,massHistSigmaRanges->GetBinContent(iname,j)+histo0s[iname-1]->GetBinContent(j));
-      massHistSigmaRanges->SetBinContent(iname,j,massHistSigmaRanges->GetBinContent(iname,j)+histo1s[iname-1]->GetBinContent(j));
-      massHistSigmaRanges->SetBinContent(iname,j,massHistSigmaRanges->GetBinContent(iname,j)+histo2s[iname-1]->GetBinContent(j));
-      massHistSigmaRanges->SetBinContent(iname,j,massHistSigmaRanges->GetBinContent(iname,j)+histo3s[iname-1]->GetBinContent(j));
-      // massHistSigmaRanges->SetBinContent(iname,j,massHistSigmaRanges->GetBinContent(iname,j)+histoAs[iname-1]->GetBinContent(j));
+    if (alreadyFound[iname-1]) {
+      for (int j = 1; j <= nbins; j++) {
+	massHistSigmaRanges->SetBinContent(iname,j,massHistSigmaRanges->GetBinContent(iname,j)+histo0s[iname-1]->GetBinContent(j));
+	massHistSigmaRanges->SetBinContent(iname,j,massHistSigmaRanges->GetBinContent(iname,j)+histo1s[iname-1]->GetBinContent(j));
+	massHistSigmaRanges->SetBinContent(iname,j,massHistSigmaRanges->GetBinContent(iname,j)+histo2s[iname-1]->GetBinContent(j));
+	massHistSigmaRanges->SetBinContent(iname,j,massHistSigmaRanges->GetBinContent(iname,j)+histo3s[iname-1]->GetBinContent(j));
+	// massHistSigmaRanges->SetBinContent(iname,j,massHistSigmaRanges->GetBinContent(iname,j)+histoAs[iname-1]->GetBinContent(j));
+      }
     }
   }
   for (int iname = 1; iname <= nameSize; iname++) {
@@ -463,13 +494,38 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
     }
   }
   
+
+  // finally really draw the final plot:
   canvas->SetLogz(0);
   massHistSigmaRanges->Draw("col");
+  const float canvasHeight   = canvas->GetWindowHeight();
+  const float canvasWidth    = canvas->GetWindowWidth();
+  const float canvasAspectRatio = canvasHeight/canvasWidth;
+  const float width          = 0.19;
+  const float xLowerEdge     = 0.78;
+  const float yLowerEdge     = 0.853;
+  const float xUpperEdge     = xLowerEdge+width;
+  const float yUpperEdge     = yLowerEdge+width*fittinoLogo->GetHeight()/fittinoLogo->GetWidth()/canvasAspectRatio;
+  cout << " xLowerEdge  = " << xLowerEdge << "\n"
+       << " yLowerEdge  = " << yLowerEdge << "\n"
+       << " xUpperEdge  = " << xUpperEdge << "\n"
+       << " yUpperEdge  = " << yUpperEdge << "\n"
+       << " Imagewidth  = " << fittinoLogo->GetWidth() << "\n"
+       << " Imageheight = " << fittinoLogo->GetHeight() << "\n"
+       << " canvasHeight= " << canvasHeight << "\n"
+       << " canvasWidth = " << canvasWidth  << "\n"
+       << endl;
+  //  TPad *fittinoLogoPad = new TPad("fittinoLogoPad", "fittinoLogoPad", 0.85, 0.85, 0.98, 0.85+d*fittinoLogo->GetHeight()/fittinoLogo->GetWidth());
+  TPad *fittinoLogoPad = new TPad("fittinoLogoPad", "fittinoLogoPad", xLowerEdge, yLowerEdge, xUpperEdge, yUpperEdge);
+  fittinoLogoPad->Draw("same");
+  fittinoLogoPad->cd();
+  fittinoLogo->Draw("xxx");
+  canvas->cd();
   canvas->Print("predictedSUSYMassSigmaRangesSpectrum.eps");
   canvas->SetLogz(0);
-
+  
   return;
-
+  
 }
 
 void MakeMassDistPlotTemplate () {

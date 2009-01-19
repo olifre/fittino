@@ -3405,7 +3405,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 		  if ( yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { // ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) (TMath::Mod(n_printouts,10)==0)
 		     cout << i << " " << j << " using obs " << yyMeasuredVec[i].name << " = " << yyMeasuredVec[i].value
 			<< "+-" << sqrt(yyMeasuredCorrelationMatrix.GetCovariance(i,j)) 
-			<< " (" << (TMath::Abs(yyMeasuredVec[i].value-yyMeasuredVec[i].theovalue))*sqrt(yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)) << ") " << " at theovalue = " 
+			<< " (" << (TMath::Abs(yyMeasuredVec[i].value-yyMeasuredVec[i].theovalue))*sqrt(yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)) << ") " << "\t at theovalue = " 
 			<< yyMeasuredVec[i].theovalue<< endl;
 		  }
 	       }
