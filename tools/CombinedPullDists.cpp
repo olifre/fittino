@@ -26,6 +26,25 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "TStyle.h"
+#include "TH1D.h"
+#include "TH2D.h"
+#include "TGraph.h"
+#include "TGraphSmooth.h"
+#include "TColor.h"
+#include "TF1.h"
+#include "TFile.h"
+#include "TTree.h"
+#include "TCanvas.h"
+#include "TLeafD.h"
+#include "TImage.h"
+#include "TLegend.h"
+#include "TLine.h"
+#include "TLatex.h"
+#include <string>
+#include <vector>
+#include <map>
+using namespace std;
 
 void CombinedPullDists (const Int_t nbins = 50, 
 			const char* filename1 = "PullDistributions1.sum.root",
@@ -36,8 +55,11 @@ void CombinedPullDists (const Int_t nbins = 50,
 			//			const char* tag2      = "Modell falsch",
 			const char* treename1 = "tree", 
 			const char* treename2 = "tree", 
-			const Double_t chi2cut = -1)
+			const Double_t chi2cut = -1,
+			const string logoPath = "" )
 {
+  // gROOT->SetStyle("ATLAS");
+  // gROOT->ForceStyle();
   gStyle->SetOptStat(111111);
   gStyle->SetOptFit(0);
 
@@ -89,7 +111,7 @@ void CombinedPullDists (const Int_t nbins = 50,
   Double_t* maxSave  = new Double_t[nLeaves1];
   Double_t* sum   = new Double_t[nLeaves1];
   Double_t* sum2  = new Double_t[nLeaves1];
-  TH2D**    histo = new TH2D[nLeaves1];
+  TH2D*    histo[nLeaves1];
   //   TF1**     gauss = new TF1[nLeaves];
   //    TF1*      chi2  = 0;
 
@@ -242,7 +264,7 @@ void CombinedPullDists (const Int_t nbins = 50,
     return;
   }
 
-  cout << "start to loop over the enties" << endl;
+  cout << "start to loop over the entries " << nEntries1 << " " << nEntries2 << endl;
 
   for (Int_t i1=0; i1<nEntries1; i1++) {
     tree1->GetEntry(i1);
@@ -260,6 +282,7 @@ void CombinedPullDists (const Int_t nbins = 50,
 	
       if (par1[iRandSeed1]==par2[iRandSeed2]) {
 
+	cout << "corresponding entry found " << par1[iRandSeed1] << " " << par2[iRandSeed2] << endl;
 	Double_t chi2val1 = -1; 
 	Double_t chi2val2 = -1; 
 	if (!(iChi2Leaf1 < 0)) {
@@ -280,10 +303,10 @@ void CombinedPullDists (const Int_t nbins = 50,
 	}
 	  
 	for (Int_t iLeaf=0; iLeaf<nLeaves1; iLeaf++) {
-	  TLeafD* leaf1 = (TLeafD*)tree1->GetListOfLeaves()->At(iLeaf);
-	  TLeafD* leaf2 = (TLeafD*)tree2->GetListOfLeaves()->At(iLeaf);
+	  //	  TLeafD* leaf1 = (TLeafD*)tree1->GetListOfLeaves()->At(iLeaf);
+	  //	  TLeafD* leaf2 = (TLeafD*)tree2->GetListOfLeaves()->At(iLeaf);
 	    
-	  if (chi2cut < 0 || ( !(chi2cut < 0) && chi2val < chi2cut ) ) {
+	  if (chi2cut < 0 || ( !(chi2cut < 0) && chi2val1 < chi2cut ) ) {
 	    histo[iLeaf]->Fill(par1[iLeaf],par2[iLeaf]);
 	      
 	    sum[iLeaf]  += par1[iLeaf];
@@ -312,7 +335,7 @@ void CombinedPullDists (const Int_t nbins = 50,
 
   char effLine1[512];
   char effLine2[512];
-  char effLine3[512];
+  //  char effLine3[512];
   char effLine4[512];
   sprintf(effLine1,"probability to prefer");
   //  sprintf(effLine2,"%s over",tag2);
@@ -344,8 +367,49 @@ void CombinedPullDists (const Int_t nbins = 50,
       text4->Draw("same");
     }
 
-    sprintf(epsfilename, "%s.eps", leaf->GetName());
+    TImage *fittinoLogo = 0;
+    if (logoPath!="") {
+      // get the fittino logo
+      fittinoLogo = TImage::Open(logoPath.c_str());
+      if (!fittinoLogo) {
+	printf("Could not open the fittino logo at %s\n exit\n",logoPath.c_str());
+	return;
+      }
+      fittinoLogo->SetConstRatio(1);
+      fittinoLogo->SetImageQuality(TAttImage::kImgBest);
+      
+      const float canvasHeight   = c->GetWindowHeight();
+      const float canvasWidth    = c->GetWindowWidth();
+      const float canvasAspectRatio = canvasHeight/canvasWidth;
+      const float width          = 0.22;
+      const float xLowerEdge     = 0.02;
+      const float yLowerEdge     = 0.88;
+      const float xUpperEdge     = xLowerEdge+width;
+      const float yUpperEdge     = yLowerEdge+width*fittinoLogo->GetHeight()/fittinoLogo->GetWidth()/canvasAspectRatio;
+      cout << " xLowerEdge  = " << xLowerEdge << "\n"
+	   << " yLowerEdge  = " << yLowerEdge << "\n"
+	   << " xUpperEdge  = " << xUpperEdge << "\n"
+	   << " yUpperEdge  = " << yUpperEdge << "\n"
+	   << " Imagewidth  = " << fittinoLogo->GetWidth() << "\n"
+	   << " Imageheight = " << fittinoLogo->GetHeight() << "\n"
+	   << " canvasHeight= " << canvasHeight << "\n"
+	   << " canvasWidth = " << canvasWidth  << "\n"
+	   << endl;
+      //  TPad *fittinoLogoPad = new TPad("fittinoLogoPad", "fittinoLogoPad", 0.85, 0.85, 0.98, 0.85+d*fittinoLogo->GetHeight()/fittinoLogo->GetWidth());
+      TPad *fittinoLogoPad = new TPad("fittinoLogoPad", "fittinoLogoPad", xLowerEdge, yLowerEdge, xUpperEdge, yUpperEdge);
+      fittinoLogoPad->Draw("same");
+      fittinoLogoPad->cd();
+      fittinoLogo->Draw("xxx");
+      c->cd();
+    }
+
+    sprintf(epsfilename, "%s2DPlot.eps", leaf->GetName());
     c->Print(epsfilename);
+
+    if (logoPath!="") {     
+      fittinoLogo->Delete();
+    }
+
 
   }
 
