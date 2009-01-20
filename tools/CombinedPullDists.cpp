@@ -162,9 +162,9 @@ void CombinedPullDists (const Int_t nbins = 50,
     else if (!strcmp(leaf1->GetName(), "M0")) strcpy(xtitle, "M_{0} (GeV)");
     else if (!strcmp(leaf1->GetName(), "M12")) strcpy(xtitle, "M_{1/2} (GeV)");
     else if (!strcmp(leaf1->GetName(), "A0")) strcpy(xtitle, "A_{0} (GeV)");
-    else if (!strcmp(leaf->GetName(), "Mmess")) strcpy(xtitle, "M_{mess} (GeV)");
-    else if (!strcmp(leaf->GetName(), "Lambda")) strcpy(xtitle, "#lambda (GeV)");
-    else if (!strcmp(leaf->GetName(), "cGrav")) strcpy(xtitle, "C_{Grav}");
+    else if (!strcmp(leaf1->GetName(), "Mmess")) strcpy(xtitle, "M_{mess} (GeV)");
+    else if (!strcmp(leaf1->GetName(), "Lambda")) strcpy(xtitle, "#lambda (GeV)");
+    else if (!strcmp(leaf1->GetName(), "cGrav")) strcpy(xtitle, "C_{Grav}");
     else strcpy(xtitle, leaf1->GetName());
     sprintf(xtitle,"%s (%s)",xtitle,tag1);
     if (!strcmp(leaf2->GetName(), "TanBeta")) strcpy(ytitle, "tan #beta");
@@ -196,9 +196,9 @@ void CombinedPullDists (const Int_t nbins = 50,
     else if (!strcmp(leaf2->GetName(), "M0")) strcpy(ytitle, "M_{0} (GeV)");
     else if (!strcmp(leaf2->GetName(), "M12")) strcpy(ytitle, "M_{1/2} (GeV)");
     else if (!strcmp(leaf2->GetName(), "A0")) strcpy(ytitle, "A_{0} (GeV)");
-    else if (!strcmp(leaf->GetName(), "Mmess")) strcpy(ytitle, "M_{mess} (GeV)");
-    else if (!strcmp(leaf->GetName(), "Lambda")) strcpy(ytitle, "#lambda (GeV)");
-    else if (!strcmp(leaf->GetName(), "cGrav")) strcpy(ytitle, "C_{Grav}");
+    else if (!strcmp(leaf2->GetName(), "Mmess")) strcpy(ytitle, "M_{mess} (GeV)");
+    else if (!strcmp(leaf2->GetName(), "Lambda")) strcpy(ytitle, "#lambda (GeV)");
+    else if (!strcmp(leaf2->GetName(), "cGrav")) strcpy(ytitle, "C_{Grav}");
     else strcpy(ytitle, leaf2->GetName());
     sprintf(ytitle,"%s (%s)",ytitle,tag2);
     histo[iLeaf]->SetXTitle(xtitle);
@@ -241,6 +241,8 @@ void CombinedPullDists (const Int_t nbins = 50,
     printf("Cannot apply chi2 cut because tree2 does not contain Chi2 leaf\n");
     return;
   }
+
+  cout << "start to loop over the enties" << endl;
 
   for (Int_t i1=0; i1<nEntries1; i1++) {
     tree1->GetEntry(i1);
@@ -291,6 +293,8 @@ void CombinedPullDists (const Int_t nbins = 50,
       }
     }
   }
+
+  cout << "draw the plot of the pairs" << endl;
 
   TCanvas* c = new TCanvas("c", "Fittino Parameter Distribution", 0, 0, 700, 700);
   c->SetBorderMode(0);
