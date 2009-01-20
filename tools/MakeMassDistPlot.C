@@ -21,6 +21,7 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
 		       const int nbins = 1000,
 		       const int minEvents = 5,
 		       const char* treename = "tree",
+		       const string tag = "",
 		       const string logoPath = "./logo/fittinologo.eps" ) {
 
   // set style
@@ -28,7 +29,7 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
   gStyle->SetOptStat(0);
   gStyle->SetFrameFillColor(10);
   gStyle->SetPadColor(10);
-  gStyle->SetCanvasColor(18);
+  gStyle->SetCanvasColor(10); // light grey: 18
   TCanvas* canvas = new TCanvas();
   canvas->SetBorderMode(0);
   canvas->SetTopMargin(0.08);
@@ -49,7 +50,7 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
   // get the fittino logo
   TImage *fittinoLogo = TImage::Open(logoPath.c_str());
   if (!fittinoLogo) {
-    printf("Could not open the fittino logo... exit\n");
+    printf("Could not open the fittino logo at %s\n exit\n",logoPath.c_str());
     return;
   }
   fittinoLogo->SetConstRatio(1);
@@ -481,19 +482,20 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
     }
   }  
   
-  TH2D* massHistSigmaRanges = new TH2D("massHistSigmaRanges","Derived Mass Spectrum of SUSY Particles",
+  string histTitle = "Derived Mass Spectrum of SUSY Particles " + tag; 
+  TH2D* massHistSigmaRanges = new TH2D("massHistSigmaRanges", histTitle.c_str(),
 				       nameSize,
 				       0.,(double)nameSize,
 				       nbins,
 				       min,max);
 
-  TH2D* massHistMostProbable = new TH2D("massHistMostProbable","Derived Mass Spectrum of SUSY Particles",
+  TH2D* massHistMostProbable = new TH2D("massHistMostProbable", histTitle.c_str(),
 					nameSize,
 					0.,(double)nameSize,
 					nbins,
 					min,max);
   
-  TH2D* massHistMean = new TH2D("massHistMean","Derived Mass Spectrum of SUSY Particles",
+  TH2D* massHistMean = new TH2D("massHistMean", histTitle.c_str(),
 				nameSize,
 				0.,(double)nameSize,
 				nbins,

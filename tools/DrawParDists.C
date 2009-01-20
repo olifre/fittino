@@ -58,8 +58,11 @@ Double_t chi2Function2(Double_t *x, Double_t *par)
 
 
 void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributions.sum.root",
-		  const char* treename = "tree", const Double_t chi2cut = -1, const bool twoChi2Fit = false)
+		  const char* treename = "tree", const Double_t chi2cut = -1, const bool twoChi2Fit = false,
+		  const string logoPath = "" )
 {
+    gROOT->SetStyle("ATLAS");
+    gROOT->ForceStyle(); 
     gStyle->SetOptStat(0);
     gStyle->SetOptFit(111111);
 
@@ -278,10 +281,49 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
 	  pullFitsFile << leaf->GetName() << " = " << mu << " +- " << sigma << " (Mean+-Var: " << mean << "+-" << rms << ") deviation from gaussian: " << rmsSigmaRatio << endl;
 	}
       }
-      
+   
+      if (logoPath!="") {
+	// get the fittino logo
+	TImage *fittinoLogo = TImage::Open(logoPath.c_str());
+	if (!fittinoLogo) {
+	  printf("Could not open the fittino logo at %s\n exit\n",logoPath.c_str());
+	  return;
+	}
+	fittinoLogo->SetConstRatio(1);
+	fittinoLogo->SetImageQuality(TAttImage::kImgBest);
+	
+	const float canvasHeight   = c->GetWindowHeight();
+	const float canvasWidth    = c->GetWindowWidth();
+	const float canvasAspectRatio = canvasHeight/canvasWidth;
+	const float width          = 0.22;
+	const float xLowerEdge     = 0.02;
+	const float yLowerEdge     = 0.88;
+	const float xUpperEdge     = xLowerEdge+width;
+	const float yUpperEdge     = yLowerEdge+width*fittinoLogo->GetHeight()/fittinoLogo->GetWidth()/canvasAspectRatio;
+	cout << " xLowerEdge  = " << xLowerEdge << "\n"
+	     << " yLowerEdge  = " << yLowerEdge << "\n"
+	     << " xUpperEdge  = " << xUpperEdge << "\n"
+	     << " yUpperEdge  = " << yUpperEdge << "\n"
+	     << " Imagewidth  = " << fittinoLogo->GetWidth() << "\n"
+	     << " Imageheight = " << fittinoLogo->GetHeight() << "\n"
+	     << " canvasHeight= " << canvasHeight << "\n"
+	     << " canvasWidth = " << canvasWidth  << "\n"
+	     << endl;
+	//  TPad *fittinoLogoPad = new TPad("fittinoLogoPad", "fittinoLogoPad", 0.85, 0.85, 0.98, 0.85+d*fittinoLogo->GetHeight()/fittinoLogo->GetWidth());
+	TPad *fittinoLogoPad = new TPad("fittinoLogoPad", "fittinoLogoPad", xLowerEdge, yLowerEdge, xUpperEdge, yUpperEdge);
+	fittinoLogoPad->Draw("same");
+	fittinoLogoPad->cd();
+	fittinoLogo->Draw("xxx");
+	c->cd();
+      }
+   
       sprintf(epsfilename, "%s.eps", leaf->GetName());
       c->Print(epsfilename);
-      
+   
+      if (logoPath!="") {     
+	fittinoLogo->Delete();
+      }
+   
     }
     
     delete[] par;
