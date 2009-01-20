@@ -30,9 +30,9 @@
 void CombinedPullDists (const Int_t nbins = 50, 
 			const char* filename1 = "PullDistributions1.sum.root",
 			const char* filename2 = "PullDistributions2.sum.root",
-			const char* tag1      = "correct model",
+			const char* tag1      = "#mu > 0",
 			//			const char* tag1      = "Modell korrekt",
-			const char* tag2      = "wrong model",
+			const char* tag2      = "#mu < 0",
 			//			const char* tag2      = "Modell falsch",
 			const char* treename1 = "tree", 
 			const char* treename2 = "tree", 
@@ -305,9 +305,10 @@ void CombinedPullDists (const Int_t nbins = 50,
   char effLine3[512];
   char effLine4[512];
   sprintf(effLine1,"probability to prefer");
-  sprintf(effLine2,"%s over",tag2);
-  sprintf(effLine3,"%s:",tag1);
-  sprintf(effLine4,"%f +- %f",wrongEff,deltaWrongEff);
+  //  sprintf(effLine2,"%s over",tag2);
+  //  sprintf(effLine3,"%s:",tag1);
+  sprintf(effLine2,"%s over %s:",tag2, tag1);
+  sprintf(effLine4,"%.3f #pm %.3f",wrongEff,deltaWrongEff);
 
   for (Int_t iLeaf=0; iLeaf<nLeaves1; iLeaf++) {
 
@@ -320,13 +321,16 @@ void CombinedPullDists (const Int_t nbins = 50,
     histo[iLeaf]->Draw("boxsame");
 
     if (!strcmp(leaf->GetName(),"Chi2")) {
-      TLatex* text1 = new TLatex((0.3*maxSave[iLeaf]+minSave[iLeaf]),(0.16*maxSave[iLeaf]+minSave[iLeaf]),effLine1);
-      TLatex* text2 = new TLatex((0.3*maxSave[iLeaf]+minSave[iLeaf]),(0.11*maxSave[iLeaf]+minSave[iLeaf]),effLine2);
-      TLatex* text3 = new TLatex((0.3*maxSave[iLeaf]+minSave[iLeaf]),(0.06*maxSave[iLeaf]+minSave[iLeaf]),effLine3);
-      TLatex* text4 = new TLatex((0.3*maxSave[iLeaf]+minSave[iLeaf]),(0.01*maxSave[iLeaf]+minSave[iLeaf]),effLine4);
+//      TLatex* text1 = new TLatex((0.3*maxSave[iLeaf]+minSave[iLeaf]),(0.21*maxSave[iLeaf]+minSave[iLeaf]),effLine1);
+//      TLatex* text2 = new TLatex((0.3*maxSave[iLeaf]+minSave[iLeaf]),(0.16*maxSave[iLeaf]+minSave[iLeaf]),effLine2);
+//      TLatex* text3 = new TLatex((0.3*maxSave[iLeaf]+minSave[iLeaf]),(0.10*maxSave[iLeaf]+minSave[iLeaf]),effLine3);
+//      TLatex* text4 = new TLatex((0.3*maxSave[iLeaf]+minSave[iLeaf]),(0.05*maxSave[iLeaf]+minSave[iLeaf]),effLine4);
+      TLatex* text1 = new TLatex((0.4*maxSave[iLeaf]+minSave[iLeaf]),(0.18*maxSave[iLeaf]+minSave[iLeaf]),effLine1);
+      TLatex* text2 = new TLatex((0.4*maxSave[iLeaf]+minSave[iLeaf]),(0.115*maxSave[iLeaf]+minSave[iLeaf]),effLine2);
+      TLatex* text4 = new TLatex((0.4*maxSave[iLeaf]+minSave[iLeaf]),(0.04*maxSave[iLeaf]+minSave[iLeaf]),effLine4);
       text1->Draw("same");
       text2->Draw("same");
-      text3->Draw("same");
+      //      text3->Draw("same");
       text4->Draw("same");
     }
 
