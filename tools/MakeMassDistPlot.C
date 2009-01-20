@@ -39,23 +39,54 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
   canvas->SetRightMargin(0.05);
 
   // set color scheme
-  const Int_t NRGBs = 5;
-  const Int_t NCont = 7;  
-  Double_t stops[NRGBs] = { 0.00, 0.34, 0.61, 0.84, 1.00 };
-  Double_t red[NRGBs]   = { 0.00, 0.00, 0.87, 1.00, 0.51 };
-  Double_t green[NRGBs] = { 0.00, 0.81, 1.00, 0.20, 0.00 };
-  Double_t blue[NRGBs]  = { 0.51, 1.00, 0.12, 0.00, 0.00 };
+//  const Int_t NRGBs = 5;
+//  const Int_t NCont = 7;  
+////  Double_t stops[NRGBs] = { 0.00, 0.34, 0.61, 0.84, 1.00 };
+////  Double_t red[NRGBs]   = { 0.00, 0.00, 0.87, 1.00, 0.51 };
+////  Double_t green[NRGBs] = { 0.00, 0.81, 1.00, 0.20, 0.00 };
+////  Double_t blue[NRGBs]  = { 0.51, 1.00, 0.12, 0.00, 0.00 };
 //  Double_t red[NRGBs] = { 1.00, 0.00, 0.00};
 //  Double_t green[NRGBs] = { 0.00, 1.00, 0.00};
-//  Double_t blue[NRGBs] = { 1.00, 0.00, 1.00};
-//  Double_t stops[NRGBs] = { 0.00, 0.50, 1.00 };
+//  Double_t blue[NRGBs] = { 0.00, 0.00, 1.00};
+//  Double_t stops[NRGBs] = { 0.50, 0.00, 0.00 };
+//
+////  Double_t stops[NRGBs] = { 0.00, 0.34, 0.61, 0.84, 1.00 };
+////  Double_t red[NRGBs]   = { 0.00, 0.00, 0.87, 1.00, 0.51 };
+////  Double_t green[NRGBs] = { 0.00, 0.81, 1.00, 0.20, 0.00 };
+////  Double_t blue[NRGBs]  = { 0.51, 1.00, 0.12, 0.00, 0.00 };
+//  TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
+//  gStyle->SetNumberContours(NCont);
 
-//  Double_t stops[NRGBs] = { 0.00, 0.34, 0.61, 0.84, 1.00 };
-//  Double_t red[NRGBs]   = { 0.00, 0.00, 0.87, 1.00, 0.51 };
-//  Double_t green[NRGBs] = { 0.00, 0.81, 1.00, 0.20, 0.00 };
-//  Double_t blue[NRGBs]  = { 0.51, 1.00, 0.12, 0.00, 0.00 };
-  TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
-  gStyle->SetNumberContours(NCont);
+  // dummy colors
+  const int deepColor1 = kBlue+2;
+  const int deepColor2 = kBlue;
+  // important colors
+//  // magenta scheme
+//  const int env3sColor = kMagenta-10;
+//  const int env2sColor = kMagenta-8;
+//  const int env1sColor = kMagenta-6;
+//  const int highestColor = kRed+1;
+//  const int meanColor = kRed+4;
+//  // red scheme
+//  const int env3sColor = kRed-7;
+//  const int env2sColor = kRed-3;
+//  const int env1sColor = kRed+2;
+//  const int highestColor = kBlue+0;
+//  const int meanColor = kBlue+4;
+  // red scheme
+  const int env3sColor = kBlue-9;
+  const int env2sColor = kBlue-6;
+  const int env1sColor = kBlue-2;
+  const int highestColor = kRed+0;
+  const int meanColor = kRed+4;
+
+  Int_t colors[7] = {deepColor1, deepColor2,
+		     env3sColor,
+		     env2sColor, 
+		     env1sColor, 
+		     highestColor, 
+		     meanColor};
+  gStyle->SetPalette(7,colors);
   
   // get the fittino logo
   TImage *fittinoLogo = TImage::Open(logoPath.c_str());
@@ -577,23 +608,23 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
   // add a legend
   TLegend *legend = new TLegend(0.35,0.65,0.65,0.9,"");
   TF1* dummyFunc1s = new TF1("gaus1s","gaus",0.,1.);
-  dummyFunc1s->SetFillColor(1);
-  dummyFunc1s->SetLineColor(1);
+  dummyFunc1s->SetFillColor(env1sColor);
+  dummyFunc1s->SetLineColor(env1sColor);
   dummyFunc1s->SetFillStyle(1001);  
   TF1* dummyFunc2s = new TF1("gaus2s","gaus",0.,1.);
-  dummyFunc2s->SetFillColor(2);
-  dummyFunc2s->SetLineColor(2);
+  dummyFunc2s->SetFillColor(env2sColor);
+  dummyFunc2s->SetLineColor(env2sColor);
   dummyFunc2s->SetFillStyle(1001);  
   TF1* dummyFunc3s = new TF1("gaus3s","gaus",0.,1.);
-  dummyFunc3s->SetFillColor(3);
-  dummyFunc3s->SetLineColor(3);
+  dummyFunc3s->SetFillColor(env3sColor);
+  dummyFunc3s->SetLineColor(env3sColor);
   dummyFunc3s->SetFillStyle(1001);  
   TF1* dummyFuncHighest = new TF1("gausHighest","gaus",0.,1.);
-  dummyFuncHighest->SetFillColor(4);
-  dummyFuncHighest->SetLineColor(4);
+  dummyFuncHighest->SetFillColor(highestColor);
+  dummyFuncHighest->SetLineColor(highestColor);
   TF1* dummyFuncMean = new TF1("gausMean","gaus",0.,1.);
-  dummyFuncMean->SetFillColor(5);
-  dummyFuncMean->SetLineColor(5);
+  dummyFuncMean->SetFillColor(meanColor);
+  dummyFuncMean->SetLineColor(meanColor);
   legend->AddEntry(dummyFunc1s,  "1#sigma Environment", "F");
   legend->AddEntry(dummyFunc2s,  "2#sigma Environment", "F");
   legend->AddEntry(dummyFunc3s,  "3#sigma Environment", "F");
