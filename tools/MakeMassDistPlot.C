@@ -10,6 +10,7 @@
 #include "TCanvas.h"
 #include "TLeafD.h"
 #include "TImage.h"
+#include "TLegend.h"
 #include <string>
 #include <vector>
 #include <map>
@@ -39,11 +40,20 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
 
   // set color scheme
   const Int_t NRGBs = 5;
-  const Int_t NCont = 255;  
+  const Int_t NCont = 7;  
   Double_t stops[NRGBs] = { 0.00, 0.34, 0.61, 0.84, 1.00 };
   Double_t red[NRGBs]   = { 0.00, 0.00, 0.87, 1.00, 0.51 };
   Double_t green[NRGBs] = { 0.00, 0.81, 1.00, 0.20, 0.00 };
   Double_t blue[NRGBs]  = { 0.51, 1.00, 0.12, 0.00, 0.00 };
+//  Double_t red[NRGBs] = { 1.00, 0.00, 0.00};
+//  Double_t green[NRGBs] = { 0.00, 1.00, 0.00};
+//  Double_t blue[NRGBs] = { 1.00, 0.00, 1.00};
+//  Double_t stops[NRGBs] = { 0.00, 0.50, 1.00 };
+
+//  Double_t stops[NRGBs] = { 0.00, 0.34, 0.61, 0.84, 1.00 };
+//  Double_t red[NRGBs]   = { 0.00, 0.00, 0.87, 1.00, 0.51 };
+//  Double_t green[NRGBs] = { 0.00, 0.81, 1.00, 0.20, 0.00 };
+//  Double_t blue[NRGBs]  = { 0.51, 1.00, 0.12, 0.00, 0.00 };
   TColor::CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont);
   gStyle->SetNumberContours(NCont);
   
@@ -441,28 +451,28 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
 	}
 	if (sum1s+binmap[largestI]<0.68 && !stopCount1s) {
 	  sum1s+=binmap[largestI];
-	  histo1s[iname]->SetBinContent(largestI,1.);
+	  histo1s[iname]->SetBinContent(largestI,4.);
 	} else {
 	  stopCount1s = true;
 	}
 	if (sum2s+binmap[largestI]<0.95 && !stopCount2s) { 
 	  sum2s+=binmap[largestI];
-	  histo2s[iname]->SetBinContent(largestI,1.);
+	  histo2s[iname]->SetBinContent(largestI,3.);
 	} else {
 	  stopCount2s = true;
 	}
 	if (sum3s+binmap[largestI]<0.99 && !stopCount3s) { 
 	  sum3s+=binmap[largestI];
-	  histo3s[iname]->SetBinContent(largestI,1.);
+	  histo3s[iname]->SetBinContent(largestI,2.);
 	} else {
 	  stopCount3s = true;
 	}
 	sumAs+=binmap[largestI];
 	histoAs[iname]->SetBinContent(largestI,1.);
 	if (first)  { 
-	  histo0s[iname]->SetBinContent(largestI,2.);
-	  histo0s[iname]->SetBinContent(largestI-1,2.);
-	  histo0s[iname]->SetBinContent(largestI+1,2.);	
+	  histo0s[iname]->SetBinContent(largestI,5.);
+	  histo0s[iname]->SetBinContent(largestI-1,5.);
+	  histo0s[iname]->SetBinContent(largestI+1,5.);	
 	}
 	lastLargest = largest;
 	first = false;
@@ -483,11 +493,21 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
   }  
   
   string histTitle = "Derived Mass Spectrum of SUSY Particles " + tag; 
-  TH2D* massHistSigmaRanges = new TH2D("massHistSigmaRanges", histTitle.c_str(),
-				       nameSize,
-				       0.,(double)nameSize,
-				       nbins,
-				       min,max);
+  TH2D* massHistSigmaRanges1s = new TH2D("massHistSigmaRanges1s", histTitle.c_str(),
+					 nameSize,
+					 0.,(double)nameSize,
+					 nbins,
+					 min,max);
+  TH2D* massHistSigmaRanges2s = new TH2D("massHistSigmaRanges2s", histTitle.c_str(),
+					 nameSize,
+					 0.,(double)nameSize,
+					 nbins,
+					 min,max);
+  TH2D* massHistSigmaRanges3s = new TH2D("massHistSigmaRanges3s", histTitle.c_str(),
+					 nameSize,
+					 0.,(double)nameSize,
+					 nbins,
+					 min,max);
 
   TH2D* massHistMostProbable = new TH2D("massHistMostProbable", histTitle.c_str(),
 					nameSize,
@@ -501,27 +521,26 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
 				nbins,
 				min,max);
   
-  massHistSigmaRanges->SetYTitle("Derived Particle Mass [GeV]");
-  massHistSigmaRanges->GetYaxis()->SetLabelSize(0.05);
-  massHistSigmaRanges->GetYaxis()->CenterTitle();
-  massHistSigmaRanges->GetYaxis()->SetTitleSize(0.05);
-  massHistSigmaRanges->GetYaxis()->SetTitleOffset(1.3);
+  massHistSigmaRanges3s->SetYTitle("Derived Particle Mass [GeV]");
+  massHistSigmaRanges3s->GetYaxis()->SetLabelSize(0.05);
+  massHistSigmaRanges3s->GetYaxis()->CenterTitle();
+  massHistSigmaRanges3s->GetYaxis()->SetTitleSize(0.05);
+  massHistSigmaRanges3s->GetYaxis()->SetTitleOffset(1.3);
   
-  TAxis* theXAxisSigmaRanges = massHistSigmaRanges->GetXaxis();
-  theXAxisSigmaRanges->SetLabelSize(0.07);
-  theXAxisSigmaRanges->SetLabelOffset(0.01);
+  TAxis* theXAxisSigmaRanges3s = massHistSigmaRanges3s->GetXaxis();
+  theXAxisSigmaRanges3s->SetLabelSize(0.07);
+  theXAxisSigmaRanges3s->SetLabelOffset(0.01);
   for (int i = 1; i <= nameSize; i++) {
-    theXAxisSigmaRanges->SetBinLabel(i,binName[i-1].c_str());
+    theXAxisSigmaRanges3s->SetBinLabel(i,binName[i-1].c_str());
   }  
   
   for (int iname = 1; iname <= nameSize; iname++) {
     if (alreadyFound[iname-1]) {
       for (int j = 1; j <= nbins; j++) {
-	massHistMostProbable->SetBinContent(iname,j,massHistMostProbable->GetBinContent(iname,j)+2.5*histo0s[iname-1]->GetBinContent(j));
-	massHistSigmaRanges->SetBinContent(iname,j,massHistSigmaRanges->GetBinContent(iname,j)+histo0s[iname-1]->GetBinContent(j));
-	massHistSigmaRanges->SetBinContent(iname,j,massHistSigmaRanges->GetBinContent(iname,j)+histo1s[iname-1]->GetBinContent(j));
-	massHistSigmaRanges->SetBinContent(iname,j,massHistSigmaRanges->GetBinContent(iname,j)+histo2s[iname-1]->GetBinContent(j));
-	massHistSigmaRanges->SetBinContent(iname,j,massHistSigmaRanges->GetBinContent(iname,j)+histo3s[iname-1]->GetBinContent(j));
+	massHistMostProbable->SetBinContent (iname,j,histo0s[iname-1]->GetBinContent(j));
+	massHistSigmaRanges1s->SetBinContent(iname,j,histo1s[iname-1]->GetBinContent(j));
+	massHistSigmaRanges2s->SetBinContent(iname,j,histo2s[iname-1]->GetBinContent(j));
+	massHistSigmaRanges3s->SetBinContent(iname,j,histo3s[iname-1]->GetBinContent(j));
 	// massHistSigmaRanges->SetBinContent(iname,j,massHistSigmaRanges->GetBinContent(iname,j)+histoAs[iname-1]->GetBinContent(j));
       }
       massHistMean->Fill(iname-1,meanValues[iname-1],6.);
@@ -529,7 +548,9 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
   }
   for (int iname = 1; iname <= nameSize; iname++) {
     for (int j = 1; j <= nbins; j++) {
-      if (massHistSigmaRanges->GetBinContent(iname,j)<0.5) massHistSigmaRanges->SetBinContent(iname,j,0.);
+      if (massHistSigmaRanges1s->GetBinContent(iname,j)<0.5) massHistSigmaRanges1s->SetBinContent(iname,j,0.);
+      if (massHistSigmaRanges2s->GetBinContent(iname,j)<0.5) massHistSigmaRanges2s->SetBinContent(iname,j,0.);
+      if (massHistSigmaRanges3s->GetBinContent(iname,j)<0.5) massHistSigmaRanges3s->SetBinContent(iname,j,0.);
       if (massHistMostProbable->GetBinContent(iname,j)<0.5) massHistMostProbable->SetBinContent(iname,j,0.);
       if (massHistMean->GetBinContent(iname,j)<0.5) massHistMean->SetBinContent(iname,j,0.);
     }
@@ -538,9 +559,48 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
 
   // finally really draw the final plot:
   canvas->SetLogz(0);
-  massHistSigmaRanges->Draw("col");
+  massHistSigmaRanges3s->SetMaximum(7.);
+  massHistSigmaRanges3s->SetMinimum(0.);
+  massHistSigmaRanges2s->SetMaximum(7.);
+  massHistSigmaRanges2s->SetMinimum(0.);
+  massHistSigmaRanges1s->SetMaximum(7.);
+  massHistSigmaRanges1s->SetMinimum(0.);
+  massHistMostProbable->SetMaximum(7.);
+  massHistMostProbable->SetMinimum(0.);
+  massHistMean->SetMaximum(7.);
+  massHistMean->SetMinimum(0.);
+  massHistSigmaRanges3s->Draw("col");
+  massHistSigmaRanges2s->Draw("colsame");
+  massHistSigmaRanges1s->Draw("colsame");
   massHistMostProbable->Draw("colsame");
   massHistMean->Draw("colsame");
+  // add a legend
+  TLegend *legend = new TLegend(0.35,0.65,0.65,0.9,"");
+  TF1* dummyFunc1s = new TF1("gaus1s","gaus",0.,1.);
+  dummyFunc1s->SetFillColor(1);
+  dummyFunc1s->SetLineColor(1);
+  dummyFunc1s->SetFillStyle(1001);  
+  TF1* dummyFunc2s = new TF1("gaus2s","gaus",0.,1.);
+  dummyFunc2s->SetFillColor(2);
+  dummyFunc2s->SetLineColor(2);
+  dummyFunc2s->SetFillStyle(1001);  
+  TF1* dummyFunc3s = new TF1("gaus3s","gaus",0.,1.);
+  dummyFunc3s->SetFillColor(3);
+  dummyFunc3s->SetLineColor(3);
+  dummyFunc3s->SetFillStyle(1001);  
+  TF1* dummyFuncHighest = new TF1("gausHighest","gaus",0.,1.);
+  dummyFuncHighest->SetFillColor(4);
+  dummyFuncHighest->SetLineColor(4);
+  TF1* dummyFuncMean = new TF1("gausMean","gaus",0.,1.);
+  dummyFuncMean->SetFillColor(5);
+  dummyFuncMean->SetLineColor(5);
+  legend->AddEntry(dummyFunc1s,  "1#sigma Environment", "F");
+  legend->AddEntry(dummyFunc2s,  "2#sigma Environment", "F");
+  legend->AddEntry(dummyFunc3s,  "3#sigma Environment", "F");
+  legend->AddEntry(dummyFuncHighest, "Most Probable Value", "l");
+  legend->AddEntry(dummyFuncMean,    "Mean Value", "l");
+  legend->Draw("same");
+  // add the fittino logo
   const float canvasHeight   = canvas->GetWindowHeight();
   const float canvasWidth    = canvas->GetWindowWidth();
   const float canvasAspectRatio = canvasHeight/canvasWidth;
@@ -570,6 +630,38 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
   return;
   
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 void MakeMassDistPlotTemplate () {
 
