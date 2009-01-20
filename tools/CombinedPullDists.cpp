@@ -162,6 +162,9 @@ void CombinedPullDists (const Int_t nbins = 50,
     else if (!strcmp(leaf1->GetName(), "M0")) strcpy(xtitle, "M_{0} (GeV)");
     else if (!strcmp(leaf1->GetName(), "M12")) strcpy(xtitle, "M_{1/2} (GeV)");
     else if (!strcmp(leaf1->GetName(), "A0")) strcpy(xtitle, "A_{0} (GeV)");
+    else if (!strcmp(leaf->GetName(), "Mmess")) strcpy(xtitle, "M_{mess} (GeV)");
+    else if (!strcmp(leaf->GetName(), "Lambda")) strcpy(xtitle, "#lambda (GeV)");
+    else if (!strcmp(leaf->GetName(), "cGrav")) strcpy(xtitle, "C_{Grav}");
     else strcpy(xtitle, leaf1->GetName());
     sprintf(xtitle,"%s (%s)",xtitle,tag1);
     if (!strcmp(leaf2->GetName(), "TanBeta")) strcpy(ytitle, "tan #beta");
@@ -193,6 +196,9 @@ void CombinedPullDists (const Int_t nbins = 50,
     else if (!strcmp(leaf2->GetName(), "M0")) strcpy(ytitle, "M_{0} (GeV)");
     else if (!strcmp(leaf2->GetName(), "M12")) strcpy(ytitle, "M_{1/2} (GeV)");
     else if (!strcmp(leaf2->GetName(), "A0")) strcpy(ytitle, "A_{0} (GeV)");
+    else if (!strcmp(leaf->GetName(), "Mmess")) strcpy(ytitle, "M_{mess} (GeV)");
+    else if (!strcmp(leaf->GetName(), "Lambda")) strcpy(ytitle, "#lambda (GeV)");
+    else if (!strcmp(leaf->GetName(), "cGrav")) strcpy(ytitle, "C_{Grav}");
     else strcpy(ytitle, leaf2->GetName());
     sprintf(ytitle,"%s (%s)",ytitle,tag2);
     histo[iLeaf]->SetXTitle(xtitle);

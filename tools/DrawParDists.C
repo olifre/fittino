@@ -154,6 +154,9 @@ void DrawParDists(const Int_t  nbins = 50, const char* filename = "PullDistribut
 	else if (!strcmp(leaf->GetName(), "M0")) strcpy(xtitle, "M_{0} (GeV)");
 	else if (!strcmp(leaf->GetName(), "M12")) strcpy(xtitle, "M_{1/2} (GeV)");
 	else if (!strcmp(leaf->GetName(), "A0")) strcpy(xtitle, "A_{0} (GeV)");
+	else if (!strcmp(leaf->GetName(), "Mmess")) strcpy(xtitle, "M_{mess} (GeV)");
+	else if (!strcmp(leaf->GetName(), "Lambda")) strcpy(xtitle, "#lambda (GeV)");
+	else if (!strcmp(leaf->GetName(), "cGrav")) strcpy(xtitle, "C_{Grav}");
 	else strcpy(xtitle, leaf->GetName());
 	histo[iLeaf]->SetXTitle(xtitle);
 	histo[iLeaf]->GetXaxis()->CenterTitle();
@@ -231,6 +234,7 @@ void DrawParDists(const Int_t  nbins = 50, const char* filename = "PullDistribut
     c->SetBottomMargin(0.15);
     c->SetLeftMargin(0.15);
     c->SetRightMargin(0.05);
+    //c->SetLogx(1);
     
     char epsfilename[256];
 
