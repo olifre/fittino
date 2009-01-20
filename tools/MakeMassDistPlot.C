@@ -23,6 +23,7 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
 		       const int minEvents = 5,
 		       const char* treename = "tree",
 		       const string tag = "",
+		       const string predicted = "Derived",
 		       const string logoPath = "./logo/fittinologo.eps" ) {
 
   // set style
@@ -523,7 +524,7 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
     }
   }  
   
-  string histTitle = "Derived Mass Spectrum of SUSY Particles " + tag; 
+  string histTitle = predicted + " Mass Spectrum of SUSY Particles " + tag; 
   TH2D* massHistSigmaRanges1s = new TH2D("massHistSigmaRanges1s", histTitle.c_str(),
 					 nameSize,
 					 0.,(double)nameSize,
@@ -552,7 +553,8 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
 				nbins,
 				min,max);
   
-  massHistSigmaRanges3s->SetYTitle("Derived Particle Mass [GeV]");
+  string yAxisTitle = predicted + " Particle Mass [GeV]";
+  massHistSigmaRanges3s->SetYTitle(yAxisTitle.c_str());
   massHistSigmaRanges3s->GetYaxis()->SetLabelSize(0.05);
   massHistSigmaRanges3s->GetYaxis()->CenterTitle();
   massHistSigmaRanges3s->GetYaxis()->SetTitleSize(0.05);
