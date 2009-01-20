@@ -150,8 +150,8 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
 	histo[iLeaf]->GetXaxis()->SetTitleSize(0.05);
 	histo[iLeaf]->GetXaxis()->SetTitleOffset(1.2);
 	histo[iLeaf]->GetXaxis()->SetLabelSize(0.05);
-	histo[iLeaf]->SetYTitle("Eintr#ddot{a}ge");
-	//histo[iLeaf]->SetYTitle("Toy fits");
+	//	histo[iLeaf]->SetYTitle("Eintr#ddot{a}ge");
+	histo[iLeaf]->SetYTitle("Toy fits");
 	histo[iLeaf]->GetYaxis()->SetLabelSize(0.05);
 	histo[iLeaf]->GetYaxis()->CenterTitle();
 	histo[iLeaf]->GetYaxis()->SetTitleSize(0.05);
