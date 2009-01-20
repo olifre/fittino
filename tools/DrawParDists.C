@@ -57,14 +57,21 @@ Double_t chi2Function2(Double_t *x, Double_t *par)
 }
 
 
-void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributions.sum.root",
-		  const char* treename = "tree", const Double_t chi2cut = -1, const bool twoChi2Fit = false,
+void DrawParDists(const Int_t  nbins = 50, const char* filename = "PullDistributions.sum.root",
+		  const char*  treename = "tree", const Double_t chi2cut = -1, const bool twoChi2Fit = false,
+		  const bool   doFit = true,
 		  const string logoPath = "" )
 {
     gROOT->SetStyle("ATLAS");
-    gROOT->ForceStyle(); 
-    gStyle->SetOptStat(0);
-    gStyle->SetOptFit(111111);
+    gROOT->ForceStyle();
+    if (doFit) {
+      gStyle->SetOptStat(0);
+      gStyle->SetOptFit(111111);
+    } else {
+      gStyle->SetOptStat(1111);
+      gStyle->SetOptFit(0);
+    }
+
 
     TFile* file = new TFile(filename, "read");
 
@@ -232,7 +239,9 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
       TLeafD* leaf = (TLeafD*)tree->GetListOfLeaves()->At(iLeaf);
       
       if (!strcmp(leaf->GetName(), "Chi2")) {
-	histo[iLeaf]->Fit(chi2, "rem");
+	if (doFit) {
+	  histo[iLeaf]->Fit(chi2, "rem");
+	}
 	histo[iLeaf]->Draw("ep");
 	if (twoChi2Fit) {
 	  const double norm1 = chi2->GetParameter(0);
@@ -264,7 +273,9 @@ void DrawParDists(const Int_t nbins = 50, const char* filename = "PullDistributi
       }
       else {
 	if (strcmp(leaf->GetName(), "Kppinn_npf")) {
-	  histo[iLeaf]->Fit(gauss[iLeaf], "rem");
+	  if (doFit) {
+	    histo[iLeaf]->Fit(gauss[iLeaf], "rem");
+	  }
 	  histo[iLeaf]->Draw("ep");
 	  Double_t mean = sum[iLeaf] / nEntries;
 	  Double_t mu = gauss[iLeaf]->GetParameter(1);
