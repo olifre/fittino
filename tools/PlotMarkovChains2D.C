@@ -17,9 +17,9 @@
 #include "vector"
 using namespace std;
 
-void PlotMarkovChains2D (bool bayes = true);
+void PlotMarkovChains2D (bool bayes = true, int maxevents = -1);
 
-void PlotMarkovChains2D (bool bayes) 
+void PlotMarkovChains2D (bool bayes, int maxevents) 
 {
   //gROOT->SetStyle("MyStyle");
   //gROOT->ForceStyle();
@@ -30,7 +30,9 @@ void PlotMarkovChains2D (bool bayes)
   markovChain.Print();
 
   int nEntries = markovChain.GetEntries();
-  //  if (nEntries > 100000) nEntries = 100000;
+  if ( maxevents >= 0 ) {
+    if (nEntries > maxevents) nEntries = maxevents;
+  }
   int nBins = 25;
 
   std::cout << "number of entries " << nEntries << std::endl;
