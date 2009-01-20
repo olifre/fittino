@@ -296,10 +296,11 @@ void DrawParDists(const Int_t  nbins = 50, const char* filename = "PullDistribut
 	  pullFitsFile << leaf->GetName() << " = " << mu << " +- " << sigma << " (Mean+-Var: " << mean << "+-" << rms << ") deviation from gaussian: " << rmsSigmaRatio << endl;
 	}
       }
-   
+
+      TImage *fittinoLogo = 0;
       if (logoPath!="") {
 	// get the fittino logo
-	TImage *fittinoLogo = TImage::Open(logoPath.c_str());
+	fittinoLogo = TImage::Open(logoPath.c_str());
 	if (!fittinoLogo) {
 	  printf("Could not open the fittino logo at %s\n exit\n",logoPath.c_str());
 	  return;
