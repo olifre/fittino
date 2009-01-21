@@ -183,7 +183,7 @@ void DrawParDists(const Int_t  nbins = 50, const char* filename = "PullDistribut
 	    
 	    chi2->SetParNames("norm", "ndf");
 	    chi2->SetParameter(0, 0.1 * histo[iLeaf]->Integral());
-	    chi2->SetParameter(1, 10);
+	    chi2->SetParameter(1, 30);
 	  } else {
 	    chi2 = new TF1("chi2", chi2Function2,
 			   TMath::Max( histo[iLeaf]->GetXaxis()->GetXmin(), 0.0),

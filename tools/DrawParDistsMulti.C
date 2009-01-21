@@ -53,24 +53,32 @@ void DrawParDistsMulti(const char* filename1 = "file1",
 
    // ----- open input files and make trees accessible -----
 
+   // opening files
+   cout << "start opening files" << endl;
+
    //   const char* filename_arr[2];
    const char* filename_arr[3];
    filename_arr[0] = filename1;
    filename_arr[1] = filename2;
    filename_arr[2] = filename3;
 
-   TFile** file = new TFile[3];
+   TFile* file[3];
    //TFile** file = new TFile[2];
-   TTree** tree = new TTree[3];
+   TTree* tree[3];
    //TTree** tree = new TTree[2];
 
    Int_t nEntries[3];
    //Int_t nEntries[2];
 
+
    //   for (unsigned int iFile=0; iFile<2; iFile++) {
    for (unsigned int iFile=0; iFile<3; iFile++) {
 
-      file[iFile] = new TFile(filename_arr[iFile], "read");
+     if (!strncmp(filename_arr[iFile],"file",4)) continue;
+
+     cout << "opeing file " << filename_arr[iFile] << endl;
+ 
+     file[iFile] = new TFile(filename_arr[iFile], "read");
 
       if ( !file[iFile] ) {
 	 printf("Problem accessing file %s\n", filename_arr[iFile]);
@@ -95,14 +103,22 @@ void DrawParDistsMulti(const char* filename1 = "file1",
    Int_t nLeaves = tree[0]->GetListOfLeaves()->GetEntriesFast();
    Int_t nPlots = tree[0]->GetListOfLeaves()->GetEntriesFast(); // nPlots = nLeaves
 
+   Int_t nLeaves1 = tree[1]->GetListOfLeaves()->GetEntriesFast();
+   Int_t nPlots1 = tree[1]->GetListOfLeaves()->GetEntriesFast(); // nPlots = nLeaves
+
+   if (nLeaves!=nLeaves1) {
+     cout << "unfortunately the list of leaves in all files has to agree" << endl;
+     return;
+   }
+
    Double_t* par   = new Double_t[nLeaves];
    Double_t* sum   = new Double_t[nLeaves];
    Double_t* sum2  = new Double_t[nLeaves];
-   TH1F**    histo = new TH1F[3];
+   TH1F* histo[3];
    //TH1F**    histo = new TH1F[2];
-   TF1**     gauss = new TF1[3];
+   TF1* gauss[3];
    //TF1**     gauss = new TF1[2];
-   TF1**     chi2  = new TF1[3];
+   TF1* chi2TF1[3];
    //TF1**     chi2  = new TF1[2];
    Color_t   color[3] = {kRed, kGreen, kBlue};
    //Color_t   color[3] = {kRed, kBlue};
@@ -110,7 +126,7 @@ void DrawParDistsMulti(const char* filename1 = "file1",
    //Double_t  nbins[2] = {nbins1, nbins2};
 
    // ----- loop over leaves in tree -----
-
+ 
    for (Int_t iLeaf=0; iLeaf<nLeaves; iLeaf++) {
 
       TCanvas* c = new TCanvas("c", "Fittino Parameter Distribution", 0, 0, 700, 700);
@@ -123,6 +139,9 @@ void DrawParDistsMulti(const char* filename1 = "file1",
       //      for (unsigned int iFile=0; iFile<2; iFile++) {
       for (unsigned int iFile=0; iFile<3; iFile++) {
 
+	if (!strncmp(filename_arr[iFile],"file",4)) continue;
+
+ 	
 	 TLeafD* leaf = (TLeafD*)tree[iFile]->GetListOfLeaves()->At(iLeaf);
 	//	 TLeafD* leaf = (TLeafD*)tree[iFile]->GetListOfLeaves()->FindObject("A0");
 	 if ( ! (!strcmp(leaf->GetName(), "M0") || !strcmp(leaf->GetName(), "M12") ||
@@ -168,6 +187,7 @@ void DrawParDistsMulti(const char* filename1 = "file1",
 	 else if (!strcmp(leaf->GetName(), "M0")) strcpy(xtitle, "M_{0} (GeV)");
 	 else if (!strcmp(leaf->GetName(), "M12")) strcpy(xtitle, "M_{1/2} (GeV)");
 	 else if (!strcmp(leaf->GetName(), "A0")) strcpy(xtitle, "A_{0} (GeV)");
+	 else if (!strcmp(leaf->GetName(), "Omega_npf_nofit")) strcpy(xtitle, "#Omega_{DM}");
 	 else strcpy(xtitle, leaf->GetName());
 
 	 histo[iFile]->SetXTitle(xtitle);
