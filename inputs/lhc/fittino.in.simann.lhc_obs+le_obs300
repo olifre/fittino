@@ -109,6 +109,36 @@ brsum ( brprod_5 brprod_6 brprod_7 ) alias 1
  
 weighted ( brsum_1 edge_14 brprod_8 edge_15 ) 359.458 GeV +- 2.5 GeV +- (JES) 3.6 GeV alias 1 # [12]
 
+### Unfitted SUSY masses
+
+nofit massSdownL       5.71265636E+02  GeV +- 0.5     GeV
+nofit massSdownR       5.48186608E+02  GeV +- 0.5     GeV
+nofit massSupL         5.65837422E+02  GeV +- 0.5     GeV
+nofit massSupR         5.48477923E+02  GeV +- 0.5     GeV
+nofit massSstrangeL    5.71265975E+02  GeV +- 0.5     GeV
+nofit massSstrangeR    5.48182283E+02  GeV +- 0.5     GeV
+nofit massScharmL      5.65846193E+02  GeV +- 0.5     GeV
+nofit massScharmR      5.48465774E+02  GeV +- 0.5     GeV
+nofit massSbottom1     5.16112074E+02  GeV +- 0.5     GeV
+nofit massSbottom2     5.48001827E+02  GeV +- 0.5     GeV
+nofit massStop1        3.99110224E+02  GeV +- 0.5     GeV
+nofit massStop2        5.88456541E+02  GeV +- 0.5     GeV
+nofit massSelectronL   2.02529284E+02  GeV +- 0.5     GeV
+nofit massSelectronR   1.44083610E+02  GeV +- 0.5     GeV
+nofit massSmuL         2.02545235E+02  GeV +- 0.5     GeV
+nofit massSmuR         1.44048523E+02  GeV +- 0.5     GeV
+nofit massStau1        1.34629990E+02  GeV +- 0.5     GeV
+nofit massStau2        2.06454448E+02  GeV +- 0.5     GeV
+nofit massGluino       6.04790720E+02  GeV +- 0.5     GeV
+nofit massNeutralino1  9.71391015E+01  GeV +- 0.5     GeV
+nofit massNeutralino2  1.80611148E+02  GeV +- 0.5     GeV
+nofit massNeutralino3 -3.60683676E+02  GeV +- 0.5     GeV
+nofit massNeutralino4  3.78501515E+02  GeV +- 0.5     GeV
+nofit massChargino2    3.79500146E+02  GeV +- 0.5     GeV
+nofit massA0           3.96051971E+02  GeV +- 0.5     GeV
+nofit massH0           3.96051971E+02  GeV +- 0.5     GeV
+nofit massHplus        3.96051971E+02  GeV +- 0.5     GeV
+
 #  [1] Buchmueller et al. arXiv:0808.4128v1
 #  [2] Buchmueller et al. arXiv:0707.3447v2
 #  [3] PDG 2008 Electroweak model and constraints on new physics (Rev.)
