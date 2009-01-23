@@ -42,8 +42,8 @@
 #include "TLine.h"
 #include "TLatex.h"
 #include <string>
-#include <vector>
-#include <map>
+//#include <vector>
+//#include <map>
 using namespace std;
 
 void ModelComparison (const Int_t nbins = 50, 
@@ -93,9 +93,9 @@ void ModelComparison (const Int_t nbins = 50,
   Int_t nLeaves1 = tree1->GetListOfLeaves()->GetEntries();
   Int_t nLeaves2 = tree2->GetListOfLeaves()->GetEntries();
 
-  if (nLeaves1!=nLeaves2) {
-    cout << "number of leaves in the two files not identical." << endl;
-    return;
+  if (nLeaves1 != nLeaves2) {
+    cout << "Number of leaves in the two files not identical." << endl;
+    //    return;
   }
 
   Int_t iChi2Leaf1 = -1; // leaf index of chi2 leaf
@@ -105,36 +105,90 @@ void ModelComparison (const Int_t nbins = 50,
   Int_t iToy1 = -1; // leaf index of nToy leaf
   Int_t iToy2 = -1; // leaf index of nToy leaf
 
-  Double_t* par1  = new Double_t[nLeaves1];
-  Double_t* par2  = new Double_t[nLeaves1];
-  Double_t* minSave  = new Double_t[nLeaves1];
-  Double_t* maxSave  = new Double_t[nLeaves1];
-  Double_t* sum   = new Double_t[nLeaves1];
-  Double_t* sum2  = new Double_t[nLeaves1];
-  TH2D**    histo = new TH2D[nLeaves1];
-  //   TF1**     gauss = new TF1[nLeaves];
-  //    TF1*      chi2  = 0;
-
   Char_t xtitle[256];
   Char_t ytitle[256];
 
   int nPoints = 0;
   int nInverted = 0;
 
-  for (Int_t iLeaf=0; iLeaf<nLeaves1; iLeaf++) {
-    TLeafD* leaf1 = (TLeafD*)tree1->GetListOfLeaves()->At(iLeaf);
-    TLeafD* leaf2 = (TLeafD*)tree2->GetListOfLeaves()->At(iLeaf);
-    leaf1->SetAddress(&par1[iLeaf]);
-    leaf2->SetAddress(&par2[iLeaf]);
+  vector<string> commonLeaves;
+  if (nLeaves1 >= nLeaves2) {
+    for (Int_t iLeaf=0; iLeaf<nLeaves1; iLeaf++) {    
+      leaf1 = (TLeafD*)tree1->GetListOfLeaves()->At(iLeaf);
+      leaf2 = (TLeafD*)tree2->GetListOfLeaves()->FindObject(leaf1->GetName());
+      if (leaf2) {
+	if (!strcmp(leaf1->GetName(), leaf2->GetName())) {
+	  commonLeaves.push_back(leaf1->GetName());
+	}
+      }
+    }
+  }
+  else {
+    for (Int_t iLeaf=0; iLeaf<nLeaves2; iLeaf++) {    
+      leaf2 = (TLeafD*)tree2->GetListOfLeaves()->At(iLeaf);
+      leaf1 = (TLeafD*)tree1->GetListOfLeaves()->FindObject(leaf2->GetName());
+      if (leaf1) {
+	if (!strcmp(leaf1->GetName(), leaf2->GetName())) {
+	  commonLeaves.push_back(leaf1->GetName());
+	}
+      }
+    }
+  }
+
+  Int_t nCommonLeaves = commonLeaves.size();
+
+  Double_t* par1  = new Double_t[nCommonLeaves];
+  Double_t* par2  = new Double_t[nCommonLeaves];
+  Double_t* minSave  = new Double_t[nCommonLeaves];
+  Double_t* maxSave  = new Double_t[nCommonLeaves];
+  Double_t* sum   = new Double_t[nCommonLeaves];
+  Double_t* sum2  = new Double_t[nCommonLeaves];
+  TH2D**    histo = new TH2D[nCommonLeaves];
+  Int_t ntoy1;
+  Int_t ntoy2;
+
+  //   TF1**     gauss = new TF1[nCommonLeaves];
+  //    TF1*      chi2  = 0;
+
+  /*
+  cout << "List of common leaves:" << endl;
+  for (int iLeaf=0 ; iLeaf < nCommonLeaves; iLeaf++ ) {
+    cout << "    " << commonLeaves[iLeaf] << endl;
+  }
+  */
+  
+  for (Int_t iLeaf=0; iLeaf<commonLeaves.size(); iLeaf++) {
+
+    TLeafD* leaf1 = (TLeafD*)tree1->GetListOfLeaves()->FindObject(commonLeaves[iLeaf].c_str());
+    TLeafD* leaf2 = (TLeafD*)tree2->GetListOfLeaves()->FindObject(commonLeaves[iLeaf].c_str());
+
+    if (!leaf1) {
+      cerr << "Did not find leaf1 in tree" << endl;
+      return;
+    }
+
+    if (!leaf2) {
+      cerr << "Did not find leaf2 in tree" << endl;
+      return;
+    }
+
+    if (strcmp(leaf1->GetName(),"nToy")) {
+      leaf1->SetAddress(&par1[iLeaf]);
+      leaf2->SetAddress(&par2[iLeaf]);
+    }
+    else {
+      leaf1->SetAddress(&ntoy1);
+      leaf2->SetAddress(&ntoy2);
+    }
       
     sum[iLeaf]  = 0;
     sum2[iLeaf] = 0;
       
     if (strcmp(leaf1->GetName(),leaf2->GetName())) {
-      cout << "order of the leaves in the two ntuples is not identical." << endl;
+      cout << "Names of leaves are not identical. Something is going wrong." << endl;
       return;
     }
-      
+
     Double_t mintree = tree1->GetMinimum(leaf1->GetName());
     Double_t maxtree = tree1->GetMaximum(leaf1->GetName());
     if (tree2->GetMinimum(leaf2->GetName())<mintree) {
@@ -236,22 +290,16 @@ void ModelComparison (const Int_t nbins = 50,
     histo[iLeaf]->GetYaxis()->SetTitleOffset(1.3);
 
     if (!strcmp(leaf1->GetName(), "Chi2")) {
-      iChi2Leaf1 = iLeaf;
+      iChi2Leaf1 = (TLeafD*)tree1->GetListOfLeaves()->IndexOf(leaf1);
     }
     if (!strcmp(leaf2->GetName(), "Chi2")) {
-      iChi2Leaf2 = iLeaf;
+      iChi2Leaf2 = (TLeafD*)tree2->GetListOfLeaves()->IndexOf(leaf2);
     }
     if (!strcmp(leaf1->GetName(), "randSeed")) {
-      iRandSeed1 = iLeaf;
+      iRandSeed1 = (TLeafD*)tree1->GetListOfLeaves()->IndexOf(leaf1);
     }
     if (!strcmp(leaf2->GetName(), "randSeed")) {
-      iRandSeed2 = iLeaf;
-    }
-    if (!strcmp(leaf1->GetName(), "nToy")) {
-      iToy1 = iLeaf;
-    }
-    if (!strcmp(leaf2->GetName(), "nToy")) {
-      iToy2 = iLeaf;
+      iRandSeed2 = (TLeafD*)tree2->GetListOfLeaves()->IndexOf(leaf2);
     }
   }
 
@@ -264,25 +312,30 @@ void ModelComparison (const Int_t nbins = 50,
     return;
   }
 
-  cout << "start to loop over the entries " << nEntries1 << " " << nEntries2 << endl;
+  cout << "Start to loop over the entries " << nEntries1
+       << " " << nEntries2 << endl;
 
   for (Int_t i1=0; i1<nEntries1; i1++) {
     tree1->GetEntry(i1);
+
     // check nToy
-    if (par1[iToy1]>1) {
+    if (ntoy1>1) {
       continue;
     }
+
     // find corresponding entry in the other tree
     for (Int_t i2=0; i2<nEntries2; i2++) {
       tree2->GetEntry(i2);
+
       // check nToy
-      if (par2[iToy2]>1) {
+      if (ntoy2>1) {
 	continue;
       }
-	
+
       if (par1[iRandSeed1]==par2[iRandSeed2]) {
 
-	cout << "corresponding entry found " << par1[iRandSeed1] << " " << par2[iRandSeed2] << endl;
+	cout << "Corresponding entry found " << par1[iRandSeed1] 
+	     << " " << par2[iRandSeed2] << endl;
 	Double_t chi2val1 = -1; 
 	Double_t chi2val2 = -1; 
 	if (!(iChi2Leaf1 < 0)) {
@@ -302,10 +355,7 @@ void ModelComparison (const Int_t nbins = 50,
 	  nInverted++;
 	}
 	  
-	for (Int_t iLeaf=0; iLeaf<nLeaves1; iLeaf++) {
-	  //	  TLeafD* leaf1 = (TLeafD*)tree1->GetListOfLeaves()->At(iLeaf);
-	  //	  TLeafD* leaf2 = (TLeafD*)tree2->GetListOfLeaves()->At(iLeaf);
-	    
+	for (Int_t iLeaf=0; iLeaf<nCommonLeaves; iLeaf++) {
 	  if (chi2cut < 0 || ( !(chi2cut < 0) && chi2val1 < chi2cut ) ) {
 	    histo[iLeaf]->Fill(par1[iLeaf],par2[iLeaf]);
 	      
@@ -317,7 +367,7 @@ void ModelComparison (const Int_t nbins = 50,
     }
   }
 
-  cout << "draw the plot of the pairs" << endl;
+  cout << "Draw the plot of the pairs" << endl;
 
   TCanvas* c = new TCanvas("c", "Fittino Parameter Distribution", 0, 0, 700, 700);
   c->SetBorderMode(0);
@@ -328,7 +378,7 @@ void ModelComparison (const Int_t nbins = 50,
     
   char epsfilename[256];
 
-  cout << "calculating and plotting results" << endl;
+  cout << "Calculating and plotting results" << endl;
 
   double wrongEff      = (double)nInverted/(double)nPoints;
   double deltaWrongEff = sqrt(wrongEff*(1-wrongEff)/nPoints);
@@ -337,15 +387,14 @@ void ModelComparison (const Int_t nbins = 50,
   char effLine2[512];
   //  char effLine3[512];
   char effLine4[512];
-  sprintf(effLine1,"probability to prefer");
+  sprintf(effLine1,"Probability to prefer");
   //  sprintf(effLine2,"%s over",tag2);
   //  sprintf(effLine3,"%s:",tag1);
   sprintf(effLine2,"%s over %s:",tag2, tag1);
   sprintf(effLine4,"%.3f #pm %.3f",wrongEff,deltaWrongEff);
 
-  for (Int_t iLeaf=0; iLeaf<nLeaves1; iLeaf++) {
+  for (Int_t iLeaf=0; iLeaf<nCommonLeaves; iLeaf++) {
 
-    TLeafD* leaf  = (TLeafD*)tree1->GetListOfLeaves()->At(iLeaf);
     TLine*  line  = new TLine(minSave[iLeaf],minSave[iLeaf],maxSave[iLeaf],maxSave[iLeaf]); 
     line->SetLineColor(kRed);
 
@@ -353,7 +402,7 @@ void ModelComparison (const Int_t nbins = 50,
     line->Draw("same");
     histo[iLeaf]->Draw("boxsame");
 
-    if (!strcmp(leaf->GetName(),"Chi2")) {
+    if (!strcmp(commonLeaves[iLeaf].c_str(),"Chi2")) {
 //      TLatex* text1 = new TLatex((0.3*maxSave[iLeaf]+minSave[iLeaf]),(0.21*maxSave[iLeaf]+minSave[iLeaf]),effLine1);
 //      TLatex* text2 = new TLatex((0.3*maxSave[iLeaf]+minSave[iLeaf]),(0.16*maxSave[iLeaf]+minSave[iLeaf]),effLine2);
 //      TLatex* text3 = new TLatex((0.3*maxSave[iLeaf]+minSave[iLeaf]),(0.10*maxSave[iLeaf]+minSave[iLeaf]),effLine3);
@@ -403,7 +452,7 @@ void ModelComparison (const Int_t nbins = 50,
       c->cd();
     }
 
-    sprintf(epsfilename, "%s2DPlot.eps", leaf->GetName());
+    sprintf(epsfilename, "%s_2DPlot.eps", commonLeaves[iLeaf].c_str());
     c->Print(epsfilename);
 
     if (logoPath!="") {     
@@ -417,7 +466,7 @@ void ModelComparison (const Int_t nbins = 50,
 
   delete[] par1;
   delete[] par2;
-  for (Int_t iLeaf=0; iLeaf<nLeaves1; iLeaf++) {
+  for (Int_t iLeaf=0; iLeaf<nCommonLeaves; iLeaf++) {
     delete histo[iLeaf];
   }
   delete c;
