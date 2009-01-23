@@ -111,7 +111,7 @@ void ModelComparison (const Int_t nbins = 50,
   Double_t* maxSave  = new Double_t[nLeaves1];
   Double_t* sum   = new Double_t[nLeaves1];
   Double_t* sum2  = new Double_t[nLeaves1];
-  TH2D*    histo[nLeaves1];
+  TH2D**    histo = new TH2D[nLeaves1];
   //   TF1**     gauss = new TF1[nLeaves];
   //    TF1*      chi2  = 0;
 
