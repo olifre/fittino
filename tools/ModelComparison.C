@@ -1,6 +1,6 @@
 /***************************************************************************
-                           CombinedPullDists.cpp
-                           ---------------------
+                           ModelComparison.C
+                           -----------------
     This ROOT macro draws the distribution of parameters
     found in a ROOT tree such as that contained in the
     PullDistributions.root file produced by Fittino if
@@ -46,17 +46,17 @@
 #include <map>
 using namespace std;
 
-void CombinedPullDists (const Int_t nbins = 50, 
-			const char* filename1 = "PullDistributions1.sum.root",
-			const char* filename2 = "PullDistributions2.sum.root",
-			const char* tag1      = "#mu > 0",
-			//			const char* tag1      = "Modell korrekt",
-			const char* tag2      = "#mu < 0",
-			//			const char* tag2      = "Modell falsch",
-			const char* treename1 = "tree", 
-			const char* treename2 = "tree", 
-			const Double_t chi2cut = -1,
-			const string logoPath = "" )
+void ModelComparison (const Int_t nbins = 50, 
+		      const char* filename1 = "PullDistributions1.sum.root",
+		      const char* filename2 = "PullDistributions2.sum.root",
+		      const char* tag1      = "#mu > 0",
+		      //			const char* tag1      = "Modell korrekt",
+		      const char* tag2      = "#mu < 0",
+		      //			const char* tag2      = "Modell falsch",
+		      const char* treename1 = "tree", 
+		      const char* treename2 = "tree", 
+		      const Double_t chi2cut = -1,
+		      const string logoPath = "" )
 {
   // gROOT->SetStyle("ATLAS");
   // gROOT->ForceStyle();
