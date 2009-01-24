@@ -162,6 +162,8 @@ bool          yyRandomParameters = false;
 bool          yyUseObservableScatteringBefore = false;
 bool          yyToyFitShakeFittedVecBeforeStart = false;
 bool          yySetErrorFlag = false;
+bool          yyUseSimplexMinOnly = false;
+bool          yyUseSimplexMin = true;
 
 unsigned int yyCalculator;
 unsigned int yyRelicDensityCalculator;
@@ -1294,6 +1296,14 @@ input:
 		  if (!strcmp($2, "ToyFitShakeFittedVecBeforeStart")) {
 		      if ($3 == on) yyToyFitShakeFittedVecBeforeStart = true;
 		      else yyToyFitShakeFittedVecBeforeStart = false;
+		  } 
+		  if (!strcmp($2, "UseSimplexMinOnly")) {
+		      if ($3 == on) yyUseSimplexMinOnly = true;
+		      else yyUseSimplexMinOnly = false;
+		  } 
+		  if (!strcmp($2, "UseSimplexMin")) {
+		      if ($3 == on) yyUseSimplexMin = true;
+		      else yyUseSimplexMin = false;
 		  } 
 	      }
 	    | input T_CALCULATOR T_WORD

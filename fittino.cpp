@@ -1609,8 +1609,8 @@ void Fittino::setStartValues()
 	 fLambda.value = yyFittedPar[FindInFittedPar("Lambda")].value;
 	 fLambda.error = yyFittedPar[FindInFittedPar("Lambda")].error;
       }
-      fLambda.bound_low = 1e3;
-      fLambda.bound_up = 1e9;
+      fLambda.bound_low = 0.;//1e3;
+      fLambda.bound_up = 0.;//1e9;
 
       fMmess.name  = "Mmess";
       fMmess.value = 2e5;
@@ -1619,8 +1619,8 @@ void Fittino::setStartValues()
 	 fMmess.value = yyFittedPar[FindInFittedPar("Mmess")].value;
 	 fMmess.error = yyFittedPar[FindInFittedPar("Mmess")].error;
       }
-      fMmess.bound_low = 1e3;
-      fMmess.bound_up = 1e9;
+      fMmess.bound_low = 0.;//1e3;
+      fMmess.bound_up = 0.;//1e9;
 
       fcGrav.name  = "cGrav";
       fcGrav.value = 1;
@@ -2372,7 +2372,17 @@ void Fittino::calculateLoopLevelValues()
 		     yyFittedVec[j].bound_low, yyFittedVec[j].bound_up,ierr);
 	    }
 	 }
-	 fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
+	 if (yyUseSimplexMinOnly || yyUseSimplexMin) {
+	   cout << "perform simplex optimization" << endl;
+	   arguments[0]  = 1000.;  
+	   fitter->mnexcm("SIMPLEX",arguments, 1, ierr);
+	 }
+	 if (!yyUseSimplexMinOnly) {
+	   cout << "perform MINIMIZE optimization" << endl;
+	   arguments[0] = 200000;
+	   arguments[1] = 0.1;
+	   fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
+	 }
       }
       cout << "returning from MINIMIZE, return value "<< ierr << endl;
       if (yyUseHesse && !yyUseMinos) {
