@@ -67,7 +67,9 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
 			    const Int_t nbins3 = 50,
 			    const char* treename = "tree",
 			    const Double_t chi2cut = -1,
-			    const string logoPath = "") {
+			    const string logoPath = "",
+			    const double minDef = -1.,
+			    const double maxDef = -1. ) {
 
   gStyle->SetOptStat(0);
   gStyle->SetOptFit(111111);
@@ -183,16 +185,16 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
       TLeafD* leaf = (TLeafD*)tree[iFile]->GetListOfLeaves()->At(iLeaf);
       //	 TLeafD* leaf = (TLeafD*)tree[iFile]->GetListOfLeaves()->FindObject("A0");
       if (!leaf) return;
-      cout << "found leaf" << endl;
+      // cout << "found leaf" << endl;
       string leafName = leaf->GetName();
-      cout << "leaf Name " << leafName << endl;
-      cout << "target Name " << targetName << endl;
+      // cout << "leaf Name " << leafName << endl;
+      // cout << "target Name " << targetName << endl;
       char leafNameChar[256];
       strcpy(leafNameChar,leafName.c_str());
-      cout << "leaf Name Char " << leafNameChar << endl;
+      // cout << "leaf Name Char " << leafNameChar << endl;
       char targetNameChar[256];
       strcpy(targetNameChar,targetName.c_str());
-      cout << "target Name Char " << targetNameChar << endl;
+      // cout << "target Name Char " << targetNameChar << endl;
       if ( strcmp(leafNameChar,targetNameChar) ) continue;
       cout << "found target " << leafName << endl;
       leaf->SetAddress(&par[iLeaf]);
@@ -201,14 +203,60 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
       
       mintree[iFile] = tree[iFile]->GetMinimum(leaf->GetName());
       maxtree[iFile] = tree[iFile]->GetMaximum(leaf->GetName());
-      if ((mintree[iFile] - 0.15 * (maxtree[iFile] - mintree[iFile]))<min) {
-	min = mintree[iFile] - 0.15 * (maxtree[iFile] - mintree[iFile]);
+
+      cout << "this mintree[" << iFile << "] = " << mintree[iFile] << endl;
+      cout << "this maxtree[" << iFile << "] = " << maxtree[iFile] << endl;
+
+      if ((mintree[iFile] - 0.05 * (maxtree[iFile] - mintree[iFile]))<min) {
+	min = mintree[iFile] - 0.05 * (maxtree[iFile] - mintree[iFile]);
       }
-      if ((maxtree[iFile] + 0.15 * (maxtree[iFile] - mintree[iFile]))>max) {
-	max = maxtree[iFile] + 0.15 * (maxtree[iFile] - mintree[iFile]);
+      if ((maxtree[iFile] + 0.05 * (maxtree[iFile] - mintree[iFile]))>max) {
+	max = maxtree[iFile] + 0.05 * (maxtree[iFile] - mintree[iFile]);
       }
       
-      histo[iFile] = new TH1F(leaf->GetName(), "", nbins[iFile], min, max);
+      cout << "new min = " << min << endl;
+      cout << "new max = " << max << endl;
+
+    }
+  }
+
+  if (min<0.) min=0.;
+
+  if (minDef>0 && min<minDef) min=minDef;
+  if (maxDef>0 && max>maxDef) max=maxDef;
+
+  for (unsigned int iFile=0; iFile<3; iFile++) {
+     
+    cout << "testing for file " << filename_arr[iFile] << endl;
+    if (!strncmp(filename_arr[iFile],"file",4)) continue;
+    cout << "looking at file " << filename_arr[iFile] << " with " << nLeavesPerFile[iFile] << " leaves" << endl;
+    
+    for (Int_t iLeaf=0; iLeaf<nLeavesPerFile[iFile]; iLeaf++) {
+      
+      cout << "testing for leaf " << iLeaf << " in tree " << iFile << endl;
+      TLeafD* leaf = (TLeafD*)tree[iFile]->GetListOfLeaves()->At(iLeaf);
+      //	 TLeafD* leaf = (TLeafD*)tree[iFile]->GetListOfLeaves()->FindObject("A0");
+      if (!leaf) return;
+      // cout << "found leaf" << endl;
+      string leafName = leaf->GetName();
+      // cout << "leaf Name " << leafName << endl;
+      // cout << "target Name " << targetName << endl;
+      char leafNameChar[256];
+      strcpy(leafNameChar,leafName.c_str());
+      // cout << "leaf Name Char " << leafNameChar << endl;
+      char targetNameChar[256];
+      strcpy(targetNameChar,targetName.c_str());
+      // cout << "target Name Char " << targetNameChar << endl;
+      if ( strcmp(leafNameChar,targetNameChar) ) continue;
+      cout << "found target " << leafName << endl;
+      leaf->SetAddress(&par[iLeaf]);
+      
+      cout << "found and creating histogram Omega " << iLeaf << " " << leaf->GetName() << endl;
+
+      char histName[256];
+      sprintf(histName,"%s_%i",leafName.c_str(),iFile);
+      cout << "histname = " << histName << endl;
+      histo[iFile] = new TH1F(histName, "", nbins[iFile], min, max);
       //histo[iFile] = new TH1F(leaf->GetName(), "", nbins[iFile], 95, 105);
       
       Char_t xtitle[256];
@@ -282,7 +330,7 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
 	
 	//if (chi2cut < 0 || ( !(chi2cut < 0) && chi2val < chi2cut ) ) {
 	double modelShift = 0.;
-	if (iFile==1) modelShift = -0.0008;
+	if (iFile==0) modelShift = -0.0008;
 	histo[iFile]->Fill(par[iLeaf]+modelShift);
 	//histo[0]->Rebin(2);
 	//histo[0]->Rebin(40);
@@ -303,23 +351,37 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
 
   }
 
+  cout << "scale the histograms" << endl;
+  for (unsigned int iFile=0; iFile<3; iFile++) {
+    if (!strncmp(filename_arr[iFile],"file",4)) continue;   
+    cout << "Integral of hist " << iFile << " = " << histo[iFile]->Integral() << endl;
+    histo[iFile]->Scale(500./(double)histo[iFile]->Integral());
+    for (int i = 1; i < nbins[iFile]+1; i++) {
+      //histo[iFile]->SetBinError(i,histo[iFile]->GetBinError(i)/histo[iFile]->Integral());
+      //     histo[iFile]->SetBinError(i,0.);
+    }
+  }
+
   cout << "compare the histograms" << endl;
 
   // find highest contents
   int histOrder[3];
   if (strncmp(filename_arr[2],"file",4)) {   
     cout << "compare three histograms" << endl;
-    if ((histo[0]->GetMaximum()>histo[1]->GetMaximum())&&(histo[0]->GetMaximum()>histo[2]->GetMaximum())) {
+    if ((histo[0]->GetMaximum()>=histo[1]->GetMaximum())&&(histo[0]->GetMaximum()>=histo[2]->GetMaximum())) {
+      cout << "0 1 2" << endl;
       histOrder[0] = 0;
       histOrder[1] = 1;
       histOrder[2] = 2;
     }
-    if ((histo[1]->GetMaximum()>histo[0]->GetMaximum())&&(histo[1]->GetMaximum()>histo[2]->GetMaximum())) {
+    if ((histo[1]->GetMaximum()>=histo[0]->GetMaximum())&&(histo[1]->GetMaximum()>=histo[2]->GetMaximum())) {
+      cout << "1 0 2" << endl;
       histOrder[0] = 1;
       histOrder[1] = 0;
       histOrder[2] = 2;
     }
-    if ((histo[2]->GetMaximum()>histo[0]->GetMaximum())&&(histo[2]->GetMaximum()>histo[1]->GetMaximum())) {
+    if ((histo[2]->GetMaximum()>=histo[0]->GetMaximum())&&(histo[2]->GetMaximum()>=histo[1]->GetMaximum())) {
+      cout << "2 1 0" << endl;
       histOrder[0] = 2;
       histOrder[1] = 1;
       histOrder[2] = 0;
@@ -327,64 +389,94 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
   } else {
     cout << "compare two histograms" << endl;
    if (histo[0]->GetMaximum()>histo[1]->GetMaximum()) {
+      cout << "0 1" << endl;
       histOrder[0] = 0;
       histOrder[1] = 1;
       histOrder[2] = 2;
     } else {
+      cout << "1 0" << endl;
       histOrder[0] = 1;
       histOrder[1] = 0;
       histOrder[2] = 2;
     }
   }
+
+  // omega measurements
+  double presentMeasPecision = 0.0062;
+  double presentMeanValue =    0.1099;
+  double fittedMeanvalue =     0.194005;
+  double futureMeasPrecision = 0.0002;
+
+  // print Omega
+  TBox* omegaBox = new TBox(fittedMeanvalue-2.*presentMeasPecision,0.,
+			    fittedMeanvalue+2.*presentMeasPecision,histo[histOrder[0]]->GetMaximum()*1.12);
+  omegaBox->SetFillColor(kYellow-9);
  
   cout << "print the histograms" << endl;
   for (unsigned int iFile=0; iFile<3; iFile++) {
 
     if (!strncmp(filename_arr[iFile],"file",4)) continue;   
 
-    cout << "print histograms" << iFile << endl;
+    cout << "print histograms " << iFile << " " << histOrder[iFile] << endl;
    
 
-    if ( iFile == 0 ) histo[histOrder[iFile]]->Draw("ep");
+    if ( iFile == 0 ) { 
+      histo[histOrder[iFile]]->Draw("ep");
+      omegaBox->Draw();
+      histo[histOrder[iFile]]->Draw("epsame");
+    }
     else histo[histOrder[iFile]]->Draw("epsame");
     
-    if (!strcmp(leaf->GetName(), "Chi2")) {
+
+//    if (!strcmp(leaf->GetName(), "Chi2")) {
+//      
+//      //if (!(chi2cut < 0) && iChi2Leaf < 0) {
+//      //   printf("Cannot apply chi2 cut because tree does not contain Chi2 leaf\n");
+//      //   return;
+//      //}
+//      
+//      chi2[iFile] = new TF1("chi2", chi2Function,
+//			    TMath::Max( histo[iFile]->GetXaxis()->GetXmin(), 0.0),
+//			    histo[iFile]->GetXaxis()->GetXmax(), 2);
+//      chi2[iFile]->SetLineColor(color[iFile]);
+//      chi2[iFile]->SetParNames("norm", "ndf");
+//      chi2[iFile]->SetParameter(0, 0.1 * histo[iFile]->Integral());
+//      chi2[iFile]->SetParameter(1, 10);
+//      histo[iFile]->Fit(chi2[iFile], "0");
+//      chi2[iFile]->Draw("same");
+//      
+//      //iChi2Leaf[iFile] = iLeaf;
+//      
+//    }
+//    
+//    else {
       
-      //if (!(chi2cut < 0) && iChi2Leaf < 0) {
-      //   printf("Cannot apply chi2 cut because tree does not contain Chi2 leaf\n");
-      //   return;
-      //}
-      
-      chi2[iFile] = new TF1("chi2", chi2Function,
-			    TMath::Max( histo[iFile]->GetXaxis()->GetXmin(), 0.0),
-			    histo[iFile]->GetXaxis()->GetXmax(), 2);
-      chi2[iFile]->SetLineColor(color[iFile]);
-      chi2[iFile]->SetParNames("norm", "ndf");
-      chi2[iFile]->SetParameter(0, 0.1 * histo[iFile]->Integral());
-      chi2[iFile]->SetParameter(1, 10);
-      histo[iFile]->Fit(chi2[iFile], "0");
-      chi2[iFile]->Draw("same");
-      
-      //iChi2Leaf[iFile] = iLeaf;
-      
-    }
-    
-    else {
-      
+      cout << "perform the fit" << endl;
       gauss[iFile] = new TF1("gauss", "gaus", histo[iFile]->GetXaxis()->GetXmin(),
 			     histo[iFile]->GetXaxis()->GetXmax());
       gauss[iFile]->SetLineColor(color[iFile]);
       histo[iFile]->Fit(gauss[iFile], "0");
       gauss[iFile]->Draw("same");
       
-    }
+      //    }
     
   }
   
-  TLegend *legend = new TLegend(0.68,0.68,0.85,0.85); 
+
+  TLegend *legend = new TLegend(0.15,0.5,0.95,0.85); 
   legend->SetFillStyle(0);
-  legend->AddEntry(gauss[0],"  MSSM18", "L");
-  legend->AddEntry(gauss[1],"  mSUGRA", "L");
+  legend->SetTextSize(0.03);
+  legend->SetBorderSize(0.0);
+  char legendHist1[256];
+  char legendHist2[256];
+  char legendHist3[256];
+  sprintf(legendHist1," LE+LHC+ILC mSUGRA:  #Omega = %7.5f   #pm %7.5f",gauss[0]->GetParameter(1),gauss[0]->GetParameter(2));
+  sprintf(legendHist2," LE+LHC+ILC MSSM18:  #Omega = %7.5f   #pm %7.5f",gauss[1]->GetParameter(1),gauss[1]->GetParameter(2));
+  sprintf(legendHist3," LE+LHC MSSM18:  #Omega = %7.5f   #pm %7.5f",gauss[2]->GetParameter(1),gauss[2]->GetParameter(2));
+  legend->AddEntry(gauss[0],legendHist1, "L");
+  legend->AddEntry(gauss[1],legendHist2, "L");
+  legend->AddEntry(gauss[2],legendHist3, "L");
+  legend->AddEntry(omegaBox,"WMAP #Omega_{DM} #pm 2#sigma", "F");
   legend->Draw();
     
   TImage *fittinoLogo = 0;
@@ -402,7 +494,7 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
     const float canvasWidth    = c->GetWindowWidth();
     const float canvasAspectRatio = canvasHeight/canvasWidth;
     const float width          = 0.22;
-    const float xLowerEdge     = 0.02;
+    const float xLowerEdge     = 0.78;
     const float yLowerEdge     = 0.88;
     const float xUpperEdge     = xLowerEdge+width;
     const float yUpperEdge     = yLowerEdge+width*fittinoLogo->GetHeight()/fittinoLogo->GetWidth()/canvasAspectRatio;
