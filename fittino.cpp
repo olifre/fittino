@@ -1609,8 +1609,8 @@ void Fittino::setStartValues()
 	 fLambda.value = yyFittedPar[FindInFittedPar("Lambda")].value;
 	 fLambda.error = yyFittedPar[FindInFittedPar("Lambda")].error;
       }
-      fLambda.bound_low = 0.;//1e3;
-      fLambda.bound_up = 0.;//1e9;
+      fLambda.bound_low = 1e3;
+      fLambda.bound_up = 1e9;
 
       fMmess.name  = "Mmess";
       fMmess.value = 2e5;
@@ -1619,8 +1619,8 @@ void Fittino::setStartValues()
 	 fMmess.value = yyFittedPar[FindInFittedPar("Mmess")].value;
 	 fMmess.error = yyFittedPar[FindInFittedPar("Mmess")].error;
       }
-      fMmess.bound_low = 0.;//1e3;
-      fMmess.bound_up = 0.;//1e9;
+      fMmess.bound_low = 1e3;
+      fMmess.bound_up = 1e9;
 
       fcGrav.name  = "cGrav";
       fcGrav.value = 1;
@@ -1962,16 +1962,30 @@ void Fittino::calculateLoopLevelValues()
 	 cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
 	 cout << "adding parameter " << yyFittedVec[i].name << endl;
 	 cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
-	 if ( yyFittedVec[i].error <= 0. ) {
-	    fitter->mnparm(i, yyFittedVec[i].name.c_str(),
-		  yyFittedVec[i].value, TMath::Abs(yyFittedVec[i].value/10.), 
-		  yyFittedVec[i].bound_low, yyFittedVec[i].bound_up,ierr);
-	    saved_uncertainties.push_back(TMath::Abs(yyFittedVec[i].value/10.));
+	 if (!(yyFittedVec[i].name=="Mmess") && !(yyFittedVec[i].name=="Lambda")) {
+	   if ( yyFittedVec[i].error <= 0. ) {
+	     fitter->mnparm(i, yyFittedVec[i].name.c_str(),
+			    yyFittedVec[i].value, TMath::Abs(yyFittedVec[i].value/10.), 
+			    yyFittedVec[i].bound_low, yyFittedVec[i].bound_up,ierr);
+	     saved_uncertainties.push_back(TMath::Abs(yyFittedVec[i].value/10.));
+	   } else {
+	     fitter->mnparm(i, yyFittedVec[i].name.c_str(),
+			    yyFittedVec[i].value, yyFittedVec[i].error, 
+			    yyFittedVec[i].bound_low, yyFittedVec[i].bound_up,ierr);
+	     saved_uncertainties.push_back(yyFittedVec[i].error);
+	   }
 	 } else {
-	    fitter->mnparm(i, yyFittedVec[i].name.c_str(),
-		  yyFittedVec[i].value, yyFittedVec[i].error, 
-		  yyFittedVec[i].bound_low, yyFittedVec[i].bound_up,ierr);
-	    saved_uncertainties.push_back(yyFittedVec[i].error);
+	   if ( yyFittedVec[i].error <= 0. ) {
+	     fitter->mnparm(i, yyFittedVec[i].name.c_str(),
+			    yyFittedVec[i].value, TMath::Abs(yyFittedVec[i].value/10.), 
+			    0., 0., ierr);
+	     saved_uncertainties.push_back(TMath::Abs(yyFittedVec[i].value/10.));
+	   } else {
+	     fitter->mnparm(i, yyFittedVec[i].name.c_str(),
+			    yyFittedVec[i].value, yyFittedVec[i].error, 
+			    0., 0., ierr);
+	     saved_uncertainties.push_back(yyFittedVec[i].error);
+	   }	   
 	 }
       }
 
