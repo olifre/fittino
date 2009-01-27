@@ -2624,6 +2624,8 @@ void Fittino::calculateLoopLevelValues()
 	       y[i*yyScanPar[1].numberOfSteps+j] = value2;
 	       z[i*yyScanPar[1].numberOfSteps+j] = chi2;
 
+	       cout << "parScan " << value2 << " " << value1 << " " << chi2 << endl;
+
 	    }
 	 }
 
