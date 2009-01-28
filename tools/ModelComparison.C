@@ -156,6 +156,8 @@ void ModelComparison (const Int_t nbins = 50,
     cout << "    " << commonLeaves[iLeaf] << endl;
   }
   */
+
+  map<int,int> iLeafToInternalIndexMap;
   
   for (Int_t iLeaf=0; iLeaf<commonLeaves.size(); iLeaf++) {
 
@@ -290,17 +292,25 @@ void ModelComparison (const Int_t nbins = 50,
     histo[iLeaf]->GetYaxis()->SetTitleOffset(1.3);
 
     if (!strcmp(leaf1->GetName(), "Chi2")) {
-      iChi2Leaf1 = (TLeafD*)tree1->GetListOfLeaves()->IndexOf(leaf1);
+      //      iChi2Leaf1 = (TLeafD*)tree1->GetListOfLeaves()->IndexOf(leaf1);
+      iChi2Leaf1 = iLeaf;
     }
     if (!strcmp(leaf2->GetName(), "Chi2")) {
-      iChi2Leaf2 = (TLeafD*)tree2->GetListOfLeaves()->IndexOf(leaf2);
+      //      iChi2Leaf2 = (TLeafD*)tree2->GetListOfLeaves()->IndexOf(leaf2);
+      iChi2Leaf2 = iLeaf;
     }
     if (!strcmp(leaf1->GetName(), "randSeed")) {
-      iRandSeed1 = (TLeafD*)tree1->GetListOfLeaves()->IndexOf(leaf1);
+      //      iRandSeed1 = (TLeafD*)tree1->GetListOfLeaves()->IndexOf(leaf1);
+      iRandSeed1 = iLeaf;
+      cout << "found randseed 1 " << iLeaf << " " << iRandSeed1 << endl;
+      //      iLeafToInternalIndexMap[(Int_t)(TLeafD*)tree1->GetListOfLeaves()->IndexOf(leaf1)] = iLeaf;
     }
     if (!strcmp(leaf2->GetName(), "randSeed")) {
-      iRandSeed2 = (TLeafD*)tree2->GetListOfLeaves()->IndexOf(leaf2);
+      // iRandSeed2 = (TLeafD*)tree2->GetListOfLeaves()->IndexOf(leaf2);
+      iRandSeed2 = iLeaf;
+      cout << "found randseed 2 " << iLeaf << " " << iRandSeed2 << endl;
     }
+
   }
 
   if (!(chi2cut < 0) && iChi2Leaf1 < 0) {
@@ -332,7 +342,11 @@ void ModelComparison (const Int_t nbins = 50,
 	continue;
       }
 
+      // cout << par1[iRandSeed1] << " " << par2[iRandSeed2] << endl;
+
       if (par1[iRandSeed1]==par2[iRandSeed2]) {
+
+	
 
 	cout << "Corresponding entry found " << par1[iRandSeed1] 
 	     << " " << par2[iRandSeed2] << endl;
