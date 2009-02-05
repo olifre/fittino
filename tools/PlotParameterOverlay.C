@@ -30,6 +30,9 @@ void PlotParameterOverlay (const string filename = "PullDistributions.sum.root",
   gStyle->SetOptFit(0);
   gStyle->SetPalette(1);
 
+  Int_t colors[8] = {kRed-10,kRed-8,kRed-6,kRed-5,kRed-2,kRed+0,kRed+2,kRed+4};//,kRed+6};
+  gStyle->SetPalette(8,colors);
+
   TFile* file = new TFile(filename.c_str(), "read");
   if ( !file ) {
     printf("Problem accessing file %s\n", filename);
@@ -42,7 +45,7 @@ void PlotParameterOverlay (const string filename = "PullDistributions.sum.root",
     return;
   }
   
-  const int nAscii = 7;
+  const int nAscii = 6;
   const int nRows  = 100000;
   ifstream* in[nAscii];
   double m0[nAscii][nRows];
@@ -55,14 +58,21 @@ void PlotParameterOverlay (const string filename = "PullDistributions.sum.root",
   int nBinsM12[nAscii];
 
   string asciiFileName[nAscii];
-  asciiFileName[0] = "fittino.out.simann.le_obs.only.4paras.real_scanMoM12_1_090123_1_166461_1000.tgz.log.extract";
-  asciiFileName[1] = "fittino.out.simann.le_obs.only.4paras.real_scanMoM12_2_090123_1_166462_1000.tgz.log.extract";
-  asciiFileName[2] = "fittino.out.simann.le_obs.only.4paras.real_scanMoM12_3_090123_1_166463_1000.tgz.log.extract";
-  asciiFileName[3] = "fittino.out.simann.le_obs.only.4paras.real_scanMoM12_4_090123_1_166464_1000.tgz.log.extract";
-  asciiFileName[4] = "fittino.out.simann.le_obs.only.4paras.real_scanMoM12_5_090123_1_166465_1000.tgz.log.extract";
-  asciiFileName[5] = "fittino.out.simann.le_obs.only.4paras.real_scanMoM12_6_090123_1_166466_1000.tgz.log.extract";
-  asciiFileName[6] = "fittino.out.simann.le_obs.only.4paras.real_scanMoM12_7_090123_1_166467_1000.tgz.log.extract";
+//  asciiFileName[0] = "fittino.out.simann.le_obs.only.4paras.real_scanMoM12_1_090123_1_176303_1000.tgz.log.extract";
+//  asciiFileName[1] = "fittino.out.simann.le_obs.only.4paras.real_scanMoM12_2_090123_1_176304_1000.tgz.log.extract";
+//  asciiFileName[2] = "fittino.out.simann.le_obs.only.4paras.real_scanMoM12_3_090123_1_176305_1000.tgz.log.extract";
+//  asciiFileName[3] = "fittino.out.simann.le_obs.only.4paras.real_scanMoM12_4_090123_1_176306_1000.tgz.log.extract";
+//  asciiFileName[4] = "fittino.out.simann.le_obs.only.4paras.real_scanMoM12_5_090123_1_176307_1000.tgz.log.extract";
+//  asciiFileName[5] = "fittino.out.simann.le_obs.only.4paras.real_scanMoM12_6_090123_1_176308_1000.tgz.log.extract";
+//  asciiFileName[6] = "fittino.out.simann.le_obs.only.4paras.real_scanMoM12_7_090123_1_176309_1000.tgz.log.extract";
 
+  asciiFileName[0] = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_1_090123_1_176296_1000.tgz.log.extract";
+  asciiFileName[1] = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_2_090123_1_176297_1000.tgz.log.extract";
+  asciiFileName[2] = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_3_090123_1_176298_1000.tgz.log.extract";
+  asciiFileName[3] = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_4_090123_1_176299_1000.tgz.log.extract";
+  asciiFileName[4] = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_5_090123_1_176300_1000.tgz.log.extract";
+  asciiFileName[5] = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_6_090123_1_176301_1000.tgz.log.extract";
+  //  asciiFileName[6] = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_7_090123_1_176302_1000.tgz.log.extract";
 
   for (int iAscii = 0; iAscii<nAscii; iAscii++) {
     in[iAscii] = new ifstream(asciiFileName[iAscii].c_str());
@@ -77,13 +87,14 @@ void PlotParameterOverlay (const string filename = "PullDistributions.sum.root",
     while (!in[iAscii]->eof()) {
       if (iRow>=nRows) break;
       if (!in[iAscii]->good()) break;
+      char parScanText[7];
       double x;
-      *in[iAscii] >> x;
+      double y;
+      double thisChi2;
+      *in[iAscii] >> parScanText >> x >> y >> thisChi2;
       m0[iAscii][iRow] = x;
-      *in[iAscii] >> x;
-      m12[iAscii][iRow] = x;
-      *in[iAscii] >> x;
-      chi2[iAscii][iRow] = x;
+      m12[iAscii][iRow] = y;
+      chi2[iAscii][iRow] = thisChi2;
       if (chi2[iAscii][iRow]<smallestChi2[iAscii]) {
 	// cout << "new lowest chi2 at " << iRow << " " << m12[iAscii][iRow] << " " << m0[iAscii][iRow] << " = " << chi2[iAscii][iRow] << endl;
 	smallestChi2[iAscii]=chi2[iAscii][iRow];
@@ -98,26 +109,28 @@ void PlotParameterOverlay (const string filename = "PullDistributions.sum.root",
   }
 
   // transfer information from arrays into histogram
-  TH2D* contourHist[nAscii];
+  string thisHistTitle = "contourHist";
+  TH2D* contourHist = new TH2D(thisHistTitle.c_str(),"",301,lowX,highX,101,lowY,highY);
   for (int iAscii = 0; iAscii<nAscii; iAscii++) {
-    string thisHistTitle = "contourHist"+iAscii;
-    contourHist[iAscii] = new TH2D(thisHistTitle.c_str(),"",301,lowX,highX,101,lowY,highY);
     cout << "looking for chi2 lower than " << smallestChi2[iAscii] + 1 << endl;
     for (iRow = 0; iRow<nRowsEff[iAscii]; iRow++) {
       if (chi2[iAscii][iRow]-smallestChi2[iAscii]<=1.) {
-	// cout << "finding 1sigma env at level " << iAscii << " at point " << m12[iAscii][iRow] << " " << m0[iAscii][iRow] << endl;
-	contourHist[iAscii]->SetBinContent(m0[iAscii][iRow],m12[iAscii][iRow],(double)iAscii+1.);
-      } else {
-	contourHist[iAscii]->SetBinContent(m0[iAscii][iRow],m12[iAscii][iRow],0.);
+	cout << "finding 1sigma env at level " << iAscii << " at point " << m12[iAscii][iRow] << " " << m0[iAscii][iRow] << endl;
+	contourHist->Fill(m0[iAscii][iRow],m12[iAscii][iRow],1.);
       }
+//      else if(contourHist->GetBinContent(m0[iAscii][iRow],m12[iAscii][iRow])<0.5) {
+//	contourHist->SetBinContent(m0[iAscii][iRow],m12[iAscii][iRow],0.);
+//      }
     }
   }  
 
+  contourHist->SetMinimum(0.);
+  contourHist->SetMaximum((double)nAscii+1);
 
   const double topMargin    = 0.05;
   const double bottomMargin = 0.15;
   const double leftMargin   = 0.15;
-  const double rightMargin  = 0.05;
+  const double rightMargin  = 0.15;
   const double histWidth  = 1. - leftMargin - rightMargin;
   const double histHeight = 1. - topMargin  - bottomMargin;
   TCanvas* c = new TCanvas("c", "Fittino Parameter Distribution", 0, 0, 700, 700);
@@ -146,54 +159,62 @@ void PlotParameterOverlay (const string filename = "PullDistributions.sum.root",
   parDistHist->GetYaxis()->SetTitleSize(0.05);
   parDistHist->GetYaxis()->SetTitleOffset(1.4);
 
+  bool first = true;
 
-  // eventually get the background Image
-  TImage *backgroundImage = 0;
-  if (backgroundImageName!="") {
-    // get the fittino logo
-    backgroundImage = TImage::Open(backgroundImageName.c_str());
-    if (!backgroundImage) {
-      printf("Could not open the background file at %s\n exit\n",backgroundImageName.c_str());
-      return;
-    }
-    //    backgroundImage->SetConstRatio(1);
-    backgroundImage->SetImageQuality(TAttImage::kImgBest);
-    
-   const float canvasHeight   = c->GetWindowHeight();
-   const float canvasWidth    = c->GetWindowWidth();
-   const float canvasAspectRatio = canvasHeight/canvasWidth;
-   // const float width          = 0.22;
-   const float xLowerEdge     = leftMargin;
-   const float yLowerEdge     = bottomMargin;
-   const float xUpperEdge     = xLowerEdge+histWidth;
-   //   const float yUpperEdge     = yLowerEdge+width*backgroundImage->GetHeight()/backgroundImage->GetWidth()/canvasAspectRatio;
-   const float yUpperEdge     = yLowerEdge+histHeight;
-   cout << " xLowerEdge  = " << xLowerEdge << "\n"
-	 << " yLowerEdge  = " << yLowerEdge << "\n"
-	 << " xUpperEdge  = " << xUpperEdge << "\n"
-	 << " yUpperEdge  = " << yUpperEdge << "\n"
-	 << " Imagewidth  = " << backgroundImage->GetWidth() << "\n"
-	 << " Imageheight = " << backgroundImage->GetHeight() << "\n"
-	 << " canvasHeight= " << canvasHeight << "\n"
-	 << " canvasWidth = " << canvasWidth  << "\n"
-	 << endl;
-   TPad *backgroundImagePad = new TPad("backgroundImagePad", "backgroundImagePad", xLowerEdge, yLowerEdge, xUpperEdge, yUpperEdge);
-   backgroundImagePad->Draw("same");
-   backgroundImagePad->cd();
-   backgroundImage->Draw("xxx");
-   c->cd();
-  }
+   // eventually get the background Image
+   TImage *backgroundImage = 0;
+   if (backgroundImageName!="") {
+     // get the fittino logo
+     backgroundImage = TImage::Open(backgroundImageName.c_str());
+     if (!backgroundImage) {
+       printf("Could not open the background file at %s\n exit\n",backgroundImageName.c_str());
+       return;
+     }
+     //    backgroundImage->SetConstRatio(1);
+     backgroundImage->SetImageQuality(TAttImage::kImgBest);
+     
+    const float canvasHeight   = c->GetWindowHeight();
+    const float canvasWidth    = c->GetWindowWidth();
+    const float canvasAspectRatio = canvasHeight/canvasWidth;
+    // const float width          = 0.22;
+    const float xLowerEdge     = leftMargin;
+    const float yLowerEdge     = bottomMargin;
+    const float xUpperEdge     = xLowerEdge+histWidth;
+    //   const float yUpperEdge     = yLowerEdge+width*backgroundImage->GetHeight()/backgroundImage->GetWidth()/canvasAspectRatio;
+    const float yUpperEdge     = yLowerEdge+histHeight;
+    cout << " xLowerEdge  = " << xLowerEdge << "\n"
+ 	 << " yLowerEdge  = " << yLowerEdge << "\n"
+ 	 << " xUpperEdge  = " << xUpperEdge << "\n"
+ 	 << " yUpperEdge  = " << yUpperEdge << "\n"
+ 	 << " Imagewidth  = " << backgroundImage->GetWidth() << "\n"
+ 	 << " Imageheight = " << backgroundImage->GetHeight() << "\n"
+ 	 << " canvasHeight= " << canvasHeight << "\n"
+ 	 << " canvasWidth = " << canvasWidth  << "\n"
+ 	 << endl;
+    TPad *backgroundImagePad = new TPad("backgroundImagePad", "backgroundImagePad", xLowerEdge, yLowerEdge, xUpperEdge, yUpperEdge);
+    backgroundImagePad->Draw("same");
+    backgroundImagePad->cd();
+    backgroundImage->Draw("xxx");
+    c->cd();
+   }
    
   // draw the parameter distribution
   //  parDistHist->Draw("contsame");
 
-  // draw the overlays of the different variables
-  for (int iAscii = 0; iAscii<nAscii; iAscii++) {
-    contourHist[iAscii]->Draw("contsame");
-  }  
-
+//  // draw the overlays of the different variables
+//  for (int iAscii = 0; iAscii<nAscii-2; iAscii++) {
+//    cout << "drawing contour " << iAscii << endl;
+//    if (first) {
+//      contourHist[iAscii]->Draw();
+//      first = false;
+//    } else {
+//      contourHist[iAscii]->Draw();
+//    }
+//  }  
+//
+   // contourHist->Draw("cont1zsame");
   // draw the parameter distribution
-  //  parDistHist->Draw("contsame");
+  // parDistHist->Draw("contsame");
 
 
   // eventually draw the Fittino Logo
