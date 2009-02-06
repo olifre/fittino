@@ -30,8 +30,8 @@ void PlotParameterOverlay (const string filename = "PullDistributions.sum.root",
   gStyle->SetOptFit(0);
   gStyle->SetPalette(1);
 
-  Int_t colors[8] = {kRed-10,kRed-8,kRed-6,kRed-5,kRed-2,kRed+0,kRed+2,kRed+4};//,kRed+6};
-  gStyle->SetPalette(8,colors);
+  Int_t colors[13] = {kRed-10,kRed-9,kRed-7,kRed-6,kRed-5,kRed+2,,kBlue-6,kBlue-5,kBlue-4,kBlue-3,kBlue-2,kBlue-1,kBlue+2};//,kRed+6};
+  gStyle->SetPalette(12,colors);
 
   TFile* file = new TFile(filename.c_str(), "read");
   if ( !file ) {
@@ -45,7 +45,7 @@ void PlotParameterOverlay (const string filename = "PullDistributions.sum.root",
     return;
   }
   
-  const int nAscii = 6;
+  const int nAscii = 4;
   const int nRows  = 100000;
   ifstream* in[nAscii];
   double m0[nAscii][nRows];
@@ -66,13 +66,32 @@ void PlotParameterOverlay (const string filename = "PullDistributions.sum.root",
 //  asciiFileName[5] = "fittino.out.simann.le_obs.only.4paras.real_scanMoM12_6_090123_1_176308_1000.tgz.log.extract";
 //  asciiFileName[6] = "fittino.out.simann.le_obs.only.4paras.real_scanMoM12_7_090123_1_176309_1000.tgz.log.extract";
 
-  asciiFileName[0] = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_1_090123_1_176296_1000.tgz.log.extract";
-  asciiFileName[1] = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_2_090123_1_176297_1000.tgz.log.extract";
-  asciiFileName[2] = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_3_090123_1_176298_1000.tgz.log.extract";
-  asciiFileName[3] = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_4_090123_1_176299_1000.tgz.log.extract";
-  asciiFileName[4] = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_5_090123_1_176300_1000.tgz.log.extract";
-  asciiFileName[5] = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_6_090123_1_176301_1000.tgz.log.extract";
-  //  asciiFileName[6] = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_7_090123_1_176302_1000.tgz.log.extract";
+//  asciiFileName[0]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_H_090123_1_191335_1000.tgz.log.extract";
+//  asciiFileName[1]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_0_090123_1_191334_1000.tgz.log.extract";
+//  asciiFileName[2]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_1_090123_1_191413_1000.tgz.log.extract";
+//  asciiFileName[3]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_2_090123_1_191414_1000.tgz.log.extract";
+//  asciiFileName[4]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_3_090123_1_191415_1000.tgz.log.extract";
+//  asciiFileName[5]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_4_090123_1_191416_1000.tgz.log.extract";
+//  asciiFileName[6]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_5_090123_1_191417_1000.tgz.log.extract";
+//  asciiFileName[7]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_6_090123_1_191418_1000.tgz.log.extract";
+//  asciiFileName[8]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_8_090123_1_191419_1000.tgz.log.extract";
+//  asciiFileName[9]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_9_090123_1_191420_1000.tgz.log.extract";
+//  asciiFileName[10] = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_10_090123_1_191421_1000.tgz.log.extract";
+
+  asciiFileName[0]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_H_090123_1_191335_1000.tgz.log.extract";
+//  asciiFileName[1]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_0_090123_1_191334_1000.tgz.log.extract";
+//  asciiFileName[2]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_1_090123_1_191413_1000.tgz.log.extract";
+//  asciiFileName[3]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_2_090123_1_191414_1000.tgz.log.extract";
+//  asciiFileName[4]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_3_090123_1_191415_1000.tgz.log.extract";
+//  asciiFileName[5]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_4_090123_1_191416_1000.tgz.log.extract";
+//  asciiFileName[6]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_5_090123_1_191417_1000.tgz.log.extract";
+//  asciiFileName[0]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_6_090123_1_191418_1000.tgz.log.extract";
+  asciiFileName[1]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_8_090123_1_191419_1000.tgz.log.extract";
+  asciiFileName[2]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_9_090123_1_191420_1000.tgz.log.extract";
+  asciiFileName[3]  = "fittino.out.simann.le_obs.only.4paras.bestfit_scanM0M12_10_090123_1_191421_1000.tgz.log.extract";
+
+
+
 
   for (int iAscii = 0; iAscii<nAscii; iAscii++) {
     in[iAscii] = new ifstream(asciiFileName[iAscii].c_str());
@@ -112,9 +131,9 @@ void PlotParameterOverlay (const string filename = "PullDistributions.sum.root",
   string thisHistTitle = "contourHist";
   TH2D* contourHist = new TH2D(thisHistTitle.c_str(),"",301,lowX,highX,101,lowY,highY);
   for (int iAscii = 0; iAscii<nAscii; iAscii++) {
-    cout << "looking for chi2 lower than " << smallestChi2[iAscii] + 1 << endl;
+    cout << "looking for chi2 lower than " << smallestChi2[iAscii] + 4. << endl;
     for (iRow = 0; iRow<nRowsEff[iAscii]; iRow++) {
-      if (chi2[iAscii][iRow]-smallestChi2[iAscii]<=1.) {
+      if (chi2[iAscii][iRow]-smallestChi2[iAscii]<=4.) {
 	cout << "finding 1sigma env at level " << iAscii << " at point " << m12[iAscii][iRow] << " " << m0[iAscii][iRow] << endl;
 	contourHist->Fill(m0[iAscii][iRow],m12[iAscii][iRow],1.);
       }
@@ -125,7 +144,7 @@ void PlotParameterOverlay (const string filename = "PullDistributions.sum.root",
   }  
 
   contourHist->SetMinimum(0.);
-  contourHist->SetMaximum((double)nAscii+1);
+  contourHist->SetMaximum(2.*((double)nAscii+1));
 
   const double topMargin    = 0.05;
   const double bottomMargin = 0.15;
@@ -140,10 +159,17 @@ void PlotParameterOverlay (const string filename = "PullDistributions.sum.root",
   c->SetLeftMargin  (leftMargin  );
   c->SetRightMargin (rightMargin );
   
-  TH2D* parDistHist = new TH2D("parDistHist","parDistHist",200,lowX,highX,200,lowY,highY);
+  TH2D* parDistHist = new TH2D("parDistHist","parDistHist",600,lowX,highX,200,lowY,highY);
 
   const string varList = parY+":"+parX+">>parDistHist";
-  tree->Draw(varList.c_str());//,"7.<TanBeta && TanBeta<13."); 
+  tree->Draw(varList.c_str());//,"7.<TanBeta && TanBeta<13.");
+  for (int i =0; i<600; i++) {
+    for (int j =0; j<200; j++) {
+      if (parDistHist->GetBinContent(i+1,j+1)>0.1) {
+	parDistHist->SetBinContent(i+1,j+1,parDistHist->GetBinContent(i+1,j+1)+nAscii+2.);
+      }
+    }
+  }
   //  TH2F* parDistHist = gROOT->FindObject("parDistHist");
   parDistHist->SetTitle("");
   const string xAxisTitle = "M_{0} (GeV)";
@@ -158,6 +184,8 @@ void PlotParameterOverlay (const string filename = "PullDistributions.sum.root",
   parDistHist->GetYaxis()->CenterTitle();
   parDistHist->GetYaxis()->SetTitleSize(0.05);
   parDistHist->GetYaxis()->SetTitleOffset(1.4);
+  parDistHist->SetMinimum(0.);
+  parDistHist->SetMaximum(2.*((double)nAscii+1));
 
   bool first = true;
 
@@ -212,9 +240,9 @@ void PlotParameterOverlay (const string filename = "PullDistributions.sum.root",
 //    }
 //  }  
 //
-   // contourHist->Draw("cont1zsame");
+  contourHist->Draw("contzsame");
   // draw the parameter distribution
-  // parDistHist->Draw("contsame");
+  parDistHist->Draw("contzsame");
 
 
   // eventually draw the Fittino Logo
