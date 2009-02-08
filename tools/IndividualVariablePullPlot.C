@@ -54,7 +54,7 @@ void IndividualVariablePullPlot (const string model = "",
   //gROOT->ForceStyle();
   gStyle->SetOptStat(0);
   gStyle->SetOptFit(0);
-
+  gStyle->SetCanvasColor(0);
 
   // canvas
   TCanvas* c = new TCanvas("c", "Fittino Parameter Distribution", 0, 0, 700, 900);
