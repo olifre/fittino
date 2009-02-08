@@ -145,8 +145,10 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
   Double_t* sum   = new Double_t[nLeaves];
   Double_t* sum2  = new Double_t[nLeaves];
   TH1F* histo[3];
+  TH1F* insertHisto[3];
   //TH1F**    histo = new TH1F[2];
   TF1* gauss[3];
+  TF1* insertGauss[3];
   //TF1**     gauss = new TF1[2];
   TF1* chi2TF1[3];
   //TF1**     chi2  = new TF1[2];
@@ -171,6 +173,7 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
   Double_t maxtree[3]; 
   Double_t min = 100000.;
   Double_t max = -100000.;
+  double omegaExpModel = 0.19388;
 
   //      for (unsigned int iFile=0; iFile<2; iFile++) {
   for (unsigned int iFile=0; iFile<3; iFile++) {
@@ -220,6 +223,9 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
     }
   }
 
+  min = min/omegaExpModel;
+  max = max/omegaExpModel;
+
   if (min<0.) min=0.;
 
   if (minDef>0 && min<minDef) min=minDef;
@@ -253,10 +259,14 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
       
       cout << "found and creating histogram Omega " << iLeaf << " " << leaf->GetName() << endl;
 
+
       char histName[256];
       sprintf(histName,"%s_%i",leafName.c_str(),iFile);
+      char insertHistName[256];
+      sprintf(insertHistName,"insert_%s_%i",leafName.c_str(),iFile);
       cout << "histname = " << histName << endl;
       histo[iFile] = new TH1F(histName, "", nbins[iFile], min, max);
+      insertHisto[iFile] = new TH1F(insertHistName, "", 50, 0.992, 1.008);
       //histo[iFile] = new TH1F(leaf->GetName(), "", nbins[iFile], 95, 105);
       
       Char_t xtitle[256];
@@ -290,7 +300,7 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
       else if (!strcmp(leaf->GetName(), "M0")) strcpy(xtitle, "M_{0} (GeV)");
       else if (!strcmp(leaf->GetName(), "M12")) strcpy(xtitle, "M_{1/2} (GeV)");
       else if (!strcmp(leaf->GetName(), "A0")) strcpy(xtitle, "A_{0} (GeV)");
-      else if (!strcmp(leaf->GetName(), "Omega_npf_nofit")) strcpy(xtitle, "#Omega_{DM}");
+      else if (!strcmp(leaf->GetName(), "Omega_npf_nofit")) strcpy(xtitle, "#Omega_{DM}h^{2}(predicted)/#Omega_{DM}h^{2}(measured)");
       else strcpy(xtitle, leaf->GetName());
       
       histo[iFile]->SetXTitle(xtitle);
@@ -323,6 +333,13 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
 	histo[iFile]->SetOption("marker");
 	histo[iFile]->SetStats(kFALSE); // disable fit statistics display
 	
+	insertHisto[iFile]->SetMarkerStyle(8);
+	insertHisto[iFile]->SetMarkerSize(0.6);
+	insertHisto[iFile]->SetMarkerColor(color[iFile]);
+	insertHisto[iFile]->SetLineColor(color[iFile]);
+	insertHisto[iFile]->SetOption("marker");
+	insertHisto[iFile]->SetStats(kFALSE); // disable fit statistics display
+
 	//Double_t chi2val = -1;
 	//if (!(iChi2Leaf < 0)) {
 	//   chi2val = par[iChi2Leaf];
@@ -331,7 +348,8 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
 	//if (chi2cut < 0 || ( !(chi2cut < 0) && chi2val < chi2cut ) ) {
 	double modelShift = 0.;
 	if (iFile==0) modelShift = -0.0008;
-	histo[iFile]->Fill(par[iLeaf]+modelShift);
+	histo[iFile]->Fill((par[iLeaf]+modelShift)/omegaExpModel);
+	insertHisto[iFile]->Fill((par[iLeaf]+modelShift)/omegaExpModel);
 	//histo[0]->Rebin(2);
 	//histo[0]->Rebin(40);
 	//histo[0]->Scale(0.025);
@@ -361,6 +379,17 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
       //     histo[iFile]->SetBinError(i,0.);
     }
   }
+
+  for (unsigned int iFile=0; iFile<3; iFile++) {
+    if (!strncmp(filename_arr[iFile],"file",4)) continue;   
+    cout << "Integral of hist " << iFile << " = " << insertHisto[iFile]->Integral() << endl;
+    insertHisto[iFile]->Scale(500./(double)insertHisto[iFile]->Integral());
+    for (int i = 1; i < nbins[iFile]+1; i++) {
+      //histo[iFile]->SetBinError(i,histo[iFile]->GetBinError(i)/histo[iFile]->Integral());
+      //     histo[iFile]->SetBinError(i,0.);
+    }
+  }
+
 
   cout << "compare the histograms" << endl;
 
@@ -401,6 +430,43 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
     }
   }
 
+  int insertHistOrder[3];
+  if (strncmp(filename_arr[2],"file",4)) {   
+    cout << "compare three histograms" << endl;
+    if ((insertHisto[0]->GetMaximum()>=insertHisto[1]->GetMaximum())&&(insertHisto[0]->GetMaximum()>=insertHisto[2]->GetMaximum())) {
+      cout << "0 1 2" << endl;
+      insertHistOrder[0] = 0;
+      insertHistOrder[1] = 1;
+      insertHistOrder[2] = 2;
+    }
+    if ((insertHisto[1]->GetMaximum()>=insertHisto[0]->GetMaximum())&&(insertHisto[1]->GetMaximum()>=insertHisto[2]->GetMaximum())) {
+      cout << "1 0 2" << endl;
+      insertHistOrder[0] = 1;
+      insertHistOrder[1] = 0;
+      insertHistOrder[2] = 2;
+    }
+    if ((insertHisto[2]->GetMaximum()>=insertHisto[0]->GetMaximum())&&(insertHisto[2]->GetMaximum()>=insertHisto[1]->GetMaximum())) {
+      cout << "2 1 0" << endl;
+      insertHistOrder[0] = 2;
+      insertHistOrder[1] = 1;
+      insertHistOrder[2] = 0;
+    }
+  } else {
+    cout << "compare two histograms" << endl;
+   if (insertHisto[0]->GetMaximum()>insertHisto[1]->GetMaximum()) {
+      cout << "0 1" << endl;
+      insertHistOrder[0] = 0;
+      insertHistOrder[1] = 1;
+      insertHistOrder[2] = 2;
+    } else {
+      cout << "1 0" << endl;
+      insertHistOrder[0] = 1;
+      insertHistOrder[1] = 0;
+      insertHistOrder[2] = 2;
+    }
+  }
+
+
   // omega measurements
   double presentMeasPecision = 0.0062;
   double presentMeanValue =    0.1099;
@@ -408,8 +474,8 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
   double futureMeasPrecision = 0.0002;
 
   // print Omega
-  TBox* omegaBox = new TBox(fittedMeanvalue-2.*presentMeasPecision,0.,
-			    fittedMeanvalue+2.*presentMeasPecision,histo[histOrder[0]]->GetMaximum()*1.12);
+  TBox* omegaBox = new TBox((fittedMeanvalue-2.*presentMeasPecision)/omegaExpModel,0.,
+			    (fittedMeanvalue+2.*presentMeasPecision)/omegaExpModel,histo[histOrder[0]]->GetMaximum()*1.1245);
   omegaBox->SetFillColor(kYellow-9);
  
   cout << "print the histograms" << endl;
@@ -457,13 +523,16 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
       gauss[iFile]->SetLineColor(color[iFile]);
       histo[iFile]->Fit(gauss[iFile], "0");
       gauss[iFile]->Draw("same");
+      insertGauss[iFile] = new TF1("insertGauss", "gaus", insertHisto[iFile]->GetXaxis()->GetXmin(),
+			     insertHisto[iFile]->GetXaxis()->GetXmax());
+      insertGauss[iFile]->SetLineColor(color[iFile]);
       
       //    }
     
   }
   
 
-  TLegend *legend = new TLegend(0.15,0.5,0.95,0.85); 
+  TLegend *legend = new TLegend(0.15,0.68,0.95,0.88); 
   legend->SetFillStyle(0);
   legend->SetTextSize(0.03);
   legend->SetBorderSize(0.0);
@@ -476,9 +545,26 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
   legend->AddEntry(gauss[0],legendHist1, "L");
   legend->AddEntry(gauss[1],legendHist2, "L");
   legend->AddEntry(gauss[2],legendHist3, "L");
-  legend->AddEntry(omegaBox,"WMAP #Omega_{DM} #pm 2#sigma", "F");
+  legend->AddEntry(omegaBox,"WMAP  #Omega_{DM}h^{2}  #pm  2 #sigma", "F");
   legend->Draw();
+
+  // draw insert
+  TPad *insertPad = new TPad("insertPad", "insertPad", 0.18,0.22,0.5,0.68);
+  insertPad->Draw("same");
+  insertPad->cd();
+  for (unsigned int iFile=0; iFile<3; iFile++) {
+    if (!strncmp(filename_arr[iFile],"file",4)) continue;   
+    cout << "print histograms " << iFile << " " << histOrder[iFile] << endl;
+    if ( iFile == 0 ) { 
+      insertHisto[insertHistOrder[iFile]]->Draw("ep");
+    }
+    else insertHisto[insertHistOrder[iFile]]->Draw("epsame");
+    insertHisto[iFile]->Fit(insertGauss[iFile], "0");
+    insertGauss[iFile]->Draw("same");
+  } 
+  c->cd();
     
+  // draw logo
   TImage *fittinoLogo = 0;
   if (logoPath!="") {
     // get the fittino logo
