@@ -72,6 +72,8 @@ void IndividualVariablePullPlot (const string model = "",
   vector<string> meas;
   vector<string> fitr;
 
+
+  // GMSB
   // 0 0   using obs Bsg_npf =        1.117+-0.122474       (0.16793)       at theovalue = 1.13757
   // 1 1   using obs dm_s_npf =       1.11+-0.320156        (0.272472)      at theovalue = 1.02277
   // 3 3   using obs Btn_npf =        1.15+-0.4             (0.585147)      at theovalue = 0.915941
@@ -139,71 +141,73 @@ void IndividualVariablePullPlot (const string model = "",
   //massTau        = 1.77684+-0.00017      (0) 	         at theovalue = 1.77684
   //massCharm      = 1.2+-0.11             (0) 	         at theovalue = 1.2
   
-  //name.push_back("BR(b#rightarrow s#gamma)");     meas.push_back("1.117 #pm 0.122           "); fitr.push_back("1.138         ");  pull.push_back(0.16793)    ; //  
-  //name.push_back("#Delta(m_{s})");                meas.push_back("1.11 #pm 0.32             "); fitr.push_back("1.02          ");  pull.push_back(0.272472)   ; // -
-  //name.push_back("BR(b#rightarrow #tau#nu)");     meas.push_back("1.15 #pm 0.4              "); fitr.push_back("0.92          ");  pull.push_back(0.585147)   ; // -
-  //name.push_back("BR(B_{s}#rightarrow X_{s}ll)"); meas.push_back("0.99 #pm 0.32             "); fitr.push_back("0.99          ");  pull.push_back(0.00958694) ; //  
-  //name.push_back("BR(K#rightarrow l#nu) ");       meas.push_back("1.008 #pm 0.014           "); fitr.push_back("0.999         ");  pull.push_back(0.625805)   ; // -
-  //name.push_back("(g-2)_{#mu}   ");               meas.push_back("3.02 10^{-9} #pm 9.0 10^{-10}"); fitr.push_back("2.99 10^{-09} ");  pull.push_back(0.0283529)  ; // -
-  //name.push_back("m_{W}         ");               meas.push_back("80.399 #pm 0.027          "); fitr.push_back("80.378        ");  pull.push_back(0.783597)   ; // -
-  //name.push_back("sin#theta_{eff}");              meas.push_back("0.2324 #pm 0.0012         "); fitr.push_back("0.2314        ");  pull.push_back(0.839658)   ; // -
-  //name.push_back("#Gamma_{Z}    ");               meas.push_back("2495.2 #pm 2.51           "); fitr.push_back("2495.08       ");  pull.push_back(0.0466908)  ; //  
-  //name.push_back("R_{l}           ");             meas.push_back("20.767 #pm 0.025          "); fitr.push_back("20.743        ");  pull.push_back(0.96356)    ; //  
-  //name.push_back("R_{b}           ");             meas.push_back("0.21629 #pm 0.00066       "); fitr.push_back("0.21603       ");  pull.push_back(0.400333)   ; // -
-  //name.push_back("R_{c}           ");             meas.push_back("0.1721 #pm 0.003          "); fitr.push_back("0.1722        ");  pull.push_back(0.03595)    ; // -
-  //name.push_back("A_{b}^{fb}      ");             meas.push_back("0.0992 #pm 0.0016         "); fitr.push_back("0.1038        ");  pull.push_back(2.88566)    ; //  
-  //name.push_back("A_{c}^{fb}      ");             meas.push_back("0.0707 #pm 0.0035         "); fitr.push_back("0.0742        ");  pull.push_back(1.00116)    ; //  
-  //name.push_back("A_{b}           ");             meas.push_back("0.923 #pm 0.02            "); fitr.push_back("0.935         ");  pull.push_back(0.601613)   ; //  
-  //name.push_back("A_{c}           ");             meas.push_back("0.67 #pm 0.027            "); fitr.push_back("0.67          ");  pull.push_back(0.0621656)  ; // -
-  //name.push_back("A_{l}           ");             meas.push_back("0.1513 #pm 0.0021         "); fitr.push_back("0.1480        ");  pull.push_back(1.55209)    ; // -
-  //name.push_back("m_{h}         ");               meas.push_back("114.4                     "); fitr.push_back("113.3         ");  pull.push_back(0.378)      ; // -
-  //name.push_back("#Omega_{DM}   ");               meas.push_back("0.1099 #pm 0.0135         "); fitr.push_back("0.1100        ");  pull.push_back(0.00558672) ; //  
-  //name.push_back("A_{#tau}      ");               meas.push_back("0.1465 #pm 0.0032         "); fitr.push_back("0.1480        ");  pull.push_back(0.481441)   ; //  
-  //name.push_back("A_{l}^{fb}    ");               meas.push_back("0.01714 #pm 0.00095       "); fitr.push_back("0.01644       ");  pull.push_back(0.739983)   ; // -
-  //name.push_back("#sigma_{had}^{0}");             meas.push_back("41.54 #pm 0.04            "); fitr.push_back("41.48         ");  pull.push_back(1.49357)    ; // -
-  //name.push_back("#Delta_{m_{K}}");               meas.push_back("0.92 #pm 0.14             "); fitr.push_back("1.02          ");  pull.push_back(0.733964)   ; //  
-  //name.push_back("#Delta_{m_{s}}/#Delta_{m_{d}}");meas.push_back("1.09 #pm 0.16             "); fitr.push_back("1.00          ");  pull.push_back(0.561576)   ; // -
-  //name.push_back("#alpha_{em}^{-1}");             meas.push_back("127.925 #pm 0.016         "); fitr.push_back("127.925       ");  pull.push_back(0)          ; // -
-  //name.push_back("G_{F}         ");               meas.push_back("1.16637 10^{-5} #pm 10^{-10}"); fitr.push_back("1.16637 10^{-5}   ");  pull.push_back(0)          ; //  
-  //name.push_back("#alpha_{s}    ");               meas.push_back("0.1176 #pm 0.0020         "); fitr.push_back("0.1176	   ");  pull.push_back(0)          ; // -
-  //name.push_back("m_{Z}         ");               meas.push_back("91.1875 #pm 0.0021        "); fitr.push_back("91.1875       ");  pull.push_back(0)          ; // -
-  //name.push_back("m_{b}         ");               meas.push_back("4.2 #pm 0.17              "); fitr.push_back("4.2	   ");  pull.push_back(0)          ; // -
-  //name.push_back("m_{t}         ");               meas.push_back("172.4 #pm 1.2             "); fitr.push_back("172.4	   ");  pull.push_back(0)          ; // -
-  //name.push_back("m_{#tau}      ");               meas.push_back("1.77684 #pm 0.00017       "); fitr.push_back("1.77684       ");  pull.push_back(0)          ; // -
-  //name.push_back("m_{c}         ");               meas.push_back("1.2 #pm 0.11              "); fitr.push_back("1.2           ");  pull.push_back(0)          ; //  
 
-  name.push_back("BR(b#rightarrow s#gamma)");     meas.push_back("1.117 #pm 0.122           "); fitr.push_back("1.014      "); pull.push_back(0.839753)   ; //  
-  name.push_back("#Delta(m_{s})");                meas.push_back("1.11 #pm 0.32             "); fitr.push_back("1.03       "); pull.push_back(0.243694)   ; // -
-  name.push_back("BR(b#rightarrow #tau#nu)");     meas.push_back("1.15 #pm 0.4              "); fitr.push_back("0.96       "); pull.push_back(0.478271)   ; // -
-  name.push_back("BR(B_{s}#rightarrow X_{s}ll)"); meas.push_back("0.99 #pm 0.32             "); fitr.push_back("0.99       "); pull.push_back(0.00391203) ; //  
-  name.push_back("BR(K#rightarrow l#nu) ");       meas.push_back("1.008 #pm 0.014           "); fitr.push_back("1.000      "); pull.push_back(0.597855)   ; // -
-  name.push_back("(g-2)_{#mu}   ");            meas.push_back("3.02 10^{-9} #pm 9.0 10^{-10}"); fitr.push_back("2.54 10^{-09}"); pull.push_back(0.535321) ; // -
-  name.push_back("m_{W}         ");               meas.push_back("80.399 #pm 0.027          "); fitr.push_back("80.381     "); pull.push_back(0.6753)     ; // -
-  name.push_back("sin#theta_{eff}");              meas.push_back("0.2324 #pm 0.0012         "); fitr.push_back("0.2314     "); pull.push_back(0.841958)   ; // -
-  name.push_back("#Gamma_{Z}    ");               meas.push_back("2495.2 #pm 2.51           "); fitr.push_back("2495.2     "); pull.push_back(0.0162282)  ; //  
-  name.push_back("R_{l}           ");             meas.push_back("20.767 #pm 0.025          "); fitr.push_back("20.744     "); pull.push_back(0.93888)    ; //  
-  name.push_back("R_{b}           ");             meas.push_back("0.21629 #pm 0.00066       "); fitr.push_back("0.21604    "); pull.push_back(0.382667)   ; // -
-  name.push_back("R_{c}           ");             meas.push_back("0.1721 #pm 0.003          "); fitr.push_back("0.1722     "); pull.push_back(0.03431)    ; // -
-  name.push_back("A_{b}^{fb}      ");             meas.push_back("0.0992 #pm 0.0016         "); fitr.push_back("0.1038     "); pull.push_back(2.89251)    ; //  
-  name.push_back("A_{c}^{fb}      ");             meas.push_back("0.0707 #pm 0.0035         "); fitr.push_back("0.0742     "); pull.push_back(1.0044)     ; //  
-  name.push_back("A_{b}           ");             meas.push_back("0.923 #pm 0.02            "); fitr.push_back("0.935      "); pull.push_back(0.599688)   ; //  
-  name.push_back("A_{c}           ");             meas.push_back("0.67 #pm 0.027            "); fitr.push_back("0.67       "); pull.push_back(0.0620163)  ; // -
-  name.push_back("A_{l}           ");             meas.push_back("0.1513 #pm 0.0021         "); fitr.push_back("0.1481     "); pull.push_back(1.54174)    ; // -
-  name.push_back("m_{h}         ");               meas.push_back("114.4                     "); fitr.push_back("113.2      "); pull.push_back(0.3923)     ; // -
-  name.push_back("#Omega_{DM}   ");               meas.push_back("0.1099 #pm 0.0135         "); fitr.push_back("0.1085     "); pull.push_back(0.10401)    ; //  
-  name.push_back("A_{#tau}      ");               meas.push_back("0.1465 #pm 0.0032         "); fitr.push_back("0.1481     "); pull.push_back(0.488231)   ; //  
-  name.push_back("A_{l}^{fb}    ");               meas.push_back("0.01714 #pm 0.00095       "); fitr.push_back("0.01644    "); pull.push_back(0.734903)   ; // -
-  name.push_back("#sigma_{had}^{0}");             meas.push_back("41.54 #pm 0.04            "); fitr.push_back("41.48      "); pull.push_back(1.52035)    ; // -
-  name.push_back("#Delta_{m_{K}}");               meas.push_back("0.92 #pm 0.14             "); fitr.push_back("1.03       "); pull.push_back(0.799217)   ; //  
-  name.push_back("#Delta_{m_{s}}/#Delta_{m_{d}}");meas.push_back("1.09 #pm 0.16             "); fitr.push_back("1.00       "); pull.push_back(0.562134)   ; // -
-  name.push_back("#alpha_{em}^{-1}");             meas.push_back("127.925 #pm 0.016         "); fitr.push_back("127.923    "); pull.push_back(0.125)      ; // -
-  name.push_back("G_{F}         ");             meas.push_back("1.16637 10^{-5} #pm 10^{-10}"); fitr.push_back("1.16637 10^{-05}"); pull.push_back(0)     ; //  
-  name.push_back("#alpha_{s}    ");               meas.push_back("0.1176 #pm 0.0020         "); fitr.push_back("0.1176     "); pull.push_back(0)          ; // -
-  name.push_back("m_{Z}         ");               meas.push_back("91.1875 #pm 0.0021        "); fitr.push_back("91.1874    "); pull.push_back(0.0571429)  ; // -
-  name.push_back("m_{b}         ");               meas.push_back("4.2 #pm 0.17              "); fitr.push_back("4.2        "); pull.push_back(0)          ; // -
-  name.push_back("m_{t}         ");               meas.push_back("172.4 #pm 1.2             "); fitr.push_back("172.4      "); pull.push_back(0)          ; // -
-  name.push_back("m_{#tau}      ");               meas.push_back("1.77684 #pm 0.00017       "); fitr.push_back("1.77684    "); pull.push_back(0)          ; // -
-  name.push_back("m_{c}         ");               meas.push_back("1.2 #pm 0.11              "); fitr.push_back("1.2        "); pull.push_back(0)          ; //  
+  // GMSB
+  name.push_back("BR(b#rightarrow s#gamma)");     meas.push_back("1.117 #pm 0.122           "); fitr.push_back("1.138         ");  pull.push_back(0.16793)    ; //  
+  name.push_back("#Delta(m_{s})");                meas.push_back("1.11 #pm 0.32             "); fitr.push_back("1.02          ");  pull.push_back(0.272472)   ; // -
+  name.push_back("BR(b#rightarrow #tau#nu)");     meas.push_back("1.15 #pm 0.4              "); fitr.push_back("0.92          ");  pull.push_back(0.585147)   ; // -
+  name.push_back("BR(B_{s}#rightarrow X_{s}ll)"); meas.push_back("0.99 #pm 0.32             "); fitr.push_back("0.99          ");  pull.push_back(0.00958694) ; //  
+  name.push_back("BR(K#rightarrow l#nu) ");       meas.push_back("1.008 #pm 0.014           "); fitr.push_back("0.999         ");  pull.push_back(0.625805)   ; // -
+  name.push_back("(g-2)_{#mu}   ");               meas.push_back("3.02 10^{-9} #pm 9.0 10^{-10}"); fitr.push_back("2.99 10^{-09} ");  pull.push_back(0.0283529)  ; // -
+  name.push_back("m_{W}         ");               meas.push_back("80.399 #pm 0.027          "); fitr.push_back("80.378        ");  pull.push_back(0.783597)   ; // -
+  name.push_back("sin#theta_{eff}");              meas.push_back("0.2324 #pm 0.0012         "); fitr.push_back("0.2314        ");  pull.push_back(0.839658)   ; // -
+  name.push_back("#Gamma_{Z}    ");               meas.push_back("2495.2 #pm 2.51           "); fitr.push_back("2495.08       ");  pull.push_back(0.0466908)  ; //  
+  name.push_back("R_{l}           ");             meas.push_back("20.767 #pm 0.025          "); fitr.push_back("20.743        ");  pull.push_back(0.96356)    ; //  
+  name.push_back("R_{b}           ");             meas.push_back("0.21629 #pm 0.00066       "); fitr.push_back("0.21603       ");  pull.push_back(0.400333)   ; // -
+  name.push_back("R_{c}           ");             meas.push_back("0.1721 #pm 0.003          "); fitr.push_back("0.1722        ");  pull.push_back(0.03595)    ; // -
+  name.push_back("A_{b}^{fb}      ");             meas.push_back("0.0992 #pm 0.0016         "); fitr.push_back("0.1038        ");  pull.push_back(2.88566)    ; //  
+  name.push_back("A_{c}^{fb}      ");             meas.push_back("0.0707 #pm 0.0035         "); fitr.push_back("0.0742        ");  pull.push_back(1.00116)    ; //  
+  name.push_back("A_{b}           ");             meas.push_back("0.923 #pm 0.02            "); fitr.push_back("0.935         ");  pull.push_back(0.601613)   ; //  
+  name.push_back("A_{c}           ");             meas.push_back("0.67 #pm 0.027            "); fitr.push_back("0.67          ");  pull.push_back(0.0621656)  ; // -
+  name.push_back("A_{l}           ");             meas.push_back("0.1513 #pm 0.0021         "); fitr.push_back("0.1480        ");  pull.push_back(1.55209)    ; // -
+  name.push_back("m_{h}         ");               meas.push_back("114.4                     "); fitr.push_back("113.3         ");  pull.push_back(0.378)      ; // -
+  name.push_back("#Omega_{DM}   ");               meas.push_back("0.1099 #pm 0.0135         "); fitr.push_back("0.1100        ");  pull.push_back(0.00558672) ; //  
+  name.push_back("A_{#tau}      ");               meas.push_back("0.1465 #pm 0.0032         "); fitr.push_back("0.1480        ");  pull.push_back(0.481441)   ; //  
+  name.push_back("A_{l}^{fb}    ");               meas.push_back("0.01714 #pm 0.00095       "); fitr.push_back("0.01644       ");  pull.push_back(0.739983)   ; // -
+  name.push_back("#sigma_{had}^{0}");             meas.push_back("41.54 #pm 0.04            "); fitr.push_back("41.48         ");  pull.push_back(1.49357)    ; // -
+  name.push_back("#Delta_{m_{K}}");               meas.push_back("0.92 #pm 0.14             "); fitr.push_back("1.02          ");  pull.push_back(0.733964)   ; //  
+  name.push_back("#Delta_{m_{s}}/#Delta_{m_{d}}");meas.push_back("1.09 #pm 0.16             "); fitr.push_back("1.00          ");  pull.push_back(0.561576)   ; // -
+  name.push_back("#alpha_{em}^{-1}");             meas.push_back("127.925 #pm 0.016         "); fitr.push_back("127.925       ");  pull.push_back(0)          ; // -
+  name.push_back("G_{F}         ");               meas.push_back("1.16637 10^{-5} #pm 10^{-10}"); fitr.push_back("1.16637 10^{-5}   ");  pull.push_back(0)          ; //  
+  name.push_back("#alpha_{s}    ");               meas.push_back("0.1176 #pm 0.0020         "); fitr.push_back("0.1176	   ");  pull.push_back(0)          ; // -
+  name.push_back("m_{Z}         ");               meas.push_back("91.1875 #pm 0.0021        "); fitr.push_back("91.1875       ");  pull.push_back(0)          ; // -
+  name.push_back("m_{b}         ");               meas.push_back("4.2 #pm 0.17              "); fitr.push_back("4.2	   ");  pull.push_back(0)          ; // -
+  name.push_back("m_{t}         ");               meas.push_back("172.4 #pm 1.2             "); fitr.push_back("172.4	   ");  pull.push_back(0)          ; // -
+  name.push_back("m_{#tau}      ");               meas.push_back("1.77684 #pm 0.00017       "); fitr.push_back("1.77684       ");  pull.push_back(0)          ; // -
+  name.push_back("m_{c}         ");               meas.push_back("1.2 #pm 0.11              "); fitr.push_back("1.2           ");  pull.push_back(0)          ; //  
+
+  //name.push_back("BR(b#rightarrow s#gamma)");     meas.push_back("1.117 #pm 0.122           "); fitr.push_back("1.014      "); pull.push_back(0.839753)   ; //  
+  //name.push_back("#Delta(m_{s})");                meas.push_back("1.11 #pm 0.32             "); fitr.push_back("1.03       "); pull.push_back(0.243694)   ; // -
+  //name.push_back("BR(b#rightarrow #tau#nu)");     meas.push_back("1.15 #pm 0.4              "); fitr.push_back("0.96       "); pull.push_back(0.478271)   ; // -
+  //name.push_back("BR(B_{s}#rightarrow X_{s}ll)"); meas.push_back("0.99 #pm 0.32             "); fitr.push_back("0.99       "); pull.push_back(0.00391203) ; //  
+  //name.push_back("BR(K#rightarrow l#nu) ");       meas.push_back("1.008 #pm 0.014           "); fitr.push_back("1.000      "); pull.push_back(0.597855)   ; // -
+  //name.push_back("(g-2)_{#mu}   ");            meas.push_back("3.02 10^{-9} #pm 9.0 10^{-10}"); fitr.push_back("2.54 10^{-09}"); pull.push_back(0.535321) ; // -
+  //name.push_back("m_{W}         ");               meas.push_back("80.399 #pm 0.027          "); fitr.push_back("80.381     "); pull.push_back(0.6753)     ; // -
+  //name.push_back("sin#theta_{eff}");              meas.push_back("0.2324 #pm 0.0012         "); fitr.push_back("0.2314     "); pull.push_back(0.841958)   ; // -
+  //name.push_back("#Gamma_{Z}    ");               meas.push_back("2495.2 #pm 2.51           "); fitr.push_back("2495.2     "); pull.push_back(0.0162282)  ; //  
+  //name.push_back("R_{l}           ");             meas.push_back("20.767 #pm 0.025          "); fitr.push_back("20.744     "); pull.push_back(0.93888)    ; //  
+  //name.push_back("R_{b}           ");             meas.push_back("0.21629 #pm 0.00066       "); fitr.push_back("0.21604    "); pull.push_back(0.382667)   ; // -
+  //name.push_back("R_{c}           ");             meas.push_back("0.1721 #pm 0.003          "); fitr.push_back("0.1722     "); pull.push_back(0.03431)    ; // -
+  //name.push_back("A_{b}^{fb}      ");             meas.push_back("0.0992 #pm 0.0016         "); fitr.push_back("0.1038     "); pull.push_back(2.89251)    ; //  
+  //name.push_back("A_{c}^{fb}      ");             meas.push_back("0.0707 #pm 0.0035         "); fitr.push_back("0.0742     "); pull.push_back(1.0044)     ; //  
+  //name.push_back("A_{b}           ");             meas.push_back("0.923 #pm 0.02            "); fitr.push_back("0.935      "); pull.push_back(0.599688)   ; //  
+  //name.push_back("A_{c}           ");             meas.push_back("0.67 #pm 0.027            "); fitr.push_back("0.67       "); pull.push_back(0.0620163)  ; // -
+  //name.push_back("A_{l}           ");             meas.push_back("0.1513 #pm 0.0021         "); fitr.push_back("0.1481     "); pull.push_back(1.54174)    ; // -
+  //name.push_back("m_{h}         ");               meas.push_back("114.4                     "); fitr.push_back("113.2      "); pull.push_back(0.3923)     ; // -
+  //name.push_back("#Omega_{DM}   ");               meas.push_back("0.1099 #pm 0.0135         "); fitr.push_back("0.1085     "); pull.push_back(0.10401)    ; //  
+  //name.push_back("A_{#tau}      ");               meas.push_back("0.1465 #pm 0.0032         "); fitr.push_back("0.1481     "); pull.push_back(0.488231)   ; //  
+  //name.push_back("A_{l}^{fb}    ");               meas.push_back("0.01714 #pm 0.00095       "); fitr.push_back("0.01644    "); pull.push_back(0.734903)   ; // -
+  //name.push_back("#sigma_{had}^{0}");             meas.push_back("41.54 #pm 0.04            "); fitr.push_back("41.48      "); pull.push_back(1.52035)    ; // -
+  //name.push_back("#Delta_{m_{K}}");               meas.push_back("0.92 #pm 0.14             "); fitr.push_back("1.03       "); pull.push_back(0.799217)   ; //  
+  //name.push_back("#Delta_{m_{s}}/#Delta_{m_{d}}");meas.push_back("1.09 #pm 0.16             "); fitr.push_back("1.00       "); pull.push_back(0.562134)   ; // -
+  //name.push_back("#alpha_{em}^{-1}");             meas.push_back("127.925 #pm 0.016         "); fitr.push_back("127.923    "); pull.push_back(0.125)      ; // -
+  //name.push_back("G_{F}         ");             meas.push_back("1.16637 10^{-5} #pm 10^{-10}"); fitr.push_back("1.16637 10^{-05}"); pull.push_back(0)     ; //  
+  //name.push_back("#alpha_{s}    ");               meas.push_back("0.1176 #pm 0.0020         "); fitr.push_back("0.1176     "); pull.push_back(0)          ; // -
+  //name.push_back("m_{Z}         ");               meas.push_back("91.1875 #pm 0.0021        "); fitr.push_back("91.1874    "); pull.push_back(0.0571429)  ; // -
+  //name.push_back("m_{b}         ");               meas.push_back("4.2 #pm 0.17              "); fitr.push_back("4.2        "); pull.push_back(0)          ; // -
+  //name.push_back("m_{t}         ");               meas.push_back("172.4 #pm 1.2             "); fitr.push_back("172.4      "); pull.push_back(0)          ; // -
+  //name.push_back("m_{#tau}      ");               meas.push_back("1.77684 #pm 0.00017       "); fitr.push_back("1.77684    "); pull.push_back(0)          ; // -
+  //name.push_back("m_{c}         ");               meas.push_back("1.2 #pm 0.11              "); fitr.push_back("1.2        "); pull.push_back(0)          ; //  
   
   if (pull.size()!=name.size()) {
     cout << "setup error" << endl;
