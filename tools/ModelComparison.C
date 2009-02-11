@@ -98,12 +98,9 @@ void ModelComparison (const Int_t nbins = 50,
     //    return;
   }
 
-  Int_t iChi2Leaf1 = -1; // leaf index of chi2 leaf
-  Int_t iChi2Leaf2 = -1; // leaf index of chi2 leaf
-  Int_t iRandSeed1 = -1; // leaf index of randSeed leaf
-  Int_t iRandSeed2 = -1; // leaf index of randSeed leaf
-  Int_t iToy1 = -1; // leaf index of nToy leaf
-  Int_t iToy2 = -1; // leaf index of nToy leaf
+  Int_t iChi2Leaf = -1; // vector index of chi2
+  Int_t iRandSeed = -1; // vector index of randSeed
+  Int_t iToy = -1; // vector index of nToy leaf
 
   Char_t xtitle[256];
   Char_t ytitle[256];
@@ -158,46 +155,64 @@ void ModelComparison (const Int_t nbins = 50,
   */
 
   map<int,int> iLeafToInternalIndexMap;
+
+  char leaf1name[256];
+  char leaf2name[256];
   
   for (Int_t iLeaf=0; iLeaf<commonLeaves.size(); iLeaf++) {
 
-    TLeafD* leaf1 = (TLeafD*)tree1->GetListOfLeaves()->FindObject(commonLeaves[iLeaf].c_str());
-    TLeafD* leaf2 = (TLeafD*)tree2->GetListOfLeaves()->FindObject(commonLeaves[iLeaf].c_str());
+    TLeafD* leaf1 = 0;
+    TLeafD* leaf2 = 0;
+    TLeafI* leafi1 = 0;
+    TLeafI* leafi2 = 0;
 
-    if (!leaf1) {
-      cerr << "Did not find leaf1 in tree" << endl;
-      return;
-    }
+    if ( commonLeaves[iLeaf].compare("nToy") ) {
 
-    if (!leaf2) {
-      cerr << "Did not find leaf2 in tree" << endl;
-      return;
-    }
+      leaf1 = (TLeafD*)tree1->GetListOfLeaves()->FindObject(commonLeaves[iLeaf].c_str());
+      leaf2 = (TLeafD*)tree2->GetListOfLeaves()->FindObject(commonLeaves[iLeaf].c_str());
 
-    if (strcmp(leaf1->GetName(),"nToy")) {
+      if (!leaf1) {
+	cerr << "Did not find leaf1 in tree" << endl;
+	return;
+      }
+
+      if (!leaf2) {
+	cerr << "Did not find leaf2 in tree" << endl;
+	return;
+      }
+
       leaf1->SetAddress(&par1[iLeaf]);
       leaf2->SetAddress(&par2[iLeaf]);
+
+      strcpy(leaf1name, leaf1->GetName());
+      strcpy(leaf2name, leaf2->GetName());
     }
     else {
-      leaf1->SetAddress(&ntoy1);
-      leaf2->SetAddress(&ntoy2);
+      leafi1 = (TLeafI*)tree1->GetListOfLeaves()->FindObject(commonLeaves[iLeaf].c_str());
+      leafi2 = (TLeafI*)tree2->GetListOfLeaves()->FindObject(commonLeaves[iLeaf].c_str());
+
+      leafi1->SetAddress(&ntoy1);
+      leafi2->SetAddress(&ntoy2);
+
+      strcpy(leaf1name, leafi1->GetName());
+      strcpy(leaf2name, leafi2->GetName());
     }
-      
+
     sum[iLeaf]  = 0;
     sum2[iLeaf] = 0;
       
-    if (strcmp(leaf1->GetName(),leaf2->GetName())) {
+    if (strcmp(leaf1name,leaf2name)) {
       cout << "Names of leaves are not identical. Something is going wrong." << endl;
       return;
     }
 
-    Double_t mintree = tree1->GetMinimum(leaf1->GetName());
-    Double_t maxtree = tree1->GetMaximum(leaf1->GetName());
-    if (tree2->GetMinimum(leaf2->GetName())<mintree) {
-      mintree = tree2->GetMinimum(leaf2->GetName());
+    Double_t mintree = tree1->GetMinimum(leaf1name);
+    Double_t maxtree = tree1->GetMaximum(leaf1name);
+    if (tree2->GetMinimum(leaf2name)<mintree) {
+      mintree = tree2->GetMinimum(leaf2name);
     }
-    if (tree2->GetMaximum(leaf2->GetName())>maxtree) {
-      maxtree = tree2->GetMaximum(leaf2->GetName());
+    if (tree2->GetMaximum(leaf2name)>maxtree) {
+      maxtree = tree2->GetMaximum(leaf2name);
     }
     Double_t min = mintree - 0.15 * (maxtree - mintree);
     Double_t max = maxtree + 0.15 * (maxtree - mintree);
@@ -205,79 +220,79 @@ void ModelComparison (const Int_t nbins = 50,
     minSave[iLeaf] = min;
     maxSave[iLeaf] = max;
       
-    histo[iLeaf] = new TH2D(leaf1->GetName(), "" /*leaf->GetTitle()*/, nbins, min, max, nbins, min, max );
+    histo[iLeaf] = new TH2D(leaf1name, "", nbins, min, max, nbins, min, max );
       
     histo[iLeaf]->SetMarkerStyle(8);
     histo[iLeaf]->SetMarkerSize(1.2);
     histo[iLeaf]->SetOption("marker");
     histo[iLeaf]->SetStats(kFALSE); // disable fit statistics display
-    if (!strcmp(leaf1->GetName(), "TanBeta")) strcpy(xtitle, "tan #beta");
-    else if (!strcmp(leaf1->GetName(), "Mu")) strcpy(xtitle, "#mu (GeV)");
-    else if (!strcmp(leaf1->GetName(), "MuEff")) strcpy(xtitle, "#mu_{eff} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "Xtau")) strcpy(xtitle, "X_{#tau} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "MSelectronR")) strcpy(xtitle, "M_{#tilde{e}_{R}} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "MStauR")) strcpy(xtitle, "M_{#tilde{#tau}_{R}} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "MSelectronL")) strcpy(xtitle, "M_{#tilde{e}_{L}} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "MStauL")) strcpy(xtitle, "M_{#tilde{#tau}_{L}} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "Xtop")) strcpy(xtitle, "X_{t} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "Xbottom")) strcpy(xtitle, "X_{b} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "MSdownR")) strcpy(xtitle, "M_{#tilde{d}_{R}} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "MSbottomR")) strcpy(xtitle, "M_{#tilde{b}_{R}} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "MSupR")) strcpy(xtitle, "M_{#tilde{u}_{R}} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "MStopR")) strcpy(xtitle, "M_{#tilde{t}_{R}} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "MSupL")) strcpy(xtitle, "M_{#tilde{u}_{L}} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "MStopL")) strcpy(xtitle, "M_{#tilde{t}_{L}} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "M1")) strcpy(xtitle, "M_{1} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "M2")) strcpy(xtitle, "M_{2} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "M3")) strcpy(xtitle, "M_{3} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "massA0")) strcpy(xtitle, "m_{A} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "massTop")) strcpy(xtitle, "m_{t} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "lambda")) strcpy(xtitle, "#lambda");
-    else if (!strcmp(leaf1->GetName(), "kappa")) strcpy(xtitle, "#kappa");
-    else if (!strcmp(leaf1->GetName(), "ALambda")) strcpy(xtitle, "A_{#lambda} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "AKappa")) strcpy(xtitle, "A_{#kappa} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "Chi2")) strcpy(xtitle, "#chi^{2}");
-    else if (!strcmp(leaf1->GetName(), "M0")) strcpy(xtitle, "M_{0} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "M12")) strcpy(xtitle, "M_{1/2} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "A0")) strcpy(xtitle, "A_{0} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "Mmess")) strcpy(xtitle, "M_{mess} (GeV)");
-    else if (!strcmp(leaf1->GetName(), "Lambda")) strcpy(xtitle, "#lambda (GeV)");
-    else if (!strcmp(leaf1->GetName(), "cGrav")) strcpy(xtitle, "C_{Grav}");
-    else strcpy(xtitle, leaf1->GetName());
+    if (!strcmp(leaf1name, "TanBeta")) strcpy(xtitle, "tan #beta");
+    else if (!strcmp(leaf1name, "Mu")) strcpy(xtitle, "#mu (GeV)");
+    else if (!strcmp(leaf1name, "MuEff")) strcpy(xtitle, "#mu_{eff} (GeV)");
+    else if (!strcmp(leaf1name, "Xtau")) strcpy(xtitle, "X_{#tau} (GeV)");
+    else if (!strcmp(leaf1name, "MSelectronR")) strcpy(xtitle, "M_{#tilde{e}_{R}} (GeV)");
+    else if (!strcmp(leaf1name, "MStauR")) strcpy(xtitle, "M_{#tilde{#tau}_{R}} (GeV)");
+    else if (!strcmp(leaf1name, "MSelectronL")) strcpy(xtitle, "M_{#tilde{e}_{L}} (GeV)");
+    else if (!strcmp(leaf1name, "MStauL")) strcpy(xtitle, "M_{#tilde{#tau}_{L}} (GeV)");
+    else if (!strcmp(leaf1name, "Xtop")) strcpy(xtitle, "X_{t} (GeV)");
+    else if (!strcmp(leaf1name, "Xbottom")) strcpy(xtitle, "X_{b} (GeV)");
+    else if (!strcmp(leaf1name, "MSdownR")) strcpy(xtitle, "M_{#tilde{d}_{R}} (GeV)");
+    else if (!strcmp(leaf1name, "MSbottomR")) strcpy(xtitle, "M_{#tilde{b}_{R}} (GeV)");
+    else if (!strcmp(leaf1name, "MSupR")) strcpy(xtitle, "M_{#tilde{u}_{R}} (GeV)");
+    else if (!strcmp(leaf1name, "MStopR")) strcpy(xtitle, "M_{#tilde{t}_{R}} (GeV)");
+    else if (!strcmp(leaf1name, "MSupL")) strcpy(xtitle, "M_{#tilde{u}_{L}} (GeV)");
+    else if (!strcmp(leaf1name, "MStopL")) strcpy(xtitle, "M_{#tilde{t}_{L}} (GeV)");
+    else if (!strcmp(leaf1name, "M1")) strcpy(xtitle, "M_{1} (GeV)");
+    else if (!strcmp(leaf1name, "M2")) strcpy(xtitle, "M_{2} (GeV)");
+    else if (!strcmp(leaf1name, "M3")) strcpy(xtitle, "M_{3} (GeV)");
+    else if (!strcmp(leaf1name, "massA0")) strcpy(xtitle, "m_{A} (GeV)");
+    else if (!strcmp(leaf1name, "massTop")) strcpy(xtitle, "m_{t} (GeV)");
+    else if (!strcmp(leaf1name, "lambda")) strcpy(xtitle, "#lambda");
+    else if (!strcmp(leaf1name, "kappa")) strcpy(xtitle, "#kappa");
+    else if (!strcmp(leaf1name, "ALambda")) strcpy(xtitle, "A_{#lambda} (GeV)");
+    else if (!strcmp(leaf1name, "AKappa")) strcpy(xtitle, "A_{#kappa} (GeV)");
+    else if (!strcmp(leaf1name, "Chi2")) strcpy(xtitle, "#chi^{2}");
+    else if (!strcmp(leaf1name, "M0")) strcpy(xtitle, "M_{0} (GeV)");
+    else if (!strcmp(leaf1name, "M12")) strcpy(xtitle, "M_{1/2} (GeV)");
+    else if (!strcmp(leaf1name, "A0")) strcpy(xtitle, "A_{0} (GeV)");
+    else if (!strcmp(leaf1name, "Mmess")) strcpy(xtitle, "M_{mess} (GeV)");
+    else if (!strcmp(leaf1name, "Lambda")) strcpy(xtitle, "#lambda (GeV)");
+    else if (!strcmp(leaf1name, "cGrav")) strcpy(xtitle, "C_{Grav}");
+    else strcpy(xtitle, leaf1name);
     sprintf(xtitle,"%s (%s)",xtitle,tag1);
-    if (!strcmp(leaf2->GetName(), "TanBeta")) strcpy(ytitle, "tan #beta");
-    else if (!strcmp(leaf2->GetName(), "Mu")) strcpy(ytitle, "#mu (GeV)");
-    else if (!strcmp(leaf2->GetName(), "MuEff")) strcpy(ytitle, "#mu_{eff} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "Xtau")) strcpy(ytitle, "X_{#tau} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "MSelectronR")) strcpy(ytitle, "M_{#tilde{e}_{R}} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "MStauR")) strcpy(ytitle, "M_{#tilde{#tau}_{R}} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "MSelectronL")) strcpy(ytitle, "M_{#tilde{e}_{L}} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "MStauL")) strcpy(ytitle, "M_{#tilde{#tau}_{L}} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "Xtop")) strcpy(ytitle, "X_{t} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "Xbottom")) strcpy(ytitle, "X_{b} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "MSdownR")) strcpy(ytitle, "M_{#tilde{d}_{R}} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "MSbottomR")) strcpy(ytitle, "M_{#tilde{b}_{R}} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "MSupR")) strcpy(ytitle, "M_{#tilde{u}_{R}} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "MStopR")) strcpy(ytitle, "M_{#tilde{t}_{R}} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "MSupL")) strcpy(ytitle, "M_{#tilde{u}_{L}} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "MStopL")) strcpy(ytitle, "M_{#tilde{t}_{L}} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "M1")) strcpy(ytitle, "M_{1} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "M2")) strcpy(ytitle, "M_{2} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "M3")) strcpy(ytitle, "M_{3} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "massA0")) strcpy(ytitle, "m_{A} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "massTop")) strcpy(ytitle, "m_{t} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "lambda")) strcpy(ytitle, "#lambda");
-    else if (!strcmp(leaf2->GetName(), "kappa")) strcpy(ytitle, "#kappa");
-    else if (!strcmp(leaf2->GetName(), "ALambda")) strcpy(ytitle, "A_{#lambda} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "AKappa")) strcpy(ytitle, "A_{#kappa} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "Chi2")) strcpy(ytitle, "#chi^{2}");
-    else if (!strcmp(leaf2->GetName(), "M0")) strcpy(ytitle, "M_{0} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "M12")) strcpy(ytitle, "M_{1/2} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "A0")) strcpy(ytitle, "A_{0} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "Mmess")) strcpy(ytitle, "M_{mess} (GeV)");
-    else if (!strcmp(leaf2->GetName(), "Lambda")) strcpy(ytitle, "#lambda (GeV)");
-    else if (!strcmp(leaf2->GetName(), "cGrav")) strcpy(ytitle, "C_{Grav}");
-    else strcpy(ytitle, leaf2->GetName());
+    if (!strcmp(leaf2name, "TanBeta")) strcpy(ytitle, "tan #beta");
+    else if (!strcmp(leaf2name, "Mu")) strcpy(ytitle, "#mu (GeV)");
+    else if (!strcmp(leaf2name, "MuEff")) strcpy(ytitle, "#mu_{eff} (GeV)");
+    else if (!strcmp(leaf2name, "Xtau")) strcpy(ytitle, "X_{#tau} (GeV)");
+    else if (!strcmp(leaf2name, "MSelectronR")) strcpy(ytitle, "M_{#tilde{e}_{R}} (GeV)");
+    else if (!strcmp(leaf2name, "MStauR")) strcpy(ytitle, "M_{#tilde{#tau}_{R}} (GeV)");
+    else if (!strcmp(leaf2name, "MSelectronL")) strcpy(ytitle, "M_{#tilde{e}_{L}} (GeV)");
+    else if (!strcmp(leaf2name, "MStauL")) strcpy(ytitle, "M_{#tilde{#tau}_{L}} (GeV)");
+    else if (!strcmp(leaf2name, "Xtop")) strcpy(ytitle, "X_{t} (GeV)");
+    else if (!strcmp(leaf2name, "Xbottom")) strcpy(ytitle, "X_{b} (GeV)");
+    else if (!strcmp(leaf2name, "MSdownR")) strcpy(ytitle, "M_{#tilde{d}_{R}} (GeV)");
+    else if (!strcmp(leaf2name, "MSbottomR")) strcpy(ytitle, "M_{#tilde{b}_{R}} (GeV)");
+    else if (!strcmp(leaf2name, "MSupR")) strcpy(ytitle, "M_{#tilde{u}_{R}} (GeV)");
+    else if (!strcmp(leaf2name, "MStopR")) strcpy(ytitle, "M_{#tilde{t}_{R}} (GeV)");
+    else if (!strcmp(leaf2name, "MSupL")) strcpy(ytitle, "M_{#tilde{u}_{L}} (GeV)");
+    else if (!strcmp(leaf2name, "MStopL")) strcpy(ytitle, "M_{#tilde{t}_{L}} (GeV)");
+    else if (!strcmp(leaf2name, "M1")) strcpy(ytitle, "M_{1} (GeV)");
+    else if (!strcmp(leaf2name, "M2")) strcpy(ytitle, "M_{2} (GeV)");
+    else if (!strcmp(leaf2name, "M3")) strcpy(ytitle, "M_{3} (GeV)");
+    else if (!strcmp(leaf2name, "massA0")) strcpy(ytitle, "m_{A} (GeV)");
+    else if (!strcmp(leaf2name, "massTop")) strcpy(ytitle, "m_{t} (GeV)");
+    else if (!strcmp(leaf2name, "lambda")) strcpy(ytitle, "#lambda");
+    else if (!strcmp(leaf2name, "kappa")) strcpy(ytitle, "#kappa");
+    else if (!strcmp(leaf2name, "ALambda")) strcpy(ytitle, "A_{#lambda} (GeV)");
+    else if (!strcmp(leaf2name, "AKappa")) strcpy(ytitle, "A_{#kappa} (GeV)");
+    else if (!strcmp(leaf2name, "Chi2")) strcpy(ytitle, "#chi^{2}");
+    else if (!strcmp(leaf2name, "M0")) strcpy(ytitle, "M_{0} (GeV)");
+    else if (!strcmp(leaf2name, "M12")) strcpy(ytitle, "M_{1/2} (GeV)");
+    else if (!strcmp(leaf2name, "A0")) strcpy(ytitle, "A_{0} (GeV)");
+    else if (!strcmp(leaf2name, "Mmess")) strcpy(ytitle, "M_{mess} (GeV)");
+    else if (!strcmp(leaf2name, "Lambda")) strcpy(ytitle, "#lambda (GeV)");
+    else if (!strcmp(leaf2name, "cGrav")) strcpy(ytitle, "C_{Grav}");
+    else strcpy(ytitle, leaf2name);
     sprintf(ytitle,"%s (%s)",ytitle,tag2);
     histo[iLeaf]->SetXTitle(xtitle);
     histo[iLeaf]->SetYTitle(ytitle);
@@ -291,34 +306,17 @@ void ModelComparison (const Int_t nbins = 50,
     histo[iLeaf]->GetYaxis()->SetTitleSize(0.05);
     histo[iLeaf]->GetYaxis()->SetTitleOffset(1.3);
 
-    if (!strcmp(leaf1->GetName(), "Chi2")) {
-      //      iChi2Leaf1 = (TLeafD*)tree1->GetListOfLeaves()->IndexOf(leaf1);
-      iChi2Leaf1 = iLeaf;
+    if (!strcmp(leaf1name, "Chi2") || !strcmp(leaf2name, "Chi2")) {
+      iChi2Leaf = iLeaf;
     }
-    if (!strcmp(leaf2->GetName(), "Chi2")) {
-      //      iChi2Leaf2 = (TLeafD*)tree2->GetListOfLeaves()->IndexOf(leaf2);
-      iChi2Leaf2 = iLeaf;
-    }
-    if (!strcmp(leaf1->GetName(), "randSeed")) {
-      //      iRandSeed1 = (TLeafD*)tree1->GetListOfLeaves()->IndexOf(leaf1);
-      iRandSeed1 = iLeaf;
-      cout << "found randseed 1 " << iLeaf << " " << iRandSeed1 << endl;
-      //      iLeafToInternalIndexMap[(Int_t)(TLeafD*)tree1->GetListOfLeaves()->IndexOf(leaf1)] = iLeaf;
-    }
-    if (!strcmp(leaf2->GetName(), "randSeed")) {
-      // iRandSeed2 = (TLeafD*)tree2->GetListOfLeaves()->IndexOf(leaf2);
-      iRandSeed2 = iLeaf;
-      cout << "found randseed 2 " << iLeaf << " " << iRandSeed2 << endl;
+    if (!strcmp(leaf1name, "randSeed") || !strcmp(leaf2name, "randSeed")) {
+      iRandSeed = iLeaf;
     }
 
   }
 
-  if (!(chi2cut < 0) && iChi2Leaf1 < 0) {
-    printf("Cannot apply chi2 cut because tree1 does not contain Chi2 leaf\n");
-    return;
-  }
-  if (!(chi2cut < 0) && iChi2Leaf2 < 0) {
-    printf("Cannot apply chi2 cut because tree2 does not contain Chi2 leaf\n");
+  if (!(chi2cut < 0) && iChi2Leaf < 0) {
+    printf("Cannot apply chi2 cut because tree(s) do(es) not contain Chi2 leaf\n");
     return;
   }
 
@@ -342,21 +340,17 @@ void ModelComparison (const Int_t nbins = 50,
 	continue;
       }
 
-      // cout << par1[iRandSeed1] << " " << par2[iRandSeed2] << endl;
+      if (par1[iRandSeed]==par2[iRandSeed]) {
 
-      if (par1[iRandSeed1]==par2[iRandSeed2]) {
-
-	
-
-	cout << "Corresponding entry found " << par1[iRandSeed1] 
-	     << " " << par2[iRandSeed2] << endl;
+	cout << "Corresponding entry found " << par1[iRandSeed] 
+	     << " " << par2[iRandSeed] << endl;
 	Double_t chi2val1 = -1; 
 	Double_t chi2val2 = -1; 
-	if (!(iChi2Leaf1 < 0)) {
-	  chi2val1 = par1[iChi2Leaf1];
+	if (!(iChi2Leaf < 0)) {
+	  chi2val1 = par1[iChi2Leaf];
 	}
-	if (!(iChi2Leaf2 < 0)) {
-	  chi2val2 = par2[iChi2Leaf2];
+	if (!(iChi2Leaf < 0)) {
+	  chi2val2 = par2[iChi2Leaf];
 	}
 
 	if ( chi2val1<0. || chi2val2<0. ) {
