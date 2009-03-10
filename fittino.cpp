@@ -1630,7 +1630,7 @@ void Fittino::setStartValues()
 	 fcGrav.error = yyFittedPar[FindInFittedPar("cGrav")].error;
       }
       fcGrav.bound_low = 0;
-      fcGrav.bound_up = 100;
+      fcGrav.bound_up = 100000;
 
       //fN5.name  = "N5";
       //fN5.value = 1;
