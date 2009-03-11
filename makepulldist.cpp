@@ -68,6 +68,7 @@ void MakePullDist::CalcPullDist()
 {
   //double correction;
   vector<MeasuredValue>  savedMeasuredValues;
+  vector<MeasuredValue>  debugMeasuredValues;
   unsigned int npulls = 100;
   vector<TH1F*> histomap;
   char histogram_name[256];
@@ -114,6 +115,7 @@ void MakePullDist::CalcPullDist()
 
   // get local copy of measured values
   savedMeasuredValues.clear();
+  debugMeasuredValues.clear();
   for (unsigned int i = 0; i < yyMeasuredVec.size(); i++) {  
     savedMeasuredValues.push_back(yyMeasuredVec[i]);
   }
@@ -222,6 +224,10 @@ void MakePullDist::CalcPullDist()
        }
      }
 
+     for (unsigned int ii = 0; ii < yyMeasuredVec.size(); ii++) {  
+       debugMeasuredValues.push_back(yyMeasuredVec[ii]);
+     }
+
      // test printouts for observable value scattering
      cout << yyDashedLine << endl;
      cout<<"Thrown set of observables for pull fit no "<<i<<":"<<endl;
@@ -274,6 +280,18 @@ void MakePullDist::CalcPullDist()
 	   }
 	}
      }
+     
+     cout << endl << yyDashedLine << endl << endl;
+     for (unsigned int ii = 0; ii < yyMeasuredVec.size(); ii++) {  
+       if (yyMeasuredVec[ii].nofit == false) {
+	 if (debugMeasuredValues[ii].value != yyMeasuredVec[ii].value) {
+	   cout << "Variable " << yyMeasuredVec[ii].name << " has been unexpectedly altered during the toy fit from "
+		<< debugMeasuredValues[ii].value << " to " << yyMeasuredVec[ii].value << endl;
+	 }
+       }
+     }
+     
+     cout << endl << yyDashedLine << endl << endl;
      cout << "Copying observables into obsLeafVec..." << endl;
      for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
        if (yyMeasuredVec[j].nofit == false) {
