@@ -9267,9 +9267,11 @@ int   ReadLesHouches()
 
 
 	 if (firstChi2) {
-	    firstChi2 = false;
-	    if (likelihood>0.)
-	       previousLikelihood = likelihood*2;
+	   firstChi2 = false;
+	   if (likelihood>0.) {
+	     previousLikelihood = likelihood*2;
+	   }
+	   previousChi2 = chi2+1.;
 	 }
 
 	 // calculate Q
@@ -9298,6 +9300,7 @@ int   ReadLesHouches()
 	   //cout << "using alternative calculation" << endl;
 	   //rho =  TMath::Exp( -chi2/2. + previousChi2/2. );
 	   rho = likelihood/previousLikelihood;
+	   cout << "compare " << chi2 << " " << previousChi2 << " " << rho << " " << TMath::Exp( -chi2/2. + previousChi2/2. ) << endl;
 	 } else {
 	    continue;
 	 }
