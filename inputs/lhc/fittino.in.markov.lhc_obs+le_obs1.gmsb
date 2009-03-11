@@ -203,10 +203,10 @@ SimAnnUncertainty              off
 SimAnnUncertaintyRunDown       off
 GetTempFromFirstChiSqr         on
 
-UseMarkovChains                off
+UseMarkovChains                on
 MarkovChainReadjustWidth       off
 MarkovChainReadjustWidthPeriod 500
-MaxMarkovChain                 20000
+MaxMarkovChain                 60000
 
 MinuitStrategy	               2
 MachinePrecision               1e-8
@@ -215,5 +215,5 @@ Verbose                        on
 
 ScanParameters                 off
 
-PerformFit                     on
+PerformFit                     off
 #RandomGeneratorSeed            -1

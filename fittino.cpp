@@ -7461,6 +7461,10 @@ int   ReadLesHouches()
 	    yyMeasuredVec[i].theovalue = 0.;
 	    dependencies_theoset = true;
 	    yyMeasuredVec[i].theovalue = (yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue*yyMeasuredVec[yyMeasuredVec[i].daughters[1]].theovalue+yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue*yyMeasuredVec[yyMeasuredVec[i].daughters[3]].theovalue)/(yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue+yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue);
+	    if (!(yyMeasuredVec[i].theovalue<0.) && !(yyMeasuredVec[i].theovalue>=0.)) {
+	      cout << "detected nan" << endl;
+	      yyMeasuredVec[i].theovalue = -10000.;
+	    }
 	    for (unsigned int j=0; j<4; j++) {
 	       if (yyMeasuredVec[yyMeasuredVec[i].daughters[j]].theoset == false) {
 		  dependencies_theoset = false;
@@ -9291,7 +9295,9 @@ int   ReadLesHouches()
 	 //	    if (previousLikelihood*Qlower>0.) {
 	 if (previousLikelihood>0.) {
 	    //	       rho = likelihood*Qupper/(previousLikelihood*Qlower);
-	    rho = likelihood/previousLikelihood;
+	   //cout << "using alternative calculation" << endl;
+	   //rho =  TMath::Exp( -chi2/2. + previousChi2/2. );
+	   rho = likelihood/previousLikelihood;
 	 } else {
 	    continue;
 	 }
