@@ -105,6 +105,8 @@ extern string yyCalculatorPath;
 extern string yyRelicDensityCalculatorPath;
 extern string yyLEOCalculatorPath;
 extern string yyDashedLine;
+extern string yyMarkovInterfaceFilePath;
+
 
 extern int    yyParseError;
 extern int    yyNaN;

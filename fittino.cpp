@@ -1913,6 +1913,7 @@ void Fittino::calculateLoopLevelValues()
       TFile *MarkovNtupFile = new TFile("MarkovChainNtupFile.root","RECREATE");
       sprintf ( ntuplename, "markovChain" );
       sprintf ( ntupletext, "path of the Markov Chain" );
+      //      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:haveAcceptedAtLeastOne:globalIter" );
       sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:haveAcceptedAtLeastOne" );
       for (unsigned int j=0; j < yyFittedVec.size(); j++ ) {
 	 sprintf ( ntuplevars, "%s:%s", ntuplevars, yyFittedVec[j].name.c_str() );
@@ -9147,6 +9148,7 @@ int   ReadLesHouches()
       vector <int> ntest;
       vector <double> c; 
 
+      int globalIter = 0;
 
       // fill vector of parameters
       for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
@@ -9158,6 +9160,12 @@ int   ReadLesHouches()
 	 c.push_back(2.0);
 	 nacp.push_back(0);
 	 ntest.push_back(0);
+      }
+
+      // check for additional input file
+      if (yyMarkovInterfaceFilePath!="") {
+	cout << "read previous ending from file " << endl;
+	
       }
 
       time_t systime;
@@ -9205,6 +9213,7 @@ int   ReadLesHouches()
       {
 
 	 niter++;
+	 globalIter++;
 
 	 // choose new point
 	 for (unsigned int iiVariable = 0; iiVariable < x.size(); iiVariable++) 
@@ -9330,6 +9339,7 @@ int   ReadLesHouches()
 	    ntupvars[3] = (Float_t)accpoint;
 	    ntupvars[4] = (Float_t)niter;
 	    ntupvars[5] = (haveAcceptedAtLeastOne) ? 1 : 0;
+	    //	    ntupvars[6] = (Float_t)globalIter;
 	    for (unsigned int ii = 6; ii < 6+yyFittedVec.size(); ii++) {
 	       ntupvars[ii] = xp[ii-6];
 	    }
@@ -9340,6 +9350,7 @@ int   ReadLesHouches()
 	    ntupvars[3] = 0.;
 	    ntupvars[4] = (Float_t)niter;
 	    ntupvars[5] = (haveAcceptedAtLeastOne) ? 1 : 0;
+	    // ntupvars[6] = (Float_t)globalIter;
 	    for (unsigned int ii = 6; ii < 6+yyFittedVec.size(); ii++) {
 	       ntupvars[ii] = x[ii-6];
 	    }

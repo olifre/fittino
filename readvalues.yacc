@@ -173,6 +173,7 @@ string       yyCalculatorPath = "";
 string       yyRelicDensityCalculatorPath = "";
 string       yyLEOCalculatorPath = "";
 string       yyDashedLine = "------------------------------------------------------------";
+string       yyMarkovInterfaceFilePath = "";
 
 unsigned int yyFitModel = MSSM;
 unsigned int yySeedForObservableScattering = 1;
@@ -287,7 +288,7 @@ struct correrrorstruct {
 %token <real> T_NUMBER
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
 %token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS T_NOFIT T_NOFITLEO T_SCALING
-%token T_BLOCK T_SCALE T_DECAY T_BR T_LEO T_XS T_CALCULATOR T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO
+%token T_BLOCK T_SCALE T_DECAY T_BR T_LEO T_XS T_CALCULATOR T_MARKOVINTERFACEFILEPATH T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH T_NEWLINE
  
 %type <name>   sentence
@@ -1357,6 +1358,16 @@ input:
 		      yyRelicDensityCalculator = MICROMEGAS;
 		   }
 	           yyRelicDensityCalculatorPath = $4;
+	      }
+	    | input T_MARKOVINTERFACEFILEPATH T_WORD
+	      {
+                   yyInputFileLine.prevalue  = "MarkovInterfaceFilePath";
+		   yyInputFileLine.prevalue += "\t";
+		   yyInputFileLine.prevalue += $3;
+
+		   if (!strcmp($3, "MICROMEGAS")) {
+		      yyMarkovInterfaceFilePath = $3;
+		   }
 	      }
 	    | input T_LEOCALCULATOR T_WORD
 	      {
