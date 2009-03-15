@@ -9130,6 +9130,7 @@ int   ReadLesHouches()
       vector <double> xp;
       vector <double> lb; 
       vector <double> ub;
+      vector <string> xNames;
       vector <double> obsTheoValue(yyMeasuredVec.size());
       vector <double> previousObsTheoValue(yyMeasuredVec.size());
       Float_t ntupvars[5000];
@@ -9173,15 +9174,70 @@ int   ReadLesHouches()
 	 vm.push_back(yyFittedVec[k].error);
 	 lb.push_back(yyFittedVec[k].bound_low);
 	 ub.push_back(yyFittedVec[k].bound_up);
+	 xNames.push_back(yyFittedVec[k].name);
 	 c.push_back(2.0);
 	 nacp.push_back(0);
 	 ntest.push_back(0);
       }
 
       // check for additional input file
+      unsigned int nFilePars = 0; 
+      const unsigned int nVars = xp.size();
+      double varsFromFile[200];
+      string thisString[200];
+      bool fileReadError = false;
       if (yyMarkovInterfaceFilePath!="") {
-	cout << "read previous ending from file " << endl;
-	
+	cout << "read previous ending from file " << yyMarkovInterfaceFilePath << endl;
+	string syscall = "cp "+yyMarkovInterfaceFilePath+" ./markovInterfaceFile.txt";
+	int rc = system (syscall.c_str());
+	if (rc!=0) {
+	  cout << "return value " << rc << " from copy of markovInterfaceFile " << yyMarkovInterfaceFilePath << endl; 
+	} else {
+	  ifstream markovInterfaceFilePath("./markovInterfaceFile.txt");
+	  if (markovInterfaceFilePath.is_open()) {
+	    while (!markovInterfaceFilePath.eof()) {
+	      markovInterfaceFilePath >> globalIter;
+	      break;
+	    }
+	    while (!markovInterfaceFilePath.eof()) {
+	      if (nFilePars>nVars) {
+		cout << "too many parameters" << endl;
+		fileReadError = true;
+		break;
+	      }
+	      markovInterfaceFilePath >> thisString[nFilePars] >> varsFromFile[nFilePars];
+	      nFilePars++;
+	    }
+	    if (!(nFilePars==xp.size()+1)) {
+	      cout << "wrong number of parameters" << endl;
+	      globalIter = 0;
+	    } else if (!fileReadError) {
+	      cout << "correct number of parameters" << endl;
+	      for (unsigned int i = 0; i < nVars; i++) {
+		for (unsigned int j = 0; j < nVars; j++) {
+		  if (xNames[i]==thisString[j]) {
+		    cout << "setting variable " << xNames[i] << " = " << varsFromFile[j] << endl;
+		    x[i]  = varsFromFile[j];
+		    xp[i] = varsFromFile[j];
+		  }
+		}
+	      } 
+	    } else {
+	      cout << "unspecified syntax error for (yyMarkovInterfaceFilePath, reverting to standard start values" << endl;
+	    }
+	  } else {
+	    cout << "file " << yyMarkovInterfaceFilePath << "could not be opened, reverting to standard start values" << endl;
+	  }
+	  cout << yyDashedLine << endl;
+	  cout << "using the following start settings" << endl;
+	  cout << "globalIter = " << globalIter << endl;
+	  for (unsigned int i = 0; i < xNames.size(); i++) {
+	    cout << xNames[i] << " = " << xp[i] << endl;
+	  }
+	  cout << yyDashedLine << endl;
+	  markovInterfaceFilePath.close();
+	}
+	system ("rm ./markovInterfaceFile.txt");
       }
 
       TRandom3* random = new TRandom3();
@@ -9414,18 +9470,46 @@ int   ReadLesHouches()
       MarkovNtupFile->Write();
       MarkovNtupFile->Close();
 
-
+      // eventually write final point to output text file
+      if (yyMarkovInterfaceFilePath!="") {
+	bool allOK = true;
+	ofstream markovInterfaceFilePath("./markovInterfaceFile.txt");
+	if (markovInterfaceFilePath.is_open()) {
+	  markovInterfaceFilePath << globalIter << endl;
+	  for (unsigned int i = 0; i < xp.size(); i++) {
+	    markovInterfaceFilePath << xNames[i] << " " << xp[i] << endl;
+	  }
+	} else {
+	  allOK = false;
+	}
+	markovInterfaceFilePath.close();
+	if (allOK) {
+	  cout << yyDashedLine << endl;
+	  system("cat ./markovInterfaceFile.txt");
+	  cout << yyDashedLine << endl;
+	  cout << "write ending to file " << yyMarkovInterfaceFilePath << endl;
+	  string syscall = "cp ./markovInterfaceFile.txt "+yyMarkovInterfaceFilePath;
+	  int rc = system (syscall.c_str());
+	  if (rc!=0) {
+	    cout << "return value " << rc << " from copy to markovInterfaceFile " << yyMarkovInterfaceFilePath << endl; 
+	  } else {
+	    cout << "successfully copied interfcae file to " << yyMarkovInterfaceFilePath << endl;
+	  }
+	}
+	system("rm ./markovInterfaceFile.txt");
+      }     
+      
       return;
+      
+   }
 
-      }
-
-      double Fittino::calculateQ(vector<double> x, vector<double> xk, vector<double> vm)
-      {
-	 double Q = 1.;
-	 for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) 
-	 {
-	    Q = Q * 1/(TMath::Sqrt(2.*TMath::Pi())*vm[iVariable])*
-	       TMath::Exp(-sqr(x[iVariable]-xk[iVariable])/(2.*sqr(vm[iVariable])));
-	 }
-	 return Q;
-      }
+double Fittino::calculateQ(vector<double> x, vector<double> xk, vector<double> vm)
+{
+  double Q = 1.;
+  for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) 
+    {
+      Q = Q * 1/(TMath::Sqrt(2.*TMath::Pi())*vm[iVariable])*
+	TMath::Exp(-sqr(x[iVariable]-xk[iVariable])/(2.*sqr(vm[iVariable])));
+    }
+  return Q;
+}

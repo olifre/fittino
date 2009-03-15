@@ -1359,15 +1359,13 @@ input:
 		   }
 	           yyRelicDensityCalculatorPath = $4;
 	      }
-	    | input T_MARKOVINTERFACEFILEPATH T_WORD
+	    | input T_MARKOVINTERFACEFILEPATH T_PATH
 	      {
                    yyInputFileLine.prevalue  = "MarkovInterfaceFilePath";
 		   yyInputFileLine.prevalue += "\t";
 		   yyInputFileLine.prevalue += $3;
-
-		   if (!strcmp($3, "MICROMEGAS")) {
-		      yyMarkovInterfaceFilePath = $3;
-		   }
+		   cout << "read " << $3 << endl;
+	           yyMarkovInterfaceFilePath = $3;
 	      }
 	    | input T_LEOCALCULATOR T_WORD
 	      {
