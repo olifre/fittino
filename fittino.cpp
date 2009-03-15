@@ -9141,6 +9141,7 @@ int   ReadLesHouches()
       vector <int> ntest;
       vector <double> c; 
 
+      int successes = 0;
       int globalIter = 0;
 
       char ntuplename[256];
@@ -9307,7 +9308,7 @@ int   ReadLesHouches()
 	 } 
 
 
-	 std::cout << "looking at Markov Chain in step " << niter << std::endl;
+	 std::cout << "looking at Markov Chain in step " << niter << " success/fail = " << (double)successes/(double)(niter-successes) << std::endl;
 	 for (unsigned int iiiVariable = 0; iiiVariable < x.size(); iiiVariable++) 
 	 {
 	    std::cout 
@@ -9403,7 +9404,10 @@ int   ReadLesHouches()
 	 } 
 	 std::cout << "accpoint = " << accpoint << std::endl;
 
-	 if (accpoint==1) haveAcceptedAtLeastOne = true;
+	 if (accpoint==1) { 
+	   haveAcceptedAtLeastOne = true;
+	   successes++;
+	 }
 
 	 // ++ntest[iVariable];
 	 // write into ntuple
