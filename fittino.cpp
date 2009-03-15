@@ -43,6 +43,7 @@ email                : philip.bechtle@desy.de, peter.wienemann@desy.de
 #include <TMinuit.h>
 #include <TGraph.h>
 #include <TGraph2D.h>
+#include <TRandom3.h>
 
 #include <TFile.h>
 #include <TH1.h>
@@ -1910,18 +1911,7 @@ void Fittino::calculateLoopLevelValues()
    system ("rm SimAnnNtupFile.root");
    system ("rm MarkovChainNtupFile.root");
    if (yyUseMarkovChains) {
-      TFile *MarkovNtupFile = new TFile("MarkovChainNtupFile.root","RECREATE");
-      sprintf ( ntuplename, "markovChain" );
-      sprintf ( ntupletext, "path of the Markov Chain" );
-      //      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:haveAcceptedAtLeastOne:globalIter" );
-      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:haveAcceptedAtLeastOne" );
-      for (unsigned int j=0; j < yyFittedVec.size(); j++ ) {
-	 sprintf ( ntuplevars, "%s:%s", ntuplevars, yyFittedVec[j].name.c_str() );
-      }
-      TNtuple *markovTuple = new TNtuple(ntuplename,ntupletext,ntuplevars);
-      markovChain(markovTuple);
-      MarkovNtupFile->Write();
-      MarkovNtupFile->Close();
+      markovChain();
       return;
    }
 
@@ -9132,7 +9122,7 @@ int   ReadLesHouches()
    }
 
 
-   void Fittino::markovChain (TNtuple *ntuple)
+   void Fittino::markovChain ()
    {
 
       vector <double> x; 
@@ -9140,7 +9130,9 @@ int   ReadLesHouches()
       vector <double> xp;
       vector <double> lb; 
       vector <double> ub;
-      Float_t ntupvars[50];
+      vector <double> obsTheoValue(yyMeasuredVec.size());
+      vector <double> previousObsTheoValue(yyMeasuredVec.size());
+      Float_t ntupvars[5000];
       Double_t dummyfloat = 5.;
       Int_t dummyint = 1;
       Double_t xdummy[100];
@@ -9149,6 +9141,30 @@ int   ReadLesHouches()
       vector <double> c; 
 
       int globalIter = 0;
+
+      char ntuplename[256];
+      char ntupletext[256];
+      char ntuplevars[65536];
+
+      TFile *MarkovNtupFile = new TFile("MarkovChainNtupFile.root","RECREATE");
+      sprintf ( ntuplename, "markovChain" );
+      sprintf ( ntupletext, "path of the Markov Chain" );
+      //      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:haveAcceptedAtLeastOne:globalIter" );
+      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:haveAcceptedAtLeastOne" );
+      for (unsigned int j=0; j < yyFittedVec.size(); j++ ) {
+	string parName = "P_"+yyFittedVec[j].name;
+	sprintf ( ntuplevars, "%s:%s", ntuplevars, parName.c_str() );
+      }
+      for (unsigned int k = 0; k < yyMeasuredVec.size(); k++ ) {
+	if (yyMeasuredVec[k].nofit == false) {
+	  string obsName = "O_"+yyMeasuredVec[k].name;
+	  sprintf ( ntuplevars, "%s:%s", ntuplevars, obsName.c_str() );
+	} else {
+	  string obsName = "O_"+yyMeasuredVec[k].name+"_nofit";
+	  sprintf ( ntuplevars, "%s:%s", ntuplevars, obsName.c_str() );
+	}
+      }
+      TNtuple *markovTuple = new TNtuple(ntuplename,ntupletext,ntuplevars);
 
       // fill vector of parameters
       for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
@@ -9168,6 +9184,7 @@ int   ReadLesHouches()
 	
       }
 
+      TRandom3* random = new TRandom3();
       time_t systime;
       int seed;
       struct sysinfo sinfo; 
@@ -9186,7 +9203,7 @@ int   ReadLesHouches()
 	 seed = yyRandomGeneratorSeed;
       }
       cout << "seed = " << seed << endl;
-      gRandom->SetSeed(seed);
+      random->SetSeed(seed);
 
       // ====================================================================
       // ====================================================================
@@ -9224,8 +9241,8 @@ int   ReadLesHouches()
 	    {
 	       first = false; 
 	       outOfBounds = false;
-	       xp[iiVariable] = x[iiVariable] + gRandom->Gaus(0.,vm[iiVariable]);
-	       //		      xp[iiVariable] = x[iiVariable] + gRandom->Uniform(-1.,1.) * vm[iiVariable];
+	       xp[iiVariable] = x[iiVariable] + random->Gaus(0.,vm[iiVariable]);
+	       //		      xp[iiVariable] = x[iiVariable] + random->Uniform(-1.,1.) * vm[iiVariable];
 	       if ( ( xp[iiVariable] < lb[iiVariable] ) || ( xp[iiVariable] > ub[iiVariable] ) )
 	       {			  
 		  outOfBounds = true;
@@ -9281,6 +9298,9 @@ int   ReadLesHouches()
 	     previousLikelihood = likelihood*2;
 	   }
 	   previousChi2 = chi2+1.;
+	   for (unsigned int i = 0; i < previousObsTheoValue.size(); ++i) {
+	     previousObsTheoValue[i] = yyMeasuredVec[i].theovalue;
+	   }
 	 }
 
 	 // calculate Q
@@ -9304,15 +9324,15 @@ int   ReadLesHouches()
 	 // calculate rho
 	 double rho = 0.;
 	 //	    if (previousLikelihood*Qlower>0.) {
-	 if (previousLikelihood>0.) {
-	    //	       rho = likelihood*Qupper/(previousLikelihood*Qlower);
-	   //cout << "using alternative calculation" << endl;
-	   //rho =  TMath::Exp( -chi2/2. + previousChi2/2. );
-	   rho = likelihood/previousLikelihood;
-	   cout << "compare " << chi2 << " " << previousChi2 << " " << rho << " " << TMath::Exp( -chi2/2. + previousChi2/2. ) << endl;
-	 } else {
-	    continue;
-	 }
+	 //if (previousLikelihood>0.) {
+	 //	       rho = likelihood*Qupper/(previousLikelihood*Qlower);
+	 //cout << "using alternative calculation" << endl;
+	 rho =  TMath::Exp( -chi2/2. + previousChi2/2. );
+	 //rho = likelihood/previousLikelihood;
+	 cout << "compare " << chi2 << " " << previousChi2 << " " << rho << " " << TMath::Exp( -chi2/2. + previousChi2/2. ) << endl;
+	 // } else {
+	 // continue;
+	 //}
 	 std::cout << "rho = " << rho << std::endl;
 
 	 // decide whether point shall be accepted
@@ -9320,7 +9340,7 @@ int   ReadLesHouches()
 	 if (rho > 1.) {
 	    accpoint = 1;
 	 } else {
-	    double p = gRandom->Uniform(0.,1.);
+	    double p = random->Uniform(0.,1.);
 	    if (p < rho) {
 	       accpoint = 1;
 	    }
@@ -9340,8 +9360,13 @@ int   ReadLesHouches()
 	    ntupvars[4] = (Float_t)niter;
 	    ntupvars[5] = (haveAcceptedAtLeastOne) ? 1 : 0;
 	    //	    ntupvars[6] = (Float_t)globalIter;
+	    int counter = 0;
 	    for (unsigned int ii = 6; ii < 6+yyFittedVec.size(); ii++) {
 	       ntupvars[ii] = xp[ii-6];
+	       counter = ii;
+	    }
+	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
+	      ntupvars[iii] = yyMeasuredVec[iii-(counter+1)].theovalue;
 	    }
 	 } else {
 	    ntupvars[0] = (Float_t)previousLikelihood;
@@ -9351,17 +9376,25 @@ int   ReadLesHouches()
 	    ntupvars[4] = (Float_t)niter;
 	    ntupvars[5] = (haveAcceptedAtLeastOne) ? 1 : 0;
 	    // ntupvars[6] = (Float_t)globalIter;
+	    int counter = 0;
 	    for (unsigned int ii = 6; ii < 6+yyFittedVec.size(); ii++) {
 	       ntupvars[ii] = x[ii-6];
+	       counter = ii;
+	    }
+	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
+	      ntupvars[iii] = previousObsTheoValue[iii-(counter+1)];
 	    }
 	 }
-	 ntuple->Fill(ntupvars);
+	 markovTuple->Fill(ntupvars);
 
 	 // save variables 
 	 if (accpoint == 1)
 	 {
 	    for (unsigned int i = 0; i < x.size(); ++i) {
 	       x[i] = xp[i];
+	    }
+	    for (unsigned int i = 0; i < previousObsTheoValue.size(); ++i) {
+	       previousObsTheoValue[i] = yyMeasuredVec[i].theovalue;
 	    }
 	    previousRho        = rho;
 	    previousChi2       = chi2;
@@ -9377,6 +9410,10 @@ int   ReadLesHouches()
 	 }
 
       }
+
+      MarkovNtupFile->Write();
+      MarkovNtupFile->Close();
+
 
       return;
 
