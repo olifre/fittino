@@ -9151,7 +9151,7 @@ int   ReadLesHouches()
       sprintf ( ntuplename, "markovChain" );
       sprintf ( ntupletext, "path of the Markov Chain" );
       //      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:haveAcceptedAtLeastOne:globalIter" );
-      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:haveAcceptedAtLeastOne" );
+      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:globalIter:haveAcceptedAtLeastOne" );
       for (unsigned int j=0; j < yyFittedVec.size(); j++ ) {
 	string parName = "P_"+yyFittedVec[j].name;
 	sprintf ( ntuplevars, "%s:%s", ntuplevars, parName.c_str() );
@@ -9414,11 +9414,11 @@ int   ReadLesHouches()
 	    ntupvars[2] = (Float_t)chi2;
 	    ntupvars[3] = (Float_t)accpoint;
 	    ntupvars[4] = (Float_t)niter;
-	    ntupvars[5] = (haveAcceptedAtLeastOne) ? 1 : 0;
-	    //	    ntupvars[6] = (Float_t)globalIter;
+	    ntupvars[5] = (Float_t)globalIter;
+	    ntupvars[6] = (haveAcceptedAtLeastOne) ? 1 : 0;
 	    int counter = 0;
-	    for (unsigned int ii = 6; ii < 6+yyFittedVec.size(); ii++) {
-	       ntupvars[ii] = xp[ii-6];
+	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
+	       ntupvars[ii] = xp[ii-7];
 	       counter = ii;
 	    }
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
@@ -9430,11 +9430,11 @@ int   ReadLesHouches()
 	    ntupvars[2] = (Float_t)previousChi2;
 	    ntupvars[3] = 0.;
 	    ntupvars[4] = (Float_t)niter;
-	    ntupvars[5] = (haveAcceptedAtLeastOne) ? 1 : 0;
-	    // ntupvars[6] = (Float_t)globalIter;
+	    ntupvars[5] = (Float_t)globalIter;
+	    ntupvars[6] = (haveAcceptedAtLeastOne) ? 1 : 0;
 	    int counter = 0;
-	    for (unsigned int ii = 6; ii < 6+yyFittedVec.size(); ii++) {
-	       ntupvars[ii] = x[ii-6];
+	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
+	       ntupvars[ii] = x[ii-7];
 	       counter = ii;
 	    }
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
