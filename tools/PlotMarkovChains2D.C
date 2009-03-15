@@ -231,6 +231,8 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 		 << fBestFit - f1sigmaLowerBound
 		 << " + "
 		 << f1sigmaUpperBound - fBestFit
+		 << "at min chi2 = " 
+		 << - 2 * TMath::Log(absHighestL)
 		 << endl;
 	    cout << "One Dimensional 1 sigma environment of " << variables[sVariable] 
 		 << " = "
@@ -239,6 +241,8 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 		 << sBestFit - s1sigmaLowerBound
 		 << " + "
 		 << s1sigmaUpperBound - sBestFit
+		 << "at min chi2 = " 
+		 << - 2 * TMath::Log(absHighestL)
 		 << endl;
 	    markovFitsFile << "One Dimensional 1 sigma environment of " << variables[fVariable] 
 			   << " = "
@@ -247,6 +251,8 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 			   << fBestFit - f1sigmaLowerBound
 			   << " + "
 			   << f1sigmaUpperBound - fBestFit
+			   << "at min chi2 = " 
+			   << - 2 * TMath::Log(absHighestL)
 			   << endl;
 	    markovFitsFile << "One Dimensional 1 sigma environment of " << variables[sVariable] 
 			   << " = "
@@ -255,6 +261,8 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 			   << sBestFit - s1sigmaLowerBound
 			   << " + "
 			   << s1sigmaUpperBound - sBestFit
+			   << "at min chi2 = " 
+			   << - 2 * TMath::Log(absHighestL)
 			   << endl;
 	  }
 
