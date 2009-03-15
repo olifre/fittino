@@ -4,6 +4,8 @@
 // The asymed statistics is bayesian. Shame on me. An alternative 
 // frequentist interpretation will follow soon. 
 
+#include "TStyle.h"
+#include "TDirectory.h"
 #include "TChain.h"
 #include "TCanvas.h"
 #include "TH1D.h"
@@ -24,10 +26,16 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
   //gROOT->SetStyle("MyStyle");
   //gROOT->ForceStyle();
 
+  gStyle->SetPalette(1);
+
   TChain markovChain("markovChain");
   markovChain.Add("MarkovChainNtupFile*.root");
   // markovChain.Add("MarkovTestRosenbrockNTupel.root");
   markovChain.Print();
+
+  // open text file
+  fstream markovFitsFile;
+  markovFitsFile.open ("markovFitsResults.txt",ofstream::out);
 
   int nEntries = markovChain.GetEntries();
   if ( maxevents >= 0 ) {
@@ -102,6 +110,15 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 	{
 
 	  TH2D *thisHist;
+
+	  double s1sigmaUpperBound = -100000000.;
+	  double s1sigmaLowerBound =  100000000.;
+	  double f1sigmaUpperBound = -100000000.;
+	  double f1sigmaLowerBound =  100000000.;
+	  double sBestFit = 0.;
+	  double fBestFit = 0.;
+	  double absHighestL = 0.;
+
 	  // Bayesian Interpretation
 	  if (bayes) 
 	    {
@@ -123,7 +140,7 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 	      double sVarMin =  1000000000.;	      
 	      for (int i = 0; i < nEntries; i++) {
 		markovChain.GetEntry(i);
-		if (nStep > 2000 && haveAcceptedAtLeastOne > 0.5) {		
+		if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {		
 		  if (varValues[fVariable]>fVarMax) {
 		    fVarMax = varValues[fVariable];
 		  }
@@ -141,6 +158,7 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 	      cout << variables[fVariable] << " " << variables[sVariable] << " " 
 		   << fVarMax << " " << fVarMin << " " << sVarMax << " " << sVarMin << endl;
 	      // loop over bins in the variables
+
 	      thisHist = new TH2D("thisHist","",
 				  nBins+2,sVarMin-1./(double)nBins*(-sVarMin+sVarMax),sVarMax+1./(double)nBins*(-sVarMin+sVarMax),
 				  nBins+2,fVarMin-1./(double)nBins*(-fVarMin+fVarMax),fVarMax+1./(double)nBins*(-fVarMin+fVarMax));
@@ -158,7 +176,7 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 		    // find the highest likelihood
 		    if (fVarValueLow<varValues[fVariable] && varValues[fVariable]<=fVarValueHig &&
 			sVarValueLow<varValues[sVariable] && varValues[sVariable]<=sVarValueHig &&
-			nStep > 2000 && haveAcceptedAtLeastOne > 0.5) {
+			nStep > 0 && haveAcceptedAtLeastOne > 0.5) {
 		      foundAPoint = true;
 		      if (likelihood>highestL) {
 			highestL=likelihood;
@@ -170,6 +188,11 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 //			 << " " << (fVarValueHig+fVarValueLow)/2. 
 //			 << " " << highestL << endl;
 		    thisHist->Fill((sVarValueHig+sVarValueLow)/2.,(fVarValueHig+fVarValueLow)/2.,highestL);
+		    if (highestL>absHighestL) {
+		      absHighestL=highestL;
+		      sBestFit = (sVarValueHig+sVarValueLow)/2.;
+		      fBestFit = (fVarValueHig+fVarValueLow)/2.;
+		    }
 		  } else {
 		    //		    cout << "No valid point at   " << (sVarValueHig+sVarValueLow)/2. 
 		    //			 << " " << (fVarValueHig+fVarValueLow)/2. << endl;
@@ -177,6 +200,63 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 		}
 	      }
 	    }
+
+	  // find 1D 1sigma uncertainties
+	  if (bayes==false) {
+	    for (int i = 0; i < nEntries; i++) {
+	      markovChain.GetEntry(i);
+	      if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {
+		double val = 2 * TMath::Log(absHighestL)
+		  - 2 * TMath::Log(likelihood);
+		if (val<1.) {
+		  if (varValues[sVariable]<s1sigmaLowerBound) {
+		    s1sigmaLowerBound = varValues[sVariable];
+		  }
+		  if (varValues[sVariable]>s1sigmaUpperBound) {
+		    s1sigmaUpperBound = varValues[sVariable];
+		  }
+		  if (varValues[fVariable]<f1sigmaLowerBound) {
+		    f1sigmaLowerBound = varValues[fVariable];
+		  }
+		  if (varValues[fVariable]>f1sigmaUpperBound) {
+		    f1sigmaUpperBound = varValues[fVariable];
+		  }
+		}
+	      }
+	    }
+	    cout << "One Dimensional 1 sigma environment of " << variables[fVariable] 
+		 << " = "
+		 << fBestFit
+		 << " - "
+		 << fBestFit - f1sigmaLowerBound
+		 << " + "
+		 << f1sigmaUpperBound - fBestFit
+		 << endl;
+	    cout << "One Dimensional 1 sigma environment of " << variables[sVariable] 
+		 << " = "
+		 << sBestFit
+		 << " - "
+		 << sBestFit - s1sigmaLowerBound
+		 << " + "
+		 << s1sigmaUpperBound - sBestFit
+		 << endl;
+	    markovFitsFile << "One Dimensional 1 sigma environment of " << variables[fVariable] 
+			   << " = "
+			   << fBestFit
+			   << " - "
+			   << fBestFit - f1sigmaLowerBound
+			   << " + "
+			   << f1sigmaUpperBound - fBestFit
+			   << endl;
+	    markovFitsFile << "One Dimensional 1 sigma environment of " << variables[sVariable] 
+			   << " = "
+			   << sBestFit
+			   << " - "
+			   << sBestFit - s1sigmaLowerBound
+			   << " + "
+			   << s1sigmaUpperBound - sBestFit
+			   << endl;
+	  }
 
 	  // common plotting for frequentist and bayesian interpretation
 
@@ -342,6 +422,8 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 	  loghist->Delete();
 	}
     }
+
+    markovFitsFile.close();
 
 
 }
