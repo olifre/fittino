@@ -155,6 +155,15 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 		  }
 		}
 	      }
+	      if (variables[fVariable]=="TanBeta") {
+		if (fVarMax>100.) fVarMax=100.;
+		if (fVarMin<0.)   fVarMin=0.;
+	      }
+	      if (variables[sVariable]=="TanBeta") {
+		if (sVarMax>100.) sVarMax=100.;
+		if (sVarMin<0.)   sVarMin=0.;
+	      }
+
 	      cout << variables[fVariable] << " " << variables[sVariable] << " " 
 		   << fVarMax << " " << fVarMin << " " << sVarMax << " " << sVarMin << endl;
 	      // loop over bins in the variables
