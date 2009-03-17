@@ -38,9 +38,16 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
 
   float* par   = new float[nLeaves];
   TLeafD* leaf[nLeaves];
-  int iChi2 = 0;
-  int iLikelihood = 0;
-  
+  int iChi2 = -1;
+  int iLikelihood = -1;
+  int iTanBeta = -1;
+  int iM0      = -1;
+  int iM12     = -1;
+  int iA0      = -1;
+  int iCgrav   = -1;
+  int iMmess   = -1;
+  int iLambda  = -1;
+
   // get leaves
   for (Int_t iLeaf=0; iLeaf<nLeaves; iLeaf++) {
     leaf[iLeaf] = (TLeafD*)markovChain.GetListOfLeaves()->At(iLeaf);
@@ -51,11 +58,43 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
     if (!strcmp(leaf[iLeaf]->GetName(), "likelihood")) {
       iLikelihood = iLeaf;
     }
+    if (!strcmp(leaf[iLeaf]->GetName(), "TanBeta")) {
+      iTanBeta = iLeaf;
+    }
+    if (!strcmp(leaf[iLeaf]->GetName(), "M0")) {
+      iM0 = iLeaf;
+    }
+    if (!strcmp(leaf[iLeaf]->GetName(), "M12")) {
+      iM12 = iLeaf;
+    }
+    if (!strcmp(leaf[iLeaf]->GetName(), "A0")) {
+      iA0 = iLeaf;
+    }
+    if (!strcmp(leaf[iLeaf]->GetName(), "Lambda")) {
+      iLambda = iLeaf;
+    }
+    if (!strcmp(leaf[iLeaf]->GetName(), "Mmess")) {
+      iMmess = iLeaf;
+    }
+    if (!strcmp(leaf[iLeaf]->GetName(), "Cgrav")) {
+      iCgrav = iLeaf;
+    }
+    
   } 
 
+  if (iChi2<0) {
+    cout << "input tree incomplete" << endl;
+    return;
+  }
+  if (iLikelihood<0) {
+    cout << "input tree incomplete" << endl;
+    return;
+  }
+  
+
+  // create new output tree
   TFile* outputRootFile = new TFile (outputRootFileName.c_str(),"RECREATE");
   TTree* newTree = new TTree ("markovChain","Skimmed MarkovChainTree");
-  
   for (Int_t iLeaf=0; iLeaf<nLeaves; iLeaf++) {
      string str = leaf[iLeaf]->GetName();
      str.append("/F");
@@ -86,6 +125,41 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
     //    cout << "chi2 = " << chi2 << endl;
     if (chi2>maxDeltaChi2+minChi2) {
       continue;
+    }
+    if (iTanBeta>=0) {
+      if (par[iTanBeta]>100. || par[iTanBeta]<0.) {
+	continue;
+      }
+    }
+    if (iM0>=0) {
+      if (par[iM0]>10000. || par[iM0]<0.) {
+	continue;
+      }
+    }
+    if (iM12>=0) {
+      if (par[iM12]>10000. || par[iM12]<0.) {
+	continue;
+      }
+    }
+    if (iA0>=0) {
+      if (par[iA0]>10000. || par[iA0]<-10000.) {
+	continue;
+      }
+    }
+    if (iLambda>=0) {
+      if (par[iLambda]>1000000000. || par[iLambda]<0.) {
+	continue;
+      }
+    }
+    if (iMmess>=0) {
+      if (par[iMmess]>1000000000. || par[iMmess]<0.) {
+	continue;
+      }
+    }
+    if (iCgrav>=0) {
+      if (par[iCgrav]>1000000. || par[iCgrav]<0.) {
+	continue;
+      }
     }
     nNewEvents++;
     newTree->Fill();
