@@ -157,13 +157,38 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 	      }
 	      if (variables[fVariable]=="TanBeta") {
 		if (fVarMax>100.) fVarMax=100.;
-		if (fVarMin<0.)   fVarMin=0.;
+		if (fVarMin<0.  ) fVarMin=0.;   
 	      }
+	      if (variables[fVariable]=="M0") {
+		if (fVarMax>10000.) fVarMax=10000.;	
+		if (fVarMin<0.    ) fVarMin=0.;     
+	      }
+	      if (variables[fVariable]=="M12") {
+		if (fVarMax>10000.) fVarMax=10000.;	
+		if (fVarMin<0.    ) fVarMin=0.;     
+	      }
+	      if (variables[fVariable]=="A0") {
+		if (fVarMax>10000. ) fVarMax=10000.;	
+		if (fVarMin<-10000.) fVarMin=-10000.;   
+	      }
+
 	      if (variables[sVariable]=="TanBeta") {
 		if (sVarMax>100.) sVarMax=100.;
 		if (sVarMin<0.)   sVarMin=0.;
 	      }
-
+	      if (variables[fVariable]=="M0") {
+		if (sVarMax>10000.) sVarMax=10000.;	
+		if (sVarMin<0.    ) sVarMin=0.;     
+	      }
+	      if (variables[fVariable]=="M12") {
+		if (sVarMax>10000.) sVarMax=10000.;	
+		if (sVarMin<0.    ) sVarMin=0.;     
+	      }
+	      if (variables[fVariable]=="A0") {
+		if (sVarMax>10000. ) sVarMax=10000.;	
+		if (sVarMin<-10000.) sVarMin=-10000.;   
+	      }
+	      
 	      cout << variables[fVariable] << " " << variables[sVariable] << " " 
 		   << fVarMax << " " << fVarMin << " " << sVarMax << " " << sVarMin << endl;
 	      // loop over bins in the variables
@@ -219,15 +244,79 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 		  - 2 * TMath::Log(likelihood);
 		if (val<1.) {
 		  if (varValues[sVariable]<s1sigmaLowerBound) {
+		    if (variables[sVariable]=="TanBeta") {
+		      if (varValues[sVariable]>100.) continue;
+		      if (varValues[sVariable]<0.)   continue;
+		    }
+		    if (variables[sVariable]=="M0") {
+		      if (varValues[sVariable]>10000.) continue;
+		      if (varValues[sVariable]<0.)   continue;
+		    }
+		    if (variables[sVariable]=="M12") {
+		      if (varValues[sVariable]>10000.) continue;
+		      if (varValues[sVariable]<0.)   continue;
+		    }
+		    if (variables[sVariable]=="A0") {
+		      if (varValues[sVariable]>10000.) continue;
+		      if (varValues[sVariable]<-10000.)   continue;
+		    }
 		    s1sigmaLowerBound = varValues[sVariable];
 		  }
 		  if (varValues[sVariable]>s1sigmaUpperBound) {
+		    if (variables[sVariable]=="TanBeta") {
+		      if (varValues[sVariable]>100.) continue;
+		      if (varValues[sVariable]<0.)   continue;
+		    }
+		    if (variables[sVariable]=="M0") {
+		      if (varValues[sVariable]>10000.) continue;
+		      if (varValues[sVariable]<0.)   continue;
+		    }
+		    if (variables[sVariable]=="M12") {
+		      if (varValues[sVariable]>10000.) continue;
+		      if (varValues[sVariable]<0.)   continue;
+		    }
+		    if (variables[sVariable]=="A0") {
+		      if (varValues[sVariable]>10000.) continue;
+		      if (varValues[sVariable]<-10000.)   continue;
+		    }
 		    s1sigmaUpperBound = varValues[sVariable];
 		  }
 		  if (varValues[fVariable]<f1sigmaLowerBound) {
+		    if (variables[fVariable]=="TanBeta") {
+		      if (varValues[fVariable]>100.) continue;
+		      if (varValues[fVariable]<0.)   continue;
+		    }
+		    if (variables[fVariable]=="M0") {
+		      if (varValues[fVariable]>10000.) continue;
+		      if (varValues[fVariable]<0.)   continue;
+		    }
+		    if (variables[fVariable]=="M12") {
+		      if (varValues[fVariable]>10000.) continue;
+		      if (varValues[fVariable]<0.)   continue;
+		    }
+		    if (variables[fVariable]=="A0") {
+		      if (varValues[fVariable]>10000.) continue;
+		      if (varValues[fVariable]<-10000.)   continue;
+		    }
 		    f1sigmaLowerBound = varValues[fVariable];
 		  }
 		  if (varValues[fVariable]>f1sigmaUpperBound) {
+		    if (variables[fVariable]=="TanBeta") {
+		      if (varValues[fVariable]>100.) continue;
+		      if (varValues[fVariable]<0.)   continue;
+		    }
+		    if (variables[fVariable]=="M0") {
+		      if (varValues[fVariable]>10000.) continue;
+		      if (varValues[fVariable]<0.)   continue;
+		    }
+		    if (variables[fVariable]=="M12") {
+		      if (varValues[fVariable]>10000.) continue;
+		      if (varValues[fVariable]<0.)   continue;
+		    }
+		    if (variables[fVariable]=="A0") {
+		      if (varValues[fVariable]>10000.) continue;
+		      if (varValues[fVariable]<-10000.)   continue;
+		    }
 		    f1sigmaUpperBound = varValues[fVariable];
 		  }
 		}
