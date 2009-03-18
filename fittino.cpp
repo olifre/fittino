@@ -9428,15 +9428,32 @@ int   ReadLesHouches()
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
 	      ntupvars[iii] = yyMeasuredVec[iii-(counter+1)].theovalue;
 	    }
+	    markovTuple->Fill(ntupvars);
 	 } else {
-	    ntupvars[0] = (Float_t)previousLikelihood;
-	    ntupvars[1] = (Float_t)previousRho;
-	    ntupvars[2] = (Float_t)previousChi2;
+	    ntupvars[0] = (Float_t)likelihood;
+	    ntupvars[1] = (Float_t)rho;
+	    ntupvars[2] = (Float_t)chi2;
 	    ntupvars[3] = 0.;
 	    ntupvars[4] = (Float_t)niter;
 	    ntupvars[5] = (Float_t)globalIter;
 	    ntupvars[6] = (haveAcceptedAtLeastOne) ? 1 : 0;
 	    int counter = 0;
+	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
+	       ntupvars[ii] = xp[ii-7];
+	       counter = ii;
+	    }
+	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
+	      ntupvars[iii] = yyMeasuredVec[iii-(counter+1)].theovalue;
+	    }
+	    markovTuple->Fill(ntupvars);
+	    ntupvars[0] = (Float_t)previousLikelihood;
+	    ntupvars[1] = (Float_t)previousRho;
+	    ntupvars[2] = (Float_t)previousChi2;
+	    ntupvars[3] = 1.;
+	    ntupvars[4] = (Float_t)niter;
+	    ntupvars[5] = (Float_t)globalIter;
+	    ntupvars[6] = (haveAcceptedAtLeastOne) ? 1 : 0;
+	    counter = 0;
 	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
 	       ntupvars[ii] = x[ii-7];
 	       counter = ii;
@@ -9444,8 +9461,9 @@ int   ReadLesHouches()
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
 	      ntupvars[iii] = previousObsTheoValue[iii-(counter+1)];
 	    }
+	    markovTuple->Fill(ntupvars);
+
 	 }
-	 markovTuple->Fill(ntupvars);
 
 	 // save variables 
 	 if (accpoint == 1)

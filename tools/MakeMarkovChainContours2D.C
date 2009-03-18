@@ -25,9 +25,9 @@ using namespace std;
 
 // void PlotMarkovChains2D (bool bayes = true, int maxevents = -1);
 
-void PlotMarkovChains2D (bool bayes = true, 
-			 int maxevents = -1,
-			 string contourOutputFileName = "markovContours.root" ) 
+void MakeMarkovChainContour2D (bool bayes = true, 
+			       int maxevents = -1,
+			       string contourOutputFileName = "markovContours.root" ) 
 {
   //gROOT->SetStyle("MyStyle");
   //gROOT->ForceStyle();
@@ -52,7 +52,7 @@ void PlotMarkovChains2D (bool bayes = true,
   if ( maxevents >= 0 ) {
     if (nEntries > maxevents) nEntries = maxevents;
   }
-  int nBins = 26;
+  int nBins = 27;
 
   std::cout << "number of entries " << nEntries << std::endl;
 
@@ -364,10 +364,10 @@ void PlotMarkovChains2D (bool bayes = true,
 		   << fVarMax << " " << fVarMin << " " << sVarMax << " " << sVarMin << endl;
 	      // loop over bins in the variables
 
-	      sVarMin = sVarMin-2./(double)(nBins-3)*(-sVarMin+sVarMax);
-	      sVarMax = sVarMax+1./(double)(nBins-3)*(-sVarMin+sVarMax);
-	      fVarMin = fVarMin-2./(double)(nBins-3)*(-fVarMin+fVarMax);
-	      fVarMax = fVarMax+1./(double)(nBins-3)*(-fVarMin+fVarMax);
+	      sVarMin = sVarMin-3./(double)(nBins-4)*(-sVarMin+sVarMax);
+	      sVarMax = sVarMax+1./(double)(nBins-4)*(-sVarMin+sVarMax);
+	      fVarMin = fVarMin-3./(double)(nBins-4)*(-fVarMin+fVarMax);
+	      fVarMax = fVarMax+1./(double)(nBins-4)*(-fVarMin+fVarMax);
 
 	      thisHist = new TH2D("thisHist","",
 				  nBins,sVarMin,sVarMax,
@@ -426,6 +426,15 @@ void PlotMarkovChains2D (bool bayes = true,
 				   thisHist->GetNbinsY(),
 				   thisHist->GetYaxis()->GetXmin(),
 				   thisHist->GetYaxis()->GetXmax());
+
+	  string emptyHistName = "emptyHist_";
+	  emptyHistName = emptyHistName + variables[sVariable] + "_" + variables[fVariable];
+	  TH2D *emptyhist = new TH2D(emptyHistName.c_str(), emptyHistName.c_str(), thisHist->GetNbinsX(),
+				     thisHist->GetXaxis()->GetXmin(),
+				     thisHist->GetXaxis()->GetXmax(),
+				     thisHist->GetNbinsY(),
+				     thisHist->GetYaxis()->GetXmin(),
+				     thisHist->GetYaxis()->GetXmax());
 	  loghist->SetStats(kFALSE);
 	  loghist->GetXaxis()->CenterTitle(1);
 	  loghist->GetYaxis()->CenterTitle(1);
@@ -510,30 +519,40 @@ void PlotMarkovChains2D (bool bayes = true,
 
 	  if (!strcmp(variables[sVariable].c_str(), "A0")) {
 	     loghist->SetXTitle("A_{0} (GeV)");
+	     emptyhist->SetXTitle("A_{0} (GeV)");
 	  }
 	  else if (!strcmp(variables[sVariable].c_str(), "M0")) {
 	     loghist->SetXTitle("M_{0} (GeV)");
+	     emptyhist->SetXTitle("M_{0} (GeV)");
 	  }
 	  else if (!strcmp(variables[sVariable].c_str(), "TanBeta")) {
 	     loghist->SetXTitle("tan(#beta)");
+	     emptyhist->SetXTitle("tan(#beta)");
 	  }
 	  else if (!strcmp(variables[sVariable].c_str(), "M12")) {
 	     loghist->SetXTitle("M_{1/2} (GeV)");
+	     emptyhist->SetXTitle("M_{1/2} (GeV)");
 	  }
 	  if (!strcmp(variables[fVariable].c_str(), "A0")) {
 	     loghist->SetYTitle("A_{0} (GeV)");
+	     emptyhist->SetYTitle("A_{0} (GeV)");
 	  }
 	  else if (!strcmp(variables[fVariable].c_str(), "M0")) {
 	     loghist->SetYTitle("M_{0} (GeV)");
+	     emptyhist->SetYTitle("M_{0} (GeV)");
 	  }
 	  else if (!strcmp(variables[fVariable].c_str(), "TanBeta")) {
 	     loghist->SetYTitle("tan(#beta)");
+	     emptyhist->SetYTitle("tan(#beta)");
 	  }
 	  else if (!strcmp(variables[fVariable].c_str(), "M12")) {
 	     loghist->SetYTitle("M_{1/2} (GeV)");
+	     emptyhist->SetYTitle("M_{1/2} (GeV)");
 	  }
 	  loghist->GetXaxis()->SetTitleOffset(1.2);
 	  loghist->GetYaxis()->SetTitleOffset(1.1);
+	  emptyhist->GetXaxis()->SetTitleOffset(1.2);
+	  emptyhist->GetYaxis()->SetTitleOffset(1.1);
 	  //	  loghist->GetXaxis()->SetTitleSize(0.04);
 	  //	  loghist->GetYaxis()->SetTitleSize(0.04);
 	  // gStyle->SetPalette(1,0);
@@ -627,6 +646,8 @@ void PlotMarkovChains2D (bool bayes = true,
 	  canvas->SetLogz(0);
 	  thisHist->Delete();
 	  loghist->Delete();
+	  emptyhist->Write();
+	  emptyhist->Delete();
 	}
     }
 
