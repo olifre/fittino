@@ -561,25 +561,35 @@ void MakeMarkovChainContour2D (bool bayes = true,
 	  loghist->Draw("cont1");
 	  // draw a cross at the global minimum
 	  cout << "global minimum at " << fBestFit << " " << sBestFit << endl;
-	  TLine* line1 = new TLine(sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-				   fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-				   sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-				   fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
-	  TLine* line2 = new TLine(sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-				   fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-				   sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-				   fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
-	  line1->SetLineWidth(3);
-	  line2->SetLineWidth(3);
+//	  TLine* line1 = new TLine(sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+//				   fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+//				   sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+//				   fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
+//	  TLine* line2 = new TLine(sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+//				   fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+//				   sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+//				   fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
+	  const double xVec1[2] = {sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80., 
+				  sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.};
+	  const double yVec1[2] = {fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+				  fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.};
+	  TGraph* lineGraph1 = new TGraph(2,xVec1,yVec1);
+	  const double xVec2[2] = {sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80., 
+				  sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.};
+	  const double yVec2[2] = {fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+				  fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.};
+	  TGraph* lineGraph2 = new TGraph(2,xVec2,yVec2);	  
+	  lineGraph1->SetLineWidth(3);
+	  lineGraph2->SetLineWidth(3);
 	  string lineName = "";
 	  lineName = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_1";
-	  // line1->SetName(lineName.c_str());
+	  lineGraph1->SetName(lineName.c_str());
 	  lineName = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_2";
-	  // line2->SetName(lineName.c_str());
-	  line1->Write();
-	  line2->Write();
-	  line1->Draw();
-	  line2->Draw();
+	  lineGraph2->SetName(lineName.c_str());
+	  lineGraph1->Write();
+	  lineGraph2->Write();
+	  lineGraph1->Draw();
+	  lineGraph2->Draw();
 	  // draw a hatched contour line at min+1
 	  //double levels = 1.;
 	  //loghist->SetContour(1,&levels);
