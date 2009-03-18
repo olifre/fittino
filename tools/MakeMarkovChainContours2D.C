@@ -117,7 +117,9 @@ void MakeMarkovChainContour2D (bool bayes = true,
   for (Int_t i=0; i<nEntries; i++) {
     markovChain.GetEntry(i);	
     if (likelihood > absHighestL) {
-      absHighestL = likelihood;
+      if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {		
+	absHighestL = likelihood;
+      }
     }
   }
 
@@ -181,10 +183,16 @@ void MakeMarkovChainContour2D (bool bayes = true,
 		  if (varValues[sVariable]<sVarMin && val<6.01) {
 		    sVarMin = varValues[sVariable];
 		  }
-
+		  
+//		  cout << "minimal chi2 = " << - 2 * TMath::Log(absHighestL) 
+//		       << " this chi2 = " << - 2 * TMath::Log(likelihood)
+//		       << " val = " << val 
+//		       << endl;
 		  if (val<1.) {
+		    //		    cout << "found point within 1s at " << val << endl;
 		    if (val<valMin) {
 		      valMin = val;
+		      //		      cout << "found new minimum at " << val << endl;
 		      if (variables[sVariable]=="TanBeta") {
 			if (varValues[sVariable]>100.) continue;
 			if (varValues[sVariable]<0.)   continue;
@@ -201,6 +209,7 @@ void MakeMarkovChainContour2D (bool bayes = true,
 			if (varValues[sVariable]>10000.) continue;
 			if (varValues[sVariable]<-10000.)   continue;
 		      }
+		      // cout << "setting new minimum at " << varValues[sVariable] << " " << varValues[fVariable] << endl;
 		      sBestFit = varValues[sVariable];
 		      fBestFit = varValues[fVariable];
 		    }
