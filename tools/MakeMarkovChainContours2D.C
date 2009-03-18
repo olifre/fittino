@@ -356,15 +356,15 @@ void MakeMarkovChainContour2D (bool bayes = true,
 		if (sVarMax>100.) sVarMax=100.;
 		if (sVarMin<0.)   sVarMin=0.;
 	      }
-	      if (variables[fVariable]=="M0") {
+	      if (variables[sVariable]=="M0") {
 		if (sVarMax>10000.) sVarMax=10000.;	
 		if (sVarMin<0.    ) sVarMin=0.;     
 	      }
-	      if (variables[fVariable]=="M12") {
+	      if (variables[sVariable]=="M12") {
 		if (sVarMax>10000.) sVarMax=10000.;	
 		if (sVarMin<0.    ) sVarMin=0.;     
 	      }
-	      if (variables[fVariable]=="A0") {
+	      if (variables[sVariable]=="A0") {
 		if (sVarMax>10000. ) sVarMax=10000.;	
 		if (sVarMin<-10000.) sVarMin=-10000.;   
 	      }
