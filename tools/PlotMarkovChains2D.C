@@ -126,7 +126,7 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 		":" +
 		variables[sVariable] +
 		">>thisHist";
-	      markovChain.Draw(plotCommand.c_str(),"n>2000 && haveAcceptedAtLeastOne == 1");
+	      markovChain.Draw(plotCommand.c_str(),"n>2000 && haveAcceptedAtLeastOne == 1 && accpoint==1");
 	      //	      markovChain.Draw(plotCommand.c_str(),"n>2000");
 	      thisHist = (TH2D*)gDirectory->Get("thisHist");
 	    }
