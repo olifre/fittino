@@ -560,16 +560,24 @@ void MakeMarkovChainContour2D (bool bayes = true,
 	  canvas->Update();
 	  loghist->Draw("cont1");
 	  // draw a cross at the global minimum
-	  TLine* line1 = new TLine(minF-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-				   minS-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-				   minF+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-				   minS+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
-	  TLine* line2 = new TLine(minF-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-				   minS+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-				   minF+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-				   minS-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
+	  cout << "global minimum at " << fBestFit << " " << sBestFit << endl;
+	  TLine* line1 = new TLine(sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+				   fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+				   sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+				   fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
+	  TLine* line2 = new TLine(sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+				   fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+				   sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+				   fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
 	  line1->SetLineWidth(3);
 	  line2->SetLineWidth(3);
+	  string lineName = "";
+	  lineName = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_1";
+	  // line1->SetName(lineName.c_str());
+	  lineName = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_2";
+	  // line2->SetName(lineName.c_str());
+	  line1->Write();
+	  line2->Write();
 	  line1->Draw();
 	  line2->Draw();
 	  // draw a hatched contour line at min+1
@@ -598,7 +606,9 @@ void MakeMarkovChainContour2D (bool bayes = true,
 		sprintf(number,"%i",iGraph);
 		contourName = contourName + variables[sVariable] + "_" + variables[fVariable] + "_" + number + "_1D1s";
 		graph->SetName(contourName.c_str());
+		//		if (graph->GetN()>2) {
 		graph->Write();
+		//		}
 	      }
 	    }
 	    theContourNumber = contourLineNo2D2s;
@@ -619,7 +629,9 @@ void MakeMarkovChainContour2D (bool bayes = true,
 		sprintf(number,"%i",iGraph);
 		contourName = contourName + variables[sVariable] + "_" + variables[fVariable] + "_" + number + "_2D2s";
 		graph->SetName(contourName.c_str());
+		//		if (graph->GetN()>2) {
 		graph->Write();
+		//		}
 	      }
 	    } else {
 	      cout << "Error in contour counting" << endl;
