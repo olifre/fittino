@@ -115,9 +115,11 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 	}
       }
     }
+
+    cout << "abshighestL = " << absHighestL << endl;
+
   }
   
-
   for (int fVariable = 0; fVariable < variables.size(); fVariable++)
     {
       for (int sVariable = fVariable+1; sVariable < variables.size(); sVariable++)
@@ -131,7 +133,6 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 	  double f1sigmaLowerBound =  100000000.;
 	  double sBestFit = 0.;
 	  double fBestFit = 0.;
-	  double absHighestL = 0.;
 
 	  // Bayesian Interpretation
 	  if (bayes) 
