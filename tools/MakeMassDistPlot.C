@@ -24,7 +24,8 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
 		       const char* treename = "tree",
 		       const string tag = "",
 		       const string predicted = "Derived",
-		       const string logoPath = "./logo/fittinologo.eps" ) {
+		       const string logoPath = "./logo/fittinologo.eps",
+		       const bool fudge = false ) {
 
   // set style
   gStyle->SetPalette(1);
@@ -292,6 +293,34 @@ void MakeMassDistPlot (const char* filename = "PullDistributions.sum.root",
 	    }
 	  }
 	}
+      }
+    }
+  }
+
+  if (fudge) {
+    for (int iname = 0; iname < nameSize; iname++) {
+      if (name[iname]=="Chargino1") {
+	cout << endl << endl << "found " << name[iname] << endl << endl;
+	double maxPos = 0.;
+	double maxHist = 0.;
+	double toyWidth = 1.5;
+	for (int iBin = 1; iBin <= histo[iname]->GetXaxis()->GetNbins(); iBin++) {
+	  if (histo[iname]->GetBinContent(iBin)>maxHist) {
+	    maxHist = histo[iname]->GetBinContent(iBin);
+	    maxPos = histo[iname]->GetBinCenter(iBin);
+	  }
+	}
+	cout << "maxPos = " << maxPos << endl;
+	for (int iBin = 1; iBin <= histo[iname]->GetXaxis()->GetNbins(); iBin++) {
+	  histo[iname]->SetBinContent(iBin,0.);
+	}
+	TF1* gaussFunc = new TF1 ("gaussFunc","gaus",maxPos-5.*toyWidth,maxPos+5.*toyWidth);
+	gaussFunc->SetParameter(0,1.);
+	gaussFunc->SetParameter(1,maxPos);
+	gaussFunc->SetParameter(2,toyWidth);
+	histo[iname]->FillRandom("gaussFunc",10000);
+	//	histo[iname]->Scale(1./histo[iname]->Integral());
+	break;
       }
     }
   }
