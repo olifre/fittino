@@ -25,6 +25,31 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "TStyle.h"
+#include "TROOT.h"
+#include "TFile.h"
+#include "TDirectory.h"
+#include "TChain.h"
+#include "TCanvas.h"
+#include "TH1D.h"
+#include "TF1.h"
+#include "TImage.h"
+#include "TH2D.h"
+#include "TMatrixD.h"
+#include "TMatrixDEigen.h"
+#include "TGraph.h"
+#include "TList.h"
+#include "TLeafD.h"
+#include "TLine.h"
+#include "TMath.h"
+#include "TObjArray.h"
+#include "iostream"
+#include "fstream"
+#include "string"
+#include "vector"
+using namespace std;
+
+
 void CalculateCovarianceMatrix(const char* filename = "TreeSum.root", const char* treename = "tree")
 {
     TFile* file = new TFile(filename, "read");
@@ -118,9 +143,12 @@ void CalculateCovarianceMatrix(const char* filename = "TreeSum.root", const char
     }
 
     const TMatrixDEigen matrix(covMatrix);
-    TVectorD eigenValueVec = matrix.GetEigenValues();
+    TVectorD eigenValueVec = (TVectorD)matrix.GetEigenValues();
     for (Int_t v=0; v<eigenValueVec.GetNoElements(); v++) {
-        if (eigenValueVec(v) < 0) printf(stderr, "WARNING: Covariance matrix is not non-negative definite\n");
+      if (eigenValueVec(v) < 0) { 
+	cout << "WARNING: Covariance matrix is not non-negative definite" << endl;
+	return;
+      }
     }
 
     FILE* outFile = fopen("covarianceMatrix.txt", "w+");
