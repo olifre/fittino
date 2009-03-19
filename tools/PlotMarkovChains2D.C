@@ -105,6 +105,17 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
   }
 
   // control histograms
+  double absHighestL = 0.;
+  if (!bayes) {
+    for (Int_t i=0; i<nEntries; i++) {
+      markovChain.GetEntry(i);	
+      if (likelihood > absHighestL) {
+	if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {		
+	  absHighestL = likelihood;
+	}
+      }
+    }
+  }
   
 
   for (int fVariable = 0; fVariable < variables.size(); fVariable++)
@@ -141,9 +152,14 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 	      double fVarMin =  1000000000.;
 	      double sVarMax = -1000000000.;
 	      double sVarMin =  1000000000.;	      
+	      double valMin = 100000000.;
 	      for (int i = 0; i < nEntries; i++) {
 		markovChain.GetEntry(i);
 		if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {		
+		  
+		  double val = 2 * TMath::Log(absHighestL)
+		    - 2 * TMath::Log(likelihood);
+		  
 		  if (varValues[fVariable]>fVarMax) {
 		    fVarMax = varValues[fVariable];
 		  }
@@ -156,8 +172,133 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 		  if (varValues[sVariable]<sVarMin) {
 		    sVarMin = varValues[sVariable];
 		  }
+		  
+		  if (val<1.) {
+		    //		    cout << "found point within 1s at " << val << endl;
+		    if (val<valMin) {
+		      valMin = val;
+		      //		      cout << "found new minimum at " << val << endl;
+		      if (variables[sVariable]=="TanBeta") {
+			if (varValues[sVariable]>100.) continue;
+			if (varValues[sVariable]<0.)   continue;
+		      }
+		      if (variables[sVariable]=="M0") {
+			if (varValues[sVariable]>10000.) continue;
+			if (varValues[sVariable]<0.)   continue;
+		      }
+		      if (variables[sVariable]=="M12") {
+			if (varValues[sVariable]>10000.) continue;
+			if (varValues[sVariable]<0.)   continue;
+		      }
+		      if (variables[sVariable]=="A0") {
+			if (varValues[sVariable]>10000.) continue;
+			if (varValues[sVariable]<-10000.)   continue;
+		      }
+		      // cout << "setting new minimum at " << varValues[sVariable] << " " << varValues[fVariable] << endl;
+		      sBestFit = varValues[sVariable];
+		      fBestFit = varValues[fVariable];
+		    }
+		    if (varValues[sVariable]<s1sigmaLowerBound) {
+		      if (variables[sVariable]=="TanBeta") {
+			if (varValues[sVariable]>100.) continue;
+			if (varValues[sVariable]<0.)   continue;
+		      }
+		      if (variables[sVariable]=="M0") {
+			if (varValues[sVariable]>10000.) continue;
+			if (varValues[sVariable]<0.)   continue;
+		      }
+		      if (variables[sVariable]=="M12") {
+			if (varValues[sVariable]>10000.) continue;
+			if (varValues[sVariable]<0.)   continue;
+		      }
+		      if (variables[sVariable]=="A0") {
+			if (varValues[sVariable]>10000.) continue;
+			if (varValues[sVariable]<-10000.)   continue;
+		      }
+		      s1sigmaLowerBound = varValues[sVariable];
+		    }
+		    if (varValues[sVariable]>s1sigmaUpperBound) {
+		      if (variables[sVariable]=="TanBeta") {
+			if (varValues[sVariable]>100.) continue;
+			if (varValues[sVariable]<0.)   continue;
+		      }
+		      if (variables[sVariable]=="M0") {
+			if (varValues[sVariable]>10000.) continue;
+			if (varValues[sVariable]<0.)   continue;
+		      }
+		      if (variables[sVariable]=="M12") {
+			if (varValues[sVariable]>10000.) continue;
+			if (varValues[sVariable]<0.)   continue;
+		      }
+		      if (variables[sVariable]=="A0") {
+			if (varValues[sVariable]>10000.) continue;
+			if (varValues[sVariable]<-10000.)   continue;
+		      }
+		      s1sigmaUpperBound = varValues[sVariable];
+		    }
+		    if (varValues[fVariable]<f1sigmaLowerBound) {
+		      if (variables[fVariable]=="TanBeta") {
+			if (varValues[fVariable]>100.) continue;
+			if (varValues[fVariable]<0.)   continue;
+		      }
+		      if (variables[fVariable]=="M0") {
+			if (varValues[fVariable]>10000.) continue;
+			if (varValues[fVariable]<0.)   continue;
+		      }
+		      if (variables[fVariable]=="M12") {
+			if (varValues[fVariable]>10000.) continue;
+			if (varValues[fVariable]<0.)   continue;
+		      }
+		      if (variables[fVariable]=="A0") {
+			if (varValues[fVariable]>10000.) continue;
+			if (varValues[fVariable]<-10000.)   continue;
+		      }
+		      f1sigmaLowerBound = varValues[fVariable];
+		    }
+		    if (varValues[fVariable]>f1sigmaUpperBound) {
+		      if (variables[fVariable]=="TanBeta") {
+			if (varValues[fVariable]>100.) continue;
+			if (varValues[fVariable]<0.)   continue;
+		      }
+		      if (variables[fVariable]=="M0") {
+			if (varValues[fVariable]>10000.) continue;
+			if (varValues[fVariable]<0.)   continue;
+		      }
+		      if (variables[fVariable]=="M12") {
+			if (varValues[fVariable]>10000.) continue;
+			if (varValues[fVariable]<0.)   continue;
+		      }
+		      if (variables[fVariable]=="A0") {
+			if (varValues[fVariable]>10000.) continue;
+			if (varValues[fVariable]<-10000.)   continue;
+		      }
+		      f1sigmaUpperBound = varValues[fVariable];
+		    }
+		  }
 		}
 	      }
+
+	      cout << "One Dimensional 1 sigma environment of " << variables[fVariable] 
+		   << " = "
+		   << fBestFit
+		   << " - "
+		   << fBestFit - f1sigmaLowerBound
+		   << " + "
+		   << f1sigmaUpperBound - fBestFit
+		   << " at min chi2 = " 
+		   << - 2 * TMath::Log(absHighestL)
+		   << endl;
+	      cout << "One Dimensional 1 sigma environment of " << variables[sVariable] 
+		   << " = "
+		   << sBestFit
+		   << " - "
+		   << sBestFit - s1sigmaLowerBound
+		   << " + "
+		   << s1sigmaUpperBound - sBestFit
+		   << " at min chi2 = " 
+		   << - 2 * TMath::Log(absHighestL)
+		   << endl;
+
 	      if (variables[fVariable]=="TanBeta") {
 		if (fVarMax>100.) fVarMax=100.;
 		if (fVarMin<0.  ) fVarMin=0.;   
@@ -179,19 +320,19 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 		if (sVarMax>100.) sVarMax=100.;
 		if (sVarMin<0.)   sVarMin=0.;
 	      }
-	      if (variables[fVariable]=="M0") {
+	      if (variables[sVariable]=="M0") {
 		if (sVarMax>10000.) sVarMax=10000.;	
 		if (sVarMin<0.    ) sVarMin=0.;     
 	      }
-	      if (variables[fVariable]=="M12") {
+	      if (variables[sVariable]=="M12") {
 		if (sVarMax>10000.) sVarMax=10000.;	
 		if (sVarMin<0.    ) sVarMin=0.;     
 	      }
-	      if (variables[fVariable]=="A0") {
+	      if (variables[sVariable]=="A0") {
 		if (sVarMax>10000. ) sVarMax=10000.;	
 		if (sVarMin<-10000.) sVarMin=-10000.;   
 	      }
-	      
+	  
 	      cout << variables[fVariable] << " " << variables[sVariable] << " " 
 		   << fVarMax << " " << fVarMin << " " << sVarMax << " " << sVarMin << endl;
 	      // loop over bins in the variables
@@ -398,8 +539,8 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 		if (val > maxval) maxval = val;
 		if (val < minVal) {
 		  minVal = val;
-		  minF = ((double)ix-0.5)/(double)thisHist->GetNbinsX()*(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())+thisHist->GetXaxis()->GetXmin();
-		  minS = ((double)iy-0.5)/(double)thisHist->GetNbinsY()*(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())+thisHist->GetYaxis()->GetXmin();
+		  minF = ((double)ix)/(double)thisHist->GetNbinsX()*(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())+thisHist->GetXaxis()->GetXmin();
+		  minS = ((double)iy)/(double)thisHist->GetNbinsY()*(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())+thisHist->GetYaxis()->GetXmin();
 		}
 		loghist->SetBinContent(ix, iy, val);
 	      }
@@ -468,15 +609,27 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 	  loghist->Draw("CONTLIST");
 	  canvas->Update();
 	  loghist->Draw("cont1z");
+	  if (bayes) {
+	    sBestFit = minF;
+	    fBestFit = minS;
+	  }
 	  // draw a cross at the global minimum
-	  TLine* line1 = new TLine(minF-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-				   minS-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-				   minF+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-				   minS+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
-	  TLine* line2 = new TLine(minF-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-				   minS+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-				   minF+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-				   minS-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
+	  TLine* line1 = new TLine(sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+				   fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+				   sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+				   fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
+	  TLine* line2 = new TLine(sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+				   fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+				   sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+				   fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
+//	  TLine* line1 = new TLine(minF-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+//				   minS-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+//				   minF+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+//				   minS+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
+//	  TLine* line2 = new TLine(minF-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+//				   minS+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+//				   minF+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+//				   minS-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
 	  line1->SetLineWidth(3);
 	  line2->SetLineWidth(3);
 	  line1->Draw();
