@@ -5,6 +5,8 @@
 // frequentist interpretation will follow soon. 
 
 #include "TStyle.h"
+#include "TROOT.h"
+#include "TMath.h"
 #include "TDirectory.h"
 #include "TChain.h"
 #include "TCanvas.h"
@@ -15,6 +17,7 @@
 #include "TLine.h"
 #include "TObjArray.h"
 #include "iostream"
+#include "fstream"
 #include "string"
 #include "vector"
 using namespace std;
