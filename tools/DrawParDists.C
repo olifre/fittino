@@ -26,6 +26,27 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "TStyle.h"
+#include "TROOT.h"
+#include "TFile.h"
+#include "TDirectory.h"
+#include "TChain.h"
+#include "TCanvas.h"
+#include "TH1D.h"
+#include "TF1.h"
+#include "TImage.h"
+#include "TH2D.h"
+#include "TGraph.h"
+#include "TList.h"
+#include "TLeafD.h"
+#include "TLine.h"
+#include "TMath.h"
+#include "TObjArray.h"
+#include "iostream"
+#include "fstream"
+#include "string"
+#include "vector"
+using namespace std;
 
 Double_t chi2Function(Double_t *x, Double_t *par)
 {
@@ -96,8 +117,8 @@ void DrawParDists(const Int_t  nbins = 50, const char* filename = "PullDistribut
     Double_t* par   = new Double_t[nLeaves];
     Double_t* sum   = new Double_t[nLeaves];
     Double_t* sum2  = new Double_t[nLeaves];
-    TH1F**    histo = new TH1F[nLeaves];
-    TF1**     gauss = new TF1[nLeaves];
+    TH1F*    histo[nLeaves];
+    TF1*     gauss[nLeaves];
     TF1*      chi2  = 0;
 
     // open text file
@@ -216,7 +237,7 @@ void DrawParDists(const Int_t  nbins = 50, const char* filename = "PullDistribut
 	}
 
 	for (Int_t iLeaf=0; iLeaf<nLeaves; iLeaf++) {
-            TLeafD* leaf = (TLeafD*)tree->GetListOfLeaves()->At(iLeaf);
+	  //            TLeafD* leaf = (TLeafD*)tree->GetListOfLeaves()->At(iLeaf);
 
 	    if (chi2cut < 0 || ( !(chi2cut < 0) && chi2val < chi2cut ) ) {
 	        histo[iLeaf]->Fill(par[iLeaf]);
