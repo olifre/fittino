@@ -6,6 +6,7 @@
 
 #include "TStyle.h"
 #include "TROOT.h"
+#include "TLegend.h"
 #include "TFile.h"
 #include "TMath.h"
 #include "TDirectory.h"
@@ -17,20 +18,28 @@
 #include "TList.h"
 #include "TLine.h"
 #include "TObjArray.h"
+#include "TImage.h"
 #include "iostream"
 #include "fstream"
 #include "string"
 #include "vector"
 using namespace std;
 
-void Plot2SigmaMarkovContours (string model = "mSUGRA",
-			       int    drawCross = 0,
-			       string file1="file1",
-			       string file2="file2",
-			       string file3="file3",
-			       string file4="file4",
-			       string file5="file5",
-			       string file6="file6" ) 
+void Plot2SigmaMarkovContours (const string model = "mSUGRA",
+			       const int    drawCross = 0,
+			       const string file1="file1",
+			       const string fileTag1="Tag1",
+			       const string file2="file2",
+			       const string fileTag2="Tag2",
+			       const string file3="file3",
+			       const string fileTag3="Tag3",
+			       const string file4="file4",
+			       const string fileTag4="Tag4",
+			       const string file5="file5",
+			       const string fileTag5="Tag5",
+			       const string file6="file6",
+			       const string fileTag6="Tag6",
+			       const string logoPath = "" ) 
 {
   
   // setups
@@ -46,17 +55,46 @@ void Plot2SigmaMarkovContours (string model = "mSUGRA",
   canvas->SetLeftMargin(0.10);
   canvas->SetRightMargin(0.05);
   
+  // get the fittino logo
+  TImage *fittinoLogo = TImage::Open(logoPath.c_str());
+  if (!(logoPath=="")) {
+    if (!fittinoLogo) {
+      printf("Could not open the fittino logo at %s\n exit\n",logoPath.c_str());
+      return;
+    }
+    fittinoLogo->SetConstRatio(1);
+    fittinoLogo->SetImageQuality(TAttImage::kImgBest);
+  }
 
   // sort files
   vector<string> fileNames;
+  vector<string> fileNameTags;
   for (int i = 0; i < 6; i++) {
     string thisFile;
-    if (i==0 && file1!="file1") fileNames.push_back(file1);
-    if (i==1 && file2!="file2") fileNames.push_back(file2);
-    if (i==2 && file3!="file3") fileNames.push_back(file3);
-    if (i==3 && file4!="file4") fileNames.push_back(file4);
-    if (i==4 && file5!="file5") fileNames.push_back(file5);
-    if (i==5 && file6!="file6") fileNames.push_back(file6);
+    if (i==0 && file1!="file1") {
+      fileNames.push_back(file1);
+      fileNameTags.push_back(fileTag1);
+    }
+    if (i==1 && file2!="file2") { 
+      fileNames.push_back(file2);
+      fileNameTags.push_back(fileTag2);
+    }
+    if (i==2 && file3!="file3") { 
+      fileNames.push_back(file3);
+      fileNameTags.push_back(fileTag3);
+    }
+    if (i==3 && file4!="file4") { 
+      fileNames.push_back(file4);
+      fileNameTags.push_back(fileTag4);
+    }
+    if (i==4 && file5!="file5") { 
+      fileNames.push_back(file5);
+      fileNameTags.push_back(fileTag5);
+    }
+    if (i==5 && file6!="file6") { 
+      fileNames.push_back(file6);
+      fileNameTags.push_back(fileTag6);
+    }
   }
   const int nFiles = fileNames.size();
 
@@ -85,13 +123,13 @@ void Plot2SigmaMarkovContours (string model = "mSUGRA",
   vector<string> variableNames;
   if (model == "mSUGRA") {
     variables.push_back("TanBeta");
-    variables.push_back("A0");
     variables.push_back("M0");
     variables.push_back("M12");
+    variables.push_back("A0");
     variableNames.push_back("tan#beta");
-    variableNames.push_back("A_{0} (GeV)");
     variableNames.push_back("M_{0} (GeV)");
     variableNames.push_back("M_{12} (GeV)");
+    variableNames.push_back("A_{0} (GeV)");
   } else if (model == "GMSB") {
     cout << "model GMSB not yet implemented, please feel free to do so" << endl;
     return;
@@ -122,6 +160,11 @@ void Plot2SigmaMarkovContours (string model = "mSUGRA",
       //      hist->GetXaxis()->SetTitle(variableNames[iVariable1]);
       hist->Draw();
 
+      // Create a legend
+      //      TLegend *legend = new TLegend(0.60,0.95,0.7,0.95,"");
+      TLegend *legend = new TLegend(0.62,0.84,0.96,0.99,"");
+      legend->SetTextSize(0.03);
+
       // loop over the existing files and draw the contours
       for (int iFile = 0; iFile < nFiles; iFile++) {
 	// draw the contours
@@ -134,7 +177,6 @@ void Plot2SigmaMarkovContours (string model = "mSUGRA",
 	    + variables[iVariable1] + "_" 
 	    + contourNumber + "_1D1s";
 	  cout << "drawing contour " << contourName << endl;
-	  iContour++;
 	  TGraph* contour = (TGraph*)files[iFile]->Get(contourName.c_str());
 	  if (!contour) {
 	    break;
@@ -143,6 +185,11 @@ void Plot2SigmaMarkovContours (string model = "mSUGRA",
 	  contour->SetLineStyle(styles[iFile]);
 	  contour->SetLineColor(colors1[iFile]);
 	  contour->Draw("same");
+	  if (iContour == 0) {
+	    string legendEntry = "1D 68% CL " + fileNameTags[iFile];
+	    legend->AddEntry(contour, legendEntry.c_str(), "l");
+	  }
+	  iContour++;
 	}
 	iContour = 0;
 	while (1) {
@@ -153,7 +200,6 @@ void Plot2SigmaMarkovContours (string model = "mSUGRA",
 	    + variables[iVariable1] + "_" 
 	    + contourNumber + "_2D2s";
 	  cout << "drawing contour " << contourName << endl;
-	  iContour++;
 	  TGraph* contour = (TGraph*)files[iFile]->Get(contourName.c_str());
 	  if (!contour) {
 	    break;
@@ -162,6 +208,11 @@ void Plot2SigmaMarkovContours (string model = "mSUGRA",
 	  contour->SetLineStyle(styles[iFile]);
 	  contour->SetLineColor(colors2[iFile]);
 	  contour->Draw("same");
+	  if (iContour == 0) {
+	    string legendEntry = "2D 95% CL " + fileNameTags[iFile];
+	    legend->AddEntry(contour, legendEntry.c_str(), "l");
+	  }
+	  iContour++;
 	}
 	// eventually draw the cross
 	if (iFile == drawCross) {
@@ -180,11 +231,43 @@ void Plot2SigmaMarkovContours (string model = "mSUGRA",
 	}
       }
       
+      // add the fittino logo
+      if (!(logoPath=="")) {
+	const float canvasHeight   = canvas->GetWindowHeight();
+	const float canvasWidth    = canvas->GetWindowWidth();
+	const float canvasAspectRatio = canvasHeight/canvasWidth;
+	const float width          = 0.19;
+	const float xLowerEdge     = 0.02;
+	const float yLowerEdge     = 0.853;
+	const float xUpperEdge     = xLowerEdge+width;
+	const float yUpperEdge     = yLowerEdge+width*fittinoLogo->GetHeight()/fittinoLogo->GetWidth()/canvasAspectRatio;
+	cout << " xLowerEdge  = " << xLowerEdge << "\n"
+	     << " yLowerEdge  = " << yLowerEdge << "\n"
+	     << " xUpperEdge  = " << xUpperEdge << "\n"
+	     << " yUpperEdge  = " << yUpperEdge << "\n"
+	     << " Imagewidth  = " << fittinoLogo->GetWidth() << "\n"
+	     << " Imageheight = " << fittinoLogo->GetHeight() << "\n"
+	     << " canvasHeight= " << canvasHeight << "\n"
+	     << " canvasWidth = " << canvasWidth  << "\n"
+	     << endl;
+	//  TPad *fittinoLogoPad = new TPad("fittinoLogoPad", "fittinoLogoPad", 0.85, 0.85, 0.98, 0.85+d*fittinoLogo->GetHeight()/fittinoLogo->GetWidth());
+	TPad *fittinoLogoPad = new TPad("fittinoLogoPad", "fittinoLogoPad", xLowerEdge, yLowerEdge, xUpperEdge, yUpperEdge);
+	fittinoLogoPad->Draw("same");
+	fittinoLogoPad->cd();
+	fittinoLogo->Draw("xxx");
+	canvas->cd();
+      }
+
+      // Draw the legend
+      legend->Draw("same");      
+
       // write output histogram
       string outputName = "markovChain2D2sContours_" 
 	+ variables[iVariable2] + "_" 
 	+ variables[iVariable1] + ".eps";
       canvas->Print(outputName.c_str());
+
+      canvas->Clear();
       
     }
   }
