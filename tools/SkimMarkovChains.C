@@ -37,6 +37,8 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
   std::cout << "number of leaves " << nLeaves << std::endl;
 
   float* par   = new float[nLeaves];
+  //float* par   = new float[10000];
+  //float par[10000];
   TLeafD* leaf[nLeaves];
   int iChi2 = -1;
   int iLikelihood = -1;
@@ -55,28 +57,28 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
     if (!strcmp(leaf[iLeaf]->GetName(), "chi2")) {
       iChi2 = iLeaf;
     }
-    if (!strcmp(leaf[iLeaf]->GetName(), "likelihood")) {
+    else if (!strcmp(leaf[iLeaf]->GetName(), "likelihood")) {
       iLikelihood = iLeaf;
     }
-    if (!strcmp(leaf[iLeaf]->GetName(), "TanBeta")) {
+    else if (!strcmp(leaf[iLeaf]->GetName(), "P_TanBeta")) {
       iTanBeta = iLeaf;
     }
-    if (!strcmp(leaf[iLeaf]->GetName(), "M0")) {
+    else if (!strcmp(leaf[iLeaf]->GetName(), "P_M0")) {
       iM0 = iLeaf;
     }
-    if (!strcmp(leaf[iLeaf]->GetName(), "M12")) {
+    else if (!strcmp(leaf[iLeaf]->GetName(), "P_M12")) {
       iM12 = iLeaf;
     }
-    if (!strcmp(leaf[iLeaf]->GetName(), "A0")) {
+    else if (!strcmp(leaf[iLeaf]->GetName(), "P_A0")) {
       iA0 = iLeaf;
     }
-    if (!strcmp(leaf[iLeaf]->GetName(), "Lambda")) {
+    else if (!strcmp(leaf[iLeaf]->GetName(), "P_Lambda")) {
       iLambda = iLeaf;
     }
-    if (!strcmp(leaf[iLeaf]->GetName(), "Mmess")) {
+    else if (!strcmp(leaf[iLeaf]->GetName(), "P_Mmess")) {
       iMmess = iLeaf;
     }
-    if (!strcmp(leaf[iLeaf]->GetName(), "Cgrav")) {
+    else if (!strcmp(leaf[iLeaf]->GetName(), "P_Cgrav")) {
       iCgrav = iLeaf;
     }
     
@@ -103,19 +105,20 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
      str.erase();
   }
 
-  cout << "looping over events to find minimal chi2" << endl;
+  cout << "looping over events to find minimal chi2 at iChi2 = " << iChi2 << " iLikelihood = " << iLikelihood << endl;
 
   // find minimal chi2
   float minChi2 = 10000000.;
   for (Int_t i=0; i<nEntries; i++) {
     markovChain.GetEntry(i);	
-    double chi2 =  par[iChi2];
+    float chi2 =  par[iChi2];
+    // cout << "chi2 = " << chi2 << " " << par[iChi2] <<  " " << par[0] << endl; 
     if (chi2<minChi2) {
       minChi2 = chi2;
     }
   }
   
-  cout << "minimal chi2 found at " << minChi2 << endl;
+  cout << "minimal chi2 found at " << minChi2 << " for iChi2 = " << iChi2 << endl;
 
   // fill events
   int nNewEvents = 0;
