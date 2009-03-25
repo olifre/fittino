@@ -68,10 +68,10 @@ void MakeMarkovChainContour2D (bool bayes = true,
   // variables.push_back("Y");
 
   // mSUGRA
-  variables.push_back("TanBeta");
-  variables.push_back("M0");
-  variables.push_back("M12"); 
-  variables.push_back("A0");
+  variables.push_back("P_TanBeta");
+  variables.push_back("P_M0");
+  variables.push_back("P_M12"); 
+  variables.push_back("P_A0");
 
   // MSSM
 //  variables.push_back("MSelectronL");
@@ -193,19 +193,19 @@ void MakeMarkovChainContour2D (bool bayes = true,
 		    if (val<valMin) {
 		      valMin = val;
 		      //		      cout << "found new minimum at " << val << endl;
-		      if (variables[sVariable]=="TanBeta") {
+		      if (variables[sVariable]=="P_TanBeta") {
 			if (varValues[sVariable]>100.) continue;
 			if (varValues[sVariable]<0.)   continue;
 		      }
-		      if (variables[sVariable]=="M0") {
+		      if (variables[sVariable]=="P_M0") {
 			if (varValues[sVariable]>10000.) continue;
 			if (varValues[sVariable]<0.)   continue;
 		      }
-		      if (variables[sVariable]=="M12") {
+		      if (variables[sVariable]=="P_M12") {
 			if (varValues[sVariable]>10000.) continue;
 			if (varValues[sVariable]<0.)   continue;
 		      }
-		      if (variables[sVariable]=="A0") {
+		      if (variables[sVariable]=="P_A0") {
 			if (varValues[sVariable]>10000.) continue;
 			if (varValues[sVariable]<-10000.)   continue;
 		      }
@@ -214,76 +214,76 @@ void MakeMarkovChainContour2D (bool bayes = true,
 		      fBestFit = varValues[fVariable];
 		    }
 		    if (varValues[sVariable]<s1sigmaLowerBound) {
-		      if (variables[sVariable]=="TanBeta") {
+		      if (variables[sVariable]=="P_TanBeta") {
 			if (varValues[sVariable]>100.) continue;
 			if (varValues[sVariable]<0.)   continue;
 		      }
-		      if (variables[sVariable]=="M0") {
+		      if (variables[sVariable]=="P_M0") {
 			if (varValues[sVariable]>10000.) continue;
 			if (varValues[sVariable]<0.)   continue;
 		      }
-		      if (variables[sVariable]=="M12") {
+		      if (variables[sVariable]=="P_M12") {
 			if (varValues[sVariable]>10000.) continue;
 			if (varValues[sVariable]<0.)   continue;
 		      }
-		      if (variables[sVariable]=="A0") {
+		      if (variables[sVariable]=="P_A0") {
 			if (varValues[sVariable]>10000.) continue;
 			if (varValues[sVariable]<-10000.)   continue;
 		      }
 		      s1sigmaLowerBound = varValues[sVariable];
 		    }
 		    if (varValues[sVariable]>s1sigmaUpperBound) {
-		      if (variables[sVariable]=="TanBeta") {
+		      if (variables[sVariable]=="P_TanBeta") {
 			if (varValues[sVariable]>100.) continue;
 			if (varValues[sVariable]<0.)   continue;
 		      }
-		      if (variables[sVariable]=="M0") {
+		      if (variables[sVariable]=="P_M0") {
 			if (varValues[sVariable]>10000.) continue;
 			if (varValues[sVariable]<0.)   continue;
 		      }
-		      if (variables[sVariable]=="M12") {
+		      if (variables[sVariable]=="P_M12") {
 			if (varValues[sVariable]>10000.) continue;
 			if (varValues[sVariable]<0.)   continue;
 		      }
-		      if (variables[sVariable]=="A0") {
+		      if (variables[sVariable]=="P_A0") {
 			if (varValues[sVariable]>10000.) continue;
 			if (varValues[sVariable]<-10000.)   continue;
 		      }
 		      s1sigmaUpperBound = varValues[sVariable];
 		    }
 		    if (varValues[fVariable]<f1sigmaLowerBound) {
-		      if (variables[fVariable]=="TanBeta") {
+		      if (variables[fVariable]=="P_TanBeta") {
 			if (varValues[fVariable]>100.) continue;
 			if (varValues[fVariable]<0.)   continue;
 		      }
-		      if (variables[fVariable]=="M0") {
+		      if (variables[fVariable]=="P_M0") {
 			if (varValues[fVariable]>10000.) continue;
 			if (varValues[fVariable]<0.)   continue;
 		      }
-		      if (variables[fVariable]=="M12") {
+		      if (variables[fVariable]=="P_M12") {
 			if (varValues[fVariable]>10000.) continue;
 			if (varValues[fVariable]<0.)   continue;
 		      }
-		      if (variables[fVariable]=="A0") {
+		      if (variables[fVariable]=="P_A0") {
 			if (varValues[fVariable]>10000.) continue;
 			if (varValues[fVariable]<-10000.)   continue;
 		      }
 		      f1sigmaLowerBound = varValues[fVariable];
 		    }
 		    if (varValues[fVariable]>f1sigmaUpperBound) {
-		      if (variables[fVariable]=="TanBeta") {
+		      if (variables[fVariable]=="P_TanBeta") {
 			if (varValues[fVariable]>100.) continue;
 			if (varValues[fVariable]<0.)   continue;
 		      }
-		      if (variables[fVariable]=="M0") {
+		      if (variables[fVariable]=="P_M0") {
 			if (varValues[fVariable]>10000.) continue;
 			if (varValues[fVariable]<0.)   continue;
 		      }
-		      if (variables[fVariable]=="M12") {
+		      if (variables[fVariable]=="P_M12") {
 			if (varValues[fVariable]>10000.) continue;
 			if (varValues[fVariable]<0.)   continue;
 		      }
-		      if (variables[fVariable]=="A0") {
+		      if (variables[fVariable]=="P_A0") {
 			if (varValues[fVariable]>10000.) continue;
 			if (varValues[fVariable]<-10000.)   continue;
 		      }
@@ -335,36 +335,36 @@ void MakeMarkovChainContour2D (bool bayes = true,
 			     << endl;
 	      
 	  
-	      if (variables[fVariable]=="TanBeta") {
+	      if (variables[fVariable]=="P_TanBeta") {
 		if (fVarMax>100.) fVarMax=100.;
 		if (fVarMin<0.  ) fVarMin=0.;   
 	      }
-	      if (variables[fVariable]=="M0") {
+	      if (variables[fVariable]=="P_M0") {
 		if (fVarMax>10000.) fVarMax=10000.;	
 		if (fVarMin<0.    ) fVarMin=0.;     
 	      }
-	      if (variables[fVariable]=="M12") {
+	      if (variables[fVariable]=="P_M12") {
 		if (fVarMax>10000.) fVarMax=10000.;	
 		if (fVarMin<0.    ) fVarMin=0.;     
 	      }
-	      if (variables[fVariable]=="A0") {
+	      if (variables[fVariable]=="P_A0") {
 		if (fVarMax>10000. ) fVarMax=10000.;	
 		if (fVarMin<-10000.) fVarMin=-10000.;   
 	      }
 
-	      if (variables[sVariable]=="TanBeta") {
+	      if (variables[sVariable]=="P_TanBeta") {
 		if (sVarMax>100.) sVarMax=100.;
 		if (sVarMin<0.)   sVarMin=0.;
 	      }
-	      if (variables[sVariable]=="M0") {
+	      if (variables[sVariable]=="P_M0") {
 		if (sVarMax>10000.) sVarMax=10000.;	
 		if (sVarMin<0.    ) sVarMin=0.;     
 	      }
-	      if (variables[sVariable]=="M12") {
+	      if (variables[sVariable]=="P_M12") {
 		if (sVarMax>10000.) sVarMax=10000.;	
 		if (sVarMin<0.    ) sVarMin=0.;     
 	      }
-	      if (variables[sVariable]=="A0") {
+	      if (variables[sVariable]=="P_A0") {
 		if (sVarMax>10000. ) sVarMax=10000.;	
 		if (sVarMin<-10000.) sVarMin=-10000.;   
 	      }
@@ -526,35 +526,35 @@ void MakeMarkovChainContour2D (bool bayes = true,
 	  // draw the plot
 	  loghist->SetTitle("");
 
-	  if (!strcmp(variables[sVariable].c_str(), "A0")) {
+	  if (!strcmp(variables[sVariable].c_str(), "P_A0")) {
 	     loghist->SetXTitle("A_{0} (GeV)");
 	     emptyhist->SetXTitle("A_{0} (GeV)");
 	  }
-	  else if (!strcmp(variables[sVariable].c_str(), "M0")) {
+	  else if (!strcmp(variables[sVariable].c_str(), "P_M0")) {
 	     loghist->SetXTitle("M_{0} (GeV)");
 	     emptyhist->SetXTitle("M_{0} (GeV)");
 	  }
-	  else if (!strcmp(variables[sVariable].c_str(), "TanBeta")) {
+	  else if (!strcmp(variables[sVariable].c_str(), "P_TanBeta")) {
 	     loghist->SetXTitle("tan(#beta)");
 	     emptyhist->SetXTitle("tan(#beta)");
 	  }
-	  else if (!strcmp(variables[sVariable].c_str(), "M12")) {
+	  else if (!strcmp(variables[sVariable].c_str(), "P_M12")) {
 	     loghist->SetXTitle("M_{1/2} (GeV)");
 	     emptyhist->SetXTitle("M_{1/2} (GeV)");
 	  }
-	  if (!strcmp(variables[fVariable].c_str(), "A0")) {
+	  if (!strcmp(variables[fVariable].c_str(), "P_A0")) {
 	     loghist->SetYTitle("A_{0} (GeV)");
 	     emptyhist->SetYTitle("A_{0} (GeV)");
 	  }
-	  else if (!strcmp(variables[fVariable].c_str(), "M0")) {
+	  else if (!strcmp(variables[fVariable].c_str(), "P_M0")) {
 	     loghist->SetYTitle("M_{0} (GeV)");
 	     emptyhist->SetYTitle("M_{0} (GeV)");
 	  }
-	  else if (!strcmp(variables[fVariable].c_str(), "TanBeta")) {
+	  else if (!strcmp(variables[fVariable].c_str(), "P_TanBeta")) {
 	     loghist->SetYTitle("tan(#beta)");
 	     emptyhist->SetYTitle("tan(#beta)");
 	  }
-	  else if (!strcmp(variables[fVariable].c_str(), "M12")) {
+	  else if (!strcmp(variables[fVariable].c_str(), "P_M12")) {
 	     loghist->SetYTitle("M_{1/2} (GeV)");
 	     emptyhist->SetYTitle("M_{1/2} (GeV)");
 	  }
