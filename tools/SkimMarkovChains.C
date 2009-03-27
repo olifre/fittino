@@ -111,6 +111,9 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
   float minChi2 = 10000000.;
   for (Int_t i=0; i<nEntries; i++) {
     markovChain.GetEntry(i);	
+    if (chi2<0.) {
+      continue;
+    }   
     float chi2 =  par[iChi2];
     // cout << "chi2 = " << chi2 << " " << par[iChi2] <<  " " << par[0] << endl; 
     if (chi2<minChi2) {
