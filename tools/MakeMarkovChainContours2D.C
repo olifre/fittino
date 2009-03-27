@@ -27,7 +27,8 @@ using namespace std;
 
 void MakeMarkovChainContour2D (bool bayes = true, 
 			       int maxevents = -1,
-			       string contourOutputFileName = "markovContours.root" ) 
+			       string contourOutputFileName = "markovContours.root",
+			       bool doAlsoSM = false ) 
 {
   //gROOT->SetStyle("MyStyle");
   //gROOT->ForceStyle();
@@ -93,6 +94,15 @@ void MakeMarkovChainContour2D (bool bayes = true,
 //  variables.push_back("M3");
 //  variables.push_back("massA0");
 
+  // SM
+  if (doAlsoSM) {
+    variables.push_back("P_alphas");
+    variables.push_back("P_alphaem");
+    variables.push_back("P_massZ"); 
+    variables.push_back("P_massTop");
+    variables.push_back("P_G_F");    
+  }
+
   // create and initialize variables
   vector<float> varValues;
   for (unsigned int i = 0; i < variables.size(); i++) {
@@ -101,6 +111,7 @@ void MakeMarkovChainContour2D (bool bayes = true,
   float haveAcceptedAtLeastOne;
   float nStep;
   float likelihood;
+  float chi2;
 
   // attach variables to ntuple
   if (!bayes) {
@@ -110,12 +121,14 @@ void MakeMarkovChainContour2D (bool bayes = true,
     markovChain.SetBranchAddress("haveAcceptedAtLeastOne",&haveAcceptedAtLeastOne);
     markovChain.SetBranchAddress("n",&nStep);
     markovChain.SetBranchAddress("likelihood",&likelihood);
+    markovChain.SetBranchAddress("chi2",&chi2);
   }
 
 
   double absHighestL = 0.;
   for (Int_t i=0; i<nEntries; i++) {
-    markovChain.GetEntry(i);	
+    markovChain.GetEntry(i);
+    if (chi2<0.) continue;
     if (likelihood > absHighestL) {
       if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {		
 	absHighestL = likelihood;
@@ -166,6 +179,7 @@ void MakeMarkovChainContour2D (bool bayes = true,
 	      double valMin = 100000000.;
 	      for (int i = 0; i < nEntries; i++) {
 		markovChain.GetEntry(i);
+		if (chi2<0.) continue;
 		if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {		
 
 		  double val = 2 * TMath::Log(absHighestL)
@@ -392,6 +406,7 @@ void MakeMarkovChainContour2D (bool bayes = true,
 		  bool foundAPoint = false;
 		  for (int i = 0; i < nEntries; i++) {
 		    markovChain.GetEntry(i);
+		    if (chi2<0.) continue;
 		    // find the highest likelihood
 		    if (fVarValueLow<varValues[fVariable] && varValues[fVariable]<=fVarValueHig &&
 			sVarValueLow<varValues[sVariable] && varValues[sVariable]<=sVarValueHig &&
@@ -542,6 +557,26 @@ void MakeMarkovChainContour2D (bool bayes = true,
 	     loghist->SetXTitle("M_{1/2} (GeV)");
 	     emptyhist->SetXTitle("M_{1/2} (GeV)");
 	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_alphas")) {
+	     loghist->SetXTitle("#alpha_{s}");
+	     emptyhist->SetXTitle("#alpha_{s}");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_alphaem")) {
+	     loghist->SetXTitle("#alpha_{em}");
+	     emptyhist->SetXTitle("#alpha_{em}");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_massZ")) {
+	     loghist->SetXTitle("m_{Z} (Gev)");
+	     emptyhist->SetXTitle("m_{Z} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_massTop")) {
+	     loghist->SetXTitle("m_{t} (GeV)");
+	     emptyhist->SetXTitle("m_{t} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_G_F")) {
+	     loghist->SetXTitle("G_F (Gev^{-2})");
+	     emptyhist->SetXTitle("G_F (GeV^{-2})");
+	  }
 	  if (!strcmp(variables[fVariable].c_str(), "P_A0")) {
 	     loghist->SetYTitle("A_{0} (GeV)");
 	     emptyhist->SetYTitle("A_{0} (GeV)");
@@ -557,6 +592,26 @@ void MakeMarkovChainContour2D (bool bayes = true,
 	  else if (!strcmp(variables[fVariable].c_str(), "P_M12")) {
 	     loghist->SetYTitle("M_{1/2} (GeV)");
 	     emptyhist->SetYTitle("M_{1/2} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_alphas")) {
+	     loghist->SetYTitle("#alpha_{s}");
+	     emptyhist->SetYTitle("#alpha_{s}");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_alphaem")) {
+	     loghist->SetYTitle("#alpha_{em}");
+	     emptyhist->SetYTitle("#alpha_{em}");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_massZ")) {
+	     loghist->SetYTitle("m_{Z} (Gev)");
+	     emptyhist->SetYTitle("m_{Z} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_massTop")) {
+	     loghist->SetYTitle("m_{t} (GeV)");
+	     emptyhist->SetYTitle("m_{t} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_G_F")) {
+	     loghist->SetYTitle("G_F (Gev^{-2})");
+	     emptyhist->SetYTitle("G_F (GeV^{-2})");
 	  }
 	  loghist->GetXaxis()->SetTitleOffset(1.2);
 	  loghist->GetYaxis()->SetTitleOffset(1.1);

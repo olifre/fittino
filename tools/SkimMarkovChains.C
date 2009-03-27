@@ -129,6 +129,9 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
     if (chi2>maxDeltaChi2+minChi2) {
       continue;
     }
+    if (chi2<0.) {
+      continue;
+    }   
     if (iTanBeta>=0) {
       if (par[iTanBeta]>100. || par[iTanBeta]<0.) {
 	continue;
