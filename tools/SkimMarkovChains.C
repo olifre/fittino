@@ -18,9 +18,13 @@
 #include "vector"
 using namespace std;
 
+// typical chi2 minima without the points with the bug:
+// markov.le_obs.only.4paras: 20.587
+
 void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.root", 
 			double maxDeltaChi2 = 6.2, 
-			int maxevents = -1 ) {
+			int maxevents = -1,
+			double absMinChi2 = 0. ) {
 
   TChain markovChain("markovChain");
   markovChain.Add("MarkovChainNtupFile*.root");
@@ -116,11 +120,11 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
       continue;
     }   
     // cout << "chi2 = " << chi2 << " " << par[iChi2] <<  " " << par[0] << endl; 
-    if (chi2<minChi2) {
+    if (chi2<minChi2 && chi2>=absMinChi2) {
       minChi2 = chi2;
     }
   }
-  
+
   cout << "minimal chi2 found at " << minChi2 << " for iChi2 = " << iChi2 << endl;
 
   // fill events
@@ -132,7 +136,7 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
     if (chi2>maxDeltaChi2+minChi2) {
       continue;
     }
-    if (chi2<0.) {
+    if (chi2<absMinChi2) {
       continue;
     }   
     if (iTanBeta>=0) {

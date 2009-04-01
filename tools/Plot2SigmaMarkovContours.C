@@ -184,7 +184,9 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 	  contour->SetLineWidth(2);
 	  contour->SetLineStyle(styles[iFile]);
 	  contour->SetLineColor(colors1[iFile]);
-	  contour->Draw("same");
+	  if (contour->GetN()>4) {
+	    contour->Draw("same");
+	  }
 	  if (iContour == 0) {
 	    string legendEntry = "1D 68% CL " + fileNameTags[iFile];
 	    legend->AddEntry(contour, legendEntry.c_str(), "l");
@@ -207,7 +209,9 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 	  contour->SetLineWidth(2);
 	  contour->SetLineStyle(styles[iFile]);
 	  contour->SetLineColor(colors2[iFile]);
-	  contour->Draw("same");
+	  if (contour->GetN()>4) {
+	    contour->Draw("same");
+	  }
 	  if (iContour == 0) {
 	    string legendEntry = "2D 95% CL " + fileNameTags[iFile];
 	    legend->AddEntry(contour, legendEntry.c_str(), "l");
