@@ -123,12 +123,12 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
   vector<string> variableNames;
   if (model == "mSUGRA") {
     variables.push_back("TanBeta");
-    variables.push_back("M0");
     variables.push_back("M12");
+    variables.push_back("M0");
     variables.push_back("A0");
     variableNames.push_back("tan#beta");
-    variableNames.push_back("M_{0} (GeV)");
     variableNames.push_back("M_{12} (GeV)");
+    variableNames.push_back("M_{0} (GeV)");
     variableNames.push_back("A_{0} (GeV)");
   } else if (model == "GMSB") {
     cout << "model GMSB not yet implemented, please feel free to do so" << endl;
