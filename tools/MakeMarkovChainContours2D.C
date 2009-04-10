@@ -28,7 +28,8 @@ using namespace std;
 void MakeMarkovChainContour2D (bool bayes = true, 
 			       int maxevents = -1,
 			       string contourOutputFileName = "markovContours.root",
-			       bool doAlsoSM = false ) 
+			       bool doAlsoSM = false,
+			       string model = "mSUGRA" ) 
 {
   //gROOT->SetStyle("MyStyle");
   //gROOT->ForceStyle();
@@ -69,30 +70,37 @@ void MakeMarkovChainContour2D (bool bayes = true,
   // variables.push_back("Y");
 
   // mSUGRA
-  variables.push_back("P_TanBeta");
-  variables.push_back("P_M0");
-  variables.push_back("P_M12"); 
-  variables.push_back("P_A0");
-
+  if (model=="mSUGRA") {
+    variables.push_back("P_TanBeta");
+    variables.push_back("P_M0");
+    variables.push_back("P_M12"); 
+    variables.push_back("P_A0");
+  }
+  else if (model=="MSSM") {
   // MSSM
-//  variables.push_back("MSelectronL");
-//  variables.push_back("MSelectronR");
-//  variables.push_back("MStauL");
-//  variables.push_back("MStauR");
-//  variables.push_back("MSupL");
-//  variables.push_back("MSupR");
-//  variables.push_back("MSbottomR");
-//  variables.push_back("MStopL");
-//  variables.push_back("MStopR");
-//  variables.push_back("TanBeta");
-//  variables.push_back("Mu");
-//  variables.push_back("Xtau");
-//  variables.push_back("Xtop");
-//  variables.push_back("Xbottom");
-//  variables.push_back("M1");
-//  variables.push_back("M2");
-//  variables.push_back("M3");
-//  variables.push_back("massA0");
+    variables.push_back("P_MSelectronL");
+    variables.push_back("P_MSelectronR");
+    variables.push_back("P_MStauL");
+    variables.push_back("P_MStauR");
+    variables.push_back("P_MSupL");
+    variables.push_back("P_MSupR");
+    variables.push_back("P_MSbottomR");
+    variables.push_back("P_MStopL");
+    variables.push_back("P_MStopR");
+    variables.push_back("P_TanBeta");
+    variables.push_back("P_Mu");
+    variables.push_back("P_Xtau");
+    variables.push_back("P_Xtop");
+    variables.push_back("P_Xbottom");
+    variables.push_back("P_M1");
+    variables.push_back("P_M2");
+    variables.push_back("P_M3");
+    variables.push_back("P_massA0");
+  }
+  else {
+    cout << "unknown model " << model << endl;
+    return;
+  }
 
   // SM
   if (doAlsoSM) {
@@ -154,6 +162,10 @@ void MakeMarkovChainContour2D (bool bayes = true,
 	  double s1sigmaLowerBound =  100000000.;
 	  double f1sigmaUpperBound = -100000000.;
 	  double f1sigmaLowerBound =  100000000.;
+	  double s2sigmaUpperBound = -100000000.;
+	  double s2sigmaLowerBound =  100000000.;
+	  double f2sigmaUpperBound = -100000000.;
+	  double f2sigmaLowerBound =  100000000.;
 	  double sBestFit = 0.;
 	  double fBestFit = 0.;
 
@@ -304,6 +316,84 @@ void MakeMarkovChainContour2D (bool bayes = true,
 		      f1sigmaUpperBound = varValues[fVariable];
 		    }
 		  }
+		  if (val<4.) {
+		    if (varValues[sVariable]<s2sigmaLowerBound) {
+		      if (variables[sVariable]=="P_TanBeta") {
+			if (varValues[sVariable]>100.) continue;
+			if (varValues[sVariable]<0.)   continue;
+		      }
+		      if (variables[sVariable]=="P_M0") {
+			if (varValues[sVariable]>10000.) continue;
+			if (varValues[sVariable]<0.)   continue;
+		      }
+		      if (variables[sVariable]=="P_M12") {
+			if (varValues[sVariable]>10000.) continue;
+			if (varValues[sVariable]<0.)   continue;
+		      }
+		      if (variables[sVariable]=="P_A0") {
+			if (varValues[sVariable]>10000.) continue;
+			if (varValues[sVariable]<-10000.)   continue;
+		      }
+		      s2sigmaLowerBound = varValues[sVariable];
+		    }
+		    if (varValues[sVariable]>s2sigmaUpperBound) {
+		      if (variables[sVariable]=="P_TanBeta") {
+			if (varValues[sVariable]>100.) continue;
+			if (varValues[sVariable]<0.)   continue;
+		      }
+		      if (variables[sVariable]=="P_M0") {
+			if (varValues[sVariable]>10000.) continue;
+			if (varValues[sVariable]<0.)   continue;
+		      }
+		      if (variables[sVariable]=="P_M12") {
+			if (varValues[sVariable]>10000.) continue;
+			if (varValues[sVariable]<0.)   continue;
+		      }
+		      if (variables[sVariable]=="P_A0") {
+			if (varValues[sVariable]>10000.) continue;
+			if (varValues[sVariable]<-10000.)   continue;
+		      }
+		      s2sigmaUpperBound = varValues[sVariable];
+		    }
+		    if (varValues[fVariable]<f2sigmaLowerBound) {
+		      if (variables[fVariable]=="P_TanBeta") {
+			if (varValues[fVariable]>100.) continue;
+			if (varValues[fVariable]<0.)   continue;
+		      }
+		      if (variables[fVariable]=="P_M0") {
+			if (varValues[fVariable]>10000.) continue;
+			if (varValues[fVariable]<0.)   continue;
+		      }
+		      if (variables[fVariable]=="P_M12") {
+			if (varValues[fVariable]>10000.) continue;
+			if (varValues[fVariable]<0.)   continue;
+		      }
+		      if (variables[fVariable]=="P_A0") {
+			if (varValues[fVariable]>10000.) continue;
+			if (varValues[fVariable]<-10000.)   continue;
+		      }
+		      f2sigmaLowerBound = varValues[fVariable];
+		    }
+		    if (varValues[fVariable]>f2sigmaUpperBound) {
+		      if (variables[fVariable]=="P_TanBeta") {
+			if (varValues[fVariable]>100.) continue;
+			if (varValues[fVariable]<0.)   continue;
+		      }
+		      if (variables[fVariable]=="P_M0") {
+			if (varValues[fVariable]>10000.) continue;
+			if (varValues[fVariable]<0.)   continue;
+		      }
+		      if (variables[fVariable]=="P_M12") {
+			if (varValues[fVariable]>10000.) continue;
+			if (varValues[fVariable]<0.)   continue;
+		      }
+		      if (variables[fVariable]=="P_A0") {
+			if (varValues[fVariable]>10000.) continue;
+			if (varValues[fVariable]<-10000.)   continue;
+		      }
+		      f2sigmaUpperBound = varValues[fVariable];
+		    }
+		  }
 		}
 	      }
 	      
@@ -344,6 +434,47 @@ void MakeMarkovChainContour2D (bool bayes = true,
 			     << sBestFit - s1sigmaLowerBound
 			     << " + "
 			     << s1sigmaUpperBound - sBestFit
+			     << " at min chi2 = " 
+			     << - 2 * TMath::Log(absHighestL)
+			     << endl;
+	      
+	      cout << "One Dimensional 1 sigma environment from 2Dres of " << variables[fVariable] 
+		   << " = "
+		   << fBestFit
+		   << " - "
+		   << (fBestFit - f2sigmaLowerBound)/2.
+		   << " + "
+		   << (f2sigmaUpperBound - fBestFit)/2.
+		   << " at min chi2 = " 
+		   << - 2 * TMath::Log(absHighestL)
+		   << endl;
+	      cout << "One Dimensional 1 sigma environment from 2Dres of " << variables[sVariable] 
+		   << " = "
+		   << sBestFit
+		   << " - "
+		   << (sBestFit - s2sigmaLowerBound)/2.
+		   << " + "
+		   << (s2sigmaUpperBound - sBestFit)/2.
+		   << " at min chi2 = " 
+		   << - 2 * TMath::Log(absHighestL)
+		   << endl;
+	      markovFitsFile << "One Dimensional 1 sigma environment from 2Dres of " << variables[fVariable] 
+			     << " = "
+			     << fBestFit
+			     << " - "
+			     << (fBestFit - f2sigmaLowerBound)/2.
+			     << " + "
+			     << (f2sigmaUpperBound - fBestFit)/2.
+			     << " at min chi2 = " 
+			     << - 2 * TMath::Log(absHighestL)
+			     << endl;
+	      markovFitsFile << "One Dimensional 1 sigma environment from 2Dres of " << variables[sVariable] 
+			     << " = "
+			     << sBestFit
+			     << " - "
+			     << (sBestFit - s2sigmaLowerBound)/2.
+			     << " + "
+			     << (s2sigmaUpperBound - sBestFit)/2.
 			     << " at min chi2 = " 
 			     << - 2 * TMath::Log(absHighestL)
 			     << endl;
