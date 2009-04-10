@@ -582,7 +582,9 @@ void MakeMarkovChainContour2D (bool bayes = true,
 
 	  // common plotting for frequentist and bayesian interpretation
 
-	  TH2D *loghist = new TH2D("loghist", "", thisHist->GetNbinsX(),
+	  string logHistName = "logHist_";
+	  logHistName = logHistName + variables[sVariable] + "_" + variables[fVariable];
+	  TH2D *loghist = new TH2D(logHistName.c_str(), "", thisHist->GetNbinsX(),
 				   thisHist->GetXaxis()->GetXmin(),
 				   thisHist->GetXaxis()->GetXmax(),
 				   thisHist->GetNbinsY(),
