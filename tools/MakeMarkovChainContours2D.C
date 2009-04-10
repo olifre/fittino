@@ -693,6 +693,86 @@ void MakeMarkovChainContour2D (bool bayes = true,
 	    loghist->SetXTitle("G_F (Gev^{-2})");
 	    emptyhist->SetXTitle("G_F (GeV^{-2})");
 	  }
+	  // MSSM
+	  else if (!strcmp(variables[sVariable].c_str(), "P_Mu")) { 
+	    loghist->SetXTitle("#mu (GeV)"); 
+	    emptyhist->SetXTitle("#mu (GeV)"); 
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MuEff")) { 
+	    loghist->SetXTitle("#mu_{eff} (GeV)");
+	    emptyhist->SetXTitle("#mu_{eff} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_Xtau")) { 
+	    loghist->SetXTitle("X_{#tau} (GeV)");
+	    emptyhist->SetXTitle("X_{#tau} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MSelectronR")) { 
+	    loghist->SetXTitle("M_{#tilde{e}_{R}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{e}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MStauR")) { 
+	    loghist->SetXTitle("M_{#tilde{#tau}_{R}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{#tau}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MSelectronL")) { 
+	    loghist->SetXTitle("M_{#tilde{e}_{L}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{e}_{L}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MStauL")) { 
+	    loghist->SetXTitle("M_{#tilde{#tau}_{L}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{#tau}_{L}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_Xtop")) { 
+	    loghist->SetXTitle("X_{t} (GeV)");
+	    emptyhist->SetXTitle("X_{t} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_Xbottom")) { 
+	    loghist->SetXTitle("X_{b} (GeV)");
+	    emptyhist->SetXTitle("X_{b} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MSdownR")) { 
+	    loghist->SetXTitle("M_{#tilde{d}_{R}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{d}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MSbottomR")) { 
+	    loghist->SetXTitle("M_{#tilde{b}_{R}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{b}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MSupR")) { 
+	    loghist->SetXTitle("M_{#tilde{u}_{R}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{u}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MStopR")) { 
+	    loghist->SetXTitle("M_{#tilde{t}_{R}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{t}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MSupL")) { 
+	    loghist->SetXTitle("M_{#tilde{u}_{L}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{u}_{L}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MStopL")) { 
+	    loghist->SetXTitle("M_{#tilde{t}_{L}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{t}_{L}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_M1")) { 
+	    loghist->SetXTitle("M_{1} (GeV)");
+	    emptyhist->SetXTitle("M_{1} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_M2")) { 
+	    loghist->SetXTitle("M_{2} (GeV)");
+	    emptyhist->SetXTitle("M_{2} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_M3")) { 
+	    loghist->SetXTitle("M_{3} (GeV)");
+	    emptyhist->SetXTitle("M_{3} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_massA0")) { 
+	    loghist->SetXTitle("m_{A} (GeV)");
+	    emptyhist->SetXTitle("m_{A} (GeV)");
+	  }
+
+
+	  // fVariables
 	  if (!strcmp(variables[fVariable].c_str(), "P_A0")) {
 	    loghist->SetYTitle("A_{0} (GeV)");
 	    emptyhist->SetYTitle("A_{0} (GeV)");
@@ -729,6 +809,85 @@ void MakeMarkovChainContour2D (bool bayes = true,
 	    loghist->SetYTitle("G_F (Gev^{-2})");
 	    emptyhist->SetYTitle("G_F (GeV^{-2})");
 	  }
+	  // MSSM
+	  else if (!strcmp(variables[fVariable].c_str(), "P_Mu")) { 
+	    loghist->SetYTitle("#mu (GeV)"); 
+	    emptyhist->SetYTitle("#mu (GeV)"); 
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MuEff")) { 
+	    loghist->SetYTitle("#mu_{eff} (GeV)");
+	    emptyhist->SetYTitle("#mu_{eff} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_Xtau")) { 
+	    loghist->SetYTitle("X_{#tau} (GeV)");
+	    emptyhist->SetYTitle("X_{#tau} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MSelectronR")) { 
+	    loghist->SetYTitle("M_{#tilde{e}_{R}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{e}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MStauR")) { 
+	    loghist->SetYTitle("M_{#tilde{#tau}_{R}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{#tau}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MSelectronL")) { 
+	    loghist->SetYTitle("M_{#tilde{e}_{L}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{e}_{L}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MStauL")) { 
+	    loghist->SetYTitle("M_{#tilde{#tau}_{L}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{#tau}_{L}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_Xtop")) { 
+	    loghist->SetYTitle("X_{t} (GeV)");
+	    emptyhist->SetYTitle("X_{t} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_Xbottom")) { 
+	    loghist->SetYTitle("X_{b} (GeV)");
+	    emptyhist->SetYTitle("X_{b} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MSdownR")) { 
+	    loghist->SetYTitle("M_{#tilde{d}_{R}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{d}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MSbottomR")) { 
+	    loghist->SetYTitle("M_{#tilde{b}_{R}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{b}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MSupR")) { 
+	    loghist->SetYTitle("M_{#tilde{u}_{R}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{u}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MStopR")) { 
+	    loghist->SetYTitle("M_{#tilde{t}_{R}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{t}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MSupL")) { 
+	    loghist->SetYTitle("M_{#tilde{u}_{L}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{u}_{L}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MStopL")) { 
+	    loghist->SetYTitle("M_{#tilde{t}_{L}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{t}_{L}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_M1")) { 
+	    loghist->SetYTitle("M_{1} (GeV)");
+	    emptyhist->SetYTitle("M_{1} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_M2")) { 
+	    loghist->SetYTitle("M_{2} (GeV)");
+	    emptyhist->SetYTitle("M_{2} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_M3")) { 
+	    loghist->SetYTitle("M_{3} (GeV)");
+	    emptyhist->SetYTitle("M_{3} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_massA0")) { 
+	    loghist->SetYTitle("m_{A} (GeV)");
+	    emptyhist->SetYTitle("m_{A} (GeV)");
+	  }
+
+
 	  loghist->GetXaxis()->SetTitleOffset(1.2);
 	  loghist->GetYaxis()->SetTitleOffset(1.1);
 	  emptyhist->GetXaxis()->SetTitleOffset(1.2);
@@ -742,9 +901,11 @@ void MakeMarkovChainContour2D (bool bayes = true,
 	    cout << "just write the histograms to the file, do not draw contours" << endl;
 	    loghist->Write();
 	    emptyhist->Write();
+	    cout << "Delete the Histograms" << endl;
 	    loghist->Delete();
 	    emptyhist->Delete();
 	    thisHist->Delete();
+	    cout << "Start new Variables" << endl;
 
 	  } else {
 
