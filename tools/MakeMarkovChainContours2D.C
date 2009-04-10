@@ -749,7 +749,7 @@ void MakeMarkovChainContour2D (bool bayes = true,
 	    loghist->Draw("CONTLIST");
 	    cout << "update the canvas to get the lists written" << endl;
 	    canvas->Update();
-	    cout << "Draw all the lists again to see them" << end;
+	    cout << "Draw all the lists again to see them" << endl;
 	    loghist->Draw("cont1");
 	    // draw a cross at the global minimum
 	    cout << "global minimum at " << fBestFit << " " << sBestFit << endl;
