@@ -29,7 +29,8 @@ void MakeMarkovChainContour2D (bool bayes = true,
 			       int maxevents = -1,
 			       string contourOutputFileName = "markovContours.root",
 			       bool doAlsoSM = false,
-			       string model = "mSUGRA" ) 
+			       string model = "mSUGRA",
+			       bool makeOnly2DHistograms = false) 
 {
   //gROOT->SetStyle("MyStyle");
   //gROOT->ForceStyle();
@@ -75,6 +76,12 @@ void MakeMarkovChainContour2D (bool bayes = true,
     variables.push_back("P_M12"); 
     variables.push_back("P_M0");
     variables.push_back("P_A0");
+  }
+  else if (model=="GMSB") {
+    variables.push_back("P_TanBeta");
+    variables.push_back("P_Lambda"); 
+    variables.push_back("P_Mmess");
+    variables.push_back("P_Cgrav");
   }
   else if (model=="MSSM") {
   // MSSM
@@ -635,32 +642,6 @@ void MakeMarkovChainContour2D (bool bayes = true,
 
 	  cout << "found minimum at " << minF << " " << minS << " with value " << minVal << endl;
 
-	  // maxval = 10.;
-	  
-	  // make sure a contour line is drawn exactly at min+1,
-	  // provided the palette has 20 levels!!! How can we check that?
-//	  int contourLineNo = 0;
-//	  if (maxval>20.) {
-//	    maxval = 20.;
-//	  } else {
-//	    int bestFit = 1;
-//	    double bestDiff = 10000000.;
-//	    for (int iFit = 1; iFit < 10; iFit++) {
-//	      double thisDiff = TMath::Abs(20./TMath::Power(2,iFit-1)-maxval);
-//	      if (thisDiff<bestDiff) {
-//		bestDiff = thisDiff;
-//		bestFit = iFit;
-//		contourLineNo = (int)TMath::Abs(TMath::Power(2,iFit-1)-1);
-//	      }
-//	    }
-//	    maxval = 20./TMath::Power(2,bestFit-1);
-//	  }
-//	  if (maxval<6.) { 
-//	    maxval = 6.;
-//	    contourLineNo = 6;
-//	  }
-//          loghist->SetMaximum(maxval);
-
 	  if (maxval<6.) {
 	    cout << "WARNING: Incomplete chain, 95percent CL in 2D was reached nowhere!" << endl;
 	  }
@@ -669,80 +650,82 @@ void MakeMarkovChainContour2D (bool bayes = true,
 	  const int contourLineNo2D2s = 5;
 	  loghist->SetMaximum(maxval);
 
+	  cout << "starting to draw the plot" << endl;
+
 	  // draw the plot
 	  loghist->SetTitle("");
-
+	  
 	  if (!strcmp(variables[sVariable].c_str(), "P_A0")) {
-	     loghist->SetXTitle("A_{0} (GeV)");
-	     emptyhist->SetXTitle("A_{0} (GeV)");
+	    loghist->SetXTitle("A_{0} (GeV)");
+	    emptyhist->SetXTitle("A_{0} (GeV)");
 	  }
 	  else if (!strcmp(variables[sVariable].c_str(), "P_M0")) {
-	     loghist->SetXTitle("M_{0} (GeV)");
-	     emptyhist->SetXTitle("M_{0} (GeV)");
+	    loghist->SetXTitle("M_{0} (GeV)");
+	    emptyhist->SetXTitle("M_{0} (GeV)");
 	  }
 	  else if (!strcmp(variables[sVariable].c_str(), "P_TanBeta")) {
-	     loghist->SetXTitle("tan(#beta)");
-	     emptyhist->SetXTitle("tan(#beta)");
+	    loghist->SetXTitle("tan(#beta)");
+	    emptyhist->SetXTitle("tan(#beta)");
 	  }
 	  else if (!strcmp(variables[sVariable].c_str(), "P_M12")) {
-	     loghist->SetXTitle("M_{1/2} (GeV)");
-	     emptyhist->SetXTitle("M_{1/2} (GeV)");
+	    loghist->SetXTitle("M_{1/2} (GeV)");
+	    emptyhist->SetXTitle("M_{1/2} (GeV)");
 	  }
 	  else if (!strcmp(variables[sVariable].c_str(), "P_alphas")) {
-	     loghist->SetXTitle("#alpha_{s}");
-	     emptyhist->SetXTitle("#alpha_{s}");
+	    loghist->SetXTitle("#alpha_{s}");
+	    emptyhist->SetXTitle("#alpha_{s}");
 	  }
 	  else if (!strcmp(variables[sVariable].c_str(), "P_alphaem")) {
-	     loghist->SetXTitle("#alpha_{em}");
-	     emptyhist->SetXTitle("#alpha_{em}");
+	    loghist->SetXTitle("#alpha_{em}");
+	    emptyhist->SetXTitle("#alpha_{em}");
 	  }
 	  else if (!strcmp(variables[sVariable].c_str(), "P_massZ")) {
-	     loghist->SetXTitle("m_{Z} (Gev)");
-	     emptyhist->SetXTitle("m_{Z} (GeV)");
+	    loghist->SetXTitle("m_{Z} (Gev)");
+	    emptyhist->SetXTitle("m_{Z} (GeV)");
 	  }
 	  else if (!strcmp(variables[sVariable].c_str(), "P_massTop")) {
-	     loghist->SetXTitle("m_{t} (GeV)");
-	     emptyhist->SetXTitle("m_{t} (GeV)");
+	    loghist->SetXTitle("m_{t} (GeV)");
+	    emptyhist->SetXTitle("m_{t} (GeV)");
 	  }
 	  else if (!strcmp(variables[sVariable].c_str(), "P_G_F")) {
-	     loghist->SetXTitle("G_F (Gev^{-2})");
-	     emptyhist->SetXTitle("G_F (GeV^{-2})");
+	    loghist->SetXTitle("G_F (Gev^{-2})");
+	    emptyhist->SetXTitle("G_F (GeV^{-2})");
 	  }
 	  if (!strcmp(variables[fVariable].c_str(), "P_A0")) {
-	     loghist->SetYTitle("A_{0} (GeV)");
-	     emptyhist->SetYTitle("A_{0} (GeV)");
+	    loghist->SetYTitle("A_{0} (GeV)");
+	    emptyhist->SetYTitle("A_{0} (GeV)");
 	  }
 	  else if (!strcmp(variables[fVariable].c_str(), "P_M0")) {
-	     loghist->SetYTitle("M_{0} (GeV)");
-	     emptyhist->SetYTitle("M_{0} (GeV)");
+	    loghist->SetYTitle("M_{0} (GeV)");
+	    emptyhist->SetYTitle("M_{0} (GeV)");
 	  }
 	  else if (!strcmp(variables[fVariable].c_str(), "P_TanBeta")) {
-	     loghist->SetYTitle("tan(#beta)");
-	     emptyhist->SetYTitle("tan(#beta)");
+	    loghist->SetYTitle("tan(#beta)");
+	    emptyhist->SetYTitle("tan(#beta)");
 	  }
 	  else if (!strcmp(variables[fVariable].c_str(), "P_M12")) {
-	     loghist->SetYTitle("M_{1/2} (GeV)");
-	     emptyhist->SetYTitle("M_{1/2} (GeV)");
+	    loghist->SetYTitle("M_{1/2} (GeV)");
+	    emptyhist->SetYTitle("M_{1/2} (GeV)");
 	  }
 	  else if (!strcmp(variables[fVariable].c_str(), "P_alphas")) {
-	     loghist->SetYTitle("#alpha_{s}");
-	     emptyhist->SetYTitle("#alpha_{s}");
+	    loghist->SetYTitle("#alpha_{s}");
+	    emptyhist->SetYTitle("#alpha_{s}");
 	  }
 	  else if (!strcmp(variables[fVariable].c_str(), "P_alphaem")) {
-	     loghist->SetYTitle("#alpha_{em}");
-	     emptyhist->SetYTitle("#alpha_{em}");
+	    loghist->SetYTitle("#alpha_{em}");
+	    emptyhist->SetYTitle("#alpha_{em}");
 	  }
 	  else if (!strcmp(variables[fVariable].c_str(), "P_massZ")) {
-	     loghist->SetYTitle("m_{Z} (Gev)");
-	     emptyhist->SetYTitle("m_{Z} (GeV)");
+	    loghist->SetYTitle("m_{Z} (Gev)");
+	    emptyhist->SetYTitle("m_{Z} (GeV)");
 	  }
 	  else if (!strcmp(variables[fVariable].c_str(), "P_massTop")) {
-	     loghist->SetYTitle("m_{t} (GeV)");
-	     emptyhist->SetYTitle("m_{t} (GeV)");
+	    loghist->SetYTitle("m_{t} (GeV)");
+	    emptyhist->SetYTitle("m_{t} (GeV)");
 	  }
 	  else if (!strcmp(variables[fVariable].c_str(), "P_G_F")) {
-	     loghist->SetYTitle("G_F (Gev^{-2})");
-	     emptyhist->SetYTitle("G_F (GeV^{-2})");
+	    loghist->SetYTitle("G_F (Gev^{-2})");
+	    emptyhist->SetYTitle("G_F (GeV^{-2})");
 	  }
 	  loghist->GetXaxis()->SetTitleOffset(1.2);
 	  loghist->GetYaxis()->SetTitleOffset(1.1);
@@ -751,120 +734,135 @@ void MakeMarkovChainContour2D (bool bayes = true,
 	  //	  loghist->GetXaxis()->SetTitleSize(0.04);
 	  //	  loghist->GetYaxis()->SetTitleSize(0.04);
 	  // gStyle->SetPalette(1,0);
-	  loghist->Draw("CONTLIST");
-	  canvas->Update();
-	  loghist->Draw("cont1");
-	  // draw a cross at the global minimum
-	  cout << "global minimum at " << fBestFit << " " << sBestFit << endl;
-//	  TLine* line1 = new TLine(sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-//				   fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-//				   sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-//				   fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
-//	  TLine* line2 = new TLine(sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-//				   fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-//				   sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-//				   fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
-	  const double xVec1[2] = {sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80., 
-				  sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.};
-	  const double yVec1[2] = {fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-				  fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.};
-	  TGraph* lineGraph1 = new TGraph(2,xVec1,yVec1);
-	  const double xVec2[2] = {sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80., 
-				  sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.};
-	  const double yVec2[2] = {fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-				  fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.};
-	  TGraph* lineGraph2 = new TGraph(2,xVec2,yVec2);	  
-	  lineGraph1->SetLineWidth(3);
-	  lineGraph2->SetLineWidth(3);
-	  string lineName = "";
-	  lineName = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_1";
-	  lineGraph1->SetName(lineName.c_str());
-	  lineName = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_2";
-	  lineGraph2->SetName(lineName.c_str());
-	  lineGraph1->Write();
-	  lineGraph2->Write();
-	  lineGraph1->Draw();
-	  lineGraph2->Draw();
-	  // draw a hatched contour line at min+1
-	  //double levels = 1.;
-	  //loghist->SetContour(1,&levels);
-	  //loghist->Draw("CONTLIST");
-	  TObjArray *contours = (TObjArray*)gROOT->GetListOfSpecials()->FindObject("contours");
-	  if (contours) {
-	    int ncontours = contours->GetSize();
-	    int theContourNumber = 0;
-	    theContourNumber = contourLineNo1D1s;
-	    cout << "plotting contour no. " << theContourNumber << endl; 
-	    if (theContourNumber<ncontours) {
-	      // get correct contour line
-	      TList *contourList = (TList*)contours->At(theContourNumber);
-	      int nGraphsPerContour = contourList->GetSize();
-	      for (int iGraph = 0; iGraph<nGraphsPerContour; iGraph++) {
-		cout << "drawing graph no. " << iGraph << endl;
-		TGraph* graph = (TGraph*)contourList->At(iGraph);
-		graph->SetLineColor(kBlack);
-		graph->SetLineWidth(3);
-		graph->SetLineStyle(3);
-		graph->Draw("");
-		string contourName = "contour_";
-		char number[256];
-		sprintf(number,"%i",iGraph);
-		contourName = contourName + variables[sVariable] + "_" + variables[fVariable] + "_" + number + "_1D1s";
-		graph->SetName(contourName.c_str());
-		//		if (graph->GetN()>2) {
-		graph->Write();
-		//		}
+	  
+	  if (makeOnly2DHistograms) {
+	    
+	    cout << "just write the histograms to the file, do not draw contours" << endl;
+	    loghist->Write();
+	    emptyhist->Write();
+	    loghist->Delete();
+	    emptyhist->Delete();
+
+	  } else {
+
+	    cout << "finished setting the axis, now drawing the contour list" << endl;
+	    loghist->Draw("CONTLIST");
+	    cout << "update the canvas to get the lists written" << endl;
+	    canvas->Update();
+	    cout << "Draw all the lists again to see them" << end;
+	    loghist->Draw("cont1");
+	    // draw a cross at the global minimum
+	    cout << "global minimum at " << fBestFit << " " << sBestFit << endl;
+	    //	  TLine* line1 = new TLine(sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+	    //				   fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+	    //				   sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+	    //				   fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
+	    //	  TLine* line2 = new TLine(sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+	    //				   fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+	    //				   sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
+	    //				   fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
+	    const double xVec1[2] = {sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80., 
+				     sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.};
+	    const double yVec1[2] = {fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+				     fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.};
+	    TGraph* lineGraph1 = new TGraph(2,xVec1,yVec1);
+	    const double xVec2[2] = {sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80., 
+				     sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.};
+	    const double yVec2[2] = {fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+				     fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.};
+	    TGraph* lineGraph2 = new TGraph(2,xVec2,yVec2);	  
+	    lineGraph1->SetLineWidth(3);
+	    lineGraph2->SetLineWidth(3);
+	    string lineName = "";
+	    lineName = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_1";
+	    lineGraph1->SetName(lineName.c_str());
+	    lineName = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_2";
+	    lineGraph2->SetName(lineName.c_str());
+	    lineGraph1->Write();
+	    lineGraph2->Write();
+	    lineGraph1->Draw();
+	    lineGraph2->Draw();
+	    // draw a hatched contour line at min+1
+	    //double levels = 1.;
+	    //loghist->SetContour(1,&levels);
+	    //loghist->Draw("CONTLIST");
+	    TObjArray *contours = (TObjArray*)gROOT->GetListOfSpecials()->FindObject("contours");
+	    if (contours) {
+	      int ncontours = contours->GetSize();
+	      int theContourNumber = 0;
+	      theContourNumber = contourLineNo1D1s;
+	      cout << "plotting contour no. " << theContourNumber << endl; 
+	      if (theContourNumber<ncontours) {
+		// get correct contour line
+		TList *contourList = (TList*)contours->At(theContourNumber);
+		int nGraphsPerContour = contourList->GetSize();
+		for (int iGraph = 0; iGraph<nGraphsPerContour; iGraph++) {
+		  cout << "drawing graph no. " << iGraph << endl;
+		  TGraph* graph = (TGraph*)contourList->At(iGraph);
+		  graph->SetLineColor(kBlack);
+		  graph->SetLineWidth(3);
+		  graph->SetLineStyle(3);
+		  graph->Draw("");
+		  string contourName = "contour_";
+		  char number[256];
+		  sprintf(number,"%i",iGraph);
+		  contourName = contourName + variables[sVariable] + "_" + variables[fVariable] + "_" + number + "_1D1s";
+		  graph->SetName(contourName.c_str());
+		  //		if (graph->GetN()>2) {
+		  graph->Write();
+		  //		}
+		}
 	      }
-	    }
-	    theContourNumber = contourLineNo2D2s;
-	    cout << "plotting contour no. " << theContourNumber << endl; 
-	    if (theContourNumber<ncontours) {
-	      // get correct contour line
-	      TList *contourList = (TList*)contours->At(theContourNumber);
-	      int nGraphsPerContour = contourList->GetSize();
-	      for (int iGraph = 0; iGraph<nGraphsPerContour; iGraph++) {
-		cout << "drawing graph no. " << iGraph << endl;
-		TGraph* graph = (TGraph*)contourList->At(iGraph);
-		graph->SetLineColor(kRed+3);
-		graph->SetLineWidth(3);
-		graph->SetLineStyle(3);
-		graph->Draw("");
-		string contourName = "contour_";
-		char number[256];
-		sprintf(number,"%i",iGraph);
-		contourName = contourName + variables[sVariable] + "_" + variables[fVariable] + "_" + number + "_2D2s";
-		graph->SetName(contourName.c_str());
-		//		if (graph->GetN()>2) {
-		graph->Write();
-		//		}
+	      theContourNumber = contourLineNo2D2s;
+	      cout << "plotting contour no. " << theContourNumber << endl; 
+	      if (theContourNumber<ncontours) {
+		// get correct contour line
+		TList *contourList = (TList*)contours->At(theContourNumber);
+		int nGraphsPerContour = contourList->GetSize();
+		for (int iGraph = 0; iGraph<nGraphsPerContour; iGraph++) {
+		  cout << "drawing graph no. " << iGraph << endl;
+		  TGraph* graph = (TGraph*)contourList->At(iGraph);
+		  graph->SetLineColor(kRed+3);
+		  graph->SetLineWidth(3);
+		  graph->SetLineStyle(3);
+		  graph->Draw("");
+		  string contourName = "contour_";
+		  char number[256];
+		  sprintf(number,"%i",iGraph);
+		  contourName = contourName + variables[sVariable] + "_" + variables[fVariable] + "_" + number + "_2D2s";
+		  graph->SetName(contourName.c_str());
+		  //		if (graph->GetN()>2) {
+		  graph->Write();
+		  //		}
+		}
+	      } else {
+		cout << "Error in contour counting" << endl;
 	      }
 	    } else {
-	      cout << "Error in contour counting" << endl;
+	      cout << "No Contour lines found!" << endl;
 	    }
-	  } else {
-	    cout << "No Contour lines found!" << endl;
+	    
+	    string fileName = variables[fVariable] + 
+	      variables[sVariable] +
+	      "Markov";
+	    if (bayes) {
+	      fileName = fileName + "Bayes.eps";
+	    } else {
+	      fileName = fileName + "Freq.eps";
+	    }
+	    canvas->Print(fileName.c_str());
+	    //canvas->SetLogz();
+	    //thisHist->Draw("cont1z");
+	    //fileName = variables[fVariable] + 
+	    //   variables[sVariable] +
+	    //   "TestMarkov.eps";
+	    //canvas->Print(fileName.c_str());	  
+	    canvas->SetLogz(0);
+	    thisHist->Delete();
+	    loghist->Delete();
+	    emptyhist->Write();
+	    emptyhist->Delete();
 	  }
-	  
-	  string fileName = variables[fVariable] + 
-	     variables[sVariable] +
-	     "Markov";
-	  if (bayes) {
-	    fileName = fileName + "Bayes.eps";
-	  } else {
-	    fileName = fileName + "Freq.eps";
-	  }
-	  canvas->Print(fileName.c_str());
-	  //canvas->SetLogz();
-	  //thisHist->Draw("cont1z");
-	  //fileName = variables[fVariable] + 
-	  //   variables[sVariable] +
-	  //   "TestMarkov.eps";
-	  //canvas->Print(fileName.c_str());	  
-	  canvas->SetLogz(0);
-	  thisHist->Delete();
-	  loghist->Delete();
-	  emptyhist->Write();
-	  emptyhist->Delete();
 	}
     }
 
