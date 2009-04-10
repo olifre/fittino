@@ -742,6 +742,7 @@ void MakeMarkovChainContour2D (bool bayes = true,
 	    emptyhist->Write();
 	    loghist->Delete();
 	    emptyhist->Delete();
+	    thisHist->Delete();
 
 	  } else {
 
