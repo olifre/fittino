@@ -908,6 +908,28 @@ void MakeMarkovChainContour2D (bool bayes = true,
 	    loghist->Delete();
 	    emptyhist->Delete();
 	    thisHist->Delete();
+	    // add the cross at the best fit point
+	    const double xVec1[2] = {sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80., 
+				     sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.};
+	    const double yVec1[2] = {fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+				     fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.};
+	    TGraph* lineGraph1 = new TGraph(2,xVec1,yVec1);
+	    const double xVec2[2] = {sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80., 
+				     sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.};
+	    const double yVec2[2] = {fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+				     fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.};
+	    TGraph* lineGraph2 = new TGraph(2,xVec2,yVec2);	  
+	    lineGraph1->SetLineWidth(3);
+	    lineGraph2->SetLineWidth(3);
+	    string lineName = "";
+	    lineName = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_1";
+	    lineGraph1->SetName(lineName.c_str());
+	    lineName = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_2";
+	    lineGraph2->SetName(lineName.c_str());
+	    lineGraph1->Write();
+	    lineGraph2->Write();
+	    lineGraph1->Draw();
+	    lineGraph2->Draw();
 	    cout << "Start new Variables" << endl;
 
 	  } else {
