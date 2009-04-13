@@ -14,6 +14,7 @@
 #include "TCanvas.h"
 #include "TLeafD.h"
 #include "TH1D.h"
+#include "TF1.h"
 #include "TH2D.h"
 #include "TGraph.h"
 #include "TList.h"
@@ -33,7 +34,7 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
 			     const char* treename = "markovChain",
 			     const string tag = "",
 			     const string predicted = "Derived",
-			     const string logoPath = "./logo/fittinologo.eps" ) 
+			     const string logoPath = "./logo/fittinologo.jpg" ) 
 {
 
     // set style
@@ -181,6 +182,9 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
   }
   if (iChi2<0) return;
 
+  //  nEntries = 10000;
+  cout << "looping over " << nEntries << " entries" << endl;
+
   // find the chi2 minimum
   float chi2 = 0.;
   double minChi2 = 100000000.;
@@ -276,17 +280,17 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
   for (int iname = 0; iname < nameSize; iname++) {
     for (int iBin = 0; iBin < nbins; iBin++) {
       if (oneDHistTwoSigma[iname]->GetBinContent(iBin+1)>0.) {
-	oneDHistTwoSigma[iname]->SetBinContent(iBin+1,1.);
+	oneDHistTwoSigma[iname]->SetBinContent(iBin+1,2.);
       } else {
 	oneDHistTwoSigma[iname]->SetBinContent(iBin+1,0.);
       }
       if (oneDHistOneSigma[iname]->GetBinContent(iBin+1)>0.) {
-	oneDHistOneSigma[iname]->SetBinContent(iBin+1,3.);
+	oneDHistOneSigma[iname]->SetBinContent(iBin+1,4.);
       } else {
 	oneDHistOneSigma[iname]->SetBinContent(iBin+1,0.);
       }
       if (oneDHistBestFit[iname]->GetBinContent(iBin+1)>0.) {
-	oneDHistBestFit[iname]->SetBinContent(iBin+1,6.);
+	oneDHistBestFit[iname]->SetBinContent(iBin+1,5.);
       } else {
 	oneDHistBestFit[iname]->SetBinContent(iBin+1,0.);
       }
@@ -331,6 +335,20 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
   massHistAll->SetMinimum(0.);
   massHistAll->SetMaximum(7.);
 
+  // make the best fit line a bit thicker
+  if (nbins>300) {
+    for (int iname = 0; iname < nameSize; iname++) {
+      for (int iBin = 0; iBin < nbins; iBin++) {
+	if (oneDHistBestFit[iname]->GetBinContent(iBin+1)>0.) {
+	  oneDHistBestFit[iname]->SetBinContent(iBin,oneDHistBestFit[iname]->GetBinContent(iBin+1));
+	  oneDHistBestFit[iname]->SetBinContent(iBin+2,oneDHistBestFit[iname]->GetBinContent(iBin+1));
+	  break;
+	}
+      }
+    }  
+  }
+
+  // fill the oneD histos into the 2D histo
   for (int iname = 0; iname < nameSize; iname++) {
     for (int iBin = 0; iBin < nbins; iBin++) {
       if (oneDHistTwoSigma[iname]->GetBinContent(iBin+1)>0.) {
@@ -345,6 +363,57 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
     }    
   }  
   massHistAll->Draw("col");
+
+  // add a legend
+  TLegend *legend = new TLegend(0.33,0.65,0.63,0.9,"");
+  TF1* dummyFunc1s = new TF1("gaus1s","gaus",0.,1.);
+  dummyFunc1s->SetFillColor(env1sColor);
+  dummyFunc1s->SetLineColor(env1sColor);
+  dummyFunc1s->SetFillStyle(1001);  
+  TF1* dummyFunc2s = new TF1("gaus2s","gaus",0.,1.);
+  dummyFunc2s->SetFillColor(env3sColor);
+  dummyFunc2s->SetLineColor(env3sColor);
+  dummyFunc2s->SetFillStyle(1001);  
+  TF1* dummyFunc3s = new TF1("gaus3s","gaus",0.,1.);
+  dummyFunc3s->SetFillColor(env3sColor);
+  dummyFunc3s->SetLineColor(env3sColor);
+  dummyFunc3s->SetFillStyle(1001);  
+  TF1* dummyFuncHighest = new TF1("gausHighest","gaus",0.,1.);
+  dummyFuncHighest->SetFillColor(highestColor);
+  dummyFuncHighest->SetLineColor(highestColor);
+  TF1* dummyFuncMean = new TF1("gausMean","gaus",0.,1.);
+  dummyFuncMean->SetFillColor(meanColor);
+  dummyFuncMean->SetLineColor(meanColor);
+  legend->AddEntry(dummyFunc1s,  "1#sigma Environment", "F");
+  legend->AddEntry(dummyFunc2s,  "2#sigma Environment", "F");
+  //  legend->AddEntry(dummyFunc3s,  "3#sigma Environment", "F");
+  legend->AddEntry(dummyFuncHighest, "Best Fit Value", "l");
+  //  legend->AddEntry(dummyFuncMean,    "Mean Value", "l");
+  legend->Draw("same");
+  // add the fittino logo
+  const float canvasHeight   = canvas->GetWindowHeight();
+  const float canvasWidth    = canvas->GetWindowWidth();
+  const float canvasAspectRatio = canvasHeight/canvasWidth;
+  const float width          = 0.19;
+  const float xLowerEdge     = 0.78;
+  const float yLowerEdge     = 0.853;
+  const float xUpperEdge     = xLowerEdge+width;
+  const float yUpperEdge     = yLowerEdge+width*fittinoLogo->GetHeight()/fittinoLogo->GetWidth()/canvasAspectRatio;
+  cout << " xLowerEdge  = " << xLowerEdge << "\n"
+       << " yLowerEdge  = " << yLowerEdge << "\n"
+       << " xUpperEdge  = " << xUpperEdge << "\n"
+       << " yUpperEdge  = " << yUpperEdge << "\n"
+       << " Imagewidth  = " << fittinoLogo->GetWidth() << "\n"
+       << " Imageheight = " << fittinoLogo->GetHeight() << "\n"
+       << " canvasHeight= " << canvasHeight << "\n"
+       << " canvasWidth = " << canvasWidth  << "\n"
+       << endl;
+  //  TPad *fittinoLogoPad = new TPad("fittinoLogoPad", "fittinoLogoPad", 0.85, 0.85, 0.98, 0.85+d*fittinoLogo->GetHeight()/fittinoLogo->GetWidth());
+  TPad *fittinoLogoPad = new TPad("fittinoLogoPad", "fittinoLogoPad", xLowerEdge, yLowerEdge, xUpperEdge, yUpperEdge);
+  fittinoLogoPad->Draw("same");
+  fittinoLogoPad->cd();
+  fittinoLogo->Draw("xxx");
+  canvas->cd();
 
   string outFile = "markovMassDist.eps";
   canvas->Print(outFile.c_str());
