@@ -602,6 +602,9 @@ void MakeMarkovChainContour2D (bool bayes = true,
 	  loghist->SetStats(kFALSE);
 	  loghist->GetXaxis()->CenterTitle(1);
 	  loghist->GetYaxis()->CenterTitle(1);
+	  emptyhist->SetStats(kFALSE);
+	  emptyhist->GetXaxis()->CenterTitle(1);
+	  emptyhist->GetYaxis()->CenterTitle(1);
 	  //loghist->GetXaxis()->SetRangeUser(-2500,3000);
 	  //loghist->GetXaxis()->SetRangeUser(-1000,2000);
 	  //loghist->GetYaxis()->SetRangeUser(0,50);

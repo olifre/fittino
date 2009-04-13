@@ -26,6 +26,7 @@
 using namespace std;
 
 void Plot2SigmaMarkovContours (const string model = "mSUGRA",
+			       const bool   doAlsoSM = false,
 			       const int    drawCross = 0,
 			       const string file1="file1",
 			       const string fileTag1="Tag1",
@@ -122,23 +123,77 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
   vector<string> variables;
   vector<string> variableNames;
   if (model == "mSUGRA") {
-    variables.push_back("TanBeta");
-    variables.push_back("M12");
-    variables.push_back("M0");
-    variables.push_back("A0");
+    variables.push_back("P_TanBeta");
+    variables.push_back("P_M12");
+    variables.push_back("P_M0");
+    variables.push_back("P_A0");
     variableNames.push_back("tan#beta");
     variableNames.push_back("M_{12} (GeV)");
     variableNames.push_back("M_{0} (GeV)");
     variableNames.push_back("A_{0} (GeV)");
   } else if (model == "GMSB") {
-    cout << "model GMSB not yet implemented, please feel free to do so" << endl;
-    return;
+    variables.push_back("P_TanBeta");
+    variables.push_back("P_Lambda"); 
+    variables.push_back("P_Mmess");
+    variables.push_back("P_Cgrav");
+    variableNames.push_back("tan#beta");
+    variableNames.push_back("#Lambda (GeV)");
+    variableNames.push_back("M_{mess} (GeV)");
+    variableNames.push_back("C_{grav} (GeV)");
   } else if (model == "MSSM18") {
-    cout << "model MSSM18 not yet implemented, please feel free to do so" << endl;
-    return;
+    variables.push_back("P_MSelectronL");
+    variables.push_back("P_MSelectronR");
+    variables.push_back("P_MStauL");
+    variables.push_back("P_MStauR");
+    variables.push_back("P_MSupL");
+    variables.push_back("P_MSupR");
+    variables.push_back("P_MSbottomR");
+    variables.push_back("P_MStopL");
+    variables.push_back("P_MStopR");
+    variables.push_back("P_TanBeta");
+    variables.push_back("P_Mu");
+    variables.push_back("P_Xtau");
+    variables.push_back("P_Xtop");
+    variables.push_back("P_Xbottom");
+    variables.push_back("P_M1");
+    variables.push_back("P_M2");
+    variables.push_back("P_M3");
+    variables.push_back("P_massA0");
+    variableNames.push_back("M_{#tilde{e}_{L}} (GeV)");
+    variableNames.push_back("M_{#tilde{e}_{R}} (GeV)");
+    variableNames.push_back("M_{#tilde{#tau}_{L}} (GeV)");
+    variableNames.push_back("M_{#tilde{#tau}_{R}} (GeV)");
+    variableNames.push_back("M_{#tilde{u}_{L}} (GeV)");
+    variableNames.push_back("M_{#tilde{u}_{R}} (GeV)");
+    variableNames.push_back("M_{#tilde{b}_{R}} (GeV)");
+    variableNames.push_back("M_{#tilde{t}_{L}} (GeV)");
+    variableNames.push_back("M_{#tilde{t}_{R}} (GeV)");
+    variableNames.push_back("tan#beta");
+    variableNames.push_back("#mu (GeV)"); 
+    variableNames.push_back("X_{#tau} (GeV)");
+    variableNames.push_back("X_{t} (GeV)");
+    variableNames.push_back("X_{b} (GeV)");
+    variableNames.push_back("M_{1} (GeV)");
+    variableNames.push_back("M_{2} (GeV)");
+    variableNames.push_back("M_{3} (GeV)");
+    variableNames.push_back("m_{A} (GeV)");
+    //    variableNames.push_back("M_{#tilde{d}_{R}} (GeV)");
   } else {
     cout << "model " << model << " unknown" << endl; 
     return;
+  }
+
+  if (doAlsoSM) {
+    variables.push_back("P_alphas");
+    variables.push_back("P_alphaem");
+    variables.push_back("P_massZ"); 
+    variables.push_back("P_massTop");
+    variables.push_back("P_G_F");    
+    variableNames.push_back("#alpha_{s}");
+    variableNames.push_back("#alpha_{em}");
+    variableNames.push_back("m_{Z} (Gev)");
+    variableNames.push_back("m_{t} (GeV)");
+    variableNames.push_back("G_F (Gev^{-2})");
   }
 
 
@@ -184,7 +239,7 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 	  contour->SetLineWidth(2);
 	  contour->SetLineStyle(styles[iFile]);
 	  contour->SetLineColor(colors1[iFile]);
-	  if (contour->GetN()>4) {
+	  if (contour->GetN()>7) {
 	    contour->Draw("same");
 	  }
 	  if (iContour == 0) {
@@ -209,7 +264,7 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 	  contour->SetLineWidth(2);
 	  contour->SetLineStyle(styles[iFile]);
 	  contour->SetLineColor(colors2[iFile]);
-	  if (contour->GetN()>4) {
+	  if (contour->GetN()>7) {
 	    contour->Draw("same");
 	  }
 	  if (iContour == 0) {
