@@ -10,6 +10,7 @@
 #include "TDirectory.h"
 #include "TChain.h"
 #include "TCanvas.h"
+#include "TLeafD.h"
 #include "TH1D.h"
 #include "TH2D.h"
 #include "TGraph.h"
@@ -30,7 +31,8 @@ void MakeMarkovChainContour2D (bool bayes = true,
 			       string contourOutputFileName = "markovContours.root",
 			       bool doAlsoSM = false,
 			       string model = "mSUGRA",
-			       bool makeOnly2DHistograms = false) 
+			       bool makeOnly2DHistograms = false,
+			       int fixComb = -1 ) 
 {
   //gROOT->SetStyle("MyStyle");
   //gROOT->ForceStyle();
@@ -83,6 +85,12 @@ void MakeMarkovChainContour2D (bool bayes = true,
     variables.push_back("P_Mmess");
     variables.push_back("P_Cgrav");
   }
+  else if (model=="Pheno") {
+    variables.push_back("O_massNeutralino1_nofit");
+    variables.push_back("O_Omega_npf"); 
+    variables.push_back("O_massStau1_nofit"); 
+    variables.push_back("O_Omega_npf_nofit"); 
+  }
   else if (model=="MSSM") {
   // MSSM
     variables.push_back("P_MSelectronL");
@@ -128,10 +136,32 @@ void MakeMarkovChainContour2D (bool bayes = true,
   float likelihood;
   float chi2;
 
+  vector<bool> varThere;
+
+  // look if all the branches are there
+  const Int_t nLeaves = markovChain.GetListOfLeaves()->GetEntriesFast();
+  for (Int_t iLeaf=0; iLeaf<nLeaves; iLeaf++) {
+    TLeafD* leaf = (TLeafD*)markovChain.GetListOfLeaves()->At(iLeaf);
+    for (unsigned int iVar = 0; iVar < variables.size(); iVar++) {
+      varThere.push_back(false);
+      if (leaf->GetName()==variables[iVar]) {
+	varThere[iVar] = true;
+	break;
+      }
+    }
+  }
+  for (unsigned int iVar = 0; iVar < variables.size(); iVar++) {
+    if (!varThere[iVar]) {
+      cout << "WARNING: Variable " << variables[iVar] << " not found in the tree" << endl;
+    }
+  }
+
   // attach variables to ntuple
   if (!bayes) {
     for (unsigned int i = 0; i < variables.size(); i++) {
-      markovChain.SetBranchAddress(variables[i].c_str(),&varValues[i]);
+      if (varThere[i]) {
+	markovChain.SetBranchAddress(variables[i].c_str(),&varValues[i]);
+      }
     }
     markovChain.SetBranchAddress("haveAcceptedAtLeastOne",&haveAcceptedAtLeastOne);
     markovChain.SetBranchAddress("n",&nStep);
@@ -156,13 +186,19 @@ void MakeMarkovChainContour2D (bool bayes = true,
   TFile* contourOutputFile = new TFile (contourOutputFileName.c_str(), "RECREATE");
 
   // control histograms
-  
+  int icomb = -1;
 
   for (unsigned int fVariable = 0; fVariable < variables.size(); fVariable++)
     {
       for (unsigned int sVariable = fVariable+1; sVariable < variables.size(); sVariable++)
 	{
+	  icomb++;
+	  if (!varThere[sVariable] || !varThere[fVariable]) continue;
 
+	  if (fixComb>=0) {
+	    if (icomb!=fixComb) continue;
+	  }
+	  
 	  TH2D *thisHist;
 
 	  double s1sigmaUpperBound = -100000000.;
