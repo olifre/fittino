@@ -322,8 +322,11 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
       }
       // check for overflow
       if (overflow[iname]>max) {
+	cout << "variable " << name[iname] << " has upper 2s boundary outside histogram range" << endl;
 	// calculate virtual bin of the overflow
 	int iOverflowBin = (int)((overflow[iname]-min)/((max-min)/(double)nbins));
+	cout << "virtual upper 2s bin is at " << iOverflowBin << endl;
+	cout << "previous highest2sBin = " << highest2sBin << endl;
 	if (iOverflowBin>highest2sBin && highest2sBin>=nbins-1) highest2sBin = iOverflowBin;
       }
       // determine new boundaries
