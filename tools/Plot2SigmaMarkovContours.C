@@ -135,7 +135,7 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
     variables.push_back("P_TanBeta");
     variables.push_back("P_Lambda"); 
     variables.push_back("P_Mmess");
-    variables.push_back("P_Cgrav");
+    variables.push_back("P_cGrav");
     variableNames.push_back("tan#beta");
     variableNames.push_back("#Lambda (GeV)");
     variableNames.push_back("M_{mess} (GeV)");

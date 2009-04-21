@@ -83,7 +83,7 @@ void MakeMarkovChainContour2D (bool bayes = true,
     variables.push_back("P_TanBeta");
     variables.push_back("P_Lambda"); 
     variables.push_back("P_Mmess");
-    variables.push_back("P_Cgrav");
+    variables.push_back("P_cGrav");
   }
   else if (model=="Pheno") {
     variables.push_back("O_massNeutralino1_nofit");

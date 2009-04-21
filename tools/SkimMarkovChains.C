@@ -82,7 +82,7 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
     else if (!strcmp(leaf[iLeaf]->GetName(), "P_Mmess")) {
       iMmess = iLeaf;
     }
-    else if (!strcmp(leaf[iLeaf]->GetName(), "P_Cgrav")) {
+    else if (!strcmp(leaf[iLeaf]->GetName(), "P_cGrav")) {
       iCgrav = iLeaf;
     }
     

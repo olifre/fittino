@@ -67,7 +67,7 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
     variables.push_back("P_TanBeta");
     variables.push_back("P_Lambda"); 
     variables.push_back("P_Mmess");
-    variables.push_back("P_Cgrav");
+    variables.push_back("P_cGrav");
   }
   else if (model=="MSSM") {
   // MSSM
