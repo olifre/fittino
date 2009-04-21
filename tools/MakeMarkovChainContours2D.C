@@ -57,7 +57,7 @@ void MakeMarkovChainContour2D (bool bayes = true,
   if ( maxevents >= 0 ) {
     if (nEntries > maxevents) nEntries = maxevents;
   }
-  int nBins = 27;
+  int nBins = 29;
 
   std::cout << "number of entries " << nEntries << std::endl;
 
@@ -561,10 +561,10 @@ void MakeMarkovChainContour2D (bool bayes = true,
 		   << fVarMax << " " << fVarMin << " " << sVarMax << " " << sVarMin << endl;
 	      // loop over bins in the variables
 
-	      sVarMin = sVarMin-3./(double)(nBins-4)*(-sVarMin+sVarMax);
-	      sVarMax = sVarMax+1./(double)(nBins-4)*(-sVarMin+sVarMax);
-	      fVarMin = fVarMin-3./(double)(nBins-4)*(-fVarMin+fVarMax);
-	      fVarMax = fVarMax+1./(double)(nBins-4)*(-fVarMin+fVarMax);
+	      sVarMin = sVarMin-3./(double)(nBins-6)*(-sVarMin+sVarMax);
+	      sVarMax = sVarMax+3./(double)(nBins-6)*(-sVarMin+sVarMax);
+	      fVarMin = fVarMin-3./(double)(nBins-6)*(-fVarMin+fVarMax);
+	      fVarMax = fVarMax+3./(double)(nBins-6)*(-fVarMin+fVarMax);
 
 	      thisHist = new TH2D("thisHist","",
 				  nBins,sVarMin,sVarMax,
