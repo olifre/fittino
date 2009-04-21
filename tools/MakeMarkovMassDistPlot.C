@@ -34,7 +34,8 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
 			     const char* treename = "markovChain",
 			     const string tag = "",
 			     const string predicted = "Derived",
-			     const string logoPath = "./logo/fittinologo.jpg" ) 
+			     const string logoPath = "./logo/fittinologo.jpg",
+			     const bool smooth = false ) 
 {
 
     // set style
@@ -158,6 +159,8 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
 
   const int nameSize = name.size();
 
+  vector<double> overflow;
+
   bool nofitFound[nameSize];
   bool alreadyFound[nameSize];
   int leafPosition[nameSize];
@@ -243,6 +246,7 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
   TH1F* oneDHistOneSigma[name.size()];
   TH1F* oneDHistTwoSigma[name.size()];
   for (int iname = 0; iname < nameSize; iname++) {
+    overflow.push_back(0.);
     string histNameBestFit = "bestFit_" + binName[iname];
     oneDHistBestFit[iname] = new TH1F(histNameBestFit.c_str(),"",nbins,min,max);
     string histNameOneSigma = "oneSigma_" + binName[iname];
@@ -256,6 +260,7 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
     tree->GetEntry(i);
     if (par[iChi2]-minChi2<=4.0) {
       for (int iname = 0; iname < nameSize; iname++) {
+	if (par[obsPosition[iname]]>max && par[obsPosition[iname]]>overflow[iname]) overflow[iname]=par[obsPosition[iname]];
 	oneDHistTwoSigma[iname]->Fill(TMath::Abs(par[obsPosition[iname]]));
       }
     }
@@ -270,11 +275,6 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
       }
     }
   }  
-
-//   // make the BestFitHisto wider
-//   for (int iBin = 0; iBin < nbins; iBin++) {
-//     if () {
-//   }
 
   // flatten the histograms
   for (int iname = 0; iname < nameSize; iname++) {
@@ -295,6 +295,60 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
 	oneDHistBestFit[iname]->SetBinContent(iBin+1,0.);
       }
     }    
+  }
+
+  // if desired: smooth 1 and 2sigma env
+  if (smooth) {
+    for (int iname = 0; iname < nameSize; iname++) {
+      // get 2 sigma boundaries
+      int lowest2sBin  =  100000;
+      int highest2sBin = -100000; 
+      int bestFitBin   = 0;
+      for (int iBin = 0; iBin < nbins; iBin++) {
+	if (oneDHistBestFit[iname]->GetBinContent(iBin+1)>0.) {
+	  bestFitBin = iBin;
+	  break;
+	}
+      }
+      for (int iBin = 0; iBin < nbins; iBin++) {
+	if (oneDHistTwoSigma[iname]->GetBinContent(iBin+1)>0.) {
+	  if (lowest2sBin==100000) {
+	    lowest2sBin = iBin;
+	  }
+	}
+	if (oneDHistTwoSigma[iname]->GetBinContent(iBin+1)>0.) {
+	  highest2sBin = iBin;
+	}
+      }
+      // check for overflow
+      if (overflow[iname]>max) {
+	// calculate virtual bin of the overflow
+	int iOverflowBin = (int)((overflow[iname]-min)/((max-min)/(double)nbins));
+	if (iOverflowBin>highest2sBin && highest2sBin>=nbins-1) highest2sBin = iOverflowBin;
+      }
+      // determine new boundaries
+      int lowest1sBin  = (int)((double)(bestFitBin + lowest2sBin)/2.);
+      int highest1sBin = (int)((double)(bestFitBin + highest2sBin)/2.);
+      cout << "lowest and highest " << name[iname] << " 1s bins " << lowest1sBin << " " << highest1sBin << endl;
+      cout << "lowest and highest " << name[iname] << " 2s bins " << lowest2sBin << " " << highest2sBin << endl;
+      // loop over the histogram again and set bin contents
+      for (int iBin = 0; iBin < nbins; iBin++) {
+	if (iBin<lowest1sBin) {
+	  oneDHistOneSigma[iname]->SetBinContent(iBin+1,0.);
+	} else if (iBin>=lowest1sBin && iBin<=highest1sBin) {
+	  oneDHistOneSigma[iname]->SetBinContent(iBin+1,4.);
+	} else {
+	  oneDHistOneSigma[iname]->SetBinContent(iBin+1,0.);
+	}
+	if (iBin<lowest2sBin) {
+	  oneDHistTwoSigma[iname]->SetBinContent(iBin+1,0.);
+	} else if (iBin>=lowest2sBin && iBin<=highest2sBin) {
+	  oneDHistTwoSigma[iname]->SetBinContent(iBin+1,2.);
+	} else {
+	  oneDHistTwoSigma[iname]->SetBinContent(iBin+1,0.);
+	}
+      }
+    }
   }
 
   // plot the histograms for debug reasons
@@ -414,7 +468,7 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
   fittinoLogoPad->cd();
   fittinoLogo->Draw("xxx");
   canvas->cd();
-
+  
   string outFile = "markovMassDist.eps";
   canvas->Print(outFile.c_str());
   
