@@ -87,6 +87,15 @@ void Get1and2sigmaUncertaintiesFromMarkovs ( int maxevents = -1,
     variables.push_back("P_Mmess");
     variables.push_back("P_Cgrav");
   }
+  else if (model=="allLowScale") {
+    variables.push_back("P_TanBeta");
+    variables.push_back("P_M12"); 
+    variables.push_back("P_M0");
+    variables.push_back("P_A0");
+    variables.push_back("P_Lambda"); 
+    variables.push_back("P_Mmess");
+    variables.push_back("P_Cgrav");
+  }  
   else if (model=="Pheno") {
     variables.push_back("O_massNeutralino1_nofit");
     variables.push_back("O_Omega_npf"); 
