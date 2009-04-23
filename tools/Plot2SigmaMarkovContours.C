@@ -28,6 +28,8 @@ using namespace std;
 void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 			       const bool   doAlsoSM = false,
 			       const int    drawCross = 0,
+			       const string logoPath = "",
+			       const string nameTag = "",
 			       const string file1="file1",
 			       const string fileTag1="Tag1",
 			       const string file2="file2",
@@ -39,8 +41,7 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 			       const string file5="file5",
 			       const string fileTag5="Tag5",
 			       const string file6="file6",
-			       const string fileTag6="Tag6",
-			       const string logoPath = "" ) 
+			       const string fileTag6="Tag6" ) 
 {
   
   // setups
@@ -56,17 +57,6 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
   canvas->SetLeftMargin(0.10);
   canvas->SetRightMargin(0.05);
   
-  // get the fittino logo
-  TImage *fittinoLogo = TImage::Open(logoPath.c_str());
-  if (!(logoPath=="")) {
-    if (!fittinoLogo) {
-      printf("Could not open the fittino logo at %s\n exit\n",logoPath.c_str());
-      return;
-    }
-    fittinoLogo->SetConstRatio(1);
-    fittinoLogo->SetImageQuality(TAttImage::kImgBest);
-  }
-
   // sort files
   vector<string> fileNames;
   vector<string> fileNameTags;
@@ -100,13 +90,20 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
   const int nFiles = fileNames.size();
 
   // set colors and line styles
-  vector<int> colors1;
-  vector<int> colors2;
+  vector<int> colors1a;
+  vector<int> colors1b;
+  vector<int> colors2a;
+  vector<int> colors2b;
   vector<int> styles;
+  vector<int> fstyles;
   for (int i = 0; i < nFiles; i++) {
     styles.push_back(i+1);
-    colors2.push_back(kBlue-3+i);
-    colors1.push_back(kRed-2+i);
+    //    fstyles.push_back(i+3001);
+    fstyles.push_back(1001);
+    colors2a.push_back(kBlue-10+i);
+    colors1a.push_back(kRed-8+i);
+    colors2b.push_back(kBlue-2+i);
+    colors1b.push_back(kRed-2+i);
   }  
 
   // open files
@@ -131,7 +128,8 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
     variableNames.push_back("M_{12} (GeV)");
     variableNames.push_back("M_{0} (GeV)");
     variableNames.push_back("A_{0} (GeV)");
-  } else if (model == "GMSB") {
+  } 
+  else if (model == "GMSB") {
     variables.push_back("P_TanBeta");
     variables.push_back("P_Lambda"); 
     variables.push_back("P_Mmess");
@@ -140,7 +138,18 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
     variableNames.push_back("#Lambda (GeV)");
     variableNames.push_back("M_{mess} (GeV)");
     variableNames.push_back("C_{grav} (GeV)");
-  } else if (model == "MSSM18") {
+  }
+  else if (model=="Pheno") {
+    variables.push_back("O_massNeutralino1_nofit");
+    variables.push_back("O_Omega_npf"); 
+    variables.push_back("O_massStau1_nofit"); 
+    variables.push_back("O_Omega_npf_nofit"); 
+    variableNames.push_back("m_{#chi^{0}_{1}} (GeV)");
+    variableNames.push_back("#Omega h^{2}");
+    variableNames.push_back("m_{#tilde{#tau}_{1}} (GeV)");
+    variableNames.push_back("#Omega h^{2}");
+  }
+  else if (model == "MSSM18") {
     variables.push_back("P_MSelectronL");
     variables.push_back("P_MSelectronR");
     variables.push_back("P_MStauL");
@@ -210,7 +219,10 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
       }
       cout << "drawing histogram " << histName << endl;
       hist->GetXaxis()->CenterTitle(1);
+      hist->GetXaxis()->SetTitle(variableNames[iVariable2].c_str());
       hist->GetYaxis()->CenterTitle(1);
+      //      hist->GetYaxis()->SetTitleOffset(1.25);
+      hist->GetYaxis()->SetTitle(variableNames[iVariable1].c_str());
       hist->SetTitle("");
       //      hist->GetXaxis()->SetTitle(variableNames[iVariable1]);
       hist->Draw();
@@ -220,7 +232,7 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
       TLegend *legend = new TLegend(0.62,0.84,0.96,0.99,"");
       legend->SetTextSize(0.03);
 
-      // loop over the existing files and draw the contours
+      // loop over the existing files and draw the contour planes
       for (int iFile = 0; iFile < nFiles; iFile++) {
 	// draw the contours
 	int iContour = 0;
@@ -230,20 +242,70 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 	  string contourName = "contour_" 
 	    + variables[iVariable2] + "_" 
 	    + variables[iVariable1] + "_" 
-	    + contourNumber + "_1D1s";
-	  cout << "drawing contour " << contourName << endl;
+	    + contourNumber + "_2D2s";
 	  TGraph* contour = (TGraph*)files[iFile]->Get(contourName.c_str());
 	  if (!contour) {
 	    break;
 	  }
 	  contour->SetLineWidth(2);
 	  contour->SetLineStyle(styles[iFile]);
-	  contour->SetLineColor(colors1[iFile]);
+	  contour->SetFillStyle(fstyles[iFile]);
+	  contour->SetFillColor(colors2a[iFile]);
+	  contour->SetLineColor(colors2b[iFile]);
+	  if (contour->GetN()>20) {
+	    contour->Draw("fsame");
+	  }
+	  iContour++;
+	}
+	iContour = 0;
+	while (1) {
+	  char contourNumber[256];
+	  sprintf(contourNumber,"%i",iContour);
+	  string contourName = "contour_" 
+	    + variables[iVariable2] + "_" 
+	    + variables[iVariable1] + "_" 
+	    + contourNumber + "_1D1s";
+	  TGraph* contour = (TGraph*)files[iFile]->Get(contourName.c_str());
+	  if (!contour) {
+	    break;
+	  }
+	  contour->SetLineWidth(2);
+	  contour->SetLineStyle(styles[iFile]);
+	  contour->SetFillStyle(fstyles[iFile]);
+	  contour->SetFillColor(colors1a[iFile]);
+	  contour->SetLineColor(colors1b[iFile]);
 	  if (contour->GetN()>7) {
+	    contour->Draw("fsame");
+	  }
+	  iContour++;
+	}
+      }
+      // loop over the existing files again and draw the contour boundaries
+      for (int iFile = 0; iFile < nFiles; iFile++) {
+	// draw the contours
+	int iContour = 0;
+	while (1) {
+	  char contourNumber[256];
+	  sprintf(contourNumber,"%i",iContour);
+	  string contourName = "contour_" 
+	    + variables[iVariable2] + "_" 
+	    + variables[iVariable1] + "_" 
+	    + contourNumber + "_2D2s";
+	  TGraph* contour = (TGraph*)files[iFile]->Get(contourName.c_str());
+	  if (!contour) {
+	    break;
+	  }
+	  contour->SetLineWidth(2);
+	  contour->SetLineStyle(styles[iFile]);
+	  contour->SetFillStyle(fstyles[iFile]);
+	  contour->SetFillColor(colors2a[iFile]);
+	  contour->SetLineColor(colors2b[iFile]);
+	  if (contour->GetN()>20) {
+	    cout << "drawing contour " << contourName << endl;
 	    contour->Draw("same");
 	  }
 	  if (iContour == 0) {
-	    string legendEntry = "1D 68% CL " + fileNameTags[iFile];
+	    string legendEntry = "2D 95% CL " + fileNameTags[iFile];
 	    legend->AddEntry(contour, legendEntry.c_str(), "l");
 	  }
 	  iContour++;
@@ -255,24 +317,27 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 	  string contourName = "contour_" 
 	    + variables[iVariable2] + "_" 
 	    + variables[iVariable1] + "_" 
-	    + contourNumber + "_2D2s";
-	  cout << "drawing contour " << contourName << endl;
+	    + contourNumber + "_1D1s";
 	  TGraph* contour = (TGraph*)files[iFile]->Get(contourName.c_str());
 	  if (!contour) {
 	    break;
 	  }
 	  contour->SetLineWidth(2);
 	  contour->SetLineStyle(styles[iFile]);
-	  contour->SetLineColor(colors2[iFile]);
+	  contour->SetFillStyle(fstyles[iFile]);
+	  contour->SetFillColor(colors1a[iFile]);
+	  contour->SetLineColor(colors1b[iFile]);
 	  if (contour->GetN()>7) {
+	    cout << "drawing contour " << contourName << endl;
 	    contour->Draw("same");
 	  }
 	  if (iContour == 0) {
-	    string legendEntry = "2D 95% CL " + fileNameTags[iFile];
+	    string legendEntry = "1D 68% CL " + fileNameTags[iFile];
 	    legend->AddEntry(contour, legendEntry.c_str(), "l");
 	  }
 	  iContour++;
 	}
+	iContour = 0;
 	// eventually draw the cross
 	if (iFile == drawCross) {
 	  string crossName1 = "bestFitPointLine_"
@@ -290,8 +355,21 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 	}
       }
       
+      // get the fittino logo
+      TImage *fittinoLogo = 0;
+      if (logoPath!="") {
+	fittinoLogo = TImage::Open(logoPath.c_str());
+	if (!(logoPath=="")) {
+	  if (!fittinoLogo) {
+	    printf("Could not open the fittino logo at %s\n exit\n",logoPath.c_str());
+	    return;
+	  }
+	  fittinoLogo->SetConstRatio(1);
+	  fittinoLogo->SetImageQuality(TAttImage::kImgBest);
+	}
+      }
       // add the fittino logo
-      if (!(logoPath=="")) {
+      if (fittinoLogo) {
 	const float canvasHeight   = canvas->GetWindowHeight();
 	const float canvasWidth    = canvas->GetWindowWidth();
 	const float canvasAspectRatio = canvasHeight/canvasWidth;
@@ -316,6 +394,7 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 	fittinoLogo->Draw("xxx");
 	canvas->cd();
       }
+      
 
       // Draw the legend
       legend->Draw("same");      
@@ -323,8 +402,16 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
       // write output histogram
       string outputName = "markovChain2D2sContours_" 
 	+ variables[iVariable2] + "_" 
-	+ variables[iVariable1] + ".eps";
+	+ variables[iVariable1] + "_" + nameTag + ".eps";
       canvas->Print(outputName.c_str());
+      outputName = "markovChain2D2sContours_" 
+	+ variables[iVariable2] + "_" 
+	+ variables[iVariable1] + "_" + nameTag + ".gif";
+      canvas->Print(outputName.c_str());
+
+      if (fittinoLogo) {
+	fittinoLogo->Delete();
+      }
 
       canvas->Clear();
       

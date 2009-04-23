@@ -69,6 +69,12 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
     variables.push_back("P_Mmess");
     variables.push_back("P_cGrav");
   }
+  else if (model=="Pheno") {
+    variables.push_back("O_massNeutralino1_nofit");
+    variables.push_back("O_Omega_npf"); 
+    variables.push_back("O_massStau1_nofit"); 
+    variables.push_back("O_Omega_npf_nofit"); 
+  }
   else if (model=="MSSM") {
   // MSSM
     variables.push_back("P_MSelectronL");
@@ -119,10 +125,26 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
   // loop over the histograms in the input file
   for (unsigned int fVariable = 0; fVariable < variables.size(); fVariable++) {
     for (unsigned int sVariable = fVariable+1; sVariable < variables.size(); sVariable++) {
+      string crossName1 = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_1";
+      TGraph* crossLine1 = (TGraph*)histInputFile->Get(crossName1.c_str());
+      if (!crossLine1) {
+	cout << "WARNING: crossLine " << crossName1 << " not found" << endl;
+      } else {
+	crossLine1->Write();
+	crossLine1->Delete();
+      }
+      string crossName2 = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_2";
+      TGraph* crossLine2 = (TGraph*)histInputFile->Get(crossName2.c_str());
+      if (!crossLine2) {
+	cout << "WARNING: crossLine " << crossName2 << " not found" << endl;
+      } else {
+	crossLine2->Write();
+	crossLine2->Delete();
+      }
       string histname = "logHist_" + variables[sVariable] + "_" + variables[fVariable];
       TH2D* loghist = (TH2D*)histInputFile->Get(histname.c_str());
       if (!loghist) {
-	cout << "histogram " << histname << " not found" << endl;
+	cout << "WARNING: histogram " << histname << " not found" << endl;
       } else {
 	cout << "histogram " << histname << " found" << endl;
 
@@ -197,7 +219,7 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
 	      contourName = contourName + variables[sVariable] + "_" + variables[fVariable] + "_" + number + "_1D1s";
 	      graph->SetName(contourName.c_str());
 	      graph->Write();
-	      if (graph->GetN()>7) {
+	      if (graph->GetN()>4) {
 		// loop over X and Y values and determine max and min
 		double x = 0.;
 		double y = 0.;
@@ -240,7 +262,7 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
 	      contourName = contourName + variables[sVariable] + "_" + variables[fVariable] + "_" + number + "_2D2s";
 	      graph->SetName(contourName.c_str());
 	      graph->Write();
-	      if (graph->GetN()>7) {
+	      if (graph->GetN()>4) {
 		// loop over X and Y values and determine max and min
 		double x = 0.;
 		double y = 0.;
@@ -288,7 +310,7 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
 	} else { 
 	  emptyHistYMin = emptyHistYMin - 0.05*(emptyHistYMax-emptyHistYMin);
 	}
-	emptyHistYMax = emptyHistYMax + 0.10*(emptyHistYMax-emptyHistYMin);
+	emptyHistYMax = emptyHistYMax + 0.15*(emptyHistYMax-emptyHistYMin);
 
 	cout << "finished evaluating " << histname << endl;
 	cout << "creating new empty hist with envelope " << endl 
