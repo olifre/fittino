@@ -32,6 +32,7 @@ void MakeMarkovChainContour2D (bool bayes = true,
 			       bool doAlsoSM = false,
 			       string model = "mSUGRA",
 			       bool makeOnly2DHistograms = false,
+			       bool requireNeut1LSP = false,
 			       int fixComb = -1 ) 
 {
   //gROOT->SetStyle("MyStyle");
@@ -157,11 +158,16 @@ void MakeMarkovChainContour2D (bool bayes = true,
     }
   }
 
+  int iNeut1Var = -1;
+  int iStau1Var = -1;
+
   // attach variables to ntuple
   if (!bayes) {
     for (unsigned int i = 0; i < variables.size(); i++) {
       if (varThere[i]) {
 	markovChain.SetBranchAddress(variables[i].c_str(),&varValues[i]);
+	if (variables[i]=="O_massNeutralino1_nofit") iNeut1Var = i;
+	if (variables[i]=="O_massStau1_nofit")       iStau1Var = i;
       }
     }
     markovChain.SetBranchAddress("haveAcceptedAtLeastOne",&haveAcceptedAtLeastOne);
@@ -171,12 +177,39 @@ void MakeMarkovChainContour2D (bool bayes = true,
     markovChain.SetBranchAddress("chi2",&chi2);
   }
 
+  float massNeut1Local;
+  float massStau1Local;
+
+  if (requireNeut1LSP) {
+    if (iNeut1Var == -1) {
+      markovChain.SetBranchAddress("O_massNeutralino1_nofit",&massNeut1Local);
+    }
+    if (iStau1Var == -1) {
+      markovChain.SetBranchAddress("O_massStau1_nofit",&massStau1Local);
+    }
+  }
+
 
   double absHighestL = 0.;
   if (!bayes) {
     for (Int_t i=0; i<nEntries; i++) {
       markovChain.GetEntry(i);
       if (chi2<0.) continue;
+      if (requireNeut1LSP) {
+	float thisMassNeut1 = 0.;
+	float thisMassStau1 = 0.;
+	if (iNeut1Var == -1) {
+	  thisMassNeut1 = massNeut1Local;
+	} else {
+	  thisMassNeut1 = varValues[iNeut1Var];
+	}
+	if (iStau1Var == -1) {
+	  thisMassStau1 = massStau1Local;
+	} else {
+	  thisMassStau1 = varValues[iStau1Var];
+	}
+	if (thisMassStau1<thisMassNeut1) continue;
+      }
       if (likelihood > absHighestL) {
 	if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {		
 	  absHighestL = likelihood;
@@ -238,6 +271,21 @@ void MakeMarkovChainContour2D (bool bayes = true,
 	      for (int i = 0; i < nEntries; i++) {
 		markovChain.GetEntry(i);
 		if (chi2<0.) continue;
+		if (requireNeut1LSP) {
+		  float thisMassNeut1 = 0.;
+		  float thisMassStau1 = 0.;
+		  if (iNeut1Var == -1) {
+		    thisMassNeut1 = massNeut1Local;
+		  } else {
+		    thisMassNeut1 = varValues[iNeut1Var];
+		  }
+		  if (iStau1Var == -1) {
+		    thisMassStau1 = massStau1Local;
+		  } else {
+		    thisMassStau1 = varValues[iStau1Var];
+		  }
+		  if (thisMassStau1<thisMassNeut1) continue;
+		}
 		if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {		
 
 		  double val = 2 * TMath::Log(absHighestL)
@@ -583,6 +631,21 @@ void MakeMarkovChainContour2D (bool bayes = true,
 		  bool foundAPoint = false;
 		  for (int i = 0; i < nEntries; i++) {
 		    markovChain.GetEntry(i);
+		    if (requireNeut1LSP) {
+		      float thisMassNeut1 = 0.;
+		      float thisMassStau1 = 0.;
+		      if (iNeut1Var == -1) {
+			thisMassNeut1 = massNeut1Local;
+		      } else {
+			thisMassNeut1 = varValues[iNeut1Var];
+		      }
+		      if (iStau1Var == -1) {
+			thisMassStau1 = massStau1Local;
+		      } else {
+			thisMassStau1 = varValues[iStau1Var];
+		      }
+		      if (thisMassStau1<thisMassNeut1) continue;
+		    }
 		    if (chi2<0.) continue;
 		    // find the highest likelihood
 		    if (fVarValueLow<varValues[fVariable] && varValues[fVariable]<=fVarValueHig &&
