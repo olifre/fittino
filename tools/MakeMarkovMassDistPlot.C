@@ -35,7 +35,8 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
 			     const string tag = "",
 			     const string predicted = "Derived",
 			     const string logoPath = "./logo/fittinologo.jpg",
-			     const bool smooth = false ) 
+			     const bool smooth = false,
+			     const bool requireNeut1LSP = false ) 
 {
 
     // set style
@@ -173,6 +174,10 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
   double mintree = 1000000.;
   double maxtree = -1000000.;
 
+  int neut1Position = -1;
+  int stau1Position = -1;
+
+
   // bind the parameters and observables
   int iChi2 = -1;
   for (int iLeaf = 0; iLeaf < nLeaves; iLeaf++) {
@@ -182,8 +187,22 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
     if (!strcmp("chi2",leaf->GetName())) {
       iChi2 = iLeaf;
     }
+    if (!strncmp("O_massNeutralino1",leaf->GetName(),17)) {
+      neut1Position = iLeaf;
+    }
+    if (!strncmp("O_massStau1",leaf->GetName(),11)) {
+      stau1Position = iLeaf;
+    }
   }
   if (iChi2<0) return;
+
+  if (requireNeut1LSP) {
+    if ( neut1Position == -1 || stau1Position == -1) {
+      cout << "stau1 or neutralino1 not found" << neut1Position << " " << stau1Position << endl;
+      return;
+    }
+  }
+
 
   //  nEntries = 10000;
   cout << "looping over " << nEntries << " entries" << endl;
@@ -193,13 +212,17 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
   double minChi2 = 100000000.;
   for (int i = 0; i < nEntries; i++) {
     tree->GetEntry(i);
+    if (requireNeut1LSP) {
+      if (par[stau1Position]<par[neut1Position]) {
+	continue;
+      }
+    }    
     if (par[iChi2]<minChi2) {
       minChi2 = par[iChi2];
     }
   }
   cout << "found minimal chi2 = " << minChi2 << endl;
   
-
   // find the 2sigma envelope
   vector<int> obsPosition(name.size());
   for (int iname = 0; iname < nameSize; iname++) {
@@ -219,8 +242,14 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
       }
     }
   }
+
   for (int i = 0; i < nEntries; i++) {
     tree->GetEntry(i);
+    if (requireNeut1LSP) {
+      if (par[stau1Position]<par[neut1Position]) {
+	continue;
+      }
+    }
     if (par[iChi2]-minChi2<4.01) {
       for (int iname = 0; iname < nameSize; iname++) {
 	if (par[obsPosition[iname]]<0.) { 
@@ -258,6 +287,11 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
   // fill the oneD histos
   for (int i = 0; i < nEntries; i++) {
     tree->GetEntry(i);
+    if (requireNeut1LSP) {
+      if (par[stau1Position]<par[neut1Position]) {
+	continue;
+      }
+    }
     if (par[iChi2]-minChi2<=4.0) {
       for (int iname = 0; iname < nameSize; iname++) {
 	if (par[obsPosition[iname]]>max && par[obsPosition[iname]]>overflow[iname]) overflow[iname]=par[obsPosition[iname]];
