@@ -154,12 +154,29 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
 	// get the correlations
 	// first, invert the histogram
 	TH2D* inverthist = (TH2D*)loghist->Clone();
-	double inverthistMax = inverthist->GetMaximum();
-	double inverthistMin = inverthist->GetMinimum();
+	double inverthistMax = -11111111111.;
+	double inverthistMin =  11111111111.;
+	for (int invHistBinsX = 1; invHistBinsX<=inverthist->GetXaxis()->GetNbins(); invHistBinsX++) {
+	  for (int invHistBinsY = 1; invHistBinsY<=inverthist->GetYaxis()->GetNbins(); invHistBinsY++) {
+	    //cout << invHistBinsX << " " << invHistBinsY << " " << inverthist->GetBinContent(invHistBinsX,invHistBinsY) << endl;
+	    if (inverthist->GetBinContent(invHistBinsX,invHistBinsY)<inverthistMin) {
+	      inverthistMin=inverthist->GetBinContent(invHistBinsX,invHistBinsY);
+	    }
+	    if (inverthist->GetBinContent(invHistBinsX,invHistBinsY)>inverthistMax) {
+	      inverthistMax=inverthist->GetBinContent(invHistBinsX,invHistBinsY);
+	    }
+	  }
+	}
+	inverthistMax=6.;
 	cout << "loghist min " << inverthistMin << " max " << inverthistMax << endl;
-	for (int invHistBinsX = 1; invHistBinsX<=inverthist->GetXaxis()->GetNBins(); invHistBinsX++) {
-	  for (int invHistBinsY = 1; invHistBinsY<=inverthist->GetYaxis()->GetNBins(); invHistBinsY++) {
-	    inverthist->SetBinContent(invHistBinsX,invHistBinsY,inverthistMax-inverthist->GetBinContent(invHistBinsX,invHistBinsY));
+	for (int invHistBinsX = 1; invHistBinsX<=inverthist->GetXaxis()->GetNbins(); invHistBinsX++) {
+	  for (int invHistBinsY = 1; invHistBinsY<=inverthist->GetYaxis()->GetNbins(); invHistBinsY++) {
+	    if (inverthist->GetBinContent(invHistBinsX,invHistBinsY)>inverthistMax) {
+	      inverthist->SetBinContent(invHistBinsX,invHistBinsY,0.);
+	    }
+	    else {
+	      inverthist->SetBinContent(invHistBinsX,invHistBinsY,inverthistMax-inverthist->GetBinContent(invHistBinsX,invHistBinsY));
+	    }
 	  }
 	}
 	inverthist->Draw("lego");

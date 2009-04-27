@@ -28,6 +28,7 @@
 *******************************************************************************/
 
 #include "TStyle.h"
+#include "TMath.h"
 #include "TH1D.h"
 #include "TH2D.h"
 #include "TGraph.h"
@@ -45,6 +46,8 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "TROOT.h"
+#include <iostream>
 using namespace std;
 
 Double_t chi2Function(Double_t *x, Double_t *par) {
@@ -66,7 +69,7 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
 			    const char* filename3 = "file3",
 			    const Int_t nbins3 = 50,
 			    const char* treename = "tree",
-			    const Double_t chi2cut = -1,
+			    // const Double_t chi2cut = -1,
 			    const string logoPath = "",
 			    const double minDef = -1.,
 			    const double maxDef = -1. ) {
@@ -123,16 +126,16 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
     
   }
   
-  Int_t nLeaves = tree[0]->GetListOfLeaves()->GetEntriesFast();
-  Int_t nPlots = tree[0]->GetListOfLeaves()->GetEntriesFast(); // nPlots = nLeaves
+  Int_t nLeaves = tree[0]->GetListOfLeaves()->GetEntries();
+  //Int_t nPlots = tree[0]->GetListOfLeaves()->GetEntriesFast(); // nPlots = nLeaves
   
-  Int_t nLeaves1 = tree[1]->GetListOfLeaves()->GetEntriesFast();
-  Int_t nPlots1 = tree[1]->GetListOfLeaves()->GetEntriesFast(); // nPlots = nLeaves
+  Int_t nLeaves1 = tree[1]->GetListOfLeaves()->GetEntries();
+  //Int_t nPlots1 = tree[1]->GetListOfLeaves()->GetEntriesFast(); // nPlots = nLeaves
   
   Int_t nLeaves2 = 0;
   Int_t nPlots2 = 0;
   if (strncmp(filename_arr[2],"file",4)) {
-    nLeaves2 = tree[2]->GetListOfLeaves()->GetEntriesFast();
+    nLeaves2 = tree[2]->GetListOfLeaves()->GetEntries();
     nPlots2 = tree[2]->GetListOfLeaves()->GetEntriesFast(); // nPlots = nLeaves
   }
   
@@ -142,20 +145,20 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
   nLeavesPerFile[2] = nLeaves2;
   
   Double_t* par   = new Double_t[nLeaves];
-  Double_t* sum   = new Double_t[nLeaves];
-  Double_t* sum2  = new Double_t[nLeaves];
+  //Double_t* sum   = new Double_t[nLeaves];
+  //Double_t* sum2  = new Double_t[nLeaves];
   TH1F* histo[3];
   TH1F* insertHisto[3];
   //TH1F**    histo = new TH1F[2];
   TF1* gauss[3];
   TF1* insertGauss[3];
   //TF1**     gauss = new TF1[2];
-  TF1* chi2TF1[3];
+  //TF1* chi2TF1[3];
   //TF1**     chi2  = new TF1[2];
   //  Color_t   color[3] = {kRed, kGreen, kBlue};
   Color_t   color[3] = {46,38,41};
   //Color_t   color[3] = {kRed, kBlue};
-  Double_t  nbins[3] = {nbins1, nbins2, nbins3};
+  Int_t  nbins[3] = {nbins1, nbins2, nbins3};
   //Double_t  nbins[2] = {nbins1, nbins2};
   
   // ----- loop over leaves in tree -----
@@ -319,7 +322,7 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
       
       // ----- fill histo
       
-      for (unsigned int iEntry=0; iEntry<nEntries[iFile]; iEntry++) {
+      for (int iEntry=0; iEntry<nEntries[iFile]; iEntry++) {
 	
 	tree[iFile]->GetEntry(iEntry);
 	
@@ -469,13 +472,13 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
 
   // omega measurements
   double presentMeasPecision = 0.0062;
-  double presentMeanValue =    0.1099;
+  //double presentMeanValue =    0.1099;
   double fittedMeanvalue =     0.194005;
-  double futureMeasPrecision = 0.0002;
+  //double futureMeasPrecision = 0.0002;
 
   // print Omega
   TBox* omegaBox = new TBox((fittedMeanvalue-2.*presentMeasPecision)/omegaExpModel,0.,
-			    (fittedMeanvalue+2.*presentMeasPecision)/omegaExpModel,histo[histOrder[0]]->GetMaximum()*1.1245);
+			    (fittedMeanvalue+2.*presentMeasPecision)/omegaExpModel,histo[histOrder[0]]->GetMaximum()*1.095);
   omegaBox->SetFillColor(kYellow-9);
  
   cout << "print the histograms" << endl;
@@ -535,7 +538,7 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
   TLegend *legend = new TLegend(0.15,0.68,0.95,0.88); 
   legend->SetFillStyle(0);
   legend->SetTextSize(0.03);
-  legend->SetBorderSize(0.0);
+  legend->SetBorderSize(0);
   char legendHist1[256];
   char legendHist2[256];
   char legendHist3[256];
@@ -549,7 +552,7 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
   legend->Draw();
 
   // draw insert
-  TPad *insertPad = new TPad("insertPad", "insertPad", 0.18,0.22,0.5,0.68);
+  TPad *insertPad = new TPad("insertPad", "insertPad", 0.18,0.22,0.7,0.68);
   insertPad->Draw("same");
   insertPad->cd();
   for (unsigned int iFile=0; iFile<3; iFile++) {
@@ -580,7 +583,7 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
     const float canvasWidth    = c->GetWindowWidth();
     const float canvasAspectRatio = canvasHeight/canvasWidth;
     const float width          = 0.22;
-    const float xLowerEdge     = 0.78;
+    const float xLowerEdge     = 0.05;
     const float yLowerEdge     = 0.88;
     const float xUpperEdge     = xLowerEdge+width;
     const float yUpperEdge     = yLowerEdge+width*fittinoLogo->GetHeight()/fittinoLogo->GetWidth()/canvasAspectRatio;
