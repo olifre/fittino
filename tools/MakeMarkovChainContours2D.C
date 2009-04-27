@@ -133,6 +133,7 @@ void MakeMarkovChainContour2D (bool bayes = true,
   }
   float haveAcceptedAtLeastOne;
   float nStep;
+  float globalIter;
   float likelihood;
   float chi2;
 
@@ -165,22 +166,24 @@ void MakeMarkovChainContour2D (bool bayes = true,
     }
     markovChain.SetBranchAddress("haveAcceptedAtLeastOne",&haveAcceptedAtLeastOne);
     markovChain.SetBranchAddress("n",&nStep);
+    markovChain.SetBranchAddress("globalIter",&globalIter);
     markovChain.SetBranchAddress("likelihood",&likelihood);
     markovChain.SetBranchAddress("chi2",&chi2);
   }
 
 
   double absHighestL = 0.;
-  for (Int_t i=0; i<nEntries; i++) {
-    markovChain.GetEntry(i);
-    if (chi2<0.) continue;
-    if (likelihood > absHighestL) {
-      if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {		
-	absHighestL = likelihood;
+  if (!bayes) {
+    for (Int_t i=0; i<nEntries; i++) {
+      markovChain.GetEntry(i);
+      if (chi2<0.) continue;
+      if (likelihood > absHighestL) {
+	if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {		
+	  absHighestL = likelihood;
+	}
       }
     }
   }
-
 
   // open output file for the contours
   TFile* contourOutputFile = new TFile (contourOutputFileName.c_str(), "RECREATE");
@@ -219,7 +222,7 @@ void MakeMarkovChainContour2D (bool bayes = true,
 		":" +
 		variables[sVariable] +
 		">>thisHist";
-	      markovChain.Draw(plotCommand.c_str(),"n>2000 && haveAcceptedAtLeastOne == 1 && accpoint==1");
+	      markovChain.Draw(plotCommand.c_str(),"globalIter>20000 && haveAcceptedAtLeastOne == 1 && accpoint==1");
 	      //	      markovChain.Draw(plotCommand.c_str(),"n>2000");
 	      thisHist = (TH2D*)gDirectory->Get("thisHist");
 	    }
