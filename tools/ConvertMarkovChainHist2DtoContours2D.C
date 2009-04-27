@@ -45,6 +45,9 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
   TFile* histInputFile = new TFile (histInputFileName.c_str(), "READ");
 
 
+  // open text file
+  ofstream correlationsOutputFile ("correlationsResults.txt",ios::out);
+
   TCanvas* canvas = new TCanvas();
   canvas->SetRightMargin(0.05);
   canvas->SetBorderMode(0);
@@ -147,6 +150,28 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
 	cout << "WARNING: histogram " << histname << " not found" << endl;
       } else {
 	cout << "histogram " << histname << " found" << endl;
+
+	// get the correlations
+	// first, invert the histogram
+	TH2D* inverthist = (TH2D*)loghist->Clone();
+	double inverthistMax = inverthist->GetMaximum();
+	double inverthistMin = inverthist->GetMinimum();
+	cout << "loghist min " << inverthistMin << " max " << inverthistMax << endl;
+	for (int invHistBinsX = 1; invHistBinsX<=inverthist->GetXaxis()->GetNBins(); invHistBinsX++) {
+	  for (int invHistBinsY = 1; invHistBinsY<=inverthist->GetYaxis()->GetNBins(); invHistBinsY++) {
+	    inverthist->SetBinContent(invHistBinsX,invHistBinsY,inverthistMax-inverthist->GetBinContent(invHistBinsX,invHistBinsY));
+	  }
+	}
+	inverthist->Draw("lego");
+	canvas->Print("test.eps");
+	double correlationFactor = inverthist->GetCorrelationFactor();
+
+	correlationsOutputFile << "correlation factor between " 
+			       << variables[fVariable] << " and " 
+			       << variables[sVariable] << " = " 
+			       << correlationFactor << endl; 
+
+	inverthist->Delete();
 
 	// draw the histogram
 	cout << "finished setting the axis, now drawing the contour list" << endl;
@@ -354,6 +379,6 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
   
   contourOutputFile->Close();
   histInputFile->Close();
-
+  correlationsOutputFile.close();
 
 }
