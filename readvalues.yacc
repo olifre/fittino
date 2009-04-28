@@ -164,6 +164,7 @@ bool          yyToyFitShakeFittedVecBeforeStart = false;
 bool          yySetErrorFlag = false;
 bool          yyUseSimplexMinOnly = false;
 bool          yyUseSimplexMin = true;
+bool          yyRequireNeut1LSP = false;
 
 unsigned int yyCalculator;
 unsigned int yyRelicDensityCalculator;
@@ -1302,6 +1303,10 @@ input:
 		      if ($3 == on) yyUseSimplexMinOnly = true;
 		      else yyUseSimplexMinOnly = false;
 		  } 
+		  if (!strcmp($2, "yyRequireNeut1LSP")) {
+		      if ($3 == on) yyRequireNeut1LSP = true;
+		      else yyRequireNeut1LSP = false;
+		  }
 		  if (!strcmp($2, "UseSimplexMin")) {
 		      if ($3 == on) yyUseSimplexMin = true;
 		      else yyUseSimplexMin = false;

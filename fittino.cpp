@@ -3384,12 +3384,53 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    }
 
    if (yySetErrorFlag) {
-     cerr << "Exiting fitterFCN because of Syntax Error in the LesHouches File" << endl;                                                                      
-     f = 111111111111.;                                                                                                                                                
-     cout << " f = " << f << endl;                                                                                                                                     
+     cerr << "Exiting fitterFCN because of Syntax Error in the LesHouches File" << endl;
+     f = 111111111111.;  
+     cout << " f = " << f << endl;
      return;  
    }
    yySetErrorFlag = false;
+
+   if (yyRequireNeut1LSP) {
+     // search for particle masses
+     double massNeut1 = -1.;
+     double massChar1 = -1.;
+     double massSlepL = -1.;
+     double massSlepR = -1.;
+     double massStau1 = -1.;
+     for (unsigned int i = 0; i < yyMeasuredVec.size(); i++) {
+       if (yyMeasuredVec[i].name == "massNeutralino1") {
+	 massNeut1 = yyMeasuredVec[i].theovalue;
+       }
+       if (yyMeasuredVec[i].name == "massChargino1") {
+	 massChar1 = yyMeasuredVec[i].theovalue;
+       }
+       if (yyMeasuredVec[i].name == "massSelectronL") {
+	 massSlepL = yyMeasuredVec[i].theovalue;
+       }
+       if (yyMeasuredVec[i].name == "massSelectronR") {
+	 massSlepR = yyMeasuredVec[i].theovalue;
+       }
+       if (yyMeasuredVec[i].name == "massStau1") {
+	 massStau1 = yyMeasuredVec[i].theovalue;
+       }
+     }
+     // check the masses
+     //cout << "masses of lightest sparticles " << massNeut1 << " " << massChar1 << " " << massSlepL << " " << massSlepR << " " << massStau1 << endl;
+     if (massNeut1<0.) {
+       cout << "WARNING: RequireNeut1LSP set but no neutralino1 mass among the observables" << endl;
+     } else if (massChar1<0. && massSlepL<0. && massSlepR<0. && massStau1<0.) {
+       cout << "WARNING: RequireNeut1LSP set but no selectron, chargino and stau masses among the observables" << endl;
+     } else if ( (massNeut1>massChar1 && massChar1>0.) || 
+		 (massNeut1>massSlepL && massSlepL>0.) || 
+		 (massNeut1>massSlepR && massSlepR>0.) || 
+		 (massNeut1>massStau1 && massStau1>0.) ) {
+       cout << "Neut1 is not the LSP" << endl;
+       f = 111111111111.;  
+       cout << " f = " << f << endl;
+       return;  
+     }
+   }
 
    // end loop over crosssections and polarisations:
    //  }

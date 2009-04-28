@@ -84,6 +84,7 @@ extern bool yyToyFitShakeFittedVecBeforeStart;
 extern bool          yySetErrorFlag ;
 extern bool yyUseSimplexMinOnly;
 extern bool yyUseSimplexMin;
+extern bool yyRequireNeut1LSP;
 
 extern unsigned int yyNumberOfMinimizations;
 extern unsigned int yySeedForObservableScattering;
