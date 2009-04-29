@@ -21,7 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
+#include <stdlib.h>
 #include <input.h>
 #include <yy.h>
 #include <units.h>

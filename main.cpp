@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
+#include <stdlib.h>
 #include <input.h>
 #include <fittino.h>
 #include <units.h>

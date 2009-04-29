@@ -36,6 +36,7 @@ email                : philip.bechtle@desy.de, peter.wienemann@desy.de
 #include <sys/wait.h>
 #include <sys/signal.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #include <TRandom.h>
 #include <TMath.h>
