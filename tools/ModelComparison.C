@@ -43,10 +43,25 @@
 #include "TLegend.h"
 #include "TLine.h"
 #include "TLatex.h"
+#include "TMath.h"
+#include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 #include <map>
 using namespace std;
+
+Double_t chi2Function(Double_t *x, Double_t *par)
+{
+    Double_t retval = 0;
+
+    if ( TMath::Power(2, 0.5*par[1]) * TMath::Gamma(0.5*par[1]) ) {
+      retval = (par[0]*(TMath::Power(x[0], 0.5*par[1] - 1) * TMath::Exp(-0.5*x[0]) /
+			(TMath::Power(2, 0.5*par[1]) * TMath::Gamma(0.5*par[1]))));
+    }
+
+    return retval;
+}
 
 void ModelComparison (const Int_t nbins = 50, 
 		      const char* filename1 = "PullDistributions1.sum.root",
@@ -58,12 +73,19 @@ void ModelComparison (const Int_t nbins = 50,
 		      const char* treename1 = "tree", 
 		      const char* treename2 = "tree", 
 		      const Double_t chi2cut = -1,
-		      const string logoPath = "" )
+		      const string logoPath = "",
+		      const bool doFit = true )
 {
-  // gROOT->SetStyle("ATLAS");
-  // gROOT->ForceStyle();
-  gStyle->SetOptStat(111111);
-  gStyle->SetOptFit(0);
+
+  gROOT->SetStyle("ATLAS");
+  gROOT->ForceStyle();
+  if (doFit) {
+    gStyle->SetOptStat(0);
+    gStyle->SetOptFit(111111);
+  } else {
+    gStyle->SetOptStat(1111);
+    gStyle->SetOptFit(0);
+  }
 
   TFile* file1 = new TFile(filename1, "read");
   TFile* file2 = new TFile(filename2, "read");
@@ -89,6 +111,10 @@ void ModelComparison (const Int_t nbins = 50,
     return;
   }
 
+  // open text file
+  fstream pullFitsFile;
+  pullFitsFile.open ("pullFitsResults.txt",ofstream::out);
+
   Int_t nEntries1 = tree1->GetEntries();
   Int_t nEntries2 = tree2->GetEntries();
 
@@ -106,6 +132,10 @@ void ModelComparison (const Int_t nbins = 50,
 
   Char_t xtitle[256];
   Char_t ytitle[256];
+  Char_t xtitle1D[256];
+
+  Color_t   color[3] = {kBlack, kBlue-2, kRed-2};
+
 
   int nPoints = 0;
   int nInverted = 0;
@@ -143,11 +173,18 @@ void ModelComparison (const Int_t nbins = 50,
   Double_t* sum   = new Double_t[nCommonLeaves];
   Double_t* sum2  = new Double_t[nCommonLeaves];
   TH2D*    histo[nCommonLeaves];
+  TH1D*    histo1D[nCommonLeaves];
+  TH1D*    histo1DMod1[nCommonLeaves];
+  TH1D*    histo1DMod2[nCommonLeaves];
   Int_t ntoy1;
   Int_t ntoy2;
 
-  //   TF1**     gauss = new TF1[nCommonLeaves];
-  //    TF1*      chi2  = 0;
+  TF1*     gaussComb[nCommonLeaves];
+  TF1*     chi2Comb  = 0;
+  TF1*     gaussMod1[nCommonLeaves];
+  TF1*     chi2Mod1  = 0;
+  TF1*     gaussMod2[nCommonLeaves];
+  TF1*     chi2Mod2  = 0;
 
   /*
   cout << "List of common leaves:" << endl;
@@ -222,8 +259,41 @@ void ModelComparison (const Int_t nbins = 50,
     minSave[iLeaf] = min;
     maxSave[iLeaf] = max;
       
-    histo[iLeaf] = new TH2D(leaf1name, "", nbins, min, max, nbins, min, max );
+    string histoName = leaf1name;
+    histoName = histoName + "_2D";
+    histo[iLeaf]   = new TH2D(histoName.c_str(), "", nbins, min, max, nbins, min, max );
+    histoName = leaf1name;
+    histoName = histoName + "_1D";
+    histo1D[iLeaf] = new TH1D(histoName.c_str(), "", nbins, min, max );
+    histoName = leaf1name;
+    histoName = histoName + "_1DMod1";
+    histo1DMod1[iLeaf] = new TH1D(histoName.c_str(), "", nbins, min, max );
+    histoName = leaf1name;
+    histoName = histoName + "_1DMod2";
+    histo1DMod2[iLeaf] = new TH1D(histoName.c_str(), "", nbins, min, max );
       
+    histo1D[iLeaf]->SetMarkerStyle(8);
+    histo1D[iLeaf]->SetMarkerSize(1.2);
+    histo1D[iLeaf]->SetOption("marker");
+    histo1D[iLeaf]->SetMarkerColor(color[0]);
+    histo1D[iLeaf]->SetLineColor(color[0]);
+
+    histo1DMod1[iLeaf]->SetMarkerStyle(8);
+    histo1DMod1[iLeaf]->SetMarkerSize(0.6);
+    histo1DMod1[iLeaf]->SetOption("marker");
+    histo1DMod1[iLeaf]->SetMarkerColor(color[1]);
+    histo1DMod1[iLeaf]->SetLineColor(color[1]);
+    histo1DMod1[iLeaf]->SetStats(kFALSE); // disable fit statistics display
+
+    histo1DMod2[iLeaf]->SetMarkerStyle(8);
+    histo1DMod2[iLeaf]->SetMarkerSize(0.6);
+    histo1DMod2[iLeaf]->SetOption("marker");
+    histo1DMod2[iLeaf]->SetMarkerColor(color[2]);
+    histo1DMod2[iLeaf]->SetLineColor(color[2]);
+    histo1DMod2[iLeaf]->SetStats(kFALSE); // disable fit statistics display
+
+
+
     histo[iLeaf]->SetMarkerStyle(8);
     histo[iLeaf]->SetMarkerSize(1.2);
     histo[iLeaf]->SetOption("marker");
@@ -261,6 +331,7 @@ void ModelComparison (const Int_t nbins = 50,
     else if (!strcmp(leaf1name, "Lambda")) strcpy(xtitle, "#lambda (GeV)");
     else if (!strcmp(leaf1name, "cGrav")) strcpy(xtitle, "C_{Grav}");
     else strcpy(xtitle, leaf1name);
+    sprintf(xtitle1D,"%s",xtitle);
     sprintf(xtitle,"%s (%s)",xtitle,tag1);
     if (!strcmp(leaf2name, "TanBeta")) strcpy(ytitle, "tan #beta");
     else if (!strcmp(leaf2name, "Mu")) strcpy(ytitle, "#mu (GeV)");
@@ -308,6 +379,51 @@ void ModelComparison (const Int_t nbins = 50,
     histo[iLeaf]->GetYaxis()->SetTitleSize(0.05);
     histo[iLeaf]->GetYaxis()->SetTitleOffset(1.3);
 
+    histo1D[iLeaf]->SetXTitle(xtitle1D);
+    histo1D[iLeaf]->SetYTitle("Toy fits");
+    histo1D[iLeaf]->GetXaxis()->CenterTitle();
+    histo1D[iLeaf]->GetXaxis()->SetTitleSize(0.05);
+    histo1D[iLeaf]->GetXaxis()->SetTitleOffset(1.2);
+    histo1D[iLeaf]->GetXaxis()->SetLabelSize(0.05);
+    histo1D[iLeaf]->GetYaxis()->SetLabelSize(0.05);
+    histo1D[iLeaf]->GetYaxis()->CenterTitle();
+    histo1D[iLeaf]->GetYaxis()->SetTitleSize(0.05);
+    histo1D[iLeaf]->GetYaxis()->SetTitleOffset(1.3);
+
+    gaussComb[iLeaf] = new TF1("gaussComb", "gaus", histo[iLeaf]->GetXaxis()->GetXmin(),
+			   histo[iLeaf]->GetXaxis()->GetXmax());
+    gaussComb[iLeaf]->SetLineColor(color[0]);
+    gaussComb[iLeaf]->SetLineWidth(3);
+    gaussMod1[iLeaf] = new TF1("gaussMod1", "gaus", histo[iLeaf]->GetXaxis()->GetXmin(),
+			   histo[iLeaf]->GetXaxis()->GetXmax());
+    gaussMod1[iLeaf]->SetLineColor(color[1]);
+    gaussMod1[iLeaf]->SetLineWidth(1);
+    gaussMod2[iLeaf] = new TF1("gaussMod2", "gaus", histo[iLeaf]->GetXaxis()->GetXmin(),
+			   histo[iLeaf]->GetXaxis()->GetXmax());
+    gaussMod2[iLeaf]->SetLineColor(color[2]);
+    gaussMod2[iLeaf]->SetLineWidth(1);
+    
+    if (!strcmp(leaf1name, "Chi2")) {
+      chi2Comb = new TF1("chi2Comb", chi2Function,
+		     TMath::Max( histo[iLeaf]->GetXaxis()->GetXmin(), 0.0),
+		     histo[iLeaf]->GetXaxis()->GetXmax(), 2);
+      chi2Comb->SetParNames("norm", "ndf");
+      chi2Comb->SetLineColor(color[0]);
+      chi2Comb->SetLineWidth(3);
+      chi2Mod1 = new TF1("chi2Mod1", chi2Function,
+		     TMath::Max( histo[iLeaf]->GetXaxis()->GetXmin(), 0.0),
+		     histo[iLeaf]->GetXaxis()->GetXmax(), 2);
+      chi2Mod1->SetParNames("norm", "ndf");
+      chi2Mod1->SetLineColor(color[1]);
+      chi2Mod1->SetLineWidth(1);
+      chi2Mod2 = new TF1("chi2Mod2", chi2Function,
+		     TMath::Max( histo[iLeaf]->GetXaxis()->GetXmin(), 0.0),
+		     histo[iLeaf]->GetXaxis()->GetXmax(), 2);
+      chi2Mod2->SetParNames("norm", "ndf");
+      chi2Mod2->SetLineColor(color[2]);
+      chi2Mod2->SetLineWidth(1);
+    }
+    
     if (!strcmp(leaf1name, "Chi2") || !strcmp(leaf2name, "Chi2")) {
       iChi2Leaf = iLeaf;
     }
@@ -369,6 +485,14 @@ void ModelComparison (const Int_t nbins = 50,
 	  if (chi2cut < 0 || ( !(chi2cut < 0) && chi2val1 < chi2cut ) ) {
 	    histo[iLeaf]->Fill(par1[iLeaf],par2[iLeaf]);
 	      
+	    if (chi2val1<chi2val2) {
+	      histo1D[iLeaf]->Fill(par1[iLeaf]);
+	    } else {
+	      histo1D[iLeaf]->Fill(par2[iLeaf]);
+	    }
+	    histo1DMod1[iLeaf]->Fill(par1[iLeaf]);
+	    histo1DMod2[iLeaf]->Fill(par2[iLeaf]);
+
 	    sum[iLeaf]  += par1[iLeaf];
 	    sum2[iLeaf] += par1[iLeaf] * par1[iLeaf];
 	  }
@@ -469,6 +593,115 @@ void ModelComparison (const Int_t nbins = 50,
       fittinoLogo->Delete();
     }
 
+    // now fit and plot the 1D plots
+    c->Clear();
+
+    // add a legend
+    TLegend *legend = new TLegend(0.7,0.62,0.98,0.75,"");
+
+    // fit the chi2
+    if (!strcmp(commonLeaves[iLeaf].c_str(), "Chi2")) {
+      if (doFit) {
+	chi2Comb->SetParameter(0,0.1*histo1D[iLeaf]->Integral());
+	chi2Comb->SetParameter(1,histo1D[iLeaf]->GetMean());
+	histo1D[iLeaf]->Fit(chi2Comb, "rem");
+	chi2Mod1->SetParameter(0,0.1*histo1DMod1[iLeaf]->Integral());
+	chi2Mod1->SetParameter(1,histo1DMod1[iLeaf]->GetMean());
+	histo1DMod1[iLeaf]->Fit(chi2Mod1, "rem");
+	chi2Mod2->SetParameter(0,0.1*histo1DMod2[iLeaf]->Integral());
+	chi2Mod2->SetParameter(1,histo1DMod2[iLeaf]->GetMean());
+	histo1DMod2[iLeaf]->Fit(chi2Mod2, "rem");
+      }
+      histo1D[iLeaf]->Draw("ep");
+      histo1DMod1[iLeaf]->Draw("epsame");
+      histo1DMod2[iLeaf]->Draw("epsame");
+      histo1D[iLeaf]->Draw("epsame");
+    } else {
+      if (strcmp(commonLeaves[iLeaf].c_str(), "Kppinn_npf")) {
+	if (doFit) {
+	  gaussComb[iLeaf]->SetParameter(0,0.1*histo1D[iLeaf]->Integral());
+	  gaussComb[iLeaf]->SetParameter(1,histo1D[iLeaf]->GetMean());
+	  gaussComb[iLeaf]->SetParameter(2,histo1D[iLeaf]->GetRMS());
+	  histo1D[iLeaf]->Fit(gaussComb[iLeaf], "rem");
+	  gaussMod1[iLeaf]->SetParameter(0,0.1*histo1DMod1[iLeaf]->Integral());
+	  gaussMod1[iLeaf]->SetParameter(1,histo1DMod1[iLeaf]->GetMean());
+	  gaussMod1[iLeaf]->SetParameter(2,histo1DMod1[iLeaf]->GetRMS());
+	  histo1DMod1[iLeaf]->Fit(gaussMod1[iLeaf], "rem");
+	  gaussMod2[iLeaf]->SetParameter(0,0.1*histo1DMod2[iLeaf]->Integral());
+	  gaussMod2[iLeaf]->SetParameter(1,histo1DMod2[iLeaf]->GetMean());
+	  gaussMod2[iLeaf]->SetParameter(2,histo1DMod2[iLeaf]->GetRMS());
+	  histo1DMod2[iLeaf]->Fit(gaussMod2[iLeaf], "rem");
+	}
+	histo1D[iLeaf]->Draw("ep");
+	histo1DMod1[iLeaf]->Draw("epsame");
+	histo1DMod2[iLeaf]->Draw("epsame");
+	histo1D[iLeaf]->Draw("epsame");
+
+	Double_t mean = sum[iLeaf] / nEntries1;
+	Double_t mu = gaussComb[iLeaf]->GetParameter(1);
+	Double_t rms = TMath::Sqrt((sum2[iLeaf] - sum[iLeaf] * sum[iLeaf]
+				    / nEntries1 ) / nEntries1);
+	Double_t sigma = gaussComb[iLeaf]->GetParameter(2);
+	double rmsSigmaRatio = 100000.;
+	if (sigma>0.) rmsSigmaRatio = (rms - sigma) / sigma;
+	printf("mean = %f             mu    = %f\n", mean, mu);
+	printf("RMS  = %f             sigma = %f\n", rms, sigma);
+	printf("%s: (RMS - Sigma) / Sigma = %f\n", commonLeaves[iLeaf].c_str(),
+	       rmsSigmaRatio);
+	// write ot the fit result to a file
+	pullFitsFile << commonLeaves[iLeaf].c_str() << " = " << mu << " +- " << sigma << " (Mean+-Var: " << mean << "+-" << rms << ") deviation from gaussian: " << rmsSigmaRatio << endl;
+      }
+    }
+
+    legend->AddEntry(histo1D[iLeaf],     "Combined Fit", "l");
+    legend->AddEntry(histo1DMod1[iLeaf], tag1, "l");
+    legend->AddEntry(histo1DMod2[iLeaf], tag2, "l");
+    legend->Draw("same");
+
+    fittinoLogo = 0;
+    if (logoPath!="") {
+      // get the fittino logo
+      fittinoLogo = TImage::Open(logoPath.c_str());
+      if (!fittinoLogo) {
+	printf("Could not open the fittino logo at %s\n exit\n",logoPath.c_str());
+	return;
+      }
+      fittinoLogo->SetConstRatio(1);
+      fittinoLogo->SetImageQuality(TAttImage::kImgBest);
+      
+      const float canvasHeight   = c->GetWindowHeight();
+      const float canvasWidth    = c->GetWindowWidth();
+      const float canvasAspectRatio = canvasHeight/canvasWidth;
+      const float width          = 0.22;
+      const float xLowerEdge     = 0.02;
+      const float yLowerEdge     = 0.88;
+      const float xUpperEdge     = xLowerEdge+width;
+      const float yUpperEdge     = yLowerEdge+width*fittinoLogo->GetHeight()/fittinoLogo->GetWidth()/canvasAspectRatio;
+      cout << " xLowerEdge  = " << xLowerEdge << "\n"
+	   << " yLowerEdge  = " << yLowerEdge << "\n"
+	   << " xUpperEdge  = " << xUpperEdge << "\n"
+	   << " yUpperEdge  = " << yUpperEdge << "\n"
+	   << " Imagewidth  = " << fittinoLogo->GetWidth() << "\n"
+	   << " Imageheight = " << fittinoLogo->GetHeight() << "\n"
+	   << " canvasHeight= " << canvasHeight << "\n"
+	   << " canvasWidth = " << canvasWidth  << "\n"
+	   << endl;
+      //  TPad *fittinoLogoPad = new TPad("fittinoLogoPad", "fittinoLogoPad", 0.85, 0.85, 0.98, 0.85+d*fittinoLogo->GetHeight()/fittinoLogo->GetWidth());
+      TPad *fittinoLogoPad = new TPad("fittinoLogoPad", "fittinoLogoPad", xLowerEdge, yLowerEdge, xUpperEdge, yUpperEdge);
+      fittinoLogoPad->Draw("same");
+      fittinoLogoPad->cd();
+      fittinoLogo->Draw("xxx");
+      c->cd();
+    }
+
+    sprintf(epsfilename, "%s_combined1DPlot.eps", commonLeaves[iLeaf].c_str());
+    c->Print(epsfilename);
+
+    if (logoPath!="") {     
+      fittinoLogo->Delete();
+    }
+
+    legend->Delete();
 
   }
 
@@ -480,4 +713,9 @@ void ModelComparison (const Int_t nbins = 50,
     delete histo[iLeaf];
   }
   delete c;
+
+  pullFitsFile.close();
+
+  return;
+
 }
