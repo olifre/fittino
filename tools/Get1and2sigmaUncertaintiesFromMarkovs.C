@@ -29,7 +29,8 @@ using namespace std;
 void Get1and2sigmaUncertaintiesFromMarkovs ( int maxevents = -1,
 					     string inputFileName = "markovContours.root",
 					     bool doAlsoSM = false,
-					     string model = "mSUGRA" )
+					     string model = "mSUGRA",
+					     bool requireNeut1LSP = false )
 {
   //gROOT->SetStyle("MyStyle");
   //gROOT->ForceStyle();
@@ -179,11 +180,40 @@ void Get1and2sigmaUncertaintiesFromMarkovs ( int maxevents = -1,
   markovChain->SetBranchAddress("chi2",&chi2);
 
 
+  int neut1Position = -1;
+  int stau1Position = -1;
+  float* par   = new float[nLeaves];
+  vector<string> parNames;
+
+  // bind the observables
+  for (int iLeaf = 0; iLeaf < nLeaves; iLeaf++) {
+    TLeafD* leaf = (TLeafD*)markovChain->GetListOfLeaves()->At(iLeaf);
+    if (!strncmp("O_massNeutralino1",leaf->GetName(),17)) {
+      neut1Position = iLeaf;
+      leaf->SetAddress(&par[iLeaf]);
+    }
+    if (!strncmp("O_massStau1",leaf->GetName(),11)) {
+      stau1Position = iLeaf;
+      leaf->SetAddress(&par[iLeaf]);
+    }
+  }
+  if (requireNeut1LSP) {
+    if ( neut1Position == -1 || stau1Position == -1) {
+      cout << "stau1 or neutralino1 not found" << neut1Position << " " << stau1Position << endl;
+      return;
+    }
+  }
+
 
   double absHighestL = 0.;
   for (Int_t i=0; i<nEntries; i++) {
     markovChain->GetEntry(i);
     if (chi2<0.) continue;
+    if (requireNeut1LSP) {
+      if (par[stau1Position]<par[neut1Position]) {
+	continue;
+      }
+    }    
     if (likelihood > absHighestL) {
       if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {		
 	absHighestL = likelihood;
@@ -210,6 +240,11 @@ void Get1and2sigmaUncertaintiesFromMarkovs ( int maxevents = -1,
       double valMin = 100000000.;
       for (int i = 0; i < nEntries; i++) {
 	markovChain->GetEntry(i);
+	if (requireNeut1LSP) {
+	  if (par[stau1Position]<par[neut1Position]) {
+	    continue;
+	  }
+	}
 	if (chi2<0.) continue;
 	if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {		
 	  

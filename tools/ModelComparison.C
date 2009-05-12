@@ -26,6 +26,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "TROOT.h"
 #include "TStyle.h"
 #include "TH1D.h"
 #include "TH2D.h"
@@ -37,13 +38,14 @@
 #include "TTree.h"
 #include "TCanvas.h"
 #include "TLeafD.h"
+#include "TLeafI.h"
 #include "TImage.h"
 #include "TLegend.h"
 #include "TLine.h"
 #include "TLatex.h"
 #include <string>
-//#include <vector>
-//#include <map>
+#include <vector>
+#include <map>
 using namespace std;
 
 void ModelComparison (const Int_t nbins = 50, 
@@ -100,7 +102,7 @@ void ModelComparison (const Int_t nbins = 50,
 
   Int_t iChi2Leaf = -1; // vector index of chi2
   Int_t iRandSeed = -1; // vector index of randSeed
-  Int_t iToy = -1; // vector index of nToy leaf
+  // Int_t iToy = -1; // vector index of nToy leaf
 
   Char_t xtitle[256];
   Char_t ytitle[256];
@@ -111,8 +113,8 @@ void ModelComparison (const Int_t nbins = 50,
   vector<string> commonLeaves;
   if (nLeaves1 >= nLeaves2) {
     for (Int_t iLeaf=0; iLeaf<nLeaves1; iLeaf++) {    
-      leaf1 = (TLeafD*)tree1->GetListOfLeaves()->At(iLeaf);
-      leaf2 = (TLeafD*)tree2->GetListOfLeaves()->FindObject(leaf1->GetName());
+      TLeafD* leaf1 = (TLeafD*)tree1->GetListOfLeaves()->At(iLeaf);
+      TLeafD* leaf2 = (TLeafD*)tree2->GetListOfLeaves()->FindObject(leaf1->GetName());
       if (leaf2) {
 	if (!strcmp(leaf1->GetName(), leaf2->GetName())) {
 	  commonLeaves.push_back(leaf1->GetName());
@@ -122,8 +124,8 @@ void ModelComparison (const Int_t nbins = 50,
   }
   else {
     for (Int_t iLeaf=0; iLeaf<nLeaves2; iLeaf++) {    
-      leaf2 = (TLeafD*)tree2->GetListOfLeaves()->At(iLeaf);
-      leaf1 = (TLeafD*)tree1->GetListOfLeaves()->FindObject(leaf2->GetName());
+      TLeafD* leaf2 = (TLeafD*)tree2->GetListOfLeaves()->At(iLeaf);
+      TLeafD* leaf1 = (TLeafD*)tree1->GetListOfLeaves()->FindObject(leaf2->GetName());
       if (leaf1) {
 	if (!strcmp(leaf1->GetName(), leaf2->GetName())) {
 	  commonLeaves.push_back(leaf1->GetName());
@@ -140,7 +142,7 @@ void ModelComparison (const Int_t nbins = 50,
   Double_t* maxSave  = new Double_t[nCommonLeaves];
   Double_t* sum   = new Double_t[nCommonLeaves];
   Double_t* sum2  = new Double_t[nCommonLeaves];
-  TH2D**    histo = new TH2D[nCommonLeaves];
+  TH2D*    histo[nCommonLeaves];
   Int_t ntoy1;
   Int_t ntoy2;
 
@@ -159,7 +161,7 @@ void ModelComparison (const Int_t nbins = 50,
   char leaf1name[256];
   char leaf2name[256];
   
-  for (Int_t iLeaf=0; iLeaf<commonLeaves.size(); iLeaf++) {
+  for (unsigned int iLeaf=0; iLeaf<commonLeaves.size(); iLeaf++) {
 
     TLeafD* leaf1 = 0;
     TLeafD* leaf2 = 0;
