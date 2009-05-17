@@ -156,7 +156,7 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
   //TF1* chi2TF1[3];
   //TF1**     chi2  = new TF1[2];
   //  Color_t   color[3] = {kRed, kGreen, kBlue};
-  Color_t   color[3] = {46,38,41};
+  Color_t   color[3] = {46,39,41};
   //Color_t   color[3] = {kRed, kBlue};
   Int_t  nbins[3] = {nbins1, nbins2, nbins3};
   //Double_t  nbins[2] = {nbins1, nbins2};
@@ -471,15 +471,20 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
 
 
   // omega measurements
-  double presentMeasPecision = 0.0062;
+  //  double presentMeasPecision = 0.0062;
+  double presentMeasPecision = 0.0109;
+  double futureMeasPecision  = 0.0038;
   //double presentMeanValue =    0.1099;
   double fittedMeanvalue =     0.194005;
   //double futureMeasPrecision = 0.0002;
 
   // print Omega
-  TBox* omegaBox = new TBox((fittedMeanvalue-2.*presentMeasPecision)/omegaExpModel,0.,
-			    (fittedMeanvalue+2.*presentMeasPecision)/omegaExpModel,histo[histOrder[0]]->GetMaximum()*1.095);
+  TBox* omegaBox = new TBox((fittedMeanvalue-presentMeasPecision)/omegaExpModel,0.,
+			    (fittedMeanvalue+presentMeasPecision)/omegaExpModel,histo[histOrder[0]]->GetMaximum()*1.095);
   omegaBox->SetFillColor(kYellow-9);
+  TBox* omegaPlanckBox = new TBox((fittedMeanvalue-futureMeasPecision)/omegaExpModel,0.,
+				  (fittedMeanvalue+futureMeasPecision)/omegaExpModel,histo[histOrder[0]]->GetMaximum()*1.095);
+  omegaPlanckBox->SetFillColor(kBlue-10);
  
   cout << "print the histograms" << endl;
   for (unsigned int iFile=0; iFile<3; iFile++) {
@@ -492,6 +497,7 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
     if ( iFile == 0 ) { 
       histo[histOrder[iFile]]->Draw("ep");
       omegaBox->Draw();
+      omegaPlanckBox->Draw();
       histo[histOrder[iFile]]->Draw("epsame");
     }
     else histo[histOrder[iFile]]->Draw("epsame");
@@ -548,7 +554,8 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
   legend->AddEntry(gauss[0],legendHist1, "L");
   legend->AddEntry(gauss[1],legendHist2, "L");
   legend->AddEntry(gauss[2],legendHist3, "L");
-  legend->AddEntry(omegaBox,"WMAP  #Omega_{DM}h^{2}  #pm  2 #sigma", "F");
+  legend->AddEntry(omegaBox,"WMAP  #Omega_{DM}h^{2}  #pm  1 #sigma", "F");
+  legend->AddEntry(omegaPlanckBox,"Planck  #Omega_{DM}h^{2}  #pm  1 #sigma", "F");
   legend->Draw();
 
   // draw insert
@@ -560,6 +567,8 @@ void DrawParDistsMultiOmega(const char* filename1 = "file1",
     cout << "print histograms " << iFile << " " << histOrder[iFile] << endl;
     if ( iFile == 0 ) { 
       insertHisto[insertHistOrder[iFile]]->Draw("ep");
+      //      omegaPlanckBox->Draw();
+      insertHisto[insertHistOrder[iFile]]->Draw("epsame");
     }
     else insertHisto[insertHistOrder[iFile]]->Draw("epsame");
     insertHisto[iFile]->Fit(insertGauss[iFile], "0");
