@@ -1703,7 +1703,7 @@ input:
 		  MeasuredValue tmpValue;
 		  tmpValue.setScaling = false;
 		  tmpValue.bound = false;
-                  tmpValue.nofit = false;
+                  tmpValue.nofit = true;
 		  tmpValue.theovalue  = 0;
 		  tmpValue.name = "edge_type_";
 		  char srtt[20];
