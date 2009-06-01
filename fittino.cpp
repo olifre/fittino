@@ -9201,10 +9201,114 @@ int   ReadLesHouches()
       }
       for (unsigned int k = 0; k < yyMeasuredVec.size(); k++ ) {
 	if (yyMeasuredVec[k].nofit == false) {
-	  string obsName = "O_"+yyMeasuredVec[k].name;
+	  string obsName = "";
+	  if (strchr(yyMeasuredVec[k].name.c_str(),'>') || strchr(yyMeasuredVec[k].name.c_str(),' ') ) {
+
+	    cout << "found unlucky string: " <<  yyMeasuredVec[k].name << endl;
+	    string correctedName = "";
+	    char varName[1024];
+	    strcpy(varName,"");
+	    char* movedVarName = varName;
+	    strcpy(varName,yyMeasuredVec[k].name.c_str());
+	    char* firstPos;
+	    while (strchr(movedVarName,'>')) {
+	      firstPos = strchr(movedVarName,'>');
+	      if (firstPos) {
+		int length = strlen(movedVarName)-strlen(firstPos);
+		cout << "found initial string of length " << length << " before the first >" << endl;
+		char section[1024];
+		strcpy(section,"");
+		strncpy(section,movedVarName,length-1);
+		section[length-1]='\0';
+		cout << "assembling string: |" << correctedName << "| + |" <<  section << "|" << endl;
+		correctedName = correctedName + section + "To";
+		movedVarName = firstPos+1;
+	      }
+	    }
+	    correctedName = correctedName + (firstPos+1);
+	    cout << "first part corrected string: " << correctedName << endl;
+	    string saveCorrectedName = correctedName;
+	    strcpy(varName,"");
+	    movedVarName = varName;
+	    strcpy(varName,correctedName.c_str());
+	    correctedName = "";
+	    while (strchr(movedVarName,' ')) {
+	      firstPos = strchr(movedVarName,' ');
+	      if (firstPos) {
+		int length = strlen(movedVarName)-strlen(firstPos);
+		cout << "found initial string of length " << length << " before the first >" << endl;
+		char section[1024];
+		strcpy(section,"");
+		strncpy(section,movedVarName,length);
+		section[length]='\0';
+		cout << "assembling string: |" << correctedName << "| + |" <<  section << "|" << endl;
+		correctedName = correctedName + section + "_";
+		movedVarName = firstPos+1;
+	      }
+	    }	    
+	    correctedName = correctedName + (firstPos+1);
+	    obsName = "O_"+correctedName;
+	    cout << "fully corrected string: " << obsName << endl;
+	    //delete varName;
+
+	  } else {
+	    cout << "found useable string: " <<  yyMeasuredVec[k].name << endl;
+	    obsName = "O_"+yyMeasuredVec[k].name;
+	  }
 	  sprintf ( ntuplevars, "%s:%s", ntuplevars, obsName.c_str() );
 	} else {
-	  string obsName = "O_"+yyMeasuredVec[k].name+"_nofit";
+	  string obsName = "";
+	  if (strchr(yyMeasuredVec[k].name.c_str(),'>') || strchr(yyMeasuredVec[k].name.c_str(),' ') ) {
+	    cout << "found unlucky string: " <<  yyMeasuredVec[k].name << endl;
+	    string correctedName = "";
+	    char varName[1024];
+	    strcpy(varName,"");
+	    char* movedVarName = varName;
+	    strcpy(varName,yyMeasuredVec[k].name.c_str());
+	    char* firstPos;
+	    while (strchr(movedVarName,'>')) {
+	      firstPos = strchr(movedVarName,'>');
+	      if (firstPos) {
+		int length = strlen(movedVarName)-strlen(firstPos);
+		cout << "found initial string of length " << length << " before the first >" << endl;
+		char section[1024];
+		strcpy(section,"");
+		strncpy(section,movedVarName,length-1);
+		section[length-1]='\0';
+		cout << "assembling string: |" << correctedName << "| + |" <<  section << "|" << endl;
+		correctedName = correctedName + section + "To";
+		movedVarName = firstPos+1;
+	      }
+	    }
+	    correctedName = correctedName + (firstPos+1);
+	    cout << "first part corrected string: " << correctedName << endl;
+	    string saveCorrectedName = correctedName;
+	    strcpy(varName,"");
+	    movedVarName = varName;
+	    strcpy(varName,correctedName.c_str());
+	    correctedName = "";
+	    while (strchr(movedVarName,' ')) {
+	      firstPos = strchr(movedVarName,' ');
+	      if (firstPos) {
+		int length = strlen(movedVarName)-strlen(firstPos);
+		cout << "found initial string of length " << length << " before the first >" << endl;
+		char section[1024];
+		strcpy(section,"");
+		strncpy(section,movedVarName,length);
+		section[length]='\0';
+		cout << "assembling string: |" << correctedName << "| + |" <<  section << "|" << endl;
+		correctedName = correctedName + section + "_";
+		movedVarName = firstPos+1;
+	      }
+	    }	    
+	    correctedName = correctedName + (firstPos+1);
+	    obsName = "O_"+correctedName+"_nofit";
+	    cout << "fully corrected string: " << obsName << endl;
+	    //delete varName;
+	  } else {
+	    cout << "found useable string: " <<  yyMeasuredVec[k].name << endl;
+	    obsName = "O_"+yyMeasuredVec[k].name+"_nofit";
+	  }
 	  sprintf ( ntuplevars, "%s:%s", ntuplevars, obsName.c_str() );
 	}
       }
