@@ -213,6 +213,7 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
       // draw the canvas      
       string histName = "emptyHist_" + variables[iVariable2] + "_" + variables[iVariable1];
       TH2D* hist = (TH2D*)files[0]->Get(histName.c_str());
+      // TH2D* hist = new TH2D("test","",300,0.,300000.,80,0.,80.);
       if (!hist) {
 	cout << "histogram " << histName << " not found" << endl;
 	continue;
@@ -221,15 +222,17 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
       hist->GetXaxis()->CenterTitle(1);
       hist->GetXaxis()->SetTitle(variableNames[iVariable2].c_str());
       hist->GetYaxis()->CenterTitle(1);
-      //      hist->GetYaxis()->SetTitleOffset(1.25);
+      hist->GetYaxis()->SetTitleOffset(1.25);
       hist->GetYaxis()->SetTitle(variableNames[iVariable1].c_str());
       hist->SetTitle("");
+      hist->GetXaxis()->SetTitleOffset(1.25);
       //      hist->GetXaxis()->SetTitle(variableNames[iVariable1]);
       hist->Draw();
 
       // Create a legend
-      //      TLegend *legend = new TLegend(0.60,0.95,0.7,0.95,"");
-      TLegend *legend = new TLegend(0.62,0.84,0.96,0.99,"");
+      TLegend *legend = new TLegend(0.60,0.95,0.7,0.95,"");
+      //      TLegend *legend = new TLegend(0.62,0.84,0.96,0.99,"");
+      //TLegend *legend = new TLegend(0.60,0.15,0.94,0.40,"");
       legend->SetTextSize(0.03);
 
       // loop over the existing files and draw the contour planes
@@ -252,7 +255,7 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 	  contour->SetFillStyle(fstyles[iFile]);
 	  contour->SetFillColor(colors2a[iFile]);
 	  contour->SetLineColor(colors2b[iFile]);
-	  if (contour->GetN()>20) {
+	  if (contour->GetN()>30) {
 	    contour->Draw("fsame");
 	  }
 	  iContour++;
@@ -300,7 +303,7 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 	  contour->SetFillStyle(fstyles[iFile]);
 	  contour->SetFillColor(colors2a[iFile]);
 	  contour->SetLineColor(colors2b[iFile]);
-	  if (contour->GetN()>20) {
+	  if (contour->GetN()>30) {
 	    cout << "drawing contour " << contourName << endl;
 	    contour->Draw("same");
 	  }

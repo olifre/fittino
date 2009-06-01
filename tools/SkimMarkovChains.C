@@ -112,7 +112,7 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
   cout << "looping over events to find minimal chi2 at iChi2 = " << iChi2 << " iLikelihood = " << iLikelihood << endl;
 
   // clean up NPFitter bug
-  //absMinChi2 = 19.2;
+  // absMinChi2 = 31.;
 
   // find minimal chi2
   float minChi2 = 10000000.;
@@ -144,11 +144,11 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
     }   
 //    // clean up NPfitter bug
 //    if (chi2<minChi2+1.) {
-////      if (iLambda>=0) {
-////	if (42400. > par[iLambda] || par[iLambda] > 72800.) {
-////	  continue;
-////	}
-////      }
+//      if (iLambda>=0) {
+//	if (42400. > par[iLambda] || par[iLambda] > 72800.) {
+//	  continue;
+//	}
+//      }
 //      if (iTanBeta>=0) {
 //	if (12. > par[iTanBeta] || par[iTanBeta] > 33.5 ) {
 //	  continue;
@@ -192,7 +192,7 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
 //	}
 //      }
 //    }
-//    // end clean up
+    // end clean up
     if (iTanBeta>=0) {
       if (par[iTanBeta]>100. || par[iTanBeta]<0.) {
 	continue;
