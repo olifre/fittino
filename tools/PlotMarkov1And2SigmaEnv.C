@@ -100,7 +100,9 @@ void PlotMarkov1And2SigmaEnv ( int maxevents = -1,
   for (Int_t i=0; i<nEntries; i++) {
     markovChain->GetEntry(i);
     if (par[iChi2Leaf]<0.) continue;
-    lowestChi2 = par[iChi2Leaf];
+    if (par[iChi2Leaf]<lowestChi2) {
+      lowestChi2 = par[iChi2Leaf];
+    }
   }
 
   cout << "lowest chi2 = " << lowestChi2 << endl;
