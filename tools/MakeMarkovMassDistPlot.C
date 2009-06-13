@@ -456,7 +456,7 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
   massHistAll->Draw("col");
 
   // add a legend
-  TLegend *legend = new TLegend(0.33,0.65,0.63,0.9,"");
+  TLegend *legend = new TLegend(0.33,0.75,0.6,0.92,"");
   TF1* dummyFunc1s = new TF1("gaus1s","gaus",0.,1.);
   dummyFunc1s->SetFillColor(env1sColor);
   dummyFunc1s->SetLineColor(env1sColor);

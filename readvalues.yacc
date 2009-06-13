@@ -838,7 +838,7 @@ input:
                         }			
                       }
 
-//	              cout << "filling correlation coefficient for " << $3 << " " << $4 << " " << $5 << endl;
+	              cout << "filling correlation coefficient for row " << i << " " << j << " " << $5 << endl;
 		      yyMeasuredCorrelationMatrix.add(i, j, $5);
 		  }
 		  //
