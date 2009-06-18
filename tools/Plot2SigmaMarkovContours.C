@@ -230,7 +230,7 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
       hist->Draw();
 
       // Create a legend
-      TLegend *legend = new TLegend(0.60,0.95,0.7,0.95,"");
+      TLegend *legend = new TLegend(0.60,0.78,0.98,0.98,"");
       //      TLegend *legend = new TLegend(0.62,0.84,0.96,0.99,"");
       //TLegend *legend = new TLegend(0.60,0.15,0.94,0.40,"");
       legend->SetTextSize(0.03);
