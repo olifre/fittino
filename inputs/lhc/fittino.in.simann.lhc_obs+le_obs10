@@ -57,6 +57,7 @@ massh0     109.582      GeV +- 1.4        GeV +- (LES) 0.1 GeV # [9]
 
 massSbottom1 500 GeV +- 50 GeV alias 1
 massSbottom2 500 GeV +- 50 GeV alias 2
+massGluino   600 GeV +- 50 GeV alias 3
 
 ### edges
 
@@ -105,7 +106,7 @@ brratio ( brprod_1 brprod_2 ) 0.0762483 +- 0.003 +- 0.008 alias 1 # [13]
 brsum ( brprod_5 brprod_6 brprod_7 ) alias 1
  
 weighted ( brsum_1 edge_11 brprod_8 edge_12 ) 359.458 GeV +- 13.6 GeV +- (JES) 3.6 GeV alias 1 # [10]
-weighted ( brprod_4 mass_1 brprod_3 mass_2 )  520.709 GeV +-  5.4 GeV +- (JES) 2.6 GeV alias 2 # [10]
+weighted ( mass_3 brprod_4 mass_1 brprod_3 mass_2 )  84.0452 GeV +-  5.4 GeV +- (JES) 0.8 GeV  alias 2 # [10]
 
 ### Unfitted SUSY masses
 
