@@ -7493,7 +7493,14 @@ int   ReadLesHouches()
 	 if (yyMeasuredVec[i].type == weighted) {
 	    yyMeasuredVec[i].theovalue = 0.;
 	    dependencies_theoset = true;
-	    yyMeasuredVec[i].theovalue = (yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue*yyMeasuredVec[yyMeasuredVec[i].daughters[1]].theovalue+yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue*yyMeasuredVec[yyMeasuredVec[i].daughters[3]].theovalue)/(yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue+yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue);
+
+	    if (yyMeasuredVec[i].daughters.size() == 4) {
+	      yyMeasuredVec[i].theovalue = (yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue*yyMeasuredVec[yyMeasuredVec[i].daughters[1]].theovalue+yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue*yyMeasuredVec[yyMeasuredVec[i].daughters[3]].theovalue)/(yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue+yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue);
+	    }
+	    if (yyMeasuredVec[i].daughters.size() == 5) {
+	      yyMeasuredVec[i].theovalue = yyMeasuredVec[yyMeasuredVec[i].daughters[0]].theovalue - (yyMeasuredVec[yyMeasuredVec[i].daughters[1]].theovalue*yyMeasuredVec[yyMeasuredVec[i].daughters[2]].theovalue+yyMeasuredVec[yyMeasuredVec[i].daughters[3]].theovalue*yyMeasuredVec[yyMeasuredVec[i].daughters[4]].theovalue)/(yyMeasuredVec[yyMeasuredVec[i].daughters[1]].theovalue+yyMeasuredVec[yyMeasuredVec[i].daughters[3]].theovalue);
+	    }
+
 	    if (!(yyMeasuredVec[i].theovalue<0.) && !(yyMeasuredVec[i].theovalue>=0.)) {
 	      cout << "detected nan" << endl;
 	      yyMeasuredVec[i].theovalue = -10000.;
@@ -7509,6 +7516,7 @@ int   ReadLesHouches()
 	    else {
 	       yyMeasuredVec[i].theoset = false;
 	    }
+
 	 }
       }
       // check whether all has been found

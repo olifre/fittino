@@ -2836,7 +2836,7 @@ input:
 		  //		  while ((newpos = str.find(" ", pos)) != string::npos) {
 		  while ((newpos = str.find(" ", pos)) <= stringsize ) {
                     countbrs++;
-		    if (countbrs>=5) {
+		    if (countbrs>=6) {
 		      cout << "syntax error in weighted: too many arguments, alias: " << tmpValue.alias <<  endl;
 		      yyerror (" ");		      
 		    }
@@ -3479,7 +3479,7 @@ input:
 		  //		  while ((newpos = str.find(" ", pos)) != string::npos) {
 		  while ((newpos = str.find(" ", pos)) <= stringsize ) {
                     countbrs++;
-		    if (countbrs>=5) {
+		    if (countbrs>=6) {
 		      cout << "syntax error in weighted: too many arguments, alias: " << tmpValue.alias <<  endl;
 		      yyerror (" ");		      
 		    }
