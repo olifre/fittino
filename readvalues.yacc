@@ -165,6 +165,7 @@ bool          yySetErrorFlag = false;
 bool          yyUseSimplexMinOnly = false;
 bool          yyUseSimplexMin = true;
 bool          yyRequireNeut1LSP = false;
+bool          yyPreliminaryScan = false;
 
 unsigned int yyCalculator;
 unsigned int yyRelicDensityCalculator;
@@ -1310,6 +1311,10 @@ input:
 		  if (!strcmp($2, "UseSimplexMin")) {
 		      if ($3 == on) yyUseSimplexMin = true;
 		      else yyUseSimplexMin = false;
+		  } 
+		  if (!strcmp($2, "yyPreliminaryScan")) {
+		    if ($3 == on) yyPreliminaryScan = true;
+		    else yyPreliminaryScan = false;
 		  } 
 	      }
 	    | input T_CALCULATOR T_WORD

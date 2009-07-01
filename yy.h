@@ -85,6 +85,7 @@ extern bool          yySetErrorFlag ;
 extern bool yyUseSimplexMinOnly;
 extern bool yyUseSimplexMin;
 extern bool yyRequireNeut1LSP;
+extern bool yyPreliminaryScan;
 
 extern unsigned int yyNumberOfMinimizations;
 extern unsigned int yySeedForObservableScattering;
