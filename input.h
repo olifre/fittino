@@ -30,6 +30,7 @@
 class Input {
 private:
     vector<MeasuredValue>  fMeasuredVec;
+
     CorrelationMatrix      fMeasuredCorrelationMatrix;
     void CheckDefault(string name, int ID, double value, double error);
     void Fill_IDs();

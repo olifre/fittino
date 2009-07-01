@@ -158,24 +158,35 @@ int main(int argc, char** argv)
 	fittino->calculateTreeLevelValues(10000);
      }
      else if (yyFitModel == mSUGRA || yyFitModel == XMSUGRA || yyFitModel == GMSB || yyFitModel == AMSB) {
+
+	cout << yyDashedLine << endl;
+	cout << "Setting widths start values" << endl;
+	fittino->setStartWidths();
+
 	cout << yyDashedLine << endl;
 	cout << "Setting fit start values" << endl;
 	fittino->setStartValues();
      }
-     if (yyRandomParameters) {
-	fittino->CalcFromRandPars(1000);
-     }
-     else {
-	if (yyUseLoopCorrections) {
-	   cout << yyDashedLine << endl;
-	   cout << "Calculating loop level values" << endl;
-	   fittino->calculateLoopLevelValues();
-	}
+  
 
-	if (yyPerformFit) {
-	   fittino->writeResults("fittino.out");
-	}
-     }
+//    if (yyRandomParameters) {
+// 	fittino->CalcFromRandPars(1000);
+//      }
+//      else {
+// 	if (yyUseLoopCorrections) {
+// 	   cout << yyDashedLine << endl;
+// 	   cout << "Calculating loop level values" << endl;
+// 	   fittino->calculateLoopLevelValues();
+// 	}
+
+// 	if (yyPerformFit) {
+// 	   fittino->writeResults("fittino.out");
+// 	}
+//      }
+
+
+
+
   }
 
   return 0;

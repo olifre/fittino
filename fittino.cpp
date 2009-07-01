@@ -1277,6 +1277,52 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 
 }
 
+// ====================================
+// == Evaluate the width of fitted parameters
+void Fittino::setStartWidths(){
+  
+  // == Input parameters for the Chi2 fonction
+  Double_t dummyfloat = 5.;
+  Int_t dummyint = 1;
+  Double_t xdummy[100];
+  double chi2 = 1.E10;
+
+
+  // == We need to fill yyFittedVec: fill vectors with input parameters
+  MeasuredValue justToSetTheSize;
+  vector<MeasuredValue>  fScanVec;
+  for (unsigned int  i = 0; i < yyFittedPar.size(); i++ ){
+    fScanVec.push_back( justToSetTheSize );
+    fScanVec[i].name = yyFittedPar[i].name;
+    fScanVec[i].value = yyFittedPar[i].value;
+    xdummy[i] = yyFittedPar[i].value;
+  }
+
+  yyFittedVec = fScanVec;
+
+
+
+  // == Loop on fitted parameters
+  cout << "Current settings..."<< endl;
+  for (unsigned int  i = 0; i < yyFittedPar.size(); i++ )
+    cout << "Parameter : " << yyFittedPar[i].name <<" Value = "<<yyFittedPar[i].value <<" Error = "<<yyFittedPar[i].error << endl;
+    
+ 
+
+  //limites :  yyFittedVec[i].bound_low   yyFittedVec[i].bound_up  
+
+   // == Calculate chi2 for these values
+
+
+  cout << "Computing Chi2..."<< endl;
+  fitterFCN( dummyint, &dummyfloat, chi2, xdummy, 0 );
+  cout << "chi = " << chi2 << endl;  
+}
+
+
+
+// ====================================
+// == Set start values of fitted parameters
 
 void Fittino::setStartValues()
 {
@@ -3264,7 +3310,7 @@ double hamiltonian(int n, double* q, double* p)
 
 void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag) 
 {
-   // cout<<"fitterFCN called"<<endl;
+    cout<<"fitterFCN called"<<endl;
    //  niterations++;
    int rc = 0;
    int nobs = 0;
@@ -4340,7 +4386,7 @@ void WriteLesHouches(double* x)
 	 }
       }
       else {
-	 cerr << "Parameter TanBeta not declared" << endl;
+	 cerr << "e-Parameter TanBeta not declared" << endl;
 	 exit (EXIT_FAILURE);
       }
 
@@ -5260,7 +5306,7 @@ void WriteLesHouches(double* x)
 	 }
       }
       else {
-	 cerr << "Parameter TanBeta not declared" << endl;
+	 cerr << "a-Parameter TanBeta not declared" << endl;
 	 exit (EXIT_FAILURE);
       }
 
@@ -5638,7 +5684,7 @@ void WriteLesHouches(double* x)
 	 }
       }
       else {
-	 cerr << "Parameter TanBeta not declared" << endl;
+	 cerr << "b-Parameter TanBeta not declared" << endl;
 	 exit (EXIT_FAILURE);
       }
 
@@ -5978,7 +6024,7 @@ void WriteLesHouches(double* x)
 	 }
       }
       else {
-	 cerr << "Parameter TanBeta not declared" << endl;
+	 cerr << "c-Parameter TanBeta not declared" << endl;
 	 exit (EXIT_FAILURE);
       }
 
@@ -6294,7 +6340,7 @@ void WriteLesHouches(double* x)
 	       }
 	    }
 	    else {
-	       cerr << "Parameter TanBeta not declared" << endl;
+	       cerr << "d-Parameter TanBeta not declared" << endl;
 	       exit (EXIT_FAILURE);
 	    }
 

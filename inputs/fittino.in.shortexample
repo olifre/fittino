@@ -23,7 +23,7 @@ massA0                   430.676 GeV +- 1.3  GeV # +- 0.6 GeV # not at LHC
 massH0                   430.802 GeV +- 1.3  GeV # +- 0.6 GeV # not at LHC
 massHplus                438.416 GeV +- 1.1  GeV # +- 0.6 GeV # not at LHC
 
-nofit massSdownL         561.54  GeV +-  9.8 GeV # +- 10.0 GeV
+nofit massSPdownL         561.54  GeV +-  9.8 GeV # +- 10.0 GeV
 nofit massSdownR         543.348 GeV +- 23.6 GeV # +- 9.4 GeV 
 nofit massSstrangeL      561.54  GeV +-  9.8 GeV # +- 10.0 GeV
 nofit massSstrangeR      543.348 GeV +- 23.6 GeV # +- 9.4 GeV 
@@ -406,7 +406,7 @@ InitTempSimAnn        10000
 
 NoBoundsAtAll         off
 
-Calculator            SPHENO  ../theorycodes/SPheno2.2.2/SPheno
+Calculator            SPHENO   ./SPheno
 
 UseMinos              on
 UseHesse              off

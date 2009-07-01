@@ -54,6 +54,7 @@ public:
     void calculateLoopLevelValues();
     void CalcFromRandPars(unsigned int nruns);
 
+    void setStartWidths();
     void setStartValues();
 
     void writeResults(const char* filename);
