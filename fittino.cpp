@@ -1287,36 +1287,53 @@ void Fittino::setStartWidths(){
   Double_t xdummy[100];
   double chi2 = 1.E10;
 
+//   // 1 == Initilize parameters vectors
+//   // == Fill yyFittedVec with input parameters
+//   MeasuredValue justToSetTheSize;
+//   vector<MeasuredValue>  fScanVec;
+//   for (unsigned int  i = 0; i < yyFittedPar.size(); i++ ){
+//     fScanVec.push_back( justToSetTheSize );
+//     fScanVec[i].name = yyFittedPar[i].name;
+//     fScanVec[i].value = yyFittedPar[i].value;
+//     xdummy[i] = yyFittedPar[i].value;
+//   }
+//   yyFittedVec = fScanVec;
 
-  // == We need to fill yyFittedVec: fill vectors with input parameters
-  MeasuredValue justToSetTheSize;
-  vector<MeasuredValue>  fScanVec;
-  for (unsigned int  i = 0; i < yyFittedPar.size(); i++ ){
-    fScanVec.push_back( justToSetTheSize );
-    fScanVec[i].name = yyFittedPar[i].name;
-    fScanVec[i].value = yyFittedPar[i].value;
-    xdummy[i] = yyFittedPar[i].value;
-  }
-
-  yyFittedVec = fScanVec;
+//   // == Fill yyFixedVec
+//   vector<MeasuredValue>  fFixVec;
+//   for (unsigned int i = 0; i < yyFixedPar.size(); i++) {
+//     fFixVec.push_back( justToSetTheSize );
+//     fFixVec[i].name = yyFixedPar[i].name;
+//     fFixVec[i].value = yyFixedPar[i].value;
+//   }
+//   yyFixedVec = fFixVec;
+  //  setStartValues();
 
 
+  // 2 == Scan the parameter space
+  Int_t divisions = 10;
 
   // == Loop on fitted parameters
+
   cout << "Current settings..."<< endl;
-  for (unsigned int  i = 0; i < yyFittedPar.size(); i++ )
+
+  for (unsigned int  i = 0; i < 1; i++ ){
+
+    //for (unsigned int  i = 0; i < yyFittedPar.size(); i++ ){
     cout << "Parameter : " << yyFittedPar[i].name <<" Value = "<<yyFittedPar[i].value <<" Error = "<<yyFittedPar[i].error << endl;
-    
+   //  Double_t segment = ( yyFittedPar[i].bound_up - yyFittedPar[i].bound_low ) / divisions;
+
+//     // == Loop on each position in the parameter space
+//     for( int step = 0; step < 10; step++ ){
+//       xdummy[i] = yyFittedPar[i].bound_low + (1 + step)*segment;
+//       // == Calculate chi2 for these values
+//       cout << "Computing Chi2..."<< endl;
+    fitterFCN( dummyint, &dummyfloat, chi2, xdummy, 0 );
+    cout << "chi = " << chi2 << endl;  
+    //     }
  
+  }
 
-  //limites :  yyFittedVec[i].bound_low   yyFittedVec[i].bound_up  
-
-   // == Calculate chi2 for these values
-
-
-  cout << "Computing Chi2..."<< endl;
-  fitterFCN( dummyint, &dummyfloat, chi2, xdummy, 0 );
-  cout << "chi = " << chi2 << endl;  
 }
 
 
@@ -1957,10 +1974,44 @@ void Fittino::calculateLoopLevelValues()
    // eventually call simulated annealing
    system ("rm SimAnnNtupFile.root");
    system ("rm MarkovChainNtupFile.root");
+
    if (yyUseMarkovChains) {
-      markovChain();
-      return;
+
+   // ===========================================
+   // on-going test
+     if( yyPreliminaryScan ){
+       cout << yyDashedLine << endl;
+       cout << "Preliminary scan of fitted parameter space" << endl;
+
+       Double_t dummyfloat = 5.;
+       Int_t dummyint = 1;
+       Double_t xdummy[100];
+       double chi2 = 1.E10;
+       for (unsigned int  i = 0; i < yyFittedPar.size(); i++ ) xdummy[i] = yyFittedPar[i].value;
+
+       for (unsigned int  i = 0; i < 1; i++ ){
+	  //for (unsigned int  i = 0; i < yyFittedPar.size(); i++ ){
+	  cout << "Parameter : " << yyFittedPar[i].name <<" Value = "<<yyFittedPar[i].value <<" Error = "<<yyFittedPar[i].error << endl;
+	  //  Double_t segment = ( yyFittedPar[i].bound_up - yyFittedPar[i].bound_low ) / divisions;
+	  
+	  //     // == Loop on each position in the parameter space
+	  //     for( int step = 0; step < 10; step++ ){
+	  //       xdummy[i] = yyFittedPar[i].bound_low + (1 + step)*segment;
+	  //       // == Calculate chi2 for these values
+	  //       cout << "Computing Chi2..."<< endl;
+	  fitterFCN( dummyint, &dummyfloat, chi2, xdummy, 0 );
+	  cout << "chi = " << chi2 << endl;  
+	  //     }
+ 
+	}
+       
+       //setStartWidths();
+       return;
+     }
+     if( !yyPreliminaryScan ) markovChain();
+     return;
    }
+   // ===========================================
 
    if (yyUseSimAnnBefore) {
       unsigned int i = 0;
@@ -3310,7 +3361,7 @@ double hamiltonian(int n, double* q, double* p)
 
 void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag) 
 {
-    cout<<"fitterFCN called"<<endl;
+  //cout<<"fitterFCN called"<<endl;
    //  niterations++;
    int rc = 0;
    int nobs = 0;
@@ -3396,7 +3447,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	 return;
       }
    }
-
+  
    // HERE: READ THE LES HOUCHES FILE
    rc = ReadLesHouches();
    if (yyCalculatorError) {
@@ -4174,7 +4225,7 @@ void callSuspect()
 void WriteLesHouches(double* x) 
 {
    double local_mu, local_tanb;
-
+   //cout <<"Openning file LesHouches.in"<< endl;
    // open file LesHouches.in
    fstream LesHouchesOutfile;
    LesHouchesOutfile.open ("LesHouches.in",ofstream::out);
@@ -5390,7 +5441,6 @@ void WriteLesHouches(double* x)
 	 cerr << "Parameter A0 not declared" << endl;
 	 exit (EXIT_FAILURE);
       }
-
       if (FindInFixed("SignMu") && TMath::Abs(ReturnFixedValue("SignMu")->value) == 1 ) {
 	 LesHouchesOutfile << "    4  "<< ReturnFixedValue("SignMu")->value <<" # sign(mu) (fixed)"<< endl;
       }
@@ -9220,8 +9270,7 @@ int   ReadLesHouches()
 
    void Fittino::markovChain ()
    {
-
-      vector <double> x; 
+     vector <double> x; 
       vector <double> vm;
       vector <double> xp;
       vector <double> lb; 

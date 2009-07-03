@@ -159,19 +159,11 @@ int main(int argc, char** argv)
      }
      else if (yyFitModel == mSUGRA || yyFitModel == XMSUGRA || yyFitModel == GMSB || yyFitModel == AMSB) {
 
-       if( yyPreliminaryScan ){
-	cout << yyDashedLine << endl;
-	cout << "Setting widths start values" << endl;
-	fittino->setStartWidths();
-       }
-
-
 	cout << yyDashedLine << endl;
 	cout << "Setting fit start values" << endl;
 	fittino->setStartValues();
      }
   
-     if( !yyPreliminaryScan ){
        if (yyRandomParameters) {
 	fittino->CalcFromRandPars(1000);
        }
@@ -186,9 +178,7 @@ int main(int argc, char** argv)
 	   fittino->writeResults("fittino.out");
 	 }
        }
-     }
-
-
+  
 
   }
 
