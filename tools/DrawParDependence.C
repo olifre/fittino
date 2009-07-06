@@ -11,12 +11,12 @@ void DrawParDependence(const char* filename, int lumi,
     value["O_alphas"] = 0.1176;
     value["O_G_F"] = 1.16637e-5;
     value["O_massBottom"] = 4.20;
-    value["O_massCharm"] = 1.27;
+    value["O_massCharm"] = 1.2;
     value["O_massTau"] = 1.77684;
     value["O_massTop"] = 172.4;
     value["O_massW"] = 80.3789;
     value["O_massZ"] = 91.1875;
-    value["O_brratio_1"] = 0.08;
+    value["O_brratio_1"] = 0.0762483;
     value["O_weighted_1"] = 360.9;
     value["O_massh0"] = 109.582;
     value["O_Bsg_npf"] = 0.912458;
@@ -146,7 +146,7 @@ void DrawParDependence(const char* filename, int lumi,
       error["O_edge_type_106_alias_8"] = 4.9;
       error["O_edge_type_102_alias_9"] = 4.9;
       error["O_edge_type_5_alias_10"] = 19.7;
-      error["O_brratio_1"] = 0.003;
+      error["O_brratio_1"] = 0.0085;
       error["O_weighted_1"] = 14.1;
       error["O_weighted_2"] = 5.5;
     }
@@ -168,6 +168,7 @@ void DrawParDependence(const char* filename, int lumi,
       error["O_edge_type_106_alias_11"] = 2.2;
       error["O_edge_type_102_alias_12"] = 1.9;
       error["O_edge_type_5_alias_13"] = 3.7;
+      error["O_brratio_1"] = 0.0081;
       error["O_brratio_2"] = 0.078;
     }
 
@@ -215,6 +216,8 @@ void DrawParDependence(const char* filename, int lumi,
 
 	tree->Draw(varcmd, chi2cmd, "box");
 
+	double nbinsX = tree->GetHistogram()->GetNbinsX();
+	double nbinsY = tree->GetHistogram()->GetNbinsY();
 	double xmin = tree->GetHistogram()->GetXaxis()->GetXmin();
 	double xmax = tree->GetHistogram()->GetXaxis()->GetXmax();
 
@@ -222,11 +225,31 @@ void DrawParDependence(const char* filename, int lumi,
 	double ymin = value[obs[io]] - error[obs[io]];
 	double ymax = value[obs[io]] + error[obs[io]];
 
+	double nymin = value[obs[io]]
+	               - 1.2 * TMath::Sqrt(chi2cut) * error[obs[io]];
+	double nymax = value[obs[io]]
+	               + 1.2 * TMath::Sqrt(chi2cut) * error[obs[io]];
+
 	double min = tree->GetHistogram()->GetYaxis()->GetXmin();
 	double max = tree->GetHistogram()->GetYaxis()->GetXmax();
 
-	if (ymin < min ) ymin = min;
-	if (ymax > max ) ymax = max;
+	char xtitle[1000];
+	char ytitle[1000];
+
+	strcpy(xtitle, tree->GetHistogram()->GetXaxis()->GetTitle());
+	strcpy(ytitle, tree->GetHistogram()->GetYaxis()->GetTitle());
+
+	TH2F* histo = new TH2F("histo", "", nbinsX, xmin, xmax,
+			       nbinsY, nymin, nymax);
+
+	histo->SetXTitle(xtitle);
+	histo->SetYTitle(ytitle);
+
+	sprintf(varcmd, "%s:%s>>histo", obs[io].c_str(), par[ip].c_str());
+
+	gPad->Clear();
+
+	tree->Draw(varcmd, chi2cmd, "box");
 
 	TLine* linemin = new TLine(xmin,ymin, xmax, ymin);
 	linemin->SetLineColor(kRed);
