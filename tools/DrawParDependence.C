@@ -207,8 +207,13 @@ void DrawParDependence(const char* filename, int lumi,
     char chi2cmd[100];
     char outputfilename[1000];
 
-    for ( int io=0; io<obs.size(); io++ ) {
-      for ( int ip=0; ip<par.size(); ip++ ) {
+    std::map<std::string, double> quanmap;
+
+    for ( int ip=0; ip<par.size(); ip++ ) {
+
+      quanmap.clear();
+
+      for ( int io=0; io<obs.size(); io++ ) {
 
 	if ( obs[io].find("nofit") < obs[io].size() ) continue;
 
@@ -240,6 +245,7 @@ void DrawParDependence(const char* filename, int lumi,
 	strcpy(xtitle, tree->GetHistogram()->GetXaxis()->GetTitle());
 	strcpy(ytitle, tree->GetHistogram()->GetYaxis()->GetTitle());
 
+
 	TH2F* histo = new TH2F("histo", "", nbinsX, xmin, xmax,
 			       nbinsY, nymin, nymax);
 
@@ -251,6 +257,12 @@ void DrawParDependence(const char* filename, int lumi,
 	gPad->Clear();
 
 	tree->Draw(varcmd, chi2cmd, "box");
+
+	double abscorr = TMath::Abs(histo->GetCorrelationFactor());
+
+	double quantity = abscorr * (tree->GetMaximum(obs[io].c_str()) - tree->GetMinimum(obs[io].c_str())) / error[obs[io].c_str()];
+
+	quanmap[obs[io].c_str()] = quantity;
 
 	TLine* linemin = new TLine(xmin,ymin, xmax, ymin);
 	linemin->SetLineColor(kRed);
@@ -272,6 +284,45 @@ void DrawParDependence(const char* filename, int lumi,
 
 	c1->Print(outputfilename);
       }
+
+      /*
+      std::cout << "Most sensitive observables for " << par[ip]
+		<< ":" << std::endl;
+
+      double maxquan = -1;
+      std::string maxquanname;
+      for ( int io=0; io<obs.size(); io++ ) {
+	if ( quanmap[obs[io]] > maxquan ) {
+	  maxquan = quanmap[obs[io]];
+	  maxquanname = obs[io];
+	}
+      }
+
+      std::cout << maxquanname << " (" << maxquan << ")" << std::endl;
+
+      double max2quan = -1;
+      std::string max2quanname;
+      for ( int io=0; io<obs.size(); io++ ) {
+	if ( quanmap[obs[io]] > max2quan && obs[io].compare(maxquanname) ) {
+	  max2quan = quanmap[obs[io]];
+	  max2quanname = obs[io];
+	}
+      }
+
+      std::cout << max2quanname << " (" << max2quan << ")" << std::endl;
+
+      double max3quan = -1;
+      std::string max3quanname;
+      for ( int io=0; io<obs.size(); io++ ) {
+	if ( quanmap[obs[io]] > max3quan && obs[io].compare(maxquanname) 
+	     && obs[io].compare(max2quanname) ) {
+	  max3quan = quanmap[obs[io]];
+	  max3quanname = obs[io];
+	}
+      }
+
+      std::cout << max3quanname << " (" << max3quan << ")" << std::endl;
+      */
     }
 
 }
