@@ -1,6 +1,6 @@
 #include <map>
 
-void DrawParDependence(const char* filename,
+void DrawParDependence(const char* filename, int lumi,
 		       double chi2cut = 4.0,
 		       const char* treename = "markovChain")
 {
@@ -42,46 +42,48 @@ void DrawParDependence(const char* filename,
     value["O_dm_k_npf"] = 1.04844;
     value["O_DmsDmd_npf"] = 0.999848;
 
-    /*
-    // LHC only, 1 fb-1
-    value["O_edge_type_3_alias_3"] = 83.3605;
-    value["O_edge_type_8_alias_1"] = 530.995;
-    value["O_edge_type_100_alias_2"] = 80.4331;
-    value["O_edge_type_101_alias_4"] = 452.076;
-    value["O_edge_type_102_alias_7"] = 215.565;
-    value["O_edge_type_105_alias_5"] = 318.577;
-    value["O_edge_type_106_alias_6"] = 396.045;
-    */
-    // LHC only, 10 fb-1
-    value["O_edge_type_2_alias_1"] = 507.652;
-    value["O_edge_type_8_alias_2"] = 530.995;
-    value["O_edge_type_100_alias_3"] = 80.4331;
-    value["O_edge_type_3_alias_4"] = 280.578;
-    value["O_edge_type_3_alias_5"] = 83.3605;
-    value["O_edge_type_101_alias_6"] = 452.076;
-    value["O_edge_type_105_alias_7"] = 318.577;
-    value["O_edge_type_106_alias_8"] = 396.045;
-    value["O_edge_type_102_alias_9"] = 215.565;;
-    value["O_edge_type_5_alias_10"] = 195.907;
-    value["O_weighted_2"] = 84.0452;
-    /*
-    // LHC only, 300 fb-1
-    value["O_massChargino1"] = 180.176;
-    value["O_edge_type_8_alias_1"] = 148.816;
-    value["O_edge_type_2_alias_2"] = 507.652;
-    value["O_edge_type_8_alias_3"] = 530.995;
-    value["O_edge_type_2_alias_4"] = 88.6786;
-    value["O_edge_type_2_alias_5"] = 56.7889;
-    value["O_edge_type_100_alias_6"] = 80.4331;
-    value["O_edge_type_3_alias_7"] = 280.578;
-    value["O_edge_type_3_alias_8"] = 83.3605;
-    value["O_edge_type_101_alias_9"] = 452.076;
-    value["O_edge_type_105_alias_10"] = 318.577;
-    value["O_edge_type_106_alias_11"] = 396.045;
-    value["O_edge_type_102_alias_12"] = 215.565;
-    value["O_edge_type_5_alias_13"] = 195.907;
-    value["O_brratio_2"] = 0.168414;
-    */
+    if ( lumi == 1 ) {
+      // LHC only, 1 fb-1
+      value["O_edge_type_3_alias_3"] = 83.3605;
+      value["O_edge_type_8_alias_1"] = 530.995;
+      value["O_edge_type_100_alias_2"] = 80.4331;
+      value["O_edge_type_101_alias_4"] = 452.076;
+      value["O_edge_type_102_alias_7"] = 215.565;
+      value["O_edge_type_105_alias_5"] = 318.577;
+      value["O_edge_type_106_alias_6"] = 396.045;
+    }
+    else if ( lumi == 10 ) {
+      // LHC only, 10 fb-1
+      value["O_edge_type_2_alias_1"] = 507.652;
+      value["O_edge_type_8_alias_2"] = 530.995;
+      value["O_edge_type_100_alias_3"] = 80.4331;
+      value["O_edge_type_3_alias_4"] = 280.578;
+      value["O_edge_type_3_alias_5"] = 83.3605;
+      value["O_edge_type_101_alias_6"] = 452.076;
+      value["O_edge_type_105_alias_7"] = 318.577;
+      value["O_edge_type_106_alias_8"] = 396.045;
+      value["O_edge_type_102_alias_9"] = 215.565;;
+      value["O_edge_type_5_alias_10"] = 195.907;
+      value["O_weighted_2"] = 84.0452;
+    }
+    else if ( lumi == 300 ) {
+      // LHC only, 300 fb-1
+      value["O_massChargino1"] = 180.176;
+      value["O_edge_type_8_alias_1"] = 148.816;
+      value["O_edge_type_2_alias_2"] = 507.652;
+      value["O_edge_type_8_alias_3"] = 530.995;
+      value["O_edge_type_2_alias_4"] = 88.6786;
+      value["O_edge_type_2_alias_5"] = 56.7889;
+      value["O_edge_type_100_alias_6"] = 80.4331;
+      value["O_edge_type_3_alias_7"] = 280.578;
+      value["O_edge_type_3_alias_8"] = 83.3605;
+      value["O_edge_type_101_alias_9"] = 452.076;
+      value["O_edge_type_105_alias_10"] = 318.577;
+      value["O_edge_type_106_alias_11"] = 396.045;
+      value["O_edge_type_102_alias_12"] = 215.565;
+      value["O_edge_type_5_alias_13"] = 195.907;
+      value["O_brratio_2"] = 0.168414;
+    }
 
     ////////////////////////////////////////////////////////////
 
@@ -116,56 +118,58 @@ void DrawParDependence(const char* filename,
     error["O_dm_k_npf"] = 0.14;
     error["O_DmsDmd_npf"] = 0.1603;
 
-    /*
-    // LHC only, 1 fb-1
-    error["O_massTop"] = 1.2;
-    error["O_brratio_1"] = 0.012;
-    error["O_edge_type_3_alias_3"] = 15.7;
-    error["O_edge_type_8_alias_1"] = 34.6;
-    error["O_edge_type_100_alias_2"] = 1.71;
-    error["O_edge_type_101_alias_4"] = 18.0;
-    error["O_edge_type_102_alias_7"] = 27.0;
-    error["O_edge_type_105_alias_5"] = 11.0;
-    error["O_edge_type_106_alias_6"] = 11.3;
-    error["O_weighted_1"] = 43;
-    */
-
-    // LHC only, 10 fb-1
-    error["O_massTop"] = 1.2;
-    error["O_massh0"] = 1.4;
-    error["O_brratio_1"] = 0.009;
-    error["O_edge_type_2_alias_1"] = 11.0;
-    error["O_edge_type_8_alias_2"] = 12.9;
-    error["O_edge_type_100_alias_3"] = 0.51;
-    error["O_edge_type_3_alias_4"] = 12.6;
-    error["O_edge_type_3_alias_5"] = 9.2;
-    error["O_edge_type_101_alias_6"] = 4.8;
-    error["O_edge_type_105_alias_7"] = 3.8;
-    error["O_edge_type_106_alias_8"] = 4.9;
-    error["O_edge_type_102_alias_9"] = 4.9;
-    error["O_edge_type_5_alias_10"] = 19.7;
-    error["O_brratio_1"] = 0.003;
-    error["O_weighted_1"] = 14.1;
-    error["O_weighted_2"] = 5.5;
-
-    /*
-    // LHC only, 300 fb-1
-    error["O_massChargino1"] = 11.5;
-    error["O_edge_type_8_alias_1"] = 6.2;
-    error["O_edge_type_2_alias_2"] = 10.6;
-    error["O_edge_type_8_alias_3"] = 11.4;
-    error["O_edge_type_2_alias_4"] = 1.6;
-    error["O_edge_type_2_alias_5"] = 2.5;
-    error["O_edge_type_100_alias_6"] = 0.09;
-    error["O_edge_type_3_alias_7"] = 2.3;
-    error["O_edge_type_3_alias_8"] = 8.4;
-    error["O_edge_type_101_alias_9"] = 2.7;
-    error["O_edge_type_105_alias_10"] = 1.8;
-    error["O_edge_type_106_alias_11"] = 2.2;
-    error["O_edge_type_102_alias_12"] = 1.9;
-    error["O_edge_type_5_alias_13"] = 3.7;
-    error["O_brratio_2"] = 0.078;
-    */
+    if ( lumi == 1 ) {
+      // LHC only, 1 fb-1
+      error["O_massTop"] = 1.9;
+      error["O_brratio_1"] = 0.012;
+      error["O_edge_type_3_alias_3"] = 15.7;
+      error["O_edge_type_8_alias_1"] = 34.6;
+      error["O_edge_type_100_alias_2"] = 1.71;
+      error["O_edge_type_101_alias_4"] = 18.0;
+      error["O_edge_type_102_alias_7"] = 27.0;
+      error["O_edge_type_105_alias_5"] = 11.0;
+      error["O_edge_type_106_alias_6"] = 11.3;
+      error["O_weighted_1"] = 43;
+    }
+    else if ( lumi == 10 ) {
+      // LHC only, 10 fb-1
+      error["O_massTop"] = 1.0;
+      error["O_massh0"] = 1.4;
+      error["O_brratio_1"] = 0.009;
+      error["O_edge_type_2_alias_1"] = 11.0;
+      error["O_edge_type_8_alias_2"] = 12.9;
+      error["O_edge_type_100_alias_3"] = 0.51;
+      error["O_edge_type_3_alias_4"] = 12.6;
+      error["O_edge_type_3_alias_5"] = 9.2;
+      error["O_edge_type_101_alias_6"] = 4.8;
+      error["O_edge_type_105_alias_7"] = 3.8;
+      error["O_edge_type_106_alias_8"] = 4.9;
+      error["O_edge_type_102_alias_9"] = 4.9;
+      error["O_edge_type_5_alias_10"] = 19.7;
+      error["O_brratio_1"] = 0.003;
+      error["O_weighted_1"] = 14.1;
+      error["O_weighted_2"] = 5.5;
+    }
+    else if ( lumi == 300 ) {
+      // LHC only, 300 fb-1
+      error["O_massTop"] = 1.0;
+      error["O_massh0"] = 0.14;
+      error["O_massChargino1"] = 11.5;
+      error["O_edge_type_8_alias_1"] = 6.2;
+      error["O_edge_type_2_alias_2"] = 10.6;
+      error["O_edge_type_8_alias_3"] = 11.4;
+      error["O_edge_type_2_alias_4"] = 1.6;
+      error["O_edge_type_2_alias_5"] = 2.5;
+      error["O_edge_type_100_alias_6"] = 0.09;
+      error["O_edge_type_3_alias_7"] = 2.3;
+      error["O_edge_type_3_alias_8"] = 8.4;
+      error["O_edge_type_101_alias_9"] = 2.7;
+      error["O_edge_type_105_alias_10"] = 1.8;
+      error["O_edge_type_106_alias_11"] = 2.2;
+      error["O_edge_type_102_alias_12"] = 1.9;
+      error["O_edge_type_5_alias_13"] = 3.7;
+      error["O_brratio_2"] = 0.078;
+    }
 
 
     TFile* file = new TFile(filename, "read");
