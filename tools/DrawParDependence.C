@@ -17,7 +17,7 @@ void DrawParDependence(const char* filename, int lumi,
     value["O_massW"] = 80.3789;
     value["O_massZ"] = 91.1875;
     value["O_brratio_1"] = 0.0762483;
-    value["O_weighted_1"] = 360.9;
+    value["O_weighted_1"] = 359.458;
     value["O_massh0"] = 109.582;
     value["O_Bsg_npf"] = 0.912458;
     value["O_dm_s_npf"] = 1.04897;
@@ -170,6 +170,7 @@ void DrawParDependence(const char* filename, int lumi,
       error["O_edge_type_5_alias_13"] = 3.7;
       error["O_brratio_1"] = 0.0081;
       error["O_brratio_2"] = 0.078;
+      error["O_weighted_1"] = 4.4;
     }
 
 
