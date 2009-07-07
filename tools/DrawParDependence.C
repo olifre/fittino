@@ -1,9 +1,22 @@
 #include <map>
+#include <TFile.h>
+#include <TTree.h>
+#include <TLeaf.h>
+#include <TLeafD.h>
+#include <TMath.h>
+#include <TH2F.h>
+#include <TLine.h>
+#include <TPad.h>
+#include <TCanvas.h>
 
-void DrawParDependence(const char* filename, int lumi,
+void DrawParDependence(const char* filename, 
+		       int lumi,
 		       double chi2cut = 4.0,
 		       const char* treename = "markovChain")
 {
+
+    TCanvas* c1 = new TCanvas();
+
     std::map<std::string, double> value;
     std::map<std::string, double> error;
 
@@ -209,11 +222,11 @@ void DrawParDependence(const char* filename, int lumi,
 
     std::map<std::string, double> quanmap;
 
-    for ( int ip=0; ip<par.size(); ip++ ) {
+    for ( unsigned int ip=0; ip<par.size(); ip++ ) {
 
       quanmap.clear();
 
-      for ( int io=0; io<obs.size(); io++ ) {
+      for ( unsigned int io=0; io<obs.size(); io++ ) {
 
 	if ( obs[io].find("nofit") < obs[io].size() ) continue;
 
@@ -236,8 +249,8 @@ void DrawParDependence(const char* filename, int lumi,
 	double nymax = value[obs[io]]
 	               + 1.2 * TMath::Sqrt(chi2cut) * error[obs[io]];
 
-	double min = tree->GetHistogram()->GetYaxis()->GetXmin();
-	double max = tree->GetHistogram()->GetYaxis()->GetXmax();
+	//double min = tree->GetHistogram()->GetYaxis()->GetXmin();
+	//double max = tree->GetHistogram()->GetYaxis()->GetXmax();
 
 	char xtitle[1000];
 	char ytitle[1000];
@@ -283,6 +296,9 @@ void DrawParDependence(const char* filename, int lumi,
 	sprintf(outputfilename, "%sVs%s.jpg", obs[io].c_str(), par[ip].c_str());
 
 	c1->Print(outputfilename);
+
+	histo->Delete();
+
       }
 
       /*
