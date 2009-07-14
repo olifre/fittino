@@ -1311,7 +1311,7 @@ void Fittino::setStartWidths(){
 
 
   // 2 == Scan the parameter space
-  Int_t divisions = 10;
+  //Int_t divisions = 10;
 
   // == Loop on fitted parameters
 
@@ -1989,23 +1989,30 @@ void Fittino::calculateLoopLevelValues()
        double chi2 = 1.E10;
        for (unsigned int  i = 0; i < yyFittedPar.size(); i++ ) xdummy[i] = yyFittedPar[i].value;
 
+       // 2 == Scan the parameter space
+       Int_t division = 3;
+
+
+
+
        for (unsigned int  i = 0; i < 1; i++ ){
-	  //for (unsigned int  i = 0; i < yyFittedPar.size(); i++ ){
-	  cout << "Parameter : " << yyFittedPar[i].name <<" Value = "<<yyFittedPar[i].value <<" Error = "<<yyFittedPar[i].error << endl;
-	  //  Double_t segment = ( yyFittedPar[i].bound_up - yyFittedPar[i].bound_low ) / divisions;
-	  
-	  //     // == Loop on each position in the parameter space
-	  //     for( int step = 0; step < 10; step++ ){
-	  //       xdummy[i] = yyFittedPar[i].bound_low + (1 + step)*segment;
-	  //       // == Calculate chi2 for these values
-	  //       cout << "Computing Chi2..."<< endl;
-	  fitterFCN( dummyint, &dummyfloat, chi2, xdummy, 0 );
-	  cout << "chi = " << chi2 << endl;  
-	  //     }
- 
-	}
+ 	  //for (unsigned int  i = 0; i < yyFittedVec.size(); i++ ){
+ 	 cout << "Parameter : " << yyFittedVec[i].name <<" Value = "<<yyFittedVec[i].value <<" Error = "<<yyFittedVec[i].error << endl;
+ 	 Double_t segment = ( 500 - 0 ) / division;
+	 //Double_t segment = ( yyFittedVec[i].bound_up - yyFittedVec[i].bound_low ) / division;
+
+ 	 // == Loop on each position in the parameter space
+ 	 for( int step = 0; step < division-1; step++ ){
+ 	   xdummy[i] = yyFittedVec[i].bound_low + (1 + step)*segment;
+	   cout << "Parameter : " << yyFittedVec[i].name <<" Value = "<< xdummy[i] << endl;
+ 	   // == Calculate chi2 for these values
+ 	   cout << "Computing Chi2..."<< endl;
+ 	   fitterFCN( dummyint, &dummyfloat, chi2, xdummy, 0 );
+ 	   cout << "chi = " << chi2 << endl;  
+ 	 }
+	 
+       }
        
-       //setStartWidths();
        return;
      }
      if( !yyPreliminaryScan ) markovChain();
@@ -3539,35 +3546,47 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
       cout << "Calculating chisq" << endl;
    }
-   for (unsigned int i = 0; i < yyMeasuredVec.size(); i++) {
-      for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
-	 //    cout << "looking at "<< yyMeasuredVec[i].name << endl;
-	 if ((yyMeasuredVec[i].theoset && yyMeasuredVec[j].theoset) && (!yyMeasuredVec[i].nofit && !yyMeasuredVec[j].nofit )
+   for (unsigned int i = 0; i < yyMeasuredVec.size(); i++)
+     {
+       for (unsigned int j = 0; j < yyMeasuredVec.size(); j++)
+	 {
+	   //    cout << "looking at "<< yyMeasuredVec[i].name << endl;
+	   if ((yyMeasuredVec[i].theoset && yyMeasuredVec[j].theoset) && (!yyMeasuredVec[i].nofit && !yyMeasuredVec[j].nofit )
 	       && (!yyMeasuredVec[i].temp_nofit && !yyMeasuredVec[j].temp_nofit ) ) {
-	    // cout << "theo ist set" << endl;
-	    if ((yyMeasuredVec[i].error > 0.) && (yyMeasuredVec[j].error > 0.) && !yyMeasuredVec[j].bound ) {
+	     // cout << "theo ist set" << endl;
+	     if ((yyMeasuredVec[i].error > 0.) && (yyMeasuredVec[j].error > 0.) && !yyMeasuredVec[j].bound ) {
 	       // find corresponding measurement for prediction... 
 	       f += (yyMeasuredVec[i].theovalue-yyMeasuredVec[i].value)
-		  * yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)
-		  * (yyMeasuredVec[j].theovalue-yyMeasuredVec[j].value);
+		 * yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)
+		 * (yyMeasuredVec[j].theovalue-yyMeasuredVec[j].value);
+
+	       // ================================
+	       // Unlock NAN for preliminary chi2 scan
+	       if( yyPreliminaryScan ){
+		 if ( !(f < 0. ) && !( f >= 0. ) ) f = 100000.;
+	       }
+	       // ================================
+	       
+
 	       if ( (i==j) && (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j) > 1.E-12) ) {
-		  nobs++;
+		 nobs++;
 	       } else if (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j) > 1.E-12) {
-		  ncorr++;
+		 ncorr++;
 	       }
 	       if ( i == j && ( (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)>1.E-12) || 
-			(yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)<-1.E-12) ) ) {
-		  //	    cout << (float)n_printouts/10. << " " << n_printouts/11 << endl;
-		  if ( yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { // ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) (TMath::Mod(n_printouts,10)==0)
-		     cout << i << " " << j << " using obs " << yyMeasuredVec[i].name << " = " << yyMeasuredVec[i].value
+				(yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)<-1.E-12) ) ) {
+		 //	    cout << (float)n_printouts/10. << " " << n_printouts/11 << endl;
+		 if ( yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { // ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) (TMath::Mod(n_printouts,10)==0)
+
+		   cout << i << " " << j << " using obs " << yyMeasuredVec[i].name << " = " << yyMeasuredVec[i].value
 			<< "+-" << sqrt(yyMeasuredCorrelationMatrix.GetCovariance(i,j)) 
 			<< " (" << (TMath::Abs(yyMeasuredVec[i].value-yyMeasuredVec[i].theovalue))*sqrt(yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)) << ") " << "\t at theovalue = " 
 			<< yyMeasuredVec[i].theovalue<< endl;
-		  }
+		 }
 	       }
 	    } else if (yyMeasuredVec[j].bound) {
-	       if (i == j) {
-		  if (yyMeasuredVec[i].theovalue<yyMeasuredVec[i].bound_low ) {
+	      if (i == j) {
+		if (yyMeasuredVec[i].theovalue<yyMeasuredVec[i].bound_low ) {
 		     f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].value)/(yyMeasuredVec[i].error));
 		     cout << i << " using lower bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_low << " > " << 
 			yyMeasuredVec[i].theovalue << endl;
@@ -3605,13 +3624,10 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    //	+ sqr(sRecMassTop-fMassTop)/sqr(fMassTop.error)
    //	); 
 
-
-   if ((!(f<0.))&&(!(f>=0.))) {
-
-      f = 111111111111.;
-      cout << "detected nan!" << endl;
-
-   }
+  if ((!(f<0.))&&(!(f>=0.))) {
+    f = 111111111111.;
+    cout << "detected nan!" << endl;
+  }
 
    if (iflag == 10) {
       parameter_t tmpchisq;
