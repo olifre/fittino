@@ -1976,46 +1976,7 @@ void Fittino::calculateLoopLevelValues()
    system ("rm MarkovChainNtupFile.root");
 
    if (yyUseMarkovChains) {
-
-   // ===========================================
-   // on-going test
-     if( yyPreliminaryScan ){
-       cout << yyDashedLine << endl;
-       cout << "Preliminary scan of fitted parameter space" << endl;
-
-       Double_t dummyfloat = 5.;
-       Int_t dummyint = 1;
-       Double_t xdummy[100];
-       double chi2 = 1.E10;
-       for (unsigned int  i = 0; i < yyFittedPar.size(); i++ ) xdummy[i] = yyFittedPar[i].value;
-
-       // 2 == Scan the parameter space
-       Int_t division = 3;
-
-
-
-
-       for (unsigned int  i = 0; i < 1; i++ ){
- 	  //for (unsigned int  i = 0; i < yyFittedVec.size(); i++ ){
- 	 cout << "Parameter : " << yyFittedVec[i].name <<" Value = "<<yyFittedVec[i].value <<" Error = "<<yyFittedVec[i].error << endl;
- 	 Double_t segment = ( 500 - 0 ) / division;
-	 //Double_t segment = ( yyFittedVec[i].bound_up - yyFittedVec[i].bound_low ) / division;
-
- 	 // == Loop on each position in the parameter space
- 	 for( int step = 0; step < division-1; step++ ){
- 	   xdummy[i] = yyFittedVec[i].bound_low + (1 + step)*segment;
-	   cout << "Parameter : " << yyFittedVec[i].name <<" Value = "<< xdummy[i] << endl;
- 	   // == Calculate chi2 for these values
- 	   cout << "Computing Chi2..."<< endl;
- 	   fitterFCN( dummyint, &dummyfloat, chi2, xdummy, 0 );
- 	   cout << "chi = " << chi2 << endl;  
- 	 }
-	 
-       }
-       
-       return;
-     }
-     if( !yyPreliminaryScan ) markovChain();
+     markovChain();
      return;
    }
    // ===========================================
@@ -3559,14 +3520,6 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	       f += (yyMeasuredVec[i].theovalue-yyMeasuredVec[i].value)
 		 * yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)
 		 * (yyMeasuredVec[j].theovalue-yyMeasuredVec[j].value);
-
-	       // ================================
-	       // Unlock NAN for preliminary chi2 scan
-	       if( yyPreliminaryScan ){
-		 if ( !(f < 0. ) && !( f >= 0. ) ) f = 100000.;
-	       }
-	       // ================================
-	       
 
 	       if ( (i==j) && (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j) > 1.E-12) ) {
 		 nobs++;
@@ -9529,6 +9482,68 @@ int   ReadLesHouches()
 
       // ====================================================================
       // ====================================================================
+      double previousChi2 = 1.E10;
+      
+
+      // ===================== start of preliminary scan =======================
+      if( yyPreliminaryScan )
+	{
+	  cout << yyDashedLine << endl;
+	 cout << "Preliminary scan of fitted parameter space" << endl;
+	 
+	 // 0 == Prelimimary Markov chain of 100 steps
+	 int step = 0;
+	 int maxStep = 10;
+	 while( step < maxStep ){
+	   
+	   
+	   //for (unsigned int iiVariable = 0; iiVariable < x.size(); iiVariable++) 
+	   for (unsigned int iiVariable = 0; iiVariable < 1; iiVariable++) 
+	     {
+	       
+	       // 1 == Pick a new point within bounds according to proposal distribution
+	       bool outOfBounds = false;
+	       bool first = true;
+	       while ( outOfBounds == true || first == true )
+		 {
+		   first = false; 
+		   outOfBounds = false;
+		   xp[iiVariable] = x[iiVariable] + random->Gaus( 0., vm[iiVariable] );
+		   if ( ( xp[iiVariable] < lb[iiVariable] ) || ( xp[iiVariable] > ub[iiVariable] ) ) outOfBounds = true;
+		 }
+	       // 2 == Calculate chi2
+	       double chi2 = 1.E10;
+	       for (unsigned int i = 0; i < xp.size(); i++) xdummy[i] = xp[i];
+	       fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
+	       //std::cout << "chi^2 = " << chi2 << std::endl;
+
+	       // 3 == Compare chi2 and the previous chi2
+	       if ( step == 0 ) previousChi2 = chi2 + 1.;
+	       double rho =  TMath::Exp( -chi2/2. + previousChi2/2. );
+	       //cout << "compare " << chi2 << " " << previousChi2 << " " << rho << " " << TMath::Exp( -chi2/2. + previousChi2/2. ) << endl;
+
+	       // 4 == Decide which point to accept
+	       float accpoint = 0;
+	       if( rho > 1.) accpoint = 1;
+	       else
+		 {
+		   double p = random->Uniform(0.,1.);
+		   if( p < rho ) accpoint = 1;
+		 } 
+	       //std::cout << "accpoint = " << accpoint << std::endl;
+
+	       // 5 == Count the number of successes
+	       if( accpoint == 1 ) successes++;
+	       cout << " Successes : "<< successes << endl;
+	       cout << " Step : "<< step << endl;
+	     }
+	   step++;
+	 }
+	 std::cout << "looking at Markov Chain in step " << step << " success/all = " << (double)successes/(double)(maxStep) << std::endl;
+	 
+	 return;
+	}
+      // ===================== end of preliminary scan =======================
 
       //-------------------------------------------
       // perform the optimization
@@ -9536,10 +9551,10 @@ int   ReadLesHouches()
       int chainCount = 0;
       double previousLikelihood = 1.E-99;
       double previousRho = 1.;
-      double previousChi2 = 1.E10;
-
+      previousChi2 = 1.E10;
       bool firstChi2 = true;
       bool haveAcceptedAtLeastOne = false;
+       successes = 0;
 
       std::cout << "Starting Markov Chain algorithm" << std::endl;
       std::cout << "Starting with the following variables and bounds" << std::endl;
