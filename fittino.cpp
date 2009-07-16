@@ -1278,67 +1278,6 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 }
 
 // ====================================
-// == Evaluate the width of fitted parameters
-void Fittino::setStartWidths(){
-  
-  // == Input parameters for the Chi2 fonction
-  Double_t dummyfloat = 5.;
-  Int_t dummyint = 1;
-  Double_t xdummy[100];
-  double chi2 = 1.E10;
-
-//   // 1 == Initilize parameters vectors
-//   // == Fill yyFittedVec with input parameters
-//   MeasuredValue justToSetTheSize;
-//   vector<MeasuredValue>  fScanVec;
-//   for (unsigned int  i = 0; i < yyFittedPar.size(); i++ ){
-//     fScanVec.push_back( justToSetTheSize );
-//     fScanVec[i].name = yyFittedPar[i].name;
-//     fScanVec[i].value = yyFittedPar[i].value;
-//     xdummy[i] = yyFittedPar[i].value;
-//   }
-//   yyFittedVec = fScanVec;
-
-//   // == Fill yyFixedVec
-//   vector<MeasuredValue>  fFixVec;
-//   for (unsigned int i = 0; i < yyFixedPar.size(); i++) {
-//     fFixVec.push_back( justToSetTheSize );
-//     fFixVec[i].name = yyFixedPar[i].name;
-//     fFixVec[i].value = yyFixedPar[i].value;
-//   }
-//   yyFixedVec = fFixVec;
-  //  setStartValues();
-
-
-  // 2 == Scan the parameter space
-  //Int_t divisions = 10;
-
-  // == Loop on fitted parameters
-
-  cout << "Current settings..."<< endl;
-
-  for (unsigned int  i = 0; i < 1; i++ ){
-
-    //for (unsigned int  i = 0; i < yyFittedPar.size(); i++ ){
-    cout << "Parameter : " << yyFittedPar[i].name <<" Value = "<<yyFittedPar[i].value <<" Error = "<<yyFittedPar[i].error << endl;
-   //  Double_t segment = ( yyFittedPar[i].bound_up - yyFittedPar[i].bound_low ) / divisions;
-
-//     // == Loop on each position in the parameter space
-//     for( int step = 0; step < 10; step++ ){
-//       xdummy[i] = yyFittedPar[i].bound_low + (1 + step)*segment;
-//       // == Calculate chi2 for these values
-//       cout << "Computing Chi2..."<< endl;
-    fitterFCN( dummyint, &dummyfloat, chi2, xdummy, 0 );
-    cout << "chi = " << chi2 << endl;  
-    //     }
- 
-  }
-
-}
-
-
-
-// ====================================
 // == Set start values of fitted parameters
 
 void Fittino::setStartValues()
@@ -9489,62 +9428,100 @@ int   ReadLesHouches()
       if( yyPreliminaryScan )
 	{
 	  cout << yyDashedLine << endl;
-	 cout << "Preliminary scan of fitted parameter space" << endl;
-	 
-	 // 0 == Prelimimary Markov chain of 100 steps
-	 int step = 0;
-	 int maxStep = 10;
-	 while( step < maxStep ){
+	  cout << "Preliminary scan of fitted parameter space" << endl;
+	  // Fill some nice histograms
+	  TFile *tempoFile = new TFile( "tempoFile.root", "RECREATE" );
+	  TH1F* vm_h = new TH1F ( "vm_h", "vm_h", 100, 0, 100 );
+	  TH1F* suc_h = new TH1F ( "suc_h", "suc_h", 100, 0, 100 );
+
+	 //for (unsigned int iiVariable = 0; iiVariable < x.size(); iiVariable++) 
+	 for (unsigned int iiVariable = 0; iiVariable < 1; iiVariable++) 
+	   {
+
+	     // == Tune width of proposal distribution so that success rate is in [0.4;0.6]
+	     bool firstPrelimChain = true;
+	     bool successRateOK = false;
+	     int numChain = 0;
+
+
+	     // 1 == Prelimimary Markov chain 
+	     while( firstPrelimChain || !successRateOK )
+	       {
+		 firstPrelimChain = false;
+		 successes = 0;
+		 int step = 0;
+		 int maxStep = 100;
+		 while( step < maxStep )
+		   {
+		     cout << " ==============STEP " << step << " =========="<< endl;
+		     
+		     // 2 == Pick a new point within bounds according to proposal distribution
+		     bool outOfBounds = false;
+		     bool first = true;
+		     while ( outOfBounds == true || first == true )
+		       {
+			 first = false; 
+			 outOfBounds = false;
+			 xp[iiVariable] = x[iiVariable] + random->Gaus( 0., vm[iiVariable] );
+			 if ( ( xp[iiVariable] < lb[iiVariable] ) || ( xp[iiVariable] > ub[iiVariable] ) ) outOfBounds = true;
+		       }
+		     // 3 == Calculate chi2
+		     double chi2 = 1.E10;
+		     for (unsigned int i = 0; i < xp.size(); i++) xdummy[i] = xp[i];
+		     fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
+		     //std::cout << "chi^2 = " << chi2 << std::endl;
+		     
+		     // 4 == Compare chi2 and the previous chi2
+		     if ( step == 0 ) previousChi2 = chi2 + 1.;
+		     double rho =  TMath::Exp( -chi2/2. + previousChi2/2. );
+		     //cout << "compare " << chi2 << " " << previousChi2 << " " << rho << " " << TMath::Exp( -chi2/2. + previousChi2/2. ) << endl;
+		 
+		     // 5 == Decide which point to accept
+		     float accpoint = 0;
+		     if( rho > 1.) accpoint = 1;
+		     else{
+		       double p = random->Uniform( 0., 1. );
+		       if( p < rho ) accpoint = 1;
+		     } 
+		 
+		     // 6 == Count the number of successes
+		     if( accpoint == 1 ) successes++;
+		     step++;
+
+		     // 7 == Assume linear dependency to get a success rate between 40 and 60%
+		     if( step == maxStep-1 ){
+		       float _s = successes;
+		       float _m = maxStep;
+		       //double successRate = double(successes/maxStep);
+		       float successRate = _s / _m;
+		       vm_h->SetBinContent( numChain, vm[iiVariable] );
+		       suc_h->SetBinContent( numChain, successRate );
+		       numChain++;
+		       cout << " ---> Markov Chain success rate  = (" << successes <<")   "<<  successRate << endl;
+		       cout << " ---> Former width = "<<  vm[iiVariable] << endl;
+		       if( successRate < 0.4 ) vm[iiVariable] = vm[iiVariable] * successRate / 0.4;
+		       if( successRate > 0.6 ) vm[iiVariable] = vm[iiVariable] * successRate / 0.6;
+		       cout << " ---> New width = "<<  vm[iiVariable] << endl;
+		       if( successRate > 0.4 && successRate < 0.6 ) successRateOK = true;
+		     }//change width
+		   }//markov chain
+	       }//success rate
+
+	     tempoFile->cd();
+	     vm_h->Write();
+	     suc_h->Write();
+	     tempoFile->Close();
+	     tempoFile->Delete();
+	     
+
+	     if( successRateOK ) continue;
+
+	   }//variables
 	   
-	   
-	   //for (unsigned int iiVariable = 0; iiVariable < x.size(); iiVariable++) 
-	   for (unsigned int iiVariable = 0; iiVariable < 1; iiVariable++) 
-	     {
-	       
-	       // 1 == Pick a new point within bounds according to proposal distribution
-	       bool outOfBounds = false;
-	       bool first = true;
-	       while ( outOfBounds == true || first == true )
-		 {
-		   first = false; 
-		   outOfBounds = false;
-		   xp[iiVariable] = x[iiVariable] + random->Gaus( 0., vm[iiVariable] );
-		   if ( ( xp[iiVariable] < lb[iiVariable] ) || ( xp[iiVariable] > ub[iiVariable] ) ) outOfBounds = true;
-		 }
-	       // 2 == Calculate chi2
-	       double chi2 = 1.E10;
-	       for (unsigned int i = 0; i < xp.size(); i++) xdummy[i] = xp[i];
-	       fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
-	       //std::cout << "chi^2 = " << chi2 << std::endl;
-
-	       // 3 == Compare chi2 and the previous chi2
-	       if ( step == 0 ) previousChi2 = chi2 + 1.;
-	       double rho =  TMath::Exp( -chi2/2. + previousChi2/2. );
-	       //cout << "compare " << chi2 << " " << previousChi2 << " " << rho << " " << TMath::Exp( -chi2/2. + previousChi2/2. ) << endl;
-
-	       // 4 == Decide which point to accept
-	       float accpoint = 0;
-	       if( rho > 1.) accpoint = 1;
-	       else
-		 {
-		   double p = random->Uniform(0.,1.);
-		   if( p < rho ) accpoint = 1;
-		 } 
-	       //std::cout << "accpoint = " << accpoint << std::endl;
-
-	       // 5 == Count the number of successes
-	       if( accpoint == 1 ) successes++;
-	       cout << " Successes : "<< successes << endl;
-	       cout << " Step : "<< step << endl;
-	     }
-	   step++;
-	 }
-	 std::cout << "looking at Markov Chain in step " << step << " success/all = " << (double)successes/(double)(maxStep) << std::endl;
-	 
 	 return;
-	}
+	}// prelimi scan
       // ===================== end of preliminary scan =======================
-
+      
       //-------------------------------------------
       // perform the optimization
       int niter = 0;
@@ -9554,7 +9531,7 @@ int   ReadLesHouches()
       previousChi2 = 1.E10;
       bool firstChi2 = true;
       bool haveAcceptedAtLeastOne = false;
-       successes = 0;
+      successes = 0;
 
       std::cout << "Starting Markov Chain algorithm" << std::endl;
       std::cout << "Starting with the following variables and bounds" << std::endl;
