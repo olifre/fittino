@@ -7159,14 +7159,28 @@ int   ReadLesHouches()
 	    double a11R = - 2 * yyg / TMath::Sqrt(2) * yyN11 * yygprime / yyg * TMath::Sin(yyThetaStau) - yyYtau * yyN13 * TMath::Cos(yyThetaStau);
 	    double a11L = yyg / TMath::Sqrt(2) * ( yyN12 + yyN11 * yygprime / yyg ) * TMath::Cos(yyThetaStau) - yyYtau * yyN13 * TMath::Sin(yyThetaStau);
 	    yyMeasuredVec[i].theovalue = ( a11R * a11R - a11L * a11L ) / ( a11R * a11R + a11L * a11L );
-	    //      cout << "g = " << yyg <<endl;
-	    //      cout << "g' = " << yygprime <<endl;
-	    //      cout << "N11 = " << yyN11 <<endl;
-	    //      cout << "N12 = " << yyN12 <<endl;
-	    //      cout << "N13 = " << yyN13 <<endl;
-	    //      cout << "thetaStau = " << yyThetaStau <<endl;
-	    //      cout << "Ytau = " << yyYtau <<endl;
-	    //      cout << "pol = " << yyMeasuredVec[i].theovalue <<endl;
+//	    cout << "g = " << yyg <<endl;
+//	    cout << "g' = " << yygprime <<endl;
+//	    cout << "N11 = " << yyN11 <<endl;
+//	    cout << "N12 = " << yyN12 <<endl;
+//	    cout << "N13 = " << yyN13 <<endl;
+//	    cout << "thetaStau = " << yyThetaStau <<endl;
+//	    cout << "Ytau = " << yyYtau <<endl;
+//          cout << "far pol = " << yyMeasuredVec[i].theovalue <<endl;
+	    yyMeasuredVec[i].theoset = true;
+	 }
+	 else if (yyMeasuredVec[i].type == tauFromNeutralino2Polarisation) {
+	    double a21R = - 2 * yyg / TMath::Sqrt(2) * yyN21 * yygprime / yyg * TMath::Sin(yyThetaStau) - yyYtau * yyN23 * TMath::Cos(yyThetaStau);
+	    double a21L = yyg / TMath::Sqrt(2) * ( yyN22 + yyN21 * yygprime / yyg ) * TMath::Cos(yyThetaStau) - yyYtau * yyN23 * TMath::Sin(yyThetaStau);
+	    yyMeasuredVec[i].theovalue = ( a21R * a21R - a21L * a21L ) / ( a21R * a21R + a21L * a21L );
+//	    cout << "g = " << yyg <<endl;
+//	    cout << "g' = " << yygprime <<endl;
+//	    cout << "N21 = " << yyN21 <<endl;
+//	    cout << "N22 = " << yyN22 <<endl;
+//	    cout << "N23 = " << yyN23 <<endl;
+//	    cout << "thetaStau = " << yyThetaStau <<endl;
+//	    cout << "Ytau = " << yyYtau <<endl;
+//	    cout << "near pol = " << yyMeasuredVec[i].theovalue <<endl;
 	    yyMeasuredVec[i].theoset = true;
 	 }
 	 else if (yyMeasuredVec[i].type == Pedge) {

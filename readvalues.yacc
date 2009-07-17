@@ -72,6 +72,9 @@ double yygprime;
 double yyN11;
 double yyN12;
 double yyN13;
+double yyN21;
+double yyN22;
+double yyN23;
 double yyThetaStau;
 
 // SPINFO
@@ -497,6 +500,7 @@ input:
 			    tmpValue.id    = yyParticleIDs[tmpstrpointer];
 			  }
 		          else if (!strcmp($2, "tauFromStau1Polarisation")) tmpValue.type = tauFromStau1Polarisation;
+		          else if (!strcmp($2, "tauFromNeutralino2Polarisation")) tmpValue.type = tauFromNeutralino2Polarisation;
 		          else if (!strcmp($2, "G_F")) {
 			      tmpValue.type = SMPrecision;
 			      tmpValue.id = gf;
@@ -572,6 +576,7 @@ input:
 			    tmpValue.id    = yyParticleIDs[tmpstrpointer];
 			  }
 	                  else if (!strcmp($2, "tauFromStau1Polarisation")) tmpValue.type = tauFromStau1Polarisation;
+	                  else if (!strcmp($2, "tauFromNeutralino2Polarisation")) tmpValue.type = tauFromNeutralino2Polarisation;
 	        	  else tmpValue.type = other;
 	        	  yyMeasuredVec.push_back(tmpValue);
 	        	  if (!strncmp($2, "cos", 3)) {
@@ -637,6 +642,7 @@ input:
 			    tmpValue.id    = yyParticleIDs[tmpstrpointer];
 			  }
 	                  else if (!strcmp($2, "tauFromStau1Polarisation")) tmpValue.type = tauFromStau1Polarisation;
+	                  else if (!strcmp($2, "tauFromNeutralino2Polarisation")) tmpValue.type = tauFromNeutralino2Polarisation;
 	        	  else tmpValue.type = other;
 	        	  yyMeasuredVec.push_back(tmpValue);
 	        	  if (!strncmp($2, "cos", 3)) {
@@ -4287,6 +4293,9 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 		     yyN11 = tmpParams[0][2];
 		     yyN12 = tmpParams[1][2];
 		     yyN13 = tmpParams[2][2];
+		     yyN21 = tmpParams[4][2];
+		     yyN22 = tmpParams[5][2];
+		     yyN23 = tmpParams[6][2];
 
 		     //		    for (unsigned int i=0; i<tmpParams.size(); i++) {
 

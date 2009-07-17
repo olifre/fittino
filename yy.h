@@ -158,6 +158,9 @@ extern double        yygprime; // U1 coupling constant
 extern double        yyN11; // neutralino mixing matrix element
 extern double        yyN12; // neutralino mixing matrix element
 extern double        yyN13; // neutralino mixing matrix element
+extern double        yyN21; // neutralino mixing matrix element
+extern double        yyN22; // neutralino mixing matrix element
+extern double        yyN23; // neutralino mixing matrix element
 extern double        yyThetaStau; // stau mixing angle
 
 //==========================================================
