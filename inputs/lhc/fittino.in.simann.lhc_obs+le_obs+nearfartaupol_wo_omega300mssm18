@@ -30,7 +30,7 @@ LEObs ( A_fbc_npf      )      0.0742132  +- 0.0035                       alias 1
 LEObs ( A_b_npf        )      0.935005   +- 0.020                        alias 15 # [2]
 LEObs ( A_c_npf        )      0.668324   +- 0.027                        alias 16 # [2]
 LEObs ( A_l_npf        )      0.148058   +- 0.0021                       alias 17 # [2]
-nofit LEObs ( Omega_npf      )      0.194704   +- 0.0062           +- 0.012    alias 18 # [1]
+nofitLEObs ( Omega_npf      )      0.194704   +- 0.0062           +- 0.012    alias 18 # [1]
 LEObs ( A_tau_npf      )      0.148058   +- 0.0032                       alias 19 # [2]
 LEObs ( A_fbl_npf      )      0.016441  +- 0.00095                      alias 20 # [2]
 LEObs ( sigma_had0_npf )     41.4836     +- 0.037                        alias 21 # [2]
@@ -233,12 +233,13 @@ GetContours                    off
 UseSimAnnBefore                on # change
 UseSimAnnWhile                 off
 AdaptiveSimAnn                 off
-TempRedSimAnn                  0.5
-MaxCallsSimAnn                 100000
-InitTempSimAnn                 12
+TempRedSimAnn                  0.65
+MaxCallsSimAnn                 137000
+InitTempSimAnn                 100
+SimAnnEpochLength              15
 SimAnnUncertainty              off
 SimAnnUncertaintyRunDown       off
-GetTempFromFirstChiSqr         on
+GetTempFromFirstChiSqr         off
 
 UseMarkovChains                off
 MarkovChainReadjustWidth       off
@@ -248,7 +249,7 @@ MaxMarkovChain                 20000
 MinuitStrategy	               2
 MachinePrecision               1e-8
 
-Verbose                        on
+Verbose                        off
 
 MaxCalculatorTime	       20
 
