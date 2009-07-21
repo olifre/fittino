@@ -213,7 +213,7 @@ LoopCorrections                on
 ISR                            on
 UseGivenStartValues            on
 FitAllDirectly                 on
-CalcPullDist                   off # changed
+CalcPullDist                   on # change
 CalcIndChisqContr              off
 BoundsOnX                      off
 ScanX                          off
