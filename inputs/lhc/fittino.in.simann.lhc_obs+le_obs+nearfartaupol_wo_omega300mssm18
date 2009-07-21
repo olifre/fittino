@@ -230,12 +230,12 @@ ErrDef                         1.0
 NumberPulls                    1
 GetContours                    off
 
-UseSimAnnBefore                off # changed
+UseSimAnnBefore                on # change
 UseSimAnnWhile                 off
 AdaptiveSimAnn                 off
-TempRedSimAnn                  0.6
-MaxCallsSimAnn                 65000
-InitTempSimAnn                 20
+TempRedSimAnn                  0.5
+MaxCallsSimAnn                 100000
+InitTempSimAnn                 12
 SimAnnUncertainty              off
 SimAnnUncertaintyRunDown       off
 GetTempFromFirstChiSqr         on
