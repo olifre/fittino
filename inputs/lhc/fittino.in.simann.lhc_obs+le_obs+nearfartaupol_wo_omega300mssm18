@@ -234,7 +234,7 @@ UseSimAnnBefore                on # change
 UseSimAnnWhile                 off
 AdaptiveSimAnn                 off
 TempRedSimAnn                  0.65
-MaxCallsSimAnn                 137000
+MaxCallsSimAnn                 120000
 InitTempSimAnn                 100
 SimAnnEpochLength              15
 SimAnnUncertainty              off
