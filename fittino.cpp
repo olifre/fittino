@@ -1,3 +1,4 @@
+
 /***************************************************************************
   fittino.cpp
   -------------------    
@@ -9760,52 +9761,66 @@ int   ReadLesHouches()
 	  cout << "Preliminary scan of fitted parameter space" << endl;
 	  // Fill some nice histograms
 	  TFile *tempoFile = new TFile( "tempoFile.root", "RECREATE" );
-	  TH1F* vm_h = new TH1F ( "vm_h", "vm_h", 100, 0, 100 );
-	  TH1F* suc_h = new TH1F ( "suc_h", "suc_h", 100, 0, 100 );
 
-	 //for (unsigned int iiVariable = 0; iiVariable < x.size(); iiVariable++) 
-	 for (unsigned int iiVariable = 0; iiVariable < 1; iiVariable++) 
-	   {
+	  TH1F* vm_h_1 = new TH1F ( "vm_h_1", "vm_h_1", 100, 0, 100 );
+	  TH1F* suc_h_1 = new TH1F ( "suc_h_1", "suc_h_1", 100, 0, 100 );
 
-	     // == Tune width of proposal distribution so that success rate is in [0.4;0.6]
-	     bool firstPrelimChain = true;
-	     bool successRateOK = false;
-	     int numChain = 0;
+	  TH1F* vm_h_2 = new TH1F ( "vm_h_2", "vm_h_2", 100, 0, 100 );
+	  TH1F* suc_h_2 = new TH1F ( "suc_h_2", "suc_h_2", 100, 0, 100 );
 
+	  TH1F* vm_h_3 = new TH1F ( "vm_h_3", "vm_h_3", 100, 0, 100 );
+	  TH1F* suc_h_3 = new TH1F ( "suc_h_3", "suc_h_3", 100, 0, 100 );
 
+	  TH1F* vm_h_4 = new TH1F ( "vm_h_4", "vm_h_4", 100, 0, 100 );
+	  TH1F* suc_h_4 = new TH1F ( "suc_h_4", "suc_h_4", 100, 0, 100 );
+
+	  TH1F* vm_h_1_G = new TH1F ( "vm_h_1_G", "vm_h_1_G", 100, 0, 100 );
+	  TH1F* vm_h_2_G = new TH1F ( "vm_h_2_G", "vm_h_2_G", 100, 0, 100 );
+	  TH1F* vm_h_3_G = new TH1F ( "vm_h_3_G", "vm_h_3_G", 100, 0, 100 );
+	  TH1F* vm_h_4_G = new TH1F ( "vm_h_4_G", "vm_h_4_G", 100, 0, 100 );
+	  TH1F* suc_h_G = new TH1F ( "suc_h_G", "suc_h_G", 100, 0, 100 );
+
+	  TH1F* globalScale_h = new TH1F ( "globalScale_h", "globalScale_h", 100, 0, 100 );
+	  
+
+	  // 1 == Tune width of proposal distribution so that success rate is in [0.4;0.6]
+	 for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) 
+	  {
+	    bool firstPrelimChain = true;
+	    bool successRateOK = false;
+	    int numChain = 0;
+	    
 	     // 1 == Prelimimary Markov chain 
 	     while( firstPrelimChain || !successRateOK )
 	       {
 		 firstPrelimChain = false;
 		 successes = 0;
 		 int step = 0;
-		 int maxStep = 100;
+		 int maxStep = 1000;
 		 while( step < maxStep )
 		   {
 		     cout << " ==============STEP " << step << " =========="<< endl;
 		     
-		     // 2 == Pick a new point within bounds according to proposal distribution
+		     // 1.2 == Pick a new point within bounds according to proposal distribution
 		     bool outOfBounds = false;
 		     bool first = true;
 		     while ( outOfBounds == true || first == true )
 		       {
 			 first = false; 
 			 outOfBounds = false;
-			 xp[iiVariable] = x[iiVariable] + random->Gaus( 0., vm[iiVariable] );
-			 if ( ( xp[iiVariable] < lb[iiVariable] ) || ( xp[iiVariable] > ub[iiVariable] ) ) outOfBounds = true;
+			 xp[iVariable] = x[iVariable] + random->Gaus( 0., vm[iVariable] );
+			 if ( ( xp[iVariable] < lb[iVariable] ) || ( xp[iVariable] > ub[iVariable] ) ) outOfBounds = true;
 		       }
-		     // 3 == Calculate chi2
+		     // 1.3 == Calculate chi2
 		     double chi2 = 1.E10;
 		     for (unsigned int i = 0; i < xp.size(); i++) xdummy[i] = xp[i];
 		     fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
-		     //std::cout << "chi^2 = " << chi2 << std::endl;
-		     
-		     // 4 == Compare chi2 and the previous chi2
+		   		     
+		     // 1.4 == Compare chi2 and the previous chi2
 		     if ( step == 0 ) previousChi2 = chi2 + 1.;
 		     double rho =  TMath::Exp( -chi2/2. + previousChi2/2. );
-		     //cout << "compare " << chi2 << " " << previousChi2 << " " << rho << " " << TMath::Exp( -chi2/2. + previousChi2/2. ) << endl;
-		 
-		     // 5 == Decide which point to accept
+		   		 
+		     // 1.5 == Decide which point to accept
 		     float accpoint = 0;
 		     if( rho > 1.) accpoint = 1;
 		     else{
@@ -9813,40 +9828,153 @@ int   ReadLesHouches()
 		       if( p < rho ) accpoint = 1;
 		     } 
 		 
-		     // 6 == Count the number of successes
+		     // 1.6 == Count the number of successes
 		     if( accpoint == 1 ) successes++;
 		     step++;
 
-		     // 7 == Assume linear dependency to get a success rate between 40 and 60%
+		     // 1.7 == Assume linear dependency: modify width to get a success rate between 40 and 60%
 		     if( step == maxStep-1 ){
 		       float _s = successes;
 		       float _m = maxStep;
-		       //double successRate = double(successes/maxStep);
 		       float successRate = _s / _m;
-		       vm_h->SetBinContent( numChain, vm[iiVariable] );
-		       suc_h->SetBinContent( numChain, successRate );
+		       if( iVariable == 0 ){
+			 vm_h_1->SetBinContent( numChain, vm[iVariable] );
+			 suc_h_1->SetBinContent( numChain, successRate );
+		       }
+		       if( iVariable == 1 ){
+			 vm_h_2->SetBinContent( numChain, vm[iVariable] );
+			 suc_h_2->SetBinContent( numChain, successRate );
+		       }
+		       if( iVariable == 2 ){
+			 vm_h_3->SetBinContent( numChain, vm[iVariable] );
+			 suc_h_3->SetBinContent( numChain, successRate );
+		       }
+		       if( iVariable == 3 ){
+			 vm_h_4->SetBinContent( numChain, vm[iVariable] );
+			 suc_h_4->SetBinContent( numChain, successRate );
+		       }
+
 		       numChain++;
+		       cout << " ---> Variable  = " << iVariable << endl;
 		       cout << " ---> Markov Chain success rate  = (" << successes <<")   "<<  successRate << endl;
-		       cout << " ---> Former width = "<<  vm[iiVariable] << endl;
-		       if( successRate < 0.4 ) vm[iiVariable] = vm[iiVariable] * successRate / 0.4;
-		       if( successRate > 0.6 ) vm[iiVariable] = vm[iiVariable] * successRate / 0.6;
-		       cout << " ---> New width = "<<  vm[iiVariable] << endl;
-		       if( successRate > 0.4 && successRate < 0.6 ) successRateOK = true;
+		       cout << " ---> Former width = "<<  vm[iVariable] << endl;
+		       if( successRate == 0 ) successRate = 0.2;
+		       if( successRate < 0.4 ) vm[iVariable] = vm[iVariable] * successRate / 0.4;
+		       if( successRate > 0.6 ) vm[iVariable] = vm[iVariable] * successRate / 0.6;
+		       cout << " ---> New width = "<<  vm[iVariable] << endl;
+		       if( successRate >= 0.4 && successRate <= 0.6 ) successRateOK = true;
 		     }//change width
 		   }//markov chain
 	       }//success rate
 
-	     tempoFile->cd();
-	     vm_h->Write();
-	     suc_h->Write();
-	     tempoFile->Close();
-	     tempoFile->Delete();
-	     
-
-	     if( successRateOK ) continue;
-
-	   }//variables
+	  }//variables
 	   
+	 // 2 == Global scaling of all variables by a factor 1/sqrt(nVar)
+	 for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) vm[iVariable] = vm[iVariable] / sqrt( x.size() + 1 );
+
+	 // 3 == Global tune of all variables widths 
+	 bool firstPrelimChain = true;
+	 bool successRateOK = false;
+	 int numChain = 0;
+	 while( firstPrelimChain || !successRateOK )
+	   {
+	     firstPrelimChain = false;
+	     successes = 0;
+	     int step = 0;
+	     int maxStep = 1000;
+	     while( step < maxStep )
+	       {
+		 cout << " ==============STEP " << step << " =========="<< endl;
+		 
+		 // 3.1 == Pick a new point within bounds according to proposal distribution
+		 for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) 
+		   {
+		     bool outOfBounds = false;
+		     bool first = true;
+		     while ( outOfBounds == true || first == true )
+		       {
+			 first = false; 
+			 outOfBounds = false;
+			 xp[iVariable] = x[iVariable] + random->Gaus( 0., vm[iVariable] );
+			 if ( ( xp[iVariable] < lb[iVariable] ) || ( xp[iVariable] > ub[iVariable] ) ) outOfBounds = true;
+		       }
+		   } 
+		 
+		 // 3.2 == Calculate chi2
+		 double chi2 = 1.E10;
+		 for (unsigned int i = 0; i < xp.size(); i++) xdummy[i] = xp[i];
+		 fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
+		     
+		 // 3.3 == Compare chi2 and the previous chi2
+		 if ( step == 0 ) previousChi2 = chi2 + 1.;
+		 double rho =  TMath::Exp( -chi2/2. + previousChi2/2. );
+		 
+		 // 3.4 == Decide which point to accept
+		 float accpoint = 0;
+		 if( rho > 1.) accpoint = 1;
+		 else{
+		   double p = random->Uniform( 0., 1. );
+		   if( p < rho ) accpoint = 1;
+		 } 
+
+		 // 3.5 == Count the number of successes
+		 if( accpoint == 1 ) successes++;
+		 step++;
+		 
+		 // 3.6 == Global scaling of widths to get a success rate between 40 and 60%
+		 if( step == maxStep-1 ){
+		   float _s = successes;
+		   float _m = maxStep;
+		   float successRate = _s / _m;
+		   for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++){
+		     if( iVariable == 0 ) vm_h_1_G->SetBinContent( numChain, vm[iVariable] );
+		     if( iVariable == 1 ) vm_h_2_G->SetBinContent( numChain, vm[iVariable] );
+		     if( iVariable == 2 ) vm_h_3_G->SetBinContent( numChain, vm[iVariable] );
+		     if( iVariable == 3 ) vm_h_4_G->SetBinContent( numChain, vm[iVariable] );
+		   }
+		   suc_h_G->SetBinContent( numChain, successRate );
+		   numChain++;
+		       
+		   cout << " ---> Markov Chain success rate  = (" << successes <<")   "<<  successRate << endl;
+		   cout << " ---> Former widths : " << endl;
+		   for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) cout << iVariable <<" -> "<< vm[iVariable] << endl;
+		   
+		   float globalScale = 1.;
+		   if( successRate == 0 ) successRate = 0.2;
+		   if( successRate < 0.4 ) globalScale = successRate / 0.4;
+		   if( successRate > 0.6 ) globalScale = successRate / 0.6;
+		   globalScale_h->SetBinContent( numChain, globalScale );
+		   
+		   for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) vm[iVariable] =vm[iVariable] * globalScale;
+		   cout << " ---> New widths : "<< endl;
+		   for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) cout << iVariable <<" -> "<< vm[iVariable] << endl;
+		   if( successRate >= 0.4 && successRate <= 0.6 ) successRateOK = true;
+		 }//change width
+	       }//markov chain
+	   }//success rate
+	 
+
+	 tempoFile->cd();
+
+	 vm_h_1->Write();
+	 suc_h_1->Write();
+	 vm_h_2->Write();
+	 suc_h_2->Write();
+	 vm_h_3->Write();
+	 suc_h_3->Write();
+	 vm_h_4->Write();
+	 suc_h_4->Write();
+	 globalScale_h->Write();
+	 vm_h_1_G->Write();
+	 vm_h_2_G->Write();
+	 vm_h_3_G->Write();
+	 vm_h_4_G->Write();
+
+	 suc_h_G->Write();
+
+	 tempoFile->Close();
+	 tempoFile->Delete();
+	 
 	 return;
 	}// prelimi scan
       // ===================== end of preliminary scan =======================
