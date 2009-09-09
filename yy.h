@@ -76,7 +76,7 @@ extern bool yySimAnnUncertaintyRunDown;
 extern bool yyGetTempFromFirstChiSqr;
 extern bool yyRandomDirUncertainties;
 extern bool yyPerformSingleFits;
-extern bool yyUseHiggsLimits;
+extern bool yyUseHiggsBounds;
 extern bool yyQuarkFlavourViolation;
 extern bool yyRandomParameters;
 extern bool yyUseObservableScatteringBefore;
@@ -110,6 +110,7 @@ extern string yyCalculatorPath;
 extern string yyDecayCalculatorPath;
 extern string yyRelicDensityCalculatorPath;
 extern string yyLEOCalculatorPath;
+extern string yyHBWhichExpt;
 extern string yyDashedLine;
 extern string yyMarkovInterfaceFilePath;
 
