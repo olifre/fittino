@@ -28,7 +28,10 @@
 #include <yy.h>
 #include <indchisq.h>
 #include <makepulldist.h>
-
+#ifdef USELIBHB
+extern "C" { void initialize_higgsbounds_(int*, char*);}
+extern "C" { void finish_higgsbounds_();}
+#endif
 using namespace std;
 
 
@@ -112,7 +115,18 @@ int main(int argc, char** argv)
   cout << yyDashedLine << endl;
   cout << "Reading input from file " << inputfilename << endl;
   Input* input = new Input(inputfilename);
-
+  #ifdef USELIBHB
+  if (yyUseHiggsBounds == 1){
+	char* whichexpt = const_cast<char*>(yyHBWhichExpt.c_str());
+	int nH; 
+	if(yyFitModel == 4){
+		nH=5;
+		}
+	else { 
+		nH=3; }
+      	initialize_higgsbounds_(&nH,whichexpt);
+   }
+  #endif
   delete[] inputfilename;
 
   //  input->DumpMeasuredVector();
