@@ -43,6 +43,7 @@ extern double yyMassZ;
 extern double yyG_F;
 extern double yyoneoveralpha_em_mz;
 extern double yyalpha_s_mz;
+extern double yyalpha;
 extern double yyMass_b;
 extern double yyMass_t;
 extern double yyMass_tau;
@@ -66,6 +67,7 @@ typedef struct {
 } decay_element_t;
 
 extern map<int,decay_element_t> branching_ratios;
+extern map<int,double> yyGamma;
 
 typedef struct {
   int initials[2];
