@@ -26,16 +26,21 @@ ROOTCFLAGS        = $(shell $(ROOTSYS)/bin/root-config --cflags)
 ROOTLIBS          = $(shell $(ROOTSYS)/bin/root-config --libs)
 ROOTLIBS         += -lMinuit
 ROOTGLIBS         = $(shell $(ROOTSYS)/bin/root-config --glibs)
+LIBS              = $(ROOTLIBS)
 
 
 CXX               = g++
 CXXFLAGS          = -g -Wall -pedantic -Wno-long-long \
                     -Wshadow -fPIC -I. $(ROOTCFLAGS) 
+
+#HBLIB		  = -L../HiggsBounds-1.1.0/HiggsBounds-f90 -lHB
+#LIBGFORTRAN	  = /usr/lib/libgfortran.so.1
+#LIBS	    	 += $(HBLIB) $(LIBGFORTRAN)
+#CXXFLAGS         += -DUSELIBHB
+
 LD                = g++
 LDFLAGS           = -g -Wall -pedantic -Wno-long-long -Wshadow
 # -pedantic -ansi
-
-LIBS              = $(ROOTLIBS)
 
 SOURCES           = $(wildcard *.cpp)
 OBJECTS_BASENAME  = $(SOURCES:.cpp=.o)
