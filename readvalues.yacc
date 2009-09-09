@@ -94,10 +94,13 @@ vector<int> tmpNumbers;
 // MASS
 map<int,double> yyMass;
 
+// alpha
+double yyalpha;
 
 // DECAY
 decay_element_t tmp_branch;
 map<int,decay_element_t> branching_ratios;
+map<int,double> yyGamma;
 
 
 // XS
@@ -159,7 +162,7 @@ bool          yySimAnnUncertaintyRunDown = false;
 bool          yyGetTempFromFirstChiSqr = false;
 bool          yyRandomDirUncertainties = false;
 bool          yyPerformSingleFits = false;
-bool          yyUseHiggsLimits = false;
+bool          yyUseHiggsBounds = false;
 bool          yyQuarkFlavourViolation = false;
 bool          yyRandomParameters = false;
 bool          yyUseObservableScatteringBefore = false;
@@ -179,6 +182,7 @@ unsigned int yyRelicDensityCalculator;
 unsigned int yyLEOCalculator;
 
 string       yyCalculatorPath = "";
+string	     yyHBWhichExpt = "LandT";
 string			 yyDecayCalculatorPath = "";
 string       yyRelicDensityCalculatorPath = "";
 string       yyLEOCalculatorPath = "";
@@ -1303,9 +1307,9 @@ input:
 		      if ($3 == on) yyPerformSingleFits = true;
 		      else yyPerformSingleFits = false;
 		  } 
- 		  if (!strcmp($2, "UseHiggsLimits")) {
-		      if ($3 == on) yyUseHiggsLimits = true;
-		      else yyUseHiggsLimits = false;
+ 		  if (!strcmp($2, "UseHiggsBounds")) {
+		      if ($3 == on) yyUseHiggsBounds = true;
+		      else yyUseHiggsBounds = false;
 		  } 	      
  		  if (!strcmp($2, "QuarkFlavourViolation")) {
 		      if ($3 == on) yyQuarkFlavourViolation = true;
@@ -1483,6 +1487,9 @@ input:
 		      exit(EXIT_FAILURE);
 		    }
 		  }
+		  else if (!strcmp($2,"HBWhichExpt")) {
+			yyHBWhichExpt = $3;
+			}
 	      }
 	    | input T_KEY T_WORD value
 	      {
@@ -4003,7 +4010,8 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 		  }
 //========================================================================
                   else if (!strcmp($2, "alpha") || !strcmp($2, "ALPHA")) {
-		      cout << "Ignoring block alpha" << endl;
+			yyalpha = tmpParams[0][0];
+		      cout << "Reading block alpha" << endl;
 		  }
 //========================================================================
                   else if (!strcmp($2, "USQmix")) {
@@ -4434,6 +4442,7 @@ decay:      T_DECAY T_NUMBER T_NUMBER T_NEWLINE parameters
 		  branching_ratios[(int)$2] = tmp_branch;
 	       }
 	       tmpParams.clear();
+	       yyGamma[(int)$2] = $3;
 	    }
 	    ;	
 
@@ -4559,6 +4568,9 @@ parameters: /* empty */
 	    }
 	    | parameters T_NUMBER T_NEWLINE
 	    {
+		  tmpVec.clear();
+		  tmpVec.push_back($2);
+		  tmpParams.push_back(tmpVec);
 
 	    }
 			| parameters T_NUMBER T_VERSIONTAGSOSY T_NEWLINE 
