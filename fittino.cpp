@@ -2818,66 +2818,66 @@ void Fittino::calculateLoopLevelValues()
 	    }
 	 }
 
-      }
-TFile* file = new TFile("ParameterScan.root","recreate");
-TTree* tree = new TTree("observables","Tree holding the parameters + chi2");
-Float_t par1, par2, chi;
-tree->Branch(yyScanPar[0].name.c_str(),&par1,yyScanPar[0].name.c_str());
-tree->Branch(yyScanPar[1].name.c_str(),&par2,yyScanPar[1].name.c_str());
-tree->Branch("chi2",&chi,"chi2");
-#ifdef USELIBHB
-if (yyUseHiggsBounds){
-Float_t massh0, massH0, massA0, gammah0, gammaH0, gammaA0, BR_hjbbh0, BR_hjbbH0, BR_hjbbA0, BR_hjtautauh0, BR_hjtautauH0, BR_hjtautauA0, g2hjZZh0, g2hjZZH0, g2hjZZA0;
-tree->Branch("O_massh0",&massh0,"O_massh0");
-tree->Branch("O_massH0",&massH0,"O_massH0");
-tree->Branch("O_massA0",&massA0,"O_massA0");
-tree->Branch("O_gammah0",&gammah0,"O_gammah0");
-tree->Branch("O_gammaH0",&gammaH0,"O_gammaH0");
-tree->Branch("O_gammaA0",&gammaA0,"O_gammaA0");
-tree->Branch("BR_hjbbh0",&BR_hjbbh0,"BR_hjbbh0");
-tree->Branch("BR_hjbbH0",&BR_hjbbH0,"BR_hjbbH0");
-tree->Branch("BR_hjbbA0",&BR_hjbbA0,"BR_hjbbA0");
-tree->Branch("BR_hjtautauh0",&BR_hjtautauh0,"BR_hjtautauh0");
-tree->Branch("BR_hjtautauH0",&BR_hjtautauH0,"BR_hjtautauH0");
-tree->Branch("BR_hjtautauA0",&BR_hjtautauA0,"BR_hjtautauA0");
-tree->Branch("O_g2hjZZh0",&g2hjZZh0,"O_g2hjZZh0");
-tree->Branch("O_g2hjZZH0",&g2hjZZH0,"O_g2hjZZH0");
-tree->Branch("O_g2hjZZA0",&g2hjZZA0,"O_g2hjZZA0");
-}
-#endif
-      if (par) delete[] par;
-
-
-for (unsigned int j=0; j<(yyScanPar[0].numberOfSteps*yyScanPar[0].numberOfSteps); j++) {
-	par1 = x[j];
-	par2 = y[j];
-	chi = z[j];
+      	}
+	TFile* file = new TFile("ParameterScan.root","recreate");
+	TTree* tree = new TTree("observables","Tree holding the parameters + chi2");
+	Float_t par1, par2, chi;
+	tree->Branch(yyScanPar[0].name.c_str(),&par1,yyScanPar[0].name.c_str());
+	tree->Branch(yyScanPar[1].name.c_str(),&par2,yyScanPar[1].name.c_str());
+	tree->Branch("chi2",&chi,"chi2");
 	#ifdef USELIBHB
-	if (yyUseHiggsBounds) {
-	massh0 = HBmass[0][j];
-	massH0 = HBmass[1][j];
-	massA0 = HBmass[2][j];
-	
-	gammah0 = gammah[0][j];
-	gammaH0 = gammah[1][j];
-	gammaA0 = gammah[2][j];
-
-	BR_hjbbh0 = BR_hjbb[0][j];
-	BR_hjbbH0 = BR_hjbb[1][j];
-	BR_hjbbA0 = BR_hjbb[2][j];
-
-	BR_hjtautauh0 = BR_hjtautau[0][j];
-	BR_hjtautauH0 = BR_hjtautau[1][j];
-	BR_hjtautauA0 = BR_hjtautau[2][j];
-
-	g2hjZZh0 = O_g2hjZZ[0][j];
-	g2hjZZH0 = O_g2hjZZ[1][j];
-	g2hjZZA0 = O_g2hjZZ[2][j];
-	}
+	Float_t massh0, massH0, massA0, gammah0, gammaH0, gammaA0, BR_hjbbh0, BR_hjbbH0, BR_hjbbA0, BR_hjtautauh0, BR_hjtautauH0, BR_hjtautauA0, g2hjZZh0, g2hjZZH0, g2hjZZA0;
+	if (yyUseHiggsBounds){
+		tree->Branch("O_massh0",&massh0,"O_massh0");
+		tree->Branch("O_massH0",&massH0,"O_massH0");
+		tree->Branch("O_massA0",&massA0,"O_massA0");
+		tree->Branch("O_gammah0",&gammah0,"O_gammah0");
+		tree->Branch("O_gammaH0",&gammaH0,"O_gammaH0");
+		tree->Branch("O_gammaA0",&gammaA0,"O_gammaA0");
+		tree->Branch("BR_hjbbh0",&BR_hjbbh0,"BR_hjbbh0");
+		tree->Branch("BR_hjbbH0",&BR_hjbbH0,"BR_hjbbH0");
+		tree->Branch("BR_hjbbA0",&BR_hjbbA0,"BR_hjbbA0");
+		tree->Branch("BR_hjtautauh0",&BR_hjtautauh0,"BR_hjtautauh0");
+		tree->Branch("BR_hjtautauH0",&BR_hjtautauH0,"BR_hjtautauH0");
+		tree->Branch("BR_hjtautauA0",&BR_hjtautauA0,"BR_hjtautauA0");
+		tree->Branch("O_g2hjZZh0",&g2hjZZh0,"O_g2hjZZh0");
+		tree->Branch("O_g2hjZZH0",&g2hjZZH0,"O_g2hjZZH0");
+		tree->Branch("O_g2hjZZA0",&g2hjZZA0,"O_g2hjZZA0");
+		}
 	#endif
-   tree->Fill();
-}
-tree->Write();
+      	if (par) delete[] par;
+
+
+	for (unsigned int j=0; j<(yyScanPar[0].numberOfSteps*yyScanPar[0].numberOfSteps); j++) {
+		par1 = x[j];
+		par2 = y[j];
+		chi = z[j];
+		#ifdef USELIBHB
+		if (yyUseHiggsBounds) {
+			massh0 = HBmass[0][j];
+			massH0 = HBmass[1][j];
+			massA0 = HBmass[2][j];
+			
+			gammah0 = gammah[0][j];
+			gammaH0 = gammah[1][j];
+			gammaA0 = gammah[2][j];
+
+			BR_hjbbh0 = BR_hjbb[0][j];
+			BR_hjbbH0 = BR_hjbb[1][j];
+			BR_hjbbA0 = BR_hjbb[2][j];
+
+			BR_hjtautauh0 = BR_hjtautau[0][j];
+			BR_hjtautauH0 = BR_hjtautau[1][j];
+			BR_hjtautauA0 = BR_hjtautau[2][j];
+
+			g2hjZZh0 = O_g2hjZZ[0][j];
+			g2hjZZH0 = O_g2hjZZ[1][j];
+			g2hjZZA0 = O_g2hjZZ[2][j];
+			}
+		#endif
+	   tree->Fill();
+	}
+	tree->Write();
 
       TGraph* graph1d = 0;
       TGraph2D* graph2d = 0;
