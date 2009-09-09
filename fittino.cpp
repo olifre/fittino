@@ -93,11 +93,26 @@ double        sRecCos2PhiR;
 double        sRecMassTop;
 
 
+
 extern "C" { void susygen_call_test_(int *, double [],double *);}
 extern "C" { void mssmsusygen_init_(int *, int *, float *, float *,float *,float *,float *,float *);}
 extern "C" { void mssmsusygen_();}
 extern "C" { void call_suspect_free_(int *,int *,double *,double *,double *,
       double [],double *,double *,double *,double *,double *,double *);}
+#ifdef USELIBHB
+extern "C" { void initialize_higgsbounds_(int*, char*);}
+extern "C" { double smgamma_h_(double* Mh);}
+extern "C" { double smbr_hgg_(double* Mh);}
+extern "C" { double smbr_hgamgam_(double* Mh);}
+extern "C" { double smbr_hzz_(double* Mh);}
+extern "C" { double smbr_hww_(double* Mh);}
+extern "C" { double smbr_hbb_(double* Mh);}
+extern "C" { double smbr_htautau_(double* Mh);}
+extern "C" { void run_higgsbounds_effc_(int* nH, double Mh[], double GammaTotal[], double g2hjbb[], double g2hjtautau[], double g2hjWW[], double g2hjZZ[], double g2hjgaga[], double g2hjgg[], double g2hjhiZ[][3], double BR_hjhihi[][3], int*p, int* chan, double obsratio[], int* ncombined);}
+int excl = 0;
+int nexcl = 0;
+vector<float> HBmass[3], gammah[3], BR_hjbb[3], BR_hjtautau[3], O_g2hjZZ[3];
+#endif
 
 //extern "C" { void get_suspect_(double [],double [],double *,double [],double [2][2],double [2][2],double [4][4],double []);}
 void callSuspect();
@@ -133,6 +148,180 @@ double gchisq;
 int    gstat;
 
 int n_printouts;
+
+#ifdef USELIBHB
+
+int call_HiggsBounds(int nH, double* parameterVector) 
+	{
+	int chan, ncombined, HBresult, checkflag;
+	double Mh[3], GammaTotal[3], g2hjbb[3], g2hjtautau[3], g2hjWW[3], g2hjZZ[3], g2hjgaga[3], g2hjgg[3], g2hjhiZ[3][3], BR_hjhihi[3][3], BR_hjhihisorted[3][3], g2hjhiZsorted[3][3], obsratio[3];
+	double thisTanB = 0.;
+	int IDarray[3] = {ID_h,ID_H,ID_A};
+	int checkarray[3] = {0,1,2};
+	double temp;
+	int temp2;
+
+	if (FindInFixed("TanBeta")) {
+	  thisTanB = ReturnFixedValue("TanBeta")->value;
+	}    
+	else if (FindInFitted("TanBeta")) {
+	  thisTanB = parameterVector[ReturnFittedPosition("TanBeta")];
+	} 
+
+
+	// Higss Masses
+	Mh[0]=yyMass[ID_h];
+	Mh[1]=yyMass[ID_H];
+	Mh[2]=yyMass[ID_A];
+	vector<int> daughter_list;
+	double temp_BR[3];
+	if (Mh[0] == 0 || Mh[1] == 0 || Mh[2] == 0)
+	  {
+	    cout<<"Error: Cannot get Higgs-Masses. HiggsBounds aborted"<<endl;
+	    HBresult = 2;
+	    for (int i=0; i<nH; i++){ 
+		HBmass[i].push_back(Mh[i]);
+		gammah[i].push_back(0.);
+		BR_hjbb[i].push_back(0.);
+		BR_hjtautau[i].push_back(0.);
+		O_g2hjZZ[i].push_back(0.);
+		}
+	    return HBresult;
+	  }
+	else {
+		double SMGammaTotal = smgamma_h_(&yyMass[ID_h]);
+		for (int i=0; i<nH; i++){ 
+			HBmass[i].push_back(Mh[i]);
+			GammaTotal[i] = yyGamma[IDarray[i]];
+			gammah[i].push_back(yyGamma[IDarray[i]]);
+			for (int j = 0;j<nH;j++){
+				if (i!=j){
+					daughter_list.push_back(IDarray[i]);
+					daughter_list.push_back(IDarray[i]);
+					BR_hjhihi[j][i] = higgsBR(IDarray[j], daughter_list);
+					daughter_list.clear();
+					}
+				else { 
+					BR_hjhihi[j][i] = 0;
+					g2hjhiZ[i][j] = 0;
+					}
+				BR_hjhihisorted[j][i] = 0;
+				g2hjhiZsorted[j][i] = 0;
+				}
+			daughter_list.push_back(ID_g);
+			daughter_list.push_back(ID_g);
+			temp_BR[i] = higgsBR(IDarray[i], daughter_list);
+			g2hjgg[i] = (temp_BR[i]*GammaTotal[i])/(smbr_hgg_(&Mh[0])*SMGammaTotal);
+			daughter_list.clear();
+			daughter_list.push_back(ID_gamma);
+			daughter_list.push_back(ID_gamma);
+			temp_BR[i] = higgsBR(IDarray[i], daughter_list);
+			g2hjgaga[i] = (temp_BR[i]*GammaTotal[i])/(smbr_hgamgam_(&Mh[0])*SMGammaTotal);
+			daughter_list.clear();
+			daughter_list.push_back(ID_b);
+			daughter_list.push_back(-ID_b);
+			temp_BR[i] = higgsBR(IDarray[i], daughter_list);
+			BR_hjbb[i].push_back(temp_BR[i]);
+			g2hjbb[i] = (temp_BR[i]*GammaTotal[i])/(smbr_hbb_(&Mh[0])*SMGammaTotal);
+			daughter_list.clear();
+			daughter_list.push_back(ID_tau);
+			daughter_list.push_back(-ID_tau);
+			temp_BR[i] = higgsBR(IDarray[i], daughter_list);
+			BR_hjtautau[i].push_back(temp_BR[i]);
+			g2hjtautau[i] = (temp_BR[i]*GammaTotal[i])/(smbr_htautau_(&Mh[0])*SMGammaTotal);
+			daughter_list.clear();
+			}
+				
+		g2hjZZ[0] = pow(((TMath::Sin(TMath::ATan(thisTanB)-yyalpha))),2);
+		g2hjZZ[1] = pow(((TMath::Cos(TMath::ATan(thisTanB)-yyalpha))),2);
+		g2hjZZ[2] = 0.;                                                
+		g2hjWW[0] = pow(((TMath::Sin(TMath::ATan(thisTanB)-yyalpha))),2);
+		g2hjWW[1] = pow(((TMath::Cos(TMath::ATan(thisTanB)-yyalpha))),2);
+		g2hjWW[2] = 0.;                                              
+		
+
+
+		g2hjhiZ[0][1] = g2hjhiZ[1][0] = pow(((TMath::Cos(TMath::ATan(thisTanB)-yyalpha))),2);
+		g2hjhiZ[0][2] = g2hjhiZ[2][0] = 0.;
+		g2hjhiZ[1][2] = g2hjhiZ[2][1] = pow(((TMath::Sin(TMath::ATan(thisTanB)-yyalpha))),2);                                                
+		for (int i = 0; i<nH;i++){
+			O_g2hjZZ[i].push_back(g2hjZZ[i]);
+		}
+
+	
+
+		for (int i = 0; i<nH; i++){
+			checkflag = 0;
+				for (int j = 0; j<nH-1; j++) {
+					if(Mh[j]>Mh[j+1]){
+						temp = Mh[j];
+						Mh[j] = Mh[j+1];
+						Mh[j+1] = temp;
+						temp2 = IDarray[j];
+						IDarray[j] = IDarray[j+1];
+						IDarray[j+1] = temp2;
+						temp2 = checkarray[j];
+						checkarray[j] = checkarray[j+1];
+						checkarray[j+1] = temp2;
+						temp = g2hjgg[j]; 
+						g2hjgg[j] = g2hjgg[j+1];
+						g2hjgg[j+1] = temp;
+						temp = g2hjbb[j]; 
+						g2hjbb[j] = g2hjbb[j+1];
+						g2hjbb[j+1] = temp;
+						temp = g2hjZZ[j]; 
+						g2hjZZ[j] = g2hjZZ[j+1];
+						g2hjZZ[j+1] = temp;
+						temp = g2hjWW[j]; 
+						g2hjWW[j] = g2hjWW[j+1];
+						g2hjWW[j+1] = temp;
+						temp = g2hjtautau[j]; 
+						g2hjtautau[j] = g2hjtautau[j+1];
+						g2hjtautau[j+1] = temp;
+						temp = g2hjgaga[j]; 
+						g2hjgaga[j] = g2hjgaga[j+1];
+						g2hjgaga[j+1] = temp;
+						
+						checkflag = 1;
+						}
+					}
+				if (!checkflag){
+					break; 
+					}
+			}
+
+			if (checkarray[0] == 0 && checkarray[1] == 1){}
+			else {
+				for (int i = 0; i<nH; i++){
+					for (int j = 0; j<nH; j++){
+						g2hjhiZsorted[i][j] = g2hjhiZ[checkarray[i]][checkarray[j]]; 
+						BR_hjhihisorted[i][j] = BR_hjhihi[checkarray[i]][checkarray[j]]; 
+					}
+				}
+			}
+
+		run_higgsbounds_effc_(&nH, Mh, GammaTotal, g2hjbb, g2hjtautau, g2hjWW, g2hjZZ, g2hjgaga, g2hjgg, g2hjhiZsorted, BR_hjhihisorted, &HBresult, &chan, obsratio, &ncombined);
+			if (yyVerbose){ 
+				cout<<"INFO: Higgs masses: "<<Mh[0]<<" , "<<Mh[1]<<" , "<<Mh[2]<<endl;
+				cout<<"INFO: Widths: "<<GammaTotal[0]<<" , "<<GammaTotal[1]<<" , "<<GammaTotal[2]<<endl;
+				cout<<"INFO: hj -> bb: "<<g2hjbb[0]<<", "<<g2hjbb[1]<<", "<<g2hjbb[2]<<endl;
+				cout<<"INFO: hj -> tau tau: "<<g2hjtautau[0]<<", "<<g2hjtautau[1]<<", "<<g2hjtautau[2]<<endl;
+				cout<<"INFO: hj -> W W: "<<g2hjWW[0]<<", "<<g2hjWW[1]<<", "<<g2hjWW[2]<<endl;
+				cout<<"INFO: hj -> Z Z: "<<g2hjZZ[0]<<", "<<g2hjZZ[1]<<", "<<g2hjZZ[2]<<endl;
+				cout<<"INFO: hj -> gamma gamma: "<<g2hjgaga[0]<<", "<<g2hjgaga[1]<<", "<<g2hjgaga[2]<<endl;
+				cout<<"INFO: hj -> gg: "<<g2hjgg[0]<<", "<<g2hjgg[1]<<", "<<g2hjgg[2]<<endl;
+				cout<<"INFO: channel: "<<chan<<endl;
+					for (int i = 0; i<nH;i++){
+						for (int j = 0; j<nH;j++){
+						cout<<"INFO: BR_h"<<j<<"h"<<i<<": "<<checkarray[0]<<checkarray[1]<<checkarray[2]<<", "<<BR_hjhihi[j][i]<<", "<<BR_hjhihisorted[j][i]<<endl;
+						}
+					}
+				}
+
+		return HBresult;
+		}
+	}
+#endif
 
 Fittino::Fittino(const Input* input)
 {
@@ -2630,10 +2819,65 @@ void Fittino::calculateLoopLevelValues()
 	 }
 
       }
-
+TFile* file = new TFile("ParameterScan.root","recreate");
+TTree* tree = new TTree("observables","Tree holding the parameters + chi2");
+Float_t par1, par2, chi;
+tree->Branch(yyScanPar[0].name.c_str(),&par1,yyScanPar[0].name.c_str());
+tree->Branch(yyScanPar[1].name.c_str(),&par2,yyScanPar[1].name.c_str());
+tree->Branch("chi2",&chi,"chi2");
+#ifdef USELIBHB
+if (yyUseHiggsBounds){
+Float_t massh0, massH0, massA0, gammah0, gammaH0, gammaA0, BR_hjbbh0, BR_hjbbH0, BR_hjbbA0, BR_hjtautauh0, BR_hjtautauH0, BR_hjtautauA0, g2hjZZh0, g2hjZZH0, g2hjZZA0;
+tree->Branch("O_massh0",&massh0,"O_massh0");
+tree->Branch("O_massH0",&massH0,"O_massH0");
+tree->Branch("O_massA0",&massA0,"O_massA0");
+tree->Branch("O_gammah0",&gammah0,"O_gammah0");
+tree->Branch("O_gammaH0",&gammaH0,"O_gammaH0");
+tree->Branch("O_gammaA0",&gammaA0,"O_gammaA0");
+tree->Branch("BR_hjbbh0",&BR_hjbbh0,"BR_hjbbh0");
+tree->Branch("BR_hjbbH0",&BR_hjbbH0,"BR_hjbbH0");
+tree->Branch("BR_hjbbA0",&BR_hjbbA0,"BR_hjbbA0");
+tree->Branch("BR_hjtautauh0",&BR_hjtautauh0,"BR_hjtautauh0");
+tree->Branch("BR_hjtautauH0",&BR_hjtautauH0,"BR_hjtautauH0");
+tree->Branch("BR_hjtautauA0",&BR_hjtautauA0,"BR_hjtautauA0");
+tree->Branch("O_g2hjZZh0",&g2hjZZh0,"O_g2hjZZh0");
+tree->Branch("O_g2hjZZH0",&g2hjZZH0,"O_g2hjZZH0");
+tree->Branch("O_g2hjZZA0",&g2hjZZA0,"O_g2hjZZA0");
+}
+#endif
       if (par) delete[] par;
 
-      TFile* file = new TFile("ParameterScan.root", "recreate");
+
+for (unsigned int j=0; j<(yyScanPar[0].numberOfSteps*yyScanPar[0].numberOfSteps); j++) {
+	par1 = x[j];
+	par2 = y[j];
+	chi = z[j];
+	#ifdef USELIBHB
+	if (yyUseHiggsBounds) {
+	massh0 = HBmass[0][j];
+	massH0 = HBmass[1][j];
+	massA0 = HBmass[2][j];
+	
+	gammah0 = gammah[0][j];
+	gammaH0 = gammah[1][j];
+	gammaA0 = gammah[2][j];
+
+	BR_hjbbh0 = BR_hjbb[0][j];
+	BR_hjbbH0 = BR_hjbb[1][j];
+	BR_hjbbA0 = BR_hjbb[2][j];
+
+	BR_hjtautauh0 = BR_hjtautau[0][j];
+	BR_hjtautauH0 = BR_hjtautau[1][j];
+	BR_hjtautauA0 = BR_hjtautau[2][j];
+
+	g2hjZZh0 = O_g2hjZZ[0][j];
+	g2hjZZH0 = O_g2hjZZ[1][j];
+	g2hjZZA0 = O_g2hjZZ[2][j];
+	}
+	#endif
+   tree->Fill();
+}
+tree->Write();
 
       TGraph* graph1d = 0;
       TGraph2D* graph2d = 0;
@@ -3565,14 +3809,35 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	 }
       }
    }
-
+#ifdef USELIBHB
    // Higgs Bounds here
-   if (yyUseHiggsLimits) {
-      cout << "Starting Higgs limits" << endl;
-      f += higgsLimit();
-      cout << "ending Higgs limits" << endl;
-   }
+   if (yyUseHiggsBounds==1) {
+      int nH = 3;
+      cout << "Starting HiggsBounds" << endl;
+      int HBresult = 0;
+      HBresult = call_HiggsBounds(nH,x);
+      cout<<"Result from HiggsBounds: "<<HBresult<<endl;
 
+   yySetErrorFlag = false;
+   if (HBresult == 0) {
+	excl++;
+	cerr << "Scenario Excluded by HiggsBounds"<<endl;
+	f = 11111111111.;
+	cout << "f = " << f << endl;
+   }
+   if (HBresult == 1) {
+	nexcl++;
+}
+   if (HBresult == 2) {
+	f = 111111111111.;
+}
+      if (yyVerbose){ 
+      cout<<"Already excluded: "<<excl<<endl;
+      cout<<"Not excluded: "<<nexcl<<endl;
+      }
+      cout << "ending HiggsBounds" << endl;
+   }
+#endif
    cout << " chisq = " << f << " with " << nobs << " observables (" << ncorr/2 << " correlated), "
       << yyFittedVec.size() << " parameters and " << nbound << " bounds" << endl;
 
