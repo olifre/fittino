@@ -193,10 +193,6 @@ Input::Input(const char* inputfile)
      }
   }
 
-  if (yyUseHiggsLimits) {
-     // read tables
-
-  }
 
   //cout << "before End" << endl;
   //DumpMeasuredVector();
