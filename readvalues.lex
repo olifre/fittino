@@ -29,6 +29,7 @@ COMMA            ","
 WHITESPACE       [ \t]+
 PATH             ["./""/""~"][a-zA-Z0-9"+""-""~"".""_""/"]*
 ERRORSIGN        ("+-"|"-+")
+NAN							 NAN
 
 %%
 {COMMENT}                 {
@@ -52,7 +53,9 @@ XS                        {
                               BEGIN(INITIAL);
                               return T_XS;
                           }
-
+NAN												{
+															return T_NAN;
+													}
 
 Q[ \t]*=                  {
                               BEGIN(INITIAL);

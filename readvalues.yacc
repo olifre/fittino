@@ -307,6 +307,7 @@ struct correrrorstruct {
 %token <name> T_VERSIONTAGSOSY
 %token <name> T_VERSIONTAGSDEC
 %token <name> T_VERSIONTAGHDEC
+%token <name> T_NAN
 %type <name>   sentence
 %type <real>   value err
 %type <correrrorptr> correrr
@@ -4444,6 +4445,10 @@ decay:      T_DECAY T_NUMBER T_NUMBER T_NEWLINE parameters
 	       tmpParams.clear();
 	       yyGamma[(int)$2] = $3;
 	    }
+			| T_DECAY T_NUMBER T_NAN T_NEWLINE parameters
+			{
+				cout << "CRITICAL: NAN Decay" << endl;
+			}
 	    ;	
 
 	    //========================================================================
@@ -4538,6 +4543,10 @@ parameters: /* empty */
 	       tmpVec.push_back($5);
 	       tmpParams.push_back(tmpVec);
 	    }
+			| parameters T_NAN T_NUMBER T_NUMBER T_NUMBER T_NEWLINE
+			{
+
+			}
 	    | parameters T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NEWLINE
 	    {
 	       tmpVec.clear();
