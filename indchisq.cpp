@@ -153,7 +153,7 @@ void IndChisq::CalcIndChisq()
 	    ind_delta_chisq_array_size = k+1;
 	    ind_chisq_array[k].chisq = ind_delta_chisq;
 	    ind_chisq_array[k].name = individ_delta_chisq_start[k].name;
-	    ind_chisq_array[k].alias = individ_delta_chisq_start[k].error;
+	    ind_chisq_array[k].alias = int(individ_delta_chisq_start[k].error);
 	    fprintf (file, "%31s : %20g\n",individ_delta_chisq_start[k].name.c_str(),ind_delta_chisq);
 	  }
 	  pairsort(ind_chisq_array, ind_delta_chisq_array_size);

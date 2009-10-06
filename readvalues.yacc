@@ -171,10 +171,10 @@ bool          yySetErrorFlag = false;
 bool          yyUseSimplexMinOnly = false;
 bool          yyUseSimplexMin = true;
 bool          yyRequireNeut1LSP = false;
-bool          yyPreliminaryScan = false;
 
-unsigned int  yyPrelScanIterations = 0;
+unsigned int  yyNumberOptimizationSteps = 1000;
 unsigned int  yyAcceptanceRange = 0;
+unsigned int  yyWidthOptimization = 0;
 
 unsigned int yyCalculator;
 unsigned int yyDecayCalculator;
@@ -342,16 +342,20 @@ input:
 		sprintf(c, "%f", $3);
                 yyInputFileLine.prevalue += c;
 
-		if (!strcmp($2,"yyAcceptanceRange")) {
+		if (!strcmp($2,"AcceptanceRange")) {
 		  if ($3>0) {
 		    yyAcceptanceRange  = (int)$3;
                   }
 		}
-		if (!strcmp($2,"yyPrelScanIterations")) {
+		if (!strcmp($2,"NumberOptimizationSteps")) {
 		  if ($3>0) {
-		     yyPrelScanIterations = (int)$3;
+		     yyNumberOptimizationSteps = (int)$3;
                   }
 		}
+		if (!strcmp($2,"WidthOptimization")) {
+		  yyWidthOptimization = (int)$3;
+		}
+
 		if (!strcmp($2,"NumberOfMinimizations")) {
 		  // cout << "FOUND NUMBER OF MINIMIZATIONS "<<$3<<endl;
 		  if ($3>0) {
@@ -1339,10 +1343,6 @@ input:
 		  if (!strcmp($2, "UseSimplexMin")) {
 		      if ($3 == on) yyUseSimplexMin = true;
 		      else yyUseSimplexMin = false;
-		  } 
-		  if (!strcmp($2, "yyPreliminaryScan")) {
-		    if ($3 == on) yyPreliminaryScan = true;
-		    else yyPreliminaryScan = false;
 		  } 
 	      }
 	    | input T_CALCULATOR T_WORD

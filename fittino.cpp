@@ -3087,7 +3087,7 @@ void Fittino::calculateLoopLevelValues()
 	       TGraphTitle.append(yyFittedVec[i].name);
 	       TGraphDummy = new TGraph(ncontpoints+1,closedxarray,closedyarray);
 	       TGraphDummy->SetTitle(TGraphTitle.c_str());
-	       sprintf(GraphName,"Graph%i",i*yyFittedVec.size()+j);
+	       sprintf(GraphName,"Graph%i",int(i*yyFittedVec.size()+j));
 	       TGraphDummy->SetName(GraphName);
 	       TGraphDummy->Write();
 	       // free all other parameters
@@ -3141,7 +3141,7 @@ void Fittino::calculateLoopLevelValues()
 	       TGraphTitle.append(yyFittedVec[i].name);
 	       TGraphDummy = new TGraph(ncontpoints+1,closedxarray,closedyarray);
 	       TGraphDummy->SetTitle(TGraphTitle.c_str());
-	       sprintf(GraphName,"Graph%i",i*yyFittedVec.size()+j);
+	       sprintf(GraphName,"Graph%i",int(i*yyFittedVec.size()+j));
 	       TGraphDummy->SetName(GraphName);
 	       TGraphDummy->Write();
 	    }
@@ -9770,6 +9770,296 @@ int   ReadLesHouches()
       if (par) delete[] par;
    }
 
+void Fittino::widthOptimization()
+{
+  cout << yyDashedLine << endl;
+  cout << "Preliminary optimization of proposal width" << endl;
+  // Fill input vectors
+  vector <double> x; 
+  vector <double> vm;
+  vector <double> xp;
+  vector <double> lb; 
+  vector <double> ub;
+  vector <string> xNames;
+  int successes = 0;
+  Double_t dummyfloat = 5.;
+  Int_t dummyint = 1;
+  Double_t xdummy[100];
+  double previousChi2 = 1.E10;
+  TRandom3* random = new TRandom3();
+
+  for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+    x.push_back(yyFittedVec[k].value);
+    xp.push_back(yyFittedVec[k].value);
+    vm.push_back(yyFittedVec[k].error);
+    lb.push_back(yyFittedVec[k].bound_low);
+    ub.push_back(yyFittedVec[k].bound_up);
+    xNames.push_back(yyFittedVec[k].name);
+  }
+  
+
+ // Fill some nice histograms
+  TFile *tempoFile = new TFile( "tempoFile.root", "RECREATE" );
+  TH1F* vm_h_1 = new TH1F ( "vm_h_1", "vm_h_1", 100, -1, 100 );
+  TH1F* suc_h_1 = new TH1F ( "suc_h_1", "suc_h_1", 100, -1, 100 );
+  TH1F* vm_h_2 = new TH1F ( "vm_h_2", "vm_h_2", 100, -1, 100 );
+  TH1F* suc_h_2 = new TH1F ( "suc_h_2", "suc_h_2", 100, -1, 100 );
+  TH1F* vm_h_3 = new TH1F ( "vm_h_3", "vm_h_3", 100, -1, 100 );
+  TH1F* suc_h_3 = new TH1F ( "suc_h_3", "suc_h_3", 100, -1, 100 );
+  TH1F* vm_h_4 = new TH1F ( "vm_h_4", "vm_h_4", 100, -1, 100 );
+  TH1F* suc_h_4 = new TH1F ( "suc_h_4", "suc_h_4", 100, -1, 100 );
+  TH1F* suc_h_G = new TH1F ( "suc_h_G", "suc_h_G", 100, -1, 100 );
+  TH1F* globalScale_h = new TH1F ( "globalScale_h", "globalScale_h", 100, -1, 100 );
+  int maxStep = 0;
+  if( yyNumberOptimizationSteps < 0 ) maxStep = 1000;
+  else maxStep = yyNumberOptimizationSteps;
+  
+  // 1 == Tune width of proposal distribution so that success rate is in [0.4;0.6]
+  for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++){
+    bool firstPrelimChain = true;
+    bool successRateOK = false;
+    int numChain = 0;
+
+    // 1 == Prelimimary Markov chain 
+    while( firstPrelimChain || !successRateOK ){
+      cout << " ==== NOUVELLE CHAINE ==== "<< endl;
+      
+      // == Before the beginning of each new chain, reset the starting point 
+      x[iVariable] = yyFittedVec[iVariable].value;
+      cout << "Variable "<< xNames[iVariable] << "  " << x[iVariable]<< "  " << xp[iVariable] << endl;
+      
+	       firstPrelimChain = false;
+	       successes = 0;
+	       int step = 0;
+	       while( step < maxStep ){
+		     cout << " ==== Individual optimization == STEP " << step << " ====="<< endl;
+		     
+		     // 1.2 == Pick a new point within bounds according to proposal distribution
+		     bool outOfBounds = false;
+		     bool first = true;
+		     while ( outOfBounds == true || first == true ){
+			 first = false; 
+			 outOfBounds = false;
+			 xp[iVariable] = x[iVariable] + random->Gaus( 0., vm[iVariable] );
+			 if ( ( xp[iVariable] < lb[iVariable] ) || ( xp[iVariable] > ub[iVariable] ) ) outOfBounds = true;
+		       }
+		     // 1.3 == Calculate chi2
+		     double chi2 = 1.E10;
+		     for (unsigned int i = 0; i < xp.size(); i++) xdummy[i] = xp[i];
+		     fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
+		   		     
+		     // 1.4 == Compare chi2 and the previous chi2
+		     if ( step == 0 ) previousChi2 = chi2 + 1.;
+		     double rho =  TMath::Exp( -chi2/2. + previousChi2/2. );
+		     cout <<"rho = " << rho << endl;		   		 
+
+		     // 1.5 == Decide which point to accept
+		     float accpoint = 0;
+		     if( rho > 1.) accpoint = 1;
+		     else{
+		       double p = random->Uniform( 0., 1. );
+		       cout << "p = "<< p << endl;
+		       if( p < rho ) accpoint = 1;
+		     } 
+		     cout << "IT accpoint = "<< accpoint << endl;
+		     // 1.6 == Count the number of successes
+		     if( accpoint == 1 ){
+		       successes++;
+		       x[iVariable] = xp[iVariable];
+		       previousChi2 = chi2;
+		     }
+		     step++;
+
+		     // 1.7 == Assume linear dependency: modify width
+		     if( step == maxStep )
+		       {
+			 float _s = successes;
+			 float _m = maxStep;
+			 float successRate = _s / _m;
+			 if( iVariable == 0 ){
+			   vm_h_1->SetBinContent( numChain, vm[iVariable] );
+			   suc_h_1->SetBinContent( numChain, successRate );
+			 }
+			 if( iVariable == 1 ){
+			   vm_h_2->SetBinContent( numChain, vm[iVariable] );
+			   suc_h_2->SetBinContent( numChain, successRate );
+			 }
+			 if( iVariable == 2 ){
+			   vm_h_3->SetBinContent( numChain, vm[iVariable] );
+			   suc_h_3->SetBinContent( numChain, successRate );
+			 }
+			 if( iVariable == 3 ){
+			   vm_h_4->SetBinContent( numChain, vm[iVariable] );
+			   suc_h_4->SetBinContent( numChain, successRate );
+			 }
+			 
+			 numChain++;
+			 cout << "step" << step << " --->IT "<< xNames[iVariable] << " Former width = "<<  vm[iVariable] << endl;
+			 if( successRate == 0 ){
+			   cout << " Success rate null ! Set to 0.2 " << endl;
+			   successRate = 0.2;
+			 }
+
+
+
+			 // == Test narrower acceptance ranges
+			 if( yyAcceptanceRange == 1 ){
+			   if( successRate < 0.4 ) vm[iVariable] = vm[iVariable] * successRate / 0.4;
+			   if( successRate > 0.6 ) vm[iVariable] = vm[iVariable] * successRate / 0.6;
+			   if( successRate >= 0.4 && successRate <= 0.6 ) successRateOK = true;
+			 }
+			 if( yyAcceptanceRange == 2 ){
+			   if( successRate < 0.44 ) vm[iVariable] = vm[iVariable] * successRate / 0.44;
+			   if( successRate > 0.56 ) vm[iVariable] = vm[iVariable] * successRate / 0.56;
+			   if( successRate >= 0.44 && successRate <= 0.56 ) successRateOK = true;
+			 }
+			 if( yyAcceptanceRange == 3 ){
+			   if( successRate > 0.52 ) vm[iVariable] *= ( 1 + 4*( successRate - 0.52 )/successRate );
+			   if( successRate < 0.48 ){
+			     float tempScale = ( 1 + ( successRate - 0.48 )/successRate );
+			     if( tempScale > 0 ) vm[iVariable] *= tempScale;
+			     if( tempScale < 0 ) vm[iVariable] *= ( 1 + ( successRate - 0.48 )/0.48 );
+			   }
+			   if( successRate >= 0.48 && successRate <= 0.52 ) successRateOK = true;
+			 }
+			 cout << "step" << step << " --->IT "<< xNames[iVariable] << " #success = " << successes <<" Markov Chain success rate = " <<  successRate <<" New width = "<<  vm[iVariable] << endl;
+		       }
+		   }
+	       }
+	  }
+	   
+	 // 2 == Global scaling of all variables by a factor 1/sqrt(nVar)
+	 cout << " ---> Global scaling 1/sqrt(N) = " << 1/sqrt( x.size() ) << endl;
+	 for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++){
+	   vm[iVariable] = vm[iVariable] / sqrt( x.size() );
+	   if( iVariable == 0 ) vm_h_1->SetBinContent( vm_h_1->GetMinimumBin(), vm[iVariable] );
+	   if( iVariable == 1 ) vm_h_2->SetBinContent( vm_h_2->GetMinimumBin(), vm[iVariable] );
+	   if( iVariable == 2 ) vm_h_3->SetBinContent( vm_h_3->GetMinimumBin(), vm[iVariable] );
+	   if( iVariable == 3 ) vm_h_4->SetBinContent( vm_h_4->GetMinimumBin(), vm[iVariable] );
+	 }
+
+	 // 3 == Global tune of all variables widths 
+	 bool firstPrelimChain = true;
+	 bool successRateOK = false;
+	 int numChain = 0;
+	 while( firstPrelimChain || !successRateOK ){
+	     firstPrelimChain = false;
+	     successes = 0;
+	     int step = 0;
+
+	     cout << " ==== NOUVELLE CHAINE ==== "<< endl;
+	     // == Before the beginning of each new chain, reset the starting point 
+	     for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) x[iVariable] = yyFittedVec[iVariable].value;
+
+	     while( step < maxStep ){
+		 cout << " ==== Global optimization == STEP " << step << " ===="<< endl;
+		 
+		 // 3.1 == Pick a new point within bounds according to proposal distribution
+		 for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) 
+		   {
+		     bool outOfBounds = false;
+		     bool first = true;
+		     while ( outOfBounds == true || first == true )
+		       {
+			 first = false; 
+			 outOfBounds = false;
+			 xp[iVariable] = x[iVariable] + random->Gaus( 0., vm[iVariable] );
+			 if ( ( xp[iVariable] < lb[iVariable] ) || ( xp[iVariable] > ub[iVariable] ) ) outOfBounds = true;
+		       }
+		   } 
+		 
+		 // 3.2 == Calculate chi2
+		 double chi2 = 1.E10;
+		 for (unsigned int i = 0; i < xp.size(); i++) xdummy[i] = xp[i];
+		 fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
+		     
+		 // 3.3 == Compare chi2 and the previous chi2
+		 if ( step == 0 ) previousChi2 = chi2 + 1.;
+		 double rho =  TMath::Exp( -chi2/2. + previousChi2/2. );
+		 
+		 // 3.4 == Decide which point to accept
+		 float accpoint = 0;
+		 if( rho > 1.) accpoint = 1;
+		 else{
+		   double p = random->Uniform( 0., 1. );
+		   if( p < rho ) accpoint = 1;
+		 } 
+		 cout << "GT accpoint = "<< accpoint << endl;
+
+		 // 3.5 == Count the number of successes
+		 if( accpoint == 1 ){
+		   successes++;
+		   for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) x[iVariable] = xp[iVariable];
+		   previousChi2 = chi2;
+		 }
+		 step++;
+		 
+		 // 3.6 == Global scaling of widths
+		 if( step == maxStep ){
+		     float _s = successes;
+		     float _m = maxStep;
+		     float successRate = _s / _m;
+		     cout << "step" << step << " --->GT #success = " << successes << " Markov Chain success rate = " <<  successRate << " Former widths : " << endl;
+		     for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++){
+		       cout << "step" << step << " --->GT "<< xNames[iVariable] << "  "<<  vm[iVariable] << endl;		       
+		       if( iVariable == 0 ) vm_h_1->SetBinContent( vm_h_1->GetMinimumBin(), vm[iVariable] );
+		       if( iVariable == 1 ) vm_h_2->SetBinContent( vm_h_2->GetMinimumBin(), vm[iVariable] );
+		       if( iVariable == 2 ) vm_h_3->SetBinContent( vm_h_3->GetMinimumBin(), vm[iVariable] );
+		       if( iVariable == 3 ) vm_h_4->SetBinContent( vm_h_4->GetMinimumBin(), vm[iVariable] );
+		     }
+		     numChain++;
+		     
+		     float globalScale = 1.;
+		     if( successRate == 0 ) successRate = 0.2;
+		     
+		     // == Test narrower acceptance ranges
+		     if( yyAcceptanceRange == 1 ){
+		       if( successRate < 0.4 ) globalScale = successRate / 0.4;
+		       if( successRate > 0.6 ) globalScale = successRate / 0.6;
+		       if( successRate >= 0.4 && successRate <= 0.6 ) successRateOK = true;
+		     }
+		     if( yyAcceptanceRange == 2 ){
+		       if( successRate < 0.44 ) globalScale = successRate / 0.44;
+		       if( successRate > 0.56 ) globalScale = successRate / 0.56;
+		       if( successRate >= 0.44 && successRate <= 0.56 ) successRateOK = true;
+		     }
+		     if( yyAcceptanceRange == 3 ){
+		       if( successRate > 0.52 ) globalScale = ( 1 + ( successRate - 0.52 )/successRate );
+		       if( successRate < 0.48 ){
+			 float tempScale = ( 1 + ( successRate - 0.48 )/successRate );
+			 if( tempScale > 0 ) globalScale = tempScale;
+			 if( tempScale < 0 ) globalScale = ( 1 + ( successRate - 0.48 )/0.48 );
+		       }
+		       if( successRate >= 0.48 && successRate <= 0.52 ) successRateOK = true;
+		     }
+		     suc_h_G->SetBinContent( numChain, successRate );
+		     globalScale_h->SetBinContent( numChain, globalScale );
+		     
+		     for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++){
+		       vm[iVariable] = vm[iVariable] * globalScale;		     
+		       cout << "step" << step << " --->GT "<< xNames[iVariable] << " #success = " << successes <<" Markov Chain success rate = " <<  successRate <<" New width = "<<  vm[iVariable] << endl;
+		     }
+		   }
+	       }
+	   }
+	 
+	 tempoFile->cd();
+	 vm_h_1->Write();
+	 suc_h_1->Write();
+	 vm_h_2->Write();
+	 suc_h_2->Write();
+	 vm_h_3->Write();
+	 suc_h_3->Write();
+	 vm_h_4->Write();
+	 suc_h_4->Write();
+	 globalScale_h->Write();
+	 suc_h_G->Write();
+	 tempoFile->Close();
+	 tempoFile->Delete();
+}
+
+
+
 
    void Fittino::markovChain ()
    {
@@ -9937,9 +10227,12 @@ int   ReadLesHouches()
       unsigned int nFilePars = 0; 
       const unsigned int nVars = xp.size();
       double varsFromFile[200];
+      double widthsFromFile[200];
+      for( int i=0; i<200; i++ ) widthsFromFile[i] = -1;
       string thisString[200];
       bool fileReadError = false;
-      if (yyMarkovInterfaceFilePath!="") {
+      string separator;
+      if (yyMarkovInterfaceFilePath != "") {
 	cout << "read previous ending from file " << yyMarkovInterfaceFilePath << endl;
 	string syscall = "cp "+yyMarkovInterfaceFilePath+" ./markovInterfaceFile.txt";
 	int rc = system (syscall.c_str());
@@ -9958,7 +10251,7 @@ int   ReadLesHouches()
 		fileReadError = true;
 		break;
 	      }
-	      markovInterfaceFilePath >> thisString[nFilePars] >> varsFromFile[nFilePars];
+	      markovInterfaceFilePath >> thisString[nFilePars] >> varsFromFile[nFilePars] >> separator >> widthsFromFile[nFilePars];
 	      nFilePars++;
 	    }
 	    if (!(nFilePars==xp.size()+1)) {
@@ -9972,9 +10265,19 @@ int   ReadLesHouches()
 		    cout << "setting variable " << xNames[i] << " = " << varsFromFile[j] << endl;
 		    x[i]  = varsFromFile[j];
 		    xp[i] = varsFromFile[j];
+		    if( widthsFromFile[nFilePars] != -1 )  vm[i] = widthsFromFile[j];
 		  }
 		}
-	      } 
+	      }
+	      if( widthsFromFile[nFilePars] == -1 ){
+		cout << "NOTE: no proposal width in interface file" << endl;
+		if( yyWidthOptimization == 0 ) cout << "NOTE: values in input file taken" << endl;
+		if( yyWidthOptimization == 1 ){
+		  cout << "NOTE: width optimization about to be processed ... " << endl;
+		  widthOptimization();
+		}
+	      }
+	      
 	    } else {
 	      cout << "unspecified syntax error for (yyMarkovInterfaceFilePath, reverting to standard start values" << endl;
 	    }
@@ -9985,7 +10288,7 @@ int   ReadLesHouches()
 	  cout << "using the following start settings" << endl;
 	  cout << "globalIter = " << globalIter << endl;
 	  for (unsigned int i = 0; i < xNames.size(); i++) {
-	    cout << xNames[i] << " = " << xp[i] << endl;
+	    cout << xNames[i] << " = " << xp[i] << " +- " << vm[i] << endl;
 	  }
 	  cout << yyDashedLine << endl;
 	  markovInterfaceFilePath.close();
@@ -10018,281 +10321,12 @@ int   ReadLesHouches()
       // ====================================================================
       double previousChi2 = 1.E10;
       
-
-      // ===================== start of preliminary tuning =======================
-      if( yyPreliminaryScan )
-	{
-	  cout << yyDashedLine << endl;
-	  cout << "Preliminary tuning of proposal width" << endl;
-	  // Fill some nice histograms
-	  TFile *tempoFile = new TFile( "tempoFile.root", "RECREATE" );
-	  TH1F* vm_h_1 = new TH1F ( "vm_h_1", "vm_h_1", 100, -1, 100 );
-	  TH1F* suc_h_1 = new TH1F ( "suc_h_1", "suc_h_1", 100, -1, 100 );
-	  TH1F* vm_h_2 = new TH1F ( "vm_h_2", "vm_h_2", 100, -1, 100 );
-	  TH1F* suc_h_2 = new TH1F ( "suc_h_2", "suc_h_2", 100, -1, 100 );
-	  TH1F* vm_h_3 = new TH1F ( "vm_h_3", "vm_h_3", 100, -1, 100 );
-	  TH1F* suc_h_3 = new TH1F ( "suc_h_3", "suc_h_3", 100, -1, 100 );
-	  TH1F* vm_h_4 = new TH1F ( "vm_h_4", "vm_h_4", 100, -1, 100 );
-	  TH1F* suc_h_4 = new TH1F ( "suc_h_4", "suc_h_4", 100, -1, 100 );
-	  TH1F* suc_h_G = new TH1F ( "suc_h_G", "suc_h_G", 100, -1, 100 );
-	  TH1F* globalScale_h = new TH1F ( "globalScale_h", "globalScale_h", 100, -1, 100 );
-	  int maxStep = 1000;
-	  if( yyPrelScanIterations == 0 ) maxStep = 1000;
-	  else maxStep = yyPrelScanIterations;
-	  
-	  // 1 == Tune width of proposal distribution so that success rate is in [0.4;0.6]
-	  for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) 
-	  {
-	    bool firstPrelimChain = true;
-	    bool successRateOK = false;
-	    int numChain = 0;
-
-	     // 1 == Prelimimary Markov chain 
-	     while( firstPrelimChain || !successRateOK )
-	       {
-		 cout << " ==== NOUVELLE CHAINE ==== "<< endl;
-
-		 // == Before the beginning of each new chain, reset the starting point 
-		 x[iVariable] = yyFittedVec[iVariable].value;
-		 cout << "Variable "<< xNames[iVariable] << "  " << x[iVariable]<< "  " << xp[iVariable] << endl;
-
-		 firstPrelimChain = false;
-		 successes = 0;
-		 int step = 0;
-		 while( step < maxStep )
-		   {
-		     cout << " ==== Individual tuning == STEP " << step << " ====="<< endl;
-		     
-		     // 1.2 == Pick a new point within bounds according to proposal distribution
-		     bool outOfBounds = false;
-		     bool first = true;
-		     while ( outOfBounds == true || first == true )
-		       {
-			 first = false; 
-			 outOfBounds = false;
-			 xp[iVariable] = x[iVariable] + random->Gaus( 0., vm[iVariable] );
-			 if ( ( xp[iVariable] < lb[iVariable] ) || ( xp[iVariable] > ub[iVariable] ) ) outOfBounds = true;
-		       }
-		     // 1.3 == Calculate chi2
-		     double chi2 = 1.E10;
-		     for (unsigned int i = 0; i < xp.size(); i++) xdummy[i] = xp[i];
-		     fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
-		   		     
-		     // 1.4 == Compare chi2 and the previous chi2
-		     if ( step == 0 ) previousChi2 = chi2 + 1.;
-		     double rho =  TMath::Exp( -chi2/2. + previousChi2/2. );
-		     cout <<"rho = " << rho << endl;		   		 
-
-		     // 1.5 == Decide which point to accept
-		     float accpoint = 0;
-		     if( rho > 1.) accpoint = 1;
-		     else{
-		       double p = random->Uniform( 0., 1. );
-		       cout << "p = "<< p << endl;
-		       if( p < rho ) accpoint = 1;
-		     } 
-		     cout << "IT accpoint = "<< accpoint << endl;
-		     // 1.6 == Count the number of successes
-		     if( accpoint == 1 ){
-		       successes++;
-		       x[iVariable] = xp[iVariable];
-		       previousChi2 = chi2;
-		     }
-		     step++;
-
-		     // 1.7 == Assume linear dependency: modify width
-		     if( step == maxStep )
-		       {
-			 float _s = successes;
-			 float _m = maxStep;
-			 float successRate = _s / _m;
-			 if( iVariable == 0 ){
-			   vm_h_1->SetBinContent( numChain, vm[iVariable] );
-			   suc_h_1->SetBinContent( numChain, successRate );
-			 }
-			 if( iVariable == 1 ){
-			   vm_h_2->SetBinContent( numChain, vm[iVariable] );
-			   suc_h_2->SetBinContent( numChain, successRate );
-			 }
-			 if( iVariable == 2 ){
-			   vm_h_3->SetBinContent( numChain, vm[iVariable] );
-			   suc_h_3->SetBinContent( numChain, successRate );
-			 }
-			 if( iVariable == 3 ){
-			   vm_h_4->SetBinContent( numChain, vm[iVariable] );
-			   suc_h_4->SetBinContent( numChain, successRate );
-			 }
-			 
-			 numChain++;
-			 cout << "step" << step << " --->IT "<< xNames[iVariable] << " Former width = "<<  vm[iVariable] << endl;
-			 if( successRate == 0 ){
-			   cout << " Success rate null ! Set to 0.2 " << endl;
-			   successRate = 0.2;
-			 }
-
-
-
-			 // == Test narrower acceptance ranges
-			 if( yyAcceptanceRange == 1 ){
-			   if( successRate < 0.4 ) vm[iVariable] = vm[iVariable] * successRate / 0.4;
-			   if( successRate > 0.6 ) vm[iVariable] = vm[iVariable] * successRate / 0.6;
-			   if( successRate >= 0.4 && successRate <= 0.6 ) successRateOK = true;
-			 }
-			 if( yyAcceptanceRange == 2 ){
-			   if( successRate < 0.44 ) vm[iVariable] = vm[iVariable] * successRate / 0.44;
-			   if( successRate > 0.56 ) vm[iVariable] = vm[iVariable] * successRate / 0.56;
-			   if( successRate >= 0.44 && successRate <= 0.56 ) successRateOK = true;
-			 }
-			 if( yyAcceptanceRange == 3 ){
-			   if( successRate > 0.52 ) vm[iVariable] *= ( 1 + 4*( successRate - 0.52 )/successRate );
-			   if( successRate < 0.48 ){
-			     float tempScale = ( 1 + ( successRate - 0.48 )/successRate );
-			     if( tempScale > 0 ) vm[iVariable] *= tempScale;
-			     if( tempScale < 0 ) vm[iVariable] *= ( 1 + ( successRate - 0.48 )/0.48 );
-			   }
-			   if( successRate >= 0.48 && successRate <= 0.52 ) successRateOK = true;
-			 }
-			 cout << "step" << step << " --->IT "<< xNames[iVariable] << " #success = " << successes <<" Markov Chain success rate = " <<  successRate <<" New width = "<<  vm[iVariable] << endl;
-		       }
-		   }
-	       }
-	  }
-	   
-	 // 2 == Global scaling of all variables by a factor 1/sqrt(nVar)
-	 cout << " ---> Global scaling 1/sqrt(N) = " << 1/sqrt( x.size() ) << endl;
-	 for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++){
-	   vm[iVariable] = vm[iVariable] / sqrt( x.size() );
-	   if( iVariable == 0 ) vm_h_1->SetBinContent( vm_h_1->GetMinimumBin(), vm[iVariable] );
-	   if( iVariable == 1 ) vm_h_2->SetBinContent( vm_h_2->GetMinimumBin(), vm[iVariable] );
-	   if( iVariable == 2 ) vm_h_3->SetBinContent( vm_h_3->GetMinimumBin(), vm[iVariable] );
-	   if( iVariable == 3 ) vm_h_4->SetBinContent( vm_h_4->GetMinimumBin(), vm[iVariable] );
-	 }
-
-	 // 3 == Global tune of all variables widths 
-	 bool firstPrelimChain = true;
-	 bool successRateOK = false;
-	 int numChain = 0;
-	 while( firstPrelimChain || !successRateOK )
-	   {
-	     firstPrelimChain = false;
-	     successes = 0;
-	     int step = 0;
-
-	     cout << " ==== NOUVELLE CHAINE ==== "<< endl;
-	     // == Before the beginning of each new chain, reset the starting point 
-	     for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) x[iVariable] = yyFittedVec[iVariable].value;
-
-	     while( step < maxStep )
-	       {
-		 cout << " ==== Global tuning == STEP " << step << " ===="<< endl;
-		 
-		 // 3.1 == Pick a new point within bounds according to proposal distribution
-		 for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) 
-		   {
-		     bool outOfBounds = false;
-		     bool first = true;
-		     while ( outOfBounds == true || first == true )
-		       {
-			 first = false; 
-			 outOfBounds = false;
-			 xp[iVariable] = x[iVariable] + random->Gaus( 0., vm[iVariable] );
-			 if ( ( xp[iVariable] < lb[iVariable] ) || ( xp[iVariable] > ub[iVariable] ) ) outOfBounds = true;
-		       }
-		   } 
-		 
-		 // 3.2 == Calculate chi2
-		 double chi2 = 1.E10;
-		 for (unsigned int i = 0; i < xp.size(); i++) xdummy[i] = xp[i];
-		 fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
-		     
-		 // 3.3 == Compare chi2 and the previous chi2
-		 if ( step == 0 ) previousChi2 = chi2 + 1.;
-		 double rho =  TMath::Exp( -chi2/2. + previousChi2/2. );
-		 
-		 // 3.4 == Decide which point to accept
-		 float accpoint = 0;
-		 if( rho > 1.) accpoint = 1;
-		 else{
-		   double p = random->Uniform( 0., 1. );
-		   if( p < rho ) accpoint = 1;
-		 } 
-		 cout << "GT accpoint = "<< accpoint << endl;
-
-		 // 3.5 == Count the number of successes
-		 if( accpoint == 1 ){
-		   successes++;
-		   for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) x[iVariable] = xp[iVariable];
-		   previousChi2 = chi2;
-		 }
-		 step++;
-		 
-		 // 3.6 == Global scaling of widths
-		 if( step == maxStep )
-		   {
-		     float _s = successes;
-		     float _m = maxStep;
-		     float successRate = _s / _m;
-		     cout << "step" << step << " --->GT #success = " << successes << " Markov Chain success rate = " <<  successRate << " Former widths : " << endl;
-		     for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++){
-		       cout << "step" << step << " --->GT "<< xNames[iVariable] << "  "<<  vm[iVariable] << endl;		       
-		       if( iVariable == 0 ) vm_h_1->SetBinContent( vm_h_1->GetMinimumBin(), vm[iVariable] );
-		       if( iVariable == 1 ) vm_h_2->SetBinContent( vm_h_2->GetMinimumBin(), vm[iVariable] );
-		       if( iVariable == 2 ) vm_h_3->SetBinContent( vm_h_3->GetMinimumBin(), vm[iVariable] );
-		       if( iVariable == 3 ) vm_h_4->SetBinContent( vm_h_4->GetMinimumBin(), vm[iVariable] );
-		     }
-		     numChain++;
-		     
-		     float globalScale = 1.;
-		     if( successRate == 0 ) successRate = 0.2;
-		     
-		     // == Test narrower acceptance ranges
-		     if( yyAcceptanceRange == 1 ){
-		       if( successRate < 0.4 ) globalScale = successRate / 0.4;
-		       if( successRate > 0.6 ) globalScale = successRate / 0.6;
-		       if( successRate >= 0.4 && successRate <= 0.6 ) successRateOK = true;
-		     }
-		     if( yyAcceptanceRange == 2 ){
-		       if( successRate < 0.44 ) globalScale = successRate / 0.44;
-		       if( successRate > 0.56 ) globalScale = successRate / 0.56;
-		       if( successRate >= 0.44 && successRate <= 0.56 ) successRateOK = true;
-		     }
-		     if( yyAcceptanceRange == 3 ){
-		       if( successRate > 0.52 ) globalScale = ( 1 + ( successRate - 0.52 )/successRate );
-		       if( successRate < 0.48 ){
-			 float tempScale = ( 1 + ( successRate - 0.48 )/successRate );
-			 if( tempScale > 0 ) globalScale = tempScale;
-			 if( tempScale < 0 ) globalScale = ( 1 + ( successRate - 0.48 )/0.48 );
-		       }
-		       if( successRate >= 0.48 && successRate <= 0.52 ) successRateOK = true;
-		     }
-		     suc_h_G->SetBinContent( numChain, successRate );
-		     globalScale_h->SetBinContent( numChain, globalScale );
-		     
-		     for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++){
-		       vm[iVariable] = vm[iVariable] * globalScale;		     
-		       cout << "step" << step << " --->GT "<< xNames[iVariable] << " #success = " << successes <<" Markov Chain success rate = " <<  successRate <<" New width = "<<  vm[iVariable] << endl;
-		     }
-		   }
-	       }
-	   }
-	 
-
-	 tempoFile->cd();
-	 vm_h_1->Write();
-	 suc_h_1->Write();
-	 vm_h_2->Write();
-	 suc_h_2->Write();
-	 vm_h_3->Write();
-	 suc_h_3->Write();
-	 vm_h_4->Write();
-	 suc_h_4->Write();
-	 globalScale_h->Write();
-	 suc_h_G->Write();
-	 tempoFile->Close();
-	 tempoFile->Delete();
-	 
-	 return;
-	}// prelimi scan
+      // ===================== start of preliminary optimization =======================
+      //       if( yyWidthOptimization )
+      // 	{
+      // 	  widthOptimization();
+      // 	  return;
+      // 	}
       // ===================== end of preliminary scan =======================
       
       //-------------------------------------------
@@ -10523,7 +10557,7 @@ int   ReadLesHouches()
       MarkovNtupFile->Close();
 
       // eventually write final point to output text file
-      if (yyMarkovInterfaceFilePath!="") {
+      if (yyMarkovInterfaceFilePath != "") {
 	bool allOK = true;
 	ofstream markovInterfaceFilePath("./markovInterfaceFile.txt");
 	if (markovInterfaceFilePath.is_open()) {
@@ -10545,7 +10579,7 @@ int   ReadLesHouches()
 	  if (rc!=0) {
 	    cout << "return value " << rc << " from copy to markovInterfaceFile " << yyMarkovInterfaceFilePath << endl; 
 	  } else {
-	    cout << "successfully copied interfcae file to " << yyMarkovInterfaceFilePath << endl;
+	    cout << "successfully copied interface file to " << yyMarkovInterfaceFilePath << endl;
 	  }
 	}
 	system("rm ./markovInterfaceFile.txt");
