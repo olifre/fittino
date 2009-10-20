@@ -26,7 +26,9 @@ massh0     109.582      GeV +- 0.1        GeV +- (LES) 0.1 GeV # [9]
 
 ### masses
 
-massChargino1  180.176 GeV +- 11.4  GeV +- (JES) 1.8 GeV # [10]
+# Oct. 20, 2009: Changed uncertainty
+#massChargino1  180.176 GeV +- 11.4  GeV +- (JES) 1.8 GeV # [10]
+massChargino1  180.176 GeV +- 20.0  GeV +- (JES) 1.8 GeV # [10]
 
 ### edges
 
