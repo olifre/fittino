@@ -5510,8 +5510,14 @@ void WriteLesHouches(double* x)
 	    }
 	 }
       }
-		if( yyCalculator == SPHENO ) {  //ADDED SOMETHING HERE
-      // BLOCK SPhenoInput
+      // cout << "looking for SPheno " << yyCalculator << endl;
+      if( yyCalculator == SPHENO ) {  //ADDED SOMETHING HERE
+	//cout << "writing LesHouches for SPheno " << yySPhenoStartDataString << endl;
+	//if (yySPhenoStartDataString!="") {
+	//  LesHouchesOutfile << "BLOCK StartDataFile" << endl;
+	//  LesHouchesOutfile << " " << yySPhenoStartDataString << endl;
+	//}
+	// BLOCK SPhenoInput
       LesHouchesOutfile << "BLOCK SPHENOINPUT" << endl;
       LesHouchesOutfile << "    1  0                  # error level" << endl;
       LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
@@ -5848,7 +5854,11 @@ void WriteLesHouches(double* x)
 	 cerr<<"SignMu must be fixed to either 1 or -1"<<endl;
 	 exit(EXIT_FAILURE);
       }
-			if( yyCalculator == SPHENO ) {
+      if( yyCalculator == SPHENO ) {
+	if (yySPhenoStartDataString!="") {
+	  LesHouchesOutfile << "BLOCK StartDataFile" << endl;
+	  LesHouchesOutfile << " " << yySPhenoStartDataString << endl;
+	}
       LesHouchesOutfile << "BLOCK SPHENOINPUT" << endl;
       LesHouchesOutfile << "    1  0                  # error level" << endl;
       LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
@@ -6265,7 +6275,11 @@ void WriteLesHouches(double* x)
 	 exit (EXIT_FAILURE);
       }
       // BLOCK SPhenoInput
-			if( yyCalculator == SPHENO ) {
+      if( yyCalculator == SPHENO ) {
+	if (yySPhenoStartDataString!="") {
+	  LesHouchesOutfile << "BLOCK StartDataFile" << endl;
+	  LesHouchesOutfile << " " << yySPhenoStartDataString << endl;
+	}
       LesHouchesOutfile << "BLOCK SPHENOINPUT" << endl;
       LesHouchesOutfile << "    1  0                  # error level" << endl;
       LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
@@ -6591,7 +6605,11 @@ void WriteLesHouches(double* x)
 	 cerr<<"N5 must be fixed to an integer number"<<endl;
 	 exit(EXIT_FAILURE);
       }
-			if( yyCalculator == SPHENO ) {
+      if( yyCalculator == SPHENO ) {
+	if (yySPhenoStartDataString!="") {
+	  LesHouchesOutfile << "BLOCK StartDataFile" << endl;
+	  LesHouchesOutfile << " " << yySPhenoStartDataString << endl;
+	}
       LesHouchesOutfile << "BLOCK SPHENOINPUT" << endl;
       LesHouchesOutfile << "    1  0                  # error level" << endl;
       LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
@@ -6882,7 +6900,11 @@ void WriteLesHouches(double* x)
 	       cerr<<"SignMu must be fixed to either 1 or -1"<<endl;
 	       exit(EXIT_FAILURE);
 	    }
-			if( yyCalculator == SPHENO ) {
+	    if( yyCalculator == SPHENO ) {
+	      if (yySPhenoStartDataString!="") {
+		LesHouchesOutfile << "BLOCK StartDataFile" << endl;
+		LesHouchesOutfile << " " << yySPhenoStartDataString << endl;
+	      }
 	    LesHouchesOutfile << "BLOCK SPHENOINPUT" << endl;
 	    LesHouchesOutfile << "    1  0                  # error level" << endl;
 	    LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;

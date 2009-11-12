@@ -76,7 +76,7 @@ double yyN21;
 double yyN22;
 double yyN23;
 double yyThetaStau;
-
+ 
 // SPINFO
 char yy_spectrum_calc_name[256];
 char yy_spectrum_calc_version[256];
@@ -181,6 +181,7 @@ unsigned int yyDecayCalculator;
 unsigned int yyRelicDensityCalculator;
 unsigned int yyLEOCalculator;
 
+string       yySPhenoStartDataString = "";
 string       yyCalculatorPath = "";
 string	     yyHBWhichExpt = "LandT";
 string			 yyDecayCalculatorPath = "";
@@ -1468,6 +1469,13 @@ input:
 		     tmpparam.error = 0.;
 		     yyFittedPar.push_back(tmpparam);
 		  }  
+		  else if (!strcmp($2,"SPhenoStartData")) {
+		    if (!strcmp($3, "")) {
+		      yyerror ("syntax error in SPhenoStartData");
+		    } else {
+		      yySPhenoStartDataString = $3;
+		    }
+		  }
 		  else if (!strcmp($2,"fitModel")) {
 		    cout << yyDashedLine << endl;
 		    cout<<"Fitting "<<$3<<" model"<<endl;

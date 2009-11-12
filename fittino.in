@@ -135,6 +135,8 @@ ErrDef                         1.0
 NumberPulls                    1
 GetContours                    off
 
+SPhenoStartData                SPheno.spc.last
+
 UseSimAnnBefore                off
 UseSimAnnWhile                 off
 AdaptiveSimAnn                 off
