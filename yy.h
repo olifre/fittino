@@ -106,6 +106,7 @@ extern vector<ScanParameter> yyScanPar;
 
 extern vector<parameter_t> yyCorrelatedErr;
 
+extern bool   yySPhenoLastCallValid;
 extern string yySPhenoStartDataString;
 extern string yyCalculatorPath;
 extern string yyDecayCalculatorPath;

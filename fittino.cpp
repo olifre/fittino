@@ -3422,45 +3422,45 @@ void Fittino::CalcFromRandPars(unsigned int nruns) {
 			exit(EXIT_FAILURE);
 		}
 	}
-	//Calling SPheno to calculate observables
-      int rc = 0;
-			Double_t f = 0.;
-			if( yyCalculator == SPHENO ) {
- 		  	rc = callSPheno();
- 		    if (rc == 2) {
-				cout << "SIGINT received in SPheno, exiting" << endl;
-				exit (2);
-      	}
-		    if (rc > 0) {
-		      cerr << "Exiting fitterFCN because of problem in SPheno run" << endl;
-		      f = 111111111111.;
-		      cout << " f = " << f << endl;
-		    }
-		    else if( yyCalculator == SOFTSUSY ) {
-		      if( yyFitModel != AMSB && yyFitModel != GMSB && yyFitModel != mSUGRA ) {
-					cout << "SoftSUSY currently works only with AMSB, GMSB and mSUGRA. sorry. " << endl;
-				}
-				if( yyDecayCalculator != SUSYHIT ) {
-					cout << "SoftSUSY currently works only with SUSYHIT. sorry. " <<endl;
-					exit(1);
-				}
-				rc = callSoftSusy();
-				if( rc > 0 ) {
-					cerr << "Exiting fitter FCN because of problem in SoftSusy run" << endl;
-					f = 111111111111.;
-					cout << "f = " << f << endl;
-				}
-				cout << "     SoftSusy finished (Maybe With Problems?). Calling SUSYHIT" << endl;
-        rc = callSUSYHIT();
-        if( rc > 0 ) {
-          cerr << "Exiting fitterFCN because of problem in SUSYHIT run" << endl;
-          f = 111111111111.;
-          cout << " f = " << f << endl;
-          return;
-        }
-			}
-			return;        
-     }
+	 //Calling SPheno to calculate observables
+	 int rc = 0;
+	 Double_t f = 0.;
+	 if( yyCalculator == SPHENO ) {
+	   rc = callSPheno();
+	   if (rc == 2) {
+	     cout << "SIGINT received in SPheno, exiting" << endl;
+	     exit (2);
+	   }
+	   if (rc > 0) {
+	     cerr << "Exiting fitterFCN because of problem in SPheno run" << endl;
+	     f = 111111111111.;
+	     cout << " f = " << f << endl;
+	   }
+	   else if( yyCalculator == SOFTSUSY ) {
+	     if( yyFitModel != AMSB && yyFitModel != GMSB && yyFitModel != mSUGRA ) {
+	       cout << "SoftSUSY currently works only with AMSB, GMSB and mSUGRA. sorry. " << endl;
+	     }
+	     if( yyDecayCalculator != SUSYHIT ) {
+	       cout << "SoftSUSY currently works only with SUSYHIT. sorry. " <<endl;
+	       exit(1);
+	     }
+	     rc = callSoftSusy();
+	     if( rc > 0 ) {
+	       cerr << "Exiting fitter FCN because of problem in SoftSusy run" << endl;
+	       f = 111111111111.;
+	       cout << "f = " << f << endl;
+	     }
+	     cout << "     SoftSusy finished (Maybe With Problems?). Calling SUSYHIT" << endl;
+	     rc = callSUSYHIT();
+	     if( rc > 0 ) {
+	       cerr << "Exiting fitterFCN because of problem in SUSYHIT run" << endl;
+	       f = 111111111111.;
+	       cout << " f = " << f << endl;
+	       return;
+	     }
+	   }
+	   return;        
+	 }
 
       //Reading the Les Houches outputfile
       rc = ReadLesHouches();
@@ -3583,6 +3583,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
    WriteLesHouches(x);
 
+   yySPhenoLastCallValid = false;
    //  exit(0);
 
    if ( yyCalculatorPath.compare("") ) {
@@ -3605,50 +3606,50 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
       callSuspect();
    }
    else if (yyCalculator == SPHENO) {
-      cout << yyDashedLine << endl;
-      cout << "Calling SPheno" << endl;
-      rc = callSPheno();
+     cout << yyDashedLine << endl;
+     cout << "Calling SPheno" << endl;
+     rc = callSPheno();
+     
+     if (rc == 2) {
+       cout << "SIGINT received in SPheno, exiting" << endl;
+       exit (2);
+     }
+     if (rc > 0) {
+       cerr << "Exiting fitterFCN because of problem in SPheno run" << endl;
+       f = 111111111111.;
+       cout << " f = " << f << endl;
+       return;        
+     }
+   }
+   else if (yyCalculator == SOFTSUSY) {
+     if( yyFitModel != AMSB && yyFitModel != GMSB && yyFitModel != mSUGRA ) {
+       cout << "FATAL: SOFTSUSY SUPOPRT AT THE MOMENT ONLY FOR  GMSB, AMSB and mSUGRA. " << yyFitModel << " MAY BE AVAILABLE LATER . . . (sorry :( )"<< endl;
+       exit(1);
+     }
+     if (yyDecayCalculator != SUSYHIT ) {
+       cout << "SoftSUSY currently runs only with SUSYHIT. Sorry. " << endl;
+       exit(1);
+     }
+     cout << yyDashedLine << endl;
+     cout << "Calling SoftSusy" << endl;
+     rc = callSoftSusy();
+     if( rc > 0 ) {
+       cerr << "Exiting fitterFCN because of problem in SoftSusy run" << endl;
+       f = 111111111111.;
+       cout << " f = " << f << endl;
+       return;	
+     }
+     cout << "     SoftSusy finished (Maybe With Problems?). Calling SUSYHIT" << endl;
+     rc = callSUSYHIT();
+     if( rc > 0 ) {
+       cerr << "Exiting fitterFCN because of problem in SUSYHIT run" << endl;
+       f = 111111111111.;
+       cout << " f = " << f << endl;
+       return;		
+     }
+   }    
    
-  	  if (rc == 2) {
-      	cout << "SIGINT received in SPheno, exiting" << endl;
-      	exit (2);
-   		}
-   		if (rc > 0) {
-     	 cerr << "Exiting fitterFCN because of problem in SPheno run" << endl;
-     	 f = 111111111111.;
-     	 cout << " f = " << f << endl;
-     	 return;        
-   		}
-		}
-	 	else if (yyCalculator == SOFTSUSY) {
-			if( yyFitModel != AMSB && yyFitModel != GMSB && yyFitModel != mSUGRA ) {
-				cout << "FATAL: SOFTSUSY SUPOPRT AT THE MOMENT ONLY FOR  GMSB, AMSB and mSUGRA. " << yyFitModel << " MAY BE AVAILABLE LATER . . . (sorry :( )"<< endl;
-				exit(1);
-			}
-			if (yyDecayCalculator != SUSYHIT ) {
-				cout << "SoftSUSY currently runs only with SUSYHIT. Sorry. " << endl;
-				exit(1);
-			}
-	 		cout << yyDashedLine << endl;
-			cout << "Calling SoftSusy" << endl;
-			rc = callSoftSusy();
-			if( rc > 0 ) {
-				cerr << "Exiting fitterFCN because of problem in SoftSusy run" << endl;
-				f = 111111111111.;
-				cout << " f = " << f << endl;
-				return;	
-			}
-			cout << "     SoftSusy finished (Maybe With Problems?). Calling SUSYHIT" << endl;
-				rc = callSUSYHIT();
-				if( rc > 0 ) {
-					cerr << "Exiting fitterFCN because of problem in SUSYHIT run" << endl;
-					f = 111111111111.;
-					cout << " f = " << f << endl;
-					return;		
-				}
-		}    
-												
-
+   
    if (yyLEOCalculator == NPFITTER) {
       cout << yyDashedLine << endl;
       cout << "Calling NPFitter" << endl;
@@ -3753,6 +3754,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      }
    }
 
+   yySPhenoLastCallValid = true;
    // end loop over crosssections and polarisations:
    //  }
 
@@ -5855,7 +5857,7 @@ void WriteLesHouches(double* x)
 	 exit(EXIT_FAILURE);
       }
       if( yyCalculator == SPHENO ) {
-	if (yySPhenoStartDataString!="") {
+	if (yySPhenoStartDataString!="" && yySPhenoLastCallValid) {
 	  LesHouchesOutfile << "BLOCK StartDataFile" << endl;
 	  LesHouchesOutfile << " " << yySPhenoStartDataString << endl;
 	}
@@ -6276,7 +6278,7 @@ void WriteLesHouches(double* x)
       }
       // BLOCK SPhenoInput
       if( yyCalculator == SPHENO ) {
-	if (yySPhenoStartDataString!="") {
+	if (yySPhenoStartDataString!="" && yySPhenoLastCallValid) {
 	  LesHouchesOutfile << "BLOCK StartDataFile" << endl;
 	  LesHouchesOutfile << " " << yySPhenoStartDataString << endl;
 	}
@@ -6606,7 +6608,7 @@ void WriteLesHouches(double* x)
 	 exit(EXIT_FAILURE);
       }
       if( yyCalculator == SPHENO ) {
-	if (yySPhenoStartDataString!="") {
+	if (yySPhenoStartDataString!="" && yySPhenoLastCallValid) {
 	  LesHouchesOutfile << "BLOCK StartDataFile" << endl;
 	  LesHouchesOutfile << " " << yySPhenoStartDataString << endl;
 	}
@@ -6901,7 +6903,7 @@ void WriteLesHouches(double* x)
 	       exit(EXIT_FAILURE);
 	    }
 	    if( yyCalculator == SPHENO ) {
-	      if (yySPhenoStartDataString!="") {
+	      if (yySPhenoStartDataString!="" && yySPhenoLastCallValid) {
 		LesHouchesOutfile << "BLOCK StartDataFile" << endl;
 		LesHouchesOutfile << " " << yySPhenoStartDataString << endl;
 	      }

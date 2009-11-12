@@ -181,6 +181,7 @@ unsigned int yyDecayCalculator;
 unsigned int yyRelicDensityCalculator;
 unsigned int yyLEOCalculator;
 
+ bool         yySPhenoLastCallValid = false;
 string       yySPhenoStartDataString = "";
 string       yyCalculatorPath = "";
 string	     yyHBWhichExpt = "LandT";
