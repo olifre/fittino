@@ -173,8 +173,9 @@ bool          yyUseSimplexMin = true;
 bool          yyRequireNeut1LSP = false;
 
 unsigned int  yyNumberOptimizationSteps = 1000;
-unsigned int  yyAcceptanceRange = 0;
-unsigned int  yyWidthOptimization = 0;
+float  yyAcceptanceRangeUpper = 0.52;
+float  yyAcceptanceRangeLower = 0.48;
+bool  yyWidthOptimization = false;
 
 unsigned int yyCalculator;
 unsigned int yyDecayCalculator;
@@ -344,20 +345,19 @@ input:
 		sprintf(c, "%f", $3);
                 yyInputFileLine.prevalue += c;
 
-		if (!strcmp($2,"AcceptanceRange")) {
-		  if ($3>0) {
-		    yyAcceptanceRange  = (int)$3;
-                  }
+		if (!strcmp($2,"AcceptanceRangeUpper")) {
+		    yyAcceptanceRangeUpper  = $3;
 		}
+		if (!strcmp($2,"AcceptanceRangeLower")) {
+		  yyAcceptanceRangeLower  = $3;
+		}
+
 		if (!strcmp($2,"NumberOptimizationSteps")) {
 		  if ($3>0) {
 		     yyNumberOptimizationSteps = (int)$3;
                   }
 		}
-		if (!strcmp($2,"WidthOptimization")) {
-		  yyWidthOptimization = (int)$3;
-		}
-
+	
 		if (!strcmp($2,"NumberOfMinimizations")) {
 		  // cout << "FOUND NUMBER OF MINIMIZATIONS "<<$3<<endl;
 		  if ($3>0) {
@@ -1245,6 +1245,10 @@ input:
 		  if (!strcmp($2, "UseMarkovChains")) {
 		    if ($3 == on) yyUseMarkovChains = true;
 		      else yyUseMarkovChains = false;
+		  }
+		  if (!strcmp($2, "WidthOptimization")) {
+		    if ($3 == on) yyWidthOptimization = true;
+		    else yyWidthOptimization = false;
 		  }
 		  if (!strcmp($2, "MarkovChainReadjustWidth")) {
 		    if ($3 == on) yyMarkovChainReadjustWidth = true;

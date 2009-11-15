@@ -87,8 +87,9 @@ extern bool yyUseSimplexMin;
 extern bool yyRequireNeut1LSP;
 
 extern unsigned int  yyNumberOptimizationSteps;
-extern unsigned int  yyAcceptanceRange;
-extern unsigned int  yyWidthOptimization;
+extern float  yyAcceptanceRangeUpper;
+extern float  yyAcceptanceRangeLower;
+extern bool  yyWidthOptimization;
 
 extern unsigned int yyNumberOfMinimizations;
 extern unsigned int yySeedForObservableScattering;

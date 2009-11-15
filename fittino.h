@@ -28,6 +28,7 @@
 #include <TMatrixD.h>
 #include <TTree.h>
 #include <TNtuple.h>
+#include "TMatrixDSymEigen.h"
 
 class Input;
 class SmearedInput;
@@ -147,7 +148,19 @@ private:
     void simulated_annealing_uncertainties (TNtuple *ntuple);
     void simulated_annealing_uncertainties_run_down (TNtuple *ntuple);
     void markovChain ();
+
+   // == For optimization of proposal width
+    TNtuple* ntupleCov;
+    TVectorD eigenValues;
+    TMatrixD eigenVectors;
+    TMatrixD correlationMatrix;
+    TMatrixDSymEigen covarianceMatrix;
+    vector<double> correlatedRandomNumbers( vector<double> mean );
     vector <double> widthOptimization(std::vector<double> x, std::vector<double> vm, std::vector<double> xp, std::vector<double> lb, std::vector <double> ub, std::vector<string> xNames );
+    void estimateCorrelations(vector<double> x, vector<double> xp, vector<double> vm, vector<double> lb, vector <double> ub );
+    void computeCovMatrix( vector<double> vm );
+    // ==
+    
     double calculateQ(std::vector<double> x, std::vector<double> xk, std::vector<double> vm);
     void hybridMonteCarlo();
 
