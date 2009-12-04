@@ -227,7 +227,7 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
   vector<int> obsPosition(name.size());
   for (int iname = 0; iname < nameSize; iname++) {
     for (int iLeaf = 0; iLeaf < nLeaves; iLeaf++) {
-      if (!strncmp("O_mass",parNames[iLeaf].c_str(),4)) {
+      if (!strncmp("O_mass",parNames[iLeaf].c_str(),6)) {
 	char fullParticleName[256];
 	sprintf(fullParticleName,"%s",parNames[iLeaf].c_str());
 	//	cout << "trying to find " << fullParticleName << endl; 
