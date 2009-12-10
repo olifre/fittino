@@ -119,7 +119,7 @@ void callSuspect();
 int callSPheno();
 int callSoftSusy();
 int callSUSYHIT();
-int WriteSUSYHITInputFile();
+int WriteSUSYHITInputFile(int);
 int callNPFitter();
 int checkcall(char programpath[1024], unsigned int runtime);
 void WriteLesHouches(double* x);
@@ -3436,6 +3436,16 @@ void Fittino::CalcFromRandPars(unsigned int nruns) {
 	     f = 111111111111.;
 	     cout << " f = " << f << endl;
 	   }
+		 else if( yyCalculator == SUSPECT ) {
+        cout << "Calling SuSpect and SDecay/HDecay via SUSYHIT" << endl;
+        rc = callSUSYHIT();
+        if( rc > 0 ) {
+          cerr << "Exiting fitterFCN because of problem in SUSYHIT run" << endl;
+          f = 111111111111.;
+          cout << " f = " << f << endl;
+          return;
+        }
+      }
 	   else if( yyCalculator == SOFTSUSY ) {
 	     if( yyFitModel != AMSB && yyFitModel != GMSB && yyFitModel != mSUGRA ) {
 	       cout << "SoftSUSY currently works only with AMSB, GMSB and mSUGRA. sorry. " << endl;
@@ -3603,8 +3613,15 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    
 
    if (yyCalculator == SUSPECT) {
-      callSuspect();
-   }
+  	cout << "Calling SuSpect and SDecay/HDecay via SUSYHIT" << endl;
+      rc = callSUSYHIT();
+      if( rc > 0 ) {
+        cerr << "Exiting fitterFCN because of problem in SUSYHIT run" << endl;
+        f = 111111111111.;
+        cout << " f = " << f << endl;
+        return;
+      }	 
+	 }
    else if (yyCalculator == SPHENO) {
      cout << yyDashedLine << endl;
      cout << "Calling SPheno" << endl;
@@ -4245,44 +4262,80 @@ double higgsBR(int id, vector<int> daughter_list) {
 }
 // This Function writes the SUSYHIT InputFile
 
-int WriteSUSYHITInputFile() {
+int WriteSUSYHITInputFile(int SpecCalc) {
 	system("rm susyhit.in");
-	ofstream susyhit_in("susyhit.in", ios::out);
-	if( !susyhit_in ) {
-		return 1006;
-	}
-	susyhit_in << "* SUspect-SdecaY-Hdecay-InTerface options:" << endl;
-	susyhit_in << "------------------------------------------" << endl;
+  ofstream susyhit_in("susyhit.in", ios::out);
+  if( !susyhit_in ) {
+    return 1006;
+  }
+  susyhit_in << "* SUspect-SdecaY-Hdecay-InTerface options:" << endl;
+  susyhit_in << "------------------------------------------" << endl;
   susyhit_in << "  (1) link SuSpect-Sdecay-Hdecay and take the input parameters from SuSpect" << endl;
   susyhit_in << "  (2) link Sdecay-Hdecay, not SuSpect, take the input parameters from any SLHA" << endl;
   susyhit_in << "      input, called slhaspectrum.in " << endl;
-	susyhit_in << "2" << endl;
-	susyhit_in << "* Choice of the output, SLHA format (1) or simple (0):" << endl;
-	susyhit_in << "------------------------------------------------------" << endl;
-	susyhit_in << "1" << endl;
-	susyhit_in << "* HDECAY input parameters:" << endl;
-	susyhit_in << "--------------------------" << endl;
-	susyhit_in << "MSBAR(1) = 0.190D0" << endl;
-	susyhit_in << "MC       = 1.40D0" << endl;
-	susyhit_in << "MMUON    = 0.105658389D0" << endl;
-	susyhit_in << "1/ALPHA  = 137.0359895D0" << endl;
-	susyhit_in << "GAMW     = 2.080D0" << endl;
-	susyhit_in << "GAMZ     = 2.490D0" << endl;
-	susyhit_in << "VUS      = 0.2205D0" << endl;
-	susyhit_in << "VCB      = 0.04D0" << endl;
-	susyhit_in << "VUB/VCB  = 0.08D0" << endl;
+  susyhit_in << SpecCalc << endl;
+  susyhit_in << "* Choice of the output, SLHA format (1) or simple (0):" << endl;
+  susyhit_in << "------------------------------------------------------" << endl;
+  susyhit_in << "1" << endl;
+  susyhit_in << "* HDECAY input parameters:" << endl;
+  susyhit_in << "--------------------------" << endl;
+  susyhit_in << "MSBAR(1) = 0.190D0" << endl;
+  susyhit_in << "MC       = 1.40D0" << endl;
+  susyhit_in << "MMUON    = 0.105658389D0" << endl;
+  susyhit_in << "1/ALPHA  = 137.0359895D0" << endl;
+  susyhit_in << "GAMW     = 2.080D0" << endl;
+  susyhit_in << "GAMZ     = 2.490D0" << endl;
+  susyhit_in << "VUS      = 0.2205D0" << endl;
+  susyhit_in << "VCB      = 0.04D0" << endl;
+  susyhit_in << "VUB/VCB  = 0.08D0" << endl;
 
-	susyhit_in.close();
-	return 0;
+  susyhit_in.close();
+
+  if( SpecCalc == 1 ) {
+    system("cp LesHouches.in suspect2_lha.in");
+    fstream suspect_in("suspect2_lha.in", ios::out | ios::app );
+      suspect_in << "Block SU_ALGO  # !Optional SUSPECT v>=2.3* block: algorithm control parameters" << endl;
+      suspect_in << "# !IF block absent (or if any parameter undefined), defaut values are taken" << endl;
+      suspect_in << "     2    21  # 2-loop RGE (defaut, 1-loop RGE is: 11 instead)" << endl;
+      suspect_in << "     3    1   # 1: g_1(gut) = g_2(gut) consistently calculated from input" << endl;
+      suspect_in << "#   (other possibility is 0: High scale input =HIGH in block EXTPAR below)" << endl;
+      suspect_in << "     4    2   # RGE accuracy: 1: moderate, 2: accurate (but slower)  " <<endl;
+      suspect_in << "     6    1   #  1: M_Hu, M_Hd input (default in constrained models)" << endl;
+      suspect_in << "#        (other possibility 0: MA_pole, MU(EWSB) input instead) "<< endl;
+      suspect_in << "     7    2   #  choice for sparticles masses rad. corr. (=/= h): "<< endl;
+      suspect_in << "#               2 ->all (recommended, defaut); 1->no R.C. in squarks & gauginos." << endl;
+      suspect_in << "     8    0   # 1 (defaut): EWSB scale=(mt_L*mt_R)^(1/2) "<< endl;
+      suspect_in << "#         (Or = 0: arbitrary EWSB scale: give EWSB in Block EXTPAR below) " <<endl;
+      suspect_in << "     9    2   # Final spectrum accuracy: 1 -> 1% acc.; 2 -> 0.01 % acc.(defaut) "<< endl;
+      suspect_in << "     10   2   # Higgs boson masses rad. corr. calculation options:  " <<endl;
+      suspect_in << "#             A simple (but very good) approximation (advantage=fast)  : 0 " << endl;
+      suspect_in << "#             Full one-loop calculation                                : 1 " <<endl;
+      suspect_in << "#             One-loop  + dominant DSVZ 2-loop (defaut,recommended)    : 2 " << endl;
+      suspect_in << "     11   0   # Higher order Higgs 'scheme' choice in rad. corr. at mZ: " << endl;
+      suspect_in << "#          RUNNING DRbar Higgs masses at loop-level at mZ (defaut)    : 0 " << endl;
+      suspect_in << "#          POLE          Higgs masses at loop-level at mZ             : 1 " << endl;
+      suspect_in << "Block EXTPAR" << endl;
+      suspect_in << "     0 1000.0" << endl;
+    suspect_in.close();
+  }
+  return 0;
+
 }
 
 // This Function calls SUSYHIT - only used when yyCalculator == SOFTSUSY
 
 
 int callSUSYHIT() {
-	if( WriteSUSYHITInputFile() > 0 ) {
-		return 1005;
-	}
+	if( yyCalculator == SOFTSUSY ) {
+    if( WriteSUSYHITInputFile(2) > 0 ) {
+      return 1005;
+    }
+  }
+  else if ( yyCalculator == SUSPECT ) {
+    if( WriteSUSYHITInputFile(1) > 0 ) {
+      return 1005;
+    }
+  }
 	int return_value;
 	int pid = -2;
 	int status = 0;
@@ -8151,37 +8204,8 @@ int   ReadLesHouches()
 
 	 // exit (0);
       }
-			else if ( yyCalculator == SOFTSUSY) {
-		    /*system("mv LesHouches.out LesHouches.old");
-				char line[200];
-				FILE *Old = fopen("LesHouches.old","r");
-				FILE *New = fopen("LesHouches.out","w+");
-				for(int i = 0; i< 152; i++ ) {
-					fgets(line, 200, Old);
-					if( i == 4) {
-						fputs("     2 v3.0.9\n", New);
-					}
-					else
-					fputs(line, New);
-				}
-				fclose(Old);
-				fclose(New);
-				if( yyFitModel == mSUGRA ) {
-					system("tail -147 LesHouches.old > LesHouches.out");
-				}
-			
-				else if( yyFitModel == AMSB ) {
-					system("tail -146 LesHouches.old > LesHouches.out");
-				}
-				else if( yyFitModel == GMSB ) {
-					system("tail -149 LesHouches.old > LesHouches.out");			
-				}
-				else if( yyFitModel == MSSM) {
-					system("tail -169 LesHouches.old > LesHouches.out");
-				}
-				*/
-		//		system("mv susyhit_slha.out susyhit_slha.old");
-		//		system("tail -573 susyhit_slha.old > susyhit_slha.out");
+			else if ( yyCalculator == SOFTSUSY || yyCalculator == SUSPECT) {
+				
 				yyin = fopen("susyhit_slha.out", "r");
 		    if( !yyin ) {
 			    cerr << "Couldnt open susyhit_slha.out" << endl;
@@ -8191,9 +8215,12 @@ int   ReadLesHouches()
 				yyInputFileLineNo = 1;
 				rc = yyparse();
 				fclose(yyin);
-				//system("mv LesHouches.out.last LesHouches.out.last2");
-				//system("mv LesHouches.out LesHouches.out.last");
-				//system("mv LesHouches.in LesHouches.in.last");
+				system("mv susyhit_slha.out.last susyhit_slha.out.last2");
+        system("mv susyhit_slha.out susyhit_slha.out.last");
+        system("mv slhaspectrum.in.last slhaspectrum.in.last2");
+        system("mv slhaspectrum.in slhaspectrum.in.last");
+        system("mv LesHouches.in.last LesHouches.in.last2");
+        system("mv LesHouches.in LesHouches.in.last");
 			}
 																									 
       else {
