@@ -90,7 +90,7 @@ extern unsigned int  yyNumberOptimizationSteps;
 extern float  yyAcceptanceRangeUpper;
 extern float  yyAcceptanceRangeLower;
 extern bool  yyWidthOptimization;
-
+extern bool  yyCorrelationInMarkovChain;
 extern unsigned int yyNumberOfMinimizations;
 extern unsigned int yySeedForObservableScattering;
 

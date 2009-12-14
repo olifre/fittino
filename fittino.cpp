@@ -9849,7 +9849,7 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
   }
   cout << "NOTE: used acceptance range for optimization ["<< acceptLow<<";"<< acceptUp<<"]"<< endl;
 
-  // 1 == Tune width of proposal distribution so that success rate is in [0.4;0.6]
+  // 1 == Tune width of proposal distribution so that success rate is in [acceptLow;acceptUp]
   for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++){
     cout << "NOTE: Optimization for variable " << xNames[iVariable] << endl;
     bool firstChain = true;
@@ -9930,18 +9930,29 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
   }
    
   // 2 == Global scaling of all variables by a factor 1/(nVar)^lambda, lambda=0.5
-  cout << " ---> Global scaling 1/sqrt(N) = " << 1/sqrt( x.size() ) << endl;
-  for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) vm[iVariable] = vm[iVariable] / sqrt( x.size() );
+  unsigned int nVar = x.size();
+  cout << "NOTE: Global scaling by 1/sqrt(N) = " << 1/sqrt( nVar ) << endl;
+  for (unsigned int iVariable = 0; iVariable < nVar; iVariable++) vm[iVariable] = vm[iVariable] / sqrt( nVar );
   
   // 3 == Estimation of correlations and eigenvalues/vectors
-  eigenValues.ResizeTo( 4 );
-  eigenVectors.ResizeTo( 4, 4 );
-  correlationMatrix.ResizeTo( 4, 4 );
-  ntupleCov = new TNtuple("ntupleCov","ntupleCov","M0:M12:A0:TanBeta:chi2");
-  TNtuple* ntupleSamp = new TNtuple("ntupleSamp","ntupleSamp","M0:M12:A0:TanBeta");
-  TNtuple* ntupleAcc = new TNtuple("ntupleAcc","ntupleAcc","M0:M12:A0:TanBeta:chi2");
-  estimateCorrelations( x, xp, vm, lb, ub );
-  computeCovMatrix( vm );
+  TString VarChain = "", VarChainChi2 = "";
+  for (unsigned int iVar = 0; iVar < nVar; iVar++){
+    if( iVar == 0 ) VarChain += xNames[iVar];
+    if( iVar > 0 ) VarChain += ":" + xNames[iVar];
+  }
+    VarChainChi2 = VarChain + ":chi2";
+    ntupleCov = new TNtuple("ntupleCov","ntupleCov", VarChainChi2 );
+    TNtuple* ntupleSamp = new TNtuple("ntupleSamp","ntupleSamp", VarChain );
+    TNtuple* ntupleAcc = new TNtuple("ntupleAcc","ntupleAcc", VarChainChi2 );
+    if( yyCorrelationInMarkovChain ){
+      cout << "NOTE: correlations will be included in Markov chain" << endl;
+      eigenValues.ResizeTo( nVar );
+      eigenVectors.ResizeTo( nVar, nVar );
+    correlationMatrix.ResizeTo( nVar, nVar );
+    estimateCorrelations( x, xp, vm, lb, ub );
+    computeCovMatrix( vm );
+  }
+  if( !yyCorrelationInMarkovChain ) cout << "NOTE: correlations will not be included in Markov chain" << endl;
 
   // 4 == Global optimization
   bool firstChain = true;
@@ -9962,17 +9973,31 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
       cout << yyDashedLine << endl;
       cout << "NOTE: Global optimization, step " << step << " ===="<< endl;
       
-      // 4.2.1 == Pick a new point
-      bool outOfBounds = false;
+        // 4.2.1 == Pick a new point
       bool first = true;
-      while ( outOfBounds == true || first == true ){
-	first = false; 
-	outOfBounds = false;
-	xp = correlatedRandomNumbers( x );
+      bool outOfBounds = false;
+
+      // Choice of correlated new point 
+      if( yyCorrelationInMarkovChain ){
+       while ( outOfBounds == true ){
+	 outOfBounds = false;
+	 xp = correlatedRandomNumbers( x );
+	 for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++)
+	   if ( ( xp[iVariable] < lb[iVariable] ) || ( xp[iVariable] > ub[iVariable] ) ) outOfBounds = true;
+       }
+      }
+      // Choice of new point uncorrelated
+      if( !yyCorrelationInMarkovChain ){
 	for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++){
-	  if ( ( xp[iVariable] < lb[iVariable] ) || ( xp[iVariable] > ub[iVariable] ) ) outOfBounds = true;
+	  while ( outOfBounds == true || first == true ){
+	    first = false; 
+	    outOfBounds = false;
+	    xp[iVariable] = x[iVariable] + random->Gaus( 0., vm[iVariable] );
+	    if ( ( xp[iVariable] < lb[iVariable] ) || ( xp[iVariable] > ub[iVariable] ) ) outOfBounds = true;
+	  }
 	}
       }
+
       ntupleSamp->Fill( xp[0], xp[1], xp[2], xp[3] );
 
       // 4.2.2 == Calculate chi2
@@ -10032,7 +10057,7 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
 	  }
 
 	  // 4.3.4 == Recalcul covariance matrix
-	  computeCovMatrix( vm );
+	  if( yyCorrelationInMarkovChain ) computeCovMatrix( vm );
 	}
       }
     }
@@ -10225,13 +10250,9 @@ vector<double> Fittino::correlatedRandomNumbers( vector<double> mean ){
       cerr << "WARNING: Covariance matrix is not non-negative definite" << endl;
       exit(EXIT_FAILURE);
     }
-    cout <<" Sigma = " << TMath::Sqrt( eigenValues[i] ) << endl;
     y(i) = gRandom->Gaus( 0, TMath::Sqrt( eigenValues[i] ) );
   }
    TVectorD x(y);
-   //y.Print();
-   //x.Print();
-
    x *= eigenVectors;
    x += Vmean;
    for( unsigned int i=0; i<n; i++) mean[i] = x[i];

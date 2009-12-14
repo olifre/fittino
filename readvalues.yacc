@@ -171,11 +171,12 @@ bool          yySetErrorFlag = false;
 bool          yyUseSimplexMinOnly = false;
 bool          yyUseSimplexMin = true;
 bool          yyRequireNeut1LSP = false;
-
-unsigned int  yyNumberOptimizationSteps = 1000;
-float  yyAcceptanceRangeUpper = 0.52;
-float  yyAcceptanceRangeLower = 0.48;
-bool  yyWidthOptimization = false;
+ 
+ unsigned int  yyNumberOptimizationSteps = 1000;
+ float  yyAcceptanceRangeUpper = 0.52;
+ float  yyAcceptanceRangeLower = 0.48;
+ bool   yyWidthOptimization = false;
+ bool   yyCorrelationInMarkovChain = false;
 
 unsigned int yyCalculator;
 unsigned int yyDecayCalculator;
@@ -1249,6 +1250,10 @@ input:
 		  if (!strcmp($2, "WidthOptimization")) {
 		    if ($3 == on) yyWidthOptimization = true;
 		    else yyWidthOptimization = false;
+		  }
+		  if (!strcmp($2, "CorrelationInMarkovChain")) {
+		    if ($3 == on) yyCorrelationInMarkovChain = true;
+		    else yyCorrelationInMarkovChain = false;
 		  }
 		  if (!strcmp($2, "MarkovChainReadjustWidth")) {
 		    if ($3 == on) yyMarkovChainReadjustWidth = true;

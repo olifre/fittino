@@ -140,6 +140,7 @@ void MakeMarkovChainContour2D (bool bayes = true,
 
   vector<bool> varThere;
 
+
   // look if all the branches are there
   const Int_t nLeaves = markovChain.GetListOfLeaves()->GetEntriesFast();
   for (Int_t iLeaf=0; iLeaf<nLeaves; iLeaf++) {
