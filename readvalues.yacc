@@ -349,17 +349,17 @@ input:
 		if (!strcmp($2,"AcceptanceRangeUpper")) {
 		    yyAcceptanceRangeUpper  = $3;
 		}
-		if (!strcmp($2,"AcceptanceRangeLower")) {
+		else if (!strcmp($2,"AcceptanceRangeLower")) {
 		  yyAcceptanceRangeLower  = $3;
 		}
 
-		if (!strcmp($2,"NumberOptimizationSteps")) {
+		else if (!strcmp($2,"NumberOptimizationSteps")) {
 		  if ($3>0) {
 		     yyNumberOptimizationSteps = (int)$3;
                   }
 		}
 	
-		if (!strcmp($2,"NumberOfMinimizations")) {
+		else if (!strcmp($2,"NumberOfMinimizations")) {
 		  // cout << "FOUND NUMBER OF MINIMIZATIONS "<<$3<<endl;
 		  if ($3>0) {
                     yyNumberOfMinimizations = (int)$3;
