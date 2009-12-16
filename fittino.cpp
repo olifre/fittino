@@ -10455,7 +10455,15 @@ void Fittino::markovChain ()
 	if( searchWidth == 0 ) cout << "NOTE: proposal width found in interface file" << endl;
 
 	if (rc!=0){
-	  cout << "return value " << rc << " from copy of markovInterfaceFile " << yyMarkovInterfaceFilePath << endl; 
+	  cout << "return value " << rc << " from copy of markovInterfaceFile " << yyMarkovInterfaceFilePath << endl;
+	  if( searchWidth != 0 ){
+	    if( yyWidthOptimization == false ) cout << "NOTE: width values taken from input file" << endl;
+	    if( yyWidthOptimization == true ){
+	      cout << "NOTE: width optimization about to be processed ... " << endl;
+	      widthOptimizationPerformed = true;
+	      vm = widthOptimization( x, vm, xp, lb, ub, xNames );
+	    }
+	  }
 	} else {
 	  ifstream markovInterfaceFilePath("./markovInterfaceFile.txt");
 	  if (markovInterfaceFilePath.is_open()) {
