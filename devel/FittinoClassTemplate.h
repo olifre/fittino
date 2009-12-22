@@ -27,12 +27,25 @@
 #ifndef FITTINO_FITTINOCLASSTEMPLATE_H
 #define FITTINO_FITTINOCLASSTEMPLATE_H
 
+/*!
+ *  \brief Fittino namespace
+ */
 namespace Fittino {
 
+  /*!
+   *  \brief Class template for Fittino classes
+   */
   class FittinoClassTemplate {
 
     public:
+      /*!
+       *  Constructor
+       */
       FittinoClassTemplate();
+
+      /*!
+       *  Destructor
+       */
       ~FittinoClassTemplate();
 
   };
