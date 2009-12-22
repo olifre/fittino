@@ -22,12 +22,12 @@
 
 #include "FittinoClassTemplate.h"
 
-FittinoClassTemplate::FittinoClassTemplate() {
+Fittino::FittinoClassTemplate::FittinoClassTemplate() {
 
     // Code goes here
 
 }
 
-FittinoClassTemplate::~FittinoClassTemplate() {
+Fittino::FittinoClassTemplate::~FittinoClassTemplate() {
 
 }

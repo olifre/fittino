@@ -27,12 +27,16 @@
 #ifndef FITTINO_FITTINOCLASSTEMPLATE_H
 #define FITTINO_FITTINOCLASSTEMPLATE_H
 
-class FittinoClassTemplate {
+namespace Fittino {
 
-  public:
-    FittinoClassTemplate();
-    ~FittinoClassTemplate();
+  class FittinoClassTemplate {
 
-};
+    public:
+      FittinoClassTemplate();
+      ~FittinoClassTemplate();
+
+  };
+
+}
 
 #endif // FITTINO_FITTINOCLASSTEMPLATE_H
