@@ -1,4 +1,4 @@
-PROJECT( Fittino )
+PROJECT( FITTINO )
 
 # Project version
 SET( ${PROJECT_NAME}_MAJOR_VERSION 0 )
@@ -29,4 +29,13 @@ ADD_DEFINITIONS( "-Wall -ansi -pedantic" )
 # List of all source files
 AUX_SOURCE_DIRECTORY( src )
 
+# Search for ROOT package
+find_package(ROOT REQUIRED)
+include_directories(${ROOT_INCLUDE_DIRS})
+set(LIBS ${LIBS} ${ROOT_LIBRARIES})
+
+# Add binary fittino build from file fittino.{cpp,cxx,cc}
 ADD_EXECUTABLE(fittino fittino)
+
+# Link executable to required libraries
+TARGET_LINK_LIBRARIES(fittino ${LIBS})
