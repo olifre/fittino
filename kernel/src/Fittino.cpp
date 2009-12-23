@@ -47,24 +47,24 @@ int main( int argc, char** argv ) {
 	controller->TerminateFittino();
 
     }
-    catch ( Fittino::InputFileException& e ) {
+    catch ( Fittino::InputFileException& inputFileException ) {
 
-        std::cout << e.what() << std::endl;
-
-    }
-    catch ( Fittino::LesHouchesFileException& e ) {
-
-        std::cout << e.what() << std::endl;
+        std::cout << inputFileException.what() << std::endl;
 
     }
-    catch ( Fittino::ModelCalculatorException& e ) {
+    catch ( Fittino::LesHouchesFileException& lesHouchesFileException ) {
 
-        std::cout << e.what() << std::endl;
+        std::cout << lesHouchesFileException.what() << std::endl;
 
     }
-    catch ( Fittino::OptimizerException& e ) {
+    catch ( Fittino::ModelCalculatorException& modelCalculatorException ) {
 
-        std::cout << e.what() << std::endl;
+        std::cout << modelCalculatorException.what() << std::endl;
+
+    }
+    catch ( Fittino::OptimizerException& optimizerException ) {
+
+        std::cout << optimizerException.what() << std::endl;
 
     }
     catch (...) {
