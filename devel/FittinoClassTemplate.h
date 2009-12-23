@@ -17,10 +17,6 @@
 *                                                                              *
 *******************************************************************************/
 
-/*!
- *  \brief Fittino class template
- */
-
 #ifndef FITTINO_FITTINOCLASSTEMPLATE_H
 #define FITTINO_FITTINOCLASSTEMPLATE_H
 
