@@ -23,6 +23,8 @@
 #ifndef FITTINO_CONTROLLER_H
 #define FITTINO_CONTROLLER_H
 
+#include <string>
+
 #include "InputFileInterpreterBase.h"
 
 /*! 
@@ -59,13 +61,19 @@ namespace Fittino {
 
     protected:
       Controller();
+
       ~Controller();
 
     private:
       static Controller*                        _instance;
 
     private:
-      InputFileInterpreterBase::InputFileFormat _inputFileFormat;
+      int                                       _randomSeed;
+
+      std::string                               _inputFileName;
+
+    private:
+      InputFileInterpreterBase::InputFileFormat GetInputFileFormat();
 
   };
 
