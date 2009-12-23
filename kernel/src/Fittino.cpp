@@ -31,6 +31,10 @@
  */
 
 #include "Controller.h"
+#include "InputFileException.h"
+#include "LesHouchesFileException.h"
+#include "ModelCalculatorException.h"
+#include "OptimizerException.h"
 
 int main( int argc, char** argv ) {
  
@@ -43,8 +47,30 @@ int main( int argc, char** argv ) {
 	controller->TerminateFittino();
 
     }
+    catch ( Fittino::InputFileException& e ) {
+
+        std::cout << e.what() << std::endl;
+
+    }
+    catch ( Fittino::LesHouchesFileException& e ) {
+
+        std::cout << e.what() << std::endl;
+
+    }
+    catch ( Fittino::ModelCalculatorException& e ) {
+
+        std::cout << e.what() << std::endl;
+
+    }
+    catch ( Fittino::OptimizerException& e ) {
+
+        std::cout << e.what() << std::endl;
+
+    }
     catch (...) {
+
         std::cout << "Exception caught by default handler" std::endl;
+
     }
 
     return 0;
