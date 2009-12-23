@@ -34,12 +34,19 @@
 
 int main( int argc, char** argv ) {
  
-  Controller* controller = Controller::GetInstance();
+    try {
 
-  controller->InitializeFittino( argc, argv );
-  controller->ExecuteFittino();
-  controller->TerminateFittino();
+        Controller* controller = Controller::GetInstance();
 
-  return 0;
+	controller->InitializeFittino( argc, argv );
+	controller->ExecuteFittino();
+	controller->TerminateFittino();
+
+    }
+    catch (...) {
+        std::cout << "Exception caught by default handler" std::endl;
+    }
+
+    return 0;
 
 }
