@@ -13,14 +13,14 @@
 
 ### LE (low energy) observables
 
-LEObs ( DmsDmd_npf     )      1.09    +- 0.01    +- 0.16              alias 27 # [1]
-LEObs ( dm_s_npf       )      1.11    +- 0.01    +- 0.32              alias  2 # [1]
+LEObs ( DmsDmd_npf     )      1.00    +- 0.01    +- 0.13              alias 27 # [1]
+LEObs ( dm_s_npf       )      0.97    +- 0.01    +- 0.27              alias  2 # [1]
 LEObs ( Kppinn_npf     ) <    4.5     +- 1.0E-10                      alias 25 # [1], added small error 1.0E-10
 LEObs ( Klnu_npf       )      1.008   +- 0.014                        alias  6 # [1]
 LEObs ( B_smm_npf      ) <    4.7E-8                      +- 0.02E-8  alias  3 # [1]
 LEObs ( B_sXsll_npf    )      0.99    +- 0.32                         alias  5 # [1]
 LEObs ( B_dll_npf      ) <    2.3E-8                      +- 0.001E-8 alias 26 # [1]
-LEObs ( Btn_npf        )      1.15    +- 0.40                         alias  4 # [1]
+LEObs ( Btn_npf        )      1.25    +- 0.40                         alias  4 # [1]
 LEObs ( Bsg_npf        )      1.117   +- 0.076   +- 0.082 +- 0.050    alias  1 # [1]
 LEObs ( gmin2m_npf     )     30.2E-10 +- 8.8E-10          +- 2.0E-10  alias  7 # [1]
 LEObs ( Omega_npf      )      0.1099  +- 0.0062           +- 0.012    alias 20 # [1]
@@ -40,7 +40,69 @@ LEObs ( Massh0_npf     ) >  114.4                         +- 3.0      alias 19 #
 LEObs ( A_tau_npf      )      0.1465  +- 0.0032                       alias 21 # [2]
 LEObs ( A_fbl_npf      )      0.01714 +- 0.00095                      alias 22 # [2]
 LEObs ( sigma_had0_npf )     41.540   +- 0.037                        alias 23 # [2]
-LEObs ( dm_k_npf       )      0.92    +- 0.14                         alias 24 # [1]
+LEObs ( dm_k_npf       )      1.08    +- 0.14                         alias 24 # [1]
+
+####################################################
+# Changes:
+
+# # btn:
+# 85. R. Faccini et al. Flavour Phyiscs in the Quark
+# Sector, CERN-PH-TH-2009-112 (submitted
+# to Phys. Rep.).
+# 86. A. Gray et al. [HPQCD Collaboration],
+# Phys. Rev. Lett. 95 (2005) 212001 [heplat/
+# 0507015].
+# 87. The value of BRexp
+# B!  /BRSM
+# B!   is obtained
+# from BRexp
+# B!   = 1.51(33) Ã— 10 4 [85], and
+# computing BRSM
+# B!   with |Vub| = 3.83(22)
+# (weighted average of inclusive and exclusive
+# semileptonic modes [85]) and fB =
+# 216(9)(19)(4) MeV [86] (the only published
+# Nf = 2 + 1 unquenched value of fB). Using
+# the lower value fB = 200(20) MeV [86], suggested
+# in [94], would raise this constraint to
+# BRexp
+# B!Ïï¿½½/BRSM
+# B!Ïï¿½½ = 1.52 ÂÂ± 0.48, with only a
+# small effect on our analysis.
+
+# # dm_s_npf + dm_k_npf 
+# 
+# 91. A. J. Buras, P. Gambino, M. Gorbahn,
+# S. Jager and L. Silvestrini, Nucl. Phys. B 592
+# (2001) 55 [arXiv:hep-ph/0007313].
+# 92. A. V. Artamonov et al. [E949 Collaboration],
+# Phys. Rev. Lett. 101, 191802 (2008)
+# [arXiv:0808.2459 [hep-ex]].
+# 93. M. Bona et al. [UTfit Collaboration], JHEP
+# 0803 (2008) 049 [arXiv:0707.0636 [hep-ph]],
+# and updated at http://www.utfit.org .
+# 94. V. Lubicz and C. Tarantino, Nuovo Cim.
+# 123B (2008) 674 [arXiv:0807.4605 [hep-lat]].
+
+# # DmsDmd_npf
+# 
+# 79. E. Barberio et al. [Heavy Flavour Averaging
+# Group (HFAG)], hep-ex/0603003,
+# http://slac.stanford.edu/xorg/hfag/ .
+# 80. G. Isidori and A. Retico, JHEP 0111 (2001)
+# 001 [arXiv:hep-ph/0110121].
+# 81. A. J. Buras, P. H. Chankowski, J. Rosiek and
+# L. Slawianowska, Nucl. Phys. B 659 (2003) 3
+# [hep-ph/0210145];
+# 82. G. Isidori and P. Paradisi, Phys. Lett. B 639
+# (2006) 499 [arXiv:hep-ph/0605012].
+# 83. G. Isidori, F. Mescia, P. Paradisi and
+# D. Temes, Phys. Rev. D 75 (2007)
+# 115019 [arXiv:hep-ph/0703035], and references
+# therein.
+
+
+
 
 ### SM observables
 

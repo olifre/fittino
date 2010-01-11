@@ -268,6 +268,9 @@ void MakeMarkovMassDistPlot (const char* filename = "MarkovChainNtupFile.root",
   double max = maxtree + 0.1 * (maxtree - mintree);
   if (min < minHist) min = minHist;
   if (max > maxHist) max = maxHist;
+  //  min = minHist;
+  //  max = maxHist;
+
   cout << "found envelope " << mintree << " " << maxtree << endl;
 
   // book one histogram for each observable
