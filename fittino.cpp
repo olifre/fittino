@@ -9869,7 +9869,7 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
       while( step < maxStep ){
 	cout << yyDashedLine << endl;
 	cout << "NOTE: Individual optimization, step " << step << endl;
-		     
+	
 	// 1.2 == Pick a new point within bounds according to proposal distribution
 	bool outOfBounds = false;
 	bool first = true;
@@ -9879,6 +9879,8 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
 	  xp[iVariable] = x[iVariable] + random->Gaus( 0., vm[iVariable] );
 	  if ( ( xp[iVariable] < lb[iVariable] ) || ( xp[iVariable] > ub[iVariable] ) ) outOfBounds = true;
 	}
+	cout << "Picked value " << xNames[iVariable] << " = " << xp[iVariable] << endl;
+
 	// 1.3 == Calculate chi2
 	double chi2 = 1.E10;
 	for (unsigned int i = 0; i < xp.size(); i++) xdummy[i] = xp[i];
@@ -9988,16 +9990,21 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
       }
       // Choice of new point uncorrelated
       if( !yyCorrelationInMarkovChain ){
-	for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++){
-	  while ( outOfBounds == true || first == true ){
-	    first = false; 
+	for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++)
+	  {
+	    first = true; 
 	    outOfBounds = false;
-	    xp[iVariable] = x[iVariable] + random->Gaus( 0., vm[iVariable] );
-	    if ( ( xp[iVariable] < lb[iVariable] ) || ( xp[iVariable] > ub[iVariable] ) ) outOfBounds = true;
+	    	    
+	    while ( outOfBounds == true || first == true ){
+	      first = false; 
+	      outOfBounds = false;
+	      xp[iVariable] = x[iVariable] + random->Gaus( 0., vm[iVariable] );
+	      if ( ( xp[iVariable] < lb[iVariable] ) || ( xp[iVariable] > ub[iVariable] ) ) outOfBounds = true;
+	    }
 	  }
-	}
       }
-
+      cout << "Picked value: " << endl;
+      for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) cout << xNames[iVariable] << " = " << xp[iVariable] << endl;
       ntupleSamp->Fill( xp[0], xp[1], xp[2], xp[3] );
 
       // 4.2.2 == Calculate chi2
