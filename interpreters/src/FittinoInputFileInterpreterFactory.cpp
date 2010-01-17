@@ -17,7 +17,7 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "FittinoInputFileInterpreterFactory"
+#include "FittinoInputFileInterpreterFactory.h"
 
 Fittino::FittinoInputFileInterpreterFactory::FittinoInputFileInterpreterFactory() {
 

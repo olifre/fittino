@@ -20,6 +20,10 @@
 #ifndef FITTINO_FITTINOINPUTFILEINTERPRETERFACTORY_H
 #define FITTINO_FITTINOINPUTFILEINTERPRETERFACTORY_H
 
+#include "InputFileInterpreterBase.h"
+
+class Fittino::FittinoInputFileInterpreter;
+
 /*!
  *  \brief Fittino namespace
  */
@@ -28,20 +32,20 @@ namespace Fittino {
   /*!
    *  \brief Factory class for Fittino input file interpreter
    */
-  class FittinoInputFileInterpreterFactory : InputFileInterpreterFactoryBase {
+  class FittinoInputFileInterpreterFactory : public InputFileInterpreterBase {
 
     public:
-                                   /*!
-                                    *  Constructor
-                                    */
-                                   FittinoInputFileInterpreterFactory();
+      /*!
+       *  Constructor
+       */
+      FittinoInputFileInterpreterFactory();
 
-                                   /*!
-                                    *  Destructor
-                                    */
-                                   ~FittinoInputFileInterpreterFactory();
+      /*!
+       *  Destructor
+       */
+      ~FittinoInputFileInterpreterFactory();
 
-      FittinoInputFileInterpreter* CreateInterpreter();
+      Fittino::FittinoInputFileInterpreter* CreateInterpreter();
 
   };
 

@@ -22,10 +22,10 @@
 
 #include "InputFileInterpreterBase.h"
 
-InputFileInterpreterBase::InputFileInterpreterBase() {
+Fittino::InputFileInterpreterBase::InputFileInterpreterBase() {
 
 }
 
-InputFileInterpreterBase::~InputFileInterpreterBase() {
+Fittino::InputFileInterpreterBase::~InputFileInterpreterBase() {
 
 }
