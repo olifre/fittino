@@ -321,6 +321,83 @@ int call_HiggsBounds(int nH, double* parameterVector)
 		return HBresult;
 		}
 	}
+
+double ScanForHiggsLimit( int nH, double* parameterVector ) {
+
+   double predictedHiggsMass = yyMass[ID_h];
+   double higgsMassLimitCandidate = yyMass[ID_h];
+   double scanStepWidth = 5.;
+
+   double higgsMassError = 0.3;
+   for ( unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
+      if ( yyMeasuredVec[i].name == "Massh0_npf" ) {
+         higgsMassError = yyMeasuredVec[i].error;
+      }
+   }
+   double tolerance = higgsMassError/100.*10.;
+
+   bool higgsMassNotAccepted = true;
+   while ( higgsMassNotAccepted ) {
+
+      yyMass[ID_h] += scanStepWidth;
+      higgsMassNotAccepted = !( call_HiggsBounds( nH, parameterVector ) );
+
+   }
+
+   double higgsMassAccepted = yyMass[ID_h];
+   double higgsMassRejected = yyMass[ID_h]-scanStepWidth;
+   if ( yyVerbose ) { cout << "Found accepted higgs mass at " << higgsMassAccepted << endl; }
+
+   bool higgsMassLimitNotFound = true;
+   bool higgsMassLimitCandidateNotAccepted; 
+   if ( yyVerbose ) { cout << "Starting search for higgs mass limit" << endl; }
+   while ( higgsMassLimitNotFound ) {
+
+      higgsMassLimitCandidate = ( higgsMassRejected + higgsMassAccepted )/2.;
+
+      yyMass[ID_h] = higgsMassLimitCandidate;
+      higgsMassLimitCandidateNotAccepted = !( call_HiggsBounds( nH, parameterVector ) );
+
+      if ( higgsMassLimitCandidateNotAccepted ) {
+
+         higgsMassRejected = yyMass[ID_h];
+         if ( yyVerbose ) { cout << "Higgs mass of " << higgsMassRejected << " rejected" << endl; }
+
+         if ( fabs( higgsMassLimitCandidate - higgsMassAccepted ) < tolerance ) {
+
+            if ( yyVerbose ) { cout << "Abort criterium met: Terminate" << endl; }
+            higgsMassLimitNotFound = false;
+
+         }
+         else { if ( yyVerbose ) { cout << "Abort criterium not met. Continue." << endl; } }
+
+      }
+      else {
+
+         higgsMassAccepted = yyMass[ID_h];
+         if ( yyVerbose ) { cout << "higgs mass of " << higgsMassAccepted << " accepted" << endl; }
+
+         if ( fabs( higgsMassLimitCandidate - higgsMassRejected ) < tolerance ) {
+
+            if ( yyVerbose ) { cout << "Abort criterium met: Terminate" << endl; }
+            higgsMassLimitNotFound = false;
+
+         }
+         else { if ( yyVerbose ) { cout << "Abort criterium not met. Continue." << endl; } }
+
+      }
+
+   }
+
+   double higgsMassLimit = higgsMassLimitCandidate;
+   if ( yyVerbose ) { cout << "Higgs mass limit is " << higgsMassLimit << endl; }
+
+
+   yyMass[ID_h] = predictedHiggsMass;
+   return higgsMassLimit;
+
+}
+
 #endif
 
 Fittino::Fittino(const Input* input)
@@ -3775,90 +3852,143 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    // end loop over crosssections and polarisations:
    //  }
 
+   // Higgsbounds
+   #ifdef USELIBHB
+
+   if ( yyUseHiggsBounds == 1 ) {
+
+      cout << yyDashedLine << endl;
+      cout << "Starting HiggsBounds" << endl;
+
+      int nH = 3;
+      int HBresult = 0;
+      HBresult = call_HiggsBounds( nH, x );
+
+      yySetErrorFlag = false;
+
+      if ( HBresult == 0 ) {
+
+         cerr << "Scenario excluded by HiggsBounds" << endl;
+         excl++;
+
+         cout << "Starting scan for limit of lightest higgs mass" << endl;
+   
+         double higgsMassLimit = ScanForHiggsLimit( nH, x );
+
+         for ( unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
+
+            if ( yyMeasuredVec[i].name == "Massh0_npf" ) {
+
+               yyMeasuredVec[i].bound_low = higgsMassLimit;
+
+            }
+
+         }
+         cout << "Scan terminated" << endl;
+         cout << "Changed higgs mass limit to > " << higgsMassLimit << " GeV in list of observables" << endl;
+
+      }
+      if ( HBresult == 1 ) {
+
+         cerr << "Scenario accepted by HiggsBounds" << endl;
+	 nexcl++;
+
+      }
+      if ( HBresult == 2 ) {
+
+	 f = 111111111111.;
+
+      }
+      if ( yyVerbose ) {
+
+         cout << "Already excluded: " << excl << endl;
+         cout << "Not excluded: " << nexcl << endl;
+
+      }
+      cout << "Ending HiggsBounds" << endl;
+   }
+
+   #endif
+
    // HERE: FIND OBSERVABLES BELONGING TO THE MEASUREMENTS IN yyMeasuredVec
    // CALCULATE CHISQ
    n_printouts++;
-   if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
+   if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) {
+      cout << yyDashedLine << endl;
       cout << "Calculating chisq" << endl;
    }
-   for (unsigned int i = 0; i < yyMeasuredVec.size(); i++)
-     {
-       for (unsigned int j = 0; j < yyMeasuredVec.size(); j++)
-	 {
-	   //    cout << "looking at "<< yyMeasuredVec[i].name << endl;
-	   if ((yyMeasuredVec[i].theoset && yyMeasuredVec[j].theoset) && (!yyMeasuredVec[i].nofit && !yyMeasuredVec[j].nofit )
-	       && (!yyMeasuredVec[i].temp_nofit && !yyMeasuredVec[j].temp_nofit ) ) {
-	     // cout << "theo ist set" << endl;
-	     if ((yyMeasuredVec[i].error > 0.) && (yyMeasuredVec[j].error > 0.) && !yyMeasuredVec[j].bound ) {
-	       // find corresponding measurement for prediction... 
-	       f += (yyMeasuredVec[i].theovalue-yyMeasuredVec[i].value)
-		 * yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)
-		 * (yyMeasuredVec[j].theovalue-yyMeasuredVec[j].value);
+   for (unsigned int i = 0; i < yyMeasuredVec.size(); i++) {
 
-	       if ( (i==j) && (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j) > 1.E-12) ) {
-		 nobs++;
-	       } else if (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j) > 1.E-12) {
-		 ncorr++;
-	       }
-	       if ( i == j && ( (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)>1.E-12) || 
-				(yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)<-1.E-12) ) ) {
-		 //	    cout << (float)n_printouts/10. << " " << n_printouts/11 << endl;
-		 if ( yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { // ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) (TMath::Mod(n_printouts,10)==0)
+      for (unsigned int j = 0; j < yyMeasuredVec.size(); j++) {
 
-		   cout << i << " " << j << " using obs " << yyMeasuredVec[i].name << " = " << yyMeasuredVec[i].value
-			<< "+-" << sqrt(yyMeasuredCorrelationMatrix.GetCovariance(i,j)) 
-			<< " (" << (TMath::Abs(yyMeasuredVec[i].value-yyMeasuredVec[i].theovalue))*sqrt(yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)) << ") " << "\t at theovalue = " 
-			<< yyMeasuredVec[i].theovalue<< endl;
-		 }
-	       }
-	    } else if (yyMeasuredVec[j].bound) {
-	      if (i == j) {
-		if (yyMeasuredVec[i].theovalue<yyMeasuredVec[i].bound_low ) {
-		     f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].value)/(yyMeasuredVec[i].error));
-		     cout << i << " using lower bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_low << " > " << 
-			yyMeasuredVec[i].theovalue << endl;
-		  } else if (yyMeasuredVec[i].theovalue>yyMeasuredVec[i].bound_up ) {
-		     f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].value)/(yyMeasuredVec[i].error));
-		     cout << i << " using upper bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_up << " < " << 
-			yyMeasuredVec[i].theovalue << endl;
-		  }
-		  nbound++;
-	       }
-	    }
-	 }
+         //    cout << "looking at "<< yyMeasuredVec[i].name << endl;
+         if ((yyMeasuredVec[i].theoset && yyMeasuredVec[j].theoset) && (!yyMeasuredVec[i].nofit && !yyMeasuredVec[j].nofit )
+              && (!yyMeasuredVec[i].temp_nofit && !yyMeasuredVec[j].temp_nofit ) ) {
+
+            // cout << "theo ist set" << endl;
+            if ((yyMeasuredVec[i].error > 0.) && (yyMeasuredVec[j].error > 0.) && !yyMeasuredVec[j].bound ) {
+
+               // find corresponding measurement for prediction... 
+               f += (yyMeasuredVec[i].theovalue-yyMeasuredVec[i].value)
+       	         * yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)
+       	         * (yyMeasuredVec[j].theovalue-yyMeasuredVec[j].value);
+
+               if ( (i==j) && (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j) > 1.E-12) ) {
+
+       	          nobs++;
+
+               }
+               else if (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j) > 1.E-12) {
+
+       	          ncorr++;
+               }
+               if ( i == j && ( (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)>1.E-12) ||
+       			(yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)<-1.E-12) ) ) {
+
+       	          // cout << (float)n_printouts/10. << " " << n_printouts/11 << endl;
+       	          if ( yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) {
+
+       	             cout << i << " " << j << " using obs " << yyMeasuredVec[i].name << " = " << yyMeasuredVec[i].value
+       		          << "+-" << sqrt(yyMeasuredCorrelationMatrix.GetCovariance(i,j))
+       		          << " (" << (TMath::Abs(yyMeasuredVec[i].value-yyMeasuredVec[i].theovalue))*sqrt(yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)) << ") "
+                          << "\t at theovalue = "
+       		          << yyMeasuredVec[i].theovalue<< endl;
+       	          }
+               }
+            }
+            else if ( yyMeasuredVec[j].bound ) {
+
+               if ( i == j ) {
+
+       	          if ( yyMeasuredVec[i].theovalue<yyMeasuredVec[i].bound_low ) {
+
+       	             f += sqr( ( yyMeasuredVec[i].theovalue-yyMeasuredVec[i].value )/yyMeasuredVec[i].error );
+       	             cout << i << " using lower bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_low << " > " <<
+       		     yyMeasuredVec[i].theovalue << endl;
+
+       	          }
+                  else if ( yyMeasuredVec[i].theovalue>yyMeasuredVec[i].bound_up ) {
+
+       	             f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].value)/(yyMeasuredVec[i].error));
+       	             cout << i << " using upper bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_up << " < " <<
+       	             yyMeasuredVec[i].theovalue << endl;
+
+       	          }
+
+       	          nbound++;
+
+               }
+
+            }
+
+         }
+
       }
-   }
-#ifdef USELIBHB
-   // Higgs Bounds here
-   if (yyUseHiggsBounds==1) {
-      int nH = 3;
-      cout << "Starting HiggsBounds" << endl;
-      int HBresult = 0;
-      HBresult = call_HiggsBounds(nH,x);
-      cout<<"Result from HiggsBounds: "<<HBresult<<endl;
 
-   yySetErrorFlag = false;
-   if (HBresult == 0) {
-	excl++;
-	cerr << "Scenario Excluded by HiggsBounds"<<endl;
-	f = 11111111111.;
-	cout << "f = " << f << endl;
    }
-   if (HBresult == 1) {
-	nexcl++;
-}
-   if (HBresult == 2) {
-	f = 111111111111.;
-}
-      if (yyVerbose){ 
-      cout<<"Already excluded: "<<excl<<endl;
-      cout<<"Not excluded: "<<nexcl<<endl;
-      }
-      cout << "ending HiggsBounds" << endl;
-   }
-#endif
+
    cout << " chisq = " << f << " with " << nobs << " observables (" << ncorr/2 << " correlated), "
-      << yyFittedVec.size() << " parameters and " << nbound << " bounds" << endl;
+        << yyFittedVec.size() << " parameters and " << nbound << " bounds" << endl;
 
    //  f = ( sqr(sRecMassChargino1-fMassChargino1)/sqr(fMassChargino1.error)
    //	+ sqr(sRecMassChargino2-fMassChargino2)/sqr(fMassChargino2.error)
