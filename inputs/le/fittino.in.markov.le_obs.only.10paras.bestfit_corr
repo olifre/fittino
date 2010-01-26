@@ -200,10 +200,10 @@ correlationCoefficient LEObs_16 LEObs_17   0.11
 ### mSUGRA parameters at SPS 1a
 
 fitParameter alphaem     127.925     +- 0.004 GeV
-fixParameter G_F           1.16637E-5
+fitParameter G_F          1.16637E-5 +- 0.00001E-5  
 fitParameter alphas        0.1176    +- 0.0005 GeV
 fitParameter massZ        91.1875    +- 0.0005 GeV
-fixParameter massBottom    4.20       GeV
+fitParameter massBottom    4.20 GeV  +- 0.17   GeV 
 fitParameter massTop     173.1       +- 0.13   GeV
 fixParameter massTau       1.77684    GeV
 fixParameter SignMu        1
