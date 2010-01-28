@@ -33,12 +33,12 @@ CXX               = g++
 CXXFLAGS          = -g -Wall -pedantic -Wno-long-long \
                     -Wshadow -fPIC -I. $(ROOTCFLAGS) 
 
-# HBLIB		  = -L../HiggsBounds-1.1.0/HiggsBounds-f90 -lHB
-HBLIB		  = -L../HiggsBounds-1.2.0/HiggsBounds-f77 -lHB
-LIBGFORTRAN       = -L/usr/lib/gcc/x86_64-redhat-linux5E/4.1.2 -lgfortran
-#LIBGFORTRAN	  = /usr/lib/libgfortran.so.1
-LIBS	    	 += $(HBLIB) $(LIBGFORTRAN)
-CXXFLAGS         += -DUSELIBHB
+# # HBLIB		  = -L../HiggsBounds-1.1.0/HiggsBounds-f90 -lHB
+# HBLIB		  = -L../HiggsBounds-1.2.0/HiggsBounds-f77 -lHB
+# LIBGFORTRAN       = -L/usr/lib/gcc/x86_64-redhat-linux5E/4.1.2 -lgfortran
+# #LIBGFORTRAN	  = /usr/lib/libgfortran.so.1
+# LIBS	    	 += $(HBLIB) $(LIBGFORTRAN)
+# CXXFLAGS         += -DUSELIBHB
 
 LD                = g++
 LDFLAGS           = -g -Wall -pedantic -Wno-long-long -Wshadow
