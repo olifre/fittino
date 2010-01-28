@@ -189,8 +189,9 @@ int call_HiggsBounds(int nH, double* parameterVector)
 	    return HBresult;
 	  }
 	else {
-		double SMGammaTotal = smgamma_h_(&yyMass[ID_h]);
+	  //		  double SMGammaTotal = smgamma_h_(&yyMass[ID_h]);
 		for (int i=0; i<nH; i++){ 
+		  double SMGammaTotal = smgamma_h_(&Mh[i]);
 			HBmass[i].push_back(Mh[i]);
 			GammaTotal[i] = yyGamma[IDarray[i]];
 			gammah[i].push_back(yyGamma[IDarray[i]]);
@@ -211,24 +212,24 @@ int call_HiggsBounds(int nH, double* parameterVector)
 			daughter_list.push_back(ID_g);
 			daughter_list.push_back(ID_g);
 			temp_BR[i] = higgsBR(IDarray[i], daughter_list);
-			g2hjgg[i] = (temp_BR[i]*GammaTotal[i])/(smbr_hgg_(&Mh[0])*SMGammaTotal);
+			g2hjgg[i] = (temp_BR[i]*GammaTotal[i])/(smbr_hgg_(&Mh[i])*SMGammaTotal);
 			daughter_list.clear();
 			daughter_list.push_back(ID_gamma);
 			daughter_list.push_back(ID_gamma);
 			temp_BR[i] = higgsBR(IDarray[i], daughter_list);
-			g2hjgaga[i] = (temp_BR[i]*GammaTotal[i])/(smbr_hgamgam_(&Mh[0])*SMGammaTotal);
+			g2hjgaga[i] = (temp_BR[i]*GammaTotal[i])/(smbr_hgamgam_(&Mh[i])*SMGammaTotal);
 			daughter_list.clear();
 			daughter_list.push_back(ID_b);
 			daughter_list.push_back(-ID_b);
 			temp_BR[i] = higgsBR(IDarray[i], daughter_list);
 			BR_hjbb[i].push_back(temp_BR[i]);
-			g2hjbb[i] = (temp_BR[i]*GammaTotal[i])/(smbr_hbb_(&Mh[0])*SMGammaTotal);
+			g2hjbb[i] = (temp_BR[i]*GammaTotal[i])/(smbr_hbb_(&Mh[i])*SMGammaTotal);
 			daughter_list.clear();
 			daughter_list.push_back(ID_tau);
 			daughter_list.push_back(-ID_tau);
 			temp_BR[i] = higgsBR(IDarray[i], daughter_list);
 			BR_hjtautau[i].push_back(temp_BR[i]);
-			g2hjtautau[i] = (temp_BR[i]*GammaTotal[i])/(smbr_htautau_(&Mh[0])*SMGammaTotal);
+			g2hjtautau[i] = (temp_BR[i]*GammaTotal[i])/(smbr_htautau_(&Mh[i])*SMGammaTotal);
 			daughter_list.clear();
 			}
 				
