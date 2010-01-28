@@ -152,176 +152,176 @@ int n_printouts;
 #ifdef USELIBHB
 
 int call_HiggsBounds(int nH, double* parameterVector) 
-	{
-	int chan, ncombined, HBresult, checkflag;
-	double Mh[3], GammaTotal[3], g2hjbb[3], g2hjtautau[3], g2hjWW[3], g2hjZZ[3], g2hjgaga[3], g2hjgg[3], g2hjhiZ[3][3], BR_hjhihi[3][3], BR_hjhihisorted[3][3], g2hjhiZsorted[3][3], obsratio[3];
-	double thisTanB = 0.;
-	int IDarray[3] = {ID_h,ID_H,ID_A};
-	int checkarray[3] = {0,1,2};
-	double temp;
-	int temp2;
-
-	if (FindInFixed("TanBeta")) {
-	  thisTanB = ReturnFixedValue("TanBeta")->value;
-	}    
-	else if (FindInFitted("TanBeta")) {
-	  thisTanB = parameterVector[ReturnFittedPosition("TanBeta")];
-	} 
-
-
-	// Higss Masses
-	Mh[0]=yyMass[ID_h];
-	Mh[1]=yyMass[ID_H];
-	Mh[2]=yyMass[ID_A];
-	vector<int> daughter_list;
-	double temp_BR[3];
-	if (Mh[0] == 0 || Mh[1] == 0 || Mh[2] == 0)
-	  {
-	    cout<<"Error: Cannot get Higgs-Masses. HiggsBounds aborted"<<endl;
-	    HBresult = 2;
-	    for (int i=0; i<nH; i++){ 
-		HBmass[i].push_back(Mh[i]);
-		gammah[i].push_back(0.);
-		BR_hjbb[i].push_back(0.);
-		BR_hjtautau[i].push_back(0.);
-		O_g2hjZZ[i].push_back(0.);
-		}
-	    return HBresult;
-	  }
-	else {
-	  //		  double SMGammaTotal = smgamma_h_(&yyMass[ID_h]);
-		for (int i=0; i<nH; i++){ 
-		  double SMGammaTotal = smgamma_h_(&Mh[i]);
-			HBmass[i].push_back(Mh[i]);
-			GammaTotal[i] = yyGamma[IDarray[i]];
-			gammah[i].push_back(yyGamma[IDarray[i]]);
-			for (int j = 0;j<nH;j++){
-				if (i!=j){
-					daughter_list.push_back(IDarray[i]);
-					daughter_list.push_back(IDarray[i]);
-					BR_hjhihi[j][i] = higgsBR(IDarray[j], daughter_list);
-					daughter_list.clear();
-					}
-				else { 
-					BR_hjhihi[j][i] = 0;
-					g2hjhiZ[i][j] = 0;
-					}
-				BR_hjhihisorted[j][i] = 0;
-				g2hjhiZsorted[j][i] = 0;
-				}
-			daughter_list.push_back(ID_g);
-			daughter_list.push_back(ID_g);
-			temp_BR[i] = higgsBR(IDarray[i], daughter_list);
-			g2hjgg[i] = (temp_BR[i]*GammaTotal[i])/(smbr_hgg_(&Mh[i])*SMGammaTotal);
-			daughter_list.clear();
-			daughter_list.push_back(ID_gamma);
-			daughter_list.push_back(ID_gamma);
-			temp_BR[i] = higgsBR(IDarray[i], daughter_list);
-			g2hjgaga[i] = (temp_BR[i]*GammaTotal[i])/(smbr_hgamgam_(&Mh[i])*SMGammaTotal);
-			daughter_list.clear();
-			daughter_list.push_back(ID_b);
-			daughter_list.push_back(-ID_b);
-			temp_BR[i] = higgsBR(IDarray[i], daughter_list);
-			BR_hjbb[i].push_back(temp_BR[i]);
-			g2hjbb[i] = (temp_BR[i]*GammaTotal[i])/(smbr_hbb_(&Mh[i])*SMGammaTotal);
-			daughter_list.clear();
-			daughter_list.push_back(ID_tau);
-			daughter_list.push_back(-ID_tau);
-			temp_BR[i] = higgsBR(IDarray[i], daughter_list);
-			BR_hjtautau[i].push_back(temp_BR[i]);
-			g2hjtautau[i] = (temp_BR[i]*GammaTotal[i])/(smbr_htautau_(&Mh[i])*SMGammaTotal);
-			daughter_list.clear();
-			}
-				
-		g2hjZZ[0] = pow(((TMath::Sin(TMath::ATan(thisTanB)-yyalpha))),2);
-		g2hjZZ[1] = pow(((TMath::Cos(TMath::ATan(thisTanB)-yyalpha))),2);
-		g2hjZZ[2] = 0.;                                                
-		g2hjWW[0] = pow(((TMath::Sin(TMath::ATan(thisTanB)-yyalpha))),2);
-		g2hjWW[1] = pow(((TMath::Cos(TMath::ATan(thisTanB)-yyalpha))),2);
-		g2hjWW[2] = 0.;                                              
-		
-
-
-		g2hjhiZ[0][1] = g2hjhiZ[1][0] = pow(((TMath::Cos(TMath::ATan(thisTanB)-yyalpha))),2);
-		g2hjhiZ[0][2] = g2hjhiZ[2][0] = 0.;
-		g2hjhiZ[1][2] = g2hjhiZ[2][1] = pow(((TMath::Sin(TMath::ATan(thisTanB)-yyalpha))),2);                                                
-		for (int i = 0; i<nH;i++){
-			O_g2hjZZ[i].push_back(g2hjZZ[i]);
-		}
-
-	
-
-		for (int i = 0; i<nH; i++){
-			checkflag = 0;
-				for (int j = 0; j<nH-1; j++) {
-					if(Mh[j]>Mh[j+1]){
-						temp = Mh[j];
-						Mh[j] = Mh[j+1];
-						Mh[j+1] = temp;
-						temp2 = IDarray[j];
-						IDarray[j] = IDarray[j+1];
-						IDarray[j+1] = temp2;
-						temp2 = checkarray[j];
-						checkarray[j] = checkarray[j+1];
-						checkarray[j+1] = temp2;
-						temp = g2hjgg[j]; 
-						g2hjgg[j] = g2hjgg[j+1];
-						g2hjgg[j+1] = temp;
-						temp = g2hjbb[j]; 
-						g2hjbb[j] = g2hjbb[j+1];
-						g2hjbb[j+1] = temp;
-						temp = g2hjZZ[j]; 
-						g2hjZZ[j] = g2hjZZ[j+1];
-						g2hjZZ[j+1] = temp;
-						temp = g2hjWW[j]; 
-						g2hjWW[j] = g2hjWW[j+1];
-						g2hjWW[j+1] = temp;
-						temp = g2hjtautau[j]; 
-						g2hjtautau[j] = g2hjtautau[j+1];
-						g2hjtautau[j+1] = temp;
-						temp = g2hjgaga[j]; 
-						g2hjgaga[j] = g2hjgaga[j+1];
-						g2hjgaga[j+1] = temp;
-						
-						checkflag = 1;
-						}
-					}
-				if (!checkflag){
-					break; 
-					}
-			}
-
-			if (checkarray[0] == 0 && checkarray[1] == 1){}
-			else {
-				for (int i = 0; i<nH; i++){
-					for (int j = 0; j<nH; j++){
-						g2hjhiZsorted[i][j] = g2hjhiZ[checkarray[i]][checkarray[j]]; 
-						BR_hjhihisorted[i][j] = BR_hjhihi[checkarray[i]][checkarray[j]]; 
-					}
-				}
-			}
-
-		run_higgsbounds_effc_(&nH, Mh, GammaTotal, g2hjbb, g2hjtautau, g2hjWW, g2hjZZ, g2hjgaga, g2hjgg, g2hjhiZsorted, BR_hjhihisorted, &HBresult, &chan, obsratio, &ncombined);
-			if (yyVerbose){ 
-				cout<<"INFO: Higgs masses: "<<Mh[0]<<" , "<<Mh[1]<<" , "<<Mh[2]<<endl;
-				cout<<"INFO: Widths: "<<GammaTotal[0]<<" , "<<GammaTotal[1]<<" , "<<GammaTotal[2]<<endl;
-				cout<<"INFO: hj -> bb: "<<g2hjbb[0]<<", "<<g2hjbb[1]<<", "<<g2hjbb[2]<<endl;
-				cout<<"INFO: hj -> tau tau: "<<g2hjtautau[0]<<", "<<g2hjtautau[1]<<", "<<g2hjtautau[2]<<endl;
-				cout<<"INFO: hj -> W W: "<<g2hjWW[0]<<", "<<g2hjWW[1]<<", "<<g2hjWW[2]<<endl;
-				cout<<"INFO: hj -> Z Z: "<<g2hjZZ[0]<<", "<<g2hjZZ[1]<<", "<<g2hjZZ[2]<<endl;
-				cout<<"INFO: hj -> gamma gamma: "<<g2hjgaga[0]<<", "<<g2hjgaga[1]<<", "<<g2hjgaga[2]<<endl;
-				cout<<"INFO: hj -> gg: "<<g2hjgg[0]<<", "<<g2hjgg[1]<<", "<<g2hjgg[2]<<endl;
-				cout<<"INFO: channel: "<<chan<<endl;
-					for (int i = 0; i<nH;i++){
-						for (int j = 0; j<nH;j++){
-						cout<<"INFO: BR_h"<<j<<"h"<<i<<": "<<checkarray[0]<<checkarray[1]<<checkarray[2]<<", "<<BR_hjhihi[j][i]<<", "<<BR_hjhihisorted[j][i]<<endl;
-						}
-					}
-				}
-
-		return HBresult;
-		}
+{
+  int chan, ncombined, HBresult, checkflag;
+  double Mh[3], GammaTotal[3], g2hjbb[3], g2hjtautau[3], g2hjWW[3], g2hjZZ[3], g2hjgaga[3], g2hjgg[3], g2hjhiZ[3][3], BR_hjhihi[3][3], BR_hjhihisorted[3][3], g2hjhiZsorted[3][3], obsratio[3];
+  double thisTanB = 0.;
+  int IDarray[3] = {ID_h,ID_H,ID_A};
+  int checkarray[3] = {0,1,2};
+  double temp;
+  int temp2;
+  
+  if (FindInFixed("TanBeta")) {
+    thisTanB = ReturnFixedValue("TanBeta")->value;
+  }    
+  else if (FindInFitted("TanBeta")) {
+    thisTanB = parameterVector[ReturnFittedPosition("TanBeta")];
+  } 
+  
+  
+  // Higss Masses
+  Mh[0]=yyMass[ID_h];
+  Mh[1]=yyMass[ID_H];
+  Mh[2]=yyMass[ID_A];
+  vector<int> daughter_list;
+  double temp_BR[3];
+  if (Mh[0] == 0 || Mh[1] == 0 || Mh[2] == 0)
+    {
+      cout<<"Error: Cannot get Higgs-Masses. HiggsBounds aborted"<<endl;
+      HBresult = 2;
+      for (int i=0; i<nH; i++){ 
+	HBmass[i].push_back(Mh[i]);
+	gammah[i].push_back(0.);
+	BR_hjbb[i].push_back(0.);
+	BR_hjtautau[i].push_back(0.);
+	O_g2hjZZ[i].push_back(0.);
+      }
+      return HBresult;
+    }
+  else {
+    //		  double SMGammaTotal = smgamma_h_(&yyMass[ID_h]);
+    for (int i=0; i<nH; i++){ 
+      double SMGammaTotal = smgamma_h_(&Mh[i]);
+      HBmass[i].push_back(Mh[i]);
+      GammaTotal[i] = yyGamma[IDarray[i]];
+      gammah[i].push_back(yyGamma[IDarray[i]]);
+      for (int j = 0;j<nH;j++){
+	if (i!=j){
+	  daughter_list.push_back(IDarray[i]);
+	  daughter_list.push_back(IDarray[i]);
+	  BR_hjhihi[j][i] = higgsBR(IDarray[j], daughter_list);
+	  daughter_list.clear();
 	}
+	else { 
+	  BR_hjhihi[j][i] = 0;
+	  g2hjhiZ[i][j] = 0;
+	}
+	BR_hjhihisorted[j][i] = 0;
+	g2hjhiZsorted[j][i] = 0;
+      }
+      daughter_list.push_back(ID_g);
+      daughter_list.push_back(ID_g);
+      temp_BR[i] = higgsBR(IDarray[i], daughter_list);
+      g2hjgg[i] = (temp_BR[i]*GammaTotal[i])/(smbr_hgg_(&Mh[i])*SMGammaTotal);
+      daughter_list.clear();
+      daughter_list.push_back(ID_gamma);
+      daughter_list.push_back(ID_gamma);
+      temp_BR[i] = higgsBR(IDarray[i], daughter_list);
+      g2hjgaga[i] = (temp_BR[i]*GammaTotal[i])/(smbr_hgamgam_(&Mh[i])*SMGammaTotal);
+      daughter_list.clear();
+      daughter_list.push_back(ID_b);
+      daughter_list.push_back(-ID_b);
+      temp_BR[i] = higgsBR(IDarray[i], daughter_list);
+      BR_hjbb[i].push_back(temp_BR[i]);
+      g2hjbb[i] = (temp_BR[i]*GammaTotal[i])/(smbr_hbb_(&Mh[i])*SMGammaTotal);
+      daughter_list.clear();
+      daughter_list.push_back(ID_tau);
+      daughter_list.push_back(-ID_tau);
+      temp_BR[i] = higgsBR(IDarray[i], daughter_list);
+      BR_hjtautau[i].push_back(temp_BR[i]);
+      g2hjtautau[i] = (temp_BR[i]*GammaTotal[i])/(smbr_htautau_(&Mh[i])*SMGammaTotal);
+      daughter_list.clear();
+    }
+    
+    g2hjZZ[0] = pow(((TMath::Sin(TMath::ATan(thisTanB)-yyalpha))),2);
+    g2hjZZ[1] = pow(((TMath::Cos(TMath::ATan(thisTanB)-yyalpha))),2);
+    g2hjZZ[2] = 0.;                                                
+    g2hjWW[0] = pow(((TMath::Sin(TMath::ATan(thisTanB)-yyalpha))),2);
+    g2hjWW[1] = pow(((TMath::Cos(TMath::ATan(thisTanB)-yyalpha))),2);
+    g2hjWW[2] = 0.;                                              
+    
+    
+    
+    g2hjhiZ[0][1] = g2hjhiZ[1][0] = pow(((TMath::Cos(TMath::ATan(thisTanB)-yyalpha))),2);
+    g2hjhiZ[0][2] = g2hjhiZ[2][0] = 0.;
+    g2hjhiZ[1][2] = g2hjhiZ[2][1] = pow(((TMath::Sin(TMath::ATan(thisTanB)-yyalpha))),2);                                                
+    for (int i = 0; i<nH;i++){
+      O_g2hjZZ[i].push_back(g2hjZZ[i]);
+    }
+    
+    
+    
+    for (int i = 0; i<nH; i++){
+      checkflag = 0;
+      for (int j = 0; j<nH-1; j++) {
+	if(Mh[j]>Mh[j+1]){
+	  temp = Mh[j];
+	  Mh[j] = Mh[j+1];
+	  Mh[j+1] = temp;
+	  temp2 = IDarray[j];
+	  IDarray[j] = IDarray[j+1];
+	  IDarray[j+1] = temp2;
+	  temp2 = checkarray[j];
+	  checkarray[j] = checkarray[j+1];
+	  checkarray[j+1] = temp2;
+	  temp = g2hjgg[j]; 
+	  g2hjgg[j] = g2hjgg[j+1];
+	  g2hjgg[j+1] = temp;
+	  temp = g2hjbb[j]; 
+	  g2hjbb[j] = g2hjbb[j+1];
+	  g2hjbb[j+1] = temp;
+	  temp = g2hjZZ[j]; 
+	  g2hjZZ[j] = g2hjZZ[j+1];
+	  g2hjZZ[j+1] = temp;
+	  temp = g2hjWW[j]; 
+	  g2hjWW[j] = g2hjWW[j+1];
+	  g2hjWW[j+1] = temp;
+	  temp = g2hjtautau[j]; 
+	  g2hjtautau[j] = g2hjtautau[j+1];
+	  g2hjtautau[j+1] = temp;
+	  temp = g2hjgaga[j]; 
+	  g2hjgaga[j] = g2hjgaga[j+1];
+	  g2hjgaga[j+1] = temp;
+	  
+	  checkflag = 1;
+	}
+      }
+      if (!checkflag){
+	break; 
+      }
+    }
+    
+    if (checkarray[0] == 0 && checkarray[1] == 1){}
+    else {
+      for (int i = 0; i<nH; i++){
+	for (int j = 0; j<nH; j++){
+	  g2hjhiZsorted[i][j] = g2hjhiZ[checkarray[i]][checkarray[j]]; 
+	  BR_hjhihisorted[i][j] = BR_hjhihi[checkarray[i]][checkarray[j]]; 
+	}
+      }
+    }
+    
+    run_higgsbounds_effc_(&nH, Mh, GammaTotal, g2hjbb, g2hjtautau, g2hjWW, g2hjZZ, g2hjgaga, g2hjgg, g2hjhiZsorted, BR_hjhihisorted, &HBresult, &chan, obsratio, &ncombined);
+    if (yyVerbose){ 
+      cout<<"INFO: Higgs masses: "<<Mh[0]<<" , "<<Mh[1]<<" , "<<Mh[2]<<endl;
+      cout<<"INFO: Widths: "<<GammaTotal[0]<<" , "<<GammaTotal[1]<<" , "<<GammaTotal[2]<<endl;
+      cout<<"INFO: hj -> bb: "<<g2hjbb[0]<<", "<<g2hjbb[1]<<", "<<g2hjbb[2]<<endl;
+      cout<<"INFO: hj -> tau tau: "<<g2hjtautau[0]<<", "<<g2hjtautau[1]<<", "<<g2hjtautau[2]<<endl;
+      cout<<"INFO: hj -> W W: "<<g2hjWW[0]<<", "<<g2hjWW[1]<<", "<<g2hjWW[2]<<endl;
+      cout<<"INFO: hj -> Z Z: "<<g2hjZZ[0]<<", "<<g2hjZZ[1]<<", "<<g2hjZZ[2]<<endl;
+      cout<<"INFO: hj -> gamma gamma: "<<g2hjgaga[0]<<", "<<g2hjgaga[1]<<", "<<g2hjgaga[2]<<endl;
+      cout<<"INFO: hj -> gg: "<<g2hjgg[0]<<", "<<g2hjgg[1]<<", "<<g2hjgg[2]<<endl;
+      cout<<"INFO: channel: "<<chan<<endl;
+      for (int i = 0; i<nH;i++){
+	for (int j = 0; j<nH;j++){
+	  cout<<"INFO: BR_h"<<j<<"h"<<i<<": "<<checkarray[0]<<checkarray[1]<<checkarray[2]<<", "<<BR_hjhihi[j][i]<<", "<<BR_hjhihisorted[j][i]<<endl;
+	}
+      }
+    }
+    
+    return HBresult;
+  }
+}
 
 double ScanForHiggsLimit( int nH, double* parameterVector ) {
 
