@@ -23,29 +23,29 @@ massTau      1.77684    GeV +- 0.00017    GeV                  # [8]
 massCharm    1.2        GeV +- 0.11       GeV                  # [5]
 massW       80.3789     GeV +- 0.025      GeV +- 0.066 GeV                 # [4]
 
-# The last contribution to the uncertainty is one standard deviation calculated from the prediction of the Observables at SPS1a by SPheno, SoftSUSY+SDECAY/HDECAY and SUSPECT+HDECAY/SDECAY
+# The third column (second for higgs/chargino mass) contribution to the uncertainty is one standard deviation calculated from the prediction of the Observables at SPS1a by SPheno, SoftSUSY+SDECAY/HDECAY and SUSPECT+HDECAY/SDECAY
 
-massh0     109.582      GeV +- 0.1        GeV +- (LES) 0.1 GeV +- 0.2 GeV	# [9]
+massh0     109.582      GeV +- 0.1        GeV +- 0.2 GeV +-(LES) 0.1 GeV # [9]
 
 ### masses
 
-massChargino1  180.176 GeV +- 11.4  GeV +- (JES) 1.8 GeV +- 0.3 GeV	# [10]
+massChargino1  180.176 GeV +- 11.4  GeV +- 0.3 GeV +- (JES) 1.8 GeV 	# [10]
 
 ### edges
 
-edge   8 massSelectronL  massNeutralino1                              148.816  GeV +- 1.7  GeV +-  6.0 GeV +- (LES) 0.1  GeV +- 1.9 GeV	alias  1 # [11]
-edge   2 massGluino      massNeutralino1                              507.652  GeV +- 2.5  GeV +- 10.0 GeV +- (JES) 2.5  GeV +-	1.7 GeV	alias  2 # [12]
-edge   8 massSupR        massNeutralino1                              530.995  GeV +- 1.1  GeV +- 10.0 GeV +- (JES) 5.3  GeV +-	1.8 GeV	alias  3 # [12]
-edge   2 massGluino      massSbottom1                                  88.6786 GeV +- 1.5  GeV             +- (JES) 0.4  GeV +-	2.4 GeV	alias  4 # [12]
-edge   2 massGluino      massSbottom2                                  56.7889 GeV +- 2.5  GeV             +- (JES) 0.3  GeV +- 2.7 GeV	alias  5 # [12]
-edge 100 massNeutralino1 massNeutralino2 massSelectronR                80.4331 GeV +- 0.03 GeV             +- (LES) 0.08 GeV +-	0.5 GeV	alias  6 # [12]
-edge   3 massNeutralino1 massNeutralino4 massSelectronL               280.578  GeV +- 2.3  GeV             +- (LES) 0.28 GeV +-	2.1 GeV	alias  7 # [13]
-edge   3 massNeutralino1 massNeutralino2 massStau1                     83.3605 GeV +- 0.73 GeV +-  8.3 GeV +- (JES) 0.8  GeV +-	0.3 GeV	alias  8 # [14]
-edge 101 massNeutralino1 massSupL        massNeutralino2              452.076  GeV +- 1.4  GeV             +- (JES) 2.3  GeV +-	4.1 GeV	alias  9 # [12]
-edge 105 massSelectronR  massSupL        massNeutralino2              318.577  GeV +- 0.9  GeV             +- (JES) 1.6  GeV +-	2.9 GeV	alias 10 # [12]
-edge 106 massNeutralino1 massNeutralino2 massSelectronR  massSupL     396.045  GeV +- 1.0  GeV             +- (JES) 2.0  GeV +-	3.9 GeV	alias 11 # [12]
-edge 102 massNeutralino1 massNeutralino2 massSelectronR  massSupL     215.565  GeV +- 1.6  GeV             +- (JES) 1.1  GeV +-	2.3 GeV	alias 12 # [12]
-edge   5 massNeutralino1 massNeutralino2 massSelectronR  massSbottom1 195.907  GeV +- 3.6  GeV             +- (JES) 1.0  GeV +- 2.2 GeV	alias 13 # [12]
+edge   8 massSelectronL  massNeutralino1                              148.816  GeV +- 1.7  GeV +-  6.0 GeV +- 1.9 GeV +- (LES) 0.1  GeV alias  1 # [11]
+edge   2 massGluino      massNeutralino1                              507.652  GeV +- 2.5  GeV +- 10.0 GeV +- 1.7 GeV +- (JES) 2.5  GeV alias  2 # [12]
+edge   8 massSupR        massNeutralino1                              530.995  GeV +- 1.1  GeV +- 10.0 GeV +- 1.8 GeV +- (JES) 5.3  GeV alias  3 # [12]
+edge   2 massGluino      massSbottom1                                  88.6786 GeV +- 1.5  GeV             +- 2.4 GeV +- (JES) 0.4  GeV alias  4 # [12]
+edge   2 massGluino      massSbottom2                                  56.7889 GeV +- 2.5  GeV             +- 2.7 GeV +- (JES) 0.3  GeV alias  5 # [12]
+edge 100 massNeutralino1 massNeutralino2 massSelectronR                80.4331 GeV +- 0.03 GeV             +- 0.5 GeV +- (LES) 0.08 GeV alias  6 # [12]
+edge   3 massNeutralino1 massNeutralino4 massSelectronL               280.578  GeV +- 2.3  GeV             +- 2.1 GeV +- (LES) 0.28 GeV alias  7 # [13]
+edge   3 massNeutralino1 massNeutralino2 massStau1                     83.3605 GeV +- 0.73 GeV +-  8.3 GeV +- 0.3 GeV +- (JES) 0.8  GeV alias  8 # [14]
+edge 101 massNeutralino1 massSupL        massNeutralino2              452.076  GeV +- 1.4  GeV             +- 4.1 GeV +- (JES) 2.3  GeV alias  9 # [12]
+edge 105 massSelectronR  massSupL        massNeutralino2              318.577  GeV +- 0.9  GeV             +- 2.9 GeV +- (JES) 1.6  GeV alias 10 # [12]
+edge 106 massNeutralino1 massNeutralino2 massSelectronR  massSupL     396.045  GeV +- 1.0  GeV             +- 3.9 GeV +- (JES) 2.0  GeV alias 11 # [12]
+edge 102 massNeutralino1 massNeutralino2 massSelectronR  massSupL     215.565  GeV +- 1.6  GeV             +- 2.3 GeV +- (JES) 1.1  GeV alias 12 # [12]
+edge   5 massNeutralino1 massNeutralino2 massSelectronR  massSbottom1 195.907  GeV +- 3.6  GeV             +- 2.2 GeV +- (JES) 1.0  GeV alias 13 # [12]
 
 edge   6 massTop         massStop1       massChargino1   massGluino                                                          alias 14
 edge   7 massTop         massGluino      massSbottom1    massChargino1                                                       alias 15
@@ -81,7 +81,7 @@ brratio ( brprod_3 brprod_4 ) 0.168414  +- 0.078 +-	0.042          alias 2 # [12
 
 brsum ( brprod_5 brprod_6 brprod_7 ) alias 1
  
-weighted ( brsum_1 edge_14 brprod_8 edge_15 ) 359.458 GeV +- 2.5 GeV +- (JES) 3.6 GeV +- 2.0 GeV alias 1 # [12]
+weighted ( brsum_1 edge_14 brprod_8 edge_15 ) 359.458 GeV +- 2.5 GeV +- 2.0 GeV +- (JES) 3.6 GeV alias 1 # [12]
 
 #  [1] PDG 2008 Electroweak model and constraints on new physics (Rev.)
 #  [2] PDG 2008 Physical constants (Rev.)
