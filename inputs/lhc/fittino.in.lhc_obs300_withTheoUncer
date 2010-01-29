@@ -21,7 +21,7 @@ massTop    172.4        GeV +- 0.01       GeV +- (JES) 1.0 GeV # [6],[7]
 massTau      1.77684    GeV +- 0.00017    GeV                  # [8]
 
 massCharm    1.2        GeV +- 0.11       GeV                  # [5]
-massW       80.3789     GeV +- 0.025      GeV                  # [4]
+massW       80.3789     GeV +- 0.025      GeV +- 0.066 GeV                 # [4]
 
 # The last contribution to the uncertainty is one standard deviation calculated from the prediction of the Observables at SPS1a by SPheno, SoftSUSY+SDECAY/HDECAY and SUSPECT+HDECAY/SDECAY
 
