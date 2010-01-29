@@ -141,6 +141,7 @@ int   ParseLesHouches();
 double give_xs (doubleVec_t initial, int channel, int element );
 double give_br ( int id, int decay, int element );
 int FindInFittedPar (string name);
+double mSquarkGluinoMax;
 
 double* GetRandomParameterVector(const vector<parameter_t>&);
 
@@ -405,6 +406,7 @@ Fittino::Fittino(const Input* input)
 {
    fInput = input;
    fFittedCovarianceMatrix = 0;
+   mSquarkGluinoMax = 1000.;
 }
 
 
@@ -3744,24 +3746,26 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    //  fitterA.value        = -500.0;// x[10];
 
    // Check whether QEWSB is within bounds
-   if (FindInFitted("QEWSB")) {
-     cout << "QEWSB found fitted = " << x[ReturnFittedPosition("QEWSB")] << endl;
-     if (x[ReturnFittedPosition("QEWSB")] > 2000.) {
-       cout << "QEWSB out of dynamic bounds " << endl;
-       f = 111111111111.;
-       cout << " f = " << f << endl;
-       return;
-     }
-   } 
-   else if (FindInUniversality("QEWSB")) {
-     cout << "QEWSB found in universality = " << ReturnUniversality("QEWSB")->universality << endl;
-     if (x[ReturnFittedPosition(ReturnUniversality("QEWSB")->universality)] > 2000.) {
-       cout << "QEWSB universality out of dynamic bounds " << endl;
-       f = 111111111111.; 
-       cout << " f = " << f << endl;
-       return;
-     }
-   }      
+   if (mSquarkGluinoMax>0.) {
+     if (FindInFitted("QEWSB")) {
+       cout << "QEWSB found fitted = " << x[ReturnFittedPosition("QEWSB")] << endl;
+       if (x[ReturnFittedPosition("QEWSB")] > 4.*mSquarkGluinoMax ) {
+	 cout << "QEWSB out of dynamic bounds " << endl;
+	 f = 111111111111.;
+	 cout << " f = " << f << endl;
+	 return;
+       }
+     } 
+     else if (FindInUniversality("QEWSB")) {
+       cout << "QEWSB found in universality = " << ReturnUniversality("QEWSB")->universality << endl;
+       if (x[ReturnFittedPosition(ReturnUniversality("QEWSB")->universality)] >  4.*mSquarkGluinoMax ) {
+	 cout << "QEWSB universality out of dynamic bounds " << endl;
+	 f = 111111111111.; 
+	 cout << " f = " << f << endl;
+	 return;
+       }
+     }    
+   }  
 
    WriteLesHouches(x);
 
@@ -3901,6 +3905,24 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      return;  
    }
    yySetErrorFlag = false;
+
+   // find maximum squark or gluino mass
+   mSquarkGluinoMax = -1.;
+   for (unsigned int i = 0; i < yyMeasuredVec.size(); i++) {
+     if (yyMeasuredVec[i].name == "massGluino" ||
+	 yyMeasuredVec[i].name == "massStop1"  ||
+	 yyMeasuredVec[i].name == "massStop2"  ||
+	 yyMeasuredVec[i].name == "massSbottom1"  ||
+	 yyMeasuredVec[i].name == "massSbottom2"  ||
+	 yyMeasuredVec[i].name == "massSupL"  ||
+	 yyMeasuredVec[i].name == "massSupR"  ||
+	 yyMeasuredVec[i].name == "massSdownL"  ||
+	 yyMeasuredVec[i].name == "massSdownR" 	 ) {
+       if (yyMeasuredVec[i].theovalue>mSquarkGluinoMax) {
+	 mSquarkGluinoMax = yyMeasuredVec[i].theovalue;
+       }
+     }
+   }   
 
    if (yyRequireNeut1LSP) {
      // search for particle masses

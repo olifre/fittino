@@ -45,6 +45,7 @@ extern void FillFixedParameters();
 extern int callMicrOmegas (double *x);
 extern double higgsLimit ();
 extern double higgsBR(int id, vector<int> daughter_list);
+extern double mSquarkGluinoMax;
 
 class Fittino {
 public:
