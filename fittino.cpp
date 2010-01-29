@@ -5877,20 +5877,21 @@ void WriteLesHouches(double* x)
 				 }
       }
       else {
-				 LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+	LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
       }
-   	}
-						//ADDED SOMETHING HERE
-	else if( yyCalculator == SOFTSUSY ) {
-		//ADD BLOCK SOFTSUSY
-		LesHouchesOutfile << "BLOCK SOFTSUSY        #SOFTSUSY specific inputs" << endl;
-		LesHouchesOutfile << "    1 	0.1     			# desired fractional accuracy in output " << endl;
-		LesHouchesOutfile << "    2   -1.0           # quark mixing option " << endl;
-		LesHouchesOutfile << "    3   0.0           # gives additional verbose output during caclualtion " << endl;
-		LesHouchesOutfile << "    4   1000.0		    # change electroweak symmetry breaking scale " << endl;
-		LesHouchesOutfile << "    5   1.0           # Full 2-loop running in RGEs " << endl;
-	}
-	}
+      LesHouchesOutfile << "   80  1     # SPheno Exit wit hnon-zero-value for sure!!" << endl;
+      }
+      //ADDED SOMETHING HERE
+      else if( yyCalculator == SOFTSUSY ) {
+	//ADD BLOCK SOFTSUSY
+	LesHouchesOutfile << "BLOCK SOFTSUSY        #SOFTSUSY specific inputs" << endl;
+	LesHouchesOutfile << "    1 	0.1     			# desired fractional accuracy in output " << endl;
+	LesHouchesOutfile << "    2   -1.0           # quark mixing option " << endl;
+	LesHouchesOutfile << "    3   0.0           # gives additional verbose output during caclualtion " << endl;
+	LesHouchesOutfile << "    4   1000.0		    # change electroweak symmetry breaking scale " << endl;
+	LesHouchesOutfile << "    5   1.0           # Full 2-loop running in RGEs " << endl;
+      }
+   }
    else if (yyFitModel == mSUGRA) {
 
       LesHouchesOutfile << "BLOCK MODSEL                 # Select model" << endl;
@@ -6239,6 +6240,7 @@ void WriteLesHouches(double* x)
       else {
 	 LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
       }
+      LesHouchesOutfile << "   80  1     # SPheno Exit wit hnon-zero-value for sure!!" << endl;
    }
 	
 	else if( yyCalculator == SOFTSUSY ) {
@@ -6679,6 +6681,7 @@ void WriteLesHouches(double* x)
       else {
 	 LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
       }
+      LesHouchesOutfile << "   80  1     # SPheno Exit wit hnon-zero-value for sure!!" << endl;
    }
 		else if( yyCalculator == SOFTSUSY ) {
 			//ADD BLOCK SOFTSUSY
@@ -7028,6 +7031,7 @@ void WriteLesHouches(double* x)
       else {
 	 LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
       }
+      LesHouchesOutfile << "   80  1     # SPheno Exit wit hnon-zero-value for sure!!" << endl;
    }
 	else if( yyCalculator == SOFTSUSY ) {
   	//ADD BLOCK SOFTSUSY
@@ -7342,6 +7346,7 @@ void WriteLesHouches(double* x)
 	    else {
 	       LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
 	    }
+	    LesHouchesOutfile << "   80  1     # SPheno Exit wit hnon-zero-value for sure!!" << endl;
 	 }
 		else if( yyCalculator == SOFTSUSY ) {
 		    //ADD BLOCK SOFTSUSY
