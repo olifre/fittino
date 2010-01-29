@@ -413,7 +413,6 @@ Fittino::~Fittino()
 
 }
 
-
 void Fittino::calculateM1(const SmearedInput* input)
 {
    double ka[3],kb[3],kc[3],kd[3];
@@ -976,6 +975,19 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    // look at given observables, decide which parameters can be fitted, ask 
    // user for list of parameters to be fitted
 
+
+   fQEWSB.name  = "QEWSB";
+   fQEWSB.value = 1000.;
+   fQEWSB.error = 50.;
+   if (yyUseGivenStartValues && (FindInFittedPar("QEWSB") >= 0)) {
+      fQEWSB.value = yyFittedPar[FindInFittedPar("QEWSB")].value ;
+      if (yyFittedPar[FindInFittedPar("QEWSB")].error > 0.) {
+	 fQEWSB.error = yyFittedPar[FindInFittedPar("QEWSB")].error ;
+      }
+   }
+   fQEWSB.bound_low = 91.2;
+   fQEWSB.bound_up = 10000.;
+
    fM1.name  = "M1";
    fM1.value = sumM1 / double(nvalid);
    fM1.error = TMath::Sqrt(sum2M1 / double(nvalid) - sqr(fM1.value));
@@ -1407,6 +1419,10 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	 }
       }
       if (!par_already_found) {
+	 if (!yyFittedPar[i].name.compare("QEWSB")) {
+	    yyFittedVec.push_back(fQEWSB);
+	    par_already_found = true;
+	 }
 	 if (!yyFittedPar[i].name.compare("TanBeta")) {
 	    yyFittedVec.push_back(fTanBeta);
 	    par_already_found = true;
@@ -1555,6 +1571,17 @@ void Fittino::setStartValues()
 {
    if (yyFitModel == mSUGRA) {
 
+     cout << "setting start values for QEWSB" << endl;
+      fQEWSB.name  = "QEWSB";
+      fQEWSB.value = 1000.;
+      fQEWSB.error = 50;
+      if (FindInFittedPar("QEWSB") >= 0) {
+	 fQEWSB.value = yyFittedPar[FindInFittedPar("QEWSB")].value;
+	 fQEWSB.error = yyFittedPar[FindInFittedPar("QEWSB")].error;
+      }
+      fQEWSB.bound_low = 91.2;
+      fQEWSB.bound_up = 10000.;
+
       fTanBeta.name  = "TanBeta";
       fTanBeta.value = 10;
       fTanBeta.error = 10;
@@ -1609,6 +1636,7 @@ void Fittino::setStartValues()
       //
       //    exit(1);
 
+      
       for (unsigned int  i=0; i < yyFittedPar.size(); i++ ) {
 	 par_already_found = false;
 	 for (unsigned int j = 0; j < fInput->GetMeasuredVector().size(); j++ ) {
@@ -1630,6 +1658,10 @@ void Fittino::setStartValues()
 	    }
 	 }
 	 if (!par_already_found) {
+	    if (!yyFittedPar[i].name.compare("QEWSB")) {
+	       yyFittedVec.push_back(fQEWSB);
+	       par_already_found = true;
+	    }
 	    if (!yyFittedPar[i].name.compare("TanBeta")) {
 	       yyFittedVec.push_back(fTanBeta);
 	       par_already_found = true;
@@ -1688,6 +1720,16 @@ void Fittino::setStartValues()
    }
 
    else if (yyFitModel == XMSUGRA) {
+
+     fQEWSB.name  = "QEWSB";
+      fQEWSB.value = 1000.;
+      fQEWSB.error = 50;
+      if (FindInFittedPar("QEWSB") >= 0) {
+	 fQEWSB.value = yyFittedPar[FindInFittedPar("QEWSB")].value;
+	 fQEWSB.error = yyFittedPar[FindInFittedPar("QEWSB")].error;
+      }
+      fQEWSB.bound_low = 91.2;
+      fQEWSB.bound_up = 10000.;
 
       fTanBeta.name  = "TanBeta";
       fTanBeta.value = 10;
@@ -1796,6 +1838,10 @@ void Fittino::setStartValues()
 	    }
 	 }
 	 if (!par_already_found) {
+	   if (!yyFittedPar[i].name.compare("QEWSB")) {
+	     yyFittedVec.push_back(fQEWSB);
+	     par_already_found = true;
+	   }
 	    if (!yyFittedPar[i].name.compare("TanBeta")) {
 	       yyFittedVec.push_back(fTanBeta);
 	       par_already_found = true;
@@ -1866,6 +1912,16 @@ void Fittino::setStartValues()
    }
 
    else if (yyFitModel == GMSB) {
+
+      fQEWSB.name  = "QEWSB";
+      fQEWSB.value = 1000.;
+      fQEWSB.error = 50;
+      if (FindInFittedPar("QEWSB") >= 0) {
+	 fQEWSB.value = yyFittedPar[FindInFittedPar("QEWSB")].value;
+	 fQEWSB.error = yyFittedPar[FindInFittedPar("QEWSB")].error;
+      }
+      fQEWSB.bound_low = 91.2;
+      fQEWSB.bound_up = 10000.;
 
       fTanBeta.name  = "TanBeta";
       fTanBeta.value = 15;
@@ -1952,6 +2008,10 @@ void Fittino::setStartValues()
 	    }
 	 }
 	 if (!par_already_found) {
+	   if (!yyFittedPar[i].name.compare("QEWSB")) {
+	     yyFittedVec.push_back(fQEWSB);
+	     par_already_found = true;
+	   }
 	    if (!yyFittedPar[i].name.compare("TanBeta")) {
 	       yyFittedVec.push_back(fTanBeta);
 	       par_already_found = true;
@@ -2010,6 +2070,16 @@ void Fittino::setStartValues()
    }
 
    else if (yyFitModel == AMSB) {
+
+      fQEWSB.name  = "QEWSB";
+      fQEWSB.value = 1000.;
+      fQEWSB.error = 50;
+      if (FindInFittedPar("QEWSB") >= 0) {
+	 fQEWSB.value = yyFittedPar[FindInFittedPar("QEWSB")].value;
+	 fQEWSB.error = yyFittedPar[FindInFittedPar("QEWSB")].error;
+      }
+      fQEWSB.bound_low = 91.2;
+      fQEWSB.bound_up = 10000.;
 
       fTanBeta.name  = "TanBeta";
       fTanBeta.value = 10;
@@ -2075,6 +2145,10 @@ void Fittino::setStartValues()
 	    }
 	 }
 	 if (!par_already_found) {
+	   if (!yyFittedPar[i].name.compare("QEWSB")) {
+	     yyFittedVec.push_back(fQEWSB);
+	     par_already_found = true;
+	   }
 	    if (!yyFittedPar[i].name.compare("TanBeta")) {
 	       yyFittedVec.push_back(fTanBeta);
 	       par_already_found = true;
@@ -3669,6 +3743,26 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    //  fitterMassSupR.value = 429.6; // x[9];
    //  fitterA.value        = -500.0;// x[10];
 
+   // Check whether QEWSB is within bounds
+   if (FindInFitted("QEWSB")) {
+     cout << "QEWSB found fitted = " << x[ReturnFittedPosition("QEWSB")] << endl;
+     if (x[ReturnFittedPosition("QEWSB")] > 2000.) {
+       cout << "QEWSB out of dynamic bounds " << endl;
+       f = 111111111111.;
+       cout << " f = " << f << endl;
+       return;
+     }
+   } 
+   else if (FindInUniversality("QEWSB")) {
+     cout << "QEWSB found in universality = " << ReturnUniversality("QEWSB")->universality << endl;
+     if (x[ReturnFittedPosition(ReturnUniversality("QEWSB")->universality)] > 2000.) {
+       cout << "QEWSB universality out of dynamic bounds " << endl;
+       f = 111111111111.; 
+       cout << " f = " << f << endl;
+       return;
+     }
+   }      
+
    WriteLesHouches(x);
 
    yySPhenoLastCallValid = false;
@@ -4830,6 +4924,26 @@ void WriteLesHouches(double* x)
 	 LesHouchesOutfile << "    1  0 # MSSM particle content" << endl;
       else if (yyFitModel == NMSSM) 
 	 LesHouchesOutfile << "    3  1 # NMSSM particle content" << endl;
+
+      if (FindInFixed("QEWSB")) {
+	 LesHouchesOutfile << "    12  "<<ReturnFixedValue("QEWSB")->value<<" # Q_EWSB (fixed)"<<endl;
+      }
+      else if (FindInFitted("QEWSB")) {
+	 LesHouchesOutfile << "    12  "<<x[ReturnFittedPosition("QEWSB")]<<" # Q_EWSB"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Fitting Q_EWSB " << x[ReturnFittedPosition("QEWSB")] << endl;
+	 }
+      } 
+      else if (FindInUniversality("QEWSB")) {
+	 LesHouchesOutfile << "    12  "<<x[ReturnFittedPosition(ReturnUniversality("QEWSB")->universality)]<<" # Q_EWSB"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fitting " << ReturnUniversality("QEWSB")->universality << " instead of QEWSB" << endl;
+	 }
+      }      
+      else {
+	LesHouchesOutfile << "    12   1000.    # Q_EWSB (fixed)"<<endl;
+      }
+      
       LesHouchesOutfile << "BLOCK SMINPUTS" << endl;
       if (FindInFixed("alphaem")) {
 	 LesHouchesOutfile << "    1 "<<ReturnFixedValue("alphaem")->value<<" # 1/alpha_em (fixed)"<<endl;
@@ -5724,7 +5838,7 @@ void WriteLesHouches(double* x)
       LesHouchesOutfile << "   26  1.00000000E-05     # write only cross sections larger than this value [fb]" << endl;
       LesHouchesOutfile << "   31  -1.00000000E+00     # m_GUT, if < 0 than it determined via g_1=g_2" << endl;
       LesHouchesOutfile << "   32  0                  # require strict unification g_1=g_2=g_3 if '1' is set " << endl;
-      LesHouchesOutfile << "   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
+      // LesHouchesOutfile << "   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
       if (FindInFixed("massCharm")) {
 				LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
       }
@@ -5762,6 +5876,26 @@ void WriteLesHouches(double* x)
       if ( yyQuarkFlavourViolation ) {
 	 LesHouchesOutfile << "    6 1                      # Flavour violation in quark sector" << endl;
       }
+
+      if (FindInFixed("QEWSB")) {
+	 LesHouchesOutfile << "    12  "<<ReturnFixedValue("QEWSB")->value<<" # Q_EWSB (fixed)"<<endl;
+      }
+      else if (FindInFitted("QEWSB")) {
+	 LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition("QEWSB")]<<" # Q_EWSB"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Fitting Q_EWSB " << x[ReturnFittedPosition("QEWSB")] << endl;
+	 }
+      } 
+      else if (FindInUniversality("QEWSB")) {
+	 LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition(ReturnUniversality("QEWSB")->universality)]<<" # Q_EWSB"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fitting " << ReturnUniversality("QEWSB")->universality << " instead of QEWSB" << endl;
+	 }
+      }      
+      else {
+	LesHouchesOutfile << "    12   1000.    # Q_EWSB (fixed)"<<endl;
+      }
+
       LesHouchesOutfile << "BLOCK SMINPUTS               # Standard Model inputs" << endl;
 
       if (FindInFixed("alphaem")) {
@@ -6064,7 +6198,7 @@ void WriteLesHouches(double* x)
       LesHouchesOutfile << "   26  1.00000000E-05     # write only cross sections larger than this value [fb]" << endl;
       LesHouchesOutfile << "   31  -1.00000000E+00     # m_GUT, if < 0 than it determined via g_1=g_2" << endl;
       LesHouchesOutfile << "   32  0                  # require strict unification g_1=g_2=g_3 if '1' is set " << endl;
-      LesHouchesOutfile << "   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
+      // LesHouchesOutfile << "   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
       if (FindInFixed("massCharm")) {
 	 LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
       }
@@ -6102,6 +6236,25 @@ void WriteLesHouches(double* x)
       if ( yyQuarkFlavourViolation ) {
 	 LesHouchesOutfile << "    6  1                 # Flavour violation in quark sector" << endl;
       }
+      if (FindInFixed("QEWSB")) {
+	 LesHouchesOutfile << "    12  "<<ReturnFixedValue("QEWSB")->value<<" # Q_EWSB (fixed)"<<endl;
+      }
+      else if (FindInFitted("QEWSB")) {
+	 LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition("QEWSB")]<<" # Q_EWSB"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Fitting Q_EWSB " << x[ReturnFittedPosition("QEWSB")] << endl;
+	 }
+      } 
+      else if (FindInUniversality("QEWSB")) {
+	 LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition(ReturnUniversality("QEWSB")->universality)]<<" # Q_EWSB"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fitting " << ReturnUniversality("QEWSB")->universality << " instead of QEWSB" << endl;
+	 }
+      }      
+      else {
+	LesHouchesOutfile << "    12   1000.    # Q_EWSB (fixed)"<<endl;
+      }
+
       LesHouchesOutfile << "BLOCK SMINPUTS               # Standard Model inputs" << endl;
       if (FindInFixed("alphaem")) {
 	 LesHouchesOutfile << "    1 " <<ReturnFixedValue("alphaem")->value << " # 1/alpha_em (fixed)" << endl;
@@ -6485,7 +6638,7 @@ void WriteLesHouches(double* x)
       LesHouchesOutfile << "   26  1.00000000E-05     # write only cross sections larger than this value [fb]" << endl;
       LesHouchesOutfile << "   31  -1.00000000E+00     # m_GUT, if < 0 than it determined via g_1=g_2" << endl;
       LesHouchesOutfile << "   32  0                  # require strict unification g_1=g_2=g_3 if '1' is set " << endl;
-      LesHouchesOutfile << "#   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
+      // LesHouchesOutfile << "#   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
       if (FindInFixed("massCharm")) {
 	 LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
       }
@@ -6519,6 +6672,25 @@ void WriteLesHouches(double* x)
 
       LesHouchesOutfile<<"BLOCK MODSEL                 # Select model"<<endl;
       LesHouchesOutfile<<" 1    2                      # GMSB"<<endl;
+      if (FindInFixed("QEWSB")) {
+	 LesHouchesOutfile << "    12  "<<ReturnFixedValue("QEWSB")->value<<" # Q_EWSB (fixed)"<<endl;
+      }
+      else if (FindInFitted("QEWSB")) {
+	 LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition("QEWSB")]<<" # Q_EWSB"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Fitting Q_EWSB " << x[ReturnFittedPosition("QEWSB")] << endl;
+	 }
+      } 
+      else if (FindInUniversality("QEWSB")) {
+	 LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition(ReturnUniversality("QEWSB")->universality)]<<" # Q_EWSB"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fitting " << ReturnUniversality("QEWSB")->universality << " instead of QEWSB" << endl;
+	 }
+      }      
+      else {
+	LesHouchesOutfile << "    12   1000.    # Q_EWSB (fixed)"<<endl;
+      }
+
       LesHouchesOutfile<<"BLOCK SMINPUTS               # Standard Model inputs"<<endl;
       if (FindInFixed("alphaem")) {
 	 LesHouchesOutfile << "    1 "<<ReturnFixedValue("alphaem")->value<<" # 1/alpha_em (fixed)"<<endl;
@@ -6815,7 +6987,7 @@ void WriteLesHouches(double* x)
       LesHouchesOutfile << "   26  1.00000000E-05     # write only cross sections larger than this value [fb]" << endl;
       LesHouchesOutfile << "   31  -1.00000000E+00     # m_GUT, if < 0 than it determined via g_1=g_2" << endl;
       LesHouchesOutfile << "   32  0                  # require strict unification g_1=g_2=g_3 if '1' is set " << endl;
-      LesHouchesOutfile << "   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
+      // LesHouchesOutfile << "   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
       if (FindInFixed("massCharm")) {
 	 LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
       }
@@ -6849,6 +7021,25 @@ void WriteLesHouches(double* x)
 
 	    LesHouchesOutfile<<"BLOCK MODSEL                 # Select model"<<endl;
 	    LesHouchesOutfile<<" 1    3                      # AMSB"<<endl;
+	    if (FindInFixed("QEWSB")) {
+	      LesHouchesOutfile << "    12  "<<ReturnFixedValue("QEWSB")->value<<" # Q_EWSB (fixed)"<<endl;
+	    }
+	    else if (FindInFitted("QEWSB")) {
+	      LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition("QEWSB")]<<" # Q_EWSB"<<endl;
+	      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+		cout << "Fitting Q_EWSB " << x[ReturnFittedPosition("QEWSB")] << endl;
+	      }
+	    } 
+	    else if (FindInUniversality("QEWSB")) {
+	      LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition(ReturnUniversality("QEWSB")->universality)]<<" # Q_EWSB"<<endl;
+	      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+		cout << "fitting " << ReturnUniversality("QEWSB")->universality << " instead of QEWSB" << endl;
+	      }
+	    }      
+	    else {
+	      LesHouchesOutfile << "    12   1000.    # Q_EWSB (fixed)"<<endl;
+	    }
+
 	    LesHouchesOutfile<<"BLOCK SMINPUTS               # Standard Model inputs"<<endl;
 	    if (FindInFixed("alphaem")) {
 	       LesHouchesOutfile << "    1 "<<ReturnFixedValue("alphaem")->value<<" # 1/alpha_em (fixed)"<<endl;
@@ -7110,7 +7301,7 @@ void WriteLesHouches(double* x)
 	    LesHouchesOutfile << "   26  1.00000000E-05     # write only cross sections larger than this value [fb]" << endl;
 	    LesHouchesOutfile << "   31  -1.00000000E+00     # m_GUT, if < 0 than it determined via g_1=g_2" << endl;
 	    LesHouchesOutfile << "   32  0                  # require strict unification g_1=g_2=g_3 if '1' is set " << endl;
-	    LesHouchesOutfile << "   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
+	    // LesHouchesOutfile << "   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
 	    if (FindInFixed("massCharm")) {
 	       LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
 	    }

@@ -110,6 +110,8 @@ private:
     MeasuredValue fXtop;
     MeasuredValue fXtau;
 
+    MeasuredValue fQEWSB;
+
     MeasuredValue fNmssmLambda;
     MeasuredValue fKappa;
     MeasuredValue fALambda;

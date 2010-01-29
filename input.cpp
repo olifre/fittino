@@ -76,6 +76,7 @@ Input::Input(const char* inputfile)
   // G_F is skipped because its small uncertainty causes numerical problems with covariance matrix inversion.
   CheckDefault("G_F"       , 0     ,   1.16639e-5, 0.000001e-5);
   CheckDefault("alphaem"   , 0     , 127.934     , 0.027      );
+  //  CheckDefault("QEWSB"     , 0     , 1000.       , 50.        );
 
   // cout << "mass = " << mass << endl; 
 
