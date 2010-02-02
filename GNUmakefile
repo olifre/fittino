@@ -22,6 +22,8 @@
 
 ARCH              = $(shell uname)
 
+HBDIR             = $(HOME)/theorycodes/HiggsBounds-1.2.0/HiggsBounds-f77
+
 ROOTCFLAGS        = $(shell $(ROOTSYS)/bin/root-config --cflags)
 ROOTLIBS          = $(shell $(ROOTSYS)/bin/root-config --libs)
 ROOTLIBS         += -lMinuit
@@ -33,10 +35,8 @@ CXX               = g++
 CXXFLAGS          = -g -Wall -pedantic -Wno-long-long \
                     -Wshadow -fPIC -I. $(ROOTCFLAGS) 
 
-# HBLIB		  = -L../HiggsBounds-1.1.0/HiggsBounds-f90 -lHB
-HBLIB		  = -L../HiggsBounds-1.2.0/HiggsBounds-f77 -lHB
-LIBGFORTRAN       = -L/usr/lib/gcc/x86_64-redhat-linux5E/4.1.2 -lgfortran
-#LIBGFORTRAN	  = /usr/lib/libgfortran.so.1
+HBLIB		  = -L$(HBDIR) -lHB
+LIBGFORTRAN       = -lgfortran
 LIBS	    	 += $(HBLIB) $(LIBGFORTRAN)
 CXXFLAGS         += -DUSELIBHB
 
