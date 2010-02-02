@@ -110,6 +110,9 @@ private:
     MeasuredValue fXbottom;
     MeasuredValue fXtop;
     MeasuredValue fXtau;
+    MeasuredValue fAbottom;
+    MeasuredValue fAtop;
+    MeasuredValue fAtau;
 
     MeasuredValue fQEWSB;
 

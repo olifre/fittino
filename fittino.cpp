@@ -1,4 +1,5 @@
 
+
 /***************************************************************************
   fittino.cpp
   -------------------    
@@ -1342,7 +1343,35 @@ void Fittino::calculateTreeLevelValues(int nthrows)
       fXbottom.value = yyXscanlow;
    }
 
+   fAtau.name = "Atau";
+   fAtau.value = 0;
+   fAtau.error = 1000; // rough estimate
+   if (yyUseGivenStartValues && (FindInFittedPar("Atau") >= 0)) { 
+      fAtau.value = yyFittedPar[FindInFittedPar("Atau")].value ;
+      fAtau.error = yyFittedPar[FindInFittedPar("Atau")].error;
+   }
+   fAtau.bound_low = -10000.;
+   fAtau.bound_up = 10000.;
 
+   fAtop.name = "Atop";
+   fAtop.value = 0;
+   fAtop.error = 1000; // rough estimate
+   if (yyUseGivenStartValues && (FindInFittedPar("Atop") >= 0)) { 
+      fAtop.value = yyFittedPar[FindInFittedPar("Atop")].value ;
+      fAtop.error = yyFittedPar[FindInFittedPar("Atop")].error;
+   }
+   fAtop.bound_low = -10000.;
+   fAtop.bound_up = 10000.;
+
+   fAbottom.name = "Abottom";
+   fAbottom.value = 0;
+   fAbottom.error = 1000; // rough estimate
+   if (yyUseGivenStartValues && (FindInFittedPar("Abottom") >= 0)) { 
+      fAbottom.value = yyFittedPar[FindInFittedPar("Abottom")].value ;
+      fAbottom.error = yyFittedPar[FindInFittedPar("Abottom")].error;
+   }
+   fAbottom.bound_low = -10000.;
+   fAbottom.bound_up = 10000.;
 
    // FIXME: Find a more intelligent way to get start values and errors
    if (yyFitModel == NMSSM) {
@@ -1513,8 +1542,20 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	    yyFittedVec.push_back(fXtop);
 	    par_already_found = true;
 	 }
-	 else if (!yyFittedPar[i].name.compare("Xbottom")) {
-	    yyFittedVec.push_back(fXbottom);
+	 else if (!yyFittedPar[i].name.compare("Abottom")) {
+	    yyFittedVec.push_back(fAbottom);
+	    par_already_found = true;
+	 }
+	 else if (!yyFittedPar[i].name.compare("Atau")) {
+	    yyFittedVec.push_back(fAtau);
+	    par_already_found = true;
+	 }
+	 else if (!yyFittedPar[i].name.compare("Atop")) {
+	    yyFittedVec.push_back(fAtop);
+	    par_already_found = true;
+	 }
+	 else if (!yyFittedPar[i].name.compare("Abottom")) {
+	    yyFittedVec.push_back(fAbottom);
 	    par_already_found = true;
 	 }
 
@@ -5304,6 +5345,84 @@ void WriteLesHouches(double* x)
 	 exit (EXIT_FAILURE);
       }
 
+      if (FindInFixed("Atop")) {
+	 LesHouchesOutfile << "   11  "<< ReturnFixedValue("Atop")->value <<" # Atop (fixed)"<< endl;
+      }    
+      else if (FindInFitted("Atop")) {
+	 LesHouchesOutfile << "   11  "<< x[ReturnFittedPosition("Atop")] <<" # Atop"<< endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Fitting Atop " << x[ReturnFittedPosition("Atop")] << endl;
+	 }
+      } 
+      else if (FindInRandomPar("Atop")) {
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Calculating random Atop " << x[ReturnRandomPosition("Atop")] << endl;
+	 }
+	 LesHouchesOutfile << "   11  " << x[ReturnRandomPosition("Atop")] << " # Atop (random)" << endl;
+      }
+      else if (FindInUniversality("Atop")) {
+	 LesHouchesOutfile << "   11  "<<x[ReturnFittedPosition(ReturnUniversality("Atop")->universality)] <<" # Atop"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fitting " << ReturnUniversality("Atop")->universality << " instead of Atop" << endl;
+	 }
+      }
+      else {
+	 cerr << "Parameter Atop not declared" << endl;
+	 exit (EXIT_FAILURE);
+      }
+
+      if (FindInFixed("Abottom")) {
+	 LesHouchesOutfile << "   12  "<< ReturnFixedValue("Abottom")->value <<" # Abottom (fixed)"<< endl;
+      }    
+      else if (FindInFitted("Abottom")) {
+	 LesHouchesOutfile << "   12  "<< x[ReturnFittedPosition("Abottom")] <<" # Abottom"<< endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Fitting Abottom " << x[ReturnFittedPosition("Abottom")] << endl;
+	 }
+      }  
+      else if (FindInRandomPar("Abottom")) {
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Calculating random Abottom " << x[ReturnRandomPosition("Abottom")] << endl;
+	 }
+	 LesHouchesOutfile << "   12  " << x[ReturnRandomPosition("Abottom")] << " # Abottom (random)" << endl;
+      }
+      else if (FindInUniversality("Abottom")) {
+	 LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition(ReturnUniversality("Abottom")->universality)] <<" # Abottom"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fitting " << ReturnUniversality("Abottom")->universality << " instead of Abottom" << endl;
+	 }
+      }
+      else {
+	 cerr << "Parameter Abottom not declared" << endl;
+	 exit (EXIT_FAILURE);
+      }
+
+      if (FindInFixed("Atau")) {
+	 LesHouchesOutfile << "   13  "<< ReturnFixedValue("Atau")->value <<" # Atau (fixed)"<< endl;
+      }    
+      else if (FindInFitted("Atau")) {
+	 LesHouchesOutfile << "   13  "<< x[ReturnFittedPosition("Atau")] <<" # Atau"<< endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Fitting Atau " << x[ReturnFittedPosition("Atau")] << endl;
+	 }
+      }  
+      else if (FindInRandomPar("Atau")) {
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "Calculating random Atau " << x[ReturnRandomPosition("Atau")] << endl;
+	 }
+	 LesHouchesOutfile << "   13  " << x[ReturnRandomPosition("Atau")] << " # Atau (random)" << endl;
+      }
+      else if (FindInUniversality("Atau")) {
+	 LesHouchesOutfile << "   13  "<<x[ReturnFittedPosition(ReturnUniversality("Atau")->universality)] <<" # Atau"<<endl;
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    cout << "fitting " << ReturnUniversality("Atau")->universality << " instead of Atau" << endl;
+	 }
+      }
+      else {
+	 cerr << "Parameter Atau not declared" << endl;
+	 exit (EXIT_FAILURE);
+      }
+
       if (FindInFixed("Mu")) {
 	 LesHouchesOutfile << "   23  "<< ReturnFixedValue("Mu")->value <<" # mu (fixed)"<< endl;
       }    
@@ -7557,6 +7676,33 @@ void FillFixedParameters()
    }
    if (!FindInFitted("Xtau") && !FindInFixed("Xtau") && !FindInUniversality("Xtau") && !FindInRandomPar("Xtau")) {  
       tmpValue.name = "Xtau";
+      tmpValue.value = 300.;
+      tmpValue.error = -1.;
+      tmpValue.bound_low = -1E+6;
+      tmpValue.bound_up = 1E+6;
+      cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      yyFixedVec.push_back(tmpValue);
+   }
+   if (!FindInFitted("Atop") && !FindInFixed("Atop") && !FindInUniversality("Atop") && !FindInRandomPar("Atop")) {
+      tmpValue.name = "Atop";
+      tmpValue.value = 0.;
+      tmpValue.error = -1.;
+      tmpValue.bound_low = -1E+6;
+      tmpValue.bound_up = 1E+6;
+      cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      yyFixedVec.push_back(tmpValue);
+   }
+   if (!FindInFitted("Abottom") && !FindInFixed("Abottom") && !FindInUniversality("Abottom") && !FindInRandomPar("Abottom")) {  
+      tmpValue.name = "Abottom";
+      tmpValue.value = 0.;
+      tmpValue.error = -1.;
+      tmpValue.bound_low = -1E+6;
+      tmpValue.bound_up = 1E+6;
+      cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      yyFixedVec.push_back(tmpValue);
+   }
+   if (!FindInFitted("Atau") && !FindInFixed("Atau") && !FindInUniversality("Atau") && !FindInRandomPar("Atau")) {  
+      tmpValue.name = "Atau";
       tmpValue.value = 300.;
       tmpValue.error = -1.;
       tmpValue.bound_low = -1E+6;
