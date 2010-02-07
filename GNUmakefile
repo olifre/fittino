@@ -35,10 +35,10 @@ CXX               = g++
 CXXFLAGS          = -g -Wall -pedantic -Wno-long-long \
                     -Wshadow -fPIC -I. $(ROOTCFLAGS) 
 
-HBLIB		  = -L$(HBDIR) -lHB
-LIBGFORTRAN       = -lgfortran
-LIBS	    	 += $(HBLIB) $(LIBGFORTRAN)
-CXXFLAGS         += -DUSELIBHB
+#HBLIB		  = -L$(HBDIR) -lHB
+#LIBGFORTRAN       = -lgfortran
+#LIBS	    	 += $(HBLIB) $(LIBGFORTRAN)
+#CXXFLAGS         += -DUSELIBHB
 
 LD                = g++
 LDFLAGS           = -g -Wall -pedantic -Wno-long-long -Wshadow

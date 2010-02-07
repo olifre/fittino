@@ -10958,13 +10958,11 @@ void Fittino::markovChain ()
 
 	if (rc!=0){
 	  cout << "return value " << rc << " from copy of markovInterfaceFile " << yyMarkovInterfaceFilePath << endl;
-	  if( searchWidth != 0 ){
-	    if( yyWidthOptimization == false ) cout << "NOTE: width values taken from input file" << endl;
-	    if( yyWidthOptimization == true ){
-	      cout << "NOTE: width optimization about to be processed ... " << endl;
-	      widthOptimizationPerformed = true;
-	      vm = widthOptimization( x, vm, xp, lb, ub, xNames );
-	    }
+	  if( yyWidthOptimization == false ) cout << "NOTE: width values taken from input file" << endl;
+	  if( yyWidthOptimization == true ){
+	    cout << "NOTE: width optimization about to be processed ... " << endl;
+	    widthOptimizationPerformed = true;
+	    vm = widthOptimization( x, vm, xp, lb, ub, xNames );
 	  }
 	} else {
 	  ifstream markovInterfaceFilePath("./markovInterfaceFile.txt");
@@ -11289,8 +11287,7 @@ void Fittino::markovChain ()
 	if (markovInterfaceFilePath.is_open()) {
 	  markovInterfaceFilePath << globalIter << endl;
 	  for (unsigned int i = 0; i < xp.size(); i++) {
-	    if( !widthOptimizationPerformed ) markovInterfaceFilePath << xNames[i] << " " << xp[i] << endl;
-	    if( widthOptimizationPerformed ) markovInterfaceFilePath << xNames[i] << " " << xp[i] << " +- " << vm[i] << endl;
+	      markovInterfaceFilePath << xNames[i] << " " << xp[i] << " +- " << vm[i] << endl;
 	  }
 	} else {
 	  allOK = false;
