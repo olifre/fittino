@@ -89,8 +89,11 @@ extern bool yyRequireNeut1LSP;
 extern unsigned int  yyNumberOptimizationSteps;
 extern float  yyAcceptanceRangeUpper;
 extern float  yyAcceptanceRangeLower;
+extern float  yyOptimizationSlope;
 extern bool  yyWidthOptimization;
 extern bool  yyCorrelationInMarkovChain;
+extern bool  yyGlobalOptimizationOnly;
+extern string yyIndividuallyOptimized;
 extern unsigned int yyNumberOfMinimizations;
 extern unsigned int yySeedForObservableScattering;
 

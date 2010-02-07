@@ -172,18 +172,21 @@ bool          yyUseSimplexMinOnly = false;
 bool          yyUseSimplexMin = true;
 bool          yyRequireNeut1LSP = false;
  
- unsigned int  yyNumberOptimizationSteps = 1000;
- float  yyAcceptanceRangeUpper = 0.52;
- float  yyAcceptanceRangeLower = 0.48;
- bool   yyWidthOptimization = false;
- bool   yyCorrelationInMarkovChain = false;
+unsigned int  yyNumberOptimizationSteps = 1000;
+float         yyAcceptanceRangeUpper = 0.52;
+float         yyAcceptanceRangeLower = 0.48;
+bool          yyWidthOptimization = false;
+bool          yyCorrelationInMarkovChain = false;
+float         yyOptimizationSlope = 4;
+bool          yyGlobalOptimizationOnly = false;
+string        yyIndividuallyOptimized = "";
 
 unsigned int yyCalculator;
 unsigned int yyDecayCalculator;
 unsigned int yyRelicDensityCalculator;
 unsigned int yyLEOCalculator;
 
- bool         yySPhenoLastCallValid = false;
+bool         yySPhenoLastCallValid = false;
 string       yySPhenoStartDataString = "";
 string       yyCalculatorPath = "";
 string	     yyHBWhichExpt = "LandT";
@@ -358,7 +361,10 @@ input:
 		     yyNumberOptimizationSteps = (int)$3;
                   }
 		}
-	
+		else if (!strcmp($2,"OptimizationSlope")) {
+		  yyOptimizationSlope = $3;
+		}
+
 		else if (!strcmp($2,"NumberOfMinimizations")) {
 		  // cout << "FOUND NUMBER OF MINIMIZATIONS "<<$3<<endl;
 		  if ($3>0) {
@@ -1251,6 +1257,10 @@ input:
 		    if ($3 == on) yyWidthOptimization = true;
 		    else yyWidthOptimization = false;
 		  }
+		  if (!strcmp($2, "GlobalOptimizationOnly")) {
+		    if ($3 == on) yyGlobalOptimizationOnly = true;
+                    else yyGlobalOptimizationOnly = false;
+                  }
 		  if (!strcmp($2, "CorrelationInMarkovChain")) {
 		    if ($3 == on) yyCorrelationInMarkovChain = true;
 		    else yyCorrelationInMarkovChain = false;
@@ -1472,6 +1482,10 @@ input:
 		  yyInputFileLine.prevalue  = $2;
 		  yyInputFileLine.prevalue += "\t";
 		  yyInputFileLine.prevalue += $3;
+
+		  if (!strcmp($2, "IndividuallyOptimized")) {
+		    yyIndividuallyOptimized = $3;
+		  }
 
 		  if (!strcmp($2, "fitParameter")) {
 		     parameter_t tmpparam;
