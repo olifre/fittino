@@ -10343,9 +10343,18 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
     acceptLow = yyAcceptanceRangeLower;
   }
   cout << "NOTE: used acceptance range for optimization ["<< acceptLow<<";"<< acceptUp<<"]"<< endl;
+  
+  if( yyGlobalOptimizationOnly )
+    cout << "NOTE: global optimization performed only" << endl;
+  if( !yyGlobalOptimizationOnly ){
+  if( yyIndividuallyOptimized != "" )
+    cout << "NOTE: individual optimization performed for variable "<< yyIndividuallyOptimized <<" only, with the slope value " <<yyOptimizationSlope<< endl;
 
   // 1 == Tune width of proposal distribution so that success rate is in [acceptLow;acceptUp]
   for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++){
+    
+    if( yyIndividuallyOptimized != "" && xNames[iVariable] != yyIndividuallyOptimized ) continue;
+
     cout << "NOTE: Optimization for variable " << xNames[iVariable] << endl;
     bool firstChain = true;
     bool successRateOK = false;
@@ -10413,7 +10422,7 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
 	    cout << "step" << step << " --->IT "<< xNames[iVariable] << " Former width = "<<  vm[iVariable] << endl;
 	    if( successRate == 0 ) successRate = 0.2;
 
-	    if( successRate > acceptUp ) vm[iVariable] *= ( 1 + 4*( successRate - acceptUp )/successRate );
+	    if( successRate > acceptUp ) vm[iVariable] *= ( 1 + yyOptimizationSlope*( successRate - acceptUp )/successRate );
 	      if( successRate < acceptLow ){
 		float tempScale = ( 1 + ( successRate - acceptLow )/successRate );
 		if( tempScale > 0 ) vm[iVariable] *= tempScale;
@@ -10425,7 +10434,11 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
       }
     }
   }
-   
+  }
+
+
+  if( yyGlobalOptimizationOnly ){
+
   // 2 == Global scaling of all variables by a factor 1/(nVar)^lambda, lambda=0.5
   unsigned int nVar = x.size();
   cout << "NOTE: Global scaling by 1/sqrt(N) = " << 1/sqrt( nVar ) << endl;
@@ -10564,13 +10577,13 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
       }
     }
   }
-	 
   tempoFile->cd();
   ntupleCov->Write();
   ntupleSamp->Write();
   ntupleAcc->Write();
   tempoFile->Close();
   tempoFile->Delete();
+}
   return vm;
 }
 
