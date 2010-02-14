@@ -180,6 +180,11 @@ bool          yyCorrelationInMarkovChain = false;
 float         yyOptimizationSlope = 4;
 bool          yyGlobalOptimizationOnly = false;
 string        yyIndividuallyOptimized = "";
+string        yySPhenoOldInputFile = "";
+
+
+// Block STARTDATAFILE
+// name_of_file
 
 unsigned int yyCalculator;
 unsigned int yyDecayCalculator;
@@ -1486,8 +1491,10 @@ input:
 		  if (!strcmp($2, "IndividuallyOptimized")) {
 		    yyIndividuallyOptimized = $3;
 		  }
-
-		  if (!strcmp($2, "fitParameter")) {
+		  else if (!strcmp($2, "SPhenoOldInputFile")) {
+		    yySPhenoOldInputFile = $3;
+		  }
+		  else if (!strcmp($2, "fitParameter")) {
 		     parameter_t tmpparam;
 		     tmpparam.name = $3;
 		     tmpparam.error = 0.;

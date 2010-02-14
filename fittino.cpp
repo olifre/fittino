@@ -5999,6 +5999,10 @@ void WriteLesHouches(double* x)
 	LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
       }
       LesHouchesOutfile << "   80  1     # SPheno Exit wit hnon-zero-value for sure!!" << endl;
+      if ( yySPhenoOldInputFile != "") {
+	LesHouchesOutfile << "BLOCK STARTDATAFILE" << endl;
+	LesHouchesOutfile << yySPhenoOldInputFile << endl;
+      }
       }
       //ADDED SOMETHING HERE
       else if( yyCalculator == SOFTSUSY ) {
@@ -6360,6 +6364,10 @@ void WriteLesHouches(double* x)
 	 LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
       }
       LesHouchesOutfile << "   80  1     # SPheno Exit wit hnon-zero-value for sure!!" << endl;
+      if ( yySPhenoOldInputFile != "") {
+	LesHouchesOutfile << "BLOCK STARTDATAFILE" << endl;
+	LesHouchesOutfile << yySPhenoOldInputFile << endl;
+      }
    }
 	
 	else if( yyCalculator == SOFTSUSY ) {
@@ -6801,6 +6809,10 @@ void WriteLesHouches(double* x)
 	 LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
       }
       LesHouchesOutfile << "   80  1     # SPheno Exit wit hnon-zero-value for sure!!" << endl;
+      if ( yySPhenoOldInputFile != "") {
+	LesHouchesOutfile << "BLOCK STARTDATAFILE" << endl;
+	LesHouchesOutfile << yySPhenoOldInputFile << endl;
+      }
    }
 		else if( yyCalculator == SOFTSUSY ) {
 			//ADD BLOCK SOFTSUSY
@@ -7151,6 +7163,10 @@ void WriteLesHouches(double* x)
 	 LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
       }
       LesHouchesOutfile << "   80  1     # SPheno Exit wit hnon-zero-value for sure!!" << endl;
+      if ( yySPhenoOldInputFile != "") {
+	LesHouchesOutfile << "BLOCK STARTDATAFILE" << endl;
+	LesHouchesOutfile << yySPhenoOldInputFile << endl;
+      }
    }
 	else if( yyCalculator == SOFTSUSY ) {
   	//ADD BLOCK SOFTSUSY
@@ -7466,6 +7482,10 @@ void WriteLesHouches(double* x)
 	       LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
 	    }
 	    LesHouchesOutfile << "   80  1     # SPheno Exit wit hnon-zero-value for sure!!" << endl;
+	    if ( yySPhenoOldInputFile != "") {
+	      LesHouchesOutfile << "BLOCK STARTDATAFILE" << endl;
+	      LesHouchesOutfile << yySPhenoOldInputFile << endl;
+	    }
 	 }
 		else if( yyCalculator == SOFTSUSY ) {
 		    //ADD BLOCK SOFTSUSY

@@ -119,7 +119,7 @@ extern string yyLEOCalculatorPath;
 extern string yyHBWhichExpt;
 extern string yyDashedLine;
 extern string yyMarkovInterfaceFilePath;
-
+extern string yySPhenoOldInputFile;
 
 extern int    yyParseError;
 extern int    yyNaN;
