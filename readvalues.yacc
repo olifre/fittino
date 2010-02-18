@@ -171,6 +171,7 @@ bool          yySetErrorFlag = false;
 bool          yyUseSimplexMinOnly = false;
 bool          yyUseSimplexMin = true;
 bool          yyRequireNeut1LSP = false;
+bool          yyCalculateSPhenoCrossSections = false;
  
 unsigned int  yyNumberOptimizationSteps = 1000;
 float         yyAcceptanceRangeUpper = 0.52;
@@ -1365,6 +1366,10 @@ input:
 		  if (!strcmp($2, "yyRequireNeut1LSP")) {
 		      if ($3 == on) yyRequireNeut1LSP = true;
 		      else yyRequireNeut1LSP = false;
+		  }
+		  if (!strcmp($2, "CalculateSPhenoCrossSections")) {
+		      if ($3 == on) yyCalculateSPhenoCrossSections = true;
+		      else yyCalculateSPhenoCrossSections = false;
 		  }
 		  if (!strcmp($2, "UseSimplexMin")) {
 		      if ($3 == on) yyUseSimplexMin = true;

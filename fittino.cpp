@@ -5187,7 +5187,7 @@ void WriteLesHouches(double* x)
       // EXTPAR
       LesHouchesOutfile << "BLOCK EXTPAR" << endl;
       //    LesHouchesOutfile << "BLOCK MSOFT" << endl;
-      //      LesHouchesOutfile << "    0  1000. # Input scale for mSUGRA" << endl;
+      LesHouchesOutfile << "    0  1000. # Input scale for mSUGRA" << endl;
       if (FindInFixed("M1")) {
 	 LesHouchesOutfile << "    1  "<< ReturnFixedValue("M1")->value <<" # M1 (fixed)"<< endl;
       }    
@@ -6685,7 +6685,7 @@ void WriteLesHouches(double* x)
 
       // BLOCK EXTPAR
       LesHouchesOutfile << "BLOCK EXTPAR" << endl;
-      //      LesHouchesOutfile << "    0  1000. # Input scale for mSUGRA" << endl;
+      LesHouchesOutfile << "    0  1000. # Input scale for mSUGRA" << endl;
       // M1
       if (FindInFixed("M1")) {
 	 LesHouchesOutfile << "    1  " << ReturnFixedValue("M1")->value << " # M1(M_GUT) (fixed)" << endl;
