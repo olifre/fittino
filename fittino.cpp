@@ -5964,7 +5964,11 @@ void WriteLesHouches(double* x)
       LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
       LesHouchesOutfile << "   11  1                  # calculate branching ratios" << endl;
       LesHouchesOutfile << "   12  1.00000000E-04     # write only branching ratios larger than this value" << endl;
-      LesHouchesOutfile << "   21  1                  # calculate cross section" << endl;
+      if (yyCalculateSPhenoCrossSections) {
+	LesHouchesOutfile << "   21  1                  # calculate cross section" << endl;
+      } else {
+	LesHouchesOutfile << "   21  0                  # calculate cross section" << endl;
+      }
       for (unsigned int j = 0; j < CrossSectionProduction.size(); j++) {
 				 LesHouchesOutfile << "   22  " << CrossSectionProduction[j][0] << "     # cms energy in GeV" << endl;
 				 LesHouchesOutfile << "   23  " << CrossSectionProduction[j][1] << "     # polarisation of incoming e- beam" << endl;
@@ -6330,7 +6334,11 @@ void WriteLesHouches(double* x)
       LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
       LesHouchesOutfile << "   11  1                  # calculate branching ratios" << endl;
       LesHouchesOutfile << "   12  1.00000000E-04     # write only branching ratios larger than this value" << endl;
-      LesHouchesOutfile << "   21  1                  # calculate cross section" << endl;
+      if (yyCalculateSPhenoCrossSections) {
+	LesHouchesOutfile << "   21  1                  # calculate cross section" << endl;
+      } else {
+	LesHouchesOutfile << "   21  0                  # calculate cross section" << endl;
+      }
       for (unsigned int j = 0; j < CrossSectionProduction.size(); j++) {
 	 LesHouchesOutfile << "   22  " << CrossSectionProduction[j][0] << "     # cms energy in GeV" << endl;
 	 LesHouchesOutfile << "   23  " << CrossSectionProduction[j][1] << "     # polarisation of incoming e- beam" << endl;
@@ -6775,7 +6783,11 @@ void WriteLesHouches(double* x)
       LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
       LesHouchesOutfile << "   11  1                  # calculate branching ratios" << endl;
       LesHouchesOutfile << "   12  1.00000000E-04     # write only branching ratios larger than this value" << endl;
-      LesHouchesOutfile << "   21  1                  # calculate cross section" << endl;
+      if (yyCalculateSPhenoCrossSections) {
+	LesHouchesOutfile << "   21  1                  # calculate cross section" << endl;
+      } else {
+	LesHouchesOutfile << "   21  0                  # calculate cross section" << endl;
+      }
       for (unsigned int j = 0; j < CrossSectionProduction.size(); j++) {
 	 LesHouchesOutfile << "   22  " << CrossSectionProduction[j][0] << "     # cms energy in GeV" << endl;
 	 LesHouchesOutfile << "   23  " << CrossSectionProduction[j][1] << "     # polarisation of incoming e- beam" << endl;
@@ -7129,7 +7141,11 @@ void WriteLesHouches(double* x)
       LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
       LesHouchesOutfile << "   11  1                  # calculate branching ratios" << endl;
       LesHouchesOutfile << "   12  1.00000000E-04     # write only branching ratios larger than this value" << endl;
-      LesHouchesOutfile << "   21  1                  # calculate cross section" << endl;
+      if (yyCalculateSPhenoCrossSections) {
+	LesHouchesOutfile << "   21  1                  # calculate cross section" << endl;
+      } else {
+	LesHouchesOutfile << "   21  0                  # calculate cross section" << endl;
+      }
       for (unsigned int j = 0; j < CrossSectionProduction.size(); j++) {
 	 LesHouchesOutfile << "   22  " << CrossSectionProduction[j][0] << "     # cms energy in GeV" << endl;
 	 LesHouchesOutfile << "   23  " << CrossSectionProduction[j][1] << "     # polarisation of incoming e- beam" << endl;
@@ -7448,7 +7464,11 @@ void WriteLesHouches(double* x)
 	    LesHouchesOutfile << "    2  0                  # if 1, then SPA conventions are used" << endl;
 	    LesHouchesOutfile << "   11  1                  # calculate branching ratios" << endl;
 	    LesHouchesOutfile << "   12  1.00000000E-04     # write only branching ratios larger than this value" << endl;
-	    LesHouchesOutfile << "   21  1                  # calculate cross section" << endl;
+	    if (yyCalculateSPhenoCrossSections) {
+	      LesHouchesOutfile << "   21  1                  # calculate cross section" << endl;
+	    } else {
+	      LesHouchesOutfile << "   21  0                  # calculate cross section" << endl;
+	    }
 	    for (unsigned int j = 0; j < CrossSectionProduction.size(); j++) {
 	       LesHouchesOutfile << "   22  " << CrossSectionProduction[j][0] << "     # cms energy in GeV" << endl;
 	       LesHouchesOutfile << "   23  " << CrossSectionProduction[j][1] << "     # polarisation of incoming e- beam" << endl;
