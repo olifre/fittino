@@ -4,9 +4,9 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        InputFileInterpreterBase.h                                       *
+* File        FittinoInputFileInterpreter.cpp                                  *
 *                                                                              *
-* Description Base class for reading and interpreting input files              *
+* Description Class for reading and interpreting Fittino input files           *
 *                                                                              *
 * Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
 *             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
@@ -20,37 +20,16 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_INPUTFILEINTERPRETERBASE_H
-#define FITTINO_INPUTFILEINTERPRETERBASE_H
+#include "FittinoInputFileInterpreter.h"
 
-/*!
- *  \brief Fittino namespace
- */
-namespace Fittino {
-
-  /*!
-   *  \brief Base class for reading and interpreting input files
-   */
-  class InputFileInterpreterBase {
-  
-    public:
-      enum FileFormat { FITTINOINPUTFILE, XMLINPUTFILE };
-  
-    public:
-                   /*!
-                    *  Constructor
-                    */
-                   InputFileInterpreterBase();
-
-                   /*!
-                    *  Destructor
-                    */
-                   ~InputFileInterpreterBase();
-
-      virtual void Parse() = 0;
-  
-  };
+Fittino::FittinoInputFileInterpreter::FittinoInputFileInterpreter() {
 
 }
 
-#endif // FITTINO_INPUTFILEINTERPRETERBASE_H
+Fittino::FittinoInputFileInterpreter::~FittinoInputFileInterpreter() {
+
+}
+
+void Fittino::FittinoInputFileInterpreter::Parse() {
+
+}

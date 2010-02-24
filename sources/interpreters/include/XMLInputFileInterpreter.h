@@ -1,12 +1,12 @@
-/* $Id$ */
+/* $Id: XMLInputFileInterpreter.h 542 2009-12-23 14:59:43Z wiene $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        FittinoInputFileInterpreter.cpp                                  *
+* File        XMLInputFileInterpreter.h                                        *
 *                                                                              *
-* Description Class for reading and interpreting Fittino input files           *
+* Description Class for reading and interpreting XML input files               *
 *                                                                              *
 * Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
 *             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
@@ -20,20 +20,36 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "FittinoInputFileInterpreter.h"
+#ifndef FITTINO_XMLINPUTFILEINTERPRETER_H
+#define FITTINO_XMLINPUTFILEINTERPRETER_H
 
-FittinoInputFileInterpreter::FittinoInputFileInterpreter() {
+#include "InputFileInterpreterBase.h"
+
+/*!
+ *  \brief Fittino namespace
+ */
+namespace Fittino {
+
+  /*!
+   *  \brief Class for reading and interpreting XML input files
+   */
+  class XMLInputFileInterpreter : public InputFileInterpreterBase {
+  
+    public:
+           /*!
+            *  Constructor
+            */
+           XMLInputFileInterpreter();
+
+           /*!
+            *  Destructor
+            */
+           ~XMLInputFileInterpreter();
+
+      void Parse();
+  
+  };
 
 }
 
-FittinoInputFileInterpreter::~FittinoInputFileInterpreter() {
-
-}
-
-void FittinoInputFileInterpreter::Parse() {
-
-  if () {
-
-  }
-
-}
+#endif // FITTINO_XMLINPUTFILEINTERPRETER_H

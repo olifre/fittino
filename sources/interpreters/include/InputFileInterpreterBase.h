@@ -4,9 +4,9 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        InputFileInterpreterFactoryBase.h                                *
+* File        InputFileInterpreterBase.h                                       *
 *                                                                              *
-* Description Base class for input file interpreter factories                  *
+* Description Base class for reading and interpreting input files              *
 *                                                                              *
 * Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
 *             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
@@ -20,8 +20,8 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_INPUTFILEINTERPRETERFACTORYBASE_H
-#define FITTINO_INPUTFILEINTERPRETERFACTORYBASE_H
+#ifndef FITTINO_INPUTFILEINTERPRETERBASE_H
+#define FITTINO_INPUTFILEINTERPRETERBASE_H
 
 /*!
  *  \brief Fittino namespace
@@ -29,25 +29,28 @@
 namespace Fittino {
 
   /*!
-   *  \brief Base class for input file interpreter factories 
+   *  \brief Base class for reading and interpreting input files
    */
-  class InputFileInterpreterFactoryBase {
-
+  class InputFileInterpreterBase {
+  
     public:
-                                       /*!
-                                        *  Constructor
-                                        */
-                                       InputFileInterpreterFactoryBase();
+      enum InputFileFormat { FITTINOINPUTFILE, XMLINPUTFILE };
+  
+    public:
+                   /*!
+                    *  Constructor
+                    */
+                   InputFileInterpreterBase();
 
-                                       /*!
-                                        *  Destructor
-                                        */
-                                       ~InputFileInterpreterFactoryBase();
+                   /*!
+                    *  Destructor
+                    */
+                   ~InputFileInterpreterBase();
 
-      virtual InputFileInterpreterBase* CreateInterpreter() = 0;
-
+      virtual void Parse() = 0;
+  
   };
 
 }
 
-#endif // FITTINO_INPUTFILEINTERPRETERFACTORYBASE_H
+#endif // FITTINO_INPUTFILEINTERPRETERBASE_H

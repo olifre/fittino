@@ -31,14 +31,16 @@
  */
 
 #include "Controller.h"
-#include "InputFileException.h"
-#include "LesHouchesFileException.h"
-#include "ModelCalculatorException.h"
-#include "OptimizerException.h"
+//#include "InputFileException.h"
+//#include "LesHouchesFileException.h"
+//#include "ModelCalculatorException.h"
+//#include "OptimizerException.h"
+
+using namespace Fittino;
 
 int main( int argc, char** argv ) {
  
-    try {
+    //try {
 
         Controller* controller = Controller::GetInstance();
 
@@ -46,32 +48,32 @@ int main( int argc, char** argv ) {
 	controller->ExecuteFittino();
 	controller->TerminateFittino();
 
-    }
-    catch ( Fittino::InputFileException& inputFileException ) {
+    //}
+    //catch ( Fittino::InputFileException& inputFileException ) {
 
-        std::cout << inputFileException.what() << std::endl;
+    //    std::cout << inputFileException.what() << std::endl;
 
-    }
-    catch ( Fittino::LesHouchesFileException& lesHouchesFileException ) {
+    //}
+    //catch ( Fittino::LesHouchesFileException& lesHouchesFileException ) {
 
-        std::cout << lesHouchesFileException.what() << std::endl;
+    //    std::cout << lesHouchesFileException.what() << std::endl;
 
-    }
-    catch ( Fittino::ModelCalculatorException& modelCalculatorException ) {
+    //}
+    //catch ( Fittino::ModelCalculatorException& modelCalculatorException ) {
 
-        std::cout << modelCalculatorException.what() << std::endl;
+    //    std::cout << modelCalculatorException.what() << std::endl;
 
-    }
-    catch ( Fittino::OptimizerException& optimizerException ) {
+    //}
+    //catch ( Fittino::OptimizerException& optimizerException ) {
 
-        std::cout << optimizerException.what() << std::endl;
+    //    std::cout << optimizerException.what() << std::endl;
 
-    }
-    catch (...) {
+    //}
+    //catch (...) {
 
-        std::cout << "Exception caught by default handler" std::endl;
+    //    std::cout << "Exception caught by default handler" std::endl;
 
-    }
+    //}
 
     return 0;
 

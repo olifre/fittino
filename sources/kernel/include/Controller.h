@@ -46,14 +46,12 @@ namespace Fittino {
        *  vector of command line arguments specified while invocing Fittino.
        */
       void                                      InitializeFittino( int argc, char** argv );
-
       /*!  
        *  In this function Fittino sets up the configured execution mode.
        *  It is called directly after Controller::InitializeFittino.
        *  Supported modes are sampling, scan or optimization.
        */
       void                                      ExecuteFittino();
-
       /*!
        *  This function provides the controlled termination of Fittino
        */
@@ -61,7 +59,6 @@ namespace Fittino {
 
     protected:
       Controller();
-
       ~Controller();
 
     private:
@@ -69,10 +66,11 @@ namespace Fittino {
 
     private:
       int                                       _randomSeed;
-
       std::string                               _inputFileName;
+      InputFileInterpreterBase::InputFileFormat _inputFileFormat;
 
     private:
+      void                                      PrintHelpText();
       InputFileInterpreterBase::InputFileFormat GetInputFileFormat();
 
   };

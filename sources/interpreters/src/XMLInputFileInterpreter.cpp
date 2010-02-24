@@ -1,14 +1,17 @@
-/* $Id$ */
+/* $Id: XMLInputFileInterpreter.cpp 542 2009-12-23 14:59:43Z wiene $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        InputFileInterpreterFactoryBase.cpp                              *
+* File        XMLInputFileInterpreter.cpp                                      *
 *                                                                              *
-* Description Base class for input file interpreter factories                  *
+* Description Class for reading and interpreting XML input files               *
 *                                                                              *
-* Authors     Mathias Uhlenbrock <uhlenbrock@physik.uni-bonn.de>               *
+* Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
+*             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
+*	      Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+*	      Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -17,14 +20,16 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "InputFileInterpreterFactoryBase.h"
+#include "XMLInputFileInterpreter.h"
 
-Fittino::InputFileInterpreterFactoryBase::InputFileInterpreterFactoryBase() {
-
-    // Code goes here
+Fittino::XMLInputFileInterpreter::XMLInputFileInterpreter() {
 
 }
 
-Fittino::InputFileInterpreterFactoryBase::~InputFileInterpreterFactoryBase() {
+Fittino::XMLInputFileInterpreter::~XMLInputFileInterpreter() {
+
+}
+
+void Fittino::XMLInputFileInterpreter::Parse() {
 
 }
