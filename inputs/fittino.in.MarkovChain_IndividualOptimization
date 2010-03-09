@@ -131,8 +131,8 @@ MarkovInterfaceFilePath        /afs/blabla.de/myFittinoDirectory/interfaceFile_e
 ### >>>> Optimization can last more than 8h, split your jobs among the parameters
 
 WidthOptimization               on
-NumberOptimizationSteps         3000
-AcceptanceRangeUpper            0.55
-AcceptanceRangeLower            0.45
+NumberOptimizationSteps         1000
+AcceptanceRangeUpper            0.52
+AcceptanceRangeLower            0.48
 IndividuallyOptimized           A0
 GlobalOptimizationOnly          off
