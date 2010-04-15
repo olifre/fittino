@@ -21,8 +21,7 @@
 
 #include "LesHouchesFileException.h"
 
-Fittino::LesHouchesFileException::LesHouchesFileException( const std::string& text ) {
-
-    _message = "Fittino::LesHouchesFileException: " + text;
+Fittino::LesHouchesFileException::LesHouchesFileException( const std::string& text )
+    : _message( "Fittino::LesHouchesFileException: " + text ) {
 
 }

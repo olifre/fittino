@@ -20,8 +20,7 @@
 
 #include "OptimizerException.h"
 
-Fittino::OptimizerException::OptimizerException( const std::string& text ) {
-
-    _message = "Fittino::OptimizerException: " + text;
+Fittino::OptimizerException::OptimizerException( const std::string& text )
+    : _message( "Fittino::OptimizerException: " + text ) {
 
 }

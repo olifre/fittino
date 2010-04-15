@@ -20,8 +20,7 @@
 
 #include "InputFileException.h"
 
-Fittino::InputFileException::InputFileException( const std::string& text ) {
-
-    _message = "InputFileException: " + text;
+Fittino::InputFileException::InputFileException( const std::string& text )
+    : _message( "InputFileException: " + text ) {
 
 }

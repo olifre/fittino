@@ -20,8 +20,7 @@
 
 #include "ModelCalculatorException.h"
 
-Fittino::ModelCalculatorException::ModelCalculatorException( const std::string& text ) {
-
-    _message = "Fittino::ModelCalculatorException: " + text;
+Fittino::ModelCalculatorException::ModelCalculatorException( const std::string& text )
+    : _message( "Fittino::ModelCalculatorException: " + text ) {
 
 }

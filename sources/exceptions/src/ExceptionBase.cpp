@@ -23,9 +23,8 @@ Fittino::ExceptionBase::ExceptionBase() {
 
 }
 
-Fittino::ExceptionBase::ExceptionBase( const std::string& text ) {
-
-    _message = "Fittino::ExceptionBase: " + text;
+Fittino::ExceptionBase::ExceptionBase( const std::string& text )
+    : _message( "Fittino::ExceptionBase: " + text ) {
 
 }
 
