@@ -1,0 +1,5 @@
+--indent=spaces=4
+--brackets=attach
+--brackets=break-closing
+--pad=oper
+--pad=paren-in
