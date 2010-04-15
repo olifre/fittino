@@ -8,7 +8,7 @@
 *                                                                              *
 * Description Fittino exception base class                                     *
 *                                                                              *
-* Authors     Peter Wienemann <wienemann@physik.uni-bonn.de>                   *
+* Authors     Peter Wienemann  <wienemann@physik.uni-bonn.de>                  *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -20,8 +20,8 @@
 #ifndef FITTINO_EXCEPTIONBASE_H
 #define FITTINO_EXCEPTIONBASE_H
 
-#include <string>
 #include <exception>
+#include <string>
 
 /*!
  *  \brief Fittino namespace
@@ -37,28 +37,20 @@ namespace Fittino {
       /*!
        *  Constructor
        */
-      ExceptionBase( const std::string& text ) {
-
-	  _message = "Fittino::ExceptionBase: " + text;
-	
-      }
-
+                          ExceptionBase();
+                          ExceptionBase( const std::string& text );
       /*!
        *  Destructor
        */
-      virtual ~ExceptionBase() throw() { ; }
-
+      virtual             ~ExceptionBase() throw();
       /*!
        *  Method to print message
        */
-      virtual const char* what() const throw() {
-
-	  return _message.c_str();
-
-      }
+      virtual const char* what() const throw();
 
     protected:
-      std::string    _message; //! message to be printed
+      std::string         _message; //! message to be printed
+
   };
 
 }

@@ -4,43 +4,24 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        OptimizerException.h                                             *
+* File        OptimizerException.cpp                                           *
 *                                                                              *
 * Description Fittino optimizer exception class. It is thrown in case of       *
 *             problems with optimizers.                                        *
 *                                                                              *
-* Authors     Peter Wienemann  <wienemann@physik.uni-bonn.de>                  *
+* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*             published by the Free Software Foundation; either version 3 of   *
-*             the License, or (at your option) any later version.              *
+*	      published by the Free Software Foundation; either version 3 of   *
+*	      the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_OPTIMIZEREXCEPTION_H
-#define FITTINO_OPTIMIZEREXCEPTION_H
+#include "OptimizerException.h"
 
-#include "ExceptionBase.h"
+Fittino::OptimizerException::OptimizerException( const std::string& text ) {
 
-/*!
- *  \brief Fittino namespace
- */
-namespace Fittino {
-
-  /*!
-   *  \brief Fittino optimizer exception class
-   */
-  class OptimizerException : public Fittino::ExceptionBase {
-
-    public:
-      /*!
-       *  Constructor
-       */
-      OptimizerException( const std::string& text );
-
-  };
+    _message = "Fittino::OptimizerException: " + text;
 
 }
-
-#endif // FITTINO_OPTIMIZEREXCEPTION_H
