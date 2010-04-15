@@ -32,13 +32,17 @@ namespace Fittino {
   /*!
    *  \brief Fittino Les Houches file exception class
    */
-  class LesHouchesFileException : public Fittino::ExceptionBase {
+  class LesHouchesFileException : public ExceptionBase {
 
     public:
       /*!
        *  Constructor
        */
-      LesHouchesFileException( const std::string& text );
+                  LesHouchesFileException( const std::string& message );
+      /*!
+       *  Method to print message
+       */
+      const char* what() const throw();
 
   };
 

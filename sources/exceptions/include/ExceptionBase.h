@@ -38,7 +38,7 @@ namespace Fittino {
        *  Constructor
        */
                           ExceptionBase();
-                          ExceptionBase( const std::string& text );
+                          ExceptionBase( const std::string& message );
       /*!
        *  Destructor
        */
@@ -49,7 +49,7 @@ namespace Fittino {
       virtual const char* what() const throw();
 
     protected:
-      std::string         _message; //! message to be printed
+      std::string         _message; //! Message to be printed
 
   };
 

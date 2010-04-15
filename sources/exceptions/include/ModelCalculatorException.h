@@ -31,13 +31,17 @@ namespace Fittino {
   /*!
    *  \brief Fittino model calculator exception class
    */
-  class ModelCalculatorException : public Fittino::ExceptionBase {
+  class ModelCalculatorException : public ExceptionBase {
 
     public:
       /*!
        *  Constructor
        */
-      ModelCalculatorException( const std::string& text );
+                  ModelCalculatorException( const std::string& message );
+      /*!
+       *  Method to print message
+       */
+      const char* what() const throw();
 
   };
 

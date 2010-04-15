@@ -31,13 +31,17 @@ namespace Fittino {
   /*!
    *  \brief Fittino optimizer exception class
    */
-  class OptimizerException : public Fittino::ExceptionBase {
+  class OptimizerException : public ExceptionBase {
 
     public:
       /*!
        *  Constructor
        */
-      OptimizerException( const std::string& text );
+                  OptimizerException( const std::string& message );
+      /*!
+       *  Method to print message
+       */
+      const char* what() const throw();
 
   };
 

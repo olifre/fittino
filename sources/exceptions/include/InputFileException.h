@@ -37,7 +37,11 @@ namespace Fittino {
       /*!
        *  Constructor
        */
-      InputFileException( const std::string& text );
+                  InputFileException( const std::string& message );
+      /*!
+       *  Method to print message
+       */
+      const char* what() const throw();
 
   };
 
