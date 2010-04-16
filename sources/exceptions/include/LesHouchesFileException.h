@@ -10,7 +10,7 @@
 *             of problems with Les Houches file (syntax errors, etc.) from     *
 *             model calculators.                                               *
 *                                                                              *
-* Authors     Mahtias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *             Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
