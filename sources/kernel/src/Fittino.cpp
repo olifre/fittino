@@ -20,7 +20,7 @@
 *                                                                              *
 *******************************************************************************/
 
-/*! 
+/*!
  *  \mainpage Fittino Class Reference
  *
  *  This document aims to give an overview on the underlying software
@@ -39,14 +39,18 @@
 using namespace Fittino;
 
 int main( int argc, char** argv ) {
- 
+
+    /*!
+     *  \todo Short-term: Discuss usage of exceptions here.
+     */
+
     //try {
 
-        Controller* controller = Controller::GetInstance();
+    Controller* controller = Controller::GetInstance();
 
-	controller->InitializeFittino( argc, argv );
-	controller->ExecuteFittino();
-	controller->TerminateFittino();
+    controller->InitializeFittino( argc, argv );
+    controller->ExecuteFittino();
+    controller->TerminateFittino();
 
     //}
     //catch ( Fittino::InputFileException& inputFileException ) {
