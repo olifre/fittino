@@ -30,6 +30,6 @@ Fittino::FittinoInputFileInterpreter::~FittinoInputFileInterpreter() {
 
 }
 
-void Fittino::FittinoInputFileInterpreter::Parse() {
+void Fittino::FittinoInputFileInterpreter::Parse( const TString& fittinoInputFileName ) {
 
 }

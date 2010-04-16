@@ -36,17 +36,15 @@ namespace Fittino {
   class FittinoInputFileInterpreter : public InputFileInterpreterBase {
   
     public:
-           /*!
-            *  Constructor
-            */
-           FittinoInputFileInterpreter();
-
-           /*!
-            *  Destructor
-            */
-           ~FittinoInputFileInterpreter();
-
-      void Parse();
+      /*!
+       *  Constructor
+       */
+                   FittinoInputFileInterpreter();
+      /*!
+       *  Destructor
+       */
+      virtual      ~FittinoInputFileInterpreter();
+      virtual void Parse( const TString& fittinoInputFileName );
   
   };
 

@@ -23,6 +23,10 @@
 #ifndef FITTINO_INPUTFILEINTERPRETERBASE_H
 #define FITTINO_INPUTFILEINTERPRETERBASE_H
 
+#include <string>
+
+#include "TString.h"
+
 /*!
  *  \brief Fittino namespace
  */
@@ -37,17 +41,15 @@ namespace Fittino {
       enum InputFileFormat { FITTINOINPUTFILE, XMLINPUTFILE };
   
     public:
-                   /*!
-                    *  Constructor
-                    */
+      /*!
+       *  Constructor
+       */
                    InputFileInterpreterBase();
-
-                   /*!
-                    *  Destructor
-                    */
-                   ~InputFileInterpreterBase();
-
-      virtual void Parse() = 0;
+      /*!
+       *  Destructor
+       */
+      virtual      ~InputFileInterpreterBase();
+      virtual void Parse( const TString& inputFileName ) = 0;
   
   };
 
