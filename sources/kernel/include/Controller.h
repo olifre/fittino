@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: Controller.h 572 2010-02-24 22:43:57Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
@@ -26,6 +26,20 @@
 #include <string>
 
 #include "InputFileInterpreterBase.h"
+#include "Messenger.h"
+
+/*! 
+ *  \todo Long-term: Make complete build process manageable by cmake
+ *
+ *  \todo Mid-term: Make CMakeList files contain consistent but general set of
+ *        commands to manage minimal working build
+ *
+ *  \todo Mid-term: Make use of (XML) input files working
+ *
+ *  \todo Mid-term: Create classes to handle output
+ *
+ *  \todo Short-term: Create class to handle messages 
+ */
 
 /*! 
  *  \brief Fittino namespace 
@@ -57,10 +71,6 @@ namespace Fittino {
        */
       void                                      TerminateFittino();
 
-    protected:
-      Controller();
-      ~Controller();
-
     private:
       static Controller*                        _instance;
 
@@ -68,9 +78,12 @@ namespace Fittino {
       int                                       _randomSeed;
       std::string                               _inputFileName;
       InputFileInterpreterBase::InputFileFormat _inputFileFormat;
+      Messenger*                                _messenger;
 
     private:
-      void                                      PrintHelpText();
+                                                Controller();
+                                                ~Controller();
+      void                                      PrintHelp();
       InputFileInterpreterBase::InputFileFormat GetInputFileFormat();
 
   };

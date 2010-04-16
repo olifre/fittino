@@ -22,11 +22,12 @@
 
 #include <cstdlib>
 #include <iostream>
-#include <string.h>
 
-//#include "Configuration.h"
+#include "Configuration.h"
 #include "Controller.h"
 #include "FittinoInputFileInterpreter.h"
+#include "InputFileException.h"
+//#include "OptimizerBase.h"
 #include "XMLInputFileInterpreter.h"
 
 Fittino::Controller* Fittino::Controller::GetInstance() {
@@ -43,49 +44,52 @@ Fittino::Controller* Fittino::Controller::GetInstance() {
 
 void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
-    if ( argc == 1 || ( argc == 2 && !strcmp( argv[1], "-h" ) ) || ( argc == 2 && !strcmp( argv[1], "--help" ) ) ) {
+    for ( int i = 1; i <= argc; i++ ) {
 
-	Fittino::Controller::PrintHelpText();
+        if ( argc == 1 || ( argc == 2 && !strcmp( argv[1], "-h" ) ) || ( argc == 2 && !strcmp( argv[1], "--help" ) ) ) {
 
-    }
-    else if ( argc == 2 ) {
+            Fittino::Controller::PrintHelp();
+            exit( EXIT_SUCCESS );
 
-	_inputFileName = std::string( argv[1] );
+        }
+        else if ( argc == 2 ) {
 
-    }
-    else {
+            _inputFileName = std::string( argv[1] );
 
-	for ( int i = 1; i < argc; i++ ) {
+        }
+        else {
 
-	    if ( !strcmp( argv[i], "-i" ) ) {
+            if ( !strcmp( argv[i], "-i" ) ) {
 
-		i++;
-		_inputFileName = std::string( argv[i] );
-		continue;
+                i++;
+                _inputFileName = std::string( argv[i] );
+                continue;
 
-	    }
-	    if ( !strcmp( argv[i], "-s" ) ) {
+            }
+            if ( !strcmp( argv[i], "-s" ) ) {
 
-		i++;
-		_randomSeed = atoi( argv[i] );
-		continue;
+                i++;
+                _randomSeed = atoi( argv[i] );
+                continue;
 
-	    }
+            }
 
-	}
+        }
 
     }
 
     if ( Fittino::Controller::GetInputFileFormat() == InputFileInterpreterBase::FITTINOINPUTFILE ) {
 
-        Fittino::InputFileInterpreterBase* inputFileInterpreter = new Fittino::FittinoInputFileInterpreter();
-        inputFileInterpreter->Parse();
+        Fittino::FittinoInputFileInterpreter* inputFileInterpreter = new Fittino::FittinoInputFileInterpreter();
+        inputFileInterpreter->Parse( _inputFileName );
+        delete inputFileInterpreter;
 
     }
     else if ( Fittino::Controller::GetInputFileFormat() == InputFileInterpreterBase::XMLINPUTFILE ) {
 
-        Fittino::InputFileInterpreterBase* inputFileInterpreter = new Fittino::XMLInputFileInterpreter();
-        inputFileInterpreter->Parse();
+        Fittino::XMLInputFileInterpreter* inputFileInterpreter = new Fittino::XMLInputFileInterpreter();
+        inputFileInterpreter->Parse( _inputFileName );
+        delete inputFileInterpreter;
 
     }
 
@@ -95,23 +99,22 @@ void Fittino::Controller::ExecuteFittino() {
 
     //switch ( Configuration::GetInstance()->GetExecutionMode() ) {
 
-    //    case ExecutionMode::OPTIMIZATION:
-    //        OptimizerBase* optimizer = Configuration::GetInstance()->GetOptimizer();
-    //        optimizer->Execute();
-
-    //        //default:
+    //case ExecutionMode::OPTIMIZATION:
+    //    OptimizerBase* optimizer = Configuration::GetInstance()->GetOptimizer();
+    //    optimizer->Execute();
 
     //}
 
 }
 
 void Fittino::Controller::TerminateFittino() {
-    
+
 }
 
-Fittino::Controller::Controller() {
+Fittino::Controller* Fittino::Controller::_instance = 0;
 
-    _inputFileFormat = Fittino::InputFileInterpreterBase::XMLINPUTFILE;
+Fittino::Controller::Controller()
+        : _inputFileFormat( Fittino::InputFileInterpreterBase::XMLINPUTFILE ) {
 
 }
 
@@ -119,64 +122,63 @@ Fittino::Controller::~Controller() {
 
 }
 
-Fittino::Controller* Fittino::Controller::_instance = 0;
+void Fittino::Controller::PrintHelp() {
 
-void Fittino::Controller::PrintHelpText() {
-
-	std::cout << std::endl;
-	std::cout << "Usage: fittino [<parameters>]" << std::endl;
-	std::cout << std::endl;
-	std::cout << "Supported parameters are:" << std::endl;
-	std::cout << std::endl;
-	std::cout << "  <inputfile>" << std::endl;
-	std::cout << "      If only a single parameter is given (different from \"-h\" or \"--help\")," << std::endl;
-	std::cout << "      Fittino reads in input file <inputfile>." << std::endl;
-	std::cout << "      Input file suffix must be .ftn (Fittino format) or .xml (XML format)." << std::endl;
-	std::cout << std::endl;
-	std::cout << "  -h, --help" << std::endl;
-	std::cout << "      Fittino prints this message." << std::endl;
-	std::cout << std::endl;
-	std::cout << "  -i <inputfile>" << std::endl;
-	std::cout << "      Fittino uses input file <inputfile>." << std::endl;
-	std::cout << "      Input file suffix must be .ftn (Fittino format) or .xml (XML format)." << std::endl;
-	std::cout << std::endl;
-	std::cout << "  -s <seed>" << std::endl;
-	std::cout << "      Fittino uses the given random number generator seed." << std::endl;
-	std::cout << std::endl;
+    std::cout << std::endl;
+    std::cout << "Usage: fittino [<parameters>]" << std::endl;
+    std::cout << std::endl;
+    std::cout << "Supported parameters are:" << std::endl;
+    std::cout << std::endl;
+    std::cout << "  <inputfile>" << std::endl;
+    std::cout << "      If only a single parameter is given (different from \"-h\" or \"--help\")," << std::endl;
+    std::cout << "      Fittino reads in input file <inputfile>." << std::endl;
+    std::cout << "      Input file suffix must be .ftn (Fittino format) or .xml (XML format)." << std::endl;
+    std::cout << std::endl;
+    std::cout << "  -h, --help" << std::endl;
+    std::cout << "      Fittino prints this message." << std::endl;
+    std::cout << std::endl;
+    std::cout << "  -i <inputfile>" << std::endl;
+    std::cout << "      Fittino uses input file <inputfile>." << std::endl;
+    std::cout << "      Input file suffix must be .ftn (Fittino format) or .xml (XML format)." << std::endl;
+    std::cout << std::endl;
+    std::cout << "  -s <seed>" << std::endl;
+    std::cout << "      Fittino uses the given random number generator seed." << std::endl;
+    std::cout << std::endl;
 
 }
 
 Fittino::InputFileInterpreterBase::InputFileFormat Fittino::Controller::GetInputFileFormat() {
 
-    if ( _inputFileName.length() < 5 ) {
+    try {
 
-        throw ;
+        if ( _inputFileName.length() < 5 ) {
+
+            throw InputFileException( "Invalid input file name" );
+
+        }
+
+        if ( !_inputFileName.compare( _inputFileName.length() - 4, 4, ".ftn" ) ) {
+
+            return Fittino::InputFileInterpreterBase::FITTINOINPUTFILE;
+
+        }
+        else if ( !_inputFileName.compare( _inputFileName.length() - 4, 4, ".xml" ) ) {
+
+            return Fittino::InputFileInterpreterBase::XMLINPUTFILE;
+
+        }
+        else {
+
+            throw InputFileException( "Input file suffix must be .ftn (Fittino format) or .xml (XML format)." );
+
+        }
 
     }
+    catch ( InputFileException& inputFileException ) {
 
-    std::string suffix;
-    std::string::reverse_iterator iter = _inputFileName.rbegin();
+        std::cout << "\n" << inputFileException.what() << "\n" << std::endl;
+        exit( EXIT_FAILURE );
 
-    //if ( ; iter < _inputFileName.rend(); iter++ ) {
-
-    //    suffix.insert( 0, *iter );
- 
-    //}
-
-    //if ( !suffix.compare( ".ftn" ) ) {
-
-    //    return Fittino::InputFileInterpreterBase::FITTINOINPUTFILE;
-
-    //}
-    //else if ( !suffix.compare( ".xml" ) ) {
-    //        
-        return Fittino::InputFileInterpreterBase::XMLINPUTFILE;
-    //
-    //}
-    //else {
-
-    //    throw ;
-
-    //}
+    }
 
 }
