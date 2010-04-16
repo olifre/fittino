@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: OptimizerException.h 582 2010-04-15 23:00:32Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
@@ -35,11 +35,14 @@ namespace Fittino {
 
     public:
       /*!
-       *  Constructor
+       *  Takes as input a message string which is printed on the screen as soon
+       *  as the exception is caught and the what() method is called. The message
+       *  is supposed to provide the user with further information about the
+       *  occurred exception.
        */
                   OptimizerException( const std::string& message );
       /*!
-       *  Method to print message
+       *  Prints message specified in the constructor
        */
       const char* what() const throw();
 
