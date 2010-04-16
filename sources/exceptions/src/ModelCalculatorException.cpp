@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: ModelCalculatorException.cpp 582 2010-04-15 23:00:32Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
@@ -21,7 +21,7 @@
 #include "ModelCalculatorException.h"
 
 Fittino::ModelCalculatorException::ModelCalculatorException( const std::string& message )
-    : ExceptionBase( message ) {
+        : ExceptionBase( message ) {
 
 }
 

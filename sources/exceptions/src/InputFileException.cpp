@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: InputFileException.cpp 582 2010-04-15 23:00:32Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
@@ -21,7 +21,7 @@
 #include "InputFileException.h"
 
 Fittino::InputFileException::InputFileException( const std::string& message )
-    : ExceptionBase( message ) {
+        : ExceptionBase( message ) {
 
 }
 

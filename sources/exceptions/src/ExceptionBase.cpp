@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: ExceptionBase.cpp 582 2010-04-15 23:00:32Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
@@ -19,12 +19,8 @@
 
 #include "ExceptionBase.h"
 
-Fittino::ExceptionBase::ExceptionBase() {
-
-}
-
 Fittino::ExceptionBase::ExceptionBase( const std::string& message )
-    : _message( message ) {
+        : _message( message ) {
 
 }
 

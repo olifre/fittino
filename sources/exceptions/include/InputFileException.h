@@ -9,7 +9,8 @@
 * Description Fittino input file exception class. It is thrown in case of      *
 *             problems with input file (syntax error, unknown type, etc.).     *
 *                                                                              *
-* Authors     Peter Wienemann  <wienemann@physik.uni-bonn.de>                  *
+* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              * 
+*             Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -40,11 +41,11 @@ namespace Fittino {
        *  is supposed to provide the user with further information about the
        *  occurred exception.
        */
-                  InputFileException( const std::string& message );
+                          InputFileException( const std::string& message );
       /*!
        *  Prints message specified in the constructor
        */
-      const char* what() const throw();
+      virtual const char* what() const throw();
 
   };
 

@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: LesHouchesFileException.cpp 582 2010-04-15 23:00:32Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
@@ -22,7 +22,7 @@
 #include "LesHouchesFileException.h"
 
 Fittino::LesHouchesFileException::LesHouchesFileException( const std::string& message )
-    : ExceptionBase( message ) {
+        : ExceptionBase( message ) {
 
 }
 

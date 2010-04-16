@@ -9,7 +9,8 @@
 * Description Fittino optimizer exception class. It is thrown in case of       *
 *             problems with optimizers.                                        *
 *                                                                              *
-* Authors     Peter Wienemann  <wienemann@physik.uni-bonn.de>                  *
+* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+*             Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
