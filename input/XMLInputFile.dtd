@@ -1,0 +1,24 @@
+<!ELEMENT XMLInputFile (ExecutionMode, Model, Optimizer, ParticleSwarmOptimizer) >
+
+<!ELEMENT ExecutionMode ANY>
+<!ATTLIST ExecutionMode
+  Mode CDATA #REQUIRED
+>
+
+<!ELEMENT Model ANY>
+<!ATTLIST Model
+  ModelType CDATA #REQUIRED
+>
+
+<!ELEMENT Optimizer ANY>
+<!ATTLIST Optimizer
+  NumberOfIterations CDATA #REQUIRED
+  OptimizerType      CDATA #REQUIRED
+>
+
+<!ELEMENT ParticleSwarmOptimizer ANY>
+<!ATTLIST ParticleSwarmOptimizer
+  C1                CDATA #REQUIRED
+  C2                CDATA #REQUIRED
+  NumberOfParticles CDATA #REQUIRED
+>
