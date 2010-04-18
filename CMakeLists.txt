@@ -7,4 +7,8 @@ cmake_minimum_required(VERSION 2.4)
 
 project(fittino)
 
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/CMakeModules")
+  
+find_package(root)
+
 add_subdirectory(sources)
