@@ -1,2 +1,5 @@
+add_subdirectory(exceptions)
 add_subdirectory(interpreters)
 add_subdirectory(kernel)
+add_subdirectory(models)
+#add_subdirectory(optimizers)
