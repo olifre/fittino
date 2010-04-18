@@ -27,7 +27,7 @@
 #include "Controller.h"
 #include "FittinoInputFileInterpreter.h"
 #include "InputFileException.h"
-//#include "OptimizerBase.h"
+#include "OptimizerBase.h"
 #include "XMLInputFileInterpreter.h"
 
 Fittino::Controller* Fittino::Controller::GetInstance() {
