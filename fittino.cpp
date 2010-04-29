@@ -3888,6 +3888,12 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
       cout << yyDashedLine << endl;
       cout << "Calling NPFitter" << endl;
       rc = callNPFitter();
+      if( rc > 0 ) {
+	cerr << "Exiting fitterFCN because of problem in NPFITTER run" << endl;
+	f = 111111111111.;
+	cout << " f = " << f << endl;
+	return;
+      }
    }
 
    if (yyRelicDensityCalculator == MICROMEGAS) {
@@ -11133,7 +11139,6 @@ void Fittino::markovChain ()
 	       }
 	    }
 	 } 
-
 
 	 std::cout << "looking at Markov Chain in step " << niter << " success/fail = " << (double)successes/(double)(niter-successes) << std::endl;
 	 for (unsigned int iiiVariable = 0; iiiVariable < x.size(); iiiVariable++) 
