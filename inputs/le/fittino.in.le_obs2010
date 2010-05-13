@@ -22,7 +22,6 @@ LEObs ( Kppinn_npf     )      < 4.5     +- 1.0E-10                 alias 25 # [4
 LEObs ( dm_k_npf       )      0.92    +- 0.14                         alias 24 # [4]
 LEObs ( sigma_had0_npf )      41.540   +- 0.037                        alias 23 # [5]
 LEObs ( Massh0_npf     ) >  114.4                         +- 3.0      alias 19 # [6]
-
 LEObs ( A_fbl_npf      )      0.0171 +- 0.0010                      alias 22 # [5]
 LEObs ( A_l_npf        )      0.1489  +- 0.0015                       alias 18 # [7]
 LEObs ( R_l_npf        )     20.767   +- 0.025                        alias 11 # [5]
@@ -33,7 +32,7 @@ LEObs ( A_fbc_npf      )      0.0635  +- 0.0036                       alias 15 #
 LEObs ( A_b_npf        )      0.923   +- 0.020                        alias 16 # [8]
 LEObs ( A_c_npf        )      0.670   +- 0.027                        alias 17 # [8]
 LEObs ( MassW_npf      )     80.398   +- 0.025            +- 0.010    alias  8 # [6]
-LEObs ( sin_th_eff_npf )      0.23153  +- 0.0016                       alias  9 # [10]
+LEObs ( sin_th_eff_npf )      0.2324  +- 0.0012                       alias  9 # [10]
 LEObs ( GammaZ_npf     )   2495.2     +- 2.3              +- 1.0      alias 10 # [5]
 LEObs ( Bsg_npf        )      1.117   +- 0.076   +- 0.082 +- 0.050    alias  1 # [11]
 LEObs ( dm_s_npf       )      1.11    +- 0.01    +- 0.32              alias  2 # [1]
@@ -96,7 +95,7 @@ correlationCoefficient A_fbc_npf A_c_npf 0.04
 # [7] Measurement at Z resonance, Phys.Rept.427:257,2006,  p120, Table 7.6, [arXiv:hep-ex/0509008v3]
 # [8] Measurement at Z resonance, Phys.Rept.427:257,2006,  p108, Table 5.10, [arXiv:hep-ex/0509008v3]
 # [9] Measurement at Z resonance, Phys.Rept.427:257,2006,  p106, Table 5.9, [arXiv:hep-ex/0509008v3]
-# [10] Measurement at Z resonance, p125, formula 7.11, Phys.Rept.427:257,2006, [arXiv:hep-ex/0509008v3]
+# [10] Measurement at Z resonance, p113, formula 6.3, Phys.Rept.427:257,2006, [arXiv:hep-ex/0509008v3]
 # [11] HFAG 2008, p166, Table 120 [arXiv:0808.1297v3 [hep-ex]]
 # [12] HFAG 2008, p170, Table 127 [arXiv:0808.1297v3 [hep-ex]]
 # [13] Combination of Belle Phys.Rev.D72:092005,2005, BaBar Phys.Rev.Lett.93:081802,2004
