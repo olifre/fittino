@@ -112,18 +112,19 @@ RequireNeutLSP	on
 
  ### mSUGRA parameters at SPS 1a
 
-fitParameter alphaem     127.925      GeV
+fixParameter alphaem     127.925      GeV
 fixParameter G_F         1.16637E-5
-fitParameter alphas      0.1176     GeV
-fitParameter massZ       91.1876     GeV
+fixParameter alphas      0.1176     GeV
+fixParameter massZ       91.1876     GeV
 fixParameter massBottom  4.20       GeV
-fitParameter massTop     171.3        GeV
+fixParameter massTop     171.3        GeV
 fixParameter massTau     1.77684    GeV
 fixParameter SignMu        1
 fitParameter M0          100 	      GeV +-  1.  GeV
 fitParameter M12         250          GeV +-  2.5 GeV
 fitParameter A0         -100          GeV +- 10.  GeV
 fitParameter TanBeta      10              +-  1.
+fitParameter QEWSB      1000          GeV +- 10 GeV
 
 ################################################################################
 ### Switches                                                                 ###
