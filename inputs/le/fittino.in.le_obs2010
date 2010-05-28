@@ -108,7 +108,7 @@ correlationCoefficient A_fbc_npf A_c_npf 0.04
  ### Parameters                                                               ###
  ################################################################################
 
-RequireNeutLSP	on
+RequireNeut1LSP	on
 
  ### mSUGRA parameters at SPS 1a
 
