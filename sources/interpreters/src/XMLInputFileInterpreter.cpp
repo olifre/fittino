@@ -20,10 +20,11 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <cstdlib>
 #include <iostream>
-#include <sstream>
 
 #include "TDOMParser.h"
+#include "TList.h"
 #include "TString.h"
 #include "TXMLAttr.h"
 #include "TXMLDocument.h"
@@ -31,7 +32,6 @@
 
 #include "Configuration.h"
 #include "InputFileException.h"
-#include "SteeringParameterTemplate.h"
 #include "XMLInputFileInterpreter.h"
 
 Fittino::XMLInputFileInterpreter::XMLInputFileInterpreter() {
@@ -44,9 +44,14 @@ Fittino::XMLInputFileInterpreter::~XMLInputFileInterpreter() {
 
 void Fittino::XMLInputFileInterpreter::Parse( const TString& xmlInputFileName ) {
 
-    Configuration* configuration = Configuration::GetInstance();
+    std::cout << "\n  Reading input from file " << xmlInputFileName << "\n" << std::endl;
+
+    // Construct XML DOM parser
 
     TDOMParser* xmlParser = new TDOMParser();
+
+    // Check if XML input file can be parsed
+
     Int_t parseCode = xmlParser->ParseFile( xmlInputFileName );
 
     if ( parseCode != 0 ) {
@@ -55,46 +60,28 @@ void Fittino::XMLInputFileInterpreter::Parse( const TString& xmlInputFileName ) 
         exit( EXIT_FAILURE );
 
     }
-    else {
 
-        std::cout << "\nReading input from file " << xmlInputFileName << "\n" << std::endl;
+    // Loop over the XML DOM tree and add the input data to appropriate lists
 
-        TXMLDocument* xmlDocument = xmlParser->GetXMLDocument();
-        TXMLNode* xmlRootNode = xmlDocument->GetRootNode();
-        TXMLNode* xmlNode = xmlRootNode->GetChildren();
+    TXMLDocument* xmlDocument = xmlParser->GetXMLDocument();
+    TXMLNode* xmlRootNode = xmlDocument->GetRootNode();
+    TXMLNode* xmlNode = xmlRootNode->GetChildren();
 
-        while ( xmlNode != 0 ) {
+    while ( xmlNode != 0 ) {
 
-            TXMLAttr* xmlAttribute( 0 );
-            TListIter attributeIterator( xmlNode->GetAttributes() );
+        TXMLAttr* xmlAttribute( 0 );
+        TListIter attributeIterator( xmlNode->GetAttributes() );
 
-            while ( ( xmlAttribute = ( TXMLAttr* )attributeIterator() )  != 0 ) {
+        while ( ( xmlAttribute = ( TXMLAttr* )attributeIterator() )  != 0 ) {
 
-                std::string key = xmlAttribute->GetName();
-                std::string name = xmlAttribute->GetName();
-
-                std::stringstream sstr;
-                sstr << xmlAttribute->GetValue();
-
-                if ( sstr.eof() ) {
-
-                    int value = 0; sstr >> value;
-                    ( *configuration->GetSteeringParameterMap() )[key] = new SteeringParameterTemplate<int>( name, value );
-
-                }
-                else {
-
-                    std::string value = ""; sstr >> value;
-                    ( *configuration->GetSteeringParameterMap() )[key] = new SteeringParameterTemplate<std::string>( name, value );
-
-                }
-
-            }
-
-            xmlNode = xmlNode->GetNextNode();
+            Configuration::GetInstance()->AddSteeringParameter( xmlAttribute->GetName(), xmlAttribute->GetValue() );
 
         }
 
+        xmlNode = xmlNode->GetNextNode();
+
     }
+
+    delete xmlParser;
 
 }
