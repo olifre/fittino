@@ -29,12 +29,7 @@
 #include "Messenger.h"
 
 /*! 
- *  \todo Long-term: Make complete build process manageable by cmake
- *
- *  \todo Mid-term: Make CMakeList files contain consistent but general set of
- *        commands to manage minimal working build
- *
- *  \todo Mid-term: Make use of (XML) input files working
+ *  \todo Mid-term: Make objects configurable via steering parameters
  *
  *  \todo Mid-term: Create classes to handle output
  *
@@ -77,7 +72,6 @@ namespace Fittino {
     private:
       int                                       _randomSeed;
       std::string                               _inputFileName;
-      InputFileInterpreterBase::InputFileFormat _inputFileFormat;
       Messenger*                                _messenger;
 
     private:
