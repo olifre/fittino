@@ -20,6 +20,8 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <getopt.h>
+
 #include <cstdlib>
 #include <iostream>
 
@@ -44,35 +46,34 @@ Fittino::Controller* Fittino::Controller::GetInstance() {
 
 void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
-    for ( int i = 1; i <= argc; i++ ) {
+    while ( true ) {
 
-        if ( argc == 1 || ( argc == 2 && !strcmp( argv[1], "-h" ) ) || ( argc == 2 && !strcmp( argv[1], "--help" ) ) ) {
+        static struct option options[] = {
 
-            Fittino::Controller::PrintHelp();
-            exit( EXIT_SUCCESS );
+            {"input-file", required_argument, 0, 'i'},
+            {"help",       no_argument,       0, 'h'},
+            {"seed",       required_argument, 0, 's'}
 
-        }
-        else if ( argc == 2 ) {
+        };
 
-            _inputFileName = std::string( argv[1] );
+        int optionIndex = 0;
+        int optionCode = getopt_long( argc, argv, "i:hs:", options, &optionIndex );
 
-        }
-        else {
+        if ( optionCode == -1 ) break; 
 
-            if ( !strcmp( argv[i], "-i" ) ) {
+        switch ( optionCode ) {
 
-                i++;
-                _inputFileName = std::string( argv[i] );
+            case 'i':
+                _inputFileName = std::string( optarg );
                 continue;
 
-            }
-            if ( !strcmp( argv[i], "-s" ) ) {
+            case 'h':
+                Fittino::Controller::PrintHelp();
+                exit( EXIT_SUCCESS );
 
-                i++;
-                _randomSeed = atoi( argv[i] );
+            case 's':
+                _randomSeed = atoi( optarg );
                 continue;
-
-            }
 
         }
 
@@ -97,13 +98,31 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
 void Fittino::Controller::ExecuteFittino() {
 
-    //switch ( Configuration::GetInstance()->GetExecutionMode() ) {
+    try {
 
-    //case ExecutionMode::OPTIMIZATION:
-    //    OptimizerBase* optimizer = Configuration::GetInstance()->GetOptimizer();
-    //    optimizer->Execute();
+        //switch ( Configuration::GetInstance()->GetSteeringParameter( "ExecutionMode", (int)ExecutionMode::OPTIMIZATION ) ) {
 
-    //}
+            //case ExecutionMode::OPTIMIZATION:
+                OptimizerBase* optimizer = Configuration::GetInstance()->GetOptimizer();
+                optimizer->Execute();
+                //std::cout << "Parameter optimization not supported yet\n" << std::endl; 
+                exit( EXIT_SUCCESS );
+                //throw InputFileException( "Parameter optimization not supported yet" );
+
+            //case ExecutionMode::SCAN:
+            //    std::cout << "Parameter scan not supported yet\n" << std::endl; 
+            //    exit( EXIT_SUCCESS );
+            //    //throw InputFileException( "Parameter scan not supported yet" );
+
+        //}
+
+    }
+    catch ( InputFileException& inputFileException ) {
+
+        std::cout << "\n" << inputFileException.what() << "\n" << std::endl;
+        exit( EXIT_FAILURE );
+
+    }
 
 }
 
@@ -113,8 +132,7 @@ void Fittino::Controller::TerminateFittino() {
 
 Fittino::Controller* Fittino::Controller::_instance = 0;
 
-Fittino::Controller::Controller()
-        : _inputFileFormat( Fittino::InputFileInterpreterBase::XMLINPUTFILE ) {
+Fittino::Controller::Controller() {
 
 }
 
