@@ -34,7 +34,7 @@ namespace Fittino {
   class ExecutionMode {
   
     public:
-      enum Mode { OPTIMIZATION };
+      enum Mode { OPTIMIZATION, SCAN };
   
     public:
            ExecutionMode();
