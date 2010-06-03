@@ -26,17 +26,18 @@
 
 #include <map>
 #include <string>
+#include <sstream>
 
 #include "ExecutionMode.h"
 #include "SteeringParameterBase.h"
-//#include "OptimizerBase.h"
+#include "OptimizerBase.h"
 
 /*! 
  *  \brief Fittino namespace 
  */
 namespace Fittino {
 
-  typedef std::map<std::string, SteeringParameterBase*> SteeringParameterMap;
+  typedef std::map<std::string, std::string> SteeringParameterMap;
 
   /*!
    *  \brief Singleton class for storing and providing access to user-defined
@@ -45,24 +46,68 @@ namespace Fittino {
   class Configuration {
   
     public:
-      static Configuration* GetInstance();
+      static Configuration*                 GetInstance();
   
     public:
-      SteeringParameterMap* GetSteeringParameterMap() const;
-      //OptimizerBase*        GetOptimizer() const;
+      void                                  AddSteeringParameter( std::string key, std::string value );
+      ExecutionMode::Mode                   GetExecutionMode() const;
+      OptimizerBase::OptimizerType          GetOptimizerType() const;
+
+    public:
+      template<class SteeringParameterType>
+      SteeringParameterType                 GetSteeringParameter( const std::string& name, const SteeringParameterType& value ) const;
   
     protected:
-                            Configuration();
-                            ~Configuration();
+                                            Configuration();
+                                            ~Configuration();
   
     private:
-      static Configuration* _instance;
+      static Configuration*                 _instance;
   
     private:
-      SteeringParameterMap* _steeringParameterMap;
-      //OptimizerBase*        _optimizer;
+      ExecutionMode::Mode                   _executionMode;
+      SteeringParameterMap*                 _steeringParameterMap;
+      OptimizerBase::OptimizerType          _optimizerType;
   
   };
+
+  template<class SteeringParameterType>
+  SteeringParameterType Configuration::GetSteeringParameter( const std::string& name, const SteeringParameterType& defaultValue ) const {
+
+    /*!
+     *  \todo Short-term: Think about a more sophisticated implementation of this function. 
+     */
+    if ( !_steeringParameterMap->empty() ) {
+
+      for ( SteeringParameterMap::iterator iter = _steeringParameterMap->begin(); iter != _steeringParameterMap->end(); iter++ ) {
+
+        if ( _steeringParameterMap->find( name )->first == name ) {
+
+          std::stringstream stringstream;
+          SteeringParameterType value;
+
+          stringstream << (*_steeringParameterMap)[name];
+          stringstream >> value;
+
+          return value;
+
+        }
+        else {
+
+          return defaultValue;
+
+        }
+
+      }
+
+    }
+    else {
+
+      return defaultValue;
+
+    }
+
+  }
 
 }
 

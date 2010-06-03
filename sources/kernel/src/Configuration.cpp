@@ -22,7 +22,6 @@
 *******************************************************************************/
 
 #include "Configuration.h"
-#include "RosenbrockModel.h"
 
 Fittino::Configuration* Fittino::Configuration::GetInstance() {
 
@@ -36,55 +35,44 @@ Fittino::Configuration* Fittino::Configuration::GetInstance() {
 
 }
 
-//void Fittino::Configuration::SetExecutionMode( ExecutionMode::Mode executionMode ) {
-//
-//    _executionMode = executionMode;
-//
-//}
+void Fittino::Configuration::AddSteeringParameter( std::string key, std::string value ) {
 
-//void Fittino::Configuration::SetOptimizer( OptimizerBase* optimizer ) {
-//
-//    _optimizer = optimizer;
-//
-//}
-
-Fittino::SteeringParameterMap* Fittino::Configuration::GetSteeringParameterMap() const {
-
-    return _steeringParameterMap;
+    ( *_steeringParameterMap )[key] = value;
 
 }
 
-//Fittino::ExecutionMode::Mode Fittino::Configuration::GetExecutionMode() const {
-//    /*!
-//     *  Returns configured execution mode
-//     */
-//    return _executionMode;
-//
-//}
+Fittino::ExecutionMode::Mode Fittino::Configuration::GetExecutionMode() const {
 
-//Fittino::OptimizerBase* Fittino::Configuration::GetOptimizer() const {
-//    /*!
-//     *  Returns configured parameter optimizer
-//     */
-//    //return _optimizer;
-//
-//}
+    /*!
+     *  Returns configured execution mode
+     */
+    return _executionMode;
+
+}
+
+Fittino::OptimizerBase::OptimizerType Fittino::Configuration::GetOptimizerType() const {
+
+    /*!
+     *  Returns configured optimizer type
+     */
+    return _optimizerType;
+}
 
 Fittino::Configuration::Configuration() {
+
     /*!
      *  Sets default execution mode (optimization)
      */
-    //_executionMode = ExecutionMode::OPTIMIZATION;
+    _executionMode = ExecutionMode::OPTIMIZATION;
+    _steeringParameterMap = new SteeringParameterMap();
     /*!
      *  Sets default optimizer (particle swarm optimizer)
      */
-    //_optimizer = new OptimizerBase();
+    _optimizerType = OptimizerBase::PARTICLESWARMOPTIMIZER;
 
 }
 
 Fittino::Configuration::~Configuration() {
-
-    //delete _optimizer;
 
 }
 
