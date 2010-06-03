@@ -27,10 +27,11 @@
 
 #include "Configuration.h"
 #include "Controller.h"
-#include "FittinoInputFileInterpreter.h"
 #include "InputFileException.h"
+#include "InputFileInterpreterBase.h"
+#include "InputFileInterpreterFactory.h"
 #include "OptimizerBase.h"
-#include "XMLInputFileInterpreter.h"
+#include "OptimizerFactory.h"
 
 Fittino::Controller* Fittino::Controller::GetInstance() {
 
@@ -46,20 +47,20 @@ Fittino::Controller* Fittino::Controller::GetInstance() {
 
 void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
+    static struct option options[] = {
+
+        {"input-file", required_argument, 0, 'i'},
+        {"help",       no_argument,       0, 'h'},
+        {"seed",       required_argument, 0, 's'}
+
+    };
+
     while ( true ) {
-
-        static struct option options[] = {
-
-            {"input-file", required_argument, 0, 'i'},
-            {"help",       no_argument,       0, 'h'},
-            {"seed",       required_argument, 0, 's'}
-
-        };
 
         int optionIndex = 0;
         int optionCode = getopt_long( argc, argv, "i:hs:", options, &optionIndex );
 
-        if ( optionCode == -1 ) break; 
+        if ( optionCode == -1 ) break;
 
         switch ( optionCode ) {
 
@@ -79,20 +80,10 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
     }
 
-    if ( Fittino::Controller::GetInputFileFormat() == InputFileInterpreterBase::FITTINOINPUTFILE ) {
-
-        Fittino::FittinoInputFileInterpreter* inputFileInterpreter = new Fittino::FittinoInputFileInterpreter();
-        inputFileInterpreter->Parse( _inputFileName );
-        delete inputFileInterpreter;
-
-    }
-    else if ( Fittino::Controller::GetInputFileFormat() == InputFileInterpreterBase::XMLINPUTFILE ) {
-
-        Fittino::XMLInputFileInterpreter* inputFileInterpreter = new Fittino::XMLInputFileInterpreter();
-        inputFileInterpreter->Parse( _inputFileName );
-        delete inputFileInterpreter;
-
-    }
+    InputFileInterpreterFactory inputFileInterpreterFactory = InputFileInterpreterFactory();
+    InputFileInterpreterBase* inputFileInterpreter = inputFileInterpreterFactory.GetInputFileInterpreter( Controller::GetInputFileFormat() );
+    inputFileInterpreter->Parse( _inputFileName );
+    delete inputFileInterpreter;
 
 }
 
@@ -100,21 +91,20 @@ void Fittino::Controller::ExecuteFittino() {
 
     try {
 
-        //switch ( Configuration::GetInstance()->GetSteeringParameter( "ExecutionMode", (int)ExecutionMode::OPTIMIZATION ) ) {
+        if ( Configuration::GetInstance()->GetExecutionMode() == ExecutionMode::OPTIMIZATION ) {
 
-            //case ExecutionMode::OPTIMIZATION:
-                OptimizerBase* optimizer = Configuration::GetInstance()->GetOptimizer();
-                optimizer->Execute();
-                //std::cout << "Parameter optimization not supported yet\n" << std::endl; 
-                exit( EXIT_SUCCESS );
-                //throw InputFileException( "Parameter optimization not supported yet" );
+            OptimizerFactory optimizerFactory = OptimizerFactory();
+            OptimizerBase* optimizer = optimizerFactory.GetOptimizer( Configuration::GetInstance()->GetOptimizerType() );
+            optimizer->Execute();
+            delete optimizer;
 
-            //case ExecutionMode::SCAN:
-            //    std::cout << "Parameter scan not supported yet\n" << std::endl; 
-            //    exit( EXIT_SUCCESS );
-            //    //throw InputFileException( "Parameter scan not supported yet" );
+        }
+        else if ( Configuration::GetInstance()->GetExecutionMode() == ExecutionMode::SCAN ) {
 
-        //}
+            //throw InputFileException( "Execution mode SCAN not supported yet" );
+            throw InputFileException( "Execution mode SCAN not su" );
+
+        }
 
     }
     catch ( InputFileException& inputFileException ) {
@@ -171,7 +161,7 @@ Fittino::InputFileInterpreterBase::InputFileFormat Fittino::Controller::GetInput
 
         if ( _inputFileName.length() < 5 ) {
 
-            throw InputFileException( "Invalid input file name" );
+            throw InputFileException( "Invalid input file name." );
 
         }
 
