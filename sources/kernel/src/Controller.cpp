@@ -80,7 +80,7 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
     }
 
-    InputFileInterpreterFactory inputFileInterpreterFactory = InputFileInterpreterFactory();
+    InputFileInterpreterFactory inputFileInterpreterFactory;
     InputFileInterpreterBase* inputFileInterpreter = inputFileInterpreterFactory.GetInputFileInterpreter( Controller::GetInputFileFormat() );
     inputFileInterpreter->Parse( _inputFileName );
     delete inputFileInterpreter;
@@ -93,7 +93,7 @@ void Fittino::Controller::ExecuteFittino() {
 
         if ( Configuration::GetInstance()->GetExecutionMode() == ExecutionMode::OPTIMIZATION ) {
 
-            OptimizerFactory optimizerFactory = OptimizerFactory();
+            OptimizerFactory optimizerFactory;
             OptimizerBase* optimizer = optimizerFactory.GetOptimizer( Configuration::GetInstance()->GetOptimizerType() );
             optimizer->Execute();
             delete optimizer;
@@ -101,8 +101,7 @@ void Fittino::Controller::ExecuteFittino() {
         }
         else if ( Configuration::GetInstance()->GetExecutionMode() == ExecutionMode::SCAN ) {
 
-            //throw InputFileException( "Execution mode SCAN not supported yet" );
-            throw InputFileException( "Execution mode SCAN not su" );
+            throw InputFileException( "Execution mode SCAN not supported yet." );
 
         }
 

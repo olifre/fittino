@@ -42,10 +42,6 @@ namespace Fittino {
        *  occurred exception.
        */
                   OptimizerException( const std::string& message );
-      /*!
-       *  Prints message specified in the constructor
-       */
-      const char* what() const throw();
 
   };
 

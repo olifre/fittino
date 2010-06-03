@@ -30,6 +30,6 @@ Fittino::ExceptionBase::~ExceptionBase() throw() {
 
 const char* Fittino::ExceptionBase::what() const throw() {
 
-    return ( "Fittino::ExceptionBase: " + _message ).c_str();
+    return _message.c_str();
 
 }

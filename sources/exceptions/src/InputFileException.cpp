@@ -21,12 +21,6 @@
 #include "InputFileException.h"
 
 Fittino::InputFileException::InputFileException( const std::string& message )
-        : ExceptionBase( message ) {
-
-}
-
-const char* Fittino::InputFileException::what() const throw() {
-
-    return ( "Fittino::InputFileException: " + _message ).c_str();
+        : ExceptionBase( "Fittino::InputFileException: " + message ) {
 
 }

@@ -43,10 +43,6 @@ namespace Fittino {
        *  occurred exception.
        */
                           LesHouchesFileException( const std::string& message );
-      /*!
-       *  Prints message specified in the constructor
-       */
-      virtual const char* what() const throw();
 
   };
 

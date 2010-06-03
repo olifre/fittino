@@ -41,21 +41,21 @@ namespace Fittino {
        *  is supposed to provide the user with further information about the
        *  occurred exception.
        */
-                          ExceptionBase( const std::string& message );
+                        ExceptionBase( const std::string& message );
       /*!
        *  Destructor
        */
-      virtual             ~ExceptionBase() throw();
+      virtual           ~ExceptionBase() throw();
       /*!
        *  Prints message specified in the constructor.
        */
-      virtual const char* what() const throw();
+      const char*       what() const throw();
 
     protected:
       /*!
        *  Message to be printed.
        */
-      std::string         _message;
+      const std::string _message;
 
   };
 

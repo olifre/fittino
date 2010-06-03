@@ -22,12 +22,6 @@
 #include "LesHouchesFileException.h"
 
 Fittino::LesHouchesFileException::LesHouchesFileException( const std::string& message )
-        : ExceptionBase( message ) {
-
-}
-
-const char* Fittino::LesHouchesFileException::what() const throw() {
-
-    return ( "Fittino::LesHouchesFileException: " + _message ).c_str();
+        : ExceptionBase( "Fittino::LesHouchesFileException: " + message ) {
 
 }
