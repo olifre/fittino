@@ -35,7 +35,7 @@
  */
 namespace Fittino {
 
-  typedef std::map<std::string, SteeringParameterBase*> SteeringParameterMap;
+  //typedef std::map<std::string, SteeringParameterBase*> SteeringParameterMap;
 
   /*!
    *  \brief Base class for Fittino parameter optimizers
@@ -54,33 +54,40 @@ namespace Fittino {
   class OptimizerBase {
 
     public:
-                           OptimizerBase();
-                           ~OptimizerBase();
+      enum OptimizerType { PARTICLESWARMOPTIMIZER };
+
+    public:
+                                             OptimizerBase();
+      virtual                                ~OptimizerBase();
       /*!
        *  The Execute() method. It checks the value of a generic abort
        *  criterium. In the case it is not met the model is updated and
        *  evaluated.  
        */
-      virtual void         Execute() = 0;
+      virtual void                           Execute() = 0;
+
+    protected:
+      template<class SteeringParameterType>
+      void                                   DeclareSteeringParameter( std::string name, SteeringParameterType value ); 
 
     private:
-      //void                 PrintConfiguration();
-      //void                 PrintResult();
-      //void                 PrintStatus();
-      virtual ModelBase*   UpdateModel() = 0;
-      //virtual double       EvaluateModel( ModelBase& model );
+      double                                 _abortCriterium;
+      ModelBase*                             _model;
+      //SteeringParameterMap                   _steeringParameterMap;
 
     private:
-      double               _abortCriterium;
-      ModelBase*           _model;
-      SteeringParameterMap _steeringParameterMap;
+      //void                                   PrintConfiguration();
+      //void                                   PrintResult();
+      //void                                   PrintStatus();
+      //virtual ModelBase*                     UpdateModel() = 0;
+      //virtual double                         EvaluateModel( ModelBase& model );
 
   };
 
-  //template <class SteeringParameterType>
+  //template<class SteeringParameterType>
   //void OptimizerBase::DeclareSteeringParameter( std::string name, SteeringParameterType value ) {
 
-  //  SteeringParameterType key = value
+  //  std::string key = name;
   //  _steeringParameterMap[ key ] = new SteeringParameterTemplate<SteeringParameterType>( name, value );
 
   //}

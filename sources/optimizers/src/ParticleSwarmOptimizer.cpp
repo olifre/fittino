@@ -20,13 +20,20 @@
 *                                                                              *
 *******************************************************************************/
 
+#include "Configuration.h"
 #include "ParticleSwarmOptimizer.h"
+
+void Fittino::ParticleSwarmOptimizer::Execute() {
+
+}
 
 Fittino::ParticleSwarmOptimizer::ParticleSwarmOptimizer() {
 
-    //DeclareSteeringParameter( "ParticleSwarmOptimizer:C1", _c1 = 0.01 );
-    //DeclareSteeringParameter( "ParticleSwarmOptimizer:C2", _c2 = 0.01 );
-    //DeclareSteeringParameter( "ParticleSwarmOptimizer:NumberOfParticles", _numberOfParticles = 20 );
+    Configuration* configuration = Configuration::GetInstance();
+
+    _c1 = configuration->GetSteeringParameter( "C1", 0.01 );
+    _c2 = configuration->GetSteeringParameter( "C2", 0.01 );
+    _numberOfParticles = configuration->GetSteeringParameter( "NumberOfParticles", 20 );
 
     //_particleSwarm = new ParticleSwarm( _numberOfParticles, _c1, _c2 );
 
@@ -46,9 +53,9 @@ Fittino::ParticleSwarmOptimizer::ParticleSwarmOptimizer() {
     std::cout << "   Configuration                                                                " << std::endl;
     std::cout << "                                                                                " << std::endl;
     std::cout << "    Maximum number of iterations    10000                                       " << std::endl;
-    std::cout << "    Number of particles                20                                       " << std::endl;
-    std::cout << "    Global scaling factor c1            0.01                                    " << std::endl;
-    std::cout << "    Local  scaling factor c2            0.01                                    " << std::endl;
+    std::cout << "    Number of particles             " << _numberOfParticles                       << std::endl;
+    std::cout << "    Global scaling factor c1        " << _c1                                      << std::endl;
+    std::cout << "    Local  scaling factor c2        " << _c2                                      << std::endl;
     std::cout << "                                                                                " << std::endl;
 
 }
