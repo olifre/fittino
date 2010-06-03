@@ -41,7 +41,7 @@ namespace Fittino {
        *  is supposed to provide the user with further information about the
        *  occurred exception.
        */
-       InputFileException( const std::string& message );
+      InputFileException( const std::string& message );
 
   };
 

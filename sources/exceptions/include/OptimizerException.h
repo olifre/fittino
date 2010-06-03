@@ -41,7 +41,7 @@ namespace Fittino {
        *  is supposed to provide the user with further information about the
        *  occurred exception.
        */
-       OptimizerException( const std::string& message );
+      OptimizerException( const std::string& message );
 
   };
 
