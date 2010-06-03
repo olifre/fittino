@@ -1,4 +1,5 @@
 --indent=spaces=4
+--indent-switches
 --brackets=attach
 --brackets=break-closing
 --pad=oper
