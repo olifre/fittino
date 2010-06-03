@@ -1,17 +1,14 @@
-/* $Id$ */
+/* $Id: InputFileInterpreterFactory.cpp 613 2010-05-26 09:42:00Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        FittinoInputFileInterpreter.cpp                                  *
+* File        InputFileInterpreterFactory.cpp                                  *
 *                                                                              *
-* Description Class for reading and interpreting Fittino input files           *
+* Description Factory class for input file interpreters                        *
 *                                                                              *
-* Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
-*             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
-*	      Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
-*	      Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
+* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -20,20 +17,28 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <iostream>
-
+#include "InputFileInterpreterFactory.h"
 #include "FittinoInputFileInterpreter.h"
+#include "XMLInputFileInterpreter.h"
 
-Fittino::FittinoInputFileInterpreter::FittinoInputFileInterpreter() {
-
-}
-
-Fittino::FittinoInputFileInterpreter::~FittinoInputFileInterpreter() {
+Fittino::InputFileInterpreterFactory::InputFileInterpreterFactory() {
 
 }
 
-void Fittino::FittinoInputFileInterpreter::Parse( const TString& fittinoInputFileName ) {
+Fittino::InputFileInterpreterBase* Fittino::InputFileInterpreterFactory::GetInputFileInterpreter( Fittino::InputFileInterpreterBase::InputFileFormat inputFileFormat ) const {
 
-    std::cout << "Fittino input files not supported yet" << std::endl;
+    switch ( inputFileFormat ) {
+
+        case Fittino::InputFileInterpreterBase::XMLINPUTFILE:
+            return new XMLInputFileInterpreter();
+
+        case Fittino::InputFileInterpreterBase::FITTINOINPUTFILE:
+            return new FittinoInputFileInterpreter();
+
+    }
+
+}
+
+Fittino::InputFileInterpreterFactory::~InputFileInterpreterFactory() {
 
 }
