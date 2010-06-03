@@ -30,18 +30,18 @@ Fittino::OptimizerBase::~OptimizerBase() {
 
 }
 
-void Fittino::OptimizerBase::Execute() {
-
-    while ( !( _abortCriterium < 1e-6 ) ) {
-        //_iterationsCounter = 1;
-        //while ( _iterationsCounter <= _numberOfIterations ) {
-
-        _model = this->UpdateModel();
-        //_abortCriterium = this->EvaluateModel( _model );
-
-    }
-
-}
+//void Fittino::OptimizerBase::Execute() {
+//
+//    while ( !( _abortCriterium < 1e-6 ) ) {
+//        //_iterationsCounter = 1;
+//        //while ( _iterationsCounter <= _numberOfIterations ) {
+//
+//        _model = this->UpdateModel();
+//        //_abortCriterium = this->EvaluateModel( _model );
+//
+//    }
+//
+//}
 
 //double Fittino::EvaluateModel( ModelBase& model ) {
 //
