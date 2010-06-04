@@ -58,17 +58,15 @@ Fittino::OptimizerBase::OptimizerType Fittino::Configuration::GetOptimizerType()
     return _optimizerType;
 }
 
-Fittino::Configuration::Configuration() {
+Fittino::Configuration::Configuration()
+        : _executionMode( ExecutionMode::OPTIMIZATION ),
+          _steeringParameterMap( new SteeringParameterMap() ),
+          _optimizerType( OptimizerBase::PARTICLESWARMOPTIMIZER ) {
 
     /*!
      *  Sets default execution mode (optimization)
-     */
-    _executionMode = ExecutionMode::OPTIMIZATION;
-    _steeringParameterMap = new SteeringParameterMap();
-    /*!
      *  Sets default optimizer (particle swarm optimizer)
      */
-    _optimizerType = OptimizerBase::PARTICLESWARMOPTIMIZER;
 
 }
 
