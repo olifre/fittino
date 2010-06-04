@@ -81,10 +81,20 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
     }
 
-    InputFileInterpreterFactory inputFileInterpreterFactory;
-    InputFileInterpreterBase* inputFileInterpreter = inputFileInterpreterFactory.GetInputFileInterpreter( Controller::GetInputFileFormat() );
-    inputFileInterpreter->Parse( _inputFileName );
-    delete inputFileInterpreter;
+    try {
+
+        InputFileInterpreterFactory inputFileInterpreterFactory;
+        InputFileInterpreterBase* inputFileInterpreter = inputFileInterpreterFactory.GetInputFileInterpreter( Controller::GetInputFileFormat() );
+        inputFileInterpreter->Parse( _inputFileName );
+        delete inputFileInterpreter;
+
+    }
+    catch ( InputFileException& inputFileException ) {
+
+        std::cout << "\n" << inputFileException.what() << "\n" << std::endl;
+        exit( EXIT_FAILURE );
+
+    }
 
 }
 
@@ -112,9 +122,9 @@ void Fittino::Controller::ExecuteFittino() {
         }
 
     }
-    catch ( InputFileException& inputFileException ) {
+    catch ( ConfigurationException& configurationException ) {
 
-        std::cout << "\n" << inputFileException.what() << "\n" << std::endl;
+        std::cout << "\n" << configurationException.what() << "\n" << std::endl;
         exit( EXIT_FAILURE );
 
     }

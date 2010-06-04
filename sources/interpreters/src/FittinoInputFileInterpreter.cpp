@@ -23,6 +23,7 @@
 #include <iostream>
 
 #include "FittinoInputFileInterpreter.h"
+#include "InputFileException.h"
 
 Fittino::FittinoInputFileInterpreter::FittinoInputFileInterpreter() {
 
@@ -34,6 +35,6 @@ Fittino::FittinoInputFileInterpreter::~FittinoInputFileInterpreter() {
 
 void Fittino::FittinoInputFileInterpreter::Parse( const TString& fittinoInputFileName ) {
 
-    std::cout << "Fittino input files not supported yet" << std::endl;
+    throw InputFileException( "Fittino input files not supported yet" );
 
 }
