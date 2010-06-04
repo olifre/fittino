@@ -27,6 +27,7 @@
 
 #include "Configuration.h"
 #include "Controller.h"
+#include "ConfigurationException.h"
 #include "InputFileException.h"
 #include "InputFileInterpreterBase.h"
 #include "InputFileInterpreterFactory.h"
@@ -101,7 +102,12 @@ void Fittino::Controller::ExecuteFittino() {
         }
         else if ( Configuration::GetInstance()->GetExecutionMode() == ExecutionMode::SCAN ) {
 
-            throw InputFileException( "Execution mode SCAN not supported yet." );
+            throw ConfigurationException( "Execution mode SCAN not supported yet." );
+
+        }
+        else {
+
+            throw ConfigurationException( "Configured execution mode unknown." );
 
         }
 
@@ -121,11 +127,16 @@ void Fittino::Controller::TerminateFittino() {
 
 Fittino::Controller* Fittino::Controller::_instance = 0;
 
-Fittino::Controller::Controller() {
+Fittino::Controller::Controller()
+        : _randomSeed( 0 ),
+          _inputFileName( "" ), 
+          _messenger( new Messenger() ) { 
 
 }
 
 Fittino::Controller::~Controller() {
+
+    delete _messenger;
 
 }
 
