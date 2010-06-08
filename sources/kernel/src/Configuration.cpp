@@ -50,21 +50,33 @@ Fittino::ExecutionMode::Mode Fittino::Configuration::GetExecutionMode() const {
 
 }
 
+Fittino::ModelBase::ModelType Fittino::Configuration::GetModelType() const {
+
+    /*!
+     *  Returns configured model type
+     */
+    return _modelType;
+
+}
+
 Fittino::OptimizerBase::OptimizerType Fittino::Configuration::GetOptimizerType() const {
 
     /*!
      *  Returns configured optimizer type
      */
     return _optimizerType;
+
 }
 
 Fittino::Configuration::Configuration()
         : _executionMode( ExecutionMode::OPTIMIZATION ),
           _steeringParameterMap( new SteeringParameterMap() ),
+          _modelType( ModelBase::ROSENBROCKMODEL ), 
           _optimizerType( OptimizerBase::PARTICLESWARMOPTIMIZER ) {
 
     /*!
      *  Sets default execution mode (optimization)
+     *  Sets default model (Rosenbrock model)
      *  Sets default optimizer (particle swarm optimizer)
      */
 

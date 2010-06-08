@@ -19,7 +19,8 @@
 
 #include "ModelBase.h"
 
-Fittino::ModelBase::ModelBase() {
+Fittino::ModelBase::ModelBase()
+        : _dimension(0) {
 
 }
 

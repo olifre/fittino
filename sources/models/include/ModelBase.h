@@ -31,14 +31,21 @@ namespace Fittino {
   class ModelBase {
 
     public:
+      enum      ModelType { ROSENBROCKMODEL };
+
+    public:
       /*!
        *  Constructor
        */
-      ModelBase();
+                ModelBase();
+      int       GetDimension() const;
       /*!
        *  Destructor
        */
-      ~ModelBase();
+                ~ModelBase();
+
+    private:
+      const int _dimension;
 
   };
 

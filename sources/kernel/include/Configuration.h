@@ -30,6 +30,7 @@
 
 #include "ExecutionMode.h"
 #include "SteeringParameterBase.h"
+#include "ModelBase.h"
 #include "OptimizerBase.h"
 
 /*! 
@@ -51,6 +52,7 @@ namespace Fittino {
     public:
       void                                  AddSteeringParameter( std::string key, std::string value );
       ExecutionMode::Mode                   GetExecutionMode() const;
+      ModelBase::ModelType                  GetModelType() const;
       OptimizerBase::OptimizerType          GetOptimizerType() const;
 
     public:
@@ -67,6 +69,7 @@ namespace Fittino {
     private:
       ExecutionMode::Mode                   _executionMode;
       SteeringParameterMap*                 _steeringParameterMap;
+      ModelBase::ModelType                  _modelType;
       OptimizerBase::OptimizerType          _optimizerType;
   
   };

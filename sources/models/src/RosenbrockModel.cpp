@@ -17,9 +17,17 @@
 *                                                                              *
 *******************************************************************************/
 
+#include "Configuration.h"
 #include "RosenbrockModel.h"
 
-Fittino::RosenbrockModel::RosenbrockModel() {
+Fittino::RosenbrockModel::RosenbrockModel()
+        : _x ( 0. ),
+          _y ( 0. ) {
+
+    Configuration* configuration = Configuration::GetInstance();
+
+    _x = configuration->GetSteeringParameter( "X", 0. );
+    _y = configuration->GetSteeringParameter( "Y", 0. );
 
 }
 

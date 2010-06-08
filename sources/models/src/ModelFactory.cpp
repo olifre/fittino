@@ -1,14 +1,14 @@
-/* $Id$ */
+/* $Id: ModelFactory.cpp 613 2010-05-26 09:42:00Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        RosenbrockModel.h                                                *
+* File        ModelFactory.cpp                                                 *
 *                                                                              *
-* Description Implementation of the Rosenbrock model                           *
+* Description Factory class for models                                         *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenrbrock@physik.uni-bonn.de>             *
+* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -17,37 +17,24 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_ROSENBROCKMODEL_H
-#define FITTINO_ROSENBROCKMODEL_H
+#include "ModelFactory.h"
+#include "RosenbrockModel.h"
 
-#include "ModelBase.h"
-
-/*!
- *  \brief Fittino namespace
- */
-namespace Fittino {
-
-  /*!
-   *  \brief Implementation of the Rosenbrock model 
-   */
-  class RosenbrockModel : public ModelBase {
-
-    public:
-      double _x;
-      double _y;
-
-    public:
-      /*!
-       *  Constructor
-       */
-             RosenbrockModel();
-      /*!
-       *  Destructor
-       */
-             ~RosenbrockModel();
-
-  };
+Fittino::ModelFactory::ModelFactory() {
 
 }
 
-#endif // FITTINO_ROSENBROCKMODEL_H
+Fittino::ModelBase* Fittino::ModelFactory::GetModel( Fittino::ModelBase::ModelType modelType ) const {
+
+    switch ( modelType ) {
+
+        case Fittino::ModelBase::ROSENBROCKMODEL:
+            return new RosenbrockModel();
+
+    }
+
+}
+
+Fittino::ModelFactory::~ModelFactory() {
+
+}

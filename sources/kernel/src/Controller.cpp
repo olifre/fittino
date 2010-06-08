@@ -31,6 +31,8 @@
 #include "InputException.h"
 #include "InputFileInterpreterBase.h"
 #include "InputFileInterpreterFactory.h"
+#include "ModelBase.h"
+#include "ModelFactory.h"
 #include "OptimizerBase.h"
 #include "OptimizerFactory.h"
 
@@ -131,10 +133,14 @@ void Fittino::Controller::ExecuteFittino() {
 
     try {
 
+        ModelFactory modelFactory;
+        ModelBase* model = modelFactory.GetModel( Configuration::GetInstance()->GetModelType() );
+
         if ( Configuration::GetInstance()->GetExecutionMode() == ExecutionMode::OPTIMIZATION ) {
 
             OptimizerFactory optimizerFactory;
             OptimizerBase* optimizer = optimizerFactory.GetOptimizer( Configuration::GetInstance()->GetOptimizerType() );
+            //optimizer->AssociateModel( model );
             optimizer->Execute();
             delete optimizer;
 
@@ -149,6 +155,8 @@ void Fittino::Controller::ExecuteFittino() {
             throw ConfigurationException( "Configured execution mode unknown." );
 
         }
+
+        delete model; 
 
     }
     catch ( ConfigurationException& configurationException ) {
