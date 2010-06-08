@@ -28,7 +28,7 @@
 #include "Configuration.h"
 #include "Controller.h"
 #include "ConfigurationException.h"
-#include "InputFileException.h"
+#include "InputException.h"
 #include "InputFileInterpreterBase.h"
 #include "InputFileInterpreterFactory.h"
 #include "OptimizerBase.h"
@@ -48,40 +48,69 @@ Fittino::Controller* Fittino::Controller::GetInstance() {
 
 void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
+    // If Fittino is called without options or arguments print a help text with
+    // further instructions and exit.
+
+    if ( argc == 1 ) {
+
+        Fittino::Controller::PrintHelp();
+        exit( EXIT_SUCCESS );
+
+    }
+
+    // Otherwise use getopt() to handle given options. For more informations on
+    // getopt() see manpage of getopt(3)
+
     static struct option options[] = {
 
         {"input-file", required_argument, 0, 'i'},
         {"help",       no_argument,       0, 'h'},
-        {"seed",       required_argument, 0, 's'}
+        {"seed",       required_argument, 0, 's'},
+        {0,            0,                 0, 0  }
 
     };
 
-    while ( true ) {
+    int optionIndex = 0;
+    int optionCode = -1;
+    opterr = 0;
 
-        int optionIndex = 0;
-        int optionCode = getopt_long( argc, argv, "i:hs:", options, &optionIndex );
+    try {
 
-        if ( optionCode == -1 ) break;
+        while ( true ) {
 
-        switch ( optionCode ) {
+            optionCode = getopt_long( argc, argv, ":i:hs:", options, &optionIndex );
 
-            case 'i':
-                _inputFileName = std::string( optarg );
-                continue;
+            if ( optionCode == -1 ) break;
 
-            case 'h':
-                Fittino::Controller::PrintHelp();
-                exit( EXIT_SUCCESS );
+            switch ( optionCode ) {
 
-            case 's':
-                _randomSeed = atoi( optarg );
-                continue;
+                case 'i':
+                    _inputFileName = std::string( optarg );
+                    continue;
+
+                case 'h':
+                    Fittino::Controller::PrintHelp();
+                    exit( EXIT_SUCCESS );
+
+                case 's':
+                    _randomSeed = atoi( optarg );
+                    continue;
+
+                case ':':
+                    throw InputException( "Missing option parameter." );
+
+                default:
+                    throw InputException( "Unknown option(s)" );
+
+            }
 
         }
 
-    }
+        if ( optind < argc && argc == 2 ) {
 
-    try {
+            _inputFileName = std::string( argv[optind] );
+
+        }
 
         InputFileInterpreterFactory inputFileInterpreterFactory;
         InputFileInterpreterBase* inputFileInterpreter = inputFileInterpreterFactory.GetInputFileInterpreter( Controller::GetInputFileFormat() );
@@ -89,9 +118,9 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
         delete inputFileInterpreter;
 
     }
-    catch ( InputFileException& inputFileException ) {
+    catch ( InputException& inputException ) {
 
-        std::cout << "\n" << inputFileException.what() << "\n" << std::endl;
+        std::cout << "\n" << inputException.what() << "\n" << std::endl;
         exit( EXIT_FAILURE );
 
     }
@@ -153,23 +182,22 @@ Fittino::Controller::~Controller() {
 void Fittino::Controller::PrintHelp() {
 
     std::cout << std::endl;
-    std::cout << "Usage: fittino [<parameters>]" << std::endl;
+    std::cout << "Usage: fittino [OPTION(S)] [FILE]" << std::endl;
     std::cout << std::endl;
-    std::cout << "Supported parameters are:" << std::endl;
+    std::cout << "  If only a single parameter is given (different from \"-h\" or \"--help\")," << std::endl;
+    std::cout << "  Fittino reads in input file FILE." << std::endl;
+    std::cout << "  Input file suffix must be .ftn (Fittino format) or .xml (XML format)." << std::endl;
     std::cout << std::endl;
-    std::cout << "  <inputfile>" << std::endl;
-    std::cout << "      If only a single parameter is given (different from \"-h\" or \"--help\")," << std::endl;
-    std::cout << "      Fittino reads in input file <inputfile>." << std::endl;
-    std::cout << "      Input file suffix must be .ftn (Fittino format) or .xml (XML format)." << std::endl;
+    std::cout << "Supported options are:" << std::endl;
     std::cout << std::endl;
     std::cout << "  -h, --help" << std::endl;
     std::cout << "      Fittino prints this message." << std::endl;
     std::cout << std::endl;
-    std::cout << "  -i <inputfile>" << std::endl;
-    std::cout << "      Fittino uses input file <inputfile>." << std::endl;
+    std::cout << "  -i, --input-file=FILE " << std::endl;
+    std::cout << "      Fittino uses input file FILE." << std::endl;
     std::cout << "      Input file suffix must be .ftn (Fittino format) or .xml (XML format)." << std::endl;
     std::cout << std::endl;
-    std::cout << "  -s <seed>" << std::endl;
+    std::cout << "  -s, --seed=SEED" << std::endl;
     std::cout << "      Fittino uses the given random number generator seed." << std::endl;
     std::cout << std::endl;
 
@@ -181,7 +209,7 @@ Fittino::InputFileInterpreterBase::InputFileFormat Fittino::Controller::GetInput
 
         if ( _inputFileName.length() < 5 ) {
 
-            throw InputFileException( "Invalid input file name." );
+            throw InputException( "Invalid input file name." );
 
         }
 
@@ -197,14 +225,14 @@ Fittino::InputFileInterpreterBase::InputFileFormat Fittino::Controller::GetInput
         }
         else {
 
-            throw InputFileException( "Input file suffix must be .ftn (Fittino format) or .xml (XML format)." );
+            throw InputException( "Input file suffix must be .ftn (Fittino format) or .xml (XML format)." );
 
         }
 
     }
-    catch ( InputFileException& inputFileException ) {
+    catch ( InputException& inputException ) {
 
-        std::cout << "\n" << inputFileException.what() << "\n" << std::endl;
+        std::cout << "\n" << inputException.what() << "\n" << std::endl;
         exit( EXIT_FAILURE );
 
     }

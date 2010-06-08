@@ -31,7 +31,7 @@
 #include "TXMLNode.h"
 
 #include "Configuration.h"
-#include "InputFileException.h"
+#include "InputException.h"
 #include "XMLInputFileInterpreter.h"
 
 Fittino::XMLInputFileInterpreter::XMLInputFileInterpreter() {
@@ -56,7 +56,7 @@ void Fittino::XMLInputFileInterpreter::Parse( const TString& xmlInputFileName ) 
 
     if ( parseCode != 0 ) {
 
-        throw InputFileException( "Parsing of xml document failed" );
+        throw InputException( "Parsing of xml document failed" );
         exit( EXIT_FAILURE );
 
     }
