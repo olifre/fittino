@@ -10361,17 +10361,17 @@ int   ReadLesHouches()
 
 vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm, vector<double> xp, vector<double> lb, vector <double> ub, vector<string> xNames )
 {
-   // Fill input vectors
+  // Fill input vectors
   int successes = 0;
   Double_t dummyfloat = 5.;
   Int_t dummyint = 1;
   Double_t xdummy[100];
   double previousChi2 = 1.E10;
   TRandom3* random = new TRandom3();
-
+  
   if( x.size() == 0 ) cout <<"WARNING: x vector has size 0 !"<< endl;
-
- // Information about optimization
+  
+  // Information about optimization
   TFile *tempoFile = new TFile( "tempoFile.root", "RECREATE" );
   int maxStep = 0;
   if( yyNumberOptimizationSteps < 0 ) maxStep = 1000;
@@ -10390,82 +10390,82 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
   if( yyGlobalOptimizationOnly )
     cout << "NOTE: global optimization performed only" << endl;
   if( !yyGlobalOptimizationOnly ){
-  if( yyIndividuallyOptimized != "" )
-    cout << "NOTE: individual optimization performed for variable "<< yyIndividuallyOptimized <<" only, with the slope value " <<yyOptimizationSlope<< endl;
-
-  // 1 == Tune width of proposal distribution so that success rate is in [acceptLow;acceptUp]
-  for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++){
+    if( yyIndividuallyOptimized != "" )
+      cout << "NOTE: individual optimization performed for variable "<< yyIndividuallyOptimized <<" only, with the slope value " <<yyOptimizationSlope<< endl;
     
-    if( yyIndividuallyOptimized != "" && xNames[iVariable] != yyIndividuallyOptimized ) continue;
-
-    cout << "NOTE: Optimization for variable " << xNames[iVariable] << endl;
-    bool firstChain = true;
-    bool successRateOK = false;
-    int numChain = 0;
-
-    // 1 == Prelimimary Markov chain 
-    while( firstChain || !successRateOK ){
-      cout << " ====  New chain ==== "<< endl;
+    // 1 == Tune width of proposal distribution so that success rate is in [acceptLow;acceptUp]
+    for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++){
       
-      // == Before the beginning of each new chain, reset the starting point 
-      x[iVariable] = yyFittedVec[iVariable].value;
+      if( yyIndividuallyOptimized != "" && xNames[iVariable] != yyIndividuallyOptimized ) continue;
       
-      firstChain = false;
-      successes = 0;
-      int step = 0;
-      while( step < maxStep ){
-	cout << yyDashedLine << endl;
-	cout << "NOTE: Individual optimization, step " << step << endl;
+      cout << "NOTE: Optimization for variable " << xNames[iVariable] << endl;
+      bool firstChain = true;
+      bool successRateOK = false;
+      int numChain = 0;
+      
+      // 1 == Prelimimary Markov chain 
+      while( firstChain || !successRateOK ){
+	cout << " ====  New chain ==== "<< endl;
 	
-	// 1.2 == Pick a new point within bounds according to proposal distribution
-	bool outOfBounds = false;
-	bool first = true;
-	while ( outOfBounds == true || first == true ){
-	  first = false; 
-	  outOfBounds = false;
-	  xp[iVariable] = x[iVariable] + random->Gaus( 0., vm[iVariable] );
-	  if ( ( xp[iVariable] < lb[iVariable] ) || ( xp[iVariable] > ub[iVariable] ) ) outOfBounds = true;
-	}
-	cout << "Picked value " << xNames[iVariable] << " = " << xp[iVariable] << endl;
-
-	// 1.3 == Calculate chi2
-	double chi2 = 1.E10;
-	for (unsigned int i = 0; i < xp.size(); i++) xdummy[i] = xp[i];
-	fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
-		   		     
-	// 1.4 == Compare chi2 and the previous chi2
-	if ( step == 0 ) previousChi2 = chi2 + 1.;
-	double rho =  TMath::Exp( -chi2/2. + previousChi2/2. );
-	cout <<"rho = " << rho << endl;		   		 
-
-	// 1.5 == Decide which point to accept
-	float accpoint = 0;
-	if( rho > 1.) accpoint = 1;
-	else{
-	  double p = random->Uniform( 0., 1. );
-	  cout << "p = "<< p << endl;
-	  if( p < rho ) accpoint = 1;
-	} 
-	cout << "IT accpoint = "<< accpoint << endl;
-	// 1.6 == Count the number of successes
-	if( accpoint == 1 ){
-	  successes++;
-	  x[iVariable] = xp[iVariable];
-	  previousChi2 = chi2;
-	}
-	step++;
+	// == Before the beginning of each new chain, reset the starting point 
+	x[iVariable] = yyFittedVec[iVariable].value;
 	
-	// 1.7 == Modify width
-	if( step == maxStep )
-	  {
-	    float _s = successes;
-	    float _m = maxStep;
-	    float successRate = _s / _m;
-	    numChain++;
-	    cout << "step" << step << " --->IT "<< xNames[iVariable] << " Former width = "<<  vm[iVariable] << endl;
-	    if( successRate == 0 ) successRate = 0.2;
-
-	    if( successRate > acceptUp ) vm[iVariable] *= ( 1 + yyOptimizationSlope*( successRate - acceptUp )/successRate );
+	firstChain = false;
+	successes = 0;
+	int step = 0;
+	while( step < maxStep ){
+	  cout << yyDashedLine << endl;
+	  cout << "NOTE: Individual optimization, step " << step << endl;
+	  
+	  // 1.2 == Pick a new point within bounds according to proposal distribution
+	  bool outOfBounds = false;
+	  bool first = true;
+	  while ( outOfBounds == true || first == true ){
+	    first = false; 
+	    outOfBounds = false;
+	    xp[iVariable] = x[iVariable] + random->Gaus( 0., vm[iVariable] );
+	    if ( ( xp[iVariable] < lb[iVariable] ) || ( xp[iVariable] > ub[iVariable] ) ) outOfBounds = true;
+	  }
+	  cout << "Picked value " << xNames[iVariable] << " = " << xp[iVariable] << endl;
+	  
+	  // 1.3 == Calculate chi2
+	  double chi2 = 1.E10;
+	  for (unsigned int i = 0; i < xp.size(); i++) xdummy[i] = xp[i];
+	  fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
+	  
+	  // 1.4 == Compare chi2 and the previous chi2
+	  if ( step == 0 ) previousChi2 = chi2 + 1.;
+	  double rho =  TMath::Exp( -chi2/2. + previousChi2/2. );
+	  cout <<"rho = " << rho << endl;		   		 
+	  
+	  // 1.5 == Decide which point to accept
+	  float accpoint = 0;
+	  if( rho > 1.) accpoint = 1;
+	  else{
+	    double p = random->Uniform( 0., 1. );
+	    cout << "p = "<< p << endl;
+	    if( p < rho ) accpoint = 1;
+	  } 
+	  cout << "IT accpoint = "<< accpoint << endl;
+	  // 1.6 == Count the number of successes
+	  if( accpoint == 1 ){
+	    successes++;
+	    x[iVariable] = xp[iVariable];
+	    previousChi2 = chi2;
+	  }
+	  step++;
+	  
+	  // 1.7 == Modify width
+	  if( step == maxStep )
+	    {
+	      float _s = successes;
+	      float _m = maxStep;
+	      float successRate = _s / _m;
+	      numChain++;
+	      cout << "step" << step << " --->IT "<< xNames[iVariable] << " Former width = "<<  vm[iVariable] << endl;
+	      if( successRate == 0 ) successRate = 0.2;
+	      
+	      if( successRate > acceptUp ) vm[iVariable] *= ( 1 + yyOptimizationSlope*( successRate - acceptUp )/successRate );
 	      if( successRate < acceptLow ){
 		float tempScale = ( 1 + ( successRate - acceptLow )/successRate );
 		if( tempScale > 0 ) vm[iVariable] *= tempScale;
@@ -10473,26 +10473,27 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
 	      }
 	      if( successRate >= acceptLow && successRate <= acceptUp ) successRateOK = true;
 	      cout << "step" << step << " --->IT "<< xNames[iVariable] << " #success = " << successes <<" Markov Chain success rate = " <<  successRate <<" New width = "<<  vm[iVariable] << endl;
-	  }
+	    }
+	}
       }
     }
   }
-  }
-
-
-  if( yyGlobalOptimizationOnly ){
-
-  // 2 == Global scaling of all variables by a factor 1/(nVar)^lambda, lambda=0.5
-  unsigned int nVar = x.size();
-  cout << "NOTE: Global scaling by 1/sqrt(N) = " << 1/sqrt( nVar ) << endl;
-  for (unsigned int iVariable = 0; iVariable < nVar; iVariable++) vm[iVariable] = vm[iVariable] / sqrt( nVar );
   
-  // 3 == Estimation of correlations and eigenvalues/vectors
-  TString VarChain = "", VarChainChi2 = "";
-  for (unsigned int iVar = 0; iVar < nVar; iVar++){
-    if( iVar == 0 ) VarChain += xNames[iVar];
-    if( iVar > 0 ) VarChain += ":" + xNames[iVar];
-  }
+  // PBe: Comment out the following: Otherwise no global optimization is run!
+  //  if( yyGlobalOptimizationOnly ){
+  if( yyIndividuallyOptimized == "" ) {
+    
+    // 2 == Global scaling of all variables by a factor 1/(nVar)^lambda, lambda=0.5
+    unsigned int nVar = x.size();
+    cout << "NOTE: Global scaling by 1/sqrt(N) = " << 1/sqrt( nVar ) << endl;
+    for (unsigned int iVariable = 0; iVariable < nVar; iVariable++) vm[iVariable] = vm[iVariable] / sqrt( nVar );
+    
+    // 3 == Estimation of correlations and eigenvalues/vectors
+    TString VarChain = "", VarChainChi2 = "";
+    for (unsigned int iVar = 0; iVar < nVar; iVar++){
+      if( iVar == 0 ) VarChain += xNames[iVar];
+      if( iVar > 0 ) VarChain += ":" + xNames[iVar];
+    }
     VarChainChi2 = VarChain + ":chi2";
     ntupleCov = new TNtuple("ntupleCov","ntupleCov", VarChainChi2 );
     TNtuple* ntupleSamp = new TNtuple("ntupleSamp","ntupleSamp", VarChain );
@@ -10501,133 +10502,141 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
       cout << "NOTE: correlations will be included in Markov chain" << endl;
       eigenValues.ResizeTo( nVar );
       eigenVectors.ResizeTo( nVar, nVar );
-    correlationMatrix.ResizeTo( nVar, nVar );
-    estimateCorrelations( x, xp, vm, lb, ub );
-    computeCovMatrix( vm );
-  }
-  if( !yyCorrelationInMarkovChain ) cout << "NOTE: correlations will not be included in Markov chain" << endl;
-
-  // 4 == Global optimization
-  bool firstChain = true;
-  bool successRateOK = false;
-  while( firstChain || !successRateOK ){
-    firstChain = false;
-    successes = 0;
-    int step = 0;
-    cout << yyDashedLine << endl;
-    cout << "NOTE: New chain... "<< endl;
-    cout << yyDashedLine << endl;
-
-    // 4.1 == Reset the starting point 
-    for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) x[iVariable] = yyFittedVec[iVariable].value;
-
-    // 4.2 == Start the chain
-    while( step <= maxStep ){
+      correlationMatrix.ResizeTo( nVar, nVar );
+      estimateCorrelations( x, xp, vm, lb, ub );
+      computeCovMatrix( vm );
+    }
+    if( !yyCorrelationInMarkovChain ) cout << "NOTE: correlations will not be included in Markov chain" << endl;
+    
+    // 4 == Global optimization
+    bool firstChain = true;
+    bool successRateOK = false;
+    while( firstChain || !successRateOK ){
+      firstChain = false;
+      successes = 0;
+      int step = 0;
       cout << yyDashedLine << endl;
-      cout << "NOTE: Global optimization, step " << step << " ===="<< endl;
+      cout << "NOTE: New chain... "<< endl;
+      cout << yyDashedLine << endl;
       
-        // 4.2.1 == Pick a new point
-      bool first = true;
-      bool outOfBounds = false;
-
-      // Choice of correlated new point 
-      if( yyCorrelationInMarkovChain ){
-       while ( outOfBounds == true ){
-	 outOfBounds = false;
-	 xp = correlatedRandomNumbers( x );
-	 for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++)
-	   if ( ( xp[iVariable] < lb[iVariable] ) || ( xp[iVariable] > ub[iVariable] ) ) outOfBounds = true;
-       }
-      }
-      // Choice of new point uncorrelated
-      if( !yyCorrelationInMarkovChain ){
-	for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++)
-	  {
-	    first = true; 
+      // 4.1 == Reset the starting point 
+      for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) x[iVariable] = yyFittedVec[iVariable].value;
+      
+      // 4.2 == Start the chain
+      while( step <= maxStep ){
+	cout << yyDashedLine << endl;
+	cout << "NOTE: Global optimization, step " << step << " ===="<< endl;
+	
+	// 4.2.1 == Pick a new point
+	bool first = true;
+	bool outOfBounds = false;
+	
+	// Choice of correlated new point 
+	if( yyCorrelationInMarkovChain ){
+	  while ( outOfBounds == true ){
 	    outOfBounds = false;
-	    	    
-	    while ( outOfBounds == true || first == true ){
-	      first = false; 
-	      outOfBounds = false;
-	      xp[iVariable] = x[iVariable] + random->Gaus( 0., vm[iVariable] );
+	    xp = correlatedRandomNumbers( x );
+	    for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++)
 	      if ( ( xp[iVariable] < lb[iVariable] ) || ( xp[iVariable] > ub[iVariable] ) ) outOfBounds = true;
-	    }
 	  }
-      }
-      cout << "Picked value: " << endl;
-      for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) cout << xNames[iVariable] << " = " << xp[iVariable] << endl;
-      ntupleSamp->Fill( xp[0], xp[1], xp[2], xp[3] );
-
-      // 4.2.2 == Calculate chi2
-      double chi2 = 1.E10;
-      for (unsigned int i = 0; i < xp.size(); i++) xdummy[i] = xp[i];
-      fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
-		     
-      // 4.2.3 == Compare chi2 and the previous chi2
-      if ( step == 0 ) previousChi2 = chi2 + 1.;
-      double rho =  TMath::Exp( -chi2/2. + previousChi2/2. );
-		 
-      // 4.2.4 == Decide which point to accept
-      float accpoint = 0;
-      if( rho > 1.) accpoint = 1;
-      else{
-	double p = random->Uniform( 0., 1. );
-	if( p < rho ) accpoint = 1;
-      } 
-      cout << "GT accpoint = "<< accpoint << endl;
-  
-      // 4.2.5 == Count the number of successes
-      if( accpoint == 1 ){
-	successes++;
-	for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) x[iVariable] = xp[iVariable];
-	previousChi2 = chi2;
-	ntupleAcc->Fill( xp[0], xp[1], xp[2], xp[3], chi2 );
-      }
-      step++;
-
-      // 4.3 == End of the chain
-      if( step == maxStep ){
-
-	// 4.3.1 == Count successes
-	float _s = successes;
-	float _m = maxStep;
-	float successRate = _s / _m;
-	cout << "step" << step << " --->GT #success = " << successes << " Markov Chain success rate = " <<  successRate << " Former widths : " << endl;
-	for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++)  cout << "step" << step << " --->GT "<< xNames[iVariable] << "  "<<  vm[iVariable] << endl;		       
-	if( successRate == 0 ) successRate = 0.2;
-		     
-	// 4.3.2 == Compute width scale
-	float globalScale = 1.;
-	if( successRate > acceptUp ) globalScale = ( 1 + ( successRate - acceptUp )/successRate );
-	if( successRate < acceptLow ){
-	  float tempScale = ( 1 + ( successRate - acceptLow )/successRate );
-	  if( tempScale > 0 ) globalScale = tempScale;
-	  if( tempScale < 0 ) globalScale = ( 1 + ( successRate - acceptLow )/acceptLow );
 	}
-	if( successRate >= acceptLow && successRate <= acceptUp ) successRateOK = true;
-
-	if( !successRateOK ){
+	// Choice of new point uncorrelated
+	if( !yyCorrelationInMarkovChain ){
+	  for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++)
+	    {
+	      first = true; 
+	      outOfBounds = false;
+	      
+	      while ( outOfBounds == true || first == true ){
+		first = false; 
+		outOfBounds = false;
+		xp[iVariable] = x[iVariable] + random->Gaus( 0., vm[iVariable] );
+		if ( ( xp[iVariable] < lb[iVariable] ) || ( xp[iVariable] > ub[iVariable] ) ) outOfBounds = true;
+	      }
+	    }
+	}
+	cout << "Picked value: " << endl;
+	for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) cout << xNames[iVariable] << " = " << xp[iVariable] << endl;
+	ntupleSamp->Fill( xp[0], xp[1], xp[2], xp[3] );
+	
+	// 4.2.2 == Calculate chi2
+	double chi2 = 1.E10;
+	for (unsigned int i = 0; i < xp.size(); i++) xdummy[i] = xp[i];
+	fitterFCN(dummyint, &dummyfloat, chi2, xdummy, 0);
+	
+	// 4.2.3 == Compare chi2 and the previous chi2
+	if ( step == 0 ) previousChi2 = chi2 + 1.;
+	double rho =  TMath::Exp( -chi2/2. + previousChi2/2. );
+	
+	// 4.2.4 == Decide which point to accept
+	float accpoint = 0;
+	if( rho > 1.) accpoint = 1;
+	else{
+	  double p = random->Uniform( 0., 1. );
+	  if( p < rho ) accpoint = 1;
+	} 
+	cout << "GT accpoint = "<< accpoint << endl;
+	
+	// 4.2.5 == Count the number of successes
+	if( accpoint == 1 ){
+	  successes++;
+	  for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) x[iVariable] = xp[iVariable];
+	  previousChi2 = chi2;
+	  ntupleAcc->Fill( xp[0], xp[1], xp[2], xp[3], chi2 );
+	}
+	step++;
+	
+	// 4.3 == End of the chain
+	if( step == maxStep ){
 	  
-	  // 4.3.3 == Modify widths
-	  for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++){
-	    vm[iVariable] = vm[iVariable] * globalScale;		     
-	    cout << "step" << step << " --->GT "<< xNames[iVariable] << " #success = " << successes <<" Markov Chain success rate = " <<  successRate <<" New width = "<<  vm[iVariable] << endl;
+	  // 4.3.1 == Count successes
+	  float _s = successes;
+	  float _m = maxStep;
+	  float successRate = _s / _m;
+	  cout << "step" << step << " --->GT #success = " << successes << " Markov Chain success rate = " <<  successRate << " Former widths : " << endl;
+	  for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++)  cout << "step" << step << " --->GT "<< xNames[iVariable] << "  "<<  vm[iVariable] << endl;		       
+	  if( successRate == 0 ) successRate = 0.2;
+	  
+	  // 4.3.2 == Compute width scale
+	  float globalScale = 1.;
+	  if( successRate > acceptUp ) globalScale = ( 1 + ( successRate - acceptUp )/successRate );
+	  if( successRate < acceptLow ){
+	    float tempScale = ( 1 + ( successRate - acceptLow )/successRate );
+	    if( tempScale > 0 ) globalScale = tempScale;
+	    if( tempScale < 0 ) globalScale = ( 1 + ( successRate - acceptLow )/acceptLow );
 	  }
-
-	  // 4.3.4 == Recalcul covariance matrix
-	  if( yyCorrelationInMarkovChain ) computeCovMatrix( vm );
+	  if( successRate >= acceptLow && successRate <= acceptUp ) successRateOK = true;
+	  
+	  if( !successRateOK ){
+	    
+	    // 4.3.3 == Modify widths
+	    for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++){
+	      vm[iVariable] = vm[iVariable] * globalScale;		     
+	      cout << "step" << step << " --->GT "<< xNames[iVariable] << " #success = " << successes <<" Markov Chain success rate = " <<  successRate <<" New width = "<<  vm[iVariable] << endl;
+	    }
+	    
+	    // 4.3.4 == Recalcul covariance matrix
+	    if( yyCorrelationInMarkovChain ) computeCovMatrix( vm );
+	  }
 	}
       }
     }
+
+    ntupleCov->Write();
+    ntupleSamp->Write();
+    ntupleAcc->Write();
+
+
   }
+
+
+
   tempoFile->cd();
-  ntupleCov->Write();
-  ntupleSamp->Write();
-  ntupleAcc->Write();
   tempoFile->Close();
   tempoFile->Delete();
-}
+
   return vm;
+
 }
 
 
