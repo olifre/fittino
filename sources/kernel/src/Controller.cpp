@@ -114,8 +114,13 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
         }
 
+        std::cout << "--------------------------------------------------------------------------------" << std::endl;
+        std::cout << "                                                                                " << std::endl;
+        std::cout << "  Welcome to Fittino"                                                             << std::endl;
+        std::cout << "                                                                                " << std::endl;
+
         InputFileInterpreterFactory inputFileInterpreterFactory;
-        InputFileInterpreterBase* inputFileInterpreter = inputFileInterpreterFactory.GetInputFileInterpreter( Controller::GetInputFileFormat() );
+        InputFileInterpreterBase* inputFileInterpreter = inputFileInterpreterFactory.CreateInputFileInterpreter( Controller::GetInputFileFormat() );
         inputFileInterpreter->Parse( _inputFileName );
         delete inputFileInterpreter;
 
@@ -134,13 +139,12 @@ void Fittino::Controller::ExecuteFittino() {
     try {
 
         ModelFactory modelFactory;
-        ModelBase* model = modelFactory.GetModel( Configuration::GetInstance()->GetModelType() );
+        ModelBase* model = modelFactory.CreateModel( Configuration::GetInstance()->GetModelType() );
 
         if ( Configuration::GetInstance()->GetExecutionMode() == ExecutionMode::OPTIMIZATION ) {
 
             OptimizerFactory optimizerFactory;
-            OptimizerBase* optimizer = optimizerFactory.GetOptimizer( Configuration::GetInstance()->GetOptimizerType() );
-            //optimizer->AssociateModel( model );
+            OptimizerBase* optimizer = optimizerFactory.CreateOptimizer( Configuration::GetInstance()->GetOptimizerType(), model );
             optimizer->Execute();
             delete optimizer;
 

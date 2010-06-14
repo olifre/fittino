@@ -29,7 +29,6 @@
 #include <sstream>
 
 #include "ExecutionMode.h"
-#include "SteeringParameterBase.h"
 #include "ModelBase.h"
 #include "OptimizerBase.h"
 
