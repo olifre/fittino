@@ -17,6 +17,9 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <cmath>
+#include <iostream>
+
 #include "Configuration.h"
 #include "RosenbrockModel.h"
 
@@ -26,11 +29,39 @@ Fittino::RosenbrockModel::RosenbrockModel()
 
     Configuration* configuration = Configuration::GetInstance();
 
+    _numberOfParameters = 2;
     _x = configuration->GetSteeringParameter( "X", 0. );
     _y = configuration->GetSteeringParameter( "Y", 0. );
+
+    _parameterVector.push_back( _x );
+    _parameterVector.push_back( _y );
+
+    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "  Initializing Rosenbrock model                                                 " << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "   Starting values                                                              " << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "    X    " << _x                                                                  << std::endl;
+    std::cout << "    Y    " << _y                                                                  << std::endl;
+    std::cout << "                                                                                " << std::endl;
+
+}
+
+Fittino::RosenbrockModel* Fittino::RosenbrockModel::Clone() const {
+
+    return new RosenbrockModel( *this );
 
 }
 
 Fittino::RosenbrockModel::~RosenbrockModel() {
+
+}
+
+double Fittino::RosenbrockModel::Evaluate() {
+
+    //double functionValue = pow( ( 1 - _x ), 2 ) + 100 * pow( _y - pow( _x, 2 ), 2 );
+    double functionValue = pow( ( 1 - _parameterVector[0] ), 2 ) + 100 * pow( _parameterVector[1] - pow( _parameterVector[0], 2 ), 2 );
+    return functionValue;
 
 }

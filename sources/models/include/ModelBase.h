@@ -20,6 +20,8 @@
 #ifndef FITTINO_MODELBASE_H
 #define FITTINO_MODELBASE_H
 
+#include <vector>
+
 /*!
  *  \brief Fittino namespace
  */
@@ -31,21 +33,25 @@ namespace Fittino {
   class ModelBase {
 
     public:
-      enum      ModelType { ROSENBROCKMODEL };
+      enum                 ModelType { ROSENBROCKMODEL };
 
     public:
       /*!
        *  Constructor
        */
-                ModelBase();
-      int       GetDimension() const;
+                           ModelBase();
       /*!
        *  Destructor
        */
-                ~ModelBase();
+                           ~ModelBase();
+      int                  GetNumberOfParameters() const;
+      std::vector<double>* GetParameterVector();
+      virtual double       Evaluate() = 0;
+      virtual ModelBase*   Clone() const = 0;
 
-    private:
-      const int _dimension;
+    protected:
+      int                  _numberOfParameters;
+      std::vector<double>  _parameterVector;
 
   };
 

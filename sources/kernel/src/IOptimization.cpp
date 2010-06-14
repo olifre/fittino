@@ -1,12 +1,12 @@
-/* $Id$ */
+/* $Id: IOptimization.cpp 613 2010-05-26 09:42:00Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        ModelBase.cpp                                                    *
+* File        IOptimization.cpp                                                *
 *                                                                              *
-* Description Base class for Fittino models                                    *
+* Description Interface class for optimization algorithms                      *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -17,25 +17,19 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "ModelBase.h"
+#include "IOptimization.h"
 
-Fittino::ModelBase::ModelBase()
-        : _numberOfParameters(0) {
-
-}
-
-Fittino::ModelBase::~ModelBase() {
+Fittino::IOptimization::IOptimization() {
 
 }
 
-int Fittino::ModelBase::GetNumberOfParameters() const {
-
-    return _numberOfParameters;
+Fittino::IOptimization::~IOptimization() {
 
 }
 
-std::vector<double>* Fittino::ModelBase::GetParameterVector() {
+double Fittino::IOptimization::EvaluateModel( ModelBase* model ) {
 
-    return &_parameterVector;
+    double chi2 = model->Evaluate();
+    return chi2;
 
 }

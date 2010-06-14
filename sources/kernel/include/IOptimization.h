@@ -1,12 +1,12 @@
-/* $Id$ */
+/* $Id: IOptimization.h 613 2010-05-26 09:42:00Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        ModelBase.cpp                                                    *
+* File        IOptimization.h                                                  *
 *                                                                              *
-* Description Base class for Fittino models                                    *
+* Description Interface class for optimization algorithms                      *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -17,25 +17,36 @@
 *                                                                              *
 *******************************************************************************/
 
+#ifndef FITTINO_IOPTIMIZATION_H
+#define FITTINO_IOPTIMIZATION_H
+
 #include "ModelBase.h"
 
-Fittino::ModelBase::ModelBase()
-        : _numberOfParameters(0) {
+/*!
+ *  \brief Fittino namespace
+ */
+namespace Fittino {
+
+  /*!
+   *  \brief Interface class for optimization algorithms
+   */
+  class IOptimization {
+
+    public:
+      /*!
+       *  Constructor
+       */
+                         IOptimization();
+      /*!
+       *  Destructor
+       */
+                         ~IOptimization();
+      double             EvaluateModel( ModelBase* model );
+      //virtual ModelBase* UpdateModel( ModelBase* oldModel ) = 0;
+      virtual void       UpdateModel() = 0;
+
+  };
 
 }
 
-Fittino::ModelBase::~ModelBase() {
-
-}
-
-int Fittino::ModelBase::GetNumberOfParameters() const {
-
-    return _numberOfParameters;
-
-}
-
-std::vector<double>* Fittino::ModelBase::GetParameterVector() {
-
-    return &_parameterVector;
-
-}
+#endif // FITTINO_IOPTIMIZATION_H

@@ -23,11 +23,8 @@
 #ifndef FITTINO_PARTICLESWARMOPTIMIZATION_H
 #define FITTINO_PARTICLESWARMOPTIMIZATION_H
 
-#include <iostream>
-
-#include "ModelBase.h"
 #include "OptimizerBase.h"
-//#include "ParticleSwarm.h"
+#include "Particle.h"
 
 /*! 
  *  \brief Fittino namespace 
@@ -43,46 +40,37 @@ namespace Fittino {
    *    \vec{r} = \vec{r} + \vec{v} 
    *  \f] 
    *
-   *  
-   *
-   */
-
-  /*!
-   *  \todo Mid-term: Rethink optimizer design
-   *
-   *  \todo Mid-term: Make optimizer fully configurable from instance of
-   *        Configuration class
    */
   class ParticleSwarmOptimizer : public OptimizerBase {
   
     public:
       /*!
        *  The constructor of the particle swarm optimizer takes as input the
-       *  maximal number of iteration steps , the number of particles in the
-       *  swarm , the global scaling parameter c1 which determines and the
+       *  maximal number of iteration steps, the number of particles in the
+       *  swarm, the global scaling parameter c1 which determines and the
        *  local scaling parameter c2 witch determines respectively. It
        *  subsequently creates and initializes a particle swarm with the
        *  specified number of particles.
        */
-	                 ParticleSwarmOptimizer();
+	                     ParticleSwarmOptimizer( ModelBase* model );
       /*!
        *  The destructor of the particle swarm optimizer. It calls the
        *  destructor of the particle swarm. 
        */
-                         ~ParticleSwarmOptimizer();
+                             ~ParticleSwarmOptimizer();
+      virtual void           Execute();
 
     private:
-      virtual ModelBase* UpdateModel();
+      double                 _c1;
+      double                 _c2;
+      unsigned int           _numberOfParticles;
+      std::vector<Particle*> _particleSwarm;
+
+    private:
+      virtual void           PrintConfiguration();
+      virtual void           PrintResult();
+      virtual void           PrintStatus();
  
-    private:
-      unsigned int       _numberOfParticles;
-      double             _c1;
-      double             _c2;
-      //ParticleSwarm* _particleSwarm;
-
-    private:
-      //void               DeclareSteeringParameter( std::string parameterName, SteeringParameterBase parameterValue );
-
   };
 
 }

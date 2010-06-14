@@ -33,18 +33,23 @@ namespace Fittino {
   class RosenbrockModel : public ModelBase {
 
     public:
-      double _x;
-      double _y;
+      double                   _x;
+      double                   _y;
 
     public:
       /*!
        *  Constructor
        */
-             RosenbrockModel();
+                               RosenbrockModel();
+      /*!
+       *  Virtual copy constructor
+       */
+      virtual RosenbrockModel* Clone() const;
       /*!
        *  Destructor
        */
-             ~RosenbrockModel();
+                               ~RosenbrockModel();
+      virtual double           Evaluate();
 
   };
 

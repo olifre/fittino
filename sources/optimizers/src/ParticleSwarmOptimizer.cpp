@@ -20,53 +20,98 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <iostream>
+
 #include "Configuration.h"
 #include "ParticleSwarmOptimizer.h"
 
-void Fittino::ParticleSwarmOptimizer::Execute() {
-
-}
-
-Fittino::ParticleSwarmOptimizer::ParticleSwarmOptimizer() {
+Fittino::ParticleSwarmOptimizer::ParticleSwarmOptimizer( Fittino::ModelBase* model )
+        : OptimizerBase( model ) {
 
     Configuration* configuration = Configuration::GetInstance();
 
     _c1 = configuration->GetSteeringParameter( "C1", 0.01 );
     _c2 = configuration->GetSteeringParameter( "C2", 0.01 );
+    _name =  "particle swarm optimization algorithm";
     _numberOfParticles = configuration->GetSteeringParameter( "NumberOfParticles", 20 );
 
-    //_particleSwarm = new ParticleSwarm( _numberOfParticles, _c1, _c2 );
+    TRandom _randomGenerator;
 
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "  Optimizing Rosenbrock model                                                   " << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "   Starting values                                                              " << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "    X     2.56                                                                  " << std::endl;
-    std::cout << "    Y    -1.54                                                                  " << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "  Initializing particle swarm optimization algorithm                            " << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "   Configuration                                                                " << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "    Maximum number of iterations    10000                                       " << std::endl;
-    std::cout << "    Number of particles             " << _numberOfParticles                       << std::endl;
-    std::cout << "    Global scaling factor c1        " << _c1                                      << std::endl;
-    std::cout << "    Local  scaling factor c2        " << _c2                                      << std::endl;
-    std::cout << "                                                                                " << std::endl;
+    for ( unsigned int n = 0; n < _numberOfParticles; n++ ) {
+
+        int seed = _randomGenerator.Uniform( 0, 10000 );
+
+        Particle* particle = new Particle( _c1, _c2, _model, seed );
+        _particleSwarm.push_back( particle );
+
+    }
+
+    ParticleSwarmOptimizer::PrintConfiguration();
+
 
 }
 
 Fittino::ParticleSwarmOptimizer::~ParticleSwarmOptimizer() {
 
-    //_particleSwarm->PrintGlobalOptimum();
+    ParticleSwarmOptimizer::PrintResult();
+    //delete _particleSwarm;
+
+}
+
+void Fittino::ParticleSwarmOptimizer::Execute() {
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "                                                                                " << std::endl;
-    std::cout << "  Terminating particle swarm optimization algorithm                             " << std::endl;
+    std::cout << "  Running " << _name                                                              << std::endl;
+    std::cout << "                                                                                " << std::endl;
+
+    unsigned int iterationCounter = 0;
+
+    while (  _globalBestChi2 > _abortCriterium && iterationCounter < _numberOfIterations ) {
+
+        iterationCounter++;
+
+        for ( unsigned int i = 0; i < _particleSwarm.size(); i++ ) {
+
+            _particleSwarm[i]->UpdateModel();
+
+        }
+
+        _globalBestChi2 = Fittino::Particle::_globalBestChi2;
+        _model = Fittino::Particle::_globalBestModel;
+
+        PrintStatus();
+
+    }
+
+    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "  Optimization converged after " << iterationCounter << " iterations            " << std::endl;
+    std::cout << "                                                                                " << std::endl;
+
+}
+
+void Fittino::ParticleSwarmOptimizer::PrintConfiguration() {
+
+    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "  Initializing " << _name                                                         << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "   Configuration                                                                " << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "    Maximum number of iterations    " << _numberOfIterations                      << std::endl;
+    std::cout << "    Number of particles             " << _numberOfParticles                       << std::endl;
+    std::cout << "    Global scaling factor c1        " << _c1                                      << std::endl;
+    std::cout << "    Local scaling factor c2         " << _c2                                      << std::endl;
+    std::cout << "                                                                                " << std::endl;
+
+}
+
+void Fittino::ParticleSwarmOptimizer::PrintResult() {
+
+    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "  Terminating " << _name                                                          << std::endl;
     std::cout << "                                                                                " << std::endl;
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "                                                                                " << std::endl;
@@ -74,31 +119,23 @@ Fittino::ParticleSwarmOptimizer::~ParticleSwarmOptimizer() {
     std::cout << "                                                                                " << std::endl;
     std::cout << "   Final set of Rosenbrock model parameters                                     " << std::endl;
     std::cout << "                                                                                " << std::endl;
-    std::cout << "    X     1.00                                                                  " << std::endl;
-    std::cout << "    Y     1.01                                                                  " << std::endl;
+    std::cout << "    X    " << ( *( _model->GetParameterVector() ) )[0]                            << std::endl;
+    std::cout << "    Y    " << ( *( _model->GetParameterVector() ) )[1]                            << std::endl;
     std::cout << "                                                                                " << std::endl;
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
 
-    //delete _particleSwarm;
-
 }
 
-//void Fittino::ParticleSwarmOptimizer::Iterate() {
-//
-//    //_particleSwarm->FindGlobalOptimum();
-//
-//    //for ( unsigned int iParticle = 0; iParticle < _particleSwarm->size(); iParticle++ ) {
-//
-//    //    _particleSwarm->GetParticle( iParticle )->UpdatePosition();
-//    //    _abortCriterium = EvaluateModel( model );
-//
-//    //}
-//
-//    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-//    std::cout << "                                                                                " << std::endl;
-//    std::cout << "  Running particle swarm optimization algorithm                                 " << std::endl;
-//    std::cout << "                                                                                " << std::endl;
-//    std::cout << "   Optimization converged after 432 iterations                                  " << std::endl;
-//    std::cout << "                                                                                " << std::endl;
-//
-//}
+void Fittino::ParticleSwarmOptimizer::PrintStatus() {
+
+    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "  Actual best set of Rosenbrock model parameters                                " << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "    X    " << ( *( _model->GetParameterVector() ) )[0]                            << std::endl;
+    std::cout << "    Y    " << ( *( _model->GetParameterVector() ) )[1]                            << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "    Chi2 " << _globalBestChi2                                                     << std::endl;
+    std::cout << "                                                                                " << std::endl;
+
+}

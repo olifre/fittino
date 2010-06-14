@@ -1,12 +1,12 @@
-/* $Id: OptimizerBase.cpp,v 1.0 2007/10/08 09:37:15 uhlenbrock $ */
+/* $Id: Particle.h,v 1.0 2007/10/08 09:37:15 uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        OptimizerBase.cpp                                                *
+* File        Particle.h                                                       *
 *                                                                              *
-* Description Base class for Fittino parameter optimizers                      *
+* Description Class for Particle                                               *
 *                                                                              *
 * Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
 *             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
@@ -20,23 +20,54 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "Configuration.h"
-#include "OptimizerBase.h"
+#ifndef FITTINO_PARTICLE_H
+#define FITTINO_PARTICLE_H
 
-Fittino::OptimizerBase::OptimizerBase( ModelBase* model )
-        : _abortCriterium( 1e-6 ),
-          _globalBestChi2( 1e99 ),
-          _numberOfIterations( 10000 ),
-          _name( "" ),
-          _model( model ) {
+#include <vector>
 
-    Configuration* configuration = Configuration::GetInstance();
+#include "TRandom.h"
 
-    _abortCriterium = configuration->GetSteeringParameter( "AbortCriterium", 1e-6 );
-    _numberOfIterations = configuration->GetSteeringParameter( "NumberOfIterations", 10000 );
+#include "IOptimization.h"
+
+/*! 
+ *  \brief Fittino namespace 
+ */
+namespace Fittino {
+
+  /**
+   *  \brief Class for particle
+   */
+  class Particle : public IOptimization {
+
+    public:
+      static double       _globalBestChi2;
+      static ModelBase*   _globalBestModel;
+  
+    public:
+                          Particle( double c1, double c2, ModelBase* model, int seed );
+                          ~Particle();
+      virtual void        UpdateModel();
+  
+    private:
+      //static float        _c1;
+      //static float        _c2;
+  
+    private:
+      float               _c1;
+      float               _c2;
+      double              _personalBestChi2;
+      std::vector<double> _position;
+      std::vector<double> _velocity;
+      TRandom*            _randomGenerator;
+      ModelBase*          _model;
+      ModelBase*          _personalBestModel;
+
+    private:
+      void                UpdateVelocity();
+      void                UpdatePosition();
+  
+  };
 
 }
 
-Fittino::OptimizerBase::~OptimizerBase() {
-
-}
+#endif // FITTINO_PARTICLE_H
