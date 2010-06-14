@@ -8,10 +8,13 @@
 <!ELEMENT Model EMPTY>
 <!ATTLIST Model
   ModelType CDATA #REQUIRED
+  X         CDATA #REQUIRED
+  Y         CDATA #REQUIRED
 >
 
 <!ELEMENT Optimizer EMPTY>
 <!ATTLIST Optimizer
+  AbortCriterium     CDATA #REQUIRED
   NumberOfIterations CDATA #REQUIRED
   OptimizerType      CDATA #REQUIRED
 >
