@@ -114,10 +114,7 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
         }
 
-        std::cout << "--------------------------------------------------------------------------------" << std::endl;
-        std::cout << "                                                                                " << std::endl;
-        std::cout << "  Welcome to Fittino"                                                             << std::endl;
-        std::cout << "                                                                                " << std::endl;
+        Fittino::Controller::PrintLogo();
 
         InputFileInterpreterFactory inputFileInterpreterFactory;
         InputFileInterpreterBase* inputFileInterpreter = inputFileInterpreterFactory.CreateInputFileInterpreter( Controller::GetInputFileFormat() );
@@ -180,14 +177,11 @@ Fittino::Controller* Fittino::Controller::_instance = 0;
 
 Fittino::Controller::Controller()
         : _randomSeed( 0 ),
-          _inputFileName( "" ), 
-          _messenger( new Messenger() ) { 
+          _inputFileName( "" ) {
 
 }
 
 Fittino::Controller::~Controller() {
-
-    delete _messenger;
 
 }
 
@@ -212,6 +206,15 @@ void Fittino::Controller::PrintHelp() {
     std::cout << "  -s, --seed=SEED" << std::endl;
     std::cout << "      Fittino uses the given random number generator seed." << std::endl;
     std::cout << std::endl;
+
+}
+
+void Fittino::Controller::PrintLogo() {
+
+        std::cout << "--------------------------------------------------------------------------------" << std::endl;
+        std::cout << "                                                                                " << std::endl;
+        std::cout << "  Welcome to Fittino"                                                             << std::endl;
+        std::cout << "                                                                                " << std::endl;
 
 }
 

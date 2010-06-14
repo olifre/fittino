@@ -26,7 +26,6 @@
 #include <string>
 
 #include "InputFileInterpreterBase.h"
-#include "Messenger.h"
 
 /*! 
  *  \todo Mid-term: Make objects configurable via steering parameters
@@ -72,12 +71,12 @@ namespace Fittino {
     private:
       int                                       _randomSeed;
       std::string                               _inputFileName;
-      Messenger*                                _messenger;
 
     private:
                                                 Controller();
                                                 ~Controller();
       void                                      PrintHelp();
+      void                                      PrintLogo();
       InputFileInterpreterBase::InputFileFormat GetInputFileFormat();
 
   };
