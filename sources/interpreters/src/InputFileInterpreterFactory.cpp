@@ -25,7 +25,7 @@ Fittino::InputFileInterpreterFactory::InputFileInterpreterFactory() {
 
 }
 
-Fittino::InputFileInterpreterBase* Fittino::InputFileInterpreterFactory::GetInputFileInterpreter( Fittino::InputFileInterpreterBase::InputFileFormat inputFileFormat ) const {
+Fittino::InputFileInterpreterBase* Fittino::InputFileInterpreterFactory::CreateInputFileInterpreter( Fittino::InputFileInterpreterBase::InputFileFormat inputFileFormat ) const {
 
     switch ( inputFileFormat ) {
 

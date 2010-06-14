@@ -20,6 +20,7 @@
 #ifndef FITTINO_OPTIMIZERFACTORY_H
 #define FITTINO_OPTIMIZERFACTORY_H
 
+#include "ModelBase.h"
 #include "OptimizerBase.h"
 
 /*!
@@ -37,12 +38,11 @@ namespace Fittino {
        *  Constructor
        */
                      OptimizerFactory();
-      OptimizerBase* GetOptimizer( OptimizerBase::OptimizerType optimizerType ) const;
-
       /*!
        *  Destructor
        */
                      ~OptimizerFactory();
+      OptimizerBase* CreateOptimizer( OptimizerBase::OptimizerType optimizerType, ModelBase* model ) const;
 
   };
 

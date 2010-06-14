@@ -37,12 +37,11 @@ namespace Fittino {
        *  Constructor
        */
                  ModelFactory();
-      ModelBase* GetModel( ModelBase::ModelType modelType ) const;
-
       /*!
        *  Destructor
        */
                  ~ModelFactory();
+      ModelBase* CreateModel( ModelBase::ModelType modelType ) const;
 
   };
 

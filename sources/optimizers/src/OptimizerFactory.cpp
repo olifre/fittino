@@ -24,12 +24,12 @@ Fittino::OptimizerFactory::OptimizerFactory() {
 
 }
 
-Fittino::OptimizerBase* Fittino::OptimizerFactory::GetOptimizer( Fittino::OptimizerBase::OptimizerType optimizerType ) const {
+Fittino::OptimizerBase* Fittino::OptimizerFactory::CreateOptimizer( Fittino::OptimizerBase::OptimizerType optimizerType, Fittino::ModelBase* model ) const {
 
     switch ( optimizerType ) {
 
         case Fittino::OptimizerBase::PARTICLESWARMOPTIMIZER:
-            return new ParticleSwarmOptimizer();
+            return new ParticleSwarmOptimizer( model );
 
     }
 

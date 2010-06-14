@@ -24,7 +24,7 @@ Fittino::ModelFactory::ModelFactory() {
 
 }
 
-Fittino::ModelBase* Fittino::ModelFactory::GetModel( Fittino::ModelBase::ModelType modelType ) const {
+Fittino::ModelBase* Fittino::ModelFactory::CreateModel( Fittino::ModelBase::ModelType modelType ) const {
 
     switch ( modelType ) {
 
