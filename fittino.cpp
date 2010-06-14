@@ -196,11 +196,13 @@ int call_HiggsBounds(int nH, double* parameterVector)
       cout << "mh = " << Mh[i] << endl;
       double SMGammaTotal = 1.;
       double thisMh = 500.;
+      double fudgeSafety = 1.;
       if (Mh[i]<500.) {
 	thisMh = Mh[i];
       }
       else {
 	thisMh = 500.;
+	fudgeSafety = 1000.;
       }
       SMGammaTotal = smgamma_h_(&thisMh);
       HBmass[i].push_back(Mh[i]);
@@ -223,24 +225,24 @@ int call_HiggsBounds(int nH, double* parameterVector)
       daughter_list.push_back(ID_g);
       daughter_list.push_back(ID_g);
       temp_BR[i] = higgsBR(IDarray[i], daughter_list);
-      g2hjgg[i] = (temp_BR[i]*GammaTotal[i])/(smbr_hgg_(&thisMh)*SMGammaTotal);
+      g2hjgg[i] = (temp_BR[i]*GammaTotal[i])/(fudgeSafety*smbr_hgg_(&thisMh)*SMGammaTotal);
       daughter_list.clear();
       daughter_list.push_back(ID_gamma);
       daughter_list.push_back(ID_gamma);
       temp_BR[i] = higgsBR(IDarray[i], daughter_list);
-      g2hjgaga[i] = (temp_BR[i]*GammaTotal[i])/(smbr_hgamgam_(&thisMh)*SMGammaTotal);
+      g2hjgaga[i] = (temp_BR[i]*GammaTotal[i])/(fudgeSafety*smbr_hgamgam_(&thisMh)*SMGammaTotal);
       daughter_list.clear();
       daughter_list.push_back(ID_b);
       daughter_list.push_back(-ID_b);
       temp_BR[i] = higgsBR(IDarray[i], daughter_list);
       BR_hjbb[i].push_back(temp_BR[i]);
-      g2hjbb[i] = (temp_BR[i]*GammaTotal[i])/(smbr_hbb_(&thisMh)*SMGammaTotal);
+      g2hjbb[i] = (temp_BR[i]*GammaTotal[i])/(fudgeSafety*smbr_hbb_(&thisMh)*SMGammaTotal);
       daughter_list.clear();
       daughter_list.push_back(ID_tau);
       daughter_list.push_back(-ID_tau);
       temp_BR[i] = higgsBR(IDarray[i], daughter_list);
       BR_hjtautau[i].push_back(temp_BR[i]);
-      g2hjtautau[i] = (temp_BR[i]*GammaTotal[i])/(smbr_htautau_(&thisMh)*SMGammaTotal);
+      g2hjtautau[i] = (temp_BR[i]*GammaTotal[i])/(fudgeSafety*smbr_htautau_(&thisMh)*SMGammaTotal);
       daughter_list.clear();
     }
     
