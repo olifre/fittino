@@ -60,16 +60,14 @@ namespace Fittino {
                              ~ParticleSwarmOptimizer();
       virtual void           Execute();
 
+    protected:
+      virtual void           PrintConfiguration();
+
     private:
       double                 _c1;
       double                 _c2;
       unsigned int           _numberOfParticles;
       std::vector<Particle*> _particleSwarm;
-
-    private:
-      virtual void           PrintConfiguration();
-      virtual void           PrintResult();
-      virtual void           PrintStatus();
  
   };
 

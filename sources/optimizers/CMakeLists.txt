@@ -30,4 +30,4 @@ AUX_SOURCE_DIRECTORY(src sources)
 ADD_LIBRARY(optimizers ${sources})
 
 #TARGET_LINK_LIBRARIES(optimizers `root-config --libs`)
-TARGET_LINK_LIBRARIES(optimizers -L/afs/atlass01.physik.uni-bonn.de/i386_linux24/root/root-5.26.00_sid/root/lib -lCore -lCint -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -pthread -lm -ldl -rdynamic)
+TARGET_LINK_LIBRARIES(optimizers -L/afs/atlass01.physik.uni-bonn.de/i386_linux24/root/root-5.26.00_sid/root/lib -lCore -lCint -lHist -lGraf -lGraf3d -lGpad -lTree -lRint -lPostscript -lMatrix -lPhysics -pthread -lm -ldl -rdynamic -lMinuit2)

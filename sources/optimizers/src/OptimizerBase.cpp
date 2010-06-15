@@ -20,6 +20,8 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <iostream>
+
 #include "Configuration.h"
 #include "OptimizerBase.h"
 
@@ -38,5 +40,38 @@ Fittino::OptimizerBase::OptimizerBase( ModelBase* model )
 }
 
 Fittino::OptimizerBase::~OptimizerBase() {
+
+}
+
+void Fittino::OptimizerBase::PrintResult() {
+
+    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "  Terminating " << _name                                                          << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "  Optimization results                                                          " << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "   Final set of Rosenbrock model parameters                                     " << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "    X    " << ( *( _model->GetParameterVector() ) )[0]                            << std::endl;
+    std::cout << "    Y    " << ( *( _model->GetParameterVector() ) )[1]                            << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+
+}
+
+void Fittino::OptimizerBase::PrintStatus() {
+
+    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "  Actual best set of Rosenbrock model parameters                                " << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "    X    " << ( *( _model->GetParameterVector() ) )[0]                            << std::endl;
+    std::cout << "    Y    " << ( *( _model->GetParameterVector() ) )[1]                            << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "    Chi2 " << _globalBestChi2                                                     << std::endl;
+    std::cout << "                                                                                " << std::endl;
 
 }

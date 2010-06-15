@@ -49,7 +49,7 @@ namespace Fittino {
   class OptimizerBase {
 
     public:
-      enum         OptimizerType { PARTICLESWARMOPTIMIZER };
+      enum         OptimizerType { MINUITOPTIMIZER, PARTICLESWARMOPTIMIZER };
 
     public:
                    OptimizerBase( ModelBase* model );
@@ -68,10 +68,10 @@ namespace Fittino {
       std::string  _name;
       ModelBase*   _model;
 
-    private:
+    protected:
+      void         PrintResult();
+      void         PrintStatus();
       virtual void PrintConfiguration() = 0;
-      virtual void PrintResult() = 0;
-      virtual void PrintStatus() = 0;
 
   };
 

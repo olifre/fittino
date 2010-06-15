@@ -1,17 +1,14 @@
-/* $Id: ParticleSwarmOptimizer.cpp,v 1.0 2007/10/08 09:37:15 uhlenbrock $ */
+/* $Id: MinuitOptimizer.cpp 613 2010-05-26 09:42:00Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        ParticleSwarmOptimizer.cpp                                       *
+* File        MinuitOptimizer.cpp                                              *
 *                                                                              *
-* Description Class for particle swarm parameter optimization                  *
+* Description Class for Minuit optimization                                    *
 *                                                                              *
-* Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
-*             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
-*	      Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
-*	      Peter   Wienemann   <wiene@physik.uni-bonn.de>                   *
+* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -22,43 +19,22 @@
 
 #include <iostream>
 
-#include "Configuration.h"
-#include "ParticleSwarmOptimizer.h"
+#include "MinuitOptimizer.h"
 
-Fittino::ParticleSwarmOptimizer::ParticleSwarmOptimizer( Fittino::ModelBase* model )
+Fittino::MinuitOptimizer::MinuitOptimizer( Fittino::ModelBase* model )
         : OptimizerBase( model ) {
 
-    Configuration* configuration = Configuration::GetInstance();
-
-    _c1 = configuration->GetSteeringParameter( "C1", 0.01 );
-    _c2 = configuration->GetSteeringParameter( "C2", 0.01 );
-    _name =  "particle swarm optimization algorithm";
-    _numberOfParticles = configuration->GetSteeringParameter( "NumberOfParticles", 20 );
-
-    TRandom _randomGenerator;
-
-    for ( unsigned int n = 0; n < _numberOfParticles; n++ ) {
-
-        int seed = _randomGenerator.Uniform( 0, 10000 );
-
-        Particle* particle = new Particle( _c1, _c2, _model, seed );
-        _particleSwarm.push_back( particle );
-
-    }
-
-    ParticleSwarmOptimizer::PrintConfiguration();
-
+    _name =  "Minuit optimization algorithm";
 
 }
 
-Fittino::ParticleSwarmOptimizer::~ParticleSwarmOptimizer() {
+Fittino::MinuitOptimizer::~MinuitOptimizer() {
 
-    ParticleSwarmOptimizer::PrintResult();
-    //delete _particleSwarm;
+    MinuitOptimizer::PrintResult();
 
 }
 
-void Fittino::ParticleSwarmOptimizer::Execute() {
+void Fittino::MinuitOptimizer::Execute() {
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "                                                                                " << std::endl;
@@ -71,15 +47,6 @@ void Fittino::ParticleSwarmOptimizer::Execute() {
 
         iterationCounter++;
 
-        for ( unsigned int i = 0; i < _particleSwarm.size(); i++ ) {
-
-            _particleSwarm[i]->UpdateModel();
-
-        }
-
-        _globalBestChi2 = Fittino::Particle::_globalBestChi2;
-        _model = Fittino::Particle::_globalBestModel;
-
         PrintStatus();
 
     }
@@ -91,18 +58,13 @@ void Fittino::ParticleSwarmOptimizer::Execute() {
 
 }
 
-void Fittino::ParticleSwarmOptimizer::PrintConfiguration() {
+void Fittino::MinuitOptimizer::PrintConfiguration() {
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "                                                                                " << std::endl;
     std::cout << "  Initializing " << _name                                                         << std::endl;
     std::cout << "                                                                                " << std::endl;
     std::cout << "   Configuration                                                                " << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "    Maximum number of iterations    " << _numberOfIterations                      << std::endl;
-    std::cout << "    Number of particles             " << _numberOfParticles                       << std::endl;
-    std::cout << "    Global scaling factor c1        " << _c1                                      << std::endl;
-    std::cout << "    Local scaling factor c2         " << _c2                                      << std::endl;
     std::cout << "                                                                                " << std::endl;
 
 }
