@@ -31,15 +31,19 @@ namespace Fittino {
 
   /*!
    *  \brief Fittino input exception class
+   *
+   *  Input exceptions are thrown if Fittino is called with formally invalid input of any kind e.g\n
+   *  with unknown options, an invalid combination of options or if there are missing option\n
+   *  parameters. They are also thrown if the format of the input file cannot be detected or if\n
+   *  parsing errors have occurred.
    */
   class InputException : public ExceptionBase {
 
     public:
       /*!
-       *  Takes as input a message string which is printed on the screen as soon
-       *  as the exception is caught and the what() method is called. The message
-       *  is supposed to provide the user with further information about the
-       *  occurred exception.
+       *  Takes as input a message string which is printed on the screen as soon as the exception\n
+       *  is caught and the what() method is called. The message is supposed to provide the user\n
+       *  with further information about the occurred exception.
        */
       InputException( const std::string& message );
 

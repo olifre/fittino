@@ -36,10 +36,9 @@ namespace Fittino {
 
     public:
       /*!
-       *  Takes as input a message string which is printed on the screen as soon
-       *  as the exception is caught and the what() method is called. The message
-       *  is supposed to provide the user with further information about the
-       *  occurred exception.
+       *  Takes as input a message string which is printed on the screen as soon as the exception\n
+       *  is caught and the what() method is called. The message is supposed to provide the user\n
+       *  with further information about the occurred exception.
        */
       ModelCalculatorException( const std::string& message );
 
