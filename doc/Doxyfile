@@ -459,7 +459,7 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                  = "../exceptions/include" "../exceptions/src" "../interpreters/include" "../interpreters/src" "../kernel/include" "../kernel/src" "../optimizers/include" "../optimizers/src"
+INPUT                  = "../sources/exceptions/include" "../sources/exceptions/src" "../sources/models/include" "../sources/models/src" "../sources/interpreters/include" "../sources/interpreters/src" "../sources/kernel/include" "../sources/kernel/src" "../sources/optimizers/include" "../sources/optimizers/src"
 
 # If the value of the INPUT tag contains directories, you can use the 
 # FILE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp 
@@ -480,7 +480,7 @@ RECURSIVE              = YES
 # excluded from the INPUT source files. This way you can easily exclude a 
 # subdirectory from a directory tree whose root is specified with the INPUT tag.
 
-EXCLUDE                = "../src/lex.yy.c" "../src/lex.yy.cc" "../src/FittinoInputFileGrammar.tab.cpp" "../src/FittinoInputFileGrammar.tab.hpp"
+EXCLUDE                =
 
 # The EXCLUDE_SYMLINKS tag can be used select whether or not files or 
 # directories that are symbolic links (a Unix filesystem feature) are excluded 
@@ -1148,7 +1148,7 @@ INCLUDED_BY_GRAPH      = YES
 # So in most cases it will be better to enable call graphs for selected 
 # functions only using the \callgraph command.
 
-CALL_GRAPH             = YES 
+CALL_GRAPH             = NO 
 
 # If the CALLER_GRAPH and HAVE_DOT tags are set to YES then doxygen will 
 # generate a caller dependency graph for every global function or class method. 
@@ -1156,7 +1156,7 @@ CALL_GRAPH             = YES
 # So in most cases it will be better to enable caller graphs for selected 
 # functions only using the \callergraph command.
 
-CALLER_GRAPH           = YES 
+CALLER_GRAPH           = NO 
 
 # If the GRAPHICAL_HIERARCHY and HAVE_DOT tags are set to YES then doxygen 
 # will graphical hierarchy of all classes instead of a textual one.
