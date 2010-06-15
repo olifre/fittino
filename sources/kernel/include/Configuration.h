@@ -25,8 +25,8 @@
 #define FITTINO_CONFIGURATION_H
 
 #include <map>
-#include <string>
 #include <sstream>
+#include <string>
 
 #include "ExecutionMode.h"
 #include "ModelBase.h"
@@ -58,18 +58,18 @@ namespace Fittino {
       template<class SteeringParameterType>
       SteeringParameterType                 GetSteeringParameter( const std::string& name, const SteeringParameterType& value ) const;
   
-    protected:
-                                            Configuration();
-                                            ~Configuration();
-  
     private:
       static Configuration*                 _instance;
   
     private:
       ExecutionMode::Mode                   _executionMode;
-      SteeringParameterMap*                 _steeringParameterMap;
       ModelBase::ModelType                  _modelType;
       OptimizerBase::OptimizerType          _optimizerType;
+      SteeringParameterMap*                 _steeringParameterMap;
+
+    private:
+                                            Configuration();
+                                            ~Configuration();
   
   };
 

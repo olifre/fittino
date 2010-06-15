@@ -42,14 +42,14 @@ namespace Fittino {
        */
                                RosenbrockModel();
       /*!
-       *  Virtual copy constructor
-       */
-      virtual RosenbrockModel* Clone() const;
-      /*!
        *  Destructor
        */
                                ~RosenbrockModel();
       virtual double           Evaluate();
+      /*!
+       *  Virtual copy constructor
+       */
+      virtual RosenbrockModel* Clone() const;
 
   };
 

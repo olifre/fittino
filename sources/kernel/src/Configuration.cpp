@@ -72,7 +72,8 @@ Fittino::Configuration::Configuration()
         : _executionMode( ExecutionMode::OPTIMIZATION ),
           _steeringParameterMap( new SteeringParameterMap() ),
           _modelType( ModelBase::ROSENBROCKMODEL ), 
-          _optimizerType( OptimizerBase::PARTICLESWARMOPTIMIZER ) {
+          _optimizerType( OptimizerBase::MINUITOPTIMIZER ) {
+          //_optimizerType( OptimizerBase::PARTICLESWARMOPTIMIZER ) {
 
     /*!
      *  Sets default execution mode (optimization)

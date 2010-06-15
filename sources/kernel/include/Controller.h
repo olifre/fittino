@@ -50,14 +50,13 @@ namespace Fittino {
 
     public:
       /*!
-       *  This function initializes Fittino. It takes as input the number and the
-       *  vector of command line arguments specified while invocing Fittino.
+       *  This function initializes Fittino. It takes as input the number and the vector of\n
+       *  command line arguments specified while invocing Fittino.
        */
       void                                      InitializeFittino( int argc, char** argv );
       /*!  
-       *  In this function Fittino sets up the configured execution mode.
-       *  It is called directly after Controller::InitializeFittino.
-       *  Supported modes are sampling, scan or optimization.
+       *  In this function Fittino sets up the configured execution mode. It is called directly\n
+       *  after Controller::InitializeFittino. Supported modes are sampling, scan or optimization.
        */
       void                                      ExecuteFittino();
       /*!
@@ -69,15 +68,38 @@ namespace Fittino {
       static Controller*                        _instance;
 
     private:
+      /*!
+       *  External seed as passed as an argument to Fittino.
+       */
       int                                       _randomSeed;
+      /*!
+       *  The name of the input file. 
+       */
       std::string                               _inputFileName;
 
     private:
+      /*!
+       *  Constructor.
+       */
                                                 Controller();
+      /*!
+       *  Destructor.
+       */
                                                 ~Controller();
-      void                                      PrintHelp();
-      void                                      PrintLogo();
-      InputFileInterpreterBase::InputFileFormat GetInputFileFormat();
+      /*!
+       *  When Fittino is called without arguments or with the -h/--help option this method\n
+       *  prints a help screen with further instructions on how to use Fittino. 
+       */
+      void                                      PrintHelp() const;
+      /*!
+       *  Prints a welcome screen. 
+       */
+      void                                      PrintLogo() const;
+      /*!
+       *  Determines the format of the input file. Supported input file formats are .xml or .ftn\n
+       *  (a special Fittino file format)
+       */
+      InputFileInterpreterBase::InputFileFormat GetInputFileFormat() const;
 
   };
 

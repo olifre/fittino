@@ -26,8 +26,8 @@
 #include <iostream>
 
 #include "Configuration.h"
-#include "Controller.h"
 #include "ConfigurationException.h"
+#include "Controller.h"
 #include "InputException.h"
 #include "InputFileInterpreterBase.h"
 #include "InputFileInterpreterFactory.h"
@@ -40,7 +40,7 @@ Fittino::Controller* Fittino::Controller::GetInstance() {
 
     if ( !_instance ) {
 
-        _instance = new Controller();
+        _instance = new Controller::Controller();
 
     }
 
@@ -55,7 +55,7 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
     if ( argc == 1 ) {
 
-        Fittino::Controller::PrintHelp();
+        Controller::PrintHelp();
         exit( EXIT_SUCCESS );
 
     }
@@ -91,7 +91,7 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
                     continue;
 
                 case 'h':
-                    Fittino::Controller::PrintHelp();
+                    Controller::PrintHelp();
                     exit( EXIT_SUCCESS );
 
                 case 's':
@@ -114,7 +114,7 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
         }
 
-        Fittino::Controller::PrintLogo();
+        Controller::PrintLogo();
 
         InputFileInterpreterFactory inputFileInterpreterFactory;
         InputFileInterpreterBase* inputFileInterpreter = inputFileInterpreterFactory.CreateInputFileInterpreter( Controller::GetInputFileFormat() );
@@ -185,14 +185,14 @@ Fittino::Controller::~Controller() {
 
 }
 
-void Fittino::Controller::PrintHelp() {
+void Fittino::Controller::PrintHelp() const {
 
     std::cout << std::endl;
-    std::cout << "Usage: fittino [OPTION(S)] [FILE]" << std::endl;
+    std::cout << "Usage: fittino [OPTION(S)] FILE" << std::endl;
     std::cout << std::endl;
-    std::cout << "  If only a single parameter is given (different from \"-h\" or \"--help\")," << std::endl;
-    std::cout << "  Fittino reads in input file FILE." << std::endl;
-    std::cout << "  Input file suffix must be .ftn (Fittino format) or .xml (XML format)." << std::endl;
+    std::cout << "  A single given argument (different from \"-h\" or \"--help\") is" << std::endl;
+    std::cout << "  interpreted as the name of an input file. The input file suffix" << std::endl;
+    std::cout << "  must be .ftn (Fittino format) or .xml (XML format)." << std::endl;
     std::cout << std::endl;
     std::cout << "Supported options are:" << std::endl;
     std::cout << std::endl;
@@ -200,8 +200,8 @@ void Fittino::Controller::PrintHelp() {
     std::cout << "      Fittino prints this message." << std::endl;
     std::cout << std::endl;
     std::cout << "  -i, --input-file=FILE " << std::endl;
-    std::cout << "      Fittino uses input file FILE." << std::endl;
-    std::cout << "      Input file suffix must be .ftn (Fittino format) or .xml (XML format)." << std::endl;
+    std::cout << "      Fittino uses the input file FILE. The input file suffix must" << std::endl;
+    std::cout << "      be .ftn (Fittino format) or .xml (XML format)." << std::endl;
     std::cout << std::endl;
     std::cout << "  -s, --seed=SEED" << std::endl;
     std::cout << "      Fittino uses the given random number generator seed." << std::endl;
@@ -209,16 +209,16 @@ void Fittino::Controller::PrintHelp() {
 
 }
 
-void Fittino::Controller::PrintLogo() {
+void Fittino::Controller::PrintLogo() const {
 
-        std::cout << "--------------------------------------------------------------------------------" << std::endl;
-        std::cout << "                                                                                " << std::endl;
-        std::cout << "  Welcome to Fittino"                                                             << std::endl;
-        std::cout << "                                                                                " << std::endl;
+    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+    std::cout << std::endl;
+    std::cout << "  Welcome to Fittino" << std::endl;
+    std::cout << std::endl;
 
 }
 
-Fittino::InputFileInterpreterBase::InputFileFormat Fittino::Controller::GetInputFileFormat() {
+Fittino::InputFileInterpreterBase::InputFileFormat Fittino::Controller::GetInputFileFormat() const {
 
     try {
 

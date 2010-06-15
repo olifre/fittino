@@ -42,7 +42,6 @@ namespace Fittino {
        */
                          ~IOptimization();
       double             EvaluateModel( ModelBase* model );
-      //virtual ModelBase* UpdateModel( ModelBase* oldModel ) = 0;
       virtual void       UpdateModel() = 0;
 
   };
