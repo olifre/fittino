@@ -3797,28 +3797,6 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    //  fitterMassSupR.value = 429.6; // x[9];
    //  fitterA.value        = -500.0;// x[10];
 
-   // Check whether QEWSB is within bounds
-   if (mSquarkGluinoMax>0.) {
-     if (FindInFitted("QEWSB")) {
-       cout << "QEWSB found fitted = " << x[ReturnFittedPosition("QEWSB")] << endl;
-       if (x[ReturnFittedPosition("QEWSB")] > 4.*mSquarkGluinoMax ) {
-	 cout << "QEWSB out of dynamic bounds " << endl;
-	 f = 111111111111.;
-	 cout << " f = " << f << endl;
-	 return;
-       }
-     } 
-     else if (FindInUniversality("QEWSB")) {
-       cout << "QEWSB found in universality = " << ReturnUniversality("QEWSB")->universality << endl;
-       if (x[ReturnFittedPosition(ReturnUniversality("QEWSB")->universality)] >  4.*mSquarkGluinoMax ) {
-	 cout << "QEWSB universality out of dynamic bounds " << endl;
-	 f = 111111111111.; 
-	 cout << " f = " << f << endl;
-	 return;
-       }
-     }    
-   }  
-
    WriteLesHouches(x);
 
    yySPhenoLastCallValid = false;
@@ -3981,6 +3959,28 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        }
      }
    }   
+
+   // Check whether QEWSB is within bounds
+   if (mSquarkGluinoMax>0.) {
+     if (FindInFitted("QEWSB")) {
+       cout << "QEWSB found fitted = " << x[ReturnFittedPosition("QEWSB")] << endl;
+       if (x[ReturnFittedPosition("QEWSB")] > 4.*mSquarkGluinoMax ) {
+	 cout << "QEWSB out of dynamic bounds " << endl;
+	 f = 111111111111.;
+	 cout << " f = " << f << endl;
+	 return;
+       }
+     } 
+     else if (FindInUniversality("QEWSB")) {
+       cout << "QEWSB found in universality = " << ReturnUniversality("QEWSB")->universality << endl;
+       if (x[ReturnFittedPosition(ReturnUniversality("QEWSB")->universality)] >  4.*mSquarkGluinoMax ) {
+	 cout << "QEWSB universality out of dynamic bounds " << endl;
+	 f = 111111111111.; 
+	 cout << " f = " << f << endl;
+	 return;
+       }
+     }    
+   }  
 
    if (yyRequireNeut1LSP) {
      // search for particle masses
