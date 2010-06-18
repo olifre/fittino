@@ -48,7 +48,7 @@ int main(int argc, char** argv)
   sprintf(command, "cp %s %s\n", slhafilename, newfile.c_str());
   system(command);
 
-  sprintf(command, "echo 'Block Micromegas # Micromegas observables' >> %s\n",
+  sprintf(command, "echo 'Block MicrOMEGAs # MicrOMEGAs observables' >> %s\n",
 	  newfile.c_str());
   system(command);
 

@@ -4249,7 +4249,7 @@ int callMicrOmegas (double* x)
        * The child executes the code inside this if.
        */
       child_pid = getpid();
-      char* argv[2];
+      char* argv[3];
 
       argv[0] = new char[1024];
       strcpy(argv[0], yyRelicDensityCalculatorPath.c_str());
@@ -4258,8 +4258,9 @@ int callMicrOmegas (double* x)
       strcpy(argv[1], cwd);
       strcat(argv[1], "/SPheno.spc.saved_fittino");
 
-      cout << "calling " << yyRelicDensityCalculatorPath.c_str()
-	   << " " << argv[1] << std::endl; 
+      argv[2] = 0;
+
+      cout << "calling " << argv[0] << " " << argv[1] << std::endl; 
       rc = execve(argv[0], argv, environ);
       cout << "returning from execve "<< rc<< endl;
       exit (rc);

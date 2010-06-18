@@ -4367,7 +4367,7 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 
                   // MicrOmegas 
 //========================================================================
-		  else if (!strcmp($2, "MicrOmegas")) {
+		  else if (!strcmp($2, "MicrOMEGAs")) {
 		     for (unsigned int i=0; i<tmpParams.size(); i++) {
 			if ((unsigned int)tmpParams[i][0]==1) {
 			   yyOmega=tmpParams[i][1];
