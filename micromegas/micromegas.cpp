@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 	  newfile.c_str());
   system(command);
 
-  sprintf(command, "mv %s %s\n", newfile.c_str(), slhafilename);
+  sprintf(command, "cp %s %s\n", newfile.c_str(), slhafilename);
   system(command);
 
   return 0;

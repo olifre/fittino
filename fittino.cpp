@@ -1,5 +1,3 @@
-
-
 /***************************************************************************
   fittino.cpp
   -------------------    
@@ -4218,55 +4216,16 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 int callMicrOmegas (double* x)
 {
 
-   string commandString = "sugomg";
-   //char value[256];
    int rc;
 
    cout << "Using relic density calculator MicrOmegas" << endl;
 
-   //  if (FindInFixed("M0")) {
-   //    sprintf (value, " %f", ReturnFixedValue("M0")->value);
-   //    commandString.append(value);
-   //  }    
-   //  else if (FindInFitted("M0")) {
-   //    sprintf (value, " %f", x[ReturnFittedPosition("M0")]);
-   //    commandString.append(value);
-   //  } 
-   //  if (FindInFixed("M12")) {
-   //    sprintf (value, " %f", ReturnFixedValue("M12")->value);
-   //    commandString.append(value);
-   //  }    
-   //  else if (FindInFitted("M12")) {
-   //    sprintf (value, " %f", x[ReturnFittedPosition("M12")]);
-   //    commandString.append(value);
-   //  } 
-   //  if (FindInFixed("A0")) {
-   //    sprintf (value, " %f", ReturnFixedValue("A0")->value);
-   //    commandString.append(value);
-   //  }    
-   //  else if (FindInFitted("A0")) {
-   //    sprintf (value, " %f", x[ReturnFittedPosition("A0")]);
-   //    commandString.append(value);
-   //  } 
-   //  if (FindInFixed("TanBeta")) {
-   //    sprintf (value, " %f", ReturnFixedValue("TanBeta")->value);
-   //    commandString.append(value);
-   //  }    
-   //  else if (FindInFitted("TanBeta")) {
-   //    sprintf (value, " %f", x[ReturnFittedPosition("TanBeta")]);
-   //    commandString.append(value);
-   //  } 
-   //  if (FindInFixed("SignMu")) {
-   //    sprintf (value, " %f", ReturnFixedValue("SignMu")->value);
-   //    commandString.append(value);
-   //  }    
-   //  else if (FindInFitted("SignMu")) {
-   //    sprintf (value, " %f", x[ReturnFittedPosition("SignMu")]);
-   //    commandString.append(value);
-   //  } 
-
    system ("cp SPheno.spc SPheno.spc.saved_fittino");
-   cout << "command string:" << commandString << endl;
+
+   char cwd[1024];
+   if (getcwd(cwd, sizeof(cwd)) == NULL) {
+     perror("getcwd() error");
+   }
 
    int pid = -2;
    int status = 0;
@@ -4290,67 +4249,19 @@ int callMicrOmegas (double* x)
        * The child executes the code inside this if.
        */
       child_pid = getpid();
-      char *argv[7];
-      argv[0] = "sugomg";
-      argv[6] = 0;
+      char* argv[2];
 
-      char value1[256];
-      char value2[256];
-      char value3[256];
-      char value4[256];
-      char value5[256];
-      if (FindInFixed("M0")) {
-	 sprintf (value1, " %f", ReturnFixedValue("M0")->value);
-	 argv[1] = value1;
-      }    
-      else if (FindInFitted("M0")) {
-	 sprintf (value1, " %f", x[ReturnFittedPosition("M0")]);
-	 argv[1] = value1;
-      } 
-      if (FindInFixed("M12")) {
-	 sprintf (value2, " %f", ReturnFixedValue("M12")->value);
-	 argv[2] = value2;
-      }    
-      else if (FindInFitted("M12")) {
-	 sprintf (value2, " %f", x[ReturnFittedPosition("M12")]);
-	 argv[2] = value2;
-      } 
-      if (FindInFixed("A0")) {
-	 sprintf (value3, " %f", ReturnFixedValue("A0")->value);
-	 argv[3] = value3;
-      }    
-      else if (FindInFitted("A0")) {
-	 sprintf (value3, " %f", x[ReturnFittedPosition("A0")]);
-	 argv[3] = value3;
-      } 
-      if (FindInFixed("TanBeta")) {
-	 sprintf (value4, " %f", ReturnFixedValue("TanBeta")->value);
-	 argv[4] = value4;
-      }    
-      else if (FindInFitted("TanBeta")) {
-	 sprintf (value4, " %f", x[ReturnFittedPosition("TanBeta")]);
-	 argv[4] = value4;
-      } 
-      if (FindInFixed("SignMu")) {
-	 sprintf (value5, " %f", ReturnFixedValue("SignMu")->value);
-	 argv[5] = value5;
-      }    
-      else if (FindInFitted("SignMu")) {
-	 sprintf (value5, " %f", x[ReturnFittedPosition("SignMu")]);
-	 argv[5] = value5;
-      } 
+      argv[0] = new char[1024];
+      strcpy(argv[0], yyRelicDensityCalculatorPath.c_str());
 
+      argv[1] = new char[1024];
+      strcpy(argv[1], cwd);
+      strcat(argv[1], "/SPheno.spc.saved_fittino");
 
-      cerr << "calling " << commandString 
-	 << argv[1] << ", " 
-	 << argv[2] << ", " 
-	 << argv[3] << ", " 
-	 << argv[4] << ", " 
-	 << argv[5] << ", " 
-	 << argv[6] << ", " 
-	 << endl;
-      rc = execve(yyRelicDensityCalculatorPath.c_str(), argv, environ);
-      cout << "retourning from execve "<< rc<< endl;
+      cout << "calling " << yyRelicDensityCalculatorPath.c_str()
+	   << " " << argv[1] << std::endl; 
+      rc = execve(argv[0], argv, environ);
+      cout << "returning from execve "<< rc<< endl;
       exit (rc);
    }
    else {
@@ -4380,12 +4291,11 @@ int callMicrOmegas (double* x)
    rc = WEXITSTATUS(status);
    cout << "MicrOmegas returned with return value " << rc << endl;
 
-   system ("mv SPheno.spc.saved_fittino SPheno.spc");
    if (rc == 0) {
-      system ("cat slha.out >> SPheno.spc");
+     //      system ("mv SPheno.spc.saved_fittino SPheno.spc");
+      system ("cp SPheno.spc.saved_fittino SPheno.spc");
    }
    return rc;
-
 }
 
 // ************************************************************
