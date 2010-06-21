@@ -4075,12 +4075,24 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 		      cout << "Ignoring block IMDSQmix" << endl;
 		  }
 //========================================================================
+                  else if (!strcmp($2, "VCKMIN")) {
+		      cout << "Ignoring block VCKMIN" << endl;
+		  }
+//========================================================================
                   else if (!strcmp($2, "SLmix")) {
 		      cout << "Ignoring block SLmix" << endl;
 		  }
 //========================================================================
                   else if (!strcmp($2, "IMSLmix")) {
 		      cout << "Ignoring block IMSLmix" << endl;
+		  }
+//========================================================================
+                  else if (!strcmp($2, "SNUMIX")) {
+		      cout << "Ignoring block SNUMIX" << endl;
+		  }
+//========================================================================
+                  else if (!strcmp($2, "SELMIX")) {
+		      cout << "Ignoring block SELMIX" << endl;
 		  }
 //========================================================================
                   else if (!strcmp($2, "SNmix")) {
