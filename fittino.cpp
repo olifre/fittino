@@ -10279,6 +10279,28 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
   Double_t xdummy[100];
   double previousChi2 = 1.E10;
   TRandom3* random = new TRandom3();
+
+  //BS: set the random number generator seed
+   time_t systime;
+      int seed;
+      struct sysinfo sinfo; 
+      time (&systime);
+      sysinfo(&sinfo);
+      if (yyRandomGeneratorSeed < 0) {
+	 seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
+	 cout<<"uptime = "<<sinfo.uptime<<endl;
+	 cout<<"freeswap = "<<sinfo.freeswap<<endl;
+	 cout<<"pid = "<<getpid()<<endl;
+	 cout << "systime " << systime << endl; 
+      }
+      else {
+	 cout<<"using seed from input file"<<endl;
+	 seed = yyRandomGeneratorSeed;
+      }
+      cout << "seed = " << seed << endl;
+      random->SetSeed(seed);
+
+
   
   if( x.size() == 0 ) cout <<"WARNING: x vector has size 0 !"<< endl;
   
