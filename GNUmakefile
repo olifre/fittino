@@ -41,7 +41,7 @@ HBLIB		  = -L$(HBDIR) -lHB
 #LIBS	    	 += $(HBLIB) $(LIBGFORTRAN)
 #CXXFLAGS         += -DUSELIBHB
 
-#HBLIB             = -L/afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/HiggsBounds-1.2.0/HiggsBounds-f77/ -lHB
+HBLIB             = -L/afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/HiggsBounds-1.2.0/HiggsBounds-f77/ -lHB
 LIBGFORTRAN       = -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2/ -lgfortran
 #LIBGFORTRAN      = /usr/lib/libgfortran.so.1
 LIBS             += $(HBLIB) $(LIBGFORTRAN)

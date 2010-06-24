@@ -10281,24 +10281,24 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
   TRandom3* random = new TRandom3();
 
   //BS: set the random number generator seed
-   time_t systime;
-      int seed;
-      struct sysinfo sinfo; 
-      time (&systime);
-      sysinfo(&sinfo);
-      if (yyRandomGeneratorSeed < 0) {
-	 seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
-	 cout<<"uptime = "<<sinfo.uptime<<endl;
-	 cout<<"freeswap = "<<sinfo.freeswap<<endl;
-	 cout<<"pid = "<<getpid()<<endl;
-	 cout << "systime " << systime << endl; 
-      }
-      else {
-	 cout<<"using seed from input file"<<endl;
-	 seed = yyRandomGeneratorSeed;
-      }
-      cout << "seed = " << seed << endl;
-      random->SetSeed(seed);
+  time_t systime;
+  int seed;
+  struct sysinfo sinfo; 
+  time (&systime);
+  sysinfo(&sinfo);
+  if (yyRandomGeneratorSeed < 0) {
+    seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
+    cout<<"uptime = "<<sinfo.uptime<<endl;
+    cout<<"freeswap = "<<sinfo.freeswap<<endl;
+    cout<<"pid = "<<getpid()<<endl;
+    cout << "systime " << systime << endl; 
+  }
+  else {
+    cout<<"using seed from input file"<<endl;
+    seed = yyRandomGeneratorSeed;
+  }
+  cout << "seed = " << seed << endl;
+  random->SetSeed(seed);
 
 
   
@@ -10381,7 +10381,7 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
 	  } 
 	  cout << "IT accpoint = "<< accpoint << endl;
 	  // 1.6 == Count the number of successes
-	  if( accpoint == 1 ){
+	  if( accpoint == 1 && chi2<1.1E10){
 	    successes++;
 	    x[iVariable] = xp[iVariable];
 	    previousChi2 = chi2;
@@ -10511,7 +10511,7 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
 	cout << "GT accpoint = "<< accpoint << endl;
 	
 	// 4.2.5 == Count the number of successes
-	if( accpoint == 1 ){
+	if( accpoint == 1 && chi2<1.1E10){
 	  successes++;
 	  for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) x[iVariable] = xp[iVariable];
 	  previousChi2 = chi2;

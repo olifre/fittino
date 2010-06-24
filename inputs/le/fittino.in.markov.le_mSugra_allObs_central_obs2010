@@ -13,16 +13,16 @@
 ### LE (low energy) observables
 
 
-LEObs ( gmin2m_npf     )     25.5E-10 +- 8.0E-10      alias  7 # [14]
-LEObs ( Omega_npf      )      0.113  +- 0.003    alias 20 # [15]
-#LEObs ( Omega_npf      )      0.1123  +- 0.0035    alias 20 # [16]
+LEObs ( gmin2m_npf     )     25.5E-10 +- 8.0E-10                      alias  7 # [14]
+LEObs ( Omega_npf      )      0.113  +- 0.003                         alias 20 # [15]
+#LEObs ( Omega_npf      )      0.1123  +- 0.0035                      alias 20 # [16]
 LEObs ( DmsDmd_npf     )      1.09    +- 0.01    +- 0.16              alias 27 # [1]
 LEObs ( B_dll_npf      ) <    1.8E-8                      +- 0.001E-8 alias 26 # [2]
-LEObs ( Kppinn_npf     )      < 4.5     +- 1.0E-10                 alias 25 # [4]
+LEObs ( Kppinn_npf     )      < 4.5     +- 1.0E-10                    alias 25 # [4]
 LEObs ( dm_k_npf       )      0.92    +- 0.14                         alias 24 # [4]
-LEObs ( sigma_had0_npf )      41.540   +- 0.037                        alias 23 # [5]
+LEObs ( sigma_had0_npf )      41.540   +- 0.037                       alias 23 # [5]
 LEObs ( Massh0_npf     ) >  114.4                         +- 3.0      alias 19 # [6]
-LEObs ( A_fbl_npf      )      0.0171 +- 0.0010                      alias 22 # [5]
+LEObs ( A_fbl_npf      )      0.0171 +- 0.0010                        alias 22 # [5]
 LEObs ( A_l_npf        )      0.1489  +- 0.0015                       alias 18 # [7]
 LEObs ( R_l_npf        )     20.767   +- 0.025                        alias 11 # [5]
 LEObs ( R_b_npf        )      0.21629 +- 0.00066                      alias 12 # [8]
