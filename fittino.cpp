@@ -6117,12 +6117,22 @@ void WriteLesHouches(double* x)
 
       if ( yyQuarkFlavourViolation ) {
 	 // VCKM
+	/*
+	// Obsolete Les Houches CKM matrix parametrisation
 	 LesHouchesOutfile << "BLOCK VCKMIN"               << endl;
 	 LesHouchesOutfile << "    1  0.2292    # theta12" << endl;
 	 LesHouchesOutfile << "    2  0.04224   # theta23" << endl;
 	 LesHouchesOutfile << "    3  0.0038903 # theta13" << endl;
-	 LesHouchesOutfile << "    4  0.9944    # delta"   << endl; // set CKM phase (rad), SPheno default value = 0
+	 LesHouchesOutfile << "    4  0.9944    # delta"   << endl; // set CKM p
+hase (rad), SPheno default value = 0
 	 //    LesHouchesOutfile << "    4  0.0 # delta" << endl; // set CKM phase (rad), SPheno default value = 0
+	 */
+	// Wolfenstein parametrisation
+	 LesHouchesOutfile << "BLOCK VCKMIN"               << endl;
+	 LesHouchesOutfile << "    1  0.226500E+00       # lambda" << endl;
+	 LesHouchesOutfile << "    2  0.807000E+00       # A" << endl;
+	 LesHouchesOutfile << "    3  0.141000E+00       # rho bar" << endl;
+	 LesHouchesOutfile << "    4  0.343000E+00       # eta bar" << endl; // set CKM p
       }
 
       LesHouchesOutfile << "BLOCK MINPAR                 # Input parameters" << endl;
