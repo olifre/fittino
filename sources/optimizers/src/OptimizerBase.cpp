@@ -28,6 +28,7 @@
 Fittino::OptimizerBase::OptimizerBase( ModelBase* model )
         : _abortCriterium( 1e-6 ),
           _globalBestChi2( 1e99 ),
+          _iterationCounter( 0 ),
           _numberOfIterations( 10000 ),
           _name( "" ),
           _model( model ) {

@@ -48,12 +48,6 @@ Fittino::RosenbrockModel::RosenbrockModel()
 
 }
 
-Fittino::RosenbrockModel* Fittino::RosenbrockModel::Clone() const {
-
-    return new RosenbrockModel( *this );
-
-}
-
 Fittino::RosenbrockModel::~RosenbrockModel() {
 
 }
@@ -63,5 +57,35 @@ double Fittino::RosenbrockModel::Evaluate() {
     //double functionValue = pow( ( 1 - _x ), 2 ) + 100 * pow( _y - pow( _x, 2 ), 2 );
     double functionValue = pow( ( 1 - _parameterVector[0] ), 2 ) + 100 * pow( _parameterVector[1] - pow( _parameterVector[0], 2 ), 2 );
     return functionValue;
+
+}
+
+Fittino::RosenbrockModel* Fittino::RosenbrockModel::Clone() const {
+
+    return new RosenbrockModel( *this );
+
+}
+
+Fittino::RosenbrockFCN::RosenbrockFCN( const std::vector<double>& meas, const std::vector<double>& pos, const std::vector<double>& mvar )
+        : theMeasurements( meas ),
+          thePositions( pos ),
+          theMVariances( mvar ),
+          theErrorDef( 1. ) {
+
+}
+
+Fittino::RosenbrockFCN::~RosenbrockFCN() {
+
+}
+
+double Fittino::RosenbrockFCN::Up() const {
+
+    return theErrorDef;
+
+}
+
+double Fittino::RosenbrockFCN::operator()( const std::vector<double>& parameterVector ) const {
+
+    return pow( ( 1 - parameterVector[0] ), 2 ) + 100 * pow( parameterVector[1] - pow( parameterVector[0], 2 ), 2 );
 
 }

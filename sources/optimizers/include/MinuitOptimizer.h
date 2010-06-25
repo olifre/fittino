@@ -21,6 +21,7 @@
 #define FITTINO_MINUITOPTIMIZER_H
 
 #include "Minuit2/FCNBase.h"
+#include "Minuit2/MnUserParameterState.h"
 
 #include "OptimizerBase.h"
 
@@ -38,15 +39,18 @@ namespace Fittino {
       /*!
        *  Constructor
        */
-                             MinuitOptimizer( ModelBase* model );
+                                      MinuitOptimizer( ModelBase* model );
       /*!
        *  Destructor
        */
-                             ~MinuitOptimizer();
-      virtual void           Execute();
+                                      ~MinuitOptimizer();
+      virtual void                    Execute();
 
     protected:
-      virtual void           PrintConfiguration();
+      virtual void                    PrintConfiguration();
+
+    private:
+      ROOT::Minuit2::MnUserParameters _minuitUserParameters;
 
   };
 
