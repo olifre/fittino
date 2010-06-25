@@ -50,8 +50,8 @@ Fittino::Controller* Fittino::Controller::GetInstance() {
 
 void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
-    // If Fittino is called without options or arguments print a help text with
-    // further instructions and exit.
+    // If Fittino is called without options or arguments print a help text with further instructions
+    // and exit.
 
     if ( argc == 1 ) {
 
@@ -60,13 +60,13 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
     }
 
-    // Otherwise use getopt() to handle given options. For more informations on
-    // getopt() see manpage of getopt(3)
+    // Otherwise use getopt() to handle given options. For more informations on getopt() see manpage
+    // of getopt(3)
 
     static struct option options[] = {
 
-        {"input-file", required_argument, 0, 'i'},
         {"help",       no_argument,       0, 'h'},
+        {"input-file", required_argument, 0, 'i'},
         {"seed",       required_argument, 0, 's'},
         {0,            0,                 0, 0  }
 
@@ -80,19 +80,19 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
         while ( true ) {
 
-            optionCode = getopt_long( argc, argv, ":i:hs:", options, &optionIndex );
+            optionCode = getopt_long( argc, argv, ":hi:s:", options, &optionIndex );
 
             if ( optionCode == -1 ) break;
 
             switch ( optionCode ) {
 
-                case 'i':
-                    _inputFileName = std::string( optarg );
-                    continue;
-
                 case 'h':
                     Controller::PrintHelp();
                     exit( EXIT_SUCCESS );
+
+                case 'i':
+                    _inputFileName = std::string( optarg );
+                    continue;
 
                 case 's':
                     _randomSeed = atoi( optarg );

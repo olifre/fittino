@@ -64,6 +64,7 @@ namespace Fittino {
     protected:
       double       _abortCriterium;
       double       _globalBestChi2;
+      unsigned int _iterationCounter;
       unsigned int _numberOfIterations;
       std::string  _name;
       ModelBase*   _model;

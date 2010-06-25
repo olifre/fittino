@@ -65,11 +65,9 @@ void Fittino::ParticleSwarmOptimizer::Execute() {
     std::cout << "  Running " << _name                                                              << std::endl;
     std::cout << "                                                                                " << std::endl;
 
-    unsigned int iterationCounter = 0;
+    while (  _globalBestChi2 > _abortCriterium && _iterationCounter < _numberOfIterations ) {
 
-    while (  _globalBestChi2 > _abortCriterium && iterationCounter < _numberOfIterations ) {
-
-        iterationCounter++;
+        _iterationCounter++;
 
         for ( unsigned int i = 0; i < _particleSwarm.size(); i++ ) {
 
@@ -80,13 +78,13 @@ void Fittino::ParticleSwarmOptimizer::Execute() {
         _globalBestChi2 = Fittino::Particle::_globalBestChi2;
         _model = Fittino::Particle::_globalBestModel;
 
-        PrintStatus();
+        //PrintStatus();
 
     }
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "                                                                                " << std::endl;
-    std::cout << "  Optimization converged after " << iterationCounter << " iterations            " << std::endl;
+    std::cout << "  Optimization converged after " << _iterationCounter << " iterations           " << std::endl;
     std::cout << "                                                                                " << std::endl;
 
 }
