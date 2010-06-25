@@ -116,13 +116,13 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
         Controller::PrintLogo();
 
-        InputFileInterpreterFactory inputFileInterpreterFactory;
-        InputFileInterpreterBase* inputFileInterpreter = inputFileInterpreterFactory.CreateInputFileInterpreter( Controller::DetermineInputFileFormat() );
+        const InputFileInterpreterFactory inputFileInterpreterFactory;
+        const InputFileInterpreterBase* const inputFileInterpreter = inputFileInterpreterFactory.CreateInputFileInterpreter( Controller::DetermineInputFileFormat() );
         inputFileInterpreter->Parse( _inputFileName );
         delete inputFileInterpreter;
 
     }
-    catch ( InputException& inputException ) {
+    catch ( const InputException& inputException ) {
 
         std::cout << "\n" << inputException.what() << "\n" << std::endl;
         exit( EXIT_FAILURE );
@@ -131,17 +131,17 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
 }
 
-void Fittino::Controller::ExecuteFittino() {
+void Fittino::Controller::ExecuteFittino() const {
 
     try {
 
-        ModelFactory modelFactory;
-        ModelBase* model = modelFactory.CreateModel( Configuration::GetInstance()->GetModelType() );
+        const ModelFactory modelFactory;
+        ModelBase* const model = modelFactory.CreateModel( Configuration::GetInstance()->GetModelType() );
 
         if ( Configuration::GetInstance()->GetExecutionMode() == ExecutionMode::OPTIMIZATION ) {
 
-            OptimizerFactory optimizerFactory;
-            OptimizerBase* optimizer = optimizerFactory.CreateOptimizer( Configuration::GetInstance()->GetOptimizerType(), model );
+            const OptimizerFactory optimizerFactory;
+            OptimizerBase* const optimizer = optimizerFactory.CreateOptimizer( Configuration::GetInstance()->GetOptimizerType(), model );
             optimizer->Execute();
             delete optimizer;
 
@@ -160,7 +160,7 @@ void Fittino::Controller::ExecuteFittino() {
         delete model; 
 
     }
-    catch ( ConfigurationException& configurationException ) {
+    catch ( const ConfigurationException& configurationException ) {
 
         std::cout << "\n" << configurationException.what() << "\n" << std::endl;
         exit( EXIT_FAILURE );
@@ -169,7 +169,7 @@ void Fittino::Controller::ExecuteFittino() {
 
 }
 
-void Fittino::Controller::TerminateFittino() {
+void Fittino::Controller::TerminateFittino() const {
 
 }
 
@@ -194,6 +194,8 @@ void Fittino::Controller::PrintHelp() const {
     std::cout << "  interpreted as the name of an input file. The input file suffix" << std::endl;
     std::cout << "  must be .ftn (Fittino format) or .xml (XML format)." << std::endl;
     std::cout << std::endl;
+    std::cout << "  An example input file can be found at input/Example.in.xml" << std::endl;
+    std::cout << std::endl;
     std::cout << "Supported options are:" << std::endl;
     std::cout << std::endl;
     std::cout << "  -h, --help" << std::endl;
@@ -202,6 +204,7 @@ void Fittino::Controller::PrintHelp() const {
     std::cout << "  -i, --input-file=FILE " << std::endl;
     std::cout << "      Fittino uses the input file FILE. The input file suffix must" << std::endl;
     std::cout << "      be .ftn (Fittino format) or .xml (XML format)." << std::endl;
+    std::cout << "      An example input file can be found at input/Example.in.xml" << std::endl;
     std::cout << std::endl;
     std::cout << "  -s, --seed=SEED" << std::endl;
     std::cout << "      Fittino uses the given random number generator seed." << std::endl;
@@ -218,7 +221,7 @@ void Fittino::Controller::PrintLogo() const {
 
 }
 
-Fittino::InputFileInterpreterBase::InputFileFormat Fittino::Controller::DetermineInputFileFormat() const {
+const Fittino::InputFileInterpreterBase::InputFileFormat Fittino::Controller::DetermineInputFileFormat() const {
 
     try {
 
@@ -245,7 +248,7 @@ Fittino::InputFileInterpreterBase::InputFileFormat Fittino::Controller::Determin
         }
 
     }
-    catch ( InputException& inputException ) {
+    catch ( const InputException& inputException ) {
 
         std::cout << "\n" << inputException.what() << "\n" << std::endl;
         exit( EXIT_FAILURE );
