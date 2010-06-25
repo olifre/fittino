@@ -99,7 +99,7 @@ namespace Fittino {
        *  Determines the format of the input file. Supported input file formats are .xml or .ftn\n
        *  (a special Fittino file format)
        */
-      InputFileInterpreterBase::InputFileFormat GetInputFileFormat() const;
+      InputFileInterpreterBase::InputFileFormat DetermineInputFileFormat() const;
 
   };
 

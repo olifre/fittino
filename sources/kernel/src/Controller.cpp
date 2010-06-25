@@ -117,7 +117,7 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
         Controller::PrintLogo();
 
         InputFileInterpreterFactory inputFileInterpreterFactory;
-        InputFileInterpreterBase* inputFileInterpreter = inputFileInterpreterFactory.CreateInputFileInterpreter( Controller::GetInputFileFormat() );
+        InputFileInterpreterBase* inputFileInterpreter = inputFileInterpreterFactory.CreateInputFileInterpreter( Controller::DetermineInputFileFormat() );
         inputFileInterpreter->Parse( _inputFileName );
         delete inputFileInterpreter;
 
@@ -218,7 +218,7 @@ void Fittino::Controller::PrintLogo() const {
 
 }
 
-Fittino::InputFileInterpreterBase::InputFileFormat Fittino::Controller::GetInputFileFormat() const {
+Fittino::InputFileInterpreterBase::InputFileFormat Fittino::Controller::DetermineInputFileFormat() const {
 
     try {
 
