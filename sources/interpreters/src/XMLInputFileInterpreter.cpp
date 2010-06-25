@@ -42,18 +42,18 @@ Fittino::XMLInputFileInterpreter::~XMLInputFileInterpreter() {
 
 }
 
-void Fittino::XMLInputFileInterpreter::Parse( const TString& xmlInputFileName ) {
+void Fittino::XMLInputFileInterpreter::Parse( const TString& xmlInputFileName ) const {
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "\n  Reading input from file " << xmlInputFileName << "\n" << std::endl;
 
     // Construct XML DOM parser
 
-    TDOMParser* xmlParser = new TDOMParser();
+    TDOMParser* const xmlParser = new TDOMParser();
 
     // Check if XML input file can be parsed
 
-    Int_t parseCode = xmlParser->ParseFile( xmlInputFileName );
+    const Int_t parseCode = xmlParser->ParseFile( xmlInputFileName );
 
     if ( parseCode != 0 ) {
 
@@ -64,8 +64,8 @@ void Fittino::XMLInputFileInterpreter::Parse( const TString& xmlInputFileName ) 
 
     // Loop over the XML DOM tree and add the input data to appropriate lists
 
-    TXMLDocument* xmlDocument = xmlParser->GetXMLDocument();
-    TXMLNode* xmlRootNode = xmlDocument->GetRootNode();
+    const TXMLDocument* const xmlDocument = xmlParser->GetXMLDocument();
+    TXMLNode* const xmlRootNode = xmlDocument->GetRootNode();
     TXMLNode* xmlNode = xmlRootNode->GetChildren();
 
     while ( xmlNode != 0 ) {

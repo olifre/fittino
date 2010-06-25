@@ -37,12 +37,12 @@ namespace Fittino {
       /*!
        *  Constructor
        */
-                     OptimizerFactory();
+                           OptimizerFactory();
       /*!
        *  Destructor
        */
-                     ~OptimizerFactory();
-      OptimizerBase* CreateOptimizer( OptimizerBase::OptimizerType optimizerType, ModelBase* model ) const;
+                           ~OptimizerFactory();
+      OptimizerBase* const CreateOptimizer( const OptimizerBase::OptimizerType& optimizerType, ModelBase* model ) const;
 
   };
 

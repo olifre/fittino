@@ -23,8 +23,6 @@
 #ifndef FITTINO_INPUTFILEINTERPRETERBASE_H
 #define FITTINO_INPUTFILEINTERPRETERBASE_H
 
-#include <string>
-
 #include "TString.h"
 
 /*!
@@ -49,7 +47,7 @@ namespace Fittino {
        *  Destructor
        */
       virtual      ~InputFileInterpreterBase();
-      virtual void Parse( const TString& inputFileName ) = 0;
+      virtual void Parse( const TString& inputFileName ) const = 0;
   
   };
 

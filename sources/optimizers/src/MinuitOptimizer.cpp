@@ -77,7 +77,7 @@ void Fittino::MinuitOptimizer::Execute() {
 
 }
 
-void Fittino::MinuitOptimizer::PrintConfiguration() {
+void Fittino::MinuitOptimizer::PrintConfiguration() const {
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "                                                                                " << std::endl;

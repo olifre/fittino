@@ -89,7 +89,7 @@ void Fittino::ParticleSwarmOptimizer::Execute() {
 
 }
 
-void Fittino::ParticleSwarmOptimizer::PrintConfiguration() {
+void Fittino::ParticleSwarmOptimizer::PrintConfiguration() const {
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "                                                                                " << std::endl;

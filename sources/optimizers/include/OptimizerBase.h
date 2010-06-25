@@ -70,9 +70,9 @@ namespace Fittino {
       ModelBase*   _model;
 
     protected:
-      void         PrintResult();
-      void         PrintStatus();
-      virtual void PrintConfiguration() = 0;
+      void         PrintResult() const;
+      void         PrintStatus() const;
+      virtual void PrintConfiguration() const = 0;
 
   };
 

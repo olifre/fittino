@@ -61,7 +61,7 @@ namespace Fittino {
       virtual void           Execute();
 
     protected:
-      virtual void           PrintConfiguration();
+      virtual void           PrintConfiguration() const;
 
     private:
       double                 _c1;

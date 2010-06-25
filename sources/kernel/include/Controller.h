@@ -46,60 +46,60 @@ namespace Fittino {
   class Controller {
 
     public:
-      static Controller*                        GetInstance();
+      static Controller*                              GetInstance();
 
     public:
       /*!
        *  This function initializes Fittino. It takes as input the number and the vector of\n
        *  command line arguments specified while invocing Fittino.
        */
-      void                                      InitializeFittino( int argc, char** argv );
+      void                                            InitializeFittino( int argc, char** argv );
       /*!  
        *  In this function Fittino sets up the configured execution mode. It is called directly\n
        *  after Controller::InitializeFittino. Supported modes are sampling, scan or optimization.
        */
-      void                                      ExecuteFittino();
+      void                                            ExecuteFittino() const;
       /*!
        *  This function provides the controlled termination of Fittino
        */
-      void                                      TerminateFittino();
+      void                                            TerminateFittino() const;
 
     private:
-      static Controller*                        _instance;
+      static Controller*                              _instance;
 
     private:
       /*!
        *  External seed as passed as an argument to Fittino.
        */
-      int                                       _randomSeed;
+      int                                             _randomSeed;
       /*!
        *  The name of the input file. 
        */
-      std::string                               _inputFileName;
+      std::string                                     _inputFileName;
 
     private:
       /*!
        *  Constructor.
        */
-                                                Controller();
+                                                      Controller();
       /*!
        *  Destructor.
        */
-                                                ~Controller();
+                                                      ~Controller();
       /*!
        *  When Fittino is called without arguments or with the -h/--help option this method\n
        *  prints a help screen with further instructions on how to use Fittino. 
        */
-      void                                      PrintHelp() const;
+      void                                            PrintHelp() const;
       /*!
        *  Prints a welcome screen. 
        */
-      void                                      PrintLogo() const;
+      void                                            PrintLogo() const;
       /*!
        *  Determines the format of the input file. Supported input file formats are .xml or .ftn\n
        *  (a special Fittino file format)
        */
-      InputFileInterpreterBase::InputFileFormat DetermineInputFileFormat() const;
+      const InputFileInterpreterBase::InputFileFormat DetermineInputFileFormat() const;
 
   };
 

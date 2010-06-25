@@ -36,12 +36,12 @@ namespace Fittino {
       /*!
        *  Constructor
        */
-                                InputFileInterpreterFactory();
+                                            InputFileInterpreterFactory();
       /*!
        *  Destructor
        */
-                                ~InputFileInterpreterFactory();
-      InputFileInterpreterBase* CreateInputFileInterpreter( InputFileInterpreterBase::InputFileFormat inputFileFormat ) const;
+                                            ~InputFileInterpreterFactory();
+      const InputFileInterpreterBase* const CreateInputFileInterpreter( const InputFileInterpreterBase::InputFileFormat& inputFileFormat ) const;
 
   };
 

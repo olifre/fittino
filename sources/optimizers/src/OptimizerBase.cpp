@@ -44,7 +44,7 @@ Fittino::OptimizerBase::~OptimizerBase() {
 
 }
 
-void Fittino::OptimizerBase::PrintResult() {
+void Fittino::OptimizerBase::PrintResult() const {
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "                                                                                " << std::endl;
@@ -63,7 +63,7 @@ void Fittino::OptimizerBase::PrintResult() {
 
 }
 
-void Fittino::OptimizerBase::PrintStatus() {
+void Fittino::OptimizerBase::PrintStatus() const {
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "                                                                                " << std::endl;

@@ -50,9 +50,9 @@ namespace Fittino {
   
     public:
       void                                  AddSteeringParameter( std::string key, std::string value );
-      ExecutionMode::Mode                   GetExecutionMode() const;
-      ModelBase::ModelType                  GetModelType() const;
-      OptimizerBase::OptimizerType          GetOptimizerType() const;
+      ExecutionMode::Mode                   GetExecutionMode();
+      ModelBase::ModelType                  GetModelType();
+      OptimizerBase::OptimizerType          GetOptimizerType();
 
     public:
       template<class SteeringParameterType>

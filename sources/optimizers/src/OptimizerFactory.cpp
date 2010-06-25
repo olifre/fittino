@@ -25,7 +25,7 @@ Fittino::OptimizerFactory::OptimizerFactory() {
 
 }
 
-Fittino::OptimizerBase* Fittino::OptimizerFactory::CreateOptimizer( Fittino::OptimizerBase::OptimizerType optimizerType, Fittino::ModelBase* model ) const {
+Fittino::OptimizerBase* const Fittino::OptimizerFactory::CreateOptimizer( const Fittino::OptimizerBase::OptimizerType& optimizerType, Fittino::ModelBase* model ) const {
 
     switch ( optimizerType ) {
 

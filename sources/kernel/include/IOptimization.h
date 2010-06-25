@@ -41,7 +41,7 @@ namespace Fittino {
        *  Destructor
        */
                          ~IOptimization();
-      double             EvaluateModel( ModelBase* model );
+      double             EvaluateModel( ModelBase* model ) const;
       virtual void       UpdateModel() = 0;
 
   };

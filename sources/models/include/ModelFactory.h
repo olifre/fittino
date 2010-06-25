@@ -36,12 +36,12 @@ namespace Fittino {
       /*!
        *  Constructor
        */
-                 ModelFactory();
+                        ModelFactory();
       /*!
        *  Destructor
        */
-                 ~ModelFactory();
-      ModelBase* CreateModel( ModelBase::ModelType modelType ) const;
+                        ~ModelFactory();
+       ModelBase* const CreateModel( const ModelBase::ModelType& modelType ) const;
 
   };
 

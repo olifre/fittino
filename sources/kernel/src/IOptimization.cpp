@@ -27,9 +27,8 @@ Fittino::IOptimization::~IOptimization() {
 
 }
 
-double Fittino::IOptimization::EvaluateModel( ModelBase* model ) {
+double Fittino::IOptimization::EvaluateModel( ModelBase* model ) const {
 
-    double chi2 = model->Evaluate();
-    return chi2;
+    return model->Evaluate();
 
 }

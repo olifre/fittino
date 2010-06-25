@@ -44,7 +44,7 @@ namespace Fittino {
        *  Destructor
        */
       virtual      ~FittinoInputFileInterpreter();
-      virtual void Parse( const TString& fittinoInputFileName );
+      virtual void Parse( const TString& fittinoInputFileName ) const;
   
   };
 
