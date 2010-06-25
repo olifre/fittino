@@ -49,10 +49,10 @@ namespace Fittino {
       static Configuration*                 GetInstance();
   
     public:
-      void                                  AddSteeringParameter( std::string key, std::string value );
-      ExecutionMode::Mode                   GetExecutionMode();
-      ModelBase::ModelType                  GetModelType();
-      OptimizerBase::OptimizerType          GetOptimizerType();
+      void                                  AddSteeringParameter( const std::string& key, const std::string& value );
+      ExecutionMode::Mode                   GetExecutionMode() const;
+      ModelBase::ModelType                  GetModelType() const;
+      OptimizerBase::OptimizerType          GetOptimizerType() const;
 
     public:
       template<class SteeringParameterType>
@@ -62,9 +62,6 @@ namespace Fittino {
       static Configuration*                 _instance;
   
     private:
-      ExecutionMode::Mode                   _executionMode;
-      ModelBase::ModelType                  _modelType;
-      OptimizerBase::OptimizerType          _optimizerType;
       SteeringParameterMap*                 _steeringParameterMap;
 
     private:

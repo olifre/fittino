@@ -22,12 +22,13 @@
 *******************************************************************************/
 
 #include "Configuration.h"
+#include "ConfigurationException.h"
 
 Fittino::Configuration* Fittino::Configuration::GetInstance() {
 
     if ( !_instance ) {
 
-        _instance = new Configuration();
+        _instance = new Configuration::Configuration();
 
     }
 
@@ -35,72 +36,84 @@ Fittino::Configuration* Fittino::Configuration::GetInstance() {
 
 }
 
-void Fittino::Configuration::AddSteeringParameter( std::string key, std::string value ) {
+void Fittino::Configuration::AddSteeringParameter( const std::string& key, const std::string& value ) {
 
     ( *_steeringParameterMap )[key] = value;
 
 }
 
-Fittino::ExecutionMode::Mode Fittino::Configuration::GetExecutionMode() {
+Fittino::ExecutionMode::Mode Fittino::Configuration::GetExecutionMode() const {
 
     /*!
      *  Returns configured execution mode
      */
-    if ( ( *_steeringParameterMap )["Mode"] == "OPTIMIZATION" ) {
+    const std::string key = "Mode";
 
-        _executionMode = ExecutionMode::OPTIMIZATION;
+    if ( ( *_steeringParameterMap )[key] == "OPTIMIZATION" ) {
 
-    }
-    else if ( ( *_steeringParameterMap )["Mode"] == "SCAN" ) {
-
-        _executionMode = ExecutionMode::SCAN;
+        return ExecutionMode::OPTIMIZATION;
 
     }
+    else if ( ( *_steeringParameterMap )[key] == "SCAN" ) {
 
-    return _executionMode;
+        return ExecutionMode::SCAN;
+
+    }
+    else {
+
+        throw ConfigurationException( "Configured execution mode unknown." );
+
+    }
 
 }
 
-Fittino::ModelBase::ModelType Fittino::Configuration::GetModelType() {
+Fittino::ModelBase::ModelType Fittino::Configuration::GetModelType() const {
 
     /*!
      *  Returns configured model type
      */
-    if ( ( *_steeringParameterMap )["ModelType"] == "RosenbrockModel" ) {
+    const std::string key = "ModelType";
 
-        _modelType = ModelBase::ROSENBROCKMODEL;
+    if ( ( *_steeringParameterMap )[key] == "RosenbrockModel" ) {
+
+        return ModelBase::ROSENBROCKMODEL;
+
+    }
+    else {
+
+        throw ConfigurationException( "Configured model type unknown." );
 
     }
 
-    return _modelType;
-
 }
 
-Fittino::OptimizerBase::OptimizerType Fittino::Configuration::GetOptimizerType() {
+Fittino::OptimizerBase::OptimizerType Fittino::Configuration::GetOptimizerType() const {
 
     /*!
      *  Returns configured optimizer type
      */
-    if ( ( *_steeringParameterMap )["OptimizerType"] == "MinuitOptimizer" ) {
+    const std::string key = "OptimizerType";
 
-        _optimizerType = OptimizerBase::MINUITOPTIMIZER;
+    if ( ( *_steeringParameterMap )[key] == "MinuitOptimizer" ) {
 
-    }
-    else if ( ( *_steeringParameterMap )["OptimizerType"] == "ParticleSwarmOptimizer" ) {
-
-        _optimizerType = OptimizerBase::PARTICLESWARMOPTIMIZER;
+        return OptimizerBase::MINUITOPTIMIZER;
 
     }
+    else if ( ( *_steeringParameterMap )[key] == "ParticleSwarmOptimizer" ) {
 
-    return _optimizerType;
+        return OptimizerBase::PARTICLESWARMOPTIMIZER;
+
+    }
+    else {
+
+        throw ConfigurationException( "Configured optimizer type unknown." );
+
+    }
 
 }
 
 Fittino::Configuration::Configuration()
-        : _executionMode( ExecutionMode::OPTIMIZATION ),
-          _steeringParameterMap( new SteeringParameterMap() ),
-          _modelType( ModelBase::ROSENBROCKMODEL ), 
-          _optimizerType( OptimizerBase::MINUITOPTIMIZER ) {
+        : _steeringParameterMap( new SteeringParameterMap() ) {
 
     /*!
      *  Sets default execution mode (optimization)
