@@ -41,29 +41,57 @@ void Fittino::Configuration::AddSteeringParameter( std::string key, std::string 
 
 }
 
-Fittino::ExecutionMode::Mode Fittino::Configuration::GetExecutionMode() const {
+Fittino::ExecutionMode::Mode Fittino::Configuration::GetExecutionMode() {
 
     /*!
      *  Returns configured execution mode
      */
+    if ( ( *_steeringParameterMap )["Mode"] == "OPTIMIZATION" ) {
+
+        _executionMode = ExecutionMode::OPTIMIZATION;
+
+    }
+    else if ( ( *_steeringParameterMap )["Mode"] == "SCAN" ) {
+
+        _executionMode = ExecutionMode::SCAN;
+
+    }
+
     return _executionMode;
 
 }
 
-Fittino::ModelBase::ModelType Fittino::Configuration::GetModelType() const {
+Fittino::ModelBase::ModelType Fittino::Configuration::GetModelType() {
 
     /*!
      *  Returns configured model type
      */
+    if ( ( *_steeringParameterMap )["ModelType"] == "RosenbrockModel" ) {
+
+        _modelType = ModelBase::ROSENBROCKMODEL;
+
+    }
+
     return _modelType;
 
 }
 
-Fittino::OptimizerBase::OptimizerType Fittino::Configuration::GetOptimizerType() const {
+Fittino::OptimizerBase::OptimizerType Fittino::Configuration::GetOptimizerType() {
 
     /*!
      *  Returns configured optimizer type
      */
+    if ( ( *_steeringParameterMap )["OptimizerType"] == "MinuitOptimizer" ) {
+
+        _optimizerType = OptimizerBase::MINUITOPTIMIZER;
+
+    }
+    else if ( ( *_steeringParameterMap )["OptimizerType"] == "ParticleSwarmOptimizer" ) {
+
+        _optimizerType = OptimizerBase::PARTICLESWARMOPTIMIZER;
+
+    }
+
     return _optimizerType;
 
 }
@@ -73,12 +101,11 @@ Fittino::Configuration::Configuration()
           _steeringParameterMap( new SteeringParameterMap() ),
           _modelType( ModelBase::ROSENBROCKMODEL ), 
           _optimizerType( OptimizerBase::MINUITOPTIMIZER ) {
-          //_optimizerType( OptimizerBase::PARTICLESWARMOPTIMIZER ) {
 
     /*!
      *  Sets default execution mode (optimization)
      *  Sets default model (Rosenbrock model)
-     *  Sets default optimizer (particle swarm optimizer)
+     *  Sets default optimizer (Minuit optimizer)
      */
 
 }
