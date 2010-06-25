@@ -22,8 +22,11 @@
 
 SET(ROOT_CONFIG_PATH $ENV{ROOTSYS}/bin)
 
-# Look for the executable "root-config" in the specified path. If the executable
-# is not found there, "ROOT_CONFIG_EXECUTABLE-NOTFOUND" is returned.
+# Look for the executable "root-config" in the specified path. If the executable is not found there,
+# the variable ROOT_CONFIG_EXECUTABLE is set to "ROOT_CONFIG_EXECUTABLE-NOTFOUND" which is the
+# default value.
+
+SET(ROOT_CONFIG_EXECUTABLE "ROOT_CONFIG_EXECUTABLE-NOTFOUND")
 
 FIND_PROGRAM(ROOT_CONFIG_EXECUTABLE root-config PATHS ${ROOT_CONFIG_PATH} NO_DEFAULT_PATH)
 
