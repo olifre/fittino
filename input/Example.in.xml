@@ -5,8 +5,12 @@
 <XMLInputFile>
 
   <ExecutionMode
-   Mode = "SCAN"
+   Mode = "OPTIMIZATION"
    />
+
+<!--  <ExecutionMode
+   Mode = "SCAN"
+   /> -->
 
   <Model
    ModelType = "RosenbrockModel"
@@ -17,13 +21,19 @@
   <Optimizer
    AbortCriterium     = "1e-6"
    NumberOfIterations = "500"
-   OptimizerType      = "ParticleSwarmOptimizer"
+   OptimizerType      = "MinuitOptimizer"
    />
+
+<!--  <Optimizer
+   AbortCriterium     = "1e-6"
+   NumberOfIterations = "500"
+   OptimizerType      = "ParticleSwarmOptimizer"
+   /> -->
 
   <ParticleSwarmOptimizer
    C1                = "0.01"
    C2                = "0.01"
-   NumberOfParticles = "30"
+   NumberOfParticles = "100"
    />
 
 </XMLInputFile>
