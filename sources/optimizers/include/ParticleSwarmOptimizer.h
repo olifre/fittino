@@ -58,16 +58,16 @@ namespace Fittino {
        *  destructor of the particle swarm. 
        */
                              ~ParticleSwarmOptimizer();
-      virtual void           Execute();
-
-    protected:
-      virtual void           PrintConfiguration() const;
 
     private:
       double                 _c1;
       double                 _c2;
       unsigned int           _numberOfParticles;
       std::vector<Particle*> _particleSwarm;
+
+    private:
+      virtual double         UpdateChi2();
+      virtual void           PrintSteeringParameters() const;
  
   };
 

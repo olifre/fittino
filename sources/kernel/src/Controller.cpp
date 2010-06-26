@@ -142,7 +142,7 @@ void Fittino::Controller::ExecuteFittino() const {
 
             const OptimizerFactory optimizerFactory;
             OptimizerBase* const optimizer = optimizerFactory.CreateOptimizer( Configuration::GetInstance()->GetOptimizerType(), model );
-            optimizer->Execute();
+            optimizer->PerformOptimization();
             delete optimizer;
 
         }

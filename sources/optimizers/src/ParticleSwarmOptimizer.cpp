@@ -28,12 +28,10 @@
 Fittino::ParticleSwarmOptimizer::ParticleSwarmOptimizer( Fittino::ModelBase* model )
         : OptimizerBase( model ) {
 
-    Configuration* configuration = Configuration::GetInstance();
-
-    _c1 = configuration->GetSteeringParameter( "C1", 0.01 );
-    _c2 = configuration->GetSteeringParameter( "C2", 0.01 );
+    _c1 = Configuration::GetInstance()->GetSteeringParameter( "C1", 0.01 );
+    _c2 = Configuration::GetInstance()->GetSteeringParameter( "C2", 0.01 );
     _name =  "particle swarm optimization algorithm";
-    _numberOfParticles = configuration->GetSteeringParameter( "NumberOfParticles", 20 );
+    _numberOfParticles = Configuration::GetInstance()->GetSteeringParameter( "NumberOfParticles", 20 );
 
     TRandom _randomGenerator;
 
@@ -46,61 +44,34 @@ Fittino::ParticleSwarmOptimizer::ParticleSwarmOptimizer( Fittino::ModelBase* mod
 
     }
 
-    ParticleSwarmOptimizer::PrintConfiguration();
-
-
 }
 
 Fittino::ParticleSwarmOptimizer::~ParticleSwarmOptimizer() {
 
-    ParticleSwarmOptimizer::PrintResult();
     //delete _particleSwarm;
 
 }
 
-void Fittino::ParticleSwarmOptimizer::Execute() {
+double Fittino::ParticleSwarmOptimizer::UpdateChi2() {
 
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "  Running " << _name                                                              << std::endl;
-    std::cout << "                                                                                " << std::endl;
+    for ( unsigned int i = 0; i < _particleSwarm.size(); i++ ) {
 
-    while (  _globalBestChi2 > _abortCriterium && _iterationCounter < _numberOfIterations ) {
-
-        _iterationCounter++;
-
-        for ( unsigned int i = 0; i < _particleSwarm.size(); i++ ) {
-
-            _particleSwarm[i]->UpdateModel();
-
-        }
-
-        _globalBestChi2 = Fittino::Particle::_globalBestChi2;
-        _model = Fittino::Particle::_globalBestModel;
-
-        //PrintStatus();
+        _particleSwarm[i]->UpdateModel();
 
     }
 
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "  Optimization converged after " << _iterationCounter << " iterations           " << std::endl;
-    std::cout << "                                                                                " << std::endl;
+    _model = Fittino::Particle::_globalBestModel;
+
+    return Fittino::Particle::_globalBestChi2;
+
+    //PrintStatus();
 
 }
 
-void Fittino::ParticleSwarmOptimizer::PrintConfiguration() const {
+void Fittino::ParticleSwarmOptimizer::PrintSteeringParameters() const {
 
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "  Initializing " << _name                                                         << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "   Configuration                                                                " << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "    Maximum number of iterations    " << _numberOfIterations                      << std::endl;
-    std::cout << "    Number of particles             " << _numberOfParticles                       << std::endl;
-    std::cout << "    Global scaling factor c1        " << _c1                                      << std::endl;
-    std::cout << "    Local scaling factor c2         " << _c2                                      << std::endl;
-    std::cout << "                                                                                " << std::endl;
+    std::cout << "    Number of particles         " << _numberOfParticles  << std::endl;
+    std::cout << "    Global scaling factor c1    " << _c1                 << std::endl;
+    std::cout << "    Local scaling factor c2     " << _c2                 << std::endl;
 
 }

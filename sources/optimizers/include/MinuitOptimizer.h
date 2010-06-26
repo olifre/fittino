@@ -44,13 +44,13 @@ namespace Fittino {
        *  Destructor
        */
                                       ~MinuitOptimizer();
-      virtual void                    Execute();
-
-    protected:
-      virtual void                    PrintConfiguration() const;
 
     private:
       ROOT::Minuit2::MnUserParameters _minuitUserParameters;
+
+    private:
+      virtual double                  UpdateChi2();
+      virtual void                    PrintSteeringParameters() const;
 
   };
 

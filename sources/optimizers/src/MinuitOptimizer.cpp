@@ -40,11 +40,9 @@ Fittino::MinuitOptimizer::MinuitOptimizer( Fittino::ModelBase* model )
 
 Fittino::MinuitOptimizer::~MinuitOptimizer() {
 
-    MinuitOptimizer::PrintResult();
-
 }
 
-void Fittino::MinuitOptimizer::Execute() {
+double Fittino::MinuitOptimizer::UpdateChi2() {
 
     std::vector<double> pos;
     std::vector<double> meas;
@@ -52,13 +50,6 @@ void Fittino::MinuitOptimizer::Execute() {
 
     RosenbrockFCN rosenbrockFCN( meas, pos, var );
     ROOT::Minuit2::MnMigrad _migrad( rosenbrockFCN, _minuitUserParameters );
-
-    MinuitOptimizer::PrintConfiguration();
-
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "  Running " << _name                                                              << std::endl;
-    std::cout << "                                                                                " << std::endl;
 
     ROOT::Minuit2::FunctionMinimum minuitResult = _migrad();
 
@@ -70,22 +61,12 @@ void Fittino::MinuitOptimizer::Execute() {
 
     _iterationCounter =  minuitResult.NFcn();
 
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "  Optimization converged after " << _iterationCounter << " iterations           " << std::endl;
-    std::cout << "                                                                                " << std::endl;
+    return 1e-7;
 
 }
 
-void Fittino::MinuitOptimizer::PrintConfiguration() const {
+void Fittino::MinuitOptimizer::PrintSteeringParameters() const {
 
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "  Initializing " << _name                                                         << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "   Configuration                                                                " << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "    Default configuration                                                       " << std::endl;
-    std::cout << "                                                                                " << std::endl;
+    std::cout << "    Default configuration " << std::endl;
 
 }

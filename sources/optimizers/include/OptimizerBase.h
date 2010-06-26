@@ -49,30 +49,39 @@ namespace Fittino {
   class OptimizerBase {
 
     public:
-      enum         OptimizerType { MINUITOPTIMIZER, PARTICLESWARMOPTIMIZER };
+      enum           OptimizerType { MINUITOPTIMIZER, PARTICLESWARMOPTIMIZER };
 
     public:
-                   OptimizerBase( ModelBase* model );
-      virtual      ~OptimizerBase();
+                     OptimizerBase( ModelBase* model );
+      virtual        ~OptimizerBase();
       /*!
        *  The Execute() method. It checks the value of a generic abort
        *  criterium. In the case it is not met the model is updated and
        *  evaluated.
        */
-      virtual void Execute() = 0;
+      void           PerformOptimization();
 
     protected:
-      double       _abortCriterium;
-      double       _globalBestChi2;
-      unsigned int _iterationCounter;
-      unsigned int _numberOfIterations;
-      std::string  _name;
-      ModelBase*   _model;
+      unsigned int   _iterationCounter;
+      std::string    _name;
+      ModelBase*     _model;
 
     protected:
-      void         PrintResult() const;
-      void         PrintStatus() const;
-      virtual void PrintConfiguration() const = 0;
+      void           PrintStatus() const;
+      virtual double UpdateChi2() = 0;
+      virtual void   PrintSteeringParameters() const = 0;
+
+    private:
+      double         _abortCriterium;
+      double         _chi2;
+      unsigned int   _numberOfIterations;
+
+    private:
+      void           ExecuteOptimizer();
+      void           InitializeOptimizer();
+      void           PrintConfiguration() const;
+      void           PrintResult() const;
+      void           TerminateOptimizer() const;
 
   };
 

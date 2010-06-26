@@ -112,6 +112,8 @@ Fittino::OptimizerBase::OptimizerType Fittino::Configuration::GetOptimizerType()
 
 }
 
+Fittino::Configuration* Fittino::Configuration::_instance = 0;
+
 Fittino::Configuration::Configuration()
         : _steeringParameterMap( new SteeringParameterMap() ) {
 
@@ -126,5 +128,3 @@ Fittino::Configuration::Configuration()
 Fittino::Configuration::~Configuration() {
 
 }
-
-Fittino::Configuration* Fittino::Configuration::_instance = 0;

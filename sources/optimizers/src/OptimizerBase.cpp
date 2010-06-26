@@ -26,21 +26,79 @@
 #include "OptimizerBase.h"
 
 Fittino::OptimizerBase::OptimizerBase( ModelBase* model )
-        : _abortCriterium( 1e-6 ),
-          _globalBestChi2( 1e99 ),
+        : _chi2( 1e99 ),
           _iterationCounter( 0 ),
-          _numberOfIterations( 10000 ),
           _name( "" ),
           _model( model ) {
 
-    Configuration* configuration = Configuration::GetInstance();
-
-    _abortCriterium = configuration->GetSteeringParameter( "AbortCriterium", 1e-6 );
-    _numberOfIterations = configuration->GetSteeringParameter( "NumberOfIterations", 10000 );
+    _abortCriterium = Configuration::GetInstance()->GetSteeringParameter( "AbortCriterium", 1e-6 );
+    _numberOfIterations = Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", 10000 );
 
 }
 
 Fittino::OptimizerBase::~OptimizerBase() {
+
+}
+
+void Fittino::OptimizerBase::PerformOptimization() {
+
+    OptimizerBase::InitializeOptimizer();
+    OptimizerBase::ExecuteOptimizer();
+    OptimizerBase::TerminateOptimizer();
+
+}
+
+void Fittino::OptimizerBase::PrintStatus() const {
+
+    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "  Actual best set of Rosenbrock model parameters                                " << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "    X    " << ( *( _model->GetParameterVector() ) )[0]                            << std::endl;
+    std::cout << "    Y    " << ( *( _model->GetParameterVector() ) )[1]                            << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "    Chi2 " << _chi2                                                               << std::endl;
+    std::cout << "                                                                                " << std::endl;
+
+}
+
+void Fittino::OptimizerBase::ExecuteOptimizer() {
+
+    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "  Running " << _name                                                              << std::endl;
+    std::cout << "                                                                                " << std::endl;
+
+    while (  _chi2 > _abortCriterium && _iterationCounter < _numberOfIterations ) {
+
+        _iterationCounter++;
+
+        _chi2 = this->UpdateChi2();
+
+    }
+
+}
+
+void Fittino::OptimizerBase::InitializeOptimizer() {
+
+    OptimizerBase::PrintConfiguration();
+
+}
+
+void Fittino::OptimizerBase::PrintConfiguration() const {
+
+    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "  Initializing " << _name                                                         << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "   Configuration                                                                " << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "    Abort criterium             " << _abortCriterium                              << std::endl;
+    std::cout << "    Number of Iterations        " << _numberOfIterations                          << std::endl;
+
+    this->PrintSteeringParameters();
+
+    std::cout << "                                                                                " << std::endl;
 
 }
 
@@ -63,16 +121,13 @@ void Fittino::OptimizerBase::PrintResult() const {
 
 }
 
-void Fittino::OptimizerBase::PrintStatus() const {
+void Fittino::OptimizerBase::TerminateOptimizer() const {
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "                                                                                " << std::endl;
-    std::cout << "  Actual best set of Rosenbrock model parameters                                " << std::endl;
+    std::cout << "  Optimization converged after " << _iterationCounter << " iterations           " << std::endl;
     std::cout << "                                                                                " << std::endl;
-    std::cout << "    X    " << ( *( _model->GetParameterVector() ) )[0]                            << std::endl;
-    std::cout << "    Y    " << ( *( _model->GetParameterVector() ) )[1]                            << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "    Chi2 " << _globalBestChi2                                                     << std::endl;
-    std::cout << "                                                                                " << std::endl;
+
+    OptimizerBase::PrintResult();
 
 }
