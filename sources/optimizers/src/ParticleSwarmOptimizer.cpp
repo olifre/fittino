@@ -30,7 +30,7 @@ Fittino::ParticleSwarmOptimizer::ParticleSwarmOptimizer( Fittino::ModelBase* mod
 
     _c1 = Configuration::GetInstance()->GetSteeringParameter( "C1", 0.01 );
     _c2 = Configuration::GetInstance()->GetSteeringParameter( "C2", 0.01 );
-    _name =  "particle swarm optimization algorithm";
+    _name = "particle swarm optimization algorithm";
     _numberOfParticles = Configuration::GetInstance()->GetSteeringParameter( "NumberOfParticles", 20 );
 
     TRandom _randomGenerator;

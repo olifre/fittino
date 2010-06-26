@@ -23,13 +23,12 @@
 #include "Configuration.h"
 #include "RosenbrockModel.h"
 
-Fittino::RosenbrockModel::RosenbrockModel()
-        : _x ( 0. ),
-          _y ( 0. ) {
+Fittino::RosenbrockModel::RosenbrockModel() {
 
     Configuration* configuration = Configuration::GetInstance();
 
     _numberOfParameters = 2;
+    _name = "Rosenbrock model";
     _x = configuration->GetSteeringParameter( "X", 0. );
     _y = configuration->GetSteeringParameter( "Y", 0. );
 
@@ -38,7 +37,7 @@ Fittino::RosenbrockModel::RosenbrockModel()
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "                                                                                " << std::endl;
-    std::cout << "  Initializing Rosenbrock model                                                 " << std::endl;
+    std::cout << "  Initializing " << _name                                                         << std::endl;
     std::cout << "                                                                                " << std::endl;
     std::cout << "   Starting values                                                              " << std::endl;
     std::cout << "                                                                                " << std::endl;

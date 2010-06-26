@@ -20,6 +20,7 @@
 #ifndef FITTINO_MODELBASE_H
 #define FITTINO_MODELBASE_H
 
+#include <string>
 #include <vector>
 
 /*!
@@ -45,12 +46,14 @@ namespace Fittino {
        */
                            ~ModelBase();
       int                  GetNumberOfParameters() const;
+      std::string          GetName() const;
       std::vector<double>* GetParameterVector();
       virtual double       Evaluate() = 0;
       virtual ModelBase*   Clone() const = 0;
 
     protected:
       int                  _numberOfParameters;
+      std::string          _name;
       std::vector<double>  _parameterVector;
 
   };

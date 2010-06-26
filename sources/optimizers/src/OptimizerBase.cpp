@@ -52,7 +52,7 @@ void Fittino::OptimizerBase::PrintStatus() const {
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "                                                                                " << std::endl;
-    std::cout << "  Actual best set of Rosenbrock model parameters                                " << std::endl;
+    std::cout << "  Actual best set of " << _model->GetName() << " parameters                     " << std::endl;
     std::cout << "                                                                                " << std::endl;
     std::cout << "    X    " << ( *( _model->GetParameterVector() ) )[0]                            << std::endl;
     std::cout << "    Y    " << ( *( _model->GetParameterVector() ) )[1]                            << std::endl;
@@ -81,6 +81,11 @@ void Fittino::OptimizerBase::ExecuteOptimizer() {
 
 void Fittino::OptimizerBase::InitializeOptimizer() {
 
+    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "  Initializing " << _name                                                         << std::endl;
+    std::cout << "                                                                                " << std::endl;
+
     OptimizerBase::PrintConfiguration();
 
 }
@@ -88,8 +93,6 @@ void Fittino::OptimizerBase::InitializeOptimizer() {
 void Fittino::OptimizerBase::PrintConfiguration() const {
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "  Initializing " << _name                                                         << std::endl;
     std::cout << "                                                                                " << std::endl;
     std::cout << "   Configuration                                                                " << std::endl;
     std::cout << "                                                                                " << std::endl;
@@ -106,13 +109,13 @@ void Fittino::OptimizerBase::PrintResult() const {
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "                                                                                " << std::endl;
-    std::cout << "  Terminating " << _name                                                          << std::endl;
+    std::cout << "  Optimization converged after " << _iterationCounter << " iterations           " << std::endl;
     std::cout << "                                                                                " << std::endl;
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "                                                                                " << std::endl;
     std::cout << "  Optimization results                                                          " << std::endl;
     std::cout << "                                                                                " << std::endl;
-    std::cout << "   Final set of Rosenbrock model parameters                                     " << std::endl;
+    std::cout << "   Final set of " << _model->GetName() << " parameters                          " << std::endl;
     std::cout << "                                                                                " << std::endl;
     std::cout << "    X    " << ( *( _model->GetParameterVector() ) )[0]                            << std::endl;
     std::cout << "    Y    " << ( *( _model->GetParameterVector() ) )[1]                            << std::endl;
@@ -125,9 +128,9 @@ void Fittino::OptimizerBase::TerminateOptimizer() const {
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "                                                                                " << std::endl;
-    std::cout << "  Optimization converged after " << _iterationCounter << " iterations           " << std::endl;
+    std::cout << "  Terminating " << _name                                                          << std::endl;
     std::cout << "                                                                                " << std::endl;
-
+    
     OptimizerBase::PrintResult();
 
 }

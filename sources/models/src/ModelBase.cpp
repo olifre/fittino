@@ -20,7 +20,8 @@
 #include "ModelBase.h"
 
 Fittino::ModelBase::ModelBase()
-        : _numberOfParameters(0) {
+        : _numberOfParameters(0),
+          _name( "" ) { 
 
 }
 
@@ -31,6 +32,12 @@ Fittino::ModelBase::~ModelBase() {
 int Fittino::ModelBase::GetNumberOfParameters() const {
 
     return _numberOfParameters;
+
+}
+
+std::string Fittino::ModelBase::GetName() const {
+
+    return _name;
 
 }
 
