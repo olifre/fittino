@@ -10305,7 +10305,7 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
   }
   else {
     cout<<"using seed from input file"<<endl;
-    seed = yyRandomGeneratorSeed;
+    seed = yyRandomGeneratorSeed+1;
   }
   cout << "seed = " << seed << endl;
   random->SetSeed(seed);
@@ -10577,6 +10577,24 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
   tempoFile->cd();
   tempoFile->Close();
   tempoFile->Delete();
+
+
+TFile* OptimizedWidths= new TFile("OptimizedWidths.root","recreate");
+  TTree* tree=new TTree("tree", "tree");
+
+  for (unsigned int i=0; i<yyFittedVec.size(); i++){ 
+    tree->Branch(("width_"+yyFittedVec[i].name).c_str(),&vm[i], (yyFittedVec[i].name+"/D").c_str());	  
+  }
+  tree->Fill();
+  tree->Write();
+  OptimizedWidths->Close();
+
+
+
+
+
+
+
 
   return vm;
 
