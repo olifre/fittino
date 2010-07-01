@@ -253,8 +253,8 @@ int call_HiggsBounds(int nH, double* parameterVector)
     
     
     
-    g2hjhiZ[0][1] = g2hjhiZ[1][0] = pow(((TMath::Cos(TMath::ATan(thisTanB)-yyalpha))),2);
-    g2hjhiZ[0][2] = g2hjhiZ[2][0] = 0.;
+    g2hjhiZ[0][1] = g2hjhiZ[1][0] = 0.;
+    g2hjhiZ[0][2] = g2hjhiZ[2][0] = pow(((TMath::Cos(TMath::ATan(thisTanB)-yyalpha))),2);
     g2hjhiZ[1][2] = g2hjhiZ[2][1] = pow(((TMath::Sin(TMath::ATan(thisTanB)-yyalpha))),2);                                                
     for (int i = 0; i<nH;i++){
       O_g2hjZZ[i].push_back(g2hjZZ[i]);
@@ -322,6 +322,7 @@ int call_HiggsBounds(int nH, double* parameterVector)
       cout<<"INFO: hj -> Z Z: "<<g2hjZZ[0]<<", "<<g2hjZZ[1]<<", "<<g2hjZZ[2]<<endl;
       cout<<"INFO: hj -> gamma gamma: "<<g2hjgaga[0]<<", "<<g2hjgaga[1]<<", "<<g2hjgaga[2]<<endl;
       cout<<"INFO: hj -> gg: "<<g2hjgg[0]<<", "<<g2hjgg[1]<<", "<<g2hjgg[2]<<endl;
+      cout<<"INFO: Z  -> hi hj: " << g2hjhiZsorted[0][1] << ", "  << g2hjhiZsorted[0][2] << ", " << g2hjhiZsorted[1][2] << endl;
       cout<<"INFO: channel: "<<chan<<endl;
       for (int i = 0; i<nH;i++){
 	for (int j = 0; j<nH;j++){
@@ -339,6 +340,7 @@ double ScanForHiggsLimit( int nH, double* parameterVector ) {
    double predictedHiggsMass = yyMass[ID_h];
    double higgsMassLimitCandidate = yyMass[ID_h];
    double scanStepWidth = 5.;
+   const int ntriesLimit = 1000; 
 
    double higgsMassError = 0.3;
    for ( unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
@@ -349,7 +351,9 @@ double ScanForHiggsLimit( int nH, double* parameterVector ) {
    double tolerance = higgsMassError/100.*10.;
 
    bool higgsMassNotAccepted = true;
-   while ( higgsMassNotAccepted ) {
+   int ntries = 0;
+   while ( higgsMassNotAccepted && ntries < ntriesLimit ) {
+     ntries++;
 
       yyMass[ID_h] += scanStepWidth;
       higgsMassNotAccepted = !( call_HiggsBounds( nH, parameterVector ) );
@@ -361,9 +365,11 @@ double ScanForHiggsLimit( int nH, double* parameterVector ) {
    if ( yyVerbose ) { cout << "Found accepted higgs mass at " << higgsMassAccepted << endl; }
 
    bool higgsMassLimitNotFound = true;
-   bool higgsMassLimitCandidateNotAccepted; 
+   bool higgsMassLimitCandidateNotAccepted;
    if ( yyVerbose ) { cout << "Starting search for higgs mass limit" << endl; }
-   while ( higgsMassLimitNotFound ) {
+   ntries = 0;
+   while ( higgsMassLimitNotFound && ntries < ntriesLimit ) {
+     ntries++;
 
       higgsMassLimitCandidate = ( higgsMassRejected + higgsMassAccepted )/2.;
 
