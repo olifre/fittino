@@ -6,7 +6,7 @@
 *                                                                              *
 * File        ParticleSwarmOptimizer.h                                         *
 *                                                                              *
-* Description Class for particle swarm parameter optimization                  *
+* Description Class for particle swarm parameter optimizer                     *
 *                                                                              *
 * Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
 *             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
@@ -32,7 +32,7 @@
 namespace Fittino {
 
   /*!
-   *  \brief Class for particle swarm parameter optimization
+   *  \brief Class for particle swarm parameter optimizer
    *
    *  The algorithm works as follows:
    *  <br>
@@ -66,8 +66,8 @@ namespace Fittino {
       std::vector<Particle*> _particleSwarm;
 
     private:
-      virtual double         UpdateChi2();
       virtual void           PrintSteeringParameters() const;
+      virtual void           UpdateModel();
  
   };
 

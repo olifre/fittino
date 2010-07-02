@@ -25,12 +25,14 @@
 
 #include <string>
 
-#include "ModelBase.h"
+#include "TRandom.h"
 
 /*! 
  *  \brief Fittino namespace 
  */
 namespace Fittino {
+
+  class ModelBase;
 
   /*!
    *  \brief Base class for Fittino parameter optimizers
@@ -49,7 +51,7 @@ namespace Fittino {
   class OptimizerBase {
 
     public:
-      enum           OptimizerType { MINUITOPTIMIZER, PARTICLESWARMOPTIMIZER };
+      enum           OptimizerType { MINUIT, PARTICLESWARM, SIMULATEDANNEALING };
 
     public:
                      OptimizerBase( ModelBase* model );
@@ -62,18 +64,18 @@ namespace Fittino {
       void           PerformOptimization();
 
     protected:
-      unsigned int   _iterationCounter;
       std::string    _name;
+      TRandom        _randomGenerator;
       ModelBase*     _model;
 
     protected:
-      void           PrintStatus() const;
-      virtual double UpdateChi2() = 0;
       virtual void   PrintSteeringParameters() const = 0;
+      virtual void   UpdateModel() = 0;
 
     private:
       double         _abortCriterium;
       double         _chi2;
+      unsigned int   _iterationCounter;
       unsigned int   _numberOfIterations;
 
     private:
@@ -81,6 +83,7 @@ namespace Fittino {
       void           InitializeOptimizer();
       void           PrintConfiguration() const;
       void           PrintResult() const;
+      void           PrintStatus() const;
       void           TerminateOptimizer() const;
 
   };

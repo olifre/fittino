@@ -6,7 +6,7 @@
 *                                                                              *
 * File        MinuitOptimizer.h                                                *
 *                                                                              *
-* Description Class for Minuit optimization                                    *
+* Description Class for Minuit parameter optimizer                             *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -20,7 +20,6 @@
 #ifndef FITTINO_MINUITOPTIMIZER_H
 #define FITTINO_MINUITOPTIMIZER_H
 
-#include "Minuit2/FCNBase.h"
 #include "Minuit2/MnUserParameterState.h"
 
 #include "OptimizerBase.h"
@@ -31,7 +30,7 @@
 namespace Fittino {
 
   /*!
-   *  \brief Class for Minuit optimization 
+   *  \brief Class for Minuit parameter optimizer 
    */
   class MinuitOptimizer : public OptimizerBase {
 
@@ -49,8 +48,8 @@ namespace Fittino {
       ROOT::Minuit2::MnUserParameters _minuitUserParameters;
 
     private:
-      virtual double                  UpdateChi2();
       virtual void                    PrintSteeringParameters() const;
+      virtual void                    UpdateModel();
 
   };
 

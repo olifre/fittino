@@ -90,7 +90,7 @@ void Fittino::Particle::UpdateModel() {
 
     }
 
-    double actualChi2 = EvaluateModel( _model );
+    double actualChi2 = _model->Evaluate();
 
     if ( actualChi2 < _personalBestChi2 ) {
 

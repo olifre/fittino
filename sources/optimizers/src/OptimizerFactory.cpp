@@ -20,6 +20,7 @@
 #include "MinuitOptimizer.h"
 #include "OptimizerFactory.h"
 #include "ParticleSwarmOptimizer.h"
+#include "SimulatedAnnealingOptimizer.h"
 
 Fittino::OptimizerFactory::OptimizerFactory() {
 
@@ -29,11 +30,14 @@ Fittino::OptimizerBase* const Fittino::OptimizerFactory::CreateOptimizer( const 
 
     switch ( optimizerType ) {
 
-        case Fittino::OptimizerBase::MINUITOPTIMIZER:
+        case Fittino::OptimizerBase::MINUIT:
             return new MinuitOptimizer( model );
 
-        case Fittino::OptimizerBase::PARTICLESWARMOPTIMIZER:
+        case Fittino::OptimizerBase::PARTICLESWARM:
             return new ParticleSwarmOptimizer( model );
+
+        case Fittino::OptimizerBase::SIMULATEDANNEALING:
+            return new SimulatedAnnealingOptimizer( model );
 
     }
 

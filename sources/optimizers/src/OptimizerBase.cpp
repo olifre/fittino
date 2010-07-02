@@ -73,7 +73,11 @@ void Fittino::OptimizerBase::ExecuteOptimizer() {
 
         _iterationCounter++;
 
-        _chi2 = this->UpdateChi2();
+        _chi2 = _model->Evaluate();
+
+        PrintStatus();
+
+        this->UpdateModel();
 
     }
 
@@ -96,8 +100,8 @@ void Fittino::OptimizerBase::PrintConfiguration() const {
     std::cout << "                                                                                " << std::endl;
     std::cout << "   Configuration                                                                " << std::endl;
     std::cout << "                                                                                " << std::endl;
-    std::cout << "    Abort criterium             " << _abortCriterium                              << std::endl;
-    std::cout << "    Number of Iterations        " << _numberOfIterations                          << std::endl;
+    std::cout << "    Abort criterium              " << _abortCriterium                             << std::endl;
+    std::cout << "    Number of Iterations         " << _numberOfIterations                         << std::endl;
 
     this->PrintSteeringParameters();
 

@@ -6,7 +6,7 @@
 *                                                                              *
 * File        OptimizerFactory.h                                               *
 *                                                                              *
-* Description Factory class for optimizers                                     *
+* Description Factory class for creating parameter optimizers                  *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -29,7 +29,7 @@
 namespace Fittino {
 
   /*!
-   *  \brief Factory class for optimizers
+   *  \brief Factory class for creating parameter optimizers
    */
   class OptimizerFactory {
 

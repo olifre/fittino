@@ -94,14 +94,19 @@ Fittino::OptimizerBase::OptimizerType Fittino::Configuration::GetOptimizerType()
      */
     const std::string key = "OptimizerType";
 
-    if ( ( *_steeringParameterMap )[key] == "MinuitOptimizer" ) {
+    if ( ( *_steeringParameterMap )[key] == "Minuit" ) {
 
-        return OptimizerBase::MINUITOPTIMIZER;
+        return OptimizerBase::MINUIT;
 
     }
-    else if ( ( *_steeringParameterMap )[key] == "ParticleSwarmOptimizer" ) {
+    else if ( ( *_steeringParameterMap )[key] == "ParticleSwarm" ) {
 
-        return OptimizerBase::PARTICLESWARMOPTIMIZER;
+        return OptimizerBase::PARTICLESWARM;
+
+    }
+    else if ( ( *_steeringParameterMap )[key] == "SimulatedAnnealing" ) {
+
+        return OptimizerBase::SIMULATEDANNEALING;
 
     }
     else {

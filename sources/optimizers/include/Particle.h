@@ -6,7 +6,7 @@
 *                                                                              *
 * File        Particle.h                                                       *
 *                                                                              *
-* Description Class for Particle                                               *
+* Description Class for Particle (needed by particle swarm optimizer)          *
 *                                                                              *
 * Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
 *             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
@@ -27,7 +27,7 @@
 
 #include "TRandom.h"
 
-#include "IOptimization.h"
+#include "ModelBase.h"
 
 /*! 
  *  \brief Fittino namespace 
@@ -35,9 +35,9 @@
 namespace Fittino {
 
   /**
-   *  \brief Class for particle
+   *  \brief Class for particle (needed by particle swarm optimizer)
    */
-  class Particle : public IOptimization {
+  class Particle {
 
     public:
       static double       _globalBestChi2;
@@ -46,7 +46,7 @@ namespace Fittino {
     public:
                           Particle( double c1, double c2, ModelBase* model, int seed );
                           ~Particle();
-      virtual void        UpdateModel();
+      void                UpdateModel();
   
     private:
       //static float        _c1;

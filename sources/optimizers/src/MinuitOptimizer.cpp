@@ -19,6 +19,7 @@
 
 #include <iostream>
 
+#include "Minuit2/FCNBase.h"
 #include "Minuit2/FunctionMinimum.h"
 #include "Minuit2/MnMigrad.h"
 #include "Minuit2/MnPrint.h"
@@ -42,14 +43,25 @@ Fittino::MinuitOptimizer::~MinuitOptimizer() {
 
 }
 
-double Fittino::MinuitOptimizer::UpdateChi2() {
+void Fittino::MinuitOptimizer::PrintSteeringParameters() const {
+
+    std::cout << "    Default configuration " << std::endl;
+
+}
+
+void Fittino::MinuitOptimizer::UpdateModel() {
 
     std::vector<double> pos;
     std::vector<double> meas;
     std::vector<double> var;
 
     RosenbrockFCN rosenbrockFCN( meas, pos, var );
-    ROOT::Minuit2::MnMigrad _migrad( rosenbrockFCN, _minuitUserParameters );
+
+    ROOT::Minuit2::MnStrategy minuitStrategy;
+    //minuitStrategy.SetGradientNCycles(0);
+    //minuitStrategy.SetHessianNCycles(0);
+
+    ROOT::Minuit2::MnMigrad _migrad( rosenbrockFCN, _minuitUserParameters, minuitStrategy );
 
     ROOT::Minuit2::FunctionMinimum minuitResult = _migrad();
 
@@ -58,15 +70,5 @@ double Fittino::MinuitOptimizer::UpdateChi2() {
         ( *( _model->GetParameterVector() ) )[i] = minuitResult.UserParameters().Value(i);
 
     }
-
-    _iterationCounter =  minuitResult.NFcn();
-
-    return 1e-7;
-
-}
-
-void Fittino::MinuitOptimizer::PrintSteeringParameters() const {
-
-    std::cout << "    Default configuration " << std::endl;
 
 }

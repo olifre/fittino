@@ -28,12 +28,11 @@
 Fittino::ParticleSwarmOptimizer::ParticleSwarmOptimizer( Fittino::ModelBase* model )
         : OptimizerBase( model ) {
 
+    _name = "particle swarm optimization algorithm";
+
     _c1 = Configuration::GetInstance()->GetSteeringParameter( "C1", 0.01 );
     _c2 = Configuration::GetInstance()->GetSteeringParameter( "C2", 0.01 );
-    _name = "particle swarm optimization algorithm";
     _numberOfParticles = Configuration::GetInstance()->GetSteeringParameter( "NumberOfParticles", 20 );
-
-    TRandom _randomGenerator;
 
     for ( unsigned int n = 0; n < _numberOfParticles; n++ ) {
 
@@ -52,7 +51,15 @@ Fittino::ParticleSwarmOptimizer::~ParticleSwarmOptimizer() {
 
 }
 
-double Fittino::ParticleSwarmOptimizer::UpdateChi2() {
+void Fittino::ParticleSwarmOptimizer::PrintSteeringParameters() const {
+
+    std::cout << "    Number of particles          " << _numberOfParticles << std::endl;
+    std::cout << "    Global scaling factor c1     " << _c1                << std::endl;
+    std::cout << "    Local scaling factor c2      " << _c2                << std::endl;
+
+}
+
+void Fittino::ParticleSwarmOptimizer::UpdateModel() {
 
     for ( unsigned int i = 0; i < _particleSwarm.size(); i++ ) {
 
@@ -61,17 +68,5 @@ double Fittino::ParticleSwarmOptimizer::UpdateChi2() {
     }
 
     _model = Fittino::Particle::_globalBestModel;
-
-    return Fittino::Particle::_globalBestChi2;
-
-    //PrintStatus();
-
-}
-
-void Fittino::ParticleSwarmOptimizer::PrintSteeringParameters() const {
-
-    std::cout << "    Number of particles         " << _numberOfParticles  << std::endl;
-    std::cout << "    Global scaling factor c1    " << _c1                 << std::endl;
-    std::cout << "    Local scaling factor c2     " << _c2                 << std::endl;
 
 }

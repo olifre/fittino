@@ -1,12 +1,12 @@
-/* $Id: IOptimization.h 613 2010-05-26 09:42:00Z uhlenbrock $ */
+/* $Id: SimulatedAnnealingOptimizer.h 613 2010-05-26 09:42:00Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        IOptimization.h                                                  *
+* File        SimulatedAnnealingOptimizer.h                                    *
 *                                                                              *
-* Description Interface class for optimization algorithms                      *
+* Description Class for simulated annealing parameter optimizer                *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -17,10 +17,10 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_IOPTIMIZATION_H
-#define FITTINO_IOPTIMIZATION_H
+#ifndef FITTINO_SIMULATEDANNEALINGOPTIMIZER_H
+#define FITTINO_SIMULATEDANNEALINGOPTIMIZER_H
 
-#include "ModelBase.h"
+#include "OptimizerBase.h"
 
 /*!
  *  \brief Fittino namespace
@@ -28,24 +28,31 @@
 namespace Fittino {
 
   /*!
-   *  \brief Interface class for optimization algorithms
+   *  \brief Class for simulated annealing parameter optimizer
    */
-  class IOptimization {
+  class SimulatedAnnealingOptimizer : public OptimizerBase {
 
     public:
       /*!
        *  Constructor
        */
-                         IOptimization();
+                   SimulatedAnnealingOptimizer( ModelBase* model );
       /*!
        *  Destructor
        */
-                         ~IOptimization();
-      double             EvaluateModel( ModelBase* model ) const;
-      virtual void       UpdateModel() = 0;
+                   ~SimulatedAnnealingOptimizer();
+
+    private:
+      double       _initialTemperature;
+      double       _temperatureReductionFactor;
+      double       _temperature;
+
+    private:
+      virtual void PrintSteeringParameters() const;
+      virtual void UpdateModel();
 
   };
 
 }
 
-#endif // FITTINO_IOPTIMIZATION_H
+#endif // FITTINO_SIMULATEDANNEALINGOPTIMIZER_H
