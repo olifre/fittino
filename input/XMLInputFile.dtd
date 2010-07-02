@@ -1,4 +1,8 @@
-<!ELEMENT XMLInputFile (ExecutionMode, Model, Optimizer, ParticleSwarmOptimizer) >
+<!ELEMENT XMLInputFile (ExecutionMode,
+                        Model,
+                        Optimizer,
+                        ParticleSwarmOptimizer,
+                        SimulatedAnnealingOptimizer) >
 
 <!ELEMENT ExecutionMode EMPTY>
 <!ATTLIST ExecutionMode
@@ -24,4 +28,10 @@
   C1                CDATA #REQUIRED
   C2                CDATA #REQUIRED
   NumberOfParticles CDATA #REQUIRED
+>
+
+<!ELEMENT SimulatedAnnealingOptimizer EMPTY>
+<!ATTLIST SimulatedAnnealingOptimizer
+  InitialTemperature         CDATA #REQUIRED
+  TemperatureReductionFactor CDATA #REQUIRED
 >

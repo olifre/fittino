@@ -7,10 +7,7 @@
   <ExecutionMode
    Mode = "OPTIMIZATION"
    />
-
-<!--  <ExecutionMode
-   Mode = "SCAN"
-   /> -->
+<!--  Mode = "SCAN" -->
 
   <Model
    ModelType = "RosenbrockModel"
@@ -19,21 +16,22 @@
    />
 
   <Optimizer
-   AbortCriterium     = "1e-6"
+   AbortCriterium     = "1e-5"
    NumberOfIterations = "500"
-   OptimizerType      = "MinuitOptimizer"
+   OptimizerType      = "SimulatedAnnealing"
    />
-
-<!--  <Optimizer
-   AbortCriterium     = "1e-6"
-   NumberOfIterations = "500"
-   OptimizerType      = "ParticleSwarmOptimizer"
-   /> -->
+<!--   OptimizerType      = "ParticleSwarm" -->
+<!--   OptimizerType      = "Minuit" -->
 
   <ParticleSwarmOptimizer
    C1                = "0.01"
    C2                = "0.01"
    NumberOfParticles = "100"
+   />
+
+  <SimulatedAnnealingOptimizer
+   InitialTemperature         = "600."
+   TemperatureReductionFactor = "0.5"
    />
 
 </XMLInputFile>
