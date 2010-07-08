@@ -13,33 +13,33 @@
 ### LE (low energy) observables
 
 
-LEObs ( gmin2m_npf     )     25.5E-10 +- 8.0E-10                      alias  7 # [14]
+nofitLEObs ( gmin2m_npf     )     25.5E-10 +- 8.0E-10                      alias  7 # [14]
 nofitLEObs ( Omega_npf      )      0.113  +- 0.003                         alias 20 # [15]
 #LEObs ( Omega_npf      )      0.1123  +- 0.0035                      alias 20 # [16]
-LEObs ( DmsDmd_npf     )      1.09    +- 0.01    +- 0.16              alias 27 # [1]
-LEObs ( B_dll_npf      ) <    1.8E-8                      +- 0.001E-8 alias 26 # [2]
-LEObs ( Kppinn_npf     )      < 4.5     +- 1.0E-10                    alias 25 # [4]
-LEObs ( dm_k_npf       )      0.92    +- 0.14                         alias 24 # [4]
+nofitLEObs ( DmsDmd_npf     )      1.09    +- 0.01    +- 0.16              alias 27 # [1]
+nofitLEObs ( B_dll_npf      )     1.8E-8                      +- 0.001E-8 alias 26 # [2]
+nofitLEObs ( Kppinn_npf     )       4.5     +- 1.0E-10                    alias 25 # [4]
+nofitLEObs ( dm_k_npf       )      0.92    +- 0.14                         alias 24 # [4]
 LEObs ( sigma_had0_npf )      41.540   +- 0.037                       alias 23 # [5]
-LEObs ( Massh0_npf     ) >  114.4                         +- 3.0      alias 19 # [6]
-LEObs ( A_fbl_npf      )      0.0171 +- 0.0010                        alias 22 # [5]
-LEObs ( A_l_npf        )      0.1489  +- 0.0015                       alias 18 # [7]
+nofitLEObs ( Massh0_npf     )   114.4                         +- 3.0      alias 19 # [6]
+nofitLEObs ( A_fbl_npf      )      0.0171 +- 0.0010                        alias 22 # [5]
+nofitLEObs ( A_l_npf        )      0.1489  +- 0.0015                       alias 18 # [7]
 LEObs ( R_l_npf        )     20.767   +- 0.025                        alias 11 # [5]
 LEObs ( R_b_npf        )      0.21629 +- 0.00066                      alias 12 # [8]
 LEObs ( R_c_npf        )      0.1721  +- 0.003                        alias 13 # [8]
-LEObs ( A_fbb_npf      )      0.0982  +- 0.0017                       alias 14 # [9]
-LEObs ( A_fbc_npf      )      0.0635  +- 0.0036                       alias 15 # [9]
-LEObs ( A_b_npf        )      0.923   +- 0.020                        alias 16 # [8]
-LEObs ( A_c_npf        )      0.670   +- 0.027                        alias 17 # [8]
-LEObs ( MassW_npf      )     80.398   +- 0.025            +- 0.010    alias  8 # [6]
-LEObs ( sin_th_eff_npf )      0.2324  +- 0.0012                       alias  9 # [10]
+nofitLEObs ( A_fbb_npf      )      0.0982  +- 0.0017                       alias 14 # [9]
+nofitLEObs ( A_fbc_npf      )      0.0635  +- 0.0036                       alias 15 # [9]
+nofitLEObs ( A_b_npf        )      0.923   +- 0.020                        alias 16 # [8]
+nofitLEObs ( A_c_npf        )      0.670   +- 0.027                        alias 17 # [8]
+nofitLEObs ( MassW_npf      )     80.398   +- 0.025            +- 0.010    alias  8 # [6]
+nofitLEObs ( sin_th_eff_npf )      0.2324  +- 0.0012                       alias  9 # [10]
 LEObs ( GammaZ_npf     )   2495.2     +- 2.3              +- 1.0      alias 10 # [5]
-LEObs ( Bsg_npf        )      1.117   +- 0.076   +- 0.082 +- 0.050    alias  1 # [11]
-LEObs ( dm_s_npf       )      1.11    +- 0.01    +- 0.32              alias  2 # [1]
-LEObs ( B_smm_npf      ) <    4.7E-8                      +- 0.02E-8  alias  3 # [12]
-LEObs ( Btn_npf        )      1.74    +- 0.53                         alias  4 # [1]
-LEObs ( B_sXsll_npf    )      0.99    +- 0.32                         alias  5 # [13]
-LEObs ( Klnu_npf       )      1.008   +- 0.014                        alias  6 # [4]
+nofitLEObs ( Bsg_npf        )      1.117   +- 0.076   +- 0.082 +- 0.050    alias  1 # [11]
+nofitLEObs ( dm_s_npf       )      1.11    +- 0.01    +- 0.32              alias  2 # [1]
+nofitLEObs ( B_smm_npf      )     4.7E-8                      +- 0.02E-8  alias  3 # [12]
+nofitLEObs ( Btn_npf        )      1.74    +- 0.53                         alias  4 # [1]
+nofitLEObs ( B_sXsll_npf    )      0.99    +- 0.32                         alias  5 # [13]
+nofitLEObs ( Klnu_npf       )      1.008   +- 0.014                        alias  6 # [4]
 
 ### SM observables
 
@@ -154,11 +154,11 @@ fixParameter massTop     171.3        GeV
 fixParameter massTau     1.77684      GeV
 fixParameter SignMu        1
 
-fitParameter M0            500.      GeV +- 1745.95   GeV 
-fitParameter M12           600.      GeV +- 428.224   GeV
-fitParameter A0           -600.      GeV +- 3132.67   GeV 
-fitParameter TanBeta        40.          +- 17.6604 	  
-fitParameter QEWSB        1000.      GeV +- 7.40775   GeV  
+fitParameter M0             76.2      GeV +-  42.1649   GeV 
+fitParameter M12           331.5      GeV +-  249.009   GeV
+fitParameter A0            383.8      GeV +-  481.227   GeV 
+fitParameter TanBeta        13.2          +-  9.95015	  
+fitParameter QEWSB        1000.       GeV +-  0.843297  GeV  
 
 ################################################################################
 ### Switches                                                                 ###

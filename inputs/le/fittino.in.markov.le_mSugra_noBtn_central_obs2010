@@ -14,7 +14,7 @@
 
 
 LEObs ( gmin2m_npf     )     25.5E-10 +- 8.0E-10                      alias  7 # [14]
-nofitLEObs ( Omega_npf      )      0.113  +- 0.003                         alias 20 # [15]
+LEObs ( Omega_npf      )      0.113  +- 0.003                         alias 20 # [15]
 #LEObs ( Omega_npf      )      0.1123  +- 0.0035                      alias 20 # [16]
 LEObs ( DmsDmd_npf     )      1.09    +- 0.01    +- 0.16              alias 27 # [1]
 LEObs ( B_dll_npf      ) <    1.8E-8                      +- 0.001E-8 alias 26 # [2]
@@ -37,7 +37,7 @@ LEObs ( GammaZ_npf     )   2495.2     +- 2.3              +- 1.0      alias 10 #
 LEObs ( Bsg_npf        )      1.117   +- 0.076   +- 0.082 +- 0.050    alias  1 # [11]
 LEObs ( dm_s_npf       )      1.11    +- 0.01    +- 0.32              alias  2 # [1]
 LEObs ( B_smm_npf      ) <    4.7E-8                      +- 0.02E-8  alias  3 # [12]
-LEObs ( Btn_npf        )      1.74    +- 0.53                         alias  4 # [1]
+nofitLEObs ( Btn_npf        )      1.74    +- 0.53                         alias  4 # [1]
 LEObs ( B_sXsll_npf    )      0.99    +- 0.32                         alias  5 # [13]
 LEObs ( Klnu_npf       )      1.008   +- 0.014                        alias  6 # [4]
 
@@ -154,11 +154,11 @@ fixParameter massTop     171.3        GeV
 fixParameter massTau     1.77684      GeV
 fixParameter SignMu        1
 
-fitParameter M0            500.      GeV +- 1745.95   GeV 
-fitParameter M12           600.      GeV +- 428.224   GeV
-fitParameter A0           -600.      GeV +- 3132.67   GeV 
-fitParameter TanBeta        40.          +- 17.6604 	  
-fitParameter QEWSB        1000.      GeV +- 7.40775   GeV  
+fitParameter M0             76.2      GeV +-  0.511052  GeV 
+fitParameter M12           331.5      GeV +-  2.16667   GeV
+fitParameter A0            383.8      GeV +-  19.6391   GeV 
+fitParameter TanBeta        13.2          +-  0.145332	  
+fitParameter QEWSB        1000.       GeV +-  1.06684   GeV  
 
 ################################################################################
 ### Switches                                                                 ###
