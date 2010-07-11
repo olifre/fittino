@@ -32,7 +32,7 @@ FIND_PROGRAM(ROOT_CONFIG_EXECUTABLE root-config PATHS ${ROOT_CONFIG_PATH} NO_DEF
 
 IF(${ROOT_CONFIG_EXECUTABLE} MATCHES "ROOT_CONFIG_EXECUTABLE-NOTFOUND")
 
-    MESSAGE(FATAL_ERROR "\nModule ROOT not found.\nPlease set ROOTSYS or add the path to your ROOT installation in the macro FindROOT.cmake in the subdirectory CMakeModules.\n") 
+    MESSAGE(FATAL_ERROR "\nModule ROOT not found.\nPlease set ROOTSYS or add the path to your ROOT installation to the macro FindROOT.cmake in the subdirectory CMakeModules.\n") 
 
 ELSE(${ROOT_CONFIG_EXECUTABLE} MATCHES "ROOT_CONFIG_EXECUTABLE-NOTFOUND")
 
