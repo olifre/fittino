@@ -111,10 +111,10 @@ fixParameter massBottom      4.20       GeV
 fixParameter massTop       172.4        GeV
 fixParameter massTau         1.77684    GeV
 fixParameter SignMu          1
-fixParameter N5              3
-fitParameter Lambda      40000          GeV +-  1000   GeV
-fitParameter Mmess      250000          GeV +- 25000   GeV
-fitParameter TanBeta        10              +-     1
+fixParameter N5              1
+fitParameter Lambda      90000          GeV +-  1000   GeV
+fitParameter Mmess      500000          GeV +- 50000   GeV
+fitParameter TanBeta         5              +-     1
 fitParameter cGrav           1              +-     0.1
 
 ################################################################################

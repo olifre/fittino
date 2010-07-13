@@ -101,7 +101,7 @@ nofit massChargino2    418.495 GeV +-  3.0  GeV
 ### Parameters                                                               ###
 ################################################################################
 
-### mSUGRA parameters at SPS 1a
+### GMSB parameters
 
 fixParameter alphaem       127.925      GeV
 fixParameter G_F             1.16637E-5
@@ -110,12 +110,15 @@ fixParameter massZ          91.1875     GeV
 fixParameter massBottom      4.20       GeV
 fixParameter massTop       172.4        GeV
 fixParameter massTau         1.77684    GeV
+
 fixParameter SignMu          1
-fixParameter N5              3
-fitParameter Lambda      40000          GeV +-  1000   GeV
-fitParameter Mmess      250000          GeV +- 25000   GeV
-fitParameter TanBeta        10              +-     1
-fitParameter cGrav           1              +-     0.1
+fixParameter N5              1
+
+fitParameter Lambda      57112.7        GeV +- 3543.93     GeV
+fitParameter Mmess      572812.         GeV +- 6221.07     GeV
+fitParameter TanBeta        12.9687         +-    0.556077
+fitParameter cGrav         415.151          +-   65.1624
+fitParameter QEWSB        1000.         GeV +-  651.624    GeV
 
 ################################################################################
 ### Switches                                                                 ###
@@ -155,10 +158,13 @@ SimAnnUncertainty              off
 SimAnnUncertaintyRunDown       off
 GetTempFromFirstChiSqr         on
 
+UseHiggsBounds		       on
+
 UseMarkovChains                on
 MarkovChainReadjustWidth       off
 MarkovChainReadjustWidthPeriod 500
-MaxMarkovChain                 40000
+MaxMarkovChain                 80000
+#MarkovInterfaceFilePath        /PUT/YOUR/OWN/PATH/fittino.interface.markov.le_obs.only.gmsb
 
 MinuitStrategy	               2
 MachinePrecision               1e-8
