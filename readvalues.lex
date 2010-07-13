@@ -124,6 +124,9 @@ Q[ \t]*=                  {
 						if (!strcmp(yytext, "DecayCalculator" )) {
 							return T_DECAYCALCULATOR;
 						}
+			      if (!strcmp(yytext, "AstroCalculator")) { 
+				  return T_ASTROCALCULATOR;
+			      }
 			      if (!strcmp(yytext, "RelicDensityCalculator")) { 
 				  return T_RELICDENSITYCALCULATOR;
 			      }

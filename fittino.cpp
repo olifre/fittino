@@ -4166,6 +4166,22 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
    }
 
+
+   //ASTROFIT
+
+     //yyUseAstroFit = true;
+   //int UseAstroFit = 1;
+   if (yyUseAstroFit) {
+     //if (UseAstroFit == 1) {
+     cout << "vorher = " << f << endl;
+     f += readAstroFit();
+     cout << "nachher = " << f << endl;
+   }
+
+
+
+
+
    cout << " chisq = " << f << " with " << nobs << " observables (" << ncorr/2 << " correlated), "
         << yyFittedVec.size() << " parameters and " << nbound << " bounds" << endl;
 
@@ -4386,6 +4402,31 @@ int callNPFitter() {
    return 0;
 
 }
+
+
+double readAstroFit()
+{
+
+  int return_value;
+  char* argv[3];
+  argv[0] = new char[1024];
+  strcpy(argv[0], yyAstroCalculatorPath.c_str());
+  return_value = system(argv[0]);
+  float chi2;
+  ifstream file_to_read;
+  TString filename = "afchi2.txt";
+  file_to_read.open(filename);
+  string line;
+  getline(file_to_read, line);
+  sscanf(line.c_str(), "%f", &chi2);
+
+  cout << "calling AstroFit " << chi2 << endl;
+
+  return chi2;
+
+}
+
+
 
 double higgsLimit ()
 {

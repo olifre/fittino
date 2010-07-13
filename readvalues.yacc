@@ -163,6 +163,7 @@ bool          yyGetTempFromFirstChiSqr = false;
 bool          yyRandomDirUncertainties = false;
 bool          yyPerformSingleFits = false;
 bool          yyUseHiggsBounds = false;
+bool          yyUseAstroFit = false;
 bool          yyQuarkFlavourViolation = false;
 bool          yyRandomParameters = false;
 bool          yyUseObservableScatteringBefore = false;
@@ -189,6 +190,7 @@ string        yySPhenoOldInputFile = "";
 
 unsigned int yyCalculator;
 unsigned int yyDecayCalculator;
+unsigned int yyAstroCalculator;
 unsigned int yyRelicDensityCalculator;
 unsigned int yyLEOCalculator;
 
@@ -197,6 +199,7 @@ string       yySPhenoStartDataString = "";
 string       yyCalculatorPath = "";
 string	     yyHBWhichExpt = "LandT";
 string			 yyDecayCalculatorPath = "";
+string       yyAstroCalculatorPath = "";
 string       yyRelicDensityCalculatorPath = "";
 string       yyLEOCalculatorPath = "";
 string       yyDashedLine = "------------------------------------------------------------";
@@ -315,7 +318,7 @@ struct correrrorstruct {
 %token <real> T_NUMBER
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
 %token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS T_NOFIT T_NOFITLEO T_SCALING
-%token T_BLOCK T_SCALE T_DECAY T_BR T_LEO T_XS T_CALCULATOR T_DECAYCALCULATOR T_MARKOVINTERFACEFILEPATH T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO
+%token T_BLOCK T_SCALE T_DECAY T_BR T_LEO T_XS T_CALCULATOR T_DECAYCALCULATOR T_MARKOVINTERFACEFILEPATH T_ASTROCALCULATOR T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH T_NEWLINE
 %token <name> T_VERSIONTAGSOSY
 %token <name> T_VERSIONTAGSDEC
@@ -1342,7 +1345,11 @@ input:
  		  if (!strcmp($2, "UseHiggsBounds")) {
 		      if ($3 == on) yyUseHiggsBounds = true;
 		      else yyUseHiggsBounds = false;
-		  } 	      
+		  } 
+		  if (!strcmp($2, "UseAstroFit")) {
+		      if ($3 == on) yyUseAstroFit = true;
+		      else yyUseAstroFit = false;
+		  } 	  	      
  		  if (!strcmp($2, "QuarkFlavourViolation")) {
 		      if ($3 == on) yyQuarkFlavourViolation = true;
 		      else yyQuarkFlavourViolation = false;
@@ -1433,6 +1440,14 @@ input:
 				}
 				yyDecayCalculatorPath = $4;
 			}
+	    | input T_ASTROCALCULATOR T_PATH
+	      {
+                   yyInputFileLine.prevalue  = "AstroCalculator";
+		   yyInputFileLine.prevalue += "\t";
+		   yyInputFileLine.prevalue += $3;
+
+		   yyAstroCalculatorPath = $3;
+	      }
 	    | input T_RELICDENSITYCALCULATOR T_WORD
 	      {
                    yyInputFileLine.prevalue  = "RelicDensityCalculator";
