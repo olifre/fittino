@@ -1,0 +1,161 @@
+################################################################################
+### Fittino input file                                                       ###
+################################################################################
+
+################################################################################
+### Fit of LHC observables to mSUGRA benchmark point SPS 1a for 1 fb-1       ###
+### modified by BOL to be a minimal set of edges, with errors for 10 TeV     ###
+################################################################################
+
+################################################################################
+### Observables                                                              ###
+################################################################################
+
+### SM observables
+
+alphaem    127.925      GeV +- 0.016      GeV                  # [1]
+G_F          1.16637E-5     +- 0.00001E-5                      # [2]
+alphas       0.1176     GeV +- 0.0020     GeV                  # [2]
+massZ       91.1875     GeV +- 0.0021     GeV                  # [3],[4]
+massBottom   4.20       GeV +- 0.17       GeV                  # [5]
+massTop    172.4        GeV +- 1.1        GeV +- (JES) 1.5 GeV # [6],[7]
+massTau      1.77684    GeV +- 0.00017    GeV                  # [8]
+
+massCharm    1.2        GeV +- 0.11       GeV                  # [5]
+massW       80.3789     GeV +- 0.025      GeV                  # [4]
+
+### edges
+
+edge 100 massNeutralino1 massNeutralino2 massSelectronR                 80.4331 GeV +-  2.95 GeV             +- (LES)  0.16 GeV alias 2 #  [9] mll
+edge 101 massNeutralino1 massSupL        massNeutralino2               452.076  GeV +- 24.1  GeV             +- (JES) 11.4  GeV alias 4 #  [9] mqll
+edge 105 massSelectronR  massSupL        massNeutralino2               318.577  GeV +- 13.2  GeV             +- (JES)  8.0  GeV alias 5 #  [9] mql(low)
+edge 106 massNeutralino1 massNeutralino2 massSelectronR  massSupL      396.045  GeV +-  9.03  GeV             +- (JES) 10.0  GeV alias 6 #  [9] mql(high)
+
+### m_ql(threshold):
+edge 102 massNeutralino1 massNeutralino2 massSelectronR  massSupL      215.565  GeV +- 46.0  GeV             +- (JES)  5.4  GeV alias 7 #  [9] mql(thr)
+
+### stransverse mass:
+edge   8 massSupR        massNeutralino1                               530.995  GeV +- 34.0  GeV +- 10.0 GeV +- (JES) 26.7  GeV alias 1 #  [9] mT2
+
+### m_tautau
+edge   3 massNeutralino1 massNeutralino2 massStau1                      83.3605 GeV +- 21.9  GeV +-  8.3 GeV +- (JES)  4.2  GeV alias 3 # [10]
+
+### m_tb^W (everything down to the "weighted"):
+BR ( Gluino      -> Bottom Sbottom2      ) alias  5
+BR ( Gluino      -> Bottom Sbottom1      ) alias  6
+BR ( Gluino      -> Stop1 Top            ) alias  9
+BR ( Stop1       -> Bottom Chargino1     ) alias 10
+BR ( Sbottom1    -> W Stop1              ) alias 11
+BR ( Sbottom2    -> W Stop1              ) alias 12
+BR ( Stop1       -> Bottom Chargino2     ) alias 13
+BR ( Sbottom1    -> Top Chargino1        ) alias 14
+brprod ( br_9 br_10       ) alias 5
+brprod ( br_6 br_11 br_10 ) alias 6
+brprod ( br_5 br_12 br_13 ) alias 7
+brprod ( br_6 br_14       ) alias 8
+brsum ( brprod_5 brprod_6 brprod_7 ) alias 1
+edge   6 massTop         massStop1       massChargino1   massGluino                                                             alias 8
+edge   7 massTop         massGluino      massSbottom1    massChargino1                                                          alias 9
+weighted ( brsum_1 edge_8 brprod_8 edge_9 ) 359.458 GeV +- 74.7 GeV +- (JES) 18.0 GeV alias 1 # [9]
+
+### tau BR ratio (everything down to the "brratio"):
+BR ( Neutralino2 -> Electron SelectronR  ) alias  1
+BR ( Neutralino2 -> Tau Stau1            ) alias  2
+BR ( SelectronR  -> Neutralino1 Electron ) alias  3
+BR ( Stau1       -> Neutralino1 Tau      ) alias  4
+brprod ( br_1 br_3        ) alias 1
+brprod ( br_2 br_4        ) alias 2
+brratio ( brprod_1 brprod_2 ) 0.0762483 +- 0.0156 +- 0.008 alias 1 # [11] 
+
+### rates:
+
+fully_inclusive 12688 fb +- 254 fb   # number of events with ETmis>100GeV and at least 2 jets with pT> 50 GeV and abs(eta)<2.5 divided by luminosity
+
+os_sf 456 fb +- 92fb  #number of events which pass above cuts and have at least two ossf light leptons with pT>10GeV and abs(eta)<2.5 divided by luminosity (background is removed by the standard ossf-osof procedure)
+
+#  [1] PDG 2008 Electroweak model and constraints on new physics (Rev.)
+#  [2] PDG 2008 Physical constants (Rev.)
+#  [3] Buchmueller et al. arXiv:0707.3447v2
+#  [4] PDG 2008 Summary Tables: Gauge and Higgs Bosons
+#  [5] PDG 2008 Summary Tables: Quarks
+#  [6] Buchmueller et al. arXiv:0808.4128v1
+#  [7] Borjanovic et al. arXiv:hep-ex/0403021
+#  [8] PDG 2008 Summary Tables: Leptons
+#  [9] LHC/LC Study Group arXiv:hep-ph/0410364
+# [10] Zendler et al. Measuring the endpoint of the di-tau mass spectrum in ~chi20 decays with the ATLAS detector at the LHC (Atlas note)
+# [11] Nojiri et al. hep-ph/0512204v1
+
+################################################################################
+### Parameters                                                               ###
+################################################################################
+
+### mSUGRA parameters at SPS 1a
+
+fixParameter alphaem     127.925      GeV
+fixParameter G_F           1.16637E-5
+fixParameter alphas        0.1176     GeV
+fixParameter massZ        91.1875     GeV
+fixParameter massBottom    4.20       GeV
+fixParameter massTop     172.4        GeV
+fixParameter massTau       1.77684    GeV
+fixParameter SignMu        1
+fitParameter M0          100          GeV +-  1.  GeV
+fitParameter M12         250          GeV +-  2.5 GeV
+fitParameter A0         -100          GeV +- 10.  GeV
+fitParameter TanBeta      10              +-  2.
+
+################################################################################
+### Switches                                                                 ###
+################################################################################
+
+fitModel                       mSUGRA
+RandomParameters               off
+LoopCorrections                on
+ISR                            on
+UseGivenStartValues            on
+FitAllDirectly                 on
+CalcPullDist                   off
+CalcIndChisqContr              off
+BoundsOnX                      off
+ScanX                          off
+SepFitTanbX                    off
+SepFitTanbMu                   off
+SepFitmA	               off
+MaxCalculatorTime              6
+Calculator                     SPHENO ./SPheno
+QuarkFlavourViolation          off
+UseMinos                       off
+UseHesse                       off
+NumberOfMinimizations          1
+ErrDef                         1.0
+NumberPulls                    1
+GetContours                    off
+
+UseSimAnnBefore                off
+UseSimAnnWhile                 off
+AdaptiveSimAnn                 off
+TempRedSimAnn                  0.5
+MaxCallsSimAnn                 20000
+InitTempSimAnn                 5
+SimAnnUncertainty              off
+SimAnnUncertaintyRunDown       off
+GetTempFromFirstChiSqr         on
+
+UseMarkovChains                off
+MarkovChainReadjustWidth       on
+MarkovChainReadjustWidthPeriod 500
+MaxMarkovChain                 100000
+
+MinuitStrategy	               2
+MachinePrecision               1e-8
+
+Verbose                        on
+
+ScanParameters                 off
+
+GridPath                       /YOUR/PATH/TO/GRID/DIRECTORY/10TeV #points to directory which contains the grid files, which you want to use for calculation of LHCRates. In the grids directory of the fittino trunk a 7TeV, 10TeV and 14TeV directory is availible
+
+UseNLO                         off #if on, NLO contributions are taken into account for LHCRates. Since no NLO contributions are availible for 10 TeV at the moment, you get a chi2 of nan if GridPath points to the 10 TeV directory and UseNLO is on at the same time
+    
+PerformFit                     on
+#RandomGeneratorSeed            -1

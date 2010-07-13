@@ -53,6 +53,8 @@ email                : philip.bechtle@desy.de, peter.wienemann@desy.de
 #include <sys/sysinfo.h>
 #include <sys/time.h>
 #include <sys/unistd.h>
+
+#include "sRates.h"
 // #include <sys/types.h>
 extern char **environ;
 
@@ -70,6 +72,9 @@ MeasuredValue fitterMassSupR;
 MeasuredValue fitterMassSupL;
 MeasuredValue fitterA;
 MeasuredValue fitterMassTop;
+
+
+sRates* rateValue;
 
 // observables received from suspect:
 double        sRecMassChargino1;
@@ -420,14 +425,31 @@ double ScanForHiggsLimit( int nH, double* parameterVector ) {
 
 Fittino::Fittino(const Input* input)
 {
-   fInput = input;
-   fFittedCovarianceMatrix = 0;
-   mSquarkGluinoMax = 1000.;
+  fInput = input;
+  fFittedCovarianceMatrix = 0;
+  mSquarkGluinoMax = 1000.;
+
+ 
+  //Added by JL & BOL. Here we read in the grids. Thus we do not need to read them in at every single step.
+
+  for (unsigned int i=0; i<yyMeasuredVec.size();i++){
+    if (yyMeasuredVec[i].type==LHCRate){
+      rateValue = new sRates("fb",yyUseNLO);
+      rateValue->readGrids();
+      rateValue->readLeptonGrids();
+      break;
+    }
+  }
 }
 
 
 Fittino::~Fittino()
-{
+{      
+      
+      ////Added by JL & BOL
+      delete rateValue;
+      ////////
+      
 
 }
 
@@ -7986,7 +8008,31 @@ int   ReadLesHouches()
    if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
       cout << yyDashedLine << endl;
       cout << "Interpreting the les houches output " << endl;
-   }  
+   }
+
+   //Added by JL and BOL
+   //    read in LHE-File in EW_spectrum
+   int spectrum_loaded = 0;
+   
+   for (unsigned int i=0; i<yyMeasuredVec.size();i++){
+     if (yyMeasuredVec[i].type==LHCRate){
+       if ( rateValue->readSLHA( "./SPheno.spc.last" ) ){
+	 spectrum_loaded = 1;	 
+       } else {
+	
+	 spectrum_loaded = 0;
+       
+       }
+       break;
+     }
+   }
+
+
+
+
+
+
+  
    for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
       if (yyMeasuredVec[i].type == mass) {
 	 //      cout << "found mass of particle " << yyMeasuredVec[i].id << endl;
@@ -8178,6 +8224,86 @@ int   ReadLesHouches()
 	    yyMeasuredVec[i].theovalue = yyoneoveralpha_em_mz;
 	    yyMeasuredVec[i].theoset = true;
 	 }
+      }
+     else if ( yyMeasuredVec[i].type == LHCRate )
+                        // if the observable to be compared is a cross-section times branching ratio at the LHC...
+      {
+		
+	if (yyMeasuredVec[i].id == fully_inclusive){
+
+	      if ( spectrum_loaded == 1 ){ //check that spectrum has been loaded successfully
+
+	      yyMeasuredVec[i].theovalue = rateValue->fully_inclusive_with_cuts();  // actually work out the theoretical value.
+
+
+	      } else {
+
+		      yyMeasuredVec[i].theovalue = -1.;
+	      }
+	      
+	      if (yyMeasuredVec[i].theovalue < 0 ) {
+	
+		      yyMeasuredVec[i].theoset = false; // note that the theoretical value has NOT been recorded.
+
+	      } else {	
+
+	      yyMeasuredVec[i].theoset = true;  // note that the theoretical value has been recorded.
+	      
+	      }
+
+	} 
+	
+	//OS-SF light leptons from two-body neutralino2 decays with lepton+jet+missingET cuts (veto on b+t)
+	else if (yyMeasuredVec[i].id == os_sf){
+
+		if ( spectrum_loaded == 1 ){ //check that spectrum has been loaded successfully
+
+			yyMeasuredVec[i].theovalue = rateValue->Two_OSSF_leptons_cuts();  // actually work out the theoretical value.
+
+
+		} else {
+
+			yyMeasuredVec[i].theovalue = -1.;
+		}
+	      
+		if (yyMeasuredVec[i].theovalue < 0 ) {
+	
+			yyMeasuredVec[i].theoset = false; // note that the theoretical value has NOT been recorded.
+
+		} else {	
+
+			yyMeasuredVec[i].theoset = true;  // note that the theoretical value has been recorded.
+	      
+		}
+
+	}	
+	
+	//four b signature (not to be used at the moment. might not work correctly)
+	else if (yyMeasuredVec[i].id == four_b) {
+
+	      if ( spectrum_loaded == 1 ){ //check that spectrum has been loaded successfully
+
+              yyMeasuredVec[i].theovalue = rateValue->fully_inclusive_four_sbottons_with_cuts();  // actually work out the theoretical value.
+
+
+              } else {
+
+                      yyMeasuredVec[i].theovalue = -1.;
+              }
+              
+              if (yyMeasuredVec[i].theovalue < 0 ) {
+        
+                      yyMeasuredVec[i].theoset = false; // note that the theoretical value has NOT been recorded.
+
+              } else {  
+
+              yyMeasuredVec[i].theoset = true;  // note that the theoretical value has been recorded.
+              
+              }
+
+
+	}
+
       }
       else if (yyMeasuredVec[i].type == Pwidth) {
 	//cout << "width of particle " << yyMeasuredVec[i].id << " is measured at " <<  yyMeasuredVec[i].value << " and predicted at " << branching_ratios[yyMeasuredVec[i].id].TWidth << endl;
@@ -8537,6 +8663,36 @@ int   ReadLesHouches()
 	       std::cout << " supL mass " << epmasses[3] << std::endl;
 	       std::cout << " gluino mass " << epmasses[4] << std::endl;
 	       yyMeasuredVec[i].theovalue = Endpoint(yyMeasuredVec[i].id - 100, epmasses);
+
+
+/////////////////////////////////////////////////////	       
+// 	       // hacked by BOL to ensure the right edge is chosen for this point's hierarchy.
+// 		if( ( yyMeasuredVec[i].id == 103 ) || ( yyMeasuredVec[i].id == 105 ) )  // if the edge is m_ql(low)...
+// 	       {
+// 
+// 		       if( ( 2.0 * epmasses[1] * epmasses[1] ) > ( ( epmasses[2] * epmasses[2] ) + ( epmasses[0] * epmasses[0] ) ) )  // if m_ql(low) should be m_ql(near)...
+// 		       {
+// 
+// 			       yyMeasuredVec[i].theovalue = Endpoint( 3, epmasses );  // use m_ql(near).
+// 
+// 		       }
+// 		       else  // otherwise
+// 		       {
+// 
+// 			       yyMeasuredVec[i].theovalue = Endpoint( 5, epmasses );  // use m_ql(eq).
+// 
+// 		       }
+// 
+// 	       }
+// 	       else
+// 	       {
+// 
+// 		       yyMeasuredVec[i].theovalue = Endpoint(yyMeasuredVec[i].id - 100, epmasses);
+// 
+// 	       }
+////////////////////////////////////////////////////////	       
+
+
 	       yyMeasuredVec[i].theoset = true;
 	    }
 	 }

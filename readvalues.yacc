@@ -134,6 +134,7 @@ vector<ScanParameter> yyScanPar; // contains parameters to scan
 vector <parameter_t> indchisq_vec;
  
 bool          yyUseLoopCorrections = true;
+bool          yyUseNLO = true;
 bool          yyCalcPullDist;
 bool          yyScanParameters = false;
 bool          yyPerformFit = true;
@@ -204,6 +205,7 @@ string       yyRelicDensityCalculatorPath = "";
 string       yyLEOCalculatorPath = "";
 string       yyDashedLine = "------------------------------------------------------------";
 string       yyMarkovInterfaceFilePath = "";
+string       yyGridPath="";
 
 unsigned int yyFitModel = MSSM;
 unsigned int yySeedForObservableScattering = 1;
@@ -318,7 +320,7 @@ struct correrrorstruct {
 %token <real> T_NUMBER
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
 %token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS T_NOFIT T_NOFITLEO T_SCALING
-%token T_BLOCK T_SCALE T_DECAY T_BR T_LEO T_XS T_CALCULATOR T_DECAYCALCULATOR T_MARKOVINTERFACEFILEPATH T_ASTROCALCULATOR T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO
+%token T_BLOCK T_SCALE T_DECAY T_BR T_LEO T_XS T_CALCULATOR T_DECAYCALCULATOR T_MARKOVINTERFACEFILEPATH T_GRIDPATH T_ASTROCALCULATOR T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH T_NEWLINE
 %token <name> T_VERSIONTAGSOSY
 %token <name> T_VERSIONTAGSDEC
@@ -556,6 +558,18 @@ input:
 		          else if (!strcmp($2, "alphaem")) {
 			      tmpValue.type = SMPrecision;
 			      tmpValue.id = alphaem;
+			  }
+			  else if (!strcmp($2, "fully_inclusive")) {
+			      tmpValue.type = LHCRate;
+			      tmpValue.id = fully_inclusive;
+			  }
+			  else if (!strcmp($2, "os_sf")) {
+			      tmpValue.type = LHCRate;
+			      tmpValue.id = os_sf;
+			  }
+			  else if (!strcmp($2, "four_b")) {
+			      tmpValue.type = LHCRate;
+			      tmpValue.id = four_b;
 			  }
 			  else tmpValue.type = other;
 			  yyMeasuredVec.push_back(tmpValue);
@@ -1219,8 +1233,12 @@ input:
 		  if (!strcmp($2, "LoopCorrections")) {
 		      if ($3 == on) yyUseLoopCorrections = true;
 		      else yyUseLoopCorrections = false;
-
 		  }
+		  if (!strcmp($2, "UseNLO")) {
+		      if ($3 == on) yyUseNLO = true;
+		      else yyUseNLO = false;
+		  }
+
 		  if (!strcmp($2, "CalcPullDist")) {
 		      if ($3 == on) yyCalcPullDist = true;
 		      else yyCalcPullDist = false;
@@ -1479,6 +1497,14 @@ input:
 		   cout << "read " << $3 << endl;
 	           yyMarkovInterfaceFilePath = $3;
 	      }
+           | input T_GRIDPATH T_PATH
+	      {
+                   yyInputFileLine.prevalue  = "GridPath";
+		   yyInputFileLine.prevalue += "\t";
+		   yyInputFileLine.prevalue += $3;
+		   yyGridPath = $3;
+	      }
+
 	    | input T_LEOCALCULATOR T_WORD
 	      {
                    yyInputFileLine.prevalue  = "LEOCalculator";

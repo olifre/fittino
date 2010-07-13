@@ -136,6 +136,9 @@ Q[ \t]*=                  {
                               if (!strcmp(yytext, "MarkovInterfaceFilePath")) { 
 				  return T_MARKOVINTERFACEFILEPATH;
 			      }
+			      if (!strcmp(yytext, "GridPath")) { 
+				  return T_GRIDPATH;
+			      }
 			      if (!strcmp(yytext, "BR")) {
 				  return T_BR;
 			      }

@@ -122,6 +122,7 @@ extern string yyLEOCalculatorPath;
 extern string yyHBWhichExpt;
 extern string yyDashedLine;
 extern string yyMarkovInterfaceFilePath;
+extern string yyGridPath;
 extern string yySPhenoOldInputFile;
 
 extern int    yyParseError;
