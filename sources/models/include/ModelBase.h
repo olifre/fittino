@@ -36,7 +36,7 @@ namespace Fittino {
   class ModelBase {
 
     public:
-      enum                     ModelType { ROSENBROCKMODEL };
+      enum                     ModelType { MSUGRA, ROSENBROCK };
 
     public:
       /*!

@@ -74,9 +74,14 @@ Fittino::ModelBase::ModelType Fittino::Configuration::GetModelType() const {
      */
     const std::string key = "ModelType";
 
-    if ( ( *_steeringParameterMap )[key] == "RosenbrockModel" ) {
+    if ( ( *_steeringParameterMap )[key] == "Rosenbrock" ) {
 
-        return ModelBase::ROSENBROCKMODEL;
+        return ModelBase::ROSENBROCK;
+
+    }
+    else if ( ( *_steeringParameterMap )[key] == "MSUGRA" ) {
+
+        return ModelBase::MSUGRA;
 
     }
     else {

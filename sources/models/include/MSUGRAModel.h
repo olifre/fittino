@@ -1,12 +1,12 @@
-/* $Id$ */
+/* $Id: MSUGRAModel.h 613 2010-05-26 09:42:00Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        RosenbrockModel.h                                                *
+* File        MSUGRAModel.h                                                    *
 *                                                                              *
-* Description Implementation of the Rosenbrock model                           *
+* Description Implementation of the MSUGRA model                               *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -17,8 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_ROSENBROCKMODEL_H
-#define FITTINO_ROSENBROCKMODEL_H
+#ifndef FITTINO_MSUGRAMODEL_H
+#define FITTINO_MSUGRAMODEL_H
 
 #include <vector>
 
@@ -32,35 +32,35 @@
 namespace Fittino {
 
   /*!
-   *  \brief Implementation of the Rosenbrock model 
+   *  \brief Implementation of the MSUGRA model 
    */
-  class RosenbrockModel : public ModelBase {
+  class MSUGRAModel : public ModelBase {
 
     public:
       /*!
        *  Constructor
        */
-                               RosenbrockModel();
+                           MSUGRAModel();
       /*!
        *  Destructor
        */
-                               ~RosenbrockModel();
-      virtual double           Evaluate();
+                           ~MSUGRAModel();
+      virtual double       Evaluate();
       /*!
        *  Virtual copy constructor
        */
-      virtual RosenbrockModel* Clone() const;
+      virtual MSUGRAModel* Clone() const;
 
   };
 
   /*!
-   *  \brief Implementation of the Rosenbrock model as required by Minuit
+   *  \brief Implementation of the MSUGRA model as required by Minuit
    */
-  class RosenbrockFCN : public ROOT::Minuit2::FCNBase {
+  class MSUGRAFCN : public ROOT::Minuit2::FCNBase {
 
     public:
-                          RosenbrockFCN( const std::vector<double>& meas, const std::vector<double>& pos, const std::vector<double>& mvar );
-                          ~RosenbrockFCN();
+                          MSUGRAFCN( const std::vector<double>& meas, const std::vector<double>& pos, const std::vector<double>& mvar );
+                          ~MSUGRAFCN();
       virtual double      Up() const;
 
     public:
@@ -76,4 +76,4 @@ namespace Fittino {
 
 }
 
-#endif // FITTINO_ROSENBROCKMODEL_H
+#endif // FITTINO_MSUGRAMODEL_H

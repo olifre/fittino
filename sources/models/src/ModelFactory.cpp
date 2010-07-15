@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "ModelFactory.h"
+#include "MSUGRAModel.h"
 #include "RosenbrockModel.h"
 
 Fittino::ModelFactory::ModelFactory() {
@@ -28,7 +29,10 @@ Fittino::ModelBase* const Fittino::ModelFactory::CreateModel( const Fittino::Mod
 
     switch ( modelType ) {
 
-        case Fittino::ModelBase::ROSENBROCKMODEL:
+        case Fittino::ModelBase::MSUGRA:
+            return new MSUGRAModel();
+
+        case Fittino::ModelBase::ROSENBROCK:
             return new RosenbrockModel();
 
     }
