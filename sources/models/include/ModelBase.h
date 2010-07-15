@@ -23,6 +23,8 @@
 #include <string>
 #include <vector>
 
+#include "Parameter.h"
+
 /*!
  *  \brief Fittino namespace
  */
@@ -34,27 +36,27 @@ namespace Fittino {
   class ModelBase {
 
     public:
-      enum                 ModelType { ROSENBROCKMODEL };
+      enum                     ModelType { ROSENBROCKMODEL };
 
     public:
       /*!
        *  Constructor
        */
-                           ModelBase();
+                               ModelBase();
       /*!
        *  Destructor
        */
-                           ~ModelBase();
-      int                  GetNumberOfParameters() const;
-      std::string          GetName() const;
-      std::vector<double>* GetParameterVector();
-      virtual double       Evaluate() = 0;
-      virtual ModelBase*   Clone() const = 0;
+                               ~ModelBase();
+      int                      GetNumberOfParameters() const;
+      std::string              GetName() const;
+      std::vector<Parameter>*  GetParameterVector();
+      virtual double           Evaluate() = 0;
+      virtual ModelBase*       Clone() const = 0;
 
     protected:
-      int                  _numberOfParameters;
-      std::string          _name;
-      std::vector<double>  _parameterVector;
+      int                      _numberOfParameters;
+      std::string              _name;
+      std::vector<Parameter>   _parameterVector;
 
   };
 

@@ -38,10 +38,6 @@ namespace Fittino {
   class RosenbrockModel : public ModelBase {
 
     public:
-      double                   _x;
-      double                   _y;
-
-    public:
       /*!
        *  Constructor
        */

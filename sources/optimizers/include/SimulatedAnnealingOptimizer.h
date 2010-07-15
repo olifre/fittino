@@ -42,6 +42,7 @@ namespace Fittino {
        */
                    ~SimulatedAnnealingOptimizer();
 
+      /*! \cond UML */
     private:
       double       _initialTemperature;
       double       _temperatureReductionFactor;
@@ -50,6 +51,7 @@ namespace Fittino {
     private:
       virtual void PrintSteeringParameters() const;
       virtual void UpdateModel();
+      /*! \endcond UML */
 
   };
 

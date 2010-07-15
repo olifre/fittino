@@ -54,8 +54,16 @@ void Fittino::OptimizerBase::PrintStatus() const {
     std::cout << "                                                                                " << std::endl;
     std::cout << "  Actual best set of " << _model->GetName() << " parameters                     " << std::endl;
     std::cout << "                                                                                " << std::endl;
-    std::cout << "    X    " << ( *( _model->GetParameterVector() ) )[0]                            << std::endl;
-    std::cout << "    Y    " << ( *( _model->GetParameterVector() ) )[1]                            << std::endl;
+
+    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
+
+        std::cout << "    "
+                  << ( *_model->GetParameterVector() )[i].GetName()
+                  << "   "
+                  << ( *_model->GetParameterVector() )[i].GetValue()                                << std::endl;
+
+    }
+
     std::cout << "                                                                                " << std::endl;
     std::cout << "    Chi2 " << _chi2                                                               << std::endl;
     std::cout << "                                                                                " << std::endl;
@@ -121,8 +129,16 @@ void Fittino::OptimizerBase::PrintResult() const {
     std::cout << "                                                                                " << std::endl;
     std::cout << "   Final set of " << _model->GetName() << " parameters                          " << std::endl;
     std::cout << "                                                                                " << std::endl;
-    std::cout << "    X    " << ( *( _model->GetParameterVector() ) )[0]                            << std::endl;
-    std::cout << "    Y    " << ( *( _model->GetParameterVector() ) )[1]                            << std::endl;
+
+    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
+
+        std::cout << "    "
+                  << ( *_model->GetParameterVector() )[i].GetName()
+                  << "   "
+                  << ( *_model->GetParameterVector() )[i].GetValue()                                << std::endl;
+
+    }
+
     std::cout << "                                                                                " << std::endl;
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
 

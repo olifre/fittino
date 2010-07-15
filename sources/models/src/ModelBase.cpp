@@ -41,7 +41,7 @@ std::string Fittino::ModelBase::GetName() const {
 
 }
 
-std::vector<double>* Fittino::ModelBase::GetParameterVector() {
+std::vector<Fittino::Parameter>* Fittino::ModelBase::GetParameterVector() {
 
     return &_parameterVector;
 

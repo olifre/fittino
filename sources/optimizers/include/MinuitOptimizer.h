@@ -44,12 +44,14 @@ namespace Fittino {
        */
                                       ~MinuitOptimizer();
 
+      /*! \cond UML */
     private:
       ROOT::Minuit2::MnUserParameters _minuitUserParameters;
 
     private:
       virtual void                    PrintSteeringParameters() const;
       virtual void                    UpdateModel();
+      /*! \endcond UML */
 
   };
 

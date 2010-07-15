@@ -29,11 +29,8 @@ Fittino::RosenbrockModel::RosenbrockModel() {
 
     _numberOfParameters = 2;
     _name = "Rosenbrock model";
-    _x = configuration->GetSteeringParameter( "X", 0. );
-    _y = configuration->GetSteeringParameter( "Y", 0. );
-
-    _parameterVector.push_back( _x );
-    _parameterVector.push_back( _y );
+    _parameterVector.push_back( Parameter( "X", configuration->GetSteeringParameter( "X", 0. ) ) );
+    _parameterVector.push_back( Parameter( "Y", configuration->GetSteeringParameter( "Y", 0. ) ) );
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "                                                                                " << std::endl;
@@ -41,8 +38,16 @@ Fittino::RosenbrockModel::RosenbrockModel() {
     std::cout << "                                                                                " << std::endl;
     std::cout << "   Starting values                                                              " << std::endl;
     std::cout << "                                                                                " << std::endl;
-    std::cout << "    X    " << _x                                                                  << std::endl;
-    std::cout << "    Y    " << _y                                                                  << std::endl;
+
+    for ( unsigned int i = 0; i < _numberOfParameters; i++ ) {
+
+        std::cout << "    "
+                  << _parameterVector[i].GetName()
+                  << "   "
+                  << _parameterVector[i].GetValue()                                                << std::endl;
+
+    }
+
     std::cout << "                                                                                " << std::endl;
 
 }
@@ -53,9 +58,7 @@ Fittino::RosenbrockModel::~RosenbrockModel() {
 
 double Fittino::RosenbrockModel::Evaluate() {
 
-    //double functionValue = pow( ( 1 - _x ), 2 ) + 100 * pow( _y - pow( _x, 2 ), 2 );
-    double functionValue = pow( ( 1 - _parameterVector[0] ), 2 ) + 100 * pow( _parameterVector[1] - pow( _parameterVector[0], 2 ), 2 );
-    return functionValue;
+    return pow( ( 1 - _parameterVector[0].GetValue() ), 2 ) + 100 * pow( _parameterVector[1].GetValue() - pow( _parameterVector[0].GetValue(), 2 ), 2 );
 
 }
 

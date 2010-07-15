@@ -32,10 +32,12 @@ Fittino::MinuitOptimizer::MinuitOptimizer( Fittino::ModelBase* model )
 
     _name =  "Minuit optimization algorithm";
 
-    double x, y;
+    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
-    _minuitUserParameters.Add("X", x, 2.56);
-    _minuitUserParameters.Add("Y", y, -1.54);
+        double x;
+        _minuitUserParameters.Add( ( *_model->GetParameterVector() )[i].GetName(), x, ( *_model->GetParameterVector() )[i].GetValue() );
+
+    }
 
 }
 
@@ -65,9 +67,9 @@ void Fittino::MinuitOptimizer::UpdateModel() {
 
     ROOT::Minuit2::FunctionMinimum minuitResult = _migrad();
 
-    for ( unsigned int i = 0; i < _model->GetParameterVector()->size(); i++ ) {
+    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
-        ( *( _model->GetParameterVector() ) )[i] = minuitResult.UserParameters().Value(i);
+        ( *_model->GetParameterVector() )[i].SetValue( minuitResult.UserParameters().Value( i ) );
 
     }
 

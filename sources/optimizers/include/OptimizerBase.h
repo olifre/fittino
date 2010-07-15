@@ -51,40 +51,42 @@ namespace Fittino {
   class OptimizerBase {
 
     public:
-      enum           OptimizerType { MINUIT, PARTICLESWARM, SIMULATEDANNEALING };
+      enum         OptimizerType { MINUIT, PARTICLESWARM, SIMULATEDANNEALING };
 
     public:
-                     OptimizerBase( ModelBase* model );
-      virtual        ~OptimizerBase();
+                   OptimizerBase( ModelBase* model );
+      virtual      ~OptimizerBase();
       /*!
        *  The Execute() method. It checks the value of a generic abort
        *  criterium. In the case it is not met the model is updated and
        *  evaluated.
        */
-      void           PerformOptimization();
+      void         PerformOptimization();
 
     protected:
-      std::string    _name;
-      TRandom        _randomGenerator;
-      ModelBase*     _model;
+      std::string  _name;
+      TRandom      _randomGenerator;
+      ModelBase*   _model;
 
     protected:
-      virtual void   PrintSteeringParameters() const = 0;
-      virtual void   UpdateModel() = 0;
+      virtual void PrintSteeringParameters() const = 0;
+      virtual void UpdateModel() = 0;
+
+      /*! \cond UML */
+    private:
+      double       _abortCriterium;
+      double       _chi2;
+      unsigned int _iterationCounter;
+      unsigned int _numberOfIterations;
 
     private:
-      double         _abortCriterium;
-      double         _chi2;
-      unsigned int   _iterationCounter;
-      unsigned int   _numberOfIterations;
-
-    private:
-      void           ExecuteOptimizer();
-      void           InitializeOptimizer();
-      void           PrintConfiguration() const;
-      void           PrintResult() const;
-      void           PrintStatus() const;
-      void           TerminateOptimizer() const;
+      void         ExecuteOptimizer();
+      void         InitializeOptimizer();
+      void         PrintConfiguration() const;
+      void         PrintResult() const;
+      void         PrintStatus() const;
+      void         TerminateOptimizer() const;
+      /*! \endcond UML */
 
   };
 

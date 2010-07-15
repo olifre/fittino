@@ -67,6 +67,7 @@ namespace Fittino {
     private:
       static Controller*                              _instance;
 
+      /*! \cond UML */
     private:
       /*!
        *  External seed as passed as an argument to Fittino.
@@ -100,6 +101,7 @@ namespace Fittino {
        *  (a special Fittino file format)
        */
       const InputFileInterpreterBase::InputFileFormat DetermineInputFileFormat() const;
+      /*! \endcond UML */
 
   };
 

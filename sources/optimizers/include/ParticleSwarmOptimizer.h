@@ -59,6 +59,7 @@ namespace Fittino {
        */
                              ~ParticleSwarmOptimizer();
 
+      /*! \cond UML */
     private:
       double                 _c1;
       double                 _c2;
@@ -68,6 +69,7 @@ namespace Fittino {
     private:
       virtual void           PrintSteeringParameters() const;
       virtual void           UpdateModel();
+      /*! \endcond UML */
  
   };
 

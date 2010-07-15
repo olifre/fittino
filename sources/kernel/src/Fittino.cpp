@@ -28,6 +28,8 @@
  *  for each of the component classes, the inheritance and collaboration
  *  structure and the individual roles within a certain design pattern are
  *  depicted.
+ *
+ *  The central object is the Fittino::Controller.
  */
 
 //#include <iostream>

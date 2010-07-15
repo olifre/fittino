@@ -51,7 +51,7 @@ void Fittino::SimulatedAnnealingOptimizer::UpdateModel() {
 
     std::vector<double> stepWidth;
 
-    for ( unsigned int i = 0; i < _model->GetParameterVector()->size(); i++ ) {
+    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
         stepWidth.push_back( 1. );
 
@@ -62,9 +62,9 @@ void Fittino::SimulatedAnnealingOptimizer::UpdateModel() {
 
     unsigned int numberOfTrials = 60;
 
-    if ( _model->GetParameterVector()->size() >= 20 ) {
+    if ( _model->GetNumberOfParameters() >= 20 ) {
 
-        numberOfTrials = 3 * _model->GetParameterVector()->size();
+        numberOfTrials = 3 * _model->GetNumberOfParameters();
 
     }
 
@@ -85,7 +85,7 @@ void Fittino::SimulatedAnnealingOptimizer::UpdateModel() {
 
         // Reset of the counter.
 
-        for ( unsigned int i = 0; i < _model->GetParameterVector()->size(); i++ ) {
+        for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
             numberOfAcceptedVariations.push_back( 0. );
 
@@ -95,14 +95,14 @@ void Fittino::SimulatedAnnealingOptimizer::UpdateModel() {
 
             // Variation of one parameter at a time.
 
-            for ( unsigned int k = 0; k < _model->GetParameterVector()->size(); k++ ) {
+            for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
                 ModelBase* oldModel = _model->Clone();
                 double oldChi2 = oldModel->Evaluate();
 
                 // Update of the model.
 
-                ( *( _model->GetParameterVector() ) )[k] += _randomGenerator.Uniform( -1, 1 ) * stepWidth[k];
+                ( *_model->GetParameterVector() )[k].SetValue( ( *_model->GetParameterVector() )[k].GetValue() + _randomGenerator.Uniform( -1, 1 ) * stepWidth[k] );
 
                 double newChi2 = _model->Evaluate();
 
@@ -147,7 +147,7 @@ void Fittino::SimulatedAnnealingOptimizer::UpdateModel() {
 
         // Adjustment of the stepWidth.
 
-        for ( unsigned int iParameter = 0; iParameter < _model->GetParameterVector()->size(); iParameter++ ) {
+        for ( unsigned int iParameter = 0; iParameter < _model->GetNumberOfParameters(); iParameter++ ) {
 
             double samplingEfficiency = static_cast<double>( numberOfAcceptedVariations[iParameter] ) / 20.;
 
