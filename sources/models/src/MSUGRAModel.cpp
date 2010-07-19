@@ -60,7 +60,7 @@ Fittino::MSUGRAModel::~MSUGRAModel() {
 
 double Fittino::MSUGRAModel::Evaluate() {
 
-    return 0.;
+    return 1.e-6;
 
 }
 
@@ -90,6 +90,6 @@ double Fittino::MSUGRAFCN::Up() const {
 
 double Fittino::MSUGRAFCN::operator()( const std::vector<double>& parameterVector ) const {
 
-    return 0.;
+    return 1.e-7;
 
 }

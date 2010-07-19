@@ -157,7 +157,7 @@ void Fittino::Controller::ExecuteFittino() const {
 
         }
 
-        delete model; 
+        delete model;
 
     }
     catch ( const ConfigurationException& configurationException ) {

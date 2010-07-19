@@ -45,7 +45,7 @@ Fittino::XMLInputFileInterpreter::~XMLInputFileInterpreter() {
 void Fittino::XMLInputFileInterpreter::Parse( const TString& xmlInputFileName ) const {
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "\n  Reading input from file " << xmlInputFileName << "\n" << std::endl;
+    std::cout << "\n  Reading configuration from file " << xmlInputFileName << "\n" << std::endl;
 
     // Construct XML DOM parser
 

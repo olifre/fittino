@@ -83,9 +83,9 @@ void Fittino::OptimizerBase::ExecuteOptimizer() {
 
         _chi2 = _model->Evaluate();
 
-        PrintStatus();
-
         this->UpdateModel();
+
+        OptimizerBase::PrintStatus();
 
     }
 
@@ -104,8 +104,6 @@ void Fittino::OptimizerBase::InitializeOptimizer() {
 
 void Fittino::OptimizerBase::PrintConfiguration() const {
 
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "                                                                                " << std::endl;
     std::cout << "   Configuration                                                                " << std::endl;
     std::cout << "                                                                                " << std::endl;
     std::cout << "    Abort criterium              " << _abortCriterium                             << std::endl;
@@ -150,7 +148,7 @@ void Fittino::OptimizerBase::TerminateOptimizer() const {
     std::cout << "                                                                                " << std::endl;
     std::cout << "  Terminating " << _name                                                          << std::endl;
     std::cout << "                                                                                " << std::endl;
-    
+
     OptimizerBase::PrintResult();
 
 }

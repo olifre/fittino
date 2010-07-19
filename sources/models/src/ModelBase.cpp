@@ -20,8 +20,8 @@
 #include "ModelBase.h"
 
 Fittino::ModelBase::ModelBase()
-        : _numberOfParameters(0),
-          _name( "" ) { 
+        : _numberOfParameters( 0 ),
+          _name( "" ) {
 
 }
 
