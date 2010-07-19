@@ -165,7 +165,7 @@ bool          yyRandomDirUncertainties = false;
 bool          yyPerformSingleFits = false;
 bool          yyUseHiggsBounds = false;
 bool          yyUseAstroFit = false;
-bool          yyQuarkFlavourViolation = false;
+bool          yyUseFullCKMMatrix = false;
 bool          yyRandomParameters = false;
 bool          yyUseObservableScatteringBefore = false;
 bool          yyToyFitShakeFittedVecBeforeStart = false;
@@ -1369,8 +1369,11 @@ input:
 		      else yyUseAstroFit = false;
 		  } 	  	      
  		  if (!strcmp($2, "QuarkFlavourViolation")) {
-		      if ($3 == on) yyQuarkFlavourViolation = true;
-		      else yyQuarkFlavourViolation = false;
+		      yyerror("Switch QuarkFlavourViolation is obsolete. Use UseFullCKMMatrix instead (also switches on CPV phase).");
+		  } 	      
+ 		  if (!strcmp($2, "UseFullCKMMatrix")) {
+		      if ($3 == on) yyUseFullCKMMatrix = true;
+		      else yyUseFullCKMMatrix = false;
 		  } 	      
                   if (!strcmp($2, "RandomParameters")) {
 		      if ($3 == on) yyRandomParameters = true;

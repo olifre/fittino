@@ -78,7 +78,7 @@ extern bool yyRandomDirUncertainties;
 extern bool yyPerformSingleFits;
 extern bool yyUseAstroFit;
 extern bool yyUseHiggsBounds;
-extern bool yyQuarkFlavourViolation;
+extern bool yyUseFullCKMMatrix;
 extern bool yyRandomParameters;
 extern bool yyUseObservableScatteringBefore;
 extern bool yyToyFitShakeFittedVecBeforeStart;

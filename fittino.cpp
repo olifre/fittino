@@ -6009,7 +6009,8 @@ void WriteLesHouches(double* x)
 
       LesHouchesOutfile << "BLOCK MODSEL                 # Select model" << endl;
       LesHouchesOutfile << "    1 1                      # mSugra" << endl;
-      if ( yyQuarkFlavourViolation ) {
+      if ( yyUseFullCKMMatrix ) {
+	 LesHouchesOutfile << "    5 1                      # CP violation (0,1,2)=(none, CKM, general SUSY)" << endl;
 	 LesHouchesOutfile << "    6 1                      # Flavour violation in quark sector" << endl;
       }
 
@@ -6184,7 +6185,7 @@ void WriteLesHouches(double* x)
       //  LesHouchesOutfile << "    8  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
       //}
 
-      if ( yyQuarkFlavourViolation ) {
+      if ( yyUseFullCKMMatrix ) {
 	 // VCKM
 	/*
 	// Obsolete Les Houches CKM matrix parametrisation
@@ -6388,7 +6389,8 @@ hase (rad), SPheno default value = 0
 
       LesHouchesOutfile << "BLOCK MODSEL                 # Select model"     << endl;
       LesHouchesOutfile << "    1  1                     # mSugra (XMSUGRA)" << endl;
-      if ( yyQuarkFlavourViolation ) {
+      if ( yyUseFullCKMMatrix ) {
+	 LesHouchesOutfile << "    5  1                 # CP violation (0,1,2)=(none, CKM, general SUSY)" << endl;
 	 LesHouchesOutfile << "    6  1                 # Flavour violation in quark sector" << endl;
       }
       if (FindInFixed("QEWSB")) {
@@ -6560,7 +6562,7 @@ hase (rad), SPheno default value = 0
       //      LesHouchesOutfile << "    8  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
       //    }
 
-      if ( yyQuarkFlavourViolation ) {
+      if ( yyUseFullCKMMatrix ) {
 	 // VCKM
 	 LesHouchesOutfile << "BLOCK VCKMIN"               << endl;
 	 LesHouchesOutfile << "    1  0.2292    # theta12" << endl;
