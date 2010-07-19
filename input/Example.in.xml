@@ -1,27 +1,38 @@
 <?xml version="1.0" encoding='UTF-8'?>
 
-<!DOCTYPE XMLInputFile PUBLIC "" "XMLInputFile.dtd" >
+<!DOCTYPE InputFile PUBLIC "" "InputFile.dtd" >
 
-<XMLInputFile>
+<InputFile>
+
+<!--  Mode = "SCAN" -->
 
   <ExecutionMode
    Mode = "OPTIMIZATION"
    />
-<!--  Mode = "SCAN" -->
+
+<!--  <Model -->
+<!--   ModelType = "Rosenbrock" -->
+<!--   X         = "2.56" -->
+<!--   Y         = "-1.54" -->
+<!--   /> -->
 
   <Model
-   ModelType = "RosenbrockModel"
-   X         = "2.56"
-   Y         = "-1.54"
+   ModelType = "MSUGRA"
+   A0        = "-300."
+   M0        = "100."
+   M12       = "250."
+   TanBeta   = "10."
    />
 
   <Optimizer
    AbortCriterium     = "1e-5"
    NumberOfIterations = "500"
-   OptimizerType      = "SimulatedAnnealing"
+   OptimizerType      = "ParticleSwarm"
    />
-<!--   OptimizerType      = "ParticleSwarm" -->
+
 <!--   OptimizerType      = "Minuit" -->
+<!--   OptimizerType      = "ParticleSwarm" -->
+<!--   OptimizerType      = "SimulatedAnnealing" -->
 
   <ParticleSwarmOptimizer
    C1                = "0.01"
@@ -34,4 +45,4 @@
    TemperatureReductionFactor = "0.5"
    />
 
-</XMLInputFile>
+</InputFile>
