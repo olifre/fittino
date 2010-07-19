@@ -10,19 +10,19 @@
    Mode = "OPTIMIZATION"
    />
 
-<!--  <Model -->
-<!--   ModelType = "Rosenbrock" -->
-<!--   X         = "2.56" -->
-<!--   Y         = "-1.54" -->
-<!--   /> -->
-
   <Model
-   ModelType = "MSUGRA"
-   A0        = "-300."
-   M0        = "100."
-   M12       = "250."
-   TanBeta   = "10."
+   ModelType = "Rosenbrock"
+   X         = "2.56"
+   Y         = "-1.54"
    />
+
+<!--  <Model -->
+<!--   ModelType = "MSUGRA" -->
+<!--   A0        = "-300." -->
+<!--   M0        = "100." -->
+<!--   M12       = "250." -->
+<!--   TanBeta   = "10." -->
+<!--   /> -->
 
   <Optimizer
    AbortCriterium     = "1e-5"
