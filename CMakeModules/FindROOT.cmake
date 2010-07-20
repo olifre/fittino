@@ -18,33 +18,128 @@
 #                                                                              #
 ################################################################################
 
-# Specify the installation path of the executable "root-config".
+# Specify the installation path of the executable "root-config". By default, it is assumed that the
+# environment variable ROOTSYS is set.
 
 SET(ROOT_CONFIG_PATH $ENV{ROOTSYS}/bin)
 
-# Look for the executable "root-config" in the specified path. If the executable is not found there,
-# the variable ROOT_CONFIG_EXECUTABLE is set to "ROOT_CONFIG_EXECUTABLE-NOTFOUND" which is the
+# The variable ROOT_CONFIG_EXECUTABLE is set to "ROOT_CONFIG_EXECUTABLE-NOTFOUND" which is the
 # default value.
 
 SET(ROOT_CONFIG_EXECUTABLE "ROOT_CONFIG_EXECUTABLE-NOTFOUND")
+
+# Look for the executable "root-config".
 
 FIND_PROGRAM(ROOT_CONFIG_EXECUTABLE root-config PATHS ${ROOT_CONFIG_PATH} NO_DEFAULT_PATH)
 
 IF(${ROOT_CONFIG_EXECUTABLE} MATCHES "ROOT_CONFIG_EXECUTABLE-NOTFOUND")
 
+    # If the executable "root-config is not found print this message"
+
     MESSAGE(FATAL_ERROR "\nModule ROOT not found.\nPlease set ROOTSYS or add the path to your ROOT installation to the macro FindROOT.cmake in the subdirectory CMakeModules.\n") 
 
 ELSE(${ROOT_CONFIG_EXECUTABLE} MATCHES "ROOT_CONFIG_EXECUTABLE-NOTFOUND")
 
+    # If the executable "root-config is found print this message"
+
     MESSAGE(STATUS "Module ROOT found")
+
+    # Look for needed libraries and make them accessible via the ROOT_LIBRARIES cache entry.
+
+    FIND_LIBRARY(ROOT_CINT_LIBRARY NAMES Cint PATHS $ENV{ROOTSYS}/lib)
+    FIND_LIBRARY(ROOT_CORE_LIBRARY NAMES Core PATHS $ENV{ROOTSYS}/lib)
+    FIND_LIBRARY(ROOT_GPAD_LIBRARY NAMES Gpad PATHS   $ENV{ROOTSYS}/lib)
+    FIND_LIBRARY(ROOT_GRAF_LIBRARY NAMES Graf PATHS $ENV{ROOTSYS}/lib)
+    FIND_LIBRARY(ROOT_GRAF3D_LIBRARY NAMES Graf3d PATHS $ENV{ROOTSYS}/lib)
+    FIND_LIBRARY(ROOT_HIST_LIBRARY NAMES Hist PATHS $ENV{ROOTSYS}/lib)
+    FIND_LIBRARY(ROOT_MATRIX_LIBRARY NAMES Matrix PATHS $ENV{ROOTSYS}/lib)
+    FIND_LIBRARY(ROOT_MINUIT2_LIBRARY NAMES Minuit2 PATHS $ENV{ROOTSYS}/lib)
+    FIND_LIBRARY(ROOT_PHYSICS_LIBRARY NAMES Physics PATHS  $ENV{ROOTSYS}/lib)
+    FIND_LIBRARY(ROOT_POSTSCRIPT_LIBRARY NAMES Postscript PATHS $ENV{ROOTSYS}/lib)
+    FIND_LIBRARY(ROOT_RINT_LIBRARY NAMES Rint PATHS $ENV{ROOTSYS}/lib)
+    FIND_LIBRARY(ROOT_TREE_LIBRARY NAMES Tree PATHS $ENV{ROOTSYS}/lib)
+    FIND_LIBRARY(ROOT_XMLIO_LIBRARY NAMES XMLIO PATHS $ENV{ROOTSYS}/lib)
+    FIND_LIBRARY(ROOT_XMLPARSER_LIBRARY NAMES XMLParser PATHS $ENV{ROOTSYS}/lib)
+    
+    SET(ROOT_LIBRARIES ${ROOT_CINT_LIBRARY}
+                       ${ROOT_CORE_LIBRARY}
+                       ${ROOT_GPAD_LIBRARY}
+                       ${ROOT_GRAF_LIBRARY}
+                       ${ROOT_GRAF3D_LIBRARY}
+                       ${ROOT_HIST_LIBRARY}
+                       ${ROOT_MATRIX_LIBRARY}
+                       ${ROOT_MINUIT2_LIBRARY}
+                       ${ROOT_PHYSICS_LIBRARY}
+                       ${ROOT_POSTSCRIPT_LIBRARY}
+                       ${ROOT_RINT_LIBRARY}
+                       ${ROOT_TREE_LIBRARY}
+                       ${ROOT_XMLIO_LIBRARY}
+                       ${ROOT_XMLPARSER_LIBRARY})
 
 ENDIF(${ROOT_CONFIG_EXECUTABLE} MATCHES "ROOT_CONFIG_EXECUTABLE-NOTFOUND")
 
-# Check if the minimal ROOT version required is found
+# Folgendes funktioniert leider nicht, da der Output in einem String gespeichert ist
+# und nicht in einer Liste. Dies muss ich mir noch mal anschauen.
+# Bis dahin wird jede Library einzeln abgefragt und am Ende die ROOT_LIBRARIES
+# zusammengebaut.
 #
+#      EXECUTE_PROCESS( ${ROOT_CONFIG_EXECUTABLE}
+#        ARGS "--libs --noauxlibs --noldflags" 
+#        OUTPUT_VARIABLE root_flags )
+#        message("ROOT_FLAGS: ${root_flags}")
+#
+#     set(ROOT_LIBRARIES "")
+#     FOREACH (_current_FLAG ${root_flags})
+#       message("1")
+#       string(SUBstring ${_current_FLAG} 2 1 bla)
+#       if(${bla} MATCHES "l")
+#         string(REGEX REPLACE "^-l(.*)" "\\1" test ${_current_FLAG}) 
+#         message("${test}")
+#         set(ROOT_LIBRARIES ${ROOT_LIBRARIES} ${test})
+#       ELSE (${bla} MATCHES "l")
+#         if(${bla} MATCHES "p")
+#           string(REGEX REPLACE "^-(.*)" "\\1" test ${_current_FLAG}) 
+#         endif(${bla} MATCHES "p")       
+#         message("${test}")
+#         set(ROOT_LIBRARIES ${ROOT_LIBRARIES} ${test})
+#       ENDIF (${bla} MATCHES "l")
+#
+#     endFOREACH (_current_FLAG ${root_flags})
+#
+#
+#      set(ROOT_FLAGS ${root_flags})
+#      # CACHE INTERNAL "")
+#
+#
+#  set(ROOT_DEFINITIONS ${ROOT_DEFINITIONS} -L${ROOT_LIBRARY_DIR} ${ROOT_FLAGS} )
+
+# Make variables changeble to the advanced user
+#MARK_AS_ADVANCED( ROOT_LIBRARY_DIR ROOT_INCLUDE_DIR ROOT_DEFINITIONS)
+
+# Set ROOT_INCLUDES
+#set( ROOT_INCLUDES ${ROOT_INCLUDE_DIR})
+
+#set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${ROOT_LIBRARY_DIR})
+ 
+
+#######################################
+#
+#       Check the executables of ROOT 
+#          ( rootcint )
+#
+#######################################
+
+#    find_program(ROOT_CINT_EXECUTABLE
+#	    NAMES rootcint
+#	    PATHS ${ROOT_BINARY_DIR}
+#	    NO_DEFAULT_PATH
+#	    )
+
+# Check if the minimal ROOT version required is found
+
 #STRING(REGEX REPLACE "(^.*)/bin/root-config" "\\1" test ${ROOT_CONFIG_EXECUTABLE})
 #SET(ENV{ROOTSYS} ${test})
-#
+
 #if(ROOT_CONFIG_EXECUTABLE)
 #
 #    # we need at least version 4.00/08
@@ -91,126 +186,15 @@ ENDIF(${ROOT_CONFIG_EXECUTABLE} MATCHES "ROOT_CONFIG_EXECUTABLE-NOTFOUND")
 #    endif(found_vers LESS req_vers)
 #
 #endif(ROOT_CONFIG_EXECUTABLE)
-#
-#
+
 #set(ROOT_DEFINITIONS "")
+
+###########################################
 #
-#IF (ROOT_FOUND)
+#       Macros for building ROOT dictionary
 #
-#    # ask root-config for the library dir
-#    # Set ROOT_LIBRARY_DIR
-#    
-#    exec_program( ${ROOT_CONFIG_EXECUTABLE} ARGS "--libdir" OUTPUT_VARIABLE ROOT_LIBRARY_DIR_TMP )
-#
-#    if(EXISTS "${ROOT_LIBRARY_DIR_TMP}")
-#
-#        set(ROOT_LIBRARY_DIR ${ROOT_LIBRARY_DIR_TMP} )
-#
-#    # CACHE PATH "ROOT library dir")
-#
-#    else(EXISTS "${ROOT_LIBRARY_DIR_TMP}")
-#
-#        message("Warning: ROOT_CONFIG_EXECUTABLE reported ${ROOT_LIBRARY_DIR_TMP} as library path,")
-#        message("Warning: but ${ROOT_LIBRARY_DIR_TMP} does not exist, ROOT must not be installed correctly.")
-#
-#    endif(EXISTS "${ROOT_LIBRARY_DIR_TMP}")
-#    
-#    # ask root-config for the binary dir
-#
-#    exec_program(${ROOT_CONFIG_EXECUTABLE} ARGS "--bindir" OUTPUT_VARIABLE root_bins )
-#    set(ROOT_BINARY_DIR ${root_bins})
-#
-#    # CACHE INTERNAL "")
-#    # ask root-config for the include dir
-#
-#    exec_program( ${ROOT_CONFIG_EXECUTABLE} ARGS "--incdir" OUTPUT_VARIABLE root_headers )
-#    set(ROOT_INCLUDE_DIR ${root_headers})
-#
-#    # CACHE INTERNAL "")
-#    # ask root-config for the library varaibles
-#    
-#    # Folgendes funktioniert leider nicht, da der Output in einem String gespeichert ist
-#    # und nicht in einer Liste. Dies muss ich mir noch mal anschauen.
-#    # Bis dahin wird jede Library einzeln abgefragt und am Ende die ROOT_LIBRARIES
-#    # zusammengebaut.
-#    #
-#    #      exec_program( ${ROOT_CONFIG_EXECUTABLE}
-#    #        ARGS "--libs --noauxlibs --noldflags" 
-#    #        OUTPUT_VARIABLE root_flags )
-#    #        message("ROOT_FLAGS: ${root_flags}")
-#    #
-#    #     set(ROOT_LIBRARIES "")
-#    #     FOREACH (_current_FLAG ${root_flags})
-#    #       message("1")
-#    #       string(SUBstring ${_current_FLAG} 2 1 bla)
-#    #       if(${bla} MATCHES "l")
-#    #         string(REGEX REPLACE "^-l(.*)" "\\1" test ${_current_FLAG}) 
-#    #         message("${test}")
-#    #         set(ROOT_LIBRARIES ${ROOT_LIBRARIES} ${test})
-#    #       ELSE (${bla} MATCHES "l")
-#    #         if(${bla} MATCHES "p")
-#    #           string(REGEX REPLACE "^-(.*)" "\\1" test ${_current_FLAG}) 
-#    #         endif(${bla} MATCHES "p")       
-#    #         message("${test}")
-#    #         set(ROOT_LIBRARIES ${ROOT_LIBRARIES} ${test})
-#    #       ENDIF (${bla} MATCHES "l")
-#    #
-#    #     endFOREACH (_current_FLAG ${root_flags})
-#    #
-#    #
-#    #      set(ROOT_FLAGS ${root_flags})
-#    #      # CACHE INTERNAL "")
-#    #
-#    #
-#    #  set(ROOT_DEFINITIONS ${ROOT_DEFINITIONS} -L${ROOT_LIBRARY_DIR} ${ROOT_FLAGS} )
-#    
-#    FIND_LIBRARY(ROOT_CORE_LIBRARY NAMES Core PATHS $ENV{ROOTSYS}/lib)
-#    FIND_LIBRARY(ROOT_CINT_LIBRARY NAMES Cint PATHS $ENV{ROOTSYS}/lib)
-#    FIND_LIBRARY(ROOT_HIST_LIBRARY NAMES Hist PATHS $ENV{ROOTSYS}/lib)
-#    FIND_LIBRARY(ROOT_GRAF_LIBRARY NAMES Graf PATHS $ENV{ROOTSYS}/lib)
-#    FIND_LIBRARY(ROOT_GRAF3D_LIBRARY NAMES Graf3d PATHS $ENV{ROOTSYS}/lib)
-#    FIND_LIBRARY(ROOT_GPAD_LIBRARY NAMES Gpad PATHS   $ENV{ROOTSYS}/lib)
-#    FIND_LIBRARY(ROOT_TREE_LIBRARY NAMES Tree PATHS $ENV{ROOTSYS}/lib)
-#    FIND_LIBRARY(ROOT_RINT_LIBRARY NAMES Rint PATHS $ENV{ROOTSYS}/lib)
-#    FIND_LIBRARY(ROOT_POST_LIBRARY NAMES Postscript PATHS $ENV{ROOTSYS}/lib)
-#    FIND_LIBRARY(ROOT_MATRIX_LIBRARY NAMES Matrix PATHS $ENV{ROOTSYS}/lib)
-#    FIND_LIBRARY(ROOT_PHYSICS_LIBRARY NAMES Physics PATHS  $ENV{ROOTSYS}/lib)
-#    FIND_LIBRARY(ROOT_GUI_LIBRARY NAMES Gui PATHS $ENV{ROOTSYS}/lib)
-#    
-#    set(ROOT_LIBRARIES ${ROOT_CORE_LIBRARY} ${ROOT_CINT_LIBRARY} ${ROOT_HIST_LIBRARY} 
-#        ${ROOT_GRAF_LIBRARY} ${ROOT_GRAF3D_LIBRARY} ${ROOT_GPAD_LIBRARY} ${ROOT_TREE_LIBRARY}
-#        ${ROOT_RINT_LIBRARY} ${ROOT_POST_LIBRARY} ${ROOT_MATRIX_LIBRARY} 
-#        ${ROOT_PHYSICS_LIBRARY} ${ROOT_GUI_LIBRARY})
-#    
-#    # Make variables changeble to the advanced user
-#    MARK_AS_ADVANCED( ROOT_LIBRARY_DIR ROOT_INCLUDE_DIR ROOT_DEFINITIONS)
-#    
-#    # Set ROOT_INCLUDES
-#    set( ROOT_INCLUDES ${ROOT_INCLUDE_DIR})
-#    
-#    set(LD_LIBRARY_PATH ${LD_LIBRARY_PATH} ${ROOT_LIBRARY_DIR})
-#    
-#    #######################################
-#    #
-#    #       Check the executables of ROOT 
-#    #          ( rootcint )
-#    #
-#    #######################################
-#    
-#        find_program(ROOT_CINT_EXECUTABLE
-#    	    NAMES rootcint
-#    	    PATHS ${ROOT_BINARY_DIR}
-#    	    NO_DEFAULT_PATH
-#    	    )
-#    
-#ENDIF (ROOT_FOUND)
-#
-############################################
-##
-##       Macros for building ROOT dictionary
-##
-############################################
-#
+###########################################
+
 #MACRO(ROOT_GENERATE_DICTIONARY)
 #
 #    set(INFILES "")
