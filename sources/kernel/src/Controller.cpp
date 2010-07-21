@@ -194,7 +194,7 @@ void Fittino::Controller::PrintHelp() const {
     std::cout << "  interpreted as the name of an input file. The input file suffix" << std::endl;
     std::cout << "  must be .ftn (Fittino format) or .xml (XML format)." << std::endl;
     std::cout << std::endl;
-    std::cout << "  An example input file can be found at input/Example.in.xml" << std::endl;
+    std::cout << "  An example input file can be found at input/Example.in.xml." << std::endl;
     std::cout << std::endl;
     std::cout << "Supported options are:" << std::endl;
     std::cout << std::endl;
@@ -204,7 +204,7 @@ void Fittino::Controller::PrintHelp() const {
     std::cout << "  -i, --input-file=FILE " << std::endl;
     std::cout << "      Fittino uses the input file FILE. The input file suffix must" << std::endl;
     std::cout << "      be .ftn (Fittino format) or .xml (XML format)." << std::endl;
-    std::cout << "      An example input file can be found at input/Example.in.xml" << std::endl;
+    std::cout << "      An example input file can be found at input/Example.in.xml." << std::endl;
     std::cout << std::endl;
     std::cout << "  -s, --seed=SEED" << std::endl;
     std::cout << "      Fittino uses the given random number generator seed." << std::endl;

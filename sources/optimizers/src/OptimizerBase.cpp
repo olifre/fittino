@@ -20,6 +20,7 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <iomanip>
 #include <iostream>
 
 #include "Configuration.h"
@@ -58,14 +59,19 @@ void Fittino::OptimizerBase::PrintStatus() const {
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
         std::cout << "    "
+                  << std::left
+                  << std::setw( 11 )
+                  << std::setiosflags( std::ios::fixed )
+                  << std::setprecision( 6 )
                   << ( *_model->GetParameterVector() )[i].GetName()
-                  << "   "
+                  << std::right
+                  << std::setw( 9 )
                   << ( *_model->GetParameterVector() )[i].GetValue()                                << std::endl;
 
     }
 
     std::cout << "                                                                                " << std::endl;
-    std::cout << "    Chi2 " << _chi2                                                               << std::endl;
+    std::cout << "    Chi2    " << _chi2                                                            << std::endl;
     std::cout << "                                                                                " << std::endl;
 
 }
@@ -131,8 +137,13 @@ void Fittino::OptimizerBase::PrintResult() const {
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
         std::cout << "    "
+                  << std::left
+                  << std::setw( 11 )
+                  << std::setiosflags( std::ios::fixed )
+                  << std::setprecision( 6 )
                   << ( *_model->GetParameterVector() )[i].GetName()
-                  << "   "
+                  << std::right
+                  << std::setw( 9 )
                   << ( *_model->GetParameterVector() )[i].GetValue()                                << std::endl;
 
     }

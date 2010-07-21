@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include <cmath>
+#include <iomanip>
 #include <iostream>
 
 #include "Configuration.h"
@@ -44,9 +45,14 @@ Fittino::MSUGRAModel::MSUGRAModel() {
     for ( unsigned int i = 0; i < _numberOfParameters; i++ ) {
 
         std::cout << "    "
+                  << std::left
+                  << std::setw( 11 )
+                  << std::setiosflags( std::ios::fixed )
+                  << std::setprecision( 6 )
                   << _parameterVector[i].GetName()
-                  << "   "
-                  << _parameterVector[i].GetValue()                                                << std::endl;
+                  << std::right
+                  << std::setw( 12 )
+                  << _parameterVector[i].GetValue()                                                 << std::endl;
 
     }
 
