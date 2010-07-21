@@ -3985,6 +3985,8 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
                           case 3:
                               yyParticleContent = (int)tmpParams[i][1];
                               break;
+                          case 5:
+                              break;
                           case 6:
                               break;
 			  default:
@@ -4145,6 +4147,14 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 //========================================================================
                   else if (!strcmp($2, "IMSNmix")) {
 		      cout << "Ignoring block IMSNmix" << endl;
+		  }
+//========================================================================
+                  else if (!strcmp($2, "IMUmix")) {
+		      cout << "Ignoring block IMUmix" << endl;
+		  }
+//========================================================================
+                  else if (!strcmp($2, "IMVmix")) {
+		      cout << "Ignoring block IMVmix" << endl;
 		  }
 //==============/==========================================================
                   else if (!strcmp($2, "EXTPAR")) {
