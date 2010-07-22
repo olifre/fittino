@@ -103,7 +103,7 @@ SepFitTanbX                    off
 SepFitTanbMu                   off
 SepFitmA	               off
 Calculator                     SPHENO  ../SPheno3.0.beta
-QuarkFlavourViolation          off
+UseFullCKMMatrix               off
 UseMinos                       off
 UseHesse                       off
 NumberOfMinimizations          1

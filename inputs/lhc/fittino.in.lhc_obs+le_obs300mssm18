@@ -214,7 +214,7 @@ SepFitTanbMu                   off
 SepFitmA	               off
 Calculator                     SPHENO ./SPheno
 LEOCalculator                  NPFITTER ./NPpredict.exe
-QuarkFlavourViolation          off
+UseFullCKMMatrix               off
 UseMinos                       off
 UseHesse                       off
 NumberOfMinimizations          1

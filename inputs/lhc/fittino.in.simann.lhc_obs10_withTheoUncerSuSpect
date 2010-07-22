@@ -133,7 +133,7 @@ SepFitTanbMu                   off
 SepFitmA	               off
 Calculator                     SUSPECT ./susyhit
 DecayCalculator								 SUSYHIT ./susyhit
-QuarkFlavourViolation          off
+UseFullCKMMatrix               off
 UseMinos                       off
 UseHesse                       off
 NumberOfMinimizations          1

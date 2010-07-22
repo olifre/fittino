@@ -118,7 +118,7 @@ SepFitTanbMu                   off
 SepFitmA	               off
 Calculator                     SOFTSUSY ./softpoint.x
 DecayCalculator								 SUSYHIT ./susyhit
-QuarkFlavourViolation          off
+UseFullCKMMatrix               off
 UseMinos                       off
 UseHesse                       off
 NumberOfMinimizations          1

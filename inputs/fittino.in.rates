@@ -123,7 +123,7 @@ SepFitTanbMu                   off
 SepFitmA	               off
 MaxCalculatorTime              6
 Calculator                     SPHENO ./SPheno
-QuarkFlavourViolation          off
+UseFullCKMMatrix               off
 UseMinos                       off
 UseHesse                       off
 NumberOfMinimizations          1
