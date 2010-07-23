@@ -6324,7 +6324,7 @@ hase (rad), SPheno default value = 0
       if( yyCalculator == SPHENO ) {
 	if (yySPhenoStartDataString!="" && yySPhenoLastCallValid) {
 	  LesHouchesOutfile << "BLOCK StartDataFile" << endl;
-	  LesHouchesOutfile << " " << yySPhenoStartDataString << endl;
+	  LesHouchesOutfile << "    " << yySPhenoStartDataString << endl;
 	}
       LesHouchesOutfile << "BLOCK SPHENOINPUT" << endl;
       LesHouchesOutfile << "    1  0                  # error level" << endl;
@@ -6774,7 +6774,7 @@ hase (rad), SPheno default value = 0
       if( yyCalculator == SPHENO ) {
 	if (yySPhenoStartDataString!="" && yySPhenoLastCallValid) {
 	  LesHouchesOutfile << "BLOCK StartDataFile" << endl;
-	  LesHouchesOutfile << " " << yySPhenoStartDataString << endl;
+	  LesHouchesOutfile << "    " << yySPhenoStartDataString << endl;
 	}
       LesHouchesOutfile << "BLOCK SPHENOINPUT" << endl;
       LesHouchesOutfile << "    1  0                  # error level" << endl;
@@ -7132,7 +7132,7 @@ hase (rad), SPheno default value = 0
       if( yyCalculator == SPHENO ) {
 	if (yySPhenoStartDataString!="" && yySPhenoLastCallValid) {
 	  LesHouchesOutfile << "BLOCK StartDataFile" << endl;
-	  LesHouchesOutfile << " " << yySPhenoStartDataString << endl;
+	  LesHouchesOutfile << "    " << yySPhenoStartDataString << endl;
 	}
       LesHouchesOutfile << "BLOCK SPHENOINPUT" << endl;
       LesHouchesOutfile << "    1  0                  # error level" << endl;
@@ -7455,7 +7455,7 @@ hase (rad), SPheno default value = 0
 	    if( yyCalculator == SPHENO ) {
 	      if (yySPhenoStartDataString!="" && yySPhenoLastCallValid) {
 		LesHouchesOutfile << "BLOCK StartDataFile" << endl;
-		LesHouchesOutfile << " " << yySPhenoStartDataString << endl;
+		LesHouchesOutfile << "    " << yySPhenoStartDataString << endl;
 	      }
 	    LesHouchesOutfile << "BLOCK SPHENOINPUT" << endl;
 	    LesHouchesOutfile << "    1  0                  # error level" << endl;
