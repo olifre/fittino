@@ -182,7 +182,9 @@ int call_HiggsBounds(int nH, double* parameterVector)
   double temp_BR[3];
   if (Mh[0] == 0 || Mh[1] == 0 || Mh[2] == 0)
     {
+      if (yyVerbose){
       cout<<"Error: Cannot get Higgs-Masses. HiggsBounds aborted"<<endl;
+      }
       HBresult = 2;
       for (int i=0; i<nH; i++){ 
 	HBmass[i].push_back(Mh[i]);
@@ -196,7 +198,9 @@ int call_HiggsBounds(int nH, double* parameterVector)
   else {
     //		  double SMGammaTotal = smgamma_h_(&yyMass[ID_h]);
     for (int i=0; i<nH; i++){ 
+      if (yyVerbose){
       cout << "mh = " << Mh[i] << endl;
+      }
       double SMGammaTotal = 1.;
       double thisMh = 500.;
       double fudgeSafety = 1.;
@@ -679,7 +683,9 @@ void Fittino::calculateMSmuL(const SmearedInput* input)
 
    Msq = sqr(massZ)*TMath::Cos(2.*beta)*(0.5-sin2ThetaW) - sqr(mMuon) + sqr(mSmuon1);
    fMSmuL.value = TMath::Sqrt(Msq);
+   //  if (yyVerbose){
    //  cout << fMSmuL.value << endl;
+   //  }
    return;
 }
 void Fittino::calculateMSmuR(const SmearedInput* input)
@@ -1449,35 +1455,45 @@ void Fittino::calculateTreeLevelValues(int nthrows)
       fAKappa.bound_up = 10000.;
    }
 
-
+   //    if (yyVerbose){
    //    cout << "MSelectronL = " << fMSelL.value << " +- " << fMSelL.error << endl;
    //    cout << "MSmuL = " << fMSmuL.value << " +- " << fMSmuL.error << endl;
    //    cout << "MStauL = " << fMStauL.value << " +- " << fMStauL.error << endl;
    //    cout << "MSelectronR = " << fMSelR.value << " +- " << fMSelR.error << endl;
    //    cout << "MSmuR = " << fMSmuR.value << " +- " << fMSmuR.error << endl;
    //    cout << "MStauR = " << fMStauR.value << " +- " << fMStauR.error << endl;
-
+   //    }
    //-----------------------------------------------------------------
    // fill yyFittedVec
    // first fill in the measured parameters
    for (unsigned int  i=0; i < yyFittedPar.size(); i++ ) {
       par_already_found = false;
+      // if (yyVerbose){
       // cout << "filling yyFittedVec" << endl;
+      // }
       for (unsigned int j = 0; j < fInput->GetMeasuredVector().size(); j++ ) {
+	// if (yyVerbose){
 	// cout << "looping over measured value " << fInput->GetMeasuredVector()[j].name << endl;
+	// }
  	 if (!yyFittedPar[i].name.compare(fInput->GetMeasuredVector()[j].name)) {
+	   // if (yyVerbose){
 	   // cout << "filling contents of " << fInput->GetMeasuredVector()[j].name << endl;
+	   // }
 	    yyFittedVec.push_back((fInput->GetMeasuredVector())[j]);
 	    if (yyUseGivenStartValues) {
+	       if (yyVerbose){
 	       cout << "use given start values for " << fInput->GetMeasuredVector()[j].name << endl;
+	       }
 	       unsigned int ilength;
 	       ilength = yyFittedVec.size();
 	       yyFittedVec[ilength-1].value = yyFittedPar[i].value;
 	       if (yyFittedPar[i].error>0.) {
 		 yyFittedVec[ilength-1].error = yyFittedPar[i].error;
 	       }
+	       if (yyVerbose){
 	       cout << " parameter " <<  yyFittedPar[i].name << " " << yyFittedVec[ilength-1].value << " " 
 	       	    << " to value " << yyFittedPar[i].value << " +- " << yyFittedVec[ilength-1].error << endl;	   
+	       }
 	       if (!yyFittedPar[i].name.compare("massA0")) {
 		 yyFittedVec[ilength-1].bound_low = 0.;
 	       }	    
@@ -1598,7 +1614,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 
       }
       if (!par_already_found) {
+	if (yyVerbose){
 	std::cout << "ParNotFound: " <<  yyFittedPar[i].name << std::endl;
+	}
 	fnew.name  = yyFittedPar[i].name;
 	fnew.value = yyFittedPar[i].value;
 	fnew.error = yyFittedPar[i].value*0.05;
@@ -1626,20 +1644,25 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    //    yyFittedVec.push_back(fM2);
    //    yyFittedVec.push_back(fAbsM3);
 
-
+   if (yyVerbose){
    cout << "fill fixed parameters " << endl;
-
+   }
    FillFixedParameters();
-
+   
+   if (yyVerbose){
    cout << "------------------------------------------------------------" << endl;
    cout << "nthrows " << nthrows << " nvalid " << nvalid << endl;
    cout << "Estimated Parameters:" << endl;
+   }
    for (unsigned int  i=0; i < yyFittedVec.size(); i++ ) {
+      if (yyVerbose){
       cout << i << " " << yyFittedVec[i].name << " = " << yyFittedVec[i].value << " +- " << yyFittedVec[i].error 
 	 << " bounds " << yyFittedVec[i].bound_low << " -- " <<  yyFittedVec[i].bound_up << endl;
+      }
    }
+   if (yyVerbose){
    cout << "------------------------------------------------------------" << endl;
-
+   }
 
 
 }
@@ -1650,8 +1673,10 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 void Fittino::setStartValues()
 {
    if (yyFitModel == mSUGRA) {
-
+     
+     if (yyVerbose){
      cout << "setting start values for QEWSB" << endl;
+     }
       fQEWSB.name  = "QEWSB";
       fQEWSB.value = 1000.;
       fQEWSB.error = 50;
@@ -1704,14 +1729,18 @@ void Fittino::setStartValues()
 
       bool par_already_found;
 
+      //    if (yyVerbose){
       //    cout<<"TanBeta = "<<fTanBeta.value<<" +- "<<fTanBeta.error<<endl;
       //    cout<<"M0 = "<<fM0.value<<" +- "<<fM0.error<<endl;
       //    cout<<"M12 = "<<fM12.value<<" +- "<<fM12.error<<endl;
       //    cout<<"A0 = "<<fA0.value<<" +- "<<fA0.error<<endl;
-
+      
       //    cout<<"Contents of yyFittedPar:"<<endl;
+      //    }
       //    for (unsigned int  i=0; i < yyFittedPar.size(); i++ ) {
+      //      if (yyVerbose){
       //      cout<<yyFittedPar[i].name<<" "<<yyFittedPar[i].value<<" "<<yyFittedPar[i].error<<endl;
+      //      }
       //    }
       //
       //    exit(1);
@@ -1729,9 +1758,11 @@ void Fittino::setStartValues()
 		  if (yyFittedPar[i].error>0.) {
 		    yyFittedVec[ilength-1].error = yyFittedPar[i].error;
 		  }
+		  if (yyVerbose){
 		  cout << " parameter " <<  yyFittedPar[i].name << " " 
 		     << yyFittedVec[ilength-1].value << " " 
-		     << " to value " << yyFittedPar[i].value << endl;	   
+		     << " to value " << yyFittedPar[i].value << endl;
+		  }
 	       }
 	       par_already_found = true;
 	       break;
@@ -1763,8 +1794,10 @@ void Fittino::setStartValues()
 
       // Fill fixed parameters();
       MeasuredValue tmpValue;
-
+      
+      if (yyVerbose){
       cout << yyDashedLine << endl;
+      }
       for (unsigned int i = 0; i < yyFixedPar.size(); i++) {
 	 for (unsigned int j = 0; j < yyFittedPar.size(); j++) {
 	    if (!yyFittedPar[j].name.compare(yyFixedPar[i].name)) {
@@ -1786,15 +1819,21 @@ void Fittino::setStartValues()
 	 tmpValue.bound_low = -1E+6;
 	 tmpValue.bound_up = 1E+6;
 	 yyFixedVec.push_back(tmpValue);
-
+	 
+	 if (yyVerbose){
 	 cout << "fixed: " << yyFixedPar[i].name << " at " << yyFixedPar[i].value << endl;
+	 }
       }
 
+      if (yyVerbose){
       cout << yyDashedLine << endl;
       cout << "Setting parameter start values to:" << endl;
+      }
       for (unsigned int  i=0; i < yyFittedVec.size(); i++ ) {
+	if (yyVerbose){
 	 cout << i << " " << yyFittedVec[i].name << " = " << yyFittedVec[i].value << " +- " << yyFittedVec[i].error 
 	    << " bounds " << yyFittedVec[i].bound_low << " -- " <<  yyFittedVec[i].bound_up << endl;
+	}
       }
 
    }
@@ -1883,6 +1922,7 @@ void Fittino::setStartValues()
 
       bool par_already_found;
 
+      //    if (yyVerbose){
       //    cout << "TanBeta = " << fTanBeta.value << " +- " << fTanBeta.error << endl;
       //    cout << "M1      = " << fM0.value      << " +- " << fM0.error      << endl;
       //    cout << "M2      = " << fM2.value      << " +- " << fM2.error      << endl;
@@ -1891,8 +1931,11 @@ void Fittino::setStartValues()
       //    cout << "A0      = " << fA0.value      << " +- " << fA0.error      << endl;
 
       //    cout << "Contents of yyFittedPar: " << endl;
+      //    }
       //    for (unsigned int  i=0; i < yyFittedPar.size(); i++ ) {
+      //      if (yyVerbose){
       //      cout << yyFittedPar[i].name << " " << yyFittedPar[i].value << " " << yyFittedPar[i].error << endl;
+      //      }
       //    }
       //
       //    exit(1);
@@ -1909,9 +1952,11 @@ void Fittino::setStartValues()
 		  if (yyFittedPar[i].error>0.) {
 		     yyFittedVec[ilength-1].error = yyFittedPar[i].error;
 		  }
+		  if (yyVerbose){
 		  cout << " parameter " <<  yyFittedPar[i].name << " " 
 		     << yyFittedVec[ilength-1].value << " " 
-		     << " to value " << yyFittedPar[i].value << endl;	   
+		     << " to value " << yyFittedPar[i].value << endl;
+		  }
 	       }
 	       par_already_found = true;
 	       break;
@@ -1978,16 +2023,24 @@ void Fittino::setStartValues()
 	 tmpValue.bound_up = 1E+6;
 	 yyFixedVec.push_back(tmpValue);
 
+	 if (yyVerbose){
 	 cout << "fixed: " << yyFixedPar[i].name << " at " << yyFixedPar[i].value << endl;
+	 }
       }
 
+      if (yyVerbose){
       cout << "=======================================================" << endl;
       cout << "Setting start parameter start values to:" << endl;
+      }
       for (unsigned int  i=0; i < yyFittedVec.size(); i++ ) {
+	 if (yyVerbose){
 	 cout << i << " " << yyFittedVec[i].name << " = " << yyFittedVec[i].value << " +- " << yyFittedVec[i].error 
 	    << " bounds " << yyFittedVec[i].bound_low << " -- " <<  yyFittedVec[i].bound_up << endl;
+	 }
       }
+      if (yyVerbose){
       cout << "=======================================================" << endl;
+      }
 
    }
 
@@ -2055,14 +2108,18 @@ void Fittino::setStartValues()
 
       bool par_already_found;
 
+      //    if (yyVerbose){
       //    cout<<"TanBeta = "<<fTanBeta.value<<" +- "<<fTanBeta.error<<endl;
       //    cout<<"Lambda = "<<fLambda.value<<" +- "<<fLambda.error<<endl;
       //    cout<<"Mmess = "<<fMmess.value<<" +- "<<fMmess.error<<endl;
       //    cout<<"cGrav = "<<fcGrav.value<<" +- "<<fcGrav.error<<endl;
 
       //    cout<<"Contents of yyFittedPar:"<<endl;
+      //    }
       //    for (unsigned int  i=0; i < yyFittedPar.size(); i++ ) {
+      //      if (yyVerbose){
       //      cout<<yyFittedPar[i].name<<" "<<yyFittedPar[i].value<<" "<<yyFittedPar[i].error<<endl;
+      //      }
       //    }
       //
       //    exit(1);
@@ -2079,9 +2136,11 @@ void Fittino::setStartValues()
 		  if (yyFittedPar[i].error>0.) {
 		     yyFittedVec[ilength-1].error = yyFittedPar[i].error;
 		  }
+		  if (yyVerbose){
 		  cout << " parameter " <<  yyFittedPar[i].name << " " 
 		     << yyFittedVec[ilength-1].value << " " 
-		     << " to value " << yyFittedPar[i].value << endl;	   
+		     << " to value " << yyFittedPar[i].value << endl;
+		  }
 	       }
 	       par_already_found = true;
 	       break;
@@ -2136,16 +2195,24 @@ void Fittino::setStartValues()
 	 tmpValue.bound_up = 1E+6;
 	 yyFixedVec.push_back(tmpValue);
 
+	 if (yyVerbose){
 	 cout << "fixed: " << yyFixedPar[i].name << " at " << yyFixedPar[i].value << endl;
+	 }
       }
 
+      if (yyVerbose){
       cout << "=======================================================" << endl;
       cout << "Setting start parameter start values to:" << endl;
+      }
       for (unsigned int  i=0; i < yyFittedVec.size(); i++ ) {
+	if (yyVerbose){
 	 cout << i << " " << yyFittedVec[i].name << " = " << yyFittedVec[i].value << " +- " << yyFittedVec[i].error 
 	    << " bounds " << yyFittedVec[i].bound_low << " -- " <<  yyFittedVec[i].bound_up << endl;
+	}
       }
+      if (yyVerbose){
       cout << "=======================================================" << endl;
+      }
 
    }
 
@@ -2193,13 +2260,17 @@ void Fittino::setStartValues()
 
       bool par_already_found;
 
+      //    if (yyVerbose){
       //    cout<<"TanBeta = "<<fTanBeta.value<<" +- "<<fTanBeta.error<<endl;
       //    cout<<"M0 = "<<fM0.value<<" +- "<<fM0.error<<endl;
       //    cout<<"M32 = "<<fM32.value<<" +- "<<fM32.error<<endl;
 
       //    cout<<"Contents of yyFittedPar:"<<endl;
+      //    }
       //    for (unsigned int  i=0; i < yyFittedPar.size(); i++ ) {
+      //      if (yyVerbose){
       //      cout<<yyFittedPar[i].name<<" "<<yyFittedPar[i].value<<" "<<yyFittedPar[i].error<<endl;
+      //      }
       //    }
       //
       //    exit(1);
@@ -2216,9 +2287,11 @@ void Fittino::setStartValues()
 		  if (yyFittedPar[i].error>0.) {
 		     yyFittedVec[ilength-1].error = yyFittedPar[i].error;
 		  }
+		  if (yyVerbose){
 		  cout << " parameter " <<  yyFittedPar[i].name << " " 
 		     << yyFittedVec[ilength-1].value << " " 
 		     << " to value " << yyFittedPar[i].value << endl;	   
+		  }
 	       }
 	       par_already_found = true;
 	       break;
@@ -2269,16 +2342,24 @@ void Fittino::setStartValues()
 	 tmpValue.bound_up = 1E+6;
 	 yyFixedVec.push_back(tmpValue);
 
+	 if (yyVerbose){
 	 cout << "fixed: " << yyFixedPar[i].name << " at " << yyFixedPar[i].value << endl;
+	 }
       }
 
+      if (yyVerbose){
       cout << "=======================================================" << endl;
       cout << "Setting start parameter start values to:" << endl;
+      }
       for (unsigned int  i=0; i < yyFittedVec.size(); i++ ) {
+	 if (yyVerbose){
 	 cout << i << " " << yyFittedVec[i].name << " = " << yyFittedVec[i].value << " +- " << yyFittedVec[i].error 
 	    << " bounds " << yyFittedVec[i].bound_low << " -- " <<  yyFittedVec[i].bound_up << endl;
+	 }
       }
+      if (yyVerbose){
       cout << "=======================================================" << endl;
+      }
 
    }
    else if (yyFitModel == MSSM || yyFitModel == NMSSM) {
@@ -2380,9 +2461,11 @@ void Fittino::calculateLoopLevelValues()
 
 
       for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+	 if (yyVerbose){
 	 cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
 	 cout << "adding parameter " << yyFittedVec[i].name << endl;
 	 cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+	 }
 	 if (!(yyFittedVec[i].name=="Mmess") && !(yyFittedVec[i].name=="Lambda")) {
 	   if ( yyFittedVec[i].error <= 0. ) {
 	     fitter->mnparm(i, yyFittedVec[i].name.c_str(),
@@ -2428,7 +2511,9 @@ void Fittino::calculateLoopLevelValues()
 	    for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
 	       if ( yyFittedVec[i].name.compare("massA0") ) {
 		  arguments[0] = i+1;
+		  if (yyVerbose){
 		  cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
+		  }
 		  fitter->mnexcm("FIX", arguments, 1,ierr);
 	       }
 	    }
@@ -2468,7 +2553,9 @@ void Fittino::calculateLoopLevelValues()
 	    for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
 	       if ( !( !yyFittedVec[i].name.compare("TanBeta") || !yyFittedVec[i].name.compare("Mu") ) ) {
 		  arguments[0] = i+1;
+		  if (yyVerbose){
 		  cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
+		  }
 		  fitter->mnexcm("FIX", arguments, 1,ierr);
 	       }
 	    }
@@ -2574,7 +2661,9 @@ void Fittino::calculateLoopLevelValues()
 		     || !yyFittedVec[i].name.compare("MSelectronR") || !yyFittedVec[i].name.compare("MSmuR")
 		     || !yyFittedVec[i].name.compare("MStauR") ) ) {
 	       arguments[0] = i+1;
+	       if (yyVerbose){
 	       cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
+	       }
 	       fitter->mnexcm("FIX", arguments, 1,ierr);
 	    }
 	 }
@@ -2631,7 +2720,9 @@ void Fittino::calculateLoopLevelValues()
 	    for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
 	       if (  !yyFittedVec[i].name.compare("Xtop") ) {
 		  arguments[0] = i+1;
+		  if (yyVerbose){
 		  cout << "scanning parameter no " << i+1 << " " << yyFittedVec[i].name << endl;
+		  }
 		  arguments[1] = 100;
 		  if (yyBoundsOnX) {
 		     arguments[2] = yyFittedVec[i].bound_low;
@@ -2650,7 +2741,9 @@ void Fittino::calculateLoopLevelValues()
 	    for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
 	       if (  !yyFittedVec[i].name.compare("Xbottom") ) {
 		  arguments[0] = i+1;
+		  if (yyVerbose){
 		  cout << "scanning parameter no " << i+1 << " " << yyFittedVec[i].name << endl;
+		  }
 		  arguments[1] = 100;
 		  if (yyBoundsOnX) {
 		     arguments[2] = yyFittedVec[i].bound_low;
@@ -2676,7 +2769,9 @@ void Fittino::calculateLoopLevelValues()
 		     || !yyFittedVec[i].name.compare("MSdownR")
 		     || !yyFittedVec[i].name.compare("MSstrangeR") || !yyFittedVec[i].name.compare("MSbottomR") ) ) {
 	       arguments[0] = i+1;
+	       if (yyVerbose){
 	       cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
+	       }
 	       fitter->mnexcm("FIX", arguments, 1,ierr);
 	    }
 	 }
@@ -2718,7 +2813,9 @@ void Fittino::calculateLoopLevelValues()
 	       if ( !( !yyFittedVec[i].name.compare("Xtop") || !yyFittedVec[i].name.compare("Xbottom") || !yyFittedVec[i].name.compare("TanBeta") 
 			|| !yyFittedVec[i].name.compare("MStopL") || !yyFittedVec[i].name.compare("MStopR") ) ) { 
 		  arguments[0] = i+1;
-		  cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
+	          if (yyVerbose){
+		  cout << "fixing parameter "<< yyFittedVec[i].name << endl;
+		  }
 		  fitter->mnexcm("FIX", arguments, 1,ierr);
 	       }
 	    }
@@ -2799,30 +2896,40 @@ void Fittino::calculateLoopLevelValues()
 	    }
 	    // reset the uncertainties
 	    for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
+	       if (yyVerbose){
 	       cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
 	       cout << "resetting parameter errors " << yyFittedVec[j].name << endl;
 	       cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+	       }
 	       fitter->mnparm(j, yyFittedVec[j].name.c_str(),
 		     yyFittedVec[j].value, saved_uncertainties[j], 
 		     yyFittedVec[j].bound_low, yyFittedVec[j].bound_up,ierr);
 	    }
 	 }
 	 if (yyUseSimplexMinOnly || yyUseSimplexMin) {
+	   if (yyVerbose){
 	   cout << "perform simplex optimization" << endl;
+	   }
 	   arguments[0]  = 1000.;  
 	   fitter->mnexcm("SIMPLEX",arguments, 1, ierr);
 	 }
 	 if (!yyUseSimplexMinOnly) {
+	   if (yyVerbose){
 	   cout << "perform MINIMIZE optimization" << endl;
+	   }
 	   arguments[0] = 200000;
 	   arguments[1] = 0.1;
 	   fitter->mnexcm("MINIMIZE", arguments, 2,ierr);
 	 }
       }
+      if (yyVerbose){
       cout << "returning from MINIMIZE, return value "<< ierr << endl;
+      }
       if (yyUseHesse && !yyUseMinos) {
 	 fitter->mnexcm("HESSE", arguments, 1,ierr);
+	 if (yyVerbose){
 	 cout << "returning from HESSE, return value "<< ierr << endl;
+	 }
       }
       if (yyUseMinos) {
 	 fitter->mnexcm("HESSE", arguments, 1,ierr);
@@ -2835,7 +2942,9 @@ void Fittino::calculateLoopLevelValues()
 
    if (yyPerformSingleFits) {
       fstream singleFitsFile;
+      if (yyVerbose){
       cout << "Starting single Fits" << endl;
+      }
 
       if (!yyPerformFit) {
 	 fitter = new TMinuit (yyFittedVec.size());
@@ -2847,9 +2956,11 @@ void Fittino::calculateLoopLevelValues()
 	 fitter->mnexcm("SET ERR", arguments, 1,ierr);
 
 	 for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
+	    if (yyVerbose){
 	    cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
 	    cout << "adding parameter " << yyFittedVec[i].name << endl;
 	    cout << "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%" << endl;
+	    }
 	    if ( yyFittedVec[i].error <= 0. ) {
 	       fitter->mnparm(i, yyFittedVec[i].name.c_str(),
 		     yyFittedVec[i].value, TMath::Abs(yyFittedVec[i].value/10.), 
@@ -2875,9 +2986,13 @@ void Fittino::calculateLoopLevelValues()
 	 for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
 	    if ( i != ipar ) { 
 	       arguments[0] = i+1;
+	       if (yyVerbose){
 	       cout << "fixing parameter "<< yyFittedVec[i].name << endl; 
+	       }
 	       fitter->mnexcm("FIX", arguments, 1,ierr);
+	       if (yyVerbose){
 	       cout << "fixing done" << endl;
+	       }
 	    }
 	 }
 	 Double_t fivelargest[5];
@@ -2973,7 +3088,9 @@ void Fittino::calculateLoopLevelValues()
       double* y = 0;
       double* z = 0;
 
+      if (yyVerbose){
       cout<<"Starting parameter scan with:"<<endl;
+      }
 
       if (yyPerformFit) {
 	 for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
@@ -2983,7 +3100,9 @@ void Fittino::calculateLoopLevelValues()
 
       for (unsigned int j = 0; j < yyFittedVec.size(); j++ ) {
 	 par[j] = yyFittedVec[j].value;
+	 if (yyVerbose){
 	 cout<<yyFittedVec[j].name<<" = "<<yyFittedVec[j].value<<endl;
+	 }
       }
 
 
@@ -3044,8 +3163,10 @@ void Fittino::calculateLoopLevelValues()
 	       x[i*yyScanPar[1].numberOfSteps+j] = value1;
 	       y[i*yyScanPar[1].numberOfSteps+j] = value2;
 	       z[i*yyScanPar[1].numberOfSteps+j] = chi2;
-
+	       
+	       if (yyVerbose){
 	       cout << "parScan " << value2 << " " << value1 << " " << chi2 << endl;
+	       }
 
 	    }
 	 }
@@ -3152,8 +3273,10 @@ void Fittino::calculateLoopLevelValues()
       fSavedFittedCovarianceMatrix = new TMatrixD(yyFittedVec.size(),yyFittedVec.size());
       fSavedFittedCorrelationMatrix = new TMatrixD(yyFittedVec.size(),yyFittedVec.size());
 
-
+      
+      if (yyVerbose){
       cout << "calculating the covariance and correlation matrix "<<endl;
+      }
       //-------------------------------------------------------------------------
       // Calculate Covariance Matrix
       for (unsigned int i = 0; i < yyFittedVec.size(); i++ ) {
@@ -3168,7 +3291,9 @@ void Fittino::calculateLoopLevelValues()
 	 }
       }
 
+      if (yyVerbose){
       cout << "get the errors" << endl;
+      }
       //-------------------------------------------------------------------------
       // Get Errors
       // return values
@@ -3206,16 +3331,22 @@ void Fittino::calculateLoopLevelValues()
       sysinfo(&sinfo);
       if (yyRandomGeneratorSeed < 0) {
 	 seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
+	 if (yyVerbose){
 	 cout<<"uptime = "<<sinfo.uptime<<endl;
 	 cout<<"freeswap = "<<sinfo.freeswap<<endl;
 	 cout<<"pid = "<<getpid()<<endl;
-	 cout << "systime " << systime << endl; 
+	 cout << "systime " << systime << endl;
+	 }
       }
       else {
+	 if (yyVerbose){
 	 cout<<"using seed from input file"<<endl;
+	 }
 	 seed = yyRandomGeneratorSeed;
       }
+      if (yyVerbose){
       cout << "seed = " << seed << endl;
+      }
       gRandom->SetSeed(seed);
       TFile *SimAnnNtupFile = new TFile("SimAnnNtupFile.root","UPDATE");
       sprintf ( ntuplename, "uncertainty_ntuple" );
@@ -3238,16 +3369,22 @@ void Fittino::calculateLoopLevelValues()
       sysinfo(&sinfo);
       if (yyRandomGeneratorSeed < 0) {
 	 seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
+	 if (yyVerbose){
 	 cout<<"uptime = "<<sinfo.uptime<<endl;
 	 cout<<"freeswap = "<<sinfo.freeswap<<endl;
 	 cout<<"pid = "<<getpid()<<endl;
 	 cout << "systime " << systime << endl; 
+	 }
       }
       else {
+	 if (yyVerbose){
 	 cout<<"using seed from input file"<<endl;
+	 }
 	 seed = yyRandomGeneratorSeed;
       }
+      if (yyVerbose){
       cout << "seed = " << seed << endl;
+      }
       gRandom->SetSeed(seed);
       TFile *SimAnnNtupFile = new TFile("SimAnnNtupFile.root","UPDATE");
       sprintf ( ntuplename, "uncertainty_ntuple" );
@@ -3267,10 +3404,14 @@ void Fittino::calculateLoopLevelValues()
    }
 
    if (yyPerformFit) {
+      if (yyVerbose){
       cout << "write the preliminay output file" << endl;
+      }
       writeResults("fittino.out.intermediate");
    }
+   if (yyVerbose){
    cout << "eventually get the contours " << endl;
+   }
    //-------------------------------------------------------------------------
    // Get the contours with only two parameters free
    if (yyPerformFit && yyGetContours) {
@@ -3287,7 +3428,9 @@ void Fittino::calculateLoopLevelValues()
 	       for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
 		  if ( !( (k==i) || (k==j) ) ) {
 		     arguments[0] = k+1;
+		     if (yyVerbose){
 		     cout << "fixing parameter "<< yyFittedVec[k].name << endl; 
+		     }
 		     fitter->mnexcm("FIX", arguments, 1,ierr);
 		  }
 	       }
@@ -3306,7 +3449,9 @@ void Fittino::calculateLoopLevelValues()
 	       for (unsigned int k = 0; k<ncontpoints; k++) {
 		  closedxarray[k] = xarray[k];
 		  closedyarray[k] = yarray[k];
+		  if (yyVerbose){
 		  cout<<"x["<<k<<"] = "<<xarray[k]<<"   y["<<k<<"] = "<<yarray[k]<<endl;
+		  }
 	       }
 	       closedxarray[ncontpoints] = xarray[0];
 	       closedyarray[ncontpoints] = yarray[0];
@@ -3330,7 +3475,9 @@ void Fittino::calculateLoopLevelValues()
 	    }
 	 }
       }
+      if (yyVerbose){
       cout << "close the output root files " << endl;
+      }
       //-------------------------------------------------------------------------
       // Close the Output file
       // close histograms
@@ -3360,7 +3507,9 @@ void Fittino::calculateLoopLevelValues()
 	       for (unsigned int k = 0; k<ncontpoints; k++) {
 		  closedxarray[k] = xarray[k];
 		  closedyarray[k] = yarray[k];
+		  if (yyVerbose){
 		  cout<<"x["<<k<<"] = "<<xarray[k]<<"   y["<<k<<"] = "<<yarray[k]<<endl;
+		  }
 	       }
 	       closedxarray[ncontpoints] = xarray[0];
 	       closedyarray[ncontpoints] = yarray[0];
@@ -3379,7 +3528,9 @@ void Fittino::calculateLoopLevelValues()
 	    }
 	 }
       }
+      if (yyVerbose){
       cout << "close the output root files " << endl;
+      }
       //-------------------------------------------------------------------------
       // Close the Output file
       // close histograms
@@ -3390,7 +3541,9 @@ void Fittino::calculateLoopLevelValues()
    //  arguments[0] = 0;
    //  fitter->mnexcm("RETURN", arguments, 0,ierr);
 
+   if (yyVerbose){
    cout << "do not delete fitter" << endl;
+   }
 
    // if (fitter) delete fitter;
    // cout << "fitter deleted" << endl;
@@ -3413,7 +3566,9 @@ void Fittino::writeResults(const char* filename)
    int year = tm_now->tm_year + 1900;
    int wday = tm_now->tm_wday;
 
+   if (yyVerbose){
    cout << " entering writeResults" << endl;
+   }
 
    string weekday;
    switch (wday) {
@@ -3618,13 +3773,17 @@ void Fittino::writeResults(const char* filename)
    }
    fprintf(file, "##################### End of Fit Summary ####################\n");
 
+   if (yyVerbose){
    cout << "closing output file" << endl;
+   }
    fclose(file);
 }
 
 void Fittino::CalcFromRandPars(unsigned int nruns) {
+   if (yyVerbose){
    cout << yyDashedLine << endl;
    cout << "Calcualting Observables from random parameter distribution" << endl;
+   }
 
    TFile *file = new TFile("Observables.root","RECREATE");
    TTree *tree = new TTree("Observables","Observable scatter plots");
@@ -3660,44 +3819,62 @@ void Fittino::CalcFromRandPars(unsigned int nruns) {
 	 if( yyCalculator == SPHENO ) {
 	   rc = callSPheno();
 	   if (rc == 2) {
+	     if (yyVerbose){
 	     cout << "SIGINT received in SPheno, exiting" << endl;
+	     }
 	     exit (2);
 	   }
 	   if (rc > 0) {
 	     cerr << "Exiting fitterFCN because of problem in SPheno run" << endl;
 	     f = 111111111111.;
+	     if (yyVerbose){
 	     cout << " f = " << f << endl;
+	     }
 	   }
 		 else if( yyCalculator == SUSPECT ) {
+	if (yyVerbose){
         cout << "Calling SuSpect and SDecay/HDecay via SUSYHIT" << endl;
+	}
         rc = callSUSYHIT();
         if( rc > 0 ) {
           cerr << "Exiting fitterFCN because of problem in SUSYHIT run" << endl;
           f = 111111111111.;
+	  if (yyVerbose){
           cout << " f = " << f << endl;
+	  }
           return;
         }
       }
 	   else if( yyCalculator == SOFTSUSY ) {
 	     if( yyFitModel != AMSB && yyFitModel != GMSB && yyFitModel != mSUGRA ) {
+	       if (yyVerbose){
 	       cout << "SoftSUSY currently works only with AMSB, GMSB and mSUGRA. sorry. " << endl;
+	       }
 	     }
 	     if( yyDecayCalculator != SUSYHIT ) {
+	       if (yyVerbose){
 	       cout << "SoftSUSY currently works only with SUSYHIT. sorry. " <<endl;
+	       }
 	       exit(1);
 	     }
 	     rc = callSoftSusy();
 	     if( rc > 0 ) {
 	       cerr << "Exiting fitter FCN because of problem in SoftSusy run" << endl;
 	       f = 111111111111.;
+	       if (yyVerbose){
 	       cout << "f = " << f << endl;
+	       }
 	     }
+	     if (yyVerbose){
 	     cout << "     SoftSusy finished (Maybe With Problems?). Calling SUSYHIT" << endl;
+	     }
 	     rc = callSUSYHIT();
 	     if( rc > 0 ) {
 	       cerr << "Exiting fitterFCN because of problem in SUSYHIT run" << endl;
 	       f = 111111111111.;
+	       if (yyVerbose){
 	       cout << " f = " << f << endl;
+	       }
 	       return;
 	     }
 	   }
@@ -3709,31 +3886,41 @@ void Fittino::CalcFromRandPars(unsigned int nruns) {
       if (yyCalculatorError) {
 	 cerr << "Exiting fitterFCN because LesHouches outfile did not exist" << endl;
 	 f = 111111111111.;
+	 if (yyVerbose){
 	 cout << " f = " << f << endl;
+	 }
 	 return;    
       }
       if (yyParseError) {
 	 cerr << "Exiting fitterFCN because of a parse error in yacc" << endl;
 	 f = 111111111111.;
+	 if (yyVerbose){
 	 cout << " f = " << f << endl;
+	 }
 	 return;
       }
       if (yyNaN) {
 	 cerr << "Exiting fitterFCN because of NaN in Les Houches ouput file" << endl;
 	 f = 111111111111.;
+	 if (yyVerbose){
 	 cout << " f = " << f << endl;
+	 }
 	 return;
       }
       if (yyInfinity) {
 	 cerr << "Exiting fitterFCN because of infinity in Les Houches ouput file" << endl;
 	 f = 111111111111.;
+	 if (yyVerbose){
 	 cout << " f = " << f << endl;
+	 }
 	 return;
       }
       if (rc > 0) {
 	 cerr << "Exiting fitterFCN because of return value "<< rc << " from the Calculator" << endl;
 	 f = 111111111111.;
+	 if (yyVerbose){
 	 cout << " f = " << f << endl;
+	 }
 	 return;
       }
       tree->Fill();
@@ -3845,68 +4032,94 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    
 
    if (yyCalculator == SUSPECT) {
+        if (yyVerbose){
   	cout << "Calling SuSpect and SDecay/HDecay via SUSYHIT" << endl;
+	}
       rc = callSUSYHIT();
       if( rc > 0 ) {
         cerr << "Exiting fitterFCN because of problem in SUSYHIT run" << endl;
         f = 111111111111.;
+	if (yyVerbose){
         cout << " f = " << f << endl;
+	}
         return;
       }	 
 	 }
    else if (yyCalculator == SPHENO) {
+     if (yyVerbose){
      cout << yyDashedLine << endl;
      cout << "Calling SPheno" << endl;
+     }
      rc = callSPheno();
      
      if (rc == 2) {
+       if (yyVerbose){
        cout << "SIGINT received in SPheno, exiting" << endl;
+       }
        exit (2);
      }
      if (rc > 0) {
        cerr << "Exiting fitterFCN because of problem in SPheno run" << endl;
        f = 111111111111.;
+       if (yyVerbose){
        cout << " f = " << f << endl;
+       }
        return;        
      }
    }
    else if (yyCalculator == SOFTSUSY) {
      if( yyFitModel != AMSB && yyFitModel != GMSB && yyFitModel != mSUGRA ) {
+       if (yyVerbose){
        cout << "FATAL: SOFTSUSY SUPOPRT AT THE MOMENT ONLY FOR  GMSB, AMSB and mSUGRA. " << yyFitModel << " MAY BE AVAILABLE LATER . . . (sorry :( )"<< endl;
+       }
        exit(1);
      }
      if (yyDecayCalculator != SUSYHIT ) {
+       if (yyVerbose){
        cout << "SoftSUSY currently runs only with SUSYHIT. Sorry. " << endl;
+       }
        exit(1);
      }
+     if (yyVerbose){
      cout << yyDashedLine << endl;
      cout << "Calling SoftSusy" << endl;
+     }
      rc = callSoftSusy();
      if( rc > 0 ) {
        cerr << "Exiting fitterFCN because of problem in SoftSusy run" << endl;
        f = 111111111111.;
+       if (yyVerbose){
        cout << " f = " << f << endl;
+       }
        return;	
      }
+     if (yyVerbose){
      cout << "     SoftSusy finished (Maybe With Problems?). Calling SUSYHIT" << endl;
+     }
      rc = callSUSYHIT();
      if( rc > 0 ) {
        cerr << "Exiting fitterFCN because of problem in SUSYHIT run" << endl;
        f = 111111111111.;
+       if (yyVerbose){
        cout << " f = " << f << endl;
+       }
        return;		
      }
    }    
    
    
    if (yyLEOCalculator == NPFITTER) {
+      if (yyVerbose){
       cout << yyDashedLine << endl;
       cout << "Calling NPFitter" << endl;
+      }
       rc = callNPFitter();
       if( rc > 0 ) {
 	cerr << "Exiting fitterFCN because of problem in NPFITTER run" << endl;
 	f = 111111111111.;
+	if (yyVerbose){
 	cout << " f = " << f << endl;
+	}
 	return;
       }
    }
@@ -3922,7 +4135,9 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
       if (rc > 0) {
 	 cerr << "Exiting fitterFCN because of problem in MicrOmegas run" << endl;
 	 f = 111111111111.;
+	 if (yyVerbose){
 	 cout << " f = " << f << endl;
+	 }
 	 return;
       }
    }
@@ -3932,38 +4147,50 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    if (yyCalculatorError) {
       cerr << "Exiting fitterFCN because LesHouches outfile did not exist" << endl;
       f = 111111111111.;
+      if (yyVerbose){
       cout << " f = " << f << endl;
+      }
       return;    
    }
    if (yyParseError) {
       cerr << "Exiting fitterFCN because of a parse error in yacc" << endl;
       f = 111111111111.;
+      if (yyVerbose){
       cout << " f = " << f << endl;
+      }
       return;
    }
    if (yyNaN) {
       cerr << "Exiting fitterFCN because of NaN in Les Houches ouput file" << endl;
       f = 111111111111.;
+      if (yyVerbose){
       cout << " f = " << f << endl;
+      }
       return;
    }
    if (yyInfinity) {
       cerr << "Exiting fitterFCN because of infinity in Les Houches ouput file" << endl;
       f = 111111111111.;
+      if (yyVerbose){
       cout << " f = " << f << endl;
+      }
       return;
    }
    if (rc > 0) {
       cerr << "Exiting fitterFCN because of return value "<< rc << " from the Calculator" << endl;
       f = 111111111111.;
+      if (yyVerbose){
       cout << " f = " << f << endl;
+      }
       return;
    }
 
    if (yySetErrorFlag) {
      cerr << "Exiting fitterFCN because of Syntax Error in the LesHouches File" << endl;
      f = 111111111111.;  
+     if (yyVerbose){
      cout << " f = " << f << endl;
+     }
      return;  
    }
    yySetErrorFlag = false;
@@ -3989,20 +4216,32 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    // Check whether QEWSB is within bounds
    if (mSquarkGluinoMax>0.) {
      if (FindInFitted("QEWSB")) {
+       if (yyVerbose){
        cout << "QEWSB found fitted = " << x[ReturnFittedPosition("QEWSB")] << endl;
+       }
        if (x[ReturnFittedPosition("QEWSB")] > 4.*mSquarkGluinoMax ) {
+	 if (yyVerbose){
 	 cout << "QEWSB out of dynamic bounds " << endl;
+	 }
 	 f = 111111111111.;
+	 if (yyVerbose){
 	 cout << " f = " << f << endl;
+	 }
 	 return;
        }
      } 
      else if (FindInUniversality("QEWSB")) {
+       if (yyVerbose){
        cout << "QEWSB found in universality = " << ReturnUniversality("QEWSB")->universality << endl;
+       }
        if (x[ReturnFittedPosition(ReturnUniversality("QEWSB")->universality)] >  4.*mSquarkGluinoMax ) {
+	 if (yyVerbose){
 	 cout << "QEWSB universality out of dynamic bounds " << endl;
+	 }
 	 f = 111111111111.; 
+	 if (yyVerbose){
 	 cout << " f = " << f << endl;
+	 }
 	 return;
        }
      }    
@@ -4035,16 +4274,24 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      // check the masses
      //cout << "masses of lightest sparticles " << massNeut1 << " " << massChar1 << " " << massSlepL << " " << massSlepR << " " << massStau1 << endl;
      if (massNeut1<0.) {
+       if (yyVerbose){
        cout << "WARNING: RequireNeut1LSP set but no neutralino1 mass among the observables" << endl;
+       }
      } else if (massChar1<0. && massSlepL<0. && massSlepR<0. && massStau1<0.) {
+       if (yyVerbose){
        cout << "WARNING: RequireNeut1LSP set but no selectron, chargino and stau masses among the observables" << endl;
+       }
      } else if ( (massNeut1>massChar1 && massChar1>0.) || 
 		 (massNeut1>massSlepL && massSlepL>0.) || 
 		 (massNeut1>massSlepR && massSlepR>0.) || 
 		 (massNeut1>massStau1 && massStau1>0.) ) {
+       if (yyVerbose){
        cout << "Neut1 is not the LSP" << endl;
+       }
        f = 111111111111.;  
+       if (yyVerbose){
        cout << " f = " << f << endl;
+       }
        return;  
      }
    }
@@ -4058,8 +4305,10 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
    if ( yyUseHiggsBounds == 1 ) {
 
+      if (yyVerbose){
       cout << yyDashedLine << endl;
       cout << "Starting HiggsBounds" << endl;
+      }
 
       int nH = 3;
       int HBresult = 0;
@@ -4072,7 +4321,9 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
          cerr << "Scenario excluded by HiggsBounds" << endl;
          excl++;
 
+	 if (yyVerbose){
          cout << "Starting scan for limit of lightest higgs mass" << endl;
+	 }
    
          double higgsMassLimit = ScanForHiggsLimit( nH, x );
 
@@ -4085,8 +4336,10 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
             }
 
          }
+         if (yyVerbose){
          cout << "Scan terminated" << endl;
          cout << "Changed higgs mass limit to > " << higgsMassLimit << " GeV in list of observables" << endl;
+	 }
 
       }
       if ( HBresult == 1 ) {
@@ -4102,11 +4355,15 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
       }
       if ( yyVerbose ) {
 
+	 if (yyVerbose){
          cout << "Already excluded: " << excl << endl;
          cout << "Not excluded: " << nexcl << endl;
+	 }
 
       }
+      if (yyVerbose){
       cout << "Ending HiggsBounds" << endl;
+      }
    }
 
    #endif
@@ -4147,7 +4404,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        			(yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)<-1.E-12) ) ) {
 
        	          // cout << (float)n_printouts/10. << " " << n_printouts/11 << endl;
-       	          if ( yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) {
+       	          if ( ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) {
 
        	             cout << i << " " << j << " using obs " << yyMeasuredVec[i].name << " = " << yyMeasuredVec[i].value
        		          << "+-" << sqrt(yyMeasuredCorrelationMatrix.GetCovariance(i,j))
@@ -4195,9 +4452,13 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    //int UseAstroFit = 1;
    if (yyUseAstroFit) {
      //if (UseAstroFit == 1) {
+     if (yyVerbose){
      cout << "vorher = " << f << endl;
+     }
      f += readAstroFit();
+     if (yyVerbose){
      cout << "nachher = " << f << endl;
+     }
    }
 
 
@@ -4221,7 +4482,9 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
   if ((!(f<0.))&&(!(f>=0.))) {
     f = 111111111111.;
+    if (yyVerbose){
     cout << "detected nan!" << endl;
+    }
   }
 
    if (iflag == 10) {
@@ -4248,7 +4511,9 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	 sRecMassA0 + sRecMassh0 + sRecMassGluino + sRecCos2PhiL + sRecCos2PhiR;
       if ((!(f<0.))&&(!(f>=0.))) {
 	 f = 1.E99;
+	 if (yyVerbose){
 	 cout << "detected nan in return!" << endl;
+	 }
       }
    }
 
@@ -4262,7 +4527,9 @@ int callMicrOmegas (double* x)
 
    int rc;
 
+   if (yyVerbose){
    cout << "Using relic density calculator MicrOmegas" << endl;
+   }
 
    system ("cp SPheno.spc SPheno.spc.saved_fittino");
 
@@ -4304,9 +4571,13 @@ int callMicrOmegas (double* x)
 
       argv[2] = 0;
 
+      if (yyVerbose){
       cout << "calling " << argv[0] << " " << argv[1] << std::endl; 
+      }
       rc = execve(argv[0], argv, environ);
+      if (yyVerbose){
       cout << "returning from execve "<< rc<< endl;
+      }
       exit (rc);
    }
    else {
@@ -4334,7 +4605,9 @@ int callMicrOmegas (double* x)
    }
 
    rc = WEXITSTATUS(status);
+   if (yyVerbose){
    cout << "MicrOmegas returned with return value " << rc << endl;
+   }
 
    if (rc == 0) {
      //      system ("mv SPheno.spc.saved_fittino SPheno.spc");
@@ -4415,7 +4688,9 @@ int callNPFitter() {
    }
 
    return_value = WEXITSTATUS(status);
+   if (yyVerbose){
    cout << "NPFitter returned with return value " << return_value << endl;
+   }
 
    if (return_value > 0) {
       return(return_value);
@@ -4442,7 +4717,9 @@ double readAstroFit()
   getline(file_to_read, line);
   sscanf(line.c_str(), "%f", &chi2);
 
+  if (yyVerbose){
   cout << "calling AstroFit " << chi2 << endl;
+  }
 
   return chi2;
 
@@ -4660,7 +4937,9 @@ int callSUSYHIT() {
 		}
 	}
 	return_value= WEXITSTATUS(status);
+  if (yyVerbose){
   cout << "SUSYHIT returned with return value " << return_value << endl;
+  }
   if( return_value > 0 ) {
     return(return_value);
   }
@@ -4712,7 +4991,9 @@ int callSoftSusy() {
 		}
 	}
 	return_value= WEXITSTATUS(status);
+	if (yyVerbose){
 	cout << "softsusy returned with return value " << return_value << endl;
+	}
 	if( return_value > 0 ) {
 		return(return_value);
 	}
@@ -4807,7 +5088,9 @@ int callSPheno()
    }
 
    return_value = WEXITSTATUS(status);
+   if (yyVerbose){
    cout << "SPheno returned with return value " << return_value << endl;
+   }
 
 
    //  if (!yyCalculatorPath.compare(""))
@@ -4991,7 +5274,9 @@ void WriteLesHouches(double* x)
       else if (FindInFitted("QEWSB")) {
 	 LesHouchesOutfile << "    12  "<<x[ReturnFittedPosition("QEWSB")]<<" # Q_EWSB"<<endl;
 	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose){
 	    cout << "Fitting Q_EWSB " << x[ReturnFittedPosition("QEWSB")] << endl;
+	    }
 	 }
       } 
       else if (FindInUniversality("QEWSB")) {
@@ -5976,13 +6261,17 @@ void WriteLesHouches(double* x)
       else if (FindInFitted("massCharm")) {
 				LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
 			 	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+		if (yyVerbose){
 	    	cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
+		}
 				 }
       } 
       else if (FindInUniversality("massCharm")) {
 				 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
 				 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+				   if (yyVerbose){
 	   			 cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
+				   }
 				 }
       }
       else {
@@ -7690,7 +7979,9 @@ void FillFixedParameters()
       tmpValue.bound_up = 1E+6;
       yyFixedVec.push_back(tmpValue);
 
+      if (yyVerbose){
       cout << "fixed: " << yyFixedPar[i].name << " at " << yyFixedPar[i].value << endl;
+      }
    }
    
    
@@ -7723,7 +8014,9 @@ void FillFixedParameters()
       tmpValue.error = -1.;
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }  
    if ( (!AbottomUsed && !XbottomUsed) ) {  
@@ -7732,7 +8025,9 @@ void FillFixedParameters()
       tmpValue.error = -1.;
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
    if ( (!AtauUsed && !XtauUsed) ) {  
@@ -7741,7 +8036,9 @@ void FillFixedParameters()
       tmpValue.error = -1.;
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
    
@@ -7752,7 +8049,9 @@ void FillFixedParameters()
       tmpValue.bound_low = 0.0;
       tmpValue.bound_up = 1E+6;
       tmpValue.id = ID_A;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
    if (!FindInFitted("Mu") && !FindInFixed("Mu") && !FindInUniversality("Mu") && !FindInRandomPar("Mu")) {  
@@ -7761,7 +8060,9 @@ void FillFixedParameters()
       tmpValue.error = -1.;
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
    if (!FindInFitted("MSelectronL") && !FindInFixed("MSelectronL") && !FindInUniversality("MSelectronL") && !FindInRandomPar("MSelectronL")) {  
@@ -7771,7 +8072,9 @@ void FillFixedParameters()
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
       tmpValue.id = 0;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
    if (!FindInFitted("MSmuL") && !FindInFixed("MSmuL") && !FindInUniversality("MSmuL") && !FindInRandomPar("MSmuL")) {  
@@ -7781,7 +8084,9 @@ void FillFixedParameters()
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
       tmpValue.id = 0;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
    if (!FindInFitted("MStauL") && !FindInFixed("MStauL") && !FindInUniversality("MStauL") && !FindInRandomPar("MStauL")) {  
@@ -7791,7 +8096,9 @@ void FillFixedParameters()
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
       tmpValue.id = 0;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
    if (!FindInFitted("MSelectronR") && !FindInFixed("MSelectronR") && !FindInUniversality("MSelectronR") && !FindInRandomPar("MSelectronR")) {  
@@ -7801,7 +8108,9 @@ void FillFixedParameters()
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
       tmpValue.id = 0;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
    if (!FindInFitted("MSmuR") && !FindInFixed("MSmuR") && !FindInUniversality("MSmuR") && !FindInRandomPar("MSmuR")) {  
@@ -7811,7 +8120,9 @@ void FillFixedParameters()
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
       tmpValue.id = 0;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
    if (!FindInFitted("MStauR") && !FindInFixed("MStauR") && !FindInUniversality("MStauR") && !FindInRandomPar("MStauR")) {  
@@ -7821,7 +8132,9 @@ void FillFixedParameters()
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
       tmpValue.id = 0;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
 
@@ -7832,7 +8145,9 @@ void FillFixedParameters()
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
       tmpValue.id = 0;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
    if (!FindInFitted("MScharmL") && !FindInFixed("MScharmL") && !FindInUniversality("MScharmL") && !FindInRandomPar("MScharmL")) {  
@@ -7842,7 +8157,9 @@ void FillFixedParameters()
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
       tmpValue.id = 0;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
    if (!FindInFitted("MStopL") && !FindInFixed("MStopL") && !FindInUniversality("MStopL") && !FindInRandomPar("MStopL")) {  
@@ -7852,7 +8169,9 @@ void FillFixedParameters()
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
       tmpValue.id = 0;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
 
@@ -7863,7 +8182,9 @@ void FillFixedParameters()
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
       tmpValue.id = 0;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
    if (!FindInFitted("MScharmR") && !FindInFixed("MScharmR") && !FindInUniversality("MScharmR") && !FindInRandomPar("MScharmR")) {  
@@ -7873,7 +8194,9 @@ void FillFixedParameters()
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
       tmpValue.id = 0;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
    if (!FindInFitted("MStopR") && !FindInFixed("MStopR") && !FindInUniversality("MStopR") && !FindInRandomPar("MStopR")) {  
@@ -7883,7 +8206,9 @@ void FillFixedParameters()
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
       tmpValue.id = 0;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
 
@@ -7894,7 +8219,9 @@ void FillFixedParameters()
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
       tmpValue.id = 0;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
    if (!FindInFitted("MSstrangeR") && !FindInFixed("MSstrangeR") && !FindInUniversality("MSstrangeR") && !FindInRandomPar("MSstrangeR")) {  
@@ -7904,7 +8231,9 @@ void FillFixedParameters()
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
       tmpValue.id = 0;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
    if (!FindInFitted("MSbottomR") && !FindInFixed("MSbottomR") && !FindInUniversality("MSbottomR") && !FindInRandomPar("MSbottomR")) {  
@@ -7914,7 +8243,9 @@ void FillFixedParameters()
       tmpValue.bound_low = -1E+6;
       tmpValue.bound_up = 1E+6;
       tmpValue.id = 0;
+      if (yyVerbose){
       cout<<"Setting "<<tmpValue.name<<" to default value "<<tmpValue.value<<endl;
+      }
       yyFixedVec.push_back(tmpValue);
    }
 
@@ -7948,6 +8279,7 @@ int   ReadLesHouches()
    //========================================
    //if (yyLEOCalculator == NOLEOCALCULATOR) {
 	 if( yyCalculator == SPHENO ) {
+   if (yyVerbose){
    cout << "  --->  yybsg            from SPheno:     " << yybsg    << endl;   //  1  BR(b -> s gamma) 
    cout << "  --->  yybsmm           from SPheno:     " << yybsmm   << endl;   //  2  BR(b -> s mu+ mu-)
    cout << "  --->  yyB_smm          from SPheno:     " << yyB_smm  << endl;   //  3  BR(Bs -> mu+ mu-)
@@ -7961,17 +8293,23 @@ int   ReadLesHouches()
    cout << "  --->  yyMassZ          from SPheno:     " << yyMassZ   << endl;   //
    cout << "  --->  yyG_F            from SPheno:     " << yyG_F   << endl;   //
    }
+   }
 	 else if( yyCalculator == SOFTSUSY ) {
+		        if (yyVerbose){
 	 		cout << "  --->  yyMassZ          from SoftSusy:   " << yyMassZ   << endl;   //
 			cout << "  --->  yyG_F            from SoftSusy:   " << yyG_F   << endl;   //
+			}
 	}
 	 //}
    //------------------------------------------------------------------------------------------
    if (yyRelicDensityCalculator == MICROMEGAS) {
+     if (yyVerbose){
       cout << "  --->  yyOmega          from MicrOmegas: " << yyOmega  << endl;   //     relic density
+     }
    }
    //------------------------------------------------------------------------------------------
    if (yyLEOCalculator == NPFITTER) {
+      if (yyVerbose){
       cout << "  --->  yyBsg_npf        from NPFitter:   " << yyBsg_npf        << endl; // R(B->s gamma)
       cout << "  --->  yydm_s_npf       from NPFitter:   " << yydm_s_npf       << endl; // R(Delta m_s)
       cout << "  --->  yyB_smm_npf      from NPFitter:   " << yyB_smm_npf      << endl; // B(Bs->mumu)
@@ -8002,6 +8340,7 @@ int   ReadLesHouches()
       cout << "  --->  yyDmsDmd_npf     from NPFitter:   " << yyDmsDmd_npf     << endl; // R(Dms)/R(Dmd)
       cout << "  --->  yyD_0_npf        from NPFitter:   " << yyD_0_npf        << endl; // D_0(K*gamma)
       cout << "  --->  yybsg_npf        from NPFitter:   " << yybsg_npf        << endl; // B(b->sg)
+      }
    }
    //------------------------------------------------------------------------------------------
 
@@ -8658,12 +8997,14 @@ int   ReadLesHouches()
 	       epmasses[2] = yyMass[ID_chi02];
 	       epmasses[3] = yyMass[ID_suL];
 	       epmasses[4] = yyMass[ID_gluino];
+	       if (yyVerbose){
 	       std::cout << " endpoint number " << yyMeasuredVec[i].id - 100 << std::endl;
 	       std::cout << " neutralino1 mass " << epmasses[0] << std::endl;
 	       std::cout << " selectronR mass " << epmasses[1] << std::endl;
 	       std::cout << " neutralino2 mass " << epmasses[2] << std::endl;
 	       std::cout << " supL mass " << epmasses[3] << std::endl;
 	       std::cout << " gluino mass " << epmasses[4] << std::endl;
+	       }
 	       yyMeasuredVec[i].theovalue = Endpoint(yyMeasuredVec[i].id - 100, epmasses);
 
 
@@ -8797,7 +9138,9 @@ int   ReadLesHouches()
 	    }
 
 	    if (!(yyMeasuredVec[i].theovalue<0.) && !(yyMeasuredVec[i].theovalue>=0.)) {
+	      if (yyVerbose){
 	      cout << "detected nan" << endl;
+	      }
 	      yyMeasuredVec[i].theovalue = -10000.;
 	    }
 	    for (unsigned int j=0; j<4; j++) {
@@ -8894,7 +9237,9 @@ int   ReadLesHouches()
 
       yyInputFileLineNo = 1;
 
+      if (yyVerbose){
       cout<<counter<<" ###########################################################"<<endl;
+      }
 
 
       return rc;
@@ -9056,16 +9401,22 @@ int   ReadLesHouches()
       sysinfo(&sinfo);
       if (yyRandomGeneratorSeed < 0) {
 	 seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
+	 if (yyVerbose){
 	 cout<<"uptime = "<<sinfo.uptime<<endl;
 	 cout<<"freeswap = "<<sinfo.freeswap<<endl;
 	 cout<<"pid = "<<getpid()<<endl;
 	 cout << "systime " << systime << endl; 
+	 }
       }
       else {
+	if (yyVerbose){
 	 cout<<"using seed from input file"<<endl;
+	}
 	 seed = yyRandomGeneratorSeed;
       }
+      if (yyVerbose){
       cout << "seed = " << seed << endl;
+      }
       gRandom->SetSeed(seed);
 
 
@@ -9174,7 +9525,9 @@ int   ReadLesHouches()
 		  }
 		  fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
 		  fp = -fp;
+		  if (yyVerbose){
 		  cout << "fp = " << fp << endl;
+		  }
 		  if (fp > -1e10) {
 		     //	fopt = 0.;
 		     //      fp = 5.;
@@ -9196,7 +9549,9 @@ int   ReadLesHouches()
       // simple temperature adaption
       if (yyGetTempFromFirstChiSqr) {
 
+	if (yyVerbose){
 	 cout << "determining initial temperature from first chi2 " << fopt << endl;
+	}
 	 double firstChi2 = TMath::Abs(fopt);
 	 if (firstChi2<yyInitTempSimAnn*10.) {
 	    t = yyInitTempSimAnn;
@@ -9208,7 +9563,9 @@ int   ReadLesHouches()
 
 
 
+      if (yyVerbose){
       cout << "temperature chosen " << t << endl;
+      }
 
       //-------------------------------------------
       // perform the optimization
@@ -9225,12 +9582,18 @@ int   ReadLesHouches()
 	    if (niter>0 && ( TMath::Abs( ( (float)niter/2. ) - niter/2 ) < 0.01 ) ) {
 	       if (lower_opt>0 && upper_opt==0 && lower_opt_before>0 && upper_opt_before==0) {
 		  if (nt>20) {
+		    if (yyVerbose){
 		     cout << "resetting the temperature reduction factor from " << rt;
+		    }
 		     rt = TMath::Sqrt(rt);
+		     if (yyVerbose){
 		     cout  << " to " << rt << endl;
 		     cout << "resetting the temperature step width from " << nt;
+		     }
 		     nt = nt/2;
+		     if (yyVerbose){
 		     cout  << " to " << nt << endl;
+		     }
 		  }
 	       }
 	    }
@@ -9323,7 +9686,9 @@ int   ReadLesHouches()
 			fopt = fp;
 			++nnew;
 			xoptflag = 1;
+			if (yyVerbose){
 			cout << "found new optimum at chisq = " << fopt << endl;
+			}
 		     }
 		     //  Metropolis criteria to decide whether point is accepted if chisq is worse than before 
 		  } else {
@@ -9395,7 +9760,9 @@ int   ReadLesHouches()
 	    quit_while_loop = true;
 	 } else {
 	    // If not terminating, prepare t
+	    if (yyVerbose){
 	    cout << "starting new temperature loop at t = " << rt * t <<  endl;
+	    }
 	    t = rt * t;
 	    for (i = neps-1; i >= 1; --i) {
 	       fstar[i] = fstar[i - 1];
@@ -9413,7 +9780,9 @@ int   ReadLesHouches()
       for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
 	 yyFittedVec[k].value = xopt[k];
       }
+      if (yyVerbose){
       cout << "optimal function value " << fopt << " after " << nacc << " evaluations" << endl;
+      }
 
    }
 
@@ -9625,7 +9994,9 @@ int   ReadLesHouches()
       //   }
       // }
       t = 0.05;
+      if (yyVerbose){
       cout << "temperature chosen " << t << endl;
+      }
 
       //-------------------------------------------
       // perform the optimization
@@ -9681,7 +10052,9 @@ int   ReadLesHouches()
 		     }
 		  }
 		  fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
+		  if (yyVerbose){
 		  cout << "fminimum = " << fminimum << " fgoal = " << fgoal << " fp = " << fp << " with up to now " << nacc << " accepted points" << endl;
+		  }
 		  delta1 = TMath::Abs(fp-fgoal);
 		  fp = steepness*sqr(fp-fgoal);
 		  if (start_pushaway) {
@@ -9693,7 +10066,9 @@ int   ReadLesHouches()
 			}
 			p_mean[k] = p_mean[k] / (double) number_stored;
 		     }	    
+		     if (yyVerbose){
 		     cout << "p_mean[0] = " << p_mean[0] << " xp[0] = " << xp[0]  << endl;
+		     }
 		     // add something to fp
 		     fadd = 0.;
 		     for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
@@ -9710,10 +10085,14 @@ int   ReadLesHouches()
 			f = f - 2.*fadd - 1.; // make sure it is accepted on the first time
 			start_pushaway_now = true;
 		     }
+		     if (yyVerbose){
 		     cout << "adding " << fadd << " to the potential, with f = " << f << endl;
+		     }
 		     fp = fp + fadd;
 		  }
+		  if (yyVerbose){
 		  cout << "hyperbolical chisq = " << fp << endl;
+		  }
 		  fp = -fp;
 		  ++nfcnev;
 		  xoptflag = 0;
@@ -9729,9 +10108,13 @@ int   ReadLesHouches()
 		     return;
 		  }
 		  //  Accept new point if better chisq
+		  if (yyVerbose){
 		  cout << " f = " << f << " fp = " << fp << endl; 
+		  }
 		  if (fp >= f) {
+		    if (yyVerbose){
 		     cout << "accept point because better" << endl;
+		    }
 		     for (i = 0; i < n; ++i) {
 			x[i] = xp[i];
 		     }
@@ -9754,11 +10137,15 @@ int   ReadLesHouches()
 			fopt = fp;
 			++nnew;
 			xoptflag = 1;
+			if (yyVerbose){
 			cout << "found new optimum at chisq = " << fopt << endl;
+			}
 		     }
 		     //  Metropolis criteria to decide whether point is accepted if chisq is worse than before 
 		  } else {
+		    if (yyVerbose){
 		     cout << "point is worse, contemplate acceptance..." << endl;
+		    }
 		     accbetter = 0;
 		     d1 = (fp - f) / t;
 		     p = TMath::Exp(d1);
@@ -9772,9 +10159,13 @@ int   ReadLesHouches()
 			++nacp[h];
 			++ndown;
 			accpoint = 1;
+			if (yyVerbose){
 			cout << "accept anyway" << endl;
+			}
 		     } else {
+		       if (yyVerbose){
 			cout << "reject" << endl;
+		       }
 			++nrej;
 			accpoint = 0;
 		     }
@@ -9797,11 +10188,13 @@ int   ReadLesHouches()
 			saved_x[k].value = saved_x[k-1].value;
 		     }	    
 		     saved_x[0] = fill_vector;
+		     if (yyVerbose){
 		     cout << " 0: " << saved_x[0].value[0] <<  
 			" 1: " << saved_x[1].value[0] <<  
 			" 2: " << saved_x[2].value[0] <<  
 			" 3: " << saved_x[3].value[0] <<
 			" 4: " << saved_x[4].value[0] << endl;
+		     }
 		  }
 		  // write point to ntuple
 		  ntupvars[0] = (Float_t)nfcnev;
@@ -9856,7 +10249,9 @@ int   ReadLesHouches()
 	    // quit_while_loop = true;
 	 } else {
 	    // If not terminating, prepare t
+	    if (yyVerbose){
 	    cout << "starting new temperature loop at t = " << rt * t <<  endl;
+	    }
 	    // t = rt * t;
 	    for (i = neps-1; i >= 1; --i) {
 	       fstar[i] = fstar[i - 1];
@@ -9874,7 +10269,9 @@ int   ReadLesHouches()
       for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
 	 yyFittedVec[k].value = xopt[k];
       }
+      if (yyVerbose){
       cout << "optimal function value " << fopt << " after " << nacc << " evaluations" << endl;
+      }
 
    }
 
@@ -10090,7 +10487,9 @@ int   ReadLesHouches()
       //   }
       // }
       t = 0.05;
+      if (yyVerbose){
       cout << "temperature chosen " << t << endl;
+      }
 
       //-------------------------------------------
       // perform the optimization
@@ -10146,11 +10545,15 @@ int   ReadLesHouches()
 		     }
 		  }
 		  fitterFCN(dummyint, &dummyfloat, fp, xdummy, 0);
+		  if (yyVerbose){
 		  cout << "fminimum = " << fminimum << " fgoal = " << fgoal << " fp = " << fp << " with up to now " << nacc << 
 		     " accepted points, n_found = " << n_found << endl;
+		  }
 		  delta1 = TMath::Abs(fp-fgoal);
 		  fp = steepness*sqr(fp-fgoal);
+		  if (yyVerbose){
 		  cout << "hyperbolical chisq = " << fp << endl;
+		  }
 		  fp = -fp;
 		  ++nfcnev;
 		  xoptflag = 0;
@@ -10166,9 +10569,13 @@ int   ReadLesHouches()
 		     return;
 		  }
 		  //  Accept new point if better chisq
+		  if (yyVerbose){
 		  cout << " f = " << f << " fp = " << fp << endl; 
+		  }
 		  if (fp >= f) {
+		    if (yyVerbose){
 		     cout << "accept point because better" << endl;
+		    }
 		     for (i = 0; i < n; ++i) {
 			x[i] = xp[i];
 		     }
@@ -10191,11 +10598,15 @@ int   ReadLesHouches()
 			fopt = fp;
 			++nnew;
 			xoptflag = 1;
+			if (yyVerbose){
 			cout << "found new optimum at chisq = " << fopt << endl;
+			}
 		     }
 		     //  Metropolis criteria to decide whether point is accepted if chisq is worse than before 
 		  } else {
+		    if (yyVerbose){
 		     cout << "point is worse, contemplate acceptance..." << endl;
+		    }
 		     accbetter = 0;
 		     d1 = (fp - f) / t;
 		     p = TMath::Exp(d1);
@@ -10209,9 +10620,13 @@ int   ReadLesHouches()
 			++nacp[h];
 			++ndown;
 			accpoint = 1;
+			if (yyVerbose){
 			cout << "accept anyway" << endl;
+			}
 		     } else {
+		       if (yyVerbose){
 			cout << "reject" << endl;
+		       }
 			++nrej;
 			accpoint = 0;
 		     }
@@ -10253,18 +10668,24 @@ int   ReadLesHouches()
 		  }
 		  ntuple->Fill(ntupvars);
 		  if (n_found > 2.5 && delta1<0.05) {
+		    if (yyVerbose){
 		     cout << endl << endl << endl << "restarting simann" << endl;
+		    }
 		     // restart
 		     n_found = 0;
 		     for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+		       if (yyVerbose){
 			cout << yyFittedVec[k].name << " = " << x_min[k] << endl; 
+		       }
 			vm[k] = TMath::Abs(xopt[k]-x_min[k]);
 			x[k] = x_min[k];
 			xopt[k] = x_min[k];
 			xp[k] = x_min[k];
 			//	      vm[k] = vm_orig[k];
 		     }	
+		     if (yyVerbose){
 		     cout << endl << endl << endl ;
+		     }
 		     f = -111111111.;
 		     fopt = f;
 		     fp = f;
@@ -10312,7 +10733,9 @@ int   ReadLesHouches()
 	    // quit_while_loop = true;
 	 } else {
 	    // If not terminating, prepare t
+	    if (yyVerbose){
 	    cout << "starting new temperature loop at t = " << rt * t <<  endl;
+	    }
 	    // t = rt * t;
 	    for (i = neps-1; i >= 1; --i) {
 	       fstar[i] = fstar[i - 1];
@@ -10330,14 +10753,18 @@ int   ReadLesHouches()
       for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
 	 yyFittedVec[k].value = xopt[k];
       }
+      if (yyVerbose){
       cout << "optimal function value " << fopt << " after " << nacc << " evaluations" << endl;
+      }
 
    }
 
 
    void Fittino::randomDirectionUncertainties()
    {
+     if (yyVerbose){
       cout<<"Using randomDirectionUncertainties"<<endl;
+     }
 
       const double eps = 0.005;
       double* optpar = new double[yyFittedVec.size()];
@@ -10359,16 +10786,22 @@ int   ReadLesHouches()
       sysinfo(&sinfo);
       if (yyRandomGeneratorSeed < 0) {
 	 seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
+	 if (yyVerbose){
 	 cout<<"uptime = "<<sinfo.uptime<<endl;
 	 cout<<"freeswap = "<<sinfo.freeswap<<endl;
 	 cout<<"pid = "<<getpid()<<endl;
 	 cout << "systime " << systime << endl; 
+	 }
       }
       else {
+	if (yyVerbose){
 	 cout<<"using seed from input file"<<endl;
+	}
 	 seed = yyRandomGeneratorSeed;
       }
+      if (yyVerbose){
       cout << "seed = " << seed << endl;
+      }
       gRandom->SetSeed(seed);
 
       double* par = new double[yyFittedVec.size()];
@@ -10379,17 +10812,23 @@ int   ReadLesHouches()
       TFile* file = new TFile("RandomDirUncertainties.root", "recreate");
       TTree* tree = new TTree("tree", "Tree containing fitted parameters");
       vector<MeasuredValue> leafVec(yyFittedPar.size());
+      if (yyVerbose){
       cout<<"Creating RandomDirectionUncertainties tree"<<endl;
+      }
       for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
 	 leafVec[k].name = yyFittedVec[k].name;
 	 leafVec[k].value = -1;
 	 string str = yyFittedVec[k].name;
 	 str.append("/D");
+	 if (yyVerbose){
 	 cout << "Adding branch " << yyFittedVec[k].name.c_str() << " to tree" << endl;
+	 }
 	 tree->Branch(yyFittedVec[k].name.c_str(), &(leafVec[k].value), str.c_str());
 	 str.erase();
       }
+      if (yyVerbose){
       cout << "Adding branch DeltaChi2 to tree" << endl;
+      }
       tree->Branch("DeltaChi2", &deltaChi2, "DeltaChi2/D");
 
       for (int idir=0; idir<yyNumberOfDirections; idir++) {
@@ -10416,8 +10855,10 @@ int   ReadLesHouches()
 	    fitterFCN(npar, gin, chi2, par, iflag);
 	    ncalls++;
 	    deltaChi2 = chi2 - minChi2;
+	    if (yyVerbose){
 	    cout<<"f = "<<deltaChi2<<endl;
 	    cout<<"d = "<<d<<endl;
+	    }
 	    if (deltaChi2 < 0) cerr<<"WARNING: Minimization did not yield global minimum"<<endl;
 	    if (TMath::Abs(deltaChi2 - yyErrDef) < eps || ncalls > 50) break;
 	    /*
@@ -10467,10 +10908,14 @@ int   ReadLesHouches()
 	    }
 	 }
 
+if (yyVerbose){
 	 cout<<"Found interception with uncertainty countour (ErrDef = "
 	    <<yyErrDef<<", f = "<<deltaChi2<<") at"<<endl;
+}
 	 for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
+	   if (yyVerbose){
 	    cout<<yyFittedVec[k].name<<" = "<<par[k]<<endl;
+	   }
 	    leafVec[k].name = yyFittedVec[k].name;
 	    leafVec[k].value = par[k];
 	 }
@@ -10503,16 +10948,22 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
   sysinfo(&sinfo);
   if (yyRandomGeneratorSeed < 0) {
     seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
+    if (yyVerbose){
     cout<<"uptime = "<<sinfo.uptime<<endl;
     cout<<"freeswap = "<<sinfo.freeswap<<endl;
     cout<<"pid = "<<getpid()<<endl;
     cout << "systime " << systime << endl; 
+    }
   }
   else {
+    if (yyVerbose){
     cout<<"using seed from input file"<<endl;
+    }
     seed = yyRandomGeneratorSeed+1;
   }
+  if (yyVerbose){
   cout << "seed = " << seed << endl;
+  }
   random->SetSeed(seed);
 
 
@@ -10533,27 +10984,37 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
     acceptUp = yyAcceptanceRangeUpper;
     acceptLow = yyAcceptanceRangeLower;
   }
+  if (yyVerbose){
   cout << "NOTE: used acceptance range for optimization ["<< acceptLow<<";"<< acceptUp<<"]"<< endl;
+  }
   
   if( yyGlobalOptimizationOnly )
+    if (yyVerbose){
     cout << "NOTE: global optimization performed only" << endl;
+    }
   if( !yyGlobalOptimizationOnly ){
     if( yyIndividuallyOptimized != "" )
+      if (yyVerbose){
       cout << "NOTE: individual optimization performed for variable "<< yyIndividuallyOptimized <<" only, with the slope value " <<yyOptimizationSlope<< endl;
+      }
     
     // 1 == Tune width of proposal distribution so that success rate is in [acceptLow;acceptUp]
     for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++){
       
       if( yyIndividuallyOptimized != "" && xNames[iVariable] != yyIndividuallyOptimized ) continue;
-      
+    
+    if (yyVerbose){
       cout << "NOTE: Optimization for variable " << xNames[iVariable] << endl;
+    }
       bool firstChain = true;
       bool successRateOK = false;
       int numChain = 0;
       
       // 1 == Prelimimary Markov chain 
       while( firstChain || !successRateOK ){
+	if (yyVerbose){
 	cout << " ====  New chain ==== "<< endl;
+	}
 	
 	// == Before the beginning of each new chain, reset the starting point 
 	x[iVariable] = yyFittedVec[iVariable].value;
@@ -10562,8 +11023,10 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
 	successes = 0;
 	int step = 0;
 	while( step < maxStep ){
+	  if (yyVerbose){
 	  cout << yyDashedLine << endl;
 	  cout << "NOTE: Individual optimization, step " << step << endl;
+	  }
 	  
 	  // 1.2 == Pick a new point within bounds according to proposal distribution
 	  bool outOfBounds = false;
@@ -10574,7 +11037,9 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
 	    xp[iVariable] = x[iVariable] + random->Gaus( 0., vm[iVariable] );
 	    if ( ( xp[iVariable] < lb[iVariable] ) || ( xp[iVariable] > ub[iVariable] ) ) outOfBounds = true;
 	  }
+	  if (yyVerbose){
 	  cout << "Picked value " << xNames[iVariable] << " = " << xp[iVariable] << endl;
+	  }
 	  
 	  // 1.3 == Calculate chi2
 	  double chi2 = 1.E10;
@@ -10591,10 +11056,14 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
 	  if( rho > 1.) accpoint = 1;
 	  else{
 	    double p = random->Uniform( 0., 1. );
+	    if (yyVerbose){
 	    cout << "p = "<< p << endl;
+	    }
 	    if( p < rho ) accpoint = 1;
 	  } 
+	  if (yyVerbose){
 	  cout << "IT accpoint = "<< accpoint << endl;
+	  }
 	  // 1.6 == Count the number of successes
 	  if( accpoint == 1 && chi2<1.1E10){
 	    successes++;
@@ -10610,7 +11079,9 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
 	      float _m = maxStep;
 	      float successRate = _s / _m;
 	      numChain++;
+	      if (yyVerbose){
 	      cout << "step" << step << " --->IT "<< xNames[iVariable] << " Former width = "<<  vm[iVariable] << endl;
+	      }
 	      if( successRate == 0 ) successRate = 0.2;
 	      
 	      if( successRate > acceptUp ) vm[iVariable] *= ( 1 + yyOptimizationSlope*( successRate - acceptUp )/successRate );
@@ -10620,7 +11091,9 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
 		if( tempScale < 0 ) vm[iVariable] *= ( 1 + ( successRate - acceptLow )/acceptLow );
 	      }
 	      if( successRate >= acceptLow && successRate <= acceptUp ) successRateOK = true;
+	      if (yyVerbose){
 	      cout << "step" << step << " --->IT "<< xNames[iVariable] << " #success = " << successes <<" Markov Chain success rate = " <<  successRate <<" New width = "<<  vm[iVariable] << endl;
+	      }
 	    }
 	}
       }
@@ -10633,7 +11106,9 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
     
     // 2 == Global scaling of all variables by a factor 1/(nVar)^lambda, lambda=0.5
     unsigned int nVar = x.size();
+    if (yyVerbose){
     cout << "NOTE: Global scaling by 1/sqrt(N) = " << 1/sqrt( nVar ) << endl;
+    }
     for (unsigned int iVariable = 0; iVariable < nVar; iVariable++) vm[iVariable] = vm[iVariable] / sqrt( nVar );
     
     // 3 == Estimation of correlations and eigenvalues/vectors
@@ -10647,7 +11122,9 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
     TNtuple* ntupleSamp = new TNtuple("ntupleSamp","ntupleSamp", VarChain );
     TNtuple* ntupleAcc = new TNtuple("ntupleAcc","ntupleAcc", VarChainChi2 );
     if( yyCorrelationInMarkovChain ){
+      if (yyVerbose){
       cout << "NOTE: correlations will be included in Markov chain" << endl;
+      }
       eigenValues.ResizeTo( nVar );
       eigenVectors.ResizeTo( nVar, nVar );
       correlationMatrix.ResizeTo( nVar, nVar );
@@ -10663,17 +11140,21 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
       firstChain = false;
       successes = 0;
       int step = 0;
+      if (yyVerbose){
       cout << yyDashedLine << endl;
       cout << "NOTE: New chain... "<< endl;
       cout << yyDashedLine << endl;
+      }
       
       // 4.1 == Reset the starting point 
       for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) x[iVariable] = yyFittedVec[iVariable].value;
       
       // 4.2 == Start the chain
       while( step <= maxStep ){
+	if (yyVerbose){
 	cout << yyDashedLine << endl;
 	cout << "NOTE: Global optimization, step " << step << " ===="<< endl;
+	}
 	
 	// 4.2.1 == Pick a new point
 	bool first = true;
@@ -10703,7 +11184,9 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
 	      }
 	    }
 	}
+	if (yyVerbose){
 	cout << "Picked value: " << endl;
+	}
 	for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) cout << xNames[iVariable] << " = " << xp[iVariable] << endl;
 	ntupleSamp->Fill( xp[0], xp[1], xp[2], xp[3] );
 	
@@ -10723,7 +11206,9 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
 	  double p = random->Uniform( 0., 1. );
 	  if( p < rho ) accpoint = 1;
 	} 
+	if (yyVerbose){
 	cout << "GT accpoint = "<< accpoint << endl;
+	}
 	
 	// 4.2.5 == Count the number of successes
 	if( accpoint == 1 && chi2<1.1E10){
@@ -10741,7 +11226,9 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
 	  float _s = successes;
 	  float _m = maxStep;
 	  float successRate = _s / _m;
+	  if (yyVerbose){
 	  cout << "step" << step << " --->GT #success = " << successes << " Markov Chain success rate = " <<  successRate << " Former widths : " << endl;
+	  }
 	  for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++)  cout << "step" << step << " --->GT "<< xNames[iVariable] << "  "<<  vm[iVariable] << endl;		       
 	  if( successRate == 0 ) successRate = 0.2;
 	  
@@ -10759,8 +11246,10 @@ vector <double> Fittino::widthOptimization( vector<double> x, vector<double> vm,
 	    
 	    // 4.3.3 == Modify widths
 	    for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++){
-	      vm[iVariable] = vm[iVariable] * globalScale;		     
+	      vm[iVariable] = vm[iVariable] * globalScale;	
+	      if (yyVerbose){
 	      cout << "step" << step << " --->GT "<< xNames[iVariable] << " #success = " << successes <<" Markov Chain success rate = " <<  successRate <<" New width = "<<  vm[iVariable] << endl;
+	      }
 	    }
 	    
 	    // 4.3.4 == Recalcul covariance matrix
@@ -10816,7 +11305,9 @@ TFile* OptimizedWidths= new TFile("OptimizedWidths.root","recreate");
 // 2 -> A0      x   x    1   0
 // 3 -> Tanbeta x   x    x   1
 void Fittino::computeCovMatrix( vector<double> vm ){
+  if (yyVerbose){
   cout <<"NOTE: Compute covariance matrix..."<< endl;
+  }
   TMatrixD covM(4,4);
   TArrayD h(16);
   // Diagonal elements (width)^2
@@ -10837,8 +11328,10 @@ void Fittino::computeCovMatrix( vector<double> vm ){
   TMatrixDSym covMsym; 
   TMatrixD eigVect(4,4);
   TVectorD eigVal(4);
-  covMsym.Use( covM.GetNrows(), covM.GetMatrixArray() ); 
+  covMsym.Use( covM.GetNrows(), covM.GetMatrixArray() );
+  if (yyVerbose){
   cout <<"NOTE: Estimated covariance matrix..."<< endl;
+  }
   covMsym.Print();
   // Compute eigenvalues/vectors
   TMatrixDSymEigen covMsymEig ( covMsym );
@@ -10852,7 +11345,9 @@ void Fittino::computeCovMatrix( vector<double> vm ){
 // == Run a Markov chain to evaluate the correlations between variables
 void Fittino::estimateCorrelations( vector<double> x, vector<double> xp, vector<double> vm, vector<double> lb, vector <double> ub ){
 
+  if (yyVerbose){
   cout << "NOTE: Markov chain for correlations estimations..."<< endl;
+  }
 
   for (unsigned int iVariable = 0; iVariable < yyFittedVec.size(); iVariable++) x[iVariable] = yyFittedVec[iVariable].value;
   Double_t dummyfloat = 5.;
@@ -10899,7 +11394,9 @@ void Fittino::estimateCorrelations( vector<double> x, vector<double> xp, vector<
     step++;
   }
   // == Estimate correlations with best points
+  if (yyVerbose){
   cout << "NOTE: Correlation estimation..."<< endl;
+  }
   Float_t M0, M12, A0, TanBeta, chi2;
   Float_t M0_max = -10000, M12_max = -10000, A0_max = -10000, TanBeta_max = -10000;
   Float_t M0_min = 10000, M12_min = 10000, A0_min = 10000, TanBeta_min = 10000;
@@ -10963,7 +11460,9 @@ void Fittino::estimateCorrelations( vector<double> x, vector<double> xp, vector<
     else h[i] = 0;
   }
    V.SetMatrixArray(h.GetArray());
+   if (yyVerbose){
    cout <<"NOTE: Estimated correlation matrix..."<< endl;
+   }
    correlationMatrix = V;
    correlationMatrix.Print();
    return;
@@ -11034,7 +11533,9 @@ void Fittino::markovChain ()
 	  string obsName = "";
 	  if (strchr(yyMeasuredVec[k].name.c_str(),'>') || strchr(yyMeasuredVec[k].name.c_str(),' ') ) {
 
+	    if (yyVerbose){
 	    cout << "found unlucky string: " <<  yyMeasuredVec[k].name << endl;
+	    }
 	    string correctedName = "";
 	    char varName[1024];
 	    strcpy(varName,"");
@@ -11045,18 +11546,24 @@ void Fittino::markovChain ()
 	      firstPos = strchr(movedVarName,'>');
 	      if (firstPos) {
 		int length = strlen(movedVarName)-strlen(firstPos);
+		if (yyVerbose){
 		cout << "found initial string of length " << length << " before the first >" << endl;
+		}
 		char section[1024];
 		strcpy(section,"");
 		strncpy(section,movedVarName,length-1);
 		section[length-1]='\0';
+		if (yyVerbose){
 		cout << "assembling string: |" << correctedName << "| + |" <<  section << "|" << endl;
+		}
 		correctedName = correctedName + section + "To";
 		movedVarName = firstPos+1;
 	      }
 	    }
 	    correctedName = correctedName + (firstPos+1);
+	    if (yyVerbose){
 	    cout << "first part corrected string: " << correctedName << endl;
+	    }
 	    string saveCorrectedName = correctedName;
 	    strcpy(varName,"");
 	    movedVarName = varName;
@@ -11066,30 +11573,40 @@ void Fittino::markovChain ()
 	      firstPos = strchr(movedVarName,' ');
 	      if (firstPos) {
 		int length = strlen(movedVarName)-strlen(firstPos);
+		if (yyVerbose){
 		cout << "found initial string of length " << length << " before the first >" << endl;
+		}
 		char section[1024];
 		strcpy(section,"");
 		strncpy(section,movedVarName,length);
 		section[length]='\0';
+		if (yyVerbose){
 		cout << "assembling string: |" << correctedName << "| + |" <<  section << "|" << endl;
+		}
 		correctedName = correctedName + section + "_";
 		movedVarName = firstPos+1;
 	      }
 	    }	    
 	    correctedName = correctedName + (firstPos+1);
 	    obsName = "O_"+correctedName;
+	    if (yyVerbose){
 	    cout << "fully corrected string: " << obsName << endl;
+	    }
 	    //delete varName;
 
 	  } else {
+	    if (yyVerbose){
 	    cout << "found useable string: " <<  yyMeasuredVec[k].name << endl;
+	    }
 	    obsName = "O_"+yyMeasuredVec[k].name;
 	  }
 	  sprintf ( ntuplevars, "%s:%s", ntuplevars, obsName.c_str() );
 	} else {
 	  string obsName = "";
 	  if (strchr(yyMeasuredVec[k].name.c_str(),'>') || strchr(yyMeasuredVec[k].name.c_str(),' ') ) {
+	    if (yyVerbose){
 	    cout << "found unlucky string: " <<  yyMeasuredVec[k].name << endl;
+	    }
 	    string correctedName = "";
 	    char varName[1024];
 	    strcpy(varName,"");
@@ -11100,18 +11617,24 @@ void Fittino::markovChain ()
 	      firstPos = strchr(movedVarName,'>');
 	      if (firstPos) {
 		int length = strlen(movedVarName)-strlen(firstPos);
+		if (yyVerbose){
 		cout << "found initial string of length " << length << " before the first >" << endl;
+		}
 		char section[1024];
 		strcpy(section,"");
 		strncpy(section,movedVarName,length-1);
 		section[length-1]='\0';
+		if (yyVerbose){
 		cout << "assembling string: |" << correctedName << "| + |" <<  section << "|" << endl;
+		}
 		correctedName = correctedName + section + "To";
 		movedVarName = firstPos+1;
 	      }
 	    }
 	    correctedName = correctedName + (firstPos+1);
+	    if (yyVerbose){
 	    cout << "first part corrected string: " << correctedName << endl;
+	    }
 	    string saveCorrectedName = correctedName;
 	    strcpy(varName,"");
 	    movedVarName = varName;
@@ -11121,22 +11644,30 @@ void Fittino::markovChain ()
 	      firstPos = strchr(movedVarName,' ');
 	      if (firstPos) {
 		int length = strlen(movedVarName)-strlen(firstPos);
+		if (yyVerbose){
 		cout << "found initial string of length " << length << " before the first >" << endl;
+		}
 		char section[1024];
 		strcpy(section,"");
 		strncpy(section,movedVarName,length);
 		section[length]='\0';
+		if (yyVerbose){
 		cout << "assembling string: |" << correctedName << "| + |" <<  section << "|" << endl;
+		}
 		correctedName = correctedName + section + "_";
 		movedVarName = firstPos+1;
 	      }
 	    }	    
 	    correctedName = correctedName + (firstPos+1);
 	    obsName = "O_"+correctedName+"_nofit";
+	    if (yyVerbose){
 	    cout << "fully corrected string: " << obsName << endl;
+	    }
 	    //delete varName;
 	  } else {
+	    if (yyVerbose){
 	    cout << "found useable string: " <<  yyMeasuredVec[k].name << endl;
+	    }
 	    obsName = "O_"+yyMeasuredVec[k].name+"_nofit";
 	  }
 	  sprintf ( ntuplevars, "%s:%s", ntuplevars, obsName.c_str() );
@@ -11168,30 +11699,42 @@ void Fittino::markovChain ()
       bool fileReadError = false;
       string separator;
       if (yyMarkovInterfaceFilePath == "") {
+	if (yyVerbose){
 	cout << "NOTE: no interface file found" << endl;
+	}
 	if( yyWidthOptimization == false ) cout << "NOTE: width values taken from input file" << endl;
 	if( yyWidthOptimization == true ){
+	  if (yyVerbose){
 	  cout << "NOTE: width optimization about to be processed ... " << endl;
+	  }
 	  widthOptimizationPerformed = true;
 	  vm = widthOptimization( x, vm, xp, lb, ub, xNames );
 	}
       }
 
       if (yyMarkovInterfaceFilePath != "") {
+	if (yyVerbose){
 	cout << "read previous ending from file " << yyMarkovInterfaceFilePath << endl;
+	}
 	string syscall = "cp "+yyMarkovInterfaceFilePath+" ./markovInterfaceFile.txt";
 	int rc = system (syscall.c_str());
+	if (yyVerbose){
 	cout << "NOTE: search for proposal widths in interface file..."<< endl;
+	}
 	syscall = "grep '+-' " + yyMarkovInterfaceFilePath;
 	searchWidth = system ( syscall.c_str() );
 	if( searchWidth != 0 ) cout << "NOTE: no proposal width in interface file" << endl;
 	if( searchWidth == 0 ) cout << "NOTE: proposal width found in interface file" << endl;
 
 	if (rc!=0){
+	  if (yyVerbose){
 	  cout << "return value " << rc << " from copy of markovInterfaceFile " << yyMarkovInterfaceFilePath << endl;
+	  }
 	  if( yyWidthOptimization == false ) cout << "NOTE: width values taken from input file" << endl;
 	  if( yyWidthOptimization == true ){
+	    if (yyVerbose){
 	    cout << "NOTE: width optimization about to be processed ... " << endl;
+	    }
 	    widthOptimizationPerformed = true;
 	    vm = widthOptimization( x, vm, xp, lb, ub, xNames );
 	  }
@@ -11205,7 +11748,9 @@ void Fittino::markovChain ()
 	    while (!markovInterfaceFilePath.eof()) {
 
 	      if ( nFilePars > nVars ) {
+		if (yyVerbose){
 		cout << "too many parameters" << endl;
+		}
 		fileReadError = true;
 		break;
 	      }
@@ -11218,17 +11763,23 @@ void Fittino::markovChain ()
 	      cout << "wrong number of parameters" << endl;
 	      globalIter = 0;
 	    } else if (!fileReadError) {
+	      if (yyVerbose){
 	      cout << "correct number of parameters" << endl;
+	      }
 	      for (unsigned int i = 0; i < nVars; i++) {
 		for (unsigned int j = 0; j < nVars; j++) {
 		  if ( xNames[i] == thisString[j] ) {
+		    if (yyVerbose){
 		    cout << "setting variable " << xNames[i] << " = " << varsFromFile[j];
+		    }
 		    x[i]  = varsFromFile[j];
 		    xp[i] = varsFromFile[j];
 		    if( searchWidth != 0 )  cout << endl;
 		    if( searchWidth == 0 ){
 		      vm[i] = widthsFromFile[j];
+		      if (yyVerbose){
 		      cout << " +- " << widthsFromFile[j] << endl;
+		      }
 		    }
 		  }
 		}
@@ -11236,7 +11787,9 @@ void Fittino::markovChain ()
 	      if( searchWidth != 0 ){
 		if( yyWidthOptimization == false ) cout << "NOTE: width values taken from input file" << endl;
 		if( yyWidthOptimization == true ){
+		  if (yyVerbose){
 		  cout << "NOTE: width optimization about to be processed ... " << endl;
+		  }
 		  widthOptimizationPerformed = true;
 		  vm = widthOptimization( x, vm, xp, lb, ub, xNames );
 		}
@@ -11248,11 +11801,15 @@ void Fittino::markovChain ()
 	  } else {
 	    cout << "file " << yyMarkovInterfaceFilePath << "could not be opened, reverting to standard start values" << endl;
 	  }
+	  if (yyVerbose){
 	  cout << yyDashedLine << endl;
 	  cout << "using the following start settings" << endl;
 	  cout << "globalIter = " << globalIter << endl;
+	  }
 	  for (unsigned int i = 0; i < xNames.size(); i++) {
+	    if (yyVerbose){
 	    cout << xNames[i] << " = " << xp[i] << " +- " << vm[i] << endl;
+	    }
 	  }	  cout << yyDashedLine << endl;
 	  markovInterfaceFilePath.close();
 	}
@@ -11268,16 +11825,22 @@ void Fittino::markovChain ()
       sysinfo(&sinfo);
       if (yyRandomGeneratorSeed < 0) {
 	 seed = systime + sinfo.uptime + sinfo.freeswap + getpid();
+	 if (yyVerbose){
 	 cout<<"uptime = "<<sinfo.uptime<<endl;
 	 cout<<"freeswap = "<<sinfo.freeswap<<endl;
 	 cout<<"pid = "<<getpid()<<endl;
-	 cout << "systime " << systime << endl; 
+	 cout << "systime " << systime << endl;
+	 }
       }
       else {
+	if (yyVerbose){
 	 cout<<"using seed from input file"<<endl;
+	}
 	 seed = yyRandomGeneratorSeed;
       }
+      if (yyVerbose){
       cout << "seed = " << seed << endl;
+      }
       random->SetSeed(seed);
 
       // ====================================================================
@@ -11295,11 +11858,15 @@ void Fittino::markovChain ()
       bool haveAcceptedAtLeastOne = false;
       successes = 0;
 
+      if (yyVerbose){
       std::cout << "Starting Markov Chain algorithm" << std::endl;
       std::cout << "Starting with the following variables and bounds" << std::endl;
+      }
       for (unsigned int iVariable = 0; iVariable < x.size(); iVariable++) 
       {
+	if (yyVerbose){
 	 std::cout << iVariable << " " << x[iVariable] << " [" << lb[iVariable] << "," << ub[iVariable] << "]" << std::endl;
+	}
       }
 
       while (1)
@@ -11326,9 +11893,12 @@ void Fittino::markovChain ()
 	    }
 	 } 
 
+if (yyVerbose){
 	 std::cout << "looking at Markov Chain in step " << niter << " success/fail = " << (double)successes/(double)(niter-successes) << std::endl;
+}
 	 for (unsigned int iiiVariable = 0; iiiVariable < x.size(); iiiVariable++) 
 	 {
+	   if (yyVerbose){
 	    std::cout 
 	       << iiiVariable << " " 
 	       << xp[iiiVariable] << " +- " 
@@ -11336,6 +11906,7 @@ void Fittino::markovChain ()
 	       << lb[iiiVariable] << "," 
 	       << ub[iiiVariable] << "]" 
 	       << std::endl;
+	   }
 	 }
 
 	 // calclate chi^2
@@ -11360,11 +11931,15 @@ void Fittino::markovChain ()
 	 //	       } 
 	 //	    }
 	 yyMarkovChainChi2Scale = 1.;
+	 if (yyVerbose){
 	 std::cout << "Using yyMarkovChainChi2Scale = " << yyMarkovChainChi2Scale << std::endl;
+	 }
 
 	 // calculate likelihood
 	 double likelihood = TMath::Exp(-chi2/(2.*yyMarkovChainChi2Scale));
+	 if (yyVerbose){
 	 std::cout << "L = " << likelihood << std::endl;
+	 }
 
 
 	 if (firstChi2) {
@@ -11381,8 +11956,10 @@ void Fittino::markovChain ()
 	 // calculate Q
 	 double Qupper = calculateQ(x,xp,vm);
 	 double Qlower = calculateQ(xp,x,vm);
+	 if (yyVerbose){
 	 std::cout << "Qlower = " << Qlower << std::endl;
 	 std::cout << "Qupper = " << Qupper << std::endl;
+	 }
 
 	 //	  if (haveAcceptedAtLeastOne==false) {
 	 //	    if (previousLikelihood==0) {
@@ -11394,7 +11971,9 @@ void Fittino::markovChain ()
 	 //	    }
 	 //	  } 
 
+if (yyVerbose){
 	 std::cout << "calculating rho = " << likelihood << "*" << Qupper << "/" << previousLikelihood << "*" << Qlower<< std::endl;
+}
 
 	 // calculate rho
 	 double rho = 0.;
@@ -11404,11 +11983,15 @@ void Fittino::markovChain ()
 	 //cout << "using alternative calculation" << endl;
 	 rho =  TMath::Exp( -chi2/2. + previousChi2/2. );
 	 //rho = likelihood/previousLikelihood;
+	 if (yyVerbose){
 	 cout << "compare " << chi2 << " " << previousChi2 << " " << rho << " " << TMath::Exp( -chi2/2. + previousChi2/2. ) << endl;
+	 }
 	 // } else {
 	 // continue;
 	 //}
+	 if (yyVerbose){
 	 std::cout << "rho = " << rho << std::endl;
+	 }
 
 	 // decide whether point shall be accepted
 	 float accpoint = 0;
@@ -11420,7 +12003,9 @@ void Fittino::markovChain ()
 	       accpoint = 1;
 	    }
 	 } 
+	 if (yyVerbose){
 	 std::cout << "accpoint = " << accpoint << std::endl;
+	 }
 
 	 if (accpoint==1) { 
 	   haveAcceptedAtLeastOne = true;

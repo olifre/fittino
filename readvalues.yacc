@@ -7,7 +7,7 @@
 #include <leshouches.h>
 #include <yy.h>
 #include <misc.h>
-
+#include <fstream>       //INCLUDED BY GABRIEL FOR DEBUGGING
 // #define YYERROR_VERBOSE 1
 
 char yyBlockName[255];
@@ -3972,7 +3972,9 @@ input:
 //========================================================================
 block:      T_BLOCK T_WORD T_NEWLINE parameters
               {
+if (yyVerbose){
                   printf("Reading block %s...\n", $2);
+}
 
 //========================================================================
                   if (!strcmp($2, "MODSEL")) {
@@ -4102,59 +4104,87 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 //========================================================================
                   else if (!strcmp($2, "alpha") || !strcmp($2, "ALPHA")) {
 			yyalpha = tmpParams[0][0];
+if (yyVerbose){
 		      cout << "Reading block alpha" << endl;
+}
 		  }
 //========================================================================
                   else if (!strcmp($2, "USQmix")) {
+if (yyVerbose){
 		      cout << "Ignoring block USQmix" << endl;
+}
 		  }
 //========================================================================
                   else if (!strcmp($2, "DSQmix")) {
+if (yyVerbose){
 		      cout << "Ignoring block DSQmix" << endl;
+}
 		  }
 //========================================================================
                   else if (!strcmp($2, "IMUSQmix")) {
+if (yyVerbose){
 		      cout << "Ignoring block IMUSQmix" << endl;
+}
 		  }
 //========================================================================
                   else if (!strcmp($2, "IMDSQmix")) {
+if (yyVerbose){
 		      cout << "Ignoring block IMDSQmix" << endl;
+}
 		  }
 //========================================================================
                   else if (!strcmp($2, "VCKMIN")) {
+if (yyVerbose){
 		      cout << "Ignoring block VCKMIN" << endl;
+}
 		  }
 //========================================================================
                   else if (!strcmp($2, "SLmix")) {
+if (yyVerbose){
 		      cout << "Ignoring block SLmix" << endl;
+}
 		  }
 //========================================================================
                   else if (!strcmp($2, "IMSLmix")) {
+if (yyVerbose){
 		      cout << "Ignoring block IMSLmix" << endl;
+}
 		  }
 //========================================================================
                   else if (!strcmp($2, "SNUMIX")) {
+if (yyVerbose){
 		      cout << "Ignoring block SNUMIX" << endl;
+}
 		  }
 //========================================================================
                   else if (!strcmp($2, "SELMIX")) {
+if (yyVerbose){
 		      cout << "Ignoring block SELMIX" << endl;
+}
 		  }
 //========================================================================
                   else if (!strcmp($2, "SNmix")) {
+if (yyVerbose){
 		      cout << "Ignoring block SNmix" << endl;
+}
 		  }
 //========================================================================
                   else if (!strcmp($2, "IMSNmix")) {
+if (yyVerbose){
 		      cout << "Ignoring block IMSNmix" << endl;
+}
 		  }
 //========================================================================
                   else if (!strcmp($2, "IMUmix")) {
+if (yyVerbose){
 		      cout << "Ignoring block IMUmix" << endl;
+}
 		  }
 //========================================================================
                   else if (!strcmp($2, "IMVmix")) {
+if (yyVerbose){
 		      cout << "Ignoring block IMVmix" << endl;
+}
 		  }
 //==============/==========================================================
                   else if (!strcmp($2, "EXTPAR")) {
@@ -4498,7 +4528,9 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
     | T_BLOCK T_WORD T_SCALE T_NUMBER T_NEWLINE parameters
 	    {
 	       yyScale = $4;
+if (yyVerbose){
 	       printf("Reading block %s at scale %f...\n", $2, $4);
+}
 
 	       if ( !strcmp( $2, "Ye" ) ) {
 		  yyYtau = tmpParams[2][2];
@@ -4513,7 +4545,9 @@ block:      T_BLOCK T_WORD T_NEWLINE parameters
 	    | T_BLOCK T_WORD T_NUMBER T_NEWLINE parameters
 	    {
 	       yyScale = $3;
+if (yyVerbose){
 	       printf("Reading block %s at scale %f...\n", $2, $3);
+}
 
 	       tmpParams.clear();
 	    }
@@ -4782,6 +4816,11 @@ correrr:   T_ERRORSIGN T_BRA T_WORD T_KET value
 	      void yyerror(char* s) {
 		 fprintf(stderr, "Error while reading input file (line %d): %s\n",
 		       yyInputFileLineNo, s);
+
+		 system("cp LesHouches.in ~/debug.in");
+		 system("touch HELLO");
+		 system("touch $PBS_JOBID.HELLO");
+
 		 //    fprintf(stderr, "Error while reading input file: %s\n", s);
 		 yySetErrorFlag = true;
 		 tmpStrings.clear();

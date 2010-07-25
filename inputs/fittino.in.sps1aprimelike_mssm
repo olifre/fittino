@@ -11,7 +11,7 @@
 # Masses                                                                                #
 #########################################################################################
 
-massW                    80.3371 GeV +- 0.039  GeV
+massW                    80.2547 GeV +- 0.039  GeV
 massZ                    91.1187 GeV +- 0.0021 GeV
 massTop                 178.0    GeV +- 0.05   GeV
 massBottom	          4.2    GeV +- 0.5    GeV
@@ -19,35 +19,35 @@ alphas                    0.1172     +- 0.002
 
 sin2ThetaW                0.23113    +- 0.00015
 
-massh0                  112.888 GeV  +- 0.05 GeV # +- 0.5 GeV # Degrassi et al
-massA0                  374.228 GeV  +- 1.3  GeV # +- 0.6 GeV # not at LHC
-massH0                  374.465 GeV  +- 1.3  GeV # +- 0.6 GeV # not at LHC
-massHplus               383.131 GeV  +- 1.1  GeV # +- 0.6 GeV # not at LHC
+massh0                  113.066 GeV  +- 0.05 GeV # +- 0.5 GeV # Degrassi et al
+massA0                  382.752 GeV  +- 1.3  GeV # +- 0.6 GeV # not at LHC
+massH0                  382.924 GeV  +- 1.3  GeV # +- 0.6 GeV # not at LHC
+massHplus               391.871  +- 1.1  GeV # +- 0.6 GeV # not at LHC
 
 nofit massSdownR        543.348 GeV +- 23.6  GeV # +-  9.4 GeV 
 nofit massSstrangeR     543.348 GeV +- 23.6  GeV # +-  9.4 GeV 
 nofit massScharmL       561.54  GeV +-  9.8  GeV # +- 10.0 GeV
 nofit massScharmR       543.348 GeV +- 23.6  GeV # +-  9.4 GeV 
 nofit massSupL          561.539 GeV +-  9.8  GeV # +- 10.0 GeV # replaced by edges
-massSupR                543.35  GeV +- 11.0  GeV # +-  9.4 GeV 
-massSbottom1	        502.059 GeV +-  5.7  GeV # +-  5.4 GeV
-massSbottom2	        541.81  GeV +-  6.2  GeV # +-  8.5 GeV
-massStop1               365.819 GeV +-  2.0  GeV # +-  5.4 GeV # not at LHC
+massSupR                543.386  GeV +- 11.0  GeV # +-  9.4 GeV 
+massSbottom1	        490.466 GeV +-  5.7  GeV # +-  5.4 GeV
+massSbottom2	        537.385  GeV +-  6.2  GeV # +-  8.5 GeV
+massStop1               362.062 GeV +-  2.0  GeV # +-  5.4 GeV # not at LHC
 nofit massStop2		600.037 GeV +- 20.0  GeV               # not at LHC
-massSelectronL		190.209 GeV +-  0.2  GeV # +-  0.4 GeV
-massSelectronR		124.883 GeV +-  0.05 GeV # +-  1.2 GeV
+massSelectronL		190.195 GeV +-  0.2  GeV # +-  0.4 GeV
+massSelectronR		124.9 GeV +-  0.05 GeV # +-  1.2 GeV
 massSnueL		172.947 GeV +-  0.7  GeV               # not at LHC
-massSmuL		190.237 GeV +-  0.5  GeV # +-  0.4 GeV
-massSmuR		124.837 GeV +-  0.2  GeV # +-  1.2 GeV
-massStau1		107.292 GeV +-  0.3  GeV # +-  0.5 GeV
-massStau2		195.290 GeV +-  1.1  GeV # +-  0.5 GeV # not at LHC
-massGluino              603.639 GeV +-  6.4  GeV # +-  1.4 GeV
-massNeutralino1		97.7662 GeV +-  0.05 GeV # +-  0.4 GeV
-massNeutralino2		184.345 GeV +-  0.08 GeV # +-  1.2 GeV
-massNeutralino3	       -404.134 GeV +-  4.0  GeV # +-  1.1 GeV
-massNeutralino4         417.037 GeV +-  2.3  GeV # +-  1.1 GeV
+massSmuL		190.223 GeV +-  0.5  GeV # +-  0.4 GeV
+massSmuR		124.854 GeV +-  0.2  GeV # +-  1.2 GeV
+massStau1		107.296 GeV +-  0.3  GeV # +-  0.5 GeV
+massStau2		195.327 GeV +-  1.1  GeV # +-  0.5 GeV # not at LHC
+massGluino              603.672 GeV +-  6.4  GeV # +-  1.4 GeV
+massNeutralino1		97.7597 GeV +-  0.05 GeV # +-  0.4 GeV
+massNeutralino2		184.346 GeV +-  0.08 GeV # +-  1.2 GeV
+massNeutralino3	       -404.132 GeV +-  4.0  GeV # +-  1.1 GeV
+massNeutralino4         417.017 GeV +-  2.3  GeV # +-  1.1 GeV
 massChargino1		184.132 GeV +-  0.55 GeV # +-  1.0 GeV
-massChargino2		418.495 GeV +-  3.0  GeV # +-  3.4 GeV
+massChargino2		418.456 GeV +-  3.0  GeV # +-  3.4 GeV
 
 edge 3 massNeutralino1 massSupL        massNeutralino2              449.679 GeV +- 4.9  GeV alias 1
 edge 3 massSmuR        massSupL        massNeutralino2              390.285 GeV +- 3.35 GeV alias 2
@@ -213,10 +213,10 @@ BR ( Neutralino2 -> Stau1~ Tau )                             alias 26
 BR ( Neutralino2 -> Stau1 Tau~ )                             alias 27
 
 # h0 Branching ratios
-BR ( h0 -> Bottom Bottom~ )                                  0.7621    +- 0.019  alias 30
-BR ( h0 -> Charm  Charm~ )                                   0.0369497 +- 0.0033 alias 31
-BR ( h0 -> Tau  Tau~ )                                       0.104958  +- 0.0067 alias 32
-BR ( h0 -> Gluon Gluon )                                     0.0388324 +- 0.004  alias 33
+BR ( h0 -> Bottom Bottom~ )                                  0.697292    +- 0.019  alias 30
+BR ( h0 -> Charm  Charm~ )                                   0.0414924 +- 0.0033 alias 31
+BR ( h0 -> Tau  Tau~ )                                       0.136969  +- 0.0067 alias 32
+BR ( h0 -> Gluon Gluon )                                     0.0379349 +- 0.004  alias 33
 
 # H0 Branching ratios
 BR ( H0 -> Bottom Bottom~ )                                  alias 34
@@ -426,15 +426,15 @@ XScanRange            -6000. GeV  -300. GeV
 ScanX                 off
 
 ScanParameters        off
-CalcPullDist          off
+CalcPullDist          on
 
-UseSimAnnBefore       off
+UseSimAnnBefore       on
 UseSimAnnWhile        off
 TempRedSimAnn         0.6
-MaxCallsSimAnn        450000
+MaxCallsSimAnn        10
 InitTempSimAnn        10000
 
-Calculator            SPHENO  ./SPheno
+Calculator            SPHENO  ./theorycodes/SPheno3.0.beta46/bin/SPheno
 
 UseMinos              off
 UseHesse              off
