@@ -33,7 +33,7 @@ int main(int argc, char** argv)
   double Xf;
   int fast = 1;
   double Beps = 1e-6;
-  double omegah2 = darkOmegaFO(&Xf, fast, Beps);
+  double omegah2 = darkOmega(&Xf, fast, Beps);
   if (omegah2 < 0) {
     std::cerr << "Problem with DM relic density calculation" << std::endl;
     return 1;

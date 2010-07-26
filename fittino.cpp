@@ -4371,7 +4371,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    // HERE: FIND OBSERVABLES BELONGING TO THE MEASUREMENTS IN yyMeasuredVec
    // CALCULATE CHISQ
    n_printouts++;
-   if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) {
+   if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/100. ) - n_printouts/100 ) < 0.01 ) ) {
       cout << yyDashedLine << endl;
       cout << "Calculating chisq" << endl;
    }
@@ -4403,8 +4403,8 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
                if ( i == j && ( (yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)>1.E-12) ||
        			(yyMeasuredCorrelationMatrix.GetInverseCovariance(i,j)<-1.E-12) ) ) {
 
-       	          // cout << (float)n_printouts/10. << " " << n_printouts/11 << endl;
-       	          if ( ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) {
+       	          // cout << (float)n_printouts/100. << " " << n_printouts/101 << endl;
+       	          if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/100. ) - n_printouts/100 ) < 0.01 ) ) {
 
        	             cout << i << " " << j << " using obs " << yyMeasuredVec[i].name << " = " << yyMeasuredVec[i].value
        		          << "+-" << sqrt(yyMeasuredCorrelationMatrix.GetCovariance(i,j))
@@ -4464,9 +4464,10 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
 
 
-
+   if (yyVerbose){
    cout << " chisq = " << f << " with " << nobs << " observables (" << ncorr/2 << " correlated), "
         << yyFittedVec.size() << " parameters and " << nbound << " bounds" << endl;
+   }
 
    //  f = ( sqr(sRecMassChargino1-fMassChargino1)/sqr(fMassChargino1.error)
    //	+ sqr(sRecMassChargino2-fMassChargino2)/sqr(fMassChargino2.error)
@@ -5273,15 +5274,15 @@ void WriteLesHouches(double* x)
       }
       else if (FindInFitted("QEWSB")) {
 	 LesHouchesOutfile << "    12  "<<x[ReturnFittedPosition("QEWSB")]<<" # Q_EWSB"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-	    if (yyVerbose){
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+	    
 	    cout << "Fitting Q_EWSB " << x[ReturnFittedPosition("QEWSB")] << endl;
-	    }
+	    
 	 }
       } 
       else if (FindInUniversality("QEWSB")) {
 	 LesHouchesOutfile << "    12  "<<x[ReturnFittedPosition(ReturnUniversality("QEWSB")->universality)]<<" # Q_EWSB"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("QEWSB")->universality << " instead of QEWSB" << endl;
 	 }
       }      
@@ -5295,13 +5296,13 @@ void WriteLesHouches(double* x)
       }
       else if (FindInFitted("alphaem")) {
 	 LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition("alphaem")]<<" # 1/alpha_em(M_Z)"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting alphaem " << x[ReturnFittedPosition("alphaem")] << endl;
 	 }
       } 
       else if (FindInUniversality("alphaem")) {
 	 LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition(ReturnUniversality("alphaem")->universality)]<<" # 1/alpha_em(M_Z)"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fiting " << ReturnUniversality("alphaem")->universality << " instead of alphaem" << endl;
 	 }
       }
@@ -5314,13 +5315,13 @@ void WriteLesHouches(double* x)
       }
       else if (FindInFitted("G_F")) {
          LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition("G_F")]<<" # G_F"<<endl;
-         if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+         if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
             cout << "Fitting G_F " << x[ReturnFittedPosition("G_F")] << endl;
          }
       } 
       else if (FindInUniversality("G_F")) {
          LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("G_F")->universality)]<<" # G_F"<<endl;
-         if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+         if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
             cout << "fitting " << ReturnUniversality("G_F")->universality << " instead of G_F" << endl;
          }
       }
@@ -5333,13 +5334,13 @@ void WriteLesHouches(double* x)
       }
       else if (FindInFitted("alphas")) {
 	 LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition("alphas")]<<" # alpha_s"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting alphas " << x[ReturnFittedPosition("alphas")] << endl;
 	 }
       } 
       else if (FindInUniversality("alphas")) {
 	 LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition(ReturnUniversality("alphas")->universality)]<<" # alpha_ss"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("alphas")->universality << " instead of alphas" << endl;
 	 }
       }
@@ -5353,13 +5354,13 @@ void WriteLesHouches(double* x)
       }
       else if (FindInFitted("massZ")) {
 	 LesHouchesOutfile << "    4  "<<x[ReturnFittedPosition("massZ")]<<" # mZ"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting massZ " << x[ReturnFittedPosition("massZ")] << endl;
 	 }
       } 
       else if (FindInUniversality("massZ")) {
 	 LesHouchesOutfile << "    4  "<<x[ReturnFittedPosition(ReturnUniversality("massZ")->universality)]<<" # massZ"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("massZ")->universality << " instead of massZ" << endl;
 	 }
       }
@@ -5372,13 +5373,13 @@ void WriteLesHouches(double* x)
       }
       else if (FindInFitted("massBottom")) {
 	 LesHouchesOutfile << "    5  "<<x[ReturnFittedPosition("massBottom")]<<" # mb(mb)"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting mBottom " << x[ReturnFittedPosition("massBottom")] << endl;
 	 }
       } 
       else if (FindInUniversality("massBottom")) {
 	 LesHouchesOutfile << "    5  "<<x[ReturnFittedPosition(ReturnUniversality("massBottom")->universality)]<<" # massBottom"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("massBottom")->universality << " instead of massBottom" << endl;
 	 }
       }
@@ -5392,13 +5393,13 @@ void WriteLesHouches(double* x)
       }
       else if (FindInFitted("massTop")) {
 	 LesHouchesOutfile << "    6  "<<x[ReturnFittedPosition("massTop")]<<" # mtop"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting mTop " << x[ReturnFittedPosition("massTop")] << endl;
 	 }
       } 
       else if (FindInUniversality("massTop")) {
 	 LesHouchesOutfile << "    6  "<<x[ReturnFittedPosition(ReturnUniversality("massTop")->universality)]<<" # massTop"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("massTop")->universality << " instead of massTop" << endl;
 	 }
       }
@@ -5414,7 +5415,7 @@ void WriteLesHouches(double* x)
       } 
       else if (FindInUniversality("massTau")) {
 	 LesHouchesOutfile << "    7  "<<x[ReturnFittedPosition(ReturnUniversality("massTau")->universality)]<<" # massTau"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("massTau")->universality << " instead of massTau" << endl;
 	 }
       }
@@ -5444,20 +5445,20 @@ void WriteLesHouches(double* x)
 	 LesHouchesOutfile << "    3  " << ReturnFixedValue("TanBeta")->value << " # TanBeta (fixed)" << endl;
       }
       else if (FindInFitted("TanBeta")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting TanBeta " << x[ReturnFittedPosition("TanBeta")] << endl;
 	 }
 	 LesHouchesOutfile << "    3  " << x[ReturnFittedPosition("TanBeta")] << " # TanBeta" << endl;
       } 
       else if (FindInRandomPar("TanBeta")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random TanBeta " << x[ReturnRandomPosition("TanBeta")] << "(deviation from mean value " << yyFittedPar[2].value <<" within " << TMath::Ceil(TMath::Abs(x[ReturnRandomPosition("TanBeta")]-yyFittedPar[2].value)/yyFittedPar[2].error) << " sigma)"<<endl;
 	 }
 	 LesHouchesOutfile << "    3  " << x[ReturnRandomPosition("TanBeta")] << " # TanBeta (random)" << endl;
       }
       else if (FindInUniversality("TanBeta")) {
 	 LesHouchesOutfile << "    3  " << x[ReturnFittedPosition(ReturnUniversality("TanBeta")->universality)] << " # TanBeta" << endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting " << ReturnUniversality("TanBeta")->universality << " instead of TanBeta" << endl;
 	 }
       }
@@ -5475,19 +5476,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("M1")) {
 	 LesHouchesOutfile << "    1  "<< x[ReturnFittedPosition("M1")]<<" # M1"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting M1 " << x[ReturnFittedPosition("M1")] << endl;
 	 }
       } 
       else if (FindInRandomPar("M1")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random M1 " << x[ReturnRandomPosition("M1")] << endl;
 	 }
 	 LesHouchesOutfile << "    1  " << x[ReturnRandomPosition("M1")] << " # M1 (random)" << endl;
       }
       else if (FindInUniversality("M1")) {
 	 LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition(ReturnUniversality("M1")->universality)]<<" # M1"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting " << ReturnUniversality("M1")->universality << " instead of M1" << endl;
 	 }
       }
@@ -5501,19 +5502,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("M2")) {
 	 LesHouchesOutfile << "    2  "<< x[ReturnFittedPosition("M2")]<<" # M2"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting M2 " << x[ReturnFittedPosition("M2")] << endl;
 	 }
       }
       else if (FindInRandomPar("M2")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random M2 " << x[ReturnRandomPosition("M2")] << endl;
 	 }
 	 LesHouchesOutfile << "    2  " << x[ReturnRandomPosition("M2")] << " # M2 (random)" << endl;
       }
       else if (FindInUniversality("M2")) {
 	 LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("M2")->universality)]<<" # M2"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("M2")->universality << " instead of M2" << endl;
 	 }
       }
@@ -5527,19 +5528,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("M3")) {
 	 LesHouchesOutfile << "    3  "<< x[ReturnFittedPosition("M3")]<<" # M3"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting M3 " << x[ReturnFittedPosition("M3")] << endl;
 	 }
       }
       else if (FindInRandomPar("M3")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random M3 " << x[ReturnRandomPosition("M3")] << endl;
 	 }
 	 LesHouchesOutfile << "    3  " << x[ReturnRandomPosition("M3")] << " # M3 (random)" << endl;
       }
       else if (FindInUniversality("M3")) {
 	 LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition(ReturnUniversality("M3")->universality)]<<" # M3"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("M3")->universality << " instead of M3" << endl;
 	 }
       }
@@ -5555,19 +5556,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("Xtop")) {
 	 LesHouchesOutfile << "   11  "<< x[ReturnFittedPosition("Xtop")]+local_mu/local_tanb<<" # Atop"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting Xtop " << x[ReturnFittedPosition("Xtop")] << endl;
 	 }
       } 
       else if (FindInRandomPar("Xtop")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random Xtop " << x[ReturnRandomPosition("Xtop")] << endl;
 	 }
 	 LesHouchesOutfile << "   11  " << x[ReturnRandomPosition("Xtop")] << " # Xtop (random)" << endl;
       }
       else if (FindInUniversality("Xtop")) {
 	 LesHouchesOutfile << "   11  "<<x[ReturnFittedPosition(ReturnUniversality("Xtop")->universality)]+local_mu/local_tanb<<" # Atop"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("Xtop")->universality << " instead of Xtop" << endl;
 	 }
       }
@@ -5576,19 +5577,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("Atop")) {
 	 LesHouchesOutfile << "   11  "<< x[ReturnFittedPosition("Atop")] <<" # Atop"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting Atop " << x[ReturnFittedPosition("Atop")] << endl;
 	 }
       }   
       else if (FindInRandomPar("Atop")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random Atop " << x[ReturnRandomPosition("Atop")] << endl;
 	 }
 	 LesHouchesOutfile << "   11  " << x[ReturnRandomPosition("Atop")] << " # Atop (random)" << endl;
       }
       else if (FindInUniversality("Atop")) {
 	 LesHouchesOutfile << "   11  "<<x[ReturnFittedPosition(ReturnUniversality("Atop")->universality)] <<" # Atop"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("Atop")->universality << " instead of Atop" << endl;
 	 }
       }
@@ -5603,19 +5604,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("Xbottom")) {
 	 LesHouchesOutfile << "   12  "<< x[ReturnFittedPosition("Xbottom")]+local_mu/local_tanb<<" # Abottom"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting Xbottom " << x[ReturnFittedPosition("Xbottom")] << endl;
 	 }
       } 
       else if (FindInRandomPar("Xbottom")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random Xbottom " << x[ReturnRandomPosition("Xbottom")] << endl;
 	 }
 	 LesHouchesOutfile << "   12  " << x[ReturnRandomPosition("Xbottom")] << " # Xbottom (random)" << endl;
       }
       else if (FindInUniversality("Xbottom")) {
 	 LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition(ReturnUniversality("Xbottom")->universality)]+local_mu/local_tanb<<" # Abottom"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("Xbottom")->universality << " instead of Xbottom" << endl;
 	 }
       }
@@ -5624,19 +5625,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("Abottom")) {
 	 LesHouchesOutfile << "   12  "<< x[ReturnFittedPosition("Abottom")] <<" # Abottom"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting Abottom " << x[ReturnFittedPosition("Abottom")] << endl;
 	 }
       }   
       else if (FindInRandomPar("Abottom")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random Abottom " << x[ReturnRandomPosition("Abottom")] << endl;
 	 }
 	 LesHouchesOutfile << "   12  " << x[ReturnRandomPosition("Abottom")] << " # Abottom (random)" << endl;
       }
       else if (FindInUniversality("Abottom")) {
 	 LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition(ReturnUniversality("Abottom")->universality)] <<" # Abottom"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("Abottom")->universality << " instead of Abottom" << endl;
 	 }
       }
@@ -5651,19 +5652,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("Xtau")) {
 	 LesHouchesOutfile << "   13  "<< x[ReturnFittedPosition("Xtau")]+local_mu*local_tanb<<" # Atau"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting Xtau " << x[ReturnFittedPosition("Xtau")] << endl;
 	 }
       }  
       else if (FindInRandomPar("Xtau")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random Xtau " << x[ReturnRandomPosition("Xtau")] << endl;
 	 }
 	 LesHouchesOutfile << "   13  " << x[ReturnRandomPosition("Xtau")] << " # Xtau (random)" << endl;
       }
       else if (FindInUniversality("Xtau")) {
 	 LesHouchesOutfile << "   13  "<<x[ReturnFittedPosition(ReturnUniversality("Xtau")->universality)]+local_mu*local_tanb<<" # Atau"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("Xtau")->universality << " instead of Xtau" << endl;
 	 }
       }
@@ -5672,19 +5673,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("Atau")) {
 	 LesHouchesOutfile << "   13  "<< x[ReturnFittedPosition("Atau")] <<" # Atau"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting Atau " << x[ReturnFittedPosition("Atau")] << endl;
 	 }
       }  
       else if (FindInRandomPar("Atau")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random Atau " << x[ReturnRandomPosition("Atau")] << endl;
 	 }
 	 LesHouchesOutfile << "   13  " << x[ReturnRandomPosition("Atau")] << " # Atau (random)" << endl;
       }
       else if (FindInUniversality("Atau")) {
 	 LesHouchesOutfile << "   13  "<<x[ReturnFittedPosition(ReturnUniversality("Atau")->universality)] <<" # Atau"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("Atau")->universality << " instead of Atau" << endl;
 	 }
       }
@@ -5699,19 +5700,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("Mu")) {
 	 LesHouchesOutfile << "   23  "<< x[ReturnFittedPosition("Mu")]<<" # mu"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting Mu " << x[ReturnFittedPosition("Mu")] << endl;
 	 }
       } 
       else if (FindInRandomPar("Mu")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random Mu " << x[ReturnRandomPosition("Mu")] << endl;
 	 }
 	 LesHouchesOutfile << "   23  " << x[ReturnRandomPosition("Mu")] << " # Mu (random)" << endl;
       }
       else if (FindInUniversality("Mu")) {
 	 LesHouchesOutfile << "   23  "<<x[ReturnFittedPosition(ReturnUniversality("Mu")->universality)]<<" # Mu"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("Mu")->universality << " instead of Mu" << endl;
 	 }
       }
@@ -5734,19 +5735,19 @@ void WriteLesHouches(double* x)
 			}
 			else
 	   	 LesHouchesOutfile << "   24  "<< sqr(x[ReturnFittedPosition("massA0")])<<" # mA"<< endl;
-	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	       cout << "Fitting mA " << x[ReturnFittedPosition("massA0")] << endl;
 	    }
 	 } 
 	 else if (FindInRandomPar("massA0")) {
-	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	       cout << "Calculating random mA " << x[ReturnRandomPosition("massA0")] << endl;
 	    }
 	    LesHouchesOutfile << "   24  " << x[ReturnRandomPosition("massA0")] << " # massA0 (random)" << endl;
 	 }
 	 else if (FindInUniversality("massA0")) {
 	    LesHouchesOutfile << "   24  "<<sqr(x[ReturnFittedPosition(ReturnUniversality("massA0")->universality)])<<" # massA0"<<endl;
-	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	       cout << "fitting " << ReturnUniversality("massA0")->universality << " instead of massA0" << endl;
 	    }
 	 }
@@ -5761,19 +5762,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("MSelectronL")) {
 	 LesHouchesOutfile << "   31  "<< x[ReturnFittedPosition("MSelectronL")]<<" # MSelectronL"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting MSelectronL " << x[ReturnFittedPosition("MSelectronL")] << endl;
 	 }
       } 
       else if (FindInRandomPar("MSelectronL")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random MSelectronL " << x[ReturnRandomPosition("MSelectronL")] << endl;
 	 }
 	 LesHouchesOutfile << "   31  " << x[ReturnRandomPosition("MSelectronL")] << " # MSelectronL (random)" << endl;
       }
       else if (FindInUniversality("MSelectronL")) {
 	 LesHouchesOutfile << "   31  "<<x[ReturnFittedPosition(ReturnUniversality("MSelectronL")->universality)]<<" # MSelectronL"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("MSelectronL")->universality << " instead of MSelectronL" << endl;
 	 }
       }
@@ -5787,19 +5788,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("MSmuL")) {
 	 LesHouchesOutfile << "   32 "<< x[ReturnFittedPosition("MSmuL")]<<" # MSmuL"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting MSmuL " << x[ReturnFittedPosition("MSmuL")] << endl;
 	 }
       } 
       else if (FindInRandomPar("MSmuL")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random MSmuL " << x[ReturnRandomPosition("MSmuL")] << endl;
 	 }
 	 LesHouchesOutfile << "   32  " << x[ReturnRandomPosition("MSmuL")] << " # MSmuL (random)" << endl;
       }
       else if (FindInUniversality("MSmuL")) {
 	 LesHouchesOutfile << "   32  "<<x[ReturnFittedPosition(ReturnUniversality("MSmuL")->universality)]<<" # MSmuL"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("MSmuL")->universality << " instead of MSmuL" << endl;
 	 }
       }
@@ -5813,19 +5814,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("MStauL")) {
 	 LesHouchesOutfile << "   33  "<< x[ReturnFittedPosition("MStauL")]<<" # MStauL"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting MStauL " << x[ReturnFittedPosition("MStauL")] << endl;
 	 }
       } 
       else if (FindInRandomPar("MStauL")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random MStauL " << x[ReturnRandomPosition("MStauL")] << endl;
 	 }
 	 LesHouchesOutfile << "   33  " << x[ReturnRandomPosition("MStauL")] << " # MStauL (random)" << endl;
       }
       else if (FindInUniversality("MStauL")) {
 	 LesHouchesOutfile << "   33  "<<x[ReturnFittedPosition(ReturnUniversality("MStauL")->universality)]<<" # MStauL"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("MStauL")->universality << " instead of MStauL" << endl;
 	 }
       }
@@ -5839,19 +5840,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("MSelectronR")) {
 	 LesHouchesOutfile << "   34  "<< x[ReturnFittedPosition("MSelectronR")]<<" # MSelectronR"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting MSelectronR " << x[ReturnFittedPosition("MSelectronR")] << endl;
 	 }
       } 
       else if (FindInRandomPar("MSelectronR")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random MSelectronR " << x[ReturnRandomPosition("MSelectronR")] << endl;
 	 }
 	 LesHouchesOutfile << "   34  " << x[ReturnRandomPosition("MSelectronR")] << " # MSelectronR (random)" << endl;
       }
       else if (FindInUniversality("MSelectronR")) {
 	 LesHouchesOutfile << "   34  "<<x[ReturnFittedPosition(ReturnUniversality("MSelectronR")->universality)]<<" # MSelectronR"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("MSelectronR")->universality << " instead of MSelectronR" << endl;
 	 }
       }
@@ -5865,19 +5866,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("MSmuR")) {
 	 LesHouchesOutfile << "   35  "<< x[ReturnFittedPosition("MSmuR")]<<" # MSmuR"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting MSmuR " << x[ReturnFittedPosition("MSmuR")] << endl;
 	 }
       } 
       else if (FindInRandomPar("MSmuR")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random MSmuR " << x[ReturnRandomPosition("MSmuR")] << endl;
 	 }
 	 LesHouchesOutfile << "   35  " << x[ReturnRandomPosition("MSmuR")] << " # MSmuR (random)" << endl;
       }
       else if (FindInUniversality("MSmuR")) {
 	 LesHouchesOutfile << "   35  "<<x[ReturnFittedPosition(ReturnUniversality("MSmuR")->universality)]<<" # MSmuR"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("MSmuR")->universality << " instead of MSmuR" << endl;
 	 }
       }
@@ -5891,19 +5892,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("MStauR")) {
 	 LesHouchesOutfile << "   36  "<< x[ReturnFittedPosition("MStauR")]<<" # MStauR"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting MStauR " << x[ReturnFittedPosition("MStauR")] << endl;
 	 }
       } 
       else if (FindInRandomPar("MStauR")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random MStauR " << x[ReturnRandomPosition("MStauR")] << endl;
 	 }
 	 LesHouchesOutfile << "   36  " << x[ReturnRandomPosition("MStauR")] << " # MStauR (random)" << endl;
       }
       else if (FindInUniversality("MStauR")) {
 	 LesHouchesOutfile << "   36  "<<x[ReturnFittedPosition(ReturnUniversality("MStauR")->universality)]<<" # MStauR"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("MStauR")->universality << " instead of MStauR" << endl;
 	 }
       }
@@ -5917,19 +5918,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("MSupL")) {
 	 LesHouchesOutfile << "   41  "<< x[ReturnFittedPosition("MSupL")]<<" # MSupL"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting MSupL " << x[ReturnFittedPosition("MSupL")] << endl;
 	 }
       } 
       else if (FindInRandomPar("MSupL")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random MSupL " << x[ReturnRandomPosition("MSupL")] << endl;
 	 }
 	 LesHouchesOutfile << "   41  " << x[ReturnRandomPosition("MSupL")] << " # MSupL (random)" << endl;
       }
       else if (FindInUniversality("MSupL")) {
 	 LesHouchesOutfile << "   41  "<<x[ReturnFittedPosition(ReturnUniversality("MSupL")->universality)]<<" # MSupL"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("MSupL")->universality << " instead of MSupL" << endl;
 	 }
       }
@@ -5939,19 +5940,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("MScharmL")) {
 	 LesHouchesOutfile << "   42  "<< x[ReturnFittedPosition("MScharmL")]<<" # MScharmL"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting MScharmL " << x[ReturnFittedPosition("MScharmL")] << endl;
 	 }
       } 
       else if (FindInRandomPar("MScharmL")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random MScharmL " << x[ReturnRandomPosition("MScharmL")] << endl;
 	 }
 	 LesHouchesOutfile << "   42  " << x[ReturnRandomPosition("MScharmL")] << " # MScharmL (random)" << endl;
       }
       else if (FindInUniversality("MScharmL")) {
 	 LesHouchesOutfile << "   42  "<<x[ReturnFittedPosition(ReturnUniversality("MScharmL")->universality)]<<" # MScharmL"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("MScharmL")->universality << " instead of MScharmL" << endl;
 	 }
       }
@@ -5961,19 +5962,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("MStopL")) {
 	 LesHouchesOutfile << "   43  "<< x[ReturnFittedPosition("MStopL")]<<" # MStopL"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting MStopL " << x[ReturnFittedPosition("MStopL")] << endl;
 	 }
       } 
       else if (FindInRandomPar("MStopL")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random MStopL " << x[ReturnRandomPosition("MStopL")] << endl;
 	 }
 	 LesHouchesOutfile << "   43  " << x[ReturnRandomPosition("MStopL")] << " # MStopL (random)" << endl;
       }
       else if (FindInUniversality("MStopL")) {
 	 LesHouchesOutfile << "   43  "<<x[ReturnFittedPosition(ReturnUniversality("MStopL")->universality)]<<" # MStopL"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("MStopL")->universality << " instead of MStopL" << endl;
 	 }
       }
@@ -5983,19 +5984,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("MSupR")) {
 	 LesHouchesOutfile << "   44  "<< x[ReturnFittedPosition("MSupR")]<<" # MSupR"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting MSupR " << x[ReturnFittedPosition("MSupR")] << endl;
 	 }
       } 
       else if (FindInRandomPar("MSupR")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random MSupR " << x[ReturnRandomPosition("MSupR")] << endl;
 	 }
 	 LesHouchesOutfile << "   44  " << x[ReturnRandomPosition("MSupR")] << " # MSupR (random)" << endl;
       }
       else if (FindInUniversality("MSupR")) {
 	 LesHouchesOutfile << "   44  "<<x[ReturnFittedPosition(ReturnUniversality("MSupR")->universality)]<<" # MSupR"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("MSupR")->universality << " instead of MSupR" << endl;
 	 }
       }
@@ -6005,19 +6006,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("MScharmR")) {
 	 LesHouchesOutfile << "   45  "<< x[ReturnFittedPosition("MScharmR")]<<" # MScharmR"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting MScharmR " << x[ReturnFittedPosition("MScharmR")] << endl;
 	 }
       } 
       else if (FindInRandomPar("MScharnR")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random MScharmR " << x[ReturnRandomPosition("MScharmR")] << endl;
 	 }
 	 LesHouchesOutfile << "   45  " << x[ReturnRandomPosition("MScharmR")] << " # MScharmR (random)" << endl;
       }
       else if (FindInUniversality("MScharmR")) {
 	 LesHouchesOutfile << "   45  "<<x[ReturnFittedPosition(ReturnUniversality("MScharmR")->universality)]<<" # MScharmR"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("MScharmR")->universality << " instead of MScharmR" << endl;
 	 }
       }
@@ -6027,19 +6028,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("MStopR")) {
 	 LesHouchesOutfile << "   46  "<< x[ReturnFittedPosition("MStopR")]<<" # MStopR"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting MStopR " << x[ReturnFittedPosition("MStopR")] << endl;
 	 }
       } 
       else if (FindInRandomPar("MStopR")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random MStopR " << x[ReturnRandomPosition("MStopR")] << endl;
 	 }
 	 LesHouchesOutfile << "   46  " << x[ReturnRandomPosition("MStopR")] << " # MStopR (random)" << endl;
       }
       else if (FindInUniversality("MStopR")) {
 	 LesHouchesOutfile << "   46  "<<x[ReturnFittedPosition(ReturnUniversality("MStopR")->universality)]<<" # MStopR"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("MStopR")->universality << " instead of MStopR" << endl;
 	 }
       }
@@ -6049,19 +6050,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("MSdownR")) {
 	 LesHouchesOutfile << "   47  "<< x[ReturnFittedPosition("MSdownR")]<<" # MSdownR"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting MSdownR " << x[ReturnFittedPosition("MSdownR")] << endl;
 	 }
       } 
       else if (FindInRandomPar("MSdownR")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random MSdownR " << x[ReturnRandomPosition("MSdownR")] << endl;
 	 }
 	 LesHouchesOutfile << "   47  " << x[ReturnRandomPosition("MSdownR")] << " # MSdownR (random)" << endl;
       }
       else if (FindInUniversality("MSdownR")) {
 	 LesHouchesOutfile << "   47  "<<x[ReturnFittedPosition(ReturnUniversality("MSdownR")->universality)]<<" # MSdownR"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("MSdownR")->universality << " instead of MSdownR" << endl;
 	 }
       }
@@ -6071,19 +6072,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("MSstrangeR")) {
 	 LesHouchesOutfile << "   48  "<< x[ReturnFittedPosition("MSstrangeR")]<<" # MSstrangeR"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting MSstrangeR " << x[ReturnFittedPosition("MSstrangeR")] << endl;
 	 }
       } 
       else if (FindInRandomPar("MSstrangeR")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random MSstrangeR " << x[ReturnRandomPosition("MSstrangeR")] << endl;
 	 }
 	 LesHouchesOutfile << "   48  " << x[ReturnRandomPosition("MSstrangeR")] << " # MSstrangeR (random)" << endl;
       }
       else if (FindInUniversality("MSstrangeR")) {
 	 LesHouchesOutfile << "   48  "<<x[ReturnFittedPosition(ReturnUniversality("MSstrangeR")->universality)]<<" # MSstrangeR"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("MSstrangeR")->universality << " instead of MSstrangeR" << endl;
 	 }
       }
@@ -6093,19 +6094,19 @@ void WriteLesHouches(double* x)
       }    
       else if (FindInFitted("MSbottomR")) {
 	 LesHouchesOutfile << "   49  "<< x[ReturnFittedPosition("MSbottomR")]<<" # MSbottomR"<< endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting MSbottomR " << x[ReturnFittedPosition("MSbottomR")] << endl;
 	 }
       } 
       else if (FindInRandomPar("MSbottomR")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random MSbottomR " << x[ReturnRandomPosition("MSbottomR")] << endl;
 	 }
 	 LesHouchesOutfile << "   49  " << x[ReturnRandomPosition("MSbottomR")] << " # MSbottomR (random)" << endl;
       }
       else if (FindInUniversality("MSbottomR")) {
 	 LesHouchesOutfile << "   49  "<<x[ReturnFittedPosition(ReturnUniversality("MSbottomR")->universality)]<<" # MSbottomR"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("MSbottomR")->universality << " instead of MSbottomR" << endl;
 	 }
       }
@@ -6117,19 +6118,19 @@ void WriteLesHouches(double* x)
 	 }    
 	 else if (FindInFitted("lambda")) {
 	    LesHouchesOutfile << "   61  "<< x[ReturnFittedPosition("lambda")]<<" # lambda"<< endl;
-	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	       cout << "Fitting lambda " << x[ReturnFittedPosition("lambda")] << endl;
 	    }
 	 } 
 	 else if (FindInRandomPar("lambda")) {
-	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	       cout << "Calculating random lambda " << x[ReturnRandomPosition("lambda")] << endl;
 	    }
 	    LesHouchesOutfile << "   61  " << x[ReturnRandomPosition("lambda")] << " # lambda (random)" << endl;
 	 }
 	 else if (FindInUniversality("lambda")) {
 	    LesHouchesOutfile << "   61  "<<x[ReturnFittedPosition(ReturnUniversality("lambda")->universality)]<<" # lambda"<<endl;
-	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	       cout << "fitting " << ReturnUniversality("lambda")->universality << " instead of lambda" << endl;
 	    }
 	 }
@@ -6139,19 +6140,19 @@ void WriteLesHouches(double* x)
 	 }    
 	 else if (FindInFitted("kappa")) {
 	    LesHouchesOutfile << "   62  "<< x[ReturnFittedPosition("kappa")]<<" # kappa"<< endl;
-	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	       cout << "Fitting kappa " << x[ReturnFittedPosition("kappa")] << endl;
 	    }
 	 } 
 	 else if (FindInRandomPar("kappa")) {
-	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	       cout << "Calculating random kappa " << x[ReturnRandomPosition("kappa")] << endl;
 	    }
 	    LesHouchesOutfile << "   62  " << x[ReturnRandomPosition("kappa")] << " # kappa (random)" << endl;
 	 }
 	 else if (FindInUniversality("kappa")) {
 	    LesHouchesOutfile << "   62  "<<x[ReturnFittedPosition(ReturnUniversality("kappa")->universality)]<<" # kappa"<<endl;
-	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	       cout << "fitting " << ReturnUniversality("kappa")->universality << " instead of kappa" << endl;
 	    }
 	 }
@@ -6161,19 +6162,19 @@ void WriteLesHouches(double* x)
 	 }    
 	 else if (FindInFitted("ALambda")) {
 	    LesHouchesOutfile << "   63  "<< x[ReturnFittedPosition("ALambda")]<<" # ALambda"<< endl;
-	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	       cout << "Fitting ALambda " << x[ReturnFittedPosition("ALambda")] << endl;
 	    }
 	 } 
 	 else if (FindInRandomPar("Alambda")) {
-	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	       cout << "Calculating random Alambda " << x[ReturnRandomPosition("Alambda")] << endl;
 	    }
 	    LesHouchesOutfile << "   63  " << x[ReturnRandomPosition("Alambda")] << " # Alambda (random)" << endl;
 	 }
 	 else if (FindInUniversality("ALambda")) {
 	    LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("ALambda")->universality)]<<" # ALambda"<<endl;
-	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	       cout << "fitting " << ReturnUniversality("ALambda")->universality << " instead of ALambda" << endl;
 	    }
 	 }
@@ -6183,19 +6184,19 @@ void WriteLesHouches(double* x)
 	 }    
 	 else if (FindInFitted("AKappa")) {
 	    LesHouchesOutfile << "   64  "<< x[ReturnFittedPosition("AKappa")]<<" # AKappa"<< endl;
-	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	       cout << "Fitting AKappa " << x[ReturnFittedPosition("AKappa")] << endl;
 	    }
 	 } 
 	 else if (FindInRandomPar("Akappa")) {
-	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	       cout << "Calculating random Akappa " << x[ReturnRandomPosition("Akappa")] << endl;
 	    }
 	    LesHouchesOutfile << "   64  " << x[ReturnRandomPosition("Akappa")] << " # Akappa (random)" << endl;
 	 }
 	 else if (FindInUniversality("AKappa")) {
 	    LesHouchesOutfile << "   64  "<<x[ReturnFittedPosition(ReturnUniversality("AKappa")->universality)]<<" # AKappa"<<endl;
-	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	       cout << "fitting " << ReturnUniversality("AKappa")->universality << " instead of AKappa" << endl;
 	    }
 	 }
@@ -6205,19 +6206,19 @@ void WriteLesHouches(double* x)
 	 }    
 	 else if (FindInFitted("MuEff")) {
 	    LesHouchesOutfile << "   65  "<< x[ReturnFittedPosition("MuEff")]<<" # MuEff"<< endl;
-	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	       cout << "Fitting MuEff " << x[ReturnFittedPosition("MuEff")] << endl;
 	    }
 	 } 
 	 else if (FindInRandomPar("MuEff")) {
-	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	       cout << "Calculating random MuEff " << x[ReturnRandomPosition("MuEff")] << endl;
 	    }
 	    LesHouchesOutfile << "   65  " << x[ReturnRandomPosition("MuEff")] << " # MuEff (random)" << endl;
 	 }
 	 else if (FindInUniversality("MuEff")) {
 	    LesHouchesOutfile << "   65  "<<x[ReturnFittedPosition(ReturnUniversality("MuEff")->universality)]<<" # MuEff"<<endl;
-	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	    if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	       cout << "fitting " << ReturnUniversality("MuEff")->universality << " instead of MuEff" << endl;
 	    }
 	 }
@@ -6260,18 +6261,17 @@ void WriteLesHouches(double* x)
       }
       else if (FindInFitted("massCharm")) {
 				LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-			 	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-		if (yyVerbose){
+			 	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+		
 	    	cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
-		}
+		
 				 }
       } 
       else if (FindInUniversality("massCharm")) {
 				 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-				 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
-				   if (yyVerbose){
+				 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	   			 cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
-				   }
+				   
 				 }
       }
       else {
@@ -6308,13 +6308,13 @@ void WriteLesHouches(double* x)
       }
       else if (FindInFitted("QEWSB")) {
 	 LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition("QEWSB")]<<" # Q_EWSB"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting Q_EWSB " << x[ReturnFittedPosition("QEWSB")] << endl;
 	 }
       } 
       else if (FindInUniversality("QEWSB")) {
 	 LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition(ReturnUniversality("QEWSB")->universality)]<<" # Q_EWSB"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("QEWSB")->universality << " instead of QEWSB" << endl;
 	 }
       }      
@@ -6329,13 +6329,13 @@ void WriteLesHouches(double* x)
       }
       else if (FindInFitted("alphaem")) {
 	 LesHouchesOutfile << "    1  " << x[ReturnFittedPosition("alphaem")] << " # 1/alpha_em(M_Z)" << endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting alphaem " << x[ReturnFittedPosition("alphaem")] << endl;
 	 }
       } 
       else if (FindInUniversality("alphaem")) {
 	 LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition(ReturnUniversality("alphaem")->universality)]<<" # 1/alpha_em(M_Z)"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("alphaem")->universality << " instead of alphaem" << endl;
 	 }
       }
@@ -6349,13 +6349,13 @@ void WriteLesHouches(double* x)
       }
       else if (FindInFitted("G_F")) {
 	 LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition("G_F")]<<" # G_F"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting G_F " << x[ReturnFittedPosition("G_F")] << endl;
 	 }
       } 
       else if (FindInUniversality("G_F")) {
 	 LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("G_F")->universality)]<<" # G_F"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("G_F")->universality << " instead of G_F" << endl;
 	 }
       }
@@ -6368,13 +6368,13 @@ void WriteLesHouches(double* x)
       }
       else if (FindInFitted("alphas")) {
 	 LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition("alphas")]<<" # alpha_s"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting alphas " << x[ReturnFittedPosition("alphas")] << endl;
 	 }
       } 
       else if (FindInUniversality("alphas")) {
 	 LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition(ReturnUniversality("alphas")->universality)]<<" # alpha_ss"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("alphas")->universality << " instead of alphas" << endl;
 	 }
       }
@@ -6387,13 +6387,13 @@ void WriteLesHouches(double* x)
       }
       else if (FindInFitted("massZ")) {
 	 LesHouchesOutfile << "    4  "<<x[ReturnFittedPosition("massZ")]<<" # mZ"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting massZ " << x[ReturnFittedPosition("massZ")] << endl;
 	 }
       } 
       else if (FindInUniversality("massZ")) {
 	 LesHouchesOutfile << "    4  "<<x[ReturnFittedPosition(ReturnUniversality("massZ")->universality)]<<" # massZ"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("massZ")->universality << " instead of massZ" << endl;
 	 }
       }
@@ -6406,13 +6406,13 @@ void WriteLesHouches(double* x)
       }
       else if (FindInFitted("massBottom")) {
 	 LesHouchesOutfile << "    5  "<<x[ReturnFittedPosition("massBottom")]<<" # mb(mb)"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting mBottom " << x[ReturnFittedPosition("massBottom")] << endl;
 	 }
       } 
       else if (FindInUniversality("massBottom")) {
 	 LesHouchesOutfile << "    5  "<<x[ReturnFittedPosition(ReturnUniversality("massBottom")->universality)]<<" # massBottom"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("massBottom")->universality << " instead of massBottom" << endl;
 	 }
       }
@@ -6426,13 +6426,13 @@ void WriteLesHouches(double* x)
       }
       else if (FindInFitted("massTop")) {
 	 LesHouchesOutfile << "    6  "<<x[ReturnFittedPosition("massTop")]<<" # mtop"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting massTop " << x[ReturnFittedPosition("massTop")] << endl;
 	 }
       } 
       else if (FindInUniversality("massTop")) {
 	 LesHouchesOutfile << "    6  "<<x[ReturnFittedPosition(ReturnUniversality("massTop")->universality)]<<" # massTop"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("massTop")->universality << " instead of massTop" << endl;
 	 }
       }
@@ -6445,13 +6445,13 @@ void WriteLesHouches(double* x)
       }
       else if (FindInFitted("massTau")) {
 	 LesHouchesOutfile << "    7  "<<x[ReturnFittedPosition("massTau")]<<" # mtau"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) {
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
 	    cout << "Fitting massTau " << x[ReturnFittedPosition("massTau")] << endl;
 	 }
       } 
       else if (FindInUniversality("massTau")) {
 	 LesHouchesOutfile << "    7  "<<x[ReturnFittedPosition(ReturnUniversality("massTau")->universality)]<<" # massTau"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) {
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
 	    cout << "fitting " << ReturnUniversality("massTau")->universality << " instead of massTau" << endl;
 	 }
       }
@@ -6500,13 +6500,13 @@ hase (rad), SPheno default value = 0
 	 LesHouchesOutfile << "    3  "<< ReturnFixedValue("TanBeta")->value <<" # tanb (fixed)"<< endl;
       }
       else if (FindInFitted("TanBeta")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting tanb " << x[ReturnFittedPosition("TanBeta")] << endl;
 	 }
 	 LesHouchesOutfile << "    3  "<< x[ReturnFittedPosition("TanBeta")]<<" # tanb"<< endl;
       } 
       else if (FindInRandomPar("TanBeta")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random tanb " << x[ReturnRandomPosition("TanBeta")] << endl;
 	 }
 
@@ -6514,7 +6514,7 @@ hase (rad), SPheno default value = 0
       }
       else if (FindInUniversality("TanBeta")) {
 	 LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition(ReturnUniversality("TanBeta")->universality)]<<" # TanBeta"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("TanBeta")->universality << " instead of TanBeta" << endl;
 	 }
       }
@@ -6527,13 +6527,13 @@ hase (rad), SPheno default value = 0
 	 LesHouchesOutfile << "    1  "<< ReturnFixedValue("M0")->value <<" # M0 (fixed)"<< endl;
       }
       else if (FindInFitted("M0")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting M0 " << x[ReturnFittedPosition("M0")] << endl;
 	 }
 	 LesHouchesOutfile << "    1  "<< x[ReturnFittedPosition("M0")]<<" # M0"<< endl;
       } 
       else if (FindInRandomPar("M0")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random M0 " << x[ReturnRandomPosition("M0")] << endl;
 	 }
 	 LesHouchesOutfile << "    1  "<< x[ReturnRandomPosition("M0")]<<" # M0 (random)"<< endl;
@@ -6541,7 +6541,7 @@ hase (rad), SPheno default value = 0
 
       else if (FindInUniversality("M0")) {
 	 LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition(ReturnUniversality("M0")->universality)]<<" # M0"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("M0")->universality << " instead of M0" << endl;
 	 }
       }
@@ -6554,13 +6554,13 @@ hase (rad), SPheno default value = 0
 	 LesHouchesOutfile << "    2  "<< ReturnFixedValue("M12")->value <<" # M12 (fixed)"<< endl;
       }
       else if (FindInFitted("M12")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting M12 " << x[ReturnFittedPosition("M12")] << endl;
 	 }
 	 LesHouchesOutfile << "    2  "<< x[ReturnFittedPosition("M12")]<<" # M12"<< endl;
       } 
       else if (FindInRandomPar("M12")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random M12 " << x[ReturnRandomPosition("M12")] << endl;
 	 }
 	 LesHouchesOutfile << "    2  "<< x[ReturnRandomPosition("M12")]<<" # M12 (random)"<< endl;
@@ -6568,7 +6568,7 @@ hase (rad), SPheno default value = 0
 
       else if (FindInUniversality("M12")) {
 	 LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("M12")->universality)]<<" # M12"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("M12")->universality << " instead of M12" << endl;
 	 }
       }
@@ -6581,13 +6581,13 @@ hase (rad), SPheno default value = 0
 	 LesHouchesOutfile << "    5  "<< ReturnFixedValue("A0")->value <<" # A0 (fixed)"<< endl;
       }
       else if (FindInFitted("A0")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting A0 " << x[ReturnFittedPosition("A0")] << endl;
 	 }
 	 LesHouchesOutfile << "    5  "<< x[ReturnFittedPosition("A0")]<<" # A0"<< endl;
       } 
       else if (FindInRandomPar("A0")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random A0 " << x[ReturnRandomPosition("A0")] << endl;
 	 }
 	 LesHouchesOutfile << "    5  "<< x[ReturnRandomPosition("A0")]<<" # A0 (random)"<< endl;
@@ -6595,7 +6595,7 @@ hase (rad), SPheno default value = 0
 
       else if (FindInUniversality("A0")) {
 	 LesHouchesOutfile << "    5  "<<x[ReturnFittedPosition(ReturnUniversality("A0")->universality)]<<" # A0"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("A0")->universality << " instead of A0" << endl;
 	 }
       }
@@ -6644,13 +6644,13 @@ hase (rad), SPheno default value = 0
       }
       else if (FindInFitted("massCharm")) {
 	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
 	 }
       } 
       else if (FindInUniversality("massCharm")) {
 	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
 	 }
       }
@@ -6687,13 +6687,13 @@ hase (rad), SPheno default value = 0
       }
       else if (FindInFitted("QEWSB")) {
 	 LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition("QEWSB")]<<" # Q_EWSB"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting Q_EWSB " << x[ReturnFittedPosition("QEWSB")] << endl;
 	 }
       } 
       else if (FindInUniversality("QEWSB")) {
 	 LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition(ReturnUniversality("QEWSB")->universality)]<<" # Q_EWSB"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("QEWSB")->universality << " instead of QEWSB" << endl;
 	 }
       }      
@@ -6707,13 +6707,13 @@ hase (rad), SPheno default value = 0
       }
       else if (FindInFitted("alphaem")) {
 	 LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition("alphaem")]<<" # 1/alpha_em(M_Z)"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting alphaem " << x[ReturnFittedPosition("alphaem")] << endl;
 	 }
       } 
       else if (FindInUniversality("alphaem")) {
 	 LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition(ReturnUniversality("alphaem")->universality)]<<" # 1/alpha_em(M_Z)"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("alphaem")->universality << " instead of alphaem" << endl;
 	 }
       }
@@ -6746,13 +6746,13 @@ hase (rad), SPheno default value = 0
       }
       else if (FindInFitted("alphas")) {
 	 LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition("alphas")]<<" # alpha_s"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting alphas " << x[ReturnFittedPosition("alphas")] << endl;
 	 }
       } 
       else if (FindInUniversality("alphas")) {
 	 LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition(ReturnUniversality("alphas")->universality)]<<" # alpha_ss"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("alphas")->universality << " instead of alphas" << endl;
 	 }
       }
@@ -6766,13 +6766,13 @@ hase (rad), SPheno default value = 0
       }
       else if (FindInFitted("massZ")) {
 	 LesHouchesOutfile << "    4  "<<x[ReturnFittedPosition("massZ")]<<" # mZ"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting massZ " << x[ReturnFittedPosition("massZ")] << endl;
 	 }
       } 
       else if (FindInUniversality("massZ")) {
 	 LesHouchesOutfile << "    4  "<<x[ReturnFittedPosition(ReturnUniversality("massZ")->universality)]<<" # massZ"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("massZ")->universality << " instead of massZ" << endl;
 	 }
       }
@@ -6785,13 +6785,13 @@ hase (rad), SPheno default value = 0
       }
       else if (FindInFitted("massBottom")) {
 	 LesHouchesOutfile << "    5  "<<x[ReturnFittedPosition("massBottom")]<<" # mb(mb)"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting mBottom " << x[ReturnFittedPosition("massBottom")] << endl;
 	 }
       } 
       else if (FindInUniversality("massBottom")) {
 	 LesHouchesOutfile << "    5  "<<x[ReturnFittedPosition(ReturnUniversality("massBottom")->universality)]<<" # massBottom"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("massBottom")->universality << " instead of massBottom" << endl;
 	 }
       }
@@ -6805,13 +6805,13 @@ hase (rad), SPheno default value = 0
       }
       else if (FindInFitted("massTop")) {
 	 LesHouchesOutfile << "    6  "<<x[ReturnFittedPosition("massTop")]<<" # mtop"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting mTop " << x[ReturnFittedPosition("massTop")] << endl;
 	 }
       } 
       else if (FindInUniversality("massTop")) {
 	 LesHouchesOutfile << "    6  "<<x[ReturnFittedPosition(ReturnUniversality("massTop")->universality)]<<" # massTop"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("massTop")->universality << " instead of massTop" << endl;
 	 }
       }
@@ -6827,7 +6827,7 @@ hase (rad), SPheno default value = 0
       } 
       else if (FindInUniversality("massTau")) {
 	 LesHouchesOutfile << "    7  "<<x[ReturnFittedPosition(ReturnUniversality("massTau")->universality)]<<" # massTau"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("massTau")->universality << " instead of massTau" << endl;
 	 }
       }
@@ -6867,13 +6867,13 @@ hase (rad), SPheno default value = 0
 	 LesHouchesOutfile << "    1  "<< ReturnFixedValue("M0")->value <<" # M0 (fixed)"<< endl;
       }
       else if (FindInFitted("M0")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting M0 " << x[ReturnFittedPosition("M0")] << endl;
 	 }
 	 LesHouchesOutfile << "    1  "<< x[ReturnFittedPosition("M0")]<<" # M0"<< endl;
       } 
       else if (FindInRandomPar("M0")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random M0 " << x[ReturnRandomPosition("M0")] << endl;
 	 }
 	 LesHouchesOutfile << "    1  "<< x[ReturnRandomPosition("M0")]<<" # M0 (random)"<< endl;
@@ -6881,7 +6881,7 @@ hase (rad), SPheno default value = 0
 
       else if (FindInUniversality("M0")) {
 	 LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition(ReturnUniversality("M0")->universality)]<<" # M0"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("M0")->universality << " instead of M0" << endl;
 	 }
       }
@@ -6894,13 +6894,13 @@ hase (rad), SPheno default value = 0
 	 LesHouchesOutfile << "    2  "<< ReturnFixedValue("M12")->value <<" # M12 (fixed)"<< endl;
       }
       else if (FindInFitted("M12")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting M12 " << x[ReturnFittedPosition("M12")] << endl;
 	 }
 	 LesHouchesOutfile << "    2  "<< x[ReturnFittedPosition("M12")]<<" # M12"<< endl;
       } 
       else if (FindInRandomPar("M12")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random M12 " << x[ReturnRandomPosition("M12")] << endl;
 	 }
 	 LesHouchesOutfile << "    2  "<< x[ReturnRandomPosition("M12")]<<" # M12 (random)"<< endl;
@@ -6908,7 +6908,7 @@ hase (rad), SPheno default value = 0
 
       else if (FindInUniversality("M12")) {
 	 LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("M12")->universality)]<<" # M12"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("M12")->universality << " instead of M12" << endl;
 	 }
       }
@@ -6921,20 +6921,20 @@ hase (rad), SPheno default value = 0
 	 LesHouchesOutfile << "    3  "<< ReturnFixedValue("TanBeta")->value <<" # tanb (fixed)"<< endl;
       }
       else if (FindInFitted("TanBeta")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting tanb " << x[ReturnFittedPosition("TanBeta")] << endl;
 	 }
 	 LesHouchesOutfile << "    3  "<< x[ReturnFittedPosition("TanBeta")]<<" # tanb"<< endl;
       } 
       else if (FindInRandomPar("TanBeta")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random tanb " << x[ReturnRandomPosition("TanBeta")] << endl;
 	 }
 	 LesHouchesOutfile << "    3  "<< x[ReturnRandomPosition("TanBeta")]<<" # tanb (random)"<< endl;
       }
       else if (FindInUniversality("TanBeta")) {
 	 LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition(ReturnUniversality("TanBeta")->universality)]<<" # TanBeta"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("TanBeta")->universality << " instead of TanBeta" << endl;
 	 }
       }
@@ -6955,13 +6955,13 @@ hase (rad), SPheno default value = 0
 	 LesHouchesOutfile << "    5  "<< ReturnFixedValue("A0")->value <<" # A0 (fixed)"<< endl;
       }
       else if (FindInFitted("A0")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting A0 " << x[ReturnFittedPosition("A0")] << endl;
 	 }
 	 LesHouchesOutfile << "    5  "<< x[ReturnFittedPosition("A0")]<<" # A0"<< endl;
       } 
       else if (FindInRandomPar("A0")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random A0 " << x[ReturnRandomPosition("A0")] << endl;
 	 }
 	 LesHouchesOutfile << "    5  "<< x[ReturnRandomPosition("A0")]<<" # A0 (random)"<< endl;
@@ -6969,7 +6969,7 @@ hase (rad), SPheno default value = 0
 
       else if (FindInUniversality("A0")) {
 	 LesHouchesOutfile << "    5  "<<x[ReturnFittedPosition(ReturnUniversality("A0")->universality)]<<" # A0"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("A0")->universality << " instead of A0" << endl;
 	 }
       }
@@ -6986,19 +6986,19 @@ hase (rad), SPheno default value = 0
 	 LesHouchesOutfile << "    1  " << ReturnFixedValue("M1")->value << " # M1(M_GUT) (fixed)" << endl;
       }    
       else if (FindInFitted("M1")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting M1 " << x[ReturnFittedPosition("M1")] << endl;
 	 }
 	 LesHouchesOutfile << "    1  " << x[ReturnFittedPosition("M1")] << " # M1(M_GUT)" << endl;
       } 
       else if (FindInRandomPar("M1")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random M1 " << x[ReturnRandomPosition("M1")] << endl;
 	 }
 	 LesHouchesOutfile << "    1  " << x[ReturnRandomPosition("M1")] << " # M1(M_GUT) (random)" << endl;
       } 
       else if (FindInUniversality("M1")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("M1")->universality << " instead of M1" << endl;
 	 }
 	 LesHouchesOutfile << "    1  " << x[ReturnFittedPosition(ReturnUniversality("M1")->universality)] << " # M1(M_GUT)" << endl;
@@ -7012,19 +7012,19 @@ hase (rad), SPheno default value = 0
 	 LesHouchesOutfile << "    2  " << ReturnFixedValue("M2")->value << " # M2(M_GUT) (fixed)" << endl;
       }    
       else if (FindInFitted("M2")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting M2 " << x[ReturnFittedPosition("M2")] << endl;
 	 }
 	 LesHouchesOutfile << "    2  " << x[ReturnFittedPosition("M2")] << " # M2(M_GUT)" << endl;
       }
       else if (FindInRandomPar("M2")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random M2 " << x[ReturnRandomPosition("M2")] << endl;
 	 }
 	 LesHouchesOutfile << "    2  " << x[ReturnRandomPosition("M2")] << " # M2(M_GUT) (random)" << endl;
       }
       else if (FindInUniversality("M2")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("M2")->universality << " instead of M2" << endl;
 	 }
 	 LesHouchesOutfile << "    2  " << x[ReturnFittedPosition(ReturnUniversality("M2")->universality)] << " # M2(M_GUT)" << endl;
@@ -7038,19 +7038,19 @@ hase (rad), SPheno default value = 0
 	 LesHouchesOutfile << "    3  " << ReturnFixedValue("M3")->value << " # M3(M_GUT) (fixed)" << endl;
       }    
       else if (FindInFitted("M3")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting M3 " << x[ReturnFittedPosition("M3")] << endl;
 	 }
 	 LesHouchesOutfile << "    3  " << x[ReturnFittedPosition("M3")] << " # M3(M_GUT)" << endl;
       }
       else if (FindInRandomPar("M3")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random M3 " << x[ReturnRandomPosition("M3")] << endl;
 	 }
 	 LesHouchesOutfile << "    3  " << x[ReturnRandomPosition("M3")] << " # M3(M_GUT) (random)" << endl;
       }
       else if (FindInUniversality("M3")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("M3")->universality << " instead of M3" << endl;
 	 }
 	 LesHouchesOutfile << "    3  " << x[ReturnFittedPosition(ReturnUniversality("M3")->universality)] << " # M3(M_GUT)" << endl;
@@ -7094,13 +7094,13 @@ hase (rad), SPheno default value = 0
       }
       else if (FindInFitted("massCharm")) {
 	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
 	 }
       } 
       else if (FindInUniversality("massCharm")) {
 	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
 	 }
       }
@@ -7132,13 +7132,13 @@ hase (rad), SPheno default value = 0
       }
       else if (FindInFitted("QEWSB")) {
 	 LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition("QEWSB")]<<" # Q_EWSB"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting Q_EWSB " << x[ReturnFittedPosition("QEWSB")] << endl;
 	 }
       } 
       else if (FindInUniversality("QEWSB")) {
 	 LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition(ReturnUniversality("QEWSB")->universality)]<<" # Q_EWSB"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("QEWSB")->universality << " instead of QEWSB" << endl;
 	 }
       }      
@@ -7152,13 +7152,13 @@ hase (rad), SPheno default value = 0
       }
       else if (FindInFitted("alphaem")) {
 	 LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition("alphaem")]<<" # 1/alpha_em(M_Z)"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting alphaem " << x[ReturnFittedPosition("alphaem")] << endl;
 	 }
       } 
       else if (FindInUniversality("alphaem")) {
 	 LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition(ReturnUniversality("alphaem")->universality)]<<" # 1/alpha_em(M_Z)"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fiting " << ReturnUniversality("alphaem")->universality << " instead of alphaem" << endl;
 	 }
       }
@@ -7172,13 +7172,13 @@ hase (rad), SPheno default value = 0
       }
       else if (FindInFitted("G_F")) {
 	LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition("G_F")]<<" # G_F"<<endl;
-	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	  cout << "Fitting G_F " << x[ReturnFittedPosition("G_F")] << endl;
 	}
       } 
       else if (FindInUniversality("G_F")) {
 	LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("G_F")->universality)]<<" # G_F"<<endl;
-	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	  cout << "fitting " << ReturnUniversality("G_F")->universality << " instead of G_F" << endl;
 	}
       }
@@ -7192,13 +7192,13 @@ hase (rad), SPheno default value = 0
       }
       else if (FindInFitted("alphas")) {
 	 LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition("alphas")]<<" # alpha_s"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting alphas " << x[ReturnFittedPosition("alphas")] << endl;
 	 }
       } 
       else if (FindInUniversality("alphas")) {
 	 LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition(ReturnUniversality("alphas")->universality)]<<" # alpha_ss"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("alphas")->universality << " instead of alphas" << endl;
 	 }
       }
@@ -7212,13 +7212,13 @@ hase (rad), SPheno default value = 0
       }
       else if (FindInFitted("massZ")) {
 	 LesHouchesOutfile << "    4  "<<x[ReturnFittedPosition("massZ")]<<" # mZ"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting massZ " << x[ReturnFittedPosition("massZ")] << endl;
 	 }
       } 
       else if (FindInUniversality("massZ")) {
 	 LesHouchesOutfile << "    4  "<<x[ReturnFittedPosition(ReturnUniversality("massZ")->universality)]<<" # massZ"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("massZ")->universality << " instead of massZ" << endl;
 	 }
       }
@@ -7231,13 +7231,13 @@ hase (rad), SPheno default value = 0
       }
       else if (FindInFitted("massBottom")) {
 	 LesHouchesOutfile << "    5  "<<x[ReturnFittedPosition("massBottom")]<<" # mb(mb)"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting mBottom " << x[ReturnFittedPosition("massBottom")] << endl;
 	 }
       } 
       else if (FindInUniversality("massBottom")) {
 	 LesHouchesOutfile << "    5  "<<x[ReturnFittedPosition(ReturnUniversality("massBottom")->universality)]<<" # massBottom"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("massBottom")->universality << " instead of massBottom" << endl;
 	 }
       }
@@ -7251,13 +7251,13 @@ hase (rad), SPheno default value = 0
       }
       else if (FindInFitted("massTop")) {
 	 LesHouchesOutfile << "    6  "<<x[ReturnFittedPosition("massTop")]<<" # mtop"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting mTop " << x[ReturnFittedPosition("massTop")] << endl;
 	 }
       } 
       else if (FindInUniversality("massTop")) {
 	 LesHouchesOutfile << "    6  "<<x[ReturnFittedPosition(ReturnUniversality("massTop")->universality)]<<" # massTop"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("massTop")->universality << " instead of massTop" << endl;
 	 }
       }
@@ -7273,7 +7273,7 @@ hase (rad), SPheno default value = 0
       } 
       else if (FindInUniversality("massTau")) {
 	 LesHouchesOutfile << "    7  "<<x[ReturnFittedPosition(ReturnUniversality("massTau")->universality)]<<" # massTau"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("massTau")->universality << " instead of massTau" << endl;
 	 }
       }
@@ -7303,20 +7303,20 @@ hase (rad), SPheno default value = 0
 	 LesHouchesOutfile << "    3  "<< ReturnFixedValue("TanBeta")->value <<" # tanb (fixed)"<< endl;
       }
       else if (FindInFitted("TanBeta")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting tanb " << x[ReturnFittedPosition("TanBeta")] << endl;
 	 }
 	 LesHouchesOutfile << "    3  "<< x[ReturnFittedPosition("TanBeta")]<<" # tanb"<< endl;
       } 
       else if (FindInRandomPar("TanBeta")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random TanBeta " << x[ReturnRandomPosition("TanBeta")] << endl;
 	 }
 	 LesHouchesOutfile << "    3  " << x[ReturnRandomPosition("TanBeta")] << " # TanBeta (random)" << endl;
       }
       else if (FindInUniversality("TanBeta")) {
 	 LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition(ReturnUniversality("TanBeta")->universality)]<<" # TanBeta"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("TanBeta")->universality << " instead of TanBeta" << endl;
 	 }
       }
@@ -7329,20 +7329,20 @@ hase (rad), SPheno default value = 0
 	 LesHouchesOutfile << "    1  "<< ReturnFixedValue("Lambda")->value <<" # Lambda (fixed)"<< endl;
       }
       else if (FindInFitted("Lambda")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting Lambda " << x[ReturnFittedPosition("Lambda")] << endl;
 	 }
 	 LesHouchesOutfile << "    1  "<< x[ReturnFittedPosition("Lambda")]<<" # Lambda"<< endl;
       } 
       else if (FindInRandomPar("Lambda")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random Lambda " << x[ReturnRandomPosition("Lambda")] << endl;
 	 }
 	 LesHouchesOutfile << "    1  " << x[ReturnRandomPosition("Lambda")] << " # Lambda (random)" << endl;
       }
       else if (FindInUniversality("Lambda")) {
 	 LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition(ReturnUniversality("Lambda")->universality)]<<" # Lambda"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("Lambda")->universality << " instead of Lambda" << endl;
 	 }
       }
@@ -7355,20 +7355,20 @@ hase (rad), SPheno default value = 0
 	 LesHouchesOutfile << "    2  "<< ReturnFixedValue("Mmess")->value <<" # Mmess (fixed)"<< endl;
       }
       else if (FindInFitted("Mmess")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting Mmess " << x[ReturnFittedPosition("Mmess")] << endl;
 	 }
 	 LesHouchesOutfile << "    2  "<< x[ReturnFittedPosition("Mmess")]<<" # Mmess"<< endl;
       } 
       else if (FindInRandomPar("Mmess")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random Mmess " << x[ReturnRandomPosition("Mmess")] << endl;
 	 }
 	 LesHouchesOutfile << "    2  " << x[ReturnRandomPosition("Mmess")] << " # Mmess (random)" << endl;
       }
       else if (FindInUniversality("Mmess")) {
 	 LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("Mmess")->universality)]<<" # Mmess"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("Mmess")->universality << " instead of Mmess" << endl;
 	 }
       }
@@ -7381,20 +7381,20 @@ hase (rad), SPheno default value = 0
 	 LesHouchesOutfile << "    6  "<< ReturnFixedValue("cGrav")->value <<" # cGrav (fixed)"<< endl;
       }
       else if (FindInFitted("cGrav")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting cGrav " << x[ReturnFittedPosition("cGrav")] << endl;
 	 }
 	 LesHouchesOutfile << "    6  "<< x[ReturnFittedPosition("cGrav")]<<" # cGrav"<< endl;
       } 
       else if (FindInRandomPar("cGrav")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Calculating random cGrav" << x[ReturnRandomPosition("cGrav")] << endl;
 	 }
 	 LesHouchesOutfile << "    6  " << x[ReturnRandomPosition("cGrav")] << " # cGrav (random)" << endl;
       }
       else if (FindInUniversality("cGrav")) {
 	 LesHouchesOutfile << "    6  "<<x[ReturnFittedPosition(ReturnUniversality("cGrav")->universality)]<<" # cGrav"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("cGrav")->universality << " instead of cGrav" << endl;
 	 }
       }
@@ -7452,13 +7452,13 @@ hase (rad), SPheno default value = 0
       }
       else if (FindInFitted("massCharm")) {
 	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
 	 }
       } 
       else if (FindInUniversality("massCharm")) {
 	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
 	 }
       }
@@ -7490,13 +7490,13 @@ hase (rad), SPheno default value = 0
 	    }
 	    else if (FindInFitted("QEWSB")) {
 	      LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition("QEWSB")]<<" # Q_EWSB"<<endl;
-	      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		cout << "Fitting Q_EWSB " << x[ReturnFittedPosition("QEWSB")] << endl;
 	      }
 	    } 
 	    else if (FindInUniversality("QEWSB")) {
 	      LesHouchesOutfile << "   12  "<<x[ReturnFittedPosition(ReturnUniversality("QEWSB")->universality)]<<" # Q_EWSB"<<endl;
-	      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		cout << "fitting " << ReturnUniversality("QEWSB")->universality << " instead of QEWSB" << endl;
 	      }
 	    }      
@@ -7510,13 +7510,13 @@ hase (rad), SPheno default value = 0
 	    }
 	    else if (FindInFitted("alphaem")) {
 	       LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition("alphaem")]<<" # 1/alpha_em(M_Z)"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "Fitting alphaem " << x[ReturnFittedPosition("alphaem")] << endl;
 	       }
 	    } 
 	    else if (FindInUniversality("alphaem")) {
 	       LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition(ReturnUniversality("alphaem")->universality)]<<" # 1/alpha_em(M_Z)"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "fiting " << ReturnUniversality("alphaem")->universality << " instead of alphaem" << endl;
 	       }
 	    }
@@ -7549,13 +7549,13 @@ hase (rad), SPheno default value = 0
 	    }
 	    else if (FindInFitted("alphas")) {
 	       LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition("alphas")]<<" # alpha_s"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "Fitting alphas " << x[ReturnFittedPosition("alphas")] << endl;
 	       }
 	    } 
 	    else if (FindInUniversality("alphas")) {
 	       LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition(ReturnUniversality("alphas")->universality)]<<" # alpha_ss"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "fitting " << ReturnUniversality("alphas")->universality << " instead of alphas" << endl;
 	       }
 	    }
@@ -7569,13 +7569,13 @@ hase (rad), SPheno default value = 0
 	    }
 	    else if (FindInFitted("massZ")) {
 	       LesHouchesOutfile << "    4  "<<x[ReturnFittedPosition("massZ")]<<" # mZ"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "Fitting massZ " << x[ReturnFittedPosition("massZ")] << endl;
 	       }
 	    } 
 	    else if (FindInUniversality("massZ")) {
 	       LesHouchesOutfile << "    4  "<<x[ReturnFittedPosition(ReturnUniversality("massZ")->universality)]<<" # massZ"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "fitting " << ReturnUniversality("massZ")->universality << " instead of massZ" << endl;
 	       }
 	    }
@@ -7588,13 +7588,13 @@ hase (rad), SPheno default value = 0
 	    }
 	    else if (FindInFitted("massBottom")) {
 	       LesHouchesOutfile << "    5  "<<x[ReturnFittedPosition("massBottom")]<<" # mb(mb)"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "Fitting mBottom " << x[ReturnFittedPosition("massBottom")] << endl;
 	       }
 	    } 
 	    else if (FindInUniversality("massBottom")) {
 	       LesHouchesOutfile << "    5  "<<x[ReturnFittedPosition(ReturnUniversality("massBottom")->universality)]<<" # massBottom"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "fitting " << ReturnUniversality("massBottom")->universality << " instead of massBottom" << endl;
 	       }
 	    }
@@ -7608,13 +7608,13 @@ hase (rad), SPheno default value = 0
 	    }
 	    else if (FindInFitted("massTop")) {
 	       LesHouchesOutfile << "    6  "<<x[ReturnFittedPosition("massTop")]<<" # mtop"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "Fitting mTop " << x[ReturnFittedPosition("massTop")] << endl;
 	       }
 	    } 
 	    else if (FindInUniversality("massTop")) {
 	       LesHouchesOutfile << "    6  "<<x[ReturnFittedPosition(ReturnUniversality("massTop")->universality)]<<" # massTop"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "fitting " << ReturnUniversality("massTop")->universality << " instead of massTop" << endl;
 	       }
 	    }
@@ -7630,7 +7630,7 @@ hase (rad), SPheno default value = 0
 	    } 
 	    else if (FindInUniversality("massTau")) {
 	       LesHouchesOutfile << "    7  "<<x[ReturnFittedPosition(ReturnUniversality("massTau")->universality)]<<" # massTau"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "fitting " << ReturnUniversality("massTau")->universality << " instead of massTau" << endl;
 	       }
 	    }
@@ -7660,20 +7660,20 @@ hase (rad), SPheno default value = 0
 	       LesHouchesOutfile << "    3  "<< ReturnFixedValue("TanBeta")->value <<" # tanb (fixed)"<< endl;
 	    }
 	    else if (FindInFitted("TanBeta")) {
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "Fitting tanb " << x[ReturnFittedPosition("TanBeta")] << endl;
 	       }
 	       LesHouchesOutfile << "    3  "<< x[ReturnFittedPosition("TanBeta")]<<" # tanb"<< endl;
 	    } 
 	    else if (FindInRandomPar("TanBeta")) {
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "Calculating random TanBeta " << x[ReturnRandomPosition("TanBeta")] << endl;
 	       }
 	       LesHouchesOutfile << "    3  " << x[ReturnRandomPosition("TanBeta")] << " # TanBeta (random)" << endl;
 	    }
 	    else if (FindInUniversality("TanBeta")) {
 	       LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition(ReturnUniversality("TanBeta")->universality)]<<" # TanBeta"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "fitting " << ReturnUniversality("TanBeta")->universality << " instead of TanBeta" << endl;
 	       }
 	    }
@@ -7686,20 +7686,20 @@ hase (rad), SPheno default value = 0
 	       LesHouchesOutfile << "    1  "<< ReturnFixedValue("M0")->value <<" # M0 (fixed)"<< endl;
 	    }
 	    else if (FindInFitted("M0")) {
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "Fitting M0 " << x[ReturnFittedPosition("M0")] << endl;
 	       }
 	       LesHouchesOutfile << "    1  "<< x[ReturnFittedPosition("M0")]<<" # M0"<< endl;
 	    } 
 	    else if (FindInRandomPar("M0")) {
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "Calculating random M0 " << x[ReturnRandomPosition("M0")] << endl;
 	       }
 	       LesHouchesOutfile << "    1  " << x[ReturnRandomPosition("M0")] << " # M0 (random)" << endl;
 	    }
 	    else if (FindInUniversality("M0")) {
 	       LesHouchesOutfile << "    1  "<<x[ReturnFittedPosition(ReturnUniversality("M0")->universality)]<<" # M0"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "fitting " << ReturnUniversality("M0")->universality << " instead of M0" << endl;
 	       }
 	    }
@@ -7712,20 +7712,20 @@ hase (rad), SPheno default value = 0
 	       LesHouchesOutfile << "    2  "<< ReturnFixedValue("M32")->value <<" # M32 (fixed)"<< endl;
 	    }
 	    else if (FindInFitted("M32")) {
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "Fitting M32 " << x[ReturnFittedPosition("M32")] << endl;
 	       }
 	       LesHouchesOutfile << "    2  "<< x[ReturnFittedPosition("M32")]<<" # M32"<< endl;
 	    } 
 	    else if (FindInRandomPar("M32")) {
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "Calculating random M32 " << x[ReturnRandomPosition("M32")] << endl;
 	       }
 	       LesHouchesOutfile << "    2  " << x[ReturnRandomPosition("M32")] << " # M32 (random)" << endl;
 	    }
 	    else if (FindInUniversality("M32")) {
 	       LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("M32")->universality)]<<" # M32"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "fitting " << ReturnUniversality("M32")->universality << " instead of M32" << endl;
 	       }
 	    }
@@ -7775,13 +7775,13 @@ hase (rad), SPheno default value = 0
 	    }
 	    else if (FindInFitted("massCharm")) {
 	       LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
 	       }
 	    } 
 	    else if (FindInUniversality("massCharm")) {
 	       LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/10. ) - (n_printouts+1)/10 ) < 0.01 ) ) { 
+	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		  cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
 	       }
 	    }
@@ -8259,7 +8259,7 @@ int   ReadLesHouches()
 {
    unsigned int found_prod;
    // first parse the LesHouches outfile and load predictions to maps
-   if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
+   if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/100. ) - n_printouts/100 ) < 0.01 ) ) { 
       cout << yyDashedLine << endl;
       cout << "Parsing the les houches file " << endl;
    }
@@ -8346,7 +8346,7 @@ int   ReadLesHouches()
 
    used_products.clear();
    // loop over yyMeasuredVec and fill theovalue
-   if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
+   if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/100. ) - n_printouts/100 ) < 0.01 ) ) { 
       cout << yyDashedLine << endl;
       cout << "Interpreting the les houches output " << endl;
    }
@@ -9160,7 +9160,7 @@ int   ReadLesHouches()
       // check whether all has been found
       for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
 	 if ((yyMeasuredVec[i].theoset == false) && (yyMeasuredVec[i].nofit == false)) {
-	    if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) {       
+	    if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/100. ) - n_printouts/100 ) < 0.01 ) ) {       
 	       cout << "WARNING: observable " << yyMeasuredVec[i].name << " not found!" << endl;
 	    }
 	 }
@@ -9630,7 +9630,7 @@ int   ReadLesHouches()
 		  for (unsigned int ii = 0; ii < xp.size(); ii++) {
 		     xdummy[ii] = xp[ii];
 		  }
-		  if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
+		  if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/100. ) - n_printouts/100 ) < 0.01 ) ) { 
 		     cout << "running simulated annealing at t = " << t << " m(<"<<nt<<") = " << m << " j(<"<<ns<<") = " << j << 
 			" h(<"<<n<<") = " << h << " " << yyFittedVec[h].name << " in niter = " << niter <<  endl;
 		  }
@@ -10041,7 +10041,7 @@ int   ReadLesHouches()
 		  for (unsigned int ii = 0; ii < xp.size(); ii++) {
 		     xdummy[ii] = xp[ii];
 		  }
-		  if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
+		  if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/100. ) - n_printouts/100 ) < 0.01 ) ) { 
 		     cout << "running simulated annealing at t = " << t << " m(<"<<nt<<") = " << m << " j(<"<<ns<<") = " << j << 
 			" h(<"<<n<<") = " << h << " " << yyFittedVec[h].name << " in niter = " << niter <<  endl;
 		  }
@@ -10534,7 +10534,7 @@ int   ReadLesHouches()
 		  for (unsigned int ii = 0; ii < xp.size(); ii++) {
 		     xdummy[ii] = xp[ii];
 		  }
-		  if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/10. ) - n_printouts/10 ) < 0.01 ) ) { 
+		  if (yyVerbose || ( TMath::Abs( ( (float)n_printouts/100. ) - n_printouts/100 ) < 0.01 ) ) { 
 		     cout << "running simulated annealing at t = " << t << " m(<"<<nt<<") = " << m << " j(<"<<ns<<") = " << j << 
 			" h(<"<<n<<") = " << h << " " << yyFittedVec[h].name << " in niter = " << niter <<  endl;
 		  }
