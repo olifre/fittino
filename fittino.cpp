@@ -174,7 +174,7 @@ int call_HiggsBounds(int nH, double* parameterVector)
   } 
   
   
-  // Higss Masses
+  // Higgs Masses
   Mh[0]=yyMass[ID_h];
   Mh[1]=yyMass[ID_H];
   Mh[2]=yyMass[ID_A];
@@ -182,9 +182,7 @@ int call_HiggsBounds(int nH, double* parameterVector)
   double temp_BR[3];
   if (Mh[0] == 0 || Mh[1] == 0 || Mh[2] == 0)
     {
-      if (yyVerbose){
       cout<<"Error: Cannot get Higgs-Masses. HiggsBounds aborted"<<endl;
-      }
       HBresult = 2;
       for (int i=0; i<nH; i++){ 
 	HBmass[i].push_back(Mh[i]);
@@ -199,7 +197,7 @@ int call_HiggsBounds(int nH, double* parameterVector)
     //		  double SMGammaTotal = smgamma_h_(&yyMass[ID_h]);
     for (int i=0; i<nH; i++){ 
       if (yyVerbose){
-      cout << "mh = " << Mh[i] << endl;
+	cout << "mh = " << Mh[i] << endl;
       }
       double SMGammaTotal = 1.;
       double thisMh = 500.;
@@ -353,7 +351,8 @@ double ScanForHiggsLimit( int nH, double* parameterVector ) {
 
    double higgsMassError = 0.3;
    for ( unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
-      if ( yyMeasuredVec[i].name == "Massh0_npf" ) {
+      if ( yyMeasuredVec[i].name == "Massh0_npf" ||
+	   yyMeasuredVec[i].name == "massh0" ) {
          higgsMassError = yyMeasuredVec[i].error;
       }
    }
@@ -4329,7 +4328,8 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
          for ( unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
 
-            if ( yyMeasuredVec[i].name == "Massh0_npf" ) {
+            if ( yyMeasuredVec[i].name == "Massh0_npf" ||
+		 yyMeasuredVec[i].name == "massh0" ) {
 
                yyMeasuredVec[i].bound_low = higgsMassLimit;
 

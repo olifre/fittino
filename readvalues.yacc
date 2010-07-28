@@ -579,6 +579,70 @@ input:
 		      }
                   }
 	      }
+	    | input T_KEY T_COMPARATOR value err
+	      {
+		  yyInputFileLine.prevalue = $2;
+		  yyInputFileLine.value = $4;
+//		  yyInputFileLine.error = $5;
+
+		  MeasuredValue tmpValue;
+		  tmpValue.setScaling = false;
+		  tmpValue.bound = true;
+		  tmpValue.nofit = false;
+		  tmpValue.name = $2;
+		  tmpValue.value = $4;
+		  tmpValue.error = $5;
+		  tmpValue.type = mass;
+		  tmpValue.theovalue  = 0;
+		  if (!strcmp($3,"<")) {
+		    tmpValue.bound_low = 0.;
+		    tmpValue.bound_up = $4;
+		  }
+		  if (!strcmp($3,">")) {
+		    tmpValue.bound_low = $4;
+		    tmpValue.bound_up = 0;
+		  }
+		  tmpValue.alias = 0;
+		  tmpValue.id = 0;
+		  if (!strncmp($2, "mass", 4))tmpValue.type = mass;
+	          else if (!strncmp($2, "width", 5)) { 
+		    tmpValue.type = Pwidth;
+		    char tmpstr5[256];
+		    strcpy(tmpstr5,$2);
+		    char* tmpstrpointer;
+		    tmpstrpointer = &tmpstr5[5];
+		    // cout << "setting the particle " << tmpstrpointer << " id to " << yyParticleIDs[tmpstrpointer] << " " << yyParticleIDs["Neutralino1"  ] << endl;
+		    tmpValue.id    = yyParticleIDs[tmpstrpointer];
+		  }
+		  else if (!strcmp($2, "tauFromStau1Polarisation")) tmpValue.type = tauFromStau1Polarisation;
+		  else if (!strcmp($2, "tauFromNeutralino2Polarisation")) tmpValue.type = tauFromNeutralino2Polarisation;
+		  else if (!strcmp($2, "G_F")) {
+		      tmpValue.type = SMPrecision;
+		      tmpValue.id = gf;
+		  }
+		  else if (!strcmp($2, "alphas")) {
+		      tmpValue.type = SMPrecision;
+		      tmpValue.id = alphas;
+		  }
+		  else if (!strcmp($2, "alphaem")) {
+		      tmpValue.type = SMPrecision;
+		      tmpValue.id = alphaem;
+		  }
+		  else if (!strcmp($2, "fully_inclusive")) {
+		      tmpValue.type = LHCRate;
+		      tmpValue.id = fully_inclusive;
+		  }
+		  else if (!strcmp($2, "os_sf")) {
+		      tmpValue.type = LHCRate;
+		      tmpValue.id = os_sf;
+		  }
+		  else if (!strcmp($2, "four_b")) {
+		      tmpValue.type = LHCRate;
+		      tmpValue.id = four_b;
+		  }
+		  else tmpValue.type = other;
+		  yyMeasuredVec.push_back(tmpValue);
+	      }
 	    | input T_KEY value err T_ALIAS T_NUMBER
 	      {
                   char c[1000];
