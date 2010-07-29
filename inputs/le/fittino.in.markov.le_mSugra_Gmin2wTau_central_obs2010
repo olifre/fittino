@@ -179,7 +179,7 @@ SepFitTanbMu                   off
 SepFitmA	               off
 Calculator                     SPHENO ./SPheno
 LEOCalculator                  NPFITTER ./NPpredict.exe
-QuarkFlavourViolation          off
+UseFullCKMMatrix               off
 UseMinos                       off
 UseHesse                       off
 NumberOfMinimizations          1
@@ -193,8 +193,8 @@ UseHiggsBounds                 on
 UseMarkovChains                on
 MarkovChainReadjustWidth       off
 MarkovChainReadjustWidthPeriod 500
-MaxMarkovChain                 80000
-#MarkovInterfaceFilePath        /PUT/YOUR/OWN/PATH/fittino.in.markov.le_mSugra_allObs_central_obs2010
+MaxMarkovChain                 50000
+MarkovInterfaceFilePath         /afs/naf.desy.de/user/p/prudent/fittino/interfaceFile_LEO2010_Gmin2wTau_mSugra_central.txt
 
 MinuitStrategy	               2
 MachinePrecision               1e-8
