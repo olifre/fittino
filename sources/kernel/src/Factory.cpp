@@ -1,12 +1,13 @@
-/* $Id: OptimizerFactory.cpp 613 2010-05-26 09:42:00Z uhlenbrock $ */
+/* $Id: Factory.cpp 613 2010-05-26 09:42:00Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        OptimizerFactory.cpp                                             *
+* File        Factory.cpp                                                      *
 *                                                                              *
-* Description Factory class for input file interpreters                        *
+* Description Factory class for creating input file interpreters, models and   *
+*             optimizers                                                       *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -17,16 +18,52 @@
 *                                                                              *
 *******************************************************************************/
 
+#include "Factory.h"
+#include "FittinoInputFileInterpreter.h"
 #include "MinuitOptimizer.h"
-#include "OptimizerFactory.h"
+#include "MSUGRAModel.h"
 #include "ParticleSwarmOptimizer.h"
+#include "RosenbrockModel.h"
 #include "SimulatedAnnealingOptimizer.h"
+#include "XMLInputFileInterpreter.h"
 
-Fittino::OptimizerFactory::OptimizerFactory() {
+Fittino::Factory::Factory() {
 
 }
 
-Fittino::OptimizerBase* const Fittino::OptimizerFactory::CreateOptimizer( const Fittino::OptimizerBase::OptimizerType& optimizerType, Fittino::ModelBase* model ) const {
+Fittino::Factory::~Factory() {
+
+}
+
+const Fittino::InputFileInterpreterBase* const Fittino::Factory::CreateInputFileInterpreter( const Fittino::InputFileInterpreterBase::InputFileFormat& inputFileFormat ) const {
+
+    switch ( inputFileFormat ) {
+
+        case Fittino::InputFileInterpreterBase::XMLINPUTFILE:
+            return new XMLInputFileInterpreter();
+
+        case Fittino::InputFileInterpreterBase::FITTINOINPUTFILE:
+            return new FittinoInputFileInterpreter();
+
+    }
+
+}
+
+Fittino::ModelBase* const Fittino::Factory::CreateModel( const Fittino::ModelBase::ModelType& modelType ) const {
+
+    switch ( modelType ) {
+
+        case Fittino::ModelBase::MSUGRA:
+            return new MSUGRAModel();
+
+        case Fittino::ModelBase::ROSENBROCK:
+            return new RosenbrockModel();
+
+    }
+
+}
+
+Fittino::OptimizerBase* const Fittino::Factory::CreateOptimizer( const Fittino::OptimizerBase::OptimizerType& optimizerType, Fittino::ModelBase* model ) const {
 
     switch ( optimizerType ) {
 
@@ -40,9 +77,5 @@ Fittino::OptimizerBase* const Fittino::OptimizerFactory::CreateOptimizer( const 
             return new SimulatedAnnealingOptimizer( model );
 
     }
-
-}
-
-Fittino::OptimizerFactory::~OptimizerFactory() {
 
 }

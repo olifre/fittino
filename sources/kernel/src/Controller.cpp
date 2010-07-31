@@ -28,13 +28,11 @@
 #include "Configuration.h"
 #include "ConfigurationException.h"
 #include "Controller.h"
+#include "Factory.h"
 #include "InputException.h"
 #include "InputFileInterpreterBase.h"
-#include "InputFileInterpreterFactory.h"
 #include "ModelBase.h"
-#include "ModelFactory.h"
 #include "OptimizerBase.h"
-#include "OptimizerFactory.h"
 
 Fittino::Controller* Fittino::Controller::GetInstance() {
 
@@ -116,8 +114,8 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
         Controller::PrintLogo();
 
-        const InputFileInterpreterFactory inputFileInterpreterFactory;
-        const InputFileInterpreterBase* const inputFileInterpreter = inputFileInterpreterFactory.CreateInputFileInterpreter( Controller::DetermineInputFileFormat() );
+        const Factory factory;
+        const InputFileInterpreterBase* const inputFileInterpreter = factory.CreateInputFileInterpreter( Controller::DetermineInputFileFormat() );
         inputFileInterpreter->Parse( _inputFileName );
         delete inputFileInterpreter;
 
@@ -135,13 +133,12 @@ void Fittino::Controller::ExecuteFittino() const {
 
     try {
 
-        const ModelFactory modelFactory;
-        ModelBase* const model = modelFactory.CreateModel( Configuration::GetInstance()->GetModelType() );
+        const Factory factory;
+        ModelBase* const model = factory.CreateModel( Configuration::GetInstance()->GetModelType() );
 
         if ( Configuration::GetInstance()->GetExecutionMode() == ExecutionMode::OPTIMIZATION ) {
 
-            const OptimizerFactory optimizerFactory;
-            OptimizerBase* const optimizer = optimizerFactory.CreateOptimizer( Configuration::GetInstance()->GetOptimizerType(), model );
+            OptimizerBase* const optimizer = factory.CreateOptimizer( Configuration::GetInstance()->GetOptimizerType(), model );
             optimizer->PerformOptimization();
             delete optimizer;
 

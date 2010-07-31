@@ -1,12 +1,13 @@
-/* $Id: ModelFactory.h 613 2010-05-26 09:42:00Z uhlenbrock $ */
+/* $Id: Factory.h 613 2010-05-26 09:42:00Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        ModelFactory.h                                                   *
+* File        Factory.h                                                        *
 *                                                                              *
-* Description Factory class for models                                         *
+* Description Factory class for creating input file interpreters, models and   *
+*             optimizers                                                       *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -17,10 +18,12 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_MODELFACTORY_H
-#define FITTINO_MODELFACTORY_H
+#ifndef FITTINO_FACTORY_H
+#define FITTINO_FACTORY_H
 
+#include "InputFileInterpreterBase.h"
 #include "ModelBase.h"
+#include "OptimizerBase.h"
 
 /*!
  *  \brief Fittino namespace
@@ -28,23 +31,25 @@
 namespace Fittino {
 
   /*!
-   *  \brief Factory class for models 
+   *  \brief Factory class for creating input file interpreters. models and optimizers.
    */
-  class ModelFactory {
+  class Factory {
 
     public:
       /*!
        *  Constructor
        */
-                        ModelFactory();
+                                            Factory();
       /*!
        *  Destructor
        */
-                        ~ModelFactory();
-       ModelBase* const CreateModel( const ModelBase::ModelType& modelType ) const;
+                                            ~Factory();
+      const InputFileInterpreterBase* const CreateInputFileInterpreter( const InputFileInterpreterBase::InputFileFormat& inputFileFormat ) const;
+      ModelBase* const                      CreateModel( const ModelBase::ModelType& modelType ) const;
+      OptimizerBase* const                  CreateOptimizer( const OptimizerBase::OptimizerType& optimizerType, ModelBase* model ) const;
 
   };
 
 }
 
-#endif // FITTINO_MODELFACTORY_
+#endif // FITTINO_FACTORY_H
