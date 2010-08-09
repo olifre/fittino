@@ -1455,7 +1455,7 @@ input:
 		      if ($3 == on) yyUseSimplexMinOnly = true;
 		      else yyUseSimplexMinOnly = false;
 		  } 
-		  if (!strcmp($2, "yyRequireNeut1LSP")) {
+		  if (!strcmp($2, "RequireNeut1LSP")) {
 		      if ($3 == on) yyRequireNeut1LSP = true;
 		      else yyRequireNeut1LSP = false;
 		  }
