@@ -97,6 +97,8 @@ double        sRecCos2PhiR;
 double        sRecMassTop;
 
 
+std::map< std::pair<int,int>, double> signalXsec;
+
 
 extern "C" { void susygen_call_test_(int *, double [],double *);}
 extern "C" { void mssmsusygen_init_(int *, int *, float *, float *,float *,float *,float *,float *);}
@@ -441,6 +443,30 @@ Fittino::Fittino(const Input* input)
       rateValue->readGrids();
       rateValue->readLeptonGrids();
       break;
+    }
+  }
+
+  if (yyUseXsecLimits) {
+    std::ifstream infile(yyGridPath.c_str());
+    if (!infile.is_open()) {
+      std::cerr << "Cannot open cross-section file" << std::endl;
+      exit(EXIT_FAILURE);
+    }
+
+    std::string line;
+    for (int i=0; i<2; i++) { // skip first two lines containing legend
+      getline(infile,line);
+    }
+  
+    double m0, m12, xs;
+    std::pair<int, int> p;
+
+    while (!infile.eof()) {
+      infile >> m0 >> m12 >> xs;
+      //    std::cout << m0 << " " << m12 << " " << xs << std::endl;
+      p.first = m0;
+      p.second = m12;
+      signalXsec[p] = xs;
     }
   }
 }
@@ -4462,6 +4488,35 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    }
 
 
+   if (yyUseXsecLimits) {
+     double M0;
+     if (FindInFixed("M0")) {
+       M0 = ReturnFixedValue("M0")->value;
+     }
+     else if (FindInFitted("M0")) {
+       M0 = x[ReturnFittedPosition("M0")];
+     }
+     else if (FindInRandomPar("M0")) {
+       M0 = x[ReturnRandomPosition("M0")];
+     }
+     double M12;
+     if (FindInFixed("M12")) {
+       M12 = ReturnFixedValue("M12")->value;
+     }
+     else if (FindInFitted("M12")) {
+       M12 = x[ReturnFittedPosition("M12")];
+     }
+     else if (FindInRandomPar("M12")) {
+       M12 = x[ReturnRandomPosition("M12")];
+     }
+     double s = BilinearInterpolator(M0, M12, signalXsec);
+     s *= 1.4; // fudge factor to get agreement with Atlas SU4 study
+     double b = 2420; // hard-coded (I know it's ugly)
+     double sigma = TMath::Sqrt(s+b);
+     double CLsb = -0.5 * TMath::Erf( TMath::Sqrt(2) * s / (2*sigma) ) + 0.5;
+
+     f += 2 * TMath::ErfInverse(1 - 2*CLsb) * TMath::ErfInverse(1 - 2*CLsb);
+   }
 
 
    if (yyVerbose){

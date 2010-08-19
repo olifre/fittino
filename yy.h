@@ -51,6 +51,7 @@ extern bool yyUseLoopCorrections;
 extern bool yyCalcPullDist;
 extern bool yyScanParameters;
 extern bool yyPerformFit;
+extern bool yyUseXsecLimits;
 extern bool yyISR;
 extern bool yyCalculatorError;
 extern bool yyUseMinos;

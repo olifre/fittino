@@ -141,6 +141,7 @@ bool          yyPerformFit = true;
 bool          yyISR;
 bool          yyCalculatorError;
 bool          yyUseMinos;
+bool          yyUseXsecLimits = false;
 bool          yyGetContours = false;
 bool          yyUseHesse;
 bool          yyUseSimAnnBefore = false;
@@ -1302,7 +1303,10 @@ input:
 		      if ($3 == on) yyUseNLO = true;
 		      else yyUseNLO = false;
 		  }
-
+		  if (!strcmp($2, "UseXsecLimits")) {
+		    if ($3 == on) yyUseXsecLimits = true;
+		      else yyUseXsecLimits = false;
+		  }
 		  if (!strcmp($2, "CalcPullDist")) {
 		      if ($3 == on) yyCalcPullDist = true;
 		      else yyCalcPullDist = false;
