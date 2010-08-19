@@ -279,4 +279,6 @@ class CorrelationMatrix {
 
 TVectorD getCorrelatedRandomNumbers(const TVectorD& mean, const TMatrixDSym& covarianceMatrix);
 
+      double BilinearInterpolator(double m0, double m12, std::map< std::pair<int,int>, double>& xs);
+
 #endif

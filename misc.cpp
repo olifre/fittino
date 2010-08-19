@@ -481,3 +481,140 @@ TVectorD getCorrelatedRandomNumbers(const TVectorD& mean, const TMatrixDSym& cov
 
    return x;
 }
+
+double  BilinearInterpolator(double m0, double m12, std::map< std::pair<int,int>, double>& xs)
+{
+  //  std::cout << "m0 = " << m0 << "     m12 = " << m12 << std::endl;
+
+  double m0_1 = 0;
+  double m0_2 = 0;
+  double m12_1 = 0;
+  double m12_2 = 0;
+
+  std::map<std::pair<int,int>, double>::const_iterator it;
+
+  // check boundaries (assumes ordering in input file)
+  it = xs.begin();
+  int m0min = it->first.first;
+  int m12min = it->first.second;
+  it = xs.end();
+  it--;
+  int m0max = it->first.first;
+  int m12max = it->first.second;
+
+  /*
+  std::cout << "m0min = " << m0min << std::endl;
+  std::cout << "m0max = " << m0max << std::endl;
+  std::cout << "m12min = " << m12min << std::endl;
+  std::cout << "m12max = " << m12max << std::endl;
+  */
+
+  if (m0 < m0min || m0 > m0max || m12 < m12min || m12 > m12max) {
+    std::cerr << "parameter point outside grid range" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+
+  // find m0_1, m0_2, m12_1 and m12_2
+  for (it=xs.begin(); it != xs.end(); it++) {
+    if (it->first.first > m0) {
+      m0_2 = it->first.first;
+      it--;
+      m0_1 = it->first.first;
+      it++;
+      while (it->first.second < m12) {
+        it++;
+      }
+      m12_2 = it->first.second;
+      it--;
+      m12_1 = it->first.second;
+      break;
+    }
+  }
+
+  std::pair<int, int> p;
+
+  if (m0 == m0max && m12 == m12max) {
+    p.first = m0max;
+    p.second = m12max;
+    return xs[p];
+  }
+
+
+  if (m0 == m0max) {
+    m0_2 = m0max;
+    it = xs.end();
+    it--;
+    while (it->first.first == m0max) {
+      it--;
+    }
+    m0_1 = it->first.first;
+    it = xs.end();
+    it--;
+    while (it->first.second > m12) {
+      it--;
+    }
+    m12_1 = it->first.second;
+    it++;
+    m12_2 = it->first.second;
+  }
+
+  if (m12 == m12min) {
+    m12_1 = m12min;
+    it = xs.begin();
+    it++;
+    while (it->first.second == m12min) {
+      it++;
+    }
+    m12_2 = it->first.second;
+    it--;
+    while (it->first.first > m0) {
+      it--;
+    }
+    m12_1 = it->first.second;
+    it++;
+    m12_2 = it->first.second;
+  }
+
+
+  std::cout << "m0_1 = " << m0_1 << std::endl;
+  std::cout << "m0_2 = " << m0_2 << std::endl;
+  std::cout << "m12_1 = " << m12_1 << std::endl;
+  std::cout << "m12_2 = " << m12_2 << std::endl;
+
+  double x1 = m0_1;
+  double x2 = m0_2;
+  double y1 = m12_1;
+  double y2 = m12_2;
+
+  p.first = x1;
+  p.second = y1;
+  double z11 = xs[p];
+
+  p.first = x1;
+  p.second = y2;
+  double z12 = xs[p];
+
+  p.first = x2;
+  p.second = y1;
+  double z21 = xs[p];
+
+  p.first = x2;
+  p.second = y2;
+  double z22 = xs[p];
+
+  /*
+  std::cout << "xs11 = " << z11 << std::endl;
+  std::cout << "xs12 = " << z12 << std::endl;
+  std::cout << "xs21 = " << z21 << std::endl;
+  std::cout << "xs22 = " << z22 << std::endl;
+  */
+
+  double x = m0;
+  double y = m12;
+
+  double val =  1.0 / ( (x2 - x1) * (y2 - y1) )
+    * (  (x-x1)*(y-y1)*z22 + (x2-x)*(y-y1)*z12
+         + (x-x1)*(y2-y)*z21 + (x2-x)*(y2-y)*z11 );
+
+  return val;
+}
