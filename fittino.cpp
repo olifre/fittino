@@ -4510,12 +4510,43 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        M12 = x[ReturnRandomPosition("M12")];
      }
      double s = BilinearInterpolator(M0, M12, signalXsec);
-     s *= 1.4; // fudge factor to get agreement with Atlas SU4 study
-     double b = 2420; // hard-coded (I know it's ugly)
-     double sigma = TMath::Sqrt(s+b);
-     double CLsb = -0.5 * TMath::Erf( TMath::Sqrt(2) * s / (2*sigma) ) + 0.5;
+     double xschi2 = 0;
 
-     f += 2 * TMath::ErfInverse(1 - 2*CLsb) * TMath::ErfInverse(1 - 2*CLsb);
+     // check whether parameter point is out-of-bounds
+     // WARNING: TMath::ErfInverse(1) returns 0, not infinity
+     if (s < 0 && s > -10) {
+       xschi2 = 0;
+     }
+     else if (s < -10) {
+       xschi2 = 8e88;
+     }
+     else {
+       s *= 1.4; // fudge factor to get agreement with Atlas SU4 study
+       double b = 2420; // hard-coded (I know it's ugly)
+       double sigma = TMath::Sqrt(s+b) * TMath::Sqrt(1.25); // stat. and 50 % syst. uncertainty
+       double CLsb = -0.5 * TMath::Erf( TMath::Sqrt(2) * s / (2*sigma) ) + 0.5;
+       
+       xschi2 = 2 * TMath::ErfInverse(1 - 2*CLsb) * TMath::ErfInverse(1 - 2*CLsb);
+
+       if (yyVerbose) {
+	 std::cout << "LHC cross-section at M0 = " 
+		   << M0 << " GeV, M12 = " << M12 << " GeV is " 
+		   << s << " fb " << std::endl;
+	 
+	 std::cout << "s = " << s << "   b = " << b << "    s/sigma_{s+b} = "
+		   << s / sigma << std::endl;
+
+	 std::cout << "Parameter point";
+	 if (CLsb > 0.05) std::cout << " not";
+	 std::cout << " excluded at 95 % CL" << std::endl;
+	 
+	 std::cout << "chi2 contribution from LHC cross-section = " << xschi2 << std::endl;
+       }
+
+     }
+
+     f += xschi2;
+
    }
 
 
@@ -11801,10 +11832,10 @@ void Fittino::markovChain ()
 	      break;
 	    }
 	    while (!markovInterfaceFilePath.eof()) {
-
 	      if ( nFilePars > nVars ) {
 		if (yyVerbose){
 		cout << "too many parameters" << endl;
+		cout << "nFilePars = " << nFilePars << ", nVars = " << nVars << endl;
 		}
 		fileReadError = true;
 		break;

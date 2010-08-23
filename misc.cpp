@@ -510,8 +510,9 @@ double  BilinearInterpolator(double m0, double m12, std::map< std::pair<int,int>
   */
 
   if (m0 < m0min || m0 > m0max || m12 < m12min || m12 > m12max) {
-    std::cerr << "parameter point outside grid range" << std::endl;
-    exit(EXIT_FAILURE);
+    std::cerr << "Parameter point outside grid range" << std::endl;
+    if (m0 < m0min || m12 < m12min) return -1000; // in this case add infinity to chi2
+    else return -1; // in this case add 0 to chi2
   }
 
   // find m0_1, m0_2, m12_1 and m12_2
@@ -575,11 +576,12 @@ double  BilinearInterpolator(double m0, double m12, std::map< std::pair<int,int>
     m12_2 = it->first.second;
   }
 
-
+  /*
   std::cout << "m0_1 = " << m0_1 << std::endl;
   std::cout << "m0_2 = " << m0_2 << std::endl;
   std::cout << "m12_1 = " << m12_1 << std::endl;
   std::cout << "m12_2 = " << m12_2 << std::endl;
+  */
 
   double x1 = m0_1;
   double x2 = m0_2;
