@@ -4523,10 +4523,18 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      else {
        s *= 1.4; // fudge factor to get agreement with Atlas SU4 study
        double b = 2420; // hard-coded (I know it's ugly)
-       double sigma = TMath::Sqrt(s+b) * TMath::Sqrt(1.25); // stat. and 50 % syst. uncertainty
+       double sigma_stat = TMath::Sqrt(s+b); // stat. unc. only;
+       double sigma_sys_s = 0 * s;
+       double sigma_sys_b = 0 * b;
+       double sigma_sys = TMath::Sqrt( sigma_sys_s*sigma_sys_s + sigma_sys_b*sigma_sys_b );
+      //      double sigma = sigma_stat;
+       double sigma = TMath::Sqrt(sigma_stat*sigma_stat + sigma_sys*sigma_sys);
        double CLsb = -0.5 * TMath::Erf( TMath::Sqrt(2) * s / (2*sigma) ) + 0.5;
        
-       xschi2 = 2 * TMath::ErfInverse(1 - 2*CLsb) * TMath::ErfInverse(1 - 2*CLsb);
+       // The following line causes trouble because of numerical instability
+       // of TMath::ErfInverse(x) if x is close to 1
+       //       xschi2 = 2 * TMath::ErfInverse(1 - 2*CLsb) * TMath::ErfInverse(1 - 2*CLsb);
+       xschi2 = s * s / (sigma * sigma);
 
        if (yyVerbose) {
 	 std::cout << "LHC cross-section at M0 = " 
@@ -4534,7 +4542,8 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 		   << s << " fb " << std::endl;
 	 
 	 std::cout << "s = " << s << "   b = " << b << "    s/sigma_{s+b} = "
-		   << s / sigma << std::endl;
+		   << s / sigma << "    s/sigma_stat_{s+b} = "
+		   << s / sigma_stat << std::endl;
 
 	 std::cout << "Parameter point";
 	 if (CLsb > 0.05) std::cout << " not";
