@@ -24,6 +24,7 @@
 #include <iostream>
 
 #include "Configuration.h"
+#include "Messenger.h"
 #include "OptimizerBase.h"
 
 Fittino::OptimizerBase::OptimizerBase( ModelBase* model )
@@ -78,10 +79,12 @@ void Fittino::OptimizerBase::PrintStatus() const {
 
 void Fittino::OptimizerBase::ExecuteOptimizer() {
 
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "  Running " << _name                                                              << std::endl;
-    std::cout << "                                                                                " << std::endl;
+    Messenger* messenger = Messenger::GetInstance();
+
+    messenger->InfoMessage( "--------------------------------------------------------------------------------" );
+    messenger->InfoMessage( "                                                                                " );
+    messenger->InfoMessage( "  Running " + _name                                                               );
+    messenger->InfoMessage( "                                                                                " );
 
     while (  _chi2 > _abortCriterium && _iterationCounter < _numberOfIterations ) {
 
@@ -123,10 +126,13 @@ void Fittino::OptimizerBase::PrintConfiguration() const {
 
 void Fittino::OptimizerBase::PrintResult() const {
 
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "  Optimization converged after " << _iterationCounter << " iterations           " << std::endl;
-    std::cout << "                                                                                " << std::endl;
+    Messenger* messenger = Messenger::GetInstance();
+
+    messenger->InfoMessage( "--------------------------------------------------------------------------------" );
+    messenger->InfoMessage( "                                                                                " );
+    //messenger->InfoMessage( "  Optimization converged after " + _iterationCounter + " iterations             " );
+    messenger->InfoMessage( "                                                                                " );
+
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "                                                                                " << std::endl;
     std::cout << "  Optimization results                                                          " << std::endl;
@@ -155,10 +161,12 @@ void Fittino::OptimizerBase::PrintResult() const {
 
 void Fittino::OptimizerBase::TerminateOptimizer() const {
 
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "  Terminating " << _name                                                          << std::endl;
-    std::cout << "                                                                                " << std::endl;
+    Messenger* messenger = Messenger::GetInstance();
+
+    messenger->InfoMessage( "--------------------------------------------------------------------------------" );
+    messenger->InfoMessage( "                                                                                " );
+    messenger->InfoMessage( "  Terminating " + _name                                                           );
+    messenger->InfoMessage( "                                                                                " );
 
     OptimizerBase::PrintResult();
 
