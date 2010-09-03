@@ -4530,6 +4530,25 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
       //      double sigma = sigma_stat;
        double sigma = TMath::Sqrt(sigma_stat*sigma_stat + sigma_sys*sigma_sys);
        double CLsb = -0.5 * TMath::Erf( TMath::Sqrt(2) * s / (2*sigma) ) + 0.5;
+
+       // Alternative MC-based method to calculate CLsb
+//      double n = b; // Asimov data set
+//      double lnQdata = n * ( TMath::Log(s+b) - TMath::Log(b) ) - s;
+//      double nCLsb = 0;
+//      const int ntrials = 100000;
+//      for (int itrial=0; itrial<ntrials; itrial++) {
+//	double sb = gRandom->Poisson(s+b);
+//
+//	n = sb;
+//	double lnQ = n * ( TMath::Log(s+b) - TMath::Log(b) ) - s;
+//
+//	if (lnQ < lnQdata) {
+//	  nCLsb++;
+//	}
+//      }
+//
+//      double CLsb = double(nCLsb) / ntrials;
+
        
        // The following line causes trouble because of numerical instability
        // of TMath::ErfInverse(x) if x is close to 1
