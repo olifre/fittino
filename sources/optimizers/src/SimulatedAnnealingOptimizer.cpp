@@ -75,7 +75,7 @@ void Fittino::SimulatedAnnealingOptimizer::UpdateModel() {
 
     for ( unsigned int i = 0; i < numberOfTrials; i++ ) {
 
-        // Within every trial, each parameter is varyied one after another and the number of accepted
+        // Within every trial, each parameter is varied one after another and the number of accepted
         // parameter variations is counted. A parameter variation is accepted if the new model has a
         // better chi2 value or if it fulfills the Metropolis criterium. This is repeated 20 times.
         // After that the step width for the next iteration of variations is updated for each
