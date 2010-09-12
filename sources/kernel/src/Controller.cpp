@@ -33,6 +33,7 @@
 #include "InputFileInterpreterBase.h"
 #include "ModelBase.h"
 #include "OptimizerBase.h"
+#include "SamplerBase.h"
 
 Fittino::Controller* Fittino::Controller::GetInstance() {
 
@@ -143,6 +144,13 @@ void Fittino::Controller::ExecuteFittino() const {
             delete optimizer;
 
         }
+        else if ( Configuration::GetInstance()->GetExecutionMode() == ExecutionMode::SAMPLING ) {
+
+            SamplerBase* const sampler = factory.CreateSampler( Configuration::GetInstance()->GetSamplerType(), model );
+            sampler->PerformSampling();
+            delete sampler;
+
+	}
         else if ( Configuration::GetInstance()->GetExecutionMode() == ExecutionMode::SCAN ) {
 
             throw ConfigurationException( "Execution mode SCAN not supported yet." );

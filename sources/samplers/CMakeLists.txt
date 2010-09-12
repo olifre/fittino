@@ -1,4 +1,4 @@
-# $Id$ #
+# $Id: CMakeLists.txt 703 2010-07-20 16:13:54Z uhlenbrock $ #
 
 ################################################################################
 #                                                                              #
@@ -6,7 +6,7 @@
 #                                                                              #
 # File        CMakeLists.txt                                                   #
 #                                                                              #
-# Description Cmake configuration file for the sources directory.              #
+# Description Cmake configuration file for the samplers directory.             #
 #                                                                              #
 # Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              #
 #                                                                              #
@@ -17,9 +17,16 @@
 #                                                                              #
 ################################################################################
 
-ADD_SUBDIRECTORY(exceptions)
-ADD_SUBDIRECTORY(interpreters)
-ADD_SUBDIRECTORY(kernel)
-ADD_SUBDIRECTORY(models)
-ADD_SUBDIRECTORY(optimizers)
-ADD_SUBDIRECTORY(samplers)
+ADD_DEFINITIONS(`root-config --cflags`)
+
+INCLUDE_DIRECTORIES(./include)
+INCLUDE_DIRECTORIES(../exceptions/include)
+INCLUDE_DIRECTORIES(../kernel/include)
+INCLUDE_DIRECTORIES(../models/include)
+INCLUDE_DIRECTORIES(../optimizers/include)
+
+AUX_SOURCE_DIRECTORY(src sources)
+
+ADD_LIBRARY(samplers ${sources})
+
+TARGET_LINK_LIBRARIES(samplers ${ROOT_LIBRARIES})

@@ -31,6 +31,7 @@
 #include "ExecutionMode.h"
 #include "ModelBase.h"
 #include "OptimizerBase.h"
+#include "SamplerBase.h"
 
 /*! 
  *  \brief Fittino namespace 
@@ -53,6 +54,7 @@ namespace Fittino {
       ExecutionMode::Mode                   GetExecutionMode() const;
       ModelBase::ModelType                  GetModelType() const;
       OptimizerBase::OptimizerType          GetOptimizerType() const;
+      SamplerBase::SamplerType              GetSamplerType() const;
 
     public:
       template<class SteeringParameterType>

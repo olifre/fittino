@@ -6,8 +6,8 @@
 *                                                                              *
 * File        Factory.cpp                                                      *
 *                                                                              *
-* Description Factory class for creating input file interpreters, models and   *
-*             optimizers                                                       *
+* Description Factory class for creating input file interpreters, models,      *
+*             optimizers and samplers                                          *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -20,6 +20,7 @@
 
 #include "Factory.h"
 #include "FittinoInputFileInterpreter.h"
+#include "MarkovChainSampler.h"
 #include "MinuitOptimizer.h"
 #include "MSUGRAModel.h"
 #include "ParticleSwarmOptimizer.h"
@@ -75,6 +76,17 @@ Fittino::OptimizerBase* const Fittino::Factory::CreateOptimizer( const Fittino::
 
         case Fittino::OptimizerBase::SIMULATEDANNEALING:
             return new SimulatedAnnealingOptimizer( model );
+
+    }
+
+}
+
+Fittino::SamplerBase* const Fittino::Factory::CreateSampler( const Fittino::SamplerBase::SamplerType& samplerType, Fittino::ModelBase* model ) const {
+
+    switch ( samplerType ) {
+
+        case Fittino::SamplerBase::MARKOVCHAIN:
+            return new MarkovChainSampler( model );
 
     }
 

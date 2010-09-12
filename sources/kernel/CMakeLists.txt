@@ -24,6 +24,7 @@ INCLUDE_DIRECTORIES(../exceptions/include)
 INCLUDE_DIRECTORIES(../interpreters/include)
 INCLUDE_DIRECTORIES(../models/include)
 INCLUDE_DIRECTORIES(../optimizers/include)
+INCLUDE_DIRECTORIES(../samplers/include)
 
 AUX_SOURCE_DIRECTORY(./src sources)
 
@@ -33,3 +34,4 @@ TARGET_LINK_LIBRARIES(fittino exceptions)
 TARGET_LINK_LIBRARIES(fittino interpreters)
 TARGET_LINK_LIBRARIES(fittino models)
 TARGET_LINK_LIBRARIES(fittino optimizers)
+TARGET_LINK_LIBRARIES(fittino samplers)

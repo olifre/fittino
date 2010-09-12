@@ -54,6 +54,11 @@ Fittino::ExecutionMode::Mode Fittino::Configuration::GetExecutionMode() const {
         return ExecutionMode::OPTIMIZATION;
 
     }
+    else if ( ( *_steeringParameterMap )[key] == "SAMPLING" ) {
+
+        return ExecutionMode::SAMPLING;
+
+    }
     else if ( ( *_steeringParameterMap )[key] == "SCAN" ) {
 
         return ExecutionMode::SCAN;
@@ -117,6 +122,26 @@ Fittino::OptimizerBase::OptimizerType Fittino::Configuration::GetOptimizerType()
     else {
 
         throw ConfigurationException( "Configured optimizer type unknown." );
+
+    }
+
+}
+
+Fittino::SamplerBase::SamplerType Fittino::Configuration::GetSamplerType() const {
+
+    /*!
+     *  Returns configured sampler type
+     */
+    const std::string key = "SamplerType";
+
+    if ( ( *_steeringParameterMap )[key] == "MarkovChain" ) {
+
+        return SamplerBase::MARKOVCHAIN;
+
+    }
+    else {
+
+        throw ConfigurationException( "Configured sampler type unknown." );
 
     }
 
