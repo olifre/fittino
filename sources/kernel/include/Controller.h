@@ -28,11 +28,17 @@
 #include "InputFileInterpreterBase.h"
 
 /*! 
- *  \todo Mid-term: Make objects configurable via steering parameters
+ *  \todo Long-term: Document the code
+ * 
+ *  \todo Long-term: Write a comprehensive developer's guide
  *
- *  \todo Mid-term: Create classes to handle output
+ *  \todo Long-term: Write a comprehensive user's guide
  *
- *  \todo Short-term: Create class to handle messages 
+ *  \todo Mid-term: Write classes to handle output
+ *
+ *  \todo Mid-term: Write SLHA file parser
+ *
+ *  \todo Mid-term: Write a Genetic Algorithm optimizer
  */
 
 /*! 

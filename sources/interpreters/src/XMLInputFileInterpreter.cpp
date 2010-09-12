@@ -68,6 +68,9 @@ void Fittino::XMLInputFileInterpreter::Parse( const TString& xmlInputFileName ) 
     TXMLNode* const xmlRootNode = xmlDocument->GetRootNode();
     TXMLNode* xmlNode = xmlRootNode->GetChildren();
 
+    /*!
+     *  \todo Short-term: Implement recursive loop over nested nodes. 
+     */
     while ( xmlNode != 0 ) {
 
         TXMLAttr* xmlAttribute( 0 );

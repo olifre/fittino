@@ -39,6 +39,9 @@ Fittino::Particle::Particle( double c1, double c2, Fittino::ModelBase* model, in
 
     for ( unsigned int n = 0; n < _model->GetNumberOfParameters(); n++ ) {
 
+        /*!
+         *  \todo Short-term: Get initial position ranges from bounds on parameters. 
+	 */
         _position.push_back( _randomGenerator->Uniform( -3., 3. ) );
         _velocity.push_back( 0. );
 
