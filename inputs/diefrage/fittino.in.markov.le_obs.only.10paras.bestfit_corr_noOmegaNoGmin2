@@ -268,7 +268,7 @@ MaxMarkovChain                 45000
 MarkovInterfaceFilePath        /lustre/user/wiene/markovinterfacefiles/interface_le_obs_mSugra10_bestfit_corr_noOmegaNoGmin2.txt
 
 UseXsecLimits                  on
-GridPath                       /lustre/user/wiene/fittino/grids/7TeV/test/Atlas_cross_section.dat
+GridPath                       /lustre/user/wiene/fittino/grids/7TeV/test/Atlas_events_nlo.dat
 
 MinuitStrategy	               2
 MachinePrecision               1e-8

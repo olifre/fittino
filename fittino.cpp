@@ -458,15 +458,22 @@ Fittino::Fittino(const Input* input)
       getline(infile,line);
     }
   
-    double m0, m12, xs;
+    double m0, m12, msq, mgl, xslo, xsnlo, kfac;
     std::pair<int, int> p;
 
     while (!infile.eof()) {
-      infile >> m0 >> m12 >> xs;
-      //    std::cout << m0 << " " << m12 << " " << xs << std::endl;
+      //      infile >> m0 >> m12 >> xslo;
+      infile >> m0 >> m12 >> msq >> mgl >> xslo >> xsnlo >> kfac;
+      /*
+      std::cout << "m0 = " << m0 << "   m12 = " << m12 
+		<< "   msq = " << msq << "   mgl = " << mgl 
+		<< "   xslo = " << xslo << "   xsnlo = " << xsnlo 
+		<< "   kfac = " << kfac << std::endl;
+      */
       p.first = m0;
       p.second = m12;
-      signalXsec[p] = xs;
+      //      signalXsec[p] = xslo;
+      signalXsec[p] = xsnlo;
     }
   }
 }
@@ -4521,7 +4528,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        xschi2 = 8e88;
      }
      else {
-       s *= 1.4; // fudge factor to get agreement with Atlas SU4 study
+       //       s *= 1.4; // rough estimate for k-factor
        double b = 2420; // hard-coded (I know it's ugly)
        double sigma_stat = TMath::Sqrt(s+b); // stat. unc. only;
        double sigma_sys_s = 0 * s;
