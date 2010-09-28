@@ -186,6 +186,10 @@ bool          yyGlobalOptimizationOnly = false;
 string        yyIndividuallyOptimized = "";
 string        yySPhenoOldInputFile = "";
 
+// stuff for LHC cross-sections
+double        yyLumi = 1.0; // fb-1
+double        yyRelativeSignalCrossSectionSysUncertainty = 0;
+double        yyRelativeBackgroundCrossSectionSysUncertainty = 0;
 
 // Block STARTDATAFILE
 // name_of_file
@@ -430,6 +434,15 @@ input:
 		else if (!strcmp($2,"NumberOfDirections")) {
 		  // cout << "FOUND NumberOfDirections "<<$3<<endl;
 		  yyNumberOfDirections = (int)$3;
+                }
+		else if (!strcmp($2,"Luminosity")) {
+		  yyLumi = (int)$3;
+                }
+		else if (!strcmp($2,"RelativeSignalCrossSectionSysUncertainty")) {
+		  yyRelativeSignalCrossSectionSysUncertainty = (int)$3;
+                }
+		else if (!strcmp($2,"RelativeBackgroundCrossSectionSysUncertainty")) {
+		  yyRelativeBackgroundCrossSectionSysUncertainty = (int)$3;
                 }
 		else if (!strcmp($2,"MaxMarkovChain")) {
 		  // cout << "FOUND NumberOfDirections "<<$3<<endl;

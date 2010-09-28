@@ -4516,23 +4516,24 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      else if (FindInRandomPar("M12")) {
        M12 = x[ReturnRandomPosition("M12")];
      }
-     double s = BilinearInterpolator(M0, M12, signalXsec);
+     double xs = BilinearInterpolator(M0, M12, signalXsec);
+     double s = xs * yyLumi;
      double xschi2 = 0;
 
      // check whether parameter point is out-of-bounds
      // WARNING: TMath::ErfInverse(1) returns 0, not infinity
-     if (s < 0 && s > -10) {
+     if (xs < 0 && xs > -10) {
        xschi2 = 0;
      }
-     else if (s < -10) {
+     else if (xs < -10) {
        xschi2 = 8e88;
      }
      else {
-       //       s *= 1.4; // rough estimate for k-factor
+       //       s *= 1.4; // rough estimate for k-factor (not needed for NLO xs)
        double b = 2420; // hard-coded (I know it's ugly)
        double sigma_stat = TMath::Sqrt(s+b); // stat. unc. only;
-       double sigma_sys_s = 0 * s;
-       double sigma_sys_b = 0 * b;
+       double sigma_sys_s = yyRelativeSignalCrossSectionSysUncertainty * s;
+       double sigma_sys_b = yyRelativeBackgroundCrossSectionSysUncertainty * b;
        double sigma_sys = TMath::Sqrt( sigma_sys_s*sigma_sys_s + sigma_sys_b*sigma_sys_b );
       //      double sigma = sigma_stat;
        double sigma = TMath::Sqrt(sigma_stat*sigma_stat + sigma_sys*sigma_sys);
@@ -4565,11 +4566,15 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        if (yyVerbose) {
 	 std::cout << "LHC cross-section at M0 = " 
 		   << M0 << " GeV, M12 = " << M12 << " GeV is " 
-		   << s << " fb " << std::endl;
+		   << xs << " fb " << std::endl;
 	 
-	 std::cout << "s = " << s << "   b = " << b << "    s/sigma_{s+b} = "
-		   << s / sigma << "    s/sigma_stat_{s+b} = "
-		   << s / sigma_stat << std::endl;
+	 std::cout << "s = " << s
+		   << "   b = " << b 
+		   << "   sigma_sys_b = " << sigma_sys_b 
+		   << "   sigma_sys_s = " << sigma_sys_s 
+		   << "   s/sigma_stat_{s+b} = " << s / sigma_stat
+		   << "   s/sigma_{s+b} = " << s / sigma
+		   << std::endl;
 
 	 std::cout << "Parameter point";
 	 if (CLsb > 0.05) std::cout << " not";

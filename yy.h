@@ -100,6 +100,11 @@ extern string yyIndividuallyOptimized;
 extern unsigned int yyNumberOfMinimizations;
 extern unsigned int yySeedForObservableScattering;
 
+// stuff for LHC cross-sections
+extern double        yyLumi;
+extern double        yyRelativeSignalCrossSectionSysUncertainty;
+extern double        yyRelativeBackgroundCrossSectionSysUncertainty;
+
 typedef struct {
   string name;
   double value;
