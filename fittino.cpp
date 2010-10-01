@@ -9041,7 +9041,7 @@ int   ReadLesHouches()
 
 			);
 	       }
-	       if (tmpvalue >= 0.) {
+	       if (tmpvalue > 0.) {
 		  yyMeasuredVec[i].theovalue = TMath::Sqrt(tmpvalue);
 	       } else {
 		  yyMeasuredVec[i].theovalue = 1.1E11;
@@ -9083,7 +9083,7 @@ int   ReadLesHouches()
 				       +yyMass[yyMeasuredVec[i].daughters[0]])))))
 			);
 	       }
-	       if (tmpvalue >= 0.) {
+	       if (tmpvalue > 0.) {
 		  yyMeasuredVec[i].theovalue = TMath::Sqrt(tmpvalue);
 	       } else {
 		  yyMeasuredVec[i].theovalue = 1.1E11;
@@ -9093,7 +9093,7 @@ int   ReadLesHouches()
 	    }
 	    else if (yyMeasuredVec[i].id == 8) {
 	       double tmpvalue = sqr(yyMass[yyMeasuredVec[i].daughters[0]]) - 2*sqr(yyMass[yyMeasuredVec[i].daughters[1]]);
-	       yyMeasuredVec[i].theovalue = (tmpvalue >= 0 ) ? TMath::Sqrt(tmpvalue) : 1.1E11;
+	       yyMeasuredVec[i].theovalue = (tmpvalue > 0 ) ? TMath::Sqrt(tmpvalue) : 1.1E11;
 	       yyMeasuredVec[i].theoset = true;
 	    }
             else if (yyMeasuredVec[i].id == 9) {
