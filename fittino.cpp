@@ -4530,7 +4530,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      }
      else {
        //       s *= 1.4; // rough estimate for k-factor (not needed for NLO xs)
-       double b = 2420; // hard-coded (I know it's ugly)
+       double b = 2420 * yyLumi; // hard-coded (I know it's ugly)
        double sigma_stat = TMath::Sqrt(s+b); // stat. unc. only;
        double sigma_sys_s = yyRelativeSignalCrossSectionSysUncertainty * s;
        double sigma_sys_b = yyRelativeBackgroundCrossSectionSysUncertainty * b;
