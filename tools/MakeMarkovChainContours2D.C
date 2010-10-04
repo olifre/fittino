@@ -26,7 +26,7 @@ using namespace std;
 
 // void PlotMarkovChains2D (bool bayes = true, int maxevents = -1);
 
-void MakeMarkovChainContour2D (bool bayes = true, 
+void MakeMarkovChainContours2D(bool bayes = true, 
 			       int maxevents = -1,
 			       string contourOutputFileName = "markovContours.root",
 			       bool doAlsoSM = false,
@@ -46,7 +46,8 @@ void MakeMarkovChainContour2D (bool bayes = true,
   gStyle->SetNumberContours(7);
 
   TChain markovChain("markovChain");
-  markovChain.Add("MarkovChainNtupFile*.root");
+  //  markovChain.Add("MarkovChainNtupFile*.root");
+  markovChain.Add("MarkovChainNtupFileSkimmed.root");
   // markovChain.Add("MarkovTestRosenbrockNTupel.root");
   markovChain.Print();
 
