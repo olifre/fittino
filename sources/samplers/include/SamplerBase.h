@@ -22,8 +22,7 @@
 
 #include <string>
 
-#include <TRandom.h>
-
+#include "AnalysisTool.h"
 #include "ModelBase.h"
 
 /*! 
@@ -36,7 +35,7 @@ namespace Fittino {
   /*!
    *  \brief Base class for Fittino parameter samplers 
    */
-  class SamplerBase {
+  class SamplerBase : public AnalysisTool {
 
     public:
       enum         SamplerType { MARKOVCHAIN };
@@ -44,31 +43,10 @@ namespace Fittino {
     public:
                    SamplerBase( ModelBase* model );
       virtual      ~SamplerBase();
-      void         PerformSampling();
-
-    protected:
-      std::string  _name;
-      TRandom      _randomGenerator;
-      ModelBase*   _model;
-
-    protected:
-      virtual void PrintSteeringParameters() const = 0;
-      virtual void UpdateModel() = 0;
 
       /*! \cond UML */
     private:
-      double       _abortCriterium;
-      double       _chi2;
-      unsigned int _iterationCounter;
-      unsigned int _numberOfIterations;
-
-    private:
-      void         ExecuteSampler();
-      void         InitializeSampler();
-      void         PrintConfiguration() const;
-      void         PrintResult() const;
-      void         PrintStatus() const;
-      void         TerminateSampler() const;
+      virtual void PrintResult() const;
       /*! \endcond UML */
 
   };

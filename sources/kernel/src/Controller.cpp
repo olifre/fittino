@@ -31,6 +31,7 @@
 #include "Factory.h"
 #include "InputException.h"
 #include "InputFileInterpreterBase.h"
+#include "Messenger.h"
 #include "ModelBase.h"
 #include "OptimizerBase.h"
 #include "SamplerBase.h"
@@ -140,14 +141,14 @@ void Fittino::Controller::ExecuteFittino() const {
         if ( Configuration::GetInstance()->GetExecutionMode() == ExecutionMode::OPTIMIZATION ) {
 
             OptimizerBase* const optimizer = factory.CreateOptimizer( Configuration::GetInstance()->GetOptimizerType(), model );
-            optimizer->PerformOptimization();
+            optimizer->PerformAnalysis();
             delete optimizer;
 
         }
         else if ( Configuration::GetInstance()->GetExecutionMode() == ExecutionMode::SAMPLING ) {
 
             SamplerBase* const sampler = factory.CreateSampler( Configuration::GetInstance()->GetSamplerType(), model );
-            sampler->PerformSampling();
+            sampler->PerformAnalysis();
             delete sampler;
 
 	}
@@ -192,37 +193,38 @@ Fittino::Controller::~Controller() {
 
 void Fittino::Controller::PrintHelp() const {
 
-    std::cout << std::endl;
-    std::cout << "Usage: fittino [OPTION(S)] FILE" << std::endl;
-    std::cout << std::endl;
-    std::cout << "  A single given argument (different from \"-h\" or \"--help\") is" << std::endl;
-    std::cout << "  interpreted as the name of an input file. The input file suffix" << std::endl;
-    std::cout << "  must be .ftn (Fittino format) or .xml (XML format)." << std::endl;
-    std::cout << std::endl;
-    std::cout << "  An example input file can be found at input/Example.in.xml." << std::endl;
-    std::cout << std::endl;
-    std::cout << "Supported options are:" << std::endl;
-    std::cout << std::endl;
-    std::cout << "  -h, --help" << std::endl;
-    std::cout << "      Fittino prints this message." << std::endl;
-    std::cout << std::endl;
-    std::cout << "  -i, --input-file=FILE " << std::endl;
-    std::cout << "      Fittino uses the input file FILE. The input file suffix must" << std::endl;
-    std::cout << "      be .ftn (Fittino format) or .xml (XML format)." << std::endl;
-    std::cout << "      An example input file can be found at input/Example.in.xml." << std::endl;
-    std::cout << std::endl;
-    std::cout << "  -s, --seed=SEED" << std::endl;
-    std::cout << "      Fittino uses the given random number generator seed." << std::endl;
-    std::cout << std::endl;
+    Messenger* messenger = Messenger::GetInstance();
+
+    messenger->PrintALWAYSMessage( "\n" );
+    messenger->PrintALWAYSMessage( "Usage: fittino [OPTION(S)] FILE\n" );
+    messenger->PrintALWAYSMessage( "\n" );
+    messenger->PrintALWAYSMessage( "  A single given argument (different from \"-h\" or \"--help\") is\n" );
+    messenger->PrintALWAYSMessage( "  interpreted as the name of an input file. The input file suffix\n" );
+    messenger->PrintALWAYSMessage( "  must be .ftn (Fittino format) or .xml (XML format).\n" );
+    messenger->PrintALWAYSMessage( "  Several example input files can be found at fittino2/input.\n" );
+    messenger->PrintALWAYSMessage( "\n" );
+    messenger->PrintALWAYSMessage( "Supported options are:\n" );
+    messenger->PrintALWAYSMessage( "\n" );
+    messenger->PrintALWAYSMessage( "  -h, --help\n" );
+    messenger->PrintALWAYSMessage( "      Fittino prints this message.\n" );
+    messenger->PrintALWAYSMessage( "  -i, --input-file=FILE\n" );
+    messenger->PrintALWAYSMessage( "      Fittino uses the input file FILE. The input file suffix must\n" );
+    messenger->PrintALWAYSMessage( "      be .ftn (Fittino format) or .xml (XML format).\n" );
+    messenger->PrintALWAYSMessage( "      Several example input files can be found at fittino2/input.\n" );
+    messenger->PrintALWAYSMessage( "  -s, --seed=SEED\n" );
+    messenger->PrintALWAYSMessage( "      Fittino uses the given random number generator seed.\n" );
+    messenger->PrintALWAYSMessage( "\n" );
 
 }
 
 void Fittino::Controller::PrintLogo() const {
 
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << std::endl;
-    std::cout << "  Welcome to Fittino" << std::endl;
-    std::cout << std::endl;
+    Messenger* messenger = Messenger::GetInstance();
+
+    messenger->PrintALWAYSMessage( "--------------------------------------------------------------------------------\n" );
+    messenger->PrintALWAYSMessage( "\n" );
+    messenger->PrintALWAYSMessage( "  Welcome to Fittino\n" );
+    messenger->PrintALWAYSMessage( "\n" );
 
 }
 
