@@ -21,8 +21,10 @@
 *******************************************************************************/
 
 #include <iostream>
+#include <sstream>
 
 #include "Configuration.h"
+#include "Messenger.h"
 #include "ParticleSwarmOptimizer.h"
 
 Fittino::ParticleSwarmOptimizer::ParticleSwarmOptimizer( Fittino::ModelBase* model )
@@ -53,9 +55,18 @@ Fittino::ParticleSwarmOptimizer::~ParticleSwarmOptimizer() {
 
 void Fittino::ParticleSwarmOptimizer::PrintSteeringParameters() const {
 
-    std::cout << "    Number of particles          " << _numberOfParticles << std::endl;
-    std::cout << "    Global scaling factor c1     " << _c1                << std::endl;
-    std::cout << "    Local scaling factor c2      " << _c2                << std::endl;
+    Messenger* messenger = Messenger::GetInstance();
+
+    std::ostringstream numberOfParticles;
+    numberOfParticles << _numberOfParticles;
+    std::ostringstream c1;
+    c1 << _c1;
+    std::ostringstream c2;
+    c2 << _c2;
+
+    messenger->PrintALWAYSMessage( "    Number of particles          " + numberOfParticles.str() + "\n" );
+    messenger->PrintALWAYSMessage( "    Global scaling factor c1     " + c1.str()                + "\n" );
+    messenger->PrintALWAYSMessage( "    Local scaling factor c2      " + c2.str()                + "\n" );
 
 }
 

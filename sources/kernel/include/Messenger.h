@@ -47,10 +47,10 @@ namespace Fittino {
        *  Destructor
        */
                         ~Messenger();
-      void              AlwaysMessage( std::string alwaysMessage );
-      void              DebugMessage( std::string debugMessage );
-      void              InfoMessage( std::string infoMessage );
-      void              VerboseMessage( std::string verboseMessage );
+      void              PrintALWAYSMessage( std::string alwaysMessage );
+      void              PrintDEBUGMessage( std::string debugMessage );
+      void              PrintINFOMessage( std::string infoMessage );
+      void              PrintVERBOSEMessage( std::string verboseMessage );
 
     private:
       static Messenger* _instance;

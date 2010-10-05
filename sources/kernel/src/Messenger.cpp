@@ -43,44 +43,44 @@ Fittino::Messenger::~Messenger() {
 
 }
 
-void Fittino::Messenger::AlwaysMessage( std::string alwaysMessage ) {
+void Fittino::Messenger::PrintALWAYSMessage( std::string alwaysMessage ) {
 
     if ( _outputLevel == Messenger::ALWAYS ||
 	 _outputLevel == Messenger::DEBUG  ||
 	 _outputLevel == Messenger::INFO   ||
 	 _outputLevel == Messenger::VERBOSE ) {
 
-        std::cout << alwaysMessage << std::endl;
+        std::cout << alwaysMessage;
     }
 
 }
 
-void Fittino::Messenger::DebugMessage( std::string debugMessage ) {
+void Fittino::Messenger::PrintDEBUGMessage( std::string debugMessage ) {
  
     if ( _outputLevel == Messenger::DEBUG ||
          _outputLevel == Messenger::VERBOSE ) {
 
-        std::cout << debugMessage << std::endl;
+        std::cout << debugMessage;
     }
 
 }
 
-void Fittino::Messenger::InfoMessage( std::string infoMessage ) {
+void Fittino::Messenger::PrintINFOMessage( std::string infoMessage ) {
 
     if ( _outputLevel == Messenger::DEBUG ||
 	 _outputLevel == Messenger::INFO  ||
 	 _outputLevel == Messenger::VERBOSE ) {
 
-        std::cout << infoMessage << std::endl;
+        std::cout << infoMessage;
     }
 
 }
 
-void Fittino::Messenger::VerboseMessage( std::string verboseMessage ) {
+void Fittino::Messenger::PrintVERBOSEMessage( std::string verboseMessage ) {
 
     if ( _outputLevel == Messenger::VERBOSE ) {
 
-        std::cout << verboseMessage << std::endl;
+        std::cout << verboseMessage;
     }
 
 }

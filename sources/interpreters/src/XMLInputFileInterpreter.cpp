@@ -32,6 +32,7 @@
 
 #include "Configuration.h"
 #include "InputException.h"
+#include "Messenger.h"
 #include "XMLInputFileInterpreter.h"
 
 Fittino::XMLInputFileInterpreter::XMLInputFileInterpreter() {
@@ -44,8 +45,12 @@ Fittino::XMLInputFileInterpreter::~XMLInputFileInterpreter() {
 
 void Fittino::XMLInputFileInterpreter::Parse( const TString& xmlInputFileName ) const {
 
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "\n  Reading configuration from file " << xmlInputFileName << "\n" << std::endl;
+    Messenger* messenger = Messenger::GetInstance();
+
+    messenger->PrintALWAYSMessage( "--------------------------------------------------------------------------------\n" );
+    messenger->PrintALWAYSMessage( "\n" );
+    messenger->PrintALWAYSMessage( "  Reading configuration from file " + static_cast<std::string>( xmlInputFileName ) + "\n" );
+    messenger->PrintALWAYSMessage( "\n" );
 
     // Construct XML DOM parser
 

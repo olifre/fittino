@@ -50,6 +50,9 @@ namespace Fittino {
 
     private:
       virtual void PrintSteeringParameters() const;
+      /*!
+       *  This method updates the model according to the simulated annealing algorithm.
+       */
       virtual void UpdateModel();
       /*! \endcond UML */
 
