@@ -141,6 +141,14 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 		":" +
 		variables[sVariable] +
 		">>thisHist";
+	      /*
+	      if ( !strcmp(variables[fVariable].c_str(), "P_M12") && !strcmp( variables[sVariable].c_str(), "P_M0") ) {
+		thisHist = new TH2D("thisHist", "", 50, 0, 400, 50, 0, 1000);
+	      }
+	      else if ( !strcmp(variables[fVariable].c_str(), "P_TanBeta") && !strcmp( variables[sVariable].c_str(), "P_A0") ) {
+		thisHist = new TH2D("thisHist", "", 50, -3000, 4000, 50, 0, 40);
+	      }
+	      */
 	      markovChain.Draw(plotCommand.c_str(),"n>2000 && haveAcceptedAtLeastOne == 1 && accpoint==1");
 	      //	      markovChain.Draw(plotCommand.c_str(),"n>2000");
 	      thisHist = (TH2D*)gDirectory->Get("thisHist");
@@ -511,12 +519,13 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 
 	  // common plotting for frequentist and bayesian interpretation
 
-	  TH2D *loghist = new TH2D("loghist", "", thisHist->GetNbinsX(),
+	  TH2D* loghist = new TH2D("loghist", "", thisHist->GetNbinsX(),
 				   thisHist->GetXaxis()->GetXmin(),
 				   thisHist->GetXaxis()->GetXmax(),
 				   thisHist->GetNbinsY(),
 				   thisHist->GetYaxis()->GetXmin(),
 				   thisHist->GetYaxis()->GetXmax());
+
 	  loghist->SetStats(kFALSE);
 	  //loghist->GetXaxis()->SetRangeUser(-2500,3000);
 	  //loghist->GetXaxis()->SetRangeUser(-1000,2000);
