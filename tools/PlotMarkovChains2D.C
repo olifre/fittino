@@ -61,9 +61,9 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 
   // mSUGRA
   variables.push_back("P_TanBeta");
-  variables.push_back("P_M0");
-  variables.push_back("P_M12"); 
   variables.push_back("P_A0");
+  variables.push_back("P_M12"); 
+  variables.push_back("P_M0");
 
   // MSSM
 //  variables.push_back("P_MSelectronL");
@@ -578,28 +578,28 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
 	  // draw the plot
 	  loghist->SetTitle("");
 
-	  if (!strcmp(variables[sVariable].c_str(), "A0")) {
+	  if (!strcmp(variables[sVariable].c_str(), "P_A0")) {
 	     loghist->SetXTitle("A_{0} (GeV)");
 	  }
-	  else if (!strcmp(variables[sVariable].c_str(), "M0")) {
+	  else if (!strcmp(variables[sVariable].c_str(), "P_M0")) {
 	     loghist->SetXTitle("M_{0} (GeV)");
 	  }
-	  else if (!strcmp(variables[sVariable].c_str(), "TanBeta")) {
+	  else if (!strcmp(variables[sVariable].c_str(), "P_TanBeta")) {
 	     loghist->SetXTitle("tan(#beta)");
 	  }
-	  else if (!strcmp(variables[sVariable].c_str(), "M12")) {
+	  else if (!strcmp(variables[sVariable].c_str(), "P_M12")) {
 	     loghist->SetXTitle("M_{1/2} (GeV)");
 	  }
-	  if (!strcmp(variables[fVariable].c_str(), "A0")) {
+	  if (!strcmp(variables[fVariable].c_str(), "P_A0")) {
 	     loghist->SetYTitle("A_{0} (GeV)");
 	  }
-	  else if (!strcmp(variables[fVariable].c_str(), "M0")) {
+	  else if (!strcmp(variables[fVariable].c_str(), "P_M0")) {
 	     loghist->SetYTitle("M_{0} (GeV)");
 	  }
-	  else if (!strcmp(variables[fVariable].c_str(), "TanBeta")) {
+	  else if (!strcmp(variables[fVariable].c_str(), "P_TanBeta")) {
 	     loghist->SetYTitle("tan(#beta)");
 	  }
-	  else if (!strcmp(variables[fVariable].c_str(), "M12")) {
+	  else if (!strcmp(variables[fVariable].c_str(), "P_M12")) {
 	     loghist->SetYTitle("M_{1/2} (GeV)");
 	  }
 	  loghist->GetXaxis()->SetTitleOffset(1.2);
