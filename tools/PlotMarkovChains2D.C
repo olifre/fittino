@@ -32,7 +32,8 @@ void PlotMarkovChains2D (bool bayes, int maxevents)
   gStyle->SetPalette(1);
 
   TChain markovChain("markovChain");
-  markovChain.Add("MarkovChainNtupFile*.root");
+  //  markovChain.Add("MarkovChainNtupFile*.root");
+  markovChain.Add("MarkovChainNtupFileSkimmed.root");
   // markovChain.Add("MarkovTestRosenbrockNTupel.root");
   markovChain.Print();
 
