@@ -251,7 +251,7 @@ void MakeMarkovChainContours2D(bool bayes = true,
 	       << "    variables[sVariable] = " << variables[sVariable]
 	       << "    icomb = " << icomb << endl;
 
-	  continue;
+	  //	  continue;
 
 	  TH2D *thisHist;
 
