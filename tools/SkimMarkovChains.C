@@ -190,7 +190,7 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
   TGraph* ga0 = new TGraph(na0, a0, c2a0);
   */
 
-  absMinChi2 = 19.38; // for xsec_realsys_2fb
+  absMinChi2 = 19.384; // for xsec_realsys_2fb
   const int nm0 = 19;
   double m0[] = { 34.4, 36, 40, 45, 50, 55, 58, 60, 65, 70, 75, 80, 85, 90, 
                   110, 130, 150, 200, 250};
