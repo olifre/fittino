@@ -157,6 +157,70 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
   TGraph* ga0 = new TGraph(na0, a0, c2a0);
   */
 
+  /*
+  absMinChi2 = 19.348; // for xsec_realsys
+  const int nm0 = 17;
+  double m0[] = { 36, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 
+                  110, 130, 150, 200, 250};
+  double c2m0[] = { 24.40, 22.68, 21.20, 20.22, 19.67, 19.41, 19.36, 19.34, 19.34, 19.36, 19.39, 19.41,
+                    19.57, 19.76, 19.96, 20.50, 20.97};
+  TGraph* gm0 = new TGraph(nm0, m0, c2m0);
+
+  const int nm12 = 21;
+  double m12[] = { 200, 220, 230, 240, 250, 260, 280, 300, 320, 340, 360, 380, 400,
+                   450, 500, 600, 700, 750, 800, 900, 1000};
+  double c2m12[] = { 26, 23.68, 22.52, 21.73, 21.05, 20.55, 19.81, 19.40, 19.34, 19.36, 19.48, 19.69, 19.97,
+                     20.88, 21.75, 23.53, 25.12, 26, 26, 26, 26};
+  TGraph* gm12 = new TGraph(nm12, m12, c2m12);
+
+  const int ntb = 22;
+  double tb[] = {2, 3.04, 3.5, 4, 4.5, 5, 5.5, 6, 7, 8, 9,
+                 10, 11, 12, 14, 16, 18, 20, 25, 30, 35, 40};
+  double c2tb[] = {26, 26, 23.66, 22.5, 21.82, 21.31, 20.93, 20.63, 20.12, 19.77, 19.53,
+                   19.41, 19.36, 19.34, 19.38, 19.52, 19.75, 19.99, 20.83, 22.02, 23.46, 24.16};
+  TGraph* gtb = new TGraph(ntb, tb, c2tb);
+
+  const int na0 = 23;
+  double a0[] = {-2500, -1580, -1300, -1100, -800, -500, -300, -200, -100, 0,
+                 100, 200, 300, 400, 600, 800, 1000, 1200, 1400,
+                 1600, 1800, 2100, 2300};
+  double c2a0[] = {26, 26, 24.97, 24.15, 22.77, 21.29, 20.40, 20.06, 19.78, 19.59,
+                   19.43, 19.37, 19.34, 19.34, 19.43, 19.63, 20.03, 20.52, 21.23,
+                   22.47, 23.93, 26, 26};
+  TGraph* ga0 = new TGraph(na0, a0, c2a0);
+  */
+
+  absMinChi2 = 19.38; // for xsec_realsys_2fb
+  const int nm0 = 19;
+  double m0[] = { 34.4, 36, 40, 45, 50, 55, 58, 60, 65, 70, 75, 80, 85, 90, 
+                  110, 130, 150, 200, 250};
+  double c2m0[] = { 26, 25.25, 23.49, 21.73, 20.57, 19.78, 19.56, 19.46, 19.39, 19.38, 19.38, 19.39, 19.41, 19.43,
+                    19.58, 19.76, 19.96, 20.50, 20.97};
+  TGraph* gm0 = new TGraph(nm0, m0, c2m0);
+
+  const int nm12 = 23;
+  double m12[] = { 200, 214, 230, 240, 250, 260, 270, 280, 290, 300, 320, 340, 360, 380, 400,
+                   450, 500, 600, 700, 750, 800, 900, 1000};
+  double c2m12[] = { 26, 26, 24.02, 22.77, 21.92, 21.20, 20.58, 20.14, 19.71, 19.47, 19.38, 19.39, 19.50, 19.70, 19.98,
+                     20.88, 21.75, 23.53, 25.12, 26, 26, 26, 26};
+  TGraph* gm12 = new TGraph(nm12, m12, c2m12);
+
+  const int ntb = 23;
+  double tb[] = {2, 3.04, 3.5, 4, 4.5, 5, 5.5, 6, 7, 8, 9,
+                 10, 11, 12, 13, 14, 16, 18, 20, 25, 30, 35, 40};
+  double c2tb[] = {26, 26, 23.66, 22.55, 22.09, 21.63, 21.22, 20.86, 20.26, 19.85, 19.59,
+                   19.46, 19.39, 19.38, 19.38, 19.41, 19.54, 19.75, 19.99, 20.83, 21.78, 23.46, 24.16};
+  TGraph* gtb = new TGraph(ntb, tb, c2tb);
+
+  const int na0 = 23;
+  double a0[] = {-2500, -1580, -1300, -1100, -800, -500, -300, -200, -100, 0,
+                 100, 200, 300, 400, 600, 800, 1000, 1200, 1400,
+                 1600, 1800, 2030, 2300};
+  double c2a0[] = {26, 26, 24.97, 24.15, 22.77, 21.29, 20.50, 20.16, 19.87, 19.64,
+                   19.48, 19.41, 19.38, 19.38, 19.45, 19.66, 20.03, 20.59, 21.69,
+                   22.98, 24.38, 26, 26};
+  TGraph* ga0 = new TGraph(na0, a0, c2a0);
+
   // find minimal chi2
   float minChi2 = 1e20;
   float minM0 = -1;
@@ -171,7 +235,7 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
     }   
     //    cout << "chi2 = " << chi2 << endl; 
     if (chi2<minChi2 && chi2>=absMinChi2) {
-      /*
+
       if ( par[iM0] > m0[0] && par[iM0] < m0[nm0-1]) {
 	if (chi2 < gm0->Eval(par[iM0])) continue;
       }
@@ -184,7 +248,7 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
       if ( par[iA0] > a0[0] && par[iA0] < a0[na0-1]) {
 	if (chi2 < ga0->Eval(par[iA0])) continue;
       }
-      */
+
       if (iM0 >= 0) minM0 = par[iM0];
       if (iM12 >= 0) minM12 = par[iM12];
       if (iA0 >= 0) minA0 = par[iA0];
@@ -263,7 +327,7 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
 //	}
 //      }
 //    }
-/*
+
     if ( par[iM0] > m0[0] && par[iM0] < m0[nm0-1]) {
       if (chi2 < gm0->Eval(par[iM0])) continue;
     }
@@ -276,7 +340,7 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
     if ( par[iA0] > a0[0] && par[iA0] < a0[na0-1]) {
       if (chi2 < ga0->Eval(par[iA0])) continue;
     }
-*/
+
     // end clean up
     if (iTanBeta>=0) {
       if (par[iTanBeta]>100. || par[iTanBeta]<0.) {
