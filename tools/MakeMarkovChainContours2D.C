@@ -1,8 +1,18 @@
+// compile with
+//
+// g++ `root-config --cflags` MakeMarkovChainContours2D.C -o MakeMarkovChainContours2D `root-config --libs`
 
 // This ROOT macro plots the markov chains produced by Fittino 
 // in the projections of the mSUGRA high-scale parameters. 
 // The asymed statistics is bayesian. Shame on me. An alternative 
 // frequentist interpretation will follow soon. 
+
+//    variables[fVariable] = P_TanBeta    variables[sVariable] = P_M12    icomb = 0
+//    variables[fVariable] = P_TanBeta    variables[sVariable] = P_M0    icomb = 1
+//    variables[fVariable] = P_TanBeta    variables[sVariable] = P_A0    icomb = 2
+//    variables[fVariable] = P_M12    variables[sVariable] = P_M0    icomb = 3
+//    variables[fVariable] = P_M12    variables[sVariable] = P_A0    icomb = 4
+//    variables[fVariable] = P_M0    variables[sVariable] = P_A0    icomb = 5
 
 #include "TStyle.h"
 #include "TROOT.h"
@@ -236,7 +246,13 @@ void MakeMarkovChainContours2D(bool bayes = true,
 	  if (fixComb>=0) {
 	    if (icomb!=fixComb) continue;
 	  }
-	  
+
+	  cout << "    variables[fVariable] = " << variables[fVariable]
+	       << "    variables[sVariable] = " << variables[sVariable]
+	       << "    icomb = " << icomb << endl;
+
+	  continue;
+
 	  TH2D *thisHist;
 
 	  double s1sigmaUpperBound = -100000000.;
@@ -1163,4 +1179,23 @@ void MakeMarkovChainContours2D(bool bayes = true,
   markovFitsFile.close();
 
 
+}
+
+int main(int argc, char** argv)
+{
+  int combnum = -1;
+
+  if (argc == 2) {
+    combnum = atoi(argv[1]);
+  }
+
+  MakeMarkovChainContours2D(false, // bayes
+			    -1, // maxevents
+			    "markovContours.root", // contourOutputFileName
+			    false, // doAlsoSM
+			    "mSUGRA", // model
+			    false, // makeOnly2DHistograms
+			    true, // requireNeut1LSP
+			    combnum ); // fixComb
+  return 0;
 }
