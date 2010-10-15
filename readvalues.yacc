@@ -436,7 +436,7 @@ input:
 		  yyNumberOfDirections = (int)$3;
                 }
 		else if (!strcmp($2,"Luminosity")) {
-		  yyLumi = (int)$3;
+		  yyLumi = (double)$3;
                 }
 		else if (!strcmp($2,"RelativeSignalCrossSectionSysUncertainty")) {
 		  yyRelativeSignalCrossSectionSysUncertainty = (double)$3;
