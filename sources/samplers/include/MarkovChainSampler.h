@@ -28,17 +28,17 @@
 namespace Fittino {
 
   /*!
-   *  \brief Class for Markov chain parameter sampler
+   *  \brief Class for Markov chain parameter sampler.
    */
   class MarkovChainSampler : public SamplerBase {
 
     public:
       /*!
-       *  Constructor
+       *  Standard constructor.
        */
       MarkovChainSampler( ModelBase* model);
       /*!
-       *  Destructor
+       *  Standard destructor.
        */
       ~MarkovChainSampler();
 

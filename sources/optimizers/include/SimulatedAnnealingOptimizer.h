@@ -28,17 +28,17 @@
 namespace Fittino {
 
   /*!
-   *  \brief Class for simulated annealing parameter optimizer
+   *  \brief Class for simulated annealing parameter optimizer.
    */
   class SimulatedAnnealingOptimizer : public OptimizerBase {
 
     public:
       /*!
-       *  Constructor
+       *  Standard constructor.
        */
                    SimulatedAnnealingOptimizer( ModelBase* model );
       /*!
-       *  Destructor
+       *  Standard destructor.
        */
                    ~SimulatedAnnealingOptimizer();
 

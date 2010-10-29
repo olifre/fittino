@@ -30,7 +30,7 @@
 namespace Fittino {
 
   /*!
-   *  \brief Fittino optimizer exception class
+   *  \brief Fittino optimizer exception class.
    */
   class OptimizerException : public ExceptionBase {
 

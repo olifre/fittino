@@ -31,17 +31,17 @@
 namespace Fittino {
 
   /*!
-   *  \brief Class for reading and interpreting XML input files
+   *  \brief Class for reading and interpreting XML input files.
    */
   class XMLInputFileInterpreter : public InputFileInterpreterBase {
   
     public:
       /*!
-       *  Constructor
+       *  Standard constructor.
        */
                    XMLInputFileInterpreter();
       /*!
-       *  Destructor
+       *  Standard destructor.
        */
       virtual      ~XMLInputFileInterpreter();
       virtual void Parse( const TString& xmlInputFileName ) const;

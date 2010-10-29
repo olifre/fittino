@@ -60,8 +60,8 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
     }
 
-    // Otherwise use getopt() to handle given options. For more informations on getopt() see manpage
-    // of getopt(3)
+    // Otherwise use getopt() to handle given command line options. For more informations on
+    // getopt() have a look at the manpage of getopt(3).
 
     static struct option options[] = {
 
@@ -114,7 +114,11 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
         }
 
+	// Print a welcome logo.
+
         Controller::PrintLogo();
+
+	// Create an input file interpreter depending on the file format and parse the input file.
 
         const Factory factory;
         const InputFileInterpreterBase* const inputFileInterpreter = factory.CreateInputFileInterpreter( Controller::DetermineInputFileFormat() );

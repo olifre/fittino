@@ -28,28 +28,43 @@
 namespace Fittino {
 
   /*!
-   *  \brief Class for model parameters 
+   *  \brief Class for model parameters. 
    */
   class Parameter {
 
     public:
       /*!
-       *  Constructor
+       *  Takes as input the name and starting value of the parameter.
        */
                   Parameter( std::string name, double value );
       /*!
-       *  Destructor
+       *  Standard destructor.
        */
                   ~Parameter();
+      /*!
+       *  Returns the value of the parameter.
+       */
       double      GetValue() const;
+      /*!
+       *  Sets the value of the parameter.
+       */
       void        SetValue( double value );
+      /*!
+       *  Returns the name of the parameter.
+       */
       std::string GetName() const;
 
     private:
       //double      _error;
       //double      _lowerBound;
+      /*!
+       *  Value of the parameter.
+       */
       double      _value;
       //double      _upperBound;
+      /*!
+       *  Name of the parameter.
+       */
       std::string _name;
 
   };

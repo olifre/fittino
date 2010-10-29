@@ -30,7 +30,7 @@
 namespace Fittino {
 
   /*!
-   *  \brief Fittino input exception class
+   *  \brief Fittino input exception class.
    *
    *  Input exceptions are thrown if Fittino is called with formally invalid input of any kind e.g\n
    *  with unknown options, an invalid combination of options or if there are missing option\n

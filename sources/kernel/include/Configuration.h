@@ -41,39 +41,81 @@ namespace Fittino {
   typedef std::map<std::string, std::string> SteeringParameterMap;
 
   /*!
-   *  \brief Singleton class for storing and providing access to user-defined
-   *  configuration settings 
+   *  \brief Singleton class for storing and providing access to user-defined configuration\n
+   *  settings. 
+   *
+   *  The instance of this class is created when the input file interpreter (see also\n
+   *  InputFileInterpreterBase) is parsing the input file. The steering parameters found by the\n
+   *  interpreter are added to a list via AddSteeringParameter() and can be accessed again later\n
+   *  via the various getter functions.
    */
   class Configuration {
   
     public:
+      /*!
+       *  Returns a static pointer to the unique instance of this class.
+       */
       static Configuration*                 GetInstance();
   
     public:
+      /*!
+       *  Adds a new steering parameter specified by a key-value pair to the _steeringParameterMap\n
+       *  where the parameter is stored. It can be retrieved again by calling the apropriate\n
+       *  getter function.
+       */
       void                                  AddSteeringParameter( const std::string& key, const std::string& value );
+      /*!
+       *  Returns the configured execution mode.
+       */
       ExecutionMode::Mode                   GetExecutionMode() const;
+      /*!
+       *  Returns the configured model type.
+       */
       ModelBase::ModelType                  GetModelType() const;
+      /*!
+       *  Returns the configured optimizer type.
+       */
       OptimizerBase::OptimizerType          GetOptimizerType() const;
+      /*!
+       *  Returns the configured sampler type.
+       */
       SamplerBase::SamplerType              GetSamplerType() const;
 
     public:
       template<class SteeringParameterType>
-      SteeringParameterType                 GetSteeringParameter( const std::string& name, const SteeringParameterType& value ) const;
+      /*!
+       *  Retrieves the value of a key-specified steering parameter from _steeringParameterMap if\n
+       *  it has been added before via AddSteeringParameter(). Otherwise it returns the specified\n
+       *  default value.
+       */
+      SteeringParameterType                 GetSteeringParameter( const std::string& key, const SteeringParameterType& defaultValue ) const;
   
     private:
+      /*!
+       *  Pointer to the unique instance of this class.
+       */
       static Configuration*                 _instance;
   
     private:
+      /*!
+       *  Stores the configured steering parameters in an easy accessible key-value pair.
+       */
       SteeringParameterMap*                 _steeringParameterMap;
 
     private:
+      /*!
+       *  Standard constructor.
+       */
                                             Configuration();
+      /*!
+       *  Standard destructor.
+       */
                                             ~Configuration();
   
   };
 
   template<class SteeringParameterType>
-  SteeringParameterType Configuration::GetSteeringParameter( const std::string& name, const SteeringParameterType& defaultValue ) const {
+  SteeringParameterType Configuration::GetSteeringParameter( const std::string& key, const SteeringParameterType& defaultValue ) const {
 
     /*!
      *  \todo Short-term: Think about a more sophisticated implementation of this function. 
@@ -82,12 +124,12 @@ namespace Fittino {
 
       for ( SteeringParameterMap::iterator iter = _steeringParameterMap->begin(); iter != _steeringParameterMap->end(); iter++ ) {
 
-        if ( _steeringParameterMap->find( name )->first == name ) {
+        if ( _steeringParameterMap->find( key )->first == key ) {
 
           std::stringstream stringstream;
           SteeringParameterType value;
 
-          stringstream << (*_steeringParameterMap)[name];
+          stringstream << (*_steeringParameterMap)[key];
           stringstream >> value;
 
           return value;

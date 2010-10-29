@@ -31,7 +31,7 @@
 namespace Fittino {
 
   /*!
-   *  \brief Fittino Les Houches file exception class
+   *  \brief Fittino Les Houches file exception class.
    */
   class LesHouchesFileException : public ExceptionBase {
 

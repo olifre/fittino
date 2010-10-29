@@ -31,17 +31,17 @@
 namespace Fittino {
 
   /*!
-   *  \brief Class for reading and interpreting Fittino input files
+   *  \brief Class for reading and interpreting Fittino input files.
    */
   class FittinoInputFileInterpreter : public InputFileInterpreterBase {
   
     public:
       /*!
-       *  Constructor
+       *  Standard constructor.
        */
                    FittinoInputFileInterpreter();
       /*!
-       *  Destructor
+       *  Standard destructor.
        */
       virtual      ~FittinoInputFileInterpreter();
       virtual void Parse( const TString& fittinoInputFileName ) const;

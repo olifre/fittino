@@ -28,7 +28,7 @@
 namespace Fittino {
 
   /*!
-   *  \brief Class for printing messages of various priority
+   *  \brief Class for printing messages of various priority.
    */
   class Messenger {
 
@@ -40,11 +40,11 @@ namespace Fittino {
 
     public:
       /*!
-       *  Constructor
+       *  Standard constructor.
        */
                         Messenger();
       /*!
-       *  Destructor
+       *  Standard destructor.
        */
                         ~Messenger();
       void              PrintALWAYSMessage( std::string alwaysMessage );

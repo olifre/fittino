@@ -30,7 +30,7 @@
 namespace Fittino {
 
   /*!
-   *  \brief Fittino model calculator exception class
+   *  \brief Fittino model calculator exception class.
    */
   class ModelCalculatorException : public ExceptionBase {
 

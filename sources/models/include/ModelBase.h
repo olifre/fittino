@@ -31,32 +31,68 @@
 namespace Fittino {
 
   /*!
-   *  \brief Base class for Fittino models 
+   *  \brief Base class for Fittino models. 
    */
   class ModelBase {
 
     public:
-      enum                     ModelType { MSUGRA, ROSENBROCK };
+      enum                    ModelType { MSUGRA, ROSENBROCK };
 
     public:
       /*!
-       *  Constructor
+       *  Standard constructor.
        */
-                               ModelBase();
+                              ModelBase();
       /*!
-       *  Destructor
+       *  Standard destructor.
        */
-                               ~ModelBase();
-      int                      GetNumberOfParameters() const;
-      std::string              GetName() const;
-      std::vector<Parameter>*  GetParameterVector();
-      virtual double           Evaluate() = 0;
-      virtual ModelBase*       Clone() const = 0;
+                              ~ModelBase();
+      /*!
+       *  Returns the number of parameters of the model.
+       */
+      int                     GetNumberOfParameters() const;
+      /*!
+       *  Returns the name of the model.
+       */
+      std::string             GetName() const;
+      /*!
+       *  Returns the parameters of the model as a vector.
+       */
+      std::vector<Parameter>* GetParameterVector();
+      /*!
+       *  Returns the chi2 of the comparison between the predicted observables of the model and\n
+       *  the measured observables. In the case of a test model simply returns the function value.
+       */
+      virtual double          Evaluate() = 0;
+      /*!
+       *  Returns a pointer to a copy of the model.
+       */
+      virtual ModelBase*      Clone() const = 0;
 
     protected:
-      int                      _numberOfParameters;
-      std::string              _name;
-      std::vector<Parameter>   _parameterVector;
+      /*!
+       *  Number of the model parameters.
+       */
+      int                     _numberOfParameters;
+      /*!
+       *  Name of the model.
+       */
+      std::string             _name;
+      /*!
+       *  Stores the model parameters.
+       */
+      std::vector<Parameter>  _parameterVector;
+
+    protected:
+      /*!
+       *  Initializes the model with a name and the starting values for the parameters.
+       */
+      void                    InitializeModel() const;
+      /*!
+       *  Prints the configuration of the model, i.e. its name and the starting values of the\n
+       *  parameters
+       */
+      void                    PrintConfiguration() const;
 
   };
 

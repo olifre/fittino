@@ -35,7 +35,7 @@
 namespace Fittino {
 
   /**
-   *  \brief Class for particle (needed by particle swarm optimizer)
+   *  \brief Class for particle (needed by particle swarm optimizer).
    */
   class Particle {
 

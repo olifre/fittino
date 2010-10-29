@@ -29,7 +29,7 @@
 namespace Fittino {
 
   /*!
-   *  \brief Fittino configuration exception class
+   *  \brief Fittino configuration exception class.
    *
    *  Configuration exceptions are thrown if an inconsistent configuration is detected, e.g.\n
    *  steering parameters unknown to Fittino.

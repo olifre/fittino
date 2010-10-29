@@ -23,23 +23,32 @@
 #ifndef FITTINO_EXECUTIONMODE_H
 #define FITTINO_EXECUTIONMODE_H
 
-/*! 
- *  \brief Fittino namespace 
+/*!
+ *  \brief Fittino namespace
  */
 namespace Fittino {
 
   /*!
-   *  \brief Class for execution mode 
+   *  \brief Class for execution mode.
    */
   class ExecutionMode {
-  
+
     public:
+      /*!
+       *  Execution modes known to Fittino.
+       */
       enum Mode { OPTIMIZATION, SAMPLING, SCAN };
-  
+
     public:
+      /*!
+       *  Standard constructor.
+       */
            ExecutionMode();
+      /*!
+       *  Standard destructor.
+       */
            ~ExecutionMode();
-  
+
   };
 
 }

@@ -30,17 +30,17 @@
 namespace Fittino {
 
   /*!
-   *  \brief Class for Minuit parameter optimizer 
+   *  \brief Class for Minuit parameter optimizer.
    */
   class MinuitOptimizer : public OptimizerBase {
 
     public:
       /*!
-       *  Constructor
+       *  Standard constructor.
        */
                                       MinuitOptimizer( ModelBase* model );
       /*!
-       *  Destructor
+       *  Standard destructor.
        */
                                       ~MinuitOptimizer();
 

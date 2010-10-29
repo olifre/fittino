@@ -31,7 +31,7 @@
 namespace Fittino {
 
   /*!
-   *  \brief Base class for reading and interpreting input files
+   *  \brief Base class for reading and interpreting input files.
    */
   class InputFileInterpreterBase {
   
@@ -40,13 +40,18 @@ namespace Fittino {
   
     public:
       /*!
-       *  Constructor
+       *  Standard constructor.
        */
                    InputFileInterpreterBase();
       /*!
-       *  Destructor
+       *  Standard destructor.
        */
       virtual      ~InputFileInterpreterBase();
+      /*!
+       *  Parses the input file given as an argument. After calling this method the Configuration\n
+       *  instance is initialized and the steering parameters specified in the input file can be\n
+       *  retrieved via dedicated getter functions.
+       */
       virtual void Parse( const TString& inputFileName ) const = 0;
   
   };

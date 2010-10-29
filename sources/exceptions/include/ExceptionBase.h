@@ -60,7 +60,7 @@ namespace Fittino {
        */
                         ExceptionBase( const std::string& message );
       /*!
-       *  Destructor
+       *  Standard destructor.
        */
       virtual           ~ExceptionBase() throw();
       /*!

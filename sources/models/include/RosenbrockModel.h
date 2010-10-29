@@ -32,29 +32,29 @@
 namespace Fittino {
 
   /*!
-   *  \brief Implementation of the Rosenbrock model 
+   *  \brief Implementation of the Rosenbrock model.
    */
   class RosenbrockModel : public ModelBase {
 
     public:
       /*!
-       *  Constructor
+       *  Standard constructor.
        */
                                RosenbrockModel();
       /*!
-       *  Destructor
+       *  Standard destructor.
        */
                                ~RosenbrockModel();
       virtual double           Evaluate();
       /*!
-       *  Virtual copy constructor
+       *  Virtual copy constructor.
        */
       virtual RosenbrockModel* Clone() const;
 
   };
 
   /*!
-   *  \brief Implementation of the Rosenbrock model as required by Minuit
+   *  \brief Implementation of the Rosenbrock model as required by Minuit.
    */
   class RosenbrockFCN : public ROOT::Minuit2::FCNBase {
 

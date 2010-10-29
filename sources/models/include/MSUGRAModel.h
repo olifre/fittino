@@ -32,29 +32,29 @@
 namespace Fittino {
 
   /*!
-   *  \brief Implementation of the MSUGRA model 
+   *  \brief Implementation of the MSUGRA model.
    */
   class MSUGRAModel : public ModelBase {
 
     public:
       /*!
-       *  Constructor
+       *  Standard constructor.
        */
                            MSUGRAModel();
       /*!
-       *  Destructor
+       *  Standard destructor.
        */
                            ~MSUGRAModel();
       virtual double       Evaluate();
       /*!
-       *  Virtual copy constructor
+       *  Virtual copy constructor.
        */
       virtual MSUGRAModel* Clone() const;
 
   };
 
   /*!
-   *  \brief Implementation of the MSUGRA model as required by Minuit
+   *  \brief Implementation of the MSUGRA model as required by Minuit.
    */
   class MSUGRAFCN : public ROOT::Minuit2::FCNBase {
 

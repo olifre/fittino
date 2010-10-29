@@ -33,14 +33,10 @@ namespace Fittino {
   class ModelBase;
 
   /*!
-   *  \brief Base class for Fittino parameter optimizers
+   *  \brief Base class for Fittino parameter optimizers.
    *
-   *  The purpose of this class is to provide the template method
-   *  OptimizerBase::Execute().
-   *  <br>
    *  Supported parameter optimizers are
    *  <ul>
-   *    <li> genetic algorithm optimizer 
    *    <li> Minuit optimizer
    *    <li> particle swarm optimizer
    *    <li> simulated annealing optimizer
@@ -52,7 +48,15 @@ namespace Fittino {
       enum         OptimizerType { MINUIT, PARTICLESWARM, SIMULATEDANNEALING };
 
     public:
+      /*!
+       *  Takes as input a pointer to the model to be analysed. Via this pointer an association\n
+       *  between a model and the concrete optimizer is established.
+       */
+ 
                    OptimizerBase( ModelBase* model );
+      /*!
+       *  Standard destructor.
+       */
       virtual      ~OptimizerBase();
 
       /*! \cond UML */

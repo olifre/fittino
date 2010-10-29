@@ -17,6 +17,10 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <iomanip>
+#include <iostream>
+#include <sstream>
+
 #include "ModelBase.h"
 
 Fittino::ModelBase::ModelBase()
@@ -44,5 +48,39 @@ std::string Fittino::ModelBase::GetName() const {
 std::vector<Fittino::Parameter>* Fittino::ModelBase::GetParameterVector() {
 
     return &_parameterVector;
+
+}
+
+void Fittino::ModelBase::InitializeModel() const {
+
+    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+    std::cout << "                                                                                " << std::endl;
+    std::cout << "  Initializing " << _name                                                         << std::endl;
+    std::cout << "                                                                                " << std::endl;
+
+    ModelBase::PrintConfiguration();
+
+}
+
+void Fittino::ModelBase::PrintConfiguration() const {
+
+    std::cout << "   Starting values                                                              " << std::endl;
+    std::cout << "                                                                                " << std::endl;
+
+    for ( unsigned int i = 0; i < _numberOfParameters; i++ ) {
+
+        std::cout << "    "
+                  << std::left
+                  << std::setw( 11 )
+                  << std::setiosflags( std::ios::fixed )
+                  << std::setprecision( 6 )
+                  << _parameterVector[i].GetName()
+                  << std::right
+                  << std::setw( 12 )
+                  << _parameterVector[i].GetValue()                                                 << std::endl;
+
+    }
+
+    std::cout << "                                                                                " << std::endl;
 
 }

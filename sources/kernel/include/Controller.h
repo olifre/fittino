@@ -27,9 +27,9 @@
 
 #include "InputFileInterpreterBase.h"
 
-/*! 
+/*!
  *  \todo Long-term: Document the code
- * 
+ *
  *  \todo Long-term: Write a comprehensive developer's guide
  *
  *  \todo Long-term: Write a comprehensive user's guide
@@ -41,36 +41,56 @@
  *  \todo Mid-term: Write a Genetic Algorithm optimizer
  */
 
-/*! 
- *  \brief Fittino namespace 
+/*!
+ *  \brief Fittino namespace
  */
 namespace Fittino {
 
-  /*! 
-   *  \brief Singleton class for controlling the execution flow of Fittino
+  /*!
+   *  \brief Singleton class for controlling the execution flow of Fittino.
+   *
+   *  The (unique) instance of the Controller class is the first object that is created at the\n
+   *  beginning of the execution of Fittino. Depending on the user configuration the Controller\n
+   *  creates instances of further objects (either directly or with the help of a factory) and\n
+   *  advises them to perform specified tasks, hereby controlling the program's overall execution\n
+   *  flow.
+   *
+   *  The controller adresses its purpose in three distinct phases: At first, the Controller
+   *  initializes Fittino by reading in user specified options and At the end, the Controller terminates Fittino.
    */
   class Controller {
 
     public:
+      /*!
+       *  Returns a static pointer to the unique instance of this class.
+       */
       static Controller*                              GetInstance();
 
     public:
       /*!
-       *  This function initializes Fittino. It takes as input the number and the vector of\n
-       *  command line arguments specified while invocing Fittino.
+       *  Initializes Fittino. Takes as input the command line arguments specified by the user\n
+       *  while invocing Fittino and stores them for future reference. Then a dedicated input file\n
+       *  interpreter inheriting from InputFileInterpreterBase is created and advised to parse the\n
+       *  mandatory input file. After that the steering parameters and flags are globally\n
+       *  accessible via calls to the Configuration.
        */
       void                                            InitializeFittino( int argc, char** argv );
-      /*!  
-       *  In this function Fittino sets up the configured execution mode. It is called directly\n
-       *  after Controller::InitializeFittino. Supported modes are sampling, scan or optimization.
+      /*!
+       *  Executes Fittino according to the configured execution mode. So far supported modes are\n
+       *  parameter sampling or optimization. For that purpose a model inheriting from ModelBase\n
+       *  and the required analysis tools inheriting from AnalysisTool are created and put into\n
+       *  action.
        */
       void                                            ExecuteFittino() const;
       /*!
-       *  This function provides the controlled termination of Fittino
+       *  Provides the controlled termination of Fittino.
        */
       void                                            TerminateFittino() const;
 
     private:
+      /*!
+       *  Pointer to the unique instance of this class.
+       */
       static Controller*                              _instance;
 
       /*! \cond UML */
@@ -80,31 +100,31 @@ namespace Fittino {
        */
       int                                             _randomSeed;
       /*!
-       *  The name of the input file. 
+       *  The name of the input file.
        */
       std::string                                     _inputFileName;
 
     private:
       /*!
-       *  Constructor.
+       *  Standard constructor.
        */
                                                       Controller();
       /*!
-       *  Destructor.
+       *  Standard destructor.
        */
                                                       ~Controller();
       /*!
        *  When Fittino is called without arguments or with the -h/--help option this method\n
-       *  prints a help screen with further instructions on how to use Fittino. 
+       *  prints a help screen with further instructions on how to use Fittino.
        */
       void                                            PrintHelp() const;
       /*!
-       *  Prints a welcome screen. 
+       *  Prints a welcome logo.
        */
       void                                            PrintLogo() const;
       /*!
        *  Determines the format of the input file. Supported input file formats are .xml or .ftn\n
-       *  (a special Fittino file format)
+       *  (a special Fittino file format).
        */
       const InputFileInterpreterBase::InputFileFormat DetermineInputFileFormat() const;
       /*! \endcond UML */

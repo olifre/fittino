@@ -18,8 +18,6 @@
 *******************************************************************************/
 
 #include <cmath>
-#include <iomanip>
-#include <iostream>
 
 #include "Configuration.h"
 #include "RosenbrockModel.h"
@@ -33,28 +31,7 @@ Fittino::RosenbrockModel::RosenbrockModel() {
     _parameterVector.push_back( Parameter( "X", configuration->GetSteeringParameter( "X", 0. ) ) );
     _parameterVector.push_back( Parameter( "Y", configuration->GetSteeringParameter( "Y", 0. ) ) );
 
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "  Initializing " << _name                                                         << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "   Starting values                                                              " << std::endl;
-    std::cout << "                                                                                " << std::endl;
-
-    for ( unsigned int i = 0; i < _numberOfParameters; i++ ) {
-
-        std::cout << "    "
-                  << std::left
-                  << std::setw( 11 )
-                  << std::setiosflags( std::ios::fixed )
-                  << std::setprecision( 6 )
-                  << _parameterVector[i].GetName()
-                  << std::right
-                  << std::setw( 12 )
-                  << _parameterVector[i].GetValue()                                                 << std::endl;
-
-    }
-
-    std::cout << "                                                                                " << std::endl;
+    ModelBase::InitializeModel();
 
 }
 

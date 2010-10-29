@@ -44,9 +44,6 @@ void Fittino::Configuration::AddSteeringParameter( const std::string& key, const
 
 Fittino::ExecutionMode::Mode Fittino::Configuration::GetExecutionMode() const {
 
-    /*!
-     *  Returns configured execution mode
-     */
     const std::string key = "Mode";
 
     if ( ( *_steeringParameterMap )[key] == "OPTIMIZATION" ) {
@@ -74,9 +71,6 @@ Fittino::ExecutionMode::Mode Fittino::Configuration::GetExecutionMode() const {
 
 Fittino::ModelBase::ModelType Fittino::Configuration::GetModelType() const {
 
-    /*!
-     *  Returns configured model type
-     */
     const std::string key = "ModelType";
 
     if ( ( *_steeringParameterMap )[key] == "Rosenbrock" ) {
@@ -99,9 +93,6 @@ Fittino::ModelBase::ModelType Fittino::Configuration::GetModelType() const {
 
 Fittino::OptimizerBase::OptimizerType Fittino::Configuration::GetOptimizerType() const {
 
-    /*!
-     *  Returns configured optimizer type
-     */
     const std::string key = "OptimizerType";
 
     if ( ( *_steeringParameterMap )[key] == "Minuit" ) {
@@ -129,9 +120,6 @@ Fittino::OptimizerBase::OptimizerType Fittino::Configuration::GetOptimizerType()
 
 Fittino::SamplerBase::SamplerType Fittino::Configuration::GetSamplerType() const {
 
-    /*!
-     *  Returns configured sampler type
-     */
     const std::string key = "SamplerType";
 
     if ( ( *_steeringParameterMap )[key] == "MarkovChain" ) {
@@ -152,14 +140,10 @@ Fittino::Configuration* Fittino::Configuration::_instance = 0;
 Fittino::Configuration::Configuration()
         : _steeringParameterMap( new SteeringParameterMap() ) {
 
-    /*!
-     *  Sets default execution mode (optimization)
-     *  Sets default model (Rosenbrock model)
-     *  Sets default optimizer (Minuit optimizer)
-     */
-
 }
 
 Fittino::Configuration::~Configuration() {
+
+    delete _steeringParameterMap;
 
 }

@@ -32,7 +32,7 @@
 namespace Fittino {
 
   /*!
-   *  \brief Class for particle swarm parameter optimizer
+   *  \brief Class for particle swarm parameter optimizer.
    *
    *  The algorithm works as follows:
    *  <br>
@@ -45,17 +45,11 @@ namespace Fittino {
   
     public:
       /*!
-       *  The constructor of the particle swarm optimizer takes as input the
-       *  maximal number of iteration steps, the number of particles in the
-       *  swarm, the global scaling parameter c1 which determines and the
-       *  local scaling parameter c2 witch determines respectively. It
-       *  subsequently creates and initializes a particle swarm with the
-       *  specified number of particles.
+       *  Standard constructor.
        */
 	                     ParticleSwarmOptimizer( ModelBase* model );
       /*!
-       *  The destructor of the particle swarm optimizer. It calls the
-       *  destructor of the particle swarm. 
+       *  Standard destructor.
        */
                              ~ParticleSwarmOptimizer();
 

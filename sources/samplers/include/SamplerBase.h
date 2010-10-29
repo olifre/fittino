@@ -33,7 +33,7 @@ namespace Fittino {
   class ModelBase;
 
   /*!
-   *  \brief Base class for Fittino parameter samplers 
+   *  \brief Base class for Fittino parameter samplers. 
    */
   class SamplerBase : public AnalysisTool {
 
@@ -41,7 +41,14 @@ namespace Fittino {
       enum         SamplerType { MARKOVCHAIN };
 
     public:
+      /*!
+       *  Takes as input a pointer to the model to be analysed. Via this pointer an association\n
+       *  between a model and the concrete sampler is established.
+       */
                    SamplerBase( ModelBase* model );
+      /*!
+       *  Standard destructor.
+       */
       virtual      ~SamplerBase();
 
       /*! \cond UML */

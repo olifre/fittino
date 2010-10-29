@@ -93,15 +93,15 @@ void Fittino::AnalysisTool::ExecuteAnalysisTool() {
 
         _chi2 = _model->Evaluate();
 
-        this->UpdateModel();
-
         AnalysisTool::PrintStatus();
+
+        this->UpdateModel();
 
     }
 
 }
 
-void Fittino::AnalysisTool::InitializeAnalysisTool() {
+void Fittino::AnalysisTool::InitializeAnalysisTool() const {
 
     std::cout << "--------------------------------------------------------------------------------" << std::endl;
     std::cout << "                                                                                " << std::endl;
