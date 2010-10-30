@@ -32,7 +32,9 @@
 #include <TVectorD.h>
 #include <TMatrixD.h>
 #include <TMatrixDSym.h>
+#include <TH1.h>
 #include<leshouches.h>
+
 
 using namespace std;
 
@@ -279,6 +281,8 @@ class CorrelationMatrix {
 
 TVectorD getCorrelatedRandomNumbers(const TVectorD& mean, const TMatrixDSym& covarianceMatrix);
 
-double BilinearInterpolator(double m0, double m12, std::map< std::pair<int,int>, double>& xs);
+double BilinearInterpolator(double m0, double m12, int bin, std::map< std::pair<int,int>, TH1F*>& xs);
+
+double LogLikelihoodRatio(const TH1F* hs, const TH1F* hb, const TH1F* hd, double relsigsys, double relbkgdsys, const char* option);
 
 #endif

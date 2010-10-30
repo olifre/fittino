@@ -27,6 +27,7 @@
 #include <TMatrixDSymEigen.h>
 #include <TRandom.h>
 #include <TVectorD.h>
+#include <TRandom3.h>
 
 CorrelationMatrix::CorrelationMatrix() { 
    fMeasuredVector          = 0;
@@ -482,7 +483,7 @@ TVectorD getCorrelatedRandomNumbers(const TVectorD& mean, const TMatrixDSym& cov
    return x;
 }
 
-double  BilinearInterpolator(double m0, double m12, std::map< std::pair<int,int>, double>& xs)
+double  BilinearInterpolator(double m0, double m12, int bin, std::map< std::pair<int,int>, TH1F*>& xs)
 {
   //  std::cout << "m0 = " << m0 << "     m12 = " << m12 << std::endl;
 
@@ -491,7 +492,7 @@ double  BilinearInterpolator(double m0, double m12, std::map< std::pair<int,int>
   double m12_1 = 0;
   double m12_2 = 0;
 
-  std::map<std::pair<int,int>, double>::const_iterator it;
+  std::map<std::pair<int,int>, TH1F*>::const_iterator it;
 
   // check boundaries (assumes ordering in input file)
   it = xs.begin();
@@ -508,7 +509,6 @@ double  BilinearInterpolator(double m0, double m12, std::map< std::pair<int,int>
   std::cout << "m12min = " << m12min << std::endl;
   std::cout << "m12max = " << m12max << std::endl;
   */
-
   if (m0 < m0min || m0 > m0max || m12 < m12min || m12 > m12max) {
     std::cerr << "Parameter point outside grid range" << std::endl;
     if (m0 < m0min || m12 < m12min) return -1000; // in this case add infinity to chi2
@@ -533,15 +533,15 @@ double  BilinearInterpolator(double m0, double m12, std::map< std::pair<int,int>
   }
 
   std::pair<int, int> p;
+  //  std::pair<double, double> p;
 
   if (m0 == m0max && m12 == m12max) {
     p.first = m0max;
     p.second = m12max;
-    return xs[p];
+    return xs[p]->GetBinContent(bin);
   }
 
-
-  if (m0 == m0max) {
+ if (m0 == m0max) {
     m0_2 = m0max;
     it = xs.end();
     it--;
@@ -590,19 +590,19 @@ double  BilinearInterpolator(double m0, double m12, std::map< std::pair<int,int>
 
   p.first = x1;
   p.second = y1;
-  double z11 = xs[p];
+  double z11 = xs[p]->GetBinContent(bin);
 
   p.first = x1;
   p.second = y2;
-  double z12 = xs[p];
+  double z12 = xs[p]->GetBinContent(bin);
 
   p.first = x2;
   p.second = y1;
-  double z21 = xs[p];
+  double z21 = xs[p]->GetBinContent(bin);
 
   p.first = x2;
   p.second = y2;
-  double z22 = xs[p];
+  double z22 = xs[p]->GetBinContent(bin);
 
   /*
   std::cout << "xs11 = " << z11 << std::endl;
@@ -619,4 +619,81 @@ double  BilinearInterpolator(double m0, double m12, std::map< std::pair<int,int>
          + (x-x1)*(y2-y)*z21 + (x2-x)*(y2-y)*z11 );
 
   return val;
+}
+
+
+double LogLikelihoodRatio(const TH1F* hs, const TH1F* hb, const TH1F* hd, double relsigsys, double relbkgdsys, const char* option)
+{
+// <option> can be either "data", "b", "sb", "expected_b" or
+// "expected_sb"
+
+  static TRandom3 random;
+
+  int nbinss = hs->GetNbinsX();
+  int nbinsb = hb->GetNbinsX();
+  int nbinsd = hd->GetNbinsX();
+  if (nbinss != nbinsb || nbinsd != nbinss || nbinss<1) {
+    std::cout << "binning broken" << std::endl;
+    exit(1);
+  }
+
+  double b_scale = 1.;
+  double s_scale = 1.;
+  while (1) {
+    b_scale = random.Gaus(1, relbkgdsys);
+    if (b_scale>0.) break;
+  } 
+  while (1) {
+    s_scale = random.Gaus(1, relsigsys);
+    if (s_scale>0.) break;
+  }
+  //  std::cout << "b_scale = " << b_scale << " s_scale = " << s_scale << std::endl;
+  double loglikelihood_b  = 0;
+  double loglikelihood_sb = 0;
+
+  for (int bin=1; bin<=nbinss; bin++) {
+
+    double b = hb->GetBinContent(bin);
+    double s = hs->GetBinContent(bin);
+    double d = hd->GetBinContent(bin);
+
+    double n = 0;
+    double toyb = 0;
+    double toysb = 0;
+    double numb = 0;
+    double numsb = 0;
+
+    if (!strcmp(option, "data"))
+      n = d;
+    else if (!strcmp(option, "b")) {
+      toyb = (double)random.Poisson(b*b_scale);
+      n = toyb;
+    }
+    else if (!strcmp(option, "sb")) {
+      toysb = (double)random.Poisson(s*s_scale) +  (double)random.Poisson(b*b_scale);
+      n = toysb;
+    }
+    else if (!strcmp(option, "expected_b"))
+      n = b;
+    else if (!strcmp(option, "expected_sb"))
+      n = s + b;
+    else {
+      std::cerr<<"LogLikelihoodRatio: Unknown option "<<option<<std::endl;
+      exit(EXIT_FAILURE);
+    }
+
+    numb  = TMath::Max(b, 1e-3);
+    numsb = TMath::Max(s + b, 1e-3);    
+
+    if (n < 0) n = 0;
+
+    // subtraction of TMath::LnGamma(n + 1) is not necessary
+    // in loglikelihood_sb and loglikelihood_b because
+    // it disappears in the difference
+    // loglikelihood_sb - loglikelihood_b
+    loglikelihood_sb += -numsb + n * TMath::Log(numsb);
+    loglikelihood_b  += -numb  + n * TMath::Log(numb);
+  }
+
+  return loglikelihood_sb - loglikelihood_b;
 }

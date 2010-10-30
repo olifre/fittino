@@ -97,7 +97,8 @@ double        sRecCos2PhiR;
 double        sRecMassTop;
 
 
-std::map< std::pair<int,int>, double> signalXsec;
+std::map< std::pair<int,int>, TH1F*> signalXsec;
+TH1F* hbkgd = 0;
 
 
 extern "C" { void susygen_call_test_(int *, double [],double *);}
@@ -458,23 +459,51 @@ Fittino::Fittino(const Input* input)
       getline(infile,line);
     }
   
-    double m0, m12, msq, mgl, xslo, xsnlo, kfac;
+    double m0, m12, msq, mgl, xsnlo;
+    double meff1, meff2, meff3, meff4, meff5;
+    double meff6, meff7, meff8, meff9, meff10;
     std::pair<int, int> p;
 
+    int histno = 0;
+    TH1F* histo;
     while (!infile.eof()) {
-      //      infile >> m0 >> m12 >> xslo;
-      infile >> m0 >> m12 >> msq >> mgl >> xslo >> xsnlo >> kfac;
-      /*
-      std::cout << "m0 = " << m0 << "   m12 = " << m12 
-		<< "   msq = " << msq << "   mgl = " << mgl 
-		<< "   xslo = " << xslo << "   xsnlo = " << xsnlo 
-		<< "   kfac = " << kfac << std::endl;
-      */
+      infile >> m0 >> m12 >> msq >> mgl >> xsnlo >> meff1 >> meff2 
+	     >> meff3 >> meff4 >> meff5 >> meff6 >> meff7 >> meff8
+	     >> meff9 >> meff10;
+      char no[256];
+      sprintf(no,"%d",histno);
+      histno++;
+      string histname = "histname_";
+      histname = histname +no;
+      histo = new TH1F(histname.c_str(), "", 10, 0, 4000);
+      histo->SetBinContent( 1,  meff1 * xsnlo);
+      histo->SetBinContent( 2,  meff2 * xsnlo);
+      histo->SetBinContent( 3,  meff3 * xsnlo);
+      histo->SetBinContent( 4,  meff4 * xsnlo);
+      histo->SetBinContent( 5,  meff5 * xsnlo);
+      histo->SetBinContent( 6,  meff6 * xsnlo);
+      histo->SetBinContent( 7,  meff7 * xsnlo);
+      histo->SetBinContent( 8,  meff8 * xsnlo);
+      histo->SetBinContent( 9,  meff9 * xsnlo);
+      histo->SetBinContent(10, meff10 * xsnlo);
+      
       p.first = m0;
       p.second = m12;
-      //      signalXsec[p] = xslo;
-      signalXsec[p] = xsnlo;
+      signalXsec[p] = histo;
     }
+
+    hbkgd = new TH1F("hbkgd", "", 10, 0, 4000);
+    hbkgd->SetBinContent(1, 358.48);
+    hbkgd->SetBinContent(2, 1974.87);
+    hbkgd->SetBinContent(3, 75.07);
+    hbkgd->SetBinContent(4, 8.98);
+    hbkgd->SetBinContent(5, 0.52);
+    hbkgd->SetBinContent(6, 0.32);
+    hbkgd->SetBinContent(7, 0);
+    hbkgd->SetBinContent(8, 0);
+    hbkgd->SetBinContent(9, 0);
+    hbkgd->SetBinContent(10, 0);
+    hbkgd->Scale(yyLumi);
   }
 }
 
@@ -4048,19 +4077,19 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    //  exit(0);
 
    if ( yyCalculatorPath.compare("") ) {
-      if ( access( yyCalculatorPath.c_str(), X_OK ) ) {
-	 cerr << "Cannot find calculator " << yyCalculatorPath << endl;
-	 cerr << "Check path in input file." << endl;
-	 exit(EXIT_FAILURE);
-      }
-			}
-			if( yyDecayCalculatorPath.compare("") ) {
-				if( access( yyDecayCalculatorPath.c_str(), X_OK) ) {
-					cerr<< "Cannot find DecayCalculator " << yyDecayCalculatorPath << endl;
-					cerr<< "Check path in input file." << endl;
-					exit(EXIT_FAILURE);
-				}
-			}
+     if ( access( yyCalculatorPath.c_str(), X_OK ) ) {
+       cerr << "Cannot find calculator " << yyCalculatorPath << endl;
+       cerr << "Check path in input file." << endl;
+       exit(EXIT_FAILURE);
+     }
+   }
+   if( yyDecayCalculatorPath.compare("") ) {
+     if( access( yyDecayCalculatorPath.c_str(), X_OK) ) {
+       cerr<< "Cannot find DecayCalculator " << yyDecayCalculatorPath << endl;
+       cerr<< "Check path in input file." << endl;
+       exit(EXIT_FAILURE);
+     }
+   }
    
 
    if (yyCalculator == SUSPECT) {
@@ -4516,76 +4545,71 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      else if (FindInRandomPar("M12")) {
        M12 = x[ReturnRandomPosition("M12")];
      }
-     double xs = BilinearInterpolator(M0, M12, signalXsec);
-     double s = xs * yyLumi;
-     double xschi2 = 0;
+
+     const int binmax = 10;
+     TH1F* hsig = new TH1F("hsig", "", binmax, 0, 4000);
+
+     for (int bin=1; bin<=binmax; bin++) {
+       hsig->SetBinContent(bin, BilinearInterpolator(M0, M12, bin, signalXsec)*yyLumi);
+     }
+
+     // Asimov data set (data = bkgd only)
+     double lnQdata = LogLikelihoodRatio(hsig, hbkgd, hbkgd, 
+					 yyRelativeSignalCrossSectionSysUncertainty,
+					 yyRelativeBackgroundCrossSectionSysUncertainty, 
+					 "expected_b");
+     //     std::cout << "lnQdata = " << lnQdata << std::endl;
+     double nCLsb = 0;
+     double nCLb = 0;
+     const int ntrials = 50000;
+     for (int itrial=0; itrial<ntrials; itrial++) {
+       double lnQsb = LogLikelihoodRatio(hsig, hbkgd, hbkgd,
+					 yyRelativeSignalCrossSectionSysUncertainty,
+					 yyRelativeBackgroundCrossSectionSysUncertainty, "sb");
+       double lnQb = LogLikelihoodRatio(hsig, hbkgd, hbkgd, 
+					yyRelativeSignalCrossSectionSysUncertainty,
+					yyRelativeBackgroundCrossSectionSysUncertainty, "b");
+       if (lnQsb < lnQdata) {
+	 nCLsb++;
+       }
+       if (lnQb < lnQdata) {
+	 nCLb++;
+       }
+     }
+
+     double xsintegral = hsig->Integral();
+     hsig->Delete();
+
+     double CLsb = double(nCLsb) / (double)ntrials;
+     double CLb = double(nCLb) / (double)ntrials;
+
+     double xschi2 = 2 * TMath::ErfInverse(1 - 2*CLsb) * TMath::ErfInverse(1 - 2*CLsb);
 
      // check whether parameter point is out-of-bounds
      // WARNING: TMath::ErfInverse(1) returns 0, not infinity
-     if (xs < 0 && xs > -10) {
-       xschi2 = 0;
-     }
-     else if (xs < -10) {
-       xschi2 = 8e88;
-     }
-     else {
-       //       s *= 1.4; // rough estimate for k-factor (not needed for NLO xs)
-       double b = 2420 * yyLumi; // hard-coded (I know it's ugly)
-       double sigma_stat = TMath::Sqrt(s+b); // stat. unc. only;
-       double sigma_sys_s = yyRelativeSignalCrossSectionSysUncertainty * s;
-       double sigma_sys_b = yyRelativeBackgroundCrossSectionSysUncertainty * b;
-       double sigma_sys = TMath::Sqrt( sigma_sys_s*sigma_sys_s + sigma_sys_b*sigma_sys_b );
-      //      double sigma = sigma_stat;
-       double sigma = TMath::Sqrt(sigma_stat*sigma_stat + sigma_sys*sigma_sys);
-       double CLsb = -0.5 * TMath::Erf( TMath::Sqrt(2) * s / (2*sigma) ) + 0.5;
+//     if (xs < 0 && xs > -10) {
+//       xschi2 = 0;
+//     }
+//     else if (xs < -10) {
+//       xschi2 = 8e88;
+//     }
 
-       // Alternative MC-based method to calculate CLsb
-//      double n = b; // Asimov data set
-//      double lnQdata = n * ( TMath::Log(s+b) - TMath::Log(b) ) - s;
-//      double nCLsb = 0;
-//      const int ntrials = 100000;
-//      for (int itrial=0; itrial<ntrials; itrial++) {
-//	double sb = gRandom->Poisson(s+b);
-//
-//	n = sb;
-//	double lnQ = n * ( TMath::Log(s+b) - TMath::Log(b) ) - s;
-//
-//	if (lnQ < lnQdata) {
-//	  nCLsb++;
-//	}
-//      }
-//
-//      double CLsb = double(nCLsb) / ntrials;
+     if (yyVerbose) {
+       std::cout << "LHC cross-section at M0 = " 
+		 << M0 << " GeV, M12 = " << M12 << " GeV is " 
+		 << xsintegral/yyLumi << " fb " << std::endl;
 
+       std::cout << "CLsb = " << CLsb << "   CLb = " << CLb << std::endl;
        
-       // The following line causes trouble because of numerical instability
-       // of TMath::ErfInverse(x) if x is close to 1
-       //       xschi2 = 2 * TMath::ErfInverse(1 - 2*CLsb) * TMath::ErfInverse(1 - 2*CLsb);
-       xschi2 = s * s / (sigma * sigma);
-
-       if (yyVerbose) {
-	 std::cout << "LHC cross-section at M0 = " 
-		   << M0 << " GeV, M12 = " << M12 << " GeV is " 
-		   << xs << " fb " << std::endl;
-	 
-	 std::cout << "s = " << s
-		   << "   b = " << b 
-		   << "   sigma_sys_b = " << sigma_sys_b 
-		   << "   sigma_sys_s = " << sigma_sys_s 
-		   << "   s/sigma_stat_{s+b} = " << s / sigma_stat
-		   << "   s/sigma_{s+b} = " << s / sigma
-		   << std::endl;
-
-	 std::cout << "Parameter point";
-	 if (CLsb > 0.05) std::cout << " not";
-	 std::cout << " excluded at 95 % CL" << std::endl;
-	 
-	 std::cout << "chi2 contribution from LHC cross-section = " << xschi2 << std::endl;
-       }
-
+       std::cout << "Parameter point";
+       if (CLsb > 0.05) std::cout << " not";
+       std::cout << " excluded at 95 % CL" << std::endl;
+       
+       std::cout << "chi2 contribution from LHC cross-section = " << xschi2 << std::endl;
      }
-
+     
      f += xschi2;
+
 
    }
 
