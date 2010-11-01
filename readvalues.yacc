@@ -4238,13 +4238,13 @@ if (yyVerbose){
 }
 		  }
 //========================================================================
-                  else if (!strcmp($2, "SELMIX")) {
+                  else if (!strcmp($2, "SELmix")) {
 if (yyVerbose){
 		      cout << "Ignoring block SELMIX" << endl;
 }
 		  }
 //========================================================================
-                  else if (!strcmp($2, "SNmix")) {
+                  else if (!strcmp($2, "SNUmix")) {
 if (yyVerbose){
 		      cout << "Ignoring block SNmix" << endl;
 }
