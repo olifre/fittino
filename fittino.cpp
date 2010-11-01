@@ -9147,6 +9147,17 @@ int   ReadLesHouches()
 	       epmasses[2] = yyMass[ID_chi02];
 	       epmasses[3] = yyMass[ID_suL];
 	       epmasses[4] = yyMass[ID_gluino];
+	       if (yyMeasuredVec[i].id == 100) {
+		 // for m(ll) use the masses defined in the input file
+		 epmasses[0] = yyMass[yyMeasuredVec[i].daughters[0]];
+		 epmasses[1] = yyMass[yyMeasuredVec[i].daughters[2]];
+		 epmasses[2] = yyMass[yyMeasuredVec[i].daughters[1]];
+	       } else if (yyMeasuredVec[i].id == 102) {
+		 epmasses[0] = yyMass[yyMeasuredVec[i].daughters[0]];
+		 epmasses[1] = yyMass[yyMeasuredVec[i].daughters[2]];
+		 epmasses[2] = yyMass[yyMeasuredVec[i].daughters[1]];
+		 epmasses[3] = yyMass[yyMeasuredVec[i].daughters[3]];
+	       }
 	       if (yyVerbose){
 	       std::cout << " endpoint number " << yyMeasuredVec[i].id - 100 << std::endl;
 	       std::cout << " neutralino1 mass " << epmasses[0] << std::endl;
