@@ -28,6 +28,7 @@
 #include <TRandom.h>
 #include <TVectorD.h>
 #include <TRandom3.h>
+#include <math.h>
 
 CorrelationMatrix::CorrelationMatrix() { 
    fMeasuredVector          = 0;
@@ -619,6 +620,942 @@ double  BilinearInterpolator(double m0, double m12, int bin, std::map< std::pair
          + (x-x1)*(y2-y)*z21 + (x2-x)*(y2-y)*z11 );
 
   return val;
+}
+
+
+double
+BicubicInterpolator( double x_value, // M_0, when used for Die Frage
+		     double y_value, // M_1/2, when used for Die Frage
+		     int requested_bin,
+		     std::map< std::pair< int, int >, TH1F* >& data_grid )
+/* this is an extension by Ben O'Leary (benjamin.oleary@gmail.com) to
+ * BilinearInterpolator above to use a fit to cubic polynomials as an
+ * interpolation on a grid of histograms.
+ */
+{
+
+  // debugging:
+  //  std::cout << "m0 = " << x_value << "     m12 = " << y_value << std::endl;
+
+  // check boundaries (assumes ordering in input file)
+  std::map< std::pair< int, int >, TH1F* >::const_iterator
+  grid_iterator = data_grid.begin();
+  int minimum_x = grid_iterator->first.first;
+  int minimum_y = grid_iterator->first.second;
+  grid_iterator = data_grid.end();
+  grid_iterator--;
+  int maximum_x = grid_iterator->first.first;
+  int maximum_y = grid_iterator->first.second;
+
+  /*
+  std::cout << "m0min = " << minimum_x << std::endl;
+  std::cout << "m0max = " << maximum_x << std::endl;
+  std::cout << "m12min = " << minimum_y  << std::endl;
+  std::cout << "m12max = " << maximum_y << std::endl;
+  */
+
+  if( ( minimum_x > x_value )
+      ||
+      ( minimum_y > y_value ) )
+    {
+
+      std::cerr << "BicubicInterpolator: Parameter point outside grid range"
+		<< std::endl;
+
+      return -1000;  // in this case add "infinity" to chi^2
+
+    }
+  else if( ( maximum_x < x_value )
+	   ||
+	   ( maximum_y < y_value ) )
+    {
+
+      std::cerr << "BicubicInterpolator: Parameter point outside grid range"
+		<< std::endl;
+
+      return -1;  // in this case add 0 to chi^2
+
+  }
+
+  // we fit cubics along x-lines to produce 4 points of the line y = y_value:
+
+  int far_lower_x = minimum_x;
+  // the lesser of the 2 nearest grid line x-values less than x_value.
+  int near_lower_x = minimum_x;
+  // the greater of the 2 nearest grid line x-values less than x_value.
+  int near_upper_x = maximum_x;
+  // the lesser of the 2 nearest grid line x-values greater than x_value.
+  int far_upper_x = maximum_x;
+  // the greater of the 2 nearest grid line x-values greater than x_value.
+
+  int far_lower_y = minimum_y;
+  // the lesser of the 2 nearest grid line y-values less than y_value.
+  int near_lower_y = minimum_y;
+  // the greater of the 2 nearest grid line y-values less than y_value.
+  int near_upper_y = maximum_y;
+  // the lesser of the 2 nearest grid line y-values greater than y_value.
+  int far_upper_y = maximum_y;
+  // the greater of the 2 nearest grid line y-values greater than y_value.
+
+  // the 4 values at the points of the line y = y_value are stored in the
+  // following variables:
+  double far_lower_cubic_value = NAN;
+  double near_lower_cubic_value = NAN;
+  double near_upper_cubic_value = NAN;
+  double far_upper_cubic_value = NAN;
+
+  std::pair< int, int > grid_point;
+
+
+  /* now we have to decide whether we can use full cubics for the interpolation,
+   * or if we have to restrict it to a quadratic in 1 or the other variable
+   * because we are too close to the edge of the grid. we do this while
+   * looking for the nearest grid points to the requested value.
+   */
+
+  // grid_iterator at the moment is at the last recorded point.
+
+  bool all_x_lines_found = false;
+  bool all_y_lines_found = false;
+
+  while( ( data_grid.begin() != grid_iterator )
+	 &&
+	 !( all_x_lines_found
+	    &&
+	    all_y_lines_found ) )
+    // go through the grid (until either we reach the end of the std::map or
+    // we find BOTH all 4 x-values & all 4 y-values)...
+    {
+
+      grid_iterator--;
+      // go back another step from the end.
+
+      if( !all_x_lines_found )
+        {
+
+          if( grid_iterator->first.first > x_value )
+            // if, at this step, we are still to the right of the requested
+            // point...
+            {
+
+              if( grid_iterator->first.first < near_upper_x )
+	        // if we have moved to a line closer to the requested point...
+                {
+
+	          far_upper_x = near_upper_x;
+	          // the farther right line should move 1 line left, before
+	          // we forget this line.
+
+	          near_upper_x = grid_iterator->first.first;
+	          // now the nearer right line should move 1 line left, to
+	          // this line.
+
+	        }
+
+	    }
+          /* otherwise, now near_upper_x should be the lowest x-value higher
+           * than x_value which was found in the grid, & far_upper_x should be
+           * the next largest x-value.
+           * now we look to see if we have found the other 2 x-values:
+           */
+          else if( grid_iterator->first.first > near_lower_x )
+	    // if we've gone left past x_value, BUT near_lower_x is to our
+	    // left (& it begins at the left-most x-value)...
+	    {
+
+	      near_lower_x = grid_iterator->first.first;
+
+	    }
+          /* otherwise, now near_lower_x should be the highest x-value lower
+           * than x_value which was found in the grid, while the upper
+           * x-values are as they should be.
+           * now we look to see if we have found the final x-value:
+           */
+          else if( ( grid_iterator->first.first > far_lower_x )
+	           &&
+	           ( grid_iterator->first.first < near_lower_x ) )
+	    /* if we've gone left past x_value, AND near_lower_x is to our
+             * right (so we are not at its value exactly), AND far_lower_x is
+             * to our left (& it begins at the left-most x-value)...
+	     */
+	    {
+
+	      far_lower_x = grid_iterator->first.first;
+	      all_x_lines_found = true;
+	      // note that we have found all the x-values necessary.
+
+	    }
+
+        }
+
+      // we also do the same for the y-values:
+
+      if( !all_y_lines_found )
+        {
+
+          if( grid_iterator->first.second > y_value )
+	    // if, at this step, we are still above the requested point...
+	    {
+
+	      if( grid_iterator->first.second < near_upper_y )
+	        // if we have moved to a line closer to the requested point...
+	        {
+
+	          far_upper_y = near_upper_y;
+	          // the farther up line should move 1 line down, before we
+	          // forget this line.
+
+                  near_upper_y = grid_iterator->first.second;
+	          // now the nearer above line should move 1 line down, to this
+	          // line.
+
+                }
+
+            }
+          /* otherwise, now near_upper_y should be the lowest y-value higher than
+            * y_value which was found in the grid, & far_upper_y should be the
+            *     next largest y-value.
+           * now we look to see if we have found the other 2 y-values:
+          */
+          else if( grid_iterator->first.second > near_lower_y )
+	    // if we've gone down past y_value, BUT near_lower_y is beneath us
+	    // (& it begins at the lowest y-value)...
+            {
+
+              near_lower_y = grid_iterator->first.second;
+
+            }
+          /* otherwise, now near_lower_y should be the highest y-value lower than
+            * y_value which was found in the grid, while the upper y-values are as
+            * they should be.
+           * now we look to see if we have found the final y-value:
+          */
+          else if( ( grid_iterator->first.second > far_lower_y )
+                     &&
+                     ( grid_iterator->first.second < near_lower_y ) )
+	    /* if we've gone down past y_value, AND near_lower_y is above us
+              * (so we are not at its value exactly), AND far_lower_y is beneath us
+              * (& it begins at the lowest y-value)...
+            */
+            {
+
+              far_lower_y = grid_iterator->first.second;
+              all_y_lines_found = true;
+	      // note that we have found all the y-values necessary.
+
+            }
+
+        }
+
+    }  // end of while loop looking for the 4 x-values & 4 y-values.
+
+
+  // debugging:
+  /*std::cout << std::endl << "debugging! x-values: " << far_lower_x
+	    << ", " << near_lower_x << ", " << near_upper_x
+	    << ", " << far_upper_x;
+  std::cout << std::endl << "and y-values: " << far_lower_y
+	    << ", " << near_lower_y << ", " << near_upper_y
+	    << ", " << far_upper_y;*/
+
+
+  // now we determine if we have any of the special cases:
+
+  if( near_lower_x == x_value )
+    // if the requested point lies directly on a grid x-value...
+    {
+
+      if( near_lower_y == y_value )
+	// if we were asked for a point exactly on a grid point...
+	{
+
+	  grid_point = make_pair( near_lower_x,
+				  near_lower_y );
+	  return data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  // return the value held in the grid histogram directly.
+
+	}
+      else
+	// otherwise, prepare the y-value cubic equation directly from grid
+	// values:
+	{
+
+	  grid_point = make_pair( near_lower_x,
+				  far_lower_y );
+	  far_lower_cubic_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+
+	  grid_point = make_pair( near_lower_x,
+				  near_lower_y );
+	  near_lower_cubic_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+
+	  grid_point = make_pair( near_lower_x,
+				  near_upper_y );
+	  near_upper_cubic_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+
+	  grid_point = make_pair( near_lower_x,
+				  far_upper_y );
+	  far_upper_cubic_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+
+	}
+
+    }
+  else if( near_lower_y == y_value )
+    /* if the requested point lies directly on a grid y-value, but not a
+     * grid x-value, fit to a cubic on the x-values:
+     * (& we swap x-values with y-values to get y-value bin sizes correct.)
+     */
+    {
+
+      grid_point = make_pair( far_lower_x,
+			      near_lower_y );
+      far_lower_cubic_value
+	= data_grid[ grid_point ]->GetBinContent( requested_bin );
+
+      grid_point = make_pair( near_lower_x,
+			      near_lower_y );
+      near_lower_cubic_value
+	= data_grid[ grid_point ]->GetBinContent( requested_bin );
+
+      grid_point = make_pair( near_upper_x,
+			      near_lower_y );
+      near_upper_cubic_value
+	= data_grid[ grid_point ]->GetBinContent( requested_bin );
+
+      grid_point = make_pair( far_upper_x,
+			      near_lower_y );
+      far_upper_cubic_value
+	= data_grid[ grid_point ]->GetBinContent( requested_bin );
+
+      far_lower_y = far_lower_x;
+      near_lower_y = near_lower_x;
+      near_upper_y = near_upper_x;
+      far_upper_y = far_upper_x;
+      y_value = x_value;
+
+    }
+  else
+    // otherwise we have to check if we are too close to the grid edge to use a
+    // full cubic in x-values:
+    {
+
+      if( far_lower_x >= near_lower_x )
+	// if we are too close to the grid's left edge, we use a quadratic,
+	// ignoring far_lower_x.
+	{
+
+	  grid_point = make_pair( near_upper_x,
+				  far_lower_y );
+	  double left_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_lower_x,
+				  far_lower_y );
+	  double origin_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( far_upper_x,
+				  far_lower_y );
+	  double right_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  far_lower_cubic_value = BOL_QuadraticInterpolate( x_value,
+                                                            near_upper_x,
+                                                            left_value,
+                                                            near_lower_x,
+                                                            origin_value,
+                                                            far_upper_x,
+                                                            right_value );
+
+	  grid_point = make_pair( near_upper_x,
+				  near_lower_y );
+	  left_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_lower_x,
+				  near_lower_y );
+	  origin_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( far_upper_x,
+				  near_lower_y );
+	  right_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  near_lower_cubic_value = BOL_QuadraticInterpolate( x_value,
+                                                             near_upper_x,
+                                                             left_value,
+                                                             near_lower_x,
+                                                             origin_value,
+                                                             far_upper_x,
+                                                             right_value );
+
+	  grid_point = make_pair( near_upper_x,
+				  near_upper_y );
+	  left_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_lower_x,
+				  near_upper_y );
+	  origin_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( far_upper_x,
+				  near_upper_y );
+	  right_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  near_upper_cubic_value = BOL_QuadraticInterpolate( x_value,
+                                                             near_upper_x,
+                                                             left_value,
+                                                             near_lower_x,
+                                                             origin_value,
+                                                             far_upper_x,
+                                                             right_value );
+
+	  grid_point = make_pair( near_upper_x,
+				  far_upper_y );
+	  left_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_lower_x,
+				  far_upper_y );
+	  origin_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( far_upper_x,
+				  far_upper_y );
+	  right_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  far_upper_cubic_value = BOL_QuadraticInterpolate( x_value,
+                                                            near_upper_x,
+                                                            left_value,
+                                                            near_lower_x,
+                                                            origin_value,
+                                                            far_upper_x,
+                                                            right_value );
+
+	}
+      else if( far_upper_x <= near_upper_x )
+	// if we are too close to the grid's right edge, we use a quadratic,
+	// ignoring far_upper_x.
+	{
+
+	  grid_point = make_pair( far_lower_x,
+				  far_lower_y );
+	  double left_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_lower_x,
+				  far_lower_y );
+	  double origin_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_upper_x,
+				  far_lower_y );
+	  double right_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  far_lower_cubic_value = BOL_QuadraticInterpolate( x_value,
+                                                            far_lower_x,
+                                                            left_value,
+                                                            near_lower_x,
+                                                            origin_value,
+                                                            near_upper_x,
+                                                            right_value );
+
+	  grid_point = make_pair( far_lower_x,
+				  near_lower_y );
+	  left_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_lower_x,
+				  near_lower_y );
+	  origin_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_upper_x,
+				  near_lower_y );
+	  right_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  near_lower_cubic_value = BOL_QuadraticInterpolate( x_value,
+                                                             far_lower_x,
+                                                             left_value,
+                                                             near_lower_x,
+                                                             origin_value,
+                                                             near_upper_x,
+                                                             right_value );
+
+	  grid_point = make_pair( far_lower_x,
+				  near_upper_y );
+	  left_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_lower_x,
+				  near_upper_y );
+	  origin_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_upper_x,
+				  near_upper_y );
+	  right_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  near_upper_cubic_value = BOL_QuadraticInterpolate( x_value,
+                                                             far_lower_x,
+                                                             left_value,
+                                                             near_lower_x,
+                                                             origin_value,
+                                                             near_upper_x,
+                                                             right_value );
+
+	  grid_point = make_pair( far_lower_x,
+				  far_upper_y );
+	  left_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_lower_x,
+				  far_upper_y );
+	  origin_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_upper_x,
+				  far_upper_y );
+	  right_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  far_upper_cubic_value = BOL_QuadraticInterpolate( x_value,
+                                                            far_lower_x,
+                                                            left_value,
+                                                            near_lower_x,
+                                                            origin_value,
+                                                            near_upper_x,
+                                                            right_value );
+
+	}
+      else
+	// otherwise, use a full cubic in the x-values:
+	{
+
+	  // debugging:
+	  /*std::cout << std::endl
+		    << "far_lower_cubic from " << far_lower_x
+		    << ", " << far_lower_y;
+		    std::cout << std::endl;*/
+
+	  grid_point = make_pair( far_lower_x,
+				  far_lower_y );
+	  double far_lower_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_lower_x,
+				  far_lower_y );
+	  double near_lower_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_upper_x,
+				  far_lower_y );
+	  double near_upper_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( far_upper_x,
+				  far_lower_y );
+	  double far_upper_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  far_lower_cubic_value = BOL_CubicInterpolate( x_value,
+                                                        far_lower_x,
+                                                        far_lower_value,
+                                                        near_lower_x,
+                                                        near_lower_value,
+                                                        near_upper_x,
+                                                        near_upper_value,
+                                                        far_upper_x,
+                                                        far_upper_value );
+
+	  // debugging:
+	  /*std::cout << std::endl
+		    << "near_lower_cubic from " << far_lower_x
+		    << ", " << near_lower_y;
+		    std::cout << std::endl;*/
+
+	  grid_point = make_pair( far_lower_x,
+				  near_lower_y );
+	  far_lower_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_lower_x,
+				  near_lower_y );
+	  near_lower_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_upper_x,
+				  near_lower_y );
+	  near_upper_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( far_upper_x,
+				  near_lower_y );
+	  far_upper_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  near_lower_cubic_value = BOL_CubicInterpolate( x_value,
+                                                         far_lower_x,
+                                                         far_lower_value,
+                                                         near_lower_x,
+                                                         near_lower_value,
+                                                         near_upper_x,
+                                                         near_upper_value,
+                                                         far_upper_x,
+                                                         far_upper_value );
+
+	  // debugging:
+	  /*std::cout << std::endl
+		    << "near_upper_cubic from " << far_lower_x
+		    << ", " << near_upper_y;
+		    std::cout << std::endl;*/
+
+	  grid_point = make_pair( far_lower_x,
+				  near_upper_y );
+	  far_lower_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_lower_x,
+				  near_upper_y );
+	  near_lower_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_upper_x,
+				  near_upper_y );
+	  near_upper_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( far_upper_x,
+				  near_upper_y );
+	  far_upper_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  near_upper_cubic_value = BOL_CubicInterpolate( x_value,
+                                                         far_lower_x,
+                                                         far_lower_value,
+                                                         near_lower_x,
+                                                         near_lower_value,
+                                                         near_upper_x,
+                                                         near_upper_value,
+                                                         far_upper_x,
+                                                         far_upper_value );
+
+	  // debugging:
+	  /*std::cout << std::endl
+		    << "far_upper_cubic from " << far_lower_x
+		    << ", " << far_upper_y;
+		    std::cout << std::endl;*/
+
+	  grid_point = make_pair( far_lower_x,
+				  far_upper_y );
+	  far_lower_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_lower_x,
+				  far_upper_y );
+	  near_lower_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( near_upper_x,
+				  far_upper_y );
+	  near_upper_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  grid_point = make_pair( far_upper_x,
+				  far_upper_y );
+	  far_upper_value
+	    = data_grid[ grid_point ]->GetBinContent( requested_bin );
+	  far_upper_cubic_value = BOL_CubicInterpolate( x_value,
+                                                        far_lower_x,
+                                                        far_lower_value,
+                                                        near_lower_x,
+                                                        near_lower_value,
+                                                        near_upper_x,
+                                                        near_upper_value,
+                                                        far_upper_x,
+                                                        far_upper_value );
+
+	}
+
+    }
+  // at this point we have a set of 4 interpolated values on a line with 4
+  // coordinate values.
+
+  // now we check to see if we are too close to an edge in the y-direction:
+
+  if( far_lower_y >= near_lower_y )
+    // if we are too close to the grid's lower edge, we use a quadratic,
+    // ignoring far_lower_y.
+    {
+
+      return BOL_QuadraticInterpolate( y_value,
+				       near_upper_y,
+				       near_upper_cubic_value,
+				       near_lower_y,
+				       near_lower_cubic_value,
+				       far_upper_y,
+				       far_upper_cubic_value );
+
+    }
+  else if( far_upper_y <= near_upper_y )
+    // if we are too close to the grid's upper edge, we use a quadratic,
+    // ignoring far_upper_y.
+    {
+
+      return BOL_QuadraticInterpolate( y_value,
+				       far_lower_y,
+				       far_lower_cubic_value,
+				       near_lower_y,
+				       near_lower_cubic_value,
+				       near_upper_y,
+				       near_upper_cubic_value );
+
+    }
+  else
+    // otherwise, use a full cubic:
+    {
+
+      return BOL_CubicInterpolate( y_value,
+				   far_lower_y,
+				   far_lower_cubic_value,
+				   near_lower_y,
+				   near_lower_cubic_value,
+				   near_upper_y,
+				   near_upper_cubic_value,
+				   far_upper_y,
+				   far_upper_cubic_value );
+
+    }
+
+}
+
+double
+BOL_QuadraticInterpolate( double input_z,
+			  // the distance along from origin_z to be
+			  // interpolated.
+			  // the lower-value co-ordinate & its value:
+			  double left_z,
+			  double left_value,
+			  // the origin-value co-ordinate & its value:
+			  double origin_z,
+			  double origin_value,
+			  // the higher-value co-ordinate & its value:
+			  double right_z,
+			  double right_value )
+/* this is to aid BicubicInterpolate by fitting a quadratic function to the
+ * given arguments in order & returning the interpolated value.
+ * (Ben O'Leary (benjamin.oleary@gmail.com) to be blamed for this function.)
+ * this will break if any 2 of { left_z, origin_z, right_z } or all 3 are
+ * equal, but I should not ever have done that in BicubicInterpolate().
+ */
+{
+
+  // debugging:
+  /*std::cout << std::endl << "debugging! BOL_QuadraticInterpolate( "
+	    << input_z << ", " << left_z << ", " << left_value
+	    << ", " << origin_z << ", " << origin_value << ", "
+	    << right_z << ", " << right_value << " ) called.";
+	    std::cout << std::endl;*/
+
+
+  if( input_z == origin_z )
+    {
+
+      return origin_value;
+
+    }
+  else if( !( right_z > left_z ) )
+    {
+
+      std::cout << std::endl << "BOL_QuadraticInterpolate error!" << std::endl;
+      std::cout << "!( right_z > left_z )" << std::endl;
+      return NAN;
+
+    }
+  /*else if( input_z == left_z )
+    // this should never happen. :P
+    {
+
+      return left_value;
+
+    }
+  else if( input_z == right_z )
+    // this should never happen. :P
+    {
+
+      return right_value;
+
+      }*/
+  else
+    {
+
+      double delta_left = ( left_z - origin_z );
+      double delta_right = ( right_z - origin_z );
+      double delta_z = ( input_z - origin_z );
+
+      double constant_coefficient = origin_value;
+
+      double left_difference = ( left_value - origin_value );
+      double right_difference = ( right_value - origin_value );
+
+      // debugging:
+      /*std::cout << std::endl << "delta_left = " << delta_left;
+	std::cout << std::endl << "delta_right = " << delta_right;
+	std::cout << std::endl << "delta_z = " << delta_z;
+	std::cout << std::endl << "constant_coefficient = " << constant_coefficient;
+	std::cout << std::endl << "left_difference = " << left_difference;
+	std::cout << std::endl << "right_difference = " << right_difference;
+	std::cout << std::endl;*/
+
+      double quadratic_coefficient
+	= ( ( left_difference * delta_right
+	      - right_difference * delta_left )
+	    / ( delta_left * delta_right
+		* ( delta_left - delta_right ) ) );
+
+      double linear_coefficient
+	= ( ( left_difference / delta_left )
+	    - delta_left * quadratic_coefficient );
+
+      // debugging:
+      /*std::cout << std::endl << "constant_coefficient = " << constant_coefficient;
+	std::cout << std::endl << "linear_coefficient = " << linear_coefficient;
+	std::cout << std::endl << "quadratic_coefficient = " << quadratic_coefficient;
+	std::cout << std::endl << "result = "
+	<< ( constant_coefficient
+	+ delta_z * linear_coefficient
+	+ delta_z * delta_z * quadratic_coefficient );
+	std::cout << std::endl;*/
+
+      return ( constant_coefficient
+	       + delta_z * linear_coefficient
+	       + delta_z * delta_z * quadratic_coefficient );
+
+    }
+
+}
+
+double
+BOL_CubicInterpolate( double input_z,
+		      // the distance along from near_left_z to be interpolated.
+		      // the lowest-value co-ordinate & its value:
+		      double far_left_z,
+		      double far_left_value,
+		      // the 2nd-lowest-value co-ordinate & its value:
+		      double near_left_z,
+		      double near_left_value,
+		      // the 2nd-highest-value co-ordinate & its value:
+		      double near_right_z,
+		      double near_right_value,
+		      // the highest-value co-ordinate & its value:
+		      double far_right_z,
+		      double far_right_value )
+/* this is to aid BicubicInterpolate by fitting a cubic function to the
+ * given arguments in order & returning the interpolated value.
+ * (Ben O'Leary (benjamin.oleary@gmail.com) to be blamed for this function.)
+ * this will break if any 2 or more of
+ * { far_left_z, near_left_z, near_right_z, far_right_z } are equal,
+ * but I should not ever have done that in BicubicInterpolate().
+ */
+{
+
+  // debugging:
+  /*std::cout << std::endl << "debugging! BOL_CubicInterpolate( "
+	    << input_z << ", " << far_left_z << ", " << far_left_value
+	    << ", " << near_left_z << ", " << near_left_value << ", "
+	    << near_right_z << ", " << near_right_value << ", " << far_right_z
+	    << ", " << far_right_value << " ) called.";
+	    std::cout << std::endl;*/
+
+  if( input_z == near_left_z )
+    {
+
+      return near_left_value;
+
+    }
+  else if( !( ( far_right_z > near_right_z )
+	      &&
+	      ( near_right_z > near_left_z )
+	      &&
+	      ( near_left_z > far_left_z ) ) )
+    {
+
+      std::cout << std::endl << "BOL_CubicInterpolate error!" << std::endl;
+      std::cout << "!( ( far_right_z > near_right_z )" << std::endl;
+      std::cout << "&&" << std::endl;
+      std::cout << "( near_right_z > near_left_z )" << std::endl;
+      std::cout << "&&" << std::endl;
+      std::cout << "( near_left_z > far_left_z ) )" << std::endl;
+      return NAN;
+
+    }
+  /*else if( input_z == far_left_z )
+    // this should never happen. :P
+    {
+
+      return far_left_value;
+
+    }
+  else if( input_z == near_right_z )
+    // this should never happen. :P
+    {
+
+      return near_right_value;
+
+      }
+  else if( input_z == far_right_z )
+    // this should never happen. :P
+    {
+
+      return far_right_value;
+
+      }*/
+  else
+    {
+
+      double delta_far_left = ( far_left_z - near_left_z );
+      double delta_near_right = ( near_right_z - near_left_z );
+      double delta_far_right = ( far_right_z - near_left_z );
+      double delta_z = ( input_z - near_left_z );
+
+      double constant_coefficient = near_left_value;
+
+      double far_left_difference = ( far_left_value - near_left_value );
+      double near_right_difference = ( near_right_value - near_left_value );
+      double far_right_difference = ( far_right_value - near_left_value );
+
+      // debugging:
+      /*std::cout << std::endl << "delta_far_left = " << delta_far_left;
+	std::cout << std::endl << "delta_near_right = " << delta_near_right;
+	std::cout << std::endl << "delta_far_right = " << delta_far_right;
+	std::cout << std::endl << "delta_z = " << delta_z;
+	std::cout << std::endl << "constant_coefficient = " << constant_coefficient;
+	std::cout << std::endl << "far_left_difference = " << far_left_difference;
+	std::cout << std::endl << "near_right_difference = " << near_right_difference;
+	std::cout << std::endl << "far_right_difference = " << far_right_difference;
+	std::cout << std::endl;*/
+
+      double cubic_coefficient
+	= ( ( ( ( ( far_left_difference * delta_near_right
+		    - near_right_difference * delta_far_left )
+		  * ( delta_near_right - delta_far_right ) )
+		/ ( delta_near_right * delta_far_left ) )
+	      + ( ( ( near_right_difference * delta_far_right
+		      - far_right_difference * delta_near_right )
+		    * ( delta_near_right - delta_far_left ) )
+		  / ( delta_near_right * delta_far_right ) ) )
+	    / ( ( delta_far_right - delta_near_right )
+		* ( delta_near_right - delta_far_left )
+		* ( delta_near_right + delta_far_left )
+		+ ( delta_near_right - delta_far_left )
+		* ( delta_near_right - delta_far_right )
+		* ( delta_near_right + delta_far_right ) ) );
+
+      double quadratic_coefficient
+	= ( ( ( near_right_difference
+		- delta_near_right * delta_near_right
+		* delta_near_right * cubic_coefficient ) * delta_far_right
+	      - ( far_right_difference
+		  - delta_far_right * delta_far_right
+		  * delta_far_right * cubic_coefficient ) * delta_near_right )
+	    / ( delta_near_right * delta_far_right
+		* ( delta_near_right - delta_far_right ) ) );
+
+      double linear_coefficient
+	= ( ( near_right_difference / delta_near_right )
+	    - delta_near_right * delta_near_right * cubic_coefficient
+	    - delta_near_right * quadratic_coefficient );
+
+      // debugging:
+      /*std::cout << std::endl << "constant_coefficient = " << constant_coefficient;
+	std::cout << std::endl << "linear_coefficient = " << linear_coefficient;
+	std::cout << std::endl << "quadratic_coefficient = " << quadratic_coefficient;
+	std::cout << std::endl << "cubic_coefficient = " << cubic_coefficient;
+	std::cout << std::endl << "result = "
+	<< ( constant_coefficient
+	+ delta_z * linear_coefficient
+	+ delta_z * delta_z * quadratic_coefficient
+	+ delta_z * delta_z * delta_z * cubic_coefficient );
+	std::cout << std::endl;*/
+
+      return ( constant_coefficient
+	       + delta_z * linear_coefficient
+	       + delta_z * delta_z * quadratic_coefficient
+	       + delta_z * delta_z * delta_z * cubic_coefficient );
+
+    }
+
 }
 
 

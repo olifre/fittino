@@ -34,6 +34,7 @@
 #include <TMatrixDSym.h>
 #include <TH1.h>
 #include<leshouches.h>
+#include <math.h>
 
 
 using namespace std;
@@ -282,6 +283,61 @@ class CorrelationMatrix {
 TVectorD getCorrelatedRandomNumbers(const TVectorD& mean, const TMatrixDSym& covarianceMatrix);
 
 double BilinearInterpolator(double m0, double m12, int bin, std::map< std::pair<int,int>, TH1F*>& xs);
+
+
+double
+BicubicInterpolator( double x_value, // M_0, when used for Die Frage
+		     double y_value, // M_1/2, when used for Die Frage
+		     int requested_bin,
+		     std::map< std::pair< int, int >, TH1F* >& data_grid );
+/* this is an extension by Ben O'Leary (benjamin.oleary@gmail.com) to
+ * BilinearInterpolator above to use a fit to cubic polynomials as an
+ * interpolation on a grid of histograms.
+ */
+
+double
+BOL_QuadraticInterpolate( double input_z,
+			  // the distance along from origin_z to be
+			  // interpolated.
+			  // the lower-value co-ordinate & its value:
+			  double left_z,
+			  double left_value,
+			  // the origin-value co-ordinate & its value:
+			  double origin_z,
+			  double origin_value,
+			  // the higher-value co-ordinate & its value:
+			  double right_z,
+			  double right_value );
+/* this is to aid BicubicInterpolate by fitting a quadratic function to the
+ * given arguments in order & returning the interpolated value.
+ * (Ben O'Leary (benjamin.oleary@gmail.com) to be blamed for this function.)
+ * this will break if any 2 of { left_z, origin_z, right_z } or all 3 are
+ * equal, but I should not ever have done that in BicubicInterpolate().
+ */
+
+double
+BOL_CubicInterpolate( double input_z,
+		      // the distance along from near_left_z to be interpolated.
+		      // the lowest-value co-ordinate & its value:
+		      double far_left_z,
+		      double far_left_value,
+		      // the 2nd-lowest-value co-ordinate & its value:
+		      double near_left_z,
+		      double near_left_value,
+		      // the 2nd-highest-value co-ordinate & its value:
+		      double near_right_z,
+		      double near_right_value,
+		      // the highest-value co-ordinate & its value:
+		      double far_right_z,
+		      double far_right_value );
+/* this is to aid BicubicInterpolate by fitting a cubic function to the
+ * given arguments in order & returning the interpolated value.
+ * (Ben O'Leary (benjamin.oleary@gmail.com) to be blamed for this function.)
+ * this will break if any 2 or more of
+ * { far_left_z, near_left_z, near_right_z, far_right_z } are equal,
+ * but I should not ever have done that in BicubicInterpolate().
+ */
+
 
 double LogLikelihoodRatio(const TH1F* hs, const TH1F* hb, const TH1F* hd, double relsigsys, double relbkgdsys, const char* option);
 
