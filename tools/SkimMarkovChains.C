@@ -22,14 +22,15 @@ using namespace std;
 // typical chi2 minima without the points with the bug:
 // markov.le_obs.only.4paras: 20.587
 
-void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.root", 
+void SkimMarkovChains ( string inputRootFileName = "MarkovChainNtupFileComb.root",
+		        string outputRootFileName = "MarkovChainNtupFileSkimmed.root", 
 			double maxDeltaChi2 = 6.2, 
 			int maxevents = -1,
 			double absMinChi2 = 0. ) {
 
   TChain markovChain("markovChain");
   //  markovChain.Add("MarkovChainNtupFile.*.root"); // multiple file chain can give weird results
-  markovChain.Add("MarkovChainNtupFile.sum.root");
+  markovChain.Add(inputRootFileName.c_str());
   // markovChain.Add("MarkovTestRosenbrockNTupel.root");
   //  markovChain.Print();
 
@@ -223,7 +224,7 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
   TGraph* ga0 = new TGraph(na0, a0, c2a0);
   */
 
-  absMinChi2 = 20.786; // for xsec_nosys
+  //  absMinChi2 = 20.786; // for xsec_nosys
   const int nm0 = 21;
   double m0[] = { 30, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110,
                   115, 120, 125, 130, 135, 140, 150, 170, 200, 300};
@@ -363,18 +364,18 @@ void SkimMarkovChains ( string outputRootFileName = "MarkovChainNtupFileSkimmed.
 //      }
 //    }
 
-    if ( par[iM0] > m0[0] && par[iM0] < m0[nm0-1]) {
-      if (chi2 < gm0->Eval(par[iM0])) continue;
-    }
-    if ( par[iM12] > m12[0] && par[iM12] < m12[nm12-1]) {
-      if (chi2 < gm12->Eval(par[iM12])) continue;
-    }
-    if ( par[iTanBeta] > tb[0] && par[iTanBeta] < tb[ntb-1]) {
-      if (chi2 < gtb->Eval(par[iTanBeta])) continue;
-    }
-    if ( par[iA0] > a0[0] && par[iA0] < a0[na0-1]) {
-      if (chi2 < ga0->Eval(par[iA0])) continue;
-    }
+//    if ( par[iM0] > m0[0] && par[iM0] < m0[nm0-1]) {
+//      if (chi2 < gm0->Eval(par[iM0])) continue;
+//    }
+//    if ( par[iM12] > m12[0] && par[iM12] < m12[nm12-1]) {
+//      if (chi2 < gm12->Eval(par[iM12])) continue;
+//    }
+//    if ( par[iTanBeta] > tb[0] && par[iTanBeta] < tb[ntb-1]) {
+//      if (chi2 < gtb->Eval(par[iTanBeta])) continue;
+//    }
+//    if ( par[iA0] > a0[0] && par[iA0] < a0[na0-1]) {
+//      if (chi2 < ga0->Eval(par[iA0])) continue;
+//    }
 
     // end clean up
     if (iTanBeta>=0) {
