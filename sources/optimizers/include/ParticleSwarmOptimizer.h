@@ -47,22 +47,22 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-	                     ParticleSwarmOptimizer( ModelBase* model );
+	                    ParticleSwarmOptimizer( ModelBase* model );
       /*!
        *  Standard destructor.
        */
-                             ~ParticleSwarmOptimizer();
+                            ~ParticleSwarmOptimizer();
 
       /*! \cond UML */
     private:
-      double                 _c1;
-      double                 _c2;
-      unsigned int           _numberOfParticles;
-      std::vector<Particle*> _particleSwarm;
+      double                _c1;
+      double                _c2;
+      unsigned int          _numberOfParticles;
+      std::vector<Particle> _particleSwarm;
 
     private:
-      virtual void           PrintSteeringParameters() const;
-      virtual void           UpdateModel();
+      virtual void          PrintSteeringParameters() const;
+      virtual void          UpdateModel();
       /*! \endcond UML */
  
   };

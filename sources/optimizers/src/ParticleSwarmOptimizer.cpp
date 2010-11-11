@@ -40,7 +40,7 @@ Fittino::ParticleSwarmOptimizer::ParticleSwarmOptimizer( Fittino::ModelBase* mod
 
         int seed = _randomGenerator.Uniform( 0, 10000 );
 
-        Particle* particle = new Particle( _c1, _c2, _model, seed );
+        Particle particle( _c1, _c2, _model, seed );
         _particleSwarm.push_back( particle );
 
     }
@@ -74,7 +74,7 @@ void Fittino::ParticleSwarmOptimizer::UpdateModel() {
 
     for ( unsigned int i = 0; i < _particleSwarm.size(); i++ ) {
 
-        _particleSwarm[i]->UpdateModel();
+        _particleSwarm[i].UpdateModel();
 
     }
 
