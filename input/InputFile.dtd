@@ -2,7 +2,8 @@
                      Model,
                      Optimizer,
                      ParticleSwarmOptimizer,
-                     SimulatedAnnealingOptimizer) >
+                     SimulatedAnnealingOptimizer,
+                     GeneticAlgorithmOptimizer) >
 
 <!ELEMENT ExecutionMode EMPTY>
 <!ATTLIST ExecutionMode
@@ -38,4 +39,11 @@
 <!ATTLIST SimulatedAnnealingOptimizer
   InitialTemperature         CDATA #REQUIRED
   TemperatureReductionFactor CDATA #REQUIRED
+>
+
+
+<!ELEMENT GeneticAlgorithmOptimizer EMPTY>
+<!ATTLIST GeneticAlgorithmOptimizer
+  mutationRate         CDATA #REQUIRED
+  sizeOfPopulation     CDATA #REQUIRED
 >

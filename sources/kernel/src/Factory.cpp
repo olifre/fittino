@@ -27,6 +27,7 @@
 #include "RosenbrockModel.h"
 #include "SimulatedAnnealingOptimizer.h"
 #include "XMLInputFileInterpreter.h"
+#include "GeneticAlgorithmOptimizer.h"
 
 Fittino::Factory::Factory() {
 
@@ -76,6 +77,9 @@ Fittino::OptimizerBase* const Fittino::Factory::CreateOptimizer( const Fittino::
 
         case Fittino::OptimizerBase::SIMULATEDANNEALING:
             return new SimulatedAnnealingOptimizer( model );
+
+        case Fittino::OptimizerBase::GENETICALGORITHM:
+            return new GeneticAlgorithmOptimizer( model );
 
     }
 

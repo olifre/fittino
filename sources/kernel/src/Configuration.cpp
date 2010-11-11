@@ -110,6 +110,12 @@ Fittino::OptimizerBase::OptimizerType Fittino::Configuration::GetOptimizerType()
         return OptimizerBase::SIMULATEDANNEALING;
 
     }
+    else if ( ( *_steeringParameterMap )[key] == "GeneticAlgorithm" ) {
+
+        return OptimizerBase::GENETICALGORITHM;
+
+    }
+
     else {
 
         throw ConfigurationException( "Configured optimizer type unknown." );
