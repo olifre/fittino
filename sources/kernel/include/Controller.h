@@ -49,14 +49,16 @@ namespace Fittino {
   /*!
    *  \brief Singleton class for controlling the execution flow of Fittino.
    *
-   *  The (unique) instance of the Controller class is the first object that is created at the\n
-   *  beginning of the execution of Fittino. Depending on the user configuration the Controller\n
-   *  creates instances of further objects (either directly or with the help of a factory) and\n
-   *  advises them to perform specified tasks, hereby controlling the program's overall execution\n
+   *  The instance of the Controller class is the first object that is created at the beginning of\n
+   *  the execution of Fittino. Depending on the user configuration the controller creates\n
+   *  instances of further objects (either directly or with the help of a factory) and advises\n
+   *  them to perform the specified tasks, hereby controlling the program's overall execution\n
    *  flow.
    *
-   *  The controller adresses its purpose in three distinct phases: At first, the Controller
-   *  initializes Fittino by reading in user specified options and At the end, the Controller terminates Fittino.
+   *  The controller adresses its purpose in three distinct phases: At first, the controller\n
+   *  initializes Fittino by letting an input file interpreter read in user specified options.\n
+   *  After that further objects are created and put into action according to the user's\n
+   *  configuration. At the end, the controller provides the controlled termination of Fittino.
    */
   class Controller {
 
