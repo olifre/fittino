@@ -51,14 +51,14 @@ Fittino::ExecutionMode::Mode Fittino::Configuration::GetExecutionMode() const {
         return ExecutionMode::OPTIMIZATION;
 
     }
-    else if ( ( *_steeringParameterMap )[key] == "SAMPLING" ) {
-
-        return ExecutionMode::SAMPLING;
-
-    }
     else if ( ( *_steeringParameterMap )[key] == "SCAN" ) {
 
         return ExecutionMode::SCAN;
+
+    }
+    else if ( ( *_steeringParameterMap )[key] == "SAMPLING" ) {
+
+        return ExecutionMode::SAMPLING;
 
     }
     else {
@@ -73,14 +73,14 @@ Fittino::ModelBase::ModelType Fittino::Configuration::GetModelType() const {
 
     const std::string key = "ModelType";
 
-    if ( ( *_steeringParameterMap )[key] == "Rosenbrock" ) {
-
-        return ModelBase::ROSENBROCK;
-
-    }
-    else if ( ( *_steeringParameterMap )[key] == "MSUGRA" ) {
+    if ( ( *_steeringParameterMap )[key] == "MSUGRA" ) {
 
         return ModelBase::MSUGRA;
+
+    }
+    else if ( ( *_steeringParameterMap )[key] == "Rosenbrock" ) {
+
+        return ModelBase::ROSENBROCK;
 
     }
     else {
@@ -95,7 +95,12 @@ Fittino::OptimizerBase::OptimizerType Fittino::Configuration::GetOptimizerType()
 
     const std::string key = "OptimizerType";
 
-    if ( ( *_steeringParameterMap )[key] == "Minuit" ) {
+    if ( ( *_steeringParameterMap )[key] == "GeneticAlgorithm" ) {
+
+        return OptimizerBase::GENETICALGORITHM;
+
+    }
+    else if ( ( *_steeringParameterMap )[key] == "Minuit" ) {
 
         return OptimizerBase::MINUIT;
 
@@ -110,12 +115,6 @@ Fittino::OptimizerBase::OptimizerType Fittino::Configuration::GetOptimizerType()
         return OptimizerBase::SIMULATEDANNEALING;
 
     }
-    else if ( ( *_steeringParameterMap )[key] == "GeneticAlgorithm" ) {
-
-        return OptimizerBase::GENETICALGORITHM;
-
-    }
-
     else {
 
         throw ConfigurationException( "Configured optimizer type unknown." );

@@ -46,7 +46,7 @@ namespace Fittino {
 
 
 
-
+  /*! \cond UML */
   private:
 		   double _mutationRate;
 		   unsigned int _sizeOfPopulation;
@@ -76,6 +76,7 @@ namespace Fittino {
        *  Add a brief description on how this function is implemented in this optimizer here.
        */
 		   virtual void UpdateModel();
+  /*! \endcond UML */
 
   };
 

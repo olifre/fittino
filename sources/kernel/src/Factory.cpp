@@ -20,6 +20,7 @@
 
 #include "Factory.h"
 #include "FittinoInputFileInterpreter.h"
+#include "GeneticAlgorithmOptimizer.h"
 #include "MarkovChainSampler.h"
 #include "MinuitOptimizer.h"
 #include "MSUGRAModel.h"
@@ -27,7 +28,6 @@
 #include "RosenbrockModel.h"
 #include "SimulatedAnnealingOptimizer.h"
 #include "XMLInputFileInterpreter.h"
-#include "GeneticAlgorithmOptimizer.h"
 
 Fittino::Factory::Factory() {
 
@@ -41,11 +41,11 @@ const Fittino::InputFileInterpreterBase* const Fittino::Factory::CreateInputFile
 
     switch ( inputFileFormat ) {
 
-        case Fittino::InputFileInterpreterBase::XMLINPUTFILE:
-            return new XMLInputFileInterpreter();
-
         case Fittino::InputFileInterpreterBase::FITTINOINPUTFILE:
             return new FittinoInputFileInterpreter();
+
+        case Fittino::InputFileInterpreterBase::XMLINPUTFILE:
+            return new XMLInputFileInterpreter();
 
     }
 
@@ -69,6 +69,9 @@ Fittino::OptimizerBase* const Fittino::Factory::CreateOptimizer( const Fittino::
 
     switch ( optimizerType ) {
 
+        case Fittino::OptimizerBase::GENETICALGORITHM:
+            return new GeneticAlgorithmOptimizer( model );
+
         case Fittino::OptimizerBase::MINUIT:
             return new MinuitOptimizer( model );
 
@@ -77,9 +80,6 @@ Fittino::OptimizerBase* const Fittino::Factory::CreateOptimizer( const Fittino::
 
         case Fittino::OptimizerBase::SIMULATEDANNEALING:
             return new SimulatedAnnealingOptimizer( model );
-
-        case Fittino::OptimizerBase::GENETICALGORITHM:
-            return new GeneticAlgorithmOptimizer( model );
 
     }
 

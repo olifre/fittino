@@ -117,7 +117,7 @@ void Fittino::AnalysisTool::PrintConfiguration() const {
     std::cout << "   Configuration                                                                " << std::endl;
     std::cout << "                                                                                " << std::endl;
     std::cout << "    Abort criterium              " << _abortCriterium                             << std::endl;
-    std::cout << "    Number of Iterations         " << _numberOfIterations                         << std::endl;
+    std::cout << "    Number of iterations         " << _numberOfIterations                         << std::endl;
 
     this->PrintSteeringParameters();
 

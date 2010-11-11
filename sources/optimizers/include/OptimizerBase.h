@@ -45,7 +45,7 @@ namespace Fittino {
   class OptimizerBase : public AnalysisTool {
 
     public:
-    enum         OptimizerType { MINUIT, PARTICLESWARM, SIMULATEDANNEALING, GENETICALGORITHM };
+    enum         OptimizerType { GENETICALGORITHM, MINUIT, PARTICLESWARM, SIMULATEDANNEALING };
 
     public:
       /*!
