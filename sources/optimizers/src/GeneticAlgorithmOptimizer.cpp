@@ -17,6 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <algorithm>
+
 #include "GeneticAlgorithmOptimizer.h"
 #include "Configuration.h"
 
@@ -203,7 +205,7 @@ void Fittino::GeneticAlgorithmOptimizer::Mutation() {
 
 
 void Fittino::GeneticAlgorithmOptimizer::SortPopulation() {
-    //sort(_population.begin(), _population.end(),CompareIndividuals());
+    sort(_population.begin(), _population.end(),CompareIndividuals());
 }
 
 
