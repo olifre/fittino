@@ -36,7 +36,7 @@
 
 #include "Controller.h"
 //#include "InputFileException.h"
-//#include "LesHouchesFileException.h"
+//#include "SLHAFileException.h"
 //#include "ModelCalculatorException.h"
 //#include "OptimizerException.h"
 
@@ -62,7 +62,7 @@ int main( int argc, char** argv ) {
     //    std::cout << inputFileException.what() << std::endl;
 
     //}
-    //catch ( Fittino::LesHouchesFileException& lesHouchesFileException ) {
+    //catch ( Fittino::SLHAFileException& slhaFileException ) {
 
     //    std::cout << lesHouchesFileException.what() << std::endl;
 

@@ -45,7 +45,7 @@ namespace Fittino {
    *      e.g with unknown options, an invalid combination of options or if there are missing\n
    *      option parameters. They are also thrown if the format of the input file cannot be\n
    *      detected or if parsing errors have occurred.
-   *    <li> LesHouchesFileException
+   *    <li> SLHAFileException
    *    <li> ModelCalculatorException
    *    <li> OptimizerException
    *  </ul>

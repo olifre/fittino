@@ -1,14 +1,13 @@
-/* $Id: LesHouchesFileException.h 582 2010-04-15 23:00:32Z uhlenbrock $ */
+/* $Id: SLHAFileException.h 582 2010-04-15 23:00:32Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        LesHouchesFileException.h                                        *
+* File        SLHAFileException.h                                              *
 *                                                                              *
-* Description Fittino Les Houches file exception class. It is thrown in case   *
-*             of problems with Les Houches file (syntax errors, etc.) from     *
-*             model calculators.                                               *
+* Description Fittino SLHA file exception class. It is thrown in case of       *
+*             problems with the SLHA file (syntax errors, etc.).               *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *             Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
@@ -20,8 +19,8 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_LESHOUCHESFILEEXCEPTION_H
-#define FITTINO_LESHOUCHESFILEEXCEPTION_H
+#ifndef FITTINO_SLHAFILEEXCEPTION_H
+#define FITTINO_SLHAFILEEXCEPTION_H
 
 #include "ExceptionBase.h"
 
@@ -31,9 +30,9 @@
 namespace Fittino {
 
   /*!
-   *  \brief Fittino Les Houches file exception class.
+   *  \brief Fittino SLHA file exception class.
    */
-  class LesHouchesFileException : public ExceptionBase {
+  class SLHAFileException : public ExceptionBase {
 
     public:
       /*!
@@ -41,10 +40,10 @@ namespace Fittino {
        *  is caught and the what() method is called. The message is supposed to provide the user\n
        *  with further information about the occurred exception.
        */
-      LesHouchesFileException( const std::string& message );
+      SLHAFileException( const std::string& message );
 
   };
 
 }
 
-#endif // FITTINO_LESHOUCHESFILEEXCEPTION_H
+#endif // FITTINO_SLHAFILEEXCEPTION_H
