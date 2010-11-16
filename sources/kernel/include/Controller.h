@@ -25,7 +25,7 @@
 
 #include <string>
 
-#include "InputFileInterpreterBase.h"
+#include "Configuration.h"
 
 /*!
  *  \todo Long-term: Document the code
@@ -66,7 +66,7 @@ namespace Fittino {
       /*!
        *  Returns a static pointer to the unique instance of this class.
        */
-      static Controller*                              GetInstance();
+      static Controller*                   GetInstance();
 
     public:
       /*!
@@ -76,59 +76,59 @@ namespace Fittino {
        *  mandatory input file. After that the steering parameters and flags are globally\n
        *  accessible via calls to the Configuration.
        */
-      void                                            InitializeFittino( int argc, char** argv );
+      void                                 InitializeFittino( int argc, char** argv );
       /*!
        *  Executes Fittino according to the configured execution mode. So far supported modes are\n
        *  parameter sampling or optimization. For that purpose a model inheriting from ModelBase\n
        *  and the required analysis tools inheriting from AnalysisTool are created and put into\n
        *  action.
        */
-      void                                            ExecuteFittino() const;
+      void                                 ExecuteFittino() const;
       /*!
        *  Provides the controlled termination of Fittino.
        */
-      void                                            TerminateFittino() const;
+      void                                 TerminateFittino() const;
 
     private:
       /*!
        *  Pointer to the unique instance of this class.
        */
-      static Controller*                              _instance;
+      static Controller*                   _instance;
 
       /*! \cond UML */
     private:
       /*!
        *  External seed as passed as an argument to Fittino.
        */
-      int                                             _randomSeed;
+      int                                  _randomSeed;
       /*!
        *  The name of the input file.
        */
-      std::string                                     _inputFileName;
+      std::string                          _inputFileName;
 
     private:
       /*!
        *  Standard constructor.
        */
-                                                      Controller();
+                                           Controller();
       /*!
        *  Standard destructor.
        */
-                                                      ~Controller();
+                                           ~Controller();
       /*!
        *  When Fittino is called without arguments or with the -h/--help option this method\n
        *  prints a help screen with further instructions on how to use Fittino.
        */
-      void                                            PrintHelp() const;
+      void                                 PrintHelp() const;
       /*!
        *  Prints a welcome logo.
        */
-      void                                            PrintLogo() const;
+      void                                 PrintLogo() const;
       /*!
        *  Determines the format of the input file. Supported input file formats are .xml or .ftn\n
        *  (a special Fittino file format).
        */
-      const InputFileInterpreterBase::InputFileFormat DetermineInputFileFormat() const;
+      const Configuration::InputFileFormat DetermineInputFileFormat() const;
       /*! \endcond UML */
 
   };

@@ -28,7 +28,6 @@
 #include <sstream>
 #include <string>
 
-#include "ExecutionMode.h"
 #include "ModelBase.h"
 #include "OptimizerBase.h"
 #include "SamplerBase.h"
@@ -56,6 +55,13 @@ namespace Fittino {
        *  Returns a static pointer to the unique instance of this class.
        */
       static Configuration*                 GetInstance();
+
+    public:
+      enum                                  ExecutionMode { OPTIMIZATION, SAMPLING, SCAN };
+      enum                                  InputFileFormat { FITTINOINPUTFILE, XMLINPUTFILE };
+      enum                                  ModelType { MSUGRA, ROSENBROCK };
+      enum                                  OptimizerType { GENETICALGORITHM, MINUIT, PARTICLESWARM, SIMULATEDANNEALING };
+      enum                                  SamplerType { MARKOVCHAIN };
   
     public:
       /*!
@@ -67,19 +73,19 @@ namespace Fittino {
       /*!
        *  Returns the configured execution mode.
        */
-      ExecutionMode::Mode                   GetExecutionMode() const;
+      ExecutionMode                         GetExecutionMode() const;
       /*!
        *  Returns the configured model type.
        */
-      ModelBase::ModelType                  GetModelType() const;
+      ModelType                             GetModelType() const;
       /*!
        *  Returns the configured optimizer type.
        */
-      OptimizerBase::OptimizerType          GetOptimizerType() const;
+      OptimizerType                         GetOptimizerType() const;
       /*!
        *  Returns the configured sampler type.
        */
-      SamplerBase::SamplerType              GetSamplerType() const;
+      SamplerType                           GetSamplerType() const;
 
     public:
       template<class SteeringParameterType>

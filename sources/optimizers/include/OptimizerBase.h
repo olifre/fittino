@@ -45,9 +45,6 @@ namespace Fittino {
   class OptimizerBase : public AnalysisTool {
 
     public:
-    enum         OptimizerType { GENETICALGORITHM, MINUIT, PARTICLESWARM, SIMULATEDANNEALING };
-
-    public:
       /*!
        *  Takes as input a pointer to the model to be analysed. Via this pointer an association\n
        *  between a model and the concrete optimizer is established.

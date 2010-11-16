@@ -38,9 +38,6 @@ namespace Fittino {
   class SamplerBase : public AnalysisTool {
 
     public:
-      enum         SamplerType { MARKOVCHAIN };
-
-    public:
       /*!
        *  Takes as input a pointer to the model to be analysed. Via this pointer an association\n
        *  between a model and the concrete sampler is established.

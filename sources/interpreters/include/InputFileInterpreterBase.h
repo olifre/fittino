@@ -36,9 +36,6 @@ namespace Fittino {
   class InputFileInterpreterBase {
   
     public:
-      enum InputFileFormat { FITTINOINPUTFILE, XMLINPUTFILE };
-  
-    public:
       /*!
        *  Standard constructor.
        */

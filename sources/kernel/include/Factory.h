@@ -21,6 +21,7 @@
 #ifndef FITTINO_FACTORY_H
 #define FITTINO_FACTORY_H
 
+#include "Configuration.h"
 #include "InputFileInterpreterBase.h"
 #include "ModelBase.h"
 #include "OptimizerBase.h"
@@ -53,7 +54,7 @@ namespace Fittino {
        *    <li> XMLINPUTFILE\n
        *  </ul>
        */
-      const InputFileInterpreterBase* const CreateInputFileInterpreter( const InputFileInterpreterBase::InputFileFormat& inputFileFormat ) const;
+      const InputFileInterpreterBase* const CreateInputFileInterpreter( const Configuration::InputFileFormat& inputFileFormat ) const;
       /*!
        *  Returns a concrete model according to the model type passed as an argument. Supported\n
        *  model types are
@@ -62,7 +63,7 @@ namespace Fittino {
        *    <li> ROSENBROCK\n
        *  </ul>
        */
-      ModelBase* const                      CreateModel( const ModelBase::ModelType& modelType ) const;
+      ModelBase* const                      CreateModel( const Configuration::ModelType& modelType ) const;
       /*!
        *  Returns a concrete parameter optimizer according to the optimizer type passed as an\n
        *  argument. Supported optimizer types are
@@ -72,7 +73,7 @@ namespace Fittino {
        *    <li> SIMULATEDANNEALING\n
        *  </ul>
        */
-      OptimizerBase* const                  CreateOptimizer( const OptimizerBase::OptimizerType& optimizerType, ModelBase* model ) const;
+      OptimizerBase* const                  CreateOptimizer( const Configuration::OptimizerType& optimizerType, ModelBase* model ) const;
       /*!
        *  Returns a concrete parameter sampler according to the sampler type passed as an\n
        *  argument.  Supported sampler types are
@@ -80,7 +81,7 @@ namespace Fittino {
        *    <li> MARKOVCHAIN\n
        *  </ul>
        */
-      SamplerBase* const                    CreateSampler( const SamplerBase::SamplerType& samplerType, ModelBase* model ) const;
+      SamplerBase* const                    CreateSampler( const Configuration::SamplerType& samplerType, ModelBase* model ) const;
 
   };
 

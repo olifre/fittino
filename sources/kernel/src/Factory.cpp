@@ -37,59 +37,59 @@ Fittino::Factory::~Factory() {
 
 }
 
-const Fittino::InputFileInterpreterBase* const Fittino::Factory::CreateInputFileInterpreter( const Fittino::InputFileInterpreterBase::InputFileFormat& inputFileFormat ) const {
+const Fittino::InputFileInterpreterBase* const Fittino::Factory::CreateInputFileInterpreter( const Fittino::Configuration::InputFileFormat& inputFileFormat ) const {
 
     switch ( inputFileFormat ) {
 
-        case Fittino::InputFileInterpreterBase::FITTINOINPUTFILE:
+        case Configuration::FITTINOINPUTFILE:
             return new FittinoInputFileInterpreter();
 
-        case Fittino::InputFileInterpreterBase::XMLINPUTFILE:
+        case Configuration::XMLINPUTFILE:
             return new XMLInputFileInterpreter();
 
     }
 
 }
 
-Fittino::ModelBase* const Fittino::Factory::CreateModel( const Fittino::ModelBase::ModelType& modelType ) const {
+Fittino::ModelBase* const Fittino::Factory::CreateModel( const Fittino::Configuration::ModelType& modelType ) const {
 
     switch ( modelType ) {
 
-        case Fittino::ModelBase::MSUGRA:
+        case Configuration::MSUGRA:
             return new MSUGRAModel();
 
-        case Fittino::ModelBase::ROSENBROCK:
+        case Configuration::ROSENBROCK:
             return new RosenbrockModel();
 
     }
 
 }
 
-Fittino::OptimizerBase* const Fittino::Factory::CreateOptimizer( const Fittino::OptimizerBase::OptimizerType& optimizerType, Fittino::ModelBase* model ) const {
+Fittino::OptimizerBase* const Fittino::Factory::CreateOptimizer( const Fittino::Configuration::OptimizerType& optimizerType, Fittino::ModelBase* model ) const {
 
     switch ( optimizerType ) {
 
-        case Fittino::OptimizerBase::GENETICALGORITHM:
+        case Configuration::GENETICALGORITHM:
             return new GeneticAlgorithmOptimizer( model );
 
-        case Fittino::OptimizerBase::MINUIT:
+        case Configuration::MINUIT:
             return new MinuitOptimizer( model );
 
-        case Fittino::OptimizerBase::PARTICLESWARM:
+        case Configuration::PARTICLESWARM:
             return new ParticleSwarmOptimizer( model );
 
-        case Fittino::OptimizerBase::SIMULATEDANNEALING:
+        case Configuration::SIMULATEDANNEALING:
             return new SimulatedAnnealingOptimizer( model );
 
     }
 
 }
 
-Fittino::SamplerBase* const Fittino::Factory::CreateSampler( const Fittino::SamplerBase::SamplerType& samplerType, Fittino::ModelBase* model ) const {
+Fittino::SamplerBase* const Fittino::Factory::CreateSampler( const Fittino::Configuration::SamplerType& samplerType, Fittino::ModelBase* model ) const {
 
     switch ( samplerType ) {
 
-        case Fittino::SamplerBase::MARKOVCHAIN:
+        case Configuration::MARKOVCHAIN:
             return new MarkovChainSampler( model );
 
     }

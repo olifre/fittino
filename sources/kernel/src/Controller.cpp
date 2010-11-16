@@ -142,21 +142,21 @@ void Fittino::Controller::ExecuteFittino() const {
         const Factory factory;
         ModelBase* const model = factory.CreateModel( Configuration::GetInstance()->GetModelType() );
 
-        if ( Configuration::GetInstance()->GetExecutionMode() == ExecutionMode::OPTIMIZATION ) {
+        if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::OPTIMIZATION ) {
 
             OptimizerBase* const optimizer = factory.CreateOptimizer( Configuration::GetInstance()->GetOptimizerType(), model );
             optimizer->PerformAnalysis();
             delete optimizer;
 
         }
-        else if ( Configuration::GetInstance()->GetExecutionMode() == ExecutionMode::SAMPLING ) {
+        else if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::SAMPLING ) {
 
             SamplerBase* const sampler = factory.CreateSampler( Configuration::GetInstance()->GetSamplerType(), model );
             sampler->PerformAnalysis();
             delete sampler;
 
 	}
-        else if ( Configuration::GetInstance()->GetExecutionMode() == ExecutionMode::SCAN ) {
+        else if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::SCAN ) {
 
             throw ConfigurationException( "Execution mode SCAN not supported yet." );
 
@@ -232,7 +232,7 @@ void Fittino::Controller::PrintLogo() const {
 
 }
 
-const Fittino::InputFileInterpreterBase::InputFileFormat Fittino::Controller::DetermineInputFileFormat() const {
+const Fittino::Configuration::InputFileFormat Fittino::Controller::DetermineInputFileFormat() const {
 
     try {
 
@@ -244,12 +244,12 @@ const Fittino::InputFileInterpreterBase::InputFileFormat Fittino::Controller::De
 
         if ( !_inputFileName.compare( _inputFileName.length() - 4, 4, ".ftn" ) ) {
 
-            return Fittino::InputFileInterpreterBase::FITTINOINPUTFILE;
+            return Configuration::FITTINOINPUTFILE;
 
         }
         else if ( !_inputFileName.compare( _inputFileName.length() - 4, 4, ".xml" ) ) {
 
-            return Fittino::InputFileInterpreterBase::XMLINPUTFILE;
+            return Configuration::XMLINPUTFILE;
 
         }
         else {
