@@ -28,17 +28,17 @@
 namespace Fittino {
 
   /*!
-   *  \brief Add a brief description this optimizer here.
+   *  \brief Add a brief description of this optimizer here.
    */
   class FittinoOptimizerTemplate : public OptimizerBase {
 
     public:
       /*!
-       *  Add a brief description of the constructor of this opitmizer here.
+       *  Add a brief description of the constructor of this optimizer here.
        */
                    FittinoOptimizerTemplate( ModelBase* model );
       /*!
-       *  Add a brief description of the destructor of this opitmizer here.
+       *  Add a brief description of the destructor of this optimizer here.
        */
                    ~FittinoOptimizerTemplate();
 
