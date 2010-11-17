@@ -37,6 +37,7 @@ namespace Fittino {
    *
    *  Supported parameter optimizers are
    *  <ul>
+   *    <li> genetic algorithm optimizer
    *    <li> Minuit optimizer
    *    <li> particle swarm optimizer
    *    <li> simulated annealing optimizer
@@ -59,8 +60,8 @@ namespace Fittino {
       /*! \cond UML */
     private:
       virtual void PrintResult() const;
-      /*! \endcond UML */
 
+      /*! \endcond UML */
   };
 
 }

@@ -51,6 +51,7 @@ namespace Fittino {
       /*! \cond UML */
     private:
       virtual void PrintResult() const;
+
       /*! \endcond UML */
 
   };

@@ -68,6 +68,7 @@ namespace Fittino {
        *  Returns a concrete parameter optimizer according to the optimizer type passed as an\n
        *  argument. Supported optimizer types are
        *  <ul>
+       *    <li> GENETICALGORITHM\n
        *    <li> MINUIT\n
        *    <li> PARTICLESWARM\n
        *    <li> SIMULATEDANNEALING\n

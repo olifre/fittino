@@ -129,6 +129,7 @@ namespace Fittino {
        *  (a special Fittino file format).
        */
       const Configuration::InputFileFormat DetermineInputFileFormat() const;
+
       /*! \endcond UML */
 
   };

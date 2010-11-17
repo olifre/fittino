@@ -119,6 +119,7 @@ namespace Fittino {
       void         PrintConfiguration() const;
       void         PrintStatus() const;
       void         TerminateAnalysisTool() const;
+
       /*! \endcond UML */
 
   };
