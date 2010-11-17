@@ -43,7 +43,7 @@ namespace Fittino {
        */
                                             Factory();
       /*!
-       *  Standard destructor. 
+       *  Standard destructor.
        */
                                             ~Factory();
       /*!

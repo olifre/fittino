@@ -36,11 +36,11 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      MarkovChainSampler( ModelBase* model);
+                             MarkovChainSampler( ModelBase* model );
       /*!
        *  Standard destructor.
        */
-      ~MarkovChainSampler();
+                             ~MarkovChainSampler();
 
       /*! \cond UML */
     private:

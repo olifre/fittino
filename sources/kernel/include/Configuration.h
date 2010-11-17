@@ -32,8 +32,8 @@
 #include "OptimizerBase.h"
 #include "SamplerBase.h"
 
-/*! 
- *  \brief Fittino namespace 
+/*!
+ *  \brief Fittino namespace
  */
 namespace Fittino {
 
@@ -41,7 +41,7 @@ namespace Fittino {
 
   /*!
    *  \brief Singleton class for storing and providing access to user-defined configuration\n
-   *  settings. 
+   *  settings.
    *
    *  The instance of this class is created when the input file interpreter (see also\n
    *  InputFileInterpreterBase) is parsing the input file. The steering parameters found by the\n
@@ -49,7 +49,7 @@ namespace Fittino {
    *  via the various getter functions.
    */
   class Configuration {
-  
+
     public:
       /*!
        *  Returns a static pointer to the unique instance of this class.
@@ -62,7 +62,7 @@ namespace Fittino {
       enum                                  ModelType { MSUGRA, ROSENBROCK };
       enum                                  OptimizerType { GENETICALGORITHM, MINUIT, PARTICLESWARM, SIMULATEDANNEALING };
       enum                                  SamplerType { MARKOVCHAIN };
-  
+
     public:
       /*!
        *  Adds a new steering parameter specified by a key-value pair to the _steeringParameterMap\n
@@ -95,13 +95,13 @@ namespace Fittino {
        *  default value.
        */
       SteeringParameterType                 GetSteeringParameter( const std::string& key, const SteeringParameterType& defaultValue ) const;
-  
+
     private:
       /*!
        *  Pointer to the unique instance of this class.
        */
       static Configuration*                 _instance;
-  
+
     private:
       /*!
        *  Stores the configured steering parameters in an easy accessible key-value pair.
@@ -117,14 +117,14 @@ namespace Fittino {
        *  Standard destructor.
        */
                                             ~Configuration();
-  
+
   };
 
   template<class SteeringParameterType>
   SteeringParameterType Configuration::GetSteeringParameter( const std::string& key, const SteeringParameterType& defaultValue ) const {
 
     /*!
-     *  \todo Short-term: Think about a more sophisticated implementation of this function. 
+     *  \todo Short-term: Think about a more sophisticated implementation of this function.
      */
     if ( !_steeringParameterMap->empty() ) {
 
@@ -135,7 +135,7 @@ namespace Fittino {
           std::stringstream stringstream;
           SteeringParameterType value;
 
-          stringstream << (*_steeringParameterMap)[key];
+          stringstream << ( *_steeringParameterMap )[key];
           stringstream >> value;
 
           return value;

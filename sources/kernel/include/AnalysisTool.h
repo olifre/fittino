@@ -56,7 +56,7 @@ namespace Fittino {
        */
                    ~AnalysisTool();
       /*!
-       *  Template method . It subdivides the tool's exectution into three 
+       *  Template method . It subdivides the tool's exectution into three
        *  It is usually called directly after the creation of a concrete analysis tool.
        */
       void         PerformAnalysis();

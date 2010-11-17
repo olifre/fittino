@@ -35,49 +35,43 @@ namespace Fittino {
 
     public:
       /*!
-       *  Add a brief description of the constructor of this opitmizer here.
+       *  Add a brief description of the constructor of this optimizer here.
        */
-                   GeneticAlgorithmOptimizer( ModelBase* model );
+                              GeneticAlgorithmOptimizer( ModelBase* model );
       /*!
-       *  Add a brief description of the destructor of this opitmizer here.
+       *  Add a brief description of the destructor of this optimizer here.
        */
-                   ~GeneticAlgorithmOptimizer();
+                              ~GeneticAlgorithmOptimizer();
 
+      /*! \cond UML */
+    private:
+      double                  _mutationRate;
+      unsigned int            _sizeOfPopulation;
+      unsigned int            _numberOfGenes;
+      unsigned int            _numberOfFamilies;
+      unsigned int            _numberOfSurvivors;
+      std::vector<double>      MaitingProbabilities;
+      std::vector<double>      CumMaitingProbabilities;
+      std::vector<Individual*> _population;
+      std::vector<Individual*> _fathers;
+      std::vector<Individual*> _mothers;
+      std::vector<Individual*> _firstChilds;
+      std::vector<Individual*> _secondChilds;
 
-
-
-  /*! \cond UML */
-  private:
-		   double _mutationRate;
-		   unsigned int _sizeOfPopulation;
-		   unsigned int _numberOfGenes;
-		   unsigned int _numberOfFamilies;
-		   unsigned int _numberOfSurvivors;
-		   std::vector<double> MaitingProbabilities;
-		   std::vector<double> CumMaitingProbabilities;
-		   std::vector<Individual*> _population;
-		   std::vector<Individual*> _fathers;
-		   std::vector<Individual*> _mothers;
-		   std::vector<Individual*> _firstChilds;
-		   std::vector<Individual*> _secondChilds;
-		   
-		   
-
-  private:
-		   void Pairing();
-		   void Mutation();
-		   void Crossover();
-		   void Replacement();
-		   void SortPopulation();
-		   void CalculateMaitingProbabilities();
-		   virtual void PrintSteeringParameters() const;
-
+    private:
+      void                     Pairing();
+      void                     Mutation();
+      void                     Crossover();
+      void                     Replacement();
+      void                     SortPopulation();
+      void                     CalculateMaitingProbabilities();
+      virtual void             PrintSteeringParameters() const;
       /*!
        *  Add a brief description on how this function is implemented in this optimizer here.
        */
-		   virtual void UpdateModel();
+      virtual void             UpdateModel();
 
-  /*! \endcond UML */
+      /*! \endcond UML */
 
   };
 

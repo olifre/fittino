@@ -25,8 +25,8 @@
 
 #include "AnalysisTool.h"
 
-/*! 
- *  \brief Fittino namespace 
+/*!
+ *  \brief Fittino namespace
  */
 namespace Fittino {
 
@@ -50,7 +50,7 @@ namespace Fittino {
        *  Takes as input a pointer to the model to be analysed. Via this pointer an association\n
        *  between a model and the concrete optimizer is established.
        */
- 
+
                    OptimizerBase( ModelBase* model );
       /*!
        *  Standard destructor.

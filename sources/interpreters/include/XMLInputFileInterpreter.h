@@ -22,7 +22,7 @@
 
 #ifndef FITTINO_XMLINPUTFILEINTERPRETER_H
 #define FITTINO_XMLINPUTFILEINTERPRETER_H
- 
+
 #include "InputFileInterpreterBase.h"
 
 /*!
@@ -34,7 +34,7 @@ namespace Fittino {
    *  \brief Class for reading and interpreting XML input files.
    */
   class XMLInputFileInterpreter : public InputFileInterpreterBase {
-  
+
     public:
       /*!
        *  Standard constructor.
@@ -45,7 +45,7 @@ namespace Fittino {
        */
       virtual      ~XMLInputFileInterpreter();
       virtual void Parse( const TString& xmlInputFileName ) const;
-  
+
   };
 
 }

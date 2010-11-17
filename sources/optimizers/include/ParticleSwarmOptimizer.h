@@ -26,8 +26,8 @@
 #include "OptimizerBase.h"
 #include "Particle.h"
 
-/*! 
- *  \brief Fittino namespace 
+/*!
+ *  \brief Fittino namespace
  */
 namespace Fittino {
 
@@ -37,17 +37,17 @@ namespace Fittino {
    *  The algorithm works as follows:
    *  <br>
    *  \f[
-   *    \vec{r} = \vec{r} + \vec{v} 
-   *  \f] 
+   *    \vec{r} = \vec{r} + \vec{v}
+   *  \f]
    *
    */
   class ParticleSwarmOptimizer : public OptimizerBase {
-  
+
     public:
       /*!
        *  Standard constructor.
        */
-	                    ParticleSwarmOptimizer( ModelBase* model );
+                            ParticleSwarmOptimizer( ModelBase* model );
       /*!
        *  Standard destructor.
        */
@@ -65,7 +65,7 @@ namespace Fittino {
       virtual void          UpdateModel();
 
       /*! \endcond UML */
- 
+
   };
 
 }

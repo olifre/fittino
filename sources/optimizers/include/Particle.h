@@ -29,8 +29,8 @@
 
 #include "ModelBase.h"
 
-/*! 
- *  \brief Fittino namespace 
+/*!
+ *  \brief Fittino namespace
  */
 namespace Fittino {
 
@@ -42,16 +42,16 @@ namespace Fittino {
     public:
       static double       _globalBestChi2;
       static ModelBase*   _globalBestModel;
-  
+
     public:
                           Particle( double c1, double c2, ModelBase* model, int seed );
                           ~Particle();
       void                UpdateModel();
-  
+
     private:
       //static float        _c1;
       //static float        _c2;
-  
+
     private:
       float               _c1;
       float               _c2;
@@ -65,7 +65,7 @@ namespace Fittino {
     private:
       void                UpdateVelocity();
       void                UpdatePosition();
-  
+
   };
 
 }

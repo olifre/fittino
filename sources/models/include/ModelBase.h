@@ -31,7 +31,7 @@
 namespace Fittino {
 
   /*!
-   *  \brief Base class for Fittino models. 
+   *  \brief Base class for Fittino models.
    */
   class ModelBase {
 

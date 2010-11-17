@@ -25,15 +25,15 @@
 #include "AnalysisTool.h"
 #include "ModelBase.h"
 
-/*! 
- *  \brief Fittino namespace 
+/*!
+ *  \brief Fittino namespace
  */
 namespace Fittino {
 
   class ModelBase;
 
   /*!
-   *  \brief Base class for Fittino parameter samplers. 
+   *  \brief Base class for Fittino parameter samplers.
    */
   class SamplerBase : public AnalysisTool {
 

@@ -20,12 +20,12 @@
 #ifndef FITTINO_INDIVIDUAL_H
 #define FITTINO_INDIVIDUAL_H
 
-#include <vector>
 #include <iostream>
+#include <vector>
+
 #include "TRandom.h"
 
 #include "ModelBase.h"
-
 
 /*!
  *  \brief Fittino namespace
@@ -37,43 +37,40 @@ namespace Fittino {
    */
   struct Individual {
 
-  public:
-  
-  Individual(ModelBase* model, double mutationRate, int seed);
-    ~Individual();
+    public:
+                          Individual( ModelBase* model, double mutationRate, int seed );
+                          ~Individual();
+      void                Mutation();
+      void                UpdateModel();
+      void                SetChi2();
 
-    
-    void Mutation();
-    void UpdateModel();
-    void SetChi2();
-    
-    //  private:
+      //  private:
+      std::vector<double> _genes;
+      TRandom*            _randomGenerator;
+      ModelBase*          _model;
+      bool                _mutatedIndividual;
+      double              _chi2;
+      double              _mutationRate;
+      bool operator<( const Individual& individual ) const;
 
-    std::vector<double> _genes;
-    TRandom*            _randomGenerator;
-    ModelBase*          _model;
-    bool                _mutatedIndividual;
-    double              _chi2;
-    double              _mutationRate;
-    bool operator<(const Individual& individual) const;
-    
   };
 
-
-/*!
- *  \brief Structure for comparison of individuals
-   */
-
-
-/*   struct CompareIndividuals { */
-/*     bool operator()(const Individual& a, const Individual& b) const{ */
-/*       return a._chi2<b._chi2; */
-/*     } */
-/*   }; */
-
-
+  /*!
+   *  \brief Structure for comparison of individuals
+     */
+  /*   struct CompareIndividuals { */
+  /*     bool operator()(const Individual& a, const Individual& b) const{ */
+  /*       return a._chi2<b._chi2; */
+  /*     } */
+  /*   }; */
   struct CompareIndividuals {
-    bool operator ()(Individual *lhs, Individual *rhs) { return (*lhs < *rhs); }
+
+    bool operator ()( Individual *lhs, Individual *rhs ) {
+
+      return ( *lhs < *rhs );
+
+    }
+
   };
 
 }

@@ -28,7 +28,7 @@
 namespace Fittino {
 
   /*!
-   *  \brief Class for model parameters. 
+   *  \brief Class for model parameters.
    */
   class Parameter {
 

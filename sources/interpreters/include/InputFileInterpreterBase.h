@@ -34,7 +34,7 @@ namespace Fittino {
    *  \brief Base class for reading and interpreting input files.
    */
   class InputFileInterpreterBase {
-  
+
     public:
       /*!
        *  Standard constructor.
@@ -50,7 +50,7 @@ namespace Fittino {
        *  retrieved via dedicated getter functions.
        */
       virtual void Parse( const TString& inputFileName ) const = 0;
-  
+
   };
 
 }
