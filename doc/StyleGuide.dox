@@ -1,0 +1,74 @@
+/*! \page StyleGuide Style guide
+ *
+ *  <h1>General remarks</h1>
+ *
+ *  To help you getting started with writing your own extension as quickly as possible there exist\n
+ *  a number of template files in the \c devel directory. At the moment only templates for Fittino\n
+ *  optimizers exist. If there is no template available yet for the extension you intend to write\n
+ *  use the generic \c FittinoClassTemplate files.
+ *
+ *  If you decided to use a template, replace the name of the file and the placeholders in the\n
+ *  file with the name of your class, insert your name and email adress to the preamble and add a\n
+ *  brief description on what your new class is intended to do.
+ *
+ *  Most of the overall style definitions are enforced by running the \c astyle command as the\n
+ *  last step of the development process of your class. However, the code has to satisfy a few\n
+ *  more style conventions used throughout Fittino that \c astyle cannot account for (e.g.\n
+ *  sorting). This page is intended to serve as a guidline.
+ *
+ *  <h1>Header files style</h1>
+ *
+ *  \b Include \b file \b order\n
+ *  <ul>
+ *    <li> Standard C++ include libraries
+ *    <li> ROOT include files
+ *    <li> Fittino include files
+ *  </ul>
+ *  Seperate each block with a newline. Within each block sort the items alphabetically.
+ *  \n\n
+ *  \b Class \b member \b order
+ *  \n
+ *  Sort all class members according to their visibility:
+ *  <ul>
+ *    <li> public static data members 
+ *    <li> public data members 
+ *    <li> public static function members 
+ *    <li> public function members 
+ *    <li> protected static data members 
+ *    <li> protected data members 
+ *    <li> protected static function members 
+ *    <li> protected function members 
+ *    <li> private static data members 
+ *    <li> private data members 
+ *    <li> private static function members 
+ *    <li> private function members 
+ *  </ul>
+ *  Include operators after functions.
+ *  \n 
+ *  Seperate each block with a newline. Within each block sort the items alphabetically starting\n
+ *  with the data type.
+ *  <ul>
+ *    <li> built-in types 
+ *    <li> STL types 
+ *    <li> ROOT classes
+ *    <li> Fittino classes 
+ *  </ul>
+ *  The only exeptions are the constructor and the destructor members which\n
+ *  should be always the first items in their respective block.
+ *  \n
+ *  Add virtual functions after all regular functions. Apart from that, sort them like regular
+ *  functions.
+ *
+ *  <h1>Source files style</h1>
+ *
+ *  Sort the include files in the same way as in the header files.
+ *  \n
+ *  Arrange the implementation of the functions in the same order as in the header file.
+ *  \n
+ *  Seperate the functions with a newline. 
+ *
+ *  After writing your code make sure everything is fine by using the astyle command:\n
+ *  \c astyle \c --options=devel/astyle-header-options <\c filename.h>
+ *  \n
+ *  \c astyle \c --options=devel/astyle-options <\c filename.cpp>
+ */
