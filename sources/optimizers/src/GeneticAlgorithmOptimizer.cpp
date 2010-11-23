@@ -216,7 +216,7 @@ void Fittino::GeneticAlgorithmOptimizer::CalculateMaitingProbabilities() {
 
     double sum = 0;
     for ( unsigned int i = 0; i < _numberOfFamilies; i++ ) {
-        MaitingProbabilities[i] = _numberOfGenes - i;
+        MaitingProbabilities[i] = _numberOfFamilies - i;
         sum = sum + MaitingProbabilities[i];
     }
 
