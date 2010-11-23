@@ -2,7 +2,7 @@
 
 /*******************************************************************************
 *                                                                              *
-* Project     Fittino - A SUSY Parameter Fitting Package                       *
+o* Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
 * File        Individual.h                                                     *
 *                                                                              *
@@ -35,7 +35,7 @@ namespace Fittino {
   /*!
    *  \brief Class for individual (needed by genetic algorithm optimizer)
    */
-  struct Individual {
+  class Individual {
 
     public:
                           Individual( ModelBase* model, double mutationRate, int seed );
@@ -46,12 +46,14 @@ namespace Fittino {
 
 
       //  private:
-      std::vector<double> _genes;
-      TRandom*            _randomGenerator;
-      ModelBase*          _model;
-      bool                _mutatedIndividual;
-      double              _chi2;
-      double              _mutationRate;
+    bool                _mutatedIndividual;
+    double              _chi2;
+    double              _mutationRate;
+    std::vector<double> _genes;
+    TRandom*            _randomGenerator;
+    ModelBase*          _model;
+
+
       bool operator<( const Individual& individual ) const;
 
   };
@@ -59,15 +61,15 @@ namespace Fittino {
   /*!
    *  \brief Structure for comparison of individuals
      */
-  struct CompareIndividuals {
+ /*  struct CompareIndividuals { */
 
-    bool operator ()( Individual *lhs, Individual *rhs ) {
+/*     bool operator ()( Individual *lhs, Individual *rhs ) { */
 
-      return ( *lhs < *rhs );
+/*       return ( *lhs < *rhs ); */
 
-    }
+/*     } */
 
-  };
+/*   }; */
 
 }
 

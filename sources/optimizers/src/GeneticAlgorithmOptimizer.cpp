@@ -32,56 +32,26 @@ Fittino::GeneticAlgorithmOptimizer::GeneticAlgorithmOptimizer( Fittino::ModelBas
     _numberOfFamilies = ( unsigned int )( double( _sizeOfPopulation ) / 4 );
     _numberOfSurvivors = _sizeOfPopulation - 2 * _numberOfFamilies;
     _numberOfGenes = model->GetNumberOfParameters();
-    _population.resize( _sizeOfPopulation );
-    _fathers.resize( _numberOfFamilies );
-    _mothers.resize( _numberOfFamilies );
-    _firstChildren.resize( _numberOfFamilies );
-    _secondChildren.resize( _numberOfFamilies );
     _cumulativeMatingProbabilities.resize( _numberOfFamilies + 1 );
     _matingProbabilities.resize( _numberOfFamilies );
 
     for ( unsigned int i = 0; i < _sizeOfPopulation; i++ ) {
 
-        int seed = _randomGenerator.Integer( 10000 );
-        Individual* individual = new Individual(  _model, _mutationRate, seed );
-        _population[i] = individual;
+      _population.push_back( Individual(  _model, _mutationRate, _randomGenerator.Integer( 10000 )));
 
     }
 
     for ( unsigned int i = 0; i < _numberOfFamilies; i++ ) {
 
-        int seed = _randomGenerator.Integer( 10000 );
-        Individual* individual = new Individual(  _model, _mutationRate, seed );
-        _fathers[i] = individual;
-
-    }
-
-    for ( unsigned int i = 0; i < _numberOfFamilies; i++ ) {
-
-        int seed = _randomGenerator.Integer( 10000 );
-        Individual* individual = new Individual(  _model, _mutationRate, seed );
-        _mothers[i] = individual;
-
-    }
-
-    for ( unsigned int i = 0; i < _numberOfFamilies; i++ ) {
-
-        int seed = _randomGenerator.Integer( 10000 );
-        Individual* individual = new Individual(  _model, _mutationRate, seed );
-        _firstChildren[i] = individual;
-
-    }
-
-    for ( unsigned int i = 0; i < _numberOfFamilies; i++ ) {
-
-        int seed = _randomGenerator.Integer( 10000 );
-        Individual* individual = new Individual(  _model, _mutationRate, seed );
-        _secondChildren[i] = individual;
+      _mothers.push_back(Individual(  _model, _mutationRate, _randomGenerator.Integer( 10000 ) ));
+      _fathers.push_back(Individual(  _model, _mutationRate, _randomGenerator.Integer( 10000 ) ));
+      _firstChildren.push_back(Individual(  _model, _mutationRate, _randomGenerator.Integer( 10000 ) ));
+      _secondChildren.push_back(Individual(  _model, _mutationRate, _randomGenerator.Integer( 10000 ) ));
 
     }
 
     SortPopulation();
-    _population[0]->UpdateModel();
+    _population[0].UpdateModel();
 
 }
 
@@ -122,18 +92,18 @@ void Fittino::GeneticAlgorithmOptimizer::CrossOver() {
 
         for ( int j = 0; j < crossoverpoint; j++ ) {
 
-            _firstChildren[i]->_genes[j] = _mothers[i]->_genes[j];
-            _secondChildren[i]->_genes[j] = _fathers[i]->_genes[j];
+            _firstChildren[i]._genes[j] = _mothers[i]._genes[j];
+            _secondChildren[i]._genes[j] = _fathers[i]._genes[j];
 
         }
 
-        _firstChildren[i]->_genes[crossoverpoint] = _mothers[i]->_genes[crossoverpoint] - weight * ( _mothers[i]->_genes[crossoverpoint] - _fathers[i]->_genes[crossoverpoint] );
-        _secondChildren[i]->_genes[crossoverpoint] = _fathers[i]->_genes[crossoverpoint] + weight * ( _mothers[i]->_genes[crossoverpoint] - _fathers[i]->_genes[crossoverpoint] );
+        _firstChildren[i]._genes[crossoverpoint] = _mothers[i]._genes[crossoverpoint] - weight * ( _mothers[i]._genes[crossoverpoint] - _fathers[i]._genes[crossoverpoint] );
+        _secondChildren[i]._genes[crossoverpoint] = _fathers[i]._genes[crossoverpoint] + weight * ( _mothers[i]._genes[crossoverpoint] - _fathers[i]._genes[crossoverpoint] );
 
         for ( unsigned int j = crossoverpoint + 1; j < _numberOfGenes; j++ ) {
 
-            _firstChildren[i]->_genes[j] = _fathers[i]->_genes[j];
-            _secondChildren[i]->_genes[j] = _mothers[i]->_genes[j];
+            _firstChildren[i]._genes[j] = _fathers[i]._genes[j];
+            _secondChildren[i]._genes[j] = _mothers[i]._genes[j];
 
         }
 
@@ -145,8 +115,8 @@ void Fittino::GeneticAlgorithmOptimizer::MutatePopulation() {
 
     for ( unsigned int i = 1; i < _sizeOfPopulation; i++ ) {
 
-        _population[i]->_mutatedIndividual = false;
-        _population[i]->Mutation();
+        _population[i]._mutatedIndividual = false;
+        _population[i].Mutation();
 
     }
 
@@ -167,7 +137,7 @@ void Fittino::GeneticAlgorithmOptimizer::Pair() {
 
             if ( _cumulativeMatingProbabilities[j] < r1 && r1 <= _cumulativeMatingProbabilities[j+1] ) {
 
-                *_mothers[i] = *_population[j];
+                _mothers[i] = _population[j];
 
                 while ( father_equals_mother == true ) {
 
@@ -181,7 +151,7 @@ void Fittino::GeneticAlgorithmOptimizer::Pair() {
 
                             if ( _cumulativeMatingProbabilities[k] < r2 && r2 <= _cumulativeMatingProbabilities[k+1] ) {
 
-                                *_fathers[i] = *_population[k];
+                                _fathers[i] = _population[k];
 
                             }
 
@@ -203,8 +173,8 @@ void Fittino::GeneticAlgorithmOptimizer::Replace() {
 
     for ( unsigned int i = 0; i < _numberOfFamilies; i++ ) {
 
-        *_population[_numberOfSurvivors+i] = *_firstChildren[i];
-        *_population[_numberOfSurvivors+_numberOfFamilies+i] = *_secondChildren[i];
+        _population[_numberOfSurvivors+i] = _firstChildren[i];
+        _population[_numberOfSurvivors+_numberOfFamilies+i] = _secondChildren[i];
 
     }
 
@@ -212,7 +182,7 @@ void Fittino::GeneticAlgorithmOptimizer::Replace() {
 
 void Fittino::GeneticAlgorithmOptimizer::SortPopulation() {
 
-    sort( _population.begin(), _population.end(), CompareIndividuals() );
+    sort( _population.begin(), _population.end() );
 
 }
 
@@ -233,17 +203,17 @@ void Fittino::GeneticAlgorithmOptimizer::UpdateModel() {
 
     for ( unsigned int i = 0; i < _sizeOfPopulation; i++ ) {
 
-        if  ( _population[i]->_mutatedIndividual == true || i >= _numberOfSurvivors ) {
+        if  ( _population[i]._mutatedIndividual == true || i >= _numberOfSurvivors ) {
 
-            _population[i]->UpdateModel();
-            _population[i]->SetChi2();
+            _population[i].UpdateModel();
+            _population[i].SetChi2();
 
         }
 
     }
 
     SortPopulation();
-    _population[0]->UpdateModel();
+    _population[0].UpdateModel();
 
 }
 

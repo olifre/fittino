@@ -48,18 +48,18 @@ namespace Fittino {
 
     private:
 
-      double                   _mutationRate;
-      unsigned int             _numberOfFamilies;
-      unsigned int             _numberOfGenes;
-      unsigned int             _numberOfSurvivors;
-      unsigned int             _sizeOfPopulation;
-      std::vector<double>      _cumulativeMatingProbabilities;
-      std::vector<double>      _matingProbabilities;
-      std::vector<Individual*> _fathers;
-      std::vector<Individual*> _firstChildren;
-      std::vector<Individual*> _mothers;
-      std::vector<Individual*> _population;
-      std::vector<Individual*> _secondChildren;
+      double                  _mutationRate;
+      unsigned int            _numberOfFamilies;
+      unsigned int            _numberOfGenes;
+      unsigned int            _numberOfSurvivors;
+      unsigned int            _sizeOfPopulation;
+      std::vector<double>     _cumulativeMatingProbabilities;
+      std::vector<double>     _matingProbabilities;
+      std::vector<Individual> _fathers;
+      std::vector<Individual> _firstChildren;
+      std::vector<Individual> _mothers;
+      std::vector<Individual> _population;
+      std::vector<Individual> _secondChildren;
 
     private:
 
