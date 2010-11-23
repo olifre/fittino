@@ -41,8 +41,9 @@ namespace Fittino {
                           Individual( ModelBase* model, double mutationRate, int seed );
                           ~Individual();
       void                Mutation();
-      void                UpdateModel();
       void                SetChi2();
+      void                UpdateModel();
+
 
       //  private:
       std::vector<double> _genes;
@@ -58,11 +59,6 @@ namespace Fittino {
   /*!
    *  \brief Structure for comparison of individuals
      */
-  /*   struct CompareIndividuals { */
-  /*     bool operator()(const Individual& a, const Individual& b) const{ */
-  /*       return a._chi2<b._chi2; */
-  /*     } */
-  /*   }; */
   struct CompareIndividuals {
 
     bool operator ()( Individual *lhs, Individual *rhs ) {

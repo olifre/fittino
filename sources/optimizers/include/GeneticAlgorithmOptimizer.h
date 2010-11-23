@@ -34,40 +34,45 @@ namespace Fittino {
   class GeneticAlgorithmOptimizer : public OptimizerBase {
 
     public:
+
       /*!
-       *  Add a brief description of the constructor of this optimizer here.
+       *  Creates a random a sorted random population
        */
-                              GeneticAlgorithmOptimizer( ModelBase* model );
+      GeneticAlgorithmOptimizer( ModelBase* model );
       /*!
-       *  Add a brief description of the destructor of this optimizer here.
+       *  Standard destructor
        */
-                              ~GeneticAlgorithmOptimizer();
+      ~GeneticAlgorithmOptimizer();
 
       /*! \cond UML */
-    private:
-      double                  _mutationRate;
-      unsigned int            _sizeOfPopulation;
-      unsigned int            _numberOfGenes;
-      unsigned int            _numberOfFamilies;
-      unsigned int            _numberOfSurvivors;
-      std::vector<double>      MaitingProbabilities;
-      std::vector<double>      CumMaitingProbabilities;
-      std::vector<Individual*> _population;
-      std::vector<Individual*> _fathers;
-      std::vector<Individual*> _mothers;
-      std::vector<Individual*> _firstChilds;
-      std::vector<Individual*> _secondChilds;
 
     private:
-      void                     Pairing();
-      void                     Mutation();
-      void                     Crossover();
-      void                     Replacement();
+
+      double                   _mutationRate;
+      unsigned int             _numberOfFamilies;
+      unsigned int             _numberOfGenes;
+      unsigned int             _numberOfSurvivors;
+      unsigned int             _sizeOfPopulation;
+      std::vector<double>      _cumulativeMatingProbabilities;
+      std::vector<double>      _matingProbabilities;
+      std::vector<Individual*> _fathers;
+      std::vector<Individual*> _firstChildren;
+      std::vector<Individual*> _mothers;
+      std::vector<Individual*> _population;
+      std::vector<Individual*> _secondChildren;
+
+    private:
+
+      void                     CalculateMatingProbabilities();
+      void                     CrossOver();
+      void                     MutatePopulation();
+      void                     Pair();
+      void                     Replace();
       void                     SortPopulation();
-      void                     CalculateMaitingProbabilities();
+
       virtual void             PrintSteeringParameters() const;
       /*!
-       *  Add a brief description on how this function is implemented in this optimizer here.
+       *  By simulating evolution the created population in changed. The fittest individual of the new population determines how the model is updated.
        */
       virtual void             UpdateModel();
 
