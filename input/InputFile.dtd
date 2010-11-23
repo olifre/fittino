@@ -44,6 +44,6 @@
 
 <!ELEMENT GeneticAlgorithmOptimizer EMPTY>
 <!ATTLIST GeneticAlgorithmOptimizer
-  mutationRate         CDATA #REQUIRED
-  sizeOfPopulation     CDATA #REQUIRED
+  MutationRate         CDATA #REQUIRED
+  SizeOfPopulation     CDATA #REQUIRED
 >

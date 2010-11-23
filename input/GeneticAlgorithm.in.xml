@@ -99,8 +99,8 @@
    -->
 
   <GeneticAlgorithmOptimizer
-   mutationRate      ="0.5"
-   sizeOfPopulation  ="100"  
+   MutationRate      ="0.5"
+   SizeOfPopulation  ="100"  
    />
 
 </InputFile>
