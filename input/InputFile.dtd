@@ -1,9 +1,10 @@
 <!ELEMENT InputFile (ExecutionMode,
                      Model,
                      Optimizer,
+                     GeneticAlgorithmOptimizer,
                      ParticleSwarmOptimizer,
                      SimulatedAnnealingOptimizer,
-                     GeneticAlgorithmOptimizer) >
+		     Sampler)>
 
 <!ELEMENT ExecutionMode EMPTY>
 <!ATTLIST ExecutionMode
@@ -12,7 +13,7 @@
 
 <!ELEMENT Model EMPTY>
 <!ATTLIST Model
-  ModelType CDATA #IMPLIED
+  ModelType CDATA #REQUIRED
   A0        CDATA #IMPLIED
   M0        CDATA #IMPLIED
   M12       CDATA #IMPLIED
@@ -28,6 +29,12 @@
   OptimizerType      CDATA #REQUIRED
 >
 
+<!ELEMENT GeneticAlgorithmOptimizer EMPTY>
+<!ATTLIST GeneticAlgorithmOptimizer
+  MutationRate         CDATA #REQUIRED
+  SizeOfPopulation     CDATA #REQUIRED
+>
+
 <!ELEMENT ParticleSwarmOptimizer EMPTY>
 <!ATTLIST ParticleSwarmOptimizer
   C1                CDATA #REQUIRED
@@ -41,9 +48,9 @@
   TemperatureReductionFactor CDATA #REQUIRED
 >
 
-
-<!ELEMENT GeneticAlgorithmOptimizer EMPTY>
-<!ATTLIST GeneticAlgorithmOptimizer
-  MutationRate         CDATA #REQUIRED
-  SizeOfPopulation     CDATA #REQUIRED
+<!ELEMENT Sampler EMPTY>
+<!ATTLIST Sampler 
+  AbortCriterium     CDATA #REQUIRED
+  NumberOfIterations CDATA #REQUIRED
+  SamplerType        CDATA #REQUIRED
 >

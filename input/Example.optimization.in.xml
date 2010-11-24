@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding='UTF-8'?>
 
-<!-- $Id$ -->
+<!-- $Id: Example.optimization.in.xml 705 2010-07-20 22:56:05Z uhlenbrock $ -->
 
 <!--#########################################################################-->
 <!--                                                                         -->
 <!-- Project     Fittino - A SUSY Parameter Fitting Package                  -->
 <!--                                                                         -->
-<!-- File        Example.in.xml                                              -->
+<!-- File        Example.optimization.in.xml                                 -->
 <!--                                                                         -->
-<!-- Description This is an example Fittino input file in XML format.        -->
+<!-- Description This is an example optimization Fittino input file in XML   -->
+<!--             format.                                                     -->
 <!--                                                                         -->
 <!-- Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>         -->
 <!--                                                                         -->
@@ -50,13 +51,13 @@
    Y         = "-1.54"
    />
 
-  <!-- <Model                -->
-  <!--  ModelType = "MSUGRA" -->
-  <!--  A0        = "-300."  -->
-  <!--  M0        = "100."   -->
-  <!--  M12       = "250."   -->
-  <!--  TanBeta   = "10."    -->
-  <!--  />                   -->
+  <!-- <Model                --> 
+  <!--  ModelType = "MSUGRA" --> 
+  <!--  A0        = "-300."  --> 
+  <!--  M0        = "100."   --> 
+  <!--  M12       = "250."   --> 
+  <!--  TanBeta   = "10."    --> 
+  <!--  />                   --> 
 
   <!--
    The Optimizer node specifies the optimization algorithm (optimization type) and several general
@@ -69,7 +70,7 @@
   -->
 
   <Optimizer
-   AbortCriterium     = "1e-5"
+   AbortCriterium     = "1.e-5"
    NumberOfIterations = "500"
    OptimizerType      = "ParticleSwarm"
    />
@@ -79,8 +80,8 @@
    -->
 
   <GeneticAlgorithmOptimizer
-   mutationRate      ="0.5"
-   sizeOfPopulation  ="100"  
+   MutationRate      = "0.5"
+   SizeOfPopulation  = "100"  
    />
 
   <!--
@@ -100,6 +101,16 @@
   <SimulatedAnnealingOptimizer
    InitialTemperature         = "600."
    TemperatureReductionFactor = "0.5"
+   />
+
+  <!--
+   The Sampler node specifies the sampling algorithm (sampler type).
+   -->
+
+  <Sampler
+   AbortCriterium     = "1.e-5"
+   NumberOfIterations = "500"
+   SamplerType        = "MarkovChain"
    />
 
 </InputFile>

@@ -76,6 +76,15 @@
     />
 
   <!--
+   Configuration example for the genetic algorithm optimizer.
+   -->
+
+  <GeneticAlgorithmOptimizer
+   MutationRate      ="0.5"
+   SizeOfPopulation  ="100"  
+   />
+
+  <!--
    Configuration example for the particle swarm optimizer.
    -->
 
@@ -95,12 +104,13 @@
    />
 
   <!--
-   Configuration example for the genetic algorithm optimizer.
+   The Sampler node specifies the sampling algorithm (sampler type).
    -->
 
-  <GeneticAlgorithmOptimizer
-   MutationRate      ="0.5"
-   SizeOfPopulation  ="100"  
+  <Sampler
+   AbortCriterium     = "1.e-5"
+   NumberOfIterations = "500"
+   SamplerType        = "MarkovChain"
    />
 
 </InputFile>
