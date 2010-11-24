@@ -92,18 +92,18 @@ void Fittino::GeneticAlgorithmOptimizer::CrossOver() {
 
         for ( int j = 0; j < crossoverpoint; j++ ) {
 
-            _firstChildren[i]._genes[j] = _mothers[i]._genes[j];
-            _secondChildren[i]._genes[j] = _fathers[i]._genes[j];
+	  _firstChildren[i].SetGene(j,  _mothers[i].GetGene(j));
+	  _secondChildren[i].SetGene(j, _fathers[i].GetGene(j));
 
         }
 
-        _firstChildren[i]._genes[crossoverpoint] = _mothers[i]._genes[crossoverpoint] - weight * ( _mothers[i]._genes[crossoverpoint] - _fathers[i]._genes[crossoverpoint] );
-        _secondChildren[i]._genes[crossoverpoint] = _fathers[i]._genes[crossoverpoint] + weight * ( _mothers[i]._genes[crossoverpoint] - _fathers[i]._genes[crossoverpoint] );
+        _firstChildren[i].SetGene(crossoverpoint, _mothers[i].GetGene(crossoverpoint) - weight * ( _mothers[i].GetGene(crossoverpoint) - _fathers[i].GetGene(crossoverpoint) ));
+        _secondChildren[i].SetGene(crossoverpoint, _fathers[i].GetGene(crossoverpoint) + weight * ( _mothers[i].GetGene(crossoverpoint) - _fathers[i].GetGene(crossoverpoint) ));
 
         for ( unsigned int j = crossoverpoint + 1; j < _numberOfGenes; j++ ) {
 
-            _firstChildren[i]._genes[j] = _fathers[i]._genes[j];
-            _secondChildren[i]._genes[j] = _mothers[i]._genes[j];
+	  _firstChildren[i].SetGene(j, _fathers[i].GetGene(j));
+	  _secondChildren[i].SetGene(j, _mothers[i].GetGene(j));
 
         }
 

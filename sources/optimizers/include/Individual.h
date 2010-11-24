@@ -38,38 +38,30 @@ namespace Fittino {
   class Individual {
 
     public:
+      bool                _mutatedIndividual;
+      double              _chi2;
+      double              _mutationRate;
+      TRandom*            _randomGenerator;
+      ModelBase*          _model;
+
+    public:
                           Individual( ModelBase* model, double mutationRate, int seed );
                           ~Individual();
+      double              GetGene( int index );
       void                Mutation();
       void                SetChi2();
+      void                SetGene( int index, double newValue );
       void                UpdateModel();
 
 
-      //  private:
-    bool                _mutatedIndividual;
-    double              _chi2;
-    double              _mutationRate;
-    std::vector<double> _genes;
-    TRandom*            _randomGenerator;
-    ModelBase*          _model;
+    public:
+      bool operator       <( const Individual& individual ) const;
 
-
-      bool operator<( const Individual& individual ) const;
+    private:
+      std::vector<double> _genes;
 
   };
 
-  /*!
-   *  \brief Structure for comparison of individuals
-     */
- /*  struct CompareIndividuals { */
-
-/*     bool operator ()( Individual *lhs, Individual *rhs ) { */
-
-/*       return ( *lhs < *rhs ); */
-
-/*     } */
-
-/*   }; */
 
 }
 

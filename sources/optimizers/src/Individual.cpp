@@ -19,61 +19,75 @@
 
 #include "Individual.h"
 
-Fittino::Individual::Individual(Fittino::ModelBase* model, double mutationRate, int seed): 
-  _model (model) ,
-  _mutationRate ( mutationRate ),
-  _randomGenerator( new TRandom() ),
-  _chi2 ( 1e99 ){
-  _mutatedIndividual=false;
-  _randomGenerator->SetSeed(seed);
+Fittino::Individual::Individual( Fittino::ModelBase* model, double mutationRate, int seed ):
+    _model ( model ) ,
+    _mutationRate ( mutationRate ),
+    _randomGenerator( new TRandom() ),
+    _chi2 ( 1e99 ) {
+    _mutatedIndividual = false;
+    _randomGenerator->SetSeed( seed );
 
-  for (unsigned int i=0; i< model->GetNumberOfParameters();i++){
+    for ( unsigned int i = 0; i < model->GetNumberOfParameters(); i++ ) {
 
-    _genes.push_back(_randomGenerator->Uniform(-3.,3.)); //to do: Get bounds from bounds of parameters of the pointed model or from input file
-    
-  }
+        _genes.push_back( _randomGenerator->Uniform( -3., 3. ) ); //to do: Get bounds from bounds of parameters of the pointed model or from input file
 
-  UpdateModel();
-  SetChi2();
+    }
+
+    UpdateModel();
+    SetChi2();
 }
 
 Fittino::Individual::~Individual() {
 
 }
 
-void Fittino::Individual::Mutation(){
-  
-  for (unsigned int i=0; i<_genes.size();i++){
+double Fittino::Individual::GetGene( int index ) {
 
-    if (_randomGenerator->Uniform(0,1)<_mutationRate){
-      
-      _genes[i]=_randomGenerator->Gaus(_genes[i],0.02);
-      _mutatedIndividual=true;  //to do: Get MutationStepSize from error of parameters of the pointed model 
+    return _genes[index];
+
+}
+
+void Fittino::Individual::Mutation() {
+
+    for ( unsigned int i = 0; i < _genes.size(); i++ ) {
+
+        if ( _randomGenerator->Uniform( 0, 1 ) < _mutationRate ) {
+
+            _genes[i] = _randomGenerator->Gaus( _genes[i], 0.02 );
+            _mutatedIndividual = true; //to do: Get MutationStepSize from error of parameters of the pointed model
+
+        }
 
     }
 
-  }
+}
+
+void Fittino::Individual::SetChi2() {
+
+    _chi2 = _model->Evaluate();
 
 }
 
-void Fittino::Individual::UpdateModel(){
+void Fittino::Individual::SetGene( int index, double newValue ) {
 
-  for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
-
-    ( *_model->GetParameterVector() )[i].SetValue( _genes[i] );
-
-  }
+    _genes[index] = newValue;
 
 }
 
-void Fittino::Individual::SetChi2(){
+void Fittino::Individual::UpdateModel() {
 
-  _chi2=_model->Evaluate();
+    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
+
+        ( *_model->GetParameterVector() )[i].SetValue( _genes[i] );
+
+    }
+
+}
+
+bool Fittino::Individual::operator<( const Individual& individual ) const {
+
+    return this->_chi2 < individual._chi2;
 
 }
 
-bool Fittino::Individual::operator<(const Individual& individual) const {
-  
-  return this->_chi2 < individual._chi2;
 
-}
