@@ -24,7 +24,7 @@ Fittino::Individual::Individual( Fittino::ModelBase* model, double mutationRate,
     _mutationRate ( mutationRate ),
     _randomGenerator( new TRandom() ),
     _chi2 ( 1e99 ) {
-    _mutatedIndividual = false;
+    _updatedChi2 = false;
     _randomGenerator->SetSeed( seed );
 
     for ( unsigned int i = 0; i < model->GetNumberOfParameters(); i++ ) {
@@ -33,11 +33,16 @@ Fittino::Individual::Individual( Fittino::ModelBase* model, double mutationRate,
 
     }
 
-    UpdateModel();
-    SetChi2();
+    UpdateChi2();
 }
 
 Fittino::Individual::~Individual() {
+
+}
+
+bool Fittino::Individual::UpdatedChi2(){
+
+  return _updatedChi2;
 
 }
 
@@ -54,7 +59,7 @@ void Fittino::Individual::Mutation() {
         if ( _randomGenerator->Uniform( 0, 1 ) < _mutationRate ) {
 
             _genes[i] = _randomGenerator->Gaus( _genes[i], 0.02 );
-            _mutatedIndividual = true; //to do: Get MutationStepSize from error of parameters of the pointed model
+            _updatedChi2 = false; //to do: Get MutationStepSize from error of parameters of the pointed model
 
         }
 
@@ -62,15 +67,18 @@ void Fittino::Individual::Mutation() {
 
 }
 
-void Fittino::Individual::SetChi2() {
+void Fittino::Individual::UpdateChi2() {
 
+  UpdateModel();
     _chi2 = _model->Evaluate();
+    _updatedChi2=true;
 
 }
 
 void Fittino::Individual::SetGene( int index, double newValue ) {
 
     _genes[index] = newValue;
+    _updatedChi2=false;
 
 }
 

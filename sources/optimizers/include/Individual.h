@@ -38,30 +38,27 @@ namespace Fittino {
   class Individual {
 
     public:
-      bool                _mutatedIndividual;
-      double              _chi2;
-      double              _mutationRate;
-      TRandom*            _randomGenerator;
-      ModelBase*          _model;
-
-    public:
                           Individual( ModelBase* model, double mutationRate, int seed );
                           ~Individual();
+      bool                UpdatedChi2();
       double              GetGene( int index );
       void                Mutation();
-      void                SetChi2();
+      void                UpdateChi2(); //calls UpdateModel and than sets the chi2 according to that model
       void                SetGene( int index, double newValue );
-      void                UpdateModel();
-
+      void                UpdateModel(); //sets the pointed model according to the genes
 
     public:
       bool operator       <( const Individual& individual ) const;
 
     private:
+      bool                _updatedChi2;
+      double              _chi2;
+      double              _mutationRate;
       std::vector<double> _genes;
+      TRandom*            _randomGenerator;
+      ModelBase*          _model;
 
   };
-
 
 }
 

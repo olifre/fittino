@@ -115,8 +115,7 @@ void Fittino::GeneticAlgorithmOptimizer::MutatePopulation() {
 
     for ( unsigned int i = 1; i < _sizeOfPopulation; i++ ) {
 
-        _population[i]._mutatedIndividual = false;
-        _population[i].Mutation();
+      _population[i].Mutation();
 
     }
 
@@ -203,10 +202,9 @@ void Fittino::GeneticAlgorithmOptimizer::UpdateModel() {
 
     for ( unsigned int i = 0; i < _sizeOfPopulation; i++ ) {
 
-        if  ( _population[i]._mutatedIndividual == true || i >= _numberOfSurvivors ) {
+      if  ( !_population[i].UpdatedChi2() ) {
 
-            _population[i].UpdateModel();
-            _population[i].SetChi2();
+            _population[i].UpdateChi2();
 
         }
 
