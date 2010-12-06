@@ -1604,10 +1604,14 @@ double LogLikelihoodRatio(const TH1F* hs, const TH1F* hb, const TH1F* hd, double
       n = d;
     else if (!strcmp(option, "b")) {
       toyb = (double)random.Poisson(b*b_scale);
+      // toyb = (double)random.Gaus(b*b_scale, TMath::Sqrt(b*b_scale));
       n = toyb;
     }
     else if (!strcmp(option, "sb")) {
-      toysb = (double)random.Poisson(s*s_scale) +  (double)random.Poisson(b*b_scale);
+      //      toysb = (double)random.Poisson(s*s_scale) +  (double)random.Poisson(b*b_scale);
+      toysb = (double)random.Poisson(s*s_scale + b*b_scale);
+      //      toysb = (double)random.Gaus(s*s_scale, TMath::Sqrt(s*s_scale)) +  (double)random.Gaus(b*b_scale,  TMath::Sqrt(b*b_scale));
+      //toysb = (double)random.Gaus(s*s_scale + b*b_scale, TMath::Sqrt(s*s_scale + b*b_scale));
       n = toysb;
     }
     else if (!strcmp(option, "expected_b"))
@@ -1619,8 +1623,8 @@ double LogLikelihoodRatio(const TH1F* hs, const TH1F* hb, const TH1F* hd, double
       exit(EXIT_FAILURE);
     }
 
-    numb  = TMath::Max(b, 1e-3);
-    numsb = TMath::Max(s + b, 1e-3);    
+    numb  = TMath::Max(b, 1e-6);
+    numsb = TMath::Max(s + b, 1e-6);    
 
     if (n < 0) n = 0;
 
