@@ -459,6 +459,7 @@ Fittino::Fittino(const Input* input)
       getline(infile,line);
     }
   
+    double norm;
     double m0, m12, msq, mgl, xsnlo;
     double meff1, meff2, meff3, meff4, meff5;
     double meff6, meff7, meff8, meff9, meff10;
@@ -475,17 +476,19 @@ Fittino::Fittino(const Input* input)
       histno++;
       string histname = "histname_";
       histname = histname +no;
+      //      norm = xsnlo; // Michael's files are normalised to unity, i. e. scale with NLO xs
+      norm = 1; // Björn's files are normalised to expected events numbers, i. e. scale with 1
       histo = new TH1F(histname.c_str(), "", 10, 0, 4000);
-      histo->SetBinContent( 1,  meff1 * xsnlo);
-      histo->SetBinContent( 2,  meff2 * xsnlo);
-      histo->SetBinContent( 3,  meff3 * xsnlo);
-      histo->SetBinContent( 4,  meff4 * xsnlo);
-      histo->SetBinContent( 5,  meff5 * xsnlo);
-      histo->SetBinContent( 6,  meff6 * xsnlo);
-      histo->SetBinContent( 7,  meff7 * xsnlo);
-      histo->SetBinContent( 8,  meff8 * xsnlo);
-      histo->SetBinContent( 9,  meff9 * xsnlo);
-      histo->SetBinContent(10, meff10 * xsnlo);
+      histo->SetBinContent( 1,  meff1 * norm);
+      histo->SetBinContent( 2,  meff2 * norm);
+      histo->SetBinContent( 3,  meff3 * norm);
+      histo->SetBinContent( 4,  meff4 * norm);
+      histo->SetBinContent( 5,  meff5 * norm);
+      histo->SetBinContent( 6,  meff6 * norm);
+      histo->SetBinContent( 7,  meff7 * norm);
+      histo->SetBinContent( 8,  meff8 * norm);
+      histo->SetBinContent( 9,  meff9 * norm);
+      histo->SetBinContent(10, meff10 * norm);
       
       p.first = m0;
       p.second = m12;
