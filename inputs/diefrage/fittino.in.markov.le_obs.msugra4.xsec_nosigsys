@@ -233,7 +233,7 @@ UseXsecLimits                  on
 GridPath                       /lustre/user/wiene/fittino/grids/7TeV/test/Atlas_events_nlo.dat
 Luminosity                     1    # in fb-1
 RelativeSignalCrossSectionSysUncertainty       0
-RelativeBackgroundCrossSectionSysUncertainty   0.5
+RelativeBackgroundCrossSectionSysUncertainty   0.2
 
 UseHiggsBounds                 on
 
