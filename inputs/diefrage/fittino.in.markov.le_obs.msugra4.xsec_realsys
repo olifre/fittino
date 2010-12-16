@@ -226,7 +226,7 @@ GetTempFromFirstChiSqr         on
 UseMarkovChains                on
 MarkovChainReadjustWidth       off
 MarkovChainReadjustWidthPeriod 500
-MaxMarkovChain                 45000
+MaxMarkovChain                 35000
 MarkovInterfaceFilePath        /lustre/user/wiene/markovinterfacefiles/interface.le_obs.msugra4.xsec_realsys.txt
 
 UseXsecLimits                  on
