@@ -116,7 +116,7 @@ using namespace std;
 
 enum SwitchState    { off, on };
 enum Calculator     { SPHENO, SUSPECT, SPHENO_FH, SOFTSUSY };
-enum DecayCalculator		{ SUSYHIT };
+enum DecayCalculator		{ SUSYHIT, NONE};
 enum RelicDensityCalculator { NORELICDENSITYCALCULATOR, MICROMEGAS };
 enum LEOCalculator  { NOLEOCALCULATOR, NPFITTER};
 enum ObservableType { mass, Pwidth, xsection, br, xsectionbr, Pedge, xsbr, brratio, brsum, LEObs, brprod, tauFromStau1Polarisation, tauFromNeutralino2Polarisation, SMPrecision, other, weighted, LHCRate };

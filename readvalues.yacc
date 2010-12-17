@@ -1529,6 +1529,9 @@ input:
 				 if( !strcmp($3, "SUSYHIT" )) {
 						yyDecayCalculator = SUSYHIT;
 				 }
+				 if( !strcmp($3, "NONE" )) {
+						yyDecayCalculator = NONE;
+				 }
 			}
 			| input T_DECAYCALCULATOR T_WORD T_PATH
 			{
@@ -1539,6 +1542,9 @@ input:
 				yyInputFileLine.prevalue += $4;
 				if( !strcmp($3, "SUSYHIT") ) {
 					yyDecayCalculator = SUSYHIT;
+				}
+				if( !strcmp($3, "NONE" ) ) {
+					yyDecayCalculator = NONE;
 				}
 				yyDecayCalculatorPath = $4;
 			}

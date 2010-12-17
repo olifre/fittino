@@ -3932,15 +3932,20 @@ void Fittino::CalcFromRandPars(unsigned int nruns) {
 	     if (yyVerbose){
 	     cout << "     SoftSusy finished (Maybe With Problems?). Calling SUSYHIT" << endl;
 	     }
-	     rc = callSUSYHIT();
-	     if( rc > 0 ) {
-	       cerr << "Exiting fitterFCN because of problem in SUSYHIT run" << endl;
-	       f = 111111111111.;
-	       if (yyVerbose){
-	       cout << " f = " << f << endl;
-	       }
-	       return;
-	     }
+			 if( yyDecayCalculator != NONE ) {
+	 	  	 rc = callSUSYHIT();
+	  	   if( rc > 0 ) {
+	      	 cerr << "Exiting fitterFCN because of problem in SUSYHIT run" << endl;
+	         f = 111111111111.;
+	      	 if (yyVerbose){
+	      		 cout << " f = " << f << endl;
+	      	 }
+	      	 return;
+	     	}
+			}
+			else {
+				system( "cp slhaspectrum.in susyhit_slha.out" );
+			}
 	   }
 	   return;        
 	 }
@@ -4138,7 +4143,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        }
        exit(1);
      }
-     if (yyDecayCalculator != SUSYHIT ) {
+     if (yyDecayCalculator != SUSYHIT && yyDecayCalculator != NONE ) {
        if (yyVerbose){
        cout << "SoftSUSY currently runs only with SUSYHIT. Sorry. " << endl;
        }
@@ -4158,17 +4163,22 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        return;	
      }
      if (yyVerbose){
-     cout << "     SoftSusy finished (Maybe With Problems?). Calling SUSYHIT" << endl;
+     cout << "     SoftSusy finished (Maybe With Problems?)." << endl; 
      }
-     rc = callSUSYHIT();
-     if( rc > 0 ) {
-       cerr << "Exiting fitterFCN because of problem in SUSYHIT run" << endl;
-       f = 111111111111.;
-       if (yyVerbose){
-       cout << " f = " << f << endl;
-       }
-       return;		
-     }
+     if( yyDecayCalculator != NONE ) {
+			 rc = callSUSYHIT();
+ 	     if( rc > 0 ) {
+    	   cerr << "Exiting fitterFCN because of problem in SUSYHIT run" << endl;
+     	  f = 111111111111.;
+     	  if (yyVerbose){
+      	 cout << " f = " << f << endl;
+       	}
+       	return;		
+     	}
+		}
+		else {
+			system( "cp slhaspectrum.in susyhit_slha.out" );
+		}
    }    
    
    
@@ -4832,10 +4842,11 @@ int callNPFitter() {
 				argv[1] = "SPheno.spc";
       }
 			else if( yyCalculator == SOFTSUSY ) {
-				argv[1] = "slhaspectrum.in";
+				argv[1] = "susyhit_slha.out";
+				std::cout << "not tested: using softsusy with mastercode!" << std::endl;
 			}
 			else if( yyCalculator == SUSPECT ) {
-				argv[1] = "slhaspctrum.in";
+				argv[1] = "susyhit_slha.out";
 				std::cout << "not tested: using suspect with mastercode!" << std::endl;
 			}
 			argv[2] = 0;
