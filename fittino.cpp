@@ -4828,8 +4828,17 @@ int callNPFitter() {
       child_pid = getpid();
       char *argv[3];
       argv[0] = "NPFitter";
-      argv[1] = "SPheno.spc";
-      argv[2] = 0;
+      if( yyCalculator == SPHENO ) {
+				argv[1] = "SPheno.spc";
+      }
+			else if( yyCalculator == SOFTSUSY ) {
+				argv[1] = "slhaspectrum.in";
+			}
+			else if( yyCalculator == SUSPECT ) {
+				argv[1] = "slhaspctrum.in";
+				std::cout << "not tested: using suspect with mastercode!" << std::endl;
+			}
+			argv[2] = 0;
       if (fopen("SPheno.spc.last", "r") == NULL) {
 	 cout << "File SPheno.spc.last cannot be found" << endl;
       }
