@@ -4,6 +4,13 @@
 // The asymed statistics is bayesian. Shame on me. An alternative 
 // frequentist interpretation will follow soon. 
 
+//    variables[fVariable] = P_TanBeta    variables[sVariable] = P_M12    icomb = 0
+//    variables[fVariable] = P_TanBeta    variables[sVariable] = P_M0    icomb = 1
+//    variables[fVariable] = P_TanBeta    variables[sVariable] = P_A0    icomb = 2
+//    variables[fVariable] = P_M12    variables[sVariable] = P_M0    icomb = 3
+//    variables[fVariable] = P_M12    variables[sVariable] = P_A0    icomb = 4
+//    variables[fVariable] = P_M0    variables[sVariable] = P_A0    icomb = 5
+
 #include "TStyle.h"
 #include "TROOT.h"
 #include "TFile.h"
@@ -48,7 +55,8 @@ void MakeMarkovChainContour2D (bool bayes = false,
   gStyle->SetNumberContours(7);
 
   TChain markovChain("markovChain");
-  markovChain.Add("MarkovChainNtupFile*.root");
+//  markovChain.Add("MarkovChainNtupFile*.root");
+  markovChain.Add("MarkovChainNtupFile.sum.root");
   // markovChain.Add("MarkovTestRosenbrockNTupel.root");
   markovChain.Print();
 
