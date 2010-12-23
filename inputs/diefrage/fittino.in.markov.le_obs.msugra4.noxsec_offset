@@ -227,7 +227,7 @@ UseMarkovChains                on
 MarkovChainReadjustWidth       off
 MarkovChainReadjustWidthPeriod 500
 MaxMarkovChain                 35000
-MarkovInterfaceFilePath        /lustre/user/wiene/markovinterfacefiles/interface.le_obs.msugra4.noxsec.txt
+MarkovInterfaceFilePath        /lustre/user/wiene/markovinterfacefiles/interface.le_obs.msugra4.noxsec_offset.txt
 
 UseXsecLimits                  off
 GridPath                       /lustre/user/wiene/fittino/grids/7TeV/test/Meff_Delphes_NLO.dat
