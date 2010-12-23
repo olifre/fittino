@@ -155,6 +155,10 @@ double* GetRandomParameterVector(const vector<parameter_t>&);
 double gchisq;
 int    gstat;
 
+double global_LHC_CLb = -1;
+double global_LHC_CLsb = -1;
+double global_LHC_chi2 = -1;
+
 int n_printouts;
 
 #ifdef USELIBHB
@@ -4620,6 +4624,10 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      double CLb = double(nCLb) / (double)ntrials;
 
      double xschi2 = 2 * TMath::ErfInverse(1 - 2*CLsb) * TMath::ErfInverse(1 - 2*CLsb);
+
+     global_LHC_CLb = CLb;
+     global_LHC_CLsb = CLsb;
+     global_LHC_chi2 = xschi2;
 
      // check whether parameter point is out-of-bounds
      // WARNING: TMath::ErfInverse(1) returns 0, not infinity
@@ -11729,8 +11737,9 @@ void Fittino::markovChain ()
       TFile *MarkovNtupFile = new TFile("MarkovChainNtupFile.root","RECREATE");
       sprintf ( ntuplename, "markovChain" );
       sprintf ( ntupletext, "path of the Markov Chain" );
-      //      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:haveAcceptedAtLeastOne:globalIter" );
-      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:globalIter:haveAcceptedAtLeastOne" );
+      ////      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:haveAcceptedAtLeastOne:globalIter" );
+      //      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:globalIter:haveAcceptedAtLeastOne" );
+      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:globalIter:haveAcceptedAtLeastOne:LHC_CLb:LHC_CLsb:LHC_chi2" );
       for (unsigned int j=0; j < yyFittedVec.size(); j++ ) {
 	string parName = "P_"+yyFittedVec[j].name;
 	sprintf ( ntuplevars, "%s:%s", ntuplevars, parName.c_str() );
@@ -12053,6 +12062,10 @@ void Fittino::markovChain ()
       // ====================================================================
       // ====================================================================
       double previousChi2 = 1.E10;
+
+      double previous_LHC_CLb  = -1;
+      double previous_LHC_CLsb = -1;
+      double previous_LHC_chi2 = -1;
  
       //-------------------------------------------
       // perform the optimization
@@ -12158,6 +12171,9 @@ if (yyVerbose){
 	   for (unsigned int i = 0; i < previousObsTheoValue.size(); ++i) {
 	     previousObsTheoValue[i] = yyMeasuredVec[i].theovalue;
 	   }
+	   previous_LHC_CLb = global_LHC_CLb;
+	   previous_LHC_CLsb = global_LHC_CLsb;
+	   previous_LHC_chi2 = global_LHC_chi2;
 	 }
 
 	 // calculate Q
@@ -12230,9 +12246,14 @@ if (yyVerbose){
 	    ntupvars[4] = (Float_t)niter;
 	    ntupvars[5] = (Float_t)globalIter;
 	    ntupvars[6] = (haveAcceptedAtLeastOne) ? 1 : 0;
+	    ntupvars[7] = (Float_t)global_LHC_CLb;
+	    ntupvars[8] = (Float_t)global_LHC_CLsb;
+	    ntupvars[9] = (Float_t)global_LHC_chi2;
 	    int counter = 0;
-	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
-	       ntupvars[ii] = xp[ii-7];
+	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
+	    //	       ntupvars[ii] = xp[ii-7];
+	    for (unsigned int ii = 10; ii < 10+yyFittedVec.size(); ii++) {
+	       ntupvars[ii] = xp[ii-10];
 	       counter = ii;
 	    }
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
@@ -12247,9 +12268,14 @@ if (yyVerbose){
 	    ntupvars[4] = (Float_t)niter;
 	    ntupvars[5] = (Float_t)globalIter;
 	    ntupvars[6] = (haveAcceptedAtLeastOne) ? 1 : 0;
+	    ntupvars[7] = (Float_t)global_LHC_CLb;
+	    ntupvars[8] = (Float_t)global_LHC_CLsb;
+	    ntupvars[9] = (Float_t)global_LHC_chi2;
 	    int counter = 0;
-	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
-	       ntupvars[ii] = xp[ii-7];
+	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
+	    //	       ntupvars[ii] = xp[ii-7];
+	    for (unsigned int ii = 10; ii < 10+yyFittedVec.size(); ii++) {
+	       ntupvars[ii] = xp[ii-10];
 	       counter = ii;
 	    }
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
@@ -12263,9 +12289,14 @@ if (yyVerbose){
 	    ntupvars[4] = (Float_t)niter;
 	    ntupvars[5] = (Float_t)globalIter;
 	    ntupvars[6] = (haveAcceptedAtLeastOne) ? 1 : 0;
+	    ntupvars[7] = (Float_t)previous_LHC_CLb;
+	    ntupvars[8] = (Float_t)previous_LHC_CLsb;
+	    ntupvars[9] = (Float_t)previous_LHC_chi2;
 	    counter = 0;
-	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
-	       ntupvars[ii] = x[ii-7];
+	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
+	    //	       ntupvars[ii] = x[ii-7];
+	    for (unsigned int ii = 10; ii < 10+yyFittedVec.size(); ii++) {
+	       ntupvars[ii] = x[ii-10];
 	       counter = ii;
 	    }
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
@@ -12287,6 +12318,9 @@ if (yyVerbose){
 	    previousRho        = rho;
 	    previousChi2       = chi2;
 	    previousLikelihood = likelihood;
+	    previous_LHC_CLb   = global_LHC_CLb;
+	    previous_LHC_CLsb  = global_LHC_CLsb;
+	    previous_LHC_chi2  = global_LHC_chi2;
 	 }
 
 
