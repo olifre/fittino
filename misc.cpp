@@ -589,20 +589,20 @@ double  BilinearInterpolator(double m0, double m12, int bin, std::map< std::pair
   double y1 = m12_1;
   double y2 = m12_2;
 
-  p.first = x1;
-  p.second = y1;
+  p.first = (int)x1;
+  p.second = (int)y1;
   double z11 = xs[p]->GetBinContent(bin);
 
-  p.first = x1;
-  p.second = y2;
+  p.first = (int)x1;
+  p.second = (int)y2;
   double z12 = xs[p]->GetBinContent(bin);
 
-  p.first = x2;
-  p.second = y1;
+  p.first = (int)x2;
+  p.second = (int)y1;
   double z21 = xs[p]->GetBinContent(bin);
 
-  p.first = x2;
-  p.second = y2;
+  p.first = (int)x2;
+  p.second = (int)y2;
   double z22 = xs[p]->GetBinContent(bin);
 
   /*

@@ -494,8 +494,8 @@ Fittino::Fittino(const Input* input)
       histo->SetBinContent( 9,  meff9 * norm);
       histo->SetBinContent(10, meff10 * norm);
       
-      p.first = m0;
-      p.second = m12;
+      p.first = (int)m0;
+      p.second = (int)m12;
       signalXsec[p] = histo;
     }
 
