@@ -13,8 +13,8 @@
 
 ### LE (low energy) observables
 
-LEObs ( gmin2m_npf     )     30.2E-10 +- 8.8E-10 +- 2E-10             alias  7 # [14]
-LEObs ( Omega_npf      )      0.1099  +- 0.0062 +- 0.012              alias 20 # [15]
+nofitLEObs ( gmin2m_npf     )     30.2E-10 +- 8.8E-10 +- 2E-10             alias  7 # [14]
+nofitLEObs ( Omega_npf      )      0.1099  +- 0.0062 +- 0.012              alias 20 # [15]
 LEObs ( DmsDmd_npf     )      1.09    +- 0.01    +- 0.16              alias 27 # [1]
 LEObs ( B_dll_npf      ) <    2.3E-8                      +- 0.001E-8 alias 26 # [2]
 LEObs ( Kppinn_npf     )      < 4.5     +- 1.0E-10                    alias 25 # [4]
@@ -226,16 +226,16 @@ GetTempFromFirstChiSqr         on
 UseMarkovChains                on
 MarkovChainReadjustWidth       off
 MarkovChainReadjustWidthPeriod 500
-MaxMarkovChain                 45000
-MarkovInterfaceFilePath        /lustre/user/wiene/markovinterfacefiles/interface.le_obs.msugra4.noxsec.nohb.txt
+MaxMarkovChain                 35000
+MarkovInterfaceFilePath        /lustre/user/wiene/markovinterfacefiles/interface.le_obs.msugra4.xsec_realsys_noOmegaNoGmin2_offset.txt
 
-UseXsecLimits                  off
-GridPath                       /lustre/user/wiene/fittino/grids/7TeV/test/Atlas_events_nlo.dat
+UseXsecLimits                  on
+GridPath                       /lustre/user/wiene/fittino/grids/7TeV/test/Meff_Delphes_NLO.dat
 Luminosity                     1    # in fb-1
-RelativeSignalCrossSectionSysUncertainty       0
-RelativeBackgroundCrossSectionSysUncertainty   0
+RelativeSignalCrossSectionSysUncertainty       0.3
+RelativeBackgroundCrossSectionSysUncertainty   0.2
 
-UseHiggsBounds                 off
+UseHiggsBounds                 on
 
 RequireNeut1LSP                on
 

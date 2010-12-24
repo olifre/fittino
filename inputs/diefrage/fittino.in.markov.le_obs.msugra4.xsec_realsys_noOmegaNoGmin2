@@ -226,11 +226,11 @@ GetTempFromFirstChiSqr         on
 UseMarkovChains                on
 MarkovChainReadjustWidth       off
 MarkovChainReadjustWidthPeriod 500
-MaxMarkovChain                 45000
+MaxMarkovChain                 35000
 MarkovInterfaceFilePath        /lustre/user/wiene/markovinterfacefiles/interface.le_obs.msugra4.xsec_realsys_noOmegaNoGmin2.txt
 
 UseXsecLimits                  on
-GridPath                       /lustre/user/wiene/fittino/grids/7TeV/test/Atlas_events_nlo.dat
+GridPath                       /lustre/user/wiene/fittino/grids/7TeV/test/Meff_Delphes_NLO.dat
 Luminosity                     1    # in fb-1
 RelativeSignalCrossSectionSysUncertainty       0.3
 RelativeBackgroundCrossSectionSysUncertainty   0.2
