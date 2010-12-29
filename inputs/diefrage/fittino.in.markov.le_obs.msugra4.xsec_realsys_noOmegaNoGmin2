@@ -175,10 +175,10 @@ fixParameter massTop     173.1 GeV
 fixParameter massTau       1.77684    GeV
 fixParameter SignMu        1
 
-fitParameter M0           7.40381e+01 GeV +- 3. GeV #+-  1.  GeV
-fitParameter M12          3.30382e+02 GeV +- 3. GeV #+-  2.5 GeV
-fitParameter A0           3.82113e+02 GeV +- 6. GeV # +- 8.44276e+00 GeV #+- 10.  GeV
-fitParameter TanBeta      1.27859e+01     +- 0.4       # +- 1.35651e-02 GeV #+-  1.
+fitParameter M0           7.40381e+01 GeV +- 15. GeV #+-  1.  GeV
+fitParameter M12          3.30382e+02 GeV +- 15. GeV #+-  2.5 GeV
+fitParameter A0           3.82113e+02 GeV +- 60. GeV # +- 8.44276e+00 GeV #+- 10.  GeV
+fitParameter TanBeta      1.27859e+01     +- 0.5       # +- 1.35651e-02 GeV #+-  1.
 
 
 #scanParameter M12 0. 1000. 101
