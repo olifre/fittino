@@ -4588,46 +4588,80 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
      const int binmax = 10;
      TH1F* hsig = new TH1F("hsig", "", binmax, 0, 4000);
-
+     bool interpolationOK = true;
+     bool noGridPoint = false;
      for (int bin=1; bin<=binmax; bin++) {
-       hsig->SetBinContent(bin, BilinearInterpolator(M0, M12, bin, signalXsec)*yyLumi);
+       const double binContent = BilinearInterpolator(M0, M12, bin, signalXsec);
+       if (binContent<-999.) {
+	 interpolationOK = false;
+       }
+       else if (binContent<-0.5) {
+	 interpolationOK = false;
+	 noGridPoint = true;
+       } else {
+	 hsig->SetBinContent(bin, binContent*yyLumi);
+       }       
+     }
+     
+     double xsintegral;
+     
+     double CLsb;
+     double CLb;
+     
+     double xschi2;
+     
+     if (interpolationOK) {
+       // Asimov data set (data = bkgd only)
+       double lnQdata = LogLikelihoodRatio(hsig, hbkgd, hbkgd, 
+					   yyRelativeSignalCrossSectionSysUncertainty,
+					   yyRelativeBackgroundCrossSectionSysUncertainty, 
+					   "expected_b");
+       //     std::cout << "lnQdata = " << lnQdata << std::endl;
+       double nCLsb = 0;
+       double nCLb = 0;
+       const int ntrials = 50000;
+       for (int itrial=0; itrial<ntrials; itrial++) {
+	 double lnQsb = LogLikelihoodRatio(hsig, hbkgd, hbkgd,
+					   yyRelativeSignalCrossSectionSysUncertainty,
+					   yyRelativeBackgroundCrossSectionSysUncertainty, "sb");
+	 double lnQb = LogLikelihoodRatio(hsig, hbkgd, hbkgd, 
+					  yyRelativeSignalCrossSectionSysUncertainty,
+					  yyRelativeBackgroundCrossSectionSysUncertainty, "b");
+	 if (lnQsb < lnQdata) {
+	   nCLsb++;
+	 }
+	 if (lnQb < lnQdata) {
+	   nCLb++;
+	 }
+       }
+       
+       xsintegral = hsig->Integral();
+       
+       CLsb = double(nCLsb) / (double)ntrials;
+       CLb = double(nCLb) / (double)ntrials;
+       
+       xschi2 = 2 * TMath::ErfInverse(1 - 2*CLsb) * TMath::ErfInverse(1 - 2*CLsb);
+
+       global_LHC_CLb = CLb;
+       global_LHC_CLsb = CLsb;
+       global_LHC_chi2 = xschi2;
+       
+     } else {
+       if (noGridPoint) {
+	 xsintegral = 0.;
+	 global_LHC_CLb = 0.5;
+	 global_LHC_CLsb = 0.5;
+	 global_LHC_chi2 = 0.;	 
+       } else {
+	 xsintegral = 10000.;
+	 global_LHC_CLb = 0.5;
+	 global_LHC_CLsb = 0.0;
+	 global_LHC_chi2 = 1000.;	 	 
+       }
      }
 
-     // Asimov data set (data = bkgd only)
-     double lnQdata = LogLikelihoodRatio(hsig, hbkgd, hbkgd, 
-					 yyRelativeSignalCrossSectionSysUncertainty,
-					 yyRelativeBackgroundCrossSectionSysUncertainty, 
-					 "expected_b");
-     //     std::cout << "lnQdata = " << lnQdata << std::endl;
-     double nCLsb = 0;
-     double nCLb = 0;
-     const int ntrials = 50000;
-     for (int itrial=0; itrial<ntrials; itrial++) {
-       double lnQsb = LogLikelihoodRatio(hsig, hbkgd, hbkgd,
-					 yyRelativeSignalCrossSectionSysUncertainty,
-					 yyRelativeBackgroundCrossSectionSysUncertainty, "sb");
-       double lnQb = LogLikelihoodRatio(hsig, hbkgd, hbkgd, 
-					yyRelativeSignalCrossSectionSysUncertainty,
-					yyRelativeBackgroundCrossSectionSysUncertainty, "b");
-       if (lnQsb < lnQdata) {
-	 nCLsb++;
-       }
-       if (lnQb < lnQdata) {
-	 nCLb++;
-       }
-     }
-
-     double xsintegral = hsig->Integral();
      hsig->Delete();
 
-     double CLsb = double(nCLsb) / (double)ntrials;
-     double CLb = double(nCLb) / (double)ntrials;
-
-     double xschi2 = 2 * TMath::ErfInverse(1 - 2*CLsb) * TMath::ErfInverse(1 - 2*CLsb);
-
-     global_LHC_CLb = CLb;
-     global_LHC_CLsb = CLsb;
-     global_LHC_chi2 = xschi2;
 
      // check whether parameter point is out-of-bounds
      // WARNING: TMath::ErfInverse(1) returns 0, not infinity
@@ -4643,16 +4677,16 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 		 << M0 << " GeV, M12 = " << M12 << " GeV is " 
 		 << xsintegral/yyLumi << " fb " << std::endl;
 
-       std::cout << "CLsb = " << CLsb << "   CLb = " << CLb << std::endl;
+       std::cout << "CLsb = " << global_LHC_CLsb << "   CLb = " << global_LHC_CLb << std::endl;
        
        std::cout << "Parameter point";
-       if (CLsb > 0.05) std::cout << " not";
+       if (global_LHC_CLsb > 0.05) std::cout << " not";
        std::cout << " excluded at 95 % CL" << std::endl;
        
-       std::cout << "chi2 contribution from LHC cross-section = " << xschi2 << std::endl;
+       std::cout << "chi2 contribution from LHC cross-section = " << global_LHC_chi2 << std::endl;
      }
      
-     f += xschi2;
+     f += global_LHC_chi2;
 
 
    }
