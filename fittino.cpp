@@ -4592,12 +4592,14 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      bool noGridPoint = false;
      for (int bin=1; bin<=binmax; bin++) {
        const double binContent = BilinearInterpolator(M0, M12, bin, signalXsec);
-       if (binContent<-999.) {
+       if (binContent<0.) {
 	 interpolationOK = false;
-       }
-       else if (binContent<-0.5) {
-	 interpolationOK = false;
-	 noGridPoint = true;
+	 if (binContent<-999.) {
+	   noGridPoint = false;
+	 }
+	 else if (binContent<-0.5) {
+	   noGridPoint = true;
+	 }
        } else {
 	 hsig->SetBinContent(bin, binContent*yyLumi);
        }       
