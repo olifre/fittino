@@ -235,7 +235,7 @@ void Skimming::FindMinimalChi2(){
   for (Int_t i=0; i<maxEvents; i++) {
       
     markovChain->GetEntry(i);	
-    cout<<"chi2="<<leaves["chi2"]<<endl;
+
     if (leaves["chi2"]>=minChi2) continue;      
     if (Chi2Cut() || Cut()) continue;
 
