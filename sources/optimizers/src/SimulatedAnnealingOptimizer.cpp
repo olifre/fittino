@@ -22,6 +22,7 @@
 #include <vector>
 
 #include "Configuration.h"
+#include "Messenger.h"
 #include "SimulatedAnnealingOptimizer.h"
 
 Fittino::SimulatedAnnealingOptimizer::SimulatedAnnealingOptimizer( Fittino::ModelBase* model )
@@ -42,8 +43,10 @@ Fittino::SimulatedAnnealingOptimizer::~SimulatedAnnealingOptimizer() {
 
 void Fittino::SimulatedAnnealingOptimizer::PrintSteeringParameters() const {
 
-    std::cout << "    Initial temperature          " << _initialTemperature         << std::endl;
-    std::cout << "    Temperature reduction factor " << _temperatureReductionFactor << std::endl;
+    Messenger& messenger = Messenger::GetInstance();
+
+    messenger << Messenger::ALWAYS << "    Initial temperature          " << _initialTemperature         << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Temperature reduction factor " << _temperatureReductionFactor << Messenger::Endl;
 
 }
 

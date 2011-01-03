@@ -17,25 +17,29 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <iomanip>
 #include <iostream>
 
+#include "Configuration.h"
 #include "Messenger.h"
 
-Fittino::Messenger* Fittino::Messenger::GetInstance() {
+Fittino::Messenger& Fittino::Messenger::Endl( Messenger& messenger ) {
 
-    if ( !_instance ) {
+    messenger.Send();
+    return messenger;
 
-        _instance = new Messenger::Messenger();
+}
 
-    }
+Fittino::Messenger& Fittino::Messenger::GetInstance() {
 
-    return _instance;
+    static Messenger instance;
+    return instance;
 
 }
 
 Fittino::Messenger::Messenger()
-//        : _outputLevel( Messenger::ALWAYS ) {
-        : _outputLevel( Messenger::INFO ) {
+        : _actualVerbosityLevel( Messenger::ALWAYS ),
+          _verbosityLevel( Messenger::ALWAYS ) {
 
 }
 
@@ -43,46 +47,50 @@ Fittino::Messenger::~Messenger() {
 
 }
 
-void Fittino::Messenger::PrintALWAYSMessage( std::string alwaysMessage ) {
+void Fittino::Messenger::Send() {
 
-    if ( _outputLevel == Messenger::ALWAYS ||
-	 _outputLevel == Messenger::DEBUG  ||
-	 _outputLevel == Messenger::INFO   ||
-	 _outputLevel == Messenger::VERBOSE ) {
+    if ( _actualVerbosityLevel >= _verbosityLevel ) {
 
-        std::cout << alwaysMessage;
+        std::cout << std::setiosflags( std::ios::fixed )
+                  << std::setprecision( 6 )
+                  << this->str()
+		  << std::endl;
+
     }
+
+    this->str( "" );
 
 }
 
-void Fittino::Messenger::PrintDEBUGMessage( std::string debugMessage ) {
- 
-    if ( _outputLevel == Messenger::DEBUG ||
-         _outputLevel == Messenger::VERBOSE ) {
+void Fittino::Messenger::SetVerbosityLevel( const VerbosityLevel& verbosityLevel ) {
 
-        std::cout << debugMessage;
-    }
+    _verbosityLevel = verbosityLevel;
 
 }
 
-void Fittino::Messenger::PrintINFOMessage( std::string infoMessage ) {
+Fittino::Messenger& Fittino::Messenger::operator << ( std::ios& ( *_f )( std::ios& ) ) {
 
-    if ( _outputLevel == Messenger::DEBUG ||
-	 _outputLevel == Messenger::INFO  ||
-	 _outputLevel == Messenger::VERBOSE ) {
-
-        std::cout << infoMessage;
-    }
+    ( _f )( *this );
+    return *this;
 
 }
 
-void Fittino::Messenger::PrintVERBOSEMessage( std::string verboseMessage ) {
+Fittino::Messenger& Fittino::Messenger::operator << ( std::ostream& ( *_f )( std::ostream& ) ) {
 
-    if ( _outputLevel == Messenger::VERBOSE ) {
-
-        std::cout << verboseMessage;
-    }
+    ( _f )( *this );
+    return *this;
 
 }
 
-Fittino::Messenger* Fittino::Messenger::_instance = 0;
+Fittino::Messenger& Fittino::Messenger::operator << ( Fittino::Messenger& ( *_f )( Fittino::Messenger& ) ) {
+
+    return ( _f )( *this );
+
+}
+
+Fittino::Messenger& Fittino::Messenger::operator << ( Fittino::Messenger::VerbosityLevel verbosityLevel ) {
+
+    _actualVerbosityLevel = verbosityLevel;
+    return *this;
+
+}

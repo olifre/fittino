@@ -45,12 +45,12 @@ Fittino::XMLInputFileInterpreter::~XMLInputFileInterpreter() {
 
 void Fittino::XMLInputFileInterpreter::Parse( const TString& xmlInputFileName ) const {
 
-    Messenger* messenger = Messenger::GetInstance();
+    Messenger& messenger = Messenger::GetInstance();
 
-    messenger->PrintALWAYSMessage( "--------------------------------------------------------------------------------\n" );
-    messenger->PrintALWAYSMessage( "\n" );
-    messenger->PrintALWAYSMessage( "  Reading configuration from file " + static_cast<std::string>( xmlInputFileName ) + "\n" );
-    messenger->PrintALWAYSMessage( "\n" );
+    messenger << Messenger::ALWAYS << "--------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Reading configuration from file " << static_cast<std::string>( xmlInputFileName ) << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
 
     // Construct XML DOM parser
 

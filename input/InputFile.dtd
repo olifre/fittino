@@ -1,10 +1,16 @@
-<!ELEMENT InputFile (ExecutionMode,
+<!ELEMENT InputFile (VerbosityLevel,
+	             ExecutionMode,
                      Model,
                      Optimizer,
                      GeneticAlgorithmOptimizer,
                      ParticleSwarmOptimizer,
                      SimulatedAnnealingOptimizer,
 		     Sampler)>
+
+<!ELEMENT VerbosityLevel EMPTY>
+<!ATTLIST VerbosityLevel
+  Level CDATA #REQUIRED
+>
 
 <!ELEMENT ExecutionMode EMPTY>
 <!ATTLIST ExecutionMode

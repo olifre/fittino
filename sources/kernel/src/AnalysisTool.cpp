@@ -51,41 +51,41 @@ void Fittino::AnalysisTool::PerformAnalysis() {
 
 void Fittino::AnalysisTool::PrintStatus() const {
 
-    Messenger* messenger = Messenger::GetInstance();
+    Messenger& messenger = Messenger::GetInstance();
 
-    messenger->PrintINFOMessage( "--------------------------------------------------------------------------------\n" );
-    messenger->PrintINFOMessage( "\n" );
-    messenger->PrintINFOMessage( "  Actual best set of " + _model->GetName() + " parameters\n" );
-    messenger->PrintINFOMessage( "\n" );
+    messenger << Messenger::INFO << "--------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::Endl;
+    messenger << Messenger::INFO << "  Actual best set of " << _model->GetName() << " parameters" << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::Endl;
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
-        std::cout << "    "
+        messenger << Messenger::INFO
+	          << "    "
                   << std::left
                   << std::setw( 11 )
-                  << std::setiosflags( std::ios::fixed )
-                  << std::setprecision( 6 )
                   << ( *_model->GetParameterVector() )[i].GetName()
                   << std::right
                   << std::setw( 9 )
-                  << ( *_model->GetParameterVector() )[i].GetValue()                                << std::endl;
+                  << ( *_model->GetParameterVector() )[i].GetValue()
+		  << Messenger::Endl;
 
     }
 
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "    Chi2    " << _chi2                                                            << std::endl;
-    std::cout << "                                                                                " << std::endl;
+    messenger << Messenger::INFO << "                                                                                " << Messenger::Endl;
+    messenger << Messenger::INFO << "    Chi2    " << _chi2                                                            << Messenger::Endl;
+    messenger << Messenger::INFO << "                                                                                " << Messenger::Endl;
 
 }
 
 void Fittino::AnalysisTool::ExecuteAnalysisTool() {
 
-    Messenger* messenger = Messenger::GetInstance();
+    Messenger& messenger = Messenger::GetInstance();
 
-    messenger->PrintINFOMessage( "--------------------------------------------------------------------------------\n" );
-    messenger->PrintINFOMessage( "\n" );
-    messenger->PrintINFOMessage( "  Running " + _name + "\n" );
-    messenger->PrintINFOMessage( "\n" );
+    messenger << Messenger::INFO << "--------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::Endl;
+    messenger << Messenger::INFO << "  Running " << _name << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::Endl;
 
     while (  _chi2 > _abortCriterium && _iterationCounter < _numberOfIterations ) {
 
@@ -103,10 +103,12 @@ void Fittino::AnalysisTool::ExecuteAnalysisTool() {
 
 void Fittino::AnalysisTool::InitializeAnalysisTool() const {
 
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "  Initializing " << _name                                                         << std::endl;
-    std::cout << "                                                                                " << std::endl;
+    Messenger& messenger = Messenger::GetInstance();
+
+    messenger << Messenger::ALWAYS << "--------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Initializing " << _name                                                         << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
 
     AnalysisTool::PrintConfiguration();
 
@@ -114,25 +116,27 @@ void Fittino::AnalysisTool::InitializeAnalysisTool() const {
 
 void Fittino::AnalysisTool::PrintConfiguration() const {
 
-    std::cout << "   Configuration                                                                " << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "    Abort criterium              " << _abortCriterium                             << std::endl;
-    std::cout << "    Number of iterations         " << _numberOfIterations                         << std::endl;
+    Messenger& messenger = Messenger::GetInstance();
+
+    messenger << Messenger::ALWAYS << "   Configuration                                                                " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Abort criterium              " << _abortCriterium                             << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Number of iterations         " << _numberOfIterations                         << Messenger::Endl;
 
     this->PrintSteeringParameters();
 
-    std::cout << "                                                                                " << std::endl;
+    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
 
 }
 
 void Fittino::AnalysisTool::TerminateAnalysisTool() const {
 
-    Messenger* messenger = Messenger::GetInstance();
+    Messenger& messenger = Messenger::GetInstance();
 
-    messenger->PrintINFOMessage( "--------------------------------------------------------------------------------\n" );
-    messenger->PrintINFOMessage( "\n" );
-    messenger->PrintINFOMessage( "  Terminating " + _name + "\n" );
-    messenger->PrintINFOMessage( "\n" );
+    messenger << Messenger::INFO << "--------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::Endl;
+    messenger << Messenger::INFO << "  Terminating " << _name << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::Endl;
 
     this->PrintResult();
 

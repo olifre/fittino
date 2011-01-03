@@ -26,6 +26,23 @@
 <InputFile>
 
   <!--
+   The VerbosityLevel node specifies the degree of information which is printed out on the screen.
+   The supported verbosity levels are listed in the table below:
+
+       Level         Description 
+
+       ALWAYS        Default verbosity level
+       VERBOSE
+       DEBUG
+       INFO
+
+   -->
+
+  <VerbosityLevel
+   Level = "INFO"
+   />
+
+  <!--
    The ExecutionMode node specifies the main execution mode of Fittino. If OPTIMIZATION is set,
    Fittino tries to find the optimal parameter set of a given model w.r.t. experimental observation.
    -->
@@ -72,7 +89,7 @@
   <Optimizer
    AbortCriterium     = "1.e-5"
    NumberOfIterations = "500"
-   OptimizerType      = "ParticleSwarm"
+   OptimizerType      = "GeneticAlgorithm"
    />
 
   <!--

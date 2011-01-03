@@ -38,35 +38,35 @@ Fittino::OptimizerBase::~OptimizerBase() {
 
 void Fittino::OptimizerBase::PrintResult() const {
 
-    Messenger* messenger = Messenger::GetInstance();
+    Messenger& messenger = Messenger::GetInstance();
 
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "  Optimization converged after " << _iterationCounter << " iterations           " << std::endl;
-    std::cout << "                                                                                " << std::endl;
+    messenger << Messenger::ALWAYS << "--------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Optimization converged after " << _iterationCounter << " iterations           " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
 
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "  Optimization results                                                          " << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "   Final set of " << _model->GetName() << " parameters                          " << std::endl;
-    std::cout << "                                                                                " << std::endl;
+    messenger << Messenger::ALWAYS << "--------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Optimization results                                                          " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "   Final set of " << _model->GetName() << " parameters                          " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
-        std::cout << "    "
+        messenger << Messenger::ALWAYS
+	          << "    "
                   << std::left
                   << std::setw( 11 )
-                  << std::setiosflags( std::ios::fixed )
-                  << std::setprecision( 6 )
                   << ( *_model->GetParameterVector() )[i].GetName()
                   << std::right
                   << std::setw( 9 )
-                  << ( *_model->GetParameterVector() )[i].GetValue()                                << std::endl;
+                  << ( *_model->GetParameterVector() )[i].GetValue()
+		  << Messenger::Endl;
 
     }
 
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
+    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "--------------------------------------------------------------------------------" << Messenger::Endl;
 
 }

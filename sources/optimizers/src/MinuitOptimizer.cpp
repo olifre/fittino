@@ -24,6 +24,7 @@
 #include "Minuit2/MnMigrad.h"
 #include "Minuit2/MnPrint.h"
 
+#include "Messenger.h"
 #include "MinuitOptimizer.h"
 #include "RosenbrockModel.h"
 
@@ -47,7 +48,9 @@ Fittino::MinuitOptimizer::~MinuitOptimizer() {
 
 void Fittino::MinuitOptimizer::PrintSteeringParameters() const {
 
-    std::cout << "    Default configuration " << std::endl;
+    Messenger& messenger = Messenger::GetInstance();
+
+    messenger << Messenger::ALWAYS << "    Default configuration " << Messenger::Endl;
 
 }
 

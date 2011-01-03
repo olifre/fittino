@@ -20,6 +20,7 @@
 #ifndef FITTINO_MESSENGER_H
 #define FITTINO_MESSENGER_H
 
+#include <sstream>
 #include <string>
 
 /*!
@@ -30,35 +31,52 @@ namespace Fittino {
   /*!
    *  \brief Class for printing messages of various priority.
    */
-  class Messenger {
+  class Messenger : public std::ostringstream {
 
     public:
-      enum OutputLevel { INFO, DEBUG, VERBOSE, ALWAYS };
+      enum                VerbosityLevel { INFO, DEBUG, VERBOSE, ALWAYS };
 
     public:
-      static Messenger* GetInstance();
+      static Messenger&   Endl( Messenger& messenger );
+      static Messenger&   GetInstance();
 
     public:
       /*!
        *  Standard constructor.
        */
-                        Messenger();
+                          Messenger();
       /*!
        *  Standard destructor.
        */
-                        ~Messenger();
-      void              PrintALWAYSMessage( std::string alwaysMessage );
-      void              PrintDEBUGMessage( std::string debugMessage );
-      void              PrintINFOMessage( std::string infoMessage );
-      void              PrintVERBOSEMessage( std::string verboseMessage );
+                          ~Messenger();
+      void                Send();
+      void                SetVerbosityLevel( const VerbosityLevel& verbosityLevel );
+
+    public:
+      Messenger& operator << ( std::ios& ( *_f )( std::ios& ) );
+      Messenger& operator << ( std::ostream& ( *_f )( std::ostream& ) );
+      Messenger& operator << ( Messenger& ( *_f )( Messenger& ) );
+      Messenger& operator << ( VerbosityLevel verbosityLevel );
+      template<class T>
+      Messenger& operator << ( T arg );
 
     private:
-      static Messenger* _instance;
-
-    private:
-      OutputLevel       _outputLevel;
+      VerbosityLevel      _verbosityLevel;
+      VerbosityLevel      _actualVerbosityLevel;
 
   };
+
+  template<class T>
+  Messenger& Messenger::operator<< ( T arg ) {
+
+    if ( _actualVerbosityLevel >= _verbosityLevel ) {
+
+      *( std::ostringstream* )this << arg;
+
+    }
+    return *this;
+
+  }
 
 }
 

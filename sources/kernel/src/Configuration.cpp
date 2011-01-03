@@ -140,6 +140,38 @@ Fittino::Configuration::SamplerType Fittino::Configuration::GetSamplerType() con
 
 }
 
+Fittino::Messenger::VerbosityLevel Fittino::Configuration::GetVerbosityLevel() const {
+
+    const std::string key = "Level";
+
+    if ( ( *_steeringParameterMap )[key] == "INFO" ) {
+
+        return Messenger::INFO;
+
+    }
+    else if ( ( *_steeringParameterMap )[key] == "DEBUG" ) {
+
+        return Messenger::DEBUG;
+
+    }
+    else if ( ( *_steeringParameterMap )[key] == "VERBOSE" ) {
+
+        return Messenger::VERBOSE;
+
+    }
+    else if ( ( *_steeringParameterMap )[key] == "ALWAYS" ) {
+
+        return Messenger::ALWAYS;
+
+    }
+    else {
+
+        throw ConfigurationException( "Configured verbosity level unknown." );
+
+    }
+
+}
+
 Fittino::Configuration* Fittino::Configuration::_instance = 0;
 
 Fittino::Configuration::Configuration()

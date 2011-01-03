@@ -21,6 +21,7 @@
 
 #include "Configuration.h"
 #include "GeneticAlgorithmOptimizer.h"
+#include "Messenger.h"
 
 
 Fittino::GeneticAlgorithmOptimizer::GeneticAlgorithmOptimizer( Fittino::ModelBase* model )
@@ -187,8 +188,10 @@ void Fittino::GeneticAlgorithmOptimizer::SortPopulation() {
 
 void Fittino::GeneticAlgorithmOptimizer::PrintSteeringParameters() const {
 
-    std::cout << "    Mutation rate                " << _mutationRate << std::endl;
-    std::cout << "    Size of population           " << _sizeOfPopulation << std::endl;
+    Messenger& messenger = Messenger::GetInstance();
+
+    messenger << Messenger::ALWAYS << "    Mutation rate                " << _mutationRate     << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Size of population           " << _sizeOfPopulation << Messenger::Endl;
 
 }
 

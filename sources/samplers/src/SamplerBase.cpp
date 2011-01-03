@@ -31,8 +31,8 @@ Fittino::SamplerBase::~SamplerBase() {
 
 void Fittino::SamplerBase::PrintResult() const {
 
-    Messenger* messenger = Messenger::GetInstance();
+    Messenger& messenger = Messenger::GetInstance();
 
-    messenger->PrintINFOMessage( "--------------------------------------------------------------------------------\n" );
+    messenger << Messenger::INFO << "--------------------------------------------------------------------------------" << Messenger::Endl;
 
 }

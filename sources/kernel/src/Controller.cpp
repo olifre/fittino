@@ -125,6 +125,8 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
         inputFileInterpreter->Parse( _inputFileName );
         delete inputFileInterpreter;
 
+        Messenger::GetInstance().SetVerbosityLevel( Configuration::GetInstance()->GetVerbosityLevel() );
+
     }
     catch ( const InputException& inputException ) {
 
@@ -197,38 +199,38 @@ Fittino::Controller::~Controller() {
 
 void Fittino::Controller::PrintHelp() const {
 
-    Messenger* messenger = Messenger::GetInstance();
+    Messenger& messenger = Messenger::GetInstance();
 
-    messenger->PrintALWAYSMessage( "\n" );
-    messenger->PrintALWAYSMessage( "Usage: fittino [OPTION(S)] FILE\n" );
-    messenger->PrintALWAYSMessage( "\n" );
-    messenger->PrintALWAYSMessage( "  A single given argument (different from \"-h\" or \"--help\") is\n" );
-    messenger->PrintALWAYSMessage( "  interpreted as the name of an input file. The input file suffix\n" );
-    messenger->PrintALWAYSMessage( "  must be .ftn (Fittino format) or .xml (XML format).\n" );
-    messenger->PrintALWAYSMessage( "  Several example input files can be found at fittino2/input.\n" );
-    messenger->PrintALWAYSMessage( "\n" );
-    messenger->PrintALWAYSMessage( "Supported options are:\n" );
-    messenger->PrintALWAYSMessage( "\n" );
-    messenger->PrintALWAYSMessage( "  -h, --help\n" );
-    messenger->PrintALWAYSMessage( "      Fittino prints this message.\n" );
-    messenger->PrintALWAYSMessage( "  -i, --input-file=FILE\n" );
-    messenger->PrintALWAYSMessage( "      Fittino uses the input file FILE. The input file suffix must\n" );
-    messenger->PrintALWAYSMessage( "      be .ftn (Fittino format) or .xml (XML format).\n" );
-    messenger->PrintALWAYSMessage( "      Several example input files can be found at fittino2/input.\n" );
-    messenger->PrintALWAYSMessage( "  -s, --seed=SEED\n" );
-    messenger->PrintALWAYSMessage( "      Fittino uses the given random number generator seed.\n" );
-    messenger->PrintALWAYSMessage( "\n" );
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "Usage: fittino [OPTION(S)] FILE" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  A single given argument (different from \"-h\" or \"--help\") is" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  interpreted as the name of an input file. The input file suffix" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  must be .ftn (Fittino format) or .xml (XML format)." << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Several example input files can be found at fittino2/input." << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "Supported options are:" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  -h, --help" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "      Fittino prints this message." << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  -i, --input-file=FILE" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "      Fittino uses the input file FILE. The input file suffix must" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "      be .ftn (Fittino format) or .xml (XML format)." << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "      Several example input files can be found at fittino2/input." << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  -s, --seed=SEED" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "      Fittino uses the given random number generator seed." << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
 
 }
 
 void Fittino::Controller::PrintLogo() const {
 
-    Messenger* messenger = Messenger::GetInstance();
+    Messenger& messenger = Messenger::GetInstance();
 
-    messenger->PrintALWAYSMessage( "--------------------------------------------------------------------------------\n" );
-    messenger->PrintALWAYSMessage( "\n" );
-    messenger->PrintALWAYSMessage( "  Welcome to Fittino\n" );
-    messenger->PrintALWAYSMessage( "\n" );
+    messenger << Messenger::ALWAYS << "--------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Welcome to Fittino" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
 
 }
 

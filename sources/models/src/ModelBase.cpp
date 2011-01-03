@@ -21,6 +21,7 @@
 #include <iostream>
 #include <sstream>
 
+#include "Messenger.h"
 #include "ModelBase.h"
 
 Fittino::ModelBase::ModelBase()
@@ -53,10 +54,12 @@ std::vector<Fittino::Parameter>* Fittino::ModelBase::GetParameterVector() {
 
 void Fittino::ModelBase::InitializeModel() const {
 
-    std::cout << "--------------------------------------------------------------------------------" << std::endl;
-    std::cout << "                                                                                " << std::endl;
-    std::cout << "  Initializing " << _name                                                         << std::endl;
-    std::cout << "                                                                                " << std::endl;
+    Messenger& messenger = Messenger::GetInstance();
+
+    messenger << Messenger::ALWAYS << "--------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Initializing " << _name                                                         << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
 
     ModelBase::PrintConfiguration();
 
@@ -64,23 +67,25 @@ void Fittino::ModelBase::InitializeModel() const {
 
 void Fittino::ModelBase::PrintConfiguration() const {
 
-    std::cout << "   Starting values                                                              " << std::endl;
-    std::cout << "                                                                                " << std::endl;
+    Messenger& messenger = Messenger::GetInstance();
+
+    messenger << Messenger::ALWAYS << "   Starting values                                                              " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
 
     for ( unsigned int i = 0; i < _numberOfParameters; i++ ) {
 
-        std::cout << "    "
+        messenger << Messenger::ALWAYS
+	          << "    "
                   << std::left
                   << std::setw( 11 )
-                  << std::setiosflags( std::ios::fixed )
-                  << std::setprecision( 6 )
                   << _parameterVector[i].GetName()
                   << std::right
                   << std::setw( 12 )
-                  << _parameterVector[i].GetValue()                                                 << std::endl;
+                  << _parameterVector[i].GetValue()
+		  << Messenger::Endl;
 
     }
 
-    std::cout << "                                                                                " << std::endl;
+    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
 
 }

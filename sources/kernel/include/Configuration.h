@@ -28,6 +28,7 @@
 #include <sstream>
 #include <string>
 
+#include "Messenger.h"
 #include "ModelBase.h"
 #include "OptimizerBase.h"
 #include "SamplerBase.h"
@@ -86,6 +87,10 @@ namespace Fittino {
        *  Returns the configured sampler type.
        */
       SamplerType                           GetSamplerType() const;
+      /*!
+       *  Returns the configured verbosity level.
+       */
+      Messenger::VerbosityLevel             GetVerbosityLevel() const;
 
     public:
       template<class SteeringParameterType>
