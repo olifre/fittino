@@ -1,11 +1,10 @@
 <!ELEMENT InputFile (VerbosityLevel,
 	             ExecutionMode,
                      Model,
-                     Optimizer,
-                     GeneticAlgorithmOptimizer,
-                     ParticleSwarmOptimizer,
-                     SimulatedAnnealingOptimizer,
-		     Sampler)>
+                     (Optimizer|Sampler),
+                     GeneticAlgorithmOptimizer?,
+                     ParticleSwarmOptimizer?,
+                     SimulatedAnnealingOptimizer?)>
 
 <!ELEMENT VerbosityLevel EMPTY>
 <!ATTLIST VerbosityLevel
@@ -35,6 +34,13 @@
   OptimizerType      CDATA #REQUIRED
 >
 
+<!ELEMENT Sampler EMPTY>
+<!ATTLIST Sampler
+  AbortCriterium     CDATA #REQUIRED
+  NumberOfIterations CDATA #REQUIRED
+  SamplerType        CDATA #REQUIRED
+>
+
 <!ELEMENT GeneticAlgorithmOptimizer EMPTY>
 <!ATTLIST GeneticAlgorithmOptimizer
   MutationRate         CDATA #REQUIRED
@@ -52,11 +58,4 @@
 <!ATTLIST SimulatedAnnealingOptimizer
   InitialTemperature         CDATA #REQUIRED
   TemperatureReductionFactor CDATA #REQUIRED
->
-
-<!ELEMENT Sampler EMPTY>
-<!ATTLIST Sampler 
-  AbortCriterium     CDATA #REQUIRED
-  NumberOfIterations CDATA #REQUIRED
-  SamplerType        CDATA #REQUIRED
 >

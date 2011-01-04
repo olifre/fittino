@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding='UTF-8'?>
 
-<!-- $Id$ -->
+<!-- $Id: Example.in.xml 705 2010-07-20 22:56:05Z uhlenbrock $ -->
 
 <!--#########################################################################-->
 <!--                                                                         -->
@@ -23,6 +23,23 @@
 <!DOCTYPE InputFile PUBLIC "" "InputFile.dtd" >
 
 <InputFile>
+
+  <!--
+   The VerbosityLevel node specifies the degree of information which is printed out on the screen.
+   The supported verbosity levels are listed in the table below:
+
+       Level         Description 
+
+       ALWAYS        Default verbosity level
+       VERBOSE
+       DEBUG
+       INFO
+
+   -->
+
+  <VerbosityLevel
+   Level = "ALWAYS"
+   />
 
   <!--
    The ExecutionMode node specifies the main execution mode of Fittino. If OPTIMIZATION is set,
@@ -50,18 +67,11 @@
    Y         = "-1.54"
    />
 
-  <!-- <Model                -->
-  <!--  ModelType = "MSUGRA" -->
-  <!--  A0        = "-300."  -->
-  <!--  M0        = "100."   -->
-  <!--  M12       = "250."   -->
-  <!--  TanBeta   = "10."    -->
-  <!--  />                   -->
-
   <!--
    The Optimizer node specifies the optimization algorithm (optimization type) and several general
    optimizer settings. Supported optimizer types are:
 
+      * GeneticAlgorithm
       * Minuit
       * ParticleSwarm
       * SimulatedAnnealing
@@ -71,35 +81,16 @@
   <Optimizer
    AbortCriterium     = "1e-5"
    NumberOfIterations = "500"
-   OptimizerType      = "ParticleSwarm"
-   />
+   OptimizerType      = "GeneticAlgorithm"
+    />
 
   <!--
    Configuration example for the genetic algorithm optimizer.
    -->
 
   <GeneticAlgorithmOptimizer
-   mutationRate      ="0.5"
-   sizeOfPopulation  ="100"  
-   />
-
-  <!--
-   Configuration example for the particle swarm optimizer.
-   -->
-
-  <ParticleSwarmOptimizer
-   C1                = "0.01"
-   C2                = "0.01"
-   NumberOfParticles = "100"
-   />
-
-  <!--
-   Configuration example for the simulated annealing optimizer.
-   -->
-
-  <SimulatedAnnealingOptimizer
-   InitialTemperature         = "600."
-   TemperatureReductionFactor = "0.5"
+   MutationRate      ="0.5"
+   SizeOfPopulation  ="100"  
    />
 
 </InputFile>

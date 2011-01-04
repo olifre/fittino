@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding='UTF-8'?>
 
-<!-- $Id: Example.in.xml 705 2010-07-20 22:56:05Z uhlenbrock $ -->
+<!-- $Id: Example.optimization.in.xml 705 2010-07-20 22:56:05Z uhlenbrock $ -->
 
 <!--#########################################################################-->
 <!--                                                                         -->
 <!-- Project     Fittino - A SUSY Parameter Fitting Package                  -->
 <!--                                                                         -->
-<!-- File        Example.in.xml                                              -->
+<!-- File        Example.optimization.in.xml                                 -->
 <!--                                                                         -->
-<!-- Description This is an example Fittino input file in XML format.        -->
+<!-- Description This is an example optimization Fittino input file in XML   -->
+<!--             format.                                                     -->
 <!--                                                                         -->
 <!-- Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>         -->
 <!--                                                                         -->
@@ -38,7 +39,7 @@
    -->
 
   <VerbosityLevel
-   Level = "INFO"
+   Level = "ALWAYS"
    />
 
   <!--
@@ -46,12 +47,8 @@
    Fittino tries to find the optimal parameter set of a given model w.r.t. experimental observation.
    -->
 
-<!--  <ExecutionMode
-   Mode = "OPTIMIZATION"
-   /> -->
-
   <ExecutionMode
-   Mode = "SAMPLING"
+   Mode = "OPTIMIZATION"
    />
 
   <!--
@@ -65,26 +62,17 @@
 
    -->
 
-<!--   X         = "2.56"   -->
-<!--   Y         = "-1.54"  -->
   <Model
    ModelType = "Rosenbrock"
-   X         = "1."
-   Y         = "-2"
+   X         = "2.56"
+   Y         = "-1.54"
    />
-
-  <!-- <Model                --> 
-  <!--  ModelType = "MSUGRA" --> 
-  <!--  A0        = "-300."  --> 
-  <!--  M0        = "100."   --> 
-  <!--  M12       = "250."   --> 
-  <!--  TanBeta   = "10."    --> 
-  <!--  />                   --> 
 
   <!--
    The Optimizer node specifies the optimization algorithm (optimization type) and several general
    optimizer settings. Supported optimizer types are:
 
+      * GeneticAlgorithm
       * Minuit
       * ParticleSwarm
       * SimulatedAnnealing
@@ -92,14 +80,10 @@
   -->
 
   <Optimizer
-   AbortCriterium     = "1e-5"
+   AbortCriterium     = "1.e-5"
    NumberOfIterations = "500"
-   OptimizerType      = "ParticleSwarm"
+   OptimizerType      = "SimulatedAnnealing"
    />
-
-  <!--
-   Configuration example for the particle swarm optimizer.
-   -->
 
   <!--
    Configuration example for the genetic algorithm optimizer.
@@ -107,8 +91,12 @@
 
   <GeneticAlgorithmOptimizer
    MutationRate      = "0.5"
-   SizeOfPopulation  = "100"  
+   SizeOfPopulation  = "100"
    />
+
+  <!--
+   Configuration example for the particle swarm optimizer.
+   -->
 
   <ParticleSwarmOptimizer
    C1                = "0.01"
@@ -123,16 +111,6 @@
   <SimulatedAnnealingOptimizer
    InitialTemperature         = "600."
    TemperatureReductionFactor = "0.5"
-   />
-
-  <!--
-   The Sampler node specifies the sampling algorithm (sampler type).
-   -->
-
-  <Sampler
-   AbortCriterium     = "1e-5"
-   NumberOfIterations = "500"
-   SamplerType        = "MarkovChain"
    />
 
 </InputFile>
