@@ -82,10 +82,10 @@ void Fittino::AnalysisTool::ExecuteAnalysisTool() {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::INFO << "--------------------------------------------------------------------------------" << Messenger::Endl;
-    messenger << Messenger::INFO << Messenger::Endl;
-    messenger << Messenger::INFO << "  Running " << _name << Messenger::Endl;
-    messenger << Messenger::INFO << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "--------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Running " << _name << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
 
     while (  _chi2 > _abortCriterium && _iterationCounter < _numberOfIterations ) {
 
@@ -133,10 +133,10 @@ void Fittino::AnalysisTool::TerminateAnalysisTool() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::INFO << "--------------------------------------------------------------------------------" << Messenger::Endl;
-    messenger << Messenger::INFO << Messenger::Endl;
-    messenger << Messenger::INFO << "  Terminating " << _name << Messenger::Endl;
-    messenger << Messenger::INFO << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "--------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Terminating " << _name << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
 
     this->PrintResult();
 
