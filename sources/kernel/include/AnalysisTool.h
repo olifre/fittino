@@ -89,6 +89,7 @@ namespace Fittino {
       virtual void PrintResult() const = 0;
       /*!
        *  Prints the steering parameters of a particuar analysis tool.
+       *  \todo Short-term: Write a function that does always the correct formatting.
        */
       virtual void PrintSteeringParameters() const = 0;
       /*!

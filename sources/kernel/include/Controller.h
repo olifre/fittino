@@ -28,17 +28,17 @@
 #include "Configuration.h"
 
 /*!
- *  \todo Long-term: Document the code
+ *  \todo Long-term: Document the code.
  *
- *  \todo Long-term: Write a comprehensive developer's guide
+ *  \todo Long-term: Write a comprehensive developer's guide.
  *
- *  \todo Long-term: Write a comprehensive user's guide
+ *  \todo Long-term: Write a comprehensive user's guide.
  *
- *  \todo Mid-term: Write classes to handle output
+ *  \todo Mid-term: Write classes to handle output.
  *
- *  \todo Mid-term: Write SLHA file parser
+ *  \todo Mid-term: Write an adapter for an external SLHA file parser (Mathias, Frank).
  *
- *  \todo Mid-term: Write a Genetic Algorithm optimizer
+ *  \todo Short-term: Write an adapter for Minuit2 (Peter).
  */
 
 /*!
