@@ -49,8 +49,13 @@ namespace Fittino {
       /*!
        *  Virtual copy constructor.
        */
-      virtual double           TestModelFunction();
       virtual RosenbrockModel* Clone() const;
+
+      /*! \cond UML */
+    private:
+      virtual double           TestModelFunction();
+
+      /*! \endcond UML */
 
   };
 

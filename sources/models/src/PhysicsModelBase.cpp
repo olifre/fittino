@@ -43,6 +43,12 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
 
 void Fittino::PhysicsModelBase::UpdateObservablePredictions() {
 
+    for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
+
+        _observableVector[i].UpdatePredictedValue();
+
+    }
+
 }
 
 void Fittino::PhysicsModelBase::UpdateSLHAConfiguration() {

@@ -21,6 +21,7 @@
 #define FITTINO_PHYSICSMODELBASE_H
 
 #include "ModelBase.h"
+#include "Observable.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -34,21 +35,26 @@ namespace Fittino {
   class PhysicsModelBase : public ModelBase {
 
     public:
-                     /*!
-                      *  Standard constructor.
-                      */
-                     PhysicsModelBase();
+      /*!
+       *  Standard constructor.
+       */
+                              PhysicsModelBase();
+      /*!
+       *  Standard destructor.
+       */
+                              ~PhysicsModelBase();
+      virtual double          Evaluate();
 
-                     /*!
-                      *  Standard destructor.
-                      */
-                     ~PhysicsModelBase();
-      virtual double Evaluate();
+    protected:
+      std::vector<Observable> _observableVector;
 
+      /*! \cond UML */
     private:
-      double         CalculateChi2();
-      void           UpdateObservablePredictions();
-      void           UpdateSLHAConfiguration();
+      double                  CalculateChi2();
+      void                    UpdateObservablePredictions();
+      void                    UpdateSLHAConfiguration();
+
+      /*! \endcond UML */
 
   };
 

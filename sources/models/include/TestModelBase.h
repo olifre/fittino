@@ -34,16 +34,21 @@ namespace Fittino {
   class TestModelBase : public ModelBase {
 
     public:
-                     /*!
-                      *  Standard constructor.
-                      */
+      /*!
+       *  Standard constructor.
+       */
                      TestModelBase();
-                     /*!
-                      *  Standard destructor.
-                      */
+      /*!
+       *  Standard destructor.
+       */
                      ~TestModelBase();
       virtual double Evaluate();
+
+      /*! \cond UML */
+    private:
       virtual double TestModelFunction() = 0;
+
+      /*! \endcond UML */
 
   };
 
