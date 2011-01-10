@@ -21,7 +21,6 @@
 
 #include "Configuration.h"
 #include "MSUGRAModel.h"
-#include "SLHAFileInterpreter.h"
 
 Fittino::MSUGRAModel::MSUGRAModel() {
 
@@ -55,29 +54,5 @@ double Fittino::MSUGRAModel::Evaluate() {
 Fittino::MSUGRAModel* Fittino::MSUGRAModel::Clone() const {
 
     return new MSUGRAModel( *this );
-
-}
-
-Fittino::MSUGRAFCN::MSUGRAFCN( const std::vector<double>& meas, const std::vector<double>& pos, const std::vector<double>& mvar )
-        : theMeasurements( meas ),
-          thePositions( pos ),
-          theMVariances( mvar ),
-          theErrorDef( 1. ) {
-
-}
-
-Fittino::MSUGRAFCN::~MSUGRAFCN() {
-
-}
-
-double Fittino::MSUGRAFCN::Up() const {
-
-    return theErrorDef;
-
-}
-
-double Fittino::MSUGRAFCN::operator()( const std::vector<double>& parameterVector ) const {
-
-    return 1.e-7;
 
 }

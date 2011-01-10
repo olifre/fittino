@@ -54,27 +54,6 @@ namespace Fittino {
 
   };
 
-  /*!
-   *  \brief Implementation of the MSUGRA model as required by Minuit.
-   */
-  class MSUGRAFCN : public ROOT::Minuit2::FCNBase {
-
-    public:
-                          MSUGRAFCN( const std::vector<double>& meas, const std::vector<double>& pos, const std::vector<double>& mvar );
-                          ~MSUGRAFCN();
-      virtual double      Up() const;
-
-    public:
-      virtual double      operator()( const std::vector<double>& parameterVector ) const;
-
-    private:
-      double              theErrorDef;
-      std::vector<double> theMeasurements;
-      std::vector<double> thePositions;
-      std::vector<double> theMVariances;
-
-  };
-
 }
 
 #endif // FITTINO_MSUGRAMODEL_H
