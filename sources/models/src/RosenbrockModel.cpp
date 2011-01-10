@@ -39,7 +39,7 @@ Fittino::RosenbrockModel::~RosenbrockModel() {
 
 }
 
-double Fittino::RosenbrockModel::Evaluate() {
+double Fittino::RosenbrockModel::TestModelFunction() {
 
     return pow( ( 1 - _parameterVector[0].GetValue() ), 2 ) + 100 * pow( _parameterVector[1].GetValue() - pow( _parameterVector[0].GetValue(), 2 ), 2 );
 

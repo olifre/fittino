@@ -46,10 +46,10 @@ namespace Fittino {
        *  Standard destructor.
        */
                                ~RosenbrockModel();
-      virtual double           Evaluate();
       /*!
        *  Virtual copy constructor.
        */
+      virtual double           TestModelFunction();
       virtual RosenbrockModel* Clone() const;
 
   };

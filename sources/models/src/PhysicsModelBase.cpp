@@ -26,3 +26,29 @@ Fittino::PhysicsModelBase::PhysicsModelBase() {
 Fittino::PhysicsModelBase::~PhysicsModelBase() {
 
 }
+
+double Fittino::PhysicsModelBase::Evaluate() {
+
+    PhysicsModelBase::UpdateSLHAConfiguration();
+    PhysicsModelBase::UpdateObservablePredictions();
+    return PhysicsModelBase::CalculateChi2();
+
+}
+
+double Fittino::PhysicsModelBase::CalculateChi2() {
+
+    return 1.e-6;
+
+}
+
+void Fittino::PhysicsModelBase::UpdateObservablePredictions() {
+
+}
+
+void Fittino::PhysicsModelBase::UpdateSLHAConfiguration() {
+
+    //SLHAFileInterpreter* _inputSLHAFileInterpreter = new SLHAFileInterpreter();
+    //_inputSLHAFileInterpreter->ReadFile( "SPheno.spc" );
+    //std::cout << _inputSLHAFileInterpreter->GetMODSEL() << std::endl;
+
+}

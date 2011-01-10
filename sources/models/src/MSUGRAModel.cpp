@@ -41,16 +41,6 @@ Fittino::MSUGRAModel::~MSUGRAModel() {
 
 }
 
-double Fittino::MSUGRAModel::Evaluate() {
-
-    //SLHAFileInterpreter* _inputSLHAFileInterpreter = new SLHAFileInterpreter();
-    //_inputSLHAFileInterpreter->ReadFile( "SPheno.spc" );
-    //std::cout << _inputSLHAFileInterpreter->GetMODSEL() << std::endl;
-
-    return 1.e-6;
-
-}
-
 Fittino::MSUGRAModel* Fittino::MSUGRAModel::Clone() const {
 
     return new MSUGRAModel( *this );

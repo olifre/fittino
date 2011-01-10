@@ -46,7 +46,6 @@ namespace Fittino {
        *  Standard destructor.
        */
                            ~MSUGRAModel();
-      virtual double       Evaluate();
       /*!
        *  Virtual copy constructor.
        */

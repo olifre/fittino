@@ -29,20 +29,21 @@ namespace Fittino {
 
   /*!
    *  \ingroup models
-   *  \brief Class template for Fittino classes
+   *  \brief Base class for Fittino test models.
    */
   class TestModelBase : public ModelBase {
 
     public:
-      /*!
-       *  Constructor
-       */
-      TestModelBase();
-
-      /*!
-       *  Destructor
-       */
-      ~TestModelBase();
+                     /*!
+                      *  Standard constructor.
+                      */
+                     TestModelBase();
+                     /*!
+                      *  Standard destructor.
+                      */
+                     ~TestModelBase();
+      virtual double Evaluate();
+      virtual double TestModelFunction() = 0;
 
   };
 

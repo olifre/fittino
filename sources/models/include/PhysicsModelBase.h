@@ -29,20 +29,26 @@ namespace Fittino {
 
   /*!
    *  \ingroup models
-   *  \brief Base class for Fittino physics models
+   *  \brief Base class for Fittino physics models.
    */
   class PhysicsModelBase : public ModelBase {
 
     public:
-      /*!
-       *  Standard constructor.
-       */
-      PhysicsModelBase();
+                     /*!
+                      *  Standard constructor.
+                      */
+                     PhysicsModelBase();
 
-      /*!
-       *  Standard destructor.
-       */
-      ~PhysicsModelBase();
+                     /*!
+                      *  Standard destructor.
+                      */
+                     ~PhysicsModelBase();
+      virtual double Evaluate();
+
+    private:
+      double         CalculateChi2();
+      void           UpdateObservablePredictions();
+      void           UpdateSLHAConfiguration();
 
   };
 

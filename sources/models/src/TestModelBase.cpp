@@ -26,3 +26,9 @@ Fittino::TestModelBase::TestModelBase() {
 Fittino::TestModelBase::~TestModelBase() {
 
 }
+
+double Fittino::TestModelBase::Evaluate() {
+
+    return this->TestModelFunction();
+
+}
