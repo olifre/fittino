@@ -21,23 +21,23 @@
 #define FITTINO_FITTINOCLASSTEMPLATE_H
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
-   *  \brief Class template for Fittino classes
+   *  \brief Class template for Fittino classes.
    */
   class FittinoClassTemplate {
 
     public:
       /*!
-       *  Constructor
+       *  Standard constructor.
        */
       FittinoClassTemplate();
 
       /*!
-       *  Destructor
+       *  Standard destructor.
        */
       ~FittinoClassTemplate();
 

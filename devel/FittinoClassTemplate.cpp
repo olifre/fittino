@@ -21,7 +21,7 @@
 
 Fittino::FittinoClassTemplate::FittinoClassTemplate() {
 
-    // Code goes here
+    // Code goes here.
 
 }
 
