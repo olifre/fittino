@@ -36,7 +36,7 @@ public:
   void SetDeleteIdenticalPoints(bool deleteIdenticalPoints);
   void SetKeepBugPoints(bool keepBugPoints);
   void SetMaxDeltaChi2(double maxDeltaChi2);  
-  void SetMaxEvents(int maxEvents);
+  void SetMaxEvents(Long64_t maxEvents);
   void SetOutputFileName(string outputFileName); 
   
 private:
@@ -45,7 +45,7 @@ private:
   double absMinChi2;
   double absMaxChi2;
   double maxDeltaChi2;
-  int maxEvents;
+  Long64_t maxEvents;
   float bug;
   float minChi2;
   string outputFileName;
@@ -57,6 +57,7 @@ private:
   TObjArray* CutObjects;
   vector<string> InputFiles;
   TTree* newTree;
+  TFile* outputRootFile;
   
 private:
   bool Chi2Cut();
@@ -74,30 +75,30 @@ void SkimMarkovChainWithGraphicalCuts(){
   Skimming Skim;
 
   //Please add your root inputfiles...
-  Skim.AddInputFile("myoutputrenamed.root");
+  Skim.AddInputFile("fittino.out.markov.le_obs.msugra4.2.loxsec_realsys_merged.root");
 
   //.. set the following parameters...
   Skim.SetTreeName("markovChain");
-  Skim.SetAbsMaxChi2(1e20); 
+  Skim.SetAbsMaxChi2(35); 
   Skim.SetAbsMinChi2(0);
-  Skim.SetDeleteIdenticalPoints(true); //  if true identical points are deleted. To save time it's assumed that a 'identical point' corresponds to a point exactly  two entries before. This assumption is made since an identical point in the markovchain should result from the rejection of a point in between. 
-  Skim.SetKeepBugPoints(true); //if true, the bugpoints are kept but the new tree gets an additional branch "bug" which is 1 if the point is buggy, otherwise 0
+  Skim.SetDeleteIdenticalPoints(false); //  if true identical points are deleted. To save time it's assumed that a 'identical point' corresponds to a point exactly  two entries before. This assumption is made since an identical point in the markovchain should result from the rejection of a point in between. 
+  Skim.SetKeepBugPoints(false); //if true, the bugpoints are kept but the new tree gets an additional branch "bug" which is 1 if the point is buggy, otherwise 0
   Skim.SetMaxDeltaChi2(-1);  //if negative, the minimal chi2 is not determined, so one loop less needs to be performaned
   Skim.SetMaxEvents(-1); //if negative, all events are used 
-  Skim.SetOutputFileName("SkimmedFile.root"); 
+  Skim.SetOutputFileName("SkimmedFilecentral.root"); 
 
   //... and create/load your TCutG objects and add them! 
   
   // Example for loading saved cuts from a root file (see CreateCutObjects.C how to easily create such CutObjects with the graphics editor)
-  TFile* cutfile=new TFile("AllObs2010Cuts.root", "READ");
-  TCutG* M0Cut= (TCutG*) cutfile->Get("M0Cut");
-  TCutG* M12Cut= (TCutG*) cutfile->Get("M12Cut");
-  TCutG* A0Cut= (TCutG*) cutfile->Get("A0Cut");
-  TCutG* TanBetaCut= (TCutG*) cutfile->Get("TanBetaCut");
-  Skim.AddCut(M0Cut);
-  Skim.AddCut(M12Cut);
-  Skim.AddCut(A0Cut);
-  Skim.AddCut(TanBetaCut);
+//   TFile* cutfile=new TFile("noxsecCuts.root", "READ");
+//   //  TCutG* M0= (TCutG*) cutfile->Get("M0_2");
+//   TCutG* M12= (TCutG*) cutfile->Get("M12_2");
+//   TCutG* A0= (TCutG*) cutfile->Get("A0_2");
+//   TCutG* TanBeta= (TCutG*) cutfile->Get("TanBeta_2");
+//   // Skim.AddCut(M0);
+//    Skim.AddCut(M12);
+//    Skim.AddCut(A0);
+//    Skim.AddCut(TanBeta);
    
   //Example for creating a CutObject right here:
   TCutG *ExampleCut = new TCutG("ExampleCut",6);
@@ -124,14 +125,13 @@ void SkimMarkovChainWithGraphicalCuts(){
 void Skimming::SetTreeName(string name){
 
   markovChain->SetName(name.c_str());
-  newTree->SetName(name.c_str());
+  //  newTree->SetName(name.c_str());
 }
 
 Skimming::Skimming(){
 
   markovChain=new TChain();
   CutObjects=new TObjArray();
-  newTree =new TTree();
   
   maxDeltaChi2=6.2; 
   absMinChi2=0; 
@@ -186,7 +186,7 @@ void Skimming::SetMaxDeltaChi2(double maxDeltaChi2){
 
 }
 
-void Skimming::SetMaxEvents(int maxEvents){
+void Skimming::SetMaxEvents(Long64_t maxEvents){
 
   this->maxEvents=maxEvents;
 
@@ -232,7 +232,7 @@ void Skimming::FindMinimalChi2(){
   cout << "looping over events to find minimal chi2"<<endl;
 
 
-  for (Int_t i=0; i<maxEvents; i++) {
+  for (Long64_t i=0; i<maxEvents; i++) {
       
     markovChain->GetEntry(i);	
 
@@ -309,13 +309,15 @@ bool Skimming::OldPoint(){
 
 void Skimming::FillEntries(){
 
-  TFile* outputRootFile=new TFile(outputFileName.c_str(), "RECREATE"); 
+
   
-  int nNewEvents = 0;
+  Long64_t nNewEvents = 0;
   
-  for (Int_t i=0; i<maxEvents; i++) {
+  for (Long64_t i=0; i<maxEvents; i++) {
     
     markovChain->GetEntry(i);	
+    if (i % 100000 ==0) cout<<"Loaded entry "<<i<<endl;
+
     bug=0;
 
 
@@ -343,11 +345,15 @@ void Skimming::FillEntries(){
 
   }
 
+
   newTree->Write();
-  
+
   outputRootFile->Close();
   
-  cout << nNewEvents << " have been written to the file." <<  endl;
+  cout <<"Have written " <<nNewEvents << " to the file." <<endl;
+
+
+
   
 }
 
@@ -384,9 +390,16 @@ void Skimming::GetAndSetBranches(){
 
   int nLeaves = markovChain->GetListOfLeaves()->GetEntries();  
 
-  int nEntries=markovChain->GetEntries();
+  Long64_t nEntries=markovChain->GetEntries();
 
-  if (maxEvents<0) maxEvents=nEntries;
+  if (maxEvents<0 || maxEvents>nEntries) maxEvents=nEntries;
+
+  cout<<"Have found "<<nEntries<<" entries in the input files."<<endl;
+  cout<<"Set maxEvents to "<<maxEvents<<endl;
+
+  outputRootFile=new TFile(outputFileName.c_str(), "RECREATE"); 
+  newTree =new TTree(markovChain->GetName(), "skimmed tree");
+
   
   for (Int_t iLeaf=0; iLeaf<nLeaves; iLeaf++){
 
