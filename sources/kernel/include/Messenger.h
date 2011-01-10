@@ -24,11 +24,12 @@
 #include <string>
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
+   *  \ingroup kernel
    *  \brief Class for printing messages of various priority.
    */
   class Messenger : public std::ostringstream {

@@ -23,11 +23,12 @@
 #include <string>
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
+   *  \ingroup models
    *  \brief Class for model parameters.
    */
   class Parameter {

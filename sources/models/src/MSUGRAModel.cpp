@@ -21,7 +21,7 @@
 
 #include "Configuration.h"
 #include "MSUGRAModel.h"
-//#include "SLHAFileInterpreter.h"
+#include "SLHAFileInterpreter.h"
 
 Fittino::MSUGRAModel::MSUGRAModel() {
 
@@ -46,7 +46,7 @@ double Fittino::MSUGRAModel::Evaluate() {
 
     //SLHAFileInterpreter* _inputSLHAFileInterpreter = new SLHAFileInterpreter();
     //_inputSLHAFileInterpreter->ReadFile( "SPheno.spc" );
-    // std::cout << _inputSLHAFileInterpreter->GetMODSEL() << std::endl;
+    //std::cout << _inputSLHAFileInterpreter->GetMODSEL() << std::endl;
 
     return 1.e-6;
 

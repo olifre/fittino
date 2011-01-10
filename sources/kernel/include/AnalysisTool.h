@@ -28,13 +28,14 @@
 #include "ModelBase.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   class ModelBase;
 
   /*!
+   *  \ingroup kernel
    *  \brief Abstract class which provides basic functionality for analysis tools like optimizers\n
    *  or samplers.
    *

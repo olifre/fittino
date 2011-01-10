@@ -25,11 +25,12 @@
 #include "OptimizerBase.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
+   *  \ingroup optimizers
    *  \brief Class for Minuit parameter optimizer.
    */
   class MinuitOptimizer : public OptimizerBase {

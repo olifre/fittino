@@ -26,13 +26,17 @@
 #include "AnalysisTool.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   class ModelBase;
 
   /*!
+   *  \defgroup optimizers
+   */
+  /*!
+   *  \ingroup optimizers
    *  \brief Base class for Fittino parameter optimizers.
    *
    *  Supported parameter optimizers are

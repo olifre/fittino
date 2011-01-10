@@ -24,11 +24,12 @@
 #include "OptimizerBase.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
+   *  \ingroup optimizers
    *  \brief Class for genetic algorithm parameter optimizer.
    */
   class GeneticAlgorithmOptimizer : public OptimizerBase {

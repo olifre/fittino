@@ -27,11 +27,12 @@
 #include "ModelBase.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
+   *  \ingroup models
    *  \brief Implementation of the MSUGRA model.
    */
   class MSUGRAModel : public ModelBase {

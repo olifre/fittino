@@ -28,11 +28,12 @@
 #include "SamplerBase.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
+   *  \ingroup kernel
    *  \brief Factory class for creating input file interpreters, models, optimizers and samplers.
    */
   class Factory {

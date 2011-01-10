@@ -23,11 +23,12 @@
 #include "SamplerBase.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
+   *  \ingroup samplers
    *  \brief Class for Markov chain parameter sampler.
    */
   class MarkovChainSampler : public SamplerBase {

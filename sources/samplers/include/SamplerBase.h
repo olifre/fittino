@@ -26,13 +26,17 @@
 #include "ModelBase.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   class ModelBase;
 
   /*!
+   *  \defgroup samplers
+   */
+  /*!
+   *  \ingroup samplers
    *  \brief Base class for Fittino parameter samplers.
    */
   class SamplerBase : public AnalysisTool {

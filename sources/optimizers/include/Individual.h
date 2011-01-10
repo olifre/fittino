@@ -2,7 +2,7 @@
 
 /*******************************************************************************
 *                                                                              *
-o* Project     Fittino - A SUSY Parameter Fitting Package                       *
+* Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
 * File        Individual.h                                                     *
 *                                                                              *
@@ -28,12 +28,13 @@ o* Project     Fittino - A SUSY Parameter Fitting Package                       
 #include "ModelBase.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
-   *  \brief Class for individual (needed by genetic algorithm optimizer)
+   *  \ingroup optimizers
+   *  \brief Class for individual (needed by genetic algorithm optimizer).
    */
   class Individual {
 
@@ -43,9 +44,15 @@ namespace Fittino {
       bool                UpdatedChi2();
       double              GetGene( int index );
       void                Mutation();
-      void                UpdateChi2(); //calls UpdateModel and than sets the chi2 according to that model
+                          /*!
+                           *  Calls UpdateModel() and than sets the chi2 according to that model.
+                           */
+      void                UpdateChi2();
       void                SetGene( int index, double newValue );
-      void                UpdateModel(); //sets the pointed model according to the genes
+                          /*!
+                           *  Sets the pointed model according to the genes.
+                           */
+      void                UpdateModel();
 
     public:
       bool operator       <( const Individual& individual ) const;

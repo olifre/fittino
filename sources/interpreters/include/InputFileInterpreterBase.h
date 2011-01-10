@@ -26,11 +26,15 @@
 #include "TString.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
+   *  \defgroup interpreters
+   */
+  /*!
+   *  \ingroup interpreters
    *  \brief Base class for reading and interpreting input files.
    */
   class InputFileInterpreterBase {

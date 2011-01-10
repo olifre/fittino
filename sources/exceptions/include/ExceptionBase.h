@@ -25,11 +25,15 @@
 #include <string>
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
+   *  \defgroup exceptions 
+   */
+  /*!
+   *  \ingroup exceptions
    *  \brief Fittino exception base class.
    *
    *  Exceptions make up the backbone of the error handling system in Fittino. This class provides\n

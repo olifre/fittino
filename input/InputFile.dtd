@@ -1,6 +1,7 @@
 <!ELEMENT InputFile (VerbosityLevel,
 	             ExecutionMode,
                      Model,
+		     Observable*,
                      (Optimizer|Sampler),
                      GeneticAlgorithmOptimizer?,
                      ParticleSwarmOptimizer?,
@@ -25,6 +26,15 @@
   TanBeta   CDATA #IMPLIED
   X         CDATA #IMPLIED
   Y         CDATA #IMPLIED
+>
+
+<!ELEMENT Observable EMPTY>
+<!ATTLIST Observable
+  Name          CDATA #REQUIRED
+  MeasuredValue CDATA #REQUIRED
+  Error1        CDATA #REQUIRED
+  Error2        CDATA #IMPLIED
+  Error3        CDATA #IMPLIED
 >
 
 <!ELEMENT Optimizer EMPTY>

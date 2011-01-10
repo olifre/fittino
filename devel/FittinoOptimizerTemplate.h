@@ -23,7 +23,7 @@
 // Include additional needed classes here (remove this comment when done).
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 

@@ -27,11 +27,12 @@
 #include "Particle.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
+   *  \ingroup optimizers
    *  \brief Class for particle swarm parameter optimizer.
    *
    *  The algorithm works as follows:

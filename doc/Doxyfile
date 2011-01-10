@@ -1014,7 +1014,7 @@ FORMULA_FONTSIZE       = 10
 # typically be disabled. For large projects the javascript based search engine
 # can be slow, then enabling SERVER_BASED_SEARCH may provide a better solution.
 
-SEARCHENGINE           = NO
+SEARCHENGINE           = YES
 
 # When the SERVER_BASED_SEARCH tag is enabled the search engine will be implemented using a PHP enabled web server instead of at the web client using Javascript. Doxygen will generate the search PHP script and index
 # file to put on the web server. The advantage of the server based approach is that it scales better to large projects and allows full text search. The disadvances is that it is more difficult to setup
@@ -1344,7 +1344,8 @@ SKIP_FUNCTION_MACROS   = YES
 # If a tag file is not located in the directory in which doxygen
 # is run, you must also specify the path to the tagfile here.
 
-TAGFILES               =
+TAGFILES               = #slhaea/SLHAea.tag=../slhaea/html \
+                         #minuit2/Minuit2.tag=../minuit2/html
 
 # When a file name is specified after GENERATE_TAGFILE, doxygen will create
 # a tag file that is based on the input files it reads.
@@ -1355,7 +1356,7 @@ GENERATE_TAGFILE       =
 # in the class index. If set to NO only the inherited external classes
 # will be listed.
 
-ALLEXTERNALS           = NO
+ALLEXTERNALS           = YES
 
 # If the EXTERNAL_GROUPS tag is set to YES all external groups will be listed
 # in the modules index. If set to NO, only the current project's groups will

@@ -23,11 +23,12 @@
 #include "OptimizerBase.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
+   *  \ingroup optimizers
    *  \brief Class for simulated annealing parameter optimizer.
    */
   class SimulatedAnnealingOptimizer : public OptimizerBase {

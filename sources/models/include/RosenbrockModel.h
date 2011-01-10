@@ -27,11 +27,12 @@
 #include "ModelBase.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
+   *  \ingroup models
    *  \brief Implementation of the Rosenbrock model.
    */
   class RosenbrockModel : public ModelBase {

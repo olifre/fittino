@@ -26,11 +26,15 @@
 #include "Parameter.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
+   *  \defgroup models
+   */
+  /*!
+   *  \ingroup models 
    *  \brief Base class for Fittino models.
    */
   class ModelBase {

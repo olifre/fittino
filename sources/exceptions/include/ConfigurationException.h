@@ -24,11 +24,12 @@
 #include "ExceptionBase.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
+   *  \ingroup exceptions
    *  \brief Fittino configuration exception class.
    *
    *  Configuration exceptions are thrown if an inconsistent configuration is detected, e.g.\n

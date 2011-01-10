@@ -42,11 +42,15 @@
  */
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
+   *  \defgroup kernel 
+   */
+  /*!
+   *  \ingroup kernel
    *  \brief Singleton class for controlling the execution flow of Fittino.
    *
    *  The instance of the Controller class is the first object that is created at the beginning of\n

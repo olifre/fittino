@@ -26,11 +26,12 @@
 #include "InputFileInterpreterBase.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
+   *  \ingroup interpreters
    *  \brief Class for reading and interpreting Fittino input files.
    */
   class FittinoInputFileInterpreter : public InputFileInterpreterBase {

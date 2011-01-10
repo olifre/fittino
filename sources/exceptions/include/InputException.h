@@ -25,11 +25,12 @@
 #include "ExceptionBase.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
+   *  \ingroup exceptions
    *  \brief Fittino input exception class.
    *
    *  Input exceptions are thrown if Fittino is called with formally invalid input of any kind e.g\n

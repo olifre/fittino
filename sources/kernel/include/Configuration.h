@@ -34,13 +34,14 @@
 #include "SamplerBase.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   typedef std::map<std::string, std::string> SteeringParameterMap;
 
   /*!
+   *  \ingroup kernel
    *  \brief Singleton class for storing and providing access to user-defined configuration\n
    *  settings.
    *

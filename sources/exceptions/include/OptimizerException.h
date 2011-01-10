@@ -25,11 +25,12 @@
 #include "ExceptionBase.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /*!
+   *  \ingroup exceptions
    *  \brief Fittino optimizer exception class.
    */
   class OptimizerException : public ExceptionBase {

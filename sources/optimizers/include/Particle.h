@@ -30,11 +30,12 @@
 #include "ModelBase.h"
 
 /*!
- *  \brief Fittino namespace
+ *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   /**
+   *  \ingroup optimizers
    *  \brief Class for particle (needed by particle swarm optimizer).
    */
   class Particle {
