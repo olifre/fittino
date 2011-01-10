@@ -35,7 +35,6 @@ namespace Fittino {
        *  Standard constructor.
        */
       FittinoClassTemplate();
-
       /*!
        *  Standard destructor.
        */
