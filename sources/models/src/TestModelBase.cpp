@@ -1,12 +1,12 @@
-/* $Id: MSUGRAModel.h 613 2010-05-26 09:42:00Z uhlenbrock $ */
+/* $Id: TestModelBase.cpp 613 2010-05-26 09:42:00Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        MSUGRAModel.h                                                    *
+* File        TestModelBase.cpp                                                *
 *                                                                              *
-* Description Implementation of the MSUGRA model                               *
+* Description Base class for Fittino test models                               *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -17,43 +17,12 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_MSUGRAMODEL_H
-#define FITTINO_MSUGRAMODEL_H
+#include "TestModelBase.h"
 
-#include <vector>
-
-#include "Minuit2/FCNBase.h"
-
-#include "PhysicsModelBase.h"
-
-/*!
- *  \brief Fittino namespace.
- */
-namespace Fittino {
-
-  /*!
-   *  \ingroup models
-   *  \brief Implementation of the MSUGRA model.
-   */
-  class MSUGRAModel : public PhysicsModelBase {
-
-    public:
-      /*!
-       *  Standard constructor.
-       */
-                           MSUGRAModel();
-      /*!
-       *  Standard destructor.
-       */
-                           ~MSUGRAModel();
-      virtual double       Evaluate();
-      /*!
-       *  Virtual copy constructor.
-       */
-      virtual MSUGRAModel* Clone() const;
-
-  };
+Fittino::TestModelBase::TestModelBase() {
 
 }
 
-#endif // FITTINO_MSUGRAMODEL_H
+Fittino::TestModelBase::~TestModelBase() {
+
+}

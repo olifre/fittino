@@ -1,12 +1,12 @@
-/* $Id: MSUGRAModel.h 613 2010-05-26 09:42:00Z uhlenbrock $ */
+/* $Id: PhysicsModelBase.h 613 2010-05-26 09:42:00Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        MSUGRAModel.h                                                    *
+* File        PhysicsModelBase.h                                               *
 *                                                                              *
-* Description Implementation of the MSUGRA model                               *
+* Description Base class for Fittino physics models                            *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -17,14 +17,10 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_MSUGRAMODEL_H
-#define FITTINO_MSUGRAMODEL_H
+#ifndef FITTINO_PHYSICSMODELBASE_H
+#define FITTINO_PHYSICSMODELBASE_H
 
-#include <vector>
-
-#include "Minuit2/FCNBase.h"
-
-#include "PhysicsModelBase.h"
+#include "ModelBase.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -33,27 +29,23 @@ namespace Fittino {
 
   /*!
    *  \ingroup models
-   *  \brief Implementation of the MSUGRA model.
+   *  \brief Base class for Fittino physics models
    */
-  class MSUGRAModel : public PhysicsModelBase {
+  class PhysicsModelBase : public ModelBase {
 
     public:
       /*!
        *  Standard constructor.
        */
-                           MSUGRAModel();
+      PhysicsModelBase();
+
       /*!
        *  Standard destructor.
        */
-                           ~MSUGRAModel();
-      virtual double       Evaluate();
-      /*!
-       *  Virtual copy constructor.
-       */
-      virtual MSUGRAModel* Clone() const;
+      ~PhysicsModelBase();
 
   };
 
 }
 
-#endif // FITTINO_MSUGRAMODEL_H
+#endif // FITTINO_PHYSICSMODELBASE_H

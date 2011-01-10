@@ -24,7 +24,7 @@
 
 #include "Minuit2/FCNBase.h"
 
-#include "ModelBase.h"
+#include "TestModelBase.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -35,7 +35,7 @@ namespace Fittino {
    *  \ingroup models
    *  \brief Implementation of the Rosenbrock model.
    */
-  class RosenbrockModel : public ModelBase {
+  class RosenbrockModel : public TestModelBase {
 
     public:
       /*!
