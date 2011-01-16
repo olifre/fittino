@@ -20,6 +20,7 @@
 #include "TClonesArray.h"
 #include "TCutG.h"
 #include "map"
+#include "TKey.h"
 
 using namespace std;
 
@@ -29,6 +30,7 @@ public:
   Skimming();
   void AddInputFile(string RootInputFile);
   void AddCut(TCutG* CutObject);
+  void AddCutFile(const char* CutFile);
   void Perform();
   void SetTreeName(string name);
   void SetAbsMaxChi2(double absMaxChi2);
@@ -75,30 +77,34 @@ void SkimMarkovChainWithGraphicalCuts(){
   Skimming Skim;
 
   //Please add your root inputfiles...
-  Skim.AddInputFile("fittino.out.markov.le_obs.msugra4.2.loxsec_realsys_merged.root");
+  Skim.AddInputFile("MarkovChainNtupFile.root");
 
   //.. set the following parameters...
+  Skim.SetAbsMaxChi2(1e20); 
   Skim.SetTreeName("markovChain");
-  Skim.SetAbsMaxChi2(35); 
   Skim.SetAbsMinChi2(0);
   Skim.SetDeleteIdenticalPoints(false); //  if true identical points are deleted. To save time it's assumed that a 'identical point' corresponds to a point exactly  two entries before. This assumption is made since an identical point in the markovchain should result from the rejection of a point in between. 
   Skim.SetKeepBugPoints(false); //if true, the bugpoints are kept but the new tree gets an additional branch "bug" which is 1 if the point is buggy, otherwise 0
   Skim.SetMaxDeltaChi2(-1);  //if negative, the minimal chi2 is not determined, so one loop less needs to be performaned
   Skim.SetMaxEvents(-1); //if negative, all events are used 
-  Skim.SetOutputFileName("SkimmedFilecentral.root"); 
+  Skim.SetOutputFileName("SkimmedFile.root"); 
 
   //... and create/load your TCutG objects and add them! 
   
+  //Example for adding a cut file: All TCutG objects in this file are used
+  // Skim.AddCutFile("noxsecCuts.root");
+
+
   // Example for loading saved cuts from a root file (see CreateCutObjects.C how to easily create such CutObjects with the graphics editor)
-//   TFile* cutfile=new TFile("noxsecCuts.root", "READ");
-//   //  TCutG* M0= (TCutG*) cutfile->Get("M0_2");
-//   TCutG* M12= (TCutG*) cutfile->Get("M12_2");
-//   TCutG* A0= (TCutG*) cutfile->Get("A0_2");
-//   TCutG* TanBeta= (TCutG*) cutfile->Get("TanBeta_2");
-//   // Skim.AddCut(M0);
-//    Skim.AddCut(M12);
-//    Skim.AddCut(A0);
-//    Skim.AddCut(TanBeta);
+  //  TFile* cutfile=new TFile("2Dcut.root", "READ");
+  // TCutG* M0= (TCutG*) cutfile->Get("M0_M12");
+  //  TCutG* M12= (TCutG*) cutfile->Get("M12");
+  // TCutG* A0= (TCutG*) cutfile->Get("A0");
+  // TCutG* TanBeta= (TCutG*) cutfile->Get("TanBeta");
+  //   Skim.AddCut(M0);
+   //   Skim.AddCut(M12);
+   // Skim.AddCut(A0);
+   // Skim.AddCut(TanBeta);
    
   //Example for creating a CutObject right here:
   TCutG *ExampleCut = new TCutG("ExampleCut",6);
@@ -155,6 +161,28 @@ void Skimming::AddCut(TCutG* CutObject){
   CutObjects->Add(CutObject);
 
 }
+
+
+void Skimming::AddCutFile(const char* CutFile){
+
+  TFile f(CutFile);
+
+  TList *listOfKeys = (TList*) f.GetListOfKeys();
+
+  TIter next(listOfKeys);
+
+  while (TKey* key = (TKey*) next()) {
+    TObject *obj = key->ReadObj();
+
+    if (obj->InheritsFrom("TCutG")){
+      TCutG * cut = (TCutG*) obj;
+      AddCut(cut);
+    }
+
+  }
+}
+
+
 
 void Skimming::SetAbsMaxChi2(double absMaxChi2){
 
