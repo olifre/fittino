@@ -52,6 +52,13 @@ void CreateCutObject(const char* cutfile){
   mycutg = (TCutG*)gROOT->GetListOfSpecials()->FindObject("CUTG");
 
   const char* varx=mycutg->GetVarX();
+  const char* vary=mycutg->GetVarY();
+
+  char newname[200];
+  strcpy(newname,vary);
+  strcat(newname,"_");
+  strcat(newname,varx);
+
   
   int NumberOfCutsOfThatVariable=0;
 
@@ -67,7 +74,7 @@ void CreateCutObject(const char* cutfile){
 
     const char* name=obj->GetName();
     
-    if (!strncmp(varx,name,strlen(varx))){
+    if (!strncmp(newname,name,strlen(newname))){
 
       NumberOfCutsOfThatVariable++;
 
@@ -78,8 +85,6 @@ void CreateCutObject(const char* cutfile){
   char CutsOfThatVariable[10];
   sprintf(CutsOfThatVariable,"%d", NumberOfCutsOfThatVariable);
 
-  char newname[200];
-  strcpy(newname,varx);
   strcat(newname, "_");
   strcat(newname, CutsOfThatVariable); 
   cout<<"Save cut as "<<newname<<endl;
