@@ -1,0 +1,250 @@
+################################################################################
+### Fittino input file                                                       ###
+################################################################################
+
+################################################################################
+### Fit of measured LE observables to mSUGRA model for compairison with      ###
+### Buchmueller et al. results                                               ###
+################################################################################
+
+################################################################################
+### Observables                                                              ###
+################################################################################
+
+### LE (low energy) observables
+
+LEObs ( gmin2m_npf     )     30.2E-10 +- 8.8E-10 +- 2E-10             alias  7 # [14]
+LEObs ( Omega_npf      )      0.1099  +- 0.0062 +- 0.012              alias 20 # [15]
+LEObs ( DmsDmd_npf     )      1.09    +- 0.01    +- 0.16              alias 27 # [1]
+LEObs ( B_dll_npf      ) <    2.3E-8                      +- 0.001E-8 alias 26 # [2]
+LEObs ( Kppinn_npf     )      < 4.5     +- 1.0E-10                    alias 25 # [4]
+LEObs ( dm_k_npf       )      0.92    +- 0.14                         alias 24 # [4]
+LEObs ( sigma_had0_npf )      41.540   +- 0.037                       alias 23 # [5]
+LEObs ( Massh0_npf     ) >  114.4                         +- 3.0      alias 19 # [6]
+LEObs ( A_fbl_npf      )      0.0171 +- 0.0010                        alias 22 # [5]
+LEObs ( A_l_npf        )      0.1513  +- 0.0021                       alias 18 # [7]
+LEObs ( A_tau_npf      )      0.1465  +- 0.0032                       alias 50 # [7]
+LEObs ( R_l_npf        )     20.767   +- 0.025                        alias 11 # [5]
+LEObs ( R_b_npf        )      0.21629 +- 0.00066                      alias 12 # [8]
+LEObs ( R_c_npf        )      0.1721  +- 0.003                        alias 13 # [8]
+LEObs ( A_fbb_npf      )      0.0992  +- 0.0016                       alias 14 # [9]
+LEObs ( A_fbc_npf      )      0.0707  +- 0.0035                       alias 15 # [9]
+LEObs ( A_b_npf        )      0.923   +- 0.020                        alias 16 # [8]
+LEObs ( A_c_npf        )      0.670   +- 0.027                        alias 17 # [8]
+LEObs ( MassW_npf      )     80.398   +- 0.025            +- 0.010    alias  8 # [6]
+LEObs ( sin_th_eff_npf )      0.2324  +- 0.0012                       alias  9 # [10]
+LEObs ( GammaZ_npf     )   2495.2     +- 2.3              +- 1.0      alias 10 # [5]
+LEObs ( Bsg_npf        )      1.117   +- 0.076   +- 0.096    alias  1 # [11]
+LEObs ( dm_s_npf       )      1.11    +- 0.01    +- 0.32              alias  2 # [1]
+LEObs ( B_smm_npf      ) <    4.7E-8                      +- 0.02E-8  alias  3 # [12]
+LEObs ( Btn_npf        )      1.15    +- 0.40                         alias  4 # [1]
+LEObs ( B_sXsll_npf    )      0.99    +- 0.32                         alias  5 # [13]
+LEObs ( Klnu_npf       )      1.008   +- 0.014                        alias  6 # [4]
+
+
+### SM observables
+
+alphaem    127.925      GeV +- 0.016      GeV # [3]
+G_F          1.16637E-5     +- 0.00001E-5     # [4]
+alphas       0.1176     GeV +- 0.0020     GeV # [4]
+massZ       91.1875     GeV +- 0.0021     GeV # [2]
+massBottom   4.20       GeV +- 0.17       GeV # [5]
+massTop    173.1        GeV +- 1.3        GeV # [1]
+massTau      1.77684    GeV +- 0.00017    GeV # [6]
+
+massCharm    1.27       GeV +- 0.11       GeV # [5]
+
+
+### Unfitted SUSY masses
+
+nofit massh0           112.888 GeV +-  0.05 GeV
+nofit massA0           374.228 GeV +-  1.3  GeV
+nofit massH0           374.465 GeV +-  1.3  GeV
+nofit massHplus        383.131 GeV +-  1.1  GeV
+nofit massSdownR       543.348 GeV +- 23.6  GeV
+nofit massSstrangeR    543.348 GeV +- 23.6  GeV
+nofit massScharmL      561.54  GeV +-  9.8  GeV
+nofit massScharmR      543.348 GeV +- 23.6  GeV
+nofit massSupL         561.539 GeV +-  9.8  GeV
+nofit massScharmL      561.539 GeV +-  9.8  GeV
+nofit massSupR         543.35  GeV +- 11.0  GeV
+nofit massSdownR       543.35  GeV +- 11.0  GeV
+nofit massSstrangeR    543.35  GeV +- 11.0  GeV
+nofit massScharmR      543.35  GeV +- 11.0  GeV
+nofit massSbottom1     502.059 GeV +-  5.7  GeV
+nofit massSbottom2     541.81  GeV +-  6.2  GeV
+nofit massStop1        365.819 GeV +-  2.0  GeV
+nofit massStop2        600.037 GeV +- 20.0  GeV
+nofit massSelectronL   190.209 GeV +-  0.2  GeV
+nofit massSelectronR   124.883 GeV +-  0.05 GeV
+nofit massSmuL         190.209 GeV +-  0.2  GeV
+nofit massSmuR	       124.883 GeV +-  0.05 GeV
+nofit massSnueL	       172.947 GeV +-  0.7  GeV
+nofit massSmuL         190.237 GeV +-  0.5  GeV
+nofit massSmuR	       124.837 GeV +-  0.2  GeV
+nofit massStau1	       107.292 GeV +-  0.3  GeV
+nofit massStau2	       195.290 GeV +-  1.1  GeV
+nofit massGluino       603.639 GeV +-  6.4  GeV
+nofit massNeutralino1   97.766 GeV +-  0.05 GeV
+nofit massNeutralino2  184.345 GeV +-  0.08 GeV
+nofit massNeutralino3 -404.134 GeV +-  4.0  GeV
+nofit massNeutralino4  417.037 GeV +-  2.3  GeV
+nofit massChargino1    184.132 GeV +-  0.55 GeV
+nofit massChargino2    418.495 GeV +-  3.0  GeV
+
+# Table 2.13 with lepton universality
+correlationCoefficient massZ GammaZ_npf -0.023
+correlationCoefficient massZ sigma_had0_npf -0.045
+correlationCoefficient massZ R_l_npf   0.033     
+correlationCoefficient massZ A_fbl_npf 0.0171
+correlationCoefficient GammaZ_npf sigma_had0_npf -0.297
+correlationCoefficient GammaZ_npf R_l_npf   0.004
+correlationCoefficient GammaZ_npf A_fbl_npf 0.003
+correlationCoefficient sigma_had0_npf R_l_npf 0.183
+correlationCoefficient sigma_had0_npf A_fbl_npf 0.006
+correlationCoefficient R_l_npf A_fbl_npf -0.056
+
+# Table 7.6
+correlationCoefficient A_l_npf A_b_npf -0.42
+correlationCoefficient A_l_npf A_c_npf -0.10
+correlationCoefficient A_b_npf A_c_npf 0.15
+
+# Table 5.11
+correlationCoefficient R_b_npf R_c_npf   -0.18
+correlationCoefficient R_b_npf A_fbb_npf -0.10
+correlationCoefficient R_b_npf A_fbc_npf 0.07
+correlationCoefficient R_b_npf A_b_npf  -0.08
+correlationCoefficient R_b_npf A_c_npf   0.04
+correlationCoefficient R_c_npf A_fbb_npf 0.04
+correlationCoefficient R_c_npf A_fbc_npf -0.06
+correlationCoefficient R_c_npf A_b_npf 0.04
+correlationCoefficient R_c_npf A_c_npf -0.06
+correlationCoefficient A_fbb_npf A_fbc_npf 0.15
+correlationCoefficient A_fbb_npf A_b_npf 0.06
+correlationCoefficient A_fbb_npf A_c_npf 0.01
+correlationCoefficient A_fbc_npf A_b_npf -0.02
+correlationCoefficient A_fbc_npf A_c_npf 0.04
+
+
+## SLD correlations
+#correlationCoefficient LEObs_16 LEObs_18  0.09
+#correlationCoefficient LEObs_17 LEObs_18  0.05
+## Z peak and XS correlations
+#correlationCoefficient LEObs_10 massZ    -0.023
+#correlationCoefficient LEObs_23 massZ    -0.045
+#correlationCoefficient LEObs_23 LEObs_10 -0.297
+#correlationCoefficient LEObs_11 massZ     0.033
+#correlationCoefficient LEObs_11 LEObs_23  0.183
+#correlationCoefficient LEObs_11 LEObs_10  0.004
+#correlationCoefficient LEObs_22 massZ     0.055
+#correlationCoefficient LEObs_22 LEObs_10  0.003
+#correlationCoefficient LEObs_22 LEObs_23  0.006
+#correlationCoefficient LEObs_22 LEObs_11 -0.056
+## Asymmetry Correlations
+#correlationCoefficient LEObs_12 LEObs_13  -0.18
+#correlationCoefficient LEObs_12 LEObs_14  -0.10
+#correlationCoefficient LEObs_12 LEObs_15   0.07
+#correlationCoefficient LEObs_12 LEObs_16  -0.08
+#correlationCoefficient LEObs_12 LEObs_17   0.04
+#correlationCoefficient LEObs_13 LEObs_14   0.04
+#correlationCoefficient LEObs_13 LEObs_15  -0.06
+#correlationCoefficient LEObs_13 LEObs_16   0.04
+#correlationCoefficient LEObs_13 LEObs_17  -0.06
+#correlationCoefficient LEObs_14 LEObs_15   0.15
+#correlationCoefficient LEObs_14 LEObs_16   0.06
+#correlationCoefficient LEObs_14 LEObs_17   0.01
+#correlationCoefficient LEObs_15 LEObs_16  -0.02
+#correlationCoefficient LEObs_15 LEObs_17   0.04
+#correlationCoefficient LEObs_16 LEObs_17   0.11
+
+
+
+
+################################################################################
+### Parameters                                                               ###
+################################################################################
+
+### mSUGRA parameters at SPS 1a
+
+fixParameter alphaem     127.925
+fixParameter G_F         1.16637E-5
+fixParameter alphas        0.1176
+fixParameter massZ        91.1875 GeV
+fixParameter massBottom    4.20 GeV
+fixParameter massTop     173.1 GeV
+fixParameter massTau       1.77684    GeV
+fixParameter SignMu        1
+
+fitParameter M0           7.40381e+01 GeV +- 30. GeV #+-  1.  GeV
+fitParameter M12          3.30382e+02 GeV +- 30. GeV #+-  2.5 GeV
+fitParameter A0           3.82113e+02 GeV +- 60. GeV # +- 8.44276e+00 GeV #+- 10.  GeV
+fitParameter TanBeta      1.27859e+01     +- 2.       # +- 1.35651e-02 GeV #+-  1.
+
+
+#scanParameter M12 0. 1000. 101
+#scanParameter A0  -1000. 1000. 201
+
+################################################################################
+### Switches                                                                 ###
+################################################################################
+
+fitModel                       mSUGRA
+
+RandomParameters               off
+LoopCorrections                on
+ISR                            on
+UseGivenStartValues            on
+FitAllDirectly                 on
+CalcPullDist                   off
+CalcIndChisqContr              off
+BoundsOnX                      off
+ScanX                          off
+SepFitTanbX                    off
+SepFitTanbMu                   off
+SepFitmA	               off
+Calculator                     SPHENO ./SPheno
+LEOCalculator                  NPFITTER ./NPpredict.exe
+UseFullCKMMatrix               off
+UseMinos                       off
+UseHesse                       off
+NumberOfMinimizations          1
+ErrDef                         1.0
+NumberPulls                    1
+GetContours                    off
+
+UseSimAnnBefore                off
+UseSimAnnWhile                 off
+AdaptiveSimAnn                 off
+TempRedSimAnn                  0.5
+MaxCallsSimAnn                 20000
+InitTempSimAnn                 5
+SimAnnEpochLength              30
+SimAnnUncertainty              off
+SimAnnUncertaintyRunDown       off
+GetTempFromFirstChiSqr         on
+
+UseMarkovChains                on
+MarkovChainReadjustWidth       off
+MarkovChainReadjustWidthPeriod 500
+MaxMarkovChain                 60000
+MarkovInterfaceFilePath        /afs/naf.desy.de/user/b/bechtle/programs/start_fittino/interfaceFiles/interface.le_obs.msugra4.7.loxsec_realsys_wide.txt
+
+UseXsecLimits                  on
+GridPath                       /afs/naf.desy.de/user/b/bechtle/programs/fittino/grids/7TeV/test/Meff_Delphes_LO.dat
+Luminosity                     7    # in fb-1
+RelativeSignalCrossSectionSysUncertainty       0.3
+RelativeBackgroundCrossSectionSysUncertainty   0.2
+
+UseHiggsBounds                 on
+
+RequireNeut1LSP                on
+
+MinuitStrategy	               2
+MachinePrecision               1e-8
+
+Verbose                        off
+
+ScanParameters                 off
+
+PerformFit                     off
+#RandomGeneratorSeed            -1
