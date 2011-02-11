@@ -182,6 +182,7 @@ float         yyAcceptanceRangeLower = 0.48;
 bool          yyWidthOptimization = false;
 bool          yyCorrelationInMarkovChain = false;
 float         yyOptimizationSlope = 4;
+bool          yyUpdateWidths = false;
 bool          yyGlobalOptimizationOnly = false;
 string        yyIndividuallyOptimized = "";
 string        yySPhenoOldInputFile = "";
