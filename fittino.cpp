@@ -11251,7 +11251,7 @@ ss:maxStep:numChain" );
   if( yyNumberOptimizationSteps < 0 ) maxStep = 1000;
   else maxStep = yyNumberOptimizationSteps;
   float acceptUp = 0, acceptLow = 0;
-  if( yyAcceptanceRangeUpper < 0.5 || yyAcceptanceRangeLower > 0.5 )
+  if( yyAcceptanceRangeUpper < yyAcceptanceRangeLower )
     {
       cout <<"WARNING: optimization could not be processed..."<< endl;
       return vm;
