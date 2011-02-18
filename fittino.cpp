@@ -4646,7 +4646,8 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
        global_LHC_CLb = CLb;
        global_LHC_CLsb = CLsb;
-       global_LHC_chi2 = xschi2;
+       if (xschi2<0.) global_LHC_chi2 = 1000.;
+       else global_LHC_chi2 = xschi2;
        
      } else {
        if (noGridPoint) {
