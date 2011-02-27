@@ -20,17 +20,12 @@
 #ifndef FITTINO_SAMPLERBASE_H
 #define FITTINO_SAMPLERBASE_H
 
-#include <string>
-
 #include "AnalysisTool.h"
-#include "ModelBase.h"
 
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
-
-  class ModelBase;
 
   /*!
    *  \defgroup samplers

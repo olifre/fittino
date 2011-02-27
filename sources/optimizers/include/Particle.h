@@ -25,14 +25,14 @@
 
 #include <vector>
 
-#include "TRandom.h"
-
-#include "ModelBase.h"
+class TRandom;
 
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
+
+  class ModelBase;
 
   /**
    *  \ingroup optimizers

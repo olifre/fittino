@@ -17,7 +17,10 @@
 *                                                                              *
 *******************************************************************************/
 
+#include "TRandom.h"
+
 #include "Individual.h"
+#include "ModelBase.h"
 
 Fittino::Individual::Individual( Fittino::ModelBase* model, double mutationRate, int seed ):
     _model ( model ) ,

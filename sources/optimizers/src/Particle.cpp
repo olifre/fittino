@@ -24,6 +24,9 @@
 #include <ctime>
 #include <iostream>
 
+#include "TRandom.h"
+
+#include "ModelBase.h"
 #include "Particle.h"
 
 double Fittino::Particle::_globalBestChi2 = 1e99;

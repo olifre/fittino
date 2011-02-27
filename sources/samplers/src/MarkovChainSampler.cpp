@@ -19,9 +19,10 @@
 
 #include <iostream>
 
-#include <TMath.h>
+#include "TMath.h"
 
 #include "MarkovChainSampler.h"
+#include "ModelBase.h"
 
 Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model )
         : SamplerBase( model ),

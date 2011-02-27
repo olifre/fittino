@@ -25,6 +25,7 @@
 #include <sstream>
 
 #include "Messenger.h"
+#include "ModelBase.h"
 #include "OptimizerBase.h"
 
 Fittino::OptimizerBase::OptimizerBase( ModelBase* model )

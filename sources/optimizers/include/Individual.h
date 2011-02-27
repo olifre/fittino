@@ -20,17 +20,16 @@
 #ifndef FITTINO_INDIVIDUAL_H
 #define FITTINO_INDIVIDUAL_H
 
-#include <iostream>
 #include <vector>
 
-#include "TRandom.h"
-
-#include "ModelBase.h"
+class TRandom;
 
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
+
+  class ModelBase;
 
   /*!
    *  \ingroup optimizers

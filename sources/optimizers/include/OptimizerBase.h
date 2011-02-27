@@ -30,8 +30,6 @@
  */
 namespace Fittino {
 
-  class ModelBase;
-
   /*!
    *  \defgroup optimizers
    */
