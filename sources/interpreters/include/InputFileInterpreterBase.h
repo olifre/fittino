@@ -23,7 +23,7 @@
 #ifndef FITTINO_INPUTFILEINTERPRETERBASE_H
 #define FITTINO_INPUTFILEINTERPRETERBASE_H
 
-#include "TString.h"
+class TString;
 
 /*!
  *  \brief Fittino namespace.
@@ -52,6 +52,8 @@ namespace Fittino {
        *  Parses the input file given as an argument. After calling this method the Configuration\n
        *  instance is initialized and the steering parameters specified in the input file can be\n
        *  retrieved via dedicated getter functions.
+       *
+       *  \todo Discuss usage of TString (instead of std::string) here.
        */
       virtual void Parse( const TString& inputFileName ) const = 0;
 
