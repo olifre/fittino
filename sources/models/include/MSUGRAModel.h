@@ -20,10 +20,6 @@
 #ifndef FITTINO_MSUGRAMODEL_H
 #define FITTINO_MSUGRAMODEL_H
 
-#include <vector>
-
-#include "Minuit2/FCNBase.h"
-
 #include "PhysicsModelBase.h"
 
 /*!
