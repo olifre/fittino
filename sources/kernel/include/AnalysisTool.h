@@ -40,7 +40,7 @@ namespace Fittino {
    *  or samplers.
    *
    *  This class contains auxiliary objects needed by every analysis tool such as the tool's name,\n
-   *  a pointer to the model to be anlysed, a counter for the number of iteration steps and a\n
+   *  a pointer to the model to be analysed, a counter for the number of iteration steps and a\n
    *  random number generator.
    */
   class AnalysisTool {
