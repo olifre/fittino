@@ -37,8 +37,6 @@
  *  \todo Mid-term: Write classes to handle output.
  *
  *  \todo Mid-term: Write an adapter for an external SLHA file parser (Mathias, Frank).
- *
- *  \todo Short-term: Write an adapter for Minuit2 (Peter).
  */
 
 /*!
