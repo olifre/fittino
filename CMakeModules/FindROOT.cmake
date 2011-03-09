@@ -21,10 +21,11 @@
 # Specify the installation path of the executable "root-config". By default, it is assumed that the
 # environment variable ROOTSYS is set.
 
-# Requires at least ROOT version 5.20/00
-set(ROOT_MIN_VERSION "5.20/00")
-
 SET(ROOT_CONFIG_PATH $ENV{ROOTSYS}/bin)
+
+# Requires at least ROOT version 5.20/00.
+
+SET(ROOT_MIN_VERSION "5.20/00")
 
 # The variable ROOT_CONFIG_EXECUTABLE is set to "ROOT_CONFIG_EXECUTABLE-NOTFOUND" which is the
 # default value.
@@ -37,36 +38,40 @@ FIND_PROGRAM(ROOT_CONFIG_EXECUTABLE root-config PATHS ${ROOT_CONFIG_PATH} NO_DEF
 
 IF(${ROOT_CONFIG_EXECUTABLE} MATCHES "ROOT_CONFIG_EXECUTABLE-NOTFOUND")
 
-    # If the executable "root-config" is not found print this message
+    # If the executable "root-config" is not found print this message.
 
-    MESSAGE(FATAL_ERROR "\nModule ROOT not found.\nPlease set ROOTSYS or add the path to your ROOT installation to the macro FindROOT.cmake in the subdirectory CMakeModules.\n") 
+    MESSAGE(FATAL_ERROR "\nModule ROOT not found.\nPlease set ROOTSYS or add the path to your ROOT installation to the macro FindROOT.cmake in the subdirectory CMakeModules.\n")
 
 ELSE(${ROOT_CONFIG_EXECUTABLE} MATCHES "ROOT_CONFIG_EXECUTABLE-NOTFOUND")
 
-    # If the executable "root-config" is found, check version number
+    # If the executable "root-config" is found, check version number.
+
     EXECUTE_PROCESS(COMMAND root-config --version OUTPUT_VARIABLE ROOT_FOUND_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-    # Decompose minimal ROOT version into major, minor and patch numbers
-    string(REGEX REPLACE "^([0-9]+)\\.[0-9][0-9]+\\/[0-9][0-9]+" "\\1" ROOT_MIN_VERSION_MAJOR "${ROOT_MIN_VERSION}")
-    string(REGEX REPLACE "^[0-9]+\\.([0-9][0-9])+\\/[0-9][0-9]+.*" "\\1" ROOT_MIN_VERSION_MINOR "${ROOT_MIN_VERSION}")
-    string(REGEX REPLACE "^[0-9]+\\.[0-9][0-9]+\\/([0-9][0-9]+)" "\\1" ROOT_MIN_VERSION_PATCH "${ROOT_MIN_VERSION}")
+    # Decompose minimal ROOT version into major, minor and patch numbers.
 
-    # Decompose found ROOT version into major, minor and patch numbers
-    string(REGEX REPLACE "^([0-9]+)\\.[0-9][0-9]+\\/[0-9][0-9]+" "\\1" ROOT_FOUND_VERSION_MAJOR "${ROOT_FOUND_VERSION}")
-    string(REGEX REPLACE "^[0-9]+\\.([0-9][0-9])+\\/[0-9][0-9]+.*" "\\1" ROOT_FOUND_VERSION_MINOR "${ROOT_FOUND_VERSION}")
-    string(REGEX REPLACE "^[0-9]+\\.[0-9][0-9]+\\/([0-9][0-9]+)" "\\1" ROOT_FOUND_VERSION_PATCH "${ROOT_FOUND_VERSION}")
+    STRING(REGEX REPLACE "^([0-9]+)\\.[0-9][0-9]+\\/[0-9][0-9]+" "\\1" ROOT_MIN_VERSION_MAJOR "${ROOT_MIN_VERSION}")
+    STRING(REGEX REPLACE "^[0-9]+\\.([0-9][0-9])+\\/[0-9][0-9]+.*" "\\1" ROOT_MIN_VERSION_MINOR "${ROOT_MIN_VERSION}")
+    STRING(REGEX REPLACE "^[0-9]+\\.[0-9][0-9]+\\/([0-9][0-9]+)" "\\1" ROOT_MIN_VERSION_PATCH "${ROOT_MIN_VERSION}")
 
-    # Translate version numbers into single (easily comparable) numbers
+    # Decompose found ROOT version into major, minor and patch numbers.
+
+    STRING(REGEX REPLACE "^([0-9]+)\\.[0-9][0-9]+\\/[0-9][0-9]+" "\\1" ROOT_FOUND_VERSION_MAJOR "${ROOT_FOUND_VERSION}")
+    STRING(REGEX REPLACE "^[0-9]+\\.([0-9][0-9])+\\/[0-9][0-9]+.*" "\\1" ROOT_FOUND_VERSION_MINOR "${ROOT_FOUND_VERSION}")
+    STRING(REGEX REPLACE "^[0-9]+\\.[0-9][0-9]+\\/([0-9][0-9]+)" "\\1" ROOT_FOUND_VERSION_PATCH "${ROOT_FOUND_VERSION}")
+
+    # Translate version numbers into single (easily comparable) numbers.
+
     MATH(EXPR MIN_VERSION "${ROOT_MIN_VERSION_MAJOR}*10000 + ${ROOT_MIN_VERSION_MINOR}*100 + ${ROOT_MIN_VERSION_PATCH}")
     MATH(EXPR FOUND_VERSION "${ROOT_FOUND_VERSION_MAJOR}*10000 + ${ROOT_FOUND_VERSION_MINOR}*100 + ${ROOT_FOUND_VERSION_PATCH}")
 
     IF(FOUND_VERSION LESS MIN_VERSION)
 
-      MESSAGE(FATAL_ERROR "\nROOT version too old. At least ${ROOT_MIN_VERSION} needed.\n")
+        MESSAGE(FATAL_ERROR "\nROOT version too old. At least ${ROOT_MIN_VERSION} needed.\n")
 
     ELSE(FOUND_VERSION LESS MIN_VERSION)
 
-      MESSAGE(STATUS "ROOT version: ${ROOT_FOUND_VERSION}")
+        MESSAGE(STATUS "ROOT version: ${ROOT_FOUND_VERSION}")
 
     ENDIF(FOUND_VERSION LESS MIN_VERSION)
 
