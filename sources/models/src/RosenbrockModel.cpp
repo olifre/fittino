@@ -50,27 +50,3 @@ Fittino::RosenbrockModel* Fittino::RosenbrockModel::Clone() const {
     return new RosenbrockModel( *this );
 
 }
-
-Fittino::RosenbrockFCN::RosenbrockFCN( const std::vector<double>& meas, const std::vector<double>& pos, const std::vector<double>& mvar )
-        : theMeasurements( meas ),
-          thePositions( pos ),
-          theMVariances( mvar ),
-          theErrorDef( 1. ) {
-
-}
-
-Fittino::RosenbrockFCN::~RosenbrockFCN() {
-
-}
-
-double Fittino::RosenbrockFCN::Up() const {
-
-    return theErrorDef;
-
-}
-
-double Fittino::RosenbrockFCN::operator()( const std::vector<double>& parameterVector ) const {
-
-    return pow( ( 1 - parameterVector[0] ), 2 ) + 100 * pow( parameterVector[1] - pow( parameterVector[0], 2 ), 2 );
-
-}

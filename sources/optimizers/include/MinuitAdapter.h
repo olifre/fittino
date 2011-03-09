@@ -39,30 +39,33 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-    MinuitAdapter( const std::vector< double >& meas,
-                   const std::vector< double >& pos,
-                   const std::vector< double >& var
-                   );
+    MinuitAdapter() {;}
       /*!
        *  Standard destructor.
        */
-      ~MinuitAdapter();
+    virtual ~MinuitAdapter() {;}
 
       /*!
        *  Error definition
        */
-      virtual double			Up() const;
+    virtual double			Up() const { return _errorDef; }
+
+      /*!
+       *  Set error definition
+       */
+    virtual void			SetErrorDef( double err ) { _errorDef = err; }
 
       /*!
        *  Function to be minimized
        */
-      virtual double			operator()( const std::vector< double >& parameterVector ) const;
+    virtual double			operator()( const std::vector< double >& parameterVector ) const;
 
       /*! \cond UML */
     private:
-      Fittino::ModelBase*  		_model;
-      /*! \endcond UML */
+    Fittino::ModelBase*  		_model;
 
+    double                              _errorDef;
+      /*! \endcond UML */
   };
 
 }

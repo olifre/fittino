@@ -19,6 +19,7 @@
 
 #include "MinuitAdapter.h"
 
+
 double Fittino::MinuitAdapter::operator()( const std::vector< double >& parameterVector ) const {
 
     return _model->Evaluate();

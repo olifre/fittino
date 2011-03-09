@@ -59,27 +59,6 @@ namespace Fittino {
 
   };
 
-  /*!
-   *  \brief Implementation of the Rosenbrock model as required by Minuit.
-   */
-  class RosenbrockFCN : public ROOT::Minuit2::FCNBase {
-
-    public:
-                          RosenbrockFCN( const std::vector<double>& meas, const std::vector<double>& pos, const std::vector<double>& mvar );
-                          ~RosenbrockFCN();
-      virtual double      Up() const;
-
-    public:
-      virtual double      operator()( const std::vector<double>& parameterVector ) const;
-
-    private:
-      double              theErrorDef;
-      std::vector<double> theMeasurements;
-      std::vector<double> thePositions;
-      std::vector<double> theMVariances;
-
-  };
-
 }
 
 #endif // FITTINO_ROSENBROCKMODEL_H

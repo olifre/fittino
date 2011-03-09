@@ -19,14 +19,13 @@
 
 #include <iostream>
 
-#include "Minuit2/FCNBase.h"
 #include "Minuit2/FunctionMinimum.h"
 #include "Minuit2/MnMigrad.h"
 #include "Minuit2/MnPrint.h"
 
 #include "Messenger.h"
 #include "MinuitOptimizer.h"
-#include "RosenbrockModel.h"
+#include "MinuitAdapter.h"
 
 Fittino::MinuitOptimizer::MinuitOptimizer( Fittino::ModelBase* model )
         : OptimizerBase( model ) {
@@ -56,17 +55,13 @@ void Fittino::MinuitOptimizer::PrintSteeringParameters() const {
 
 void Fittino::MinuitOptimizer::UpdateModel() {
 
-    std::vector<double> pos;
-    std::vector<double> meas;
-    std::vector<double> var;
-
-    RosenbrockFCN rosenbrockFCN( meas, pos, var );
+    MinuitAdapter minuitAdapter;
 
     ROOT::Minuit2::MnStrategy minuitStrategy;
     //minuitStrategy.SetGradientNCycles(0);
     //minuitStrategy.SetHessianNCycles(0);
 
-    ROOT::Minuit2::MnMigrad _migrad( rosenbrockFCN, _minuitUserParameters, minuitStrategy );
+    ROOT::Minuit2::MnMigrad _migrad( minuitAdapter, _minuitUserParameters, minuitStrategy );
 
     ROOT::Minuit2::FunctionMinimum minuitResult = _migrad();
 
