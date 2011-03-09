@@ -21,6 +21,8 @@
 # Specify the installation path of the executable "root-config". By default, it is assumed that the
 # environment variable ROOTSYS is set.
 
+# Requires at least ROOT version 5.20.00
+
 SET(ROOT_CONFIG_PATH $ENV{ROOTSYS}/bin)
 
 # The variable ROOT_CONFIG_EXECUTABLE is set to "ROOT_CONFIG_EXECUTABLE-NOTFOUND" which is the
