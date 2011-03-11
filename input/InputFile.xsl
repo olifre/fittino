@@ -32,7 +32,23 @@
 </xsl:template>
 
 <xsl:template match="Model">
-  <tr><td>Model</td><td><xsl:value-of select="@ModelType"/></td></tr>
+  <xsl:choose>
+    <xsl:when test="@ModelType = 'Rosenbrock'">
+      <tr><td>ModelType</td><td><xsl:value-of select="@ModelType"/></td></tr>
+      <tr><td>X</td><td><xsl:value-of select="@X"/></td></tr>
+      <tr><td>Y</td><td><xsl:value-of select="@Y"/></td></tr>
+    </xsl:when>
+    <xsl:when test="@ModelType = 'MSUGRA'">
+      <tr><td>ModelType</td><td><xsl:value-of select="@ModelType"/></td></tr>
+      <tr><td>A0</td><td><xsl:value-of select="@A0"/></td></tr>
+      <tr><td>M0</td><td><xsl:value-of select="@M0"/></td></tr>
+      <tr><td>M12</td><td><xsl:value-of select="@M12"/></td></tr>
+      <tr><td>TanBeta</td><td><xsl:value-of select="@TanBeta"/></td></tr>
+    </xsl:when>
+    <xsl:otherwise>
+      <tr><td>ModelType</td><td><xsl:value-of select="@ModelType"/> (unknown)</td></tr>
+    </xsl:otherwise>
+  </xsl:choose>
 </xsl:template>
 
 </xsl:stylesheet>
