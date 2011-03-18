@@ -21,9 +21,9 @@
 #include <iomanip>
 
 #include "Messenger.h"
+#include "ObservableBase.h"
 #include "PhysicsModelBase.h"
-#include "SLHAeaSLHAFileHandler.h"
-#include "SLHAObservable.h"
+//#include "SLHAeaSLHAFileHandler.h"
 
 Fittino::PhysicsModelBase::PhysicsModelBase() {
 
@@ -106,7 +106,7 @@ void Fittino::PhysicsModelBase::UpdateObservablePredictions() {
 
 void Fittino::PhysicsModelBase::UpdateSLHAConfiguration() {
 
-    SLHAeaSLHAFileHandler slhaeaSLHAFileHandler;
-    slhaeaSLHAFileHandler.WriteInputFile( "LesHouches.in", this );
+    //SLHAeaSLHAFileHandler slhaeaSLHAFileHandler;
+    //slhaeaSLHAFileHandler.WriteInputFile( "LesHouches.in", this );
 
 }
