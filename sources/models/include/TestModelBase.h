@@ -43,6 +43,7 @@ namespace Fittino {
        */
                      ~TestModelBase();
       virtual double Evaluate();
+      virtual void   PrintStatus();
 
       /*! \cond UML */
     private:

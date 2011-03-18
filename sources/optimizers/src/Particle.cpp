@@ -68,8 +68,8 @@ void Fittino::Particle::UpdateVelocity() {
     for ( unsigned int i = 0; i < _velocity.size(); i++ ) {
 
         _velocity[i] =   _velocity[i]
-                       + _c1 * randomNumber1 * ( ( *_personalBestModel->GetParameterVector() )[i].GetValue() - _position[i] )
-                       + _c2 * randomNumber2 * ( ( *_globalBestModel->GetParameterVector() )[i].GetValue() - _position[i] );
+                       + _c1 * randomNumber1 * ( ( _personalBestModel->GetParameterVector() )[i].GetValue() - _position[i] )
+                       + _c2 * randomNumber2 * ( ( _globalBestModel->GetParameterVector() )[i].GetValue() - _position[i] );
 
     }
 
@@ -92,7 +92,7 @@ void Fittino::Particle::UpdateModel() {
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
-        ( *_model->GetParameterVector() )[i].SetValue( _position[i] );
+        ( *_model->SetParameterVector() )[i].SetValue( _position[i] );
 
     }
 

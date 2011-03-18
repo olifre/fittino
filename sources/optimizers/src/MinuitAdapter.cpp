@@ -17,10 +17,24 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <iostream>
+
 #include "MinuitAdapter.h"
 
+Fittino::MinuitAdapter::MinuitAdapter( ModelBase* model )
+        : _model( model) {
+
+} 
 
 double Fittino::MinuitAdapter::operator()( const std::vector< double >& parameterVector ) const {
+
+    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
+
+        std::cout << parameterVector[i] << std::endl;
+
+        ( *_model->SetParameterVector() )[i].SetValue( parameterVector[i] );
+
+    }
 
     return _model->Evaluate();
 

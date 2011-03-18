@@ -59,12 +59,17 @@ namespace Fittino {
       /*!
        *  Returns the parameters of the model as a vector.
        */
-      std::vector<Parameter>* GetParameterVector();
+      std::vector<Parameter>  GetParameterVector() const;
+      /*!
+       *  Returns the parameters of the model as a vector.
+       */
+      std::vector<Parameter>* SetParameterVector();
       /*!
        *  Returns the chi2 of the comparison between the predicted observables of the model and\n
        *  the measured observables. In the case of a test model simply returns the function value.
        */
       virtual double          Evaluate() = 0;
+      virtual void            PrintStatus() = 0;
       /*!
        *  Returns a pointer to a copy of the model.
        */

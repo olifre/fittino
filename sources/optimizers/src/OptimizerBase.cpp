@@ -59,10 +59,10 @@ void Fittino::OptimizerBase::PrintResult() const {
 	          << "    "
                   << std::left
                   << std::setw( 11 )
-                  << ( *_model->GetParameterVector() )[i].GetName()
+                  << ( _model->GetParameterVector() )[i].GetName()
                   << std::right
                   << std::setw( 9 )
-                  << ( *_model->GetParameterVector() )[i].GetValue()
+                  << ( _model->GetParameterVector() )[i].GetValue()
 		  << Messenger::Endl;
 
     }

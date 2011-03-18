@@ -93,7 +93,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
     for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-        ( *_model->GetParameterVector() )[k].SetValue( ( *_model->GetParameterVector() )[k].GetValue() + _randomGenerator.Gaus( 0., 1. ) );
+        ( *_model->SetParameterVector() )[k].SetValue( ( _model->GetParameterVector() )[k].GetValue() + _randomGenerator.Gaus( 0., 1. ) );
 
     }
 

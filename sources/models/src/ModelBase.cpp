@@ -46,7 +46,14 @@ std::string Fittino::ModelBase::GetName() const {
 
 }
 
-std::vector<Fittino::Parameter>* Fittino::ModelBase::GetParameterVector() {
+std::vector<Fittino::Parameter> Fittino::ModelBase::GetParameterVector() const {
+
+    return _parameterVector;
+
+}
+
+
+std::vector<Fittino::Parameter>* Fittino::ModelBase::SetParameterVector() {
 
     return &_parameterVector;
 
@@ -56,10 +63,10 @@ void Fittino::ModelBase::InitializeModel() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::ALWAYS << "--------------------------------------------------------------------------------" << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  Initializing " << _name                                                         << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Initializing " << _name << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
 
     ModelBase::PrintConfiguration();
 
@@ -69,8 +76,8 @@ void Fittino::ModelBase::PrintConfiguration() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::ALWAYS << "   Starting values                                                              " << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "   Starting values" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
 
     for ( unsigned int i = 0; i < _numberOfParameters; i++ ) {
 
@@ -86,6 +93,6 @@ void Fittino::ModelBase::PrintConfiguration() const {
 
     }
 
-    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
 
 }

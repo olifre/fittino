@@ -17,6 +17,9 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <iomanip>
+
+#include "Messenger.h"
 #include "TestModelBase.h"
 
 Fittino::TestModelBase::TestModelBase() {
@@ -30,5 +33,30 @@ Fittino::TestModelBase::~TestModelBase() {
 double Fittino::TestModelBase::Evaluate() {
 
     return this->TestModelFunction();
+
+}
+
+void Fittino::TestModelBase::PrintStatus() {
+
+    Messenger& messenger = Messenger::GetInstance();
+
+    messenger << Messenger::INFO << "--------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::Endl;
+    messenger << Messenger::INFO << "  Set of " << _name << " parameters:" << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::Endl;
+
+    for ( unsigned int i = 0; i < this->GetNumberOfParameters(); i++ ) {
+
+        messenger << Messenger::INFO
+	          << "    "
+                  << std::left
+                  << std::setw( 11 )
+                  << _parameterVector[i].GetName()
+                  << std::right
+                  << std::setw( 9 )
+                  << _parameterVector[i].GetValue()
+		  << Messenger::Endl;
+
+    }
 
 }
