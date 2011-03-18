@@ -25,8 +25,6 @@
 
 #include "TRandom.h"
 
-#include "ModelBase.h"
-
 /*!
  *  \brief Fittino namespace.
  */

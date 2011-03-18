@@ -25,6 +25,7 @@
 #include "AnalysisTool.h"
 #include "Configuration.h"
 #include "Messenger.h"
+#include "ModelBase.h"
 
 Fittino::AnalysisTool::AnalysisTool( ModelBase* model )
         : _chi2( 1e99 ),
@@ -51,30 +52,13 @@ void Fittino::AnalysisTool::PerformAnalysis() {
 
 void Fittino::AnalysisTool::PrintStatus() const {
 
+    _model->PrintStatus();
+
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::INFO << "--------------------------------------------------------------------------------" << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
-    messenger << Messenger::INFO << "  Actual best set of " << _model->GetName() << " parameters" << Messenger::Endl;
+    messenger << Messenger::INFO << std::scientific << std::setprecision( 6 ) << "    Chi2    " << _chi2 << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
-
-    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
-
-        messenger << Messenger::INFO
-	          << "    "
-                  << std::left
-                  << std::setw( 11 )
-                  << ( *_model->GetParameterVector() )[i].GetName()
-                  << std::right
-                  << std::setw( 9 )
-                  << ( *_model->GetParameterVector() )[i].GetValue()
-		  << Messenger::Endl;
-
-    }
-
-    messenger << Messenger::INFO << "                                                                                " << Messenger::Endl;
-    messenger << Messenger::INFO << "    Chi2    " << _chi2                                                            << Messenger::Endl;
-    messenger << Messenger::INFO << "                                                                                " << Messenger::Endl;
 
 }
 
@@ -82,7 +66,7 @@ void Fittino::AnalysisTool::ExecuteAnalysisTool() {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::ALWAYS << "--------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  Running " << _name << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
@@ -105,7 +89,7 @@ void Fittino::AnalysisTool::InitializeAnalysisTool() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::ALWAYS << "--------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
     messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  Initializing " << _name                                                         << Messenger::Endl;
     messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
@@ -133,7 +117,7 @@ void Fittino::AnalysisTool::TerminateAnalysisTool() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::ALWAYS << "--------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  Terminating " << _name << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;

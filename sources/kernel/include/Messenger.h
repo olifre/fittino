@@ -21,7 +21,6 @@
 #define FITTINO_MESSENGER_H
 
 #include <sstream>
-#include <string>
 
 /*!
  *  \brief Fittino namespace.
