@@ -21,12 +21,13 @@
 #define FITTINO_PHYSICSMODELBASE_H
 
 #include "ModelBase.h"
-#include "Observable.h"
 
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
+
+  class ObservableBase;
 
   /*!
    *  \ingroup models
@@ -38,21 +39,22 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                              PhysicsModelBase();
+                                   PhysicsModelBase();
       /*!
        *  Standard destructor.
        */
-                              ~PhysicsModelBase();
-      virtual double          Evaluate();
+                                   ~PhysicsModelBase();
+      virtual double               Evaluate();
+      virtual void                 PrintStatus();
 
     protected:
-      std::vector<Observable> _observableVector;
+      std::vector<ObservableBase*> _observableVector;
 
       /*! \cond UML */
     private:
-      double                  CalculateChi2();
-      void                    UpdateObservablePredictions();
-      void                    UpdateSLHAConfiguration();
+      double                       CalculateChi2();
+      void                         UpdateObservablePredictions();
+      void                         UpdateSLHAConfiguration();
 
       /*! \endcond UML */
 

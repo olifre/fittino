@@ -19,8 +19,9 @@
 
 #include "Parameter.h"
 
-Fittino::Parameter::Parameter( std::string name, double value )
+Fittino::Parameter::Parameter( std::string name, double value, int id )
         : _name( name ),
+	  _id( id ),
           _value( value ) {
 
 }
@@ -32,6 +33,12 @@ Fittino::Parameter::~Parameter() {
 double Fittino::Parameter::GetValue() const {
 
     return _value;
+
+}
+
+int Fittino::Parameter::GetID() const {
+
+    return _id;
 
 }
 

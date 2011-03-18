@@ -17,7 +17,13 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <cmath>
+#include <iomanip>
+
+#include "Messenger.h"
 #include "PhysicsModelBase.h"
+#include "SLHAeaSLHAFileHandler.h"
+#include "SLHAObservable.h"
 
 Fittino::PhysicsModelBase::PhysicsModelBase() {
 
@@ -35,9 +41,56 @@ double Fittino::PhysicsModelBase::Evaluate() {
 
 }
 
+void Fittino::PhysicsModelBase::PrintStatus() {
+
+    Messenger& messenger = Messenger::GetInstance();
+
+    messenger << Messenger::INFO << "-------------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::Endl;
+    messenger << Messenger::INFO << "  Set of the " << this->GetName() << " parameters:" << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::Endl;
+
+    for ( unsigned int i = 0; i < this->GetNumberOfParameters(); i++ ) {
+
+        messenger << Messenger::INFO
+	          << "    "
+                  << std::left
+                  << std::setw( 11 )
+                  << _parameterVector[i].GetName()
+                  << std::right
+                  << std::setw( 12 )
+                  << std::setprecision( 5 )
+                  << std::scientific
+                  << _parameterVector[i].GetValue()
+		  << Messenger::Endl;
+
+    }
+
+    messenger << Messenger::Endl;
+    messenger << Messenger::INFO << "  Summary of the " << this->GetName() << " predictions:"  << Messenger::Endl;
+    messenger << Messenger::Endl;
+    messenger << Messenger::INFO << "    Observable        Predicted value                  Measured value    Deviation" << Messenger::Endl;
+    messenger << Messenger::Endl;
+
+    for ( unsigned int i = 0; i < _observableVector.size(); i++ ) {
+
+        _observableVector[i]->PrintStatus();
+
+    }
+
+}
+
 double Fittino::PhysicsModelBase::CalculateChi2() {
 
-    return 1.e-6;
+    double chi2 = 0.;
+
+    for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
+
+        chi2 += _observableVector[i]->GetChi2();
+
+    }
+
+    return chi2;
 
 }
 
@@ -45,7 +98,7 @@ void Fittino::PhysicsModelBase::UpdateObservablePredictions() {
 
     for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
 
-        _observableVector[i].UpdatePredictedValue();
+        _observableVector[i]->UpdatePrediction();
 
     }
 
@@ -53,8 +106,7 @@ void Fittino::PhysicsModelBase::UpdateObservablePredictions() {
 
 void Fittino::PhysicsModelBase::UpdateSLHAConfiguration() {
 
-    //SLHAFileInterpreter* _inputSLHAFileInterpreter = new SLHAFileInterpreter();
-    //_inputSLHAFileInterpreter->ReadFile( "SPheno.spc" );
-    //std::cout << _inputSLHAFileInterpreter->GetMODSEL() << std::endl;
+    SLHAeaSLHAFileHandler slhaeaSLHAFileHandler;
+    slhaeaSLHAFileHandler.WriteInputFile( "LesHouches.in", this );
 
 }

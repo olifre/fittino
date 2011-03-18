@@ -21,6 +21,7 @@
 
 #include "Configuration.h"
 #include "MSUGRAModel.h"
+//#include "SLHAObservable.h"
 
 Fittino::MSUGRAModel::MSUGRAModel() {
 
@@ -28,10 +29,13 @@ Fittino::MSUGRAModel::MSUGRAModel() {
 
     _numberOfParameters = 4;
     _name = "MSUGRA model";
-    _parameterVector.push_back( Parameter( "A0", configuration->GetSteeringParameter( "A0", 0. ) ) );
-    _parameterVector.push_back( Parameter( "M0", configuration->GetSteeringParameter( "M0", 0. ) ) );
-    _parameterVector.push_back( Parameter( "M12", configuration->GetSteeringParameter( "M12", 0. ) ) );
-    _parameterVector.push_back( Parameter( "TanBeta", configuration->GetSteeringParameter( "TanBeta", 0. ) ) );
+    _parameterVector.push_back( Parameter( "A0", configuration->GetSteeringParameter( "A0", 0. ), 5 ) );
+    _parameterVector.push_back( Parameter( "M0", configuration->GetSteeringParameter( "M0", 0. ), 1 ) );
+    _parameterVector.push_back( Parameter( "M12", configuration->GetSteeringParameter( "M12", 0. ), 2 ) );
+    _parameterVector.push_back( Parameter( "TanBeta", configuration->GetSteeringParameter( "TanBeta", 0. ), 3 ) );
+
+    //SLHAObservable* observable = new SLHAObservable( "Br(b -> s gamma)", 3.55e-04, 0.26e-04, 1 );
+    //_observableVector.push_back( observable );
 
     ModelBase::InitializeModel();
 

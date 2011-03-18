@@ -1,12 +1,12 @@
-/* $Id: Observable.h 844 2011-01-10 13:52:15Z uhlenbrock $ */
+/* $Id: ObservableBase.h 844 2011-01-10 13:52:15Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        Observable.h                                                     *
+* File        ObservableBase.h                                                 *
 *                                                                              *
-* Description Class for observables                                            *
+* Description Base class for observables                                       *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -17,8 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_OBSERVABLE_H
-#define FITTINO_OBSERVABLE_H
+#ifndef FITTINO_OBSERVABLEBASE_H
+#define FITTINO_OBSERVABLEBASE_H
 
 #include <string>
 
@@ -29,29 +29,38 @@ namespace Fittino {
 
   /*!
    *  \ingroup models
-   *  \brief Class for observables.
+   *  \brief Base class for observables.
    */
-  class Observable {
+  class ObservableBase {
 
     public:
       /*!
        *  Standard constructor.
        */
-                  Observable();
+                     ObservableBase( std::string name, int id );
       /*!
        *  Standard destructor.
        */
-                  ~Observable();
-      void        UpdatePredictedValue();
+                     ~ObservableBase();
+      double         GetChi2() const;
+      double         GetDeviation() const;
+      int            GetID() const;
+      std::string    GetName() const;
+      virtual void   PrintStatus() const = 0;
+      virtual void   UpdatePrediction() = 0;
 
-    private:
-      double      _error;
-      double      _measuredValue;
-      double      _predictedValue;
-      std::string _name;
+    protected:
+      virtual double CalculateChi2() = 0;
+      virtual double CalculateDeviation() = 0;
+
+    protected:
+      double         _chi2;
+      double         _deviation;
+      int            _id;
+      std::string    _name;
 
   };
 
 }
 
-#endif // FITTINO_OBSERVABLE_H
+#endif // FITTINO_OBSERVABLEBASE_H
