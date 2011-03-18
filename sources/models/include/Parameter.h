@@ -37,7 +37,7 @@ namespace Fittino {
       /*!
        *  Takes as input the name and starting value of the parameter.
        */
-                  Parameter( std::string name, double value );
+                  Parameter( std::string name, double value, int id );
       /*!
        *  Standard destructor.
        */
@@ -46,6 +46,14 @@ namespace Fittino {
        *  Returns the value of the parameter.
        */
       double      GetValue() const;
+      /*!
+       *  Returns the ID of the parameter. The parameter ID can (and should) be used whenever it\n
+       *  is necessary to identify a parameter by a numerical (integer) value. The parameter ID\n
+       *  has to be unique within a certain model and is specified in the definition of the model\n
+       *  class.  For example, in the definition of the SLHA standard tan(beta) has the\n
+       *  parameter ID 3 (for all models satisfying the standard).
+       */
+      int         GetID() const;
       /*!
        *  Sets the value of the parameter.
        */
@@ -63,6 +71,10 @@ namespace Fittino {
        */
       double      _value;
       //double      _upperBound;
+      /*!
+       *  ID of the parameter.
+       */
+      int         _id;
       /*!
        *  Name of the parameter.
        */

@@ -28,8 +28,8 @@ Fittino::RosenbrockModel::RosenbrockModel() {
 
     _numberOfParameters = 2;
     _name = "Rosenbrock model";
-    _parameterVector.push_back( Parameter( "X", configuration->GetSteeringParameter( "X", 0. ) ) );
-    _parameterVector.push_back( Parameter( "Y", configuration->GetSteeringParameter( "Y", 0. ) ) );
+    _parameterVector.push_back( Parameter( "X", configuration->GetSteeringParameter( "X", 0. ), 1 ) );
+    _parameterVector.push_back( Parameter( "Y", configuration->GetSteeringParameter( "Y", 0. ), 2 ) );
 
     ModelBase::InitializeModel();
 
