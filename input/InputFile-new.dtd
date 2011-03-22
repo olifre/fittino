@@ -1,0 +1,72 @@
+<!ELEMENT InputFile (VerbosityLevel,
+	             ExecutionMode,
+                     Model,
+		     Observable*,
+                     (Optimizer|Sampler))>
+
+<!ELEMENT VerbosityLevel EMPTY>
+<!ATTLIST VerbosityLevel
+  Level CDATA #REQUIRED
+>
+
+<!ELEMENT ExecutionMode EMPTY>
+<!ATTLIST ExecutionMode
+  Mode CDATA #REQUIRED
+>
+
+<!ELEMENT Model (Rosenbrock|MSUGRA)>
+
+<!ELEMENT Rosenbrock EMPTY>
+<!ATTLIST Rosenbrock
+  X         CDATA #REQUIRED
+  Y         CDATA #REQUIRED
+>
+
+<!ELEMENT MSUGRA EMPTY>
+<!ATTLIST MSUGRA
+  A0        CDATA #REQUIRED
+  M0        CDATA #REQUIRED
+  M12       CDATA #REQUIRED
+  TanBeta   CDATA #REQUIRED
+>
+
+<!ELEMENT Observable EMPTY>
+<!ATTLIST Observable
+  Name          CDATA #REQUIRED
+  MeasuredValue CDATA #REQUIRED
+  Error1        CDATA #REQUIRED
+  Error2        CDATA #IMPLIED
+  Error3        CDATA #IMPLIED
+>
+
+<!ELEMENT Optimizer (GeneticAlgorithmOptimizer|ParticleSwarmOptimizer|SimulatedAnnealingOptimizer)>
+<!ATTLIST Optimizer
+  AbortCriterium     CDATA #REQUIRED
+  NumberOfIterations CDATA #REQUIRED
+>
+
+<!ELEMENT Sampler EMPTY>
+<!ATTLIST Sampler
+  AbortCriterium     CDATA #REQUIRED
+  NumberOfIterations CDATA #REQUIRED
+  SamplerType        CDATA #REQUIRED
+>
+
+<!ELEMENT GeneticAlgorithmOptimizer EMPTY>
+<!ATTLIST GeneticAlgorithmOptimizer
+  MutationRate         CDATA #REQUIRED
+  SizeOfPopulation     CDATA #REQUIRED
+>
+
+<!ELEMENT ParticleSwarmOptimizer EMPTY>
+<!ATTLIST ParticleSwarmOptimizer
+  C1                CDATA #REQUIRED
+  C2                CDATA #REQUIRED
+  NumberOfParticles CDATA #REQUIRED
+>
+
+<!ELEMENT SimulatedAnnealingOptimizer EMPTY>
+<!ATTLIST SimulatedAnnealingOptimizer
+  InitialTemperature         CDATA #REQUIRED
+  TemperatureReductionFactor CDATA #REQUIRED
+>
