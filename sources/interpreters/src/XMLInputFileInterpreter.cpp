@@ -56,6 +56,10 @@ void Fittino::XMLInputFileInterpreter::Parse( const TString& xmlInputFileName ) 
 
     TDOMParser* const xmlParser = new TDOMParser();
 
+    // Switch on XML file validation
+
+    xmlParser->SetValidate();
+
     // Check if XML input file can be parsed
 
     const Int_t parseCode = xmlParser->ParseFile( xmlInputFileName );
@@ -73,21 +77,25 @@ void Fittino::XMLInputFileInterpreter::Parse( const TString& xmlInputFileName ) 
     TXMLNode* const xmlRootNode = xmlDocument->GetRootNode();
     TXMLNode* xmlNode = xmlRootNode->GetChildren();
 
-    /*!
-     *  \todo Short-term: Implement recursive loop over nested nodes. 
-     */
     while ( xmlNode != 0 ) {
 
         TXMLAttr* xmlAttribute( 0 );
+
+	//	if ( xmlNode->GetNodeType() == TXMLNode::kXMLElementNode )
+	//	  std::cout << "node name = " << xmlNode->GetNodeName() << std::endl;
+
         TListIter attributeIterator( xmlNode->GetAttributes() );
 
-        while ( ( xmlAttribute = ( TXMLAttr* )attributeIterator() )  != 0 ) {
+        while ( ( xmlAttribute = ( TXMLAttr* )attributeIterator() ) != 0 ) {
 
             Configuration::GetInstance()->AddSteeringParameter( xmlAttribute->GetName(), xmlAttribute->GetValue() );
 
         }
 
-        xmlNode = xmlNode->GetNextNode();
+	if      ( xmlNode->HasChildren() ) xmlNode = xmlNode->GetChildren();
+	else if ( xmlNode->HasNextNode() ) xmlNode = xmlNode->GetNextNode();
+	else if ( xmlNode->HasParent()   ) xmlNode = xmlNode->GetParent()->GetNextNode();
+	else throw InputException( "Found inconsistency in XML input file" );
 
     }
 
