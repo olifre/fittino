@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding='UTF-8'?>
-<?xml-stylesheet type="text/xsl" href="InputFile.xsl"?>
+<?xml-stylesheet type="text/xsl" href="InputFile-new.xsl"?>
 
 <!-- $Id: Example.optimization.in.xml 705 2010-07-20 22:56:05Z uhlenbrock $ -->
 
@@ -22,7 +22,29 @@
 <!--                                                                         -->
 <!--#########################################################################-->
 
-<!DOCTYPE InputFile PUBLIC "" "InputFile.dtd" >
+<!DOCTYPE InputFile PUBLIC "" "InputFile-new.dtd" >
+
+<!--
+Suggested structure:
+
+  <Model>
+
+    <Rosenbrock 
+
+       Universality = "X=Y"
+
+       <Parameter
+          Name  = "X"
+	  Value = "2.56"
+	  Error = "0.1"
+	  Fixed = "false"
+	  Range = "[:]"
+       />
+
+    />
+
+  </Model>
+-->
 
 <InputFile>
 
