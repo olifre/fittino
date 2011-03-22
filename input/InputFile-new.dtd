@@ -15,19 +15,20 @@
 >
 
 <!ELEMENT Model (Rosenbrock|MSUGRA)>
-
-<!ELEMENT Rosenbrock EMPTY>
-<!ATTLIST Rosenbrock
-  X         CDATA #REQUIRED
-  Y         CDATA #REQUIRED
+<!ATTLIST Model
+  Universality   CDATA #IMPLIED
 >
 
-<!ELEMENT MSUGRA EMPTY>
-<!ATTLIST MSUGRA
-  A0        CDATA #REQUIRED
-  M0        CDATA #REQUIRED
-  M12       CDATA #REQUIRED
-  TanBeta   CDATA #REQUIRED
+<!ELEMENT Rosenbrock (Parameter+)>
+<!ELEMENT MSUGRA (Parameter+)>
+
+<!ELEMENT Parameter EMPTY>
+<!ATTLIST Parameter
+  Name      CDATA #REQUIRED
+  Value     CDATA #REQUIRED
+  Error     CDATA #REQUIRED
+  Fixed     CDATA #IMPLIED
+  Range     CDATA #IMPLIED
 >
 
 <!ELEMENT Observable EMPTY>

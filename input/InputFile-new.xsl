@@ -36,17 +36,17 @@
 </xsl:template>
 
 <xsl:template match="Rosenbrock">
-      <tr><td colspan="2">Rosenbrock</td></tr>
-      <tr><td>X</td><td><xsl:value-of select="@X"/></td></tr>
-      <tr><td>Y</td><td><xsl:value-of select="@Y"/></td></tr>
+  <tr><td colspan="2">Rosenbrock</td></tr>
+  <xsl:apply-templates/>
 </xsl:template>
 
 <xsl:template match="MSUGRA">
-      <tr><td colspan="2">MSUGRA</td></tr>
-      <tr><td>A0</td><td><xsl:value-of select="@A0"/></td></tr>
-      <tr><td>M0</td><td><xsl:value-of select="@M0"/></td></tr>
-      <tr><td>M12</td><td><xsl:value-of select="@M12"/></td></tr>
-      <tr><td>TanBeta</td><td><xsl:value-of select="@TanBeta"/></td></tr>
+  <tr><td colspan="2">MSUGRA</td></tr>
+  <xsl:apply-templates/>
+</xsl:template>
+
+<xsl:template match="Parameter">
+  <tr><td><xsl:value-of select="@Name"/></td><td><xsl:value-of select="@Value"/> +- <xsl:value-of select="@Error"/></td></tr>
 </xsl:template>
 
 </xsl:stylesheet>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding='UTF-8'?>
 <?xml-stylesheet type="text/xsl" href="InputFile-new.xsl"?>
+<!DOCTYPE InputFile PUBLIC "" "InputFile-new.dtd" >
 
-<!-- $Id: Example.optimization.in.xml 705 2010-07-20 22:56:05Z uhlenbrock $ -->
+<!-- $Id$ -->
 
 <!--#########################################################################-->
 <!--                                                                         -->
@@ -12,7 +13,8 @@
 <!-- Description This is an example optimization Fittino input file in XML   -->
 <!--             format.                                                     -->
 <!--                                                                         -->
-<!-- Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>         -->
+<!-- Authors     Mathias Uhlenbrock <uhlenbrock@physik.uni-bonn.de>          -->
+<!--             Peter Wienemann <wienemann@physik.uni-bonn.de>              -->
 <!--                                                                         -->
 <!-- Licence     This program is free software; you can redistribute it      -->
 <!--             and/or modify it under the terms of the GNU General Public  -->
@@ -21,30 +23,6 @@
 <!--             later version.                                              -->
 <!--                                                                         -->
 <!--#########################################################################-->
-
-<!DOCTYPE InputFile PUBLIC "" "InputFile-new.dtd" >
-
-<!--
-Suggested structure:
-
-  <Model>
-
-    <Rosenbrock 
-
-       Universality = "X=Y"
-
-       <Parameter
-          Name  = "X"
-	  Value = "2.56"
-	  Error = "0.1"
-	  Fixed = "false"
-	  Range = "[:]"
-       />
-
-    />
-
-  </Model>
--->
 
 <InputFile>
 
@@ -75,8 +53,8 @@ Suggested structure:
    />
 
   <!--
-   The Model node specifies the model to be optimized. The supported models and their parameters are
-   listed in the table below:
+   The Model node specifies the model to be optimized.
+   Supported models and their parameters are listed in the table below:
 
        Model         Parameters
 
@@ -87,17 +65,36 @@ Suggested structure:
 
   <Model>
 
-    <Rosenbrock
-       X = "2.56"
-       Y = "-1.54"
-    />
+<!--
+    Universality = "X=Y"
+-->
+
+    <Rosenbrock>
+
+       <Parameter
+          Name  = "X"
+	  Value = "2.56"
+	  Error = "0.5"
+	  Fixed = "false"
+	  Range = "[:]"
+       />
+
+       <Parameter
+          Name  = "Y"
+	  Value = "-1.54"
+	  Error = "0.5"
+	  Fixed = "false"
+	  Range = "[:]"
+       />
+
+    </Rosenbrock>
 
   </Model>
 
 
   <!--
-   The Optimizer node specifies the optimization algorithm (optimization type) and several general
-   optimizer settings. Supported optimizer types are:
+   The Optimizer node specifies the optimization algorithm and optimizer settings.
+   Supported optimizer algorithms are:
 
       * GeneticAlgorithm
       * Minuit
@@ -115,21 +112,19 @@ Suggested structure:
 	TemperatureReductionFactor = "0.5"
      />
 
-   </Optimizer>
-
 <!--
-
-  <GeneticAlgorithmOptimizer
-   MutationRate      = "0.5"
-   SizeOfPopulation  = "100"
-   />
-
-  <ParticleSwarmOptimizer
-   C1                = "0.01"
-   C2                = "0.01"
-   NumberOfParticles = "100"
-   />
-
+     <GeneticAlgorithmOptimizer
+      MutationRate      = "0.5"
+      SizeOfPopulation  = "100"
+      />
+   
+     <ParticleSwarmOptimizer
+      C1                = "0.01"
+      C2                = "0.01"
+      NumberOfParticles = "100"
+      />
 -->
+
+   </Optimizer>
 
 </InputFile>
