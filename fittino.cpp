@@ -4613,15 +4613,9 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      double xschi2;
      
      if (interpolationOK) {
-       // Asimov data set (data = bkgd only)
-       double lnQdata = LogLikelihoodRatio(hsig, hbkgd, hbkgd, 
-					   yyRelativeSignalCrossSectionSysUncertainty,
-					   yyRelativeBackgroundCrossSectionSysUncertainty, 
-					   "expected_b");
-       //     std::cout << "lnQdata = " << lnQdata << std::endl;
-       double nCLsb = 0;
-       double nCLb = 0;
        const int ntrials = 50000;
+       double array_lnQb[ntrials];
+       double array_lnQsb[ntrials];
        for (int itrial=0; itrial<ntrials; itrial++) {
 	 double lnQsb = LogLikelihoodRatio(hsig, hbkgd, hbkgd,
 					   yyRelativeSignalCrossSectionSysUncertainty,
@@ -4629,6 +4623,35 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	 double lnQb = LogLikelihoodRatio(hsig, hbkgd, hbkgd, 
 					  yyRelativeSignalCrossSectionSysUncertainty,
 					  yyRelativeBackgroundCrossSectionSysUncertainty, "b");
+
+	 array_lnQb[itrial] = lnQb;
+	 array_lnQsb[itrial] = lnQsb;
+
+       }
+
+       int array_index[ntrials];
+
+       TMath::Sort(ntrials, array_lnQb, array_index, kFALSE);
+       
+       int median_pos = int(ntrials * 0.5 + 0.5);
+
+       double median_lnQb = array_lnQb[ array_index[ median_pos ] ];
+
+       // Asimov data set (data = bkgd only)
+//       double lnQdata = LogLikelihoodRatio(hsig, hbkgd, hbkgd, 
+//					   yyRelativeSignalCrossSectionSysUncertainty,
+//					   yyRelativeBackgroundCrossSectionSysUncertainty, 
+//					   "expected_b");
+
+       double lnQdata = median_lnQb;
+       //     std::cout << "lnQdata = " << lnQdata << std::endl;
+
+       double nCLsb = 0;
+       double nCLb = 0;
+       for (int itrial=0; itrial<ntrials; itrial++) {
+	 double lnQb = array_lnQb[itrial];
+	 double lnQsb = array_lnQsb[itrial];
+
 	 if (lnQsb < lnQdata) {
 	   nCLsb++;
 	 }
@@ -4636,7 +4659,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	   nCLb++;
 	 }
        }
-       
+
        xsintegral = hsig->Integral();
        
        CLsb = double(nCLsb) / (double)ntrials;
