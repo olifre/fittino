@@ -18,11 +18,6 @@
 #                                                                              #
 ################################################################################
 
-# Specify the installation path of the executable "root-config". By default, it is assumed that the
-# environment variable ROOTSYS is set.
-
-SET(ROOT_CONFIG_PATH $ENV{ROOTSYS}/bin)
-
 # Requires at least ROOT version 5.20/00.
 
 SET(ROOT_MIN_VERSION "5.20/00")
@@ -34,13 +29,13 @@ SET(ROOT_CONFIG_EXECUTABLE "ROOT_CONFIG_EXECUTABLE-NOTFOUND")
 
 # Look for the executable "root-config".
 
-FIND_PROGRAM(ROOT_CONFIG_EXECUTABLE root-config PATHS ${ROOT_CONFIG_PATH} NO_DEFAULT_PATH)
+FIND_PROGRAM(ROOT_CONFIG_EXECUTABLE root-config PATHS ${ROOT_CONFIG_INSTALLATION_PATH} $ENV{ROOTSYS}/bin)
 
 IF(${ROOT_CONFIG_EXECUTABLE} MATCHES "ROOT_CONFIG_EXECUTABLE-NOTFOUND")
 
     # If the executable "root-config" is not found print this message.
 
-    MESSAGE(FATAL_ERROR "\nModule ROOT not found.\nPlease set ROOTSYS or add the path to your ROOT installation to the macro FindROOT.cmake in the subdirectory CMakeModules.\n")
+    MESSAGE(FATAL_ERROR "\nRequired module ROOT not found.\nPlease set ROOTSYS or specify the path to your ROOT installation in the file CMakeLists.txt in the Fittino root directory.\n")
 
 ELSE(${ROOT_CONFIG_EXECUTABLE} MATCHES "ROOT_CONFIG_EXECUTABLE-NOTFOUND")
 

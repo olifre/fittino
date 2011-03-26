@@ -18,23 +18,26 @@
 #                                                                              #
 ################################################################################
 
-# Specify the installation path of the executable "SPheno".
-
-SET(SPHENO_PATH ../SPheno3.0.beta50/bin)
-
-# Look for the executable "SPheno" in the specified path. If the executable is not found there, the
-# variable SPHENO_EXECUTABLE is set to "SPHENO_EXECUTABLE-NOTFOUND" which is the default value.
+# The variable SPHENO_EXECUTABLE is set to "SPHENO_EXECUTABLE-NOTFOUND" which is the default value.
 
 SET(SPHENO_EXECUTABLE "SPHENO_EXECUTABLE-NOTFOUND")
 
-FIND_PROGRAM(SPHENO_EXECUTABLE SPheno PATHS ${SPHENO_PATH} NO_DEFAULT_PATH)
+# Look for the location of the executable "SPheno".
+
+FIND_PROGRAM(SPHENO_EXECUTABLE SPheno PATHS ${SPHENO_INSTALLATION_PATH} ../SPheno/bin)
 
 IF(${SPHENO_EXECUTABLE} MATCHES "SPHENO_EXECUTABLE-NOTFOUND")
 
-    MESSAGE(FATAL_ERROR "\nModule SPHENO not found.\nPlease add the path to your SPHENO installation to the macro FindSPHENO.cmake in the subdirectory CMakeModules.\n") 
+    # If the path to the SPheno installation is not found print this message.
+
+    MESSAGE(WARNING "\nOptional module SPHENO not found.\nIf you want to use SPHENO, please specify the path to your SPheno installation in the file CMakeLists.txt in the Fittino root directory.\nContinuing with the cmake configuration.\n")
 
 ELSE(${SPHENO_EXECUTABLE} MATCHES "SPHENO_EXECUTABLE-NOTFOUND")
 
-    MESSAGE(STATUS "Module SPHENO found")
+    # If the path to the SPheno installation is found create a symbolic link to the executable and
+    # print a message.
+
+    EXECUTE_PROCESS(COMMAND ln -s ${SPHENO_INSTALLATION_PATH}/SPheno SPheno)
+    MESSAGE(STATUS "SPheno version:")
 
 ENDIF(${SPHENO_EXECUTABLE} MATCHES "SPHENO_EXECUTABLE-NOTFOUND")
