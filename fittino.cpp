@@ -1968,15 +1968,15 @@ void Fittino::setStartValues()
       fAbsM3.bound_low = 0.;
       fAbsM3.bound_up = 10000.;
 
-      fM12.name  = "M12";
-      fM12.value = 100;
-      fM12.error = 100;
-      if (yyUseGivenStartValues && (FindInFittedPar("M12") >= 0)) {
-	 fM12.value = yyFittedPar[FindInFittedPar("M12")].value;
-	 fM12.error = yyFittedPar[FindInFittedPar("M12")].error;
-      }
-      fM12.bound_low = 0.;
-      fM12.bound_up = 10000.;
+//      fM12.name  = "M12";
+//      fM12.value = 100;
+//      fM12.error = 100;
+//      if (yyUseGivenStartValues && (FindInFittedPar("M12") >= 0)) {
+//	 fM12.value = yyFittedPar[FindInFittedPar("M12")].value;
+//	 fM12.error = yyFittedPar[FindInFittedPar("M12")].error;
+//      }
+//      fM12.bound_low = 0.;
+//      fM12.bound_up = 10000.;
 
       fA0.name  = "A0";
       fA0.value = 100;
@@ -7156,32 +7156,32 @@ hase (rad), SPheno default value = 0
 	 exit (EXIT_FAILURE);
       }
 
-      if (FindInFixed("M12")) {
-	 LesHouchesOutfile << "    2  "<< ReturnFixedValue("M12")->value <<" # M12 (fixed)"<< endl;
-      }
-      else if (FindInFitted("M12")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
-	    cout << "Fitting M12 " << x[ReturnFittedPosition("M12")] << endl;
-	 }
-	 LesHouchesOutfile << "    2  "<< x[ReturnFittedPosition("M12")]<<" # M12"<< endl;
-      } 
-      else if (FindInRandomPar("M12")) {
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
-	    cout << "Calculating random M12 " << x[ReturnRandomPosition("M12")] << endl;
-	 }
-	 LesHouchesOutfile << "    2  "<< x[ReturnRandomPosition("M12")]<<" # M12 (random)"<< endl;
-      }
-
-      else if (FindInUniversality("M12")) {
-	 LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("M12")->universality)]<<" # M12"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
-	    cout << "fitting " << ReturnUniversality("M12")->universality << " instead of M12" << endl;
-	 }
-      }
-      else {
-	 cerr << "Parameter M12 not declared" << endl;
-	 exit (EXIT_FAILURE);
-      }
+//      if (FindInFixed("M12")) {
+//	 LesHouchesOutfile << "    2  "<< ReturnFixedValue("M12")->value <<" # M12 (fixed)"<< endl;
+//      }
+//      else if (FindInFitted("M12")) {
+//	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+//	    cout << "Fitting M12 " << x[ReturnFittedPosition("M12")] << endl;
+//	 }
+//	 LesHouchesOutfile << "    2  "<< x[ReturnFittedPosition("M12")]<<" # M12"<< endl;
+//      } 
+//      else if (FindInRandomPar("M12")) {
+//	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+//	    cout << "Calculating random M12 " << x[ReturnRandomPosition("M12")] << endl;
+//	 }
+//	 LesHouchesOutfile << "    2  "<< x[ReturnRandomPosition("M12")]<<" # M12 (random)"<< endl;
+//      }
+//
+//      else if (FindInUniversality("M12")) {
+//	 LesHouchesOutfile << "    2  "<<x[ReturnFittedPosition(ReturnUniversality("M12")->universality)]<<" # M12"<<endl;
+//	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+//	    cout << "fitting " << ReturnUniversality("M12")->universality << " instead of M12" << endl;
+//	 }
+//      }
+//      else {
+//	 cerr << "Parameter M12 not declared" << endl;
+//	 exit (EXIT_FAILURE);
+//      }
 
       if (FindInFixed("TanBeta")) {
 	 LesHouchesOutfile << "    3  "<< ReturnFixedValue("TanBeta")->value <<" # tanb (fixed)"<< endl;
@@ -7246,7 +7246,7 @@ hase (rad), SPheno default value = 0
 
       // BLOCK EXTPAR
       LesHouchesOutfile << "BLOCK EXTPAR" << endl;
-      LesHouchesOutfile << "    0  1000. # Input scale for mSUGRA" << endl;
+      //      LesHouchesOutfile << "    0  1000. # Input scale for mSUGRA" << endl;
       // M1
       if (FindInFixed("M1")) {
 	 LesHouchesOutfile << "    1  " << ReturnFixedValue("M1")->value << " # M1(M_GUT) (fixed)" << endl;
