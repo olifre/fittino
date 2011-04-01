@@ -10,7 +10,7 @@
 
 
 //locale includes
-#include "CppSLHA.h"
+#include "old_CppSLHA.h"
 #include "Xgrid.h"
 #include "ACgrid.h"
 #include "grid.h"
@@ -205,7 +205,7 @@ class sRates{
       return -1;
     }
 			
-    return spectrum->get_particle_property_set(PDG_sbottom_one_CODE)->get_mass();
+    // return spectrum->get_particle_property_set(PDG_sbottom_one_CODE)->get_mass();
   }
 	
 	

@@ -1435,7 +1435,7 @@ int sRates::readSLHA(std::string SLHA_file_name){
 		
   // 		BOL_SLHA_reader::BOL_SLHA_reader *reader = new BOL_SLHA_reader( this->spectrum );  // create a BOL_SLHA_reader instance to read in the SLHA file.
 		
-  CppSLHA::CppSLHA* reader = new CppSLHA::CppSLHA( SLHA_file_name, spectrum );
+  old_CppSLHA::old_CppSLHA* reader = new old_CppSLHA::old_CppSLHA( SLHA_file_name, spectrum );
 				
   // 		if (reader->read_file( SLHA_file_name ) != 0 ){
   if (reader->read_file( SLHA_file_name ) != 0 ){	

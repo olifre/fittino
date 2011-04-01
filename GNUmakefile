@@ -52,6 +52,8 @@ LDFLAGS           = -g -Wall -pedantic -Wno-long-long -Wshadow
 # -pedantic -ansi
 
 SOURCES           = $(wildcard *.cpp)
+SOURCES          += $(wildcard LHC-FASER/*.cpp)
+SOURCES          += $(wildcard LHC-FASER/CppSLHA/*.cpp)
 OBJECTS_BASENAME  = $(SOURCES:.cpp=.o)
 OBJECTS_BASENAME += lex.yy.o y.tab.o
 INCLUDES          = $(wildcard *.h)

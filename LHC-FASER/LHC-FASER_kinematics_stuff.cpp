@@ -2,7 +2,55 @@
  * LHC-FASER_kinematics_stuff.hpp
  *
  *  Created on: 02 Mar 2011
- *      Author: bol
+ *      Authors: Ben O'Leary (benjamin.oleary@gmail.com)
+ *               Jonas Lindert (jonas.lindert@googlemail.com)
+ *               Carsten Robens (carsten.robens@gmx.de)
+ *      Copyright 2010 Ben O'Leary, Jonas Lindert, Carsten Robens
+ *
+ *      This file is part of LHC-FASER.
+ *
+ *      LHC-FASER is free software: you can redistribute it and/or modify
+ *      it under the terms of the GNU General Public License as published by
+ *      the Free Software Foundation, either version 3 of the License, or
+ *      (at your option) any later version.
+ *
+ *      LHC-FASER is distributed in the hope that it will be useful,
+ *      but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *      GNU General Public License for more details.
+ *
+ *      You should have received a copy of the GNU General Public License
+ *      along with LHC-FASER.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *      The GNU General Public License should be in GNU_public_license.txt
+ *      the files of LHC-FASER are:
+ *      LHC-FASER.hpp
+ *      LHC-FASER.cpp
+ *      LHC-FASER_electroweak_cascade_stuff.hpp
+ *      LHC-FASER_electroweak_cascade_stuff.cpp
+ *      LHC-FASER_full_cascade_stuff.hpp
+ *      LHC-FASER_full_cascade_stuff.cpp
+ *      LHC-FASER_global_stuff.hpp
+ *      LHC-FASER_global_stuff.cpp
+ *      LHC-FASER_input_handling_stuff.hpp
+ *      LHC-FASER_input_handling_stuff.cpp
+ *      LHC-FASER_kinematics_stuff.hpp
+ *      LHC-FASER_kinematics_stuff.cpp
+ *      LHC-FASER_lepton_distributions.hpp
+ *      LHC-FASER_lepton_distributions.cpp
+ *      LHC-FASER_signal_calculator_stuff.hpp
+ *      LHC-FASER_signal_calculator_stuff.cpp
+ *      LHC-FASER_signal_data_collection_stuff.hpp
+ *      LHC-FASER_signal_data_collection_stuff.cpp
+ *      LHC-FASER_sparticle_decay_stuff.hpp
+ *      LHC-FASER_sparticle_decay_stuff.cpp
+ *      and README.LHC-FASER.txt which describes the package.
+ *
+ *      LHC-FASER also requires CppSLHA. It should be found in a subdirectory
+ *      included with this package.
+ *
+ *      LHC-FASER also requires grids of lookup values. These should also be
+ *      found in a subdirectory included with this package.
  */
 
 #include "LHC-FASER_kinematics_stuff.hpp"
@@ -2505,6 +2553,51 @@ namespace LHC_FASER
         delete *deletion_iterator;
 
       }
+
+  }
+
+
+  lepton_acceptance_table*
+  kinematics_handler::get_lepton_acceptance_table(
+                                                  int const LHC_energy_in_TeV )
+  {
+
+    // we have to check to see if the lepton_acceptance_table already exists:
+    lepton_acceptance_table* return_pointer = NULL;
+    for( std::vector< lepton_acceptance_table* >::iterator
+         lepton_iterator = lepton_tables.begin();
+         lepton_tables.end() > lepton_iterator;
+         ++lepton_iterator )
+      {
+
+        if( LHC_energy_in_TeV == (*lepton_iterator)->get_energy() )
+          {
+
+            return_pointer = *lepton_iterator;
+            lepton_iterator = lepton_tables.end();
+
+          }
+
+      }
+    if( NULL == return_pointer )
+      {
+
+        std::string
+        lepton_grids( *(shortcut->inspect_path_to_kinematics_grids()) );
+        std::stringstream energy_stream( "" );
+        energy_stream << "/" << LHC_energy_in_TeV << "TeV";
+        lepton_grids.append( energy_stream.str() );
+        lepton_grids.append( "/leptons/" );
+
+        return_pointer = new lepton_acceptance_table( &lepton_grids,
+                                                      LHC_energy_in_TeV,
+                                                      shortcut );
+
+        lepton_tables.push_back( return_pointer );
+
+      }
+
+    return return_pointer;
 
   }
 

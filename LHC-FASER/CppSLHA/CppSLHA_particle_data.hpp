@@ -440,6 +440,10 @@ namespace CppSLHA
     set_LaTeX_antiname( std::string const input_LaTeX_antiname )
     /* code after the classes in this .hpp file, or in the .cpp file. */;
 
+    std::string const*
+    get_name_or_antiname( bool const name_not_antiname )
+    const
+    /* code after the classes in this .hpp file, or in the .cpp file. */;
 
     std::list< particle_decay* > const*
     get_direct_decays()
@@ -958,6 +962,25 @@ namespace CppSLHA
 
   }
 
+  inline std::string const*
+  particle_property_set::get_name_or_antiname( bool const name_not_antiname )
+  const
+  {
+
+    if( name_not_antiname )
+      {
+
+        return &particle_name;
+
+      }
+    else
+      {
+
+        return &antiparticle_name;
+
+      }
+
+  }
 
   inline std::list< particle_decay* > const*
   particle_property_set::get_direct_decays()

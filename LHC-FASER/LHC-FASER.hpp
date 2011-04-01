@@ -1,8 +1,56 @@
 /*
  * LHC-FASER.hpp
  *
- *  Created on: 6 Oct 2010
- *      Author: Ben O'Leary (benjamin.oleary@gmail.com)
+ *  Created on: 06 Oct 2010
+ *      Authors: Ben O'Leary (benjamin.oleary@gmail.com)
+ *               Jonas Lindert (jonas.lindert@googlemail.com)
+ *               Carsten Robens (carsten.robens@gmx.de)
+ *      Copyright 2010 Ben O'Leary, Jonas Lindert, Carsten Robens
+ *
+ *      This file is part of LHC-FASER.
+ *
+ *      LHC-FASER is free software: you can redistribute it and/or modify
+ *      it under the terms of the GNU General Public License as published by
+ *      the Free Software Foundation, either version 3 of the License, or
+ *      (at your option) any later version.
+ *
+ *      LHC-FASER is distributed in the hope that it will be useful,
+ *      but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *      GNU General Public License for more details.
+ *
+ *      You should have received a copy of the GNU General Public License
+ *      along with LHC-FASER.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *      The GNU General Public License should be in GNU_public_license.txt
+ *      the files of LHC-FASER are:
+ *      LHC-FASER.hpp
+ *      LHC-FASER.cpp
+ *      LHC-FASER_electroweak_cascade_stuff.hpp
+ *      LHC-FASER_electroweak_cascade_stuff.cpp
+ *      LHC-FASER_full_cascade_stuff.hpp
+ *      LHC-FASER_full_cascade_stuff.cpp
+ *      LHC-FASER_global_stuff.hpp
+ *      LHC-FASER_global_stuff.cpp
+ *      LHC-FASER_input_handling_stuff.hpp
+ *      LHC-FASER_input_handling_stuff.cpp
+ *      LHC-FASER_kinematics_stuff.hpp
+ *      LHC-FASER_kinematics_stuff.cpp
+ *      LHC-FASER_lepton_distributions.hpp
+ *      LHC-FASER_lepton_distributions.cpp
+ *      LHC-FASER_signal_calculator_stuff.hpp
+ *      LHC-FASER_signal_calculator_stuff.cpp
+ *      LHC-FASER_signal_data_collection_stuff.hpp
+ *      LHC-FASER_signal_data_collection_stuff.cpp
+ *      LHC-FASER_sparticle_decay_stuff.hpp
+ *      LHC-FASER_sparticle_decay_stuff.cpp
+ *      and README.LHC-FASER.txt which describes the package.
+ *
+ *      LHC-FASER also requires CppSLHA. It should be found in a subdirectory
+ *      included with this package.
+ *
+ *      LHC-FASER also requires grids of lookup values. These should also be
+ *      found in a subdirectory included with this package.
  */
 
 #ifndef LHC_FASER_HPP_
@@ -16,10 +64,10 @@
 /* this version of the code was written mainly by Ben O'Leary ("BOL",
  * benjamin.oleary@gmail.com), based on a setup decided upon by Michael Krämer
  * ("MK", mkraemer@physik.rwth-aachen.de), Jonas Lindert ("JL",
- * Jonas.Lindert@rwth-aachen.de) and BOL. Quite a lot is a refactoring of
- * JL's code. most of the grids were created by JL & the classes used to
- * access them were written by JL too. there is also code written by Carsten
- * Robens ("CR", Carsten.Robens@rwth-aachen.de).
+ * jonas.lindert@googlemail.com) and BOL. Quite a lot is a refactoring of
+ * JL's code. the cross-section grids were created by JL, while the current
+ * acceptance grids were written by Carsten Robens
+ * ("CR", Carsten.Robens@rwth-aachen.de).
  */
 
 /* the method of calculation is as laid out in the publication
@@ -115,7 +163,7 @@ namespace LHC_FASER
     /* code after the classes in this .hpp file, or in the .cpp file. */;
 
 
-    void
+    signal_handler*
     add_signal( std::string const signal_name )
     // this adds a new signal to the set of signals based on its name.
     /* code after the classes in this .hpp file, or in the .cpp file. */;
@@ -200,14 +248,18 @@ namespace LHC_FASER
 
   // inline functions:
 
-  inline void
+  inline signal_handler*
   LHC_FASER_UI::add_signal( std::string const signal_name )
   // this adds a new signal to the set of signals based on its name.
   {
 
-    signal_set.push_back( ( new signal_handler( signal_name,
-                                                shortcut,
-                                               cross_section_unit_factor ) ) );
+    signal_handler* return_pointer = new signal_handler( signal_name,
+                                                         shortcut,
+                                                   cross_section_unit_factor );
+
+    signal_set.push_back( return_pointer );
+
+    return return_pointer;
 
   }
 

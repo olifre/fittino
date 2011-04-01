@@ -38,7 +38,7 @@
  *      CppSLHA_particle_data.cpp
  *      CppSLHA_waiting_on_subprocess_executor.hpp
  *      CppSLHA_waiting_on_subprocess_executor.cpp
- *      and ./README.CppSLHA.txt which describes the package.
+ *      and README.CppSLHA.txt which describes the package.
  *
  */
 

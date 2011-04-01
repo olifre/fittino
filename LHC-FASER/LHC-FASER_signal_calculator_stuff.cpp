@@ -2,7 +2,55 @@
  * LHC-FASER_signal_calculator_stuff.cpp
  *
  *  Created on: 17 Nov 2010
- *      Author: bol
+ *      Authors: Ben O'Leary (benjamin.oleary@gmail.com)
+ *               Jonas Lindert (jonas.lindert@googlemail.com)
+ *               Carsten Robens (carsten.robens@gmx.de)
+ *      Copyright 2010 Ben O'Leary, Jonas Lindert, Carsten Robens
+ *
+ *      This file is part of LHC-FASER.
+ *
+ *      LHC-FASER is free software: you can redistribute it and/or modify
+ *      it under the terms of the GNU General Public License as published by
+ *      the Free Software Foundation, either version 3 of the License, or
+ *      (at your option) any later version.
+ *
+ *      LHC-FASER is distributed in the hope that it will be useful,
+ *      but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *      GNU General Public License for more details.
+ *
+ *      You should have received a copy of the GNU General Public License
+ *      along with LHC-FASER.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *      The GNU General Public License should be in GNU_public_license.txt
+ *      the files of LHC-FASER are:
+ *      LHC-FASER.hpp
+ *      LHC-FASER.cpp
+ *      LHC-FASER_electroweak_cascade_stuff.hpp
+ *      LHC-FASER_electroweak_cascade_stuff.cpp
+ *      LHC-FASER_full_cascade_stuff.hpp
+ *      LHC-FASER_full_cascade_stuff.cpp
+ *      LHC-FASER_global_stuff.hpp
+ *      LHC-FASER_global_stuff.cpp
+ *      LHC-FASER_input_handling_stuff.hpp
+ *      LHC-FASER_input_handling_stuff.cpp
+ *      LHC-FASER_kinematics_stuff.hpp
+ *      LHC-FASER_kinematics_stuff.cpp
+ *      LHC-FASER_lepton_distributions.hpp
+ *      LHC-FASER_lepton_distributions.cpp
+ *      LHC-FASER_signal_calculator_stuff.hpp
+ *      LHC-FASER_signal_calculator_stuff.cpp
+ *      LHC-FASER_signal_data_collection_stuff.hpp
+ *      LHC-FASER_signal_data_collection_stuff.cpp
+ *      LHC-FASER_sparticle_decay_stuff.hpp
+ *      LHC-FASER_sparticle_decay_stuff.cpp
+ *      and README.LHC-FASER.txt which describes the package.
+ *
+ *      LHC-FASER also requires CppSLHA. It should be found in a subdirectory
+ *      included with this package.
+ *
+ *      LHC-FASER also requires grids of lookup values. These should also be
+ *      found in a subdirectory included with this package.
  */
 
 #include "LHC-FASER_signal_calculator_stuff.hpp"
@@ -489,7 +537,8 @@ namespace LHC_FASER
     << std::endl
     << "about to enter loop over pairs of"
     << " { sQCD_to_EWino*, cross_section_table* }";
-    std::cout << std::endl;**/
+    std::cout << std::endl;
+    double channel_acceptance;**/
 
     // loop over all the combinations of gluinos &/or squarks:
     for( std::vector< std::pair< sQCD_to_EWino*,
@@ -512,7 +561,8 @@ namespace LHC_FASER
                                  (*channel_iterator)->first->get_scolored_pair(
                                              )->second_is_not_antiparticle() ))
         << ", cross-section = " << (*channel_iterator)->second->get_value();
-        std::cout << std::endl;**/
+        std::cout << std::endl;
+        channel_acceptance = 0.0;**/
 
         if( LHC_FASER_global::negligible_sigma
             < (*channel_iterator)->second->get_value() )
@@ -806,7 +856,9 @@ namespace LHC_FASER
                     << "total acceptance = "
                     << ( sQCD_decayed_4j_acceptance
                         + sQCD_decayed_3j_acceptance );
-                    std::cout << std::endl;**/
+                    std::cout << std::endl;
+                    channel_acceptance
+                    += subchannel_cross_section_times_acceptance;**/
 
                     // we add these configurations to the channel acceptance:
                     *signal_value += subchannel_cross_section_times_acceptance;
@@ -893,9 +945,13 @@ namespace LHC_FASER
         // end of if channel's cross-section is large enough to bother with.
 
         // debugging:
-        /**std::cout
+        /** channel_acceptance
+        *= ( 1.0 / (*channel_iterator)->second->get_value() );
+        std::cout
         << std::endl
-        << "total sigma * BR so far = " << *signal_value;
+        << "total sigma * BR so far = " << *signal_value
+        << std::endl
+        << "channel_acceptance = " << channel_acceptance;
         std::cout << std::endl;**/
 
       } // end of loop over sQCD_to_EWinos.

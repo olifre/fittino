@@ -1,8 +1,8 @@
 
-#include "CppSLHA.h"
+#include "old_CppSLHA.h"
 
 
-std::string CppSLHA::SLHA_double( double given_double )
+std::string old_CppSLHA::SLHA_double( double given_double )
 // this prepares a string that is the ASCII version of a double, in the form necessary for an SLHA file (Fortran E16.8).
 // 1st character: either - for negative numbers, of a blank space for positive numbers,
 // 2nd character: the 1st digit,
@@ -96,7 +96,7 @@ std::string CppSLHA::SLHA_double( double given_double )
 }
 
 
-std::string CppSLHA::SLHA_int( int given_int, int given_size )
+std::string old_CppSLHA::SLHA_int( int given_int, int given_size )
 // this prepares a string that is the ASCII version of an int, in the form necessary for an SLHA file
 // (Fortran Iw, where w is an integer, which is given as given_size).  the string is given_size characters long.
 {
@@ -158,7 +158,7 @@ std::string CppSLHA::SLHA_int( int given_int, int given_size )
 
 
 
-CppSLHA::CppSLHA( std::string given_SLHA_file_name )  // the constructor requires a file to open.
+old_CppSLHA::old_CppSLHA( std::string given_SLHA_file_name )  // the constructor requires a file to open.
   {
 
     // the constructor sets all entries to -10^10 (apart from off-diagonal YU, YD, YE, AU, AD & AE, which get set to zero)
@@ -175,7 +175,7 @@ CppSLHA::CppSLHA( std::string given_SLHA_file_name )  // the constructor require
 
   }
 
-CppSLHA::CppSLHA( std::string given_SLHA_file_name, BOL_EW_scale_spectrum::BOL_EW_scale_spectrum* given_spectrum )
+old_CppSLHA::old_CppSLHA( std::string given_SLHA_file_name, BOL_EW_scale_spectrum::BOL_EW_scale_spectrum* given_spectrum )
   // this constructor requires a file to open, & this one takes a pre-existing BOL_EW_scale_spectrum,
   // which is how one can implement the NMSSM or similar.
   {
@@ -190,7 +190,7 @@ CppSLHA::CppSLHA( std::string given_SLHA_file_name, BOL_EW_scale_spectrum::BOL_E
       {
 
 	std::cout
-	  << std::endl << "error!  this CppSLHA constructor, with given file name \"" << given_SLHA_file_name
+	  << std::endl << "error!  this old_CppSLHA constructor, with given file name \"" << given_SLHA_file_name
 	  << "\" and given pointer to a BOL_EW_scale_spectrum::BOL_EW_scale_spectrum instance found that the pointer was a NULL pointer.";
 	std::cout << std::endl << "this constructor really doesn't want to do the memory management when given such a pointer."
 		  << "  instead, it is taking the easy way out & calling exit( EXIT_FAILURE )."
@@ -216,7 +216,7 @@ CppSLHA::CppSLHA( std::string given_SLHA_file_name, BOL_EW_scale_spectrum::BOL_E
 
   }
 
-CppSLHA::CppSLHA( CppSLHA::CppSLHA* copy_source )
+old_CppSLHA::old_CppSLHA( old_CppSLHA::old_CppSLHA* copy_source )
   // this constructor copies another instance.
   {
 
@@ -352,7 +352,7 @@ CppSLHA::CppSLHA( CppSLHA::CppSLHA* copy_source )
 
 
 
-bool CppSLHA::reset()
+bool old_CppSLHA::reset()
 // this resets all entries to -10^10 except for the entries in YU, YD, YE, AU, AD & AE, which are reset to 0.0.
 {
 
@@ -490,13 +490,13 @@ bool CppSLHA::reset()
 }
 
 
-double CppSLHA::get_BLOCK( std::string requested_BLOCK )
+double old_CppSLHA::get_BLOCK( std::string requested_BLOCK )
 {
 
   std::transform( requested_BLOCK.begin(),
 		  requested_BLOCK.end(),
 		  requested_BLOCK.begin(),
-		  CppSLHA::safeToUpperThing<std::toupper> );
+		  old_CppSLHA::safeToUpperThing<std::toupper> );
 
   double return_value = REALLY_WRONG_VALUE;
 
@@ -536,7 +536,7 @@ double CppSLHA::get_BLOCK( std::string requested_BLOCK )
 }
 
 
-std::string CppSLHA::get_MODSEL_as_string()
+std::string old_CppSLHA::get_MODSEL_as_string()
 {
 
   std::stringstream return_string_builder;
@@ -548,26 +548,26 @@ std::string CppSLHA::get_MODSEL_as_string()
 }
 
 
-std::string CppSLHA::get_ALPHA_as_string()
+std::string old_CppSLHA::get_ALPHA_as_string()
 {
 
   std::stringstream return_string_builder;
 
   return_string_builder << "BLOCK ALPHA   # Effective Higgs mixing angle" << std::endl
-			<< "         " <<  CppSLHA::SLHA_double( this->get_ALPHA() ) << "   # alpha" << std::endl;
+			<< "         " <<  old_CppSLHA::SLHA_double( this->get_ALPHA() ) << "   # alpha" << std::endl;
 
   return return_string_builder.str();
 
 }
 
 
-void CppSLHA::set_BLOCK( std::string requested_BLOCK, double set_value )
+void old_CppSLHA::set_BLOCK( std::string requested_BLOCK, double set_value )
 {
 
   std::transform( requested_BLOCK.begin(),
 		  requested_BLOCK.end(),
 		  requested_BLOCK.begin(),
-		  CppSLHA::safeToUpperThing<std::toupper> );
+		  old_CppSLHA::safeToUpperThing<std::toupper> );
 
   if( requested_BLOCK.compare( "MODSEL" ) == 0 )
     {
@@ -602,13 +602,13 @@ void CppSLHA::set_BLOCK( std::string requested_BLOCK, double set_value )
 }
 
 
-double CppSLHA::get_BLOCK( std::string requested_BLOCK, int requested_element )
+double old_CppSLHA::get_BLOCK( std::string requested_BLOCK, int requested_element )
 {
 
   std::transform( requested_BLOCK.begin(),
 		  requested_BLOCK.end(),
 		  requested_BLOCK.begin(),
-		  CppSLHA::safeToUpperThing<std::toupper> );
+		  old_CppSLHA::safeToUpperThing<std::toupper> );
 
   double return_value = REALLY_WRONG_VALUE;
 
@@ -677,7 +677,7 @@ double CppSLHA::get_BLOCK( std::string requested_BLOCK, int requested_element )
 }
 
 
-double CppSLHA::get_MINPAR( int requested_element )
+double old_CppSLHA::get_MINPAR( int requested_element )
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -706,25 +706,25 @@ double CppSLHA::get_MINPAR( int requested_element )
 
 }
 
-std::string CppSLHA::get_MINPAR_as_string()
+std::string old_CppSLHA::get_MINPAR_as_string()
 {
 
   std::stringstream return_string_builder;
 
   return_string_builder
     << "BLOCK MINPAR   # Input parameters " << std::endl
-    << "     1   " << CppSLHA::SLHA_double( this->get_MINPAR( 1 ) ) << "   # the common scalar soft mass" << std::endl
-    << "     2   " << CppSLHA::SLHA_double( this->get_MINPAR( 2 ) ) << "   # the common gaugino soft mass" << std::endl
-    << "     3   " << CppSLHA::SLHA_double( this->get_MINPAR( 3 ) ) << "   # tangent of beta at the Z mass" << std::endl
-    << "     4   " << CppSLHA::SLHA_double( this->get_MINPAR( 4 ) ) << "   # the sign of the mu parameter" << std::endl
-    << "     5   " << CppSLHA::SLHA_double( this->get_MINPAR( 5 ) ) << "   # the common scalar soft trilinear mass" << std::endl;
+    << "     1   " << old_CppSLHA::SLHA_double( this->get_MINPAR( 1 ) ) << "   # the common scalar soft mass" << std::endl
+    << "     2   " << old_CppSLHA::SLHA_double( this->get_MINPAR( 2 ) ) << "   # the common gaugino soft mass" << std::endl
+    << "     3   " << old_CppSLHA::SLHA_double( this->get_MINPAR( 3 ) ) << "   # tangent of beta at the Z mass" << std::endl
+    << "     4   " << old_CppSLHA::SLHA_double( this->get_MINPAR( 4 ) ) << "   # the sign of the mu parameter" << std::endl
+    << "     5   " << old_CppSLHA::SLHA_double( this->get_MINPAR( 5 ) ) << "   # the common scalar soft trilinear mass" << std::endl;
 
   return return_string_builder.str();
 
 }
 
 
-double CppSLHA::get_EXTPAR( int requested_element )  // EXTPAR has a zero element, so the enumeration is slightly different to MSOFT.
+double old_CppSLHA::get_EXTPAR( int requested_element )  // EXTPAR has a zero element, so the enumeration is slightly different to MSOFT.
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -774,41 +774,41 @@ double CppSLHA::get_EXTPAR( int requested_element )  // EXTPAR has a zero elemen
 }
 
 
-std::string CppSLHA::get_EXTPAR_as_string()
+std::string old_CppSLHA::get_EXTPAR_as_string()
 {
 
   std::stringstream return_string_builder;
 
   return_string_builder
     << "BLOCK EXTPAR   # soft SUSY breaking masses for non-minimal/non-universal models" << std::endl
-    << "     0   " << CppSLHA::SLHA_double( this->get_EXTPAR(  0 ) ) << "   # the scale for these parameters" << std::endl
-    << "     1   " << CppSLHA::SLHA_double( this->get_EXTPAR(  1 ) ) << "   # M_1" << std::endl
-    << "     2   " << CppSLHA::SLHA_double( this->get_EXTPAR(  2 ) ) << "   # M_2" << std::endl
-    << "     3   " << CppSLHA::SLHA_double( this->get_EXTPAR(  3 ) ) << "   # M_3" << std::endl
-    << "    21   " << CppSLHA::SLHA_double( this->get_EXTPAR( 21 ) ) << "   # M^2_(H,d)" << std::endl
-    << "    22   " << CppSLHA::SLHA_double( this->get_EXTPAR( 22 ) ) << "   # M^2_(H,u)" << std::endl
-    << "    31   " << CppSLHA::SLHA_double( this->get_EXTPAR( 31 ) ) << "   # M_(L,11)" << std::endl
-    << "    32   " << CppSLHA::SLHA_double( this->get_EXTPAR( 32 ) ) << "   # M_(L,22)" << std::endl
-    << "    33   " << CppSLHA::SLHA_double( this->get_EXTPAR( 33 ) ) << "   # M_(L,33)" << std::endl
-    << "    34   " << CppSLHA::SLHA_double( this->get_EXTPAR( 34 ) ) << "   # M_(E,11)" << std::endl
-    << "    35   " << CppSLHA::SLHA_double( this->get_EXTPAR( 35 ) ) << "   # M_(E,22)" << std::endl
-    << "    36   " << CppSLHA::SLHA_double( this->get_EXTPAR( 36 ) ) << "   # M_(E,33)" << std::endl
-    << "    41   " << CppSLHA::SLHA_double( this->get_EXTPAR( 41 ) ) << "   # M_(Q,11)" << std::endl
-    << "    42   " << CppSLHA::SLHA_double( this->get_EXTPAR( 42 ) ) << "   # M_(Q,22)" << std::endl
-    << "    43   " << CppSLHA::SLHA_double( this->get_EXTPAR( 43 ) ) << "   # M_(Q,33)" << std::endl
-    << "    44   " << CppSLHA::SLHA_double( this->get_EXTPAR( 44 ) ) << "   # M_(U,11)" << std::endl
-    << "    45   " << CppSLHA::SLHA_double( this->get_EXTPAR( 45 ) ) << "   # M_(U,22)" << std::endl
-    << "    46   " << CppSLHA::SLHA_double( this->get_EXTPAR( 46 ) ) << "   # M_(U,33)" << std::endl
-    << "    47   " << CppSLHA::SLHA_double( this->get_EXTPAR( 47 ) ) << "   # M_(D,11)" << std::endl
-    << "    48   " << CppSLHA::SLHA_double( this->get_EXTPAR( 48 ) ) << "   # M_(D,22)" << std::endl
-    << "    49   " << CppSLHA::SLHA_double( this->get_EXTPAR( 49 ) ) << "   # M_(D,33)" << std::endl;
+    << "     0   " << old_CppSLHA::SLHA_double( this->get_EXTPAR(  0 ) ) << "   # the scale for these parameters" << std::endl
+    << "     1   " << old_CppSLHA::SLHA_double( this->get_EXTPAR(  1 ) ) << "   # M_1" << std::endl
+    << "     2   " << old_CppSLHA::SLHA_double( this->get_EXTPAR(  2 ) ) << "   # M_2" << std::endl
+    << "     3   " << old_CppSLHA::SLHA_double( this->get_EXTPAR(  3 ) ) << "   # M_3" << std::endl
+    << "    21   " << old_CppSLHA::SLHA_double( this->get_EXTPAR( 21 ) ) << "   # M^2_(H,d)" << std::endl
+    << "    22   " << old_CppSLHA::SLHA_double( this->get_EXTPAR( 22 ) ) << "   # M^2_(H,u)" << std::endl
+    << "    31   " << old_CppSLHA::SLHA_double( this->get_EXTPAR( 31 ) ) << "   # M_(L,11)" << std::endl
+    << "    32   " << old_CppSLHA::SLHA_double( this->get_EXTPAR( 32 ) ) << "   # M_(L,22)" << std::endl
+    << "    33   " << old_CppSLHA::SLHA_double( this->get_EXTPAR( 33 ) ) << "   # M_(L,33)" << std::endl
+    << "    34   " << old_CppSLHA::SLHA_double( this->get_EXTPAR( 34 ) ) << "   # M_(E,11)" << std::endl
+    << "    35   " << old_CppSLHA::SLHA_double( this->get_EXTPAR( 35 ) ) << "   # M_(E,22)" << std::endl
+    << "    36   " << old_CppSLHA::SLHA_double( this->get_EXTPAR( 36 ) ) << "   # M_(E,33)" << std::endl
+    << "    41   " << old_CppSLHA::SLHA_double( this->get_EXTPAR( 41 ) ) << "   # M_(Q,11)" << std::endl
+    << "    42   " << old_CppSLHA::SLHA_double( this->get_EXTPAR( 42 ) ) << "   # M_(Q,22)" << std::endl
+    << "    43   " << old_CppSLHA::SLHA_double( this->get_EXTPAR( 43 ) ) << "   # M_(Q,33)" << std::endl
+    << "    44   " << old_CppSLHA::SLHA_double( this->get_EXTPAR( 44 ) ) << "   # M_(U,11)" << std::endl
+    << "    45   " << old_CppSLHA::SLHA_double( this->get_EXTPAR( 45 ) ) << "   # M_(U,22)" << std::endl
+    << "    46   " << old_CppSLHA::SLHA_double( this->get_EXTPAR( 46 ) ) << "   # M_(U,33)" << std::endl
+    << "    47   " << old_CppSLHA::SLHA_double( this->get_EXTPAR( 47 ) ) << "   # M_(D,11)" << std::endl
+    << "    48   " << old_CppSLHA::SLHA_double( this->get_EXTPAR( 48 ) ) << "   # M_(D,22)" << std::endl
+    << "    49   " << old_CppSLHA::SLHA_double( this->get_EXTPAR( 49 ) ) << "   # M_(D,33)" << std::endl;
 
   return return_string_builder.str();
 
 }
 
 
-double CppSLHA::get_SMINPUTS( int requested_element )
+double old_CppSLHA::get_SMINPUTS( int requested_element )
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -838,27 +838,27 @@ double CppSLHA::get_SMINPUTS( int requested_element )
 }
 
 
-std::string CppSLHA::get_SMINPUTS_as_string()
+std::string old_CppSLHA::get_SMINPUTS_as_string()
 {
 
   std::stringstream return_string_builder;
 
   return_string_builder
 << "BLOCK SMINPUTS  # SM parameters" << std::endl
-<< "     1   " << CppSLHA::SLHA_double( this->get_SMINPUTS( 1 ) ) << "  # 1/alpha_EM at the Z mass in the MSbar scheme" << std::endl
-<< "     2   " << CppSLHA::SLHA_double( this->get_SMINPUTS( 2 ) ) << "  # the Fermi constant G_F in GeV^(-2)" << std::endl
-<< "     3   " << CppSLHA::SLHA_double( this->get_SMINPUTS( 3 ) ) << "  # 1/alpha_s at the Z mass in the MSbar scheme" << std::endl
-<< "     4   " << CppSLHA::SLHA_double( this->get_SMINPUTS( 4 ) ) << "  # the pole mass of the Z boson" << std::endl
-<< "     5   " << CppSLHA::SLHA_double( this->get_SMINPUTS( 5 ) ) << "  # the bottom quark mass at itself in the MSbar scheme" << std::endl
-<< "     6   " << CppSLHA::SLHA_double( this->get_SMINPUTS( 6 ) ) << "  # the pole mass of the top quark" << std::endl
-<< "     7   " << CppSLHA::SLHA_double( this->get_SMINPUTS( 7 ) ) << "  # the pole mass of the tau lepton" << std::endl;
+<< "     1   " << old_CppSLHA::SLHA_double( this->get_SMINPUTS( 1 ) ) << "  # 1/alpha_EM at the Z mass in the MSbar scheme" << std::endl
+<< "     2   " << old_CppSLHA::SLHA_double( this->get_SMINPUTS( 2 ) ) << "  # the Fermi constant G_F in GeV^(-2)" << std::endl
+<< "     3   " << old_CppSLHA::SLHA_double( this->get_SMINPUTS( 3 ) ) << "  # 1/alpha_s at the Z mass in the MSbar scheme" << std::endl
+<< "     4   " << old_CppSLHA::SLHA_double( this->get_SMINPUTS( 4 ) ) << "  # the pole mass of the Z boson" << std::endl
+<< "     5   " << old_CppSLHA::SLHA_double( this->get_SMINPUTS( 5 ) ) << "  # the bottom quark mass at itself in the MSbar scheme" << std::endl
+<< "     6   " << old_CppSLHA::SLHA_double( this->get_SMINPUTS( 6 ) ) << "  # the pole mass of the top quark" << std::endl
+<< "     7   " << old_CppSLHA::SLHA_double( this->get_SMINPUTS( 7 ) ) << "  # the pole mass of the tau lepton" << std::endl;
 
   return return_string_builder.str();
 
 }
 
 
-double CppSLHA::get_GAUGE( int requested_element )
+double old_CppSLHA::get_GAUGE( int requested_element )
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -888,22 +888,22 @@ double CppSLHA::get_GAUGE( int requested_element )
 }
 
 
-std::string CppSLHA::get_GAUGE_as_string()
+std::string old_CppSLHA::get_GAUGE_as_string()
 {
 
   std::stringstream return_string_builder;
 
-  return_string_builder << "BLOCK GAUGE Q= " << CppSLHA::SLHA_double( this->get_Q() ) << "   # (SUSY scale)" << std::endl
-			<< "     1   " << CppSLHA::SLHA_double( this->get_GAUGE( 1 ) ) << "   # g'(Q) in the DRbar scheme" << std::endl
-			<< "     2   " << CppSLHA::SLHA_double( this->get_GAUGE( 2 ) ) << "   # g(Q) in the DRbar scheme" << std::endl
-			<< "     3   " << CppSLHA::SLHA_double( this->get_GAUGE( 3 ) ) << "   # g_3(Q) in the DRbar scheme" << std::endl;
+  return_string_builder << "BLOCK GAUGE Q= " << old_CppSLHA::SLHA_double( this->get_Q() ) << "   # (SUSY scale)" << std::endl
+			<< "     1   " << old_CppSLHA::SLHA_double( this->get_GAUGE( 1 ) ) << "   # g'(Q) in the DRbar scheme" << std::endl
+			<< "     2   " << old_CppSLHA::SLHA_double( this->get_GAUGE( 2 ) ) << "   # g(Q) in the DRbar scheme" << std::endl
+			<< "     3   " << old_CppSLHA::SLHA_double( this->get_GAUGE( 3 ) ) << "   # g_3(Q) in the DRbar scheme" << std::endl;
 
   return return_string_builder.str();
 
 }
 
 
-double CppSLHA::get_MSOFT( int requested_element )
+double old_CppSLHA::get_MSOFT( int requested_element )
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -954,74 +954,74 @@ double CppSLHA::get_MSOFT( int requested_element )
 }
 
 
-std::string CppSLHA::get_MSOFT_as_string()
+std::string old_CppSLHA::get_MSOFT_as_string()
 {
 
   std::stringstream return_string_builder;
 
   return_string_builder
-    << "BLOCK MSOFT Q=  " << CppSLHA::SLHA_double( this->get_Q() ) << "   # soft SUSY breaking masses at Q" << std::endl
-    << "     1   " << CppSLHA::SLHA_double( this->get_MSOFT(  1 ) ) << "   # M_1" << std::endl
-    << "     2   " << CppSLHA::SLHA_double( this->get_MSOFT(  2 ) ) << "   # M_2" << std::endl
-    << "     3   " << CppSLHA::SLHA_double( this->get_MSOFT(  3 ) ) << "   # M_3" << std::endl
-    << "    21   " << CppSLHA::SLHA_double( this->get_MSOFT( 21 ) ) << "   # M^2_(H,d)" << std::endl
-    << "    22   " << CppSLHA::SLHA_double( this->get_MSOFT( 22 ) ) << "   # M^2_(H,u)" << std::endl
-    << "    31   " << CppSLHA::SLHA_double( this->get_MSOFT( 31 ) ) << "   # M_(L,11)" << std::endl
-    << "    32   " << CppSLHA::SLHA_double( this->get_MSOFT( 32 ) ) << "   # M_(L,22)" << std::endl
-    << "    33   " << CppSLHA::SLHA_double( this->get_MSOFT( 33 ) ) << "   # M_(L,33)" << std::endl
-    << "    34   " << CppSLHA::SLHA_double( this->get_MSOFT( 34 ) ) << "   # M_(E,11)" << std::endl
-    << "    35   " << CppSLHA::SLHA_double( this->get_MSOFT( 35 ) ) << "   # M_(E,22)" << std::endl
-    << "    36   " << CppSLHA::SLHA_double( this->get_MSOFT( 36 ) ) << "   # M_(E,33)" << std::endl
-    << "    41   " << CppSLHA::SLHA_double( this->get_MSOFT( 41 ) ) << "   # M_(Q,11)" << std::endl
-    << "    42   " << CppSLHA::SLHA_double( this->get_MSOFT( 42 ) ) << "   # M_(Q,22)" << std::endl
-    << "    43   " << CppSLHA::SLHA_double( this->get_MSOFT( 43 ) ) << "   # M_(Q,33)" << std::endl
-    << "    44   " << CppSLHA::SLHA_double( this->get_MSOFT( 44 ) ) << "   # M_(U,11)" << std::endl
-    << "    45   " << CppSLHA::SLHA_double( this->get_MSOFT( 45 ) ) << "   # M_(U,22)" << std::endl
-    << "    46   " << CppSLHA::SLHA_double( this->get_MSOFT( 46 ) ) << "   # M_(U,33)" << std::endl
-    << "    47   " << CppSLHA::SLHA_double( this->get_MSOFT( 47 ) ) << "   # M_(D,11)" << std::endl
-    << "    48   " << CppSLHA::SLHA_double( this->get_MSOFT( 48 ) ) << "   # M_(D,22)" << std::endl
-    << "    49   " << CppSLHA::SLHA_double( this->get_MSOFT( 49 ) ) << "   # M_(D,33)" << std::endl;
+    << "BLOCK MSOFT Q=  " << old_CppSLHA::SLHA_double( this->get_Q() ) << "   # soft SUSY breaking masses at Q" << std::endl
+    << "     1   " << old_CppSLHA::SLHA_double( this->get_MSOFT(  1 ) ) << "   # M_1" << std::endl
+    << "     2   " << old_CppSLHA::SLHA_double( this->get_MSOFT(  2 ) ) << "   # M_2" << std::endl
+    << "     3   " << old_CppSLHA::SLHA_double( this->get_MSOFT(  3 ) ) << "   # M_3" << std::endl
+    << "    21   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 21 ) ) << "   # M^2_(H,d)" << std::endl
+    << "    22   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 22 ) ) << "   # M^2_(H,u)" << std::endl
+    << "    31   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 31 ) ) << "   # M_(L,11)" << std::endl
+    << "    32   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 32 ) ) << "   # M_(L,22)" << std::endl
+    << "    33   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 33 ) ) << "   # M_(L,33)" << std::endl
+    << "    34   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 34 ) ) << "   # M_(E,11)" << std::endl
+    << "    35   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 35 ) ) << "   # M_(E,22)" << std::endl
+    << "    36   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 36 ) ) << "   # M_(E,33)" << std::endl
+    << "    41   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 41 ) ) << "   # M_(Q,11)" << std::endl
+    << "    42   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 42 ) ) << "   # M_(Q,22)" << std::endl
+    << "    43   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 43 ) ) << "   # M_(Q,33)" << std::endl
+    << "    44   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 44 ) ) << "   # M_(U,11)" << std::endl
+    << "    45   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 45 ) ) << "   # M_(U,22)" << std::endl
+    << "    46   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 46 ) ) << "   # M_(U,33)" << std::endl
+    << "    47   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 47 ) ) << "   # M_(D,11)" << std::endl
+    << "    48   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 48 ) ) << "   # M_(D,22)" << std::endl
+    << "    49   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 49 ) ) << "   # M_(D,33)" << std::endl;
 
   return return_string_builder.str();
 
 }
 
 
-std::string CppSLHA::get_EXTPAR_from_MSOFT_as_string()  // this writes the MSOFT BLOCK as the EXTPAR BLOCK, using the Q which was read in.
+std::string old_CppSLHA::get_EXTPAR_from_MSOFT_as_string()  // this writes the MSOFT BLOCK as the EXTPAR BLOCK, using the Q which was read in.
 {
 
   std::stringstream return_string_builder;
 
   return_string_builder
     << "BLOCK EXTPAR   # soft SUSY breaking masses for non-minimal/non-universal models" << std::endl
-    << "     0   " << CppSLHA::SLHA_double( this->get_Q()         ) << "   # the scale for these parameters" << std::endl
-    << "     1   " << CppSLHA::SLHA_double( this->get_MSOFT(  1 ) ) << "   # M_1" << std::endl
-    << "     2   " << CppSLHA::SLHA_double( this->get_MSOFT(  2 ) ) << "   # M_2" << std::endl
-    << "     3   " << CppSLHA::SLHA_double( this->get_MSOFT(  3 ) ) << "   # M_3" << std::endl
-    << "    21   " << CppSLHA::SLHA_double( this->get_MSOFT( 21 ) ) << "   # M^2_(H,d)" << std::endl
-    << "    22   " << CppSLHA::SLHA_double( this->get_MSOFT( 22 ) ) << "   # M^2_(H,u)" << std::endl
-    << "    31   " << CppSLHA::SLHA_double( this->get_MSOFT( 31 ) ) << "   # M_(L,11)" << std::endl
-    << "    32   " << CppSLHA::SLHA_double( this->get_MSOFT( 32 ) ) << "   # M_(L,22)" << std::endl
-    << "    33   " << CppSLHA::SLHA_double( this->get_MSOFT( 33 ) ) << "   # M_(L,33)" << std::endl
-    << "    34   " << CppSLHA::SLHA_double( this->get_MSOFT( 34 ) ) << "   # M_(E,11)" << std::endl
-    << "    35   " << CppSLHA::SLHA_double( this->get_MSOFT( 35 ) ) << "   # M_(E,22)" << std::endl
-    << "    36   " << CppSLHA::SLHA_double( this->get_MSOFT( 36 ) ) << "   # M_(E,33)" << std::endl
-    << "    41   " << CppSLHA::SLHA_double( this->get_MSOFT( 41 ) ) << "   # M_(Q,11)" << std::endl
-    << "    42   " << CppSLHA::SLHA_double( this->get_MSOFT( 42 ) ) << "   # M_(Q,22)" << std::endl
-    << "    43   " << CppSLHA::SLHA_double( this->get_MSOFT( 43 ) ) << "   # M_(Q,33)" << std::endl
-    << "    44   " << CppSLHA::SLHA_double( this->get_MSOFT( 44 ) ) << "   # M_(U,11)" << std::endl
-    << "    45   " << CppSLHA::SLHA_double( this->get_MSOFT( 45 ) ) << "   # M_(U,22)" << std::endl
-    << "    46   " << CppSLHA::SLHA_double( this->get_MSOFT( 46 ) ) << "   # M_(U,33)" << std::endl
-    << "    47   " << CppSLHA::SLHA_double( this->get_MSOFT( 47 ) ) << "   # M_(D,11)" << std::endl
-    << "    48   " << CppSLHA::SLHA_double( this->get_MSOFT( 48 ) ) << "   # M_(D,22)" << std::endl
-    << "    49   " << CppSLHA::SLHA_double( this->get_MSOFT( 49 ) ) << "   # M_(D,33)" << std::endl;
+    << "     0   " << old_CppSLHA::SLHA_double( this->get_Q()         ) << "   # the scale for these parameters" << std::endl
+    << "     1   " << old_CppSLHA::SLHA_double( this->get_MSOFT(  1 ) ) << "   # M_1" << std::endl
+    << "     2   " << old_CppSLHA::SLHA_double( this->get_MSOFT(  2 ) ) << "   # M_2" << std::endl
+    << "     3   " << old_CppSLHA::SLHA_double( this->get_MSOFT(  3 ) ) << "   # M_3" << std::endl
+    << "    21   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 21 ) ) << "   # M^2_(H,d)" << std::endl
+    << "    22   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 22 ) ) << "   # M^2_(H,u)" << std::endl
+    << "    31   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 31 ) ) << "   # M_(L,11)" << std::endl
+    << "    32   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 32 ) ) << "   # M_(L,22)" << std::endl
+    << "    33   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 33 ) ) << "   # M_(L,33)" << std::endl
+    << "    34   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 34 ) ) << "   # M_(E,11)" << std::endl
+    << "    35   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 35 ) ) << "   # M_(E,22)" << std::endl
+    << "    36   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 36 ) ) << "   # M_(E,33)" << std::endl
+    << "    41   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 41 ) ) << "   # M_(Q,11)" << std::endl
+    << "    42   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 42 ) ) << "   # M_(Q,22)" << std::endl
+    << "    43   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 43 ) ) << "   # M_(Q,33)" << std::endl
+    << "    44   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 44 ) ) << "   # M_(U,11)" << std::endl
+    << "    45   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 45 ) ) << "   # M_(U,22)" << std::endl
+    << "    46   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 46 ) ) << "   # M_(U,33)" << std::endl
+    << "    47   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 47 ) ) << "   # M_(D,11)" << std::endl
+    << "    48   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 48 ) ) << "   # M_(D,22)" << std::endl
+    << "    49   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 49 ) ) << "   # M_(D,33)" << std::endl;
 
   return return_string_builder.str();
 
 }
 
 
-std::string CppSLHA::get_EXTPAR_from_MSOFT_as_string( double given_scale )
+std::string old_CppSLHA::get_EXTPAR_from_MSOFT_as_string( double given_scale )
 // this writes the MSOFT BLOCK as the EXTPAR BLOCK, with the given scale.
 {
 
@@ -1029,34 +1029,34 @@ std::string CppSLHA::get_EXTPAR_from_MSOFT_as_string( double given_scale )
 
   return_string_builder
     << "BLOCK EXTPAR   # soft SUSY breaking masses for non-minimal/non-universal models" << std::endl
-    << "     0   " << CppSLHA::SLHA_double(           given_scale ) << "   # the scale for these parameters" << std::endl
-    << "     1   " << CppSLHA::SLHA_double( this->get_MSOFT(  1 ) ) << "   # M_1" << std::endl
-    << "     2   " << CppSLHA::SLHA_double( this->get_MSOFT(  2 ) ) << "   # M_2" << std::endl
-    << "     3   " << CppSLHA::SLHA_double( this->get_MSOFT(  3 ) ) << "   # M_3" << std::endl
-    << "    21   " << CppSLHA::SLHA_double( this->get_MSOFT( 21 ) ) << "   # M^2_(H,d)" << std::endl
-    << "    22   " << CppSLHA::SLHA_double( this->get_MSOFT( 22 ) ) << "   # M^2_(H,u)" << std::endl
-    << "    31   " << CppSLHA::SLHA_double( this->get_MSOFT( 31 ) ) << "   # M_(L,11)" << std::endl
-    << "    32   " << CppSLHA::SLHA_double( this->get_MSOFT( 32 ) ) << "   # M_(L,22)" << std::endl
-    << "    33   " << CppSLHA::SLHA_double( this->get_MSOFT( 33 ) ) << "   # M_(L,33)" << std::endl
-    << "    34   " << CppSLHA::SLHA_double( this->get_MSOFT( 34 ) ) << "   # M_(E,11)" << std::endl
-    << "    35   " << CppSLHA::SLHA_double( this->get_MSOFT( 35 ) ) << "   # M_(E,22)" << std::endl
-    << "    36   " << CppSLHA::SLHA_double( this->get_MSOFT( 36 ) ) << "   # M_(E,33)" << std::endl
-    << "    41   " << CppSLHA::SLHA_double( this->get_MSOFT( 41 ) ) << "   # M_(Q,11)" << std::endl
-    << "    42   " << CppSLHA::SLHA_double( this->get_MSOFT( 42 ) ) << "   # M_(Q,22)" << std::endl
-    << "    43   " << CppSLHA::SLHA_double( this->get_MSOFT( 43 ) ) << "   # M_(Q,33)" << std::endl
-    << "    44   " << CppSLHA::SLHA_double( this->get_MSOFT( 44 ) ) << "   # M_(U,11)" << std::endl
-    << "    45   " << CppSLHA::SLHA_double( this->get_MSOFT( 45 ) ) << "   # M_(U,22)" << std::endl
-    << "    46   " << CppSLHA::SLHA_double( this->get_MSOFT( 46 ) ) << "   # M_(U,33)" << std::endl
-    << "    47   " << CppSLHA::SLHA_double( this->get_MSOFT( 47 ) ) << "   # M_(D,11)" << std::endl
-    << "    48   " << CppSLHA::SLHA_double( this->get_MSOFT( 48 ) ) << "   # M_(D,22)" << std::endl
-    << "    49   " << CppSLHA::SLHA_double( this->get_MSOFT( 49 ) ) << "   # M_(D,33)" << std::endl;
+    << "     0   " << old_CppSLHA::SLHA_double(           given_scale ) << "   # the scale for these parameters" << std::endl
+    << "     1   " << old_CppSLHA::SLHA_double( this->get_MSOFT(  1 ) ) << "   # M_1" << std::endl
+    << "     2   " << old_CppSLHA::SLHA_double( this->get_MSOFT(  2 ) ) << "   # M_2" << std::endl
+    << "     3   " << old_CppSLHA::SLHA_double( this->get_MSOFT(  3 ) ) << "   # M_3" << std::endl
+    << "    21   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 21 ) ) << "   # M^2_(H,d)" << std::endl
+    << "    22   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 22 ) ) << "   # M^2_(H,u)" << std::endl
+    << "    31   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 31 ) ) << "   # M_(L,11)" << std::endl
+    << "    32   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 32 ) ) << "   # M_(L,22)" << std::endl
+    << "    33   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 33 ) ) << "   # M_(L,33)" << std::endl
+    << "    34   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 34 ) ) << "   # M_(E,11)" << std::endl
+    << "    35   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 35 ) ) << "   # M_(E,22)" << std::endl
+    << "    36   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 36 ) ) << "   # M_(E,33)" << std::endl
+    << "    41   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 41 ) ) << "   # M_(Q,11)" << std::endl
+    << "    42   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 42 ) ) << "   # M_(Q,22)" << std::endl
+    << "    43   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 43 ) ) << "   # M_(Q,33)" << std::endl
+    << "    44   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 44 ) ) << "   # M_(U,11)" << std::endl
+    << "    45   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 45 ) ) << "   # M_(U,22)" << std::endl
+    << "    46   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 46 ) ) << "   # M_(U,33)" << std::endl
+    << "    47   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 47 ) ) << "   # M_(D,11)" << std::endl
+    << "    48   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 48 ) ) << "   # M_(D,22)" << std::endl
+    << "    49   " << old_CppSLHA::SLHA_double( this->get_MSOFT( 49 ) ) << "   # M_(D,33)" << std::endl;
 
   return return_string_builder.str();
 
 }
 
 
-double CppSLHA::get_MASS( int requested_element )
+double old_CppSLHA::get_MASS( int requested_element )
 {
 
   double return_value = this->particle_spectrum->get_PDG_coded_mass( requested_element );
@@ -1078,7 +1078,7 @@ double CppSLHA::get_MASS( int requested_element )
 }
 
 
-std::string CppSLHA::get_MASS_as_string()
+std::string old_CppSLHA::get_MASS_as_string()
 {
 
   std::stringstream return_string_builder;
@@ -1094,8 +1094,8 @@ std::string CppSLHA::get_MASS_as_string()
 
       set_being_written = this->particle_spectrum->get_particle_property_sets()->at( particle_counter );
 
-      return_string_builder << " " << CppSLHA::SLHA_int( set_being_written->get_PDG_code(), 9 )
-			    << "   " << CppSLHA::SLHA_double( set_being_written->get_mass() )
+      return_string_builder << " " << old_CppSLHA::SLHA_int( set_being_written->get_PDG_code(), 9 )
+			    << "   " << old_CppSLHA::SLHA_double( set_being_written->get_mass() )
 			    << "   # " << set_being_written->get_name() << std::endl;
 
     }
@@ -1105,7 +1105,7 @@ std::string CppSLHA::get_MASS_as_string()
 }
 
 
-double CppSLHA::get_HMIX( int requested_element )
+double old_CppSLHA::get_HMIX( int requested_element )
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -1135,24 +1135,24 @@ double CppSLHA::get_HMIX( int requested_element )
 }
 
 
-std::string CppSLHA::get_HMIX_as_string()
+std::string old_CppSLHA::get_HMIX_as_string()
 {
 
   std::stringstream return_string_builder;
 
   return_string_builder
-    << "BLOCK HMIX Q= " << CppSLHA::SLHA_double( this->get_Q() ) << "   # Higgs mixing parameters" << std::endl
-    << "     1   " << CppSLHA::SLHA_double( this->get_HMIX( 1 ) ) << "   # mu" << std::endl
-    << "     2   " << CppSLHA::SLHA_double( this->get_HMIX( 2 ) ) << "   # tangent of beta at scale Q" << std::endl
-    << "     3   " << CppSLHA::SLHA_double( this->get_HMIX( 3 ) ) << "   # v(Q)" << std::endl
-    << "     4   " << CppSLHA::SLHA_double( this->get_HMIX( 4 ) ) << "   # m^2_A(Q)" << std::endl;
+    << "BLOCK HMIX Q= " << old_CppSLHA::SLHA_double( this->get_Q() ) << "   # Higgs mixing parameters" << std::endl
+    << "     1   " << old_CppSLHA::SLHA_double( this->get_HMIX( 1 ) ) << "   # mu" << std::endl
+    << "     2   " << old_CppSLHA::SLHA_double( this->get_HMIX( 2 ) ) << "   # tangent of beta at scale Q" << std::endl
+    << "     3   " << old_CppSLHA::SLHA_double( this->get_HMIX( 3 ) ) << "   # v(Q)" << std::endl
+    << "     4   " << old_CppSLHA::SLHA_double( this->get_HMIX( 4 ) ) << "   # m^2_A(Q)" << std::endl;
 
   return return_string_builder.str();
 
 }
 
 
-double CppSLHA::get_SPHENOLOWENERGY( int requested_element )
+double old_CppSLHA::get_SPHENOLOWENERGY( int requested_element )
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -1202,49 +1202,49 @@ double CppSLHA::get_SPHENOLOWENERGY( int requested_element )
 }
 
 
-std::string CppSLHA::get_SPHENOLOWENERGY_as_string()
+std::string old_CppSLHA::get_SPHENOLOWENERGY_as_string()
 {
 
   std::stringstream return_string_builder;
 
   return_string_builder
     << "BLOCK SPHENOLOWENERGY  # low energy observables as calculated by SPheno" << std::endl
-    << "     1   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY(  1 ) ) << "   # BR(b -> s gamma)" << std::endl
-    << "     2   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY(  2 ) ) << "   # BR(b -> s mu+ mu-)" << std::endl
-    << "     3   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY(  3 ) ) << "   # BR(b -> s nu nu)" << std::endl
-    << "     4   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY(  4 ) ) << "   # BR(Bs -> mu+ mu-)" << std::endl
-    << "     5   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY(  5 ) ) << "   # BR(B_u -> tau nu)" << std::endl
-    << "     6   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY(  6 ) ) << "   # |Delta(M_Bd)| [ps^-1] " << std::endl
-    << "     7   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY(  7 ) ) << "   # |Delta(M_Bs)| [ps^-1] " << std::endl
-    << "    10   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 10 ) ) << "   # Delta(g-2)_electron" << std::endl
-    << "    11   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 11 ) ) << "   # Delta(g-2)_muon" << std::endl
-    << "    12   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 12 ) ) << "   # Delta(g-2)_tau" << std::endl
-    << "    13   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 13 ) ) << "   # electric dipole moment of the electron" << std::endl
-    << "    14   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 14 ) ) << "   # electric dipole moment of the muon" << std::endl
-    << "    15   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 15 ) ) << "   # electric dipole moment of the tau" << std::endl
-    << "    16   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 16 ) ) << "   # Br(mu -> e gamma)" << std::endl
-    << "    17   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 17 ) ) << "   # Br(tau -> e gamma)" << std::endl
-    << "    18   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 18 ) ) << "   # Br(tau -> mu gamma)" << std::endl
-    << "    19   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 19 ) ) << "   # Br(mu -> 3 e)" << std::endl
-    << "    20   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 20 ) ) << "   # Br(tau -> 3 e)" << std::endl
-    << "    21   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 21 ) ) << "   # Br(tau -> 3 mu)" << std::endl
-    << "    30   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 30 ) ) << "   # Delta(rho_parameter)" << std::endl
-    << "    40   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 40 ) ) << "   # BR(Z -> e mu)" << std::endl
-    << "    41   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 41 ) ) << "   # BR(Z -> e tau)" << std::endl
-    << "    42   " << CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 42 ) ) << "   # BR(Z -> mu tau)" << std::endl;
+    << "     1   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY(  1 ) ) << "   # BR(b -> s gamma)" << std::endl
+    << "     2   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY(  2 ) ) << "   # BR(b -> s mu+ mu-)" << std::endl
+    << "     3   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY(  3 ) ) << "   # BR(b -> s nu nu)" << std::endl
+    << "     4   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY(  4 ) ) << "   # BR(Bs -> mu+ mu-)" << std::endl
+    << "     5   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY(  5 ) ) << "   # BR(B_u -> tau nu)" << std::endl
+    << "     6   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY(  6 ) ) << "   # |Delta(M_Bd)| [ps^-1] " << std::endl
+    << "     7   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY(  7 ) ) << "   # |Delta(M_Bs)| [ps^-1] " << std::endl
+    << "    10   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 10 ) ) << "   # Delta(g-2)_electron" << std::endl
+    << "    11   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 11 ) ) << "   # Delta(g-2)_muon" << std::endl
+    << "    12   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 12 ) ) << "   # Delta(g-2)_tau" << std::endl
+    << "    13   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 13 ) ) << "   # electric dipole moment of the electron" << std::endl
+    << "    14   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 14 ) ) << "   # electric dipole moment of the muon" << std::endl
+    << "    15   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 15 ) ) << "   # electric dipole moment of the tau" << std::endl
+    << "    16   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 16 ) ) << "   # Br(mu -> e gamma)" << std::endl
+    << "    17   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 17 ) ) << "   # Br(tau -> e gamma)" << std::endl
+    << "    18   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 18 ) ) << "   # Br(tau -> mu gamma)" << std::endl
+    << "    19   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 19 ) ) << "   # Br(mu -> 3 e)" << std::endl
+    << "    20   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 20 ) ) << "   # Br(tau -> 3 e)" << std::endl
+    << "    21   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 21 ) ) << "   # Br(tau -> 3 mu)" << std::endl
+    << "    30   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 30 ) ) << "   # Delta(rho_parameter)" << std::endl
+    << "    40   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 40 ) ) << "   # BR(Z -> e mu)" << std::endl
+    << "    41   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 41 ) ) << "   # BR(Z -> e tau)" << std::endl
+    << "    42   " << old_CppSLHA::SLHA_double( this->get_SPHENOLOWENERGY( 42 ) ) << "   # BR(Z -> mu tau)" << std::endl;
 
   return return_string_builder.str();
 
 }
 
 
-void CppSLHA::set_BLOCK( std::string requested_BLOCK, int requested_element, double set_value )
+void old_CppSLHA::set_BLOCK( std::string requested_BLOCK, int requested_element, double set_value )
 {
 
   std::transform( requested_BLOCK.begin(),
 		  requested_BLOCK.end(),
 		  requested_BLOCK.begin(),
-		  CppSLHA::safeToUpperThing<std::toupper> );
+		  old_CppSLHA::safeToUpperThing<std::toupper> );
 
   if( requested_BLOCK.compare( "MINPAR" ) == 0 )
     {
@@ -1309,7 +1309,7 @@ void CppSLHA::set_BLOCK( std::string requested_BLOCK, int requested_element, dou
 }
 
 
-void CppSLHA::set_MINPAR( int requested_element, double set_value )
+void old_CppSLHA::set_MINPAR( int requested_element, double set_value )
 {
 
   if( ( requested_element > 0 )
@@ -1335,7 +1335,7 @@ void CppSLHA::set_MINPAR( int requested_element, double set_value )
 }
 
 
-void CppSLHA::set_EXTPAR( int requested_element, double set_value )
+void old_CppSLHA::set_EXTPAR( int requested_element, double set_value )
 {
 
   if( ( requested_element >= 0 )
@@ -1381,7 +1381,7 @@ void CppSLHA::set_EXTPAR( int requested_element, double set_value )
 }
 
 
-void CppSLHA::set_SMINPUTS( int requested_element, double set_value )
+void old_CppSLHA::set_SMINPUTS( int requested_element, double set_value )
 {
 
   if( ( requested_element > 0 )
@@ -1407,7 +1407,7 @@ void CppSLHA::set_SMINPUTS( int requested_element, double set_value )
 }
 
 
-void CppSLHA::set_GAUGE( int requested_element, double set_value )
+void old_CppSLHA::set_GAUGE( int requested_element, double set_value )
 {
 
   if( ( requested_element > 0 )
@@ -1433,7 +1433,7 @@ void CppSLHA::set_GAUGE( int requested_element, double set_value )
 }
 
 
-void CppSLHA::set_MSOFT( int requested_element, double set_value )
+void old_CppSLHA::set_MSOFT( int requested_element, double set_value )
 {
 
   if( ( requested_element > 0 )
@@ -1480,7 +1480,7 @@ void CppSLHA::set_MSOFT( int requested_element, double set_value )
 }
 
 
-void CppSLHA::set_HMIX( int requested_element, double set_value )
+void old_CppSLHA::set_HMIX( int requested_element, double set_value )
 {
 
   if( ( requested_element > 0 )
@@ -1506,7 +1506,7 @@ void CppSLHA::set_HMIX( int requested_element, double set_value )
 }
 
 
-void CppSLHA::set_SPHENOLOWENERGY( int requested_element, double set_value )
+void old_CppSLHA::set_SPHENOLOWENERGY( int requested_element, double set_value )
 {
 
   if( ( requested_element > 0 )
@@ -1552,13 +1552,13 @@ void CppSLHA::set_SPHENOLOWENERGY( int requested_element, double set_value )
 }
 
 
-double CppSLHA::get_BLOCK( std::string requested_BLOCK, int requested_element_one, int requested_element_two )
+double old_CppSLHA::get_BLOCK( std::string requested_BLOCK, int requested_element_one, int requested_element_two )
 {
 
   std::transform( requested_BLOCK.begin(),
 		  requested_BLOCK.end(),
 		  requested_BLOCK.begin(),
-		  CppSLHA::safeToUpperThing<std::toupper> );
+		  old_CppSLHA::safeToUpperThing<std::toupper> );
 
   double return_value = REALLY_WRONG_VALUE;
 
@@ -1651,7 +1651,7 @@ double CppSLHA::get_BLOCK( std::string requested_BLOCK, int requested_element_on
 }
 
 
-double CppSLHA::get_YU( int requested_element_one, int requested_element_two )
+double old_CppSLHA::get_YU( int requested_element_one, int requested_element_two )
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -1684,12 +1684,12 @@ double CppSLHA::get_YU( int requested_element_one, int requested_element_two )
 }
 
 
-std::string CppSLHA::get_YU_as_string()
+std::string old_CppSLHA::get_YU_as_string()
 {
 
   std::stringstream return_string_builder;
 
-  return_string_builder << "BLOCK YU Q=  " << CppSLHA::SLHA_double( this->get_Q() ) << "   # (SUSY scale)" << std::endl;
+  return_string_builder << "BLOCK YU Q=  " << old_CppSLHA::SLHA_double( this->get_Q() ) << "   # (SUSY scale)" << std::endl;
 
   for( int element_one_counter = 1;
        element_one_counter <= 3;
@@ -1701,7 +1701,7 @@ std::string CppSLHA::get_YU_as_string()
 	   element_two_counter++ )
 	{
 
-	  return_string_builder << " " << CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << CppSLHA::SLHA_double( this->get_YU( element_one_counter, element_two_counter ) ) << "   #";
+	  return_string_builder << " " << old_CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << old_CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << old_CppSLHA::SLHA_double( this->get_YU( element_one_counter, element_two_counter ) ) << "   #";
 
 	  if( ( element_one_counter == 1 )
 	      && ( element_two_counter == 1 ) )
@@ -1736,7 +1736,7 @@ std::string CppSLHA::get_YU_as_string()
 }
 
 
-double CppSLHA::get_YD( int requested_element_one, int requested_element_two )
+double old_CppSLHA::get_YD( int requested_element_one, int requested_element_two )
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -1769,12 +1769,12 @@ double CppSLHA::get_YD( int requested_element_one, int requested_element_two )
 }
 
 
-std::string CppSLHA::get_YD_as_string()
+std::string old_CppSLHA::get_YD_as_string()
 {
 
   std::stringstream return_string_builder;
 
-  return_string_builder << "BLOCK YD Q=  " << CppSLHA::SLHA_double( this->get_Q() ) << "   # (SUSY scale)" << std::endl;
+  return_string_builder << "BLOCK YD Q=  " << old_CppSLHA::SLHA_double( this->get_Q() ) << "   # (SUSY scale)" << std::endl;
 
   for( int element_one_counter = 1;
        element_one_counter <= 3;
@@ -1786,7 +1786,7 @@ std::string CppSLHA::get_YD_as_string()
 	   element_two_counter++ )
 	{
 	    
-	  return_string_builder << " " << CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << CppSLHA::SLHA_double( this->get_YD( element_one_counter, element_two_counter ) ) << "   #";
+	  return_string_builder << " " << old_CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << old_CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << old_CppSLHA::SLHA_double( this->get_YD( element_one_counter, element_two_counter ) ) << "   #";
 
 	  if( ( element_one_counter == 1 )
 	      && ( element_two_counter == 1 ) )
@@ -1821,7 +1821,7 @@ std::string CppSLHA::get_YD_as_string()
 }
 
 
-double CppSLHA::get_YE( int requested_element_one, int requested_element_two )
+double old_CppSLHA::get_YE( int requested_element_one, int requested_element_two )
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -1854,12 +1854,12 @@ double CppSLHA::get_YE( int requested_element_one, int requested_element_two )
 }
 
 
-std::string CppSLHA::get_YE_as_string()
+std::string old_CppSLHA::get_YE_as_string()
 {
 
   std::stringstream return_string_builder;
 
-  return_string_builder << "BLOCK YE Q=  " << CppSLHA::SLHA_double( this->get_Q() ) << "   # (SUSY scale)" << std::endl;
+  return_string_builder << "BLOCK YE Q=  " << old_CppSLHA::SLHA_double( this->get_Q() ) << "   # (SUSY scale)" << std::endl;
 
   for( int element_one_counter = 1;
        element_one_counter <= 3;
@@ -1871,7 +1871,7 @@ std::string CppSLHA::get_YE_as_string()
 	   element_two_counter++ )
 	{
 	    
-	  return_string_builder << " " << CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << CppSLHA::SLHA_double( this->get_YE( element_one_counter, element_two_counter ) ) << "   #";
+	  return_string_builder << " " << old_CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << old_CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << old_CppSLHA::SLHA_double( this->get_YE( element_one_counter, element_two_counter ) ) << "   #";
 
 	  if( ( element_one_counter == 1 )
 	      && ( element_two_counter == 1 ) )
@@ -1906,7 +1906,7 @@ std::string CppSLHA::get_YE_as_string()
 }
 
 
-double CppSLHA::get_AU( int requested_element_one, int requested_element_two )
+double old_CppSLHA::get_AU( int requested_element_one, int requested_element_two )
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -1939,12 +1939,12 @@ double CppSLHA::get_AU( int requested_element_one, int requested_element_two )
 }
 
 
-std::string CppSLHA::get_AU_as_string()
+std::string old_CppSLHA::get_AU_as_string()
 {
 
   std::stringstream return_string_builder;
 
-  return_string_builder << "BLOCK AU Q=  " << CppSLHA::SLHA_double( this->get_Q() ) << "   # (SUSY scale)" << std::endl;
+  return_string_builder << "BLOCK AU Q=  " << old_CppSLHA::SLHA_double( this->get_Q() ) << "   # (SUSY scale)" << std::endl;
 
   for( int element_one_counter = 1;
        element_one_counter <= 3;
@@ -1956,7 +1956,7 @@ std::string CppSLHA::get_AU_as_string()
 	   element_two_counter++ )
 	{
 	    
-	  return_string_builder << " " << CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << CppSLHA::SLHA_double( this->get_AU( element_one_counter, element_two_counter ) ) << "   #";
+	  return_string_builder << " " << old_CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << old_CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << old_CppSLHA::SLHA_double( this->get_AU( element_one_counter, element_two_counter ) ) << "   #";
 
 	  if( ( element_one_counter == 1 )
 	      && ( element_two_counter == 1 ) )
@@ -1991,7 +1991,7 @@ std::string CppSLHA::get_AU_as_string()
 }
 
 
-double CppSLHA::get_AD( int requested_element_one, int requested_element_two )
+double old_CppSLHA::get_AD( int requested_element_one, int requested_element_two )
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -2024,12 +2024,12 @@ double CppSLHA::get_AD( int requested_element_one, int requested_element_two )
 }
 
 
-std::string CppSLHA::get_AD_as_string()
+std::string old_CppSLHA::get_AD_as_string()
 {
 
   std::stringstream return_string_builder;
 
-  return_string_builder << "BLOCK AD Q=  " << CppSLHA::SLHA_double( this->get_Q() ) << "   # (SUSY scale)" << std::endl;
+  return_string_builder << "BLOCK AD Q=  " << old_CppSLHA::SLHA_double( this->get_Q() ) << "   # (SUSY scale)" << std::endl;
 
   for( int element_one_counter = 1;
        element_one_counter <= 3;
@@ -2041,7 +2041,7 @@ std::string CppSLHA::get_AD_as_string()
 	   element_two_counter++ )
 	{
 	    
-	  return_string_builder << " " << CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << CppSLHA::SLHA_double( this->get_AD( element_one_counter, element_two_counter ) ) << "   #";
+	  return_string_builder << " " << old_CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << old_CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << old_CppSLHA::SLHA_double( this->get_AD( element_one_counter, element_two_counter ) ) << "   #";
 
 	  if( ( element_one_counter == 1 )
 	      && ( element_two_counter == 1 ) )
@@ -2076,7 +2076,7 @@ std::string CppSLHA::get_AD_as_string()
 }
 
 
-double CppSLHA::get_AE( int requested_element_one, int requested_element_two )
+double old_CppSLHA::get_AE( int requested_element_one, int requested_element_two )
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -2109,12 +2109,12 @@ double CppSLHA::get_AE( int requested_element_one, int requested_element_two )
 }
 
 
-std::string CppSLHA::get_AE_as_string()
+std::string old_CppSLHA::get_AE_as_string()
 {
 
   std::stringstream return_string_builder;
 
-  return_string_builder << "BLOCK AE Q=  " << CppSLHA::SLHA_double( this->get_Q() ) << "   # (SUSY scale)" << std::endl;
+  return_string_builder << "BLOCK AE Q=  " << old_CppSLHA::SLHA_double( this->get_Q() ) << "   # (SUSY scale)" << std::endl;
 
   for( int element_one_counter = 1;
        element_one_counter <= 3;
@@ -2126,7 +2126,7 @@ std::string CppSLHA::get_AE_as_string()
 	   element_two_counter++ )
 	{
 	    
-	  return_string_builder << " " << CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << CppSLHA::SLHA_double( this->get_AE( element_one_counter, element_two_counter ) ) << "   #";
+	  return_string_builder << " " << old_CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << old_CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << old_CppSLHA::SLHA_double( this->get_AE( element_one_counter, element_two_counter ) ) << "   #";
 
 	  if( ( element_one_counter == 1 )
 	      && ( element_two_counter == 1 ) )
@@ -2161,7 +2161,7 @@ std::string CppSLHA::get_AE_as_string()
 }
 
 
-double CppSLHA::get_STOPMIX( int requested_element_one, int requested_element_two )
+double old_CppSLHA::get_STOPMIX( int requested_element_one, int requested_element_two )
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -2194,7 +2194,7 @@ double CppSLHA::get_STOPMIX( int requested_element_one, int requested_element_tw
 }
 
 
-std::string CppSLHA::get_STOPMIX_as_string()
+std::string old_CppSLHA::get_STOPMIX_as_string()
 {
 
   std::stringstream return_string_builder;
@@ -2211,7 +2211,7 @@ std::string CppSLHA::get_STOPMIX_as_string()
 	   element_two_counter++ )
 	{
 	    
-	  return_string_builder << " " << CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << CppSLHA::SLHA_double( this->get_STOPMIX( element_one_counter, element_two_counter ) ) << "   #" << std::endl;
+	  return_string_builder << " " << old_CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << old_CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << old_CppSLHA::SLHA_double( this->get_STOPMIX( element_one_counter, element_two_counter ) ) << "   #" << std::endl;
 
 	}
 
@@ -2222,7 +2222,7 @@ std::string CppSLHA::get_STOPMIX_as_string()
 }
 
 
-double CppSLHA::get_SBOTMIX( int requested_element_one, int requested_element_two )
+double old_CppSLHA::get_SBOTMIX( int requested_element_one, int requested_element_two )
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -2255,7 +2255,7 @@ double CppSLHA::get_SBOTMIX( int requested_element_one, int requested_element_tw
 }
 
 
-std::string CppSLHA::get_SBOTMIX_as_string()
+std::string old_CppSLHA::get_SBOTMIX_as_string()
 {
 
   std::stringstream return_string_builder;
@@ -2272,7 +2272,7 @@ std::string CppSLHA::get_SBOTMIX_as_string()
 	   element_two_counter++ )
 	{
 	    
-	  return_string_builder << " " << CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << CppSLHA::SLHA_double( this->get_SBOTMIX( element_one_counter, element_two_counter ) ) << "   #" << std::endl;
+	  return_string_builder << " " << old_CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << old_CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << old_CppSLHA::SLHA_double( this->get_SBOTMIX( element_one_counter, element_two_counter ) ) << "   #" << std::endl;
 
 	}
 
@@ -2283,7 +2283,7 @@ std::string CppSLHA::get_SBOTMIX_as_string()
 }
 
 
-double CppSLHA::get_STAUMIX( int requested_element_one, int requested_element_two )
+double old_CppSLHA::get_STAUMIX( int requested_element_one, int requested_element_two )
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -2316,7 +2316,7 @@ double CppSLHA::get_STAUMIX( int requested_element_one, int requested_element_tw
 }
 
 
-std::string CppSLHA::get_STAUMIX_as_string()
+std::string old_CppSLHA::get_STAUMIX_as_string()
 {
 
   std::stringstream return_string_builder;
@@ -2333,7 +2333,7 @@ std::string CppSLHA::get_STAUMIX_as_string()
 	   element_two_counter++ )
 	{
 	    
-	  return_string_builder << " " << CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << CppSLHA::SLHA_double( this->get_STAUMIX( element_one_counter, element_two_counter ) ) << "   #" << std::endl;
+	  return_string_builder << " " << old_CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << old_CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << old_CppSLHA::SLHA_double( this->get_STAUMIX( element_one_counter, element_two_counter ) ) << "   #" << std::endl;
 
 	}
 
@@ -2344,7 +2344,7 @@ std::string CppSLHA::get_STAUMIX_as_string()
 }
 
 
-double CppSLHA::get_NMIX( int requested_element_one, int requested_element_two )
+double old_CppSLHA::get_NMIX( int requested_element_one, int requested_element_two )
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -2377,7 +2377,7 @@ double CppSLHA::get_NMIX( int requested_element_one, int requested_element_two )
 }
 
 
-std::string CppSLHA::get_NMIX_as_string()
+std::string old_CppSLHA::get_NMIX_as_string()
 {
 
   std::stringstream return_string_builder;
@@ -2394,7 +2394,7 @@ std::string CppSLHA::get_NMIX_as_string()
 	   element_two_counter++ )
 	{
 	    
-	  return_string_builder << " " << CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << CppSLHA::SLHA_double( this->get_NMIX( element_one_counter, element_two_counter ) ) << "   #" << std::endl;
+	  return_string_builder << " " << old_CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << old_CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << old_CppSLHA::SLHA_double( this->get_NMIX( element_one_counter, element_two_counter ) ) << "   #" << std::endl;
 
 	}
 
@@ -2405,7 +2405,7 @@ std::string CppSLHA::get_NMIX_as_string()
 }
 
 
-double CppSLHA::get_UMIX( int requested_element_one, int requested_element_two )
+double old_CppSLHA::get_UMIX( int requested_element_one, int requested_element_two )
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -2438,7 +2438,7 @@ double CppSLHA::get_UMIX( int requested_element_one, int requested_element_two )
 }
 
 
-std::string CppSLHA::get_UMIX_as_string()
+std::string old_CppSLHA::get_UMIX_as_string()
 {
 
   std::stringstream return_string_builder;
@@ -2455,7 +2455,7 @@ std::string CppSLHA::get_UMIX_as_string()
 	   element_two_counter++ )
 	{
 	    
-	  return_string_builder << " " << CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << CppSLHA::SLHA_double( this->get_UMIX( element_one_counter, element_two_counter ) ) << "   #" << std::endl;
+	  return_string_builder << " " << old_CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << old_CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << old_CppSLHA::SLHA_double( this->get_UMIX( element_one_counter, element_two_counter ) ) << "   #" << std::endl;
 
 	}
 
@@ -2466,7 +2466,7 @@ std::string CppSLHA::get_UMIX_as_string()
 }
 
 
-double CppSLHA::get_VMIX( int requested_element_one, int requested_element_two )
+double old_CppSLHA::get_VMIX( int requested_element_one, int requested_element_two )
 {
 
   double return_value = REALLY_WRONG_VALUE;
@@ -2499,7 +2499,7 @@ double CppSLHA::get_VMIX( int requested_element_one, int requested_element_two )
 }
 
 
-std::string CppSLHA::get_VMIX_as_string()
+std::string old_CppSLHA::get_VMIX_as_string()
 {
 
   std::stringstream return_string_builder;
@@ -2516,7 +2516,7 @@ std::string CppSLHA::get_VMIX_as_string()
 	   element_two_counter++ )
 	{
 	    
-	  return_string_builder << " " << CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << CppSLHA::SLHA_double( this->get_VMIX( element_one_counter, element_two_counter ) ) << "   #" << std::endl;
+	  return_string_builder << " " << old_CppSLHA::SLHA_int( element_one_counter, 2 ) << " " << old_CppSLHA::SLHA_int( element_two_counter, 2 ) << "   " << old_CppSLHA::SLHA_double( this->get_VMIX( element_one_counter, element_two_counter ) ) << "   #" << std::endl;
 
 	}
 
@@ -2527,13 +2527,13 @@ std::string CppSLHA::get_VMIX_as_string()
 }
 
 
-void CppSLHA::set_BLOCK( std::string requested_BLOCK, int requested_element_one, int requested_element_two, double set_value )
+void old_CppSLHA::set_BLOCK( std::string requested_BLOCK, int requested_element_one, int requested_element_two, double set_value )
 {
 
   std::transform( requested_BLOCK.begin(),
 		  requested_BLOCK.end(),
 		  requested_BLOCK.begin(),
-		  CppSLHA::safeToUpperThing<std::toupper> );
+		  old_CppSLHA::safeToUpperThing<std::toupper> );
 
   if( requested_BLOCK.compare( "YU" ) == 0 )
     {
@@ -2622,7 +2622,7 @@ void CppSLHA::set_BLOCK( std::string requested_BLOCK, int requested_element_one,
 }
 
 
-void CppSLHA::set_YU( int requested_element_one, int requested_element_two, double set_value )
+void old_CppSLHA::set_YU( int requested_element_one, int requested_element_two, double set_value )
 {
 
   if( ( requested_element_one > 0 )
@@ -2651,7 +2651,7 @@ void CppSLHA::set_YU( int requested_element_one, int requested_element_two, doub
 }
 
 
-void CppSLHA::set_YD( int requested_element_one, int requested_element_two, double set_value )
+void old_CppSLHA::set_YD( int requested_element_one, int requested_element_two, double set_value )
 {
 
   if( ( requested_element_one > 0 )
@@ -2680,7 +2680,7 @@ void CppSLHA::set_YD( int requested_element_one, int requested_element_two, doub
 }
 
 
-void CppSLHA::set_YE( int requested_element_one, int requested_element_two, double set_value )
+void old_CppSLHA::set_YE( int requested_element_one, int requested_element_two, double set_value )
 {
 
   if( ( requested_element_one > 0 )
@@ -2709,7 +2709,7 @@ void CppSLHA::set_YE( int requested_element_one, int requested_element_two, doub
 }
 
 
-void CppSLHA::set_AU( int requested_element_one, int requested_element_two, double set_value )
+void old_CppSLHA::set_AU( int requested_element_one, int requested_element_two, double set_value )
 {
 
   if( ( requested_element_one > 0 )
@@ -2738,7 +2738,7 @@ void CppSLHA::set_AU( int requested_element_one, int requested_element_two, doub
 }
 
 
-void CppSLHA::set_AD( int requested_element_one, int requested_element_two, double set_value )
+void old_CppSLHA::set_AD( int requested_element_one, int requested_element_two, double set_value )
 {
 
   if( ( requested_element_one > 0 )
@@ -2767,7 +2767,7 @@ void CppSLHA::set_AD( int requested_element_one, int requested_element_two, doub
 }
 
 
-void CppSLHA::set_AE( int requested_element_one, int requested_element_two, double set_value )
+void old_CppSLHA::set_AE( int requested_element_one, int requested_element_two, double set_value )
 {
 
   if( ( requested_element_one > 0 )
@@ -2796,7 +2796,7 @@ void CppSLHA::set_AE( int requested_element_one, int requested_element_two, doub
 }
 
 
-void CppSLHA::set_STOPMIX( int requested_element_one, int requested_element_two, double set_value )
+void old_CppSLHA::set_STOPMIX( int requested_element_one, int requested_element_two, double set_value )
 {
 
   if( ( requested_element_one > 0 )
@@ -2825,7 +2825,7 @@ void CppSLHA::set_STOPMIX( int requested_element_one, int requested_element_two,
 }
 
 
-void CppSLHA::set_SBOTMIX( int requested_element_one, int requested_element_two, double set_value )
+void old_CppSLHA::set_SBOTMIX( int requested_element_one, int requested_element_two, double set_value )
 {
 
   if( ( requested_element_one > 0 )
@@ -2854,7 +2854,7 @@ void CppSLHA::set_SBOTMIX( int requested_element_one, int requested_element_two,
 }
 
 
-void CppSLHA::set_STAUMIX( int requested_element_one, int requested_element_two, double set_value )
+void old_CppSLHA::set_STAUMIX( int requested_element_one, int requested_element_two, double set_value )
 {
 
   if( ( requested_element_one > 0 )
@@ -2883,7 +2883,7 @@ void CppSLHA::set_STAUMIX( int requested_element_one, int requested_element_two,
 }
 
 
-void CppSLHA::set_NMIX( int requested_element_one, int requested_element_two, double set_value )
+void old_CppSLHA::set_NMIX( int requested_element_one, int requested_element_two, double set_value )
 {
 
   if( ( requested_element_one > 0 )
@@ -2912,7 +2912,7 @@ void CppSLHA::set_NMIX( int requested_element_one, int requested_element_two, do
 }
 
 
-void CppSLHA::set_UMIX( int requested_element_one, int requested_element_two, double set_value )
+void old_CppSLHA::set_UMIX( int requested_element_one, int requested_element_two, double set_value )
 {
 
   if( ( requested_element_one > 0 )
@@ -2941,7 +2941,7 @@ void CppSLHA::set_UMIX( int requested_element_one, int requested_element_two, do
 }
 
 
-void CppSLHA::set_VMIX( int requested_element_one, int requested_element_two, double set_value )
+void old_CppSLHA::set_VMIX( int requested_element_one, int requested_element_two, double set_value )
 {
 
   if( ( requested_element_one > 0 )
@@ -2970,13 +2970,13 @@ void CppSLHA::set_VMIX( int requested_element_one, int requested_element_two, do
 }
 
 
-std::string CppSLHA::get_BLOCK_as_string( std::string requested_BLOCK )
+std::string old_CppSLHA::get_BLOCK_as_string( std::string requested_BLOCK )
 {
 
   std::transform( requested_BLOCK.begin(),
 		  requested_BLOCK.end(),
 		  requested_BLOCK.begin(),
-		  CppSLHA::safeToUpperThing<std::toupper> );
+		  old_CppSLHA::safeToUpperThing<std::toupper> );
 
   std::string return_string = "error!  unknown BLOCK requested from get_BLOCK_as_string()\n";
 
@@ -3131,7 +3131,7 @@ std::string CppSLHA::get_BLOCK_as_string( std::string requested_BLOCK )
 }
 
 
-std::string CppSLHA::get_DECAY_as_string()
+std::string old_CppSLHA::get_DECAY_as_string()
 {
 
   std::stringstream return_string_builder;
@@ -3158,8 +3158,8 @@ std::string CppSLHA::get_DECAY_as_string()
       return_string_builder
 	<< "#" <<std::endl
 	<< "#         PDG            Width" << std::endl
-	<< "DECAY " << CppSLHA::SLHA_int( set_being_written->get_PDG_code(), 9 )
-	<<  "   " << CppSLHA::SLHA_double( set_being_written->get_decay_width() )
+	<< "DECAY " << old_CppSLHA::SLHA_int( set_being_written->get_PDG_code(), 9 )
+	<<  "   " << old_CppSLHA::SLHA_double( set_being_written->get_decay_width() )
 	<< "   # " << set_being_written->get_name() << " decays" << std::endl
 	<< "#   BR               NDA         ID1       ID2       ID3" << std::endl;
       //  xxx+1.23456789E+123   12   123456789 123456789 123456789  #
@@ -3171,8 +3171,8 @@ std::string CppSLHA::get_DECAY_as_string()
 	{
 
 	  return_string_builder
-	    << "   " << CppSLHA::SLHA_double( (*direct_decay_iterator)->get_branching_ratio() )  // write the BR
-	    << "   " << CppSLHA::SLHA_int( (*direct_decay_iterator)->get_decay_product_PDG_codes()->size(), 2 )
+	    << "   " << old_CppSLHA::SLHA_double( (*direct_decay_iterator)->get_branching_ratio() )  // write the BR
+	    << "   " << old_CppSLHA::SLHA_int( (*direct_decay_iterator)->get_decay_product_PDG_codes()->size(), 2 )
 	    // & the number of decay products.
 	    << "   ";
 
@@ -3181,7 +3181,7 @@ std::string CppSLHA::get_DECAY_as_string()
 	       decay_product_iterator++ )  // for each decay product...
 	    {
 
-	      return_string_builder << CppSLHA::SLHA_int( *decay_product_iterator, 9 ) << " ";  // print the PDG code.
+	      return_string_builder << old_CppSLHA::SLHA_int( *decay_product_iterator, 9 ) << " ";  // print the PDG code.
 
 	    }
 
@@ -3209,14 +3209,14 @@ std::string CppSLHA::get_DECAY_as_string()
 }
 
 
-bool CppSLHA::read_file()  // this reads in the SLHA file and returns true if it was successful.
+bool old_CppSLHA::read_file()  // this reads in the SLHA file and returns true if it was successful.
 {
 
   this->reset();
 
   bool successful_reading = false;
 
-  std::cout << std::endl << "CppSLHA::read_file() (using \"" << SLHA_file_name << "\") has been called" << std::endl;
+  std::cout << std::endl << "old_CppSLHA::read_file() (using \"" << SLHA_file_name << "\") has been called" << std::endl;
 
   // open the file.
   std::ifstream* input_file = new std::ifstream();
@@ -3727,10 +3727,10 @@ bool CppSLHA::read_file()  // this reads in the SLHA file and returns true if it
 }
 
 
-bool CppSLHA::read_file( std::string new_SLHA_file_name )  // this reads in the specified SLHA file and returns true if it was successful.
+bool old_CppSLHA::read_file( std::string new_SLHA_file_name )  // this reads in the specified SLHA file and returns true if it was successful.
 {
 
-  std::cout << std::endl << "CppSLHA::read_file( \"" << new_SLHA_file_name << "\" ) called";
+  std::cout << std::endl << "old_CppSLHA::read_file( \"" << new_SLHA_file_name << "\" ) called";
     std::cout << " - warning, all previously held data in this instance has been discarded.";
   std::cout << std::endl;
 
@@ -3741,7 +3741,7 @@ bool CppSLHA::read_file( std::string new_SLHA_file_name )  // this reads in the 
 }
 
 
-// bool CppSLHA::write_file( std::string output_SLHA_file_name )
+// bool old_CppSLHA::write_file( std::string output_SLHA_file_name )
 // // this writes out all the BLOCKs to a file with the given name (DECAY counts as a BLOCK name in this case).
 // {
 
@@ -3789,7 +3789,7 @@ bool CppSLHA::read_file( std::string new_SLHA_file_name )  // this reads in the 
 // };
 
 
-void CppSLHA::write_file( std::string output_SLHA_file_name, std::list< std::string >* list_of_BLOCKS )
+void old_CppSLHA::write_file( std::string output_SLHA_file_name, std::list< std::string >* list_of_BLOCKS )
 // this writes out the BLOCKs from the supplied list to a file with the given name (DECAY counts as a BLOCK name in this case).
 {
 
@@ -3823,11 +3823,11 @@ void CppSLHA::write_file( std::string output_SLHA_file_name, std::list< std::str
 
 // STUFF FOR TESTING PURPOSES!
 
-int CppSLHA::write_particle_spectrum( double minimum_branching_ratio_to_keep, std::string output_file_name )
+int old_CppSLHA::write_particle_spectrum( double minimum_branching_ratio_to_keep, std::string output_file_name )
 // this writes all the stored spectrum data to a file with the provided name.  it returns the number of particle property sets written.
 {
 
-  std::cout << std::endl << "CppSLHA::write_particle_spectrum() has been called" << std::endl;
+  std::cout << std::endl << "old_CppSLHA::write_particle_spectrum() has been called" << std::endl;
 
   std::cout << std::endl << "found " << this->particle_spectrum->find_all_cascade_decays( minimum_branching_ratio_to_keep ) << " cascade decays" << std::endl;
 
@@ -3997,7 +3997,7 @@ int CppSLHA::write_particle_spectrum( double minimum_branching_ratio_to_keep, st
 // END OF TESTING METHOD!
 
 
-CppSLHA::~CppSLHA()  // destructor
+old_CppSLHA::~old_CppSLHA()  // destructor
   {
 
     if( allocated_spectrum_memory )  // if the constructor allocated memory for the spectrum...

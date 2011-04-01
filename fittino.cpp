@@ -55,6 +55,7 @@ email                : philip.bechtle@desy.de, peter.wienemann@desy.de
 #include <sys/unistd.h>
 
 #include "sRates.h"
+#include "./LHC-FASER/LHC-FASER.hpp"
 // #include <sys/types.h>
 extern char **environ;
 
@@ -74,7 +75,10 @@ MeasuredValue fitterA;
 MeasuredValue fitterMassTop;
 
 
-sRates* rateValue;
+sRates* rateValue = NULL;
+LHC_FASER::LHC_FASER_UI* lhcFaserSignals = NULL;
+LHC_FASER::signal_handler* lhcFaserAtlas4jMET0l = NULL;
+LHC_FASER::signal_handler* lhcFaserAtlas3jMET1l = NULL;
 
 // observables received from suspect:
 double        sRecMassChargino1;
@@ -444,10 +448,64 @@ Fittino::Fittino(const Input* input)
 
   for (unsigned int i=0; i<yyMeasuredVec.size();i++){
     if (yyMeasuredVec[i].type==LHCRate){
-      rateValue = new sRates("fb",yyUseNLO);
-      rateValue->readGrids();
-      rateValue->readLeptonGrids();
-      break;
+
+      // if it's one of the old sRates signals...
+      if( ( yyMeasuredVec[i].id == fully_inclusive )
+          ||
+          ( yyMeasuredVec[i].id == os_sf )
+          ||
+          ( yyMeasuredVec[i].id == four_b ) )
+       {
+
+         rateValue = new sRates("fb",yyUseNLO);
+         rateValue->readGrids();
+         rateValue->readLeptonGrids();
+        //break;
+        // we cannot exit this loop prematurely now, since there could be
+        // LHC-FASER signals too, which also require initialization per signal.
+
+        }
+      else
+        {
+
+          if( NULL == lhcFaserSignals )
+          // if the LHC-FASER_UI object has not yet been constructed...
+          {
+
+            lhcFaserSignals = new LHC_FASER::LHC_FASER_UI( "SPheno.spc.last",
+                                                          "./LHC-FASER/grids/",
+                                                           "fb",
+                                                           yyUseNLO );
+            // these are the defaults for what I (BOL) think is the standard
+            // Fittino setup.
+
+          }
+
+        /* I (BOL) am sure that there's a more elegant way of doing this, but
+         * I really do not want to mess with the lexical parser.
+         * (if someone with more confidence wants to do so, I'd have a
+         * std::vector of strings which are the signal names, & go through that
+         * vector once, here, loading in all the signals, & then we could break
+         * from this loop over the yyMeasuredVec entries. actually, we wouldn't
+         * even have to go into this loop, we could just loop over the vector
+         * of signal names.
+         */
+        if( yyMeasuredVec[i].id == Atlas4jMET0l )
+          {
+
+            lhcFaserAtlas4jMET0l
+            = lhcFaserSignals->add_signal( "Atlas4jMET0l" );
+
+          }
+        else if( yyMeasuredVec[i].id == Atlas3jMET1l )
+          {
+
+            lhcFaserAtlas3jMET1l
+            = lhcFaserSignals->add_signal( "Atlas3jMET1l" );
+
+          }
+
+      }
     }
   }
 
@@ -519,7 +577,19 @@ Fittino::~Fittino()
 {      
       
       ////Added by JL & BOL
-      delete rateValue;
+    if( NULL !=  rateValue )
+      {
+
+        delete rateValue;
+
+      }
+
+    if( NULL !=  lhcFaserSignals )
+      {
+
+        delete lhcFaserSignals;
+
+      }
       ////////
       
 
@@ -8618,6 +8688,7 @@ int   ReadLesHouches()
    }
 
    //Added by JL and BOL
+   // old sRates spectrum read-in code:
    //    read in LHE-File in EW_spectrum
    int spectrum_loaded = 0;
    
@@ -8633,6 +8704,19 @@ int   ReadLesHouches()
        break;
      }
    }
+  // new LHC-FASER read-in code:
+  if( NULL != lhcFaserSignals )
+    {
+
+      lhcFaserSignals->update_for_new_point();
+
+    }
+  /* unfortunately it's more effort to make LHC-FASER share input with sRates
+   * than it is to just get LHC-FASER to take over the functionality of sRates.
+   * unfortunately *that* is going to take some time, as new acceptance grids
+   * need to be generated & analyzed...
+   */
+
 
 
 
@@ -8910,6 +8994,24 @@ int   ReadLesHouches()
 
 
 	}
+	else if( yyMeasuredVec[i].id == Atlas4jMET0l )
+	// Atlas 4-jet + MET + 0-lepton signal
+          {
+
+            yyMeasuredVec[i].theovalue = lhcFaserAtlas4jMET0l->get_value();
+            yyMeasuredVec[i].theoset = true;
+            // note that the theory value has been recorded.
+
+          }
+	else if( yyMeasuredVec[i].id == Atlas3jMET1l )
+	// Atlas 3-jet + MET + 1-lepton signal
+          {
+
+            yyMeasuredVec[i].theovalue = lhcFaserAtlas3jMET1l->get_value();
+            yyMeasuredVec[i].theoset = true;
+            // note that the theory value has been recorded.
+
+          }
 
       }
       else if (yyMeasuredVec[i].type == Pwidth) {

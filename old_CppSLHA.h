@@ -1,3 +1,17 @@
+
+
+/*****************************************************************************
+ * IMPORTANT! THIS FILE IS DEPRECIATED! IT IS KEPT HERE ONLY UNTIL LHC-FASER *
+ * TAKES OVER THE FUNCTIONALITY OF THE LEGACY CODE sRates!                   *
+ *****************************************************************************/
+
+
+
+
+
+
+
+
 // Ben O'Leary, 8th July 2010.  NOT FOR PUBLIC DISTRIBUTION.  If this code has been included in a public release, covered by the GNU license agreement or similar, then this warning is obviously a holdover from pre-release, & should be disregarded in favor of the release agreement.  This code is based in part on what I learned from reading some private code by Martin Wiebusch (mwiebusch@physik.rwth-aachen.de), along with examples from the cplusplus.com website.
 // this is the .hpp file for a C++ class that reads a supplied SLHA file & stores the masses & decays of the sparticles in a BOL_EW_scale_MSSM_spectrum instance & the rest in arrays of doubles.
 
@@ -129,7 +143,7 @@
 // none
 
 
-class CppSLHA // this class reads in a SLHA format file & stores the data internally,
+class old_CppSLHA // this class reads in a SLHA format file & stores the data internally,
               // to be accessed in the format "get_BLOCK( BLOCKNAME, element, element ) (or with less elements, depending on the BLOCK).
 {
 
@@ -231,15 +245,15 @@ public:
 
   // constructors:
 
-  CppSLHA( std::string given_SLHA_file_name )  // the constructor requires a file to open.
+  old_CppSLHA( std::string given_SLHA_file_name )  // the constructor requires a file to open.
   ;
 
-  CppSLHA( std::string given_SLHA_file_name, BOL_EW_scale_spectrum* given_spectrum )
+  old_CppSLHA( std::string given_SLHA_file_name, BOL_EW_scale_spectrum* given_spectrum )
   // this constructor requires a file to open, & this one takes a pre-existing BOL_EW_scale_spectrum,
   // which is how one can implement the NMSSM or similar.
   ;
 
-  CppSLHA( CppSLHA* copy_source )
+  old_CppSLHA( old_CppSLHA* copy_source )
   // this constructor copies another instance.
   ;
 
@@ -667,7 +681,7 @@ public:
   // END OF TESTING METHOD!
 
 
-  ~CppSLHA();  // destructor
+  ~old_CppSLHA();  // destructor
   
 
 
