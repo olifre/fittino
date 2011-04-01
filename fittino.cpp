@@ -8691,14 +8691,24 @@ int   ReadLesHouches()
    // old sRates spectrum read-in code:
    //    read in LHE-File in EW_spectrum
    int spectrum_loaded = 0;
-   
    for (unsigned int i=0; i<yyMeasuredVec.size();i++){
      if (yyMeasuredVec[i].type==LHCRate){
-       if ( rateValue->readSLHA( "./SPheno.spc.last" ) ){
-	 spectrum_loaded = 1;	 
-       } else {
+
+       if( NULL != rateValue )
+         {
+
+           if( rateValue->readSLHA( "./SPheno.spc.last" ) )
+             {
+
+               spectrum_loaded = 1;
+
+             }
+           else
+             {
 	
-	 spectrum_loaded = 0;
+	       spectrum_loaded = 0;
+
+             }
        
        }
        break;
