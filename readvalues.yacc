@@ -586,13 +586,13 @@ input:
 			      tmpValue.type = LHCRate;
 			      tmpValue.id = four_b;
 			  }
-			  else if (!strcmp($2, "Atlas4jMET0l")) {
+			  else if (!strcmp($2, "Atlas4jMET0l7TeV")) {
 			      tmpValue.type = LHCRate;
-			      tmpValue.id = Atlas4jMET0l;
+			      tmpValue.id = Atlas4jMET0l7TeV;
 			  }
-			  else if (!strcmp($2, "Atlas3jMET1l")) {
+			  else if (!strcmp($2, "Atlas3jMET1l7TeV")) {
 			      tmpValue.type = LHCRate;
-			      tmpValue.id = Atlas3jMET1l;
+			      tmpValue.id = Atlas3jMET1l7TeV;
 			  }
 			  else tmpValue.type = other;
 			  yyMeasuredVec.push_back(tmpValue);
