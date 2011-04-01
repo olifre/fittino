@@ -77,8 +77,8 @@ MeasuredValue fitterMassTop;
 
 sRates* rateValue = NULL;
 LHC_FASER::LHC_FASER_UI* lhcFaserSignals = NULL;
-LHC_FASER::signal_handler* lhcFaserAtlas4jMET0l = NULL;
-LHC_FASER::signal_handler* lhcFaserAtlas3jMET1l = NULL;
+LHC_FASER::signal_handler* lhcFaserAtlas4jMET0l7TeV = NULL;
+LHC_FASER::signal_handler* lhcFaserAtlas3jMET1l7TeV = NULL;
 
 // observables received from suspect:
 double        sRecMassChargino1;
@@ -493,14 +493,14 @@ Fittino::Fittino(const Input* input)
         if( yyMeasuredVec[i].id == Atlas4jMET0l7TeV )
           {
 
-            lhcFaserAtlas4jMET0l
+            lhcFaserAtlas4jMET0l7TeV
             = lhcFaserSignals->add_signal( "Atlas4jMET0l7TeV" );
 
           }
         else if( yyMeasuredVec[i].id == Atlas3jMET1l7TeV )
           {
 
-            lhcFaserAtlas3jMET1l
+            lhcFaserAtlas3jMET1l7TeV
             = lhcFaserSignals->add_signal( "Atlas3jMET1l7TeV" );
 
           }
@@ -8994,20 +8994,20 @@ int   ReadLesHouches()
 
 
 	}
-	else if( yyMeasuredVec[i].id == Atlas4jMET0l )
+	else if( yyMeasuredVec[i].id == Atlas4jMET0l7TeV )
 	// Atlas 4-jet + MET + 0-lepton signal
           {
 
-            yyMeasuredVec[i].theovalue = lhcFaserAtlas4jMET0l->get_value();
+            yyMeasuredVec[i].theovalue = lhcFaserAtlas4jMET0l7TeV->get_value();
             yyMeasuredVec[i].theoset = true;
             // note that the theory value has been recorded.
 
           }
-	else if( yyMeasuredVec[i].id == Atlas3jMET1l )
+	else if( yyMeasuredVec[i].id == Atlas3jMET1l7TeV )
 	// Atlas 3-jet + MET + 1-lepton signal
           {
 
-            yyMeasuredVec[i].theovalue = lhcFaserAtlas3jMET1l->get_value();
+            yyMeasuredVec[i].theovalue = lhcFaserAtlas3jMET1l7TeV->get_value();
             yyMeasuredVec[i].theoset = true;
             // note that the theory value has been recorded.
 
