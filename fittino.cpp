@@ -490,18 +490,18 @@ Fittino::Fittino(const Input* input)
          * even have to go into this loop, we could just loop over the vector
          * of signal names.
          */
-        if( yyMeasuredVec[i].id == Atlas4jMET0l )
+        if( yyMeasuredVec[i].id == Atlas4jMET0l7TeV )
           {
 
             lhcFaserAtlas4jMET0l
-            = lhcFaserSignals->add_signal( "Atlas4jMET0l" );
+            = lhcFaserSignals->add_signal( "Atlas4jMET0l7TeV" );
 
           }
-        else if( yyMeasuredVec[i].id == Atlas3jMET1l )
+        else if( yyMeasuredVec[i].id == Atlas3jMET1l7TeV )
           {
 
             lhcFaserAtlas3jMET1l
-            = lhcFaserSignals->add_signal( "Atlas3jMET1l" );
+            = lhcFaserSignals->add_signal( "Atlas3jMET1l7TeV" );
 
           }
 

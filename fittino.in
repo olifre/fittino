@@ -68,6 +68,14 @@ brsum ( brprod_5 brprod_6 brprod_7 ) alias 1
  
 weighted ( brsum_1 edge_8 brprod_8 edge_9 ) 359.458 GeV +- 43.0 GeV +- (JES) 18.0 GeV alias 1 # [9]
 
+
+# LHC-FASER inputs:
+#Atlas4jMET0l7TeV 123.4 +- 56.7
+#Atlas3jMET1l7TeV 98.7 +- 6.5
+# these are just example values.
+
+
+
 #  [1] PDG 2008 Electroweak model and constraints on new physics (Rev.)
 #  [2] PDG 2008 Physical constants (Rev.)
 #  [3] Buchmueller et al. arXiv:0707.3447v2
