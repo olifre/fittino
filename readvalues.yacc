@@ -586,6 +586,14 @@ input:
 			      tmpValue.type = LHCRate;
 			      tmpValue.id = four_b;
 			  }
+			  else if (!strcmp($2, "Atlas4jMET0l")) {
+			      tmpValue.type = LHCRate;
+			      tmpValue.id = Atlas4jMET0l;
+			  }
+			  else if (!strcmp($2, "Atlas3jMET1l")) {
+			      tmpValue.type = LHCRate;
+			      tmpValue.id = Atlas3jMET1l;
+			  }
 			  else tmpValue.type = other;
 			  yyMeasuredVec.push_back(tmpValue);
 			  if (!strncmp($2, "cos", 3)) {
@@ -654,6 +662,14 @@ input:
 		  else if (!strcmp($2, "four_b")) {
 		      tmpValue.type = LHCRate;
 		      tmpValue.id = four_b;
+		  }
+		  else if (!strcmp($2, "Atlas4jMET0l")) {
+			  tmpValue.type = LHCRate;
+			  tmpValue.id = Atlas4jMET0l;
+		  }
+		  else if (!strcmp($2, "Atlas3jMET1l")) {
+			  tmpValue.type = LHCRate;
+			  tmpValue.id = Atlas3jMET1l;
 		  }
 		  else tmpValue.type = other;
 		  yyMeasuredVec.push_back(tmpValue);
