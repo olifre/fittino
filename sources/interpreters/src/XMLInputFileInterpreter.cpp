@@ -52,15 +52,15 @@ void Fittino::XMLInputFileInterpreter::Parse( const TString& xmlInputFileName ) 
     messenger << Messenger::ALWAYS << "  Reading configuration from file " << static_cast<std::string>( xmlInputFileName ) << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
-    // Construct XML DOM parser
+    // Construct XML DOM parser.
 
     TDOMParser* const xmlParser = new TDOMParser();
 
-    // Switch on XML file validation
+    // Switch on XML file validation.
 
     xmlParser->SetValidate();
 
-    // Check if XML input file can be parsed
+    // Check if XML input file can be parsed.
 
     const Int_t parseCode = xmlParser->ParseFile( xmlInputFileName );
 
@@ -70,7 +70,7 @@ void Fittino::XMLInputFileInterpreter::Parse( const TString& xmlInputFileName ) 
 
     }
 
-    // Loop over the XML DOM tree and add the input data to appropriate lists
+    // Loop over the XML DOM tree and add the input data to appropriate lists.
 
     const TXMLDocument* const xmlDocument = xmlParser->GetXMLDocument();
     TXMLNode* const xmlRootNode = xmlDocument->GetRootNode();
