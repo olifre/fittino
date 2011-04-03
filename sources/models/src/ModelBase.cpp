@@ -88,6 +88,8 @@ void Fittino::ModelBase::PrintConfiguration() const {
                   << _parameterVector[i].GetName()
                   << std::right
                   << std::setw( 12 )
+                  << std::setprecision( 5 )
+                  << std::scientific
                   << _parameterVector[i].GetValue()
 		  << Messenger::Endl;
 

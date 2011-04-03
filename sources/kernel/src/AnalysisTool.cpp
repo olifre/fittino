@@ -57,7 +57,7 @@ void Fittino::AnalysisTool::PrintStatus() const {
     Messenger& messenger = Messenger::GetInstance();
 
     messenger << Messenger::INFO << Messenger::Endl;
-    messenger << Messenger::INFO << std::scientific << std::setprecision( 6 ) << "    Chi2    " << _chi2 << Messenger::Endl;
+    messenger << Messenger::INFO << std::scientific << std::setprecision( 5 ) << "    Chi2    " << _chi2 << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
 
 }
@@ -90,9 +90,9 @@ void Fittino::AnalysisTool::InitializeAnalysisTool() const {
     Messenger& messenger = Messenger::GetInstance();
 
     messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  Initializing " << _name                                                         << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Initializing " << _name << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
 
     AnalysisTool::PrintConfiguration();
 
@@ -102,14 +102,14 @@ void Fittino::AnalysisTool::PrintConfiguration() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::ALWAYS << "   Configuration                                                                " << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "    Abort criterium              " << _abortCriterium                             << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "    Number of iterations         " << _numberOfIterations                         << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "   Configuration" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Abort criterium              " << _abortCriterium << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Number of iterations         " << _numberOfIterations << Messenger::Endl;
 
     this->PrintSteeringParameters();
 
-    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
 
 }
 

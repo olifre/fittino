@@ -52,7 +52,6 @@ void Fittino::Messenger::Send() {
     if ( _actualVerbosityLevel >= _verbosityLevel ) {
 
         std::cout << std::setiosflags( std::ios::fixed )
-                  //<< std::setprecision( 6 )
                   << this->str()
 		  << std::endl;
 

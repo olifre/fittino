@@ -69,7 +69,7 @@ void Fittino::PhysicsModelBase::PrintStatus() {
     messenger << Messenger::Endl;
     messenger << Messenger::INFO << "  Summary of the " << this->GetName() << " predictions:"  << Messenger::Endl;
     messenger << Messenger::Endl;
-    messenger << Messenger::INFO << "    Observable        Predicted value                  Measured value    Deviation" << Messenger::Endl;
+    messenger << Messenger::INFO << "    Observable          Predicted value                 Measured value    Deviation" << Messenger::Endl;
     messenger << Messenger::Endl;
 
     for ( unsigned int i = 0; i < _observableVector.size(); i++ ) {

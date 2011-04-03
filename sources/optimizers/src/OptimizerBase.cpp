@@ -41,17 +41,17 @@ void Fittino::OptimizerBase::PrintResult() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::ALWAYS << "--------------------------------------------------------------------------------" << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  Optimization converged after " << _iterationCounter << " iterations           " << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Optimization converged after " << _iterationCounter << " iterations" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
 
-    messenger << Messenger::ALWAYS << "--------------------------------------------------------------------------------" << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  Optimization results                                                          " << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "   Final set of " << _model->GetName() << " parameters                          " << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Optimization results" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "   Final set of " << _model->GetName() << " parameters" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
@@ -67,7 +67,7 @@ void Fittino::OptimizerBase::PrintResult() const {
 
     }
 
-    messenger << Messenger::ALWAYS << "                                                                                " << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "--------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
 
 }
