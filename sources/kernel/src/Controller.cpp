@@ -125,6 +125,8 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
         inputFileInterpreter->Parse( _inputFileName );
         delete inputFileInterpreter;
 
+	// Set the level of output verbosity.
+
         Messenger::GetInstance().SetVerbosityLevel( Configuration::GetInstance()->GetVerbosityLevel() );
 
     }
