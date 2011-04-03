@@ -34,6 +34,9 @@ namespace Fittino {
    *  \ingroup interpreters
    *  \brief Class for reading and interpreting Fittino input files.
    */
+  /*!
+   *  \todo Short-term: Remove this class completely?
+   */
   class FittinoInputFileInterpreter : public InputFileInterpreterBase {
 
     public:

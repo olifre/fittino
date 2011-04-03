@@ -53,7 +53,7 @@ namespace Fittino {
        *  instance is initialized and the steering parameters specified in the input file can be\n
        *  retrieved via dedicated getter functions.
        *
-       *  \todo Discuss usage of TString (instead of std::string) here.
+       *  \todo Short-term: Discuss usage of TString (instead of std::string) here.
        */
       virtual void Parse( const TString& inputFileName ) const = 0;
 

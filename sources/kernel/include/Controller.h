@@ -36,7 +36,11 @@
  *
  *  \todo Mid-term: Write classes to handle output.
  *
- *  \todo Mid-term: Write an adapter for an external SLHA file parser (Mathias, Frank).
+ *  \todo Mid-term: Write an adapter for an external SLHA file parser (Mathias).
+ *
+ *  \todo Mid-term: Include workspaces (Matthias).
+ *
+ *  \todo Short-term: Update doc/Doxyfile.
  */
 
 /*!
@@ -77,6 +81,10 @@ namespace Fittino {
        *  interpreter inheriting from InputFileInterpreterBase is created and advised to parse the\n
        *  mandatory input file. After that the steering parameters and flags are globally\n
        *  accessible via calls to the Configuration.
+       */
+      /*!
+       *  \todo Short-term: Remove all references to the Fittino input file format (.ftn). This\n
+       *  file format is not expected to be supported soon.
        */
       void                                 InitializeFittino( int argc, char** argv );
       /*!
@@ -121,7 +129,7 @@ namespace Fittino {
        *  When Fittino is called without arguments or with the -h/--help option this method\n
        *  prints a help screen with further instructions on how to use Fittino.
        */
-      void                                 PrintHelp() const;
+     void                                 PrintHelp() const;
       /*!
        *  Prints a welcome logo.
        */
