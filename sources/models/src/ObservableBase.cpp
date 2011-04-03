@@ -23,8 +23,8 @@ Fittino::ObservableBase::ObservableBase( std::string name, int id )
                     : _id( id ),
                       _name( name ) {
 
-    _chi2 = 0.;
-    _deviation = 0.;
+    _chi2 = 1.e99;
+    _deviation = 1.e99;
 
 }
 

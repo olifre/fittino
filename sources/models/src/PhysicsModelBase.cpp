@@ -82,7 +82,7 @@ void Fittino::PhysicsModelBase::PrintStatus() {
 
 double Fittino::PhysicsModelBase::CalculateChi2() {
 
-    double chi2 = 0.;
+    double chi2 = 1.e99;
 
     for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
 
