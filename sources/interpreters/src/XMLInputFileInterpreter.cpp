@@ -67,7 +67,6 @@ void Fittino::XMLInputFileInterpreter::Parse( const TString& xmlInputFileName ) 
     if ( parseCode != 0 ) {
 
         throw InputException( "Parsing of xml document failed" );
-        exit( EXIT_FAILURE );
 
     }
 
@@ -81,8 +80,8 @@ void Fittino::XMLInputFileInterpreter::Parse( const TString& xmlInputFileName ) 
 
         TXMLAttr* xmlAttribute( 0 );
 
-	//	if ( xmlNode->GetNodeType() == TXMLNode::kXMLElementNode )
-	//	  std::cout << "node name = " << xmlNode->GetNodeName() << std::endl;
+        //if ( xmlNode->GetNodeType() == TXMLNode::kXMLElementNode )
+        //std::cout << "node name = " << xmlNode->GetNodeName() << std::endl;
 
         TListIter attributeIterator( xmlNode->GetAttributes() );
 
@@ -92,10 +91,10 @@ void Fittino::XMLInputFileInterpreter::Parse( const TString& xmlInputFileName ) 
 
         }
 
-	if      ( xmlNode->HasChildren() ) xmlNode = xmlNode->GetChildren();
-	else if ( xmlNode->HasNextNode() ) xmlNode = xmlNode->GetNextNode();
-	else if ( xmlNode->HasParent()   ) xmlNode = xmlNode->GetParent()->GetNextNode();
-	else throw InputException( "Found inconsistency in XML input file" );
+        if      ( xmlNode->HasChildren() ) xmlNode = xmlNode->GetChildren();
+        else if ( xmlNode->HasNextNode() ) xmlNode = xmlNode->GetNextNode();
+        else if ( xmlNode->HasParent()   ) xmlNode = xmlNode->GetParent()->GetNextNode();
+        else throw InputException( "Found inconsistency in XML input file" );
 
     }
 
