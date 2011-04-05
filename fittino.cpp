@@ -2271,8 +2271,8 @@ else if (yyFitModel == NONUNIVSIMPLIFIED) {
 	 fM0H.value = yyFittedPar[FindInFittedPar("M0H")].value;
 	 fM0H.error = yyFittedPar[FindInFittedPar("M0H")].error;
       }
-      fM0H.bound_low = -10000.;
-      fM0H.bound_up = 10000.;
+      fM0H.bound_low = -10000000.;
+      fM0H.bound_up = 10000000.;
 
       fM05.name  = "M05";
       fM05.value = 100;
@@ -2281,7 +2281,7 @@ else if (yyFitModel == NONUNIVSIMPLIFIED) {
 	 fM05.value = yyFittedPar[FindInFittedPar("M05")].value;
 	 fM05.error = yyFittedPar[FindInFittedPar("M05")].error;
       }
-      fM05.bound_low = -10000.;
+      fM05.bound_low = 0.;
       fM05.bound_up = 10000.;
 
       fM010.name  = "M010";
@@ -2291,7 +2291,7 @@ else if (yyFitModel == NONUNIVSIMPLIFIED) {
 	 fM010.value = yyFittedPar[FindInFittedPar("M010")].value;
 	 fM010.error = yyFittedPar[FindInFittedPar("M010")].error;
       }
-      fM010.bound_low = -10000.;
+      fM010.bound_low = 0.;
       fM010.bound_up = 10000.;
 
       bool par_already_found;
