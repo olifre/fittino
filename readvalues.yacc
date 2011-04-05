@@ -1675,6 +1675,8 @@ input:
 		      yyFitModel = AMSB;
 		    else if (!strcmp($3, "NMSSM"))
 		      yyFitModel = NMSSM;
+		    else if (!strcmp($3, "NONUNIVSIMPLIFIED"))
+		      yyFitModel = NONUNIVSIMPLIFIED;
 		    else {
 		      cerr<<"Unknown fit model: "<<$3<<endl;
 		      exit(EXIT_FAILURE);
