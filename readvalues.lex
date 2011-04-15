@@ -121,9 +121,12 @@ Q[ \t]*=                  {
 			      if (!strcmp(yytext, "Calculator")) { 
 				  return T_CALCULATOR;
                               }
-						if (!strcmp(yytext, "DecayCalculator" )) {
-							return T_DECAYCALCULATOR;
-						}
+			      if (!strcmp(yytext, "HiggsCalculator")) { 
+				  return T_HIGGSCALCULATOR;
+                              }
+			      if (!strcmp(yytext, "DecayCalculator" )) {
+			  	  return T_DECAYCALCULATOR;
+			      }
 			      if (!strcmp(yytext, "AstroCalculator")) { 
 				  return T_ASTROCALCULATOR;
 			      }

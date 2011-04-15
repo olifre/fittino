@@ -116,9 +116,10 @@ using namespace std;
 
 enum SwitchState    { off, on };
 enum Calculator     { SPHENO, SUSPECT, SPHENO_FH, SOFTSUSY };
+enum HiggsCalculator { NOHIGGSCALCULATOR, FEYNHIGGS };
 enum DecayCalculator		{ SUSYHIT, NONE};
 enum RelicDensityCalculator { NORELICDENSITYCALCULATOR, MICROMEGAS };
-enum LEOCalculator  { NOLEOCALCULATOR, NPFITTER};
+enum LEOCalculator  { NOLEOCALCULATOR, NPFITTER };
 enum ObservableType { mass, Pwidth, xsection, br, xsectionbr, Pedge, xsbr, brratio, brsum, LEObs, brprod, tauFromStau1Polarisation, tauFromNeutralino2Polarisation, SMPrecision, other, weighted, LHCRate };
 //   LEObservables  { bsg,                                           gmin2,          drho, omega };
 enum LHCRatetypes { fully_inclusive, os_sf, four_b, /* <- old sRates signals */
@@ -145,6 +146,7 @@ extern bool         yyUseNLO;
 extern bool         yyCalcPullDist;
 extern bool         yyScanParameters;
 extern unsigned int yyCalculator;
+extern unsigned int yyHiggsCalculator;
 extern unsigned int yyDecayCalculator;
 extern unsigned int yyRelicDensityCalculator;
 extern unsigned int yyLEOCalculator;

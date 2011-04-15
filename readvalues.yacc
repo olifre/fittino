@@ -196,6 +196,7 @@ double        yyRelativeBackgroundCrossSectionSysUncertainty = 0;
 // name_of_file
 
 unsigned int yyCalculator;
+unsigned int yyHiggsCalculator = NOHIGGSCALCULATOR;
 unsigned int yyDecayCalculator;
 unsigned int yyAstroCalculator;
 unsigned int yyRelicDensityCalculator;
@@ -204,6 +205,7 @@ unsigned int yyLEOCalculator;
 bool         yySPhenoLastCallValid = false;
 string       yySPhenoStartDataString = "";
 string       yyCalculatorPath = "";
+string       yyHiggsCalculatorPath = "";
 string	     yyHBWhichExpt = "LandT";
 string			 yyDecayCalculatorPath = "";
 string       yyAstroCalculatorPath = "";
@@ -326,7 +328,7 @@ struct correrrorstruct {
 %token <real> T_NUMBER
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
 %token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS T_NOFIT T_NOFITLEO T_SCALING
-%token T_BLOCK T_SCALE T_DECAY T_BR T_LEO T_XS T_CALCULATOR T_DECAYCALCULATOR T_MARKOVINTERFACEFILEPATH T_GRIDPATH T_ASTROCALCULATOR T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO
+%token T_BLOCK T_SCALE T_DECAY T_BR T_LEO T_XS T_CALCULATOR T_HIGGSCALCULATOR T_DECAYCALCULATOR T_MARKOVINTERFACEFILEPATH T_GRIDPATH T_ASTROCALCULATOR T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH T_NEWLINE
 %token <name> T_VERSIONTAGSOSY
 %token <name> T_VERSIONTAGSDEC
@@ -1511,9 +1513,9 @@ input:
 		   if (!strcmp($3, "SPHENO")) {
 		      yyCalculator = SPHENO;
 		   }
-			 if (!strcmp($3, "SOFTSUSY")) {
-					yyCalculator = SOFTSUSY;
-			 }
+		   if (!strcmp($3, "SOFTSUSY")) {
+		     yyCalculator = SOFTSUSY;
+		   }
 		   if (!strcmp($3, "SUSPECT")) {
 		      yyCalculator = SUSPECT;
 		   }
@@ -1529,9 +1531,9 @@ input:
 		   if (!strcmp($3, "SPHENO")) {
 		      yyCalculator = SPHENO;
 		   }
-			 if( !strcmp($3, "SOFTSUSY")) {
-					yyCalculator = SOFTSUSY;
-			 }
+		   if( !strcmp($3, "SOFTSUSY")) {
+		     yyCalculator = SOFTSUSY;
+		   }
 		   if (!strcmp($3, "SUSPECT")) {
 		      yyCalculator = SUSPECT;
 		   }
@@ -1565,6 +1567,17 @@ input:
 				}
 				yyDecayCalculatorPath = $4;
 			}
+	    | input T_HIGGSCALCULATOR T_WORD T_PATH
+	      {
+                   yyInputFileLine.prevalue  = "HiggsCalculator";
+		   yyInputFileLine.prevalue += "\t";
+		   yyInputFileLine.prevalue += $3;
+
+		   if (!strcmp($3, "FEYNHIGGS")) {
+		      yyHiggsCalculator = FEYNHIGGS;
+		   }
+		   yyHiggsCalculatorPath = $3;
+	      }
 	    | input T_ASTROCALCULATOR T_PATH
 	      {
                    yyInputFileLine.prevalue  = "AstroCalculator";
