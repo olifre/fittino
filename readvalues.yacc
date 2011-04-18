@@ -183,6 +183,7 @@ bool          yyWidthOptimization = false;
 bool          yyCorrelationInMarkovChain = false;
 float         yyOptimizationSlope = 4;
 bool          yyUpdateWidths = false;
+float         yyUpdateWidthsScale = 1;
 bool          yyGlobalOptimizationOnly = false;
 string        yyIndividuallyOptimized = "";
 string        yySPhenoOldInputFile = "";
@@ -374,7 +375,9 @@ input:
 		else if (!strcmp($2,"AcceptanceRangeLower")) {
 		  yyAcceptanceRangeLower  = $3;
 		}
-
+		else if (!strcmp($2, "UpdateWidthsScale")) {
+		   yyUpdateWidthsScale = $3;
+		}
 		else if (!strcmp($2,"NumberOptimizationSteps")) {
 		  if ($3>0) {
 		     yyNumberOptimizationSteps = (int)$3;
@@ -1379,6 +1382,10 @@ input:
 		  if (!strcmp($2, "UseMarkovChains")) {
 		    if ($3 == on) yyUseMarkovChains = true;
 		      else yyUseMarkovChains = false;
+		  }
+		  if (!strcmp($2, "UpdateWidths")) {
+                    if ($3 == on) yyUpdateWidths = true;
+                    else yyUpdateWidths = false; 
 		  }
 		  if (!strcmp($2, "WidthOptimization")) {
 		    if ($3 == on) yyWidthOptimization = true;

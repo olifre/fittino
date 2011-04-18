@@ -162,8 +162,9 @@ private:
     void simulated_annealing_uncertainties_run_down (TNtuple *ntuple);
     void markovChain ();
 
-   // == For optimization of proposal width
-    TNtuple* ntupleCov;
+    // == For optimization of proposal width
+    TMatrixD corM;
+    TMatrixDSym covMsym; 
     TVectorD eigenValues;
     TMatrixD eigenVectors;
     TMatrixD correlationMatrix;
@@ -171,8 +172,10 @@ private:
     vector<double> correlatedRandomNumbers( vector<double> mean );
     vector <double> widthOptimization(std::vector<double> x, std::vector<double> vm, std::vector<double> xp, std::vector<double> lb, std::vector <double> ub, std::vector<string> xNames );
     void estimateCorrelations(vector<double> x, vector<double> xp, vector<double> vm, vector<double> lb, vector <double> ub );
-    void computeCovMatrix( vector<double> vm );
+    void computeCovMatrix( vector<double> vm, vector< vector <Float_t> > varSampling );
+
     // ==
+ 
     
     double calculateQ(std::vector<double> x, std::vector<double> xk, std::vector<double> vm);
     void hybridMonteCarlo();

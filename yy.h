@@ -95,6 +95,7 @@ extern float  yyAcceptanceRangeLower;
 extern float  yyOptimizationSlope;
 extern bool  yyWidthOptimization;
 extern bool  yyUpdateWidths;
+extern float yyUpdateWidthsScale;
 extern bool  yyCorrelationInMarkovChain;
 extern bool  yyGlobalOptimizationOnly;
 extern string yyIndividuallyOptimized;
