@@ -1,0 +1,56 @@
+################################################################################
+### Fittino input file                                                       ###
+################################################################################
+
+### LE (low energy) observables
+
+### References and comments are given in
+## https://wiki.terascale.de/index.php/SUSY/BSM_Parameter_Fitting
+
+LEObs ( gmin2m_npf     )     25.5E-10 +- 8.0E-10                      alias  7 
+
+LEObs ( Omega_npf      ) <    0.19368  +- 0.0108                         alias 20 # From SN+WMAP+SHOES, h from astrophysics PDG, Table 21.1, p25
+#LEObs ( Omega_npf      ) <    0.113  +- 0.003                         alias 20 
+
+LEObs ( Kppinn_npf     )      < 4.5     +- 1.0E-10                    alias 25 
+LEObs ( dm_k_npf       )      0.92    +- 0.14                         alias 24 
+LEObs ( Klnu_npf       )      1.008   +- 0.014                        alias  6
+
+LEObs ( Massh0_npf     ) >  114.4                         +- 3.0      alias 19 
+LEObs ( MassW_npf      )     80.398   +- 0.025            +- 0.010    alias  8 
+LEObs ( sin_th_eff_npf )      0.2313  +- 0.00021                      alias  9 
+
+LEObs ( DmsDmd_npf     )      1.09    +- 0.01    +- 0.16              alias 27
+LEObs ( B_dll_npf      ) <    0.6E-8                      +- 0.001E-8 alias 26 # Changed !
+LEObs ( Bsg_npf        )      1.117   +- 0.076   +- 0.082 +- 0.050    alias  1 # ratio unchanged with new measurement
+LEObs ( dm_s_npf       )      1.11    +- 0.01    +- 0.32              alias  2 
+LEObs ( B_smm_npf      ) <    3.6E-8                      +- 0.02E-8  alias  3 # Changed !
+LEObs ( Btn_npf        )      2.07    +- 0.482                        alias  4 # Changed !
+LEObs ( B_sXsll_npf    )      0.99    +- 0.32                         alias  5 
+
+### SM observables
+
+alphaem    127.925      GeV +- 0.016      GeV # [6]
+G_F          1.16637E-5     +- 0.00001E-5     # [6]
+alphas       0.1176     GeV +- 0.0020     GeV # [6]
+massZ       91.1876     GeV +- 0.0021     GeV # [6]
+massBottom   4.20       GeV +- 0.17       GeV # [6]
+massTop    171.3        GeV +- 1.2        GeV # [6]
+massTau      1.77684    GeV +- 0.00017    GeV # [6]
+massCharm    1.27       GeV +- 0.11       GeV # [6]
+
+# [6] PDG 2009 
+
+ ################################################################################
+ ### Parameters                                                               ###
+ ################################################################################
+
+fixParameter alphaem     127.925      GeV
+fixParameter G_F         1.16637E-5
+fixParameter alphas      0.1176       GeV
+fixParameter massZ       91.1876      GeV
+fixParameter massBottom  4.20         GeV
+fixParameter massTop     171.3        GeV
+fixParameter massTau     1.77684      GeV
+
+
