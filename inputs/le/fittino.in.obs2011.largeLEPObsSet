@@ -17,7 +17,7 @@ LEObs ( dm_k_npf       )      0.92    +- 0.14                         alias 24
 LEObs ( Klnu_npf       )      1.008   +- 0.014                        alias  6
 
 LEObs ( Massh0_npf     ) >  114.4                         +- 3.0      alias 19 
-LEObs ( MassW_npf      )     80.398   +- 0.025            +- 0.010    alias  8 
+LEObs ( MassW_npf      )     80.398   +- 0.025            +- 0.010    alias  8 # [6]
 LEObs ( sigma_had0_npf )      41.540   +- 0.037                        alias 23 # [5]
 LEObs ( A_fbl_npf      )      0.0171 +- 0.0010                      alias 22 # [5]
 LEObs ( A_l_npf        )      0.1513  +- 0.0021                       alias 18 # [7]
@@ -28,7 +28,6 @@ LEObs ( A_fbb_npf      )      0.0982  +- 0.0017                       alias 14 #
 LEObs ( A_fbc_npf      )      0.0635  +- 0.0036                       alias 15 # [9]
 LEObs ( A_b_npf        )      0.923   +- 0.020                        alias 16 # [8]
 LEObs ( A_c_npf        )      0.670   +- 0.027                        alias 17 # [8]
-LEObs ( MassW_npf      )     80.398   +- 0.025            +- 0.010    alias  8 # [6]
 LEObs ( sin_th_eff_npf )      0.2324  +- 0.0012                       alias  9 # [10]
 LEObs ( GammaZ_npf     )   2495.2     +- 2.3              +- 1.0      alias 10 # [5]
 
