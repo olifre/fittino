@@ -6124,20 +6124,25 @@ void WriteLesHouches(double* x)
       }
 
 
-      //if (FindInFixed("massCharm")) {
-      //  LesHouchesOutfile << "    8  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      //}
-      //else if (FindInFitted("massCharm")) {
-      //  LesHouchesOutfile << "    8  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-      //  cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
-      //} 
-      //else if (FindInUniversality("massCharm")) {
-      //  LesHouchesOutfile << "    8  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-      //  cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
-      //}
-      //else {
-      //  LesHouchesOutfile << "    8  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      //}
+      if (FindInFixed("massCharm")) {
+	LesHouchesOutfile << "    24  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+      }
+      else if (FindInFitted("massCharm")) {
+	LesHouchesOutfile << "    24  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+	  cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
+	}
+      } 
+      else if (FindInUniversality("massCharm")) {
+	LesHouchesOutfile << "    24  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+	  cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
+	}
+      }
+      else {
+	LesHouchesOutfile << "    24  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+      }
+
 
       // MINPAR
       LesHouchesOutfile << "BLOCK MINPAR" << endl;
@@ -6956,27 +6961,29 @@ void WriteLesHouches(double* x)
       LesHouchesOutfile << "   31  -1.00000000E+00     # m_GUT, if < 0 than it determined via g_1=g_2" << endl;
       LesHouchesOutfile << "   32  0                  # require strict unification g_1=g_2=g_3 if '1' is set " << endl;
       // LesHouchesOutfile << "   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
-      if (FindInFixed("massCharm")) {
-				LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      }
-      else if (FindInFitted("massCharm")) {
-				LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-			 	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+
+//       if (FindInFixed("massCharm")) {
+// 				LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+//       }
+//       else if (FindInFitted("massCharm")) {
+// 				LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
+// 			 	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		
-	    	cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
+// 	    	cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
 		
-				 }
-      } 
-      else if (FindInUniversality("massCharm")) {
-				 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-				 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
-	   			 cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
+// 				 }
+//       } 
+//       else if (FindInUniversality("massCharm")) {
+// 				 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
+// 				 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+// 	   			 cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
 				   
-				 }
-      }
-      else {
-	LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      }
+// 				 }
+//       }
+//       else {
+// 	LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+//       }
+
       LesHouchesOutfile << "   80  1     # SPheno Exit wit hnon-zero-value for sure!!" << endl;
       if ( yySPhenoOldInputFile != "") {
 	LesHouchesOutfile << "BLOCK STARTDATAFILE" << endl;
@@ -7159,20 +7166,24 @@ void WriteLesHouches(double* x)
 	 LesHouchesOutfile << "    7  "<<ReturnMeasuredValue("massTau")->value<<" # mtau (fixed)"<<endl;
       }
 
-      //if (FindInFixed("massCharm")) {
-      //  LesHouchesOutfile << "    8  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      //}
-      //else if (FindInFitted("massCharm")) {
-      //  LesHouchesOutfile << "    8  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-      //  cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
-      //} 
-      //else if (FindInUniversality("massCharm")) {
-      //  LesHouchesOutfile << "    8  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-      //  cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
-      //}
-      //else {
-      //  LesHouchesOutfile << "    8  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      //}
+      if (FindInFixed("massCharm")) {
+	LesHouchesOutfile << "    24  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+      }
+      else if (FindInFitted("massCharm")) {
+	LesHouchesOutfile << "    24  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+	  cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
+	}
+      } 
+      else if (FindInUniversality("massCharm")) {
+	LesHouchesOutfile << "    24  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+	  cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
+	}
+      }
+      else {
+	LesHouchesOutfile << "    24  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+      }
 
       if ( yyUseFullCKMMatrix ) {
 	 // VCKM
@@ -7339,24 +7350,26 @@ hase (rad), SPheno default value = 0
       LesHouchesOutfile << "   31  -1.00000000E+00     # m_GUT, if < 0 than it determined via g_1=g_2" << endl;
       LesHouchesOutfile << "   32  0                  # require strict unification g_1=g_2=g_3 if '1' is set " << endl;
       // LesHouchesOutfile << "   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
-      if (FindInFixed("massCharm")) {
-	 LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      }
-      else if (FindInFitted("massCharm")) {
-	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
-	    cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
-	 }
-      } 
-      else if (FindInUniversality("massCharm")) {
-	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
-	    cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
-	 }
-      }
-      else {
-	 LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      }
+
+//       if (FindInFixed("massCharm")) {
+// 	 LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+//       }
+//       else if (FindInFitted("massCharm")) {
+// 	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
+// 	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+// 	    cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
+// 	 }
+//       } 
+//       else if (FindInUniversality("massCharm")) {
+// 	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
+// 	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+// 	    cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
+// 	 }
+//       }
+//       else {
+// 	 LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+//       }
+
       LesHouchesOutfile << "   80  1     # SPheno Exit wit hnon-zero-value for sure!!" << endl;
       if ( yySPhenoOldInputFile != "") {
 	LesHouchesOutfile << "BLOCK STARTDATAFILE" << endl;
@@ -7537,20 +7550,24 @@ hase (rad), SPheno default value = 0
       }
 
 
-      //    if (FindInFixed("massCharm")) {
-      //      LesHouchesOutfile << "    8  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      //    }
-      //    else if (FindInFitted("massCharm")) {
-      //      LesHouchesOutfile << "    8  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-      //      cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
-      //    } 
-      //    else if (FindInUniversality("massCharm")) {
-      //      LesHouchesOutfile << "    8  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-      //      cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
-      //    }
-      //    else {
-      //      LesHouchesOutfile << "    8  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      //    }
+      if (FindInFixed("massCharm")) {
+	LesHouchesOutfile << "    24  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+      }
+      else if (FindInFitted("massCharm")) {
+	LesHouchesOutfile << "    24  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+	  cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
+	}
+      } 
+      else if (FindInUniversality("massCharm")) {
+	LesHouchesOutfile << "    24  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
+	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+	  cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
+	}
+      }
+      else {
+	LesHouchesOutfile << "    24  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+      }
 
       if ( yyUseFullCKMMatrix ) {
 	 // VCKM
@@ -7790,24 +7807,26 @@ hase (rad), SPheno default value = 0
       LesHouchesOutfile << "   31  -1.00000000E+00     # m_GUT, if < 0 than it determined via g_1=g_2" << endl;
       LesHouchesOutfile << "   32  0                  # require strict unification g_1=g_2=g_3 if '1' is set " << endl;
       // LesHouchesOutfile << "#   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
-      if (FindInFixed("massCharm")) {
-	 LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      }
-      else if (FindInFitted("massCharm")) {
-	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
-	    cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
-	 }
-      } 
-      else if (FindInUniversality("massCharm")) {
-	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
-	    cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
-	 }
-      }
-      else {
-	 LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      }
+
+//       if (FindInFixed("massCharm")) {
+// 	 LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+//       }
+//       else if (FindInFitted("massCharm")) {
+// 	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
+// 	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+// 	    cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
+// 	 }
+//       } 
+//       else if (FindInUniversality("massCharm")) {
+// 	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
+// 	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+// 	    cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
+// 	 }
+//       }
+//       else {
+// 	 LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+//       }
+
       LesHouchesOutfile << "   80  1     # SPheno Exit wit hnon-zero-value for sure!!" << endl;
       if ( yySPhenoOldInputFile != "") {
 	LesHouchesOutfile << "BLOCK STARTDATAFILE" << endl;
@@ -7988,20 +8007,24 @@ hase (rad), SPheno default value = 0
       }
 
 
-      //    if (FindInFixed("massCharm")) {
-      //      LesHouchesOutfile << "    8  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      //    }
-      //    else if (FindInFitted("massCharm")) {
-      //      LesHouchesOutfile << "    8  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-      //      cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
-      //    } 
-      //    else if (FindInUniversality("massCharm")) {
-      //      LesHouchesOutfile << "    8  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-      //      cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
-      //    }
-      //    else {
-      //      LesHouchesOutfile << "    8  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      //    }
+         if (FindInFixed("massCharm")) {
+           LesHouchesOutfile << "    24  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+         }
+         else if (FindInFitted("massCharm")) {
+           LesHouchesOutfile << "    24  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
+	   if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+	     cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
+	   }
+         } 
+         else if (FindInUniversality("massCharm")) {
+           LesHouchesOutfile << "    24  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
+	   if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+	     cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
+	   }
+         }
+         else {
+           LesHouchesOutfile << "    24  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+         }
 
       if ( yyUseFullCKMMatrix ) {
 	 // VCKM
@@ -8328,24 +8351,26 @@ hase (rad), SPheno default value = 0
       LesHouchesOutfile << "   31  -1.00000000E+00     # m_GUT, if < 0 than it determined via g_1=g_2" << endl;
       LesHouchesOutfile << "   32  0                  # require strict unification g_1=g_2=g_3 if '1' is set " << endl;
       // LesHouchesOutfile << "#   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
-      if (FindInFixed("massCharm")) {
-	 LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      }
-      else if (FindInFitted("massCharm")) {
-	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
-	    cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
-	 }
-      } 
-      else if (FindInUniversality("massCharm")) {
-	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
-	    cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
-	 }
-      }
-      else {
-	 LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      }
+
+//       if (FindInFixed("massCharm")) {
+// 	 LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+//       }
+//       else if (FindInFitted("massCharm")) {
+// 	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
+// 	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+// 	    cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
+// 	 }
+//       } 
+//       else if (FindInUniversality("massCharm")) {
+// 	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
+// 	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+// 	    cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
+// 	 }
+//       }
+//       else {
+// 	 LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+//       }
+
       LesHouchesOutfile << "   80  1     # SPheno Exit wit hnon-zero-value for sure!!" << endl;
       if ( yySPhenoOldInputFile != "") {
 	LesHouchesOutfile << "BLOCK STARTDATAFILE" << endl;
@@ -8526,20 +8551,24 @@ hase (rad), SPheno default value = 0
       }
 
 
-      //    if (FindInFixed("massCharm")) {
-      //      LesHouchesOutfile << "    8  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      //    }
-      //    else if (FindInFitted("massCharm")) {
-      //      LesHouchesOutfile << "    8  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-      //      cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
-      //    } 
-      //    else if (FindInUniversality("massCharm")) {
-      //      LesHouchesOutfile << "    8  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-      //      cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
-      //    }
-      //    else {
-      //      LesHouchesOutfile << "    8  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      //    }
+         if (FindInFixed("massCharm")) {
+           LesHouchesOutfile << "    24  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+         }
+         else if (FindInFitted("massCharm")) {
+           LesHouchesOutfile << "    24  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
+	   if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+	     cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
+	   }
+         } 
+         else if (FindInUniversality("massCharm")) {
+           LesHouchesOutfile << "    24  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
+	   if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+	     cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
+	   }
+	 }
+         else {
+           LesHouchesOutfile << "    24  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+         }
 
       LesHouchesOutfile<<"BLOCK MINPAR                 # Input parameters"<<endl;
 
@@ -8691,24 +8720,26 @@ hase (rad), SPheno default value = 0
       LesHouchesOutfile << "   31  -1.00000000E+00     # m_GUT, if < 0 than it determined via g_1=g_2" << endl;
       LesHouchesOutfile << "   32  0                  # require strict unification g_1=g_2=g_3 if '1' is set " << endl;
       // LesHouchesOutfile << "   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
-      if (FindInFixed("massCharm")) {
-	 LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      }
-      else if (FindInFitted("massCharm")) {
-	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
-	    cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
-	 }
-      } 
-      else if (FindInUniversality("massCharm")) {
-	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
-	    cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
-	 }
-      }
-      else {
-	 LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-      }
+
+//       if (FindInFixed("massCharm")) {
+// 	 LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+//       }
+//       else if (FindInFitted("massCharm")) {
+// 	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
+// 	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+// 	    cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
+// 	 }
+//       } 
+//       else if (FindInUniversality("massCharm")) {
+// 	 LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
+// 	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+// 	    cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
+// 	 }
+//       }
+//       else {
+// 	 LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+//       }
+
       LesHouchesOutfile << "   80  1     # SPheno Exit wit hnon-zero-value for sure!!" << endl;
       if ( yySPhenoOldInputFile != "") {
 	LesHouchesOutfile << "BLOCK STARTDATAFILE" << endl;
@@ -8883,20 +8914,25 @@ hase (rad), SPheno default value = 0
 	    }
 
 
-	    //    if (FindInFixed("massCharm")) {
-	    //      LesHouchesOutfile << "    8  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-	    //    }
-	    //    else if (FindInFitted("massCharm")) {
-	    //      LesHouchesOutfile << "    8  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-	    //      cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
-	    //    } 
-	    //    else if (FindInUniversality("massCharm")) {
-	    //      LesHouchesOutfile << "    8  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-	    //      cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
-	    //    }
-	    //    else {
-	    //      LesHouchesOutfile << "    8  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-	    //    }
+	    if (FindInFixed("massCharm")) {
+	      LesHouchesOutfile << "    24  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+	    }
+	    else if (FindInFitted("massCharm")) {
+	      LesHouchesOutfile << "    24  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
+	      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+		cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
+	      } 
+	    }
+	    else if (FindInUniversality("massCharm")) {
+	      LesHouchesOutfile << "    24  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
+	      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+		cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
+	      }
+	    }
+	    else {
+	      LesHouchesOutfile << "    24  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+	    }
+
 
 	    LesHouchesOutfile<<"BLOCK MINPAR                 # Input parameters"<<endl;
 
@@ -9014,24 +9050,26 @@ hase (rad), SPheno default value = 0
 	    LesHouchesOutfile << "   31  -1.00000000E+00     # m_GUT, if < 0 than it determined via g_1=g_2" << endl;
 	    LesHouchesOutfile << "   32  0                  # require strict unification g_1=g_2=g_3 if '1' is set " << endl;
 	    // LesHouchesOutfile << "   33  1000.              #  Q_EWSB, if < 0 than  Q_EWSB=sqrt(m_~t1 m_~t2) " << endl;
-	    if (FindInFixed("massCharm")) {
-	       LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-	    }
-	    else if (FindInFitted("massCharm")) {
-	       LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
-		  cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
-	       }
-	    } 
-	    else if (FindInUniversality("massCharm")) {
-	       LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
-	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
-		  cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
-	       }
-	    }
-	    else {
-	       LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
-	    }
+
+// 	    if (FindInFixed("massCharm")) {
+// 	       LesHouchesOutfile << "   63  "<<ReturnFixedValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+// 	    }
+// 	    else if (FindInFitted("massCharm")) {
+// 	       LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition("massCharm")]<<" # mcharm"<<endl;
+// 	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+// 		  cout << "Fitting mCharm " << x[ReturnFittedPosition("massCharm")] << endl;
+// 	       }
+// 	    } 
+// 	    else if (FindInUniversality("massCharm")) {
+// 	       LesHouchesOutfile << "   63  "<<x[ReturnFittedPosition(ReturnUniversality("massCharm")->universality)]<<" # massCharm"<<endl;
+// 	       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+// 		  cout << "fitting " << ReturnUniversality("massCharm")->universality << " instead of massCharm" << endl;
+// 	       }
+// 	    }
+// 	    else {
+// 	       LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
+// 	    }
+
 	    LesHouchesOutfile << "   80  1     # SPheno Exit wit hnon-zero-value for sure!!" << endl;
 	    if ( yySPhenoOldInputFile != "") {
 	      LesHouchesOutfile << "BLOCK STARTDATAFILE" << endl;
