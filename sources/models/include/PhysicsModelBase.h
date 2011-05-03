@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -53,6 +53,11 @@ namespace Fittino {
       /*! \cond UML */
     private:
       double                       CalculateChi2();
+      /*!
+       *  \todo Short-term: This function may either become obsolete or will have to be expanded,
+       *  depending on how the actual interface to LHC rate prediction calculators will be realized.
+       */
+      void                         UpdateLHCRatePrediction();
       void                         UpdateObservablePredictions();
       void                         UpdateSLHAConfiguration();
 

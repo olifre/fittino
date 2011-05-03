@@ -9,7 +9,9 @@
 # Description This macro tries to find a local ROOT installation.              #
 #             If successful, it adds ROOT to Fittino as a cmake module.        #
 #                                                                              #
-# Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              #
+# Authors     Matthias Hamer       <mhamer@gwdg.de>                            #
+#             Mathias  Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>             #
+#             Peter    Wienemann   <wienemann@physik.uni-bonn.de>              # 
 #                                                                              #
 # Licence     This program is free software; you can redistribute it and/or    #
 #             modify it under the terms of the GNU General Public License as   #
@@ -75,9 +77,13 @@ ELSE(${ROOT_CONFIG_EXECUTABLE} MATCHES "ROOT_CONFIG_EXECUTABLE-NOTFOUND")
     EXECUTE_PROCESS(COMMAND root-config --libdir OUTPUT_VARIABLE ROOT_LIBRARY_PATH OUTPUT_STRIP_TRAILING_WHITESPACE)
     EXECUTE_PROCESS(COMMAND root-config --libs OUTPUT_VARIABLE ROOT_STANDARD_LIBRARIES OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-    FIND_LIBRARY(ROOT_XMLPARSER_LIBRARY NAMES XMLParser PATHS ${ROOT_LIBRARY_PATH} NO_DEFAULT_PATH)
+    FIND_LIBRARY(ROOT_FOAM_LIBRARY NAMES Foam PATHS ${ROOT_LIBRARY_PATH} NO_DEFAULT_PATH)
+    FIND_LIBRARY(ROOT_MINUIT_LIBRARY NAMES Minuit PATHS ${ROOT_LIBRARY_PATH} NO_DEFAULT_PAHT)
     FIND_LIBRARY(ROOT_MINUIT2_LIBRARY NAMES Minuit2 PATHS ${ROOT_LIBRARY_PATH} NO_DEFAULT_PATH)
+    FIND_LIBRARY(ROOT_ROOFIT_LIBRARY NAMES RooFit PATHS ${ROOT_LIBRARY_PATH} NO_DEFAULT_PATH)
+    FIND_LIBRARY(ROOT_ROOFITCORE_LIBRARY NAMES RooFitCore PATHS ${ROOT_LIBRARY_PATH} NO_DEFAULT_PATH)
+    FIND_LIBRARY(ROOT_XMLPARSER_LIBRARY NAMES XMLParser PATHS ${ROOT_LIBRARY_PATH} NO_DEFAULT_PATH)
 
-    SET(ROOT_LIBRARIES ${ROOT_STANDARD_LIBRARIES} ${ROOT_XMLPARSER_LIBRARY} ${ROOT_MINUIT2_LIBRARY})
+    SET(ROOT_LIBRARIES ${ROOT_STANDARD_LIBRARIES} ${ROOT_XMLPARSER_LIBRARY} ${ROOT_MINUIT2_LIBRARY} ${ROOT_MINUIT_LIBRARY} ${ROOT_ROOFITCORE_LIBRARY} ${ROOT_ROOFIT_LIBRARY} ${ROOT_FOAM_LIBRARY})
 
 ENDIF(${ROOT_CONFIG_EXECUTABLE} MATCHES "ROOT_CONFIG_EXECUTABLE-NOTFOUND")

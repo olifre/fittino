@@ -17,8 +17,9 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <cmath>
+#include <cstdlib>
 #include <iomanip>
+#include <iostream>
 
 #include "Messenger.h"
 #include "ObservableBase.h"
@@ -35,7 +36,6 @@ Fittino::PhysicsModelBase::~PhysicsModelBase() {
 
 double Fittino::PhysicsModelBase::Evaluate() {
 
-    PhysicsModelBase::UpdateSLHAConfiguration();
     PhysicsModelBase::UpdateObservablePredictions();
     return PhysicsModelBase::CalculateChi2();
 
@@ -50,7 +50,7 @@ void Fittino::PhysicsModelBase::PrintStatus() {
     messenger << Messenger::INFO << "  Set of the " << this->GetName() << " parameters:" << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
 
-    for ( unsigned int i = 0; i < this->GetNumberOfParameters(); i++ ) {
+    for ( unsigned int i = 0; i < this->GetNumberOfParameters(); ++i ) {
 
         messenger << Messenger::INFO
 	          << "    "
@@ -72,7 +72,7 @@ void Fittino::PhysicsModelBase::PrintStatus() {
     messenger << Messenger::INFO << "    Observable          Predicted value                 Measured value    Deviation" << Messenger::Endl;
     messenger << Messenger::Endl;
 
-    for ( unsigned int i = 0; i < _observableVector.size(); i++ ) {
+    for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
 
         _observableVector[i]->PrintStatus();
 
@@ -82,7 +82,7 @@ void Fittino::PhysicsModelBase::PrintStatus() {
 
 double Fittino::PhysicsModelBase::CalculateChi2() {
 
-    double chi2 = 1.e99;
+    double chi2 = 0.;
 
     for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
 
@@ -96,11 +96,28 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
 
 void Fittino::PhysicsModelBase::UpdateObservablePredictions() {
 
+    PhysicsModelBase::UpdateSLHAConfiguration();
+    /*!
+     *  \todo Short-term: This function may either become obsolete or will have to be expanded,
+     *  depending on how the actual interface to LHC rate prediction calculators will be realized.
+     */
+    PhysicsModelBase::UpdateLHCRatePrediction();
+
     for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
 
         _observableVector[i]->UpdatePrediction();
 
     }
+
+}
+
+void Fittino::PhysicsModelBase::UpdateLHCRatePrediction() {
+
+    std::string command = "/afs/atlass01.physik.uni-bonn.de/user/uhlenbrock/programs/WorkspaceSimpleExample/PredictSignalContribution ";
+    char *attributes = (char*)malloc(120*sizeof(char));
+    sprintf( attributes, "%f %f %f %f", _parameterVector[1].GetValue(), _parameterVector[2].GetValue(), _parameterVector[0].GetValue(), _parameterVector[3].GetValue() );
+    command += attributes;
+    system( command.c_str() );
 
 }
 

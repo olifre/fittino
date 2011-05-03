@@ -17,14 +17,19 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <iomanip>
+
+#include "Messenger.h"
 #include "ObservableBase.h"
 
 Fittino::ObservableBase::ObservableBase( std::string name, int id )
-                    : _id( id ),
-                      _name( name ) {
-
-    _chi2 = 1.e99;
-    _deviation = 1.e99;
+        : _chi2( 0. ),
+          _deviation( 0. ),
+          _measuredError( 0. ),
+          _measuredValue( 0. ),
+          _predictedValue( 0. ),
+          _id( id ),
+          _name( name ) {
 
 }
 
@@ -38,20 +43,51 @@ double Fittino::ObservableBase::GetChi2() const {
 
 }
 
-double Fittino::ObservableBase::GetDeviation() const {
+void Fittino::ObservableBase::PrintStatus() const {
 
-    return _deviation;
+    Messenger& messenger = Messenger::GetInstance();
+
+    messenger << Messenger::INFO
+              << "    "
+              << std::left
+              << std::setw( 17 )
+              << _name 
+              << std::right
+              << std::setw( 18 )
+              << std::setprecision( 5 ) 
+              << std::scientific
+              << _predictedValue
+              << std::right
+              << std::setw( 15 )
+              << _measuredValue
+              << std::setw( 5 )
+              << " +/- "
+              << std::right
+              << std::setw( 10 )
+              << _measuredError
+              << std::right
+              << std::setw( 7 )
+              << std::setprecision( 1 )
+              << std::fixed
+              << _deviation
+              << std::right
+              << std::setw( 6 )
+              << " sigma"
+              << Messenger::Endl;
 
 }
 
-int Fittino::ObservableBase::GetID() const {
+void Fittino::ObservableBase::CalculateDeviation() {
 
-    return _id;
+    if ( _measuredError != 0. ) {
 
-}
+        _deviation = ( _measuredValue - _predictedValue ) / _measuredError;
 
-std::string Fittino::ObservableBase::GetName() const {
+    }
+    else {
 
-    return _name;
+        _deviation = ( _measuredValue - _predictedValue );
+
+    }
 
 }

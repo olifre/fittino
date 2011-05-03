@@ -43,19 +43,19 @@ namespace Fittino {
        */
                      ~ObservableBase();
       double         GetChi2() const;
-      double         GetDeviation() const;
-      int            GetID() const;
-      std::string    GetName() const;
-      virtual void   PrintStatus() const = 0;
+      void           PrintStatus() const;
       virtual void   UpdatePrediction() = 0;
 
     protected:
-      virtual double CalculateChi2() = 0;
-      virtual double CalculateDeviation() = 0;
+      void           CalculateDeviation();
+      virtual void   CalculateChi2() = 0;
 
     protected:
       double         _chi2;
       double         _deviation;
+      double         _measuredError;
+      double         _measuredValue;
+      double         _predictedValue;
       int            _id;
       std::string    _name;
 
