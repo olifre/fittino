@@ -83,6 +83,57 @@ nofit massNeutralino4  417.037 GeV +-  2.3  GeV
 nofit massChargino1    184.132 GeV +-  0.55 GeV
 nofit massChargino2    418.495 GeV +-  3.0  GeV
 
+
+BR ( Neutralino2 -> Electron SelectronR  ) alias 1
+BR ( Neutralino2 -> Muon SmuonR          ) alias  16
+BR ( Neutralino2 -> Electron SelectronL  ) alias  18
+BR ( Neutralino2 -> Muon SmuonL          ) alias  19
+BR ( Neutralino2 -> Tau Stau1            ) alias  2
+BR ( Neutralino2 -> Nutau Snutau1        ) alias  15
+BR ( Neutralino2 -> Tau Stau2            ) alias  17
+BR ( Neutralino2 -> Neutralino1 Z        ) alias  20
+BR ( Neutralino2 -> Neutralino1 h0       ) alias  21
+BR ( Neutralino2 -> Nutau Snutau2        ) alias  22
+BR ( Chargino1   -> Neutralino1 W        ) alias  201
+BR ( Chargino1   -> Nutau Stau1          ) alias  202
+BR ( Chargino1   -> Nutau Stau2          ) alias  203
+BR ( Chargino1   -> Electron SnueL       ) alias  204
+BR ( Chargino1   -> Muon SnumuL          ) alias  205
+BR ( Chargino1   -> Tau Snutau1          ) alias  206
+BR ( SelectronR  -> Neutralino1 Electron ) alias  3
+BR ( SelectronR  -> Neutralino2 Electron ) alias  32
+BR ( SelectronL  -> Neutralino1 Electron ) alias  30
+BR ( SelectronL  -> Neutralino2 Electron ) alias  31
+BR ( Stau1       -> Neutralino1 Tau      ) alias  4
+BR ( Stau2       -> Neutralino1 Tau      ) alias  40
+BR ( Stau2       -> Neutralino2 Tau      ) alias  41
+BR ( Stau2       -> Chargino1 Nutau      ) alias  42
+BR ( Gluino      -> Bottom Sbottom2      ) alias  5
+BR ( Gluino      -> Bottom Sbottom1      ) alias  6
+BR ( Gluino      -> Stop1 Top            ) alias  9
+BR ( Gluino      -> Stop2 Top            ) alias  90
+BR ( Gluino      -> SupL up              ) alias  91
+BR ( Gluino      -> SupR up              ) alias  92
+BR ( Gluino      -> SdownL down          ) alias  910
+BR ( Gluino      -> SdownR down          ) alias  920
+BR ( SupL        -> Up Neutralino1       ) alias 101
+BR ( SupR        -> Up Neutralino1       ) alias 102
+BR ( SupL        -> Up Neutralino2       ) alias 103
+BR ( SupR        -> Up Neutralino2       ) alias 104
+BR ( SupL        -> Down Chargino1       ) alias 105
+BR ( SupR        -> Down Chargino1       ) alias 106
+BR ( SupL        -> Down Chargino2       ) alias 107
+BR ( SupR        -> Down Chargino2       ) alias 108
+BR ( Stop1       -> Bottom Chargino1     ) alias 10
+BR ( Stop1       -> Bottom Chargino2     ) alias 13
+BR ( Stop1       -> Top Neutralino1      ) alias 100
+BR ( Stop1       -> Top Neutralino2      ) alias 130
+BR ( Sbottom1    -> W Stop1              ) alias 11
+BR ( Sbottom2    -> W Stop1              ) alias 12
+BR ( Sbottom1    -> Top Chargino1        ) alias 14
+BR ( Sbottom2    -> Neutralino2 Bottom   ) alias  7
+BR ( Sbottom1    -> Neutralino2 Bottom   ) alias  8
+
 # Table 2.13 with lepton universality
 correlationCoefficient massZ GammaZ_npf -0.023
 correlationCoefficient massZ sigma_had0_npf -0.045
@@ -139,55 +190,7 @@ fitParameter A0            383.8      GeV +-  220   GeV
 fitParameter TanBeta        13.2          +-  6    
 fitParameter QEWSB        1000.       GeV +-  1   GeV  
 
-BR ( Neutralino2 -> Electron SelectronR  ) alias 1
-BR ( Neutralino2 -> Muon SmuonR          ) alias  16
-BR ( Neutralino2 -> Electron SelectronL  ) alias  18
-BR ( Neutralino2 -> Muon SmuonL          ) alias  19
-BR ( Neutralino2 -> Tau Stau1            ) alias  2
-BR ( Neutralino2 -> Nutau Snutau1        ) alias  15
-BR ( Neutralino2 -> Tau Stau2            ) alias  17
-BR ( Neutralino2 -> Neutralino1 Z        ) alias  20
-BR ( Neutralino2 -> Neutralino1 h0       ) alias  21
-BR ( Neutralino2 -> Nutau Snutau2        ) alias  22
-BR ( Chargino1   -> Neutralino1 W        ) alias  201
-BR ( Chargino1   -> Nutau Stau1          ) alias  202
-BR ( Chargino1   -> Nutau Stau2          ) alias  203
-BR ( Chargino1   -> Electron SnueL       ) alias  204
-BR ( Chargino1   -> Muon SnumuL          ) alias  205
-BR ( Chargino1   -> Tau Snutau1          ) alias  206
-BR ( SelectronR  -> Neutralino1 Electron ) alias  3
-BR ( SelectronR  -> Neutralino2 Electron ) alias  32
-BR ( SelectronL  -> Neutralino1 Electron ) alias  30
-BR ( SelectronL  -> Neutralino2 Electron ) alias  31
-BR ( Stau1       -> Neutralino1 Tau      ) alias  4
-BR ( Stau2       -> Neutralino1 Tau      ) alias  40
-BR ( Stau2       -> Neutralino2 Tau      ) alias  41
-BR ( Stau2       -> Chargino1 Nutau      ) alias  42
-BR ( Gluino      -> Bottom Sbottom2      ) alias  5
-BR ( Gluino      -> Bottom Sbottom1      ) alias  6
-BR ( Gluino      -> Stop1 Top            ) alias  9
-BR ( Gluino      -> Stop2 Top            ) alias  90
-BR ( Gluino      -> SupL up              ) alias  91
-BR ( Gluino      -> SupR up              ) alias  92
-BR ( Gluino      -> SdownL down          ) alias  910
-BR ( Gluino      -> SdownR down          ) alias  920
-BR ( SupL        -> Up Neutralino1       ) alias 101
-BR ( SupR        -> Up Neutralino1       ) alias 102
-BR ( SupL        -> Up Neutralino2       ) alias 103
-BR ( SupR        -> Up Neutralino2       ) alias 104
-BR ( SupL        -> Down Chargino1       ) alias 105
-BR ( SupR        -> Down Chargino1       ) alias 106
-BR ( SupL        -> Down Chargino2       ) alias 107
-BR ( SupR        -> Down Chargino2       ) alias 108
-BR ( Stop1       -> Bottom Chargino1     ) alias 10
-BR ( Stop1       -> Bottom Chargino2     ) alias 13
-BR ( Stop1       -> Top Neutralino1      ) alias 100
-BR ( Stop1       -> Top Neutralino2      ) alias 130
-BR ( Sbottom1    -> W Stop1              ) alias 11
-BR ( Sbottom2    -> W Stop1              ) alias 12
-BR ( Sbottom1    -> Top Chargino1        ) alias 14
-BR ( Sbottom2    -> Neutralino2 Bottom   ) alias  7
-BR ( Sbottom1    -> Neutralino2 Bottom   ) alias  8
+
 
 
 ################################################################################
