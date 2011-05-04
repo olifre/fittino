@@ -7,10 +7,9 @@
 ### References and comments are given in
 ## https://wiki.terascale.de/index.php/SUSY/BSM_Parameter_Fitting
 
-LEObs ( gmin2m_npf     )     25.5E-10 +- 8.0E-10                      alias  7 
+LEObs ( gmin2m_npf     )     28.7E-10 +- 8.0E-10                      alias  7 
 
-LEObs ( Omega_npf      )     0.139  +- 0.008                         alias 20
-#LEObs ( Omega_npf      )    0.113  +- 0.003                         alias 20 
+LEObs ( Omega_npf      )    0.113  +- 0.003                         alias 20 
 
 LEObs ( Kppinn_npf     )      < 4.5     +- 1.0E-10                    alias 25 
 LEObs ( dm_k_npf       )      0.92    +- 0.14                         alias 24 
