@@ -4149,7 +4149,7 @@ if (yyVerbose){
                               yyMass_tau = tmpParams[i][1];
 			      break;
 			  default:
-                              yyerror("Parameter in SMINPUTS not known");
+			    ;//                              yyerror("Parameter in SMINPUTS not known");
                           }
                       }
                   }
@@ -4304,6 +4304,18 @@ if (yyVerbose){
                   else if (!strcmp($2, "IMUmix")) {
 if (yyVerbose){
 		      cout << "Ignoring block IMUmix" << endl;
+}
+		  }
+//========================================================================
+                  else if (!strcmp($2, "HiggsBoundsInputHiggsCouplingsBosons")) {
+if (yyVerbose){
+		      cout << "Ignoring block HiggsBoundsInputHiggsCouplingsBosons" << endl;
+}
+                  }
+//========================================================================
+                  else if (!strcmp($2, "HiggsBoundsInputHiggsCouplingsFermions")) {
+if (yyVerbose){
+		      cout << "Ignoring block HiggsBoundsInputHiggsCouplingsFermions" << endl;
 }
 		  }
 //========================================================================
@@ -4825,6 +4837,17 @@ parameters: /* empty */
 	       tmpVec.push_back($4);
 	       tmpVec.push_back($5);
 	       tmpVec.push_back($6);
+	       tmpParams.push_back(tmpVec);
+	    }
+	    | parameters T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NUMBER T_NEWLINE
+	    {
+	       tmpVec.clear();
+	       tmpVec.push_back($2);
+	       tmpVec.push_back($3);                  
+	       tmpVec.push_back($4);
+	       tmpVec.push_back($5);
+	       tmpVec.push_back($6);
+	       tmpVec.push_back($7);
 	       tmpParams.push_back(tmpVec);
 	    }
 	    | parameters T_NUMBER sentence T_NEWLINE
