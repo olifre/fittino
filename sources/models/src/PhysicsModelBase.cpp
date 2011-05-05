@@ -20,6 +20,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
+#include <stdio.h>
 
 #include "Messenger.h"
 #include "ObservableBase.h"

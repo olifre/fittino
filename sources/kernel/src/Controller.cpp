@@ -40,7 +40,7 @@ Fittino::Controller* Fittino::Controller::GetInstance() {
 
     if ( !_instance ) {
 
-        _instance = new Controller::Controller();
+        _instance = new Controller;
 
     }
 

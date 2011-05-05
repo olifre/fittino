@@ -28,7 +28,7 @@ Fittino::Configuration* Fittino::Configuration::GetInstance() {
 
     if ( !_instance ) {
 
-        _instance = new Configuration::Configuration();
+        _instance = new Configuration;
 
     }
 
