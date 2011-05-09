@@ -94,6 +94,9 @@ vector<int> tmpNumbers;
 // MASS
 map<int,double> yyMass;
 
+// FINETUNING PARAMETERS
+map<int,double> yyFineTuningParameters;
+
 // alpha
 double yyalpha;
 
@@ -1828,8 +1831,16 @@ input:
 	          tmpValue.bound_up = 1.E+6;
                   tmpValue.nofit = true;
 		  if (!strncmp($3, "mass", 4)) tmpValue.type = mass;
-		  else if (!strncmp($3, "cos", 3)) tmpValue.type = other;
-		  yyMeasuredVec.push_back(tmpValue);
+		  else if( !strncmp($3, "FineTuningParameter", 19 )) { 
+				string line($3);
+				int tmpSize = line.size() - 19; 
+				char *tmpId = (char*)malloc( tmpSize*sizeof(char) );
+				line.copy( tmpId, tmpSize, 19 );
+				tmpValue.type = FineTuningParameter;
+				tmpValue.id = atoi(tmpId);
+			}
+			else if (!strncmp($3, "cos", 3)) tmpValue.type = other;
+			yyMeasuredVec.push_back(tmpValue);
               }
 	    | input T_KEY T_WORD value T_ERRORSIGN value
 	      {
@@ -4450,6 +4461,13 @@ if (yyVerbose){
      			  yyMass[(unsigned int)tmpParams[i][0]]=tmpParams[i][1];     
                       }
                   }
+			// Fine-Tuning Parameters
+//========================================================================
+								else if( !strcmp($2, "FINETUNING")) {
+									for(unsigned int i = 0; i <tmpParams.size(); ++i ) {
+										yyFineTuningParameters[(unsigned int)tmpParams[i][0]]=tmpParams[i][1];
+									}
+								}
 
 		  // SPhenoLowEnergy 
 //========================================================================

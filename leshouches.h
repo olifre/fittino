@@ -57,7 +57,7 @@ extern double yy_A;
 extern double yyMinput;
 extern double yyM1;
 extern map<int,double> yyMass;
-
+extern map<int,double> yyFineTuningParameters;
 
 typedef vector<double> doubleVec_t;
 

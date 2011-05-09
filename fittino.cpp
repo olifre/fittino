@@ -9690,6 +9690,10 @@ int   ReadLesHouches()
 	 yyMeasuredVec[i].theovalue = yyMass[yyMeasuredVec[i].id];
 	 yyMeasuredVec[i].theoset = true;
       }
+			else if ( yyMeasuredVec[i].type == FineTuningParameter ) {
+				yyMeasuredVec[i].theovalue = yyFineTuningParameters[yyMeasuredVec[i].id];
+				yyMeasuredVec[i].theoset = true;
+			}
       //################################################
       else if (yyMeasuredVec[i].type == LEObs) {
 	 if (yyMeasuredVec[i].id == bsg) {
