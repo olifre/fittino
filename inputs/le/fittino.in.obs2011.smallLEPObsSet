@@ -167,6 +167,8 @@ SepFitTanbMu                   off
 SepFitmA                       off
 Calculator                     SPHENO ./SPheno
 LEOCalculator                  NPFITTER ./NPpredict.exe
+#HiggsCalculator                FEYNHIGGS ./FeynHiggs
+#AfterBurnerDirectory           /lustre/user/wiene/fittino/afterburner
 UseFullCKMMatrix               off
 UseMinos                       off
 UseHesse                       off

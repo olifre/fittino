@@ -139,6 +139,9 @@ Q[ \t]*=                  {
                               if (!strcmp(yytext, "MarkovInterfaceFilePath")) { 
 				  return T_MARKOVINTERFACEFILEPATH;
 			      }
+                              if (!strcmp(yytext, "AfterBurnerDirectory")) { 
+				  return T_AFTERBURNERDIRECTORY;
+			      }
 			      if (!strcmp(yytext, "GridPath")) { 
 				  return T_GRIDPATH;
 			      }

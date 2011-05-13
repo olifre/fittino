@@ -128,6 +128,7 @@ extern string yyDecayCalculatorPath;
 extern string yyAstroCalculatorPath;
 extern string yyRelicDensityCalculatorPath;
 extern string yyLEOCalculatorPath;
+extern string yyAfterBurnerDirectory;
 extern string yyHBWhichExpt;
 extern string yyDashedLine;
 extern string yyMarkovInterfaceFilePath;

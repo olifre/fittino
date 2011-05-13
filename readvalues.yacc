@@ -215,6 +215,7 @@ string			 yyDecayCalculatorPath = "";
 string       yyAstroCalculatorPath = "";
 string       yyRelicDensityCalculatorPath = "";
 string       yyLEOCalculatorPath = "";
+string       yyAfterBurnerDirectory = "";
 string       yyDashedLine = "------------------------------------------------------------";
 string       yyMarkovInterfaceFilePath = "";
 string       yyGridPath="";
@@ -332,7 +333,7 @@ struct correrrorstruct {
 %token <real> T_NUMBER
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
 %token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS T_NOFIT T_NOFITLEO T_SCALING
-%token T_BLOCK T_SCALE T_DECAY T_BR T_LEO T_XS T_CALCULATOR T_HIGGSCALCULATOR T_DECAYCALCULATOR T_MARKOVINTERFACEFILEPATH T_GRIDPATH T_ASTROCALCULATOR T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO
+%token T_BLOCK T_SCALE T_DECAY T_BR T_LEO T_XS T_CALCULATOR T_HIGGSCALCULATOR T_DECAYCALCULATOR T_MARKOVINTERFACEFILEPATH T_GRIDPATH T_ASTROCALCULATOR T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO T_AFTERBURNERDIRECTORY
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH T_NEWLINE
 %token <name> T_VERSIONTAGSOSY
 %token <name> T_VERSIONTAGSDEC
@@ -1595,6 +1596,10 @@ input:
 		   yyInputFileLine.prevalue += $3;
 
 		   yyAstroCalculatorPath = $3;
+	      }
+	    | input T_AFTERBURNERDIRECTORY T_PATH
+	      {
+		  yyAfterBurnerDirectory = $3;
 	      }
 	    | input T_RELICDENSITYCALCULATOR T_WORD
 	      {
