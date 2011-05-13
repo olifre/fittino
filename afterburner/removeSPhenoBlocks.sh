@@ -4,7 +4,12 @@
 # This is needed to feed SPheno spectrum files into programs which
 # do not ignore unknown blocks and thus do not work properly.
 
-FILE=SPheno.spc.last
+if [ ${#*} -ne 1 ]; then
+    echo "$0: wrong number of parameters"
+    echo "usage: `basename $0` <SPheno spectrum file>"
+fi
+
+FILE=$1
 TMPFILESUFFIX=tmp
 
 STARTINFO=`cat -n $FILE | grep "Block SPhenoINFO" | awk '{ print $1}'`
