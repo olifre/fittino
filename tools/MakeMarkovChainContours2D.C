@@ -123,6 +123,26 @@ void MakeMarkovChainContour2D (bool bayes = false,
     variables.push_back("P_M3");
     variables.push_back("P_massA0");
   }
+  else if( model == "XMSUGRA" ){
+    // XMSUGRA
+    variables.push_back("P_M0");
+    variables.push_back("P_M1");
+    variables.push_back("P_M2");
+    variables.push_back("P_M3");
+    variables.push_back("P_A0");
+    variables.push_back("P_TanBeta");
+  }
+  else if( model == "NONUNIVSIMPLIFIED" ){
+    // NONUNIVSIMPLIFIED
+    variables.push_back("P_TanBeta");
+    variables.push_back("P_A0");
+    variables.push_back("P_M1");
+    variables.push_back("P_M2");
+    variables.push_back("P_M3");
+    variables.push_back("P_M0H");
+    variables.push_back("P_M05");
+    variables.push_back("P_M010");
+  }
   else {
     cout << "unknown model " << model << endl;
     return;
@@ -782,11 +802,23 @@ void MakeMarkovChainContour2D (bool bayes = false,
 
 	      // draw the plot
 	      loghist->SetTitle("");
-	  
 	      if (!strcmp(variables[sVariable].c_str(), "P_A0")) {
 		loghist->SetXTitle("A_{0} (GeV)");
 		emptyhist->SetXTitle("A_{0} (GeV)");
 	      }
+
+	      else if (!strcmp(variables[sVariable].c_str(), "P_M0H")) {
+		loghist->SetXTitle("M_{0,H} (GeV)");
+                emptyhist->SetXTitle("M_{0,H} (GeV)");
+              }
+	      else if (!strcmp(variables[sVariable].c_str(), "P_M05")) {
+                loghist->SetXTitle("M_{0,5} (GeV)");
+                emptyhist->SetXTitle("M_{0,5} (GeV)");
+              }
+	      else if (!strcmp(variables[sVariable].c_str(), "P_M010")) {
+                loghist->SetXTitle("M_{0,10} (GeV)");
+                emptyhist->SetXTitle("M_{0,10} (GeV)");
+              }
 	      else if (!strcmp(variables[sVariable].c_str(), "P_M0")) {
 		loghist->SetXTitle("M_{0} (GeV)");
 		emptyhist->SetXTitle("M_{0} (GeV)");

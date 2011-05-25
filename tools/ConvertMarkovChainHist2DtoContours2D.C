@@ -99,6 +99,26 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
     variables.push_back("P_M3");
     variables.push_back("P_massA0");
   }
+  else if( model == "XMSUGRA" ){
+    // XMSUGRA
+    variables.push_back("P_M0");
+    variables.push_back("P_M1");
+    variables.push_back("P_M2");
+    variables.push_back("P_M3");
+    variables.push_back("P_A0");
+    variables.push_back("P_TanBeta");
+  }
+  else if( model == "NONUNIVSIMPLIFIED" ){
+    // NONUNIVSIMPLIFIED
+    variables.push_back("P_TanBeta");
+    variables.push_back("P_A0");
+    variables.push_back("P_M1");
+    variables.push_back("P_M2");
+    variables.push_back("P_M3");
+    variables.push_back("P_M0H");
+    variables.push_back("P_M05");
+    variables.push_back("P_M010");
+  }
   else {
     cout << "unknown model " << model << endl;
     return;

@@ -149,6 +149,40 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
     variableNames.push_back("m_{#tilde{#tau}_{1}} (GeV)");
     variableNames.push_back("#Omega h^{2}");
   }
+  else if( model == "XMSUGRA" ){
+    // XMSUGRA
+    variables.push_back("P_M0");
+    variables.push_back("P_M1");
+    variables.push_back("P_M2");
+    variables.push_back("P_M3");
+    variables.push_back("P_A0");
+    variables.push_back("P_TanBeta");
+    variableNames.push_back("M_{0} (GeV)");
+    variableNames.push_back("M_{1} (GeV)");
+    variableNames.push_back("M_{2} (GeV)");
+    variableNames.push_back("M_{3} (GeV)");
+    variableNames.push_back("A_{0} (GeV)");
+    variableNames.push_back("tan#beta");
+  }
+  else if( model == "NONUNIVSIMPLIFIED" ){
+    // NONUNIVSIMPLIFIED
+    variables.push_back("P_TanBeta");
+    variables.push_back("P_A0");
+    variables.push_back("P_M1");
+    variables.push_back("P_M2");
+    variables.push_back("P_M3");
+    variables.push_back("P_M0H");
+    variables.push_back("P_M05");
+    variables.push_back("P_M010");
+    variableNames.push_back("tan#beta");
+    variableNames.push_back("A_{0} (GeV)");
+    variableNames.push_back("M_{1} (GeV)");
+    variableNames.push_back("M_{2} (GeV)");
+    variableNames.push_back("M_{3} (GeV)");
+    variableNames.push_back("M_{0,H} (GeV)");
+    variableNames.push_back("M_{0,5} (GeV)");
+    variableNames.push_back("M_{0,10} (GeV)");
+  }
   else if (model == "MSSM18") {
     variables.push_back("P_MSelectronL");
     variables.push_back("P_MSelectronR");
