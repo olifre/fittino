@@ -1,0 +1,35 @@
+
+#!/usr/bin/env zsh
+#
+#$ -j y
+##$ -l os=sld5
+#$ -cwd
+#$ -P atlas
+#$ -l h_cpu=00:30:00 
+#$ -l h_vmem=1G
+#$ -w e
+#$ -m ae -M prudent@physik.tu-dresden.de
+
+echo "Script started"
+date
+
+export PATH=$ROOTSYS/bin:$PATH
+export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
+ini ROOT526
+
+export link=/afs/naf.desy.de/user/p/prudent/grid-fittino/Analyse/scratch_zn/grid-fittino/50_500_0_3
+export input_RecSim=$link/RecSim.root
+export input_Channels=$link/Channels.root
+export input_WeightingFactors=$link/WeightingFactors.root
+export output_A=$link/output_A.root
+export output_B=$link/output_B.root
+export output_C=$link/output_C.root
+export output_D=$link/output_D.root
+export output_txt=$link/NLO.txt
+/afs/naf.desy.de/user/p/prudent/grid-fittino/Analyse/RecoTree
+
+
+date 
+echo "Script finished"
+
+

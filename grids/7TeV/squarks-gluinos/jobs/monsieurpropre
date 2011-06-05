@@ -1,0 +1,2 @@
+rm Analyse_*.o*
+rm *~

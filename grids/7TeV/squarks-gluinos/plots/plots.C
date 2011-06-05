@@ -1,0 +1,77 @@
+{
+  gROOT->SetStyle("Plain");
+  TFile f ("../scratch_zn/grid-fittino/AnalysisOutput.root");
+
+  h_njets->SetXTitle("Number of jets before any selection");
+  h_nel->SetXTitle("Number of electrons before any selection");
+  h_nmu->SetXTitle("Number of muons before any selection");
+  h_ptjets->SetXTitle("Jets p_{T} (GeV)");
+  h_etajets->SetXTitle("Jets #eta");
+  h_ptel->SetXTitle("Electrons p_{T} (GeV)");
+  h_etael->SetXTitle("Electrons #eta");
+  h_flagMedel->SetXTitle("Electrons flag for medium ID");
+  h_ptmu->SetXTitle("Muons p_{T} (GeV)");
+  h_etamu->SetXTitle("Muons #eta");
+  h_sumptmu->SetXTitle("Muons isolation: SumPt(tracks)");
+  h_dR_jete->SetXTitle("#DeltaR(jet,electron)");
+  h_dR_ejet->SetXTitle("#DeltaR(electron,jet)");
+  h_dR_mujet->SetXTitle("#DeltaR(muon,jet)");
+  h_nel_presel->SetXTitle("Number of preselected electrons");
+  h_nmu_presel->SetXTitle("Number of preselected muons");
+  h_njets_presel->SetXTitle("Number of preselected jets");
+  h_ptleadjets->SetXTitle("Leading jet p_{T} (GeV)");
+  h_MET->SetXTitle("Missing E_{T} (GeV)");
+  h_dPhi->SetXTitle("#Delta#phi(jet,MET)");
+  h_meff->SetXTitle("effective mass (GeV)");
+  h_METmeff->SetXTitle("Missing E_{T} / effective mass");
+  h_mT2->SetXTitle("Stranverse mass m_{T2} (GeV)");
+
+  h_njets->Draw();
+  c1->SaveAs("h_njets.gif");
+  h_nel->Draw();
+  c1->SaveAs("h_nel.gif");
+  h_nmu->Draw();
+  c1->SaveAs("h_nmu.gif");
+  h_ptjets->Draw();
+  c1->SaveAs("h_ptjets.gif");
+  h_etajets->Draw();
+  c1->SaveAs("h_etajets.gif");
+  h_ptel->Draw();
+  c1->SaveAs("h_ptel.gif");
+  h_etael->Draw();
+  c1->SaveAs("h_etael.gif");
+  h_flagMedel->Draw();
+  c1->SaveAs("h_flagMedel.gif");
+  h_ptmu->Draw();
+  c1->SaveAs("h_ptmu.gif");
+  h_etamu->Draw();
+  c1->SaveAs("h_etamu.gif");
+  h_sumptmu->Draw();
+  c1->SaveAs("h_sumptmu.gif");
+  h_dR_jete->Draw();
+  c1->SaveAs("h_dR_jete.gif");
+  h_dR_ejet->Draw();
+  c1->SaveAs("h_dR_ejet.gif");
+  h_dR_mujet->Draw();
+  c1->SaveAs("h_dR_mujet.gif");
+  h_nel_presel->Draw();
+  c1->SaveAs("h_nel_presel.gif");
+  h_nmu_presel->Draw();
+  c1->SaveAs("h_nmu_presel.gif");
+  h_ptleadjets->Draw();
+  c1->SaveAs("h_ptleadjets.gif");
+  h_njets_presel->Draw();
+  c1->SaveAs("h_njets_presel.gif");
+  h_MET->Draw();
+  c1->SaveAs("h_MET.gif");
+  h_dPhi->Draw();
+  c1->SaveAs("h_dPhi.gif");
+  h_meff->Draw();
+  c1->SaveAs("h_meff.gif");
+  h_METmeff->Draw();
+  c1->SaveAs("h_METmeff.gif");
+  h_mT2->Draw();
+  c1->SaveAs("h_mT2.gif");
+
+
+}
