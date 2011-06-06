@@ -8,13 +8,13 @@ int main()
   RecoTree t;
 
   cout << " >>> Region A..."<< endl;
-  int nA = t.Loop( "A" );
+  float nA = t.Loop( "A" );
   cout << " >>> Region B..."<< endl;
-  int nB = t.Loop( "B" );
+  float nB = t.Loop( "B" );
   cout << " >>> Region C..."<< endl;
-  int nC = t.Loop( "C" );
+  float nC = t.Loop( "C" );
   cout << " >>> Region D..."<< endl;
-  int nD = t.Loop( "D" );
+  float nD = t.Loop( "D" );
 
   cout << " >>> Number of events..."<< endl;
   cout << "Region A: " << nA << endl;

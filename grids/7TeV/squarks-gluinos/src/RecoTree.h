@@ -40,7 +40,7 @@ public :
    TString output_txt;
 
    // Declaration of leaf types
-   float factor;
+   Double_t factor;
 
    Int_t           Jet;
    vector<float>   *Jet_E;
@@ -109,7 +109,6 @@ public :
    Int_t           ETmis_size;
 
    // List of branches
-   TBranch        *b_factor;
    TBranch        *b_Jet;   //!
    TBranch        *b_Jet_E;   //!
    TBranch        *b_Jet_Px;   //!
@@ -182,10 +181,10 @@ public :
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
-   virtual int     Loop( TString signalRegion );
+   virtual float    Loop( TString signalRegion );
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
-   virtual void     writeResults( int _nA, int _nB, int _nC, int _nD );
+   virtual void     writeResults( float _nA, float _nB, float _nC, float _nD );
 };
 
 #endif
@@ -206,14 +205,6 @@ RecoTree::RecoTree(TTree *tree)
   cout << input_RecSim << endl << input_Channels << endl << input_WeightingFactors << endl;
   cout << " >>> Output ROOT files..." << endl;
   cout << output_A << endl << output_B << endl <<output_C << endl <<output_D << endl << output_txt << endl;
-
-  /*
-    TFile *f_weights = (TFile*)gROOT->GetListOfFiles()->FindObject("WeightingFactors.root");
-    t_weights = (TTree*)gDirectory->Get( "WeightingFactor" );
-    t_weights->SetMakeClass(1);
-    factor=0;
-    t_weights->SetBranchAddress("factor", &factor, &b_factor);
-  */
 
   // if parameter tree is not specified (or zero), connect the file
   // used to generate this class and read the Tree.
@@ -391,6 +382,13 @@ void RecoTree::Init(TTree *tree)
    fChain->SetBranchAddress("ETmis_Px", &ETmis_Px, &b_ETmis_Px);
    fChain->SetBranchAddress("ETmis_Py", &ETmis_Py, &b_ETmis_Py);
    fChain->SetBranchAddress("ETmis_size", &ETmis_size, &b_ETmis_size);
+
+   TFile *f_weights = new TFile( input_WeightingFactors );
+   t_weights = (TTree*)f_weights->Get( "WeightingFactor" );
+   factor=0;
+   t_weights->SetBranchAddress("factor", &factor );
+   fChain->AddFriend( t_weights );
+   
    Notify();
 }
 
@@ -413,7 +411,7 @@ void RecoTree::Show(Long64_t entry)
    fChain->Show(entry);
 }
 
-void RecoTree::writeResults( int _nA, int _nB, int _nC, int _nD )
+void RecoTree::writeResults( float _nA, float _nB, float _nC, float _nD )
 {
   cout << " >>> Writing in NLO.txt " << endl;
   std::ofstream _output_txt;

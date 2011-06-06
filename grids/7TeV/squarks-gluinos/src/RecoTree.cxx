@@ -2,7 +2,7 @@
 #include "RecoTree.h"
 
 
-int RecoTree::Loop( TString signalRegion )
+float RecoTree::Loop( TString signalRegion )
 {
   // Book some histograms and write them in a root file
   TFile* output = 0;
@@ -39,11 +39,13 @@ int RecoTree::Loop( TString signalRegion )
   TH1F* h_METmeff = new TH1F( "h_METmeff", "", 100, 0, 1 );
   TH1F* h_mT2 = new TH1F( "h_mT2", "", 100, 0, 1000 );
 
+  TH1F* h_factor = new TH1F( "h_factor", "", 1001, 0, 1000 );
+
   TH1I* h_cutflow = new TH1I( "h_cutflow", "", 11, 0, 10 );
   TH1I* h_cutflow_eff = new TH1I( "h_cutflow_eff", "", 11, 0, 10 );
   TH1I* h_cutflow_cumeff = new TH1I( "h_cutflow_cumeff", "", 11, 0, 10 );
   int nbSignal[10] = {0};
-  int ntest = 0;
+  float totNormalised = 0;
 
   Long64_t nentries = fChain->GetEntriesFast();
   for ( Long64_t jentry = 0; jentry < nentries; jentry++ )
@@ -386,7 +388,10 @@ int RecoTree::Loop( TString signalRegion )
 	nbSignal[10]++;
 
 	// Count the number of signal events at the end of the cutflow
-	ntest++;	
+	if ( TMath::Finite( factor )  && TMath::IsNaN( factor ) == false ){
+	  totNormalised += factor;
+	  h_factor->Fill( factor );
+	}
 	
 	rec_Jets.clear();
 	rec_Electrons.clear();
@@ -411,7 +416,7 @@ int RecoTree::Loop( TString signalRegion )
 
 
 
-
+  h_factor->Write();
   h_cutflow->Write();
   h_cutflow_eff->Write();
   h_cutflow_cumeff->Write();
@@ -442,8 +447,7 @@ int RecoTree::Loop( TString signalRegion )
   output->Write();
   output->Close();
 
-  //return nbSignal[10];
-  return ntest;
+  return totNormalised;
 }
 
 
