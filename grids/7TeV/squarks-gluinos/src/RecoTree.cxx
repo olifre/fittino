@@ -120,24 +120,24 @@ float RecoTree::Loop( TString signalRegion )
 	{
 	  for( unsigned int ijet = 0; ijet < rec_Jets.size(); ijet++ )
 	    {
-	      float jetPx = (*Jet_Px)[rec_Jets[ijet]];
-	      float jetPy = (*Jet_Py)[rec_Jets[ijet]];
-	      float jetPz = (*Jet_Pz)[rec_Jets[ijet]];
+	      float jetPt = (*Jet_PT)[rec_Jets[ijet]];
+	      float jetEta = (*Jet_Eta)[rec_Jets[ijet]];
+	      float jetPhi = (*Jet_Phi)[rec_Jets[ijet]];
 	      float jetE = (*Jet_E)[rec_Jets[ijet]];
 
 	      TLorentzVector lv_jet;
-	      lv_jet.SetPxPyPzE( jetPx, jetPy, jetPz, jetE );
+	      lv_jet.SetPtEtaPhiE( jetPt, jetEta, jetPhi, jetE );
 
 	      
 	      for( unsigned int iel = 0; iel < rec_Electrons.size(); iel++ ){
 
-		float elPx = (*Electron_Px)[rec_Electrons[iel]];
-		float elPy = (*Electron_Py)[rec_Electrons[iel]];
-		float elPz = (*Electron_Pz)[rec_Electrons[iel]];
+		float elPt = (*Electron_PT)[rec_Electrons[iel]];
+		float elEta = (*Electron_Eta)[rec_Electrons[iel]];
+		float elPhi = (*Electron_Phi)[rec_Electrons[iel]];
 		float elE = (*Electron_E)[rec_Electrons[iel]];
 
 		TLorentzVector lv_el;
-		lv_el.SetPxPyPzE( elPx, elPy, elPz, elE );
+		lv_el.SetPtEtaPhiE( elPt, elEta, elPhi, elE );
 
 		float dR = lv_jet.DeltaR( lv_el );
 		h_dR_jete->Fill( dR );
@@ -165,24 +165,24 @@ float RecoTree::Loop( TString signalRegion )
 	{
 	  for( unsigned int iel = 0; iel < rec_Electrons.size(); iel++ )
 	    {
-	      float elPx = (*Electron_Px)[rec_Electrons[iel]];
-	      float elPy = (*Electron_Py)[rec_Electrons[iel]];
-	      float elPz = (*Electron_Pz)[rec_Electrons[iel]];
+	      float elPt = (*Electron_PT)[rec_Electrons[iel]];
+	      float elEta = (*Electron_Eta)[rec_Electrons[iel]];
+	      float elPhi = (*Electron_Phi)[rec_Electrons[iel]];
 	      float elE = (*Electron_E)[rec_Electrons[iel]];
 	      
 	      TLorentzVector lv_el;
-	      lv_el.SetPxPyPzE( elPx, elPy, elPz, elE );
+	      lv_el.SetPtEtaPhiE( elPt, elEta, elPhi, elE );
 	      
 	      
 	      for( unsigned int ijet = 0; ijet < rec_Jets.size(); ijet++ )
 		{
-		  float jetPx = (*Jet_Px)[rec_Jets[ijet]];
-		  float jetPy = (*Jet_Py)[rec_Jets[ijet]];
-		  float jetPz = (*Jet_Pz)[rec_Jets[ijet]];
+		  float jetPt = (*Jet_PT)[rec_Jets[ijet]];
+		  float jetEta = (*Jet_Eta)[rec_Jets[ijet]];
+		  float jetPhi = (*Jet_Phi)[rec_Jets[ijet]];
 		  float jetE = (*Jet_E)[rec_Jets[ijet]];
 
 		  TLorentzVector lv_jet;
-		  lv_jet.SetPxPyPzE( jetPx, jetPy, jetPz, jetE );
+		  lv_jet.SetPtEtaPhiE( jetPt, jetEta, jetPhi, jetE );
 		  
 		  float dR = lv_jet.DeltaR( lv_el );
 		  h_dR_ejet->Fill( dR );
@@ -200,24 +200,24 @@ float RecoTree::Loop( TString signalRegion )
 	  {
 	    for( unsigned int imu = 0; imu < rec_Muons.size(); imu++ )
 	      {
-		float muPx = (*Muon_Px)[rec_Muons[imu]];
-		float muPy = (*Muon_Py)[rec_Muons[imu]];
-		float muPz = (*Muon_Pz)[rec_Muons[imu]];
+		float muPt = (*Muon_PT)[rec_Muons[imu]];
+		float muEta = (*Muon_Eta)[rec_Muons[imu]];
+		float muPhi = (*Muon_Phi)[rec_Muons[imu]];
 		float muE = (*Muon_E)[rec_Muons[imu]];
 
 		TLorentzVector lv_mu;
-		lv_mu.SetPxPyPzE( muPx, muPy, muPz, muE );
+		lv_mu.SetPtEtaPhiE( muPt, muEta, muPhi, muE );
 
 
 		for( unsigned int ijet = 0; ijet < rec_Jets.size(); ijet++ )
 		  {
-		    float jetPx = (*Jet_Px)[rec_Jets[ijet]];
-		    float jetPy = (*Jet_Py)[rec_Jets[ijet]];
-		    float jetPz = (*Jet_Pz)[rec_Jets[ijet]];
+		    float jetPt = (*Jet_PT)[rec_Jets[ijet]];
+		    float jetEta = (*Jet_Eta)[rec_Jets[ijet]];
+		    float jetPhi = (*Jet_Phi)[rec_Jets[ijet]];
 		    float jetE = (*Jet_E)[rec_Jets[ijet]];
 
 		    TLorentzVector lv_jet;
-		    lv_jet.SetPxPyPzE( jetPx, jetPy, jetPz, jetE );
+		    lv_jet.SetPtEtaPhiE( jetPt, jetEta, jetPhi, jetE );
 
 		    float dR = lv_jet.DeltaR( lv_mu );
 		    h_dR_mujet->Fill( dR );
