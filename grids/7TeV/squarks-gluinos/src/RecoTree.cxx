@@ -72,7 +72,7 @@ float RecoTree::Loop( TString signalRegion )
 	  if( (*Jet_PT)[ijet] < 20 ) continue;	
 
 	   h_etajets->Fill( fabs((*Jet_Eta)[ijet]) );
-	  if( fabs((*Jet_Eta)[ijet]) > 2.47 ) continue;
+	  if( fabs((*Jet_Eta)[ijet]) > 2.5 ) continue;
 
 	  rec_Jets.push_back( ijet );
 	}
@@ -104,6 +104,8 @@ float RecoTree::Loop( TString signalRegion )
 
 	   h_sumptmu->Fill( (*Muon_SumPt)[imu] );
 	  if( (*Muon_SumPt)[imu] > 1.8 ) continue;
+
+	  if ((*Muon_ID)[imu] != 1) continue;
 
 	  rec_Muons.push_back( imu );
 	}
