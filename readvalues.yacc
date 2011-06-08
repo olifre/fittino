@@ -1587,7 +1587,7 @@ input:
 		   if (!strcmp($3, "FEYNHIGGS")) {
 		      yyHiggsCalculator = FEYNHIGGS;
 		   }
-		   yyHiggsCalculatorPath = $3;
+		   yyHiggsCalculatorPath = $4;
 	      }
 	    | input T_ASTROCALCULATOR T_PATH
 	      {

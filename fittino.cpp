@@ -4462,6 +4462,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
      // Some calculators cannot digest non-standard SLHA blocks.
      // If needed, create a spectrum file without SPheno specific blocks.
+     // The output file is called SPheno.spc.stdslha
      if (yyHiggsCalculator == FEYNHIGGS) {
        string command = yyAfterBurnerDirectory + "/removeSPhenoBlocks.sh SPheno.spc";
        system(command.c_str());
@@ -4535,7 +4536,6 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      }
    }
 
-   
    if (yyLEOCalculator == NPFITTER) {
       if (yyVerbose){
       cout << yyDashedLine << endl;
@@ -5752,18 +5752,21 @@ int callFeynHiggs()
       /*
        * The child executes the code inside this if.
        */
+     
+      // prevent FeynHiggs from calling pager
+      system("export PAGER=''");
+
       child_pid = getpid();
       char *argv[3];
       argv[0] = "FeynHiggs";
       argv[1] = "SPheno.spc.stdslha";
       argv[2] = 0;
       // printf("Process %d has forked a child process with pid %d\n", parent_pid, child_pid  );
-      if (!yyCalculatorPath.compare("")) {
+      if (!yyHiggsCalculatorPath.compare("")) {
 	 return_value = execve("./FeynHiggs", argv, environ );
       }
       else {
-	 return_value = execve(yyCalculatorPath.c_str(), argv, environ );
-	 // return_value = system(yyCalculatorPath.c_str());
+	 return_value = execve(yyHiggsCalculatorPath.c_str(), argv, environ );
       }
       //    for ( unsigned int i = 0; i < 5; i++ ) {
       //      sleep (1);
