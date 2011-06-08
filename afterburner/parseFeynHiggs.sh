@@ -1,14 +1,14 @@
 #!/bin/bash
 
-massh=`grep '# Mh0' ./SPheno.spc.fh | awk '{print $2}'`
-massH=`grep '# MHH' ./SPheno.spc.fh | awk '{print $2}'`
-massA=`grep '# MA0' ./SPheno.spc.fh | grep -v 'MA02' | awk '{print $2}'`
-massHp=`grep '# MHp' ./SPheno.spc.fh | awk '{print $2}'`
-gm2mu=`grep '# gminus2mu' ./SPheno.spc.fh | awk '{print $2}'`
-mwmssm=`grep '# MWMSSM' ./SPheno.spc.fh | awk '{print $2}'`
-mwsm=`grep '# MWSM' ./SPheno.spc.fh | awk '{print $2}'`
-bsgmssm=`grep '# bsgammaMSSM' ./SPheno.spc.fh | awk '{print $2}'`
-bsgsm=`grep '# bsgammaSM' ./SPheno.spc.fh | awk '{print $2}'`
+massh=`grep '# Mh0' ./SPheno.spc.stdslha.fh | awk '{print $2}'`
+massH=`grep '# MHH' ./SPheno.spc.stdslha.fh | awk '{print $2}'`
+massA=`grep '# MA0' ./SPheno.spc.stdslha.fh | grep -v 'MA02' | awk '{print $2}'`
+massHp=`grep '# MHp' ./SPheno.spc.stdslha.fh | awk '{print $2}'`
+gm2mu=`grep '# gminus2mu' ./SPheno.spc.stdslha.fh | awk '{print $2}'`
+mwmssm=`grep '# MWMSSM' ./SPheno.spc.stdslha.fh | awk '{print $2}'`
+mwsm=`grep '# MWSM' ./SPheno.spc.stdslha.fh | awk '{print $2}'`
+bsgmssm=`grep '# bsgammaMSSM' ./SPheno.spc.stdslha.fh | awk '{print $2}'`
+bsgsm=`grep '# bsgammaSM' ./SPheno.spc.stdslha.fh | awk '{print $2}'`
 
 echo "Block FeynHiggs # FeynHiggs observables" >> SPheno.spc
 echo "    1    $massh # massh" >> SPheno.spc

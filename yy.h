@@ -209,6 +209,9 @@ extern double yyA_b_npf;         // A_b
 extern double yyA_c_npf;         // A_c
 extern double yyA_l_npf;         // A_l(SLD)
 extern double yyMassh0_npf;      // m(h0)
+extern double yyMassH0_npf;      // m(H0)
+extern double yyMassA0_npf;      // m(A0)
+extern double yyMassHpm_npf;      // m(H+-)
 extern double yyOmega_npf;       // Omega_h
 extern double yyA_tau_npf;       // A_l(P_tau)
 extern double yyA_fbl_npf;       // A_fb(l)

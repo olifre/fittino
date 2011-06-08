@@ -291,6 +291,9 @@ double        yyA_b_npf        = -10000.;  // A_b
 double        yyA_c_npf        = -10000.;  // A_c
 double        yyA_l_npf        = -10000.;  // A_l(SLD)
 double        yyMassh0_npf     = -10000.;  // m(h0)
+double        yyMassH0_npf     = -10000.;  // m(H0)
+double        yyMassA0_npf     = -10000.;  // m(A0)
+double        yyMassHpm_npf    = -10000.;  // m(H+-)
 double        yyOmega_npf      = -10000.;  // Omega_h
 double        yyA_tau_npf      = -10000.;  // A_l(P_tau)
 double        yyA_fbl_npf      = -10000.;  // A_fb(l)
@@ -4522,6 +4525,34 @@ if (yyVerbose){
 		    tmpStrings.clear();
 		    tmpNumbers.clear();
                   }
+
+		  // FeynHiggs
+//========================================================================
+                  else if (!strcmp($2, "FeynHiggs")) {
+                      for (unsigned int i=0; i<tmpParams.size(); i++) {
+			 if ((unsigned int)tmpParams[i][0]==1) {
+			    yyMassh0_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==2) {
+			    yyMassH0_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==3) {
+			    yyMassA0_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==4) {
+			    yyMassHpm_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==5) {
+			    yygmin2m_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==6) {
+			    yyMassW_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==8) {
+			    yyBsg_npf=tmpParams[i][1];
+			 }
+		      }
+		  }
 
 		  // PREDICT 
 //========================================================================

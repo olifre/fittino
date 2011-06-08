@@ -4534,6 +4534,10 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        }
        return;        
      }
+
+     // append FeynHiggs block to SPheno.spc file
+     string command = yyAfterBurnerDirectory + "/parseFeynHiggs.sh";
+     system(command.c_str());
    }
 
    if (yyLEOCalculator == NPFITTER) {
@@ -9568,6 +9572,12 @@ int   ReadLesHouches()
    bool already_used = false;
    bool dependencies_theoset = false;
 
+   if ( yyLEOCalculator == NPFITTER && yyHiggsCalculator == FEYNHIGGS ) {
+     cerr << "Switched on both NPFitter and FeynHiggs" << endl;
+     cerr << "This is not supported (mis-use of variables) ;-)" << endl;
+     exit(1);
+   }
+
    // test reading of low energy measurements
    //========================================
    //if (yyLEOCalculator == NOLEOCALCULATOR) {
@@ -9600,6 +9610,19 @@ int   ReadLesHouches()
       cout << "  --->  yyOmega          from MicrOmegas: " << yyOmega  << endl;   //     relic density
      }
    }
+
+   if ( yyHiggsCalculator == FEYNHIGGS ) {
+     if (yyVerbose){
+       cout << "  --->  yyMassh0_npf     from FeynHiggs:   " << yyMassh0_npf        << endl; // R(B->s gamma)  
+       cout << "  --->  yyMassH0_npf     from FeynHiggs:   " << yyMassH0_npf        << endl; // R(B->s gamma)  
+       cout << "  --->  yyMassA0_npf     from FeynHiggs:   " << yyMassA0_npf        << endl; // R(B->s gamma)  
+       cout << "  --->  yyMassHpm_npf    from FeynHiggs:   " << yyMassHpm_npf       << endl; // R(B->s gamma)  
+       cout << "  --->  yygmin2m_npf     from FeynHiggs:   " << yygmin2m_npf     << endl; // D(g-2)
+       cout << "  --->  yyMassW_npf      from FeynHiggs:   " << yyMassW_npf      << endl; // m(W)
+       cout << "  --->  yyBsg_npf        from FeynHiggs:   " << yyBsg_npf        << endl; // R(B->s gamma)  
+     }
+   }
+
    //------------------------------------------------------------------------------------------
    if (yyLEOCalculator == NPFITTER) {
       if (yyVerbose){
@@ -9825,6 +9848,18 @@ int   ReadLesHouches()
 	 }         
 	 else if (yyMeasuredVec[i].id == Massh0_npf) {
 	    yyMeasuredVec[i].theovalue = yyMassh0_npf;
+	    yyMeasuredVec[i].theoset = true;
+	 }         
+	 else if (yyMeasuredVec[i].id == MassH0_npf) {
+	    yyMeasuredVec[i].theovalue = yyMassH0_npf;
+	    yyMeasuredVec[i].theoset = true;
+	 }         
+	 else if (yyMeasuredVec[i].id == MassA0_npf) {
+	    yyMeasuredVec[i].theovalue = yyMassA0_npf;
+	    yyMeasuredVec[i].theoset = true;
+	 }         
+	 else if (yyMeasuredVec[i].id == MassHpm_npf) {
+	    yyMeasuredVec[i].theovalue = yyMassHpm_npf;
 	    yyMeasuredVec[i].theoset = true;
 	 }         
 	 else if (yyMeasuredVec[i].id == Omega_npf) {
