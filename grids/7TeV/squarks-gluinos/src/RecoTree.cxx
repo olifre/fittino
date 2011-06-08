@@ -116,38 +116,37 @@ float RecoTree::Loop( TString signalRegion )
 
       // jet - electron
 
-      if( rec_Electrons.size() > 0 && rec_Jets.size() > 0 )
-	{
-	  for( unsigned int ijet = 0; ijet < rec_Jets.size(); ijet++ )
-	    {
-	      float jetPt = (*Jet_PT)[rec_Jets[ijet]];
-	      float jetEta = (*Jet_Eta)[rec_Jets[ijet]];
-	      float jetPhi = (*Jet_Phi)[rec_Jets[ijet]];
-	      float jetE = (*Jet_E)[rec_Jets[ijet]];
+      if( rec_Electrons.size() > 0 && rec_Jets.size() > 0 ){
 
-	      TLorentzVector lv_jet;
-	      lv_jet.SetPtEtaPhiE( jetPt, jetEta, jetPhi, jetE );
+	for( unsigned int iel = 0; iel < rec_Electrons.size(); iel++ ){
+	  
+	  float elPt = (*Electron_PT)[rec_Electrons[iel]];
+	  float elEta = (*Electron_Eta)[rec_Electrons[iel]];
+	  float elPhi = (*Electron_Phi)[rec_Electrons[iel]];
+	  float elE = (*Electron_E)[rec_Electrons[iel]];
 
-	      
-	      for( unsigned int iel = 0; iel < rec_Electrons.size(); iel++ ){
+	  TLorentzVector lv_el;
+	  lv_el.SetPtEtaPhiE( elPt, elEta, elPhi, elE );
 
-		float elPt = (*Electron_PT)[rec_Electrons[iel]];
-		float elEta = (*Electron_Eta)[rec_Electrons[iel]];
-		float elPhi = (*Electron_Phi)[rec_Electrons[iel]];
-		float elE = (*Electron_E)[rec_Electrons[iel]];
+	  for( unsigned int ijet = 0; ijet < rec_Jets.size(); ijet++ ){
+	    
+	    float jetPt = (*Jet_PT)[rec_Jets[ijet]];
+	    float jetEta = (*Jet_Eta)[rec_Jets[ijet]];
+	    float jetPhi = (*Jet_Phi)[rec_Jets[ijet]];
+	    float jetE = (*Jet_E)[rec_Jets[ijet]];
 
-		TLorentzVector lv_el;
-		lv_el.SetPtEtaPhiE( elPt, elEta, elPhi, elE );
-
-		float dR = lv_jet.DeltaR( lv_el );
-		h_dR_jete->Fill( dR );
-		if( dR < 0.2 ){
-		  rec_Jets.erase( rec_Jets.begin() + ijet );
-		  break;
-		}
-	      }
+	    TLorentzVector lv_jet;
+	    lv_jet.SetPtEtaPhiE( jetPt, jetEta, jetPhi, jetE );
+	    
+	    float dR = lv_jet.DeltaR( lv_el );
+	    h_dR_jete->Fill( dR );
+	    if( dR < 0.2 ){
+	      rec_Jets.erase( rec_Jets.begin() + ijet );
+	      ijet--;
 	    }
+	  }
 	}
+      }
       
       // Electrons in crack region 
       
@@ -159,78 +158,62 @@ float RecoTree::Loop( TString signalRegion )
       if( crack ) continue;
       nbSignal[1]++;
 
-      // Electron - jet
+      // Lepton - jet
 
-        if( rec_Electrons.size() > 0 && rec_Jets.size() > 0 )
-	{
-	  for( unsigned int iel = 0; iel < rec_Electrons.size(); iel++ )
-	    {
-	      float elPt = (*Electron_PT)[rec_Electrons[iel]];
-	      float elEta = (*Electron_Eta)[rec_Electrons[iel]];
-	      float elPhi = (*Electron_Phi)[rec_Electrons[iel]];
-	      float elE = (*Electron_E)[rec_Electrons[iel]];
+      for( unsigned int ijet = 0; ijet < rec_Jets.size(); ijet++ ){
+
+	float jetPt = (*Jet_PT)[rec_Jets[ijet]];
+	float jetEta = (*Jet_Eta)[rec_Jets[ijet]];
+	float jetPhi = (*Jet_Phi)[rec_Jets[ijet]];
+	float jetE = (*Jet_E)[rec_Jets[ijet]];
+
+	TLorentzVector lv_jet;
+	lv_jet.SetPtEtaPhiE( jetPt, jetEta, jetPhi, jetE );
+	  
+	// Electron - jet
+
+	for( unsigned int iel = 0; iel < rec_Electrons.size(); iel++ ){
+	    
+	  float elPt = (*Electron_PT)[rec_Electrons[iel]];
+	  float elEta = (*Electron_Eta)[rec_Electrons[iel]];
+	  float elPhi = (*Electron_Phi)[rec_Electrons[iel]];
+	  float elE = (*Electron_E)[rec_Electrons[iel]];
 	      
-	      TLorentzVector lv_el;
-	      lv_el.SetPtEtaPhiE( elPt, elEta, elPhi, elE );
-	      
-	      
-	      for( unsigned int ijet = 0; ijet < rec_Jets.size(); ijet++ )
-		{
-		  float jetPt = (*Jet_PT)[rec_Jets[ijet]];
-		  float jetEta = (*Jet_Eta)[rec_Jets[ijet]];
-		  float jetPhi = (*Jet_Phi)[rec_Jets[ijet]];
-		  float jetE = (*Jet_E)[rec_Jets[ijet]];
-
-		  TLorentzVector lv_jet;
-		  lv_jet.SetPtEtaPhiE( jetPt, jetEta, jetPhi, jetE );
-		  
-		  float dR = lv_jet.DeltaR( lv_el );
-		  h_dR_ejet->Fill( dR );
-		  if( dR < 0.4 ){
-		    rec_Electrons.erase( rec_Electrons.begin() + iel );
-		    break;
-		  }
-		}
-	    }
-	}
-	
-	// Muon - jet
-	
-	if( rec_Muons.size() > 0 && rec_Jets.size() > 0 )
-	  {
-	    for( unsigned int imu = 0; imu < rec_Muons.size(); imu++ )
-	      {
-		float muPt = (*Muon_PT)[rec_Muons[imu]];
-		float muEta = (*Muon_Eta)[rec_Muons[imu]];
-		float muPhi = (*Muon_Phi)[rec_Muons[imu]];
-		float muE = (*Muon_E)[rec_Muons[imu]];
-
-		TLorentzVector lv_mu;
-		lv_mu.SetPtEtaPhiE( muPt, muEta, muPhi, muE );
-
-
-		for( unsigned int ijet = 0; ijet < rec_Jets.size(); ijet++ )
-		  {
-		    float jetPt = (*Jet_PT)[rec_Jets[ijet]];
-		    float jetEta = (*Jet_Eta)[rec_Jets[ijet]];
-		    float jetPhi = (*Jet_Phi)[rec_Jets[ijet]];
-		    float jetE = (*Jet_E)[rec_Jets[ijet]];
-
-		    TLorentzVector lv_jet;
-		    lv_jet.SetPtEtaPhiE( jetPt, jetEta, jetPhi, jetE );
-
-		    float dR = lv_jet.DeltaR( lv_mu );
-		    h_dR_mujet->Fill( dR );
-		    if( dR < 0.4 ){
-		      rec_Muons.erase( rec_Muons.begin() + imu );
-		      break;
-		    }
-		  }
-	      }
+	  TLorentzVector lv_el;
+	  lv_el.SetPtEtaPhiE( elPt, elEta, elPhi, elE );
+	    
+	  float dR = lv_jet.DeltaR( lv_el );
+	  h_dR_ejet->Fill( dR );
+	  if( dR < 0.4 ){
+	    rec_Electrons.erase( rec_Electrons.begin() + iel );
+	    iel--;
 	  }
+	}
+
+	// Muon - jet
+
+	for( unsigned int imu = 0; imu < rec_Muons.size(); imu++ ){
+	  
+	  float muPt = (*Muon_PT)[rec_Muons[imu]];
+	  float muEta = (*Muon_Eta)[rec_Muons[imu]];
+	  float muPhi = (*Muon_Phi)[rec_Muons[imu]];
+	  float muE = (*Muon_E)[rec_Muons[imu]];
+	    
+	  TLorentzVector lv_mu;
+	  lv_mu.SetPtEtaPhiE( muPt, muEta, muPhi, muE );
+	    
+	  float dR = lv_jet.DeltaR( lv_mu );
+	  h_dR_mujet->Fill( dR );
+	  if( dR < 0.4 ){
+	    rec_Muons.erase( rec_Muons.begin() + imu );
+	    imu--;
+	  }
+	}
+      }
+
 	
-	
-	////////////////// EVENT SELECTION ///////////////
+      
+      ////////////////// EVENT SELECTION ///////////////
 	
 	// No lepton
 	 h_nel_presel->Fill( rec_Electrons.size() );
