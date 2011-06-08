@@ -5142,8 +5142,6 @@ int callMicrOmegas (double* x)
    cout << "Using relic density calculator MicrOmegas" << endl;
    }
 
-   system ("cp SPheno.spc SPheno.spc.saved_fittino");
-
    char cwd[1024];
    if (getcwd(cwd, sizeof(cwd)) == NULL) {
      perror("getcwd() error");
@@ -5171,19 +5169,23 @@ int callMicrOmegas (double* x)
        * The child executes the code inside this if.
        */
       child_pid = getpid();
-      char* argv[3];
+      char* argv[4];
 
       argv[0] = new char[1024];
       strcpy(argv[0], yyRelicDensityCalculatorPath.c_str());
 
       argv[1] = new char[1024];
       strcpy(argv[1], cwd);
-      strcat(argv[1], "/SPheno.spc.saved_fittino");
+      strcat(argv[1], "/SPheno.spc.stdslha");
 
-      argv[2] = 0;
+      argv[2] = new char[1024];
+      strcpy(argv[2], cwd);
+      strcat(argv[2], "/SPheno.spc");
+
+      argv[3] = 0;
 
       if (yyVerbose){
-      cout << "calling " << argv[0] << " " << argv[1] << std::endl; 
+	cout << "calling " << argv[0] << " " << argv[1] << " " << argv[2] << std::endl; 
       }
       rc = execve(argv[0], argv, environ);
       if (yyVerbose){
@@ -5757,17 +5759,20 @@ int callFeynHiggs()
        * The child executes the code inside this if.
        */
      
-      // prevent FeynHiggs from calling pager
-      system("export PAGER=''");
-
       child_pid = getpid();
       char *argv[3];
       argv[0] = "FeynHiggs";
       argv[1] = "SPheno.spc.stdslha";
       argv[2] = 0;
+
+      // prevent FeynHiggs from calling pager
+      char *locenviron[2];
+      locenviron[0]="PAGER=''";
+      locenviron[1]=(char *)0;
+
       // printf("Process %d has forked a child process with pid %d\n", parent_pid, child_pid  );
       if (!yyHiggsCalculatorPath.compare("")) {
-	 return_value = execve("./FeynHiggs", argv, environ );
+	 return_value = execve("./FeynHiggs", argv, locenviron );
       }
       else {
 	 return_value = execve(yyHiggsCalculatorPath.c_str(), argv, environ );
