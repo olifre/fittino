@@ -10,6 +10,7 @@
 LEObs ( gmin2m_npf     )     28.7E-10 +- 8.0E-10                      alias  7 
 
 LEObs ( Omega_npf      )    0.113  +- 0.003                         alias 20 
+#LEObs ( Omega      )    0.113  +- 0.003                         alias 20
 
 LEObs ( Kppinn_npf     )      < 4.5     +- 1.0E-10                    alias 25 
 LEObs ( dm_k_npf       )      0.92    +- 0.14                         alias 24 
@@ -168,6 +169,7 @@ SepFitmA                       off
 Calculator                     SPHENO ./SPheno
 LEOCalculator                  NPFITTER ./NPpredict.exe
 #HiggsCalculator                FEYNHIGGS ./FeynHiggs
+#RelicDensityCalculator         MICROMEGAS ./micromegas/micromegas
 #AfterBurnerDirectory           /lustre/user/wiene/fittino/afterburner
 UseFullCKMMatrix               off
 UseMinos                       off
