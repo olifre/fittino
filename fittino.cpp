@@ -131,6 +131,7 @@ int callSPheno();
 int callSoftSusy();
 int callSUSYHIT();
 int callFeynHiggs();
+int callSuperIso();
 int WriteSUSYHITInputFile(int);
 int callNPFitter();
 int checkcall(char programpath[1024], unsigned int runtime);
@@ -4540,6 +4541,34 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      system(command.c_str());
    }
 
+   if (yyFlavourCalculator == SUPERISO) {
+     if (yyVerbose){
+     cout << yyDashedLine << endl;
+     cout << "Calling SuperIso" << endl;
+     }
+     rc = callSuperIso();
+     
+     if (rc == 2) {
+       if (yyVerbose){
+       cout << "SIGINT received in SuperIso, exiting" << endl;
+       }
+       exit (2);
+     }
+     if (rc > 0) {
+       cerr << "Exiting fitterFCN because of problem in SuperIso run" << endl;
+       f = 111111111111.;
+       if (yyVerbose){
+       cout << " f = " << f << endl;
+       }
+       return;        
+     }
+
+     // append SuperIso block to SPheno.spc file
+     string command = yyAfterBurnerDirectory + "/parseSuperIso.sh";
+     system(command.c_str());
+   }
+
+
    if (yyLEOCalculator == NPFITTER) {
       if (yyVerbose){
       cout << yyDashedLine << endl;
@@ -5815,6 +5844,98 @@ int callFeynHiggs()
    return_value = WEXITSTATUS(status);
    if (yyVerbose){
      cout << "FeynHiggs returned with return value " << return_value << endl;
+   }
+
+
+   if (return_value > 0) {
+      return(return_value);
+   }
+
+   return 0;
+
+}
+
+
+// ************************************************************
+// callSuperIso
+// ************************************************************
+int callSuperIso() 
+{
+   int return_value;
+
+   int pid = -2;
+   int status = 0;
+   int child_pid = 0;
+   // printf("Process %d about to fork a child.\n", parent_pid  );
+
+   /*
+    * Get a child process.
+    */
+   if ((pid = fork()) < 0) {
+      perror("fork");
+      exit(1);
+      /* NOTE: perror() produces a short  error  message  on  the  standard
+	 error describing the last error encountered during a call to
+	 a system or library function.
+	 */
+   }
+
+   if (pid == 0) {
+      /*
+       * The child executes the code inside this if.
+       */
+     
+      child_pid = getpid();
+      char *argv[3];
+      argv[0] = "slha.x";
+      argv[1] = "SPheno.spc";
+      argv[2] = 0;
+
+      // printf("Process %d has forked a child process with pid %d\n", parent_pid, child_pid  );
+      if (!yyFlavourCalculatorPath.compare("")) {
+	 return_value = execve("./slha.x", argv, environ );
+      }
+      else {
+	 return_value = execve(yyFlavourCalculatorPath.c_str(), argv, environ );
+      }
+      //    for ( unsigned int i = 0; i < 5; i++ ) {
+      //      sleep (1);
+      //      cout << "child is doing nothing but making noise..." << endl;
+      //    }
+      //    return_value = 250;
+      //    sleep (15);
+      exit (return_value);
+   }
+   else {
+      /*
+       * The parent executes this
+       */
+      int spheno_counter = 0;
+      while (1) {
+	 spheno_counter++;
+	 //      printf("waiting for SPheno with status = %d and pid = %d\n",status, pid);
+	 if (waitpid (pid, &status, WNOHANG) == pid) {
+	    // printf("child process finished, status = %d\n", WEXITSTATUS(status));
+	    // sleep (1);
+	    break;
+	 } 
+	 if ( yyMaxCalculatorTime < (float)spheno_counter/10. ) {
+	    printf("killing child process %d due to too much time\n",pid);
+	    kill (pid, 9);
+	    waitpid (-1, &status, 0);
+	    return(1);
+	 }
+	 usleep (100000);
+      }
+      // while (waitpid (-1, &status, 0) != pid) {
+      //   sleep (2);
+      //   printf("waiting for FeynHiggs with status = %d and pid = %d\n",status, pid);
+      // }
+   }
+
+   return_value = WEXITSTATUS(status);
+   if (yyVerbose){
+     cout << "SuperIso returned with return value " << return_value << endl;
    }
 
 

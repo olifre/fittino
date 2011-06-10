@@ -201,6 +201,7 @@ double        yyRelativeBackgroundCrossSectionSysUncertainty = 0;
 
 unsigned int yyCalculator;
 unsigned int yyHiggsCalculator = NOHIGGSCALCULATOR;
+unsigned int yyFlavourCalculator = NOFLAVOURCALCULATOR;
 unsigned int yyDecayCalculator;
 unsigned int yyAstroCalculator;
 unsigned int yyRelicDensityCalculator;
@@ -210,6 +211,7 @@ bool         yySPhenoLastCallValid = false;
 string       yySPhenoStartDataString = "";
 string       yyCalculatorPath = "";
 string       yyHiggsCalculatorPath = "";
+string       yyFlavourCalculatorPath = "";
 string	     yyHBWhichExpt = "LandT";
 string			 yyDecayCalculatorPath = "";
 string       yyAstroCalculatorPath = "";
@@ -336,7 +338,7 @@ struct correrrorstruct {
 %token <real> T_NUMBER
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
 %token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS T_NOFIT T_NOFITLEO T_SCALING
-%token T_BLOCK T_SCALE T_DECAY T_BR T_LEO T_XS T_CALCULATOR T_HIGGSCALCULATOR T_DECAYCALCULATOR T_MARKOVINTERFACEFILEPATH T_GRIDPATH T_ASTROCALCULATOR T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO T_AFTERBURNERDIRECTORY
+%token T_BLOCK T_SCALE T_DECAY T_BR T_LEO T_XS T_CALCULATOR T_HIGGSCALCULATOR T_FLAVOURCALCULATOR T_DECAYCALCULATOR T_MARKOVINTERFACEFILEPATH T_GRIDPATH T_ASTROCALCULATOR T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO T_AFTERBURNERDIRECTORY
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH T_NEWLINE
 %token <name> T_VERSIONTAGSOSY
 %token <name> T_VERSIONTAGSDEC
@@ -1591,6 +1593,17 @@ input:
 		      yyHiggsCalculator = FEYNHIGGS;
 		   }
 		   yyHiggsCalculatorPath = $4;
+	      }
+	    | input T_FLAVOURCALCULATOR T_WORD T_PATH
+	      {
+                   yyInputFileLine.prevalue  = "FlavourCalculator";
+		   yyInputFileLine.prevalue += "\t";
+		   yyInputFileLine.prevalue += $3;
+
+		   if (!strcmp($3, "SUPERISO")) {
+		      yyFlavourCalculator = SUPERISO;
+		   }
+		   yyFlavourCalculatorPath = $4;
 	      }
 	    | input T_ASTROCALCULATOR T_PATH
 	      {

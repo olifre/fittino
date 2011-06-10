@@ -124,6 +124,7 @@ extern bool   yySPhenoLastCallValid;
 extern string yySPhenoStartDataString;
 extern string yyCalculatorPath;
 extern string yyHiggsCalculatorPath;
+extern string yyFlavourCalculatorPath;
 extern string yyDecayCalculatorPath;
 extern string yyAstroCalculatorPath;
 extern string yyRelicDensityCalculatorPath;

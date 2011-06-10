@@ -124,6 +124,9 @@ Q[ \t]*=                  {
 			      if (!strcmp(yytext, "HiggsCalculator")) { 
 				  return T_HIGGSCALCULATOR;
                               }
+			      if (!strcmp(yytext, "FlavourCalculator")) { 
+				  return T_FLAVOURCALCULATOR;
+                              }
 			      if (!strcmp(yytext, "DecayCalculator" )) {
 			  	  return T_DECAYCALCULATOR;
 			      }
