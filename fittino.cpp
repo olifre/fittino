@@ -10593,7 +10593,6 @@ int   ReadLesHouches()
 	 yyInputFileLineNo = 1;
 	 rc = yyparse();
 	 fclose(yyin);
-	 system ("mv SPheno.spc.last SPheno.spc.last2");
 	 system ("mv SPheno.spc SPheno.spc.last");
 	 system ("mv Messages.out Messages.out.last");
 	 system ("mv LesHouches.in LesHouches.in.last");

@@ -1,5 +1,6 @@
-MICROMEGASDIR  = /afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/NPFitter.mm2.2/micromegas_2.2.CPC.i
+#MICROMEGASDIR  = /afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/NPFitter.mm2.2/micromegas_2.2.CPC.i
 #MICROMEGASDIR  = $(HOME)/theorycodes/micromegas_2.4.O
+MICROMEGASDIR  = $(HOME)/theorycodes/NPFitter.mm2.2/micromegas_2.2.CPC.i
 
 MICROMEGASLIBS22 = $(MICROMEGASDIR)/sources/micromegas.a \
 	  	   $(MICROMEGASDIR)/MSSM/lib/aLib.a \
