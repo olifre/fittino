@@ -9,6 +9,10 @@ mwmssm=`grep '# MWMSSM' ./SPheno.spc.stdslha.fh | awk '{print $2}'`
 mwsm=`grep '# MWSM' ./SPheno.spc.stdslha.fh | awk '{print $2}'`
 bsgmssm=`grep '# bsgammaMSSM' ./SPheno.spc.stdslha.fh | awk '{print $2}'`
 bsgsm=`grep '# bsgammaSM' ./SPheno.spc.stdslha.fh | awk '{print $2}'`
+SW2effMSSM=`grep '# SW2effMSSM' ./SPheno.spc.stdslha.fh | awk '{print $2}'`
+SW2effSM=`grep '# SW2effSM' ./SPheno.spc.stdslha.fh | awk '{print $2}'`
+DeltaMsMSSM=`grep '# DeltaMsMSSM' ./SPheno.spc.stdslha.fh | awk '{print $2}'`
+DeltaMsSM=`grep '# DeltaMsSM' ./SPheno.spc.stdslha.fh | awk '{print $2}'`
 
 echo "Block FeynHiggs # FeynHiggs observables" >> SPheno.spc
 echo "    1    $massh # massh" >> SPheno.spc
@@ -20,3 +24,7 @@ echo "    6    $mwmssm # mwmssm" >> SPheno.spc
 echo "    7    $mwsm # mwsm" >> SPheno.spc
 echo "    8    $bsgmssm # bsgmssm" >> SPheno.spc
 echo "    9    $bsgsm # bsgsm" >> SPheno.spc
+echo "   10    $SW2effMSSM # SW2effMSSM" >> SPheno.spc
+echo "   11    $SW2effSM # SW2effSM" >> SPheno.spc
+echo "   12    $DeltaMsMSSM # DeltaMsMSSM" >> SPheno.spc
+echo "   13    $DeltaMsSM # DeltaMsSM" >> SPheno.spc

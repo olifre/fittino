@@ -170,6 +170,7 @@ Calculator                     SPHENO ./SPheno
 LEOCalculator                  NPFITTER ./NPpredict.exe
 #HiggsCalculator                FEYNHIGGS ./FeynHiggs
 #RelicDensityCalculator         MICROMEGAS ./micromegas/micromegas
+#FlavourCalculator              SUPERISO ./slha.x
 #AfterBurnerDirectory           /lustre/user/wiene/fittino/afterburner
 UseFullCKMMatrix               off
 UseMinos                       off
