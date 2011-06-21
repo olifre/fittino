@@ -165,6 +165,19 @@ double global_LHC_CLb = -1;
 double global_LHC_CLsb = -1;
 double global_LHC_chi2 = -1;
 
+double af_photon=-1;
+double af_relic=-1;
+double af_svind=-1;
+double af_direct=-1;
+
+double af_chi2_total=-1;
+double af_chi2_photon=-1;
+double af_chi2_relic=-1;
+double af_chi2_svind=-1;
+double af_chi2_direct=-1;
+
+
+
 int n_printouts;
 
 #ifdef USELIBHB
@@ -4938,11 +4951,11 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    if (yyUseAstroFit) {
      //if (UseAstroFit == 1) {
      if (yyVerbose){
-     cout << "vorher = " << f << endl;
+     cout << "chi2 without AstroFit = " << f << endl;
      }
      f += readAstroFit();
      if (yyVerbose){
-     cout << "nachher = " << f << endl;
+     cout << "chi2 with AstroFit = " << f << endl;
      }
    }
 
@@ -5361,19 +5374,27 @@ double readAstroFit()
   argv[0] = new char[1024];
   strcpy(argv[0], yyAstroCalculatorPath.c_str());
   return_value = system(argv[0]);
-  float chi2;
   ifstream file_to_read;
   TString filename = "afchi2.txt";
+
   file_to_read.open(filename);
   string line;
-  getline(file_to_read, line);
-  sscanf(line.c_str(), "%f", &chi2);
 
-  if (yyVerbose){
-  cout << "calling AstroFit " << chi2 << endl;
+  while (  getline(file_to_read, line)){
+    vector<string> words= split(line, ' ');
+        if (words[0]=="chi2_total") af_chi2_total=atof(words[1].c_str());
+        if (words[0]=="chi2_relic") af_chi2_relic=atof(words[1].c_str());
+        if (words[0]=="chi2_photon") af_chi2_photon=atof(words[1].c_str());
+        if (words[0]=="chi2_svind") af_chi2_svind=atof(words[1].c_str());
+        if (words[0]=="chi2_direct") af_chi2_direct=atof(words[1].c_str());
+        if (words[0]=="relic") af_relic=atof(words[1].c_str());
+        if (words[0]=="photon") af_photon=atof(words[1].c_str());
+        if (words[0]=="svind") af_svind=atof(words[1].c_str());
+        if (words[0]=="direct") af_direct=atof(words[1].c_str());
   }
 
-  return chi2;
+
+  return af_chi2_total;
 
 }
 
@@ -12472,7 +12493,7 @@ void Fittino::markovChain ()
       sprintf ( ntupletext, "path of the Markov Chain" );
       ////      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:haveAcceptedAtLeastOne:globalIter" );
       //      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:globalIter:haveAcceptedAtLeastOne" );
-      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:globalIter:haveAcceptedAtLeastOne:LHC_CLb:LHC_CLsb:LHC_chi2" );
+      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:globalIter:haveAcceptedAtLeastOne:LHC_CLb:LHC_CLsb:LHC_chi2:af_photon:af_relic:af_svind:af_direct:af_chi2_total:af_chi2_photon:af_chi2_relic:af_chi2_svind:af_chi2_direct" );
       for (unsigned int j=0; j < yyFittedVec.size(); j++ ) {
 	string parName = "P_"+yyFittedVec[j].name;
 	sprintf ( ntuplevars, "%s:%s", ntuplevars, parName.c_str() );
@@ -12774,6 +12795,18 @@ void Fittino::markovChain ()
       double previous_LHC_CLb  = -1;
       double previous_LHC_CLsb = -1;
       double previous_LHC_chi2 = -1;
+
+      double previous_af_photon=-1;
+      double previous_af_relic=-1;
+      double previous_af_svind=-1;
+      double previous_af_direct=-1;
+      double previous_af_chi2_total=-1;
+      double previous_af_chi2_photon=-1;
+      double previous_af_chi2_relic=-1;
+      double previous_af_chi2_svind=-1;
+      double previous_af_chi2_direct=-1;
+
+
  
       //-------------------------------------------
       // perform the optimization
@@ -12969,6 +13002,18 @@ void Fittino::markovChain ()
 	   previous_LHC_CLb = global_LHC_CLb;
 	   previous_LHC_CLsb = global_LHC_CLsb;
 	   previous_LHC_chi2 = global_LHC_chi2;
+
+	   previous_af_photon=af_photon;
+	   previous_af_relic=af_relic;
+	   previous_af_svind=af_svind;
+	   previous_af_direct=af_direct;
+	   previous_af_chi2_total=af_chi2_total;
+	   previous_af_chi2_photon=af_chi2_photon;
+	   previous_af_chi2_relic=af_chi2_relic;
+	   previous_af_chi2_svind=af_chi2_svind;
+	   previous_af_chi2_direct=af_chi2_direct;
+
+
 	 }
 
 	 // calculate Q
@@ -13041,11 +13086,21 @@ void Fittino::markovChain ()
 	    ntupvars[7] = (Float_t)global_LHC_CLb;
 	    ntupvars[8] = (Float_t)global_LHC_CLsb;
 	    ntupvars[9] = (Float_t)global_LHC_chi2;
+	    ntupvars[10] = (Float_t) af_photon;
+	    ntupvars[11] = (Float_t) af_relic;
+	    ntupvars[12] = (Float_t) af_svind;
+	    ntupvars[13] = (Float_t) af_direct;
+	    ntupvars[14] = (Float_t) af_chi2_total;
+	    ntupvars[15] = (Float_t) af_chi2_photon;
+	    ntupvars[16] = (Float_t) af_chi2_relic;
+	    ntupvars[17] = (Float_t) af_chi2_svind;
+	    ntupvars[18] = (Float_t) af_chi2_direct;
+
 	    int counter = 0;
 	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
 	    //	       ntupvars[ii] = xp[ii-7];
-	    for (unsigned int ii = 10; ii < 10+yyFittedVec.size(); ii++) {
-	       ntupvars[ii] = xp[ii-10];
+	    for (unsigned int ii = 19; ii < 19+yyFittedVec.size(); ii++) {
+	       ntupvars[ii] = xp[ii-19];
 	       counter = ii;
 	    }
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
@@ -13063,11 +13118,21 @@ void Fittino::markovChain ()
 	    ntupvars[7] = (Float_t)global_LHC_CLb;
 	    ntupvars[8] = (Float_t)global_LHC_CLsb;
 	    ntupvars[9] = (Float_t)global_LHC_chi2;
+	    ntupvars[10] = (Float_t) af_photon;
+	    ntupvars[11] = (Float_t) af_relic;
+	    ntupvars[12] = (Float_t) af_svind;
+	    ntupvars[13] = (Float_t) af_direct;
+	    ntupvars[14] = (Float_t) af_chi2_total;
+	    ntupvars[15] = (Float_t) af_chi2_photon;
+	    ntupvars[16] = (Float_t) af_chi2_relic;
+	    ntupvars[17] = (Float_t) af_chi2_svind;
+	    ntupvars[18] = (Float_t) af_chi2_direct;
+
 	    int counter = 0;
 	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
 	    //	       ntupvars[ii] = xp[ii-7];
-	    for (unsigned int ii = 10; ii < 10+yyFittedVec.size(); ii++) {
-	       ntupvars[ii] = xp[ii-10];
+	    for (unsigned int ii = 19; ii < 19+yyFittedVec.size(); ii++) {
+	       ntupvars[ii] = xp[ii-19];
 	       counter = ii;
 	    }
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
@@ -13084,11 +13149,21 @@ void Fittino::markovChain ()
 	    ntupvars[7] = (Float_t)previous_LHC_CLb;
 	    ntupvars[8] = (Float_t)previous_LHC_CLsb;
 	    ntupvars[9] = (Float_t)previous_LHC_chi2;
+	    ntupvars[10] = (Float_t)previous_af_photon;
+	    ntupvars[11] = (Float_t) previous_af_relic;
+	    ntupvars[12] = (Float_t) previous_af_svind;
+	    ntupvars[13] = (Float_t) previous_af_direct;
+	    ntupvars[14] = (Float_t) previous_af_chi2_total;
+	    ntupvars[15] = (Float_t) previous_af_chi2_photon;
+	    ntupvars[16] = (Float_t) previous_af_chi2_relic;
+	    ntupvars[17] = (Float_t) previous_af_chi2_svind;
+	    ntupvars[18] = (Float_t) previous_af_chi2_direct;
+
 	    counter = 0;
 	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
 	    //	       ntupvars[ii] = x[ii-7];
-	    for (unsigned int ii = 10; ii < 10+yyFittedVec.size(); ii++) {
-	       ntupvars[ii] = x[ii-10];
+	    for (unsigned int ii = 19; ii < 19+yyFittedVec.size(); ii++) {
+	       ntupvars[ii] = x[ii-19];
 	       counter = ii;
 	    }
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
@@ -13113,8 +13188,18 @@ void Fittino::markovChain ()
 	    previous_LHC_CLb   = global_LHC_CLb;
 	    previous_LHC_CLsb  = global_LHC_CLsb;
 	    previous_LHC_chi2  = global_LHC_chi2;
-	 }
 
+	    previous_af_photon=af_photon;
+	    previous_af_relic=af_relic;
+	    previous_af_svind=af_svind;
+	    previous_af_direct=af_direct;
+	    previous_af_chi2_total=af_chi2_total;
+	    previous_af_chi2_photon=af_chi2_photon;
+	    previous_af_chi2_relic=af_chi2_relic;
+	    previous_af_chi2_svind=af_chi2_svind;
+	    previous_af_chi2_direct=af_chi2_direct;
+
+	 }
 
 
 	 chainCount++;

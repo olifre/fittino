@@ -1638,3 +1638,27 @@ double LogLikelihoodRatio(const TH1F* hs, const TH1F* hb, const TH1F* hd, double
 
   return loglikelihood_sb - loglikelihood_b;
 }
+
+
+
+vector<string> split(const string &s, char delim) {
+  //  if delim=' ' whitespace is skipped
+  vector<string> words;
+  stringstream ss(s);
+  string word;
+  
+  if (delim==' '){ 
+    while (ss>>word){
+      words.push_back(word);
+    }
+  }
+  
+  else{
+    while(getline(ss, word, delim)) {
+      words.push_back(word);
+    }
+  }
+
+  return words;
+  
+}

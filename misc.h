@@ -35,6 +35,7 @@
 #include <TH1.h>
 #include<leshouches.h>
 #include <math.h>
+#include<sstream> 
 
 
 using namespace std;
@@ -345,5 +346,10 @@ BOL_CubicInterpolate( double input_z,
 
 
 double LogLikelihoodRatio(const TH1F* hs, const TH1F* hb, const TH1F* hd, double relsigsys, double relbkgdsys, const char* option);
+
+//BS: this function splits string s according to char delim and return the splitted parts as vector
+vector<string> split(const string &s, char delim); 
+
+
 
 #endif
