@@ -4946,10 +4946,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
    //ASTROFIT
 
-     //yyUseAstroFit = true;
-   //int UseAstroFit = 1;
    if (yyUseAstroFit) {
-     //if (UseAstroFit == 1) {
      if (yyVerbose){
      cout << "chi2 without AstroFit = " << f << endl;
      }
@@ -5379,20 +5376,28 @@ double readAstroFit()
 
   file_to_read.open(filename);
   string line;
-
+  
   while (  getline(file_to_read, line)){
     vector<string> words= split(line, ' ');
-        if (words[0]=="chi2_total") af_chi2_total=atof(words[1].c_str());
-        if (words[0]=="chi2_relic") af_chi2_relic=atof(words[1].c_str());
-        if (words[0]=="chi2_photon") af_chi2_photon=atof(words[1].c_str());
-        if (words[0]=="chi2_svind") af_chi2_svind=atof(words[1].c_str());
-        if (words[0]=="chi2_direct") af_chi2_direct=atof(words[1].c_str());
-        if (words[0]=="relic") af_relic=atof(words[1].c_str());
-        if (words[0]=="photon") af_photon=atof(words[1].c_str());
-        if (words[0]=="svind") af_svind=atof(words[1].c_str());
-        if (words[0]=="direct") af_direct=atof(words[1].c_str());
-  }
 
+    //   if (words[0]=="chi2_total") af_chi2_total=atof(words[1].c_str());
+
+    if (words[0]=="chi2_relic") af_chi2_relic=atof(words[1].c_str());
+    if (words[0]=="chi2_photon")af_chi2_photon=atof(words[1].c_str());
+    if (words[0]=="chi2_svind") af_chi2_svind=atof(words[1].c_str());
+    if (words[0]=="chi2_direct") af_chi2_direct=atof(words[1].c_str());
+    if (words[0]=="relic") af_relic=atof(words[1].c_str());
+    if (words[0]=="photon") af_photon=atof(words[1].c_str());
+    if (words[0]=="svind") af_svind=atof(words[1].c_str());
+    if (words[0]=="direct") af_direct=atof(words[1].c_str());
+
+  }
+    
+  af_chi2_total=0;
+  if (yyUseAFrelic) af_chi2_total+=af_chi2_relic;
+  if (yyUseAFphoton) af_chi2_total+=af_chi2_photon;    
+  if (yyUseAFsvind) af_chi2_total+=af_chi2_svind;    
+  if (yyUseAFdirect) af_chi2_total+=af_chi2_direct;    
 
   return af_chi2_total;
 

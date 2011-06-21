@@ -169,6 +169,10 @@ bool          yyRandomDirUncertainties = false;
 bool          yyPerformSingleFits = false;
 bool          yyUseHiggsBounds = false;
 bool          yyUseAstroFit = false;
+bool          yyUseAFphoton = false;
+bool          yyUseAFrelic = false;
+bool          yyUseAFdirect = false;
+bool          yyUseAFsvind = false;
 bool          yyUseFullCKMMatrix = false;
 bool          yyRandomParameters = false;
 bool          yyUseObservableScatteringBefore = false;
@@ -1483,6 +1487,22 @@ input:
 		  if (!strcmp($2, "UseAstroFit")) {
 		      if ($3 == on) yyUseAstroFit = true;
 		      else yyUseAstroFit = false;
+		  } 	  	      
+		  if (!strcmp($2, "UseAFrelic")) {
+		    if ($3 == on) yyUseAFrelic = true;
+		    else yyUseAFrelic = false;
+		  } 	  	      
+		  if (!strcmp($2, "UseAFphoton")) {
+		    if ($3 == on) yyUseAFphoton = true;
+		    else yyUseAFphoton = false;
+		  } 	  	      
+		  if (!strcmp($2, "UseAFdirect")) {
+		    if ($3 == on) yyUseAFdirect = true;
+		    else yyUseAFdirect = false;
+		  } 	  	      
+		  if (!strcmp($2, "UseAFsvind")) {
+		    if ($3 == on) yyUseAFsvind = true;
+		    else yyUseAFsvind = false;
 		  } 	  	      
  		  if (!strcmp($2, "QuarkFlavourViolation")) {
 		      yyerror("Switch QuarkFlavourViolation is obsolete. Use UseFullCKMMatrix instead (also switches on CPV phase).");
