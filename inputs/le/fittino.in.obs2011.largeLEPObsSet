@@ -225,6 +225,13 @@ GetContours                    off
 UseHiggsBounds                 on
 RequireNeut1LSP                on
 
+UseAstroFit                off
+AstroCalculator            ./AstroFit
+UseAFrelic                 off
+UseAFphoton                off
+UseAFsvind                 off
+UseAFdirect                off
+
 UseMarkovChains                on
 MarkovChainReadjustWidth       off
 MarkovChainReadjustWidthPeriod 500
