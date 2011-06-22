@@ -169,7 +169,6 @@ double af_photon=-1;
 double af_relic=-1;
 double af_svind=-1;
 double af_direct=-1;
-
 double af_chi2_total=-1;
 double af_chi2_photon=-1;
 double af_chi2_relic=-1;
@@ -4384,6 +4383,21 @@ double hamiltonian(int n, double* q, double* p)
 
 void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag) 
 {
+
+  global_LHC_CLb = -1;
+  global_LHC_CLsb = -1;
+  global_LHC_chi2 = -1;
+
+  af_photon=-1;
+  af_relic=-1;
+  af_svind=-1;
+  af_direct=-1;
+  af_chi2_total=-1;
+  af_chi2_photon=-1;
+  af_chi2_relic=-1;
+  af_chi2_svind=-1;
+  af_chi2_direct=-1;
+
   //cout<<"fitterFCN called"<<endl;
    //  niterations++;
    int rc = 0;
