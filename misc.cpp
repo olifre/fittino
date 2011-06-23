@@ -484,7 +484,7 @@ TVectorD getCorrelatedRandomNumbers(const TVectorD& mean, const TMatrixDSym& cov
    return x;
 }
 
-double  BilinearInterpolator(double m0, double m12, int bin, std::map< std::pair<int,int>, TH1F*>& xs)
+double  BilinearInterpolator(double m0, double m12, int bin, std::map< std::pair<int,int>, TH1D*>& xs)
 {
   //  std::cout << "m0 = " << m0 << "     m12 = " << m12 << std::endl;
 
@@ -493,7 +493,7 @@ double  BilinearInterpolator(double m0, double m12, int bin, std::map< std::pair
   double m12_1 = 0;
   double m12_2 = 0;
 
-  std::map<std::pair<int,int>, TH1F*>::const_iterator it;
+  std::map<std::pair<int,int>, TH1D*>::const_iterator it;
 
   // check boundaries (assumes ordering in input file)
   it = xs.begin();
@@ -1559,7 +1559,7 @@ BOL_CubicInterpolate( double input_z,
 }
 
 
-double LogLikelihoodRatio(const TH1F* hs, const TH1F* hb, const TH1F* hd, double relsigsys, double relbkgdsys, const char* option)
+double LogLikelihoodRatio(const TH1D* hs, const TH1D* hb, const TH1D* hd, double relsigsys, double relbkgdsys, const char* option)
 {
 // <option> can be either "data", "b", "sb", "expected_b" or
 // "expected_sb"

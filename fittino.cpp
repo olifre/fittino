@@ -101,9 +101,10 @@ double        sRecCos2PhiR;
 double        sRecMassTop;
 
 
-std::map< std::pair<int,int>, TH1F*> signalXsec;
-TH1F* hbkgd = 0;
-
+std::map< std::pair<int,int>, TH1D*> signalXsec;
+TH1D* hbkgd = 0;
+TH1D* hdata = 0;
+double dataDefaultLumi=0.165;
 
 extern "C" { void susygen_call_test_(int *, double [],double *);}
 extern "C" { void mssmsusygen_init_(int *, int *, float *, float *,float *,float *,float *,float *);}
@@ -164,6 +165,9 @@ int    gstat;
 double global_LHC_CLb = -1;
 double global_LHC_CLsb = -1;
 double global_LHC_chi2 = -1;
+double global_LHC_Exp_CLb = -1;
+double global_LHC_Exp_CLsb = -1;
+double global_LHC_Exp_chi2 = -1;
 
 double af_photon=-1;
 double af_relic=-1;
@@ -542,11 +546,14 @@ Fittino::Fittino(const Input* input)
     std::pair<int, int> p;
 
     int histno = 0;
-    TH1F* histo;
+    TH1D* histo;
     while (!infile.eof()) {
-      infile >> m0 >> m12 >> msq >> mgl >> xsnlo >> meff1 >> meff2 
-	     >> meff3 >> meff4 >> meff5 >> meff6 >> meff7 >> meff8
-	     >> meff9 >> meff10;
+//      infile >> m0 >> m12 >> msq >> mgl >> xsnlo >> meff1 >> meff2 
+//	     >> meff3 >> meff4 >> meff5 >> meff6 >> meff7 >> meff8
+//	     >> meff9 >> meff10;
+      // FIXME: Adapt to final sctructure
+      infile >> m0 >> m12  >> meff1 >> meff2 
+	     >> meff3 ;
       char no[256];
       sprintf(no,"%d",histno);
       histno++;
@@ -554,35 +561,47 @@ Fittino::Fittino(const Input* input)
       histname = histname +no;
       //      norm = xsnlo; // Michael's files are normalised to unity, i. e. scale with NLO xs
       norm = 1; // Björn's files are normalised to expected events numbers, i. e. scale with 1
-      histo = new TH1F(histname.c_str(), "", 10, 0, 4000);
+      histo = new TH1D(histname.c_str(), "", 3, 0, 3);
       histo->SetBinContent( 1,  meff1 * norm);
       histo->SetBinContent( 2,  meff2 * norm);
       histo->SetBinContent( 3,  meff3 * norm);
-      histo->SetBinContent( 4,  meff4 * norm);
-      histo->SetBinContent( 5,  meff5 * norm);
-      histo->SetBinContent( 6,  meff6 * norm);
-      histo->SetBinContent( 7,  meff7 * norm);
-      histo->SetBinContent( 8,  meff8 * norm);
-      histo->SetBinContent( 9,  meff9 * norm);
-      histo->SetBinContent(10, meff10 * norm);
+//      histo->SetBinContent( 4,  meff4 * norm);
+//      histo->SetBinContent( 5,  meff5 * norm);
+//      histo->SetBinContent( 6,  meff6 * norm);
+//      histo->SetBinContent( 7,  meff7 * norm);
+//      histo->SetBinContent( 8,  meff8 * norm);
+//      histo->SetBinContent( 9,  meff9 * norm);
+//      histo->SetBinContent(10, meff10 * norm);
       
       p.first = (int)m0;
       p.second = (int)m12;
       signalXsec[p] = histo;
     }
 
-    hbkgd = new TH1F("hbkgd", "", 10, 0, 4000);
-    hbkgd->SetBinContent(1, 358.48);
-    hbkgd->SetBinContent(2, 1974.87);
-    hbkgd->SetBinContent(3, 75.07);
-    hbkgd->SetBinContent(4, 8.98);
-    hbkgd->SetBinContent(5, 0.52);
-    hbkgd->SetBinContent(6, 0.32);
-    hbkgd->SetBinContent(7, 0);
-    hbkgd->SetBinContent(8, 0);
-    hbkgd->SetBinContent(9, 0);
-    hbkgd->SetBinContent(10, 0);
+    hbkgd = new TH1D("hbkgd", "", 3, 0, 3);
+//    hbkgd->SetBinContent(1, 358.48);
+//    hbkgd->SetBinContent(2, 1974.87);
+//    hbkgd->SetBinContent(3, 75.07);
+//    hbkgd->SetBinContent(4, 8.98);
+//    hbkgd->SetBinContent(5, 0.52);
+//    hbkgd->SetBinContent(6, 0.32);
+//    hbkgd->SetBinContent(7, 0);
+//    hbkgd->SetBinContent(8, 0);
+//    hbkgd->SetBinContent(9, 0);
+//    hbkgd->SetBinContent(10, 0);
+    hbkgd->SetBinContent(1, 10.);  // FIXME: CORRECT VALUE
+    hbkgd->SetBinContent(2, 20.);  // FIXME: CORRECT VALUE
+    hbkgd->SetBinContent(3, 100.); // FIXME: CORRECT VALUE
     hbkgd->Scale(yyLumi);
+
+    hdata = new TH1D("hdata", "", 3, 0, 3);
+    hdata->SetBinContent(1, 20. ); // FIXME: CORRECT VALUE
+    hdata->SetBinContent(2, 11. ); // FIXME: CORRECT VALUE
+    hdata->SetBinContent(3, 110.); // FIXME: CORRECT VALUE
+    hdata->Scale(yyLumi);          // this is rather unconventional,
+				   // but could be interesting to see
+				   // how excesses would scale
+
   }
 }
 
@@ -4387,6 +4406,9 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
   global_LHC_CLb = -1;
   global_LHC_CLsb = -1;
   global_LHC_chi2 = -1;
+  global_LHC_Exp_CLb = -1;
+  global_LHC_Exp_CLsb = -1;
+  global_LHC_Exp_chi2 = -1;
 
   af_photon=-1;
   af_relic=-1;
@@ -4993,8 +5015,8 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        M12 = x[ReturnRandomPosition("M12")];
      }
 
-     const int binmax = 10;
-     TH1F* hsig = new TH1F("hsig", "", binmax, 0, 4000);
+     const int binmax = 3;
+     TH1D* hsig = new TH1D("hsig", "", binmax, 0, 3);
      bool interpolationOK = true;
      bool noGridPoint = false;
      for (int bin=1; bin<=binmax; bin++) {
@@ -5016,49 +5038,129 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      
      double CLsb;
      double CLb;
+     double ObsCLsb;
+     double ObsCLb;
      
      double xschi2;
+     double xschi2Exp;
      
      if (interpolationOK) {
-       const int ntrials = 50000;
-       double array_lnQb[ntrials];
-       double array_lnQsb[ntrials];
-       for (int itrial=0; itrial<ntrials; itrial++) {
-	 double lnQsb = LogLikelihoodRatio(hsig, hbkgd, hbkgd,
-					   yyRelativeSignalCrossSectionSysUncertainty,
-					   yyRelativeBackgroundCrossSectionSysUncertainty, "sb");
-	 double lnQb = LogLikelihoodRatio(hsig, hbkgd, hbkgd, 
-					  yyRelativeSignalCrossSectionSysUncertainty,
-					  yyRelativeBackgroundCrossSectionSysUncertainty, "b");
+       const int ntrials = 20000;
+       int bestSignalRegion = -1;
+       double bestExpCLsb      = 1000.;
+       double bestExpCLb       = 1000.;
+       // loop over the three bins
+       for (int signalRegionNumber = 0; signalRegionNumber<binmax; ++signalRegionNumber) {
+	 // create new histograms
+	 TH1D* thisSig = new TH1D("thisSig","thisSig",1,0,1);
+	 TH1D* thisBkg = new TH1D("thisBkg","thisBkg",1,0,1);
+	 // copy the Bin contents
+	 thisSig->SetBinContent(1,hsig->GetBinContent(signalRegionNumber+1));
+	 thisBkg->SetBinContent(1,hbkgd->GetBinContent(signalRegionNumber+1));
+	 double array_lnQb[ntrials];
+	 double array_lnQsb[ntrials];
+	 for (int itrial=0; itrial<ntrials; itrial++) {
+	   double lnQsb = LogLikelihoodRatio(thisSig, thisBkg, thisBkg,
+					     yyRelativeSignalCrossSectionSysUncertainty,
+					     yyRelativeBackgroundCrossSectionSysUncertainty, "sb");
+	   double lnQb = LogLikelihoodRatio(thisSig, thisBkg, thisBkg, 
+					    yyRelativeSignalCrossSectionSysUncertainty,
+					    yyRelativeBackgroundCrossSectionSysUncertainty, "b");
+	   
+	   array_lnQb[itrial] = lnQb;
+	   array_lnQsb[itrial] = lnQsb;
+	   
+	 }
 
-	 array_lnQb[itrial] = lnQb;
-	 array_lnQsb[itrial] = lnQsb;
+	 int array_index[ntrials];
+	 
+	 TMath::Sort(ntrials, array_lnQb, array_index, kFALSE);
+	 
+	 int median_pos = int(ntrials * 0.5 + 0.5);
+	 
+	 double median_lnQb = array_lnQb[ array_index[ median_pos ] ];
+	 
+	 // Asimov data set (data = bkgd only)
+	 //       double lnQdata = LogLikelihoodRatio(hsig, hbkgd, hbkgd, 
+	 //					   yyRelativeSignalCrossSectionSysUncertainty,
+	 //					   yyRelativeBackgroundCrossSectionSysUncertainty, 
+	 //					   "expected_b");
+	 
+	 double lnQdata = median_lnQb;
+	 //     std::cout << "lnQdata = " << lnQdata << std::endl;
+	 
+	 int nCLsb = 0;
+	 int nCLb = 0;
+	 for (int itrial=0; itrial<ntrials; itrial++) {
+	   double lnQb = array_lnQb[itrial];
+	   double lnQsb = array_lnQsb[itrial];
+	   
+	   if (lnQsb < lnQdata) {
+	     nCLsb++;
+	   }
+	   if (lnQb < lnQdata) {
+	     nCLb++;
+	   }
+	 }
+
+	 //	 xsintegral = hsig->Integral();
+	 
+	 CLsb = double(nCLsb) / (double)ntrials;
+	 CLb = double(nCLb) / (double)ntrials;
+	 
+	 if (CLsb<bestExpCLsb) {
+	   bestExpCLsb = CLsb;
+	   bestExpCLb  = CLb;
+	   bestSignalRegion = signalRegionNumber;
+	 }
+
+	 thisSig->Delete();
+	 thisBkg->Delete();
 
        }
+       // now calculate observed limit 
+       TH1D* thisSig = new TH1D("thisSig","thisSig",1,0,1);
+       TH1D* thisBkg = new TH1D("thisBkg","thisBkg",1,0,1);
+       TH1D* thisDat = new TH1D("thisDat","thisBkg",1,0,1);
+       // copy the Bin contents
+       thisSig->SetBinContent(1,hsig->GetBinContent(bestSignalRegion+1));
+       thisBkg->SetBinContent(1,hbkgd->GetBinContent(bestSignalRegion+1));
+       thisDat->SetBinContent(1,hdata->GetBinContent(bestSignalRegion+1));
+       double array_lnQb[ntrials];
+       double array_lnQsb[ntrials];
+       double lnQdata = LogLikelihoodRatio(thisSig, thisBkg, thisDat,
+					   yyRelativeSignalCrossSectionSysUncertainty,
+					   yyRelativeBackgroundCrossSectionSysUncertainty, "data");
+       for (int itrial=0; itrial<ntrials; itrial++) {
+	 double lnQsb = LogLikelihoodRatio(thisSig, thisBkg, thisDat,
+					   yyRelativeSignalCrossSectionSysUncertainty,
+					   yyRelativeBackgroundCrossSectionSysUncertainty, "sb");
+	 double lnQb = LogLikelihoodRatio(thisSig, thisBkg, thisDat,
+					  yyRelativeSignalCrossSectionSysUncertainty,
+					  yyRelativeBackgroundCrossSectionSysUncertainty, "b");
+	 
+	 array_lnQb[itrial] = lnQb;
+	 array_lnQsb[itrial] = lnQsb;
+	 
+       }
 
-       int array_index[ntrials];
-
-       TMath::Sort(ntrials, array_lnQb, array_index, kFALSE);
+       //int array_index[ntrials];
        
-       int median_pos = int(ntrials * 0.5 + 0.5);
-
-       double median_lnQb = array_lnQb[ array_index[ median_pos ] ];
-
-       // Asimov data set (data = bkgd only)
-//       double lnQdata = LogLikelihoodRatio(hsig, hbkgd, hbkgd, 
-//					   yyRelativeSignalCrossSectionSysUncertainty,
-//					   yyRelativeBackgroundCrossSectionSysUncertainty, 
-//					   "expected_b");
-
-       double lnQdata = median_lnQb;
+       //TMath::Sort(ntrials, array_lnQb, array_index, kFALSE);
+       
+       //int median_pos = int(ntrials * 0.5 + 0.5);
+       
+       //double median_lnQb = array_lnQb[ array_index[ median_pos ] ];
+       
+       //	 double lnQdata = median_lnQb;
        //     std::cout << "lnQdata = " << lnQdata << std::endl;
-
-       double nCLsb = 0;
-       double nCLb = 0;
+       
+       int nCLsb = 0;
+       int nCLb = 0;
        for (int itrial=0; itrial<ntrials; itrial++) {
 	 double lnQb = array_lnQb[itrial];
 	 double lnQsb = array_lnQsb[itrial];
-
+	 
 	 if (lnQsb < lnQdata) {
 	   nCLsb++;
 	 }
@@ -5066,20 +5168,32 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	   nCLb++;
 	 }
        }
-
+       
        xsintegral = hsig->Integral();
        
-       CLsb = double(nCLsb) / (double)ntrials;
-       CLb = double(nCLb) / (double)ntrials;
+       ObsCLsb = double(nCLsb) / (double)ntrials;
+       ObsCLb = double(nCLb) / (double)ntrials;
        
-       xschi2 = 2 * TMath::ErfInverse(1 - 2*CLsb) * TMath::ErfInverse(1 - 2*CLsb);
+       thisSig->Delete();
+       thisBkg->Delete();
+       thisDat->Delete();
+       
+      
+       xschi2 = 2 * TMath::ErfInverse(1 - 2*ObsCLsb) * TMath::ErfInverse(1 - 2*ObsCLsb);
+       xschi2Exp = 2 * TMath::ErfInverse(1 - 2*CLsb) * TMath::ErfInverse(1 - 2*CLsb);
 
-       global_LHC_CLb = CLb;
-       global_LHC_CLsb = CLsb;
+       global_LHC_CLb  = ObsCLb;
+       global_LHC_CLsb = ObsCLsb;
+       global_LHC_Exp_CLsb = CLsb;
+       global_LHC_Exp_CLb  = CLb;
        if (xschi2<0.) global_LHC_chi2 = 1000.;
        else global_LHC_chi2 = xschi2;
+       if (xschi2Exp<0.) global_LHC_Exp_chi2 = 1000.;
+       else global_LHC_Exp_chi2 = xschi2Exp ;
        // Be careful: The following will not work if we have real data!!!!!
-       if (global_LHC_CLsb>0.5) global_LHC_chi2 = 0.;
+       //       if (global_LHC_CLsb>0.5) global_LHC_chi2 = 0.;
+
+       
        
      } else {
        if (noGridPoint) {
@@ -5087,11 +5201,17 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	 global_LHC_CLb = 0.5;
 	 global_LHC_CLsb = 0.5;
 	 global_LHC_chi2 = 0.;	 
+	 global_LHC_Exp_CLb = 0.5;
+	 global_LHC_Exp_CLsb = 0.5;
+	 global_LHC_Exp_chi2 = 0.;	 
        } else {
 	 xsintegral = 10000.;
 	 global_LHC_CLb = 0.5;
 	 global_LHC_CLsb = 0.0;
 	 global_LHC_chi2 = 1000.;	 	 
+	 global_LHC_Exp_CLb = 0.5;
+	 global_LHC_Exp_CLsb = 0.0;
+	 global_LHC_Exp_chi2 = 1000.;	 
        }
      }
 
@@ -5121,7 +5241,13 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        std::cout << "chi2 contribution from LHC cross-section = " << global_LHC_chi2 << std::endl;
      }
      
-     f += global_LHC_chi2;
+     if (yyLumi==dataDefaultLumi) {
+       //cout << "using obs chi2" << endl;
+       f += global_LHC_chi2;
+     } else {
+       //cout << "using exp chi2" << endl;
+       f += global_LHC_Exp_chi2;
+     }
 
 
    }
@@ -12814,6 +12940,9 @@ void Fittino::markovChain ()
       double previous_LHC_CLb  = -1;
       double previous_LHC_CLsb = -1;
       double previous_LHC_chi2 = -1;
+      double previous_LHC_Exp_CLb  = -1;
+      double previous_LHC_Exp_CLsb = -1;
+      double previous_LHC_Exp_chi2 = -1;
 
       double previous_af_photon=-1;
       double previous_af_relic=-1;
@@ -13021,6 +13150,9 @@ void Fittino::markovChain ()
 	   previous_LHC_CLb = global_LHC_CLb;
 	   previous_LHC_CLsb = global_LHC_CLsb;
 	   previous_LHC_chi2 = global_LHC_chi2;
+	   previous_LHC_Exp_CLb = global_LHC_Exp_CLb;
+	   previous_LHC_Exp_CLsb = global_LHC_Exp_CLsb;
+	   previous_LHC_Exp_chi2 = global_LHC_Exp_chi2;
 
 	   previous_af_photon=af_photon;
 	   previous_af_relic=af_relic;
@@ -13105,21 +13237,24 @@ void Fittino::markovChain ()
 	    ntupvars[7] = (Float_t)global_LHC_CLb;
 	    ntupvars[8] = (Float_t)global_LHC_CLsb;
 	    ntupvars[9] = (Float_t)global_LHC_chi2;
-	    ntupvars[10] = (Float_t) af_photon;
-	    ntupvars[11] = (Float_t) af_relic;
-	    ntupvars[12] = (Float_t) af_svind;
-	    ntupvars[13] = (Float_t) af_direct;
-	    ntupvars[14] = (Float_t) af_chi2_total;
-	    ntupvars[15] = (Float_t) af_chi2_photon;
-	    ntupvars[16] = (Float_t) af_chi2_relic;
-	    ntupvars[17] = (Float_t) af_chi2_svind;
-	    ntupvars[18] = (Float_t) af_chi2_direct;
+	    ntupvars[10] = (Float_t)global_LHC_Exp_CLb;
+	    ntupvars[11] = (Float_t)global_LHC_Exp_CLsb;
+	    ntupvars[12] = (Float_t)global_LHC_Exp_chi2;
+	    ntupvars[13] = (Float_t) af_photon;
+	    ntupvars[14] = (Float_t) af_relic;
+	    ntupvars[15] = (Float_t) af_svind;
+	    ntupvars[16] = (Float_t) af_direct;
+	    ntupvars[17] = (Float_t) af_chi2_total;
+	    ntupvars[18] = (Float_t) af_chi2_photon;
+	    ntupvars[19] = (Float_t) af_chi2_relic;
+	    ntupvars[20] = (Float_t) af_chi2_svind;
+	    ntupvars[21] = (Float_t) af_chi2_direct;
 
 	    int counter = 0;
 	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
 	    //	       ntupvars[ii] = xp[ii-7];
-	    for (unsigned int ii = 19; ii < 19+yyFittedVec.size(); ii++) {
-	       ntupvars[ii] = xp[ii-19];
+	    for (unsigned int ii = 22; ii < 22+yyFittedVec.size(); ii++) {
+	       ntupvars[ii] = xp[ii-22];
 	       counter = ii;
 	    }
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
@@ -13137,21 +13272,24 @@ void Fittino::markovChain ()
 	    ntupvars[7] = (Float_t)global_LHC_CLb;
 	    ntupvars[8] = (Float_t)global_LHC_CLsb;
 	    ntupvars[9] = (Float_t)global_LHC_chi2;
-	    ntupvars[10] = (Float_t) af_photon;
-	    ntupvars[11] = (Float_t) af_relic;
-	    ntupvars[12] = (Float_t) af_svind;
-	    ntupvars[13] = (Float_t) af_direct;
-	    ntupvars[14] = (Float_t) af_chi2_total;
-	    ntupvars[15] = (Float_t) af_chi2_photon;
-	    ntupvars[16] = (Float_t) af_chi2_relic;
-	    ntupvars[17] = (Float_t) af_chi2_svind;
-	    ntupvars[18] = (Float_t) af_chi2_direct;
+	    ntupvars[10] = (Float_t)global_LHC_Exp_CLb;
+	    ntupvars[11] = (Float_t)global_LHC_Exp_CLsb;
+	    ntupvars[12] = (Float_t)global_LHC_Exp_chi2;
+	    ntupvars[13] = (Float_t) af_photon;
+	    ntupvars[14] = (Float_t) af_relic;
+	    ntupvars[15] = (Float_t) af_svind;
+	    ntupvars[16] = (Float_t) af_direct;
+	    ntupvars[17] = (Float_t) af_chi2_total;
+	    ntupvars[18] = (Float_t) af_chi2_photon;
+	    ntupvars[19] = (Float_t) af_chi2_relic;
+	    ntupvars[20] = (Float_t) af_chi2_svind;
+	    ntupvars[21] = (Float_t) af_chi2_direct;
 
 	    int counter = 0;
 	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
 	    //	       ntupvars[ii] = xp[ii-7];
-	    for (unsigned int ii = 19; ii < 19+yyFittedVec.size(); ii++) {
-	       ntupvars[ii] = xp[ii-19];
+	    for (unsigned int ii = 22; ii < 22+yyFittedVec.size(); ii++) {
+	       ntupvars[ii] = xp[ii-22];
 	       counter = ii;
 	    }
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
@@ -13168,21 +13306,24 @@ void Fittino::markovChain ()
 	    ntupvars[7] = (Float_t)previous_LHC_CLb;
 	    ntupvars[8] = (Float_t)previous_LHC_CLsb;
 	    ntupvars[9] = (Float_t)previous_LHC_chi2;
-	    ntupvars[10] = (Float_t)previous_af_photon;
-	    ntupvars[11] = (Float_t) previous_af_relic;
-	    ntupvars[12] = (Float_t) previous_af_svind;
-	    ntupvars[13] = (Float_t) previous_af_direct;
-	    ntupvars[14] = (Float_t) previous_af_chi2_total;
-	    ntupvars[15] = (Float_t) previous_af_chi2_photon;
-	    ntupvars[16] = (Float_t) previous_af_chi2_relic;
-	    ntupvars[17] = (Float_t) previous_af_chi2_svind;
-	    ntupvars[18] = (Float_t) previous_af_chi2_direct;
+	    ntupvars[10] = (Float_t)previous_LHC_Exp_CLb;
+	    ntupvars[11] = (Float_t)previous_LHC_Exp_CLsb;
+	    ntupvars[12] = (Float_t)previous_LHC_Exp_chi2;
+	    ntupvars[13] = (Float_t)previous_af_photon;
+	    ntupvars[14] = (Float_t) previous_af_relic;
+	    ntupvars[15] = (Float_t) previous_af_svind;
+	    ntupvars[16] = (Float_t) previous_af_direct;
+	    ntupvars[17] = (Float_t) previous_af_chi2_total;
+	    ntupvars[18] = (Float_t) previous_af_chi2_photon;
+	    ntupvars[19] = (Float_t) previous_af_chi2_relic;
+	    ntupvars[20] = (Float_t) previous_af_chi2_svind;
+	    ntupvars[21] = (Float_t) previous_af_chi2_direct;
 
 	    counter = 0;
 	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
 	    //	       ntupvars[ii] = x[ii-7];
-	    for (unsigned int ii = 19; ii < 19+yyFittedVec.size(); ii++) {
-	       ntupvars[ii] = x[ii-19];
+	    for (unsigned int ii = 22; ii < 22+yyFittedVec.size(); ii++) {
+	       ntupvars[ii] = x[ii-22];
 	       counter = ii;
 	    }
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
@@ -13207,6 +13348,9 @@ void Fittino::markovChain ()
 	    previous_LHC_CLb   = global_LHC_CLb;
 	    previous_LHC_CLsb  = global_LHC_CLsb;
 	    previous_LHC_chi2  = global_LHC_chi2;
+	    previous_LHC_Exp_CLb   = global_LHC_Exp_CLb;
+	    previous_LHC_Exp_CLsb  = global_LHC_Exp_CLsb;
+	    previous_LHC_Exp_chi2  = global_LHC_Exp_chi2;
 
 	    previous_af_photon=af_photon;
 	    previous_af_relic=af_relic;

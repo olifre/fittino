@@ -288,7 +288,7 @@ class CorrelationMatrix {
 
 TVectorD getCorrelatedRandomNumbers(const TVectorD& mean, const TMatrixDSym& covarianceMatrix);
 
-double BilinearInterpolator(double m0, double m12, int bin, std::map< std::pair<int,int>, TH1F*>& xs);
+double BilinearInterpolator(double m0, double m12, int bin, std::map< std::pair<int,int>, TH1D*>& xs);
 
 
 double
@@ -345,7 +345,7 @@ BOL_CubicInterpolate( double input_z,
  */
 
 
-double LogLikelihoodRatio(const TH1F* hs, const TH1F* hb, const TH1F* hd, double relsigsys, double relbkgdsys, const char* option);
+double LogLikelihoodRatio(const TH1D* hs, const TH1D* hb, const TH1D* hd, double relsigsys, double relbkgdsys, const char* option);
 
 //BS: this function splits string s according to char delim and return the splitted parts as vector
 vector<string> split(const string &s, char delim); 

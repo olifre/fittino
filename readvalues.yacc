@@ -5054,8 +5054,8 @@ correrr:   T_ERRORSIGN T_BRA T_WORD T_KET value
 		       yyInputFileLineNo, s);
 
 		 system("cp LesHouches.in ~/debug.in");
-		 system("touch HELLO");
-		 system("touch $PBS_JOBID.HELLO");
+		 //system("touch HELLO");
+		 //system("touch $PBS_JOBID.HELLO");
 
 		 //    fprintf(stderr, "Error while reading input file: %s\n", s);
 		 yySetErrorFlag = true;
