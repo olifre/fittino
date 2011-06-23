@@ -1,9 +1,11 @@
 #!/usr/local/bin/perl
 
 
-$list = "/afs/naf.desy.de/user/p/prudent/grid-fittino/Analyse/scratch_zn/grid-fittino/ListOfParameterPoints_mSUGRA.txt";
+#$list = "/afs/naf.desy.de/user/p/prudent/grid-fittino/Analyse/scratch_zn/grid-fittino/List_1_crashed";
 
-open( FILE, $list );
+system("rm lance");
+
+open( FILE, $ARGV[0] );
 @tab = <FILE>;
 while ($ligne = shift @tab) {
     my @p = split(' ',$ligne);
@@ -12,6 +14,8 @@ while ($ligne = shift @tab) {
     system("rm Analyse\_$name");
     system("cp Analyse Analyse\_$name");
     system("sed -i 's/XXX/$name/g' Analyse\_$name");
+    system("echo \"qsub Analyse\_$name\" >> lance");
 }
 close FILE;
 
+system("chmod u+x lance");

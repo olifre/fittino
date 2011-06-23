@@ -17,7 +17,8 @@ export PATH=$ROOTSYS/bin:$PATH
 export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
 ini ROOT526
 
-export link=/afs/naf.desy.de/user/p/prudent/grid-fittino/Analyse/scratch_zn/grid-fittino/XXX
+#export link=/afs/naf.desy.de/user/p/prudent/grid-fittino/Analyse/scratch_zn/grid-fittino/XXX
+export link=/afs/naf.desy.de/user/p/prudent/grid-fittino/Analyse/scratch_hh/XXX
 export input_RecSim=$link/RecSim.root
 export input_Channels=$link/Channels.root
 export input_WeightingFactors=$link/WeightingFactors.root
