@@ -4584,6 +4584,13 @@ if (yyVerbose){
 			 else if ((unsigned int)tmpParams[i][0]==8) {
 			    yyBsg_npf=tmpParams[i][1];
 			 }
+			 else if ((unsigned int)tmpParams[i][0]==10) {
+			    yysin_th_eff_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==12) {
+			    yydm_s_npf=tmpParams[i][1];
+			 }
+			 
 		      }
 		  }
 

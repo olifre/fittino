@@ -5403,7 +5403,7 @@ int callMicrOmegas (double* x)
 
    if (rc == 0) {
      //      system ("mv SPheno.spc.saved_fittino SPheno.spc");
-      system ("cp SPheno.spc.saved_fittino SPheno.spc");
+     // system ("cp SPheno.spc.saved_fittino SPheno.spc");
    }
    return rc;
 }
@@ -5970,7 +5970,7 @@ int callFeynHiggs()
 	 return_value = execve("./FeynHiggs", argv, locenviron );
       }
       else {
-	 return_value = execve(yyHiggsCalculatorPath.c_str(), argv, environ );
+	 return_value = execve(yyHiggsCalculatorPath.c_str(), argv, locenviron );
       }
       //    for ( unsigned int i = 0; i < 5; i++ ) {
       //      sleep (1);
