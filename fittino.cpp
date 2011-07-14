@@ -9912,8 +9912,12 @@ int   ReadLesHouches()
        cout << "  --->  yygmin2m_npf     from FeynHiggs:   " << yygmin2m_npf     << endl; // D(g-2)
        cout << "  --->  yyMassW_npf      from FeynHiggs:   " << yyMassW_npf      << endl; // m(W)
        cout << "  --->  yyBsg_npf        from FeynHiggs:   " << yyBsg_npf        << endl; // R(B->s gamma)  
+       cout << "  --->  yysin_th_eff_npf from FeynHiggs:   " << yysin_th_eff_npf << endl; // sin^2ThetaEff
+       cout << "  --->  yydm_s_npf       from FeynHiggs:   " << yydm_s_npf       << endl; // Delta_m (B_s,B_d)/ps-1  
      }
    }
+
+   
 
    //------------------------------------------------------------------------------------------
    if (yyLEOCalculator == NPFITTER) {

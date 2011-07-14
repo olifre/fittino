@@ -4593,6 +4593,37 @@ if (yyVerbose){
 			 
 		      }
 		  }
+		  // SuperIso
+//========================================================================
+                  else if (!strcmp($2, "SuperIso")) {
+                      for (unsigned int i=0; i<tmpParams.size(); i++) {
+			 if ((unsigned int)tmpParams[i][0]==1) {
+			   // Use FH instead for now
+			   //  yyBsg_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==2) {
+			   //Bs -> mumu
+			   yyB_smm_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==3) {
+			   //B_u -> tau nu
+			   yyBtn_npf=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==4) {
+			   //D_s -> tau nu
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==5) {
+			   //D_s -> mu nu
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==6) {
+			   //B+ -> D0 tau nu
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==8) {
+			   //K->munu/pi->munu
+			 }
+			 
+		      }
+		  }
 
 		  // PREDICT 
 //========================================================================
