@@ -13007,6 +13007,11 @@ void Fittino::markovChain ()
 	}
       }
 
+      // Fill the width ntuples with the starting values
+      _widthNtuple[0] = globalIter;
+      for( int iVar = 0; iVar < nVar; iVar++ ) _widthNtuple[iVar+1] = vm[iVar];
+      widthNtuple->Fill( _widthNtuple );
+
       while (1)
       {
 	cout << " >>>> Starting point #" << globalIter << " <<<< " << endl;
