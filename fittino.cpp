@@ -112,7 +112,7 @@ extern "C" { void mssmsusygen_();}
 extern "C" { void call_suspect_free_(int *,int *,double *,double *,double *,
       double [],double *,double *,double *,double *,double *,double *);}
 #ifdef USELIBHB
-extern "C" { void initialize_higgsbounds_(int*, char*);}
+//extern "C" { void initialize_higgsbounds_(int*, char*);}
 extern "C" { double smgamma_h_(double* Mh);}
 extern "C" { double smbr_hgg_(double* Mh);}
 extern "C" { double smbr_hgamgam_(double* Mh);}
@@ -120,7 +120,15 @@ extern "C" { double smbr_hzz_(double* Mh);}
 extern "C" { double smbr_hww_(double* Mh);}
 extern "C" { double smbr_hbb_(double* Mh);}
 extern "C" { double smbr_htautau_(double* Mh);}
+extern "C" { void initialize_higgsbounds_chisqtables_();}
+extern "C" { void initialize_higgsbounds_(int* nH, int* nHplus, char* whichexpt);}
+extern "C" { void finish_higgsbounds_chisqtables_();}
+extern "C" { void finish_higgsbounds_();}
 extern "C" { void run_higgsbounds_effc_(int* nH, double Mh[], double GammaTotal[], double g2hjbb[], double g2hjtautau[], double g2hjWW[], double g2hjZZ[], double g2hjgaga[], double g2hjgg[], double g2hjhiZ[][3], double BR_hjhihi[][3], int*p, int* chan, double obsratio[], int* ncombined);}
+extern "C" { void higgsbounds_input_slha_(char* filename, int* len); }
+extern "C" { void run_higgsbounds_( int* HBresult,int* chan, double* obsratio,int* ncombined ); }
+extern "C" { void hb_calc_stats_(double* theory_uncertainty_1s, double* chisq_withouttheory, double*chisq_withtheory); }
+
 int excl = 0;
 int nexcl = 0;
 vector<float> HBmass[3], gammah[3], BR_hjbb[3], BR_hjtautau[3], O_g2hjZZ[3];
@@ -184,6 +192,98 @@ double af_chi2_direct=-1;
 int n_printouts;
 
 #ifdef USELIBHB
+
+int initialize_HiggsBoundsWithSLHA(int nH, int nHplus, char* whichexpt)
+{
+
+  initialize_higgsbounds_chisqtables_();
+  initialize_higgsbounds_(&nH,&nHplus,whichexpt);
+
+  return 0;
+}
+
+
+int close_HiggsBoundsWithSLHA()
+{
+
+  finish_higgsbounds_chisqtables_();
+  finish_higgsbounds_();
+
+  return 0;
+}
+
+
+
+
+double call_HiggsBoundsWithSLHA() 
+{
+
+  double theory_uncertainty_1s=1.5;
+  double chisq_withtheory = 0;
+  double chisq_withouttheory = 0;
+  int HBresult = -1;
+  int chan = 0;
+  double obsratio = 0.;
+  int ncombined = 0;
+  string filename;
+
+  for ( unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
+    if ( yyMeasuredVec[i].name == "Massh0_npf" ||
+	 yyMeasuredVec[i].name == "massh0" ) {
+      theory_uncertainty_1s = yyMeasuredVec[i].error;
+      break;
+    }
+  }  
+
+  if (yyCalculator == SPHENO) {
+    filename="SPheno.spc.last";
+  } else {
+    cout << "HB blocks not implemented in other calculators than SPheno, exiting" << endl;
+    exit (-1);
+  }
+  system ("ls -l SPheno.spc.last");
+  char charfilename[256];
+  sprintf(charfilename,"%s",filename.c_str());
+  int charfilenamelen = strlen(charfilename);
+  higgsbounds_input_slha_(charfilename, &charfilenamelen);
+
+  if (yyVerbose) {
+    cout << "-----------------------------------------------" << endl;
+    cout << "-----------------------------------------------" << endl;
+  }
+
+  run_higgsbounds_( &HBresult, &chan, &obsratio, &ncombined     );
+  if (HBresult < 0 || HBresult > 1) {
+    return -1.0;
+  }
+
+  if (yyVerbose) {
+    cout << "HBresult  " << HBresult  << endl;
+    cout << "chan      " << chan      << endl;
+    cout << "obsratio  " << obsratio  << endl;
+    cout << "ncombined " << ncombined << endl;
+    cout << "---------------------------" << endl;
+    cout << "use a theory uncertainty of " << theory_uncertainty_1s << endl;
+  }
+
+  hb_calc_stats_(&theory_uncertainty_1s, &chisq_withouttheory, &chisq_withtheory);
+  if (chisq_withouttheory < 0.) {
+    return -1.0;
+  }
+  if (chisq_withtheory < 0. && theory_uncertainty_1s > 0.0) {
+    return -1.0;
+  }
+
+  if (yyVerbose) {
+    cout << "chisq_withouttheory " << chisq_withouttheory << endl;
+    cout << "chisq_withtheory    " << chisq_withtheory    << endl;
+    cout << "-----------------------------------------------" << endl;
+    cout << "-----------------------------------------------" << endl;
+  }
+  
+  return chisq_withtheory;
+
+}
 
 int call_HiggsBounds(int nH, double* parameterVector) 
 {
@@ -4834,71 +4934,82 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    //  }
 
    // Higgsbounds
+   double higgsChisqContribution = 0.;
    #ifdef USELIBHB
 
    if ( yyUseHiggsBounds == 1 ) {
 
-      if (yyVerbose){
-      cout << yyDashedLine << endl;
-      cout << "Starting HiggsBounds" << endl;
-      }
+     higgsChisqContribution = call_HiggsBoundsWithSLHA();
+     if (higgsChisqContribution<0) {
+       f += 111111111111.;  
+     }
+     f+= higgsChisqContribution;
+     if (yyVerbose) {
+       cout << "adding " << higgsChisqContribution << " to the chi2 due to the Higgs limits"<< endl;
+     }
 
-      int nH = 3;
-      int HBresult = 0;
-      HBresult = call_HiggsBounds( nH, x );
-
-      yySetErrorFlag = false;
-
-      if ( HBresult == 0 ) {
-
-         cerr << "Scenario excluded by HiggsBounds" << endl;
-         excl++;
-
-	 if (yyVerbose){
-         cout << "Starting scan for limit of lightest higgs mass" << endl;
-	 }
-   
-         double higgsMassLimit = ScanForHiggsLimit( nH, x );
-
-         for ( unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
-
-            if ( yyMeasuredVec[i].name == "Massh0_npf" ||
-		 yyMeasuredVec[i].name == "massh0" ) {
-
-               yyMeasuredVec[i].bound_low = higgsMassLimit;
-
-            }
-
-         }
-         if (yyVerbose){
-         cout << "Scan terminated" << endl;
-         cout << "Changed higgs mass limit to > " << higgsMassLimit << " GeV in list of observables" << endl;
-	 }
-
-      }
-      if ( HBresult == 1 ) {
-
-         cerr << "Scenario accepted by HiggsBounds" << endl;
-	 nexcl++;
-
-      }
-      if ( HBresult == 2 ) {
-
-	 f = 111111111111.;
-
-      }
-      if ( yyVerbose ) {
-
-	 if (yyVerbose){
-         cout << "Already excluded: " << excl << endl;
-         cout << "Not excluded: " << nexcl << endl;
-	 }
-
-      }
-      if (yyVerbose){
-      cout << "Ending HiggsBounds" << endl;
-      }
    }
+//      if (yyVerbose){
+//      cout << yyDashedLine << endl;
+//      cout << "Starting HiggsBounds" << endl;
+//      }
+//
+//      int nH = 3;
+//      int HBresult = 0;
+//      HBresult = call_HiggsBounds( nH, x );
+//
+//      yySetErrorFlag = false;
+//
+//      if ( HBresult == 0 ) {
+//
+//         cerr << "Scenario excluded by HiggsBounds" << endl;
+//         excl++;
+//
+//	 if (yyVerbose){
+//         cout << "Starting scan for limit of lightest higgs mass" << endl;
+//	 }
+//   
+//         double higgsMassLimit = ScanForHiggsLimit( nH, x );
+//
+//         for ( unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
+//
+//            if ( yyMeasuredVec[i].name == "Massh0_npf" ||
+//		 yyMeasuredVec[i].name == "massh0" ) {
+//
+//               yyMeasuredVec[i].bound_low = higgsMassLimit;
+//
+//            }
+//
+//         }
+//         if (yyVerbose){
+//         cout << "Scan terminated" << endl;
+//         cout << "Changed higgs mass limit to > " << higgsMassLimit << " GeV in list of observables" << endl;
+//	 }
+//
+//      }
+//      if ( HBresult == 1 ) {
+//
+//         cerr << "Scenario accepted by HiggsBounds" << endl;
+//	 nexcl++;
+//
+//      }
+//      if ( HBresult == 2 ) {
+//
+//	 f = 111111111111.;
+//
+//      }
+//      if ( yyVerbose ) {
+//
+//	 if (yyVerbose){
+//         cout << "Already excluded: " << excl << endl;
+//         cout << "Not excluded: " << nexcl << endl;
+//	 }
+//
+//      }
+//      if (yyVerbose){
+//      cout << "Ending HiggsBounds" << endl;
+//      }
+//   }
 
    #endif
 
@@ -4952,22 +5063,31 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
                if ( i == j ) {
 
-       	          if ( yyMeasuredVec[i].theovalue<yyMeasuredVec[i].bound_low ) {
-
+		 if ( (yyUseHiggsBounds == 1) && 
+		      (yyMeasuredVec[i].name == "Massh0_npf" ||
+		       yyMeasuredVec[i].name == "massh0") ) {
+		   cout << i << " using lower bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_low << " > " << yyMeasuredVec[i].theovalue << " chi2 contribution " << higgsChisqContribution <<  endl;
+		 }
+		 else {
+		   
+		   
+		   if ( yyMeasuredVec[i].theovalue<yyMeasuredVec[i].bound_low ) {
+		     
        	             f += sqr( ( yyMeasuredVec[i].theovalue-yyMeasuredVec[i].value )/yyMeasuredVec[i].error );
        	             cout << i << " using lower bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_low << " > " <<
-       		     yyMeasuredVec[i].theovalue << endl;
-
-       	          }
-                  else if ( yyMeasuredVec[i].theovalue>yyMeasuredVec[i].bound_up ) {
-
+		       yyMeasuredVec[i].theovalue << endl;
+		     
+		   }
+		   else if ( yyMeasuredVec[i].theovalue>yyMeasuredVec[i].bound_up ) {
+		     
        	             f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].value)/(yyMeasuredVec[i].error));
        	             cout << i << " using upper bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_up << " < " <<
-       	             yyMeasuredVec[i].theovalue << endl;
-
-       	          }
-
-       	          nbound++;
+		       yyMeasuredVec[i].theovalue << endl;
+		     
+		   }
+		 }
+		 
+		 nbound++;
 
                }
 

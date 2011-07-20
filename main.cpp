@@ -119,12 +119,17 @@ int main(int argc, char** argv)
   if (yyUseHiggsBounds == 1){
 	char* whichexpt = const_cast<char*>(yyHBWhichExpt.c_str());
 	int nH; 
+	int nHplus;
 	if(yyFitModel == 4){
-		nH=5;
-		}
+	  nH=5;
+	  nHplus=1;
+	}
 	else { 
-		nH=3; }
-      	initialize_higgsbounds_(&nH,whichexpt);
+	  nH=3;
+	  nHplus = 1;
+	}
+      	//initialize_higgsbounds_(&nH,whichexpt);
+	initialize_HiggsBoundsWithSLHA(nH, nHplus, whichexpt);
    }
   #endif
   delete[] inputfilename;
@@ -195,6 +200,9 @@ int main(int argc, char** argv)
   
 
   }
+
+  
+  close_HiggsBoundsWithSLHA();
 
   return 0;
 }

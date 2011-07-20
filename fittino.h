@@ -36,6 +36,8 @@ class SmearedInput;
 typedef struct {
   vector <double> value;
 } vector_type;
+extern int initialize_HiggsBoundsWithSLHA(int nH, int nHplus, char* whichexpt);
+extern int close_HiggsBoundsWithSLHA();
 extern void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag) ;
 extern double gchisq;
 extern int    gstat;
