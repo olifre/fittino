@@ -12,13 +12,13 @@ LEObs ( gmin2m_npf     )     28.7E-10 +- 8.0E-10                      alias  7 #
 LEObs ( omega      )    0.113  +- 0.003                         alias 20
 
 LEObs ( Massh0_npf     ) >  114.4                         +- 3.0      alias 19 
-LEObs ( MassW_npf      )     80.398   +- 0.025            +- 0.010    alias  8 
-LEObs ( sin_th_eff_npf )      0.2313  +- 0.00021                      alias  9 
+LEObs ( MassW_npf      )     80.399   +- 0.023                        alias  8 
+LEObs ( sin_th_eff_npf )      0.23113  +- 0.00021                      alias  9 
 
-LEObs ( Bsg_npf        )      1.117   +- 0.076   +- 0.082 +- 0.050    alias  1 # ratio unchanged with new measurement
-LEObs ( dm_s_npf       )      1.11    +- 0.01    +- 0.32              alias  2 
-LEObs ( B_smm_npf      ) <    3.6E-8                      +- 0.02E-8  alias  3 # Changed !
-LEObs ( Btn_npf        )      2.07    +- 0.482                        alias  4 # Changed !
+LEObs ( Bsg_npf        )      3.55E-4  +-  0.24E-4  +-  0.09E-4       alias 1 
+LEObs ( dm_s_npf       )      17.78  +-  0.12                         alias  2 
+LEObs ( B_smm_npf      ) <    3.6E-8                      +- 0.02E-8  alias  3
+LEObs ( Btn_npf        )      1.67E-8  +-  0.39E-8                    alias  4
 
 ### SM observables
 
@@ -37,7 +37,7 @@ massCharm    1.27       GeV +- 0.11       GeV # [6]
  ### Parameters                                                               ###
  ################################################################################
 
-fixParameter alphaem     127.925      GeV
+fixParameter alphaem     128.962      GeV
 fixParameter G_F         1.16637E-5
 fixParameter alphas      0.1176       GeV
 fixParameter massZ       91.1876      GeV
@@ -159,7 +159,6 @@ SepFitTanbX                    off
 SepFitTanbMu                   off
 SepFitmA                       off
 Calculator                     SPHENO ./SPheno
-#LEOCalculator                  NPFITTER ./NPpredict.exe
 HiggsCalculator                FEYNHIGGS ./FeynHiggs
 RelicDensityCalculator         MICROMEGAS ./micromegas/micromegas
 FlavourCalculator              SUPERISO ./slha.x
