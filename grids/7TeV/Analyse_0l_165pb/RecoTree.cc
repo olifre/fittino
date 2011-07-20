@@ -7,22 +7,19 @@ int main()
 {
   RecoTree t;
 
-  cout << " >>> Region A..."<< endl;
-  float nA = t.Loop( "A" );
-  cout << " >>> Region B..."<< endl;
-  float nB = t.Loop( "B" );
-  cout << " >>> Region C..."<< endl;
-  float nC = t.Loop( "C" );
-  cout << " >>> Region D..."<< endl;
-  float nD = t.Loop( "D" );
-
+  cout << " >>> Region 2jets..."<< endl;
+  float n2 = t.Loop( "2jets" );
+  cout << " >>> Region 3jets..."<< endl;
+  float n3 = t.Loop( "3jets" );
+  cout << " >>> Region 4jets..."<< endl;
+  float n4 = t.Loop( "4jets" );
+    
   cout << " >>> Number of events..."<< endl;
-  cout << "Region A: " << nA << endl;
-  cout << "Region B: " << nB << endl;
-  cout << "Region C: " << nC << endl;
-  cout << "Region D: " << nD << endl;
+  cout << "Region 2jets: " << n2 << endl;
+  cout << "Region 3jets: " << n3 << endl;
+  cout << "Region 4jets: " << n4 << endl;
 
-  t.writeResults( nA, nB, nC, nD );
+  t.writeResults( n2, n3, n4 );
 
   return 0;  
 }

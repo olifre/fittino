@@ -36,6 +36,9 @@ public :
    TString input_Channels;
    TString input_WeightingFactors;
    TString output_txt;
+   TString output_2jets;
+   TString output_3jets;
+   TString output_4jets;
 
    // Declaration of leaf types
    Double_t factor;
@@ -182,7 +185,7 @@ public :
    virtual float    Loop( TString signalRegion );
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
-   virtual void     writeResults( float _nA, float _nB, float _nC, float _nD );
+   virtual void     writeResults( float _nA, float _nB, float _nC );
 };
 
 #endif
@@ -194,9 +197,14 @@ RecoTree::RecoTree(TTree *tree)
   input_Channels = getenv( "input_Channels" );
   input_WeightingFactors = getenv( "input_WeightingFactors" );
   output_txt = getenv( "output_txt" );
+  output_2jets = getenv( "output_2jets" );
+  output_3jets = getenv( "output_3jets" );
+  output_4jets = getenv( "output_4jets" );
 
   cout << " >>> Input ROOT files..." << endl;
   cout << input_RecSim << endl << input_Channels << endl << input_WeightingFactors << endl;
+  cout << " >>> Output ROOT files..." << endl;
+  cout << output_2jets << endl << output_3jets << endl << output_4jets << endl;
 
   // if parameter tree is not specified (or zero), connect the file
   // used to generate this class and read the Tree.
@@ -409,12 +417,12 @@ void RecoTree::Show(Long64_t entry)
    fChain->Show(entry);
 }
 
-void RecoTree::writeResults( float _nA, float _nB, float _nC, float _nD )
+void RecoTree::writeResults( float _nA, float _nB, float _nC )
 {
   cout << " >>> Writing in NLO.txt " << endl;
   std::ofstream _output_txt;
   _output_txt.open( output_txt  );
-  _output_txt << _nA << "   " << _nB << "   " << _nC << "   " << _nD << endl;
+  _output_txt << _nA << "   " << _nB << "   " << _nC << endl;
   _output_txt.close();
 }
 

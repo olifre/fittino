@@ -11,17 +11,17 @@ float RecoTree::Loop( TString signalRegion ){
   float ratio;
 
   if( signalRegion == "2jets" ){
-    output = new TFile("2jets.root", "RECREATE" );
+    output = new TFile( output_2jets, "RECREATE" );
     NumberOfJets=2;
     ratio=0.3;
   }
   else if( signalRegion == "3jets" ){
-    output = new TFile("3jets.root", "RECREATE" );
+    output = new TFile( output_3jets, "RECREATE" );
     NumberOfJets=3;
     ratio=0.25;
   }
   else if( signalRegion == "4jets" ){
-    output = new TFile("4jets.root", "RECREATE" );
+    output = new TFile( output_4jets, "RECREATE" );
     NumberOfJets=4;
     ratio=0.25;
   }
@@ -71,6 +71,12 @@ float RecoTree::Loop( TString signalRegion ){
     {
       fChain->GetEntry(jentry);
 
+      ////////////////////// FACTOR //////////////////////
+      if ( TMath::Finite( factor )  && TMath::IsNaN( factor ) == false ){
+	factor *= 0.165; // 165/pb analysis
+      }
+      else factor = 0;
+
       // Reconstructed objects
       vector< unsigned int >  rec_Jets;
       vector< unsigned int >  rec_Electrons;
@@ -78,18 +84,18 @@ float RecoTree::Loop( TString signalRegion ){
       
       ///////////////////// OBJECTS //////////////////////
       nbSignal[0]++;
-      h_njets->Fill( Jet );
-      h_nel->Fill( Electron );
-      h_nmu->Fill( Muon );
+      h_njets->Fill( Jet, factor );
+      h_nel->Fill( Electron, factor );
+      h_nmu->Fill( Muon, factor );
       
 
       // Jets
       for( int ijet = 0; ijet < Jet; ijet++ ){
 	
-	h_ptjets->Fill( (*Jet_PT)[ijet] );
+	h_ptjets->Fill( (*Jet_PT)[ijet], factor );
 	if( (*Jet_PT)[ijet] <= 20 ) continue;	
 	
-	h_etajets->Fill( fabs((*Jet_Eta)[ijet]) );
+	h_etajets->Fill( fabs((*Jet_Eta)[ijet]), factor );
 	if( fabs((*Jet_Eta)[ijet]) >= 2.8 ) continue;
 	
 	rec_Jets.push_back( ijet );
@@ -99,13 +105,13 @@ float RecoTree::Loop( TString signalRegion ){
       // Electrons
       for( int iel = 0; iel < Electron; iel++ ){
 
-	h_ptel->Fill( (*Electron_PT)[iel] );	
+	h_ptel->Fill( (*Electron_PT)[iel], factor );	
 	if( (*Electron_PT)[iel] <= 20 ) continue;
 	
-	h_etael->Fill( fabs((*Electron_Eta)[iel]) );
+	h_etael->Fill( fabs((*Electron_Eta)[iel]), factor );
 	if( fabs((*Electron_Eta)[iel]) >= 2.47 ) continue;
 
-	h_flagMedel->Fill( (*Electron_FlagMedium)[iel] );
+	h_flagMedel->Fill( (*Electron_FlagMedium)[iel], factor );
 	if( (*Electron_FlagMedium)[iel] != 1 ) continue;
 
 	rec_Electrons.push_back( iel );
@@ -115,10 +121,10 @@ float RecoTree::Loop( TString signalRegion ){
       // Muons
       for( int imu = 0; imu < Muon; imu++ ){
 
-	h_ptmu->Fill( (*Muon_PT)[imu] );
+	h_ptmu->Fill( (*Muon_PT)[imu], factor );
 	if( (*Muon_PT)[imu] <= 10 ) continue;
 	
-	h_etamu->Fill( fabs((*Muon_Eta)[imu]) );
+	h_etamu->Fill( fabs((*Muon_Eta)[imu]), factor );
 	if( fabs((*Muon_Eta)[imu]) >= 2.4 ) continue;
 	
 	if ((*Muon_ID)[imu] != 1) continue;
@@ -185,7 +191,7 @@ float RecoTree::Loop( TString signalRegion ){
 	    lv_jet.SetPtEtaPhiE( jetPt, jetEta, jetPhi, jetE );
 	    
 	    float dR = lv_jet.DeltaR( lv_el );
-	    h_dR_jete->Fill( dR );
+	    h_dR_jete->Fill( dR, factor );
 	    if( dR < 0.2 ){
 	      rec_Jets.erase( rec_Jets.begin() + ijet );
 	      ijet--;
@@ -219,7 +225,7 @@ float RecoTree::Loop( TString signalRegion ){
 	  lv_el.SetPtEtaPhiE( elPt, elEta, elPhi, elE );
 	    
 	  float dR = lv_jet.DeltaR( lv_el );
-	  h_dR_ejet->Fill( dR );
+	  h_dR_ejet->Fill( dR, factor );
 	  if( dR < 0.4 ){
 	    rec_Electrons.erase( rec_Electrons.begin() + iel );
 	    iel--;
@@ -239,7 +245,7 @@ float RecoTree::Loop( TString signalRegion ){
 	  lv_mu.SetPtEtaPhiE( muPt, muEta, muPhi, muE );
 	    
 	  float dR = lv_jet.DeltaR( lv_mu );
-	  h_dR_mujet->Fill( dR );
+	  h_dR_mujet->Fill( dR, factor );
 	  if( dR < 0.4 ){
 	    rec_Muons.erase( rec_Muons.begin() + imu );
 	    imu--;
@@ -259,13 +265,13 @@ float RecoTree::Loop( TString signalRegion ){
 	}
       }
 
-      h_nel_presel->Fill( rec_Electrons.size() );
-      h_nmu_presel->Fill( rec_Muons.size() );
+      h_nel_presel->Fill( rec_Electrons.size(), factor );
+      h_nmu_presel->Fill( rec_Muons.size(), factor );
       if( rec_Muons.size() > 0 || rec_Electrons.size() > 0 ) continue;
       nbSignal[1]++;
       
       // Number of jets
-      h_njets_presel->Fill( rec_Jets.size() );
+      h_njets_presel->Fill( rec_Jets.size(), factor );
       if (rec_Jets.size()<NumberOfJets) continue;
       nbSignal[2]++;
 
@@ -275,19 +281,19 @@ float RecoTree::Loop( TString signalRegion ){
       TVector2 v_MET;
       v_MET.SetMagPhi(METpt,METphi);      
       
-      h_MET->Fill( METpt );
+      h_MET->Fill( METpt, factor );
       if( METpt <= 130 ) continue;
       nbSignal[3]++;
       
       //leading jet PT
       float leading_jet_pt=(*Jet_PT)[rec_Jets[0]];
-      h_ptleadjets->Fill( leading_jet_pt );
+      h_ptleadjets->Fill( leading_jet_pt, factor );
       if( leading_jet_pt <= 130 ) continue;
       nbSignal[4]++;
       
       //last jet PT
       float last_jet_pt=(*Jet_PT)[rec_Jets[NumberOfJets-1]];
-      h_ptlastjets->Fill(last_jet_pt);
+      h_ptlastjets->Fill(last_jet_pt, factor);
       if( last_jet_pt <= 40 ) continue;
       nbSignal[5]++;
       
@@ -307,7 +313,7 @@ float RecoTree::Loop( TString signalRegion ){
 	
       }
 	
-      h_dPhi->Fill( deltaPhi );
+      h_dPhi->Fill( deltaPhi, factor );
       if( deltaPhi < 0.4 ) continue;
       nbSignal[6]++;
 
@@ -321,18 +327,17 @@ float RecoTree::Loop( TString signalRegion ){
       }
 
       float ETmis_meff = METpt / meff;
-
-      if (ETmis_meff<ratio) continue;
-      h_METmeff->Fill( ETmis_meff );
+      h_METmeff->Fill( ETmis_meff, factor );
+      if (ETmis_meff < ratio) continue;
       nbSignal[7]++;
 
-      h_meff->Fill( meff );
-      if (meff>1000) continue;
+      h_meff->Fill( meff, factor );
+      if ( meff < 1000 ) continue;
       nbSignal[8]++;
-
       
       // Count the number of signal events at the end of the cutflow
       if ( TMath::Finite( factor )  && TMath::IsNaN( factor ) == false ){
+	//cout <<" factor = " << factor << endl;
 	totNormalised += factor;
 	h_factor->Fill( factor );
       }
