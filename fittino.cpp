@@ -164,6 +164,7 @@ double give_xs (doubleVec_t initial, int channel, int element );
 double give_br ( int id, int decay, int element );
 int FindInFittedPar (string name);
 double mSquarkGluinoMax;
+double globalHiggsChi2;
 
 double* GetRandomParameterVector(const vector<parameter_t>&);
 
@@ -246,7 +247,9 @@ double call_HiggsBoundsWithSLHA()
   sprintf(charfilename,"%s",filename.c_str());
   int charfilenamelen = strlen(charfilename);
   higgsbounds_input_slha_(charfilename, &charfilenamelen);
-
+  
+  globalHiggsChi2 = 0.;
+  
   if (yyVerbose) {
     cout << "-----------------------------------------------" << endl;
     cout << "-----------------------------------------------" << endl;
@@ -281,6 +284,7 @@ double call_HiggsBoundsWithSLHA()
     cout << "-----------------------------------------------" << endl;
   }
   
+  globalHiggsChi2 = chisq_withtheory;
   return chisq_withtheory;
 
 }
@@ -12762,7 +12766,30 @@ void Fittino::markovChain ()
       sprintf ( ntupletext, "path of the Markov Chain" );
       ////      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:haveAcceptedAtLeastOne:globalIter" );
       //      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:globalIter:haveAcceptedAtLeastOne" );
-      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:globalIter:haveAcceptedAtLeastOne:LHC_CLb:LHC_CLsb:LHC_chi2:af_photon:af_relic:af_svind:af_direct:af_chi2_total:af_chi2_photon:af_chi2_relic:af_chi2_svind:af_chi2_direct" );
+      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:globalIter:haveAcceptedAtLeastOne:LHC_CLb:LHC_CLsb:LHC_chi2:LHC_Exp_CLb:LHC_Exp_CLsb:LHC_Exp_chi2:af_photon:af_relic:af_svind:af_direct:af_chi2_total:af_chi2_photon:af_chi2_relic:af_chi2_svind:af_chi2_direct:globalHiggsChi2" );
+//	    ntupvars[0] = (Float_t)likelihood;
+//	    ntupvars[1] = (Float_t)rho;
+//	    ntupvars[2] = (Float_t)chi2;
+//	    ntupvars[3] = (Float_t)accpoint;
+//	    ntupvars[4] = (Float_t)niter;
+//	    ntupvars[5] = (Float_t)globalIter;
+//	    ntupvars[6] = (haveAcceptedAtLeastOne) ? 1 : 0;
+//	    ntupvars[7] = (Float_t)global_LHC_CLb;
+//	    ntupvars[8] = (Float_t)global_LHC_CLsb;
+//	    ntupvars[9] = (Float_t)global_LHC_chi2;
+//	    ntupvars[10] = (Float_t)global_LHC_Exp_CLb;
+//	    ntupvars[11] = (Float_t)global_LHC_Exp_CLsb;
+//	    ntupvars[12] = (Float_t)global_LHC_Exp_chi2;
+//	    ntupvars[13] = (Float_t) af_photon;
+//	    ntupvars[14] = (Float_t) af_relic;
+//	    ntupvars[15] = (Float_t) af_svind;
+//	    ntupvars[16] = (Float_t) af_direct;
+//	    ntupvars[17] = (Float_t) af_chi2_total;
+//	    ntupvars[18] = (Float_t) af_chi2_photon;
+//	    ntupvars[19] = (Float_t) af_chi2_relic;
+//	    ntupvars[20] = (Float_t) af_chi2_svind;
+//	    ntupvars[21] = (Float_t) af_chi2_direct;
+//	    ntupvars[22] = (Float_t) globalHiggsChi2;
       for (unsigned int j=0; j < yyFittedVec.size(); j++ ) {
 	string parName = "P_"+yyFittedVec[j].name;
 	sprintf ( ntuplevars, "%s:%s", ntuplevars, parName.c_str() );
@@ -13378,12 +13405,12 @@ void Fittino::markovChain ()
 	    ntupvars[19] = (Float_t) af_chi2_relic;
 	    ntupvars[20] = (Float_t) af_chi2_svind;
 	    ntupvars[21] = (Float_t) af_chi2_direct;
-
+	    ntupvars[22] = (Float_t) globalHiggsChi2;
 	    int counter = 0;
 	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
 	    //	       ntupvars[ii] = xp[ii-7];
-	    for (unsigned int ii = 22; ii < 22+yyFittedVec.size(); ii++) {
-	       ntupvars[ii] = xp[ii-22];
+	    for (unsigned int ii = 23; ii < 22+yyFittedVec.size(); ii++) {
+	       ntupvars[ii] = xp[ii-23];
 	       counter = ii;
 	    }
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
@@ -13413,12 +13440,13 @@ void Fittino::markovChain ()
 	    ntupvars[19] = (Float_t) af_chi2_relic;
 	    ntupvars[20] = (Float_t) af_chi2_svind;
 	    ntupvars[21] = (Float_t) af_chi2_direct;
+	    ntupvars[22] = (Float_t) globalHiggsChi2;
 
 	    int counter = 0;
 	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
 	    //	       ntupvars[ii] = xp[ii-7];
-	    for (unsigned int ii = 22; ii < 22+yyFittedVec.size(); ii++) {
-	       ntupvars[ii] = xp[ii-22];
+	    for (unsigned int ii = 23; ii < 22+yyFittedVec.size(); ii++) {
+	       ntupvars[ii] = xp[ii-23];
 	       counter = ii;
 	    }
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
@@ -13447,12 +13475,13 @@ void Fittino::markovChain ()
 	    ntupvars[19] = (Float_t) previous_af_chi2_relic;
 	    ntupvars[20] = (Float_t) previous_af_chi2_svind;
 	    ntupvars[21] = (Float_t) previous_af_chi2_direct;
+	    ntupvars[22] = (Float_t) globalHiggsChi2;
 
 	    counter = 0;
 	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
 	    //	       ntupvars[ii] = x[ii-7];
-	    for (unsigned int ii = 22; ii < 22+yyFittedVec.size(); ii++) {
-	       ntupvars[ii] = x[ii-22];
+	    for (unsigned int ii = 23; ii < 22+yyFittedVec.size(); ii++) {
+	       ntupvars[ii] = x[ii-23];
 	       counter = ii;
 	    }
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
