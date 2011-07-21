@@ -13409,7 +13409,7 @@ void Fittino::markovChain ()
 	    int counter = 0;
 	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
 	    //	       ntupvars[ii] = xp[ii-7];
-	    for (unsigned int ii = 23; ii < 22+yyFittedVec.size(); ii++) {
+	    for (unsigned int ii = 23; ii < 23+yyFittedVec.size(); ii++) {
 	       ntupvars[ii] = xp[ii-23];
 	       counter = ii;
 	    }
@@ -13445,7 +13445,7 @@ void Fittino::markovChain ()
 	    int counter = 0;
 	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
 	    //	       ntupvars[ii] = xp[ii-7];
-	    for (unsigned int ii = 23; ii < 22+yyFittedVec.size(); ii++) {
+	    for (unsigned int ii = 23; ii < 23+yyFittedVec.size(); ii++) {
 	       ntupvars[ii] = xp[ii-23];
 	       counter = ii;
 	    }
@@ -13480,7 +13480,7 @@ void Fittino::markovChain ()
 	    counter = 0;
 	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
 	    //	       ntupvars[ii] = x[ii-7];
-	    for (unsigned int ii = 23; ii < 22+yyFittedVec.size(); ii++) {
+	    for (unsigned int ii = 23; ii < 23+yyFittedVec.size(); ii++) {
 	       ntupvars[ii] = x[ii-23];
 	       counter = ii;
 	    }
