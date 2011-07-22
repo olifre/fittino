@@ -656,8 +656,8 @@ Fittino::Fittino(const Input* input)
 //	     >> meff3 >> meff4 >> meff5 >> meff6 >> meff7 >> meff8
 //	     >> meff9 >> meff10;
       // FIXME: Adapt to final sctructure
-      infile >> m0 >> m12  >> meff1 >> meff2 
-	     >> meff3 ;
+      infile >> m0 >> m12  >> msq >> mgl >> meff1 >> meff2 >> meff3 ;
+
       char no[256];
       sprintf(no,"%d",histno);
       histno++;
@@ -693,15 +693,15 @@ Fittino::Fittino(const Input* input)
 //    hbkgd->SetBinContent(8, 0);
 //    hbkgd->SetBinContent(9, 0);
 //    hbkgd->SetBinContent(10, 0);
-    hbkgd->SetBinContent(1, 10.);  // FIXME: CORRECT VALUE
-    hbkgd->SetBinContent(2, 20.);  // FIXME: CORRECT VALUE
-    hbkgd->SetBinContent(3, 100.); // FIXME: CORRECT VALUE
+    hbkgd->SetBinContent(1, 12.1);  // FIXME: CORRECT VALUE
+    hbkgd->SetBinContent(2, 10.1);  // FIXME: CORRECT VALUE
+    hbkgd->SetBinContent(3, 7.3); // FIXME: CORRECT VALUE
     hbkgd->Scale(yyLumi);
 
     hdata = new TH1D("hdata", "", 3, 0, 3);
-    hdata->SetBinContent(1, 20. ); // FIXME: CORRECT VALUE
-    hdata->SetBinContent(2, 11. ); // FIXME: CORRECT VALUE
-    hdata->SetBinContent(3, 110.); // FIXME: CORRECT VALUE
+    hdata->SetBinContent(1, 10. ); // FIXME: CORRECT VALUE
+    hdata->SetBinContent(2, 8. ); // FIXME: CORRECT VALUE
+    hdata->SetBinContent(3, 7.); // FIXME: CORRECT VALUE
     hdata->Scale(yyLumi);          // this is rather unconventional,
 				   // but could be interesting to see
 				   // how excesses would scale
@@ -5168,8 +5168,10 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      double xschi2;
      double xschi2Exp;
      
+     cout << " >>> THE INTERPOLATION IS " << interpolationOK << endl;
+
      if (interpolationOK) {
-       const int ntrials = 20000;
+       const int ntrials = 1000;
        int bestSignalRegion = -1;
        double bestExpCLsb      = 1000.;
        double bestExpCLb       = 1000.;
@@ -12943,14 +12945,14 @@ void Fittino::markovChain ()
 
       // fill vector of parameters
       for (unsigned int k = 0; k < yyFittedVec.size(); k++ ) {
-	 x.push_back(yyFittedVec[k].value);
-	 xp.push_back(yyFittedVec[k].value);
-	 vm.push_back(yyFittedVec[k].error);
-	 lb.push_back(yyFittedVec[k].bound_low);
-	 ub.push_back(yyFittedVec[k].bound_up);
-	 xNames.push_back(yyFittedVec[k].name);
-	 c.push_back(2.0);
-	 nacp.push_back(0);
+	x.push_back(yyFittedVec[k].value);
+	xp.push_back(yyFittedVec[k].value);
+	vm.push_back(yyFittedVec[k].error);
+	lb.push_back(yyFittedVec[k].bound_low);
+	ub.push_back(yyFittedVec[k].bound_up);
+	xNames.push_back(yyFittedVec[k].name);
+	c.push_back(2.0);
+	nacp.push_back(0);
 	 ntest.push_back(0);
       }
 
