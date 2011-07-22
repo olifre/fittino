@@ -18,7 +18,7 @@ LEObs ( sin_th_eff_npf )      0.23113  +- 0.00021                      alias  9
 LEObs ( Bsg_npf        )      3.55E-4  +-  0.24E-4  +-  0.09E-4       alias 1 
 LEObs ( dm_s_npf       )      17.78  +-  0.12                         alias  2 
 LEObs ( B_smm_npf      ) <    3.6E-8                      +- 0.02E-8  alias  3
-LEObs ( Btn_npf        )      1.67E-8  +-  0.39E-8                    alias  4
+LEObs ( Btn_npf        )      1.67E-4  +-  0.39E-4                    alias  4
 
 ### SM observables
 
