@@ -5171,7 +5171,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      cout << " >>> THE INTERPOLATION IS " << interpolationOK << endl;
 
      if (interpolationOK) {
-       const int ntrials = 1000;
+       const int ntrials = 10000;
        int bestSignalRegion = -1;
        double bestExpCLsb      = 1000.;
        double bestExpCLb       = 1000.;
@@ -5304,14 +5304,21 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        thisBkg->Delete();
        thisDat->Delete();
        
-      
-       xschi2 = 2 * TMath::ErfInverse(1 - 2*ObsCLsb) * TMath::ErfInverse(1 - 2*ObsCLsb);
-       xschi2Exp = 2 * TMath::ErfInverse(1 - 2*CLsb) * TMath::ErfInverse(1 - 2*CLsb);
+       if (ObsCLsb>0.) {
+	 xschi2 = 2. * TMath::ErfInverse(1. - 2.*ObsCLsb) * TMath::ErfInverse(1. - 2.*ObsCLsb);
+       } else {
+	 xschi2 = 100.;
+       }
+       if (bestExpCLsb>0.) {
+	 xschi2Exp = 2. * TMath::ErfInverse(1. - 2.*bestExpCLsb) * TMath::ErfInverse(1. - 2.*bestExpCLsb);
+       } else {
+	 xschi2Exp = 100.;
+       }
 
        global_LHC_CLb  = ObsCLb;
        global_LHC_CLsb = ObsCLsb;
-       global_LHC_Exp_CLsb = CLsb;
-       global_LHC_Exp_CLb  = CLb;
+       global_LHC_Exp_CLsb = bestExpCLsb;
+       global_LHC_Exp_CLb  = bestExpCLb;
        if (xschi2<0.) global_LHC_chi2 = 1000.;
        else global_LHC_chi2 = xschi2;
        if (xschi2Exp<0.) global_LHC_Exp_chi2 = 1000.;
@@ -5354,17 +5361,22 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 //     }
 
      if (yyVerbose) {
+       std::cout << "**********************************************************" << endl;
+       std::cout << "**********************************************************" << endl;
        std::cout << "LHC cross-section at M0 = " 
 		 << M0 << " GeV, M12 = " << M12 << " GeV is " 
 		 << xsintegral/yyLumi << " fb " << std::endl;
 
-       std::cout << "CLsb = " << global_LHC_CLsb << "   CLb = " << global_LHC_CLb << std::endl;
+       std::cout << "    CLsb = " << global_LHC_CLsb     << "     CLb = " << global_LHC_CLb     << "     chi2 = " << global_LHC_chi2<<  std::endl;
+       std::cout << "Exp CLsb = " << global_LHC_Exp_CLsb << " Exp CLb = " << global_LHC_Exp_CLb << " Exp chi2 = " << global_LHC_Exp_chi2<<  std::endl;
        
        std::cout << "Parameter point";
        if (global_LHC_CLsb > 0.05) std::cout << " not";
        std::cout << " excluded at 95 % CL" << std::endl;
        
        std::cout << "chi2 contribution from LHC cross-section = " << global_LHC_chi2 << std::endl;
+       std::cout << "**********************************************************" << endl;
+       std::cout << "**********************************************************" << endl;
      }
      
      if (yyLumi==dataDefaultLumi) {
