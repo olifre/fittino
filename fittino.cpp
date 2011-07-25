@@ -227,11 +227,13 @@ double call_HiggsBoundsWithSLHA()
   double obsratio = 0.;
   int ncombined = 0;
   string filename;
+  double mh = 0.;
 
   for ( unsigned int i = 0; i < yyMeasuredVec.size(); i++ ) {
     if ( yyMeasuredVec[i].name == "Massh0_npf" ||
 	 yyMeasuredVec[i].name == "massh0" ) {
       theory_uncertainty_1s = yyMeasuredVec[i].error;
+      mh = yyMeasuredVec[i].theovalue;
       break;
     }
   }  
@@ -284,6 +286,15 @@ double call_HiggsBoundsWithSLHA()
     cout << "-----------------------------------------------" << endl;
   }
   
+  // DIRTY FIXME for h0 -> chi+ chi-: 
+  if (mh<106.5) {
+    chisq_withtheory += 1000.;
+  }
+
+
+
+
+
   globalHiggsChi2 = chisq_withtheory;
   return chisq_withtheory;
 
@@ -5171,7 +5182,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      cout << " >>> THE INTERPOLATION IS " << interpolationOK << endl;
 
      if (interpolationOK) {
-       const int ntrials = 10000;
+       const int ntrials = 20000;
        int bestSignalRegion = -1;
        double bestExpCLsb      = 1000.;
        double bestExpCLb       = 1000.;
@@ -5200,12 +5211,22 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
 	 int array_index[ntrials];
 	 
+//	 for (int itrial=0; itrial<ntrials; itrial++) {
+//	   cout << "before trial No. " <<  itrial << " " << array_lnQb[itrial] << endl;
+//	 }
+
 	 TMath::Sort(ntrials, array_lnQb, array_index, kFALSE);
-	 
+
+//	 for (int itrial=0; itrial<ntrials; itrial++) {
+//	   cout << "after  trial No. " <<  itrial << " " << array_lnQb[array_index[itrial]] << endl;
+//	 }
+
 	 int median_pos = int(ntrials * 0.5 + 0.5);
 	 
 	 double median_lnQb = array_lnQb[ array_index[ median_pos ] ];
 	 
+	 //	 cout << "median pos = " << median_pos << " median = " << median_lnQb << endl;
+
 	 // Asimov data set (data = bkgd only)
 	 //       double lnQdata = LogLikelihoodRatio(hsig, hbkgd, hbkgd, 
 	 //					   yyRelativeSignalCrossSectionSysUncertainty,
