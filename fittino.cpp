@@ -127,7 +127,7 @@ extern "C" { void finish_higgsbounds_();}
 extern "C" { void run_higgsbounds_effc_(int* nH, double Mh[], double GammaTotal[], double g2hjbb[], double g2hjtautau[], double g2hjWW[], double g2hjZZ[], double g2hjgaga[], double g2hjgg[], double g2hjhiZ[][3], double BR_hjhihi[][3], int*p, int* chan, double obsratio[], int* ncombined);}
 extern "C" { void higgsbounds_input_slha_(char* filename, int* len); }
 extern "C" { void run_higgsbounds_( int* HBresult,int* chan, double* obsratio,int* ncombined ); }
-extern "C" { void hb_calc_stats_(double* theory_uncertainty_1s, double* chisq_withouttheory, double*chisq_withtheory); }
+extern "C" { void hb_calc_stats_(double* theory_uncertainty_1s, double* chisq_withouttheory, double*chisq_withtheory, int* bestChanChi2); }
 
 int excl = 0;
 int nexcl = 0;
@@ -224,6 +224,7 @@ double call_HiggsBoundsWithSLHA()
   double chisq_withouttheory = 0;
   int HBresult = -1;
   int chan = 0;
+  int bestChanChi2 = 0;
   double obsratio = 0.;
   int ncombined = 0;
   string filename;
@@ -271,12 +272,18 @@ double call_HiggsBoundsWithSLHA()
     cout << "use a theory uncertainty of " << theory_uncertainty_1s << endl;
   }
 
-  hb_calc_stats_(&theory_uncertainty_1s, &chisq_withouttheory, &chisq_withtheory);
+  hb_calc_stats_(&theory_uncertainty_1s, &chisq_withouttheory, &chisq_withtheory, &bestChanChi2);
   if (chisq_withouttheory < 0.) {
     return -1.0;
   }
   if (chisq_withtheory < 0. && theory_uncertainty_1s > 0.0) {
     return -1.0;
+  }
+  if (chan != bestChanChi2) {
+    if (HBresult==0) {
+      chisq_withouttheory = 1000.;
+      chisq_withtheory = 1000.;
+    }
   }
 
   if (yyVerbose) {
@@ -287,9 +294,9 @@ double call_HiggsBoundsWithSLHA()
   }
   
   // DIRTY FIXME for h0 -> chi+ chi-: 
-  if (mh<106.5) {
-    chisq_withtheory += 1000.;
-  }
+  //if (mh<106.5) {
+  //  chisq_withtheory += 1000.;
+  //}
 
 
 
