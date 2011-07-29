@@ -5678,7 +5678,7 @@ double readAstroFit()
   strcpy(argv[0], yyAstroCalculatorPath.c_str());
   return_value = system(argv[0]);
   ifstream file_to_read;
-  TString filename = "afchi2.txt";
+  TString filename = "afout.txt";
 
   file_to_read.open(filename);
   string line;
