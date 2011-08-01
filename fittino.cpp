@@ -164,7 +164,7 @@ double give_xs (doubleVec_t initial, int channel, int element );
 double give_br ( int id, int decay, int element );
 int FindInFittedPar (string name);
 double mSquarkGluinoMax;
-double globalHiggsChi2;
+
 
 double* GetRandomParameterVector(const vector<parameter_t>&);
 
@@ -188,6 +188,7 @@ double af_chi2_relic=-1;
 double af_chi2_svind=-1;
 double af_chi2_direct=-1;
 
+double globalHiggsChi2=-1;
 
 
 int n_printouts;
@@ -4541,6 +4542,8 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
   af_chi2_relic=-1;
   af_chi2_svind=-1;
   af_chi2_direct=-1;
+
+  globalHiggsChi2=-1;
 
   //cout<<"fitterFCN called"<<endl;
    //  niterations++;
@@ -13147,6 +13150,8 @@ void Fittino::markovChain ()
       double previous_af_chi2_svind=-1;
       double previous_af_chi2_direct=-1;
 
+      double previous_globalHiggsChi2=-1;
+
 
  
       //-------------------------------------------
@@ -13362,6 +13367,8 @@ void Fittino::markovChain ()
 	   previous_af_chi2_svind=af_chi2_svind;
 	   previous_af_chi2_direct=af_chi2_direct;
 
+	   previous_globalHiggsChi2=globalHiggsChi2;
+
 
 	 }
 
@@ -13517,7 +13524,7 @@ void Fittino::markovChain ()
 	    ntupvars[19] = (Float_t) previous_af_chi2_relic;
 	    ntupvars[20] = (Float_t) previous_af_chi2_svind;
 	    ntupvars[21] = (Float_t) previous_af_chi2_direct;
-	    ntupvars[22] = (Float_t) globalHiggsChi2;
+	    ntupvars[22] = (Float_t) previous_globalHiggsChi2;
 
 	    counter = 0;
 	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
@@ -13561,6 +13568,8 @@ void Fittino::markovChain ()
 	    previous_af_chi2_relic=af_chi2_relic;
 	    previous_af_chi2_svind=af_chi2_svind;
 	    previous_af_chi2_direct=af_chi2_direct;
+
+	    previous_globalHiggsChi2=globalHiggsChi2;
 
 	 }
 
