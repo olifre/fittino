@@ -162,11 +162,11 @@ RelicDensityCalculator         MICROMEGAS /afs/naf.desy.de/group/atlas/scratch/f
 FlavourCalculator              SUPERISO ./slha.x
 AfterBurnerDirectory           /afs/naf.desy.de/user/p/prudent/fittino/afterburner
 
-UseXsecLimits                  off
-GridPath                       ./PseudoGrid_2D.txt
-Luminosity                     1000000    # in fb-1
-RelativeSignalCrossSectionSysUncertainty       0
-RelativeBackgroundCrossSectionSysUncertainty   0
+UseXsecLimits                  on
+GridPath                       /afs/naf.desy.de/user/p/prudent/fittino/grids/7TeV/Analyse_0l_165pb/Analyse_noLepton_1invfb_mSUGRA.txt
+Luminosity                     0.165    # in fb-1
+RelativeSignalCrossSectionSysUncertainty       0.25
+RelativeBackgroundCrossSectionSysUncertainty   0.20
 
 UseFullCKMMatrix               off
 UseMinos                       off
@@ -198,7 +198,7 @@ MaxMarkovChain                 50000
 
 MinuitStrategy                 2
 MachinePrecision               1e-8
-#RandomGeneratorSeed            3
+#RandomGeneratorSeed            1305920158
 
 Verbose                        on
 
