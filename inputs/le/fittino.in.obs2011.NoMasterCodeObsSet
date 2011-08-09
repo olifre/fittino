@@ -168,8 +168,8 @@ AfterBurnerDirectory           /afs/naf.desy.de/user/b/bechtle/programs/fittino/
 UseXsecLimits                  off
 GridPath                       ./Analyse_noLepton_1invfb_mSUGRA.txt
 Luminosity                     0.165    # in fb-1
-RelativeSignalCrossSectionSysUncertainty       0.25
-RelativeBackgroundCrossSectionSysUncertainty   0.2
+RelativeSignalCrossSectionSysUncertainty       0.3
+RelativeBackgroundCrossSectionSysUncertainty   0.23
 
 UseFullCKMMatrix               off
 UseMinos                       off
