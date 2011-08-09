@@ -7,16 +7,15 @@
 ### References and comments are given in
 ## https://wiki.terascale.de/index.php/SUSY/BSM_Parameter_Fitting
 
-LEObs ( Bsg_npf        )      3.55E-4  +-  0.24E-4  +-  0.09E-4       alias 1 
-LEObs ( dm_s_npf       )      17.78  +-  0.12  +- 5.2                 alias  2 
+LEObs ( Bsg_npf        )      3.55E-4  +-  0.24E-4  +-  0.09E-4       alias 1
+LEObs ( dm_s_npf       )      17.78  +-  0.12  +- 5.2                 alias  2
 LEObs ( Btn_npf        )      1.67E-4  +-  0.39E-4                    alias  4
-LEObs ( gmin2m_npf     )     28.7E-10 +- 8.0E-10  +- 2.0E-10           alias  7 
-LEObs ( omega      )    0.113  +- 0.003  +-  0.012                       alias 20 
-LEObs ( Massh0_npf     ) >  114.4                         +- 3.0      alias 19 
+LEObs ( gmin2m_npf     )     28.7E-10 +- 8.0E-10  +- 2.0E-10           alias  7
+LEObs ( omega      )    0.113  +- 0.003  +-  0.012                       alias 20
+LEObs ( Massh0_npf     ) >  114.4                         +- 3.0      alias 19
 LEObs ( MassW_npf      )     80.399   +- 0.023        +-  0.010                alias  8
-LEObs ( sin_th_eff_npf )      0.23113  +- 0.00021                      alias  9 
-LEObs ( B_smm_npf      ) <    3.6E-8                      +- 0.02E-8  alias  3 
-
+LEObs ( sin_th_eff_npf )      0.23113  +- 0.00021                      alias  9
+LEObs ( B_smm_npf      ) <    3.6E-8                      +- 0.02E-8  alias  3
 
 
 ### SM observables
@@ -46,10 +45,10 @@ fixParameter massTau     1.77682      GeV
 fixParameter massCharm   1.27         GeV 
 fixParameter SignMu        1
 
-fitParameter M0             76.2      GeV +-  9.5  GeV 
-fitParameter M12           331.5      GeV +-  6.0   GeV
-fitParameter A0            383.8      GeV +-  22.0   GeV 
-fitParameter TanBeta        13.2          +-  0.6    
+fitParameter M0             100      GeV +-  10  GeV 
+fitParameter M12            100      GeV +-  10   GeV
+fitParameter A0             0      GeV   +-  20.0   GeV 
+fitParameter TanBeta        10          +-  1    
 fixParameter QEWSB        1000.       GeV # +-  1   GeV  
 
 ### Unfitted SUSY masses and BR
@@ -159,17 +158,15 @@ SepFitTanbMu                   off
 SepFitmA                       off
 Calculator                     SPHENO ./SPheno
 HiggsCalculator                FEYNHIGGS ./FeynHiggs
-RelicDensityCalculator         MICROMEGAS ./micromegas/micromegas
+RelicDensityCalculator         MICROMEGAS /afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/micromegas_v2.2.CPC.i/micromegas 
 FlavourCalculator              SUPERISO ./slha.x
-AfterBurnerDirectory           /afs/naf.desy.de/user/b/bechtle/programs/fittino/afterburner/
+AfterBurnerDirectory           /afs/naf.desy.de/user/p/prudent/fittino/afterburner
 
-
-# Grid files can be found in fittino/grids/7TeV/Analyse_0l_165pb
 UseXsecLimits                  off
-GridPath                       ./Analyse_noLepton_1invfb_mSUGRA.txt
-Luminosity                     0.165    # in fb-1
-RelativeSignalCrossSectionSysUncertainty       0.3
-RelativeBackgroundCrossSectionSysUncertainty   0.23
+GridPath                       ./PseudoGrid_2D.txt
+Luminosity                     1000000    # in fb-1
+RelativeSignalCrossSectionSysUncertainty       0
+RelativeBackgroundCrossSectionSysUncertainty   0
 
 UseFullCKMMatrix               off
 UseMinos                       off
@@ -201,6 +198,7 @@ MaxMarkovChain                 50000
 
 MinuitStrategy                 2
 MachinePrecision               1e-8
+#RandomGeneratorSeed            3
 
 Verbose                        on
 
