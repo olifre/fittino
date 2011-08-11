@@ -712,15 +712,15 @@ Fittino::Fittino(const Input* input)
 //    hbkgd->SetBinContent(8, 0);
 //    hbkgd->SetBinContent(9, 0);
 //    hbkgd->SetBinContent(10, 0);
-    hbkgd->SetBinContent(1, 12.1);  // FIXME: CORRECT VALUE
-    hbkgd->SetBinContent(2, 10.1);  // FIXME: CORRECT VALUE
-    hbkgd->SetBinContent(3, 7.3); // FIXME: CORRECT VALUE
+    hbkgd->SetBinContent(1, 73.3);  // FIXME: CORRECT VALUE
+    hbkgd->SetBinContent(2, 61.2);  // FIXME: CORRECT VALUE
+    hbkgd->SetBinContent(3, 44.2); // FIXME: CORRECT VALUE
     hbkgd->Scale(yyLumi);
 
     hdata = new TH1D("hdata", "", 3, 0, 3);
-    hdata->SetBinContent(1, 10. ); // FIXME: CORRECT VALUE
-    hdata->SetBinContent(2, 8. ); // FIXME: CORRECT VALUE
-    hdata->SetBinContent(3, 7.); // FIXME: CORRECT VALUE
+    hdata->SetBinContent(1, 60.6); // FIXME: CORRECT VALUE
+    hdata->SetBinContent(2, 48.5); // FIXME: CORRECT VALUE
+    hdata->SetBinContent(3, 42.4); // FIXME: CORRECT VALUE
     hdata->Scale(yyLumi);          // this is rather unconventional,
 				   // but could be interesting to see
 				   // how excesses would scale
