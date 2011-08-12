@@ -93,7 +93,12 @@ nofit massNeutralino4  417.037 GeV +-  2.3  GeV
 nofit massChargino1    184.132 GeV +-  0.55 GeV
 nofit massChargino2    418.495 GeV +-  3.0  GeV
 
-
+nofit FineTuningParameter1  10 +- 10
+nofit FineTuningParameter2  10 +- 10
+nofit FineTuningParameter3  10 +- 10
+nofit FineTuningParameter4  10 +- 10
+nofit FineTuningParameter5  10 +- 10
+nofit FineTuningParameter6  10 +- 10
 
 
 BR ( Neutralino2 -> Electron SelectronR  ) alias 1
@@ -164,6 +169,7 @@ SepFitTanbX                    off
 SepFitTanbMu                   off
 SepFitmA                       off
 Calculator                     SOFTSUSY ./softpoint.x
+DecayCalculator								 NONE
 HiggsCalculator                FEYNHIGGS ./FeynHiggs
 RelicDensityCalculator         MICROMEGAS ./micromegas
 FlavourCalculator              SUPERISO ./slha.x
@@ -183,10 +189,10 @@ ErrDef                         1.0
 NumberPulls                    1
 GetContours                    off
 
-UseHiggsBounds                 on
+UseHiggsBounds                 off
 RequireNeut1LSP                on
 
-UseAstroFit                on
+UseAstroFit                off
 AstroCalculator            ./AstroFitXn
 UseAFrelic                 off
 UseAFphoton                on
