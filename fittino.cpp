@@ -13238,10 +13238,11 @@ void Fittino::markovChain ()
 		     variance[iVar] = fabs( sum2[iVar] - sum[iVar]*sum[iVar] );
 		     
 		     // Adapt the width to the variance, rescaled by an arbitrary factor
-		     if( !firstData  ) vm[iVar] = sqrt( variance[iVar] ) / yyUpdateWidthsScale;
-		     
-		     // For the first chain, as the widths are small, don't reduce the variance
-		     if( firstData )  vm[iVar] = sqrt( variance[iVar] );
+		     vm[iVar] = sqrt( variance[iVar] ) / yyUpdateWidthsScale;
+//		     if( !firstData  ) vm[iVar] = sqrt( variance[iVar] ) / yyUpdateWidthsScale;
+//		     
+//		     // For the first chain, as the widths are small, don't reduce the variance
+//		     if( firstData )  vm[iVar] = sqrt( variance[iVar] );
 		     _widthNtuple[iVar+1] = vm[iVar];
 		   }
 		 widthNtuple->Fill( _widthNtuple );
