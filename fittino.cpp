@@ -5524,11 +5524,21 @@ int callMicrOmegas (double* x)
 
       argv[1] = new char[1024];
       strcpy(argv[1], cwd);
-      strcat(argv[1], "/SPheno.spc.stdslha");
+      if( yyCalculator == SOFTSUSY ) {
+				strcat(argv[1], "/susyhit_slha.out.stdslha" );
+			}
+			else {
+				strcat(argv[1], "/SPheno.spc.stdslha");
+			}
 
       argv[2] = new char[1024];
       strcpy(argv[2], cwd);
-      strcat(argv[2], "/SPheno.spc");
+      if( yyCalculator == SOFTSUSY ) {
+				strcat(argv[2], "/susyhit_slha.out");
+			}
+			else {
+				strcat(argv[2], "/SPheno.spc");
+			}
 
       argv[3] = 0;
 
@@ -6126,8 +6136,14 @@ int callFeynHiggs()
       child_pid = getpid();
       char *argv[3];
       argv[0] = "FeynHiggs";
-      argv[1] = "SPheno.spc.stdslha";
-      argv[2] = 0;
+      if( yyCalculator == SOFTSUSY ) {
+				system( "cp susyhit_slha.out susyhit_slha.out.stdslha");
+				argv[1] = "susyhit_slha.out.stdslha";
+			}
+			else {
+				argv[1] = "SPheno.spc.stdslha";
+      }
+			argv[2] = 0;
 
       // prevent FeynHiggs from calling pager
       char *locenviron[2];
@@ -6223,8 +6239,13 @@ int callSuperIso()
       child_pid = getpid();
       char *argv[3];
       argv[0] = "slha.x";
-      argv[1] = "SPheno.spc";
-      argv[2] = 0;
+      if( yyCalculator == SOFTSUSY ) {
+				argv[1] = "susyhit_slha.out";
+			}
+			else {
+				argv[1] = "SPheno.spc";
+      }
+			argv[2] = 0;
 
       // printf("Process %d has forked a child process with pid %d\n", parent_pid, child_pid  );
       if (!yyFlavourCalculatorPath.compare("")) {
