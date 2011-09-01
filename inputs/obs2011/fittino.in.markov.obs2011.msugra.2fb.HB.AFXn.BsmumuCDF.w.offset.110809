@@ -53,10 +53,10 @@ fixParameter SignMu        1
 # fitParameter TanBeta     201.08760           +-  0.6    
 # fixParameter QEWSB        1000.       GeV # +-  1   GeV  
 
-fitParameter M0           1906.     GeV +- 4.56432  GeV
-fitParameter M12           906.     GeV +- 13.6428  GeV
-fitParameter A0          -501.27020 GeV +- 20.3575  GeV
-fitParameter TanBeta      54.781196     +- 0.303222 
+fitParameter M0         2476.0510   GeV +- 4.56432 GeV
+fitParameter M12        134.66848   GeV +- 13.6428 GeV
+fitParameter A0         -893.0744   GeV +- 20.3575 GeV
+fitParameter TanBeta    38.250198       +- 0.30322 
 
 fixParameter QEWSB        1000.       GeV # +-  1   GeV  
 
