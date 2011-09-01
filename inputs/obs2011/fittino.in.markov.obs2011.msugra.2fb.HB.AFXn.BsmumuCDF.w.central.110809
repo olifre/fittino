@@ -11,7 +11,7 @@ LEObs ( Bsg_npf        )      3.55E-4  +-  0.24E-4  +-  0.09E-4       alias 1
 LEObs ( dm_s_npf       )      17.78  +-  0.12  +- 5.2                 alias  2 
 LEObs ( Btn_npf        )      1.67E-4  +-  0.39E-4                    alias  4
 LEObs ( gmin2m_npf     )     28.7E-10 +- 8.0E-10  +- 2.0E-10           alias  7 
-LEObs ( omega      )    0.113  +- 0.003  +-  0.012                       alias 20 
+LEObs ( omega      )    0.1123  +- 0.0035  +-  0.012                       alias 20 
 LEObs ( Massh0_npf     ) >  114.4                         +- 3.0      alias 19 
 LEObs ( MassW_npf      )     80.399   +- 0.023        +-  0.010       alias  8
 LEObs ( sin_th_eff_npf )      0.23113  +- 0.00021                     alias  9 
