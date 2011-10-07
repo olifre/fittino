@@ -8,6 +8,7 @@
 //Successive further mouse clicks determine the edges of the polygon.
 //For the last edge double click, then the polygon will automatically be closed.
 //Use this function to save the cut you have just drawn in a root file, e.g.: CreateCutObject("AllObs2010Cuts.root", "M0Cut")
+//or simply CreateCutObject("AllObs2010Cuts.root"). In the later case the macro will try to determine a meaningfull name for the cut by itself
 //Go on with the next variable: markovChain->Draw("chi2:P_M12", "chi2<35")...
 
 
