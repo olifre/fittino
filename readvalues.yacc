@@ -4582,7 +4582,8 @@ if (yyVerbose){
 			    yyMassW_npf=tmpParams[i][1];
 			 }
 			 else if ((unsigned int)tmpParams[i][0]==8) {
-			    yyBsg_npf=tmpParams[i][1];
+			   //use superiso instead
+			   //			    yyBsg_npf=tmpParams[i][1];
 			 }
 			 else if ((unsigned int)tmpParams[i][0]==10) {
 			    yysin_th_eff_npf=tmpParams[i][1];
@@ -4598,8 +4599,7 @@ if (yyVerbose){
                   else if (!strcmp($2, "SuperIso")) {
                       for (unsigned int i=0; i<tmpParams.size(); i++) {
 			 if ((unsigned int)tmpParams[i][0]==1) {
-			   // Use FH instead for now
-			   //  yyBsg_npf=tmpParams[i][1];
+			     yyBsg_npf=tmpParams[i][1];
 			 }
 			 else if ((unsigned int)tmpParams[i][0]==2) {
 			   //Bs -> mumu
