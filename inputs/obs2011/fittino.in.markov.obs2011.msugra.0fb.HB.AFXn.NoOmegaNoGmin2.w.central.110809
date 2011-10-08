@@ -7,7 +7,7 @@
 ### References and comments are given in
 ## https://wiki.terascale.de/index.php/SUSY/BSM_Parameter_Fitting
 
-LEObs ( Bsg_npf        )      3.55E-4  +-  0.24E-4  +-  0.09E-4       alias 1 
+LEObs ( Bsg_npf        )      3.55E-4  +-  0.24E-4  +-  0.09E-4 +- 0.23E-4       alias 1 
 LEObs ( dm_s_npf       )      17.78  +-  0.12  +- 5.2                 alias  2 
 LEObs ( Btn_npf        )      1.67E-4  +-  0.39E-4                    alias  4
 nofitLEObs ( gmin2m_npf     )     28.7E-10 +- 8.0E-10  +- 2.0E-10           alias  7 
