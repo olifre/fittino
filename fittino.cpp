@@ -4642,6 +4642,12 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        string command = yyAfterBurnerDirectory + "/removeSPhenoBlocks.sh SPheno.spc";
        system(command.c_str());
      }
+
+     if (yyLEOCalculator==NPFITTER){
+       string command = yyAfterBurnerDirectory + "/removeSPhenoBlocks.sh SPheno.spc";
+       system(command.c_str());
+       system ("cp SPheno.spc.stdslha SPheno.spc.stdslha.mastercode");
+     }
    }
    else if (yyCalculator == SOFTSUSY) {
      if( yyFitModel != AMSB && yyFitModel != GMSB && yyFitModel != mSUGRA ) {
@@ -4757,6 +4763,10 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	}
 	return;
       }
+
+     // append PREDICT block to SPheno.spc file
+     string command = yyAfterBurnerDirectory + "/parseMastercode.sh";
+     system(command.c_str());
    }
 
    if (yyRelicDensityCalculator == MICROMEGAS) {
@@ -5623,7 +5633,7 @@ int callNPFitter() {
       char *argv[3];
       argv[0] = "NPFitter";
       if( yyCalculator == SPHENO ) {
-				argv[1] = "SPheno.spc";
+				argv[1] = "SPheno.spc.stdslha.mastercode";
       }
 			else if( yyCalculator == SOFTSUSY ) {
 				argv[1] = "susyhit_slha.out";
@@ -5634,8 +5644,8 @@ int callNPFitter() {
 				std::cout << "not tested: using suspect with mastercode!" << std::endl;
 			}
 			argv[2] = 0;
-      if (fopen("SPheno.spc.last", "r") == NULL) {
-	 cout << "File SPheno.spc.last cannot be found" << endl;
+      if (fopen("SPheno.spc.stdslha.mastercode", "r") == NULL) {
+	 cout << "File SPheno.spc.stdslha.mastercode cannot be found" << endl;
       }
       // cout << "Process " << parent_pid << " has forked a child process with pid " << child_pid << endl;
       if (!yyLEOCalculatorPath.compare("")) {
