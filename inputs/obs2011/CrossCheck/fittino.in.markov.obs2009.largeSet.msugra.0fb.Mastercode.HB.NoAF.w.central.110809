@@ -203,7 +203,7 @@ ErrDef                         1.0
 NumberPulls                    1
 GetContours                    off
 
-UseHiggsBounds                 on
+UseHiggsBounds                 off
 RequireNeut1LSP                on
 
 UseAstroFit                off
