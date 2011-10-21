@@ -31,9 +31,9 @@ BOL_particle_property_set::BOL_particle_property_set( int constructing_PDG_code,
   // as opposed to guessing whether it should be really stable,
   // or if its decay width was never given.
 
-  this->direct_decays = new BOL_particle_decay_set_handler::BOL_particle_decay_set_handler;
+  this->direct_decays = new BOL_particle_decay_set_handler;
 
-  this->cascade_decays = new BOL_particle_decay_set_handler::BOL_particle_decay_set_handler;
+  this->cascade_decays = new BOL_particle_decay_set_handler;
 
 }
 

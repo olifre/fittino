@@ -4837,10 +4837,9 @@ namespace LHC_FASER
 
 
   visible_tau_decay_product::visible_tau_decay_product(
-            lepton_energy_distribution::lepton_energy_distribution const* const
-                                                              tau_distribution,
-        tau_decay_coefficient::tau_decay_coefficient const* const tau_decay ) :
-    lepton_energy_distribution::lepton_energy_distribution(
+            lepton_energy_distribution const* const tau_distribution,
+            tau_decay_coefficient const* const tau_decay ) :
+            lepton_energy_distribution(
                                          tau_distribution->get_spectrum_data(),
                                             tau_distribution->get_first_mass(),
                                            tau_distribution->get_second_mass(),

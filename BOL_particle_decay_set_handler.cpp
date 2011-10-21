@@ -5,15 +5,15 @@ BOL_particle_decay_set_handler* BOL_particle_decay_set_handler::become_copy_of(B
 // this copies a BOL_particle_decay_set_handler instance.
 {
 
-  BOL_particle_decay::BOL_particle_decay* pointer_to_decay_to_be_added;
+  BOL_particle_decay* pointer_to_decay_to_be_added;
 
-  for( std::list< BOL_particle_decay::BOL_particle_decay* >::iterator decay_copying_iterator =
+  for( std::list< BOL_particle_decay* >::iterator decay_copying_iterator =
 	 decay_handler_to_copy->get_decay_set()->begin();
        decay_copying_iterator != decay_handler_to_copy->get_decay_set()->end();
        decay_copying_iterator++ )
     {
 
-      pointer_to_decay_to_be_added = new BOL_particle_decay::BOL_particle_decay( *decay_copying_iterator );
+      pointer_to_decay_to_be_added = new BOL_particle_decay( *decay_copying_iterator );
 
       this->decay_set->push_back( pointer_to_decay_to_be_added );
 
@@ -29,7 +29,7 @@ std::list< BOL_particle_decay* >* BOL_particle_decay_set_handler::copy_decay_set
 // this copies a BOL_particle_decay_set_handler instance.
 {
   
-  BOL_particle_decay::BOL_particle_decay* pointer_to_decay_to_be_added;
+  BOL_particle_decay* pointer_to_decay_to_be_added;
 
   for( std::list< BOL_particle_decay* >::iterator decay_copying_iterator = decay_sets_to_copy->begin();
        decay_copying_iterator != decay_sets_to_copy->end();
@@ -205,7 +205,7 @@ int BOL_particle_decay_set_handler::merge_identical_decays()
 
       // go through each decay after (backwards, so actaully before) the one that will be kept.
       // this would be a for loop, except we have to initialize an iterator & advance it once before starting the loop.
-      std::list< BOL_particle_decay::BOL_particle_decay* >::iterator checked_decay_iterator = kept_decay_iterator;
+      std::list< BOL_particle_decay* >::iterator checked_decay_iterator = kept_decay_iterator;
       if( checked_decay_iterator != this->decay_set->end() )  // if there are still decays to check...
 	{
 

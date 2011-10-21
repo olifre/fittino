@@ -218,7 +218,7 @@ BOL_particle_property_set* BOL_EW_scale_spectrum::record_PDG_coded_mass( int inp
 
     }
 
-  BOL_particle_property_set::BOL_particle_property_set* sought_property_set = this->get_particle_property_set( input_PDG_code );
+  BOL_particle_property_set* sought_property_set = this->get_particle_property_set( input_PDG_code );
 
   if( sought_property_set != NULL )  // if there is a particle with this PDG code...
     {
@@ -433,7 +433,7 @@ BOL_particle_property_set* BOL_EW_scale_spectrum::record_PDG_coded_direct_decay(
 }
 
 
-std::string BOL_EW_scale_spectrum::get_decay_as_string( BOL_particle_decay::BOL_particle_decay* decay_to_have_as_string )
+std::string BOL_EW_scale_spectrum::get_decay_as_string( BOL_particle_decay* decay_to_have_as_string )
 // this returns a string that is the decay with names as well as PDG codes.
 {
 
@@ -500,8 +500,8 @@ int BOL_EW_scale_spectrum::find_all_cascade_decays( double minimum_branching_rat
        cascader_counter-- )  // for each particle in the spectrum...
     {
 
-      BOL_particle_property_set::BOL_particle_property_set* current_cascader = this->particle_property_sets->at( cascader_counter );
-      BOL_particle_property_set::BOL_particle_property_set* current_decay_product;
+      BOL_particle_property_set* current_cascader = this->particle_property_sets->at( cascader_counter );
+      BOL_particle_property_set* current_decay_product;
 
       bool cascader_finished = false;  // start by assuming that there are still unstable particles left in the cascade decay.
       //  int amount_of_cascades_from_here;
@@ -518,7 +518,7 @@ int BOL_EW_scale_spectrum::find_all_cascade_decays( double minimum_branching_rat
 	    {
 
 	      // go through each (presumed unfinished) cascade decay for this particle.
-	      std::list< BOL_particle_decay::BOL_particle_decay* >::iterator current_cascade_iterator =
+	      std::list< BOL_particle_decay* >::iterator current_cascade_iterator =
 		current_cascader->get_cascade_decays()->begin();
 	      while( current_cascade_iterator != current_cascader->get_cascade_decays()->end() )
 		{
@@ -579,7 +579,7 @@ int BOL_EW_scale_spectrum::find_all_cascade_decays( double minimum_branching_rat
 			      cascader_finished = false;
 			      // note that we are not finished yet since we still have unstable particles to decay.
 
-			      std::list< BOL_particle_decay::BOL_particle_decay* >* decays_to_insert;
+			      std::list< BOL_particle_decay* >* decays_to_insert;
 
 			      if( !(current_decay_product->get_cascade_decays()->empty()) )
 				// if this decay product already has had its cascade decays worked out...
@@ -598,7 +598,7 @@ int BOL_EW_scale_spectrum::find_all_cascade_decays( double minimum_branching_rat
 
 			      // go through each decay.  it's easier to create a full new set of cascades & delete the original than
 			      // to muck about with skipping a decay to keep for modifying the original cascade.
-			      for( std::list< BOL_particle_decay::BOL_particle_decay* >::iterator decay_substitution_iterator =
+			      for( std::list< BOL_particle_decay* >::iterator decay_substitution_iterator =
 				     decays_to_insert->begin();
 				   decay_substitution_iterator != decays_to_insert->end();
 				   decay_substitution_iterator++ )
@@ -612,7 +612,7 @@ int BOL_EW_scale_spectrum::find_all_cascade_decays( double minimum_branching_rat
 				  if( new_branching_ratio >= minimum_branching_ratio_to_keep )
 				    // if the branching ratio for this cascade decay has not gotten too small...
 				    {
-				      BOL_particle_decay::BOL_particle_decay* cascade_duplicate =
+				      BOL_particle_decay* cascade_duplicate =
 					current_cascader->add_cascade_decay( *current_cascade_iterator );
 				      cascade_duplicate->set_branching_ratio( new_branching_ratio );
 

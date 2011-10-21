@@ -202,13 +202,13 @@ class BOL_particle_property_set
     };
 
 
-  inline BOL_particle_decay* add_direct_decay( BOL_particle_decay::BOL_particle_decay* decay_to_be_copied )
+  inline BOL_particle_decay* add_direct_decay( BOL_particle_decay* decay_to_be_copied )
     {
       return (this->direct_decays->add_decay( decay_to_be_copied ));
     };
 
 
-  inline BOL_particle_decay* add_cascade_decay( BOL_particle_decay::BOL_particle_decay* decay_to_be_copied )
+  inline BOL_particle_decay* add_cascade_decay( BOL_particle_decay* decay_to_be_copied )
     {
       return (this->cascade_decays->add_decay( decay_to_be_copied ));
     };

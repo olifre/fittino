@@ -33,9 +33,9 @@ class BOL_particle_decay_set_handler  // an instance of this class holds a list 
     {
 
       BOL_particle_decay* pointer_to_decay_to_be_added
-	= new BOL_particle_decay::BOL_particle_decay( product_PDG_code_one,
-						      product_PDG_code_two,
-						      input_branching_ratio );
+	= new BOL_particle_decay( product_PDG_code_one,
+				  product_PDG_code_two,
+				  input_branching_ratio );
 
       this->decay_set->push_back( pointer_to_decay_to_be_added );
 
@@ -53,10 +53,10 @@ class BOL_particle_decay_set_handler  // an instance of this class holds a list 
     {
 
       BOL_particle_decay* pointer_to_decay_to_be_added =
-	new BOL_particle_decay::BOL_particle_decay( product_PDG_code_one,
-						    product_PDG_code_two,
-						    product_PDG_code_three,
-						    input_branching_ratio );
+	new BOL_particle_decay( product_PDG_code_one,
+				product_PDG_code_two,
+				product_PDG_code_three,
+				input_branching_ratio );
 
       this->decay_set->push_back( pointer_to_decay_to_be_added );
 
@@ -70,8 +70,8 @@ class BOL_particle_decay_set_handler  // an instance of this class holds a list 
     // instances of this BOL_particle_property_set.  N.B.: this does not check that the decay does not already exist for this particle!
     {
 
-      BOL_particle_decay::BOL_particle_decay* pointer_to_decay_to_be_added =
-	new BOL_particle_decay::BOL_particle_decay( decay_to_be_copied );
+      BOL_particle_decay* pointer_to_decay_to_be_added =
+	new BOL_particle_decay( decay_to_be_copied );
       
       this->decay_set->push_back( pointer_to_decay_to_be_added );
 

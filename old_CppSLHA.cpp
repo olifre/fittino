@@ -165,7 +165,7 @@ old_CppSLHA::old_CppSLHA( std::string given_SLHA_file_name )  // the constructor
     // & also allocates the memory for the particle spectrum.
     // then it actually opens the file, reads in the data it finds, & closes the file again.
     this->SLHA_file_name = given_SLHA_file_name;
-    this->particle_spectrum = new BOL_EW_scale_MSSM_spectrum::BOL_EW_scale_MSSM_spectrum();
+    this->particle_spectrum = new BOL_EW_scale_MSSM_spectrum();
     this->allocated_spectrum_memory = true;  // note that this instance allocated memory, so needs to deallocate it with its destructor.
 
 
@@ -175,7 +175,7 @@ old_CppSLHA::old_CppSLHA( std::string given_SLHA_file_name )  // the constructor
 
   }
 
-old_CppSLHA::old_CppSLHA( std::string given_SLHA_file_name, BOL_EW_scale_spectrum::BOL_EW_scale_spectrum* given_spectrum )
+old_CppSLHA::old_CppSLHA( std::string given_SLHA_file_name, BOL_EW_scale_spectrum* given_spectrum )
   // this constructor requires a file to open, & this one takes a pre-existing BOL_EW_scale_spectrum,
   // which is how one can implement the NMSSM or similar.
   {
@@ -216,12 +216,12 @@ old_CppSLHA::old_CppSLHA( std::string given_SLHA_file_name, BOL_EW_scale_spectru
 
   }
 
-old_CppSLHA::old_CppSLHA( old_CppSLHA::old_CppSLHA* copy_source )
+old_CppSLHA::old_CppSLHA( old_CppSLHA* copy_source )
   // this constructor copies another instance.
   {
 
     this->SLHA_file_name = copy_source->get_SLHA_file_name();
-    this->particle_spectrum = new BOL_EW_scale_spectrum::BOL_EW_scale_spectrum( copy_source->get_particle_spectrum() );
+    this->particle_spectrum = new BOL_EW_scale_spectrum( copy_source->get_particle_spectrum() );
     this->allocated_spectrum_memory = true;  // note that this instance DID allocate memory,
                                              // so SHOULD deallocate it with its destructor.
 
@@ -483,7 +483,7 @@ bool old_CppSLHA::reset()
 
     }
 
-  this->particle_spectrum = new BOL_EW_scale_MSSM_spectrum::BOL_EW_scale_MSSM_spectrum();
+  this->particle_spectrum = new BOL_EW_scale_MSSM_spectrum();
 
   return return_bool;
 
@@ -1086,7 +1086,7 @@ std::string old_CppSLHA::get_MASS_as_string()
   return_string_builder << "BLOCK MASS   # " << std::endl;
 
   int number_of_property_sets_to_write = this->particle_spectrum->get_particle_property_sets()->size();
-  BOL_particle_property_set::BOL_particle_property_set* set_being_written; 
+  BOL_particle_property_set* set_being_written; 
 
   for( int particle_counter = 0; particle_counter < number_of_property_sets_to_write; particle_counter++ )
     // for each stored particle property set...
@@ -3147,7 +3147,7 @@ std::string old_CppSLHA::get_DECAY_as_string()
     << "# ID3 = PDG particle ID of 3rd decay product" << std::endl;
 
   int number_of_property_sets_to_write = this->particle_spectrum->get_particle_property_sets()->size();
-  BOL_particle_property_set::BOL_particle_property_set* set_being_written; 
+  BOL_particle_property_set* set_being_written; 
 
   for( int particle_counter = 0; particle_counter < number_of_property_sets_to_write; particle_counter++ )
     // for each stored particle property set...
@@ -3164,7 +3164,7 @@ std::string old_CppSLHA::get_DECAY_as_string()
 	<< "#   BR               NDA         ID1       ID2       ID3" << std::endl;
       //  xxx+1.23456789E+123   12   123456789 123456789 123456789  #
 
-      for( std::list< BOL_particle_decay::BOL_particle_decay* >::iterator direct_decay_iterator =
+      for( std::list< BOL_particle_decay* >::iterator direct_decay_iterator =
 	     set_being_written->get_direct_decays()->begin();
 	   direct_decay_iterator != set_being_written->get_direct_decays()->end();
 	   direct_decay_iterator++ )  // for each decay channel of this particle...
@@ -3837,7 +3837,7 @@ int old_CppSLHA::write_particle_spectrum( double minimum_branching_ratio_to_keep
 
   *output_file << "# this is a file with the data from a CppSLHA instance #" << std::endl;
 
-  BOL_particle_property_set::BOL_particle_property_set* set_being_written; 
+  BOL_particle_property_set* set_being_written; 
 
   // int PDG_code_being_written;
 
@@ -3905,7 +3905,7 @@ int old_CppSLHA::write_particle_spectrum( double minimum_branching_ratio_to_keep
 
       *output_file << std::endl << " direct decays (" << set_being_written->get_direct_decays()->size() << "):" << std::endl;
 
-      for( std::list< BOL_particle_decay::BOL_particle_decay* >::iterator direct_decay_iterator =
+      for( std::list< BOL_particle_decay* >::iterator direct_decay_iterator =
 	     set_being_written->get_direct_decays()->begin();
 	   direct_decay_iterator != set_being_written->get_direct_decays()->end();
 	   direct_decay_iterator++ )
@@ -3930,7 +3930,7 @@ int old_CppSLHA::write_particle_spectrum( double minimum_branching_ratio_to_keep
 
       *output_file << std::endl << " cascade decays (" << set_being_written->get_cascade_decays()->size() << "):" << std::endl;
 
-      for( std::list< BOL_particle_decay::BOL_particle_decay* >::iterator cascade_decay_iterator =
+      for( std::list< BOL_particle_decay* >::iterator cascade_decay_iterator =
 	     set_being_written->get_cascade_decays()->begin();
 	   cascade_decay_iterator != set_being_written->get_cascade_decays()->end();
 	   cascade_decay_iterator++ )

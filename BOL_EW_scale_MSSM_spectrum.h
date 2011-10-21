@@ -13,7 +13,7 @@ class BOL_EW_scale_MSSM_spectrum : public BOL_EW_scale_SM_spectrum
 
   BOL_EW_scale_MSSM_spectrum();  // constructor: this constructs a BOL_EW_scale_SM_spectrum & then adds the extra particles.
 
-  BOL_particle_property_set* get_lighter_particle(BOL_particle_property_set::BOL_particle_property_set* compared_particle,
+  BOL_particle_property_set* get_lighter_particle(BOL_particle_property_set* compared_particle,
 						  int comparison_PDG_code )
     // this compares the masses of 2 particles & returns a pointer to the lighter particle's property set.
     ;

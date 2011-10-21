@@ -1157,7 +1157,7 @@ int sRates::information_available_ossf(){
 sRates::sRates(std::string unit, bool nlo_in )  
 //Initialization list
   : gg_grid( new Xgrid() ) , sg_grid(new Xgrid()) , ss_grid(new Xgrid()) , sd_grid(new Xgrid()) , stop_grid(new Xgrid()) , 
-    spectrum(new BOL_EW_scale_MSSM_spectrum::BOL_EW_scale_MSSM_spectrum())
+    spectrum(new BOL_EW_scale_MSSM_spectrum())
 	
 {
   if (unit == "pb") { 
@@ -1202,7 +1202,7 @@ sRates::sRates(std::string unit, bool nlo_in )
 sRates::sRates( std::string SLHA_filename , std::string unit, bool nlo_in) 
 //Initialization list
   : gg_grid( new Xgrid() ) , sg_grid(new Xgrid()) , ss_grid(new Xgrid()) , sd_grid(new Xgrid()), stop_grid(new Xgrid()) 
-  , spectrum(new BOL_EW_scale_MSSM_spectrum::BOL_EW_scale_MSSM_spectrum())
+  , spectrum(new BOL_EW_scale_MSSM_spectrum())
 	
 {
 
@@ -1248,7 +1248,7 @@ sRates::sRates( std::string SLHA_filename , std::string unit, bool nlo_in)
 //Copy Constructor
 sRates::sRates(const sRates&)
   : gg_grid( new Xgrid() ) , sg_grid(new Xgrid()) , ss_grid(new Xgrid()) , sd_grid(new Xgrid()), stop_grid(new Xgrid()) , 
-    spectrum(new BOL_EW_scale_MSSM_spectrum::BOL_EW_scale_MSSM_spectrum())
+    spectrum(new BOL_EW_scale_MSSM_spectrum())
 {
 		
   spectrum_loaded = 0;
@@ -1435,7 +1435,7 @@ int sRates::readSLHA(std::string SLHA_file_name){
 		
   // 		BOL_SLHA_reader::BOL_SLHA_reader *reader = new BOL_SLHA_reader( this->spectrum );  // create a BOL_SLHA_reader instance to read in the SLHA file.
 		
-  old_CppSLHA::old_CppSLHA* reader = new old_CppSLHA::old_CppSLHA( SLHA_file_name, spectrum );
+  old_CppSLHA* reader = new old_CppSLHA( SLHA_file_name, spectrum );
 				
   // 		if (reader->read_file( SLHA_file_name ) != 0 ){
   if (reader->read_file( SLHA_file_name ) != 0 ){	
