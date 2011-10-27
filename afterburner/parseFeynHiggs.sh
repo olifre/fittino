@@ -29,3 +29,6 @@ echo "   10    $SW2effMSSM # SW2effMSSM" >> SPheno.spc
 echo "   11    $SW2effSM # SW2effSM" >> SPheno.spc
 echo "   12    $DeltaMsMSSM # DeltaMsMSSM" >> SPheno.spc
 echo "   13    $DeltaMsSM # DeltaMsSM" >> SPheno.spc
+
+mv ./SPheno.spc.stdslha.fh-001.last ./SPheno.spc.stdslha.fh-001.last2
+mv ./SPheno.spc.stdslha.fh-001 ./SPheno.spc.stdslha.fh-001.last

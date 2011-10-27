@@ -29,3 +29,6 @@ echo "   10    $SW2effMSSM # SW2effMSSM" >> susyhit_slha.out
 echo "   11    $SW2effSM # SW2effSM" >> susyhit_slha.out
 echo "   12    $DeltaMsMSSM # DeltaMsMSSM" >> susyhit_slha.out
 echo "   13    $DeltaMsSM # DeltaMsSM" >> susyhit_slha.out
+
+mv susyhit_slha.out.stdslha.fh-001.last susyhit_slha.out.stdslha.fh-001.last2
+mv susyhit_slha.out.stdslha.fh-001 susyhit_slha.out.stdslha.fh-001.last
