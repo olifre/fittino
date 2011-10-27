@@ -16,3 +16,7 @@ echo "    4    $Dstaunu # BR(D_s->tau nu)" >> susyhit_slha.out
 echo "    5    $Dsmunu # BR(D_s->mu nu)" >> susyhit_slha.out
 echo "    6    $BpD0taunu # BR(B+->D0 tau nu)" >> susyhit_slha.out
 echo "    7    $KmunuPimunu # BR(K->mu nu)/BR(pi->mu nu)" >> susyhit_slha.out
+
+mv output.flha.last output.flha.last2
+mv output.flha output.flha.last
+
