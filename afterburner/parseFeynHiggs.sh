@@ -1,6 +1,14 @@
 #!/bin/bash
 echo "parsing ./SPheno.spc.stdslha.fh-001"
+ls -lrt SPheno.spc.*
 ls -l ./SPheno.spc.stdslha.fh-001
+# if [ -e ./SPheno.spc.stdslha.fh-001 ]
+# then
+#     echo file there!
+# else
+#     echo file not there!
+#     cp SPheno.spc.stdslha SPheno.spc.stdslha.fh-001
+# fi
 massh=`grep '# Mh0' ./SPheno.spc.stdslha.fh-001 | awk '{print $2}'`
 massH=`grep '# MHH' ./SPheno.spc.stdslha.fh-001 | awk '{print $2}'`
 massA=`grep '# MA0' ./SPheno.spc.stdslha.fh-001 | grep -v 'MA02' | awk '{print $2}'`

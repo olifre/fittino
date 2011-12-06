@@ -5150,26 +5150,49 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
    if (yyUseXsecLimits) {
      double M0;
-     if (FindInFixed("M0")) {
-       M0 = ReturnFixedValue("M0")->value;
-     }
-     else if (FindInFitted("M0")) {
-       M0 = x[ReturnFittedPosition("M0")];
-     }
-     else if (FindInRandomPar("M0")) {
-       M0 = x[ReturnRandomPosition("M0")];
+     if (yyFitModel == NONUNIVSIMPLIFIED) {
+       if (FindInFixed("M05")) {
+	 M0 = ReturnFixedValue("M05")->value;
+       }
+       else if (FindInFitted("M05")) {
+	 M0 = x[ReturnFittedPosition("M05")];
+       }
+       else if (FindInRandomPar("M05")) {
+	 M0 = x[ReturnRandomPosition("M05")];
+       }
+     } else {
+       if (FindInFixed("M0")) {
+	 M0 = ReturnFixedValue("M0")->value;
+       }
+       else if (FindInFitted("M0")) {
+	 M0 = x[ReturnFittedPosition("M0")];
+       }
+       else if (FindInRandomPar("M0")) {
+	 M0 = x[ReturnRandomPosition("M0")];
+       }
      }
      double M12;
-     if (FindInFixed("M12")) {
-       M12 = ReturnFixedValue("M12")->value;
+     if (yyFitModel == NONUNIVSIMPLIFIED) {
+       if (FindInFixed("M1")) {
+	 M12 = ReturnFixedValue("M1")->value;
+       }
+       else if (FindInFitted("M1")) {
+	 M12 = x[ReturnFittedPosition("M1")];
+       }
+       else if (FindInRandomPar("M1")) {
+	 M12 = x[ReturnRandomPosition("M1")];
+       }
+     } else {
+       if (FindInFixed("M12")) {
+	 M12 = ReturnFixedValue("M12")->value;
+       }
+       else if (FindInFitted("M12")) {
+	 M12 = x[ReturnFittedPosition("M12")];
+       }
+       else if (FindInRandomPar("M12")) {
+	 M12 = x[ReturnRandomPosition("M12")];
+       }
      }
-     else if (FindInFitted("M12")) {
-       M12 = x[ReturnFittedPosition("M12")];
-     }
-     else if (FindInRandomPar("M12")) {
-       M12 = x[ReturnRandomPosition("M12")];
-     }
-
      const int binmax = 3;
      TH1D* hsig = new TH1D("hsig", "", binmax, 0, 3);
      bool interpolationOK = true;
@@ -6162,10 +6185,14 @@ int callFeynHiggs()
 
       // printf("Process %d has forked a child process with pid %d\n", parent_pid, child_pid  );
       if (!yyHiggsCalculatorPath.compare("")) {
+	cout << "calling FeynHiggs 1" << endl;
 	 return_value = execve("./FeynHiggs", argv, locenviron );
+	cout << "returning from FeynHiggs 1" << endl;
       }
       else {
+	cout << "calling FeynHiggs 2" << endl;
 	 return_value = execve(yyHiggsCalculatorPath.c_str(), argv, locenviron );
+	cout << "returning from FeynHiggs 2" << endl;
       }
       //    for ( unsigned int i = 0; i < 5; i++ ) {
       //      sleep (1);
@@ -6173,6 +6200,7 @@ int callFeynHiggs()
       //    }
       //    return_value = 250;
       //    sleep (15);
+      //system("ls -lrt");
       exit (return_value);
    }
    else {
