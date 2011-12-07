@@ -57,7 +57,6 @@ fitParameter M0H         11000.     GeV +- 400.56432  GeV
 fitParameter M05           800.     GeV +- 30.56432  GeV
 #fitParameter M010          900.     GeV +- 30.56432  GeV
 
-
 universality M1 M2 M3
 universality M1 M12
 universality M05 M010
@@ -206,8 +205,8 @@ MaxMarkovChain                 10000
 # Uncomment to use adaptive widths in Markov chain
 # See  ../fittino.in.OnlineMarkovChainOptimisation
 UpdateWidths                    on
-UpdateWidthsScale               2
-MarkovInterfaceFilePath        /afs/naf.desy.de/user/b/bechtle/programs/start_fittino/interfaceFiles/markov.obs2011.nonunivverysimplified.5fb.NoHB.AFXn.H126.n.central.110809.if
+UpdateWidthsScale               0.5
+MarkovInterfaceFilePath        /afs/naf.desy.de/user/b/bechtle/programs/start_fittino/interfaceFiles/markov.obs2011.nonunivverysimplified.5fb.NoHB.AFXn.H126.w.central.110809.if
 
 MinuitStrategy                 2
 MachinePrecision               1e-8

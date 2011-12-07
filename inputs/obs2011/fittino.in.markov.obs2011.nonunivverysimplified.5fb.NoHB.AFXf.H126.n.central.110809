@@ -192,7 +192,7 @@ UseHiggsBounds                 off
 RequireNeut1LSP                on
 
 UseAstroFit                on
-AstroCalculator            ./AstroFitXn
+AstroCalculator            ./AstroFitXf
 UseAFrelic                 off
 UseAFphoton                on
 UseAFsvind                 off
@@ -207,7 +207,7 @@ MaxMarkovChain                 10000
 # See  ../fittino.in.OnlineMarkovChainOptimisation
 UpdateWidths                    on
 UpdateWidthsScale               2
-MarkovInterfaceFilePath        /afs/naf.desy.de/user/b/bechtle/programs/start_fittino/interfaceFiles/markov.obs2011.nonunivverysimplified.5fb.NoHB.AFXn.H126.n.central.110809.if
+MarkovInterfaceFilePath        /afs/naf.desy.de/user/b/bechtle/programs/start_fittino/interfaceFiles/markov.obs2011.nonunivverysimplified.5fb.NoHB.AFXf.H126.n.central.110809.if
 
 MinuitStrategy                 2
 MachinePrecision               1e-8

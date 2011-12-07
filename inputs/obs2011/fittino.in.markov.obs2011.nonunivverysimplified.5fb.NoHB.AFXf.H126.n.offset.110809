@@ -48,15 +48,14 @@ fixParameter SignMu        1
 
 # 10.686706 * 458.79147 * 152.05116 * 6238.6743 * 805.63220
 
-fitParameter TanBeta      10.781196     +- 0.503222 
-fitParameter A0           200.27020 GeV +- 50.3575  GeV
+fitParameter TanBeta      13.781196     +- 0.503222 
+fitParameter A0           400.27020 GeV +- 50.3575  GeV
 fitParameter M1             250.     GeV +- 30.428  GeV
 # fitParameter M2             250.     GeV +- 30.428  GeV
 # fitParameter M3             250.     GeV +- 60.428  GeV
-fitParameter M0H         11000.     GeV +- 400.56432  GeV
+fitParameter M0H         9000.     GeV +- 400.56432  GeV
 fitParameter M05           800.     GeV +- 30.56432  GeV
 #fitParameter M010          900.     GeV +- 30.56432  GeV
-
 
 universality M1 M2 M3
 universality M1 M12
@@ -192,7 +191,7 @@ UseHiggsBounds                 off
 RequireNeut1LSP                on
 
 UseAstroFit                on
-AstroCalculator            ./AstroFitXn
+AstroCalculator            ./AstroFitXf
 UseAFrelic                 off
 UseAFphoton                on
 UseAFsvind                 off
@@ -206,8 +205,8 @@ MaxMarkovChain                 10000
 # Uncomment to use adaptive widths in Markov chain
 # See  ../fittino.in.OnlineMarkovChainOptimisation
 UpdateWidths                    on
-UpdateWidthsScale               2
-MarkovInterfaceFilePath        /afs/naf.desy.de/user/b/bechtle/programs/start_fittino/interfaceFiles/markov.obs2011.nonunivverysimplified.5fb.NoHB.AFXn.H126.n.central.110809.if
+UpdateWidthsScale               2.
+MarkovInterfaceFilePath        /afs/naf.desy.de/user/b/bechtle/programs/start_fittino/interfaceFiles/markov.obs2011.nonunivverysimplified.5fb.NoHB.AFXf.H126.n.offset.110809.if
 
 MinuitStrategy                 2
 MachinePrecision               1e-8

@@ -12,7 +12,7 @@ LEObs ( dm_s_npf       )      17.78  +-  0.12  +- 5.2                 alias  2
 LEObs ( Btn_npf        )      1.67E-4  +-  0.39E-4                    alias  4
 LEObs ( gmin2m_npf     )     28.7E-10 +- 8.0E-10  +- 2.0E-10           alias  7 
 LEObs ( omega      )    0.1123  +- 0.0035  +-  0.0123                       alias 20 
-LEObs ( Massh0_npf     )     126.0 +- 2.0                         +- 3.0      alias 19 
+LEObs ( Massh0_npf     )     126.0 +- 2.0                        +- 3.0      alias 19 
 LEObs ( MassW_npf      )     80.399   +- 0.023        +-  0.010                alias  8
 LEObs ( sin_th_eff_npf )      0.23113  +- 0.00021                      alias  9 
 LEObs ( B_smm_npf      ) <    1.6E-8                      +- 0.02E-8  alias  3 # LHCb http://indico.in2p3.fr/getFile.py/access?contribId=1029&sessionId=2&resId=0&materialId=slides&confId=5116
@@ -41,27 +41,23 @@ fixParameter G_F         1.16637E-5
 fixParameter alphas      0.1176       GeV
 fixParameter massZ       91.1876      GeV
 fixParameter massBottom  4.19         GeV
-fixParameter massTop     173.2        GeV
 fixParameter massTau     1.77682      GeV
 fixParameter massCharm   1.27         GeV 
 fixParameter SignMu        1
 
-# 10.686706 * 458.79147 * 152.05116 * 6238.6743 * 805.63220
+# fitParameter M0          1274.0870       GeV +-  9.5  GeV 
+# fitParameter M12         99.980529        GeV +-  6.0   GeV
+# fitParameter A0          35.007404       GeV +-  22.0   GeV 
+# fitParameter TanBeta     201.08760           +-  0.6    
+# fixParameter QEWSB        1000.       GeV # +-  1   GeV  
 
-fitParameter TanBeta      10.781196     +- 0.503222 
-fitParameter A0           200.27020 GeV +- 50.3575  GeV
-fitParameter M1             250.     GeV +- 30.428  GeV
-# fitParameter M2             250.     GeV +- 30.428  GeV
-# fitParameter M3             250.     GeV +- 60.428  GeV
-fitParameter M0H         11000.     GeV +- 400.56432  GeV
-fitParameter M05           800.     GeV +- 30.56432  GeV
-#fitParameter M010          900.     GeV +- 30.56432  GeV
+fitParameter M0         2476.0510   GeV +- 4.56432 GeV
+fitParameter M12        134.66848   GeV +- 13.6428 GeV
+fitParameter A0         -893.0744   GeV +- 20.3575 GeV
+fitParameter TanBeta    38.250198       +- 0.30322 
+fitParameter massTop     173.2        GeV +- 1.34 GeV
 
-
-universality M1 M2 M3
-universality M1 M12
-universality M05 M010
-universality M05 M0
+fixParameter QEWSB        1000.       GeV # +-  1   GeV  
 
 ### Unfitted SUSY masses and BR
 
@@ -155,7 +151,7 @@ BR ( Sbottom1    -> Neutralino2 Bottom   ) alias  8
 ### Switches                                                                 ###
 ################################################################################
 
-fitModel                       NONUNIVSIMPLIFIED
+fitModel                       mSUGRA
 
 LoopCorrections                on
 ISR                            on
@@ -192,7 +188,7 @@ UseHiggsBounds                 off
 RequireNeut1LSP                on
 
 UseAstroFit                on
-AstroCalculator            ./AstroFitXn
+AstroCalculator            ./AstroFitXf
 UseAFrelic                 off
 UseAFphoton                on
 UseAFsvind                 off
@@ -207,7 +203,7 @@ MaxMarkovChain                 10000
 # See  ../fittino.in.OnlineMarkovChainOptimisation
 UpdateWidths                    on
 UpdateWidthsScale               2
-MarkovInterfaceFilePath        /afs/naf.desy.de/user/b/bechtle/programs/start_fittino/interfaceFiles/markov.obs2011.nonunivverysimplified.5fb.NoHB.AFXn.H126.n.central.110809.if
+MarkovInterfaceFilePath        /afs/naf.desy.de/user/b/bechtle/programs/start_fittino/interfaceFiles/markov.obs2011.msugratop.5fb.NoHB.AFXf.H126.n.offset.110809.if
 
 MinuitStrategy                 2
 MachinePrecision               1e-8
