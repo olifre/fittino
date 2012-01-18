@@ -6176,22 +6176,24 @@ int callFeynHiggs()
 			else {
 				argv[1] = "SPheno.spc.stdslha";
       }
-			argv[2] = 0;
+      argv[2] = 0;
 
       // prevent FeynHiggs from calling pager
       char *locenviron[2];
-      locenviron[0]="PAGER=''";
-      locenviron[1]=(char *)0;
 
+      if (yyVerbose) locenviron[0]="PAGER=cat";
+      else locenviron[0]="PAGER=''";
+      locenviron[1]=(char *)0;
+      
       // printf("Process %d has forked a child process with pid %d\n", parent_pid, child_pid  );
       if (!yyHiggsCalculatorPath.compare("")) {
 	cout << "calling FeynHiggs 1" << endl;
-	 return_value = execve("./FeynHiggs", argv, locenviron );
+	return_value = execve("./FeynHiggs", argv, locenviron );
 	cout << "returning from FeynHiggs 1" << endl;
       }
       else {
 	cout << "calling FeynHiggs 2" << endl;
-	 return_value = execve(yyHiggsCalculatorPath.c_str(), argv, locenviron );
+	return_value = execve(yyHiggsCalculatorPath.c_str(), argv, locenviron );
 	cout << "returning from FeynHiggs 2" << endl;
       }
       //    for ( unsigned int i = 0; i < 5; i++ ) {
