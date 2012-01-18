@@ -5101,7 +5101,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 		 if ( (yyUseHiggsBounds == 1) && 
 		      (yyMeasuredVec[i].name == "Massh0_npf" ||
 		       yyMeasuredVec[i].name == "massh0") ) {
-		   cout << i << " using lower bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_low << " > " << yyMeasuredVec[i].theovalue << " chi2 contribution " << higgsChisqContribution <<  endl;
+		   cout << i << " using lower bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_low << " > " << yyMeasuredVec[i].theovalue << " Sqrt (chi2 contribution) " << TMath::Sqrt(higgsChisqContribution) <<  endl;
 		 }
 		 else {
 		   
@@ -5109,17 +5109,21 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 		   if ( yyMeasuredVec[i].theovalue<yyMeasuredVec[i].bound_low ) {
 		     
        	             f += sqr( ( yyMeasuredVec[i].theovalue-yyMeasuredVec[i].value )/yyMeasuredVec[i].error );
-       	             cout << i << " using lower bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_low << " > " <<
-		       yyMeasuredVec[i].theovalue << endl;
+       	             cout << i << " using lower bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_low << " > " << yyMeasuredVec[i].theovalue << endl;
 		     
 		   }
+
 		   else if ( yyMeasuredVec[i].theovalue>yyMeasuredVec[i].bound_up ) {
-		     
-       	             f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].value)/(yyMeasuredVec[i].error));
-       	             cout << i << " using upper bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_up << " < " <<
-		       yyMeasuredVec[i].theovalue << endl;
-		     
+		     f += sqr((yyMeasuredVec[i].theovalue-yyMeasuredVec[i].value)/(yyMeasuredVec[i].error));
+       	             cout << i << " using upper bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_up << " < " <<  yyMeasuredVec[i].theovalue << endl;
 		   }
+
+		   else if (yyVerbose ) {
+		     cout<< i << " NOT using lower bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_low << " < " << yyMeasuredVec[i].theovalue << endl;
+		     cout << i << " NOT using upper bound on " << yyMeasuredVec[i].name << " at " << yyMeasuredVec[i].bound_up << " > " <<  yyMeasuredVec[i].theovalue << endl;
+		   }
+
+		 
 		 }
 		 
 		 nbound++;
@@ -5439,6 +5443,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        std::cout << " excluded at 95 % CL" << std::endl;
        
        std::cout << "chi2 contribution from LHC cross-section = " << global_LHC_chi2 << std::endl;
+       std::cout << "Sqrt(chi2) contribution from LHC cross-section = " << TMath::Sqrt(global_LHC_chi2) << std::endl;
        std::cout << "**********************************************************" << endl;
        std::cout << "**********************************************************" << endl;
      }
@@ -5751,39 +5756,39 @@ double readAstroFit()
   af_chi2_total=0;
 
   if (yyUseAFrelic){
-    if (yyVerbose) cout<<"using obs af_relic ("<<af_chi2_relic<<") at theovalue="<<af_relic<<endl;
-    af_chi2_total+=af_chi2_relic;
     if (af_chi2_relic<0 || af_relic<0){
       cout<<"FATAL ERROR IN AF/DARKSUSY. EXIT!"<<endl;
       exit(2);
     }
+    if (yyVerbose) cout<<"using obs af_relic ("<<TMath::Sqrt(af_chi2_relic)<<") at theovalue="<<af_relic<<endl;
+    af_chi2_total+=af_chi2_relic;
   }
 
   if (yyUseAFphoton){
-    if (yyVerbose) cout<<"using obs af_photon ("<<af_chi2_photon<<") at theovalue="<<af_photon<<endl;
-    af_chi2_total+=af_chi2_photon;    
     if (af_chi2_photon<0 || af_photon<0){
       cout<<"FATAL ERROR IN AF/DARKSUSY. EXIT!"<<endl;
       exit(2);
     }
+    if (yyVerbose) cout<<"using obs af_photon ("<<TMath::Sqrt(af_chi2_photon)<<") at theovalue="<<af_photon<<endl;
+    af_chi2_total+=af_chi2_photon;    
   }
 
   if (yyUseAFsvind){
-    if (yyVerbose) cout<<"using obs af_svind ("<<af_chi2_svind<<") at theovalue="<<af_svind<<endl;
-    af_chi2_total+=af_chi2_svind;    
     if (af_chi2_svind<0 || af_svind<0){
       cout<<"FATAL ERROR IN AF/DARKSUSY. EXIT!"<<endl;
       exit(2);
     }
+    if (yyVerbose) cout<<"using obs af_svind ("<<TMath::Sqrt(af_chi2_svind)<<") at theovalue="<<af_svind<<endl;
+    af_chi2_total+=af_chi2_svind;    
   }
 
   if (yyUseAFdirect){
-    if (yyVerbose) cout<<"using obs af_direct ("<<af_chi2_direct<<") at theovalue="<<af_direct<<endl;
-    af_chi2_total+=af_chi2_direct; 
     if (af_chi2_direct<0 || af_direct<0){
       cout<<"FATAL ERROR IN AF/DARKSUSY. EXIT!"<<endl;
       exit(2);
     }
+    if (yyVerbose) cout<<"using obs af_direct ("<<TMath::Sqrt(af_chi2_direct)<<") at theovalue="<<af_direct<<endl;
+    af_chi2_total+=af_chi2_direct; 
   }
 
   system("mv afout.last.txt  afout.last2.txt");
