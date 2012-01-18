@@ -34,7 +34,7 @@ using namespace std;
 
 // void PlotMarkovChains2D (bool bayes = true, int maxevents = -1);
 
-void MakeMarkovChainContour2D (bool bayes = false, 
+void MakeMarkovChainContours2D (bool bayes = false, 
 			       int maxevents = -1,
 			       string contourOutputFileName = "markovContours.root",
 			       bool doAlsoSM = true,
