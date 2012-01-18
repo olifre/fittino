@@ -5724,15 +5724,18 @@ double readAstroFit()
   strcpy(argv[0], yyAstroCalculatorPath.c_str());
   return_value = system(argv[0]);
   ifstream file_to_read;
-  TString filename = "afout.txt";
+  file_to_read.open("afout.txt");
 
-  file_to_read.open(filename);
+  if (!file_to_read.is_open()) {
+    cerr << "error opening afout.txt" << endl;
+    exit(EXIT_FAILURE);
+  }
+
+
   string line;
   
   while (  getline(file_to_read, line)){
     vector<string> words= split(line, ' ');
-
-    //   if (words[0]=="chi2_total") af_chi2_total=atof(words[1].c_str());
 
     if (words[0]=="chi2_relic") af_chi2_relic=atof(words[1].c_str());
     if (words[0]=="chi2_photon")af_chi2_photon=atof(words[1].c_str());
@@ -5746,11 +5749,45 @@ double readAstroFit()
   }
     
   af_chi2_total=0;
-  if (yyUseAFrelic) af_chi2_total+=af_chi2_relic;
-  if (yyUseAFphoton) af_chi2_total+=af_chi2_photon;    
-  if (yyUseAFsvind) af_chi2_total+=af_chi2_svind;    
-  if (yyUseAFdirect) af_chi2_total+=af_chi2_direct;    
 
+  if (yyUseAFrelic){
+    if (yyVerbose) cout<<"using obs af_relic ("<<af_chi2_relic<<") at theovalue="<<af_relic<<endl;
+    af_chi2_total+=af_chi2_relic;
+    if (af_chi2_relic<0 || af_relic<0){
+      cout<<"FATAL ERROR IN AF/DARKSUSY. EXIT!"<<endl;
+      exit(2);
+    }
+  }
+
+  if (yyUseAFphoton){
+    if (yyVerbose) cout<<"using obs af_photon ("<<af_chi2_photon<<") at theovalue="<<af_photon<<endl;
+    af_chi2_total+=af_chi2_photon;    
+    if (af_chi2_photon<0 || af_photon<0){
+      cout<<"FATAL ERROR IN AF/DARKSUSY. EXIT!"<<endl;
+      exit(2);
+    }
+  }
+
+  if (yyUseAFsvind){
+    if (yyVerbose) cout<<"using obs af_svind ("<<af_chi2_svind<<") at theovalue="<<af_svind<<endl;
+    af_chi2_total+=af_chi2_svind;    
+    if (af_chi2_svind<0 || af_svind<0){
+      cout<<"FATAL ERROR IN AF/DARKSUSY. EXIT!"<<endl;
+      exit(2);
+    }
+  }
+
+  if (yyUseAFdirect){
+    if (yyVerbose) cout<<"using obs af_direct ("<<af_chi2_direct<<") at theovalue="<<af_direct<<endl;
+    af_chi2_total+=af_chi2_direct; 
+    if (af_chi2_direct<0 || af_direct<0){
+      cout<<"FATAL ERROR IN AF/DARKSUSY. EXIT!"<<endl;
+      exit(2);
+    }
+  }
+
+  system("mv afout.last.txt  afout.last2.txt");
+  system("mv afout.txt  afout.last.txt");
   return af_chi2_total;
 
 }
