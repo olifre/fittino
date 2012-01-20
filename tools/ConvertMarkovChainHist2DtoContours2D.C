@@ -164,16 +164,16 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
 	crossLine2->Write();
 	crossLine2->Delete();
       }
-      string histname = "logHist_" + variables[sVariable] + "_" + variables[fVariable];
-      TH2D* loghist = (TH2D*)histInputFile->Get(histname.c_str());
-      if (!loghist) {
+      string histname = "thisHist_" + variables[sVariable] + "_" + variables[fVariable];
+      TH2D* thishist = (TH2D*)histInputFile->Get(histname.c_str());
+      if (!thishist) {
 	cout << "WARNING: histogram " << histname << " not found" << endl;
       } else {
 	cout << "histogram " << histname << " found" << endl;
 
 	// get the correlations
 	// first, invert the histogram
-	TH2D* inverthist = (TH2D*)loghist->Clone();
+	TH2D* inverthist = (TH2D*)thishist->Clone();
 	double inverthistMax = -11111111111.;
 	double inverthistMin =  11111111111.;
 	for (int invHistBinsX = 1; invHistBinsX<=inverthist->GetXaxis()->GetNbins(); invHistBinsX++) {
@@ -188,7 +188,7 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
 	  }
 	}
 	inverthistMax=6.;
-	cout << "loghist min " << inverthistMin << " max " << inverthistMax << endl;
+	cout << "thishist min " << inverthistMin << " max " << inverthistMax << endl;
 	for (int invHistBinsX = 1; invHistBinsX<=inverthist->GetXaxis()->GetNbins(); invHistBinsX++) {
 	  for (int invHistBinsY = 1; invHistBinsY<=inverthist->GetYaxis()->GetNbins(); invHistBinsY++) {
 	    if (inverthist->GetBinContent(invHistBinsX,invHistBinsY)>inverthistMax) {
@@ -212,11 +212,11 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
 
 	// draw the histogram
 	cout << "finished setting the axis, now drawing the contour list" << endl;
-	loghist->Draw("CONTLIST");
+	thishist->Draw("CONTLIST");
 	cout << "update the canvas to get the lists written" << endl;
 	canvas->Update();
 	cout << "Draw all the lists again to see them" << endl;
-	loghist->Draw("cont1");
+	thishist->Draw("cont1");
 //	// draw a cross at the global minimum
 //	cout << "global minimum at " << fBestFit << " " << sBestFit << endl;
 //	//	  TLine* line1 = new TLine(sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
@@ -250,8 +250,8 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
 //	lineGraph2->Draw();
 	// draw a hatched contour line at min+1
 	//double levels = 1.;
-	//loghist->SetContour(1,&levels);
-	//loghist->Draw("CONTLIST");
+	//thishist->SetContour(1,&levels);
+	//thishist->Draw("CONTLIST");
 
 	double emptyHistXMin =  100000000.;
 	double emptyHistYMin =  100000000.;
@@ -384,17 +384,17 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
 
 	// create empty histogram
 	string emptyHistName = "emptyHist_" + variables[sVariable] + "_" + variables[fVariable];
-	TH2D *emptyhist = new TH2D(emptyHistName.c_str(), emptyHistName.c_str(), loghist->GetNbinsX(),
+	TH2D *emptyhist = new TH2D(emptyHistName.c_str(), emptyHistName.c_str(), thishist->GetNbinsX(),
 				   emptyHistXMin,
 				   emptyHistXMax,
-				   loghist->GetNbinsY(),
+				   thishist->GetNbinsY(),
 				   emptyHistYMin,
 				   emptyHistYMax);
 	emptyhist->SetStats(kFALSE);
 	emptyhist->GetXaxis()->CenterTitle(1);
 	emptyhist->GetYaxis()->CenterTitle(1);
-	emptyhist->GetXaxis()->SetTitle(loghist->GetXaxis()->GetTitle());
-	emptyhist->GetYaxis()->SetTitle(loghist->GetYaxis()->GetTitle());
+	emptyhist->GetXaxis()->SetTitle(thishist->GetXaxis()->GetTitle());
+	emptyhist->GetYaxis()->SetTitle(thishist->GetYaxis()->GetTitle());
 
 
 
@@ -407,7 +407,7 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
 	//   "TestMarkov.eps";
 	//canvas->Print(fileName.c_str());	  
 	canvas->SetLogz(0);
-	loghist->Delete();
+	thishist->Delete();
 	emptyhist->Write();
 	emptyhist->Delete();
       }

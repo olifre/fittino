@@ -36,12 +36,11 @@ using namespace std;
 
 void MakeMarkovChainContours2D (bool bayes = false, 
 			       int maxevents = -1,
-			       string contourOutputFileName = "markovContours.root",
-			       bool doAlsoSM = true,
+			       string contourOutputFileName = "markovHists.root",
+			       bool doAlsoSM = false,
 			       string model = "mSUGRA",
-			       bool makeOnly2DHistograms = true,
 			       bool requireNeut1LSP = true,
-			       int fixComb = 0 ) 
+			       int fixComb = 3 ) 
 {
 
   //gROOT->SetStyle("MyStyle");
@@ -165,7 +164,6 @@ void MakeMarkovChainContours2D (bool bayes = false,
   float haveAcceptedAtLeastOne;
   float nStep;
   float globalIter;
-  float likelihood;
   float chi2;
 
   vector<bool> varThere;
@@ -204,7 +202,6 @@ void MakeMarkovChainContours2D (bool bayes = false,
     markovChain.SetBranchAddress("haveAcceptedAtLeastOne",&haveAcceptedAtLeastOne);
     markovChain.SetBranchAddress("n",&nStep);
     markovChain.SetBranchAddress("globalIter",&globalIter);
-    markovChain.SetBranchAddress("likelihood",&likelihood);
     markovChain.SetBranchAddress("chi2",&chi2);
   }
 
@@ -221,7 +218,7 @@ void MakeMarkovChainContours2D (bool bayes = false,
   }
 
 
-  double absHighestL = 0.;
+  double minChi2 = 1e33;
   if (!bayes) {
     for (Int_t i=0; i<nEntries; i++) {
       markovChain.GetEntry(i);
@@ -241,13 +238,15 @@ void MakeMarkovChainContours2D (bool bayes = false,
 	}
 	if (thisMassStau1<thisMassNeut1) continue;
       }
-      if (likelihood > absHighestL) {
+      if (chi2 < minChi2) {
 	if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {		
-	  absHighestL = likelihood;
+	  minChi2 = chi2;
 	}
       }
     }
   }
+
+  std::cout << "Minimal chi2 = " << minChi2 << std::endl;
 
   // open output file for the contours
   TFile* contourOutputFile = new TFile (contourOutputFileName.c_str(), "RECREATE");
@@ -322,8 +321,7 @@ void MakeMarkovChainContours2D (bool bayes = false,
 		}
 		if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {		
 
-		  double val = 2 * TMath::Log(absHighestL)
-		    - 2 * TMath::Log(likelihood);
+		  double val = chi2 - minChi2;
 
 		  if (varValues[fVariable]>fVarMax && val<6.01) {
 		    fVarMax = varValues[fVariable];
@@ -338,10 +336,6 @@ void MakeMarkovChainContours2D (bool bayes = false,
 		    sVarMin = varValues[sVariable];
 		  }
 		  
-		  //		  cout << "minimal chi2 = " << - 2 * TMath::Log(absHighestL) 
-		  //		       << " this chi2 = " << - 2 * TMath::Log(likelihood)
-		  //		       << " val = " << val 
-		  //		       << endl;
 		  if (val<1.) {
 		    //		    cout << "found point within 1s at " << val << endl;
 		    if (val<valMin) {
@@ -534,7 +528,7 @@ void MakeMarkovChainContours2D (bool bayes = false,
 		   << " + "
 		   << f1sigmaUpperBound - fBestFit
 		   << " at min chi2 = " 
-		   << - 2 * TMath::Log(absHighestL)
+		   << minChi2
 		   << endl;
 	      cout << "One Dimensional 1 sigma environment of " << variables[sVariable] 
 		   << " = "
@@ -544,7 +538,7 @@ void MakeMarkovChainContours2D (bool bayes = false,
 		   << " + "
 		   << s1sigmaUpperBound - sBestFit
 		   << " at min chi2 = " 
-		   << - 2 * TMath::Log(absHighestL)
+		   << minChi2
 		   << endl;
 	      markovFitsFile << "One Dimensional 1 sigma environment of " << variables[fVariable] 
 			     << " = "
@@ -554,7 +548,7 @@ void MakeMarkovChainContours2D (bool bayes = false,
 			     << " + "
 			     << f1sigmaUpperBound - fBestFit
 			     << " at min chi2 = " 
-			     << - 2 * TMath::Log(absHighestL)
+			     << minChi2
 			     << endl;
 	      markovFitsFile << "One Dimensional 1 sigma environment of " << variables[sVariable] 
 			     << " = "
@@ -564,7 +558,7 @@ void MakeMarkovChainContours2D (bool bayes = false,
 			     << " + "
 			     << s1sigmaUpperBound - sBestFit
 			     << " at min chi2 = " 
-			     << - 2 * TMath::Log(absHighestL)
+			     << minChi2
 			     << endl;
 	      
 	      cout << "One Dimensional 1 sigma environment from 2Dres of " << variables[fVariable] 
@@ -575,7 +569,7 @@ void MakeMarkovChainContours2D (bool bayes = false,
 		   << " + "
 		   << (f2sigmaUpperBound - fBestFit)/2.
 		   << " at min chi2 = " 
-		   << - 2 * TMath::Log(absHighestL)
+		   << minChi2
 		   << endl;
 	      cout << "One Dimensional 1 sigma environment from 2Dres of " << variables[sVariable] 
 		   << " = "
@@ -585,7 +579,7 @@ void MakeMarkovChainContours2D (bool bayes = false,
 		   << " + "
 		   << (s2sigmaUpperBound - sBestFit)/2.
 		   << " at min chi2 = " 
-		   << - 2 * TMath::Log(absHighestL)
+		   << minChi2
 		   << endl;
 	      markovFitsFile << "One Dimensional 1 sigma environment from 2Dres of " << variables[fVariable] 
 			     << " = "
@@ -595,7 +589,7 @@ void MakeMarkovChainContours2D (bool bayes = false,
 			     << " + "
 			     << (f2sigmaUpperBound - fBestFit)/2.
 			     << " at min chi2 = " 
-			     << - 2 * TMath::Log(absHighestL)
+			     << minChi2
 			     << endl;
 	      markovFitsFile << "One Dimensional 1 sigma environment from 2Dres of " << variables[sVariable] 
 			     << " = "
@@ -605,7 +599,7 @@ void MakeMarkovChainContours2D (bool bayes = false,
 			     << " + "
 			     << (s2sigmaUpperBound - sBestFit)/2.
 			     << " at min chi2 = " 
-			     << - 2 * TMath::Log(absHighestL)
+			     << minChi2
 			     << endl;
 	      
 	  
@@ -647,19 +641,23 @@ void MakeMarkovChainContours2D (bool bayes = false,
 		   << fVarMax << " " << fVarMin << " " << sVarMax << " " << sVarMin << endl;
 
 	      // loop over bins in the variables
-	      sVarMin = sVarMin-3./(double)(nBins-6)*(-sVarMin+sVarMax);
-	      sVarMax = sVarMax+3./(double)(nBins-6)*(-sVarMin+sVarMax);
-	      fVarMin = fVarMin-3./(double)(nBins-6)*(-fVarMin+fVarMax);
-	      fVarMax = fVarMax+3./(double)(nBins-6)*(-fVarMin+fVarMax);
+	      double sWidth = (-sVarMin+sVarMax);
+	      double fWidth = (-fVarMin+fVarMax);
+	      sVarMin = sVarMin-3./(double)(nBins-6)*sWidth;
+	      sVarMax = sVarMax+3./(double)(nBins-6)*sWidth;
+	      fVarMin = fVarMin-3./(double)(nBins-6)*fWidth;
+	      fVarMax = fVarMax+3./(double)(nBins-6)*fWidth;
 
-	      thisHist = new TH2D("thisHist","",
+	      string thisHistName = "thisHist_";
+	      thisHistName = thisHistName + variables[sVariable] + "_" + variables[fVariable];
+	      thisHist = new TH2D(thisHistName.c_str(),"",
 				  nBins,sVarMin,sVarMax,
 				  nBins,fVarMin,fVarMax);
 
-	      // Value of likelihood stored in a matrix for each 2D bin
-	      Float_t L[nBins][nBins];
+	      // Value of chi2 stored in a matrix for each 2D bin
+	      Float_t chi2Array[nBins][nBins];
 	      for (int fbin = 0; fbin < nBins; fbin++)
-		for (int sbin = 0; sbin < nBins; sbin++) L[sbin][fbin] = -10000;
+		for (int sbin = 0; sbin < nBins; sbin++) chi2Array[sbin][fbin] = 1e33;
 
 	      // Loop on events
 	      for (int i = 0; i < nEntries; i++) {
@@ -686,25 +684,29 @@ void MakeMarkovChainContours2D (bool bayes = false,
 		
 
 		// Loop on bins
-		for (int fbin = 0; fbin < nBins; fbin++)
+		for (int fbin = 1; fbin <= nBins; fbin++)
 		  {
 		    // Upper and lower bounds of the bin
-		    double fVarValueLow = (double)fbin/(double)nBins*(-fVarMin+fVarMax)+fVarMin;
-		    double fVarValueHig = (double)(fbin+1)/(double)nBins*(-fVarMin+fVarMax)+fVarMin;
+		    //		    double fVarValueLow = (double)fbin/(double)nBins*(-fVarMin+fVarMax)+fVarMin;
+		    //		    double fVarValueHig = (double)(fbin+1)/(double)nBins*(-fVarMin+fVarMax)+fVarMin;
+		    double fVarValueLow = thisHist->GetYaxis()->GetBinLowEdge(fbin);
+		    double fVarValueHig = thisHist->GetYaxis()->GetBinUpEdge(fbin);
 
-		    for (int sbin = 0; sbin < nBins; sbin++) 
+		    for (int sbin = 1; sbin <= nBins; sbin++) 
 		      {
 			// Upper and lower bounds of the bin
-			double sVarValueLow = (double)sbin/(double)nBins*(-sVarMin+sVarMax)+sVarMin;
-			double sVarValueHig = (double)(sbin+1)/(double)nBins*(-sVarMin+sVarMax)+sVarMin;
+			//			double sVarValueLow = (double)sbin/(double)nBins*(-sVarMin+sVarMax)+sVarMin;
+			//			double sVarValueHig = (double)(sbin+1)/(double)nBins*(-sVarMin+sVarMax)+sVarMin;
+			double sVarValueLow = thisHist->GetXaxis()->GetBinLowEdge(sbin);
+			double sVarValueHig = thisHist->GetXaxis()->GetBinUpEdge(sbin);
 
 			// If the event falls in the bin
 			if( fVarValueLow < varValues[fVariable] && varValues[fVariable] <= fVarValueHig &&
 			    sVarValueLow < varValues[sVariable] && varValues[sVariable] <= sVarValueHig &&
 			    nStep > 0 && haveAcceptedAtLeastOne > 0.5)
 			  {
-			    // If likelihood larger than best likelihood in that bin, update L[][]
-			    if( likelihood > L[sbin][fbin] ) L[sbin][fbin] = likelihood;
+			    // If chi2 smaller than smallest chi2 in that bin, update chi2Array[][]
+			    if( chi2 < chi2Array[sbin-1][fbin-1] && chi2 - minChi2 < 6.01 ) chi2Array[sbin-1][fbin-1] = chi2;
 			  }
 		      }
 		  }
@@ -713,24 +715,17 @@ void MakeMarkovChainContours2D (bool bayes = false,
 	      // Fill the histo with the matrix (+1 as bin Nb starts at 1)
 	      for (int fbin = 0; fbin < nBins; fbin++){
 		for (int sbin = 0; sbin < nBins; sbin++){
-		  if( L[sbin][fbin] > -10000 ) thisHist->SetBinContent( sbin+1, fbin+1,  L[sbin][fbin] );
+		  if( chi2Array[sbin][fbin] < 1e32 ) thisHist->SetBinContent( sbin+1, fbin+1,  chi2Array[sbin][fbin] - minChi2 );
+		  else thisHist->SetBinContent( sbin+1, fbin+1, 7);
 		}
 	      }
 	      
 	      thisHist->Draw("box");
 	      canvas->Print("test.eps");
 	    }
+
 	  // common plotting for frequentist and bayesian interpretation
-	  
-	  string logHistName = "logHist_";
-	  logHistName = logHistName + variables[sVariable] + "_" + variables[fVariable];
-	  TH2D *loghist = new TH2D(logHistName.c_str(), "", thisHist->GetNbinsX(),
-				   thisHist->GetXaxis()->GetXmin(),
-				   thisHist->GetXaxis()->GetXmax(),
-				   thisHist->GetNbinsY(),
-				   thisHist->GetYaxis()->GetXmin(),
-				   thisHist->GetYaxis()->GetXmax());
-	  
+
 	  string emptyHistName = "emptyHist_";
 	  emptyHistName = emptyHistName + variables[sVariable] + "_" + variables[fVariable];
 	  TH2D *emptyhist = new TH2D(emptyHistName.c_str(), emptyHistName.c_str(), thisHist->GetNbinsX(),
@@ -739,478 +734,320 @@ void MakeMarkovChainContours2D (bool bayes = false,
 				     thisHist->GetNbinsY(),
 				     thisHist->GetYaxis()->GetXmin(),
 				     thisHist->GetYaxis()->GetXmax());
-	  loghist->SetStats(kFALSE);
-	  loghist->GetXaxis()->CenterTitle(1);
-	  loghist->GetYaxis()->CenterTitle(1);
+
 	  emptyhist->SetStats(kFALSE);
-	      emptyhist->GetXaxis()->CenterTitle(1);
-	      emptyhist->GetYaxis()->CenterTitle(1);
-	      //loghist->GetXaxis()->SetRangeUser(-2500,3000);
-	      //loghist->GetXaxis()->SetRangeUser(-1000,2000);
-	      //loghist->GetYaxis()->SetRangeUser(0,50);
-	      double thisHistIntegral = thisHist->GetEntries();
-	      if (bayes) {
-		thisHist->Scale(1./thisHistIntegral);
-	      }
-		  
-	      double minF = 0.;
-	      double minS = 0.;
-	      double minVal = 100000000.;
-
-	      double thisHistMax = thisHist->GetMaximum();
-	      double maxval = -1;
-	      for (Int_t ix=1; ix<=thisHist->GetNbinsX(); ix++) {
-		for (Int_t iy=1; iy<=thisHist->GetNbinsY(); iy++) {
-		  if ( thisHist->GetBinContent(ix, iy)>0. ) {
-		    double val = 2 * TMath::Log(thisHistMax)
-		      - 2 * TMath::Log( thisHist->GetBinContent(ix, iy) );
-
-		    //		if (ix > thisHist->GetNbinsX()*2./3.) { 
-		    //		  cout << "filling logHist at " << ix
-		    //		       << " " << iy
-		    //		       << " " << val << endl;
-		    //		}
-		
-		    if (val > maxval) maxval = val;
-		    if (val < minVal) {
-		      minVal = val;
-		      minF = ((double)ix-0.5)/(double)thisHist->GetNbinsX()*(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())+thisHist->GetXaxis()->GetXmin();
-		      minS = ((double)iy-0.5)/(double)thisHist->GetNbinsY()*(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())+thisHist->GetYaxis()->GetXmin();
-		    }
-		    loghist->SetBinContent(ix, iy, val);
-		  }
-		  else {
-		    loghist->SetBinContent(ix, iy, 1e99);
-		  }
-		}
-	      }
-
-	      cout << "Position of minimum chi2..." << endl;
-	      cout << "From histo scan: x = " << minS << " y = " << minF << " with deltaChi2 = " << minVal << endl;
-	      cout << "From event scan: x = " << fBestFit <<" y = " << sBestFit <<" with chi2 = " << chi2BestFit << endl;
-
+	  emptyhist->GetXaxis()->CenterTitle(1);
+	  emptyhist->GetYaxis()->CenterTitle(1);
+	  double thisHistIntegral = thisHist->GetEntries();
+	  if (bayes) {
+	    thisHist->Scale(1./thisHistIntegral);
+	  }
 	      
-	      if (maxval<6.) {
-		cout << "WARNING: Incomplete chain, 95percent CL in 2D was reached nowhere!" << endl;
-	      }
-	      maxval = 7.;
-	      const int contourLineNo1D1s = 0;
-	      const int contourLineNo2D2s = 5;
-	      loghist->SetMaximum(maxval);
-	      
-	      cout << "starting to draw the plot" << endl;
+	  cout << "starting to draw the plot" << endl;
 
-	      // draw the plot
-	      loghist->SetTitle("");
-	      if (!strcmp(variables[sVariable].c_str(), "P_A0")) {
-		loghist->SetXTitle("A_{0} (GeV)");
-		emptyhist->SetXTitle("A_{0} (GeV)");
-	      }
+	  // draw the plot
+	  thisHist->SetTitle("");
+	  if (!strcmp(variables[sVariable].c_str(), "P_A0")) {
+	    thisHist->SetXTitle("A_{0} (GeV)");
+	    emptyhist->SetXTitle("A_{0} (GeV)");
+	  }
 
-	      else if (!strcmp(variables[sVariable].c_str(), "P_M0H")) {
-		loghist->SetXTitle("M_{0,H} (GeV)");
-                emptyhist->SetXTitle("M_{0,H} (GeV)");
-              }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_M05")) {
-                loghist->SetXTitle("M_{0,5} (GeV)");
-                emptyhist->SetXTitle("M_{0,5} (GeV)");
-              }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_M010")) {
-                loghist->SetXTitle("M_{0,10} (GeV)");
-                emptyhist->SetXTitle("M_{0,10} (GeV)");
-              }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_M0")) {
-		loghist->SetXTitle("M_{0} (GeV)");
-		emptyhist->SetXTitle("M_{0} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_TanBeta")) {
-		loghist->SetXTitle("tan(#beta)");
-		emptyhist->SetXTitle("tan(#beta)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_M12")) {
-		loghist->SetXTitle("M_{1/2} (GeV)");
-		emptyhist->SetXTitle("M_{1/2} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_alphas")) {
-		loghist->SetXTitle("#alpha_{s}");
-		emptyhist->SetXTitle("#alpha_{s}");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_alphaem")) {
-		loghist->SetXTitle("#alpha_{em}");
-		emptyhist->SetXTitle("#alpha_{em}");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_massZ")) {
-		loghist->SetXTitle("m_{Z} (Gev)");
-		emptyhist->SetXTitle("m_{Z} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_massTop")) {
-		loghist->SetXTitle("m_{t} (GeV)");
-		emptyhist->SetXTitle("m_{t} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_G_F")) {
-		loghist->SetXTitle("G_F (Gev^{-2})");
-		emptyhist->SetXTitle("G_F (GeV^{-2})");
-	      }
-	      // MSSM
-	      else if (!strcmp(variables[sVariable].c_str(), "P_Mu")) { 
-		loghist->SetXTitle("#mu (GeV)"); 
-		emptyhist->SetXTitle("#mu (GeV)"); 
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_MuEff")) { 
-		loghist->SetXTitle("#mu_{eff} (GeV)");
-		emptyhist->SetXTitle("#mu_{eff} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_Xtau")) { 
-		loghist->SetXTitle("X_{#tau} (GeV)");
-		emptyhist->SetXTitle("X_{#tau} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_MSelectronR")) { 
-		loghist->SetXTitle("M_{#tilde{e}_{R}} (GeV)");
-		emptyhist->SetXTitle("M_{#tilde{e}_{R}} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_MStauR")) { 
-		loghist->SetXTitle("M_{#tilde{#tau}_{R}} (GeV)");
-		emptyhist->SetXTitle("M_{#tilde{#tau}_{R}} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_MSelectronL")) { 
-		loghist->SetXTitle("M_{#tilde{e}_{L}} (GeV)");
-		emptyhist->SetXTitle("M_{#tilde{e}_{L}} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_MStauL")) { 
-		loghist->SetXTitle("M_{#tilde{#tau}_{L}} (GeV)");
-		emptyhist->SetXTitle("M_{#tilde{#tau}_{L}} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_Xtop")) { 
-		loghist->SetXTitle("X_{t} (GeV)");
-		emptyhist->SetXTitle("X_{t} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_Xbottom")) { 
-		loghist->SetXTitle("X_{b} (GeV)");
-		emptyhist->SetXTitle("X_{b} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_MSdownR")) { 
-		loghist->SetXTitle("M_{#tilde{d}_{R}} (GeV)");
-		emptyhist->SetXTitle("M_{#tilde{d}_{R}} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_MSbottomR")) { 
-		loghist->SetXTitle("M_{#tilde{b}_{R}} (GeV)");
-		emptyhist->SetXTitle("M_{#tilde{b}_{R}} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_MSupR")) { 
-		loghist->SetXTitle("M_{#tilde{u}_{R}} (GeV)");
-		emptyhist->SetXTitle("M_{#tilde{u}_{R}} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_MStopR")) { 
-		loghist->SetXTitle("M_{#tilde{t}_{R}} (GeV)");
-		emptyhist->SetXTitle("M_{#tilde{t}_{R}} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_MSupL")) { 
-		loghist->SetXTitle("M_{#tilde{u}_{L}} (GeV)");
-		emptyhist->SetXTitle("M_{#tilde{u}_{L}} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_MStopL")) { 
-		loghist->SetXTitle("M_{#tilde{t}_{L}} (GeV)");
-		emptyhist->SetXTitle("M_{#tilde{t}_{L}} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_M1")) { 
-		loghist->SetXTitle("M_{1} (GeV)");
-		emptyhist->SetXTitle("M_{1} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_M2")) { 
-		loghist->SetXTitle("M_{2} (GeV)");
-		emptyhist->SetXTitle("M_{2} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_M3")) { 
-		loghist->SetXTitle("M_{3} (GeV)");
-		emptyhist->SetXTitle("M_{3} (GeV)");
-	      }
-	      else if (!strcmp(variables[sVariable].c_str(), "P_massA0")) { 
-		loghist->SetXTitle("m_{A} (GeV)");
-		emptyhist->SetXTitle("m_{A} (GeV)");
-	      }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_M0H")) {
+	    thisHist->SetXTitle("M_{0,H} (GeV)");
+	    emptyhist->SetXTitle("M_{0,H} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_M05")) {
+	    thisHist->SetXTitle("M_{0,5} (GeV)");
+	    emptyhist->SetXTitle("M_{0,5} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_M010")) {
+	    thisHist->SetXTitle("M_{0,10} (GeV)");
+	    emptyhist->SetXTitle("M_{0,10} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_M0")) {
+	    thisHist->SetXTitle("M_{0} (GeV)");
+	    emptyhist->SetXTitle("M_{0} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_TanBeta")) {
+	    thisHist->SetXTitle("tan(#beta)");
+	    emptyhist->SetXTitle("tan(#beta)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_M12")) {
+	    thisHist->SetXTitle("M_{1/2} (GeV)");
+	    emptyhist->SetXTitle("M_{1/2} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_alphas")) {
+	    thisHist->SetXTitle("#alpha_{s}");
+	    emptyhist->SetXTitle("#alpha_{s}");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_alphaem")) {
+	    thisHist->SetXTitle("#alpha_{em}");
+	    emptyhist->SetXTitle("#alpha_{em}");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_massZ")) {
+	    thisHist->SetXTitle("m_{Z} (Gev)");
+	    emptyhist->SetXTitle("m_{Z} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_massTop")) {
+	    thisHist->SetXTitle("m_{t} (GeV)");
+	    emptyhist->SetXTitle("m_{t} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_G_F")) {
+	    thisHist->SetXTitle("G_F (Gev^{-2})");
+	    emptyhist->SetXTitle("G_F (GeV^{-2})");
+	  }
+	  // MSSM
+	  else if (!strcmp(variables[sVariable].c_str(), "P_Mu")) { 
+	    thisHist->SetXTitle("#mu (GeV)"); 
+	    emptyhist->SetXTitle("#mu (GeV)"); 
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MuEff")) { 
+	    thisHist->SetXTitle("#mu_{eff} (GeV)");
+	    emptyhist->SetXTitle("#mu_{eff} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_Xtau")) { 
+	    thisHist->SetXTitle("X_{#tau} (GeV)");
+	    emptyhist->SetXTitle("X_{#tau} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MSelectronR")) { 
+	    thisHist->SetXTitle("M_{#tilde{e}_{R}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{e}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MStauR")) { 
+	    thisHist->SetXTitle("M_{#tilde{#tau}_{R}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{#tau}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MSelectronL")) { 
+	    thisHist->SetXTitle("M_{#tilde{e}_{L}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{e}_{L}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MStauL")) { 
+	    thisHist->SetXTitle("M_{#tilde{#tau}_{L}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{#tau}_{L}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_Xtop")) { 
+	    thisHist->SetXTitle("X_{t} (GeV)");
+	    emptyhist->SetXTitle("X_{t} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_Xbottom")) { 
+	    thisHist->SetXTitle("X_{b} (GeV)");
+	    emptyhist->SetXTitle("X_{b} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MSdownR")) { 
+	    thisHist->SetXTitle("M_{#tilde{d}_{R}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{d}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MSbottomR")) { 
+	    thisHist->SetXTitle("M_{#tilde{b}_{R}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{b}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MSupR")) { 
+	    thisHist->SetXTitle("M_{#tilde{u}_{R}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{u}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MStopR")) { 
+	    thisHist->SetXTitle("M_{#tilde{t}_{R}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{t}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MSupL")) { 
+	    thisHist->SetXTitle("M_{#tilde{u}_{L}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{u}_{L}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_MStopL")) { 
+	    thisHist->SetXTitle("M_{#tilde{t}_{L}} (GeV)");
+	    emptyhist->SetXTitle("M_{#tilde{t}_{L}} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_M1")) { 
+	    thisHist->SetXTitle("M_{1} (GeV)");
+	    emptyhist->SetXTitle("M_{1} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_M2")) { 
+	    thisHist->SetXTitle("M_{2} (GeV)");
+	    emptyhist->SetXTitle("M_{2} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_M3")) { 
+	    thisHist->SetXTitle("M_{3} (GeV)");
+	    emptyhist->SetXTitle("M_{3} (GeV)");
+	  }
+	  else if (!strcmp(variables[sVariable].c_str(), "P_massA0")) { 
+	    thisHist->SetXTitle("m_{A} (GeV)");
+	    emptyhist->SetXTitle("m_{A} (GeV)");
+	  }
 
 
-	      // fVariables
-	      if (!strcmp(variables[fVariable].c_str(), "P_A0")) {
-		loghist->SetYTitle("A_{0} (GeV)");
-		emptyhist->SetYTitle("A_{0} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_M0")) {
-		loghist->SetYTitle("M_{0} (GeV)");
-		emptyhist->SetYTitle("M_{0} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_TanBeta")) {
-		loghist->SetYTitle("tan(#beta)");
-		emptyhist->SetYTitle("tan(#beta)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_M12")) {
-		loghist->SetYTitle("M_{1/2} (GeV)");
-		emptyhist->SetYTitle("M_{1/2} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_alphas")) {
-		loghist->SetYTitle("#alpha_{s}");
-		emptyhist->SetYTitle("#alpha_{s}");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_alphaem")) {
-		loghist->SetYTitle("#alpha_{em}");
-		emptyhist->SetYTitle("#alpha_{em}");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_massZ")) {
-		loghist->SetYTitle("m_{Z} (Gev)");
-		emptyhist->SetYTitle("m_{Z} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_massTop")) {
-		loghist->SetYTitle("m_{t} (GeV)");
-		emptyhist->SetYTitle("m_{t} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_G_F")) {
-		loghist->SetYTitle("G_F (Gev^{-2})");
-		emptyhist->SetYTitle("G_F (GeV^{-2})");
-	      }
-	      // MSSM
-	      else if (!strcmp(variables[fVariable].c_str(), "P_Mu")) { 
-		loghist->SetYTitle("#mu (GeV)"); 
-		emptyhist->SetYTitle("#mu (GeV)"); 
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_MuEff")) { 
-		loghist->SetYTitle("#mu_{eff} (GeV)");
-		emptyhist->SetYTitle("#mu_{eff} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_Xtau")) { 
-		loghist->SetYTitle("X_{#tau} (GeV)");
-		emptyhist->SetYTitle("X_{#tau} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_MSelectronR")) { 
-		loghist->SetYTitle("M_{#tilde{e}_{R}} (GeV)");
-		emptyhist->SetYTitle("M_{#tilde{e}_{R}} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_MStauR")) { 
-		loghist->SetYTitle("M_{#tilde{#tau}_{R}} (GeV)");
-		emptyhist->SetYTitle("M_{#tilde{#tau}_{R}} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_MSelectronL")) { 
-		loghist->SetYTitle("M_{#tilde{e}_{L}} (GeV)");
-		emptyhist->SetYTitle("M_{#tilde{e}_{L}} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_MStauL")) { 
-		loghist->SetYTitle("M_{#tilde{#tau}_{L}} (GeV)");
-		emptyhist->SetYTitle("M_{#tilde{#tau}_{L}} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_Xtop")) { 
-		loghist->SetYTitle("X_{t} (GeV)");
-		emptyhist->SetYTitle("X_{t} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_Xbottom")) { 
-		loghist->SetYTitle("X_{b} (GeV)");
-		emptyhist->SetYTitle("X_{b} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_MSdownR")) { 
-		loghist->SetYTitle("M_{#tilde{d}_{R}} (GeV)");
-		emptyhist->SetYTitle("M_{#tilde{d}_{R}} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_MSbottomR")) { 
-		loghist->SetYTitle("M_{#tilde{b}_{R}} (GeV)");
-		emptyhist->SetYTitle("M_{#tilde{b}_{R}} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_MSupR")) { 
-		loghist->SetYTitle("M_{#tilde{u}_{R}} (GeV)");
-		emptyhist->SetYTitle("M_{#tilde{u}_{R}} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_MStopR")) { 
-		loghist->SetYTitle("M_{#tilde{t}_{R}} (GeV)");
-		emptyhist->SetYTitle("M_{#tilde{t}_{R}} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_MSupL")) { 
-		loghist->SetYTitle("M_{#tilde{u}_{L}} (GeV)");
-		emptyhist->SetYTitle("M_{#tilde{u}_{L}} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_MStopL")) { 
-		loghist->SetYTitle("M_{#tilde{t}_{L}} (GeV)");
-		emptyhist->SetYTitle("M_{#tilde{t}_{L}} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_M1")) { 
-		loghist->SetYTitle("M_{1} (GeV)");
-		emptyhist->SetYTitle("M_{1} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_M2")) { 
-		loghist->SetYTitle("M_{2} (GeV)");
-		emptyhist->SetYTitle("M_{2} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_M3")) { 
-		loghist->SetYTitle("M_{3} (GeV)");
-		emptyhist->SetYTitle("M_{3} (GeV)");
-	      }
-	      else if (!strcmp(variables[fVariable].c_str(), "P_massA0")) { 
-		loghist->SetYTitle("m_{A} (GeV)");
-		emptyhist->SetYTitle("m_{A} (GeV)");
-	      }
+	  // fVariables
+	  if (!strcmp(variables[fVariable].c_str(), "P_A0")) {
+	    thisHist->SetYTitle("A_{0} (GeV)");
+	    emptyhist->SetYTitle("A_{0} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_M0")) {
+	    thisHist->SetYTitle("M_{0} (GeV)");
+	    emptyhist->SetYTitle("M_{0} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_TanBeta")) {
+	    thisHist->SetYTitle("tan(#beta)");
+	    emptyhist->SetYTitle("tan(#beta)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_M12")) {
+	    thisHist->SetYTitle("M_{1/2} (GeV)");
+	    emptyhist->SetYTitle("M_{1/2} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_alphas")) {
+	    thisHist->SetYTitle("#alpha_{s}");
+	    emptyhist->SetYTitle("#alpha_{s}");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_alphaem")) {
+	    thisHist->SetYTitle("#alpha_{em}");
+	    emptyhist->SetYTitle("#alpha_{em}");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_massZ")) {
+	    thisHist->SetYTitle("m_{Z} (Gev)");
+	    emptyhist->SetYTitle("m_{Z} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_massTop")) {
+	    thisHist->SetYTitle("m_{t} (GeV)");
+	    emptyhist->SetYTitle("m_{t} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_G_F")) {
+	    thisHist->SetYTitle("G_F (Gev^{-2})");
+	    emptyhist->SetYTitle("G_F (GeV^{-2})");
+	  }
+	  // MSSM
+	  else if (!strcmp(variables[fVariable].c_str(), "P_Mu")) { 
+	    thisHist->SetYTitle("#mu (GeV)"); 
+	    emptyhist->SetYTitle("#mu (GeV)"); 
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MuEff")) { 
+	    thisHist->SetYTitle("#mu_{eff} (GeV)");
+	    emptyhist->SetYTitle("#mu_{eff} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_Xtau")) { 
+	    thisHist->SetYTitle("X_{#tau} (GeV)");
+	    emptyhist->SetYTitle("X_{#tau} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MSelectronR")) { 
+	    thisHist->SetYTitle("M_{#tilde{e}_{R}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{e}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MStauR")) { 
+	    thisHist->SetYTitle("M_{#tilde{#tau}_{R}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{#tau}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MSelectronL")) { 
+	    thisHist->SetYTitle("M_{#tilde{e}_{L}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{e}_{L}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MStauL")) { 
+	    thisHist->SetYTitle("M_{#tilde{#tau}_{L}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{#tau}_{L}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_Xtop")) { 
+	    thisHist->SetYTitle("X_{t} (GeV)");
+	    emptyhist->SetYTitle("X_{t} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_Xbottom")) { 
+	    thisHist->SetYTitle("X_{b} (GeV)");
+	    emptyhist->SetYTitle("X_{b} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MSdownR")) { 
+	    thisHist->SetYTitle("M_{#tilde{d}_{R}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{d}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MSbottomR")) { 
+	    thisHist->SetYTitle("M_{#tilde{b}_{R}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{b}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MSupR")) { 
+	    thisHist->SetYTitle("M_{#tilde{u}_{R}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{u}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MStopR")) { 
+	    thisHist->SetYTitle("M_{#tilde{t}_{R}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{t}_{R}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MSupL")) { 
+	    thisHist->SetYTitle("M_{#tilde{u}_{L}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{u}_{L}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_MStopL")) { 
+	    thisHist->SetYTitle("M_{#tilde{t}_{L}} (GeV)");
+	    emptyhist->SetYTitle("M_{#tilde{t}_{L}} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_M1")) { 
+	    thisHist->SetYTitle("M_{1} (GeV)");
+	    emptyhist->SetYTitle("M_{1} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_M2")) { 
+	    thisHist->SetYTitle("M_{2} (GeV)");
+	    emptyhist->SetYTitle("M_{2} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_M3")) { 
+	    thisHist->SetYTitle("M_{3} (GeV)");
+	    emptyhist->SetYTitle("M_{3} (GeV)");
+	  }
+	  else if (!strcmp(variables[fVariable].c_str(), "P_massA0")) { 
+	    thisHist->SetYTitle("m_{A} (GeV)");
+	    emptyhist->SetYTitle("m_{A} (GeV)");
+	  }
 
 
-	      loghist->GetXaxis()->SetTitleOffset(1.2);
-	      loghist->GetYaxis()->SetTitleOffset(1.1);
-	      emptyhist->GetXaxis()->SetTitleOffset(1.2);
-	      emptyhist->GetYaxis()->SetTitleOffset(1.1);
-	      //	  loghist->GetXaxis()->SetTitleSize(0.04);
-	      //	  loghist->GetYaxis()->SetTitleSize(0.04);
-	      // gStyle->SetPalette(1,0);
-	  
-	      if (makeOnly2DHistograms) {
-	    
-		cout << "just write the histograms to the file, do not draw contours" << endl;
-		loghist->Write();
-		emptyhist->Write();
-		cout << "Delete the Histograms" << endl;
-		loghist->Delete();
-		emptyhist->Delete();
-		thisHist->Delete();
-		// add the cross at the best fit point
-		const double xVec1[2] = {sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80., 
-					 sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.};
-		const double yVec1[2] = {fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-					 fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.};
-		TGraph* lineGraph1 = new TGraph(2,xVec1,yVec1);
-		const double xVec2[2] = {sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80., 
-					 sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.};
-		const double yVec2[2] = {fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-					 fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.};
-		TGraph* lineGraph2 = new TGraph(2,xVec2,yVec2);	  
-		lineGraph1->SetLineWidth(3);
-		lineGraph2->SetLineWidth(3);
-		string lineName = "";
-		lineName = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_1";
-		lineGraph1->SetName(lineName.c_str());
-		lineName = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_2";
-		lineGraph2->SetName(lineName.c_str());
-		lineGraph1->Write();
-		lineGraph2->Write();
-		lineGraph1->Draw();
-		lineGraph2->Draw();
-		cout << "Start new Variables" << endl;
+	  thisHist->GetXaxis()->SetTitleOffset(1.2);
+	  thisHist->GetYaxis()->SetTitleOffset(1.1);
+	  emptyhist->GetXaxis()->SetTitleOffset(1.2);
+	  emptyhist->GetYaxis()->SetTitleOffset(1.1);
+	  //	  thisHist->GetXaxis()->SetTitleSize(0.04);
+	  //	  thisHist->GetYaxis()->SetTitleSize(0.04);
+	  // gStyle->SetPalette(1,0);
 
-	      } else {
 
-		cout << "finished setting the axis, now drawing the contour list" << endl;
-		loghist->Draw("CONTLIST");
-		cout << "update the canvas to get the lists written" << endl;
-		canvas->Update();
-		cout << "Draw all the lists again to see them" << endl;
-		loghist->Draw("cont1");
-		// draw a cross at the global minimum
-		cout << "global minimum at " << fBestFit << " " << sBestFit << endl;
-		//	  TLine* line1 = new TLine(sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-		//				   fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-		//				   sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-		//				   fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
-		//	  TLine* line2 = new TLine(sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-		//				   fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-		//				   sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-		//				   fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
-		const double xVec1[2] = {sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80., 
-					 sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.};
-		const double yVec1[2] = {fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-					 fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.};
-		TGraph* lineGraph1 = new TGraph(2,xVec1,yVec1);
-		const double xVec2[2] = {sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80., 
-					 sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.};
-		const double yVec2[2] = {fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-					 fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.};
-		TGraph* lineGraph2 = new TGraph(2,xVec2,yVec2);	  
-		lineGraph1->SetLineWidth(3);
-		lineGraph2->SetLineWidth(3);
-		string lineName = "";
-		lineName = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_1";
-		lineGraph1->SetName(lineName.c_str());
-		lineName = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_2";
-		lineGraph2->SetName(lineName.c_str());
-		lineGraph1->Write();
-		lineGraph2->Write();
-		lineGraph1->Draw();
-		lineGraph2->Draw();
-		// draw a hatched contour line at min+1
-		//double levels = 1.;
-		//loghist->SetContour(1,&levels);
-		//loghist->Draw("CONTLIST");
-		TObjArray *contours = (TObjArray*)gROOT->GetListOfSpecials()->FindObject("contours");
-		if (contours) {
-		  int ncontours = contours->GetSize();
-		  int theContourNumber = 0;
-		  theContourNumber = contourLineNo1D1s;
-		  cout << "plotting contour no. " << theContourNumber << endl; 
-		  if (theContourNumber<ncontours) {
-		    // get correct contour line
-		    TList *contourList = (TList*)contours->At(theContourNumber);
-		    int nGraphsPerContour = contourList->GetSize();
-		    for (int iGraph = 0; iGraph<nGraphsPerContour; iGraph++) {
-		      cout << "drawing graph no. " << iGraph << endl;
-		      TGraph* graph = (TGraph*)contourList->At(iGraph);
-		      graph->SetLineColor(kBlack);
-		      graph->SetLineWidth(3);
-		      graph->SetLineStyle(3);
-		      graph->Draw("");
-		      string contourName = "contour_";
-		      char number[256];
-		      sprintf(number,"%i",iGraph);
-		      contourName = contourName + variables[sVariable] + "_" + variables[fVariable] + "_" + number + "_1D1s";
-		      graph->SetName(contourName.c_str());
-		      //		if (graph->GetN()>2) {
-		      graph->Write();
-		      //		}
-		    }
-		  }
-		  theContourNumber = contourLineNo2D2s;
-		  cout << "plotting contour no. " << theContourNumber << endl; 
-		  if (theContourNumber<ncontours) {
-		    // get correct contour line
-		    TList *contourList = (TList*)contours->At(theContourNumber);
-		    int nGraphsPerContour = contourList->GetSize();
-		    for (int iGraph = 0; iGraph<nGraphsPerContour; iGraph++) {
-		      cout << "drawing graph no. " << iGraph << endl;
-		      TGraph* graph = (TGraph*)contourList->At(iGraph);
-		      graph->SetLineColor(kRed+3);
-		      graph->SetLineWidth(3);
-		      graph->SetLineStyle(3);
-		      graph->Draw("");
-		      string contourName = "contour_";
-		      char number[256];
-		      sprintf(number,"%i",iGraph);
-		      contourName = contourName + variables[sVariable] + "_" + variables[fVariable] + "_" + number + "_2D2s";
-		      graph->SetName(contourName.c_str());
-		      //		if (graph->GetN()>2) {
-		      graph->Write();
-		      //		}
-		    }
-		  } else {
-		    cout << "Error in contour counting" << endl;
-		  }
-		} else {
-		  cout << "No Contour lines found!" << endl;
-		}
-	    
-		string fileName = variables[fVariable] + 
-		  variables[sVariable] +
-		  "Markov";
-		if (bayes) {
-		  fileName = fileName + "Bayes.eps";
-		} else {
-		  fileName = fileName + "Freq.eps";
-		}
-		canvas->Print(fileName.c_str());
-		//canvas->SetLogz();
-		//thisHist->Draw("cont1z");
-		//fileName = variables[fVariable] + 
-		//   variables[sVariable] +
-		//   "TestMarkov.eps";
-		//canvas->Print(fileName.c_str());	  
-		canvas->SetLogz(0);
-		thisHist->Delete();
-		loghist->Delete();
-		emptyhist->Write();
-		emptyhist->Delete();
-	      }
-	    }
+	  cout << "just write the histograms to the file, do not draw contours" << endl;
+	  thisHist->Write();
+	  emptyhist->Write();
+	  cout << "Delete the Histograms" << endl;
+	  thisHist->Delete();
+	  emptyhist->Delete();
+	  // add the cross at the best fit point
+	  const double xVec1[2] = {sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80., 
+				   sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.};
+	  const double yVec1[2] = {fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+				   fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.};
+	  TGraph* lineGraph1 = new TGraph(2,xVec1,yVec1);
+	  const double xVec2[2] = {sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80., 
+				   sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.};
+	  const double yVec2[2] = {fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
+				   fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.};
+	  TGraph* lineGraph2 = new TGraph(2,xVec2,yVec2);	  
+	  lineGraph1->SetLineWidth(3);
+	  lineGraph2->SetLineWidth(3);
+	  string lineName = "";
+	  lineName = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_1";
+	  lineGraph1->SetName(lineName.c_str());
+	  lineName = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_2";
+	  lineGraph2->SetName(lineName.c_str());
+	  lineGraph1->Write();
+	  lineGraph2->Write();
+	  lineGraph1->Draw();
+	  lineGraph2->Draw();
+	  cout << "Start new Variables" << endl;
+
+	  string fileName = variables[fVariable] + variables[sVariable] + "Markov";
+	  if (bayes) {
+	    fileName = fileName + "Bayes.eps";
+	  } else {
+	    fileName = fileName + "Freq.eps";
+	  }
+	  canvas->Print(fileName.c_str());
+	  //canvas->SetLogz();
+	  //thisHist->Draw("cont1z");
+	  //fileName = variables[fVariable] + 
+	  //   variables[sVariable] +
+	  //   "TestMarkov.eps";
+	  //canvas->Print(fileName.c_str());	  
+	  canvas->SetLogz(0);
 	}
-    
-      contourOutputFile->Close();
-      markovFitsFile.close();
-
     }
+    
+  contourOutputFile->Close();
+  markovFitsFile.close();
+
+}
