@@ -265,7 +265,8 @@ void MakeMarkovChainContours2D (bool bayes = false,
 	    if (icomb!=fixComb) continue;
 	  }
 	  
-	  TH2D *thisHist;
+	  TH2D *thisHist; // hist for 1D 68 % CL contour
+	  TH2D *thisHist2; // hist for 2D 95 % CL contour
 
 	  double s1sigmaUpperBound = -100000000.;
 	  double s1sigmaLowerBound =  100000000.;
@@ -654,6 +655,12 @@ void MakeMarkovChainContours2D (bool bayes = false,
 				  nBins,sVarMin,sVarMax,
 				  nBins,fVarMin,fVarMax);
 
+	      string thisHist2Name = "thisHist2_";
+	      thisHist2Name = thisHist2Name + variables[sVariable] + "_" + variables[fVariable];
+	      thisHist2 = new TH2D(thisHist2Name.c_str(),"",
+				   nBins,sVarMin,sVarMax,
+				   nBins,fVarMin,fVarMax);
+
 	      // Value of chi2 stored in a matrix for each 2D bin
 	      Float_t chi2Array[nBins][nBins];
 	      for (int fbin = 0; fbin < nBins; fbin++)
@@ -715,8 +722,10 @@ void MakeMarkovChainContours2D (bool bayes = false,
 	      // Fill the histo with the matrix (+1 as bin Nb starts at 1)
 	      for (int fbin = 0; fbin < nBins; fbin++){
 		for (int sbin = 0; sbin < nBins; sbin++){
-		  if( chi2Array[sbin][fbin] < 1e32 ) thisHist->SetBinContent( sbin+1, fbin+1,  chi2Array[sbin][fbin] - minChi2 );
-		  else thisHist->SetBinContent( sbin+1, fbin+1, 7);
+		  if( chi2Array[sbin][fbin] - minChi2 < 1.000001 ) thisHist->SetBinContent( sbin+1, fbin+1,  chi2Array[sbin][fbin] - minChi2 );
+		  else thisHist->SetBinContent( sbin+1, fbin+1, 2.);
+		  if( chi2Array[sbin][fbin] < 1e32 ) thisHist2->SetBinContent( sbin+1, fbin+1,  chi2Array[sbin][fbin] - minChi2 );
+		  else thisHist2->SetBinContent( sbin+1, fbin+1, 7);
 		}
 	      }
 	      
@@ -1002,9 +1011,11 @@ void MakeMarkovChainContours2D (bool bayes = false,
 
 	  cout << "just write the histograms to the file, do not draw contours" << endl;
 	  thisHist->Write();
+	  thisHist2->Write();
 	  emptyhist->Write();
 	  cout << "Delete the Histograms" << endl;
 	  thisHist->Delete();
+	  thisHist2->Delete();
 	  emptyhist->Delete();
 	  // add the cross at the best fit point
 	  const double xVec1[2] = {sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80., 

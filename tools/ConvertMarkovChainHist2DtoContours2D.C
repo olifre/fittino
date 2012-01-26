@@ -36,10 +36,8 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
   gStyle->SetOptStat(0);
   // enforce a palette with 6 levels:
   //  gStyle->SetPalette(1);
-  Int_t colors[7] = {kBlue+1,kBlue+2,kBlue+3,kBlue+4,kRed,kRed+1,kRed+2};
-  gStyle->SetPalette(7,colors);
-  gStyle->SetNumberContours(7);
-
+  Int_t colors[2] = {kBlue+1,kBlue+2};
+  Int_t colors2[7] = {kBlue+1,kBlue+2,kBlue+3,kBlue+4,kRed,kRed+1,kRed+2};
 
   // open the input file
   TFile* histInputFile = new TFile (histInputFileName.c_str(), "READ");
@@ -170,7 +168,17 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
 	cout << "WARNING: histogram " << histname << " not found" << endl;
       } else {
 	cout << "histogram " << histname << " found" << endl;
+      }
 
+      string hist2name = "thisHist2_" + variables[sVariable] + "_" + variables[fVariable];
+      TH2D* thishist2 = (TH2D*)histInputFile->Get(hist2name.c_str());
+      if (!thishist2) {
+	cout << "WARNING: histogram 2 " << hist2name << " not found" << endl;
+      } else {
+	cout << "histogram 2 " << hist2name << " found" << endl;
+      }
+
+      if (thishist && thishist2) {
 	// get the correlations
 	// first, invert the histogram
 	TH2D* inverthist = (TH2D*)thishist->Clone();
@@ -212,46 +220,13 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
 
 	// draw the histogram
 	cout << "finished setting the axis, now drawing the contour list" << endl;
-	thishist->Draw("CONTLIST");
+	gStyle->SetPalette(7,colors2);
+	gStyle->SetNumberContours(7);
+	thishist2->Draw("CONTLIST");
 	cout << "update the canvas to get the lists written" << endl;
 	canvas->Update();
 	cout << "Draw all the lists again to see them" << endl;
-	thishist->Draw("cont1");
-//	// draw a cross at the global minimum
-//	cout << "global minimum at " << fBestFit << " " << sBestFit << endl;
-//	//	  TLine* line1 = new TLine(sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-//	//				   fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-//	//				   sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-//	//				   fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
-//	//	  TLine* line2 = new TLine(sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-//	//				   fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-//	//				   sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.,
-//	//				   fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.);
-//	const double xVec1[2] = {sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80., 
-//				 sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.};
-//	const double yVec1[2] = {fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-//				 fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.};
-//	TGraph* lineGraph1 = new TGraph(2,xVec1,yVec1);
-//	const double xVec2[2] = {sBestFit-(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80., 
-//				 sBestFit+(thisHist->GetXaxis()->GetXmax()-thisHist->GetXaxis()->GetXmin())/80.};
-//	const double yVec2[2] = {fBestFit+(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.,
-//				 fBestFit-(thisHist->GetYaxis()->GetXmax()-thisHist->GetYaxis()->GetXmin())/80.};
-//	TGraph* lineGraph2 = new TGraph(2,xVec2,yVec2);	  
-//	lineGraph1->SetLineWidth(3);
-//	lineGraph2->SetLineWidth(3);
-//	string lineName = "";
-//	lineName = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_1";
-//	lineGraph1->SetName(lineName.c_str());
-//	lineName = "bestFitPointLine_" + variables[sVariable] + "_" + variables[fVariable] + "_2";
-//	lineGraph2->SetName(lineName.c_str());
-//	lineGraph1->Write();
-//	lineGraph2->Write();
-//	lineGraph1->Draw();
-//	lineGraph2->Draw();
-	// draw a hatched contour line at min+1
-	//double levels = 1.;
-	//thishist->SetContour(1,&levels);
-	//thishist->Draw("CONTLIST");
+	thishist2->Draw("cont1");
 
 	double emptyHistXMin =  100000000.;
 	double emptyHistYMin =  100000000.;
@@ -262,49 +237,6 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
 	if (contours) {
 	  int ncontours = contours->GetSize();
 	  int theContourNumber = 0;
-	  theContourNumber = contourLineNo1D1s;
-	  cout << "plotting contour no. " << theContourNumber << endl; 
-	  if (theContourNumber<ncontours) {
-	    // get correct contour line
-	    TList *contourList = (TList*)contours->At(theContourNumber);
-	    int nGraphsPerContour = contourList->GetSize();
-	    for (int iGraph = 0; iGraph<nGraphsPerContour; iGraph++) {
-	      TGraph* graph = (TGraph*)contourList->At(iGraph);
-	      cout << "drawing graph no. " << iGraph << " with " << graph->GetN() << " points" << endl;
-	      graph->SetLineColor(kBlack);
-	      graph->SetLineWidth(3);
-	      graph->SetLineStyle(3);
-	      graph->Draw("");
-	      string contourName = "contour_";
-	      char number[256];
-	      sprintf(number,"%i",iGraph);
-	      contourName = contourName + variables[sVariable] + "_" + variables[fVariable] + "_" + number + "_1D1s";
-	      graph->SetName(contourName.c_str());
-	      graph->Write();
-	      if (graph->GetN()>4) {
-		// loop over X and Y values and determine max and min
-		double x = 0.;
-		double y = 0.;
-		for (int iPoint = 0; iPoint < graph->GetN(); iPoint++) {
-		  int rc = graph->GetPoint(iPoint,x,y);
-		  if (rc>=0) {
-		    if (x<emptyHistXMin) {
-		      emptyHistXMin = x;
-		    }
-		    if (y<emptyHistYMin) {
-		      emptyHistYMin = y;
-		    }
-		    if (x>emptyHistXMax) {
-		      emptyHistXMax = x;
-		    }
-		    if (y>emptyHistYMax) {
-		      emptyHistYMax = y;
-		    }
-		  }
-		}
-	      }
-	    }
-	  }
 	  theContourNumber = contourLineNo2D2s;
 	  cout << "plotting contour no. " << theContourNumber << endl; 
 	  if (theContourNumber<ncontours) {
@@ -353,7 +285,46 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
 	} else {
 	  cout << "No Contour lines found!" << endl;
 	}
-	
+
+	// draw the histogram
+	cout << "finished setting the axis, now drawing the contour list" << endl;
+	gStyle->SetPalette(2,colors);
+	gStyle->SetNumberContours(2);
+	thishist->Draw("CONTLIST");
+	cout << "update the canvas to get the lists written" << endl;
+	canvas->Update();
+	cout << "Draw all the lists again to see them" << endl;
+	thishist->Draw("cont1");
+
+	contours = (TObjArray*)gROOT->GetListOfSpecials()->FindObject("contours");
+	if (contours) {
+	  int ncontours = contours->GetSize();
+	  int theContourNumber = 0;
+	  theContourNumber = contourLineNo1D1s;
+	  cout << "plotting contour no. " << theContourNumber << endl; 
+	  if (theContourNumber<ncontours) {
+	    // get correct contour line
+	    TList *contourList = (TList*)contours->At(theContourNumber);
+	    int nGraphsPerContour = contourList->GetSize();
+	    for (int iGraph = 0; iGraph<nGraphsPerContour; iGraph++) {
+	      TGraph* graph = (TGraph*)contourList->At(iGraph);
+	      cout << "drawing graph no. " << iGraph << " with " << graph->GetN() << " points" << endl;
+	      graph->SetLineColor(kBlack);
+	      graph->SetLineWidth(3);
+	      graph->SetLineStyle(3);
+	      graph->Draw("");
+	      string contourName = "contour_";
+	      char number[256];
+	      sprintf(number,"%i",iGraph);
+	      contourName = contourName + variables[sVariable] + "_" + variables[fVariable] + "_" + number + "_1D1s";
+	      graph->SetName(contourName.c_str());
+	      graph->Write();
+	    }
+	  }
+	} else {
+	  cout << "No Contour lines found!" << endl;
+	}
+
 	string fileName = variables[fVariable] + 
 	  variables[sVariable] +
 	  "Markov";
