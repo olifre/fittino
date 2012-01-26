@@ -53,6 +53,8 @@ void MakeMarkovChainContours2D (bool bayes = false,
   gStyle->SetPalette(7,colors);
   gStyle->SetNumberContours(7);
 
+  bool doublelogplot = false;
+
   TChain markovChain("markovChain");
 //  markovChain.Add("MarkovChainNtupFile*.root");
   markovChain.Add("MarkovChainNtupFile.sum.root");
@@ -96,6 +98,7 @@ void MakeMarkovChainContours2D (bool bayes = false,
     variables.push_back("P_cGrav");
   }
   else if (model=="Pheno") {
+    variables.push_back("af_direct");
     variables.push_back("O_massNeutralino1_nofit");
     variables.push_back("O_Omega_npf"); 
     variables.push_back("O_massStau1_nofit"); 
@@ -301,6 +304,13 @@ void MakeMarkovChainContours2D (bool bayes = false,
 	      double sVarMax = -1000000000.;
 	      double sVarMin =  1000000000.;	      
 	      double valMin = 100000000.;
+	      
+	      if ( ( variables[fVariable] == "O_massNeutralino1_nofit" &&
+		     variables[sVariable] == "af_direct" ) ||
+		   ( variables[fVariable] == "af_direct" &&
+		     variables[sVariable] == "O_massNeutralino1_nofit" ) ) {
+		doublelogplot = true;
+	      }
 
 	      for (int i = 0; i < nEntries; i++) {
 		markovChain.GetEntry(i);
@@ -641,9 +651,16 @@ void MakeMarkovChainContours2D (bool bayes = false,
 	      cout << variables[fVariable] << " " << variables[sVariable] << " " 
 		   << fVarMax << " " << fVarMin << " " << sVarMax << " " << sVarMin << endl;
 
+
 	      // loop over bins in the variables
-	      double sWidth = (-sVarMin+sVarMax);
-	      double fWidth = (-fVarMin+fVarMax);
+	      if (doublelogplot) {
+		sVarMin = TMath::Log10(sVarMin);
+		fVarMin = TMath::Log10(fVarMin);
+		sVarMax = TMath::Log10(sVarMax);
+		fVarMax = TMath::Log10(fVarMax);
+	      }
+	      double sWidth = TMath::Abs(-sVarMin+sVarMax);
+	      double fWidth = TMath::Abs(-fVarMin+fVarMax);
 	      sVarMin = sVarMin-3./(double)(nBins-6)*sWidth;
 	      sVarMax = sVarMax+3./(double)(nBins-6)*sWidth;
 	      fVarMin = fVarMin-3./(double)(nBins-6)*fWidth;
@@ -707,18 +724,30 @@ void MakeMarkovChainContours2D (bool bayes = false,
 			double sVarValueLow = thisHist->GetXaxis()->GetBinLowEdge(sbin);
 			double sVarValueHig = thisHist->GetXaxis()->GetBinUpEdge(sbin);
 
-			// If the event falls in the bin
-			if( fVarValueLow < varValues[fVariable] && varValues[fVariable] <= fVarValueHig &&
-			    sVarValueLow < varValues[sVariable] && varValues[sVariable] <= sVarValueHig &&
-			    nStep > 0 && haveAcceptedAtLeastOne > 0.5)
-			  {
-			    // If chi2 smaller than smallest chi2 in that bin, update chi2Array[][]
-			    if( chi2 < chi2Array[sbin-1][fbin-1] && chi2 - minChi2 < 6.01 ) chi2Array[sbin-1][fbin-1] = chi2;
-			  }
+			if (!doublelogplot) {
+			  // If the event falls in the bin
+			  if( fVarValueLow < varValues[fVariable] && varValues[fVariable] <= fVarValueHig &&
+			      sVarValueLow < varValues[sVariable] && varValues[sVariable] <= sVarValueHig &&
+											     nStep > 0 && haveAcceptedAtLeastOne > 0.5)
+			    {
+			      // If chi2 smaller than smallest chi2 in that bin, update chi2Array[][]
+			      if( chi2 < chi2Array[sbin-1][fbin-1] && chi2 - minChi2 < 6.01 ) chi2Array[sbin-1][fbin-1] = chi2;
+			    }
+			}
+			else {
+			  if( fVarValueLow < TMath::Log10(varValues[fVariable]) && TMath::Log10(varValues[fVariable]) <= fVarValueHig &&
+			      sVarValueLow < TMath::Log10(varValues[sVariable]) && TMath::Log10(varValues[sVariable]) <= sVarValueHig &&
+											     nStep > 0 && haveAcceptedAtLeastOne > 0.5)
+			    {
+			      // If chi2 smaller than smallest chi2 in that bin, update chi2Array[][]
+			      if( chi2 < chi2Array[sbin-1][fbin-1] && chi2 - minChi2 < 6.01 ) chi2Array[sbin-1][fbin-1] = chi2;
+			    }
+			  
+			}
 		      }
 		  }
 	      }
-	      
+
 	      // Fill the histo with the matrix (+1 as bin Nb starts at 1)
 	      for (int fbin = 0; fbin < nBins; fbin++){
 		for (int sbin = 0; sbin < nBins; sbin++){

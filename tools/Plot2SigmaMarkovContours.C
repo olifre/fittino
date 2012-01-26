@@ -56,6 +56,8 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
   canvas->SetBottomMargin(0.12);
   canvas->SetLeftMargin(0.10);
   canvas->SetRightMargin(0.05);
+
+  bool doublelogplot = false;
   
   // sort files
   vector<string> fileNames;
@@ -140,10 +142,12 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
     variableNames.push_back("C_{grav} (GeV)");
   }
   else if (model=="Pheno") {
+    variables.push_back("af_direct");
     variables.push_back("O_massNeutralino1_nofit");
     variables.push_back("O_Omega_npf"); 
     variables.push_back("O_massStau1_nofit"); 
     variables.push_back("O_Omega_npf_nofit"); 
+    variableNames.push_back("#sigma_{SI} (pb)");
     variableNames.push_back("m_{#chi^{0}_{1}} (GeV)");
     variableNames.push_back("#Omega h^{2}");
     variableNames.push_back("m_{#tilde{#tau}_{1}} (GeV)");
@@ -244,6 +248,14 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
   // assume for the time being that the first file contains the largest uncertainties
   for (unsigned int iVariable1 = 0; iVariable1 < variables.size(); iVariable1++) {
     for (unsigned int iVariable2 = iVariable1 +1; iVariable2 < variables.size(); iVariable2++) {
+
+      if ( ( variables[iVariable1] == "O_massNeutralino1_nofit" &&
+	     variables[iVariable1] == "af_direct" ) ||
+	   ( variables[iVariable2] == "af_direct" &&
+	     variables[iVariable2] == "O_massNeutralino1_nofit" ) ) {
+	doublelogplot = true;
+      }
+
       // draw the canvas      
       string histName = "emptyHist_" + variables[iVariable2] + "_" + variables[iVariable1];
       TH2D* hist = (TH2D*)files[0]->Get(histName.c_str());
@@ -253,6 +265,25 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 	continue;
       }
       cout << "drawing histogram " << histName << endl;
+
+      
+      TH2D* emptyHist = 0;
+
+      if (doublelogplot) {
+	emptyHist = new TH2D("emptyHist", "",
+			     hist->GetNbinsX(),
+			     TMath::Power(10, hist->GetXaxis()->GetXmin()),
+			     TMath::Power(10, hist->GetXaxis()->GetXmax()),
+			     hist->GetNbinsY(),
+			     TMath::Power(10, hist->GetYaxis()->GetXmin()),
+			     TMath::Power(10, hist->GetYaxis()->GetXmax()));
+
+	hist->GetXaxis()->SetLabelColor(kWhite);
+	hist->GetXaxis()->SetAxisColor(kWhite);
+	hist->GetYaxis()->SetLabelColor(kWhite);
+	hist->GetYaxis()->SetAxisColor(kWhite);
+      }
+
       hist->GetXaxis()->CenterTitle(1);
       hist->GetXaxis()->SetTitle(variableNames[iVariable2].c_str());
       hist->GetYaxis()->CenterTitle(1);
@@ -262,6 +293,11 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
       hist->GetXaxis()->SetTitleOffset(1.25);
       //      hist->GetXaxis()->SetTitle(variableNames[iVariable1]);
       hist->Draw();
+
+      if (doublelogplot) {
+	emptyHist->GetXaxis()->Draw();
+	emptyHist->GetYaxis()->Draw();
+      }
 
       // Create a legend
       TLegend *legend = new TLegend(0.60,0.75,0.98,0.98,"");

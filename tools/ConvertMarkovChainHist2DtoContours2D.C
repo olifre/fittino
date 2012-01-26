@@ -71,6 +71,7 @@ void ConvertMarkovChainHist2DtoContours2D ( string histInputFileName = "markovHi
     variables.push_back("P_cGrav");
   }
   else if (model=="Pheno") {
+    variables.push_back("af_direct");
     variables.push_back("O_massNeutralino1_nofit");
     variables.push_back("O_Omega_npf"); 
     variables.push_back("O_massStau1_nofit"); 
