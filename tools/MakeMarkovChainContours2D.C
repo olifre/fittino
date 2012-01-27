@@ -658,7 +658,6 @@ void MakeMarkovChainContours2D (bool bayes = false,
 	      cout << variables[fVariable] << " " << variables[sVariable] << " " 
 		   << fVarMax << " " << fVarMin << " " << sVarMax << " " << sVarMin << endl;
 
-
 	      // loop over bins in the variables
 	      if (doublelogplot) {
 		sVarMin = TMath::Log10(sVarMin);
@@ -672,6 +671,18 @@ void MakeMarkovChainContours2D (bool bayes = false,
 	      sVarMax = sVarMax+3./(double)(nBins-6)*sWidth;
 	      fVarMin = fVarMin-3./(double)(nBins-6)*fWidth;
 	      fVarMax = fVarMax+3./(double)(nBins-6)*fWidth;
+
+	      if (variables[sVariable] != "A0" && !doublelogplot) {
+		if (sVarMin < 0) {
+		  sVarMin = -2*sVarMax/(nBins-2);
+		}
+	      }
+
+	      if (variables[fVariable] != "A0" && !doublelogplot) {
+		if (fVarMin < 0) {
+		  fVarMin = -2*fVarMax/(nBins-2);
+		}
+	      }
 
 	      string thisHistName = "thisHist_";
 	      thisHistName = thisHistName + variables[sVariable] + "_" + variables[fVariable];
