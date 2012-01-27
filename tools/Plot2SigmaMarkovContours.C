@@ -131,6 +131,18 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
     variableNames.push_back("M_{0} (GeV)");
     variableNames.push_back("A_{0} (GeV)");
   } 
+  else if (model=="mSUGRAmassTop") {
+    variables.push_back("P_TanBeta");
+    variables.push_back("P_M12");
+    variables.push_back("P_M0");
+    variables.push_back("P_A0");
+    variables.push_back("P_massTop");
+    variableNames.push_back("tan#beta");
+    variableNames.push_back("M_{12} (GeV)");
+    variableNames.push_back("M_{0} (GeV)");
+    variableNames.push_back("A_{0} (GeV)");
+    variableNames.push_back("m(top) (GeV)");
+  }
   else if (model == "GMSB") {
     variables.push_back("P_TanBeta");
     variables.push_back("P_Lambda"); 

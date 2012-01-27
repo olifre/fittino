@@ -91,6 +91,13 @@ void MakeMarkovChainContours2D (bool bayes = false,
     variables.push_back("P_M0");
     variables.push_back("P_A0");
   }
+  else if (model=="mSUGRAmassTop") {
+    variables.push_back("P_TanBeta");
+    variables.push_back("P_M12");
+    variables.push_back("P_M0");
+    variables.push_back("P_A0");
+    variables.push_back("P_massTop");
+  }
   else if (model=="GMSB") {
     variables.push_back("P_TanBeta");
     variables.push_back("P_Lambda"); 
