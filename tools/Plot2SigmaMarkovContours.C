@@ -23,6 +23,8 @@
 #include "fstream"
 #include "string"
 #include "vector"
+#include "TGaxis.h"
+
 using namespace std;
 
 void Plot2SigmaMarkovContours (const string model = "mSUGRA",
@@ -262,8 +264,8 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
     for (unsigned int iVariable2 = iVariable1 +1; iVariable2 < variables.size(); iVariable2++) {
 
       if ( ( variables[iVariable1] == "O_massNeutralino1_nofit" &&
-	     variables[iVariable1] == "af_direct" ) ||
-	   ( variables[iVariable2] == "af_direct" &&
+	     variables[iVariable2] == "af_direct" ) ||
+	   ( variables[iVariable1] == "af_direct" &&
 	     variables[iVariable2] == "O_massNeutralino1_nofit" ) ) {
 	doublelogplot = true;
       }
@@ -278,18 +280,8 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
       }
       cout << "drawing histogram " << histName << endl;
 
-      
-      TH2D* emptyHist = 0;
 
       if (doublelogplot) {
-	emptyHist = new TH2D("emptyHist", "",
-			     hist->GetNbinsX(),
-			     TMath::Power(10, hist->GetXaxis()->GetXmin()),
-			     TMath::Power(10, hist->GetXaxis()->GetXmax()),
-			     hist->GetNbinsY(),
-			     TMath::Power(10, hist->GetYaxis()->GetXmin()),
-			     TMath::Power(10, hist->GetYaxis()->GetXmax()));
-
 	hist->GetXaxis()->SetLabelColor(kWhite);
 	hist->GetXaxis()->SetAxisColor(kWhite);
 	hist->GetYaxis()->SetLabelColor(kWhite);
@@ -307,9 +299,29 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
       hist->Draw();
 
       if (doublelogplot) {
-	emptyHist->GetXaxis()->Draw();
-	emptyHist->GetYaxis()->Draw();
+	canvas->Update();
+	TGaxis *xaxis = new TGaxis(canvas->GetUxmin(),
+				   canvas->GetUymin(),
+				   canvas->GetUxmax(),
+				   canvas->GetUymin(),
+				   TMath::Power(10,hist->GetXaxis()->GetXmin()),
+				   TMath::Power(10,hist->GetXaxis()->GetXmax()),
+				   505,"G"); 
+
+	TGaxis *yaxis = new TGaxis(canvas->GetUxmin(),
+				   canvas->GetUymin(),
+				   canvas->GetUxmin(),
+				   canvas->GetUymax(),
+				   TMath::Power(10,hist->GetYaxis()->GetXmin()),
+				   TMath::Power(10,hist->GetYaxis()->GetXmax()),
+				   505,"G"); 
+
+                 
+	xaxis->Draw();
+	yaxis->Draw();
       }
+
+      
 
       // Create a legend
       TLegend *legend = new TLegend(0.60,0.75,0.98,0.98,"");
