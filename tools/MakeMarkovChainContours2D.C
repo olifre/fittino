@@ -672,13 +672,13 @@ void MakeMarkovChainContours2D (bool bayes = false,
 	      fVarMin = fVarMin-3./(double)(nBins-6)*fWidth;
 	      fVarMax = fVarMax+3./(double)(nBins-6)*fWidth;
 
-	      if (variables[sVariable] != "A0" && !doublelogplot) {
+	      if (variables[sVariable] != "P_A0" && !doublelogplot) {
 		if (sVarMin < 0) {
 		  sVarMin = -2*sVarMax/(nBins-2);
 		}
 	      }
 
-	      if (variables[fVariable] != "A0" && !doublelogplot) {
+	      if (variables[fVariable] != "P_A0" && !doublelogplot) {
 		if (fVarMin < 0) {
 		  fVarMin = -2*fVarMax/(nBins-2);
 		}
