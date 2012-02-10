@@ -610,11 +610,141 @@
   graph5->SetPoint(127,7.521e+0, 3.817e-4);
   graph5->SetPoint(128,7.480e+0, 4.206e-4);
       
+  //CRESST TGraph, 1 sigma
+
+  TGraph *graph6 = new TGraph(129);
+  graph6->SetName("CRESST1s");
+  graph6->SetTitle("CRESST 1 sigma region");
+  graph6->SetFillColor(3);
+  graph6->SetLineStyle(7);
+  graph6->SetLineWidth(2);
+  graph6->SetMarkerStyle(21);
+  graph6->SetMarkerSize(0.5);
+
+  graph6->SetPoint(0, 1.959E+01, 4.318E-06 );
+  graph6->SetPoint(1, 1.959E+01, 5.016E-06 );
+  graph6->SetPoint(2, 1.967E+01, 5.450E-06 );
+  graph6->SetPoint(3, 2.030E+01, 5.185E-06 );
+  graph6->SetPoint(4, 2.085E+01, 4.851E-06 );
+  graph6->SetPoint(5, 2.151E+01, 4.391E-06 );
+  graph6->SetPoint(6, 2.219E+01, 3.908E-06 );
+  graph6->SetPoint(7, 2.279E+01, 3.537E-06 );
+  graph6->SetPoint(8, 2.341E+01, 3.201E-06 );
+  graph6->SetPoint(9, 2.404E+01, 2.897E-06 );
+  graph6->SetPoint(10, 2.480E+01, 2.579E-06 );
+  graph6->SetPoint(11, 2.570E+01, 2.258E-06 );
+  graph6->SetPoint(12, 2.652E+01, 2.010E-06 );
+  graph6->SetPoint(13, 2.736E+01, 1.789E-06 );
+  graph6->SetPoint(14, 2.848E+01, 1.540E-06 );
+  graph6->SetPoint(15, 2.964E+01, 1.348E-06 );
+  graph6->SetPoint(16, 3.058E+01, 1.220E-06 );
+  graph6->SetPoint(17, 3.169E+01, 1.086E-06 );
+  graph6->SetPoint(18, 3.255E+01, 1.000E-06 );
+  graph6->SetPoint(19, 3.358E+01, 9.050E-07 );
+  graph6->SetPoint(20, 3.495E+01, 7.923E-07 );
+  graph6->SetPoint(21, 3.606E+01, 6.936E-07 );
+  graph6->SetPoint(22, 3.687E+01, 6.174E-07 );
+  graph6->SetPoint(23, 3.703E+01, 5.777E-07 );
+  graph6->SetPoint(24, 3.606E+01, 5.228E-07 );
+  graph6->SetPoint(25, 3.464E+01, 5.142E-07 );
+  graph6->SetPoint(26, 3.313E+01, 5.228E-07 );
+  graph6->SetPoint(27, 3.183E+01, 5.405E-07 );
+  graph6->SetPoint(28, 3.031E+01, 5.777E-07 );
+  graph6->SetPoint(29, 2.899E+01, 6.383E-07 );
+  graph6->SetPoint(30, 2.772E+01, 7.053E-07 );
+  graph6->SetPoint(31, 2.663E+01, 7.923E-07 );
+  graph6->SetPoint(32, 2.547E+01, 9.202E-07 );
+  graph6->SetPoint(33, 2.469E+01, 1.033E-06 );
+  graph6->SetPoint(34, 2.372E+01, 1.241E-06 );
+  graph6->SetPoint(35, 2.299E+01, 1.441E-06 );
+  graph6->SetPoint(36, 2.219E+01, 1.702E-06 );
+  graph6->SetPoint(37, 2.151E+01, 2.078E-06 );
+  graph6->SetPoint(38, 2.048E+01, 2.803E-06 );
+  graph6->SetPoint(39, 1.985E+01, 3.537E-06 );
+
+
+  //CRESST TGraph, 2 sigma
+
+  TGraph *graph7 = new TGraph(129);
+  graph7->SetName("CRESST1s");
+  graph7->SetTitle("CRESST 1 sigma region");
+  graph7->SetFillColor(3);
+  graph7->SetLineStyle(7);
+  graph7->SetLineWidth(2);
+  graph7->SetMarkerStyle(21);
+  graph7->SetMarkerSize(0.5);
+
+  graph7->SetPoint(0, 1.582E+01, 1.131E-05 );
+  graph7->SetPoint(1, 1.603E+01, 1.271E-05 );
+  graph7->SetPoint(2, 1.661E+01, 1.230E-05 );
+  graph7->SetPoint(3, 1.721E+01, 1.171E-05 );
+  graph7->SetPoint(4, 1.784E+01, 1.078E-05 );
+  graph7->SetPoint(5, 1.840E+01, 9.925E-06 );
+  graph7->SetPoint(6, 1.899E+01, 8.987E-06 );
+  graph7->SetPoint(7, 1.950E+01, 8.002E-06 );
+  graph7->SetPoint(8, 2.021E+01, 7.127E-06 );
+  graph7->SetPoint(9, 2.085E+01, 6.346E-06 );
+  graph7->SetPoint(10, 2.151E+01, 5.558E-06 );
+  graph7->SetPoint(11, 2.229E+01, 4.788E-06 );
+  graph7->SetPoint(12, 2.299E+01, 4.264E-06 );
+  graph7->SetPoint(13, 2.372E+01, 3.734E-06 );
+  graph7->SetPoint(14, 2.436E+01, 3.381E-06 );
+  graph7->SetPoint(15, 2.502E+01, 3.061E-06 );
+  graph7->SetPoint(16, 2.616E+01, 2.594E-06 );
+  graph7->SetPoint(17, 2.699E+01, 2.310E-06 );
+  graph7->SetPoint(18, 2.797E+01, 2.023E-06 );
+  graph7->SetPoint(19, 2.938E+01, 1.743E-06 );
+  graph7->SetPoint(20, 3.085E+01, 1.502E-06 );
+  graph7->SetPoint(21, 3.211E+01, 1.337E-06 );
+  graph7->SetPoint(22, 3.328E+01, 1.211E-06 );
+  graph7->SetPoint(23, 3.464E+01, 1.096E-06 );
+  graph7->SetPoint(24, 3.638E+01, 9.770E-07 );
+  graph7->SetPoint(25, 3.787E+01, 8.996E-07 );
+  graph7->SetPoint(26, 3.959E+01, 8.147E-07 );
+  graph7->SetPoint(27, 4.140E+01, 7.501E-07 );
+  graph7->SetPoint(28, 4.386E+01, 6.795E-07 );
+  graph7->SetPoint(29, 4.627E+01, 6.154E-07 );
+  graph7->SetPoint(30, 4.925E+01, 5.668E-07 );
+  graph7->SetPoint(31, 5.242E+01, 5.134E-07 );
+  graph7->SetPoint(32, 5.505E+01, 4.727E-07 );
+  graph7->SetPoint(33, 5.654E+01, 4.210E-07 );
+  graph7->SetPoint(34, 5.654E+01, 3.747E-07 );
+  graph7->SetPoint(35, 5.384E+01, 3.278E-07 );
+  graph7->SetPoint(36, 5.058E+01, 3.065E-07 );
+  graph7->SetPoint(37, 4.774E+01, 2.962E-07 );
+  graph7->SetPoint(38, 4.525E+01, 2.863E-07 );
+  graph7->SetPoint(39, 4.252E+01, 2.861E-07 );
+  graph7->SetPoint(40, 4.031E+01, 2.859E-07 );
+  graph7->SetPoint(41, 3.821E+01, 2.953E-07 );
+  graph7->SetPoint(42, 3.622E+01, 3.051E-07 );
+  graph7->SetPoint(43, 3.433E+01, 3.258E-07 );
+  graph7->SetPoint(44, 3.240E+01, 3.538E-07 );
+  graph7->SetPoint(45, 3.072E+01, 3.842E-07 );
+  graph7->SetPoint(46, 2.899E+01, 4.313E-07 );
+  graph7->SetPoint(47, 2.772E+01, 4.924E-07 );
+  graph7->SetPoint(48, 2.628E+01, 5.714E-07 );
+  graph7->SetPoint(49, 2.525E+01, 6.524E-07 );
+  graph7->SetPoint(50, 2.415E+01, 7.828E-07 );
+  graph7->SetPoint(51, 2.320E+01, 9.239E-07 );
+  graph7->SetPoint(52, 2.249E+01, 1.072E-06 );
+  graph7->SetPoint(53, 2.151E+01, 1.352E-06 );
+  graph7->SetPoint(54, 2.075E+01, 1.650E-06 );
+  graph7->SetPoint(55, 2.021E+01, 1.948E-06 );
+  graph7->SetPoint(56, 1.967E+01, 2.300E-06 );
+  graph7->SetPoint(57, 1.916E+01, 2.715E-06 );
+  graph7->SetPoint(58, 1.865E+01, 3.313E-06 );
+  graph7->SetPoint(59, 1.800E+01, 4.180E-06 );
+  graph7->SetPoint(60, 1.744E+01, 5.100E-06 );
+  graph7->SetPoint(61, 1.698E+01, 6.329E-06 );
+  graph7->SetPoint(62, 1.646E+01, 7.723E-06 );
+  graph7->SetPoint(63, 1.603E+01, 9.744E-06 );
+
 
   gDirectory->GetList()->Add(graph);
   gDirectory->GetList()->Add(graph2);
   gDirectory->GetList()->Add(graph3);
   gDirectory->GetList()->Add(graph4);
   gDirectory->GetList()->Add(graph5);
-  
+  gDirectory->GetList()->Add(graph6);
+  gDirectory->GetList()->Add(graph7);
 }
