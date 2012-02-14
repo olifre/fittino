@@ -388,8 +388,7 @@
   graph3->SetPoint(105,9.9460e+2, 3.9996e-10);
 
 
-  /* Note: These are the CRESST regions used in the fit.
-     They have been taken from [1011.5432v2] */
+  //CRESST  from [1011.5432v2] 
 
   //CRESST TGraph, inner region
       
@@ -609,7 +608,9 @@
   graph5->SetPoint(126,7.561e+0, 3.447e-4);
   graph5->SetPoint(127,7.521e+0, 3.817e-4);
   graph5->SetPoint(128,7.480e+0, 4.206e-4);
-      
+ 
+  //CRESST 1109.0702
+     
   //CRESST TGraph, 1 sigma
 
   TGraph *graph6 = new TGraph(129);
@@ -666,8 +667,8 @@
   //CRESST TGraph, 2 sigma
 
   TGraph *graph7 = new TGraph(129);
-  graph7->SetName("CRESST1s");
-  graph7->SetTitle("CRESST 1 sigma region");
+  graph7->SetName("CRESST2s");
+  graph7->SetTitle("CRESST 2 sigma region");
   graph7->SetFillColor(3);
   graph7->SetLineStyle(7);
   graph7->SetLineWidth(2);
