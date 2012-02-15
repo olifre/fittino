@@ -88,6 +88,9 @@ void DrawChi2Map(const char* infilename,
 
   }
 
+  //  std::cout << "Axis ranges: xmin = " << xmin << " xmax = " << xmax
+  //	    << " ymin = " << ymin << " ymax = " << ymax << std::endl;
+
   int nbinsx = 100;
   int nbinsy = 100;
 
@@ -130,22 +133,17 @@ void DrawChi2Map(const char* infilename,
       }
 
       if (val < 6.01 && val < hist->GetBinContent(xbin, ybin)) {
-	hist->Fill(xvar, yvar, val);
+	//	std::cout << "xar = " << xvar << " yvar = " << yvar
+	//		  << " val = " << val << std::endl;
+	hist->SetBinContent(xbin, ybin, val);
       }
 
     }
 
   }
 
-  for (int i=0; i<nbinsx; i++) {
-    for (int j=0; j<nbinsy; j++) {
-      if (hist->GetBinContent(i+1, j+1) > 1e10)
-	hist->SetBinContent(i+1, j+1, 0);
-    }
-  }
-
-
-  hist->Draw("cont4z");
+  hist->SetMaximum(6.01);
+  hist->Draw("cont1z");
   hist->Write();
   outfile->Close();
 }
