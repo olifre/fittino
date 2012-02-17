@@ -28,7 +28,7 @@ void DrawChi2Map(const char* infilename,
   float haveAcceptedAtLeastOne;
   float nStep;
   float chi2;
-  float LHC_chi2;
+  float LHC_Exp_chi2;
 
   float massNeutralino1;
   float massStau1;
@@ -38,29 +38,34 @@ void DrawChi2Map(const char* infilename,
   tree->SetBranchAddress("haveAcceptedAtLeastOne", &haveAcceptedAtLeastOne);
   tree->SetBranchAddress("n",&nStep);
   tree->SetBranchAddress("chi2",&chi2);
-  tree->SetBranchAddress("LHC_chi2", &LHC_chi2 );
+  tree->SetBranchAddress("LHC_Exp_chi2", &LHC_Exp_chi2 );
   tree->SetBranchAddress("O_massNeutralino1_nofit", &massNeutralino1);
   tree->SetBranchAddress("O_massStau1_nofit", &massStau1);
 
   // get minimal chi2
   float minLHCChi2 = 1e33;
-  std::cout << "getting minimal LHC_chi2 . . . " << std::endl;
-  for (int i=0; i<nentries; i++) {
-    tree->GetEntry(i);
-    std::cout << "progress: " << float((i+1))/(float)nentries*100 << "%                \r";
-    fflush(stdout);
-    if (LHC_chi2<0.) continue;
-    if( LHC_chi2 > 99. ) LHC_chi2 -= 100.;
-    if (massStau1 < massNeutralino1) continue;
+  std::cout << "getting minimal LHC_Exp_chi2 . . . " << std::endl;
+  
+  if( !strcmp(xvarname.c_str(), "P_M0") && !strcmp(yvarname.c_str(), "P_M12") ) {
+    minLHCChi2 = 0.;
+  }
+  else {
+    for (int i=0; i<nentries; i++) {
+      tree->GetEntry(i);
+      std::cout << "progress: " << float((i+1))/(float)nentries*100 << "%                \r";
+      fflush(stdout);
+      if (LHC_Exp_chi2<0.) continue;
+      if( LHC_Exp_chi2 > 99. ) LHC_Exp_chi2 -= 100.;
+      if (massStau1 < massNeutralino1) continue;
 
-    if (LHC_chi2 < minLHCChi2) {
-      if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {                
-	      minLHCChi2 = LHC_chi2;
+      if (LHC_Exp_chi2 < minLHCChi2) {
+        if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {                
+	        minLHCChi2 = LHC_Exp_chi2;
+        }
       }
     }
-  }
-    
-  std::cout << std::endl << "Minimal LHC_chi2: " << minLHCChi2 << std::endl;
+  }  
+  std::cout << std::endl << "Minimal LHC_Exp_chi2: " << minLHCChi2 << std::endl;
 
   // open output file for the contours
   TFile* outfile = new TFile(outfilename, "RECREATE");
@@ -72,7 +77,7 @@ void DrawChi2Map(const char* infilename,
   std::cout << "Getting Histogram Axis Range . . . " << std::endl;
   if( !strcmp(xvarname.c_str(), "P_M0") && !strcmp(yvarname.c_str(), "P_M12") ) {
     xmin = 0.;
-    ymin = 50.;
+    ymin = 80.;
     xmax = 2600.;
     ymax = 1250.;
   }
@@ -81,14 +86,14 @@ void DrawChi2Map(const char* infilename,
       tree->GetEntry(i);
       std::cout << "progress: " << float((i+1))/(float)nentries*100 << "%                \r";
       fflush(stdout);
-      if (LHC_chi2<0.) continue;
-      if( LHC_chi2 > 99. ) LHC_chi2 -= 100.;
+      if (LHC_Exp_chi2<0.) continue;
+      if( LHC_Exp_chi2 > 99. ) LHC_Exp_chi2 -= 100.;
 
       if (massStau1 < massNeutralino1) continue;
 
       if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {
 
-        double val = LHC_chi2 - minLHCChi2;
+        double val = LHC_Exp_chi2 - minLHCChi2;
 
         if (val < 7.0) {
 	        if (xvar < xmin) xmin = xvar;
@@ -105,8 +110,8 @@ void DrawChi2Map(const char* infilename,
   //  std::cout << "Axis ranges: xmin = " << xmin << " xmax = " << xmax
   //	    << " ymin = " << ymin << " ymax = " << ymax << std::endl;
 
-  int nbinsx = 100;
-  int nbinsy = 100;
+  int nbinsx = 80;
+  int nbinsy = 80;
 
   TH2F* hist = new TH2F("hist", "",
 			nbinsx, xmin, xmax,
@@ -120,22 +125,22 @@ void DrawChi2Map(const char* infilename,
       hExcl->SetBinContent(i+1,j+1, -10.);
     }
   }
-  std::cout << "Fill histogram with LHC_chi2 profile " << std::endl;
+  std::cout << "Fill histogram with LHC_Exp_chi2 profile " << std::endl;
   for (int i=0; i<nentries; i++) {
     tree->GetEntry(i);
     std::cout << "progress: " << float((i+1))/(float)nentries*100 << "%                \r";
     fflush(stdout);
-    if (LHC_chi2<0.) continue;
-    if( LHC_chi2 > 99. ) LHC_chi2 -= 100.;
+    if (LHC_Exp_chi2<0.) continue;
+    if( LHC_Exp_chi2 > 99. ) LHC_Exp_chi2 -= 100.;
 
     if (massStau1 < massNeutralino1) continue;
 
     if (nStep > 0 && haveAcceptedAtLeastOne > 0.5) {
 
-      double val = LHC_chi2 - minLHCChi2;
-
+      double val = LHC_Exp_chi2 - minLHCChi2;
       int xbin = -1;
       int ybin = -1;
+
 
       for (int ibin=0; ibin<nbinsx; ibin++) {
 	float xlow = hist->GetXaxis()->GetBinLowEdge(ibin+1);
@@ -151,27 +156,41 @@ void DrawChi2Map(const char* infilename,
 	}
       }
 
-      if (val < 7.0 && val < hist->GetBinContent(xbin, ybin)) {
-	//	std::cout << "xar = " << xvar << " yvar = " << yvar
-	//		  << " val = " << val << std::endl;
-	hist->SetBinContent(xbin, ybin, val);
+      if (/*val < 7.0 &&*/ val < hist->GetBinContent(xbin, ybin)) {
+	      hist->SetBinContent(xbin, ybin, val);
       }
-      if( val < 5.99 ) {
-        hExcl->SetBinContent(xbin,ybin, 5.);
-      }
-
     }
 
+  }
+  
+  
+  for( int i = 1; i < nbinsx; ++i ) {
+    for( int j = 1; j < nbinsy; ++j ) {
+      double m0 = hist->GetXaxis()->GetBinCenter(i);
+      double m12 = hist->GetYaxis()->GetBinCenter(j);
+      if( hist->GetBinContent(i,j) > 1.e9 ) {
+        if( m0 > 1000. && m12 > 800 ) {
+          hist->SetBinContent(i,j,1.e-10);
+        }
+        else {
+          hist->SetBinContent(i,j,-10.);
+        }
+      }
+      if( hist->GetBinContent(i,j) > 0. && hist -> GetBinContent(i,j) < minLHCChi2 + 5.99 ) {
+        hExcl->SetBinContent( i, j, 5. ); 
+      }
+    }
   }
   std::cout << std::endl;
   TCanvas canvas("canvas","canvas");
   canvas.SetBorderMode(0);
-  hist->SetMaximum(7.0);
+  //hist->SetMaximum(7.0);
+  hist->GetZaxis()->SetRangeUser(0., hist->GetMaximum()+1.);
   hist->Draw("cont1z");
   hExcl->Draw("cont2same");
-  canvas.Print("LHC_chi2.pdf");
-  canvas.Print("LHC_chi2.eps");
-  canvas.Print("LHC_chi2.png");
+  canvas.Print("LHC_Exp_chi2.pdf");
+  canvas.Print("LHC_Exp_chi2.eps");
+  canvas.Print("LHC_Exp_chi2.png");
   hist->Write();
   hExcl->Write();
   outfile->Close();
