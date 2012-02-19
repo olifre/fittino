@@ -176,7 +176,7 @@ void DrawChi2Map(const char* infilename,
           hist->SetBinContent(i,j,-10.);
         }
       }
-      if( hist->GetBinContent(i,j) >= 0. && hist -> GetBinContent(i,j) < minLHCChi2 + 5.99 ) {
+      if( hist->GetBinContent(i,j) >= 0. && hist -> GetBinContent(i,j) < minLHCChi2 + 2.7 ) {
         hExcl->SetBinContent( i, j, 5. ); 
       }
     }
