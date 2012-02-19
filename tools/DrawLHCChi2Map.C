@@ -79,7 +79,7 @@ void DrawChi2Map(const char* infilename,
     xmin = 0.;
     ymin = 80.;
     xmax = 2600.;
-    ymax = 1250.;
+    ymax = 700.;
   }
   else {
     for (int i=0; i<nentries; i++) {
@@ -110,8 +110,8 @@ void DrawChi2Map(const char* infilename,
   //  std::cout << "Axis ranges: xmin = " << xmin << " xmax = " << xmax
   //	    << " ymin = " << ymin << " ymax = " << ymax << std::endl;
 
-  int nbinsx = 80;
-  int nbinsy = 80;
+  int nbinsx = 100;
+  int nbinsy = 100;
 
   TH2F* hist = new TH2F("hist", "",
 			nbinsx, xmin, xmax,
@@ -128,7 +128,7 @@ void DrawChi2Map(const char* infilename,
   std::cout << "Fill histogram with LHC_Exp_chi2 profile " << std::endl;
   for (int i=0; i<nentries; i++) {
     tree->GetEntry(i);
-    std::cout << "progress: " << float((i+1))/(float)nentries*100 << "%                \r";
+    if( (i+1)%100000 == 0 ) std::cout << "progress: " << float((i+1))/(float)nentries*100 << "%                \r";
     fflush(stdout);
     if (LHC_Exp_chi2<0.) continue;
     if( LHC_Exp_chi2 > 99. ) LHC_Exp_chi2 -= 100.;
@@ -164,19 +164,19 @@ void DrawChi2Map(const char* infilename,
   }
   
   
-  for( int i = 1; i < nbinsx; ++i ) {
-    for( int j = 1; j < nbinsy; ++j ) {
+  for( int i = 1; i <= nbinsx; ++i ) {
+    for( int j = 1; j <= nbinsy; ++j ) {
       double m0 = hist->GetXaxis()->GetBinCenter(i);
       double m12 = hist->GetYaxis()->GetBinCenter(j);
       if( hist->GetBinContent(i,j) > 1.e9 ) {
-        if( m0 > 1000. && m12 > 800 ) {
+        if( m0 > 1000. && m12 > 500 ) {
           hist->SetBinContent(i,j,1.e-10);
         }
         else {
           hist->SetBinContent(i,j,-10.);
         }
       }
-      if( hist->GetBinContent(i,j) > 0. && hist -> GetBinContent(i,j) < minLHCChi2 + 5.99 ) {
+      if( hist->GetBinContent(i,j) >= 0. && hist -> GetBinContent(i,j) < minLHCChi2 + 5.99 ) {
         hExcl->SetBinContent( i, j, 5. ); 
       }
     }
