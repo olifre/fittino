@@ -13,7 +13,8 @@ FILE=$1
 TMPFILESUFFIX=tmp
 
 STARTINFO=`cat -n $FILE | grep "Block SPhenoINFO" | awk '{ print $1}'`
-AFTERINFO=`cat -n $FILE | grep "Block MODSEL" | awk '{ print $1}'`
+AFTERINFO=`cat -n $FILE | grep "Block MODSEL" | awk '{ print $1}'`  # this assumes certain block order
+AFTERINFO=`expr $STARTINFO + 3`                                     # this instead assumes certain block length (would be better to search for beginning of next block)
 ENDINFO=`expr $AFTERINFO - 1`
 
 sed "$STARTINFO,$ENDINFO d" $FILE > $FILE.${TMPFILESUFFIX}1
