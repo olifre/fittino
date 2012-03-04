@@ -1218,6 +1218,9 @@ void Fittino::calculateTreeLevelValues(int nthrows)
    bool par_already_found;
 
 
+   if (!yyUseGivenStartValues){
+
+
    SmearedInput* smearedinput = new SmearedInput(fInput);
 
    for (int i = 0; i < nthrows; i++) {
@@ -1311,6 +1314,8 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 
    delete smearedinput;
 
+
+   }
 
    // look at given observables, decide which parameters can be fitted, ask 
    // user for list of parameters to be fitted
@@ -4635,6 +4640,15 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        return;        
      }
 
+     if (yyFitModel==MSSM){
+       ofstream file;
+       file.open("SPheno.spc",ios::app);
+       file<<"Block MODSEL  # Model selection"<<endl;
+       file<<"1    0    # MSSM"<<endl;
+       file<<"3    0    # MSSM particle content"<<endl;	
+       file.close();
+     }
+     
      // Some calculators cannot digest non-standard SLHA blocks.
      // If needed, create a spectrum file without SPheno specific blocks.
      // The output file is called SPheno.spc.stdslha
@@ -6543,8 +6557,9 @@ void WriteLesHouches(double* x)
       //  cout << "writeLesHouches: local_mu = "<< local_mu << endl;
 
       LesHouchesOutfile << "BLOCK MODSEL" << endl;
-      if (yyFitModel == MSSM) 
-	 LesHouchesOutfile << "    1  0 # MSSM particle content" << endl;
+      if (yyFitModel == MSSM) {
+	 LesHouchesOutfile << "    1  0 # General MSSM " << endl;
+	 LesHouchesOutfile << "    3  0 # MSSM particle content" << endl;}
       else if (yyFitModel == NMSSM) 
 	 LesHouchesOutfile << "    3  1 # NMSSM particle content" << endl;
 
