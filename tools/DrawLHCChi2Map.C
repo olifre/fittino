@@ -131,7 +131,7 @@ void DrawChi2Map(const char* infilename,
     if( (i+1)%100000 == 0 ) std::cout << "progress: " << float((i+1))/(float)nentries*100 << "%                \r";
     fflush(stdout);
     if (LHC_Exp_chi2<0.) continue;
-    if( LHC_Exp_chi2 > 99. ) LHC_Exp_chi2 -= 100.;
+    //if( LHC_Exp_chi2 > 99. ) LHC_Exp_chi2 -= 100.;
 
     if (massStau1 < massNeutralino1) continue;
 
