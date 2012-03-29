@@ -349,7 +349,7 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 	  contour->SetFillStyle(fstyles[iFile]);
 	  contour->SetFillColor(colors2a[iFile]);
 	  contour->SetLineColor(colors2b[iFile]);
-	  if (contour->GetN()>30) {
+	  if (contour->GetN()>7) {
 	    contour->Draw("fsame");
 	  }
 	  iContour++;
@@ -397,7 +397,7 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 	  contour->SetFillStyle(fstyles[iFile]);
 	  contour->SetFillColor(colors2a[iFile]);
 	  contour->SetLineColor(colors2b[iFile]);
-	  if (contour->GetN()>30) {
+	  if (contour->GetN()>7) {
 	    cout << "drawing contour " << contourName << endl;
 	    contour->Draw("same");
 	  }
