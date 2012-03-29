@@ -621,36 +621,6 @@ void MakeMarkovChainContours2D (bool bayes = false,
 			     << endl;
 	      
 	  
-	      
-	      cout << variables[fVariable] << " " << variables[sVariable] << " " 
-		   << fVarMax << " " << fVarMin << " " << sVarMax << " " << sVarMin << endl;
-
-	      // loop over bins in the variables
-	      if (doublelogplot) {
-		sVarMin = TMath::Log10(sVarMin);
-		fVarMin = TMath::Log10(fVarMin);
-		sVarMax = TMath::Log10(sVarMax);
-		fVarMax = TMath::Log10(fVarMax);
-	      }
-	      double sWidth = TMath::Abs(-sVarMin+sVarMax);
-	      double fWidth = TMath::Abs(-fVarMin+fVarMax);
-	      sVarMin = sVarMin-3./(double)(nBins-6)*sWidth;
-	      sVarMax = sVarMax+3./(double)(nBins-6)*sWidth;
-	      fVarMin = fVarMin-3./(double)(nBins-6)*fWidth;
-	      fVarMax = fVarMax+3./(double)(nBins-6)*fWidth;
-
-	      if (variables[sVariable] != "P_A0" && !doublelogplot) {
-		if (sVarMin < 0) {
-		  sVarMin = -2*sVarMax/(nBins-2);
-		}
-	      }
-
-	      if (variables[fVariable] != "P_A0" && !doublelogplot) {
-		if (fVarMin < 0) {
-		  fVarMin = -2*fVarMax/(nBins-2);
-		}
-	      }
-
 	      if (variables[fVariable]=="P_TanBeta") {
 		if (fVarMax>100.) fVarMax=100.;
 		if (fVarMin<0.  ) fVarMin=0.;   
@@ -684,7 +654,35 @@ void MakeMarkovChainContours2D (bool bayes = false,
 		if (sVarMax>10000. ) sVarMax=10000.;	
 		if (sVarMin<-10000.) sVarMin=-10000.;   
 	      }
+	      
+	      cout << variables[fVariable] << " " << variables[sVariable] << " " 
+		   << fVarMax << " " << fVarMin << " " << sVarMax << " " << sVarMin << endl;
 
+	      // loop over bins in the variables
+	      if (doublelogplot) {
+		sVarMin = TMath::Log10(sVarMin);
+		fVarMin = TMath::Log10(fVarMin);
+		sVarMax = TMath::Log10(sVarMax);
+		fVarMax = TMath::Log10(fVarMax);
+	      }
+	      double sWidth = TMath::Abs(-sVarMin+sVarMax);
+	      double fWidth = TMath::Abs(-fVarMin+fVarMax);
+	      sVarMin = sVarMin-3./(double)(nBins-6)*sWidth;
+	      sVarMax = sVarMax+3./(double)(nBins-6)*sWidth;
+	      fVarMin = fVarMin-3./(double)(nBins-6)*fWidth;
+	      fVarMax = fVarMax+3./(double)(nBins-6)*fWidth;
+
+	      if (variables[sVariable] != "P_A0" && !doublelogplot) {
+		if (sVarMin < 0) {
+		  sVarMin = -2*sVarMax/(nBins-2);
+		}
+	      }
+
+	      if (variables[fVariable] != "P_A0" && !doublelogplot) {
+		if (fVarMin < 0) {
+		  fVarMin = -2*fVarMax/(nBins-2);
+		}
+	      }
 
 	      string thisHistName = "thisHist_";
 	      thisHistName = thisHistName + variables[sVariable] + "_" + variables[fVariable];

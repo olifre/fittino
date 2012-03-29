@@ -230,7 +230,7 @@ bool Skimming::Chi2Cut(){
 
   double chi2=leaves["chi2"];
     
-  if (chi2<0 ||chi2>absMaxChi2 || chi2<absMinChi2) return true;
+  if ( ( absMaxChi2>=0 && chi2>absMaxChi2 ) || ( absMinChi2>=0 && chi2<absMinChi2 )) return true;
 
   return false;
 
