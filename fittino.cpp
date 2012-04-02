@@ -13288,8 +13288,8 @@ void Fittino::markovChain ()
       vector < float > sum;
       vector < float > sum2;
       vector < float > variance;
-      vector < vector < float > > data;
-      vector < float > point;
+      //vector < vector < float > > data; //moved  further below
+      //vector < float > point;      //moved further
       int nVar  = x.size();
       int nData = 0;
       bool firstData = 1;
@@ -13323,6 +13323,11 @@ void Fittino::markovChain ()
       _widthNtuple[0] = globalIter;
       for( int iVar = 0; iVar < nVar; iVar++ ) _widthNtuple[iVar+1] = vm[iVar];
       widthNtuple->Fill( _widthNtuple );
+
+
+      vector < vector < float > > data; 
+      vector < float > point;    
+
 
       while (1)
       {
