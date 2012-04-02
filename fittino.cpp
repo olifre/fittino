@@ -13288,8 +13288,8 @@ void Fittino::markovChain ()
       vector < float > sum;
       vector < float > sum2;
       vector < float > variance;
-      //vector < vector < float > > data; //moved  further below
-      //vector < float > point;      //moved further
+      vector < vector < float > > data; 
+      vector < float > point;      
       int nVar  = x.size();
       int nData = 0;
       bool firstData = 1;
@@ -13301,10 +13301,10 @@ void Fittino::markovChain ()
 	parName2 += ":" + yyFittedVec[i].name;
 	for (unsigned int j = i; j < yyFittedVec.size(); j++ ) parName += ":" + yyFittedVec[i].name + "_" + yyFittedVec[j].name;
       }
-      TNtuple *correlationNtuple = new TNtuple( "correlationNtuple", "Correlations", parName.c_str() );
-      TNtuple *widthNtuple = new TNtuple( "widthNtuple", "Proposal_widths", parName2.c_str() );
-      float _correlationNtuple[17] = {0.};
-      float _widthNtuple[6] = {0.};
+      //      TNtuple *correlationNtuple = new TNtuple( "correlationNtuple", "Correlations", parName.c_str() );
+      //      TNtuple *widthNtuple = new TNtuple( "widthNtuple", "Proposal_widths", parName2.c_str() );
+      //      float _correlationNtuple[17] = {0.};
+      //      float _widthNtuple[6] = {0.};
 
      //-------------------------------------------
  
@@ -13320,13 +13320,11 @@ void Fittino::markovChain ()
       }
 
       // Fill the width ntuples with the starting values
-      _widthNtuple[0] = globalIter;
-      for( int iVar = 0; iVar < nVar; iVar++ ) _widthNtuple[iVar+1] = vm[iVar];
-      widthNtuple->Fill( _widthNtuple );
+      //      _widthNtuple[0] = globalIter;
+      //      for( int iVar = 0; iVar < nVar; iVar++ ) _widthNtuple[iVar+1] = vm[iVar];
+      //      widthNtuple->Fill( _widthNtuple );
 
 
-      vector < vector < float > > data; 
-      vector < float > point;    
 
 
       while (1)
@@ -13355,7 +13353,7 @@ void Fittino::markovChain ()
 		   }
 		 }
 
-		 _widthNtuple[0] = globalIter;
+		 //		 _widthNtuple[0] = globalIter;
 		 for( int iVar = 0; iVar < nVar; iVar++ )
 		   {
 		     variance[iVar] = fabs( sum2[iVar] - sum[iVar]*sum[iVar] );
@@ -13366,9 +13364,9 @@ void Fittino::markovChain ()
 //		     
 //		     // For the first chain, as the widths are small, don't reduce the variance
 //		     if( firstData )  vm[iVar] = sqrt( variance[iVar] );
-		     _widthNtuple[iVar+1] = vm[iVar];
+//		     _widthNtuple[iVar+1] = vm[iVar];
 		   }
-		 widthNtuple->Fill( _widthNtuple );
+		 //		 widthNtuple->Fill( _widthNtuple );
 	       }
 	     
 	     // Adapt the correlation
@@ -13378,14 +13376,14 @@ void Fittino::markovChain ()
 		 computeCovMatrix( vm, data );
 		 // Fill the ntuple with info on correlation
 		 int index = 1;
-		 _correlationNtuple[0] = globalIter;
+		 //		 _correlationNtuple[0] = globalIter;
 		 for ( unsigned int iVarx = 0; iVarx < x.size(); iVarx++){
 		   for ( unsigned int iVary = iVarx; iVary < x.size(); iVary++){
-		     _correlationNtuple[index] = corM[iVarx][iVary];
+		     //		     _correlationNtuple[index] = corM[iVarx][iVary];
 		     index++;
 		   }
 		 }
-		 correlationNtuple->Fill( _correlationNtuple );
+		 //		 correlationNtuple->Fill( _correlationNtuple );
 	       }
 	     firstData = 0;
 	     nData = 0;
