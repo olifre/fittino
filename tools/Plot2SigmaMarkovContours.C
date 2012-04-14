@@ -24,12 +24,13 @@
 #include "string"
 #include "vector"
 #include "TGaxis.h"
+#include "TMarker.h"
 
 using namespace std;
 
 void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 			       const bool   doAlsoSM = false,
-			       const int    drawCross = 0,
+			       const int    drawCross = -1,
 			       const string logoPath = "",
 			       const string nameTag = "",
 			       const string file1="file1",
@@ -436,7 +437,7 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 	}
 	iContour = 0;
 	// eventually draw the cross
-	if (iFile == drawCross) {
+	if (iFile == drawCross || drawCross < 0) {
 	  string crossName1 = "bestFitPointLine_"
 	    + variables[iVariable2] + "_" 
 	    + variables[iVariable1] + "_1"; 
@@ -446,8 +447,12 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 	  TGraph* crossLine1 = (TGraph*)files[iFile]->Get(crossName1.c_str());
 	  TGraph* crossLine2 = (TGraph*)files[iFile]->Get(crossName2.c_str());
 	  if (crossLine1 && crossLine2) {
-	    crossLine1->Draw("same");
-	    crossLine2->Draw("same");
+	    TMarker* thisMarker = new TMarker(crossLine1->GetMean(1),crossLine1->GetMean(2),29-iFile);
+	    thisMarker->SetMarkerSize(2.5);
+	    thisMarker->SetMarkerColor(kBlack);
+	    thisMarker->Draw();
+	    //	    crossLine1->Draw("same");
+	    //	    crossLine2->Draw("same");
 	  }
 	}
       }
