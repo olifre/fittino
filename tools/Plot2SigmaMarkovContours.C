@@ -329,6 +329,10 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
       //      TLegend *legend = new TLegend(0.62,0.84,0.96,0.99,"");
       //TLegend *legend = new TLegend(0.60,0.15,0.94,0.40,"");
       legend->SetTextSize(0.03);
+      TLegend *legendBF = new TLegend(0.77,0.65,0.98,0.75,"");
+      legendBF->SetTextSize(0.03);
+      legendBF->SetFillStyle(0);
+      legendBF->SetBorderSize(0);
 
       // loop over the existing files and draw the contour planes
       for (int iFile = 0; iFile < nFiles; iFile++) {
@@ -436,6 +440,7 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 	  iContour++;
 	}
 	iContour = 0;
+
 	// eventually draw the cross
 	if (iFile == drawCross || drawCross < 0) {
 	  string crossName1 = "bestFitPointLine_"
@@ -451,6 +456,8 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 	    thisMarker->SetMarkerSize(2.5);
 	    thisMarker->SetMarkerColor(kBlack);
 	    thisMarker->Draw();
+	    string thisLegendEntry = " " + fileNameTags[iFile] + " Best Fit";
+	    legendBF->AddEntry(thisMarker,thisLegendEntry.c_str(),"p");
 	    //	    crossLine1->Draw("same");
 	    //	    crossLine2->Draw("same");
 	  }
@@ -500,6 +507,7 @@ void Plot2SigmaMarkovContours (const string model = "mSUGRA",
 
       // Draw the legend
       legend->Draw("same");      
+      legendBF->Draw("same");      
 
       // write output histogram
       string outputName = "markovChain2D2sContours_" 
