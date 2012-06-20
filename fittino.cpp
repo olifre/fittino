@@ -31,6 +31,7 @@ email                : philip.bechtle@desy.de, peter.wienemann@desy.de
 #include <time.h>
 #include <yy.h>
 #include <fstream>
+#include <sstream>
 #include <stdio.h>
 #include <leshouches.h>
 #include <sys/wait.h>
@@ -497,7 +498,34 @@ int call_HiggsBounds(int nH, double* parameterVector)
   }
 }
 
+string GetParameter(string par){
+
+
+  double d;
+  stringstream ss;
+  string s;
+
+  if (FindInFixed(par)) 
+    d=ReturnFixedValue(par)->value;
+  else if (FindInFitted(par)) 
+    d=ReturnFittedValue(par)->value;
+  else if (FindInUniversality(par)) 
+    d=ReturnFittedValue(ReturnUniversality(par)->universality)->value;
+  else {
+    cerr<<"Using hdecay without "<<par<<" given as parameter is not possible!"<<endl; 
+    exit(EXIT_FAILURE);
+  }
+
+  ss<<d;
+  ss>>s;
+  return s;
+
+}
+
+
 void hdecayINfile()	{
+
+    
 	
 	vector<string>	Input;
 
@@ -574,13 +602,13 @@ void hdecayINfile()	{
 	InputVal.push_back("150");
 	InputVal.push_back("1");
 	InputVal.push_back("0.1176");
-	InputVal.push_back("0.105");
+	InputVal.push_back(GetParameter("massStrange"));
 	InputVal.push_back("1.27");
 	InputVal.push_back("4.19D0");
 	InputVal.push_back("173.2");
 	InputVal.push_back("1.77682");
-	InputVal.push_back("0.105658366");
-	InputVal.push_back("128.962");
+	InputVal.push_back(GetParameter("massMuon"));
+	InputVal.push_back(GetParameter("alphaem"));
 	InputVal.push_back("-1e12");
 	InputVal.push_back("2.08856");
 	InputVal.push_back("-1e12");
@@ -4969,15 +4997,11 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    }
 
    if (yyUseHDecay){
-
-     cout<<"CALL HDECAY"<<endl;
-     cout<<"HDECAT PATH is "<<yyHiggsBRCalculatorPath<<endl;
-
-      if (FindInFixed("bla")) {
-	cout<<"FOUND BLA, VALUE IS: "<<ReturnFixedValue("bla")->value<<endl;
-      }
-
-
+     
+     if (yyVerbose){
+       cout<<"Calling HDECAY"<<endl;
+     }
+     
      hdecayINfile();
 
      rc=callHDecay();
