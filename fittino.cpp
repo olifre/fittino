@@ -55,7 +55,9 @@ email                : philip.bechtle@desy.de, peter.wienemann@desy.de
 #include <sys/unistd.h>
 
 #include "sRates.h"
+//#include "slhaea.h"
 #include "./LHC-FASER/LHC-FASER.hpp"
+//using namespace SLHAea;
 // #include <sys/types.h>
 extern char **environ;
 
@@ -141,6 +143,7 @@ int callSoftSusy();
 int callSUSYHIT();
 int callFeynHiggs();
 int callSuperIso();
+int callHDecay();
 int WriteSUSYHITInputFile(int);
 int callNPFitter();
 int checkcall(char programpath[1024], unsigned int runtime);
@@ -493,6 +496,236 @@ int call_HiggsBounds(int nH, double* parameterVector)
     return HBresult;
   }
 }
+
+void hdecayINfile()	{
+	
+	vector<string>	Input;
+
+	Input.push_back("SLHAIN"); 
+	Input.push_back("SLHAOUT"); 
+	Input.push_back("HIGGS");   
+	Input.push_back("SM4");     
+	Input.push_back("FERMPHOB");
+	Input.push_back("MODEL");
+	Input.push_back("TGBET");   
+	Input.push_back("MABEG");    
+	Input.push_back("MAEND");   
+	Input.push_back("NMA");     
+	Input.push_back("ALS(MZ)");  
+	Input.push_back("MSBAR(2)"); 
+	Input.push_back("MC");     
+	Input.push_back("MB");    
+	Input.push_back("MT");  
+	Input.push_back("MTAU"); 
+	Input.push_back("MMUON");
+	Input.push_back("1/ALPHA");
+	Input.push_back("GF");  
+	Input.push_back("GAMW");
+	Input.push_back("GAMZ");
+	Input.push_back("MZ"); 
+	Input.push_back("MW");
+	Input.push_back("VUS");
+	Input.push_back("VCB");
+	Input.push_back("VUB/VCB");
+	Input.push_back("***** 4TH GENERATION *****");
+	Input.push_back("MTP");
+	Input.push_back("MBP");
+	Input.push_back("MNUP");
+	Input.push_back("MEP");
+	Input.push_back("**************************");
+	Input.push_back("SUSYSCALE");
+	Input.push_back("MU");
+	Input.push_back("M2");
+	Input.push_back("MGLUINO");
+	Input.push_back("MSL1");
+	Input.push_back("MER1");
+	Input.push_back("MQL1");
+	Input.push_back("MUR1");
+	Input.push_back("MDR1");
+	Input.push_back("MSL");
+	Input.push_back("MER");
+	Input.push_back("MSQ");
+	Input.push_back("MUR");
+	Input.push_back("MDR");
+	Input.push_back("AL");
+	Input.push_back("AU");
+	Input.push_back("AD");
+	Input.push_back("NNLO (M)");
+	Input.push_back("ON-SHELL");
+	Input.push_back("ON-SH-WZ");
+	Input.push_back("IPOLE");
+	Input.push_back("OFF-SUSY");
+	Input.push_back("INDIDEC");
+	Input.push_back("NF-GG");
+	Input.push_back("IGOLD");
+	Input.push_back("MPLANCK");
+	Input.push_back("MGOLD"); 
+
+	vector<string>	InputVal;
+	
+	InputVal.push_back("1");
+	InputVal.push_back("1");
+	InputVal.push_back("5");
+	InputVal.push_back("0");
+	InputVal.push_back("0");
+	InputVal.push_back("1");
+	InputVal.push_back("000000000");
+	InputVal.push_back("50");
+	InputVal.push_back("150");
+	InputVal.push_back("1");
+	InputVal.push_back("0.1176");
+	InputVal.push_back("0.105");
+	InputVal.push_back("1.27");
+	InputVal.push_back("4.19D0");
+	InputVal.push_back("173.2");
+	InputVal.push_back("1.77682");
+	InputVal.push_back("0.105658366");
+	InputVal.push_back("128.962");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("2.08856");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("91.1876");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("0.2255");
+	InputVal.push_back("0.0413");
+	InputVal.push_back("0.09539");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("650.");
+	InputVal.push_back("600.");
+	InputVal.push_back("600.");
+	InputVal.push_back("600.");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("0");	//vorher war der Wert auf 1
+	InputVal.push_back("0");
+	InputVal.push_back("0");
+	InputVal.push_back("0");
+	InputVal.push_back("0");
+	InputVal.push_back("0");
+	InputVal.push_back("5");
+	InputVal.push_back("0");
+	InputVal.push_back("2.4D18");
+	InputVal.push_back("1.D-13");
+
+	vector<bool>	SetVal;
+	
+	SetVal.push_back(true);		//SLHAIN
+	SetVal.push_back(true);		//SLHAOUT
+	SetVal.push_back(true);		//HIGGS
+	SetVal.push_back(true);		//SM4
+	SetVal.push_back(true);		//FERMPHOB
+	SetVal.push_back(true);		//MODEL
+	SetVal.push_back(false);	//TGBET
+	SetVal.push_back(false);	//MABEG
+	SetVal.push_back(false);	//MAEND
+	SetVal.push_back(false);	//NMA
+	SetVal.push_back(false);	//ALS(MZ)
+	SetVal.push_back(true);		//MSBAR(2)
+	SetVal.push_back(true);		//MC
+	SetVal.push_back(false);	//MB
+	SetVal.push_back(false);	//MT
+	SetVal.push_back(false);	//MTAU
+	SetVal.push_back(true);		//MMUON
+	SetVal.push_back(true);		//1/ALPHA	
+	SetVal.push_back(false);	//GF
+	SetVal.push_back(true);		//GAMW
+	SetVal.push_back(true);		//GAMZ
+	SetVal.push_back(false);	//MZ
+	SetVal.push_back(false);	//MW
+	SetVal.push_back(true);		//VUS
+	SetVal.push_back(true);		//VCB
+	SetVal.push_back(true);		//VUB/VCB
+	SetVal.push_back(false);	//********
+	SetVal.push_back(false);	//MTP
+	SetVal.push_back(false);	//MBP
+	SetVal.push_back(false);	//MNUP
+	SetVal.push_back(false);	//MEP
+	SetVal.push_back(false);	//********
+	SetVal.push_back(false);	//SUSYSCALE
+	SetVal.push_back(false);	//MU
+	SetVal.push_back(false);	//M2
+	SetVal.push_back(false);	//MGLUINO
+	SetVal.push_back(false);	//MSL1
+	SetVal.push_back(false);	//MER1
+	SetVal.push_back(false);	//MQL1
+	SetVal.push_back(false);	//MUR1	
+	SetVal.push_back(false);	//MDR1
+	SetVal.push_back(false);	//MSL
+	SetVal.push_back(false);	//MER
+	SetVal.push_back(false);	//MSQ
+	SetVal.push_back(false);	//MUR
+	SetVal.push_back(false);	//MDR
+	SetVal.push_back(false);	//AL
+	SetVal.push_back(false);	//AU
+	SetVal.push_back(false);	//AD
+	SetVal.push_back(true);		//NNLO (M)
+	SetVal.push_back(true);		//ON-SHELL
+	SetVal.push_back(true);		//ON-SH-WZ
+	SetVal.push_back(true);		//IPOLE
+	SetVal.push_back(true);		//OFF-SUSY
+	SetVal.push_back(true);		//INDIDEC
+	SetVal.push_back(true);		//NF-GG
+	SetVal.push_back(true);		//IGOLD
+	SetVal.push_back(true);		//MPLANCK
+	SetVal.push_back(true);		//MGOLD
+	
+	int l=0;
+	fstream HdecayIN;
+	
+	HdecayIN.open("hdecay.in", ios::in | ios::out | ios::trunc);
+	for(unsigned int i=0; i<Input.size(); i++)	
+	{
+		l=9-strlen(Input[i].c_str());
+		HdecayIN << Input[i];
+		if(l>=0)	
+		{
+			for(int j=0;j<l;j++)	
+			{
+				HdecayIN << " ";
+			}
+			HdecayIN << "= " ;
+			if (SetVal[i]) HdecayIN << InputVal[i] << endl;
+			else HdecayIN << endl;
+		}
+		else	HdecayIN << endl;
+	}
+	HdecayIN.close();
+}
+
+// void swapBlock(string fName, string blockName)	{
+	
+// 	ifstream ifstr_in("slha.out");
+// 	ifstream ifstr_out(fName.c_str());
+	
+//         Coll coll_in(ifstr_in);
+// 	Coll coll_out(ifstr_out);
+	
+// 	ifstr_in.close();
+// 	ifstr_out.close();
+	
+// 	coll_in.at(blockName).swap(coll_out.at(blockName));
+	
+// 	ofstream ofstr(fName.c_str());
+// 	ofstr << coll_out;
+// 	ofstr.close();	
+// }
+
 
 double ScanForHiggsLimit( int nH, double* parameterVector ) {
 
@@ -4735,6 +4968,43 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      system(command.c_str());
    }
 
+   if (yyUseHDecay){
+
+     cout<<"CALL HDECAY"<<endl;
+     cout<<"HDECAT PATH is "<<yyHiggsBRCalculatorPath<<endl;
+
+      if (FindInFixed("bla")) {
+	cout<<"FOUND BLA, VALUE IS: "<<ReturnFixedValue("bla")->value<<endl;
+      }
+
+
+     hdecayINfile();
+
+     rc=callHDecay();
+
+     if (rc == 2) {
+       if (yyVerbose){
+       cout << "SIGINT received in HDecay, exiting" << endl;
+       }
+       exit (2);
+     }
+     if (rc > 0) {
+       cerr << "Exiting fitterFCN because of problem in HDecay" << endl;
+       f = 111111111111.;
+       if (yyVerbose){
+       cout << " f = " << f << endl;
+       }
+       return;        
+     }
+	// swapBlock("SPheno.spc", "25");
+	// swapBlock("SPheno.spc", "35");
+	// swapBlock("SPheno.spc", "36");
+	// swapBlock("SPheno.spc", "37");
+
+   }
+
+
+
    if (yyFlavourCalculator == SUPERISO) {
      if (yyVerbose){
      cout << yyDashedLine << endl;
@@ -6303,6 +6573,7 @@ int callFeynHiggs()
 }
 
 
+
 // ************************************************************
 // callSuperIso
 // ************************************************************
@@ -6388,6 +6659,101 @@ int callSuperIso()
    return_value = WEXITSTATUS(status);
    if (yyVerbose){
      cout << "SuperIso returned with return value " << return_value << endl;
+   }
+
+
+   if (return_value > 0) {
+      return(return_value);
+   }
+
+   return 0;
+
+}
+
+
+int callHDecay() 
+{
+   int return_value;
+
+   int pid = -2;
+   int status = 0;
+   int child_pid = 0;
+   // printf("Process %d about to fork a child.\n", parent_pid  );
+
+   /*
+    * Get a child process.
+    */
+   if ((pid = fork()) < 0) {
+      perror("fork");
+      exit(1);
+      /* NOTE: perror() produces a short  error  message  on  the  standard
+	 error describing the last error encountered during a call to
+	 a system or library function.
+	 */
+   }
+
+   if (pid == 0) {
+      /*
+       * The child executes the code inside this if.
+       */
+     
+      child_pid = getpid();
+      char *argv[3];
+      argv[0] = "hdecay";
+      if( yyCalculator == SOFTSUSY ) {
+	system("cp susyhit_slha.out slha.in");
+      }
+      else {
+	system("cp SPheno.spc slha.in");
+      }
+      argv[1] = 0;
+      argv[2] = 0;
+
+      // printf("Process %d has forked a child process with pid %d\n", parent_pid, child_pid  );
+      if (!yyHiggsBRCalculatorPath.compare("")) {
+	 return_value = execve("./hdecay", argv, environ );
+      }
+      else {
+	 return_value = execve(yyHiggsBRCalculatorPath.c_str(), argv, environ );
+      }
+      //    for ( unsigned int i = 0; i < 5; i++ ) {
+      //      sleep (1);
+      //      cout << "child is doing nothing but making noise..." << endl;
+      //    }
+      //    return_value = 250;
+      //    sleep (15);
+      exit (return_value);
+   }
+   else {
+      /*
+       * The parent executes this
+       */
+      int spheno_counter = 0;
+      while (1) {
+	 spheno_counter++;
+	 //      printf("waiting for SPheno with status = %d and pid = %d\n",status, pid);
+	 if (waitpid (pid, &status, WNOHANG) == pid) {
+	    // printf("child process finished, status = %d\n", WEXITSTATUS(status));
+	    // sleep (1);
+	    break;
+	 } 
+	 if ( yyMaxCalculatorTime < (float)spheno_counter/10. ) {
+	    printf("killing child process %d due to too much time\n",pid);
+	    kill (pid, 9);
+	    waitpid (-1, &status, 0);
+	    return(1);
+	 }
+	 usleep (100000);
+      }
+      // while (waitpid (-1, &status, 0) != pid) {
+      //   sleep (2);
+      //   printf("waiting for FeynHiggs with status = %d and pid = %d\n",status, pid);
+      // }
+   }
+
+   return_value = WEXITSTATUS(status);
+   if (yyVerbose){
+     cout << "HDecay returned with return value " << return_value << endl;
    }
 
 

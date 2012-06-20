@@ -44,6 +44,7 @@ CXXFLAGS          = -g -Wall -pedantic -Wno-long-long \
 
 #HBLIB             = -L/afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/HiggsBounds-1.2.0/HiggsBounds-f77/ -lHB
 HBLIB             = -L/afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/HB3.2b/HiggsBounds-f90/ -lHB
+#HBLIB             = -L/lustre/fittino/group/theorycodes/HB3.2b/HiggsBounds-f90/ -lHB
 #HBLIB             = -L/afs/naf.desy.de/user/p/pbechtle/public/HB_chisq_extension/ -lHB
 #LIBGFORTRAN       = -L/usr/lib/gcc/x86_64-redhat-linux/4.1.2/ -lgfortran
 LIBGFORTRAN       = -L/afs/naf.desy.de/group/atlas/software/lcg/contrib/gcc/4.3.2/x86_64-slc5-gcc43-opt/lib64  -lgfortran

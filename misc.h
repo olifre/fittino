@@ -118,6 +118,7 @@ using namespace std;
 enum SwitchState    { off, on };
 enum Calculator     { SPHENO, SUSPECT, SPHENO_FH, SOFTSUSY };
 enum HiggsCalculator { NOHIGGSCALCULATOR, FEYNHIGGS };
+enum HiggsBRCalculator { NOHIGGSBRCALCULATOR, HDECAY };
 enum FlavourCalculator { NOFLAVOURCALCULATOR, SUPERISO };
 enum DecayCalculator		{ SUSYHIT, NONE};
 enum RelicDensityCalculator { NORELICDENSITYCALCULATOR, MICROMEGAS };
