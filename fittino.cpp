@@ -56,9 +56,9 @@ email                : philip.bechtle@desy.de, peter.wienemann@desy.de
 #include <sys/unistd.h>
 
 #include "sRates.h"
-//#include "slhaea.h"
+#include "slhaea.h"
 #include "./LHC-FASER/LHC-FASER.hpp"
-//using namespace SLHAea;
+using namespace SLHAea;
 // #include <sys/types.h>
 extern char **environ;
 
