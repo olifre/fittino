@@ -736,23 +736,23 @@ void hdecayINfile()	{
 	HdecayIN.close();
 }
 
-// void swapBlock(string fName, string blockName)	{
+ void swapBlock(string fName, string blockName)	{
 	
-// 	ifstream ifstr_in("slha.out");
-// 	ifstream ifstr_out(fName.c_str());
+ 	ifstream ifstr_in("slha.out");
+ 	ifstream ifstr_out(fName.c_str());
 	
-//         Coll coll_in(ifstr_in);
-// 	Coll coll_out(ifstr_out);
+        Coll coll_in(ifstr_in);
+ 	Coll coll_out(ifstr_out);
 	
-// 	ifstr_in.close();
-// 	ifstr_out.close();
+ 	ifstr_in.close();
+ 	ifstr_out.close();
 	
-// 	coll_in.at(blockName).swap(coll_out.at(blockName));
+ 	coll_in.at(blockName).swap(coll_out.at(blockName));
 	
-// 	ofstream ofstr(fName.c_str());
-// 	ofstr << coll_out;
-// 	ofstr.close();	
-// }
+ 	ofstream ofstr(fName.c_str());
+ 	ofstr << coll_out;
+ 	ofstr.close();	
+}
 
 
 double ScanForHiggsLimit( int nH, double* parameterVector ) {
@@ -5020,10 +5020,10 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        }
        return;        
      }
-	// swapBlock("SPheno.spc", "25");
-	// swapBlock("SPheno.spc", "35");
-	// swapBlock("SPheno.spc", "36");
-	// swapBlock("SPheno.spc", "37");
+	 swapBlock("SPheno.spc", "25");
+	 swapBlock("SPheno.spc", "35");
+	 swapBlock("SPheno.spc", "36");
+	 swapBlock("SPheno.spc", "37");
 
    }
 
