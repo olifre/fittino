@@ -8186,6 +8186,46 @@ void WriteLesHouches(double* x)
       else {
 	LesHouchesOutfile << "    24  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
       }
+      if(yyUseHDecay) {
+      if (FindInFixed("massStrange")) {
+         LesHouchesOutfile << "   23  "<<ReturnFixedValue("massStrange")->value<<" # m_s(2 GeV), MSbar"<<endl;
+      }
+      else if (FindInFitted("massStrange")) {
+         LesHouchesOutfile << "   23  "<<x[ReturnFittedPosition("massStrange")]<<" # m_s(2 GeV), MSbar"<<endl;
+         if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+            cout << "Fitting mStrange " << x[ReturnFittedPosition("massStrange")] << endl;
+         }
+      }
+      else if (FindInUniversality("massStrange")) {
+         LesHouchesOutfile << "    23  "<<x[ReturnFittedPosition(ReturnUniversality("massStrange")->universality)]<<" # m_s(2 GeV), MSbar"<<endl;
+         if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+            cout << "fitting " << ReturnUniversality("massStrange")->universality << " instead of massStrange" << endl;
+         }
+      }
+      else {
+         LesHouchesOutfile << "    23  "<<ReturnMeasuredValue("massStrange")->value<<" # m_s(2 GeV), MSbar"<<endl;
+      }
+
+            if (FindInFixed("massMuon")) {
+        LesHouchesOutfile << "    13  "<<ReturnFixedValue("massMuon")->value<<" # mmuon"<<endl;
+      }
+      else if (FindInFitted("massMuon")) {
+        LesHouchesOutfile << "    13  "<<x[ReturnFittedPosition("massMuon")]<<" # mmuon"<<endl;
+        if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+          cout << "Fitting mMuon " << x[ReturnFittedPosition("massMuon")] << endl;
+        }
+      }
+      else if (FindInUniversality("massMuon")) {
+        LesHouchesOutfile << "    13  "<<x[ReturnFittedPosition(ReturnUniversality("massMuon")->universality)]<<" # massMuon"<<endl;
+        if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+          cout << "fitting " << ReturnUniversality("massMuon")->universality << " instead of massMuon" << endl;
+        }
+      }
+      else {
+        LesHouchesOutfile << "    13  "<<ReturnMeasuredValue("massMuon")->value<<" # mmuon"<<endl;
+      }
+      }
+
 
       if ( yyUseFullCKMMatrix ) {
 	 // VCKM
