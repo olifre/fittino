@@ -754,6 +754,22 @@ void hdecayINfile()	{
  	ofstr.close();	
 }
 
+void SwapMass(string fName)	{
+	
+	ifstream ifstr(fName.c_str());
+        Coll coll_in(ifstr);
+	ifstr.close();
+	
+	coll_in["MASS"]["25"].at(1)=coll_in["FeynHiggs"]["1"].at(1);
+	coll_in["MASS"]["35"].at(1)=coll_in["FeynHiggs"]["2"].at(1);
+	coll_in["MASS"]["36"].at(1)=coll_in["FeynHiggs"]["3"].at(1);
+	coll_in["MASS"]["37"].at(1)=coll_in["FeynHiggs"]["4"].at(1);
+	
+	ofstream ofstr(fName.c_str());
+	ofstr << coll_in;
+	ofstr.close();	
+
+}
 
 double ScanForHiggsLimit( int nH, double* parameterVector ) {
 
@@ -5002,6 +5018,8 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        cout<<"Calling HDECAY"<<endl;
      }
      
+     SwapMass("SPheno.spc");
+
      hdecayINfile();
 
      rc=callHDecay();
