@@ -736,10 +736,11 @@ void hdecayINfile()	{
 	HdecayIN.close();
 }
 
- void swapBlock(string fName, string blockName)	{
+//ReplaceBlock replaces a slha block in the file given in fNameOUT with the block from the file given in fNameIN
+void ReplaceBlock(string fNameIN, string fNameOUT, string blockName)	{
 	
- 	ifstream ifstr_in("slha.out");
- 	ifstream ifstr_out(fName.c_str());
+ 	ifstream ifstr_in(fNameIN.c_str());
+ 	ifstream ifstr_out(fNameOUT.c_str());
 	
         Coll coll_in(ifstr_in);
  	Coll coll_out(ifstr_out);
@@ -749,12 +750,12 @@ void hdecayINfile()	{
 	
  	coll_in.at(blockName).swap(coll_out.at(blockName));
 	
- 	ofstream ofstr(fName.c_str());
+ 	ofstream ofstr(fNameOUT.c_str());
  	ofstr << coll_out;
  	ofstr.close();	
 }
 
-void SwapMass(string fName)	{
+void ReplaceMass(string fName)	{
 	
 	ifstream ifstr(fName.c_str());
         Coll coll_in(ifstr);
@@ -5018,7 +5019,9 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        cout<<"Calling HDECAY"<<endl;
      }
      
-     SwapMass("SPheno.spc");
+	ReplaceMass("SPheno.spc");
+	ReplaceBlock("SPheno.spc.stdslha.fh-001.last", "SPheno.spc", "ALPHA");
+	ReplaceBlock("SPheno.spc.stdslha.fh-001.last", "SPheno.spc", "HMIX");
 
      hdecayINfile();
 
@@ -5038,10 +5041,10 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        }
        return;        
      }
-	 swapBlock("SPheno.spc", "25");
-	 swapBlock("SPheno.spc", "35");
-	 swapBlock("SPheno.spc", "36");
-	 swapBlock("SPheno.spc", "37");
+	 ReplaceBlock("slha.out", "SPheno.spc", "25");
+	 ReplaceBlock("slha.out", "SPheno.spc", "35");
+	 ReplaceBlock("slha.out", "SPheno.spc", "36");
+	 ReplaceBlock("slha.out", "SPheno.spc", "37");
 
    }
 
