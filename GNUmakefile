@@ -26,8 +26,8 @@ BOOST             = -I/afs/naf.desy.de/group/atlas/software/lcg/external/Boost/1
 HBLIB             = -L/afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/HB3.2b/HiggsBounds-f90/ -lHB
 
 ###   BAF   
-BOOST             = -I/afs/baf.hep-phyin.de/common/boost/1.44.0/x86_64-slc5-gcc43-opt/include/boost-1_44/  
-HBLIB             = -L/lustre/fittino/group/theorycodes/HB3.2b/HiggsBounds-f90/ -lHB
+#BOOST             = -I/afs/baf.hep-phyin.de/common/boost/1.44.0/x86_64-slc5-gcc43-opt/include/boost-1_44/  
+#HBLIB             = -L/lustre/fittino/group/theorycodes/HB3.2b/HiggsBounds-f90/ -lHB
 
 
 
