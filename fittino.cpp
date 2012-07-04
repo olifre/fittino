@@ -512,6 +512,7 @@ string GetParameter(string par){
   else if (FindInUniversality(par)) 
     d=ReturnFittedValue(ReturnUniversality(par)->universality)->value;
   else {
+MeasuredValue* ReturnUniversality (string name);
     cerr<<"Using hdecay without "<<par<<" given as parameter is not possible!"<<endl; 
     exit(EXIT_FAILURE);
   }
@@ -524,8 +525,6 @@ string GetParameter(string par){
 
 
 void hdecayINfile()	{
-
-    
 	
 	vector<string>	Input;
 
@@ -597,31 +596,26 @@ void hdecayINfile()	{
 	InputVal.push_back("0");
 	InputVal.push_back("0");
 	InputVal.push_back("1");
-	InputVal.push_back("000000000");
-	InputVal.push_back("50");
-	InputVal.push_back("150");
-	InputVal.push_back("1");
-	InputVal.push_back("0.1176");
-	InputVal.push_back(GetParameter("massStrange"));
-	InputVal.push_back("1.27");
-	InputVal.push_back("4.19D0");
-	InputVal.push_back("173.2");
-	InputVal.push_back("1.77682");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back(GetParameter("massStrange"));		
+	InputVal.push_back("1.67");		//MC pole - PDG 2012
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
 	InputVal.push_back(GetParameter("massMuon"));
 	InputVal.push_back(GetParameter("alphaem"));
 	InputVal.push_back("-1e12");
-	InputVal.push_back("2.08856");
+	InputVal.push_back("2.085");		//gamW - PDG 2012
+	InputVal.push_back("2.4952");		//gamZ - PDG 2012
 	InputVal.push_back("-1e12");
-	InputVal.push_back("91.1876");
 	InputVal.push_back("-1e12");
-	InputVal.push_back("0.2255");
-	InputVal.push_back("0.0413");
-	InputVal.push_back("0.09539");
-	InputVal.push_back("-1e12");
-	InputVal.push_back("650.");
-	InputVal.push_back("600.");
-	InputVal.push_back("600.");
-	InputVal.push_back("600.");
+	InputVal.push_back("0.2252");		//VUS - PDG 2012
+	InputVal.push_back("0.0409");		//VCB - PDG 2012
+	InputVal.push_back("0.101467");		//VUB/VCB
 	InputVal.push_back("-1e12");
 	InputVal.push_back("-1e12");
 	InputVal.push_back("-1e12");
@@ -640,7 +634,12 @@ void hdecayINfile()	{
 	InputVal.push_back("-1e12");
 	InputVal.push_back("-1e12");
 	InputVal.push_back("-1e12");
-	InputVal.push_back("0");	//vorher war der Wert auf 1
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("-1e12");
+	InputVal.push_back("1");	
 	InputVal.push_back("0");
 	InputVal.push_back("0");
 	InputVal.push_back("0");
