@@ -6612,6 +6612,29 @@ int callFeynHiggs()
       return(return_value);
    }
 
+//check file
+
+   if( yyCalculator == SOFTSUSY ) {
+	fstream filestr;
+        filestr.open("./susyhit_slha.out.stdslha.fh-001");
+        if(filestr.is_open())
+        {
+                filestr.close();
+                return 0;
+        }
+        else    return 3;
+   }
+
+        fstream filestrr;
+        filestrr.open("./SPheno.spc.stdslha.fh-001");
+        if(filestrr.is_open())   
+        {       
+                filestrr.close();
+                return 0;
+        }
+        else    return 3;
+
+
    return 0;
 
 }
