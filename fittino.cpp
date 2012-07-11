@@ -613,9 +613,9 @@ void hdecayINfile()	{
 	InputVal.push_back("2.4952");		//gamZ - PDG 2012
 	InputVal.push_back("-1e12");
 	InputVal.push_back("-1e12");
-	InputVal.push_back("0.2252");		//VUS - PDG 2012
-	InputVal.push_back("0.0409");		//VCB - PDG 2012
-	InputVal.push_back("0.101467");		//VUB/VCB
+	InputVal.push_back("0.22534");		//VUS - PDG 2012
+	InputVal.push_back("0.0412");		//VCB - PDG 2012
+	InputVal.push_back("0.085194175");	//VUB/VCB - PDG 2012
 	InputVal.push_back("-1e12");
 	InputVal.push_back("-1e12");
 	InputVal.push_back("-1e12");
