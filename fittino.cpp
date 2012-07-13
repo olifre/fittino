@@ -2869,6 +2869,186 @@ else if (yyFitModel == NONUNIVSIMPLIFIED) {
    }
 
 
+else if (yyFitModel == NUHM1) {
+     
+     if (yyVerbose){
+     cout << "setting start values for QEWSB" << endl;
+     }
+      fQEWSB.name  = "QEWSB";
+      fQEWSB.value = 1000.;
+      fQEWSB.error = 50;
+      if (FindInFittedPar("QEWSB") >= 0) {
+	 fQEWSB.value = yyFittedPar[FindInFittedPar("QEWSB")].value;
+	 fQEWSB.error = yyFittedPar[FindInFittedPar("QEWSB")].error;
+      }
+      fQEWSB.bound_low = 91.2;
+      fQEWSB.bound_up = 10000.;
+
+      fTanBeta.name  = "TanBeta";
+      fTanBeta.value = 10;
+      fTanBeta.error = 10;
+      if (yyUseGivenStartValues && (FindInFittedPar("TanBeta") >= 0)) {
+	 fTanBeta.value = yyFittedPar[FindInFittedPar("TanBeta")].value;
+	 fTanBeta.error = yyFittedPar[FindInFittedPar("TanBeta")].error;
+      }
+      fTanBeta.bound_low = 0.;
+      fTanBeta.bound_up = 100.;
+
+      fM0.name  = "M0";
+      fM0.value = 100;
+      fM0.error = 100;
+      if (yyUseGivenStartValues && (FindInFittedPar("M0") >= 0)) {
+	 fM0.value = yyFittedPar[FindInFittedPar("M0")].value;
+	 fM0.error = yyFittedPar[FindInFittedPar("M0")].error;
+      }
+      fM0.bound_low = 0.;
+      fM0.bound_up = 10000.;
+
+      fM12.name  = "M12";
+      fM12.value = 100;
+      fM12.error = 100;
+      if (yyUseGivenStartValues && (FindInFittedPar("M12") >= 0)) {
+	 fM12.value = yyFittedPar[FindInFittedPar("M12")].value;
+	 fM12.error = yyFittedPar[FindInFittedPar("M12")].error;
+      }
+      fM12.bound_low = 0.;
+      fM12.bound_up = 10000.;
+
+      fA0.name  = "A0";
+      fA0.value = 100;
+      fA0.error = 100;
+      if (yyUseGivenStartValues && (FindInFittedPar("A0") >= 0)) {
+	 fA0.value = yyFittedPar[FindInFittedPar("A0")].value;
+	 fA0.error = yyFittedPar[FindInFittedPar("A0")].error;
+      }
+      fA0.bound_low = -10000.;
+      fA0.bound_up = 10000.;
+    
+      fM0H.name = "M0H";
+      fM0H.value = 100;
+      fM0H.error = 100;
+      if( yyUseGivenStartValues && (FindInFittedPar("M0H") >= 0 )) {
+        fM0H.value = yyFittedPar[FindInFittedPar("M0H")].value;
+        fM0H.error = yyFittedPar[FindInFittedPar("M0H")].error;
+      }
+      fM0H.bound_low = -10000000.;
+      fM0H.bound_up = 10000000.;
+
+      bool par_already_found;
+
+      //    if (yyVerbose){
+      //    cout<<"TanBeta = "<<fTanBeta.value<<" +- "<<fTanBeta.error<<endl;
+      //    cout<<"M0 = "<<fM0.value<<" +- "<<fM0.error<<endl;
+      //    cout<<"M12 = "<<fM12.value<<" +- "<<fM12.error<<endl;
+      //    cout<<"A0 = "<<fA0.value<<" +- "<<fA0.error<<endl;
+      
+      //    cout<<"Contents of yyFittedPar:"<<endl;
+      //    }
+      //    for (unsigned int  i=0; i < yyFittedPar.size(); i++ ) {
+      //      if (yyVerbose){
+      //      cout<<yyFittedPar[i].name<<" "<<yyFittedPar[i].value<<" "<<yyFittedPar[i].error<<endl;
+      //      }
+      //    }
+      //
+      //    exit(1);
+
+      
+      for (unsigned int  i=0; i < yyFittedPar.size(); i++ ) {
+	 par_already_found = false;
+	 for (unsigned int j = 0; j < fInput->GetMeasuredVector().size(); j++ ) {
+	    if (!yyFittedPar[i].name.compare(fInput->GetMeasuredVector()[j].name)) {
+	       yyFittedVec.push_back((fInput->GetMeasuredVector())[j]);
+	       if (yyUseGivenStartValues) {
+		  unsigned int ilength;
+		  ilength = yyFittedVec.size();
+		  yyFittedVec[ilength-1].value = yyFittedPar[i].value;
+		  if (yyFittedPar[i].error>0.) {
+		    yyFittedVec[ilength-1].error = yyFittedPar[i].error;
+		  }
+		  if (yyVerbose){
+		  cout << " parameter " <<  yyFittedPar[i].name << " " 
+		     << yyFittedVec[ilength-1].value << " " 
+		     << " to value " << yyFittedPar[i].value << endl;
+		  }
+	       }
+	       par_already_found = true;
+	       break;
+	    }
+	 }
+	 if (!par_already_found) {
+	    if (!yyFittedPar[i].name.compare("QEWSB")) {
+	       yyFittedVec.push_back(fQEWSB);
+	       par_already_found = true;
+	    }
+	    if (!yyFittedPar[i].name.compare("TanBeta")) {
+	       yyFittedVec.push_back(fTanBeta);
+	       par_already_found = true;
+	    }
+	    else if (!yyFittedPar[i].name.compare("M0")){
+	       yyFittedVec.push_back(fM0);
+	       par_already_found = true;
+	    }
+	    else if (!yyFittedPar[i].name.compare("M12")){
+	       yyFittedVec.push_back(fM12);
+	       par_already_found = true;
+	    }
+	    else if (!yyFittedPar[i].name.compare("A0")){
+	       yyFittedVec.push_back(fA0);
+	       par_already_found = true;
+	    }
+      else if (!yyFittedPar[i].name.compare("M0H")){
+        yyFittedVec.push_back(fM0H);
+        par_already_found = true;
+      }
+	 }
+      }
+
+      // Fill fixed parameters();
+      MeasuredValue tmpValue;
+      
+      if (yyVerbose){
+      cout << yyDashedLine << endl;
+      }
+      for (unsigned int i = 0; i < yyFixedPar.size(); i++) {
+	 for (unsigned int j = 0; j < yyFittedPar.size(); j++) {
+	    if (!yyFittedPar[j].name.compare(yyFixedPar[i].name)) {
+	       cerr << "Fixed Parameter " <<  yyFixedPar[i].name << " is also in Fitted Par" << endl;
+	       exit (EXIT_FAILURE);
+	    }
+	 }
+
+	 for (unsigned int j = 0; j < yyUniversalityVec.size(); j++) {
+	    if (!yyUniversalityVec[j].name.compare(yyFixedPar[i].name)) {
+	       cerr << "Fixed Parameter " <<  yyFixedPar[i].name << " is also in universality vec" << endl;
+	       exit (EXIT_FAILURE);
+	    }
+	 }
+
+	 tmpValue.name = yyFixedPar[i].name;
+	 tmpValue.value = yyFixedPar[i].value;
+	 tmpValue.error = -1;
+	 tmpValue.bound_low = -1E+6;
+	 tmpValue.bound_up = 1E+6;
+	 yyFixedVec.push_back(tmpValue);
+	 
+	 if (yyVerbose){
+	 cout << "fixed: " << yyFixedPar[i].name << " at " << yyFixedPar[i].value << endl;
+	 }
+      }
+
+      if (yyVerbose){
+      cout << yyDashedLine << endl;
+      cout << "Setting parameter start values to:" << endl;
+      }
+      for (unsigned int  i=0; i < yyFittedVec.size(); i++ ) {
+	if (yyVerbose){
+	 cout << i << " " << yyFittedVec[i].name << " = " << yyFittedVec[i].value << " +- " << yyFittedVec[i].error 
+	    << " bounds " << yyFittedVec[i].bound_low << " -- " <<  yyFittedVec[i].bound_up << endl;
+	}
+      }
+
+   }
+
 
    else if (yyFitModel == GMSB) {
 
@@ -8028,7 +8208,7 @@ void WriteLesHouches(double* x)
 	LesHouchesOutfile << "    5   1.0           # Full 2-loop running in RGEs " << endl;
       }
    }
-   else if (yyFitModel == mSUGRA) {
+   else if (yyFitModel == mSUGRA || yyFitModel == NUHM1) {
 
       LesHouchesOutfile << "BLOCK MODSEL                 # Select model" << endl;
       LesHouchesOutfile << "    1 1                      # mSugra" << endl;
@@ -8273,7 +8453,8 @@ hase (rad), SPheno default value = 0
       }
 
       LesHouchesOutfile << "BLOCK MINPAR                 # Input parameters" << endl;
-
+      /*
+      // moved TanBeta to EXTPAR
       if (FindInFixed("TanBeta")) {
 	 LesHouchesOutfile << "    3  "<< ReturnFixedValue("TanBeta")->value <<" # tanb (fixed)"<< endl;
       }
@@ -8299,8 +8480,8 @@ hase (rad), SPheno default value = 0
       else {
 	 cerr << "a-Parameter TanBeta not declared" << endl;
 	 exit (EXIT_FAILURE);
-      }
-
+      } AAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+      */
       if (FindInFixed("M0")) {
 	 LesHouchesOutfile << "    1  "<< ReturnFixedValue("M0")->value <<" # M0 (fixed)"<< endl;
       }
@@ -8388,6 +8569,68 @@ hase (rad), SPheno default value = 0
 	 cerr<<"SignMu must be fixed to either 1 or -1"<<endl;
 	 exit(EXIT_FAILURE);
       }
+      
+      // moved TanBeta to this block
+      LesHouchesOutfile << "BLOCK EXTPAR                 # Input parameters" << endl;
+      if (FindInFixed("TanBeta")) {
+   LesHouchesOutfile << "    25 "<< ReturnFixedValue("TanBeta")->value <<" # tanb (fixed)"<< endl;
+      }
+      else if (FindInFitted("TanBeta")) {
+   if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+      cout << "Fitting tanb " << x[ReturnFittedPosition("TanBeta")] << endl;
+   }
+   LesHouchesOutfile << "    25 "<< x[ReturnFittedPosition("TanBeta")]<<" # tanb"<< endl;
+      } 
+      else if (FindInRandomPar("TanBeta")) {
+   if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+      cout << "Calculating random tanb " << x[ReturnRandomPosition("TanBeta")] << endl;
+   }
+
+   LesHouchesOutfile << "    25 "<< x[ReturnRandomPosition("TanBeta")]<<" # tanb (random)"<< endl;
+      }
+      else if (FindInUniversality("TanBeta")) {
+   LesHouchesOutfile << "    25 "<<x[ReturnFittedPosition(ReturnUniversality("TanBeta")->universality)]<<" # TanBeta"<<endl;
+   if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
+      cout << "fitting " << ReturnUniversality("TanBeta")->universality << " instead of TanBeta" << endl;
+   }
+      }
+      else {
+   cerr << "Parameter TanBeta not declared" << endl;
+   exit (EXIT_FAILURE);
+      } 
+      
+      if( yyFitModel == NUHM1 ) {
+        if (FindInFixed("M0H")) {
+          LesHouchesOutfile << "   21 " << ReturnFixedValue("M0H")->value << " # non-universal m_(H_d)^2" << endl;
+          LesHouchesOutfile << "   22 " << ReturnFixedValue("M0H")->value << " # non-universal m_(H_u)^2" << endl;
+        } 
+        else if (FindInFitted("M0H")) {
+          if( yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100) < 0.01 ) ) {
+              cout << "Fitting M0H " << x[ReturnFittedPosition("M0H")] << endl;
+          }
+          LesHouchesOutfile << "    21 " << x[ReturnFittedPosition("M0H")] << " # non-universal m_(H_d)^2" << endl;
+          LesHouchesOutfile << "    22 " << x[ReturnFittedPosition("M0H")] << " # non-universal m_(H_u)^2" << endl;
+        }
+        else if (FindInRandomPar("M0H")) {
+          if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+            cout << "Calculating random M0H " << x[ReturnRandomPosition("M0H")] << endl;
+          }
+          LesHouchesOutfile << "    21 " << x[ReturnRandomPosition("M0H")] << " # non-universal m_(H_d)^2" << endl;
+          LesHouchesOutfile << "    22 " << x[ReturnRandomPosition("M0H")] << " # non-universal m_(H_u)^2" << endl;
+        }
+        else if (FindInUniversality("M0H")) {
+          if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+            cout << "fitting " << ReturnUniversality("M0H")->universality << " instead of M0H" << endl;
+          }
+          LesHouchesOutfile << "    21 " << x[ReturnFittedPosition(ReturnUniversality("M0H")->universality)] << " # non-universal m_(H_d)^2" << endl;
+          LesHouchesOutfile << "    22 " << x[ReturnFittedPosition(ReturnUniversality("M0H")->universality)] << " # non-universal m_(H_u)^2" << endl;
+        }
+        else {
+          cerr << "Parameter M0H not declared" << endl;
+          exit (EXIT_FAILURE);
+        }
+      }
+
       if( yyCalculator == SPHENO ) {
 	if (yySPhenoStartDataString!="" && yySPhenoLastCallValid) {
 	  LesHouchesOutfile << "BLOCK StartDataFile" << endl;
@@ -8437,7 +8680,7 @@ hase (rad), SPheno default value = 0
 // 	 LesHouchesOutfile << "   63  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
 //       }
 
-      LesHouchesOutfile << "   80  1     # SPheno Exit wit hnon-zero-value for sure!!" << endl;
+      LesHouchesOutfile << "   80  1     # SPheno Exit with non-zero-value for sure!!" << endl;
       if ( yySPhenoOldInputFile != "") {
 	LesHouchesOutfile << "BLOCK STARTDATAFILE" << endl;
 	LesHouchesOutfile << yySPhenoOldInputFile << endl;

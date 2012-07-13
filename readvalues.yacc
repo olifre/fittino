@@ -1760,7 +1760,11 @@ input:
 		      yyFitModel = NMSSM;
 		    else if (!strcmp($3, "NONUNIVSIMPLIFIED"))
 		      yyFitModel = NONUNIVSIMPLIFIED;
-		    else {
+		    else if (!strcmp($3, "NUHM1"))
+          yyFitModel = NUHM1;
+        else if( !strcmp($3, "NUHM2"))
+          yyFitModel = NUHM2;
+        else {
 		      cerr<<"Unknown fit model: "<<$3<<endl;
 		      exit(EXIT_FAILURE);
 		    }
