@@ -7252,10 +7252,11 @@ void WriteLesHouches(double* x)
 	    cout << "fitting " << ReturnUniversality("QEWSB")->universality << " instead of QEWSB" << endl;
 	 }
       }      
-      else {
+      /*
+			else {
 	LesHouchesOutfile << "    12   1000.    # Q_EWSB (fixed)"<<endl;
       }
-      
+      */
       LesHouchesOutfile << "BLOCK SMINPUTS" << endl;
       if (FindInFixed("alphaem")) {
 	 LesHouchesOutfile << "    1 "<<ReturnFixedValue("alphaem")->value<<" # 1/alpha_em (fixed)"<<endl;
@@ -8263,7 +8264,7 @@ void WriteLesHouches(double* x)
 	LesHouchesOutfile << "    1 	0.1     			# desired fractional accuracy in output " << endl;
 	LesHouchesOutfile << "    2   -1.0           # quark mixing option " << endl;
 	LesHouchesOutfile << "    3   0.0           # gives additional verbose output during caclualtion " << endl;
-	LesHouchesOutfile << "    4   1000.0		    # change electroweak symmetry breaking scale " << endl;
+	//LesHouchesOutfile << "    4   1000.0		    # change electroweak symmetry breaking scale " << endl;
 	LesHouchesOutfile << "    5   1.0           # Full 2-loop running in RGEs " << endl;
       }
    }
@@ -8275,8 +8276,8 @@ void WriteLesHouches(double* x)
 	 LesHouchesOutfile << "    5 1                      # CP violation (0,1,2)=(none, CKM, general SUSY)" << endl;
 	 LesHouchesOutfile << "    6 1                      # Flavour violation in quark sector" << endl;
       }
-
       if (FindInFixed("QEWSB")) {
+	 			std::cout << "found QEWSB in fixex" << std::endl;
 	 LesHouchesOutfile << "    12  "<<ReturnFixedValue("QEWSB")->value<<" # Q_EWSB (fixed)"<<endl;
       }
       else if (FindInFitted("QEWSB")) {
@@ -8291,9 +8292,11 @@ void WriteLesHouches(double* x)
 	    cout << "fitting " << ReturnUniversality("QEWSB")->universality << " instead of QEWSB" << endl;
 	 }
       }      
-      else {
+      /*
+			else {
 	LesHouchesOutfile << "    12   1000.    # Q_EWSB (fixed)"<<endl;
       }
+			*/
 
       LesHouchesOutfile << "BLOCK SMINPUTS               # Standard Model inputs" << endl;
 
@@ -8806,7 +8809,7 @@ hase (rad), SPheno default value = 0
 		LesHouchesOutfile << "    1   0.1           # desired fractional accuracy in output " << endl;
 		LesHouchesOutfile << "    2   -1.0           # quark mixing option " << endl;
 		LesHouchesOutfile << "    3   0.0           # gives additional verbose output during caclualtion " << endl;
-		LesHouchesOutfile << "    4   1000.0        # change electroweak symmetry breaking scale " << endl;
+		//LesHouchesOutfile << "    4   1000.0        # change electroweak symmetry breaking scale " << endl;
 		LesHouchesOutfile << "    5   1.0           # Full 2-loop running in RGEs " << endl;
 	}
 	}															
@@ -8834,9 +8837,11 @@ hase (rad), SPheno default value = 0
 	    cout << "fitting " << ReturnUniversality("QEWSB")->universality << " instead of QEWSB" << endl;
 	 }
       }      
-      else {
+      /*
+			else {
 	LesHouchesOutfile << "    12   1000.    # Q_EWSB (fixed)"<<endl;
       }
+			*/
 
       LesHouchesOutfile << "BLOCK SMINPUTS               # Standard Model inputs" << endl;
       if (FindInFixed("alphaem")) {
@@ -9262,7 +9267,7 @@ hase (rad), SPheno default value = 0
 			LesHouchesOutfile << "    1   0.1           # desired fractional accuracy in output " << endl;
 			LesHouchesOutfile << "    2   -1.0           # quark mixing option " << endl;
 			LesHouchesOutfile << "    3   0.0           # gives additional verbose output during caculaltion " << endl;
-			LesHouchesOutfile << "    4   1000.0	      # change electroweak symmetry breaking scale " << endl;
+			//LesHouchesOutfile << "    4   1000.0	      # change electroweak symmetry breaking scale " << endl;
 			LesHouchesOutfile << "    5   1.0           # Full 2-loop running in RGEs " << endl;
 		}	
 	}
@@ -9291,9 +9296,11 @@ hase (rad), SPheno default value = 0
 	    cout << "fitting " << ReturnUniversality("QEWSB")->universality << " instead of QEWSB" << endl;
 	 }
       }      
-      else {
+      /*
+			else {
 	LesHouchesOutfile << "    12   1000.    # Q_EWSB (fixed)"<<endl;
       }
+			*/
 
       LesHouchesOutfile << "BLOCK SMINPUTS               # Standard Model inputs" << endl;
       if (FindInFixed("alphaem")) {
@@ -9806,7 +9813,7 @@ hase (rad), SPheno default value = 0
 			LesHouchesOutfile << "    1   0.1           # desired fractional accuracy in output " << endl;
 			LesHouchesOutfile << "    2   -1.0           # quark mixing option " << endl;
 			LesHouchesOutfile << "    3   0.0           # gives additional verbose output during caculaltion " << endl;
-			LesHouchesOutfile << "    4   1000.0	      # change electroweak symmetry breaking scale " << endl;
+			//LesHouchesOutfile << "    4   1000.0	      # change electroweak symmetry breaking scale " << endl;
 			LesHouchesOutfile << "    5   1.0           # Full 2-loop running in RGEs " << endl;
 		}	
 	}
@@ -9833,10 +9840,12 @@ hase (rad), SPheno default value = 0
 	 if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 	    cout << "fitting " << ReturnUniversality("QEWSB")->universality << " instead of QEWSB" << endl;
 	 }
-      }      
+      }     
+			/*
       else {
 	LesHouchesOutfile << "    12   1000.    # Q_EWSB (fixed)"<<endl;
       }
+			*/
 
       LesHouchesOutfile<<"BLOCK SMINPUTS               # Standard Model inputs"<<endl;
       if (FindInFixed("alphaem")) {
@@ -10175,7 +10184,7 @@ hase (rad), SPheno default value = 0
 		LesHouchesOutfile << "    1   0.1           # desired fractional accuracy in output " << endl;
 		LesHouchesOutfile << "    2   -1.0           # quark mixing option " << endl;
 		LesHouchesOutfile << "    3   0.0           # gives additional verbose output during caclualtion " << endl;
-		LesHouchesOutfile << "    4  	1.0		    # change electroweak symmetry breaking scale " << endl;
+		//LesHouchesOutfile << "    4  	1.0		    # change electroweak symmetry breaking scale " << endl;
 		LesHouchesOutfile << "    5   1.0           # Full 2-loop running in RGEs " << endl;
 	}
 }
@@ -10197,10 +10206,12 @@ hase (rad), SPheno default value = 0
 	      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) { 
 		cout << "fitting " << ReturnUniversality("QEWSB")->universality << " instead of QEWSB" << endl;
 	      }
-	    }      
+	    }     
+			/*
 	    else {
 	      LesHouchesOutfile << "    12   1000.    # Q_EWSB (fixed)"<<endl;
 	    }
+			*/
 
 	    LesHouchesOutfile<<"BLOCK SMINPUTS               # Standard Model inputs"<<endl;
 	    if (FindInFixed("alphaem")) {
@@ -10505,7 +10516,7 @@ hase (rad), SPheno default value = 0
 		    LesHouchesOutfile << "    1   0.1           # desired fractional accuracy in output " << endl;
 		    LesHouchesOutfile << "    2   -1.0           # quark mixing option " << endl;
 		    LesHouchesOutfile << "    3   0.0           # gives additional verbose output during caclualtion " << endl;
-		    LesHouchesOutfile << "    4   1.0        # change electroweak symmetry breaking scale " << endl;
+		    //LesHouchesOutfile << "    4   1.0        # change electroweak symmetry breaking scale " << endl;
 		    LesHouchesOutfile << "    5   1.0           # Full 2-loop running in RGEs " << endl;
 		}
 		}
