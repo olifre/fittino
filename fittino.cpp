@@ -5266,10 +5266,10 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        }
        return;        
      }
-	 ReplaceBlock("slha.out", "SPheno.spc", "25");
-	 ReplaceBlock("slha.out", "SPheno.spc", "35");
-	 ReplaceBlock("slha.out", "SPheno.spc", "36");
-	 ReplaceBlock("slha.out", "SPheno.spc", "37");
+     ReplaceBlock("slha.out", "SPheno.spc", "25");
+     ReplaceBlock("slha.out", "SPheno.spc", "35");
+     ReplaceBlock("slha.out", "SPheno.spc", "36");
+     ReplaceBlock("slha.out", "SPheno.spc", "37");
 
    }
 
@@ -5606,10 +5606,14 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
 
    if (yyUseHiggsSignals){
-     system("cp SPheno.spc.last SPheno.spc.last.1");
-     system((yyHiggsSignalsPath+" 1 SPheno.spc.last").c_str());
-     //TODO: read in chi2, add it, save it in ntuple
+     if (yyVerbose)
+       cout<<"Calling HiggsSignals"<<endl;
 
+     system("mv SPheno.spc.last SPheno.spc.last.1");
+     system((yyHiggsSignalsPath+" 1 SPheno.spc.last").c_str());
+     system("mv SPheno.spc.last.1 SPheno.spc.last");
+
+     //TODO: read in chi2, add it to f, save it in ntuple; save all the other output needed for toys as well
 
    }
 

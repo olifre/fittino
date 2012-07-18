@@ -11,8 +11,8 @@ ls -l ./SPheno.spc.stdslha.fh-001
 # fi
 massh=`grep '# Mh0' ./SPheno.spc.stdslha.fh-001 | awk '{print $2}'`
 massH=`grep '# MHH' ./SPheno.spc.stdslha.fh-001 | awk '{print $2}'`
-massA=`grep '# MA0' ./SPheno.spc.stdslha.fh-001 | grep -v 'MA02' | awk '{print $2}'`
-massHp=`grep '# MHp' ./SPheno.spc.stdslha.fh-001 | awk '{print $2}'`
+massA=`grep '# MA0' ./SPheno.spc.stdslha.fh-001 | grep -v 'MA02' | tail -1 | awk '{print $2}'`
+massHp=`grep '# MHp' ./SPheno.spc.stdslha.fh-001 | tail -1 | awk '{print $2}'`
 gm2mu=`grep '# gminus2mu' ./SPheno.spc.stdslha.fh-001 | awk '{print $2}'`
 mwmssm=`grep '# MWMSSM' ./SPheno.spc.stdslha.fh-001 | awk '{print $2}'`
 mwsm=`grep '# MWSM' ./SPheno.spc.stdslha.fh-001 | awk '{print $2}'`
