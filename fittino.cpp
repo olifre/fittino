@@ -2869,7 +2869,7 @@ else if (yyFitModel == NONUNIVSIMPLIFIED) {
    }
 
 
-else if (yyFitModel == NUHM1) {
+else if (yyFitModel == NUHM1 || yyFitModel == NUHM2 ) {
      
      if (yyVerbose){
      cout << "setting start values for QEWSB" << endl;
@@ -2924,16 +2924,39 @@ else if (yyFitModel == NUHM1) {
       fA0.bound_low = -10000.;
       fA0.bound_up = 10000.;
     
-      fM0H.name = "M0H";
-      fM0H.value = 100;
-      fM0H.error = 100;
-      if( yyUseGivenStartValues && (FindInFittedPar("M0H") >= 0 )) {
-        fM0H.value = yyFittedPar[FindInFittedPar("M0H")].value;
-        fM0H.error = yyFittedPar[FindInFittedPar("M0H")].error;
-      }
-      fM0H.bound_low = -10000000.;
-      fM0H.bound_up = 10000000.;
+			if( yyFitModel == NUHM1 ) {
+      	fM0H.name = "M0H";
+      	fM0H.value = 100;
+      	fM0H.error = 100;
+      	if( yyUseGivenStartValues && (FindInFittedPar("M0H") >= 0 )) {
+        	fM0H.value = yyFittedPar[FindInFittedPar("M0H")].value;
+        	fM0H.error = yyFittedPar[FindInFittedPar("M0H")].error;
+     		}
+      	fM0H.bound_low = -10000000.;
+      	fM0H.bound_up = 10000000.;
+			}
+			else if( yyFitModel == NUHM2 ) {
+				fM0Hu.name = "M0Hu";
+        fM0Hu.value = 100;
+        fM0Hu.error = 100;
+        if( yyUseGivenStartValues && (FindInFittedPar("M0Hu") >= 0 )) {
+          fM0Hu.value = yyFittedPar[FindInFittedPar("M0Hu")].value;
+          fM0Hu.error = yyFittedPar[FindInFittedPar("M0Hu")].error;
+        }
+        fM0Hu.bound_low = -10000000.;
+        fM0Hu.bound_up = 10000000.;
+				
+				fM0Hd.name = "M0Hd";
+        fM0Hd.value = 100;
+        fM0Hd.error = 100;
+        if( yyUseGivenStartValues && (FindInFittedPar("M0Hd") >= 0 )) {
+          fM0Hd.value = yyFittedPar[FindInFittedPar("M0Hd")].value;
+          fM0Hd.error = yyFittedPar[FindInFittedPar("M0Hd")].error;
+        }
+        fM0Hd.bound_low = -10000000.;
+        fM0Hd.bound_up = 10000000.;
 
+			}
       bool par_already_found;
 
       //    if (yyVerbose){
@@ -3000,6 +3023,15 @@ else if (yyFitModel == NUHM1) {
         yyFittedVec.push_back(fM0H);
         par_already_found = true;
       }
+      else if (!yyFittedPar[i].name.compare("M0Hu")){
+        yyFittedVec.push_back(fM0Hu);
+        par_already_found = true;
+      }
+      else if (!yyFittedPar[i].name.compare("M0Hd")){
+        yyFittedVec.push_back(fM0Hd);
+        par_already_found = true;
+      }
+
 	 }
       }
 
@@ -8235,7 +8267,7 @@ void WriteLesHouches(double* x)
 	LesHouchesOutfile << "    5   1.0           # Full 2-loop running in RGEs " << endl;
       }
    }
-   else if (yyFitModel == mSUGRA || yyFitModel == NUHM1) {
+   else if (yyFitModel == mSUGRA || yyFitModel == NUHM1 || yyFitModel == NUHM2 ) {
 
       LesHouchesOutfile << "BLOCK MODSEL                 # Select model" << endl;
       LesHouchesOutfile << "    1 1                      # mSugra" << endl;
@@ -8657,6 +8689,60 @@ hase (rad), SPheno default value = 0
           exit (EXIT_FAILURE);
         }
       }
+			if( yyFitModel == NUHM2 ) {
+				if (FindInFixed("M0Hu")) {
+          LesHouchesOutfile << "   22 " << ReturnFixedValue("M0Hu")->value << " # non-universal m_(H_u)^2" << endl;
+        }
+        else if (FindInFitted("M0Hu")) {
+          if( yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100) < 0.01 ) ) {
+              cout << "Fitting M0Hu " << x[ReturnFittedPosition("M0Hu")] << endl;
+          }
+          LesHouchesOutfile << "    22 " << x[ReturnFittedPosition("M0Hu")] << " # non-universal m_(H_u)^2" << endl;
+        }
+        else if (FindInRandomPar("M0Hu")) {
+          if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+            cout << "Calculating random M0Hu " << x[ReturnRandomPosition("M0Hu")] << endl;
+          }
+          LesHouchesOutfile << "    22 " << x[ReturnRandomPosition("M0Hu")] << " # non-universal m_(H_u)^2" << endl;
+        }
+        else if (FindInUniversality("M0Hu")) {
+          if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+            cout << "fitting " << ReturnUniversality("M0Hu")->universality << " instead of M0Hu" << endl;
+          }
+          LesHouchesOutfile << "    22 " << x[ReturnFittedPosition(ReturnUniversality("M0Hu")->universality)] << " # non-universal m_(H_u)^2" << endl;
+        }
+        else {
+          cerr << "Parameter M0Hu not declared" << endl;
+          exit (EXIT_FAILURE);
+        }
+				
+				if (FindInFixed("M0Hd")) {
+          LesHouchesOutfile << "   21 " << ReturnFixedValue("M0Hd")->value << " # non-universal m_(H_d)^2" << endl;
+        }
+        else if (FindInFitted("M0Hd")) {
+          if( yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100) < 0.01 ) ) {
+              cout << "Fitting M0Hd " << x[ReturnFittedPosition("M0Hd")] << endl;
+          }
+          LesHouchesOutfile << "    21 " << x[ReturnFittedPosition("M0Hd")] << " # non-universal m_(H_d)^2" << endl;
+        }
+        else if (FindInRandomPar("M0Hd")) {
+          if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+            cout << "Calculating random M0Hd " << x[ReturnRandomPosition("M0Hd")] << endl;
+          }
+          LesHouchesOutfile << "    21 " << x[ReturnRandomPosition("M0Hd")] << " # non-universal m_(H_d)^2" << endl;
+        }
+        else if (FindInUniversality("M0Hd")) {
+          if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+            cout << "fitting " << ReturnUniversality("M0Hd")->universality << " instead of M0Hd" << endl;
+          }
+          LesHouchesOutfile << "    21 " << x[ReturnFittedPosition(ReturnUniversality("M0Hd")->universality)] << " # non-universal m_(H_d)^2" << endl;
+        }
+        else {
+          cerr << "Parameter M0Hd not declared" << endl;
+          exit (EXIT_FAILURE);
+        }
+		
+			}
 
       if( yyCalculator == SPHENO ) {
 	if (yySPhenoStartDataString!="" && yySPhenoLastCallValid) {

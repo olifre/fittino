@@ -69,6 +69,8 @@ public:
     const MeasuredValue& getM2() const      { return fM2; }
     const MeasuredValue& getAbsM3() const   { return fAbsM3; }
     const MeasuredValue& getAM0H()  const   { return fM0H; }
+    const MeasuredValue& getAM0Hu()  const   { return fM0Hu; }
+    const MeasuredValue& getAM0Hd()  const   { return fM0Hd; }
     const MeasuredValue& getAM05()  const   { return fM05; }
     const MeasuredValue& getAM010() const   { return fM010; }
     const MeasuredValue& getA0() const      { return fA0; }
@@ -94,6 +96,8 @@ private:
     MeasuredValue fM2;
     MeasuredValue fAbsM3;
     MeasuredValue fM0H;
+    MeasuredValue fM0Hu;
+    MeasuredValue fM0Hd;
     MeasuredValue fM05;
     MeasuredValue fM010;
     MeasuredValue fA0;
