@@ -168,6 +168,7 @@ bool          yyGetTempFromFirstChiSqr = false;
 bool          yyRandomDirUncertainties = false;
 bool          yyPerformSingleFits = false;
 bool          yyUseHiggsBounds = false;
+bool          yyUseHiggsSignals = false;
 bool          yyUseHDecay = false;
 bool          yyUseAstroFit = false;
 bool          yyUseAFphoton = false;
@@ -228,6 +229,7 @@ string       yyAfterBurnerDirectory = "";
 string       yyDashedLine = "------------------------------------------------------------";
 string       yyMarkovInterfaceFilePath = "";
 string       yyGridPath="";
+string       yyHiggsSignalsPath="";
 
 unsigned int yyFitModel = MSSM;
 unsigned int yySeedForObservableScattering = 1;
@@ -345,7 +347,7 @@ struct correrrorstruct {
 %token <real> T_NUMBER
 %token <integer> T_ENERGYUNIT T_SWITCHSTATE T_CROSSSECTIONUNIT
 %token T_ERRORSIGN T_BRA T_KET T_COMMA T_GOESTO T_ALIAS T_NOFIT T_NOFITLEO T_SCALING
-%token T_BLOCK T_SCALE T_DECAY T_BR T_LEO T_XS T_CALCULATOR T_HIGGSCALCULATOR T_HIGGSBRCALCULATOR T_FLAVOURCALCULATOR T_DECAYCALCULATOR T_MARKOVINTERFACEFILEPATH T_GRIDPATH T_ASTROCALCULATOR T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO T_AFTERBURNERDIRECTORY
+%token T_BLOCK T_SCALE T_DECAY T_BR T_LEO T_XS T_CALCULATOR T_HIGGSCALCULATOR T_HIGGSBRCALCULATOR T_FLAVOURCALCULATOR T_DECAYCALCULATOR T_MARKOVINTERFACEFILEPATH T_GRIDPATH  T_ASTROCALCULATOR T_RELICDENSITYCALCULATOR T_LEOCALCULATOR T_XSBR T_BRRATIO T_AFTERBURNERDIRECTORY T_HIGGSSIGNALSPATH
 %token <name> T_COMPARATOR T_UNIVERSALITY T_PATH T_NEWLINE
 %token <name> T_VERSIONTAGSOSY
 %token <name> T_VERSIONTAGSDEC
@@ -1487,6 +1489,10 @@ input:
 		      if ($3 == on) yyUseHiggsBounds = true;
 		      else yyUseHiggsBounds = false;
 		  } 
+		  if (!strcmp($2, "UseHiggsSignals")) {
+		    if ($3 == on) yyUseHiggsSignals = true;
+		    else yyUseHiggsSignals = false;
+		  } 
  		  if (!strcmp($2, "UseHDecay")) {
 		      if ($3 == on) yyUseHDecay = true;
 		      else yyUseHDecay = false;
@@ -1694,7 +1700,13 @@ input:
 		   yyInputFileLine.prevalue += $3;
 		   yyGridPath = $3;
 	      }
-
+           | input T_HIGGSSIGNALSPATH T_PATH
+	      {
+                   yyInputFileLine.prevalue  = "HiggsSignalsPath";
+		   yyInputFileLine.prevalue += "\t";
+		   yyInputFileLine.prevalue += $3;
+		   yyHiggsSignalsPath = $3;
+	      }
 	    | input T_LEOCALCULATOR T_WORD
 	      {
                    yyInputFileLine.prevalue  = "LEOCalculator";

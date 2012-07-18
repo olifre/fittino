@@ -5165,7 +5165,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 		}
    }    
    
-   if (yyHiggsCalculator == FEYNHIGGS) {
+   if (yyHiggsCalculator == FEYNHIGGS ) {
      if (yyVerbose){
      cout << yyDashedLine << endl;
      cout << "Calling FeynHiggs" << endl;
@@ -5190,7 +5190,24 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      // append FeynHiggs block to SPheno.spc file
      string command = yyAfterBurnerDirectory + "/parseFeynHiggs.sh";
      system(command.c_str());
+
+
+     //TODO: add corresponding lines for softsusy
+     //TODO: We loose spheno's mass information here -- do we need to keep it?
+     ReplaceMass("SPheno.spc");
+     ReplaceBlock("SPheno.spc.stdslha.fh-001.last", "SPheno.spc", "ALPHA");
+     ReplaceBlock("SPheno.spc.stdslha.fh-001.last", "SPheno.spc", "HMIX");
+
+
+     //TODO: This should not depend on the use of hisssignals but on the use of the higgscalculator 
+     if (yyUseHiggsSignals){
+       ReplaceBlock("SPheno.spc.stdslha.fh-001.last", "SPheno.spc", "HiggsBoundsInputHiggsCouplingsBosons");
+       ReplaceBlock("SPheno.spc.stdslha.fh-001.last", "SPheno.spc", "HiggsBoundsInputHiggsCouplingsFermions");
+     }
+
    }
+
+
 
    if (yyUseHDecay){
      
@@ -5198,9 +5215,6 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        cout<<"Calling HDECAY"<<endl;
      }
      
-	ReplaceMass("SPheno.spc");
-	ReplaceBlock("SPheno.spc.stdslha.fh-001.last", "SPheno.spc", "ALPHA");
-	ReplaceBlock("SPheno.spc.stdslha.fh-001.last", "SPheno.spc", "HMIX");
 
      hdecayINfile();
 
@@ -5492,6 +5506,8 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      }
 
    }
+
+
 //      if (yyVerbose){
 //      cout << yyDashedLine << endl;
 //      cout << "Starting HiggsBounds" << endl;
@@ -5555,6 +5571,17 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 //   }
 
    #endif
+
+
+   if (yyUseHiggsSignals){
+     system("cp SPheno.spc.last SPheno.spc.last.1");
+     system((yyHiggsSignalsPath+" 1 SPheno.spc.last").c_str());
+     //TODO: read in chi2, add it, save it in ntuple
+
+
+   }
+
+
 
    // HERE: FIND OBSERVABLES BELONGING TO THE MEASUREMENTS IN yyMeasuredVec
    // CALCULATE CHISQ

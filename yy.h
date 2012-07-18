@@ -83,6 +83,7 @@ extern bool yyUseAFrelic;
 extern bool yyUseAFdirect;
 extern bool yyUseAFsvind;
 extern bool yyUseHiggsBounds;
+extern bool yyUseHiggsSignals;
 extern bool yyUseHDecay;
 extern bool yyUseFullCKMMatrix;
 extern bool yyRandomParameters;
@@ -140,6 +141,7 @@ extern string yyHBWhichExpt;
 extern string yyDashedLine;
 extern string yyMarkovInterfaceFilePath;
 extern string yyGridPath;
+extern string yyHiggsSignalsPath;
 extern string yySPhenoOldInputFile;
 
 extern int    yyParseError;

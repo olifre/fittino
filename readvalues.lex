@@ -151,6 +151,9 @@ Q[ \t]*=                  {
 			      if (!strcmp(yytext, "GridPath")) { 
 				  return T_GRIDPATH;
 			      }
+			      if (!strcmp(yytext, "HiggsSignalsPath")) { 
+				return T_HIGGSSIGNALSPATH;
+			      }
 			      if (!strcmp(yytext, "BR")) {
 				  return T_BR;
 			      }
