@@ -169,7 +169,6 @@ bool          yyRandomDirUncertainties = false;
 bool          yyPerformSingleFits = false;
 bool          yyUseHiggsBounds = false;
 bool          yyUseHiggsSignals = false;
-bool          yyUseHDecay = false;
 bool          yyUseAstroFit = false;
 bool          yyUseAFphoton = false;
 bool          yyUseAFrelic = false;
@@ -1492,10 +1491,6 @@ input:
 		  if (!strcmp($2, "UseHiggsSignals")) {
 		    if ($3 == on) yyUseHiggsSignals = true;
 		    else yyUseHiggsSignals = false;
-		  } 
- 		  if (!strcmp($2, "UseHDecay")) {
-		      if ($3 == on) yyUseHDecay = true;
-		      else yyUseHDecay = false;
 		  } 
 		  if (!strcmp($2, "UseAstroFit")) {
 		      if ($3 == on) yyUseAstroFit = true;

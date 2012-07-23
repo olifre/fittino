@@ -84,7 +84,6 @@ extern bool yyUseAFdirect;
 extern bool yyUseAFsvind;
 extern bool yyUseHiggsBounds;
 extern bool yyUseHiggsSignals;
-extern bool yyUseHDecay;
 extern bool yyUseFullCKMMatrix;
 extern bool yyRandomParameters;
 extern bool yyUseObservableScatteringBefore;

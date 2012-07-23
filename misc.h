@@ -150,6 +150,7 @@ extern bool         yyCalcPullDist;
 extern bool         yyScanParameters;
 extern unsigned int yyCalculator;
 extern unsigned int yyHiggsCalculator;
+extern unsigned int yyHiggsBRCalculator;
 extern unsigned int yyFlavourCalculator;
 extern unsigned int yyDecayCalculator;
 extern unsigned int yyRelicDensityCalculator;

@@ -5240,7 +5240,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
 
 
-   if (yyUseHDecay){
+   if (yyHiggsBRCalculator==HDECAY){
      
      if (yyVerbose){
        cout<<"Calling HDECAY"<<endl;
@@ -8456,7 +8456,7 @@ void WriteLesHouches(double* x)
       else {
 	LesHouchesOutfile << "    24  "<<ReturnMeasuredValue("massCharm")->value<<" # mcharm (fixed)"<<endl;
       }
-      if(yyUseHDecay) {
+      if(yyHiggsBRCalculator==HDECAY) {
       if (FindInFixed("massStrange")) {
          LesHouchesOutfile << "   23  "<<ReturnFixedValue("massStrange")->value<<" # m_s(2 GeV), MSbar"<<endl;
       }
