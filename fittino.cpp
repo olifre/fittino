@@ -11154,6 +11154,18 @@ int   ReadLesHouches()
 				yyMeasuredVec[i].theovalue = yyFineTuningParameters[yyMeasuredVec[i].id];
 				yyMeasuredVec[i].theoset = true;
 			}
+			else if ( yyMeasuredVec[i].type == HiggsScalarFermionCoupling ) {
+				yyMeasuredVec[i].theovalue = yyHiggsScalarFermionCouplings[yyMeasuredVec[i].id];
+				yyMeasuredVec[i].theoset = true;
+			}
+			else if ( yyMeasuredVec[i].type == HiggsPseudoScalarFermionCoupling ) {
+				yyMeasuredVec[i].theovalue = yyHiggsPseudoScalarFermionCouplings[yyMeasuredVec[i].id];
+				yyMeasuredVec[i].theoset = true;
+			}
+			else if ( yyMeasuredVec[i].type == HiggsBosonCoupling ) {
+				yyMeasuredVec[i].theovalue = yyHiggsBosonCouplings[yyMeasuredVec[i].id];
+				yyMeasuredVec[i].theoset = true;
+			}
       //################################################
       else if (yyMeasuredVec[i].type == LEObs) {
 	 if (yyMeasuredVec[i].id == bsg) {
@@ -13945,6 +13957,7 @@ void Fittino::markovChain ()
 	  sprintf ( ntuplevars, "%s:%s", ntuplevars, obsName.c_str() );
 	}
       }
+
       TNtuple *markovTuple = new TNtuple(ntuplename,ntupletext,ntuplevars);
 
       // fill vector of parameters

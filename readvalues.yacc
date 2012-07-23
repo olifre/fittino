@@ -98,6 +98,11 @@ map<int,double> yyMass;
 // FINETUNING PARAMETERS
 map<int,double> yyFineTuningParameters;
 
+// HiggsCouplings
+map<int, double> yyHiggsScalarFermionCouplings;
+map<int, double> yyHiggsPseudoScalarFermionCouplings;
+map<int, double> yyHiggsBosonCouplings;
+
 // alpha
 double yyalpha;
 
@@ -1912,6 +1917,30 @@ input:
 				char *tmpId = (char*)malloc( tmpSize*sizeof(char) );
 				line.copy( tmpId, tmpSize, 19 );
 				tmpValue.type = FineTuningParameter;
+				tmpValue.id = atoi(tmpId);
+			}
+			else if( !strncmp($3, "HiggsScalarFermionCoupling", 26 )) {
+				string line($3);
+				int tmpSize = line.size() - 26;
+				char *tmpId = (char*)malloc( tmpSize*sizeof(char) );
+				line.copy( tmpId, tmpSize, 26 );
+				tmpValue.type = HiggsScalarFermionCoupling;
+				tmpValue.id = atoi(tmpId);
+			}
+			else if( !strncmp($3, "HiggsPseudoScalarFermionCoupling", 32 )) {
+				string line($3);
+				int tmpSize = line.size() - 32;
+				char *tmpId = (char*)malloc( tmpSize*sizeof(char) );
+				line.copy( tmpId, tmpSize, 32 );
+				tmpValue.type = HiggsPseudoScalarFermionCoupling;
+				tmpValue.id = atoi(tmpId);
+			}
+			else if( !strncmp($3, "HiggsBosonCoupling", 18 )) {
+				string line($3);
+				int tmpSize = line.size() - 18;
+				char *tmpId = (char*)malloc( tmpSize*sizeof(char) );
+				line.copy( tmpId, tmpSize, 18 );
+				tmpValue.type = HiggsBosonCoupling;
 				tmpValue.id = atoi(tmpId);
 			}
 			else if (!strncmp($3, "cos", 3)) tmpValue.type = other;
@@ -4393,17 +4422,17 @@ if (yyVerbose){
 }
 		  }
 //========================================================================
-                  else if (!strcmp($2, "HiggsBoundsInputHiggsCouplingsBosons")) {
-if (yyVerbose){
-		      cout << "Ignoring block HiggsBoundsInputHiggsCouplingsBosons" << endl;
-}
-                  }
+//                  else if (!strcmp($2, "HiggsBoundsInputHiggsCouplingsBosons")) {
+//if (yyVerbose){
+//		      cout << "Ignoring block HiggsBoundsInputHiggsCouplingsBosons" << endl;
+//}
+//                  }
 //========================================================================
-                  else if (!strcmp($2, "HiggsBoundsInputHiggsCouplingsFermions")) {
-if (yyVerbose){
-		      cout << "Ignoring block HiggsBoundsInputHiggsCouplingsFermions" << endl;
-}
-		  }
+//                  else if (!strcmp($2, "HiggsBoundsInputHiggsCouplingsFermions")) {
+//if (yyVerbose){
+//		      cout << "Ignoring block HiggsBoundsInputHiggsCouplingsFermions" << endl;
+//}
+//		  }
 //========================================================================
                   else if (!strcmp($2, "IMVmix")) {
 if (yyVerbose){
@@ -4546,7 +4575,37 @@ if (yyVerbose){
 										yyFineTuningParameters[(unsigned int)tmpParams[i][0]]=tmpParams[i][1];
 									}
 								}
-
+			// HiggsCouplings to Bosons
+//========================================================================
+								else if( !strcmp($2, "HiggsBoundsInputHiggsCouplingsBosons" ) ) {
+									for( unsigned int i = 0; i < tmpParams.size(); ++i ) {
+										if( tmpParams[i].size() < 6 ) cout << "WARNING: missing information in Block HiggsBoundsInputHiggsCouplingsFermions" << endl;
+										else {
+											if( (int)(tmpParams[i][1]) == 3 ) {
+												unsigned int thisid = (unsigned int)(tmpParams[i][1]*1.e6 + tmpParams[i][2]*1.e4 + tmpParams[i][3]*1.e2 + tmpParams[i][4]*1.e0);
+												yyHiggsBosonCouplings[thisid]=tmpParams[i][0];
+											}
+											else if( (int)(tmpParams[i][1]) == 4 ) {
+												unsigned int thisid = (unsigned int)(tmpParams[i][1]*1.e8 + tmpParams[i][2]*1.e6 + tmpParams[i][3]*1.e4 + tmpParams[i][4]*1.e2 + tmpParams[i][5]*1.e0);
+												yyHiggsBosonCouplings[thisid]=tmpParams[i][0];
+											}
+										}
+									}
+								}
+			// HiggsCouplings to Fermions
+//========================================================================
+								else if( !strcmp($2, "HiggsBoundsInputHiggsCouplingsFermions" ) ) {
+									for( unsigned int i = 0; i < tmpParams.size(); ++i ) {
+										if( tmpParams[i].size() < 6 ) cout << "WARNING: missing information in Block HiggsBoundsInputHiggsCouplingsBosons" << endl;
+										else {
+											unsigned int thisid = (unsigned int)(tmpParams[i][2]*1.e6 + tmpParams[i][3]*1.e4 + tmpParams[i][4]*1.e2 + tmpParams[i][5]*1.e0);
+											yyHiggsScalarFermionCouplings[thisid]=tmpParams[i][0];
+											yyHiggsPseudoScalarFermionCouplings[thisid]=tmpParams[i][1];
+										}
+									}
+								}
+							
+					
 		  // SPhenoLowEnergy 
 //========================================================================
                   else if (!strcmp($2, "SPhenoLowEnergy")) {

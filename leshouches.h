@@ -58,6 +58,9 @@ extern double yyMinput;
 extern double yyM1;
 extern map<int,double> yyMass;
 extern map<int,double> yyFineTuningParameters;
+extern map<int,double> yyHiggsScalarFermionCouplings;
+extern map<int,double> yyHiggsPseudoScalarFermionCouplings;
+extern map<int,double> yyHiggsBosonCouplings;
 
 typedef vector<double> doubleVec_t;
 

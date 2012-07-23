@@ -123,7 +123,7 @@ enum FlavourCalculator { NOFLAVOURCALCULATOR, SUPERISO };
 enum DecayCalculator		{ SUSYHIT, NONE};
 enum RelicDensityCalculator { NORELICDENSITYCALCULATOR, MICROMEGAS };
 enum LEOCalculator  { NOLEOCALCULATOR, NPFITTER };
-enum ObservableType { mass, Pwidth, xsection, br, xsectionbr, Pedge, xsbr, brratio, brsum, LEObs, brprod, tauFromStau1Polarisation, tauFromNeutralino2Polarisation, SMPrecision, other, weighted, LHCRate, FineTuningParameter };
+enum ObservableType { mass, Pwidth, xsection, br, xsectionbr, Pedge, xsbr, brratio, brsum, LEObs, brprod, tauFromStau1Polarisation, tauFromNeutralino2Polarisation, SMPrecision, other, weighted, LHCRate, FineTuningParameter, HiggsScalarFermionCoupling, HiggsPseudoScalarFermionCoupling, HiggsBosonCoupling };
 //   LEObservables  { bsg,                                           gmin2,          drho, omega };
 enum LHCRatetypes { fully_inclusive, os_sf, four_b, /* <- old sRates signals */
                     Atlas4jMET0l7TeV, Atlas3jMET1l7TeV /* <- new LHC-FASER signals */ };
