@@ -42,6 +42,7 @@ double yy_m2Hd;
 double yy_m2Hu;
 double yy_mu;
 double yy_MassA;
+double yy_TanBeta;
 double yy_mse1L;
 double yy_mse2L;
 double yy_mse3L;
@@ -4447,6 +4448,9 @@ if (yyVerbose){
                           case 24:
                               yy_MassA =  tmpParams[i][1];
                               break;
+													case 25:
+															yy_TanBeta = tmpParams[i][1];
+															break;
 													case 26:
 															yy_MassA = tmpParams[i][1];
 															break;
