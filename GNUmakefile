@@ -23,8 +23,8 @@
 
 ###  NAF   
 BOOST             = -I/afs/naf.desy.de/group/atlas/software/lcg/external/Boost/1.42.0_python2.5/x86_64-slc5-gcc43-opt/include/boost-1_42/
-HBLIB             = -L/afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/HB3.2b/HiggsBounds-f90/ -lHB
-#HBLIB             = -L/afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/HiggsBounds-3.8.1/ -lHB
+#HBLIB             = -L/afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/HB3.2b/HiggsBounds-f90/ -lHB
+HBLIB             = -L/afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/HiggsBounds-3.8.1/ -lHB
 
 ###   BAF   
 #BOOST             = -I/afs/baf.hep-phyin.de/common/boost/1.44.0/x86_64-slc5-gcc43-opt/include/boost-1_44/  
