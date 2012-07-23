@@ -5141,7 +5141,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      // Some calculators cannot digest non-standard SLHA blocks.
      // If needed, create a spectrum file without SPheno specific blocks.
      // The output file is called SPheno.spc.stdslha
-     if (yyHiggsCalculator == FEYNHIGGS) {
+     if (yyHiggsCalculator == FEYNHIGGS || yyHiggsCalculator == HBSLHAINPUTBLOCKSFROMFH ) {
        string command = yyAfterBurnerDirectory + "/removeSPhenoBlocks.sh SPheno.spc";
        system(command.c_str());
      }
@@ -5197,7 +5197,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 		}
    }    
    
-   if (yyHiggsCalculator == FEYNHIGGS ) {
+   if (yyHiggsCalculator == FEYNHIGGS || yyHiggsCalculator == HBSLHAINPUTBLOCKSFROMFH ) {
      if (yyVerbose){
      cout << yyDashedLine << endl;
      cout << "Calling FeynHiggs" << endl;
@@ -5231,8 +5231,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      ReplaceBlock("SPheno.spc.stdslha.fh-001.last", "SPheno.spc", "HMIX");
 
 
-     //TODO: This should not depend on the use of hisssignals but on the use of the higgscalculator 
-     if (yyUseHiggsSignals){
+     if (yyHiggsCalculator==HBSLHAINPUTBLOCKSFROMFH){
        ReplaceBlock("SPheno.spc.stdslha.fh-001.last", "SPheno.spc", "HiggsBoundsInputHiggsCouplingsBosons");
        ReplaceBlock("SPheno.spc.stdslha.fh-001.last", "SPheno.spc", "HiggsBoundsInputHiggsCouplingsFermions");
      }
@@ -11034,7 +11033,7 @@ int   ReadLesHouches()
      }
    }
 
-   if ( yyHiggsCalculator == FEYNHIGGS ) {
+   if ( yyHiggsCalculator == FEYNHIGGS || yyHiggsCalculator== HBSLHAINPUTBLOCKSFROMFH) {
      if (yyVerbose){
        cout << "  --->  yyMassh0_npf     from FeynHiggs:   " << yyMassh0_npf        << endl; // R(B->s gamma)  
        cout << "  --->  yyMassH0_npf     from FeynHiggs:   " << yyMassH0_npf        << endl; // R(B->s gamma)  

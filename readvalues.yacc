@@ -1625,6 +1625,9 @@ input:
 		   if (!strcmp($3, "FEYNHIGGS")) {
 		      yyHiggsCalculator = FEYNHIGGS;
 		   }
+		   if (!strcmp($3, "HBSLHAINPUTBLOCKSFROMFH")) {
+		     yyHiggsCalculator = HBSLHAINPUTBLOCKSFROMFH;
+		   }
 		   yyHiggsCalculatorPath = $4;
 	      }
             | input T_HIGGSBRCALCULATOR T_WORD T_PATH

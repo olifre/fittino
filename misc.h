@@ -117,7 +117,7 @@ using namespace std;
 
 enum SwitchState    { off, on };
 enum Calculator     { SPHENO, SUSPECT, SPHENO_FH, SOFTSUSY };
-enum HiggsCalculator { NOHIGGSCALCULATOR, FEYNHIGGS };
+enum HiggsCalculator { NOHIGGSCALCULATOR, FEYNHIGGS, HBSLHAINPUTBLOCKSFROMFH };
 enum HiggsBRCalculator { NOHIGGSBRCALCULATOR, HDECAY };
 enum FlavourCalculator { NOFLAVOURCALCULATOR, SUPERISO };
 enum DecayCalculator		{ SUSYHIT, NONE};
