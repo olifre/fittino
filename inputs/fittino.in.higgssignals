@@ -201,13 +201,13 @@ SepFitTanbMu                   off
 SepFitmA                       off
 Calculator                     SPHENO ./SPheno
 HiggsCalculator                HBSLHAINPUTBLOCKSFROMFH ./HBSLHAinputblocksfromFH
-#HiggsCalculator                FEYNHIGGS ./FeynHiggs
+#HiggsCalculator               FEYNHIGGS ./FeynHiggs
 HiggsBRCalculator              HDECAY ./run
 RelicDensityCalculator         MICROMEGAS ./micromegas
 FlavourCalculator              SUPERISO ./slha.x
 AfterBurnerDirectory           ./afterburner
 HiggsSignalsPath               ./HSwithSLHA
-#HiggsSignalsPath               /lustre/fittino/group/theorycodes/HiggsSignals-0.1.1beta/example_programs/HSwithSLHA
+
 
 
 UseXsecLimits                  on
@@ -226,8 +226,7 @@ GetContours                    off
 
 UseHiggsBounds                 on
 UseHiggsSignals                on
-UseHDecay		       on
-UseBla   		       on
+
 RequireNeut1LSP                on
 
 UseAstroFit                on
