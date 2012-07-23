@@ -754,6 +754,40 @@ void ReplaceBlock(string fNameIN, string fNameOUT, string blockName)	{
  	ofstr.close();	
 }
 
+
+void ReplaceBlock(string fNameIN, string fNameOUT, vector<string> blockName, bool replaceMass)	{
+	
+ 	ifstream ifstr_in(fNameIN.c_str());
+ 	ifstream ifstr_out(fNameOUT.c_str());
+	
+        Coll coll_in(ifstr_in);
+ 	Coll coll_out(ifstr_out);
+	
+ 	ifstr_in.close();
+ 	ifstr_out.close();
+
+
+	if (replaceMass){
+	  coll_out["MASS"]["25"].at(1)=coll_out["FeynHiggs"]["1"].at(1);
+	  coll_out["MASS"]["35"].at(1)=coll_out["FeynHiggs"]["2"].at(1);
+	  coll_out["MASS"]["36"].at(1)=coll_out["FeynHiggs"]["3"].at(1);
+	  coll_out["MASS"]["37"].at(1)=coll_out["FeynHiggs"]["4"].at(1);
+	}
+
+
+	for (unsigned int i=0; i<blockName.size(); i++){
+	  coll_in.at(blockName[i]).swap(coll_out.at(blockName[i]));
+	}
+
+	
+ 	ofstream ofstr(fNameOUT.c_str());
+ 	ofstr << coll_out;
+ 	ofstr.close();	
+
+}
+
+
+
 void ReplaceMass(string fName)	{
 	
 	ifstream ifstr(fName.c_str());
@@ -5225,16 +5259,17 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
 
      //TODO: add corresponding lines for softsusy
-     //TODO: We loose spheno's mass information here -- do we need to keep it?
-     ReplaceMass("SPheno.spc");
-     ReplaceBlock("SPheno.spc.stdslha.fh-001.last", "SPheno.spc", "ALPHA");
-     ReplaceBlock("SPheno.spc.stdslha.fh-001.last", "SPheno.spc", "HMIX");
 
+     vector<string> blocksFromFH;
+     blocksFromFH.push_back("ALPHA");
+     blocksFromFH.push_back("HMIX");
 
      if (yyHiggsCalculator==HBSLHAINPUTBLOCKSFROMFH){
-       ReplaceBlock("SPheno.spc.stdslha.fh-001.last", "SPheno.spc", "HiggsBoundsInputHiggsCouplingsBosons");
-       ReplaceBlock("SPheno.spc.stdslha.fh-001.last", "SPheno.spc", "HiggsBoundsInputHiggsCouplingsFermions");
+       blocksFromFH.push_back("HiggsBoundsInputHiggsCouplingsBosons");
+       blocksFromFH.push_back("HiggsBoundsInputHiggsCouplingsFermions");
      }
+
+     ReplaceBlock("SPheno.spc.stdslha.fh-001.last", "SPheno.spc", blocksFromFH, true);
 
    }
 
@@ -5265,10 +5300,15 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        }
        return;        
      }
-     ReplaceBlock("slha.out", "SPheno.spc", "25");
-     ReplaceBlock("slha.out", "SPheno.spc", "35");
-     ReplaceBlock("slha.out", "SPheno.spc", "36");
-     ReplaceBlock("slha.out", "SPheno.spc", "37");
+
+
+     vector<string> blocksFromHD;
+     blocksFromHD.push_back("25");
+     blocksFromHD.push_back("35");
+     blocksFromHD.push_back("36");
+     blocksFromHD.push_back("37");
+
+     ReplaceBlock("slha.out", "SPheno.spc", blocksFromHD, false);
 
    }
 
