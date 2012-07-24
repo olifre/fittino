@@ -222,20 +222,6 @@ int close_HiggsBoundsWithSLHA()
 }
 
 
-void *CallingThreadedHiggsBounds(void *argument)
-{
-   int tid;
- 
-   tid = *((int *) argument);
-   printf("Hello World! It's me, threaded HiggsBounds %d!\n", tid);
-
-   globalHiggsBoundsChi2WithTheory = call_HiggsBoundsWithSLHA();
- 
-   return NULL;
-}
- 
-
-
 
 double call_HiggsBoundsWithSLHA() 
 {
@@ -327,6 +313,18 @@ double call_HiggsBoundsWithSLHA()
 
 }
 
+void *CallingThreadedHiggsBounds(void *argument)
+{
+   int tid;
+ 
+   tid = *((int *) argument);
+   printf("Hello World! It's me, threaded HiggsBounds %d!\n", tid);
+
+   globalHiggsBoundsChi2WithTheory = call_HiggsBoundsWithSLHA();
+ 
+   return NULL;
+}
+ 
 int call_HiggsBounds(int nH, double* parameterVector) 
 {
   int chan, ncombined, HBresult, checkflag;
@@ -5606,15 +5604,14 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      globalHiggsBoundsChi2WithTheory = -1;
      pthread_t threads[1];
      int thread_args[1];
-     thread_args[i] = 0;
-     printf("In main: creating HiggsBounds thread %d\n", i);
-     int rcHiggsBoundsThead = pthread_create(&threads[i], NULL, CallingThreadedHiggsBounds, (void *) &thread_args[i]);
+     thread_args[0] = 0;
+     int rcHiggsBoundsThead = pthread_create(&threads[0], NULL, CallingThreadedHiggsBounds, (void *) &thread_args[0]);
      if (rcHiggsBoundsThead != 0) { 
        f += 111111111111.;
        globalHiggsChi2 = f;
        return; 
      }
-     rcHiggsBoundsThead = pthread_join(threads[i], NULL);
+     rcHiggsBoundsThead = pthread_join(threads[0], NULL);
      if (rcHiggsBoundsThead != 0) {
        f += 111111111111.; 
        globalHiggsChi2 = f;
