@@ -55,10 +55,11 @@ fixParameter massStrange 0.095        GeV
 fixParameter massMuon	 0.1056583715 GeV 
 
 
-fitParameter M0             76.2      GeV +-  9.5  GeV 
-fitParameter M12           331.5      GeV +-  6.0   GeV
-fitParameter A0            383.8      GeV +-  22.0   GeV 
-fitParameter TanBeta        13.2          +-  0.6    
+
+fitParameter M0             76.2      GeV +-  4.71131  GeV 
+fitParameter M12           331.5      GeV +-  20.8398   GeV
+fitParameter A0            383.8      GeV +-  117.134   GeV 
+fitParameter TanBeta        13.2          +-  0.97314    
 fitParameter massTop     173.5  +- 1.0      GeV
 # fixParameter QEWSB        1000.       GeV # +-  1   GeV  
 

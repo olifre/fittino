@@ -53,18 +53,13 @@ fixParameter massCharm   1.275        GeV
 fixParameter SignMu      1
 fixParameter massStrange 0.095        GeV
 fixParameter massMuon	 0.1056583715 GeV 
-
- 
- 
- 
- 
  
  
 
-fitParameter M0         692.604 +- 9.5	      GeV 
-fitParameter M12        235.233 +- 6	      GeV
-fitParameter A0         477.198 +- 22	      GeV 
-fitParameter TanBeta    21.7804 +- 0.6	       
+fitParameter M0         692.604 +- 4.71131	      GeV 
+fitParameter M12        235.233 +- 20.8398	      GeV
+fitParameter A0         477.198 +- 117.134	      GeV 
+fitParameter TanBeta    21.7804 +- 0.97314	       
 fitParameter M0Hu       846757 +- 10000	      GeV
 fitParameter M0Hd       1.23489e+06 +- 10000  GeV
 fitParameter massTop     173.5  +- 1.0      GeV
