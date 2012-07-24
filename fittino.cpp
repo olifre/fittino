@@ -55,6 +55,9 @@ email                : philip.bechtle@desy.de, peter.wienemann@desy.de
 #include <sys/time.h>
 #include <sys/unistd.h>
 
+#include <pthread.h>
+#include <assert.h>
+
 #include "sRates.h"
 #include "slhaea.h"
 #include "./LHC-FASER/LHC-FASER.hpp"
@@ -168,7 +171,7 @@ double give_xs (doubleVec_t initial, int channel, int element );
 double give_br ( int id, int decay, int element );
 int FindInFittedPar (string name);
 double mSquarkGluinoMax;
-
+double globalHiggsBoundsChi2WithTheory;
 
 double* GetRandomParameterVector(const vector<parameter_t>&);
 
@@ -219,14 +222,27 @@ int close_HiggsBoundsWithSLHA()
 }
 
 
+void *CallingThreadedHiggsBounds(void *argument)
+{
+   int tid;
+ 
+   tid = *((int *) argument);
+   printf("Hello World! It's me, threaded HiggsBounds %d!\n", tid);
+
+   globalHiggsBoundsChi2WithTheory = call_HiggsBoundsWithSLHA();
+ 
+   return NULL;
+}
+ 
+
 
 
 double call_HiggsBoundsWithSLHA() 
 {
 
   double theory_uncertainty_1s=1.5;
-  double chisq_withtheory = 0;
-  double chisq_withouttheory = 0;
+  double chisq_withtheory = -1;
+  double chisq_withouttheory = -1;
   int HBresult = -1;
   int chan = 0;
   int bestChanChi2 = 0;
@@ -250,13 +266,13 @@ double call_HiggsBoundsWithSLHA()
     cout << "HB blocks not implemented in other calculators than SPheno, exiting" << endl;
     exit (-1);
   }
-  system ("ls -l SPheno.spc.last");
+  if (yyVerbose) system ("ls -l SPheno.spc.last");
   char charfilename[256];
   sprintf(charfilename,"%s",filename.c_str());
   int charfilenamelen = strlen(charfilename);
   higgsbounds_input_slha_(charfilename, &charfilenamelen);
   
-  globalHiggsChi2 = 0.;
+  //globalHiggsChi2 = 0.;
   
   if (yyVerbose) {
     cout << "-----------------------------------------------" << endl;
@@ -307,7 +323,6 @@ double call_HiggsBoundsWithSLHA()
 
 
 
-  globalHiggsChi2 = chisq_withtheory;
   return chisq_withtheory;
 
 }
@@ -5564,16 +5579,61 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
    // Higgsbounds
    double higgsChisqContribution = 0.;
    #ifdef USELIBHB
+// int threadExample(void)
+// {
+//    pthread_t threads[NUM_THREADS];
+//    int thread_args[NUM_THREADS];
+//    int rc, i;
+//  
+//    /* create all threads */
+//    for (i=0; i<NUM_THREADS; ++i) {
+//       thread_args[i] = i;
+//       printf("In main: creating thread %d\n", i);
+//       rc = pthread_create(&threads[i], NULL, TaskCode, (void *) &thread_args[i]);
+//       assert(0 == rc);
+//    }
+//  
+//    /* wait for all threads to complete */
+//    for (i=0; i<NUM_THREADS; ++i) {
+//       rc = pthread_join(threads[i], NULL);
+//       assert(0 == rc);
+//    }
+//  
+//    exit(EXIT_SUCCESS);
+// }
 
    if ( yyUseHiggsBounds == 1 ) {
-
-     higgsChisqContribution = call_HiggsBoundsWithSLHA();
-     if (higgsChisqContribution<0) {
-       f += 111111111111.;  
+     globalHiggsBoundsChi2WithTheory = -1;
+     pthread_t threads[1];
+     int thread_args[1];
+     thread_args[i] = 0;
+     printf("In main: creating HiggsBounds thread %d\n", i);
+     int rcHiggsBoundsThead = pthread_create(&threads[i], NULL, CallingThreadedHiggsBounds, (void *) &thread_args[i]);
+     if (rcHiggsBoundsThead != 0) { 
+       f += 111111111111.;
+       globalHiggsChi2 = f;
+       return; 
      }
-     f+= higgsChisqContribution;
+     rcHiggsBoundsThead = pthread_join(threads[i], NULL);
+     if (rcHiggsBoundsThead != 0) {
+       f += 111111111111.; 
+       globalHiggsChi2 = f;
+       return;
+     }
+     higgsChisqContribution = globalHiggsBoundsChi2WithTheory;//call_HiggsBoundsWithSLHA();
+     if (higgsChisqContribution<0) {
+       f += 111111111111.; 
+       globalHiggsChi2 = f;
+       return; 
+     } else {
+       // f+= higgsChisqContribution;
+       // Do NOT use the HiggsBoundsChi2 in scanning anymore!!!! Just write its chi2 into the ntuple...
+       globalHiggsChi2 = higgsChisqContribution;
+     }
      if (yyVerbose) {
+       cout << "###########################################################################" << endl;
        cout << "adding " << higgsChisqContribution << " to the chi2 due to the Higgs limits"<< endl;
+       cout << "###########################################################################" << endl;
      }
 
    }

@@ -226,6 +226,7 @@ GetContours                    off
 
 UseHiggsBounds                 on
 UseHiggsSignals                on
+WriteHiggsCouplings            on
 
 RequireNeut1LSP                on
 

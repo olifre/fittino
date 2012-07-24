@@ -23,13 +23,13 @@ LEObs ( B_smm_npf	)   <	4.5E-9          +- 0.02E-9      				 alias  3
 
 massTop		173.5      	GeV 	+- 1.00		GeV 	# PDG 2012
 
-# alphaem		128.952		GeV	+- 0.014		# http://arxiv.org/abs/1010.4180, p.11
-# G_F		1.1663787E-5		+- 0.0000006E-5		# PDG 2011
-# alphas		0.1184		GeV	+- 0.0007	GeV 	# PDG 2011
-# massZ		91.1876		GeV	+- 0.0021	GeV	# PDG 2011
-# massBottom	4.18       	GeV 	+- 0.03		GeV 	# PDG 2012
-# massTau		1.77682    	GeV 	+- 0.00016	GeV 	# PDG 2012
-# massCharm	1.275       	GeV 	+- 0.025	GeV 	# PDG 2012
+alphaem		128.952		GeV	+- 0.014		# http://arxiv.org/abs/1010.4180, p.11
+G_F		1.1663787E-5		+- 0.0000006E-5		# PDG 2011
+alphas		0.1184		GeV	+- 0.0007	GeV 	# PDG 2011
+massZ		91.1876		GeV	+- 0.0021	GeV	# PDG 2011
+massBottom	4.18       	GeV 	+- 0.03		GeV 	# PDG 2012
+massTau		1.77682    	GeV 	+- 0.00016	GeV 	# PDG 2012
+massCharm	1.275       	GeV 	+- 0.025	GeV 	# PDG 2012
 
  ################################################################################
  ### Parameters                                                               ###
@@ -227,6 +227,7 @@ GetContours                    off
 
 UseHiggsBounds                 on
 UseHiggsSignals                on
+WriteHiggsCouplings            on
 
 RequireNeut1LSP                on
 
