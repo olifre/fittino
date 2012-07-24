@@ -40,7 +40,6 @@ fixParameter G_F         1.1663787E-5
 fixParameter alphas      0.1184       GeV
 fixParameter massZ       91.1876      GeV
 fixParameter massBottom  4.18         GeV
-fixParameter massTop     173.5        GeV
 fixParameter massTau     1.77682      GeV
 fixParameter massCharm   1.275        GeV 
 fixParameter SignMu      1
@@ -53,6 +52,7 @@ fitParameter M12       349.104 +- 6      GeV
 fitParameter A0        2.57957 +- 22      GeV 
 fitParameter TanBeta   1.99813 +- 0.6     
 fitParameter M0H       951022 +- 10000 GeV
+fitParameter massTop     173.5  +- 1.0      GeV
 # fixParameter QEWSB        1000.       GeV # +-  1   GeV  
 
 ### Unfitted SUSY masses and BR
