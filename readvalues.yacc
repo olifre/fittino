@@ -189,7 +189,9 @@ bool          yyUseSimplexMinOnly = false;
 bool          yyUseSimplexMin = true;
 bool          yyRequireNeut1LSP = false;
 bool          yyCalculateSPhenoCrossSections = false;
- 
+bool					yyHiggsCouplingsManualInput = false;
+bool					yyHiggsCouplingsAutoInput = false;
+
 unsigned int  yyNumberOptimizationSteps = 1000;
 float         yyAcceptanceRangeUpper = 0.52;
 float         yyAcceptanceRangeLower = 0.48;
@@ -1552,7 +1554,81 @@ input:
 		  if (!strcmp($2, "UseSimplexMin")) {
 		      if ($3 == on) yyUseSimplexMin = true;
 		      else yyUseSimplexMin = false;
-		  } 
+		  }
+			if (!strcmp($2, "WriteHiggsCouplings" )) {
+				if( $3 == on && !yyHiggsCouplingsManualInput ) {
+					yyHiggsCouplingsAutoInput = true;
+					vector<int> varFermionId;
+					varFermionId.push_back( 3250505 );
+					varFermionId.push_back( 3350505 );
+					varFermionId.push_back( 3360505 );
+					varFermionId.push_back( 3250606 );
+					varFermionId.push_back( 3350606 );
+					varFermionId.push_back( 3360606 );
+					varFermionId.push_back( 3251515 );
+					varFermionId.push_back( 3351515 );
+					varFermionId.push_back( 3361515 );
+					for( unsigned int iVar = 0, IVar = varFermionId.size(); iVar < IVar; ++iVar ) {
+					  MeasuredValue tmpValue;
+		  			tmpValue.setScaling = false;
+		  			tmpValue.bound = false;
+		  			tmpValue.theovalue  = 0;
+						stringstream varName;
+						varName << "HiggsScalarFermionCoupling" << varFermionId[iVar];
+						tmpValue.name = varName.str();
+		  			tmpValue.value = 1;
+		  			tmpValue.error = 1;
+	          tmpValue.bound_low = -1.E+6;
+	          tmpValue.bound_up = 1.E+6;
+            tmpValue.nofit = true;
+						tmpValue.type = HiggsScalarFermionCoupling;
+						tmpValue.id = varFermionId[iVar];
+						yyMeasuredVec.push_back( tmpValue );
+						stringstream varName2;
+						varName2 << "HiggsPseudoScalarFermionCoupling" << varFermionId[iVar];
+						tmpValue.name = varName2.str();
+						tmpValue.type = HiggsPseudoScalarFermionCoupling;
+						yyMeasuredVec.push_back( tmpValue );
+					}
+					vector<int> varBosonId;
+					varBosonId.push_back( 3252424 );
+					varBosonId.push_back( 3352424 );
+					varBosonId.push_back( 3362424 );
+					varBosonId.push_back( 3252323 );
+					varBosonId.push_back( 3352323 );
+					varBosonId.push_back( 3362323 );
+					varBosonId.push_back( 3252121 );
+					varBosonId.push_back( 3352121 );
+					varBosonId.push_back( 3362121 );
+					varBosonId.push_back( 3252523 );
+					varBosonId.push_back( 3352523 );
+					varBosonId.push_back( 3353523 );
+					varBosonId.push_back( 3362523 );
+					varBosonId.push_back( 3363523 );
+					varBosonId.push_back( 3363623 );
+					varBosonId.push_back( 425212123 );
+					varBosonId.push_back( 435212123 );
+					varBosonId.push_back( 436212123 );
+					for( int iVar = 0, IVar = varBosonId.size(); iVar < IVar; ++iVar ) {
+						MeasuredValue tmpValue;
+		  			tmpValue.setScaling = false;
+		  			tmpValue.bound = false;
+		  			tmpValue.theovalue  = 0;
+		  			stringstream varName;
+						varName << "HiggsBosonCoupling" << varBosonId[iVar];
+						tmpValue.name = varName.str();
+		  			tmpValue.value = 1;
+		  			tmpValue.error = 1;
+	          tmpValue.bound_low = -1.E+6;
+	          tmpValue.bound_up = 1.E+6;
+            tmpValue.nofit = true;
+						tmpValue.type = HiggsBosonCoupling;
+						tmpValue.id = varBosonId[iVar];
+						yyMeasuredVec.push_back( tmpValue );
+					}
+				}
+			}
+
 	      }
 	    | input T_CALCULATOR T_WORD
 	      {
@@ -1919,7 +1995,8 @@ input:
 				tmpValue.type = FineTuningParameter;
 				tmpValue.id = atoi(tmpId);
 			}
-			else if( !strncmp($3, "HiggsScalarFermionCoupling", 26 )) {
+			else if( !yyHiggsCouplingsAutoInput && !strncmp($3, "HiggsScalarFermionCoupling", 26 )) {
+				yyHiggsCouplingsManualInput = true;
 				string line($3);
 				int tmpSize = line.size() - 26;
 				char *tmpId = (char*)malloc( tmpSize*sizeof(char) );
@@ -1927,7 +2004,8 @@ input:
 				tmpValue.type = HiggsScalarFermionCoupling;
 				tmpValue.id = atoi(tmpId);
 			}
-			else if( !strncmp($3, "HiggsPseudoScalarFermionCoupling", 32 )) {
+			else if( !yyHiggsCouplingsAutoInput && !strncmp($3, "HiggsPseudoScalarFermionCoupling", 32 )) {
+				yyHiggsCouplingsManualInput = true;
 				string line($3);
 				int tmpSize = line.size() - 32;
 				char *tmpId = (char*)malloc( tmpSize*sizeof(char) );
@@ -1935,7 +2013,8 @@ input:
 				tmpValue.type = HiggsPseudoScalarFermionCoupling;
 				tmpValue.id = atoi(tmpId);
 			}
-			else if( !strncmp($3, "HiggsBosonCoupling", 18 )) {
+			else if( !yyHiggsCouplingsAutoInput && !strncmp($3, "HiggsBosonCoupling", 18 )) {
+				yyHiggsCouplingsManualInput = true;
 				string line($3);
 				int tmpSize = line.size() - 18;
 				char *tmpId = (char*)malloc( tmpSize*sizeof(char) );
@@ -4578,8 +4657,9 @@ if (yyVerbose){
 			// HiggsCouplings to Bosons
 //========================================================================
 								else if( !strcmp($2, "HiggsBoundsInputHiggsCouplingsBosons" ) ) {
+									cout << "reading block HiggsBoundsInputHiggsCouplingsBosons" << endl;
 									for( unsigned int i = 0; i < tmpParams.size(); ++i ) {
-										if( tmpParams[i].size() < 6 ) cout << "WARNING: missing information in Block HiggsBoundsInputHiggsCouplingsFermions" << endl;
+										if( tmpParams[i].size() < 5 ) cout << "WARNING: missing information in Block HiggsBoundsInputHiggsCouplingsBosons" << endl;
 										else {
 											if( (int)(tmpParams[i][1]) == 3 ) {
 												unsigned int thisid = (unsigned int)(tmpParams[i][1]*1.e6 + tmpParams[i][2]*1.e4 + tmpParams[i][3]*1.e2 + tmpParams[i][4]*1.e0);
@@ -4596,7 +4676,7 @@ if (yyVerbose){
 //========================================================================
 								else if( !strcmp($2, "HiggsBoundsInputHiggsCouplingsFermions" ) ) {
 									for( unsigned int i = 0; i < tmpParams.size(); ++i ) {
-										if( tmpParams[i].size() < 6 ) cout << "WARNING: missing information in Block HiggsBoundsInputHiggsCouplingsBosons" << endl;
+										if( tmpParams[i].size() < 6 ) cout << "WARNING: missing information in Block HiggsBoundsInputHiggsCouplingsFermions" << endl;
 										else {
 											unsigned int thisid = (unsigned int)(tmpParams[i][2]*1.e6 + tmpParams[i][3]*1.e4 + tmpParams[i][4]*1.e2 + tmpParams[i][5]*1.e0);
 											yyHiggsScalarFermionCouplings[thisid]=tmpParams[i][0];
