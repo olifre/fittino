@@ -12,7 +12,7 @@ LEObs ( dm_s_npf	)	17.78		+- 0.12		+- 5.2                 		 alias  2
 LEObs ( Btn_npf		)	1.67E-4		+- 0.39E-4                    			 alias  4
 LEObs ( gmin2m_npf	)	28.7E-10	+- 8.0E-10	+- 2.0E-10           		 alias  7 
 LEObs ( omega		)	0.1123		+- 0.0035	+- 0.01123                        alias  20 
-nofitLEObs ( Massh0_npf	)	125.		+- 2.0		+- 3.0     	 		 alias  19 
+LEObs ( Massh0_npf	)	125.		+- 2.0		+- 4.0     	 		 alias  19 
 LEObs ( MassW_npf	)	80.385		+- 0.015        +- 0.010       			 alias  8
 LEObs ( sin_th_eff_npf	)	0.23113		+- 0.00021                      		 alias  9 
 LEObs ( B_smm_npf	)   <	4.5E-9          +- 0.02E-9      				 alias  3
@@ -23,13 +23,21 @@ LEObs ( B_smm_npf	)   <	4.5E-9          +- 0.02E-9      				 alias  3
 
 massTop		173.5      	GeV 	+- 1.00		GeV 	# PDG 2012
 
-alphaem		128.952		GeV	+- 0.014		# http://arxiv.org/abs/1010.4180, p.11
-G_F		1.1663787E-5		+- 0.0000006E-5		# PDG 2011
-alphas		0.1184		GeV	+- 0.0007	GeV 	# PDG 2011
-massZ		91.1876		GeV	+- 0.0021	GeV	# PDG 2011
-massBottom	4.18       	GeV 	+- 0.03		GeV 	# PDG 2012
-massTau		1.77682    	GeV 	+- 0.00016	GeV 	# PDG 2012
-massCharm	1.275       	GeV 	+- 0.025	GeV 	# PDG 2012
+alphaem		128.952		GeV	+- 0.014	     	# http://arxiv.org/abs/1010.4180, p.11
+alphas		0.1184		GeV	+- 0.0007	GeV  	# PDG 2011
+massZ		91.1876		GeV	+- 0.0021	GeV  	# PDG 2011
+nofit massBottom	4.18       	GeV 	+- 0.03		GeV  	# PDG 2012
+nofit G_F		1.1663787E-5		+- 0.0000006E-5	     	# PDG 2011
+massTau		1.77682    	GeV 	+- 0.00016	GeV  	# PDG 2012
+nofit massCharm	1.275       	GeV 	+- 0.025	GeV 	        # PDG 2012
+
+# alphaem		128.952		GeV	+- 0.014		# http://arxiv.org/abs/1010.4180, p.11
+# G_F		1.1663787E-5		+- 0.0000006E-5		# PDG 2011
+# alphas		0.1184		GeV	+- 0.0007	GeV 	# PDG 2011
+# massZ		91.1876		GeV	+- 0.0021	GeV	# PDG 2011
+# massBottom	4.18       	GeV 	+- 0.03		GeV 	# PDG 2012
+# massTau		1.77682    	GeV 	+- 0.00016	GeV 	# PDG 2012
+# massCharm	1.275       	GeV 	+- 0.025	GeV 	# PDG 2012
 
  ################################################################################
  ### Parameters                                                               ###
@@ -241,7 +249,7 @@ UseAFdirect                on
 UseMarkovChains                on
 MarkovChainReadjustWidth       off
 MarkovChainReadjustWidthPeriod 500
-MaxMarkovChain                 7200
+MaxMarkovChain                 500
 
 # Uncomment to use adaptive widths in Markov chain
 # See  ../fittino.in.OnlineMarkovChainOptimisation
