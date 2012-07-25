@@ -1983,47 +1983,57 @@ input:
 		  tmpValue.value = $4;
 		  tmpValue.error = $5;
 		  tmpValue.id = 0;
+		  tmpValue.alias = 0;
 	          tmpValue.bound_low = -1.E+6;
 	          tmpValue.bound_up = 1.E+6;
                   tmpValue.nofit = true;
 		  if (!strncmp($3, "mass", 4)) tmpValue.type = mass;
+		  else if (!strncmp($3, "width", 5)) { 
+		    tmpValue.type = Pwidth;
+		    char tmpstr5[256];
+		    strcpy(tmpstr5,$3);
+		    char* tmpstrpointer;
+		    tmpstrpointer = &tmpstr5[5];
+		    //cout << "setting the particle " << tmpstrpointer << " id to " << yyParticleIDs[tmpstrpointer]  << endl;
+		    tmpValue.id    = yyParticleIDs[tmpstrpointer];
+		  }
 		  else if( !strncmp($3, "FineTuningParameter", 19 )) { 
-				string line($3);
-				int tmpSize = line.size() - 19; 
-				char *tmpId = (char*)malloc( tmpSize*sizeof(char) );
-				line.copy( tmpId, tmpSize, 19 );
-				tmpValue.type = FineTuningParameter;
-				tmpValue.id = atoi(tmpId);
-			}
-			else if( !yyHiggsCouplingsAutoInput && !strncmp($3, "HiggsScalarFermionCoupling", 26 )) {
-				yyHiggsCouplingsManualInput = true;
-				string line($3);
-				int tmpSize = line.size() - 26;
-				char *tmpId = (char*)malloc( tmpSize*sizeof(char) );
-				line.copy( tmpId, tmpSize, 26 );
-				tmpValue.type = HiggsScalarFermionCoupling;
-				tmpValue.id = atoi(tmpId);
-			}
-			else if( !yyHiggsCouplingsAutoInput && !strncmp($3, "HiggsPseudoScalarFermionCoupling", 32 )) {
-				yyHiggsCouplingsManualInput = true;
-				string line($3);
-				int tmpSize = line.size() - 32;
-				char *tmpId = (char*)malloc( tmpSize*sizeof(char) );
-				line.copy( tmpId, tmpSize, 32 );
-				tmpValue.type = HiggsPseudoScalarFermionCoupling;
-				tmpValue.id = atoi(tmpId);
-			}
-			else if( !yyHiggsCouplingsAutoInput && !strncmp($3, "HiggsBosonCoupling", 18 )) {
-				yyHiggsCouplingsManualInput = true;
-				string line($3);
-				int tmpSize = line.size() - 18;
-				char *tmpId = (char*)malloc( tmpSize*sizeof(char) );
-				line.copy( tmpId, tmpSize, 18 );
-				tmpValue.type = HiggsBosonCoupling;
-				tmpValue.id = atoi(tmpId);
-			}
-			else if (!strncmp($3, "cos", 3)) tmpValue.type = other;
-			yyMeasuredVec.push_back(tmpValue);
+		    string line($3);
+		    int tmpSize = line.size() - 19; 
+		    char *tmpId = (char*)malloc( tmpSize*sizeof(char) );
+		    line.copy( tmpId, tmpSize, 19 );
+		    tmpValue.type = FineTuningParameter;
+		    tmpValue.id = atoi(tmpId);
+		  }
+		  else if( !yyHiggsCouplingsAutoInput && !strncmp($3, "HiggsScalarFermionCoupling", 26 )) {
+		    yyHiggsCouplingsManualInput = true;
+		    string line($3);
+		    int tmpSize = line.size() - 26;
+		    char *tmpId = (char*)malloc( tmpSize*sizeof(char) );
+		    line.copy( tmpId, tmpSize, 26 );
+		    tmpValue.type = HiggsScalarFermionCoupling;
+		    tmpValue.id = atoi(tmpId);
+		  }
+		  else if( !yyHiggsCouplingsAutoInput && !strncmp($3, "HiggsPseudoScalarFermionCoupling", 32 )) {
+		    yyHiggsCouplingsManualInput = true;
+		    string line($3);
+		    int tmpSize = line.size() - 32;
+		    char *tmpId = (char*)malloc( tmpSize*sizeof(char) );
+		    line.copy( tmpId, tmpSize, 32 );
+		    tmpValue.type = HiggsPseudoScalarFermionCoupling;
+		    tmpValue.id = atoi(tmpId);
+		  }
+		  else if( !yyHiggsCouplingsAutoInput && !strncmp($3, "HiggsBosonCoupling", 18 )) {
+		    yyHiggsCouplingsManualInput = true;
+		    string line($3);
+		    int tmpSize = line.size() - 18;
+		    char *tmpId = (char*)malloc( tmpSize*sizeof(char) );
+		    line.copy( tmpId, tmpSize, 18 );
+		    tmpValue.type = HiggsBosonCoupling;
+		    tmpValue.id = atoi(tmpId);
+		  }
+		  else if (!strncmp($3, "cos", 3)) tmpValue.type = other;
+		  yyMeasuredVec.push_back(tmpValue);
               }
 	    | input T_KEY T_WORD value T_ERRORSIGN value
 	      {
@@ -5015,7 +5025,7 @@ decay:      T_DECAY T_NUMBER T_NUMBER T_NEWLINE parameters
 		     tmp_branch.decays.push_back(tmpVec);
 		  }
 		  tmp_branch.TWidth = $3;
-//		   cout << "filling width " << tmp_branch.TWidth << " for particle " << (int)$2 << endl;
+		  //		   cout << "filling width " << tmp_branch.TWidth << " for particle " << (int)$2 << endl;
 		  branching_ratios[(int)$2] = tmp_branch;
 	       } else {
 		  tmp_branch.TWidth = 0.;	
