@@ -182,6 +182,7 @@ BR ( A0          -> Gamma Gamma          ) alias 1035
 BR ( A0          -> Gluon Gluon          ) alias 1036
 BR ( A0          -> Z h0                 ) alias 1037
 BR ( A0          -> Z Gamma              ) alias 1039
+BR ( A0          -> h0 h0                ) alias 102000
 BR ( Hplus       -> Charm Bottom~        ) alias 1040
 BR ( Hplus     	 -> Muon~ Numu             ) alias 1041
 BR ( Hplus       -> Tau~ Nutau           ) alias 1043
