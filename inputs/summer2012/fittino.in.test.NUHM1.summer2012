@@ -253,7 +253,7 @@ WriteHiggsCouplings            on
 RequireNeut1LSP                on
 
 UseAstroFit                on
-AstroCalculator            ./AstroFitXn
+AstroCalculator            ./AstroFit
 UseAFrelic                 off
 UseAFphoton                off
 UseAFsvind                 off
