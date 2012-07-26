@@ -4725,7 +4725,8 @@ if (yyVerbose){
 //========================================================================
 								else if( !strcmp($2, "HiggsSignalsResults" ) ) {
 									yyHiggsSignals_TotalChi2 = tmpParams[0][1];
-									cout << "set HiggsSignalsTotalch2i to " << yyHiggsSignals_TotalChi2;
+									if(yyVerbose)
+									  cout << "set HiggsSignalsTotalchi2 to " << yyHiggsSignals_TotalChi2<<endl;
 								}
 					
 		  // SPhenoLowEnergy 

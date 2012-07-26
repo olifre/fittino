@@ -318,7 +318,9 @@ void *CallingThreadedHiggsBounds(void *argument)
    int tid;
  
    tid = *((int *) argument);
-   printf("Hello World! It's me, threaded HiggsBounds %d!\n", tid);
+
+   if (yyVerbose)
+     printf("Hello World! It's me, threaded HiggsBounds %d!\n", tid);
 
    globalHiggsBoundsChi2WithTheory = call_HiggsBoundsWithSLHA();
  
@@ -5400,11 +5402,19 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
        cout<<"Calling HiggsSignals"<<endl;
 
      system("cp SPheno.spc SPheno.spc.temp.1");
-     system((yyHiggsSignalsPath+" 1 SPheno.spc.temp").c_str());
+     
+     if (yyVerbose)
+       system((yyHiggsSignalsPath+" 1 SPheno.spc.temp").c_str());
+
+     else
+       system((yyHiggsSignalsPath+" 1 SPheno.spc.temp >/dev/null").c_str());
+
      string command = yyAfterBurnerDirectory + "/copyHiggsSignalsOutput.sh"; 
-		 system(command.c_str());
+
+     system(command.c_str());
      //TODO: read in chi2, add it to f, save it in ntuple; save all the other output needed for toys as well
-			cout << "DONE CALLING HiggsSignals" << endl;
+     if (yyVerbose)
+       cout << "DONE CALLING HiggsSignals" << endl;
    }
 
 
@@ -5894,8 +5904,9 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      
      double xschi2;
      double xschi2Exp;
-     
-     cout << " >>> THE INTERPOLATION IS " << interpolationOK << endl;
+
+     if (yyVerbose)
+       cout << " >>> THE INTERPOLATION IS " << interpolationOK << endl;
 
      if (interpolationOK) {
        const int ntrials = 20000;
@@ -6252,7 +6263,13 @@ int callMicrOmegas (double* x)
       if (yyVerbose){
 	cout << "calling " << argv[0] << " " << argv[1] << " " << argv[2] << std::endl; 
       }
+
+
+      if (!yyVerbose)
+	freopen("/dev/null", "w", stdout);
+
       rc = execve(argv[0], argv, environ);
+      
       if (yyVerbose){
       cout << "returning from execve "<< rc<< endl;
       }
@@ -6392,11 +6409,16 @@ int callNPFitter() {
 double readAstroFit()
 {
 
+
+
+
   int return_value;
-  char* argv[3];
-  argv[0] = new char[1024];
-  strcpy(argv[0], yyAstroCalculatorPath.c_str());
-  return_value = system(argv[0]);
+  string command=yyAstroCalculatorPath;
+
+  if (!yyVerbose)
+    command+=">/dev/null";
+
+  return_value = system(command.c_str());
   ifstream file_to_read;
   file_to_read.open("afout.txt");
 
@@ -6897,15 +6919,16 @@ int callFeynHiggs()
       locenviron[1]=(char *)0;
       
       // printf("Process %d has forked a child process with pid %d\n", parent_pid, child_pid  );
+      if (!yyVerbose)
+	freopen("/dev/null", "w", stdout);
+
+
+
       if (!yyHiggsCalculatorPath.compare("")) {
-	cout << "calling FeynHiggs 1" << endl;
 	return_value = execve("./FeynHiggs", argv, locenviron );
-	cout << "returning from FeynHiggs 1" << endl;
       }
       else {
-	cout << "calling FeynHiggs 2" << endl;
 	return_value = execve(yyHiggsCalculatorPath.c_str(), argv, locenviron );
-	cout << "returning from FeynHiggs 2" << endl;
       }
       //    for ( unsigned int i = 0; i < 5; i++ ) {
       //      sleep (1);
@@ -7020,7 +7043,11 @@ int callSuperIso()
 			else {
 				argv[1] = "SPheno.spc";
       }
-			argv[2] = 0;
+      argv[2] = 0;
+
+      if (!yyVerbose)
+	freopen("/dev/null", "w", stdout);
+
 
       // printf("Process %d has forked a child process with pid %d\n", parent_pid, child_pid  );
       if (!yyFlavourCalculatorPath.compare("")) {
@@ -7116,6 +7143,12 @@ int callHDecay()
       }
       argv[1] = 0;
       argv[2] = 0;
+
+      
+
+      if (!yyVerbose)
+	freopen("/dev/null", "w", stdout);
+
 
       // printf("Process %d has forked a child process with pid %d\n", parent_pid, child_pid  );
       if (!yyHiggsBRCalculatorPath.compare("")) {
