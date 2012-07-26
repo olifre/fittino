@@ -77,7 +77,7 @@ double yyN21;
 double yyN22;
 double yyN23;
 double yyThetaStau;
- 
+
 // SPINFO
 char yy_spectrum_calc_name[256];
 char yy_spectrum_calc_version[256];
@@ -91,6 +91,8 @@ tmpstr_t tmpstr;
 vector<tmpstr_t> tmpStrings;
 vector<int> tmpNumbers;
 
+//HiggsSignals Output
+double yyHiggsSignals_TotalChi2;
 
 // MASS
 map<int,double> yyMass;
@@ -4708,6 +4710,7 @@ if (yyVerbose){
 			// HiggsCouplings to Fermions
 //========================================================================
 								else if( !strcmp($2, "HiggsBoundsInputHiggsCouplingsFermions" ) ) {
+									cout << "reading HiggsBoundsInputHiggsCouplingsFermions" << endl;
 									for( unsigned int i = 0; i < tmpParams.size(); ++i ) {
 										if( tmpParams[i].size() < 6 ) cout << "WARNING: missing information in Block HiggsBoundsInputHiggsCouplingsFermions" << endl;
 										else {
@@ -4718,6 +4721,12 @@ if (yyVerbose){
 									}
 								}
 							
+			// HiggsSignals Total chi2
+//========================================================================
+								else if( !strcmp($2, "HiggsSignalsResults" ) ) {
+									yyHiggsSignals_TotalChi2 = tmpParams[0][1];
+									cout << "set HiggsSignalsTotalch2i to " << yyHiggsSignals_TotalChi2;
+								}
 					
 		  // SPhenoLowEnergy 
 //========================================================================

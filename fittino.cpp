@@ -196,7 +196,7 @@ double af_chi2_svind=-1;
 double af_chi2_direct=-1;
 
 double globalHiggsChi2=-1;
-
+double HiggsSignals_TotalChi2 =-1;
 
 int n_printouts;
 
@@ -5085,7 +5085,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
   af_chi2_direct=-1;
 
   globalHiggsChi2=-1;
-
+	HiggsSignals_TotalChi2 = -1;
   //cout<<"fitterFCN called"<<endl;
    //  niterations++;
    int rc = 0;
@@ -5392,7 +5392,22 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 	 return;
       }
    }
-  
+ 
+
+
+   if (yyUseHiggsSignals){
+     if (yyVerbose)
+       cout<<"Calling HiggsSignals"<<endl;
+
+     system("cp SPheno.spc SPheno.spc.temp.1");
+     system((yyHiggsSignalsPath+" 1 SPheno.spc.temp").c_str());
+     string command = yyAfterBurnerDirectory + "/copyHiggsSignalsOutput.sh"; 
+		 system(command.c_str());
+     //TODO: read in chi2, add it to f, save it in ntuple; save all the other output needed for toys as well
+			cout << "DONE CALLING HiggsSignals" << endl;
+   }
+
+
    // HERE: READ THE LES HOUCHES FILE
    rc = ReadLesHouches();
    if (yyCalculatorError) {
@@ -5699,19 +5714,6 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 //   }
 
    #endif
-
-
-   if (yyUseHiggsSignals){
-     if (yyVerbose)
-       cout<<"Calling HiggsSignals"<<endl;
-
-     system("mv SPheno.spc.last SPheno.spc.last.1");
-     system((yyHiggsSignalsPath+" 1 SPheno.spc.last").c_str());
-     system("mv SPheno.spc.last.1 SPheno.spc.last");
-
-     //TODO: read in chi2, add it to f, save it in ntuple; save all the other output needed for toys as well
-
-   }
 
 
 
@@ -11236,7 +11238,7 @@ int   ReadLesHouches()
 
 
 
-  
+ 	 HiggsSignals_TotalChi2 = yyHiggsSignals_TotalChi2; 
    for (unsigned int i=0; i<yyMeasuredVec.size(); i++) {
       if (yyMeasuredVec[i].type == mass) {
 	 //      cout << "found mass of particle " << yyMeasuredVec[i].id << endl;
@@ -13886,7 +13888,7 @@ void Fittino::markovChain ()
       sprintf ( ntupletext, "path of the Markov Chain" );
       ////      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:haveAcceptedAtLeastOne:globalIter" );
       //      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:globalIter:haveAcceptedAtLeastOne" );
-      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:globalIter:haveAcceptedAtLeastOne:LHC_CLb:LHC_CLsb:LHC_chi2:LHC_Exp_CLb:LHC_Exp_CLsb:LHC_Exp_chi2:af_photon:af_relic:af_svind:af_direct:af_chi2_total:af_chi2_photon:af_chi2_relic:af_chi2_svind:af_chi2_direct:globalHiggsChi2" );
+      sprintf ( ntuplevars, "likelihood:rho:chi2:accpoint:n:globalIter:haveAcceptedAtLeastOne:LHC_CLb:LHC_CLsb:LHC_chi2:LHC_Exp_CLb:LHC_Exp_CLsb:LHC_Exp_chi2:af_photon:af_relic:af_svind:af_direct:af_chi2_total:af_chi2_photon:af_chi2_relic:af_chi2_svind:af_chi2_direct:globalHiggsChi2:HiggsSignals_TotalChi2" );
 //	    ntupvars[0] = (Float_t)likelihood;
 //	    ntupvars[1] = (Float_t)rho;
 //	    ntupvars[2] = (Float_t)chi2;
@@ -13910,6 +13912,7 @@ void Fittino::markovChain ()
 //	    ntupvars[20] = (Float_t) af_chi2_svind;
 //	    ntupvars[21] = (Float_t) af_chi2_direct;
 //	    ntupvars[22] = (Float_t) globalHiggsChi2;
+//			ntupvars[23] = (Float_T) HiggsSignals_TotalChi2;
       for (unsigned int j=0; j < yyFittedVec.size(); j++ ) {
 	string parName = "P_"+yyFittedVec[j].name;
 	sprintf ( ntuplevars, "%s:%s", ntuplevars, parName.c_str() );
@@ -14227,7 +14230,7 @@ void Fittino::markovChain ()
       double previous_af_chi2_direct=-1;
 
       double previous_globalHiggsChi2=-1;
-
+			double previous_HiggsSignals_TotalChi2 = -1;
 
  
       //-------------------------------------------
@@ -14448,7 +14451,7 @@ void Fittino::markovChain ()
 	   previous_af_chi2_direct=af_chi2_direct;
 
 	   previous_globalHiggsChi2=globalHiggsChi2;
-
+		 previous_HiggsSignals_TotalChi2 = HiggsSignals_TotalChi2;
 
 	 }
 
@@ -14535,11 +14538,12 @@ void Fittino::markovChain ()
 	    ntupvars[20] = (Float_t) af_chi2_svind;
 	    ntupvars[21] = (Float_t) af_chi2_direct;
 	    ntupvars[22] = (Float_t) globalHiggsChi2;
+			ntupvars[23] = (Float_t) HiggsSignals_TotalChi2;
 	    int counter = 0;
 	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
 	    //	       ntupvars[ii] = xp[ii-7];
-	    for (unsigned int ii = 23; ii < 23+yyFittedVec.size(); ii++) {
-	       ntupvars[ii] = xp[ii-23];
+	    for (unsigned int ii = 24; ii < 24+yyFittedVec.size(); ii++) {
+	       ntupvars[ii] = xp[ii-24];
 	       counter = ii;
 	    }
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
@@ -14570,12 +14574,13 @@ void Fittino::markovChain ()
 	    ntupvars[20] = (Float_t) af_chi2_svind;
 	    ntupvars[21] = (Float_t) af_chi2_direct;
 	    ntupvars[22] = (Float_t) globalHiggsChi2;
+			ntupvars[23] = (Float_t) HiggsSignals_TotalChi2;
 
 	    int counter = 0;
 	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
 	    //	       ntupvars[ii] = xp[ii-7];
-	    for (unsigned int ii = 23; ii < 23+yyFittedVec.size(); ii++) {
-	       ntupvars[ii] = xp[ii-23];
+	    for (unsigned int ii = 24; ii < 24+yyFittedVec.size(); ii++) {
+	       ntupvars[ii] = xp[ii-24];
 	       counter = ii;
 	    }
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
@@ -14605,12 +14610,12 @@ void Fittino::markovChain ()
 	    ntupvars[20] = (Float_t) previous_af_chi2_svind;
 	    ntupvars[21] = (Float_t) previous_af_chi2_direct;
 	    ntupvars[22] = (Float_t) previous_globalHiggsChi2;
-
+			ntupvars[23] = (Float_t) previous_HiggsSignals_TotalChi2;
 	    counter = 0;
 	    //	    for (unsigned int ii = 7; ii < 7+yyFittedVec.size(); ii++) {
 	    //	       ntupvars[ii] = x[ii-7];
-	    for (unsigned int ii = 23; ii < 23+yyFittedVec.size(); ii++) {
-	       ntupvars[ii] = x[ii-23];
+	    for (unsigned int ii = 24; ii < 24+yyFittedVec.size(); ii++) {
+	       ntupvars[ii] = x[ii-24];
 	       counter = ii;
 	    }
 	    for (unsigned int iii = counter+1; iii < counter+1+yyMeasuredVec.size(); iii++) {
@@ -14650,7 +14655,8 @@ void Fittino::markovChain ()
 	    previous_af_chi2_direct=af_chi2_direct;
 
 	    previous_globalHiggsChi2=globalHiggsChi2;
-
+			previous_HiggsSignals_TotalChi2=HiggsSignals_TotalChi2;
+	
 	 }
 
 

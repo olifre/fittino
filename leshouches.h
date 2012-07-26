@@ -56,6 +56,7 @@ extern double yy_signmu;
 extern double yy_A;
 extern double yyMinput;
 extern double yyM1;
+extern double yyHiggsSignals_TotalChi2;
 extern map<int,double> yyMass;
 extern map<int,double> yyFineTuningParameters;
 extern map<int,double> yyHiggsScalarFermionCouplings;

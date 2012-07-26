@@ -9,7 +9,7 @@ int main( int argc, char **argv ) {
 
 
 	TRandom3 rndm(atoi(argv[3]));
-	ToyLHCChi2Provider prov(argv[1], argv[2], 2000., 55000. );
+	ToyLHCChi2Provider prov(argv[1], argv[2], 400., 600. );
 	vector<float> nExpS = prov.GetSignalExpectationBF();
 	vector<float> uncS = prov.GetSignalUncertaintyBF();
 	vector<float> nExpBG;
