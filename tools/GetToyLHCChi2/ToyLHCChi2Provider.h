@@ -37,10 +37,11 @@ class ToyLHCChi2Provider {
 
 	public:
 	ToyLHCChi2Provider();
-	ToyLHCChi2Provider( string histogramFileName, string gridFileName );
+	ToyLHCChi2Provider( string histogramFileName, string gridFileName, float M0BF, float M12BF );
 	~ToyLHCChi2Provider();
 	float GetChi2Contribution( float M0, float M12, vector<float> nObs, vector<float> nExp );
-
+	vector<float> GetSignalExpectationBF();
+	vector<float> GetSignalUncertaintyBF();
 	private:
 	TFile *f_histograms;
 	TFile *f_grids;
@@ -51,6 +52,8 @@ class ToyLHCChi2Provider {
 	vector<TH2F*> h_medianMinus1Sigma_t_2D;
 	vector<TH2F*> h_medianMinus1Sigma_tobs_2D;
 	vector<TH2D*> h_grids;
+	vector<float> signalExpectationBF;
+	vector<float> signalUncertaintyBF;
 };
 
 #endif

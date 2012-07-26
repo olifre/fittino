@@ -11,11 +11,10 @@ float ToyLHCChi2Provider::GetChi2Contribution( float M0, float M12, vector<float
 		float CLsb = 0.5*(1.-erf((tobs-t)/sqrt(2)/sigma_t));
 		if( CLsb < CLsb_best ) { CLsb_best = CLsb; channel = iCh; }
 	}
-	
 	// found best expected limit -> know which channel to use
 	// now get t_obs according to the gaussian number given:
-	float nSignal = h_grids[channel]->Interpolate(M0,M12); 
-	float tobs = 2.*nSignal - 2.*log(1.+nSignal/nExp[channel])*nObs[channel];
+	float nSignal = h_grids[channel]->Interpolate(M0,M12)*20.;
+	float tobs = 2.*nSignal - 2.*log(1.+nSignal/(nExp[channel]-signalExpectationBF[channel]))*nObs[channel];
 	float t = h_median_t_2D[channel]->Interpolate(M0,M12);
 	float sigma_t = 0.5*(h_medianPlus1Sigma_t_2D[channel]->Interpolate(M0,M12)-h_medianMinus1Sigma_t_2D[channel]->Interpolate(M0,M12));
 	float CLsb = 0.5*(1.-erf((tobs-t)/sqrt(2.)/sigma_t));
@@ -28,7 +27,7 @@ ToyLHCChi2Provider::ToyLHCChi2Provider() {
 	f_grids = NULL;
 }
 
-ToyLHCChi2Provider::ToyLHCChi2Provider( string histogramFileName, string gridFileName ) {
+ToyLHCChi2Provider::ToyLHCChi2Provider( string histogramFileName, string gridFileName, float M0BF, float M12BF ) {
 	f_histograms = new TFile( histogramFileName.c_str() );
 
 	h_median_t_2D.push_back( (TH2F*)f_histograms->Get("h_median_t_2D_1") ); 
@@ -54,6 +53,16 @@ ToyLHCChi2Provider::ToyLHCChi2Provider( string histogramFileName, string gridFil
 	h_grids.push_back( (TH2D*)f_grids->Get("signalA") );
 	h_grids.push_back( (TH2D*)f_grids->Get("signalB") );
 	h_grids.push_back( (TH2D*)f_grids->Get("signalC") );
+
+
+	float lumi = 20.;
+	float lumi_ref = 1.;
+	for( unsigned int iCh = 0; iCh < 3; ++iCh ) {
+		signalExpectationBF.push_back( lumi/lumi_ref*h_grids[iCh]->Interpolate(M0BF,M12BF) );
+		signalUncertaintyBF.push_back( (M0BF>=1000.) ? 0.15 : 0.1 );
+		cout << "In SR " << iCh << " the signal expectation at the best fit has been determined to " << signalExpectationBF[iCh] << " with a relative uncertainty of " << signalUncertaintyBF[iCh] << endl;
+	}
+	
 }
 
 ToyLHCChi2Provider::~ToyLHCChi2Provider( ) {
@@ -70,4 +79,12 @@ ToyLHCChi2Provider::~ToyLHCChi2Provider( ) {
 	if( f_histograms) delete f_histograms;
 	if( f_grids->IsOpen() ) f_grids->Close();
 	if( f_grids) delete f_grids;
+}
+
+vector<float> ToyLHCChi2Provider::GetSignalExpectationBF() {
+	return signalExpectationBF; 
+}
+
+vector<float> ToyLHCChi2Provider::GetSignalUncertaintyBF() {
+	return signalUncertaintyBF;
 }
