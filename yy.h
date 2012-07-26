@@ -232,6 +232,8 @@ extern double yyDmsDmd_npf;      // R(Dms)/R(Dmd)
 extern double yyD_0_npf;         // D_0(K*gamma)
 extern double yybsg_npf;         // B(b->sg)
 
+extern double yyBpD0taunu;
+
 extern std::vector<InputFileLine> yyInputFile;
 extern int yyInputFileLineNo;
 

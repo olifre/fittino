@@ -325,6 +325,8 @@ double        yyD_0_npf        = -10000.;  // D_0(K*gamma)
 double        yybsg_npf        = -10000.;  // B(b->sg)
 //##############################################################
 
+double yyBpD0taunu = -10000;
+
 double        yyMaxCalculatorTime = 20.;
 
 std::vector<InputFileLine> yyInputFile;
@@ -2435,6 +2437,10 @@ input:
 		  else if (!strcmp($4, "bsg_npf")) {
 		    tmpValue.id    = bsg_npf;
 		  }
+		  else if (!strcmp($4, "BpD0taunu")) {
+		    tmpValue.id    = BpD0taunu;
+		  }
+		  
                   //=================================
 		  tmpValue.value = $6;
 		  tmpValue.error = $7;
@@ -2590,6 +2596,11 @@ input:
 		  else if (!strcmp($4, "bsg_npf")) {
 		    tmpValue.id    = bsg_npf;
 		  }
+		  else if (!strcmp($4, "BpD0taunu")) {
+		    tmpValue.id    = BpD0taunu;
+		  }
+
+
                   //=================================
 		  tmpValue.value = $6;
 		  tmpValue.error = $7;
@@ -2743,6 +2754,10 @@ input:
 		  else if (!strcmp($4, "bsg_npf")) {
 		    tmpValue.id    = bsg_npf;
 		  }
+		  else if (!strcmp($4, "BpD0taunu")) {
+		    tmpValue.id    = BpD0taunu;
+		  }
+
                   //=================================
 		  tmpValue.value = $6;
 		  tmpValue.error = $7;
@@ -2896,6 +2911,10 @@ input:
 		  else if (!strcmp($4, "bsg_npf")) {
 		    tmpValue.id    = bsg_npf;
 		  }
+		  else if (!strcmp($4, "BpD0taunu")) {
+		    tmpValue.id    = BpD0taunu;
+		  }
+
                   //=================================
 		  tmpValue.value = $6;
 		  tmpValue.error = $7;
@@ -3049,6 +3068,10 @@ input:
 		  else if (!strcmp($4, "bsg_npf")) {
 		    tmpValue.id    = bsg_npf;
 		  }
+		  else if (!strcmp($4, "BpD0taunu")) {
+		    tmpValue.id    = BpD0taunu;
+		  }
+
                   //==================================
 		  //cout << "T_COMPARATOR " << $4 << " " << $6 << " " << $7 << endl;
 		  if (!strcmp($6, ">")) {
@@ -4803,8 +4826,9 @@ if (yyVerbose){
 			 }
 			 else if ((unsigned int)tmpParams[i][0]==6) {
 			   //B+ -> D0 tau nu
+			   yyBpD0taunu=tmpParams[i][1];
 			 }
-			 else if ((unsigned int)tmpParams[i][0]==8) {
+			 else if ((unsigned int)tmpParams[i][0]==7) {
 			   //K->munu/pi->munu
 			 }
 			 

@@ -11440,7 +11440,12 @@ int   ReadLesHouches()
 	 else if (yyMeasuredVec[i].id == bsg_npf) {
 	    yyMeasuredVec[i].theovalue = yybsg_npf;
 	    yyMeasuredVec[i].theoset = true;
-	 }         
+	 }
+	 else if (yyMeasuredVec[i].id == BpD0taunu) {
+	    yyMeasuredVec[i].theovalue = yyBpD0taunu;
+	    yyMeasuredVec[i].theoset = true;
+	 }
+         
       }
       //################################################
       else if (yyMeasuredVec[i].type == SMPrecision) {
