@@ -1,0 +1,45 @@
+#!/usr/bin/env zsh
+#$ -j y
+##$ -l os=sld5
+#$ -cwd
+#$ -P atlas
+#$ -l h_cpu=06:00:00 
+#$ -w e
+#$ -m ae -M prudent@physik.tu-dresden.de
+
+
+#----------------------------------
+fit=fittino.out.markov.obs2011.msugra.0fb.HB.NoAF
+macro=postProcessing
+export ROOTSYS=/afs/naf.desy.de/products/root/amd64_rhel50/5.26.00
+output_destination=/scratch/hh/current/atlas/users/prudent/fittino/postProcessing/pValue/
+#-----------------------------------
+
+export PATH=$ROOTSYS/bin:$PATH
+export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
+
+echo "Script started"
+date
+
+cd $TMP
+ini ROOT526
+
+echo "Copying input files and macros"
+cp /scratch/hh/current/atlas/users/prudent/fittino/postProcessing/pValue/$macro.cc .
+cp /scratch/hh/current/atlas/users/prudent/fittino/postProcessing/pValue/$macro.h .
+cp /scratch/hh/current/atlas/users/prudent/fittino/postProcessing/pValue/compil .
+
+echo "Compiling"
+chmod u+x compil
+./compil $macro
+
+
+echo "Running the macro"
+./$macro $fit $output_destination
+
+
+echo "Copying output files"
+cp $fit.root $output_destination
+
+date 
+echo "Script finished"
