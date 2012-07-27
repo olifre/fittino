@@ -11298,6 +11298,10 @@ int   ReadLesHouches()
 				yyMeasuredVec[i].theovalue = yyHiggsBosonCouplings[yyMeasuredVec[i].id];
 				yyMeasuredVec[i].theoset = true;
 			}
+			else if( yyMeasuredVec[i].type == HiggsSignalsPeakObservable ) {
+				yyMeasuredVec[i].theovalue = yyHiggsSignalsPeakObservables[yyMeasuredVec[i].id];
+				yyMeasuredVec[i].theoset = true;
+			}
      //################################################
       else if (yyMeasuredVec[i].type == LEObs) {
 	 if (yyMeasuredVec[i].id == bsg) {

@@ -104,6 +104,7 @@ map<int,double> yyFineTuningParameters;
 map<int, double> yyHiggsScalarFermionCouplings;
 map<int, double> yyHiggsPseudoScalarFermionCouplings;
 map<int, double> yyHiggsBosonCouplings;
+map<int, double> yyHiggsSignalsPeakObservables; 
 
 // alpha
 double yyalpha;
@@ -1559,6 +1560,42 @@ input:
 		      if ($3 == on) yyUseSimplexMin = true;
 		      else yyUseSimplexMin = false;
 		  }
+			if( !strcmp($2, "WriteHiggsSignalsPeakObservables" )) {
+				if( $3 == on ) {
+					vector<string> channels;
+					channels.push_back( "pp_h_ZZ_4l_CMS" );
+					channels.push_back( "pp_VH_WW_CMS" );
+					channels.push_back( "pp_VBF_WW_CMS" );
+					channels.push_back( "pp_h_WW_CMS" );
+					channels.push_back( "pp_VH_tautau_CMS" );
+					channels.push_back( "pp_VBF_tautau_CMS" );
+					channels.push_back( "pp_singleH_tautau_CMS" );
+					channels.push_back( "pp_ttH_bb_CMS" );
+					channels.push_back( "pp_VH_bb_CMS" );
+					channels.push_back( "pp_h_gammagamma_CMS" );
+					channels.push_back( "pp_qqH_gammagamma_CMS" );
+					channels.push_back( "pp_H_WW_ATL" );
+					channels.push_back( "pp_H_tautau_ATL" );
+					channels.push_back( "pp_VH_bb_ATL" );
+					channels.push_back( "pp_h_gammagamma_ATL" );
+					channels.push_back( "pp_h_ZZ_4l_ATL" );
+					for( unsigned int iVar = 0; iVar <= 15; ++iVar ) {
+						MeasuredValue tmpValue;
+            tmpValue.setScaling = false;
+            tmpValue.bound = false;
+            tmpValue.theovalue  = 0;
+            tmpValue.name = "HiggsSignalStrength_" + channels.at(iVar);
+            tmpValue.value = 1;
+            tmpValue.error = 1;
+            tmpValue.bound_low = -1.E+6;
+            tmpValue.bound_up = 1.E+6;
+            tmpValue.nofit = true;
+            tmpValue.type = HiggsSignalsPeakObservable;
+            tmpValue.id = iVar;
+            yyMeasuredVec.push_back( tmpValue );
+					}
+				}
+			}
 			if (!strcmp($2, "WriteHiggsCouplings" )) {
 				if( $3 == on && !yyHiggsCouplingsManualInput ) {
 					yyHiggsCouplingsAutoInput = true;
@@ -4692,7 +4729,6 @@ if (yyVerbose){
 			// HiggsCouplings to Bosons
 //========================================================================
 								else if( !strcmp($2, "HiggsBoundsInputHiggsCouplingsBosons" ) ) {
-									cout << "reading block HiggsBoundsInputHiggsCouplingsBosons" << endl;
 									for( unsigned int i = 0; i < tmpParams.size(); ++i ) {
 										if( tmpParams[i].size() < 5 ) cout << "WARNING: missing information in Block HiggsBoundsInputHiggsCouplingsBosons" << endl;
 										else {
@@ -4710,7 +4746,6 @@ if (yyVerbose){
 			// HiggsCouplings to Fermions
 //========================================================================
 								else if( !strcmp($2, "HiggsBoundsInputHiggsCouplingsFermions" ) ) {
-									cout << "reading HiggsBoundsInputHiggsCouplingsFermions" << endl;
 									for( unsigned int i = 0; i < tmpParams.size(); ++i ) {
 										if( tmpParams[i].size() < 6 ) cout << "WARNING: missing information in Block HiggsBoundsInputHiggsCouplingsFermions" << endl;
 										else {
@@ -4728,7 +4763,14 @@ if (yyVerbose){
 									if(yyVerbose)
 									  cout << "set HiggsSignalsTotalchi2 to " << yyHiggsSignals_TotalChi2<<endl;
 								}
-					
+      // HiggsSignals mu and mass 
+//========================================================================
+                else if( !strcmp($2, "HiggsSignalsPeakObservables" ) ) {
+                	for( unsigned int i = 0; i < tmpParams.size(); ++i ) {
+										yyHiggsSignalsPeakObservables[i] = tmpParams[i][3];
+									}
+								}
+
 		  // SPhenoLowEnergy 
 //========================================================================
                   else if (!strcmp($2, "SPhenoLowEnergy")) {

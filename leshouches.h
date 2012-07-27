@@ -62,6 +62,7 @@ extern map<int,double> yyFineTuningParameters;
 extern map<int,double> yyHiggsScalarFermionCouplings;
 extern map<int,double> yyHiggsPseudoScalarFermionCouplings;
 extern map<int,double> yyHiggsBosonCouplings;
+extern map<int,double> yyHiggsSignalsPeakObservables;
 
 typedef vector<double> doubleVec_t;
 
