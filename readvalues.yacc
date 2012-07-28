@@ -329,6 +329,7 @@ double        yybsg_npf        = -10000.;  // B(b->sg)
 //##############################################################
 
 double yyBpD0taunu = -10000;
+double yyBpD0taunuOverBpD0enu = -10000;
 
 double        yyMaxCalculatorTime = 20.;
 
@@ -2479,6 +2480,10 @@ input:
 		  else if (!strcmp($4, "BpD0taunu")) {
 		    tmpValue.id    = BpD0taunu;
 		  }
+		  else if (!strcmp($4, "BpD0taunuOverBpD0enu")) {
+		    tmpValue.id    = BpD0taunuOverBpD0enu;
+		  }
+
 		  
                   //=================================
 		  tmpValue.value = $6;
@@ -2638,6 +2643,9 @@ input:
 		  else if (!strcmp($4, "BpD0taunu")) {
 		    tmpValue.id    = BpD0taunu;
 		  }
+		  else if (!strcmp($4, "BpD0taunuOverBpD0enu")) {
+		    tmpValue.id    = BpD0taunuOverBpD0enu;
+		  }
 
 
                   //=================================
@@ -2796,6 +2804,10 @@ input:
 		  else if (!strcmp($4, "BpD0taunu")) {
 		    tmpValue.id    = BpD0taunu;
 		  }
+		  else if (!strcmp($4, "BpD0taunuOverBpD0enu")) {
+		    tmpValue.id    = BpD0taunuOverBpD0enu;
+		  }
+
 
                   //=================================
 		  tmpValue.value = $6;
@@ -2953,6 +2965,9 @@ input:
 		  else if (!strcmp($4, "BpD0taunu")) {
 		    tmpValue.id    = BpD0taunu;
 		  }
+		  else if (!strcmp($4, "BpD0taunuOverBpD0enu")) {
+		    tmpValue.id    = BpD0taunuOverBpD0enu;
+		  }
 
                   //=================================
 		  tmpValue.value = $6;
@@ -3109,6 +3124,9 @@ input:
 		  }
 		  else if (!strcmp($4, "BpD0taunu")) {
 		    tmpValue.id    = BpD0taunu;
+		  }
+		  else if (!strcmp($4, "BpD0taunuOverBpD0enu")) {
+		    tmpValue.id    = BpD0taunuOverBpD0enu;
 		  }
 
                   //==================================
@@ -4881,6 +4899,10 @@ if (yyVerbose){
 			   yyBpD0taunu=tmpParams[i][1];
 			 }
 			 else if ((unsigned int)tmpParams[i][0]==7) {
+			   //B+ -> D0 tau nu / B+ -> D0 e nu
+			   yyBpD0taunuOverBpD0enu=tmpParams[i][1];
+			 }
+			 else if ((unsigned int)tmpParams[i][0]==8) {
 			   //K->munu/pi->munu
 			 }
 			 

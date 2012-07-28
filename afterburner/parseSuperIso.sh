@@ -6,6 +6,7 @@ Butaunu=`grep '# BR(B_u->tau nu)' ./output.flha | grep -v 'MA02' | awk '{print $
 Dstaunu=`grep '# BR(D_s->tau nu)' ./output.flha | awk '{print $3}' | head -n 1`
 Dsmunu=`grep '# BR(D_s->mu nu)' ./output.flha | awk '{print $3}' | head -n 1`
 BpD0taunu=`grep '# BR(B+->D0 tau nu)' ./output.flha | awk '{print $3}' | head -n 1`
+BpD0taunuOverBpD0enu=`grep '# BR(B+->D0 tau nu)/BR(B+-> D0 e nu)'  ./output.flha | awk '{print $3}' | head -n 1`
 KmunuPimunu=`grep '# BR(K->mu nu)/BR(pi->mu nu)' ./output.flha | awk '{print $3}' | head -n 1`
 
 echo "Block SuperIso # SuperIso observables" >> SPheno.spc
@@ -15,8 +16,8 @@ echo "    3    $Butaunu # BR(B_u->tau nu)" >> SPheno.spc
 echo "    4    $Dstaunu # BR(D_s->tau nu)" >> SPheno.spc
 echo "    5    $Dsmunu # BR(D_s->mu nu)" >> SPheno.spc
 echo "    6    $BpD0taunu # BR(B+->D0 tau nu)" >> SPheno.spc
-echo "    7    $KmunuPimunu # BR(K->mu nu)/BR(pi->mu nu)" >> SPheno.spc
-#echo "    8    $BpD0taunuOverBpD0enu # BR(B+->D0 tau nu)/BR(B+->D0 e nu)" >> SPheno.spc
+echo "    7    $BpD0taunuOverBpD0enu # BR(B+->D0 tau nu)/BR(B+->D0 e nu)" >> SPheno.spc
+echo "    8    $KmunuPimunu # BR(K->mu nu)/BR(pi->mu nu)" >> SPheno.spc
 
 mv output.flha.last output.flha.last2
 mv output.flha output.flha.last

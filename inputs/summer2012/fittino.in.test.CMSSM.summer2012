@@ -21,7 +21,7 @@ LEObs ( MassW_npf	)	80.385		+- 0.015                        +- 0.010       	    
 LEObs ( sin_th_eff_npf	)	0.23113		+- 0.00021                      		                         alias  9 	# Reference: PDG 2012
 LEObs ( B_smm_npf	)   <	4.5E-9          +- 0.02E-9                                                               alias  3       # Reference: arxiv:1203.4493 [hep-ex]
 nofitLEObs ( BpD0taunu  )       0.332 +- 0.024 +- 0.018 alias 22222 # Reference: http://arxiv.org/abs/1205.5442
-
+nofitLEObs ( BpD0taunuOverBpD0enu  )       1. +- 0.1  alias 22223 # dummy values
 
 
 

@@ -11484,6 +11484,10 @@ int   ReadLesHouches()
 	    yyMeasuredVec[i].theovalue = yyBpD0taunu;
 	    yyMeasuredVec[i].theoset = true;
 	 }
+	 else if (yyMeasuredVec[i].id == BpD0taunuOverBpD0enu) {
+	    yyMeasuredVec[i].theovalue = yyBpD0taunuOverBpD0enu;
+	    yyMeasuredVec[i].theoset = true;
+	 }
          
       }
       //################################################
