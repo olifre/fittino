@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "parsing ./SPheno.spc.stdslha.fh-001"
-ls -lrt SPheno.spc.*
-ls -l ./SPheno.spc.stdslha.fh-001
+#ls -lrt SPheno.spc.*
+#ls -l ./SPheno.spc.stdslha.fh-001
 # if [ -e ./SPheno.spc.stdslha.fh-001 ]
 # then
 #     echo file there!

@@ -4918,7 +4918,7 @@ void Fittino::CalcFromRandPars(unsigned int nruns) {
 	     cout << " f = " << f << endl;
 	     }
 	   }
-		 else if( yyCalculator == SUSPECT ) {
+	   else if( yyCalculator == SUSPECT ) {
 	if (yyVerbose){
         cout << "Calling SuSpect and SDecay/HDecay via SUSYHIT" << endl;
 	}
@@ -5288,7 +5288,7 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
 
    }
 
-
+   
 
    if (yyHiggsBRCalculator==HDECAY){
      
@@ -5324,6 +5324,19 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      blocksFromHD.push_back("37");
 
      ReplaceBlock("slha.out", "SPheno.spc", blocksFromHD, false);
+
+     system("mv slha.out.last slha.out.last2");     
+     system("mv slha.out slha.out.last");
+
+     system("mv hdecay.in.last hdecay.in.last2");
+     system("mv hdecay.in hdecay.in.last");
+
+     system("mv slha.in.last slha.in.last2");
+     system("mv slha.in slha.in.last");
+
+     system("mv br.input.last br.input.last2");
+     system("mv br.input br.input.last");
+
 
    }
 
@@ -6866,6 +6879,12 @@ int callSPheno()
       return(return_value);
    }
 
+
+   if (access("SPheno.spc", R_OK)){
+     cerr << "SPheno.spc not found." << endl;
+     return 3;
+   }
+
    return 0;
 
 }
@@ -6978,27 +6997,11 @@ int callFeynHiggs()
 
 //check file
 
-   if( yyCalculator == SOFTSUSY ) {
-	fstream filestr;
-        filestr.open("./susyhit_slha.out.stdslha.fh-001");
-        if(filestr.is_open())
-        {
-                filestr.close();
-                return 0;
-        }
-        else    return 3;
+   if (access("./SPheno.spc.stdslha.fh-001", R_OK)){
+     cerr << "SPheno.spc.stdslha.fh-001 not found." << endl;
+     return 3;
    }
-
-        fstream filestrr;
-        filestrr.open("./SPheno.spc.stdslha.fh-001");
-        if(filestrr.is_open())   
-        {       
-                filestrr.close();
-                return 0;
-        }
-        else    return 3;
-
-
+   
    return 0;
 
 }
@@ -7101,6 +7104,13 @@ int callSuperIso()
       return(return_value);
    }
 
+   if (access("./output.flha", R_OK)){
+     cerr << "output.flha not found." << endl;
+     return 3;
+   }
+
+
+
    return 0;
 
 }
@@ -7201,6 +7211,12 @@ int callHDecay()
    if (return_value > 0) {
       return(return_value);
    }
+
+   if (access("./slha.out", R_OK)){
+     cerr << "slha.out not found." << endl;
+     return 3;
+   }
+
 
    return 0;
 
@@ -12153,63 +12169,71 @@ int   ReadLesHouches()
 
    int   ParseLesHouches()
    {
-      static int counter = 0;
+     static int counter = 0;
 
-      counter++;
+     counter++;
 
-      int rc = 0;
+     int rc = 0;
 
-      if (yyCalculator == SPHENO) {
-	 //      system("cp SPheno.spc.test SPheno.spc");
-	 yyin = fopen("SPheno.spc", "r");
-	 //	yyin = fopen("leshouches.in", "r");
-	 if (!yyin) {
-	    cerr<<"SPheno.spc does not exist"<<endl;
-	    yyCalculatorError = true;
-	    return 1;
-	 }
-	 yyInputFileLineNo = 1;
-	 rc = yyparse();
-	 fclose(yyin);
-	 system ("mv SPheno.spc SPheno.spc.last");
-	 system ("mv Messages.out Messages.out.last");
-	 system ("mv LesHouches.in LesHouches.in.last");
-	 system ("mv SPheno.out SPheno.out.last");
+     if (yyCalculator == SPHENO) {
+       //      system("cp SPheno.spc.test SPheno.spc");
+       yyin = fopen("SPheno.spc", "r");
+       //	yyin = fopen("leshouches.in", "r");
+       if (!yyin) {
+	 cerr<<"SPheno.spc does not exist"<<endl;
+	 yyCalculatorError = true;
+	 return 1;
+       }
+       yyInputFileLineNo = 1;
+       rc = yyparse();
+       fclose(yyin);
 
-	 // exit (0);
-      }
-			else if ( yyCalculator == SOFTSUSY || yyCalculator == SUSPECT) {
-				
-				yyin = fopen("susyhit_slha.out", "r");
-		    if( !yyin ) {
-			    cerr << "Couldnt open susyhit_slha.out" << endl;
-		  		yyCalculatorError = true;
-					return 1;
-				}
-				yyInputFileLineNo = 1;
-				rc = yyparse();
-				fclose(yyin);
-				system("mv susyhit_slha.out.last susyhit_slha.out.last2");
-        system("mv susyhit_slha.out susyhit_slha.out.last");
-        system("mv slhaspectrum.in.last slhaspectrum.in.last2");
-        system("mv slhaspectrum.in slhaspectrum.in.last");
-        system("mv LesHouches.in.last LesHouches.in.last2");
-        system("mv LesHouches.in LesHouches.in.last");
-			}
+       system ("mv SPheno.spc.last SPheno.spc.last2");
+       system ("mv SPheno.spc SPheno.spc.last");
+
+       system ("mv Messages.out.last Messages.out.last2");
+       system ("mv Messages.out Messages.out.last");
+
+       system ("mv LesHouches.in.last LesHouches.in.last2");
+       system ("mv LesHouches.in LesHouches.in.last");
+
+       //       system ("mv SPheno.out.last SPheno.out.last2");
+       //       system ("mv SPheno.out SPheno.out.last");
+
+       // exit (0);
+     }
+     else if ( yyCalculator == SOFTSUSY || yyCalculator == SUSPECT) {
+       
+       yyin = fopen("susyhit_slha.out", "r");
+       if( !yyin ) {
+	 cerr << "Couldnt open susyhit_slha.out" << endl;
+	 yyCalculatorError = true;
+	 return 1;
+       }
+       yyInputFileLineNo = 1;
+       rc = yyparse();
+       fclose(yyin);
+       system("mv susyhit_slha.out.last susyhit_slha.out.last2");
+       system("mv susyhit_slha.out susyhit_slha.out.last");
+       system("mv slhaspectrum.in.last slhaspectrum.in.last2");
+       system("mv slhaspectrum.in slhaspectrum.in.last");
+       system("mv LesHouches.in.last LesHouches.in.last2");
+       system("mv LesHouches.in LesHouches.in.last");
+     }
 																									 
-      else {
-	 cerr<<"Only SPHENO is implemented"<<endl;
-	 exit(EXIT_FAILURE);
-      }
+     else {
+	cerr<<"Only SPHENO is implemented"<<endl;
+	exit(EXIT_FAILURE);
+     }
 
-      yyInputFileLineNo = 1;
+     yyInputFileLineNo = 1;
 
-      if (yyVerbose){
-      cout<<counter<<" ###########################################################"<<endl;
-      }
+     if (yyVerbose){
+       cout<<counter<<" ###########################################################"<<endl;
+     }
 
 
-      return rc;
+     return rc;
 
    }
 
