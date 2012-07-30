@@ -18,7 +18,7 @@ float ToyLHCChi2Provider::GetChi2Contribution( float M0, float M12, vector<float
 	float t = h_median_t_2D[channel]->Interpolate(M0,M12);
 	float sigma_t = 0.5*(h_medianPlus1Sigma_t_2D[channel]->Interpolate(M0,M12)-h_medianMinus1Sigma_t_2D[channel]->Interpolate(M0,M12));
 	float CLsb = 0.5*(1.-erf((tobs-t)/sqrt(2.)/sigma_t));
-	return 2*(TMath::ErfInverse(1.-2.*CLsb)*TMath::ErfInverse(1.-2.*CLsb));  
+	return (CLsb > 1.e-10) ? 2*(TMath::ErfInverse(1.-2.*CLsb)*TMath::ErfInverse(1.-2.*CLsb)) : 1000.;  
 }
 
 
