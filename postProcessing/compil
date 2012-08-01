@@ -1,1 +1,1 @@
-g++ $1.cc -o $1 -I${ROOTSYS}/include/ $(root-config --libs)
+g++ postProcessing.cc -o postProcessing -I${ROOTSYS}/include/ $(root-config --libs)  -L/afs/naf.desy.de/group/atlas/software/lcg/contrib/gcc/4.3.2/x86_64-slc5-gcc43-opt/lib64 -lgfortran -L/afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/HiggsBounds-3.8.1/ -lHB -L/afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/HiggsSignals-0.1.3beta.quiet/ -lHS -L/afs/naf.desy.de/user/p/prudent/fittino/tools/GetToyLHCChi2/ -lToyLHCChi2Provider

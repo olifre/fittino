@@ -4,7 +4,7 @@ int main( int argc, char** argv ){
 
 
   // == Initialization of all variables, fit, model, options
-  initialize( argv[1], argv[2], argv[3] );
+  initialize( argv[1], argv[2], argv[3], argv[4], argv[5] );
 
 
   // Prepar input and output files
