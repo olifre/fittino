@@ -8,8 +8,8 @@
 #http://arxiv.org/abs/1204.4199
 
 # Name                          Value           Experimental uncertainties      Theory uncertainties   Add. Scanning Unc.
-LEObs ( Bsg_npf		)	3.55E-4		+- 0.24E-4	+- 0.09E-4 	+- 0.23E-4                               alias  1       # Reference: HFAG 2012 P. 203
-LEObs ( dm_s_npf	)	17.719		+- 0.043	                +- 5.2                                   alias  2       # Reference: HFAG 2012 P. 44
+LEObs ( Bsg_npf		)	3.55E-4		+- 0.24E-4	+- 0.09E-4 	+- 0.46E-4                               alias  1       # Reference: HFAG 2012 P. 203
+LEObs ( dm_s_npf	)	17.719		+- 0.043	                +- 4.2                                   alias  2       # Reference: HFAG 2012 P. 44
 # BaBar												                         
 # LEObs ( Btn_npf	)	1.8E-4		+- 0.5E-4       +- 0.2E-4      			                         alias  4	# Reference: arxiv:1207.0698 [hep-ex]
 # Belle												                         
@@ -19,9 +19,10 @@ LEObs ( omega		)	0.1123		+- 0.0035	                +- 0.01123                   
 LEObs ( Massh0_npf	)	125.		+- 2.0		                +- 3.0 		      +- 3.0             alias  19 	# Reference: 
 LEObs ( MassW_npf	)	80.385		+- 0.015                        +- 0.010       	                         alias  8	# Reference: PDG 2012
 LEObs ( sin_th_eff_npf	)	0.23113		+- 0.00021                      		                         alias  9 	# Reference: PDG 2012
-LEObs ( B_smm_npf	)   <	4.5E-9          +- 0.02E-9                                                               alias  3       # Reference: arxiv:1203.4493 [hep-ex]
+LEObs ( B_smm_npf	)   <	4.5E-9          +- 0.02E-9                      +- 0.76E-9                               alias  3       # Reference: arxiv:1203.4493 [hep-ex]
 nofitLEObs ( BpD0taunu  )       0.332 +- 0.024 +- 0.018 alias 22222 # Reference: http://arxiv.org/abs/1205.5442
-nofitLEObs ( BpD0taunuOverBpD0enu  )       1. +- 0.1  alias 22223 # dummy values
+
+
 
 
 
@@ -171,6 +172,7 @@ BR ( h0          -> Gluon Gluon          ) alias 1006
 BR ( h0 	 -> W W  		 ) alias 1007
 BR ( h0 	 -> Z Z  		 ) alias 1008
 BR ( h0 	 -> Z Gamma   		 ) alias 1009
+BR ( h0 	 -> Neutralino1 Neutralino1 ) alias 10009
 BR ( H0          -> Bottom Bottom~       ) alias 1010
 BR ( H0          -> Strange Strange~     ) alias 1011
 BR ( H0          -> Charm Charm~         ) alias 1012
@@ -224,7 +226,7 @@ Calculator                     SPHENO ./SPheno
 HiggsCalculator                HBSLHAINPUTBLOCKSFROMFH ./HBSLHAinputblocksfromFH
 #HiggsCalculator               FEYNHIGGS ./FeynHiggs
 HiggsBRCalculator              HDECAY ./run
-RelicDensityCalculator         MICROMEGAS ./micromegas
+RelicDensityCalculator         MICROMEGAS ./runmicromegas
 FlavourCalculator              SUPERISO ./slha.x
 AfterBurnerDirectory           ./afterburner
 HiggsSignalsPath               ./HSwithSLHA
@@ -261,13 +263,13 @@ UseAFdirect                on
 UseMarkovChains                on
 MarkovChainReadjustWidth       off
 MarkovChainReadjustWidthPeriod 500
-MaxMarkovChain                 1000
+MaxMarkovChain                 7200
 
 # Uncomment to use adaptive widths in Markov chain
 # See  ../fittino.in.OnlineMarkovChainOptimisation
 UpdateWidths                    on
 UpdateWidthsScale               2
-MarkovInterfaceFilePath        /afs/naf.desy.de/user/b/bechtle/programs/start_fittino/interfaceFiles/fittino.in.test.summer2012.if
+MarkovInterfaceFilePath        /afs/naf.desy.de/user/b/bechtle/programs/start_fittino/interfaceFiles/fittino.in.test.CMSSM.summer2012.if
 
 MinuitStrategy                 2
 MachinePrecision               1e-4
