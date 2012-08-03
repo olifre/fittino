@@ -8,6 +8,7 @@
 #include "TMath.h"
 #include "TNtuple.h"
 #include "TH2.h"
+
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -30,6 +31,9 @@ TString option;
 TString model;
 TString outputDir;
 TString inputDir;
+
+// == Fittino input file with observables
+TString fittinoInput;
 
 // == Links for LHC chi2
 string StatTesHisto;
@@ -204,6 +208,16 @@ Float_t O_FineTuningParameter5_nofit;
 Float_t O_FineTuningParameter6_nofit;
 
 // -- Higgs
+Float_t O_h0_To_Bottom_Bottom__nofit;                                    
+Float_t O_h0_To_Strange_Strange__nofit;                                  
+Float_t O_h0_To_Charm_Charm__nofit;                                      
+Float_t O_h0_To_Tau_Tau__nofit;                                          
+Float_t O_h0_To_Muon_Muon__nofit;                                        
+Float_t O_h0_To_Gamma_Gamma__nofit;                                       
+Float_t O_h0_To_Gluon_Gluon__nofit;                                       
+Float_t O_h0_To_W_W__nofit;                                               
+Float_t O_h0_To_Z_Z__nofit;                                               
+Float_t O_h0_To_Z_Gamma__nofit;       
 Float_t O_HiggsScalarFermionCoupling3250505_nofit;
 Float_t O_HiggsPseudoScalarFermionCoupling3250505_nofit;
 Float_t O_HiggsScalarFermionCoupling3350505_nofit;
@@ -458,6 +472,17 @@ void assignOutputBranches(){
   markovChain_out->Branch("O_Sbottom1_To_Top_Chargino1__nofit",&O_Sbottom1_To_Top_Chargino1__nofit,"O_Sbottom1_To_Top_Chargino1__nofit/F");
   markovChain_out->Branch("O_Sbottom2_To_Neutralino2_Bottom__nofit",&O_Sbottom2_To_Neutralino2_Bottom__nofit,"O_Sbottom2_To_Neutralino2_Bottom__nofit/F");
   markovChain_out->Branch("O_Sbottom1_To_Neutralino2_Bottom__nofit",&O_Sbottom1_To_Neutralino2_Bottom__nofit,"O_Sbottom1_To_Neutralino2_Bottom__nofit/F");
+
+  markovChain_out->Branch("O_h0_To_Bottom_Bottom~__nofit",&O_h0_To_Bottom_Bottom__nofit,"O_h0_To_Bottom_Bottom~__nofit/F");
+  markovChain_out->Branch("O_h0_To_Strange_Strange~__nofit",&O_h0_To_Strange_Strange__nofit,"O_h0_To_Strange_Strange~__nofit/F");
+  markovChain_out->Branch("O_h0_To_Charm_Charm~__nofit",&O_h0_To_Charm_Charm__nofit,"O_h0_To_Charm_Charm~__nofit/F");
+  markovChain_out->Branch("O_h0_To_Tau_Tau~__nofit",&O_h0_To_Tau_Tau__nofit,"O_h0_To_Tau_Tau~__nofit/F");
+  markovChain_out->Branch("O_h0_To_Muon_Muon~__nofit",&O_h0_To_Muon_Muon__nofit,"O_h0_To_Muon_Muon~__nofit/F");
+  markovChain_out->Branch("O_h0_To_Gamma_Gamma__nofit",&O_h0_To_Gamma_Gamma__nofit,"O_h0_To_Gamma_Gamma__nofit/F");
+  markovChain_out->Branch("O_h0_To_Gluon_Gluon__nofit",&O_h0_To_Gluon_Gluon__nofit,"O_h0_To_Gluon_Gluon__nofit/F");
+  markovChain_out->Branch("O_h0_To_W_W__nofit",&O_h0_To_W_W__nofit,"O_h0_To_W_W__nofit/F");
+  markovChain_out->Branch("O_h0_To_Z_Z__nofit",&O_h0_To_Z_Z__nofit,"O_h0_To_Z_Z__nofit/F");
+  markovChain_out->Branch("O_h0_To_Z_Gamma__nofit",&O_h0_To_Z_Gamma__nofit,"O_h0_To_Z_Gamma__nofit/F");
   markovChain_out->Branch("O_HiggsScalarFermionCoupling3250505_nofit",&O_HiggsScalarFermionCoupling3250505_nofit,"O_HiggsScalarFermionCoupling3250505_nofit/F");
   markovChain_out->Branch("O_HiggsPseudoScalarFermionCoupling3250505_nofit",&O_HiggsPseudoScalarFermionCoupling3250505_nofit,"O_HiggsPseudoScalarFermionCoupling3250505_nofit/F");
   markovChain_out->Branch("O_HiggsScalarFermionCoupling3350505_nofit",&O_HiggsScalarFermionCoupling3350505_nofit,"O_HiggsScalarFermionCoupling3350505_nofit/F");
@@ -700,7 +725,7 @@ void openIOfiles( TString _fit ){
   return;
 }
 
-// == Get the experimental values
+// == Read the experimental values from the Fittino input file
 void assignLEObs(){
 
   //////////////////////////////////////
@@ -722,8 +747,33 @@ void assignLEObs(){
 /*   ValName[9] = "O_B_smm_npf";     */
 /*   ValName[10] = "O_massTop";  */
 
+// == To account for the different uncertainties, -1 is assigned to empty ones
+// == The fittino input is first read by a bash script preparFittinoInput.sh
+  TString name;
+  double meas, unc1, unc2, unc3, unc;
+
+  ifstream fittinoInput ( "fittinoNewObservables.txt" );
+  if( !fittinoInput.good() ) cout << "WARNING, file fittinoNewObservables.txt not found, check the script preparFittinoInput.sh" << endl; 
+  else 
+    while( fittinoInput >> name >> meas >> unc1 >> unc2 >> unc3 ){
+      if( unc2 == -1 && unc3 == -1 ) unc = unc1;
+      if( unc2 != -1 && unc3 == -1 ) unc = TMath::Sqrt( unc1*unc1 + unc2*unc2 );
+      if( unc2 != -1 && unc3 != -1 ) unc = TMath::Sqrt( unc1*unc1 + unc2*unc2 + unc3*unc3 );
+      name = "O_"+name;
+      for( int i = 1; i < size; i++ ){
+	if( ValName[i] == name ){
+	  LEObs[i] = meas;
+	  uncLEObs[i] = unc;
+	}
+      }    
+  }
+  fittinoInput.close();
+
+
+
   // Start at 1 to be consistent with the table ValName where '0' is the chi2
- LEObs[1] = 3.55E-4;
+  /*
+LEObs[1] = 3.55E-4;
  LEObs[2] = 17.78;       
  LEObs[3] = 1.67E-4;        
  LEObs[4] = 28.7E-10;     
@@ -744,38 +794,49 @@ void assignLEObs(){
  uncLEObs[8] = 0.00021; 
  uncLEObs[9] = 0.02E-8;    
  uncLEObs[10] = 1.34;
+  */
+  cout << endl << " >>> Reading new observables for PP.." << endl;
+  for( int i = 1; i < size; i++ ) if( ValName[i].Contains("O_") && !ValName[i].Contains("chi2")) cout << ValName[i] <<" = " << LEObs[i] << " +- " << uncLEObs[i] << endl;
+
+
  return;  
 }
 
 // == Calculating Higgs chi2 requires the couplings and mass
 double HiggsMassCouplings[22] = {0};
-void fillHiggsMassCouplings(){
+// == Define functions to call HiggsBound to calculate the SM BR
+// == when the couplings were not saved in the ntuple. Pseudoscalar and invisible couplings set to 0
+extern "C" { double smbr_hss_( double *Mh );}
+extern "C" { double smbr_hcc_( double *Mh );}
+extern "C" { double smbr_hmumu_( double *Mh );}
+extern "C" { double smbr_hzgam_( double *Mh );}
+extern "C" { double smbr_hgamgam_( double *Mh );}
 
-  //higgsbounds_neutral_input_effc_( &HiggsMass, &GammaTotal, &g2hjss_s, &g2hjss_p, &g2hjcc_s, &g2hjcc_p, &g2hjbb_s, &g2hjbb_p, &g2hjtt_s, &g2hjtt_p, &g2hjmumu_s, &g2hjmumu_p, &g2hjtautau_s, &g2hjtautau_p, &g2hjWW, &g2hjZZ, &g2hjZga, &g2hjgaga, &g2hjgg, &g2hjggZ, &g2hjhiZ, &BR_hjinvisible, &BR_hjhihi);
-
+void fillHiggsMassCouplings( double Mh ){
+  
   HiggsMassCouplings[0] = O_massh0_nofit;
-  HiggsMassCouplings[1] = -1;//g2hjss_s
-  HiggsMassCouplings[2] = -1;//g2hjss_p
-  HiggsMassCouplings[3] = -1;//g2hjcc_s
-  HiggsMassCouplings[4] = -1;//g2hjcc_p
+  HiggsMassCouplings[1] = O_h0_To_Strange_Strange__nofit / smbr_hss_( &Mh );//g2hjss_s
+  HiggsMassCouplings[2] = 0;//g2hjss_p
+  HiggsMassCouplings[3] = O_h0_To_Charm_Charm__nofit / smbr_hcc_( &Mh );//g2hjcc_s
+  HiggsMassCouplings[4] = 0;//g2hjcc_p
   HiggsMassCouplings[5] = O_HiggsScalarFermionCoupling3250505_nofit;//g2hjbb_s
-  HiggsMassCouplings[6] = O_HiggsPseudoScalarFermionCoupling3250505_nofit;//g2hjbb_p
+  HiggsMassCouplings[6] = 0;//O_HiggsPseudoScalarFermionCoupling3250505_nofit;//g2hjbb_p
   HiggsMassCouplings[7] = O_HiggsScalarFermionCoupling3250606_nofit;//g2hjtt_s
-  HiggsMassCouplings[8] = O_HiggsPseudoScalarFermionCoupling3250606_nofit;//g2hjtt_p
-  HiggsMassCouplings[9] = -1;//g2hjmumu_s
-  HiggsMassCouplings[10] = -1;//g2hjmumu_p
+  HiggsMassCouplings[8] = 0;//O_HiggsPseudoScalarFermionCoupling3250606_nofit;//g2hjtt_p
+  HiggsMassCouplings[9] = O_h0_To_Muon_Muon__nofit / smbr_hmumu_( &Mh );//g2hjmumu_s
+  HiggsMassCouplings[10] = 0;//g2hjmumu_p
   HiggsMassCouplings[11] = O_HiggsScalarFermionCoupling3251515_nofit;//g2hjtautau_s
-  HiggsMassCouplings[12] = O_HiggsPseudoScalarFermionCoupling3251515_nofit;//g2hjtautau_p
+  HiggsMassCouplings[12] = 0;//O_HiggsPseudoScalarFermionCoupling3251515_nofit;//g2hjtautau_p
   HiggsMassCouplings[13] = O_HiggsBosonCoupling3252424_nofit;//g2hjWW
   HiggsMassCouplings[14] = O_HiggsBosonCoupling3252323_nofit;//g2hjZZ
-  HiggsMassCouplings[15] = -1;//g2hjZga
-  HiggsMassCouplings[16] = -1;//g2hjgaga
+  HiggsMassCouplings[15] = O_h0_To_Z_Gamma__nofit / smbr_hzgam_( &Mh );//g2hjZga
+  HiggsMassCouplings[16] = O_h0_To_Gamma_Gamma__nofit / smbr_hgamgam_( &Mh );//g2hjgaga
   HiggsMassCouplings[17] = O_HiggsBosonCoupling3252121_nofit;//g2hjgg
   HiggsMassCouplings[18] = O_HiggsBosonCoupling425212123_nofit;//g2hjggZ
   HiggsMassCouplings[19] = O_HiggsBosonCoupling3252523_nofit;//g2hjhiZ ---> ???????????????
-  HiggsMassCouplings[20] = -1;//BR_hjinvisible
-  HiggsMassCouplings[21] = -1;//BR_hjhihi
-
+  HiggsMassCouplings[20] = 0;//BR_hjinvisible
+  HiggsMassCouplings[21] = 0;//BR_hjhihi
+  
   return;
 }
 
@@ -822,8 +883,8 @@ void makeToyExperiments(){
   float LHC_chi2 = 0;
   float Higgs_chi2 = 0;
 
-  for( Int_t ievt = 0; ievt <  2; ++ievt )
-    //  for( Int_t ievt = 0; ievt <  markovChain_in->GetEntries(); ++ievt )
+  for( Int_t ievt = 0; ievt <  1; ++ievt )
+    //for( Int_t ievt = 0; ievt <  markovChain_in->GetEntries(); ++ievt )
     {
       markovChain_in->GetEntry( ievt );
 
@@ -836,7 +897,7 @@ void makeToyExperiments(){
       newChi2 += 0 ;//myChi2( O_Massh0_npf,  toyVal[6], uncLEObs[6] ) ;
       newChi2 += myChi2( O_MassW_npf,  toyVal[7], uncLEObs[7] ) ;
       newChi2 += myChi2( O_sin_th_eff_npf,  toyVal[8], uncLEObs[8] ) ;
-      if( O_B_smm_npf > toyVal[9] ) newChi2 += myChi2( O_B_smm_npf,  toyVal[9], uncLEObs[9] ) ; else newChi2 += 0 ;
+      newChi2 += myChi2( O_B_smm_npf,  toyVal[9], uncLEObs[9] ); //if( O_B_smm_npf > toyVal[9] ) newChi2 += myChi2( O_B_smm_npf,  toyVal[9], uncLEObs[9] ) ; else newChi2 += 0 ;
       newChi2 += myChi2( O_massTop,  toyVal[10], uncLEObs[10] ) ;
       LEO_chi2 = newChi2;
 
@@ -858,7 +919,8 @@ void makeToyExperiments(){
       */
 
       // New chi2 for Higgs
-      fillHiggsMassCouplings();
+      cout << P_M0 << "   " << P_M12 << "    " << P_TanBeta << "    " << P_A0 << endl;
+      fillHiggsMassCouplings( O_Massh0_npf );
       Higgs_chi2 = getHiggsChi2( HiggsMassCouplings );
       newChi2 += Higgs_chi2;
 
@@ -908,7 +970,7 @@ void simulateToys(){
 
   // Simulate 'numberToys' toys
   for( int iToy = 0; iToy < numberToys; iToy++ ){
-    cout << "  >> Toy #" << iToy << " /" << numberToys << endl;
+    cout << endl << "  >> Toy #" << iToy << " /" << numberToys << endl;
 
     // Simulate new measurements
     makeToyExperiments();
@@ -972,7 +1034,7 @@ void bestFitPoint(){
   else 
     {    
       // If the file exists read it
-      cout << "Reading best fit file.. " << endl << bestFitFile << endl;
+      cout << endl << " >>> Reading best fit file.. " << endl << bestFitFile << endl;
       int iVal=0;
       Float_t _bestFitVal;
       TString _ValName;
