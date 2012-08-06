@@ -6437,7 +6437,10 @@ double readAstroFit()
 
   if (!file_to_read.is_open()) {
     cerr << "error opening afout.txt" << endl;
-    exit(EXIT_FAILURE);
+    system("mv afout.last.txt  afout.last2.txt");
+    system("mv afout.txt  afout.last.txt");
+    af_chi2_total=111111111111;
+    return af_chi2_total;
   }
 
 
@@ -6461,8 +6464,11 @@ double readAstroFit()
 
   if (yyUseAFrelic){
     if (af_chi2_relic<0 || af_relic<0){
-      cout<<"FATAL ERROR IN AF/DARKSUSY. EXIT!"<<endl;
-      exit(2);
+      cerr << "error in afout.txt" << endl;
+      af_chi2_total=111111111111;
+      system("mv afout.last.txt  afout.last2.txt");
+      system("mv afout.txt  afout.last.txt");
+      return af_chi2_total;
     }
     if (yyVerbose) cout<<"using obs af_relic ("<<TMath::Sqrt(af_chi2_relic)<<") at theovalue="<<af_relic<<endl;
     af_chi2_total+=af_chi2_relic;
@@ -6470,8 +6476,11 @@ double readAstroFit()
 
   if (yyUseAFphoton){
     if (af_chi2_photon<0 || af_photon<0){
-      cout<<"FATAL ERROR IN AF/DARKSUSY. EXIT!"<<endl;
-      exit(2);
+      cerr << "error in afout.txt" << endl;
+      af_chi2_total=111111111111;
+      system("mv afout.last.txt  afout.last2.txt");
+      system("mv afout.txt  afout.last.txt");
+      return af_chi2_total;
     }
     if (yyVerbose) cout<<"using obs af_photon ("<<TMath::Sqrt(af_chi2_photon)<<") at theovalue="<<af_photon<<endl;
     af_chi2_total+=af_chi2_photon;    
@@ -6479,8 +6488,11 @@ double readAstroFit()
 
   if (yyUseAFsvind){
     if (af_chi2_svind<0 || af_svind<0){
-      cout<<"FATAL ERROR IN AF/DARKSUSY. EXIT!"<<endl;
-      exit(2);
+      system("mv afout.last.txt  afout.last2.txt");
+      system("mv afout.txt  afout.last.txt");
+      cerr << "error in afout.txt" << endl;
+      af_chi2_total=111111111111;
+      return af_chi2_total;
     }
     if (yyVerbose) cout<<"using obs af_svind ("<<TMath::Sqrt(af_chi2_svind)<<") at theovalue="<<af_svind<<endl;
     af_chi2_total+=af_chi2_svind;    
@@ -6488,8 +6500,11 @@ double readAstroFit()
 
   if (yyUseAFdirect){
     if (af_chi2_direct<0 || af_direct<0){
-      cout<<"FATAL ERROR IN AF/DARKSUSY. EXIT!"<<endl;
-      exit(2);
+      system("mv afout.last.txt  afout.last2.txt");
+      system("mv afout.txt  afout.last.txt");
+      cerr << "error in afout.txt" << endl;
+      af_chi2_total=111111111111;
+      return af_chi2_total;
     }
     if (yyVerbose) cout<<"using obs af_direct ("<<TMath::Sqrt(af_chi2_direct)<<") at theovalue="<<af_direct<<endl;
     af_chi2_total+=af_chi2_direct; 
