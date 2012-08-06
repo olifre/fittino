@@ -21,7 +21,8 @@ int main(int argc, char** argv)
   std::cout << "               append micromegas block to file " << outfilename << std::endl;
 
   int readSMPar = 1;
-  int err = readLesH(slhafilename, readSMPar);
+//  int err = readLesH(slhafilename, readSMPar); // for Micromegas 2.2
+  int err = lesHinput(slhafilename); // for Micromegas 2.4
   if (err < 0) {
     std::cerr << "runmicromegas failed to open Les Houches file" << std::endl;
     return err;
