@@ -263,7 +263,7 @@ UseAFdirect                on
 UseMarkovChains                on
 MarkovChainReadjustWidth       off
 MarkovChainReadjustWidthPeriod 500
-MaxMarkovChain                 7200
+MaxMarkovChain                 4500
 
 # Uncomment to use adaptive widths in Markov chain
 # See  ../fittino.in.OnlineMarkovChainOptimisation
