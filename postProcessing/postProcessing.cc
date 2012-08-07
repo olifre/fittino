@@ -2,7 +2,6 @@
 
 int main( int argc, char** argv ){
 
-
   // == Initialization of all variables, fit, model, options
   initialize( argv[1], argv[2], argv[3], argv[4], argv[5] );
 
@@ -13,10 +12,6 @@ int main( int argc, char** argv ){
 
   // == Get experimental values
   assignLEObs();
-
-
-  // == Calculate chi2 of each point
-  calculateChi2();
 
 
   // == Get best fit point

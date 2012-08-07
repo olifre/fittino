@@ -23,8 +23,11 @@ fi
 ### Isolate the interesting lines of the input file ###
 
 grep LEObs $1 > $tempFile1
+echo -ne "LEObs  " >> $tempFile1
+grep massTop $1 | grep -v fitParameter | cut -d"#" -f 1 >> $tempFile1
 
 ### Replace some characters to make life easier ###
+sed -i s/GeV/\ /g $tempFile1
 sed -i s/\(/\ /g $tempFile1
 sed -i s/\)/\ /g $tempFile1
 sed -i s/alias/X/g $tempFile1
@@ -59,15 +62,10 @@ if [ $pre != "#" ]
     fi
     echo $name $val $unc1 $unc2 $unc3 >> $finalFile
     
-##printf -v unc1 '%.20f' "$_unc1"
-#printf -v unc2 '%.20f' "$_unc2"
-#printf -v unc3 '%.20f' "$_unc3"
-#_unc=$(echo "sqrt (unc1*unc1+unc2*unc2+unc3*unc3 )" | bc -l) ; 
-    
 fi
 done < $tempFile2
 
 #LEObs Bsg_npf 3.55E-4 +- 0.24E-4 +- 0.09E-4 +- 0.46E-4
 
-rm $tempFile1 
-rm $tempFile2
+#rm $tempFile1 
+#rm $tempFile2

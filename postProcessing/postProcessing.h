@@ -15,6 +15,7 @@
 
 #include "Higgs.h"
 #include "LHC.h"
+#include "astrofit.h"
 
 using namespace std;
 
@@ -40,7 +41,7 @@ string StatTesHisto;
 string SignalGrid;
 
 // == Measurements or bounds und uncertainties
-const Int_t size = 14;// uper limit on the number of observables
+const Int_t size = 17;// uper limit on the number of observables
 Float_t LEObs[size] = {0};
 Float_t uncLEObs[size] = {0};
 
@@ -284,9 +285,13 @@ void initialize( TString arg1, TString arg2, TString arg3, TString arg4, TString
   ValName[8] = "O_sin_th_eff_npf"; 
   ValName[9] = "O_B_smm_npf";    
   ValName[10] = "O_massTop"; 
-  ValName[11] = "LEO_chi2"; 
-  ValName[12] = "LHC_chi2"; 
-  ValName[13] = "Higgs_chi2"; 
+  ValName[11] = "O_massNeutralino1_nofit"; 
+  ValName[12] = "af_direct"; 
+
+  ValName[13] = "LEO_chi2"; 
+  ValName[14] = "LHC_chi2"; 
+  ValName[15] = "Higgs_chi2"; 
+  ValName[16] = "af_chi2";
   
   if( model == "msugra" ){
     ParName.push_back( "P_M0" );
@@ -320,7 +325,7 @@ void initialize( TString arg1, TString arg2, TString arg3, TString arg4, TString
   allValues += "P_M0:P_M12:P_A0:P_TanBeta";
   if( model == "NUHM1" )  allValues += ":P_M0H";
   if( model == "NUHM2" )  allValues += ":P_M0Hu:P_M0Hd";
-  allValues += ":LEO_chi2:LHC_chi2:Higgs_chi2";
+  allValues += ":LEO_chi2:LHC_chi2:Higgs_chi2:af_chi2";
   toyNtuple = new TNtuple( "toyNtuple", "toy results", allValues.c_str() ); 
   bestFitNtuple = new TNtuple( "bestFitNtuple", "best fit results", allValues.c_str() ); 
 
@@ -760,7 +765,7 @@ void assignLEObs(){
       if( unc2 != -1 && unc3 == -1 ) unc = TMath::Sqrt( unc1*unc1 + unc2*unc2 );
       if( unc2 != -1 && unc3 != -1 ) unc = TMath::Sqrt( unc1*unc1 + unc2*unc2 + unc3*unc3 );
       name = "O_"+name;
-      for( int i = 1; i < size; i++ ){
+      for( int i = 0; i < size; i++ ){
 	if( ValName[i] == name ){
 	  LEObs[i] = meas;
 	  uncLEObs[i] = unc;
@@ -769,35 +774,8 @@ void assignLEObs(){
   }
   fittinoInput.close();
 
-
-
-  // Start at 1 to be consistent with the table ValName where '0' is the chi2
-  /*
-LEObs[1] = 3.55E-4;
- LEObs[2] = 17.78;       
- LEObs[3] = 1.67E-4;        
- LEObs[4] = 28.7E-10;     
- LEObs[5] = 0.1123;      
- LEObs[6] = 126.0;     
- LEObs[7] = 80.399;      
- LEObs[8] = 0.23113; 
- LEObs[9] = 1.6E-8; 
- LEObs[10] = 173.2;
-
- uncLEObs[1] = TMath::Sqrt( 0.24E-4 * 0.24E-4 + 0.09E-4 * 0.09E-4 + 0.23E-4 * 0.23E-4 );
- uncLEObs[2] = TMath::Sqrt( 0.12 * 0.12 + 5.2 * 5.2 );       
- uncLEObs[3] = 0.39E-4;
- uncLEObs[4] = TMath::Sqrt( 8.0E-10 * 8.0E-10 + 2.0E-10 * 2.0E-10 );     
- uncLEObs[5] = TMath::Sqrt( 0.0035 * 0.0035 + 0.0123 * 0.0123 );      
- uncLEObs[6] = TMath::Sqrt( 2.0 * 2.0 + 3.0 * 3.0 );     
- uncLEObs[7] = TMath::Sqrt( 0.023 * 0.023 + 0.010 * 0.010 );      
- uncLEObs[8] = 0.00021; 
- uncLEObs[9] = 0.02E-8;    
- uncLEObs[10] = 1.34;
-  */
   cout << endl << " >>> Reading new observables for PP.." << endl;
-  for( int i = 1; i < size; i++ ) if( ValName[i].Contains("O_") && !ValName[i].Contains("chi2")) cout << ValName[i] <<" = " << LEObs[i] << " +- " << uncLEObs[i] << endl;
-
+  for( int i = 1; i < size; i++ ) if( ValName[i].Contains("O_") && !ValName[i].Contains("chi2") && !ValName[i].Contains("massNeutralino1")) cout << ValName[i] <<" = " << LEObs[i] << " +- " << uncLEObs[i] << endl;
 
  return;  
 }
@@ -841,13 +819,6 @@ void fillHiggsMassCouplings( double Mh ){
 }
 
 
-// == Given experimental values for observables, calculate the chi2 of each point
-void calculateChi2(){
-
-
-  return;
-}
-
 // ===================================================================
 // == Simple function to calculate the chi2 without messing up
 Float_t myChi2( Float_t theo, Float_t exp, Float_t unc ){
@@ -870,9 +841,18 @@ void makeToyExperiments(){
   for( int iVal = 1; iVal < size; iVal++ ) toyVal[iVal] = r.Gaus( bestFitVal[iVal], uncLEObs[iVal] );
   
 
+  // Smear the cut on the chargino mass with the theoretical uncertainty of 1 GeV
+  float mChipl = r.Gaus( 102.5, 1.0 );
+  cout << "   > Lower limit on chargino mass: " << mChipl << endl;
+
+
   // Set up the LHC tool and smear the number of observed events (Matthias Hammer)
   cout << "   > Set up LHC tools.." << endl;
   setLHCchi2Tools( StatTesHisto, SignalGrid, bestFitPar[0], bestFitPar[1] );
+
+
+  // Smear the Xenon100 contour
+  smearAstrofit( bestFitVal[11], bestFitVal[12] );
 
 
   // Calculate new chi2 and find the lowest chi2
@@ -882,14 +862,18 @@ void makeToyExperiments(){
   float LEO_chi2 = 0;
   float LHC_chi2 = 0;
   float Higgs_chi2 = 0;
+  float af_chi2 = 0;
 
   for( Int_t ievt = 0; ievt <  1; ++ievt )
     //for( Int_t ievt = 0; ievt <  markovChain_in->GetEntries(); ++ievt )
     {
       markovChain_in->GetEntry( ievt );
 
+      // Cut out 
+      if( O_massChargino1_nofit < mChipl ) continue;
+
       // New chi2 for low energy observables
-      newChi2 += myChi2( O_Bsg_npf,  toyVal[1], uncLEObs[1] ) ;
+       newChi2 += myChi2( O_Bsg_npf,  toyVal[1], uncLEObs[1] ) ;
       newChi2 += myChi2( O_dm_s_npf,  toyVal[2], uncLEObs[2] ) ;
       newChi2 += myChi2( O_Btn_npf,  toyVal[3], uncLEObs[3] ) ;
       newChi2 += myChi2( O_gmin2m_npf,  toyVal[4], uncLEObs[4] ) ;
@@ -900,29 +884,35 @@ void makeToyExperiments(){
       newChi2 += myChi2( O_B_smm_npf,  toyVal[9], uncLEObs[9] ); //if( O_B_smm_npf > toyVal[9] ) newChi2 += myChi2( O_B_smm_npf,  toyVal[9], uncLEObs[9] ) ; else newChi2 += 0 ;
       newChi2 += myChi2( O_massTop,  toyVal[10], uncLEObs[10] ) ;
       LEO_chi2 = newChi2;
+      cout << "    - Low energy " << LEO_chi2 << endl;     
+/*       cout << "LHC  " << LHCchi2( P_M0, P_M12 )<< endl;       */
+/*       cout << "Bsg  " << myChi2( O_Bsg_npf,  toyVal[1], uncLEObs[1] ) << endl; */
+/*       cout << "Dms  " << myChi2( O_dm_s_npf,  toyVal[2], uncLEObs[2] ) << endl; */
+/*       cout << "Btn  " << myChi2( O_Btn_npf,  toyVal[3], uncLEObs[3] ) << endl; */
+/*       cout << "gmin2  " << myChi2( O_gmin2m_npf,  toyVal[4], uncLEObs[4] ) << endl; */
+/*       cout << "omega  " << myChi2( O_omega,  toyVal[5], uncLEObs[5] ) << endl; */
+/*       cout << "MassW  " << myChi2( O_MassW_npf,  toyVal[7], uncLEObs[7] ) << endl; */
+/*       cout << "sinThEff  " << myChi2( O_sin_th_eff_npf,  toyVal[8], uncLEObs[8] ) << endl; */
+/*       cout << "Bsmm  " << myChi2( O_B_smm_npf,  toyVal[9], uncLEObs[9] ) << endl; */
+/*       cout << "masstop  " <<  myChi2( O_massTop,  toyVal[10], uncLEObs[10] ) << endl; */
+      
 
       // New chi2 for LHC
       LHC_chi2 = LHCchi2( P_M0, P_M12 );
       newChi2 += LHC_chi2;
+      cout << "    - LHC " << LHC_chi2 << endl;      
 
-      /*
-      cout << "LHC  " << LHCchi2( P_M0, P_M12 )<< endl;      
-      cout << "Bsg  " << myChi2( O_Bsg_npf,  toyVal[1], uncLEObs[1] ) << endl;
-      cout << "Dms  " << myChi2( O_dm_s_npf,  toyVal[2], uncLEObs[2] ) << endl;
-      cout << "Btn  " << myChi2( O_Btn_npf,  toyVal[3], uncLEObs[3] ) << endl;
-      cout << "gmin2  " << myChi2( O_gmin2m_npf,  toyVal[4], uncLEObs[4] ) << endl;
-      cout << "omega  " << myChi2( O_omega,  toyVal[5], uncLEObs[5] ) << endl;
-      cout << "MassW  " << myChi2( O_MassW_npf,  toyVal[7], uncLEObs[7] ) << endl;
-      cout << "sinThEff  " << myChi2( O_sin_th_eff_npf,  toyVal[8], uncLEObs[8] ) << endl;
-      cout << "Bsmm  " << myChi2( O_B_smm_npf,  toyVal[9], uncLEObs[9] ) << endl;
-      cout << "masstop  " << myChi2( O_massTop,  toyVal[10], uncLEObs[10] ) << endl;
-      */
-
-      // New chi2 for Higgs
-      cout << P_M0 << "   " << P_M12 << "    " << P_TanBeta << "    " << P_A0 << endl;
+      // New chi2 for Higgs       
       fillHiggsMassCouplings( O_Massh0_npf );
       Higgs_chi2 = getHiggsChi2( HiggsMassCouplings );
       newChi2 += Higgs_chi2;
+      cout << "    - Higgs " << Higgs_chi2 << endl; 
+
+      // New chi2 for astrofit
+      af_chi2 = astrofitChi2( O_massNeutralino1_nofit, af_direct );
+      newChi2 += af_chi2;
+      cout << "    - Astrofit " << af_chi2 << endl;
+      
 
 
       // Find lowest chi2 for that toy
@@ -941,6 +931,7 @@ void makeToyExperiments(){
 	toyBestFitVal[11] = LEO_chi2;
 	toyBestFitVal[12] = LHC_chi2;
 	toyBestFitVal[13] = Higgs_chi2;
+	toyBestFitVal[14] = af_chi2;
 
 	toyBestFitPar[0] = P_M0;
 	toyBestFitPar[1] = P_M12;
@@ -974,7 +965,7 @@ void simulateToys(){
 
     // Simulate new measurements
     makeToyExperiments();
-    cout << "     chi2 = " << toyBestFitVal[0] << endl;
+    cout << "   > Lowest toy-chi2 = " << toyBestFitVal[0] << endl;
 
     // Save in ntuple the lowest chi2 point chi2, observables and parameters
     for( int iVal = 0; iVal < size; iVal++ ) toyResult[iVal] = toyBestFitVal[iVal];
@@ -1013,6 +1004,9 @@ void bestFitPoint(){
 	    bestFitVal[8] = O_sin_th_eff_npf;
 	    bestFitVal[9] = O_B_smm_npf;
 	    bestFitVal[10] = O_massTop;
+	    bestFitVal[11] = O_massNeutralino1_nofit;
+	    bestFitVal[12] = af_direct;
+
 	    bestFitPar[0] = P_M0;
 	    bestFitPar[1] = P_M12;
 	    bestFitPar[2] = P_A0;
@@ -1034,7 +1028,7 @@ void bestFitPoint(){
   else 
     {    
       // If the file exists read it
-      cout << endl << " >>> Reading best fit file.. " << endl << bestFitFile << endl;
+      cout << endl << " >>> Reading file with lowest chi2 point.. " << endl << bestFitFile << endl;
       int iVal=0;
       Float_t _bestFitVal;
       TString _ValName;
