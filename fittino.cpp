@@ -8681,7 +8681,7 @@ hase (rad), SPheno default value = 0
       }
 
       LesHouchesOutfile << "BLOCK MINPAR                 # Input parameters" << endl;
-      if( yyCalculator != SPHENO ) {
+      //if( yyCalculator != SPHENO ) {
 			if (FindInFixed("TanBeta")) {
 	 LesHouchesOutfile << "    3  "<< ReturnFixedValue("TanBeta")->value <<" # tanb (fixed)"<< endl;
       }
@@ -8708,7 +8708,7 @@ hase (rad), SPheno default value = 0
 	 cerr << "a-Parameter TanBeta not declared" << endl;
 	 exit (EXIT_FAILURE);
       } 
-     	}
+     	//}
       if (FindInFixed("M0")) {
 	 LesHouchesOutfile << "    1  "<< ReturnFixedValue("M0")->value <<" # M0 (fixed)"<< endl;
       }
@@ -8798,7 +8798,8 @@ hase (rad), SPheno default value = 0
       }
       
       // moved TanBeta to this block
-      if( yyCalculator == SPHENO ) {
+      /*
+			if( yyCalculator == SPHENO ) {
 				LesHouchesOutfile << "BLOCK EXTPAR                 # Input parameters" << endl;
       	if (FindInFixed("TanBeta")) {
    	LesHouchesOutfile << "    25 "<< ReturnFixedValue("TanBeta")->value <<" # tanb (fixed)"<< endl;
@@ -8827,6 +8828,7 @@ hase (rad), SPheno default value = 0
    	exit (EXIT_FAILURE);
       	} 
       }
+			*/
       if( yyFitModel == NUHM1 ) {
         if (FindInFixed("M0H")) {
           LesHouchesOutfile << "   21 " << ReturnFixedValue("M0H")->value << " # non-universal m_(H_d)^2" << endl;
