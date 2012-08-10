@@ -58,6 +58,8 @@ email                : philip.bechtle@desy.de, peter.wienemann@desy.de
 #include <pthread.h>
 #include <assert.h>
 
+#include <exception>
+
 #include "sRates.h"
 #include "slhaea.h"
 #include "./LHC-FASER/LHC-FASER.hpp"
@@ -5323,7 +5325,19 @@ void fitterFCN(Int_t &, Double_t *, Double_t &f, Double_t *x, Int_t iflag)
      blocksFromHD.push_back("36");
      blocksFromHD.push_back("37");
 
+
+     try{
      ReplaceBlock("slha.out", "SPheno.spc", blocksFromHD, false);
+     }
+     catch(std::out_of_range& e){
+       std::cerr<<"Out of range exception, probably because of HDecay/SLHAea"<<std::endl;
+       f = 111111111111.;
+       if (yyVerbose){
+	 cout << " f = " << f << endl;
+       }
+       return;        
+     }
+
 
      system("mv slha.out.last slha.out.last2");     
      system("mv slha.out slha.out.last");
