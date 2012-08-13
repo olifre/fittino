@@ -17,7 +17,7 @@ nofitLEObs ( dm_s_npf	)	17.719		+- 0.043	                +- 4.2                 
 nofitLEObs ( Btn_npf		)	0.72E-4		+- 0.27E-4      +- 0.11E-4      		      +- 1.0E-4          alias  4	# Reference: belle.kek.jp/belle/talks/ICHEP12/yook.pdf P. 16
 nofitLEObs ( gmin2m_npf	)	28.7E-10	+- 8.0E-10	                +- 2.0E-10                               alias  7 	# Reference: CERN-OPEN-2010-021
 nofitLEObs ( omega		)	0.1123		+- 0.0035	                +- 0.01123                               alias  20 	# Reference: arxiv:1001.4538 [astro-ph.CO] 
-LEObs ( Massh0_npf	)	125.		+- 2.0		                +- 3.0 		      +- 3.0             alias  19 	# Reference: 
+LEObs ( Massh0_npf	)	125.		+- 2.0		                +- 3.0 		                         alias  19 	# Reference: 
 nofitLEObs ( MassW_npf	)	80.385		+- 0.015                        +- 0.010       	                         alias  8	# Reference: PDG 2012
 nofitLEObs ( sin_th_eff_npf	)	0.23113		+- 0.00021                      		                         alias  9 	# Reference: PDG 2012
 nofitLEObs ( B_smm_npf	)   	4.5E-9          +- 0.02E-9                      +- 0.76E-9                               alias  3       # Reference: arxiv:1203.4493 [hep-ex]
@@ -70,10 +70,10 @@ fixParameter massMuon	 0.1056583715 GeV
 # M0H 1.55211e+06 +- 28915
 # massTop 173.067 +- 0.443045
 
-fitParameter M0        198.706 +- 31.1285   GeV 
-fitParameter M12       349.104 +- 12.7058      GeV
-fitParameter A0        2.57957 +- 65.71        GeV 
-fitParameter TanBeta   1.99813 +- 2.27069     
+fitParameter M0        198.706 +- 62.1285   GeV 
+fitParameter M12       349.104 +- 24.7058      GeV
+fitParameter A0        2.57957 +- 144.71        GeV 
+fitParameter TanBeta   1.99813 +- 3.27069     
 fitParameter M0H       951022  +- 28915    GeV
 fitParameter massTop     173.5 +- 0.443045 GeV
 # fixParameter QEWSB        1000.       GeV # +-  1   GeV  
@@ -274,7 +274,7 @@ MaxMarkovChain                 4500
 
 # Uncomment to use adaptive widths in Markov chain
 # See  ../fittino.in.OnlineMarkovChainOptimisation
-UpdateWidths                    on
+UpdateWidths                    off
 UpdateWidthsScale               2
 MarkovInterfaceFilePath        /afs/naf.desy.de/user/b/bechtle/programs/start_fittino/interfaceFiles/fittino.in.point2.NUHM1.HiggsObs.summer2012.if
 
