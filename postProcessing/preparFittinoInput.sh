@@ -45,7 +45,7 @@ done < $tempFile1
 while read line
 do
 pre=`echo $line | cut -d" " -f 1`
-if [ $pre != "#" ] 
+if [ $pre == "LEObs" ] 
     then 
     name=`echo $line | cut -d" " -f 2`
     val=`echo $line | cut -d" " -f 3`

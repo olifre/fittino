@@ -3,43 +3,71 @@
 ##$ -l os=sld5
 #$ -cwd
 #$ -P atlas
-#$ -l h_cpu=01:00:00 
+#$ -l h_cpu=06:00:00 
 #$ -w e
 #$ -m ae -M prudent@physik.tu-dresden.de
 
 
 #----------------------------------
-fit=fittino.out.markov.obs2011.msugra.0fb.HB.NoAF
-macro=postProcessing
 export ROOTSYS=/afs/naf.desy.de/products/root/amd64_rhel50/5.26.00
-output_destination=/scratch/hh/current/atlas/users/prudent/fittino/postProcessing/pValue/OUTPUTDIR/
+macro=postProcessing
+fit=fittino.out.test.CMSSM.Summer2012_merged
+input_file=/afs/naf.desy.de/user/p/prudent/fittino/inputs/summer2012/fittino.in.test.CMSSM.summer2012
+input_directory=/scratch/hh/current/atlas/users/bechtle/fittino/fittino.out.test5.summer2012/
+output_destination=/scratch/hh/current/atlas/users/prudent/fittino/postProcessing/postProcessing_2012/OUTPUTDIR/
+working_directory=/afs/naf.desy.de/user/p/prudent/fittino/postProcessing
+tools_directory=/afs/naf.desy.de/user/p/prudent/fittino/tools/GetToyLHCChi2
 #-----------------------------------
 
 export PATH=$ROOTSYS/bin:$PATH
 export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/afs/naf.desy.de/user/p/prudent/fittino/tools/GetToyLHCChi2
 
-echo "Script started"
 date
+echo " --- Script started"
 
 cd $TMP
 ini ROOT526
 
-echo "Copying input files and macros"
-cp /scratch/hh/current/atlas/users/prudent/fittino/postProcessing/pValue/$macro.cc .
-cp /scratch/hh/current/atlas/users/prudent/fittino/postProcessing/pValue/$macro.h .
-cp /scratch/hh/current/atlas/users/prudent/fittino/postProcessing/pValue/compil .
+echo " --- Copying input files and macros"
 
-echo "Compiling"
+# General program
+cp $working_directory/postProcessing.cc .
+cp $working_directory/postProcessing.h .
+cp $working_directory/compil .
+
+# Higgs
+cp $working_directory/Higgs.h .
+
+# LHC
+cp $working_directory/LHC.h .
+cp $tools_directory/ToyLHCChi2Provider.h .
+histograms=$tools_directory/histograms.root
+signalGrids=$tools_directory/signalGrids.root
+
+# Astrofit
+cp $working_directory/astrofit.h .
+cp $working_directory/dd_xenon100_2012.dat .
+
+# To extract the observables from the Fittino file
+cp $working_directory/preparFittinoInput.sh .
+
+echo " --- Extracting observables from the Fittino input file"
+chmod u+x preparFittinoInput.sh
+./preparFittinoInput.sh $input_file
+
+
+echo " --- Compiling"
 chmod u+x compil
-./compil $macro
+./compil
 
 
-echo "Running the macro"
-./$macro $fit $output_destination
+echo " --- Running the macro"
+./$macro $fit $input_directory $output_destination $histograms $signalGrids
 
+echo ""
+echo " --- Copying output files"
+cp $fit.root  $output_destination
 
-echo "Copying output files"
-cp $fit.root $output_destination
-
-date 
-echo "Script finished"
+echo " --- Script finished"
+date

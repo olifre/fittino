@@ -12,9 +12,9 @@
 export ROOTSYS=/afs/naf.desy.de/products/root/amd64_rhel50/5.26.00
 macro=postProcessing
 fit=fittino.out.test.CMSSM.Summer2012_merged
-input_file=fittino.in.test.CMSSM.summer2012
-input_directory=/scratch/hh/current/atlas/users/bechtle/fittino/fittino.out.test4.summer2012/
-output_destination=/scratch/hh/current/atlas/users/prudent/fittino/postProcessing/pValue/
+input_file=/afs/naf.desy.de/user/p/prudent/fittino/inputs/summer2012/fittino.in.test.CMSSM.summer2012
+input_directory=/scratch/hh/current/atlas/users/bechtle/fittino/fittino.out.test5.summer2012/
+output_destination=/scratch/hh/current/atlas/users/prudent/fittino/postProcessing/postProcessing_2012/
 working_directory=/afs/naf.desy.de/user/p/prudent/fittino/postProcessing
 tools_directory=/afs/naf.desy.de/user/p/prudent/fittino/tools/GetToyLHCChi2
 #-----------------------------------
@@ -45,6 +45,10 @@ cp $tools_directory/ToyLHCChi2Provider.h .
 histograms=$tools_directory/histograms.root
 signalGrids=$tools_directory/signalGrids.root
 
+# Astrofit
+cp $working_directory/astrofit.h .
+cp $working_directory/dd_xenon100_2012.dat .
+
 # To extract the observables from the Fittino file
 cp $working_directory/preparFittinoInput.sh .
 
@@ -59,7 +63,7 @@ chmod u+x compil
 
 
 echo " --- Running the macro"
-./$macro $fit $input_directory $output_destination $histograms $signalGrids
+./$macro $fit $input_directory $output_destination $histograms $signalGrids 0
 
 echo ""
 echo " --- Copying output files"

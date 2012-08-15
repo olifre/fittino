@@ -10,8 +10,10 @@ vector<float> uncS;
 vector<float> nObs;
 ToyLHCChi2Provider* prov;
 
-void setLHCchi2Tools( string StatTestHisto, string SignalGrid, float bestFitM0, float bestFitM12 ){
+void setLHCchi2Tools( string StatTestHisto, string SignalGrid, float bestFitM0, float bestFitM12, bool verb ){
 	
+   if( verb ) cout << "   > Set up LHC tools.." << endl;
+
   // setup the LCH Toy Chi2 provider: it takes 4 arguments:
   // 1st argument: name of the file holding the histograms of the statistical test distributions - get these with CreateTestStatisticsHistogramsForLHCToys
   // 2nd argument: name of the file holding the signal grids
@@ -43,7 +45,7 @@ void setLHCchi2Tools( string StatTestHisto, string SignalGrid, float bestFitM0, 
   nObs.push_back( rndm.Poisson(nExpBG[1]*rndm.Gaus(1.,0.1)+nExpS[1]*rndm.Gaus(1.,uncS[1])));
   nObs.push_back( rndm.Poisson(nExpBG[2]*rndm.Gaus(1.,0.1)+nExpS[2]*rndm.Gaus(1.,uncS[2])));
   
-  return;
+ return;
 }
 
 

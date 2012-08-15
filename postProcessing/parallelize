@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 rm lance
 touch lance
 rm cleanLog
@@ -15,8 +16,8 @@ rm job_postProcess_$job
 cp job_postProcess job_postProcess_$job
 sed -i s/OUTPUTDIR/"$job"/g job_postProcess_$job
 
-rm -r $job/
-mkdir $job/
+rm -r /scratch/hh/current/atlas/users/prudent/fittino/postProcessing/postProcessing_2012/$job/
+mkdir /scratch/hh/current/atlas/users/prudent/fittino/postProcessing/postProcessing_2012/$job/
 echo "qsub job_postProcess_$job" >> lance
 echo "rm job_postProcess_$job.o*" >> cleanLog
 echo "rm job_postProcess_$job.o*" >> cleanAll

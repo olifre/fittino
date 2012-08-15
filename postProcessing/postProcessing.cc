@@ -18,12 +18,13 @@ int main( int argc, char** argv ){
   bestFitPoint();
 
 
-  // == Run toys and get minimal chi2 for each  
-  simulateToys();
-
+  // == Run toys (0) or process real data (1)
+  int realFit = atoi( argv[6] );
+  processData( realFit );
+  //plot_af_chi2();
 
   // == Write all histograms and trees and close files
-  writeAndClose();
+  writeAndClose( realFit );
   
   return 0;
 }
