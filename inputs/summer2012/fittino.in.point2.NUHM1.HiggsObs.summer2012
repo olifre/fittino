@@ -14,7 +14,7 @@ nofitLEObs ( dm_s_npf	)	17.719		+- 0.043	                +- 4.2                 
 # BaBar												                         
 # LEObs ( Btn_npf	)	1.8E-4		+- 0.5E-4       +- 0.2E-4      			                         alias  4	# Reference: arxiv:1207.0698 [hep-ex]
 # Belle												                         
-nofitLEObs ( Btn_npf		)	0.72E-4		+- 0.27E-4      +- 0.11E-4      		      +- 1.0E-4          alias  4	# Reference: belle.kek.jp/belle/talks/ICHEP12/yook.pdf P. 16
+nofitLEObs ( Btn_npf		)	0.72E-4		+- 0.27E-4      +- 0.11E-4  +- 0.07E-4    		      +- 1.0E-4          alias  4	# Reference: belle.kek.jp/belle/talks/ICHEP12/yook.pdf P. 16
 nofitLEObs ( gmin2m_npf	)	28.7E-10	+- 8.0E-10	                +- 2.0E-10                               alias  7 	# Reference: CERN-OPEN-2010-021
 nofitLEObs ( omega		)	0.1123		+- 0.0035	                +- 0.01123                               alias  20 	# Reference: arxiv:1001.4538 [astro-ph.CO] 
 LEObs ( Massh0_npf	)	125.		+- 2.0		                +- 3.0 		                         alias  19 	# Reference: 
@@ -70,10 +70,12 @@ fixParameter massMuon	 0.1056583715 GeV
 # M0H 1.55211e+06 +- 28915
 # massTop 173.067 +- 0.443045
 
-fitParameter M0        198.706 +- 62.1285   GeV 
-fitParameter M12       349.104 +- 24.7058      GeV
-fitParameter A0        2.57957 +- 144.71        GeV 
-fitParameter TanBeta   1.99813 +- 3.27069     
+#  3606.9694 * 147.01635 * 419.07357 * 20.993755
+
+fitParameter M0      3606.9694    +- 62.1285   GeV 
+fitParameter M12     147.01635   +- 24.7058      GeV
+fitParameter A0      419.07357   +- 144.71        GeV 
+fitParameter TanBeta 20.993755   +- 3.27069     
 fitParameter M0H       951022  +- 28915    GeV
 fitParameter massTop     173.5 +- 0.443045 GeV
 # fixParameter QEWSB        1000.       GeV # +-  1   GeV  
@@ -242,9 +244,9 @@ HiggsSignalsPath               ./HSwithSLHA
 
 UseXsecLimits                  on
 GridPath                       /afs/naf.desy.de/user/b/bechtle/programs/fittino//grids/7TeV/Analyse_0l_165pb/Analyse_noLepton_1invfb_mSUGRA.txt
-Luminosity                     2.0    # in fb-1
-RelativeSignalCrossSectionSysUncertainty       0.3
-RelativeBackgroundCrossSectionSysUncertainty   0.23
+Luminosity                     20.0    # in fb-1
+RelativeSignalCrossSectionSysUncertainty       0.1
+RelativeBackgroundCrossSectionSysUncertainty   0.1
 
 UseFullCKMMatrix               off
 UseMinos                       off
