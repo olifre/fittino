@@ -7,18 +7,39 @@
 #$ -w e
 #$ -m ae -M prudent@physik.tu-dresden.de
 
+# Submit this script to the batch with 'qsub job_postProcess_test'
+
 
 #----------------------------------
-export ROOTSYS=/afs/naf.desy.de/products/root/amd64_rhel50/5.26.00
-macro=postProcessing
-fit=fittino.out.test.CMSSM.Summer2012_merged
-input_file=/afs/naf.desy.de/user/p/prudent/fittino/inputs/summer2012/fittino.in.test.CMSSM.summer2012
-input_directory=/scratch/hh/current/atlas/users/bechtle/fittino/fittino.out.test5.summer2012/
+# Name of the fit to post-process or to study with toys (Attention, no .root at the end)
+fit=fittino.out.point1.CMSSM.HiggsObs.Summer2012_merged
+
+# Fittino input file with the desired constraints to be applied
+input_file=/afs/naf.desy.de/user/p/prudent/fittino/inputs/summer2012/fittino.in.point1.CMSSM.allObs.summer2012
+
+# Where does the input fit ntuple lies
+input_directory=/scratch/hh/current/atlas/users/bechtle/fittino/fittino.out.summer2012_01_probablyWrongGlobalHiggsChi2/
+
+# Output of post-processing and toys
 output_destination=/scratch/hh/current/atlas/users/prudent/fittino/postProcessing/postProcessing_2012/
+
+# Where the processing programs lie
 working_directory=/afs/naf.desy.de/user/p/prudent/fittino/postProcessing
+
+# Where to retrieve the LHC chi2 tools from
 tools_directory=/afs/naf.desy.de/user/p/prudent/fittino/tools/GetToyLHCChi2
+
+# Number of toys to run
+export NUMBERTOYS=0
+
+# Do you want a 500MB file with all information (1=yes,0=no)?
+export VERBOSE=0
+
+# Post-processing (1) or toy study (0)
+export DATATOYS=1
 #-----------------------------------
 
+export ROOTSYS=/afs/naf.desy.de/products/root/amd64_rhel50/5.26.00
 export PATH=$ROOTSYS/bin:$PATH
 export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/afs/naf.desy.de/user/p/prudent/fittino/tools/GetToyLHCChi2
@@ -35,6 +56,9 @@ echo " --- Copying input files and macros"
 cp $working_directory/postProcessing.cc .
 cp $working_directory/postProcessing.h .
 cp $working_directory/compil .
+
+# Cleaning
+cp $working_directory/cleaning.h .
 
 # Higgs
 cp $working_directory/Higgs.h .
@@ -54,6 +78,7 @@ cp $working_directory/preparFittinoInput.sh .
 
 echo " --- Extracting observables from the Fittino input file"
 chmod u+x preparFittinoInput.sh
+cp $input_file .
 ./preparFittinoInput.sh $input_file
 
 
@@ -63,7 +88,7 @@ chmod u+x compil
 
 
 echo " --- Running the macro"
-./$macro $fit $input_directory $output_destination $histograms $signalGrids 0
+./postProcessing $fit $input_directory $output_destination $histograms $signalGrids 
 
 echo ""
 echo " --- Copying output files"

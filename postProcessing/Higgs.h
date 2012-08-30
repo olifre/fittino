@@ -20,7 +20,6 @@ extern "C" { void higgsbounds_neutral_input_effc_(double* Mh, double* GammaTotal
 extern "C" { void assign_toyvalues_to_mutable_(int* ii, int* peakindex, int* npeaks, double* Toys_muobs, double* Toys_mhobs);}
 extern "C" { void run_higgssignals_(double* Pvalue, double* Chisq, int* ndf, char peak[]);}
 extern "C" { void finish_higgssignals_();}
-
 extern "C" { void __pc_chisq_MOD_print_cov_mh_to_file(int* nH);}
 extern "C" { void __pc_chisq_MOD_print_cov_mu_to_file();}
 
@@ -41,11 +40,11 @@ double dMh[3] = { 2.0, 2.0, 2.0 };
 //  dCS(4) - HZ                                  dBR(4) - tau tau
 //  dCS(5) - ttH                                 dBR(5) - b bbar
 // from https://twiki.cern.ch/twiki/bin/view/LHCPhysics/CrossSections
-double dCS_SM[5] = { 0.15, 0.027, 0.043, 0.051, 0.178 };//xx
-double dBR_SM[5] = { 0.05, 0.043, 0.043, 0.057, 0.033 };//xx
+double dCS_SM[5] = { 0.147, 0.028, 0.037, 0.051, 0.12 };
+double dBR_SM[5] = { 0.054, 0.048, 0.048, 0.061, 0.028 };
 // Rate uncertainties for the given model
-double dCS[5] = { 0.2, 0.04, 0.05, 0.08, 0.2 };//xx
-double dBR[5] = { 0.05, 0.043, 0.043, 0.057, 0.033 };//xx
+double dCS[5] = { 0.20, 0.028, 0.037, 0.051, 0.12 };
+double dBR[5] = { 0.054, 0.048, 0.048, 0.061, 0.028 };
 
  // == Minimal significance for a channel to be considered
 double S0 = 3.0;
@@ -80,7 +79,7 @@ double BR_hjinvisible=0;
 double Mh=127.1;
 
 // == Toy measurements for the peaks
-const int Nanalyses=16;
+const int Nanalyses=17;
 double Toys_muobs[Nanalyses];
 double Toys_mhobs[Nanalyses];
 TVectorD vec_obs_mu(Nanalyses);
@@ -98,7 +97,7 @@ double Chisq;
 int ndf;
 char peak[10] = "peak";
 
-
+// ===================================================================
 // == Read the covariance matrices for mu and m(h0) from HiggsSignal
 void readCovarianceMatrices( bool verb=0 ){
 
@@ -113,14 +112,14 @@ void readCovarianceMatrices( bool verb=0 ){
  double col[Nanalyses];
  int line = 0;
  ifstream cov_mu_file( "/afs/naf.desy.de/user/p/prudent/fittino/postProcessing/cov_mu.txt" );
- while( cov_mu_file >> col[0] >> col[1] >> col[2] >> col[3] >> col[4] >> col[5] >> col[6] >> col[7] >> col[8] >> col[9] >> col[10] >> col[11] >> col[12]  >> col[13] >> col[14] >>col[15] ){
+ while( cov_mu_file >> col[0] >> col[1] >> col[2] >> col[3] >> col[4] >> col[5] >> col[6] >> col[7] >> col[8] >> col[9] >> col[10] >> col[11] >> col[12]  >> col[13] >> col[14] >>col[15] >> col[16] ){
    for( int icol=0; icol<Nanalyses; icol++ ) cov_mu( line, icol ) = col[icol];
     line++;
  } cov_mu_file.close();
 
  line=0;
  ifstream cov_mh_file( "/afs/naf.desy.de/user/p/prudent/fittino/postProcessing/cov_mh.txt" );
- while( cov_mh_file >> col[0] >> col[1] >> col[2] >> col[3] >> col[4] >> col[5] >> col[6] >> col[7] >> col[8] >> col[9] >> col[10] >> col[11] >> col[12]  >> col[13] >> col[14] >>col[15] ){
+ while( cov_mh_file >> col[0] >> col[1] >> col[2] >> col[3] >> col[4] >> col[5] >> col[6] >> col[7] >> col[8] >> col[9] >> col[10] >> col[11] >> col[12]  >> col[13] >> col[14] >>col[15] >> col[16] ){
    for( int icol=0; icol<Nanalyses; icol++ ) cov_mh( line, icol ) = col[icol];
    line++;
  } cov_mh_file.close();
@@ -135,43 +134,46 @@ void readCovarianceMatrices( bool verb=0 ){
   return;
 }
 
+// ===================================================================
 // == Set nominal values of mu and mh for the 16 channels
 void set_mu_mh(){
 
   // Set toy measurements for the peaks, every analysis has only one peak (second and third argument to 1)
-  Toys_muobs[0] = 0.8;
-  Toys_muobs[1] = -1.7;
-  Toys_muobs[2] = 0.9;
-  Toys_muobs[3] = 1.0;
-  Toys_muobs[4] = 0.2;
-  Toys_muobs[5] = -1.0;
-  Toys_muobs[6] = 2.0;
-  Toys_muobs[7] = 0.1;
-  Toys_muobs[8] = -0.2;
-  Toys_muobs[9] = 1.0;
-  Toys_muobs[10] = 3.0;
-  Toys_muobs[11] = 1.0;
-  Toys_muobs[12] = 0.1;
-  Toys_muobs[13] = -1.2;
-  Toys_muobs[14] = 2.0;
-  Toys_muobs[15] = 1.0;
+  Toys_muobs[0] = 1.4800;
+  Toys_muobs[1] = 2.1400;
+  Toys_muobs[2] = 0.6840;
+  Toys_muobs[3] = -2.8400;
+  Toys_muobs[4] = 0.2880;
+  Toys_muobs[5] = 0.6560;
+  Toys_muobs[6] = 0.6800;
+  Toys_muobs[7] = -1.7500;
+  Toys_muobs[8] = 1.3550;
+  Toys_muobs[9] = -0.7500;
+  Toys_muobs[10] = 0.5090;
+  Toys_muobs[11] = 0.4390;
+  Toys_muobs[12] = 0.4730;
+  Toys_muobs[13] = 1.8790;
+  Toys_muobs[14] = 2.6580;
+  Toys_muobs[15] = 1.3130;
+  Toys_muobs[16] = 1.2550;
   //
-  Toys_mhobs[0] = 124.8;
-  Toys_mhobs[1] = 126.7;
-  Toys_mhobs[2] = 122.9;
-  Toys_mhobs[3] = 134.0;
-  Toys_mhobs[4] = 121.2;
-  Toys_mhobs[5] = 125.0;
-  Toys_mhobs[6] = 126.0;
-  Toys_mhobs[7] = 127.1;
-  Toys_mhobs[8] = 122.2;
-  Toys_mhobs[9] = 124.0;
-  Toys_mhobs[10] = 132.0;
-  Toys_mhobs[11] = 122.0;
-  Toys_mhobs[12] = 117.1;
-  Toys_mhobs[13] = 123.2;
-  Toys_mhobs[14] = 125.0;
-  Toys_mhobs[15] = 126.0;
+  Toys_mhobs[0] = 125.00;
+  Toys_mhobs[1] = 125.00;
+  Toys_mhobs[2] = 125.60;
+  Toys_mhobs[3] = 125.00;
+  Toys_mhobs[4] = 125.00;
+  Toys_mhobs[5] = 125.00;
+  Toys_mhobs[6] = 125.00;
+  Toys_mhobs[7] = 125.00;
+  Toys_mhobs[8] = 125.00;
+  Toys_mhobs[9] = 125.00;
+  Toys_mhobs[10] = 125.00;
+  Toys_mhobs[11] = 126.50;
+  Toys_mhobs[12] = 126.50;
+  Toys_mhobs[13] = 126.70;
+  Toys_mhobs[14] = 126.50;
+  Toys_mhobs[15] = 125.00;
+  Toys_mhobs[16] = 126.00;
 
   for( int i = 1; i <= Nanalyses; i++ ){
     vec_obs_mu[i-1] = Toys_muobs[i-1];
@@ -186,6 +188,7 @@ void set_mu_mh(){
   return;
 }
 
+// ===================================================================
 // == Initialize HiggsSignal
 void initializeHiggs( bool verb=0 ){
 
@@ -237,6 +240,7 @@ TVectorD getCorrelatedRandomNumbers(const TVectorD& mean, const TMatrixDSym& cov
    return x;
 }
 
+// ===================================================================
 // == Smear the Higgs observables in a correlated way
 // == the covariance matrices are created in 'readCovarianceMatrices'
 void smearHiggs( bool verb ){
@@ -259,7 +263,7 @@ void smearHiggs( bool verb ){
   return;
 }
 
-
+// ===================================================================
 // == For a given point, get the Higgs chi2
 double getHiggsChi2( double _HiggsMassCouplings[] )
 {

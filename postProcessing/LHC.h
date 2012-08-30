@@ -10,7 +10,8 @@ vector<float> uncS;
 vector<float> nObs;
 ToyLHCChi2Provider* prov;
 
-void setLHCchi2Tools( string StatTestHisto, string SignalGrid, float bestFitM0, float bestFitM12, bool verb ){
+// ===================================================================
+void setLHCchi2Tools( int PP_or_Toys, string StatTestHisto, string SignalGrid, float bestFitM0, float bestFitM12, bool verb ){
 	
    if( verb ) cout << "   > Set up LHC tools.." << endl;
 
@@ -28,8 +29,7 @@ void setLHCchi2Tools( string StatTestHisto, string SignalGrid, float bestFitM0, 
   uncS = prov->GetSignalUncertaintyBF();
   
   // setup the background expectation in the 3 signal regions:
-  // for a luminosity of 20/fb
-  float lumi = 20.;
+  float lumi = 2.;// /fb
   nExpBG.push_back( 10.*lumi/0.165);
   nExpBG.push_back( 6.*lumi/0.165);
   nExpBG.push_back( 4.*lumi/0.165);
@@ -39,16 +39,24 @@ void setLHCchi2Tools( string StatTestHisto, string SignalGrid, float bestFitM0, 
   
   // for each toy, get a new set of observed events in the signal region
   // these are random numbers thrown according to the signal + background expectation at the best fit point!
+  float bkgRelUnc = 0.23;
+  float sigRelUnc = 0.30;
   TRandom3 rndm(0);	
   nObs.clear();
-  nObs.push_back( rndm.Poisson(nExpBG[0]*rndm.Gaus(1.,0.02)+nExpS[0]*rndm.Gaus(1.,uncS[0])));
-  nObs.push_back( rndm.Poisson(nExpBG[1]*rndm.Gaus(1.,0.1)+nExpS[1]*rndm.Gaus(1.,uncS[1])));
-  nObs.push_back( rndm.Poisson(nExpBG[2]*rndm.Gaus(1.,0.1)+nExpS[2]*rndm.Gaus(1.,uncS[2])));
-  
+  if( PP_or_Toys == 0 ){//toys
+    nObs.push_back( rndm.Poisson(nExpBG[0]*rndm.Gaus(1.,0.02)+nExpS[0]*rndm.Gaus(1.,uncS[0])));
+    nObs.push_back( rndm.Poisson(nExpBG[1]*rndm.Gaus(1.,0.1)+nExpS[1]*rndm.Gaus(1.,uncS[1])));
+    nObs.push_back( rndm.Poisson(nExpBG[2]*rndm.Gaus(1.,0.1)+nExpS[2]*rndm.Gaus(1.,uncS[2])));
+  }
+  if( PP_or_Toys == 1 ){//real data
+    nObs.push_back( nExpBG[0] + nExpS[0] );
+    nObs.push_back( nExpBG[1] + nExpS[1] );
+    nObs.push_back( nExpBG[2] + nExpS[2] );
+  }
  return;
 }
 
-
+// ===================================================================
 // == Fonction to be called for each point of each toy
 // get the chi2 contribution for this toy at this point: M0 = m0 at the current point, M12 = m12 at the current point in the ntuple
 // nObs and nExp have been defined before!

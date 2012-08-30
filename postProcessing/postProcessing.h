@@ -8,6 +8,8 @@
 #include "TMath.h"
 #include "TNtuple.h"
 #include "TH2.h"
+#include "TCutG.h"
+#include "TKey.h"
 
 #include <iostream>
 #include <string>
@@ -21,7 +23,7 @@ using namespace std;
 
 // == Most relevant parameters
 bool verbose = 0;
-int numberToys = 1;
+int numberToys = 0;
 
 // == Input/Output ntuples
 TFile* file_in;
@@ -31,13 +33,15 @@ TTree* markovChain_out;
  
 // == Global variables to identify fit and model
 TString fit;
-TString option;
 TString model;
 TString outputDir;
 TString inputDir;
 
 // == Fittino input file with observables
 TString fittinoInput;
+
+// == File with cuts
+TString file_cuts;
 
 // == Links for LHC chi2
 string StatTesHisto;
@@ -46,6 +50,7 @@ string SignalGrid;
 // == Measurements or bounds und uncertainties
 vector<float> LEObs;
 vector<float> uncLEObs;
+float chipl_bound = 102.5;// lower limit on chargino mass
 float mChipl = 0;
 
 // == Lower chi2 point for nominal fit
@@ -68,15 +73,26 @@ TRandom3 r;
 // == Check ntuples for the smeared observables
 TNtuple* smearedObsNtuple = {0};
 
-// == For the removal of multiple points in the ntuple
-const int prevRange = 5;
-Float_t M0_bef[prevRange] = {0}, M12_bef[prevRange] = {0}, TanBeta_bef[prevRange] = {0}, A0_bef[prevRange] = {0};
-
 // == Ntuple variables
 // -- Chi2, likelihood, Markov chain
 Float_t likelihood;
 Float_t rho;
 Float_t chi2;
+
+Float_t chi2_1;
+Float_t chi2_2;
+Float_t chi2_3;
+Float_t chi2_4;
+Float_t chi2_5;
+Float_t chi2_6;
+Float_t chi2_7;
+Float_t chi2_8;
+Float_t chi2_9;
+Float_t chi2_LEO_LHC;
+Float_t chi2_LEO_Higgs;
+Float_t chi2_LEO_LHC_Higgs;
+Float_t chi2_LHC_Higgs;
+
 Float_t accpoint;
 Float_t n;
 Float_t globalIter;
@@ -100,6 +116,9 @@ Float_t af_chi2_photon;
 Float_t af_chi2_relic;
 Float_t af_chi2_svind;
 Float_t af_chi2_direct;
+
+// -- Higgs
+Float_t HiggsSignals_TotalChi2;
 Float_t globalHiggsChi2;
 
 // -- Individual chi2
@@ -122,7 +141,6 @@ Float_t P_M0;
 Float_t P_M12;
 Float_t P_A0;
 Float_t P_TanBeta;
-Float_t P_QEWSB;
 Float_t P_massTop;
 Float_t P_M0H;
 Float_t P_M0Hu;
@@ -286,6 +304,7 @@ Float_t O_widthh0_nofit;
 
 
 
+// ===================================================================
 // == Set all variables to zero
 void initialize( TString arg1, TString arg2, TString arg3, TString arg4, TString arg5 ){
 
@@ -296,6 +315,17 @@ void initialize( TString arg1, TString arg2, TString arg3, TString arg4, TString
   if( fit.Contains("NUHM1") ) model = "NUHM1";
   else if( fit.Contains("NUHM2") ) model = "NUHM2";
   else model = "msugra";
+
+  TString dir_cuts = "/scratch/hh/current/atlas/users/prudent/fittino/postProcessing/postProcessing_2012/outputs/";
+  if( model == "NUHM1" ) file_cuts = dir_cuts + "cut_fittino.out.NUHM1.Summer2012_merged.root";
+  if( model == "NUHM2" ) file_cuts = dir_cuts + "cut_fittino.out.NUHM2.Summer2012_merged.root";
+  else file_cuts = dir_cuts + "cut_fittino.out.CMSSM.Summer2012_merged.root";
+
+  numberToys = atoi( getenv("NUMBERTOYS") );
+  int _verbose = atoi( getenv("VERBOSE") );
+  if( _verbose == 1 ) verbose = true;
+  if( _verbose == 0 ) verbose = false;
+  
 
   // == Tools for chi2 calculation
   StatTesHisto = arg4;
@@ -315,11 +345,11 @@ void initialize( TString arg1, TString arg2, TString arg3, TString arg4, TString
   ValName.push_back( "O_massTop" ); 
   ValName.push_back( "O_massNeutralino1_nofit" ); 
   ValName.push_back( "af_direct" ); 
+
   ValName.push_back( "LEO_chi2" ); 
   ValName.push_back( "LHC_chi2" ); 
   ValName.push_back( "Higgs_chi2" ); 
-  ValName.push_back( "af_chi2" );
- 
+  ValName.push_back( "af_chi2" ); 
   ValName.push_back( "Bsg_chi2"); 
   ValName.push_back( "dm_s_chi2"); 
   ValName.push_back( "Btn_chi2"); 
@@ -329,8 +359,6 @@ void initialize( TString arg1, TString arg2, TString arg3, TString arg4, TString
   ValName.push_back( "sin_th_eff_chi2"); 
   ValName.push_back( "B_smm_chi2"); 
   ValName.push_back( "massTop_chi2" );
-
-
 
   if( model == "msugra" ){
     ParName.push_back( "P_M0" );
@@ -369,7 +397,6 @@ void initialize( TString arg1, TString arg2, TString arg3, TString arg4, TString
   string smearedObsList = "Bsg:dm_s:Btn:gmin2m:omega:Massh0:MassW:sin_th_eff:B_smm:massTop:mChipl";
   smearedObsNtuple = new TNtuple( "smearedObsNtuple", "Smeared observables", smearedObsList.c_str() ); 
 
-
   // == Set size of arrays
   toyBestFitVal.resize( ValName.size() );
   toyBestFitPar.resize( ParName.size() );
@@ -388,11 +415,28 @@ void initialize( TString arg1, TString arg2, TString arg3, TString arg4, TString
  return; 
 }
 
+
+
+// ===================================================================
 // == Assign the variables to the output ntuple
 void assignOutputBranches(){
   markovChain_out->Branch("likelihood",&likelihood,"likelihood/F");
   markovChain_out->Branch("rho",&rho,"rho/F");
   markovChain_out->Branch("chi2",&chi2,"chi2/F");
+  markovChain_out->Branch("chi2_LEO_LHC",&chi2_LEO_LHC,"chi2_LEO_LHC/F");
+  markovChain_out->Branch("chi2_LEO_Higgs",&chi2_LEO_Higgs,"chi2_LEO_Higgs/F");
+  markovChain_out->Branch("chi2_LEO_LHC_Higgs",&chi2_LEO_LHC_Higgs,"chi2_LEO_LHC_Higgs/F");
+  markovChain_out->Branch("chi2_LHC_Higgs",&chi2_LHC_Higgs,"chi2_LHC_Higgs/F");
+  markovChain_out->Branch("chi2_1",&chi2_1,"chi2_1/F");
+  markovChain_out->Branch("chi2_2",&chi2_2,"chi2_2/F");
+  markovChain_out->Branch("chi2_3",&chi2_3,"chi2_3/F");
+  markovChain_out->Branch("chi2_4",&chi2_4,"chi2_4/F");
+  markovChain_out->Branch("chi2_5",&chi2_5,"chi2_5/F");
+  markovChain_out->Branch("chi2_6",&chi2_6,"chi2_6/F");
+  markovChain_out->Branch("chi2_7",&chi2_7,"chi2_7/F");
+  markovChain_out->Branch("chi2_8",&chi2_8,"chi2_8/F");
+  markovChain_out->Branch("chi2_9",&chi2_9,"chi2_9/F");
+  
   markovChain_out->Branch("accpoint",&accpoint,"accpoint/F");
   markovChain_out->Branch("n",&n,"n/F");
   markovChain_out->Branch("globalIter",&globalIter,"globalIter/F");
@@ -413,6 +457,8 @@ void assignOutputBranches(){
   markovChain_out->Branch("af_chi2_svind",&af_chi2_svind,"af_chi2_svind/F");
   markovChain_out->Branch("af_chi2_direct",&af_chi2_direct,"af_chi2_direct/F");
   markovChain_out->Branch("globalHiggsChi2",&globalHiggsChi2,"globalHiggsChi2/F");
+  markovChain_out->Branch("HiggsSignals_TotalChi2",&HiggsSignals_TotalChi2,"HiggsSignals_TotalChi2/F");
+
   markovChain_out->Branch("Bsg_chi2",&Bsg_chi2,"Bsg_chi2/F");
   markovChain_out->Branch("dm_s_chi2",&dm_s_chi2,"dm_s_chi2/F");
   markovChain_out->Branch("Btn_chi2",&Btn_chi2,"Btn_chi2/F");
@@ -437,8 +483,6 @@ void assignOutputBranches(){
     markovChain_out->Branch("P_M0Hu",&P_M0Hu,"P_M0Hu/F");
     markovChain_out->Branch("P_M0Hd",&P_M0Hd,"P_M0Hd/F");
   }
-  if( fit.Contains("QEWSB") )  markovChain_out->Branch("P_QEWSB",&P_QEWSB,"P_QEWSB/F");
-
   markovChain_out->Branch("O_Bsg_npf",&O_Bsg_npf,"O_Bsg_npf/F");
   markovChain_out->Branch("O_dm_s_npf",&O_dm_s_npf,"O_dm_s_npf/F");
   markovChain_out->Branch("O_Btn_npf",&O_Btn_npf,"O_Btn_npf/F");
@@ -590,6 +634,8 @@ void assignOutputBranches(){
 }
 
 
+
+// ===================================================================
 // == Assign the variables to the input ntuple
 void assignInputBranches(){
   markovChain_in->SetBranchAddress("likelihood",&likelihood );
@@ -615,7 +661,7 @@ void assignInputBranches(){
   markovChain_in->SetBranchAddress("af_chi2_svind",&af_chi2_svind );
   markovChain_in->SetBranchAddress("af_chi2_direct",&af_chi2_direct );
   markovChain_in->SetBranchAddress("globalHiggsChi2",&globalHiggsChi2 );
-
+ markovChain_in->SetBranchAddress("HiggsSignals_TotalChi2",&HiggsSignals_TotalChi2 );
   markovChain_in->SetBranchAddress("P_M0",&P_M0 );
   markovChain_in->SetBranchAddress("P_M12",&P_M12 );
   markovChain_in->SetBranchAddress("P_A0",&P_A0 );
@@ -626,8 +672,6 @@ void assignInputBranches(){
     markovChain_in->SetBranchAddress("P_M0Hu",&P_M0Hu );
     markovChain_in->SetBranchAddress("P_M0Hd",&P_M0Hd );
   }
- if( fit.Contains("QEWSB") ) markovChain_in->SetBranchAddress("P_QEWSB",&P_QEWSB ); 
-
   markovChain_in->SetBranchAddress("O_massTop",&O_massTop );
   markovChain_in->SetBranchAddress("O_Bsg_npf",&O_Bsg_npf );
   markovChain_in->SetBranchAddress("O_dm_s_npf",&O_dm_s_npf );
@@ -770,17 +814,23 @@ void assignInputBranches(){
  return; 
 }
 
+
+
+// ===================================================================
 // == Prepar input and output files
 void openIOfiles( TString _fit ){
 
  // == Opening input fit to process
-  TString name_in = inputDir + _fit + ".root";
+
+  // If you have not cleaned the file before
+  //TString name_in = inputDir + _fit + ".root";
+  // If you have cleaned it before
+  TString name_in = _fit + "_cleaned.root";
 
   file_in = new TFile( name_in );
   markovChain_in = (TTree*) file_in->Get("markovChain");
   cout << endl << " >>> Processing... "  << endl 
        <<" fit: " << _fit << endl
-       <<" file: " << name_in << endl
        <<" model: " << model << endl;
   cout << " output directory: " << outputDir << endl;
   assignInputBranches();
@@ -793,6 +843,9 @@ void openIOfiles( TString _fit ){
   return;
 }
 
+
+
+// ===================================================================
 // == Read the experimental values from the Fittino input file
 void assignLEObs(){
 
@@ -807,10 +860,10 @@ void assignLEObs(){
   if( !fittinoInput.good() ) cout << "WARNING, file fittinoNewObservables.txt not found, check the script preparFittinoInput.sh" << endl; 
   else 
     while( fittinoInput >> name >> meas >> unc1 >> unc2 >> unc3 ){
-      
-      // For B->tau nu and m(h0), the last uncertainty is to enlarge the scan
-      if( name == "Btn_npf" || name == "Massh0_npf" ) unc3 = -1;
-      
+
+      // Replace the scanning unc. by the theoretical uncertainty, waiting to be included in the input file
+      if( name == "Btn_npf" ) unc3 = 0.07e-4;
+
       if( unc2 == -1 && unc3 == -1 ) unc = unc1;
       if( unc2 != -1 && unc3 == -1 ) unc = TMath::Sqrt( unc1*unc1 + unc2*unc2 );
       if( unc2 != -1 && unc3 != -1 ) unc = TMath::Sqrt( unc1*unc1 + unc2*unc2 + unc3*unc3 );
@@ -820,11 +873,16 @@ void assignLEObs(){
 	  LEObs[i] = meas;
 	  uncLEObs[i] = unc;
 	}
+	// So far Bs->mumu from LHCb not included in the input file, so added by hand
+	if( ValName[i] == "O_B_smm_npf" ){
+	  LEObs[i] = 0.8e-9;
+	  uncLEObs[i] = 1.8e-9;
+	}
       }    
   }
   fittinoInput.close();
 
-  cout << endl << " >>> Reading new observables for PP.." << endl;
+  cout << endl << " >>> Observables for post-processing.." << endl;
   for( int i = 0; i < ValName.size(); i++ ) 
     if( ValName[i].Contains("O_") && !ValName[i].Contains("chi2") && !ValName[i].Contains("massNeutralino1")) 
       cout << ValName[i] <<" = " << LEObs[i] << " +- " << uncLEObs[i] << endl;
@@ -832,6 +890,9 @@ void assignLEObs(){
  return;  
 }
 
+
+
+// ===================================================================
 // == Calculating Higgs chi2 requires the couplings and mass
 double HiggsMassCouplings[22] = {0};
 // == Define functions to call HiggsBound to calculate the SM BR
@@ -845,6 +906,9 @@ extern "C" { double smbr_hzgam_( double *Mh );}
 extern "C" { double smbr_hgamgam_( double *Mh );}
 extern "C" { double smgamma_h_( double *Mh );}
 
+
+
+// ===================================================================
 void fillHiggsMassCouplings( double Mh ){
   
   HiggsMassCouplings[0] = O_massh0_nofit;
@@ -873,11 +937,15 @@ void fillHiggsMassCouplings( double Mh ){
   return;
 }
 
+
+
 // ===================================================================
 // == Simple function to calculate the chi2 without messing up
 Float_t myChi2( Float_t theo, Float_t exp, Float_t unc ){
   return ( theo - exp ) * ( theo - exp ) / ( unc * unc );
 }
+
+
 
 // ===================================================================
 // == Save smeared observables in an ntuple
@@ -899,6 +967,8 @@ float* smearingResult = new float[11];
   return;
 }
 
+
+
 // ===================================================================
 // == Smear low energy observables and lower limit on chargino
 void smearLEObs( bool verb ){
@@ -913,88 +983,66 @@ void smearLEObs( bool verb ){
   for( int iVal = 1; iVal < ValName.size(); iVal++ ) toyVal[iVal] = r.Gaus( bestFitVal[iVal], uncLEObs[iVal] );
   
   // Smear the cut on the chargino mass with the theoretical uncertainty of 1 GeV
-  mChipl = r.Gaus( 102.5, 1.0 );
+  mChipl = r.Gaus( chipl_bound, 1.0 );
   if( verbose ) cout << "   > Lower limit on chargino mass: " << mChipl << endl;
 
   return;
 }
 
 
-// ===================================================================
-// == Removal of multiple points in the ntuple
-bool removeMultiplePoints( int IEVT, double M0, double M12, double TANBETA, double A0 ){
-
-  bool multiplePoint = 0;
-
-  // Set the first 'prevRange' points to remove the multiple points
-  if( IEVT < prevRange ){
-    M0_bef[IEVT] = M0;
-    M12_bef[IEVT] = M12;
-    TanBeta_bef[IEVT] = TANBETA;
-    A0_bef[IEVT] = A0;
-  }
-  if( IEVT >= prevRange )
-    {
-      // Check if identical to one of the five last points	  
-      for( int idx = 0; idx < prevRange; idx++ ){
-	if( M0 == M0_bef[idx] && M12 == M12_bef[idx] && TANBETA == TanBeta_bef[idx] && A0 == A0_bef[idx] ){
-	  multiplePoint = 1;
-	  break;
-	}
-      }
-      // If new points, redefine the previous points
-      if( !multiplePoint ){
-	for( int idx = 0; idx < prevRange-1; idx++ ){
-	  M0_bef[idx] = M0_bef[idx+1];
-	  M12_bef[idx] = M12_bef[idx+1];
-	  TanBeta_bef[idx] = TanBeta_bef[idx+1];
-	  A0_bef[idx] = A0_bef[idx+1];
-	}
-	M0_bef[prevRange-1] = M0;
-	M12_bef[prevRange-1] = M12;
-	TanBeta_bef[prevRange-1] = TANBETA;
-	A0_bef[prevRange-1] = A0;
-      }
-    }
-
-  return multiplePoint;
-}
 
 // ===================================================================
 // == Recalculate the minimal chi2 for a given toy with smeared observables
 // == and spot the point of minimal chi2
-void makeToyExperiments( int realFit ){
+void calculateChi2( int PP_or_Toys ){
 
-  if( realFit == 0 )
+  // Cut away buggy points
+/*   TCutG* cuts[7] = {0}; */
+/*   TFile* cutsFile = new TFile( file_cuts ); */
+/*   if( cutsFile != 0 ){ */
+/*     TIter nextkey( cutsFile->GetListOfKeys() ); */
+/*     TKey *key; */
+/*     int iter=0; */
+/*     while (key = (TKey*)nextkey()) */
+/*       { */
+/* 	TObject *obj = key->ReadObj(); */
+/* 	if (obj->InheritsFrom("TCutG")) */
+/* 	  { */
+/* 	    cuts[iter] = (TCutG*) obj; */
+/* 	    iter++; */
+/* 	  } */
+/*       } */
+/*     cutsFile->Close(); */
+/*   }     */
+
+  // Set up the LHC tool and smear the number of observed events for toys
+  setLHCchi2Tools( PP_or_Toys, StatTesHisto, SignalGrid, bestFitPar[0], bestFitPar[1], verbose );
+  
+  // Set the Xenon100 contour, smear it for toys
+  setAstrofit( PP_or_Toys, bestFitVal[11], bestFitVal[12], verbose );
+      
+  if( PP_or_Toys == 0 )
     {
       // Smear low energy observables and lower limit on chargino
-      smearLEObs( verbose );
-      
-      // Set up the LHC tool and smear the number of observed events (Matthias Hammer)
-      setLHCchi2Tools( StatTesHisto, SignalGrid, bestFitPar[0], bestFitPar[1], verbose );
-      
-      // Smear the Xenon100 contour
-      smearAstrofit( bestFitVal[11], bestFitVal[12], verbose );
-      
+      smearLEObs( verbose );          
+  
       // Smear the Higgs mh, mu
       smearHiggs( verbose );
       
       // Save smeared observables in an ntuple
       saveSmearedObs();
     }
+
   
   // Calculate new chi2 and find the lowest chi2
   if( verbose ) cout << "   > Calculate new chi2.." << endl;
   toyBestFitVal[0] = 1E5;
   float newChi2 = 0;
   
-  //for( Int_t ievt = 0; ievt < 5; ++ievt )
+  //for( Int_t ievt = 0; ievt < 100; ++ievt )
   for( Int_t ievt = 0; ievt <  markovChain_in->GetEntries(); ++ievt )
     {
       markovChain_in->GetEntry( ievt );
-
-      // Cut off high chi2 points
-      if( chi2 > 100 ) continue;
 
       LEO_chi2 = 0; LHC_chi2 = 0; Higgs_chi2 = 0; af_chi2 = 0; newChi2 = 0;
       Bsg_chi2=0; dm_s_chi2=0; Btn_chi2=0; gmin2_chi2=0; omega_chi2=0; MassW_chi2=0; sin_th_eff_chi2=0; B_smm_chi2=0; massTop_chi2=0;
@@ -1002,99 +1050,147 @@ void makeToyExperiments( int realFit ){
       if( verbose ) cout << " ---------- EVENT # "<< ievt << " ---------- " << endl;
       if( verbose ) cout <<"    - Parameters: M0(" <<P_M0<<") M12("<<P_M12<<") TanBeta("<<P_TanBeta<<") A0("<<P_A0<<")" <<endl;
 
-      // Remove multiple points
-       if( removeMultiplePoints( ievt, P_M0, P_M12, P_TanBeta, P_A0 ) ) continue;      
-
-      // Cut out 
-      if( verbose ) cout <<"    - Chargino mass " << O_massChargino1_nofit << endl;
-      if( O_massChargino1_nofit < mChipl ) continue;
+      // Cut on chargino mass
+       float mChiplCut = 0;
+       if( PP_or_Toys == 0 ) mChiplCut = mChipl;//smeared value
+       if( PP_or_Toys == 1 ) mChiplCut = chipl_bound;//nominal value	 
+       if( verbose ) cout <<"    - Chargino mass " << O_massChargino1_nofit << " bound: " << mChiplCut << endl;
+       if( O_massChargino1_nofit < mChiplCut ) continue;
+       
 
       // Chi2 for low energy observables
-      if( realFit == 1 ) Bsg_chi2 = myChi2( O_Bsg_npf,  LEObs[1], uncLEObs[1] ) ;
-      if( realFit == 0 ) Bsg_chi2 = myChi2( O_Bsg_npf,  toyVal[1], uncLEObs[1] ) ;      
+      if( PP_or_Toys == 1 ) Bsg_chi2 = myChi2( O_Bsg_npf,  LEObs[1], uncLEObs[1] ) ;
+      if( PP_or_Toys == 0 ) Bsg_chi2 = myChi2( O_Bsg_npf,  toyVal[1], uncLEObs[1] ) ;         
       LEO_chi2 += Bsg_chi2;
 
-      if( realFit == 1 ) dm_s_chi2 = myChi2( O_dm_s_npf,  LEObs[2], uncLEObs[2] ) ;
-      if( realFit == 0 ) dm_s_chi2 = myChi2( O_dm_s_npf,  toyVal[2], uncLEObs[2] ) ;
+      if( PP_or_Toys == 1 ) dm_s_chi2 = myChi2( O_dm_s_npf,  LEObs[2], uncLEObs[2] ) ;
+      if( PP_or_Toys == 0 ) dm_s_chi2 = myChi2( O_dm_s_npf,  toyVal[2], uncLEObs[2] ) ;    
       LEO_chi2 += dm_s_chi2;
 
-      if( realFit == 1 ) Btn_chi2 = myChi2( O_Btn_npf,  LEObs[3], uncLEObs[3] ) ;
-      if( realFit == 0 ) Btn_chi2 = myChi2( O_Btn_npf,  toyVal[3], uncLEObs[3] ) ;
+      if( PP_or_Toys == 1 ) Btn_chi2 = myChi2( O_Btn_npf,  LEObs[3], uncLEObs[3] ) ;
+      if( PP_or_Toys == 0 ) Btn_chi2 = myChi2( O_Btn_npf,  toyVal[3], uncLEObs[3] ) ;
       LEO_chi2 += Btn_chi2;
 
-      if( realFit == 1 ) gmin2_chi2 = myChi2( O_gmin2m_npf,  LEObs[4], uncLEObs[4] ) ;
-      if( realFit == 0 ) gmin2_chi2 = myChi2( O_gmin2m_npf,  toyVal[4], uncLEObs[4] ) ;
+      if( PP_or_Toys == 1 ) gmin2_chi2 = myChi2( O_gmin2m_npf,  LEObs[4], uncLEObs[4] ) ;
+      if( PP_or_Toys == 0 ) gmin2_chi2 = myChi2( O_gmin2m_npf,  toyVal[4], uncLEObs[4] ) ;
       LEO_chi2 += gmin2_chi2;
 
-      if( realFit == 1 ) omega_chi2 = myChi2( O_omega,  LEObs[5], uncLEObs[5] ) ;
-      if( realFit == 0 ) omega_chi2 = myChi2( O_omega,  toyVal[5], uncLEObs[5] ) ;
+      if( PP_or_Toys == 1 ) omega_chi2 = myChi2( O_omega,  LEObs[5], uncLEObs[5] ) ;
+      if( PP_or_Toys == 0 ) omega_chi2 = myChi2( O_omega,  toyVal[5], uncLEObs[5] ) ;
       LEO_chi2 += omega_chi2;
 
-      if( realFit == 1 ) MassW_chi2 = myChi2( O_MassW_npf,  LEObs[7], uncLEObs[7] ) ;
-      if( realFit == 0 ) MassW_chi2 = myChi2( O_MassW_npf,  toyVal[7], uncLEObs[7] ) ;
+      if( PP_or_Toys == 1 ) MassW_chi2 = myChi2( O_MassW_npf,  LEObs[7], uncLEObs[7] ) ;
+      if( PP_or_Toys == 0 ) MassW_chi2 = myChi2( O_MassW_npf,  toyVal[7], uncLEObs[7] ) ;
       LEO_chi2 += MassW_chi2;
 
-      if( realFit == 1 ) sin_th_eff_chi2 = myChi2( O_sin_th_eff_npf,  LEObs[8], uncLEObs[8] ) ;
-      if( realFit == 0 ) sin_th_eff_chi2 = myChi2( O_sin_th_eff_npf,  toyVal[8], uncLEObs[8] ) ;
+      if( PP_or_Toys == 1 ) sin_th_eff_chi2 = myChi2( O_sin_th_eff_npf,  LEObs[8], uncLEObs[8] ) ;
+      if( PP_or_Toys == 0 ) sin_th_eff_chi2 = myChi2( O_sin_th_eff_npf,  toyVal[8], uncLEObs[8] ) ;
       LEO_chi2 += sin_th_eff_chi2;
 
-      if( realFit == 1 ) B_smm_chi2 = myChi2( O_B_smm_npf,  LEObs[9], uncLEObs[9] ); 
-      if( realFit == 0 ) B_smm_chi2 = myChi2( O_B_smm_npf,  toyVal[9], uncLEObs[9] );
+      if( PP_or_Toys == 1 ) B_smm_chi2 = myChi2( O_B_smm_npf,  LEObs[9], uncLEObs[9] ); 
+      if( PP_or_Toys == 0 ) B_smm_chi2 = myChi2( O_B_smm_npf,  toyVal[9], uncLEObs[9] );
       LEO_chi2 += B_smm_chi2;
 
-      if( realFit == 1 ) massTop_chi2 = myChi2( O_massTop,  LEObs[10], uncLEObs[10] ) ;
-      if( realFit == 0 ) massTop_chi2 = myChi2( O_massTop,  toyVal[10], uncLEObs[10] ) ;
+      if( PP_or_Toys == 1 ) massTop_chi2 = myChi2( O_massTop,  LEObs[10], uncLEObs[10] ) ;
+      if( PP_or_Toys == 0 ) massTop_chi2 = myChi2( O_massTop,  toyVal[10], uncLEObs[10] ) ;
       LEO_chi2 += massTop_chi2;
       newChi2 += LEO_chi2;
 
+
+      chi2_1 = Bsg_chi2;
+      chi2_2 = chi2_1 + dm_s_chi2;
+      chi2_3 = chi2_2 + Btn_chi2;
+      chi2_4 = chi2_3 + gmin2_chi2;
+      chi2_5 = chi2_4 + omega_chi2;
+      chi2_6 = chi2_5 + MassW_chi2;
+      chi2_7 = chi2_6 + sin_th_eff_chi2;
+      chi2_8 = chi2_7 + B_smm_chi2;
+      chi2_9 = chi2_8 + massTop_chi2;
+
+
+
       if( verbose ){
-	cout << "    - Low energy " << LEO_chi2 << endl;     
-	cout << "    - Individual chi2 for smeared LEObs:"<<endl;       
-	if( realFit == 1 ){
-	  cout << "       Bsg = " << O_Bsg_npf << " meas = " << LEObs[1] << " ->chi2 = " << ( O_Bsg_npf,  LEObs[1], uncLEObs[1] ) << endl;
-	  cout << "       Dms = " << O_dm_s_npf<< " meas = " << LEObs[2] << " ->chi2 = " << ( O_dm_s_npf,  LEObs[2], uncLEObs[2] ) << endl;
-	  cout << "       Btn = " << O_Btn_npf<< " meas = " << LEObs[3] << " ->chi2 = " << ( O_Btn_npf,  LEObs[3], uncLEObs[3] ) << endl;
-	  cout << "       gmin2 = " << O_gmin2m_npf<< " meas = " << LEObs[4] << " ->chi2 = " << ( O_gmin2m_npf,  LEObs[4], uncLEObs[4] ) << endl;
-	  cout << "       omega = " << O_omega<< " meas = " << LEObs[5] << " ->chi2 = " << ( O_omega,  LEObs[5], uncLEObs[5] ) << endl;
-	  cout << "       MassW = " << O_MassW_npf<< " meas = " << LEObs[7] << " ->chi2 = " << ( O_MassW_npf,  LEObs[7], uncLEObs[7] ) << endl;
-	  cout << "       sinThEff = " << O_sin_th_eff_npf<< " meas = " << LEObs[8] << " ->chi2 = " << ( O_sin_th_eff_npf,  LEObs[8], uncLEObs[8] ) << endl;
-	  cout << "       Bsmm = " << O_B_smm_npf<< " meas = " << LEObs[9] << " ->chi2 = " << ( O_B_smm_npf,  LEObs[9], uncLEObs[9] ) << endl;
-	  cout << "       masstop = " <<  O_massTop<< " meas = " << LEObs[10] << " ->chi2 = " << ( O_massTop,  LEObs[10], uncLEObs[10] ) << endl;
+	cout << "    - Individual chi2 per observables:"<<endl;       
+	if( PP_or_Toys == 1 ){
+	  cout << "       Bsg: theo = " << O_Bsg_npf << " meas = " << LEObs[1] << " ->chi2 = " << Bsg_chi2 << endl;
+	  cout << "       Dms: theo = " << O_dm_s_npf<< " meas = " << LEObs[2] << " ->chi2 = " << dm_s_chi2 << endl;
+	  cout << "       Btn: theo = " << O_Btn_npf<< " meas = " << LEObs[3] << " ->chi2 = " << Btn_chi2 << endl;
+	  cout << "       gmin2: theo = " << O_gmin2m_npf<< " meas = " << LEObs[4] << " ->chi2 = " << gmin2_chi2 << endl;
+	  cout << "       omega: theo = " << O_omega<< " meas = " << LEObs[5] << " ->chi2 = " << omega_chi2 << endl;
+	  cout << "       MassW: theo = " << O_MassW_npf<< " meas = " << LEObs[7] << " ->chi2 = " << MassW_chi2 << endl;
+	  cout << "       sinThEff: theo = " << O_sin_th_eff_npf<< " meas = " << LEObs[8] << " ->chi2 = " << sin_th_eff_chi2 << endl;
+	  cout << "       Bsmm: theo = " << O_B_smm_npf<< " meas = " << LEObs[9] << " ->chi2 = " << B_smm_chi2 << endl;
+	  cout << "       masstop: theo = " <<  O_massTop<< " meas = " << LEObs[10] << " ->chi2 = " << massTop_chi2 << endl;
 	}
-	if( realFit == 0 ){
-	  cout << "       Bsg = " << O_Bsg_npf << " meas = " << toyVal[1] << " ->chi2 = " << ( O_Bsg_npf,  toyVal[1], uncLEObs[1] ) << endl;
-	  cout << "       Dms = " << O_dm_s_npf<< " meas = " << toyVal[2] << " ->chi2 = " << ( O_dm_s_npf,  toyVal[2], uncLEObs[2] ) << endl;
-	  cout << "       Btn = " << O_Btn_npf<< " meas = " << toyVal[3] << " ->chi2 = " << ( O_Btn_npf,  toyVal[3], uncLEObs[3] ) << endl;
-	  cout << "       gmin2 = " << O_gmin2m_npf<< " meas = " << toyVal[4] << " ->chi2 = " << ( O_gmin2m_npf,  toyVal[4], uncLEObs[4] ) << endl;
-	  cout << "       omega = " << O_omega<< " meas = " << toyVal[5] << " ->chi2 = " << ( O_omega,  toyVal[5], uncLEObs[5] ) << endl;
-	  cout << "       MassW = " << O_MassW_npf<< " meas = " << toyVal[7] << " ->chi2 = " << ( O_MassW_npf,  toyVal[7], uncLEObs[7] ) << endl;
-	  cout << "       sinThEff = " << O_sin_th_eff_npf<< " meas = " << toyVal[8] << " ->chi2 = " << ( O_sin_th_eff_npf,  toyVal[8], uncLEObs[8] ) << endl;
-	  cout << "       Bsmm = " << O_B_smm_npf<< " meas = " << toyVal[9] << " ->chi2 = " << ( O_B_smm_npf,  toyVal[9], uncLEObs[9] ) << endl;
-	  cout << "       masstop = " <<  O_massTop<< " meas = " << toyVal[10] << " ->chi2 = " << ( O_massTop,  toyVal[10], uncLEObs[10] ) << endl;
+	if( PP_or_Toys == 0 ){
+	  cout << "       Bsg: theo = " << O_Bsg_npf << " meas = " << toyVal[1] << " ->chi2 = " << Bsg_chi2 << endl;
+	  cout << "       Dms: theo = " << O_dm_s_npf<< " meas = " << toyVal[2] << " ->chi2 = " << dm_s_chi2 << endl;
+	  cout << "       Btn: theo = " << O_Btn_npf<< " meas = " << toyVal[3] << " ->chi2 = " << Btn_chi2 << endl;
+	  cout << "       gmin2: theo = " << O_gmin2m_npf<< " meas = " << toyVal[4] << " ->chi2 = " << gmin2_chi2 << endl;
+	  cout << "       omega: theo = " << O_omega<< " meas = " << toyVal[5] << " ->chi2 = " << omega_chi2 << endl;
+	  cout << "       MassW: theo = " << O_MassW_npf<< " meas = " << toyVal[7] << " ->chi2 = " << MassW_chi2 << endl;
+	  cout << "       sinThEff: theo = " << O_sin_th_eff_npf<< " meas = " << toyVal[8] << " ->chi2 = " << sin_th_eff_chi2 << endl;
+	  cout << "       Bsmm: theo = " << O_B_smm_npf<< " meas = " << toyVal[9] << " ->chi2 = " << B_smm_chi2 << endl;
+	  cout << "       masstop: theo = " <<  O_massTop<< " meas = " << toyVal[10] << " ->chi2 = " << massTop_chi2 << endl;
 	}
       }
 
-      // Chi2 for LHC
-      if( realFit == 0 ) LHC_chi2 = LHCchi2( P_M0, P_M12 );
-      if( realFit == 1 ) LHC_chi2 = LHC_Exp_chi2;
+      // Chi2 for LHC if the point lies in the limits of the grid
+      if( P_M0 > 20 && P_M12 > 100 && P_M0 < 2500 && P_M12 < 1200 ) LHC_chi2 = LHCchi2( P_M0, P_M12 );
+      else LHC_chi2 = 1000;
       newChi2 += LHC_chi2;
-      if( verbose ) cout << "    - LHC " << LHC_chi2 << endl;      
+      if( verbose ) cout << "       LHC " << LHC_chi2 << endl;      
 
       // New chi2 for Higgs       
-      fillHiggsMassCouplings( O_Massh0_npf );
-      Higgs_chi2 = getHiggsChi2( HiggsMassCouplings );
+      if( O_Massh0_npf < 10 || O_Massh0_npf > 1000 ) Higgs_chi2 = 1000;
+      else{
+	fillHiggsMassCouplings( O_Massh0_npf );
+	Higgs_chi2 = getHiggsChi2( HiggsMassCouplings );
+      }
       newChi2 += Higgs_chi2;
-      if( verbose ) cout << "    - Higgs " << Higgs_chi2 << endl; 
+      if( verbose ) cout << "       Higgs " << Higgs_chi2 << endl; 
 
       // New chi2 for astrofit
-      if( realFit == 0 ) af_chi2 = astrofitChi2( O_massNeutralino1_nofit, af_direct, false );
-      if( realFit == 1 ) af_chi2 = af_chi2_total;
+      af_chi2 = astrofitChi2( O_massNeutralino1_nofit, af_direct, false );
       newChi2 += af_chi2;
-      if( verbose ) cout << "    - Astrofit " << af_chi2 << endl;
+      if( verbose ) cout << "       Astrofit " << af_chi2 << endl;
       if( verbose ) cout << "    - Total chi2 " << newChi2 << endl;
+      if( verbose ) cout << "    - Total LEO chi2 " << LEO_chi2 << endl;
+
+      // Don't save large chi2 points
+      if( newChi2 > 50 ) continue;
+
+      // Cut away buggy points
+  /*     bool raus = 0; */
+/*       for( int icut = 0; icut < 7; icut++ ){ */
+/* 	if( raus ) break; */
+/* 	if( cuts[icut] == 0 ) continue; */
+/* 	TString name = cuts[icut]->GetName(); */
+/* 	if( name.Contains("A0") && cuts[icut]->IsInside( P_A0, chi2 ) ) raus = 1; */
+/* 	if( name.Contains("TanBeta") && cuts[icut]->IsInside( P_TanBeta, chi2 ) ) raus = 1; */
+/* 	if( name.Contains("M0") && cuts[icut]->IsInside( P_M0, chi2 ) ) raus = 1; */
+/* 	if( name.Contains("M12") && cuts[icut]->IsInside( P_M12, chi2 ) ) raus = 1; */
+/* 	if( name.Contains("massTop") && cuts[icut]->IsInside( P_massTop, chi2 ) ) raus = 1; */
+/* 	if( model == "NUHM1" ) */
+/* 	  if( name.Contains("M0H") && cuts[icut]->IsInside( P_M0H, chi2 ) ) raus = 1; */
+/* 	if( model == "NUHM2" ){ */
+/* 	  if( name.Contains("M0Hu") && cuts[icut]->IsInside( P_M0Hu, chi2 ) ) raus = 1; */
+/* 	  if( name.Contains("M0Hd") && cuts[icut]->IsInside( P_M0Hd, chi2 ) ) raus = 1; */
+/* 	} */
+/*       } */
+/*     if( raus ) continue; */
+
 
       // Fill output ntuple for the real fit
-      if( realFit == 1 || numberToys == 1 ) markovChain_out->Fill();
+      if( PP_or_Toys == 1 || numberToys == 1 ){
+	// Update total chi2
+	chi2_LEO_LHC = LEO_chi2 + LHC_chi2;
+	chi2_LEO_Higgs = LEO_chi2 + Higgs_chi2;	
+	chi2_LEO_LHC_Higgs = LEO_chi2 + LHC_chi2 + Higgs_chi2;
+	chi2_LHC_Higgs = LHC_chi2 + Higgs_chi2;
+	chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
+	markovChain_out->Fill();
+      }
 
       // Find lowest chi2 for that toy
       if( newChi2 < toyBestFitVal[0] ){
@@ -1144,6 +1240,8 @@ void makeToyExperiments( int realFit ){
   return;
 }
 
+
+
 // ===================================================================
 // == Save the result of each toy in the ntuple
 void saveToyResult(){
@@ -1170,129 +1268,105 @@ void saveToyResult(){
 }
 
 
-// ===================================================================
-// == simulate toys, for each get the minimal chi2
-// == realFit = true-> real data, wrong-> simulated toys
-void processData( bool realFit ){
-
-  // Processing real data
-  if( realFit == 1 ){
-    cout << endl << " >>> Processing the real data.." << endl;
-    makeToyExperiments( true );
-  }
-
-  // Simulate 'numberToys' toys
-  if( realFit == 0 ){
-    cout << endl << " >>> Simulating " << numberToys << " toys.." << endl;
-    
-    for( int iToy = 0; iToy < numberToys; iToy++ )
-      {
-	cout << endl << "  >> Toy #" << iToy << " /" << numberToys << endl;
-      
-	// Simulate new measurements     
-	makeToyExperiments( false );
-	cout << "   > Lowest toy-chi2 = " << toyBestFitVal[0] << endl;
-          
-	// Save the best fit point in the ntuple
-	saveToyResult();
-      }
-  }
-  return;
-}
 
 // ===================================================================
 // Plot the value of chi2 to test the shape of the chi2 function
 TNtuple* testNtuple = 0;
 void plot_af_chi2(){
-  smearAstrofit( bestFitVal[11], bestFitVal[12], verbose );
+  cout << " >>> Testing the astrofit chi2 shape.." << endl;
+  setAstrofit( 1, bestFitVal[11], bestFitVal[12], verbose );
+  cout << "1" << endl;
   testNtuple = new TNtuple( "testNtuple", "Test results", "af_cs:af_m:chi2" ); 
   float cup = 50E-9, cdown = 0;
   int cbin = 1000;
   float mass = 20;
   for( int c = 0; c < cbin; c++ ){
     float cs = cdown + c * ( cup - cdown ) / cbin;
+  cout << "2" << endl;
     float chisquare = astrofitChi2( mass, cs, 0 );
+  cout << "3" << endl;
     testNtuple->Fill( cs, mass, chisquare );
+  cout << "4" << endl;
   }
+  cout << "5" << endl;
   file_out->cd();
+  cout << "6" << endl;
   testNtuple->Write();
+  cout << "7" << endl;
   file_in->Close();
+  cout << "8" << endl;
   file_out->Close();
+  cout << "9" << endl;
   finish_higgssignals_();
+  cout << "10" << endl;
   return;
 }
 
+
+
 // ===================================================================
-// == For the lowest chi2 point of the nominal fit, get observables, parameters and chi2
-// == These values are saved in a text file to avoid redundancy
-void bestFitPoint(){
+// == For the lowest chi2 point after post processing, get observables, parameters and chi2
+// == These values are saved in a text file for toys
+void writeBestFitPoint(){
 
   TString bestFitFile = outputDir + "/bestFit_" + fit + ".txt";
-  ifstream bestFitStreamIn( bestFitFile );
+  ifstream bestFitStreamIn( bestFitFile );  
+  cout << endl << " >>> Creating and filling best fit file.. " << endl << bestFitFile << endl;
+  ofstream bestFitStreamOut( bestFitFile );
+  bestFitVal[0] = 1E5;
 
-  // If the file does not exist, create and fill it
-  if( !bestFitStreamIn.good() )
+  for( Int_t ievt = 0; ievt <  markovChain_out->GetEntries(); ++ievt )
     {
-      cout << endl << " >>> Creating and filling best fit file.. " << endl << bestFitFile << endl;
-      ofstream bestFitStreamOut( bestFitFile );
-      bestFitVal[0] = 1E5;
-      for( Int_t ievt = 0; ievt <  markovChain_in->GetEntries(); ++ievt )
-	{
-	  markovChain_in->GetEntry( ievt );
-	  if( chi2 < bestFitVal[0] ){
-	    bestFitVal[0] = chi2;
-	    bestFitVal[1] = O_Bsg_npf;
-	    bestFitVal[2] = O_dm_s_npf;
-	    bestFitVal[3] = O_Btn_npf;
-	    bestFitVal[4] = O_gmin2m_npf;
-	    bestFitVal[5] = O_omega;
-	    bestFitVal[6] = O_Massh0_npf;
-	    bestFitVal[7] = O_MassW_npf;
-	    bestFitVal[8] = O_sin_th_eff_npf;
-	    bestFitVal[9] = O_B_smm_npf;
-	    bestFitVal[10] = O_massTop;
-	    bestFitVal[11] = O_massNeutralino1_nofit;
-	    bestFitVal[12] = af_direct;
-	    bestFitVal[13] = 0;
-	    bestFitVal[14] = 0;
-	    bestFitVal[15] = 0;
-	    bestFitVal[16] = 0;	   
+      markovChain_out->GetEntry( ievt );
 
-	    bestFitPar[0] = P_M0;
-	    bestFitPar[1] = P_M12;
-	    bestFitPar[2] = P_A0;
-	    bestFitPar[3] = P_TanBeta;
-	    bestFitPar[4] = P_massTop;
-	    if( model == "NUHM1" ) bestFitPar[5] = P_M0H;
-	    if( model == "NUHM2" ){
-	      bestFitPar[5] = P_M0Hu;
-	      bestFitPar[6] = P_M0Hd;
-	    }
-	  }
+      if( chi2 < bestFitVal[0] ){
+	bestFitVal[0] = chi2;
+	bestFitVal[1] = O_Bsg_npf;
+	bestFitVal[2] = O_dm_s_npf;
+	bestFitVal[3] = O_Btn_npf;
+	bestFitVal[4] = O_gmin2m_npf;
+	bestFitVal[5] = O_omega;
+	bestFitVal[6] = O_Massh0_npf;
+	bestFitVal[7] = O_MassW_npf;
+	bestFitVal[8] = O_sin_th_eff_npf;
+	bestFitVal[9] = O_B_smm_npf;
+	bestFitVal[10] = O_massTop;
+	bestFitVal[11] = O_massNeutralino1_nofit;
+	bestFitVal[12] = af_direct;
+	bestFitVal[13] = LEO_chi2;
+	bestFitVal[14] = LHC_chi2;
+	bestFitVal[15] = Higgs_chi2;
+	bestFitVal[16] = af_chi2;
+	bestFitVal[17] = Bsg_chi2;
+	bestFitVal[18] = dm_s_chi2;
+	bestFitVal[19] = Btn_chi2;
+	bestFitVal[20] = gmin2_chi2;
+	bestFitVal[21] = omega_chi2;
+	bestFitVal[22] = MassW_chi2;
+	bestFitVal[23] = sin_th_eff_chi2;
+	bestFitVal[24] = B_smm_chi2;
+	bestFitVal[25] = massTop_chi2;
+	//
+	bestFitPar[0] = P_M0;
+	bestFitPar[1] = P_M12;
+	bestFitPar[2] = P_A0;
+	bestFitPar[3] = P_TanBeta;
+	bestFitPar[4] = P_massTop;
+	if( model == "NUHM1" ) bestFitPar[5] = P_M0H;
+	if( model == "NUHM2" ){
+	  bestFitPar[5] = P_M0Hu;
+	  bestFitPar[6] = P_M0Hd;
 	}
-      for( int iVal = 0; iVal < ValName.size(); iVal++ ) bestFitStreamOut << ValName[iVal] << " " << bestFitVal[iVal] << endl;
-      for( int iPar = 0; iPar < ParName.size(); iPar++ ) bestFitStreamOut << ParName[iPar] << " " << bestFitPar[iPar] << endl;      
-      bestFitStreamOut.close();
-    } 
-  else 
-    {    
-      // If the file exists read it
-      cout << endl << " >>> Reading file with lowest chi2 point.. " << endl << bestFitFile << endl;
-      int iVal=0;
-      Float_t _bestFitVal;
-      TString _ValName;
-      while( bestFitStreamIn >> _ValName >> _bestFitVal ){
-	if( iVal < ValName.size() ) bestFitVal[iVal] = _bestFitVal;
-	if( iVal >= ValName.size() ) bestFitPar[iVal-ValName.size()] = _bestFitVal;      
-	iVal++;
       }
-      bestFitStreamIn.close();
     }
+  for( int iVal = 0; iVal < ValName.size(); iVal++ ) bestFitStreamOut << ValName[iVal] << " " << bestFitVal[iVal] << endl;
+  for( int iPar = 0; iPar < ParName.size(); iPar++ ) bestFitStreamOut << ParName[iPar] << " " << bestFitPar[iPar] << endl;      
+  bestFitStreamOut.close();        
   
   // Display the results
-  cout << endl << " >>> Lowest chi2 point for the nominal fit.." << endl;
+  cout << endl << " >>> Lowest chi2 point after post-processing.." << endl;
   for( int iPar = 0; iPar < ParName.size(); iPar++ ){
-    cout << ParName[iPar] << " " << bestFitPar[iPar] << endl;
+    cout << ParName[iPar] << " = " << bestFitPar[iPar] << endl;
   }
   for( int iVal = 0; iVal < ValName.size(); iVal++ ) cout << ValName[iVal] << " = " << bestFitVal[iVal] << endl;
   
@@ -1300,13 +1374,83 @@ void bestFitPoint(){
 }
 
 
+
+// ===================================================================
+// == Read the file with the lowest chi2 point
+void readBestFitPoint(){
+  
+  TString bestFitFile = outputDir + "/bestFit_" + fit + ".txt";
+  ifstream bestFitStreamIn( bestFitFile );
+  
+  // If the file does not exist, create and fill it
+  if( !bestFitStreamIn.good() ) cout << " >>>>>> WARNING <<<<<< the file of the best fit point is missing: " 
+				     << endl << bestFitFile << endl;
+  else{
+    // If the file exists read it
+    cout << endl << " >>> Reading file with lowest chi2 point.. " << endl << bestFitFile << endl;
+    int iVal=0;
+    Float_t _bestFitVal;
+    TString _ValName;
+    while( bestFitStreamIn >> _ValName >> _bestFitVal ){
+      if( iVal < ValName.size() ) bestFitVal[iVal] = _bestFitVal;
+      if( iVal >= ValName.size() ) bestFitPar[iVal-ValName.size()] = _bestFitVal;      
+      iVal++;
+    }
+    bestFitStreamIn.close();
+    
+    // Display the results
+    cout << endl << " >>> Lowest chi2 point after post-processing.." << endl;
+    for( int iPar = 0; iPar < ParName.size(); iPar++ ){
+      cout << ParName[iPar] << " = " << bestFitPar[iPar] << endl;
+    }
+    for( int iVal = 0; iVal < ValName.size(); iVal++ ) cout << ValName[iVal] << " = " << bestFitVal[iVal] << endl;       
+  }
+
+  return;
+}
+
+
+
+// ===================================================================
+// == simulate toys, for each get the minimal chi2
+// == PP_or_Toys = true-> postProcessing, wrong-> simulated toys
+void processData( bool PP_or_Toys ){
+
+  // Post-processing
+  if( PP_or_Toys == 1 ){
+    cout << endl << " >>> Post-processing.." << endl;
+    // Calculate the chi2 for each point
+    calculateChi2( PP_or_Toys );
+    // Save the best fit point in a text file
+    writeBestFitPoint();
+  }
+
+  // Simulate toys
+  if( PP_or_Toys == 0 ){
+    // Read the best fit point file
+    readBestFitPoint();
+    cout << endl << " >>> Simulating " << numberToys << " toys.." << endl;    
+    for( int iToy = 0; iToy < numberToys; iToy++ ){
+	cout << endl << "  >> Toy #" << iToy << " /" << numberToys << endl;      
+	// Calculate the chi2 for each point
+	calculateChi2( PP_or_Toys );	          
+	// Save the best toy fit point in the ntuple
+	saveToyResult();
+      }
+  }
+  return;
+}
+
+
+
+// ===================================================================
 // == Write all histograms and trees and close files
-void writeAndClose( int realFit ){
+void writeAndClose( int PP_or_Toys ){
 
   file_out->cd();
 
-  if( realFit == 1 || numberToys == 1 ) markovChain_out->Write();
-  if( realFit == 0 ){
+  if( PP_or_Toys == 1 || numberToys == 1 ) markovChain_out->Write();
+  if( PP_or_Toys == 0 ){
     toyNtuple->Write();
     smearedObsNtuple->Write();
   }
