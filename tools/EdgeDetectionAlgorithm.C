@@ -241,7 +241,7 @@ void EdgeDetectionAlgorithm()
 
             canvas->SaveAs("Result" + (TString)histImageOriginal->GetName() + ".eps", "RECREATE");
 
-            //spline.Write();
+            spline.Write();
 
             // Cleanup.
             delete graph;
