@@ -21,6 +21,7 @@
 #include "TCutG.h"
 #include "map"
 #include "TKey.h"
+#include "TSpline.h"
 
 using namespace std;
 
@@ -30,27 +31,30 @@ public:
   Skimming();
   void AddInputFile(string RootInputFile);
   void AddCut(TCutG* CutObject);
+  void AddCut(TSpline3* CutObject);
   void AddCutFile(const char* CutFile);
   void Perform();
   void SetTreeName(string name);
   void SetAbsMaxChi2(double absMaxChi2);
   void SetAbsMinChi2(double absMinChi2);
-  void SetDeleteIdenticalPoints(bool deleteIdenticalPoints);
-  void SetKeepBugPoints(bool keepBugPoints);
-  void SetMaxDeltaChi2(double maxDeltaChi2);  
-  void SetMaxEvents(Long64_t maxEvents);
-  void SetOutputFileName(string outputFileName); 
-  
+  void SetCutMethod(unsigned int cutMethod);
+  void SetDeleteIdenticalPoints(bool _deleteIdenticalPoints);
+  void SetKeepBugPoints(bool _keepBugPoints);
+  void SetMaxDeltaChi2(double _maxDeltaChi2);
+  void SetMaxEvents(Long64_t _maxEvents);
+  void SetOutputFileName(string _outputFileName);
+
 private:
-  bool keepBugPoints;
-  bool deleteIdenticalPoints;
-  double absMinChi2;
-  double absMaxChi2;
-  double maxDeltaChi2;
-  Long64_t maxEvents;
+  bool _keepBugPoints;
+  bool _deleteIdenticalPoints;
+  double _absMinChi2;
+  double _absMaxChi2;
+  double _maxDeltaChi2;
+  Long64_t _maxEvents;
   float bug;
   float minChi2;
-  string outputFileName;
+  unsigned int _cutMethod;
+  string _outputFileName;
   vector<string> parameters;
   map<string, float> leaves;
   map<string, vector<float> > LastParameters;
@@ -65,7 +69,7 @@ private:
   bool Chi2Cut();
   bool Cut();
   bool OldPoint();
-  void ClosePolygon(); 
+  void ClosePolygon();
   void FindMinimalChi2();
   void FillEntries();
   void GetAndSetBranches();
@@ -77,7 +81,8 @@ void SkimMarkovChainWithGraphicalCuts(){
   Skimming Skim;
 
   //Please add your root inputfiles...
-  Skim.AddInputFile("MarkovChainNtupFile.root");
+  //Skim.AddInputFile("MarkovChainNtupFile.root");
+  Skim.AddInputFile("/afs/atlass01.physik.uni-bonn.de/user/uhlenbrock/fittino.out.point1.CMSSM.allObs.Summer2012_merged.root");
 
   //.. set the following parameters...
   Skim.SetAbsMaxChi2(1e20); 
@@ -87,37 +92,43 @@ void SkimMarkovChainWithGraphicalCuts(){
   Skim.SetKeepBugPoints(false); //if true, the bugpoints are kept but the new tree gets an additional branch "bug" which is 1 if the point is buggy, otherwise 0
   Skim.SetMaxDeltaChi2(-1);  //if negative, the minimal chi2 is not determined, so one loop less needs to be performaned
   Skim.SetMaxEvents(-1); //if negative, all events are used 
-  Skim.SetOutputFileName("SkimmedFile.root"); 
+  Skim.SetOutputFileName("SkimmedFile.root");
 
-  //... and create/load your TCutG objects and add them! 
-  
+  //... and create/load your TCutG objects and add them!
+
+  //Example for adding a cut file containig a TSpline
+  // Specifies the cut method:
+  //   - 0 Default method
+  //   - 1 Use predefined spline
+  Skim.SetCutMethod(1);
+  Skim.AddCutFile("Spline.root");
+
   //Example for adding a cut file: All TCutG objects in this file are used
   // Skim.AddCutFile("noxsecCuts.root");
 
-
   // Example for loading saved cuts from a root file (see CreateCutObjects.C how to easily create such CutObjects with the graphics editor)
-  //  TFile* cutfile=new TFile("2Dcut.root", "READ");
-  // TCutG* M0= (TCutG*) cutfile->Get("M0_M12");
-  //  TCutG* M12= (TCutG*) cutfile->Get("M12");
-  // TCutG* A0= (TCutG*) cutfile->Get("A0");
-  // TCutG* TanBeta= (TCutG*) cutfile->Get("TanBeta");
-  //   Skim.AddCut(M0);
-   //   Skim.AddCut(M12);
-   // Skim.AddCut(A0);
-   // Skim.AddCut(TanBeta);
-   
-  //Example for creating a CutObject right here:
-  TCutG *ExampleCut = new TCutG("ExampleCut",6);
-  ExampleCut->SetVarX("P_M12");
-  ExampleCut->SetVarY("chi2");
-  ExampleCut->SetPoint(0,756.7672,25.46769);
-  ExampleCut->SetPoint(1,476.2356,22.36917);
-  ExampleCut->SetPoint(2,484.1379,18.33713);
-  ExampleCut->SetPoint(3,797.069,18.39672);
-  ExampleCut->SetPoint(4,756.7672,25.46769);
-  ExampleCut->SetPoint(5,756.7672,25.46769);
-  //  Skim.AddCut(ExampleCut);
-  
+  //TFile* cutfile = new TFile("2Dcut.root", "READ");
+  //TCutG* M0 = (TCutG*) cutfile->Get("M0_M12");
+  //TCutG* M12 = (TCutG*) cutfile->Get("M12");
+  //TCutG* A0 = (TCutG*) cutfile->Get("A0");
+  //TCutG* TanBeta = (TCutG*) cutfile->Get("TanBeta");
+  //Skim.AddCut(M0);
+  //Skim.AddCut(M12);
+  //Skim.AddCut(A0);
+  //Skim.AddCut(TanBeta);
+
+  ////Example for creating a CutObject right here:
+  //TCutG *ExampleCut = new TCutG("ExampleCut",6);
+  //ExampleCut->SetVarX("P_M12");
+  //ExampleCut->SetVarY("chi2");
+  //ExampleCut->SetPoint(0,756.7672,25.46769);
+  //ExampleCut->SetPoint(1,476.2356,22.36917);
+  //ExampleCut->SetPoint(2,484.1379,18.33713);
+  //ExampleCut->SetPoint(3,797.069,18.39672);
+  //ExampleCut->SetPoint(4,756.7672,25.46769);
+  //ExampleCut->SetPoint(5,756.7672,25.46769);
+  ////  Skim.AddCut(ExampleCut);
+
   //Remark1: Please don't forget to set the variable names if you you create the CutObject by hand
   //Remark2: Usually a TCut Object is a closed Polygon, that means the first and the last point are identical and the points inside this polygon are cut away. 
   //If the first and the last point are not identical it is asumed that the user wants to cut all point between the polygon and the x-axis. 
@@ -134,18 +145,22 @@ void Skimming::SetTreeName(string name){
   //  newTree->SetName(name.c_str());
 }
 
-Skimming::Skimming(){
+Skimming::Skimming()
+         : _absMinChi2(0),
+           _absMaxChi2(1.e20)
+{
 
   markovChain=new TChain();
   CutObjects=new TObjArray();
   
-  maxDeltaChi2=6.2; 
-  absMinChi2=0; 
-  absMaxChi2=1e20;
-  keepBugPoints=false; 
-  deleteIdenticalPoints=false; 
-  maxEvents=-1;
+  _maxDeltaChi2=6.2; 
+  //_absMinChi2=0;
+  //_absMaxChi2=1e20;
+  _keepBugPoints=false; 
+  _deleteIdenticalPoints=false; 
+  _maxEvents=-1;
   minChi2=1e20;
+  _cutMethod=0;
   
 }
 
@@ -162,6 +177,11 @@ void Skimming::AddCut(TCutG* CutObject){
 
 }
 
+void Skimming::AddCut(TSpline3* CutObject){
+
+  CutObjects->Add(CutObject);
+
+}
 
 void Skimming::AddCutFile(const char* CutFile){
 
@@ -178,51 +198,58 @@ void Skimming::AddCutFile(const char* CutFile){
       TCutG * cut = (TCutG*) obj;
       AddCut(cut);
     }
-
+    if (obj->InheritsFrom("TSpline3")){
+      TSpline3 * cut = (TSpline3*) obj;
+      AddCut(cut);
+    }
   }
 }
 
-
-
 void Skimming::SetAbsMaxChi2(double absMaxChi2){
 
-  this->absMaxChi2=absMaxChi2;
+  this->_absMaxChi2 = absMaxChi2;
 
 }
 
 void Skimming::SetAbsMinChi2(double absMinChi2){
 
-  this->absMinChi2=absMinChi2;
+  this->_absMinChi2 = absMinChi2;
+
+}
+
+void Skimming::SetCutMethod(unsigned int cutMethod){
+
+  this->_cutMethod = cutMethod;
 
 }
 
 void Skimming::SetDeleteIdenticalPoints(bool deleteIdenticalPoints){
 
-  this->deleteIdenticalPoints=deleteIdenticalPoints;
+  this->_deleteIdenticalPoints = deleteIdenticalPoints;
 
 }
 
 void Skimming::SetKeepBugPoints(bool keepBugPoints){
 
-  this->keepBugPoints=keepBugPoints;
+  this->_keepBugPoints = keepBugPoints;
 
 }
 
 void Skimming::SetMaxDeltaChi2(double maxDeltaChi2){
 
-  this->maxDeltaChi2=maxDeltaChi2;
+  this->_maxDeltaChi2 = maxDeltaChi2;
 
 }
 
 void Skimming::SetMaxEvents(Long64_t maxEvents){
 
-  this->maxEvents=maxEvents;
+  this->_maxEvents = maxEvents;
 
 }
 
 void Skimming::SetOutputFileName(string outputFileName){
 
-  this->outputFileName=outputFileName;
+  this->_outputFileName = outputFileName;
   
 }
 
@@ -230,7 +257,7 @@ bool Skimming::Chi2Cut(){
 
   double chi2=leaves["chi2"];
     
-  if ( ( absMaxChi2>=0 && chi2>absMaxChi2 ) || ( absMinChi2>=0 && chi2<absMinChi2 )) return true;
+  if ( ( _absMaxChi2>=0 && chi2>_absMaxChi2 ) || ( _absMinChi2>=0 && chi2<_absMinChi2 )) return true;
 
   return false;
 
@@ -238,21 +265,34 @@ bool Skimming::Chi2Cut(){
 
 bool Skimming::Cut(){
    
-  TCutG* CutObject;
-    
-  for (int i=0; i<CutObjects->GetEntries();i++){
-    
-    CutObject=(TCutG*)CutObjects->At(i);
-
-    string VarX=CutObject->GetVarX();
-    string VarY=CutObject->GetVarY();
-
-    if (CutObject->IsInside(leaves[VarX],leaves[VarY])) return true;
+  if (this->_cutMethod == 0){
+    TCutG* CutObject;
       
-  }
+    for (int i=0; i<CutObjects->GetEntries();i++){
+      
+      CutObject=(TCutG*)CutObjects->At(i);
 
+      string VarX=CutObject->GetVarX();
+      string VarY=CutObject->GetVarY();
+
+      if (CutObject->IsInside(leaves[VarX],leaves[VarY])) return true;
+        
+    }
+  }
+  else if (this->_cutMethod == 1){
+    TSpline3* CutObject;
+      
+    for (int i=0; i<CutObjects->GetEntries();i++){
+      
+      CutObject=(TSpline3*)CutObjects->At(i);
+
+      string VarY = "chi2";
+      string VarX = "P_M0";
+
+      if (leaves[VarY] < CutObject->Eval(leaves[VarX])) return true;
+    }
+  }
   return false;
-    
 }
 
 void Skimming::FindMinimalChi2(){
@@ -260,7 +300,7 @@ void Skimming::FindMinimalChi2(){
   cout << "looping over events to find minimal chi2"<<endl;
 
 
-  for (Long64_t i=0; i<maxEvents; i++) {
+  for (Long64_t i=0; i<_maxEvents; i++) {
       
     markovChain->GetEntry(i);	
 
@@ -271,7 +311,7 @@ void Skimming::FindMinimalChi2(){
       
     cout << "found new chi2 minimum with chi2 = " << minChi2 << " at" << endl; 
     
-    for (int k=0;k<parameters.size();k++){
+    for (unsigned int k=0;k<parameters.size();k++){
 
       MinimalParameters[parameters[k]]=leaves[parameters[k]];
       cout<<parameters[k]<<" = "<<MinimalParameters[parameters[k]]<<"  "; 
@@ -282,7 +322,7 @@ void Skimming::FindMinimalChi2(){
     
   }
 
-  if (absMaxChi2<0 || minChi2+maxDeltaChi2<absMaxChi2) absMaxChi2=minChi2+maxDeltaChi2;
+  if (_absMaxChi2<0 || minChi2+_maxDeltaChi2<_absMaxChi2) _absMaxChi2=minChi2+_maxDeltaChi2;
 
   cout<<"End of minimal chi2 search."<<endl;
   
@@ -318,7 +358,7 @@ bool Skimming::OldPoint(){
 
   bool newpoint=false;
       
-  for (int ipar=0; ipar<parameters.size(); ipar++){
+  for (unsigned int ipar=0; ipar<parameters.size(); ipar++){
 
     string par=parameters[ipar];
     vector<float> *parvec=&LastParameters[par];
@@ -341,7 +381,7 @@ void Skimming::FillEntries(){
   
   Long64_t nNewEvents = 0;
   
-  for (Long64_t i=0; i<maxEvents; i++) {
+  for (Long64_t i=0; i<_maxEvents; i++) {
     
     markovChain->GetEntry(i);	
     if (i % 100000 ==0) cout<<"Loaded entry "<<i<<endl;
@@ -349,7 +389,7 @@ void Skimming::FillEntries(){
     bug=0;
 
 
-    if (deleteIdenticalPoints){
+    if (_deleteIdenticalPoints){
 
       if (OldPoint()) continue;
       
@@ -357,7 +397,7 @@ void Skimming::FillEntries(){
     
     if (Chi2Cut()) continue;
       
-    if (keepBugPoints){
+    if (_keepBugPoints){
 
       if (Cut()) bug=1;
       
@@ -388,22 +428,23 @@ void Skimming::FillEntries(){
 void Skimming::Perform(){
 
   cout<<"Perform Skimming with:"<<endl;
-  cout<<"keepBugPoints="<<keepBugPoints<<endl;
-  cout<<"deleteIdenticalPoints="<<deleteIdenticalPoints<<endl;
-  cout<<"absMinChi2="<<absMinChi2<<endl;
-  cout<<"absMaxChi2="<<absMaxChi2<<endl;
-  cout<<"maxDeltaChi2="<<maxDeltaChi2<<endl;
-  cout<<"maxEvents="<<maxEvents<<endl;
-  cout<<"outputFileName="<<outputFileName<<endl;
+  cout<<"_keepBugPoints="<<_keepBugPoints<<endl;
+  cout<<"_deleteIdenticalPoints="<<_deleteIdenticalPoints<<endl;
+  cout<<"_absMinChi2="<<_absMinChi2<<endl;
+  cout<<"_absMaxChi2="<<_absMaxChi2<<endl;
+  cout<<"_maxDeltaChi2="<<_maxDeltaChi2<<endl;
+  cout<<"_maxEvents="<<_maxEvents<<endl;
+  cout<<"_outputFileName="<<_outputFileName<<endl;
   cout<<"Number of InputFiles="<<InputFiles.size()<<endl;
   cout<<"Number of Cuts="<<CutObjects->GetEntries()<<endl;
   cout<<endl;
 
-  ClosePolygon();
+  if (this->_cutMethod == 0)
+    ClosePolygon();
 
   GetAndSetBranches();
 
-  if (maxDeltaChi2>=0) FindMinimalChi2();
+  if (_maxDeltaChi2>=0) FindMinimalChi2();
   
   FillEntries();
   
@@ -412,7 +453,7 @@ void Skimming::Perform(){
 void Skimming::GetAndSetBranches(){
   
 
-  for (int i=0; i<InputFiles.size();i++){
+  for (unsigned int i=0; i<InputFiles.size();i++){
     markovChain->Add(InputFiles[i].c_str());
   }
 
@@ -420,12 +461,12 @@ void Skimming::GetAndSetBranches(){
 
   Long64_t nEntries=markovChain->GetEntries();
 
-  if (maxEvents<0 || maxEvents>nEntries) maxEvents=nEntries;
+  if (_maxEvents<0 || _maxEvents>nEntries) _maxEvents=nEntries;
 
   cout<<"Have found "<<nEntries<<" entries in the input files."<<endl;
-  cout<<"Set maxEvents to "<<maxEvents<<endl;
+  cout<<"Set _maxEvents to "<<_maxEvents<<endl;
 
-  outputRootFile=new TFile(outputFileName.c_str(), "RECREATE"); 
+  outputRootFile=new TFile(_outputFileName.c_str(), "RECREATE"); 
   newTree =new TTree(markovChain->GetName(), "skimmed tree");
 
   
@@ -450,6 +491,6 @@ void Skimming::GetAndSetBranches(){
     
   }
   
-  if (keepBugPoints)  newTree->Branch("bug", &bug);
+  if (_keepBugPoints)  newTree->Branch("bug", &bug);
   
 }
