@@ -101,7 +101,7 @@ void SkimMarkovChainWithGraphicalCuts(){
   //   - 0 Default method
   //   - 1 Use predefined spline
   Skim.SetCutMethod(1);
-  Skim.AddCutFile("Spline.root");
+  Skim.AddCutFile("Splines.root");
 
   //Example for adding a cut file: All TCutG objects in this file are used
   // Skim.AddCutFile("noxsecCuts.root");
