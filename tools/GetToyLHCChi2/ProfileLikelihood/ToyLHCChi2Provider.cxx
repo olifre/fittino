@@ -89,7 +89,7 @@ ToyLHCChi2Provider::ToyLHCChi2Provider( string gridFileName, float M0BF, float M
 	}
 	
 	wspace = new RooWorkspace();
-	wspace->factory("Poisson::pois(n[50,0,1e10], sum(s[1,0,1000]*theta_s[1,0,10000],b[1]*theta_b[1.,0.,10000]))");
+	wspace->factory("Poisson::pois(n[50,0,1e10], sum(s[1,0,10000]*theta_s[1,0,10000],b[1]*theta_b[1.,0.,10000]))");
 	wspace->factory("Gaussian::sig(1,theta_s, sigma_s[0.1,0,1])");
 	wspace->factory("Gaussian::bkg(1, theta_b, sigma_b[0.1,0,1])");
 	wspace->factory("PROD::model(pois, sig, bkg)");
