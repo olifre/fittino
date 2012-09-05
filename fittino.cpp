@@ -8811,11 +8811,10 @@ hase (rad), SPheno default value = 0
 	 exit(EXIT_FAILURE);
       }
       
-      // moved TanBeta to this block
-      /*
 			if( yyCalculator == SPHENO ) {
 				LesHouchesOutfile << "BLOCK EXTPAR                 # Input parameters" << endl;
-      	if (FindInFixed("TanBeta")) {
+      	/*
+				if (FindInFixed("TanBeta")) {
    	LesHouchesOutfile << "    25 "<< ReturnFixedValue("TanBeta")->value <<" # tanb (fixed)"<< endl;
       	}
       	else if (FindInFitted("TanBeta")) {
@@ -8840,92 +8839,93 @@ hase (rad), SPheno default value = 0
       	else {
    	cerr << "Parameter TanBeta not declared" << endl;
    	exit (EXIT_FAILURE);
-      	} 
-      }
+      	}
 			*/
-      if( yyFitModel == NUHM1 ) {
-        if (FindInFixed("M0H")) {
-          LesHouchesOutfile << "   21 " << ReturnFixedValue("M0H")->value << " # non-universal m_(H_d)^2" << endl;
-          LesHouchesOutfile << "   22 " << ReturnFixedValue("M0H")->value << " # non-universal m_(H_u)^2" << endl;
-        } 
-        else if (FindInFitted("M0H")) {
-          if( yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100) < 0.01 ) ) {
+			
+      	if( yyFitModel == NUHM1 ) {
+        	if (FindInFixed("M0H")) {
+          	LesHouchesOutfile << "   21 " << ReturnFixedValue("M0H")->value << " # non-universal m_(H_d)^2" << endl;
+          	LesHouchesOutfile << "   22 " << ReturnFixedValue("M0H")->value << " # non-universal m_(H_u)^2" << endl;
+        	} 
+        	else if (FindInFitted("M0H")) {
+          	if( yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100) < 0.01 ) ) {
               cout << "Fitting M0H " << x[ReturnFittedPosition("M0H")] << endl;
-          }
-          LesHouchesOutfile << "    21 " << x[ReturnFittedPosition("M0H")] << " # non-universal m_(H_d)^2" << endl;
-          LesHouchesOutfile << "    22 " << x[ReturnFittedPosition("M0H")] << " # non-universal m_(H_u)^2" << endl;
-        }
-        else if (FindInRandomPar("M0H")) {
-          if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
-            cout << "Calculating random M0H " << x[ReturnRandomPosition("M0H")] << endl;
-          }
-          LesHouchesOutfile << "    21 " << x[ReturnRandomPosition("M0H")] << " # non-universal m_(H_d)^2" << endl;
-          LesHouchesOutfile << "    22 " << x[ReturnRandomPosition("M0H")] << " # non-universal m_(H_u)^2" << endl;
-        }
-        else if (FindInUniversality("M0H")) {
-          if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
-            cout << "fitting " << ReturnUniversality("M0H")->universality << " instead of M0H" << endl;
-          }
-          LesHouchesOutfile << "    21 " << x[ReturnFittedPosition(ReturnUniversality("M0H")->universality)] << " # non-universal m_(H_d)^2" << endl;
-          LesHouchesOutfile << "    22 " << x[ReturnFittedPosition(ReturnUniversality("M0H")->universality)] << " # non-universal m_(H_u)^2" << endl;
-        }
-        else {
-          cerr << "Parameter M0H not declared" << endl;
-          exit (EXIT_FAILURE);
-        }
-      }
-			if( yyFitModel == NUHM2 ) {
-				if (FindInFixed("M0Hu")) {
-          LesHouchesOutfile << "   22 " << ReturnFixedValue("M0Hu")->value << " # non-universal m_(H_u)^2" << endl;
-        }
-        else if (FindInFitted("M0Hu")) {
-          if( yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100) < 0.01 ) ) {
+          	}
+          	LesHouchesOutfile << "    21 " << x[ReturnFittedPosition("M0H")] << " # non-universal m_(H_d)^2" << endl;
+          	LesHouchesOutfile << "    22 " << x[ReturnFittedPosition("M0H")] << " # non-universal m_(H_u)^2" << endl;
+        	}
+        	else if (FindInRandomPar("M0H")) {
+          	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+            	cout << "Calculating random M0H " << x[ReturnRandomPosition("M0H")] << endl;
+          	}
+          	LesHouchesOutfile << "    21 " << x[ReturnRandomPosition("M0H")] << " # non-universal m_(H_d)^2" << endl;
+          	LesHouchesOutfile << "    22 " << x[ReturnRandomPosition("M0H")] << " # non-universal m_(H_u)^2" << endl;
+        	}
+        	else if (FindInUniversality("M0H")) {
+          	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+            	cout << "fitting " << ReturnUniversality("M0H")->universality << " instead of M0H" << endl;
+          	}
+          	LesHouchesOutfile << "    21 " << x[ReturnFittedPosition(ReturnUniversality("M0H")->universality)] << " # non-universal m_(H_d)^2" << endl;
+          	LesHouchesOutfile << "    22 " << x[ReturnFittedPosition(ReturnUniversality("M0H")->universality)] << " # non-universal m_(H_u)^2" << endl;
+        	}
+        	else {
+          	cerr << "Parameter M0H not declared" << endl;
+          	exit (EXIT_FAILURE);
+        	}
+      	}
+				if( yyFitModel == NUHM2 ) {
+					if (FindInFixed("M0Hu")) {
+          	LesHouchesOutfile << "   22 " << ReturnFixedValue("M0Hu")->value << " # non-universal m_(H_u)^2" << endl;
+        	}
+        	else if (FindInFitted("M0Hu")) {
+          	if( yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100) < 0.01 ) ) {
               cout << "Fitting M0Hu " << x[ReturnFittedPosition("M0Hu")] << endl;
-          }
-          LesHouchesOutfile << "    22 " << x[ReturnFittedPosition("M0Hu")] << " # non-universal m_(H_u)^2" << endl;
-        }
-        else if (FindInRandomPar("M0Hu")) {
-          if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
-            cout << "Calculating random M0Hu " << x[ReturnRandomPosition("M0Hu")] << endl;
-          }
-          LesHouchesOutfile << "    22 " << x[ReturnRandomPosition("M0Hu")] << " # non-universal m_(H_u)^2" << endl;
-        }
-        else if (FindInUniversality("M0Hu")) {
-          if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
-            cout << "fitting " << ReturnUniversality("M0Hu")->universality << " instead of M0Hu" << endl;
-          }
-          LesHouchesOutfile << "    22 " << x[ReturnFittedPosition(ReturnUniversality("M0Hu")->universality)] << " # non-universal m_(H_u)^2" << endl;
-        }
-        else {
-          cerr << "Parameter M0Hu not declared" << endl;
-          exit (EXIT_FAILURE);
-        }
+          	}
+          	LesHouchesOutfile << "    22 " << x[ReturnFittedPosition("M0Hu")] << " # non-universal m_(H_u)^2" << endl;
+        	}
+        	else if (FindInRandomPar("M0Hu")) {
+          	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+            	cout << "Calculating random M0Hu " << x[ReturnRandomPosition("M0Hu")] << endl;
+          	}
+          	LesHouchesOutfile << "    22 " << x[ReturnRandomPosition("M0Hu")] << " # non-universal m_(H_u)^2" << endl;
+       		}
+        	else if (FindInUniversality("M0Hu")) {
+          	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+            	cout << "fitting " << ReturnUniversality("M0Hu")->universality << " instead of M0Hu" << endl;
+          	}
+          	LesHouchesOutfile << "    22 " << x[ReturnFittedPosition(ReturnUniversality("M0Hu")->universality)] << " # non-universal m_(H_u)^2" << endl;
+        	}
+        	else {
+          	cerr << "Parameter M0Hu not declared" << endl;
+          	exit (EXIT_FAILURE);
+        	}
 				
-				if (FindInFixed("M0Hd")) {
-          LesHouchesOutfile << "   21 " << ReturnFixedValue("M0Hd")->value << " # non-universal m_(H_d)^2" << endl;
-        }
-        else if (FindInFitted("M0Hd")) {
-          if( yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100) < 0.01 ) ) {
+					if (FindInFixed("M0Hd")) {
+          	LesHouchesOutfile << "   21 " << ReturnFixedValue("M0Hd")->value << " # non-universal m_(H_d)^2" << endl;
+        	}
+        	else if (FindInFitted("M0Hd")) {
+          	if( yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100) < 0.01 ) ) {
               cout << "Fitting M0Hd " << x[ReturnFittedPosition("M0Hd")] << endl;
-          }
-          LesHouchesOutfile << "    21 " << x[ReturnFittedPosition("M0Hd")] << " # non-universal m_(H_d)^2" << endl;
-        }
-        else if (FindInRandomPar("M0Hd")) {
-          if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
-            cout << "Calculating random M0Hd " << x[ReturnRandomPosition("M0Hd")] << endl;
-          }
-          LesHouchesOutfile << "    21 " << x[ReturnRandomPosition("M0Hd")] << " # non-universal m_(H_d)^2" << endl;
-        }
-        else if (FindInUniversality("M0Hd")) {
-          if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
-            cout << "fitting " << ReturnUniversality("M0Hd")->universality << " instead of M0Hd" << endl;
-          }
-          LesHouchesOutfile << "    21 " << x[ReturnFittedPosition(ReturnUniversality("M0Hd")->universality)] << " # non-universal m_(H_d)^2" << endl;
-        }
-        else {
-          cerr << "Parameter M0Hd not declared" << endl;
-          exit (EXIT_FAILURE);
-        }
+          	}
+          	LesHouchesOutfile << "    21 " << x[ReturnFittedPosition("M0Hd")] << " # non-universal m_(H_d)^2" << endl;
+        	}
+        	else if (FindInRandomPar("M0Hd")) {
+          	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+            	cout << "Calculating random M0Hd " << x[ReturnRandomPosition("M0Hd")] << endl;
+          	}
+          	LesHouchesOutfile << "    21 " << x[ReturnRandomPosition("M0Hd")] << " # non-universal m_(H_d)^2" << endl;
+        	}
+        	else if (FindInUniversality("M0Hd")) {
+          	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+            	cout << "fitting " << ReturnUniversality("M0Hd")->universality << " instead of M0Hd" << endl;
+          	}	
+          	LesHouchesOutfile << "    21 " << x[ReturnFittedPosition(ReturnUniversality("M0Hd")->universality)] << " # non-universal m_(H_d)^2" << endl;
+        	}
+        	else {
+          	cerr << "Parameter M0Hd not declared" << endl;
+          	exit (EXIT_FAILURE);
+        	}
+				}
 		
 			}
 
