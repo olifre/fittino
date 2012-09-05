@@ -58,7 +58,8 @@ ToyLHCChi2Provider::ToyLHCChi2Provider() {
 
 ToyLHCChi2Provider::ToyLHCChi2Provider( string gridFileName, float M0BF, float M12BF ) {
 
-
+	RooMsgService::instance().setStreamStatus(0, kFALSE);
+  RooMsgService::instance().setStreamStatus(1, kFALSE);
 	// Open Signal Grids File and get Signal Expectation in each region for the Best Fit Point
 	f_grids = new TFile( gridFileName.c_str() );
 	h_grids.push_back( (TH2D*)f_grids->Get("signalA") );

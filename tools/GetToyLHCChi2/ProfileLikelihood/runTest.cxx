@@ -5,7 +5,7 @@
 #include "TRandom3.h"
 
 int main( int argc, char **argv ) {
-	
+
 	if( argc < 2 ) { 
 		cout << "usage: ./runTest <signalGrids.root> <randomSeed>" << endl;
 	}
