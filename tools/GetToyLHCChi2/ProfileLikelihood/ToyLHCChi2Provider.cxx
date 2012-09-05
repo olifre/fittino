@@ -7,7 +7,7 @@ float ToyLHCChi2Provider::GetChi2Contribution( float M0, float M12, vector<float
 	float lumi = 50.;
 	float lumi_ref = 1.;
 	
-	cout << "trying to find values for " << nExp[0] << " " << nExp[1] << " " << nExp[2] << endl;
+	//cout << "using nExp = " << nExp[0] << ", " << nExp[1] << ", " << nExp[2] << endl;
 
 	for( unsigned int iCh = 0; iCh < 3; ++iCh ) {
 		n->setVal(nExp[iCh]);
@@ -30,7 +30,7 @@ float ToyLHCChi2Provider::GetChi2Contribution( float M0, float M12, vector<float
 		//cout << " in channel " << iCh << " the expected chi2 is " << chi2 << endl;
 		if( chi2 > chi2_max ) { chi2_max = chi2; channel = iCh; }
 	}
-	cout << "chose region " << channel << " with " << chi2_max << endl;	
+	//cout << "chose region " << channel << " with " << chi2_max << endl;	
 	if( data ) delete data;
 	if( nll ) delete nll;
 	if( pll ) delete pll;

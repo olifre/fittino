@@ -43,7 +43,7 @@ int main( int argc, char **argv ) {
 	vector<float> nObs;
 
 	// define the number of toy experiments:
-	int nToys = 1000;
+	int nToys = 10000;
 
 	// loop over the toy experiments
 	for( int iToy = 0; iToy < nToys; ++iToy ) {
