@@ -56,6 +56,7 @@ while read line
 	  unc1=`echo $line | cut -d" " -f 4`
 	  unc2=`echo $line | cut -d" " -f 5`
 	  unc3=`echo $line | cut -d" " -f 6`
+	  unc4=`echo $line | cut -d" " -f 7`
 	  #echo $line	  
 	  #echo "name: " $name " val: " $val " unc1: " $unc1 " unc2: " $unc2 " unc3: " $unc3
 	  if [ -z "$unc2" ]
@@ -66,7 +67,11 @@ while read line
 	      then
 	      unc3=-1
 	  fi
-	  echo $name $val $unc1 $unc2 $unc3 >> $finalFile    
+	  if [ -z "$unc4" ]
+              then
+              unc4=-1
+          fi
+	  echo $name $val $unc1 $unc2 $unc3 $unc4 >> $finalFile    
       fi
   fi
 done < $tempFile2

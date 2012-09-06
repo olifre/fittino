@@ -7,36 +7,52 @@
 // argv[1]: name of the fit
 // argv[2]: input directory
 // argv[3]: output directory
-// argv[4]: histogram file for LHC chi2
-// argv[5]: signal file for LHC chi2
 
 int main( int argc, char** argv ){
 
-
-  // == Removal of multiple points
-  cleaningInputFile( argv[1], argv[2], argv[3] );
+  // == Convert arguments
+  int PP_or_Toys = atoi( getenv( "DATATOYS" ) );
+  int step = atoi( getenv("STEP") );
 
 
   // == Initialization of all variables, fit, model, options
-  initialize( argv[1], argv[2], argv[3], argv[4], argv[5] );
+  initialize( argv[1], argv[2], argv[3] );
 
 
-  // Prepar input and output files
-  openIOfiles( fit );
+  // =======================================================
+  // == 1st step of post-processing: calculation of the chi2
+  if( step == 1 )
+    {
+      
+      // == Removal of multiple points
+      cleaningInputFile( "multiplePointsRemoval", argv[1], argv[2], argv[3] );
+      
+      
+      // Prepar input and output files
+      openIOfiles( fit );
+      
+      
+      // == Get experimental values
+      assignLEObs();
+      
+      
+      // == Run toys (0) or process real data (1)
+      processData( PP_or_Toys );
+      
+      
+      // == Write all histograms and trees and close files
+      writeAndClose( PP_or_Toys );
+    }
 
 
-  // == Get experimental values
-  assignLEObs();
-
-
-  // == Run toys (0) or process real data (1)
-  int PP_or_Toys = atoi( getenv( "DATATOYS" ) );
-  processData( PP_or_Toys );
-
-
-  // == Write all histograms and trees and close files
-  writeAndClose( PP_or_Toys );
-
+ // =======================================================
+  // == 2nd step of post-processing: all fits are merged 
+  // (allObs, HiggsObs, noObs, point1, point2), buggy points
+  // are cut out and the best fit point is identified and saved in a text file
+  if( step == 2 )
+    {
+      cleaningInputFile( "buggyPointsRemoval", argv[1], argv[2], argv[3] );
+    }
 
   return 0;
 }
