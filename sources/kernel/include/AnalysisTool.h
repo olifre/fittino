@@ -23,7 +23,10 @@
 
 #include <string>
 
+#include "TFile.h"
 #include "TRandom.h"
+
+class TTree;
 
 /*!
  *  \brief Fittino namespace.
@@ -49,53 +52,60 @@ namespace Fittino {
        *  between a model and any class deriving from AnalysisTool (especially the concrete\n
        *  optimizer or sampler classes) is established.
        */
-                   AnalysisTool( ModelBase* model );
+                         AnalysisTool( ModelBase* model );
       /*!
        *  Standard destructor.
        */
-                   ~AnalysisTool();
+                         ~AnalysisTool();
       /*!
        *  Template method . It subdivides the tool's exectution into three
        *  It is usually called directly after the creation of a concrete analysis tool.
        */
-      void         PerformAnalysis();
+      void               PerformAnalysis();
 
     protected:
       /*!
        *  Counts the number of calls to UpdateModel().
        */
-      unsigned int _iterationCounter;
+      unsigned int       _iterationCounter;
       /*!
        *  Name of the analysis tool.
        */
-      std::string  _name;
+      std::string        _name;
       /*!
        *  Random number generator.
        */
-      TRandom      _randomGenerator;
+      TRandom            _randomGenerator;
       /*!
        *  Pointer to the model to be analysed. Via this pointer an association between the model\n
        *  and any class deriving from AnalysisTool (especially the concrete optimizer or sampler\n
        *  classes) is established.
        */
-      ModelBase*   _model;
+      ModelBase*         _model;
 
     protected:
+      /*!
+       *  Saves the tool's current status (steering parameters, model parameters and observable\n
+       *  predictions at a certain iteration step) which is eventually written to an output file.\n
+       *  At which point of the analysis this is done has to be specified by any concrete analysis\n
+       *  tool.
+       */
+      virtual void       FillStatus();
       /*!
        *  Prints the result of the execution of a particuar analysis tool. It is declared virtual\n
        *  because the result output is different for optimizers and samplers.
        */
-      virtual void PrintResult() const = 0;
+      virtual void       PrintResult() const = 0;
       /*!
        *  Prints the steering parameters of a particuar analysis tool.
        *  \todo Short-term: Write a function that does always the correct formatting.
        */
-      virtual void PrintSteeringParameters() const = 0;
+      virtual void       PrintSteeringParameters() const = 0;
       /*!
        *  Causes the tool to propose a new model. How this is done has to be specified by any\n
        *  concrete analysis tool.
        */
-      virtual void UpdateModel() = 0;
+      virtual void       UpdateModel() = 0;
 
       /*! \cond UML */
     private:
@@ -103,22 +113,32 @@ namespace Fittino {
        *  Stores the configured criterium of a measure of the goodness of fit is compared to\n
        *  (usually the chi2 of the model).
        */
-      double       _abortCriterium;
+      double             _abortCriterium;
       /*!
        *  The chi2 of the model.
        */
-      double       _chi2;
+      double             _chi2;
       /*!
        *  Stores the configured maximal number of iteration steps.
        */
-      unsigned int _numberOfIterations;
+      unsigned int       _numberOfIterations;
+      std::vector<float> _listOfLeaves;
+      /*!
+       *  A ROOT file which stores the tool's output. The default name of the file is "Output.root".
+       *  \todo Mid-term: At the moment only the model parameters and the chi2 values are stored.\n
+       *  If the observable values and/or other information should also be stored the\n
+       *  implementation probably has to be revisited.
+       */
+      TFile              _outputFile;
+      TTree*             _tree;
 
     private:
-      void         ExecuteAnalysisTool();
-      void         InitializeAnalysisTool() const;
-      void         PrintConfiguration() const;
-      void         PrintStatus() const;
-      void         TerminateAnalysisTool() const;
+      void               ExecuteAnalysisTool();
+      void               InitializeAnalysisTool() const;
+      void               PrintConfiguration() const;
+      void               PrintStatus() const;
+      void               TerminateAnalysisTool();
+      void               WriteResultToFile() const;
 
       /*! \endcond UML */
 

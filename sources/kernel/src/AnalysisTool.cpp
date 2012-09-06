@@ -22,19 +22,31 @@
 #include <iostream>
 #include <sstream>
 
+#include "TTree.h"
+
 #include "AnalysisTool.h"
 #include "Configuration.h"
 #include "Messenger.h"
 #include "ModelBase.h"
 
 Fittino::AnalysisTool::AnalysisTool( ModelBase* model )
-        : _chi2( 1e99 ),
+        : _abortCriterium( Configuration::GetInstance()->GetSteeringParameter( "AbortCriterium", 1e-6 ) ),
+          _chi2( 1.e99 ),
           _iterationCounter( 0 ),
+          _listOfLeaves( _model->GetNumberOfParameters() + 1, 0. ),
+          _model( model ),
           _name( "" ),
-          _model( model ) {
+          _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", 10000 ) ),
+          _outputFile( "Output.root", "RECREATE" ),
+          _randomGenerator(),
+          _tree( new TTree( "Tree", "Tree" ) ) {
 
-    _abortCriterium = Configuration::GetInstance()->GetSteeringParameter( "AbortCriterium", 1e-6 );
-    _numberOfIterations = Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", 10000 );
+    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
+
+        _tree->Branch( ( ( _model->GetParameterVector() )[i].GetName() ).c_str(), &_listOfLeaves[i], ( ( _model->GetParameterVector() )[i].GetName() ).c_str() );
+
+    }
+    _tree->Branch( "Chi2", &_listOfLeaves[_model->GetNumberOfParameters()], "Chi2/F" );
 
 }
 
@@ -50,15 +62,16 @@ void Fittino::AnalysisTool::PerformAnalysis() {
 
 }
 
-void Fittino::AnalysisTool::PrintStatus() const {
+void Fittino::AnalysisTool::FillStatus() {
 
-    _model->PrintStatus();
+    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
 
-    Messenger& messenger = Messenger::GetInstance();
+        _listOfLeaves[i] = ( _model->GetParameterVector() )[i].GetValue();
 
-    messenger << Messenger::INFO << Messenger::Endl;
-    messenger << Messenger::INFO << std::scientific << std::setprecision( 5 ) << "    Chi2    " << _chi2 << Messenger::Endl;
-    messenger << Messenger::INFO << Messenger::Endl;
+    }
+    _listOfLeaves[_model->GetNumberOfParameters()] = _model->Evaluate();
+
+    _tree->Fill();
 
 }
 
@@ -68,7 +81,7 @@ void Fittino::AnalysisTool::ExecuteAnalysisTool() {
 
     messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  Running " << _name << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Running the " << _name << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
     while (  _chi2 > _abortCriterium && _iterationCounter < _numberOfIterations ) {
@@ -91,7 +104,7 @@ void Fittino::AnalysisTool::InitializeAnalysisTool() const {
 
     messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  Initializing " << _name << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Initializing the " << _name << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
     AnalysisTool::PrintConfiguration();
@@ -113,15 +126,41 @@ void Fittino::AnalysisTool::PrintConfiguration() const {
 
 }
 
-void Fittino::AnalysisTool::TerminateAnalysisTool() const {
+void Fittino::AnalysisTool::PrintStatus() const {
+
+    Messenger& messenger = Messenger::GetInstance();
+
+    messenger << Messenger::INFO << "-------------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::Endl;
+    messenger << Messenger::INFO << "  Iteration step " << _iterationCounter << Messenger::Endl;
+
+    _model->PrintStatus();
+
+    messenger << Messenger::INFO << Messenger::Endl;
+    messenger << Messenger::INFO << std::scientific << std::setprecision( 5 ) << "    Chi2    " << _chi2 << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::Endl;
+
+}
+
+void Fittino::AnalysisTool::TerminateAnalysisTool() {
 
     Messenger& messenger = Messenger::GetInstance();
 
     messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  Terminating " << _name << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Terminating the " << _name << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
     this->PrintResult();
+
+    this->WriteResultToFile();
+
+    _outputFile.Close();
+
+}
+
+void Fittino::AnalysisTool::WriteResultToFile() const {
+
+    _tree->Write();
 
 }
