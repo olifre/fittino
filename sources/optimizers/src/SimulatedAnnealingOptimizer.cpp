@@ -90,7 +90,7 @@ void Fittino::SimulatedAnnealingOptimizer::UpdateModel() {
 
         for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
-            numberOfAcceptedVariations.push_back( 0. );
+            numberOfAcceptedVariations.push_back( 0 );
 
         }
 

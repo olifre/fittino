@@ -38,7 +38,7 @@ Fittino::ParticleSwarmOptimizer::ParticleSwarmOptimizer( Fittino::ModelBase* mod
 
     for ( unsigned int n = 0; n < _numberOfParticles; n++ ) {
 
-        int seed = _randomGenerator.Uniform( 0, 10000 );
+        int seed = static_cast<int>( _randomGenerator.Uniform( 0, 10000 ) );
 
         Particle particle( _c1, _c2, _model, seed );
         _particleSwarm.push_back( particle );
