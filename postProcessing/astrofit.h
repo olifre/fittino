@@ -2,7 +2,8 @@
 #define ASTROFIT_H
 
 TGraph* graph = 0;
-double valAtZero = 0;
+//double valAtZero = 0;
+double shiftAtBestFitPoint = 0;
 double relativeTheoUnc = 0.50;
 
 // ===================================================================
@@ -50,7 +51,10 @@ void setAstrofit( int PP_or_Toys, double bestWIMPmass, double bestWIMPcs, bool v
   if( PP_or_Toys == 1 ) parabolaMean = bestWIMPcs;
   
   // Value at cross section=zero of the parabola at best fit point
-   valAtZero = TMath::Power( parabolaMean / totalWidth, 2 );
+  //valAtZero = TMath::Power( parabolaMean / totalWidth, 2 );
+
+  // Shift of the parabola's mean: parabolaMean - upperLimit
+  shiftAtBestFitPoint = parabolaMean - ( graph->Eval( bestWIMPmass ) );
 
   return;
 }
@@ -65,7 +69,8 @@ double astrofitChi2( double WIMPmass, double WIMPcs, bool verbose ){
   //double totalWidth = parabolaWidth( WIMPmass, relativeTheoUnc );//**
 
   // Require constant chi2 for null cross section
-  double cs0 = totalWidth * TMath::Sqrt( valAtZero );
+  //double cs0 = totalWidth * TMath::Sqrt( valAtZero );
+  double cs0 = WIMPcs + shiftAtBestFitPoint;
 
   // Calculate chi2 for that point by setting the parabola to zero below the minimum
   double chi2 = 0;
