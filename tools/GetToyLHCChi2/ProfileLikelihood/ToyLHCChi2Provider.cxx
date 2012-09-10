@@ -3,12 +3,12 @@
 float ToyLHCChi2Provider::GetChi2Contribution( float M0, float M12, vector<float> nObs, vector<float> nExp ) {
 	//first: find best expected limit - best search channel
 	unsigned int channel = 0;
-	float chi2_max = -10.;
+	//float chi2_max = -10.;
 	float lumi = 50.;
 	float lumi_ref = 1.;
 	
 	//cout << "using nExp = " << nExp[0] << ", " << nExp[1] << ", " << nExp[2] << endl;
-
+	/*
 	for( unsigned int iCh = 0; iCh < 3; ++iCh ) {
 		n->setVal(nExp[iCh]);
 		if( data ) delete data;
@@ -30,7 +30,11 @@ float ToyLHCChi2Provider::GetChi2Contribution( float M0, float M12, vector<float
 		//cout << " in channel " << iCh << " the expected chi2 is " << chi2 << endl;
 		if( chi2 > chi2_max ) { chi2_max = chi2; channel = iCh; }
 	}
+	*/
+
 	//cout << "chose region " << channel << " with " << chi2_max << endl;	
+	
+	channel = 1;
 	if( data ) delete data;
 	if( nll ) delete nll;
 	if( pll ) delete pll;
