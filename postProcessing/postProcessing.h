@@ -24,6 +24,7 @@ using namespace std;
 // == Most relevant parameters
 bool verbose = 0;
 int numberToys = 0;
+bool useHiggsSignal = 1;
 
 // == Input/Output ntuples
 TFile* file_in;
@@ -76,11 +77,6 @@ Float_t likelihood;
 Float_t rho;
 Float_t chi2;
 
-Float_t chi2_LEO_LHC;
-Float_t chi2_LEO_Higgs;
-Float_t chi2_LEO_LHC_Higgs;
-Float_t chi2_LHC_Higgs;
-
 Float_t accpoint;
 Float_t n;
 Float_t globalIter;
@@ -120,6 +116,7 @@ float Btn_chi2;
 float gmin2_chi2; 
 float omega_chi2; 
 float MassW_chi2; 
+float Massh0_chi2; 
 float sin_th_eff_chi2; 
 float B_smm_chi2; 
 float massTop_chi2;
@@ -304,11 +301,17 @@ void initialize( TString arg1, TString arg2, TString arg3 ){
   else if( fit.Contains("NUHM2") ) model = "NUHM2";
   else model = "msugra";
 
+  // For the last NUHM fits, use only the msugra mode
+  model = "msugra";
+
+
   numberToys = atoi( getenv("NUMBERTOYS") );
   int _verbose = atoi( getenv("VERBOSE") );
   if( _verbose == 1 ) verbose = true;
   if( _verbose == 0 ) verbose = false;
-  
+  int _useHiggsSignal = atoi( getenv("USEHIGGSSIGNAL") );
+  if( _useHiggsSignal == 0 ) useHiggsSignal = false;
+  if( _useHiggsSignal == 1 ) useHiggsSignal = true;
 
   // == Tools for chi2 calculation
   SignalGrid   = "signalGrids.root";
@@ -337,6 +340,7 @@ void initialize( TString arg1, TString arg2, TString arg3 ){
   ValName.push_back( "Btn_chi2"); 
   ValName.push_back( "gmin2_chi2"); 
   ValName.push_back( "omega_chi2"); 
+  ValName.push_back( "Massh0_chi2");
   ValName.push_back( "MassW_chi2"); 
   ValName.push_back( "sin_th_eff_chi2"); 
   ValName.push_back( "B_smm_chi2"); 
@@ -405,10 +409,6 @@ void assignOutputBranches(){
   markovChain_out->Branch("likelihood",&likelihood,"likelihood/F");
   markovChain_out->Branch("rho",&rho,"rho/F");
   markovChain_out->Branch("chi2",&chi2,"chi2/F");
-  markovChain_out->Branch("chi2_LEO_LHC",&chi2_LEO_LHC,"chi2_LEO_LHC/F");
-  markovChain_out->Branch("chi2_LEO_Higgs",&chi2_LEO_Higgs,"chi2_LEO_Higgs/F");
-  markovChain_out->Branch("chi2_LEO_LHC_Higgs",&chi2_LEO_LHC_Higgs,"chi2_LEO_LHC_Higgs/F");
-  markovChain_out->Branch("chi2_LHC_Higgs",&chi2_LHC_Higgs,"chi2_LHC_Higgs/F");
    markovChain_out->Branch("accpoint",&accpoint,"accpoint/F");
   markovChain_out->Branch("n",&n,"n/F");
   markovChain_out->Branch("globalIter",&globalIter,"globalIter/F");
@@ -437,6 +437,7 @@ void assignOutputBranches(){
   markovChain_out->Branch("gmin2_chi2",&gmin2_chi2,"gmin2_chi2/F");
   markovChain_out->Branch("omega_chi2",&omega_chi2,"omega_chi2/F");
   markovChain_out->Branch("MassW_chi2",&MassW_chi2,"MassW_chi2/F");
+  markovChain_out->Branch("Massh0_chi2",&Massh0_chi2,"Massh0_chi2/F");
   markovChain_out->Branch("sin_th_eff_chi2",&sin_th_eff_chi2,"sin_th_eff_chi2/F");
   markovChain_out->Branch("B_smm_chi2",&B_smm_chi2,"B_smm_chi2/F");
   markovChain_out->Branch("massTop_chi2",&massTop_chi2,"massTop_chi2/F");
@@ -612,6 +613,7 @@ void assignOutputBranches(){
 // ===================================================================
 // == Assign the variables to the input ntuple
 void assignInputBranches(){
+
   markovChain_in->SetBranchAddress("likelihood",&likelihood );
   markovChain_in->SetBranchAddress("rho",&rho );
   markovChain_in->SetBranchAddress("chi2",&chi2 );
@@ -646,6 +648,7 @@ void assignInputBranches(){
     markovChain_in->SetBranchAddress("P_M0Hu",&P_M0Hu );
     markovChain_in->SetBranchAddress("P_M0Hd",&P_M0Hd );
   }
+
   markovChain_in->SetBranchAddress("O_massTop",&O_massTop );
   markovChain_in->SetBranchAddress("O_Bsg_npf",&O_Bsg_npf );
   markovChain_in->SetBranchAddress("O_dm_s_npf",&O_dm_s_npf );
@@ -796,6 +799,7 @@ void assignInputBranches(){
   markovChain_in->SetBranchAddress("O_HiggsBosonCoupling436212123_nofit",&O_HiggsBosonCoupling436212123_nofit );// A0->glu glu Z0
   markovChain_in->SetBranchAddress("O_h0_To_Neutralino1_Neutralino1__nofit",&O_h0_To_Neutralino1_Neutralino1__nofit );//h0->Chi10 Chi10
   markovChain_in->SetBranchAddress("O_widthh0_nofit",&O_widthh0_nofit );//h0->Chi10 Chi10
+
  return; 
 }
 
@@ -803,29 +807,31 @@ void assignInputBranches(){
 
 // ===================================================================
 // == Prepar input and output files
-void openIOfiles( TString _fit ){
+void openIOfiles( int PP_or_Toys, TString _fit ){
 
  // == Opening input fit to process
 
  // If you have cleaned it before (removal of multiple points in cleaning.h)
-  TString name_in = _fit + "_cleaned.root";
-  // If you have not cleaned the file before
-  //TString name_in = inputDir + _fit + ".root";
- 
+  TString name_in = _fit + "_cleaned.root";  
   file_in = new TFile( name_in );
   markovChain_in = (TTree*) file_in->Get("markovChain");
-  cout << endl << " >>> Processing... "  << endl 
-       <<" fit: " << _fit << endl
-       <<" model: " << model << endl;
-  cout << " output directory: " << outputDir << endl;
-  assignInputBranches();
 
   // == Output processed file
-  if( PP_or_Toys == 1 ) file_out = new TFile( _fit + ".root", "RECREATE" );
-  if( PP_or_Toys == 0 ) file_out = new TFile( _fit + "_toys.root", "RECREATE" );
+  TString name_out = "";
+  if( PP_or_Toys == 1 ) name_out = _fit + ".root";
+  if( PP_or_Toys == 0 ) name_out = _fit + "_toys.root";
+  file_out = new TFile( name_out, "RECREATE" );
   markovChain_out = new TTree( "markovChain", "Processed fit" );
-  assignOutputBranches();
 
+  cout << endl << " >>> Processing... "  << endl
+       <<" fit: " << _fit << endl
+       <<" model: " << model << endl;
+  cout << " input: " << name_in << endl;
+  cout << " output: " << name_out << endl;
+  
+  assignInputBranches();
+  assignOutputBranches();
+  
   return;
 }
 
@@ -1014,7 +1020,7 @@ void calculateChi2( int PP_or_Toys ){
       smearLEObs( verbose );          
   
       // Smear the Higgs mh, mu
-      smearHiggs( verbose );
+      if( useHiggsSignal ) smearHiggs( verbose );
       
       // Save smeared observables in an ntuple
       saveSmearedObs();
@@ -1032,7 +1038,7 @@ void calculateChi2( int PP_or_Toys ){
       markovChain_in->GetEntry( ievt );
 
       LEO_chi2 = 0; LHC_chi2 = 0; Higgs_chi2 = 0; af_chi2 = 0; newChi2 = 0;
-      Bsg_chi2=0; dm_s_chi2=0; Btn_chi2=0; gmin2_chi2=0; omega_chi2=0; MassW_chi2=0; sin_th_eff_chi2=0; B_smm_chi2=0; massTop_chi2=0;
+      Bsg_chi2=0; dm_s_chi2=0; Btn_chi2=0; gmin2_chi2=0; omega_chi2=0; Massh0_chi2=0; MassW_chi2=0; sin_th_eff_chi2=0; B_smm_chi2=0; massTop_chi2=0;
 
       if( verbose ) cout << " ---------- EVENT # "<< ievt << " ---------- " << endl;
       if( verbose ) cout <<"    - Parameters: M0(" <<P_M0<<") M12("<<P_M12<<") TanBeta("<<P_TanBeta<<") A0("<<P_A0<<")" <<endl;
@@ -1065,6 +1071,12 @@ void calculateChi2( int PP_or_Toys ){
       if( PP_or_Toys == 0 ) omega_chi2 = myChi2( O_omega,  toyVal[5], uncLEObs[5] ) ;
       LEO_chi2 += omega_chi2;
 
+      if( !useHiggsSignal ){
+	if( PP_or_Toys == 1 ) Massh0_chi2 = myChi2( O_Massh0_npf,  LEObs[7], uncLEObs[7] ) ;
+	if( PP_or_Toys == 0 ) Massh0_chi2 = myChi2( O_Massh0_npf,  toyVal[7], uncLEObs[7] ) ;
+	LEO_chi2 += Massh0_chi2;
+      }
+
       if( PP_or_Toys == 1 ) MassW_chi2 = myChi2( O_MassW_npf,  LEObs[7], uncLEObs[7] ) ;
       if( PP_or_Toys == 0 ) MassW_chi2 = myChi2( O_MassW_npf,  toyVal[7], uncLEObs[7] ) ;
       LEO_chi2 += MassW_chi2;
@@ -1090,6 +1102,7 @@ void calculateChi2( int PP_or_Toys ){
 	  cout << "       Btn: theo = " << O_Btn_npf<< " meas = " << LEObs[3] << " ->chi2 = " << Btn_chi2 << endl;
 	  cout << "       gmin2: theo = " << O_gmin2m_npf<< " meas = " << LEObs[4] << " ->chi2 = " << gmin2_chi2 << endl;
 	  cout << "       omega: theo = " << O_omega<< " meas = " << LEObs[5] << " ->chi2 = " << omega_chi2 << endl;
+	  if( !useHiggsSignal ) cout << "       Massh0: theo = " << O_Massh0_npf<< " meas = " << LEObs[7] << " ->chi2 = " << Massh0_chi2 << endl;
 	  cout << "       MassW: theo = " << O_MassW_npf<< " meas = " << LEObs[7] << " ->chi2 = " << MassW_chi2 << endl;
 	  cout << "       sinThEff: theo = " << O_sin_th_eff_npf<< " meas = " << LEObs[8] << " ->chi2 = " << sin_th_eff_chi2 << endl;
 	  cout << "       Bsmm: theo = " << O_B_smm_npf<< " meas = " << LEObs[9] << " ->chi2 = " << B_smm_chi2 << endl;
@@ -1102,6 +1115,7 @@ void calculateChi2( int PP_or_Toys ){
 	  cout << "       gmin2: theo = " << O_gmin2m_npf<< " meas = " << toyVal[4] << " ->chi2 = " << gmin2_chi2 << endl;
 	  cout << "       omega: theo = " << O_omega<< " meas = " << toyVal[5] << " ->chi2 = " << omega_chi2 << endl;
 	  cout << "       MassW: theo = " << O_MassW_npf<< " meas = " << toyVal[7] << " ->chi2 = " << MassW_chi2 << endl;
+	  if( !useHiggsSignal ) cout << "       Massh0: theo = " << O_Massh0_npf<< " meas = " << toyVal[7] << " ->chi2 = " << Massh0_chi2 << endl;
 	  cout << "       sinThEff: theo = " << O_sin_th_eff_npf<< " meas = " << toyVal[8] << " ->chi2 = " << sin_th_eff_chi2 << endl;
 	  cout << "       Bsmm: theo = " << O_B_smm_npf<< " meas = " << toyVal[9] << " ->chi2 = " << B_smm_chi2 << endl;
 	  cout << "       masstop: theo = " <<  O_massTop<< " meas = " << toyVal[10] << " ->chi2 = " << massTop_chi2 << endl;
@@ -1117,14 +1131,16 @@ void calculateChi2( int PP_or_Toys ){
       if( verbose ) cout << "       LHC " << LHC_chi2 << endl;      
 
       // New chi2 for Higgs       
-      if( O_Massh0_npf < 10 || O_Massh0_npf > 1000 ) Higgs_chi2 = 1000;
-      else{
-	fillHiggsMassCouplings( O_Massh0_npf );
-	Higgs_chi2 = getHiggsChi2( HiggsMassCouplings );
+      if( useHiggsSignal ){
+	if( O_Massh0_npf < 10 || O_Massh0_npf > 1000 ) Higgs_chi2 = 1000;
+	else{
+	  fillHiggsMassCouplings( O_Massh0_npf );
+	  Higgs_chi2 = getHiggsChi2( HiggsMassCouplings );
+	}
+	newChi2 += Higgs_chi2;
+	if( verbose ) cout << "       Higgs " << Higgs_chi2 << endl; 
       }
-      newChi2 += Higgs_chi2;
-      if( verbose ) cout << "       Higgs " << Higgs_chi2 << endl; 
-
+      
       // New chi2 for astrofit
       af_chi2 = astrofitChi2( O_massNeutralino1_nofit, af_direct, false );
       newChi2 += af_chi2;
@@ -1137,12 +1153,8 @@ void calculateChi2( int PP_or_Toys ){
 
       // Fill output ntuple for the real fit
       if( PP_or_Toys == 1 || numberToys == 1 ){
-	// Update total chi2
-	chi2_LEO_LHC = LEO_chi2 + LHC_chi2;
-	chi2_LEO_Higgs = LEO_chi2 + Higgs_chi2;	
-	chi2_LEO_LHC_Higgs = LEO_chi2 + LHC_chi2 + Higgs_chi2;
-	chi2_LHC_Higgs = LHC_chi2 + Higgs_chi2;
-	chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
+	if( useHiggsSignal ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
+	if( !useHiggsSignal ) chi2 = LEO_chi2 + LHC_chi2 + af_chi2;
 	markovChain_out->Fill();
       }
 
@@ -1170,10 +1182,11 @@ void calculateChi2( int PP_or_Toys ){
 	toyBestFitVal[19] = Btn_chi2; 
 	toyBestFitVal[20] = gmin2_chi2; 
 	toyBestFitVal[21] = omega_chi2; 
-	toyBestFitVal[22] = MassW_chi2; 
-	toyBestFitVal[23] = sin_th_eff_chi2; 
-	toyBestFitVal[24] = B_smm_chi2; 
-	toyBestFitVal[25] = massTop_chi2;	
+	toyBestFitVal[22] = Massh0_chi2; 
+	toyBestFitVal[23] = MassW_chi2; 
+	toyBestFitVal[24] = sin_th_eff_chi2; 
+	toyBestFitVal[25] = B_smm_chi2; 
+	toyBestFitVal[26] = massTop_chi2;	
 	//
 	toyBestFitPar[0] = P_M0;
 	toyBestFitPar[1] = P_M12;

@@ -38,13 +38,15 @@ void setAstrofit( int PP_or_Toys, double bestWIMPmass, double bestWIMPcs, bool v
   //double totalWidth = parabolaWidth( bestWIMPmass, relativeTheoUnc );//**
   double totalWidth = parabolaWidth( bestWIMPmass, bestWIMPcs, relativeTheoUnc );
   
-  // Minimum of the parabola shifter
+  // Minimum of the parabola shifted
   double parabolaMean = 0;
+  // For toys
   if( PP_or_Toys == 0 ){
   // Smear the position of the parabola
     TRandom3 rand(0);
     parabolaMean = rand.Gaus( bestWIMPcs, totalWidth );
   }
+  // For post-processing
   if( PP_or_Toys == 1 ) parabolaMean = bestWIMPcs;
   
   // Value at cross section=zero of the parabola at best fit point

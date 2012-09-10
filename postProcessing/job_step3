@@ -24,6 +24,9 @@ output_destination=/scratch/hh/current/atlas/users/prudent/fittino/postProcessin
 # Where the processing programs lie
 working_directory=/afs/naf.desy.de/user/p/prudent/fittino/postProcessing
 
+# Higgs: use HiggsSignal (1) or calculate the chi2 from the mass only (0)
+export USEHIGGSSIGNAL=1
+
 # Where to retrieve the LHC chi2 tools from
 tools_directory=/afs/naf.desy.de/user/p/prudent/fittino/tools/GetToyLHCChi2/ProfileLikelihood
 

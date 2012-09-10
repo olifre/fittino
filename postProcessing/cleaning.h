@@ -274,7 +274,7 @@ void preparIOfiles( TString task, TString arg1, TString arg2, TString arg3 ){
   if( task == "buggyPointsRemoval" ) outName = fit + "_final.root";
   if( task == "multiplePointsRemoval" ) outName = fit + "_cleaned.root";
   file_out = new TFile( outName, "RECREATE" );
-  markovChain_out = new TTree( "markovChain_out", "Processed real fit" );
+  markovChain_out = new TTree( "markovChain", "Processed real fit" );
   //markovChain_out->SetDirectory(0);
 
   // 
@@ -523,7 +523,7 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
 
   cout << endl << " >>> Looping over the file.. " << endl;
   for( Int_t ievt = 0; ievt <  markovChain_in->GetEntries(); ++ievt )
-    //  for( Int_t ievt = 0; ievt <  10; ++ievt )
+  //for( Int_t ievt = 0; ievt <  10; ++ievt )
   {
     markovChain_in->GetEntry( ievt );
 

@@ -27,6 +27,9 @@ working_directory=/afs/naf.desy.de/user/p/prudent/fittino/postProcessing
 # Where to retrieve the LHC chi2 tools from
 tools_directory=/afs/naf.desy.de/user/p/prudent/fittino/tools/GetToyLHCChi2/ProfileLikelihood
 
+# Higgs: use HiggsSignal (1) or calculate the chi2 from the mass only (0)
+export USEHIGGSSIGNAL=1
+
 # Which step of the post-processing to proceed (1=chi2 calculation,2=removal of buggy points)
 export STEP=2
 

@@ -11,7 +11,9 @@
 int main( int argc, char** argv ){
 
   // == Convert arguments
+  // Data post-processing (1) or toy study (0)
   int PP_or_Toys = atoi( getenv( "DATATOYS" ) );
+  // Removal of multiple points (1) or of buggy points (2)
   int step = atoi( getenv("STEP") );
 
 
@@ -29,7 +31,7 @@ int main( int argc, char** argv ){
       
       
       // Prepar input and output files
-      openIOfiles( fit );
+      openIOfiles( PP_or_Toys, fit );
       
       
       // == Get experimental values
