@@ -21,7 +21,7 @@ int main( int argc, char **argv ) {
 	// 1st argument: name of the file holding the signal grids
 	// 2nd argument: m0 at the best fit point
 	// 3rd argument: m12 at the best fit point
-	ToyLHCChi2Provider prov( argv[1], 600., 400. );
+	ToyLHCChi2Provider prov( argv[1], 200., 500. );
 	
 	// get the signal expectation in the 3 signal regions for the best fit point
 	// also get the systematics on the signal expectation in the three signal regions for the best fit point
@@ -57,7 +57,7 @@ int main( int argc, char **argv ) {
 		//cout << "this is toy experiment #" << iToy << " with nObs = " << nObs[0] << " " << nObs[1] << " " << nObs[2] << endl;
 		// loop over all points in the markov chain. in this example program, only a single point is tested!!! replace the loops over m0 and m12 with one loop over all points in the markovChain ntuple\
 
-		for( float M0 = 600; M0 < 610; M0 += 100) {
+		for( float M0 = 200; M0 < 210; M0 += 100) {
 			for( float M12 = 400; M12 < 405; M12 += 10 ) {
 				// get the chi2 contribution for this toy at this point: M0 = m0 at the current point, M12 = m12 at the current point in the ntuple
 				// nObs and nExp have been defined before!

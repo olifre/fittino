@@ -51,7 +51,8 @@ float ToyLHCChi2Provider::GetChi2Contribution( float M0, float M12, vector<float
 	else if (M0>1800.)  nS=nS+nS*(1800.-M0)/1800.;
 	//cout << "signal expectation is " << nS << endl;
 	s->setVal(nS);
-	return 2.*pll->getVal();
+	double chi2 = 2.*pll->getVal(); 
+	return (isnan(chi2) || isinf(chi2)) ? 1000. : chi2; 
 }
 
 
