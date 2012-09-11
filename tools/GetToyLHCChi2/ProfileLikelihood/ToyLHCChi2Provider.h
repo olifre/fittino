@@ -37,6 +37,7 @@
 #include "RooRealVar.h"
 #include "RooStats/RooStatsUtils.h"
 #include "RooMsgService.h"
+#include "RooRandom.h"
 
 using namespace std;
 using namespace RooFit;

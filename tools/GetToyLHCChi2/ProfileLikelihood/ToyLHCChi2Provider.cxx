@@ -6,7 +6,7 @@ float ToyLHCChi2Provider::GetChi2Contribution( float M0, float M12, vector<float
 	//float chi2_max = -10.;
 	float lumi = 50.;
 	float lumi_ref = 1.;
-	
+	//RooRandom::randomGenerator()->SetSeed(1823571939);
 	//cout << "using nExp = " << nExp[0] << ", " << nExp[1] << ", " << nExp[2] << endl;
 	/*
 	for( unsigned int iCh = 0; iCh < 3; ++iCh ) {
@@ -52,7 +52,7 @@ float ToyLHCChi2Provider::GetChi2Contribution( float M0, float M12, vector<float
 	//cout << "signal expectation is " << nS << endl;
 	s->setVal(nS);
 	double chi2 = 2.*pll->getVal(); 
-	return (isnan(chi2) || isinf(chi2)) ? 1000. : chi2; 
+	return (isnan(chi2) || isinf(chi2)) ? 1000. : ( (chi2 < 0.) ? 0. : chi2); 
 }
 
 
@@ -95,7 +95,7 @@ ToyLHCChi2Provider::ToyLHCChi2Provider( string gridFileName, float M0BF, float M
 	}
 	
 	wspace = new RooWorkspace();
-	wspace->factory("Poisson::pois(n[50,0,1e10], sum(s[1,0,10000]*theta_s[1,0,10000],b[1]*theta_b[1.,0.,10000]))");
+	wspace->factory("Poisson::pois(n[50,0,1e10], sum(s[1,0,10000]*theta_s[1,0,100],b[1]*theta_b[1.,0.,100]))");
 	wspace->factory("Gaussian::sig(1,theta_s, sigma_s[0.1,0,1])");
 	wspace->factory("Gaussian::bkg(1, theta_b, sigma_b[0.1,0,1])");
 	wspace->factory("PROD::model(pois, sig, bkg)");
