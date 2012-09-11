@@ -46,9 +46,9 @@ float ToyLHCChi2Provider::GetChi2Contribution( float M0, float M12, vector<float
 	nll = model->createNLL(*data);
 	pll = nll->createProfile(*POI);
 	double nS = lumi/lumi_ref*h_grids[channel]->Interpolate(M0,M12);
-	if (M0<400)  nS=nS-0.9*nS*(400-M0)/400;
-	else if (M0<1800 && M0>1000)  nS=nS-nS*(1000-M0)/1000*(1800-M0)/1800;
-	else if (M0>1800)  nS=nS+nS*(1800-M0)/1800;
+	if (M0<400.)  nS=nS-0.9*nS*(400.-M0)/400.;
+	else if (M0<1800. && M0>1000.)  nS=nS-nS*(1000.-M0)/1000.*(1800.-M0)/1800.;
+	else if (M0>1800.)  nS=nS+nS*(1800.-M0)/1800.;
 	//cout << "signal expectation is " << nS << endl;
 	s->setVal(nS);
 	return 2.*pll->getVal();
@@ -83,7 +83,7 @@ ToyLHCChi2Provider::ToyLHCChi2Provider( string gridFileName, float M0BF, float M
 
 	for( unsigned int iCh = 0; iCh < 3; ++iCh ) {
 		float nExpSignal = lumi/lumi_ref*h_grids[iCh]->Interpolate(M0BF, M12BF);
-		if( M0BF < 400. ) nExpSignal = nExpSignal - 0.9*(400.-M0BF)/400.;
+		if( M0BF < 400. ) nExpSignal = nExpSignal - 0.9*nExpSignal*(400.-M0BF)/400.;
 		else if( M0BF < 1800. && M0BF > 1000. ) nExpSignal = nExpSignal - nExpSignal*(1000.-M0BF)/1000.*(1800.-M0BF)/1800.;
 		else if( M0BF > 1800. ) nExpSignal = nExpSignal+nExpSignal*(1800.-M0BF)/1800.;
 		signalExpectationBF.push_back( nExpSignal );
