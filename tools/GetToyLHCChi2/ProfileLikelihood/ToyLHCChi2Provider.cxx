@@ -2,6 +2,7 @@
 
 float ToyLHCChi2Provider::GetChi2Contribution( float M0, float M12, vector<float> nObs, vector<float> nExp ) {
 	//first: find best expected limit - best search channel
+	if( M0 > 2500. ) M0 = 2500.;
 	unsigned int channel = 0;
 	//float chi2_max = -10.;
 	float lumi = 50.;
@@ -62,6 +63,8 @@ ToyLHCChi2Provider::ToyLHCChi2Provider() {
 }
 
 ToyLHCChi2Provider::ToyLHCChi2Provider( string gridFileName, float M0BF, float M12BF ) {
+
+	if( M0BF > 2500. ) M0BF = 2500.;
 
 	RooMsgService::instance().setStreamStatus(0, kFALSE);
   RooMsgService::instance().setStreamStatus(1, kFALSE);

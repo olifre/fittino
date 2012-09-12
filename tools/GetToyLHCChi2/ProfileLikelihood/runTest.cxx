@@ -21,7 +21,7 @@ int main( int argc, char **argv ) {
 	// 1st argument: name of the file holding the signal grids
 	// 2nd argument: m0 at the best fit point
 	// 3rd argument: m12 at the best fit point
-	ToyLHCChi2Provider prov( argv[1], 200., 500. );
+	ToyLHCChi2Provider prov( argv[1], 2600., 500. );
 	
 	// get the signal expectation in the 3 signal regions for the best fit point
 	// also get the systematics on the signal expectation in the three signal regions for the best fit point
