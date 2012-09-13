@@ -2961,25 +2961,35 @@ else if (yyFitModel == NONUNIVSIMPLIFIED) {
   fM3.bound_low = 0.;
 	fM3.bound_up = 10000.;
 
-	fMStopR.name = "MStopR";
-	fMStopR.value = 100;
-	fMStopR.error = 100;
-	if( yyUseGivenStartValues && (FindInFittedPar("MStopR") >= 0 )) {
-		fMStopR.value = yyFittedPar[FindInFittedPar("MStopR")].value;
-		fMStopR.error = yyFittedPar[FindInFittedPar("MStopR")].error;
+	fMSq3.name = "MSq3";
+	fMSq3.value = 100;
+	fMSq3.error = 100;
+	if( yyUseGivenStartValues && (FindInFittedPar("MSq3") >= 0 )) {
+		fMSq3.value = yyFittedPar[FindInFittedPar("MSq3")].value;
+		fMSq3.error = yyFittedPar[FindInFittedPar("MSq3")].error;
 	}
-	fMStopR.bound_low = 0.;
-	fMStopR.bound_up = 10000.;
+	fMSq3.bound_low = 0.;
+	fMSq3.bound_up = 10000.;
 
-	fMSupR.name = "MSupR";
-	fMSupR.value = 100;
-	fMSupR.error = 100;
-	if( yyUseGivenStartValues && (FindInFittedPar("MSupR") >= 0 )) {
-		fMSupR.value = yyFittedPar[FindInFittedPar("MSupR")].value;
-		fMSupR.error = yyFittedPar[FindInFittedPar("MSupR")].error;
+	fMSqx.name = "MSqx";
+	fMSqx.value = 100;
+	fMSqx.error = 100;
+	if( yyUseGivenStartValues && (FindInFittedPar("MSqx") >= 0 )) {
+		fMSqx.value = yyFittedPar[FindInFittedPar("MSqx")].value;
+		fMSqx.error = yyFittedPar[FindInFittedPar("MSqx")].error;
 	}
-	fMSupR.bound_low = 0.;
-	fMSupR.bound_up = 10000.;
+	fMSqx.bound_low = 0.;
+	fMSqx.bound_up = 10000.;
+
+	fMSlx.name = "MSlx";
+  fMSlx.value = 100;
+  fMSlx.error = 100;
+  if( yyUseGivenStartValues && (FindInFittedPar("MSlx") >= 0 )) {
+    fMSlx.value = yyFittedPar[FindInFittedPar("MSlx")].value;
+    fMSlx.error = yyFittedPar[FindInFittedPar("MSlx")].error;
+  }
+  fMSlx.bound_low = 0.;
+  fMSlx.bound_up = 10000.;
 
 	fmassA0.name = "massA0";
 	fmassA0.value = 100;
@@ -2990,6 +3000,18 @@ else if (yyFitModel == NONUNIVSIMPLIFIED) {
 	}
 	fmassA0.bound_low = 0.;
 	fmassA0.bound_up = 10000.;
+
+	fMu.name = "Mu";
+	fMu.value = 100;
+	fMu.error = 100;
+	if( yyUseGivenStartValues && (FindInFittedPar("Mu") >= 0 )) {
+		fMu.value = yyFittedPar[FindInFittedPar("Mu")].value;
+		fMu.error = yyFittedPar[FindInFittedPar("Mu")].error;
+	}
+	fMu.bound_low = -10000.;
+	fMu.bound_up = 10000.;
+
+
 
   bool par_already_found;
 
@@ -3033,18 +3055,26 @@ else if (yyFitModel == NONUNIVSIMPLIFIED) {
          yyFittedVec.push_back(fM3);
          par_already_found = true;
       }
-      else if (!yyFittedPar[i].name.compare("MStopR")) {
-         yyFittedVec.push_back(fMStopR);
+      else if (!yyFittedPar[i].name.compare("MSq3")) {
+         yyFittedVec.push_back(fMSq3);
          par_already_found = true;
       }
-      else if (!yyFittedPar[i].name.compare("MSupR")) {
-        yyFittedVec.push_back(fMSupR);
+      else if (!yyFittedPar[i].name.compare("MSqx")) {
+        yyFittedVec.push_back(fMSqx);
         par_already_found = true;
       }
+			else if (!yyFittedPar[i].name.compare("MSlx")) {
+			  yyFittedVec.push_back(fMSlx);
+				par_already_found = true;
+			}
       else if (!yyFittedPar[i].name.compare("massA0")) {
         yyFittedVec.push_back(fmassA0);
         par_already_found = true;
       }
+			else if (!yyFittedPar[i].name.compare("Mu")) {
+				yyFittedVec.push_back(fMu);
+				par_already_found = true;
+			}
    	}
   }
  // Fill fixed parameters();
@@ -9325,7 +9355,7 @@ hase (rad), SPheno default value = 0
    		}
     }
     else {
-   		cerr << "aaa b-Parameter TanBeta not declared" << endl;
+   		cerr << "b-Parameter TanBeta not declared" << endl;
    		exit (EXIT_FAILURE);
     }
 
@@ -9339,6 +9369,12 @@ hase (rad), SPheno default value = 0
       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
         cout << "Fitting Q_EWSB " << x[ReturnFittedPosition("QEWSB")] << endl;
       }
+    }
+		else if (FindInRandomPar("QEWSB")) {
+    	if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+      	cout << "Calculating random Q_EWSB " << x[ReturnRandomPosition("QEWSB")] << endl;
+      }
+    	LesHouchesOutfile << "    0 " << x[ReturnRandomPosition("QEWSB")] << " # Q_EWSB (fixex)" << endl;
     }
     else if (FindInUniversality("QEWSB")) {
       LesHouchesOutfile << "   0  "<<x[ReturnFittedPosition(ReturnUniversality("QEWSB")->universality)]<<" # Q_EWSB"<<endl;
@@ -9358,6 +9394,13 @@ hase (rad), SPheno default value = 0
         cout << "Fitting M2 " << x[ReturnFittedPosition("M2")] << endl;
       }
     }
+		else if (FindInRandomPar("M2")) {
+      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+        cout << "Calculating random M2 " << x[ReturnRandomPosition("M2")] << endl;
+      }
+      LesHouchesOutfile << "    1 " << 0.5*x[ReturnRandomPosition("M2")] << " # M1" << endl;
+    	LesHouchesOutfile << "    2 " << x[ReturnRandomPosition("M2")] << " # M2" << endl;
+		}
     else if (FindInUniversality("M2")) {
       LesHouchesOutfile << "   1  "<<0.5*x[ReturnFittedPosition(ReturnUniversality("M2")->universality)]<<" # M1"<<endl;
       LesHouchesOutfile << "   2  "<<x[ReturnFittedPosition(ReturnUniversality("M2")->universality)]<<" # M2"<<endl;
@@ -9375,6 +9418,12 @@ hase (rad), SPheno default value = 0
         cout << "Fitting M3 " << x[ReturnFittedPosition("M3")] << endl;
       }
     }
+		else if (FindInRandomPar("M3")) {
+      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+        cout << "Calculating random M3 " << x[ReturnRandomPosition("M3")] << endl;
+      }
+      LesHouchesOutfile << "    3 " << x[ReturnRandomPosition("M3")] << " # M3" << endl;
+    }
     else if (FindInUniversality("M3")) {
       LesHouchesOutfile << "   3  "<<x[ReturnFittedPosition(ReturnUniversality("M3")->universality)]<<" # M3"<<endl;
       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
@@ -9382,107 +9431,186 @@ hase (rad), SPheno default value = 0
       }
     }
 		
-		if( FindInFixed("MSupR")) {
-			LesHouchesOutfile << "  23 "<<ReturnFixedValue("MSupR")->value<<" # mu(MX)" <<endl;
-			LesHouchesOutfile << "  31 "<<ReturnFixedValue("MSupR")->value<<" # meL(MX)" <<endl;
-      LesHouchesOutfile << "  32 "<<ReturnFixedValue("MSupR")->value<<" # mmuL(MX)" <<endl;
-      LesHouchesOutfile << "  33 "<<ReturnFixedValue("MSupR")->value<<" # mtauL(MX)" << endl;
-      LesHouchesOutfile << "  34 "<<ReturnFixedValue("MSupR")->value<<" # meR(MX)" << endl;
-      LesHouchesOutfile << "  35 "<<ReturnFixedValue("MSupR")->value<<" # mmuR(MX)" << endl;
-      LesHouchesOutfile << "  36 "<<ReturnFixedValue("MSupR")->value<<" # mtauR(MX)" << endl;
-			LesHouchesOutfile << "  41 "<<ReturnFixedValue("MSupR")->value<<" # mqL1(MX)" <<endl;
-			LesHouchesOutfile << "  42 "<<ReturnFixedValue("MSupR")->value<<" # mqL2(MX)" <<endl;
-			LesHouchesOutfile << "  44 "<<ReturnFixedValue("MSupR")->value<<" # muR(MX)" << endl;
-			LesHouchesOutfile << "  45 "<<ReturnFixedValue("MSupR")->value<<" # mcR(MX)" << endl;
-			LesHouchesOutfile << "  47 "<<ReturnFixedValue("MSupR")->value<<" # mdR(MX)" << endl;
-			LesHouchesOutfile << "  48 "<<ReturnFixedValue("MSupR")->value<<" # msR(MX)" << endl;
-			mu_local = ReturnFixedValue("MSupR")->value;	
+		if( FindInFixed("MSqx")) {
+			LesHouchesOutfile << "  41 "<<ReturnFixedValue("MSqx")->value<<" # mqL1(MX)" <<endl;
+			LesHouchesOutfile << "  42 "<<ReturnFixedValue("MSqx")->value<<" # mqL2(MX)" <<endl;
+			LesHouchesOutfile << "  44 "<<ReturnFixedValue("MSqx")->value<<" # muR(MX)" << endl;
+			LesHouchesOutfile << "  45 "<<ReturnFixedValue("MSqx")->value<<" # mcR(MX)" << endl;
+			LesHouchesOutfile << "  47 "<<ReturnFixedValue("MSqx")->value<<" # mdR(MX)" << endl;
+			LesHouchesOutfile << "  48 "<<ReturnFixedValue("MSqx")->value<<" # msR(MX)" << endl;
 		}
-		else if (FindInFitted("MSupR")) {
-      LesHouchesOutfile << "   23  "<<x[ReturnFittedPosition("MSupR")]<<" #  mu(MX)" <<endl;
-      LesHouchesOutfile << "   31  "<<x[ReturnFittedPosition("MSupR")]<<" #  meL(MX)" <<endl;
-      LesHouchesOutfile << "   32  "<<x[ReturnFittedPosition("MSupR")]<<" #  mmuL(MX)" <<endl;
-      LesHouchesOutfile << "   33  "<<x[ReturnFittedPosition("MSupR")]<<" #  mtauL(MX)" <<endl;
-      LesHouchesOutfile << "   34  "<<x[ReturnFittedPosition("MSupR")]<<" #  meR(MX)" <<endl;
-      LesHouchesOutfile << "   35  "<<x[ReturnFittedPosition("MSupR")]<<" #  mmuR(MX)" <<endl;
-      LesHouchesOutfile << "   36  "<<x[ReturnFittedPosition("MSupR")]<<" #  mtauR(MX)" <<endl;
-      LesHouchesOutfile << "   41  "<<x[ReturnFittedPosition("MSupR")]<<" #  mqL1(MX)" <<endl;
-      LesHouchesOutfile << "   42  "<<x[ReturnFittedPosition("MSupR")]<<" #  mqL2(MX)" <<endl;
-      LesHouchesOutfile << "   44  "<<x[ReturnFittedPosition("MSupR")]<<" #  muR(MX)" <<endl;
-      LesHouchesOutfile << "   45  "<<x[ReturnFittedPosition("MSupR")]<<" #  mcR(MX)" <<endl;
-      LesHouchesOutfile << "   47  "<<x[ReturnFittedPosition("MSupR")]<<" #  mdR(MX)" <<endl;
-      LesHouchesOutfile << "   48  "<<x[ReturnFittedPosition("MSupR")]<<" #  msR(MX)" <<endl;
-			mu_local = x[ReturnFittedPosition("MSupR")];
+		else if (FindInFitted("MSqx")) {
+      LesHouchesOutfile << "   41  "<<x[ReturnFittedPosition("MSqx")]<<" #  mqL1(MX)" <<endl;
+      LesHouchesOutfile << "   42  "<<x[ReturnFittedPosition("MSqx")]<<" #  mqL2(MX)" <<endl;
+      LesHouchesOutfile << "   44  "<<x[ReturnFittedPosition("MSqx")]<<" #  muR(MX)" <<endl;
+      LesHouchesOutfile << "   45  "<<x[ReturnFittedPosition("MSqx")]<<" #  mcR(MX)" <<endl;
+      LesHouchesOutfile << "   47  "<<x[ReturnFittedPosition("MSqx")]<<" #  mdR(MX)" <<endl;
+      LesHouchesOutfile << "   48  "<<x[ReturnFittedPosition("MSqx")]<<" #  msR(MX)" <<endl;
 			if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
-        cout << "Fitting MSupR " << x[ReturnFittedPosition("MSupR")] << endl;
+        cout << "Fitting MSqx " << x[ReturnFittedPosition("MSqx")] << endl;
       }
     }
-		else if (FindInUniversality("MSupR")) {
-      LesHouchesOutfile << "   23  "<<x[ReturnFittedPosition(ReturnUniversality("MSupR")->universality)]<<" # mu(MX)"<<endl;
-      LesHouchesOutfile << "   31  "<<x[ReturnFittedPosition(ReturnUniversality("MSupR")->universality)]<<" # meL(MX)"<<endl;
-      LesHouchesOutfile << "   32  "<<x[ReturnFittedPosition(ReturnUniversality("MSupR")->universality)]<<" # mmuL(MX)"<<endl;
-      LesHouchesOutfile << "   33  "<<x[ReturnFittedPosition(ReturnUniversality("MSupR")->universality)]<<" # mtauLMX)"<<endl;
-      LesHouchesOutfile << "   34  "<<x[ReturnFittedPosition(ReturnUniversality("MSupR")->universality)]<<" # meR(MX)"<<endl;
-      LesHouchesOutfile << "   35  "<<x[ReturnFittedPosition(ReturnUniversality("MSupR")->universality)]<<" # mmuR(MX)"<<endl;
-      LesHouchesOutfile << "   36  "<<x[ReturnFittedPosition(ReturnUniversality("MSupR")->universality)]<<" # mtauR(MX)"<<endl;
-      LesHouchesOutfile << "   41  "<<x[ReturnFittedPosition(ReturnUniversality("MSupR")->universality)]<<" # mqL1(MX)"<<endl;
-      LesHouchesOutfile << "   42  "<<x[ReturnFittedPosition(ReturnUniversality("MSupR")->universality)]<<" # mqL2(MX)"<<endl;
-      LesHouchesOutfile << "   44  "<<x[ReturnFittedPosition(ReturnUniversality("MSupR")->universality)]<<" # muRMX)"<<endl;
-      LesHouchesOutfile << "   45  "<<x[ReturnFittedPosition(ReturnUniversality("MSupR")->universality)]<<" # mcR(MX)"<<endl;
-      LesHouchesOutfile << "   47  "<<x[ReturnFittedPosition(ReturnUniversality("MSupR")->universality)]<<" # mdR(MX)"<<endl;
-      LesHouchesOutfile << "   48  "<<x[ReturnFittedPosition(ReturnUniversality("MSupR")->universality)]<<" # msR(MX)"<<endl;
-      mu_local = x[ReturnFittedPosition(ReturnUniversality("MSupR")->universality)];
+		else if (FindInRandomPar("MSqx")) {
+      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+        cout << "Calculating random MSqx " << x[ReturnRandomPosition("MSqx")] << endl;
+      }
+      LesHouchesOutfile << "   41 " << x[ReturnRandomPosition("MSqx")] << " # mqL1(MX)" << endl;
+      LesHouchesOutfile << "   42 " << x[ReturnRandomPosition("MSqx")] << " # mqL2(MX)" << endl;
+      LesHouchesOutfile << "   44 " << x[ReturnRandomPosition("MSqx")] << " # muR(MX)" << endl;
+      LesHouchesOutfile << "   45 " << x[ReturnRandomPosition("MSqx")] << " # mcR(MX)" << endl;
+      LesHouchesOutfile << "   47 " << x[ReturnRandomPosition("MSqx")] << " # mdR(MX)" << endl;
+      LesHouchesOutfile << "   48 " << x[ReturnRandomPosition("MSqx")] << " # msR(MX)" << endl;
+		}
+		else if (FindInUniversality("MSqx")) {
+      LesHouchesOutfile << "   23  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # mu(MX)"<<endl;
+      LesHouchesOutfile << "   31  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # meL(MX)"<<endl;
+      LesHouchesOutfile << "   32  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # mmuL(MX)"<<endl;
+      LesHouchesOutfile << "   33  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # mtauLMX)"<<endl;
+      LesHouchesOutfile << "   34  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # meR(MX)"<<endl;
+      LesHouchesOutfile << "   35  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # mmuR(MX)"<<endl;
+      LesHouchesOutfile << "   36  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # mtauR(MX)"<<endl;
+      LesHouchesOutfile << "   41  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # mqL1(MX)"<<endl;
+      LesHouchesOutfile << "   42  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # mqL2(MX)"<<endl;
+      LesHouchesOutfile << "   44  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # muRMX)"<<endl;
+      LesHouchesOutfile << "   45  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # mcR(MX)"<<endl;
+      LesHouchesOutfile << "   47  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # mdR(MX)"<<endl;
+      LesHouchesOutfile << "   48  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # msR(MX)"<<endl;
 			if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
-        cout << "fitting " << ReturnUniversality("MSupR")->universality << " instead of MSupR" << endl;
+        cout << "fitting " << ReturnUniversality("MSqx")->universality << " instead of MSqx" << endl;
       }
     }
 		
-    if( FindInFixed("MStopR")) {
-      LesHouchesOutfile << "  43 "<<ReturnFixedValue("MStopR")->value<<" # mqL3(MX)" <<endl;
-      LesHouchesOutfile << "  46 "<<ReturnFixedValue("MStopR")->value<<" # mtR(MX)" << endl;
-      LesHouchesOutfile << "  49 "<<ReturnFixedValue("MStopR")->value<<" # mbR(MX)" << endl;
-			Xt_local = 2.*ReturnFixedValue("MStopR")->value;
+    if( FindInFixed("MSq3")) {
+      LesHouchesOutfile << "  43 "<<ReturnFixedValue("MSq3")->value<<" # mqL3(MX)" <<endl;
+      LesHouchesOutfile << "  46 "<<ReturnFixedValue("MSq3")->value<<" # mtR(MX)" << endl;
+      LesHouchesOutfile << "  49 "<<ReturnFixedValue("MSq3")->value<<" # mbR(MX)" << endl;
+			Xt_local = 2.*ReturnFixedValue("MSq3")->value;
     }
-    else if (FindInFitted("MStopR")) {
-      LesHouchesOutfile << "   43  "<<x[ReturnFittedPosition("MStopR")]<<" #  mqL3(MX)" <<endl;
-      LesHouchesOutfile << "   46  "<<x[ReturnFittedPosition("MStopR")]<<" #  mtR(MX)" <<endl;
-      LesHouchesOutfile << "   49  "<<x[ReturnFittedPosition("MStopR")]<<" #  mbR(MX)" <<endl;
-      Xt_local = 2.*x[ReturnFittedPosition("MStopR")];
+    else if (FindInFitted("MSq3")) {
+      LesHouchesOutfile << "   43  "<<x[ReturnFittedPosition("MSq3")]<<" #  mqL3(MX)" <<endl;
+      LesHouchesOutfile << "   46  "<<x[ReturnFittedPosition("MSq3")]<<" #  mtR(MX)" <<endl;
+      LesHouchesOutfile << "   49  "<<x[ReturnFittedPosition("MSq3")]<<" #  mbR(MX)" <<endl;
+      Xt_local = 2.*x[ReturnFittedPosition("MSq3")];
       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
-        cout << "Fitting MStopR " << x[ReturnFittedPosition("MStopR")] << endl;
+        cout << "Fitting MSq3 " << x[ReturnFittedPosition("MSq3")] << endl;
       }
     }
-    else if (FindInUniversality("MStopR")) {
-      LesHouchesOutfile << "   43  "<<x[ReturnFittedPosition(ReturnUniversality("MStopR")->universality)]<<" # mqL3(MX)"<<endl;
-      LesHouchesOutfile << "   46  "<<x[ReturnFittedPosition(ReturnUniversality("MStopR")->universality)]<<" # mtRMX)"<<endl;
-      LesHouchesOutfile << "   49  "<<x[ReturnFittedPosition(ReturnUniversality("MStopR")->universality)]<<" # mbR(MX)"<<endl;
-      Xt_local = 2.*x[ReturnFittedPosition(ReturnUniversality("MStopR")->universality)];
+		else if (FindInRandomPar("MSq3")) {
       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
-        cout << "fitting " << ReturnUniversality("MStopR")->universality << " instead of MStopR" << endl;
+        cout << "Calculating random MSq3 " << x[ReturnRandomPosition("MSq3")] << endl;
+      }
+      LesHouchesOutfile << "   43 " << x[ReturnRandomPosition("MSqx")] << " # mqL3(MX)" << endl;
+      LesHouchesOutfile << "   46 " << x[ReturnRandomPosition("MSqx")] << " # mtR(MX)" << endl;
+      LesHouchesOutfile << "   49 " << x[ReturnRandomPosition("MSqx")] << " # mbR(MX)" << endl;
+    }
+    else if (FindInUniversality("MSq3")) {
+      LesHouchesOutfile << "   43  "<<x[ReturnFittedPosition(ReturnUniversality("MSq3")->universality)]<<" # mqL3(MX)"<<endl;
+      LesHouchesOutfile << "   46  "<<x[ReturnFittedPosition(ReturnUniversality("MSq3")->universality)]<<" # mtRMX)"<<endl;
+      LesHouchesOutfile << "   49  "<<x[ReturnFittedPosition(ReturnUniversality("MSq3")->universality)]<<" # mbR(MX)"<<endl;
+      Xt_local = 2.*x[ReturnFittedPosition(ReturnUniversality("MSq3")->universality)];
+      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+        cout << "fitting " << ReturnUniversality("MSq3")->universality << " instead of MSq3" << endl;
       }
     }
-		
+	
+		if( FindInFixed("MSlx")) {
+      LesHouchesOutfile << "  31 "<<ReturnFixedValue("MSlx")->value<<" # meL(MX)" <<endl;
+      LesHouchesOutfile << "  32 "<<ReturnFixedValue("MSlx")->value<<" # mmuL(MX)" <<endl;
+      LesHouchesOutfile << "  33 "<<ReturnFixedValue("MSlx")->value<<" # mtauL(MX)" << endl;
+      LesHouchesOutfile << "  34 "<<ReturnFixedValue("MSlx")->value<<" # meR(MX)" << endl;
+      LesHouchesOutfile << "  35 "<<ReturnFixedValue("MSlx")->value<<" # mmuR(MX)" << endl;
+      LesHouchesOutfile << "  36 "<<ReturnFixedValue("MSlx")->value<<" # mtauR(MX)" << endl;
+    }
+		else if (FindInFitted("MSlx")) {
+      LesHouchesOutfile << "   31  "<<x[ReturnFittedPosition("MSlx")]<<" #  meL(MX)" <<endl;
+      LesHouchesOutfile << "   32  "<<x[ReturnFittedPosition("MSlx")]<<" #  mmuL(MX)" <<endl;
+      LesHouchesOutfile << "   33  "<<x[ReturnFittedPosition("MSlx")]<<" #  mtauL(MX)" <<endl;
+      LesHouchesOutfile << "   34  "<<x[ReturnFittedPosition("MSlx")]<<" #  meR(MX)" <<endl;
+      LesHouchesOutfile << "   35  "<<x[ReturnFittedPosition("MSlx")]<<" #  mmuR(MX)" <<endl;
+      LesHouchesOutfile << "   36  "<<x[ReturnFittedPosition("MSlx")]<<" #  mtauR(MX)" <<endl;
+      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+        cout << "Fitting MSlx " << x[ReturnFittedPosition("MSlx")] << endl;
+      }
+    }
+		else if (FindInRandomPar("MSlx")) {
+      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+        cout << "Calculating random MSlx " << x[ReturnRandomPosition("MSlx")] << endl;
+      }
+      LesHouchesOutfile << "   31 " << x[ReturnRandomPosition("MSlx")] << " # meL(MX)" << endl;
+      LesHouchesOutfile << "   32 " << x[ReturnRandomPosition("MSlx")] << " # mmuL(MX)" << endl;
+      LesHouchesOutfile << "   33 " << x[ReturnRandomPosition("MSlx")] << " # mtauL(MX)" << endl;
+      LesHouchesOutfile << "   34 " << x[ReturnRandomPosition("MSlx")] << " # meR(MX)" << endl;
+      LesHouchesOutfile << "   35 " << x[ReturnRandomPosition("MSlx")] << " # mmuR(MX)" << endl;
+      LesHouchesOutfile << "   36 " << x[ReturnRandomPosition("MSlx")] << " # mtauR(MX)" << endl;
+    }
+		else if (FindInUniversality("MSlx")) {
+      LesHouchesOutfile << "   31  "<<x[ReturnFittedPosition(ReturnUniversality("MSlx")->universality)]<<" # meL(MX)"<<endl;
+      LesHouchesOutfile << "   32  "<<x[ReturnFittedPosition(ReturnUniversality("MSlx")->universality)]<<" # mmuL(MX)"<<endl;
+      LesHouchesOutfile << "   33  "<<x[ReturnFittedPosition(ReturnUniversality("MSlx")->universality)]<<" # mtauLMX)"<<endl;
+      LesHouchesOutfile << "   34  "<<x[ReturnFittedPosition(ReturnUniversality("MSlx")->universality)]<<" # meR(MX)"<<endl;
+      LesHouchesOutfile << "   35  "<<x[ReturnFittedPosition(ReturnUniversality("MSlx")->universality)]<<" # mmuR(MX)"<<endl;
+      LesHouchesOutfile << "   36  "<<x[ReturnFittedPosition(ReturnUniversality("MSlx")->universality)]<<" # mtauR(MX)"<<endl;
+      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+        cout << "fitting " << ReturnUniversality("MSlx")->universality << " instead of MSlx" << endl;
+      }
+    }
+
+
 		if( FindInFixed("massA0")) {
-			LesHouchesOutfile << "   24 " << ReturnFixedValue("massA0")->value*ReturnFixedValue("massA0")->value << " # mA(pole)" << endl;
+			LesHouchesOutfile << "   26 " << ReturnFixedValue("massA0")->value << " # mA(pole)" << endl;
 		}
 		else if (FindInFitted("massA0")) {
 			cout << "got a mass A0 of " << x[ReturnFittedPosition("massA0")] << endl;
-			LesHouchesOutfile << "   24 " << x[ReturnFittedPosition("massA0")]*x[ReturnFittedPosition("massA0")]<< " # mA(pole)" << endl;
+			LesHouchesOutfile << "   26 " << x[ReturnFittedPosition("massA0")]<< " # mA(pole)" << endl;
 			if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
         cout << "Fitting massA0 " << x[ReturnFittedPosition("massA0")] << endl;
       }
 		}
+		else if (FindInRandomPar("massA0")) {
+      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+        cout << "Calculating random massA0 " << x[ReturnRandomPosition("massA0")] << endl;
+      }
+      LesHouchesOutfile << "   26 " << x[ReturnRandomPosition("massA0")] << " # mA(pole)" << endl;
+    }
 		else if (FindInUniversality("massA0")) {
-			LesHouchesOutfile << "   24 " << x[ReturnFittedPosition(ReturnUniversality("massA0")->universality)]*x[ReturnFittedPosition(ReturnUniversality("massA0")->universality)]<<" # mA(pole)" << endl;
+			LesHouchesOutfile << "   26 " << x[ReturnFittedPosition(ReturnUniversality("massA0")->universality)]<<" # mA(pole)" << endl;
 			if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
 				cout << "fitting " << ReturnUniversality("massA0")->universality << " instead of massA0" << endl;	
 			}	
 		}
-    
+
+		if( FindInFixed("Mu")) {
+      LesHouchesOutfile << "   23 " << ReturnFixedValue("Mu")->value << " # mu" << endl;
+	  	mu_local = ReturnFixedValue("Mu")->value;  
+		}
+    else if (FindInFitted("Mu")) {
+      cout << "got a mass A0 of " << x[ReturnFittedPosition("Mu")] << endl;
+      LesHouchesOutfile << "   23 " << x[ReturnFittedPosition("Mu")]<< " # mu" << endl;
+      mu_local = x[ReturnFittedPosition("Mu")];
+			if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+        cout << "Fitting Mu " << x[ReturnFittedPosition("Mu")] << endl;
+      }
+    }
+		else if (FindInRandomPar("Mu")) {
+      if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+        cout << "Calculating random Mu " << x[ReturnRandomPosition("Mu")] << endl;
+      }
+      LesHouchesOutfile << "   23 " << x[ReturnRandomPosition("Mu")] << " # mu" << endl;
+    	mu_local = x[ReturnRandomPosition("Mu")];
+		}
+    else if (FindInUniversality("Mu")) {
+      LesHouchesOutfile << "   23 " << x[ReturnFittedPosition(ReturnUniversality("Mu")->universality)]<<" # mu" << endl;
+      mu_local = x[ReturnFittedPosition(ReturnUniversality("Mu")->universality)];
+			if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
+        cout << "fitting " << ReturnUniversality("Mu")->universality << " instead of Mu" << endl;
+      }
+    }
+   
+ 
 		At_local = Xt_local + mu_local/tanBeta_local;	
 		LesHouchesOutfile << "   11 " << At_local << " # At(MX)" << endl;
-		LesHouchesOutfile << "   12 " << At_local << " # At(MX)" << endl;
-		LesHouchesOutfile << "   13 " << At_local << " # At(MX)" << endl;
+		LesHouchesOutfile << "   12 " << At_local << " # Ab(MX)" << endl;
+		LesHouchesOutfile << "   13 " << At_local << " # Atau(MX)" << endl;
         
     LesHouchesOutfile << "BLOCK SPHENOINPUT" << endl;
     LesHouchesOutfile << "    1  0                  # error level" << endl;

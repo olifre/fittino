@@ -40,10 +40,11 @@ fitModel      MHMAX
 
 fitParameter  TanBeta       10.0  +- 0.1       
 fitParameter  massA0        100. +- 1. GeV
-fitParameter  MSupR         500. +- 1. GeV
-fitParameter  MStopR        500. +- 1. GeV
+fitParameter  MSqx         500. +- 1. GeV
+fitParameter  MSq3         500. +- 1. GeV
 fitParameter  M2            100. +- 1. GeV
 fitParameter  M3            200. +- 1. GeV
+universality  MSqx MSlx Mu
 
 
 LoopCorrections       on

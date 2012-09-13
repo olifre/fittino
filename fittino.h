@@ -128,6 +128,9 @@ private:
     MeasuredValue fAtop;
     MeasuredValue fAtau;
 		MeasuredValue fmassA0;
+		MeasuredValue fMSqx;
+		MeasuredValue fMSq3;
+		MeasuredValue fMSlx;
 
     MeasuredValue fQEWSB;
 
