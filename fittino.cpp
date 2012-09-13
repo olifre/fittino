@@ -9560,7 +9560,6 @@ hase (rad), SPheno default value = 0
 			LesHouchesOutfile << "   26 " << ReturnFixedValue("massA0")->value << " # mA(pole)" << endl;
 		}
 		else if (FindInFitted("massA0")) {
-			cout << "got a mass A0 of " << x[ReturnFittedPosition("massA0")] << endl;
 			LesHouchesOutfile << "   26 " << x[ReturnFittedPosition("massA0")]<< " # mA(pole)" << endl;
 			if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
         cout << "Fitting massA0 " << x[ReturnFittedPosition("massA0")] << endl;
@@ -9584,7 +9583,6 @@ hase (rad), SPheno default value = 0
 	  	mu_local = ReturnFixedValue("Mu")->value;  
 		}
     else if (FindInFitted("Mu")) {
-      cout << "got a mass A0 of " << x[ReturnFittedPosition("Mu")] << endl;
       LesHouchesOutfile << "   23 " << x[ReturnFittedPosition("Mu")]<< " # mu" << endl;
       mu_local = x[ReturnFittedPosition("Mu")];
 			if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
