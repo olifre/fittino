@@ -9484,13 +9484,13 @@ hase (rad), SPheno default value = 0
       LesHouchesOutfile << "  43 "<<ReturnFixedValue("MSq3")->value<<" # mqL3(MX)" <<endl;
       LesHouchesOutfile << "  46 "<<ReturnFixedValue("MSq3")->value<<" # mtR(MX)" << endl;
       LesHouchesOutfile << "  49 "<<ReturnFixedValue("MSq3")->value<<" # mbR(MX)" << endl;
-			Xt_local = 2.*ReturnFixedValue("MSq3")->value;
+			Xt_local = 2.5*ReturnFixedValue("MSq3")->value;
     }
     else if (FindInFitted("MSq3")) {
       LesHouchesOutfile << "   43  "<<x[ReturnFittedPosition("MSq3")]<<" #  mqL3(MX)" <<endl;
       LesHouchesOutfile << "   46  "<<x[ReturnFittedPosition("MSq3")]<<" #  mtR(MX)" <<endl;
       LesHouchesOutfile << "   49  "<<x[ReturnFittedPosition("MSq3")]<<" #  mbR(MX)" <<endl;
-      Xt_local = 2.*x[ReturnFittedPosition("MSq3")];
+      Xt_local = 2.5*x[ReturnFittedPosition("MSq3")];
       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
         cout << "Fitting MSq3 " << x[ReturnFittedPosition("MSq3")] << endl;
       }
@@ -9499,15 +9499,16 @@ hase (rad), SPheno default value = 0
       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
         cout << "Calculating random MSq3 " << x[ReturnRandomPosition("MSq3")] << endl;
       }
-      LesHouchesOutfile << "   43 " << x[ReturnRandomPosition("MSqx")] << " # mqL3(MX)" << endl;
-      LesHouchesOutfile << "   46 " << x[ReturnRandomPosition("MSqx")] << " # mtR(MX)" << endl;
-      LesHouchesOutfile << "   49 " << x[ReturnRandomPosition("MSqx")] << " # mbR(MX)" << endl;
-    }
+      LesHouchesOutfile << "   43 " << x[ReturnRandomPosition("MSq3")] << " # mqL3(MX)" << endl;
+      LesHouchesOutfile << "   46 " << x[ReturnRandomPosition("MSq3")] << " # mtR(MX)" << endl;
+      LesHouchesOutfile << "   49 " << x[ReturnRandomPosition("MSq3")] << " # mbR(MX)" << endl;
+    	Xt_local = 2.5*x[ReturnRandomPosition("MSqx")];
+		}
     else if (FindInUniversality("MSq3")) {
       LesHouchesOutfile << "   43  "<<x[ReturnFittedPosition(ReturnUniversality("MSq3")->universality)]<<" # mqL3(MX)"<<endl;
       LesHouchesOutfile << "   46  "<<x[ReturnFittedPosition(ReturnUniversality("MSq3")->universality)]<<" # mtRMX)"<<endl;
       LesHouchesOutfile << "   49  "<<x[ReturnFittedPosition(ReturnUniversality("MSq3")->universality)]<<" # mbR(MX)"<<endl;
-      Xt_local = 2.*x[ReturnFittedPosition(ReturnUniversality("MSq3")->universality)];
+      Xt_local = 2.5*x[ReturnFittedPosition(ReturnUniversality("MSq3")->universality)];
       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
         cout << "fitting " << ReturnUniversality("MSq3")->universality << " instead of MSq3" << endl;
       }
