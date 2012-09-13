@@ -94,7 +94,8 @@ private:
 
     MeasuredValue fM1;
     MeasuredValue fM2;
-    MeasuredValue fAbsM3;
+    MeasuredValue fM3;
+		MeasuredValue fAbsM3;
     MeasuredValue fM0H;
     MeasuredValue fM0Hu;
     MeasuredValue fM0Hd;
@@ -126,6 +127,7 @@ private:
     MeasuredValue fAbottom;
     MeasuredValue fAtop;
     MeasuredValue fAtau;
+		MeasuredValue fmassA0;
 
     MeasuredValue fQEWSB;
 

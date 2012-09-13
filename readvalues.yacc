@@ -1898,7 +1898,9 @@ input:
           yyFitModel = NUHM1;
         else if( !strcmp($3, "NUHM2"))
           yyFitModel = NUHM2;
-        else {
+        else if( !strcmp($3, "MHMAX")) 
+					yyFitModel = MHMAX;
+				else {
 		      cerr<<"Unknown fit model: "<<$3<<endl;
 		      exit(EXIT_FAILURE);
 		    }

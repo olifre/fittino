@@ -1,0 +1,93 @@
+#########################################################################################
+###                           Fittino example input file                              ###
+###                           for MSSM parameters fit                                 ###
+#########################################################################################
+
+# $Id: fittino.in.sps1aprimelike_mssm 715 2010-07-25 22:24:43Z alvarez $
+# $Name$
+
+
+#########################################################################################
+# Masses                                                                                #
+#########################################################################################
+
+massW                    80.1048 GeV +- 0.039  GeV
+massZ                    91.1187 GeV +- 0.0021 GeV
+massTop                 173.0    GeV +- 0.05   GeV
+massBottom	          4.2    GeV +- 0.5    GeV
+alphas                    0.1172     +- 0.002
+sin2ThetaW                0.23113    +- 0.00015
+massCharm                 1.2 +- 0.1 GeV
+massh0                  125.00 GeV  +- 2 GeV +- 3 GeV # +- 0.5 GeV # Degrassi et al
+
+
+
+nofit massStop1   5 GeV +- 1 GeV
+nofit massStop2   5 GeV +- 1 GeV
+#########################################################################################
+# Branching ratios                                                                      #
+#########################################################################################
+
+# Selectron Branching Ratios
+#BR ( SelectronR -> Neutralino1 Electron )                    alias  1
+
+
+#########################################################################################
+# fit parameters                                                                        #
+#########################################################################################
+
+fitModel      MHMAX
+
+fitParameter  TanBeta       10.0  +- 0.1       
+fitParameter  massA0        100. +- 1. GeV
+fitParameter  MSupR         500. +- 1. GeV
+fitParameter  MStopR        500. +- 1. GeV
+fitParameter  M2            100. +- 1. GeV
+fitParameter  M3            200. +- 1. GeV
+
+
+LoopCorrections       on
+ISR                   on			       
+RequireNeut1LSP       on
+
+Verbose               on
+
+PerformFit            off
+PerformSingleFits     off
+       
+UseGivenStartValues   on
+FitAllDirectly        on
+BoundsOnX             off
+SepFitTanbX           off
+SepFitTanbMu          off
+SepFitmA	      off
+XScanRange            -6000. GeV  -300. GeV
+ScanX                 off
+
+ScanParameters        off
+CalcPullDist          off
+
+UseSimAnnBefore       off
+UseSimAnnWhile        off
+TempRedSimAnn         0.6
+MaxCallsSimAnn        10
+InitTempSimAnn        10000
+
+UseMarkovChains                on
+MarkovChainReadjustWidth       off
+MarkovChainReadjustWidthPeriod 500
+MaxMarkovChain                 10000
+
+# Uncomment to use adaptive widths in Markov chain
+# See  ../fittino.in.OnlineMarkovChainOptimisation
+UpdateWidths                    off
+UpdateWidthsScale               2
+
+
+Calculator            SPHENO ./SPheno
+
+UseMinos              off
+UseHesse              off
+
+NumberOfMinimizations 1
+ErrDef                1.
