@@ -3016,7 +3016,6 @@ else if (yyFitModel == NONUNIVSIMPLIFIED) {
   bool par_already_found;
 
   for (unsigned int  i=0; i < yyFittedPar.size(); i++ ) {
-  	cout << "now probing " << yyFittedPar[i].name  << endl;
 		par_already_found = false;
    	for (unsigned int j = 0; j < fInput->GetMeasuredVector().size(); j++ ) {
     	if (!yyFittedPar[i].name.compare(fInput->GetMeasuredVector()[j].name)) {
@@ -9462,13 +9461,6 @@ hase (rad), SPheno default value = 0
       LesHouchesOutfile << "   48 " << x[ReturnRandomPosition("MSqx")] << " # msR(MX)" << endl;
 		}
 		else if (FindInUniversality("MSqx")) {
-      LesHouchesOutfile << "   23  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # mu(MX)"<<endl;
-      LesHouchesOutfile << "   31  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # meL(MX)"<<endl;
-      LesHouchesOutfile << "   32  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # mmuL(MX)"<<endl;
-      LesHouchesOutfile << "   33  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # mtauLMX)"<<endl;
-      LesHouchesOutfile << "   34  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # meR(MX)"<<endl;
-      LesHouchesOutfile << "   35  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # mmuR(MX)"<<endl;
-      LesHouchesOutfile << "   36  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # mtauR(MX)"<<endl;
       LesHouchesOutfile << "   41  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # mqL1(MX)"<<endl;
       LesHouchesOutfile << "   42  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # mqL2(MX)"<<endl;
       LesHouchesOutfile << "   44  "<<x[ReturnFittedPosition(ReturnUniversality("MSqx")->universality)]<<" # muRMX)"<<endl;
