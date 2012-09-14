@@ -9322,33 +9322,33 @@ hase (rad), SPheno default value = 0
     }
 		
 		// define some variables that will be needed later;
-		double tanBeta_local = 0.;
-		double Xt_local = 0.;
-		double mu_local = 0.;
-		double At_local = 0.;
+		double tanBeta_val = 0.;
+		double Xt_val = 0.;
+		double mu_val = 0.;
+		double At_val = 0.;
 
 		LesHouchesOutfile << "BLOCK MINPAR" <<endl;
 		if (FindInFixed("TanBeta")) {
    		LesHouchesOutfile << "    3  "<< ReturnFixedValue("TanBeta")->value <<" # tanb (fixed)"<< endl;
-    	tanBeta_local = ReturnFixedValue("TanBeta")->value;
+    	tanBeta_val = ReturnFixedValue("TanBeta")->value;
 		}
     else if (FindInFitted("TanBeta")) {
    		if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
       	cout << "Fitting tanb " << x[ReturnFittedPosition("TanBeta")] << endl;
    		}
    		LesHouchesOutfile << "    3  "<< x[ReturnFittedPosition("TanBeta")]<<" # tanb"<< endl;
-    	tanBeta_local =  x[ReturnFittedPosition("TanBeta")];
+    	tanBeta_val =  x[ReturnFittedPosition("TanBeta")];
 		}
     else if (FindInRandomPar("TanBeta")) {
    		if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
       	cout << "Calculating random tanb " << x[ReturnRandomPosition("TanBeta")] << endl;
    		}
   		LesHouchesOutfile << "    3  "<< x[ReturnRandomPosition("TanBeta")]<<" # tanb (random)"<< endl;
-    	tanBeta_local = x[ReturnRandomPosition("TanBeta")];
+    	tanBeta_val = x[ReturnRandomPosition("TanBeta")];
 		}
     else if (FindInUniversality("TanBeta")) {
   		LesHouchesOutfile << "    3  "<<x[ReturnFittedPosition(ReturnUniversality("TanBeta")->universality)]<<" # TanBeta"<<endl;
-   		tanBeta_local = x[ReturnFittedPosition(ReturnUniversality("TanBeta")->universality)];
+   		tanBeta_val = x[ReturnFittedPosition(ReturnUniversality("TanBeta")->universality)];
 			if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
       	cout << "fitting " << ReturnUniversality("TanBeta")->universality << " instead of TanBeta" << endl;
    		}
@@ -9476,13 +9476,13 @@ hase (rad), SPheno default value = 0
       LesHouchesOutfile << "  43 "<<ReturnFixedValue("MSq3")->value<<" # mqL3(MX)" <<endl;
       LesHouchesOutfile << "  46 "<<ReturnFixedValue("MSq3")->value<<" # mtR(MX)" << endl;
       LesHouchesOutfile << "  49 "<<ReturnFixedValue("MSq3")->value<<" # mbR(MX)" << endl;
-			Xt_local = 2.5*ReturnFixedValue("MSq3")->value;
+			Xt_val = 2.5*ReturnFixedValue("MSq3")->value;
     }
     else if (FindInFitted("MSq3")) {
       LesHouchesOutfile << "   43  "<<x[ReturnFittedPosition("MSq3")]<<" #  mqL3(MX)" <<endl;
       LesHouchesOutfile << "   46  "<<x[ReturnFittedPosition("MSq3")]<<" #  mtR(MX)" <<endl;
       LesHouchesOutfile << "   49  "<<x[ReturnFittedPosition("MSq3")]<<" #  mbR(MX)" <<endl;
-      Xt_local = 2.5*x[ReturnFittedPosition("MSq3")];
+      Xt_val = 2.5*x[ReturnFittedPosition("MSq3")];
       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
         cout << "Fitting MSq3 " << x[ReturnFittedPosition("MSq3")] << endl;
       }
@@ -9494,13 +9494,13 @@ hase (rad), SPheno default value = 0
       LesHouchesOutfile << "   43 " << x[ReturnRandomPosition("MSq3")] << " # mqL3(MX)" << endl;
       LesHouchesOutfile << "   46 " << x[ReturnRandomPosition("MSq3")] << " # mtR(MX)" << endl;
       LesHouchesOutfile << "   49 " << x[ReturnRandomPosition("MSq3")] << " # mbR(MX)" << endl;
-    	Xt_local = 2.5*x[ReturnRandomPosition("MSqx")];
+    	Xt_val = 2.5*x[ReturnRandomPosition("MSq3")];
 		}
     else if (FindInUniversality("MSq3")) {
       LesHouchesOutfile << "   43  "<<x[ReturnFittedPosition(ReturnUniversality("MSq3")->universality)]<<" # mqL3(MX)"<<endl;
       LesHouchesOutfile << "   46  "<<x[ReturnFittedPosition(ReturnUniversality("MSq3")->universality)]<<" # mtRMX)"<<endl;
       LesHouchesOutfile << "   49  "<<x[ReturnFittedPosition(ReturnUniversality("MSq3")->universality)]<<" # mbR(MX)"<<endl;
-      Xt_local = 2.5*x[ReturnFittedPosition(ReturnUniversality("MSq3")->universality)];
+      Xt_val = 2.5*x[ReturnFittedPosition(ReturnUniversality("MSq3")->universality)];
       if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
         cout << "fitting " << ReturnUniversality("MSq3")->universality << " instead of MSq3" << endl;
       }
@@ -9573,11 +9573,11 @@ hase (rad), SPheno default value = 0
 
 		if( FindInFixed("Mu")) {
       LesHouchesOutfile << "   23 " << ReturnFixedValue("Mu")->value << " # mu" << endl;
-	  	mu_local = ReturnFixedValue("Mu")->value;  
+	  	mu_val = ReturnFixedValue("Mu")->value;  
 		}
     else if (FindInFitted("Mu")) {
       LesHouchesOutfile << "   23 " << x[ReturnFittedPosition("Mu")]<< " # mu" << endl;
-      mu_local = x[ReturnFittedPosition("Mu")];
+      mu_val = x[ReturnFittedPosition("Mu")];
 			if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
         cout << "Fitting Mu " << x[ReturnFittedPosition("Mu")] << endl;
       }
@@ -9587,21 +9587,21 @@ hase (rad), SPheno default value = 0
         cout << "Calculating random Mu " << x[ReturnRandomPosition("Mu")] << endl;
       }
       LesHouchesOutfile << "   23 " << x[ReturnRandomPosition("Mu")] << " # mu" << endl;
-    	mu_local = x[ReturnRandomPosition("Mu")];
+    	mu_val = x[ReturnRandomPosition("Mu")];
 		}
     else if (FindInUniversality("Mu")) {
       LesHouchesOutfile << "   23 " << x[ReturnFittedPosition(ReturnUniversality("Mu")->universality)]<<" # mu" << endl;
-      mu_local = x[ReturnFittedPosition(ReturnUniversality("Mu")->universality)];
+      mu_val = x[ReturnFittedPosition(ReturnUniversality("Mu")->universality)];
 			if (yyVerbose || ( TMath::Abs( ( (float)(n_printouts+1)/100. ) - (n_printouts+1)/100 ) < 0.01 ) ) {
         cout << "fitting " << ReturnUniversality("Mu")->universality << " instead of Mu" << endl;
       }
     }
    
  
-		At_local = Xt_local + mu_local/tanBeta_local;	
-		LesHouchesOutfile << "   11 " << At_local << " # At(MX)" << endl;
-		LesHouchesOutfile << "   12 " << At_local << " # Ab(MX)" << endl;
-		LesHouchesOutfile << "   13 " << At_local << " # Atau(MX)" << endl;
+		At_val = Xt_val + mu_val/tanBeta_val;	
+		LesHouchesOutfile << "   11 " << At_val << " # At(MX)" << endl;
+		LesHouchesOutfile << "   12 " << At_val << " # Ab(MX)" << endl;
+		LesHouchesOutfile << "   13 " << At_val << " # Atau(MX)" << endl;
         
     LesHouchesOutfile << "BLOCK SPHENOINPUT" << endl;
     LesHouchesOutfile << "    1  0                  # error level" << endl;
