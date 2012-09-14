@@ -9156,8 +9156,8 @@ hase (rad), SPheno default value = 0
 			exit(-1);
 		}
 		LesHouchesOutfile << "BLOCK MODSEL" << endl;
-    LesHouchesOutfile << "1  0 # General MSSM" << endl;
-    LesHouchesOutfile << "3  0 # MSSM particle content" << endl;
+    LesHouchesOutfile << "    1  0 # General MSSM" << endl;
+    LesHouchesOutfile << "    3  0 # MSSM particle content" << endl;
 		if ( yyUseFullCKMMatrix ) {
    		LesHouchesOutfile << "    5  1                 # CP violation (0,1,2)=(none, CKM, general SUSY)" << endl;
   		 LesHouchesOutfile << "    6  1                 # Flavour violation in quark sector" << endl;
