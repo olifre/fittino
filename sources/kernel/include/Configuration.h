@@ -60,7 +60,7 @@ namespace Fittino {
 
     public:
       enum                                  ExecutionMode { OPTIMIZATION, SAMPLING, SCAN };
-      enum                                  InputFileFormat { FITTINOINPUTFILE, XMLINPUTFILE };
+      enum                                  FileFormat { XML };
       enum                                  ModelType { MSUGRA, ROSENBROCK };
       enum                                  OptimizerType { GENETICALGORITHM, MINUIT, PARTICLESWARM, SIMULATEDANNEALING };
       enum                                  SamplerType { MARKOVCHAIN };

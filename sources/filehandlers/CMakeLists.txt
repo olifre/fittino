@@ -6,7 +6,7 @@
 #                                                                              #
 # File        CMakeLists.txt                                                   #
 #                                                                              #
-# Description Cmake configuration file for the interpreters directory.         #
+# Description Cmake configuration file for the filehandlers directory.         #
 #                                                                              #
 # Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              #
 #                                                                              #
@@ -28,6 +28,6 @@ INCLUDE_DIRECTORIES(../samplers/include)
 
 AUX_SOURCE_DIRECTORY(src sources)
 
-ADD_LIBRARY(interpreters ${sources})
+ADD_LIBRARY(filehandlers ${sources})
 
-TARGET_LINK_LIBRARIES(interpreters ${ROOT_LIBRARIES})
+TARGET_LINK_LIBRARIES(filehandlers ${ROOT_LIBRARIES})

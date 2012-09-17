@@ -6,8 +6,8 @@
 *                                                                              *
 * File        Factory.h                                                        *
 *                                                                              *
-* Description Factory class for creating input file interpreters, models,      *
-*             optimizers and samplers                                          *
+* Description Factory class for creating file handlers, models, optimizers     *
+*             and samplers                                                     *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -22,7 +22,7 @@
 #define FITTINO_FACTORY_H
 
 #include "Configuration.h"
-#include "InputFileInterpreterBase.h"
+#include "FileHandlerBase.h"
 #include "ModelBase.h"
 #include "OptimizerBase.h"
 #include "SamplerBase.h"
@@ -34,7 +34,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup kernel
-   *  \brief Factory class for creating input file interpreters, models, optimizers and samplers.
+   *  \brief Factory class for creating file handlers, models, optimizers and samplers.
    */
   class Factory {
 
@@ -42,20 +42,19 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                                            Factory();
+                                   Factory();
       /*!
        *  Standard destructor.
        */
-                                            ~Factory();
+                                   ~Factory();
       /*!
-       *  Returns a concrete input file interpreter according to the input file format passed as\n
-       *  an argument. Supported input file formats are
+       *  Returns a concrete file handler according to the file format passed as an argument.\n
+       *  Supported file formats are
        *  <ul>
-       *    <li> FITTINOINPUTFILE\n
        *    <li> XMLINPUTFILE\n
        *  </ul>
        */
-      const InputFileInterpreterBase* const CreateInputFileInterpreter( const Configuration::InputFileFormat& inputFileFormat ) const;
+      const FileHandlerBase* const CreateFileHandler( const Configuration::FileFormat& fileFormat ) const;
       /*!
        *  Returns a concrete model according to the model type passed as an argument. Supported\n
        *  model types are
@@ -64,7 +63,7 @@ namespace Fittino {
        *    <li> ROSENBROCK\n
        *  </ul>
        */
-      ModelBase* const                      CreateModel( const Configuration::ModelType& modelType ) const;
+      ModelBase* const             CreateModel( const Configuration::ModelType& modelType ) const;
       /*!
        *  Returns a concrete parameter optimizer according to the optimizer type passed as an\n
        *  argument. Supported optimizer types are
@@ -75,7 +74,7 @@ namespace Fittino {
        *    <li> SIMULATEDANNEALING\n
        *  </ul>
        */
-      OptimizerBase* const                  CreateOptimizer( const Configuration::OptimizerType& optimizerType, ModelBase* model ) const;
+      OptimizerBase* const         CreateOptimizer( const Configuration::OptimizerType& optimizerType, ModelBase* model ) const;
       /*!
        *  Returns a concrete parameter sampler according to the sampler type passed as an\n
        *  argument.  Supported sampler types are
@@ -83,7 +82,7 @@ namespace Fittino {
        *    <li> MARKOVCHAIN\n
        *  </ul>
        */
-      SamplerBase* const                    CreateSampler( const Configuration::SamplerType& samplerType, ModelBase* model ) const;
+      SamplerBase* const           CreateSampler( const Configuration::SamplerType& samplerType, ModelBase* model ) const;
 
   };
 

@@ -22,6 +22,7 @@
 #define FITTINO_ANALYSISTOOL_H
 
 #include <string>
+#include <vector>
 
 #include "TFile.h"
 #include "TRandom.h"

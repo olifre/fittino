@@ -19,7 +19,7 @@
 *******************************************************************************/
 
 #include "Factory.h"
-#include "FittinoInputFileInterpreter.h"
+#include "FileHandlerBase.h"
 #include "GeneticAlgorithmOptimizer.h"
 #include "MarkovChainSampler.h"
 #include "MinuitOptimizer.h"
@@ -27,7 +27,7 @@
 #include "ParticleSwarmOptimizer.h"
 #include "RosenbrockModel.h"
 #include "SimulatedAnnealingOptimizer.h"
-#include "XMLInputFileInterpreter.h"
+#include "XMLFittinoFileHandler.h"
 
 Fittino::Factory::Factory() {
 
@@ -37,15 +37,12 @@ Fittino::Factory::~Factory() {
 
 }
 
-const Fittino::InputFileInterpreterBase* const Fittino::Factory::CreateInputFileInterpreter( const Fittino::Configuration::InputFileFormat& inputFileFormat ) const {
+const Fittino::FileHandlerBase* const Fittino::Factory::CreateFileHandler( const Fittino::Configuration::FileFormat& fileFormat ) const {
 
-    switch ( inputFileFormat ) {
+    switch ( fileFormat ) {
 
-        case Configuration::FITTINOINPUTFILE:
-            return new FittinoInputFileInterpreter();
-
-        case Configuration::XMLINPUTFILE:
-            return new XMLInputFileInterpreter();
+        case Configuration::XML:
+            return new XMLFittinoFileHandler();
 
     }
 

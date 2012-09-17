@@ -4,9 +4,9 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        InputFileInterpreterBase.cpp                                     *
+* File        FittinoFileHandlerBase.h                                         *
 *                                                                              *
-* Description Class for reading and interpreting Fittino input files           *
+* Description Base class for reading and interpreting Fittino input files      *
 *                                                                              *
 * Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
 *             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
@@ -20,12 +20,19 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "InputFileInterpreterBase.h"
+#include "InputException.h"
+#include "FittinoFileHandlerBase.h"
 
-Fittino::InputFileInterpreterBase::InputFileInterpreterBase() {
+Fittino::FittinoFileHandlerBase::FittinoFileHandlerBase() {
 
 }
 
-Fittino::InputFileInterpreterBase::~InputFileInterpreterBase() {
+Fittino::FittinoFileHandlerBase::~FittinoFileHandlerBase() {
+
+}
+
+void Fittino::FittinoFileHandlerBase::WriteFile( const TString& outputFileName ) const {
+
+    throw InputException( "Writing of Fittino files is not impelemented yet." );
 
 }

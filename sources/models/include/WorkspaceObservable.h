@@ -82,7 +82,7 @@ namespace Fittino {
       /*!
        *  Calculate chi2 contribution from this observable.
        */
-      void          CalculateChi2();
+      //void          CalculateChi2();
 
       /*! \endcond UML */
 

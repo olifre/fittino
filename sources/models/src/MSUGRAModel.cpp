@@ -20,7 +20,7 @@
 #include "Configuration.h"
 #include "MSUGRAModel.h"
 //#include "SLHAObservable.h"
-#include "WorkspaceObservable.h"
+//#include "WorkspaceObservable.h"
 
 Fittino::MSUGRAModel::MSUGRAModel() {
 
@@ -36,12 +36,12 @@ Fittino::MSUGRAModel::MSUGRAModel() {
     //SLHAObservable* observable = new SLHAObservable( "Br(b -> s gamma)", 3.55e-04, 0.26e-04, 1 );
     //_observableVector.push_back( observable );
 
-    WorkspaceObservable *observable = new WorkspaceObservable( "LHCRate",
-                                                               0,
-                                                               "/afs/atlass01.physik.uni-bonn.de/user/uhlenbrock/programs/WorkspaceSimpleExample/workspace.root",
-                                                               "testWorkspace",
-                                                               "PredictedRate.dat" );
-    _observableVector.push_back( observable );
+    //WorkspaceObservable *observable = new WorkspaceObservable( "LHCRate",
+    //                                                           0,
+    //                                                           "/afs/atlass01.physik.uni-bonn.de/user/uhlenbrock/programs/WorkspaceSimpleExample/workspace.root",
+    //                                                           "testWorkspace",
+    //                                                           "PredictedRate.dat" );
+    //_observableVector.push_back( observable );
 
     ModelBase::InitializeModel();
 

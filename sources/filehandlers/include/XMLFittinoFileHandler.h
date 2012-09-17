@@ -1,12 +1,13 @@
-/* $Id: XMLInputFileInterpreter.h 542 2009-12-23 14:59:43Z wiene $ */
+/* $Id: XMLFittinoFileHandler.h 542 2009-12-23 14:59:43Z wiene $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        XMLInputFileInterpreter.h                                        *
+* File        XMLFittinoFileHandler.h                                          *
 *                                                                              *
-* Description Class for reading and interpreting XML input files               *
+* Description Class for reading and interpreting Fittino input files in XML    *
+*             format                                                           *
 *                                                                              *
 * Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
 *             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
@@ -20,10 +21,10 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_XMLINPUTFILEINTERPRETER_H
-#define FITTINO_XMLINPUTFILEINTERPRETER_H
+#ifndef FITTINO_XMLFITTINOFILEHANDLER_H
+#define FITTINO_XMLFITTINOFILEHANDLER_H
 
-#include "InputFileInterpreterBase.h"
+#include "FittinoFileHandlerBase.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -31,24 +32,29 @@
 namespace Fittino {
 
   /*!
-   *  \ingroup interpreters
-   *  \brief Class for reading and interpreting XML input files.
+   *  \ingroup filehandlers
+   *  \brief Class for reading and interpreting Fittino input files in XML format.
    */
-  class XMLInputFileInterpreter : public InputFileInterpreterBase {
+  class XMLFittinoFileHandler : public FittinoFileHandlerBase {
 
     public:
       /*!
        *  Standard constructor.
        */
-                   XMLInputFileInterpreter();
+                   XMLFittinoFileHandler();
       /*!
        *  Standard destructor.
        */
-      virtual      ~XMLInputFileInterpreter();
-      virtual void Parse( const TString& xmlInputFileName ) const;
+      virtual      ~XMLFittinoFileHandler();
+      /*!
+       *  Parses the input file given as an argument. After calling this method the Configuration\n
+       *  instance is initialized and the steering parameters specified in the input file can be\n
+       *  retrieved via dedicated getter functions.
+       */
+      virtual void ReadFile( const TString& xmlInputFileName ) const;
 
   };
 
 }
 
-#endif // FITTINO_XMLINPUTFILEINTERPRETER_H
+#endif // FITTINO_XMLFITTINOFILEHANDLER_H

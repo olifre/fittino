@@ -29,8 +29,8 @@
 #include "ConfigurationException.h"
 #include "Controller.h"
 #include "Factory.h"
+#include "FileHandlerBase.h"
 #include "InputException.h"
-#include "InputFileInterpreterBase.h"
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "OptimizerBase.h"
@@ -121,9 +121,9 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 	// Create an input file interpreter depending on the file format and parse the input file.
 
         const Factory factory;
-        const InputFileInterpreterBase* const inputFileInterpreter = factory.CreateInputFileInterpreter( Controller::DetermineInputFileFormat() );
-        inputFileInterpreter->Parse( _inputFileName );
-        delete inputFileInterpreter;
+        const FileHandlerBase* const fittinoFileHandler = factory.CreateFileHandler( Controller::DetermineInputFileFormat() );
+        fittinoFileHandler->ReadFile( _inputFileName );
+        delete fittinoFileHandler;
 
 	// Set the level of output verbosity.
 
@@ -208,7 +208,7 @@ void Fittino::Controller::PrintHelp() const {
     messenger << Messenger::ALWAYS << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  A single given argument (different from \"-h\" or \"--help\") is" << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  interpreted as the name of an input file. The input file suffix" << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  must be .ftn (Fittino format) or .xml (XML format)." << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  must be .xml (XML format)." << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  Several example input files can be found at fittino2/input." << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
     messenger << Messenger::ALWAYS << "Supported options are:" << Messenger::Endl;
@@ -217,7 +217,7 @@ void Fittino::Controller::PrintHelp() const {
     messenger << Messenger::ALWAYS << "      Fittino prints this message." << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  -i, --input-file=FILE" << Messenger::Endl;
     messenger << Messenger::ALWAYS << "      Fittino uses the input file FILE. The input file suffix must" << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "      be .ftn (Fittino format) or .xml (XML format)." << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "      be .xml (XML format)." << Messenger::Endl;
     messenger << Messenger::ALWAYS << "      Several example input files can be found at fittino2/input." << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  -s, --seed=SEED" << Messenger::Endl;
     messenger << Messenger::ALWAYS << "      Fittino uses the given random number generator seed." << Messenger::Endl;
@@ -236,7 +236,7 @@ void Fittino::Controller::PrintLogo() const {
 
 }
 
-const Fittino::Configuration::InputFileFormat Fittino::Controller::DetermineInputFileFormat() const {
+const Fittino::Configuration::FileFormat Fittino::Controller::DetermineInputFileFormat() const {
 
     try {
 
@@ -246,19 +246,14 @@ const Fittino::Configuration::InputFileFormat Fittino::Controller::DetermineInpu
 
         }
 
-        if ( !_inputFileName.compare( _inputFileName.length() - 4, 4, ".ftn" ) ) {
+        if ( !_inputFileName.compare( _inputFileName.length() - 4, 4, ".xml" ) ) {
 
-            return Configuration::FITTINOINPUTFILE;
-
-        }
-        else if ( !_inputFileName.compare( _inputFileName.length() - 4, 4, ".xml" ) ) {
-
-            return Configuration::XMLINPUTFILE;
+            return Configuration::XML;
 
         }
         else {
 
-            throw InputException( "Input file suffix must be .ftn (Fittino format) or .xml (XML format)." );
+            throw InputException( "Input file suffix must be .xml (XML format)." );
 
         }
 

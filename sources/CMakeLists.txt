@@ -18,7 +18,7 @@
 ################################################################################
 
 ADD_SUBDIRECTORY(exceptions)
-ADD_SUBDIRECTORY(interpreters)
+ADD_SUBDIRECTORY(filehandlers)
 ADD_SUBDIRECTORY(kernel)
 ADD_SUBDIRECTORY(models)
 ADD_SUBDIRECTORY(optimizers)

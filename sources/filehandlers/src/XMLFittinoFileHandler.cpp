@@ -1,12 +1,13 @@
-/* $Id: XMLInputFileInterpreter.cpp 542 2009-12-23 14:59:43Z wiene $ */
+/* $Id: XMLFittinoFileHandler.cpp 542 2009-12-23 14:59:43Z wiene $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        XMLInputFileInterpreter.cpp                                      *
+* File        XMLFittinoFileHandler.h                                          *
 *                                                                              *
-* Description Class for reading and interpreting XML input files               *
+* Description Class for reading and interpreting Fittino input files in XML    *
+*             format                                                           *
 *                                                                              *
 * Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
 *             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
@@ -33,17 +34,17 @@
 #include "Configuration.h"
 #include "InputException.h"
 #include "Messenger.h"
-#include "XMLInputFileInterpreter.h"
+#include "XMLFittinoFileHandler.h"
 
-Fittino::XMLInputFileInterpreter::XMLInputFileInterpreter() {
-
-}
-
-Fittino::XMLInputFileInterpreter::~XMLInputFileInterpreter() {
+Fittino::XMLFittinoFileHandler::XMLFittinoFileHandler() {
 
 }
 
-void Fittino::XMLInputFileInterpreter::Parse( const TString& xmlInputFileName ) const {
+Fittino::XMLFittinoFileHandler::~XMLFittinoFileHandler() {
+
+}
+
+void Fittino::XMLFittinoFileHandler::ReadFile( const TString& xmlInputFileName ) const {
 
     Messenger& messenger = Messenger::GetInstance();
 

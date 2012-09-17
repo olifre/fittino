@@ -4,9 +4,9 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        InputFileInterpreterBase.h                                       *
+* File        FittinoFileHandlerBase.h                                         *
 *                                                                              *
-* Description Base class for reading and interpreting input files              *
+* Description Base class for reading and interpreting Fittino input files      *
 *                                                                              *
 * Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
 *             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
@@ -20,10 +20,10 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_INPUTFILEINTERPRETERBASE_H
-#define FITTINO_INPUTFILEINTERPRETERBASE_H
+#ifndef FITTINO_FITTINOFILEHANDLERBASE_H
+#define FITTINO_FITTINOFILEHANDLERBASE_H
 
-class TString;
+#include "FileHandlerBase.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -31,34 +31,24 @@ class TString;
 namespace Fittino {
 
   /*!
-   *  \defgroup interpreters
+   *  \ingroup filehandlers
+   *  \brief Base class for reading and interpreting Fittino input files.
    */
-  /*!
-   *  \ingroup interpreters
-   *  \brief Base class for reading and interpreting input files.
-   */
-  class InputFileInterpreterBase {
+  class FittinoFileHandlerBase : public FileHandlerBase {
 
     public:
       /*!
        *  Standard constructor.
        */
-                   InputFileInterpreterBase();
+                   FittinoFileHandlerBase();
       /*!
        *  Standard destructor.
        */
-      virtual      ~InputFileInterpreterBase();
-      /*!
-       *  Parses the input file given as an argument. After calling this method the Configuration\n
-       *  instance is initialized and the steering parameters specified in the input file can be\n
-       *  retrieved via dedicated getter functions.
-       *
-       *  \todo Short-term: Discuss usage of TString (instead of std::string) here.
-       */
-      virtual void Parse( const TString& inputFileName ) const = 0;
+      virtual      ~FittinoFileHandlerBase();
+      virtual void WriteFile( const TString& outputFileName ) const;
 
   };
 
 }
 
-#endif // FITTINO_INPUTFILEINTERPRETERBASE_H
+#endif // FITTINO_FITTINOFILEHANDLERBASE_H
