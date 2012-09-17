@@ -1,17 +1,14 @@
-/* $Id$ */
+/* $Id: FileHandlerBase.h 851 2011-01-10 18:01:22Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        FittinoInputFileInterpreter.h                                    *
+* File        FileHandlerBase.h                                                *
 *                                                                              *
-* Description Class for reading and interpreting Fittino input files           *
+* Description Base class for file handlers                                     *
 *                                                                              *
-* Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
-*             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
-*	      Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
-*	      Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
+* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -20,10 +17,10 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_FITTINOINPUTFILEINTERPRETER_H
-#define FITTINO_FITTINOINPUTFILEINTERPRETER_H
+#ifndef FITTINO_FILEHANDLERBASE_H
+#define FITTINO_FILEHANDLERBASE_H
 
-#include "InputFileInterpreterBase.h"
+class TString;
 
 /*!
  *  \brief Fittino namespace.
@@ -31,27 +28,31 @@
 namespace Fittino {
 
   /*!
-   *  \ingroup interpreters
-   *  \brief Class for reading and interpreting Fittino input files.
+   *  \defgroup filehandlers
    */
   /*!
-   *  \todo Short-term: Remove this class completely?
+   *  \ingroup filehandlers
+   *  \brief Base class for file handlers.
    */
-  class FittinoInputFileInterpreter : public InputFileInterpreterBase {
+  class FileHandlerBase {
 
     public:
       /*!
        *  Standard constructor.
        */
-                   FittinoInputFileInterpreter();
+                   FileHandlerBase();
       /*!
        *  Standard destructor.
        */
-      virtual      ~FittinoInputFileInterpreter();
-      virtual void Parse( const TString& fittinoInputFileName ) const;
+      virtual      ~FileHandlerBase();
+      /*!
+       *  \todo Short-term: Discuss usage of TString (instead of std::string) here.
+       */
+      virtual void ReadFile( const TString& inputFileName ) const = 0;
+      virtual void WriteFile( const TString& outputFileName ) const = 0;
 
   };
 
 }
 
-#endif // FITTINO_FITTINOINPUTFILEINTERPRETER_H
+#endif // FITTINO_FILEHANDLERBASE_H

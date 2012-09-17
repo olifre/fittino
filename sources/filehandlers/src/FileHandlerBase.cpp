@@ -1,17 +1,14 @@
-/* $Id$ */
+/* $Id: FileHandlerBase.cpp 844 2011-01-10 13:52:15Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        FittinoInputFileInterpreter.cpp                                  *
+* File        FileHandlerBase.cpp                                              *
 *                                                                              *
-* Description Class for reading and interpreting Fittino input files           *
+* Description Base class for file handlers                                     *
 *                                                                              *
-* Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
-*             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
-*	      Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
-*	      Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
+* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -20,19 +17,12 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "FittinoInputFileInterpreter.h"
-#include "InputException.h"
+#include "FileHandlerBase.h"
 
-Fittino::FittinoInputFileInterpreter::FittinoInputFileInterpreter() {
-
-}
-
-Fittino::FittinoInputFileInterpreter::~FittinoInputFileInterpreter() {
+Fittino::FileHandlerBase::FileHandlerBase() {
 
 }
 
-void Fittino::FittinoInputFileInterpreter::Parse( const TString& fittinoInputFileName ) const {
-
-    throw InputException( "Fittino input files not supported yet" );
+Fittino::FileHandlerBase::~FileHandlerBase() {
 
 }
