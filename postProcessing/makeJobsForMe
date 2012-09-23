@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# ####################################################
+# Create the batch jobs
+# Takes 1 input:  number of generation (3,4,5)
+# ####################################################
+
+
+rm $1/*
+rm ../outputs/$1/*.root
+
+
+removeAll='removeAll'
+if [ -e "$removeAll" ]
+    then
+    rm $removeAll
+    touch $removeAll
+fi
+
+batchAllJobs='batchAllJobs'
+if [ -e "$batchAllJobs" ]
+    then
+    rm $batchAllJobs
+    touch $batchAllJobs
+fi
+
+### Loop over fits ###
+
+list=listOfFits\_$1.txt
+
+while read line
+do
+#part=`echo $line | cut -d"X" -f 1`
+echo $line
+cp job_postProcessing job_postProcessing_$line
+sed -i s/FIT_TO_BE_PROCESSED/$line/g job_postProcessing_$line
+sed -i s/XX/$1/g job_postProcessing_$line
+echo "qsub job_postProcessing_$line" >> $batchAllJobs
+echo "rm job_postProcessing_$line.o*" >> $removeAll
+done < $list
+
+###
+
+chmod u+x $batchAllJobs
+chmod u+x $removeAll
+
+mv job_postProcessing_* $1/
+mv $batchAllJobs $1/
+mv $removeAll $1/

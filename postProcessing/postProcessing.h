@@ -301,9 +301,8 @@ void initialize( TString arg1, TString arg2, TString arg3 ){
   else if( fit.Contains("NUHM2") ) model = "NUHM2";
   else model = "msugra";
 
-  // For the last NUHM fits, use only the msugra mode
-  model = "msugra";
-
+  // For the fits 3 to 6, use only the msugra mode
+  if( !inputDir.Contains("fittino.out.summer2012_07") ) model = "msugra";
 
   numberToys = atoi( getenv("NUMBERTOYS") );
   int _verbose = atoi( getenv("VERBOSE") );
