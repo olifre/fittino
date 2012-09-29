@@ -2,8 +2,8 @@
 #define ASTROFIT_H
 
 TGraph* graph = 0;
-//double valAtZero = 0;
-double shiftAtBestFitPoint = 0;
+double valAtZero = 0;
+//double shiftAtBestFitPoint = 0;
 double relativeTheoUnc = 0.50;
 
 // ===================================================================
@@ -13,15 +13,19 @@ double relativeTheoUnc = 0.50;
 
   // Upper limit on cross section at that point
   double upperLimit = graph->Eval( WIMPmass );
+  //cout << "Upper limit on CS: "<< upperLimit << endl;
 
   // Width of parabola at that point, for one-sided 1D 90%CL, chi2=1.64: Chi2 = (cs/sigma)^2
   double width = upperLimit / TMath::Sqrt(1.64);
+  //cout << "Width at this point: "<< width << endl;
   
   // Add theoretical uncertainty of 50% on cross section from form factors
   //double theo = theoUnc * upperLimit;//**
   double theo = theoUnc * WIMPcs;
+  //cout << "Theoretical unc: "<< theo << endl;
 
   double totalWidth = TMath::Sqrt( width*width + theo*theo  );
+  //cout << "total width: "<< totalWidth << endl;
 
   return totalWidth;
 }
@@ -51,10 +55,12 @@ void setAstrofit( int PP_or_Toys, double bestWIMPmass, double bestWIMPcs, bool v
   if( PP_or_Toys == 1 ) parabolaMean = bestWIMPcs;
   
   // Value at cross section=zero of the parabola at best fit point
-  //valAtZero = TMath::Power( parabolaMean / totalWidth, 2 );
+  valAtZero = TMath::Power( parabolaMean / totalWidth, 2 );
 
   // Shift of the parabola's mean: parabolaMean - upperLimit
-  shiftAtBestFitPoint = parabolaMean - ( graph->Eval( bestWIMPmass ) );
+  //shiftAtBestFitPoint = parabolaMean - ( graph->Eval( bestWIMPmass ) );
+  //cout << "Parabola mean: "<< parabolaMean << endl;
+  //cout << "Shift ta best point: "<< shiftAtBestFitPoint << endl;
 
   return;
 }
@@ -69,8 +75,9 @@ double astrofitChi2( double WIMPmass, double WIMPcs, bool verbose ){
   //double totalWidth = parabolaWidth( WIMPmass, relativeTheoUnc );//**
 
   // Require constant chi2 for null cross section
-  //double cs0 = totalWidth * TMath::Sqrt( valAtZero );
-  double cs0 = WIMPcs + shiftAtBestFitPoint;
+  double cs0 = totalWidth * TMath::Sqrt( valAtZero );
+  //double cs0 = WIMPcs + shiftAtBestFitPoint;
+  //cout << "cs0: "<< cs0 << endl;
 
   // Calculate chi2 for that point by setting the parabola to zero below the minimum
   double chi2 = 0;

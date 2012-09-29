@@ -1025,6 +1025,8 @@ void calculateChi2( int PP_or_Toys ){
       saveSmearedObs();
     }
 
+  // Monitor the cut flow
+  int cutFlow[6] = {0};
   
   // Calculate new chi2 and find the lowest chi2
   if( verbose ) cout << "   > Calculate new chi2.." << endl;
@@ -1041,6 +1043,7 @@ void calculateChi2( int PP_or_Toys ){
 
       if( verbose ) cout << " ---------- EVENT # "<< ievt << " ---------- " << endl;
       if( verbose ) cout <<"    - Parameters: M0(" <<P_M0<<") M12("<<P_M12<<") TanBeta("<<P_TanBeta<<") A0("<<P_A0<<")" <<endl;
+      cutFlow[0]++;
 
       // Cut on chargino mass
        float mChiplCut = 0;
@@ -1048,6 +1051,7 @@ void calculateChi2( int PP_or_Toys ){
        if( PP_or_Toys == 1 ) mChiplCut = chipl_bound;//nominal value	 
        if( verbose ) cout <<"    - Chargino mass " << O_massChargino1_nofit << " bound: " << mChiplCut << endl;
        if( O_massChargino1_nofit < mChiplCut ) continue;
+       cutFlow[1]++;
 
       // Chi2 for low energy observables
       if( PP_or_Toys == 1 ) Bsg_chi2 = myChi2( O_Bsg_npf,  LEObs[1], uncLEObs[1] ) ;
@@ -1092,6 +1096,7 @@ void calculateChi2( int PP_or_Toys ){
       if( PP_or_Toys == 0 ) massTop_chi2 = myChi2( O_massTop,  toyVal[10], uncLEObs[10] ) ;
       LEO_chi2 += massTop_chi2;
       newChi2 += LEO_chi2;
+      cutFlow[2]++;
 
       if( verbose ){
 	cout << "    - Individual chi2 per observables:"<<endl;       
@@ -1128,6 +1133,7 @@ void calculateChi2( int PP_or_Toys ){
       else LHC_chi2 = 1000;
       newChi2 += LHC_chi2;
       if( verbose ) cout << "       LHC " << LHC_chi2 << endl;      
+      cutFlow[3]++;
 
       // New chi2 for Higgs       
       if( useHiggsSignal ){
@@ -1139,6 +1145,7 @@ void calculateChi2( int PP_or_Toys ){
 	newChi2 += Higgs_chi2;
 	if( verbose ) cout << "       Higgs " << Higgs_chi2 << endl; 
       }
+      cutFlow[4]++;
       
       // New chi2 for astrofit
       af_chi2 = astrofitChi2( O_massNeutralino1_nofit, af_direct, false );
@@ -1148,7 +1155,8 @@ void calculateChi2( int PP_or_Toys ){
       if( verbose ) cout << "    - Total LEO chi2 " << LEO_chi2 << endl;
 
       // Don't save large chi2 points
-      if( newChi2 > 80 ) continue;
+      if( newChi2 > 150 ) continue;
+      cutFlow[5]++;
 
       // Fill output ntuple for the real fit
       if( PP_or_Toys == 1 || numberToys == 1 ){
@@ -1200,7 +1208,8 @@ void calculateChi2( int PP_or_Toys ){
       }
     }
 
-
+  cout << endl << " >>> Cut flow.." << endl;
+  for( int icut=0; icut < 6; icut++ ) cout << "Step "<< icut << ": "<< cutFlow[icut] << endl;
   delete prov;
 
   return;
