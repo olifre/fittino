@@ -33,6 +33,10 @@ void preparIOfiles( TString task, TString arg1, TString arg2, TString arg3 ){
   else if( fit.Contains("NUHM2") ) model = "NUHM2";
   else model = "msugra";
 
+  pp_segment = atoi( getenv("PP_SEGMENT") );
+  nb_segment = atoi( getenv("NB_SEGMENT") );
+  pp_segment_st = getenv("PP_SEGMENT");
+
   // == Opening input fit to process
   TString name_in = inputDir + fit + ".root";
   file_in = new TFile( name_in );
@@ -521,9 +525,24 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
     bestFitVal[0] = 1E5;
   }
 
-  cout << endl << " >>> Looping over the file.. " << endl;
-  for( Int_t ievt = 0; ievt <  markovChain_in->GetEntries(); ++ievt )
-  //for( Int_t ievt = 0; ievt < 100; ++ievt )
+  cout << endl << "  >> Looping over the file.. " << endl;
+
+
+
+  int nEnt = markovChain_in->GetEntries();
+  int nBet = 0;
+  int first = 0;
+  int last = nEnt;
+
+
+  if( task == "multiplePointsRemoval" ){
+    nBet = TMath::FloorNint( nEnt / nb_segment );
+    first = (pp_segment-1) * nBet;
+    last = first + nBet;  
+    cout << "   > PP segment: " << pp_segment << "/" << nb_segment<<" -> events: " << first << " to " << last-1 << " of " << nEnt << endl;
+  }
+  
+  for( Int_t ievt = first; ievt < last; ++ievt )  
   {
     markovChain_in->GetEntry( ievt );
 
@@ -531,11 +550,16 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
     // Remove the error points (chi2=1000)
     if( chi2 >= 1000 ) continue;
 
+    // Cut off negative chi2
+    if( af_chi2_total < 0 ) continue;
+    if( LHC_Exp_chi2 < 0 ) continue;
+    if( HiggsSignals_TotalChi2 < 0 ) continue;
+    
     // ----------------------------------------------
     // Remove the multiple points
-    // Considering the current point, the 100 points after it are compared to the current points
-    // if any of these 100 is similar, the current point is rejected. Thus of all multiple points only the
-    // last of the file remain, if the others stand at a maximale 'distance' of 100
+    // Considering the current point, the 10 points after it are compared to the current points
+    // if any of these 10 is similar, the current point is rejected. Thus of all multiple points only the
+    // last of the file remain, if the others stand at a maximale 'distance' of 10
     
     if( task == "multiplePointsRemoval" )
       {
@@ -545,25 +569,19 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
 	Float_t thisTanBeta = P_TanBeta;
 	
 	bool alreadySeen = 0;
-	int first = ievt+1;
-	int last;
-	if( (ievt+100) > markovChain_in->GetEntries() ) last = markovChain_in->GetEntries();
-	else last = ievt+100;    
-	for( Int_t jevt = first; jevt < last; ++jevt ){
+	int firstChecked = ievt+1;
+	int lastChecked;
+	if( (ievt+10) > markovChain_in->GetEntries() ) lastChecked = markovChain_in->GetEntries();
+	else lastChecked = ievt+10;    
+	for( Int_t jevt = firstChecked; jevt < lastChecked; ++jevt ){
 	markovChain_in->GetEntry( jevt );
 	if( thisM0 == P_M0 && thisM12 == P_M12 && thisA0 == P_A0 && thisTanBeta == P_TanBeta ){
 	  alreadySeen = 1;
 	  break;
 	}
 	}
-	if( alreadySeen ) continue;      
-	
-	markovChain_in->GetEntry( ievt );
-	
-	// Cut off negative chi2
-	if( af_chi2_total < 0 ) continue;
-	if( LHC_Exp_chi2 < 0 ) continue;
-	if( HiggsSignals_TotalChi2 < 0 ) continue;
+	if( alreadySeen ) continue;      	
+	markovChain_in->GetEntry( ievt );	
       }  
 
      // ----------------------------------------------
@@ -602,18 +620,18 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
 
 	  if( name.Contains("A0") && chi2 < cuts[icut]->Eval( P_A0 ) ) raus = 1;
 	  if( name.Contains("TanBeta") && chi2 < cuts[icut]->Eval( P_TanBeta ) ) raus = 1;
-	  if( name.Contains("M0") && chi2 < cuts[icut]->Eval( P_M0 ) ) raus = 1;
+	  if( name.Contains("M0") && !name.Contains("M0H") && chi2 < cuts[icut]->Eval( P_M0 ) ) raus = 1;
 	  if( name.Contains("M12") && chi2 < cuts[icut]->Eval( P_M12 ) ) raus = 1;
 	  if( name.Contains("MassTop") && chi2 < cuts[icut]->Eval( P_massTop ) ) raus = 1;
-	  if( model == "NUHM1" )
-	  if( name.Contains("M0H") && chi2 < cuts[icut]->Eval( P_M0H ) ) raus = 1;
-	  if( model == "NUHM2" ){
-	    if( name.Contains("M0Hu") && chi2 < cuts[icut]->Eval( P_M0Hu ) ) raus = 1;
-	    if( name.Contains("M0Hd") && chi2 < cuts[icut]->Eval( P_M0Hd ) ) raus = 1;
-	  }
+	  //if( model == "NUHM1" )
+	  //if( name.Contains("M0H") && chi2 < cuts[icut]->Eval( P_M0H ) ) raus = 1;
+	  //if( model == "NUHM2" ){
+	  //if( name.Contains("M0Hu") && chi2 < cuts[icut]->Eval( P_M0Hu ) ) raus = 1;
+	  //if( name.Contains("M0Hd") && chi2 < cuts[icut]->Eval( P_M0Hd ) ) raus = 1;
+	  //}
 	}
-	// == Cut out useless high chi2 points, chi2=80 is the limit used by the buggy point removal tool
-	if( chi2 > 80 ) raus = 1;
+	// == Cut out useless high chi2 points, chi2=50 is the limit used by the buggy point removal tool
+	if( chi2 > 50 ) raus = 1;
 	if( raus ) continue;	
 	
 	if( chi2 < bestFitVal[0] ){

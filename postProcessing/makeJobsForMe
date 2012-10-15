@@ -7,7 +7,7 @@
 
 
 rm $1/*
-rm ../outputs/$1/*.root
+#rm ../outputs/$1/*.root
 
 
 removeAll='removeAll'
@@ -15,13 +15,6 @@ if [ -e "$removeAll" ]
     then
     rm $removeAll
     touch $removeAll
-fi
-
-batchAllJobs='batchAllJobs'
-if [ -e "$batchAllJobs" ]
-    then
-    rm $batchAllJobs
-    touch $batchAllJobs
 fi
 
 ### Loop over fits ###
@@ -32,18 +25,35 @@ while read line
 do
 #part=`echo $line | cut -d"X" -f 1`
 echo $line
-cp job_postProcessing job_postProcessing_$line
-sed -i s/FIT_TO_BE_PROCESSED/$line/g job_postProcessing_$line
-sed -i s/XX/$1/g job_postProcessing_$line
-echo "qsub job_postProcessing_$line" >> $batchAllJobs
-echo "rm job_postProcessing_$line.o*" >> $removeAll
-done < $list
 
-###
+batchAllJobs=batchAllJobs\_$line
+if [ -e "$batchAllJobs" ]
+    then
+    rm $batchAllJobs
+    touch $batchAllJobs
+fi
 
+### Loop over segmentation ###
+for seg in {1..100}
+do
+echo $seg
+newJob=job_postProcessing\_$line\_seg$seg
+cp job_postProcessing $newJob
+sed -i s/FIT_TO_BE_PROCESSED/$line/g $newJob
+sed -i s/XX/$1/g $newJob
+sed -i s/YY/$seg/g $newJob
+echo "qsub $newJob" >> $batchAllJobs
+echo "rm $newJob.o*" >> $removeAll
 chmod u+x $batchAllJobs
+
+done
+### seg
+
+done < $list
+### fits
+
 chmod u+x $removeAll
 
 mv job_postProcessing_* $1/
-mv $batchAllJobs $1/
 mv $removeAll $1/
+mv batchAllJobs* $1/

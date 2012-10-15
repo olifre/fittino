@@ -13,6 +13,12 @@
 #include <TFile.h>
 #include <TSelector.h>
 
+// Which model
+// NUHM1 = 1
+// NUHM2 = 2
+int model = 2;
+
+
 class EdgeDetection : public TSelector {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
@@ -44,6 +50,9 @@ public :
    Float_t         P_M0;
    Float_t         P_M12;
    Float_t         P_A0;
+   Float_t         P_M0H;
+   Float_t         P_M0Hu;
+   Float_t         P_M0Hd;
    Float_t         P_massTop;
    Float_t         P_TanBeta;
    Float_t         O_Bsg_npf;
@@ -170,6 +179,9 @@ public :
    TBranch        *b_af_chi2_direct;   //!
    TBranch        *b_globalHiggsChi2;   //!
    TBranch        *b_P_M0;   //!
+   TBranch        *b_P_M0H;   //!
+   TBranch        *b_P_M0Hu;   //!
+   TBranch        *b_P_M0Hd;   //!
    TBranch        *b_P_M12;   //!
    TBranch        *b_P_A0;   //!
    TBranch        *b_P_massTop;   //!
@@ -334,6 +346,11 @@ void EdgeDetection::Init(TTree *tree)
    fChain->SetBranchAddress("af_chi2_direct", &af_chi2_direct, &b_af_chi2_direct);
    fChain->SetBranchAddress("globalHiggsChi2", &globalHiggsChi2, &b_globalHiggsChi2);
    fChain->SetBranchAddress("P_M0", &P_M0, &b_P_M0);
+   if( model == 1 ) fChain->SetBranchAddress("P_M0H", &P_M0H, &b_P_M0H);
+   if( model == 2 ){
+     fChain->SetBranchAddress("P_M0Hu", &P_M0Hu, &b_P_M0Hu);
+     fChain->SetBranchAddress("P_M0Hd", &P_M0Hd, &b_P_M0Hd);
+   }
    fChain->SetBranchAddress("P_M12", &P_M12, &b_P_M12);
    fChain->SetBranchAddress("P_A0", &P_A0, &b_P_A0);
    fChain->SetBranchAddress("P_massTop", &P_massTop, &b_P_massTop);

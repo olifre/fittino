@@ -1,4 +1,6 @@
 {
     TChain chain("markovChain");
-    chain.Add("/afs/naf.desy.de/user/p/prudent/fittino/postProcessing/postProcessing_2012/outputs/CMSSM.root");
+    //chain.Add("/scratch/hh/dust/naf/atlas/user/prudent/postProcessing_2012/outputs/CMSSM.root");
+    //chain.Add("/scratch/hh/dust/naf/atlas/user/prudent/postProcessing_2012/outputs/NUHM1.root");
+    chain.Add("/scratch/hh/dust/naf/atlas/user/prudent/postProcessing_2012/outputs/NUHM2.root");
 }

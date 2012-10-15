@@ -40,7 +40,7 @@ void EdgeDetectionAlgorithm()
     TString inputFileName = "Images.root";   // Name of the input file.
     TString outputFileName = "Splines.root"; // Name of the output file.
     const UInt_t numberOfBins = 500;         // Number of bins of the histograms in the input file.
-    const Double_t chi2Max = 80.;            // Maximal value of the chi2 in the input file.
+    const Double_t chi2Max = 50.;            // Maximal value of the chi2 in the input file.
 
     // Load and set Atlas style.
     //gROOT->LoadMacro("../slhaparser/style/AtlasLabels.C");

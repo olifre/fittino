@@ -25,6 +25,9 @@ using namespace std;
 bool verbose = 0;
 int numberToys = 0;
 bool useHiggsSignal = 1;
+int pp_segment = 0;// to speed up the PP
+int nb_segment = 0;
+TString pp_segment_st;
 
 // == Input/Output ntuples
 TFile* file_in;
@@ -302,9 +305,15 @@ void initialize( TString arg1, TString arg2, TString arg3 ){
   else model = "msugra";
 
   // For the fits 3 to 6, use only the msugra mode
-  if( !inputDir.Contains("fittino.out.summer2012_07") ) model = "msugra";
+  if( !inputDir.Contains("fittino.out.summer2012_07") && 
+      !inputDir.Contains("fittino.out.summer2012_08") && 
+      !inputDir.Contains("fittino.out.summer2012_09") &&
+      !inputDir.Contains("fittino.out.summer2012_10") ) model = "msugra";
 
   numberToys = atoi( getenv("NUMBERTOYS") );
+  nb_segment = atoi( getenv("NB_SEGMENT") );
+  pp_segment = atoi( getenv("PP_SEGMENT") );
+  pp_segment_st = getenv("PP_SEGMENT");
   int _verbose = atoi( getenv("VERBOSE") );
   if( _verbose == 1 ) verbose = true;
   if( _verbose == 0 ) verbose = false;
@@ -817,7 +826,8 @@ void openIOfiles( int PP_or_Toys, TString _fit ){
 
   // == Output processed file
   TString name_out = "";
-  if( PP_or_Toys == 1 ) name_out = _fit + ".root";
+  //if( PP_or_Toys == 1 ) name_out = _fit + ".root";
+  if( PP_or_Toys == 1 ) name_out = _fit + "_seg" + pp_segment_st + ".root";
   if( PP_or_Toys == 0 ) name_out = _fit + "_toys.root";
   file_out = new TFile( name_out, "RECREATE" );
   markovChain_out = new TTree( "markovChain", "Processed fit" );
@@ -1033,8 +1043,9 @@ void calculateChi2( int PP_or_Toys ){
   toyBestFitVal[0] = 1E5;
   float newChi2 = 0;
   
-  //for( Int_t ievt = 0; ievt < 100; ++ievt )
-  for( Int_t ievt = 0; ievt <  markovChain_in->GetEntries(); ++ievt )
+  int nEnt = markovChain_in->GetEntries();
+ 
+  for( Int_t ievt = 0; ievt < nEnt; ++ievt ) 
     {
       markovChain_in->GetEntry( ievt );
 
@@ -1155,7 +1166,7 @@ void calculateChi2( int PP_or_Toys ){
       if( verbose ) cout << "    - Total LEO chi2 " << LEO_chi2 << endl;
 
       // Don't save large chi2 points
-      if( newChi2 > 150 ) continue;
+      if( newChi2 > 50 ) continue;
       cutFlow[5]++;
 
       // Fill output ntuple for the real fit
