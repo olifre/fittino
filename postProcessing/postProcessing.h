@@ -79,6 +79,7 @@ TNtuple* smearedObsNtuple = {0};
 Float_t likelihood;
 Float_t rho;
 Float_t chi2;
+Float_t pre_chi2;
 
 Float_t accpoint;
 Float_t n;
@@ -417,6 +418,7 @@ void assignOutputBranches(){
   markovChain_out->Branch("likelihood",&likelihood,"likelihood/F");
   markovChain_out->Branch("rho",&rho,"rho/F");
   markovChain_out->Branch("chi2",&chi2,"chi2/F");
+  markovChain_out->Branch("pre_chi2",&pre_chi2,"pre_chi2/F");
    markovChain_out->Branch("accpoint",&accpoint,"accpoint/F");
   markovChain_out->Branch("n",&n,"n/F");
   markovChain_out->Branch("globalIter",&globalIter,"globalIter/F");
@@ -820,15 +822,16 @@ void openIOfiles( int PP_or_Toys, TString _fit ){
  // == Opening input fit to process
 
  // If you have cleaned it before (removal of multiple points in cleaning.h)
-  TString name_in = _fit + "_cleaned.root";  
+  TString name_in;
+  if( PP_or_Toys == 1 ) name_in = _fit + "_cleaned.root";  
+  if( PP_or_Toys == 0 ) name_in = inputDir + "/" + _fit + ".root";  
   file_in = new TFile( name_in );
   markovChain_in = (TTree*) file_in->Get("markovChain");
 
   // == Output processed file
   TString name_out = "";
-  //if( PP_or_Toys == 1 ) name_out = _fit + ".root";
   if( PP_or_Toys == 1 ) name_out = _fit + "_seg" + pp_segment_st + ".root";
-  if( PP_or_Toys == 0 ) name_out = _fit + "_toys.root";
+  if( PP_or_Toys == 0 ) name_out = outputDir + "/" + _fit + "_toys.root";
   file_out = new TFile( name_out, "RECREATE" );
   markovChain_out = new TTree( "markovChain", "Processed fit" );
 
@@ -1007,6 +1010,10 @@ void smearLEObs( bool verb ){
 // == and spot the point of minimal chi2
 void calculateChi2( int PP_or_Toys ){
 
+  // Chi2 before the post-processing
+  pre_chi2 = chi2;
+
+
   // Set up the LHC tool and smear the number of observed events for toys
   // Our LHC grid is limited in M0, we extend it by giving the chi2 values obtained at M0=2.5TeV
   // For high M12 the LHC chi2 is set to zero
@@ -1044,7 +1051,7 @@ void calculateChi2( int PP_or_Toys ){
   float newChi2 = 0;
   
   int nEnt = markovChain_in->GetEntries();
- 
+
   for( Int_t ievt = 0; ievt < nEnt; ++ievt ) 
     {
       markovChain_in->GetEntry( ievt );
@@ -1055,6 +1062,10 @@ void calculateChi2( int PP_or_Toys ){
       if( verbose ) cout << " ---------- EVENT # "<< ievt << " ---------- " << endl;
       if( verbose ) cout <<"    - Parameters: M0(" <<P_M0<<") M12("<<P_M12<<") TanBeta("<<P_TanBeta<<") A0("<<P_A0<<")" <<endl;
       cutFlow[0]++;
+
+      // Speed up the toys by smearing only lowest chi2 points
+      if( PP_or_Toys == 0 && chi2 > 40 ) continue;
+
 
       // Cut on chargino mass
        float mChiplCut = 0;
@@ -1085,11 +1096,9 @@ void calculateChi2( int PP_or_Toys ){
       if( PP_or_Toys == 0 ) omega_chi2 = myChi2( O_omega,  toyVal[5], uncLEObs[5] ) ;
       LEO_chi2 += omega_chi2;
 
-      if( !useHiggsSignal ){
-	if( PP_or_Toys == 1 ) Massh0_chi2 = myChi2( O_Massh0_npf,  LEObs[7], uncLEObs[7] ) ;
-	if( PP_or_Toys == 0 ) Massh0_chi2 = myChi2( O_Massh0_npf,  toyVal[7], uncLEObs[7] ) ;
-	LEO_chi2 += Massh0_chi2;
-      }
+      if( PP_or_Toys == 1 ) Massh0_chi2 = myChi2( O_Massh0_npf,  LEObs[7], uncLEObs[7] ) ;
+      if( PP_or_Toys == 0 ) Massh0_chi2 = myChi2( O_Massh0_npf,  toyVal[7], uncLEObs[7] ) ;
+      if( !useHiggsSignal ) LEO_chi2 += Massh0_chi2;      
 
       if( PP_or_Toys == 1 ) MassW_chi2 = myChi2( O_MassW_npf,  LEObs[7], uncLEObs[7] ) ;
       if( PP_or_Toys == 0 ) MassW_chi2 = myChi2( O_MassW_npf,  toyVal[7], uncLEObs[7] ) ;
@@ -1155,7 +1164,7 @@ void calculateChi2( int PP_or_Toys ){
 	}
 	newChi2 += Higgs_chi2;
 	if( verbose ) cout << "       Higgs " << Higgs_chi2 << endl; 
-      }
+      } else Higgs_chi2 = Massh0_chi2;
       cutFlow[4]++;
       
       // New chi2 for astrofit
@@ -1166,7 +1175,7 @@ void calculateChi2( int PP_or_Toys ){
       if( verbose ) cout << "    - Total LEO chi2 " << LEO_chi2 << endl;
 
       // Don't save large chi2 points
-      if( newChi2 > 50 ) continue;
+      if( newChi2 > 60 ) continue;
       cutFlow[5]++;
 
       // Fill output ntuple for the real fit
@@ -1293,7 +1302,7 @@ void plot_af_chi2(){
 // == Read the file with the lowest chi2 point
 void readBestFitPoint(){
   
-  TString bestFitFile = outputDir + "/bestFit_" + fit + ".txt";
+  TString bestFitFile = inputDir + "/bestFit_" + fit + ".txt";
   ifstream bestFitStreamIn( bestFitFile );
   
   // If the file does not exist, create and fill it

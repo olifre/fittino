@@ -26,8 +26,8 @@ int main( int argc, char** argv ){
   if( step == 1 )
     {
       
-      // == Removal of multiple points
-      cleaningInputFile( "multiplePointsRemoval", argv[1], argv[2], argv[3] );
+      // == Removal of multiple points, not for toys
+      if( PP_or_Toys == 1 ) cleaningInputFile( "multiplePointsRemoval", argv[1], argv[2], argv[3] );
       
       
       // Prepar input and output files

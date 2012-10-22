@@ -1,7 +1,6 @@
 #ifndef CLEANING_H
 #define CLEANING_H
 
-//#include "TCutG.h"
 #include "TSpline.h"
 #include "TKey.h"
 #include "postProcessing.h"
@@ -32,6 +31,13 @@ void preparIOfiles( TString task, TString arg1, TString arg2, TString arg3 ){
   if( fit.Contains("NUHM1") ) model = "NUHM1";
   else if( fit.Contains("NUHM2") ) model = "NUHM2";
   else model = "msugra";
+
+  // For the fits 3 to 6, use only the msugra mode
+  if( !inputDir.Contains("fittino.out.summer2012_07") && 
+      !inputDir.Contains("fittino.out.summer2012_08") && 
+      !inputDir.Contains("fittino.out.summer2012_09") &&
+      !inputDir.Contains("fittino.out.summer2012_10") ) model = "msugra";
+  
 
   pp_segment = atoi( getenv("PP_SEGMENT") );
   nb_segment = atoi( getenv("NB_SEGMENT") );
@@ -519,7 +525,7 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
     }
 
     // prepar the file for the best fit point
-    TString bestFitFile = outputDir + "/bestFit_" + fit + ".txt";
+    TString bestFitFile = outputDir + "/bestFit_" + fit + "_final.txt";
     cout << endl << " >>> Creating the file for the best fit point.. " << endl << bestFitFile << endl;
     bestFitStreamOut.open( bestFitFile );
     bestFitVal[0] = 1E5;
@@ -527,14 +533,14 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
 
   cout << endl << "  >> Looping over the file.. " << endl;
 
+  // == Cut flow
+  int cutFlow[6]={0};
 
-
+  // == Splitting the files
   int nEnt = markovChain_in->GetEntries();
   int nBet = 0;
   int first = 0;
   int last = nEnt;
-
-
   if( task == "multiplePointsRemoval" ){
     nBet = TMath::FloorNint( nEnt / nb_segment );
     first = (pp_segment-1) * nBet;
@@ -545,36 +551,43 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
   for( Int_t ievt = first; ievt < last; ++ievt )  
   {
     markovChain_in->GetEntry( ievt );
+    cutFlow[0]++;
 
     // ----------------------------------------------
     // Remove the error points (chi2=1000)
     if( chi2 >= 1000 ) continue;
+    cutFlow[1]++;
 
     // Cut off negative chi2
     if( af_chi2_total < 0 ) continue;
     if( LHC_Exp_chi2 < 0 ) continue;
     if( HiggsSignals_TotalChi2 < 0 ) continue;
-    
+    if( !(chi2 > 0) ) continue;
+    cutFlow[2]++;
+
     // ----------------------------------------------
     // Remove the multiple points
     // Considering the current point, the 10 points after it are compared to the current points
     // if any of these 10 is similar, the current point is rejected. Thus of all multiple points only the
     // last of the file remain, if the others stand at a maximale 'distance' of 10
-    
+    //cout << " ====================================== " << endl;
     if( task == "multiplePointsRemoval" )
       {
 	Float_t thisM0 = P_M0;
 	Float_t thisM12 = P_M12;
 	Float_t thisA0 = P_A0;
 	Float_t thisTanBeta = P_TanBeta;
-	
+	//cout << thisM0 << "  " << thisM12<< "  " <<thisA0 << "  " <<thisTanBeta<< endl;
+
 	bool alreadySeen = 0;
 	int firstChecked = ievt+1;
 	int lastChecked;
-	if( (ievt+10) > markovChain_in->GetEntries() ) lastChecked = markovChain_in->GetEntries();
+	if( (ievt+10) > markovChain_in->GetEntries() ) lastChecked = last;
 	else lastChecked = ievt+10;    
+
 	for( Int_t jevt = firstChecked; jevt < lastChecked; ++jevt ){
 	markovChain_in->GetEntry( jevt );
+	//cout << "...... Checking " << P_M0  << "  " << P_M12<< "  " <<P_TanBeta << "  " <<P_A0 << endl;
 	if( thisM0 == P_M0 && thisM12 == P_M12 && thisA0 == P_A0 && thisTanBeta == P_TanBeta ){
 	  alreadySeen = 1;
 	  break;
@@ -582,7 +595,10 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
 	}
 	if( alreadySeen ) continue;      	
 	markovChain_in->GetEntry( ievt );	
+	//cout << P_M0 << "  " << P_M12 << "   " << P_TanBeta << "   " << P_A0 << " --> " << alreadySeen << endl;
       }  
+
+    cutFlow[3]++;
 
      // ----------------------------------------------
     // Remove the buggy points
@@ -630,10 +646,16 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
 	  //if( name.Contains("M0Hd") && chi2 < cuts[icut]->Eval( P_M0Hd ) ) raus = 1;
 	  //}
 	}
-	// == Cut out useless high chi2 points, chi2=50 is the limit used by the buggy point removal tool
-	if( chi2 > 50 ) raus = 1;
+
+	// == Cut out useless high chi2 points, chi2=60 is the limit used by the buggy point removal tool
+	if( chi2 > 60 ) continue;
+        cutFlow[4]++;
 	if( raus ) continue;	
-	
+	cutFlow[5]++;
+      
+	// == On ATLAS request, special cuts
+	//if( chi2 > (32+2.3) ) continue;
+
 	if( chi2 < bestFitVal[0] ){
 	  bestFitVal[0] = chi2;
 	  bestFitVal[1] = O_Bsg_npf;
@@ -672,17 +694,27 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
 	    bestFitPar[5] = P_M0Hu;
 	    bestFitPar[6] = P_M0Hd;
 	  }
-
-	}
-       	
+	}       	
       }
+
     markovChain_out->Fill();
   }
- 
+
+  // == Print out the cut flow
+  cout << endl << "  >> Cut flow of the cleaning.. " << endl;
+  cout << "   > Start:         " << cutFlow[0] << endl;
+  cout << "   > Chi2<1000:     " << cutFlow[1] << endl;
+  cout << "   > Chi2>0:        " << cutFlow[2] << endl;
+  cout << "   > Double points: " << cutFlow[3] << endl;
+  if( task == "buggyPointsRemoval" ){
+    cout << "   > Chi2<60:       " << cutFlow[4] << endl;
+    cout << "   > Buggy points:  " << cutFlow[5] << endl;
+  }
+
   // Save the ntuples
  file_out->cd();
-  markovChain_out->FlushBaskets();
-  markovChain_out->Write();
+ markovChain_out->FlushBaskets();
+ markovChain_out->Write();
  file_in->Close();
  file_out->Close();
 
