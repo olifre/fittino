@@ -16,7 +16,7 @@
 // Which model
 // NUHM1 = 1
 // NUHM2 = 2
-int model = 2;
+int model = 0;
 
 
 class EdgeDetection : public TSelector {
@@ -346,10 +346,17 @@ void EdgeDetection::Init(TTree *tree)
    fChain->SetBranchAddress("af_chi2_direct", &af_chi2_direct, &b_af_chi2_direct);
    fChain->SetBranchAddress("globalHiggsChi2", &globalHiggsChi2, &b_globalHiggsChi2);
    fChain->SetBranchAddress("P_M0", &P_M0, &b_P_M0);
-   if( model == 1 ) fChain->SetBranchAddress("P_M0H", &P_M0H, &b_P_M0H);
-   if( model == 2 ){
-     fChain->SetBranchAddress("P_M0Hu", &P_M0Hu, &b_P_M0Hu);
-     fChain->SetBranchAddress("P_M0Hd", &P_M0Hd, &b_P_M0Hd);
+   fChain->SetBranchAddress("P_M0H", &P_M0H, &b_P_M0H);
+   fChain->SetBranchAddress("P_M0Hu", &P_M0Hu, &b_P_M0Hu);
+   fChain->SetBranchAddress("P_M0Hd", &P_M0Hd, &b_P_M0Hd);
+   if (model == 1)
+   {
+      fChain->SetBranchAddress("P_M0H", &P_M0H, &b_P_M0H);
+   }
+   else if (model == 2)
+   {
+      fChain->SetBranchAddress("P_M0Hu", &P_M0Hu, &b_P_M0Hu);
+      fChain->SetBranchAddress("P_M0Hd", &P_M0Hd, &b_P_M0Hd);
    }
    fChain->SetBranchAddress("P_M12", &P_M12, &b_P_M12);
    fChain->SetBranchAddress("P_A0", &P_A0, &b_P_A0);
