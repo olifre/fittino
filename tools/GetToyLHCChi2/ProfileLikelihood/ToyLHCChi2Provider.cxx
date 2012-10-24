@@ -1,6 +1,61 @@
 #include "ToyLHCChi2Provider.h"
 
-float ToyLHCChi2Provider::GetChi2Contribution( float M0, float M12, vector<float> nObs, vector<float> nExp ) {
+void ToyLHCChi2Provider::CreateChi2Histograms( float nmin, float nmax ) {
+
+	TFile *fOut = new TFile( "chi2_histograms.root", "RECREATE" );
+	vector<float> vExpS = GetSignalExpectationBF();
+	vector<float> vExpBG = GetBackgroundExpectation();
+	vector<float> vExp;
+  for( unsigned int iCh = 0; iCh < 3; ++iCh ) {vExp.push_back(vExpBG[iCh]+vExpS[iCh]);}
+
+	vector<TH2D*> vHistograms;
+	for( float nObs = nmin; nObs <= nmax; nObs += 1. ) {
+		vector<float> vObs(3,nObs);
+		char histname[20];
+		sprintf( histname, "chi2_nObs_%i", (int)nObs );
+		TH2D *h = new TH2D( histname, histname, 249, 15., 2505., 221, 97.5, 1202.5); 
+		for( int binx = 1; binx <= 249; ++binx ) {
+			for( int biny = 1; biny <= 221; ++biny ) {
+				h -> SetBinContent(binx, biny, GetChi2ContributionFit( h->GetXaxis()->GetBinCenter(binx), h->GetYaxis()->GetBinCenter(biny), vObs, vExp ) );
+			}
+		}
+		vHistograms.push_back(h);
+		fflush(stdout);
+	}
+	
+	for( unsigned iHist = 0; iHist < vHistograms.size(); ++iHist ) {
+		vHistograms.at(iHist)->Write();
+	}
+	fOut->Write();
+	fOut->Close();
+}
+
+vector<TH1D*> ToyLHCChi2Provider::GetChi2Histograms( string chi2FileName, int nmin, int nmax ) {
+
+	vector<TH1D*> vHist; 
+	TFile *fHist = new TFile( chi2FileName.c_str() );
+	char histname[20];
+	for( int i = nmin; i <= nmax; ++i ) {
+		sprintf(histname, "chi2_nObs_%i", i );
+		vHist.push_back( (TH1D*)fHist->Get(histname)->Clone("") );
+	}
+	return vHist;
+}
+
+float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, TH1D* hChi2 ) {
+	return hChi2->Interpolate(M0,M12);
+}
+
+
+float ToyLHCChi2Provider::GetChi2ContributionToy( float M0, float M12, int nObs, int nmin, int nmax, vector<TH1D*> *vChi2 ) {
+	if( nmax - nmin + 1 != (int)vChi2->size()) {
+		cout << "FATAL: provided vector of chi2 histograms does not correspond to the numbers nmin and nmax given! Returning negative value!" << endl;
+		return -1;
+	}
+	return vChi2->at(nObs-nmin)->Interpolate(M0, M12);
+}
+
+float ToyLHCChi2Provider::GetChi2ContributionFit( float M0, float M12, vector<float> nObs, vector<float> nExp ) {
 	//first: find best expected limit - best search channel
 	if( M0 > 2500. ) M0 = 2500.;
 	unsigned int channel = 0;

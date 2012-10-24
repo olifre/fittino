@@ -6,13 +6,13 @@
 
 int main( int argc, char **argv ) {
 
-	if( argc < 2 ) { 
-		cout << "usage: ./runTest <signalGrids.root> <randomSeed>" << endl;
+	if( argc < 4 ) { 
+		cout << "usage: ./runTest <signalGrids.root> <randomSeed> <chi2-histfile>" << endl;
 	}
 
 	// this is for documentation only: create a histogram which will hold the chi2 distribution for the tested point
 	TH1D* h_chi2_dist = new TH1D("h_chi2", "h_chi2", 100, 0., 20. );
-	
+	TH2D* h_test = new TH2D( "h_test", "h_test", 985, 14.5, 1000.5, 901, 99.5, 1000.5 );
 
 	// setup the random number generator
 	TRandom3 rndm(atoi(argv[2]));	
@@ -21,7 +21,7 @@ int main( int argc, char **argv ) {
 	// 1st argument: name of the file holding the signal grids
 	// 2nd argument: m0 at the best fit point
 	// 3rd argument: m12 at the best fit point
-	ToyLHCChi2Provider prov( argv[1], 2600., 500. );
+	ToyLHCChi2Provider prov( argv[1], 5000., 5000. );
 	
 	// get the signal expectation in the 3 signal regions for the best fit point
 	// also get the systematics on the signal expectation in the three signal regions for the best fit point
@@ -42,6 +42,22 @@ int main( int argc, char **argv ) {
 	// setup the vector holding the number of observed events - this will be a random number thrown once per toy!
 	vector<float> nObs;
 
+
+
+	// First test chi2 contribution for PP without Toys! 
+	TFile *fChi2 = new TFile( argv[3] );
+	//TH1D *hChi2 = (TH1D*)fChi2->Get("chi2_nObs_303");
+	TH1D *hChi2 = (TH1D*)fChi2->Get("h_chi2");
+	for( double M0 = 15.; M0 <= 1000.; M0 += 1 ) {
+		for( double M12 = 100.; M12 <= 1000.; M12 +=1 ) {
+			cout << "chi2 for M0 = " << M0 << " and M12 = " << M12 << " is " << prov.GetChi2ContributionFix( M0, M12, hChi2 ) << endl;
+			h_test -> SetBinContent( h_test->GetXaxis()->FindFixBin(M0), h_test->GetYaxis()->FindFixBin(M12), prov.GetChi2ContributionFix( M0, M12, hChi2 ));
+		}
+	}
+
+
+	/* THIS IS THE OLD IMPLEMENTATION */
+	/*
 	// define the number of toy experiments:
 	int nToys = 10000;
 
@@ -61,17 +77,20 @@ int main( int argc, char **argv ) {
 			for( float M12 = 400; M12 < 405; M12 += 10 ) {
 				// get the chi2 contribution for this toy at this point: M0 = m0 at the current point, M12 = m12 at the current point in the ntuple
 				// nObs and nExp have been defined before!
-				float ToyChi2AtPoint = prov.GetChi2Contribution( M0, M12, nObs, nExp );
+				float ToyChi2AtPoint = prov.GetChi2ContributionFit( M0, M12, nObs, nExp );
 				cout << "got ToyChi2 " << ToyChi2AtPoint << endl;
 				h_chi2_dist -> Fill( ToyChi2AtPoint );
 			}
 		}
 		//cout << "-----------------------------------------" << endl;
 	}
+	*/
 
 	// print the chi2 distribution
 	TCanvas c("c","c");
+	gStyle->SetPalette(1);
 	c.SetBorderMode(0);
-	h_chi2_dist->Draw();
+	h_test->GetZaxis()->SetRangeUser(0.,5.);
+	h_test->Draw("COLZ");
 	c.Print("chi2.png");
 }

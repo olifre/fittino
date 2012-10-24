@@ -49,7 +49,11 @@ class ToyLHCChi2Provider {
 	ToyLHCChi2Provider();
 	ToyLHCChi2Provider( string gridFileName, float M0BF, float M12BF );
 	~ToyLHCChi2Provider();
-	float GetChi2Contribution( float M0, float M12, vector<float> nObs, vector<float> nExp );
+	void CreateChi2Histograms(float nmin, float nmax);
+	vector<TH1D*> GetChi2Histograms( string hchi2FileName, int nmin, int nmax );
+	float GetChi2ContributionFit( float M0, float M12, vector<float> nObs, vector<float> nExp );
+	float GetChi2ContributionFix( float M0, float M12, TH1D* hChi2);
+	float GetChi2ContributionToy( float M0, float M12, int nObs, int nmin, int nmax, vector<TH1D*> *vChi2 );
 	vector<float> GetSignalExpectationBF();
 	vector<float> GetSignalUncertaintyBF();
 	vector<float> GetBackgroundExpectation();
