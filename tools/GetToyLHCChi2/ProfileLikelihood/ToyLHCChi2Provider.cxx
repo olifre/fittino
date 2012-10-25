@@ -42,12 +42,12 @@ vector<TH1D*> ToyLHCChi2Provider::GetChi2Histograms( string chi2FileName, int nm
 	return vHist;
 }
 
-float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, TH1D* hChi2 ) {
+float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, TH2D* hChi2 ) {
 	return hChi2->Interpolate(M0,M12);
 }
 
 
-float ToyLHCChi2Provider::GetChi2ContributionToy( float M0, float M12, int nObs, int nmin, int nmax, vector<TH1D*> *vChi2 ) {
+float ToyLHCChi2Provider::GetChi2ContributionToy( float M0, float M12, int nObs, int nmin, int nmax, vector<TH2D*> *vChi2 ) {
 	if( nmax - nmin + 1 != (int)vChi2->size()) {
 		cout << "FATAL: provided vector of chi2 histograms does not correspond to the numbers nmin and nmax given! Returning negative value!" << endl;
 		return -1;
