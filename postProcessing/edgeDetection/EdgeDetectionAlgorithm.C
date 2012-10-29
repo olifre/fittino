@@ -30,17 +30,21 @@
 #include "TStyle.h"
 #include "TSystem.h"
 
-// DISCLAIMER: This code is still in an experimental stage. It almost certainly
-// doesn't work without further ado. For the time being, unneeded intermediate
-// steps are commented out.
-
 void EdgeDetectionAlgorithm()
 {
-    // Setup parameters
-    TString inputFileName = "Images.root";   // Name of the input file.
-    TString outputFileName = "Splines.root"; // Name of the output file.
-    const UInt_t numberOfBins = 500;         // Number of bins of the histograms in the input file.
-    const Double_t chi2Max = 50.;            // Maximal value of the chi2 in the input file.
+    // Setup parameters:
+    // Name of the input file.
+    const TString inputFileName = "Images.root";
+    // Name of the output file.
+    const TString outputFileName = "Splines.root";
+    // Number of bins of the histograms in the input file.
+    const UInt_t numberOfBins = 500;
+    // Number of edge cleaning iterations. The edge detection algorithm is applied iteratively on
+    // the image of the edge found in the previous step in order to remove outliers. If this number
+    // is set to 0, the edge finding algorithm is not applied at all.
+    const UInt_t numberOfCleaningSteps = 3;
+    // Maximal value of the chi2 in the input file.
+    const Double_t chi2Max = 50.;
 
     // Load and set Atlas style.
     //gROOT->LoadMacro("../slhaparser/style/AtlasLabels.C");
@@ -73,7 +77,7 @@ void EdgeDetectionAlgorithm()
             // Get the original image (original 2D histogram).
             TH2F* histImageOriginal = (TH2F*)object;
 
-            // Save the original image.
+            //// Save the original image.
             //histImageOriginal->Draw("COL");
             //canvas->Update();
             //canvas->SaveAs("ImageOriginal" + (TString)histImageOriginal->GetName() + ".eps", "RECREATE");
@@ -96,70 +100,44 @@ void EdgeDetectionAlgorithm()
             //canvas->Update();
             //canvas->SaveAs("TemporaryDistribution" + (TString)histImageHighContrast->GetName() + ".eps", "RECREATE");
 
-            // In the second step apply Robert's Cross operator for the first time to
-            // find the edges in the given image. Since the algorithm considers
-            // outliers as distinct connected areas (and therefore keeps them)
-            // additional cleaning steps are necessary.
-            //TH2F* histEdge = new TH2F("Edge", "Edge", 100, 0., 500, 100, 0., 15.);
+	    // In the second step apply Robert's Cross operator to find the edges in the given
+	    // image. Since the algorithm considers outliers as distinct connected areas (and
+	    // therefore keeps them) additional cleaning steps are necessary.
             TH2F* histEdge = (TH2F*)histImageOriginal->Clone();
-            for (Int_t iBinX = 0; iBinX < histImageHighContrast->GetNbinsX(); ++iBinX)
-                for (Int_t iBinY = 0; iBinY < histImageHighContrast->GetNbinsY(); ++iBinY)
-                {
-                    histEdge->SetBinContent(
-                                              iBinX, iBinY,
-                                              fabs(histImageHighContrast->GetBinContent(iBinX, iBinY)
-                                            - histImageHighContrast->GetBinContent(iBinX + 1, iBinY + 1))
-                                            + fabs(histImageHighContrast->GetBinContent(iBinX + 1, iBinY)
-                                            - histImageHighContrast->GetBinContent(iBinX, iBinY + 1))
-                                           );
-                }
+            UInt_t iCleaningStep = 0;
+            while (iCleaningStep < numberOfCleaningSteps)
+            {
+                for (Int_t iBinX = 0; iBinX < histImageHighContrast->GetNbinsX(); ++iBinX)
+                    for (Int_t iBinY = 0; iBinY < histImageHighContrast->GetNbinsY(); ++iBinY)
+                    {
+                        histEdge->SetBinContent(
+                                                  iBinX, iBinY,
+                                                  fabs(histImageHighContrast->GetBinContent(iBinX, iBinY)
+                                                - histImageHighContrast->GetBinContent(iBinX + 1, iBinY + 1))
+                                                + fabs(histImageHighContrast->GetBinContent(iBinX + 1, iBinY)
+                                                - histImageHighContrast->GetBinContent(iBinX, iBinY + 1))
+                                               );
+                    }
+   
+                // Now remove the outliers by substracting the pixels of the edges from the
+                // high contrast image.
+                for (Int_t iBinX = 0; iBinX < histImageHighContrast->GetNbinsX() + 1; ++iBinX)
+                    for (Int_t iBinY = 0; iBinY < histImageHighContrast->GetNbinsY() + 1; ++iBinY)
+                    {
+                        Double_t difference =   histImageHighContrast->GetBinContent(iBinX, iBinY)
+                                              - histEdge->GetBinContent(iBinX, iBinY);
+                        if (difference < 0. || difference > 0.)
+                           continue;
+                        else
+                            histImageHighContrast->SetBinContent(iBinX, iBinY, 0.);
+                    }
+                ++iCleaningStep;
+            }
 
-            // Save the found edges.
+            //// Save the cleaned edge.
             //histEdge->Draw("COL");
             //canvas->Update();
-            //canvas->SaveAs("Edge.eps", "RECREATE");
-
-            // Now remove the outliers by substracting the pixels of the edges from the
-            // high contrast image.
-            TH2F* histImageHighContrastCleaned = (TH2F*)histImageHighContrast->Clone();
-            for (Int_t iBinX = 0; iBinX < histImageHighContrast->GetNbinsX() + 1; ++iBinX)
-                for (Int_t iBinY = 0; iBinY < histImageHighContrast->GetNbinsY() + 1; ++iBinY)
-                {
-                    Double_t difference =   histImageHighContrast->GetBinContent(iBinX, iBinY)
-                                          - histEdge->GetBinContent(iBinX, iBinY);
-                    if (difference < 0. || difference > 0.)
-                        histImageHighContrastCleaned->SetBinContent(
-                                                                    iBinX, iBinY,
-                                                                    histImageHighContrast->GetBinContent(iBinX, iBinY)
-                                                                   );
-                    else
-                        histImageHighContrastCleaned->SetBinContent(iBinX, iBinY, 0.);
-                }
-
-            //histImageHighContrastCleaned->Draw("COL");
-            //canvas->Update();
-            //canvas->SaveAs("FilteredMask.eps", "RECREATE");
-
-            // Now apply Robert's Cross operator again on the cleaned high contrast
-            // image to obtain a clean edge.
-            //TH2F* histEdgeCleaned = new TH2F("EdgeCleaned", "EdgeCleaned", 100, 0., 500, 100, 0., 15.);
-            TH2F* histEdgeCleaned = (TH2F*)histImageOriginal->Clone();
-            for (Int_t iBinX = 0; iBinX < histImageHighContrastCleaned->GetNbinsX(); ++iBinX)
-                for (Int_t iBinY = 0; iBinY < histImageHighContrastCleaned->GetNbinsY(); ++iBinY)
-                {
-                    histEdgeCleaned->SetBinContent(
-                                                     iBinX, iBinY,
-                                                     fabs(histImageHighContrastCleaned->GetBinContent(iBinX, iBinY)
-                                                   - histImageHighContrastCleaned->GetBinContent(iBinX + 1, iBinY + 1))
-                                                   + fabs(histImageHighContrastCleaned->GetBinContent(iBinX + 1, iBinY)
-                                                   - histImageHighContrastCleaned->GetBinContent(iBinX, iBinY + 1))
-                                                  );
-                }
-
-            // Save the clean edge.
-            //histEdgeCleaned->Draw("COL");
-            //canvas->Update();
-            //canvas->SaveAs("EdgeCleaned.eps", "RECREATE");
+            //canvas->SaveAs("Edge" + (TString)histImageOriginal->GetName() + ".eps", "RECREATE");
 
             // Calculate the nodes for the spline as the position of the (in
             // y-direction) lowest non-vanishing pixel.
@@ -172,7 +150,7 @@ void EdgeDetectionAlgorithm()
             for (UInt_t iBinX = 0; iBinX < numberOfBins; ++iBinX)
                 for (UInt_t iBinY = 0; iBinY < numberOfBins; ++iBinY)
                 {
-                    if (histEdgeCleaned->GetBinContent(iBinX, iBinY) > 0.)
+                    if (histEdge->GetBinContent(iBinX, iBinY) > 0.)
                     {
                         x[iBinX] = iBinX * ((histImageOriginal->GetXaxis()->GetXmax() - histImageOriginal->GetXaxis()->GetXmin()) / numberOfBins) + histImageOriginal->GetXaxis()->GetXmin();
                         y[iBinX] = iBinY * ((histImageOriginal->GetYaxis()->GetXmax() - histImageOriginal->GetYaxis()->GetXmin()) / numberOfBins) + histImageOriginal->GetYaxis()->GetXmin();
@@ -234,7 +212,7 @@ void EdgeDetectionAlgorithm()
             TSpline3 spline = TSpline3("Spline", graph);
 	    spline.SetName( (TString)histImageOriginal->GetName() );
             spline.SetLineColor(kRed);
-            spline.SetLineWidth(4.);
+            spline.SetLineWidth(4);
             spline.SetNpx(1000);
             
             histImageOriginal->Draw("COL");
