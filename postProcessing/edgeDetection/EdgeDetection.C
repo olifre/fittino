@@ -62,7 +62,7 @@ void EdgeDetection::Begin(TTree* tree)
    histChi2VsA0->GetXaxis()->SetTitle("A_{0} [GeV]");
    histChi2VsA0->GetXaxis()->SetNdivisions(506);
 
-   histChi2VsM0      = new TH2F("Chi2VsM0",      "#chi^{2} vs M_{0}",     numberOfBins,      0.,  3000., numberOfBins, 25., 50.);
+   histChi2VsM0      = new TH2F("Chi2VsM0",      "#chi^{2} vs M_{0}",     numberOfBins,      0.,  10000., numberOfBins, 25., 50.);
    histChi2VsM0->GetYaxis()->SetTitle("#chi^{2}");
    histChi2VsM0->GetXaxis()->SetTitle("M_{0} [GeV]");
    histChi2VsM0->GetXaxis()->SetNdivisions(506);

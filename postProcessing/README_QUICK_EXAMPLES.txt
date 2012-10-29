@@ -33,6 +33,7 @@ Removal of the buggy points
 
  - In /fittino/postProcessing/edgeDetection
    Give in ChainBuilder.C the link to FIT_total.root
+   Change in EdgeDetection.h the model considered (0=CMSSM, 1=NUHM1, 2=NUHM2)
    Run the following:
    > root -l -b
    > .X ChainBuilder.C

@@ -227,19 +227,20 @@ void initializeHiggs( bool verb=0 ){
 
 
 // == Get correlated random numbers, given the correlation between the 16 channels
-TVectorD getCorrelatedRandomNumbers(const TVectorD& mean, const TMatrixDSym& covarianceMatrix) {
+TVectorD getCorrelatedRandomNumbers(const TVectorD& mean, const TMatrixDSym& covarianceMatrix, int randomSeed ) {
   int n = mean.GetNoElements();
 
    const TMatrixDSymEigen matrix(covarianceMatrix);
    TMatrixD eigenVecMatrix = matrix.GetEigenVectors();
    TVectorD eigenValueVec = matrix.GetEigenValues();
    TVectorD y(n);
+   TRandom3 r( randomSeed );
    for (int i=0; i<n; i++) {
       if (eigenValueVec(i) < 0) {
 	cout << "getCorrelatedRandomNumbers: Covariance matrix is not non-negative definite" << endl;
 	 exit(EXIT_FAILURE);
       }
-      y(i) = gRandom->Gaus(0, TMath::Sqrt(eigenValueVec(i)));
+      y(i) = r.Gaus(0, TMath::Sqrt(eigenValueVec(i)));
    }
    TVectorD x(y);
    x *= eigenVecMatrix;
@@ -251,12 +252,12 @@ TVectorD getCorrelatedRandomNumbers(const TVectorD& mean, const TMatrixDSym& cov
 // ===================================================================
 // == Smear the Higgs observables in a correlated way
 // == the covariance matrices are created in 'readCovarianceMatrices'
-void smearHiggs( bool verb ){
+void smearHiggs( bool verb, int randomSeed ){
 
  if( verb ) cout << "   > Smear Higgs mu, mh.." << endl;
 
-  TVectorD vec_toy_mu = getCorrelatedRandomNumbers( vec_obs_mu, cov_mu );
-  TVectorD vec_toy_mh = getCorrelatedRandomNumbers( vec_obs_mh, cov_mh );
+ TVectorD vec_toy_mu = getCorrelatedRandomNumbers( vec_obs_mu, cov_mu, randomSeed );
+ TVectorD vec_toy_mh = getCorrelatedRandomNumbers( vec_obs_mh, cov_mh, randomSeed );
   
   if( verb ){
     cout << "     Correlated toy values for mu.." << endl;

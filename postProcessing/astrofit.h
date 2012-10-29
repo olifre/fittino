@@ -32,7 +32,7 @@ double relativeTheoUnc = 0.50;
 
 // ===================================================================
 // == Function per toy
-void setAstrofit( int PP_or_Toys, double bestWIMPmass, double bestWIMPcs, bool verb ){
+void setAstrofit( int PP_or_Toys, int randomSeed, double bestWIMPmass, double bestWIMPcs, bool verb ){
   
   if( verb ) cout << "   > Import the Xenon100 data.." << endl;
   
@@ -48,7 +48,7 @@ void setAstrofit( int PP_or_Toys, double bestWIMPmass, double bestWIMPcs, bool v
   // For toys
   if( PP_or_Toys == 0 ){
   // Smear the position of the parabola
-    TRandom3 rand(0);
+    TRandom3 rand( randomSeed );
     parabolaMean = rand.Gaus( bestWIMPcs, totalWidth );
   }
   // For post-processing

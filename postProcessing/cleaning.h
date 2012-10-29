@@ -548,7 +548,8 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
     cout << "   > PP segment: " << pp_segment << "/" << nb_segment<<" -> events: " << first << " to " << last-1 << " of " << nEnt << endl;
   }
   
-  for( Int_t ievt = first; ievt < last; ++ievt )  
+  for( Int_t ievt = 0; ievt < 50000; ++ievt )  
+    //for( Int_t ievt = first; ievt < last; ++ievt )  
   {
     markovChain_in->GetEntry( ievt );
     cutFlow[0]++;

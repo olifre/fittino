@@ -10,6 +10,7 @@
 #include "TH2.h"
 #include "TCutG.h"
 #include "TKey.h"
+#include "TStopwatch.h"
 
 #include <iostream>
 #include <string>
@@ -23,7 +24,6 @@ using namespace std;
 
 // == Most relevant parameters
 bool verbose = 0;
-int numberToys = 0;
 bool useHiggsSignal = 1;
 int pp_segment = 0;// to speed up the PP
 int nb_segment = 0;
@@ -48,6 +48,16 @@ TString fittinoInput;
 string SignalGrid;
 TH1F* LHC_extChi2 = 0;
 
+// == Time measurement
+TH1F* ht1;
+TH1F* ht2;
+TH1F* ht3;
+TH1F* ht4;
+TH1F* ht5;
+TH1F* ht6;
+TH1F* ht7;
+TH1F* ht8;
+
 // == Measurements or bounds und uncertainties
 vector<float> LEObs;
 vector<float> uncLEObs;
@@ -61,6 +71,7 @@ vector<TString> ValName;
 vector<TString> ParName;
 
 // == Toys smeared observables
+int randomSeed;
 vector<float> toyVal;
 
 // == Lower chi2 point for an individual toy
@@ -295,7 +306,7 @@ Float_t O_widthh0_nofit;
 
 // ===================================================================
 // == Set all variables to zero
-void initialize( TString arg1, TString arg2, TString arg3 ){
+void initialize( TString arg1, TString arg2, TString arg3, int PP_or_Toys ){
 
   // == Options and parameters of the post processing
   fit = arg1;
@@ -311,7 +322,7 @@ void initialize( TString arg1, TString arg2, TString arg3 ){
       !inputDir.Contains("fittino.out.summer2012_09") &&
       !inputDir.Contains("fittino.out.summer2012_10") ) model = "msugra";
 
-  numberToys = atoi( getenv("NUMBERTOYS") );
+  if( PP_or_Toys == 0 ) randomSeed = atoi( getenv("RANDOM_SEED") );
   nb_segment = atoi( getenv("NB_SEGMENT") );
   pp_segment = atoi( getenv("PP_SEGMENT") );
   pp_segment_st = getenv("PP_SEGMENT");
@@ -324,6 +335,16 @@ void initialize( TString arg1, TString arg2, TString arg3 ){
 
   // == Tools for chi2 calculation
   SignalGrid   = "signalGrids.root";
+
+  // === Time histograms
+  ht1 = new TH1F( "ht1", "", 1000000, 0, 1 );
+  ht2 = new TH1F( "ht2", "", 1000000, 0, 1 );
+  ht3 = new TH1F( "ht3", "", 1000000, 0, 1 );
+  ht4 = new TH1F( "ht4", "", 1000000, 0, 1 );
+  ht5 = new TH1F( "ht5", "", 1000000, 0, 1 );
+  ht6 = new TH1F( "ht6", "", 1000000, 0, 1 );
+  ht7 = new TH1F( "ht7", "", 1000000, 0, 1 );
+  ht8 = new TH1F( "ht8", "", 1000000, 0, 1 );
 
   // == Set names
   ValName.push_back( "chi2" );
@@ -831,7 +852,7 @@ void openIOfiles( int PP_or_Toys, TString _fit ){
   // == Output processed file
   TString name_out = "";
   if( PP_or_Toys == 1 ) name_out = _fit + "_seg" + pp_segment_st + ".root";
-  if( PP_or_Toys == 0 ) name_out = outputDir + "/" + _fit + "_toys.root";
+  if( PP_or_Toys == 0 ) name_out = outputDir + "/" + _fit + "_toys_seg" + pp_segment_st + ".root";
   file_out = new TFile( name_out, "RECREATE" );
   markovChain_out = new TTree( "markovChain", "Processed fit" );
 
@@ -989,7 +1010,7 @@ void smearLEObs( bool verb ){
 
   toyVal.clear();
   toyVal.resize( ValName.size() );
-  r.SetSeed(0);
+  r.SetSeed( randomSeed );
 
   // Smearing all LEO following a Gaussian centered on the values
   // at the best fit point, and whose width is the total uncertainty
@@ -1013,34 +1034,44 @@ void calculateChi2( int PP_or_Toys ){
   // Chi2 before the post-processing
   pre_chi2 = chi2;
 
-
+  TStopwatch t1;
   // Set up the LHC tool and smear the number of observed events for toys
   // Our LHC grid is limited in M0, we extend it by giving the chi2 values obtained at M0=2.5TeV
   // For high M12 the LHC chi2 is set to zero
-  setLHCchi2Tools( PP_or_Toys, SignalGrid, bestFitPar[0], bestFitPar[1], verbose );
-  LHC_extChi2 = new TH1F( "LHC_extChi2", "", 200, 100, 1200 );
-  for( Int_t ievt = 0; ievt <  markovChain_in->GetEntries(); ++ievt ){
-    markovChain_in->GetEntry( ievt );
-    if( P_M0 < 2450 || P_M0 > 2500 ) continue;
-    Int_t lastBin = LHC_extChi2->FindBin( P_M12 );
-    float temp_LHC_chi2 = LHCchi2( P_M0, P_M12 );
-    LHC_extChi2->SetBinContent( lastBin, temp_LHC_chi2 );
-  }
+  setLHCchi2Tools( PP_or_Toys, randomSeed, SignalGrid, bestFitPar[0], bestFitPar[1], verbose );
+  ht1->Fill( t1.RealTime() );
+
+  TFile f_LHC_extChi2 ( "/afs/naf.desy.de/user/p/prudent/fittino/postProcessing/postProcessing_2012/LHC_extChi2.root" );
+  TH1F* LHC_extChi2 = (TH1F*) f_LHC_extChi2.Get("LHC_extChi2");
+
+  // To produce the histogram LHC_extChi2 as a function of M12
+  //LHC_extChi2 = new TH1F( "LHC_extChi2", "", 200, 100, 900 );
+  //for( int ibin = 1; ibin <= 200; ibin++ ){
+  //float _M12 = LHC_extChi2->GetBinCenter( ibin );    
+  //float _LHC_chi2 = LHCchi2( 2500, _M12 );
+  //LHC_extChi2->SetBinContent( ibin, _LHC_chi2 );
+  //}    
+  //file_out->cd();
+  //LHC_extChi2->Write();
   
+  TStopwatch t2;  
   // Set the Xenon100 contour, smear it for toys
-  setAstrofit( PP_or_Toys, bestFitVal[11], bestFitVal[12], verbose );
-      
+  setAstrofit( PP_or_Toys, randomSeed, bestFitVal[11], bestFitVal[12], verbose );
+  ht2->Fill( t2.RealTime() );
+
+  TStopwatch t3;
   if( PP_or_Toys == 0 )
     {
       // Smear low energy observables and lower limit on chargino
       smearLEObs( verbose );          
-  
+
       // Smear the Higgs mh, mu
-      if( useHiggsSignal ) smearHiggs( verbose );
-      
+      if( useHiggsSignal ) smearHiggs( verbose, randomSeed );
+
       // Save smeared observables in an ntuple
       saveSmearedObs();
     }
+  ht3->Fill( t3.RealTime() );
 
   // Monitor the cut flow
   int cutFlow[6] = {0};
@@ -1050,9 +1081,19 @@ void calculateChi2( int PP_or_Toys ){
   toyBestFitVal[0] = 1E5;
   float newChi2 = 0;
   
+  // == Splitting the files
   int nEnt = markovChain_in->GetEntries();
+  int nBet = 0;
+  int first = 0;
+  int last = nEnt;
+  if( PP_or_Toys == 0 ){
+    nBet = TMath::FloorNint( nEnt / (nb_segment*10) );
+    first = (pp_segment-1) * nBet;
+    last = first + nBet;  
+    cout << "   > PP segment: " << pp_segment << "/" << nb_segment<<" -> events: " << first << " to " << last-1 << " of " << nEnt << endl;
+  }
 
-  for( Int_t ievt = 0; ievt < nEnt; ++ievt ) 
+  for( Int_t ievt = first; ievt < last; ++ievt ) 
     {
       markovChain_in->GetEntry( ievt );
 
@@ -1063,10 +1104,7 @@ void calculateChi2( int PP_or_Toys ){
       if( verbose ) cout <<"    - Parameters: M0(" <<P_M0<<") M12("<<P_M12<<") TanBeta("<<P_TanBeta<<") A0("<<P_A0<<")" <<endl;
       cutFlow[0]++;
 
-      // Speed up the toys by smearing only lowest chi2 points
-      if( PP_or_Toys == 0 && chi2 > 40 ) continue;
-
-
+      TStopwatch t4;
       // Cut on chargino mass
        float mChiplCut = 0;
        if( PP_or_Toys == 0 ) mChiplCut = mChipl;//smeared value
@@ -1117,6 +1155,7 @@ void calculateChi2( int PP_or_Toys ){
       LEO_chi2 += massTop_chi2;
       newChi2 += LEO_chi2;
       cutFlow[2]++;
+      ht4->Fill( t4.RealTime() );
 
       if( verbose ){
 	cout << "    - Individual chi2 per observables:"<<endl;       
@@ -1145,7 +1184,9 @@ void calculateChi2( int PP_or_Toys ){
 	  cout << "       masstop: theo = " <<  O_massTop<< " meas = " << toyVal[10] << " ->chi2 = " << massTop_chi2 << endl;
 	}
       }
-
+      
+      /*
+      TStopwatch t5;
       // Chi2 for LHC if the point lies in the limits of the grid
       if( P_M0 > 20 && P_M12 > 100 && P_M0 < 2500 && P_M12 < 900 ) LHC_chi2 = LHCchi2( P_M0, P_M12 );
       else if( P_M12 > 900 ) LHC_chi2 = 0;
@@ -1154,7 +1195,18 @@ void calculateChi2( int PP_or_Toys ){
       newChi2 += LHC_chi2;
       if( verbose ) cout << "       LHC " << LHC_chi2 << endl;      
       cutFlow[3]++;
+      ht5->Fill( t5.RealTime() );
+      */
 
+      
+      TStopwatch t5;
+      // Fast calculation of the LHC chi2
+      LHC_chi2 = LHCchi2_fast( P_M0, P_M12 );
+
+      ht5->Fill( t5.RealTime() );
+      
+
+      TStopwatch t6;
       // New chi2 for Higgs       
       if( useHiggsSignal ){
 	if( O_Massh0_npf < 10 || O_Massh0_npf > 1000 ) Higgs_chi2 = 1000;
@@ -1166,26 +1218,27 @@ void calculateChi2( int PP_or_Toys ){
 	if( verbose ) cout << "       Higgs " << Higgs_chi2 << endl; 
       } else Higgs_chi2 = Massh0_chi2;
       cutFlow[4]++;
-      
+      ht6->Fill( t6.RealTime() );
+
+      TStopwatch t7;
       // New chi2 for astrofit
       af_chi2 = astrofitChi2( O_massNeutralino1_nofit, af_direct, false );
       newChi2 += af_chi2;
       if( verbose ) cout << "       Astrofit " << af_chi2 << endl;
       if( verbose ) cout << "    - Total chi2 " << newChi2 << endl;
       if( verbose ) cout << "    - Total LEO chi2 " << LEO_chi2 << endl;
+      ht7->Fill( t7.RealTime() );
 
-      // Don't save large chi2 points
-      if( newChi2 > 60 ) continue;
+      // Don't save large chi2 points for PP
+      if( PP_or_Toys == 1 && newChi2 > 60 ) continue;
       cutFlow[5]++;
 
       // Fill output ntuple for the real fit
-      if( PP_or_Toys == 1 || numberToys == 1 ){
-	if( useHiggsSignal ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
-	if( !useHiggsSignal ) chi2 = LEO_chi2 + LHC_chi2 + af_chi2;
-	markovChain_out->Fill();
-      }
-
-      // Find lowest chi2 for that toy
+      if( useHiggsSignal ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
+      if( !useHiggsSignal ) chi2 = LEO_chi2 + LHC_chi2 + af_chi2;
+      markovChain_out->Fill();
+	
+	// Find lowest chi2 for that toy
       if( newChi2 < toyBestFitVal[0] ){
 	toyBestFitVal[0] = newChi2;
 	toyBestFitVal[1] = O_Bsg_npf;
@@ -1227,10 +1280,21 @@ void calculateChi2( int PP_or_Toys ){
 	}	
       }
     }
-
+  
   cout << endl << " >>> Cut flow.." << endl;
-  for( int icut=0; icut < 6; icut++ ) cout << "Step "<< icut << ": "<< cutFlow[icut] << endl;
-  delete prov;
+  for( int icut=0; icut < 6; icut++ ) cout << "Step "<< icut << ": "<< cutFlow[icut] << endl;  
+
+  file_out->cd();
+  ht1->Write();
+  ht2->Write();
+  ht3->Write();
+  ht4->Write();
+  ht5->Write();
+  ht6->Write();
+  ht7->Write();
+  ht8->Write();
+
+  //delete prov;
 
   return;
 }
@@ -1261,42 +1325,6 @@ void saveToyResult(){
 
   return;
 }
-
-
-
-// ===================================================================
-// Plot the value of chi2 to test the shape of the chi2 function
-TNtuple* testNtuple = 0;
-void plot_af_chi2(){
-  cout << " >>> Testing the astrofit chi2 shape.." << endl;
-  setAstrofit( 1, bestFitVal[11], bestFitVal[12], verbose );
-  cout << "1" << endl;
-  testNtuple = new TNtuple( "testNtuple", "Test results", "af_cs:af_m:chi2" ); 
-  float cup = 50E-9, cdown = 0;
-  int cbin = 1000;
-  float mass = 20;
-  for( int c = 0; c < cbin; c++ ){
-    float cs = cdown + c * ( cup - cdown ) / cbin;
-  cout << "2" << endl;
-    float chisquare = astrofitChi2( mass, cs, 0 );
-  cout << "3" << endl;
-    testNtuple->Fill( cs, mass, chisquare );
-  cout << "4" << endl;
-  }
-  cout << "5" << endl;
-  file_out->cd();
-  cout << "6" << endl;
-  testNtuple->Write();
-  cout << "7" << endl;
-  file_in->Close();
-  cout << "8" << endl;
-  file_out->Close();
-  cout << "9" << endl;
-  finish_higgssignals_();
-  cout << "10" << endl;
-  return;
-}
-
 
 // ===================================================================
 // == Read the file with the lowest chi2 point
@@ -1350,14 +1378,11 @@ void processData( bool PP_or_Toys ){
   if( PP_or_Toys == 0 ){
     // Read the best fit point file
     readBestFitPoint();
-    cout << endl << " >>> Simulating " << numberToys << " toys.." << endl;    
-    for( int iToy = 0; iToy < numberToys; iToy++ ){
-	cout << endl << "  >> Toy #" << iToy << " /" << numberToys << endl;      
-	// Calculate the chi2 for each point
-	calculateChi2( PP_or_Toys );	          
-	// Save the best toy fit point in the ntuple
-	saveToyResult();
-      }
+    cout << endl << " >>> Simulating a toy " << endl;    
+    // Calculate the chi2 for each point
+    calculateChi2( PP_or_Toys );	          
+    // Save the best toy fit point in the ntuple
+    saveToyResult();    
   }
   return;
 }
@@ -1369,13 +1394,13 @@ void processData( bool PP_or_Toys ){
 void writeAndClose( int PP_or_Toys ){
 
   file_out->cd();
-
-  if( PP_or_Toys == 1 || numberToys == 1 ) markovChain_out->Write();
+  
+  markovChain_out->Write();
   if( PP_or_Toys == 0 ){
     toyNtuple->Write();
     smearedObsNtuple->Write();
   }
-
+  
   file_in->Close();
   file_out->Close();
   finish_higgssignals_();

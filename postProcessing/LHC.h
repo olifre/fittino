@@ -1,20 +1,26 @@
 #ifndef LHC_H
 #define LHC_H
 
-#include "ToyLHCChi2Provider.h"
+//#include "ToyLHCChi2Provider.h"
+//vector<float> nExpBG;
+//vector<float> nExpS;
+//vector<float> nExp;
+//vector<float> uncS;
+//vector<float> nObs;
+//ToyLHCChi2Provider* prov;
 
-vector<float> nExpBG;
-vector<float> nExpS;
-vector<float> nExp;
-vector<float> uncS;
-vector<float> nObs;
-ToyLHCChi2Provider* prov;
+TFile *fChi2;
+TH2D *hChi2;
 
 // ===================================================================
-void setLHCchi2Tools( int PP_or_Toys, string SignalGrid, float bestFitM0, float bestFitM12, bool verb ){
+void setLHCchi2Tools( int PP_or_Toys, int randomSeed, string SignalGrid, float bestFitM0, float bestFitM12, bool verb ){
 	
    if( verb ) cout << "   > Set up LHC tools.." << endl;
 
+      fChi2 = new TFile( "chi2Map_nObs_eq_nBgdExp.root" );
+      hChi2 = (TH2D*)fChi2->Get("h_chi2");
+
+      /*
   // setup the LCH Toy Chi2 provider: it takes 4 arguments:
   // 1st argument: name of the file holding the signal grids
   // 2nd argument: m0 at the best fit point
@@ -37,7 +43,7 @@ void setLHCchi2Tools( int PP_or_Toys, string SignalGrid, float bestFitM0, float 
   
   // for each toy, get a new set of observed events in the signal region
   // these are random numbers thrown according to the signal + background expectation at the best fit point!
-  TRandom3 rndm(0);	
+  TRandom3 rndm( randomSeed );	
   nObs.clear();
   if( PP_or_Toys == 0 ){//toys
     nObs.push_back( rndm.Poisson(nExpBG[0]*rndm.Gaus(1.,0.03)+nExpS[0]*rndm.Gaus(1.,uncS[0])));
@@ -49,6 +55,8 @@ void setLHCchi2Tools( int PP_or_Toys, string SignalGrid, float bestFitM0, float 
     nObs.push_back( nExpBG[1] + nExpS[1] );
     nObs.push_back( nExpBG[2] + nExpS[2] );
   }
+      */
+
  return;
 }
 
@@ -56,9 +64,20 @@ void setLHCchi2Tools( int PP_or_Toys, string SignalGrid, float bestFitM0, float 
 // == Fonction to be called for each point of each toy
 // get the chi2 contribution for this toy at this point: M0 = m0 at the current point, M12 = m12 at the current point in the ntuple
 // nObs and nExp have been defined before!
-float LHCchi2( float M0, float M12 ){
-  return prov->GetChi2Contribution( M0, M12, nObs, nExp );
+
+//float LHCchi2( float M0, float M12 ){
+//return prov->GetChi2Contribution( M0, M12, nObs, nExp );
+//}
+
+// ===================================================================
+// == Fonction to be called for each point of each toy
+// get the chi2 contribution for this toy at this point: M0 = m0 at the current point, M12 = m12 at the current point in the ntuple
+// Idem as the function LHCchi2, but the chi2 is now taken from an histogram to speed up the procedure
+
+float LHCchi2_fast( float M0, float M12 ){
+      return hChi2->Interpolate(M0,M12);  
 }
+
 
 
 
