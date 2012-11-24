@@ -40,18 +40,23 @@ int main( int argc, char **argv ) {
 	}
 
 	// setup the vector holding the number of observed events - this will be a random number thrown once per toy!
-	vector<float> nObs;
-
+	vector<float> nObs = nExpBG;
+	
 
 
 	// First test chi2 contribution for PP without Toys! 
 	TFile *fChi2 = new TFile( argv[3] );
 	//TH1D *hChi2 = (TH1D*)fChi2->Get("chi2_nObs_303");
-	TH1D *hChi2 = (TH1D*)fChi2->Get("h_chi2");
-	for( double M0 = 15.; M0 <= 1000.; M0 += 1 ) {
-		for( double M12 = 100.; M12 <= 1000.; M12 +=1 ) {
-			cout << "chi2 for M0 = " << M0 << " and M12 = " << M12 << " is " << prov.GetChi2ContributionFix( M0, M12, hChi2 ) << endl;
-			h_test -> SetBinContent( h_test->GetXaxis()->FindFixBin(M0), h_test->GetYaxis()->FindFixBin(M12), prov.GetChi2ContributionFix( M0, M12, hChi2 ));
+	TH2D *hChi2 = (TH2D*)fChi2->Get("h_chi2");
+	for( double M0 = 150.; M0 <= 1000.; M0 += 10 ) {
+		for( double M12 = 100.; M12 <= 1000.; M12 += 10 ) {
+			float Chi2New = prov.GetChi2ContributionFix( M0, M12, hChi2 );
+			float Chi2Old = prov.GetChi2ContributionFit( M0, M12, nExpBG, nExp );
+			h_test -> SetBinContent( h_test->GetXaxis()->FindFixBin(M0), h_test->GetYaxis()->FindFixBin(M12), Chi2New );
+			if( (Chi2New > 0.1 && Chi2New < 20.)  || (Chi2Old > 0.1 && Chi2Old < 20.)) {
+				cout << "chi2 for M0 = " << M0 << " and M12 = " << M12 << " is " << Chi2New << " compare to " << Chi2Old << endl; 
+				cout << "DIFFERENCE : " << Chi2New - Chi2Old << " that is \t\t" << (Chi2New-Chi2Old)/Chi2New*100 << "%" << endl;
+			}
 		}
 	}
 

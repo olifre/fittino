@@ -52,6 +52,7 @@ class ToyLHCChi2Provider {
 	void CreateChi2Histograms(float nmin, float nmax);
 	vector<TH1D*> GetChi2Histograms( string hchi2FileName, int nmin, int nmax );
 	float GetChi2ContributionFit( float M0, float M12, vector<float> nObs, vector<float> nExp );
+	float GetChi2ContributionFit( float M0, float M12, vector<float> nObs, vector<float> nExp, vector<float> nSignal );
 	float GetChi2ContributionFix( float M0, float M12, TH2D* hChi2);
 	float GetChi2ContributionToy( float M0, float M12, int nObs, int nmin, int nmax, vector<TH2D*> *vChi2 );
 	vector<float> GetSignalExpectationBF();

@@ -111,6 +111,36 @@ float ToyLHCChi2Provider::GetChi2ContributionFit( float M0, float M12, vector<fl
 	return (isnan(chi2) || isinf(chi2)) ? 1000. : ( (chi2 < 0.) ? 0. : chi2); 
 }
 
+float ToyLHCChi2Provider::GetChi2ContributionFit( float M0, float M12, vector<float> nObs, vector<float> nExp, vector<float> nSignal ) {
+  //first: find best expected limit - best search channel
+  if( M0 > 2500. ) M0 = 2500.;
+  unsigned int channel = 0;
+  //float chi2_max = -10.;
+  float lumi = 50.;
+  float lumi_ref = 1.;
+  
+	channel = 1;
+  if( data ) delete data;
+  if( nll ) delete nll;
+  if( pll ) delete pll;
+
+  n->setVal(nObs[channel]);
+  data = new RooDataSet("data","data", RooArgSet(*n));
+  data->add(*n);
+  b->setVal(backgroundExpectation[channel]);
+  nll = model->createNLL(*data);
+  pll = nll->createProfile(*POI);
+  double nS = lumi/lumi_ref*nSignal[channel];
+  if (M0<400.)  nS=nS-0.9*nS*(400.-M0)/400.;
+  else if (M0<1800. && M0>1000.)  nS=nS-nS*(1000.-M0)/1000.*(1800.-M0)/1800.;
+  else if (M0>1800.)  nS=nS+nS*(1800.-M0)/1800.;
+  //cout << "signal expectation is " << nS << endl;
+  s->setVal(nS);
+  double chi2 = 2.*pll->getVal();
+  return (isnan(chi2) || isinf(chi2)) ? 1000. : ( (chi2 < 0.) ? 0. : chi2);
+}
+
+
 
 ToyLHCChi2Provider::ToyLHCChi2Provider() {
 	f_grids = NULL;
