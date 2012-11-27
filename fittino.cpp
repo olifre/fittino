@@ -2222,8 +2222,8 @@ void Fittino::calculateTreeLevelValues(int nthrows)
 	    yyFittedVec.push_back(fXtop);
 	    par_already_found = true;
 	 }
-	 else if (!yyFittedPar[i].name.compare("Abottom")) {
-	    yyFittedVec.push_back(fAbottom);
+	 else if (!yyFittedPar[i].name.compare("Xbottom")) {
+	    yyFittedVec.push_back(fXbottom);
 	    par_already_found = true;
 	 }
 	 else if (!yyFittedPar[i].name.compare("Atau")) {
