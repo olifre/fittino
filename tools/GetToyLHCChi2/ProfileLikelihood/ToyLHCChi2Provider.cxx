@@ -49,7 +49,10 @@ float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, TH2D* hCh
 float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, float A0, float tanb, TH2D *hChi2_M0_M12, TH2D *h_Chi2_A0_tb ) {
 
 	if( M0 > 0. && M0 <= 1200. ) return hChi2_M0_M12->Interpolate(M0,M12);
-	
+
+	if( A0 > 5499. ) A0 = 5499.;
+	if( A0 < -4499. ) A0 = -4499.;
+	if( tanb > 54.9) tanb = 54.9;
 	float scaleFac = (M0 < 2000. ) ? (M0-1200.)/800. : 1.;
 	float chi2_uncorr = hChi2_M0_M12->Interpolate(M0,M12);
 	float chi2_correction = h_Chi2_A0_tb->Interpolate(A0,tanb); // the histogram h_Chi2_A0_tb shows the DIFFERENCE in chi2: chi2(A0,tb)-chi2(0,10) !!!
