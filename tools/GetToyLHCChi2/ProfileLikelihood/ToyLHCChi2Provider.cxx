@@ -46,6 +46,17 @@ float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, TH2D* hCh
 	return hChi2->Interpolate(M0,M12);
 }
 
+float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, float A0, float tanb, TH2D *hChi2_M0_M12, TH2D *h_Chi2_A0_tb ) {
+
+	if( M0 > 0. && M0 <= 1200. ) return hChi2_M0_M12->Interpolate(M0,M12);
+	
+	float scaleFac = (M0 < 2000. ) ? (M0-1200.)/800. : 1.;
+	float chi2_uncorr = hChi2_M0_M12->Interpolate(M0,M12);
+	float chi2_correction = h_Chi2_A0_tb->Interpolate(A0,tanb); // the histogram h_Chi2_A0_tb shows the DIFFERENCE in chi2: chi2(A0,tb)-chi2(0,10) !!!
+	return chi2_uncorr+scaleFac*chi2_correction;
+
+}
+
 
 float ToyLHCChi2Provider::GetChi2ContributionToy( float M0, float M12, int nObs, int nmin, int nmax, vector<TH2D*> *vChi2 ) {
 	if( nmax - nmin + 1 != (int)vChi2->size()) {
