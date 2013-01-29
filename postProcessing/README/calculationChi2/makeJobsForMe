@@ -1,0 +1,84 @@
+#!/bin/bash
+
+# ####################################################
+# Create the batch jobs
+# Takes two inputs:  the fit generation and the constraint to be applied
+# ####################################################
+
+
+
+################################
+## DO THE DIRECTORIES EXIST ?
+################################
+
+if [ ! -d "$2" ]; then
+    mkdir $2
+fi
+
+if [ ! -d "$2/$1" ]; then
+    mkdir $2/$1
+fi
+
+removeAll='removeAll'
+if [ -e "$removeAll" ]
+    then
+    rm $removeAll
+    touch $removeAll
+fi
+
+################################
+## SET THE BATCH PARAMETERS
+################################
+
+list=listOfFits\_$1.txt
+batchAllJobs=batchAllJobs
+if [ -e "$batchAllJobs" ]
+    then
+    rm $batchAllJobs
+    touch $batchAllJobs
+fi
+
+if [ $2 -eq 1 -o $2 -eq 3 -o $2 -eq 4 ]
+then
+HOUR='00'
+MINUTE='30'
+else
+HOUR='06'
+MINUTE='00'
+fi
+
+################################
+## LOOP OVER FITS
+################################
+
+while read line
+do
+echo $line
+
+newJob=job_postProcessing\_$line
+cp job_postProcessing $newJob
+sed -i s/FIT_TO_BE_PROCESSED/$line/g $newJob
+
+sed -i s/XX/$1/g $newJob
+sed -i s/WHICH_OBS/$2/g $newJob
+sed -i s/HOUR/$HOUR/g $newJob
+sed -i s/MINUTE/$MINUTE/g $newJob
+
+echo "qsub $newJob" >> $batchAllJobs
+echo "rm $newJob.o*" >> $removeAll
+
+done < $list
+### fits
+
+
+################################
+## TIDY THE SCRIPTS
+################################
+
+chmod u+x $removeAll
+chmod u+x $batchAllJobs
+
+
+mv job_postProcessing_* $2/$1/
+mv $removeAll $2/$1/
+mv batchAllJobs* $2/$1/

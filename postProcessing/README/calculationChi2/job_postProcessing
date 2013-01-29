@@ -1,0 +1,106 @@
+#!/usr/bin/env zsh
+#$ -j y
+##$ -l os=sld5
+#$ -cwd
+#$ -P atlas
+#$ -l h_cpu=HOUR:MINUTE:00 
+#$ -l h_vmem=700M
+#$-l site=hh 
+#$ -w e
+#$ -m ae -M prudent@physik.tu-dresden.de
+
+
+#----------------------------------
+# Name of the fit to post-process or to study with toys (Attention, no .root at the end)
+fit=FIT_TO_BE_PROCESSED
+
+# Description of all observables
+input_file=/afs/naf.desy.de/user/p/prudent/fittino/inputs/summer2012/postProcessing/fittino.in.point1.CMSSM.WHICH_OBS.summer2012
+export OBSERVABLES=WHICH_OBS
+
+# Where does the input fit ntuple lies
+input_directory=/scratch/hh/current/atlas/users/prudent/fittino/postProcessing/postProcessing_2012/jobs/jobs_for_multiplePointsRemoval/doublePointsRemoved/XX/
+
+# Output of post-processing and toys
+output_destination=/scratch/hh/dust/naf/atlas/user/prudent/postProcessing_2012/outputs/WHICH_OBS/XX/
+
+# Where the processing programs lie
+working_directory=/afs/naf.desy.de/user/p/prudent/fittino/postProcessing
+
+# Where to retrieve the LHC chi2 tools from
+tools_directory=/afs/naf.desy.de/user/p/prudent/fittino/tools/GetToyLHCChi2/ProfileLikelihood/
+
+# Which step of the post-processing to proceed (1=chi2 calculation,2=removal of buggy points)
+export STEP=1
+
+# Post-processing (1) or toy study (0)
+export DATATOYS=1
+
+# Which segment of the PP (ntuple split to speed up)
+# export NB_SEGMENT=100
+# export PP_SEGMENT=YY
+
+# Do you want a 500GB file with all information (1=yes,0=no)?
+export VERBOSE=0
+
+
+#-----------------------------------
+
+export ROOTSYS=/afs/naf.desy.de/products/root/amd64_rhel50/5.28.00
+export PATH=$ROOTSYS/bin:$PATH
+export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/afs/naf.desy.de/user/p/prudent/fittino/tools/GetToyLHCChi2/ProfileLikelihood/
+
+date
+echo " --- Script started"
+
+cd $TMP
+ini ROOT528
+
+echo " --- Copying input files and macros"
+
+# General program
+cp $working_directory/postProcessing.cc .
+cp $working_directory/postProcessing.h .
+cp $working_directory/compil .
+
+# Cleaning
+cp $working_directory/cleaning.h .
+
+# Higgs
+cp $working_directory/Higgs.h .
+
+# LHC
+cp $tools_directory/ToyLHCChi2Provider.h .
+cp $tools_directory/signalGrids.root .
+cp $working_directory/LHC.h .
+cp $tools_directory/AllChi2Maps.root .
+
+# Astrofit
+cp $working_directory/astrofit.h .
+cp $working_directory/dd_xenon100_2012.dat .
+
+# To extract the observables from the Fittino file
+cp $working_directory/preparFittinoInput.sh .
+
+echo " --- Extracting observables from the Fittino input file"
+chmod u+x preparFittinoInput.sh
+cp $input_file .
+./preparFittinoInput.sh $input_file
+
+
+echo " --- Compiling"
+chmod u+x compil
+./compil
+
+
+echo " --- Running the macro"
+./postProcessing $fit $input_directory $output_destination
+
+echo ""
+echo " --- Copying output files"
+rm *_cleaned.root
+cp $fit*.root $output_destination
+
+echo " --- Script finished"
+date

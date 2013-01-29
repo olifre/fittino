@@ -1,0 +1,8 @@
+fittino.out.point1.NUHM1.allObs.Summer2012_merged
+fittino.out.point1.NUHM1.HiggsObs.Summer2012_merged
+fittino.out.point1.NUHM2.allObs.Summer2012_merged
+fittino.out.point1.NUHM2.HiggsObs.Summer2012_merged
+fittino.out.point2.NUHM1.allObs.Summer2012_merged
+fittino.out.point2.NUHM1.HiggsObs.Summer2012_merged
+fittino.out.point2.NUHM2.allObs.Summer2012_merged
+fittino.out.point2.NUHM2.HiggsObs.Summer2012_merged
