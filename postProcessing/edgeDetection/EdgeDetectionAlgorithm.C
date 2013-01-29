@@ -44,7 +44,9 @@ void EdgeDetectionAlgorithm()
     // is set to 0, the edge finding algorithm is not applied at all.
     const UInt_t numberOfCleaningSteps = 3;
     // Maximal value of the chi2 in the input file.
-    const Double_t chi2Max = 50.;
+    const Double_t chi2Max = XXMAXCHI2;
+    //const Double_t chi2Max = 60.;HS
+    //const Double_t chi2Max = 40.;noHS
 
     // Load and set Atlas style.
     //gROOT->LoadMacro("../slhaparser/style/AtlasLabels.C");
@@ -219,6 +221,7 @@ void EdgeDetectionAlgorithm()
             spline.Draw("SAME");
 
             canvas->SaveAs("Result" + (TString)histImageOriginal->GetName() + ".eps", "RECREATE");
+            canvas->SaveAs("Result" + (TString)histImageOriginal->GetName() + ".jpg", "RECREATE");
 
             spline.Write();
 

@@ -16,8 +16,10 @@
 // Which model
 // NUHM1 = 1
 // NUHM2 = 2
-int model = 0;
+int model = THEMODEL;
 
+// Minimum chi2
+float minChi2 = 1E10;
 
 class EdgeDetection : public TSelector {
 public :
@@ -27,6 +29,8 @@ public :
    Float_t         likelihood;
    Float_t         rho;
    Float_t         chi2;
+   Float_t         LEO_chi2;
+   Float_t         af_chi2;
    Float_t         accpoint;
    Float_t         n;
    Float_t         globalIter;
@@ -158,6 +162,8 @@ public :
    TBranch        *b_likelihood;   //!
    TBranch        *b_rho;   //!
    TBranch        *b_chi2;   //!
+   TBranch        *b_LEO_chi2;   //!
+   TBranch        *b_af_chi2;   //!
    TBranch        *b_accpoint;   //!
    TBranch        *b_n;   //!
    TBranch        *b_globalIter;   //!
@@ -325,6 +331,8 @@ void EdgeDetection::Init(TTree *tree)
    fChain->SetBranchAddress("likelihood", &likelihood, &b_likelihood);
    fChain->SetBranchAddress("rho", &rho, &b_rho);
    fChain->SetBranchAddress("chi2", &chi2, &b_chi2);
+   fChain->SetBranchAddress("LEO_chi2", &LEO_chi2, &b_LEO_chi2);
+   fChain->SetBranchAddress("af_chi2", &af_chi2, &b_af_chi2);
    fChain->SetBranchAddress("accpoint", &accpoint, &b_accpoint);
    fChain->SetBranchAddress("n", &n, &b_n);
    fChain->SetBranchAddress("globalIter", &globalIter, &b_globalIter);

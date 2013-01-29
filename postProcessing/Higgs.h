@@ -9,22 +9,28 @@
 using namespace std;
 
 // == Define Fortran routines to be called from the HiggsSignal programm
-//extern "C" { void initialize_higgsbounds_(int* nH, int* nHplus, char* whichexpt);}
-extern "C" { void initialize_higgssignals_(int* nH, int* nHplus) ;}
+extern "C" { void initialize_higgssignals_latestresults_(int* nH, int* nHplus) ;}
 extern "C" { void higgssignals_neutral_input_massuncertainty_(double dMh[]);}
-extern "C" { void setup_rate_uncertainties_(double dCS_SM[], double dCS[], double dBR_SM[], double dBR[]);}
-extern "C" { void __pc_chisq_MOD_set_significance(double* S0);}// module, not subroutine
-extern "C" { void __pc_chisq_MOD_set_pdf(int* pdf_in);}// module, not subroutine
+extern "C" { void setup_rate_uncertainties_(double dCS[], double dBR[]);}
+extern "C" { void __io_MOD_get_number_of_observables( int* ntotal, int* npeakmu, int* npeakmh, int* nmpred );}
+extern "C" { void set_pdf_(int* pdf_in);}// module, not subroutine
 extern "C" { double smgamma_h_(double* Mh);}
 extern "C" { void higgsbounds_neutral_input_effc_(double* Mh, double* GammaTotal, double* g2hjss_s, double* g2hjss_p, double* g2hjcc_s, double* g2hjcc_p, double* g2hjbb_s, double* g2hjbb_p, double* g2hjtt_s, double* g2hjtt_p, double* g2hjmumu_s, double* g2hjmumu_p, double* g2hjtautau_s, double* g2hjtautau_p, double* g2hjWW, double* g2hjZZ, double* g2hjZga, double* g2hjgaga, double* g2hjgg, double* g2hjggZ, double* g2hjhiZ, double* BR_hjinvisible, double* BR_hjhihi);}
-extern "C" { void assign_toyvalues_to_mutable_(int* ii, int* peakindex, int* npeaks, double* Toys_muobs, double* Toys_mhobs);}
-extern "C" { void run_higgssignals_(double* Pvalue, double* Chisq, int* ndf, char peak[]);}
+extern "C" { void assign_toyvalues_to_observables_(int* ii, int* peakindex, int* npeaks, double* Toys_muobs, double* Toys_mhobs);}
+extern "C" { void run_higgssignals_(double* Pvalue, double* Chisq, double* Chisq_mu, double* Chisq_mh, int* ndf, char peak[]);}
+extern "C" { void get_rvalues_lhc8_( int* nH, double* R_H_WW, double* R_H_ZZ, double* R_H_gaga, double* R_H_tautau, double* R_H_bb, double* R_VH_bb ); }
 extern "C" { void finish_higgssignals_();}
 extern "C" { void __pc_chisq_MOD_print_cov_mh_to_file(int* nH);}
 extern "C" { void __pc_chisq_MOD_print_cov_mu_to_file();}
+extern "C" { void setup_output_level_(int* outputLevel);}
+extern "C" { void set_higgs_to_peaks_assignment_iterations_(int* iteration);}
+extern "C" { void __io_MOD_get_peakinfo_from_hsresults( int* i, double* mupred, int* domH, int* nHcomb ); }
+extern "C" { void assign_uncertainty_scalefactors_to_observables_( int* ii, int* peakindex, int* npeaks, double* scale_mu, double* scale_mh ); }
 
 
 // == Input for the calculation of the chi2 (to be taken from the toy and/or the input file later)
+int outputLevel = 0;
+int iteration = 0;
 
 // == Number of Higgs
 int nH = 1;
@@ -45,9 +51,6 @@ double dBR_SM[5] = { 0.054, 0.048, 0.048, 0.061, 0.028 };
 // Rate uncertainties for the given model
 double dCS[5] = { 0.20, 0.028, 0.037, 0.051, 0.12 };
 double dBR[5] = { 0.054, 0.048, 0.048, 0.061, 0.028 };
-
- // == Minimal significance for a channel to be considered
-double S0 = 3.0;
 
 // == Set the Higgs mass pdf (1: box, 2: gaussian, 3: theory-box + exp-gaussian)
 int pdf_in = 2;
@@ -79,7 +82,7 @@ double BR_hjinvisible=0;
 double Mh=127.1;
 
 // == Toy measurements for the peaks
-const int Nanalyses=20;
+const int Nanalyses=26;
 double Toys_muobs[Nanalyses];
 double Toys_mhobs[Nanalyses];
 TVectorD vec_obs_mu(Nanalyses);
@@ -94,12 +97,14 @@ TMatrixDSym cov_mh;
 // == Statistical output
 double Pvalue;
 double Chisq;
+double Chisq_mh;
+double Chisq_mu;
 int ndf;
 char peak[10] = "peak";
 
 // ===================================================================
 // == Read the covariance matrices for mu and m(h0) from HiggsSignal
-void readCovarianceMatrices( bool verb=0 ){
+void readCovarianceMatrices( bool verb=0, int useObs=0 ){
 
   cov_mu.ResizeTo( Nanalyses, Nanalyses );
   cov_mh.ResizeTo( Nanalyses, Nanalyses );
@@ -108,20 +113,18 @@ void readCovarianceMatrices( bool verb=0 ){
   __pc_chisq_MOD_print_cov_mu_to_file();
   __pc_chisq_MOD_print_cov_mh_to_file( &nH );
 
- // Read the text files
- double col[Nanalyses];
- int line = 0;
- ifstream cov_mu_file( "cov_mu.txt" );
- //ifstream cov_mu_file( "/afs/naf.desy.de/user/p/prudent/fittino/postProcessing/cov_mu.txt" );
- while( cov_mu_file >> col[0] >> col[1] >> col[2] >> col[3] >> col[4] >> col[5] >> col[6] >> col[7] >> col[8] >> col[9] >> col[10] >> col[11] >> col[12]  >> col[13] >> col[14] >>col[15] >> col[16] >> col[17] >> col[18] >> col[19] ){
-   for( int icol=0; icol<Nanalyses; icol++ ) cov_mu( line, icol ) = col[icol];
+  // Read the text files
+  double col[Nanalyses];
+  int line = 0;
+  ifstream cov_mu_file( "cov_mu.txt" );
+  while( cov_mu_file >> col[0] >> col[1] >> col[2] >> col[3] >> col[4] >> col[5] >> col[6] >> col[7] >> col[8] >> col[9] >> col[10] >> col[11] >> col[12]  >> col[13] >> col[14] >>col[15] >> col[16] >> col[17] >> col[18] >> col[19] >> col[20] >> col[21] >> col[22] >> col[23]>> col[24] >> col[25]){
+    for( int icol=0; icol<Nanalyses; icol++ ) cov_mu( line, icol ) = col[icol];
     line++;
- } cov_mu_file.close();
-
+  } cov_mu_file.close();
+  
  line=0;
  ifstream cov_mh_file( "cov_mh.txt" );
- //ifstream cov_mh_file( "/afs/naf.desy.de/user/p/prudent/fittino/postProcessing/cov_mh.txt" );
- while( cov_mh_file >> col[0] >> col[1] >> col[2] >> col[3] >> col[4] >> col[5] >> col[6] >> col[7] >> col[8] >> col[9] >> col[10] >> col[11] >> col[12]  >> col[13] >> col[14] >>col[15] >> col[16] >> col[17] >> col[18] >> col[19]){
+  while( cov_mh_file >> col[0] >> col[1] >> col[2] >> col[3] >> col[4] >> col[5] >> col[6] >> col[7] >> col[8] >> col[9] >> col[10] >> col[11] >> col[12]  >> col[13] >> col[14] >>col[15] >> col[16] >> col[17] >> col[18] >> col[19] >> col[20] >> col[21] >> col[22] >> col[23]>> col[24] >> col[25]){
    for( int icol=0; icol<Nanalyses; icol++ ) cov_mh( line, icol ) = col[icol];
    line++;
  } cov_mh_file.close();
@@ -137,56 +140,71 @@ void readCovarianceMatrices( bool verb=0 ){
 }
 
 // ===================================================================
-// == Set nominal values of mu and mh for the 20 channels
+// == Set nominal values of mu and mh for the 26 channels
 void set_mu_mh(){
 
   // Set toy measurements for the peaks, every analysis has only one peak (second and third argument to 1)
-  Toys_muobs[0] = 1.4800;
-  Toys_muobs[1] = 2.1400;
-  Toys_muobs[2] = 0.6840;
-  Toys_muobs[3] = -2.8400;
-  Toys_muobs[4] = 0.2880;
-  Toys_muobs[5] = 0.6560;
-  Toys_muobs[6] = 0.6800;
-  Toys_muobs[7] = -1.7500;
-  Toys_muobs[8] = 1.3550;
-  Toys_muobs[9] = -0.7500;
-  Toys_muobs[10] = 0.5090;
-  Toys_muobs[11] = 0.4390;
-  Toys_muobs[12] = 0.4730;
-  Toys_muobs[13] = 1.9700;
-  Toys_muobs[14] = 3.6200;
-  Toys_muobs[15] = 0.3200;
-  Toys_muobs[16] = 1.8790;
-  Toys_muobs[17] = 2.6580;
-  Toys_muobs[18] = 1.3130;
-  Toys_muobs[19] = 1.2550;
-  //
-  Toys_mhobs[0] = 125.00;
-  Toys_mhobs[1] = 125.00;
-  Toys_mhobs[2] = 125.60;
-  Toys_mhobs[3] = 125.00;
-  Toys_mhobs[4] = 125.00;
-  Toys_mhobs[5] = 125.00;
-  Toys_mhobs[6] = 125.00;
-  Toys_mhobs[7] = 125.00;
-  Toys_mhobs[8] = 125.00;
-  Toys_mhobs[9] = 125.00;
-  Toys_mhobs[10] = 125.00;
-  Toys_mhobs[11] = 126.50;
-  Toys_mhobs[12] = 126.50;
-  Toys_mhobs[13] = 125.00;
-  Toys_mhobs[14] = 125.00;
-  Toys_mhobs[15] = 125.00;
-  Toys_mhobs[16] = 126.70;
-  Toys_mhobs[17] = 126.50;
-  Toys_mhobs[18] = 125.00;
-  Toys_mhobs[19] = 126.00;  
+  Toys_muobs[0] = 2.7200;
+  Toys_muobs[1] = 2.6200;
+  Toys_muobs[2] = 2.1800;
+  Toys_muobs[3] = 1.7200;
+  Toys_muobs[4] = 0.7050;
+  Toys_muobs[5] = 1.3460;
+  Toys_muobs[6] = 1.0490;
+  Toys_muobs[7] = 1.0800;
+  Toys_muobs[8] = -2.7000;
+  Toys_muobs[9] = 1.0000;
+  Toys_muobs[10] = 4.2085;
+  Toys_muobs[11] = 1.2889;
+  Toys_muobs[12] = 1.6870;
+  Toys_muobs[13] = 1.4460;
+  Toys_muobs[14] = 0.8950;
+  Toys_muobs[15] = 0.7680;
+  Toys_muobs[16] = 0.8000;
+  Toys_muobs[17] = -0.7710;
+  Toys_muobs[18] = 0.7000;
+  Toys_muobs[19] = -0.0550;
+  Toys_muobs[20] = 1.2880;
+  Toys_muobs[21] = 0.9570;
+  Toys_muobs[22] = -0.3120;
+  Toys_muobs[23] = 3.6200;
+  Toys_muobs[24] = 0.3200;
+  Toys_muobs[25] = 1.9700;
 
+
+  //
+   Toys_mhobs[0] = 126.50;
+   Toys_mhobs[1] = 126.50;
+   Toys_mhobs[2] = 126.50;
+   Toys_mhobs[3] = 126.50;
+   Toys_mhobs[4] = 126.00;
+   Toys_mhobs[5] = 126.00;
+   Toys_mhobs[6] = 126.50;
+   Toys_mhobs[7] = 126.50;
+   Toys_mhobs[8] = 125.00;
+   Toys_mhobs[9] = 125.00;
+   Toys_mhobs[10] = 125.00;
+   Toys_mhobs[11] = 125.00;
+   Toys_mhobs[12] = 125.00;
+   Toys_mhobs[13] = 125.00;
+   Toys_mhobs[14] = 125.00;
+   Toys_mhobs[15] = 125.80;
+   Toys_mhobs[16] = 126.20;
+   Toys_mhobs[17] = 125.00;
+   Toys_mhobs[18] = 125.00;
+   Toys_mhobs[19] = 125.80;
+   Toys_mhobs[20] = 125.00;
+   Toys_mhobs[21] = 125.00;
+   Toys_mhobs[22] = 125.80;
+   Toys_mhobs[23] = 125.00;
+   Toys_mhobs[24] = 125.00;
+   Toys_mhobs[25] = 125.00;
+   
+   
   for( int i = 1; i <= Nanalyses; i++ ){
     vec_obs_mu[i-1] = Toys_muobs[i-1];
     vec_obs_mh[i-1] = Toys_mhobs[i-1];
-    assign_toyvalues_to_mutable_( &i, &peakindex, &npeaks, &Toys_muobs[i-1], &Toys_mhobs[i-1]);
+    assign_toyvalues_to_observables_( &i, &peakindex, &npeaks, &Toys_muobs[i-1], &Toys_mhobs[i-1]);
   }
 
   double s=1,p=0,m=125;
@@ -198,29 +216,54 @@ void set_mu_mh(){
 
 // ===================================================================
 // == Initialize HiggsSignal
-void initializeHiggs( bool verb=0 ){
+void initializeHiggs( bool verb=0, int useObs=0 ){
 
   // == Restrict to SM Higgs (no charged H)
-  initialize_higgssignals_( &nH, &nHplus );
+  initialize_higgssignals_latestresults_( &nH, &nHplus );
+
+  // == Output level (0: silent, 1: screen output, 2: even more output,...)
+  setup_output_level_( &outputLevel );
 
   // == Theoretical uncertainties on mass
   higgssignals_neutral_input_massuncertainty_( dMh );
 
-  // == Systematic uncertainties on cross section and branching fraction
-  setup_rate_uncertainties_( dCS_SM, dCS, dBR_SM, dBR );
+  // == Set number of iterations to find the (best) Higgs-to-peaks assignment
+  // We set the mass very close to the peak, thus we don't need iterations.
+  set_higgs_to_peaks_assignment_iterations_( &iteration );
+    
+ // == Set the Higgs mass pdf (1: box, 2: gaussian, 3: theory-box + exp-gaussian)
+  set_pdf_( &pdf_in );
 
-  // == Minimal significance for a channel to be considered
-  __pc_chisq_MOD_set_significance( &S0 );
-
-  // == Set the Higgs mass pdf (1: box, 2: gaussian, 3: theory-box + exp-gaussian)
-  __pc_chisq_MOD_set_pdf( &pdf_in );
-
+  // == Calculate theoretical uncertainties of singleH production from ggh and bbh effective couplings. 
+  //dCS[0] = get_singleh_uncertainty_(dggh, dbbh, g2hjgg, g2hjbb_s+g2hjbb_p, mh)	
+  setup_rate_uncertainties_( dCS, dBR );
+ 
   // == Dummy run with nominal values of mu and mh to get the covariance matrix
   set_mu_mh();
-  run_higgssignals_( &Pvalue, &Chisq, &ndf, peak);
+  run_higgssignals_( &Pvalue, &Chisq, &Chisq_mu, &Chisq_mh, &ndf, peak);
+  int npeakmu, ntotal, npeakmh, nmpred;
+  __io_MOD_get_number_of_observables( &ntotal, &npeakmu, &npeakmh, &nmpred );
+
+  // == Scale down the uncertainty on mh and mu
+  // For study, lower the uncertainties
+  float redUncMu = 1.;
+  float redUncMh = 1.;
+  if( useObs == 13 ) redUncMu = 0.20;
+  if( useObs == 14 ) redUncMu = 0.05;
+  if( useObs == 15 ){ 
+    redUncMu = 0.05;
+    redUncMh = 0.25;
+  }
+  double scale_mu[26] = {redUncMu};
+  double scale_mh[26] = {redUncMh};
+  cout << " >>> Uncertainty scales for the "<< npeakmu <<" peaks: scale(mu) = " << redUncMu << " scale(mh) = " << redUncMh << endl;
+
+
+  for( int ii = 1; ii <= npeakmu; ii++ ) 
+    assign_uncertainty_scalefactors_to_observables_( &ii, &peakindex, &npeaks, scale_mu, scale_mh ); 
 
   // == Read the covariance matrices for mu and m(h0) from HiggsSignal
-  readCovarianceMatrices( verb );
+  readCovarianceMatrices( verb, useObs );
 
   return;
 }
@@ -252,44 +295,97 @@ TVectorD getCorrelatedRandomNumbers(const TVectorD& mean, const TMatrixDSym& cov
 // ===================================================================
 // == Smear the Higgs observables in a correlated way
 // == the covariance matrices are created in 'readCovarianceMatrices'
-void smearHiggs( bool verb, int randomSeed ){
+void smearHiggs( bool verb, int randomSeed, TString inputDir, TString fit ){
 
  if( verb ) cout << "   > Smear Higgs mu, mh.." << endl;
 
+ // -----------------------------------------------------------------
+ // Open the files with the values of mu and mh at the best fit point
+ TString bestMuFile = inputDir + "/mu_" + fit + ".txt";
+ TString bestMhFile = inputDir + "/mh_" + fit + ".txt";
+ ifstream bestMuStreamIn( bestMuFile );
+ ifstream bestMhStreamIn( bestMhFile );
+ 
+ // Warning if the file does not exist
+ if( !bestMuStreamIn.good() ) cout << " >>>>>> WARNING <<<<<< the file of the best fit mu is missing: " << endl << bestMuFile << endl;
+ if( !bestMhStreamIn.good() ) cout << " >>>>>> WARNING <<<<<< the file of the best fit mh is missing: " << endl << bestMhFile << endl;
+
+ cout << "   > Values of mu, m(h0) at the best fit point.." << endl;
+ cout << bestMuFile << endl;
+ cout << bestMhFile << endl;
+
+ // Read read the best fit point files for mu
+ float bestMu;
+ int analysis=0;
+ while( bestMuStreamIn >> bestMu ){
+   vec_obs_mu[analysis] = bestMu;
+   analysis++;
+   if( analysis >= Nanalyses ) break;
+ }
+ bestMuStreamIn.close();
+ 
+ // Read read the best fit point files for mh
+ float bestMh;
+ analysis=0;
+ while( bestMhStreamIn >> bestMh ){
+   vec_obs_mh[analysis] = bestMh;
+   analysis++;
+   if( analysis >= Nanalyses ) break;
+ }
+ bestMhStreamIn.close();
+
+
+ // -----------------------------------------------------------------
+ // Smear these best fit point values
  TVectorD vec_toy_mu = getCorrelatedRandomNumbers( vec_obs_mu, cov_mu, randomSeed );
  TVectorD vec_toy_mh = getCorrelatedRandomNumbers( vec_obs_mh, cov_mh, randomSeed );
-  
-  if( verb ){
-    cout << "     Correlated toy values for mu.." << endl;
-    for( int i = 0; i < Nanalyses; i++ ) cout << "      mu["<<i<<"]="<<vec_toy_mu[i]<<" ("<<vec_obs_mu[i]<<")"<<endl;
-    cout << "     Correlated toy values for mh.." << endl;
-    for( int i = 0; i < Nanalyses; i++ ) cout << "      mh["<<i<<"]="<<vec_toy_mh[i]<<" ("<<vec_obs_mh[i]<<")"<<endl;
-  }
+ //TVectorD vec_toy_mu = vec_obs_mu;// test the toys
+ //TVectorD vec_toy_mh = vec_obs_mh;
 
-  for( int i = 1; i <= Nanalyses; i++ ) 
-  assign_toyvalues_to_mutable_( &i, &peakindex, &npeaks, &vec_toy_mu[i-1], &vec_toy_mh[i-1]);
 
-  return;
+if( verb ){
+  cout << "     Correlated toy values for mu.." << endl;
+  for( int i = 0; i < Nanalyses; i++ ) cout << "      mu["<<i<<"]="<<vec_toy_mu[i]<<" ("<<vec_obs_mu[i]<<")"<<endl;
+  cout << "     Correlated toy values for mh.." << endl;
+  for( int i = 0; i < Nanalyses; i++ ) cout << "      mh["<<i<<"]="<<vec_toy_mh[i]<<" ("<<vec_obs_mh[i]<<")"<<endl;
+ }
+
+for( int i = 1; i <= Nanalyses; i++ ) assign_toyvalues_to_observables_( &i, &peakindex, &npeaks, &vec_toy_mu[i-1], &vec_toy_mh[i-1]);
+
+return;
 }
 
 // ===================================================================
 // == For a given point, get the Higgs chi2
-double getHiggsChi2( double _HiggsMassCouplings[] )
+void getHiggsChi2( double _HiggsMassCouplings[], double& Chisq, double& Chisq_mu, double& Chisq_mh )
 {
   // == Set the HiggsBounds/Signals effective relative couplings input
   double GammaTotal=smgamma_h_( &_HiggsMassCouplings[0] );
   higgsbounds_neutral_input_effc_( &_HiggsMassCouplings[0], &GammaTotal, &_HiggsMassCouplings[1], &_HiggsMassCouplings[2], &_HiggsMassCouplings[3], &_HiggsMassCouplings[4], &_HiggsMassCouplings[5], &_HiggsMassCouplings[6], &_HiggsMassCouplings[7], &_HiggsMassCouplings[8], &_HiggsMassCouplings[9], &_HiggsMassCouplings[10], &_HiggsMassCouplings[11], &_HiggsMassCouplings[12], &_HiggsMassCouplings[13], &_HiggsMassCouplings[14], &_HiggsMassCouplings[15], &_HiggsMassCouplings[16], &_HiggsMassCouplings[17], &_HiggsMassCouplings[18], &_HiggsMassCouplings[19], &_HiggsMassCouplings[20], &_HiggsMassCouplings[21] );
-  //  higgsbounds_neutral_input_effc_( &HiggsMass, &GammaTotal, &g2hjss_s, &g2hjss_p, &g2hjcc_s, &g2hjcc_p, &g2hjbb_s, &g2hjbb_p, &g2hjtt_s, &g2hjtt_p, &g2hjmumu_s, &g2hjmumu_p, &g2hjtautau_s, &g2hjtautau_p, &g2hjWW, &g2hjZZ, &g2hjZga, &g2hjgaga, &g2hjgg, &g2hjggZ, &g2hjhiZ, &BR_hjinvisible, &BR_hjhihi);
 
   // == Statistical output
-  run_higgssignals_( &Pvalue, &Chisq, &ndf, peak);
-  
-  return Chisq;
+  run_higgssignals_( &Pvalue, &Chisq, &Chisq_mu, &Chisq_mh, &ndf, peak);
+
+  return;
 }
 
- 
+ // ===================================================================
+// == Get signal-rate ratios (without efficiencies) for lightest Higgs boson from HS.
+// This function has to be called AFTER run_HiggsSignals.
+void getHiggsRatios( double& R_H_WW, double& R_H_ZZ, double& R_H_gaga, double& R_H_tautau, double& R_H_bb, double& R_VH_bb )
+{
+  get_rvalues_lhc8_( &nH, &R_H_WW, &R_H_ZZ, &R_H_gaga, &R_H_tautau, &R_H_bb, &R_VH_bb );
+  return;
+}
 
+// == predicted Higgs mu for each analysis
+double getHiggsMu( int i )
+{
+  double predmu;
+  int domH, nHcomb;
+  __io_MOD_get_peakinfo_from_hsresults( &i, &predmu, &domH, &nHcomb );
 
-
+return predmu;
+}
 
 #endif

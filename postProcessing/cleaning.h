@@ -10,11 +10,8 @@ const int prevRange = 10;
 Float_t M0_bef[prevRange] = {0}, M12_bef[prevRange] = {0}, TanBeta_bef[prevRange] = {0}, A0_bef[prevRange] = {0};
 
 // == Removal of buggy points
-//TCutG* cuts[7] = {0};
 TSpline* cuts[7] = {0};
 TFile* cutsFile = 0;
-ofstream bestFitStreamOut;
-//TTree* cleanedMarkovChain;
 
 // ===================================================================
 // == Assign the variables to the ntuples and open the IO files
@@ -30,18 +27,22 @@ void preparIOfiles( TString task, TString arg1, TString arg2, TString arg3 ){
   outputDir = arg3;
   if( fit.Contains("NUHM1") ) model = "NUHM1";
   else if( fit.Contains("NUHM2") ) model = "NUHM2";
-  else model = "msugra";
+  else model = "CMSSM";
 
-  // For the fits 3 to 6, use only the msugra mode
+  if( task == "multiplePointsRemoval" ){
+  // For the fits 3 to 6, use only the CMSSM mode
   if( !inputDir.Contains("fittino.out.summer2012_07") && 
       !inputDir.Contains("fittino.out.summer2012_08") && 
       !inputDir.Contains("fittino.out.summer2012_09") &&
-      !inputDir.Contains("fittino.out.summer2012_10") ) model = "msugra";
-  
+      !inputDir.Contains("fittino.out.summer2012_10") &&
+      !inputDir.Contains("fittino.out.summer2012_11") &&
+      !inputDir.Contains("fittino.out.summer2012_12") &&
+      !inputDir.Contains("fittino.out.summer2012_13") ) model = "CMSSM";
 
-  pp_segment = atoi( getenv("PP_SEGMENT") );
-  nb_segment = atoi( getenv("NB_SEGMENT") );
-  pp_segment_st = getenv("PP_SEGMENT");
+  //pp_segment = atoi( getenv("PP_SEGMENT") );
+  //  nb_segment = atoi( getenv("NB_SEGMENT") );
+  //  pp_segment_st = getenv("PP_SEGMENT");
+  }
 
   // == Opening input fit to process
   TString name_in = inputDir + fit + ".root";
@@ -66,6 +67,12 @@ void preparIOfiles( TString task, TString arg1, TString arg2, TString arg3 ){
     markovChain_in->SetBranchAddress("sin_th_eff_chi2",&sin_th_eff_chi2 );
     markovChain_in->SetBranchAddress("B_smm_chi2",&B_smm_chi2 );
     markovChain_in->SetBranchAddress("massTop_chi2",&massTop_chi2 );
+    markovChain_in->SetBranchAddress("R_H_WW",&R_H_WW );
+    markovChain_in->SetBranchAddress("R_H_ZZ",&R_H_ZZ );
+    markovChain_in->SetBranchAddress("R_H_gaga",&R_H_gaga );
+    markovChain_in->SetBranchAddress("R_H_tautau",&R_H_tautau );
+    markovChain_in->SetBranchAddress("R_H_bb",&R_H_bb );
+    markovChain_in->SetBranchAddress("R_VH_bb",&R_VH_bb );
   }
   markovChain_in->SetBranchAddress("accpoint",&accpoint );
   markovChain_in->SetBranchAddress("n",&n );
@@ -485,6 +492,13 @@ void preparIOfiles( TString task, TString arg1, TString arg2, TString arg3 ){
   markovChain_out->Branch("O_h0_To_Neutralino1_Neutralino1__nofit",&O_h0_To_Neutralino1_Neutralino1__nofit,"O_h0_To_Neutralino1_Neutralino1__nofit/F");
   markovChain_out->Branch("O_widthh0_nofit",&O_widthh0_nofit,"O_widthh0_nofit/F");
 
+  markovChain_out->Branch("R_H_WW",&R_H_WW,"R_H_WW/F");
+  markovChain_out->Branch("R_H_ZZ",&R_H_ZZ,"R_H_ZZ/F");
+  markovChain_out->Branch("R_H_gaga",&R_H_gaga,"R_H_gaga/F");
+  markovChain_out->Branch("R_H_tautau",&R_H_tautau,"R_H_tautau/F");
+  markovChain_out->Branch("R_H_bb",&R_H_bb,"R_H_bb/F");
+  markovChain_out->Branch("R_VH_bb",&R_VH_bb,"R_VH_bb/F");
+  
  return; 
 }
 
@@ -498,7 +512,7 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
   if( task == "multiplePointsRemoval" ) cout << " >>> Removing multiple points from:" << endl << arg2 + arg1 + ".root" << endl;
   if( task == "buggyPointsRemoval" ) cout << " >>> Removing buggy points from:" << endl << arg2 + arg1 + ".root" << endl;
   preparIOfiles( task, arg1, arg2, arg3 );
-  
+
   // ----------------------------------------------
   // Remove the buggy points
   if( task == "buggyPointsRemoval" ){
@@ -522,16 +536,10 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
 	}
       }
       cutsFile->Close();
-    }
-
-    // prepar the file for the best fit point
-    TString bestFitFile = outputDir + "/bestFit_" + fit + "_final.txt";
-    cout << endl << " >>> Creating the file for the best fit point.. " << endl << bestFitFile << endl;
-    bestFitStreamOut.open( bestFitFile );
-    bestFitVal[0] = 1E5;
+    }  
   }
 
-  cout << endl << "  >> Looping over the file.. " << endl;
+  cout << endl << "  >> Looping over the file.. (" << model <<")" << endl;
 
   // == Cut flow
   int cutFlow[6]={0};
@@ -541,15 +549,13 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
   int nBet = 0;
   int first = 0;
   int last = nEnt;
-  if( task == "multiplePointsRemoval" ){
-    nBet = TMath::FloorNint( nEnt / nb_segment );
-    first = (pp_segment-1) * nBet;
-    last = first + nBet;  
-    cout << "   > PP segment: " << pp_segment << "/" << nb_segment<<" -> events: " << first << " to " << last-1 << " of " << nEnt << endl;
-  }
-  
-  for( Int_t ievt = 0; ievt < 50000; ++ievt )  
-    //for( Int_t ievt = first; ievt < last; ++ievt )  
+  //if( task == "multiplePointsRemoval" ){
+    //nBet = TMath::FloorNint( nEnt / nb_segment );
+    //first = (pp_segment-1) * nBet;
+    //last = first + nBet;  
+    //cout << "   > PP segment: " << pp_segment << "/" << nb_segment<<" -> events: " << first << " to " << last-1 << " of " << nEnt << endl;
+  //}
+  for( Int_t ievt = first; ievt < last; ++ievt )  
   {
     markovChain_in->GetEntry( ievt );
     cutFlow[0]++;
@@ -565,7 +571,6 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
     if( HiggsSignals_TotalChi2 < 0 ) continue;
     if( !(chi2 > 0) ) continue;
     cutFlow[2]++;
-
     // ----------------------------------------------
     // Remove the multiple points
     // Considering the current point, the 10 points after it are compared to the current points
@@ -600,11 +605,11 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
       }  
 
     cutFlow[3]++;
-
      // ----------------------------------------------
     // Remove the buggy points
     // Cuts are implemented by eye&hand, should be soon make use
     // of splines and edge detection algorithm
+
     if( task == "buggyPointsRemoval" )
       {
 	bool raus = 0;
@@ -612,92 +617,31 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
 	  if( raus ) break;
 	  if( cuts[icut] == 0 ) continue;
 	  TString name = cuts[icut]->GetName();
-
-/* 	  if( name.Contains("A0") && cuts[icut]->IsInside( P_A0, chi2 ) ) raus = 1; */
-/* 	  if( name.Contains("TanBeta") && cuts[icut]->IsInside( P_TanBeta, chi2 ) ) raus = 1; */
-/* 	  if( name.Contains("M0") && cuts[icut]->IsInside( P_M0, chi2 ) ) raus = 1; */
-/* 	  if( name.Contains("M12") && cuts[icut]->IsInside( P_M12, chi2 ) ) raus = 1; */
-/* 	  if( name.Contains("massTop") && cuts[icut]->IsInside( P_massTop, chi2 ) ) raus = 1; */
-/* 	  if( model == "NUHM1" ) */
-/* 	  if( name.Contains("M0H") && cuts[icut]->IsInside( P_M0H, chi2 ) ) raus = 1; */
-/* 	  if( model == "NUHM2" ){ */
-/* 	    if( name.Contains("M0Hu") && cuts[icut]->IsInside( P_M0Hu, chi2 ) ) raus = 1; */
-/* 	    if( name.Contains("M0Hd") && cuts[icut]->IsInside( P_M0Hd, chi2 ) ) raus = 1; */
-/* 	  } */
-
-	
-/* 	  cout << name << endl; */
-/* 	  if( name.Contains("A0") ) cout << cuts[icut]->Eval( P_A0 )  << endl; */
-/* 	  if( name.Contains("TanBeta") ) cout << cuts[icut]->Eval( P_TanBeta )  << endl; */
-/* 	  if( name.Contains("M0") ) cout << cuts[icut]->Eval( P_M0 )  << endl; */
-/* 	  if( name.Contains("M12") ) cout << cuts[icut]->Eval( P_M12 )  << endl; */
-/* 	  if( name.Contains("MassTop") ) cout << cuts[icut]->Eval( P_massTop )  << endl; */
-
-
-
+	  
 	  if( name.Contains("A0") && chi2 < cuts[icut]->Eval( P_A0 ) ) raus = 1;
 	  if( name.Contains("TanBeta") && chi2 < cuts[icut]->Eval( P_TanBeta ) ) raus = 1;
 	  if( name.Contains("M0") && !name.Contains("M0H") && chi2 < cuts[icut]->Eval( P_M0 ) ) raus = 1;
 	  if( name.Contains("M12") && chi2 < cuts[icut]->Eval( P_M12 ) ) raus = 1;
 	  if( name.Contains("MassTop") && chi2 < cuts[icut]->Eval( P_massTop ) ) raus = 1;
-	  //if( model == "NUHM1" )
-	  //if( name.Contains("M0H") && chi2 < cuts[icut]->Eval( P_M0H ) ) raus = 1;
-	  //if( model == "NUHM2" ){
-	  //if( name.Contains("M0Hu") && chi2 < cuts[icut]->Eval( P_M0Hu ) ) raus = 1;
-	  //if( name.Contains("M0Hd") && chi2 < cuts[icut]->Eval( P_M0Hd ) ) raus = 1;
-	  //}
+	  if( model == "NUHM1" )
+	    if( name.Contains("M0H") && chi2 < cuts[icut]->Eval( P_M0H ) ) raus = 1;
+	  if( model == "NUHM2" ){
+	    if( name.Contains("M0Hu") && chi2 < cuts[icut]->Eval( P_M0Hu ) ) raus = 1;
+	    if( name.Contains("M0Hd") && chi2 < cuts[icut]->Eval( P_M0Hd ) ) raus = 1;
+	  }	  
 	}
-
 	// == Cut out useless high chi2 points, chi2=60 is the limit used by the buggy point removal tool
 	if( chi2 > 60 ) continue;
         cutFlow[4]++;
+
 	if( raus ) continue;	
 	cutFlow[5]++;
-      
+	
 	// == On ATLAS request, special cuts
 	//if( chi2 > (32+2.3) ) continue;
-
-	if( chi2 < bestFitVal[0] ){
-	  bestFitVal[0] = chi2;
-	  bestFitVal[1] = O_Bsg_npf;
-	  bestFitVal[2] = O_dm_s_npf;
-	  bestFitVal[3] = O_Btn_npf;
-	  bestFitVal[4] = O_gmin2m_npf;
-	  bestFitVal[5] = O_omega;
-	  bestFitVal[6] = O_Massh0_npf;
-	  bestFitVal[7] = O_MassW_npf;
-	  bestFitVal[8] = O_sin_th_eff_npf;
-	  bestFitVal[9] = O_B_smm_npf;
-	  bestFitVal[10] = O_massTop;
-	  bestFitVal[11] = O_massNeutralino1_nofit;
-	  bestFitVal[12] = af_direct;
-	  bestFitVal[13] = LEO_chi2;
-	  bestFitVal[14] = LHC_chi2;
-	  bestFitVal[15] = Higgs_chi2;
-	  bestFitVal[16] = af_chi2;
-	  bestFitVal[17] = Bsg_chi2;
-	  bestFitVal[18] = dm_s_chi2;
-	  bestFitVal[19] = Btn_chi2;
-	  bestFitVal[20] = gmin2_chi2;
-	  bestFitVal[21] = omega_chi2;
-	  bestFitVal[22] = MassW_chi2;
-	  bestFitVal[23] = sin_th_eff_chi2;
-	  bestFitVal[24] = B_smm_chi2;
-	  bestFitVal[25] = massTop_chi2;
-	  //
-	  bestFitPar[0] = P_M0;
-	  bestFitPar[1] = P_M12;
-	  bestFitPar[2] = P_A0;
-	  bestFitPar[3] = P_TanBeta;
-	  bestFitPar[4] = P_massTop;
-	  if( model == "NUHM1" ) bestFitPar[5] = P_M0H;
-	  if( model == "NUHM2" ){
-	    bestFitPar[5] = P_M0Hu;
-	    bestFitPar[6] = P_M0Hd;
-	  }
-	}       	
+	
       }
-
+    
     markovChain_out->Fill();
   }
 
@@ -718,21 +662,6 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
  markovChain_out->Write();
  file_in->Close();
  file_out->Close();
-
- // Save the best fit point 
- if( task == "buggyPointsRemoval" )
-   {
-     for( int iVal = 0; iVal < ValName.size(); iVal++ ) bestFitStreamOut << ValName[iVal] << " " << bestFitVal[iVal] << endl;
-     for( int iPar = 0; iPar < ParName.size(); iPar++ ) bestFitStreamOut << ParName[iPar] << " " << bestFitPar[iPar] << endl;      
-     bestFitStreamOut.close(); 
-     
-     // Display the results
-     cout << endl << " >>> Lowest chi2 point after post-processing.." << endl;
-     for( int iPar = 0; iPar < ParName.size(); iPar++ ){
-       cout << ParName[iPar] << " = " << bestFitPar[iPar] << endl;
-     }
-     for( int iVal = 0; iVal < ValName.size(); iVal++ ) cout << ValName[iVal] << " = " << bestFitVal[iVal] << endl;
-   }  
 
  return;
 }

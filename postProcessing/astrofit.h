@@ -46,10 +46,11 @@ void setAstrofit( int PP_or_Toys, int randomSeed, double bestWIMPmass, double be
   // Minimum of the parabola shifted
   double parabolaMean = 0;
   // For toys
-  if( PP_or_Toys == 0 ){
+  if( PP_or_Toys == 0 || PP_or_Toys == 2 ){
   // Smear the position of the parabola
-    TRandom3 rand( randomSeed );
+    TRandom3 rand( randomSeed );    
     parabolaMean = rand.Gaus( bestWIMPcs, totalWidth );
+    //parabolaMean = bestWIMPcs;// test the toys
   }
   // For post-processing
   if( PP_or_Toys == 1 ) parabolaMean = bestWIMPcs;
@@ -78,6 +79,7 @@ double astrofitChi2( double WIMPmass, double WIMPcs, bool verbose ){
   double cs0 = totalWidth * TMath::Sqrt( valAtZero );
   //double cs0 = WIMPcs + shiftAtBestFitPoint;
   //cout << "cs0: "<< cs0 << endl;
+  //cout << "WIMPcs: " << WIMPcs << endl;
 
   // Calculate chi2 for that point by setting the parabola to zero below the minimum
   double chi2 = 0;
