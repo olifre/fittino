@@ -32,7 +32,7 @@ void ToyLHCChi2Provider::CreateChi2Histograms( float nmin, float nmax ) {
     vector<float> vObs(3,nObs);
     char histname[40];
     sprintf( histname, "chi2OffCorr_nObs_%i", (int)nObs );
-    TH2D *h = new TH2D( histname, histname, 10, -4500., 5500., 5, 5., 55. );
+    TH2D *h = new TH2D( histname, histname, 10, -4500., 5500., 4, 5., 45. );
     for( int binx = 1; binx <= 10; ++binx ) {
       for( int biny = 1; biny <= 5; ++biny ) {
         h -> SetBinContent(binx, biny, GetChi2CorrectionFit( h->GetXaxis()->GetBinCenter(binx), h->GetYaxis()->GetBinCenter(biny), vObs, vExp, hCorr ) );
@@ -72,7 +72,7 @@ float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, float A0,
 
 	if( A0 > 5499. ) A0 = 5499.;
 	if( A0 < -4499. ) A0 = -4499.;
-	if( tanb > 54.9) tanb = 54.9;
+	if( tanb > 44.9) tanb = 44.9;
 	float scaleFac = (M0 < 2000. ) ? (M0-1200.)/800. : 1.;
 	float chi2_uncorr = hChi2_M0_M12->Interpolate(M0,M12);
 	float chi2_correction = h_Chi2_A0_tb->Interpolate(A0,tanb); // the histogram h_Chi2_A0_tb shows the DIFFERENCE in chi2: chi2(A0,tb)-chi2(0,10) !!!
