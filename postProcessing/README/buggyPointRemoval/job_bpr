@@ -7,7 +7,8 @@
 #$ -l h_vmem=1G
 #$-l site=hh 
 #$ -w e
-#$ -m ae -M prudent@physik.tu-dresden.de
+#$ -m ae -M MYADRESS@physik.MYUNIVERSITY.de
+
 
 
 #----------------------------------
@@ -73,7 +74,7 @@ cp $working_directory/Higgs.h .
 cp $tools_directory/ToyLHCChi2Provider.h .
 cp $tools_directory/signalGrids.root .
 cp $working_directory/LHC.h .
-cp /afs/naf.desy.de/user/p/prudent/fittino/tools/GetToyLHCChi2/ProfileLikelihood/chi2Map_nObs_eq_nBgdExp.root .
+cp $tools_directory/AllChi2Maps.root .
 
 # Astrofit
 cp $working_directory/astrofit.h .

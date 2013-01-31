@@ -62,8 +62,8 @@ for model in CMSSM NUHM1 NUHM2; do
 
 echo ..... $model .....
 
-newJob=job_substrate\_$obs\_$model
-cp job_substrate $newJob
+newJob=job_extract\_$obs\_$model
+cp job_extract $newJob
 
 sed -i s/XXMODEL/$model/g $newJob
 sed -i s/XXOBS/$obs/g $newJob

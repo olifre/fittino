@@ -7,7 +7,7 @@
 #$ -l h_vmem=2G
 #$-l site=hh 
 #$ -w e
-#$ -m ae -M prudent@physik.tu-dresden.de
+#$ -m ae -M MYADRESS@physik.MYUNIVERSITY.de
 
 
 #----------------------------------
