@@ -461,7 +461,7 @@ void assignOutputBranches(){
   markovChain_out->Branch("massTop_chi2",&massTop_chi2,"massTop_chi2/F");
   markovChain_out->Branch("LEO_chi2",&LEO_chi2,"LEO_chi2/F");
   markovChain_out->Branch("LHC_chi2",&LHC_chi2,"LHC_chi2/F");
-  markovChain_out->Branch("Higgs_chi2",&Higgs_chi2,"Higgs_chi2/F");
+  markovChain_out->Branch("Higgs_chi2",&Higgs_chi2,"Higgs_chi2/D");
   markovChain_out->Branch("mu_chi2",&mu_chi2,"mu_chi2/D");
   markovChain_out->Branch("mh_chi2",&mh_chi2,"mh_chi2/D");
   markovChain_out->Branch("af_chi2",&af_chi2,"af_chi2/F");
@@ -1091,6 +1091,96 @@ void smearLEObs( bool verb ){
 }
 
 
+// ===================================================================
+// == Observables of the 2012 paper
+float paper2012( bool verbose ){
+
+  // Calculating the chi2 for each LEO 
+  // The excluded chargino and Higgs range are already taken into into account
+  // The top mass had been fixed for the nominal fit
+  // ---------
+  // Omega
+  Float_t valOmega = 0.1123;
+  Float_t uncExpOmega = 0.0035;
+  Float_t uncTheoOmega = 0.01123;// 10% relative for 1 sigma
+  Float_t uncOmega = TMath::Sqrt( uncExpOmega*uncExpOmega + uncTheoOmega*uncTheoOmega );
+   omega_chi2 = myChi2( O_omega, valOmega, uncOmega );
+
+  // ---------
+  // b->sg
+  Float_t valBsg = 3.55E-4;
+  Float_t uncExpBsg = TMath::Sqrt( 0.24E-4*0.24E-4 + 0.09E-4*0.09E-4 );
+  Float_t uncTheoBsg_2loops = 0.23E-4;
+  Float_t uncBsg = TMath::Sqrt( uncExpBsg*uncExpBsg + uncTheoBsg_2loops*uncTheoBsg_2loops );
+   Bsg_chi2 = myChi2( O_Bsg_npf, valBsg, uncBsg );
+
+  // ---------
+  // W mass, world average 2012
+  Float_t valMW = 80.385;
+  Float_t uncMW = TMath::Sqrt( 0.015*0.015 + 0.010*0.010 );
+   MassW_chi2 = myChi2( O_MassW_npf, valMW, uncMW );
+
+  // ---------
+  // Bs->mumu, moriond 2012
+  Float_t valBsmumu = 4.5E-9;
+  Float_t uncBsmumu = 0.2E-9;
+   B_smm_chi2 = myChi2( O_B_smm_npf, valBsmumu, uncBsmumu );
+
+  // ---------
+  // DeltaMs
+  Float_t valdm_s = 17.78;
+  Float_t uncdm_s = TMath::Sqrt( 0.12*0.12 + 5.2*5.2 );
+   dm_s_chi2 = myChi2( O_dm_s_npf, valdm_s, uncdm_s );
+
+  // ---------
+  // B->taunu
+  Float_t valBtn = 1.67E-4;
+  Float_t uncBtn = 0.39E-4;
+   Btn_chi2 = myChi2( O_Btn_npf, valBtn, uncBtn );
+
+  // ---------
+  // (g-2)muon
+  Float_t valgmin2 = 28.7E-10;
+  Float_t uncgmin2 = TMath::Sqrt( 8.0E-10*8.0E-10 + 2.0E-10*2.0E-10 );
+   gmin2_chi2 = myChi2( O_gmin2m_npf, valgmin2, uncgmin2 );
+
+  // ---------
+  // Sin(Theta_eff)
+  Float_t valsin_th_eff = 0.23113;
+  Float_t uncsin_th_eff = 0.00021;
+   sin_th_eff_chi2 = myChi2( O_sin_th_eff_npf, valsin_th_eff, uncsin_th_eff );
+
+   // Total LEO chi2
+   LEO_chi2 = sin_th_eff_chi2 + gmin2_chi2 + Btn_chi2 + dm_s_chi2 + B_smm_chi2 + MassW_chi2 + Bsg_chi2 + omega_chi2;   
+
+   // Calculating the LHC chi2 for 4.7/fb at 7TeV (0lepton search at ATLAS)
+   if( P_M0 > 20 && P_M12 > 100 && P_M0 < 2500 && P_M12 < 1200 ) LHC_chi2 = hChi2->Interpolate( P_M0, P_M12 );
+   else if( P_M0 > 2500 ) LHC_chi2 = hChi2->Interpolate( 2500, P_M12 );
+   else LHC_chi2 = 0;
+   if( LHC_chi2 < 0 ) LHC_chi2 = 0;
+
+   // Calculating the Astrofit chi2 for XENON100
+   af_chi2 = astrofitChi2( O_massNeutralino1_nofit, af_direct, false );
+
+   if( verbose ){
+   cout << "       Bsg:      theo = " << O_Bsg_npf << " meas = " << valBsg << " ->chi2 = " << Bsg_chi2 << endl;
+   cout << "       Dms:      theo = " << O_dm_s_npf<< " meas = " << valdm_s << " ->chi2 = " << dm_s_chi2 << endl;
+   cout << "       Btn:      theo = " << O_Btn_npf<< " meas = " << valBtn << " ->chi2 = " << Btn_chi2 << endl;
+   cout << "       gmin2:    theo = " << O_gmin2m_npf<< " meas = " << valgmin2 << " ->chi2 = " << gmin2_chi2 << endl;
+   cout << "       omega:    theo = " << O_omega<< " meas = " << valOmega << " ->chi2 = " << omega_chi2 << endl;
+   cout << "       MassW:    theo = " << O_MassW_npf<< " meas = " << valMW << " ->chi2 = " << MassW_chi2 << endl;
+   cout << "       sinThEff: theo = " << O_sin_th_eff_npf<< " meas = " << valsin_th_eff << " ->chi2 = " << sin_th_eff_chi2 << endl;
+   cout << "       Bsmm:     theo = " << O_B_smm_npf<< " meas = " << valBsmumu << " ->chi2 = " << B_smm_chi2 << endl;
+   cout << "    - Total LEO chi2  = " << LEO_chi2 << endl;
+   cout << "    - LHC             = " << LHC_chi2 << endl;
+   cout << "    - Astrofit        = " << af_chi2 << endl;
+   cout << "    - Total chi2      = " << LEO_chi2+LHC_chi2+af_chi2<< endl;
+   }
+         
+
+   return( LEO_chi2 + LHC_chi2 + af_chi2 );
+}
+
 
 // ===================================================================
 // == Recalculate the minimal chi2 for a given toy with smeared observables
@@ -1114,7 +1204,7 @@ void calculateChi2( int PP_or_Toys ){
   else maxChi2 = 50;
 
   // Set up the LHC tool and smear the number of observed events for toys
-  if( useObs != 4 ) setLHCchi2Tools( PP_or_Toys, randomSeed, verbose, bestFitPar[0], bestFitPar[1], fit );
+  if( useObs != 4 ) setLHCchi2Tools( PP_or_Toys, randomSeed, verbose, bestFitPar[0], bestFitPar[1], fit, useObs );
   
   // Set the Xenon100 contour, smear it for toys, bestFitVal[11] = mass of the neutralino, bestFitVal[12] = total cross section
   setAstrofit( PP_or_Toys, randomSeed, bestFitVal[11], bestFitVal[12], verbose );
@@ -1163,6 +1253,7 @@ void calculateChi2( int PP_or_Toys ){
       if( verbose ) cout <<"    - Parameters: M0(" <<P_M0<<") M12("<<P_M12<<") TanBeta("<<P_TanBeta<<") A0("<<P_A0<<")" <<endl;
       cutFlow[0]++;
       
+      // --------------------
       // Cut on chargino mass
       float mChiplCut = 0;
       if( PP_or_Toys == 0 || PP_or_Toys == 2 ) mChiplCut = mChipl;//smeared value
@@ -1170,139 +1261,159 @@ void calculateChi2( int PP_or_Toys ){
       if( verbose ) cout <<"    - Chargino mass " << O_massChargino1_nofit << " bound: " << mChiplCut << endl;
       if( O_massChargino1_nofit < mChiplCut ) continue;
       cutFlow[1]++;
-      
-      // Chi2 for low energy observables
-      if( PP_or_Toys == 1 ) Bsg_chi2 = myChi2( O_Bsg_npf,  LEObs[1], uncLEObs[1] ) ;
-      if( PP_or_Toys == 0 || PP_or_Toys == 2 ) Bsg_chi2 = myChi2( O_Bsg_npf,  toyVal[1], uncLEObs[1] ) ;         
-      if( useObs != 7 ) LEO_chi2 += Bsg_chi2;
 
-      if( PP_or_Toys == 1 ) dm_s_chi2 = myChi2( O_dm_s_npf,  LEObs[2], uncLEObs[2] ) ;
-      if( PP_or_Toys == 0 || PP_or_Toys == 2 ) dm_s_chi2 = myChi2( O_dm_s_npf,  toyVal[2], uncLEObs[2] ) ;    
-      if( useObs != 7 ) LEO_chi2 += dm_s_chi2;
+      // ------------------------------------------------------
+      // Obs 17 corresponds to the observable of the 2012 paper
+      // Excluded Higgs mass range +- 3 GeV theo unc
+      float HiggsUpperLimit = 130.5;// CMS
+      float HiggsLowerLimit = 114.5;// ATLAS
+      if( useObs == 17 && ( O_Massh0_npf < HiggsLowerLimit || O_Massh0_npf > HiggsUpperLimit ) ) continue;
 
-      if( PP_or_Toys == 1 ) Btn_chi2 = myChi2( O_Btn_npf,  LEObs[3], uncLEObs[3] ) ;
-      if( PP_or_Toys == 0 || PP_or_Toys == 2 ) Btn_chi2 = myChi2( O_Btn_npf,  toyVal[3], uncLEObs[3] ) ;
-      if( useObs != 7 ) LEO_chi2 += Btn_chi2;
-
-      if( PP_or_Toys == 1 ) gmin2_chi2 = myChi2( O_gmin2m_npf,  LEObs[4], uncLEObs[4] ) ;
-      if( PP_or_Toys == 0 || PP_or_Toys == 2 ) gmin2_chi2 = myChi2( O_gmin2m_npf,  toyVal[4], uncLEObs[4] ) ;
-      if( useObs != 9 && useObs != 10 ) LEO_chi2 += gmin2_chi2;
-
-      if( PP_or_Toys == 1 ) omega_chi2 = myChi2( O_omega,  LEObs[5], uncLEObs[5] ) ;
-      if( PP_or_Toys == 0 || PP_or_Toys == 2 ) omega_chi2 = myChi2( O_omega,  toyVal[5], uncLEObs[5] ) ;
-      if( useObs != 8 && useObs != 10 ) LEO_chi2 += omega_chi2;
-
-      if( PP_or_Toys == 1 ) Massh0_chi2 = myChi2( O_Massh0_npf,  LEObs[6], uncLEObs[6] ) ;
-      if( PP_or_Toys == 0 || PP_or_Toys == 2 ) Massh0_chi2 = myChi2( O_Massh0_npf,  toyVal[6], uncLEObs[6] ) ;
-
-      if( PP_or_Toys == 1 ) MassW_chi2 = myChi2( O_MassW_npf,  LEObs[7], uncLEObs[7] ) ;
-      if( PP_or_Toys == 0 || PP_or_Toys == 2 ) MassW_chi2 = myChi2( O_MassW_npf,  toyVal[7], uncLEObs[7] ) ;
-      LEO_chi2 += MassW_chi2;
-
-      if( PP_or_Toys == 1 ) sin_th_eff_chi2 = myChi2( O_sin_th_eff_npf,  LEObs[8], uncLEObs[8] ) ;
-      if( PP_or_Toys == 0 || PP_or_Toys == 2 ) sin_th_eff_chi2 = myChi2( O_sin_th_eff_npf,  toyVal[8], uncLEObs[8] ) ;
-      LEO_chi2 += sin_th_eff_chi2;
-
-      // Upper limit on Bs->mumu
-      //if( PP_or_Toys == 1 ) B_smm_chi2 = ul_myChi2( O_B_smm_npf,  LEObs[9], uncLEObs[9] ); // Upper limit
-      //if( PP_or_Toys == 0 || PP_or_Toys == 2 ) B_smm_chi2 = ul_myChi2( O_B_smm_npf,  toyVal[9], uncLEObs[9] );// Upper limit
-
-      // Measurement of Bs->mumu
-      if( PP_or_Toys == 1 ) B_smm_chi2 = myChi2( O_B_smm_npf,  LEObs[9], uncLEObs[9] );
-      if( PP_or_Toys == 0 || PP_or_Toys == 2 ) B_smm_chi2 = myChi2( O_B_smm_npf,  toyVal[9], uncLEObs[9] );
-      if( useObs != 5 && useObs != 7 ) LEO_chi2 += B_smm_chi2;
-
-      if( PP_or_Toys == 1 ) massTop_chi2 = myChi2( O_massTop,  LEObs[10], uncLEObs[10] ) ;
-      if( PP_or_Toys == 0 || PP_or_Toys == 2 ) massTop_chi2 = myChi2( O_massTop,  toyVal[10], uncLEObs[10] ) ;
-      LEO_chi2 += massTop_chi2;
-
-      if( verbose ){
-	cout << "    - Individual chi2 per observables:"<<endl;       
-	if( PP_or_Toys == 1 ){
-	  cout << "       Bsg: theo = " << O_Bsg_npf << " meas = " << LEObs[1] << " ->chi2 = " << Bsg_chi2 << endl;
-	  cout << "       Dms: theo = " << O_dm_s_npf<< " meas = " << LEObs[2] << " ->chi2 = " << dm_s_chi2 << endl;
-	  cout << "       Btn: theo = " << O_Btn_npf<< " meas = " << LEObs[3] << " ->chi2 = " << Btn_chi2 << endl;
-	  cout << "       gmin2: theo = " << O_gmin2m_npf<< " meas = " << LEObs[4] << " ->chi2 = " << gmin2_chi2 << endl;
-	  cout << "       omega: theo = " << O_omega<< " meas = " << LEObs[5] << " ->chi2 = " << omega_chi2 << endl;
-	  cout << "       Massh0: theo = " << O_Massh0_npf<< " meas = " << LEObs[6] << " ->chi2 = " << Massh0_chi2 << endl;
-	  cout << "       MassW: theo = " << O_MassW_npf<< " meas = " << LEObs[7] << " ->chi2 = " << MassW_chi2 << endl;
-	  cout << "       sinThEff: theo = " << O_sin_th_eff_npf<< " meas = " << LEObs[8] << " ->chi2 = " << sin_th_eff_chi2 << endl;
-	  cout << "       Bsmm: theo = " << O_B_smm_npf<< " meas = " << LEObs[9] << " ->chi2 = " << B_smm_chi2 << endl;
-	  cout << "       masstop: theo = " <<  O_massTop<< " meas = " << LEObs[10] << " ->chi2 = " << massTop_chi2 << endl;
-	}
-	if( PP_or_Toys == 0 || PP_or_Toys == 2 ){
-	  cout << "       Bsg: theo = " << O_Bsg_npf << " meas = " << toyVal[1] << " ->chi2 = " << Bsg_chi2 << endl;
-	  cout << "       Dms: theo = " << O_dm_s_npf<< " meas = " << toyVal[2] << " ->chi2 = " << dm_s_chi2 << endl;
-	  cout << "       Btn: theo = " << O_Btn_npf<< " meas = " << toyVal[3] << " ->chi2 = " << Btn_chi2 << endl;
-	  cout << "       gmin2: theo = " << O_gmin2m_npf<< " meas = " << toyVal[4] << " ->chi2 = " << gmin2_chi2 << endl;
-	  cout << "       omega: theo = " << O_omega<< " meas = " << toyVal[5] << " ->chi2 = " << omega_chi2 << endl;
-	  cout << "       Massh0: theo = " << O_Massh0_npf<< " meas = " << toyVal[6] << " ->chi2 = " << Massh0_chi2 << endl;
-	  cout << "       MassW: theo = " << O_MassW_npf<< " meas = " << toyVal[7] << " ->chi2 = " << MassW_chi2 << endl;
-	  cout << "       sinThEff: theo = " << O_sin_th_eff_npf<< " meas = " << toyVal[8] << " ->chi2 = " << sin_th_eff_chi2 << endl;
-	  cout << "       Bsmm: theo = " << O_B_smm_npf<< " meas = " << toyVal[9] << " ->chi2 = " << B_smm_chi2 << endl;
-	  cout << "       masstop: theo = " <<  O_massTop<< " meas = " << toyVal[10] << " ->chi2 = " << massTop_chi2 << endl;
-	}
-      }
-      if( verbose ) cout << "    - Total LEO chi2 " << LEO_chi2 << endl;            
-
-
-      // New chi2 for LHC
-      if( useObs != 4 && useObs != 16 ){
-	if( P_M0 > 0 && P_M12 > 100 && P_M0 < 2500 && P_M12 < 1200 ) LHC_chi2 = LHCchi2_fast( P_M0, P_M12, P_A0, P_TanBeta );
-	else if( P_M12 > 1200 && P_M0 < 2500 ) LHC_chi2 = LHCchi2_fast( P_M0, 1190, P_A0, P_TanBeta );
-	else if( P_M0 > 2500 && P_M12 < 1200 ) LHC_chi2  = LHCchi2_fast( 2490, P_M12, P_A0, P_TanBeta );      
-	else LHC_chi2 = 1000;
-	if( verbose ) cout << "       LHC: " << LHC_chi2 << endl;      
-      }
-      if( useObs == 16 ){
-	if( P_M0 > 0 && P_M12 > 100 && P_M0 < 2500 && P_M12 < 1200 ) LHC_chi2 = LHCchi2_fast_nocorr( P_M0, P_M12 );
-	else if( P_M12 > 1200 && P_M0 < 2500 ) LHC_chi2 = LHCchi2_fast_nocorr( P_M0, 1190 );
-	else if( P_M0 > 2500 && P_M12 < 1200 ) LHC_chi2  = LHCchi2_fast_nocorr( 2490, P_M12 );
-	else LHC_chi2 = 1000;
-	if( verbose ) cout << "       LHC: " << LHC_chi2 << endl;
-      }
-
-      // New chi2 for astrofit
-      if( useObs != 2 && useObs != 3 ){
-	af_chi2 = astrofitChi2( O_massNeutralino1_nofit, af_direct, false );
-	if( verbose ) cout << "       Astrofit " << af_chi2 << endl;
-      }
-
-      // New chi2 for Higgs  
-      if( O_Massh0_npf < 10 || O_Massh0_npf > 1000 ){
-	Higgs_chi2 = 1000;
-	Massh0_chi2 = 1000;
-      }
-      else{
-	if ( useObs != 1 && useObs != 3 && useObs != 4 && useObs != 11 && useObs != 12 ){
-
-	  fillHiggsMassCouplings( O_Massh0_npf );
-
-	  getHiggsChi2( HiggsMassCouplings, Higgs_chi2, mu_chi2, mh_chi2 );
-	  getHiggsRatios( R_H_WW, R_H_ZZ, R_H_gaga, R_H_tautau, R_H_bb, R_VH_bb );
-	  for( int iChannel = 0; iChannel < 26; iChannel++ ) predmu[iChannel] = getHiggsMu( iChannel+1 );
+      if( useObs != 17 )
+	{
+	  
+	  // ----------------------------
+	  // Chi2 for low energy observables
+	  if( PP_or_Toys == 1 ) Bsg_chi2 = myChi2( O_Bsg_npf,  LEObs[1], uncLEObs[1] ) ;
+	  if( PP_or_Toys == 0 || PP_or_Toys == 2 ) Bsg_chi2 = myChi2( O_Bsg_npf,  toyVal[1], uncLEObs[1] ) ;         
+	  if( useObs != 7 ) LEO_chi2 += Bsg_chi2;
+	  
+	  if( PP_or_Toys == 1 ) dm_s_chi2 = myChi2( O_dm_s_npf,  LEObs[2], uncLEObs[2] ) ;
+	  if( PP_or_Toys == 0 || PP_or_Toys == 2 ) dm_s_chi2 = myChi2( O_dm_s_npf,  toyVal[2], uncLEObs[2] ) ;    
+	  if( useObs != 7 ) LEO_chi2 += dm_s_chi2;
+	  
+	  if( PP_or_Toys == 1 ) Btn_chi2 = myChi2( O_Btn_npf,  LEObs[3], uncLEObs[3] ) ;
+	  if( PP_or_Toys == 0 || PP_or_Toys == 2 ) Btn_chi2 = myChi2( O_Btn_npf,  toyVal[3], uncLEObs[3] ) ;
+	  if( useObs != 7 ) LEO_chi2 += Btn_chi2;
+	  
+	  if( PP_or_Toys == 1 ) gmin2_chi2 = myChi2( O_gmin2m_npf,  LEObs[4], uncLEObs[4] ) ;
+	  if( PP_or_Toys == 0 || PP_or_Toys == 2 ) gmin2_chi2 = myChi2( O_gmin2m_npf,  toyVal[4], uncLEObs[4] ) ;
+	  if( useObs != 9 && useObs != 10 ) LEO_chi2 += gmin2_chi2;
+	  
+	  if( PP_or_Toys == 1 ) omega_chi2 = myChi2( O_omega,  LEObs[5], uncLEObs[5] ) ;
+	  if( PP_or_Toys == 0 || PP_or_Toys == 2 ) omega_chi2 = myChi2( O_omega,  toyVal[5], uncLEObs[5] ) ;
+	  if( useObs != 8 && useObs != 10 ) LEO_chi2 += omega_chi2;
+	  
+	  if( PP_or_Toys == 1 ) Massh0_chi2 = myChi2( O_Massh0_npf,  LEObs[6], uncLEObs[6] ) ;
+	  if( PP_or_Toys == 0 || PP_or_Toys == 2 ) Massh0_chi2 = myChi2( O_Massh0_npf,  toyVal[6], uncLEObs[6] ) ;
+	  
+	  if( PP_or_Toys == 1 ) MassW_chi2 = myChi2( O_MassW_npf,  LEObs[7], uncLEObs[7] ) ;
+	  if( PP_or_Toys == 0 || PP_or_Toys == 2 ) MassW_chi2 = myChi2( O_MassW_npf,  toyVal[7], uncLEObs[7] ) ;
+	  LEO_chi2 += MassW_chi2;
+	  
+	  if( PP_or_Toys == 1 ) sin_th_eff_chi2 = myChi2( O_sin_th_eff_npf,  LEObs[8], uncLEObs[8] ) ;
+	  if( PP_or_Toys == 0 || PP_or_Toys == 2 ) sin_th_eff_chi2 = myChi2( O_sin_th_eff_npf,  toyVal[8], uncLEObs[8] ) ;
+	  LEO_chi2 += sin_th_eff_chi2;
+	  
+	  // Upper limit on Bs->mumu
+	  //if( PP_or_Toys == 1 ) B_smm_chi2 = ul_myChi2( O_B_smm_npf,  LEObs[9], uncLEObs[9] ); // Upper limit
+	  //if( PP_or_Toys == 0 || PP_or_Toys == 2 ) B_smm_chi2 = ul_myChi2( O_B_smm_npf,  toyVal[9], uncLEObs[9] );// Upper limit
+	  
+	  // Measurement of Bs->mumu
+	  if( PP_or_Toys == 1 ) B_smm_chi2 = myChi2( O_B_smm_npf,  LEObs[9], uncLEObs[9] );
+	  if( PP_or_Toys == 0 || PP_or_Toys == 2 ) B_smm_chi2 = myChi2( O_B_smm_npf,  toyVal[9], uncLEObs[9] );
+	  if( useObs != 5 && useObs != 7 ) LEO_chi2 += B_smm_chi2;
+	  
+	  if( PP_or_Toys == 1 ) massTop_chi2 = myChi2( O_massTop,  LEObs[10], uncLEObs[10] ) ;
+	  if( PP_or_Toys == 0 || PP_or_Toys == 2 ) massTop_chi2 = myChi2( O_massTop,  toyVal[10], uncLEObs[10] ) ;
+	  LEO_chi2 += massTop_chi2;
 	  
 	  if( verbose ){
-	    cout << "       Higgs ratios:" <<endl
-			     << "             R_H_WW     = " << R_H_WW<<endl
-			     << "             R_H_ZZ     = " << R_H_ZZ<<endl
-			     << "             R_H_gaga   = " << R_H_gaga<<endl
-			     << "             R_H_tautau = " << R_H_tautau<<endl
-			     << "             R_H_bb     = " << R_H_bb<<endl
-			     << "             R_VH_bb    = " << R_VH_bb << endl;
-	  cout << "       Higgs mu:" <<endl;
-	  for( int iChannel = 0; iChannel < 26; iChannel++ ) cout << "             Higgs mu["<<iChannel<<"] = "<<predmu[iChannel]<< endl;
+	    cout << "    - Individual chi2 per observables:"<<endl;       
+	    if( PP_or_Toys == 1 ){
+	      cout << "       Bsg: theo = " << O_Bsg_npf << " meas = " << LEObs[1] << " ->chi2 = " << Bsg_chi2 << endl;
+	      cout << "       Dms: theo = " << O_dm_s_npf<< " meas = " << LEObs[2] << " ->chi2 = " << dm_s_chi2 << endl;
+	      cout << "       Btn: theo = " << O_Btn_npf<< " meas = " << LEObs[3] << " ->chi2 = " << Btn_chi2 << endl;
+	      cout << "       gmin2: theo = " << O_gmin2m_npf<< " meas = " << LEObs[4] << " ->chi2 = " << gmin2_chi2 << endl;
+	      cout << "       omega: theo = " << O_omega<< " meas = " << LEObs[5] << " ->chi2 = " << omega_chi2 << endl;
+	      cout << "       Massh0: theo = " << O_Massh0_npf<< " meas = " << LEObs[6] << " ->chi2 = " << Massh0_chi2 << endl;
+	      cout << "       MassW: theo = " << O_MassW_npf<< " meas = " << LEObs[7] << " ->chi2 = " << MassW_chi2 << endl;
+	      cout << "       sinThEff: theo = " << O_sin_th_eff_npf<< " meas = " << LEObs[8] << " ->chi2 = " << sin_th_eff_chi2 << endl;
+	      cout << "       Bsmm: theo = " << O_B_smm_npf<< " meas = " << LEObs[9] << " ->chi2 = " << B_smm_chi2 << endl;
+	      cout << "       masstop: theo = " <<  O_massTop<< " meas = " << LEObs[10] << " ->chi2 = " << massTop_chi2 << endl;
+	    }
+	    if( PP_or_Toys == 0 || PP_or_Toys == 2 ){
+	      cout << "       Bsg: theo = " << O_Bsg_npf << " meas = " << toyVal[1] << " ->chi2 = " << Bsg_chi2 << endl;
+	      cout << "       Dms: theo = " << O_dm_s_npf<< " meas = " << toyVal[2] << " ->chi2 = " << dm_s_chi2 << endl;
+	      cout << "       Btn: theo = " << O_Btn_npf<< " meas = " << toyVal[3] << " ->chi2 = " << Btn_chi2 << endl;
+	      cout << "       gmin2: theo = " << O_gmin2m_npf<< " meas = " << toyVal[4] << " ->chi2 = " << gmin2_chi2 << endl;
+	      cout << "       omega: theo = " << O_omega<< " meas = " << toyVal[5] << " ->chi2 = " << omega_chi2 << endl;
+	      cout << "       Massh0: theo = " << O_Massh0_npf<< " meas = " << toyVal[6] << " ->chi2 = " << Massh0_chi2 << endl;
+	      cout << "       MassW: theo = " << O_MassW_npf<< " meas = " << toyVal[7] << " ->chi2 = " << MassW_chi2 << endl;
+	      cout << "       sinThEff: theo = " << O_sin_th_eff_npf<< " meas = " << toyVal[8] << " ->chi2 = " << sin_th_eff_chi2 << endl;
+	      cout << "       Bsmm: theo = " << O_B_smm_npf<< " meas = " << toyVal[9] << " ->chi2 = " << B_smm_chi2 << endl;
+	      cout << "       masstop: theo = " <<  O_massTop<< " meas = " << toyVal[10] << " ->chi2 = " << massTop_chi2 << endl;
+	    }
+	  }
+	  if( verbose ) cout << "    - Total LEO chi2 " << LEO_chi2 << endl;            
+	  
+	  // ----------------
+	  // New chi2 for LHC
+	  // Including the A0-TanBeta corrections
+	  if( useObs != 4 && useObs != 16 ){
+	    if( P_M0 > 0 && P_M12 > 100 && P_M0 < 2500 && P_M12 < 1200 ) LHC_chi2 = LHCchi2_fast( P_M0, P_M12, P_A0, P_TanBeta );
+	    else if( P_M12 > 1200 && P_M0 < 2500 ) LHC_chi2 = LHCchi2_fast( P_M0, 1190, P_A0, P_TanBeta );
+	    else if( P_M0 > 2500 && P_M12 < 1200 ) LHC_chi2  = LHCchi2_fast( 2490, P_M12, P_A0, P_TanBeta );      
+	    else LHC_chi2 = 1000;
+	    if( verbose ) cout << "       LHC: " << LHC_chi2 << endl;      
+	  }
+	  // Not including the A0-TanBeta corrections
+	  if( useObs == 16 ){
+	    if( P_M0 > 0 && P_M12 > 100 && P_M0 < 2500 && P_M12 < 1200 ) LHC_chi2 = LHCchi2_fast_nocorr( P_M0, P_M12 );
+	    else if( P_M12 > 1200 && P_M0 < 2500 ) LHC_chi2 = LHCchi2_fast_nocorr( P_M0, 1190 );
+	    else if( P_M0 > 2500 && P_M12 < 1200 ) LHC_chi2  = LHCchi2_fast_nocorr( 2490, P_M12 );
+	    else LHC_chi2 = 1000;
+	    if( verbose ) cout << "       LHC: " << LHC_chi2 << endl;
+	  }
+	  if( LHC_chi2 < 0 ){
+	    if( verbose ) cout << "       LHC chi2 < 0 -> set to 0" << endl;
+	    LHC_chi2 = 0;
+	  }
+
+	  // ---------------------
+	  // New chi2 for astrofit
+	  if( useObs != 2 && useObs != 3 ){
+	    af_chi2 = astrofitChi2( O_massNeutralino1_nofit, af_direct, false );
+	    if( verbose ) cout << "       Astrofit " << af_chi2 << endl;
+	  }
+	  
+	  // -------------------
+	  // New chi2 for Higgs  
+	  if( O_Massh0_npf < 10 || O_Massh0_npf > 1000 ){
+	    Higgs_chi2 = 1000;
+	    Massh0_chi2 = 1000;
+	  }
+	  else{
+	    if ( useObs != 1 && useObs != 3 && useObs != 4 && useObs != 11 && useObs != 12 ){
+	      
+	      fillHiggsMassCouplings( O_Massh0_npf );
+	      
+	      getHiggsChi2( HiggsMassCouplings, Higgs_chi2, mu_chi2, mh_chi2 );
+	      getHiggsRatios( R_H_WW, R_H_ZZ, R_H_gaga, R_H_tautau, R_H_bb, R_VH_bb );
+	      for( int iChannel = 0; iChannel < 26; iChannel++ ) predmu[iChannel] = getHiggsMu( iChannel+1 );
+	      
+	      if( verbose ){
+		cout << "       Higgs ratios:" <<endl
+		     << "             R_H_WW     = " << R_H_WW<<endl
+		     << "             R_H_ZZ     = " << R_H_ZZ<<endl
+		     << "             R_H_gaga   = " << R_H_gaga<<endl
+		     << "             R_H_tautau = " << R_H_tautau<<endl
+		     << "             R_H_bb     = " << R_H_bb<<endl
+		     << "             R_VH_bb    = " << R_VH_bb << endl;
+		cout << "       Higgs mu:" <<endl;
+		for( int iChannel = 0; iChannel < 26; iChannel++ ) cout << "             Higgs mu["<<iChannel<<"] = "<<predmu[iChannel]<< endl;
+	      }
+	    }
+	  }
+	  if( verbose ){
+	    if ( useObs != 1 && useObs != 3 && useObs != 4 && useObs != 11 && useObs != 12 ) cout << "       Higgs: " << Higgs_chi2 << endl;   
+	    else cout << "       Higgs: " << Massh0_chi2 << endl;   
 	  }
 	}
-      }
-      if( verbose ){
-	if ( useObs != 1 && useObs != 3 && useObs != 4 && useObs != 11 && useObs != 12 ) cout << "       Higgs: " << Higgs_chi2 << endl;   
-        else cout << "       Higgs: " << Massh0_chi2 << endl;   
-      }
 
+      // --------------------------------------------------------------------
       // Fill output ntuple for the real fit
       // ***** means that the input file with constraints had to be modified
-
       // 0: full obs
       // 1: full obs, but only mh
       // 2: only LHC and h0
@@ -1319,6 +1430,8 @@ void calculateChi2( int PP_or_Toys ){
       // 13: full set with more precise rate measurement (20% of now)
       // 14: full set with more precise rate measurement (5% of now) 
       // 15: full set with more precise Higgs measurement (mass: 25%, rate: 5%)
+      // 16: full obs with no LHC correction applied
+      // 17: full obs of the 2012 paper
 
       if( useObs == 0 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
       if( useObs == 1 ) chi2 = LEO_chi2 + LHC_chi2 + Massh0_chi2 + af_chi2;
@@ -1331,12 +1444,13 @@ void calculateChi2( int PP_or_Toys ){
       if( useObs == 8 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
       if( useObs == 9 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
       if( useObs == 10 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
-      if( useObs == 11 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
-      if( useObs == 12 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
+      if( useObs == 11 ) chi2 = LEO_chi2 + LHC_chi2 + Massh0_chi2 + af_chi2;
+      if( useObs == 12 ) chi2 = LEO_chi2 + LHC_chi2 + Massh0_chi2 + af_chi2;
       if( useObs == 13 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
       if( useObs == 14 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
       if( useObs == 15 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
       if( useObs == 16 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
+      if( useObs == 17 ) chi2 = paper2012( verbose );
 
       if( verbose ) cout << "    - Total chi2 " << chi2 << endl;
 
@@ -1360,7 +1474,6 @@ void calculateChi2( int PP_or_Toys ){
 
   return;
 }
-
 
 // ===================================================================
 // == Read the file with the lowest chi2 point

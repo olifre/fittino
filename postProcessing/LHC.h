@@ -14,16 +14,25 @@ TH2D *hChi2;
 TH2D *hChi2_corr;
 
 // ===================================================================
-void setLHCchi2Tools( int PP_or_Toys, int randomSeed, bool verb, float bestFitM0, float bestFitM12, TString fit ){
+void setLHCchi2Tools( int PP_or_Toys, int randomSeed, bool verb, float bestFitM0, float bestFitM12, TString fit, int useObs ){
 
 	
    if( verb ) cout << "   > Set up LHC tools.." << endl;
 
-   if( PP_or_Toys == 1 ){
-     fChi2 = new TFile( "AllChi2Maps.root" );
-     hChi2 = (TH2D*) fChi2->Get("h_chi2");
-     hChi2_corr = (TH2D*) fChi2->Get("h_chi2_corr_offgrid");
-   }
+   if( PP_or_Toys == 1 )
+     {
+       // ATLAS 0lepton analysis 5.8/fb, 8TeV
+       if( useObs != 17 ){
+	 fChi2 = new TFile( "AllChi2Maps.root" );
+	 hChi2 = (TH2D*) fChi2->Get("h_chi2");
+	 hChi2_corr = (TH2D*) fChi2->Get("h_chi2_corr_offgrid");
+       }
+       // ATLAS 0lepton analysis 4.7/fb, 7TeV
+       if( useObs == 17 ){
+	 fChi2 = new TFile( "LHCChi2Histogram_2011_7TeV_4.7ifb.root" );
+	 hChi2 = (TH2D*) fChi2->Get("hist" );
+       }
+     }
    if( PP_or_Toys == 0 || PP_or_Toys == 2 ){
      
      // setup the LCH Toy Chi2 provider: it takes 4 arguments:
