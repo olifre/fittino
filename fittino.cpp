@@ -4448,7 +4448,8 @@ void Fittino::calculateLoopLevelValues()
 	TTree* tree = new TTree("observables","Tree holding the parameters + chi2");
 	Float_t par1, par2, chi;
 	tree->Branch(yyScanPar[0].name.c_str(),&par1,yyScanPar[0].name.c_str());
-	tree->Branch(yyScanPar[1].name.c_str(),&par2,yyScanPar[1].name.c_str());
+	if (yyScanPar.size() == 2)
+	  tree->Branch(yyScanPar[1].name.c_str(),&par2,yyScanPar[1].name.c_str());
 	tree->Branch("chi2",&chi,"chi2");
 	#ifdef USELIBHB
 	Float_t massh0, massH0, massA0, gammah0, gammaH0, gammaA0, BR_hjbbh0, BR_hjbbH0, BR_hjbbA0, BR_hjtautauh0, BR_hjtautauH0, BR_hjtautauA0, g2hjZZh0, g2hjZZH0, g2hjZZA0;
@@ -4472,10 +4473,15 @@ void Fittino::calculateLoopLevelValues()
 	#endif
       	if (par) delete[] par;
 
-
-	for (unsigned int j=0; j<(yyScanPar[0].numberOfSteps*yyScanPar[0].numberOfSteps); j++) {
-		par1 = x[j];
-		par2 = y[j];
+	int nstepstotal;
+	if (yyScanPar.size() == 1)
+	  nstepstotal=(yyScanPar[0].numberOfSteps);
+	else if (yyScanPar.size() == 2)
+	  nstepstotal=(yyScanPar[0].numberOfSteps*yyScanPar[1].numberOfSteps);
+	for (unsigned int j=0; j<nstepstotal; j++) {
+	  par1 = x[j];
+		if (yyScanPar.size() == 2)
+		  par2 = y[j];
 		chi = z[j];
 		#ifdef USELIBHB
 		if (yyUseHiggsBounds) {
