@@ -4,6 +4,9 @@
 # Set general variables used by the scripts
 ################################
 
+######## Position of the setup file
+###############################
+whereIsSetup=/afs/naf.desy.de/user/p/prudent/fittino/postProcessing/README
 
 
 ######## Email adress

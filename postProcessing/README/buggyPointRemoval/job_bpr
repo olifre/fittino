@@ -10,6 +10,8 @@
 #$ -m ae -M $mymail
 
 
+cp $whereIsSetup/setup.sh
+./setup.sh
 
 #----------------------------------
 # Name of the fit to post-process or to study with toys (Attention, no .root at the end)
