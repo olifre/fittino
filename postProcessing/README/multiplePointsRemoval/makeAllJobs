@@ -19,7 +19,7 @@ if [ $1 == 1 ]; then
 fi
 
 if [ $1 == 2 ]; then
-cd /scratch/hh/current/atlas/users/prudent/fittino/postProcessing/postProcessing_2012/jobs/jobs_for_multiplePointsRemoval/$fit/
+cd $job_directory/$fit/
 ./batchAllJobs
 fi
 

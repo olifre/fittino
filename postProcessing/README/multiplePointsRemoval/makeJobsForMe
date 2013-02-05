@@ -26,7 +26,7 @@ fi
 
 
 ### Loop over the fits
-list=../listOfFits\_$1.txt
+list=$directory_listFits/listOfFits\_$1.txt
 while read line
 do
 echo $line

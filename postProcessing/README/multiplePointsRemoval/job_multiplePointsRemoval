@@ -15,20 +15,10 @@
 fit=FIT_TO_BE_PROCESSED
 
 # Description of all observables
-input_file=/afs/naf.desy.de/user/p/prudent/fittino/inputs/summer2012/fittino.in.point1.CMSSM.allObs.summer2012
 export OBSERVABLES=0
 
 # Where does the input fit ntuple lies
 input_directory=INPUT_DIR
-
-# Output of post-processing and toys
-output_destination=/scratch/hh/current/atlas/users/prudent/fittino/postProcessing/postProcessing_2012/jobs/jobs_for_multiplePointsRemoval/doublePointsRemoved/XX/
-
-# Where the processing programs lie
-working_directory=/afs/naf.desy.de/user/p/prudent/fittino/postProcessing
-
-# Where to retrieve the LHC chi2 tools from
-tools_directory=/afs/naf.desy.de/user/p/prudent/fittino/tools/GetToyLHCChi2/ProfileLikelihood/
 
 # Which step of the post-processing to proceed (1=chi2 calculation,2=removal of buggy points)
 export STEP=0
@@ -45,7 +35,6 @@ export VERBOSE=0
 export ROOTSYS=/afs/naf.desy.de/products/root/amd64_rhel50/5.28.00
 export PATH=$ROOTSYS/bin:$PATH
 export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/afs/naf.desy.de/user/p/prudent/fittino/tools/GetToyLHCChi2/ProfileLikelihood/
 
 date
 echo " --- Script started"
@@ -91,7 +80,7 @@ chmod u+x compil
 
 
 echo " --- Running the macro"
-./postProcessing $fit $input_directory $output_destination
+./postProcessing $fit $input_directory $output_destination/XX
 
 echo ""
 echo " --- Copying output files"
