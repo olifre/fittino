@@ -30,7 +30,7 @@ fi
 ## SET THE BATCH PARAMETERS
 ################################
 
-list=listOfFits\_$1.txt
+list=$directory_listFits/listOfFits\_$1.txt
 batchAllJobs=batchAllJobs
 if [ -e "$batchAllJobs" ]
     then

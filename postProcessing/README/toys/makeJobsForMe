@@ -43,7 +43,7 @@ then
 for obs in {0..17}; do
 for model in CMSSM NUHM1 NUHM2; do
 newJob=job_toys\_$obs\_$model
-cd /afs/naf.desy.de/user/p/prudent/fittino/postProcessing/postProcessing_2012/jobs/jobs_for_buggyPointRemoval/$obs/
+cd $job_directory_TOYS/$obs/
 qsub $newJob
 done
 done

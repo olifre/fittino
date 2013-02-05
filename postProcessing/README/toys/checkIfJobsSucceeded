@@ -7,7 +7,7 @@
 # ####################################################
 
 
-link=/scratch/hh/dust/naf/atlas/user/prudent/postProcessing_2012/outputs/toys/$1/$2
+link=$output_TOYS/$1/$2
 
 ### Loop over toys and segmentation ###
 itoy=0

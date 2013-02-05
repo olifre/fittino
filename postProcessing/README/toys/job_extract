@@ -7,7 +7,7 @@
 #$ -l h_vmem=500M
 #$-l site=hh 
 #$ -w e
-#$ -m ae -M MYADRESS@physik.MYUNIVERSITY.de
+#$ -m ae -M $mymail
 
 
 #----------------------------------
@@ -15,19 +15,13 @@
 fit=XXMODEL
 
 # Fittino input file with the desired constraints to be applied -> THE MODEL DOES NOT MATTER !
-input_file=/afs/naf.desy.de/user/p/prudent/fittino/inputs/summer2012/fittino.in.point1.CMSSM.allObs.summer2012
+input_file=$input_obs/fittino.in.point1.CMSSM.allObs.summer2012
 
 # Where does the input fit ntuple lies
-input_directory=/scratch/hh/dust/naf/atlas/user/prudent/postProcessing_2012/outputs/toys/XXOBS/XXMODEL/
+input_directory=$output_TOYS/toys/XXOBS/XXMODEL/
 
 # Output of post-processing and toys
-output_destination=/scratch/hh/dust/naf/atlas/user/prudent/postProcessing_2012/outputs/toys/XXOBS/XXMODEL/
-
-# Where the processing programs lie
-working_directory=/afs/naf.desy.de/user/p/prudent/fittino/postProcessing
-
-# Where to retrieve the LHC chi2 tools from
-tools_directory=/afs/naf.desy.de/user/p/prudent/fittino/tools/GetToyLHCChi2/ProfileLikelihood/
+output_destination=$output_TOYS/toys/XXOBS/XXMODEL/
 
 # Which step of the post-processing to proceed (1=chi2 calculation or toy,2=removal of buggy points,3=isolate best toy fit point)
 export STEP=3
@@ -46,7 +40,6 @@ export DATATOYS=0
 export ROOTSYS=/afs/naf.desy.de/products/root/amd64_rhel50/5.28.00
 export PATH=$ROOTSYS/bin:$PATH
 export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/afs/naf.desy.de/user/p/prudent/fittino/tools/GetToyLHCChi2/ProfileLikelihood/
 
 date
 echo " --- Script started"

@@ -7,7 +7,7 @@
 #$ -l h_vmem=1G
 #$-l site=hh 
 #$ -w e
-#$ -m ae -M MYADRESS@physik.MYUNIVERSITY.de
+#$ -m ae -M $mymail
 
 
 #----------------------------------

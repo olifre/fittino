@@ -7,7 +7,7 @@
 #$ -l h_vmem=700M
 #$-l site=hh 
 #$ -w e
-#$ -m ae -M MYADRESS@physik.MYUNIVERSITY.de
+#$ -m ae -M $mymail
 
 
 #----------------------------------
@@ -15,20 +15,14 @@
 fit=FIT_TO_BE_PROCESSED
 
 # Description of all observables
-input_file=/afs/naf.desy.de/user/p/prudent/fittino/inputs/summer2012/postProcessing/fittino.in.point1.CMSSM.WHICH_OBS.summer2012
+input_file=$input_obs/fittino.in.point1.CMSSM.WHICH_OBS.summer2012
 export OBSERVABLES=WHICH_OBS
 
 # Where does the input fit ntuple lies
-input_directory=/scratch/hh/current/atlas/users/prudent/fittino/postProcessing/postProcessing_2012/jobs/jobs_for_multiplePointsRemoval/doublePointsRemoved/XX/
+input_directory=$output_MPR/XX/
 
 # Output of post-processing and toys
-output_destination=/scratch/hh/dust/naf/atlas/user/prudent/postProcessing_2012/outputs/WHICH_OBS/XX/
-
-# Where the processing programs lie
-working_directory=/afs/naf.desy.de/user/p/prudent/fittino/postProcessing
-
-# Where to retrieve the LHC chi2 tools from
-tools_directory=/afs/naf.desy.de/user/p/prudent/fittino/tools/GetToyLHCChi2/ProfileLikelihood/
+output_destination=$output_CHI2/WHICH_OBS/XX/
 
 # Which step of the post-processing to proceed (1=chi2 calculation,2=removal of buggy points)
 export STEP=1
@@ -49,7 +43,6 @@ export VERBOSE=0
 export ROOTSYS=/afs/naf.desy.de/products/root/amd64_rhel50/5.28.00
 export PATH=$ROOTSYS/bin:$PATH
 export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/afs/naf.desy.de/user/p/prudent/fittino/tools/GetToyLHCChi2/ProfileLikelihood/
 
 date
 echo " --- Script started"
