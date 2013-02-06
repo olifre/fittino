@@ -54,7 +54,7 @@ class ToyLHCChi2Provider {
 	float GetChi2ContributionFit( float M0, float M12, vector<float> nObs, vector<float> nExp );
 	float GetChi2ContributionFit( float M0, float M12, vector<float> nObs, vector<float> nExp, vector<float> nSignal );
 	float GetChi2ContributionFix( float M0, float M12, TH2D* hChi2);
-	float GetChi2ContributionFix( float M0, float M12, float A0, float tanb, TH2D *hChi2_M0_M12, TH2D *h_Chi2_A0_tanb );
+	float GetChi2ContributionFix( float M0, float M12, float A0, float tanb, TH2D *hChi2_M0_M12, vector<TH2D*> h_Chi2_A0_tanb );
 	float GetChi2ContributionToy( float M0, float M12, int nObs, int nmin, int nmax, vector<TH2D*> *vChi2 );
 	float GetChi2CorrectionFit( float A0, float tb, vector<float> nObs, vector<float> nExp, TH2D *sigGrid );
 	vector<float> GetSignalExpectationBF();

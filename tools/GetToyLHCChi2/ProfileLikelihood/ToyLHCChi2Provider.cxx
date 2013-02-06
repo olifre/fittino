@@ -66,19 +66,46 @@ float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, TH2D* hCh
 	return hChi2->Interpolate(M0,M12);
 }
 
-float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, float A0, float tanb, TH2D *hChi2_M0_M12, TH2D *h_Chi2_A0_tb ) {
+float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, float A0, float tanb, TH2D *hChi2_M0_M12, vector<TH2D*> v_Chi2_A0_tb ) {
+
 
 	if( M0 > 0. && M0 <= 1200. ) return hChi2_M0_M12->Interpolate(M0,M12);
-
 	if( A0 > 5499. ) A0 = 5499.;
-	if( A0 < -4499. ) A0 = -4499.;
-	if( tanb > 44.9) tanb = 44.9;
+  if( A0 < -4499. ) A0 = -4499.;
+ 	if( tanb > 44.9) tanb = 44.9;
+	float chi2_uncorr = hChi2_M0_M12->Interpolate(M0,M12);
+
+	int M0up_idx, M0down_idx;
+	vector<int> M0Values;
+	M0Values.push_back(1200);
+	M0Values.push_back(1500);
+	M0Values.push_back(1962);
+	M0Values.push_back(2500);
+	M0Values.push_back(4000);
+
+	if( M0 >= 4000. ) { M0up_idx = 4; M0down_idx = 4; }
+	else {
+		for( int h = 0; h < 4; ++h ) {
+			if( M0 >= M0Values[h] && M0 < M0Values[h+1] ) {
+				M0up_idx = h+1;
+				M0down_idx = h;
+			}
+		}
+	}
+	
+	double corrFacUp = v_Chi2_A0_tb[M0up_idx]->Interpolate(A0,tanb);
+	double corrFacDown = v_Chi2_A0_tb[M0down_idx]->Interpolate(A0,tanb);
+	double finalCorrectionFactor = corrFacDown + (corrFacUp-corrFacDown)/(M0Values[M0up_idx]-M0Values[M0down_idx]) * (M0-M0Values[M0down_idx]);
+
+	float finalChi2Contribution = (1.+finalCorrectionFactor)*chi2_uncorr;
+
+	/*
 	float scaleFac = (M0 < 2000. ) ? (M0-1200.)/762. : 1.;
 	float chi2_uncorr = hChi2_M0_M12->Interpolate(M0,M12);
 	float chi2_correction = h_Chi2_A0_tb->Interpolate(A0,tanb); // the histogram h_Chi2_A0_tb shows the DIFFERENCE in chi2: chi2(A0,tb)-chi2(0,10) !!!
 	
 	float finalChi2Contribution = chi2_uncorr+scaleFac*chi2_correction;
-	
+	*/
 	return (finalChi2Contribution > 0.) ? finalChi2Contribution : 0.;
 
 }
