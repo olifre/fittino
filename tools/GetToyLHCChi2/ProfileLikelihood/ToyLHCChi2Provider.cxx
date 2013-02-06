@@ -63,16 +63,21 @@ vector<TH1D*> ToyLHCChi2Provider::GetChi2Histograms( string chi2FileName, int nm
 }
 
 float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, TH2D* hChi2 ) {
+	if( M0 > 2500. ) M0 = 2500.;
+	if( M12 > 1200. ) M12 = 1200.;
 	return hChi2->Interpolate(M0,M12);
 }
 
 float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, float A0, float tanb, TH2D *hChi2_M0_M12, vector<TH2D*> v_Chi2_A0_tb ) {
 
 
-	if( M0 > 0. && M0 <= 1200. ) return hChi2_M0_M12->Interpolate(M0,M12);
+	if( M0 > 0. && M0 < 1200. ) return hChi2_M0_M12->Interpolate(M0,M12);
+	if( M0 > 2500. ) M0 = 2500.;
+	if( M12 > 1200. ) M12 = 1200.;
 	if( A0 > 5499. ) A0 = 5499.;
   if( A0 < -4499. ) A0 = -4499.;
  	if( tanb > 44.9) tanb = 44.9;
+
 	float chi2_uncorr = hChi2_M0_M12->Interpolate(M0,M12);
 
 	int M0up_idx, M0down_idx;
@@ -145,6 +150,7 @@ float ToyLHCChi2Provider::GetChi2CorrectionFit( float A0, float tb, vector<float
 float ToyLHCChi2Provider::GetChi2ContributionFit( float M0, float M12, vector<float> nObs, vector<float> nExp ) {
 	//first: find best expected limit - best search channel
 	if( M0 > 2500. ) M0 = 2500.;
+	if( M12 > 1200. ) M12 = 1200.;
 	unsigned int channel = 0;
 	//float chi2_max = -10.;
 	float lumi = 50.;
@@ -201,6 +207,7 @@ float ToyLHCChi2Provider::GetChi2ContributionFit( float M0, float M12, vector<fl
 float ToyLHCChi2Provider::GetChi2ContributionFit( float M0, float M12, vector<float> nObs, vector<float> nExp, vector<float> nSignal ) {
   //first: find best expected limit - best search channel
   if( M0 > 2500. ) M0 = 2500.;
+  if( M12 > 1200. ) M12 = 1200.;
   unsigned int channel = 0;
   //float chi2_max = -10.;
   float lumi = 50.;
@@ -237,6 +244,7 @@ ToyLHCChi2Provider::ToyLHCChi2Provider() {
 ToyLHCChi2Provider::ToyLHCChi2Provider( string gridFileName, float M0BF, float M12BF ) {
 
 	if( M0BF > 2500. ) M0BF = 2500.;
+	if( M12BF > 1200. ) M12BF = 1200.;
 
 	RooMsgService::instance().setStreamStatus(0, kFALSE);
   RooMsgService::instance().setStreamStatus(1, kFALSE);
