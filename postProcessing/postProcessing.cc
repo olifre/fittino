@@ -77,8 +77,6 @@ int main( int argc, char** argv ){
  // =======================================================
   // == Identification of the best fit point
   if( step == 3 ) saveBestFitPoint( PP_or_Toys );    
-  //if( step == 3 ) skimToyTrees( fit );
-
 
   return 0;
 }

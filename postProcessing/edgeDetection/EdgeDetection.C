@@ -29,9 +29,6 @@
 
 Int_t numberOfBins = 500;
 
-Float_t maxChi2 = XXMAXCHI2;
-Float_t minChi2 = XXMINCHI2;
-
 TFile* outputFile = 0;
 TH2F* histChi2VsA0 = 0;
 TH2F* histChi2VsM0 = 0;
@@ -54,44 +51,43 @@ void EdgeDetection::Begin(TTree* tree)
    // Initialize the Tree branch addresses
    Init(tree);
 
-   histChi2VsA0      = new TH2F("Chi2VsA0",      "#chi^{2} vs A_{0}",     numberOfBins, -10000., 10000., numberOfBins, minChi2, maxChi2);
+   histChi2VsA0      = new TH2F("Chi2VsA0",      "#chi^{2} vs A_{0}",     numberOfBins, XXMINA0, XXMAXA0, numberOfBins, XXMINCHI2, XXMAXCHI2);
    histChi2VsA0->GetYaxis()->SetTitle("#chi^{2}");
    histChi2VsA0->GetXaxis()->SetTitle("A_{0} [GeV]");
    histChi2VsA0->GetXaxis()->SetNdivisions(506);
 
-   histChi2VsM0      = new TH2F("Chi2VsM0",      "#chi^{2} vs M_{0}",     numberOfBins,      0.,  3000., numberOfBins, minChi2, maxChi2);
-   //histChi2VsM0      = new TH2F("Chi2VsM0",      "#chi^{2} vs M_{0}",     numberOfBins,      0.,  10000., numberOfBins, minChi2, maxChi2);
+   histChi2VsM0      = new TH2F("Chi2VsM0",      "#chi^{2} vs M_{0}",     numberOfBins,     XXMINM0,  XXMAXM0, numberOfBins, XXMINCHI2, XXMAXCHI2);
    histChi2VsM0->GetYaxis()->SetTitle("#chi^{2}");
    histChi2VsM0->GetXaxis()->SetTitle("M_{0} [GeV]");
    histChi2VsM0->GetXaxis()->SetNdivisions(506);
 
-   histChi2VsM12     = new TH2F("Chi2VsM12",     "#chi^{2} vs M_{1/2}",   numberOfBins,    300.,  3000., numberOfBins, minChi2, maxChi2);
+   histChi2VsM12     = new TH2F("Chi2VsM12",     "#chi^{2} vs M_{1/2}",   numberOfBins,    XXMINM12,  XXMAXM12, numberOfBins, XXMINCHI2, XXMAXCHI2);
    histChi2VsM12->GetYaxis()->SetTitle("#chi^{2}");
    histChi2VsM12->GetXaxis()->SetTitle("M_{1/2} [GeV]");
 
-   histChi2VsTanBeta = new TH2F("Chi2VsTanBeta", "#chi^{2} vs tan#beta",  numberOfBins,      0.,    70., numberOfBins, minChi2, maxChi2);
+   histChi2VsTanBeta = new TH2F("Chi2VsTanBeta", "#chi^{2} vs tan#beta",  numberOfBins,      XXMINTANBETA,    XXMAXTANBETA, numberOfBins, XXMINCHI2, XXMAXCHI2);
    histChi2VsTanBeta->GetYaxis()->SetTitle("#chi^{2}");
    histChi2VsTanBeta->GetXaxis()->SetTitle("tan#beta");
 
-   histChi2VsMassTop = new TH2F("Chi2VsMassTop", "#chi^{2} vs m_{t}",     numberOfBins,    168.,   180., numberOfBins, minChi2, maxChi2);
+   histChi2VsMassTop = new TH2F("Chi2VsMassTop", "#chi^{2} vs m_{t}",     numberOfBins,    XXMINMASSTOP,   XXMAXMASSTOP, numberOfBins, XXMINCHI2, XXMAXCHI2);
    histChi2VsMassTop->GetYaxis()->SetTitle("#chi^{2}");
    histChi2VsMassTop->GetXaxis()->SetTitle("m_{t} [GeV]");
 
    if (model == 1)
    {
-      histChi2VsM0H = new TH2F("Chi2VsM0H", "#chi^{2} vs M_{0H}",         numberOfBins,   -1.e7,   1.e7, numberOfBins, minChi2, maxChi2);
+      histChi2VsM0H = new TH2F("Chi2VsM0H", "#chi^{2} vs M_{0H}",         numberOfBins,   -1.e7,   1.e7, numberOfBins, XXMINCHI2, XXMAXCHI2);
       histChi2VsM0H->GetYaxis()->SetTitle("#chi^{2}");
       histChi2VsM0H->GetXaxis()->SetTitle("M_{0H} [GeV]");
       histChi2VsM0H->GetXaxis()->SetNdivisions(506);
    }
    else if (model == 2)
    {
-      histChi2VsM0Hu = new TH2F("Chi2VsM0Hu", "#chi^{2} vs M_{0Hu}", numberOfBins, -1.e7, 1.e7, numberOfBins, minChi2, maxChi2);
+      histChi2VsM0Hu = new TH2F("Chi2VsM0Hu", "#chi^{2} vs M_{0Hu}", numberOfBins, -1.e7, 1.e7, numberOfBins, XXMINCHI2, XXMAXCHI2);
       histChi2VsM0Hu->GetYaxis()->SetTitle("#chi^{2}");
       histChi2VsM0Hu->GetXaxis()->SetTitle("M_{0Hu} [GeV]");
       histChi2VsM0Hu->GetXaxis()->SetNdivisions(506);
 
-      histChi2VsM0Hd = new TH2F("Chi2VsM0Hd", "#chi^{2} vs M_{0Hd}", numberOfBins, -1.e7, 1.e7, numberOfBins, minChi2, maxChi2);
+      histChi2VsM0Hd = new TH2F("Chi2VsM0Hd", "#chi^{2} vs M_{0Hd}", numberOfBins, -1.e7, 1.e7, numberOfBins, XXMINCHI2, XXMAXCHI2);
       histChi2VsM0Hd->GetYaxis()->SetTitle("#chi^{2}");
       histChi2VsM0Hd->GetXaxis()->SetTitle("M_{0Hd} [GeV]");
       histChi2VsM0Hd->GetXaxis()->SetNdivisions(506);
@@ -141,7 +137,7 @@ Bool_t EdgeDetection::Process(Long64_t entry)
 
    float myChi2 = chi2;
 
-   if (myChi2 >= minChi2)
+   if (myChi2 >= XXMINCHI2)
    {
       if (model == 1)
       {

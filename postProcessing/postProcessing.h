@@ -21,37 +21,6 @@
 
 using namespace std;
 
-
-// == For the color
-#include "Riostream.h"
-const TString  K="\033[0;30m";    // black
-const TString  R="\033[0;31m";    // red
-const TString  G="\033[0;32m";    // green
-const TString  Y="\033[0;33m";    // yellow
-const TString  B="\033[0;34m";    // blue
-const TString  M="\033[0;35m";    // magenta
-const TString  C="\033[0;36m";    // cyan
-const TString  W="\033[0;37m";    // white
-// emphasized (bolded) colors
-const TString  EMK="\033[1;30m";
-const TString  EMR="\033[1;31m";
-const TString  EMG="\033[1;32m";
-const TString  EMY="\033[1;33m";
-const TString  EMB="\033[1;34m";
-const TString  EMM="\033[1;35m";
-const TString  EMC="\033[1;36m";
-const TString  EMW="\033[1;37m";
-// background colors
-const TString  BGK="\033[40m";
-const TString  BGR="\033[41m";
-const TString  BGG="\033[42m";
-const TString  BGY="\033[43m";
-const TString  BGB="\033[44m";
-const TString  BGM="\033[45m";
-const TString  BGC="\033[46m";
-const TString  BGW="\033[47m";
-const TString FIN     = "\033[0m"    ;
-
 // == Most relevant parameters
 bool verbose = 0;
 //int pp_segment = 0;// to speed up the PP
@@ -319,6 +288,7 @@ double R_H_gaga;
 double R_H_tautau; 
 double R_H_bb; 
 double R_VH_bb;
+
 double predmu[26]={0};;
 
 // ===================================================================
@@ -869,6 +839,11 @@ void assignInputBranches( int PP_or_Toys ){
   markovChain_in->SetBranchAddress("O_h0_To_Neutralino1_Neutralino1__nofit",&O_h0_To_Neutralino1_Neutralino1__nofit );//h0->Chi10 Chi10
   markovChain_in->SetBranchAddress("O_widthh0_nofit",&O_widthh0_nofit );//h0->Chi10 Chi10
   if( PP_or_Toys == 0 ){
+
+    markovChain_in->SetBranchAddress("mu_chi2",&mu_chi2);
+    markovChain_in->SetBranchAddress("mh_chi2",&mh_chi2);
+    markovChain_in->SetBranchAddress("Massh0_chi2",&Massh0_chi2);
+
     markovChain_in->SetBranchAddress("R_H_WW",&R_H_WW );
     markovChain_in->SetBranchAddress("R_H_ZZ",&R_H_ZZ );
     markovChain_in->SetBranchAddress("R_H_gaga",&R_H_gaga );
@@ -1414,6 +1389,8 @@ void calculateChi2( int PP_or_Toys ){
       // --------------------------------------------------------------------
       // Fill output ntuple for the real fit
       // ***** means that the input file with constraints had to be modified
+      // For all set the HiggsBound chi2 is added
+      //
       // 0: full obs
       // 1: full obs, but only mh
       // 2: only LHC and h0
@@ -1433,24 +1410,24 @@ void calculateChi2( int PP_or_Toys ){
       // 16: full obs with no LHC correction applied
       // 17: full obs of the 2012 paper
 
-      if( useObs == 0 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
-      if( useObs == 1 ) chi2 = LEO_chi2 + LHC_chi2 + Massh0_chi2 + af_chi2;
-      if( useObs == 2 ) chi2 = LHC_chi2 + Higgs_chi2;
-      if( useObs == 3 ) chi2 = LHC_chi2 + Massh0_chi2;
-      if( useObs == 4 ) chi2 = LEO_chi2 + af_chi2;
-      if( useObs == 5 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
-      if( useObs == 6 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
-      if( useObs == 7 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
-      if( useObs == 8 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
-      if( useObs == 9 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
-      if( useObs == 10 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
-      if( useObs == 11 ) chi2 = LEO_chi2 + LHC_chi2 + Massh0_chi2 + af_chi2;
-      if( useObs == 12 ) chi2 = LEO_chi2 + LHC_chi2 + Massh0_chi2 + af_chi2;
-      if( useObs == 13 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
-      if( useObs == 14 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
-      if( useObs == 15 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
-      if( useObs == 16 ) chi2 = LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
-      if( useObs == 17 ) chi2 = paper2012( verbose );
+      if( useObs == 0 ) chi2 = globalHiggsChi2 + LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
+      if( useObs == 1 ) chi2 = globalHiggsChi2 + LEO_chi2 + LHC_chi2 + Massh0_chi2 + af_chi2;
+      if( useObs == 2 ) chi2 = globalHiggsChi2 + LHC_chi2 + Higgs_chi2;
+      if( useObs == 3 ) chi2 = globalHiggsChi2 + LHC_chi2 + Massh0_chi2;
+      if( useObs == 4 ) chi2 = globalHiggsChi2 + LEO_chi2 + af_chi2;
+      if( useObs == 5 ) chi2 = globalHiggsChi2 + LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
+      if( useObs == 6 ) chi2 = globalHiggsChi2 + LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
+      if( useObs == 7 ) chi2 = globalHiggsChi2 + LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
+      if( useObs == 8 ) chi2 = globalHiggsChi2 + LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
+      if( useObs == 9 ) chi2 = globalHiggsChi2 + LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
+      if( useObs == 10 ) chi2 = globalHiggsChi2 + LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
+      if( useObs == 11 ) chi2 = globalHiggsChi2 + LEO_chi2 + LHC_chi2 + Massh0_chi2 + af_chi2;
+      if( useObs == 12 ) chi2 = globalHiggsChi2 + LEO_chi2 + LHC_chi2 + Massh0_chi2 + af_chi2;
+      if( useObs == 13 ) chi2 = globalHiggsChi2 + LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
+      if( useObs == 14 ) chi2 = globalHiggsChi2 + LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
+      if( useObs == 15 ) chi2 = globalHiggsChi2 + LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
+      if( useObs == 16 ) chi2 = globalHiggsChi2 + LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
+      if( useObs == 17 ) chi2 = globalHiggsChi2 + paper2012( verbose );
 
       if( verbose ) cout << "    - Total chi2 " << chi2 << endl;
 
@@ -1597,85 +1574,455 @@ void skimToyTrees( TString _fit ){
   TTree* out_tree = new TTree( "markovChain", "skim toy tree" );
   
   // == Content of interest of the input toys
-    in_tree->SetBranchAddress("chi2",&chi2 );
-    in_tree->SetBranchAddress("O_Bsg_npf",&O_Bsg_npf );
-    in_tree->SetBranchAddress("O_dm_s_npf",&O_dm_s_npf );
-    in_tree->SetBranchAddress("O_Btn_npf",&O_Btn_npf );
-    in_tree->SetBranchAddress("O_gmin2m_npf",&O_gmin2m_npf );
-    in_tree->SetBranchAddress("O_omega",&O_omega );
-    in_tree->SetBranchAddress("O_Massh0_npf",&O_Massh0_npf );
-    in_tree->SetBranchAddress("O_MassW_npf",&O_MassW_npf );
-    in_tree->SetBranchAddress("O_sin_th_eff_npf",&O_sin_th_eff_npf );
-    in_tree->SetBranchAddress("O_B_smm_npf",&O_B_smm_npf );
-    in_tree->SetBranchAddress("O_massTop",&O_massTop );
-    in_tree->SetBranchAddress("O_massNeutralino1_nofit",&O_massNeutralino1_nofit );
-    in_tree->SetBranchAddress("af_direct",&af_direct );
-    in_tree->SetBranchAddress("LEO_chi2",&LEO_chi2 );
-    in_tree->SetBranchAddress("LHC_chi2",&LHC_chi2 );
-    in_tree->SetBranchAddress("Higgs_chi2",&Higgs_chi2 );
-    in_tree->SetBranchAddress("af_chi2",&af_chi2 );
-    in_tree->SetBranchAddress("Bsg_chi2",&Bsg_chi2 );
-    in_tree->SetBranchAddress("dm_s_chi2",&dm_s_chi2 );
-    in_tree->SetBranchAddress("Btn_chi2",&Btn_chi2 );
-    in_tree->SetBranchAddress("gmin2_chi2",&gmin2_chi2 );
-    in_tree->SetBranchAddress("omega_chi2",&omega_chi2 );
-    in_tree->SetBranchAddress("Massh0_chi2",&Massh0_chi2 );
-    in_tree->SetBranchAddress("MassW_chi2",&MassW_chi2 );
-    in_tree->SetBranchAddress("sin_th_eff_chi2",&sin_th_eff_chi2 );
-    in_tree->SetBranchAddress("B_smm_chi2",&B_smm_chi2 );
-    in_tree->SetBranchAddress("massTop_chi2",&massTop_chi2 );
-    in_tree->SetBranchAddress("P_M0",&P_M0 );
-    in_tree->SetBranchAddress("P_M12",&P_M12 );
-    in_tree->SetBranchAddress("P_A0",&P_A0 );
-    in_tree->SetBranchAddress("P_TanBeta",&P_TanBeta );
-    in_tree->SetBranchAddress("P_massTop",&P_massTop );
-    if( in_name.Contains("NUHM1") ) in_tree->SetBranchAddress("P_M0H",&P_M0H );
-    if( in_name.Contains("NUHM2") ){
-      in_tree->SetBranchAddress("P_M0Hu",&P_M0Hu );
-      in_tree->SetBranchAddress("P_M0Hd",&P_M0Hd );
-    }
+  in_tree->SetBranchAddress("likelihood",&likelihood );
+  in_tree->SetBranchAddress("rho",&rho );
+  in_tree->SetBranchAddress("chi2",&chi2 );
+  in_tree->SetBranchAddress("accpoint",&accpoint );
+  in_tree->SetBranchAddress("n",&n );
+  in_tree->SetBranchAddress("globalIter",&globalIter );
+  in_tree->SetBranchAddress("haveAcceptedAtLeastOne",&haveAcceptedAtLeastOne );
+  in_tree->SetBranchAddress("LHC_Exp_CLb",&LHC_Exp_CLb );
+  in_tree->SetBranchAddress("LHC_Exp_CLsb",&LHC_Exp_CLsb );
+  in_tree->SetBranchAddress("LHC_Exp_chi2",&LHC_Exp_chi2 );
+  in_tree->SetBranchAddress("af_photon",&af_photon );
+  in_tree->SetBranchAddress("af_relic",&af_relic );
+  in_tree->SetBranchAddress("af_svind",&af_svind );
+  in_tree->SetBranchAddress("af_direct",&af_direct );
+  in_tree->SetBranchAddress("af_chi2_total",&af_chi2_total );
+  in_tree->SetBranchAddress("af_chi2_photon",&af_chi2_photon );
+  in_tree->SetBranchAddress("af_chi2_relic",&af_chi2_relic );
+  in_tree->SetBranchAddress("af_chi2_svind",&af_chi2_svind );
+  in_tree->SetBranchAddress("af_chi2_direct",&af_chi2_direct );
+  in_tree->SetBranchAddress("globalHiggsChi2",&globalHiggsChi2 );
+  in_tree->SetBranchAddress("HiggsSignals_TotalChi2",&HiggsSignals_TotalChi2 );
+  in_tree->SetBranchAddress("P_M0",&P_M0 );
+  in_tree->SetBranchAddress("P_M12",&P_M12 );
+  in_tree->SetBranchAddress("P_A0",&P_A0 );
+  in_tree->SetBranchAddress("P_massTop", &P_massTop );
+  in_tree->SetBranchAddress("P_TanBeta",&P_TanBeta );
+  if( model == "NUHM1" ) in_tree->SetBranchAddress("P_M0H",&P_M0H );
+   if( model == "NUHM2" ){
+    in_tree->SetBranchAddress("P_M0Hu",&P_M0Hu );
+    in_tree->SetBranchAddress("P_M0Hd",&P_M0Hd );
+  }
+  in_tree->SetBranchAddress("O_massTop",&O_massTop );
+  in_tree->SetBranchAddress("O_Bsg_npf",&O_Bsg_npf );
+  in_tree->SetBranchAddress("O_dm_s_npf",&O_dm_s_npf );
+  in_tree->SetBranchAddress("O_Btn_npf",&O_Btn_npf );
+  in_tree->SetBranchAddress("O_omega",&O_omega);
+  in_tree->SetBranchAddress("O_gmin2m_npf",&O_gmin2m_npf);
+  in_tree->SetBranchAddress("O_Massh0_npf",&O_Massh0_npf );
+  in_tree->SetBranchAddress("O_MassW_npf",&O_MassW_npf );
+  in_tree->SetBranchAddress("O_sin_th_eff_npf",&O_sin_th_eff_npf );
+  in_tree->SetBranchAddress("O_B_smm_npf",&O_B_smm_npf );
+  in_tree->SetBranchAddress("O_alphaem",&O_alphaem );
+  in_tree->SetBranchAddress("O_G_F_nofit",&O_G_F_nofit );
+  in_tree->SetBranchAddress("O_alphas",&O_alphas );
+  in_tree->SetBranchAddress("O_massZ",&O_massZ );
+  in_tree->SetBranchAddress("O_massBottom_nofit",&O_massBottom_nofit );
+  in_tree->SetBranchAddress("O_massTop",&O_massTop );
+  in_tree->SetBranchAddress("O_massTau",&O_massTau );
+  in_tree->SetBranchAddress("O_massCharm_nofit",&O_massCharm_nofit );
+  in_tree->SetBranchAddress("O_massh0_nofit",&O_massh0_nofit );
+  in_tree->SetBranchAddress("O_massA0_nofit",&O_massA0_nofit );
+  in_tree->SetBranchAddress("O_massH0_nofit",&O_massH0_nofit );
+  in_tree->SetBranchAddress("O_massHplus_nofit",&O_massHplus_nofit );
+  in_tree->SetBranchAddress("O_massSupL_nofit",&O_massSupL_nofit );
+  in_tree->SetBranchAddress("O_massSupR_nofit",&O_massSupR_nofit );
+  in_tree->SetBranchAddress("O_massSdownL_nofit",&O_massSdownL_nofit );
+  in_tree->SetBranchAddress("O_massSdownR_nofit",&O_massSdownR_nofit );
+  in_tree->SetBranchAddress("O_massScharmL_nofit",&O_massScharmL_nofit );
+  in_tree->SetBranchAddress("O_massScharmR_nofit",&O_massScharmR_nofit );
+  in_tree->SetBranchAddress("O_massSstrangeL_nofit",&O_massSstrangeL_nofit );
+  in_tree->SetBranchAddress("O_massSstrangeR_nofit",&O_massSstrangeR_nofit );
+  in_tree->SetBranchAddress("O_massStop1_nofit",&O_massStop1_nofit );
+  in_tree->SetBranchAddress("O_massStop2_nofit",&O_massStop2_nofit );
+  in_tree->SetBranchAddress("O_massSbottom1_nofit",&O_massSbottom1_nofit );
+  in_tree->SetBranchAddress("O_massSbottom2_nofit",&O_massSbottom2_nofit );
+  in_tree->SetBranchAddress("O_massSelectronL_nofit",&O_massSelectronL_nofit );
+  in_tree->SetBranchAddress("O_massSelectronR_nofit",&O_massSelectronR_nofit );
+  in_tree->SetBranchAddress("O_massSmuL_nofit",&O_massSmuL_nofit );
+  in_tree->SetBranchAddress("O_massSmuR_nofit",&O_massSmuR_nofit );
+  in_tree->SetBranchAddress("O_massStau1_nofit",&O_massStau1_nofit );
+  in_tree->SetBranchAddress("O_massStau2_nofit",&O_massStau2_nofit );
+  in_tree->SetBranchAddress("O_massSnueL_nofit",&O_massSnueL_nofit );
+  in_tree->SetBranchAddress("O_massSnumuL_nofit",&O_massSnumuL_nofit );
+  in_tree->SetBranchAddress("O_massSnutau1_nofit",&O_massSnutau1_nofit );
+  in_tree->SetBranchAddress("O_massGluino_nofit",&O_massGluino_nofit );
+  in_tree->SetBranchAddress("O_massNeutralino1_nofit",&O_massNeutralino1_nofit );
+  in_tree->SetBranchAddress("O_massNeutralino2_nofit",&O_massNeutralino2_nofit );
+  in_tree->SetBranchAddress("O_massNeutralino3_nofit",&O_massNeutralino3_nofit );
+  in_tree->SetBranchAddress("O_massNeutralino4_nofit",&O_massNeutralino4_nofit );
+  in_tree->SetBranchAddress("O_massChargino1_nofit",&O_massChargino1_nofit );
+  in_tree->SetBranchAddress("O_massChargino2_nofit",&O_massChargino2_nofit );
+  in_tree->SetBranchAddress("O_Neutralino2_To_Electron_SelectronR__nofit",&O_Neutralino2_To_Electron_SelectronR__nofit );
+  in_tree->SetBranchAddress("O_Neutralino2_To_Muon_SmuonR__nofit",&O_Neutralino2_To_Muon_SmuonR__nofit );
+  in_tree->SetBranchAddress("O_Neutralino2_To_Electron_SelectronL__nofit",&O_Neutralino2_To_Electron_SelectronL__nofit );
+  in_tree->SetBranchAddress("O_Neutralino2_To_Muon_SmuonL__nofit",&O_Neutralino2_To_Muon_SmuonL__nofit );
+  in_tree->SetBranchAddress("O_Neutralino2_To_Tau_Stau1__nofit",&O_Neutralino2_To_Tau_Stau1__nofit );
+  in_tree->SetBranchAddress("O_Neutralino2_To_Nutau_Snutau1__nofit",&O_Neutralino2_To_Nutau_Snutau1__nofit );
+  in_tree->SetBranchAddress("O_Neutralino2_To_Tau_Stau2__nofit",&O_Neutralino2_To_Tau_Stau2__nofit );
+  in_tree->SetBranchAddress("O_Neutralino2_To_Neutralino1_Z__nofit",&O_Neutralino2_To_Neutralino1_Z__nofit );
+  in_tree->SetBranchAddress("O_Neutralino2_To_Neutralino1_h0__nofit",&O_Neutralino2_To_Neutralino1_h0__nofit );
+  in_tree->SetBranchAddress("O_Neutralino2_To_Nutau_Snutau2__nofit",&O_Neutralino2_To_Nutau_Snutau2__nofit );
+  in_tree->SetBranchAddress("O_Chargino1_To_Neutralino1_W__nofit",&O_Chargino1_To_Neutralino1_W__nofit );
+  in_tree->SetBranchAddress("O_Chargino1_To_Nutau_Stau1__nofit",&O_Chargino1_To_Nutau_Stau1__nofit );
+  in_tree->SetBranchAddress("O_Chargino1_To_Nutau_Stau2__nofit",&O_Chargino1_To_Nutau_Stau2__nofit );
+  in_tree->SetBranchAddress("O_Chargino1_To_Electron_SnueL__nofit",&O_Chargino1_To_Electron_SnueL__nofit );
+  in_tree->SetBranchAddress("O_Chargino1_To_Muon_SnumuL__nofit",&O_Chargino1_To_Muon_SnumuL__nofit );
+  in_tree->SetBranchAddress("O_Chargino1_To_Tau_Snutau1__nofit",&O_Chargino1_To_Tau_Snutau1__nofit );
+  in_tree->SetBranchAddress("O_SelectronR_To_Neutralino1_Electron__nofit",&O_SelectronR_To_Neutralino1_Electron__nofit );
+  in_tree->SetBranchAddress("O_SelectronR_To_Neutralino2_Electron__nofit",&O_SelectronR_To_Neutralino2_Electron__nofit );
+  in_tree->SetBranchAddress("O_SelectronL_To_Neutralino1_Electron__nofit",&O_SelectronL_To_Neutralino1_Electron__nofit );
+  in_tree->SetBranchAddress("O_SelectronL_To_Neutralino2_Electron__nofit",&O_SelectronL_To_Neutralino2_Electron__nofit );
+  in_tree->SetBranchAddress("O_Stau1_To_Neutralino1_Tau__nofit",&O_Stau1_To_Neutralino1_Tau__nofit );
+  in_tree->SetBranchAddress("O_Stau2_To_Neutralino1_Tau__nofit",&O_Stau2_To_Neutralino1_Tau__nofit );
+  in_tree->SetBranchAddress("O_Stau2_To_Neutralino2_Tau__nofit",&O_Stau2_To_Neutralino2_Tau__nofit );
+  in_tree->SetBranchAddress("O_Stau2_To_Chargino1_Nutau__nofit",&O_Stau2_To_Chargino1_Nutau__nofit );
+  in_tree->SetBranchAddress("O_Gluino_To_Bottom_Sbottom2__nofit",&O_Gluino_To_Bottom_Sbottom2__nofit );
+  in_tree->SetBranchAddress("O_Gluino_To_Bottom_Sbottom1__nofit",&O_Gluino_To_Bottom_Sbottom1__nofit );
+  in_tree->SetBranchAddress("O_Gluino_To_Stop1_Top__nofit",&O_Gluino_To_Stop1_Top__nofit );
+  in_tree->SetBranchAddress("O_Gluino_To_Stop2_Top__nofit",&O_Gluino_To_Stop2_Top__nofit );
+  in_tree->SetBranchAddress("O_Gluino_To_SupL_up__nofit",&O_Gluino_To_SupL_up__nofit );
+  in_tree->SetBranchAddress("O_Gluino_To_SupR_up__nofit",&O_Gluino_To_SupR_up__nofit );
+  in_tree->SetBranchAddress("O_Gluino_To_SdownL_down__nofit",&O_Gluino_To_SdownL_down__nofit );
+  in_tree->SetBranchAddress("O_Gluino_To_SdownR_down__nofit",&O_Gluino_To_SdownR_down__nofit );
+  in_tree->SetBranchAddress("O_SupL_To_Up_Neutralino1__nofit",&O_SupL_To_Up_Neutralino1__nofit );
+  in_tree->SetBranchAddress("O_SupR_To_Up_Neutralino1__nofit",&O_SupR_To_Up_Neutralino1__nofit );
+  in_tree->SetBranchAddress("O_SupL_To_Up_Neutralino2__nofit",&O_SupL_To_Up_Neutralino2__nofit );
+  in_tree->SetBranchAddress("O_SupR_To_Up_Neutralino2__nofit",&O_SupR_To_Up_Neutralino2__nofit );
+  in_tree->SetBranchAddress("O_SupL_To_Down_Chargino1__nofit",&O_SupL_To_Down_Chargino1__nofit );
+  in_tree->SetBranchAddress("O_SupR_To_Down_Chargino1__nofit",&O_SupR_To_Down_Chargino1__nofit );
+  in_tree->SetBranchAddress("O_SupL_To_Down_Chargino2__nofit",&O_SupL_To_Down_Chargino2__nofit );
+  in_tree->SetBranchAddress("O_SupR_To_Down_Chargino2__nofit",&O_SupR_To_Down_Chargino2__nofit );
+  in_tree->SetBranchAddress("O_Stop1_To_Bottom_Chargino1__nofit",&O_Stop1_To_Bottom_Chargino1__nofit );
+  in_tree->SetBranchAddress("O_Stop1_To_Bottom_Chargino2__nofit",&O_Stop1_To_Bottom_Chargino2__nofit );
+  in_tree->SetBranchAddress("O_Stop1_To_Top_Neutralino1__nofit",&O_Stop1_To_Top_Neutralino1__nofit );
+  in_tree->SetBranchAddress("O_Stop1_To_Top_Neutralino2__nofit",&O_Stop1_To_Top_Neutralino2__nofit );
+  in_tree->SetBranchAddress("O_Sbottom1_To_W_Stop1__nofit",&O_Sbottom1_To_W_Stop1__nofit );
+  in_tree->SetBranchAddress("O_Sbottom2_To_W_Stop1__nofit",&O_Sbottom2_To_W_Stop1__nofit );
+  in_tree->SetBranchAddress("O_Sbottom1_To_Top_Chargino1__nofit",&O_Sbottom1_To_Top_Chargino1__nofit );
+  in_tree->SetBranchAddress("O_Sbottom2_To_Neutralino2_Bottom__nofit",&O_Sbottom2_To_Neutralino2_Bottom__nofit );
+  in_tree->SetBranchAddress("O_Sbottom1_To_Neutralino2_Bottom__nofit",&O_Sbottom1_To_Neutralino2_Bottom__nofit );
+  in_tree->SetBranchAddress("O_h0_To_Bottom_Bottom__nofit",&O_h0_To_Bottom_Bottom__nofit );
+  in_tree->SetBranchAddress("O_h0_To_Strange_Strange__nofit",&O_h0_To_Strange_Strange__nofit );
+  in_tree->SetBranchAddress("O_h0_To_Charm_Charm__nofit",&O_h0_To_Charm_Charm__nofit );
+  in_tree->SetBranchAddress("O_h0_To_Tau_Tau__nofit",&O_h0_To_Tau_Tau__nofit );
+  in_tree->SetBranchAddress("O_h0_To_Muon_Muon__nofit",&O_h0_To_Muon_Muon__nofit );
+  in_tree->SetBranchAddress("O_h0_To_Gamma_Gamma__nofit",&O_h0_To_Gamma_Gamma__nofit );
+  in_tree->SetBranchAddress("O_h0_To_Gluon_Gluon__nofit",&O_h0_To_Gluon_Gluon__nofit );
+  in_tree->SetBranchAddress("O_h0_To_W_W__nofit",&O_h0_To_W_W__nofit );
+  in_tree->SetBranchAddress("O_h0_To_Z_Z__nofit",&O_h0_To_Z_Z__nofit );
+  in_tree->SetBranchAddress("O_h0_To_Z_Gamma__nofit",&O_h0_To_Z_Gamma__nofit );
+  in_tree->SetBranchAddress("O_HiggsScalarFermionCoupling3250505_nofit",&O_HiggsScalarFermionCoupling3250505_nofit );// h0->bb
+  in_tree->SetBranchAddress("O_HiggsPseudoScalarFermionCoupling3250505_nofit",&O_HiggsPseudoScalarFermionCoupling3250505_nofit );// h0->bb
+  in_tree->SetBranchAddress("O_HiggsScalarFermionCoupling3350505_nofit",&O_HiggsScalarFermionCoupling3350505_nofit );// H0->bb
+  in_tree->SetBranchAddress("O_HiggsPseudoScalarFermionCoupling3350505_nofit",&O_HiggsPseudoScalarFermionCoupling3350505_nofit );// H0->bb
+  in_tree->SetBranchAddress("O_HiggsScalarFermionCoupling3360505_nofit",&O_HiggsScalarFermionCoupling3360505_nofit );// A0->bb
+  in_tree->SetBranchAddress("O_HiggsPseudoScalarFermionCoupling3360505_nofit",&O_HiggsPseudoScalarFermionCoupling3360505_nofit );// A0->bb
+  in_tree->SetBranchAddress("O_HiggsScalarFermionCoupling3250606_nofit",&O_HiggsScalarFermionCoupling3250606_nofit );// h0->toptop
+  in_tree->SetBranchAddress("O_HiggsPseudoScalarFermionCoupling3250606_nofit",&O_HiggsPseudoScalarFermionCoupling3250606_nofit );// h0->toptop
+  in_tree->SetBranchAddress("O_HiggsScalarFermionCoupling3350606_nofit",&O_HiggsScalarFermionCoupling3350606_nofit );// H0->toptop
+  in_tree->SetBranchAddress("O_HiggsPseudoScalarFermionCoupling3350606_nofit",&O_HiggsPseudoScalarFermionCoupling3350606_nofit );// H0->toptop
+  in_tree->SetBranchAddress("O_HiggsScalarFermionCoupling3360606_nofit",&O_HiggsScalarFermionCoupling3360606_nofit );// A0->toptop
+  in_tree->SetBranchAddress("O_HiggsPseudoScalarFermionCoupling3360606_nofit",&O_HiggsPseudoScalarFermionCoupling3360606_nofit );// A0->toptop
+  in_tree->SetBranchAddress("O_HiggsScalarFermionCoupling3251515_nofit",&O_HiggsScalarFermionCoupling3251515_nofit );// h0->tautau
+  in_tree->SetBranchAddress("O_HiggsPseudoScalarFermionCoupling3251515_nofit",&O_HiggsPseudoScalarFermionCoupling3251515_nofit );// h0->tautau
+  in_tree->SetBranchAddress("O_HiggsScalarFermionCoupling3351515_nofit",&O_HiggsScalarFermionCoupling3351515_nofit );// H0->tautau
+  in_tree->SetBranchAddress("O_HiggsPseudoScalarFermionCoupling3351515_nofit",&O_HiggsPseudoScalarFermionCoupling3351515_nofit );// H0->tautau
+  in_tree->SetBranchAddress("O_HiggsScalarFermionCoupling3361515_nofit",&O_HiggsScalarFermionCoupling3361515_nofit );// A0->tautau
+  in_tree->SetBranchAddress("O_HiggsPseudoScalarFermionCoupling3361515_nofit",&O_HiggsPseudoScalarFermionCoupling3361515_nofit );// A0->tautau
+  in_tree->SetBranchAddress("O_HiggsBosonCoupling3252424_nofit",&O_HiggsBosonCoupling3252424_nofit );// h0->WW
+  in_tree->SetBranchAddress("O_HiggsBosonCoupling3352424_nofit",&O_HiggsBosonCoupling3352424_nofit );// H0->WW
+  in_tree->SetBranchAddress("O_HiggsBosonCoupling3362424_nofit",&O_HiggsBosonCoupling3362424_nofit );// A0->WW
+  in_tree->SetBranchAddress("O_HiggsBosonCoupling3252323_nofit",&O_HiggsBosonCoupling3252323_nofit );// h0->ZZ
+  in_tree->SetBranchAddress("O_HiggsBosonCoupling3352323_nofit",&O_HiggsBosonCoupling3352323_nofit );// H0->ZZ
+  in_tree->SetBranchAddress("O_HiggsBosonCoupling3362323_nofit",&O_HiggsBosonCoupling3362323_nofit );// A0->ZZ
+  in_tree->SetBranchAddress("O_HiggsBosonCoupling3252121_nofit",&O_HiggsBosonCoupling3252121_nofit );// h0->gluglu
+  in_tree->SetBranchAddress("O_HiggsBosonCoupling3352121_nofit",&O_HiggsBosonCoupling3352121_nofit );// H0->gluglu
+  in_tree->SetBranchAddress("O_HiggsBosonCoupling3362121_nofit",&O_HiggsBosonCoupling3362121_nofit );// A0->gluglu
+  in_tree->SetBranchAddress("O_HiggsBosonCoupling3252523_nofit",&O_HiggsBosonCoupling3252523_nofit );// h0->h0Z0
+  in_tree->SetBranchAddress("O_HiggsBosonCoupling3352523_nofit",&O_HiggsBosonCoupling3352523_nofit );// H0->h0Z0
+  in_tree->SetBranchAddress("O_HiggsBosonCoupling3353523_nofit",&O_HiggsBosonCoupling3353523_nofit );// H0->H0Z0
+  in_tree->SetBranchAddress("O_HiggsBosonCoupling3362523_nofit",&O_HiggsBosonCoupling3362523_nofit );// A0->h0Z0
+  in_tree->SetBranchAddress("O_HiggsBosonCoupling3363523_nofit",&O_HiggsBosonCoupling3363523_nofit );// A0->H0Z0
+  in_tree->SetBranchAddress("O_HiggsBosonCoupling3363623_nofit",&O_HiggsBosonCoupling3363623_nofit );// A0->A0Z0
+  in_tree->SetBranchAddress("O_HiggsBosonCoupling425212123_nofit",&O_HiggsBosonCoupling425212123_nofit );// h0->glu glu Z0
+  in_tree->SetBranchAddress("O_HiggsBosonCoupling435212123_nofit",&O_HiggsBosonCoupling435212123_nofit );// H0->glu glu Z0
+  in_tree->SetBranchAddress("O_HiggsBosonCoupling436212123_nofit",&O_HiggsBosonCoupling436212123_nofit );// A0->glu glu Z0
+  in_tree->SetBranchAddress("O_h0_To_Neutralino1_Neutralino1__nofit",&O_h0_To_Neutralino1_Neutralino1__nofit );//h0->Chi10 Chi10
+  in_tree->SetBranchAddress("O_widthh0_nofit",&O_widthh0_nofit );//h0->Chi10 Chi10
+    in_tree->SetBranchAddress("mu_chi2",&mu_chi2);
+    in_tree->SetBranchAddress("mh_chi2",&mh_chi2);
+    in_tree->SetBranchAddress("Massh0_chi2",&Massh0_chi2);
+    in_tree->SetBranchAddress("R_H_WW",&R_H_WW );
+    in_tree->SetBranchAddress("R_H_ZZ",&R_H_ZZ );
+    in_tree->SetBranchAddress("R_H_gaga",&R_H_gaga );
+    in_tree->SetBranchAddress("R_H_tautau",&R_H_tautau );
+    in_tree->SetBranchAddress("R_H_bb",&R_H_bb );
+    in_tree->SetBranchAddress("R_VH_bb",&R_VH_bb );
+    in_tree->SetBranchAddress("predmu0",&predmu[0] );
+    in_tree->SetBranchAddress("predmu1",&predmu[1] );
+    in_tree->SetBranchAddress("predmu2",&predmu[2] );
+    in_tree->SetBranchAddress("predmu3",&predmu[3] );
+    in_tree->SetBranchAddress("predmu4",&predmu[4] );
+    in_tree->SetBranchAddress("predmu5",&predmu[5] );
+    in_tree->SetBranchAddress("predmu6",&predmu[6] );
+    in_tree->SetBranchAddress("predmu7",&predmu[7] );
+    in_tree->SetBranchAddress("predmu8",&predmu[8] );
+    in_tree->SetBranchAddress("predmu9",&predmu[9] );
+    in_tree->SetBranchAddress("predmu10",&predmu[10] );
+    in_tree->SetBranchAddress("predmu11",&predmu[11] );
+    in_tree->SetBranchAddress("predmu12",&predmu[12] );
+    in_tree->SetBranchAddress("predmu13",&predmu[13] );
+    in_tree->SetBranchAddress("predmu14",&predmu[14] );
+    in_tree->SetBranchAddress("predmu15",&predmu[15] );
+    in_tree->SetBranchAddress("predmu16",&predmu[16] );
+    in_tree->SetBranchAddress("predmu17",&predmu[17] );
+    in_tree->SetBranchAddress("predmu18",&predmu[18] );
+    in_tree->SetBranchAddress("predmu19",&predmu[19] );
+    in_tree->SetBranchAddress("predmu20",&predmu[20] );
+    in_tree->SetBranchAddress("predmu21",&predmu[21] );
+    in_tree->SetBranchAddress("predmu22",&predmu[22] );
+    in_tree->SetBranchAddress("predmu23",&predmu[23] );
+    in_tree->SetBranchAddress("predmu24",&predmu[24] );
+    in_tree->SetBranchAddress("predmu25",&predmu[25] );
+
+
 
   // == Content of interest of the output toys
-    out_tree->Branch("chi2",&chi2,"chi2/F");
-    out_tree->Branch("Bsg_chi2",&Bsg_chi2,"Bsg_chi2/F");
-    out_tree->Branch("dm_s_chi2",&dm_s_chi2,"dm_s_chi2/F");
-    out_tree->Branch("Btn_chi2",&Btn_chi2,"Btn_chi2/F");
-    out_tree->Branch("gmin2_chi2",&gmin2_chi2,"gmin2_chi2/F");
-    out_tree->Branch("omega_chi2",&omega_chi2,"omega_chi2/F");
-    out_tree->Branch("MassW_chi2",&MassW_chi2,"MassW_chi2/F");
-    out_tree->Branch("Massh0_chi2",&Massh0_chi2,"Massh0_chi2/F");
-    out_tree->Branch("sin_th_eff_chi2",&sin_th_eff_chi2,"sin_th_eff_chi2/F");
-    out_tree->Branch("B_smm_chi2",&B_smm_chi2,"B_smm_chi2/F");
-    out_tree->Branch("massTop_chi2",&massTop_chi2,"massTop_chi2/F");
-    out_tree->Branch("LEO_chi2",&LEO_chi2,"LEO_chi2/F");
-    out_tree->Branch("LHC_chi2",&LHC_chi2,"LHC_chi2/F");
-    out_tree->Branch("Higgs_chi2",&Higgs_chi2,"Higgs_chi2/F");
-    out_tree->Branch("af_chi2",&af_chi2,"af_chi2/F");
-    out_tree->Branch("P_M12",&P_M12,"P_M12/F");
-    out_tree->Branch("P_M0",&P_M0,"P_M0/F");
-    out_tree->Branch("P_A0",&P_A0,"P_A0/F");
-    out_tree->Branch("P_TanBeta",&P_TanBeta,"P_TanBeta/F");
-    out_tree->Branch("P_massTop",&P_massTop,"P_massTop/F");
-    out_tree->Branch("O_Bsg_npf",&O_Bsg_npf,"O_Bsg_npf/F");
-    out_tree->Branch("O_dm_s_npf",&O_dm_s_npf,"O_dm_s_npf/F");
-    out_tree->Branch("O_Btn_npf",&O_Btn_npf,"O_Btn_npf/F");
-    out_tree->Branch("O_omega",&O_omega,"O_omega/F");
-    out_tree->Branch("O_gmin2m_npf",&O_gmin2m_npf,"O_gmin2m_npf/F");
-    out_tree->Branch("O_Massh0_npf",&O_Massh0_npf,"O_Massh0_npf/F");
-    out_tree->Branch("O_MassW_npf",&O_MassW_npf,"O_MassW_npf/F");
-    out_tree->Branch("O_sin_th_eff_npf",&O_sin_th_eff_npf,"O_sin_th_eff_npf/F");
-    out_tree->Branch("O_B_smm_npf",&O_B_smm_npf,"O_B_smm_npf/F");
-    out_tree->Branch("O_massTop",&O_massTop,"O_massTop/F");
-    out_tree->Branch("O_massh0_nofit",&O_massh0_nofit,"O_massh0_nofit/F");
-    if( model == "NUHM1" ) out_tree->Branch("P_M0H",&P_M0H,"P_M0H/F");
-    if( model == "NUHM2" ){
-      out_tree->Branch("P_M0Hu",&P_M0Hu,"P_M0Hu/F");
-      out_tree->Branch("P_M0Hd",&P_M0Hd,"P_M0Hd/F");
-    }
-    
-    // Find the minimal chi2 by rejecting the buggy points
+  out_tree->Branch("chi2",&chi2,"chi2/F");
+  out_tree->Branch("Bsg_chi2",&Bsg_chi2,"Bsg_chi2/F");
+  out_tree->Branch("dm_s_chi2",&dm_s_chi2,"dm_s_chi2/F");
+  out_tree->Branch("Btn_chi2",&Btn_chi2,"Btn_chi2/F");
+  out_tree->Branch("gmin2_chi2",&gmin2_chi2,"gmin2_chi2/F");
+  out_tree->Branch("omega_chi2",&omega_chi2,"omega_chi2/F");
+  out_tree->Branch("MassW_chi2",&MassW_chi2,"MassW_chi2/F");
+  out_tree->Branch("Massh0_chi2",&Massh0_chi2,"Massh0_chi2/F");
+  out_tree->Branch("sin_th_eff_chi2",&sin_th_eff_chi2,"sin_th_eff_chi2/F");
+  out_tree->Branch("B_smm_chi2",&B_smm_chi2,"B_smm_chi2/F");
+  out_tree->Branch("massTop_chi2",&massTop_chi2,"massTop_chi2/F");
+  out_tree->Branch("LEO_chi2",&LEO_chi2,"LEO_chi2/F");
+  out_tree->Branch("LHC_chi2",&LHC_chi2,"LHC_chi2/F");
+  out_tree->Branch("Higgs_chi2",&Higgs_chi2,"Higgs_chi2/D");
+  out_tree->Branch("mu_chi2",&mu_chi2,"mu_chi2/D");
+  out_tree->Branch("mh_chi2",&mh_chi2,"mh_chi2/D");
+  out_tree->Branch("af_chi2",&af_chi2,"af_chi2/F");
+  out_tree->Branch("P_M12",&P_M12,"P_M12/F");
+  out_tree->Branch("P_M0",&P_M0,"P_M0/F");
+  out_tree->Branch("P_A0",&P_A0,"P_A0/F");
+  out_tree->Branch("P_TanBeta",&P_TanBeta,"P_TanBeta/F");
+  out_tree->Branch("P_massTop",&P_massTop,"P_massTop/F");
+  if( model == "NUHM1" ) out_tree->Branch("P_M0H",&P_M0H,"P_M0H/F");
+   if( model == "NUHM2" ){
+    out_tree->Branch("P_M0Hu",&P_M0Hu,"P_M0Hu/F");
+    out_tree->Branch("P_M0Hd",&P_M0Hd,"P_M0Hd/F");
+  }
+  out_tree->Branch("O_Bsg_npf",&O_Bsg_npf,"O_Bsg_npf/F");
+  out_tree->Branch("O_dm_s_npf",&O_dm_s_npf,"O_dm_s_npf/F");
+  out_tree->Branch("O_Btn_npf",&O_Btn_npf,"O_Btn_npf/F");
+  out_tree->Branch("O_omega",&O_omega,"O_omega/F");
+  out_tree->Branch("O_gmin2m_npf",&O_gmin2m_npf,"O_gmin2m_npf/F");
+  out_tree->Branch("O_Massh0_npf",&O_Massh0_npf,"O_Massh0_npf/F");
+  out_tree->Branch("O_MassW_npf",&O_MassW_npf,"O_MassW_npf/F");
+  out_tree->Branch("O_sin_th_eff_npf",&O_sin_th_eff_npf,"O_sin_th_eff_npf/F");
+  out_tree->Branch("O_B_smm_npf",&O_B_smm_npf,"O_B_smm_npf/F");
+  out_tree->Branch("O_massTop",&O_massTop,"O_massTop/F");
+  out_tree->Branch("O_massh0_nofit",&O_massh0_nofit,"O_massh0_nofit/F");
+  out_tree->Branch("likelihood",&likelihood,"likelihood/F");
+  out_tree->Branch("rho",&rho,"rho/F");
+  out_tree->Branch("pre_chi2",&pre_chi2,"pre_chi2/F");
+  out_tree->Branch("accpoint",&accpoint,"accpoint/F");
+  out_tree->Branch("n",&n,"n/F");
+  out_tree->Branch("globalIter",&globalIter,"globalIter/F");
+  out_tree->Branch("haveAcceptedAtLeastOne",&haveAcceptedAtLeastOne,"haveAcceptedAtLeastOne/F");
+  out_tree->Branch("LHC_Exp_CLb",&LHC_Exp_CLb,"LHC_Exp_CLb/F");
+  out_tree->Branch("LHC_Exp_CLsb",&LHC_Exp_CLsb,"LHC_Exp_CLsb/F");
+  out_tree->Branch("LHC_Exp_chi2",&LHC_Exp_chi2,"LHC_Exp_chi2/F");
+  out_tree->Branch("af_photon",&af_photon,"af_photon/F");
+  out_tree->Branch("af_relic",&af_relic,"af_relic/F");
+  out_tree->Branch("af_svind",&af_svind,"af_svind/F");
+  out_tree->Branch("af_direct",&af_direct,"af_direct/F");
+  out_tree->Branch("af_chi2_total",&af_chi2_total,"af_chi2_total/F");
+  out_tree->Branch("af_chi2_photon",&af_chi2_photon,"af_chi2_photon/F");
+  out_tree->Branch("af_chi2_relic",&af_chi2_relic,"af_chi2_relic/F");
+  out_tree->Branch("af_chi2_svind",&af_chi2_svind,"af_chi2_svind/F");
+  out_tree->Branch("af_chi2_direct",&af_chi2_direct,"af_chi2_direct/F");
+  out_tree->Branch("globalHiggsChi2",&globalHiggsChi2,"globalHiggsChi2/F");
+  out_tree->Branch("HiggsSignals_TotalChi2",&HiggsSignals_TotalChi2,"HiggsSignals_TotalChi2/F");
+  out_tree->Branch("O_alphaem",&O_alphaem,"O_alphaem/F");
+  out_tree->Branch("O_G_F_nofit",&O_G_F_nofit,"O_G_F_nofit/F");
+  out_tree->Branch("O_alphas",&O_alphas,"O_alphas/F");
+  out_tree->Branch("O_massZ",&O_massZ,"O_massZ/F");
+  out_tree->Branch("O_massBottom_nofit",&O_massBottom_nofit,"O_massBottom_nofit/F");
+  out_tree->Branch("O_massTau",&O_massTau,"O_massTau/F");
+  out_tree->Branch("O_massCharm_nofit",&O_massCharm_nofit,"O_massCharm_nofit/F");
+  out_tree->Branch("O_massA0_nofit",&O_massA0_nofit,"O_massA0_nofit/F");
+  out_tree->Branch("O_massH0_nofit",&O_massH0_nofit,"O_massH0_nofit/F");
+  out_tree->Branch("O_massHplus_nofit",&O_massHplus_nofit,"O_massHplus_nofit/F");
+  out_tree->Branch("O_massSupL_nofit",&O_massSupL_nofit,"O_massSupL_nofit/F");
+  out_tree->Branch("O_massSupR_nofit",&O_massSupR_nofit,"O_massSupR_nofit/F");
+  out_tree->Branch("O_massSdownL_nofit",&O_massSdownL_nofit,"O_massSdownL_nofit/F");
+  out_tree->Branch("O_massSdownR_nofit",&O_massSdownR_nofit,"O_massSdownR_nofit/F");
+  out_tree->Branch("O_massScharmL_nofit",&O_massScharmL_nofit,"O_massScharmL_nofit/F");
+  out_tree->Branch("O_massScharmR_nofit",&O_massScharmR_nofit,"O_massScharmR_nofit/F");
+  out_tree->Branch("O_massSstrangeL_nofit",&O_massSstrangeL_nofit,"O_massSstrangeL_nofit/F");
+  out_tree->Branch("O_massSstrangeR_nofit",&O_massSstrangeR_nofit,"O_massSstrangeR_nofit/F");
+  out_tree->Branch("O_massStop1_nofit",&O_massStop1_nofit,"O_massStop1_nofit/F");
+  out_tree->Branch("O_massStop2_nofit",&O_massStop2_nofit,"O_massStop2_nofit/F");
+  out_tree->Branch("O_massSbottom1_nofit",&O_massSbottom1_nofit,"O_massSbottom1_nofit/F");
+  out_tree->Branch("O_massSbottom2_nofit",&O_massSbottom2_nofit,"O_massSbottom2_nofit/F");
+  out_tree->Branch("O_massSelectronL_nofit",&O_massSelectronL_nofit,"O_massSelectronL_nofit/F");
+  out_tree->Branch("O_massSelectronR_nofit",&O_massSelectronR_nofit,"O_massSelectronR_nofit/F");
+  out_tree->Branch("O_massSmuL_nofit",&O_massSmuL_nofit,"O_massSmuL_nofit/F");
+  out_tree->Branch("O_massSmuR_nofit",&O_massSmuR_nofit,"O_massSmuR_nofit/F");
+  out_tree->Branch("O_massStau1_nofit",&O_massStau1_nofit,"O_massStau1_nofit/F");
+  out_tree->Branch("O_massStau2_nofit",&O_massStau2_nofit,"O_massStau2_nofit/F");
+  out_tree->Branch("O_massSnueL_nofit",&O_massSnueL_nofit,"O_massSnueL_nofit/F");
+  out_tree->Branch("O_massSnumuL_nofit",&O_massSnumuL_nofit,"O_massSnumuL_nofit/F");
+  out_tree->Branch("O_massSnutau1_nofit",&O_massSnutau1_nofit,"O_massSnutau1_nofit/F");
+  out_tree->Branch("O_massGluino_nofit",&O_massGluino_nofit,"O_massGluino_nofit/F");
+  out_tree->Branch("O_massNeutralino1_nofit",&O_massNeutralino1_nofit,"O_massNeutralino1_nofit/F");
+  out_tree->Branch("O_massNeutralino2_nofit",&O_massNeutralino2_nofit,"O_massNeutralino2_nofit/F");
+  out_tree->Branch("O_massNeutralino3_nofit",&O_massNeutralino3_nofit,"O_massNeutralino3_nofit/F");
+  out_tree->Branch("O_massNeutralino4_nofit",&O_massNeutralino4_nofit,"O_massNeutralino4_nofit/F");
+  out_tree->Branch("O_massChargino1_nofit",&O_massChargino1_nofit,"O_massChargino1_nofit/F");
+  out_tree->Branch("O_massChargino2_nofit",&O_massChargino2_nofit,"O_massChargino2_nofit/F");
+  out_tree->Branch("O_Neutralino2_To_Electron_SelectronR__nofit",&O_Neutralino2_To_Electron_SelectronR__nofit,"O_Neutralino2_To_Electron_SelectronR__nofit/F");
+  out_tree->Branch("O_Neutralino2_To_Muon_SmuonR__nofit",&O_Neutralino2_To_Muon_SmuonR__nofit,"O_Neutralino2_To_Muon_SmuonR__nofit/F");
+  out_tree->Branch("O_Neutralino2_To_Electron_SelectronL__nofit",&O_Neutralino2_To_Electron_SelectronL__nofit,"O_Neutralino2_To_Electron_SelectronL__nofit/F");
+  out_tree->Branch("O_Neutralino2_To_Muon_SmuonL__nofit",&O_Neutralino2_To_Muon_SmuonL__nofit,"O_Neutralino2_To_Muon_SmuonL__nofit/F");
+  out_tree->Branch("O_Neutralino2_To_Tau_Stau1__nofit",&O_Neutralino2_To_Tau_Stau1__nofit,"O_Neutralino2_To_Tau_Stau1__nofit/F");
+  out_tree->Branch("O_Neutralino2_To_Nutau_Snutau1__nofit",&O_Neutralino2_To_Nutau_Snutau1__nofit,"O_Neutralino2_To_Nutau_Snutau1__nofit/F");
+  out_tree->Branch("O_Neutralino2_To_Tau_Stau2__nofit",&O_Neutralino2_To_Tau_Stau2__nofit,"O_Neutralino2_To_Tau_Stau2__nofit/F");
+  out_tree->Branch("O_Neutralino2_To_Neutralino1_Z__nofit",&O_Neutralino2_To_Neutralino1_Z__nofit,"O_Neutralino2_To_Neutralino1_Z__nofit/F");
+  out_tree->Branch("O_Neutralino2_To_Neutralino1_h0__nofit",&O_Neutralino2_To_Neutralino1_h0__nofit,"O_Neutralino2_To_Neutralino1_h0__nofit/F");
+  out_tree->Branch("O_Neutralino2_To_Nutau_Snutau2__nofit",&O_Neutralino2_To_Nutau_Snutau2__nofit,"O_Neutralino2_To_Nutau_Snutau2__nofit/F");
+  out_tree->Branch("O_Chargino1_To_Neutralino1_W__nofit",&O_Chargino1_To_Neutralino1_W__nofit,"O_Chargino1_To_Neutralino1_W__nofit/F");
+  out_tree->Branch("O_Chargino1_To_Nutau_Stau1__nofit",&O_Chargino1_To_Nutau_Stau1__nofit,"O_Chargino1_To_Nutau_Stau1__nofit/F");
+  out_tree->Branch("O_Chargino1_To_Nutau_Stau2__nofit",&O_Chargino1_To_Nutau_Stau2__nofit,"O_Chargino1_To_Nutau_Stau2__nofit/F");
+  out_tree->Branch("O_Chargino1_To_Electron_SnueL__nofit",&O_Chargino1_To_Electron_SnueL__nofit,"O_Chargino1_To_Electron_SnueL__nofit/F");
+  out_tree->Branch("O_Chargino1_To_Muon_SnumuL__nofit",&O_Chargino1_To_Muon_SnumuL__nofit,"O_Chargino1_To_Muon_SnumuL__nofit/F");
+  out_tree->Branch("O_Chargino1_To_Tau_Snutau1__nofit",&O_Chargino1_To_Tau_Snutau1__nofit,"O_Chargino1_To_Tau_Snutau1__nofit/F");
+  out_tree->Branch("O_SelectronR_To_Neutralino1_Electron__nofit",&O_SelectronR_To_Neutralino1_Electron__nofit,"O_SelectronR_To_Neutralino1_Electron__nofit/F");
+  out_tree->Branch("O_SelectronR_To_Neutralino2_Electron__nofit",&O_SelectronR_To_Neutralino2_Electron__nofit,"O_SelectronR_To_Neutralino2_Electron__nofit/F");
+  out_tree->Branch("O_SelectronL_To_Neutralino1_Electron__nofit",&O_SelectronL_To_Neutralino1_Electron__nofit,"O_SelectronL_To_Neutralino1_Electron__nofit/F");
+  out_tree->Branch("O_SelectronL_To_Neutralino2_Electron__nofit",&O_SelectronL_To_Neutralino2_Electron__nofit,"O_SelectronL_To_Neutralino2_Electron__nofit/F");
+  out_tree->Branch("O_Stau1_To_Neutralino1_Tau__nofit",&O_Stau1_To_Neutralino1_Tau__nofit,"O_Stau1_To_Neutralino1_Tau__nofit/F");
+  out_tree->Branch("O_Stau2_To_Neutralino1_Tau__nofit",&O_Stau2_To_Neutralino1_Tau__nofit,"O_Stau2_To_Neutralino1_Tau__nofit/F");
+  out_tree->Branch("O_Stau2_To_Neutralino2_Tau__nofit",&O_Stau2_To_Neutralino2_Tau__nofit,"O_Stau2_To_Neutralino2_Tau__nofit/F");
+  out_tree->Branch("O_Stau2_To_Chargino1_Nutau__nofit",&O_Stau2_To_Chargino1_Nutau__nofit,"O_Stau2_To_Chargino1_Nutau__nofit/F");
+  out_tree->Branch("O_Gluino_To_Bottom_Sbottom2__nofit",&O_Gluino_To_Bottom_Sbottom2__nofit,"O_Gluino_To_Bottom_Sbottom2__nofit/F");
+  out_tree->Branch("O_Gluino_To_Bottom_Sbottom1__nofit",&O_Gluino_To_Bottom_Sbottom1__nofit,"O_Gluino_To_Bottom_Sbottom1__nofit/F");
+  out_tree->Branch("O_Gluino_To_Stop1_Top__nofit",&O_Gluino_To_Stop1_Top__nofit,"O_Gluino_To_Stop1_Top__nofit/F");
+  out_tree->Branch("O_Gluino_To_Stop2_Top__nofit",&O_Gluino_To_Stop2_Top__nofit,"O_Gluino_To_Stop2_Top__nofit/F");
+  out_tree->Branch("O_Gluino_To_SupL_up__nofit",&O_Gluino_To_SupL_up__nofit,"O_Gluino_To_SupL_up__nofit/F");
+  out_tree->Branch("O_Gluino_To_SupR_up__nofit",&O_Gluino_To_SupR_up__nofit,"O_Gluino_To_SupR_up__nofit/F");
+  out_tree->Branch("O_Gluino_To_SdownL_down__nofit",&O_Gluino_To_SdownL_down__nofit,"O_Gluino_To_SdownL_down__nofit/F");
+  out_tree->Branch("O_Gluino_To_SdownR_down__nofit",&O_Gluino_To_SdownR_down__nofit,"O_Gluino_To_SdownR_down__nofit/F");
+  out_tree->Branch("O_SupL_To_Up_Neutralino1__nofit",&O_SupL_To_Up_Neutralino1__nofit,"O_SupL_To_Up_Neutralino1__nofit/F");
+  out_tree->Branch("O_SupR_To_Up_Neutralino1__nofit",&O_SupR_To_Up_Neutralino1__nofit,"O_SupR_To_Up_Neutralino1__nofit/F");
+  out_tree->Branch("O_SupL_To_Up_Neutralino2__nofit",&O_SupL_To_Up_Neutralino2__nofit,"O_SupL_To_Up_Neutralino2__nofit/F");
+  out_tree->Branch("O_SupR_To_Up_Neutralino2__nofit",&O_SupR_To_Up_Neutralino2__nofit,"O_SupR_To_Up_Neutralino2__nofit/F");
+  out_tree->Branch("O_SupL_To_Down_Chargino1__nofit",&O_SupL_To_Down_Chargino1__nofit,"O_SupL_To_Down_Chargino1__nofit/F");
+  out_tree->Branch("O_SupR_To_Down_Chargino1__nofit",&O_SupR_To_Down_Chargino1__nofit,"O_SupR_To_Down_Chargino1__nofit/F");
+  out_tree->Branch("O_SupL_To_Down_Chargino2__nofit",&O_SupL_To_Down_Chargino2__nofit,"O_SupL_To_Down_Chargino2__nofit/F");
+  out_tree->Branch("O_SupR_To_Down_Chargino2__nofit",&O_SupR_To_Down_Chargino2__nofit,"O_SupR_To_Down_Chargino2__nofit/F");
+  out_tree->Branch("O_Stop1_To_Bottom_Chargino1__nofit",&O_Stop1_To_Bottom_Chargino1__nofit,"O_Stop1_To_Bottom_Chargino1__nofit/F");
+  out_tree->Branch("O_Stop1_To_Bottom_Chargino2__nofit",&O_Stop1_To_Bottom_Chargino2__nofit,"O_Stop1_To_Bottom_Chargino2__nofit/F");
+  out_tree->Branch("O_Stop1_To_Top_Neutralino1__nofit",&O_Stop1_To_Top_Neutralino1__nofit,"O_Stop1_To_Top_Neutralino1__nofit/F");
+  out_tree->Branch("O_Stop1_To_Top_Neutralino2__nofit",&O_Stop1_To_Top_Neutralino2__nofit,"O_Stop1_To_Top_Neutralino2__nofit/F");
+  out_tree->Branch("O_Sbottom1_To_W_Stop1__nofit",&O_Sbottom1_To_W_Stop1__nofit,"O_Sbottom1_To_W_Stop1__nofit/F");
+  out_tree->Branch("O_Sbottom2_To_W_Stop1__nofit",&O_Sbottom2_To_W_Stop1__nofit,"O_Sbottom2_To_W_Stop1__nofit/F");
+  out_tree->Branch("O_Sbottom1_To_Top_Chargino1__nofit",&O_Sbottom1_To_Top_Chargino1__nofit,"O_Sbottom1_To_Top_Chargino1__nofit/F");
+  out_tree->Branch("O_Sbottom2_To_Neutralino2_Bottom__nofit",&O_Sbottom2_To_Neutralino2_Bottom__nofit,"O_Sbottom2_To_Neutralino2_Bottom__nofit/F");
+  out_tree->Branch("O_Sbottom1_To_Neutralino2_Bottom__nofit",&O_Sbottom1_To_Neutralino2_Bottom__nofit,"O_Sbottom1_To_Neutralino2_Bottom__nofit/F");
+  out_tree->Branch("O_h0_To_Bottom_Bottom__nofit",&O_h0_To_Bottom_Bottom__nofit,"O_h0_To_Bottom_Bottom__nofit/F");
+  out_tree->Branch("O_h0_To_Strange_Strange__nofit",&O_h0_To_Strange_Strange__nofit,"O_h0_To_Strange_Strange__nofit/F");
+  out_tree->Branch("O_h0_To_Charm_Charm__nofit",&O_h0_To_Charm_Charm__nofit,"O_h0_To_Charm_Charm__nofit/F");
+  out_tree->Branch("O_h0_To_Tau_Tau__nofit",&O_h0_To_Tau_Tau__nofit,"O_h0_To_Tau_Tau__nofit/F");
+  out_tree->Branch("O_h0_To_Muon_Muon__nofit",&O_h0_To_Muon_Muon__nofit,"O_h0_To_Muon_Muon__nofit/F");
+  out_tree->Branch("O_h0_To_Gamma_Gamma__nofit",&O_h0_To_Gamma_Gamma__nofit,"O_h0_To_Gamma_Gamma__nofit/F");
+  out_tree->Branch("O_h0_To_Gluon_Gluon__nofit",&O_h0_To_Gluon_Gluon__nofit,"O_h0_To_Gluon_Gluon__nofit/F");
+  out_tree->Branch("O_h0_To_W_W__nofit",&O_h0_To_W_W__nofit,"O_h0_To_W_W__nofit/F");
+  out_tree->Branch("O_h0_To_Z_Z__nofit",&O_h0_To_Z_Z__nofit,"O_h0_To_Z_Z__nofit/F");
+  out_tree->Branch("O_h0_To_Z_Gamma__nofit",&O_h0_To_Z_Gamma__nofit,"O_h0_To_Z_Gamma__nofit/F");
+  out_tree->Branch("O_HiggsScalarFermionCoupling3250505_nofit",&O_HiggsScalarFermionCoupling3250505_nofit,"O_HiggsScalarFermionCoupling3250505_nofit/F");
+  out_tree->Branch("O_HiggsPseudoScalarFermionCoupling3250505_nofit",&O_HiggsPseudoScalarFermionCoupling3250505_nofit,"O_HiggsPseudoScalarFermionCoupling3250505_nofit/F");
+  out_tree->Branch("O_HiggsScalarFermionCoupling3350505_nofit",&O_HiggsScalarFermionCoupling3350505_nofit,"O_HiggsScalarFermionCoupling3350505_nofit/F");
+  out_tree->Branch("O_HiggsPseudoScalarFermionCoupling3350505_nofit",&O_HiggsPseudoScalarFermionCoupling3350505_nofit,"O_HiggsPseudoScalarFermionCoupling3350505_nofit/F");
+  out_tree->Branch("O_HiggsScalarFermionCoupling3360505_nofit",&O_HiggsScalarFermionCoupling3360505_nofit,"O_HiggsScalarFermionCoupling3360505_nofit/F");
+  out_tree->Branch("O_HiggsPseudoScalarFermionCoupling3360505_nofit",&O_HiggsPseudoScalarFermionCoupling3360505_nofit,"O_HiggsPseudoScalarFermionCoupling3360505_nofit/F");
+  out_tree->Branch("O_HiggsScalarFermionCoupling3250606_nofit",&O_HiggsScalarFermionCoupling3250606_nofit,"O_HiggsScalarFermionCoupling3250606_nofit/F");
+  out_tree->Branch("O_HiggsPseudoScalarFermionCoupling3250606_nofit",&O_HiggsPseudoScalarFermionCoupling3250606_nofit,"O_HiggsPseudoScalarFermionCoupling3250606_nofit/F");
+  out_tree->Branch("O_HiggsScalarFermionCoupling3350606_nofit",&O_HiggsScalarFermionCoupling3350606_nofit,"O_HiggsScalarFermionCoupling3350606_nofit/F");
+  out_tree->Branch("O_HiggsPseudoScalarFermionCoupling3350606_nofit",&O_HiggsPseudoScalarFermionCoupling3350606_nofit,"O_HiggsPseudoScalarFermionCoupling3350606_nofit/F");
+  out_tree->Branch("O_HiggsScalarFermionCoupling3360606_nofit",&O_HiggsScalarFermionCoupling3360606_nofit,"O_HiggsScalarFermionCoupling3360606_nofit/F");
+  out_tree->Branch("O_HiggsPseudoScalarFermionCoupling3360606_nofit",&O_HiggsPseudoScalarFermionCoupling3360606_nofit,"O_HiggsPseudoScalarFermionCoupling3360606_nofit/F");
+  out_tree->Branch("O_HiggsScalarFermionCoupling3251515_nofit",&O_HiggsScalarFermionCoupling3251515_nofit,"O_HiggsScalarFermionCoupling3251515_nofit/F");
+  out_tree->Branch("O_HiggsPseudoScalarFermionCoupling3251515_nofit",&O_HiggsPseudoScalarFermionCoupling3251515_nofit,"O_HiggsPseudoScalarFermionCoupling3251515_nofit/F");
+  out_tree->Branch("O_HiggsScalarFermionCoupling3351515_nofit",&O_HiggsScalarFermionCoupling3351515_nofit,"O_HiggsScalarFermionCoupling3351515_nofit/F");
+  out_tree->Branch("O_HiggsPseudoScalarFermionCoupling3351515_nofit",&O_HiggsPseudoScalarFermionCoupling3351515_nofit,"O_HiggsPseudoScalarFermionCoupling3351515_nofit/F");
+  out_tree->Branch("O_HiggsScalarFermionCoupling3361515_nofit",&O_HiggsScalarFermionCoupling3361515_nofit,"O_HiggsScalarFermionCoupling3361515_nofit/F");
+  out_tree->Branch("O_HiggsPseudoScalarFermionCoupling3361515_nofit",&O_HiggsPseudoScalarFermionCoupling3361515_nofit,"O_HiggsPseudoScalarFermionCoupling3361515_nofit/F");
+  out_tree->Branch("O_HiggsBosonCoupling3252424_nofit",&O_HiggsBosonCoupling3252424_nofit,"O_HiggsBosonCoupling3252424_nofit/F");
+  out_tree->Branch("O_HiggsBosonCoupling3352424_nofit",&O_HiggsBosonCoupling3352424_nofit,"O_HiggsBosonCoupling3352424_nofit/F");
+  out_tree->Branch("O_HiggsBosonCoupling3362424_nofit",&O_HiggsBosonCoupling3362424_nofit,"O_HiggsBosonCoupling3362424_nofit/F");
+  out_tree->Branch("O_HiggsBosonCoupling3252323_nofit",&O_HiggsBosonCoupling3252323_nofit,"O_HiggsBosonCoupling3252323_nofit/F");
+  out_tree->Branch("O_HiggsBosonCoupling3352323_nofit",&O_HiggsBosonCoupling3352323_nofit,"O_HiggsBosonCoupling3352323_nofit/F");
+  out_tree->Branch("O_HiggsBosonCoupling3362323_nofit",&O_HiggsBosonCoupling3362323_nofit,"O_HiggsBosonCoupling3362323_nofit/F");
+  out_tree->Branch("O_HiggsBosonCoupling3252121_nofit",&O_HiggsBosonCoupling3252121_nofit,"O_HiggsBosonCoupling3252121_nofit/F");
+  out_tree->Branch("O_HiggsBosonCoupling3352121_nofit",&O_HiggsBosonCoupling3352121_nofit,"O_HiggsBosonCoupling3352121_nofit/F");
+  out_tree->Branch("O_HiggsBosonCoupling3362121_nofit",&O_HiggsBosonCoupling3362121_nofit,"O_HiggsBosonCoupling3362121_nofit/F");
+  out_tree->Branch("O_HiggsBosonCoupling3252523_nofit",&O_HiggsBosonCoupling3252523_nofit,"O_HiggsBosonCoupling3252523_nofit/F");
+  out_tree->Branch("O_HiggsBosonCoupling3352523_nofit",&O_HiggsBosonCoupling3352523_nofit,"O_HiggsBosonCoupling3352523_nofit/F");
+  out_tree->Branch("O_HiggsBosonCoupling3353523_nofit",&O_HiggsBosonCoupling3353523_nofit,"O_HiggsBosonCoupling3353523_nofit/F");
+  out_tree->Branch("O_HiggsBosonCoupling3362523_nofit",&O_HiggsBosonCoupling3362523_nofit,"O_HiggsBosonCoupling3362523_nofit/F");
+  out_tree->Branch("O_HiggsBosonCoupling3363523_nofit",&O_HiggsBosonCoupling3363523_nofit,"O_HiggsBosonCoupling3363523_nofit/F");
+  out_tree->Branch("O_HiggsBosonCoupling3363623_nofit",&O_HiggsBosonCoupling3363623_nofit,"O_HiggsBosonCoupling3363623_nofit/F");
+  out_tree->Branch("O_HiggsBosonCoupling425212123_nofit",&O_HiggsBosonCoupling425212123_nofit,"O_HiggsBosonCoupling425212123_nofit/F");
+  out_tree->Branch("O_HiggsBosonCoupling435212123_nofit",&O_HiggsBosonCoupling435212123_nofit,"O_HiggsBosonCoupling435212123_nofit/F");
+  out_tree->Branch("O_HiggsBosonCoupling436212123_nofit",&O_HiggsBosonCoupling436212123_nofit,"O_HiggsBosonCoupling436212123_nofit/F");
+  out_tree->Branch("O_h0_To_Neutralino1_Neutralino1__nofit",&O_h0_To_Neutralino1_Neutralino1__nofit,"O_h0_To_Neutralino1_Neutralino1__nofit/F");
+  out_tree->Branch("O_widthh0_nofit",&O_widthh0_nofit,"O_widthh0_nofit/F");
 
-    // -1- Fill an histo with the values of the chi2
+  out_tree->Branch("R_H_WW",&R_H_WW,"R_H_WW/D");
+  out_tree->Branch("R_H_ZZ",&R_H_ZZ,"R_H_ZZ/D");
+  out_tree->Branch("R_H_gaga",&R_H_gaga,"R_H_gaga/D");
+  out_tree->Branch("R_H_tautau",&R_H_tautau,"R_H_tautau/D");
+  out_tree->Branch("R_H_bb",&R_H_bb,"R_H_bb/D");
+  out_tree->Branch("R_VH_bb",&R_VH_bb,"R_VH_bb/D");
+
+  out_tree->Branch("predmu0",&predmu[0],"predmu0/D");
+  out_tree->Branch("predmu1",&predmu[1],"predmu1/D");
+  out_tree->Branch("predmu2",&predmu[2],"predmu2/D");
+  out_tree->Branch("predmu3",&predmu[3],"predmu3/D");
+  out_tree->Branch("predmu4",&predmu[4],"predmu4/D");
+  out_tree->Branch("predmu5",&predmu[5],"predmu5/D");
+  out_tree->Branch("predmu6",&predmu[6],"predmu6/D");
+  out_tree->Branch("predmu7",&predmu[7],"predmu7/D");
+  out_tree->Branch("predmu8",&predmu[8],"predmu8/D");
+  out_tree->Branch("predmu9",&predmu[9],"predmu9/D");
+  out_tree->Branch("predmu10",&predmu[10],"predmu10/D");
+  out_tree->Branch("predmu11",&predmu[11],"predmu11/D");
+  out_tree->Branch("predmu12",&predmu[12],"predmu12/D");
+  out_tree->Branch("predmu13",&predmu[13],"predmu13/D");
+  out_tree->Branch("predmu14",&predmu[14],"predmu14/D");
+  out_tree->Branch("predmu15",&predmu[15],"predmu15/D");
+  out_tree->Branch("predmu16",&predmu[16],"predmu16/D");
+  out_tree->Branch("predmu17",&predmu[17],"predmu17/D");
+  out_tree->Branch("predmu18",&predmu[18],"predmu18/D");
+  out_tree->Branch("predmu19",&predmu[19],"predmu19/D");
+  out_tree->Branch("predmu20",&predmu[20],"predmu20/D");
+  out_tree->Branch("predmu21",&predmu[21],"predmu21/D");
+  out_tree->Branch("predmu22",&predmu[22],"predmu22/D");
+  out_tree->Branch("predmu23",&predmu[23],"predmu23/D");
+  out_tree->Branch("predmu24",&predmu[24],"predmu24/D");
+  out_tree->Branch("predmu25",&predmu[25],"predmu25/D");
+
+  // Find the minimal chi2 by rejecting the buggy points
+  
+  // -1- Fill an histo with the values of the chi2
     float minHisto = 0, maxHisto = 200;
     int nBinHisto = 2000;
     
@@ -1684,32 +2031,36 @@ void skimToyTrees( TString _fit ){
       in_tree->GetEntry( ievt );
       histo_chi2->Fill( chi2 );
     }
-    // -2- Find the value for which the five bins above gather at least 10 points
+    // -2- Find the value for which the bins above gather at least some points
     float minChi2=-1;
-    for( int ibin = 1; ibin < nBinHisto; ibin++ ){
-    for( int jbin = ibin; jbin < ibin+3; jbin++ ){
-      float nAbove = histo_chi2->Integral( ibin, jbin );
-      //cout << histo_chi2->GetBinCenter( ibin ) << "    "  << nAbove << endl;
-      if( nAbove >= 10 ){
-	minChi2 = histo_chi2->GetBinCenter( ibin );
-	cout << "Minimum found at chi2 = " << minChi2 << endl;
-	break;
-      }
+    int distance = 2;
+    int neighbours = 15;
+    for( int ibin = 1; ibin < nBinHisto; ibin++ )
+      {
+      for( int jbin = ibin; jbin <= (ibin + distance); jbin++ )
+	{
+	  float nAbove = histo_chi2->Integral( ibin, jbin );
+	  if( nAbove >= neighbours ){
+	    minChi2 = histo_chi2->GetBinCenter( ibin );
+	    cout << "Minimum found at chi2 = " << minChi2 << endl;
+	    break;
+	  }
+	  if( minChi2 != -1 ) break;
+	}
       if( minChi2 != -1 ) break;
-    }
-    if( minChi2 != -1 ) break;
-    }
-    // -3- Loop on the input to reject all points with deltaChi2 > 2
+      }
+    // -3- Loop on the input to reject all points with deltaChi2 > 1
     for( Int_t ievt = 0; ievt < in_tree->GetEntries(); ++ievt ){
       in_tree->GetEntry( ievt );
-      if( chi2 > (minChi2 + 2) ) continue;
+      if( chi2 > (minChi2 + 0.5) ) continue;
+      if( chi2 < minChi2 ) continue;
       out_tree->Fill();
     }
 
 
     // Write and close
-    in_file->Close();
-    out_file->cd();
+    //in_file->Close();
+    //out_file->cd();
     out_tree->Write();
     out_file->Close();
 
@@ -1720,20 +2071,19 @@ void skimToyTrees( TString _fit ){
 // Look for the best fit point and save it in an ntuple (toy->0) or a text file (PP->1)
 void saveBestFitPoint( bool PP_or_Toys ){
 
-
   // == Input
   TFile* in_file;
   TTree* in_tree; 
   TString in_name;
   int nFiles = 0;
-
+  Float_t _Higgs_chi2;
 
   // == Output
   TString out_name;
-  TTree* out_tree = 0;
   TFile* out_file = 0;
+  TTree* out_tree = 0;
   ofstream out_stream;
-
+  double bestpredmu[26] = {0.};
 
   // == For a single fit, fill a text file
   if( PP_or_Toys == 1 ){
@@ -1752,18 +2102,45 @@ void saveBestFitPoint( bool PP_or_Toys ){
   // == Toys: output ntuple with the best fit points
   if( PP_or_Toys == 0 ){
     nFiles = atoi( getenv("NB_TOYS") );
-    out_tree = new TTree( "markovChain", "best fit points of the toys" );
     out_name = outputDir + "toy.root";
     out_file = new TFile( out_name, "RECREATE" );
+    out_tree = new TTree( "markovChain", "best fit points of the toys" );
+    out_name = outputDir + "toy.root";
     cout << "Toy substrate.." << endl;
     cout << out_name << endl;
 
     for( int iVal = 0; iVal < ValName.size(); iVal++ ) out_tree->Branch( ValName[iVal], &bestFitVal[iVal], ValName[iVal] + "/F" );  
     for( int iPar = 0; iPar < ParName.size(); iPar++ ) out_tree->Branch( ParName[iPar], &bestFitPar[iPar], ParName[iPar] + "/F" );
+    out_tree->Branch("predmu0",&bestpredmu[0],"predmu0/D");
+    out_tree->Branch("predmu1",&bestpredmu[1],"predmu1/D");
+    out_tree->Branch("predmu2",&bestpredmu[2],"predmu2/D");
+    out_tree->Branch("predmu3",&bestpredmu[3],"predmu3/D");
+    out_tree->Branch("predmu4",&bestpredmu[4],"predmu4/D");
+    out_tree->Branch("predmu5",&bestpredmu[5],"predmu5/D");
+    out_tree->Branch("predmu6",&bestpredmu[6],"predmu6/D");
+    out_tree->Branch("predmu7",&bestpredmu[7],"predmu7/D");
+    out_tree->Branch("predmu8",&bestpredmu[8],"predmu8/D");
+    out_tree->Branch("predmu9",&bestpredmu[9],"predmu9/D");
+    out_tree->Branch("predmu10",&bestpredmu[10],"predmu10/D");
+    out_tree->Branch("predmu11",&bestpredmu[11],"predmu11/D");
+    out_tree->Branch("predmu12",&bestpredmu[12],"predmu12/D");
+    out_tree->Branch("predmu13",&bestpredmu[13],"predmu13/D");
+    out_tree->Branch("predmu14",&bestpredmu[14],"predmu14/D");
+    out_tree->Branch("predmu15",&bestpredmu[15],"predmu15/D");
+    out_tree->Branch("predmu16",&bestpredmu[16],"predmu16/D");
+    out_tree->Branch("predmu17",&bestpredmu[17],"predmu17/D");
+    out_tree->Branch("predmu18",&bestpredmu[18],"predmu18/D");
+    out_tree->Branch("predmu19",&bestpredmu[19],"predmu19/D");
+    out_tree->Branch("predmu20",&bestpredmu[20],"predmu20/D");
+    out_tree->Branch("predmu21",&bestpredmu[21],"predmu21/D");
+    out_tree->Branch("predmu22",&bestpredmu[22],"predmu22/D");
+    out_tree->Branch("predmu23",&bestpredmu[23],"predmu23/D");
+    out_tree->Branch("predmu24",&bestpredmu[24],"predmu24/D");
+    out_tree->Branch("predmu25",&bestpredmu[25],"predmu25/D");
   }
 
 // == Loop on the files to check
-  for( int iFile = 1; iFile <= nFiles; iFile++ ){
+    for( int iFile = 1; iFile <= nFiles; iFile++ ){
 
     // == Open file and get ntuples
     if( PP_or_Toys == 0 ){
@@ -1791,7 +2168,7 @@ void saveBestFitPoint( bool PP_or_Toys ){
     in_tree->SetBranchAddress("af_direct",&af_direct );
     in_tree->SetBranchAddress("LEO_chi2",&LEO_chi2 );
     in_tree->SetBranchAddress("LHC_chi2",&LHC_chi2 );
-    in_tree->SetBranchAddress("Higgs_chi2",&Higgs_chi2 );
+    in_tree->SetBranchAddress("Higgs_chi2",&_Higgs_chi2 );
     in_tree->SetBranchAddress("af_chi2",&af_chi2 );
     in_tree->SetBranchAddress("Bsg_chi2",&Bsg_chi2 );
     in_tree->SetBranchAddress("dm_s_chi2",&dm_s_chi2 );
@@ -1813,11 +2190,40 @@ void saveBestFitPoint( bool PP_or_Toys ){
       in_tree->SetBranchAddress("P_M0Hu",&P_M0Hu );
       in_tree->SetBranchAddress("P_M0Hd",&P_M0Hd );
     }
+    in_tree->SetBranchAddress("predmu0",&predmu[0]);
+    in_tree->SetBranchAddress("predmu1",&predmu[1]);
+    in_tree->SetBranchAddress("predmu2",&predmu[2]);
+    in_tree->SetBranchAddress("predmu3",&predmu[3]);
+    in_tree->SetBranchAddress("predmu4",&predmu[4]);
+    in_tree->SetBranchAddress("predmu5",&predmu[5]);
+    in_tree->SetBranchAddress("predmu6",&predmu[6]);
+    in_tree->SetBranchAddress("predmu7",&predmu[7]);
+    in_tree->SetBranchAddress("predmu8",&predmu[8]);
+    in_tree->SetBranchAddress("predmu9",&predmu[9]);
+    in_tree->SetBranchAddress("predmu10",&predmu[10]);
+    in_tree->SetBranchAddress("predmu11",&predmu[11]);
+    in_tree->SetBranchAddress("predmu12",&predmu[12]);
+    in_tree->SetBranchAddress("predmu13",&predmu[13]);
+    in_tree->SetBranchAddress("predmu14",&predmu[14]);
+    in_tree->SetBranchAddress("predmu15",&predmu[15]);
+    in_tree->SetBranchAddress("predmu16",&predmu[16]);
+    in_tree->SetBranchAddress("predmu17",&predmu[17]);
+    in_tree->SetBranchAddress("predmu18",&predmu[18]);
+    in_tree->SetBranchAddress("predmu19",&predmu[19]);
+    in_tree->SetBranchAddress("predmu20",&predmu[20]);
+    in_tree->SetBranchAddress("predmu21",&predmu[21]);
+    in_tree->SetBranchAddress("predmu22",&predmu[22]);
+    in_tree->SetBranchAddress("predmu23",&predmu[23]);
+    in_tree->SetBranchAddress("predmu24",&predmu[24]);
+    in_tree->SetBranchAddress("predmu25",&predmu[25]);
+
+
+
         
     bestFitVal[0] = 1E10;
 
     // == Loop on events
-      for( Int_t ievt = 0; ievt < in_tree->GetEntries(); ++ievt ){
+    for( Int_t ievt = 0; ievt < in_tree->GetEntries(); ++ievt ){
 
       in_tree->GetEntry( ievt );
       
@@ -1837,7 +2243,7 @@ void saveBestFitPoint( bool PP_or_Toys ){
 	bestFitVal[12]=af_direct;
 	bestFitVal[13]=LEO_chi2;
 	bestFitVal[14]=LHC_chi2;
-	bestFitVal[15]=Higgs_chi2;
+	bestFitVal[15]=_Higgs_chi2;
 	bestFitVal[16]=af_chi2;
 	bestFitVal[17]=Bsg_chi2;
 	bestFitVal[18]=dm_s_chi2;
@@ -1860,7 +2266,8 @@ void saveBestFitPoint( bool PP_or_Toys ){
 	  bestFitPar[5] = P_M0Hu;
 	  bestFitPar[6] = P_M0Hd;
 	}       
-      }   
+	for ( int i = 0; i < 26; i++ ) bestpredmu[i] = predmu[i];
+      }
       
       }
       
@@ -1868,6 +2275,7 @@ void saveBestFitPoint( bool PP_or_Toys ){
       if( PP_or_Toys == 1 ){
 	for( int iVal = 0; iVal < ValName.size(); iVal++ ) out_stream << ValName[iVal] << " " << bestFitVal[iVal] << endl;
 	for( int iPar = 0; iPar < ParName.size(); iPar++ ) out_stream << ParName[iPar] << " " << bestFitPar[iPar] << endl;      
+	for( int i    = 0; i    < 26;             i++    ) out_stream << "predmu" << i << " " << bestpredmu[i] << endl;
 	out_stream.close();     
       }
       in_file->Close();

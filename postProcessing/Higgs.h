@@ -6,6 +6,37 @@
 #include "TMatrixTSym.h"
 #include "TMatrixDSymEigen.h"
 
+// == For the color
+#include "Riostream.h"
+const TString  K="\033[0;30m";    // black
+const TString  R="\033[0;31m";    // red
+const TString  G="\033[0;32m";    // green
+const TString  Y="\033[0;33m";    // yellow
+const TString  B="\033[0;34m";    // blue
+const TString  M="\033[0;35m";    // magenta
+const TString  C="\033[0;36m";    // cyan
+const TString  W="\033[0;37m";    // white
+// emphasized (bolded) colors
+const TString  EMK="\033[1;30m";
+const TString  EMR="\033[1;31m";
+const TString  EMG="\033[1;32m";
+const TString  EMY="\033[1;33m";
+const TString  EMB="\033[1;34m";
+const TString  EMM="\033[1;35m";
+const TString  EMC="\033[1;36m";
+const TString  EMW="\033[1;37m";
+// background colors
+const TString  BGK="\033[40m";
+const TString  BGR="\033[41m";
+const TString  BGG="\033[42m";
+const TString  BGY="\033[43m";
+const TString  BGB="\033[44m";
+const TString  BGM="\033[45m";
+const TString  BGC="\033[46m";
+const TString  BGW="\033[47m";
+const TString FIN     = "\033[0m"    ;
+
+
 using namespace std;
 
 // == Define Fortran routines to be called from the HiggsSignal programm
@@ -37,7 +68,7 @@ int nH = 1;
 int nHplus = 0;
 
 // == Theoretical uncertainties in GeV for the 3 MSSM neutral Higgs
-double dMh[3] = { 2.0, 2.0, 2.0 };
+double dMh[3] = { 3.0, 3.0, 3.0 };
 
 // == Relative systematic uncertainties for 
 //  dCS(1) - singleH                             dBR(1) - gamma gamma
@@ -143,6 +174,7 @@ void readCovarianceMatrices( bool verb=0, int useObs=0 ){
 // == Set nominal values of mu and mh for the 26 channels
 void set_mu_mh(){
 
+  // Nominal post-processing with measured values of mu and m(h0)
   // Set toy measurements for the peaks, every analysis has only one peak (second and third argument to 1)
   Toys_muobs[0] = 2.7200;
   Toys_muobs[1] = 2.6200;
@@ -170,8 +202,6 @@ void set_mu_mh(){
   Toys_muobs[23] = 3.6200;
   Toys_muobs[24] = 0.3200;
   Toys_muobs[25] = 1.9700;
-
-
   //
    Toys_mhobs[0] = 126.50;
    Toys_mhobs[1] = 126.50;
@@ -199,7 +229,6 @@ void set_mu_mh(){
    Toys_mhobs[23] = 125.00;
    Toys_mhobs[24] = 125.00;
    Toys_mhobs[25] = 125.00;
-   
    
   for( int i = 1; i <= Nanalyses; i++ ){
     vec_obs_mu[i-1] = Toys_muobs[i-1];
@@ -301,39 +330,57 @@ void smearHiggs( bool verb, int randomSeed, TString inputDir, TString fit ){
 
  // -----------------------------------------------------------------
  // Open the files with the values of mu and mh at the best fit point
- TString bestMuFile = inputDir + "/mu_" + fit + ".txt";
- TString bestMhFile = inputDir + "/mh_" + fit + ".txt";
- ifstream bestMuStreamIn( bestMuFile );
- ifstream bestMhStreamIn( bestMhFile );
- 
- // Warning if the file does not exist
- if( !bestMuStreamIn.good() ) cout << " >>>>>> WARNING <<<<<< the file of the best fit mu is missing: " << endl << bestMuFile << endl;
- if( !bestMhStreamIn.good() ) cout << " >>>>>> WARNING <<<<<< the file of the best fit mh is missing: " << endl << bestMhFile << endl;
 
- cout << "   > Values of mu, m(h0) at the best fit point.." << endl;
- cout << bestMuFile << endl;
- cout << bestMhFile << endl;
+ TString bestFitFile = inputDir + "/bestFit_" + fit + ".txt";
+ ifstream bestFitStreamIn( bestFitFile );
 
- // Read read the best fit point files for mu
- float bestMu;
- int analysis=0;
- while( bestMuStreamIn >> bestMu ){
-   vec_obs_mu[analysis] = bestMu;
-   analysis++;
-   if( analysis >= Nanalyses ) break;
- }
- bestMuStreamIn.close();
- 
- // Read read the best fit point files for mh
- float bestMh;
- analysis=0;
- while( bestMhStreamIn >> bestMh ){
-   vec_obs_mh[analysis] = bestMh;
-   analysis++;
-   if( analysis >= Nanalyses ) break;
- }
- bestMhStreamIn.close();
+ // If the file does not exist, create and fill it
+ if( !bestFitStreamIn.good() ) cout << BGK << EMR << " >>>>>> WARNING <<<<<< the file of the best fit point is missing: "
+				    << endl << bestFitFile << endl << FIN;
+ else{
+   // If the file exists read it
+   cout << endl << EMR << " >>> Reading file with lowest chi2 point.. " << endl << bestFitFile << endl << FIN;
+   Float_t _bestFitVal;
+   TString _ValName;
+   while( bestFitStreamIn >> _ValName >> _bestFitVal ){
 
+     // Fixe the h0 mass for all analysis to the value at the best fit point
+     if( _ValName == "O_Massh0_npf" )
+       for( int i = 0; i < Nanalyses; i++ ) vec_obs_mh[i] = _bestFitVal;     
+
+     // Fixe the mu(h0)to the values at the best fit point
+     if( _ValName == "predmu0" ) vec_obs_mu[0] = _bestFitVal;
+     if( _ValName == "predmu1" ) vec_obs_mu[1] = _bestFitVal;
+     if( _ValName == "predmu2" ) vec_obs_mu[2] = _bestFitVal;
+     if( _ValName == "predmu3" ) vec_obs_mu[3] = _bestFitVal;
+     if( _ValName == "predmu4" ) vec_obs_mu[4] = _bestFitVal;
+     if( _ValName == "predmu5" ) vec_obs_mu[5] = _bestFitVal;
+     if( _ValName == "predmu6" ) vec_obs_mu[6] = _bestFitVal;
+     if( _ValName == "predmu7" ) vec_obs_mu[7] = _bestFitVal;
+     if( _ValName == "predmu8" ) vec_obs_mu[8] = _bestFitVal;
+     if( _ValName == "predmu9" ) vec_obs_mu[9] = _bestFitVal;
+     if( _ValName == "predmu10" ) vec_obs_mu[10] = _bestFitVal;
+     if( _ValName == "predmu11" ) vec_obs_mu[11] = _bestFitVal;
+     if( _ValName == "predmu12" ) vec_obs_mu[12] = _bestFitVal;
+     if( _ValName == "predmu13" ) vec_obs_mu[13] = _bestFitVal;
+     if( _ValName == "predmu14" ) vec_obs_mu[14] = _bestFitVal;
+     if( _ValName == "predmu15" ) vec_obs_mu[15] = _bestFitVal;
+     if( _ValName == "predmu16" ) vec_obs_mu[16] = _bestFitVal;
+     if( _ValName == "predmu17" ) vec_obs_mu[17] = _bestFitVal;
+     if( _ValName == "predmu18" ) vec_obs_mu[18] = _bestFitVal;
+     if( _ValName == "predmu19" ) vec_obs_mu[19] = _bestFitVal;
+     if( _ValName == "predmu20" ) vec_obs_mu[20] = _bestFitVal;
+     if( _ValName == "predmu21" ) vec_obs_mu[21] = _bestFitVal;
+     if( _ValName == "predmu22" ) vec_obs_mu[22] = _bestFitVal;
+     if( _ValName == "predmu23" ) vec_obs_mu[23] = _bestFitVal;
+     if( _ValName == "predmu24" ) vec_obs_mu[24] = _bestFitVal;
+     if( _ValName == "predmu25" ) vec_obs_mu[25] = _bestFitVal;
+   }
+   bestFitStreamIn.close();
+
+ cout << " >>> Values of mu, m(h0) at the best fit point.." << endl;
+ cout << EMR << "   > m(h0) = " << vec_obs_mh[0] << FIN << endl;
+ for( int i = 0; i < Nanalyses; i++ )  cout << EMR << "   > mu("<<i<<") = " << vec_obs_mu[i] << FIN << endl;
 
  // -----------------------------------------------------------------
  // Smear these best fit point values
@@ -351,9 +398,10 @@ if( verb ){
  }
 
 for( int i = 1; i <= Nanalyses; i++ ) assign_toyvalues_to_observables_( &i, &peakindex, &npeaks, &vec_toy_mu[i-1], &vec_toy_mh[i-1]);
+}
 
 return;
-}
+ }
 
 // ===================================================================
 // == For a given point, get the Higgs chi2

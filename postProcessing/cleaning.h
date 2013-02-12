@@ -67,12 +67,42 @@ void preparIOfiles( TString task, TString arg1, TString arg2, TString arg3 ){
     markovChain_in->SetBranchAddress("sin_th_eff_chi2",&sin_th_eff_chi2 );
     markovChain_in->SetBranchAddress("B_smm_chi2",&B_smm_chi2 );
     markovChain_in->SetBranchAddress("massTop_chi2",&massTop_chi2 );
+    markovChain_in->SetBranchAddress("Massh0_chi2",&Massh0_chi2);
+
     markovChain_in->SetBranchAddress("R_H_WW",&R_H_WW );
     markovChain_in->SetBranchAddress("R_H_ZZ",&R_H_ZZ );
     markovChain_in->SetBranchAddress("R_H_gaga",&R_H_gaga );
     markovChain_in->SetBranchAddress("R_H_tautau",&R_H_tautau );
     markovChain_in->SetBranchAddress("R_H_bb",&R_H_bb );
     markovChain_in->SetBranchAddress("R_VH_bb",&R_VH_bb );
+    markovChain_in->SetBranchAddress("mu_chi2",&mu_chi2);
+    markovChain_in->SetBranchAddress("mh_chi2",&mh_chi2);
+    markovChain_in->SetBranchAddress("predmu0",&predmu[0] );
+    markovChain_in->SetBranchAddress("predmu1",&predmu[1] );
+    markovChain_in->SetBranchAddress("predmu2",&predmu[2] );
+    markovChain_in->SetBranchAddress("predmu3",&predmu[3] );
+    markovChain_in->SetBranchAddress("predmu4",&predmu[4] );
+    markovChain_in->SetBranchAddress("predmu5",&predmu[5] );
+    markovChain_in->SetBranchAddress("predmu6",&predmu[6] );
+    markovChain_in->SetBranchAddress("predmu7",&predmu[7] );
+    markovChain_in->SetBranchAddress("predmu8",&predmu[8] );
+    markovChain_in->SetBranchAddress("predmu9",&predmu[9] );
+    markovChain_in->SetBranchAddress("predmu10",&predmu[10] );
+    markovChain_in->SetBranchAddress("predmu11",&predmu[11] );
+    markovChain_in->SetBranchAddress("predmu12",&predmu[12] );
+    markovChain_in->SetBranchAddress("predmu13",&predmu[13] );
+    markovChain_in->SetBranchAddress("predmu14",&predmu[14] );
+    markovChain_in->SetBranchAddress("predmu15",&predmu[15] );
+    markovChain_in->SetBranchAddress("predmu16",&predmu[16] );
+    markovChain_in->SetBranchAddress("predmu17",&predmu[17] );
+    markovChain_in->SetBranchAddress("predmu18",&predmu[18] );
+    markovChain_in->SetBranchAddress("predmu19",&predmu[19] );
+    markovChain_in->SetBranchAddress("predmu20",&predmu[20] );
+    markovChain_in->SetBranchAddress("predmu21",&predmu[21] );
+    markovChain_in->SetBranchAddress("predmu22",&predmu[22] );
+    markovChain_in->SetBranchAddress("predmu23",&predmu[23] );
+    markovChain_in->SetBranchAddress("predmu24",&predmu[24] );
+    markovChain_in->SetBranchAddress("predmu25",&predmu[25] );
   }
   markovChain_in->SetBranchAddress("accpoint",&accpoint );
   markovChain_in->SetBranchAddress("n",&n );
@@ -310,8 +340,37 @@ void preparIOfiles( TString task, TString arg1, TString arg2, TString arg3 ){
     markovChain_out->Branch("massTop_chi2",&massTop_chi2,"massTop_chi2/F");
     markovChain_out->Branch("LEO_chi2",&LEO_chi2,"LEO_chi2/F");
     markovChain_out->Branch("LHC_chi2",&LHC_chi2,"LHC_chi2/F");
-    markovChain_out->Branch("Higgs_chi2",&Higgs_chi2,"Higgs_chi2/F");
+    markovChain_out->Branch("Higgs_chi2",&Higgs_chi2,"Higgs_chi2/D");
     markovChain_out->Branch("af_chi2",&af_chi2,"af_chi2/F");
+    markovChain_out->Branch("mu_chi2",&mu_chi2,"mu_chi2/D");
+    markovChain_out->Branch("mh_chi2",&mh_chi2,"mh_chi2/D");
+    markovChain_out->Branch("Massh0_chi2",&Massh0_chi2,"Massh0_chi2/F"); 
+    markovChain_out->Branch("predmu0",&predmu[0],"predmu0/D");
+    markovChain_out->Branch("predmu1",&predmu[1],"predmu1/D");
+    markovChain_out->Branch("predmu2",&predmu[2],"predmu2/D");
+    markovChain_out->Branch("predmu3",&predmu[3],"predmu3/D");
+    markovChain_out->Branch("predmu4",&predmu[4],"predmu4/D");
+    markovChain_out->Branch("predmu5",&predmu[5],"predmu5/D");
+    markovChain_out->Branch("predmu6",&predmu[6],"predmu6/D");
+    markovChain_out->Branch("predmu7",&predmu[7],"predmu7/D");
+    markovChain_out->Branch("predmu8",&predmu[8],"predmu8/D");
+    markovChain_out->Branch("predmu9",&predmu[9],"predmu9/D");
+    markovChain_out->Branch("predmu10",&predmu[10],"predmu10/D");
+    markovChain_out->Branch("predmu11",&predmu[11],"predmu11/D");
+    markovChain_out->Branch("predmu12",&predmu[12],"predmu12/D");
+    markovChain_out->Branch("predmu13",&predmu[13],"predmu13/D");
+    markovChain_out->Branch("predmu14",&predmu[14],"predmu14/D");
+    markovChain_out->Branch("predmu15",&predmu[15],"predmu15/D");
+    markovChain_out->Branch("predmu16",&predmu[16],"predmu16/D");
+    markovChain_out->Branch("predmu17",&predmu[17],"predmu17/D");
+    markovChain_out->Branch("predmu18",&predmu[18],"predmu18/D");
+    markovChain_out->Branch("predmu19",&predmu[19],"predmu19/D");
+    markovChain_out->Branch("predmu20",&predmu[20],"predmu20/D");
+    markovChain_out->Branch("predmu21",&predmu[21],"predmu21/D");
+    markovChain_out->Branch("predmu22",&predmu[22],"predmu22/D");
+    markovChain_out->Branch("predmu23",&predmu[23],"predmu23/D");
+    markovChain_out->Branch("predmu24",&predmu[24],"predmu24/D");
+    markovChain_out->Branch("predmu25",&predmu[25],"predmu25/D");
   }
   markovChain_out->Branch("accpoint",&accpoint,"accpoint/F");
   markovChain_out->Branch("n",&n,"n/F");
@@ -492,12 +551,12 @@ void preparIOfiles( TString task, TString arg1, TString arg2, TString arg3 ){
   markovChain_out->Branch("O_h0_To_Neutralino1_Neutralino1__nofit",&O_h0_To_Neutralino1_Neutralino1__nofit,"O_h0_To_Neutralino1_Neutralino1__nofit/F");
   markovChain_out->Branch("O_widthh0_nofit",&O_widthh0_nofit,"O_widthh0_nofit/F");
 
-  markovChain_out->Branch("R_H_WW",&R_H_WW,"R_H_WW/F");
-  markovChain_out->Branch("R_H_ZZ",&R_H_ZZ,"R_H_ZZ/F");
-  markovChain_out->Branch("R_H_gaga",&R_H_gaga,"R_H_gaga/F");
-  markovChain_out->Branch("R_H_tautau",&R_H_tautau,"R_H_tautau/F");
-  markovChain_out->Branch("R_H_bb",&R_H_bb,"R_H_bb/F");
-  markovChain_out->Branch("R_VH_bb",&R_VH_bb,"R_VH_bb/F");
+  markovChain_out->Branch("R_H_WW",&R_H_WW,"R_H_WW/D");
+  markovChain_out->Branch("R_H_ZZ",&R_H_ZZ,"R_H_ZZ/D");
+  markovChain_out->Branch("R_H_gaga",&R_H_gaga,"R_H_gaga/D");
+  markovChain_out->Branch("R_H_tautau",&R_H_tautau,"R_H_tautau/D");
+  markovChain_out->Branch("R_H_bb",&R_H_bb,"R_H_bb/D");
+  markovChain_out->Branch("R_VH_bb",&R_VH_bb,"R_VH_bb/D");
   
  return; 
 }
@@ -555,6 +614,7 @@ void cleaningInputFile( TString task, TString arg1, TString arg2, TString arg3 )
     //last = first + nBet;  
     //cout << "   > PP segment: " << pp_segment << "/" << nb_segment<<" -> events: " << first << " to " << last-1 << " of " << nEnt << endl;
   //}
+
   for( Int_t ievt = first; ievt < last; ++ievt )  
   {
     markovChain_in->GetEntry( ievt );
