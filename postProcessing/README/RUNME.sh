@@ -137,6 +137,10 @@ echo
 echo -e "$RED" [ STEP 4 ] "$NORMAL"
 echo "      Creation of toys, where for each toy the observables are smeared around their values at the point of lowest chi2"
 echo
+echo -e "$RED"  \>\>\> IMPORTANT "$NORMAL"
+echo "      Before all, you need to specify the links of input/output for the post-processing"
+echo "      change all the links in setup.sh and run this script before running any other script"
+echo
 echo Which step do you want to perform?
 echo
 echo \(type a number...\)
@@ -150,32 +154,6 @@ echo "    STEP 1: Removal of multiple points to increase the processing speed."
 echo -e "$BLUE" "======================================================================="  "$NORMAL"
 echo
 echo "      Look into multiplePointsRemoval/"
-echo
-echo "      You will have to modify compiling script:"
-echo -e "$RED" "[ fittino/postProcessing/compil ]"  "$NORMAL"
-echo " - The link to HiggsSignals"
-echo " - The link to the directory of the LHC chi2 tools"
-echo
-echo "      You will have to modify the batch-job script:"
-echo -e "$RED" "[ multiplePointsRemoval/job_multiplePointsRemoval ]"  "$NORMAL"
-echo " - The email adress                                                     'MYADRESS@physik.MYUNIVERSITY.de'"
-echo " - The link to the Fittino input file with the experimental constraints 'input_file'"
-echo " - The link to the output directory                                     'output_destination'"
-echo " - The link to the directory with the post-processing program           'working_directory'"
-echo " - The link to the directory of the LHC chi2 tools                      'tools_directory'"
-echo " - The link for the ROOT compilation of these LHC tools                 'LD_LIBRARY_PATH'"
-echo " - All other aliases: 'FIT_TO_BE_PROCESSED', 'INPUT_DIR', 'XX' are modified by the script 'makeAllJobs' when creating the batch-job scripts for all fits and all observables"
-echo
-echo "      You will have to modify the script:"
-echo -e "$RED" "[ multiplePointsRemoval/makeJobsForMe ]"  "$NORMAL"
-echo " - The link to the directory of the ntuples to process                  'input'"
-echo " - The link to the list of available fits (Look into listOfFits)        'listOfFits_.txt'"
-echo
-echo "      You will have to modify the script:"
-echo -e "$RED" "[ multiplePointsRemoval/makeAllJobs ]"  "$NORMAL"
-echo " - The observables sets you want to use (numerated from 0 to 17)        'obs'"
-echo " - The fits you want to process                                         'fit'"
-echo " - The link to the directory where all batch-job scripts have been created"
 echo
 echo "      Use the script makeAllJobs to create the batch-job scripts for each fit"
 echo
@@ -206,28 +184,6 @@ echo
 echo "      Look into calculationChi2/"
 echo
 echo "      Input: FIT_cleaned.root (see step 1)"
-echo
-echo "      You will have to modify the batch-job script:"
-echo -e "$RED" "[ calculationChi2/job_multiplePointsRemoval ]"  "$NORMAL"
-echo " - The email adress                                                     'MYADRESS@physik.MYUNIVERSITY.de'"
-echo " - The link to the Fittino input file with the experimental constraints 'input_file'"
-echo " - The link to the input directory                                      'input_directory'"
-echo " - The link to the output directory                                     'output_destination'"
-echo " - The link to the directory with the post-processing program           'working_directory'"
-echo " - The link to the directory of the LHC chi2 tools                      'tools_directory'"
-echo " - The link for the ROOT compilation of these LHC tools                 'LD_LIBRARY_PATH'"
-echo " - All other aliases: 'FIT_TO_BE_PROCESSED', 'WHICH_OBS', 'XX' are modified by the script 'makeAllJobs' when creating the batch-job scripts for all fits and all observables"
-echo
-echo "      You will have to modify the script:"
-echo -e "$RED" "[ calculationChi2/makeJobsForMe ]"  "$NORMAL"
-echo " - The link to the list of available fits (Look into listOfFits)        'listOfFits_.txt'"
-echo " - The batch parameter for that job                                     'HOUR, MINUTE'"
-echo
-echo "      You will have to modify the script:"
-echo -e "$RED" "[ calculationChi2/makeAllJobs ]"  "$NORMAL"
-echo " - The observables sets you want to use (numerated from 0 to 17)        'obs'"
-echo " - The fits you want to process                                         'fit'"
-echo " - The link to the directory where all batch-job scripts have been created"
 echo
 echo "      Use the script makeAllJobs to create the batch-job scripts for each fit"
 echo
@@ -285,23 +241,6 @@ echo
 echo "      Output: all splines in Splines.root, result plots ResultChi2Vs*.eps"
 echo
 echo "       [5] Use the splines to remove the buggy points"
-echo "      You will have to modify the script:"
-echo -e "$RED" "[ buggyPointRemoval/job_bpr ]"  "$NORMAL"
-echo " - The email adress                                                     'MYADRESS@physik.MYUNIVERSITY.de'"
-echo " - The link to the Fittino input file with the experimental constraints 'input_file'"
-echo " - The link to the input directory                                      'input_directory'"
-echo " - The link to the output directory                                     'output_destination'"
-echo " - The link to the directory with the post-processing program           'working_directory'"
-echo " - The link to the directory of the LHC chi2 tools                      'tools_directory'"
-echo " - The link for the ROOT compilation of these LHC tools                 'LD_LIBRARY_PATH'"
-echo " - The link to the splines                                              'FILECUTS'"
-echo " - All other aliases: 'FIT_TO_BE_PROCESSED', 'XXMODEL', 'XXOBS' are modified by the script 'makeAllJobs' when creating the batch-job scripts for all fits and all observables"
-echo
-echo "      You will have to modify the script:"
-echo -e "$RED" "[ buggyPointRemoval/makeJobsForMe ]"  "$NORMAL"
-echo " - The observables sets you want to use (numerated from 0 to 17)        'obs'"
-echo " - The model under study (CMSSM NUHM1 NUHM2)                            'model'"
-echo " - The link to the directory where all batch-job scripts have been created"
 echo
 echo "       [6] Create the batch-job scripts for each fit"
 echo -e "$RED" "> makeJobsForMe 1 " "$NORMAL"
@@ -326,51 +265,22 @@ echo "          with lowest chi2 as long as the point density is low."
 echo
 echo "       Look into toys/"
 echo 
-echo "       [1] You will have to modify the scrip:"
-echo -e "$RED" "[ toys/job_bpr ]"  "$NORMAL"
-echo " - The email adress                                                     'MYADRESS@physik.MYUNIVERSITY.de'"
-echo " - The link to the Fittino input file with the experimental constraints 'input_file'"
-echo " - The link to the input directory                                      'input_directory'"
-echo " - The link to the output directory                                     'output_destination'"
-echo " - The link to the directory with the post-processing program           'working_directory'"
-echo " - The link to the directory of the LHC chi2 tools                      'tools_directory'"
-echo " - The link for the ROOT compilation of these LHC tools                 'LD_LIBRARY_PATH'"
-echo " - All other aliases: 'XXMODEL', 'XXOBS', 'XXTOYS' are modified by the script 'makeJobsForMe' when creating the batch-job scripts for all fits and all observables"
-echo
-echo "       [2] You will have to modify the script:"
-echo -e "$RED" "[ toys/makeJobsForMe ]"  "$NORMAL"
-echo " - The observables sets you want to use (numerated from 0 to 17)        'obs'"
-echo " - The model under study (CMSSM NUHM1 NUHM2)                            'model'"
-echo " - The number of toys to run (1 toy per job)                            'toy'"
-echo " - The link to the directory where all batch-job scripts have been created"
-echo
-echo "       [3] Create the batch-job scripts for the toys"
+echo "       [1] Create the batch-job scripts for the toys"
 echo -e "$RED" "> makeJobsForMe 1" "$NORMAL"
 echo
-echo "       [4] Send all the batch-job scripts to batch"
+echo "       [2] Send all the batch-job scripts to batch"
 echo -e "$RED" "> makeJobsForMe 2" "$NORMAL"
 echo
-echo "       [5] Create the batch-job scripts for the extraction of the best fit points and their gathering in a single file"
+echo "       [3] Create the batch-job scripts for the extraction of the best fit points and their gathering in a single file"
 echo -e "$RED" "> makeJobsForMe 3" "$NORMAL"
 echo
-echo "       [6] The step 'makeJobsForMe 2' submit each batch-job script"
+echo "       [4] The step 'makeJobsForMe 2' submit each batch-job script"
 echo -e "$RED" "> qsub job_toys" "$NORMAL"
 echo
-echo "       [7] Simple script to check whether your jobs created an output"
+echo "       [5] Simple script to check whether your jobs created an output"
 echo -e "$RED" "> checkIfJobsSucceeded" "$NORMAL"
 echo
-echo "       [8] Extract for each toy the point of lowest chi2 and save all these minima in an ntuple"
-echo "        You will have to modify the script:"
-echo -e "$RED" "[ toys/job_extract ]"  "$NORMAL"
-echo " - The email adress                                                     'MYADRESS@physik.MYUNIVERSITY.de'"
-echo " - The link to the Fittino input file with the experimental constraints 'input_file'"
-echo " - The link to the input directory                                      'input_directory'"
-echo " - The link to the output directory                                     'output_destination'"
-echo " - The link to the directory with the post-processing program           'working_directory'"
-echo " - The link to the directory of the LHC chi2 tools                      'tools_directory'"
-echo " - The number of toys to consider                                       'NB_TOYS'"
-echo " - The link for the ROOT compilation of these LHC tools                 'LD_LIBRARY_PATH'"
-echo " - All other aliases: 'XXMODEL', 'XXOBS', 'XXTOYS' are modified by the script 'makeAllJobs' when creating the batch-job scripts for all fits and all observables"
+echo "       [6] Extract for each toy the point of lowest chi2 and save all these minima in an ntuple with job_extract"
 
 echo -e "$BLUE" "======================================================================="  "$NORMAL"
 fi

@@ -1410,6 +1410,8 @@ void calculateChi2( int PP_or_Toys ){
       // 16: full obs with no LHC correction applied
       // 17: full obs of the 2012 paper
 
+      if( globalHiggsChi2 < 0 ) globalHiggsChi2 = 0;
+
       if( useObs == 0 ) chi2 = globalHiggsChi2 + LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
       if( useObs == 1 ) chi2 = globalHiggsChi2 + LEO_chi2 + LHC_chi2 + Massh0_chi2 + af_chi2;
       if( useObs == 2 ) chi2 = globalHiggsChi2 + LHC_chi2 + Higgs_chi2;
