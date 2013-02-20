@@ -13,6 +13,17 @@ whereIsSetup=/afs/naf.desy.de/user/p/prudent/fittino/postProcessing/README
 ###############################
 mymail=prudent@physik.tu-dresden.de
 
+######## Plots
+###############################
+
+# Fittino repository
+fittinoPath=/afs/naf.desy.de/user/p/prudent/fittino
+
+# Where the batch jobs for the plots are
+plotDir=/afs/naf.desy.de/user/p/prudent/fittino/postProcessing/plots
+
+# Outputs of the plots
+plotOutputDir=/scratch/hh/dust/naf/atlas/user/prudent/postProcessing_2012/outputs/plots
 
 ######## Toys
 ###############################

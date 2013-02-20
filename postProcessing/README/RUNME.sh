@@ -38,6 +38,7 @@ echo "for each of these points we want to know the chi2, considering theoretical
 echo "and experimental constraints. The theoretical predictions being fixed,"
 echo "if the experimental constraints (called 'observables') are updated, then"
 echo "the chi2 needs to be recalculated for each point: this is the POST-PROCESSING."
+echo "I also added a part on how to draw the standard Fittino plots."
 echo
 echo -e "$RED" We have 18 sets of observables, numerated to 0 to 17: "$NORMAL"
 echo " [0] full observable set"
@@ -136,6 +137,9 @@ echo "      Removal of the buggy points using a contrast detection algorithm"
 echo
 echo -e "$RED" [ STEP 4 ] "$NORMAL"
 echo "      Creation of toys, where for each toy the observables are smeared around their values at the point of lowest chi2"
+echo
+echo -e "$RED" [ STEP 5 ] "$NORMAL"
+echo "      Creation of the standard Fittino plots"
 echo
 echo -e "$RED"  \>\>\> IMPORTANT "$NORMAL"
 echo "      Before all, you need to specify the links of input/output for the post-processing"
@@ -281,8 +285,29 @@ echo "       [5] Simple script to check whether your jobs created an output"
 echo -e "$RED" "> checkIfJobsSucceeded" "$NORMAL"
 echo
 echo "       [6] Extract for each toy the point of lowest chi2 and save all these minima in an ntuple with job_extract"
-
 echo -e "$BLUE" "======================================================================="  "$NORMAL"
+fi
+
+if [[ $step == 5 ]]
+then
+echo
+echo -e "$BLUE" "======================================================================="  "$NORMAL"
+echo "    STEP 5: Creation of the Fittino plots."
+echo -e "$BLUE" "======================================================================="  "$NORMAL"
+echo
+echo "       The standard Fittino plots of the 1-2 sigma contours for all the model parameters"
+echo "       show also the minimum chi2 position, pointed by a cross"
+echo
+echo "       Look into plots/"
+echo
+echo "       [1] Create the batch-job scripts for the plots"
+echo -e "$RED" "> makeJobsForMe 1" "$NORMAL"
+echo
+echo "       [2] Send all the batch-job scripts to batch"
+echo -e "$RED" "> makeJobsForMe 2" "$NORMAL"
+echo
+echo "       [3] The step 'makeJobsForMe 2' submit each batch-job script"
+echo -e "$RED" "> qsub job_toys" "$NORMAL"
 fi
 fi
 
