@@ -32,9 +32,9 @@ void ToyLHCChi2Provider::CreateChi2Histograms( float nmin, float nmax ) {
     vector<float> vObs(3,nObs);
     char histname[40];
     sprintf( histname, "chi2OffCorr_nObs_%i", (int)nObs );
-    TH2D *h = new TH2D( histname, histname, 10, -4500., 5500., 4, 5., 45. );
-    for( int binx = 1; binx <= 10; ++binx ) {
-      for( int biny = 1; biny <= 5; ++biny ) {
+    TH2D *h = new TH2D( histname, histname, 19, -4250., 5250., 7, 7.5, 42.5);
+    for( int binx = 1; binx <= 19; ++binx ) {
+      for( int biny = 1; biny <= 7; ++biny ) {
         h -> SetBinContent(binx, biny, GetChi2CorrectionFit( h->GetXaxis()->GetBinCenter(binx), h->GetYaxis()->GetBinCenter(biny), vObs, vExp, hCorr ) );
 			}
     }
@@ -74,23 +74,26 @@ float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, float A0,
 	if( M0 > 0. && M0 < 1200. ) return hChi2_M0_M12->Interpolate(M0,M12);
 	if( M0 > 2500. ) M0 = 2500.;
 	if( M12 > 1200. ) M12 = 1200.;
-	if( A0 > 5499. ) A0 = 5499.;
-  if( A0 < -4499. ) A0 = -4499.;
- 	if( tanb > 44.9) tanb = 44.9;
+	if( A0 > 5249. ) A0 = 5249.;
+  if( A0 < -4249. ) A0 = -4249.;
+ 	if( tanb > 42.4) tanb = 42.4;
 
 	float chi2_uncorr = hChi2_M0_M12->Interpolate(M0,M12);
 
 	int M0up_idx, M0down_idx;
 	vector<int> M0Values;
+	M0Values.push_back(680);
+	M0Values.push_back(860);
+	M0Values.push_back(1080);
 	M0Values.push_back(1200);
+	M0Values.push_back(1400);
 	M0Values.push_back(1500);
 	M0Values.push_back(1962);
 	M0Values.push_back(2500);
-	M0Values.push_back(4000);
 
-	if( M0 >= 4000. ) { M0up_idx = 4; M0down_idx = 4; }
+	if( M0 >= 2500. ) { M0up_idx = 7; M0down_idx = 7; }
 	else {
-		for( int h = 0; h < 4; ++h ) {
+		for( int h = 0; h < 7; ++h ) {
 			if( M0 >= M0Values[h] && M0 < M0Values[h+1] ) {
 				M0up_idx = h+1;
 				M0down_idx = h;
@@ -100,7 +103,8 @@ float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, float A0,
 	
 	double corrFacUp = v_Chi2_A0_tb[M0up_idx]->Interpolate(A0,tanb);
 	double corrFacDown = v_Chi2_A0_tb[M0down_idx]->Interpolate(A0,tanb);
-	double finalCorrectionFactor = corrFacDown + (corrFacUp-corrFacDown)/(M0Values[M0up_idx]-M0Values[M0down_idx]) * (M0-M0Values[M0down_idx]);
+	double finalCorrectionFactor = corrFacDown;
+	if( M0 < 2500. ) finalCorrectionFactor += (corrFacUp-corrFacDown)/(M0Values[M0up_idx]-M0Values[M0down_idx]) * (M0-M0Values[M0down_idx]);
 
 	float finalChi2Contribution = (1.+finalCorrectionFactor)*chi2_uncorr;
 
