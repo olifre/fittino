@@ -100,7 +100,7 @@ void setLHCchi2Tools( int PP_or_Toys, int randomSeed, bool verb, float bestFitM0
 
 
 float LHCchi2_fast( float M0, float M12, float A0, float TanBeta ){
-	return prov.GetChi2ContributionFix( M0, M12, A0, TanBeta, hChi2, vCorr );
+	return prov->GetChi2ContributionFix( M0, M12, A0, TanBeta, hChi2, vCorr );
 }
 
 float LHCchi2_fast_nocorr( float M0, float M12 ){
