@@ -12,20 +12,37 @@ ToyLHCChi2Provider* prov;
 TFile *fChi2;
 TH2D *hChi2;
 TH2D *hChi2_corr;
+vector<TH2D*> vCorr;
 
 // ===================================================================
 void setLHCchi2Tools( int PP_or_Toys, int randomSeed, bool verb, float bestFitM0, float bestFitM12, TString fit, int useObs ){
 
-	
+	 vector<int> M0Values;
+	 M0Values.push_back(680);
+	 M0Values.push_back(860);
+	 M0Values.push_back(1080);
+	 M0Values.push_back(1200);
+	 M0Values.push_back(1400);
+	 M0Values.push_back(1500);
+	 M0Values.push_back(1962);
+	 M0Values.push_back(2500);
+	 int nM0Values = M0Values.size();
+
+
    if( verb ) cout << "   > Set up LHC tools.." << endl;
 
    if( PP_or_Toys == 1 )
      {
        // ATLAS 0lepton analysis 5.8/fb, 8TeV
        if( useObs != 17 ){
-	 fChi2 = new TFile( "AllChi2Maps.root" );
-	 hChi2 = (TH2D*) fChi2->Get("h_chi2");
-	 hChi2_corr = (TH2D*) fChi2->Get("h_chi2_corr_offgrid");
+	 				fChi2 = new TFile( "AllChi2Maps.root" );
+					hChi2 = (TH2D*) fChi2->Get("h_chi2");
+	 				for( uint iM0 = 0; iM0 < nM0Values; ++iM0 ) {
+						char histname[30];
+						sprintf(histname, "h_chi2_corr_M0%i", M0Values[iM0]);
+						vCorr.push_back( (TH2D*)fChi2->Get(histname) );
+					}
+					hChi2_corr = (TH2D*) fChi2->Get("h_chi2_corr_offgrid");
        }
        // ATLAS 0lepton analysis 4.7/fb, 7TeV
        if( useObs == 17 ){
@@ -81,58 +98,12 @@ void setLHCchi2Tools( int PP_or_Toys, int randomSeed, bool verb, float bestFitM0
      return;
 }
 
-// ===================================================================
-// == Fonction to be called for each point of each toy
-// get the chi2 contribution for this toy at this point: M0 = m0 at the current point, M12 = m12 at the current point in the ntuple
-// nObs and nExp have been defined before!
-
-//float LHCchi2( float M0, float M12 ){
-//  return prov->GetChi2ContributionFit( M0, M12, nObs, nExp );
-//}
-
-// ===================================================================
-// == Fonction to be called for each point of each toy
-// get the chi2 contribution for this toy at this point: M0 = m0 at the current point, M12 = m12 at the current point in the ntuple
-// Idem as the function LHCchi2, but the chi2 is now taken from an histogram to speed up the procedure
-// A correction is applied to take the dependancy to A0 and TanBeta into account, the scaling factor is linear between 1200 and 1962 GeV then constant
 
 float LHCchi2_fast( float M0, float M12, float A0, float TanBeta ){
-
-  float myA0 = A0;
-  float myTanBeta = TanBeta;
-
-  // Without A0-TanBeta corrections
-  //return hChi2->Interpolate(M0,M12);  
-
-  // With A0-TanBeta corrections for M0 > 1200 GeV
-  if( M0 > 0. && M0 <= 1200. ) return hChi2->Interpolate( M0, M12 );
-  else{
-    if( A0 > 5499. ) myA0 = 5499.;
-    if( A0 < -4499. ) myA0 = -4499.;
-    if( TanBeta > 44.9) myTanBeta = 44.9;
-    float scaleFac = (M0 < 2000. ) ? ( M0 - 1200. ) / 762. : 1.;
-    float chi2_uncorr = hChi2->Interpolate( M0, M12 );
-    float chi2_correction = hChi2_corr->Interpolate( myA0, myTanBeta ); // the histogram hChi2_corr shows the DIFFERENCE in chi2: chi2(A0,tb)-chi2(0,10) !!!
-    return (chi2_uncorr + scaleFac*chi2_correction );
-  }
-
+	return prov.GetChi2ContributionFix( M0, M12, A0, TanBeta, hChi2, vCorr );
 }
-
-// ===================================================================
-// == Fonction to be called for each point of each toy
-// get the chi2 contribution for this toy at this point: M0 = m0 at the current point, M12 = m12 at the current point in the ntuple
-// Idem as the function LHCchi2, but the chi2 is now taken from an histogram to speed up the procedure
-// No correction to the A0-TanBeta dependancy is applied
 
 float LHCchi2_fast_nocorr( float M0, float M12 ){
-
-  // Without A0-TanBeta corrections
-  return hChi2->Interpolate(M0,M12);
-
+	return hChi2 -> Interpolate( M0, M12 );
 }
-
-
-
-
-
 #endif
