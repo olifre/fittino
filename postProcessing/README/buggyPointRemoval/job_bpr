@@ -7,11 +7,12 @@
 #$ -l h_vmem=1G
 #$-l site=hh 
 #$ -w e
-#$ -m ae -M $mymail
+##$ -m ae -M $mymail
 
+whereIsSetup=WHERE_IS_SETUP
+cp $whereIsSetup/setup.sh ./
+source setup.sh
 
-cp $whereIsSetup/setup.sh
-./setup.sh
 
 #----------------------------------
 # Name of the fit to post-process or to study with toys (Attention, no .root at the end)
@@ -41,15 +42,11 @@ export FILECUTS=$cut_directory/XXOBS/XXMODEL/Splines.root
 
 #-----------------------------------
 
-export ROOTSYS=/afs/naf.desy.de/products/root/amd64_rhel50/5.28.00
-export PATH=$ROOTSYS/bin:$PATH
-export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
 
 date
 echo " --- Script started"
 
 cd $TMP
-ini ROOT528
 
 echo " --- Copying input files and macros"
 
@@ -57,6 +54,9 @@ echo " --- Copying input files and macros"
 cp $working_directory/postProcessing.cc .
 cp $working_directory/postProcessing.h .
 cp $working_directory/compil .
+
+# libs
+cp $tools_directory/libToyLHCChi2Provider.so ./
 
 # Cleaning
 cp $working_directory/cleaning.h .

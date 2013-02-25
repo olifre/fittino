@@ -29,6 +29,7 @@ newJob=job_bpr\_$obs\_$model
 cp job_bpr $newJob
 sed -i s/XXMODEL/$model/g $newJob
 sed -i s/XXOBS/$obs/g $newJob
+sed -i s/WHERE_IS_SETUP/$whereIsSetupForSed/g $newJob
 mv $newJob $obs/
 
 done

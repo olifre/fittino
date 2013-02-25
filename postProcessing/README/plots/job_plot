@@ -10,7 +10,7 @@
 #$ -m ae -M $mymail
 
 #----------------------------------
-export ROOTSYS=/afs/naf.desy.de/products/root/amd64_rhel50/5.26.00
+export ROOTSYS=/afs/naf.desy.de/products/root/amd64_rhel50/5.34.00
 input_card1=$plotDir/XXOBS/XXMODEL/script_step1_XXOBS_XXMODEL
 input_card2=$plotDir/XXOBS/XXMODEL/script_step2_XXOBS_XXMODEL
 input_card3=$plotDir/XXOBS/XXMODEL/script_step3_XXOBS_XXMODEL
@@ -24,7 +24,7 @@ echo "Script started"
 date
 
 cd $TMP
-ini ROOT526
+ini ROOT534
 
 cp $fittinoPath/logo/fittinologoSPRING12.png .
 cp $plotDir/arrange.sh .

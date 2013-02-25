@@ -12,7 +12,7 @@ if [ ! -d "$1" ]; then
 fi
 
 if [ ! -d "doublePointsRemoved/$1" ]; then
-    mkdir doublePointsRemoved/$1
+    mkdir -p doublePointsRemoved/$1
 fi
 
 
@@ -53,7 +53,7 @@ input="\/scratch\/hh\/dust\/naf\/atlas\/user\/pbechtle\/fittino\/fittino.out.sum
 fi
 sed -i s/INPUT_DIR/$input/g $newJob
 sed -i s/XX/$1/g $newJob
-
+sed -i s/WHERE_IS_SETUP/$whereIsSetupForSed/g $newJob
 
 ### Prepar for a global run in batch
 echo "qsub $newJob" >> $batchAllJobs

@@ -63,6 +63,7 @@ sed -i s/XX/$1/g $newJob
 sed -i s/WHICH_OBS/$2/g $newJob
 sed -i s/HOUR/$HOUR/g $newJob
 sed -i s/MINUTE/$MINUTE/g $newJob
+sed -i s/WHERE_IS_SETUP/$whereIsSetupForSed/g $newJob
 
 echo "qsub $newJob" >> $batchAllJobs
 echo "rm $newJob.o*" >> $removeAll

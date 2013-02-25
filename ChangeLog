@@ -1,0 +1,35 @@
+
+2013-02-25 Bjoern <sarrazin@physik.uni-bonn.de>
+
+	* postprocessing/README/setup.sh
+	- define a scratchPath and fitinoPath at the top, make use of it later
+	- add whereIsSetupForSed variable
+	- setup ROOT
+	- setup gcc 432
+	- add current working dir to LD_LIBRARY_PATH
+
+	* postprocessing/compil
+	- use $fittinoPath instead of hard coded path
+	- use HS from the theorycodes directory
+	- include $fittinoPath/tools/GetToyLHCChi2/ProfileLikelihood/  as include directory
+
+	* skeleton scripts running on batch nodes
+	  (job_multiplePointsRemoval, job_postProcessing, job_bpr - to be continued):
+	- copy  $tools_directory/libToyLHCChi2Provider.so
+	- remove root setup
+	- use WHERE_IS_SETUP
+	- source setup.sh
+	- do not write mails
+
+	* makeJobsForMe
+	 (multiplepointsremoval, calculationChi2, buggyPointRemoval - to be continued)
+	- replace WHERE_IS_SETUP via sed in skeleton files
+
+	* job_multiplePointsRemoval
+	- instead of output_destination use output_MPR
+	- add missing XX 
+	- set input_file to $input_obs/fittino.in.point1.CMSSM.allObs.summer201
+
+	* multiplePointsRemoval/makeJobsForMe
+	- use  mkdir -p to create missing directories
+

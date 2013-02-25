@@ -39,7 +39,7 @@ export DATATOYS=0
 
 #-----------------------------------
 
-export ROOTSYS=/afs/naf.desy.de/products/root/amd64_rhel50/5.28.00
+export ROOTSYS=/afs/naf.desy.de/products/root/amd64_rhel50/5.34.00
 export PATH=$ROOTSYS/bin:$PATH
 export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
 
@@ -47,7 +47,7 @@ date
 echo " --- Script started"
 
 cd $TMP
-ini ROOT528
+ini ROOT534
 
 echo " --- Copying input files and macros"
 
