@@ -7,8 +7,8 @@
 # 3: remove all batch scripts
 ##############################
 
-for obs in {0..17}
-  do
+#for obs in {0..17}
+#  do
   echo ------ OBS $obs ------
   for fit in {3..13}
     do
@@ -29,4 +29,4 @@ for obs in {0..17}
 
     
   done
-done
+#done

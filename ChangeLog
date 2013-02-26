@@ -1,4 +1,12 @@
+2013-02-26 Bjoern <sarrazin@physik.uni-bonn.de>
+	
+	* postprocessing/README/setup.sh
+	- sub dirs for chi2 calculation
 
+	* postProcessing//multiplePointsRemoval/makeAllJobs
+	- remove loop over observables
+
+	
 2013-02-25 Bjoern <sarrazin@physik.uni-bonn.de>
 
 	* postprocessing/README/setup.sh

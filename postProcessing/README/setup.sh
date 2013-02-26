@@ -62,10 +62,10 @@ export job_directory_BPR=$scratchPath/jobs/jobs_for_buggyPointRemoval/
 ######## Chi2 calculation ###############################
 
 # Output of the chi2 calculation
-export output_CHI2=$scratchPath/outputs/ #???? #FIXME 
+export output_CHI2=$scratchPath/outputs/chi2/  
 
 # Where all the batch-job scripts for the chi2 calculation lie
-export job_directory_CHI2=$scratchPath/jobs/
+export job_directory_CHI2=$scratchPath/jobs/jobs_for_chi2
 
 # Fittino input file with the description of all observables
 export input_obs=$fittinoPath/inputs/summer2012/postProcessing
@@ -74,7 +74,7 @@ export input_obs=$fittinoPath/inputs/summer2012/postProcessing
 ######## Multiple point removal ###############################
 
 # Output of the multiple point removal
-export output_MPR=$scratchPath/jobs/jobs_for_multiplePointsRemoval/doublePointsRemoved/
+export output_MPR=$scratchPath/jobs/jobs_for_multiplePointsRemoval/doublePointsRemoved/  #FIXME - shouldn't this be in outputs ?
 
 # Where all the batch-job scripts for the multiple point removal lie
 export job_directory_MPR=$scratchPath/jobs/jobs_for_multiplePointsRemoval/
