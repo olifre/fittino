@@ -19,8 +19,7 @@ LEObs ( omega		)	0.1123		+- 0.0035	                +- 0.01123                   
 LEObs ( Massh0_npf	)	125.		+- 2.0		                +- 3.0 		                         alias  19 	# Reference: 
 LEObs ( MassW_npf	)	80.385		+- 0.015                        +- 0.010       	                         alias  8	# Reference: PDG 2012
 LEObs ( sin_th_eff_npf	)	0.23113		+- 0.00021                      		                         alias  9 	# Reference: PDG 2012
-#LEObs ( B_smm_npf	)   <	4.5E-9          +- 0.02E-9                      +- 0.76E-9                               alias  3       # Reference: arxiv:1203.4493 [hep-ex]
-LEObs ( B_smm_npf	)   	3.2E-9          +- 1.5E-9                       +- 0.76E-9                               alias  3       # Reference: arxiv:1211.2674 [hep-ex]
+LEObs ( B_smm_npf	)   <	4.5E-9          +- 0.02E-9                      +- 0.76E-9                               alias  3       # Reference: arxiv:1203.4493 [hep-ex]
 nofitLEObs ( BpD0taunu  )       0.332 +- 0.024 +- 0.018 alias 22222 # Reference: http://arxiv.org/abs/1205.5442
 
 

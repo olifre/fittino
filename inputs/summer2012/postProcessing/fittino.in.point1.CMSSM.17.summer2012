@@ -8,22 +8,37 @@
 #http://arxiv.org/abs/1204.4199
 
 # Name                          Value           Experimental uncertainties      Theory uncertainties   Add. Scanning Unc.
-LEObs ( Bsg_npf		)	3.55E-4		+- 0.24E-4	+- 0.09E-4 	+- 0.46E-4                               alias  1       # Reference: HFAG 2012 P. 203
-LEObs ( dm_s_npf	)	17.719		+- 0.043	                +- 4.2                                   alias  2       # Reference: HFAG 2012 P. 44
-# BaBar												                         
-# LEObs ( Btn_npf	)	1.8E-4		+- 0.5E-4       +- 0.2E-4      			                         alias  4	# Reference: arxiv:1207.0698 [hep-ex]
-# Belle												                         
-LEObs ( Btn_npf		)	0.72E-4		+- 0.27E-4      +- 0.11E-4  +- 0.07E-4 		      +- 1.0E-4          alias  4	# Reference: belle.kek.jp/belle/talks/ICHEP12/yook.pdf P. 16
+LEObs ( Bsg_npf		)	3.55E-4		+- 0.24E-4	+- 0.09E-4 	+- 0.23E-4                               alias  1       # Reference: HFAG 2012 P. 203
+LEObs ( dm_s_npf	)	17.78		+- 0.12	                +- 5.2                                   alias  2       # Reference: HFAG 2012 P. 44
+LEObs ( Btn_npf		)	1.67E-4		+- 0.39E-4      +- 0.0E-4  +- 0.0E-4 		      +- 1.0E-4          alias  4	# Reference: belle.kek.jp/belle/talks/ICHEP12/yook.pdf P. 16
 LEObs ( gmin2m_npf	)	28.7E-10	+- 8.0E-10	                +- 2.0E-10                               alias  7 	# Reference: CERN-OPEN-2010-021
-LEObs ( omega		)	0.1123		+- 0.0035	                +- 0.01123                               alias  20 	# Reference: arxiv:1001.4538 [astro-ph.CO] 
-LEObs ( Massh0_npf	)	125.		+- 2.0		                +- 3.0 		                         alias  19 	# Reference: 
-LEObs ( MassW_npf	)	80.385		+- 0.015                        +- 0.010       	                         alias  8	# Reference: PDG 2012
+LEObs ( omega		)	0.1123		+- 0.0035	                +- 0.0123                               alias  20 	# Reference: arxiv:1001.4538 [astro-ph.CO] 
+LEObs ( Massh0_npf	) > 114.4		+- 3.0		    		                         alias  19 	# Reference: 
+LEObs ( MassW_npf	)	80.399		+- 0.023                        +- 0.010       	                         alias  8	# Reference: PDG 2012
 LEObs ( sin_th_eff_npf	)	0.23113		+- 0.00021                      		                         alias  9 	# Reference: PDG 2012
-#LEObs ( B_smm_npf	)   <	4.5E-9          +- 0.02E-9                      +- 0.76E-9                               alias  3       # Reference: arxiv:1203.4493 [hep-ex]
-LEObs ( B_smm_npf	)   	3.2E-9          +- 1.5E-9                       +- 0.76E-9                               alias  3       # Reference: arxiv:1211.2674 [hep-ex]
-nofitLEObs ( BpD0taunu  )       0.332 +- 0.024 +- 0.018 alias 22222 # Reference: http://arxiv.org/abs/1205.5442
+LEObs ( B_smm_npf	)   <	 1.6E-8                      +- 0.02E-8                              alias  3       # Reference: arxiv:1203.4493 [hep-ex]
+
+## Previous paper
+#LEObs ( Bsg_npf        )      3.55E-4  +-  0.24E-4  +-  0.09E-4 +- 0.23E-4       alias 1 
+#LEObs ( dm_s_npf       )      17.78  +-  0.12  +- 5.2                 alias  2 
+#LEObs ( Btn_npf        )      1.67E-4  +-  0.39E-4                    alias  4
+#LEObs ( gmin2m_npf     )     28.7E-10 +- 8.0E-10  +- 2.0E-10           alias  7 
+#LEObs ( omega      )    0.1123  +- 0.0035  +-  0.0123                       alias 20 
+#LEObs ( Massh0_npf     ) >  114.4                         +- 3.0      alias 19 
+#LEObs ( MassW_npf      )     80.399   +- 0.023        +-  0.010                alias  8
+#LEObs ( sin_th_eff_npf )      0.23113  +- 0.00021                      alias  9 
+#LEObs ( B_smm_npf      ) <    1.6E-8                      +- 0.02E-8  alias  3 # LHCb http://indico.in2p3.fr/getFile.py/access?contribId=1029&sessionId=2&resId=0&materialId=slides&confId=5116
 
 
+### SM observables
+#alphaem      128.962        +- 0.014          # http://arxiv.org/abs/1010.4180, p.11
+#G_F          1.16637E-5     +- 0.00001E-5     # [6]
+#alphas       0.1176     GeV +- 0.0020     GeV # [6]
+#massZ       91.1876     GeV +- 0.0021     GeV # [6]
+#massBottom   4.19       GeV +- 0.19       GeV # [6]
+#massTop    173.2        GeV +- 1.34        GeV # [6]
+#massTau      1.77682    GeV +- 0.00016    GeV # [6]
+#massCharm    1.27       GeV +- 0.11       GeV # [6]
 
 
 
@@ -31,7 +46,6 @@ nofitLEObs ( BpD0taunu  )       0.332 +- 0.024 +- 0.018 alias 22222 # Reference:
 ### SM observables
 
 massTop		173.5      	GeV 	+- 1.00		GeV 	# PDG 2012
-
 alphaem		128.952		GeV	+- 0.014	     	# http://arxiv.org/abs/1010.4180, p.11
 alphas		0.1184		GeV	+- 0.0007	GeV  	# PDG 2011
 massZ		91.1876		GeV	+- 0.0021	GeV  	# PDG 2011

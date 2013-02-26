@@ -1,10 +1,13 @@
 2013-02-26 Bjoern <sarrazin@physik.uni-bonn.de>
 	
-	* postprocessing/README/setup.sh
+	* postProcessing/README/setup.sh
 	- sub dirs for chi2 calculation
 
-	* postProcessing//multiplePointsRemoval/makeAllJobs
+	* postProcessing/multiplePointsRemoval/makeAllJobs
 	- remove loop over observables
+
+	* inputs/summer2012/postProcessing/
+	- add missing input files
 
 	
 2013-02-25 Bjoern <sarrazin@physik.uni-bonn.de>
@@ -36,7 +39,7 @@
 	* job_multiplePointsRemoval
 	- instead of output_destination use output_MPR
 	- add missing XX 
-	- set input_file to $input_obs/fittino.in.point1.CMSSM.allObs.summer201
+	- set input_file to $input_obs/fittino.in.point1.CMSSM.allObs.summer2012
 
 	* multiplePointsRemoval/makeJobsForMe
 	- use  mkdir -p to create missing directories
