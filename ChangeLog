@@ -2,13 +2,13 @@
 	
 	* postProcessing/README/setup.sh
 	- sub dirs for chi2 calculation
-	- set VERBOSE here (removed from batch scripts)
+	- set VERBOSE here (removed from batch scripts - to be continued)
 
 	* postProcessing/multiplePointsRemoval/makeAllJobs
 	- remove loop over observables
 
 	* postProcessing/calculateChi2/makeAllJobs
-	- create job_directory_CHI2 if not exits and cd to it
+	- create job_directory_CHI2 if not exits, cd to it and cp needed stuff (to be continued with other makeAllJobs scripts)
 
 	* postProcessing/calculateChi2/job_postProcessing
 	- create output dir before trying to copy the file
