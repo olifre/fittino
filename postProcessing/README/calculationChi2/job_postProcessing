@@ -38,10 +38,6 @@ export DATATOYS=1
 # export NB_SEGMENT=100
 # export PP_SEGMENT=YY
 
-# Do you want a 500GB file with all information (1=yes,0=no)?
-export VERBOSE=0
-
-
 #-----------------------------------
 
 date
@@ -95,7 +91,12 @@ echo " --- Running the macro"
 
 echo ""
 echo " --- Copying output files"
-rm *_cleaned.root
+#rm *_cleaned.root
+
+if [ ! -d "$output_destination" ]; then
+    mkdir -p  $output_destination
+fi
+
 cp $fit*.root $output_destination
 
 echo " --- Script finished"

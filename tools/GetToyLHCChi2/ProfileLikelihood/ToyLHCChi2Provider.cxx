@@ -70,7 +70,6 @@ float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, TH2D* hCh
 
 float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, float A0, float tanb, TH2D *hChi2_M0_M12, vector<TH2D*> v_Chi2_A0_tb ) {
 
-
 	if( M0 > 0. && M0 < 1200. ) return hChi2_M0_M12->Interpolate(M0,M12);
 	if( M0 > 2500. ) M0 = 2500.;
 	if( M12 > 1200. ) M12 = 1200.;
@@ -101,7 +100,10 @@ float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, float A0,
 		}
 	}
 	
+
+
 	double corrFacUp = v_Chi2_A0_tb[M0up_idx]->Interpolate(A0,tanb);
+
 	double corrFacDown = v_Chi2_A0_tb[M0down_idx]->Interpolate(A0,tanb);
 	double finalCorrectionFactor = corrFacDown;
 	if( M0 < 2500. ) finalCorrectionFactor += (corrFacUp-corrFacDown)/(M0Values[M0up_idx]-M0Values[M0down_idx]) * (M0-M0Values[M0down_idx]);
@@ -115,6 +117,7 @@ float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, float A0,
 	
 	float finalChi2Contribution = chi2_uncorr+scaleFac*chi2_correction;
 	*/
+
 	return (finalChi2Contribution > 0.) ? finalChi2Contribution : 0.;
 
 }

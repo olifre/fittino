@@ -30,9 +30,6 @@ export STEP=0
 # Post-processing (1) or toy study (0)
 export DATATOYS=1
 
-# Do you want a 500GB file with all information (1=yes,0=no)?
-export VERBOSE=0
-
 input_file=$input_obs/fittino.in.point1.CMSSM.allObs.summer2012 #FIXME
 
 #-----------------------------------

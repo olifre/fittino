@@ -1162,6 +1162,7 @@ float paper2012( bool verbose ){
 // == and spot the point of minimal chi2
 void calculateChi2( int PP_or_Toys ){
 
+
   if( PP_or_Toys == 1 ) cout << EMR << endl << " >>> Post-processing.." << FIN << endl;
   if( PP_or_Toys == 0 ) cout << EMR << endl << " >>> Simulating a toy " << FIN << endl;    
   if( PP_or_Toys == 2 ) cout << EMR << endl << " >>> Testing the toy at the best fit point" << FIN << endl;    
@@ -1177,6 +1178,7 @@ void calculateChi2( int PP_or_Toys ){
   else if( useObs == 3 ) maxChi2 = 20;
   else if( useObs == 4 ) maxChi2 = 26;
   else maxChi2 = 50;
+
 
   // Set up the LHC tool and smear the number of observed events for toys
   if( useObs != 4 ) setLHCchi2Tools( PP_or_Toys, randomSeed, verbose, bestFitPar[0], bestFitPar[1], fit, useObs );
@@ -1326,9 +1328,40 @@ void calculateChi2( int PP_or_Toys ){
 	  // New chi2 for LHC
 	  // Including the A0-TanBeta corrections
 	  if( useObs != 4 && useObs != 16 ){
-	    if( P_M0 > 0 && P_M12 > 100 && P_M0 < 2500 && P_M12 < 1200 ) LHC_chi2 = LHCchi2_fast( P_M0, P_M12, P_A0, P_TanBeta );
-	    else if( P_M12 > 1200 && P_M0 < 2500 ) LHC_chi2 = LHCchi2_fast( P_M0, 1190, P_A0, P_TanBeta );
-	    else if( P_M0 > 2500 && P_M12 < 1200 ) LHC_chi2  = LHCchi2_fast( 2490, P_M12, P_A0, P_TanBeta );      
+	    if( P_M0 > 0 && P_M12 > 100 && P_M0 < 2500 && P_M12 < 1200 ){
+
+	      if (verbose){
+		cout<<"Calc LHC chi2 fast 1"<<endl;
+	      }
+
+	      LHC_chi2 = LHCchi2_fast( P_M0, P_M12, P_A0, P_TanBeta );
+	      if (verbose){
+		cout<<"finished Calc LHC chi2 fast 1"<<endl;
+	      }
+	    }
+
+	    else if( P_M12 > 1200 && P_M0 < 2500 ){
+	      if (verbose){
+		cout<<"Calc LHC chi2 fast 2"<<endl;
+	      }
+	      LHC_chi2 = LHCchi2_fast( P_M0, 1190, P_A0, P_TanBeta );
+
+	      if (verbose){
+		cout<<"finished Calc LHC chi2 fast 2"<<endl;
+	      }
+
+
+	    }
+	    else if( P_M0 > 2500 && P_M12 < 1200 ){ 
+	      if (verbose){
+		cout<<"Calc LHC chi2 fast 3"<<endl;
+	      }
+
+	      LHC_chi2  = LHCchi2_fast( 2490, P_M12, P_A0, P_TanBeta );      
+	      if (verbose){
+		cout<<"finished Calc LHC chi2 fast 3"<<endl;
+	      }
+	    }
 	    else LHC_chi2 = 1000;
 	    if( verbose ) cout << "       LHC: " << LHC_chi2 << endl;      
 	  }
@@ -1495,6 +1528,9 @@ void readBestFitPoint(){
 // == PP_or_Toys = true-> postProcessing, wrong-> simulated toys
 void processData( bool PP_or_Toys ){
 
+  if (verbose){
+    cout<<"Begin of processData"<<endl;
+  }
   // Post-processing
   if( PP_or_Toys == 1 ) calculateChi2( PP_or_Toys );
 

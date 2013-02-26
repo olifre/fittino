@@ -11,7 +11,6 @@ ToyLHCChi2Provider* prov;
 
 TFile *fChi2;
 TH2D *hChi2;
-TH2D *hChi2_corr;
 vector<TH2D*> vCorr;
 
 // ===================================================================
@@ -39,10 +38,9 @@ void setLHCchi2Tools( int PP_or_Toys, int randomSeed, bool verb, float bestFitM0
 					hChi2 = (TH2D*) fChi2->Get("h_chi2");
 	 				for( uint iM0 = 0; iM0 < nM0Values; ++iM0 ) {
 						char histname[30];
-						sprintf(histname, "h_chi2_corr_M0%i", M0Values[iM0]);
+						sprintf(histname, "h_chi2_corr_offgrid_M0%i", M0Values[iM0]);
 						vCorr.push_back( (TH2D*)fChi2->Get(histname) );
 					}
-					hChi2_corr = (TH2D*) fChi2->Get("h_chi2_corr_offgrid");
        }
        // ATLAS 0lepton analysis 4.7/fb, 7TeV
        if( useObs == 17 ){
@@ -100,7 +98,18 @@ void setLHCchi2Tools( int PP_or_Toys, int randomSeed, bool verb, float bestFitM0
 
 
 float LHCchi2_fast( float M0, float M12, float A0, float TanBeta ){
-	return prov->GetChi2ContributionFix( M0, M12, A0, TanBeta, hChi2, vCorr );
+  
+  if (hChi2==0){
+
+    cout<<"hChi2 is NULL"<<endl;
+
+  }
+
+  if (vCorr.size()>0 && vCorr[0]==0){
+    cout<<"vCorr[0] is NULL"<<endl;
+  }
+  return prov->GetChi2ContributionFix( M0, M12, A0, TanBeta, hChi2, vCorr );
+  
 }
 
 float LHCchi2_fast_nocorr( float M0, float M12 ){

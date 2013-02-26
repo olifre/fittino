@@ -2,13 +2,24 @@
 	
 	* postProcessing/README/setup.sh
 	- sub dirs for chi2 calculation
+	- set VERBOSE here (removed from batch scripts)
 
 	* postProcessing/multiplePointsRemoval/makeAllJobs
 	- remove loop over observables
 
+	* postProcessing/calculateChi2/makeAllJobs
+	- create job_directory_CHI2 if not exits and cd to it
+
+	* postProcessing/calculateChi2/job_postProcessing
+	- create output dir before trying to copy the file
+	
 	* inputs/summer2012/postProcessing/
 	- add missing input files
 
+	* postProcessing/LHC.h
+	- get histo h_chi2_corr_offgrid_M0 instead of h_chi2_corr_M0 from root file
+	- remove unused hChi2_corr 
+	
 	
 2013-02-25 Bjoern <sarrazin@physik.uni-bonn.de>
 

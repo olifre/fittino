@@ -17,12 +17,14 @@ export whereIsSetupForSed="\/afs\/naf.desy.de\/user\/s\/sarrazin\/sarrazin\/Fitt
 
 #Matthias
 
+################### VERBOSITY ################################
+
+export VERBOSE=0 
 
 ######################## ROOT ##########################
 export ROOTSYS=/afs/naf.desy.de/products/root/amd64_rhel50/5.34.00
 export PATH=$ROOTSYS/bin:$PATH
-export LD_LIBRARY_PATH=$ROOTSYS/lib
-
+export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
 
 ####################### gcc and working dir ################
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./:/afs/naf.desy.de/group/atlas/software/lcg/external/gcc/4.3.2/lib64/
@@ -44,7 +46,7 @@ export plotOutputDir=$scratchPath/outputs/plots
 export output_TOYS=$scratchPath/outputs/toys/
 
 # Where all the batch-job scripts for the toys
-export job_directory_TOYS=$scratchPath/jobs/jobs_for_toys/  # move to scratch
+export job_directory_TOYS=$scratchPath/jobs/jobs_for_toys/  # moved to scratch
 
 
 ######## Buggy point removal ###############################
