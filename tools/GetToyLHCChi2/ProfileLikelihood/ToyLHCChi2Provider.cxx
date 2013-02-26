@@ -70,12 +70,13 @@ float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, TH2D* hCh
 
 float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, float A0, float tanb, TH2D *hChi2_M0_M12, vector<TH2D*> v_Chi2_A0_tb ) {
 
-	if( M0 > 0. && M0 < 1200. ) return hChi2_M0_M12->Interpolate(M0,M12);
 	if( M0 > 2500. ) M0 = 2500.;
 	if( M12 > 1200. ) M12 = 1200.;
+	if( M0 > 0. && M0 < 1200. ) return hChi2_M0_M12->Interpolate(M0,M12);
 	if( A0 > 5249. ) A0 = 5249.;
   if( A0 < -4249. ) A0 = -4249.;
- 	if( tanb > 42.4) tanb = 42.4;
+ 	if( tanb < 7.51 ) tanb = 7.51;
+	if( tanb > 42.4) tanb = 42.4;
 
 	float chi2_uncorr = hChi2_M0_M12->Interpolate(M0,M12);
 
