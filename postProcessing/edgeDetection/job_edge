@@ -1,0 +1,62 @@
+#!/usr/bin/env zsh
+#$ -j y
+##$ -l os=sld5
+#$ -cwd
+#$ -P atlas
+#$ -l h_cpu=00:30:00 
+#$ -l h_vmem=2G
+#$-l site=hh 
+#$ -w e
+##$ -m ae -M prudent@physik.tu-dresden.de
+
+whereIsSetup=WHERE_IS_SETUP
+cp $whereIsSetup/setup.sh ./
+source setup.sh
+
+
+io=$fittinoPath/postProcessing/edgeDetection/
+
+
+date
+echo " --- Script started"
+
+cd $TMP
+
+
+echo " --- Copying input files and macros"
+
+cp $io/EdgeDetection.C .
+cp $io/EdgeDetection.h .
+cp $io/ChainBuilder.C .
+cp $io/EdgeDetectionAlgorithm.C .
+cp $io/edgeChain .
+cp $io/edgeScript .
+
+sed -i s/XXMINCHI2/VAR1/g EdgeDetection.C
+sed -i s/XXMAXCHI2/VAR2/g EdgeDetectionAlgorithm.C EdgeDetection.C
+sed -i s/XXINPUT/VAR3/g ChainBuilder.C
+sed -i s/XXOBS/VAR4/g ChainBuilder.C
+sed -i s/THEMODEL/VAR5/g EdgeDetection.h
+sed -i s/XXMAXA0/VAR6/ EdgeDetection.C
+sed -i s/XXMINA0/VAR7/ EdgeDetection.C
+sed -i s/XXMAXM0/VAR8/ EdgeDetection.C
+sed -i s/XXMINM0/VAR9/ EdgeDetection.C
+sed -i s/XXMAXM12/VAR10/ EdgeDetection.C
+sed -i s/XXMINM12/VAR11/ EdgeDetection.C
+sed -i s/XXMAXTANBETA/VAR12/ EdgeDetection.C
+sed -i s/XXMINTANBETA/VAR13/ EdgeDetection.C
+sed -i s/XXMAXMASSTOP/VAR14/ EdgeDetection.C
+sed -i s/XXMINMASSTOP/VAR15/ EdgeDetection.C
+
+
+
+chmod u+x edgeScript
+./edgeScript
+
+gzip *eps
+cp Splines.root Res* $io/VAR4/VAR3
+
+#cp Splines.root Res* $scratchPath/io/VAR4/VAR3
+
+echo " --- Script finished"
+date

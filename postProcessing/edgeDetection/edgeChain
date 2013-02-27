@@ -1,0 +1,5 @@
+.X ChainBuilder.C
+chain.Process("EdgeDetection.C")
+.L EdgeDetectionAlgorithm.C+ 
+EdgeDetectionAlgorithm()
+.q

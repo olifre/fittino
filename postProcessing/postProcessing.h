@@ -1344,7 +1344,7 @@ void calculateChi2( int PP_or_Toys ){
 	      if (verbose){
 		cout<<"Calc LHC chi2 fast 2"<<endl;
 	      }
-	      LHC_chi2 = LHCchi2_fast( P_M0, 1190, P_A0, P_TanBeta );
+	      LHC_chi2 = LHCchi2_fast( P_M0, 1200, P_A0, P_TanBeta );
 
 	      if (verbose){
 		cout<<"finished Calc LHC chi2 fast 2"<<endl;
@@ -1357,7 +1357,7 @@ void calculateChi2( int PP_or_Toys ){
 		cout<<"Calc LHC chi2 fast 3"<<endl;
 	      }
 
-	      LHC_chi2  = LHCchi2_fast( 2490, P_M12, P_A0, P_TanBeta );      
+	      LHC_chi2  = LHCchi2_fast( 2500, P_M12, P_A0, P_TanBeta );      
 	      if (verbose){
 		cout<<"finished Calc LHC chi2 fast 3"<<endl;
 	      }
@@ -1368,8 +1368,8 @@ void calculateChi2( int PP_or_Toys ){
 	  // Not including the A0-TanBeta corrections
 	  if( useObs == 16 ){
 	    if( P_M0 > 0 && P_M12 > 100 && P_M0 < 2500 && P_M12 < 1200 ) LHC_chi2 = LHCchi2_fast_nocorr( P_M0, P_M12 );
-	    else if( P_M12 > 1200 && P_M0 < 2500 ) LHC_chi2 = LHCchi2_fast_nocorr( P_M0, 1190 );
-	    else if( P_M0 > 2500 && P_M12 < 1200 ) LHC_chi2  = LHCchi2_fast_nocorr( 2490, P_M12 );
+	    else if( P_M12 > 1200 && P_M0 < 2500 ) LHC_chi2 = LHCchi2_fast_nocorr( P_M0, 1200 );
+	    else if( P_M0 > 2500 && P_M12 < 1200 ) LHC_chi2  = LHCchi2_fast_nocorr( 2500, P_M12 );
 	    else LHC_chi2 = 1000;
 	    if( verbose ) cout << "       LHC: " << LHC_chi2 << endl;
 	  }
