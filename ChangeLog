@@ -4,6 +4,9 @@
 	- add missing scripts edgeChain, edgeScript, job_edge, makeJobForMe
 
 	* postProcessing/postProcessing.h
+	- check for chi2 = nan
+
+	* postProcessing/postProcessing.h
 	- use 1200 and 2500 instead of 1190 and 2490 for M0 and M12 if out of grid
 
 

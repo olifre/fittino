@@ -1396,7 +1396,22 @@ void calculateChi2( int PP_or_Toys ){
 	      
 	      fillHiggsMassCouplings( O_Massh0_npf );
 	      
+	      if( verbose ){
+		cout << "using higgs couplings:"<<endl;
+		for (int iH=0; iH<22;iH++){
+		  std::cout<<"HiggsMassCouplings["<<iH<<"]="<<HiggsMassCouplings[iH]<<std::endl;
+		}
+	      }
+
+	      if( verbose ) cout << "       Start getting higgs chi2 " << af_chi2 << endl;	      
 	      getHiggsChi2( HiggsMassCouplings, Higgs_chi2, mu_chi2, mh_chi2 );
+	      if( verbose ) cout << "       Finished getting higgs chi2 " << af_chi2 << endl;	      
+
+	      if (!(Higgs_chi2<=0) && !(Higgs_chi2>0)){
+		cout << "Higgs_chi2=" <<Higgs_chi2<<", setting it to 10000."<<endl;	      
+		Higgs_chi2=10000;
+	      }
+
 	      getHiggsRatios( R_H_WW, R_H_ZZ, R_H_gaga, R_H_tautau, R_H_bb, R_VH_bb );
 	      for( int iChannel = 0; iChannel < 26; iChannel++ ) predmu[iChannel] = getHiggsMu( iChannel+1 );
 	      
@@ -1463,6 +1478,13 @@ void calculateChi2( int PP_or_Toys ){
       if( useObs == 15 ) chi2 = globalHiggsChi2 + LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
       if( useObs == 16 ) chi2 = globalHiggsChi2 + LEO_chi2 + LHC_chi2 + Higgs_chi2 + af_chi2;
       if( useObs == 17 ) chi2 = globalHiggsChi2 + paper2012( verbose );
+
+
+      if (!(chi2<=0) && !(chi2>0)){
+	cout << "chi2=" <<chi2<<", setting it to 10000."<<endl;	      
+	chi2=10000;
+      }
+      
 
       if( verbose ) cout << "    - Total chi2 " << chi2 << endl;
 
