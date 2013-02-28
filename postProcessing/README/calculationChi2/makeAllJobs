@@ -8,8 +8,8 @@
 ##############################
 
 
-#for obs in {0..17}
-for obs in 17
+for obs in {0..17}
+
   do
   echo ------ OBS $obs ------
   for fit in {3..13}
