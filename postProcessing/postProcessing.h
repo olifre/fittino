@@ -10,6 +10,7 @@
 #include "TH2.h"
 #include "TCutG.h"
 #include "TKey.h"
+#include "TSystem.h"
 
 #include <iostream>
 #include <string>
@@ -304,14 +305,28 @@ void initialize( TString arg1, TString arg2, TString arg3, int PP_or_Toys, int s
   else if( fit.Contains("NUHM2") ) model = "NUHM2";
   else model = "CMSSM";
 
-  // For the fits 3 to 6, use only the CMSSM mode
-  if( !inputDir.Contains("jobs_for_multiplePointsRemoval/doublePointsRemoved/7/") &&
-      !inputDir.Contains("jobs_for_multiplePointsRemoval/doublePointsRemoved/8/") &&
-      !inputDir.Contains("jobs_for_multiplePointsRemoval/doublePointsRemoved/9/") &&
-      !inputDir.Contains("jobs_for_multiplePointsRemoval/doublePointsRemoved/10/") &&
-      !inputDir.Contains("jobs_for_multiplePointsRemoval/doublePointsRemoved/11/") &&
-      !inputDir.Contains("jobs_for_multiplePointsRemoval/doublePointsRemoved/12/") &&
-      !inputDir.Contains("jobs_for_multiplePointsRemoval/doublePointsRemoved/13/") ) model = "CMSSM";
+  TString out_MPR("$output_MPR");
+  gSystem->ExpandPathName(out_MPR);
+
+
+  /*   // For the fits 3 to 6, use only the CMSSM mode */
+  if ( 
+      inputDir.Contains(out_MPR+"/3") || inputDir.Contains(out_MPR+"//3") ||
+      inputDir.Contains(out_MPR+"/4") || inputDir.Contains(out_MPR+"//4") ||
+      inputDir.Contains(out_MPR+"/5") || inputDir.Contains(out_MPR+"//5") ||
+      inputDir.Contains(out_MPR+"/6") || inputDir.Contains(out_MPR+"//6") 
+      ){ model = "CMSSM"; }
+  
+  
+  
+/*   // For the fits 3 to 6, use only the CMSSM mode */
+/*   if( !inputDir.Contains("jobs_for_multiplePointsRemoval/doublePointsRemoved/7/") && */
+/*       !inputDir.Contains("jobs_for_multiplePointsRemoval/doublePointsRemoved/8/") && */
+/*       !inputDir.Contains("jobs_for_multiplePointsRemoval/doublePointsRemoved/9/") && */
+/*       !inputDir.Contains("jobs_for_multiplePointsRemoval/doublePointsRemoved/10/") && */
+/*       !inputDir.Contains("jobs_for_multiplePointsRemoval/doublePointsRemoved/11/") && */
+/*       !inputDir.Contains("jobs_for_multiplePointsRemoval/doublePointsRemoved/12/") && */
+/*       !inputDir.Contains("jobs_for_multiplePointsRemoval/doublePointsRemoved/13/") ) model = "CMSSM"; */
 
   if( PP_or_Toys == 0 && step == 1 ) randomSeed = atoi( getenv("RANDOM_SEED") );
   //if(step == 1 ){
@@ -1349,7 +1364,8 @@ void calculateChi2( int PP_or_Toys ){
 	      if (verbose){
 		cout<<"Calc LHC chi2 fast 2"<<endl;
 	      }
-	      LHC_chi2 = LHCchi2_fast( P_M0, 1200, P_A0, P_TanBeta );
+	      //	      LHC_chi2 = LHCchi2_fast( P_M0, 1200, P_A0, P_TanBeta );
+	      LHC_chi2 = 0;
 
 	      if (verbose){
 		cout<<"finished Calc LHC chi2 fast 2"<<endl;
@@ -1367,15 +1383,18 @@ void calculateChi2( int PP_or_Toys ){
 		cout<<"finished Calc LHC chi2 fast 3"<<endl;
 	      }
 	    }
-	    else LHC_chi2 = 1000;
+	    //	    else LHC_chi2 = 1000;
+	    else LHC_chi2 = 0;
 	    if( verbose ) cout << "       LHC: " << LHC_chi2 << endl;      
 	  }
 	  // Not including the A0-TanBeta corrections
 	  if( useObs == 16 ){
 	    if( P_M0 > 0 && P_M12 > 100 && P_M0 < 2500 && P_M12 < 1200 ) LHC_chi2 = LHCchi2_fast_nocorr( P_M0, P_M12 );
-	    else if( P_M12 > 1200 && P_M0 < 2500 ) LHC_chi2 = LHCchi2_fast_nocorr( P_M0, 1200 );
+	    //	    else if( P_M12 > 1200 && P_M0 < 2500 ) LHC_chi2 = LHCchi2_fast_nocorr( P_M0, 1200 );
+	    else if( P_M12 > 1200 && P_M0 < 2500 ) LHC_chi2 = 0;
 	    else if( P_M0 > 2500 && P_M12 < 1200 ) LHC_chi2  = LHCchi2_fast_nocorr( 2500, P_M12 );
-	    else LHC_chi2 = 1000;
+	    //	    else LHC_chi2 = 1000;
+	    else LHC_chi2 = 0;
 	    if( verbose ) cout << "       LHC: " << LHC_chi2 << endl;
 	  }
 	  if( LHC_chi2 < 0 ){

@@ -5,8 +5,8 @@
 ################################
 
 #Bjoern
-export fittinoPath=/afs/naf.desy.de/user/s/sarrazin/sarrazin/FittinoTrunk/
-export scratchPath=/scratch/hh/dust/naf/atlas/user/sarrazin/postProcessing_2012/
+export fittinoPath=/afs/naf.desy.de/user/s/sarrazin/sarrazin/FittinoTrunk
+export scratchPath=/scratch/hh/dust/naf/atlas/user/sarrazin/postProcessing_2012
 export whereIsSetupForSed="\/afs\/naf.desy.de\/user\/s\/sarrazin\/sarrazin\/FittinoTrunk\/postProcessing\/README"
 
 #Philip
@@ -27,7 +27,7 @@ export PATH=$ROOTSYS/bin:$PATH
 export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
 
 ####################### gcc and working dir ################
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./:/afs/naf.desy.de/group/atlas/software/lcg/external/gcc/4.3.2/lib64/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./:/afs/naf.desy.de/group/atlas/software/lcg/external/gcc/4.3.2/lib64
 
 ######## Position of the setup file ###############################
 export whereIsSetup=$fittinoPath/postProcessing/README
@@ -43,17 +43,17 @@ export plotOutputDir=$scratchPath/outputs/plots
 ######## Toys ###############################
 
 # output of the toys
-export output_TOYS=$scratchPath/outputs/toys/
+export output_TOYS=$scratchPath/outputs/toys
 
 # Where all the batch-job scripts for the toys
-export job_directory_TOYS=$scratchPath/jobs/jobs_for_toys/  
+export job_directory_TOYS=$scratchPath/jobs/jobs_for_toys  
 
 ######## Splines creation ###############################
 
 export job_directory_SPLINES=$scratchPath/jobs/jobs_for_splines
 
 # Where the splines lie
-export cut_directory=$scratchPath/outputs/splines/ # cut be called output_SPLINES
+export cut_directory=$scratchPath/outputs/splines # cut be called output_SPLINES
 
 ######## MERGING ###############################
 
@@ -64,17 +64,17 @@ export job_directory_MERGE=$scratchPath/jobs/jobs_for_merge
 ######## Buggy point removal ###############################
 
 # output of the buggy point removal
-export output_BPR=$scratchPath/outputs/final/
+export output_BPR=$scratchPath/outputs/final
 
 
 # Where all the batch-job scripts for the buggy point removal
-export job_directory_BPR=$scratchPath/jobs/jobs_for_buggyPointRemoval/
+export job_directory_BPR=$scratchPath/jobs/jobs_for_buggyPointRemoval
 
 
 ######## Chi2 calculation ###############################
 
 # Output of the chi2 calculation
-export output_CHI2=$scratchPath/outputs/chi2/  
+export output_CHI2=$scratchPath/outputs/chi2  
 
 # Where all the batch-job scripts for the chi2 calculation lie
 export job_directory_CHI2=$scratchPath/jobs/jobs_for_chi2
@@ -86,10 +86,10 @@ export input_obs=$fittinoPath/inputs/summer2012/postProcessing
 ######## Multiple point removal ###############################
 
 # Output of the multiple point removal
-export output_MPR=$scratchPath/jobs/jobs_for_multiplePointsRemoval/doublePointsRemoved/  #FIXME - shouldn't this be in outputs ?
+export output_MPR=$scratchPath/jobs/jobs_for_multiplePointsRemoval/doublePointsRemoved  #FIXME - shouldn't this be in outputs ?
 
 # Where all the batch-job scripts for the multiple point removal lie
-export job_directory_MPR=$scratchPath/jobs/jobs_for_multiplePointsRemoval/
+export job_directory_MPR=$scratchPath/jobs/jobs_for_multiplePointsRemoval
 
 
 ######## Links to tools ###############################
@@ -101,5 +101,5 @@ export directory_listFits=$fittinoPath/postProcessing/README/listOfFits
 export working_directory=$fittinoPath/postProcessing
 
 # Where to retrieve the LHC chi2 tools from
-export tools_directory=$fittinoPath/tools/GetToyLHCChi2/ProfileLikelihood/
+export tools_directory=$fittinoPath/tools/GetToyLHCChi2/ProfileLikelihood
 

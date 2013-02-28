@@ -3,6 +3,10 @@
 	* postProcessing
 	- add scripts for merging (merge.sh, submitMergeJobs.sh)
 
+	* postProcessing/postProcessing.h
+	- use $output_MPR insetad of hard coded path
+	- set LHC chi2 to 0 instead of 1000 outside the grid
+
 	* postProcessing/README/setup.sh
 	- add job_directory_SPLINES
 	- add job_directory_MERGE
