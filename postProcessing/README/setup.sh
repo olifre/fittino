@@ -35,7 +35,7 @@ export whereIsSetup=$fittinoPath/postProcessing/README
 ######## Plots ###############################
 
 # Where the batch jobs for the plots are
-export plotDir=$scratchPath/jobs/plots  #moved to scratch 
+export plotDir=$scratchPath/jobs/plots  
 
 # Outputs of the plots
 export plotOutputDir=$scratchPath/outputs/plots
@@ -46,16 +46,20 @@ export plotOutputDir=$scratchPath/outputs/plots
 export output_TOYS=$scratchPath/outputs/toys/
 
 # Where all the batch-job scripts for the toys
-export job_directory_TOYS=$scratchPath/jobs/jobs_for_toys/  # moved to scratch
+export job_directory_TOYS=$scratchPath/jobs/jobs_for_toys/  
 
+######## Splines creation ###############################
+
+export job_directory_SPLINES=$scratchPath/jobs/jobs_for_splines
+
+# Where the splines lie
+export cut_directory=$scratchPath/outputs/splines/ # cut be called output_SPLINES
 
 ######## Buggy point removal ###############################
 
 # output of the buggy point removal
 export output_BPR=$scratchPath/outputs/final/
 
-# Where the splines lie
-export cut_directory=$fittinoPath/edgeDetection/
 
 # Where all the batch-job scripts for the buggy point removal
 export job_directory_BPR=$scratchPath/jobs/jobs_for_buggyPointRemoval/

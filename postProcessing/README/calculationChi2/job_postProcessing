@@ -67,6 +67,7 @@ cp $tools_directory/ToyLHCChi2Provider.h .
 cp $tools_directory/signalGrids.root .
 cp $working_directory/LHC.h .
 cp $tools_directory/AllChi2Maps.root .
+cp $tools_directory/data/LHCChi2Histogram_2011_7TeV_4.7ifb.root .
 
 # Astrofit
 cp $working_directory/astrofit.h .

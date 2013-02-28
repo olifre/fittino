@@ -54,9 +54,16 @@ chmod u+x edgeScript
 ./edgeScript
 
 gzip *eps
-cp Splines.root Res* $io/VAR4/VAR3
 
-#cp Splines.root Res* $scratchPath/io/VAR4/VAR3
+output_dest=$cut_directory/VAR4/VAR3
+
+if [ ! -d "$output_dest" ]; then
+    mkdir -p $output_dest
+fi
+
+
+cp Splines.root Res* $output_dest
+
 
 echo " --- Script finished"
 date
