@@ -1129,11 +1129,16 @@ float paper2012( bool verbose ){
    LEO_chi2 = sin_th_eff_chi2 + gmin2_chi2 + Btn_chi2 + dm_s_chi2 + B_smm_chi2 + MassW_chi2 + Bsg_chi2 + omega_chi2;   
 
    // Calculating the LHC chi2 for 4.7/fb at 7TeV (0lepton search at ATLAS)
-   if( P_M0 > 20 && P_M12 > 100 && P_M0 < 2500 && P_M12 < 1200 ) LHC_chi2 = hChi2->Interpolate( P_M0, P_M12 );
-   else if( P_M0 > 2500 ) LHC_chi2 = hChi2->Interpolate( 2500, P_M12 );
+
+
+   if( P_M0 > 20 && P_M12 > 100 && P_M0 < 3500 && P_M12 < 800 ) LHC_chi2 = hChi2->Interpolate( P_M0, P_M12 );
+   else if( P_M0 >= 3500 && P_M12<800 ) LHC_chi2 = hChi2->Interpolate( 3499, P_M12 );
    else LHC_chi2 = 0;
    if( LHC_chi2 < 0 ) LHC_chi2 = 0;
 
+   
+
+   
    // Calculating the Astrofit chi2 for XENON100
    af_chi2 = astrofitChi2( O_massNeutralino1_nofit, af_direct, false );
 

@@ -1,10 +1,17 @@
 2013-02-28 Bjoern <sarrazin@physik.uni-bonn.de>
 
+	* postProcessing
+	- add scripts for merging (merge.sh, submitMergeJobs.sh)
+
 	* postProcessing/README/setup.sh
 	- add job_directory_SPLINES
+	- add job_directory_MERGE
 
 	* postProcessing/README/calculationChi2/job_postProcessing
 	- copy 2011 LHC histo
+
+	* postProcessing/README/postProcessing.h
+	- M12_max=800GeV  in case of LHC 2011 histo
 
 
 2013-02-27 Bjoern <sarrazin@physik.uni-bonn.de>

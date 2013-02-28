@@ -55,6 +55,12 @@ export job_directory_SPLINES=$scratchPath/jobs/jobs_for_splines
 # Where the splines lie
 export cut_directory=$scratchPath/outputs/splines/ # cut be called output_SPLINES
 
+######## MERGING ###############################
+
+export job_directory_MERGE=$scratchPath/jobs/jobs_for_merge
+
+
+
 ######## Buggy point removal ###############################
 
 # output of the buggy point removal
