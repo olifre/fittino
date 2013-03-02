@@ -4,38 +4,53 @@
 ##$ -l os=sld5
 #$ -cwd
 #$ -P atlas
-#$ -l h_cpu=06:00:00 
+#$ -l h_cpu=12:00:00 
 #$-l site=hh 
 #$ -w e
-#$ -m ae -M $mymail
+##$ -m ae -M $mymail
 
-#----------------------------------
-export ROOTSYS=/afs/naf.desy.de/products/root/amd64_rhel50/5.34.00
-input_card1=$plotDir/XXOBS/XXMODEL/script_step1_XXOBS_XXMODEL
-input_card2=$plotDir/XXOBS/XXMODEL/script_step2_XXOBS_XXMODEL
-input_card3=$plotDir/XXOBS/XXMODEL/script_step3_XXOBS_XXMODEL
-output_destination=$plotOutputDir/XXOBS/XXMODEL/
-#-----------------------------------
 
-export PATH=$ROOTSYS/bin:$PATH
-export LD_LIBRARY_PATH=$ROOTSYS/lib:$LD_LIBRARY_PATH
+whereIsSetup=WHERE_IS_SETUP
+cp $whereIsSetup/setup.sh ./
+source setup.sh
+
+
+input_card1=$job_directory_PLOTS/XXOBS/XXMODEL/script_step1_XXOBS_XXMODEL
+input_card2=$job_directory_PLOTS/XXOBS/XXMODEL/script_step2_XXOBS_XXMODEL
+input_card3=$job_directory_PLOTS/XXOBS/XXMODEL/script_step3_XXOBS_XXMODEL
+
+output_destination=$output_PLOTS/XXOBS/XXMODEL/
 
 echo "Script started"
 date
 
 cd $TMP
-ini ROOT534
 
 cp $fittinoPath/logo/fittinologoSPRING12.png .
-cp $plotDir/arrange.sh .
+cp $working_directory/README/plots/arrange.sh .
 chmod u+x arrange.sh
 
+echo "Starting script 1"
+
 root -l -b < $input_card1
+
+echo "Starting script 2"
+
 root -l -b < $input_card2
+
+echo "Starting script 3"
+
 root -l -b < $input_card3
 
 echo "Content..."
 ls
+
+
+if [ ! -d $output_destination ]
+    then
+    mkdir -p $output_destination
+fi
+
 
 echo "Copying output files to $output_destination"
 cp * $output_destination

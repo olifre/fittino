@@ -30,7 +30,7 @@
 #include "TStyle.h"
 #include "TSystem.h"
 
-void EdgeDetectionAlgorithm()
+void EdgeDetectionAlgorithm(bool drawSpline=true)
 {
     // Setup parameters:
     // Name of the input file.
@@ -42,7 +42,10 @@ void EdgeDetectionAlgorithm()
     // Number of edge cleaning iterations. The edge detection algorithm is applied iteratively on
     // the image of the edge found in the previous step in order to remove outliers. If this number
     // is set to 0, the edge finding algorithm is not applied at all.
-    const UInt_t numberOfCleaningSteps = 3;
+
+    //    const UInt_t numberOfCleaningSteps = 3;
+    const UInt_t numberOfCleaningSteps = 5;
+
     // Maximal value of the chi2 in the input file.
     const Double_t chi2Max = XXMAXCHI2;
     //const Double_t chi2Max = 60.;HS
@@ -218,7 +221,9 @@ void EdgeDetectionAlgorithm()
             spline.SetNpx(1000);
             
             histImageOriginal->Draw("COL");
-            spline.Draw("SAME");
+
+	    if (drawSpline)
+	      spline.Draw("SAME");
 
             canvas->SaveAs("Result" + (TString)histImageOriginal->GetName() + ".eps", "RECREATE");
             canvas->SaveAs("Result" + (TString)histImageOriginal->GetName() + ".jpg", "RECREATE");

@@ -3,8 +3,8 @@
 ##$ -l os=sld5
 #$ -cwd
 #$ -P atlas
-#$ -l h_cpu=00:30:00 
-#$ -l h_vmem=1G
+#$ -l h_cpu=12:00:00 
+#$ -l h_vmem=2G
 #$-l site=hh 
 #$ -w e
 ##$ -m ae -M $mymail
@@ -90,6 +90,12 @@ chmod u+x compil
 
 echo " --- Running the macro"
 ./postProcessing $fit $input_directory $output_destination
+
+
+if [ ! -d "$output_destination" ]; then
+    mkdir -p $output_destination
+fi
+
 
 echo ""
 echo " --- Copying output files"

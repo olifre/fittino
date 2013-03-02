@@ -27,15 +27,15 @@ echo " --- Copying input files and macros"
 
 cp $io/EdgeDetection.C .
 cp $io/EdgeDetection.h .
-cp $io/ChainBuilder.C .
+cp $io/ChainBuilder2.C .
 cp $io/EdgeDetectionAlgorithm.C .
-cp $io/edgeChain .
-cp $io/edgeScript .
+cp $io/edgeChain2 .
+cp $io/edgeScript2 .
 
 sed -i s/XXMINCHI2/VAR1/g EdgeDetection.C
 sed -i s/XXMAXCHI2/VAR2/g EdgeDetectionAlgorithm.C EdgeDetection.C
-sed -i s/XXINPUT/VAR3/g ChainBuilder.C
-sed -i s/XXOBS/VAR4/g ChainBuilder.C
+sed -i s/XXINPUT/VAR3/g ChainBuilder2.C
+sed -i s/XXOBS/VAR4/g ChainBuilder2.C
 sed -i s/THEMODEL/VAR5/g EdgeDetection.h
 sed -i s/XXMAXA0/VAR6/ EdgeDetection.C
 sed -i s/XXMINA0/VAR7/ EdgeDetection.C
@@ -50,12 +50,12 @@ sed -i s/XXMINMASSTOP/VAR15/ EdgeDetection.C
 
 
 
-chmod u+x edgeScript
-./edgeScript
+chmod u+x edgeScript2
+./edgeScript2
 
 #gzip *eps
 
-output_dest=$cut_directory/VAR4/VAR3
+output_dest=$output_PLOTS1D/VAR4/VAR3
 
 if [ ! -d "$output_dest" ]; then
     mkdir -p $output_dest

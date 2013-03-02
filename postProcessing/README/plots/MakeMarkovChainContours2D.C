@@ -56,7 +56,7 @@ void MakeMarkovChainContours2D (bool bayes = false,
   bool doublelogplot = false;
 
   TChain markovChain("markovChain");
-  markovChain.Add( link + "/XXOBS/XXMODEL_final.root" );
+  markovChain.Add( (link + "/XXOBS/XXMODEL_final.root").c_str() );
 
   markovChain.Print();
 
@@ -140,6 +140,7 @@ void MakeMarkovChainContours2D (bool bayes = false,
     variables.push_back("P_M12");
     variables.push_back("P_M0H");
     variables.push_back("P_M0");
+    variables.push_back("P_massTop");
   }
   else if( model == "NUHM2" ){
     variables.push_back("P_TanBeta");
@@ -148,6 +149,7 @@ void MakeMarkovChainContours2D (bool bayes = false,
     variables.push_back("P_M0");
     variables.push_back("P_M0Hu");
     variables.push_back("P_M0Hd");
+    variables.push_back("P_massTop");
   }
   else {
     cout << "unknown model " << model << endl;

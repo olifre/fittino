@@ -1,6 +1,14 @@
 {
-    TChain chain("markovChain");
-    chain.Add("/scratch/hh/dust/naf/atlas/user/sarrazin/postProcessing_2012/outputs/chi2/XXOBS/XXINPUT.root");
 
-    //    chain.Add("/scratch/hh/dust/naf/atlas/user/sarrazin/postProcessing_2012/outputs/chi2/4/3/fittino.out.point1.CMSSM.allObs.Summer2012_merged.root");
+  
+  TString out_CHI2("$output_CHI2");
+  gSystem->ExpandPathName(out_CHI2);
+
+  TChain chain("markovChain");
+  chain.Add((out_CHI2+"/XXOBS/XXINPUT.root").Data());
+  
+
+
+
+
 }

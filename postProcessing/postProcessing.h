@@ -1360,7 +1360,7 @@ void calculateChi2( int PP_or_Toys ){
 	      }
 	    }
 
-	    else if( P_M12 > 1200 && P_M0 < 2500 ){
+	    else if( P_M12 >= 1200 && P_M0 < 2500 ){
 	      if (verbose){
 		cout<<"Calc LHC chi2 fast 2"<<endl;
 	      }
@@ -1373,7 +1373,7 @@ void calculateChi2( int PP_or_Toys ){
 
 
 	    }
-	    else if( P_M0 > 2500 && P_M12 < 1200 ){ 
+	    else if( P_M0 >= 2500 && P_M12 < 1200 ){ 
 	      if (verbose){
 		cout<<"Calc LHC chi2 fast 3"<<endl;
 	      }

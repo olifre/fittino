@@ -1,3 +1,31 @@
+2013-03-02 Bjoern <sarrazin@physik.uni-bonn.de>
+
+	* postProcessing/README/setup.sh
+	 add further paths with escaped backlashes needed for sed
+
+	* postProcessing/edgeDetection/Chainbuilder
+	- use $output_CHI2 instead of hard coded path
+
+	* postProcessing/edgeDetection/makeLatexFile.sh
+	- added for creating of latex file including all edgeDetection plots
+
+	* postProcessing/edgeDetection/EdgeDetectionAlgorithm.C
+	- increase iterations to 5 (to be checked)
+
+	* postProcessing/edgeDetection/makeJobsForMe
+	- add chi2 limits 
+
+	* postProcessing/edgeDetection/
+	- added makeLatexFile
+	- added plotting scripts for 1D
+	
+	* postProcessing/README/plots/script_step1 
+	- add missing quotation marks around output destination
+
+	* postProcessing/README/plots/MakeMarkovChainContours2D.C
+	- convert file name from string to char
+	
+
 2013-02-28 Bjoern <sarrazin@physik.uni-bonn.de>
 
 	* postProcessing

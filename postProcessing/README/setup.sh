@@ -7,6 +7,7 @@
 #Bjoern
 export fittinoPath=/afs/naf.desy.de/user/s/sarrazin/sarrazin/FittinoTrunk
 export scratchPath=/scratch/hh/dust/naf/atlas/user/sarrazin/postProcessing_2012
+export scratchPathForSed="\/scratch\/hh\/dust\/naf\/atlas\/user\/sarrazin\/postProcessing_2012"
 export whereIsSetupForSed="\/afs\/naf.desy.de\/user\/s\/sarrazin\/sarrazin\/FittinoTrunk\/postProcessing\/README"
 
 #Philip
@@ -34,11 +35,14 @@ export whereIsSetup=$fittinoPath/postProcessing/README
 
 ######## Plots ###############################
 
-# Where the batch jobs for the plots are
-export plotDir=$scratchPath/jobs/plots  
 
-# Outputs of the plots
-export plotOutputDir=$scratchPath/outputs/plots
+export job_directory_PLOTS=$scratchPath/jobs/plots  #was plotDir
+export job_directoryForSed_PLOTS="$scratchPathForSed\/jobs\/plots"
+
+export job_directory_PLOTS1D=$scratchPath/jobs/plots1d
+
+export output_PLOTS=$scratchPath/outputs/plots # was plotOutputDir
+export output_PLOTS1D=$scratchPath/outputs/plots1d # was plotOutputDir
 
 ######## Toys ###############################
 
@@ -65,6 +69,7 @@ export job_directory_MERGE=$scratchPath/jobs/jobs_for_merge
 
 # output of the buggy point removal
 export output_BPR=$scratchPath/outputs/final
+export outputForSed_BPR="$scratchPathForSed\/outputs\/final"
 
 
 # Where all the batch-job scripts for the buggy point removal

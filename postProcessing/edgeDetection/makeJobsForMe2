@@ -12,20 +12,20 @@
 if [[ $1 == 1 ]]
     then
 
-    if [ ! -d "$job_directory_SPLINES" ]; then
-	mkdir -p  $job_directory_SPLINES
+    if [ ! -d "$job_directory_PLOTS1D" ]; then
+	mkdir -p  $job_directory_PLOTS1D
     fi
 
-    cd $job_directory_SPLINES
+    cd $job_directory_PLOTS1D
 
 
-    cp $working_directory/edgeDetection/ChainBuilder.C .
-    cp $working_directory/edgeDetection/edgeChain .
+    cp $working_directory/edgeDetection/ChainBuilder2.C .
+    cp $working_directory/edgeDetection/edgeChain2 .
     cp $working_directory/edgeDetection/EdgeDetectionAlgorithm.C .
     cp $working_directory/edgeDetection/EdgeDetection.C .
     cp $working_directory/edgeDetection/EdgeDetection.h .
-    cp $working_directory/edgeDetection/edgeScript .
-    cp $working_directory/edgeDetection/job_edge .
+    cp $working_directory/edgeDetection/edgeScript2 .
+    cp $working_directory/edgeDetection/job_edge2 .
 
 #######################################################
 # For each set of observables
@@ -177,7 +177,7 @@ if [[ $1 == 1 ]]
 	    fi
 
 	    newJob=job_edge\_$obs\_$model
-	    cp job_edge $newJob
+	    cp job_edge2 $newJob
 
 
 	    sed -i s/VAR10/$maxM12/g $newJob
@@ -212,7 +212,7 @@ fi
 
 if [[ $1 == 2 ]]
     then
-    cd $job_directory_SPLINES
+    cd $job_directory_PLOTS1D
 
 #############
 # Observables
@@ -229,7 +229,7 @@ if [[ $1 == 2 ]]
 # mkdir $fittinoPath/postProcessing/edgeDetection/$obs/
 # fi
 
-	cd $job_directory_SPLINES/$obs/
+	cd $job_directory_PLOTS1D/$obs/
 	qsub $newJob
       done
     done
