@@ -29,18 +29,19 @@
 #include "fstream"
 #include "string"
 #include "vector"
+#include <iomanip>
 
 using namespace std;
 
 // void PlotMarkovChains2D (bool bayes = true, int maxevents = -1);
 
 void MakeMarkovChainContours2D (bool bayes = false, 
-			       int maxevents = -1,
-			       string contourOutputFileName = "markovHists.root",
-			       bool doAlsoSM = false,
-			       string model = "CMSSM",
-			       bool requireNeut1LSP = true,
-				int fixComb = 3, string link = "" ) 
+				int maxevents = -1,
+				string contourOutputFileName = "markovHists.root",
+				bool doAlsoSM = false,
+				string model = "CMSSM",
+				bool requireNeut1LSP = true,
+				int fixComb = -1, string link = "" ) 
 {
 
   //gROOT->SetStyle("MyStyle");
@@ -57,6 +58,9 @@ void MakeMarkovChainContours2D (bool bayes = false,
 
   TChain markovChain("markovChain");
   markovChain.Add( (link + "/XXOBS/XXMODEL_final.root").c_str() );
+  //  markovChain.Add("/scratch/hh/dust/naf/atlas/user/sarrazin/postProcessing_2012/outputs/final/0/CMSSM_final.root" );
+
+  
 
   markovChain.Print();
 
@@ -65,6 +69,7 @@ void MakeMarkovChainContours2D (bool bayes = false,
   //  markovFitsFile.open ("markovFitsResults.txt",ofstream::out);
 
   int nEntries = markovChain.GetEntries();
+  
   if ( maxevents >= 0 ) {
     if (nEntries > maxevents) nEntries = maxevents;
   }
@@ -165,6 +170,36 @@ void MakeMarkovChainContours2D (bool bayes = false,
     variables.push_back("P_G_F");    
   }
 
+  std::vector<std::string> variableNames;
+
+  if (model == "CMSSM") {
+    variableNames.push_back("\\tan\\beta");
+    variableNames.push_back("M_{1/2} (GeV)");
+    variableNames.push_back("M_{0} (GeV)");
+    variableNames.push_back("A_{0} (GeV)");
+    variableNames.push_back("m_{t} (GeV)");
+  } 
+  else if( model == "NUHM1" ){
+    variableNames.push_back("\\tan\\beta");
+    variableNames.push_back("M_{1/2} (GeV)");
+    variableNames.push_back("M_{0} (GeV)");
+    variableNames.push_back("A_{0} (GeV)");
+    variableNames.push_back("M_{0,H} (GeV)");
+    variableNames.push_back("m_{t} (GeV)");
+  }
+  else if( model == "NUHM2" ){
+    variableNames.push_back("\\tan\\beta");
+    variableNames.push_back("A_{0} (GeV)");
+    variableNames.push_back("M_{1/2} (GeV)");
+    variableNames.push_back("M_{0} (GeV)");
+    variableNames.push_back("M_{0,Hu} (GeV)");
+    variableNames.push_back("M_{0,Hd} (GeV)");
+    variableNames.push_back("m_{t} (GeV)");
+  }
+
+
+
+
   // create and initialize variables
   vector<float> varValues;
   for (unsigned int i = 0; i < variables.size(); i++) {
@@ -176,6 +211,12 @@ void MakeMarkovChainContours2D (bool bayes = false,
   float chi2;
 
   vector<bool> varThere;
+
+  double bestFitPoints[variables.size()];
+  double lowerUncertainties[variables.size()];
+  double upperUncertainties[variables.size()];
+  double bestFitChi2 = -1;
+    
 
 
   // look if all the branches are there
@@ -557,27 +598,42 @@ void MakeMarkovChainContours2D (bool bayes = false,
 		   << " at min chi2 = " 
 		   << minChi2
 		   << endl;
-	      markovFitsFile << "One Dimensional 1 sigma environment of " << variables[fVariable] 
-			     << " = "
-			     << fBestFit
-			     << " - "
-			     << fBestFit - f1sigmaLowerBound
-			     << " + "
-			     << f1sigmaUpperBound - fBestFit
-			     << " at min chi2 = " 
-			     << minChi2
-			     << endl;
-	      markovFitsFile << "One Dimensional 1 sigma environment of " << variables[sVariable] 
-			     << " = "
-			     << sBestFit
-			     << " - "
-			     << sBestFit - s1sigmaLowerBound
-			     << " + "
-			     << s1sigmaUpperBound - sBestFit
-			     << " at min chi2 = " 
-			     << minChi2
-			     << endl;
+// 	      markovFitsFile << "One Dimensional 1 sigma environment of " << variables[fVariable] 
+// 			     << " = "
+// 			     << fBestFit
+// 			     << " - "
+// 			     << fBestFit - f1sigmaLowerBound
+// 			     << " + "
+// 			     << f1sigmaUpperBound - fBestFit
+// 			     << " at min chi2 = " 
+// 			     << minChi2
+// 			     << endl;
+// 	      markovFitsFile << "One Dimensional 1 sigma environment of " << variables[sVariable] 
+// 			     << " = "
+// 			     << sBestFit
+// 			     << " - "
+// 			     << sBestFit - s1sigmaLowerBound
+// 			     << " + "
+// 			     << s1sigmaUpperBound - sBestFit
+// 			     << " at min chi2 = " 
+// 			     << minChi2
+// 			     << endl;
+
+	      if (sVariable==variables.size()-1){
+	      bestFitPoints[fVariable]      = fBestFit;
+	      lowerUncertainties[fVariable] = fBestFit - f1sigmaLowerBound;
+	      upperUncertainties[fVariable] = f1sigmaUpperBound - fBestFit;
+	      bestFitChi2                   = minChi2;
+
+	      bestFitPoints[sVariable]      = sBestFit;
+	      lowerUncertainties[sVariable] = sBestFit - s1sigmaLowerBound;
+	      upperUncertainties[sVariable] = s1sigmaUpperBound - sBestFit;
+
+
+	      }
+
 	      
+
 	      cout << "One Dimensional 1 sigma environment from 2Dres of " << variables[fVariable] 
 		   << " = "
 		   << fBestFit
@@ -598,26 +654,26 @@ void MakeMarkovChainContours2D (bool bayes = false,
 		   << " at min chi2 = " 
 		   << minChi2
 		   << endl;
-	      markovFitsFile << "One Dimensional 1 sigma environment from 2Dres of " << variables[fVariable] 
-			     << " = "
-			     << fBestFit
-			     << " - "
-			     << (fBestFit - f2sigmaLowerBound)/2.
-			     << " + "
-			     << (f2sigmaUpperBound - fBestFit)/2.
-			     << " at min chi2 = " 
-			     << minChi2
-			     << endl;
-	      markovFitsFile << "One Dimensional 1 sigma environment from 2Dres of " << variables[sVariable] 
-			     << " = "
-			     << sBestFit
-			     << " - "
-			     << (sBestFit - s2sigmaLowerBound)/2.
-			     << " + "
-			     << (s2sigmaUpperBound - sBestFit)/2.
-			     << " at min chi2 = " 
-			     << minChi2
-			     << endl;
+// 	      markovFitsFile << "One Dimensional 1 sigma environment from 2Dres of " << variables[fVariable] 
+// 			     << " = "
+// 			     << fBestFit
+// 			     << " - "
+// 			     << (fBestFit - f2sigmaLowerBound)/2.
+// 			     << " + "
+// 			     << (f2sigmaUpperBound - fBestFit)/2.
+// 			     << " at min chi2 = " 
+// 			     << minChi2
+// 			     << endl;
+// 	      markovFitsFile << "One Dimensional 1 sigma environment from 2Dres of " << variables[sVariable] 
+// 			     << " = "
+// 			     << sBestFit
+// 			     << " - "
+// 			     << (sBestFit - s2sigmaLowerBound)/2.
+// 			     << " + "
+// 			     << (s2sigmaUpperBound - sBestFit)/2.
+// 			     << " at min chi2 = " 
+// 			     << minChi2
+// 			     << endl;
 	      
 	  
 	      if (variables[fVariable]=="P_TanBeta") {
@@ -1133,6 +1189,27 @@ void MakeMarkovChainContours2D (bool bayes = false,
 	}
     }
     
+  string cList;
+  for (int iVar = 0; iVar < variables.size(); iVar++) {
+    cList += "c"; 
+  }
+  markovFitsFile << endl;
+  markovFitsFile << "\\begin{tabular}{l" << cList << "c}" << endl;
+  markovFitsFile << "\\hline\\hline" << endl;
+  markovFitsFile << "  & " ;
+  for (int iVar = 0; iVar < variables.size(); iVar++) {
+    markovFitsFile <<"$"<< variableNames[iVar] << "$ & " ;
+  }
+  markovFitsFile << " $\\chi^2_{min}$ \\\\" << endl;
+  markovFitsFile << "\\hline" << endl;
+  markovFitsFile << " & " << endl;
+  for (int iVar = 0; iVar < variables.size(); iVar++) {
+    markovFitsFile << std::fixed << std::setprecision(1) << " $" << bestFitPoints[iVar] << "^{+" << upperUncertainties[iVar] << "}_{-" << lowerUncertainties[iVar] << "}$ & "  ;
+  }
+  markovFitsFile <<  std::fixed << std::setprecision(1) << bestFitChi2 << " \\\\" << endl;
+  markovFitsFile << "\\hline\\hline" << endl;
+  markovFitsFile << "\\end{tabular}"<< endl;
+
   contourOutputFile->Close();
   markovFitsFile.close();
 
