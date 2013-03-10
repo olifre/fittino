@@ -48,6 +48,7 @@ namespace Fittino {
       double                 _previousChi2;
       double                 _previousLikelihood;
       double                 _previousRho;
+      std::vector<double>    _previousParameterValues;
 
     private:
       virtual void           PrintSteeringParameters() const;

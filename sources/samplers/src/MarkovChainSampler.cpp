@@ -23,14 +23,24 @@
 
 #include "MarkovChainSampler.h"
 #include "ModelBase.h"
+#include "ModelCalculatorException.h"
 
 Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model )
         : SamplerBase( model ),
           _previousChi2( 1.e99 ),
-          _previousLikelihood( 0. ),
+          //_previousChi2( model->Evaluate() ),
+          _previousLikelihood( 1.e-99 ),
+          //_previousLikelihood( TMath::Exp( -1. * _previousChi2 / 2. ) ),
+          _previousParameterValues( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
           _previousRho( 1. ) {
 
     _name = "Markov chain parameter sampler";
+
+    for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+
+        _previousParameterValues.at( k ) = _model->GetParameterVector()->at( k )->GetValue();
+
+    }
 
 }
 
@@ -40,61 +50,94 @@ Fittino::MarkovChainSampler::~MarkovChainSampler() {
 
 void Fittino::MarkovChainSampler::PrintSteeringParameters() const {
 
-    std::cout << "    Markov chain sampler parameter" << std::endl;
-
 }
 
 void Fittino::MarkovChainSampler::UpdateModel() {
 
-    // Calclate chi2.
+    //try {
 
-    double chi2 = _model->Evaluate();
+        this->FillStatus();
 
-    // Calculate likelihood.
+        // Update model.
 
-    double likelihood = TMath::Exp( -chi2 / 2. );
+        for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-    // Decide whether point shall be accepted.
+            _model->SetParameterVector()->at( k )->SetValue( _model->GetParameterVector()->at( k )->GetValue() + _randomGenerator.Gaus( 0., _model->GetParameterVector()->at( k )->GetError() ) );
 
-    bool pointAccepted = false;
-    double rho = 0.;
+        }
 
-    if ( _previousLikelihood > 0. ) {
+        // Calclate chi2.
 
-        rho = likelihood / _previousLikelihood;
+        double chi2 = _model->Evaluate();
 
-    }
+        // Calculate likelihood.
 
-    if ( rho > 1. ) {
+        double likelihood = TMath::Exp( -1. * chi2 / 2. );
 
-        pointAccepted = true;
+        // Decide whether point shall be accepted.
 
-    }
-    else {
+        bool pointAccepted = false;
+        double rho = 0.;
 
-        double randomThreshold = _randomGenerator.Uniform( 0., 1. );
-        if ( rho > randomThreshold ) {
+        if ( _previousLikelihood > 0. ) {
+
+            rho = likelihood / _previousLikelihood;
+
+        }
+
+        if ( rho > 1. ) {
 
             pointAccepted = true;
 
         }
+        else {
 
-    }
+            double randomThreshold = _randomGenerator.Uniform( 0., 1. );
+            if ( rho > randomThreshold ) {
 
-    if ( pointAccepted ) {
+                pointAccepted = true;
 
-        _previousRho        = rho;
-        _previousChi2       = chi2;
-        _previousLikelihood = likelihood;
+            }
 
-    }
+        }
 
-    // Update model.
+        if ( pointAccepted ) {
 
-    for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+            _previousRho        = rho;
+            _previousChi2       = chi2;
+            _previousLikelihood = likelihood;
+            for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-        ( *_model->SetParameterVector() )[k].SetValue( ( _model->GetParameterVector() )[k].GetValue() + _randomGenerator.Gaus( 0., 1. ) );
+                _previousParameterValues.at( k ) = _model->GetParameterVector()->at( k )->GetValue();
 
-    }
+            }
+
+        }
+        else {
+
+            // Reset the parameter values.
+
+            for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+
+                _model->SetParameterVector()->at( k )->SetValue( _previousParameterValues.at( k ) );
+
+            }
+
+        }
+
+    //}
+    //catch ( const ModelCalculatorException& modelCalculatorException ) {
+
+    //    std::cout << "\n" << modelCalculatorException.what() << "\n" << std::endl;
+    //
+    //    // Reset the parameter values.
+
+    //    for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+
+    //        _model->SetParameterVector()->at( k )->SetValue( _previousParameterValues.at( k ) );
+
+    //    }
+    //
+    //}
 
 }
