@@ -29,12 +29,12 @@
 #include "ModelBase.h"
 #include "Particle.h"
 
-double Fittino::Particle::_globalBestChi2 = 1e99;
+double Fittino::Particle::_globalBestChi2 = 1.e99;
 
 Fittino::Particle::Particle( double c1, double c2, Fittino::ModelBase* model, int seed )
         : _c1( c1 ),
           _c2( c2 ),
-          _personalBestChi2( 1e99 ),
+          _personalBestChi2( 1.e99 ),
           _randomGenerator( new TRandom() ),
           _model( model ) {
 
@@ -50,7 +50,6 @@ Fittino::Particle::Particle( double c1, double c2, Fittino::ModelBase* model, in
 
     }
 
-
     _globalBestModel = model->Clone();
     _personalBestModel = model->Clone();
 
@@ -62,14 +61,14 @@ Fittino::Particle::~Particle() {
 
 void Fittino::Particle::UpdateVelocity() {
 
-    double randomNumber1 = _randomGenerator->Uniform( 0, 1 );
-    double randomNumber2 = _randomGenerator->Uniform( 0, 1 );
+    double randomNumber1 = _randomGenerator->Uniform( 0., 1. );
+    double randomNumber2 = _randomGenerator->Uniform( 0., 1. );
 
     for ( unsigned int i = 0; i < _velocity.size(); i++ ) {
 
         _velocity[i] =   _velocity[i]
-                       + _c1 * randomNumber1 * ( ( _personalBestModel->GetParameterVector() )[i].GetValue() - _position[i] )
-                       + _c2 * randomNumber2 * ( ( _globalBestModel->GetParameterVector() )[i].GetValue() - _position[i] );
+                       + _c1 * randomNumber1 * ( _personalBestModel->GetParameterVector()->at( i )->GetValue() - _position[i] )
+                       + _c2 * randomNumber2 * ( _globalBestModel->GetParameterVector()->at( i )->GetValue() - _position[i] );
 
     }
 
@@ -92,7 +91,7 @@ void Fittino::Particle::UpdateModel() {
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
-        ( *_model->SetParameterVector() )[i].SetValue( _position[i] );
+        ( *_model->SetParameterVector() )[i]->SetValue( _position[i] );
 
     }
 
