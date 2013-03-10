@@ -31,7 +31,7 @@ namespace Fittino {
    *  \defgroup datastorages
    */
   /*!
-   *  \ingroup filehandlers
+   *  \ingroup datastorages 
    *  \brief Base class for data storages.
    */
   class DataStorageBase {

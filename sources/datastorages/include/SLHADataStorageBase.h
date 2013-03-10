@@ -32,7 +32,7 @@ namespace Fittino {
   class PhysicsModelBase;
 
   /*!
-   *  \ingoup datastorages
+   *  \ingroup datastorages
    *  \brief Base class for data storages respecting the SLHA format.
    */
   class SLHADataStorageBase : public DataStorageBase {
