@@ -21,8 +21,7 @@
 # higher. It should be specified so CMake versions 2.4 and lower fail with an error instead of just
 # a warning.
 
-#CMAKE_MINIMUM_REQUIRED(VERSION 2.8 FATAL_ERROR)
-CMAKE_MINIMUM_REQUIRED(VERSION 2.6 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8 FATAL_ERROR)
 
 PROJECT(fittino)
 
@@ -36,12 +35,12 @@ FIND_PACKAGE(ROOT)
 
 # Specify the installation path of "SLHAea". The default path is "../slhaea".
 
-# FIND_PACKAGE(SLHAEA)
+FIND_PACKAGE(SLHAEA)
 # SET(SLHAEA_INSTALLATION_PATH <slhaea/installation/path>)
 
 # Specify the installation path of the executable "SPheno". The default path is "../SPheno/bin".
 
-#FIND_PACKAGE(SPHENO)
-SET(SPHENO_INSTALLATION_PATH "/afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/SPheno-3.1.11/bin/SPheno")
+FIND_PACKAGE(SPHENO)
+#SET(SPHENO_INSTALLATION_PATH <spheno/installation/path>)
 
 ADD_SUBDIRECTORY(sources)
