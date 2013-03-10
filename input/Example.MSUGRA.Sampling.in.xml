@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding='UTF-8'?>
+
+<!-- $Id: Example.optimization.in.xml 705 2010-07-20 22:56:05Z uhlenbrock $ -->
+
+<!--#########################################################################-->
+<!--                                                                         -->
+<!-- Project     Fittino - A SUSY Parameter Fitting Package                  -->
+<!--                                                                         -->
+<!-- File        Example.optimization.in.xml                                 -->
+<!--                                                                         -->
+<!-- Description This is an example optimization Fittino input file in XML   -->
+<!--             format.                                                     -->
+<!--                                                                         -->
+<!-- Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>         -->
+<!--                                                                         -->
+<!-- Licence     This program is free software; you can redistribute it      -->
+<!--             and/or modify it under the terms of the GNU General Public  -->
+<!--             License as published by the Free Software Foundation;       -->
+<!--             either version 3 of he License, or (at your option) any     -->
+<!--             later version.                                              -->
+<!--                                                                         -->
+<!--#########################################################################-->
+
+<!DOCTYPE InputFile PUBLIC "" "InputFile.dtd" >
+
+<InputFile>
+
+  <!--
+   The VerbosityLevel node specifies the degree of information which is printed out on the screen.
+   The supported verbosity levels are listed in the table below:
+
+       Level         Description 
+
+       ALWAYS        Default verbosity level
+       VERBOSE
+       DEBUG
+       INFO
+
+   -->
+
+  <VerbosityLevel
+   Level = "INFO"
+   />
+
+  <!--
+   The ExecutionMode node specifies the main execution mode of Fittino. If OPTIMIZATION is set,
+   Fittino tries to find the optimal parameter set of a given model w.r.t. experimental observation.
+   -->
+
+  <ExecutionMode
+   Mode = "SAMPLING"
+   />
+
+  <!--
+   The Model node specifies the model to be optimized. The supported models and their parameters are
+   listed in the table below:
+
+       Model         Parameters
+
+       MSUGRA        A0, M0, M12, TanBeta (not yet fully implemented)
+       Rosenbrock    X, Y
+
+   -->
+
+  <Model
+   ModelType = "MSUGRA"
+   A0        = "-300."
+   M0        = "100."
+   M12       = "250."
+   TanBeta   = "10."
+   />
+
+  <Observable
+   Name          = "BToSGamma"
+   MeasuredValue = "1.117"
+   Error1        = "0.076"
+   Error2        = "0.082"
+   Error3        = "0.050"
+  />
+
+  <Observable
+   Name          = "GMin2Mu"
+   MeasuredValue = "30.2e-10"
+   Error1        = "8.8e-10"
+   Error2        = "2.0e-10"
+  />
+
+  <!--
+   The Sampler node specifies the sampling algorithm (sampler type).
+   -->
+
+  <Sampler
+   AbortCriterium     = "1.e-6"
+   NumberOfIterations = "3"
+   SamplerType        = "MarkovChain"
+   />
+
+</InputFile>
