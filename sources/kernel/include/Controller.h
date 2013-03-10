@@ -125,7 +125,7 @@ namespace Fittino {
        *  When Fittino is called without arguments or with the -h/--help option this method\n
        *  prints a help screen with further instructions on how to use Fittino.
        */
-     void                             PrintHelp() const;
+      void                            PrintHelp() const;
       /*!
        *  Prints a welcome logo.
        */

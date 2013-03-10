@@ -28,8 +28,8 @@
 #include "Configuration.h"
 #include "ConfigurationException.h"
 #include "Controller.h"
+#include "DataStorageBase.h"
 #include "Factory.h"
-#include "FileHandlerBase.h"
 #include "InputException.h"
 #include "Messenger.h"
 #include "ModelBase.h"
@@ -118,12 +118,12 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
         Controller::PrintLogo();
 
-	// Create an input file interpreter depending on the file format and parse the input file.
+	// Create a data storage depending on the input file format and parse the input file.
 
         const Factory factory;
-        const FileHandlerBase* const fittinoFileHandler = factory.CreateFileHandler( Controller::DetermineInputFileFormat() );
-        fittinoFileHandler->ReadFile( _inputFileName );
-        delete fittinoFileHandler;
+        const DataStorageBase* const fittinoInputDataStorage = factory.CreateDataStorage( Controller::DetermineInputFileFormat() );
+        fittinoInputDataStorage->ReadFile( _inputFileName );
+        delete fittinoInputDataStorage;
 
 	// Set the level of output verbosity.
 
@@ -160,11 +160,6 @@ void Fittino::Controller::ExecuteFittino() const {
             delete sampler;
 
 	}
-        else if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::SCAN ) {
-
-            throw ConfigurationException( "Execution mode SCAN not supported yet." );
-
-        }
         else {
 
             throw ConfigurationException( "Configured execution mode unknown." );

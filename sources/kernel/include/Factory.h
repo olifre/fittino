@@ -22,15 +22,16 @@
 #define FITTINO_FACTORY_H
 
 #include "Configuration.h"
-#include "FileHandlerBase.h"
-#include "ModelBase.h"
-#include "OptimizerBase.h"
-#include "SamplerBase.h"
 
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
+
+  class DataStorageBase;
+  class ModelBase;
+  class OptimizerBase;
+  class SamplerBase;
 
   /*!
    *  \ingroup kernel
@@ -42,19 +43,20 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                                   Factory();
+                             Factory();
       /*!
        *  Standard destructor.
        */
-                                   ~Factory();
+                             ~Factory();
       /*!
-       *  Returns a concrete file handler according to the file format passed as an argument.\n
+       *  Returns a concrete data storage according to the file format passed as an argument.\n
        *  Supported file formats are
        *  <ul>
-       *    <li> XMLINPUTFILE\n
+       *    <li> SLHA\n
+       *    <li> XML\n
        *  </ul>
        */
-      const FileHandlerBase* const CreateFileHandler( const Configuration::FileFormat& fileFormat ) const;
+      DataStorageBase* const CreateDataStorage( const Configuration::FileFormat& fileFormat ) const;
       /*!
        *  Returns a concrete model according to the model type passed as an argument. Supported\n
        *  model types are
@@ -63,7 +65,7 @@ namespace Fittino {
        *    <li> ROSENBROCK\n
        *  </ul>
        */
-      ModelBase* const             CreateModel( const Configuration::ModelType& modelType ) const;
+      ModelBase* const       CreateModel( const Configuration::ModelType& modelType ) const;
       /*!
        *  Returns a concrete parameter optimizer according to the optimizer type passed as an\n
        *  argument. Supported optimizer types are
@@ -74,7 +76,7 @@ namespace Fittino {
        *    <li> SIMULATEDANNEALING\n
        *  </ul>
        */
-      OptimizerBase* const         CreateOptimizer( const Configuration::OptimizerType& optimizerType, ModelBase* model ) const;
+      OptimizerBase* const   CreateOptimizer( const Configuration::OptimizerType& optimizerType, ModelBase* model ) const;
       /*!
        *  Returns a concrete parameter sampler according to the sampler type passed as an\n
        *  argument.  Supported sampler types are
@@ -82,7 +84,7 @@ namespace Fittino {
        *    <li> MARKOVCHAIN\n
        *  </ul>
        */
-      SamplerBase* const           CreateSampler( const Configuration::SamplerType& samplerType, ModelBase* model ) const;
+      SamplerBase* const     CreateSampler( const Configuration::SamplerType& samplerType, ModelBase* model ) const;
 
   };
 

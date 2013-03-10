@@ -43,7 +43,7 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase* model )
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
 
-        _tree->Branch( ( ( _model->GetParameterVector() )[i].GetName() ).c_str(), &_listOfLeaves[i], ( ( _model->GetParameterVector() )[i].GetName() ).c_str() );
+        _tree->Branch( ( _model->GetParameterVector()->at( i )->GetName() ).c_str(), &_listOfLeaves[i], ( _model->GetParameterVector()->at( i )->GetName() ).c_str() );
 
     }
     _tree->Branch( "Chi2", &_listOfLeaves[_model->GetNumberOfParameters()], "Chi2/F" );
@@ -66,7 +66,7 @@ void Fittino::AnalysisTool::FillStatus() {
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
 
-        _listOfLeaves[i] = ( _model->GetParameterVector() )[i].GetValue();
+        _listOfLeaves[i] = _model->GetParameterVector()->at( i )->GetValue();
 
     }
     _listOfLeaves[_model->GetNumberOfParameters()] = _model->Evaluate();

@@ -56,11 +56,6 @@ Fittino::Configuration::ExecutionMode Fittino::Configuration::GetExecutionMode()
         return Configuration::SAMPLING;
 
     }
-    else if ( ( *_steeringParameterMap )[key] == "SCAN" ) {
-
-        return Configuration::SCAN;
-
-    }
     else {
 
         throw ConfigurationException( "Configured execution mode unknown." );

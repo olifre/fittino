@@ -18,16 +18,19 @@
 *                                                                              *
 *******************************************************************************/
 
+#include "DataStorageBase.h"
 #include "Factory.h"
-#include "FileHandlerBase.h"
 #include "GeneticAlgorithmOptimizer.h"
 #include "MarkovChainSampler.h"
 #include "MinuitOptimizer.h"
 #include "MSUGRAModel.h"
+#include "ModelBase.h"
+#include "OptimizerBase.h"
 #include "ParticleSwarmOptimizer.h"
 #include "RosenbrockModel.h"
+#include "SamplerBase.h"
 #include "SimulatedAnnealingOptimizer.h"
-#include "XMLFittinoFileHandler.h"
+#include "XMLDataStorage.h"
 
 Fittino::Factory::Factory() {
 
@@ -37,12 +40,12 @@ Fittino::Factory::~Factory() {
 
 }
 
-const Fittino::FileHandlerBase* const Fittino::Factory::CreateFileHandler( const Fittino::Configuration::FileFormat& fileFormat ) const {
+Fittino::DataStorageBase* const Fittino::Factory::CreateDataStorage( const Fittino::Configuration::FileFormat& fileFormat ) const {
 
     switch ( fileFormat ) {
 
         case Configuration::XML:
-            return new XMLFittinoFileHandler();
+            return new XMLDataStorage();
 
     }
 

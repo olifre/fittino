@@ -59,8 +59,8 @@ namespace Fittino {
       static Configuration*                 GetInstance();
 
     public:
-      enum                                  ExecutionMode { OPTIMIZATION, SAMPLING, SCAN };
-      enum                                  FileFormat { XML };
+      enum                                  ExecutionMode { OPTIMIZATION, SAMPLING };
+      enum                                  FileFormat { SLHA, XML };
       enum                                  ModelType { MSUGRA, ROSENBROCK };
       enum                                  OptimizerType { GENETICALGORITHM, MINUIT, PARTICLESWARM, SIMULATEDANNEALING };
       enum                                  SamplerType { MARKOVCHAIN };

@@ -23,11 +23,10 @@
 /*!
  *  \mainpage Fittino Class Reference
  *
- *  This document aims to give an overview on the underlying software
- *  architecture of Fittino. In addition to providing a detailed description
- *  for each of the component classes, the inheritance and collaboration
- *  structure and the individual roles within a certain design pattern are
- *  depicted.
+ *  This document aims to give an overview on the underlying software architecture of Fittino. In\n
+ *  addition to providing a detailed description for each of the component classes, the\n
+ *  inheritance and collaboration structure and the individual roles within a certain design\n
+ *  pattern are depicted.
  *
  *  The central object is the Fittino::Controller.
  */

@@ -20,19 +20,21 @@
 ADD_DEFINITIONS(`root-config --cflags`)
 
 INCLUDE_DIRECTORIES(./include)
+INCLUDE_DIRECTORIES(../calculators/include)
+INCLUDE_DIRECTORIES(../datastorages/include)
 INCLUDE_DIRECTORIES(../exceptions/include)
-INCLUDE_DIRECTORIES(../filehandlers/include)
 INCLUDE_DIRECTORIES(../models/include)
 INCLUDE_DIRECTORIES(../optimizers/include)
 INCLUDE_DIRECTORIES(../samplers/include)
-#INCLUDE_DIRECTORIES(${SLHAEA_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${SLHAEA_INCLUDE_DIR})
 
 AUX_SOURCE_DIRECTORY(./src sources)
 
 ADD_EXECUTABLE(fittino ${sources})
 
-TARGET_LINK_LIBRARIES(fittino exceptions)
-TARGET_LINK_LIBRARIES(fittino filehandlers)
 TARGET_LINK_LIBRARIES(fittino models)
+TARGET_LINK_LIBRARIES(fittino calculators)
 TARGET_LINK_LIBRARIES(fittino optimizers)
 TARGET_LINK_LIBRARIES(fittino samplers)
+TARGET_LINK_LIBRARIES(fittino datastorages)
+TARGET_LINK_LIBRARIES(fittino exceptions)
