@@ -17,8 +17,9 @@
 #                                                                              #
 ################################################################################
 
+ADD_SUBDIRECTORY(calculators)
 ADD_SUBDIRECTORY(exceptions)
-ADD_SUBDIRECTORY(filehandlers)
+ADD_SUBDIRECTORY(datastorages)
 ADD_SUBDIRECTORY(kernel)
 ADD_SUBDIRECTORY(models)
 ADD_SUBDIRECTORY(optimizers)
