@@ -17,15 +17,13 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <cstdlib>
-#include <iomanip>
-#include <iostream>
-#include <stdio.h>
+#include <cmath>
 
+#include "Chi2ContributionBase.h"
 #include "Messenger.h"
+#include "ModelCalculatorBase.h"
 #include "ObservableBase.h"
 #include "PhysicsModelBase.h"
-//#include "SLHAeaSLHAFileHandler.h"
 
 Fittino::PhysicsModelBase::PhysicsModelBase() {
 
@@ -37,7 +35,32 @@ Fittino::PhysicsModelBase::~PhysicsModelBase() {
 
 double Fittino::PhysicsModelBase::Evaluate() {
 
-    PhysicsModelBase::UpdateObservablePredictions();
+    // Let the calculators calculate the model predictions.
+
+    for ( unsigned int i = 0; i < _modelCalculatorVector.size(); ++i ) {
+
+        _modelCalculatorVector[i]->CalculatePredictions( this );
+
+    }
+
+    // Instruct the observables to update their predicted values.
+
+    for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
+
+        _observableVector[i]->UpdatePrediction();
+
+    }
+
+    // Update additional chi2 terms.
+
+    for ( unsigned int i = 0; i < _chi2ContributionVector.size(); ++i ) {
+
+        _chi2ContributionVector[i]->UpdateValue();
+
+    }
+
+    // Calculate and return the resulting chi2.
+
     return PhysicsModelBase::CalculateChi2();
 
 }
@@ -46,36 +69,45 @@ void Fittino::PhysicsModelBase::PrintStatus() {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::INFO << "-------------------------------------------------------------------------------------" << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
     messenger << Messenger::INFO << "  Set of the " << this->GetName() << " parameters:" << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
 
     for ( unsigned int i = 0; i < this->GetNumberOfParameters(); ++i ) {
 
-        messenger << Messenger::INFO
-	          << "    "
-                  << std::left
-                  << std::setw( 11 )
-                  << _parameterVector[i].GetName()
-                  << std::right
-                  << std::setw( 12 )
-                  << std::setprecision( 5 )
-                  << std::scientific
-                  << _parameterVector[i].GetValue()
-		  << Messenger::Endl;
+        _parameterVector[i]->PrintStatus();
 
     }
 
-    messenger << Messenger::Endl;
-    messenger << Messenger::INFO << "  Summary of the " << this->GetName() << " predictions:"  << Messenger::Endl;
-    messenger << Messenger::Endl;
-    messenger << Messenger::INFO << "    Observable          Predicted value                 Measured value    Deviation" << Messenger::Endl;
-    messenger << Messenger::Endl;
+    if ( _observableVector.size() != 0 ) {
 
-    for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
+        messenger << Messenger::Endl;
+        messenger << Messenger::INFO << "  Summary of the " << this->GetName() << " predictions:"  << Messenger::Endl;
+        messenger << Messenger::Endl;
+        messenger << Messenger::INFO << "    Observable          Predicted value                 Measured value    Deviation" << Messenger::Endl;
+        messenger << Messenger::Endl;
 
-        _observableVector[i]->PrintStatus();
+        for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
+
+            _observableVector[i]->PrintStatus();
+
+        }
+
+    }
+
+    if ( _chi2ContributionVector.size() != 0 ) {
+
+        messenger << Messenger::Endl;
+        messenger << Messenger::INFO << "  Summary of (additional) Chi2 terms:"  << Messenger::Endl;
+        messenger << Messenger::Endl;
+        messenger << Messenger::INFO << "    Term                          Value" << Messenger::Endl;
+        messenger << Messenger::Endl;
+
+        for ( unsigned int i = 0; i < _chi2ContributionVector.size(); ++i ) {
+
+            _chi2ContributionVector[i]->PrintStatus();
+
+        }
 
     }
 
@@ -85,46 +117,23 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
 
     double chi2 = 0.;
 
+    // Calculate the chi2 contributions of all observables. Eventually replace
+    // this formula to allow for correlated observables. 
+
     for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
 
-        chi2 += _observableVector[i]->GetChi2();
+        chi2 += pow( ( _observableVector[i]->GetPredictedValue() - _observableVector[i]->GetMeasuredValue() ) / _observableVector[i]->GetMeasuredError(), 2 );
+
+    }
+
+    // Add additional chi2 terms.
+
+    for ( unsigned int i = 0; i < _chi2ContributionVector.size(); ++i ) {
+
+	chi2 += _chi2ContributionVector[i]->GetValue();
 
     }
 
     return chi2;
-
-}
-
-void Fittino::PhysicsModelBase::UpdateObservablePredictions() {
-
-    PhysicsModelBase::UpdateSLHAConfiguration();
-    /*!
-     *  \todo Short-term: This function may either become obsolete or will have to be expanded,
-     *  depending on how the actual interface to LHC rate prediction calculators will be realized.
-     */
-    PhysicsModelBase::UpdateLHCRatePrediction();
-
-    for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
-
-        _observableVector[i]->UpdatePrediction();
-
-    }
-
-}
-
-void Fittino::PhysicsModelBase::UpdateLHCRatePrediction() {
-
-    std::string command = "/afs/atlass01.physik.uni-bonn.de/user/uhlenbrock/programs/WorkspaceSimpleExample/PredictSignalContribution ";
-    char *attributes = (char*)malloc(120*sizeof(char));
-    sprintf( attributes, "%f %f %f %f", _parameterVector[1].GetValue(), _parameterVector[2].GetValue(), _parameterVector[0].GetValue(), _parameterVector[3].GetValue() );
-    command += attributes;
-    system( command.c_str() );
-
-}
-
-void Fittino::PhysicsModelBase::UpdateSLHAConfiguration() {
-
-    //SLHAeaSLHAFileHandler slhaeaSLHAFileHandler;
-    //slhaeaSLHAFileHandler.WriteInputFile( "LesHouches.in", this );
 
 }

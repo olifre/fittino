@@ -21,13 +21,16 @@
 #define FITTINO_PHYSICSMODELBASE_H
 
 #include "ModelBase.h"
+#include "SLHAParameter.h"
 
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
 
+  class Chi2ContributionBase;
   class ObservableBase;
+  class ModelCalculatorBase;
 
   /*!
    *  \ingroup models
@@ -39,27 +42,27 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                                   PhysicsModelBase();
+                                         PhysicsModelBase();
       /*!
        *  Standard destructor.
        */
-                                   ~PhysicsModelBase();
-      virtual double               Evaluate();
-      virtual void                 PrintStatus();
+                                         ~PhysicsModelBase();
+      virtual double                     Evaluate();
+      virtual void                       PrintStatus();
 
     protected:
-      std::vector<ObservableBase*> _observableVector;
+      std::vector<Chi2ContributionBase*> _chi2ContributionVector;
+      std::vector<ModelCalculatorBase*>  _modelCalculatorVector;
+      std::vector<ObservableBase*>       _observableVector;
 
       /*! \cond UML */
     private:
-      double                       CalculateChi2();
       /*!
-       *  \todo Short-term: This function may either become obsolete or will have to be expanded,
-       *  depending on how the actual interface to LHC rate prediction calculators will be realized.
+       *  Calculate the resulting chi2.
+       *  \todo Eventually generalize this function to allow for correlated
+       *  observables.
        */
-      void                         UpdateLHCRatePrediction();
-      void                         UpdateObservablePredictions();
-      void                         UpdateSLHAConfiguration();
+      double                             CalculateChi2();
 
       /*! \endcond UML */
 

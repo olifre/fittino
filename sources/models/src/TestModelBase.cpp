@@ -40,7 +40,6 @@ void Fittino::TestModelBase::PrintStatus() {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::INFO << "-------------------------------------------------------------------------------------" << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
     messenger << Messenger::INFO << "  Set of " << _name << " parameters:" << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
@@ -51,12 +50,12 @@ void Fittino::TestModelBase::PrintStatus() {
 	          << "    "
                   << std::left
                   << std::setw( 11 )
-                  << _parameterVector[i].GetName()
+                  << _parameterVector[i]->GetName()
                   << std::right
                   << std::setw( 12 )
                   << std::setprecision( 5 )
                   << std::scientific
-                  << _parameterVector[i].GetValue()
+                  << _parameterVector[i]->GetValue()
 		  << Messenger::Endl;
 
     }

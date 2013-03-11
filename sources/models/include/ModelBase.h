@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 
-#include "Parameter.h"
+#include "ParameterBase.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -43,62 +43,64 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                              ModelBase();
+                                   ModelBase();
       /*!
        *  Standard destructor.
        */
-                              ~ModelBase();
+                                   ~ModelBase();
       /*!
        *  Returns the number of parameters of the model.
        */
-      int                     GetNumberOfParameters() const;
+      int                          GetNumberOfParameters() const;
       /*!
        *  Returns the name of the model.
        */
-      std::string             GetName() const;
+      std::string                  GetName() const;
       /*!
        *  Returns the parameters of the model as a vector.
        */
-      std::vector<Parameter>  GetParameterVector() const;
+      std::vector<ParameterBase*>* GetParameterVector() const;
       /*!
        *  Returns the parameters of the model as a vector.
        */
-      std::vector<Parameter>* SetParameterVector();
+      std::vector<ParameterBase*>* SetParameterVector();
+
+    public:
       /*!
        *  Returns the chi2 of the comparison between the predicted observables of the model and\n
        *  the measured observables. In the case of a test model simply returns the function value.
        */
-      virtual double          Evaluate() = 0;
-      virtual void            PrintStatus() = 0;
+      virtual double               Evaluate() = 0;
+      virtual void                 PrintStatus() = 0;
       /*!
        *  Returns a pointer to a copy of the model.
        */
-      virtual ModelBase*      Clone() const = 0;
+      virtual ModelBase*           Clone() const = 0;
 
     protected:
       /*!
        *  Number of the model parameters.
        */
-      int                     _numberOfParameters;
+      int                          _numberOfParameters;
       /*!
        *  Name of the model.
        */
-      std::string             _name;
+      std::string                  _name;
       /*!
        *  Stores the model parameters.
        */
-      std::vector<Parameter>  _parameterVector;
+      std::vector<ParameterBase*>  _parameterVector;
 
     protected:
       /*!
        *  Initializes the model with a name and the starting values for the parameters.
        */
-      void                    InitializeModel() const;
+      void                         InitializeModel() const;
       /*!
        *  Prints the configuration of the model, i.e. its name and the starting values of the\n
        *  parameters
        */
-      void                    PrintConfiguration() const;
+      void                         PrintConfiguration() const;
 
   };
 

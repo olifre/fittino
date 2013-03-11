@@ -28,8 +28,8 @@ Fittino::RosenbrockModel::RosenbrockModel() {
 
     _numberOfParameters = 2;
     _name = "Rosenbrock model";
-    _parameterVector.push_back( Parameter( "X", configuration->GetSteeringParameter( "X", 0. ), 1 ) );
-    _parameterVector.push_back( Parameter( "Y", configuration->GetSteeringParameter( "Y", 0. ), 2 ) );
+    _parameterVector.push_back( new ParameterBase( "X", configuration->GetSteeringParameter( "X", 0. ), 1., -10., 10. ) );
+    _parameterVector.push_back( new ParameterBase( "Y", configuration->GetSteeringParameter( "Y", 0. ), 1., -10., 10. ) );
 
     ModelBase::InitializeModel();
 
@@ -41,7 +41,7 @@ Fittino::RosenbrockModel::~RosenbrockModel() {
 
 double Fittino::RosenbrockModel::TestModelFunction() {
 
-    return pow( ( 1 - _parameterVector[0].GetValue() ), 2 ) + 100 * pow( _parameterVector[1].GetValue() - pow( _parameterVector[0].GetValue(), 2 ), 2 );
+    return pow( ( 1 - _parameterVector[0]->GetValue() ), 2 ) + 100 * pow( _parameterVector[1]->GetValue() - pow( _parameterVector[0]->GetValue(), 2 ), 2 );
 
 }
 

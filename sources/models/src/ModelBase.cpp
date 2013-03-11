@@ -46,14 +46,13 @@ std::string Fittino::ModelBase::GetName() const {
 
 }
 
-std::vector<Fittino::Parameter> Fittino::ModelBase::GetParameterVector() const {
+std::vector<Fittino::ParameterBase*>* Fittino::ModelBase::GetParameterVector() const {
 
-    return _parameterVector;
+    return new std::vector<ParameterBase*>( _parameterVector );
 
 }
 
-
-std::vector<Fittino::Parameter>* Fittino::ModelBase::SetParameterVector() {
+std::vector<Fittino::ParameterBase*>* Fittino::ModelBase::SetParameterVector() {
 
     return &_parameterVector;
 
@@ -85,12 +84,12 @@ void Fittino::ModelBase::PrintConfiguration() const {
 	          << "    "
                   << std::left
                   << std::setw( 11 )
-                  << _parameterVector[i].GetName()
+                  << this->GetParameterVector()->at( i )->GetName()
                   << std::right
                   << std::setw( 12 )
                   << std::setprecision( 5 )
                   << std::scientific
-                  << _parameterVector[i].GetValue()
+                  << this->GetParameterVector()->at( i )->GetValue()
 		  << Messenger::Endl;
 
     }

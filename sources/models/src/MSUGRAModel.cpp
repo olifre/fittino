@@ -19,8 +19,11 @@
 
 #include "Configuration.h"
 #include "MSUGRAModel.h"
-//#include "SLHAObservable.h"
-//#include "WorkspaceObservable.h"
+#include "ObservableBase.h"
+#include "SLHAChi2Contribution.h"
+#include "SLHAObservable.h"
+#include "SLHAParameter.h"
+#include "SPhenoSLHAModelCalculator.h"
 
 Fittino::MSUGRAModel::MSUGRAModel() {
 
@@ -28,20 +31,21 @@ Fittino::MSUGRAModel::MSUGRAModel() {
 
     _numberOfParameters = 4;
     _name = "MSUGRA model";
-    _parameterVector.push_back( Parameter( "A0", configuration->GetSteeringParameter( "A0", 0. ), 5 ) );
-    _parameterVector.push_back( Parameter( "M0", configuration->GetSteeringParameter( "M0", 0. ), 1 ) );
-    _parameterVector.push_back( Parameter( "M12", configuration->GetSteeringParameter( "M12", 0. ), 2 ) );
-    _parameterVector.push_back( Parameter( "TanBeta", configuration->GetSteeringParameter( "TanBeta", 0. ), 3 ) );
+    _parameterVector.push_back( new SLHAParameter( "A0"     , configuration->GetSteeringParameter( "A0" ,     0. ), 1., -1.e5, 1.e5, 5 ) );
+    _parameterVector.push_back( new SLHAParameter( "M0"     , configuration->GetSteeringParameter( "M0" ,     0. ), 1.,    0., 1.e5, 1 ) );
+    _parameterVector.push_back( new SLHAParameter( "M12"    , configuration->GetSteeringParameter( "M12" ,    0. ), 1.,    0., 1.e5, 2 ) );
+    _parameterVector.push_back( new SLHAParameter( "TanBeta", configuration->GetSteeringParameter( "TanBeta", 0. ), 1.,    0., 1.e3, 3 ) );
 
-    //SLHAObservable* observable = new SLHAObservable( "Br(b -> s gamma)", 3.55e-04, 0.26e-04, 1 );
-    //_observableVector.push_back( observable );
+    SLHAModelCalculatorBase* slhaModelCalculator = new SPhenoSLHAModelCalculator();
 
-    //WorkspaceObservable *observable = new WorkspaceObservable( "LHCRate",
-    //                                                           0,
-    //                                                           "/afs/atlass01.physik.uni-bonn.de/user/uhlenbrock/programs/WorkspaceSimpleExample/workspace.root",
-    //                                                           "testWorkspace",
-    //                                                           "PredictedRate.dat" );
-    //_observableVector.push_back( observable );
+    _modelCalculatorVector.push_back( slhaModelCalculator );
+
+    _observableVector.push_back( new SLHAObservable( "BR(b -> s gamma)" , 3.55e-04, 0.53e-04, slhaModelCalculator, "SPhenoLowEnergy",  1, 1 ) );
+    _observableVector.push_back( new SLHAObservable( "BR(Bs -> mu+ mu-)",  4.5e-09,  0.8e-09, slhaModelCalculator, "SPhenoLowEnergy",  4, 1 ) );
+    _observableVector.push_back( new SLHAObservable( "Delta(M_Bs)"      ,   17.719,    4.200, slhaModelCalculator, "SPhenoLowEnergy",  7, 1 ) );
+    _observableVector.push_back( new SLHAObservable( "Delta(g-2)_muon"  , 28.7e-10,  8.2e-10, slhaModelCalculator, "SPhenoLowEnergy", 11, 1 ) );
+
+    //_chi2ContributionVector.push_back( new SLHAChi2Contribution( "TestContribution", slhaModelCalculator, "SPhenoLowEnergy", 1, 1 ) );
 
     ModelBase::InitializeModel();
 
