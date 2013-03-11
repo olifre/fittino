@@ -30,17 +30,18 @@ SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
 # Specify the installation path of the executable "root-config". By default, it is assumed that the
 # environment variable ROOTSYS is set and that the installation path is "ROOTSYS/bin".
 
-FIND_PACKAGE(ROOT)
 # SET(ROOT_CONFIG_INSTALLATION_PATH <root-config/installation/path>)
+FIND_PACKAGE(ROOT)
 
 # Specify the installation path of "SLHAea". The default path is "../slhaea".
 
-FIND_PACKAGE(SLHAEA)
 # SET(SLHAEA_INSTALLATION_PATH <slhaea/installation/path>)
+FIND_PACKAGE(SLHAEA)
 
-# Specify the installation path of the executable "SPheno". The default path is "../SPheno/bin".
+# Optional: Specify the installation path of the executable "SPheno". The default path is
+# "../SPheno/bin".
 
-FIND_PACKAGE(SPHENO)
-#SET(SPHENO_INSTALLATION_PATH <spheno/installation/path>)
+# SET(SPHENO_INSTALLATION_PATH <spheno/installation/path>)
+# FIND_PACKAGE(SPHENO)
 
 ADD_SUBDIRECTORY(sources)
