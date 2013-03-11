@@ -19,27 +19,23 @@
 
 #include <iomanip>
 
+#include "TString.h"
+
 #include "Messenger.h"
 #include "ObservableBase.h"
 
-Fittino::ObservableBase::ObservableBase( std::string name, int id )
-        : _chi2( 0. ),
-          _deviation( 0. ),
-          _measuredError( 0. ),
-          _measuredValue( 0. ),
+Fittino::ObservableBase::ObservableBase( std::string name,
+                                         double      measuredValue,
+                                         double      measuredError )
+        : _deviation( 0. ),
+          _measuredError( measuredError ),
+          _measuredValue( measuredValue ),
           _predictedValue( 0. ),
-          _id( id ),
           _name( name ) {
 
 }
 
 Fittino::ObservableBase::~ObservableBase() {
-
-}
-
-double Fittino::ObservableBase::GetChi2() const {
-
-    return _chi2;
 
 }
 
@@ -50,11 +46,11 @@ void Fittino::ObservableBase::PrintStatus() const {
     messenger << Messenger::INFO
               << "    "
               << std::left
-              << std::setw( 17 )
+              << std::setw( 18 )
               << _name 
               << std::right
-              << std::setw( 18 )
-              << std::setprecision( 5 ) 
+              << std::setw( 17 )
+              << std::setprecision( 5 )
               << std::scientific
               << _predictedValue
               << std::right
@@ -77,17 +73,23 @@ void Fittino::ObservableBase::PrintStatus() const {
 
 }
 
-void Fittino::ObservableBase::CalculateDeviation() {
+double Fittino::ObservableBase::GetMeasuredError() const {
 
-    if ( _measuredError != 0. ) {
+    return _measuredError;
+}
 
-        _deviation = ( _measuredValue - _predictedValue ) / _measuredError;
+double Fittino::ObservableBase::GetMeasuredValue() const {
 
-    }
-    else {
+    return _measuredValue;
+}
 
-        _deviation = ( _measuredValue - _predictedValue );
+double Fittino::ObservableBase::GetPredictedValue() const {
 
-    }
+    return _predictedValue;
+}
+
+double Fittino::ObservableBase::CalculateDeviation() {
+
+    _deviation = ( _predictedValue - _measuredValue ) / _measuredError;
 
 }

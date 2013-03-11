@@ -1,12 +1,12 @@
-/* $Id: ObservableBase.h 844 2011-01-10 13:52:15Z uhlenbrock $ */
+/* $Id: SLHAObservable.h 844 2011-01-10 13:52:15Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        ObservableBase.h                                                 *
+* File        SLHAObservable.h                                                 *
 *                                                                              *
-* Description Base class for observables                                       *
+* Description Class for SLHA observables                                       *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -17,51 +17,51 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_OBSERVABLEBASE_H
-#define FITTINO_OBSERVABLEBASE_H
+#ifndef FITTINO_SLHAOBSERVABLE_H
+#define FITTINO_SLHAOBSERVABLE_H
 
 #include <string>
+
+#include "ObservableBase.h"
 
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
 
+  class SLHAModelCalculatorBase;
+
   /*!
    *  \ingroup models
-   *  \brief Base class for observables.
+   *  \brief Class for SLHA observables.
    */
-  class ObservableBase {
+  class SLHAObservable : public ObservableBase {
 
     public:
       /*!
        *  Standard constructor.
        */
-                   ObservableBase( std::string name,
-                                   double      measuredValue,
-                                   double      measuredError );
+                               SLHAObservable( std::string              name,
+                                               double                   measuredValue,
+                                               double                   measuredError,
+                                               SLHAModelCalculatorBase* slhaModelCalculator,
+					       std::string              blockName,
+                                               int                      id,
+                                               int                      columnIndex );
       /*!
        *  Standard destructor.
        */
-                   ~ObservableBase();
-      virtual void UpdatePrediction() = 0;
-      void         PrintStatus() const;
-      double       GetMeasuredError() const;
-      double       GetMeasuredValue() const;
-      double       GetPredictedValue() const;
+                               ~SLHAObservable();
+      virtual void             UpdatePrediction();
 
-    protected:
-      double       _deviation;
-      double       _measuredError;
-      double       _measuredValue;
-      double       _predictedValue;
-      std::string  _name;
-
-    protected:
-      double       CalculateDeviation();
+    private:
+      int                      _columnIndex;
+      int                      _id;
+      std::string              _blockName;
+      SLHAModelCalculatorBase* _slhaModelCalculator;
 
   };
 
 }
 
-#endif // FITTINO_OBSERVABLEBASE_H
+#endif // FITTINO_SLHAOBSERVABLE_H
