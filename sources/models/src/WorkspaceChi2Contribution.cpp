@@ -1,12 +1,12 @@
-/* $Id: WorkspaceObservable.cpp 613 2010-05-26 09:42:00Z uhlenbrock $ */
+/* $Id: WorkspaceChi2Contribution.cpp 613 2010-05-26 09:42:00Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        WorkspaceObservable.cpp                                          *
+* File        WorkspaceChi2Contribution.cpp                                    *
 *                                                                              *
-* Description Class for observables provided in a Root Workspace               *
+* Description Class for chi2 contribution provided in a Root Workspace         *
 *                                                                              *
 * Authors     Matthias Hamer  <mhamer@gwdg.de>                                 *
 *                                                                              *
@@ -26,10 +26,10 @@
 #include "TFile.h"
 
 #include "ConfigurationException.h"
-#include "WorkspaceObservable.h"
+#include "WorkspaceChi2Contribution.h"
 
-Fittino::WorkspaceObservable::WorkspaceObservable( std::string name, int id, std::string fileName, std::string workspaceName, std::string predictionFileName )
-        : ObservableBase( name, id ),
+Fittino::WorkspaceChi2Contribution::WorkspaceChi2Contribution( std::string name, std::string fileName, std::string workspaceName, std::string predictionFileName )
+        : Chi2ContributionBase( name ),
           _workspaceFile( new TFile( fileName.c_str() ) ),
           _workspace( new RooWorkspace() ) {
 
@@ -61,11 +61,11 @@ Fittino::WorkspaceObservable::WorkspaceObservable( std::string name, int id, std
 
 }
 
-Fittino::WorkspaceObservable::~WorkspaceObservable() {
+Fittino::WorkspaceChi2Contribution::~WorkspaceChi2Contribution() {
 
 }
 
-void Fittino::WorkspaceObservable::UpdatePrediction() {
+void Fittino::WorkspaceChi2Contribution::UpdateValue() {
 
     //ifstream predictionFile( _predictionFileName.c_str(), ios::in );
     //std::map<std::string, double> updatedValues;
@@ -90,12 +90,3 @@ void Fittino::WorkspaceObservable::UpdatePrediction() {
     //CalculateDeviation();
 
 }
-
-//void Fittino::WorkspaceObservable::CalculateChi2() {
-//
-//    /*!
-//     *  \todo Short-term: Have to update this - need test statistics for LLR ...
-//     */
-//    _chi2 = 2 * ( _logLikelihood->getVal() - _llBG );
-//
-//}

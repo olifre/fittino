@@ -1,12 +1,12 @@
-/* $Id: WorkspaceObservable.h 613 2010-05-26 09:42:00Z uhlenbrock $ */
+/* $Id: WorkspaceChi2Contribution.h 613 2010-05-26 09:42:00Z uhlenbrock $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        WorkspaceObservable.h                                            *
+* File        WorkspaceChi2Contribution.h                                      *
 *                                                                              *
-* Description Class for observables provided in a Root Workspace               *
+* Description Class for chi2 contribution provided in a Root Workspace         *
 *                                                                              *
 * Authors     Matthias Hamer  <mhamer@gwdg.de>                                 *
 *                                                                              *
@@ -17,14 +17,14 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_WORKSPACEOBSERVABLE_H
-#define FITTINO_WORKSPACEOBSERVABLE_H
+#ifndef FITTINO_WORKSPACECHI2CONTRIBUTION_H
+#define FITTINO_WORKSPACECHI2CONTRIBUTION_H
+
+#include "Chi2ContributionBase.h"
 
 class RooAbsReal;
 class RooWorkspace;
 class TFile;
-
-#include "ObservableBase.h"
 
 /*!
  *  \brief Fittino namepsace.
@@ -35,25 +35,24 @@ namespace Fittino {
    *  \ingroup models
    *  \brief Class for observables provided in a Root Workspace.
    */
-  class WorkspaceObservable : public ObservableBase {
+  class WorkspaceChi2Contribution : public Chi2ContributionBase {
 
     public:
       /*!
        *  Constructor.
        */
-                    WorkspaceObservable( std::string name,
-                                         int id,
-                                         std::string fileName,
-                                         std::string workspaceName,
-                                         std::string predictionFileName );
+                    WorkspaceChi2Contribution( std::string name,
+                                               std::string fileName,
+                                               std::string workspaceName,
+                                               std::string predictionFileName );
       /*!
        *  Standard destructor.
        */
-                    ~WorkspaceObservable();
+                    ~WorkspaceChi2Contribution();
       /*!
        *  Update prediction for new set of parameters.
        */
-      void          UpdatePrediction();
+      virtual void  UpdateValue();
 
       /*! \cond UML */
     private:
@@ -77,12 +76,6 @@ namespace Fittino {
        *  The rootfile containing the workspace including the full analysis.
        */
       TFile*        _workspaceFile;
-
-    private:
-      /*!
-       *  Calculate chi2 contribution from this observable.
-       */
-      //void          CalculateChi2();
 
       /*! \endcond UML */
 
