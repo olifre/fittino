@@ -38,3 +38,5 @@ TARGET_LINK_LIBRARIES(fittino optimizers)
 TARGET_LINK_LIBRARIES(fittino samplers)
 TARGET_LINK_LIBRARIES(fittino datastorages)
 TARGET_LINK_LIBRARIES(fittino exceptions)
+
+INSTALL(TARGETS fittino DESTINATION bin)

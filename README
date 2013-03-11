@@ -40,5 +40,11 @@
 
   make
 
+  or
+
+  make install
+
+  to install it in a directory specified in CMakeList.txt
+
 - If the compilation is successful an executable called "fittino" is produced in
   build/sources/kernel

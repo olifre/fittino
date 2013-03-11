@@ -17,9 +17,6 @@
 #                                                                              #
 ################################################################################
 
-# Specify the minimal cmake version required. It is set to 2.6 because this is the default version
-# currently installed at the National Analysis Facility (NAF) at Desy. When this changes the
-# required version should be updated accordingly.
 # In CMAKE_MINIMUM_REQUIRED() the FATAL_ERROR option is accepted but ignored by CMake 2.6 and
 # higher. It should be specified so CMake versions 2.4 and lower fail with an error instead of just
 # a warning.
@@ -27,6 +24,11 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6 FATAL_ERROR)
 
 PROJECT(fittino)
+
+# Specify the installation directory for the fittino executable. After the installation a
+# subdirectory called bin is created which contains the executable.
+
+SET(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
 
 SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
 
@@ -44,7 +46,7 @@ FIND_PACKAGE(SLHAEA)
 # Optional: Specify the installation path of the executable "SPheno". The default path is
 # "../SPheno/bin".
 
-# SET(SPHENO_INSTALLATION_PATH <spheno/installation/path>)
+SET(SPHENO_INSTALLATION_PATH ../SPheno3.0.beta51/bin)
 # FIND_PACKAGE(SPHENO)
 
 ADD_SUBDIRECTORY(sources)
