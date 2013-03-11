@@ -31,7 +31,7 @@ PROJECT_NAME           = Fittino
 # This could be handy for archiving the generated documentation or
 # if some version control system is used.
 
-PROJECT_NUMBER         =
+PROJECT_NUMBER         = 2.0
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute)
 # base path where the generated documentation will be put.
@@ -575,12 +575,14 @@ WARN_LOGFILE           =
 # with spaces.
 
 INPUT                  = "." \
+                         "../sources/calculators/include" \
+                         "../sources/calculators/src" \
+                         "../sources/datastorages/include" \
+                         "../sources/datastorages/src" \
                          "../sources/exceptions/include" \
                          "../sources/exceptions/src" \
                          "../sources/models/include" \
                          "../sources/models/src" \
-                         "../sources/interpreters/include" \
-                         "../sources/interpreters/src" \
                          "../sources/kernel/include" \
                          "../sources/kernel/src" \
                          "../sources/optimizers/include" \
