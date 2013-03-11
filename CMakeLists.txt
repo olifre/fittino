@@ -17,11 +17,14 @@
 #                                                                              #
 ################################################################################
 
+# Specify the minimal cmake version required. It is set to 2.6 because this is the default version
+# currently installed at the National Analysis Facility (NAF) at Desy. When this changes the
+# required version should be updated accordingly.
 # In CMAKE_MINIMUM_REQUIRED() the FATAL_ERROR option is accepted but ignored by CMake 2.6 and
 # higher. It should be specified so CMake versions 2.4 and lower fail with an error instead of just
 # a warning.
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6 FATAL_ERROR)
 
 PROJECT(fittino)
 
