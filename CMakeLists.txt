@@ -46,7 +46,7 @@ FIND_PACKAGE(SLHAEA)
 # Optional: Specify the installation path of the executable "SPheno". The default path is
 # "../SPheno/bin".
 
-SET(SPHENO_INSTALLATION_PATH ../SPheno3.0.beta51/bin)
+# SET(SPHENO_INSTALLATION_PATH <spheno/installation/path>)
 # FIND_PACKAGE(SPHENO)
 
 ADD_SUBDIRECTORY(sources)
