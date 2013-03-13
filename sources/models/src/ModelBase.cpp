@@ -34,6 +34,19 @@ Fittino::ModelBase::~ModelBase() {
 
 }
 
+double Fittino::ModelBase::GetChi2() {
+
+    if ( !_evaluated ) {
+
+        _chi2 = Evaluate();
+	_evaluated = true;
+    
+    }
+
+    return _chi2;
+
+}
+
 int Fittino::ModelBase::GetNumberOfParameters() const {
 
     return _numberOfParameters;
@@ -54,6 +67,7 @@ const std::vector<Fittino::ParameterBase*>* Fittino::ModelBase::GetParameterVect
 
 std::vector<Fittino::ParameterBase*>* Fittino::ModelBase::SetParameterVector() {
 
+    _evaluated=false;
     return &_parameterVector;
 
 }

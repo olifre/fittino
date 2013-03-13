@@ -74,7 +74,7 @@ void Fittino::SimulatedAnnealingOptimizer::UpdateModel() {
     // The actual best model and chi2 are stored here for future reference.
 
     ModelBase* bestModel = _model->Clone();
-    double bestChi2 = bestModel->Evaluate();
+    double bestChi2 = bestModel->GetChi2();
 
     for ( unsigned int i = 0; i < numberOfTrials; i++ ) {
 
@@ -101,13 +101,13 @@ void Fittino::SimulatedAnnealingOptimizer::UpdateModel() {
             for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
                 ModelBase* oldModel = _model->Clone();
-                double oldChi2 = oldModel->Evaluate();
+                double oldChi2 = oldModel->GetChi2();
 
                 // Update of the model.
 
                 _model->SetParameterVector()->at( k )->SetValue( _model->GetParameterVector()->at( k )->GetValue() + _randomGenerator.Uniform( -1, 1 ) * stepWidth[k] );
 
-                double newChi2 = _model->Evaluate();
+                double newChi2 = _model->GetChi2();
 
                 if ( newChi2 > oldChi2 ) {
 

@@ -49,6 +49,11 @@ namespace Fittino {
        */
                                          ~ModelBase();
       /*!
+       *  Returns the chi2 of the comparison between the predicted observables of the model and\n
+       *  the measured observables. In the case of a test model simply returns the function value.
+       */
+      double                             GetChi2();   
+      /*!
        *  Returns the number of parameters of the model.
        */
       int                                GetNumberOfParameters() const;
@@ -66,11 +71,6 @@ namespace Fittino {
       std::vector<ParameterBase*>*       SetParameterVector();
 
     public:
-      /*!
-       *  Returns the chi2 of the comparison between the predicted observables of the model and\n
-       *  the measured observables. In the case of a test model simply returns the function value.
-       */
-      virtual double                     Evaluate() = 0;
       virtual void                       PrintStatus() = 0;
       /*!
        *  Returns a pointer to a copy of the model.
@@ -101,6 +101,22 @@ namespace Fittino {
        *  parameters
        */
       void                               PrintConfiguration() const;
+
+    private:   
+      /*!
+       *  True when _chi2 corresponds to the current parameter values.
+       */
+      bool                               _evaluated;
+      /*!
+       *  Value returned by Evaluate(). 
+       */
+      double                             _chi2;
+
+    private:
+      /*!
+       *  Evaluates the chi2 function.  
+       */
+      virtual double                     Evaluate() = 0;
 
   };
 

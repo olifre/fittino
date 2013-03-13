@@ -69,7 +69,7 @@ void Fittino::AnalysisTool::FillStatus() {
         _listOfLeaves[i] = _model->GetParameterVector()->at( i )->GetValue();
 
     }
-    _listOfLeaves[_model->GetNumberOfParameters()] = _model->Evaluate();
+    _listOfLeaves[_model->GetNumberOfParameters()] = _model->GetChi2();
 
     _tree->Fill();
 
@@ -88,7 +88,7 @@ void Fittino::AnalysisTool::ExecuteAnalysisTool() {
 
         _iterationCounter++;
 
-        _chi2 = _model->Evaluate();
+        _chi2 = _model->GetChi2();
 
         AnalysisTool::PrintStatus();
 

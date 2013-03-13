@@ -28,7 +28,7 @@
 Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model )
         : SamplerBase( model ),
           _previousChi2( 1.e99 ),
-          //_previousChi2( model->Evaluate() ),
+          //_previousChi2( model->GetChi2() ),
           _previousLikelihood( 1.e-99 ),
           //_previousLikelihood( TMath::Exp( -1. * _previousChi2 / 2. ) ),
           _previousParameterValues( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
@@ -68,7 +68,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
         // Calclate chi2.
 
-        double chi2 = _model->Evaluate();
+        double chi2 = _model->GetChi2();
 
         // Calculate likelihood.
 

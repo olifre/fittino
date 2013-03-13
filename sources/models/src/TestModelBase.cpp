@@ -30,12 +30,6 @@ Fittino::TestModelBase::~TestModelBase() {
 
 }
 
-double Fittino::TestModelBase::Evaluate() {
-
-    return this->TestModelFunction();
-
-}
-
 void Fittino::TestModelBase::PrintStatus() {
 
     Messenger& messenger = Messenger::GetInstance();
@@ -59,5 +53,11 @@ void Fittino::TestModelBase::PrintStatus() {
 		  << Messenger::Endl;
 
     }
+
+}
+
+double Fittino::TestModelBase::Evaluate() {
+
+    return this->TestModelFunction();
 
 }

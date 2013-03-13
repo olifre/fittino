@@ -42,11 +42,11 @@ namespace Fittino {
        *  Standard destructor.
        */
                      ~TestModelBase();
-      virtual double Evaluate();
       virtual void   PrintStatus();
 
       /*! \cond UML */
     private:
+      virtual double Evaluate();
       virtual double TestModelFunction() = 0;
 
       /*! \endcond UML */

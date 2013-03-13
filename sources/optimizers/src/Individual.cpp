@@ -73,7 +73,7 @@ void Fittino::Individual::Mutation() {
 void Fittino::Individual::UpdateChi2() {
 
   UpdateModel();
-    _chi2 = _model->Evaluate();
+    _chi2 = _model->GetChi2();
     _updatedChi2=true;
 
 }

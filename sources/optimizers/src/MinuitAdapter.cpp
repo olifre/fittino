@@ -36,6 +36,6 @@ double Fittino::MinuitAdapter::operator()( const std::vector< double >& paramete
 
     }
 
-    return _model->Evaluate();
+    return _model->GetChi2();
 
 }

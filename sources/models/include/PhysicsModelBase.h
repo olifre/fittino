@@ -47,7 +47,6 @@ namespace Fittino {
        *  Standard destructor.
        */
                                          ~PhysicsModelBase();
-      virtual double                     Evaluate();
       virtual void                       PrintStatus();
 
     protected:
@@ -65,6 +64,9 @@ namespace Fittino {
       double                             CalculateChi2();
 
       /*! \endcond UML */
+
+    private:   
+      virtual double                     Evaluate();
 
   };
 
