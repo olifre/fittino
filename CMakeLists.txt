@@ -37,6 +37,7 @@ SET(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
 
 # Specify the installation path of "Boost" which is required by SLHAea. There is only need to change
 # this when the installation path differs from the default.
+
 # SET(BOOST_ROOT <boost/installation/path>)
 FIND_PACKAGE(Boost REQUIRED)
 
