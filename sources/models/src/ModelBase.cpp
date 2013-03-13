@@ -26,7 +26,8 @@
 
 Fittino::ModelBase::ModelBase()
         : _numberOfParameters( 0 ),
-          _name( "" ) {
+          _name( "" ),
+          _evaluated( false ) {
 
 }
 
