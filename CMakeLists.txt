@@ -53,7 +53,7 @@ FIND_PACKAGE(ROOT)
 
 # Specify the installation path of "SLHAea". The default path is "../slhaea".
 
-SET(SLHAEA_INSTALLATION_PATH ~/Downloads/fthomas-slhaea-ae94569)
+# SET(SLHAEA_INSTALLATION_PATH <slhaea/installation/path>)
 FIND_PACKAGE(SLHAEA)
 
 # Optional: Specify the installation path of the executable "SPheno". The default path is
