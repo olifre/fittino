@@ -29,6 +29,7 @@
 #include "ParticleSwarmOptimizer.h"
 #include "RosenbrockModel.h"
 #include "SamplerBase.h"
+#include "SimpleSampler.h"
 #include "SimulatedAnnealingOptimizer.h"
 #include "XMLDataStorage.h"
 
@@ -91,6 +92,9 @@ Fittino::SamplerBase* const Fittino::Factory::CreateSampler( const Fittino::Conf
 
         case Configuration::MARKOVCHAIN:
             return new MarkovChainSampler( model );
+
+        case Configuration::SIMPLE:
+            return new SimpleSampler( model );
 
     }
 

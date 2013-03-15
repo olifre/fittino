@@ -127,6 +127,11 @@ Fittino::Configuration::SamplerType Fittino::Configuration::GetSamplerType() con
         return Configuration::MARKOVCHAIN;
 
     }
+    else if ( ( *_steeringParameterMap )[key] == "Simple" ) {
+
+        return Configuration::SIMPLE;
+
+    }
     else {
 
         throw ConfigurationException( "Configured sampler type unknown." );
