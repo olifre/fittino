@@ -40,8 +40,8 @@ double Fittino::ModelBase::GetChi2() {
     if ( !_evaluated ) {
 
         _chi2 = Evaluate();
-	_evaluated = true;
-    
+        _evaluated = true;
+
     }
 
     return _chi2;
@@ -68,7 +68,7 @@ const std::vector<Fittino::ParameterBase*>* Fittino::ModelBase::GetParameterVect
 
 std::vector<Fittino::ParameterBase*>* Fittino::ModelBase::SetParameterVector() {
 
-    _evaluated=false;
+    _evaluated = false;
     return &_parameterVector;
 
 }
@@ -96,7 +96,7 @@ void Fittino::ModelBase::PrintConfiguration() const {
     for ( unsigned int i = 0; i < _numberOfParameters; i++ ) {
 
         messenger << Messenger::ALWAYS
-	          << "    "
+                  << "    "
                   << std::left
                   << std::setw( 11 )
                   << this->GetParameterVector()->at( i )->GetName()
@@ -105,7 +105,7 @@ void Fittino::ModelBase::PrintConfiguration() const {
                   << std::setprecision( 5 )
                   << std::scientific
                   << this->GetParameterVector()->at( i )->GetValue()
-		  << Messenger::Endl;
+                  << Messenger::Endl;
 
     }
 
