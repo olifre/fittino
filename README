@@ -20,8 +20,10 @@
 1. Requirements
 ---------------
 
-- The following external programs are mandatory in order to compile Fittino
+- The following external programs/libraries are mandatory in order to compile
+  Fittino
 
+  Boost  (http://www.boost.org)
   ROOT   (http://root.cern.ch/drupal)
   slhaea (http://fthomas.github.com/slhaea)
 
@@ -36,15 +38,14 @@
 
   cmake ..
 
+  If this fails, it is most likly due to a library which is needed by Fittino
+  (see Requirements) but not found by cmake. In this case edit CMakeLists.txt
+  in the Fittino main directory to set the locations of the required libraries
+  manually
+
 - To build Fittino type
 
   make
-
-  or
-
-  make install
-
-  to install it in a directory specified in CMakeList.txt
 
 - If the compilation is successful an executable called "fittino" is produced in
   build/sources/kernel
