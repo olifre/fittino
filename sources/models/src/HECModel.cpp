@@ -17,6 +17,7 @@
 *                                                                              *
 *******************************************************************************/
 
+#include "HiggsSignalsSLHAModelCalculator.h"
 #include "ParameterBase.h"
 #include "HECModel.h"
 
@@ -44,6 +45,9 @@ Fittino::HECModel::HECModel() {
     _parameterVector.push_back( new ParameterBase( "Deltahgg",           1., 1., -10., 10.) );
     _parameterVector.push_back( new ParameterBase( "DeltahggZ",          1., 1., -10., 10.) );
     _parameterVector.push_back( new ParameterBase( "Deltahgammagamma",   1., 1., -10., 10.) );
+
+    //SLHAModelCalculatorBase* slhaModelCalculator = new HiggsSignalsSLHAModelCalculator();
+    //_modelCalculatorVector.push_back( slhaModelCalculator );
 	
     ModelBase::InitializeModel();
 
