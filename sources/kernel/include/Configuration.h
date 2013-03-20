@@ -61,7 +61,7 @@ namespace Fittino {
     public:
       enum                                  ExecutionMode { OPTIMIZATION, SAMPLING };
       enum                                  FileFormat { SLHA, XML };
-      enum                                  ModelType { MSUGRA, ROSENBROCK };
+      enum                                  ModelType { HEC, MSUGRA, ROSENBROCK };
       enum                                  OptimizerType { GENETICALGORITHM, MINUIT, PARTICLESWARM, SIMULATEDANNEALING };
       enum                                  SamplerType { MARKOVCHAIN, SIMPLE };
 

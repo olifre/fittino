@@ -61,6 +61,7 @@ namespace Fittino {
        *  Returns a concrete model according to the model type passed as an argument. Supported\n
        *  model types are
        *  <ul>
+       *    <li> HEC\n	
        *    <li> MSUGRA\n
        *    <li> ROSENBROCK\n
        *  </ul>

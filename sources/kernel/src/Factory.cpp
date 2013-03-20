@@ -21,6 +21,7 @@
 #include "DataStorageBase.h"
 #include "Factory.h"
 #include "GeneticAlgorithmOptimizer.h"
+#include "HECModel.h"
 #include "MarkovChainSampler.h"
 #include "MinuitOptimizer.h"
 #include "MSUGRAModel.h"
@@ -55,6 +56,9 @@ Fittino::DataStorageBase* const Fittino::Factory::CreateDataStorage( const Fitti
 Fittino::ModelBase* const Fittino::Factory::CreateModel( const Fittino::Configuration::ModelType& modelType ) const {
 
     switch ( modelType ) {
+
+        case Configuration::HEC:
+            return new HECModel();
 
         case Configuration::MSUGRA:
             return new MSUGRAModel();
