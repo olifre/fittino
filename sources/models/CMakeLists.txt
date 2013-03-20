@@ -30,5 +30,3 @@ INCLUDE_DIRECTORIES(../samplers/include)
 AUX_SOURCE_DIRECTORY(src sources)
 
 ADD_LIBRARY(models ${sources})
-
-TARGET_LINK_LIBRARIES(models ${ROOT_LIBRARIES})

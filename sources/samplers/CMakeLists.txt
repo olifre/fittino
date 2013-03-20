@@ -28,5 +28,3 @@ INCLUDE_DIRECTORIES(../optimizers/include)
 AUX_SOURCE_DIRECTORY(src sources)
 
 ADD_LIBRARY(samplers ${sources})
-
-TARGET_LINK_LIBRARIES(samplers ${ROOT_LIBRARIES})
