@@ -47,7 +47,7 @@ namespace Fittino {
        */
       virtual      ~SamplerBase();
 
-      /*! \cond UML */
+     /*! \cond UML */
     private:
       virtual void PrintResult() const;
 

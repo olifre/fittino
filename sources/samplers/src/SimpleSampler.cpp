@@ -17,33 +17,17 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <cmath>
-#include <iostream>
-#include <vector>
-
-#include "TMath.h"
-
 #include "ModelBase.h"
-#include "ModelCalculatorException.h"
 #include "SimpleSampler.h"
 
 Fittino::SimpleSampler::SimpleSampler( Fittino::ModelBase* model )
-        : _incrementValues(  std::vector<double>( model->GetNumberOfParameters(), 0. ) ), //decide increments for each parameter separately
-          _lowerBoundValues( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
-          _upperBoundValues( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
-          SamplerBase( model ) {
+          : SamplerBase( model ) {
 
-    _name = "Simple";
+    _name = "simple parameter sampler";
 
     for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-        _incrementValues.at( k ) = 1;
-        //_incrementValues.at(k) = _model->GetParameterVector()->at(k)->GetError();
-        _upperBoundValues.at( k ) = 10;
-        //_upperBoundValues.at(k) = _model->GetParameterVector()->at(k)->GetUpperBound();
-        _lowerBoundValues.at( k ) = 0;
-        //_lowerBoundValues.at(k) = _model->GetParameterVector()->at(k)->GetValue();
-        //_lowerBoundValues.at(k) = _model->GetParameterVector()->at(k)->GetLowerBound();
+        _model->SetParameterVector()->at( k )->SetValue( _model->GetParameterVector()->at( k )->GetLowerBound() );
 
     }
 
@@ -53,41 +37,47 @@ Fittino::SimpleSampler::~SimpleSampler() {
 
 }
 
+void Fittino::SimpleSampler::Execute() {
+
+    Scan( _model->GetNumberOfParameters() - 1 );
+
+}
+
 void Fittino::SimpleSampler::PrintSteeringParameters() const {
 
 }
 
-void Fittino::SimpleSampler::ResetValues( int index ) {
+void Fittino::SimpleSampler::ResetValues( unsigned int iParameter ) {
 
-    for ( unsigned int i = 0; i < index; i++ ) {
+    for ( unsigned int i = 0; i < iParameter; i++ ) {
 
-        _model->SetParameterVector()->at( i )->SetValue( _lowerBoundValues.at( i ) );
+        _model->SetParameterVector()->at( i )->SetValue( _model->GetParameterVector()->at( i )->GetLowerBound() );
 
     }
 
 }
 
-void Fittino::SimpleSampler::Scan( int index ) {
+void Fittino::SimpleSampler::Scan( unsigned int iParameter ) {
 
-    //for(unsigned int steps = 0; steps < _stepNumber.at(index); steps++) {
-    if ( index > 0 ) {
+    if ( iParameter > 0 ) {
 
-        while ( _model->GetParameterVector()->at( index )->GetValue() <= _upperBoundValues.at( index ) ) {
+        while ( _model->GetParameterVector()->at( iParameter )->GetValue() <= _model->GetParameterVector()->at( iParameter )->GetUpperBound() ) {
 
-            Scan( index - 1 );
-            ResetValues( index );
-            UpdateValues( index );
+            Scan( iParameter - 1 );
+            ResetValues( iParameter );
+            UpdateValues( iParameter );
 
         }
 
     }
     else {
 
-        while ( _model->GetParameterVector()->at( index )->GetValue() <= _upperBoundValues.at( index ) ) {
+        while ( _model->GetParameterVector()->at( iParameter )->GetValue() <= _model->GetParameterVector()->at( iParameter )->GetUpperBound() ) {
 
-            _model-> GetChi2();
+            _iterationCounter++;
+            this->PrintStatus();
             this->FillStatus();
-            UpdateValues( 0 );
+            UpdateValues( iParameter );
 
         }
 
@@ -97,12 +87,10 @@ void Fittino::SimpleSampler::Scan( int index ) {
 
 void Fittino::SimpleSampler::UpdateModel() {
 
-    Scan( _model->GetNumberOfParameters() - 1 );
-
 }
 
-void Fittino::SimpleSampler::UpdateValues( int i ) {
+void Fittino::SimpleSampler::UpdateValues( unsigned int iParameter ) {
 
-    _model->SetParameterVector()->at( i )->SetValue( _model->GetParameterVector()->at( i )->GetValue() + _incrementValues.at( i ) );
+    _model->SetParameterVector()->at( iParameter )->SetValue( _model->GetParameterVector()->at( iParameter )->GetValue() + _model->GetParameterVector()->at( iParameter )->GetError() );
 
 }

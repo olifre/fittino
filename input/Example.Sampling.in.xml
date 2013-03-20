@@ -75,8 +75,7 @@
    -->
 
   <Sampler
-   AbortCriterium     = "1e-5"
-   NumberOfIterations = "500"
+   NumberOfIterations = "5000000"
    SamplerType        = "Simple"
    />
 

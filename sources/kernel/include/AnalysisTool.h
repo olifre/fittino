@@ -66,6 +66,10 @@ namespace Fittino {
 
     protected:
       /*!
+       *  The chi2 of the model.
+       */
+      double             _chi2;
+      /*!
        *  Counts the number of calls to UpdateModel().
        */
       unsigned int       _iterationCounter;
@@ -108,21 +112,14 @@ namespace Fittino {
        */
       virtual void       UpdateModel() = 0;
 
+    protected:
+      /*!
+       *  Prints the tool's status to screen.
+       */
+      void               PrintStatus() const;
+
       /*! \cond UML */
     private:
-      /*!
-       *  Stores the configured criterium of a measure of the goodness of fit is compared to\n
-       *  (usually the chi2 of the model).
-       */
-      double             _abortCriterium;
-      /*!
-       *  The chi2 of the model.
-       */
-      double             _chi2;
-      /*!
-       *  Stores the configured maximal number of iteration steps.
-       */
-      unsigned int       _numberOfIterations;
       std::vector<float> _listOfLeaves;
       /*!
        *  A ROOT file which stores the tool's output. The default name of the file is "Output.root".
@@ -134,10 +131,12 @@ namespace Fittino {
       TTree*             _tree;
 
     private:
+      virtual void       Execute() = 0;
+
+    private:
       void               ExecuteAnalysisTool();
       void               InitializeAnalysisTool() const;
       void               PrintConfiguration() const;
-      void               PrintStatus() const;
       void               TerminateAnalysisTool();
       void               WriteResultToFile() const;
 

@@ -21,7 +21,9 @@
 
 #include "TMath.h"
 
+#include "Configuration.h"
 #include "MarkovChainSampler.h"
+#include "Messenger.h"
 #include "ModelBase.h"
 #include "ModelCalculatorException.h"
 
@@ -32,7 +34,8 @@ Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model )
           _previousLikelihood( 1.e-99 ),
           //_previousLikelihood( TMath::Exp( -1. * _previousChi2 / 2. ) ),
           _previousParameterValues( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
-          _previousRho( 1. ) {
+          _previousRho( 1. ),
+          _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", 10000 ) ) {
 
     _name = "Markov chain parameter sampler";
 
@@ -48,7 +51,27 @@ Fittino::MarkovChainSampler::~MarkovChainSampler() {
 
 }
 
+void Fittino::MarkovChainSampler::Execute() {
+
+    while ( _iterationCounter < _numberOfIterations ) {
+
+        _iterationCounter++;
+
+        _chi2 = _model->GetChi2();
+
+        AnalysisTool::PrintStatus();
+
+        this->UpdateModel();
+
+    }
+
+}
+
 void Fittino::MarkovChainSampler::PrintSteeringParameters() const {
+
+    Messenger& messenger = Messenger::GetInstance();
+
+    messenger << Messenger::ALWAYS << "    Number of iterations         " << _numberOfIterations << Messenger::Endl;
 
 }
 

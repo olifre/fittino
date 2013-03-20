@@ -57,9 +57,11 @@ void Fittino::ParticleSwarmOptimizer::PrintSteeringParameters() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::ALWAYS << "    Number of particles          " << _numberOfParticles << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "    Global scaling factor c1     " << _c1                << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "    Local scaling factor c2      " << _c2                << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Abort criterium              " << _abortCriterium     << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Number of iterations         " << _numberOfIterations << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Number of particles          " << _numberOfParticles  << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Global scaling factor c1     " << _c1                 << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Local scaling factor c2      " << _c2                 << Messenger::Endl;
 
 }
 

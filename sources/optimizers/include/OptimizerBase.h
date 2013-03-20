@@ -59,8 +59,20 @@ namespace Fittino {
        */
       virtual      ~OptimizerBase();
 
+    protected:
+      /*!
+       *  Stores the configured criterium of a measure of the goodness of fit is compared to\n
+       *  (usually the chi2 of the model).
+       */
+      double       _abortCriterium;
+      /*!
+       *  Stores the configured maximal number of iteration steps.
+       */
+      unsigned int _numberOfIterations;
+
       /*! \cond UML */
     private:
+      virtual void Execute();
       virtual void PrintResult() const;
 
       /*! \endcond UML */

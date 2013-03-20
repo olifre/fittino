@@ -24,16 +24,35 @@
 #include <iostream>
 #include <sstream>
 
+#include "Configuration.h"
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "OptimizerBase.h"
 
 Fittino::OptimizerBase::OptimizerBase( ModelBase* model )
-        : AnalysisTool( model ) {
+        : _abortCriterium( Configuration::GetInstance()->GetSteeringParameter( "AbortCriterium", 1e-6 ) ),
+          _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", 10000 ) ),
+          AnalysisTool( model ) {
 
 }
 
 Fittino::OptimizerBase::~OptimizerBase() {
+
+}
+
+void Fittino::OptimizerBase::Execute() {
+
+    while (  _chi2 > _abortCriterium && _iterationCounter < _numberOfIterations ) {
+
+        _iterationCounter++;
+
+        _chi2 = _model->GetChi2();
+
+        AnalysisTool::PrintStatus();
+
+        this->UpdateModel();
+
+    }
 
 }
 

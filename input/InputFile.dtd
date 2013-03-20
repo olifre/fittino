@@ -52,8 +52,7 @@
 
 <!ELEMENT Sampler EMPTY>
 <!ATTLIST Sampler
-  AbortCriterium     CDATA #REQUIRED
-  NumberOfIterations CDATA #REQUIRED
+  NumberOfIterations CDATA #IMPLIED
   SamplerType        CDATA #REQUIRED
 >
 

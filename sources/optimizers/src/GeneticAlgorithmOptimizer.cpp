@@ -190,8 +190,10 @@ void Fittino::GeneticAlgorithmOptimizer::PrintSteeringParameters() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::ALWAYS << "    Mutation rate                " << _mutationRate     << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "    Size of population           " << _sizeOfPopulation << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Abort criterium              " << _abortCriterium     << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Number of iterations         " << _numberOfIterations << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Mutation rate                " << _mutationRate       << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Size of population           " << _sizeOfPopulation   << Messenger::Endl;
 
 }
 

@@ -25,18 +25,15 @@
 #include "TTree.h"
 
 #include "AnalysisTool.h"
-#include "Configuration.h"
 #include "Messenger.h"
 #include "ModelBase.h"
 
 Fittino::AnalysisTool::AnalysisTool( ModelBase* model )
-        : _abortCriterium( Configuration::GetInstance()->GetSteeringParameter( "AbortCriterium", 1e-6 ) ),
-          _chi2( 1.e99 ),
+        : _chi2( 1.e99 ),
           _iterationCounter( 0 ),
           _listOfLeaves( _model->GetNumberOfParameters() + 1, 0. ),
           _model( model ),
           _name( "" ),
-          _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", 10000 ) ),
           _outputFile( "Output.root", "RECREATE" ),
           _randomGenerator(),
           _tree( new TTree( "Tree", "Tree" ) ) {
@@ -84,17 +81,7 @@ void Fittino::AnalysisTool::ExecuteAnalysisTool() {
     messenger << Messenger::ALWAYS << "  Running the " << _name << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
-    while (  _chi2 > _abortCriterium && _iterationCounter < _numberOfIterations ) {
-
-        _iterationCounter++;
-
-        _chi2 = _model->GetChi2();
-
-        AnalysisTool::PrintStatus();
-
-        this->UpdateModel();
-
-    }
+    this->Execute();
 
 }
 
@@ -117,8 +104,6 @@ void Fittino::AnalysisTool::PrintConfiguration() const {
 
     messenger << Messenger::ALWAYS << "   Configuration" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "    Abort criterium              " << _abortCriterium << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "    Number of iterations         " << _numberOfIterations << Messenger::Endl;
 
     this->PrintSteeringParameters();
 
@@ -137,7 +122,7 @@ void Fittino::AnalysisTool::PrintStatus() const {
     _model->PrintStatus();
 
     messenger << Messenger::INFO << Messenger::Endl;
-    messenger << Messenger::INFO << std::scientific << std::setprecision( 5 ) << "    Chi2    " << _chi2 << Messenger::Endl;
+    messenger << Messenger::INFO << std::scientific << std::setprecision( 5 ) << "    Chi2    " << _model->GetChi2() << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
 
 }

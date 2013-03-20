@@ -49,7 +49,9 @@ void Fittino::MinuitOptimizer::PrintSteeringParameters() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::ALWAYS << "    Default configuration " << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Abort criterium       " << _abortCriterium     << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Number of iterations  " << _numberOfIterations << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Default configuration"                         << Messenger::Endl;
 
 }
 

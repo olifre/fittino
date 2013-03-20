@@ -20,8 +20,6 @@
 #ifndef FITTINO_SIMPLESAMPLER_H
 #define FITTINO_SIMPLESAMPLER_H
 
-#include <vector>
-
 #include "SamplerBase.h"
 
 /*!
@@ -40,39 +38,34 @@ namespace Fittino {
        *  Standard constructor.
        */
 
-                          SimpleSampler( ModelBase* model );
+                   SimpleSampler( ModelBase* model );
       /*!
        *  Standard destructor.
        */
-                          ~SimpleSampler();
+                   ~SimpleSampler();
 
       /*! \cond UML */
     private:
-      int                 _allPoints;
-      int                 _delta1Points;
-      int                 _delta2Points;
-      std::vector<double> _incrementValues;
-      std::vector<double> _lowerBoundValues;
-      std::vector<double> _upperBoundValues;
-
-    private:
-      virtual void        PrintSteeringParameters() const;
-      virtual void        ResetValues( int i );
-      /*!
-       *  Scans chi2 by iterating over a given parameter.
-       */
-      virtual void        Scan( int index );
+      virtual void Execute();
+      virtual void PrintSteeringParameters() const;
       /*!
        *  Call Scan() for the last parameter to start the recursion.
        */
-      virtual void        UpdateModel();
+      virtual void UpdateModel();
+
+    private:
+      void         ResetValues( unsigned int iParameter );
+      /*!
+       *  Scans chi2 by iterating over a given parameter.
+       */
+      void         Scan( unsigned int iParameter );
       /*!
        *  Updates within an iteration of UpdateModel():
        *  - increase the current parameter by the desired increment
        *  - reset all following parameters to their original values
        *  - leave previous parameters unchanged
       */
-      virtual void        UpdateValues( int i );
+      void         UpdateValues( unsigned int iParameter );
 
       /*! \endcond UML */
 

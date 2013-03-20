@@ -45,6 +45,8 @@ void Fittino::SimulatedAnnealingOptimizer::PrintSteeringParameters() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
+    messenger << Messenger::ALWAYS << "    Abort criterium              " << _abortCriterium             << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "    Number of iterations         " << _numberOfIterations         << Messenger::Endl;
     messenger << Messenger::ALWAYS << "    Initial temperature          " << _initialTemperature         << Messenger::Endl;
     messenger << Messenger::ALWAYS << "    Temperature reduction factor " << _temperatureReductionFactor << Messenger::Endl;
 
