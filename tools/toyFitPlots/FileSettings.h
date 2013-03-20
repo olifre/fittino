@@ -31,16 +31,16 @@ const UInt_t numberOfParameters = 5;
 //const UInt_t numberOfParameters = 6;
 //const UInt_t numberOfParameters = 7;
 
-// Gauss' formula gives the number of pairs.
-//const UInt_t numberOfHistograms = (numberOfObservables*(numberOfObservables-1))/2.;
-//const UInt_t numberOfHistograms = numberOfObservables + numberOfParameters + 1;
-
 // For 1D histograms.
+// The number of 1D histograms is simply:
+// numberOfHistograms = numberOfObsevables + numberOfParameters.
 const UInt_t numberOfHistograms = 15; // CMSSM
 //const UInt_t numberOfHistograms = 16; // NUHM1
 //const UInt_t numberOfHistograms = 17; // NUHM2
 
 // For 2D histograms.
+// Gauss' formula gives the number of 2D histograms:
+// numberOfHistograms = (numberOfObservables*(numberOfObservables-1))/2.
 const UInt_t numberOfHistograms = 105; // CMSSM
 //const UInt_t numberOfHistograms = 120; // NUHM1
 //const UInt_t numberOfHistograms = 136; // NUHM2
