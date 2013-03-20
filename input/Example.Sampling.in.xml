@@ -62,9 +62,12 @@
    -->
 
   <Model
-   ModelType = "Rosenbrock"
-   X         = "2.56"
-   Y         = "-1.54"
+   ModelType  = "Rosenbrock"
+   Dimensions = "3"
+   X1         = "0"
+   X2         = "0"
+   X3         = "0"
+  
    />
 
   <!--
@@ -74,7 +77,7 @@
   <Sampler
    AbortCriterium     = "1e-5"
    NumberOfIterations = "500"
-   SamplerType        = "MarkovChain"
+   SamplerType        = "Simple"
    />
 
 </InputFile>

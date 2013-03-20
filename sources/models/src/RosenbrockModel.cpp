@@ -8,7 +8,8 @@
 *                                                                              *
 * Description Implementation of the Rosenbrock model                           *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>
+              Pia Kullik <pkullik@uni-bonn.de>                                                                 *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -18,18 +19,27 @@
 *******************************************************************************/
 
 #include <cmath>
+#include <sstream>
 
 #include "Configuration.h"
 #include "RosenbrockModel.h"
+#include "ParameterBase.h"
 
 Fittino::RosenbrockModel::RosenbrockModel() {
 
     Configuration* configuration = Configuration::GetInstance();
 
-    _numberOfParameters = 2;
     _name = "Rosenbrock model";
-    _parameterVector.push_back( new ParameterBase( "X", configuration->GetSteeringParameter( "X", 0. ), 1., -10., 10. ) );
-    _parameterVector.push_back( new ParameterBase( "Y", configuration->GetSteeringParameter( "Y", 0. ), 1., -10., 10. ) );
+    std::stringstream paramname;
+    _numberOfParameters = configuration->GetSteeringParameter("Dimensions", 1.);
+
+    for (unsigned int i = 0; i < _numberOfParameters; i++){
+
+        paramname.str("");
+        paramname << "X" << i+1;
+        _parameterVector.push_back(new ParameterBase(paramname.str(), configuration->GetSteeringParameter(paramname.str(), 0.), 1., -10., 10.));
+
+    }
 
     ModelBase::InitializeModel();
 
@@ -41,7 +51,14 @@ Fittino::RosenbrockModel::~RosenbrockModel() {
 
 double Fittino::RosenbrockModel::TestModelFunction() {
 
-    return pow( ( 1 - _parameterVector[0]->GetValue() ), 2 ) + 100 * pow( _parameterVector[1]->GetValue() - pow( _parameterVector[0]->GetValue(), 2 ), 2 );
+    double rosenbrock = 0;
+
+    for (unsigned int i = 1; i < _parameterVector.size(); i++){
+
+        rosenbrock += pow(1 - _parameterVector.at(i-1)->GetValue(), 2) + 100 * pow(_parameterVector.at(i)->GetValue() - pow(_parameterVector.at(i-1)->GetValue(), 2), 2);
+    }
+
+    return rosenbrock;
 
 }
 

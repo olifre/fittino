@@ -26,6 +26,12 @@
   TanBeta   CDATA #IMPLIED
   X         CDATA #IMPLIED
   Y         CDATA #IMPLIED
+  Dimensions CDATA #IMPLIED
+  X1         CDATA #IMPLIED
+  X2         CDATA #IMPLIED
+  X3         CDATA #IMPLIED
+  X4         CDATA #IMPLIED
+  X5         CDATA #IMPLIED
 >
 
 <!ELEMENT Observable EMPTY>

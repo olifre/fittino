@@ -21,10 +21,12 @@
 #define FITTINO_ROSENBROCKMODEL_H
 
 #include <vector>
+#include <sstream>
 
 #include "Minuit2/FCNBase.h"
 
 #include "TestModelBase.h"
+#include "ModelBase.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -53,7 +55,14 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
+
+
+
+
+
+    private:
       virtual double           TestModelFunction();
+
 
       /*! \endcond UML */
 
