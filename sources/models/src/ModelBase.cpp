@@ -79,7 +79,7 @@ void Fittino::ModelBase::InitializeModel() const {
 
     messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  Initializing " << _name << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Initializing the " << _name << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
     ModelBase::PrintConfiguration();
@@ -98,7 +98,7 @@ void Fittino::ModelBase::PrintConfiguration() const {
         messenger << Messenger::ALWAYS
                   << "    "
                   << std::left
-                  << std::setw( 11 )
+                  << std::setw( 19 )
                   << this->GetParameterVector()->at( i )->GetName()
                   << std::right
                   << std::setw( 12 )
