@@ -19,19 +19,16 @@
 
 <!ELEMENT Model EMPTY>
 <!ATTLIST Model
-  ModelType CDATA #REQUIRED
-  A0        CDATA #IMPLIED
-  M0        CDATA #IMPLIED
-  M12       CDATA #IMPLIED
-  TanBeta   CDATA #IMPLIED
-  X         CDATA #IMPLIED
-  Y         CDATA #IMPLIED
+  ModelType  CDATA #REQUIRED
+  A0         CDATA #IMPLIED
+  M0         CDATA #IMPLIED
+  M12        CDATA #IMPLIED
+  TanBeta    CDATA #IMPLIED
   Dimensions CDATA #IMPLIED
   X1         CDATA #IMPLIED
   X2         CDATA #IMPLIED
   X3         CDATA #IMPLIED
   X4         CDATA #IMPLIED
-  X5         CDATA #IMPLIED
 >
 
 <!ELEMENT Observable EMPTY>

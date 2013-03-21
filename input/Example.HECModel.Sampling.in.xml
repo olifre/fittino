@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding='UTF-8'?>
-<?xml-stylesheet type="text/xsl" href="InputFile.xsl"?>
 
-<!-- $Id: Example.Optimization.in.xml 705 2010-07-20 22:56:05Z uhlenbrock $ -->
+<!-- $Id: Example.HECModel.Sampling.in.xml 705 2010-07-20 22:56:05Z uhlenbrock $ -->
 
 <!--#########################################################################-->
 <!--                                                                         -->
 <!-- Project     Fittino - A SUSY Parameter Fitting Package                  -->
 <!--                                                                         -->
-<!-- File        Example.Optimization.in.xml                                 -->
+<!-- File        Example.HECModel.Sampling.in.xml                            -->
 <!--                                                                         -->
-<!-- Description Optimization example                                        -->
+<!-- Description Configuration example for the Higgs effective couplings     -->
+<!--             (HEC) model                                                 -->
 <!--                                                                         -->
-<!-- Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>         -->
+<!-- Authors     Sebastian Heer  <s6seheer@uni-bonn.de>                      --> 
 <!--                                                                         -->
 <!-- Licence     This program is free software; you can redistribute it      -->
 <!--             and/or modify it under the terms of the GNU General Public  -->
@@ -30,48 +30,16 @@
    />
 
   <ExecutionMode
-   Mode = "OPTIMIZATION"
+   Mode = "SAMPLING"
    />
 
   <Model
-   ModelType  = "Rosenbrock"
-   Dimensions = "2"
-   X1         = "2.56"
-   X2         = "-1.54"
+   ModelType = "HEC"
    />
 
-  <Optimizer
-   AbortCriterium     = "1.e-5"
-   NumberOfIterations = "500"
-   OptimizerType      = "SimulatedAnnealing"
-   />
-
-  <!--
-   Configuration example for the genetic algorithm optimizer.
-   -->
-
-  <GeneticAlgorithmOptimizer
-   MutationRate      = "0.5"
-   SizeOfPopulation  = "100"
-   />
-
-  <!--
-   Configuration example for the particle swarm optimizer.
-   -->
-
-  <ParticleSwarmOptimizer
-   C1                = "0.01"
-   C2                = "0.01"
-   NumberOfParticles = "100"
-   />
-
-  <!--
-   Configuration example for the simulated annealing optimizer.
-   -->
-
-  <SimulatedAnnealingOptimizer
-   InitialTemperature         = "600."
-   TemperatureReductionFactor = "0.5"
+  <Sampler
+   NumberOfIterations = "0"
+   SamplerType        = "MarkovChain"
    />
 
 </InputFile>

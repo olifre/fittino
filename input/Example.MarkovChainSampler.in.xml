@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding='UTF-8'?>
 
-<!-- $Id: Example.in.xml 705 2010-07-20 22:56:05Z uhlenbrock $ -->
+<!-- $Id: Example.MarkovChainSampler.in.xml 705 2010-07-20 22:56:05Z uhlenbrock $ -->
 
 <!--#########################################################################-->
 <!--                                                                         -->
 <!-- Project     Fittino - A SUSY Parameter Fitting Package                  -->
 <!--                                                                         -->
-<!-- File        Example.in.xml                                              -->
+<!-- File        Example.MarkovChainSampler.in.xml                           -->
 <!--                                                                         -->
-<!-- Description This is an example Fittino input file in XML format.        -->
+<!-- Description Configuration example for the Markov Chain parameter        -->
+<!--             sampler                                                     -->
 <!--                                                                         -->
 <!-- Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>         -->
 <!--                                                                         -->
@@ -20,63 +21,29 @@
 <!--                                                                         -->
 <!--#########################################################################-->
 
-<!DOCTYPE InputFile PUBLIC "" "InputFile.dtd" >
+<!DOCTYPE InputFile PUBLIC "" "InputFile.dtd">
 
 <InputFile>
-
-  <!--
-   The VerbosityLevel node specifies the degree of information which is printed out on the screen.
-   The supported verbosity levels are listed in the table below:
-
-       Level         Description 
-
-       ALWAYS        Default verbosity level
-       VERBOSE
-       DEBUG
-       INFO
-
-   -->
 
   <VerbosityLevel
    Level = "ALWAYS"
    />
 
-  <!--
-   The ExecutionMode node specifies the main execution mode of Fittino. If OPTIMIZATION is set,
-   Fittino tries to find the optimal parameter set of a given model w.r.t. experimental observation.
-   -->
-
   <ExecutionMode
    Mode = "SAMPLING"
    />
 
-  <!--
-   The Model node specifies the model to be optimized. The supported models and their parameters are
-   listed in the table below:
-
-       Model         Parameters
-
-       MSUGRA        A0, M0, M12, TanBeta (not yet fully implemented)
-       Rosenbrock    X, Y
-
-   -->
-
   <Model
    ModelType  = "Rosenbrock"
    Dimensions = "3"
-   X1         = "0"
-   X2         = "0"
-   X3         = "0"
-  
+   X1         = "0."
+   X2         = "0."
+   X3         = "0."
    />
 
-  <!--
-   The Sampler node specifies the sampling algorithm (sampler type).
-   -->
-
   <Sampler
-   NumberOfIterations = "5000000"
-   SamplerType        = "Simple"
+   NumberOfIterations = "500"
+   SamplerType        = "MarkovChain"
    />
 
 </InputFile>
