@@ -8,7 +8,8 @@
 *                                                                              *
 * Description Implementation of the Rosenbrock model                           *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Pia     Kullik      <pkullik@uni-bonn.de>                        *
+*             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -20,13 +21,7 @@
 #ifndef FITTINO_ROSENBROCKMODEL_H
 #define FITTINO_ROSENBROCKMODEL_H
 
-#include <vector>
-#include <sstream>
-
-#include "Minuit2/FCNBase.h"
-
 #include "TestModelBase.h"
-#include "ModelBase.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -48,6 +43,8 @@ namespace Fittino {
        *  Standard destructor.
        */
                                ~RosenbrockModel();
+
+    public:
       /*!
        *  Virtual copy constructor.
        */
@@ -55,14 +52,7 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-
-
-
-
-
-    private:
       virtual double           TestModelFunction();
-
 
       /*! \endcond UML */
 
