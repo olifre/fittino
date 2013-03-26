@@ -22,7 +22,15 @@
 
 #include "SLHAModelCalculatorBase.h"
 
-extern "C" { void initialize_higgssignals_latestresults_( int* nHzero, int* nHplus ); }
+extern "C" {
+
+  void higgssignals_neutral_input_massuncertainty_( double* dm );
+  void initialize_higgssignals_latestresults_( int* nHzero, int* nHplus );
+  void setup_higgs_to_peaks_assignment_iterations_( int* iterations );
+  void setup_output_level_( int* output_level );
+  void setup_pdf_( int* pdf );
+
+}
 
 /*!
  *  \brief Fittino namespace.
@@ -39,14 +47,17 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-           HiggsSignalsSLHAModelCalculator();
+                   HiggsSignalsSLHAModelCalculator();
       /*!
        *  Standard destructor.
        */
-           ~HiggsSignalsSLHAModelCalculator();
+                   ~HiggsSignalsSLHAModelCalculator();
+
+    public:
+      virtual void Initialize();
 
     protected:
-      void ConfigureInput( PhysicsModelBase* model );
+      void         ConfigureInput( PhysicsModelBase* model );
 
   };
 

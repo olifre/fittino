@@ -37,14 +37,16 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-           FeynHiggsSLHAModelCalculator();
+                   FeynHiggsSLHAModelCalculator();
       /*!
        *  Standard destructor.
        */
-           ~FeynHiggsSLHAModelCalculator();
+                   ~FeynHiggsSLHAModelCalculator();
+
+      virtual void Initialize();
 
     protected:
-      void ConfigureInput( PhysicsModelBase* model );
+      void         ConfigureInput( PhysicsModelBase* model );
 
   };
 

@@ -27,6 +27,10 @@ Fittino::FeynHiggsSLHAModelCalculator::~FeynHiggsSLHAModelCalculator() {
 
 }
 
+void Fittino::FeynHiggsSLHAModelCalculator::Initialize() {
+
+}
+
 void Fittino::FeynHiggsSLHAModelCalculator::ConfigureInput( PhysicsModelBase* model ) {
 
 }

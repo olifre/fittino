@@ -37,14 +37,17 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-           SPhenoSLHAModelCalculator();
+                   SPhenoSLHAModelCalculator();
       /*!
        *  Standard destructor.
        */
-           ~SPhenoSLHAModelCalculator();
+                   ~SPhenoSLHAModelCalculator();
+
+    public:
+      virtual void Initialize();
 
     protected:
-      void ConfigureInput( PhysicsModelBase* model );
+      void         ConfigureInput( PhysicsModelBase* model );
 
   };
 

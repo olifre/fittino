@@ -45,6 +45,10 @@ Fittino::SPhenoSLHAModelCalculator::~SPhenoSLHAModelCalculator() {
 
 }
 
+void Fittino::SPhenoSLHAModelCalculator::Initialize() {
+
+}
+
 void Fittino::SPhenoSLHAModelCalculator::ConfigureInput( PhysicsModelBase* model ) {
 
     // Write block "MODSEL".
