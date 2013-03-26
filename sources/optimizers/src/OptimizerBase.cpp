@@ -60,12 +60,12 @@ void Fittino::OptimizerBase::PrintResult() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  Optimization converged after " << _iterationCounter << " iterations" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
-    messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  Optimization results" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
@@ -87,6 +87,6 @@ void Fittino::OptimizerBase::PrintResult() const {
     }
 
     messenger << Messenger::ALWAYS << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
 
 }

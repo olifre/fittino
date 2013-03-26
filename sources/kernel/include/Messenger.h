@@ -34,40 +34,46 @@ namespace Fittino {
   class Messenger : public std::ostringstream {
 
     public:
-      enum                VerbosityLevel { INFO, DEBUG, VERBOSE, ALWAYS };
+      /*!
+       *  This string can be used to visually seperate individual processing steps in Fittino.
+       */
+      const static std::string& _dashedLine;
 
     public:
-      static Messenger&   Endl( Messenger& messenger );
-      static Messenger&   GetInstance();
+      enum                      VerbosityLevel { INFO, DEBUG, VERBOSE, ALWAYS };
+
+    public:
+      static Messenger&         Endl( Messenger& messenger );
+      static Messenger&         GetInstance();
 
     public:
       /*!
        *  Standard constructor.
        */
-                          Messenger();
+                                Messenger();
       /*!
        *  Standard destructor.
        */
-                          ~Messenger();
-      void                Send();
-      void                SetVerbosityLevel( const VerbosityLevel& verbosityLevel );
+                                ~Messenger();
+      void                      Send();
+      void                      SetVerbosityLevel( const VerbosityLevel& verbosityLevel );
 
     public:
-      Messenger& operator << ( std::ios& ( *_f )( std::ios& ) );
-      Messenger& operator << ( std::ostream& ( *_f )( std::ostream& ) );
-      Messenger& operator << ( Messenger& ( *_f )( Messenger& ) );
-      Messenger& operator << ( VerbosityLevel verbosityLevel );
+      Messenger&                operator<<( std::ios& ( *_f )( std::ios& ) );
+      Messenger&                operator<<( std::ostream& ( *_f )( std::ostream& ) );
+      Messenger&                operator<<( Messenger& ( *_f )( Messenger& ) );
+      Messenger&                operator<<( VerbosityLevel verbosityLevel );
       template<class T>
-      Messenger& operator << ( T arg );
+      Messenger&                operator<<( T arg );
 
     private:
-      VerbosityLevel      _verbosityLevel;
-      VerbosityLevel      _actualVerbosityLevel;
+      VerbosityLevel            _verbosityLevel;
+      VerbosityLevel            _actualVerbosityLevel;
 
   };
 
   template<class T>
-  Messenger& Messenger::operator<< ( T arg ) {
+  Messenger& Messenger::operator<<( T arg ) {
 
     if ( _actualVerbosityLevel >= _verbosityLevel ) {
 

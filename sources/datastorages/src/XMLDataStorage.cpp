@@ -45,7 +45,7 @@ void Fittino::XMLDataStorage::ReadFile( const TString& xmlInputFileName ) const 
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  Reading configuration from file " << static_cast<std::string>( xmlInputFileName ) << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;

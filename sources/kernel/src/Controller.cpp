@@ -224,7 +224,7 @@ void Fittino::Controller::PrintLogo() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  Welcome to Fittino" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;

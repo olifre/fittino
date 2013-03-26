@@ -23,6 +23,8 @@
 #include "Configuration.h"
 #include "Messenger.h"
 
+const std::string& Fittino::Messenger::_dashedLine = std::string( 85, '-' );
+
 Fittino::Messenger& Fittino::Messenger::Endl( Messenger& messenger ) {
 
     messenger.Send();
@@ -67,27 +69,27 @@ void Fittino::Messenger::SetVerbosityLevel( const VerbosityLevel& verbosityLevel
 
 }
 
-Fittino::Messenger& Fittino::Messenger::operator << ( std::ios& ( *_f )( std::ios& ) ) {
+Fittino::Messenger& Fittino::Messenger::operator<<( std::ios& ( *_f )( std::ios& ) ) {
 
     ( _f )( *this );
     return *this;
 
 }
 
-Fittino::Messenger& Fittino::Messenger::operator << ( std::ostream& ( *_f )( std::ostream& ) ) {
+Fittino::Messenger& Fittino::Messenger::operator<<( std::ostream& ( *_f )( std::ostream& ) ) {
 
     ( _f )( *this );
     return *this;
 
 }
 
-Fittino::Messenger& Fittino::Messenger::operator << ( Fittino::Messenger& ( *_f )( Fittino::Messenger& ) ) {
+Fittino::Messenger& Fittino::Messenger::operator<<( Fittino::Messenger& ( *_f )( Fittino::Messenger& ) ) {
 
     return ( _f )( *this );
 
 }
 
-Fittino::Messenger& Fittino::Messenger::operator << ( Fittino::Messenger::VerbosityLevel verbosityLevel ) {
+Fittino::Messenger& Fittino::Messenger::operator<<( Fittino::Messenger::VerbosityLevel verbosityLevel ) {
 
     _actualVerbosityLevel = verbosityLevel;
     return *this;

@@ -76,7 +76,7 @@ void Fittino::AnalysisTool::ExecuteAnalysisTool() {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  Running the " << _name << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
@@ -89,7 +89,7 @@ void Fittino::AnalysisTool::InitializeAnalysisTool() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  Initializing the " << _name << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
@@ -115,7 +115,7 @@ void Fittino::AnalysisTool::PrintStatus() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::INFO << "-------------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::_dashedLine << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
     messenger << Messenger::INFO << "  Iteration step " << _iterationCounter << Messenger::Endl;
 
@@ -131,7 +131,7 @@ void Fittino::AnalysisTool::TerminateAnalysisTool() {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  Terminating the " << _name << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;

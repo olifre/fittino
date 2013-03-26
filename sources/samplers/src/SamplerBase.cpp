@@ -33,6 +33,6 @@ void Fittino::SamplerBase::PrintResult() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::ALWAYS << "-------------------------------------------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
 
 }
