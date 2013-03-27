@@ -46,8 +46,17 @@ namespace Fittino {
     public:
       virtual void Initialize();
 
-    protected:
-      void         ConfigureInput( PhysicsModelBase* model );
+      /*! \cond UML */
+    private:
+    /*!
+     *  \todo Short-term: The method CallExecutable() is copied from the old fittino code. It should\n
+     *  be eventually replaced.
+     */
+      virtual void CallExecutable();
+      virtual void CallFunction( PhysicsModelBase* model );
+      virtual void ConfigureInput( PhysicsModelBase* model );
+
+      /*! \endcond UML */
 
   };
 

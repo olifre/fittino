@@ -56,8 +56,13 @@ namespace Fittino {
     public:
       virtual void Initialize();
 
-    protected:
-      void         ConfigureInput( PhysicsModelBase* model );
+      /*! \cond UML */
+    private:
+      virtual void CallExecutable();
+      virtual void CallFunction( PhysicsModelBase* model );
+      virtual void ConfigureInput( PhysicsModelBase* model );
+
+      /*! \endcond UML */
 
   };
 

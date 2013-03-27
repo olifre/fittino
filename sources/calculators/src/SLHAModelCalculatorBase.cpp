@@ -49,7 +49,7 @@ void Fittino::SLHAModelCalculatorBase::CalculatePredictions( Fittino::PhysicsMod
 
         case FUNCTION: {
 
-            CallFunction();
+            CallFunction( model );
 	    break;
 
         }

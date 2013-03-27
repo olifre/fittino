@@ -21,6 +21,8 @@
 
 Fittino::FeynHiggsSLHAModelCalculator::FeynHiggsSLHAModelCalculator() {
 
+    _name = "FeynHiggs";
+
 }
 
 Fittino::FeynHiggsSLHAModelCalculator::~FeynHiggsSLHAModelCalculator() {

@@ -20,11 +20,18 @@
 #include "ModelCalculatorBase.h"
 
 Fittino::ModelCalculatorBase::ModelCalculatorBase()
-        : _callMethod( FUNCTION ),
+        : _name( "" ),
+          _callMethod( FUNCTION ),
           _executableName( "" ) {
 
 }
 
 Fittino::ModelCalculatorBase::~ModelCalculatorBase() {
+
+}
+
+std::string Fittino::ModelCalculatorBase::GetName() const {
+
+    return _name;
 
 }

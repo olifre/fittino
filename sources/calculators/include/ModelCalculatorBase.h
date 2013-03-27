@@ -47,6 +47,7 @@ namespace Fittino {
        *  Standard destructor.
        */
                    ~ModelCalculatorBase();
+      std::string  GetName() const;
 
     public:
       virtual void CalculatePredictions( PhysicsModelBase* model ) = 0;
@@ -56,12 +57,13 @@ namespace Fittino {
       enum         CallMethod { EXECUTABLE, FUNCTION };
 
     protected:
+      std::string  _name;
       TString      _executableName;
       CallMethod   _callMethod;
 
     protected:
       virtual void CallExecutable() = 0;
-      virtual void CallFunction() = 0;
+      virtual void CallFunction( PhysicsModelBase* model ) = 0;
       virtual void ConfigureInput( PhysicsModelBase* model ) = 0;
 
   };

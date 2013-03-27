@@ -36,6 +36,7 @@ Fittino::SPhenoSLHAModelCalculator::SPhenoSLHAModelCalculator() {
 
     _callMethod         = EXECUTABLE;
     _executableName     = "./SPheno";
+    _name               = "SPheno";
     _slhaInputFileName  = "LesHouches.in";
     _slhaOutputFileName = "SPheno.spc";
 
@@ -112,7 +113,7 @@ void Fittino::SPhenoSLHAModelCalculator::ConfigureInput( PhysicsModelBase* model
 
 }
 
-void Fittino::SLHAModelCalculatorBase::CallExecutable() {
+void Fittino::SPhenoSLHAModelCalculator::CallExecutable() {
 
     int returnValue = 0;
 
@@ -187,6 +188,6 @@ void Fittino::SLHAModelCalculatorBase::CallExecutable() {
 
 }
 
-void Fittino::SLHAModelCalculatorBase::CallFunction() {
+void Fittino::SPhenoSLHAModelCalculator::CallFunction( PhysicsModelBase* model ) {
 
 }

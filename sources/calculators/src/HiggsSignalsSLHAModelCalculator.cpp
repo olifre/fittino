@@ -18,11 +18,14 @@
 *******************************************************************************/
 
 #include <cstring>
+#include <iostream>
 
 #include "HiggsSignalsSLHAModelCalculator.h"
 
 
 Fittino::HiggsSignalsSLHAModelCalculator::HiggsSignalsSLHAModelCalculator() {
+
+    _name = "HiggsSignals";
 
 }
 
@@ -119,6 +122,10 @@ void Fittino::HiggsSignalsSLHAModelCalculator::ConfigureInput( PhysicsModelBase*
 
 }   */
 
+void Fittino::HiggsSignalsSLHAModelCalculator::CallExecutable() {
 
-/*void Fittino::SLHAModelCalculatorBase::CallFunction() {
-}    */
+}
+
+void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* model ) {
+
+}

@@ -35,10 +35,6 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Base class for SLHA compatible model calculators.
    */
-  /*!
-   *  \todo Short-term: The method CallExecutable() is copied from the old fittino code. It should\n
-   *  be eventually replaced.
-   */
   class SLHAModelCalculatorBase : public ModelCalculatorBase {
 
     public:
@@ -50,18 +46,16 @@ namespace Fittino {
        *  Standard destructor.
        */
                            ~SLHAModelCalculatorBase();
-      virtual void         CalculatePredictions( PhysicsModelBase* model );
       SLHADataStorageBase* GetDataStorage();
+
+    public:
+      virtual void         CalculatePredictions( PhysicsModelBase* model );
 
     protected:
       TString              _slhaInputFileName;
       TString              _slhaOutputFileName;
       SLHADataStorageBase* _slhaInputDataStorage;
       SLHADataStorageBase* _slhaOutputDataStorage;
-
-    protected:
-      virtual void         CallExecutable();
-      virtual void         CallFunction();
 
   };
 
