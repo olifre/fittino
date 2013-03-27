@@ -43,7 +43,7 @@ namespace Fittino {
        */
                    ~FeynHiggsSLHAModelCalculator();
 
-      virtual void Initialize();
+      virtual void Initialize() const;
 
       /*! \cond UML */
     private:

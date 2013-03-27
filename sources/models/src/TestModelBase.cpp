@@ -30,7 +30,7 @@ Fittino::TestModelBase::~TestModelBase() {
 
 }
 
-void Fittino::TestModelBase::PrintStatus() {
+void Fittino::TestModelBase::PrintStatus() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
@@ -53,6 +53,37 @@ void Fittino::TestModelBase::PrintStatus() {
 		  << Messenger::Endl;
 
     }
+
+}
+
+void Fittino::TestModelBase::Initialize() const {
+
+    Messenger& messenger = Messenger::GetInstance();
+
+    messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Initializing the " << _name << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "   Initializing the list of model parameters" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+
+    for ( unsigned int i = 0; i < _numberOfParameters; i++ ) {
+
+        messenger << Messenger::ALWAYS
+                  << "    "
+                  << std::left
+                  << std::setw( 19 )
+                  << this->GetParameterVector()->at( i )->GetName()
+                  << std::right
+                  << std::setw( 12 )
+                  << std::setprecision( 5 )
+                  << std::scientific
+                  << this->GetParameterVector()->at( i )->GetValue()
+                  << Messenger::Endl;
+
+    }
+
+    messenger << Messenger::ALWAYS << Messenger::Endl;
 
 }
 

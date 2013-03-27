@@ -29,7 +29,7 @@ Fittino::FeynHiggsSLHAModelCalculator::~FeynHiggsSLHAModelCalculator() {
 
 }
 
-void Fittino::FeynHiggsSLHAModelCalculator::Initialize() {
+void Fittino::FeynHiggsSLHAModelCalculator::Initialize() const {
 
 }
 

@@ -71,7 +71,7 @@ namespace Fittino {
       std::vector<ParameterBase*>*       SetParameterVector();
 
     public:
-      virtual void                       PrintStatus() = 0;
+      virtual void                       PrintStatus() const = 0;
       /*!
        *  Returns a pointer to a copy of the model.
        */
@@ -93,15 +93,16 @@ namespace Fittino {
 
     protected:
       /*!
-       *  Initializes the model with a name and the starting values for the parameters.
+       *  This function is mainly used to provide a dedicated command to print the model\n
+       *  configuration to the screen and is usually called at the end of the model constructor\n
+       *  after the actual "initialization" of the model is already finished. Therefore, it should\n
+       *  not be used to alter the state of the model. However, since third party code (like e.g.\n
+       *  model calculators) sometimes does not differ between initialization and printing, this\n
+       *  is also the place where third party code is initialized.
        */
-      void                               InitializeModel() const;
-      /*!
-       *  Prints the configuration of the model, i.e. its name and the starting values of the\n
-       *  parameters
-       */
-      void                               PrintConfiguration() const;
+      virtual void                       Initialize() const = 0;
 
+      /*! \cond UML */
     private:   
       /*!
        *  True when _chi2 corresponds to the current parameter values.
@@ -117,6 +118,8 @@ namespace Fittino {
        *  Evaluates the chi2 function.  
        */
       virtual double                     Evaluate() = 0;
+
+      /*! \endcond UML */
 
   };
 

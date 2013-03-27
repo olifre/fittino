@@ -47,7 +47,7 @@ Fittino::MSUGRAModel::MSUGRAModel() {
 
     //_chi2ContributionVector.push_back( new SLHAChi2Contribution( "TestContribution", slhaModelCalculator, "SPhenoLowEnergy", 1, 1 ) );
 
-    ModelBase::InitializeModel();
+    PhysicsModelBase::Initialize();
 
 }
 

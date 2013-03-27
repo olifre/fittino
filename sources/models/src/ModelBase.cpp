@@ -17,11 +17,6 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <iomanip>
-#include <iostream>
-#include <sstream>
-
-#include "Messenger.h"
 #include "ModelBase.h"
 
 Fittino::ModelBase::ModelBase()
@@ -70,45 +65,5 @@ std::vector<Fittino::ParameterBase*>* Fittino::ModelBase::SetParameterVector() {
 
     _evaluated = false;
     return &_parameterVector;
-
-}
-
-void Fittino::ModelBase::InitializeModel() const {
-
-    Messenger& messenger = Messenger::GetInstance();
-
-    messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
-    messenger << Messenger::ALWAYS << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  Initializing the " << _name << Messenger::Endl;
-    messenger << Messenger::ALWAYS << Messenger::Endl;
-
-    ModelBase::PrintConfiguration();
-
-}
-
-void Fittino::ModelBase::PrintConfiguration() const {
-
-    Messenger& messenger = Messenger::GetInstance();
-
-    messenger << Messenger::ALWAYS << "   Starting values" << Messenger::Endl;
-    messenger << Messenger::ALWAYS << Messenger::Endl;
-
-    for ( unsigned int i = 0; i < _numberOfParameters; i++ ) {
-
-        messenger << Messenger::ALWAYS
-                  << "    "
-                  << std::left
-                  << std::setw( 19 )
-                  << this->GetParameterVector()->at( i )->GetName()
-                  << std::right
-                  << std::setw( 12 )
-                  << std::setprecision( 5 )
-                  << std::scientific
-                  << this->GetParameterVector()->at( i )->GetValue()
-                  << Messenger::Endl;
-
-    }
-
-    messenger << Messenger::ALWAYS << Messenger::Endl;
 
 }

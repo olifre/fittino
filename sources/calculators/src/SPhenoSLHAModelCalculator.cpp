@@ -46,7 +46,7 @@ Fittino::SPhenoSLHAModelCalculator::~SPhenoSLHAModelCalculator() {
 
 }
 
-void Fittino::SPhenoSLHAModelCalculator::Initialize() {
+void Fittino::SPhenoSLHAModelCalculator::Initialize() const {
 
 }
 

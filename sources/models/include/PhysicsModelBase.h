@@ -47,7 +47,10 @@ namespace Fittino {
        *  Standard destructor.
        */
                                          ~PhysicsModelBase();
-      virtual void                       PrintStatus();
+      virtual void                       PrintStatus() const;
+
+    protected:
+      virtual void                       Initialize() const;
 
     protected:
       std::vector<Chi2ContributionBase*> _chi2ContributionVector;

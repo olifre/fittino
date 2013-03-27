@@ -33,7 +33,7 @@ Fittino::HiggsSignalsSLHAModelCalculator::~HiggsSignalsSLHAModelCalculator() {
 
 }
 
-void Fittino::HiggsSignalsSLHAModelCalculator::Initialize(){
+void Fittino::HiggsSignalsSLHAModelCalculator::Initialize() const {
 
     int nHzero = 1;
     int nHplus = 0;
@@ -48,7 +48,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::Initialize(){
 
     setup_pdf_( &pdf);
 
-     double dm = 0.0;
+    double dm = 0.0;
 
     higgssignals_neutral_input_massuncertainty_( &dm );
 

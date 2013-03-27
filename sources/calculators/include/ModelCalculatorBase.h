@@ -51,7 +51,7 @@ namespace Fittino {
 
     public:
       virtual void CalculatePredictions( PhysicsModelBase* model ) = 0;
-      virtual void Initialize() = 0;
+      virtual void Initialize() const = 0;
 
     protected:
       enum         CallMethod { EXECUTABLE, FUNCTION };

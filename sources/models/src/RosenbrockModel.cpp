@@ -41,7 +41,7 @@ Fittino::RosenbrockModel::RosenbrockModel() {
 
     }
 
-    ModelBase::InitializeModel();
+    TestModelBase::Initialize();
 
 }
 

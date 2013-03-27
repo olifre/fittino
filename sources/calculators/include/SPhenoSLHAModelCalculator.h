@@ -44,7 +44,7 @@ namespace Fittino {
                    ~SPhenoSLHAModelCalculator();
 
     public:
-      virtual void Initialize();
+      virtual void Initialize() const;
 
       /*! \cond UML */
     private:
