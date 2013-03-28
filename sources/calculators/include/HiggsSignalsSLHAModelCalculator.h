@@ -23,35 +23,36 @@
 #include "SLHAModelCalculatorBase.h"
 
 extern "C" {
-    
-  void finish_higgssignals_();
-  void get_rates_(int* a, int* b, int* c, int* d, double* rate);
-  void higgsbounds_neutral_input_effc_( double* Mh, double* GammaTotal, double* g2hjss_s, double* g2hjss_p, double* g2hjcc_s,
-      double* g2hjcc_p, double* g2hjbb_s, double* g2hjbb_p, double* g2hjtt_s, double* g2hjtt_p, double* g2hjmumu_s, double* g2hjmumu_p,
-      double* g2hjtautau_s, double* g2hjtautau_p, double* g2hjWW, double* g2hjZZ, double* g2hjZga, double* g2hjgaga, double* g2hjgg,
-      double* g2hjggZ, double* g2hjhiZ, double* BR_hjinvisible, double* BR_hjhihi );
-  void higgssignals_neutral_input_massuncertainty_( double* dm );
-  void initialize_higgssignals_latestresults_( int* nHzero, int* nHplus );
-  void run_higgssignals_( int* a , double* Chisq_mu, double* Chisq_mh, double* Chisq, int* ndf, double* Pvalue );
-  void setup_higgs_to_peaks_assignment_iterations_( int* iterations );
-  void setup_output_level_( int* output_level );
-  void setup_pdf_( int* pdf );  
-  void setup_rate_uncertainty_( double* dCS[], double* dBR[] );
-  double smbr_hbb_( double* x );
-  double smbr_hcc_( double* x );
-  double smbr_hgamgam_( double* x );
-  double smbr_hgg_( double* x );
-  double smbr_hmumu_( double* x );
-  double smbr_hss_( double* x );
-  double smbr_htautau_( double* x );
-  double smbr_htoptop_( double* x );
-  double smbr_hww_( double* x );
-  double smbr_hzgam_( double* x );
-  double smbr_hzz_( double* x );
-  double smgamma_h_( double* x );
 
-  double lhc8_rh_gg_( double* x);
-  double lhc8_rh_bb_( double* x);
+  void   finish_higgssignals_();
+  void   get_rates_( int* ii, int* collider, int* Nchannels, int* IDchannels, double* rate );
+  void   higgsbounds_neutral_input_effc_( double* Mh, double* GammaTotal, double* g2hjss_s, double* g2hjss_p,
+                                          double* g2hjcc_s, double* g2hjcc_p, double* g2hjbb_s, double* g2hjbb_p, double* g2hjtt_s, double* g2hjtt_p,
+                                          double* g2hjmumu_s, double* g2hjmumu_p, double* g2hjtautau_s, double* g2hjtautau_p, double* g2hjWW,
+                                          double* g2hjZZ, double* g2hjZga, double* g2hjgaga, double* g2hjgg, double* g2hjggZ, double* g2hjhiZ,
+                                          double* BR_hjinvisible, double* BR_hjhihi );
+  void   higgssignals_neutral_input_massuncertainty_( double* dm );
+  void   initialize_higgssignals_latestresults_( int* nHzero, int* nHplus );
+  void   run_higgssignals_( int* mode, double* Chisq_mu, double* Chisq_mh, double* Chisq, int* nobs, double* Pvalue );
+  void   setup_higgs_to_peaks_assignment_iterations_( int* iterations );
+  void   setup_output_level_( int* output_level );
+  void   setup_pdf_( int* pdf );
+  void   setup_rate_uncertainties_( double dCS[], double dBR[] );
+  double smbr_hbb_( double* Mh );
+  double smbr_hcc_( double* Mh );
+  double smbr_hgamgam_( double* Mh );
+  double smbr_hgg_( double* Mh );
+  double smbr_hmumu_( double* Mh );
+  double smbr_hss_( double* Mh );
+  double smbr_htautau_( double* Mh );
+  double smbr_htoptop_( double* Mh );
+  double smbr_hww_( double* Mh );
+  double smbr_hzgam_( double* Mh );
+  double smbr_hzz_( double* Mh );
+  double smgamma_h_( double* Mh );
+  double __theory_collidersfunctions_MOD_lhc8_rh_gg( double* Mhj );
+  double __theory_collidersfunctions_MOD_lhc8_rh_bb( double* Mhj );
+
 }
 
 /*!
@@ -69,20 +70,20 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                    HiggsSignalsSLHAModelCalculator();
+      HiggsSignalsSLHAModelCalculator();
       /*!
        *  Standard destructor.
        */
-                   ~HiggsSignalsSLHAModelCalculator();
-
-     // double       get_g2hgaga();
-      double get_g2hgaga(double ghbb, double ghtt, double ghtautau, double ghWW, double ghZZ);
-      double get_singleh_uncertainty(double dggh, double dbbh, double g2hgg, double g2hbb, double mh);
+      ~HiggsSignalsSLHAModelCalculator();
 
     public:
       virtual void Initialize() const;
 
       /*! \cond UML */
+    private:
+      double       get_g2hgaga( double ghbb, double ghtt, double ghtautau, double ghWW, double ghZZ );
+      double       get_singleh_uncertainty( double dggh, double dbbh, double g2hgg, double g2hbb, double mh );
+
     private:
       virtual void CallExecutable();
       virtual void CallFunction( PhysicsModelBase* model );
