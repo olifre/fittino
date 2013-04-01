@@ -46,7 +46,7 @@ Fittino::HECModel::HECModel() {
     _parameterVector.push_back( new PhysicsParameter( "Delta_hggZ",          1.,    "", 0.1, -10., 10. ) );
     _parameterVector.push_back( new PhysicsParameter( "Delta_hgammagamma",   1.,    "", 0.1, -10., 10. ) );
 
-    _modelCalculatorVector.push_back( new HiggsSignalsSLHAModelCalculator() );
+    //_modelCalculatorVector.push_back( new HiggsSignalsSLHAModelCalculator() );
 
     PhysicsModelBase::Initialize();
 
