@@ -39,28 +39,30 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                  PhysicsParameter( std::string name,
-                                    double      value,
-                                    std::string unit,
-                                    double      error,
-                                    double      lowerBound,
-                                    double      upperBound,
-                                    bool        fixed = false );
+                   PhysicsParameter( std::string name,
+                                     double      value,
+                                     std::string unit,
+                                     double      error,
+                                     double      lowerBound,
+                                     double      upperBound,
+                                     bool        fixed = false );
       /*!
        *  Standard destructor.
        */
-                  ~PhysicsParameter();
+                   ~PhysicsParameter();
       /*!
        *  Returns the physical unit of the parameter.
        */
-      virtual void        PrintStatus() const;
-      std::string GetUnit() const;
+      std::string  GetUnit() const;
+
+    public:
+      virtual void PrintStatus() const;
 
     protected:
       /*!
        *  Physical unit of the parameter.
        */
-      std::string _unit;
+      std::string  _unit;
 
   };
 

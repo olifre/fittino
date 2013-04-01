@@ -39,6 +39,12 @@ Fittino::PhysicsParameter::~PhysicsParameter() {
 
 }
 
+std::string Fittino::PhysicsParameter::GetUnit() const {
+
+    return _unit;
+
+}
+
 void Fittino::PhysicsParameter::PrintStatus() const {
 
     Messenger& messenger = Messenger::GetInstance();
@@ -59,20 +65,12 @@ void Fittino::PhysicsParameter::PrintStatus() const {
 
     if ( _fixed ) {
 
-        messenger << Messenger::INFO
-                  << std::right
+        messenger << std::right
                   << std::setw( 10 )
                   << "(fixed)";
 
     }
 
-    messenger << Messenger::INFO
-              << Messenger::Endl;
-
-}
-
-std::string Fittino::PhysicsParameter::GetUnit() const {
-
-    return _unit;
+    messenger << Messenger::Endl;
 
 }
