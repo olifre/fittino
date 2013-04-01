@@ -31,10 +31,10 @@ Fittino::MSUGRAModel::MSUGRAModel() {
 
     _numberOfParameters = 4;
     _name = "MSUGRA model";
-    _parameterVector.push_back( new SLHAParameter( "A0"     , configuration->GetSteeringParameter( "A0" ,     0. ), 1., -1.e5, 1.e5, 5 ) );
-    _parameterVector.push_back( new SLHAParameter( "M0"     , configuration->GetSteeringParameter( "M0" ,     0. ), 1.,    0., 1.e5, 1 ) );
-    _parameterVector.push_back( new SLHAParameter( "M12"    , configuration->GetSteeringParameter( "M12" ,    0. ), 1.,    0., 1.e5, 2 ) );
-    _parameterVector.push_back( new SLHAParameter( "TanBeta", configuration->GetSteeringParameter( "TanBeta", 0. ), 1.,    0., 1.e3, 3 ) );
+    _parameterVector.push_back( new SLHAParameter( "A0"     , configuration->GetSteeringParameter( "A0" ,     0. ), "GeV", 1., -1.e5, 1.e5, 5 ) );
+    _parameterVector.push_back( new SLHAParameter( "M0"     , configuration->GetSteeringParameter( "M0" ,     0. ), "GeV", 1.,    0., 1.e5, 1 ) );
+    _parameterVector.push_back( new SLHAParameter( "M12"    , configuration->GetSteeringParameter( "M12" ,    0. ), "GeV", 1.,    0., 1.e5, 2 ) );
+    _parameterVector.push_back( new SLHAParameter( "TanBeta", configuration->GetSteeringParameter( "TanBeta", 0. ),    "", 1.,    0., 1.e3, 3 ) );
 
     SLHAModelCalculatorBase* slhaModelCalculator = new SPhenoSLHAModelCalculator();
 

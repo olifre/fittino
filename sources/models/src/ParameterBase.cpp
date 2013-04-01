@@ -72,11 +72,11 @@ void Fittino::ParameterBase::PrintStatus() const {
     messenger << Messenger::INFO
               << "    "
               << std::left
-              << std::setw( 11 )
+              << std::setw( 20 )
               << _name
               << std::right
-              << std::setw( 12 )
-              << std::setprecision( 5 )
+              << std::setw( 9 )
+              << std::setprecision( 2 )
               << std::scientific
               << _value
               << Messenger::Endl;

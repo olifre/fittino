@@ -17,8 +17,6 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <iomanip>
-
 #include "Messenger.h"
 #include "TestModelBase.h"
 
@@ -40,17 +38,7 @@ void Fittino::TestModelBase::PrintStatus() const {
 
     for ( unsigned int i = 0; i < this->GetNumberOfParameters(); i++ ) {
 
-        messenger << Messenger::INFO
-	          << "    "
-                  << std::left
-                  << std::setw( 11 )
-                  << _parameterVector[i]->GetName()
-                  << std::right
-                  << std::setw( 12 )
-                  << std::setprecision( 5 )
-                  << std::scientific
-                  << _parameterVector[i]->GetValue()
-		  << Messenger::Endl;
+        _parameterVector[i]->PrintStatus();
 
     }
 
@@ -69,17 +57,7 @@ void Fittino::TestModelBase::Initialize() const {
 
     for ( unsigned int i = 0; i < _numberOfParameters; i++ ) {
 
-        messenger << Messenger::ALWAYS
-                  << "    "
-                  << std::left
-                  << std::setw( 19 )
-                  << this->GetParameterVector()->at( i )->GetName()
-                  << std::right
-                  << std::setw( 12 )
-                  << std::setprecision( 5 )
-                  << std::scientific
-                  << this->GetParameterVector()->at( i )->GetValue()
-                  << Messenger::Endl;
+        _parameterVector[i]->PrintStatus();
 
     }
 

@@ -17,38 +17,37 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "HiggsSignalsSLHAModelCalculator.h"
-#include "ParameterBase.h"
 #include "HECModel.h"
+#include "HiggsSignalsSLHAModelCalculator.h"
 
 Fittino::HECModel::HECModel() {
 
-    _numberOfParameters = 19;
     _name = "HEC model";
 
-    _parameterVector.push_back( new ParameterBase( "Massh",            126., 1., -10., 10.) );
-    _parameterVector.push_back( new ParameterBase( "Deltahss_s",         1., 1., -10., 10.) );
-    _parameterVector.push_back( new ParameterBase( "Deltahss_p",         0., 1., -10., 10.) );
-    _parameterVector.push_back( new ParameterBase( "Deltahcc_s",         1., 1., -10., 10.) );
-    _parameterVector.push_back( new ParameterBase( "Deltahcc_p",         0., 1., -10., 10.) );
-    _parameterVector.push_back( new ParameterBase( "Deltahbb_s",         1., 1., -10., 10.) );
-    _parameterVector.push_back( new ParameterBase( "Deltahbb_p",         0., 1., -10., 10.) );
-    _parameterVector.push_back( new ParameterBase( "Deltahtt_s",         1., 1., -10., 10.) );
-    _parameterVector.push_back( new ParameterBase( "Deltahtt_p",         0., 1., -10., 10.) );
-    _parameterVector.push_back( new ParameterBase( "Deltahmumu_s",       1., 1., -10., 10.) );
-    _parameterVector.push_back( new ParameterBase( "Deltahmumu_p",       0., 1., -10., 10.) );
-    _parameterVector.push_back( new ParameterBase( "Deltahtautau_s",     1., 1., -10., 10.) );
-    _parameterVector.push_back( new ParameterBase( "Deltahtautau_p",     0., 1., -10., 10.) );
-    _parameterVector.push_back( new ParameterBase( "DeltahWW",           1., 1., -10., 10.) );
-    _parameterVector.push_back( new ParameterBase( "DeltahZZ",           1., 1., -10., 10.) );
-    _parameterVector.push_back( new ParameterBase( "DeltahZgamma",       1., 1., -10., 10.) );
-    _parameterVector.push_back( new ParameterBase( "Deltahgg",           1., 1., -10., 10.) );
-    _parameterVector.push_back( new ParameterBase( "DeltahggZ",          1., 1., -10., 10.) );
-    _parameterVector.push_back( new ParameterBase( "Deltahgammagamma",   1., 1., -10., 10.) );
+    _numberOfParameters = 19;
 
-    //SLHAModelCalculatorBase* slhaModelCalculator = new HiggsSignalsSLHAModelCalculator();
-    //_modelCalculatorVector.push_back( slhaModelCalculator );
-	
+    _parameterVector.push_back( new PhysicsParameter( "Massh",             126., "GeV", 0.1, -10., 10. ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hss",         1.,    "", 0.1, -10., 10. ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hss",         0.,    "", 0.1, -10., 10. ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hcc",         1.,    "", 0.1, -10., 10. ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hcc",         0.,    "", 0.1, -10., 10. ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hbb",         1.,    "", 0.1, -10., 10. ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hbb",         0.,    "", 0.1, -10., 10. ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_s_htt",         1.,    "", 0.1, -10., 10. ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_p_htt",         0.,    "", 0.1, -10., 10. ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hmumu",       1.,    "", 0.1, -10., 10. ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hmumu",       0.,    "", 0.1, -10., 10. ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_s_htautau",     1.,    "", 0.1, -10., 10. ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_p_htautau",     0.,    "", 0.1, -10., 10. ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hWW",           1.,    "", 0.1, -10., 10. ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hZZ",           1.,    "", 0.1, -10., 10. ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hZgamma",       1.,    "", 0.1, -10., 10. ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hgg",           1.,    "", 0.1, -10., 10. ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hggZ",          1.,    "", 0.1, -10., 10. ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hgammagamma",   1.,    "", 0.1, -10., 10. ) );
+
+    _modelCalculatorVector.push_back( new HiggsSignalsSLHAModelCalculator() );
+
     PhysicsModelBase::Initialize();
 
 }

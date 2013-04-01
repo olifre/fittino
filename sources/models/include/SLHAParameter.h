@@ -20,7 +20,7 @@
 #ifndef FITTINO_SLHAPARAMETER_H
 #define FITTINO_SLHAPARAMETER_H
 
-#include "ParameterBase.h"
+#include "PhysicsParameter.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -31,12 +31,12 @@ namespace Fittino {
    *  \ingroup models
    *  \brief Class for SLHA model parameters.
    *
-   *  This class extends the ParameterBase class with a SLHA parameter ID. This ID is unique\n
+   *  This class extends the PhysicsParameter class with a SLHA parameter ID. This ID is unique\n
    *  within a certain SLHA model and is specified in the definition of the corresponding model\n
    *  class. For example, tan(beta) has the parameter ID 3 (for all models satisfying the SLHA\n
    *  standard).
    */
-  class SLHAParameter : public ParameterBase {
+  class SLHAParameter : public PhysicsParameter {
 
     public:
       /*!
@@ -44,6 +44,7 @@ namespace Fittino {
        */
           SLHAParameter( std::string name,
                          double      value,
+                         std::string unit,
                          double      error,
                          double      lowerBound,
                          double      upperBound,

@@ -18,7 +18,6 @@
 *******************************************************************************/
 
 #include <cmath>
-#include <iomanip>
 
 #include "Chi2ContributionBase.h"
 #include "Messenger.h"
@@ -127,17 +126,7 @@ void Fittino::PhysicsModelBase::Initialize() const {
 
     for ( unsigned int i = 0; i < _numberOfParameters; i++ ) {
 
-        messenger << Messenger::ALWAYS
-                  << "    "
-                  << std::left
-                  << std::setw( 19 )
-                  << this->GetParameterVector()->at( i )->GetName()
-                  << std::right
-                  << std::setw( 9 )
-                  << std::setprecision( 2 )
-                  << std::scientific
-                  << this->GetParameterVector()->at( i )->GetValue()
-                  << Messenger::Endl;
+        _parameterVector[i]->PrintStatus();
 
     }
 

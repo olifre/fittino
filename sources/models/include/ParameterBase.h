@@ -37,72 +37,74 @@ namespace Fittino {
       /*!
        *  Takes as input the name and starting values of the parameter.
        */
-                  ParameterBase( std::string name,
-                                 double      value,
-                                 double      error,
-                                 double      lowerBound,
-                                 double      upperBound,
-                                 bool        fixed = false );
+                   ParameterBase( std::string name,
+                                  double      value,
+                                  double      error,
+                                  double      lowerBound,
+                                  double      upperBound,
+                                  bool        fixed = false );
       /*!
        *  Standard destructor.
        */
-                  ~ParameterBase();
+                   ~ParameterBase();
       /*!
        *  Returns the error of the parameter.
        */
-      double      GetError() const;
+      double       GetError() const;
       /*!
        *  Returns the lower bound of the parameter.
        */
-      double      GetLowerBound() const;
+      double       GetLowerBound() const;
       /*!
        *  Returns the upper bound of the parameter.
        */
-      double      GetUpperBound() const;
+      double       GetUpperBound() const;
       /*!
        *  Returns the value of the parameter.
        */
-      double      GetValue() const;
-      /*!
-       *  Prints the parameter status on screen.
-       */
-      void        PrintStatus() const;
+      double       GetValue() const;
       /*!
        *  Sets the value of the parameter.
        */
-      void        SetValue( double value );
+      void         SetValue( double value );
       /*!
        *  Returns the name of the parameter.
        */
-      std::string GetName() const;
+      std::string  GetName() const;
 
-    private:
+    public:
+      /*!
+       *  Prints the parameter status on screen.
+       */
+      virtual void PrintStatus() const;
+
+    protected:
       /*!
        *  If true, the parameter value is not updated by the analysis tool. Per default it is set\n
        *  to false.
        */
-      bool        _fixed;
+      bool         _fixed;
       /*!
        *  Error of the parameter. Analysis tools use this value as the parameter-dependent\n
        *  "stepwidth".
        */
-      double      _error;
+      double       _error;
       /*!
        *  Lower bound of the parameter.
        */
-      double      _lowerBound;
+      double       _lowerBound;
       /*!
        *  Upper bound of the parameter.
        */
-      double      _value;
+      double       _value;
       /*!
        *  Value of the parameter.
        */
-      double      _upperBound;
+      double       _upperBound;
       /*!
        *  Name of the parameter.
        */
-      std::string _name;
+      std::string  _name;
 
   };
 
