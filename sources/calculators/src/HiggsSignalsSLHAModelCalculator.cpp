@@ -29,6 +29,7 @@
 Fittino::HiggsSignalsSLHAModelCalculator::HiggsSignalsSLHAModelCalculator() {
 
     _name = "HiggsSignals";
+    _slhaOutputFileName = "HiggsSignals.out.txt";
 
 }
 
@@ -43,11 +44,11 @@ void Fittino::HiggsSignalsSLHAModelCalculator::Initialize() const {
 
     initialize_higgssignals_latestresults_( &nHzero, &nHplus );
 
-    int output_level = 0; //(1: box, 2: gaussian, 3: both)
+    int output_level = 0; //(0: silent, 1: screen output , 2: even more output )
 
     setup_output_level_( &output_level );
 
-    int pdf = 2;
+    int pdf = 2; //(1: box, 2: gaussian, 3: both)
 
     setup_pdf_( &pdf );
 
