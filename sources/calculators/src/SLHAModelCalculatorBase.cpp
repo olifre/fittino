@@ -50,6 +50,7 @@ void Fittino::SLHAModelCalculatorBase::CalculatePredictions( Fittino::PhysicsMod
         case FUNCTION: {
 
             CallFunction( model );
+            _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
 	    break;
 
         }
