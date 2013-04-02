@@ -20,9 +20,11 @@
 #include <cmath>
 #include <cstring>
 #include <iostream>
+#include <sstream>
 
 #include "HiggsSignalsSLHAModelCalculator.h"
 #include "PhysicsModelBase.h"
+#include "SLHADataStorageBase.h"
 
 Fittino::HiggsSignalsSLHAModelCalculator::HiggsSignalsSLHAModelCalculator() {
 
@@ -41,7 +43,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::Initialize() const {
 
     initialize_higgssignals_latestresults_( &nHzero, &nHplus );
 
-    int output_level = 1; //(1: box, 2: gaussian, 3: both)
+    int output_level = 0; //(1: box, 2: gaussian, 3: both)
 
     setup_output_level_( &output_level );
 
@@ -159,13 +161,53 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     run_higgssignals_( &mode, &Chisq_mu, &Chisq_mh, &Chisq, &nobs, &Pvalue );
 
+    _slhaOutputDataStorage->AddBlock( "HIGGSSIGNALSOUTPUT:BLOCK HIGGSSIGNALSOUTPUT:# Output parameters" );
+
+    std::stringstream tmpStream_Chisq_mu;
+    std::string tmpString_Chisq_mu;
+   
+    tmpStream_Chisq_mu << Chisq_mu; 
+
+    tmpStream_Chisq_mu >> tmpString_Chisq_mu;
+
+    _slhaOutputDataStorage->AddLine( "HIGGSSIGNALSOUTPUT:1:" + tmpString_Chisq_mu + ":# Chisq_mu" );
+
+    std::stringstream tmpStream_Chisq_mh;
+    std::string tmpString_Chisq_mh;
+
+    tmpStream_Chisq_mh << Chisq_mh;                                     
+
+    tmpStream_Chisq_mh >> tmpString_Chisq_mh;
+
+    _slhaOutputDataStorage->AddLine( "HIGGSSIGNALSOUTPUT:2:" + tmpString_Chisq_mh + ":# Chisq_mh" );
+ 
+    std::stringstream tmpStream_Chisq;
+    std::string tmpString_Chisq;
+
+    tmpStream_Chisq << Chisq;                                     
+
+    tmpStream_Chisq >> tmpString_Chisq;
+
+    _slhaOutputDataStorage->AddLine( "HIGGSSIGNALSOUTPUT:3:" + tmpString_Chisq + ":# Chisq" );
+
+    std::stringstream tmpStream_Pvalue;
+    std::string tmpString_Pvalue;
+
+    tmpStream_Pvalue << Pvalue;                                     
+
+    tmpStream_Pvalue >> tmpString_Pvalue;
+
+    _slhaOutputDataStorage->AddLine( "HIGGSSIGNALSOUTPUT:4:" + tmpString_Pvalue + ":# Pvalue" );
+
+    _slhaOutputDataStorage->WriteFile("HiggsSignals.out.txt");
+
     int ii, collider = 3; // "collider" (= 1, 2, 3 for TEV, LHC7 or LHC8)
     int Nchannels = 1, IDchannels = 10; //Nchannels = dimension (IDchannels)
     double singleH_rate, Htobb_rate;
 
-    get_rates_( &ii, &collider, &Nchannels, &IDchannels, &singleH_rate );
-    IDchannels = 15;
-    get_rates_( &ii, &collider, &Nchannels, &IDchannels, &Htobb_rate );
+    //get_rates_( &ii, &collider, &Nchannels, &IDchannels, &singleH_rate );
+    //IDchannels = 15;
+    //get_rates_( &ii, &collider, &Nchannels, &IDchannels, &Htobb_rate );
 
 }
 
