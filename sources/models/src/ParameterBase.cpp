@@ -41,6 +41,12 @@ Fittino::ParameterBase::~ParameterBase() {
 
 }
 
+bool Fittino::ParameterBase::IsFixed() const {
+
+    return _fixed;
+
+}
+
 double Fittino::ParameterBase::GetError() const {
 
     return _error;

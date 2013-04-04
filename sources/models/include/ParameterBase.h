@@ -47,6 +47,7 @@ namespace Fittino {
        *  Standard destructor.
        */
                    ~ParameterBase();
+      bool         IsFixed() const;
       /*!
        *  Returns the error of the parameter.
        */

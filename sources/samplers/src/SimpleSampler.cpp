@@ -61,9 +61,10 @@ void Fittino::SimpleSampler::Scan( unsigned int iParameter ) {
 
     if ( iParameter > 0 ) {
 
-        while ( _model->GetParameterVector()->at( iParameter )->GetValue() <= _model->GetParameterVector()->at( iParameter )->GetUpperBound() ) {
+         while ( _model->GetParameterVector()->at( iParameter )->GetValue() <= _model->GetParameterVector()->at( iParameter )->GetUpperBound() ) {
 
             Scan( iParameter - 1 );
+            if ( _model->GetParameterVector()->at( iParameter )->IsFixed() ) break;
             ResetValues( iParameter );
             UpdateValues( iParameter );
 
@@ -77,6 +78,7 @@ void Fittino::SimpleSampler::Scan( unsigned int iParameter ) {
             _iterationCounter++;
             this->PrintStatus();
             this->FillStatus();
+            if ( _model->GetParameterVector()->at( iParameter )->IsFixed() ) break;
             UpdateValues( iParameter );
 
         }
