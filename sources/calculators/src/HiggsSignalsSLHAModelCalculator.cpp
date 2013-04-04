@@ -98,7 +98,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::get_singleh_uncertainty( double
 
 void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* model ) {
 
-    double Mh             = model->GetParameterVector()->at(  0 )->GetValue();
+    double Mh             = model->GetParameterVector()->at( 0 )->GetValue();
 
     double g2hjss_s       = pow( 1 + model->GetParameterVector()->at(  1 )->GetValue(), 2 );
     double g2hjss_p       = pow( 1 + model->GetParameterVector()->at(  2 )->GetValue(), 2 );
