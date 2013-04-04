@@ -23,11 +23,11 @@
 #include "ParameterBase.h"
 
 Fittino::ParameterBase::ParameterBase( std::string name,
-	                       double      value,
-	                       double      error,
-			       double      lowerBound,
-			       double      upperBound,
-                               bool        fixed )
+	                               double      value,
+	                               double      error,
+			               double      lowerBound,
+			               double      upperBound,
+                                       bool        fixed )
         : _name( name ),
           _value( value ),
           _error( error ),
