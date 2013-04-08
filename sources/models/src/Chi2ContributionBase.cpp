@@ -41,11 +41,11 @@ void Fittino::Chi2ContributionBase::PrintStatus() const {
     messenger << Messenger::INFO
               << "    "
               << std::left
-              << std::setw( 18 )
+              << std::setw( 20 )
               << _name 
               << std::right
-              << std::setw( 17 )
-              << std::setprecision( 5 )
+              << std::setw( 9 )
+              << std::setprecision( 2 )
               << std::scientific
               << _chi2
               << Messenger::Endl;

@@ -58,15 +58,29 @@ void Fittino::PhysicsParameter::PrintStatus() const {
               << std::setw( 9 )
               << std::setprecision( 2 )
               << std::scientific
-              << _value
-              << std::right
-              << std::setw( 6 )
-              << _unit;
+              << _value;
 
-    if ( _fixed ) {
+    if ( _unit != "" && !_fixed) {
 
         messenger << std::right
+                  << std::setw( 6 )
+                  << _unit;
+
+    }
+    else if ( _unit != "" && _fixed ) {
+
+        messenger << std::right
+                  << std::setw( 6 )
+                  << _unit
+                  << std::right
                   << std::setw( 10 )
+                  << "(fixed)";
+
+    }
+    else if ( _unit == "" && _fixed ) {
+
+        messenger << std::right
+                  << std::setw( 16 )
                   << "(fixed)";
 
     }

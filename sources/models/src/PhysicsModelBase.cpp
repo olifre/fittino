@@ -70,7 +70,7 @@ void Fittino::PhysicsModelBase::PrintStatus() const {
     Messenger& messenger = Messenger::GetInstance();
 
     messenger << Messenger::INFO << Messenger::Endl;
-    messenger << Messenger::INFO << "  Set of the " << this->GetName() << " parameters:" << Messenger::Endl;
+    messenger << Messenger::INFO << "   Set of the " << this->GetName() << " parameters:" << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
 
     for ( unsigned int i = 0; i < this->GetNumberOfParameters(); ++i ) {
@@ -82,7 +82,7 @@ void Fittino::PhysicsModelBase::PrintStatus() const {
     if ( _observableVector.size() != 0 ) {
 
         messenger << Messenger::Endl;
-        messenger << Messenger::INFO << "  Summary of the " << this->GetName() << " predictions:"  << Messenger::Endl;
+        messenger << Messenger::INFO << "   Summary of the " << this->GetName() << " predictions:"  << Messenger::Endl;
         messenger << Messenger::Endl;
         messenger << Messenger::INFO << "    Observable          Predicted value                 Measured value    Deviation" << Messenger::Endl;
         messenger << Messenger::Endl;
@@ -98,9 +98,7 @@ void Fittino::PhysicsModelBase::PrintStatus() const {
     if ( _chi2ContributionVector.size() != 0 ) {
 
         messenger << Messenger::Endl;
-        messenger << Messenger::INFO << "  Summary of (additional) Chi2 terms:"  << Messenger::Endl;
-        messenger << Messenger::Endl;
-        messenger << Messenger::INFO << "    Term                          Value" << Messenger::Endl;
+        messenger << Messenger::INFO << "   Summary of chi2 terms:"  << Messenger::Endl;
         messenger << Messenger::Endl;
 
         for ( unsigned int i = 0; i < _chi2ContributionVector.size(); ++i ) {
@@ -130,7 +128,7 @@ void Fittino::PhysicsModelBase::Initialize() const {
 
     }
 
-    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::Endl;
     messenger << Messenger::ALWAYS << "   Initializing the list of model calculators" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
