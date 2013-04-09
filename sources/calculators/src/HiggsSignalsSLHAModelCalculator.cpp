@@ -115,14 +115,15 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     double g2hjWW         = pow( 1 + model->GetParameterVector()->at( 13 )->GetValue(), 2 );
     double g2hjZZ         = pow( 1 + model->GetParameterVector()->at( 14 )->GetValue(), 2 );
     double g2hjZga        = pow( 1 + model->GetParameterVector()->at( 15 )->GetValue(), 2 );
-    double g2hjgg         = pow( 1 + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
-    double g2hjggZ        = pow( 1 + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
-    double g2hjhiZ        = pow( 1 + model->GetParameterVector()->at( 18 )->GetValue(), 2 );
+    double g2hjgaga       = pow( 1 + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
+    double g2hjgg         = pow( 1 + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
+    double g2hjggZ        = pow( 1 + model->GetParameterVector()->at( 18 )->GetValue(), 2 );
+    double g2hjhiZ        = pow( 1 + model->GetParameterVector()->at( 19 )->GetValue(), 2 );
 
-    double BR_hjhihi      = model->GetParameterVector()->at( 19 )->GetValue();
-    double BR_hjinvisible = model->GetParameterVector()->at( 20 )->GetValue();
+    double BR_hjhihi      = model->GetParameterVector()->at( 20 )->GetValue();
+    double BR_hjinvisible = model->GetParameterVector()->at( 21 )->GetValue();
 
-    double g2hjgaga = get_g2hgaga( sqrt( g2hjbb_s ), sqrt( g2hjtt_s ), sqrt( g2hjtautau_s ), sqrt( g2hjWW ), sqrt( g2hjZZ ) );
+    //double g2hjgaga = get_g2hgaga( sqrt( g2hjbb_s ), sqrt( g2hjtt_s ), sqrt( g2hjtautau_s ), sqrt( g2hjWW ), sqrt( g2hjZZ ) );
 
     double SMGammaTotal = smgamma_h_( &Mh );
 
