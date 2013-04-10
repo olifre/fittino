@@ -30,8 +30,9 @@ Fittino::ObservableBase::ObservableBase( std::string name,
         : _deviation( 0. ),
           _measuredError( measuredError ),
           _measuredValue( measuredValue ),
-          _predictedValue( 0. ),
-          _name( name ) {
+          PredictionBase( name ) {
+
+   _predictedValue = 0.;
 
 }
 
@@ -81,11 +82,6 @@ double Fittino::ObservableBase::GetMeasuredError() const {
 double Fittino::ObservableBase::GetMeasuredValue() const {
 
     return _measuredValue;
-}
-
-double Fittino::ObservableBase::GetPredictedValue() const {
-
-    return _predictedValue;
 }
 
 double Fittino::ObservableBase::CalculateDeviation() {

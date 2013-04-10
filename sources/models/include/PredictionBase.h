@@ -1,28 +1,26 @@
-/* $Id$ */
+/* $Id: ObservableBase.h 1280 2013-03-28 11:23:49Z uhlenbrock@PHYSIK.UNI-BONN.DE $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        ObservableBase.h                                                 *
+* File        PredictionBase.h                                                 *
 *                                                                              *
-* Description Base class for observables                                       *
+* Description Base class for predictions                                       *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Sebastian Heer  <s6seheer@uni-bonn.de>                           *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_OBSERVABLEBASE_H
-#define FITTINO_OBSERVABLEBASE_H
+#ifndef FITTINO_PREDICTIONBASE_H
+#define FITTINO_PREDICTIONBASE_H
 
 #include <string>
-
-#include "PredictionBase.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -31,35 +29,29 @@ namespace Fittino {
 
   /*!
    *  \ingroup models
-   *  \brief Base class for observables.
+   *  \brief Base class for predictions.
    */
-  class ObservableBase : public PredictionBase {
+  class PredictionBase {
 
     public:
       /*!
        *  Standard constructor.
        */
-                   ObservableBase( std::string name,
-                                   double      measuredValue,
-                                   double      measuredError );
+                     PredictionBase( std::string name );
       /*!
        *  Standard destructor.
        */
-                   ~ObservableBase();
-      void         PrintStatus() const;
-      double       GetMeasuredError() const;
-      double       GetMeasuredValue() const;
+                     ~PredictionBase();
+      virtual void   UpdatePrediction() = 0;
+      virtual void   PrintStatus() const;
+      virtual double GetPredictedValue() const;
 
     protected:
-      double       _deviation;
-      double       _measuredError;
-      double       _measuredValue;
-
-    protected:
-      double       CalculateDeviation();
+      double         _predictedValue;
+      std::string    _name;
 
   };
 
 }
 
-#endif // FITTINO_OBSERVABLEBASE_H
+#endif // FITTINO_PREDICTIONBASE_H
