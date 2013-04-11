@@ -55,13 +55,13 @@ std::string Fittino::ModelBase::GetName() const {
 
 }
 
-const std::vector<Fittino::ParameterBase*>* Fittino::ModelBase::GetParameterVector() const {
+const std::vector<Fittino::ModelParameterBase*>* Fittino::ModelBase::GetParameterVector() const {
 
     return &_parameterVector;
 
 }
 
-std::vector<Fittino::ParameterBase*>* Fittino::ModelBase::SetParameterVector() {
+std::vector<Fittino::ModelParameterBase*>* Fittino::ModelBase::SetParameterVector() {
 
     _evaluated = false;
     return &_parameterVector;

@@ -8,7 +8,8 @@
 *                                                                              *
 * Description Base class for model parameters                                  *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Sebastian Heer        <s6seheer@uni-bonn.de>                     *
+*             Mathias   Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>            *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -23,45 +24,13 @@
 #include "ParameterBase.h"
 
 Fittino::ParameterBase::ParameterBase( std::string name,
-	                               double      value,
-	                               double      error,
-			               double      lowerBound,
-			               double      upperBound,
-                                       bool        fixed )
+	                               double      value)
         : _name( name ),
-          _value( value ),
-          _error( error ),
-          _lowerBound( lowerBound ),
-          _upperBound( upperBound ),
-          _fixed( fixed ) {
+          _value( value ){
 
 }
 
 Fittino::ParameterBase::~ParameterBase() {
-
-}
-
-bool Fittino::ParameterBase::IsFixed() const {
-
-    return _fixed;
-
-}
-
-double Fittino::ParameterBase::GetError() const {
-
-    return _error;
-
-}
-
-double Fittino::ParameterBase::GetLowerBound() const {
-
-    return _lowerBound;
-
-}
-
-double Fittino::ParameterBase::GetUpperBound() const {
-
-    return _upperBound;
 
 }
 
@@ -89,12 +58,12 @@ void Fittino::ParameterBase::PrintStatus() const {
 
 }
 
-void Fittino::ParameterBase::SetValue( double value ) {
-
-    if (!_fixed)
-        _value = value;
-
-}
+//void Fittino::ParameterBase::SetValue( double value ) {
+//
+//    if (!_fixed)
+//        _value = value;
+//
+//}
 
 std::string Fittino::ParameterBase::GetName() const {
 

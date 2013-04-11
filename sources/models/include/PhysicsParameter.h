@@ -20,7 +20,7 @@
 #ifndef FITTINO_PHYSICSPARAMETER_H
 #define FITTINO_PHYSICSPARAMETER_H
 
-#include "ParameterBase.h"
+#include "ModelParameterBase.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -33,7 +33,7 @@ namespace Fittino {
    *
    *  This class extends the ParameterBase class with a physical unit.
    */
-  class PhysicsParameter : public ParameterBase {
+  class PhysicsParameter : public ModelParameterBase {
 
     public:
       /*!

@@ -31,7 +31,7 @@ Fittino::PhysicsParameter::PhysicsParameter( std::string name,
                                              bool        fixed )
 
 	: _unit( unit ),
-          ParameterBase( name, value, error, lowerBound, upperBound, fixed ) {
+          ModelParameterBase( name, value, error, lowerBound, upperBound, fixed ) {
 
 }
 

@@ -37,7 +37,7 @@ Fittino::RosenbrockModel::RosenbrockModel() {
 
         parameterName.str( "" );
         parameterName << "X" << i + 1;
-        _parameterVector.push_back( new ParameterBase( parameterName.str(), configuration->GetSteeringParameter( parameterName.str(), 0. ), 1., -10., 10. ) );
+        _parameterVector.push_back( new ModelParameterBase( parameterName.str(), configuration->GetSteeringParameter( parameterName.str(), 0. ), 1., -10., 10. ) );
 
     }
 

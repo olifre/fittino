@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 
-#include "ParameterBase.h"
+#include "ModelParameterBase.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -43,53 +43,53 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                                         ModelBase();
+                                              ModelBase();
       /*!
        *  Standard destructor.
        */
-                                         ~ModelBase();
+                                              ~ModelBase();
       /*!
        *  Returns the chi2 of the comparison between the predicted observables of the model and\n
        *  the measured observables. In the case of a test model simply returns the function value.
        */
-      double                             GetChi2();   
+      double                                  GetChi2();   
       /*!
        *  Returns the number of parameters of the model.
        */
-      int                                GetNumberOfParameters() const;
+      int                                     GetNumberOfParameters() const;
       /*!
        *  Returns the name of the model.
        */
-      std::string                        GetName() const;
+      std::string                             GetName() const;
       /*!
        *  Returns the parameters of the model as a vector.
        */
-      const std::vector<ParameterBase*>* GetParameterVector() const;
+      const std::vector<ModelParameterBase*>* GetParameterVector() const;
       /*!
        *  Returns the parameters of the model as a vector.
        */
-      std::vector<ParameterBase*>*       SetParameterVector();
+      std::vector<ModelParameterBase*>*       SetParameterVector();
 
     public:
-      virtual void                       PrintStatus() const = 0;
+      virtual void                            PrintStatus() const = 0;
       /*!
        *  Returns a pointer to a copy of the model.
        */
-      virtual ModelBase*                 Clone() const = 0;
+      virtual ModelBase*                      Clone() const = 0;
 
     protected:
       /*!
        *  Number of the model parameters.
        */
-      int                                _numberOfParameters;
+      int                                     _numberOfParameters;
       /*!
        *  Name of the model.
        */
-      std::string                        _name;
+      std::string                             _name;
       /*!
        *  Stores the model parameters.
        */
-      std::vector<ParameterBase*>        _parameterVector;
+      std::vector<ModelParameterBase*>        _parameterVector;
 
     protected:
       /*!
@@ -100,24 +100,24 @@ namespace Fittino {
        *  model calculators) sometimes does not differ between initialization and printing, this\n
        *  is also the place where third party code is initialized.
        */
-      virtual void                       Initialize() const = 0;
+      virtual void                             Initialize() const = 0;
 
       /*! \cond UML */
     private:   
       /*!
        *  True when _chi2 corresponds to the current parameter values.
        */
-      bool                               _evaluated;
+      bool                                     _evaluated;
       /*!
        *  Value returned by Evaluate(). 
        */
-      double                             _chi2;
+      double                                   _chi2;
 
     private:
       /*!
        *  Evaluates the chi2 function.  
        */
-      virtual double                     Evaluate() = 0;
+      virtual double                           Evaluate() = 0;
 
       /*! \endcond UML */
 
