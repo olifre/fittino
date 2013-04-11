@@ -17,9 +17,9 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "SLHAPrediction.h"
 #include "SLHADataStorageBase.h"
 #include "SLHAModelCalculatorBase.h"
+#include "SLHAPrediction.h"
 
 Fittino::SLHAPrediction::SLHAPrediction( std::string              name,
                                          SLHAModelCalculatorBase* slhaModelCalculator,
@@ -43,7 +43,5 @@ Fittino::SLHAPrediction::~SLHAPrediction() {
 void Fittino::SLHAPrediction::UpdatePrediction() {
 
     _predictedValue = _slhaModelCalculator->GetDataStorage()->GetEntry( _blockName, _id, _columnIndex );
-
-    //this->CalculateDeviation();
 
 }
