@@ -53,7 +53,7 @@ Fittino::HECModel::HECModel() {
     //SLHAModelCalculatorBase* slhaModelCalculator = new HiggsSignalsSLHAModelCalculator();
     //_modelCalculatorVector.push_back( slhaModelCalculator );
 
-    //_chi2ContributionVector.push_back( new SLHAChi2Contribution( "HiggsSignals", slhaModelCalculator, "HIGGSSIGNALSOUTPUT", 3, 1 ) );
+    //_chi2ContributionVector.push_back( new SLHAChi2Contribution( "HiggsSignals", slhaModelCalculator, "HiggsSignalsResults", 12, 1 ) );
 
     PhysicsModelBase::Initialize();
 

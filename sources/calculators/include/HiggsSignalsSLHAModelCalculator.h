@@ -24,20 +24,6 @@
 
 extern "C" {
 
-  void   finish_higgssignals_();
-  void   get_rates_( int* ii, int* collider, int* Nchannels, int* IDchannels, double* rate );
-  void   higgsbounds_neutral_input_effc_( double* Mh, double* GammaTotal, double* g2hjss_s, double* g2hjss_p,
-                                          double* g2hjcc_s, double* g2hjcc_p, double* g2hjbb_s, double* g2hjbb_p, double* g2hjtt_s, double* g2hjtt_p,
-                                          double* g2hjmumu_s, double* g2hjmumu_p, double* g2hjtautau_s, double* g2hjtautau_p, double* g2hjWW,
-                                          double* g2hjZZ, double* g2hjZga, double* g2hjgaga, double* g2hjgg, double* g2hjggZ, double* g2hjhiZ,
-                                          double* BR_hjinvisible, double* BR_hjhihi );
-  void   higgssignals_neutral_input_massuncertainty_( double* dm );
-  void   initialize_higgssignals_latestresults_( int* nHzero, int* nHplus );
-  void   run_higgssignals_( int* mode, double* Chisq_mu, double* Chisq_mh, double* Chisq, int* nobs, double* Pvalue );
-  void   setup_higgs_to_peaks_assignment_iterations_( int* iterations );
-  void   setup_output_level_( int* output_level );
-  void   setup_pdf_( int* pdf );
-  void   setup_rate_uncertainties_( double dCS[], double dBR[] );
   double smbr_hbb_( double* Mh );
   double smbr_hcc_( double* Mh );
   double smbr_hgamgam_( double* Mh );
@@ -50,8 +36,27 @@ extern "C" {
   double smbr_hzgam_( double* Mh );
   double smbr_hzz_( double* Mh );
   double smgamma_h_( double* Mh );
-  double __theory_collidersfunctions_MOD_lhc8_rh_gg( double* Mhj );
+
   double __theory_collidersfunctions_MOD_lhc8_rh_bb( double* Mhj );
+  double __theory_collidersfunctions_MOD_lhc8_rh_gg( double* Mhj );
+
+  void finish_higgssignals_();
+  void get_rates_( int* ii, int* collider, int* Nchannels, int* IDchannels, double* rate );
+  void higgsbounds_neutral_input_effc_( double* Mh, double* GammaTotal, double* g2hjss_s, double* g2hjss_p,
+                                        double* g2hjcc_s, double* g2hjcc_p, double* g2hjbb_s, double* g2hjbb_p, double* g2hjtt_s, double* g2hjtt_p,
+                                        double* g2hjmumu_s, double* g2hjmumu_p, double* g2hjtautau_s, double* g2hjtautau_p, double* g2hjWW,
+                                        double* g2hjZZ, double* g2hjZga, double* g2hjgaga, double* g2hjgg, double* g2hjggZ, double* g2hjhiZ,
+                                        double* BR_hjinvisible, double* BR_hjhihi );
+  void higgssignals_neutral_input_massuncertainty_( double* dm );
+  void initialize_higgssignals_latestresults_( int* nHzero, int* nHplus );
+  void run_higgssignals_( int* mode, double* Chisq_mu, double* Chisq_mh, double* Chisq, int* nobs, double* Pvalue );
+
+  void setup_higgs_to_peaks_assignment_iterations_( int* iterations );
+  void setup_output_level_( int* output_level );
+  void setup_pdf_( int* pdf );
+  void setup_rate_uncertainties_( double dCS[], double dBR[] );
+
+  void __io_MOD_higgssignals_create_slha_output_default( int* detailed );
 
 }
 

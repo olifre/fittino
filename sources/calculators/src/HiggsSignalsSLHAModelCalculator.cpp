@@ -17,17 +17,19 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <stdlib.h>
+
 #include <cmath>
-#include <sstream>
+//#include <sstream>
 
 #include "HiggsSignalsSLHAModelCalculator.h"
 #include "PhysicsModelBase.h"
-#include "SLHADataStorageBase.h"
+//#include "SLHADataStorageBase.h"
 
 Fittino::HiggsSignalsSLHAModelCalculator::HiggsSignalsSLHAModelCalculator() {
 
     _name = "HiggsSignals";
-    _slhaOutputFileName = "HiggsSignals.out.txt";
+    _slhaOutputFileName = "HS-output.slha";
 
 }
 
@@ -125,9 +127,9 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     //double g2hjgaga = get_g2hgaga( sqrt( g2hjbb_s ), sqrt( g2hjtt_s ), sqrt( g2hjtautau_s ), sqrt( g2hjWW ), sqrt( g2hjZZ ) );
 
-    double SMGammaTotal = smgamma_h_( &Mh );
-
     // Calculate the new total decay width.
+
+    double SMGammaTotal = smgamma_h_( &Mh );
 
     double GammaTotal = SMGammaTotal * ( 1 + ( g2hjWW - 1 ) * smbr_hww_( &Mh ) + ( g2hjZZ - 1 ) * smbr_hzz_( &Mh ) +
                                          ( g2hjgg - 1 ) * smbr_hgg_( &Mh ) + ( g2hjtt_s - 1 ) * smbr_htoptop_( &Mh ) + ( g2hjbb_s - 1 ) * smbr_hbb_( &Mh ) +
@@ -156,50 +158,78 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     setup_rate_uncertainties_( dCS, dBR );
 
-    higgsbounds_neutral_input_effc_( &Mh, &GammaTotal, &g2hjss_s, &g2hjss_p, &g2hjcc_s, &g2hjcc_p,
-                                     &g2hjbb_s, &g2hjbb_p, &g2hjtt_s, &g2hjtt_p, &g2hjmumu_s, &g2hjmumu_p, &g2hjtautau_s, &g2hjtautau_p,
-                                     &g2hjWW, &g2hjZZ, &g2hjZga, &g2hjgaga, &g2hjgg, &g2hjggZ, &g2hjhiZ, &BR_hjinvisible, &BR_hjhihi );
+    higgsbounds_neutral_input_effc_( &Mh,
+                                     &GammaTotal,
+                                     &g2hjss_s,
+                                     &g2hjss_p,
+                                     &g2hjcc_s,
+                                     &g2hjcc_p,
+                                     &g2hjbb_s,
+                                     &g2hjbb_p,
+                                     &g2hjtt_s,
+                                     &g2hjtt_p,
+                                     &g2hjmumu_s,
+                                     &g2hjmumu_p,
+                                     &g2hjtautau_s,
+                                     &g2hjtautau_p,
+                                     &g2hjWW,
+                                     &g2hjZZ,
+                                     &g2hjZga,
+                                     &g2hjgaga,
+                                     &g2hjgg,
+                                     &g2hjggZ,
+                                     &g2hjhiZ,
+                                     &BR_hjinvisible,
+                                     &BR_hjhihi
+                                   );
 
-    double Chisq_mu, Chisq_mh, Chisq, Pvalue;
     int nobs, mode = 1; // mode = 1, 2, 3 for peak-centered, masse-centered chi^2 method or both
+    double Chisq_mu, Chisq_mh, Chisq, Pvalue;
 
     run_higgssignals_( &mode, &Chisq_mu, &Chisq_mh, &Chisq, &nobs, &Pvalue );
 
-    _slhaOutputDataStorage->AddBlock( "HIGGSSIGNALSOUTPUT:BLOCK HIGGSSIGNALSOUTPUT:# Output parameters" );
+    // Write the HiggsSignals output to file.
 
-    std::stringstream tmpStream_Chisq_mu;
-    std::string tmpString_Chisq_mu;
+    int detailed = 1; // 0: writes only block HiggsSignalsResults, 1: writes all blocks
+
+    system( "rm HS-output.slha" );
+    __io_MOD_higgssignals_create_slha_output_default( &detailed );
+
+    //_slhaOutputDataStorage->AddBlock( "HIGGSSIGNALSOUTPUT:BLOCK HIGGSSIGNALSOUTPUT:# Output parameters" );
+
+    //std::stringstream tmpStream_Chisq_mu;
+    //std::string tmpString_Chisq_mu;
    
-    tmpStream_Chisq_mu << Chisq_mu; 
-    tmpStream_Chisq_mu >> tmpString_Chisq_mu;
+    //tmpStream_Chisq_mu << Chisq_mu; 
+    //tmpStream_Chisq_mu >> tmpString_Chisq_mu;
 
-    _slhaOutputDataStorage->AddLine( "HIGGSSIGNALSOUTPUT:1:" + tmpString_Chisq_mu + ":# Chisq_mu" );
+    //_slhaOutputDataStorage->AddLine( "HIGGSSIGNALSOUTPUT:1:" + tmpString_Chisq_mu + ":# Chisq_mu" );
 
-    std::stringstream tmpStream_Chisq_mh;
-    std::string tmpString_Chisq_mh;
+    //std::stringstream tmpStream_Chisq_mh;
+    //std::string tmpString_Chisq_mh;
 
-    tmpStream_Chisq_mh << Chisq_mh;                                     
-    tmpStream_Chisq_mh >> tmpString_Chisq_mh;
+    //tmpStream_Chisq_mh << Chisq_mh;                                     
+    //tmpStream_Chisq_mh >> tmpString_Chisq_mh;
 
-    _slhaOutputDataStorage->AddLine( "HIGGSSIGNALSOUTPUT:2:" + tmpString_Chisq_mh + ":# Chisq_mh" );
+    //_slhaOutputDataStorage->AddLine( "HIGGSSIGNALSOUTPUT:2:" + tmpString_Chisq_mh + ":# Chisq_mh" );
  
-    std::stringstream tmpStream_Chisq;
-    std::string tmpString_Chisq;
+    //std::stringstream tmpStream_Chisq;
+    //std::string tmpString_Chisq;
 
-    tmpStream_Chisq << Chisq;                                     
-    tmpStream_Chisq >> tmpString_Chisq;
+    //tmpStream_Chisq << Chisq;                                     
+    //tmpStream_Chisq >> tmpString_Chisq;
 
-    _slhaOutputDataStorage->AddLine( "HIGGSSIGNALSOUTPUT:3:" + tmpString_Chisq + ":# Chisq" );
+    //_slhaOutputDataStorage->AddLine( "HIGGSSIGNALSOUTPUT:3:" + tmpString_Chisq + ":# Chisq" );
 
-    std::stringstream tmpStream_Pvalue;
-    std::string tmpString_Pvalue;
+    //std::stringstream tmpStream_Pvalue;
+    //std::string tmpString_Pvalue;
 
-    tmpStream_Pvalue << Pvalue;                                     
-    tmpStream_Pvalue >> tmpString_Pvalue;
+    //tmpStream_Pvalue << Pvalue;                                     
+    //tmpStream_Pvalue >> tmpString_Pvalue;
 
-    _slhaOutputDataStorage->AddLine( "HIGGSSIGNALSOUTPUT:4:" + tmpString_Pvalue + ":# Pvalue" );
+    //_slhaOutputDataStorage->AddLine( "HIGGSSIGNALSOUTPUT:4:" + tmpString_Pvalue + ":# Pvalue" );
 
-    _slhaOutputDataStorage->WriteFile("HiggsSignals.out.txt");
+    //_slhaOutputDataStorage->WriteFile("HiggsSignals.out.txt");
 
 }
 
