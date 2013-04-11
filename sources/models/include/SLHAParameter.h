@@ -42,28 +42,28 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-          SLHAParameter( std::string name,
-                         double      value,
-                         std::string unit,
-                         double      error,
-                         double      lowerBound,
-                         double      upperBound,
-                         int         id,
-                         bool        fixed = false );
+                  SLHAParameter( std::string name,
+                                 double      value,
+                                 std::string unit,
+                                 double      error,
+                                 double      lowerBound,
+                                 double      upperBound,
+                                 std::string id,
+                                 bool        fixed = false );
       /*!
        *  Standard destructor.
        */
-          ~SLHAParameter();
+                  ~SLHAParameter();
       /*!
        *  Returns the ID of the parameter.
        */
-      int GetID() const;
+      std::string GetID() const;
 
     private:
       /*!
        *  ID of the parameter.
        */
-      int _id;
+      std::string _id;
 
   };
 

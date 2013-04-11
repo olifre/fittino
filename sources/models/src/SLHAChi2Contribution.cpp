@@ -24,7 +24,7 @@
 Fittino::SLHAChi2Contribution::SLHAChi2Contribution( std::string name,
                                                      SLHAModelCalculatorBase* slhaModelCalculator,
                                                      std::string              blockName,
-                                                     int                      id,
+                                                     std::string              id,
                                                      int                      columnIndex )
         : _columnIndex( columnIndex ),
           _id( id ),

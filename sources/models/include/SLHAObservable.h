@@ -46,7 +46,7 @@ namespace Fittino {
                                                double                   measuredError,
                                                SLHAModelCalculatorBase* slhaModelCalculator,
 					       std::string              blockName,
-                                               int                      id,
+                                               std::string              id,
                                                int                      columnIndex );
       /*!
        *  Standard destructor.
@@ -56,7 +56,7 @@ namespace Fittino {
 
     private:
       int                      _columnIndex;
-      int                      _id;
+      std::string              _id;
       std::string              _blockName;
       SLHAModelCalculatorBase* _slhaModelCalculator;
 

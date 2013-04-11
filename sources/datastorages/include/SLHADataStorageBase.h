@@ -46,7 +46,8 @@ namespace Fittino {
        *  Standard destructor.
        */
                      ~SLHADataStorageBase();
-      virtual double GetEntry( const std::string& blockName, const int firstIndex, const int secondIndex ) = 0;
+      virtual double GetEntry( const std::string& blockName, const std::string& firstIndex, const int secondIndex ) = 0;
+      virtual double GetEntry( const std::string& blockName, const std::string& firstIndex, const std::string& secondIndex, const int thirdIndex ) = 0;
       virtual void   AddBlock( const std::string& path ) = 0;
       virtual void   AddLine( const std::string& path ) = 0;
       virtual void   ReadFile( const TString& slhaInputFileName ) = 0;

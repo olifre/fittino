@@ -44,7 +44,16 @@ namespace Fittino {
                                SLHAPrediction( std::string              name,
                                                SLHAModelCalculatorBase* slhaModelCalculator,
                                                std::string              blockName,
-                                               int                      id,
+                                               std::string              id,
+                                               int                      columnIndex );
+      /*!
+       *  Alternative constructor.
+       */
+                               SLHAPrediction( std::string              name,
+                                               SLHAModelCalculatorBase* slhaModelCalculator,
+                                               std::string              blockName,
+                                               std::string              firstId,
+                                               std::string              secondId,
                                                int                      columnIndex );
       /*!
        *  Standard destructor.
@@ -54,7 +63,8 @@ namespace Fittino {
 
     private:
       int                      _columnIndex;
-      int                      _id;
+      std::string              _firstId;
+      std::string              _secondId;
       std::string              _blockName;
       SLHAModelCalculatorBase* _slhaModelCalculator;
 

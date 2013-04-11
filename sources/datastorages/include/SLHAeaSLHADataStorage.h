@@ -44,7 +44,8 @@ namespace Fittino {
        *  Standard destructor.
        */
                      ~SLHAeaSLHADataStorage();
-      virtual double GetEntry( const std::string& blockName, const int firstIndex, const int secondIndex );
+      virtual double GetEntry( const std::string& blockName, const std::string& firstIndex, const int secondIndex );
+      virtual double GetEntry( const std::string& blockName, const std::string& firstIndex, const std::string& secondIndex, const int thirdIndex );
       virtual void   AddBlock( const std::string& path );
       virtual void   AddLine( const std::string& path );
       virtual void   ReadFile( const TString& slhaInputFileName );

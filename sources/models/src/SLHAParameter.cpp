@@ -25,7 +25,7 @@ Fittino::SLHAParameter::SLHAParameter( std::string name,
                                        double      error,
                                        double      lowerBound,
                                        double      upperBound,
-                                       int         id,
+                                       std::string id,
                                        bool        fixed )
 
 	: _id( id ),
@@ -37,7 +37,7 @@ Fittino::SLHAParameter::~SLHAParameter() {
 
 }
 
-int Fittino::SLHAParameter::GetID() const {
+std::string Fittino::SLHAParameter::GetID() const {
 
     return _id;
 

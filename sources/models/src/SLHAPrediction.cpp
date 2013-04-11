@@ -24,10 +24,28 @@
 Fittino::SLHAPrediction::SLHAPrediction( std::string              name,
                                          SLHAModelCalculatorBase* slhaModelCalculator,
                                          std::string              blockName,
-                                         int                      id,
+                                         std::string              id,
                                          int                      columnIndex )
         : _columnIndex( columnIndex ),
-          _id( id ),
+          _firstId( id ),
+          _blockName( blockName ),
+          _slhaModelCalculator( slhaModelCalculator ),
+          PredictionBase( name ) {
+
+    _predictedValue = 0.;
+    _secondId = "";
+
+}
+
+Fittino::SLHAPrediction::SLHAPrediction( std::string              name,
+                                         SLHAModelCalculatorBase* slhaModelCalculator,
+                                         std::string              blockName,
+                                         std::string              firstId,
+                                         std::string              secondId,
+                                         int                      columnIndex )
+        : _columnIndex( columnIndex ),
+          _firstId( firstId ),
+          _secondId( secondId ),
           _blockName( blockName ),
           _slhaModelCalculator( slhaModelCalculator ),
           PredictionBase( name ) {
@@ -42,6 +60,14 @@ Fittino::SLHAPrediction::~SLHAPrediction() {
 
 void Fittino::SLHAPrediction::UpdatePrediction() {
 
-    _predictedValue = _slhaModelCalculator->GetDataStorage()->GetEntry( _blockName, _id, _columnIndex );
+    if ( _secondId == "" ) {
+
+        _predictedValue = _slhaModelCalculator->GetDataStorage()->GetEntry( _blockName, _firstId, _columnIndex );
+    }
+    else {
+
+        _predictedValue = _slhaModelCalculator->GetDataStorage()->GetEntry( _blockName, _firstId, _secondId, _columnIndex );
+
+    }
 
 }

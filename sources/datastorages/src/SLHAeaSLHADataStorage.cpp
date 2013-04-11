@@ -33,12 +33,24 @@ Fittino::SLHAeaSLHADataStorage::~SLHAeaSLHADataStorage() {
 
 }
 
-double Fittino::SLHAeaSLHADataStorage::GetEntry( const std::string& blockName, const int firstIndex, const int secondIndex ) {
+double Fittino::SLHAeaSLHADataStorage::GetEntry( const std::string& blockName, const std::string& firstIndex, const int secondIndex ) {
 
     double entry = 0.;
 
     std::stringstream stringstream;
-    stringstream << _slhaeaDataStorage[blockName][firstIndex][secondIndex];
+    stringstream << _slhaeaDataStorage.at( blockName ).at( firstIndex ).at( secondIndex );
+    stringstream >> entry;
+
+    return entry;
+
+}
+
+double Fittino::SLHAeaSLHADataStorage::GetEntry( const std::string& blockName, const std::string& firstIndex, const std::string& secondIndex, const int thirdIndex ) {
+
+    double entry = 0.;
+
+    std::stringstream stringstream;
+    stringstream << _slhaeaDataStorage.at( blockName ).at( firstIndex, secondIndex ).at( thirdIndex );
     stringstream >> entry;
 
     return entry;
