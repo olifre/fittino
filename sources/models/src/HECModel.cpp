@@ -19,7 +19,10 @@
 
 #include "HECModel.h"
 #include "HiggsSignalsSLHAModelCalculator.h"
+#include "PredictionBase.h"
 #include "SLHAChi2Contribution.h"
+
+#include "SLHAPrediction.h"
 
 Fittino::HECModel::HECModel() {
 
@@ -52,6 +55,8 @@ Fittino::HECModel::HECModel() {
 
     //SLHAModelCalculatorBase* slhaModelCalculator = new HiggsSignalsSLHAModelCalculator();
     //_modelCalculatorVector.push_back( slhaModelCalculator );
+
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_1lep_atlas", slhaModelCalculator, "HiggsSignalsPeakObservables", 17, 3) );
 
     //_chi2ContributionVector.push_back( new SLHAChi2Contribution( "HiggsSignals", slhaModelCalculator, "HiggsSignalsResults", 12, 1 ) );
 
