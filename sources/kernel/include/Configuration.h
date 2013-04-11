@@ -42,7 +42,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup kernel
-   *  \brief Singleton class for storing and providing access to user-defined configuration\n
+   *  \brief Singleton class for storing and providing access to user-defined configuration
    *  settings.
    *
    *  The instance of this class is created when the input file interpreter (see also\n

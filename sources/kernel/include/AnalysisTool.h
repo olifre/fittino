@@ -38,8 +38,8 @@ namespace Fittino {
 
   /*!
    *  \ingroup kernel
-   *  \brief Abstract class which provides basic functionality for analysis tools like optimizers\n
-   *  or samplers.
+   *  \brief Abstract class which provides basic functionality for analysis tools like optimizers or
+   *  samplers.
    *
    *  This class contains auxiliary objects needed by every analysis tool such as the tool's name,\n
    *  a pointer to the model to be analysed, a counter for the number of iteration steps and a\n
