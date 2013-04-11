@@ -19,8 +19,6 @@
 
 #include <iomanip>
 
-#include "TString.h"
-
 #include "Messenger.h"
 #include "PredictionBase.h"
 
@@ -55,4 +53,5 @@ void Fittino::PredictionBase::PrintStatus() const {
 double Fittino::PredictionBase::GetPredictedValue() const {
 
     return _predictedValue;
+
 }
