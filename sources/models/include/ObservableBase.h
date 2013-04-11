@@ -8,7 +8,8 @@
 *                                                                              *
 * Description Base class for observables                                       *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Sebastian Heer        <s6seheer@uni-bonn.de>                     *
+*             Mathias   Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>            *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -39,24 +40,24 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                   ObservableBase( std::string name,
-                                   double      measuredValue,
-                                   double      measuredError );
+             ObservableBase( std::string name,
+                             double      measuredValue,
+                             double      measuredError );
       /*!
        *  Standard destructor.
        */
-                   ~ObservableBase();
-      void         PrintStatus() const;
-      double       GetMeasuredError() const;
-      double       GetMeasuredValue() const;
+             ~ObservableBase();
+      void   PrintStatus() const;
+      double GetMeasuredError() const;
+      double GetMeasuredValue() const;
 
     protected:
-      double       _deviation;
-      double       _measuredError;
-      double       _measuredValue;
+      double _deviation;
+      double _measuredError;
+      double _measuredValue;
 
     protected:
-      double       CalculateDeviation();
+      double CalculateDeviation();
 
   };
 
