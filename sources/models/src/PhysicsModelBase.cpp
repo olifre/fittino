@@ -8,7 +8,8 @@
 *                                                                              *
 * Description Base class for Fittino physics models                            *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Sebastian Heer        <s6seheer@uni-bonn.de>                     *     
+*             Mathias   Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>            *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -24,6 +25,7 @@
 #include "ModelCalculatorBase.h"
 #include "ObservableBase.h"
 #include "PhysicsModelBase.h"
+#include "PredictionBase.h"
 
 Fittino::PhysicsModelBase::PhysicsModelBase() {
 
@@ -50,6 +52,14 @@ double Fittino::PhysicsModelBase::Evaluate() {
         _observableVector[i]->UpdatePrediction();
 
     }
+
+//    //...
+//
+//    for ( unsigned int i = 0; i < _predictionVector.size(); ++i ) {
+//
+//        _predictionVector[i]->UpdatePrediction();
+//
+//    }
 
     // Update additional chi2 terms.
 
@@ -92,6 +102,23 @@ void Fittino::PhysicsModelBase::PrintStatus() const {
             _observableVector[i]->PrintStatus();
 
         }
+
+    }
+
+    if ( _predictionVector.size() != 0 ) {
+
+        messenger << Messenger::Endl;
+        messenger << Messenger::INFO << "   Summary of the " << this->GetName() << " predictions:"  << Messenger::Endl;
+        messenger << Messenger::Endl;
+        messenger << Messenger::INFO << "    Observable          Predicted value" << Messenger::Endl;
+        messenger << Messenger::Endl;
+
+        for ( unsigned int i = 0; i < _predictionVector.size(); ++i ) {
+
+            _predictionVector[i]->PrintStatus();
+
+        }
+
 
     }
 

@@ -8,7 +8,8 @@
 *                                                                              *
 * Description Base class for Fittino physics models                            *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Sebastian Heer        <s6seheer@uni-bonn.de>                     *
+*             Mathias   Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>            *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -30,6 +31,7 @@ namespace Fittino {
 
   class Chi2ContributionBase;
   class ObservableBase;
+  class PredictionBase;
   class ModelCalculatorBase;
 
   /*!
@@ -56,6 +58,7 @@ namespace Fittino {
       std::vector<Chi2ContributionBase*> _chi2ContributionVector;
       std::vector<ModelCalculatorBase*>  _modelCalculatorVector;
       std::vector<ObservableBase*>       _observableVector;
+      std::vector<PredictionBase*>       _predictionVector;
 
       /*! \cond UML */
     private:
