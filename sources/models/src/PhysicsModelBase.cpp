@@ -53,13 +53,13 @@ double Fittino::PhysicsModelBase::Evaluate() {
 
     }
 
-//    //...
-//
-//    for ( unsigned int i = 0; i < _predictionVector.size(); ++i ) {
-//
-//        _predictionVector[i]->UpdatePrediction();
-//
-//    }
+    // Update the Prediction values.
+
+    for ( unsigned int i = 0; i < _predictionVector.size(); ++i ) {
+
+        _predictionVector[i]->UpdatePrediction();
+
+    }
 
     // Update additional chi2 terms.
 
