@@ -8,7 +8,8 @@
 *                                                                              *
 * Description Base class for Fittino models                                    *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Sebastian Heer        <s6seheer@uni-bonn.de>                     *
+*             Mathias   Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>            *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -21,6 +22,7 @@
 
 Fittino::ModelBase::ModelBase()
         : _numberOfParameters( 0 ),
+          _numberOfPredictions( 0 ),
           _name( "" ),
           _evaluated( false ) {
 
@@ -49,6 +51,12 @@ int Fittino::ModelBase::GetNumberOfParameters() const {
 
 }
 
+int Fittino::ModelBase::GetNumberOfPredictions() const {
+
+    return _numberOfPredictions;
+
+}
+
 std::string Fittino::ModelBase::GetName() const {
 
     return _name;
@@ -58,6 +66,12 @@ std::string Fittino::ModelBase::GetName() const {
 const std::vector<Fittino::ModelParameterBase*>* Fittino::ModelBase::GetParameterVector() const {
 
     return &_parameterVector;
+
+}
+
+const std::vector<Fittino::PredictionBase*>* Fittino::ModelBase::GetPredictionVector() const {
+
+    return &_predictionVector;
 
 }
 

@@ -32,6 +32,12 @@ Fittino::PredictionBase::~PredictionBase() {
 
 }
 
+std::string Fittino::PredictionBase::GetName() const {
+
+    return _name;
+
+}
+
 void Fittino::PredictionBase::PrintStatus() const {
 
     Messenger& messenger = Messenger::GetInstance();

@@ -31,7 +31,7 @@
 Fittino::AnalysisTool::AnalysisTool( ModelBase* model )
         : _chi2( 1.e99 ),
           _iterationCounter( 0 ),
-          _listOfLeaves( _model->GetNumberOfParameters() + 1, 0. ),
+          _listOfLeaves( _model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + 1, 0. ),
           _model( model ),
           _name( "" ),
           _outputFile( "Output.root", "RECREATE" ),
@@ -43,7 +43,14 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase* model )
         _tree->Branch( ( _model->GetParameterVector()->at( i )->GetName() ).c_str(), &_listOfLeaves[i], ( _model->GetParameterVector()->at( i )->GetName() ).c_str() );
 
     }
-    _tree->Branch( "Chi2", &_listOfLeaves[_model->GetNumberOfParameters()], "Chi2/F" );
+
+    for ( unsigned int i = _model->GetNumberOfParameters(); i < _model->GetNumberOfParameters() + _model->GetNumberOfPredictions(); ++i ) {
+
+        _tree->Branch( ( _model->GetPredictionVector()->at( i )->GetName() ).c_str(), &_listOfLeaves[i], ( _model->GetPredictionVector()->at( i )->GetName() ).c_str() );
+
+    }
+
+    _tree->Branch( "Chi2", &_listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions()], "Chi2/F" );
 
 }
 
@@ -66,7 +73,13 @@ void Fittino::AnalysisTool::FillStatus() {
         _listOfLeaves[i] = _model->GetParameterVector()->at( i )->GetValue();
 
     }
-    _listOfLeaves[_model->GetNumberOfParameters()] = _model->GetChi2();
+
+    for ( unsigned int i = _model->GetNumberOfParameters(); i < _model->GetNumberOfParameters() + _model->GetNumberOfPredictions(); ++i ) {
+
+        _listOfLeaves[i] = _model->GetPredictionVector()->at( i )->GetPredictedValue();
+
+    }
+    _listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions()] = _model->GetChi2();
 
     _tree->Fill();
 

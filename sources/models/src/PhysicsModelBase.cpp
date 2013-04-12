@@ -25,7 +25,6 @@
 #include "ModelCalculatorBase.h"
 #include "ObservableBase.h"
 #include "PhysicsModelBase.h"
-#include "PredictionBase.h"
 
 Fittino::PhysicsModelBase::PhysicsModelBase() {
 

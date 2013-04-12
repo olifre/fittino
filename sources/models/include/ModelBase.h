@@ -8,7 +8,8 @@
 *                                                                              *
 * Description Base class for Fittino models                                    *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Sebastian Heer        <s6seheer@uni-bonn.de>                     *
+*             Mathias   Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>            *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -24,11 +25,15 @@
 #include <vector>
 
 #include "ModelParameterBase.h"
+#include "ParameterBase.h"
+#include "PredictionBase.h"
 
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
+
+  class PredictionBase;
 
   /*!
    *  \defgroup models
@@ -58,6 +63,10 @@ namespace Fittino {
        */
       int                                     GetNumberOfParameters() const;
       /*!
+       *  Returns the number of predictions of the model.
+       */
+      int                                     GetNumberOfPredictions() const;
+      /*!
        *  Returns the name of the model.
        */
       std::string                             GetName() const;
@@ -65,6 +74,10 @@ namespace Fittino {
        *  Returns the parameters of the model as a vector.
        */
       const std::vector<ModelParameterBase*>* GetParameterVector() const;
+      /*!
+       *  Returns the predictions of the model as a vector.
+       */
+      const std::vector<PredictionBase*>*     GetPredictionVector() const;
       /*!
        *  Returns the parameters of the model as a vector.
        */
@@ -83,6 +96,10 @@ namespace Fittino {
        */
       int                                     _numberOfParameters;
       /*!
+       *  Number of the predictions.
+       */
+      int                                     _numberOfPredictions; 
+      /*!
        *  Name of the model.
        */
       std::string                             _name;
@@ -90,6 +107,10 @@ namespace Fittino {
        *  Stores the model parameters.
        */
       std::vector<ModelParameterBase*>        _parameterVector;
+      /*!
+       *  Stores the predictions.
+       */
+      std::vector<PredictionBase*>            _predictionVector;
 
     protected:
       /*!
@@ -100,24 +121,24 @@ namespace Fittino {
        *  model calculators) sometimes does not differ between initialization and printing, this\n
        *  is also the place where third party code is initialized.
        */
-      virtual void                             Initialize() const = 0;
+      virtual void                            Initialize() const = 0;
 
       /*! \cond UML */
     private:   
       /*!
        *  True when _chi2 corresponds to the current parameter values.
        */
-      bool                                     _evaluated;
+      bool                                    _evaluated;
       /*!
        *  Value returned by Evaluate(). 
        */
-      double                                   _chi2;
+      double                                  _chi2;
 
     private:
       /*!
        *  Evaluates the chi2 function.  
        */
-      virtual double                           Evaluate() = 0;
+      virtual double                          Evaluate() = 0;
 
       /*! \endcond UML */
 

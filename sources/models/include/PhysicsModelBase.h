@@ -31,7 +31,6 @@ namespace Fittino {
 
   class Chi2ContributionBase;
   class ObservableBase;
-  class PredictionBase;
   class ModelCalculatorBase;
 
   /*!
@@ -58,7 +57,6 @@ namespace Fittino {
       std::vector<Chi2ContributionBase*> _chi2ContributionVector;
       std::vector<ModelCalculatorBase*>  _modelCalculatorVector;
       std::vector<ObservableBase*>       _observableVector;
-      std::vector<PredictionBase*>       _predictionVector;
 
       /*! \cond UML */
     private:

@@ -42,6 +42,9 @@ namespace Fittino {
        *  Standard destructor.
        */
                      ~PredictionBase();
+      std::string    GetName() const;
+
+    public:
       virtual void   UpdatePrediction() = 0;
       virtual void   PrintStatus() const;
       virtual double GetPredictedValue() const;
