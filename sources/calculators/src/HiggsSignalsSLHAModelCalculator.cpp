@@ -20,11 +20,11 @@
 #include <stdlib.h>
 
 #include <cmath>
-//#include <sstream>
+#include <sstream>
 
 #include "HiggsSignalsSLHAModelCalculator.h"
 #include "PhysicsModelBase.h"
-//#include "SLHADataStorageBase.h"
+#include "SLHADataStorageBase.h"
 
 Fittino::HiggsSignalsSLHAModelCalculator::HiggsSignalsSLHAModelCalculator() {
 
@@ -188,12 +188,19 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     run_higgssignals_( &mode, &Chisq_mu, &Chisq_mh, &Chisq, &nobs, &Pvalue );
 
-    // Write the HiggsSignals output to file.
+    int nH, collider = 3; //collider" = 1, 2, 3 for TEV, LHC7 or LHC8
+    double R_H_WW, R_H_ZZ, R_H_gaga, R_H_tautau, R_H_bb, R_VH_bb;
+
+    //get_rvalues_( &nH, &collider,  &R_H_WW, &R_H_ZZ, &R_H_gaga, &R_H_tautau, &R_H_bb, &R_VH_bb );
+
+    // Write the HiggsSignals output to file
 
     int detailed = 1; // 0: writes only block HiggsSignalsResults, 1: writes all blocks
 
     system( "rm HS-output.slha" );
     __io_MOD_higgssignals_create_slha_output_default( &detailed );
+
+    _slhaOutputDataStorage->ReadFile("HS-output.slha");
 
     //_slhaOutputDataStorage->AddBlock( "HIGGSSIGNALSOUTPUT:BLOCK HIGGSSIGNALSOUTPUT:# Output parameters" );
 
@@ -229,7 +236,65 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     //_slhaOutputDataStorage->AddLine( "HIGGSSIGNALSOUTPUT:4:" + tmpString_Pvalue + ":# Pvalue" );
 
-    //_slhaOutputDataStorage->WriteFile("HiggsSignals.out.txt");
+    _slhaOutputDataStorage->AddBlock( "HIGGSSIGNALSOUTPUT:BLOCK HiggsSignalsAdditionalPredictions:# HiggsSignalsAdditionalPredictions" );
+
+    std::stringstream tmpStream_R_H_WW;
+    std::string tmpString_R_H_WW;
+
+    tmpStream_R_H_WW << R_H_WW; 
+    tmpStream_R_H_WW >> tmpString_R_H_WW;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:1:" + tmpString_R_H_WW + ":# R_H_WW" );
+
+    std::stringstream tmpStream_R_H_ZZ;
+    std::string tmpString_R_H_ZZ;
+
+    tmpStream_R_H_ZZ << R_H_ZZ;
+    tmpStream_R_H_ZZ >> tmpString_R_H_ZZ;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:2:" + tmpString_R_H_ZZ + ":# R_H_ZZ" );
+
+    std::stringstream tmpStream_R_H_gaga;
+    std::string tmpString_R_H_gaga;
+
+    tmpStream_R_H_gaga << R_H_gaga;
+    tmpStream_R_H_gaga >> tmpString_R_H_gaga;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:3:" + tmpString_R_H_gaga + ":# R_H_gaga" );
+
+    std::stringstream tmpStream_R_H_tautau;
+    std::string tmpString_R_H_tautau;
+
+    tmpStream_R_H_tautau << R_H_tautau;
+    tmpStream_R_H_tautau >> tmpString_R_H_tautau;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:4:" + tmpString_R_H_tautau + ":# R_H_tautau" );
+
+    std::stringstream tmpStream_R_H_bb;
+    std::string tmpString_R_H_bb;
+
+    tmpStream_R_H_bb << R_H_bb;
+    tmpStream_R_H_bb >> tmpString_R_H_bb;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:5:" + tmpString_R_H_bb + ":# R_H_bb" );
+
+    std::stringstream tmpStream_R_VH_bb;
+    std::string tmpString_R_VH_bb;
+
+    tmpStream_R_VH_bb << R_VH_bb;
+    tmpStream_R_VH_bb >> tmpString_R_VH_bb;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:6:" + tmpString_R_H_bb + ":# R_VH_bb" );
+
+    std::stringstream tmpStream_GammaTotal;
+    std::string tmpString_GammaTotal;
+
+    tmpStream_GammaTotal << GammaTotal;
+    tmpStream_GammaTotal >> tmpString_GammaTotal;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:7:" + tmpString_GammaTotal + ":# GammaTotal" );
+
+    _slhaOutputDataStorage->WriteFile("HS-output.slha");
 
 }
 

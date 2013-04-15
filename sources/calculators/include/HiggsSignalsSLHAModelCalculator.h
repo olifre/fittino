@@ -42,6 +42,7 @@ extern "C" {
 
   void finish_higgssignals_();
   void get_rates_( int* ii, int* collider, int* Nchannels, int* IDchannels, double* rate );
+  //void get_rvalues_( int* nH, int* collider, double* R_H_WW, double* R_H_ZZ, double* R_H_gaga, double* R_H_tautau, double* R_H_bb, double* R_VH_bb );
   void higgsbounds_neutral_input_effc_( double* Mh, double* GammaTotal, double* g2hjss_s, double* g2hjss_p,
                                         double* g2hjcc_s, double* g2hjcc_p, double* g2hjbb_s, double* g2hjbb_p, double* g2hjtt_s, double* g2hjtt_p,
                                         double* g2hjmumu_s, double* g2hjmumu_p, double* g2hjtautau_s, double* g2hjtautau_p, double* g2hjWW,
@@ -55,9 +56,9 @@ extern "C" {
   void setup_output_level_( int* output_level );
   void setup_pdf_( int* pdf );
   void setup_rate_uncertainties_( double dCS[], double dBR[] );
-
+ 
   void __io_MOD_higgssignals_create_slha_output_default( int* detailed );
-
+  
 }
 
 /*!
