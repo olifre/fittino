@@ -45,11 +45,11 @@ void Fittino::PredictionBase::PrintStatus() const {
     messenger << Messenger::INFO
               << "    "
               << std::left
-              << std::setw( 18 )
+              << std::setw( 43 )
               << _name
               << std::right
-              << std::setw( 17 )
-              << std::setprecision( 5 )
+              << std::setw( 9 )
+              << std::setprecision( 2 )
               << std::scientific
               << _predictedValue
               << Messenger::Endl;

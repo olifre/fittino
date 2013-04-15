@@ -6,7 +6,7 @@
 *                                                                              *
 * File        ParameterBase.cpp                                                *
 *                                                                              *
-* Description Base class for model parameters                                  *
+* Description Base class for parameters                                        *
 *                                                                              *
 * Authors     Sebastian Heer        <s6seheer@uni-bonn.de>                     *
 *             Mathias   Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>            *
@@ -20,13 +20,16 @@
 
 #include <iomanip>
 
+//#include "ConfigurationException.h"
 #include "Messenger.h"
 #include "ParameterBase.h"
 
 Fittino::ParameterBase::ParameterBase( std::string name,
 	                               double      value)
         : _name( name ),
-          _value( value ){
+          _value( value ) {
+
+    //CheckConsistency();
 
 }
 
@@ -47,7 +50,7 @@ void Fittino::ParameterBase::PrintStatus() const {
     messenger << Messenger::INFO
               << "    "
               << std::left
-              << std::setw( 20 )
+              << std::setw( 43 )
               << _name
               << std::right
               << std::setw( 9 )
@@ -70,3 +73,31 @@ std::string Fittino::ParameterBase::GetName() const {
     return _name;
 
 }
+
+//void Fittino::ParameterBase::CheckConsistency() const {
+//
+//    // Check whether the parameter error is positive.
+//
+//    if ( _error < 0. ) {
+//
+//        throw ConfigurationException( "ERROR: Parameter " + _name + ": Parameter error is negative." );
+//
+//    }
+//
+//    // Check whether the lower bound is smaller than the upper bound.
+//
+//    if ( _lowerBound > _upperBound ) {
+//
+//        throw ConfigurationException( "ERROR: Parameter " + _name + ": The lower bound is larger than the upper bound." );
+//
+//    }
+//
+//    // Check whether the starting value is within the allowed range.
+//
+//    if ( _lowerBound > _value || _value > _upperBound ) {
+//
+//        throw ConfigurationException( "ERROR: Parameter " + _name + ": Parameter value is not within the allowed range." );
+//
+//    }
+//
+//}

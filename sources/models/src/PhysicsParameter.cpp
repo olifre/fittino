@@ -52,7 +52,7 @@ void Fittino::PhysicsParameter::PrintStatus() const {
     messenger << Messenger::INFO
               << "    "
               << std::left
-              << std::setw( 20 )
+              << std::setw( 43 )
               << _name
               << std::right
               << std::setw( 9 )
