@@ -44,13 +44,14 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase* model )
 
     }
 
-    for ( unsigned int i = _model->GetNumberOfParameters(); i < _model->GetNumberOfParameters() + _model->GetNumberOfPredictions(); ++i ) {
+    for ( unsigned int i = 0; i < _model->GetNumberOfPredictions(); ++i ) {
 
-        _tree->Branch( ( _model->GetPredictionVector()->at( i )->GetName() ).c_str(), &_listOfLeaves[i], ( _model->GetPredictionVector()->at( i )->GetName() ).c_str() );
+        _tree->Branch( ( _model->GetPredictionVector()->at( i )->GetName() ).c_str(), &_listOfLeaves[i + _model->GetNumberOfParameters()], ( _model->GetPredictionVector()->at( i )->GetName() ).c_str() );
 
     }
 
-    _tree->Branch( "Chi2", &_listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions()], "Chi2/F" );
+    _tree->Branch( "Chi2",             &_listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions()], "Chi2/F" );
+    _tree->Branch( "IterationCounter", &_listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + 1], "IterationCounter/F" );
 
 }
 
@@ -66,6 +67,18 @@ void Fittino::AnalysisTool::PerformAnalysis() {
 
 }
 
+//std::vector<float> Fittino::AnalysisTool::GetLeafVector() const {
+//
+//    return _listOfLeaves;
+//
+//}
+
+//TTree* Fittino::AnalysisTool::GetTree() {
+//
+//    return _tree;
+//
+//}
+
 void Fittino::AnalysisTool::FillStatus() {
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
@@ -74,12 +87,14 @@ void Fittino::AnalysisTool::FillStatus() {
 
     }
 
-    for ( unsigned int i = _model->GetNumberOfParameters(); i < _model->GetNumberOfParameters() + _model->GetNumberOfPredictions(); ++i ) {
+    for ( unsigned int i = 0; i < _model->GetNumberOfPredictions(); ++i ) {
 
-        _listOfLeaves[i] = _model->GetPredictionVector()->at( i )->GetPredictedValue();
+        _listOfLeaves[i + _model->GetNumberOfParameters()] = _model->GetPredictionVector()->at( i )->GetPredictedValue();
 
     }
+
     _listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions()] = _model->GetChi2();
+    _listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + 1] = _iterationCounter;
 
     _tree->Fill();
 
@@ -135,8 +150,9 @@ void Fittino::AnalysisTool::PrintStatus() const {
     _model->PrintStatus();
 
     messenger << Messenger::INFO << Messenger::Endl;
-    messenger << Messenger::INFO << std::scientific <<                           "    -----------------------------" << Messenger::Endl;
-    messenger << Messenger::INFO << std::scientific << std::setprecision( 2 ) << "    Sum                  " << _model->GetChi2() << Messenger::Endl;
+    messenger << Messenger::INFO << std::scientific << "    ----------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::Endl;
+    messenger << Messenger::INFO << std::scientific << std::setprecision( 2 ) << "    Sum                                         " << _model->GetChi2() << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
 
 }
