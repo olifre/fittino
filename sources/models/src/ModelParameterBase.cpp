@@ -21,7 +21,6 @@
 
 #include "Messenger.h"
 #include "ModelParameterBase.h"
-#include "ParameterBase.h"
 
 Fittino::ModelParameterBase::ModelParameterBase( std::string name,
                                                  double      value,
@@ -33,7 +32,7 @@ Fittino::ModelParameterBase::ModelParameterBase( std::string name,
           _lowerBound( lowerBound ),
           _upperBound( upperBound ),
           _fixed( fixed ),
-          ParameterBase( name, value )  {
+          ParameterBase( name, value ) {
 
 }
 

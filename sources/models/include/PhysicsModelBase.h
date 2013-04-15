@@ -22,7 +22,6 @@
 #define FITTINO_PHYSICSMODELBASE_H
 
 #include "ModelBase.h"
-#include "SLHAParameter.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -30,8 +29,8 @@
 namespace Fittino {
 
   class Chi2ContributionBase;
-  class ObservableBase;
   class ModelCalculatorBase;
+  class ObservableBase;
 
   /*!
    *  \ingroup models
@@ -67,10 +66,10 @@ namespace Fittino {
        */
       double                             CalculateChi2();
 
-      /*! \endcond UML */
-
-    private:   
+    private:
       virtual double                     Evaluate();
+
+      /*! \endcond UML */
 
   };
 

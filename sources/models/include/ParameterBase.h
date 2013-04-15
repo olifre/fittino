@@ -6,7 +6,7 @@
 *                                                                              *
 * File        ParameterBase.h                                                  *
 *                                                                              *
-* Description Base class for model parameters                                  *
+* Description Base class for parameters                                        *
 *                                                                              *
 * Authors     Sebastian Heer        <s6seheer@uni-bonn.de>                     *
 *             Mathias   Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>            *
@@ -30,13 +30,13 @@ namespace Fittino {
 
   /*!
    *  \ingroup models
-   *  \brief Base class for model parameters.
+   *  \brief Base class for parameters.
    */
   class ParameterBase {
 
     public:
       /*!
-       *  Takes as input the name and starting values of the parameter.
+       *  Takes as input the name and value of the parameter.
        */
                    ParameterBase( std::string name,
                                   double      value );
@@ -48,9 +48,9 @@ namespace Fittino {
        *  Returns the value of the parameter.
        */
       double       GetValue() const;
-//      /*!
-//       *  Sets the value of the parameter.
-//       */
+      /*!
+       *  Sets the value of the parameter.
+       */
       void         SetValue( double value );
       /*!
        *  Returns the name of the parameter.
@@ -68,9 +68,13 @@ namespace Fittino {
        *  Value of the parameter.
        */
        double      _value;
-      /*  Name of the parameter.
+      /*!
+       *  Name of the parameter.
        */
       std::string  _name;
+
+    //private:
+    //  void         CheckConsistency() const;
 
   };
 

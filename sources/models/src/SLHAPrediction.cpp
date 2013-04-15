@@ -63,6 +63,7 @@ void Fittino::SLHAPrediction::UpdatePrediction() {
     if ( _secondId == "" ) {
 
         _predictedValue = _slhaModelCalculator->GetDataStorage()->GetEntry( _blockName, _firstId, _columnIndex );
+
     }
     else {
 

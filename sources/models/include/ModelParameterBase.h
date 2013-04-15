@@ -20,9 +20,8 @@
 #ifndef FITTINO_MODELPARAMETERBASE_H
 #define FITTINO_MODELPARAMETERBASE_H
 
-#include <string>
-
 #include "ParameterBase.h"
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -36,7 +35,7 @@ namespace Fittino {
 
     public:
       /*!
-       *  Takes as input the name and starting values of the parameter.
+       *  Takes as input the name and starting value of the parameter.
        */
                    ModelParameterBase( std::string name,
                                        double      value,
@@ -91,9 +90,9 @@ namespace Fittino {
        *  Upper bound of the parameter.
        */
       double       _upperBound;
+
   };
 
 }
 
 #endif // FITTINO_MODELPARAMETERBASE_H
-

@@ -52,7 +52,7 @@ double Fittino::PhysicsModelBase::Evaluate() {
 
     }
 
-    // Update the Prediction values.
+    // Update any further predictions.
 
     for ( unsigned int i = 0; i < _predictionVector.size(); ++i ) {
 
@@ -109,15 +109,12 @@ void Fittino::PhysicsModelBase::PrintStatus() const {
         messenger << Messenger::Endl;
         messenger << Messenger::INFO << "   Summary of the " << this->GetName() << " predictions:"  << Messenger::Endl;
         messenger << Messenger::Endl;
-        messenger << Messenger::INFO << "    Observable          Predicted value" << Messenger::Endl;
-        messenger << Messenger::Endl;
 
         for ( unsigned int i = 0; i < _predictionVector.size(); ++i ) {
 
             _predictionVector[i]->PrintStatus();
 
         }
-
 
     }
 
