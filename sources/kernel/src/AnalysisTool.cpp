@@ -31,27 +31,14 @@
 Fittino::AnalysisTool::AnalysisTool( ModelBase* model )
         : _chi2( 1.e99 ),
           _iterationCounter( 0 ),
-          _listOfLeaves( _model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + 1, 0. ),
+          _listOfLeaves( _model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + 2, 0. ),
           _model( model ),
           _name( "" ),
           _outputFile( "Output.root", "RECREATE" ),
           _randomGenerator(),
           _tree( new TTree( "Tree", "Tree" ) ) {
 
-    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
-
-        _tree->Branch( ( _model->GetParameterVector()->at( i )->GetName() ).c_str(), &_listOfLeaves[i], ( _model->GetParameterVector()->at( i )->GetName() ).c_str() );
-
-    }
-
-    for ( unsigned int i = 0; i < _model->GetNumberOfPredictions(); ++i ) {
-
-        _tree->Branch( ( _model->GetPredictionVector()->at( i )->GetName() ).c_str(), &_listOfLeaves[i + _model->GetNumberOfParameters()], ( _model->GetPredictionVector()->at( i )->GetName() ).c_str() );
-
-    }
-
-    _tree->Branch( "Chi2",             &_listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions()], "Chi2/F" );
-    _tree->Branch( "IterationCounter", &_listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + 1], "IterationCounter/F" );
+    InitializeBranches();
 
 }
 
@@ -123,6 +110,34 @@ void Fittino::AnalysisTool::InitializeAnalysisTool() const {
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
     AnalysisTool::PrintConfiguration();
+
+}
+
+void Fittino::AnalysisTool::InitializeBranches() {
+
+    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
+
+        _tree->Branch( _model->GetParameterVector()->at( i )->GetName().c_str(),
+                       &_listOfLeaves[i],
+                       _model->GetParameterVector()->at( i )->GetName().c_str() );
+
+    }
+
+    for ( unsigned int i = 0; i < _model->GetNumberOfPredictions(); ++i ) {
+
+        _tree->Branch( _model->GetPredictionVector()->at( i )->GetName().c_str(),
+                       &_listOfLeaves[i + _model->GetNumberOfParameters()],
+                       _model->GetPredictionVector()->at( i )->GetName().c_str() );
+
+    }
+
+    _tree->Branch( "Chi2",
+                   &_listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions()],
+                   "Chi2/F" );
+
+    _tree->Branch( "IterationCounter",
+                   &_listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + 1],
+                   "IterationCounter/F" );
 
 }
 

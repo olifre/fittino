@@ -138,6 +138,7 @@ namespace Fittino {
     private:
       void               ExecuteAnalysisTool();
       void               InitializeAnalysisTool() const;
+      void               InitializeBranches();
       void               PrintConfiguration() const;
       void               TerminateAnalysisTool();
       void               WriteResultToFile() const;
