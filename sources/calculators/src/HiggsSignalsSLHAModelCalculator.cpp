@@ -98,6 +98,16 @@ double Fittino::HiggsSignalsSLHAModelCalculator::get_singleh_uncertainty( double
 
 }
 
+double Fittino::HiggsSignalsSLHAModelCalculator::GetGammaTotal( double Mh, double SMGammaTotal, double g2hjcc_s, double g2hjbb_s, double g2hjtt_s, double g2hjtautau_s, double g2hjWW, double g2hjZZ, double g2hjgaga, double g2hjgg ) {
+
+    double GammaTotal = SMGammaTotal * ( 1 + ( g2hjWW - 1 ) * smbr_hww_( &Mh ) + ( g2hjZZ - 1 ) * smbr_hzz_( &Mh ) +
+                                         ( g2hjgg - 1 ) * smbr_hgg_( &Mh ) + ( g2hjtt_s - 1 ) * smbr_htoptop_( &Mh ) + ( g2hjbb_s - 1 ) * smbr_hbb_( &Mh ) +
+                                         ( g2hjtautau_s -  1 ) * smbr_htautau_( &Mh ) + ( g2hjgaga - 1 ) * smbr_hgamgam_( &Mh ) + ( g2hjcc_s - 1 ) * smbr_hcc_( &Mh ) );
+
+    return GammaTotal;
+
+    }
+
 void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* model ) {
 
     double Mh             = model->GetParameterVector()->at( 0 )->GetValue();
@@ -127,13 +137,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     //double g2hjgaga = get_g2hgaga( sqrt( g2hjbb_s ), sqrt( g2hjtt_s ), sqrt( g2hjtautau_s ), sqrt( g2hjWW ), sqrt( g2hjZZ ) );
 
-    // Calculate the new total decay width.
-
     double SMGammaTotal = smgamma_h_( &Mh );
-
-    double GammaTotal = SMGammaTotal * ( 1 + ( g2hjWW - 1 ) * smbr_hww_( &Mh ) + ( g2hjZZ - 1 ) * smbr_hzz_( &Mh ) +
-                                         ( g2hjgg - 1 ) * smbr_hgg_( &Mh ) + ( g2hjtt_s - 1 ) * smbr_htoptop_( &Mh ) + ( g2hjbb_s - 1 ) * smbr_hbb_( &Mh ) +
-                                         ( g2hjtautau_s -  1 ) * smbr_htautau_( &Mh ) + ( g2hjgaga - 1 ) * smbr_hgamgam_( &Mh ) );
 
     // Set the (relative) rate uncertainties.
 
@@ -157,6 +161,8 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     dCS[0] = get_singleh_uncertainty( dggh, dbbh, g2hjgg, g2hjbb, Mh );
 
     setup_rate_uncertainties_( dCS, dBR );
+
+    double GammaTotal = GetGammaTotal( Mh, SMGammaTotal, g2hjcc_s, g2hjbb_s, g2hjtt_s, g2hjtautau_s, g2hjWW, g2hjZZ, g2hjgaga, g2hjgg );
 
     higgsbounds_neutral_input_effc_( &Mh,
                                      &GammaTotal,
@@ -188,10 +194,10 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     run_higgssignals_( &mode, &Chisq_mu, &Chisq_mh, &Chisq, &nobs, &Pvalue );
 
-    int nH, collider = 3; //collider" = 1, 2, 3 for TEV, LHC7 or LHC8
-    double R_H_WW, R_H_ZZ, R_H_gaga, R_H_tautau, R_H_bb, R_VH_bb;
+    int nH = 1, collider = 3; //collider" = 1, 2, 3 for TEV, LHC7 or LHC8
+    double R_H_WW, R_H_ZZ, R_H_gammagamma, R_H_tautau, R_H_bb, R_VH_bb;
 
-    //get_rvalues_( &nH, &collider,  &R_H_WW, &R_H_ZZ, &R_H_gaga, &R_H_tautau, &R_H_bb, &R_VH_bb );
+    get_rvalues_( &nH, &collider,  &R_H_WW, &R_H_ZZ, &R_H_gammagamma, &R_H_tautau, &R_H_bb, &R_VH_bb );
 
     // Write the HiggsSignals output to file
 
@@ -254,13 +260,13 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:2:" + tmpString_R_H_ZZ + ":# R_H_ZZ" );
 
-    std::stringstream tmpStream_R_H_gaga;
-    std::string tmpString_R_H_gaga;
+    std::stringstream tmpStream_R_H_gammagamma;
+    std::string tmpString_R_H_gammagamma;
 
-    tmpStream_R_H_gaga << R_H_gaga;
-    tmpStream_R_H_gaga >> tmpString_R_H_gaga;
+    tmpStream_R_H_gammagamma << R_H_gammagamma;
+    tmpStream_R_H_gammagamma >> tmpString_R_H_gammagamma;
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:3:" + tmpString_R_H_gaga + ":# R_H_gaga" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:3:" + tmpString_R_H_gammagamma + ":# R_H_gammagamma" );
 
     std::stringstream tmpStream_R_H_tautau;
     std::string tmpString_R_H_tautau;

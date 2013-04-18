@@ -42,7 +42,7 @@ extern "C" {
 
   void finish_higgssignals_();
   void get_rates_( int* ii, int* collider, int* Nchannels, int* IDchannels, double* rate );
-  //void get_rvalues_( int* nH, int* collider, double* R_H_WW, double* R_H_ZZ, double* R_H_gaga, double* R_H_tautau, double* R_H_bb, double* R_VH_bb );
+  void get_rvalues_( int* nH, int* collider, double* R_H_WW, double* R_H_ZZ, double* R_H_gaga, double* R_H_tautau, double* R_H_bb, double* R_VH_bb );
   void higgsbounds_neutral_input_effc_( double* Mh, double* GammaTotal, double* g2hjss_s, double* g2hjss_p,
                                         double* g2hjcc_s, double* g2hjcc_p, double* g2hjbb_s, double* g2hjbb_p, double* g2hjtt_s, double* g2hjtt_p,
                                         double* g2hjmumu_s, double* g2hjmumu_p, double* g2hjtautau_s, double* g2hjtautau_p, double* g2hjWW,
@@ -89,6 +89,7 @@ namespace Fittino {
     private:
       double       get_g2hgaga( double ghbb, double ghtt, double ghtautau, double ghWW, double ghZZ );
       double       get_singleh_uncertainty( double dggh, double dbbh, double g2hgg, double g2hbb, double mh );
+      double       GetGammaTotal( double Mh, double SMGammaTotal, double g2hjcc_s, double g2hjbb_s, double g2hjtt_s, double g2hjtautau_s, double g2hjWW, double g2hjZZ, double g2hjgaga, double g2hjgg );
 
     private:
       virtual void CallExecutable();
