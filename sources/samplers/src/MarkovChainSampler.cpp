@@ -57,7 +57,11 @@ void Fittino::MarkovChainSampler::Execute() {
 
         _iterationCounter++;
 
+        GetStatusParameterVector()->at( 1 )->SetValue( _iterationCounter );
+
         _chi2 = _model->GetChi2();
+
+        GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
 
         AnalysisTool::PrintStatus();
 
@@ -100,6 +104,9 @@ void Fittino::MarkovChainSampler::UpdateModel() {
         // Decide whether point shall be accepted.
 
         bool pointAccepted = false;
+
+        GetStatusParameterVector()->at( 2 )->SetValue( pointAccepted );
+
         double rho = 0.;
 
         if ( _previousLikelihood > 0. ) {
@@ -112,6 +119,8 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
             pointAccepted = true;
 
+            GetStatusParameterVector()->at( 2 )->SetValue( pointAccepted );
+
         }
         else {
 
@@ -119,6 +128,8 @@ void Fittino::MarkovChainSampler::UpdateModel() {
             if ( rho > randomThreshold ) {
 
                 pointAccepted = true;
+
+                GetStatusParameterVector()->at( 2 )->SetValue( pointAccepted );
 
             }
 

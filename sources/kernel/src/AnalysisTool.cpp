@@ -9,7 +9,8 @@
 * Description Abstract class which provides basic functionality for analysis   *
 *             tools like optimizers or samplers                                *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Sebastian Heer        <s6seheer@uni-bonn.de>                     *
+*             Mathias   Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>            *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -27,22 +28,42 @@
 #include "AnalysisTool.h"
 #include "Messenger.h"
 #include "ModelBase.h"
+#include "ParameterBase.h"
 
 Fittino::AnalysisTool::AnalysisTool( ModelBase* model )
         : _chi2( 1.e99 ),
           _iterationCounter( 0 ),
-          _listOfLeaves( _model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + 2, 0. ),
           _model( model ),
           _name( "" ),
           _outputFile( "Output.root", "RECREATE" ),
           _randomGenerator(),
           _tree( new TTree( "Tree", "Tree" ) ) {
 
+    _numberOfStatusParameters = 3;
+
+    _listOfLeaves = std::vector<float>( _model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + GetNumberOfStatusParameters() );
+
+    _statusParameterVector.push_back( new ParameterBase( "Chi2",             1.e99 ) );
+    _statusParameterVector.push_back( new ParameterBase( "IterationCounter", 0     ) );
+    _statusParameterVector.push_back( new ParameterBase( "PointAccepted",    0.    ) );
+
     InitializeBranches();
 
 }
 
 Fittino::AnalysisTool::~AnalysisTool() {
+
+}
+
+int Fittino::AnalysisTool::GetNumberOfStatusParameters() const {
+
+    return _numberOfStatusParameters;
+
+}
+
+const std::vector<Fittino::ParameterBase*>* Fittino::AnalysisTool::GetStatusParameterVector() const {
+
+    return &_statusParameterVector;
 
 }
 
@@ -80,8 +101,11 @@ void Fittino::AnalysisTool::FillStatus() {
 
     }
 
-    _listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions()] = _model->GetChi2();
-    _listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + 1] = _iterationCounter;
+    for ( unsigned int i = 0; i < GetNumberOfStatusParameters(); ++i ) {
+
+        _listOfLeaves[i + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions()] = GetStatusParameterVector()->at( i )->GetValue();
+
+    }
 
     _tree->Fill();
 
@@ -131,14 +155,26 @@ void Fittino::AnalysisTool::InitializeBranches() {
 
     }
 
-    _tree->Branch( "Chi2",
-                   &_listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions()],
-                   "Chi2/F" );
+    for ( unsigned int i = 0; i < GetNumberOfStatusParameters(); ++i ) {
 
-    _tree->Branch( "IterationCounter",
-                   &_listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + 1],
-                   "IterationCounter/F" );
+        _tree->Branch( GetStatusParameterVector()->at( i )->GetName().c_str(),
+                       &_listOfLeaves[i + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions()],
+                       GetStatusParameterVector()->at( i )->GetName().c_str() );
 
+    }
+
+//    _tree->Branch( "Chi2",
+//                   &_listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions()],
+//                   "Chi2/F" );
+//
+//    _tree->Branch( "IterationCounter",
+//                   &_listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + 1],
+//                   "IterationCounter/F" );
+//
+//
+//    _tree->Branch( "NumberOfAcceptedPoints",
+//                   &_listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + 2],
+//                   "NumberOfAcceptedPoints/F" );
 }
 
 void Fittino::AnalysisTool::PrintConfiguration() const {

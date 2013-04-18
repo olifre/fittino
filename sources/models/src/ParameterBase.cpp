@@ -61,12 +61,11 @@ void Fittino::ParameterBase::PrintStatus() const {
 
 }
 
-//void Fittino::ParameterBase::SetValue( double value ) {
-//
-//    if (!_fixed)
-//        _value = value;
-//
-//}
+void Fittino::ParameterBase::SetValue( double value ) {
+
+    _value = value;
+
+}
 
 std::string Fittino::ParameterBase::GetName() const {
 
