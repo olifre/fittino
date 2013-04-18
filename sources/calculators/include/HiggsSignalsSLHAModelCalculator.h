@@ -8,7 +8,8 @@
 *                                                                              *
 * Description Wrapper class for HiggsSignals                                   *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Sebastian Heer        <s6seheer@uni-bonn.de>                     *
+*             Mathias   Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>            *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -17,41 +18,82 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_HIGGSSIGNALSMODELCALCULATOR_H
-#define FITTINO_HIGGSSIGNALSMODELCALCULATOR_H
+#ifndef FITTINO_HIGGSSIGNALSSLHAMODELCALCULATOR_H
+#define FITTINO_HIGGSSIGNALSSLHAMODELCALCULATOR_H
 
 #include "SLHAModelCalculatorBase.h"
 
 extern "C" {
 
-  double smbr_hbb_( double* Mh );
-  double smbr_hcc_( double* Mh );
-  double smbr_hgamgam_( double* Mh );
-  double smbr_hgg_( double* Mh );
-  double smbr_hmumu_( double* Mh );
-  double smbr_hss_( double* Mh );
-  double smbr_htautau_( double* Mh );
-  double smbr_htoptop_( double* Mh );
-  double smbr_hww_( double* Mh );
-  double smbr_hzgam_( double* Mh );
-  double smbr_hzz_( double* Mh );
-  double smgamma_h_( double* Mh );
+  double smbr_hss_( double* massh );
+  double smbr_hcc_( double* massh );
+  double smbr_hbb_( double* massh );
+  double smbr_htoptop_( double* massh );
+  double smbr_hmumu_( double* massh );
+  double smbr_htautau_( double* massh );
+  double smbr_hgamgam_( double* massh );
+  double smbr_hgg_( double* massh );
+  double smbr_hww_( double* massh );
+  double smbr_hzgam_( double* massh );
+  double smbr_hzz_( double* massh );
+  double smgamma_h_( double* massh );
 
-  double __theory_collidersfunctions_MOD_lhc8_rh_bb( double* Mhj );
-  double __theory_collidersfunctions_MOD_lhc8_rh_gg( double* Mhj );
+  double __theory_collidersfunctions_MOD_lhc8_rh_bb( double* massh );
+  double __theory_collidersfunctions_MOD_lhc8_rh_gg( double* massh );
 
   void finish_higgssignals_();
-  void get_rates_( int* ii, int* collider, int* Nchannels, int* IDchannels, double* rate );
-  void get_rvalues_( int* nH, int* collider, double* R_H_WW, double* R_H_ZZ, double* R_H_gaga, double* R_H_tautau, double* R_H_bb, double* R_VH_bb );
-  void higgsbounds_neutral_input_effc_( double* Mh, double* GammaTotal, double* g2hjss_s, double* g2hjss_p,
-                                        double* g2hjcc_s, double* g2hjcc_p, double* g2hjbb_s, double* g2hjbb_p, double* g2hjtt_s, double* g2hjtt_p,
-                                        double* g2hjmumu_s, double* g2hjmumu_p, double* g2hjtautau_s, double* g2hjtautau_p, double* g2hjWW,
-                                        double* g2hjZZ, double* g2hjZga, double* g2hjgaga, double* g2hjgg, double* g2hjggZ, double* g2hjhiZ,
-                                        double* BR_hjinvisible, double* BR_hjhihi );
+  void get_rates_(
+                   int*    ii,
+                   int*    collider,
+                   int*    Nchannels,
+                   int*    IDchannels,
+                   double* rate
+                 ); 
+  void get_rvalues_(
+                   int*    nH,
+                   int*    collider,
+                   double* R_H_WW,
+                   double* R_H_ZZ,
+                   double* R_H_gaga,
+                   double* R_H_tautau,
+                   double* R_H_bb,
+                   double* R_VH_bb
+                   );
+  void higgsbounds_neutral_input_effc_(
+                   double* massh,
+                   double* GammaTotal,
+                   double* g2hjss_s,
+                   double* g2hjss_p,
+                   double* g2hjcc_s,
+                   double* g2hjcc_p,
+                   double* g2hjbb_s,
+                   double* g2hjbb_p,
+                   double* g2hjtt_s,
+                   double* g2hjtt_p,
+                   double* g2hjmumu_s,
+                   double* g2hjmumu_p,
+                   double* g2hjtautau_s,
+                   double* g2hjtautau_p,
+                   double* g2hjWW,
+                   double* g2hjZZ,
+                   double* g2hjZga,
+                   double* g2hjgaga,
+                   double* g2hjgg,
+                   double* g2hjggZ,
+                   double* g2hjhiZ,
+                   double* BR_hjinvisible,
+                   double* BR_hjhihi
+                                      );
   void higgssignals_neutral_input_massuncertainty_( double* dm );
   void initialize_higgssignals_latestresults_( int* nHzero, int* nHplus );
-  void run_higgssignals_( int* mode, double* Chisq_mu, double* Chisq_mh, double* Chisq, int* nobs, double* Pvalue );
-
+  void run_higgssignals_(
+                   int*    mode,
+                   double* Chisq_mu,
+                   double* Chisq_mh,
+                   double* Chisq,
+                   int*    nobs,
+                   double* Pvalue
+                        );
   void setup_higgs_to_peaks_assignment_iterations_( int* iterations );
   void setup_output_level_( int* output_level );
   void setup_pdf_( int* pdf );
@@ -76,20 +118,64 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      HiggsSignalsSLHAModelCalculator();
+                   HiggsSignalsSLHAModelCalculator();
       /*!
        *  Standard destructor.
        */
-      ~HiggsSignalsSLHAModelCalculator();
+                   ~HiggsSignalsSLHAModelCalculator();
 
     public:
       virtual void Initialize() const;
 
       /*! \cond UML */
     private:
-      double       get_g2hgaga( double ghbb, double ghtt, double ghtautau, double ghWW, double ghZZ );
-      double       get_singleh_uncertainty( double dggh, double dbbh, double g2hgg, double g2hbb, double mh );
-      double       GetGammaTotal( double Mh, double SMGammaTotal, double g2hjcc_s, double g2hjbb_s, double g2hjtt_s, double g2hjtautau_s, double g2hjWW, double g2hjZZ, double g2hjgaga, double g2hjgg );
+      /*!
+       *  Calculates the loop-induced coupling of the Higgs boson to photons\n
+       *  from the couplings to the particles contributing to the loop.
+       */
+      double       Calculateg2hgammagamma(
+                                        double ghbb,
+                                        double ghtt,
+                                        double ghtautau,
+                                        double ghWW,
+                                        double ghZZ
+                                         );
+      /*!
+       *  Calculates the uncertainty on the "SingleH" production mode (see e.g.\n
+       *  the HiggsSignals manual) by interpolating between pure bbh and ggh\n
+       *  production.
+       */
+      double       CalculateSinglehUncertainty(
+                                        double dhbb,
+                                        double dhgg,
+                                        double g2hbb,
+                                        double g2hgg,
+                                        double massh
+                                              );
+      /*!
+       *  Calculates the total width of the Higgs boson depending on its mass\n
+       *  and couplings.
+       */
+      double       CalculateGammaTotal(
+                                        double massh,
+                                        double g2hjcc_s,
+                                        double g2hjbb_s,
+                                        double g2hjtt_s,
+                                        double g2hjtautau_s,
+                                        double g2hjWW,
+                                        double g2hjZZ,
+                                        double g2hjgaga,
+                                        double g2hjgg
+                                      );
+      /*!
+       *  Set the (relative) rate uncertainties.
+       */
+      void         SetRateUncertainties(
+                                        double g2hjbb_s,
+                                        double g2hjbb_p,
+                                        double g2hjgg,
+                                        double massh
+                                       );
 
     private:
       virtual void CallExecutable();
@@ -102,4 +188,4 @@ namespace Fittino {
 
 }
 
-#endif // FITTINO_HIGGSSIGNALSMODELCALCULATOR_H
+#endif // FITTINO_HIGGSSIGNALSSLHAMODELCALCULATOR_H

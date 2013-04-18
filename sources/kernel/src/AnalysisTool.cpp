@@ -55,18 +55,6 @@ Fittino::AnalysisTool::~AnalysisTool() {
 
 }
 
-int Fittino::AnalysisTool::GetNumberOfStatusParameters() const {
-
-    return _numberOfStatusParameters;
-
-}
-
-const std::vector<Fittino::ParameterBase*>* Fittino::AnalysisTool::GetStatusParameterVector() const {
-
-    return &_statusParameterVector;
-
-}
-
 void Fittino::AnalysisTool::PerformAnalysis() {
 
     AnalysisTool::InitializeAnalysisTool();
@@ -80,7 +68,7 @@ void Fittino::AnalysisTool::PerformAnalysis() {
 //    return _listOfLeaves;
 //
 //}
-
+//
 //TTree* Fittino::AnalysisTool::GetTree() {
 //
 //    return _tree;
@@ -163,18 +151,6 @@ void Fittino::AnalysisTool::InitializeBranches() {
 
     }
 
-//    _tree->Branch( "Chi2",
-//                   &_listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions()],
-//                   "Chi2/F" );
-//
-//    _tree->Branch( "IterationCounter",
-//                   &_listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + 1],
-//                   "IterationCounter/F" );
-//
-//
-//    _tree->Branch( "NumberOfAcceptedPoints",
-//                   &_listOfLeaves[_model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + 2],
-//                   "NumberOfAcceptedPoints/F" );
 }
 
 void Fittino::AnalysisTool::PrintConfiguration() const {
@@ -187,6 +163,12 @@ void Fittino::AnalysisTool::PrintConfiguration() const {
     this->PrintSteeringParameters();
 
     messenger << Messenger::ALWAYS << Messenger::Endl;
+
+}
+
+int Fittino::AnalysisTool::GetNumberOfStatusParameters() const {
+
+    return _numberOfStatusParameters;
 
 }
 
@@ -205,6 +187,12 @@ void Fittino::AnalysisTool::PrintStatus() const {
     messenger << Messenger::INFO << Messenger::Endl;
     messenger << Messenger::INFO << std::scientific << std::setprecision( 2 ) << "    Sum                                         " << _model->GetChi2() << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
+
+}
+
+const std::vector<Fittino::ParameterBase*>* Fittino::AnalysisTool::GetStatusParameterVector() const {
+
+    return &_statusParameterVector;
 
 }
 

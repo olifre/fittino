@@ -28,7 +28,7 @@
 
 Fittino::HiggsSignalsSLHAModelCalculator::HiggsSignalsSLHAModelCalculator() {
 
-    _name = "HiggsSignals";
+    _name               = "HiggsSignals";
     _slhaOutputFileName = "HS-output.slha";
 
 }
@@ -66,51 +66,110 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallExecutable() {
 
 }
 
-double Fittino::HiggsSignalsSLHAModelCalculator::get_g2hgaga( double ghbb, double ghtt, double ghtautau, double ghWW, double ghZZ ) {
+double Fittino::HiggsSignalsSLHAModelCalculator::Calculateg2hgammagamma( double ghbb,
+                                                                         double ghtt,
+                                                                         double ghtautau,
+                                                                         double ghWW,
+                                                                         double ghZZ ) {
 
-    double get_g2hgaga = ghtt * ghtt * 0.070904 + ghbb * ghbb * 0.18760e-04 + ghWW * ghWW * 1.5863 +
-                         ghtt * ghbb * ( -0.17319e-02 ) + ghtt * ghWW * ( -0.67074 ) + ghbb * ghWW * 0.82093e-02 +
-                         ghtautau * ghtautau * 0.22663e-04 + ghtt * ghtautau * ( -0.18696e-02 ) + ghbb * ghtautau * 0.41239e-04 +
-                         ghtautau * ghWW * 0.88634e-02;
+    double g2hgammagamma = ghtt * ghtt * 0.070904
+                         + ghbb * ghbb * 0.18760e-04
+                         + ghWW * ghWW * 1.5863
+                         + ghtt * ghbb * -0.17319e-02
+                         + ghtt * ghWW * -0.67074
+                         + ghbb * ghWW * 0.82093e-02
+                         + ghtautau * ghtautau * 0.22663e-04
+                         + ghtt * ghtautau * -0.18696e-02
+                         + ghbb * ghtautau * 0.41239e-04
+                         + ghtautau * ghWW * 0.88634e-02;
 
-    return get_g2hgaga;
+    return g2hgammagamma;
 
 }
 
-double Fittino::HiggsSignalsSLHAModelCalculator::get_singleh_uncertainty( double dggh, double dbbh, double g2hgg, double g2hbb, double mh ) {
+double Fittino::HiggsSignalsSLHAModelCalculator::CalculateSinglehUncertainty( double dhbb,
+                                                                              double dhgg,
+                                                                              double g2hbb,
+                                                                              double g2hgg,
+                                                                              double massh ) {
 
-    dggh = 0.147;
-    dbbh = 0.2;
-    double get_singleh_uncertainty;
+    double singlehUncertainty;
+    double vsmall = 1.e-16;
 
-    if ( g2hgg <= 1.0e-16/* vsmall=1.0e-16 */  && g2hbb <= 1.0e-16/* vsmall=1.0e-16*/ ) {
+    if ( g2hgg <= vsmall && g2hbb <= vsmall ) {
 
-        get_singleh_uncertainty = 0.0;
+        singlehUncertainty = 0.;
 
-    } else {
+    }
+    else {
 
-        get_singleh_uncertainty = ( g2hgg * __theory_collidersfunctions_MOD_lhc8_rh_gg( &mh ) * dggh + g2hbb * __theory_collidersfunctions_MOD_lhc8_rh_bb( &mh ) * dbbh )
-                                  / ( g2hgg * __theory_collidersfunctions_MOD_lhc8_rh_gg( &mh ) + g2hbb * __theory_collidersfunctions_MOD_lhc8_rh_bb( &mh ) );
+        singlehUncertainty = ( g2hgg * __theory_collidersfunctions_MOD_lhc8_rh_gg( &massh ) * dhgg
+                           +   g2hbb * __theory_collidersfunctions_MOD_lhc8_rh_bb( &massh ) * dhbb )
+                           / ( g2hgg * __theory_collidersfunctions_MOD_lhc8_rh_gg( &massh )
+                           +   g2hbb * __theory_collidersfunctions_MOD_lhc8_rh_bb( &massh ) );
 
     }
 
-    return get_singleh_uncertainty;
+    return singlehUncertainty;
 
 }
 
-double Fittino::HiggsSignalsSLHAModelCalculator::GetGammaTotal( double Mh, double SMGammaTotal, double g2hjcc_s, double g2hjbb_s, double g2hjtt_s, double g2hjtautau_s, double g2hjWW, double g2hjZZ, double g2hjgaga, double g2hjgg ) {
+double Fittino::HiggsSignalsSLHAModelCalculator::CalculateGammaTotal( double massh,
+                                                                      double g2hjcc_s,
+                                                                      double g2hjbb_s,
+                                                                      double g2hjtt_s,
+                                                                      double g2hjtautau_s,
+                                                                      double g2hjWW,
+                                                                      double g2hjZZ,
+                                                                      double g2hjgaga,
+                                                                      double g2hjgg ) {
 
-    double GammaTotal = SMGammaTotal * ( 1 + ( g2hjWW - 1 ) * smbr_hww_( &Mh ) + ( g2hjZZ - 1 ) * smbr_hzz_( &Mh ) +
-                                         ( g2hjgg - 1 ) * smbr_hgg_( &Mh ) + ( g2hjtt_s - 1 ) * smbr_htoptop_( &Mh ) + ( g2hjbb_s - 1 ) * smbr_hbb_( &Mh ) +
-                                         ( g2hjtautau_s -  1 ) * smbr_htautau_( &Mh ) + ( g2hjgaga - 1 ) * smbr_hgamgam_( &Mh ) + ( g2hjcc_s - 1 ) * smbr_hcc_( &Mh ) );
+    double GammaTotal = smgamma_h_( &massh )
+                        * ( 1
+                        + ( g2hjcc_s - 1 ) * smbr_hcc_( &massh )
+                        + ( g2hjbb_s - 1 ) * smbr_hbb_( &massh )
+                        + ( g2hjtt_s - 1 ) * smbr_htoptop_( &massh )
+                        + ( g2hjtautau_s - 1 ) * smbr_htautau_( &massh )
+                        + ( g2hjWW - 1 ) * smbr_hww_( &massh )
+                        + ( g2hjZZ - 1 ) * smbr_hzz_( &massh )
+                        + ( g2hjgaga - 1 ) * smbr_hgamgam_( &massh )
+                        + ( g2hjgg - 1 ) * smbr_hgg_( &massh ) );
 
     return GammaTotal;
 
-    }
+}
+
+void Fittino::HiggsSignalsSLHAModelCalculator::SetRateUncertainties( double g2hjbb_s,
+                                                                     double g2hjbb_p,
+                                                                     double g2hjgg,
+                                                                     double massh ) {
+
+    double dCS[5], dBR[5];
+
+    double g2hjbb = g2hjbb_s + g2hjbb_p;
+    double dhbb = 0.2, dhgg = 0.147;
+
+    dCS[0] = CalculateSinglehUncertainty( dhbb, dhgg, g2hjbb, g2hjgg, massh ); // singleH
+    dCS[1] = 0.028; // VBF
+    dCS[2] = 0.037; // HW
+    dCS[3] = 0.051; // HZ
+    dCS[4] = 0.12;  // ttH
+
+    dBR[0] = 0.054; // gammagamma
+    dBR[1] = 0.048; // WW
+    dBR[2] = 0.048; // ZZ
+    dBR[3] = 0.061; // tautau
+    dBR[4] = 0.028; // bbbar
+
+    setup_rate_uncertainties_( dCS, dBR );
+
+}
 
 void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* model ) {
 
-    double Mh             = model->GetParameterVector()->at( 0 )->GetValue();
+    // Identify the model parameters with the variables needed by HiggsSignals.
+
+    double massh          = model->GetParameterVector()->at( 0 )->GetValue();
 
     double g2hjss_s       = pow( 1 + model->GetParameterVector()->at(  1 )->GetValue(), 2 );
     double g2hjss_p       = pow( 1 + model->GetParameterVector()->at(  2 )->GetValue(), 2 );
@@ -135,36 +194,25 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     double BR_hjhihi      = model->GetParameterVector()->at( 20 )->GetValue();
     double BR_hjinvisible = model->GetParameterVector()->at( 21 )->GetValue();
 
-    //double g2hjgaga = get_g2hgaga( sqrt( g2hjbb_s ), sqrt( g2hjtt_s ), sqrt( g2hjtautau_s ), sqrt( g2hjWW ), sqrt( g2hjZZ ) );
-
-    double SMGammaTotal = smgamma_h_( &Mh );
-
     // Set the (relative) rate uncertainties.
 
-    double dCS[5], dBR[5];
+    SetRateUncertainties( g2hjbb_s, g2hjbb_p, g2hjgg, massh ); // depend only on g2hjbb, g2hjgg
+                                                               // and the Higgs boson mass
+                                                               // use fixed values for the other rates
 
-    dCS[0] = 0.147; // singleH
-    dCS[1] = 0.028; // VBF
-    dCS[2] = 0.037; // HW
-    dCS[3] = 0.051; // HZ
-    dCS[4] = 0.12;  // ttH
+    // Calculate the total width of the Higgs boson.
 
-    dBR[0] = 0.054; // gammagamma
-    dBR[1] = 0.048; // WW
-    dBR[2] = 0.048; // ZZ
-    dBR[3] = 0.061; // tautau
-    dBR[4] = 0.028; // bbbar
+    double GammaTotal = CalculateGammaTotal( massh,
+                                             g2hjcc_s,
+                                             g2hjbb_s,
+                                             g2hjtt_s,
+                                             g2hjtautau_s,
+                                             g2hjWW,
+                                             g2hjZZ,
+                                             g2hjgaga,
+                                             g2hjgg );
 
-    double dggh = 0.147, dbbh = 0.2;
-    double g2hjbb = g2hjbb_s + g2hjbb_p;
-
-    dCS[0] = get_singleh_uncertainty( dggh, dbbh, g2hjgg, g2hjbb, Mh );
-
-    setup_rate_uncertainties_( dCS, dBR );
-
-    double GammaTotal = GetGammaTotal( Mh, SMGammaTotal, g2hjcc_s, g2hjbb_s, g2hjtt_s, g2hjtautau_s, g2hjWW, g2hjZZ, g2hjgaga, g2hjgg );
-
-    higgsbounds_neutral_input_effc_( &Mh,
+    higgsbounds_neutral_input_effc_( &massh,
                                      &GammaTotal,
                                      &g2hjss_s,
                                      &g2hjss_p,
@@ -186,63 +234,34 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
                                      &g2hjggZ,
                                      &g2hjhiZ,
                                      &BR_hjinvisible,
-                                     &BR_hjhihi
-                                   );
+                                     &BR_hjhihi );
+
+    // Run HiggsSignals.
 
     int nobs, mode = 1; // mode = 1, 2, 3 for peak-centered, masse-centered chi^2 method or both
     double Chisq_mu, Chisq_mh, Chisq, Pvalue;
 
     run_higgssignals_( &mode, &Chisq_mu, &Chisq_mh, &Chisq, &nobs, &Pvalue );
 
-    int nH = 1, collider = 3; //collider" = 1, 2, 3 for TEV, LHC7 or LHC8
-    double R_H_WW, R_H_ZZ, R_H_gammagamma, R_H_tautau, R_H_bb, R_VH_bb;
-
-    get_rvalues_( &nH, &collider,  &R_H_WW, &R_H_ZZ, &R_H_gammagamma, &R_H_tautau, &R_H_bb, &R_VH_bb );
-
-    // Write the HiggsSignals output to file
-
-    int detailed = 1; // 0: writes only block HiggsSignalsResults, 1: writes all blocks
+    // Write the HiggsSignals output to file.
 
     system( "rm HS-output.slha" );
+
+    int detailed = 1; // 0: writes only block HiggsSignalsResults, 1: writes all blocks
     __io_MOD_higgssignals_create_slha_output_default( &detailed );
 
-    _slhaOutputDataStorage->ReadFile("HS-output.slha");
+    // Write additional HiggsSignals predictions to file.
 
-    //_slhaOutputDataStorage->AddBlock( "HIGGSSIGNALSOUTPUT:BLOCK HIGGSSIGNALSOUTPUT:# Output parameters" );
+    //double g2hjgaga = Calculateg2hgammagamma( sqrt( g2hjbb_s ), sqrt( g2hjtt_s ), sqrt( g2hjtautau_s ), sqrt( g2hjWW ), sqrt( g2hjZZ ) );
 
-    //std::stringstream tmpStream_Chisq_mu;
-    //std::string tmpString_Chisq_mu;
-   
-    //tmpStream_Chisq_mu << Chisq_mu; 
-    //tmpStream_Chisq_mu >> tmpString_Chisq_mu;
+    int nH = 1, collider = 3; // collider = 1, 2, 3 for TEV, LHC7 or LHC8
+    double R_H_WW, R_H_ZZ, R_H_gammagamma, R_H_tautau, R_H_bb, R_VH_bb;
 
-    //_slhaOutputDataStorage->AddLine( "HIGGSSIGNALSOUTPUT:1:" + tmpString_Chisq_mu + ":# Chisq_mu" );
+    get_rvalues_( &nH, &collider, &R_H_WW, &R_H_ZZ, &R_H_gammagamma, &R_H_tautau, &R_H_bb, &R_VH_bb );
 
-    //std::stringstream tmpStream_Chisq_mh;
-    //std::string tmpString_Chisq_mh;
+    _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
 
-    //tmpStream_Chisq_mh << Chisq_mh;                                     
-    //tmpStream_Chisq_mh >> tmpString_Chisq_mh;
-
-    //_slhaOutputDataStorage->AddLine( "HIGGSSIGNALSOUTPUT:2:" + tmpString_Chisq_mh + ":# Chisq_mh" );
- 
-    //std::stringstream tmpStream_Chisq;
-    //std::string tmpString_Chisq;
-
-    //tmpStream_Chisq << Chisq;                                     
-    //tmpStream_Chisq >> tmpString_Chisq;
-
-    //_slhaOutputDataStorage->AddLine( "HIGGSSIGNALSOUTPUT:3:" + tmpString_Chisq + ":# Chisq" );
-
-    //std::stringstream tmpStream_Pvalue;
-    //std::string tmpString_Pvalue;
-
-    //tmpStream_Pvalue << Pvalue;                                     
-    //tmpStream_Pvalue >> tmpString_Pvalue;
-
-    //_slhaOutputDataStorage->AddLine( "HIGGSSIGNALSOUTPUT:4:" + tmpString_Pvalue + ":# Pvalue" );
-
-    _slhaOutputDataStorage->AddBlock( "HIGGSSIGNALSOUTPUT:BLOCK HiggsSignalsAdditionalPredictions:# HiggsSignalsAdditionalPredictions" );
+    _slhaOutputDataStorage->AddBlock( "HiggsSignalsAdditionalPredictions:BLOCK HiggsSignalsAdditionalPredictions:# Additional predictions" );
 
     std::stringstream tmpStream_R_H_WW;
     std::string tmpString_R_H_WW;
@@ -300,7 +319,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:7:" + tmpString_GammaTotal + ":# GammaTotal" );
 
-    _slhaOutputDataStorage->WriteFile("HS-output.slha");
+    _slhaOutputDataStorage->WriteFile( _slhaOutputFileName );
 
 }
 
