@@ -22,7 +22,8 @@
 #include "Messenger.h"
 #include "PredictionBase.h"
 
-Fittino::PredictionBase::PredictionBase( std::string name )
+Fittino::PredictionBase::PredictionBase( std::string name, 
+                                         std::string unit)
          : _predictedValue( 0. ),
            _name( name ) {
 
@@ -35,6 +36,12 @@ Fittino::PredictionBase::~PredictionBase() {
 std::string Fittino::PredictionBase::GetName() const {
 
     return _name;
+
+}
+
+std::string Fittino::PredictionBase::GetUnit() const {
+
+    return _unit;
 
 }
 

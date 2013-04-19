@@ -37,12 +37,14 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                     PredictionBase( std::string name );
+                     PredictionBase( std::string name, 
+                                     std::string unit );
       /*!
        *  Standard destructor.
        */
                      ~PredictionBase();
       std::string    GetName() const;
+      std::string    GetUnit() const;
 
     public:
       virtual void   UpdatePrediction() = 0;
@@ -52,6 +54,7 @@ namespace Fittino {
     protected:
       double         _predictedValue;
       std::string    _name;
+      std::string    _unit;
 
   };
 

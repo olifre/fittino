@@ -22,6 +22,7 @@
 #include "SLHAPrediction.h"
 
 Fittino::SLHAPrediction::SLHAPrediction( std::string              name,
+                                         std::string              unit,
                                          SLHAModelCalculatorBase* slhaModelCalculator,
                                          std::string              blockName,
                                          std::string              id,
@@ -30,7 +31,7 @@ Fittino::SLHAPrediction::SLHAPrediction( std::string              name,
           _firstId( id ),
           _blockName( blockName ),
           _slhaModelCalculator( slhaModelCalculator ),
-          PredictionBase( name ) {
+          PredictionBase( name, unit ) {
 
     _predictedValue = 0.;
     _secondId = "";
@@ -38,6 +39,7 @@ Fittino::SLHAPrediction::SLHAPrediction( std::string              name,
 }
 
 Fittino::SLHAPrediction::SLHAPrediction( std::string              name,
+                                         std::string              unit,
                                          SLHAModelCalculatorBase* slhaModelCalculator,
                                          std::string              blockName,
                                          std::string              firstId,
@@ -48,7 +50,7 @@ Fittino::SLHAPrediction::SLHAPrediction( std::string              name,
           _secondId( secondId ),
           _blockName( blockName ),
           _slhaModelCalculator( slhaModelCalculator ),
-          PredictionBase( name ) {
+          PredictionBase( name, unit ) {
 
     _predictedValue = 0.;
 

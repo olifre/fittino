@@ -26,12 +26,13 @@
 #include "ObservableBase.h"
 
 Fittino::ObservableBase::ObservableBase( std::string name,
+                                         std::string unit,
                                          double      measuredValue,
                                          double      measuredError )
         : _deviation( 0. ),
           _measuredError( measuredError ),
           _measuredValue( measuredValue ),
-          PredictionBase( name ) {
+          PredictionBase( name, unit ) {
 
    _predictedValue = 0.;
 

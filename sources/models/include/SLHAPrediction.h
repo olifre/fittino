@@ -42,6 +42,7 @@ namespace Fittino {
        *  Standard constructor.
        */
                                SLHAPrediction( std::string              name,
+                                               std::string              unit,
                                                SLHAModelCalculatorBase* slhaModelCalculator,
                                                std::string              blockName,
                                                std::string              id,
@@ -50,6 +51,7 @@ namespace Fittino {
        *  Alternative constructor.
        */
                                SLHAPrediction( std::string              name,
+                                               std::string              unit,
                                                SLHAModelCalculatorBase* slhaModelCalculator,
                                                std::string              blockName,
                                                std::string              firstId,

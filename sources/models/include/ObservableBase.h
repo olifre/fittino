@@ -41,6 +41,7 @@ namespace Fittino {
        *  Standard constructor.
        */
              ObservableBase( std::string name,
+                             std::string unit,
                              double      measuredValue,
                              double      measuredError );
       /*!

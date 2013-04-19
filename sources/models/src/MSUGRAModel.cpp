@@ -41,10 +41,10 @@ Fittino::MSUGRAModel::MSUGRAModel() {
     SPhenoSLHAModelCalculator* slhaModelCalculator = new SPhenoSLHAModelCalculator();
     _modelCalculatorVector.push_back( slhaModelCalculator );
 
-    _observableVector.push_back( new SLHAObservable( "BR(b -> s gamma)" , 3.55e-04, 0.53e-04, slhaModelCalculator, "SPhenoLowEnergy", " 1", 1 ) );
-    _observableVector.push_back( new SLHAObservable( "BR(Bs -> mu+ mu-)",  4.5e-09,  0.8e-09, slhaModelCalculator, "SPhenoLowEnergy", " 4", 1 ) );
-    _observableVector.push_back( new SLHAObservable( "Delta(M_Bs)"      ,   17.719,    4.200, slhaModelCalculator, "SPhenoLowEnergy", " 7", 1 ) );
-    _observableVector.push_back( new SLHAObservable( "Delta(g-2)_muon"  , 28.7e-10,  8.2e-10, slhaModelCalculator, "SPhenoLowEnergy", "11", 1 ) );
+    _observableVector.push_back( new SLHAObservable( "BR(b -> s gamma)" , "", 3.55e-04, 0.53e-04, slhaModelCalculator, "SPhenoLowEnergy", " 1", 1 ) );
+    _observableVector.push_back( new SLHAObservable( "BR(Bs -> mu+ mu-)", "",  4.5e-09,  0.8e-09, slhaModelCalculator, "SPhenoLowEnergy", " 4", 1 ) );
+    _observableVector.push_back( new SLHAObservable( "Delta(M_Bs)"      , "",  17.719,    4.200, slhaModelCalculator, "SPhenoLowEnergy", " 7", 1 ) );
+    _observableVector.push_back( new SLHAObservable( "Delta(g-2)_muon"  , "", 28.7e-10,  8.2e-10, slhaModelCalculator, "SPhenoLowEnergy", "11", 1 ) );
 
     //_chi2ContributionVector.push_back( new SLHAChi2Contribution( "TestContribution", slhaModelCalculator, "SPhenoLowEnergy", "1", 1 ) );
 
