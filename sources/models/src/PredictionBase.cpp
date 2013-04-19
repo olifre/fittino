@@ -22,10 +22,10 @@
 #include "Messenger.h"
 #include "PredictionBase.h"
 
-Fittino::PredictionBase::PredictionBase( std::string name, 
-                                         std::string unit)
+Fittino::PredictionBase::PredictionBase( std::string name, std::string unit )
          : _predictedValue( 0. ),
-           _name( name ) {
+           _name( name ),
+           _unit( unit ) {
 
 }
 

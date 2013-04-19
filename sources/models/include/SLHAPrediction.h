@@ -75,4 +75,3 @@ namespace Fittino {
 }
 
 #endif // FITTINO_SLHAPREDICTION_H
-

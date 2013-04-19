@@ -31,8 +31,8 @@ Fittino::SLHAObservable::SLHAObservable( std::string              name,
                                          int                      columnIndex )
         : _columnIndex( columnIndex ),
           _id( id ),
-	  _blockName( blockName ),
-	  _slhaModelCalculator( slhaModelCalculator ),
+          _blockName( blockName ),
+          _slhaModelCalculator( slhaModelCalculator ),
           ObservableBase( name, unit, measuredValue, measuredError ) {
 
     _deviation = 0.;

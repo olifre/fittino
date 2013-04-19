@@ -37,8 +37,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                     PredictionBase( std::string name, 
-                                     std::string unit );
+                     PredictionBase( std::string name, std::string unit );
       /*!
        *  Standard destructor.
        */
