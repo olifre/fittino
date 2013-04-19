@@ -60,7 +60,7 @@ void Fittino::PhysicsParameter::PrintStatus() const {
               << std::scientific
               << _value;
 
-    if ( _unit != "" && !_fixed) {
+    if ( _unit != "" && !_fixed ) {
 
         messenger << std::right
                   << std::setw( 6 )

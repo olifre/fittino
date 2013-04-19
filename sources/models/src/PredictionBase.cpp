@@ -58,8 +58,17 @@ void Fittino::PredictionBase::PrintStatus() const {
               << std::setw( 9 )
               << std::setprecision( 2 )
               << std::scientific
-              << _predictedValue
-              << Messenger::Endl;
+              << _predictedValue;
+
+    if ( _unit != "" ) {
+
+        messenger << std::right
+                  << std::setw( 6 )
+                  << _unit;
+
+    }
+
+    messenger << Messenger::Endl;
 
 }
 
