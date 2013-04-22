@@ -43,9 +43,9 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase* model )
 
     _listOfLeaves = std::vector<float>( _model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + GetNumberOfStatusParameters() );
 
-    _statusParameterVector.push_back( new ParameterBase( "Chi2",             1.e99 ) );
-    _statusParameterVector.push_back( new ParameterBase( "IterationCounter", 0     ) );
-    _statusParameterVector.push_back( new ParameterBase( "PointAccepted",    0.    ) );
+    _statusParameterVector.push_back( new ParameterBase( "Chi2",             "#chi^2",           1.e99 ) );
+    _statusParameterVector.push_back( new ParameterBase( "IterationCounter", "IterationCounter", 0     ) );
+    _statusParameterVector.push_back( new ParameterBase( "PointAccepted",    "PointAccepted",    0.    ) );
 
     InitializeBranches();
 

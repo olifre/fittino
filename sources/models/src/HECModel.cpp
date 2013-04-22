@@ -30,28 +30,28 @@ Fittino::HECModel::HECModel() {
 
     _numberOfParameters = 25;
 
-    _parameterVector.push_back( new PhysicsParameter( "Massh",             "m_{Higgs}",          126., "GeV", "GeV", 0.1, 120., 130., false ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hss",       "#Delta_shss",          0.,    "",    "", 0.1, -1.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hss",       "#Delta_phss",         -1.,    "",    "", 0.1, -1.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hcc",       "#Delta_shcc",          0.,    "",    "", 0.1, -1.,   5., false ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hcc",       "#Delta_phcc",         -1.,    "",    "", 0.1, -1.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hbb",       "#Delta_shbb",          0.,    "",    "", 0.1, -1.,   5., false ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hbb",       "#Delta_phbb",         -1.,    "",    "", 0.1, -1.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_s_htt",       "#Delta_shtt",          0.,    "",    "", 0.1, -1.,   5., false ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_p_htt",       "#Delta_phtt",         -1.,    "",    "", 0.1, -1.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hmumu",     "#Delta_sh#mu#mu",      0.,    "",    "", 0.1,  -1.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hmumu",     "#Delta_ph#mu#mu",     -1.,    "",    "", 0.1,  -1.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_s_htautau",   "#Delta_sh#tau#tau",    0.,    "",    "", 0.1,  -1.,   5., false ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_p_htautau",   "#Delta_ph#tau#tau",   -1.,    "",    "", 0.1,  -1.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_hWW",         "#Delta hWW",           0.,    "",    "", 0.1,  -1.,   5., false ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_hZZ",         "#Delta hZZ",           0.,    "",    "", 0.1,  -1.,   5., false ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_hZgamma",     "#Delta hZ#gamma",      0.,    "",    "", 0.1,  -1.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_hgammagamma", "#Delta h#gamma#gamma", 0.,    "",    "", 0.1,  -1.,   5., false ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_hgg",         "#Delta hgg",           0.,    "",    "", 0.1,  -1.,   5., false ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_hggZ",        "#Delta hggZ",          0.,    "",    "", 0.1,  -1.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_hihjZ",       "#Delta h_ih_j",       -1.,    "",    "", 0.1,  -1.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "BR_hjhihi",         "BR_{hjhihi}",          0.,    "",    "", 0.1,   0.,   1., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "BR_hInvisible",     "BR_{hInvisible}",      0.,    "",    "", 0.1,   0.,   1., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Massh",             "m_{Higgs}",                           126., "GeV", "GeV", 0.1, 120., 130., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hss",       "#Delta_shss",                           0.,    "",    "", 0.1,  -1.,   5., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hss",       "#Delta_phss",                          -1.,    "",    "", 0.1,  -1.,   5., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hcc",       "#Delta_shcc",                           0.,    "",    "", 0.1,  -1.,   5., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hcc",       "#Delta_phcc",                          -1.,    "",    "", 0.1,  -1.,   5., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hbb",       "#Delta_shbb",                           0.,    "",    "", 0.1,  -1.,   5., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hbb",       "#Delta_phbb",                          -1.,    "",    "", 0.1,  -1.,   5., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_s_htt",       "#Delta_shtt",                           0.,    "",    "", 0.1,  -1.,   5., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_p_htt",       "#Delta_phtt",                          -1.,    "",    "", 0.1,  -1.,   5., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hmumu",     "#Delta_sh#mu#mu",                       0.,    "",    "", 0.1,  -1.,   5., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hmumu",     "#Delta_ph#mu#mu",                      -1.,    "",    "", 0.1,  -1.,   5., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_s_htautau",   "#Delta_sh#tau#tau",                     0.,    "",    "", 0.1,  -1.,   5., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_p_htautau",   "#Delta_ph#tau#tau",                    -1.,    "",    "", 0.1,  -1.,   5., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hWW",         "#Delta hWW",                            0.,    "",    "", 0.1,  -1.,   5., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hZZ",         "#Delta hZZ",                            0.,    "",    "", 0.1,  -1.,   5., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hZgamma",     "#Delta hZ#gamma",                       0.,    "",    "", 0.1,  -1.,   5., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hgammagamma", "#Delta h#gamma#gamma",                  0.,    "",    "", 0.1,  -1.,   5., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hgg",         "#Delta hgg",                            0.,    "",    "", 0.1,  -1.,   5., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hggZ",        "#Delta hggZ",                           0.,    "",    "", 0.1,  -1.,   5., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hihjZ",       "#Delta h_ih_j",                        -1.,    "",    "", 0.1,  -1.,   5., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "BR_hjhihi",         "BR(#rightArrow h_j#rightArrow h_ih_i)", 0.,    "",    "", 0.1,   0.,   1., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "BR_hInvisible",     "BR(h#rightArrow Invisible)",            0.,    "",    "", 0.1,   0.,   1., true  ) );
 
     _parameterVector.push_back( new PhysicsParameter( "alphaem",           "#alpha_{em}",     128.952, "GeV", "GeV", 0.1,  50., 150., true  ) );
     _parameterVector.push_back( new PhysicsParameter( "alphas",            "#alpha_s",         0.1184, "GeV", "GeV", 0.1, -50.,  50., true  ) );
@@ -63,7 +63,7 @@ Fittino::HECModel::HECModel() {
 
     //_numberOfPredictions = 51;
 
-    //_predictionVector.push_back( new SLHAPrediction( "Gamma_hTotal",                             "#Gamme_hTotal",                                "GeV", "GeV", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "7", 1 ) );
+    //_predictionVector.push_back( new SLHAPrediction( "Gamma_hTotal",                             "#Gamma-hTotal",                                "GeV", "GeV", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "7", 1 ) );
 
     //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_1lep_ATL",                   "#mu_{h#gamma#gamma}1lep-ATL",                     "",    "", slhaModelCalculator, "HiggsSignalsPeakObservables",  "1", "17", 2 ) );
     //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_conv_central_highPTt_ATL",   "#mu_{h#gamma#gamma}conv-central-highPTt-AT",      "",    "", slhaModelCalculator, "HiggsSignalsPeakObservables",  "2", "17", 2 ) );
