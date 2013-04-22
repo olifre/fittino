@@ -115,23 +115,29 @@ double Fittino::HiggsSignalsSLHAModelCalculator::CalculateSinglehUncertainty( do
 }
 
 double Fittino::HiggsSignalsSLHAModelCalculator::CalculateGammaTotal( double massh,
+                                                                      double g2hjss_s,
                                                                       double g2hjcc_s,
                                                                       double g2hjbb_s,
                                                                       double g2hjtt_s,
+                                                                      double g2hjmumu_s,
                                                                       double g2hjtautau_s,
                                                                       double g2hjWW,
                                                                       double g2hjZZ,
+                                                                      double g2hjZga,
                                                                       double g2hjgaga,
                                                                       double g2hjgg ) {
 
     double GammaTotal = smgamma_h_( &massh )
                         * ( 1
+                        + ( g2hjss_s - 1 ) * smbr_hss_( &massh )
                         + ( g2hjcc_s - 1 ) * smbr_hcc_( &massh )
                         + ( g2hjbb_s - 1 ) * smbr_hbb_( &massh )
                         + ( g2hjtt_s - 1 ) * smbr_htoptop_( &massh )
+                        + ( g2hjmumu_s - 1 ) * smbr_hmumu_( &massh )
                         + ( g2hjtautau_s - 1 ) * smbr_htautau_( &massh )
                         + ( g2hjWW - 1 ) * smbr_hww_( &massh )
                         + ( g2hjZZ - 1 ) * smbr_hzz_( &massh )
+                        + ( g2hjZga - 1 ) * smbr_hzgam_( &massh )
                         + ( g2hjgaga - 1 ) * smbr_hgamgam_( &massh )
                         + ( g2hjgg - 1 ) * smbr_hgg_( &massh ) );
 
@@ -203,12 +209,15 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     // Calculate the total width of the Higgs boson.
 
     double GammaTotal = CalculateGammaTotal( massh,
+                                             g2hjss_s,
                                              g2hjcc_s,
                                              g2hjbb_s,
                                              g2hjtt_s,
+                                             g2hjmumu_s,
                                              g2hjtautau_s,
                                              g2hjWW,
                                              g2hjZZ,
+                                             g2hjZga,
                                              g2hjgaga,
                                              g2hjgg );
 

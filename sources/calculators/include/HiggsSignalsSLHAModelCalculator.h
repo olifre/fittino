@@ -158,12 +158,15 @@ namespace Fittino {
        */
       double       CalculateGammaTotal(
                                         double massh,
+                                        double g2hjss_s,
                                         double g2hjcc_s,
                                         double g2hjbb_s,
                                         double g2hjtt_s,
+                                        double g2hjmumu_s,
                                         double g2hjtautau_s,
                                         double g2hjWW,
                                         double g2hjZZ,
+                                        double g2hjZga,
                                         double g2hjgaga,
                                         double g2hjgg
                                       );
