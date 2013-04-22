@@ -20,8 +20,10 @@
 #include "SLHAParameter.h"
 
 Fittino::SLHAParameter::SLHAParameter( std::string name,
+                                       std::string plotName,
                                        double      value,
                                        std::string unit,
+                                       std::string plotUnit,
                                        double      error,
                                        double      lowerBound,
                                        double      upperBound,
@@ -29,7 +31,7 @@ Fittino::SLHAParameter::SLHAParameter( std::string name,
                                        bool        fixed )
 
 	: _id( id ),
-          PhysicsParameter( name, value, unit, error, lowerBound, upperBound, fixed ) {
+          PhysicsParameter( name, plotName, value, unit, plotUnit, error, lowerBound, upperBound, fixed ) {
 
 }
 

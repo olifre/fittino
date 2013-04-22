@@ -39,6 +39,7 @@ namespace Fittino {
        *  Takes as input the name and value of the parameter.
        */
                    ParameterBase( std::string name,
+                                  std::string plotName,
                                   double      value );
       /*!
        *  Standard destructor.
@@ -56,6 +57,10 @@ namespace Fittino {
        *  Returns the name of the parameter.
        */
       std::string  GetName() const;
+      /*!
+       *  Returns the name of the axis title.
+       */
+      std::string  GetPlotName() const;
 
     public:
       /*!
@@ -72,6 +77,10 @@ namespace Fittino {
        *  Name of the parameter.
        */
       std::string  _name;
+      /*!
+       *  Name of the axis in the plot.
+       */
+      std::string  _plotName;
 
     //private:
     //  void         CheckConsistency() const;

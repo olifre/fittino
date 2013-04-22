@@ -40,8 +40,10 @@ namespace Fittino {
        *  Standard constructor.
        */
                    PhysicsParameter( std::string name,
+                                     std::string plotName,
                                      double      value,
                                      std::string unit,
+                                     std::string plotUnit,
                                      double      error,
                                      double      lowerBound,
                                      double      upperBound,
@@ -54,6 +56,7 @@ namespace Fittino {
        *  Returns the physical unit of the parameter.
        */
       std::string  GetUnit() const;
+      std::string  GetPlotUnit() const;
 
     public:
       virtual void PrintStatus() const;
@@ -63,6 +66,7 @@ namespace Fittino {
        *  Physical unit of the parameter.
        */
       std::string  _unit;
+      std::string  _plotUnit;
 
   };
 

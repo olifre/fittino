@@ -23,15 +23,17 @@
 #include "PhysicsParameter.h"
 
 Fittino::PhysicsParameter::PhysicsParameter( std::string name,
+                                             std::string plotName,
                                              double      value,
                                              std::string unit,
+                                             std::string plotUnit,
                                              double      error,
                                              double      lowerBound,
                                              double      upperBound,
                                              bool        fixed )
 
 	: _unit( unit ),
-          ModelParameterBase( name, value, error, lowerBound, upperBound, fixed ) {
+          ModelParameterBase( name, plotName, value, error, lowerBound, upperBound, fixed ) {
 
 }
 
@@ -42,6 +44,12 @@ Fittino::PhysicsParameter::~PhysicsParameter() {
 std::string Fittino::PhysicsParameter::GetUnit() const {
 
     return _unit;
+
+}
+
+std::string Fittino::PhysicsParameter::GetPlotUnit() const {
+
+    return _plotUnit;
 
 }
 

@@ -42,7 +42,9 @@ namespace Fittino {
        *  Standard constructor.
        */
                                SLHAObservable( std::string              name,
+                                               std::string              plotName,
                                                std::string              unit,
+                                               std::string              plotUnit,
                                                double                   measuredValue,
                                                double                   measuredError,
                                                SLHAModelCalculatorBase* slhaModelCalculator,

@@ -23,6 +23,7 @@
 #include "ModelParameterBase.h"
 
 Fittino::ModelParameterBase::ModelParameterBase( std::string name,
+                                                 std::string plotName,
                                                  double      value,
                                                  double      error,
                                                  double      lowerBound,
@@ -32,7 +33,7 @@ Fittino::ModelParameterBase::ModelParameterBase( std::string name,
           _lowerBound( lowerBound ),
           _upperBound( upperBound ),
           _fixed( fixed ),
-          ParameterBase( name, value ) {
+          ParameterBase( name, plotName, value ) {
 
 }
 

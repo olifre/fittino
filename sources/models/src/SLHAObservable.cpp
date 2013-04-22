@@ -22,7 +22,9 @@
 #include "SLHAModelCalculatorBase.h"
 
 Fittino::SLHAObservable::SLHAObservable( std::string              name,
+                                         std::string              plotName,
                                          std::string              unit,
+                                         std::string              plotUnit,
                                          double                   measuredValue,
                                          double                   measuredError,
                                          SLHAModelCalculatorBase* slhaModelCalculator,
@@ -33,7 +35,7 @@ Fittino::SLHAObservable::SLHAObservable( std::string              name,
           _id( id ),
           _blockName( blockName ),
           _slhaModelCalculator( slhaModelCalculator ),
-          ObservableBase( name, unit, measuredValue, measuredError ) {
+          ObservableBase( name, plotName, unit, plotUnit, measuredValue, measuredError ) {
 
     _deviation = 0.;
     _predictedValue = 0.;

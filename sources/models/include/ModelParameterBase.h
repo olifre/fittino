@@ -38,6 +38,7 @@ namespace Fittino {
        *  Takes as input the name and starting value of the parameter.
        */
                    ModelParameterBase( std::string name,
+                                       std::string plotName,
                                        double      value,
                                        double      error,
                                        double      lowerBound,

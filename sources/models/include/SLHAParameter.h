@@ -43,8 +43,10 @@ namespace Fittino {
        *  Standard constructor.
        */
                   SLHAParameter( std::string name,
+                                 std::string plotName,
                                  double      value,
                                  std::string unit,
+                                 std::string plotUnit,
                                  double      error,
                                  double      lowerBound,
                                  double      upperBound,

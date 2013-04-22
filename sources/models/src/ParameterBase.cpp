@@ -25,8 +25,10 @@
 #include "ParameterBase.h"
 
 Fittino::ParameterBase::ParameterBase( std::string name,
+                                       std::string plotName,
 	                               double      value)
         : _name( name ),
+          _plotName( plotName ),
           _value( value ) {
 
     //CheckConsistency();
@@ -70,6 +72,12 @@ void Fittino::ParameterBase::SetValue( double value ) {
 std::string Fittino::ParameterBase::GetName() const {
 
     return _name;
+
+}
+
+std::string Fittino::ParameterBase::GetPlotName() const {
+
+    return _plotName;
 
 }
 
