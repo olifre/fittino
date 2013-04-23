@@ -85,6 +85,7 @@ extern "C" {
                    double* BR_hjhihi
                                       );
   void higgssignals_neutral_input_massuncertainty_( double* dm );
+  void initialize_higgssignals_for_fittino_( int* nHzero, int* nHplus );
   void initialize_higgssignals_latestresults_( int* nHzero, int* nHplus );
   void run_higgssignals_(
                    int*    mode,
@@ -94,6 +95,8 @@ extern "C" {
                    int*    nobs,
                    double* Pvalue
                         );
+  void setup_assignmentrange_( double* range );
+  void setup_correlations_( int* corr_mu, int* corr_mh);
   void setup_higgs_to_peaks_assignment_iterations_( int* iterations );
   void setup_output_level_( int* output_level );
   void setup_pdf_( int* pdf );
