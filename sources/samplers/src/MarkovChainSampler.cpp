@@ -130,6 +130,21 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
         }
 
+        // Further check if any parameter value is out of bounds.
+
+        for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+
+            if (    _model->SetParameterVector()->at( k )->GetValue() < _model->SetParameterVector()->at( k )->GetLowerBound()
+                 || _model->SetParameterVector()->at( k )->GetValue() > _model->SetParameterVector()->at( k )->GetUpperBound() ) {
+
+                pointAccepted = false;
+                GetStatusParameterVector()->at( 2 )->SetValue( pointAccepted );
+                break;
+
+            }
+
+        }
+
         if ( pointAccepted ) {
 
             _previousRho        = rho;
