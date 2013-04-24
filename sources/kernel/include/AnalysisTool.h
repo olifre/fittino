@@ -82,10 +82,6 @@ namespace Fittino {
        */
       int                                _numberOfAcceptedPoints;
       /*!
-       *  Number of the status parameters.
-       */
-      int                                _numberOfStatusParameters;
-      /*!
        *  Name of the analysis tool.
        */
       std::string                        _name;

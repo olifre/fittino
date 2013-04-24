@@ -30,11 +30,9 @@ Fittino::RosenbrockModel::RosenbrockModel() {
 
     _name = "Rosenbrock model";
 
-    _numberOfParameters = configuration->GetSteeringParameter( "Dimensions", 1. );
-
     std::stringstream parameterName;
     std::stringstream parameterPlotName;
-    for ( unsigned int i = 0; i < _numberOfParameters; i++ ) {
+    for ( unsigned int i = 0; i < configuration->GetSteeringParameter( "Dimensions", 1. ); i++ ) {
 
         parameterName.str( "" );
         parameterName << "X" << i + 1;

@@ -145,7 +145,7 @@ void Fittino::PhysicsModelBase::Initialize() const {
     messenger << Messenger::ALWAYS << "   Initializing the list of model parameters" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
-    for ( unsigned int i = 0; i < _numberOfParameters; i++ ) {
+    for ( unsigned int i = 0; i < GetNumberOfParameters(); i++ ) {
 
         _parameterVector[i]->PrintStatus();
 

@@ -31,8 +31,6 @@ Fittino::MSUGRAModel::MSUGRAModel() {
 
     _name = "MSUGRA model";
 
-    _numberOfParameters = 4;
-
     _parameterVector.push_back( new SLHAParameter( "A0",      "A0",      configuration->GetSteeringParameter( "A0" ,     0. ), "GeV", "GeV", 1., -1.e5, 1.e5, "5" ) );
     _parameterVector.push_back( new SLHAParameter( "M0",      "M0",      configuration->GetSteeringParameter( "M0" ,     0. ), "GeV", "GeV", 1.,    0., 1.e5, "1" ) );
     _parameterVector.push_back( new SLHAParameter( "M12",     "M12",     configuration->GetSteeringParameter( "M12" ,    0. ), "GeV", "GeV", 1.,    0., 1.e5, "2" ) );

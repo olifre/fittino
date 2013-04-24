@@ -92,14 +92,6 @@ namespace Fittino {
 
     protected:
       /*!
-       *  Number of the model parameters.
-       */
-      int                                     _numberOfParameters;
-      /*!
-       *  Number of the predictions.
-       */
-      int                                     _numberOfPredictions; 
-      /*!
        *  Name of the model.
        */
       std::string                             _name;

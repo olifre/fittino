@@ -21,9 +21,7 @@
 #include "ModelBase.h"
 
 Fittino::ModelBase::ModelBase()
-        : _numberOfParameters( 0 ),
-          _numberOfPredictions( 0 ),
-          _name( "" ),
+        : _name( "" ),
           _evaluated( false ) {
 
 }
@@ -47,13 +45,13 @@ double Fittino::ModelBase::GetChi2() {
 
 int Fittino::ModelBase::GetNumberOfParameters() const {
 
-    return _numberOfParameters;
+    return _parameterVector.size();
 
 }
 
 int Fittino::ModelBase::GetNumberOfPredictions() const {
 
-    return _numberOfPredictions;
+    return _predictionVector.size();
 
 }
 

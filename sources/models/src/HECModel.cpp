@@ -28,8 +28,6 @@ Fittino::HECModel::HECModel() {
 
     _name = "HEC model";
 
-    _numberOfParameters = 22;
-
     //_parameterVector.push_back( new PhysicsParameter( "AlphaEM",           "#alpha_{em}",       128.952, "GeV", "GeV", 0.1,  50., 150., true  ) );
     //_parameterVector.push_back( new PhysicsParameter( "AlphaS",            "#alpha_{S}",         0.1184, "GeV", "GeV", 0.1, -50.,  50., true  ) );
     //_parameterVector.push_back( new PhysicsParameter( "G_F",               "G_{F}",        1.1663787e-5,    "",    "", 0.1,  -5.,   5., true  ) );
@@ -59,8 +57,6 @@ Fittino::HECModel::HECModel() {
 
     //SLHAModelCalculatorBase* slhaModelCalculator = new HiggsSignalsSLHAModelCalculator();
     //_modelCalculatorVector.push_back( slhaModelCalculator );
-
-    //_numberOfPredictions = 52;
 
     //_predictionVector.push_back( new SLHAPrediction( "Gamma_hTotal",                             "#Gamma-hTotal",                                "GeV", "GeV", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "7", 1 ) );
     ////_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_inclusive_ATL",              "#mu_{h#gamma#gamma}inclusive-ATL",                "",    "", slhaModelCalculator, "HiggsSignalsPeakObservables",  "1", "17", 2 ) );
