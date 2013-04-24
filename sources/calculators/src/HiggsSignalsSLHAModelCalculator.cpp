@@ -41,7 +41,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::Initialize() const {
 
     int nHzero = 1;
     int nHplus = 0;
-    initialize_higgssignals_for_fittino_( &nHzero, &nHplus );
+    initialize_higgssignals_latestresults_( &nHzero, &nHplus );
 
     int output_level = 0; // 0: silent, 1: screen output , 2: even more output
     setup_output_level_( &output_level );
@@ -56,8 +56,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::Initialize() const {
     //int corr_mh = 1;
     //setup_correlations_( &corr_mu, &corr_mh );
 
-    double range = 1.;
-    //double range = 2.;
+    double range = 2.;
     setup_assignmentrange_( &range );
 
     int iterations = 0;
