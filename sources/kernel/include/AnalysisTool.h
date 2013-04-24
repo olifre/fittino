@@ -111,7 +111,12 @@ namespace Fittino {
        *  At which point of the analysis this is done has to be specified by any concrete analysis\n
        *  tool.
        */
-      virtual void                       FillStatus();
+      virtual void                       FillTree();
+      /*!
+       *  Fills the tree and allocates memory.
+       */
+      void                               InitializeBranches();
+
       /*!
        *  Prints the result of the execution of a particuar analysis tool. It is declared virtual\n
        *  because the result output is different for optimizers and samplers.
@@ -144,7 +149,7 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-      std::vector<float>                 _listOfLeaves;
+      std::vector<float>                 _leafVector;
       /*!
        *  A ROOT file which stores the tool's output. The default name of the file is "Output.root".
        *  \todo Mid-term: At the moment only the model parameters and the chi2 values are stored.\n
@@ -159,8 +164,7 @@ namespace Fittino {
 
     private:
       void                               ExecuteAnalysisTool();
-      void                               InitializeAnalysisTool() const;
-      void                               InitializeBranches();
+      void                               InitializeAnalysisTool();
       void                               PrintConfiguration() const;
       void                               TerminateAnalysisTool();
       void                               WriteResultToFile() const;

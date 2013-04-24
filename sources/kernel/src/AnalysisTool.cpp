@@ -39,15 +39,8 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase* model )
           _randomGenerator(),
           _tree( new TTree( "Tree", "Tree" ) ) {
 
-    _numberOfStatusParameters = 3;
-
-    _listOfLeaves = std::vector<float>( _model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + GetNumberOfStatusParameters() );
-
-    _statusParameterVector.push_back( new ParameterBase( "Chi2",             "#chi^2",           1.e99 ) );
+    _statusParameterVector.push_back( new ParameterBase( "Chi2",             "#chi^2",           1.e99 ) ),
     _statusParameterVector.push_back( new ParameterBase( "IterationCounter", "IterationCounter", 0     ) );
-    _statusParameterVector.push_back( new ParameterBase( "PointAccepted",    "PointAccepted",    0.    ) );
-
-    InitializeBranches();
 
 }
 
@@ -75,23 +68,23 @@ void Fittino::AnalysisTool::PerformAnalysis() {
 //
 //}
 
-void Fittino::AnalysisTool::FillStatus() {
+void Fittino::AnalysisTool::FillTree() {
+   
+ for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
 
-    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
-
-        _listOfLeaves[i] = _model->GetParameterVector()->at( i )->GetValue();
+        _leafVector[i] = _model->GetParameterVector()->at( i )->GetValue();
 
     }
 
     for ( unsigned int i = 0; i < _model->GetNumberOfPredictions(); ++i ) {
 
-        _listOfLeaves[i + _model->GetNumberOfParameters()] = _model->GetPredictionVector()->at( i )->GetPredictedValue();
+        _leafVector[i + _model->GetNumberOfParameters()] = _model->GetPredictionVector()->at( i )->GetPredictedValue();
 
     }
 
     for ( unsigned int i = 0; i < GetNumberOfStatusParameters(); ++i ) {
 
-        _listOfLeaves[i + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions()] = GetStatusParameterVector()->at( i )->GetValue();
+        _leafVector[i + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions()] = GetStatusParameterVector()->at( i )->GetValue();
 
     }
 
@@ -112,7 +105,9 @@ void Fittino::AnalysisTool::ExecuteAnalysisTool() {
 
 }
 
-void Fittino::AnalysisTool::InitializeAnalysisTool() const {
+void Fittino::AnalysisTool::InitializeAnalysisTool() {
+
+    InitializeBranches();
 
     Messenger& messenger = Messenger::GetInstance();
 
@@ -127,10 +122,12 @@ void Fittino::AnalysisTool::InitializeAnalysisTool() const {
 
 void Fittino::AnalysisTool::InitializeBranches() {
 
+    _leafVector = std::vector<float>( _model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + GetNumberOfStatusParameters() );
+
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
 
         _tree->Branch( _model->GetParameterVector()->at( i )->GetName().c_str(),
-                       &_listOfLeaves[i],
+                       &_leafVector[i],
                        _model->GetParameterVector()->at( i )->GetName().c_str() );
 
     }
@@ -138,7 +135,7 @@ void Fittino::AnalysisTool::InitializeBranches() {
     for ( unsigned int i = 0; i < _model->GetNumberOfPredictions(); ++i ) {
 
         _tree->Branch( _model->GetPredictionVector()->at( i )->GetName().c_str(),
-                       &_listOfLeaves[i + _model->GetNumberOfParameters()],
+                       &_leafVector[i + _model->GetNumberOfParameters()],
                        _model->GetPredictionVector()->at( i )->GetName().c_str() );
 
     }
@@ -146,7 +143,7 @@ void Fittino::AnalysisTool::InitializeBranches() {
     for ( unsigned int i = 0; i < GetNumberOfStatusParameters(); ++i ) {
 
         _tree->Branch( GetStatusParameterVector()->at( i )->GetName().c_str(),
-                       &_listOfLeaves[i + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions()],
+                       &_leafVector[i + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions()],
                        GetStatusParameterVector()->at( i )->GetName().c_str() );
 
     }
@@ -168,7 +165,7 @@ void Fittino::AnalysisTool::PrintConfiguration() const {
 
 int Fittino::AnalysisTool::GetNumberOfStatusParameters() const {
 
-    return _numberOfStatusParameters;
+    return _statusParameterVector.size();  
 
 }
 

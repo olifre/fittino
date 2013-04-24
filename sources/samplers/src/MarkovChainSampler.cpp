@@ -44,6 +44,8 @@ Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model )
         _previousParameterValues.at( k ) = _model->GetParameterVector()->at( k )->GetValue();
 
     }
+  
+   _statusParameterVector.push_back( new ParameterBase( "PointAccepted",    "PointAccepted",    0.    ) );
 
 }
 
@@ -81,7 +83,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
     //try {
 
-        this->FillStatus();
+        this->FillTree();
 
         // Update model.
 
