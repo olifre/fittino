@@ -23,6 +23,7 @@
 #include <sstream>
 
 #include "HiggsSignalsSLHAModelCalculator.h"
+#include "ModelParameterBase.h"
 #include "PhysicsModelBase.h"
 #include "SLHADataStorageBase.h"
 

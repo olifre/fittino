@@ -28,7 +28,9 @@
 #include "AnalysisTool.h"
 #include "Messenger.h"
 #include "ModelBase.h"
+#include "ModelParameterBase.h"
 #include "ParameterBase.h"
+#include "PredictionBase.h"
 
 Fittino::AnalysisTool::AnalysisTool( ModelBase* model )
         : _chi2( 1.e99 ),

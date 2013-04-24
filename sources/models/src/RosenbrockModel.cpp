@@ -22,6 +22,7 @@
 #include <sstream>
 
 #include "Configuration.h"
+#include "ModelParameterBase.h"
 #include "RosenbrockModel.h"
 
 Fittino::RosenbrockModel::RosenbrockModel() {

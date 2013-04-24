@@ -20,6 +20,7 @@
 #include <iostream>
 
 #include "MinuitAdapter.h"
+#include "ModelParameterBase.h"
 
 Fittino::MinuitAdapter::MinuitAdapter( ModelBase* model )
         : _model( model) {

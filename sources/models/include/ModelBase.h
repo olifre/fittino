@@ -24,15 +24,12 @@
 #include <string>
 #include <vector>
 
-#include "ModelParameterBase.h"
-#include "ParameterBase.h"
-#include "PredictionBase.h"
-
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
 
+  class ModelParameterBase;
   class PredictionBase;
 
   /*!

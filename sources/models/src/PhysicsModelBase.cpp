@@ -23,6 +23,7 @@
 #include "Chi2ContributionBase.h"
 #include "Messenger.h"
 #include "ModelCalculatorBase.h"
+#include "ModelParameterBase.h"
 #include "ObservableBase.h"
 #include "PhysicsModelBase.h"
 
@@ -82,7 +83,7 @@ void Fittino::PhysicsModelBase::PrintStatus() const {
     messenger << Messenger::INFO << "   Set of the " << this->GetName() << " parameters:" << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
 
-    for ( unsigned int i = 0; i < this->GetNumberOfParameters(); ++i ) {
+    for ( unsigned int i = 0; i < _parameterVector.size(); ++i ) {
 
         _parameterVector[i]->PrintStatus();
 
@@ -145,7 +146,7 @@ void Fittino::PhysicsModelBase::Initialize() const {
     messenger << Messenger::ALWAYS << "   Initializing the list of model parameters" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
-    for ( unsigned int i = 0; i < GetNumberOfParameters(); i++ ) {
+    for ( unsigned int i = 0; i < _parameterVector.size(); i++ ) {
 
         _parameterVector[i]->PrintStatus();
 

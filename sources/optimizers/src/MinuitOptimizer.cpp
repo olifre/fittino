@@ -26,6 +26,7 @@
 #include "Messenger.h"
 #include "MinuitOptimizer.h"
 #include "MinuitAdapter.h"
+#include "ModelParameterBase.h"
 
 Fittino::MinuitOptimizer::MinuitOptimizer( Fittino::ModelBase* model )
         : OptimizerBase( model ) {

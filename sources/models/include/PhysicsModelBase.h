@@ -47,6 +47,8 @@ namespace Fittino {
        *  Standard destructor.
        */
                                          ~PhysicsModelBase();
+
+    public:
       virtual void                       PrintStatus() const;
 
     protected:

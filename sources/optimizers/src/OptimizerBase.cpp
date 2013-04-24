@@ -27,6 +27,7 @@
 #include "Configuration.h"
 #include "Messenger.h"
 #include "ModelBase.h"
+#include "ModelParameterBase.h"
 #include "OptimizerBase.h"
 
 Fittino::OptimizerBase::OptimizerBase( ModelBase* model )

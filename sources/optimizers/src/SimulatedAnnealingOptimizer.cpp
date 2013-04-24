@@ -23,6 +23,7 @@
 
 #include "Configuration.h"
 #include "Messenger.h"
+#include "ModelParameterBase.h"
 #include "SimulatedAnnealingOptimizer.h"
 
 Fittino::SimulatedAnnealingOptimizer::SimulatedAnnealingOptimizer( Fittino::ModelBase* model )

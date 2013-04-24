@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "Messenger.h"
+#include "ModelParameterBase.h"
 #include "TestModelBase.h"
 
 Fittino::TestModelBase::TestModelBase() {
@@ -36,7 +37,7 @@ void Fittino::TestModelBase::PrintStatus() const {
     messenger << Messenger::INFO << "  Set of " << _name << " parameters:" << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
 
-    for ( unsigned int i = 0; i < this->GetNumberOfParameters(); i++ ) {
+    for ( unsigned int i = 0; i < GetNumberOfParameters(); i++ ) {
 
         _parameterVector[i]->PrintStatus();
 

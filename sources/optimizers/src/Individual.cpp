@@ -21,6 +21,7 @@
 
 #include "Individual.h"
 #include "ModelBase.h"
+#include "ModelParameterBase.h"
 
 Fittino::Individual::Individual( Fittino::ModelBase* model, double mutationRate, int seed ):
     _model ( model ) ,

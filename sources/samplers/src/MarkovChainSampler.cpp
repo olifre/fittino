@@ -25,6 +25,7 @@
 #include "MarkovChainSampler.h"
 #include "Messenger.h"
 #include "ModelBase.h"
+#include "ModelParameterBase.h"
 #include "ModelCalculatorException.h"
 
 Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model )
@@ -45,7 +46,7 @@ Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model )
 
     }
   
-   _statusParameterVector.push_back( new ParameterBase( "PointAccepted",    "PointAccepted",    0.    ) );
+   _statusParameterVector.push_back( new ParameterBase( "PointAccepted", "PointAccepted", 0. ) );
 
 }
 

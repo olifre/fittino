@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "ModelBase.h"
+#include "ModelParameterBase.h"
 #include "SimpleSampler.h"
 
 Fittino::SimpleSampler::SimpleSampler( Fittino::ModelBase* model )

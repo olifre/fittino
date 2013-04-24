@@ -19,6 +19,8 @@
 *******************************************************************************/
 
 #include "ModelBase.h"
+#include "ModelParameterBase.h"
+#include "PredictionBase.h"
 
 Fittino::ModelBase::ModelBase()
         : _name( "" ),
