@@ -25,7 +25,6 @@
 #include <string>
 #include <vector>
 
-#include "ModelParameterBase.h"
 #include "TFile.h"
 #include "TRandom.h"
 
@@ -37,6 +36,7 @@ class TTree;
 namespace Fittino {
 
   class ModelBase;
+  class ParameterBase;
 
   /*!
    *  \ingroup kernel
@@ -65,7 +65,7 @@ namespace Fittino {
        *  It is usually called directly after the creation of a concrete analysis tool.
        */ 
       void                               PerformAnalysis();
-      //std::vector<float>                 GetLeafVector() const;
+      //std::vector<double>                GetLeafVector() const;
       //TTree*                             GetTree();
 
     protected:
@@ -77,10 +77,6 @@ namespace Fittino {
        *  Counts the number of calls to UpdateModel().
        */
       unsigned int                       _iterationCounter;
-      /*!
-       *  Counts the number of accepted points.
-       */
-      int                                _numberOfAcceptedPoints;
       /*!
        *  Name of the analysis tool.
        */
@@ -101,18 +97,6 @@ namespace Fittino {
       std::vector<ParameterBase*>        _statusParameterVector;
 
     protected:
-      /*!
-       *  Saves the tool's current status (steering parameters, model parameters and observable\n
-       *  predictions at a certain iteration step) which is eventually written to an output file.\n
-       *  At which point of the analysis this is done has to be specified by any concrete analysis\n
-       *  tool.
-       */
-      virtual void                       FillTree();
-      /*!
-       *  Fills the tree and allocates memory.
-       */
-      void                               InitializeBranches();
-
       /*!
        *  Prints the result of the execution of a particuar analysis tool. It is declared virtual\n
        *  because the result output is different for optimizers and samplers.
@@ -135,6 +119,13 @@ namespace Fittino {
        */
       int                                GetNumberOfStatusParameters() const;
       /*!
+       *  Saves the tool's current status (steering parameters, model parameters and observable\n
+       *  predictions at a certain iteration step) which is eventually written to an output file.\n
+       *  At which point of the analysis this is done has to be specified by any concrete analysis\n
+       *  tool.
+       */
+      void                               FillTree();
+      /*!
        *  Prints the tool's status to screen.
        */
       void                               PrintStatus() const;
@@ -145,12 +136,10 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-      std::vector<float>                 _leafVector;
+      std::vector<double>                _leafVector;
       /*!
-       *  A ROOT file which stores the tool's output. The default name of the file is "Output.root".
-       *  \todo Mid-term: At the moment only the model parameters and the chi2 values are stored.\n
-       *  If the observable values and/or other information should also be stored the\n
-       *  implementation probably has to be revisited.
+       *  A ROOT file which stores the tool's output. The default name of the file is\n
+       *  "Fittino.out.root".
        */
       TFile                              _outputFile;
       TTree*                             _tree;
@@ -161,6 +150,7 @@ namespace Fittino {
     private:
       void                               ExecuteAnalysisTool();
       void                               InitializeAnalysisTool();
+      void                               InitializeBranches();
       void                               PrintConfiguration() const;
       void                               TerminateAnalysisTool();
       void                               WriteResultToFile() const;

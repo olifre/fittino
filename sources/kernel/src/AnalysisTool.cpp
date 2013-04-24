@@ -35,7 +35,7 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase* model )
           _iterationCounter( 0 ),
           _model( model ),
           _name( "" ),
-          _outputFile( "Output.root", "RECREATE" ),
+          _outputFile( "Fittino.out.root", "RECREATE" ),
           _randomGenerator(),
           _tree( new TTree( "Tree", "Tree" ) ) {
 
@@ -56,17 +56,23 @@ void Fittino::AnalysisTool::PerformAnalysis() {
 
 }
 
-//std::vector<float> Fittino::AnalysisTool::GetLeafVector() const {
+//std::vector<double> Fittino::AnalysisTool::GetLeafVector() const {
 //
 //    return _listOfLeaves;
 //
 //}
-//
+
 //TTree* Fittino::AnalysisTool::GetTree() {
 //
 //    return _tree;
 //
 //}
+
+int Fittino::AnalysisTool::GetNumberOfStatusParameters() const {
+
+    return _statusParameterVector.size();
+
+}
 
 void Fittino::AnalysisTool::FillTree() {
    
@@ -89,6 +95,30 @@ void Fittino::AnalysisTool::FillTree() {
     }
 
     _tree->Fill();
+
+}
+
+void Fittino::AnalysisTool::PrintStatus() const {
+
+    Messenger& messenger = Messenger::GetInstance();
+
+    messenger << Messenger::INFO << Messenger::_dashedLine << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::Endl;
+    messenger << Messenger::INFO << "  Iteration step " << _iterationCounter << Messenger::Endl;
+
+    _model->PrintStatus();
+
+    messenger << Messenger::INFO << Messenger::Endl;
+    messenger << Messenger::INFO << std::scientific << "    ----------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::Endl;
+    messenger << Messenger::INFO << std::scientific << std::setprecision( 2 ) << "    Sum                                         " << _model->GetChi2() << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::Endl;
+
+}
+
+const std::vector<Fittino::ParameterBase*>* Fittino::AnalysisTool::GetStatusParameterVector() const {
+
+    return &_statusParameterVector;
 
 }
 
@@ -122,7 +152,7 @@ void Fittino::AnalysisTool::InitializeAnalysisTool() {
 
 void Fittino::AnalysisTool::InitializeBranches() {
 
-    _leafVector = std::vector<float>( _model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + GetNumberOfStatusParameters() );
+    _leafVector = std::vector<double>( _model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + GetNumberOfStatusParameters() );
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
 
@@ -160,36 +190,6 @@ void Fittino::AnalysisTool::PrintConfiguration() const {
     this->PrintSteeringParameters();
 
     messenger << Messenger::ALWAYS << Messenger::Endl;
-
-}
-
-int Fittino::AnalysisTool::GetNumberOfStatusParameters() const {
-
-    return _statusParameterVector.size();  
-
-}
-
-void Fittino::AnalysisTool::PrintStatus() const {
-
-    Messenger& messenger = Messenger::GetInstance();
-
-    messenger << Messenger::INFO << Messenger::_dashedLine << Messenger::Endl;
-    messenger << Messenger::INFO << Messenger::Endl;
-    messenger << Messenger::INFO << "  Iteration step " << _iterationCounter << Messenger::Endl;
-
-    _model->PrintStatus();
-
-    messenger << Messenger::INFO << Messenger::Endl;
-    messenger << Messenger::INFO << std::scientific << "    ----------------------------------------------------" << Messenger::Endl;
-    messenger << Messenger::INFO << Messenger::Endl;
-    messenger << Messenger::INFO << std::scientific << std::setprecision( 2 ) << "    Sum                                         " << _model->GetChi2() << Messenger::Endl;
-    messenger << Messenger::INFO << Messenger::Endl;
-
-}
-
-const std::vector<Fittino::ParameterBase*>* Fittino::AnalysisTool::GetStatusParameterVector() const {
-
-    return &_statusParameterVector;
 
 }
 
