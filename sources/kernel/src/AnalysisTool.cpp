@@ -58,7 +58,7 @@ void Fittino::AnalysisTool::PerformAnalysis() {
 
 }
 
-//std::vector<double> Fittino::AnalysisTool::GetLeafVector() const {
+//std::vector<float> Fittino::AnalysisTool::GetLeafVector() const {
 //
 //    return _listOfLeaves;
 //
@@ -77,8 +77,8 @@ int Fittino::AnalysisTool::GetNumberOfStatusParameters() const {
 }
 
 void Fittino::AnalysisTool::FillTree() {
-   
- for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
+
+    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
 
         _leafVector[i] = _model->GetParameterVector()->at( i )->GetValue();
 
@@ -154,7 +154,7 @@ void Fittino::AnalysisTool::InitializeAnalysisTool() {
 
 void Fittino::AnalysisTool::InitializeBranches() {
 
-    _leafVector = std::vector<double>( _model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + GetNumberOfStatusParameters() );
+    _leafVector = std::vector<float>( _model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + GetNumberOfStatusParameters() );
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
 

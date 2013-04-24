@@ -65,7 +65,7 @@ namespace Fittino {
        *  It is usually called directly after the creation of a concrete analysis tool.
        */ 
       void                               PerformAnalysis();
-      //std::vector<double>                GetLeafVector() const;
+      //std::vector<float>                 GetLeafVector() const;
       //TTree*                             GetTree();
 
     protected:
@@ -136,7 +136,7 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-      std::vector<double>                _leafVector;
+      std::vector<float>                 _leafVector;
       /*!
        *  A ROOT file which stores the tool's output. The default name of the file is\n
        *  "Fittino.out.root".
