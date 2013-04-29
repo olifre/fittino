@@ -353,6 +353,14 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:7:" + tmpString_GammaTotal + ":# GammaTotal" );
 
+    std::stringstream tmpStream_BR_hjinvisible;
+    std::string tmpString_BR_hjinvisible;
+
+    tmpStream_BR_hjinvisible << BR_hjinvisible;
+    tmpStream_BR_hjinvisible >> tmpString_BR_hjinvisible;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:8:" + tmpString_BR_hjinvisible + ":# BR_hjInvisible" );
+
     _slhaOutputDataStorage->WriteFile( _slhaOutputFileName );
 
 }
