@@ -171,7 +171,8 @@ namespace Fittino {
                                         double g2hjZZ,
                                         double g2hjZga,
                                         double g2hjgaga,
-                                        double g2hjgg
+                                        double g2hjgg,
+                                        double GammaInvisible
                                       );
       /*!
        *  Set the (relative) rate uncertainties.

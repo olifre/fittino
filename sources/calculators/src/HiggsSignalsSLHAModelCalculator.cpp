@@ -128,7 +128,8 @@ double Fittino::HiggsSignalsSLHAModelCalculator::CalculateGammaTotal( double mas
                                                                       double g2hjZZ,
                                                                       double g2hjZga,
                                                                       double g2hjgaga,
-                                                                      double g2hjgg ) {
+                                                                      double g2hjgg,
+                                                                      double GammaInvisible ) {
 
     double GammaTotal = smgamma_h_( &massh )
                         * ( 1
@@ -142,9 +143,10 @@ double Fittino::HiggsSignalsSLHAModelCalculator::CalculateGammaTotal( double mas
                         + ( g2hjZZ - 1 ) * smbr_hzz_( &massh )
                         + ( g2hjZga - 1 ) * smbr_hzgam_( &massh )
                         + ( g2hjgaga - 1 ) * smbr_hgamgam_( &massh )
-                        + ( g2hjgg - 1 ) * smbr_hgg_( &massh ) );
+                        + ( g2hjgg - 1 ) * smbr_hgg_( &massh ) ) 
+                        + GammaInvisible;
 
-    return GammaTotal;
+    return GammaTotal;    
 
 }
 
@@ -201,13 +203,16 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     double g2hjhiZ        = pow( 1 + model->GetParameterVector()->at( 19 )->GetValue(), 2 );
 
     double BR_hjhihi      = model->GetParameterVector()->at( 20 )->GetValue();
-    double BR_hjinvisible = model->GetParameterVector()->at( 21 )->GetValue();
+    double GammaInvisible = model->GetParameterVector()->at( 21 )->GetValue();
+    //double BR_hjinvisible = model->GetParameterVector()->at( 21 )->GetValue();
 
     // Set the (relative) rate uncertainties.
 
     SetRateUncertainties( g2hjbb_s, g2hjbb_p, g2hjgg, massh ); // depend only on g2hjbb, g2hjgg
                                                                // and the Higgs boson mass
                                                                // use fixed values for the other rates
+
+    // Set the upper limit of the total width of the Higgs boson.
 
     // Calculate the total width of the Higgs boson.
 
@@ -222,7 +227,24 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
                                              g2hjZZ,
                                              g2hjZga,
                                              g2hjgaga,
-                                             g2hjgg );
+                                             g2hjgg,
+                                             GammaInvisible );
+
+    double vsmall = 1.e-16;
+
+    double BR_hjinvisible;
+
+    if ( GammaTotal <= vsmall ) {
+
+        BR_hjinvisible= 0.;
+
+    }
+
+    else {
+
+        BR_hjinvisible = GammaInvisible/GammaTotal;
+
+    }
 
     higgsbounds_neutral_input_effc_( &massh,
                                      &GammaTotal,
