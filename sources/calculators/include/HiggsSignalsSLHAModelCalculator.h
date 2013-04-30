@@ -132,6 +132,30 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
+     /*!
+      *  Calculates the slope of a linear function in an interval of 1. 
+      */
+      double       Linearslope( double y2, double y1 );
+     /*!   
+      *  Matches scaling factors to the higgs gluon couplings in dependence to the
+      *  higgs mass.
+      */
+      double       Scaleg2hgg( std::string column, double massh );
+     /*!
+      *  Matches scaling factors to the higgs gamma couplings in dependence to the
+      *  higgs mass.
+      */
+      double       Scaleg2hgammagamma( std::string column, double massh );
+
+      /*!
+       *  Calculates the loop-induced coupling of the Higgs boson to gluons\n
+       *  from the couplings to the particles contributing to the loop.
+       */
+      double       Calculateg2hgg( 
+                                        double ghbb,
+                                        double ghtt,
+                                        double massh 
+                                         );
       /*!
        *  Calculates the loop-induced coupling of the Higgs boson to photons\n
        *  from the couplings to the particles contributing to the loop.
@@ -141,7 +165,8 @@ namespace Fittino {
                                         double ghtt,
                                         double ghtautau,
                                         double ghWW,
-                                        double ghZZ
+                                        double ghZZ,
+                                        double massh
                                          );
       /*!
        *  Calculates the uncertainty on the "SingleH" production mode (see e.g.\n
