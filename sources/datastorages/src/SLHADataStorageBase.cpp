@@ -27,6 +27,6 @@ Fittino::SLHADataStorageBase::~SLHADataStorageBase() {
 
 }
 
-void Fittino::SLHADataStorageBase::ReadFile( const TString& slhaInputFileName ) const {
+void Fittino::SLHADataStorageBase::ReadFile( const std::string& slhaInputFileName ) const {
 
 }

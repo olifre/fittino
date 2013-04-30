@@ -48,8 +48,8 @@ namespace Fittino {
       virtual double GetEntry( const std::string& blockName, const std::string& firstIndex, const std::string& secondIndex, const int thirdIndex );
       virtual void   AddBlock( const std::string& path );
       virtual void   AddLine( const std::string& path );
-      virtual void   ReadFile( const TString& slhaInputFileName );
-      virtual void   WriteFile( const TString& slhaOutputFileName ) const;
+      virtual void   ReadFile( const std::string& slhaInputFileName );
+      virtual void   WriteFile( const std::string& slhaOutputFileName ) const;
 
     public:
       SLHAea::Coll   _slhaeaDataStorage;

@@ -20,7 +20,7 @@
 #ifndef FITTINO_SLHAMODELCALCULATORBASE_H
 #define FITTINO_SLHAMODELCALCULATORBASE_H
 
-#include "TString.h"
+#include <string>
 
 #include "ModelCalculatorBase.h"
 
@@ -52,8 +52,8 @@ namespace Fittino {
       virtual void         CalculatePredictions( PhysicsModelBase* model );
 
     protected:
-      TString              _slhaInputFileName;
-      TString              _slhaOutputFileName;
+      std::string          _slhaInputFileName;
+      std::string          _slhaOutputFileName;
       SLHADataStorageBase* _slhaInputDataStorage;
       SLHADataStorageBase* _slhaOutputDataStorage;
 

@@ -19,8 +19,6 @@
 
 #include <fstream>
 
-#include "TString.h"
-
 #include "PhysicsModelBase.h"
 #include "SLHAFileException.h"
 #include "SLHAeaSLHADataStorage.h"
@@ -108,9 +106,9 @@ void Fittino::SLHAeaSLHADataStorage::AddLine( const std::string& path ) {
 
 }
 
-void Fittino::SLHAeaSLHADataStorage::ReadFile( const TString& slhaInputFileName ) {
+void Fittino::SLHAeaSLHADataStorage::ReadFile( const std::string& slhaInputFileName ) {
 
-    std::ifstream file( slhaInputFileName );
+    std::ifstream file( slhaInputFileName.c_str() );
 
     if ( file.is_open() ) {
 
@@ -125,9 +123,9 @@ void Fittino::SLHAeaSLHADataStorage::ReadFile( const TString& slhaInputFileName 
 
 }
 
-void Fittino::SLHAeaSLHADataStorage::WriteFile( const TString& slhaOutputFileName ) const {
+void Fittino::SLHAeaSLHADataStorage::WriteFile( const std::string& slhaOutputFileName ) const {
 
-    std::ofstream file( slhaOutputFileName.Data() );
+    std::ofstream file( slhaOutputFileName.c_str() );
     file << _slhaeaDataStorage;
     file.close();
 

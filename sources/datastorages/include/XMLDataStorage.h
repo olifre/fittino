@@ -49,7 +49,7 @@ namespace Fittino {
        *  instance is initialized and the steering parameters specified in the input file can be\n
        *  retrieved via dedicated getter functions.
        */
-      virtual void ReadFile( const TString& xmlInputFileName ) const;
+      virtual void ReadFile( const std::string& xmlInputFileName ) const;
 
   };
 

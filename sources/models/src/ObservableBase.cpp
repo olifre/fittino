@@ -20,8 +20,6 @@
 
 #include <iomanip>
 
-#include "TString.h"
-
 #include "Messenger.h"
 #include "ObservableBase.h"
 

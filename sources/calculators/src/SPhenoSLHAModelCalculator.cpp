@@ -145,8 +145,8 @@ void Fittino::SPhenoSLHAModelCalculator::CallExecutable() {
       //char* const argv[] = { "", NULL };
       char* argv[1] = { NULL };
       
-      returnValue = execve( _executableName.Data(), argv, environ );
-      //returnValue = system( _executableName.Data() );
+      returnValue = execve( _executableName.c_str(), argv, environ );
+      //returnValue = system( _executableName.c_str() );
 
     }
     else {

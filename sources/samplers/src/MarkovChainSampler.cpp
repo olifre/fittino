@@ -19,7 +19,7 @@
 
 #include <iostream>
 
-#include "TMath.h"
+#include <cmath> 
 
 #include "Configuration.h"
 #include "MarkovChainSampler.h"
@@ -33,7 +33,7 @@ Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model )
           _previousChi2( 1.e99 ),
           //_previousChi2( model->GetChi2() ),
           _previousLikelihood( 1.e-99 ),
-          //_previousLikelihood( TMath::Exp( -1. * _previousChi2 / 2. ) ),
+          //_previousLikelihood( exp( -1. * _previousChi2 / 2. ) ),
           _previousParameterValues( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
           _previousRho( 1. ),
           _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", 10000 ) ) {
@@ -100,7 +100,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
         // Calculate likelihood.
 
-        double likelihood = TMath::Exp( -1. * chi2 / 2. );
+        double likelihood = exp( -1. * chi2 / 2. );
 
         // Decide whether point shall be accepted.
 

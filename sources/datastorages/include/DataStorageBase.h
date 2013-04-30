@@ -20,7 +20,7 @@
 #ifndef FITTINO_DATASTORAGEBASE_H
 #define FITTINO_DATASTORAGEBASE_H
 
-class TString;
+#include <string>
 
 /*!
  *  \brief Fittino namespace.
@@ -50,7 +50,7 @@ namespace Fittino {
        *  instance is initialized and the steering parameters specified in the input file can be\n
        *  retrieved via dedicated getter functions.
        */
-      virtual void ReadFile( const TString& xmlInputFileName ) const = 0;
+      virtual void ReadFile( const std::string& inputFileName ) const = 0;
 
   };
 

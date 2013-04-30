@@ -22,7 +22,6 @@
 
 #include "TDOMParser.h"
 #include "TList.h"
-#include "TString.h"
 #include "TXMLAttr.h"
 #include "TXMLDocument.h"
 #include "TXMLNode.h"
@@ -41,13 +40,13 @@ Fittino::XMLDataStorage::~XMLDataStorage() {
 
 }
 
-void Fittino::XMLDataStorage::ReadFile( const TString& xmlInputFileName ) const {
+void Fittino::XMLDataStorage::ReadFile( const std::string& xmlInputFileName ) const {
 
     Messenger& messenger = Messenger::GetInstance();
 
     messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  Reading configuration from file " << static_cast<std::string>( xmlInputFileName ) << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Reading configuration from file " << xmlInputFileName << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
     // Construct XML DOM parser.
@@ -60,7 +59,7 @@ void Fittino::XMLDataStorage::ReadFile( const TString& xmlInputFileName ) const 
 
     // Check if XML input file can be parsed.
 
-    const Int_t parseCode = xmlParser->ParseFile( xmlInputFileName );
+    const Int_t parseCode = xmlParser->ParseFile( xmlInputFileName.c_str() );
 
     if ( parseCode != 0 ) {
 

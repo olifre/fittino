@@ -20,7 +20,7 @@
 #ifndef FITTINO_MODELCALCULATORBASE_H
 #define FITTINO_MODELCALCULATORBASE_H
 
-#include "TString.h"
+#include <string>
 
 /*!
  *  \brief Fittino namespace.
@@ -57,8 +57,8 @@ namespace Fittino {
       enum         CallMethod { EXECUTABLE, FUNCTION };
 
     protected:
+      std::string  _executableName;
       std::string  _name;
-      TString      _executableName;
       CallMethod   _callMethod;
 
     protected:

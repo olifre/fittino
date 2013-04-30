@@ -19,8 +19,6 @@
 
 #include <iomanip>
 
-//#include "TString.h"
-
 #include "Messenger.h"
 #include "Chi2ContributionBase.h"
 
