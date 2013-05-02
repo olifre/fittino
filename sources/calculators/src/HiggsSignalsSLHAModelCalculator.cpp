@@ -302,17 +302,6 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Calculateg2hgammagamma( double 
                                                                          double ghZZ,
                                                                          double massh ) {
 
-    //double g2hgammagamma = ghtt * ghtt * 0.070904
-                         //+ ghbb * ghbb * 0.18760e-04
-                         //+ ghWW * ghWW * 1.5863
-                         //+ ghtt * ghbb * -0.17319e-02
-                         //+ ghtt * ghWW * -0.67074
-                         //+ ghbb * ghWW * 0.82093e-02
-                         //+ ghtautau * ghtautau * 0.22663e-04
-                         //+ ghtt * ghtautau * -0.18696e-02
-                         //+ ghbb * ghtautau * 0.41239e-04
-                         //+ ghtautau * ghWW * 0.88634e-02;
-
     double g2hgammagamma = ghtt * ghtt * Scaleg2hgammagamma( "tt", massh )
                          + ghbb * ghbb * Scaleg2hgammagamma( "bb", massh )
                          + ghWW * ghWW * Scaleg2hgammagamma( "WW", massh )
@@ -435,8 +424,8 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     double g2hjWW         = pow( 1 + model->GetParameterVector()->at( 13 )->GetValue(), 2 );
     double g2hjZZ         = pow( 1 + model->GetParameterVector()->at( 14 )->GetValue(), 2 );
     double g2hjZga        = pow( 1 + model->GetParameterVector()->at( 15 )->GetValue(), 2 );
-    double g2hjgaga       = pow( 1 + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
-    double g2hjgg         = pow( 1 + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
+    double g2hjgaga       = pow ( sqrt( Calculateg2hgammagamma( g2hjbb_s, g2hjtt_s, g2hjtautau_s, g2hjWW, g2hjZZ, massh ) ) + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
+    double g2hjgg         = pow ( sqrt( Calculateg2hgg( g2hjbb_s, g2hjtt_s, massh ) ) + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
     double g2hjggZ        = pow( 1 + model->GetParameterVector()->at( 18 )->GetValue(), 2 );
     double g2hjhiZ        = pow( 1 + model->GetParameterVector()->at( 19 )->GetValue(), 2 );
 
