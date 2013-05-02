@@ -570,7 +570,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     tmpStream_R_VH_bb << R_VH_bb;
     tmpStream_R_VH_bb >> tmpString_R_VH_bb;
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:6:" + tmpString_R_H_bb + ":# R_VH_bb" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:6:" + tmpString_R_VH_bb + ":# R_VH_bb" );
 
     std::stringstream tmpStream_GammaTotal;
     std::string tmpString_GammaTotal;
