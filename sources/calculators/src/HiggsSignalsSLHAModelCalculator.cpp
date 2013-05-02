@@ -73,7 +73,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallExecutable() {
 
 double Fittino::HiggsSignalsSLHAModelCalculator::Linearfunction( double massh, double x2, double x1, double y2, double y1 ) {
 
-    double f = ( y2 - y1 ) / (x2 - x1) * massh - massh * x1 + y1 ;
+    double f = ( y2 - y1 ) / (x2 - x1) * ( massh -  x1 ) + y1 ;
 
     return f;
 
