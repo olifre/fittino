@@ -132,10 +132,10 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-     /*!
-      *  Calculates the slope of a linear function in an interval of 1. 
-      */
-      double       Linearslope( double y2, double y1 );
+      /*!
+       *  Returns a linear function mx + b, given by two coordinates.
+       */     
+      double       Linearfunction( double massh, double x2, double x1, double y2, double y1 );
      /*!   
       *  Matches scaling factors to the higgs gluon couplings in dependence to the
       *  higgs mass.
