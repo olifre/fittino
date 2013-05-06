@@ -424,8 +424,18 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     double g2hjWW         = pow( 1 + model->GetParameterVector()->at( 13 )->GetValue(), 2 );
     double g2hjZZ         = pow( 1 + model->GetParameterVector()->at( 14 )->GetValue(), 2 );
     double g2hjZga        = pow( 1 + model->GetParameterVector()->at( 15 )->GetValue(), 2 );
-    double g2hjgaga       = pow ( sqrt( Calculateg2hgammagamma( g2hjbb_s, g2hjtt_s, g2hjtautau_s, g2hjWW, g2hjZZ, massh ) ) + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
-    double g2hjgg         = pow ( sqrt( Calculateg2hgg( g2hjbb_s, g2hjtt_s, massh ) ) + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
+
+    double g2hjgaga       = pow( sqrt( Calculateg2hgammagamma( 1 + model->GetParameterVector()->at(  5 )->GetValue(),
+                                                               1 + model->GetParameterVector()->at(  7 )->GetValue(),
+                                                               1 + model->GetParameterVector()->at( 11 )->GetValue(),
+                                                               1 + model->GetParameterVector()->at( 13 )->GetValue(),
+                                                               1 + model->GetParameterVector()->at( 14 )->GetValue(), massh ) ) 
+                                                                 + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
+
+    double g2hjgg         = pow( sqrt( Calculateg2hgg( 1 + model->GetParameterVector()->at(  5 )->GetValue(),
+                                                       1 + model->GetParameterVector()->at(  7 )->GetValue(), massh ) ) 
+                                                         + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
+
     double g2hjggZ        = pow( 1 + model->GetParameterVector()->at( 18 )->GetValue(), 2 );
     double g2hjhiZ        = pow( 1 + model->GetParameterVector()->at( 19 )->GetValue(), 2 );
 
@@ -516,12 +526,40 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     int nH = 1, collider = 3; // collider = 1, 2, 3 for TEV, LHC7 or LHC8
     double R_H_WW, R_H_ZZ, R_H_gammagamma, R_H_tautau, R_H_bb, R_VH_bb;
-    
-    double Delta_SM_hgammagamma = sqrt( Calculateg2hgammagamma( g2hjbb_s, g2hjtt_s, g2hjtautau_s, g2hjWW, g2hjZZ, massh ) ) - 1;
-    double Delta_Total_hgammagamma = pow ( sqrt( Calculateg2hgammagamma( g2hjbb_s, g2hjtt_s, g2hjtautau_s, g2hjWW, g2hjZZ, massh ) ) + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
 
-    double Delta_SM_hgg = sqrt( Calculateg2hgg( g2hjbb_s, g2hjtt_s, massh ) ) - 1;
-    double Delta_Total_hgg = pow ( sqrt( Calculateg2hgg( g2hjbb_s, g2hjtt_s, massh ) ) + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
+    double BR_s_hss       = g2hjss_s      * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_hss_( &massh );
+    double BR_s_hcc       = g2hjcc_s      * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_hcc_( &massh );
+    double BR_s_hbb       = g2hjbb_s      * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_hbb_( &massh );
+    double BR_s_htt       = g2hjtt_s      * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_htoptop_( &massh );
+    double BR_s_hmumu     = g2hjmumu_s    * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_hmumu_( &massh );
+    double BR_s_htautau   = g2hjtautau_s  * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_htautau_( &massh );
+    double BR_hWW         = g2hjWW        * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_hww_( &massh );
+    double BR_hZZ         = g2hjZZ        * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_hzz_( &massh );
+    double BR_hZgamma     = g2hjZga       * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_hzgam_( &massh );
+    double BR_hgammagamma = g2hjgaga      * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_hgamgam_( &massh );
+    double BR_hgg         = g2hjgg        * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_hgg_( &massh );
+
+    double BR_Total = BR_s_hss + BR_s_hcc + BR_s_hbb + BR_s_htt + BR_s_hmumu + BR_s_htautau + BR_hWW + BR_hZZ + BR_hZgamma + BR_hgammagamma + BR_hgg;
+    
+    double Delta_SM_hgammagamma = sqrt( Calculateg2hgammagamma( 1 + model->GetParameterVector()->at(  5 )->GetValue(),
+                                                                1 + model->GetParameterVector()->at(  7 )->GetValue(),
+                                                                1 + model->GetParameterVector()->at( 11 )->GetValue(),
+                                                                1 + model->GetParameterVector()->at( 13 )->GetValue(),
+                                                                1 + model->GetParameterVector()->at( 14 )->GetValue(), massh ) ) - 1;
+
+    double Delta_Total_hgammagamma = sqrt( Calculateg2hgammagamma( 1 + model->GetParameterVector()->at(  5 )->GetValue(),
+                                                                   1 + model->GetParameterVector()->at(  7 )->GetValue(),
+                                                                   1 + model->GetParameterVector()->at( 11 )->GetValue(),
+                                                                   1 + model->GetParameterVector()->at( 13 )->GetValue(),
+                                                                   1 + model->GetParameterVector()->at( 14 )->GetValue(), massh ) ) 
+                                                                     + model->GetParameterVector()->at( 16 )->GetValue();
+
+    double Delta_SM_hgg = sqrt( Calculateg2hgg( 1 + model->GetParameterVector()->at(  5 )->GetValue(),
+                                                1 + model->GetParameterVector()->at(  7 )->GetValue(), massh ) ) - 1;
+
+    double Delta_Total_hgg = sqrt( Calculateg2hgg( 1 + model->GetParameterVector()->at(  5 )->GetValue(),
+                                                   1 + model->GetParameterVector()->at(  7 )->GetValue(), massh ) ) 
+                                                     + model->GetParameterVector()->at( 17 )->GetValue();
 
     get_rvalues_( &nH, &collider, &R_H_WW, &R_H_ZZ, &R_H_gammagamma, &R_H_tautau, &R_H_bb, &R_VH_bb );
 
@@ -585,13 +623,109 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:7:" + tmpString_GammaTotal + ":# GammaTotal" );
 
+    std::stringstream tmpStream_BR_s_hss;
+    std::string tmpString_BR_s_hss;
+
+    tmpStream_BR_s_hss << BR_s_hss;
+    tmpStream_BR_s_hss >> tmpString_BR_s_hss;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:8:" + tmpString_BR_s_hss + ":# BR_s_hss" );
+
+    std::stringstream tmpStream_BR_s_hcc;
+    std::string tmpString_BR_s_hcc;
+
+    tmpStream_BR_s_hcc << BR_s_hcc;
+    tmpStream_BR_s_hcc >> tmpString_BR_s_hcc;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:9:" + tmpString_BR_s_hcc + ":# BR_s_hcc" );
+
+    std::stringstream tmpStream_BR_s_hbb;
+    std::string tmpString_BR_s_hbb;
+
+    tmpStream_BR_s_hbb << BR_s_hbb;
+    tmpStream_BR_s_hbb >> tmpString_BR_s_hbb;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:10:" + tmpString_BR_s_hbb + ":# BR_s_hbb" );
+
+    std::stringstream tmpStream_BR_s_htt;
+    std::string tmpString_BR_s_htt;
+
+    tmpStream_BR_s_htt << BR_s_htt;
+    tmpStream_BR_s_htt >> tmpString_BR_s_htt;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:11:" + tmpString_BR_s_htt + ":# BR_s_htt" );
+
+    std::stringstream tmpStream_BR_s_hmumu;
+    std::string tmpString_BR_s_hmumu;
+
+    tmpStream_BR_s_hmumu << BR_s_hmumu;
+    tmpStream_BR_s_hmumu >> tmpString_BR_s_hmumu;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:12:" + tmpString_BR_s_hmumu + ":# BR_s_hmumu" );
+
+    std::stringstream tmpStream_BR_s_htautau;
+    std::string tmpString_BR_s_htautau;
+
+    tmpStream_BR_s_htautau << BR_s_htautau;
+    tmpStream_BR_s_htautau >> tmpString_BR_s_htautau;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:13:" + tmpString_BR_s_htautau + ":# BR_s_htautau" );
+
+    std::stringstream tmpStream_BR_hWW;
+    std::string tmpString_BR_hWW;
+
+    tmpStream_BR_hWW << BR_hWW;
+    tmpStream_BR_hWW >> tmpString_BR_hWW;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:14:" + tmpString_BR_hWW + ":# BR_hWW" );
+
+    std::stringstream tmpStream_BR_hZZ;
+    std::string tmpString_BR_hZZ;
+
+    tmpStream_BR_hZZ << BR_hZZ;
+    tmpStream_BR_hZZ >> tmpString_BR_hZZ;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:15:" + tmpString_BR_hZZ + ":# BR_hZZ" );
+
+    std::stringstream tmpStream_BR_hZgamma;
+    std::string tmpString_BR_hZgamma;
+
+    tmpStream_BR_hZgamma << BR_hZgamma;
+    tmpStream_BR_hZgamma >> tmpString_BR_hZgamma;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:16:" + tmpString_BR_hZgamma + ":# BR_hZgamma" );
+
+    std::stringstream tmpStream_BR_hgammagamma;
+    std::string tmpString_BR_hgammagamma;
+
+    tmpStream_BR_hgammagamma << BR_hgammagamma;
+    tmpStream_BR_hgammagamma >> tmpString_BR_hgammagamma;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:17:" + tmpString_BR_hgammagamma + ":# BR_hgammagamma" );
+
+    std::stringstream tmpStream_BR_hgg;
+    std::string tmpString_BR_hgg;
+
+    tmpStream_BR_hgg << BR_hgg;
+    tmpStream_BR_hgg >> tmpString_BR_hgg;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:18:" + tmpString_BR_hgg + ":# BR_hgg" );
+
     std::stringstream tmpStream_BR_hjinvisible;
     std::string tmpString_BR_hjinvisible;
 
     tmpStream_BR_hjinvisible << BR_hjinvisible;
     tmpStream_BR_hjinvisible >> tmpString_BR_hjinvisible;
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:8:" + tmpString_BR_hjinvisible + ":# BR_hjInvisible" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:19:" + tmpString_BR_hjinvisible + ":# BR_hjInvisible" );
+
+    std::stringstream tmpStream_BR_Total;
+    std::string tmpString_BR_Total;
+
+    tmpStream_BR_Total << BR_Total;
+    tmpStream_BR_Total >> tmpString_BR_Total;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:20:" + tmpString_BR_Total + ":# BR_Total" );
 
     std::stringstream tmpStream_Delta_SM_hgammagamma;
     std::string tmpString_Delta_SM_hgammagamma;
@@ -599,7 +733,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     tmpStream_Delta_SM_hgammagamma << Delta_SM_hgammagamma;
     tmpStream_Delta_SM_hgammagamma >> tmpString_Delta_SM_hgammagamma;
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:9:" + tmpString_Delta_SM_hgammagamma + ":# Delta_SM_hgammagamma" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:21:" + tmpString_Delta_SM_hgammagamma + ":# Delta_SM_hgammagamma" );
 
     std::stringstream tmpStream_Delta_Total_hgammagamma;
     std::string tmpString_Delta_Total_hgammagamma;
@@ -607,7 +741,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     tmpStream_Delta_Total_hgammagamma << Delta_Total_hgammagamma;
     tmpStream_Delta_Total_hgammagamma >> tmpString_Delta_Total_hgammagamma;
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:10:" + tmpString_Delta_Total_hgammagamma + ":# Delta_Total_hgammagamma" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:22:" + tmpString_Delta_Total_hgammagamma + ":# Delta_Total_hgammagamma" );
 
     std::stringstream tmpStream_Delta_SM_hgg;
     std::string tmpString_Delta_SM_hgg;
@@ -615,7 +749,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     tmpStream_Delta_SM_hgg << Delta_SM_hgg;
     tmpStream_Delta_SM_hgg >> tmpString_Delta_SM_hgg;
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:11:" + tmpString_Delta_SM_hgg + ":# Delta_SM_hgg" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:23:" + tmpString_Delta_SM_hgg + ":# Delta_SM_hgg" );
 
     std::stringstream tmpStream_Delta_Total_hgg;
     std::string tmpString_Delta_Total_hgg;
@@ -623,7 +757,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     tmpStream_Delta_Total_hgg << Delta_Total_hgg;
     tmpStream_Delta_Total_hgg >> tmpString_Delta_Total_hgg;
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:12:" + tmpString_Delta_Total_hgg + ":# Delta_Total_hgg" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:24:" + tmpString_Delta_Total_hgg + ":# Delta_Total_hgg" );
 
 
     _slhaOutputDataStorage->WriteFile( _slhaOutputFileName );
