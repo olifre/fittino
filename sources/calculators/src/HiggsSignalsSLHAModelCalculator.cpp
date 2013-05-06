@@ -436,6 +436,9 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
                                                        1 + model->GetParameterVector()->at(  7 )->GetValue(), massh ) ) 
                                                          + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
 
+    //double g2hjgaga       = pow( 1 + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
+    //double g2hjgg         = pow( 1 + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
+
     double g2hjggZ        = pow( 1 + model->GetParameterVector()->at( 18 )->GetValue(), 2 );
     double g2hjhiZ        = pow( 1 + model->GetParameterVector()->at( 19 )->GetValue(), 2 );
 
@@ -547,19 +550,12 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
                                                                 1 + model->GetParameterVector()->at( 13 )->GetValue(),
                                                                 1 + model->GetParameterVector()->at( 14 )->GetValue(), massh ) ) - 1;
 
-    double Delta_Total_hgammagamma = sqrt( Calculateg2hgammagamma( 1 + model->GetParameterVector()->at(  5 )->GetValue(),
-                                                                   1 + model->GetParameterVector()->at(  7 )->GetValue(),
-                                                                   1 + model->GetParameterVector()->at( 11 )->GetValue(),
-                                                                   1 + model->GetParameterVector()->at( 13 )->GetValue(),
-                                                                   1 + model->GetParameterVector()->at( 14 )->GetValue(), massh ) ) 
-                                                                   + model->GetParameterVector()->at( 16 )->GetValue();
+    double Delta_Total_hgammagamma = Delta_SM_hgammagamma + model->GetParameterVector()->at( 16 )->GetValue();
 
     double Delta_SM_hgg = sqrt( Calculateg2hgg( 1 +model->GetParameterVector()->at(  5 )->GetValue(),
                                                 1 + model->GetParameterVector()->at(  7 )->GetValue(), massh ) ) - 1;
 
-    double Delta_Total_hgg = sqrt( Calculateg2hgg( 1 + model->GetParameterVector()->at(  5 )->GetValue(),
-                                                   1 + model->GetParameterVector()->at(  7 )->GetValue(), massh ) ) 
-                                                   + model->GetParameterVector()->at( 17 )->GetValue();
+    double Delta_Total_hgg = Delta_SM_hgg + model->GetParameterVector()->at( 17 )->GetValue();
 
     get_rvalues_( &nH, &collider, &R_H_WW, &R_H_ZZ, &R_H_gammagamma, &R_H_tautau, &R_H_bb, &R_VH_bb );
 
