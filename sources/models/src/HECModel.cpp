@@ -53,15 +53,19 @@ Fittino::HECModel::HECModel() {
     _parameterVector.push_back( new PhysicsParameter( "Delta_hggZ",        "#Delta hggZ",            0.,    "",    "",  0.1,  -7.,   5., true  ) );
     _parameterVector.push_back( new PhysicsParameter( "Delta_hihjZ",       "#Delta h_{i}h_{j}",     -1.,    "",    "",  0.1,  -7.,   5., true  ) );
     _parameterVector.push_back( new PhysicsParameter( "BR_hjhihi",         "BR_{hjhihi}",            0.,    "",    "",  0.1,   0.,   1., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Gamma_hInvisible",  "Gamma_{hInvisible}",     0., "GeV", "GeV",  1e-3,  0.,   1e-2, false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Gamma_hInvisible",  "Gamma_{hInvisible}",     0., "GeV", "GeV",  1e-3,  0.,   1e-2, true ) );
 
 
 
     //SLHAModelCalculatorBase* slhaModelCalculator = new HiggsSignalsSLHAModelCalculator();
     //_modelCalculatorVector.push_back( slhaModelCalculator );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Gamma_hTotal",                             "#Gamma-hTotal",                                "GeV", "GeV", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "7", 1 ) );
-    //_predictionVector.push_back( new SLHAPrediction( "BR_hInvisible",                            "#BR-hInvisible",                                  "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "8", 1 ) );
+    //_predictionVector.push_back( new SLHAPrediction( "Gamma_hTotal",                             "#Gamma-hTotal",                                "GeV", "GeV", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "7",  1 ) );
+    //_predictionVector.push_back( new SLHAPrediction( "BR_hInvisible",                            "#BR-hInvisible",                                  "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "8",  1 ) );
+    //_predictionVector.push_back( new SLHAPrediction( "Delta_SM_hgammagamma",                     "#Delta_{SM}h#gamma#gamma",                        "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "9",  1 ) );
+    //_predictionVector.push_back( new SLHAPrediction( "Delta_Total_hgammagamma",                  "#Delta_{Total}h#gamma#gamma",                     "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "10", 1 ) );
+    //_predictionVector.push_back( new SLHAPrediction( "Delta_SM_hgg",                             "#Delta_{SM}hgg",                                  "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "11", 1 ) );
+    //_predictionVector.push_back( new SLHAPrediction( "Delta_Total_hgg",                          "#Delta_{Total}h#gg",                              "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "12", 1 ) );
     ////_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_inclusive_ATL",              "#mu_{h#gamma#gamma}inclusive-ATL",                "",    "", slhaModelCalculator, "HiggsSignalsPeakObservables",  "1", "17", 2 ) );
     //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_1lep_ATL",                   "#mu_{h#gamma#gamma}1lep-ATL",                     "",    "", slhaModelCalculator, "HiggsSignalsPeakObservables",  "1", "17", 2 ) );
     //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_conv_central_highPTt_ATL",   "#mu_{h#gamma#gamma}conv-central-highPTt-AT",      "",    "", slhaModelCalculator, "HiggsSignalsPeakObservables",  "2", "17", 2 ) );
@@ -117,12 +121,12 @@ Fittino::HECModel::HECModel() {
     //_predictionVector.push_back( new SLHAPrediction( "R_hbb",                                    "R-hbb",                                           "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "5", 1 ) );
     //_predictionVector.push_back( new SLHAPrediction( "R_Vhbb",                                   "R-Vhbb",                                          "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "6", 1 ) );
     ////
-    //////_predictionVector.push_back( new SLHAPrediction( "Masss",   "GeV", slhaModelCalculator, "", "", 0 ) );
-    //////_predictionVector.push_back( new SLHAPrediction( "Massc",   "GeV", slhaModelCalculator, "", "", 1 ) );
-    //////_predictionVector.push_back( new SLHAPrediction( "Massb",   "GeV", slhaModelCalculator, "", "", 1 ) );
-    //////_predictionVector.push_back( new SLHAPrediction( "Masst",   "GeV", slhaModelCalculator, "", "", 1 ) );
-    //////_predictionVector.push_back( new SLHAPrediction( "Massmu",  "GeV", slhaModelCalculator, "", "", 1 ) );
-    //////_predictionVector.push_back( new SLHAPrediction( "Masstau", "GeV", slhaModelCalculator, "", "", 1 ) );
+    ////_predictionVector.push_back( new SLHAPrediction( "Masss",   "GeV", slhaModelCalculator, "", "", 0 ) );
+    ////_predictionVector.push_back( new SLHAPrediction( "Massc",   "GeV", slhaModelCalculator, "", "", 1 ) );
+    ////_predictionVector.push_back( new SLHAPrediction( "Massb",   "GeV", slhaModelCalculator, "", "", 1 ) );
+    ////_predictionVector.push_back( new SLHAPrediction( "Masst",   "GeV", slhaModelCalculator, "", "", 1 ) );
+    ////_predictionVector.push_back( new SLHAPrediction( "Massmu",  "GeV", slhaModelCalculator, "", "", 1 ) );
+    ////_predictionVector.push_back( new SLHAPrediction( "Masstau", "GeV", slhaModelCalculator, "", "", 1 ) );
 
     //_chi2ContributionVector.push_back( new SLHAChi2Contribution( "HiggsSignals", slhaModelCalculator, "HiggsSignalsResults", "12", 1 ) );
 

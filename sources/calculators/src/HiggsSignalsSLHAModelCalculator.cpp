@@ -431,7 +431,6 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     double BR_hjhihi      = model->GetParameterVector()->at( 20 )->GetValue();
     double GammaInvisible = model->GetParameterVector()->at( 21 )->GetValue();
-    //double BR_hjinvisible = model->GetParameterVector()->at( 21 )->GetValue();
 
     // Set the (relative) rate uncertainties.
 
@@ -517,6 +516,12 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     int nH = 1, collider = 3; // collider = 1, 2, 3 for TEV, LHC7 or LHC8
     double R_H_WW, R_H_ZZ, R_H_gammagamma, R_H_tautau, R_H_bb, R_VH_bb;
+    
+    double Delta_SM_hgammagamma = sqrt( Calculateg2hgammagamma( g2hjbb_s, g2hjtt_s, g2hjtautau_s, g2hjWW, g2hjZZ, massh ) ) - 1;
+    double Delta_Total_hgammagamma = pow ( sqrt( Calculateg2hgammagamma( g2hjbb_s, g2hjtt_s, g2hjtautau_s, g2hjWW, g2hjZZ, massh ) ) + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
+
+    double Delta_SM_hgg = sqrt( Calculateg2hgg( g2hjbb_s, g2hjtt_s, massh ) ) - 1;
+    double Delta_Total_hgg = pow ( sqrt( Calculateg2hgg( g2hjbb_s, g2hjtt_s, massh ) ) + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
 
     get_rvalues_( &nH, &collider, &R_H_WW, &R_H_ZZ, &R_H_gammagamma, &R_H_tautau, &R_H_bb, &R_VH_bb );
 
@@ -587,6 +592,39 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     tmpStream_BR_hjinvisible >> tmpString_BR_hjinvisible;
 
     _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:8:" + tmpString_BR_hjinvisible + ":# BR_hjInvisible" );
+
+    std::stringstream tmpStream_Delta_SM_hgammagamma;
+    std::string tmpString_Delta_SM_hgammagamma;
+
+    tmpStream_Delta_SM_hgammagamma << Delta_SM_hgammagamma;
+    tmpStream_Delta_SM_hgammagamma >> tmpString_Delta_SM_hgammagamma;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:9:" + tmpString_Delta_SM_hgammagamma + ":# Delta_SM_hgammagamma" );
+
+    std::stringstream tmpStream_Delta_Total_hgammagamma;
+    std::string tmpString_Delta_Total_hgammagamma;
+
+    tmpStream_Delta_Total_hgammagamma << Delta_Total_hgammagamma;
+    tmpStream_Delta_Total_hgammagamma >> tmpString_Delta_Total_hgammagamma;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:10:" + tmpString_Delta_Total_hgammagamma + ":# Delta_Total_hgammagamma" );
+
+    std::stringstream tmpStream_Delta_SM_hgg;
+    std::string tmpString_Delta_SM_hgg;
+
+    tmpStream_Delta_SM_hgg << Delta_SM_hgg;
+    tmpStream_Delta_SM_hgg >> tmpString_Delta_SM_hgg;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:11:" + tmpString_Delta_SM_hgg + ":# Delta_SM_hgg" );
+
+    std::stringstream tmpStream_Delta_Total_hgg;
+    std::string tmpString_Delta_Total_hgg;
+    
+    tmpStream_Delta_Total_hgg << Delta_Total_hgg;
+    tmpStream_Delta_Total_hgg >> tmpString_Delta_Total_hgg;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:12:" + tmpString_Delta_Total_hgg + ":# Delta_Total_hgg" );
+
 
     _slhaOutputDataStorage->WriteFile( _slhaOutputFileName );
 
