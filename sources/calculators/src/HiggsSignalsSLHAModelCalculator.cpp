@@ -527,17 +527,17 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     int nH = 1, collider = 3; // collider = 1, 2, 3 for TEV, LHC7 or LHC8
     double R_H_WW, R_H_ZZ, R_H_gammagamma, R_H_tautau, R_H_bb, R_VH_bb;
 
-    double BR_s_hss       = g2hjss_s      * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_hss_( &massh );
-    double BR_s_hcc       = g2hjcc_s      * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_hcc_( &massh );
-    double BR_s_hbb       = g2hjbb_s      * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_hbb_( &massh );
-    double BR_s_htt       = g2hjtt_s      * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_htoptop_( &massh );
-    double BR_s_hmumu     = g2hjmumu_s    * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_hmumu_( &massh );
-    double BR_s_htautau   = g2hjtautau_s  * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_htautau_( &massh );
-    double BR_hWW         = g2hjWW        * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_hww_( &massh );
-    double BR_hZZ         = g2hjZZ        * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_hzz_( &massh );
-    double BR_hZgamma     = g2hjZga       * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_hzgam_( &massh );
-    double BR_hgammagamma = g2hjgaga      * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_hgamgam_( &massh );
-    double BR_hgg         = g2hjgg        * ( GammaTotal / smgamma_h_( &massh ) ) * smbr_hgg_( &massh );
+    double BR_s_hss       = g2hjss_s      * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hss_( &massh );
+    double BR_s_hcc       = g2hjcc_s      * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hcc_( &massh );
+    double BR_s_hbb       = g2hjbb_s      * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hbb_( &massh );
+    double BR_s_htt       = g2hjtt_s      * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_htoptop_( &massh );
+    double BR_s_hmumu     = g2hjmumu_s    * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hmumu_( &massh );
+    double BR_s_htautau   = g2hjtautau_s  * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_htautau_( &massh );
+    double BR_hWW         = g2hjWW        * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hww_( &massh );
+    double BR_hZZ         = g2hjZZ        * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hzz_( &massh );
+    double BR_hZgamma     = g2hjZga       * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hzgam_( &massh );
+    double BR_hgammagamma = g2hjgaga      * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hgamgam_( &massh );
+    double BR_hgg         = g2hjgg        * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hgg_( &massh );
 
     double BR_Total = BR_s_hss + BR_s_hcc + BR_s_hbb + BR_s_htt + BR_s_hmumu + BR_s_htautau + BR_hWW + BR_hZZ + BR_hZgamma + BR_hgammagamma + BR_hgg;
     
