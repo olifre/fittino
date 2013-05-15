@@ -28,9 +28,9 @@ Fittino::HECModel::HECModel() {
 
     _name = "HEC model";
 
-    _parameterVector.push_back( new PhysicsParameter( "AlphaEM",           "#alpha_{em}",       128.952, "GeV", "GeV", 0.1,  50., 150., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "AlphaS",            "#alpha_{S}",         0.1184, "GeV", "GeV", 0.1, -50.,  50., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "G_F",               "G_{F}",        1.1663787e-5,    "",    "", 0.1,  -5.,   5., true  ) );
+    //_parameterVector.push_back( new PhysicsParameter( "AlphaEM",           "#alpha_{em}",       128.952, "GeV", "GeV", 0.1,  50., 150., true  ) );
+    //_parameterVector.push_back( new PhysicsParameter( "AlphaS",            "#alpha_{S}",         0.1184, "GeV", "GeV", 0.1, -50.,  50., true  ) );
+    //_parameterVector.push_back( new PhysicsParameter( "G_F",               "G_{F}",        1.1663787e-5,    "",    "", 0.1,  -5.,   5., true  ) );
 
     _parameterVector.push_back( new PhysicsParameter( "Massh",             "m_{h}",                126., "GeV", "GeV", 0.02, 123., 129., false ) );
     _parameterVector.push_back( new PhysicsParameter( "Delta_s_hss",       "#Delta_{s}hss",          0.,    "",    "",  0.1,  -7.,   5., true  ) );
@@ -142,7 +142,7 @@ Fittino::HECModel::HECModel() {
     ////_predictionVector.push_back( new SLHAPrediction( "Masstau", "GeV", slhaModelCalculator, "", "", 1 ) );
 
     //_chi2ContributionVector.push_back( new SLHAChi2Contribution( "HiggsSignals", slhaModelCalculator, "HiggsSignalsResults", "12", 1 ) );
-    //_chi2ContributionVector.push_back( new SLHAChi2Contribution( "GammaTotal_Penalty", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "25", 1 ) );
+    //_chi2ContributionVector.push_back( new SLHAChi2Contribution( "Gamma_hTotal_Penalty", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "25", 1 ) );
     //_chi2ContributionVector.push_back( new SLHAChi2Contribution( "BR_hInvisible_Limit", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "26", 1 ) );
 
     PhysicsModelBase::Initialize();
