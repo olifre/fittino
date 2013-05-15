@@ -513,13 +513,16 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     int nobs, mode = 1; // mode = 1, 2, 3 for peak-centered, masse-centered chi^2 method or both
     double Chisq_mu, Chisq_mh, Chisq , Pvalue;
-    double HiggsSignalsChi2Penalty = 0;
+
+    double Gamma_hTotal_Penalty = 0;
+
+    double BR_hInvisible_Limit = pow( -0.292048 * BR_hjinvisible, 4  ) + pow( -0.750024 * BR_hjinvisible, 3 ) + pow( 5.42909 * BR_hjinvisible, 2 ) + 3.8467 * BR_hjinvisible;
 
     run_higgssignals_( &mode, &Chisq_mu, &Chisq_mh, &Chisq, &nobs, &Pvalue );
 
         if ( GammaTotal > 1. ) {
 
-        HiggsSignalsChi2Penalty = 1000000.;
+        Gamma_hTotal_Penalty = 1000000.;
 
     }
 
@@ -568,26 +571,6 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
  
-    //double x = 1000000.;
-
-    //std::stringstream tmpStream_x;
-    //std::string tmpString_x;
-
-    //tmpStream_x << x;
-    //tmpStream_x >> tmpString_x;
-
-    //tmpString_x << _slhaOutputDataStorage->GetEntry( "HiggsSignalsResults", "12", 1 );
-    //tmpStream_x >> tmpString_x;
-
-    //std::stringstream stringstream;
-
-    //stringstream << x;
-    //stringstream >> _slhaOutputDataStorage->GetEntry( "HiggsSignalsResults", "12", 1 );
- 
-    //_slhaOutputDataStorage->GetEntry( "HiggsSignalsResults", "12", 1 ) = x;
-
-    //_slhaOutputDataStorage->GetEntry( "HiggsSignalsResults", "12", 1 ) == 10.;
-
     _slhaOutputDataStorage->AddBlock( "HiggsSignalsAdditionalPredictions:BLOCK HiggsSignalsAdditionalPredictions:# Additional predictions" );
 
     std::stringstream tmpStream_R_H_WW;
@@ -782,13 +765,22 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:24:" + tmpString_Delta_Total_hgg + ":# Delta_Total_hgg" );
 
-    std::stringstream tmpStream_HiggsSignalsChi2Penalty;
-    std::string tmpString_HiggsSignalsChi2Penalty;
+    std::stringstream tmpStream_Gamma_hTotal_Penalty;
+    std::string tmpString_Gamma_hTotal_Penalty;
 
-    tmpStream_HiggsSignalsChi2Penalty << HiggsSignalsChi2Penalty;
-    tmpStream_HiggsSignalsChi2Penalty >> tmpString_HiggsSignalsChi2Penalty;
+    tmpStream_Gamma_hTotal_Penalty << Gamma_hTotal_Penalty;
+    tmpStream_Gamma_hTotal_Penalty >> tmpString_Gamma_hTotal_Penalty;
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:25:" + tmpString_HiggsSignalsChi2Penalty + ":# HiggsSignalsChi2Penalty" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:25:" + tmpString_Gamma_hTotal_Penalty + ":# Gamma_hTotal_Penalty" );
+
+    std::stringstream tmpStream_BR_hInvisible_Limit;
+    std::string tmpString_BR_hInvisible_Limit;
+
+    tmpStream_BR_hInvisible_Limit << BR_hInvisible_Limit;
+    tmpStream_BR_hInvisible_Limit >> tmpString_BR_hInvisible_Limit;
+
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:26:" + tmpString_BR_hInvisible_Limit + ":# BR_hInvisible_Limit" );
+
 
     _slhaOutputDataStorage->WriteFile( _slhaOutputFileName );
 
