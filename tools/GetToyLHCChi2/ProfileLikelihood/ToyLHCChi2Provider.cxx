@@ -25,7 +25,6 @@ void ToyLHCChi2Provider::CreateChi2Histograms( float nmin, float nmax ) {
 	}
 	
 	// this is for getting the chi2 histograms in A0 and tb for M0 = 1962 and M12 = 389
-
 	vector<int> M0Corr;
 	M0Corr.push_back(680);
 	M0Corr.push_back(860);
@@ -50,7 +49,7 @@ void ToyLHCChi2Provider::CreateChi2Histograms( float nmin, float nmax ) {
     	TH2D *h = new TH2D( histname, histname, 19, -4250., 5250., 7, 7.5, 42.5);
     	for( int binx = 1; binx <= 19; ++binx ) {
       	for( int biny = 1; biny <= 7; ++biny ) {
-        	h -> SetBinContent(binx, biny, GetChi2CorrectionFit( h->GetXaxis()->GetBinCenter(binx), h->GetYaxis()->GetBinCenter(biny), vObs, vExp, hCorr ) );
+        	h -> SetBinContent(binx, biny, GetChi2CorrectionFit( h->GetXaxis()->GetBinCenter(binx), h->GetYaxis()->GetBinCenter(biny), M0Corr[i], vObs, vExp, hCorr ) );
 				}
     	}
     	vHistograms.push_back(h);
@@ -107,6 +106,7 @@ float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, float A0,
 	M0Values.push_back(1962);
 	M0Values.push_back(2500);
 
+
 	if( M0 >= 2500. ) { M0up_idx = 7; M0down_idx = 7; }
 	else {
 		for( int h = 0; h < 7; ++h ) {
@@ -148,8 +148,18 @@ float ToyLHCChi2Provider::GetChi2ContributionToy( float M0, float M12, int nObs,
 	return vChi2->at(nObs-nmin)->Interpolate(M0, M12);
 }
 
-float ToyLHCChi2Provider::GetChi2CorrectionFit( float A0, float tb, vector<float> nObs, vector<float> nExp, TH2D *sigGrid ) {
-	float chi2_uncorr = GetChi2ContributionFit( 1962., 389., nObs, nExp );
+float ToyLHCChi2Provider::GetChi2CorrectionFit( float A0, float tb, int vM0, vector<float> nObs, vector<float> nExp, TH2D *sigGrid ) {
+	map<int,int> M0M12Corr;
+	M0M12Corr.insert( pair<int,int>(680,700));
+	M0M12Corr.insert( pair<int,int>(860,655));
+	M0M12Corr.insert( pair<int,int>(1080,595));
+	M0M12Corr.insert( pair<int,int>(1200,522));
+	M0M12Corr.insert( pair<int,int>(1400,495));
+	M0M12Corr.insert( pair<int,int>(1500,455));
+	M0M12Corr.insert( pair<int,int>(1962,389));
+	M0M12Corr.insert( pair<int,int>(2500,366));
+	
+	float chi2_uncorr = GetChi2ContributionFit( (float)vM0, (float)M0M12Corr.at(vM0), nObs, nExp );
 	//float chi2Correct = 0.;
 	unsigned int channel = 1;
 	float lumi = 50.;
@@ -164,10 +174,13 @@ float ToyLHCChi2Provider::GetChi2CorrectionFit( float A0, float tb, vector<float
   nll = model->createNLL(*data);
   pll = nll->createProfile(*POI);
 	double nS = lumi/lumi_ref*sigGrid->Interpolate(A0,tb);
-	nS = nS+nS*(1800.-1962.)/1800.;
+	float M0 = (float)vM0;
+	if (M0<400.)  nS=nS-0.9*nS*(400.-M0)/400.;
+	else if (M0<1800. && M0>1000.)  nS=nS-nS*(1000.-M0)/1000.*(1800.-M0)/1800.;
+	else if (M0>1800.)  nS=nS+nS*(1800.-M0)/1800.;
 	s->setVal(nS);
 	double chi2_real = 2.*pll->getVal();
-	return (isnan(chi2_real) || isinf(chi2_real)) ? 1000. : chi2_real - chi2_uncorr;
+	return (isnan(chi2_real) || isinf(chi2_real)) ? 1000. : chi2_real/chi2_uncorr - 1.;
 
 }
 
