@@ -25,22 +25,38 @@ void ToyLHCChi2Provider::CreateChi2Histograms( float nmin, float nmax ) {
 	}
 	
 	// this is for getting the chi2 histograms in A0 and tb for M0 = 1962 and M12 = 389
+
+	vector<int> M0Corr;
+	M0Corr.push_back(680);
+	M0Corr.push_back(860);
+	M0Corr.push_back(1080);
+	M0Corr.push_back(1200);
+	M0Corr.push_back(1400);
+	M0Corr.push_back(1500);
+	M0Corr.push_back(1962);
+  M0Corr.push_back(2500);
 	
-	TFile *fCorr = new TFile("signalGrids_A0_tanbeta.root");
-	TH2D *hCorr = (TH2D*)fCorr->Get("signalB_corr");
-	for( float nObs = nmin; nObs <= nmax; nObs += 1. ) {
-    vector<float> vObs(3,nObs);
-    char histname[40];
-    sprintf( histname, "chi2OffCorr_nObs_%i", (int)nObs );
-    TH2D *h = new TH2D( histname, histname, 19, -4250., 5250., 7, 7.5, 42.5);
-    for( int binx = 1; binx <= 19; ++binx ) {
-      for( int biny = 1; biny <= 7; ++biny ) {
-        h -> SetBinContent(binx, biny, GetChi2CorrectionFit( h->GetXaxis()->GetBinCenter(binx), h->GetYaxis()->GetBinCenter(biny), vObs, vExp, hCorr ) );
-			}
-    }
-    vHistograms.push_back(h);
-    fflush(stdout);
-  }
+	unsigned int nCorr = M0Corr.size(); 
+  TFile *fCorr = new TFile("signalGrids_A0_tanbeta.root");
+	
+	for( unsigned int i = 0; i < nCorr; ++i ) {
+		char hCorrName[100];
+		sprintf(hCorrName, "signalB_corr_M0%i", M0Corr[i] );
+		TH2D *hCorr = (TH2D*)fCorr->Get(hCorrName);
+		for( float nObs = nmin; nObs <= nmax; nObs += 1. ) {
+    	vector<float> vObs(3,nObs);
+    	char histname[40];
+    	sprintf( histname, "chi2OffCorr_M0%i_nObs_%i", M0Corr[i], (int)nObs );
+    	TH2D *h = new TH2D( histname, histname, 19, -4250., 5250., 7, 7.5, 42.5);
+    	for( int binx = 1; binx <= 19; ++binx ) {
+      	for( int biny = 1; biny <= 7; ++biny ) {
+        	h -> SetBinContent(binx, biny, GetChi2CorrectionFit( h->GetXaxis()->GetBinCenter(binx), h->GetYaxis()->GetBinCenter(biny), vObs, vExp, hCorr ) );
+				}
+    	}
+    	vHistograms.push_back(h);
+    	fflush(stdout);
+  	}
+	}
 
 	gDirectory = fOut;
 	for( unsigned iHist = 0; iHist < vHistograms.size(); ++iHist ) {
