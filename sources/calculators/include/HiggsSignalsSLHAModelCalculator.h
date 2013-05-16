@@ -136,6 +136,10 @@ namespace Fittino {
        *  Returns a linear function mx + b, given by two coordinates.
        */     
       double       Linearfunction( double massh, double x2, double x1, double y2, double y1 );
+      /*!
+       *  Calculates the limit of BRInvisible and returns a chi2.
+       */
+      double       CalculateLimitofBRInvisible( double x );
      /*!   
       *  Matches scaling factors to the higgs gluon couplings in dependence to the
       *  higgs mass.
@@ -158,7 +162,7 @@ namespace Fittino {
                                          );
       /*!
        *  Calculates the loop-induced coupling of the Higgs boson to photons\n
-       *  from the couplings to the particles contributing to the loop.
+       *  from the couplings to the particles contributing to the loop. 
        */
       double       Calculateg2hgammagamma(
                                         double ghbb,
@@ -182,7 +186,7 @@ namespace Fittino {
                                               );
       /*!
        *  Calculates the total width of the Higgs boson depending on its mass\n
-       *  and couplings.
+       *  and couplings: FORMULA! The Sum is over all couplings that were provided with the corresponding SM-Branching Ratio from Higgs Signals. GammaInvisible is used as free parameter in the model. If GammaTotal exceeds 1 GeV, the Chi2 contribution rises to 1M, forcing the MarkovChain backwards.
        */
       double       CalculateGammaTotal(
                                         double massh,
