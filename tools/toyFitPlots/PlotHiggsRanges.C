@@ -1,380 +1,414 @@
-PlotHiggsRanges()
+
+// File     PlotHiggsRanges.C
+//
+// Usage    root -b PlotHiggsRanges.C
+//
+// Authors  Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>
+
+
+#include <iostream>
+#include <vector>
+
+#include "TROOT.h"
+#include "TFile.h"
+#include "TStyle.h"
+#include "TGraphAsymmErrors.h"
+#include "TCanvas.h"
+#include "TAxis.h"
+#include "TH1F.h"
+#include "TLine.h"
+#include "TImage.h"
+#include "TAttImage.h"
+#include "TSystem.h"
+#include "TLegend.h"
+
+#include "style/AtlasStyle.h"
+#include "style/AtlasLabels.h"
+#include "style/AtlasUtils.h"
+
+void PlotHiggsRanges()
 {
-    gROOT->LoadMacro("style/AtlasLabels.C");
-    gROOT->LoadMacro("style/AtlasStyle.C");
-    gROOT->LoadMacro("style/AtlasUtils.C");
+   // General settings.
+   //TString plotType = "BranchingRatios";
+   //TString plotType = "PartialWidths";
+   //TString plotType = "RValues";
+   TString plotType = "RatioFractions";
 
-    SetAtlasStyle();
+   TFile* file = TFile::Open( "~sarrazin/public/confidenceInterval3.root", "READ" );
 
-    gStyle->SetNdivisions(0, "Y");
-    const Int_t n = 10;
-    Double_t x[n], y[n];
-    Double_t x0[n], y0[n];
-    for (Int_t i = 0; i < n-1; i++) {
-        x0[i] = 1.;
-        x[i] = 1.;
-        y0[i] = i;
-        y[i] = i;
-    }
-    Double_t BRMinima[n];
-    Double_t BRMaxima[n];
-    Double_t BRMinima0[n];
-    Double_t BRMaxima0[n];
-    for (Int_t i = 0; i < n-1; i++) {
-        BRMinima0[i] = 0.01;
-        BRMaxima0[i] = 0.02;
-        BRMinima[i] = 0.01;
-        BRMaxima[i] = 0.02;
-    }
+   // Style settings.
+   gROOT->LoadMacro("style/AtlasLabels.C");
+   gROOT->LoadMacro("style/AtlasStyle.C");
+   gROOT->LoadMacro("style/AtlasUtils.C");
 
-    double leftvalue0[10] = {4.38877059e-01,
-                             4.54090903e-01,
-                             6.48403478e-01,
-                             6.03761961e-01,
-                             1.04638960e+00,
-                             6.26923075e-01,
-                             6.69177108e-01,
-                             6.94872957e-01,
-                             7.09751333e-01,
-                             1.
-                            };
+   SetAtlasStyle();
 
-    double rightvalue0[10] ={1.21577659e+00,
-                             1.10223691e+00,
-                             8.84435828e-01,
-                             7.84781017e-01,
-                             1.23190657e+00,
-                             8.83221975e-01,
-                             9.02969101e-01,
-                             9.12641685e-01,
-                             9.32456413e-01,
-                             1. 
-                            };
+   gStyle->SetNdivisions(0, "Y");
 
-    //double leftvalue0[10] = {6.57921034e-01,
-    //                         6.57921034e-01,
-    //                         9.04289294e-01,
-    //                         7.79793308e-01,
-    //                         9.72106034e-01,
-    //                         8.06934574e-01,
-    //                         7.94924569e-01,
-    //                         8.10762682e-01,
-    //                         8.28131155e-01,
-    //                         1.
-    //                        };
+   // Specify the leaves in the plot.
+   //const Int_t numberOfLeaves = 7;
 
-    //double rightvalue0[10] ={1.23451141e+00,
-    //                         1.13032828e+00,
-    //                         9.63070238e-01,
-    //                         8.93531288e-01,
-    //                         1.24063153e+00,
-    //                         1.03141364e+00,
-    //                         1.01449877e+00,
-    //                         1.02310721e+00,
-    //                         1.04541152e+00,
-    //                         1. 
-    //                        };
+   if (plotType == "BranchingRatios")
+   {
+      const Int_t numberOfLeaves = 11;
+      std::vector<Float_t>* leaf[10] = {};
+   }
+   else if (plotType == "PartialWidths")
+   {
+      const Int_t numberOfLeaves = 7;
+      std::vector<Float_t>* leaf[6] = {};
+   }
+   else if (plotType == "RValues")
+   {
+      const Int_t numberOfLeaves = 7;
+      std::vector<Float_t>* leaf[6] = {};
+   }
+   else if (plotType == "RatioFractions")
+   {
+      const Int_t numberOfLeaves = 6;
+      std::vector<Float_t>* leaf[5] = {};
+   }
 
+   //std::vector<std::vector<Float_t>>* test;
 
+   TTree* tree = 0;
 
-    double leftvalue[10] = {6.34961462e-01,
-                            6.14391135e-01,
-                            6.68037378e-01,
-                            6.05317407e-01,
-                            1.09031785e+00,
-                            6.53306611e-01,
-                            6.97383701e-01,
-                            7.20366885e-01,
-                            7.35753077e-01,
-                            1.
-                           };
+   if (file)
+   {
+      tree = (TTree*)file->Get("markovChain");
 
-    double rightvalue[10] ={8.14601568e-01,
-                            7.87925398e-01,
-                            8.49719655e-01,
-                            7.73701565e-01,
-                            1.16999257e+00,
-                            8.38677380e-01,
-                            8.57558155e-01,
-                            8.71001872e-01,
-                            8.89755730e-01,
-                            1. 
-                           };
+      if (plotType == "BranchingRatios")
+      {
+	 //tree->SetBranchAddress("O_h0_To_Z_Gamma_norm",               &leaf[0]);
+	 //tree->SetBranchAddress("O_h0_To_Z_Z_norm_fromG2",            &leaf[1]);
+	 //tree->SetBranchAddress("O_h0_To_W_W_norm_fromG2",            &leaf[2]);
+	 //tree->SetBranchAddress("O_h0_To_Gamma_Gamma_norm",           &leaf[3]);
+	 //tree->SetBranchAddress("O_h0_To_Gluon_Gluon_norm_fromG2",    &leaf[4]);
+	 //tree->SetBranchAddress("O_h0_To_Bottom_Bottom~_norm_fromG2", &leaf[5]);
+	 //tree->SetBranchAddress("O_h0_To_Charm_Charm~_norm",          &leaf[6]);
+	 //tree->SetBranchAddress("O_h0_To_Strange_Strange~_norm",      &leaf[7]);
+	 //tree->SetBranchAddress("O_h0_To_Tau_Tau~_norm_fromG2",       &leaf[8]);
+	 //tree->SetBranchAddress("O_h0_To_Muon_Muon~_norm",            &leaf[9]);
 
-    //double leftvalue[10] = {8.33491605e-01,
-    //                        8.11520392e-01,
-    //                        9.07506261e-01,
-    //                        8.07999141e-01,
-    //                        1.06007609e+00,
-    //                        8.80103115e-01,
-    //                        8.67190439e-01,
-    //                        8.80184312e-01,
-    //                        8.99184879e-01,
-    //                        1.
-    //                       };
+	 tree->SetBranchAddress("O_h0_To_Z_Gamma_norm",               &leaf[0]);
+	 tree->SetBranchAddress("O_h0_To_Z_Z_norm",                   &leaf[1]);
+	 tree->SetBranchAddress("O_h0_To_W_W_norm",                   &leaf[2]);
+	 tree->SetBranchAddress("O_h0_To_Gamma_Gamma_norm",           &leaf[3]);
+	 tree->SetBranchAddress("O_h0_To_Gluon_Gluon_norm",           &leaf[4]);
+	 tree->SetBranchAddress("O_h0_To_Bottom_Bottom~_norm",        &leaf[5]);
+	 tree->SetBranchAddress("O_h0_To_Charm_Charm~_norm",          &leaf[6]);
+	 tree->SetBranchAddress("O_h0_To_Strange_Strange~_norm",      &leaf[7]);
+	 tree->SetBranchAddress("O_h0_To_Tau_Tau~_norm",              &leaf[8]);
+	 tree->SetBranchAddress("O_h0_To_Muon_Muon~_norm",            &leaf[9]);
 
-    //double rightvalue[10] ={9.39854362e-01,
-    //                        9.03996870e-01,
-    //                        9.46282461e-01,
-    //                        8.48322569e-01,
-    //                        1.12034216e+00,
-    //                        9.31241969e-01,
-    //                        9.16199035e-01,
-    //                        9.28051164e-01,
-    //                        9.48090926e-01,
-    //                        1. 
-    //                       };
+      }
+      else if (plotType == "PartialWidths")
+      {
+	 //tree->SetBranchAddress("O_HiggsBosonCoupling3252322_fromBR",         &leaf[0]); // hZgamma
+	 tree->SetBranchAddress("O_HiggsBosonCoupling3252323",                  &leaf[0]); // hZZ
+	 tree->SetBranchAddress("O_HiggsBosonCoupling3252424",                  &leaf[1]); // hWW
+	 //tree->SetBranchAddress("O_HiggsBosonCoupling3252222_fromBR",         &leaf[2]); // hgammagamma
+	 tree->SetBranchAddress("O_HiggsBosonCoupling3252121",                  &leaf[2]); // hgg
+	 tree->SetBranchAddress("O_HiggsScalarFermionCoupling3250606",          &leaf[3]); // htt
+	 tree->SetBranchAddress("O_HiggsScalarFermionCoupling3250505",          &leaf[4]); // hbb
+	 //tree->SetBranchAddress("O_HiggsScalarFermionCoupling3250404_fromBR", &leaf[6]); // hcc
+	 //tree->SetBranchAddress("O_HiggsScalarFermionCoupling3250303_fromBR", &leaf[7]); // hss
+	 tree->SetBranchAddress("O_HiggsScalarFermionCoupling3251515",          &leaf[5]); // htautau
+	 //tree->SetBranchAddress("O_HiggsScalarFermionCoupling3251313_fromBR", &leaf[9]); // hmumu
+      }
+      else if (plotType == "RValues")
+      {
+	 tree->SetBranchAddress("HS_R_H_ZZ",     &leaf[0]);
+	 tree->SetBranchAddress("HS_R_H_WW",     &leaf[1]);
+	 tree->SetBranchAddress("HS_R_H_gaga",   &leaf[2]);
+	 tree->SetBranchAddress("HS_R_VH_bb",    &leaf[3]);
+	 tree->SetBranchAddress("HS_R_H_bb",     &leaf[4]);
+	 tree->SetBranchAddress("HS_R_H_tautau", &leaf[5]);
+      }
+      else if (plotType == "RatioFractions")
+      {
+	 //tree->SetBranchAddress("O_HiggsBosonCoupling3252323_hZZ",       &leaf[0]); // hZZ
+	 tree->SetBranchAddress("O_HiggsBosonCoupling3252424_hZZ",         &leaf[0]); // hWW
+	 tree->SetBranchAddress("O_HiggsBosonCoupling3252121_hZZ",         &leaf[1]); // hgg
+	 tree->SetBranchAddress("O_HiggsScalarFermionCoupling3250606_hZZ", &leaf[2]); // htt
+	 tree->SetBranchAddress("O_HiggsScalarFermionCoupling3250505_hZZ", &leaf[3]); // hbb
+	 tree->SetBranchAddress("O_HiggsScalarFermionCoupling3251515_hZZ", &leaf[4]); // htautau
+      }
+      else
+      {
+	 std::cout << "ERROR: Unknown type of plot." << std::endl;
+	 gSystem->Exit(0);
+      }
+   }
+   else
+   {
+      std::cout << "ERROR: Input file does not exist." << std::endl;
+      gSystem->Exit(0);
+   }
 
-    // old
-    //double leftvalue[10] = {5.72282257e-01,
-    //                        5.69866464e-01,
-    //                        6.77725093e-01,
-    //                        5.84038414e-01,
-    //                        1.02890091e+00,
-    //                        6.61967859e-01,
-    //                        7.03666689e-01,
-    //                        7.17718492e-01,
-    //                        7.32217558e-01,
-    //                        1.
-    //                       };
+   const Int_t n = numberOfLeaves;
+   Double_t x[n], y[n];
+   Double_t x0[n], y0[n];
+   for (Int_t i = 0; i < n-1; i++) {
+      x0[i] = 1.;
+      x[i] = 1.;
+      y0[i] = i;
+      y[i] = i;
+   }
+   Double_t BRMinima[n];
+   Double_t BRMaxima[n];
+   Double_t BRMinima0[n];
+   Double_t BRMaxima0[n];
+   for (Int_t i = 0; i < n-1; i++) {
+      BRMinima0[i] = 0.01;
+      BRMaxima0[i] = 0.02;
+      BRMinima[i] = 0.01;
+      BRMaxima[i] = 0.02;
+   }
 
-    //double rightvalue[10] ={1.01804185e+00,
-    //                        9.71339773e-01,
-    //                        9.47393406e-01,
-    //                        8.52846988e-01,
-    //                        1.14649772e+00,
-    //                        9.87595148e-01,
-    //                        9.89666635e-01,
-    //                        9.82439912e-01,
-    //                        1.00228223e+00,
-    //                        1. 
-    //                       };
+   double leftvalue0[10];
+   double rightvalue0[10];
+   double leftvalue[10];
+   double rightvalue[10];
+   double x1[10];
 
-    //double leftvalue[10] = {8.87392073e-01,
-    //                        8.67325062e-01,
-    //                        9.87235952e-01,
-    //                        8.65696369e-01,
-    //                        9.89279918e-01,
-    //                        9.93626076e-01,
-    //                        9.63583117e-01,
-    //                        9.57335911e-01,
-    //                        9.76536830e-01,
-    //                        1.
-    //                       };
+   if (file)
+      for (Int_t iEntry = 0; iEntry < tree->GetEntries(); ++iEntry)
+      {
+	 tree->GetEntry(iEntry);
 
-    //double rightvalue[10] ={1.05561312e+00,
-    //                        1.01288106e+00,
-    //                        1.02948949e+00,
-    //                        9.08531521e-01,
-    //                        1.05806679e+00,
-    //                        1.05240796e+00,
-    //                        1.03223100e+00,
-    //                        1.02393750e+00,
-    //                        1.04458004e+00,
-    //                        1. 
-    //                       };
+	 for (unsigned int j = 0; j < numberOfLeaves - 1; j++)
+	    leftvalue0[j] = leaf[j]->at(0);
 
-    x0[8] = (leftvalue0[8] + rightvalue0[8]) / 2.;
-    BRMinima0[8] = fabs(leftvalue0[8]-x0[8]);
-    BRMaxima0[8] = fabs(rightvalue0[8]-x0[8]);
+	 leftvalue0[numberOfLeaves - 1] = 1.;
 
-    x0[7] = (leftvalue0[7] + rightvalue0[7]) / 2.;
-    BRMinima0[7] = fabs(leftvalue0[7]-x0[7]);
-    BRMaxima0[7] = fabs(rightvalue0[7]-x0[7]);
+	 for (unsigned int j = 0; j < numberOfLeaves - 1; j++)
+	    leftvalue[j] = leaf[j]->at(1);
 
-    x0[6] = (leftvalue0[6] + rightvalue0[6]) / 2.;
-    BRMinima0[6] = fabs(leftvalue0[6]-x0[6]);
-    BRMaxima0[6] = fabs(rightvalue0[6]-x0[6]);
+	 leftvalue[numberOfLeaves - 1] = 1.;
 
-    x0[5] = (leftvalue0[5] + rightvalue0[5]) / 2.;
-    BRMinima0[5] = fabs(leftvalue0[5]-x0[5]);
-    BRMaxima0[5] = fabs(rightvalue0[5]-x0[5]);
+	 for (unsigned int j = 0; j < numberOfLeaves - 1; j++)
+	    x1[j] = leaf[j]->at(2);
 
-    x0[4] = (leftvalue0[4] + rightvalue0[4]) / 2.;
-    BRMinima0[4] = fabs(leftvalue0[4]-x0[4]);
-    BRMaxima0[4] = fabs(rightvalue0[4]-x0[4]);
+	 x1[numberOfLeaves - 1] = 10.;
 
-    x0[3] = (leftvalue0[3] + rightvalue0[3]) / 2.;
-    BRMinima0[3] = fabs(leftvalue0[3]-x0[3]);
-    BRMaxima0[3] = fabs(rightvalue0[3]-x0[3]);
+	 for (unsigned int j = 0; j < numberOfLeaves - 1; j++)
+	    rightvalue[j] = leaf[j]->at(3);
 
-    x0[2] = (leftvalue0[2] + rightvalue0[2]) / 2.;
-    BRMinima0[2] = fabs(leftvalue0[2]-x0[2]);
-    BRMaxima0[2] = fabs(rightvalue0[2]-x0[2]);
+	 rightvalue[numberOfLeaves - 1] = 1.;
 
-    x0[1] = (leftvalue0[1] + rightvalue0[1]) / 2.;
-    BRMinima0[1] = fabs(leftvalue0[1]-x0[1]);
-    BRMaxima0[1] = fabs(rightvalue0[1]-x0[1]);
+	 for (unsigned int j = 0; j < numberOfLeaves - 1; j++)
+	    rightvalue0[j] = leaf[j]->at(4);
 
-    x0[0] = (leftvalue0[0] + rightvalue0[0]) / 2.;
-    BRMinima0[0] = fabs(leftvalue0[0]-x0[0]);
-    BRMaxima0[0] = fabs(rightvalue0[0]-x0[0]);
+	 rightvalue0[numberOfLeaves - 1] = 1.;
 
-    x0[9] = 1.;
-    y0[9] = -10.; 
-    BRMinima0[9] = 0.56;
-    BRMaxima0[9] = 0.76;
+      }
 
-    x[8] = (leftvalue[8] + rightvalue[8]) / 2.;
-    BRMinima[8] = fabs(leftvalue[8]-x[8]);
-    BRMaxima[8] = fabs(rightvalue[8]-x[8]);
+   for (unsigned int j = 0; j < numberOfLeaves - 1; j++)
+   {
+      x0[j] = (leftvalue0[j] + rightvalue0[j]) / 2.;
+      BRMinima0[j] = fabs(leftvalue0[j]-x0[j]);
+      BRMaxima0[j] = fabs(rightvalue0[j]-x0[j]);
+   }
 
-    x[7] = (leftvalue[7] + rightvalue[7]) / 2.;
-    BRMinima[7] = fabs(leftvalue[7]-x[7]);
-    BRMaxima[7] = fabs(rightvalue[7]-x[7]);
+   x0[numberOfLeaves - 1] = 1.;
+   y0[numberOfLeaves - 1] = -10.; 
+   BRMinima0[numberOfLeaves - 1] = 0.56;
+   BRMaxima0[numberOfLeaves - 1] = 0.76;
 
-    x[6] = (leftvalue[6] + rightvalue[6]) / 2.;
-    BRMinima[6] = fabs(leftvalue[6]-x[6]);
-    BRMaxima[6] = fabs(rightvalue[6]-x[6]);
+   for (unsigned int j = 0; j < numberOfLeaves - 1; j++)
+   {
+      x[j] = (leftvalue[j] + rightvalue[j]) / 2.;
+      BRMinima[j] = fabs(leftvalue[j]-x[j]);
+      BRMaxima[j] = fabs(rightvalue[j]-x[j]);
+   }
 
-    x[5] = (leftvalue[5] + rightvalue[5]) / 2.;
-    BRMinima[5] = fabs(leftvalue[5]-x[5]);
-    BRMaxima[5] = fabs(rightvalue[5]-x[5]);
+   x[numberOfLeaves - 1] = 1.;
+   y[numberOfLeaves - 1] = -10.; 
+   BRMinima[numberOfLeaves - 1] = 0.45;
+   BRMaxima[numberOfLeaves - 1] = 0.46;
 
-    x[4] = (leftvalue[4] + rightvalue[4]) / 2.;
-    BRMinima[4] = fabs(leftvalue[4]-x[4]);
-    BRMaxima[4] = fabs(rightvalue[4]-x[4]);
+   TGraphAsymmErrors* ranges = new TGraphAsymmErrors(n, x, y, BRMinima, BRMaxima);
+   TGraphAsymmErrors* ranges0 = new TGraphAsymmErrors(n, x0, y0, BRMinima0, BRMaxima0);
 
-    x[3] = (leftvalue[3] + rightvalue[3]) / 2.;
-    BRMinima[3] = fabs(leftvalue[3]-x[3]);
-    BRMaxima[3] = fabs(rightvalue[3]-x[3]);
+   // Make the plots.
+   TCanvas* canvas = new TCanvas("Canvas", "Canvas", 800, 600);
 
-    x[2] = (leftvalue[2] + rightvalue[2]) / 2.;
-    BRMinima[2] = fabs(leftvalue[2]-x[2]);
-    BRMaxima[2] = fabs(rightvalue[2]-x[2]);
+   ranges->SetLineWidth(20);
+   ranges->SetLineColor(kBlue - 2);
+   ranges->SetMarkerColor(kBlue - 2);
+   ranges->SetMarkerSize(0.);
 
-    x[1] = (leftvalue[1] + rightvalue[1]) / 2.;
-    BRMinima[1] = fabs(leftvalue[1]-x[1]);
-    BRMaxima[1] = fabs(rightvalue[1]-x[1]);
+   ranges0->GetYaxis()->SetRangeUser(-1., numberOfLeaves - 1);
+   ranges0->SetLineWidth(20);
+   ranges0->SetLineColor(kBlue - 6);
+   ranges0->SetMarkerColor(kBlue - 6);
+   ranges0->SetMarkerSize(0.);
+   if ( plotType == "BranchingRatios" ) ranges0->GetXaxis()->SetTitle("BR^{CMSSM} / BR^{SM}");
+   //if ( plotType == "PartialWidths" )   ranges0->GetXaxis()->SetTitle("#Gamma^{CMSSM} / #Gamma^{SM}");
+   if ( plotType == "PartialWidths" )   ranges0->GetXaxis()->SetTitle("g^{2 CMSSM} / g^{2 SM}");
+   //if ( plotType == "PartialWidths" )   ranges0->GetXaxis()->SetTitle("(g^{2})^{CMSSM} / (g^{2})^{SM}");
+   if ( plotType == "RValues" )         ranges0->GetXaxis()->SetTitle("(#sigma #times BR)^{CMSSM} / (#sigma #times BR)^{SM}");
+   if ( plotType == "RatioFractions" )  ranges0->GetXaxis()->SetTitle("(g^{2 CMSSM} / g^{2 SM}) / (g_{hZZ}^{2 CMSSM} / g_{hZZ}^{2 SM})");
 
-    x[0] = (leftvalue[0] + rightvalue[0]) / 2.;
-    BRMinima[0] = fabs(leftvalue[0]-x[0]);
-    BRMaxima[0] = fabs(rightvalue[0]-x[0]);
+   ranges0->Draw("APE1");
 
-    x[9] = 1.;
-    y[9] = -10.; 
-    BRMinima[9] = 0.45;
-    BRMaxima[9] = 0.46;
+   // Draw a vertical black line at the SM expectation.
+   TLine line;
+   line.DrawLine(1.,-1.,1.,numberOfLeaves - 1.);
 
-    TGraphAsymmErrors* ranges = new TGraphAsymmErrors(n, x, y, BRMinima, BRMaxima);
-    TGraphAsymmErrors* ranges0 = new TGraphAsymmErrors(n, x0, y0, BRMinima0, BRMaxima0);
+   ranges0->Draw("PE1SAME");
+   ranges->Draw("PE1SAME");
 
-    //Double_t x1[9] = {0.,
-    //                  0.,
-    //                  0.,
-    //                  0.,
-    //                  0.,
-    //                  0.,
-    //                  0.,
-    //                  0.,
-    //                  0. 
-    //                 };
- 
+   // Draw a red line at the best fit point.
+   Double_t y1[11] = {0.,
+      1.,
+      2.,
+      3.,
+      4.,
+      5.,
+      6.,
+      7.,
+      8.,
+      9.,
+      9.
+   };
 
-    Double_t x1[9] = {0.74,
-                      0.72,
-                      0.75,
-                      0.69,
-                      1.13,
-                      0.74,
-                      0.76,
-                      0.79,
-                      0.81
-                     };
-    
-    // old
-    //Double_t x1[9] = {0.83,
-    //                  0.80,
-    //                  0.84,
-    //                  0.75,
-    //                  1.08,
-    //                  0.85,
-    //                  0.88,
-    //                  0.88,
-    //                  0.90
-    //                 };
+   Double_t xErrorUp[11] = {0.002,
+      0.002,
+      0.002,
+      0.002,
+      0.002,
+      0.002,
+      0.002,
+      0.002,
+      0.002,
+      0.002,
+      0.002
+   };
 
-    Double_t y1[9] = {0.,
-                      1.,
-                      2.,
-                      3.,
-                      4.,
-                      5.,
-                      6.,
-                      7.,
-                      8.
-                     };
+   Double_t xErrorLow[11] = {0.002,
+      0.002,
+      0.002,
+      0.002,
+      0.002,
+      0.002,
+      0.002,
+      0.002,
+      0.002,
+      0.002,
+      0.002
+   };
 
-    TGraph* graph = new TGraph(9, x1, y1);
+   TGraphAsymmErrors* graph = new TGraphAsymmErrors(10, x1, y1, xErrorUp, xErrorLow);
+   graph->SetMarkerColor(kRed);
+   graph->SetMarkerSize(0);
+   graph->SetLineWidth(20);
+   graph->SetLineColor(kRed);
+   graph->Draw("PE1SAME");
 
-    TCanvas* canvas = new TCanvas("Canvas", "Canvas", 800, 600);
-    ranges0->GetYaxis()->SetRangeUser(-1., 9.);
-    ranges0->GetXaxis()->SetTitle("BR^{CMSSM} / BR^{SM}");
-    ranges0->SetLineWidth(20.);
-    ranges->SetLineWidth(20.);
-    ranges->SetLineColor(kBlue - 2);
-    ranges->SetMarkerColor(kBlue - 2);
-    ranges0->SetLineColor(kBlue - 6);
-    ranges0->SetMarkerColor(kBlue - 6);
-    ranges->SetMarkerSize(0.);
-    ranges0->SetMarkerSize(0.);
+   // Draw a legend.
+   TH1F* dummyhist = new TH1F("Dummy", "Dummy", 2, 0., 2.);
+   dummyhist->SetFillColor(kBlue - 2);
+   dummyhist->SetLineColor(kBlue - 2);
 
-    ranges0->Draw("APE1");
-    //ranges->Draw("APE1");
+   TH1F* dummyhist0 = new TH1F("Dummy0", "Dummy0", 2, 0., 2.);
+   dummyhist0->SetFillColor(kBlue - 6);
+   dummyhist0->SetLineColor(kBlue - 6);
 
-    TLine line;
-    line.DrawLine(1.,-1.,1.,9.);
-    ranges0->Draw("PE1SAME");
+   TH1F* dummyhist1 = new TH1F("Dummy1", "Dummy1", 2, 0., 2.);
+   dummyhist1->SetLineColor(kRed);
 
-    TH1F* dummyhist = new TH1F("Dummy", "Dummy", 2, 0., 2.);
-    dummyhist->SetFillColor(kBlue - 2);
-    dummyhist->SetLineColor(kBlue - 2);
+   TLegend legend( 0.65, 0.34, 0.85, 0.50 );
+   legend.SetShadowColor(0);
+   legend.SetLineColor(0);
+   legend.SetTextSize(0.05);
+   legend.SetFillColor(0);
+   legend.AddEntry(dummyhist1, "Best fit point", "l");
+   legend.AddEntry(dummyhist,  "1D 1#sigma", "f");
+   legend.AddEntry(dummyhist0, "1D 2#sigma", "f");
+   legend.Draw();
 
-    TH1F* dummyhist0 = new TH1F("Dummy0", "Dummy0", 2, 0., 2.);
-    dummyhist0->SetFillColor(kBlue - 6);
-    dummyhist0->SetLineColor(kBlue - 6);
-    
-    TLegend legend( 0.67, 0.43, 0.87, 0.54 );
-    //TLegend legend( 0.67, 0.49, 0.87, 0.60 );
-    legend.SetShadowColor(0);
-    legend.SetLineColor(0);
-    legend.SetTextSize(0.05);
-    legend.SetFillColor(0);
-    //legend.AddEntry(dummyhist, "m_{h} = 126 GeV", "f");
-    legend.AddEntry(dummyhist, "m_{h} = 115 GeV", "f");
-    legend.AddEntry(dummyhist0, "m_{h} #pm 3 GeV", "f");
-    legend.Draw();
+   // Set the y-axis labels.
+   if ( plotType == "BranchingRatios" )
+   {
+      Double_t topLabel = 0.87;
+      Double_t bottomLabel = 0.22;
+   }
+   else if ( plotType == "PartialWidths" )
+   {
+      Double_t topLabel = 0.83;
+      Double_t bottomLabel = 0.25;
+   }
+   else if ( plotType == "RValues" )
+   {
+      Double_t topLabel = 0.83;
+      Double_t bottomLabel = 0.26;
+   }
+   else if ( plotType == "RatioFractions" )
+   {
+      Double_t topLabel = 0.81;
+      Double_t bottomLabel = 0.27;
+   }
 
-    ranges->Draw("PE1SAME");
-    //graph->Draw("PSAME");
-    myText(0.015, 0.86, kBlack, "h #rightarrow #mu#mu");
-    myText(0.015, 0.78, kBlack, "h #rightarrow #tau#tau");
-    myText(0.015, 0.70, kBlack, "h #rightarrow ss");
-    myText(0.015, 0.62, kBlack, "h #rightarrow cc");
-    myText(0.015, 0.54, kBlack, "h #rightarrow bb");
-    myText(0.015, 0.46, kBlack, "h #rightarrow gg");
-    myText(0.015, 0.38, kBlack, "h #rightarrow #gamma#gamma");
-    myText(0.015, 0.30, kBlack, "h #rightarrow WW");
-    myText(0.015, 0.22, kBlack, "h #rightarrow ZZ");
+   Double_t increment = (topLabel - bottomLabel) / ( numberOfLeaves - 2 );
+   if ( plotType == "BranchingRatios" )
+   {
+      myText(0.015, topLabel, kBlack, "h #rightarrow #mu#mu");
+      myText(0.015, topLabel - 1 * increment, kBlack, "h #rightarrow #tau#tau");
+      myText(0.015, topLabel - 2 * increment, kBlack, "h #rightarrow ss");
+      myText(0.015, topLabel - 3 * increment, kBlack, "h #rightarrow cc");
+      myText(0.015, topLabel - 4 * increment, kBlack, "h #rightarrow bb");
+      myText(0.015, topLabel - 5 * increment, kBlack, "h #rightarrow gg");
+      myText(0.015, topLabel - 6 * increment, kBlack, "h #rightarrow #gamma#gamma");
+      myText(0.015, topLabel - 7 * increment, kBlack, "h #rightarrow WW");
+      myText(0.015, topLabel - 8 * increment, kBlack, "h #rightarrow ZZ");
+      myText(0.015, topLabel - 9 * increment, kBlack, "h #rightarrow Z#gamma");
+   }
+   else if ( plotType == "PartialWidths" )
+   {
+      myText(0.035, topLabel,                 kBlack, "h#tau#tau");
+      myText(0.035, topLabel - 1 * increment, kBlack, "hbb");
+      myText(0.035, topLabel - 2 * increment, kBlack, "htt");
+      myText(0.035, topLabel - 3 * increment, kBlack, "hgg");
+      myText(0.035, topLabel - 4 * increment, kBlack, "hWW");
+      myText(0.035, topLabel - 5 * increment, kBlack, "hZZ");
+   }
+   else if ( plotType == "RValues" )
+   {
+      myText(0.015, topLabel, kBlack, "h #rightarrow #tau#tau");
+      myText(0.015, topLabel - 1 * increment, kBlack, "h #rightarrow bb");
+      myText(0.015, topLabel - 2 * increment, kBlack, "Vh #rightarrow bb");
+      myText(0.015, topLabel - 3 * increment, kBlack, "h #rightarrow #gamma#gamma");
+      myText(0.015, topLabel - 4 * increment, kBlack, "h #rightarrow WW");
+      myText(0.015, topLabel - 5 * increment, kBlack, "h #rightarrow ZZ");
+   }
+   else if ( plotType == "RatioFractions" )
+   {
+      myText(0.035, topLabel,                 kBlack, "h#tau#tau");
+      myText(0.035, topLabel - 1 * increment, kBlack, "hbb");
+      myText(0.035, topLabel - 2 * increment, kBlack, "htt");
+      myText(0.035, topLabel - 3 * increment, kBlack, "hgg");
+      myText(0.035, topLabel - 4 * increment, kBlack, "hWW");
+   }
 
-    myText(0.68, 0.660, kBlack, "CMSSM");
-    myText(0.68, 0.610, kBlack, "LHC");
-    myText(0.68, 0.560, kBlack, "HiggsBounds");
-    //myText(0.72, 0.550, kBlack, "m_{h} = 115 GeV");
-    //myText(0.72, 0.600, kBlack, "m_{h} = 126 GeV");
+   // Specify the model.
+   myText(0.66, 0.64, kBlack, "CMSSM");
+   myText(0.66, 0.59, kBlack, "All Observables");
+   myText(0.66, 0.54, kBlack, "#Deltam_{h} = 3 GeV");
 
-    TImage *fittinoLogo = 0;
-    std::string logoPath = "../../logo/fittinologoSPRING12.png";
-    if (logoPath!="") {
-      // get the fittino logo
+   // Draw the logo.
+   TImage *fittinoLogo = 0;
+   std::string logoPath = "../../logo/fittinologo_PREL.png";
+   if (logoPath!="") {
       fittinoLogo = TImage::Open(logoPath.c_str());
       if (!fittinoLogo) {
-        printf("Could not open the fittino logo at %s\n exit\n",logoPath.c_str());
-        return;
+	 printf("Could not open the fittino logo at %s\n exit\n",logoPath.c_str());
+	 return;
       }
       fittinoLogo->SetConstRatio(1);
       fittinoLogo->SetImageQuality(TAttImage::kImgBest);
-      
+
       const float canvasHeight   = canvas->GetWindowHeight();
       const float canvasWidth    = canvas->GetWindowWidth();
       const float canvasAspectRatio = canvasHeight/canvasWidth;
@@ -383,27 +417,166 @@ PlotHiggsRanges()
       const float yLowerEdge     = 0.88;
       const float xUpperEdge     = xLowerEdge+width;
       const float yUpperEdge     = yLowerEdge+width*fittinoLogo->GetHeight()/fittinoLogo->GetWidth()/canvasAspectRatio;
-      cout << " xLowerEdge  = " << xLowerEdge << "\n"
-           << " yLowerEdge  = " << yLowerEdge << "\n"
-           << " xUpperEdge  = " << xUpperEdge << "\n"
-           << " yUpperEdge  = " << yUpperEdge << "\n"
-           << " Imagewidth  = " << fittinoLogo->GetWidth() << "\n"
-           << " Imageheight = " << fittinoLogo->GetHeight() << "\n"
-           << " canvasHeight= " << canvasHeight << "\n"
-           << " canvasWidth = " << canvasWidth  << "\n"
-           << endl;
-      TPad *fittinoLogoPad = new TPad("fittinoLogoPad", "fittinoLogoPad", 0.68, 0.71, 0.88, 0.91);
-      //TPad *fittinoLogoPad = new TPad("fittinoLogoPad", "fittinoLogoPad", 0.85, 0.85, 0.98, 0.85+fittinoLogo->GetHeight()/fittinoLogo->GetWidth());
-      //TPad *fittinoLogoPad = new TPad("fittinoLogoPad", "fittinoLogoPad", xLowerEdge, yLowerEdge, xUpperEdge, yUpperEdge);
+      TPad *fittinoLogoPad = new TPad("fittinoLogoPad", "fittinoLogoPad", 0.66, 0.71, 0.88, 0.91);
       fittinoLogoPad->Draw("same");
       fittinoLogoPad->cd();
       fittinoLogo->Draw("xxx");
       canvas->cd();
-    }
+   }
 
-    canvas->SaveAs("BRRangesLHC2.eps");
-    //canvas->SaveAs("BRRangesLHC2H126.eps");
-    //canvas->SaveAs("BRRangesNUHM1.eps");
+   // Save the canvas as eps files.
+   if      ( plotType == "BranchingRatios" ) canvas->SaveAs("branchingRatiosHDecay_CMSSM_allObs_cat_dmh30.eps");
+   else if ( plotType == "PartialWidths" )   canvas->SaveAs("partialWidths_CMSSM_allObs_cat_dmh30.eps");
+   else if ( plotType == "RValues" )         canvas->SaveAs("rValues_CMSSM_allObs_cat_dmh30.eps");
+   else if ( plotType == "RatioFractions" )  canvas->SaveAs("ratioFractions_CMSSM_allObs_cat_dmh30.eps");
+   else                                      canvas->SaveAs("Default.eps");
 
-    gSystem->Exit(0);
+   gSystem->Exit(0);
 }
+
+// Old values.
+
+//double leftvalue0[10] = {4.38877059e-01,
+//                         4.54090903e-01,
+//                         6.48403478e-01,
+//                         6.03761961e-01,
+//                         1.04638960e+00,
+//                         6.26923075e-01,
+//                         6.69177108e-01,
+//                         6.94872957e-01,
+//                         7.09751333e-01,
+//                         1.
+//                        };
+
+//double rightvalue0[10] ={1.21577659e+00,
+//                         1.10223691e+00,
+//                         8.84435828e-01,
+//                         7.84781017e-01,
+//                         1.23190657e+00,
+//                         8.83221975e-01,
+//                         9.02969101e-01,
+//                         9.12641685e-01,
+//                         9.32456413e-01,
+//                         1. 
+//                        };
+
+////double leftvalue0[10] = {6.57921034e-01,
+////                         6.57921034e-01,
+////                         9.04289294e-01,
+////                         7.79793308e-01,
+////                         9.72106034e-01,
+////                         8.06934574e-01,
+////                         7.94924569e-01,
+////                         8.10762682e-01,
+////                         8.28131155e-01,
+////                         1.
+////                        };
+
+////double rightvalue0[10] ={1.23451141e+00,
+////                         1.13032828e+00,
+////                         9.63070238e-01,
+////                         8.93531288e-01,
+////                         1.24063153e+00,
+////                         1.03141364e+00,
+////                         1.01449877e+00,
+////                         1.02310721e+00,
+////                         1.04541152e+00,
+////                         1. 
+////                        };
+
+//double leftvalue[10] = {6.34961462e-01,
+//                        6.14391135e-01,
+//                        6.68037378e-01,
+//                        6.05317407e-01,
+//                        1.09031785e+00,
+//                        6.53306611e-01,
+//                        6.97383701e-01,
+//                        7.20366885e-01,
+//                        7.35753077e-01,
+//                        1.
+//                       };
+
+//double rightvalue[10] ={8.14601568e-01,
+//                        7.87925398e-01,
+//                        8.49719655e-01,
+//                        7.73701565e-01,
+//                        1.16999257e+00,
+//                        8.38677380e-01,
+//                        8.57558155e-01,
+//                        8.71001872e-01,
+//                        8.89755730e-01,
+//                        1. 
+//                       };
+
+////double leftvalue[10] = {8.33491605e-01,
+////                        8.11520392e-01,
+////                        9.07506261e-01,
+////                        8.07999141e-01,
+////                        1.06007609e+00,
+////                        8.80103115e-01,
+////                        8.67190439e-01,
+////                        8.80184312e-01,
+////                        8.99184879e-01,
+////                        1.
+////                       };
+
+////double rightvalue[10] ={9.39854362e-01,
+////                        9.03996870e-01,
+////                        9.46282461e-01,
+////                        8.48322569e-01,
+////                        1.12034216e+00,
+////                        9.31241969e-01,
+////                        9.16199035e-01,
+////                        9.28051164e-01,
+////                        9.48090926e-01,
+////                        1. 
+////                       };
+
+//// old
+////double leftvalue[10] = {5.72282257e-01,
+////                        5.69866464e-01,
+////                        6.77725093e-01,
+////                        5.84038414e-01,
+////                        1.02890091e+00,
+////                        6.61967859e-01,
+////                        7.03666689e-01,
+////                        7.17718492e-01,
+////                        7.32217558e-01,
+////                        1.
+////                       };
+
+////double rightvalue[10] ={1.01804185e+00,
+////                        9.71339773e-01,
+////                        9.47393406e-01,
+////                        8.52846988e-01,
+////                        1.14649772e+00,
+////                        9.87595148e-01,
+////                        9.89666635e-01,
+////                        9.82439912e-01,
+////                        1.00228223e+00,
+////                        1. 
+////                       };
+
+////double leftvalue[10] = {8.87392073e-01,
+////                        8.67325062e-01,
+////                        9.87235952e-01,
+////                        8.65696369e-01,
+////                        9.89279918e-01,
+////                        9.93626076e-01,
+////                        9.63583117e-01,
+////                        9.57335911e-01,
+////                        9.76536830e-01,
+////                        1.
+////                       };
+
+////double rightvalue[10] ={1.05561312e+00,
+////                        1.01288106e+00,
+////                        1.02948949e+00,
+////                        9.08531521e-01,
+////                        1.05806679e+00,
+////                        1.05240796e+00,
+////                        1.03223100e+00,
+////                        1.02393750e+00,
+////                        1.04458004e+00,
+////                        1. 
+////                       };
