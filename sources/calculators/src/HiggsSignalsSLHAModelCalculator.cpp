@@ -80,8 +80,22 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Linearfunction( double massh, d
 }
 
 double Fittino::HiggsSignalsSLHAModelCalculator::CalculateLimitofBRInvisible( double x ) {
+ 
+    double f;
 
-    double f = pow( -0.292048 * x, 4  ) + pow( -0.750024 * x, 3 ) + pow( 5.42909 * x, 2 ) + 3.8467 * x;
+    if ( x < 1. ) {
+
+       f =    pow( 3090.5 * x, 10 ) - pow( 16155 * x, 9 ) + pow( 36200.6 * x, 8 ) - pow( 45432.4 * x, 7 ) 
+            + pow( 35006.7 * x, 6 ) - pow( 17068.7 * x, 5 ) + pow( 5228.65 * x, 4 ) - pow( 963.046 * x, 3 )
+            + pow( 100.961 * x, 2 );
+
+    }
+
+   else {
+
+        f = pow( 3.322 * x, 2 ) - 4.92 * x;
+
+    }
 
     return f;
 
@@ -524,8 +538,6 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     double Gamma_hTotal_Penalty = 0;
 
-    double BR_hInvisible_Limit = CalculateLimitofBRInvisible( BR_hjinvisible );
-
     run_higgssignals_( &mode, &Chisq_mu, &Chisq_mh, &Chisq, &nobs, &Pvalue );
 
         if ( GammaTotal > 1. ) {
@@ -593,6 +605,14 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     double Delta_Total_hgg = Delta_SM_hgg + model->GetParameterVector()->at( 17 )->GetValue();
 
     get_rvalues_( &nH, &collider, &R_H_WW, &R_H_ZZ, &R_H_gammagamma, &R_H_tautau, &R_H_bb, &R_VH_bb );
+ 
+    int NChannels = 1, ChannelID = 40; //4-0 = HZ production
+
+    double HZrate;
+
+    get_rates_( &nH, &collider, &NChannels, &ChannelID, &HZrate);
+
+    double BR_hInvisible_Limit = CalculateLimitofBRInvisible( BR_hjinvisible * HZrate );
 
     _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
  
