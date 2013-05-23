@@ -130,7 +130,6 @@ namespace Fittino {
     public:
       virtual void Initialize() const;
 
-      /*! \cond UML */
     private:
       /*!
        *  Returns a linear function mx + b, given by two coordinates.
@@ -211,9 +210,6 @@ namespace Fittino {
                                         double g2hjgg,
                                         double massh
                                        );
-
-      /*! \endcond UML */
-
     private:
       /*!
        *  Calculates the SM Delta for the gluon gluon coupling that consists of \n
@@ -245,7 +241,7 @@ namespace Fittino {
       /*!
        *  Calculates the total width of the Higgs boson depending on its mass\n
        *  and couplings: \n
-       *  \f$(1+\sum_i((\Delta_i-1)*\f$ * SM-BR/f$_i(m_H)))\f$ + Gamma-Invisible \n
+       *  \f$(1+\sum_i((\Delta_i-1)*\f$ * SM-BR\f$_i(m_H)))\f$ + Gamma-Invisible \n
        *  The Sum is over all couplings that were provided with the \n
        *  corresponding SM-Branching Ratio from Higgs Signals. GammaInvisible is used as \n
        *  free parameter in the model. If GammaTotal exceeds 1 GeV, the Chi2 contribution \n
@@ -267,14 +263,10 @@ namespace Fittino {
                                         double GammaInvisible
                                       );
 
-     /*! \cond UML */
-
     private:
       virtual void CallExecutable();
       virtual void CallFunction( PhysicsModelBase* model );
       virtual void ConfigureInput( PhysicsModelBase* model );
-
-      /*! \endcond UML */
 
   };
 
