@@ -150,28 +150,27 @@ namespace Fittino {
       *  higgs mass.
       */
       double       Scaleg2hgammagamma( std::string column, double massh );
-
-      /*!
-       *  Calculates the loop-induced coupling of the Higgs boson to gluons\n
-       *  from the couplings to the particles contributing to the loop.
-       */
-      double       Calculateg2hgg( 
-                                        double ghbb,
-                                        double ghtt,
-                                        double massh 
-                                         );
-      /*!
-       *  Calculates the loop-induced coupling of the Higgs boson to photons\n
-       *  from the couplings to the particles contributing to the loop. 
-       */
-      double       Calculateg2hgammagamma(
-                                        double ghbb,
-                                        double ghtt,
-                                        double ghtautau,
-                                        double ghWW,
-                                        double ghZZ,
-                                        double massh
-                                         );
+//      /*!
+//       *  Calculates the loop-induced coupling of the Higgs boson to gluons\n
+//       *  from the couplings to the particles contributing to the loop.
+//       */
+//      double       Calculateg2hgg( 
+//                                        double ghbb,
+//                                        double ghtt,
+//                                        double massh 
+//                                         );
+//      /*!
+//       *  Calculates the loop-induced coupling of the Higgs boson to photons\n
+//       *  from the couplings to the particles contributing to the loop. 
+//       */
+//      double       Calculateg2hgammagamma(
+//                                        double ghbb,
+//                                        double ghtt,
+//                                        double ghtautau,
+//                                        double ghWW,
+//                                        double ghZZ,
+//                                        double massh
+//                                         );
       /*!
        *  Calculates the uncertainty on the "SingleH" production mode (see e.g.\n
        *  the HiggsSignals manual) by interpolating between pure bbh and ggh\n
@@ -184,9 +183,73 @@ namespace Fittino {
                                         double g2hgg,
                                         double massh
                                               );
+//      /*!
+//       *  Calculates the total width of the Higgs boson depending on its mass\n
+//       *  and couplings: FORMULA! The Sum is over all couplings that were provided with the corresponding SM-Branching Ratio from Higgs Signals. GammaInvisible is used as free parameter in the model. If GammaTotal exceeds 1 GeV, the Chi2 contribution rises to 1M, forcing the MarkovChain backwards.
+//       */
+//      double       CalculateGammaTotal(
+//                                        double massh,
+//                                        double g2hjss_s,
+//                                        double g2hjcc_s,
+//                                        double g2hjbb_s,
+//                                        double g2hjtt_s,
+//                                        double g2hjmumu_s,
+//                                        double g2hjtautau_s,
+//                                        double g2hjWW,
+//                                        double g2hjZZ,
+//                                        double g2hjZga,
+//                                        double g2hjgaga,
+//                                        double g2hjgg,
+//                                        double GammaInvisible
+//                                      );
+      /*!
+       *  Set the (relative) rate uncertainties.
+       */
+      void         SetRateUncertainties(
+                                        double g2hjbb_s,
+                                        double g2hjbb_p,
+                                        double g2hjgg,
+                                        double massh
+                                       );
+
+      /*! \endcond UML */
+
+    private:
+      /*!
+       *  Calculates the SM Delta for the gluon gluon coupling that consists of \n
+       *  other Higgs couplings: \n
+       *  \f$\Delta_{SM}=\sqrt{\sum_{i,j}((\Delta_i+1)*(\Delta_j+1)*Scale(m_H))-1}\f$ \n
+       *  The Scalefunction only works in the higgs mass range of 123-129 GeV and is  \n
+       *  a linear approximation in higgs mass intervals of 1 GeV. \n
+       */
+     double       Calculateg2hgg(
+                                        double ghbb,
+                                        double ghtt,
+                                        double massh
+                                         );
+      /*!
+       *  Calculates the SM Delta for the phonton photon coupling that consists of \n
+       *  other Higgs couplings: \n
+       *  \f$\Delta_{SM}=\sqrt{\sum_{i,j}((\Delta_i+1)*(\Delta_j+1)*Scale(m_H))-1}\f$ \n
+       *  The Scalefunction only works in the higgs mass range of 123-129 GeV and is \n
+       *  a linear approximation in higgs mass intervals of 1 GeV.
+       */
+      double       Calculateg2hgammagamma(
+                                        double ghbb,
+                                        double ghtt,
+                                        double ghtautau,
+                                        double ghWW,
+                                        double ghZZ,
+                                        double massh
+                                         );
       /*!
        *  Calculates the total width of the Higgs boson depending on its mass\n
-       *  and couplings: FORMULA! The Sum is over all couplings that were provided with the corresponding SM-Branching Ratio from Higgs Signals. GammaInvisible is used as free parameter in the model. If GammaTotal exceeds 1 GeV, the Chi2 contribution rises to 1M, forcing the MarkovChain backwards.
+       *  and couplings: \n
+       *  \f$(1+\sum_i((\Delta_i-1)*\f$ * SM-BR/f$_i(m_H)))\f$ + Gamma-Invisible \n
+       *  The Sum is over all couplings that were provided with the \n
+       *  corresponding SM-Branching Ratio from Higgs Signals. GammaInvisible is used as \n
+       *  free parameter in the model. If GammaTotal exceeds 1 GeV, the Chi2 contribution \n
+       *   rises to 1M, forcing the MarkovChain backwards.
        */
       double       CalculateGammaTotal(
                                         double massh,
@@ -203,15 +266,8 @@ namespace Fittino {
                                         double g2hjgg,
                                         double GammaInvisible
                                       );
-      /*!
-       *  Set the (relative) rate uncertainties.
-       */
-      void         SetRateUncertainties(
-                                        double g2hjbb_s,
-                                        double g2hjbb_p,
-                                        double g2hjgg,
-                                        double massh
-                                       );
+
+     /*! \cond UML */
 
     private:
       virtual void CallExecutable();
