@@ -85,15 +85,15 @@ double Fittino::HiggsSignalsSLHAModelCalculator::CalculateLimitofBRInvisible( do
 
     if ( x < 1. ) {
 
-       f =    pow( 3090.5 * x, 10 ) - pow( 16155 * x, 9 ) + pow( 36200.6 * x, 8 ) - pow( 45432.4 * x, 7 ) 
-            + pow( 35006.7 * x, 6 ) - pow( 17068.7 * x, 5 ) + pow( 5228.65 * x, 4 ) - pow( 963.046 * x, 3 )
-            + pow( 100.961 * x, 2 );
+       f =    3090.5 * pow( x, 10 ) - 16155 * pow( x, 9 ) + 36200.6 * pow( x, 8 ) - 45432.4 * pow( x, 7 ) 
+            + 35006.7 * pow( x, 6 ) - 17068.7 * pow( x, 5 ) + 5228.65 * pow( x, 4 ) - 963.046 * pow( x, 3 )
+            + 100.961 * pow( x, 2 );
 
     }
 
    else {
 
-        f = pow( 3.322 * x, 2 ) - 4.92 * x;
+        f = 3.322 * pow( x, 2 ) + 4.92 * x;
 
     }
 
@@ -770,21 +770,13 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:19:" + tmpString_BR_hjinvisible + ":# BR_hjInvisible" );
 
-    //std::stringstream tmpStream_BR_Total;
-    //std::string tmpString_BR_Total;
-
-    //tmpStream_BR_Total << BR_Total;
-    //tmpStream_BR_Total >> tmpString_BR_Total;
-
-    //_slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:20:" + tmpString_BR_Total + ":# BR_Total" );
-
     std::stringstream tmpStream_Delta_SM_hgammagamma;
     std::string tmpString_Delta_SM_hgammagamma;
 
     tmpStream_Delta_SM_hgammagamma << Delta_SM_hgammagamma;
     tmpStream_Delta_SM_hgammagamma >> tmpString_Delta_SM_hgammagamma;
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:21:" + tmpString_Delta_SM_hgammagamma + ":# Delta_SM_hgammagamma" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:20:" + tmpString_Delta_SM_hgammagamma + ":# Delta_SM_hgammagamma" );
 
     std::stringstream tmpStream_Delta_Total_hgammagamma;
     std::string tmpString_Delta_Total_hgammagamma;
@@ -792,7 +784,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     tmpStream_Delta_Total_hgammagamma << Delta_Total_hgammagamma;
     tmpStream_Delta_Total_hgammagamma >> tmpString_Delta_Total_hgammagamma;
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:22:" + tmpString_Delta_Total_hgammagamma + ":# Delta_Total_hgammagamma" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:21:" + tmpString_Delta_Total_hgammagamma + ":# Delta_Total_hgammagamma" );
 
     std::stringstream tmpStream_Delta_SM_hgg;
     std::string tmpString_Delta_SM_hgg;
@@ -800,7 +792,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     tmpStream_Delta_SM_hgg << Delta_SM_hgg;
     tmpStream_Delta_SM_hgg >> tmpString_Delta_SM_hgg;
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:23:" + tmpString_Delta_SM_hgg + ":# Delta_SM_hgg" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:22:" + tmpString_Delta_SM_hgg + ":# Delta_SM_hgg" );
 
     std::stringstream tmpStream_Delta_Total_hgg;
     std::string tmpString_Delta_Total_hgg;
@@ -808,7 +800,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     tmpStream_Delta_Total_hgg << Delta_Total_hgg;
     tmpStream_Delta_Total_hgg >> tmpString_Delta_Total_hgg;
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:24:" + tmpString_Delta_Total_hgg + ":# Delta_Total_hgg" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:23:" + tmpString_Delta_Total_hgg + ":# Delta_Total_hgg" );
 
     std::stringstream tmpStream_Gamma_hTotal_Penalty;
     std::string tmpString_Gamma_hTotal_Penalty;
@@ -816,7 +808,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     tmpStream_Gamma_hTotal_Penalty << Gamma_hTotal_Penalty;
     tmpStream_Gamma_hTotal_Penalty >> tmpString_Gamma_hTotal_Penalty;
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:25:" + tmpString_Gamma_hTotal_Penalty + ":# Gamma_hTotal_Penalty" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:24:" + tmpString_Gamma_hTotal_Penalty + ":# Gamma_hTotal_Penalty" );
 
     std::stringstream tmpStream_BR_hInvisible_Limit;
     std::string tmpString_BR_hInvisible_Limit;
@@ -824,7 +816,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     tmpStream_BR_hInvisible_Limit << BR_hInvisible_Limit;
     tmpStream_BR_hInvisible_Limit >> tmpString_BR_hInvisible_Limit;
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:26:" + tmpString_BR_hInvisible_Limit + ":# BR_hInvisible_Limit" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:25:" + tmpString_BR_hInvisible_Limit + ":# BR_hInvisible_Limit" );
 
 
     _slhaOutputDataStorage->WriteFile( _slhaOutputFileName );
