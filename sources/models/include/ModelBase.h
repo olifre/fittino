@@ -29,6 +29,7 @@
  */
 namespace Fittino {
 
+  class Chi2ContributionBase;
   class ModelParameterBase;
   class PredictionBase;
 
@@ -45,61 +46,73 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                                              ModelBase();
+                                                ModelBase();
       /*!
        *  Standard destructor.
        */
-                                              ~ModelBase();
+                                                ~ModelBase();
       /*!
        *  Returns the chi2 of the comparison between the predicted observables of the model and\n
        *  the measured observables. In the case of a test model simply returns the function value.
        */
-      double                                  GetChi2();   
+      double                                    GetChi2();
+      /*!
+       *  Returns the number of chi2 contributions which add up to the total chi2.
+       */
+      int                                       GetNumberOfChi2Contributions() const;
       /*!
        *  Returns the number of parameters of the model.
        */
-      int                                     GetNumberOfParameters() const;
+      int                                       GetNumberOfParameters() const;
       /*!
        *  Returns the number of predictions of the model.
        */
-      int                                     GetNumberOfPredictions() const;
+      int                                       GetNumberOfPredictions() const;
       /*!
        *  Returns the name of the model.
        */
-      std::string                             GetName() const;
+      std::string                               GetName() const;
+      /*!
+       *  Returns the chi2 contributions of the model as a vector.
+       */
+      const std::vector<Chi2ContributionBase*>* GetChi2ContributionVector() const;
       /*!
        *  Returns the parameters of the model as a vector.
        */
-      const std::vector<ModelParameterBase*>* GetParameterVector() const;
+      const std::vector<ModelParameterBase*>*   GetParameterVector() const;
       /*!
        *  Returns the predictions of the model as a vector.
        */
-      const std::vector<PredictionBase*>*     GetPredictionVector() const;
+      const std::vector<PredictionBase*>*       GetPredictionVector() const;
       /*!
        *  Returns the parameters of the model as a vector.
        */
-      std::vector<ModelParameterBase*>*       SetParameterVector();
+      std::vector<ModelParameterBase*>*         SetParameterVector();
 
     public:
-      virtual void                            PrintStatus() const = 0;
+      virtual void                              PrintStatus() const = 0;
       /*!
        *  Returns a pointer to a copy of the model.
        */
-      virtual ModelBase*                      Clone() const = 0;
+      virtual ModelBase*                        Clone() const = 0;
 
     protected:
       /*!
        *  Name of the model.
        */
-      std::string                             _name;
+      std::string                               _name;
+      /*!
+       *  Stores the chi2 contributions of the model.
+       */
+      std::vector<Chi2ContributionBase*>        _chi2ContributionVector;
       /*!
        *  Stores the model parameters.
        */
-      std::vector<ModelParameterBase*>        _parameterVector;
+      std::vector<ModelParameterBase*>          _parameterVector;
       /*!
        *  Stores the predictions.
        */
-      std::vector<PredictionBase*>            _predictionVector;
+      std::vector<PredictionBase*>              _predictionVector;
 
     protected:
       /*!
@@ -110,24 +123,24 @@ namespace Fittino {
        *  model calculators) sometimes does not differ between initialization and printing, this\n
        *  is also the place where third party code is initialized.
        */
-      virtual void                            Initialize() const = 0;
+      virtual void                              Initialize() const = 0;
 
       /*! \cond UML */
     private:   
       /*!
        *  True when _chi2 corresponds to the current parameter values.
        */
-      bool                                    _evaluated;
+      bool                                      _evaluated;
       /*!
        *  Value returned by Evaluate(). 
        */
-      double                                  _chi2;
+      double                                    _chi2;
 
     private:
       /*!
        *  Evaluates the chi2 function.  
        */
-      virtual double                          Evaluate() = 0;
+      virtual double                            Evaluate() = 0;
 
       /*! \endcond UML */
 

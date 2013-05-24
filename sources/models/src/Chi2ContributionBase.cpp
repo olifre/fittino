@@ -55,3 +55,9 @@ double Fittino::Chi2ContributionBase::GetValue() const {
     return _chi2;
 
 }
+
+std::string Fittino::Chi2ContributionBase::GetName() const {
+
+    return _name;
+
+}

@@ -26,6 +26,7 @@
 #include "TTree.h"
 
 #include "AnalysisTool.h"
+#include "Chi2ContributionBase.h"
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
@@ -60,10 +61,10 @@ void Fittino::AnalysisTool::PerformAnalysis() {
 
 //std::vector<float> Fittino::AnalysisTool::GetLeafVector() const {
 //
-//    return _listOfLeaves;
+//    return _leafVector;
 //
 //}
-
+//
 //TTree* Fittino::AnalysisTool::GetTree() {
 //
 //    return _tree;
@@ -78,21 +79,27 @@ int Fittino::AnalysisTool::GetNumberOfStatusParameters() const {
 
 void Fittino::AnalysisTool::FillTree() {
 
+    for ( unsigned int i = 0; i < _model->GetNumberOfChi2Contributions(); ++i ) {
+
+        _leafVector[i] = _model->GetChi2ContributionVector()->at( i )->GetValue();
+
+    }
+
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
 
-        _leafVector[i] = _model->GetParameterVector()->at( i )->GetValue();
+        _leafVector[i + _model->GetNumberOfChi2Contributions()] = _model->GetParameterVector()->at( i )->GetValue();
 
     }
 
     for ( unsigned int i = 0; i < _model->GetNumberOfPredictions(); ++i ) {
 
-        _leafVector[i + _model->GetNumberOfParameters()] = _model->GetPredictionVector()->at( i )->GetPredictedValue();
+        _leafVector[i + _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters()] = _model->GetPredictionVector()->at( i )->GetPredictedValue();
 
     }
 
     for ( unsigned int i = 0; i < GetNumberOfStatusParameters(); ++i ) {
 
-        _leafVector[i + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions()] = GetStatusParameterVector()->at( i )->GetValue();
+        _leafVector[i + _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions()] = GetStatusParameterVector()->at( i )->GetValue();
 
     }
 
@@ -154,12 +161,20 @@ void Fittino::AnalysisTool::InitializeAnalysisTool() {
 
 void Fittino::AnalysisTool::InitializeBranches() {
 
-    _leafVector = std::vector<float>( _model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + GetNumberOfStatusParameters() );
+    _leafVector = std::vector<float>( _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + GetNumberOfStatusParameters() );
+
+    for ( unsigned int i = 0; i < _model->GetNumberOfChi2Contributions(); ++i ) {
+
+        _tree->Branch( _model->GetChi2ContributionVector()->at( i )->GetName().c_str(),
+                       &_leafVector[i],
+                       _model->GetChi2ContributionVector()->at( i )->GetName().c_str() );
+
+    }
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
 
         _tree->Branch( _model->GetParameterVector()->at( i )->GetName().c_str(),
-                       &_leafVector[i],
+                       &_leafVector[i + _model->GetNumberOfChi2Contributions()],
                        _model->GetParameterVector()->at( i )->GetName().c_str() );
 
     }
@@ -167,7 +182,7 @@ void Fittino::AnalysisTool::InitializeBranches() {
     for ( unsigned int i = 0; i < _model->GetNumberOfPredictions(); ++i ) {
 
         _tree->Branch( _model->GetPredictionVector()->at( i )->GetName().c_str(),
-                       &_leafVector[i + _model->GetNumberOfParameters()],
+                       &_leafVector[i + _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters()],
                        _model->GetPredictionVector()->at( i )->GetName().c_str() );
 
     }
@@ -175,7 +190,7 @@ void Fittino::AnalysisTool::InitializeBranches() {
     for ( unsigned int i = 0; i < GetNumberOfStatusParameters(); ++i ) {
 
         _tree->Branch( GetStatusParameterVector()->at( i )->GetName().c_str(),
-                       &_leafVector[i + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions()],
+                       &_leafVector[i + _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions()],
                        GetStatusParameterVector()->at( i )->GetName().c_str() );
 
     }

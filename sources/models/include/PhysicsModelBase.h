@@ -28,7 +28,6 @@
  */
 namespace Fittino {
 
-  class Chi2ContributionBase;
   class ModelCalculatorBase;
   class ObservableBase;
 
@@ -42,22 +41,21 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                                         PhysicsModelBase();
+                                        PhysicsModelBase();
       /*!
        *  Standard destructor.
        */
-                                         ~PhysicsModelBase();
+                                        ~PhysicsModelBase();
 
     public:
-      virtual void                       PrintStatus() const;
+      virtual void                      PrintStatus() const;
 
     protected:
-      virtual void                       Initialize() const;
+      virtual void                      Initialize() const;
 
     protected:
-      std::vector<Chi2ContributionBase*> _chi2ContributionVector;
-      std::vector<ModelCalculatorBase*>  _modelCalculatorVector;
-      std::vector<ObservableBase*>       _observableVector;
+      std::vector<ModelCalculatorBase*> _modelCalculatorVector;
+      std::vector<ObservableBase*>      _observableVector;
 
       /*! \cond UML */
     private:
@@ -66,10 +64,10 @@ namespace Fittino {
        *  \todo Eventually generalize this function to allow for correlated
        *  observables.
        */
-      double                             CalculateChi2();
+      double                            CalculateChi2();
 
     private:
-      virtual double                     Evaluate();
+      virtual double                    Evaluate();
 
       /*! \endcond UML */
 

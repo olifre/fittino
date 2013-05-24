@@ -18,6 +18,7 @@
 *                                                                              *
 *******************************************************************************/
 
+#include "Chi2ContributionBase.h"
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
 #include "PredictionBase.h"
@@ -45,6 +46,12 @@ double Fittino::ModelBase::GetChi2() {
 
 }
 
+int Fittino::ModelBase::GetNumberOfChi2Contributions() const {
+
+    return _chi2ContributionVector.size();
+
+}
+
 int Fittino::ModelBase::GetNumberOfParameters() const {
 
     return _parameterVector.size();
@@ -60,6 +67,12 @@ int Fittino::ModelBase::GetNumberOfPredictions() const {
 std::string Fittino::ModelBase::GetName() const {
 
     return _name;
+
+}
+
+const std::vector<Fittino::Chi2ContributionBase*>* Fittino::ModelBase::GetChi2ContributionVector() const {
+
+    return &_chi2ContributionVector;
 
 }
 

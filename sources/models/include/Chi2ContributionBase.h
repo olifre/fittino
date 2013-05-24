@@ -43,8 +43,11 @@ namespace Fittino {
        */
                    ~Chi2ContributionBase();
       virtual void UpdateValue() = 0;
-      void         PrintStatus() const;
+
+    public:
       double       GetValue() const;
+      void         PrintStatus() const;
+      std::string  GetName() const;
 
     protected:
       double       _chi2;
