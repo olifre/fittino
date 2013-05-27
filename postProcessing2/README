@@ -1,0 +1,55 @@
+
+
+1.) Please change the variables defined at the top of postProcessing2/setup.sh, i.e. 
+     FITTINO: path to the fittino trunk directory
+     FITTINO_MAIL: mail address used by naf-log
+     FITTINO_PROJECT: naf project (atlas or ilc, I suppose)
+     FITTINO_FH: output path of the SPheno+FH jobs
+   and source the file.
+
+2.) Go to $FITTINO/tools/GetToyLHCChi2/ProfileLikelihood and type 'make'
+
+3.) Go to $FITTINO/postProcessing2/source and type 'make'
+
+4.) Go to $FITTINO/postProcessing2/FHeffC-calculator and type 'make'
+
+
+###############
+
+SPheno + FH
+
+##############
+
+
+SPheno + FH is run by $FITTINO/postProcessing2/source/runFH which hopefully has been built in Step 3. 
+The batch job is $FITTINO/postProcessing2/scripts/job_FH.sh.
+Batch jobs are submitted with 
+
+    $FITTINO/postProcessing2/scripts/submit_FH.sh nJobs model nEntries
+
+where nJobs is the number of jobs, model is CMSSM (NUHM1 not yet supported) and nEntries is the number of entries which are processed per job.
+The cpu time per job is currently hard coded in $FITTINO/postProcessing2/scripts/job_FH.sh and has to be changed there.
+
+Note: I justed checked for 100 jobs that 1000 points finish within one hour, so in order to quickly produce results a possible setting seems to be to change the requested cpu to 01:00:00 and to use 1000 entries per job.
+
+Log files will appear in $FITTINO_FH/jobs, outputs in $FITTINO_FH/outputs/CMSSM, no matter from which directory you execute the script.
+The directories are created by the scripts.
+
+runFH uses the files in directory [1] as input.
+This directory contains the points with chi2<1000 for the noHiggsRates fit.
+These are about 1e8 points.
+They have been splitted in slices of deltaChi2<1 and are combined to a chain such that the points with lowest chi2 come first. 
+
+runFH uses an interface file in [2] to loop through this chain.
+A locking directory [3] is used to make sure that this interface file is only modified by one job at the same time. 
+Interface and locking directory are chosen to be contained in the "theorycodes" directory because for this directory several people already have read and write permissions.
+So you can only use runFH as it is when you have read and write permissions for the theorycodes directory.
+
+If one of the job chrashes the chain will obviously get a hole and the job needs to be submitted again. 
+
+A random selection of points which large chi2 is not yet implemented. 
+
+[1] /scratch/hh/dust/naf/atlas/user/sarrazin/postProcessing/2/sort/outputs
+[2] /afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/interface_files
+[3] /afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/locking
+
