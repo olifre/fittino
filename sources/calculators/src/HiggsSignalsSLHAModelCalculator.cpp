@@ -101,6 +101,18 @@ double Fittino::HiggsSignalsSLHAModelCalculator::CalculateLimitofBRInvisible( do
 
 }
 
+std::string Fittino::HiggsSignalsSLHAModelCalculator::ConverttoString( double x ) {
+
+    std::stringstream tmpStream_x;
+    std::string tmpString_x;
+
+    tmpStream_x << x;
+    tmpStream_x >> tmpString_x;
+
+    return tmpString_x;
+
+}
+
 double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgg( std::string column, double massh ) {
 
     double scale;
@@ -618,206 +630,55 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
  
     _slhaOutputDataStorage->AddBlock( "HiggsSignalsAdditionalPredictions:BLOCK HiggsSignalsAdditionalPredictions:# Additional predictions" );
 
-    std::stringstream tmpStream_R_H_WW;
-    std::string tmpString_R_H_WW;
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:1:" + ConverttoString( R_H_WW ) + ":# R_H_WW" );
 
-    tmpStream_R_H_WW << R_H_WW; 
-    tmpStream_R_H_WW >> tmpString_R_H_WW;
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:2:" + ConverttoString( R_H_ZZ ) + ":# R_H_ZZ" );
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:1:" + tmpString_R_H_WW + ":# R_H_WW" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:3:" + ConverttoString( R_H_gammagamma ) + ":# R_H_gammagamma" );
 
-    std::stringstream tmpStream_R_H_ZZ;
-    std::string tmpString_R_H_ZZ;
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:4:" + ConverttoString( R_H_tautau ) + ":# R_H_tautau" );
 
-    tmpStream_R_H_ZZ << R_H_ZZ;
-    tmpStream_R_H_ZZ >> tmpString_R_H_ZZ;
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:5:" + ConverttoString( R_H_bb ) + ":# R_H_bb" );
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:2:" + tmpString_R_H_ZZ + ":# R_H_ZZ" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:6:" + ConverttoString( R_VH_bb ) + ":# R_VH_bb" );
 
-    std::stringstream tmpStream_R_H_gammagamma;
-    std::string tmpString_R_H_gammagamma;
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:7:" + ConverttoString( GammaTotal ) + ":# GammaTotal" );
 
-    tmpStream_R_H_gammagamma << R_H_gammagamma;
-    tmpStream_R_H_gammagamma >> tmpString_R_H_gammagamma;
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:8:" + ConverttoString( BR_s_hss ) + ":# BR_s_hss" );
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:3:" + tmpString_R_H_gammagamma + ":# R_H_gammagamma" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:9:" + ConverttoString( BR_s_hcc ) + ":# BR_s_hcc" );
 
-    std::stringstream tmpStream_R_H_tautau;
-    std::string tmpString_R_H_tautau;
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:10:" + ConverttoString( BR_s_hbb ) + ":# BR_s_hbb" );
 
-    tmpStream_R_H_tautau << R_H_tautau;
-    tmpStream_R_H_tautau >> tmpString_R_H_tautau;
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:11:" + ConverttoString( BR_s_htt ) + ":# BR_s_htt" );
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:4:" + tmpString_R_H_tautau + ":# R_H_tautau" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:12:" + ConverttoString( BR_s_hmumu ) + ":# BR_s_hmumu" );
 
-    std::stringstream tmpStream_R_H_bb;
-    std::string tmpString_R_H_bb;
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:13:" + ConverttoString( BR_s_htautau ) + ":# BR_s_htautau" );
 
-    tmpStream_R_H_bb << R_H_bb;
-    tmpStream_R_H_bb >> tmpString_R_H_bb;
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:14:" + ConverttoString( BR_hWW ) + ":# BR_hWW" );
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:5:" + tmpString_R_H_bb + ":# R_H_bb" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:15:" + ConverttoString( BR_hZZ ) + ":# BR_hZZ" );
 
-    std::stringstream tmpStream_R_VH_bb;
-    std::string tmpString_R_VH_bb;
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:16:" + ConverttoString( BR_hZgamma ) + ":# BR_hZgamma" );
 
-    tmpStream_R_VH_bb << R_VH_bb;
-    tmpStream_R_VH_bb >> tmpString_R_VH_bb;
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:17:" + ConverttoString( BR_hgammagamma ) + ":# BR_hgammagamma" );
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:6:" + tmpString_R_VH_bb + ":# R_VH_bb" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:18:" + ConverttoString( BR_hgg ) + ":# BR_hgg" );
 
-    std::stringstream tmpStream_GammaTotal;
-    std::string tmpString_GammaTotal;
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:19:" + ConverttoString( BR_hjinvisible ) + ":# BR_hjInvisible" );
 
-    tmpStream_GammaTotal << GammaTotal;
-    tmpStream_GammaTotal >> tmpString_GammaTotal;
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:20:" + ConverttoString( Delta_SM_hgammagamma ) + ":# Delta_SM_hgammagamma" );
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:7:" + tmpString_GammaTotal + ":# GammaTotal" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:21:" + ConverttoString( Delta_Total_hgammagamma ) + ":# Delta_Total_hgammagamma" );
 
-    std::stringstream tmpStream_BR_s_hss;
-    std::string tmpString_BR_s_hss;
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:22:" + ConverttoString( Delta_SM_hgg ) + ":# Delta_SM_hgg" );
 
-    tmpStream_BR_s_hss << BR_s_hss;
-    tmpStream_BR_s_hss >> tmpString_BR_s_hss;
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:23:" + ConverttoString( Delta_Total_hgg ) + ":# Delta_Total_hgg" );
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:8:" + tmpString_BR_s_hss + ":# BR_s_hss" );
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:24:" + ConverttoString( Gamma_hTotal_Penalty ) + ":# Gamma_hTotal_Penalty" );
 
-    std::stringstream tmpStream_BR_s_hcc;
-    std::string tmpString_BR_s_hcc;
-
-    tmpStream_BR_s_hcc << BR_s_hcc;
-    tmpStream_BR_s_hcc >> tmpString_BR_s_hcc;
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:9:" + tmpString_BR_s_hcc + ":# BR_s_hcc" );
-
-    std::stringstream tmpStream_BR_s_hbb;
-    std::string tmpString_BR_s_hbb;
-
-    tmpStream_BR_s_hbb << BR_s_hbb;
-    tmpStream_BR_s_hbb >> tmpString_BR_s_hbb;
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:10:" + tmpString_BR_s_hbb + ":# BR_s_hbb" );
-
-    std::stringstream tmpStream_BR_s_htt;
-    std::string tmpString_BR_s_htt;
-
-    tmpStream_BR_s_htt << BR_s_htt;
-    tmpStream_BR_s_htt >> tmpString_BR_s_htt;
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:11:" + tmpString_BR_s_htt + ":# BR_s_htt" );
-
-    std::stringstream tmpStream_BR_s_hmumu;
-    std::string tmpString_BR_s_hmumu;
-
-    tmpStream_BR_s_hmumu << BR_s_hmumu;
-    tmpStream_BR_s_hmumu >> tmpString_BR_s_hmumu;
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:12:" + tmpString_BR_s_hmumu + ":# BR_s_hmumu" );
-
-    std::stringstream tmpStream_BR_s_htautau;
-    std::string tmpString_BR_s_htautau;
-
-    tmpStream_BR_s_htautau << BR_s_htautau;
-    tmpStream_BR_s_htautau >> tmpString_BR_s_htautau;
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:13:" + tmpString_BR_s_htautau + ":# BR_s_htautau" );
-
-    std::stringstream tmpStream_BR_hWW;
-    std::string tmpString_BR_hWW;
-
-    tmpStream_BR_hWW << BR_hWW;
-    tmpStream_BR_hWW >> tmpString_BR_hWW;
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:14:" + tmpString_BR_hWW + ":# BR_hWW" );
-
-    std::stringstream tmpStream_BR_hZZ;
-    std::string tmpString_BR_hZZ;
-
-    tmpStream_BR_hZZ << BR_hZZ;
-    tmpStream_BR_hZZ >> tmpString_BR_hZZ;
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:15:" + tmpString_BR_hZZ + ":# BR_hZZ" );
-
-    std::stringstream tmpStream_BR_hZgamma;
-    std::string tmpString_BR_hZgamma;
-
-    tmpStream_BR_hZgamma << BR_hZgamma;
-    tmpStream_BR_hZgamma >> tmpString_BR_hZgamma;
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:16:" + tmpString_BR_hZgamma + ":# BR_hZgamma" );
-
-    std::stringstream tmpStream_BR_hgammagamma;
-    std::string tmpString_BR_hgammagamma;
-
-    tmpStream_BR_hgammagamma << BR_hgammagamma;
-    tmpStream_BR_hgammagamma >> tmpString_BR_hgammagamma;
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:17:" + tmpString_BR_hgammagamma + ":# BR_hgammagamma" );
-
-    std::stringstream tmpStream_BR_hgg;
-    std::string tmpString_BR_hgg;
-
-    tmpStream_BR_hgg << BR_hgg;
-    tmpStream_BR_hgg >> tmpString_BR_hgg;
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:18:" + tmpString_BR_hgg + ":# BR_hgg" );
-
-    std::stringstream tmpStream_BR_hjinvisible;
-    std::string tmpString_BR_hjinvisible;
-
-    tmpStream_BR_hjinvisible << BR_hjinvisible;
-    tmpStream_BR_hjinvisible >> tmpString_BR_hjinvisible;
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:19:" + tmpString_BR_hjinvisible + ":# BR_hjInvisible" );
-
-    std::stringstream tmpStream_Delta_SM_hgammagamma;
-    std::string tmpString_Delta_SM_hgammagamma;
-
-    tmpStream_Delta_SM_hgammagamma << Delta_SM_hgammagamma;
-    tmpStream_Delta_SM_hgammagamma >> tmpString_Delta_SM_hgammagamma;
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:20:" + tmpString_Delta_SM_hgammagamma + ":# Delta_SM_hgammagamma" );
-
-    std::stringstream tmpStream_Delta_Total_hgammagamma;
-    std::string tmpString_Delta_Total_hgammagamma;
-
-    tmpStream_Delta_Total_hgammagamma << Delta_Total_hgammagamma;
-    tmpStream_Delta_Total_hgammagamma >> tmpString_Delta_Total_hgammagamma;
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:21:" + tmpString_Delta_Total_hgammagamma + ":# Delta_Total_hgammagamma" );
-
-    std::stringstream tmpStream_Delta_SM_hgg;
-    std::string tmpString_Delta_SM_hgg;
-
-    tmpStream_Delta_SM_hgg << Delta_SM_hgg;
-    tmpStream_Delta_SM_hgg >> tmpString_Delta_SM_hgg;
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:22:" + tmpString_Delta_SM_hgg + ":# Delta_SM_hgg" );
-
-    std::stringstream tmpStream_Delta_Total_hgg;
-    std::string tmpString_Delta_Total_hgg;
-    
-    tmpStream_Delta_Total_hgg << Delta_Total_hgg;
-    tmpStream_Delta_Total_hgg >> tmpString_Delta_Total_hgg;
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:23:" + tmpString_Delta_Total_hgg + ":# Delta_Total_hgg" );
-
-    std::stringstream tmpStream_Gamma_hTotal_Penalty;
-    std::string tmpString_Gamma_hTotal_Penalty;
-
-    tmpStream_Gamma_hTotal_Penalty << Gamma_hTotal_Penalty;
-    tmpStream_Gamma_hTotal_Penalty >> tmpString_Gamma_hTotal_Penalty;
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:24:" + tmpString_Gamma_hTotal_Penalty + ":# Gamma_hTotal_Penalty" );
-
-    std::stringstream tmpStream_BR_hInvisible_Limit;
-    std::string tmpString_BR_hInvisible_Limit;
-
-    tmpStream_BR_hInvisible_Limit << BR_hInvisible_Limit;
-    tmpStream_BR_hInvisible_Limit >> tmpString_BR_hInvisible_Limit;
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:25:" + tmpString_BR_hInvisible_Limit + ":# BR_hInvisible_Limit" );
-
+    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:25:" + ConverttoString( BR_hInvisible_Limit ) + ":# BR_hInvisible_Limit" );
 
     _slhaOutputDataStorage->WriteFile( _slhaOutputFileName );
 

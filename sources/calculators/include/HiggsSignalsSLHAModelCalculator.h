@@ -141,6 +141,10 @@ namespace Fittino {
        */
       double       CalculateLimitofBRInvisible( double x );
      /*!   
+      *  Converts a double variable to a string.
+      */
+      std::string  ConverttoString( double x );
+     /*!   
       *  Matches scaling factors to the higgs gluon couplings in dependence to the
       *  higgs mass.
       */
