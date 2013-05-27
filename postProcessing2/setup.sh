@@ -12,8 +12,9 @@ export FITTINO_PROJECT=atlas
 export FITTINO_FH=/scratch/hh/dust/naf/atlas/user/sarrazin/postProcessing/2/FH
 
 export FITTINO_INTERFACE=$FITTINO/postProcessing2/interface_files
+# expected substructure $FITTINO_INTERFACE/FH_noHiggsRates/CMSSM/event.txt
 export FITTINO_LOCKING=$FITTINO/postProcessing2/locking
-
+# expected substructure $FITTINO_LOCKING/FH_noHiggsRates/CMSSM/
 
 ######################## ROOT ##########################
 
