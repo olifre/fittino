@@ -82,14 +82,18 @@ int main(int arc, char** argv){
 
   FHCalculator fh;
   fh.SetOutput(&data);  
-  
- 
+
   for (int i=firstEvent; i<lastEvent; i++){
 
     markovChain_in->GetEntry(i);
     metadata_in->GetEntry(i);
-    spheno.Calculate();
-    fh.Calculate();
+
+    rc=spheno.Calculate();
+    if (rc) continue;
+
+    rc=fh.Calculate();
+    if (rc) continue;
+
     markovChain_out->Fill();
     metadata_out->Fill();
 

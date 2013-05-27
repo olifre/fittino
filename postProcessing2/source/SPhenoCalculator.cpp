@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iostream>
 #include <string>
+#include <limits>
 
 
 SPhenoCalculator::SPhenoCalculator(){
@@ -81,27 +82,26 @@ void SPhenoCalculator::SetOutput(FloatStorage* out){
 
 int SPhenoCalculator::Calculate(){
 
+  _out->Set("SPheno_success", 0);
+
   system("mv LesHouches.in.last LesHouches.in.last2");
   system("mv SPheno.spc.last SPheno.spc.last2");
 
   system("mv LesHouches.in LesHouches.in.last");
   system("mv SPheno.spc SPheno.spc.last");
 
-
-  WriteSLHA();
-
-  int rc0=system("./SPheno");
+  int rc=0;
+  rc=WriteSLHA();
   
-  int rc1=ReadSLHA();
+  if (rc) return rc;
+  
+  rc=system("./SPheno");
 
-  if (rc0 || rc1){
+  if (rc) return rc;
+  
+  rc=ReadSLHA();
 
-    std::cout<<"Problem in SPheno"<<std::endl;
-    _out->Set("SPheno_success", 0);
-
-    return 1;
-
-  }
+  if (rc) return rc;
 
   _out->Set("SPheno_success", 1);
   return 0;
@@ -109,7 +109,7 @@ int SPhenoCalculator::Calculate(){
 }
 
 int SPhenoCalculator::WriteSLHA(){
-  
+
   fstream LesHouchesOutFile;
   LesHouchesOutFile.open ("LesHouches.in",ofstream::out);
   LesHouchesOutFile.setf(std::ios::scientific, std::ios::floatfield);

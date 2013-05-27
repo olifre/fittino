@@ -238,6 +238,8 @@ int FHCalculator::ReadSLHAFile(std::string fileName){
 
 int FHCalculator::Calculate(){
 
+  _out->Set("FH_success", 0);
+
   system("mv effectivecouplings_UHiggs.dat.last effectivecouplings_UHiggs.dat.last2");
   system("mv effectivecouplings_ZHiggs.dat.last effectivecouplings_ZHiggs.dat.last2");
   system("mv SPheno.spc.fh.last SPheno.spc.fh.last2");
@@ -246,24 +248,20 @@ int FHCalculator::Calculate(){
   system("mv effectivecouplings_ZHiggs.dat effectivecouplings_ZHiggs.dat.last");
   system("mv SPheno.spc.fh SPheno.spc.fh.last");
 
-  int rc0=system("./FHeffC > /dev/null 2>&1");
-  int rc1=ReadCouplingsFile("effectivecouplings_UHiggs.dat", "FH_U");
-  int rc2=ReadCouplingsFile("effectivecouplings_ZHiggs.dat", "FH_Z");
-  int rc3=ReadSLHAFile("SPheno.spc.fh");
-  
+  int rc=0;
 
-  //   system("mv effectivecouplings.dat effectivecouplings.dat.last");
-  //   system("mv LesHouches.in LesHouches.in.last");
-  //   system("mv SPheno.spc SPheno.spc.last");
+  rc=system("./FHeffC > /dev/null 2>&1");
+  if (rc) return rc;
 
+  rc=ReadCouplingsFile("effectivecouplings_UHiggs.dat", "FH_U");
+  if (rc) return rc;
 
-  if (rc0 || rc1 || rc2 || rc3 ){
-    std::cout<<"Problem in FH run"<<std::endl;
-    _out->Set("FH_success", 0);
-    return 1;
+  rc=ReadCouplingsFile("effectivecouplings_ZHiggs.dat", "FH_Z");
+  if (rc) return rc;
 
-  }
-  
+  rc=ReadSLHAFile("SPheno.spc.fh");
+  if (rc) return rc;
+
   _out->Set("FH_success", 1);
   return 0;
   
