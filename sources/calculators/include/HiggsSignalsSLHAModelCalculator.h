@@ -140,19 +140,15 @@ namespace Fittino {
        *  Calculates the limit of BRInvisible and returns a chi2.
        */
       double       CalculateLimitofBRInvisible( double x );
-     /*!   
-      *  Converts a double variable to a string.
-      */
-      std::string  ConverttoString( double x );
-     /*!   
-      *  Matches scaling factors to the higgs gluon couplings in dependence to the
-      *  higgs mass.
-      */
+      /*!   
+       *  Matches scaling factors to the higgs gluon couplings in dependence to the
+       *  higgs mass.
+       */
       double       Scaleg2hgg( std::string column, double massh );
-     /*!
-      *  Matches scaling factors to the higgs gamma couplings in dependence to the
-      *  higgs mass.
-      */
+      /*!
+       *  Matches scaling factors to the higgs gamma couplings in dependence to the
+       *  higgs mass.
+       */
       double       Scaleg2hgammagamma( std::string column, double massh );
       /*!
        *  Calculates the uncertainty on the "SingleH" production mode (see e.g.\n
@@ -175,7 +171,9 @@ namespace Fittino {
                                         double g2hjgg,
                                         double massh
                                        );
+
       /*! \endcond UML */
+
     private:
       /*!
        *  Calculates the SM Delta for the gluon gluon coupling that consists of \n
@@ -228,14 +226,17 @@ namespace Fittino {
                                         double g2hjgg,
                                         double GammaInvisible
                                       );
+
     /*! \cond UML */
     private:
       virtual void CallExecutable();
       virtual void CallFunction( PhysicsModelBase* model );
       virtual void ConfigureInput( PhysicsModelBase* model );
+
     /*! \endcond UML */   
 
   };
+
 }
 
 #endif // FITTINO_HIGGSSIGNALSSLHAMODELCALCULATOR_H

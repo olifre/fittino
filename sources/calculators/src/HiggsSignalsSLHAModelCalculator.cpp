@@ -101,18 +101,6 @@ double Fittino::HiggsSignalsSLHAModelCalculator::CalculateLimitofBRInvisible( do
 
 }
 
-std::string Fittino::HiggsSignalsSLHAModelCalculator::ConverttoString( double x ) {
-
-    std::stringstream tmpStream_x;
-    std::string tmpString_x;
-
-    tmpStream_x << x;
-    tmpStream_x >> tmpString_x;
-
-    return tmpString_x;
-
-}
-
 double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgg( std::string column, double massh ) {
 
     double scale;
@@ -129,6 +117,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgg( std::string column,
             else if ( massh >= 127. && massh < 128. ) { scale = Linearfunction( massh, 128., 127.,  1.108663766, 1.109564189 ); }
             else if ( massh >= 128. && massh < 129. ) { scale = Linearfunction( massh, 129., 128.,  1.107775663, 1.108663766 ); }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
+
         }
 
         if ( column == "bb" ) {
@@ -141,6 +130,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgg( std::string column,
             else if ( massh >= 127. && massh < 128. ) { scale = Linearfunction( massh, 128., 127., 0.1071899652e-01, 0.1099182783E-01 ); }
             else if ( massh >= 128. && massh < 129. ) { scale = Linearfunction( massh, 129., 128., 0.1045447756e-01, 0.1071899652E-01 ); }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
+
         }
 
         if ( column == "tb" ) {
@@ -153,6 +143,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgg( std::string column,
             else if ( massh >= 127. && massh < 128. ) { scale = Linearfunction( massh, 128., 127., -0.1193827622, -0.1205560165 ); }
             else if ( massh >= 128. && massh < 129. ) { scale = Linearfunction( massh, 129., 128., -0.1182301408, -0.1193827622 ); }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
+
         }
 
     }
@@ -162,10 +153,10 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgg( std::string column,
       std::cout << "\n" << configurationException.what() << "\n" << std::endl;
       exit( EXIT_FAILURE );
 
-        } 
+    }
  
     return scale;
-      
+
 }
 
 double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgammagamma( std::string column, double massh ) {
@@ -184,12 +175,12 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgammagamma( std::string
             else if ( massh >= 127. && massh < 128. ) { scale = Linearfunction( massh, 128., 127., 0.69708e-01, 0.70312e-01 ); }
             else if ( massh >= 128. && massh < 129. ) { scale = Linearfunction( massh, 129., 128., 0.69090e-01, 0.69708e-01 ); }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
-        
+
         }
 
         if ( column == "bb" ) {
 
-            if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }        
+            if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
             else if ( massh >= 123. && massh < 124. ) { scale = Linearfunction( massh, 124., 123., 0.20152e-04, 0.20885e-04 ); }
             else if ( massh >= 124. && massh < 125. ) { scale = Linearfunction( massh, 125., 124., 0.19444e-04, 0.20152e-04 ); }
             else if ( massh >= 125. && massh < 126. ) { scale = Linearfunction( massh, 126., 125., 0.18760e-04, 0.19444e-04 ); }
@@ -404,7 +395,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::CalculateGammaTotal( double mas
                         + ( g2hjZZ - 1 ) * smbr_hzz_( &massh )
                         + ( g2hjZga - 1 ) * smbr_hzgam_( &massh )
                         + ( g2hjgaga - 1 ) * smbr_hgamgam_( &massh )
-                        + ( g2hjgg - 1 ) * smbr_hgg_( &massh ) ) 
+                        + ( g2hjgg - 1 ) * smbr_hgg_( &massh ) )
                         + GammaInvisible;
 
     return GammaTotal;    
@@ -458,34 +449,24 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     double g2hjWW         = pow( 1 + model->GetParameterVector()->at( 13 )->GetValue(), 2 );
     double g2hjZZ         = pow( 1 + model->GetParameterVector()->at( 14 )->GetValue(), 2 );
     double g2hjZga        = pow( 1 + model->GetParameterVector()->at( 15 )->GetValue(), 2 );
-
-    double g2hjgaga       = pow( sqrt( Calculateg2hgammagamma( 1 + model->GetParameterVector()->at(  5 )->GetValue(),
-                                                               1 + model->GetParameterVector()->at(  7 )->GetValue(),
-                                                               1 + model->GetParameterVector()->at( 11 )->GetValue(),
-                                                               1 + model->GetParameterVector()->at( 13 )->GetValue(),
-                                                               1 + model->GetParameterVector()->at( 14 )->GetValue(), massh ) ) 
-                                                                 + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
-
-    double g2hjgg         = pow( sqrt( Calculateg2hgg( 1 + model->GetParameterVector()->at(  5 )->GetValue(),
-                                                       1 + model->GetParameterVector()->at(  7 )->GetValue(), massh ) ) 
-                                                         + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
-
-    //double g2hjgaga       = pow( 1 + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
-    //double g2hjgg         = pow( 1 + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
-
+    //double g2hjgaga     = pow( 1 + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
+    //double g2hjgg       = pow( 1 + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
     double g2hjggZ        = pow( 1 + model->GetParameterVector()->at( 18 )->GetValue(), 2 );
     double g2hjhiZ        = pow( 1 + model->GetParameterVector()->at( 19 )->GetValue(), 2 );
 
     double BR_hjhihi      = model->GetParameterVector()->at( 20 )->GetValue();
     double GammaInvisible = model->GetParameterVector()->at( 21 )->GetValue();
 
-    // Set the (relative) rate uncertainties.
+    double g2hjgaga       = pow( sqrt( Calculateg2hgammagamma( 1 + model->GetParameterVector()->at(  5 )->GetValue(),
+                                                               1 + model->GetParameterVector()->at(  7 )->GetValue(),
+                                                               1 + model->GetParameterVector()->at( 11 )->GetValue(),
+                                                               1 + model->GetParameterVector()->at( 13 )->GetValue(),
+                                                               1 + model->GetParameterVector()->at( 14 )->GetValue(), massh ) )
+                                                                 + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
 
-    SetRateUncertainties( g2hjbb_s, g2hjbb_p, g2hjgg, massh ); // depend only on g2hjbb, g2hjgg
-                                                               // and the Higgs boson mass
-                                                               // use fixed values for the other rates
-
-    // Set the upper limit of the total width of the Higgs boson.
+    double g2hjgg         = pow( sqrt( Calculateg2hgg( 1 + model->GetParameterVector()->at(  5 )->GetValue(),
+                                                       1 + model->GetParameterVector()->at(  7 )->GetValue(), massh ) )
+                                                         + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
 
     // Calculate the total width of the Higgs boson.
 
@@ -503,21 +484,20 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
                                              g2hjgg,
                                              GammaInvisible );
 
-    double vsmall = 1.e-16;
+    // Convert GammaInvisible to the branching ratio BR(h->Invisible).
 
     double BR_hjinvisible;
 
-    if ( GammaTotal <= vsmall ) {
+    if ( GammaTotal <= 1.e-16 ) BR_hjinvisible = 0.;
+    else BR_hjinvisible = GammaInvisible / GammaTotal;
 
-        BR_hjinvisible= 0.;
+    // Set the (relative) rate uncertainties.
 
-    }
+    SetRateUncertainties( g2hjbb_s, g2hjbb_p, g2hjgg, massh ); // Uncertainties depend only on g2hjbb, g2hjgg
+							       // and the Higgs boson mass
+                                                               // use fixed values for the other rates
 
-    else {
-
-        BR_hjinvisible = GammaInvisible/GammaTotal;
-
-    }
+    // Setup HiggsBounds.
 
     higgsbounds_neutral_input_effc_( &massh,
                                      &GammaTotal,
@@ -548,11 +528,13 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     int nobs, mode = 1; // mode = 1, 2, 3 for peak-centered, masse-centered chi^2 method or both
     double Chisq_mu, Chisq_mh, Chisq , Pvalue;
 
-    double Gamma_hTotal_Penalty = 0;
-
     run_higgssignals_( &mode, &Chisq_mu, &Chisq_mh, &Chisq, &nobs, &Pvalue );
 
-        if ( GammaTotal > 1. ) {
+    // Set the upper limit of the total width of the Higgs boson.
+
+    double Gamma_hTotal_Penalty = 0;
+
+    if ( GammaTotal > 1. ) {
 
         Gamma_hTotal_Penalty = 1000000.;
 
@@ -585,10 +567,10 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     double BR_hgg         = g2hjgg        * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hgg_( &massh );
 
     double BR_Total = BR_s_hss + BR_s_hcc + BR_s_hbb + BR_s_htt + BR_s_hmumu + BR_s_htautau + BR_hWW + BR_hZZ + BR_hZgamma + BR_hgammagamma + BR_hgg + BR_hjinvisible;
-    
+ 
     try {
 
-        if ( BR_Total > 1. + vsmall && BR_Total < 1. - vsmall ) {
+        if ( BR_Total > 1. + 1.e-16 && BR_Total < 1. - 1.e-16 ) {
  
             throw ConfigurationException( "BR_Total unequal 1" );
 
@@ -618,7 +600,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     get_rvalues_( &nH, &collider, &R_H_WW, &R_H_ZZ, &R_H_gammagamma, &R_H_tautau, &R_H_bb, &R_VH_bb );
  
-    int NChannels = 1, ChannelID = 40; //4-0 = HZ production
+    int NChannels = 1, ChannelID = 40; // 4 0 = HZ production
 
     double HZrate;
 
@@ -627,58 +609,36 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     double BR_hInvisible_Limit = CalculateLimitofBRInvisible( BR_hjinvisible * HZrate );
 
     _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
- 
-    _slhaOutputDataStorage->AddBlock( "HiggsSignalsAdditionalPredictions:BLOCK HiggsSignalsAdditionalPredictions:# Additional predictions" );
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:1:" + ConverttoString( R_H_WW ) + ":# R_H_WW" );
+     std::string blockName = "HiggsSignalsAdditionalPredictions";
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:2:" + ConverttoString( R_H_ZZ ) + ":# R_H_ZZ" );
+    _slhaOutputDataStorage->AddBlock( blockName + ":BLOCK " + blockName + ":# Additional predictions" );
 
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:3:" + ConverttoString( R_H_gammagamma ) + ":# R_H_gammagamma" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:4:" + ConverttoString( R_H_tautau ) + ":# R_H_tautau" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:5:" + ConverttoString( R_H_bb ) + ":# R_H_bb" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:6:" + ConverttoString( R_VH_bb ) + ":# R_VH_bb" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:7:" + ConverttoString( GammaTotal ) + ":# GammaTotal" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:8:" + ConverttoString( BR_s_hss ) + ":# BR_s_hss" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:9:" + ConverttoString( BR_s_hcc ) + ":# BR_s_hcc" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:10:" + ConverttoString( BR_s_hbb ) + ":# BR_s_hbb" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:11:" + ConverttoString( BR_s_htt ) + ":# BR_s_htt" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:12:" + ConverttoString( BR_s_hmumu ) + ":# BR_s_hmumu" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:13:" + ConverttoString( BR_s_htautau ) + ":# BR_s_htautau" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:14:" + ConverttoString( BR_hWW ) + ":# BR_hWW" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:15:" + ConverttoString( BR_hZZ ) + ":# BR_hZZ" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:16:" + ConverttoString( BR_hZgamma ) + ":# BR_hZgamma" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:17:" + ConverttoString( BR_hgammagamma ) + ":# BR_hgammagamma" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:18:" + ConverttoString( BR_hgg ) + ":# BR_hgg" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:19:" + ConverttoString( BR_hjinvisible ) + ":# BR_hjInvisible" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:20:" + ConverttoString( Delta_SM_hgammagamma ) + ":# Delta_SM_hgammagamma" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:21:" + ConverttoString( Delta_Total_hgammagamma ) + ":# Delta_Total_hgammagamma" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:22:" + ConverttoString( Delta_SM_hgg ) + ":# Delta_SM_hgg" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:23:" + ConverttoString( Delta_Total_hgg ) + ":# Delta_Total_hgg" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:24:" + ConverttoString( Gamma_hTotal_Penalty ) + ":# Gamma_hTotal_Penalty" );
-
-    _slhaOutputDataStorage->AddLine( "HiggsSignalsAdditionalPredictions:25:" + ConverttoString( BR_hInvisible_Limit ) + ":# BR_hInvisible_Limit" );
+    _slhaOutputDataStorage->AddLine( blockName +  ":1:" + String( R_H_WW )                  + ":# R_H_WW" );
+    _slhaOutputDataStorage->AddLine( blockName +  ":2:" + String( R_H_ZZ )                  + ":# R_H_ZZ" );
+    _slhaOutputDataStorage->AddLine( blockName +  ":3:" + String( R_H_gammagamma )          + ":# R_H_gammagamma" );
+    _slhaOutputDataStorage->AddLine( blockName +  ":4:" + String( R_H_tautau )              + ":# R_H_tautau" );
+    _slhaOutputDataStorage->AddLine( blockName +  ":5:" + String( R_H_bb )                  + ":# R_H_bb" );
+    _slhaOutputDataStorage->AddLine( blockName +  ":6:" + String( R_VH_bb )                 + ":# R_VH_bb" );
+    _slhaOutputDataStorage->AddLine( blockName +  ":7:" + String( GammaTotal )              + ":# GammaTotal" );
+    _slhaOutputDataStorage->AddLine( blockName +  ":8:" + String( BR_s_hss )                + ":# BR_s_hss" );
+    _slhaOutputDataStorage->AddLine( blockName +  ":9:" + String( BR_s_hcc )                + ":# BR_s_hcc" );
+    _slhaOutputDataStorage->AddLine( blockName + ":10:" + String( BR_s_hbb )                + ":# BR_s_hbb" );
+    _slhaOutputDataStorage->AddLine( blockName + ":11:" + String( BR_s_htt )                + ":# BR_s_htt" );
+    _slhaOutputDataStorage->AddLine( blockName + ":12:" + String( BR_s_hmumu )              + ":# BR_s_hmumu" );
+    _slhaOutputDataStorage->AddLine( blockName + ":13:" + String( BR_s_htautau )            + ":# BR_s_htautau" );
+    _slhaOutputDataStorage->AddLine( blockName + ":14:" + String( BR_hWW )                  + ":# BR_hWW" );
+    _slhaOutputDataStorage->AddLine( blockName + ":15:" + String( BR_hZZ )                  + ":# BR_hZZ" );
+    _slhaOutputDataStorage->AddLine( blockName + ":16:" + String( BR_hZgamma )              + ":# BR_hZgamma" );
+    _slhaOutputDataStorage->AddLine( blockName + ":17:" + String( BR_hgammagamma )          + ":# BR_hgammagamma" );
+    _slhaOutputDataStorage->AddLine( blockName + ":18:" + String( BR_hgg )                  + ":# BR_hgg" );
+    _slhaOutputDataStorage->AddLine( blockName + ":19:" + String( BR_hjinvisible )          + ":# BR_hjInvisible" );
+    _slhaOutputDataStorage->AddLine( blockName + ":20:" + String( Delta_SM_hgammagamma )    + ":# Delta_SM_hgammagamma" );
+    _slhaOutputDataStorage->AddLine( blockName + ":21:" + String( Delta_Total_hgammagamma ) + ":# Delta_Total_hgammagamma" );
+    _slhaOutputDataStorage->AddLine( blockName + ":22:" + String( Delta_SM_hgg )            + ":# Delta_SM_hgg" );
+    _slhaOutputDataStorage->AddLine( blockName + ":23:" + String( Delta_Total_hgg )         + ":# Delta_Total_hgg" );
+    _slhaOutputDataStorage->AddLine( blockName + ":24:" + String( Gamma_hTotal_Penalty )    + ":# Gamma_hTotal_Penalty" );
+    _slhaOutputDataStorage->AddLine( blockName + ":25:" + String( BR_hInvisible_Limit )     + ":# BR_hInvisible_Limit" );
 
     _slhaOutputDataStorage->WriteFile( _slhaOutputFileName );
 

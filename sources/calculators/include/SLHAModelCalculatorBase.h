@@ -47,6 +47,10 @@ namespace Fittino {
        */
                            ~SLHAModelCalculatorBase();
       SLHADataStorageBase* GetDataStorage();
+      /*!   
+       *  Converts a double variable to a string.
+       */
+      std::string          String( double x );
 
     public:
       virtual void         CalculatePredictions( PhysicsModelBase* model );

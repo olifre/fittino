@@ -32,6 +32,18 @@ Fittino::SLHAModelCalculatorBase::~SLHAModelCalculatorBase() {
 
 }
 
+std::string Fittino::SLHAModelCalculatorBase::String( double x ) {
+
+    std::stringstream tmpStream_x;
+    std::string tmpString_x;
+
+    tmpStream_x << x;
+    tmpStream_x >> tmpString_x;
+
+    return tmpString_x;
+
+}
+
 void Fittino::SLHAModelCalculatorBase::CalculatePredictions( Fittino::PhysicsModelBase* model ) {
 
     ConfigureInput( model );
