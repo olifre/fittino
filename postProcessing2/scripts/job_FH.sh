@@ -5,7 +5,6 @@
 #$ -l h_vmem=1.5G
 #$ -l site=hh 
 #$ -w e
-#$ -m ae
 
 date
 echo "Script started"

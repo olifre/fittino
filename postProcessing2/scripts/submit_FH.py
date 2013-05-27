@@ -23,7 +23,8 @@ def main():
 
     if not path.exists(jobdir):
         os.makedirs(jobdir)
-        os.chdir(jobdir)
+        
+    os.chdir(jobdir)
 
 
     for i in xrange(int(nJobs)):
@@ -31,7 +32,11 @@ def main():
         command = ['qsub']
         command.extend( ['-v', 'FITTINO_SETUP=' + environ['FITTINO_SETUP'] ] )
         command.extend( ['-P', environ['FITTINO_PROJECT'] ] )
-#        command.extend( ['-M', environ['FITTINO_MAIL'] ] )
+
+        if 'FITTINO_MAIL' in environ:
+            command.extend( ['-M', environ['FITTINO_MAIL'] ] )
+            command.extend( ['-m', 'ae' ] ) 
+            
         command.append( environ['FITTINO'] + '/postProcessing2/scripts/job_FH.sh' )
         command.append( model )
         command.append( nEntries )
