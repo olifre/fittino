@@ -47,7 +47,7 @@ So you can only use runFH as it is when you have read and write permissions for 
 
 If one of the job chrashes the chain will obviously get a hole and the job needs to be submitted again. 
 
-A random selection of points which large chi2 is not yet implemented. 
+A random selection of points with large chi2 is not yet implemented. 
 
 [1] /scratch/hh/dust/naf/atlas/user/sarrazin/postProcessing/2/sort/outputs
 [2] /afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/interface_files

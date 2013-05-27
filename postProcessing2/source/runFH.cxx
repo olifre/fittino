@@ -10,7 +10,7 @@
 #include "TFile.h" 
 #include "FHCalculator.h"
 #include "SPhenoCalculator.h"
-
+#include "TSystem.h"
 
 int main(int arc, char** argv){
 
@@ -22,30 +22,34 @@ int main(int arc, char** argv){
   numberOfEventsStream<<numberOfEventsStr;
   numberOfEventsStream>>numberOfEvents;
 
-  std::string ifDir="/afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/interface_files/FH_noHiggsRates/"+model;
-  std::string lockDir="/afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/locking/FH_noHiggsRates/"+model;
+
+  TString ifDir="$FITTINO_INTERFACE/FH_noHiggsRates/"+model;
+  TString lockDir="$FITTINO_LOCKING/FH_noHiggsRates/"+model;
+
+  gSystem->ExpandPathName(ifDir);
+  gSystem->ExpandPathName(lockDir);
 
   int rc=1;
   while (rc!=0){
-    rc=system(("mkdir "+lockDir+"/locked").c_str());
+    rc=system(("mkdir "+lockDir+"/locked").Data());
   }
   
-  ifstream fin((ifDir+"/event.txt").c_str());
+  ifstream fin((ifDir+"/event.txt").Data());
   int firstEvent;
   fin >> firstEvent;
   fin.close();
 
-  system(("mv "+ifDir+"/event.txt.last "+ifDir+"/event.txt.last2").c_str()); 
-  system(("mv "+ifDir+"/event.txt "+ifDir+"/event.txt.last").c_str()); 
+  system(("mv "+ifDir+"/event.txt.last "+ifDir+"/event.txt.last2").Data()); 
+  system(("mv "+ifDir+"/event.txt "+ifDir+"/event.txt.last").Data()); 
 
   int lastEvent = firstEvent+numberOfEvents;
 
   ofstream ifFile;
-  ifFile.open((ifDir+"/event.txt").c_str());
+  ifFile.open((ifDir+"/event.txt").Data());
   ifFile << lastEvent<< std::endl;
   ifFile.close();
   
-  system(("rm -r "+lockDir+"/locked").c_str());
+  system(("rm -r "+lockDir+"/locked").Data());
 
   std::stringstream firstEventStream; 
   firstEventStream << firstEvent;

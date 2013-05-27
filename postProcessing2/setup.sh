@@ -5,10 +5,14 @@
 
 
 export FITTINO=/afs/naf.desy.de/user/s/sarrazin/sarrazin/FittinoTrunk
+export FITTINO=/afs/naf.desy.de/user/s/sarrazin/sarrazin/FittinoTrunk
+
 export FITTINO_MAIL=bjorn.sarrazin@cern.ch
 export FITTINO_PROJECT=atlas
 export FITTINO_FH=/scratch/hh/dust/naf/atlas/user/sarrazin/postProcessing/2/FH
 
+export FITTINO_INTERFACE=$FITTINO/postProcessing2/interface_files
+export FITTINO_LOCKING=$FITTINO/postProcessing2/locking
 
 
 ######################## ROOT ##########################
