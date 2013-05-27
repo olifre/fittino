@@ -31,7 +31,7 @@ def main():
         command = ['qsub']
         command.extend( ['-v', 'FITTINO_SETUP=' + environ['FITTINO_SETUP'] ] )
         command.extend( ['-P', environ['FITTINO_PROJECT'] ] )
-        command.extend( ['-M', environ['FITTINO_MAIL'] ] )
+#        command.extend( ['-M', environ['FITTINO_MAIL'] ] )
         command.append( environ['FITTINO'] + '/postProcessing2/scripts/job_FH.sh' )
         command.append( model )
         command.append( nEntries )
