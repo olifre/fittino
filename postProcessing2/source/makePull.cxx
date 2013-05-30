@@ -50,7 +50,7 @@ int main( int arc, char* argv[]) {
     }
 
     inTree->GetEntry(i);
-    if (data.Get("chi2")<minChi2 && data.Get("P_M0")<100){
+    if (data.Get("chi2")<minChi2){
       std::cout<<"found point"<<std::endl;
       minChi2=data.Get("chi2");
       index=i;
@@ -78,9 +78,11 @@ int main( int arc, char* argv[]) {
   title<<data.Get("P_M12");
   title<<"GeV, A_{0}=";
   title<<data.Get("P_A0");
-//   title<<"GeV, M_{H}^{2}=";
-//   title<<data.Get("P_M0H");
-  // title<<"GeV^{2}, m_{t}=";
+
+  title<<"GeV, M_{H}^{2}=";
+  title<<data.Get("P_M0H");
+  title<<"GeV^{2}, m_{t}=";
+
   title<<"GeV, m_{t}=";
   title<<data.Get("P_massTop");
   title<<"GeV, tan #beta=";

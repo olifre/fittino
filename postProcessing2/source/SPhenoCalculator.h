@@ -9,7 +9,7 @@ class SPhenoCalculator{
 
  public:
 
-  SPhenoCalculator();
+  SPhenoCalculator(std::string model);
   ~SPhenoCalculator();
 
   void SetInput(FloatStorage* in);
@@ -23,7 +23,7 @@ class SPhenoCalculator{
 
   FloatStorage* _in;
   FloatStorage* _out;
-
+  std::string   _model;
   SLHAea::Coll _coll;
 
 };

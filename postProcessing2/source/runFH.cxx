@@ -76,7 +76,7 @@ int main(int arc, char** argv){
   FloatStorage data(markovChain_out);
   data.Connect(markovChain_in);
 
-  SPhenoCalculator spheno;
+  SPhenoCalculator spheno(model);
   spheno.SetInput(&data);
   spheno.SetOutput(&data);
 

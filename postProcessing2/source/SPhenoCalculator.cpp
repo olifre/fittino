@@ -7,11 +7,19 @@
 #include <iostream>
 #include <string>
 #include <limits>
+#include <stdexcept>
 
 
-SPhenoCalculator::SPhenoCalculator(){
+SPhenoCalculator::SPhenoCalculator(std::string model){
 
   _out=0;
+  _model=model;
+
+  if (_model!="CMSSM" && _model!="NUHM1"){
+    std::cout<<"Found model "<<_model<<std::endl;
+    throw std::runtime_error("Unkown model");
+
+  }
 
 }
 
@@ -149,6 +157,12 @@ int SPhenoCalculator::WriteSLHA(){
   
   LesHouchesOutFile<<"    4  1.000000e+00 # sign(mu) (fixed)"<<std::endl;
   LesHouchesOutFile<<"BLOCK EXTPAR                 # Input parameters"<<std::endl;
+
+  if (_model=="NUHM1"){
+    LesHouchesOutFile << "   21 " << _in->Get("P_M0H")<< " # non-universal m_(H_d)^2" << std::endl;
+    LesHouchesOutFile << "   22 " << _in->Get("P_M0H") << " # non-universal m_(H_u)^2" << std::endl;
+  }
+
   LesHouchesOutFile<<"BLOCK SPHENOINPUT"<<std::endl;
   LesHouchesOutFile<<"    1  0                  # error level"<<std::endl;
   LesHouchesOutFile<<"    2  0                  # if 1, then SPA conventions are used"<<std::endl;

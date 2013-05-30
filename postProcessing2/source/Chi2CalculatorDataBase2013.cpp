@@ -74,7 +74,7 @@ Chi2Calculator Chi2CalculatorDataBase2013::GetPaper2013_LEO() {
   
   Observable massChargino( "O_massChargino1", 102.5 ); 
   massChargino.AddTheoUnc(1.0);
-  massChargino.SetIsLowerLimit(true, false);   //FIXME
+  massChargino.SetIsLowerLimit(true, true);   //FIXME
   massChargino.SetPrecision(1);
   massChargino.SetTitle("m_{#chi^{+}} / GeV");
   calc.AddObservable( massChargino );
