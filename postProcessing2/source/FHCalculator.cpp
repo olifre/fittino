@@ -221,10 +221,22 @@ int FHCalculator::ReadSLHAFile(std::string fileName){
 
   
 
-  SLHAea::Block::const_iterator line = _coll["ALPHA"].begin()+1;
+  SLHAea::Block::const_iterator line;
+
+  line = _coll.at("ALPHA").begin()+1;
   _out->Set("FH_alpha", line->at(0));
-  line = _coll["DALPHA"].begin()+1;
-  _out->Set("FH_dalpha", line->at(0));
+
+  try {
+
+    line = _coll.at("DALPHA").begin()+1;
+    _out->Set("FH_dalpha", line->at(0));
+
+  }
+  catch (std::out_of_range) {
+
+    _out->Set("FH_dalpha", -1);
+
+  }
   
   _coll.clear();
 
