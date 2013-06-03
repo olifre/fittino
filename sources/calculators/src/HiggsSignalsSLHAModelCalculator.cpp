@@ -233,7 +233,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgammagamma( std::string
             //else if ( massh >= 126. && massh < 127. ) { scale = Linearfunction( massh, 127., 126., -0.66741, -0.67074 ); }
             //else if ( massh >= 127. && massh < 128. ) { scale = Linearfunction( massh, 128., 127., -0.66399, -0.66741 ); }
             //else if ( massh >= 128. && massh < 129. ) { scale = Linearfunction( massh, 129., 128., -0.66048, -0.66399 ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = 3.3 * pow( 10, -4 ) * massh - 1.09; }
+            else if ( massh >= 123 && massh <= 129. ) { scale = 3.3 * pow( 10, -3 ) * massh - 1.09; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
