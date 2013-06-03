@@ -136,10 +136,6 @@ namespace Fittino {
        *  Returns a linear function mx + b, given by two coordinates.
        */     
       double       Linearfunction( double massh, double x2, double x1, double y2, double y1 );
-      /*!
-       *  Calculates the limit of BRInvisible and returns a chi2.
-       */
-      double       CalculateLimitofBRInvisible( double x );
       /*!   
        *  Matches scaling factors to the higgs gluon couplings in dependence to the
        *  higgs mass.
@@ -176,11 +172,27 @@ namespace Fittino {
 
     private:
       /*!
+       *  Calculates the limit of BRInvisible and returns a \f$ \chi^{2}\f$. The calculation \n
+       *  is given by a polynomial fit of 10th degree. \n
+       *  @image html grad10_parabel_small40.png
+       *  fit = \f$3090.5x^{10} - 16155x^{9} + 36200.6x^{8} - 45432.4x^{7}\f$ \n
+       *  \f$+ 35006.7x^{6} - 17068.7x^{5} + 5228.65x^{4} - 963.046x^{3}\f$ \n
+       *  \f$+ 100.961x^{2}\f$ \n
+       *  This fit is used between BRInvisible = 0,1 . For the region > 1 the fit \n
+       *  is replaced by a function of second degree, in order to have a physical  \n
+       *  continuation of the data.\n
+       *  parabel = \f$3.322x^{2} + 4.92x\f$
+       */
+      double       CalculateLimitofBRInvisible( double x );
+      /*!
        *  Calculates the SM Delta for the gluon gluon coupling that consists of \n
        *  other Higgs couplings: \n
        *  \f$\Delta_{SM}=\sqrt{\sum_{i,j}((\Delta_i+1)*(\Delta_j+1)*Scale(m_H))}-1\f$ \n
        *  The Scalefunction only works in the higgs mass range of 123-129 GeV and is  \n
-       *  a linear approximation in higgs mass intervals of 1 GeV. \n
+       *  a linear fit of the corresponding numerical values. These values \n
+       *  can be found here: http://people.web.psi.ch/spira/higgscoup/gg.dat \n
+       *  These are the linear fits for the gluon scaling terms:
+       *  @image html hgg_tt+bb+tb.png
        */
      double       Calculateg2hgg(
                                         double ghbb,
@@ -192,7 +204,13 @@ namespace Fittino {
        *  other Higgs couplings: \n
        *  \f$\Delta_{SM}=\sqrt{\sum_{i,j}((\Delta_i+1)*(\Delta_j+1)*Scale(m_H))}-1\f$ \n
        *  The Scalefunction only works in the higgs mass range of 123-129 GeV and is \n
-       *  a linear approximation in higgs mass intervals of 1 GeV.
+       *  a linear a linear fit of the corresponding numerical values. These values\n
+       *  can be found here http://people.web.psi.ch/spira/higgscoup/gaga.dat \n
+       *  These are the linear fits for the gamma scaling terms:
+       *  @image html hgaga_tt+bb+tb.png
+       *  @image html hgaga_WW+tW+bW.png
+       *  @image html hgaga_tautau+ttau+btau.png
+       *  @image html hgaga_tauW.png
        */
       double       Calculateg2hgammagamma(
                                         double ghbb,
@@ -207,9 +225,10 @@ namespace Fittino {
        *  and couplings: \n
        *  \f$(1+\sum_i((\Delta_i-1)*(SMBR)_i(m_H)))\f$ + Gamma-Invisible \n
        *  The Sum is over all couplings that were provided with the \n
-       *  corresponding SM-Branching Ratio from Higgs Signals. GammaInvisible is used as \n
-       *  free parameter in the model. If GammaTotal exceeds 1 GeV, the Chi2 contribution \n
-       *   rises to 1M, forcing the MarkovChain backwards.
+       *  corresponding SM-Branching Ratio from Higgs Signals. \n
+       *  GammaInvisible is used as free parameter in the model. \n
+       *  If GammaTotal exceeds 1 GeV, the Chi2 contribution rises to 1M,\n
+       *  forcing the MarkovChain backwards.
        */
       double       CalculateGammaTotal(
                                         double massh,
