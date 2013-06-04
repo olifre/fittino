@@ -190,8 +190,18 @@ namespace Fittino {
        *  other Higgs couplings: \n
        *  \f$\Delta_{SM}=\sqrt{\sum_{i,j}((\Delta_i+1)*(\Delta_j+1)*Scale(m_H))}-1\f$ \n
        *  The Scalefunction only works in the higgs mass range of 123-129 GeV and is  \n
-       *  a linear fit of the corresponding numerical values. These values \n
-       *  can be found in the images directory of the documentation, called hgg.txt \n
+       *  a linear fit of the corresponding numerical values. These values can be found\n
+       *  in the images directory of the documentation, called hgg.txt and are also shown here: \n
+       *  \verbatim
+       m_H   G_gg               G_tt/G_gg        G_bb/G_gg         G_tb/G_gg 
+       123.  0.3266293773E-03   1.113237058      0.1217362210E-01 -0.1254106798 
+       124.  0.3345572863E-03   1.112305225      0.1186383935E-01 -0.1241690646 
+       125.  0.3426180698E-03   1.111385465      0.1156395457E-01 -0.1229494194 
+       126.  0.3508150440E-03   1.110471156      0.1127364780E-01 -0.1217448033 
+       127.  0.3591490973E-03   1.109564189      0.1099182783E-01 -0.1205560165 
+       128.  0.3676219090E-03   1.108663766      0.1071899652E-01 -0.1193827622 
+       129.  0.3762328605E-03   1.107775663      0.1045447756E-01 -0.1182301408 
+         \endverbatim
        *  These are the linear fits for the gluon scaling terms:
        *  @image html hgg_tt+bb+tb.png
        *  tt: \f$-9.1*10^{-4}x + 1.23\f$ bb: \f$-2.86*10^{-4}x + 0.047\f$ \f$1.12*10^{-3}x - 0.27\f$ \n
@@ -208,8 +218,27 @@ namespace Fittino {
        *  other Higgs couplings: \n
        *  \f$\Delta_{SM}=\sqrt{\sum_{i,j}((\Delta_i+1)*(\Delta_j+1)*Scale(m_H))}-1\f$ \n
        *  The Scalefunction only works in the higgs mass range of 123-129 GeV and is \n
-       *  a linear a linear fit of the corresponding numerical values. These values\n
-       *  can be found in the images directory of the documentation, called hgaga.txt \n
+       *  a linear a linear fit of the corresponding numerical values. These values can be found \n
+       *  in the images directory of the documentation, called hgaga.txt and are also shown here:\n
+       *  \verbatim
+       m_H   G_gaga       G_tt/G_gaga  G_bb/G_gaga   G_WW/G_gaga G_tb/G_gaga 
+       123.  0.86609E-05  0.72602E-01  0.20885E-04   1.5934     -0.18391E-02 
+       124.  0.89615E-05  0.72048E-01  0.20152E-04   1.5911     -0.18029E-02 
+       125.  0.92729E-05  0.71482E-01  0.19444E-04   1.5887     -0.17672E-02 
+       126.  0.95959E-05  0.70904E-01  0.18760E-04   1.5863     -0.17319E-02 
+       127.  0.99309E-05  0.70312E-01  0.18099E-04   1.5838     -0.16970E-02 
+       128.  0.10279E-04  0.69708E-01  0.17460E-04   1.5812     -0.16625E-02 
+       129.  0.10640E-04  0.69090E-01  0.16842E-04   1.5785     -0.16283E-02 
+     
+       m_H  G_tW/G_gaga  G_bW/G_gaga G_ll/G_gaga  G_tl/G_gaga  G_bl/G_gaga  G_lW/G_gaga
+       123.  -0.68026      0.86351E-02 0.25148E-04 -0.19851E-02  0.45838E-04  0.93221E-02
+       124.  -0.67717      0.84914E-02 0.24292E-04 -0.19461E-02  0.44253E-04  0.91672E-02
+       125.  -0.67400      0.83495E-02 0.23464E-04 -0.19077E-02  0.42720E-04  0.90143E-02
+       126.  -0.67074      0.82093E-02 0.22663E-04 -0.18696E-02  0.41239E-04  0.88634E-02
+       127.  -0.66741      0.80708E-02 0.21888E-04 -0.18321E-02  0.39806E-04  0.87144E-02
+       128.  -0.66399      0.79339E-02 0.21138E-04 -0.17949E-02  0.38421E-04  0.85671E-02
+       129.  -0.66048      0.77984E-02 0.20411E-04 -0.17581E-02  0.37079E-04  0.84215E-02   
+         \endverbatim
        *  These are the linear fits for the gamma scaling terms:
        *  @image html hgaga_tt+bb+tb.png
        *  tt: \f$-5.85*10^{-4}x + 0.145\f$ bb: \f$-6.74*10^{-7}x + 1.04*10^{-4}\f$ tb: \f$3.51*10^{-5}x - 6.16*10^{-3}\f$
