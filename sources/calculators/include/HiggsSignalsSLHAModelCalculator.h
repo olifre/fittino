@@ -178,10 +178,11 @@ namespace Fittino {
        *  fit = \f$3090.5x^{10} - 16155x^{9} + 36200.6x^{8} - 45432.4x^{7}\f$ \n
        *  \f$+ 35006.7x^{6} - 17068.7x^{5} + 5228.65x^{4} - 963.046x^{3}\f$ \n
        *  \f$+ 100.961x^{2}\f$ \n
-       *  This fit is used between BRInvisible = 0,1 . For the region > 1 the fit \n
+       *  This fit is used between BRInvisible = 0 and 1 . For the region > 1 the fit \n
        *  is replaced by a function of second degree, in order to have a physical  \n
        *  continuation of the data.\n
-       *  parabel = \f$3.322x^{2} + 4.92x\f$
+       *  parabel = \f$3.322x^{2} + 4.92x\f$ \n
+       *  The data shown in the fit can found in the images directory of the documentation, called brinvisible.txt
        */
       double       CalculateLimitofBRInvisible( double x );
       /*!
@@ -190,9 +191,12 @@ namespace Fittino {
        *  \f$\Delta_{SM}=\sqrt{\sum_{i,j}((\Delta_i+1)*(\Delta_j+1)*Scale(m_H))}-1\f$ \n
        *  The Scalefunction only works in the higgs mass range of 123-129 GeV and is  \n
        *  a linear fit of the corresponding numerical values. These values \n
-       *  can be found here: http://people.web.psi.ch/spira/higgscoup/gg.dat \n
+       *  can be found in the images directory of the documentation, called hgg.txt \n
        *  These are the linear fits for the gluon scaling terms:
        *  @image html hgg_tt+bb+tb.png
+       *  tt: \f$-9.1*10^{-4}x + 1.23\f$ bb: \f$-2.86*10^{-4}x + 0.047\f$ \f$1.12*10^{-3}x - 0.27\f$ \n
+       *  A gnuplot script to reproduce the plots, called linearfit.gnu, \n
+       *  can be found in the images directory of the documentation.
        */
      double       Calculateg2hgg(
                                         double ghbb,
@@ -205,12 +209,19 @@ namespace Fittino {
        *  \f$\Delta_{SM}=\sqrt{\sum_{i,j}((\Delta_i+1)*(\Delta_j+1)*Scale(m_H))}-1\f$ \n
        *  The Scalefunction only works in the higgs mass range of 123-129 GeV and is \n
        *  a linear a linear fit of the corresponding numerical values. These values\n
-       *  can be found here http://people.web.psi.ch/spira/higgscoup/gaga.dat \n
+       *  can be found in the images directory of the documentation, called hgaga.txt \n
        *  These are the linear fits for the gamma scaling terms:
        *  @image html hgaga_tt+bb+tb.png
+       *  tt: \f$-5.85*10^{-4}x + 0.145\f$ bb: \f$-6.74*10^{-7}x + 1.04*10^{-4}\f$ tb: \f$3.51*10^{-5}x - 6.16*10^{-3}\f$
        *  @image html hgaga_WW+tW+bW.png
+       *  WW: \f$-2.48*10^{-3}x + 1.9\f$ tW: \f$3.3*10^{-3}x - 1.09\f$ bW: \f$-1.39*10^{-4}x - 0.0258\f$
        *  @image html hgaga_tautau+ttau+btau.png
+       *  tautau: \f$-7.89*10^{-7}x + 1.22*10^{-4}\f$ tW: \f$3.78*10^{-5}x - 6.64*10^{-3}\f$ 
+       *  bW: \f$-1.46*10^{-6}x + 2.25*10^{-4}\f$
        *  @image html hgaga_tauW.png
+       *  tauW: \f$-1.5*10^{-4}x + 0.0278\f$ \n
+       *  A gnuplot script to reproduce the plots, called linearfit.gnu, \n
+       *  can be found in the images directory of the documentation.
        */
       double       Calculateg2hgammagamma(
                                         double ghbb,
