@@ -24,7 +24,28 @@
 #include "SLHAChi2Contribution.h"
 #include "SLHAPrediction.h"
 
+#include <iostream>
+#include <stdlib.h>
+#include <time.h>
+
 Fittino::HECModel::HECModel() {
+
+    double a, b; //parameters used for rand()-function a is the minimum value, b is the maximum
+
+    a = -1.;
+
+    b = 5.;
+
+    srand( ( unsigned ) time ( NULL ) );
+
+    double rc = a +  rand() / (RAND_MAX / ( b - a ) );
+    double rb = a +  rand() / (RAND_MAX / ( b - a ) );
+    double rt = a +  rand() / (RAND_MAX / ( b - a ) );
+    double rtau = a +  rand() / (RAND_MAX / ( b - a ) );
+    double rW = a +  rand() / (RAND_MAX / ( b - a ) );
+    double rZ = a +  rand() / (RAND_MAX / ( b - a ) );
+    double rgamma = a +  rand() / (RAND_MAX / ( b - a ) );
+    double rg = a +  rand() / (RAND_MAX / ( b - a ) );
 
     _name = "HEC model";
 
@@ -32,28 +53,28 @@ Fittino::HECModel::HECModel() {
     //_parameterVector.push_back( new PhysicsParameter( "Alpha_S",           "#alpha_{S}",         0.1184, "GeV", "GeV", 0.1, -50.,  50., true  ) );
     //_parameterVector.push_back( new PhysicsParameter( "G_F",               "G_{F}",        1.1663787e-5,    "",    "", 0.1,  -5.,   5., true  ) );
 
-    _parameterVector.push_back( new PhysicsParameter( "Mass_h",            "m_{h}",                126., "GeV", "GeV", 0.02, 123., 129., false ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hss",       "#Delta_{s}hss",          0.,    "",    "",  0.1,  -7.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hss",       "#Delta_{p}hss",         -1.,    "",    "",  0.1,  -7.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hcc",       "#Delta_{s}hcc",          0.,    "",    "",  0.1,  -7.,   5., false ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hcc",       "#Delta_{p}hcc",         -1.,    "",    "",  0.1,  -7.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hbb",       "#Delta_{s}hbb",          0.,    "",    "",  0.1,  -7.,   5., false ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hbb",       "#Delta_{p}hbb",         -1.,    "",    "",  0.1,  -7.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_s_htt",       "#Delta_{s}htt",          0.,    "",    "",  0.2,  -7.,   5., false ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_p_htt",       "#Delta_{p}htt",         -1.,    "",    "",  0.1,  -7.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hmumu",     "#Delta_{s}h#mu#mu",      0.,    "",    "",  0.1,  -7.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hmumu",     "#Delta_{p}h#mu#mu",     -1.,    "",    "",  0.1,  -7.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_s_htautau",   "#Delta_{s}h#tau#tau",    0.,    "",    "",  0.1,  -7.,   5., false ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_p_htautau",   "#Delta_{p}h#tau#tau",   -1.,    "",    "",  0.1,  -7.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_hWW",         "#Delta hWW",             0.,    "",    "",  0.2,  -7.,   5., false ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_hZZ",         "#Delta hZZ",             0.,    "",    "",  0.2,  -7.,   5., false ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_hZgamma",     "#Delta hZ#gamma",        0.,    "",    "",  0.1,  -7.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_hgammagamma", "#Delta h#gamma#gamma",   0.,    "",    "",  0.1,  -7.,   5., false ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_hgg",         "#Delta hgg",             0.,    "",    "",  0.2,  -7.,   5., false ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_hggZ",        "#Delta hggZ",            0.,    "",    "",  0.1,  -7.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Delta_hihjZ",       "#Delta h_{i}h_{j}",     -1.,    "",    "",  0.1,  -7.,   5., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "BR_hjhihi",         "BR_{hjhihi}",            0.,    "",    "",  0.1,   0.,   1., true  ) );
-    _parameterVector.push_back( new PhysicsParameter( "Gamma_hInvisible",  "Gamma_{hInvisible}",     0., "GeV", "GeV", 0.01,   0.,   1., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Mass_h",            "m_{h}",                  126., "GeV", "GeV", 0.02, 123., 129., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hss",       "#Delta_{s}hss",            0.,    "",    "",  0.1,  -1.,   100., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hss",       "#Delta_{p}hss",           -1.,    "",    "",  0.1,  -1.,   100., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hcc",       "#Delta_{s}hcc",            rc,    "",    "",  0.1,  -1.,   100., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hcc",       "#Delta_{p}hcc",           -1.,    "",    "",  0.1,  -1.,   100., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hbb",       "#Delta_{s}hbb",            rb,    "",    "",  0.1,  -1.,   100., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hbb",       "#Delta_{p}hbb",           -1.,    "",    "",  0.1,  -1.,   100., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_s_htt",       "#Delta_{s}htt",            rt,    "",    "",  0.2,  -1.,   100., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_p_htt",       "#Delta_{p}htt",           -1.,    "",    "",  0.1,  -1.,   100., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_s_hmumu",     "#Delta_{s}h#mu#mu",        0.,    "",    "",  0.1,  -1.,   100., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_p_hmumu",     "#Delta_{p}h#mu#mu",       -1.,    "",    "",  0.1,  -1.,   100., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_s_htautau",   "#Delta_{s}h#tau#tau",    rtau,    "",    "",  0.1,  -1.,   100., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_p_htautau",   "#Delta_{p}h#tau#tau",     -1.,    "",    "",  0.1,  -1.,   100., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hWW",         "#Delta hWW",               rW,    "",    "",  0.2,  -1.,   100., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hZZ",         "#Delta hZZ",               rZ,    "",    "",  0.2,  -1.,   100., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hZgamma",     "#Delta hZ#gamma",          0.,    "",    "",  0.1,  -1.,   100., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hgammagamma", "#Delta h#gamma#gamma", rgamma,    "",    "",  0.1,  -1.,   100., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hgg",         "#Delta hgg",               rg,    "",    "",  0.2,  -1.,   100., false ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hggZ",        "#Delta hggZ",              0.,    "",    "",  0.1,  -1.,   100., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Delta_hihjZ",       "#Delta h_{i}h_{j}",       -1.,    "",    "",  0.1,  -1.,   100., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "BR_hjhihi",         "BR_{hjhihi}",              0.,    "",    "",  0.1,   0.,   1., true  ) );
+    _parameterVector.push_back( new PhysicsParameter( "Gamma_hInvisible",  "Gamma_{hInvisible}",       0., "GeV", "GeV", 0.01,   0.,   1., false ) );
 
     //SLHAModelCalculatorBase* slhaModelCalculator = new HiggsSignalsSLHAModelCalculator();
     //_modelCalculatorVector.push_back( slhaModelCalculator );
@@ -71,11 +92,10 @@ Fittino::HECModel::HECModel() {
     //_predictionVector.push_back( new SLHAPrediction( "BR_hgammagamma",                           "#BR h#gamma#gamma",                               "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "17", 1 ) );
     //_predictionVector.push_back( new SLHAPrediction( "BR_hgg",                                   "#BR hgg",                                         "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "18", 1 ) );
     //_predictionVector.push_back( new SLHAPrediction( "BR_hInvisible",                            "#BR-hInvisible",                                  "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "19", 1 ) );
-    //_predictionVector.push_back( new SLHAPrediction( "BR_Total",                                 "#BR Total",                                       "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "20", 1 ) );
-    //_predictionVector.push_back( new SLHAPrediction( "Delta_SM_hgammagamma",                     "#Delta_{SM}h#gamma#gamma",                        "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "21", 1 ) );
-    //_predictionVector.push_back( new SLHAPrediction( "Delta_Total_hgammagamma",                  "#Delta_{Total}h#gamma#gamma",                     "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "22", 1 ) );
-    //_predictionVector.push_back( new SLHAPrediction( "Delta_SM_hgg",                             "#Delta_{SM}hgg",                                  "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "23", 1 ) );
-    //_predictionVector.push_back( new SLHAPrediction( "Delta_Total_hgg",                          "#Delta_{Total}h#gg",                              "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "24", 1 ) );
+    //_predictionVector.push_back( new SLHAPrediction( "Delta_SM_hgammagamma",                     "#Delta_{SM}h#gamma#gamma",                        "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "20", 1 ) );
+    //_predictionVector.push_back( new SLHAPrediction( "Delta_Total_hgammagamma",                  "#Delta_{Total}h#gamma#gamma",                     "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "21", 1 ) );
+    //_predictionVector.push_back( new SLHAPrediction( "Delta_SM_hgg",                             "#Delta_{SM}hgg",                                  "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "22", 1 ) );
+    //_predictionVector.push_back( new SLHAPrediction( "Delta_Total_hgg",                          "#Delta_{Total}h#gg",                              "",    "", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "23", 1 ) );
     ////_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_inclusive_ATL",              "#mu_{h#gamma#gamma}inclusive-ATL",                "",    "", slhaModelCalculator, "HiggsSignalsPeakObservables",  "1", "17", 2 ) );
     //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_1lep_ATL",                   "#mu_{h#gamma#gamma}1lep-ATL",                     "",    "", slhaModelCalculator, "HiggsSignalsPeakObservables",  "1", "17", 2 ) );
     //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_conv_central_highPTt_ATL",   "#mu_{h#gamma#gamma}conv-central-highPTt-AT",      "",    "", slhaModelCalculator, "HiggsSignalsPeakObservables",  "2", "17", 2 ) );
@@ -139,8 +159,8 @@ Fittino::HECModel::HECModel() {
     ////_predictionVector.push_back( new SLHAPrediction( "Masstau", "GeV", slhaModelCalculator, "", "", 1 ) );
 
     //_chi2ContributionVector.push_back( new SLHAChi2Contribution( "HiggsSignals",         slhaModelCalculator, "HiggsSignalsResults",               "12", 1 ) );
-    //_chi2ContributionVector.push_back( new SLHAChi2Contribution( "Gamma_hTotal_Penalty", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "25", 1 ) );
-    ////_chi2ContributionVector.push_back( new SLHAChi2Contribution( "BR_hInvisible_Limit",  slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "26", 1 ) );
+    //_chi2ContributionVector.push_back( new SLHAChi2Contribution( "Gamma_hTotal_Penalty", slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "24", 1 ) );
+    //_chi2ContributionVector.push_back( new SLHAChi2Contribution( "BR_hInvisible_Limit",  slhaModelCalculator, "HiggsSignalsAdditionalPredictions", "25", 1 ) );
 
     PhysicsModelBase::Initialize();
 
