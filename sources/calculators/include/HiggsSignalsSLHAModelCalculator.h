@@ -202,6 +202,64 @@ namespace Fittino {
        128.  0.3676219090E-03   1.108663766      0.1071899652E-01 -0.1193827622 
        129.  0.3762328605E-03   1.107775663      0.1045447756E-01 -0.1182301408 
          \endverbatim
+       *  <table border="1" rules="cols" cellspacing="1" cellpadding="2">
+       *  <tr>
+       *  <td> m_H       </td>
+       *  <td> G_gg      </td>
+       *  <td> G_tt/G_gg </td>
+       *  <td> G_bb/G_gg </td>
+       *  <td> G_tb/G_gg </td>
+       *  </tr>
+       *  <tr>
+       *  <td> 123. </td>
+       *  <td> 0.3266293773E-03 </td>
+       *  <td> 1.113237058 </td>
+       *  <td> 0.1217362210E-01 </td>
+       *  <td> -0.1254106798 </td>
+       *  </tr>
+       *  <tr>
+       *  <td> 124. </td>
+       *  <td> 0.3345572863E-03 </td>
+       *  <td> 1.112305225 </td>
+       *  <td> 0.1186383935E-01 </td>
+       *  <td> -0.1241690646 </td>
+       *  </tr>
+       *  <tr>
+       *  <td> 125. </td>
+       *  <td> 0.3426180698E-03 </td>
+       *  <td> 1.111385465 </td>
+       *  <td> 0.1156395457E-01 </td>
+       *  <td> -0.1229494194 </td>
+       *  </tr>
+       *  <tr>
+       *  <td> 126. </td>
+       *  <td> 0.3508150440E-03 </td>
+       *  <td> 1.110471156 </td>
+       *  <td> 0.1127364780E-01 </td>
+       *  <td> -0.1217448033 </td>
+       *  </tr>
+       *  <tr>
+       *  <td> 127. </td>
+       *  <td> 0.3591490973E-03 </td>
+       *  <td> 1.109564189 </td>
+       *  <td> 0.1099182783E-01 </td>
+       *  <td> -0.1205560165 </td>
+       *  </tr>
+       *  <tr>
+       *  <td> 128. </td>
+       *  <td> 0.3676219090E-03 </td>
+       *  <td> 1.108663766 </td>
+       *  <td> 0.1071899652E-01 </td>
+       *  <td> -0.1193827622 </td>
+       *  </tr>
+       *  <tr>
+       *  <td> 129. </td>
+       *  <td> 0.3762328605E-03 </td>
+       *  <td> 1.107775663 </td>
+       *  <td> 0.1045447756E-01 </td>
+       *  <td> -0.1182301408 </td>
+       *  </tr>
+       *  </table>
        *  These are the linear fits for the gluon scaling terms:
        *  @image html hgg_tt+bb+tb.png
        *  tt: \f$-9.1*10^{-4}x + 1.23\f$ bb: \f$-2.86*10^{-4}x + 0.047\f$ \f$1.12*10^{-3}x - 0.27\f$ \n
@@ -291,7 +349,9 @@ namespace Fittino {
       virtual void CallExecutable();
       virtual void CallFunction( PhysicsModelBase* model );
       virtual void ConfigureInput( PhysicsModelBase* model );
-
+   
+    protected:
+      int nHzero;
     /*! \endcond UML */   
 
   };
