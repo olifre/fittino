@@ -26,7 +26,6 @@ def main():
         
     os.chdir(jobdir)
 
-
     for i in xrange(int(nJobs)):
 
         command = ['qsub']
@@ -39,6 +38,7 @@ def main():
             
         command.append( environ['FITTINO'] + '/postProcessing2/scripts/job_FH.sh' )
         command.append( model )
+        command.append( '-1' )
         command.append( nEntries )
 
         call(command)

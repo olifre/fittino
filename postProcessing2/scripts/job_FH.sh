@@ -12,7 +12,8 @@ echo "Script started"
 source $FITTINO_SETUP
 
 model=$1
-numberOfEvents=$2
+firstEvent=$2
+numberOfEvents=$3
 
 echo "model $model"
 echo "numberOfEvents $numberOfEvents"
@@ -36,7 +37,7 @@ cp $FITTINO/postProcessing2/FHeffC-calculator/FHeffC .
 cp /afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/SPheno-3.1.11/bin/SPheno .
 
 
-./$exeName $model $numberOfEvents
+./$exeName $model $firstEvent $numberOfEvents
 
 cp *.root $outputDir
 
