@@ -172,6 +172,65 @@ namespace Fittino {
 
     private:
       /*!
+       *
+       */
+      double       dm;
+      /*!
+       *
+       */
+      double       range;
+      /*!
+       *  4 0 = HZ production.
+       */
+      int          ChannelID;
+      /*!
+       *  collider = 1, 2, 3 for TEV, LHC7 or LHC8.
+       */
+      int          collider;
+      /*!
+       *  0: writes only block HiggsSignalsResults, 1: writes all blocks.
+       */
+      int          detailed;
+      /*!
+       *
+       */
+      int          iterations;
+      /*!
+       *  1, 2, 3 for peak-centered, masse-centered chi^2 method or both.
+       */
+      int          mode;
+      /*!
+       *
+       */
+      int          NChannels;
+      /*!
+       *  Number of Higgs particles.
+       */
+      int          nH;
+      /*!
+       *
+       */
+      int          nHplus;
+      /*!
+       *
+       */
+      int          nHzero;
+      /*!
+       *
+       */
+      int          nobs;
+      /*!
+       *  0: silent, 1: screen output, 2: even more output.
+       */
+      int          output_level;
+      /*!
+       *  1: box, 2: gaussian, 3: both.
+       */
+      int          pdf;
+
+    private:
+      double       CalculateBRhInvisible( double GammaTotal, double GammahInvisible );
+      /*!
        *  Calculates the limit of BRInvisible and returns a \f$ \chi^{2}\f$. The calculation \n
        *  is given by a polynomial fit of 10th degree. \n
        *  @image html grad10_parabel_small40.png
@@ -184,7 +243,7 @@ namespace Fittino {
        *  parabel = \f$3.322x^{2} + 4.92x\f$ \n
        *  The data shown in the fit can found in the images directory of the documentation, called brinvisible.txt
        */
-      double       CalculateLimitofBRInvisible( double x );
+      double       CalculateBRhInvisibleLimit( double x );
       /*!
        *  Calculates the SM Delta for the gluon gluon coupling that consists of \n
        *  other Higgs couplings: \n
@@ -266,7 +325,7 @@ namespace Fittino {
        *  A gnuplot script to reproduce the plots, called linearfit.gnu, \n
        *  can be found in the images directory of the documentation.
        */
-     double       Calculateg2hgg(
+      double       Calculateg2hgg(
                                         double ghbb,
                                         double ghtt,
                                         double massh
@@ -484,31 +543,11 @@ namespace Fittino {
                                         double GammaInvisible
                                       );
 
-    /*! \cond UML */
     private:
       virtual void CallExecutable();
       virtual void CallFunction( PhysicsModelBase* model );
       virtual void ConfigureInput( PhysicsModelBase* model );
   
-      int          nHzero;
-      int          nHplus;
-      int          output_level;
-      int          pdf;
-      double       dm;
-      double       range;
-      int          iterations;
-
-      int          nobs;
-      int          mode;
-      int          detailed;
-      int          nH;
-      int          collider;
-      int          NChannels;
-      int          ChannelID;
-
-
-    /*! \endcond UML */   
-
   };
 
 }
