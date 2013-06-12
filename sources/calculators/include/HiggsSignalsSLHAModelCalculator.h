@@ -489,9 +489,24 @@ namespace Fittino {
       virtual void CallExecutable();
       virtual void CallFunction( PhysicsModelBase* model );
       virtual void ConfigureInput( PhysicsModelBase* model );
-   
-    protected:
-      int nHzero;
+  
+      int          nHzero;
+      int          nHplus;
+      int          output_level;
+      int          pdf;
+      double       dm;
+      double       range;
+      int          iterations;
+
+      int          nobs;
+      int          mode;
+      int          detailed;
+      int          nH;
+      int          collider;
+      int          NChannels;
+      int          ChannelID;
+
+
     /*! \endcond UML */   
 
   };

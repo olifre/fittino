@@ -33,6 +33,20 @@ Fittino::HiggsSignalsSLHAModelCalculator::HiggsSignalsSLHAModelCalculator() {
 
     _name               = "HiggsSignals";
     _slhaOutputFileName = "HS-output.slha";
+    //nHzero            = 1;
+    //nHplus            = 0;
+    //output_level      = 0; // 0: silent, 1: screen output , 2: even more output
+    //pdf               = 2; // 1: box,    2: gaussian,       3: both
+    //range             = 2.;
+    //iterations        = 0;
+
+    nobs                = 1;
+    mode                = 1; // 1, 2, 3 for peak-centered, masse-centered chi^2 method or both
+    detailed            = 1; // 0: writes only block HiggsSignalsResults, 1: writes all blocks
+    nH                  = 1; // Number of Higgs particles
+    collider            = 3; // collider = 1, 2, 3 for TEV, LHC7 or LHC8
+    NChannels           = 1;
+    ChannelID           =40; // 4 0 = HZ production
 
 }
 
@@ -425,8 +439,9 @@ void Fittino::HiggsSignalsSLHAModelCalculator::SetRateUncertainties( double g2hj
     double g2hjbb = g2hjbb_s + g2hjbb_p;
     double dhbb = 0.2, dhgg = 0.147;
 
+    dCS[0] = 0.147;
     //dCS[0] = 0.2;
-    dCS[0] = CalculateSinglehUncertainty( dhbb, dhgg, g2hjbb, g2hjgg, massh ); // singleH
+    //dCS[0] = CalculateSinglehUncertainty( dhbb, dhgg, g2hjbb, g2hjgg, massh ); // singleH
     dCS[1] = 0.028; // VBF
     dCS[2] = 0.037; // HW
     dCS[3] = 0.051; // HZ
@@ -463,24 +478,13 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     double g2hjWW         = pow( 1 + model->GetParameterVector()->at( 13 )->GetValue(), 2 );
     double g2hjZZ         = pow( 1 + model->GetParameterVector()->at( 14 )->GetValue(), 2 );
     double g2hjZga        = pow( 1 + model->GetParameterVector()->at( 15 )->GetValue(), 2 );
-    //double g2hjgaga     = pow( 1 + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
-    //double g2hjgg       = pow( 1 + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
+    double g2hjgaga       = pow( 1 + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
+    double g2hjgg         = pow( 1 + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
     double g2hjggZ        = pow( 1 + model->GetParameterVector()->at( 18 )->GetValue(), 2 );
     double g2hjhiZ        = pow( 1 + model->GetParameterVector()->at( 19 )->GetValue(), 2 );
 
     double BR_hjhihi      = model->GetParameterVector()->at( 20 )->GetValue();
     double GammaInvisible = model->GetParameterVector()->at( 21 )->GetValue();
-
-    double g2hjgaga       = pow( sqrt( Calculateg2hgammagamma( 1 + model->GetParameterVector()->at(  5 )->GetValue(),
-                                                               1 + model->GetParameterVector()->at(  7 )->GetValue(),
-                                                               1 + model->GetParameterVector()->at( 11 )->GetValue(),
-                                                               1 + model->GetParameterVector()->at( 13 )->GetValue(),
-                                                               1 + model->GetParameterVector()->at( 14 )->GetValue(), massh ) )
-                                                                 + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
-
-    double g2hjgg         = pow( sqrt( Calculateg2hgg( 1 + model->GetParameterVector()->at(  5 )->GetValue(),
-                                                       1 + model->GetParameterVector()->at(  7 )->GetValue(), massh ) )
-                                                         + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
 
     // Calculate the total width of the Higgs boson.
 
@@ -539,7 +543,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     // Run HiggsSignals.
 
-    int nobs, mode = 1; // mode = 1, 2, 3 for peak-centered, masse-centered chi^2 method or both
+    //int nobs, mode = 1; // mode = 1, 2, 3 for peak-centered, masse-centered chi^2 method or both
     double Chisq_mu, Chisq_mh, Chisq , Pvalue;
 
     run_higgssignals_( &mode, &Chisq_mu, &Chisq_mh, &Chisq, &nobs, &Pvalue );
@@ -558,14 +562,12 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     system( "rm HS-output.slha" );
 
-    int detailed = 1; // 0: writes only block HiggsSignalsResults, 1: writes all blocks
+    //int detailed = 1; // 0: writes only block HiggsSignalsResults, 1: writes all blocks
     __io_MOD_higgssignals_create_slha_output_default( &detailed );
 
     // Write additional HiggsSignals predictions to file.
 
-    //double g2hjgaga = Calculateg2hgammagamma( sqrt( g2hjbb_s ), sqrt( g2hjtt_s ), sqrt( g2hjtautau_s ), sqrt( g2hjWW ), sqrt( g2hjZZ ) );
-
-    int nH = 1, collider = 3; // collider = 1, 2, 3 for TEV, LHC7 or LHC8
+    //int nH = 1, collider = 3; // collider = 1, 2, 3 for TEV, LHC7 or LHC8
     double R_H_WW, R_H_ZZ, R_H_gammagamma, R_H_tautau, R_H_bb, R_VH_bb;
 
     double BR_s_hss       = g2hjss_s      * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hss_( &massh );
@@ -599,22 +601,18 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     }
 
-    double Delta_SM_hgammagamma = sqrt( Calculateg2hgammagamma( 1 + model->GetParameterVector()->at(  5 )->GetValue(),
-                                                                1 + model->GetParameterVector()->at(  7 )->GetValue(),
-                                                                1 + model->GetParameterVector()->at( 11 )->GetValue(),
-                                                                1 + model->GetParameterVector()->at( 13 )->GetValue(),
-                                                                1 + model->GetParameterVector()->at( 14 )->GetValue(), massh ) ) - 1;
+    double g2hjgaga_NoBSM  = Calculateg2hgammagamma( 1 + model->GetParameterVector()->at(  5 )->GetValue(),
+                                                     1 + model->GetParameterVector()->at(  7 )->GetValue(),
+                                                     1 + model->GetParameterVector()->at( 11 )->GetValue(),
+                                                     1 + model->GetParameterVector()->at( 13 )->GetValue(),
+                                                     1 + model->GetParameterVector()->at( 14 )->GetValue(), massh );
 
-    double Delta_Total_hgammagamma = Delta_SM_hgammagamma + model->GetParameterVector()->at( 16 )->GetValue();
-
-    double Delta_SM_hgg = sqrt( Calculateg2hgg( 1 +model->GetParameterVector()->at(  5 )->GetValue(),
-                                                1 + model->GetParameterVector()->at(  7 )->GetValue(), massh ) ) - 1;
-
-    double Delta_Total_hgg = Delta_SM_hgg + model->GetParameterVector()->at( 17 )->GetValue();
+    double g2hjgg_NoBSM    = Calculateg2hgg( 1 + model->GetParameterVector()->at(  5 )->GetValue(),
+                                             1 + model->GetParameterVector()->at(  7 )->GetValue(), massh );
 
     get_rvalues_( &nH, &collider, &R_H_WW, &R_H_ZZ, &R_H_gammagamma, &R_H_tautau, &R_H_bb, &R_VH_bb );
  
-    int NChannels = 1, ChannelID = 40; // 4 0 = HZ production
+    //int NChannels = 1, ChannelID = 40; // 4 0 = HZ production
 
     double HZrate;
 
@@ -647,12 +645,10 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     _slhaOutputDataStorage->AddLine( blockName + ":17:" + String( BR_hgammagamma )          + ":# BR_hgammagamma" );
     _slhaOutputDataStorage->AddLine( blockName + ":18:" + String( BR_hgg )                  + ":# BR_hgg" );
     _slhaOutputDataStorage->AddLine( blockName + ":19:" + String( BR_hjinvisible )          + ":# BR_hjInvisible" );
-    _slhaOutputDataStorage->AddLine( blockName + ":20:" + String( Delta_SM_hgammagamma )    + ":# Delta_SM_hgammagamma" );
-    _slhaOutputDataStorage->AddLine( blockName + ":21:" + String( Delta_Total_hgammagamma ) + ":# Delta_Total_hgammagamma" );
-    _slhaOutputDataStorage->AddLine( blockName + ":22:" + String( Delta_SM_hgg )            + ":# Delta_SM_hgg" );
-    _slhaOutputDataStorage->AddLine( blockName + ":23:" + String( Delta_Total_hgg )         + ":# Delta_Total_hgg" );
-    _slhaOutputDataStorage->AddLine( blockName + ":24:" + String( Gamma_hTotal_Penalty )    + ":# Gamma_hTotal_Penalty" );
-    _slhaOutputDataStorage->AddLine( blockName + ":25:" + String( BR_hInvisible_Limit )     + ":# BR_hInvisible_Limit" );
+    _slhaOutputDataStorage->AddLine( blockName + ":20:" + String( g2hjgaga_NoBSM )          + ":# g2hjgaga_NoBSM" );
+    _slhaOutputDataStorage->AddLine( blockName + ":21:" + String( g2hjgg_NoBSM )            + ":# g2hjgg_NoBSM" );
+    _slhaOutputDataStorage->AddLine( blockName + ":22:" + String( Gamma_hTotal_Penalty )    + ":# Gamma_hTotal_Penalty" );
+    _slhaOutputDataStorage->AddLine( blockName + ":23:" + String( BR_hInvisible_Limit )     + ":# BR_hInvisible_Limit" );
 
     _slhaOutputDataStorage->WriteFile( _slhaOutputFileName );
 
