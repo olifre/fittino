@@ -4,7 +4,13 @@
 #include <iostream>
 #include <stdexcept>
 
-HiggsCalculator::HiggsCalculator(FloatStorage* in, FloatStorage* out,  std::string obsSet, double theoMassUnc ) {
+HiggsCalculator::HiggsCalculator(FloatStorage* in, FloatStorage* out,  std::string obsSet, std::string theoMassUncStr ) {
+
+  double theoMassUnc;
+
+  std::stringstream ss;
+  ss<<theoMassUncStr;
+  ss>>theoMassUnc;
 
   std::cout<<"Using HS obsSet "<<obsSet<<" and theoMassUnc "<<theoMassUnc<<"."<<std::endl;
 
@@ -14,13 +20,14 @@ HiggsCalculator::HiggsCalculator(FloatStorage* in, FloatStorage* out,  std::stri
   _obsSet = obsSet;
   _nHiggsneut = 1;
   _nHiggsplus = 0;
+  _tag="HS_";
   if ( _obsSet == "inclusive" ) {
-
+    _tag+="_incl_";
     initialize_higgssignals_for_fittino_( &_nHiggsneut, &_nHiggsplus );
 
   }
   else if ( _obsSet == "category" ) {
-
+    _tag+="_cat_";
     initialize_higgssignals_latestresults_( &_nHiggsneut, &_nHiggsplus );
 
   }
@@ -30,13 +37,19 @@ HiggsCalculator::HiggsCalculator(FloatStorage* in, FloatStorage* out,  std::stri
 
   }
 
+  //  _tag+="ar10000_";
+
+  _tag+=theoMassUncStr+"_";
+
   _outputLevel = 0;
   setup_output_level_( &_outputLevel );
 
   _iteration = 0;
   setup_higgs_to_peaks_assignment_iterations_( &_iteration );
 
-  _range = 2;
+  _range = 2; 
+  //_range = 10000;
+
   setup_assignmentrange_( &_range );
 
   _pdf_in = 2;
@@ -45,6 +58,7 @@ HiggsCalculator::HiggsCalculator(FloatStorage* in, FloatStorage* out,  std::stri
   _dMh[0] = theoMassUnc;
   _dMh[1] = theoMassUnc;
   _dMh[2] = theoMassUnc;
+
   higgssignals_neutral_input_massuncertainty_( _dMh );
 
 
@@ -62,7 +76,7 @@ HiggsCalculator::HiggsCalculator(FloatStorage* in, FloatStorage* out,  std::stri
   _hsmode = 1;
   _collider = 3;
 
-  _mh = 125;
+  _mh = 125.5;
   _gammaTotal = 1;
   _g2hjss_s = 1;
   _g2hjss_p = 0;
@@ -90,12 +104,12 @@ HiggsCalculator::HiggsCalculator(FloatStorage* in, FloatStorage* out,  std::stri
 
   __io_MOD_get_number_of_observables( &_ntotal, &_npeakmu, &_npeakmh, &_nmpred, &_nanalyses );
 
-  _out->Add( "dCS0",         _dCS[0] );   
-  _out->Add( "HS_ntotal",    _ntotal );
-  _out->Add( "HS_npeakmu",   _npeakmu );
-  _out->Add( "HS_npeakmh",   _npeakmh );
-  _out->Add( "HS_nmpred",    _nmpred );
-  _out->Add( "HS_nanalyses", _nanalyses );
+  _out->Add( _tag+"dCS0",         _dCS[0] );   
+  _out->Add( _tag+"ntotal",    _ntotal );
+  _out->Add( _tag+"npeakmu",   _npeakmu );
+  _out->Add( _tag+"npeakmh",   _npeakmh );
+  _out->Add( _tag+"nmpred",    _nmpred );
+  _out->Add( _tag+"nanalyses", _nanalyses );
 
   for( int i = 1; i <= _npeakmu; i++ ) {
 
@@ -104,26 +118,28 @@ HiggsCalculator::HiggsCalculator(FloatStorage* in, FloatStorage* out,  std::stri
     __io_MOD_get_id_of_peakobservable(&i, &ID);
     ss << ID;
     _ID[ID] = ss.str();
-    _out->Add( "HS_mupred_"+_ID[ID] );
-    _out->Add( "HS_csqmu_"+_ID[ID] );
-    _out->Add( "HS_csqmh_"+_ID[ID] );
-    _out->Add( "HS_csqmax_"+_ID[ID] );
-    _out->Add( "HS_csqtot_"+_ID[ID] );
+    _out->Add( _tag+"mupred_"+_ID[ID] );
+    _out->Add( _tag+"csqmu_"+_ID[ID] );
+    _out->Add( _tag+"csqmh_"+_ID[ID] );
+    _out->Add( _tag+"csqmax_"+_ID[ID] );
+    _out->Add( _tag+"csqtot_"+_ID[ID] );
 
   }
 
-  _out->Add( "HS_Chisq" );
-  _out->Add( "HS_Chisq_mh" );
-  _out->Add( "HS_Chisq_mu" );
-  _out->Add( "HS_ndf" );
-  _out->Add( "HS_Pvalue" );
+  _out->Add( _tag+"Chisq" );
+  _out->Add( _tag+"Chisq_mh" );
+  _out->Add( _tag+"Chisq_mu" );
+  _out->Add( _tag+"ndf" );
+  _out->Add( _tag+"Pvalue" );
 
-  _out->Add( "HS_R_H_WW" );
-  _out->Add( "HS_R_H_ZZ" );
-  _out->Add( "HS_R_H_gaga" );
-  _out->Add( "HS_R_H_tautau" );
-  _out->Add( "HS_R_H_bb" );
-  _out->Add( "HS_R_VH_bb" );
+  _out->Add( _tag+"R_H_WW" );
+  _out->Add( _tag+"R_H_ZZ" );
+  _out->Add( _tag+"R_H_gaga" );
+  _out->Add( _tag+"R_H_tautau" );
+  _out->Add( _tag+"R_H_bb" );
+  _out->Add( _tag+"R_VH_bb" );
+
+  _out->Add( _tag+"HB_gamma_SM");
 
   ConfigureOutput();
 
@@ -240,37 +256,55 @@ void HiggsCalculator::ConfigureInput() {
 
   // == when the couplings were not saved in the ntuple: g2 = BF*Gamma / BF_SM*Gamma_SM 
 
-  _mh             = _in->Get("O_massh0");
-  _gammaTotal     = _in->Get("O_widthh0");
+//   _mh             = _in->Get("O_massh0");
+//   _gammaTotal     = _in->Get("O_widthh0");
+//   double gammaRatio = _gammaTotal / smgamma_h_( &_mh );
+//   _g2hjss_s       = _in->Get("O_h0_To_Strange_Strange~_") / smbr_hss_( &_mh ) * gammaRatio;
+//   _g2hjcc_s       = _in->Get("O_h0_To_Charm_Charm~_") / smbr_hcc_( &_mh ) * gammaRatio;
+//   _g2hjbb_s       = _in->Get("O_HiggsScalarFermionCoupling3250505");
+//   _g2hjtt_s       = _in->Get("O_HiggsScalarFermionCoupling3250606");
+//   _g2hjmumu_s     = _in->Get("O_h0_To_Muon_Muon~_") / smbr_hmumu_( &_mh ) * gammaRatio;
+//   _g2hjtautau_s   = _in->Get("O_HiggsScalarFermionCoupling3251515");
+//   _g2hjWW         = _in->Get("O_HiggsBosonCoupling3252424");
+//   _g2hjZZ         = _in->Get("O_HiggsBosonCoupling3252323");
+//   _g2hjZga        = _in->Get("O_h0_To_Z_Gamma_") / smbr_hzgam_( &_mh ) * gammaRatio;
+//   _g2hjgaga       = _in->Get("O_h0_To_Gamma_Gamma_") / smbr_hgamgam_( &_mh ) * gammaRatio;
+//   _g2hjgg         = _in->Get("O_HiggsBosonCoupling3252121");
+//   _g2hjggZ        = _in->Get("O_HiggsBosonCoupling425212123");
+//   _g2hjhiZ        = _in->Get("O_HiggsBosonCoupling3252523");
+//   _BR_hjinvisible = _in->Get("O_h0_To_Neutralino1_Neutralino1_");
 
-  double gammaRatio = _gammaTotal / smgamma_h_( &_mh );
+  _mh             = _in->Get("FH_massh0");
+  _gammaTotal     = _in->Get("FH_Z_GTot_Model")*smgamma_h_( &_mh )/_in->Get("FH_Z_GTot_SM");
+  _g2hjss_s       = _in->Get("FH_Z_g2hss_s_GammaNorm");
+  _g2hjcc_s       = _in->Get("FH_Z_g2hcc_s_GammaNorm");
+  _g2hjbb_s       = _in->Get("FH_Z_bbh_Model")/_in->Get("FH_Z_bbh_SM");
+  _g2hjtt_s       = _in->Get("FH_Z_tth_Model")/_in->Get("FH_Z_tth_SM");
+  _g2hjmumu_s     = _in->Get("FH_Z_g2hmumu_s_GammaNorm");
+  _g2hjtautau_s   = _in->Get("FH_Z_g2htautau_s_GammaNorm");
+  _g2hjWW         = _in->Get("FH_Z_g2hWW_GammaNorm");
+  _g2hjZZ         = _in->Get("FH_Z_g2hZZ_GammaNorm");
+  _g2hjZga        = 1;
+  _g2hjgaga       = _in->Get("FH_Z_g2hgaga_GammaNorm");
+  _g2hjgg         = _in->Get("FH_Z_ggh_Model")/_in->Get("FH_Z_ggh_SM");
+  _g2hjggZ        = 1;
+  _g2hjhiZ        = 0;
+  _BR_hjinvisible = _in->Get("FH_Z_G(h->n1n1)_Model")/_in->Get("FH_Z_GTot_Model");
 
-  _g2hjss_s       = _in->Get("O_h0_To_Strange_Strange~_") / smbr_hss_( &_mh ) * gammaRatio;
-  _g2hjcc_s       = _in->Get("O_h0_To_Charm_Charm~_") / smbr_hcc_( &_mh ) * gammaRatio;
-  _g2hjbb_s       = _in->Get("O_HiggsScalarFermionCoupling3250505");
-  _g2hjtt_s       = _in->Get("O_HiggsScalarFermionCoupling3250606");
-  _g2hjmumu_s     = _in->Get("O_h0_To_Muon_Muon~_") / smbr_hmumu_( &_mh ) * gammaRatio;
-  _g2hjtautau_s   = _in->Get("O_HiggsScalarFermionCoupling3251515");
-  _g2hjWW         = _in->Get("O_HiggsBosonCoupling3252424");
-  _g2hjZZ         = _in->Get("O_HiggsBosonCoupling3252323");
-  _g2hjZga        = _in->Get("O_h0_To_Z_Gamma_") / smbr_hzgam_( &_mh ) * gammaRatio;
-  _g2hjgaga       = _in->Get("O_h0_To_Gamma_Gamma_") / smbr_hgamgam_( &_mh ) * gammaRatio;
-  _g2hjgg         = _in->Get("O_HiggsBosonCoupling3252121");
-  _g2hjggZ        = _in->Get("O_HiggsBosonCoupling425212123");
-  _g2hjhiZ        = _in->Get("O_HiggsBosonCoupling3252523");
-  _BR_hjinvisible = _in->Get("O_h0_To_Neutralino1_Neutralino1_");
 
 }
 
 void HiggsCalculator::ConfigureOutput(){
 
-  _out->Set( "dCS0", _dCS[0] );
+  _out->Set( _tag+"HB_gamma_SM", smgamma_h_( &_mh ) );
 
-  _out->Set( "HS_Chisq_mu", _Chisq_mu );
-  _out->Set( "HS_Chisq_mh", _Chisq_mh );
-  _out->Set( "HS_Chisq",    _Chisq    );
-  _out->Set( "HS_ndf",      _ndf      );
-  _out->Set( "HS_Pvalue",   _Pvalue   );
+  _out->Set( _tag+"dCS0", _dCS[0] );
+
+  _out->Set( _tag+"Chisq_mu", _Chisq_mu );
+  _out->Set( _tag+"Chisq_mh", _Chisq_mh );
+  _out->Set( _tag+"Chisq",    _Chisq    );
+  _out->Set( _tag+"ndf",      _ndf      );
+  _out->Set( _tag+"Pvalue",   _Pvalue   );
   
   int i = 1;
 
@@ -283,12 +317,12 @@ void HiggsCalculator::ConfigureOutput(){
 		&_R_H_bb,
 		&_R_VH_bb );
 
-  _out->Set( "HS_R_H_WW",      _R_H_WW     );
-  _out->Set( "HS_R_H_ZZ",      _R_H_ZZ     );
-  _out->Set( "HS_R_H_gaga",    _R_H_gaga   );
-  _out->Set( "HS_R_H_tautau",  _R_H_tautau );
-  _out->Set( "HS_R_H_bb",      _R_H_bb     );
-  _out->Set( "HS_R_VH_bb",     _R_VH_bb    );
+  _out->Set( _tag+"R_H_WW",      _R_H_WW     );
+  _out->Set( _tag+"R_H_ZZ",      _R_H_ZZ     );
+  _out->Set( _tag+"R_H_gaga",    _R_H_gaga   );
+  _out->Set( _tag+"R_H_tautau",  _R_H_tautau );
+  _out->Set( _tag+"R_H_bb",      _R_H_bb     );
+  _out->Set( _tag+"R_VH_bb",     _R_VH_bb    );
 
 
   std::map< int, std::string >::iterator iter;
@@ -299,15 +333,15 @@ void HiggsCalculator::ConfigureOutput(){
     int domH, nHcomb;
     int id = iter->first;
     __io_MOD_get_peakinfo_from_hsresults( &id, &mupred, &domH, &nHcomb );
-    _out->Set( "HS_mupred_" + iter->second, mupred );
+    _out->Set( _tag+"mupred_" + iter->second, mupred );
 
     
     double csqmu, csqmh, csqmax, csqtot;
     __pc_chisq_MOD_get_peakchi2( &id, &csqmu, &csqmh, &csqmax, &csqtot); 
-    _out->Set("HS_csqmu_"  + iter->second,  csqmu );
-    _out->Set("HS_csqmh_"  + iter->second,  csqmh );
-    _out->Set("HS_csqmax_" + iter->second,  csqmax);
-    _out->Set("HS_csqtot_" + iter->second,  csqtot);
+    _out->Set( _tag+"csqmu_"  + iter->second,  csqmu );
+    _out->Set( _tag+"csqmh_"  + iter->second,  csqmh );
+    _out->Set( _tag+"csqmax_" + iter->second,  csqmax);
+    _out->Set( _tag+"csqtot_" + iter->second,  csqtot);
 
 
   }

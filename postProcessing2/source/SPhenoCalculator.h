@@ -14,12 +14,13 @@ class SPhenoCalculator{
 
   void SetInput(FloatStorage* in);
   void SetOutput(FloatStorage* out);
-  int Calculate();
+  int  Calculate();
 
  private:
 
   int WriteSLHA();
   int ReadSLHA();
+  int CallExecutable();
 
   FloatStorage* _in;
   FloatStorage* _out;
@@ -27,9 +28,5 @@ class SPhenoCalculator{
   SLHAea::Coll _coll;
 
 };
-
-
-
-
 
 #endif

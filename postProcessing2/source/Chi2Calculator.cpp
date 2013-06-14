@@ -13,6 +13,7 @@ Chi2Calculator::Chi2Calculator() {
   _chi2 = 0;
   _astro = 0;
   _maxChi2 = -1;
+  _minChi2=-1;
   
 }
 
@@ -27,6 +28,13 @@ double Chi2Calculator::GetMaxChi2(){
   return _maxChi2;
 
 }
+
+double Chi2Calculator::GetMinChi2(){
+
+  return _minChi2;
+
+}
+
 
 std::vector<std::string> Chi2Calculator::GetChi2Contributions(){
 
@@ -68,6 +76,13 @@ void Chi2Calculator::SetMaxChi2(double chi2){
   _maxChi2 = chi2;
 
 }
+
+void Chi2Calculator::SetMinChi2(double chi2){
+
+  _minChi2 = chi2;
+
+}
+
 
 void Chi2Calculator::AddChi2Contribution( std::string name ){
 

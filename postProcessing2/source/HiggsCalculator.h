@@ -57,7 +57,7 @@ class HiggsCalculator{
 
  public:
 
-  HiggsCalculator(FloatStorage* in, FloatStorage* out, std::string obSet, double theoMassUnc);
+  HiggsCalculator(FloatStorage* in, FloatStorage* out, std::string obSet, std::string theoMassUncStr);
   ~HiggsCalculator();
 
   void          Calculate(); 
@@ -153,6 +153,8 @@ class HiggsCalculator{
 
   std::map< int, std::string > _ID;
 
+
+  std::string _tag;
 
 };
 

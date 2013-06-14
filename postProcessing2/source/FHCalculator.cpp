@@ -38,6 +38,8 @@ FHCalculator::FHCalculator(){
   _rates1_row.push_back("ggh2");
   _rates1_row.push_back("StSth");
   _rates1_row.push_back("tHmFH");
+  _rates1_row.push_back("DeltaMB"); // new in FH2
+
   
   _rates1_col.push_back("Model");
 
@@ -250,7 +252,7 @@ int FHCalculator::ReadSLHAFile(std::string fileName){
 
 int FHCalculator::Calculate(){
 
-  _out->Set("FH_success", 0);
+  _out->Set("FH_success", 1);
 
   system("mv effectivecouplings_UHiggs.dat.last effectivecouplings_UHiggs.dat.last2");
   system("mv effectivecouplings_ZHiggs.dat.last effectivecouplings_ZHiggs.dat.last2");
@@ -262,7 +264,7 @@ int FHCalculator::Calculate(){
 
   int rc=0;
 
-  rc=system("./FHeffC > /dev/null 2>&1");
+  rc=system("./FHeffC2 > /dev/null 2>&1");
   if (rc) return rc;
 
   rc=ReadCouplingsFile("effectivecouplings_UHiggs.dat", "FH_U");
@@ -274,7 +276,7 @@ int FHCalculator::Calculate(){
   rc=ReadSLHAFile("SPheno.spc.fh");
   if (rc) return rc;
 
-  _out->Set("FH_success", 1);
+  _out->Set("FH_success", 0);
   return 0;
   
 

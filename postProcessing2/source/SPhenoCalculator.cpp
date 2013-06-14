@@ -1,14 +1,14 @@
-
-
-#include "SPhenoCalculator.h"
-
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <string>
 #include <limits>
 #include <stdexcept>
+#include <sys/wait.h>
+#include <sys/signal.h>
+#include <unistd.h>
 
+#include "SPhenoCalculator.h"
 
 SPhenoCalculator::SPhenoCalculator(std::string model){
 
@@ -83,14 +83,70 @@ void SPhenoCalculator::SetOutput(FloatStorage* out){
   _out->Add("SPheno_gamma_neut3");
   _out->Add("SPheno_gamma_neut4");
 
+}
 
 
+int SPhenoCalculator::CallExecutable(){
+
+  int return_value;
+  int child_pid = 0;
+  int status = 0;
+  int pid = -2;
+
+  if ((pid = fork()) < 0) {
+    perror("fork");
+    exit(1);
+  }
+
+  if (pid == 0) {
+    /*1
+     * The child executes the code inside this if.
+     */
+    child_pid = getpid();
+    char *argv[2];
+    argv[0] = "SPheno";
+    argv[1] = 0;
+    return_value = execve("./SPheno", argv, environ );
+    exit (return_value);
+  }
+  else {
+    /*
+     * The parent executes this
+     */
+    int spheno_counter = 0;
+    while (1) {
+      spheno_counter++;
+      if (waitpid (pid, &status, WNOHANG) == pid) {
+	break;
+      } 
+      if ( 20 < (float)spheno_counter/10. ) {
+	printf("killing child process %d due to too much time\n",pid);
+	kill (pid, 9);
+	waitpid (-1, &status, 0);
+	return(1);
+      }
+      usleep (100000);
+    }
+  }
+
+  return_value = WEXITSTATUS(status);
+
+  if (return_value > 0) {
+    return(return_value);
+  }
+
+  if (access("SPheno.spc", R_OK)){
+    std::cerr << "SPheno.spc not found." << std::endl;
+    return 1;
+  }
+
+  return 0;
 
 }
 
 int SPhenoCalculator::Calculate(){
 
-  _out->Set("SPheno_success", 0);
+  int rc;
 
   system("mv LesHouches.in.last LesHouches.in.last2");
   system("mv SPheno.spc.last SPheno.spc.last2");
@@ -98,20 +154,34 @@ int SPhenoCalculator::Calculate(){
   system("mv LesHouches.in LesHouches.in.last");
   system("mv SPheno.spc SPheno.spc.last");
 
-  int rc=0;
   rc=WriteSLHA();
   
-  if (rc) return rc;
-  
-  rc=system("./SPheno");
+  if (rc){
 
-  if (rc) return rc;
+    _out->Set("SPheno_success", 1);
+    return rc;
+
+  }
+
+  rc=CallExecutable();
+
+  if (rc){
+
+    _out->Set("SPheno_success", 2);
+    return rc;
+
+  } 
   
   rc=ReadSLHA();
 
-  if (rc) return rc;
+  if (rc) {
 
-  _out->Set("SPheno_success", 1);
+    _out->Set("SPheno_success", 3);
+    return rc;
+
+  }
+
+  _out->Set("SPheno_success", 0);
   return 0;
 
 }
@@ -187,11 +257,9 @@ int SPhenoCalculator::WriteSLHA(){
 int SPhenoCalculator::ReadSLHA(){
 
   std::ifstream inFile("SPheno.spc");
-
   
   if (!inFile){
     std::cout<<"cant open SPheno.spc"<<std::endl;
-  
     return 1;
   }
 

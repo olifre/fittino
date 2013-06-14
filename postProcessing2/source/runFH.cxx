@@ -11,12 +11,18 @@
 #include "SPhenoCalculator.h"
 #include "TSystem.h"
 
-int main(int arc, char** argv){
+int main(int argc, char** argv){
+
+  if (argc!=4){
+
+    std::cout<<"Usage: ./runFH model firstEvent maxEvents"<<std::endl;
+    return 1;
+    
+  }
 
   std::string model = argv[1];
   std::string firstEventStr = argv[2];
   std::string numberOfEventsStr = argv[3];
-
 
   std::stringstream sstream;
   
@@ -30,10 +36,8 @@ int main(int arc, char** argv){
   sstream>>firstEvent;
   sstream.clear();
 
-  TString ifDir="$FITTINO_INTERFACE/FH_noHiggsRates/"+model;
+  TString ifDir="$FITTINO_INTERFACE/"+model;
   gSystem->ExpandPathName(ifDir);
-  TString lockDir="$FITTINO_LOCKING/FH_noHiggsRates/"+model;
-  gSystem->ExpandPathName(lockDir);
 
   bool useInterFaceFile=false;
   if ( firstEvent<0 ) useInterFaceFile=true;
@@ -43,7 +47,7 @@ int main(int arc, char** argv){
   if (useInterFaceFile){
   
     while (rc!=0){
-      rc=system(("mkdir "+lockDir+"/locked").Data());
+      rc=system(("mkdir "+ifDir+"/locked").Data());
     }
   
     ifstream fin((ifDir+"/event.txt").Data());
@@ -74,9 +78,11 @@ int main(int arc, char** argv){
     ifFile << lastEvent<< std::endl;
     ifFile.close();
   
-    system(("rm -r "+lockDir+"/locked").Data());
+    system(("rm -r "+ifDir+"/locked").Data());
 
   }
+
+  std::cout<<"Building the chains"<<std::endl;
 
   TChain* markovChain_in = new TChain("markovChain");
   markovChain_in->Add(("$FITTINO_SORT/outputs/"+model+"/*.root").c_str());
@@ -86,6 +92,7 @@ int main(int arc, char** argv){
   metadata_in->Add(("$FITTINO_SORT/outputs/"+model+"/*.root").c_str());
   metadata_in->LoadTree(0);   
 
+  std::cout<<"Finished building the chains"<<std::endl;
 
   std::string outFileName=model+"_evnt_"+firstEventStr+"_"+lastEventStr+".root";
 
@@ -111,6 +118,12 @@ int main(int arc, char** argv){
 
   for (Long64_t i=firstEvent; i<lastEvent; i++){
 
+    if (i%500==0){
+
+      std::cout<<"Entry "<<i<<std::endl;
+
+    }
+
     int nb1=markovChain_in->GetEntry(i);
     int nb2=metadata_in->GetEntry(i);
 
@@ -122,14 +135,20 @@ int main(int arc, char** argv){
       
     }
 
-    rc=spheno.Calculate();
-    if (rc) continue;
+    int rcSPheno=spheno.Calculate();
+    int rcFH=0;
 
-    rc=fh.Calculate();
-    if (rc) continue;
+    if (rcSPheno==0){
+      
+      rcFH=fh.Calculate();
+
+    }
+
+    //if (rcSPheno!=0 || rcFH!=0) continue;
 
     markovChain_out->Fill();
     metadata_out->Fill();
+
 
   }
   

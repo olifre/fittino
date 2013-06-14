@@ -32,11 +32,11 @@ int main(int argc, char** argv){
   
 
 
-    Chi2CalculatorDataBase2013 db;
-    Chi2Calculator calc = db.GetChi2Calculator(obsSet, HS);
-    Double_t chi2Max = calc.GetMaxChi2();
+  Chi2CalculatorDataBase2013 db;
+  Chi2Calculator calc = db.GetChi2Calculator(obsSet, HS);
+  Double_t chi2Max = calc.GetMaxChi2();
 
-  double XXMINCHI2=0;
+  double XXMINCHI2=calc.GetMinChi2();
   double XXMAXCHI2=chi2Max;
 
 

@@ -1,3 +1,4 @@
+
 ROOTCFLAGS       = $(shell $(ROOTSYS)/bin/root-config --cflags)
 ROOTLIBS         = $(shell $(ROOTSYS)/bin/root-config --libs) -lRooFitCore -lRooFit -lHistPainter
 
@@ -14,7 +15,7 @@ OBJECTS_BASENAME = $(SOURCES:.cpp=.o)
 CXX	         = g++
 CXXFLAGS         = -g -Wall $(ROOTCFLAGS) $(BOOST) -I$(FITTINO)/tools/GetToyLHCChi2/ProfileLikelihood/ $(SLHAEA)
 
-default: runChi2 runHS CreateImage EdgeDetection cleaner addHiggsBranches FindConfidenceInterval makePull testHS runFH defChi2 sort
+default: runHS CreateImage EdgeDetection cleaner addHiggsBranches addHiggsBranchesFH FindConfidenceInterval makePull testHS runFH defChi2 sort randomize skim PlotHiggsRanges # runChi2
 
 -include $(SOURCES:.cpp=.d)
 
@@ -25,8 +26,24 @@ default: runChi2 runHS CreateImage EdgeDetection cleaner addHiggsBranches FindCo
 	              [ -s $@ ] || rm -f $@'
 
 
+example: example.cxx
+	$(CXX) $(CXXFLAGS) -o example  example.cxx 
+
+
 defChi2: $(OBJECTS_BASENAME) defChi2.cxx
 	$(CXX) $(CXXFLAGS) -o defChi2 $(OBJECTS_BASENAME) defChi2.cxx $(LIBS)
+
+PlotHiggsRanges: $(OBJECTS_BASENAME) PlotHiggsRanges.cxx 
+	$(CXX) $(CXXFLAGS) -o PlotHiggsRanges $(OBJECTS_BASENAME) PlotHiggsRanges.cxx style/AtlasStyle.C style/AtlasUtils.C $(LIBS)
+
+
+skim: $(OBJECTS_BASENAME) skim.cxx
+	$(CXX) $(CXXFLAGS) -o skim $(OBJECTS_BASENAME) skim.cxx $(LIBS)
+
+
+randomize: $(OBJECTS_BASENAME) randomize.cxx
+	$(CXX) $(CXXFLAGS) -o randomize $(OBJECTS_BASENAME) randomize.cxx $(LIBS)
+
 
 sort: $(OBJECTS_BASENAME) sort.cxx
 	$(CXX) $(CXXFLAGS) -o sort $(OBJECTS_BASENAME) sort.cxx $(LIBS)
@@ -72,6 +89,8 @@ cleaner: $(OBJECTS_BASENAME) clean.cxx
 addHiggsBranches: $(OBJECTS_BASENAME) addHiggsBranches.cxx
 	$(CXX) $(CXXFLAGS) -o addHiggsBranches $(OBJECTS_BASENAME) addHiggsBranches.cxx $(LIBS)
 
+addHiggsBranchesFH: $(OBJECTS_BASENAME) addHiggsBranchesFH.cxx
+	$(CXX) $(CXXFLAGS) -o addHiggsBranchesFH $(OBJECTS_BASENAME) addHiggsBranchesFH.cxx $(LIBS)
 
 
 
@@ -79,7 +98,7 @@ addHiggsBranches: $(OBJECTS_BASENAME) addHiggsBranches.cxx
 	$(CXX) -c -o $@ $< $(CXXFLAGS)
 
 clean:
-	@rm -f *.o *.d *~ runChi2 runHS CreateImage EdgeDetection cleaner addHiggsBranches FindConfidenceInterval makePull testHS runFH defChi2 sort
+	@rm -f *.o *.d *~ runChi2 runHS CreateImage EdgeDetection cleaner addHiggsBranches FindConfidenceInterval makePull testHS runFH defChi2 sort skim randomize addHiggsBranchesFH
 
 
 

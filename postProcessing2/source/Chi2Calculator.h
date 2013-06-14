@@ -42,7 +42,10 @@ public:
   void  SetOutput(FloatStorage* out);
 
   void SetMaxChi2(double chi2);
+  void SetMinChi2(double chi2);
+
   double GetMaxChi2();
+  double GetMinChi2();
 
   void Print();
   
@@ -61,6 +64,8 @@ private:
 
   double _chi2;
   double _maxChi2;
+  double _minChi2;
+
 };
 
 #endif

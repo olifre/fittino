@@ -44,6 +44,16 @@ Chi2Calculator Chi2CalculatorDataBase2013::GetPaper2013_LEO() {
   Bsg.AddTheoUnc( 0.23E-4 );  
   calc.AddObservable( Bsg );
 
+//   Observable Bsg( "O_Bsg_npf", 3.43E-4);
+//   Bsg.SetPrecision(2);
+//   Bsg.SetUnit(1e-4);
+//   Bsg.SetTitle("BR(b#rightarrow s#gamma) / 10^{-4}");
+//   Bsg.AddExpUnc( 0.21E-4 );
+//   Bsg.AddExpUnc( 0.07E-4 );
+//   Bsg.AddTheoUnc( 0.23E-4 );  
+//   calc.AddObservable( Bsg );
+
+
   Observable dms( "O_dm_s_npf",	17.719);
   dms.SetPrecision(3);
   dms.SetTitle("#Delta m_{s} / ps^{-1}");
@@ -74,7 +84,7 @@ Chi2Calculator Chi2CalculatorDataBase2013::GetPaper2013_LEO() {
   
   Observable massChargino( "O_massChargino1", 102.5 ); 
   massChargino.AddTheoUnc(1.0);
-  massChargino.SetIsLowerLimit(true, true);   //FIXME
+  massChargino.SetIsLowerLimit(true, false);   //FIXME
   massChargino.SetPrecision(1);
   massChargino.SetTitle("m_{#chi^{+}} / GeV");
   calc.AddObservable( massChargino );
@@ -142,7 +152,8 @@ Chi2Calculator Chi2CalculatorDataBase2013::GetChi2Calculator( std::string name, 
   
     LHCCalculator * lhc = new LHCCalculator(LHCCalculator::corr);
     calc.SetLHCCalculator(lhc);
-    calc.SetMaxChi2(15+6);
+    calc.SetMaxChi2(21);
+    calc.SetMinChi2(13);
     
     Observable massh( "O_massh0", 125.5 );
     massh.AddExpUnc( 2.0 );
@@ -163,7 +174,8 @@ Chi2Calculator Chi2CalculatorDataBase2013::GetChi2Calculator( std::string name, 
 
     if (HS=="category"){
 
-      calc.SetMaxChi2(49+6);
+      calc.SetMaxChi2(57);
+      calc.SetMinChi2(49);
 
     }
     else if (HS=="inclusive"){

@@ -10,15 +10,15 @@
 
 int main(int argc, char **argv){
 
-  std::string inFileName = argv[1];
   std::string outFileName = argv[2];
   std::string obsSet = argv[3];
+  std::string HSobSet = argv[3];
+  std::string theoMassUnc = argv[3];
   
   int maxEvents;
   std::stringstream ss; 
   ss << argv[4];
   ss >> maxEvents;
-
 
   std::cout<<"Using input file "<<inFileName<<std::endl;
   std::cout<<"Using output file "<<outFileName<<std::endl;
@@ -59,26 +59,28 @@ int main(int argc, char **argv){
     chi2 = db2013.GetChi2Calculator(obsSet, HS);
 
   }
-
   
-  TFile inFile( inFileName.c_str(), "READ" );
-  TTree* inTree = (TTree*) inFile.Get( "markovChain" );
-  if (!inTree)   
-    std::cout<<"Could not get input tree"<<std::endl;
-
-
+  
+  TChain* markovChain_in=new TChain("markovChain");
+  markovChain_in->Add("*.root");
+  markovChain_in->LoadTree(0);
+    
+  TChain* metadata_in=new TChain("metadata");
+  metadata_in->Add("*.root");
+  metadata_in->LoadTree(0);
+  
   TFile outFile( outFileName.c_str(), "RECREATE" );
-  TTree* outTree = new TTree( inTree->GetName(), inTree->GetTitle() );
   outFile.cd();
+  TChain* markovChain_out = new TTree( markovChain_in->GetName(), markovChain_out->GetTitle() );
+  TChain* metadata_out = metadata_in->GetTree()->CloneTree(0);
 
-
-  FloatStorage data( outTree );
-  data.Connect( inTree );
+  FloatStorage data( markovChain_out );
+  data.Connect( markovChain_in );
 
   chi2.SetInput( &data );
   chi2.SetOutput( &data );
 
-  int nEvents = inTree->GetEntries();
+  int nEvents = markovChain_in->GetEntries();
 
   if ( maxEvents > 0 && nEvents > maxEvents )
     nEvents = maxEvents;
@@ -87,19 +89,18 @@ int main(int argc, char **argv){
 
   for (int i=0; i<nEvents; i++) {
     
-    inTree->GetEntry( i );
+    markovChain_in->GetEntry( i );
 
     if ( chi2.Calculate() ){
       outFile.cd();
-      outTree->Fill();
+      markovChain_out->Fill();
 
     }
 
   }
 
-  outTree->Write();
+  markovChain_out->Write();
 
-  inFile.Close();
   outFile.Close();
 
   return 0;

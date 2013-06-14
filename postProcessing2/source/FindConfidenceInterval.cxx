@@ -24,7 +24,7 @@ int main(int argc, char* argv[] ) {
 
   TTree* inTree = (TTree*) f->Get("markovChain");
 
-  TFile* g = new TFile( "confidenceInterval3.root", "RECREATE");
+  TFile* g = new TFile( "confidenceInterval.root", "RECREATE");
   TTree* outTree = new TTree(inTree->GetName(), inTree->GetTitle());
   
 
