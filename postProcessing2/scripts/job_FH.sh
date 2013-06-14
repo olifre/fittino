@@ -33,7 +33,7 @@ exeName=`basename $exePath`
 cd $TMP
 
 cp $exePath .
-cp $FITTINO/postProcessing2/FHeffC-calculator/FHeffC .
+cp $FITTINO/postProcessing2/FHeffC-calculator/FHeffC2 .
 cp /afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/SPheno-3.1.11/bin/SPheno .
 
 
