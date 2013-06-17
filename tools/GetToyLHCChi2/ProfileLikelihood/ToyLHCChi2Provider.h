@@ -61,6 +61,7 @@ class ToyLHCChi2Provider {
 	vector<float> GetSignalUncertaintyBF();
 	vector<float> GetBackgroundExpectation();
 	vector<float> GetBackgroundUncertainty();
+
 	private:
 	TFile *f_grids;
 	vector<TH2D*> h_grids;
@@ -75,6 +76,7 @@ class ToyLHCChi2Provider {
 	vector<float> signalUncertaintyBF;
 	vector<float> backgroundExpectation;
 	vector<float> backgroundUncertainty;
+	double DoFudging( float M0, double nS );
 };
 
 #endif

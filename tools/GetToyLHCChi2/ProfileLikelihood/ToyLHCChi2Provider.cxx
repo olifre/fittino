@@ -6,21 +6,47 @@ void ToyLHCChi2Provider::CreateChi2Histograms( float nmin, float nmax ) {
 	vector<float> vExpS = GetSignalExpectationBF();
 	vector<float> vExpBG = GetBackgroundExpectation();
 	vector<float> vExp;
-  for( unsigned int iCh = 0; iCh < 3; ++iCh ) {vExp.push_back(vExpBG[iCh]+vExpS[iCh]);}
-
+  vector<float> vExp_Plus1Sigma;
+  vector<float> vExp_Minus1Sigma;
+	//for( unsigned int iCh = 0; iCh < 3; ++iCh ) {vExp.push_back(vExpBG[iCh]+vExpS[iCh]);}
+  for( unsigned int iCh = 0; iCh < 3; ++iCh ) {
+		vExp.push_back(vExpBG[iCh]);
+		vExp_Plus1Sigma.push_back( vExpBG[iCh] + sqrt( vExpBG[iCh] + vExpBG[iCh]*vExpBG[iCh]*GetBackgroundUncertainty()[iCh]*GetBackgroundUncertainty()[iCh]));
+		vExp_Minus1Sigma.push_back( vExpBG[iCh] - sqrt( vExpBG[iCh] + vExpBG[iCh]*vExpBG[iCh]*GetBackgroundUncertainty()[iCh]*GetBackgroundUncertainty()[iCh]));
+		if( vExp_Minus1Sigma[iCh] < 0 ) vExp_Minus1Sigma[iCh] = 0.;
+	}
 	vector<TH2D*> vHistograms;
 	// this is for getting the chi2 histograms in M0 and M12 at A0 = 0 and tb =10
 	for( float nObs = nmin; nObs <= nmax; nObs += 1. ) {
 		vector<float> vObs(3,nObs);
 		char histname[20];
+		char histname_plus1Sigma[40];
+		char histname_minus1Sigma[40];
 		sprintf( histname, "chi2_nObs_%i", (int)nObs );
+		sprintf( histname_plus1Sigma, "chi2_plus1Sigma_nObs_%i", (int)nObs );
+		sprintf( histname_minus1Sigma, "chi2_minus1Sigma_nObs_%i", (int)nObs );
+		
 		TH2D *h = new TH2D( histname, histname, 249, 15., 2505., 221, 97.5, 1202.5); 
-		for( int binx = 1; binx <= 249; ++binx ) {
-			for( int biny = 1; biny <= 221; ++biny ) {
+		TH2D *h_chi2_plus1Sigma = new TH2D( histname_plus1Sigma, histname_plus1Sigma, 249, 15.0, 2505.0, 221, 97.5, 1202.5);
+		TH2D *h_chi2_minus1Sigma = new TH2D( histname_minus1Sigma, histname_minus1Sigma, 249, 15.0, 2505.0, 221, 97.5, 1202.5);
+
+		int STARTX = 1;
+		int STARTY = 1;
+		int ENDX = 249;
+		int ENDY = 221;
+		int nPointsProcessed = 0;
+		for( int binx = STARTX; binx <= ENDX; ++binx ) {
+			for( int biny = STARTY; biny <= ENDY; ++biny ) {
 				h -> SetBinContent(binx, biny, GetChi2ContributionFit( h->GetXaxis()->GetBinCenter(binx), h->GetYaxis()->GetBinCenter(biny), vObs, vExp ) );
+				h_chi2_plus1Sigma -> SetBinContent(binx, biny, GetChi2ContributionFit( h->GetXaxis()->GetBinCenter(binx), h->GetYaxis()->GetBinCenter(biny), vExp_Plus1Sigma, vExp ) );
+				h_chi2_minus1Sigma -> SetBinContent(binx, biny, GetChi2ContributionFit( h->GetXaxis()->GetBinCenter(binx), h->GetYaxis()->GetBinCenter(biny), vExp_Minus1Sigma, vExp ) );
+				cout << "PROCESSING DONE : " << (float)(++nPointsProcessed)/(float)((ENDX-STARTX+1))/(float)((ENDY-STARTY+1))*100. << "%         \r";fflush(stdout);
+				//cout << "entered " << GetChi2ContributionFit( h->GetXaxis()->GetBinCenter(binx), h->GetYaxis()->GetBinCenter(biny), vObs, vExp ) << " AND " << GetChi2ContributionFit( h->GetXaxis()->GetBinCenter(binx), h->GetYaxis()->GetBinCenter(biny), vObs, vExp_Plus1Sigma ) << " AND " << GetChi2ContributionFit( h->GetXaxis()->GetBinCenter(binx), h->GetYaxis()->GetBinCenter(biny), vObs, vExp_Minus1Sigma ) << " from Nexp = " << vExp[1] << " and " << vExp_Plus1Sigma[1] << " and " << vExp_Minus1Sigma[1] << endl;
 			}
 		}
 		vHistograms.push_back(h);
+		vHistograms.push_back(h_chi2_plus1Sigma);
+		vHistograms.push_back(h_chi2_minus1Sigma);
 		fflush(stdout);
 	}
 	
@@ -45,14 +71,24 @@ void ToyLHCChi2Provider::CreateChi2Histograms( float nmin, float nmax ) {
 		for( float nObs = nmin; nObs <= nmax; nObs += 1. ) {
     	vector<float> vObs(3,nObs);
     	char histname[40];
+			char histname_plus1Sigma[80];
+			char histname_minus1Sigma[80];
     	sprintf( histname, "chi2OffCorr_M0%i_nObs_%i", M0Corr[i], (int)nObs );
+    	sprintf( histname_plus1Sigma, "chi2OffCorr_plus1Sigma_M0%i_nObs_%i", M0Corr[i], (int)nObs );
+    	sprintf( histname_minus1Sigma, "chi2OffCorr_minus1Sigma_M0%i_nObs_%i", M0Corr[i], (int)nObs );
     	TH2D *h = new TH2D( histname, histname, 19, -4250., 5250., 7, 7.5, 42.5);
+			TH2D *h_corr_plus1Sigma = new TH2D( histname_plus1Sigma, histname_plus1Sigma, 19, -4250., 5250., 7, 7.5, 42.5);
+			TH2D *h_corr_minus1Sigma = new TH2D( histname_minus1Sigma, histname_minus1Sigma, 19, -4250., 5250., 7, 7.5, 42.5);
     	for( int binx = 1; binx <= 19; ++binx ) {
       	for( int biny = 1; biny <= 7; ++biny ) {
         	h -> SetBinContent(binx, biny, GetChi2CorrectionFit( h->GetXaxis()->GetBinCenter(binx), h->GetYaxis()->GetBinCenter(biny), M0Corr[i], vObs, vExp, hCorr ) );
+        	h_corr_plus1Sigma -> SetBinContent(binx, biny, GetChi2CorrectionFit( h->GetXaxis()->GetBinCenter(binx), h->GetYaxis()->GetBinCenter(biny), M0Corr[i], vExp_Plus1Sigma, vExp, hCorr ) );
+        	h_corr_minus1Sigma -> SetBinContent(binx, biny, GetChi2CorrectionFit( h->GetXaxis()->GetBinCenter(binx), h->GetYaxis()->GetBinCenter(biny), M0Corr[i], vExp_Minus1Sigma, vExp, hCorr ) );
 				}
     	}
     	vHistograms.push_back(h);
+			vHistograms.push_back(h_corr_plus1Sigma);
+			vHistograms.push_back(h_corr_minus1Sigma);
     	fflush(stdout);
   	}
 	}
@@ -87,7 +123,7 @@ float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, float A0,
 
 	if( M0 > 2500. ) M0 = 2500.;
 	if( M12 > 1200. ) M12 = 1200.;
-	if( M0 > 0. && M0 < 1200. ) return hChi2_M0_M12->Interpolate(M0,M12);
+	//if( M0 > 0. && M0 <= 1200. ) return hChi2_M0_M12->Interpolate(M0,M12);
 	if( A0 > 5249. ) A0 = 5249.;
   if( A0 < -4249. ) A0 = -4249.;
  	if( tanb < 7.51 ) tanb = 7.51;
@@ -95,7 +131,8 @@ float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, float A0,
 
 	float chi2_uncorr = hChi2_M0_M12->Interpolate(M0,M12);
 
-	int M0up_idx, M0down_idx;
+	int M0up_idx = -1;
+	int M0down_idx = -1;
 	vector<int> M0Values;
 	M0Values.push_back(680);
 	M0Values.push_back(860);
@@ -108,6 +145,7 @@ float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, float A0,
 
 
 	if( M0 >= 2500. ) { M0up_idx = 7; M0down_idx = 7; }
+	else if( M0 <= 680. ) {M0up_idx = 0; M0down_idx = 0; }
 	else {
 		for( int h = 0; h < 7; ++h ) {
 			if( M0 >= M0Values[h] && M0 < M0Values[h+1] ) {
@@ -118,12 +156,13 @@ float ToyLHCChi2Provider::GetChi2ContributionFix( float M0, float M12, float A0,
 	}
 	
 
-
 	double corrFacUp = v_Chi2_A0_tb[M0up_idx]->Interpolate(A0,tanb);
-
 	double corrFacDown = v_Chi2_A0_tb[M0down_idx]->Interpolate(A0,tanb);
 	double finalCorrectionFactor = corrFacDown;
-	if( M0 < 2500. ) finalCorrectionFactor += (corrFacUp-corrFacDown)/(M0Values[M0up_idx]-M0Values[M0down_idx]) * (M0-M0Values[M0down_idx]);
+	if( M0 < 2500. && M0 > 680. ) finalCorrectionFactor += (corrFacUp-corrFacDown)/(M0Values[M0up_idx]-M0Values[M0down_idx]) * (M0-M0Values[M0down_idx]);
+	//if( fabs(M0 - 1200.) < 30 ) {
+	//	cout << "for M0 = " << M0 << " corrFacUp is " << corrFacUp << " corrFacDown is " << corrFacDown << " and final correction factor is " << finalCorrectionFactor << endl;
+	//}
 
 	float finalChi2Contribution = (1.+finalCorrectionFactor)*chi2_uncorr;
 
@@ -162,7 +201,7 @@ float ToyLHCChi2Provider::GetChi2CorrectionFit( float A0, float tb, int vM0, vec
 	float chi2_uncorr = GetChi2ContributionFit( (float)vM0, (float)M0M12Corr.at(vM0), nObs, nExp );
 	//float chi2Correct = 0.;
 	unsigned int channel = 1;
-	float lumi = 50.;
+	float lumi = 50.*3.5;
 	float lumi_ref = 1.;
 	if( data ) delete data;
 	if( nll ) delete nll;
@@ -170,14 +209,13 @@ float ToyLHCChi2Provider::GetChi2CorrectionFit( float A0, float tb, int vM0, vec
 	n->setVal(nObs[channel]);
   data = new RooDataSet("data","data", RooArgSet(*n));
   data->add(*n);
+	//b->setVal(nExp[channel]);
   b->setVal(backgroundExpectation[channel]);
   nll = model->createNLL(*data);
   pll = nll->createProfile(*POI);
 	double nS = lumi/lumi_ref*sigGrid->Interpolate(A0,tb);
 	float M0 = (float)vM0;
-	if (M0<400.)  nS=nS-0.9*nS*(400.-M0)/400.;
-	else if (M0<1800. && M0>1000.)  nS=nS-nS*(1000.-M0)/1000.*(1800.-M0)/1800.;
-	else if (M0>1800.)  nS=nS+nS*(1800.-M0)/1800.;
+	nS = DoFudging( M0, nS );
 	s->setVal(nS);
 	double chi2_real = 2.*pll->getVal();
 	return (isnan(chi2_real) || isinf(chi2_real)) ? 1000. : chi2_real/chi2_uncorr - 1.;
@@ -190,7 +228,7 @@ float ToyLHCChi2Provider::GetChi2ContributionFit( float M0, float M12, vector<fl
 	if( M12 > 1200. ) M12 = 1200.;
 	unsigned int channel = 0;
 	//float chi2_max = -10.;
-	float lumi = 50.;
+	float lumi = 50.*3.5;
 	float lumi_ref = 1.;
 	//RooRandom::randomGenerator()->SetSeed(1823571939);
 	//cout << "using nExp = " << nExp[0] << ", " << nExp[1] << ", " << nExp[2] << endl;
@@ -228,13 +266,12 @@ float ToyLHCChi2Provider::GetChi2ContributionFit( float M0, float M12, vector<fl
 	n->setVal(nObs[channel]);
 	data = new RooDataSet("data","data", RooArgSet(*n));
 	data->add(*n);
+	//b->setVal(nExp[channel]);
 	b->setVal(backgroundExpectation[channel]);
 	nll = model->createNLL(*data);
 	pll = nll->createProfile(*POI);
 	double nS = lumi/lumi_ref*h_grids[channel]->Interpolate(M0,M12);
-	if (M0<400.)  nS=nS-0.9*nS*(400.-M0)/400.;
-	else if (M0<1800. && M0>1000.)  nS=nS-nS*(1000.-M0)/1000.*(1800.-M0)/1800.;
-	else if (M0>1800.)  nS=nS+nS*(1800.-M0)/1800.;
+	nS = DoFudging( M0, nS );
 	//cout << "signal expectation is " << nS << endl;
 	s->setVal(nS);
 	double chi2 = 2.*pll->getVal(); 
@@ -247,7 +284,7 @@ float ToyLHCChi2Provider::GetChi2ContributionFit( float M0, float M12, vector<fl
   if( M12 > 1200. ) M12 = 1200.;
   unsigned int channel = 0;
   //float chi2_max = -10.;
-  float lumi = 50.;
+  float lumi = 50.*3.5;
   float lumi_ref = 1.;
   
 	channel = 1;
@@ -258,14 +295,13 @@ float ToyLHCChi2Provider::GetChi2ContributionFit( float M0, float M12, vector<fl
   n->setVal(nObs[channel]);
   data = new RooDataSet("data","data", RooArgSet(*n));
   data->add(*n);
-  b->setVal(backgroundExpectation[channel]);
+  //b->setVal(nExp[channel]);
+	b->setVal(backgroundExpectation[channel]);
   nll = model->createNLL(*data);
   pll = nll->createProfile(*POI);
   double nS = lumi/lumi_ref*nSignal[channel];
-  if (M0<400.)  nS=nS-0.9*nS*(400.-M0)/400.;
-  else if (M0<1800. && M0>1000.)  nS=nS-nS*(1000.-M0)/1000.*(1800.-M0)/1800.;
-  else if (M0>1800.)  nS=nS+nS*(1800.-M0)/1800.;
-  //cout << "signal expectation is " << nS << endl;
+  nS = DoFudging( M0, nS );
+	//cout << "signal expectation is " << nS << endl;
   s->setVal(nS);
   double chi2 = 2.*pll->getVal();
   return (isnan(chi2) || isinf(chi2)) ? 1000. : ( (chi2 < 0.) ? 0. : chi2);
@@ -292,7 +328,7 @@ ToyLHCChi2Provider::ToyLHCChi2Provider( string gridFileName, float M0BF, float M
 	h_grids.push_back( (TH2D*)f_grids->Get("signalC") );
 	cout << "opened file and read histograms" << endl;
 
-	float lumi = 50.;
+	float lumi = 50.*3.5;
 	float lumi_ref = 1.;
 	
 	backgroundExpectation.push_back( 5./0.165*lumi );
@@ -308,7 +344,8 @@ ToyLHCChi2Provider::ToyLHCChi2Provider( string gridFileName, float M0BF, float M
 		else if( M0BF < 1800. && M0BF > 1000. ) nExpSignal = nExpSignal - nExpSignal*(1000.-M0BF)/1000.*(1800.-M0BF)/1800.;
 		else if( M0BF > 1800. ) nExpSignal = nExpSignal+nExpSignal*(1800.-M0BF)/1800.;
 		signalExpectationBF.push_back( nExpSignal );
-		signalUncertaintyBF.push_back( 0.1 );
+		//signalUncertaintyBF.push_back( 0.1 );
+		signalUncertaintyBF.push_back(0.10);
 		
 		cout << "In SR " << iCh << " the signal expectation at the best fit has been determined to " << signalExpectationBF[iCh] << " with a relative uncertainty of " << signalUncertaintyBF[iCh] << endl;
 
@@ -330,13 +367,29 @@ ToyLHCChi2Provider::ToyLHCChi2Provider( string gridFileName, float M0BF, float M
 	POI = new RooArgSet(*s);
 	b->setConstant();
 	sigma_s->setConstant();
-	sigma_s->setVal(0.1);
+	//sigma_s->setVal(0.1);
+	sigma_s->setVal(0.10);
 	sigma_b->setConstant();
 	sigma_b->setVal(0.03);
 	data = NULL;
 	nll = NULL;
 	pll = NULL;
 }
+
+
+double ToyLHCChi2Provider::DoFudging( float M0, double nS ) {
+ 	//if( M0 <= 680. ) nS = nS*(0.36/430.*M0 + 985./430.-0.15);
+ 	if( M0 <= 750. ) nS = nS*(0.36/430.*M0 + 985./430.-0.15);
+	else if( M0<=1000. && M0>750.) nS = 2.77*nS-25*nS*(M0-1000.)/1000.*(M0-750.)/750.;//(1.2+1.0375/220.*(M0-680)-0.15)*nS+5.*nS*(4000.-M0)/10000.;
+	
+	else if( M0<=1200. && M0>1000.) nS =(3.44 -0.134/200*M0)*nS;
+	
+	else if (M0<=1600. && M0>1200.) nS=(1.3-0.15/700.*(M0-1600.))*nS+5.*nS*(1600.-M0)/1600.;
+	else if (M0<=1800. && M0>1600.)  nS=(2.1-0.0005*M0 )*nS-2.*nS*(1600.-M0)/1600.*(1800.-M0)/1800.;
+	else if (M0>1800.)  nS=1.2*nS-3*nS*(1800.-M0)/1800.;
+	return nS;
+}
+
 
 ToyLHCChi2Provider::~ToyLHCChi2Provider( ) {
 	
