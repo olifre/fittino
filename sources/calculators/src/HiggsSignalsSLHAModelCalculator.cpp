@@ -574,6 +574,21 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     double BR_hgammagamma = g2hjgaga     * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hgamgam_( &massh );
     double BR_hgg         = g2hjgg       * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hgg_( &massh );
 
+    // SM predictions of the branching fractions.
+
+    double BR_SM_s_hss       = smbr_hss_( &massh );
+    double BR_SM_s_hcc       = smbr_hcc_( &massh );
+    double BR_SM_s_hbb       = smbr_hbb_( &massh );
+    double BR_SM_s_htt       = smbr_htoptop_( &massh );
+    double BR_SM_s_hmumu     = smbr_hmumu_( &massh );
+    double BR_SM_s_htautau   = smbr_htautau_( &massh );
+    double BR_SM_hWW         = smbr_hww_( &massh );
+    double BR_SM_hZZ         = smbr_hzz_( &massh );
+    double BR_SM_hZgamma     = smbr_hzgam_( &massh );
+    double BR_SM_hgammagamma = smbr_hgamgam_( &massh );
+    double BR_SM_hgg         = smbr_hgg_( &massh );
+
+
     //double BR_Total = BR_s_hss + BR_s_hcc + BR_s_hbb + BR_s_htt + BR_s_hmumu + BR_s_htautau + BR_hWW + BR_hZZ + BR_hZgamma + BR_hgammagamma + BR_hgg + BR_hInvisible;
  
     //try {
@@ -647,11 +662,22 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     _slhaOutputDataStorage->AddLine( blockName + ":16:" + String( BR_hZgamma )           + ":# BR_hZgamma" );
     _slhaOutputDataStorage->AddLine( blockName + ":17:" + String( BR_hgammagamma )       + ":# BR_hgammagamma" );
     _slhaOutputDataStorage->AddLine( blockName + ":18:" + String( BR_hgg )               + ":# BR_hgg" );
-    _slhaOutputDataStorage->AddLine( blockName + ":19:" + String( BR_hInvisible )        + ":# BR_hjInvisible" );
-    _slhaOutputDataStorage->AddLine( blockName + ":20:" + String( g2_SM_hgammagamma )    + ":# g2_SM_hgammagamma" );
-    _slhaOutputDataStorage->AddLine( blockName + ":21:" + String( g2_SM_hgg )            + ":# g2_SM_hgg" );
-    _slhaOutputDataStorage->AddLine( blockName + ":22:" + String( Gamma_hTotal_Penalty ) + ":# Gamma_hTotal_Penalty" );
-    _slhaOutputDataStorage->AddLine( blockName + ":23:" + String( BR_hInvisible_Limit )  + ":# BR_hInvisible_Limit" );
+    _slhaOutputDataStorage->AddLine( blockName + ":19:" + String( BR_SM_s_hss )          + ":# BR_SM_s_hss" );
+    _slhaOutputDataStorage->AddLine( blockName + ":20:" + String( BR_SM_s_hcc )          + ":# BR_SM_s_hcc" );
+    _slhaOutputDataStorage->AddLine( blockName + ":21:" + String( BR_SM_s_hbb )          + ":# BR_SM_s_hbb" );
+    _slhaOutputDataStorage->AddLine( blockName + ":22:" + String( BR_SM_s_htt )          + ":# BR_SM_s_htt" );
+    _slhaOutputDataStorage->AddLine( blockName + ":23:" + String( BR_SM_s_hmumu )        + ":# BR_SM_s_hmumu" );
+    _slhaOutputDataStorage->AddLine( blockName + ":24:" + String( BR_SM_s_htautau )      + ":# BR_SM_s_htautau" );
+    _slhaOutputDataStorage->AddLine( blockName + ":25:" + String( BR_SM_hWW )            + ":# BR_SM_hWW" );
+    _slhaOutputDataStorage->AddLine( blockName + ":26:" + String( BR_SM_hZZ )            + ":# BR_SM_hZZ" );
+    _slhaOutputDataStorage->AddLine( blockName + ":27:" + String( BR_SM_hZgamma )        + ":# BR_SM_hZgamma" );
+    _slhaOutputDataStorage->AddLine( blockName + ":28:" + String( BR_SM_hgammagamma )    + ":# BR_SM_hgammagamma" );
+    _slhaOutputDataStorage->AddLine( blockName + ":29:" + String( BR_SM_hgg )            + ":# BR_SM_hgg" );
+    _slhaOutputDataStorage->AddLine( blockName + ":30:" + String( BR_hInvisible )        + ":# BR_hjInvisible" );
+    _slhaOutputDataStorage->AddLine( blockName + ":31:" + String( g2_SM_hgammagamma )    + ":# g2_SM_hgammagamma" );
+    _slhaOutputDataStorage->AddLine( blockName + ":32:" + String( g2_SM_hgg )            + ":# g2_SM_hgg" );
+    _slhaOutputDataStorage->AddLine( blockName + ":33:" + String( Gamma_hTotal_Penalty ) + ":# Gamma_hTotal_Penalty" );
+    _slhaOutputDataStorage->AddLine( blockName + ":34:" + String( BR_hInvisible_Limit )  + ":# BR_hInvisible_Limit" );
 
     _slhaOutputDataStorage->WriteFile( _slhaOutputFileName );
 
