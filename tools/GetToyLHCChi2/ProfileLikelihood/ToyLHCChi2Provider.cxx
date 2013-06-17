@@ -340,12 +340,14 @@ ToyLHCChi2Provider::ToyLHCChi2Provider( string gridFileName, float M0BF, float M
 
 	for( unsigned int iCh = 0; iCh < 3; ++iCh ) {
 		float nExpSignal = lumi/lumi_ref*h_grids[iCh]->Interpolate(M0BF, M12BF);
+		nExpSignal = DoFudging( M0BF, nExpSignal );
+		/*
 		if( M0BF < 400. ) nExpSignal = nExpSignal - 0.9*nExpSignal*(400.-M0BF)/400.;
 		else if( M0BF < 1800. && M0BF > 1000. ) nExpSignal = nExpSignal - nExpSignal*(1000.-M0BF)/1000.*(1800.-M0BF)/1800.;
 		else if( M0BF > 1800. ) nExpSignal = nExpSignal+nExpSignal*(1800.-M0BF)/1800.;
+		*/
 		signalExpectationBF.push_back( nExpSignal );
-		//signalUncertaintyBF.push_back( 0.1 );
-		signalUncertaintyBF.push_back(0.10);
+		signalUncertaintyBF.push_back( 0.1 );
 		
 		cout << "In SR " << iCh << " the signal expectation at the best fit has been determined to " << signalExpectationBF[iCh] << " with a relative uncertainty of " << signalUncertaintyBF[iCh] << endl;
 
@@ -367,8 +369,7 @@ ToyLHCChi2Provider::ToyLHCChi2Provider( string gridFileName, float M0BF, float M
 	POI = new RooArgSet(*s);
 	b->setConstant();
 	sigma_s->setConstant();
-	//sigma_s->setVal(0.1);
-	sigma_s->setVal(0.10);
+	sigma_s->setVal(0.1);
 	sigma_b->setConstant();
 	sigma_b->setVal(0.03);
 	data = NULL;
