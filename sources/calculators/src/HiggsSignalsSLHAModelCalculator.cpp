@@ -128,25 +128,22 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgg( std::string column,
     try {
 
         if ( column == "tt" ) {
-    
-                 if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = -9.10e-04 * massh + 1.23; } //HIER
+
+            if ( massh >= 123 && massh <= 129. ) { scale = -9.10e-04 * massh + 1.23e00; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
 
         if ( column == "bb" ) {
 
-                 if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = -2.86e-04 * massh + 0.05; }
+            if ( massh >= 123 && massh <= 129. ) { scale = -2.86e-04 * massh + 4.74e-02; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
 
         if ( column == "tb" ) {
 
-                 if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = 1.12e-03 * massh - 0.27; }
+            if ( massh >= 123 && massh <= 129. ) { scale = 1.12e-03 * massh - 2.73e-01; } 
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
@@ -172,80 +169,70 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgammagamma( std::string
 
         if ( column == "tt" ) {
 
-            if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = -5.85e-04 * massh + 0.15; }
+            if ( massh >= 123 && massh <= 129. ) { scale = -5.85e-04 * massh + 1.45e-01; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
 
         if ( column == "bb" ) {
 
-            if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = -6.74e-07 * massh + 1.04e-04; }
+            if ( massh >= 123 && massh <= 129. ) { scale = -6.74e-07 * massh + 1.04e-04; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
 
         if ( column == "WW" ) {
 
-            if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = -2.48e-03 * massh + 1.90; } 
+            if ( massh >= 123 && massh <= 129. ) { scale = -2.48e-03 * massh + 1.90e00; } 
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
 
         if ( column == "tb" ) {
 
-            if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = 3.51e-05 * massh - 6.16e-03; }
+            if ( massh >= 123 && massh <= 129. ) { scale = 3.51e-05 * massh - 6.16e-03; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
 
         if ( column == "tW" ) {
 
-            if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = 3.30e-03 * massh - 1.09; }
+            if ( massh >= 123 && massh <= 129. ) { scale = 3.30e-03 * massh - 1.09e00; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
 
         if ( column == "bW" ) {
 
-            if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = -1.39e-04 * massh + 0.03; }
+            if ( massh >= 123 && massh <= 129. ) { scale = -1.39e-04 * massh + 2.58e-02; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
 
         if ( column == "tautau" ) {
 
-            if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = -7.89e-07 * massh + 1.22e-04; }
+            if ( massh >= 123 && massh <= 129. ) { scale = -7.89e-07 * massh + 1.22e-04; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
 
         if ( column == "ttau" ) {
 
-            if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = 3.78e-05 * massh - 6.64e-03; }
+            if ( massh >= 123 && massh <= 129. ) { scale = 3.78e-05 * massh - 6.64e-03; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
 
         if ( column == "btau" ) {
 
-            if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = -1.46e-06 * massh + 2.25e-04; }
+            if ( massh >= 123 && massh <= 129. ) { scale = -1.46e-06 * massh + 2.25e-04; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
 
         if ( column == "tauW" ) {
 
-            if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = -1.50e-04 * massh + 0.03; }
+            if ( massh >= 123 && massh <= 129. ) { scale = -1.50e-04 * massh + 2.78e-02; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }

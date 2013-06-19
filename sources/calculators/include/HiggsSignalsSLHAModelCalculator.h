@@ -321,7 +321,7 @@ namespace Fittino {
        *  </table>
        *  These are the linear fits for the gluon scaling terms:
        *  @image html hgg_tt+bb+tb.png
-       *  tt: \f$-9.10*10^{-4}x + 1.23\f$ bb: \f$-2.86*10^{-4}x + 0.05\f$ \f$1.12*10^{-3}x - 0.27\f$ \n
+       *  tt: \f$-9.10*10^{-4}x + 1.23*10^{0}\f$ bb: \f$-2.86*10^{-4}x + 4.74*10^{-2}\f$ \f$1.12*10^{-3}x - 2.73*10^{-1}\f$ \n
        *  A gnuplot script to reproduce the plots, called linearfit.gnu, \n
        *  can be found in the images directory of the documentation.
        */
@@ -498,14 +498,14 @@ namespace Fittino {
        *  </table>
        *  These are the linear fits for the gamma scaling terms:
        *  @image html hgaga_tt+bb+tb.png
-       *  tt: \f$-5.85*10^{-4}x + 0.15\f$ bb: \f$-6.74*10^{-7}x + 1.04*10^{-4}\f$ tb: \f$3.51*10^{-5}x - 6.16*10^{-3}\f$
+       *  tt: \f$-5.85*10^{-4}x + 1.45*10^{-1}\f$ bb: \f$-6.74*10^{-7}x + 1.04*10^{-4}\f$ tb: \f$3.51*10^{-5}x - 6.16*10^{-3}\f$
        *  @image html hgaga_WW+tW+bW.png
-       *  WW: \f$-2.48*10^{-3}x + 1.90\f$ tW: \f$3.30*10^{-3}x - 1.09\f$ bW: \f$-1.39*10^{-4}x - 0.03\f$
+       *  WW: \f$-2.48*10^{-3}x + 1.90*10^{0}\f$ tW: \f$3.30*10^{-3}x - 1..09*10^{0}\f$ bW: \f$-1.39*10^{-4}x - 2.58*10^{-2}\f$
        *  @image html hgaga_tautau+ttau+btau.png
        *  tautau: \f$-7.89*10^{-7}x + 1.22*10^{-4}\f$ tW: \f$3.78*10^{-5}x - 6.64*10^{-3}\f$ 
        *  bW: \f$-1.46*10^{-6}x + 2.25*10^{-4}\f$
        *  @image html hgaga_tauW.png
-       *  tauW: \f$-1.50*10^{-4}x + 0.03\f$ \n
+       *  tauW: \f$-1.50*10^{-4}x + 2.78*10^{-2}\f$ \n
        *  A gnuplot script to reproduce the plots, called linearfit.gnu, \n
        *  can be found in the images directory of the documentation.
        */
