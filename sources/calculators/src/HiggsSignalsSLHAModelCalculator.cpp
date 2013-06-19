@@ -130,13 +130,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgg( std::string column,
         if ( column == "tt" ) {
     
                  if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            //else if ( massh >= 123. && massh < 124. ) { scale = Linearfunction( massh, 124., 123.,  1.112305225, 1.113237058 ); }
-            //else if ( massh >= 124. && massh < 125. ) { scale = Linearfunction( massh, 125., 124.,  1.111385465, 1.112305525 ); }
-            //else if ( massh >= 125. && massh < 126. ) { scale = Linearfunction( massh, 126., 125.,  1.110471156, 1.111385465 ); }
-            //else if ( massh >= 126. && massh < 127. ) { scale = Linearfunction( massh, 127., 126.,  1.109564189, 1.110471156 ); }
-            //else if ( massh >= 127. && massh < 128. ) { scale = Linearfunction( massh, 128., 127.,  1.108663766, 1.109564189 ); }
-            //else if ( massh >= 128. && massh < 129. ) { scale = Linearfunction( massh, 129., 128.,  1.107775663, 1.108663766 ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = -9.1 * pow( 10, -4 ) * massh + 1.23; }
+            else if ( massh >= 123 && massh <= 129. ) { scale = -9.10e-04 * massh + 1.23; } //HIER
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
@@ -144,13 +138,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgg( std::string column,
         if ( column == "bb" ) {
 
                  if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            //else if ( massh >= 123. && massh < 124. ) { scale = Linearfunction( massh, 124., 123., 0.1186383935e-01, 0.1217362210e-01 ); }
-            //else if ( massh >= 124. && massh < 125. ) { scale = Linearfunction( massh, 125., 124., 0.1156395457e-01, 0.1186383935e-01 ); }
-            //else if ( massh >= 125. && massh < 126. ) { scale = Linearfunction( massh, 126., 125., 0.1127364780e-01, 0.1156395457E-01 ); }
-            //else if ( massh >= 126. && massh < 127. ) { scale = Linearfunction( massh, 127., 126., 0.1099182783e-01, 0.1127364780E-01 ); }
-            //else if ( massh >= 127. && massh < 128. ) { scale = Linearfunction( massh, 128., 127., 0.1071899652e-01, 0.1099182783E-01 ); }
-            //else if ( massh >= 128. && massh < 129. ) { scale = Linearfunction( massh, 129., 128., 0.1045447756e-01, 0.1071899652E-01 ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = -2.86 * pow( 10, -4 ) * massh + 0.047; }
+            else if ( massh >= 123 && massh <= 129. ) { scale = -2.86e-04 * massh + 0.05; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
@@ -158,13 +146,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgg( std::string column,
         if ( column == "tb" ) {
 
                  if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            //else if ( massh >= 123. && massh < 124. ) { scale = Linearfunction( massh, 124., 123., -0.1241690646, -0.1254106798 ); }
-            //else if ( massh >= 124. && massh < 125. ) { scale = Linearfunction( massh, 125., 124., -0.1229494194, -0.1241690646 ); }
-            //else if ( massh >= 125. && massh < 126. ) { scale = Linearfunction( massh, 126., 125., -0.1217448033, -0.1229494194 ); }
-            //else if ( massh >= 126. && massh < 127. ) { scale = Linearfunction( massh, 127., 126., -0.1205560165, -0.1217448033 ); }
-            //else if ( massh >= 127. && massh < 128. ) { scale = Linearfunction( massh, 128., 127., -0.1193827622, -0.1205560165 ); }
-            //else if ( massh >= 128. && massh < 129. ) { scale = Linearfunction( massh, 129., 128., -0.1182301408, -0.1193827622 ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = 1.12 * pow( 10, -3 ) * massh - 0.27; }
+            else if ( massh >= 123 && massh <= 129. ) { scale = 1.12e-03 * massh - 0.27; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
@@ -191,13 +173,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgammagamma( std::string
         if ( column == "tt" ) {
 
             if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            //else if ( massh >= 123. && massh < 124. ) { scale = Linearfunction( massh, 124., 123., 0.72048e-01, 0.72602e-01 ); }
-            //else if ( massh >= 124. && massh < 125. ) { scale = Linearfunction( massh, 125., 124., 0.71482e-01, 0.72048e-01 ); }
-            //else if ( massh >= 125. && massh < 126. ) { scale = Linearfunction( massh, 126., 125., 0.70904e-01, 0.71482e-01 ); }
-            //else if ( massh >= 126. && massh < 127. ) { scale = Linearfunction( massh, 127., 126., 0.70312e-01, 0.70904e-01 ); }
-            //else if ( massh >= 127. && massh < 128. ) { scale = Linearfunction( massh, 128., 127., 0.69708e-01, 0.70312e-01 ); }
-            //else if ( massh >= 128. && massh < 129. ) { scale = Linearfunction( massh, 129., 128., 0.69090e-01, 0.69708e-01 ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = -5.85 * pow( 10, -4 ) * massh + 0.145; }
+            else if ( massh >= 123 && massh <= 129. ) { scale = -5.85e-04 * massh + 0.15; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
@@ -205,13 +181,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgammagamma( std::string
         if ( column == "bb" ) {
 
             if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            //else if ( massh >= 123. && massh < 124. ) { scale = Linearfunction( massh, 124., 123., 0.20152e-04, 0.20885e-04 ); }
-            //else if ( massh >= 124. && massh < 125. ) { scale = Linearfunction( massh, 125., 124., 0.19444e-04, 0.20152e-04 ); }
-            //else if ( massh >= 125. && massh < 126. ) { scale = Linearfunction( massh, 126., 125., 0.18760e-04, 0.19444e-04 ); }
-            //else if ( massh >= 126. && massh < 127. ) { scale = Linearfunction( massh, 127., 126., 0.18099e-04, 0.18760e-04 ); }
-            //else if ( massh >= 127. && massh < 128. ) { scale = Linearfunction( massh, 128., 127., 0.17460e-04, 0.18099e-04 ); }
-            //else if ( massh >= 128. && massh < 129. ) { scale = Linearfunction( massh, 129., 128., 0.16842e-04, 0.17460e-04 ); } 
-            else if ( massh >= 123 && massh <= 129. ) { scale = -6.74 * pow( 10, -7 ) * massh + 1.04 * pow( 10, -4 ); }
+            else if ( massh >= 123 && massh <= 129. ) { scale = -6.74e-07 * massh + 1.04e-04; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
@@ -219,13 +189,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgammagamma( std::string
         if ( column == "WW" ) {
 
             if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            //else if ( massh >= 123. && massh < 124. ) { scale = Linearfunction( massh, 124., 123., 1.5911, 1.5934 ); }
-            //else if ( massh >= 124. && massh < 125. ) { scale = Linearfunction( massh, 125., 124., 1.5887, 1.5911 ); }
-            //else if ( massh >= 125. && massh < 126. ) { scale = Linearfunction( massh, 126., 125., 1.5863, 1.5887 ); }
-            //else if ( massh >= 126. && massh < 127. ) { scale = Linearfunction( massh, 127., 126., 1.5838, 1.5863 ); }
-            //else if ( massh >= 127. && massh < 128. ) { scale = Linearfunction( massh, 128., 127., 1.5812, 1.5838 ); }
-            //else if ( massh >= 128. && massh < 129. ) { scale = Linearfunction( massh, 129., 128., 1.5785, 1.5812 ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = -2.48 * pow( 10, -3 ) * massh + 1.9; }
+            else if ( massh >= 123 && massh <= 129. ) { scale = -2.48e-03 * massh + 1.90; } 
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
@@ -233,13 +197,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgammagamma( std::string
         if ( column == "tb" ) {
 
             if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            //else if ( massh >= 123. && massh < 124. ) { scale = Linearfunction( massh, 124., 123., -0.18029e-02, -0.18391e-02 ); }
-            //else if ( massh >= 124. && massh < 125. ) { scale = Linearfunction( massh, 125., 124., -0.17672e-02, -0.18029e-02 ); }
-            //else if ( massh >= 125. && massh < 126. ) { scale = Linearfunction( massh, 126., 125., -0.17319e-02, -0.17672e-02 ); }
-            //else if ( massh >= 126. && massh < 127. ) { scale = Linearfunction( massh, 127., 126., -0.16970e-02, -0.17319e-02 ); }
-            //else if ( massh >= 127. && massh < 128. ) { scale = Linearfunction( massh, 128., 127., -0.16625e-02, -0.16970e-02 ); }
-            //else if ( massh >= 128. && massh < 129. ) { scale = Linearfunction( massh, 129., 128., -0.16283e-02, -0.16625e-02 ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = 3.51 * pow( 10, -5 ) * massh - 6.16 * pow( 10, -3 ); }
+            else if ( massh >= 123 && massh <= 129. ) { scale = 3.51e-05 * massh - 6.16e-03; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
@@ -247,13 +205,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgammagamma( std::string
         if ( column == "tW" ) {
 
             if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            //else if ( massh >= 123. && massh < 124. ) { scale = Linearfunction( massh, 124., 123., -0.67717, -0.68026 ); }
-            //else if ( massh >= 124. && massh < 125. ) { scale = Linearfunction( massh, 125., 124., -0.67400, -0.67717 ); }
-            //else if ( massh >= 125. && massh < 126. ) { scale = Linearfunction( massh, 126., 125., -0.67074, -0.67400 ); }
-            //else if ( massh >= 126. && massh < 127. ) { scale = Linearfunction( massh, 127., 126., -0.66741, -0.67074 ); }
-            //else if ( massh >= 127. && massh < 128. ) { scale = Linearfunction( massh, 128., 127., -0.66399, -0.66741 ); }
-            //else if ( massh >= 128. && massh < 129. ) { scale = Linearfunction( massh, 129., 128., -0.66048, -0.66399 ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = 3.3 * pow( 10, -3 ) * massh - 1.09; }
+            else if ( massh >= 123 && massh <= 129. ) { scale = 3.30e-03 * massh - 1.09; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
@@ -261,13 +213,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgammagamma( std::string
         if ( column == "bW" ) {
 
             if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            //else if ( massh >= 123. && massh < 124. ) { scale = Linearfunction( massh, 124., 123., 0.84914e-02, 0.86351e-02 ); }
-            //else if ( massh >= 124. && massh < 125. ) { scale = Linearfunction( massh, 125., 124., 0.83495e-02, 0.84914e-02 ); }
-            //else if ( massh >= 125. && massh < 126. ) { scale = Linearfunction( massh, 126., 125., 0.82093e-02, 0.83495e-02 ); }
-            //else if ( massh >= 126. && massh < 127. ) { scale = Linearfunction( massh, 127., 126., 0.80708e-02, 0.82093e-02 ); }
-            //else if ( massh >= 127. && massh < 128. ) { scale = Linearfunction( massh, 128., 127., 0.79339e-02, 0.80708e-02 ); }
-            //else if ( massh >= 128. && massh < 129. ) { scale = Linearfunction( massh, 129., 128., 0.77984e-02, 0.79339e-02 ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = -1.39 * pow( 10, -4 ) * massh + 0.0258; }
+            else if ( massh >= 123 && massh <= 129. ) { scale = -1.39e-04 * massh + 0.03; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
@@ -275,13 +221,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgammagamma( std::string
         if ( column == "tautau" ) {
 
             if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            //else if ( massh >= 123. && massh < 124. ) { scale = Linearfunction( massh, 124., 123., 0.24292e-04, 0.25148e-04 ); }
-            //else if ( massh >= 124. && massh < 125. ) { scale = Linearfunction( massh, 125., 124., 0.23464e-04, 0.24292e-04 ); }
-            //else if ( massh >= 125. && massh < 126. ) { scale = Linearfunction( massh, 126., 125., 0.22663e-04, 0.23464e-04 ); }
-            //else if ( massh >= 126. && massh < 127. ) { scale = Linearfunction( massh, 127., 126., 0.21888e-04, 0.22663e-04 ); }
-            //else if ( massh >= 127. && massh < 128. ) { scale = Linearfunction( massh, 128., 127., 0.21138e-04, 0.21888e-04 ); }
-            //else if ( massh >= 128. && massh < 129. ) { scale = Linearfunction( massh, 129., 128., 0.20411e-04, 0.21138e-04 ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = -7.89 * pow( 10, -7 ) * massh + 1.22 * pow( 10, -4 ); }
+            else if ( massh >= 123 && massh <= 129. ) { scale = -7.89e-07 * massh + 1.22e-04; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
@@ -289,13 +229,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgammagamma( std::string
         if ( column == "ttau" ) {
 
             if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            //else if ( massh >= 123. && massh < 124. ) { scale = Linearfunction( massh, 124., 123., -0.19461e-02, -0.19851e-02 ); }
-            //else if ( massh >= 124. && massh < 125. ) { scale = Linearfunction( massh, 125., 124., -0.19077e-02, -0.19461e-02 ); }
-            //else if ( massh >= 125. && massh < 126. ) { scale = Linearfunction( massh, 126., 125., -0.18696e-02, -0.19077e-02 ); }
-            //else if ( massh >= 126. && massh < 127. ) { scale = Linearfunction( massh, 127., 126., -0.18321e-02, -0.18696e-02 ); }
-            //else if ( massh >= 127. && massh < 128. ) { scale = Linearfunction( massh, 128., 127., -0.17949e-02, -0.18321e-02 ); }
-            //else if ( massh >= 128. && massh < 129. ) { scale = Linearfunction( massh, 129., 128., -0.17581e-02, -0.17949e-02 ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = 3.78 * pow( 10, -5 ) * massh - 6.64 * pow( 10, -3 ); }
+            else if ( massh >= 123 && massh <= 129. ) { scale = 3.78e-05 * massh - 6.64e-03; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
@@ -303,13 +237,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgammagamma( std::string
         if ( column == "btau" ) {
 
             if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            //else if ( massh >= 123. && massh < 124. ) { scale = Linearfunction( massh, 124., 123., 0.44253e-04, 0.45838e-04 ); }
-            //else if ( massh >= 124. && massh < 125. ) { scale = Linearfunction( massh, 125., 124., 0.42720e-04, 0.44253e-04 ); }
-            //else if ( massh >= 125. && massh < 126. ) { scale = Linearfunction( massh, 126., 125., 0.41239e-04, 0.42720e-04 ); }
-            //else if ( massh >= 126. && massh < 127. ) { scale = Linearfunction( massh, 127., 126., 0.39806e-04, 0.41239e-04 ); }
-            //else if ( massh >= 127. && massh < 128. ) { scale = Linearfunction( massh, 128., 127., 0.38421e-04, 0.39806e-04 ); }
-            //else if ( massh >= 128. && massh < 129. ) { scale = Linearfunction( massh, 129., 128., 0.37079e-04, 0.38421e-04 ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = -1.46 * pow( 10, -6 ) * massh + 2.25 * pow( 10, -4 ); }
+            else if ( massh >= 123 && massh <= 129. ) { scale = -1.46e-06 * massh + 2.25e-04; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
@@ -317,13 +245,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgammagamma( std::string
         if ( column == "tauW" ) {
 
             if ( massh < 123. ) { throw ConfigurationException( "Higgs mass out of range." ); }
-            //else if ( massh >= 123. && massh < 124. ) { scale = Linearfunction( massh, 124., 123., 0.91672e-02, 0.93221e-02 ); }
-            //else if ( massh >= 124. && massh < 125. ) { scale = Linearfunction( massh, 125., 124., 0.90143e-02, 0.91672e-02 ); }
-            //else if ( massh >= 125. && massh < 126. ) { scale = Linearfunction( massh, 126., 125., 0.88634e-02, 0.90143e-02 ); }
-            //else if ( massh >= 126. && massh < 127. ) { scale = Linearfunction( massh, 127., 126., 0.87144e-02, 0.88634e-02 ); }
-            //else if ( massh >= 127. && massh < 128. ) { scale = Linearfunction( massh, 128., 127., 0.85671e-02, 0.87144e-02 ); }
-            //else if ( massh >= 128. && massh < 129. ) { scale = Linearfunction( massh, 129., 128., 0.84215e-02, 0.85671e-02 ); }
-            else if ( massh >= 123 && massh <= 129. ) { scale = -1.5 * pow( 10, -4 ) * massh + 0.0278; }
+            else if ( massh >= 123 && massh <= 129. ) { scale = -1.50e-04 * massh + 0.03; }
             else { throw ConfigurationException( "Higgs mass out of range." ); }
 
         }
