@@ -136,16 +136,16 @@ namespace Fittino {
        *  Returns a linear function mx + b, given by two coordinates.
        */     
       double       Linearfunction( double massh, double x2, double x1, double y2, double y1 );
-      /*!   
-       *  Matches scaling factors to the higgs gluon couplings in dependence to the
-       *  higgs mass.
-       */
-      double       Scaleg2hgg( std::string column, double massh );
-      /*!
-       *  Matches scaling factors to the higgs gamma couplings in dependence to the
-       *  higgs mass.
-       */
-      double       Scaleg2hgammagamma( std::string column, double massh );
+      ///*!   
+      // *  Matches scaling factors to the higgs gluon couplings in dependence to the
+      // *  higgs mass.
+      // */
+      //double       Scaleg2hgg( std::string column, double massh );
+      ///*!
+      // *  Matches scaling factors to the higgs gamma couplings in dependence to the
+      // *  higgs mass.
+      // */
+      //double       Scaleg2hgammagamma( std::string column, double massh );
       /*!
        *  Calculates the uncertainty on the "SingleH" production mode (see e.g.\n
        *  the HiggsSignals manual) by interpolating between pure bbh and ggh\n

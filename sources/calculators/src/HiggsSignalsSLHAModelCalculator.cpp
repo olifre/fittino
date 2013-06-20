@@ -110,8 +110,7 @@ double Fittino::HiggsSignalsSLHAModelCalculator::CalculateBRhInvisibleLimit( dou
             + 100.961 * pow( x, 2 );
 
     }
-
-   else {
+    else {
 
         f = 3.322 * pow( x, 2 ) + 4.92 * x;
 
@@ -121,143 +120,95 @@ double Fittino::HiggsSignalsSLHAModelCalculator::CalculateBRhInvisibleLimit( dou
 
 }
 
-double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgg( std::string column, double massh ) {
+//double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgg( std::string column, double massh ) {
+//
+//    double scale;
+//
+//    try {
+//
+//        if ( massh >= 123 && massh <= 129. ) {
+//
+//            if ( column == "tt" ) { scale = -9.10e-04 * massh +  1.23e00; }
+//            if ( column == "bb" ) { scale = -2.86e-04 * massh + 4.74e-02; }      
+//            if ( column == "tb" ) { scale =  1.12e-03 * massh - 2.73e-01; } 
+//       
+//        }
+//        else { throw ConfigurationException( "Higgs mass out of range." ); }
+//
+//    }
+//    catch ( const ConfigurationException& configurationException ) {
+//
+//        std::cout << "\n" << configurationException.what() << "\n" << std::endl;
+//        exit( EXIT_FAILURE );
+//
+//    }
+// 
+//    return scale;
+//
+//}
 
-    double scale;
-
-    try {
-
-
-        if ( column == "tt" ) {
-
-            if ( massh >= 123 && massh <= 129. ) { scale = -9.10e-04 * massh + 1.23e00; }
-            else { throw ConfigurationException( "Higgs mass out of range." ); }
-
-        }
-
-        if ( column == "bb" ) {
-
-            if ( massh >= 123 && massh <= 129. ) { scale = -2.86e-04 * massh + 4.74e-02; }
-            else { throw ConfigurationException( "Higgs mass out of range." ); }
-
-        }
-
-        if ( column == "tb" ) {
-
-            if ( massh >= 123 && massh <= 129. ) { scale = 1.12e-03 * massh - 2.73e-01; } 
-            else { throw ConfigurationException( "Higgs mass out of range." ); }
-
-        }
-
-    }
-
-    catch ( const ConfigurationException& configurationException ) {
-
-        std::cout << "\n" << configurationException.what() << "\n" << std::endl;
-        exit( EXIT_FAILURE );
-
-    }
- 
-    return scale;
-
-}
-
-double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgammagamma( std::string column, double massh ) {
-
-    double scale;
-
-    try {
-
-        if ( column == "tt" ) {
-
-            if ( massh >= 123 && massh <= 129. ) { scale = -5.85e-04 * massh + 1.45e-01; }
-            else { throw ConfigurationException( "Higgs mass out of range." ); }
-
-        }
-
-        if ( column == "bb" ) {
-
-            if ( massh >= 123 && massh <= 129. ) { scale = -6.74e-07 * massh + 1.04e-04; }
-            else { throw ConfigurationException( "Higgs mass out of range." ); }
-
-        }
-
-        if ( column == "WW" ) {
-
-            if ( massh >= 123 && massh <= 129. ) { scale = -2.48e-03 * massh + 1.90e00; } 
-            else { throw ConfigurationException( "Higgs mass out of range." ); }
-
-        }
-
-        if ( column == "tb" ) {
-
-            if ( massh >= 123 && massh <= 129. ) { scale = 3.51e-05 * massh - 6.16e-03; }
-            else { throw ConfigurationException( "Higgs mass out of range." ); }
-
-        }
-
-        if ( column == "tW" ) {
-
-            if ( massh >= 123 && massh <= 129. ) { scale = 3.30e-03 * massh - 1.09e00; }
-            else { throw ConfigurationException( "Higgs mass out of range." ); }
-
-        }
-
-        if ( column == "bW" ) {
-
-            if ( massh >= 123 && massh <= 129. ) { scale = -1.39e-04 * massh + 2.58e-02; }
-            else { throw ConfigurationException( "Higgs mass out of range." ); }
-
-        }
-
-        if ( column == "tautau" ) {
-
-            if ( massh >= 123 && massh <= 129. ) { scale = -7.89e-07 * massh + 1.22e-04; }
-            else { throw ConfigurationException( "Higgs mass out of range." ); }
-
-        }
-
-        if ( column == "ttau" ) {
-
-            if ( massh >= 123 && massh <= 129. ) { scale = 3.78e-05 * massh - 6.64e-03; }
-            else { throw ConfigurationException( "Higgs mass out of range." ); }
-
-        }
-
-        if ( column == "btau" ) {
-
-            if ( massh >= 123 && massh <= 129. ) { scale = -1.46e-06 * massh + 2.25e-04; }
-            else { throw ConfigurationException( "Higgs mass out of range." ); }
-
-        }
-
-        if ( column == "tauW" ) {
-
-            if ( massh >= 123 && massh <= 129. ) { scale = -1.50e-04 * massh + 2.78e-02; }
-            else { throw ConfigurationException( "Higgs mass out of range." ); }
-
-        }
-
-    }
-    
-    catch ( const ConfigurationException& configurationException ) {
-     
-        std::cout << "\n" << configurationException.what() << "\n" << std::endl;
-        exit( EXIT_FAILURE );
-    
-    }
-    
-    return scale;
-
-}
+//double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgammagamma( std::string column, double massh ) {
+//
+//    double scale;
+//
+//    try {
+// 
+//        if ( massh >= 123 && massh <= 129. ) {
+//
+//            if ( column == "tt" )     { scale = -5.85e-04 * massh + 1.45e-01; }
+//            if ( column == "bb" )     { scale = -6.74e-07 * massh + 1.04e-04; }
+//            if ( column == "WW" )     { scale = -2.48e-03 * massh +  1.90e00; } 
+//            if ( column == "tb" )     { scale =  3.51e-05 * massh - 6.16e-03; }
+//            if ( column == "tW" )     { scale =  3.30e-03 * massh -  1.09e00; }
+//            if ( column == "bW" )     { scale = -1.39e-04 * massh + 2.58e-02; }
+//            if ( column == "tautau" ) { scale = -7.89e-07 * massh + 1.22e-04; }
+//            if ( column == "ttau" )   { scale =  3.78e-05 * massh - 6.64e-03; }
+//            if ( column == "btau" )   { scale = -1.46e-06 * massh + 2.25e-04; }
+//            if ( column == "tauW" )   { scale = -1.50e-04 * massh + 2.78e-02; }
+//
+//        }
+//        else { throw ConfigurationException( "Higgs mass out of range." ); }
+//
+//    }
+//    catch ( const ConfigurationException& configurationException ) {
+//     
+//        std::cout << "\n" << configurationException.what() << "\n" << std::endl;
+//        exit( EXIT_FAILURE );
+//    
+//    }
+//    
+//    return scale;
+//
+//}
 
 double Fittino::HiggsSignalsSLHAModelCalculator::Calculateg2hgg( double ghbb,
                                                                  double ghtt,
                                                                  double massh ) {
+   
+    double g2hgg;
 
-    double g2hgg = ghtt * ghtt * Scaleg2hgg( "tt", massh )
-                 + ghbb * ghbb * Scaleg2hgg( "bb", massh )
-                 + ghtt * ghbb * Scaleg2hgg( "tb", massh );
+    try {
+
+        if  ( massh >= 123 && massh <= 129. ) {
+
+            g2hgg = ghtt * ghtt * ( -9.10e-04 * massh +  1.23e00 );
+                  + ghbb * ghbb * ( -2.86e-04 * massh + 4.74e-02 );
+                  + ghtt * ghbb * (  1.12e-03 * massh - 2.73e-01 );
+
+        } 
+        else { throw ConfigurationException( "Higgs mass out of range." ); }
+
+    }
+    catch ( const ConfigurationException& configurationException ) {
+
+        std::cout << "\n" << configurationException.what() << "\n" << std::endl;
+        exit( EXIT_FAILURE );
+
+    }
+
+    //double g2hgg = ghtt * ghtt * Scaleg2hgg( "tt", massh )
+    //             + ghbb * ghbb * Scaleg2hgg( "bb", massh )
+    //             + ghtt * ghbb * Scaleg2hgg( "tb", massh );
 
     return g2hgg;
 
@@ -270,16 +221,44 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Calculateg2hgammagamma( double 
                                                                          double ghZZ,
                                                                          double massh ) {
 
-    double g2hgammagamma = ghtt * ghtt * Scaleg2hgammagamma( "tt", massh )
-                         + ghbb * ghbb * Scaleg2hgammagamma( "bb", massh )
-                         + ghWW * ghWW * Scaleg2hgammagamma( "WW", massh )
-                         + ghtt * ghbb * Scaleg2hgammagamma( "tb", massh )
-                         + ghtt * ghWW * Scaleg2hgammagamma( "tW", massh )
-                         + ghbb * ghWW * Scaleg2hgammagamma( "bW", massh )
-                         + ghtautau * ghtautau * Scaleg2hgammagamma( "tautau", massh )
-                         + ghtt * ghtautau * Scaleg2hgammagamma( "ttau", massh )
-                         + ghbb * ghtautau * Scaleg2hgammagamma( "btau", massh )
-                         + ghtautau * ghWW * Scaleg2hgammagamma( "tauW", massh );
+    double g2hgammagamma;
+
+    try {
+
+        if  ( massh >= 123 && massh <= 129. ) {
+
+            g2hgammagamma = ghtt     * ghtt     * ( -5.85e-04 * massh + 1.45e-01 );
+                          + ghbb     * ghbb     * ( -6.74e-07 * massh + 1.04e-04 );
+                          + ghWW     * ghWW     * ( -2.48e-03 * massh +  1.90e00 );
+                          + ghtt     * ghbb     * (  3.51e-05 * massh - 6.16e-03 );
+                          + ghtt     * ghWW     * (  3.30e-03 * massh -  1.09e00 );
+                          + ghbb     * ghWW     * ( -1.39e-04 * massh + 2.58e-02 );
+                          + ghtautau * ghtautau * ( -7.89e-07 * massh + 1.22e-04 );
+                          + ghtt     * ghtautau * (  3.78e-05 * massh - 6.64e-03 );
+                          + ghbb     * ghtautau * ( -1.46e-06 * massh + 2.25e-04 );
+                          + ghtautau * ghWW     * ( -1.50e-04 * massh + 2.78e-02 );
+
+        }
+        else { throw ConfigurationException( "Higgs mass out of range." ); }
+
+    }
+    catch ( const ConfigurationException& configurationException ) {
+
+        std::cout << "\n" << configurationException.what() << "\n" << std::endl;
+        exit( EXIT_FAILURE );
+
+    }
+
+    //double g2hgammagamma = ghtt * ghtt * Scaleg2hgammagamma( "tt", massh )
+    //                     + ghbb * ghbb * Scaleg2hgammagamma( "bb", massh )
+    //                     + ghWW * ghWW * Scaleg2hgammagamma( "WW", massh )
+    //                     + ghtt * ghbb * Scaleg2hgammagamma( "tb", massh )
+    //                     + ghtt * ghWW * Scaleg2hgammagamma( "tW", massh )
+    //                     + ghbb * ghWW * Scaleg2hgammagamma( "bW", massh )
+    //                     + ghtautau * ghtautau * Scaleg2hgammagamma( "tautau", massh )
+    //                     + ghtt * ghtautau * Scaleg2hgammagamma( "ttau", massh )
+    //                     + ghbb * ghtautau * Scaleg2hgammagamma( "btau", massh )
+    //                     + ghtautau * ghWW * Scaleg2hgammagamma( "tauW", massh );
 
     return g2hgammagamma;
 
@@ -390,6 +369,8 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     double massh          = model->GetParameterVector()->at( 0 )->GetValue();
 
+    // Setting 3 : All up-type quarks and all down-type quarks and leptons are the same.
+
     double g2hjss_s       = pow( 1 + model->GetParameterVector()->at(  1 )->GetValue(), 2 );
     double g2hjss_p       = pow( 1 + model->GetParameterVector()->at(  2 )->GetValue(), 2 );
     double g2hjcc_s       = pow( 1 + model->GetParameterVector()->at(  3 )->GetValue(), 2 );
@@ -413,6 +394,8 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     double BR_hjhihi      = model->GetParameterVector()->at( 17 )->GetValue();
     double GammaInvisible = model->GetParameterVector()->at( 18 )->GetValue();
 
+    // Setting 2 : All up-type quarks are the same.
+
     //double g2hjss_s       = pow( 1 + model->GetParameterVector()->at(  1 )->GetValue(), 2 );
     //double g2hjss_p       = pow( 1 + model->GetParameterVector()->at(  2 )->GetValue(), 2 );
     //double g2hjcc_s       = pow( 1 + model->GetParameterVector()->at(  3 )->GetValue(), 2 );
@@ -435,6 +418,8 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     //double BR_hjhihi      = model->GetParameterVector()->at( 19 )->GetValue();
     //double GammaInvisible = model->GetParameterVector()->at( 20 )->GetValue();
+
+    // Setting 1 : No constraints.
 
     //double g2hjss_s       = pow( 1 + model->GetParameterVector()->at(  1 )->GetValue(), 2 );
     //double g2hjss_p       = pow( 1 + model->GetParameterVector()->at(  2 )->GetValue(), 2 );
@@ -601,11 +586,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     double Gamma_hTotal_Penalty = 0;
 
-    if ( GammaTotal > 1. ) {
-
-        Gamma_hTotal_Penalty = 1000000.;
-
-    }
+    if ( GammaTotal > 1. ) { Gamma_hTotal_Penalty = 1000000.; }
 
     // Calculate the chi2 coming from the measured limit on invisible decays of the Higgs.
 
