@@ -372,6 +372,17 @@ void Fittino::HiggsSignalsSLHAModelCalculator::SetRateUncertainties( double g2hj
 
 }
 
+double Fittino::HiggsSignalsSLHAModelCalculator::CalculateBR( double g2hjxx,
+                                                              double massh,
+                                                              double GammaTotal,
+                                                              double BR_SM ){
+
+    double BR = g2hjxx * ( smgamma_h_( &massh ) / GammaTotal ) * BR_SM;
+
+    return BR;
+
+}
+
 void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* model ) {
 
     // Identify the model parameters with the variables needed by HiggsSignals.
@@ -494,17 +505,17 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     // Calculate the branching fractions.
 
-    double BR_s_hss       = g2hjss_s     * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hss_( &massh );
-    double BR_s_hcc       = g2hjcc_s     * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hcc_( &massh );
-    double BR_s_hbb       = g2hjbb_s     * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hbb_( &massh );
-    double BR_s_htt       = g2hjtt_s     * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_htoptop_( &massh );
-    double BR_s_hmumu     = g2hjmumu_s   * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hmumu_( &massh );
-    double BR_s_htautau   = g2hjtautau_s * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_htautau_( &massh );
-    double BR_hWW         = g2hjWW       * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hww_( &massh );
-    double BR_hZZ         = g2hjZZ       * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hzz_( &massh );
-    double BR_hZgamma     = g2hjZga      * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hzgam_( &massh );
-    double BR_hgammagamma = g2hjgaga     * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hgamgam_( &massh );
-    double BR_hgg         = g2hjgg       * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hgg_( &massh );
+    //double BR_s_hss       = g2hjss_s     * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hss_( &massh );
+    //double BR_s_hcc       = g2hjcc_s     * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hcc_( &massh );
+    //double BR_s_hbb       = g2hjbb_s     * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hbb_( &massh );
+    //double BR_s_htt       = g2hjtt_s     * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_htoptop_( &massh );
+    //double BR_s_hmumu     = g2hjmumu_s   * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hmumu_( &massh );
+    //double BR_s_htautau   = g2hjtautau_s * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_htautau_( &massh );
+    //double BR_hWW         = g2hjWW       * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hww_( &massh );
+    //double BR_hZZ         = g2hjZZ       * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hzz_( &massh );
+    //double BR_hZgamma     = g2hjZga      * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hzgam_( &massh );
+    //double BR_hgammagamma = g2hjgaga     * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hgamgam_( &massh );
+    //double BR_hgg         = g2hjgg       * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hgg_( &massh );
 
     // SM predictions of the branching fractions.
 
@@ -519,6 +530,18 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     double BR_SM_hZgamma     = smbr_hzgam_( &massh );
     double BR_SM_hgammagamma = smbr_hgamgam_( &massh );
     double BR_SM_hgg         = smbr_hgg_( &massh );
+
+    double BR_s_hss       = CalculateBR( g2hjss_s,     massh, GammaTotal, BR_SM_s_hss );
+    double BR_s_hcc       = CalculateBR( g2hjcc_s,     massh, GammaTotal, BR_SM_s_hcc ); 
+    double BR_s_hbb       = CalculateBR( g2hjbb_s,     massh, GammaTotal, BR_SM_s_hbb ); 
+    double BR_s_htt       = CalculateBR( g2hjtt_s,     massh, GammaTotal, BR_SM_s_htt ); 
+    double BR_s_hmumu     = CalculateBR( g2hjmumu_s,   massh, GammaTotal, BR_SM_s_hmumu ); 
+    double BR_s_htautau   = CalculateBR( g2hjtautau_s, massh, GammaTotal, BR_SM_s_htautau ); 
+    double BR_hWW         = CalculateBR( g2hjWW,       massh, GammaTotal, BR_SM_hWW ); 
+    double BR_hZZ         = CalculateBR( g2hjZZ,       massh, GammaTotal, BR_SM_hZZ ); 
+    double BR_hZgamma     = CalculateBR( g2hjZga,      massh, GammaTotal, BR_SM_hZgamma ); 
+    double BR_hgammagamma = CalculateBR( g2hjgaga,     massh, GammaTotal, BR_SM_hgammagamma ); 
+    double BR_hgg         = CalculateBR( g2hjgg,       massh, GammaTotal, BR_SM_hgg );
 
     //double BR_Total = BR_s_hss + BR_s_hcc + BR_s_hbb + BR_s_htt + BR_s_hmumu + BR_s_htautau + BR_hWW + BR_hZZ + BR_hZgamma + BR_hgammagamma + BR_hgg + BR_hInvisible;
  

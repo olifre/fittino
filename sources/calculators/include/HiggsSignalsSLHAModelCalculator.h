@@ -543,6 +543,24 @@ namespace Fittino {
                                         double GammaInvisible
                                       );
 
+      /*!
+       *  Calculates the total width of the Higgs boson depending on its mass\n
+       *  and couplings: \n
+       *  \f$(1+\sum_i((\Delta_i-1)*(SMBR)_i(m_H)))\f$ + Gamma-Invisible \n
+       *  The Sum is over all couplings that were provided with the \n
+       *  corresponding SM-Branching Ratio from Higgs Signals. \n
+       *  GammaInvisible is used as free parameter in the model. \n
+       *  If GammaTotal exceeds 1 GeV, the Chi2 contribution rises to 1M,\n
+       *  forcing the MarkovChain backwards.
+       */
+      double       CalculateBR(
+                                        double g2hjxx,
+                                        double massh,
+                                        double GammaTotal,
+                                        double BR_SM
+                                      );
+
+
     private:
       virtual void CallExecutable();
       virtual void CallFunction( PhysicsModelBase* model );
