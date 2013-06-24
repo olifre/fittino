@@ -46,6 +46,10 @@ namespace Fittino {
        */
                           ~ParameterBase();
       /*!
+       *  Returns the name of the parameter.
+       */
+      std::string         GetName() const;
+      /*!
        *  Returns the value of the parameter.
        */
       double              GetValue() const;
@@ -56,19 +60,13 @@ namespace Fittino {
 
     public:
       /*!
-       *  Returns the name of the parameter.
+       *  Prints the parameter status on screen.
        */
-      std::string         GetName() const;
+      virtual void        PrintStatus() const;
       /*!
        *  Returns the name of the axis title.
        */
       virtual std::string GetPlotName() const;
-
-    public:
-      /*!
-       *  Prints the parameter status on screen.
-       */
-      virtual void        PrintStatus() const;
 
     protected:
       /*!
@@ -85,7 +83,7 @@ namespace Fittino {
       std::string         _plotName;
 
     //private:
-    //  void         CheckConsistency() const;
+    //  void                CheckConsistency() const;
 
   };
 
