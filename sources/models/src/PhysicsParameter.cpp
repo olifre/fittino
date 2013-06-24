@@ -33,6 +33,7 @@ Fittino::PhysicsParameter::PhysicsParameter( std::string name,
                                              bool        fixed )
 
 	: _unit( unit ),
+          _plotUnit( plotUnit ),
           ModelParameterBase( name, plotName, value, error, lowerBound, upperBound, fixed ) {
 
 }
@@ -44,6 +45,16 @@ Fittino::PhysicsParameter::~PhysicsParameter() {
 std::string Fittino::PhysicsParameter::GetUnit() const {
 
     return _unit;
+
+}
+
+std::string Fittino::PhysicsParameter::GetPlotName() const {
+
+   std::string plotName = _plotName;
+
+   if ( _plotUnit != "" ) plotName += " [" + this->GetPlotUnit() + "]";
+
+   return plotName;
 
 }
 

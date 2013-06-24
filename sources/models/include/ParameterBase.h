@@ -38,49 +38,51 @@ namespace Fittino {
       /*!
        *  Takes as input the name and value of the parameter.
        */
-                   ParameterBase( std::string name,
-                                  std::string plotName,
-                                  double      value );
+                          ParameterBase( std::string name,
+                                         std::string plotName,
+                                         double      value );
       /*!
        *  Standard destructor.
        */
-                   ~ParameterBase();
+                          ~ParameterBase();
       /*!
        *  Returns the value of the parameter.
        */
-      double       GetValue() const;
+      double              GetValue() const;
       /*!
        *  Sets the value of the parameter.
        */
-      void         SetValue( double value );
+      void                SetValue( double value );
+
+    public:
       /*!
        *  Returns the name of the parameter.
        */
-      std::string  GetName() const;
+      std::string         GetName() const;
       /*!
        *  Returns the name of the axis title.
        */
-      std::string  GetPlotName() const;
+      virtual std::string GetPlotName() const;
 
     public:
       /*!
        *  Prints the parameter status on screen.
        */
-      virtual void PrintStatus() const;
+      virtual void        PrintStatus() const;
 
     protected:
       /*!
        *  Value of the parameter.
        */
-       double      _value;
+      double              _value;
       /*!
        *  Name of the parameter.
        */
-      std::string  _name;
+      std::string         _name;
       /*!
        *  Name of the axis in the plot.
        */
-      std::string  _plotName;
+      std::string         _plotName;
 
     //private:
     //  void         CheckConsistency() const;

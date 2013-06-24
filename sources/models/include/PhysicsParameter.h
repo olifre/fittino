@@ -56,6 +56,7 @@ namespace Fittino {
        *  Returns the physical unit of the parameter.
        */
       std::string  GetUnit() const;
+      std::string  GetPlotName() const;
       std::string  GetPlotUnit() const;
 
     public:
