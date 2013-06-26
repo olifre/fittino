@@ -84,14 +84,6 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallExecutable() {
 
 }
 
-double Fittino::HiggsSignalsSLHAModelCalculator::Linearfunction( double massh, double x2, double x1, double y2, double y1 ) {
-
-    double f = ( y2 - y1 ) / (x2 - x1) * ( massh -  x1 ) + y1 ;
-
-    return f;
-
-}
-
 double Fittino::HiggsSignalsSLHAModelCalculator::CalculateBRhInvisible( double GammaTotal, double GammahInvisible ) {
 
     if ( GammaTotal <= 1.e-16 ) return 0.;
@@ -120,67 +112,6 @@ double Fittino::HiggsSignalsSLHAModelCalculator::CalculateBRhInvisibleLimit( dou
 
 }
 
-//double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgg( std::string column, double massh ) {
-//
-//    double scale;
-//
-//    try {
-//
-//        if ( massh >= 123 && massh <= 129. ) {
-//
-//            if ( column == "tt" ) { scale = -9.10e-04 * massh +  1.23e00; }
-//            if ( column == "bb" ) { scale = -2.86e-04 * massh + 4.74e-02; }      
-//            if ( column == "tb" ) { scale =  1.12e-03 * massh - 2.73e-01; } 
-//       
-//        }
-//        else { throw ConfigurationException( "Higgs mass out of range." ); }
-//
-//    }
-//    catch ( const ConfigurationException& configurationException ) {
-//
-//        std::cout << "\n" << configurationException.what() << "\n" << std::endl;
-//        exit( EXIT_FAILURE );
-//
-//    }
-// 
-//    return scale;
-//
-//}
-
-//double Fittino::HiggsSignalsSLHAModelCalculator::Scaleg2hgammagamma( std::string column, double massh ) {
-//
-//    double scale;
-//
-//    try {
-// 
-//        if ( massh >= 123 && massh <= 129. ) {
-//
-//            if ( column == "tt" )     { scale = -5.85e-04 * massh + 1.45e-01; }
-//            if ( column == "bb" )     { scale = -6.74e-07 * massh + 1.04e-04; }
-//            if ( column == "WW" )     { scale = -2.48e-03 * massh +  1.90e00; } 
-//            if ( column == "tb" )     { scale =  3.51e-05 * massh - 6.16e-03; }
-//            if ( column == "tW" )     { scale =  3.30e-03 * massh -  1.09e00; }
-//            if ( column == "bW" )     { scale = -1.39e-04 * massh + 2.58e-02; }
-//            if ( column == "tautau" ) { scale = -7.89e-07 * massh + 1.22e-04; }
-//            if ( column == "ttau" )   { scale =  3.78e-05 * massh - 6.64e-03; }
-//            if ( column == "btau" )   { scale = -1.46e-06 * massh + 2.25e-04; }
-//            if ( column == "tauW" )   { scale = -1.50e-04 * massh + 2.78e-02; }
-//
-//        }
-//        else { throw ConfigurationException( "Higgs mass out of range." ); }
-//
-//    }
-//    catch ( const ConfigurationException& configurationException ) {
-//     
-//        std::cout << "\n" << configurationException.what() << "\n" << std::endl;
-//        exit( EXIT_FAILURE );
-//    
-//    }
-//    
-//    return scale;
-//
-//}
-
 double Fittino::HiggsSignalsSLHAModelCalculator::Calculateg2hgg( double ghbb,
                                                                  double ghtt,
                                                                  double massh ) {
@@ -205,10 +136,6 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Calculateg2hgg( double ghbb,
         exit( EXIT_FAILURE );
 
     }
-
-    //double g2hgg = ghtt * ghtt * Scaleg2hgg( "tt", massh )
-    //             + ghbb * ghbb * Scaleg2hgg( "bb", massh )
-    //             + ghtt * ghbb * Scaleg2hgg( "tb", massh );
 
     return g2hgg;
 
@@ -248,17 +175,6 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Calculateg2hgammagamma( double 
         exit( EXIT_FAILURE );
 
     }
-
-    //double g2hgammagamma = ghtt * ghtt * Scaleg2hgammagamma( "tt", massh )
-    //                     + ghbb * ghbb * Scaleg2hgammagamma( "bb", massh )
-    //                     + ghWW * ghWW * Scaleg2hgammagamma( "WW", massh )
-    //                     + ghtt * ghbb * Scaleg2hgammagamma( "tb", massh )
-    //                     + ghtt * ghWW * Scaleg2hgammagamma( "tW", massh )
-    //                     + ghbb * ghWW * Scaleg2hgammagamma( "bW", massh )
-    //                     + ghtautau * ghtautau * Scaleg2hgammagamma( "tautau", massh )
-    //                     + ghtt * ghtautau * Scaleg2hgammagamma( "ttau", massh )
-    //                     + ghbb * ghtautau * Scaleg2hgammagamma( "btau", massh )
-    //                     + ghtautau * ghWW * Scaleg2hgammagamma( "tauW", massh );
 
     return g2hgammagamma;
 
@@ -355,7 +271,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::SetRateUncertainties( double g2hj
 double Fittino::HiggsSignalsSLHAModelCalculator::CalculateBR( double g2hjxx,
                                                               double massh,
                                                               double GammaTotal,
-                                                              double BR_SM ){
+                                                              double BR_SM ) {
 
     double BR = g2hjxx * ( smgamma_h_( &massh ) / GammaTotal ) * BR_SM;
 
@@ -537,20 +453,6 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     double R_H_WW, R_H_ZZ, R_H_gammagamma, R_H_tautau, R_H_bb, R_VH_bb;
     get_rvalues_( &nH, &collider, &R_H_WW, &R_H_ZZ, &R_H_gammagamma, &R_H_tautau, &R_H_bb, &R_VH_bb );
 
-    // Calculate the branching fractions.
-
-    //double BR_s_hss       = g2hjss_s     * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hss_( &massh );
-    //double BR_s_hcc       = g2hjcc_s     * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hcc_( &massh );
-    //double BR_s_hbb       = g2hjbb_s     * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hbb_( &massh );
-    //double BR_s_htt       = g2hjtt_s     * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_htoptop_( &massh );
-    //double BR_s_hmumu     = g2hjmumu_s   * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hmumu_( &massh );
-    //double BR_s_htautau   = g2hjtautau_s * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_htautau_( &massh );
-    //double BR_hWW         = g2hjWW       * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hww_( &massh );
-    //double BR_hZZ         = g2hjZZ       * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hzz_( &massh );
-    //double BR_hZgamma     = g2hjZga      * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hzgam_( &massh );
-    //double BR_hgammagamma = g2hjgaga     * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hgamgam_( &massh );
-    //double BR_hgg         = g2hjgg       * ( smgamma_h_( &massh ) / GammaTotal ) * smbr_hgg_( &massh );
-
     // SM predictions of the branching fractions.
 
     double BR_SM_s_hss       = smbr_hss_( &massh );
@@ -564,6 +466,8 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
     double BR_SM_hZgamma     = smbr_hzgam_( &massh );
     double BR_SM_hgammagamma = smbr_hgamgam_( &massh );
     double BR_SM_hgg         = smbr_hgg_( &massh );
+
+    // Calculate the branching fractions.
 
     double BR_s_hss       = CalculateBR( g2hjss_s,     massh, GammaTotal, BR_SM_s_hss );
     double BR_s_hcc       = CalculateBR( g2hjcc_s,     massh, GammaTotal, BR_SM_s_hcc ); 
