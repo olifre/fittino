@@ -65,8 +65,6 @@ namespace Fittino {
        *  It is usually called directly after the creation of a concrete analysis tool.
        */ 
       void                               PerformAnalysis();
-      //std::vector<float>                 GetLeafVector() const;
-      //TTree*                             GetTree();
 
     protected:
       /*!

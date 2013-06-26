@@ -59,18 +59,6 @@ void Fittino::AnalysisTool::PerformAnalysis() {
 
 }
 
-//std::vector<float> Fittino::AnalysisTool::GetLeafVector() const {
-//
-//    return _leafVector;
-//
-//}
-//
-//TTree* Fittino::AnalysisTool::GetTree() {
-//
-//    return _tree;
-//
-//}
-
 int Fittino::AnalysisTool::GetNumberOfStatusParameters() const {
 
     return _statusParameterVector.size();
