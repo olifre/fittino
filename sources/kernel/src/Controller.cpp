@@ -67,8 +67,9 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
         {"help",       no_argument,       0, 'h'},
         {"input-file", required_argument, 0, 'i'},
+        {"data-file",  required_argument, 0, 'd'},
         {"seed",       required_argument, 0, 's'},
-        {0,            0,                 0, 0  }
+        {0,            0,                 0,  0 }
 
     };
 
@@ -80,7 +81,7 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
         while ( true ) {
 
-            optionCode = getopt_long( argc, argv, ":hi:s:", options, &optionIndex );
+            optionCode = getopt_long( argc, argv, ":hi:d:s:", options, &optionIndex );
 
             if ( optionCode == -1 ) break;
 
@@ -94,6 +95,10 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
                     _inputFileName = std::string( optarg );
                     continue;
 
+                case 'd':
+                    _dataFileName = std::string( optarg );
+                    continue;
+
                 case 's':
                     _randomSeed = atoi( optarg );
                     continue;
@@ -105,12 +110,6 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
                     throw InputException( "Unknown option(s)" );
 
             }
-
-        }
-
-        if ( optind < argc && argc == 2 ) {
-
-            _inputFileName = std::string( argv[optind] );
 
         }
 
@@ -186,6 +185,7 @@ Fittino::Controller* Fittino::Controller::_instance = 0;
 
 Fittino::Controller::Controller()
         : _randomSeed( 0 ),
+          _dataFileName( "" ),
           _inputFileName( "" ) {
 
 }
@@ -199,12 +199,7 @@ void Fittino::Controller::PrintHelp() const {
     Messenger& messenger = Messenger::GetInstance();
 
     messenger << Messenger::ALWAYS << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "Usage: fittino [OPTION(S)] FILE" << Messenger::Endl;
-    messenger << Messenger::ALWAYS << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  A single given argument (different from \"-h\" or \"--help\") is" << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  interpreted as the name of an input file. The input file suffix" << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  must be .xml (XML format)." << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  Several example input files can be found at fittino2/input." << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "Usage: fittino [OPTION(S)]" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
     messenger << Messenger::ALWAYS << "Supported options are:" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
@@ -214,6 +209,9 @@ void Fittino::Controller::PrintHelp() const {
     messenger << Messenger::ALWAYS << "      Fittino uses the input file FILE. The input file suffix must" << Messenger::Endl;
     messenger << Messenger::ALWAYS << "      be .xml (XML format)." << Messenger::Endl;
     messenger << Messenger::ALWAYS << "      Several example input files can be found at fittino2/input." << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  -d, --data-file=FILE" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "      Fittino uses the data file FILE. The data file suffix must" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "      be .root (ROOT format)." << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  -s, --seed=SEED" << Messenger::Endl;
     messenger << Messenger::ALWAYS << "      Fittino uses the given random number generator seed." << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
@@ -237,7 +235,7 @@ const Fittino::Configuration::FileFormat Fittino::Controller::DetermineInputFile
 
         if ( _inputFileName.length() < 5 ) {
 
-            throw InputException( "Invalid input file name." );
+            throw InputException( "Invalid input file name. The input file has to be specified with the option flag -i/--input-file and its suffix must be .xml (XML format)." );
 
         }
 

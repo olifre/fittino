@@ -111,6 +111,10 @@ namespace Fittino {
        *  The name of the input file.
        */
       std::string                     _inputFileName;
+      /*!
+       *  The name of the data file.
+       */
+      std::string                     _dataFileName;
 
     private:
       /*!
