@@ -19,6 +19,7 @@
 
 ADD_DEFINITIONS(`root-config --cflags`)
 
+INCLUDE_DIRECTORIES(../../external)
 INCLUDE_DIRECTORIES(./include)
 INCLUDE_DIRECTORIES(../exceptions/include)
 INCLUDE_DIRECTORIES(../datastorages/include)
