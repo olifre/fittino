@@ -43,6 +43,8 @@ namespace Fittino {
                                        double      error,
                                        double      lowerBound,
                                        double      upperBound,
+                                       double      plotLowerBound,
+                                       double      plotUpperBound,
                                        bool        fixed = false );
       /*!
        *  Standard destructor.

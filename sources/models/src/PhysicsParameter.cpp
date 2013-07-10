@@ -30,11 +30,13 @@ Fittino::PhysicsParameter::PhysicsParameter( std::string name,
                                              double      error,
                                              double      lowerBound,
                                              double      upperBound,
+                                             double      plotLowerBound,
+                                             double      plotUpperBound,
                                              bool        fixed )
 
 	: _unit( unit ),
           _plotUnit( plotUnit ),
-          ModelParameterBase( name, plotName, value, error, lowerBound, upperBound, fixed ) {
+          ModelParameterBase( name, plotName, value, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, fixed ) {
 
 }
 

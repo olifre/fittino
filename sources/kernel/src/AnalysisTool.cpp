@@ -42,8 +42,8 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase* model )
           _randomGenerator(),
           _tree( new TTree( "Tree", "Tree" ) ) {
 
-    _statusParameterVector.push_back( new ParameterBase( "Chi2",             "#chi^2",           1.e99 ) ),
-    _statusParameterVector.push_back( new ParameterBase( "IterationCounter", "IterationCounter", 0     ) );
+    _statusParameterVector.push_back( new ParameterBase( "Chi2",             "#chi^2",           1.e99, 0., 100.  ) ),
+    _statusParameterVector.push_back( new ParameterBase( "IterationCounter", "IterationCounter", 0,     0., 1.e10 ) );
 
 }
 

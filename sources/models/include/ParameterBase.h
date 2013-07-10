@@ -40,7 +40,9 @@ namespace Fittino {
        */
                           ParameterBase( std::string name,
                                          std::string plotName,
-                                         double      value );
+                                         double      value,
+                                         double      plotLowerBound,
+                                         double      plotUpperBound );
       /*!
        *  Standard destructor.
        */
@@ -67,6 +69,8 @@ namespace Fittino {
        *  Returns the name of the axis title.
        */
       virtual std::string GetPlotName() const;
+      double              GetPlotLowerBound( double plotLowerBound );
+      double              GetPlotUpperBound( double plotUpperBound );
 
     protected:
       /*!
@@ -81,6 +85,8 @@ namespace Fittino {
        *  Name of the axis in the plot.
        */
       std::string         _plotName;
+      double              _plotLowerBound;
+      double              _plotUpperBound;
 
     //private:
     //  void                CheckConsistency() const;

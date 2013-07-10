@@ -27,11 +27,13 @@ Fittino::SLHAParameter::SLHAParameter( std::string name,
                                        double      error,
                                        double      lowerBound,
                                        double      upperBound,
+                                       double      plotLowerBound,
+                                       double      plotUpperBound,
                                        std::string id,
                                        bool        fixed )
 
 	: _id( id ),
-          PhysicsParameter( name, plotName, value, unit, plotUnit, error, lowerBound, upperBound, fixed ) {
+          PhysicsParameter( name, plotName, value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, fixed ) {
 
 }
 

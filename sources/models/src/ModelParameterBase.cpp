@@ -28,12 +28,14 @@ Fittino::ModelParameterBase::ModelParameterBase( std::string name,
                                                  double      error,
                                                  double      lowerBound,
                                                  double      upperBound,
+                                                 double      plotLowerBound,
+                                                 double      plotUpperBound,
                                                  bool        fixed )
         : _error( error ),
           _lowerBound( lowerBound ),
           _upperBound( upperBound ),
           _fixed( fixed ),
-          ParameterBase( name, plotName, value ) {
+          ParameterBase( name, plotName, value, plotLowerBound, plotUpperBound ) {
 
 }
 

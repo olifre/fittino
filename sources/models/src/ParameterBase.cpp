@@ -26,10 +26,14 @@
 
 Fittino::ParameterBase::ParameterBase( std::string name,
                                        std::string plotName,
-	                               double      value)
+	                               double      value,
+                                       double      plotLowerBound,
+                                       double      plotUpperBound )
         : _name( name ),
           _plotName( plotName ),
-          _value( value ) {
+          _value( value ),
+          _plotLowerBound( plotLowerBound ),
+          _plotUpperBound( plotUpperBound ) {
 
     //CheckConsistency();
 
@@ -78,6 +82,18 @@ std::string Fittino::ParameterBase::GetName() const {
 std::string Fittino::ParameterBase::GetPlotName() const {
 
     return _plotName;
+
+}
+
+double Fittino::ParameterBase::GetPlotLowerBound( double plotLowerBound) {
+
+    return _plotLowerBound;
+
+}
+
+double Fittino::ParameterBase::GetPlotUpperBound( double plotUpperBound) {
+
+    return _plotUpperBound;
 
 }
 

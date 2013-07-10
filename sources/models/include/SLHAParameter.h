@@ -50,6 +50,8 @@ namespace Fittino {
                                  double      error,
                                  double      lowerBound,
                                  double      upperBound,
+                                 double      plotLowerBound,
+                                 double      plotUpperBound,
                                  std::string id,
                                  bool        fixed = false );
       /*!
