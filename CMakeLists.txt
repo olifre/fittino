@@ -23,53 +23,48 @@
 # Note: In CMAKE_MINIMUM_REQUIRED() the FATAL_ERROR option is accepted but ignored by CMake 2.6 and
 # higher. It should be specified so CMake versions 2.4 and lower fail with an error instead of just
 # a warning.
-
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6 FATAL_ERROR)
 
 # Specify the name of the project.
-
 PROJECT(fittino)
 
 # Specify the installation directory for the fittino executable. After the installation a
 # subdirectory called bin is created which contains the executable.
-
 SET(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
 
 # Specify the installation path of "Boost" which is required by SLHAea. There is only need to change
 # this when the installation path differs from the default.
-
 # SET(BOOST_ROOT <boost/installation/path>)
 FIND_PACKAGE(Boost REQUIRED)
 
 # Specify user-defined modules required by Fittino.
-
 SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
 
 # Optional: Specify the installation path of "HiggsBounds".
-
 # SET(HIGGSBOUNDS_INSTALLATION_PATH <higgsbounds/installation/path>)
 # FIND_PACKAGE(HIGGSBOUNDS)
 
 # Optional: Specify the installation path of "HiggsSignals".
-
 # SET(HIGGSSIGNALS_INSTALLATION_PATH <higgssignals/installation/path>)
 # FIND_PACKAGE(HIGGSSIGNALS)
 
 # Specify the installation path of the executable "root-config". By default, it is assumed that the
 # environment variable ROOTSYS is set and that the installation path is "ROOTSYS/bin".
-
 # SET(ROOT_CONFIG_INSTALLATION_PATH ROOTSYS/bin)
 FIND_PACKAGE(ROOT)
 
 # Specify the installation path of "SLHAea". The default path is "../slhaea".
-
 # SET(SLHAEA_INSTALLATION_PATH <slhaea/installation/path>)
 FIND_PACKAGE(SLHAEA)
 
 # Optional: Specify the installation path of the executable "SPheno". The default path is
 # "../SPheno/bin".
-
 # SET(SPHENO_INSTALLATION_PATH <spheno/installation/path>)
 # FIND_PACKAGE(SPHENO)
 
+# Optional: Specify the installation path of "LHAPDF".
+# SET(LHAPDF_INSTALLATION_PATH <lhapdf/installation/path>)
+# FIND_PACKAGE(LHAPDF)
+
+# ADD_SUBDIRECTORY(external)
 ADD_SUBDIRECTORY(sources)
