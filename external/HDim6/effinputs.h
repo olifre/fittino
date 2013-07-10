@@ -1,3 +1,6 @@
+#ifndef EFFINPUTS_H
+#define EFFINPUTS_H
+
 typedef struct {
   double fbb;	//fix to 0		// Coefficient of PhiFS(B)FS(B)Phi
    double fww;			// Coefficient of PhiFS(W)FS(W)Phi
@@ -33,3 +36,6 @@ typedef struct {
    double g2hww;
   double g3hww; // fix
 } effinputs;
+
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef SMINPUTS_H
+#define SMINPUTS_H
+
 typedef struct {
   /* Coupling Constants */
   double alphae;		// Electromagnetic Coupling Constants
@@ -49,3 +52,6 @@ typedef struct {
   double pp_zh_sm;	// Z-Radiation
   double pp_jjh_sm;	// VBF
 } sminputs;
+
+
+#endif
