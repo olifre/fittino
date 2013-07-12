@@ -3,6 +3,7 @@
 
 #include "ToyLHCChi2Provider.h"
 #include "TRandom3.h"
+#include "TStyle.h"
 
 int main( int argc, char **argv ) {
 
