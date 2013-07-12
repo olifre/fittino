@@ -43,9 +43,33 @@ Fittino::ParameterBase::~ParameterBase() {
 
 }
 
+double Fittino::ParameterBase::GetPlotLowerBound() const {
+
+    return _plotLowerBound;
+
+}
+
+double Fittino::ParameterBase::GetPlotUpperBound() const {
+
+    return _plotUpperBound;
+
+}
+
 double Fittino::ParameterBase::GetValue() const {
 
     return _value;
+
+}
+
+void Fittino::ParameterBase::SetValue( double value ) {
+
+    _value = value;
+
+}
+
+std::string Fittino::ParameterBase::GetName() const {
+
+    return _name;
 
 }
 
@@ -67,33 +91,9 @@ void Fittino::ParameterBase::PrintStatus() const {
 
 }
 
-void Fittino::ParameterBase::SetValue( double value ) {
-
-    _value = value;
-
-}
-
-std::string Fittino::ParameterBase::GetName() const {
-
-    return _name;
-
-}
-
 std::string Fittino::ParameterBase::GetPlotName() const {
 
     return _plotName;
-
-}
-
-double Fittino::ParameterBase::GetPlotLowerBound( double plotLowerBound) {
-
-    return _plotLowerBound;
-
-}
-
-double Fittino::ParameterBase::GetPlotUpperBound( double plotUpperBound) {
-
-    return _plotUpperBound;
 
 }
 
