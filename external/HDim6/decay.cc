@@ -1,161 +1,122 @@
+/************************************************************************************************************/
+/* Calculates decay withs and Branching Ratios of the Higgs Particle in our six-dimensional effective model */
+/* Changelog:                                                                                               */
+/* 11.07.2013 Totalwidth now included, removed unused variables to avoid compiler warnings, included all BR */
+/*            Branching Ratios return error and chisq of fit for analysis                                   */
+/*            Removed processes where the final state includes top quarks                                   */
+/************************************************************************************************************/
+
 #include "decay.h"
-
-// void totalwidth_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
-// {
-//   double width = 0, buffer = 0, error = 0;
-//   hglgl_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hgaga_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   htata_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hmumu_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   helel_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hupup_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hdodo_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hchch_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hstst_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   //htoto_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hbobo_( SMpar, Effpar, &buffer, &error ); width += buffer;
-  
-//   hztata_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hzmumu_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hzelel_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hznunu_( SMpar, Effpar, &buffer, &error ); width += 3*buffer;
-//   hzdodo_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hzupup_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hzchch_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hzstst_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   //hztoto_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hzbobo_( SMpar, Effpar, &buffer, &error ); width += buffer;
-  
-//   hwtanta_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hwmunmu_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hwelnel_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hwupdo_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hwupst_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hwupbo_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hwchdo_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hwchst_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hwchbo_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hwtodo_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hwtost_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hwtobo_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   hwtanta_( SMpar, Effpar, &buffer, &error ); width += buffer;
-//   *pWidth = buffer;
-//   twidth  = buffer;
-// };
-
-/* Initialisiere Standardmodell-Breiten */
-void initsmwidths_( sminputs * smpar )
-{
-  effinputs temp;
-  double error;
-  temp.fbb = 0; temp.fww = 0; temp.fgg = 0; temp.fb = 0; temp.fw = 0; 
-  temp.fuph = 0; temp.fdoh = 0; temp.fchh = 0; temp.fsth = 0; temp.fboh = 0; temp.ftoh = 0; temp.felh = 0; temp.fmuh = 0; temp.ftah = 0;
-  temp.ghyy = 0; temp.g1hzz = 0; temp.g2hzz = 0; temp.g3hzz = 0; temp.g1hww = 0; temp.g2hww = 0; temp.g3hww = 0; temp.g1hzy = 0; temp.g2hzy = 0;
-  /* H_gluglu & H_Digamma */
-  hglgl_( smpar, &temp, &T_hglgl_sm, &error );
-  hgaga_( smpar, &temp, &T_hgaga_sm, &error );
-  /* H_difermion */
-  helel_( smpar, &temp, &T_helel_sm, &error );
-  hmumu_( smpar, &temp, &T_hmumu_sm, &error );
-  htata_( smpar, &temp, &T_htata_sm, &error );
-  hupup_( smpar, &temp, &T_hupup_sm, &error );
-  hdodo_( smpar, &temp, &T_hdodo_sm, &error );
-  hchch_( smpar, &temp, &T_hchch_sm, &error );
-  hstst_( smpar, &temp, &T_hstst_sm, &error );
-  //htoto_( smpar, &temp, &T_helel_sm );
-  hbobo_( smpar, &temp, &T_hbobo_sm, &error );
-  
-  double buffer;
-  T_hzz_sm = 0;
-  hztata_( smpar, &temp, &buffer, &error ); T_hzz_sm += buffer;
-  hzmumu_( smpar, &temp, &buffer, &error ); T_hzz_sm += buffer;
-  hzelel_( smpar, &temp, &buffer, &error ); T_hzz_sm += buffer;
-  hzupup_( smpar, &temp, &buffer, &error ); T_hzz_sm += buffer;
-  hzdodo_( smpar, &temp, &buffer, &error ); T_hzz_sm += buffer;
-  hzchch_( smpar, &temp, &buffer, &error ); T_hzz_sm += buffer;
-  hzstst_( smpar, &temp, &buffer, &error ); T_hzz_sm += buffer;
-  hzbobo_( smpar, &temp, &buffer, &error ); T_hzz_sm += buffer;
-  hznunu_( smpar, &temp, &buffer, &error ); T_hzz_sm += 3*buffer;
-  buffer = 0; T_hww_sm = 0;
-  hwtanta_( smpar, &temp, &buffer, &error ); T_hww_sm += buffer;
-  hwmunmu_( smpar, &temp, &buffer, &error ); T_hww_sm += buffer;
-  hwelnel_( smpar, &temp, &buffer, &error ); T_hww_sm += buffer;
-  hwupdo_( smpar, &temp, &buffer, &error ); T_hww_sm += buffer;
-  hwupst_( smpar, &temp, &buffer, &error ); T_hww_sm += buffer;
-  hwupbo_( smpar, &temp, &buffer, &error ); T_hww_sm += buffer;
-  hwchdo_( smpar, &temp, &buffer, &error ); T_hww_sm += buffer;
-  hwchst_( smpar, &temp, &buffer, &error ); T_hww_sm += buffer;
-  hwchbo_( smpar, &temp, &buffer, &error ); T_hww_sm += buffer;
-  T_sm = T_hglgl_sm+T_hgaga_sm+T_helel_sm+T_hmumu_sm+T_htata_sm+T_hbobo_sm+T_hchch_sm+T_hstst_sm+T_hdodo_sm+T_hupup_sm+T_hww_sm+T_hzz_sm;
-};
 
 void initeffwidths_( sminputs * smpar, effinputs * effpar )
 {
-  double error;
   /* H_gluglu & H_Digamma */
-  hglgl_( smpar, effpar, &T_hglgl_eff, &error );
-  hgaga_( smpar, effpar, &T_hgaga_eff, &error );
+  hglgl_( smpar, effpar, &T_hglgl_eff, &err_hglgl_eff );
+  hgaga_( smpar, effpar, &T_hgaga_eff, &err_hgaga_eff );
   /* H_difermion */
-  helel_( smpar, effpar, &T_helel_eff, &error );
-  hmumu_( smpar, effpar, &T_hmumu_eff, &error );
-  htata_( smpar, effpar, &T_htata_eff, &error );
-  hupup_( smpar, effpar, &T_hupup_eff, &error );
-  hdodo_( smpar, effpar, &T_hdodo_eff, &error );
-  hchch_( smpar, effpar, &T_hchch_eff, &error );
-  hstst_( smpar, effpar, &T_hstst_eff, &error );
-  //htoto_( smpar, effpar, &T_helel_eff, &error );
-  hbobo_( smpar, effpar, &T_hbobo_eff, &error );
+  helel_( smpar, effpar, &T_helel_eff, &err_helel_eff );
+  hmumu_( smpar, effpar, &T_hmumu_eff, &err_hmumu_eff );
+  htata_( smpar, effpar, &T_htata_eff, &err_htata_eff );
+  hupup_( smpar, effpar, &T_hupup_eff, &err_hupup_eff );
+  hdodo_( smpar, effpar, &T_hdodo_eff, &err_hdodo_eff );
+  hchch_( smpar, effpar, &T_hchch_eff, &err_hchch_eff );
+  hstst_( smpar, effpar, &T_hstst_eff, &err_hstst_eff );
+  hbobo_( smpar, effpar, &T_hbobo_eff, &err_hbobo_eff );
+  chi_helel_eff = 1; chi_hmumu_eff = 1; chi_htata_eff = 1; chi_hupup_eff = 1; chi_hdodo_eff = 1; chi_hchch_eff = 1; chi_hstst_eff = 1;
+  chi_hbobo_eff = 1; chi_hgaga_eff = 1; chi_hglgl_eff = 1;
   
-  double buffer;
-  T_hzz_eff = 0;
-  hztata_( smpar, effpar, &buffer, &error ); T_hzz_eff += buffer;
-  hzmumu_( smpar, effpar, &buffer, &error ); T_hzz_eff += buffer;
-  hzelel_( smpar, effpar, &buffer, &error ); T_hzz_eff += buffer;
-  hzupup_( smpar, effpar, &buffer, &error ); T_hzz_eff += buffer;
-  hzdodo_( smpar, effpar, &buffer, &error ); T_hzz_eff += buffer;
-  hzchch_( smpar, effpar, &buffer, &error ); T_hzz_eff += buffer;
-  hzstst_( smpar, effpar, &buffer, &error ); T_hzz_eff += buffer;
-  hzbobo_( smpar, effpar, &buffer, &error ); T_hzz_eff += buffer;
-  hznunu_( smpar, effpar, &buffer, &error ); T_hzz_eff += 3*buffer;
-  buffer = 0; T_hww_eff = 0;
-  hwtanta_( smpar, effpar, &buffer, &error ); T_hww_eff += buffer;
-  hwmunmu_( smpar, effpar, &buffer, &error ); T_hww_eff += buffer;
-  hwelnel_( smpar, effpar, &buffer, &error ); T_hww_eff += buffer;
-  hwupdo_( smpar, effpar, &buffer, &error ); T_hww_eff += buffer;
-  hwupst_( smpar, effpar, &buffer, &error ); T_hww_eff += buffer;
-  hwupbo_( smpar, effpar, &buffer, &error ); T_hww_eff += buffer;
-  hwchdo_( smpar, effpar, &buffer, &error ); T_hww_eff += buffer;
-  hwchst_( smpar, effpar, &buffer, &error ); T_hww_eff += buffer;
-  hwchbo_( smpar, effpar, &buffer, &error ); T_hww_eff += buffer;
+  double buffer1, buffer2, buffer3;
+  T_hzz_eff = 0, chi_hzz_eff = 1, err_hzz_eff = 0;
+  hztata_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hzz_eff += buffer1; err_hzz_eff += buffer2; chi_hzz_eff = (fabs(chi_hzz_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_eff );
+  hzmumu_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hzz_eff += buffer1; err_hzz_eff += buffer2; chi_hzz_eff = (fabs(chi_hzz_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_eff );
+  hzelel_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hzz_eff += buffer1; err_hzz_eff += buffer2; chi_hzz_eff = (fabs(chi_hzz_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_eff );
+  hzupup_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hzz_eff += buffer1; err_hzz_eff += buffer2; chi_hzz_eff = (fabs(chi_hzz_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_eff );
+  hzdodo_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hzz_eff += buffer1; err_hzz_eff += buffer2; chi_hzz_eff = (fabs(chi_hzz_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_eff );
+  hzchch_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hzz_eff += buffer1; err_hzz_eff += buffer2; chi_hzz_eff = (fabs(chi_hzz_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_eff );
+  hzstst_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hzz_eff += buffer1; err_hzz_eff += buffer2; chi_hzz_eff = (fabs(chi_hzz_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_eff );
+  hzbobo_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hzz_eff += buffer1; err_hzz_eff += buffer2; chi_hzz_eff = (fabs(chi_hzz_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_eff );
+  hznunu_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hzz_eff += buffer1; err_hzz_eff += buffer2; chi_hzz_eff = (fabs(chi_hzz_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_eff );
+  buffer1 = 0; buffer2 = 0; buffer3 = 0; T_hww_eff = 0; chi_hww_eff = 1; err_hww_eff = 0;
+  hwtanta_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
+  hwmunmu_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
+  hwelnel_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
+  hwupdo_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
+  hwupst_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
+  hwupbo_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
+  hwchdo_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
+  hwchst_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
+  hwchbo_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
   T_eff = T_hglgl_eff+T_hgaga_eff+T_helel_eff+T_hmumu_eff+T_htata_eff+T_hbobo_eff+T_hchch_eff+T_hstst_eff+T_hdodo_eff+T_hupup_eff+T_hww_eff+T_hzz_eff;
+  err_T_eff = err_hww_eff + err_hzz_eff; /* Die anderen werden nicht numerisch berechnet, Fehler sind daher hier Null */
 };
 
-/* Branching Ratios of effective Theory as requested by Higgs-Bounds */
+/* Returns the total width of H in the effective framework */
 
-void br_hbb_( double * br )
+void totalwidth_( double * tWidth, double * tError, double * tChi )
+{
+  *tWidth = T_eff;
+  *tError = err_T_eff;
+  *tChi = ( fabs( chi_hww_eff - 1 ) > fabs( chi_hzz_eff -1 ) ? chi_hww_eff : chi_hzz_eff );
+};
+
+/* Branching Ratios of effective Theory as requested by Higgs-Bounds                      */
+/* chi returns the chi-value of the integration, the SM-Chi should be close to one anyway */
+
+void br_hbb_( double * br, double * err, double * chi )
 {
   *br = T_hbobo_eff/T_eff;
+  *err = 1/T_eff*err_hbobo_eff + T_hbobo_eff/pow(T_eff,2)*err_T_eff;
+  *chi = chi_hbobo_eff;
 };
 
-void br_htautau_( double * br )
+void br_hcc_( double * br, double * err, double * chi )
+{
+  *br = T_hchch_eff/T_eff;
+  *err = 1/T_eff*err_hchch_eff + T_hchch_eff/pow(T_eff,2)*err_T_eff;
+  *chi = chi_hchch_eff;
+};
+
+void br_hss_( double * br, double * err, double * chi )
+{
+  *br = T_hstst_eff/T_eff;
+  *err = 1/T_eff*err_hstst_eff + T_hstst_eff/pow(T_eff,2)*err_T_eff;
+  *chi = chi_hchch_eff;
+};
+
+void br_htautau_( double * br, double * err, double * chi )
 {
   *br = T_htata_eff/T_eff;
+  *err = 1/T_eff*err_htata_eff + T_htata_eff/pow(T_eff,2)*err_T_eff;
+  *chi = chi_htata_eff;
 };
 
-void br_hww_( double * br )
+void br_hww_( double * br, double * err, double * chi )
 {
   *br = T_hww_eff/T_eff;
+  *err = 1/T_eff*err_hww_eff + T_hww_eff/pow(T_eff,2)*err_T_eff;
+  *chi = chi_hww_eff;
 };
 
-void br_hgaga_( double * br )
+void br_hgaga_( double * br, double * err, double * chi )
 {
   *br = T_hgaga_eff/T_eff;
+  *err = 1/T_eff*err_hgaga_eff + T_hgaga_eff/pow(T_eff,2)*err_T_eff;
+  *chi = chi_hgaga_eff;
 };
 
-void br_hzz_( double * br )
+void br_hglgl( double * br, double * err, double * chi )
+{
+  *br = T_hglgl_eff/T_eff;
+  *err = 1/T_eff*err_hglgl_eff + T_hglgl_eff/pow(T_eff,2)*err_T_eff;
+  *chi = chi_hglgl_eff;
+};
+
+void br_hzz_( double * br, double * err, double * chi )
 {
   *br = T_hzz_eff/T_eff;
-}
+  *err = 1/T_eff*err_hzz_eff + T_hzz_eff/pow(T_eff,2)*err_T_eff;
+  *chi = chi_hzz_eff;
+};
 
 /* Die verwendeten Formeln sind dem PDG Review (rpp2012-rev-cross-section-formulae.pdf) entnommen, aufgerufen am 23.05.2012 */
 /* Leptonische Zweikoerperzerfaelle */
@@ -201,13 +162,9 @@ void htata_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pEr
 {
   double mf  = SMpar->mta;
   double mh  = SMpar->mh;
-  double mw  = SMpar->mw;
-  double sw  = SMpar->sw;
-  double ae  = SMpar->alphae;
   double v   = SMpar->vev;
   double ffH = Effpar->ftah;
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2.)/mf*ffH,2)*pow(1.-pow(2.*mf/mh,2),1.5);
-  // *pWidth = ae/8.*pow(mf,2)*mh/pow(mw*sw,2.)*pow(1.-4.*pow(mf/mh,2.),1.5);
   *pError = 0;
 };
 
@@ -215,13 +172,9 @@ void hmumu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pEr
 {
   double mf = SMpar->mmu;
   double mh = SMpar->mh;
-  double mw = SMpar->mw;
-  double sw = SMpar->sw;
-  double ae = SMpar->alphae;
   double v   = SMpar->vev;
   double ffH = Effpar->fmuh;
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*pow(1-pow(2.*mf/mh,2),1.5);  
-  //*pWidth = ae/8.*pow(mf,2)*mh/pow(mw*sw,2.)*pow(1.-4.*pow(mf/mh,2.),1.5);
   *pError = 0;
 };
 
@@ -229,13 +182,9 @@ void helel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pEr
 {
   double mf = SMpar->mel;
   double mh = SMpar->mh;
-  double mw = SMpar->mw;
-  double sw = SMpar->sw;
-  double ae = SMpar->alphae;
   double v   = SMpar->vev;
   double ffH = Effpar->felh;
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*pow(1-pow(2.*mf/mh,2),1.5);
-  //*pWidth = ae/8.*pow(mf,2)*mh/pow(mw*sw,2.)*pow(1.-4.*pow(mf/mh,2.),1.5);
   *pError = 0;
 };
 
@@ -245,13 +194,9 @@ void hupup_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pEr
 {
   double mf = SMpar->mup;
   double mh = SMpar->mh;
-  double mw = SMpar->mw;
-  double sw = SMpar->sw;
-  double ae = SMpar->alphae;
   double v   = SMpar->vev;
   double ffH = Effpar->fuph;
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
-  //*pWidth = ae/8.*pow(mf,2)*mh/pow(mw*sw,2.)*3.*pow(1.-4.*pow(mf/mh,2.),1.5);
   *pError = 0;
 };
 
@@ -259,13 +204,9 @@ void hdodo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pEr
 {
   double mf = SMpar->mdo;
   double mh = SMpar->mh;
-  double mw = SMpar->mw;
-  double sw = SMpar->sw;
-  double ae = SMpar->alphae;
   double v   = SMpar->vev;
   double ffH = Effpar->fdoh;
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
-  //*pWidth = ae/8.*pow(mf,2)*mh/pow(mw*sw,2.)*3.*pow(1.-4.*pow(mf/mh,2.),1.5);
   *pError = 0;
 };
 
@@ -273,13 +214,9 @@ void hchch_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pEr
 {
   double mf = SMpar->mch;
   double mh = SMpar->mh;
-  double mw = SMpar->mw;
-  double sw = SMpar->sw;
-  double ae = SMpar->alphae;
   double v   = SMpar->vev;
   double ffH = Effpar->fchh;
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
-  //*pWidth = ae/8.*pow(mf,2)*mh/pow(mw*sw,2.)*3.*pow(1.-4.*pow(mf/mh,2.),1.5);
   *pError = 0;
 };
 
@@ -287,27 +224,9 @@ void hstst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pEr
 {
   double mf = SMpar->mst;
   double mh = SMpar->mh;
-  double mw = SMpar->mw;
-  double sw = SMpar->sw;
-  double ae = SMpar->alphae;
   double v   = SMpar->vev;
   double ffH = Effpar->fsth;
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
-  //*pWidth = ae/8.*pow(mf,2)*mh/pow(mw*sw,2.)*3.*pow(1.-4.*pow(mf/mh,2.),1.5);
-  *pError = 0;
-};
-
-void htoto_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
-{
-  double mf = SMpar->mto;
-  double mh = SMpar->mh;
-  double mw = SMpar->mw;
-  double sw = SMpar->sw;
-  double ae = SMpar->alphae;
-  double v   = SMpar->vev;
-  double ffH = Effpar->ftoh;
-  *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
-  //*pWidth = ae/8.*pow(mf,2)*mh/pow(mw*sw,2.)*3.*pow(1.-4.*pow(mf/mh,2.),1.5);
   *pError = 0;
 };
 
@@ -315,23 +234,15 @@ void hbobo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pEr
 {
   double mf = SMpar->mbo;
   double mh = SMpar->mh;
-  double mw = SMpar->mw;
-  double sw = SMpar->sw;
-  double ae = SMpar->alphae;
   double v   = SMpar->vev;
   double ffH = Effpar->fboh;
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
-  //*pWidth = ae/8.*pow(mf,2)*mh/pow(mw*sw,2.)*3.*pow(1.-4.*pow(mf/mh,2.),1.5);
   *pError = 0;
 };
 
-/* Dreikoerperzerfaelle ueber schwache Eichbosonen */
-/* Um Vierkoerperzerfaelle zu erhalten, muss mit den */
-/* entsprechenden Branching Rations multipliziert werden */
-
-void hznunu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hznunu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
 {  
-  int dim = 2;
+  size_t dim = 2;
   double par[] = { SMpar->mh, SMpar->mz, 0, 0, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0, 
                    Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
   double result, error;
@@ -356,6 +267,7 @@ void hznunu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     }
     while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
+    *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
   
@@ -363,9 +275,9 @@ void hznunu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hztata_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hztata_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
 {  
-  int dim = 2;
+  size_t dim = 2;
   double par[] = { SMpar->mh, SMpar->mz, SMpar->mta, SMpar->mta, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
                    Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
   double result, error;
@@ -390,6 +302,7 @@ void hztata_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     }
     while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
+    *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
   
@@ -397,9 +310,9 @@ void hztata_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hzmumu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hzmumu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
 {
-  int dim = 2;
+  size_t dim = 2;
   double par[] = { SMpar->mh, SMpar->mz, SMpar->mmu, SMpar->mmu, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
                    Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
   double result, error;
@@ -424,6 +337,7 @@ void hzmumu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     }
     while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
+    *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
   
@@ -431,9 +345,9 @@ void hzmumu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hzelel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hzelel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
 {
-  int dim = 2;
+  size_t dim = 2;
   double par[] = { SMpar->mh, SMpar->mz, SMpar->mel, SMpar->mel, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
                    Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy }; 
   double result, error;
@@ -458,6 +372,7 @@ void hzelel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     }
     while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
+    *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
   
@@ -465,9 +380,9 @@ void hzelel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hzdodo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hzdodo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
 {
-  int dim = 2;
+  size_t dim = 2;
   double par[] = { SMpar->mh, SMpar->mz, SMpar->mdo, SMpar->mdo, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
                    Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
   double result, error;
@@ -492,15 +407,16 @@ void hzdodo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     }
     while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
+    *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
   *pWidth = result;
   *pError = error;
 };
 
-void hzupup_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hzupup_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
 {
-  int dim = 2;
+  size_t dim = 2;
   double par[] = { SMpar->mh, SMpar->mz, SMpar->mup, SMpar->mup, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
                    Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
   double result, error;
@@ -525,7 +441,7 @@ void hzupup_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     }
     while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
-    gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
+    *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
   
@@ -533,9 +449,9 @@ void hzupup_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hzstst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hzstst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
 {
-  int dim = 2;
+  size_t dim = 2;
   double par[] = { SMpar->mh, SMpar->mz, SMpar->mst, SMpar->mst, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
                    Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
   double result, error;
@@ -560,15 +476,16 @@ void hzstst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     }
     while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
+    *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
   *pWidth = result;
   *pError = error;
 };
 
-void hzchch_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hzchch_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
 {  
-  int dim = 2;
+  size_t dim = 2;
   double par[] = { SMpar->mh, SMpar->mz, SMpar->mch, SMpar->mch, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
                    Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
   double result, error;
@@ -593,6 +510,7 @@ void hzchch_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     }
     while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
+    *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
   
@@ -600,9 +518,9 @@ void hzchch_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hzbobo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hzbobo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
 {
-  int dim = 2;
+  size_t dim = 2;
   double par[] = { SMpar->mh, SMpar->mz, SMpar->mbo, SMpar->mbo, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
                    Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
   double result, error;
@@ -627,6 +545,7 @@ void hzbobo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     }
     while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
+    *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
   
@@ -634,9 +553,9 @@ void hzbobo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hwtanta_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hwtanta_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
 {
-  int dim = 2;
+  size_t dim = 2;
   double par[] = { SMpar->mh, SMpar->mz, 0, SMpar->mta, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
                    Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
   double result, error;
@@ -661,6 +580,7 @@ void hwtanta_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * p
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     }
     while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
+    *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
   
@@ -668,9 +588,9 @@ void hwtanta_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * p
   *pError = error;
 };
 
-void hwmunmu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hwmunmu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
 {
-  int dim = 2;
+  size_t dim = 2;
   double par[] = { SMpar->mh, SMpar->mz, 0, SMpar->mmu, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
                    Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
   double result, error;
@@ -695,6 +615,7 @@ void hwmunmu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * p
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     }
     while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
+    *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
   
@@ -702,9 +623,9 @@ void hwmunmu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * p
   *pError = error;
 };
 
-void hwelnel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hwelnel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
 {
-  int dim = 2;
+  size_t dim = 2;
   double par[] = { SMpar->mh, SMpar->mz, 0, SMpar->mel, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
                    Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
   double result, error;
@@ -729,6 +650,7 @@ void hwelnel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * p
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     }
     while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
+    *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
   
@@ -736,9 +658,9 @@ void hwelnel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * p
   *pError = error;
 };
 
-void hwupdo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hwupdo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
 {
-  int dim = 2;
+  size_t dim = 2;
   double par[] = { SMpar->mh, SMpar->mz, SMpar->mup, SMpar->mdo, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, SMpar->vud,
                    Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
   double result, error;
@@ -763,6 +685,7 @@ void hwupdo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     }
     while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
+    *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
   
@@ -770,9 +693,9 @@ void hwupdo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hwupst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hwupst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
 {
-  int dim = 2;
+  size_t dim = 2;
   double par[] = { SMpar->mh, SMpar->mz, SMpar->mup, SMpar->mst, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, SMpar->vus,
                    Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
   double result, error;
@@ -797,6 +720,7 @@ void hwupst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     }
     while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
+    *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
   
@@ -804,9 +728,9 @@ void hwupst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hwupbo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hwupbo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
 {
-  int dim = 2;
+  size_t dim = 2;
   double par[] = { SMpar->mh, SMpar->mz, SMpar->mup, SMpar->mbo, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, SMpar->vub, 
                    Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
   double result, error;
@@ -831,6 +755,7 @@ void hwupbo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     }
     while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
+    *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
   
@@ -838,9 +763,9 @@ void hwupbo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hwchdo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hwchdo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
 {
-  int dim = 2;
+  size_t dim = 2;
   double par[] = { SMpar->mh, SMpar->mz, SMpar->mch, SMpar->mdo, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, SMpar->vcd,
                    Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
   double result, error;
@@ -865,6 +790,7 @@ void hwchdo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     }
     while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
+   *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
   
@@ -872,9 +798,9 @@ void hwchdo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hwchst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hwchst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
 {
-  int dim = 2;
+  size_t dim = 2;
   double par[] = { SMpar->mh, SMpar->mz, SMpar->mch, SMpar->mst, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, SMpar->vcs,
                    Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
   double result, error;
@@ -899,6 +825,7 @@ void hwchst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     }
     while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
+    *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
   
@@ -906,9 +833,9 @@ void hwchst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hwchbo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hwchbo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
 {
-  int dim = 2;
+  size_t dim = 2;
   double par[] = { SMpar->mh, SMpar->mz, SMpar->mch, SMpar->mbo, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, SMpar->vcb,
                    Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
   double result, error;
@@ -933,108 +860,7 @@ void hwchbo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     }
     while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
-    gsl_monte_vegas_free( s );
-  };
-  
-  *pWidth = result;
-  *pError = error;
-};
-
-void hwtodo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
-{
-  int dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, SMpar->mto, SMpar->mdo, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, SMpar->vtd,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
-  double result, error;
-  
-  double xl[] = { 0, 0 };
-  double xu[] = { 1, 1 };
-  
-  const gsl_rng_type * T; 
-  gsl_rng * r;
-  size_t calls = NCalls;
-  gsl_monte_function G = { mHWqqp, dim, par };
-  
-  gsl_rng_env_setup();
-  T = gsl_rng_default;
-  r = gsl_rng_alloc( T );
-  {
-    gsl_monte_vegas_state * s = gsl_monte_vegas_alloc( dim );
-    int k = 0;
-    do
-    {    
-      k++;
-      gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
-    }
-    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
-    gsl_monte_vegas_free( s );
-  };
-  
-  *pWidth = result;
-  *pError = error;
-};
-
-void hwtost_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
-{
-  int dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, SMpar->mto, SMpar->mst, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, SMpar->vts,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
-  double result, error;
-  
-  double xl[] = { 0, 0 };
-  double xu[] = { 1, 1 };
-  
-  const gsl_rng_type * T; 
-  gsl_rng * r;
-  size_t calls = NCalls;
-  gsl_monte_function G = { mHWqqp, dim, par };
-  
-  gsl_rng_env_setup();
-  T = gsl_rng_default;
-  r = gsl_rng_alloc( T );
-  {
-    gsl_monte_vegas_state * s = gsl_monte_vegas_alloc( dim );
-    int k = 0;
-    do
-    {    
-      k++;
-      gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
-    }
-    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
-    gsl_monte_vegas_free( s );
-  };
-  
-  *pWidth = result;
-  *pError = error;
-};
-
-void hwtobo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
-{
-  int dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, SMpar->mto, SMpar->mbo, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, SMpar->vtb,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
-  double result, error;
-  
-  double xl[] = { 0, 0 };
-  double xu[] = { 1, 1 };
-  
-  const gsl_rng_type * T; 
-  gsl_rng * r;
-  size_t calls = NCalls;
-  gsl_monte_function G = { mHWqqp, dim, par };
-  
-  gsl_rng_env_setup();
-  T = gsl_rng_default;
-  r = gsl_rng_alloc( T );
-  {
-    int k = 0;
-    gsl_monte_vegas_state * s = gsl_monte_vegas_alloc( dim );
-    do
-    {    
-      k++;
-      gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
-    }
-    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && (k < NSteps));
+    *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
   
@@ -1050,15 +876,15 @@ double mHWl( double * x, size_t dim, void * par )
   double ml =  _par[3];
   double ee =  _par[4];
   double sw =  _par[5];
-  double CKM = _par[6];
-  double g1hzz = _par[7];
-  double g2hzz = _par[8];
-  double g3hzz = _par[9];
+  //double CKM = _par[6];
+  //double g1hzz = _par[7];
+  //double g2hzz = _par[8];
+  //double g3hzz = _par[9];
   double g1hww = _par[10];
   double g2hww = _par[11];
   double g3hww = _par[12];
-  double g1hzy = _par[13];
-  double g2hzy = _par[14];
+  //double g1hzy = _par[13];
+  //double g2hzy = _par[14];
   double cw = sqrt(1-pow(sw,2));
   double mw = mz * cw;
   
@@ -1066,7 +892,7 @@ double mHWl( double * x, size_t dim, void * par )
   double m23min, m23max;
   _m23lim( pow(mh,2), pow( ml, 2),0, pow(mw,2), sqrt(m12sq), &m23max, &m23min );
   double m23sq = x[1]*(m23max - m23min) + m23min;
-  double m13sq = pow(mh,2)+pow(ml,2)+pow(mw,2) - m12sq - m23sq;  
+  //double m13sq = pow(mh,2)+pow(ml,2)+pow(mw,2) - m12sq - m23sq;  
   
   double g144,g137,g51,g146,g130,g123,g22,g140,g9,g124,g4,g150,g17,g5,g134,g117,g30,g7,g6,g16,g8,g10,g11,g44,g47,g132,g129,g135,g159,g24,g13,g122,g14,g143,g15,g139,
        g19,g20,g142,g21,g126,g23,g64,g25,g49,g52,g65,g34,g27,g28,g46,g29,g31,g32,g45,g33,g35,g36,g69,g37,g38,g39,g40,g50,g125,g147,g41,g42,g43,g54,g53,g63,g118,g57,
@@ -1252,14 +1078,14 @@ double mHWqqp( double * x, size_t dim, void * par )
   double ee =  _par[4];
   double sw =  _par[5];
   double CKM = _par[6];
-  double g1hzz = _par[7];
-  double g2hzz = _par[8];
-  double g3hzz = _par[9];
+  //double g1hzz = _par[7];
+  //double g2hzz = _par[8];
+  //double g3hzz = _par[9];
   double g1hww = _par[10];
   double g2hww = _par[11];
   double g3hww = _par[12];
-  double g1hzy = _par[13];
-  double g2hzy = _par[14];
+  //double g1hzy = _par[13];
+  //double g2hzy = _par[14];
   double cw = sqrt(1-pow(sw,2));
   double mw = mz * cw;
   
@@ -1267,7 +1093,7 @@ double mHWqqp( double * x, size_t dim, void * par )
   double m23min, m23max;
   _m23lim( pow(mh,2), pow(m3,2), pow(m4,2), pow(mw,2), sqrt(m12sq), &m23max, &m23min );
   double m23sq = x[1]*(m23max - m23min) + m23min;
-  double m13sq = pow(mh,2)+pow(m3,2) + pow(m4, 2) + pow(mw,2) - m12sq - m23sq;
+  //double m13sq = pow(mh,2)+pow(m3,2) + pow(m4, 2) + pow(mw,2) - m12sq - m23sq;
   
   double g204,g218,g83,g72,g227,g224,g217,g50,g228,g225,g84,g4,g213,g198,g77,g36,g230,g21,g5,g215,g25,g6,g229,g75,g94,g53,g210,g7,g219,g26,g8,g81,g64,g11,g9,g158,g65,
          g10,g12,g79,g33,g14,g13,g15,g214,g24,g17,g18,g19,g20,g222,g196,g78,g34,g22,g23,g113,g67,g27,g28,g182,g76,g244,g117,g66,g43,g46,g31,g70,g82,g211,g32,g69,g37,
@@ -1579,13 +1405,13 @@ double mHZdD( double * x, size_t dim, void * par )
   // double mQ =  _par[3]; // Massen der FS Fermionen sind gleich
   double ee =  _par[4];
   double sw =  _par[5];
-  double CKM = _par[6];
+  //double CKM = _par[6];
   double g1hzz = _par[7];
   double g2hzz = _par[8];
-  double g3hzz = _par[9];
-  double g1hww = _par[10];
-  double g2hww = _par[11];
-  double g3hww = _par[12];
+  //double g3hzz = _par[9];
+  //double g1hww = _par[10];
+  //double g2hww = _par[11];
+  //double g3hww = _par[12];
   double g1hzy = _par[13];
   double g2hzy = _par[14];
   double cw = sqrt(1-pow(sw,2));
@@ -2731,13 +2557,13 @@ double mHZuU( double * x, size_t dim, void * par )
   // double mQ =  _par[3]; // Massen der FS Fermionen sind gleich
   double ee =  _par[4];
   double sw =  _par[5];
-  double CKM = _par[6];
+  //double CKM = _par[6];
   double g1hzz = _par[7];
   double g2hzz = _par[8];
-  double g3hzz = _par[9];
-  double g1hww = _par[10];
-  double g2hww = _par[11];
-  double g3hww = _par[12];
+  //double g3hzz = _par[9];
+  //double g1hww = _par[10];
+  //double g2hww = _par[11];
+  //double g3hww = _par[12];
   double g1hzy = _par[13];
   double g2hzy = _par[14];
   double cw = sqrt(1-pow(sw,2));
@@ -3887,13 +3713,13 @@ double mHZlL( double * x, size_t dim, void * par )
   // double mQ =  _par[3]; // Massen der FS Fermionen sind gleich
   double ee =  _par[4];
   double sw =  _par[5];
-  double CKM = _par[6];
+  //double CKM = _par[6];
   double g1hzz = _par[7];
   double g2hzz = _par[8];
-  double g3hzz = _par[9];
-  double g1hww = _par[10];
-  double g2hww = _par[11];
-  double g3hww = _par[12];
+  //double g3hzz = _par[9];
+  //double g1hww = _par[10];
+  //double g2hww = _par[11];
+  //double g3hww = _par[12];
   double g1hzy = _par[13];
   double g2hzy = _par[14];
   double cw = sqrt(1-pow(sw,2));
@@ -5026,15 +4852,15 @@ double mHZnN( double * x, size_t dim, void * par )
   // double mQ =  _par[3]; // Massen der FS Fermionen sind gleich
   double ee =  _par[4];
   double sw =  _par[5];
-  double CKM = _par[6];
+  //double CKM = _par[6];
   double g1hzz = _par[7];
   double g2hzz = _par[8];
-  double g3hzz = _par[9];
-  double g1hww = _par[10];
-  double g2hww = _par[11];
-  double g3hww = _par[12];
-  double g1hzy = _par[13];
-  double g2hzy = _par[14];
+  //double g3hzz = _par[9];
+  //double g1hww = _par[10];
+  //double g2hww = _par[11];
+  //double g3hww = _par[12];
+  //double g1hzy = _par[13];
+  //double g2hzy = _par[14];
   double cw = sqrt(1-pow(sw,2));
   double mw = mz * cw;
   

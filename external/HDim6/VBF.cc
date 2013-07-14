@@ -1,26 +1,44 @@
 #include "VBF.h"
 #define CUTS
 
-void init_(         sminputs * smpar )
+void vbf_init_cs_( sminputs * smpar )
 {
-  double err;
   effinputs temp;
-  double chi;
   temp.fbb = 0; temp.fww = 0; temp.fgg = 0; temp.fb = 0; temp.fw = 0; 
   temp.fuph = 0; temp.fdoh = 0; temp.fchh = 0; temp.fsth = 0; temp.fboh = 0; temp.ftoh = 0; temp.felh = 0; temp.fmuh = 0; temp.ftah = 0;
   temp.ghyy = 0; temp.g1hzz = 0; temp.g2hzz = 0; temp.g3hzz = 0; temp.g1hww = 0; temp.g2hww = 0; temp.g3hww = 0; temp.g1hzy = 0; temp.g2hzy = 0;
-  
-  udcs_jjh_( smpar, &temp, &CS_SM, &ERR_SM, &chi );
+
+  u_and_d_jjh_( smpar, &temp, &cs_2flavorSM, &err_2flavorSM, &chi_2flavorSM );
+  udcs_jjh_(    smpar, &temp, &cs_4flavorSM, &err_4flavorSM, &chi_4flavorSM );
+  udcsb_jjh_(   smpar, &temp, &cs_5flavorSM, &err_5flavorSM, &chi_5flavorSM );
 };
 
-void ratio_( sminputs * smpar, effinputs * effpar, double * ratio, double * err )
+void ratio_vbf_2flav_( sminputs * smpar, effinputs * effpar, double * ratio, double * error, double * chisq )
 {
-  double cs, error, chi;
-  udcs_jjh_( smpar, effpar, &cs, &error, &chi );
-  *ratio = cs / CS_SM;
-  *err   = error/cs;
+  double result, err, chi;
+  u_and_d_jjh_( smpar, effpar, &result, &err, &chi );
+  *ratio = result / cs_2flavorSM;
+  *error = err / cs_2flavorSM + result / pow( cs_2flavorSM, 2 ) * err_2flavorSM;
+  *chisq = chi;
 };
 
+void ratio_vbf_4flav_( sminputs * smpar, effinputs * effpar, double * ratio, double * error, double * chisq )
+{
+  double result, err, chi;
+  udcs_jjh_( smpar, effpar, &result, &err, &chi );
+  *ratio = result / cs_4flavorSM;
+  *error = err / cs_4flavorSM + result / pow( cs_4flavorSM, 2 ) * err_4flavorSM;
+  *chisq = chi;
+};
+
+void ratio_vbf_5flav_( sminputs * smpar, effinputs * effpar, double * ratio, double * error, double * chisq )
+{
+  double result, err, chi;
+  udcsb_jjh_( smpar, effpar, &result, &err, &chi );
+  *ratio = result / cs_2flavorSM;
+  *error = err / cs_2flavorSM + result / pow( cs_2flavorSM, 2 ) * err_2flavorSM;
+  *chisq = chi;
+};
 
 void u_and_d_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err, double * chisq )
 {
@@ -32,7 +50,7 @@ void u_and_d_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * e
   double xu[] = {1,1,1,1,1,1};
   double result, error;
   
-  int dim = 6;
+  size_t dim = 6;
   const gsl_rng_type * T;
   gsl_rng * r;
   size_t calls = NCALLS;
@@ -67,7 +85,7 @@ void udcs_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err,
   double xu[] = {1,1,1,1,1,1};
   double result, error;
   
-  int dim = 6;
+  size_t dim = 6;
   const gsl_rng_type * T;
   gsl_rng * r;
   size_t calls = NCALLS;
@@ -102,7 +120,7 @@ void udcsb_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err
   double xu[] = {1,1,1,1,1,1};
   double result, error;
   
-  int dim = 6;
+  size_t dim = 6;
   const gsl_rng_type * T;
   gsl_rng * r;
   size_t calls = NCALLS;
@@ -343,7 +361,7 @@ void cs_pp_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err
   double xu[] = {1,1,1,1,1,1};
   double result, error;
   
-  int dim = 6;
+  size_t dim = 6;
   const gsl_rng_type * T;
   gsl_rng * r;
   size_t calls = NCALLS;
@@ -447,12 +465,12 @@ double dd_ddh_massless( double * x, size_t dim, void * params )
   double sw = par.sm.sw;
   double ee = sqrt(4.*M_PI*par.sm.alphae);
   double s    = x1*x2*par.sm.s;
-  double g1hww = par.eff.g1hww;
-  double g2hww = par.eff.g2hww;
-  double g3hww = par.eff.g3hww;
+  //double g1hww = par.eff.g1hww;
+  //double g2hww = par.eff.g2hww;
+  //double g3hww = par.eff.g3hww;
   double g1hzz = par.eff.g1hzz;
   double g2hzz = par.eff.g2hzz;
-  double g3hzz = par.eff.g3hzz;
+  //double g3hzz = par.eff.g3hzz;
   double g1hzy = par.eff.g1hzy;
   double g2hzy = par.eff.g2hzy;
   double ghyy  = par.eff.ghyy;
@@ -506,11 +524,10 @@ double dd_ddh_massless( double * x, size_t dim, void * params )
   double x24	= k30*E2 + k3v*pi*(ctheta*cXi-stheta*cos(eta)*sXi);
   double x13	= k40*E1 - k4v*pi*ctheta;
   double x23	= k40*E2 + k4v*pi*ctheta;
-  double x34	= k40*k30- k3v*k4v*cXi;
+  //double x34	= k40*k30- k3v*k4v*cXi;
 
   double g48,g16,g15,g12,g4,g10,g5,g8,g6,g7,g28,g11,g20,g14,g13,g17,g26,g18,g19,g25,g37,g43,g38,g44,g45,g39,g46,g47,g40,g42,msq1;
 {
-    double t0;
     g48=ghyy*ee*ee;
     g16=g48*g48;
     g15=g16*x13;
@@ -549,7 +566,6 @@ double dd_ddh_massless( double * x, size_t dim, void * params )
 };
 double g122,g77,g76,g102,g56,g97,g67,g57,g75,g100,g58,g98,g68,g59,g74,g60,g61,g62,g63,g66,g64,g65,g69,g70,g71,g103,g72,g73,g78,g79,g80,g81,g82,g110,g112,g109,g116,g111,g113,g114,g115,g117,g118,g119,g120,g121,msq2;
 {
-    double t0;
     g122=ghyy*ee*ee;
     g77=g122*g122;
     g76=g77*x14;
@@ -1039,6 +1055,7 @@ double g662,g545,g542,g528,g601,g507,g615,g521,g508,g540,g608,g569,g509,g539,g51
          (cw*(324.0*g601*g555*mz*mz+648.0*g544*g544*sw));
     };
 };
+/*
 double g886,g737,g821,g711,g770,g827,g718,g710,g799,g705,g817,g669,g826,g725,g709,g670,g822,g726,g712,g820,g671,g672,g675,g676,g677,g823,g734,g691,g678,g801,g679,g796,g716,g713,g707,g682,g683,g798,g717,g684,g685,g689,g686,g687,g688,g722,g690,g811,g692,g719,g715,g800,g693,g774,g694,g760,g695,g701,g696,g697,g702,g698,g703,g813,g699,g704,g700,g706,g714,g708,g815,g724,g814,g723,g808,g763,g762,g755,g787,g812,g807,g747,g748,g751,g752,g761,g789,g795,g758,g759,g819,g772,g793,g792,g794,g866,g839,g842,g836,g832,g865,g843,g837,g833,g830,g831,g881,g856,g834,g851,g838,g835,g878,g840,g841,g844,g853,g880,g845,g846,g849,g868,g869,g847,g870,g858,g854,g850,g852,g855,g873,g876,g860,g861,g867,g871,g872,g874,g875,g877,g879,msq6;
 {
     double t0 =0;
@@ -1223,6 +1240,7 @@ double g886,g737,g821,g711,g770,g827,g718,g710,g799,g705,g817,g669,g826,g725,g70
          3888.0*g794*g748*mz*mz+7776.0*g792*g747));
     };
 };
+*/
 double g1212,g1086,g970,g959,g1094,g891,g1097,g962,g955,g892,g1110,g1092,g960,g915,g893,g1107,g961,g953,g1017,g896,g1088,g1081,g965,g916,g897,g1080,g964,g917,g901,g954,g905,g906,g932,g908,g933,g910,g969,g947,g911,g921,g912,g913,g1087,g1001,g914,g1098,g963,g945,g918,g1095,g1091,g922,g1004,g952,g989,g929,g978,g1068,g930,g1072,g944,g931,g934,g958,g935,g936,g946,g937,g1002,g957,g949,g939,g951,g941,g942,g948,g950,g968,g981,g966,g971,g972,g973,g974,g975,g976,g977,g979,g980,g1085,g982,g984,g985,g988,g990,g991,g993,g997,g998,g999,g1000,g1003,g1013,g1016,g1021,g1093,g1024,g1026,g1032,g1090,g1119,g1124,g1166,g1126,g1134,g1150,g1131,g1125,g1127,g1128,g1129,g1139,g1130,g1171,g1132,g1137,g1163,g1190,g1133,g1135,g1136,g1164,g1146,g1138,g1140,g1141,g1142,g1143,g1145,g1157,g1147,g1148,g1149,g1160,g1151,g1152,g1153,g1154,g1155,g1165,g1158,g1173,g1159,g1161,g1162,g1167,g1169,g1196,g1170,g1206,g1174,g1176,g1175,g1177,g1179,g1180,g1182,g1203,g1204,g1185,g1186,g1187,g1189,g1191,g1192,g1193,g1194,g1195,g1197,g1198,g1199,g1200,
 g1201,g1202,g1205,g1207,g1208,g1209,g1213,g956,g1121,g1089,msq7;
 {
@@ -6609,12 +6627,12 @@ double uu_uuh_massless( double * x, size_t dim, void * params )
   double sw = par.sm.sw;
   double ee = sqrt(4.*M_PI*par.sm.alphae);
   double s    = x1*x2*par.sm.s;
-  double g1hww = par.eff.g1hww;
-  double g2hww = par.eff.g2hww;
-  double g3hww = par.eff.g3hww;
+  //double g1hww = par.eff.g1hww;
+  //double g2hww = par.eff.g2hww;
+  //double g3hww = par.eff.g3hww;
   double g1hzz = par.eff.g1hzz;
   double g2hzz = par.eff.g2hzz;
-  double g3hzz = par.eff.g3hzz;
+  //double g3hzz = par.eff.g3hzz;
   double g1hzy = par.eff.g1hzy;
   double g2hzy = par.eff.g2hzy;
   double ghyy  = par.eff.ghyy;
@@ -6738,7 +6756,6 @@ double g110,g62,g60,g90,g89,g46,g59,g48,g49,g72,g50,g76,g51,g52,g84,g58,g54,g73,
 };
 double g125,g169,g133,g158,g115,g124,g126,g116,g117,g152,g119,g120,g155,g123,g121,g127,g122,g156,g153,g157,g129,g132,g142,g154,g141,g146,g161,g163,g162,msq4;
 {
-    double t0 = 0;
     g125=x23*x14;
     g169=ee*ee;
     g133=ghyy*g169*g169;
@@ -6778,7 +6795,6 @@ double g125,g169,g133,g158,g115,g124,g126,g116,g117,g152,g119,g120,g155,g123,g12
 };
 double g236,g193,g190,g220,g221,g175,g189,g177,g178,g204,g213,g179,g216,g188,g180,g181,g217,g184,g182,g212,g210,g192,g219,g218,g214,g223,g227,g226,g229,msq5;
 {
-    double t0 = 0;
     g236=ee*ee;
     g193=ghyy*g236*g236;
     g190=g193*x23*x23;
@@ -6816,7 +6832,7 @@ double g236,g193,g190,g220,g221,g175,g189,g177,g178,g204,g213,g179,g216,g188,g18
      g227+2.0*g226)*(g204-(2.66667*g217*g204))+g192*g184*(256.0*g1hzy+512.0*
      g2hzy)+g192*(-(192.0*g213)-(96.0*g193*g1hzy))+g218*(g226-g229))/(g220*cw*sw
      *x13*(162.0*x13+81.0*mz*mz));
-};
+};/*
 double g251,g295,g259,g284,g241,g250,g252,g242,g243,g278,g245,g246,g281,g249,g247,g253,g248,g282,g279,g283,g255,g258,g268,g280,g267,g272,g287,g289,g288,msq6;
 {
     double t0 = 0;
@@ -6856,7 +6872,7 @@ double g251,g295,g259,g284,g241,g250,g252,g242,g243,g278,g245,g246,g281,g249,g24
      g2hzy*(24.0*g253-(64.0*g249*s))+g272*(64.0*g255-(24.0*g250))-(2.66667*g287*
      g281)+g288*g282+g283*(4.0*g288-(24.0*g272))+64.0*g247*x23*s)/(g250*cw*(
      243.0*g258*mz*mz+486.0*g251*sw));
-};
+};*/
 double g430,g330,g476,g412,g343,g425,g300,g346,g394,g335,g434,g424,g301,g422,g411,g302,g345,g304,g341,g305,g342,g306,g318,g307,g334,g333,g431,g310,g315,g316,g387,g317,g319,g371,g395,g320,g429,g340,g321,g322,g386,g323,g324,g325,g326,g347,g344,g328,g339,g331,g432,g338,g332,g336,g349,g350,g351,g352,g353,g354,g355,g401,g362,g359,g374,g373,g372,g370,g410,g392,g382,g385,g393,g451,g471,g440,g445,g441,g442,g447,g443,g473,g444,g453,g446,g448,g450,g452,g454,g455,g456,g467,g458,g469,g470,g466,g468,g472,g477,g314,g438,g423,msq7;
 {  
     double t0 = 0;
@@ -10131,12 +10147,12 @@ double ud_duh_NoCKM_massless( double * x, size_t dim, void * params )
   double sw = par.sm.sw;
   double ee = sqrt(4.*M_PI*par.sm.alphae);
   double s= x1*x2*par.sm.s;
-  double g1hww = par.eff.g1hww;
-  double g2hww = par.eff.g2hww;
-  double g3hww = par.eff.g3hww;
+  //double g1hww = par.eff.g1hww;
+  //double g2hww = par.eff.g2hww;
+  //double g3hww = par.eff.g3hww;
   double g1hzz = par.eff.g1hzz;
   double g2hzz = par.eff.g2hzz;
-  double g3hzz = par.eff.g3hzz;
+  //double g3hzz = par.eff.g3hzz;
   double g1hzy = par.eff.g1hzy;
   double g2hzy = par.eff.g2hzy;
   double ghyy  = par.eff.ghyy;
@@ -10190,7 +10206,7 @@ double ud_duh_NoCKM_massless( double * x, size_t dim, void * params )
   double x24	= k30*E2 + k3v*pi*(ctheta*cXi-stheta*cos(eta)*sXi);
   double x13	= k40*E1 - k4v*pi*ctheta;
   double x23	= k40*E2 + k4v*pi*ctheta;
-  double x34	= k40*k30- k3v*k4v*cXi;
+  //double x34	= k40*k30- k3v*k4v*cXi;
 double g48,g16,g15,g12,g4,g10,g5,g8,g6,g7,g28,g11,g20,g14,g13,g17,g26,g18,g19,g25,g37,g44,g45,g38,g43,g39,g46,g47,g40,g42,msq1;
 {
     g48=ghyy*ee*ee;
@@ -13092,7 +13108,7 @@ double ud_duh_CKMsQ_massless( double * x, size_t dim, void * params )
   double g3hww = par.eff.g3hww;
   double g1hzz = par.eff.g1hzz;
   double g2hzz = par.eff.g2hzz;
-  double g3hzz = par.eff.g3hzz;
+  //double g3hzz = par.eff.g3hzz;
   double g1hzy = par.eff.g1hzy;
   double g2hzy = par.eff.g2hzy;
   double ghyy  = par.eff.ghyy;
@@ -13147,7 +13163,7 @@ double ud_duh_CKMsQ_massless( double * x, size_t dim, void * params )
   double x24	= k30*E2 + k3v*pi*(ctheta*cXi-stheta*cos(eta)*sXi);
   double x13	= k40*E1 - k4v*pi*ctheta;
   double x23	= k40*E2 + k4v*pi*ctheta;
-  double x34	= k40*k30- k3v*k4v*cXi;
+  //double x34	= k40*k30- k3v*k4v*cXi;
 
 double g737,g729,g878,g811,g735,g728,g820,g727,g818,g739,g731,g726,g725,g823,g732,g721,g824,g706,g707,g708,g709,g828,g730,g715,g710,g711,g712,g733,g716,g810,g761,g713,g717,g714,g736,g718,g719,g720,g722,g723,g724,g738,g762,g752,g741,g751,g750,g749,g809,g763,g764,g816,g815,g814,g774,g776,g778,g781,g782,g784,g785,g786,g788,g789,g790,g834,g838,g862,g835,g839,g836,g837,g867,g840,g870,g841,g842,g845,g843,g844,g846,g848,g849,g865,g866,g850,g851,g873,g852,g853,g855,g859,g860,g861,g863,g864,g868,g869,g871,g872,g874,g875,g734,g829,msq5;
 {
@@ -14604,12 +14620,12 @@ double ud_dpuph_massless( double * x, size_t dim, void * params )
   double g1hww = par.eff.g1hww;
   double g2hww = par.eff.g2hww;
   double g3hww = par.eff.g3hww;
-  double g1hzz = par.eff.g1hzz;
-  double g2hzz = par.eff.g2hzz;
-  double g3hzz = par.eff.g3hzz;
-  double g1hzy = par.eff.g1hzy;
-  double g2hzy = par.eff.g2hzy;
-  double ghyy  = par.eff.ghyy;
+  //double g1hzz = par.eff.g1hzz;
+  //double g2hzz = par.eff.g2hzz;
+  //double g3hzz = par.eff.g3hzz;
+  //double g1hzy = par.eff.g1hzy;
+  //double g2hzy = par.eff.g2hzy;
+  //double ghyy  = par.eff.ghyy;
   double mh   = m5;
   /* Daraus berechnet */
   double cw   = sqrt(1-pow(sw,2));
@@ -14660,7 +14676,7 @@ double ud_dpuph_massless( double * x, size_t dim, void * params )
   double x24	= k30*E2 + k3v*pi*(ctheta*cXi-stheta*cos(eta)*sXi);
   double x13	= k40*E1 - k4v*pi*ctheta;
   double x23	= k40*E2 + k4v*pi*ctheta;
-  double x34	= k40*k30- k3v*k4v*cXi;
+  //double x34	= k40*k30- k3v*k4v*cXi;
   
   double g6137,g6019,g6138,g6023,g5903,g6022,g5894,g6025,g5857,g5850,g6030,g5884,g5909,g5851,g5891,g5870,g5852,g5853,g5854,g6031,g5883,g5855,g5881,g5856,g5893,g5859,g6038,g5858,
        g5892,g5860,g5890,g5872,g5861,g6042,g5862,g6037,g6026,g6021,g5864,g5865,g5882,g5867,g5877,g5965,g6008,g5871,g5987,g5873,g5874,g5918,g5875,g5876,g5895,g6051,g5935,g5930,

@@ -1,20 +1,24 @@
-# vbfhad :  VBF.o
-# 	gcc -Wall -o vbfprog vbfprog.o VBF.o -Wl,-rpath=/afs/atlass01.physik.uni-bonn.de/user/sarrazin/Downloads/lhapdf-5.8.9/install/lib -L/afs/atlass01.physik.uni-bonn.de/user/sarrazin/Downloads/lhapdf-5.8.9/install/lib -lstdc++ -lLHAPDF -lgsl -lgslcblas -lm 
+default: decay.o CrossSectionHad.o inputs.o VBF.o
 
-default: VBF.o CrossSectionHad.o decay.o CrossSection.o
+testprog : testprog.o decay.o CrossSectionHad.o inputs.o VBF.o
+	gcc -Wall -o testprog testprog.o VBF.o inputs.o CrossSectionHad.o decay.o -Wl,-rpath=/net/home/lxtsfs1/tpe/bheller/Programme/LHAPDF/lib -L/net/home/lxtsfs1/tpe/bheller/Programme/LHAPDF/lib -lstdc++ -lLHAPDF -lgsl -lgslcblas\
+         -lm -fopenmp
 
-CrossSectionHad.o : CrossSection_had.cc
-	gcc -I/afs/atlass01.physik.uni-bonn.de/user/sarrazin/Downloads/lhapdf-5.8.9/install/include -c CrossSection_had.cc -o CrossSectionHad.o
 
-CrossSection.o : CrossSection.cc
-	g++ -c -Wall CrossSection.cc
+testprog.o: testprog.cc VBF.o CrossSectionHad.o inputs.o decay.o
+	gcc -c -Wall -o testprog.o -I/net/home/lxtsfs1/tpe/bheller/Programme/LHAPDF/include -c testprog.cc
+
+decay.o : decay.cc
+	gcc -c -Wall decay.cc -o decay.o
+
+CrossSectionHad.o : CrossSectionHad.cc
+	gcc -c -Wall -I/net/home/lxtsfs1/tpe/bheller/Programme/LHAPDF/include CrossSectionHad.cc -o CrossSectionHad.o
+ 
+inputs.o : inputs.cc
+	gcc -c -Wall inputs.cc -o inputs.o
 
 VBF.o : VBF.cc
-	gcc -Wall -I/afs/atlass01.physik.uni-bonn.de/user/sarrazin/Downloads/lhapdf-5.8.9/install/include -c VBF.cc -o VBF.o
+	gcc -c -Wall -I/net/home/lxtsfs1/tpe/bheller/Programme/LHAPDF/include VBF.cc -o VBF.o
 
-decay.o: decay.cc
-	gcc -Wall -c decay.cc -o decay.o 
-clean:
-	rm -f VBF.o CrossSectionHad.o decay.o CrossSection.o
-
-
+clean: 
+	rm -f inputs.o CrossSectionHad.o decay.o VBF.o testprog.o testprog

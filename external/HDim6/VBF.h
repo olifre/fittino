@@ -15,8 +15,7 @@
 #include <LHAPDF/LHAPDF.h>
 
 /* Typdefinitionen */
-#include "sminputs.h"
-#include "effinputs.h"
+#include "inputs.h"
 
 typedef struct {
    sminputs sm;
@@ -26,15 +25,20 @@ typedef struct {
 #define NCALLS 10000
 #define NRUN   20
 
-static double CS_SM, ERR_SM;
+static double cs_2flavorSM, cs_4flavorSM, cs_5flavorSM, err_2flavorSM, err_4flavorSM, err_5flavorSM;
+static double chi_2flavorSM, chi_4flavorSM, chi_5flavorSM;
 
-void init_( sminputs * smpar );
+/* Initialize VBF Standard Model Values */
 
-/* Auf SM Normierter WQ */
+void vbf_init_cs_( sminputs * smpar );
 
-void ratio_( sminputs * smpar, effinputs * effpar, double * ratio, double * err );
+/* Return the Ratios */
 
-/* Teilweise Querschnitte */
+void ratio_vbf_2flav_( sminputs * smpar, effinputs * effpar, double * ratio, double * error, double * chisq );
+void ratio_vbf_4flav_( sminputs * smpar, effinputs * effpar, double * ratio, double * error, double * chisq );
+void ratio_vbf_5flav_( sminputs * smpar, effinputs * effpar, double * ratio, double * error, double * chisq );
+
+/* Cross Sections in 2,4 and 5 flavor scheme */
 
 void u_and_d_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err, double * chisq );
 void udcs_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err, double * chisq );
