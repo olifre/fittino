@@ -1,0 +1,26 @@
+2013-07-11
+	:General
+	- removed unused variables in matrix element (eliminate compiler warnings)
+	- removed unused functions from code
+	- included uncertainty propagation due to Monte Carlo Integration
+	- Functions return chisq-Value of Integrator (In case there are several integrations
+	  the value with the largest deviation from 1 is returned)
+	- two header files sminputs.h and effinputs.h combined to inputs.h, inputs.h, provides
+	  a function to update the effective inputs (couplings) after coefficients have been set
+
+	:Decay
+	- Included Calculation of total width in the effective framework
+
+	:VBF
+	- Functions to calculate VBF Cross Section in the 2,4 and 5 flavor scheme, normalized
+	  on the corresponding Standard Model Cross Section
+
+	:HadronicCS
+	- Functions return ratio to SM Values
+
+2013-0-12
+	:General
+	- included file testprog.cc to check calculations and benchmark time per point
+	- included all Branching Ratios in decay.cc (H->Zy not yet)
+	- included b+g->b+H in Hadronic Cross Sections
+	
