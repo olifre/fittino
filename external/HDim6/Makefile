@@ -11,8 +11,8 @@ testprog.o: testprog.cc VBF.o CrossSectionHad.o inputs.o decay.o
 decay.o : decay.cc
 	gcc -c -Wall decay.cc -o decay.o
 
-CrossSectionHad.o : CrossSection_Had.cc
-	gcc -c -Wall -I/net/home/lxtsfs1/tpe/bheller/Programme/LHAPDF/include CrossSection_Had.cc -o CrossSectionHad.o
+CrossSectionHad.o : CrossSection_had.cc
+	gcc -c -Wall -I/net/home/lxtsfs1/tpe/bheller/Programme/LHAPDF/include CrossSection_had.cc -o CrossSectionHad.o
  
 inputs.o : inputs.cc
 	gcc -c -Wall inputs.cc -o inputs.o

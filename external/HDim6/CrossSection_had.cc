@@ -2,80 +2,81 @@
 
 /* Initialisierung zur Berechnung der Standardmodell-Wirkungsquerschnitte */
 
-void init_(         sminputs * SMparam )
+void init_hadronic_cs_( sminputs * smpar )
 {
-  double err;
   effinputs temp;
-  double chi;
+
   temp.fbb = 0; temp.fww = 0; temp.fgg = 0; temp.fb = 0; temp.fw = 0; 
   temp.fuph = 0; temp.fdoh = 0; temp.fchh = 0; temp.fsth = 0; temp.fboh = 0; temp.ftoh = 0; temp.felh = 0; temp.fmuh = 0; temp.ftah = 0;
   temp.ghyy = 0; temp.g1hzz = 0; temp.g2hzz = 0; temp.g3hzz = 0; temp.g1hww = 0; temp.g2hww = 0; temp.g3hww = 0; temp.g1hzy = 0; temp.g2hzy = 0;
-  
-  double errtemp;
-  double cs1, cs2;
-  
-  HWRadiation_( SMparam, &temp, &pp_wh_sm, &errtemp, &chi );
-  HZRadiation_( SMparam, &temp, &pp_zh_sm, &errtemp, &chi );
-  //cout<<"Initialisierung: "<<"pp->hz = "<<pp_zh_sm<<" pp->wh = "<<pp_wh_sm<<endl;
+ 
+  HWRadiation_( smpar, &temp, &pp_wh_sm, &err_wh_sm, &chi_wh_sm );
+  HZRadiation_( smpar, &temp, &pp_zh_sm, &err_zh_sm, &chi_zh_sm );
+  std::cout<<"pp->wh = "<<pp_wh_sm<<" pp->zh = "<<pp_zh_sm<<std::endl;
 };
-
-double pp_zh_sm_( void ) { return pp_zh_sm; };
-double pp_wh_sm_( void ) { return pp_wh_sm; };
 
 /* Berechnung der Ratios */
 
-void ratio_tth_(   sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err, double * chisq ) 
+void ratio_tth_( sminputs * smpar, effinputs * effpar, double * ratio, double * err, double * chisq ) 
 {
   /* Ratio given through modified Yukawa-Coupling! */
-  *ratio = pow(1.0 - pow(SMparam->vev,3)/sqrt(2)/SMparam->mto*ESMparam->ftoh, 2);
+  *ratio = pow(1.0 - pow(smpar->vev,3)/sqrt(2)/smpar->mto*effpar->ftoh, 2);
   *err   = 0;
   *chisq = 1;
 };
 
-void ratio_bb_h_(   sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err, double * chisq ) 
+void ratio_bg_bh_(sminputs * smpar, effinputs * effpar, double * ratio, double * err, double * chisq )
 {
-  /* Ratio given through modified Yukawa-Coupling! */
-  *ratio = pow(1.0 - pow(SMparam->vev,3)/sqrt(2)/SMparam->mbo*ESMparam->fboh, 2);
+  *ratio = pow(1-pow(smpar->vev,3)/sqrt(2)/smpar->mbo*effpar->fboh,2);
   *err   = 0;
   *chisq = 1;
 };
 
-void ratio_ggh_(   sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err, double * chisq ) 
+void ratio_bb_h_( sminputs * smpar, effinputs * effpar, double * ratio, double * err, double * chisq ) 
+{
+  /* Ratio given through modified Yukawa-Coupling! */
+  *ratio = pow(1.0 - pow(smpar->vev,3)/sqrt(2)/smpar->mbo*effpar->fboh, 2);
+  *err   = 0;
+  *chisq = 1;
+};
+
+void ratio_ggh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err, double * chisq ) 
 {
   /* Die Parameter stammen aus der effektiven Madgraph-Theorie                  */
   /* Siehe auch cp3.irmp.ucl.ac.be/projects/madgraph/wiki/Models/HiggsEffective */
   /* Aufgerufen am 12.06.2013                                                   */
-  double tau     = pow(SMparam->mh/2./SMparam->mto,2.);
-  double gh      = SMparam->alphas/3./M_PI/SMparam->vev*(1.+7./30.*tau*2./21.*pow(tau,2.)+26./525.*pow(tau,3.));
+  double tau     = pow(smpar->mh/2./smpar->mto,2.);
+  double gh      = smpar->alphas/3./M_PI/smpar->vev*(1.+7./30.*tau*2./21.*pow(tau,2.)+26./525.*pow(tau,3.));
   double ghggSM  = -1/4./sqrt(2.)*gh;
-  double ghggESM = -SMparam->alphas/8./M_PI*ESMparam->fgg*SMparam->vev;
+  double ghggESM = -smpar->alphas/8./M_PI*effpar->fgg*smpar->vev;
   *ratio         = pow((ghggSM+ghggESM)/ghggSM,2.0);
   *err           = 0;
   *chisq         = 1;
 };
 
-void ratio_pphw_(  sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err, double * chisq ) {
+void ratio_pphw_( sminputs * smpar, effinputs * effpar, double * ratio, double * err, double * chisq ) {
   double result, error, chi;
-  HWRadiation_( SMparam, ESMparam, &result, &error, &chi );
-  *ratio = result / SMparam->pp_wh_sm;
-  *err   = error / result;
+  HWRadiation_( smpar, effpar, &result, &error, &chi );
+  *ratio = result / pp_wh_sm;
+  *err   = error / pp_wh_sm + result / pow( pp_wh_sm, 2 ) * err_wh_sm;
+  *chisq = chi;
 };
 
-void ratio_pphz_(  sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err, double * chisq ) {
+void ratio_pphz_(  sminputs * smpar, effinputs * effpar, double * ratio, double * err, double * chisq ) {
   double result, error, chi;
-  HZRadiation_( SMparam, ESMparam, &result, &error, &chi );
-  *ratio = result / SMparam->pp_zh_sm;
-  *err   = error / result;
-  *chisq = 1;
+  HZRadiation_( smpar, effpar, &result, &error, &chi );
+  *ratio = result / pp_zh_sm;
+  *err   = error / pp_zh_sm + result / pow( pp_zh_sm, 2 ) * err_zh_sm;
+  *chisq = chi;
 };
 
 
-void HZRadiation_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err, double * chisq ) 
+void HZRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double * err, double * chisq ) 
 {  
-  double mq[]  = { 0, SMparam->mdo, SMparam->mup, SMparam->mst, SMparam->mch, SMparam->mbo };
+  double mq[]  = { 0, smpar->mdo, smpar->mup, smpar->mst, smpar->mch, smpar->mbo };
   double result = 0, error = 0, cs = 0, toterr = 0;
   
-  int dim = 3;
+  size_t dim = 3;
   double xl[] = { 0, 0, 0 };
   double xu[] = { 1, 1, 1 };
   
@@ -91,11 +92,11 @@ void HZRadiation_( sminputs * SMparam, effinputs * ESMparam, double * cSec, doub
   /* Loop over Initial Quarks */
   for( int i = 1; i <= 5; i++ )
   {
-    double par[] = { SMparam->mh, SMparam->mz, mq[i], sqrt( SMparam->alphae*4*M_PI ), SMparam->sw, SMparam->s, 0, 0, ESMparam->g1hww, 
-		     ESMparam->g2hww, ESMparam->g3hww, ESMparam->g1hzz, ESMparam->g2hzz, ESMparam->g3hzz, ESMparam->g1hzy, ESMparam->g2hzy, ESMparam->ghyy, i, -i };
+    double par[] = { smpar->mh, smpar->mz, mq[i], sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, 0, 0, effpar->g1hww, 
+		     effpar->g2hww, effpar->g3hww, effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hzy, effpar->g2hzy, effpar->ghyy, (double)i, -(double)i };
     if(!(i%2)) 
     {
-      G = (gsl_monte_function){ m_uU_ZH, dim, par };
+        G = (gsl_monte_function){ m_uU_ZH, dim, par };
     }
     else
     {
@@ -107,7 +108,8 @@ void HZRadiation_( sminputs * SMparam, effinputs * ESMparam, double * cSec, doub
       k++;
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
     } while (fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.5 && k < Nstep );  
-    *chisq += gsl_monte_vegas_chisq( s );
+    double chi = gsl_monte_vegas_chisq( s );
+    *chisq = (fabs(*chisq-1) > fabs(chi-1) ? *chisq : chi );
     gsl_monte_vegas_free( s );
     cs     += result;
     toterr += error;
@@ -117,12 +119,12 @@ void HZRadiation_( sminputs * SMparam, effinputs * ESMparam, double * cSec, doub
   *err  = toterr;  
 };
 
-void HWRadiation_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err, double * chisq ) 
+void HWRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double * err, double * chisq ) 
 {  
-  double mq[]  = { 0, SMparam->mdo, SMparam->mup, SMparam->mst, SMparam->mch, SMparam->mbo };
+  double mq[]  = { 0, smpar->mdo, smpar->mup, smpar->mst, smpar->mch, smpar->mbo };
   double result = 0, error = 0, cs = 0, toterr = 0;
   
-  int dim = 3;
+  size_t dim = 3;
   double xl[] = { 0, 0, 0 };
   double xu[] = { 1, 1, 1 };
   
@@ -146,23 +148,23 @@ void HWRadiation_( sminputs * SMparam, effinputs * ESMparam, double * cSec, doub
       if( (i == 2 ) )
       {
 	if( j == 1 )
-	  vckm = SMparam->vud;
+	  vckm = smpar->vud;
 	if( j == 3 )
-	  vckm = SMparam->vus;
+	  vckm = smpar->vus;
 	if( j == 5 )
-	  vckm = SMparam->vub;
+	  vckm = smpar->vub;
       };
       if( (i==4) )
       {
 	if( j == 1 )
-	  vckm = SMparam->vcd;
+	  vckm = smpar->vcd;
 	if( j == 3 )
-	  vckm = SMparam->vcs;
+	  vckm = smpar->vcs;
 	if( j == 5 )
-	  vckm = SMparam->vcb;
+	  vckm = smpar->vcb;
       };
-      double par[] = { SMparam->mh, SMparam->mz, mq[j], mq[i], sqrt( SMparam->alphae*4*M_PI ), SMparam->sw, SMparam->s, vckm, ESMparam->g1hww, 
-		       ESMparam->g2hww, ESMparam->g3hww, ESMparam->g1hzz, ESMparam->g2hzz, ESMparam->g3hzz, ESMparam->g1hzy, ESMparam->g2hzy, ESMparam->ghyy, i, -j };
+      double par[] = { smpar->mh, smpar->mz, mq[j], mq[i], sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, vckm, effpar->g1hww, 
+		       effpar->g2hww, effpar->g3hww, effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hzy, effpar->g2hzy, effpar->ghyy, (double)i, -(double)j };
 
       gsl_monte_function G = { &m_qqp_WH, dim, par };
       gsl_monte_vegas_state * s = gsl_monte_vegas_alloc( dim );
@@ -171,7 +173,8 @@ void HWRadiation_( sminputs * SMparam, effinputs * ESMparam, double * cSec, doub
 	k++;
 	gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
       } while (fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.5 && k < Nstep );
-      *chisq += gsl_monte_vegas_chisq( s );
+      double chi = gsl_monte_vegas_chisq(s);
+      *chisq = (fabs(*chisq-1) > fabs(chi-1) ? *chisq : chi );
       gsl_monte_vegas_free( s );
       cs     += result;
       toterr += error;
@@ -197,14 +200,14 @@ double m_qqp_WH( double * x, size_t dim, void * param )
   double g1hww = ((double*)param)[8];
   double g2hww = ((double*)param)[9];
   double g3hww = ((double*)param)[10];
-  double g1hzz = ((double*)param)[11];
-  double g2hzz = ((double*)param)[12];
-  double g3hzz = ((double*)param)[13];
-  double g1hzy = ((double*)param)[14];
-  double g2hzy = ((double*)param)[15];
-  double ghyy  = ((double*)param)[16];
-  int pdg1 = ((double*)param)[17];
-  int pdg2 = ((double*)param)[18];
+  //double g1hzz = ((double*)param)[11];
+  //double g2hzz = ((double*)param)[12];
+  //double g3hzz = ((double*)param)[13];
+  //double g1hzy = ((double*)param)[14];
+  //double g2hzy = ((double*)param)[15];
+  //double ghyy  = ((double*)param)[16];
+  int pdg1 = (int)((double*)param)[17];
+  int pdg2 = (int)((double*)param)[18];
   
   /* Berechnete Groessen */
   double cw = sqrt(1-sw*sw);
@@ -739,18 +742,18 @@ double m_dD_ZH( double * x, size_t dim, void * param )
   double ee = ((double*)param)[3];
   double sw = ((double*)param)[4];
   double S  = ((double*)param)[5];
-  double ckm= ((double*)param)[7];
-  double g1hww = ((double*)param)[8];
-  double g2hww = ((double*)param)[9];
-  double g3hww = ((double*)param)[10];
+  //double ckm= ((double*)param)[7];
+  //double g1hww = ((double*)param)[8];
+  //double g2hww = ((double*)param)[9];
+  //double g3hww = ((double*)param)[10];
   double g1hzz = ((double*)param)[11];
   double g2hzz = ((double*)param)[12];
-  double g3hzz = ((double*)param)[13];
+  //double g3hzz = ((double*)param)[13];
   double g1hzy = ((double*)param)[14];
   double g2hzy = ((double*)param)[15];
-  double ghyy  = ((double*)param)[16];
-  int pdg1 = ((double*)param)[17];
-  int pdg2 = ((double*)param)[18];
+  //double ghyy  = ((double*)param)[16];
+  int pdg1 = (int)((double*)param)[17];
+  int pdg2 = (int)((double*)param)[18];
   
   /* Berechnete Groessen */
   double cw = sqrt(1-sw*sw);
@@ -1545,18 +1548,18 @@ double m_uU_ZH( double * x, size_t dim, void * param )
   double ee = ((double*)param)[3];
   double sw = ((double*)param)[4];
   double S  = ((double*)param)[5];
-  double ckm= ((double*)param)[7];
-  double g1hww = ((double*)param)[8];
-  double g2hww = ((double*)param)[9];
-  double g3hww = ((double*)param)[10];
+  //double ckm= ((double*)param)[7];
+  //double g1hww = ((double*)param)[8];
+  //double g2hww = ((double*)param)[9];
+  //double g3hww = ((double*)param)[10];
   double g1hzz = ((double*)param)[11];
   double g2hzz = ((double*)param)[12];
-  double g3hzz = ((double*)param)[13];
+  //double g3hzz = ((double*)param)[13];
   double g1hzy = ((double*)param)[14];
   double g2hzy = ((double*)param)[15];
-  double ghyy  = ((double*)param)[16];
-  int pdg1 = ((double*)param)[17];
-  int pdg2 = ((double*)param)[18];
+  //double ghyy  = ((double*)param)[16];
+  int pdg1 = (int)((double*)param)[17];
+  int pdg2 = (int)((double*)param)[18];
   
   /* Berechnete Groessen */
   double cw = sqrt(1-sw*sw);
