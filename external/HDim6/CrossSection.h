@@ -9,8 +9,7 @@
 #include <gsl/gsl_monte_vegas.h>
 
 /* Typdefinitionen */
-#include "sminputs.h"
-#include "effinputs.h"
+#include "inputs.h"
 
 /* Globale Variablen zum Speichern der Standardmodell-Wirkungsquerschnitte */
 static double uu_zh_sm = 0, cc_zh_sm = 0, dd_zh_sm = 0, ss_zh_sm = 0, bb_zh_sm = 0;
