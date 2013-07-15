@@ -25,4 +25,8 @@
 	- included b+g->b+H in Hadronic Cross Sections
 
 2013-07-15
-	- decay: introduced higher order corrections via K-factor formalism
+	:decay
+	- introduced higher order corrections via K-factor formalism
+	- removed insignificant decay channels
+	:inputs
+	- sminputs now includes SM Higgs Branching ratios and width (Source LHC Higgs CS Working Group)
