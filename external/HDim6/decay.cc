@@ -65,35 +65,35 @@ void totalwidth_( double * tWidth, double * tError, double * tChi )
 void br_hbb_( double * br, double * err, double * chi )
 {
   *br = T_hbobo_eff/T_eff;
-  *err = 1/T_eff*err_hbobo_eff + T_hbobo_eff/pow(T_eff,2)*err_T_eff;
+  *err = 1./T_eff*err_hbobo_eff + T_hbobo_eff/pow(T_eff,2)*err_T_eff;
   *chi = chi_hbobo_eff;
 };
 
 void br_hcc_( double * br, double * err, double * chi )
 {
   *br = T_hchch_eff/T_eff;
-  *err = 1/T_eff*err_hchch_eff + T_hchch_eff/pow(T_eff,2)*err_T_eff;
+  *err = 1./T_eff*err_hchch_eff + T_hchch_eff/pow(T_eff,2)*err_T_eff;
   *chi = chi_hchch_eff;
 };
 
 void br_hss_( double * br, double * err, double * chi )
 {
   *br = T_hstst_eff/T_eff;
-  *err = 1/T_eff*err_hstst_eff + T_hstst_eff/pow(T_eff,2)*err_T_eff;
+  *err = 1./T_eff*err_hstst_eff + T_hstst_eff/pow(T_eff,2)*err_T_eff;
   *chi = chi_hchch_eff;
 };
 
 void br_htautau_( double * br, double * err, double * chi )
 {
   *br = T_htata_eff/T_eff;
-  *err = 1/T_eff*err_htata_eff + T_htata_eff/pow(T_eff,2)*err_T_eff;
+  *err = 1./T_eff*err_htata_eff + T_htata_eff/pow(T_eff,2)*err_T_eff;
   *chi = chi_htata_eff;
 };
 
 void br_hww_( double * br, double * err, double * chi )
 {
   *br = T_hww_eff/T_eff;
-  *err = 1/T_eff*err_hww_eff + T_hww_eff/pow(T_eff,2)*err_T_eff;
+  *err = 1./T_eff*err_hww_eff + T_hww_eff/pow(T_eff,2)*err_T_eff;
   *chi = chi_hww_eff;
 };
 
@@ -104,10 +104,10 @@ void br_hgaga_( double * br, double * err, double * chi )
   *chi = chi_hgaga_eff;
 };
 
-void br_hglgl( double * br, double * err, double * chi )
+void br_hglgl_( double * br, double * err, double * chi )
 {
   *br = T_hglgl_eff/T_eff;
-  *err = 1/T_eff*err_hglgl_eff + T_hglgl_eff/pow(T_eff,2)*err_T_eff;
+  *err = 1./T_eff*err_hglgl_eff + T_hglgl_eff/pow(T_eff,2)*err_T_eff;
   *chi = chi_hglgl_eff;
 };
 
