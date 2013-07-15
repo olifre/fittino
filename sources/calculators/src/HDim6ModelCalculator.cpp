@@ -20,8 +20,7 @@
 #include "HDim6/CrossSection.h" 
 #include "HDim6/CrossSection_had.h" 
 #include "HDim6/decay.h" 
-#include "HDim6/effinputs.h" 
-#include "HDim6/sminputs.h"
+#include "HDim6/inputs.h" 
 #include "HDim6/VBF.h"
 
 #include "HDim6ModelCalculator.h"
@@ -49,6 +48,10 @@ void Fittino::HDim6ModelCalculator::CallExecutable() {
 void Fittino::HDim6ModelCalculator::CallFunction( PhysicsModelBase* model ) {
 
   effinputs effinputs;
+  sminputs  SMparam;
+
+  init_(   &SMparam );
+  
 
 }
 
