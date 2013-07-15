@@ -1,11 +1,3 @@
-/************************************************************************************************************/
-/* Calculates decay withs and Branching Ratios of the Higgs Particle in our six-dimensional effective model */
-/* Changelog:                                                                                               */
-/* 11.07.2013 Totalwidth now included, removed unused variables to avoid compiler warnings, included all BR */
-/*            Branching Ratios return error and chisq of fit for analysis                                   */
-/*            Removed processes where the final state includes top quarks                                   */
-/************************************************************************************************************/
-
 #include "decay.h"
 
 void initeffwidths_( sminputs * smpar, effinputs * effpar )
@@ -14,15 +6,15 @@ void initeffwidths_( sminputs * smpar, effinputs * effpar )
   hglgl_( smpar, effpar, &T_hglgl_eff, &err_hglgl_eff );
   hgaga_( smpar, effpar, &T_hgaga_eff, &err_hgaga_eff );
   /* H_difermion */
-  helel_( smpar, effpar, &T_helel_eff, &err_helel_eff );
+  // helel_( smpar, effpar, &T_helel_eff, &err_helel_eff );
   hmumu_( smpar, effpar, &T_hmumu_eff, &err_hmumu_eff );
   htata_( smpar, effpar, &T_htata_eff, &err_htata_eff );
-  hupup_( smpar, effpar, &T_hupup_eff, &err_hupup_eff );
-  hdodo_( smpar, effpar, &T_hdodo_eff, &err_hdodo_eff );
+  // hupup_( smpar, effpar, &T_hupup_eff, &err_hupup_eff );
+  // hdodo_( smpar, effpar, &T_hdodo_eff, &err_hdodo_eff );
   hchch_( smpar, effpar, &T_hchch_eff, &err_hchch_eff );
   hstst_( smpar, effpar, &T_hstst_eff, &err_hstst_eff );
   hbobo_( smpar, effpar, &T_hbobo_eff, &err_hbobo_eff );
-  chi_helel_eff = 1; chi_hmumu_eff = 1; chi_htata_eff = 1; chi_hupup_eff = 1; chi_hdodo_eff = 1; chi_hchch_eff = 1; chi_hstst_eff = 1;
+  chi_hmumu_eff = 1; chi_htata_eff = 1; chi_hchch_eff = 1; chi_hstst_eff = 1;
   chi_hbobo_eff = 1; chi_hgaga_eff = 1; chi_hglgl_eff = 1;
   
   double buffer1, buffer2, buffer3;
@@ -46,79 +38,127 @@ void initeffwidths_( sminputs * smpar, effinputs * effpar )
   hwchdo_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
   hwchst_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
   hwchbo_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
-  T_eff = T_hglgl_eff+T_hgaga_eff+T_helel_eff+T_hmumu_eff+T_htata_eff+T_hbobo_eff+T_hchch_eff+T_hstst_eff+T_hdodo_eff+T_hupup_eff+T_hww_eff+T_hzz_eff;
+  T_eff = T_hglgl_eff+T_hgaga_eff+T_hmumu_eff+T_htata_eff+T_hbobo_eff+T_hchch_eff+T_hstst_eff+T_hww_eff+T_hzz_eff;
   err_T_eff = err_hww_eff + err_hzz_eff; /* Die anderen werden nicht numerisch berechnet, Fehler sind daher hier Null */
+};
+
+void initsmwidths_( sminputs * smpar )
+{
+  effinputs temp;
+  temp.fbb = 0; temp.fww = 0; temp.fgg = 0; temp.fb = 0; temp.fw = 0; 
+  temp.fuph = 0; temp.fdoh = 0; temp.fchh = 0; temp.fsth = 0; temp.fboh = 0; temp.ftoh = 0; temp.felh = 0; temp.fmuh = 0; temp.ftah = 0;
+  temp.ghyy = 0; temp.g1hzz = 0; temp.g2hzz = 0; temp.g3hzz = 0; temp.g1hww = 0; temp.g2hww = 0; temp.g3hww = 0; temp.g1hzy = 0; temp.g2hzy = 0;
+  /* H_gluglu & H_Digamma */
+  hglgl_( smpar, &temp, &T_hglgl_sm, &err_hglgl_sm );
+  hgaga_( smpar, &temp, &T_hgaga_sm, &err_hgaga_sm );
+  /* H_difermion */                                                                                                                                                                                  
+  hmumu_( smpar, &temp, &T_hmumu_sm, &err_hmumu_sm );
+  htata_( smpar, &temp, &T_htata_sm, &err_htata_sm );
+  hchch_( smpar, &temp, &T_hchch_sm, &err_hchch_sm );
+  hstst_( smpar, &temp, &T_hstst_sm, &err_hstst_sm );
+  hbobo_( smpar, &temp, &T_hbobo_sm, &err_hbobo_sm );
+  chi_hmumu_sm = 1; chi_htata_sm = 1; chi_hchch_sm = 1; chi_hstst_sm = 1;
+  chi_hbobo_sm = 1; chi_hgaga_sm = 1; chi_hglgl_sm = 1;
+
+  double buffer1, buffer2, buffer3;
+  T_hzz_sm = 0, chi_hzz_sm = 1, err_hzz_sm = 0;
+  hztata_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hzz_sm += buffer1; err_hzz_sm += buffer2; chi_hzz_sm = (fabs(chi_hzz_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_sm );
+  hzmumu_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hzz_sm += buffer1; err_hzz_sm += buffer2; chi_hzz_sm = (fabs(chi_hzz_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_sm );
+  hzelel_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hzz_sm += buffer1; err_hzz_sm += buffer2; chi_hzz_sm = (fabs(chi_hzz_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_sm );
+  hzupup_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hzz_sm += buffer1; err_hzz_sm += buffer2; chi_hzz_sm = (fabs(chi_hzz_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_sm );
+  hzdodo_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hzz_sm += buffer1; err_hzz_sm += buffer2; chi_hzz_sm = (fabs(chi_hzz_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_sm );
+  hzchch_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hzz_sm += buffer1; err_hzz_sm += buffer2; chi_hzz_sm = (fabs(chi_hzz_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_sm );
+  hzstst_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hzz_sm += buffer1; err_hzz_sm += buffer2; chi_hzz_sm = (fabs(chi_hzz_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_sm );
+  hzbobo_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hzz_sm += buffer1; err_hzz_sm += buffer2; chi_hzz_sm = (fabs(chi_hzz_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_sm );
+  hznunu_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hzz_sm += buffer1; err_hzz_sm += buffer2; chi_hzz_sm = (fabs(chi_hzz_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_sm );
+  buffer1 = 0; buffer2 = 0; buffer3 = 0; T_hww_sm = 0; chi_hww_sm = 1; err_hww_sm = 0;
+  hwtanta_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
+  hwmunmu_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
+  hwelnel_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
+  hwupdo_( smpar, &temp, &buffer1, &buffer2, &buffer3 );  T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
+  hwupst_( smpar, &temp, &buffer1, &buffer2, &buffer3 );  T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
+  hwupbo_( smpar, &temp, &buffer1, &buffer2, &buffer3 );  T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
+  hwchdo_( smpar, &temp, &buffer1, &buffer2, &buffer3 );  T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
+  hwchst_( smpar, &temp, &buffer1, &buffer2, &buffer3 );  T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
+  hwchbo_( smpar, &temp, &buffer1, &buffer2, &buffer3 );  T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
+  T_sm = T_hglgl_sm+T_hgaga_sm+T_hmumu_sm+T_htata_sm+T_hbobo_sm+T_hchch_sm+T_hstst_sm+T_hww_sm+T_hzz_sm;
+  err_T_sm = err_hww_sm + err_hzz_sm; /* Die anderen werden nicht numerisch berechnet, Fehler sind daher hier Null */
+
 };
 
 /* Returns the total width of H in the effective framework */
 
-void totalwidth_( double * tWidth, double * tError, double * tChi )
+void totalwidth_( sminputs * smpar, effinputs * effpar, double * tWidth, double * tError, double * tChi )
 {
-  *tWidth = T_eff;
-  *tError = err_T_eff;
+  *tWidth = T_eff / T_sm * smpar->sm_width;
+  *tError = (err_T_eff / T_sm + err_T_eff / pow( T_sm, 2) * err_T_sm)*smpar->sm_width + T_eff/T_sm * smpar->sm_width_err;
   *tChi = ( fabs( chi_hww_eff - 1 ) > fabs( chi_hzz_eff -1 ) ? chi_hww_eff : chi_hzz_eff );
 };
 
-/* Branching Ratios of effective Theory as requested by Higgs-Bounds                      */
-/* chi returns the chi-value of the integration, the SM-Chi should be close to one anyway */
+/* Verzweigungsverhaeltnisse des Higgs Bosons im Rahmen der K-Faktor-Beruecksichtigung der Korrekturrechnungen */
 
-void br_hbb_( double * br, double * err, double * chi )
+void br_hbb_( sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi )
 {
-  *br = T_hbobo_eff/T_eff;
-  *err = 1./T_eff*err_hbobo_eff + T_hbobo_eff/pow(T_eff,2)*err_T_eff;
+  *br = T_hbobo_eff/T_eff*T_sm/T_hbobo_sm*smpar->br_h_bb;
+  *err = T_hbobo_eff/T_eff*T_sm/T_hbobo_sm*smpar->err_h_bb;
   *chi = chi_hbobo_eff;
 };
 
-void br_hcc_( double * br, double * err, double * chi )
+void br_hcc_( sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi )
 {
-  *br = T_hchch_eff/T_eff;
-  *err = 1./T_eff*err_hchch_eff + T_hchch_eff/pow(T_eff,2)*err_T_eff;
+  *br = T_hchch_eff/T_eff*T_sm/T_hchch_sm*smpar->br_h_cc;
+  *err = T_hchch_eff/T_eff*T_sm/T_hchch_sm*smpar->err_h_cc;
   *chi = chi_hchch_eff;
 };
 
-void br_hss_( double * br, double * err, double * chi )
+void br_hss_( sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi )
 {
-  *br = T_hstst_eff/T_eff;
-  *err = 1./T_eff*err_hstst_eff + T_hstst_eff/pow(T_eff,2)*err_T_eff;
+  *br = T_hstst_eff/T_eff*T_sm/T_hstst_sm*smpar->br_h_ss;
+  *err = T_hstst_eff/T_eff*T_sm/T_hstst_sm*smpar->err_h_ss;
   *chi = chi_hchch_eff;
 };
 
-void br_htautau_( double * br, double * err, double * chi )
+void br_htautau_( sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi )
 {
-  *br = T_htata_eff/T_eff;
-  *err = 1./T_eff*err_htata_eff + T_htata_eff/pow(T_eff,2)*err_T_eff;
+  *br = T_htata_eff/T_eff*T_sm/T_htata_sm*smpar->br_h_tautau;
+  *err = T_htata_eff/T_eff*T_sm/T_htata_sm*smpar->err_h_tautau;
   *chi = chi_htata_eff;
 };
 
-void br_hww_( double * br, double * err, double * chi )
+void br_hww_( sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi )
 {
-  *br = T_hww_eff/T_eff;
-  *err = 1./T_eff*err_hww_eff + T_hww_eff/pow(T_eff,2)*err_T_eff;
+  *br = T_hww_eff/T_eff*T_sm/T_hww_sm*smpar->br_h_ww;
+  *err = (err_hww_eff/T_eff*T_sm/T_hww_sm + T_hww_eff/pow(T_eff,2)*err_T_eff*T_sm/T_hww_sm + \
+          T_hww_eff/T_eff*err_T_sm/T_hww_sm + T_hww_eff/T_eff*T_sm/pow(T_hww_sm,2)*err_hww_sm)*smpar->br_h_ww+\
+          T_hww_eff/T_eff*T_sm/T_hww_sm*smpar->err_h_ww;
   *chi = chi_hww_eff;
 };
 
-void br_hgaga_( double * br, double * err, double * chi )
+void br_hgaga_( sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi )
 {
-  *br = T_hgaga_eff/T_eff;
-  *err = 1/T_eff*err_hgaga_eff + T_hgaga_eff/pow(T_eff,2)*err_T_eff;
+  *br = T_hgaga_eff/T_eff*T_sm/T_hgaga_sm*smpar->br_h_yy;
+  *err = T_hgaga_eff/T_eff*T_sm/T_hgaga_sm*smpar->err_h_gg;
   *chi = chi_hgaga_eff;
 };
 
-void br_hglgl_( double * br, double * err, double * chi )
+void br_hglgl_( sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi )
 {
-  *br = T_hglgl_eff/T_eff;
-  *err = 1./T_eff*err_hglgl_eff + T_hglgl_eff/pow(T_eff,2)*err_T_eff;
+  *br =  T_hglgl_eff/T_eff*T_sm/T_hglgl_sm*smpar->br_h_gg;
+  *err = T_hglgl_eff/T_eff*T_sm/T_hglgl_sm*smpar->err_h_gg;
   *chi = chi_hglgl_eff;
 };
 
-void br_hzz_( double * br, double * err, double * chi )
+void br_hzz_( sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi )
 {
-  *br = T_hzz_eff/T_eff;
-  *err = 1/T_eff*err_hzz_eff + T_hzz_eff/pow(T_eff,2)*err_T_eff;
+  *br = T_hzz_eff/T_eff*T_sm/T_hzz_sm*smpar->br_h_zz;
+  *err = (err_hzz_eff/T_eff*T_sm/T_hzz_sm + T_hzz_eff/pow(T_eff,2)*err_T_eff*T_sm/T_hzz_sm + \
+          T_hzz_eff/T_eff*err_T_sm/T_hzz_sm + T_hzz_eff/T_eff*T_sm/pow(T_hzz_sm,2)*err_hzz_sm)*smpar->br_h_zz+\
+          T_hzz_eff/T_eff*T_sm/T_hzz_sm*smpar->err_h_zz;
   *chi = chi_hzz_eff;
 };
 
-/* Die verwendeten Formeln sind dem PDG Review (rpp2012-rev-cross-section-formulae.pdf) entnommen, aufgerufen am 23.05.2012 */
+/* Die folgenden Funktionen berechnen die Zerfallsbreiten des Higgs-Bosons im Rahmen der effektiven Feldtheorie auf Tree-Level */
+/* Die verwendeten Formeln sind dem PDG Review (rpp2012-rev-cross-section-formulae.pdf) entnommen, aufgerufen am 23.05.2012    */
 /* Leptonische Zweikoerperzerfaelle */
 
 void hglgl_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
@@ -128,9 +168,9 @@ void hglgl_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pEr
   double mw = SMpar->mz * sqrt( 1 - pow( sw, 2. ) );
   double mt = SMpar->mto;
   
-  double factor = pow( SMpar->alphae, 2. ) * pow( SMpar->alphas, 2. ) / 144. / M_PI / pow( mw, 2. ) / pow( sw, 2. );
+  double factor = SMpar->alphae * pow( SMpar->alphas, 2. ) / 72. / pow(M_PI,2) / pow( mw*sw, 2. );
   double z = pow( mt/mh, 2. );
-  double I = 3.*(2.*z + 2.*z*(1.-4.*z)*pow(asin(1/2./sqrt(z)), 2.));
+  double I = 3.*(2.*z - 2*z*(4.*z - 1)*pow(asin(1/2./sqrt(z)), 2.));
   double gHgg = sqrt(factor)*I + Effpar->fgg;
   
   *pWidth = 2./M_PI*pow(mh,3.)*pow(gHgg, 2.);
@@ -142,13 +182,13 @@ void hgaga_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pEr
   double mh = SMpar->mh;
   double sw = SMpar->sw;
   double mw = SMpar->mz * sqrt( 1 - pow( sw, 2. ) );
-  double factor = pow( SMpar->alphae, 4. )/4./M_PI/pow(mw*sw,2.);
+  double factor = pow( SMpar->alphae, 3. )/16./pow(M_PI,2)/pow(mw*sw,2.);
   /* Neglecting all contributions from light particles, only particles in the loop are W-Boson and t-Quark */
   double mt = SMpar->mto;
   double zt = pow( mt/mh, 2. );
   double zw = pow( mw/mh, 2. );
   
-  double v = 2.*mw*sw/sqrt(4.*M_PI*SMpar->alphae);
+  double v = SMpar->vev;
   double gyy = -M_PI*SMpar->alphae*v*(Effpar->fww + Effpar->fbb);
   
   double It = 3.*(2.*zt + 2.*zt*(1.-4.*zt)*pow(asin(1/2./sqrt(zt)), 2.));

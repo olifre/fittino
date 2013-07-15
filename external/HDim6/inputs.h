@@ -46,7 +46,21 @@ struct sminputs {
   double vts;
   double vtb;
   double s;
-  
+
+  // State of the art SM Branching Ratios for a 126 GeV Higgs particle   //
+  // from twiki.cern.ch/twiki/bin/view/LHCPhysics/CERNYelloReportPageBR2 //
+  // Required to take higher order corrections inot account              //
+
+  double br_h_bb, err_h_bb;
+  double br_h_cc, err_h_cc;
+  double br_h_ss, err_h_ss;
+  double br_h_tautau, err_h_tautau;
+  double br_h_mm, err_h_mm;
+  double br_h_ww, err_h_ww;
+  double br_h_zz, err_h_zz;
+  double br_h_gg, err_h_gg;
+  double br_h_yy, err_h_yy;  
+  double sm_width, sm_width_err;
 };
 
 struct effinputs {

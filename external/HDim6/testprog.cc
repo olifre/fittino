@@ -74,6 +74,30 @@ int main( int argc, char ** argv )
 	smvalues.vev    = smvalues.mw*smvalues.sw/sqrt(4.0*3.14159*smvalues.alphae)*2.0;
 	smvalues.s      = pow( 7000,2 );
 
+	// Standardmodell-Higgs-Breiten nach CERN LHC Higgs Cross-Section Working Group (Yellow Report Pages)
+
+	smvalues.br_h_bb      = 0.577;
+	smvalues.br_h_cc      = 0.0291;
+	smvalues.br_h_ss      = 0.015;      //Wert angenommen
+	smvalues.br_h_mm      = 2.2e-4;
+	smvalues.br_h_tautau  = 0.0632;
+	smvalues.br_h_zz      = 0.0264;
+        smvalues.br_h_ww      = 0.215;
+        smvalues.br_h_yy      = 2.28e-3;
+	smvalues.br_h_gg      = 0.0857;
+	smvalues.sm_width     = 4.07e-3;
+	smvalues.sm_width_err = 0.16e-3;
+
+	smvalues.err_h_bb     = 0.577*0.033;
+	smvalues.err_h_cc     = 0.0291*0.122;
+	smvalues.err_h_ss     = 0.015*0.05;  //Wert angenommen
+        smvalues.err_h_mm     = 2.2e-4*0.06;
+        smvalues.err_h_tautau = 0.0632*0.058;
+	smvalues.err_h_zz     = 0.0264*0.043;
+        smvalues.err_h_ww     = 0.215*0.043;
+	smvalues.err_h_yy     = 2.28e-3*0.05;
+	smvalues.err_h_gg     = 0.0857*0.1;
+
 	LHAPDF::initPDFSet( pdfset, LHAPDF::LHGRID, 0 );
 
 	/* Initialize run */
@@ -86,24 +110,28 @@ int main( int argc, char ** argv )
 	cout<<"Initialisiere Hadronische CS...";
 	init_hadronic_cs_( &smvalues );
 	cout<<"done"<<endl;
+	cout<<"Initialisiere Standardmodell-Breiten...";
+	initsmwidths_( &smvalues );
+	cout<<"done"<<endl;
 	
 	cout<<endl<<"Starte Scan..."<<endl<<endl;
 
-	cout<<setw(12)<<"fBB"<<setw(12)<<"VBF"<<setw(12)<<"VBF_ERR"<<setw(12)<<"VBF_CHI";
+	cout<<setw(12)<<"fww"<<setw(12)<<"VBF"<<setw(12)<<"VBF_ERR"<<setw(12)<<"VBF_CHI";
 	cout<<setw(12)<<"bg-hb"<<setw(12)<<"bg-hb-ERR"<<setw(12)<<"bg-hb-CHI";
         cout<<setw(12)<<"HW"<<setw(12)<<"HW_ERR"<<setw(12)<<"HW_CHI";
-	cout<<setw(12)<<"HZ"<<setw(12)<<"HZ_ERR"<<setw(12)<<"HZ_CHI"<<"Timecons.(s)";
+	cout<<setw(12)<<"HZ"<<setw(12)<<"HZ_ERR"<<setw(12)<<"HZ_CHI";
 	cout<<setw(12)<<"BR(H->ZZ*)"<<setw(12)<<"HZZ_ERR"<<setw(12)<<"HZZ_CHI";
 	cout<<setw(12)<<"BR(H->WW*)"<<setw(12)<<"HWW_ERR"<<setw(12)<<"HWW_CHI";
 	cout<<setw(12)<<"BR(H->GG*)"<<setw(12)<<"HGG_ERR"<<setw(12)<<"HGG_CHI";
-	cout<<setw(12)<<"BR(H->yy)*"<<setw(12)<<"Hyy_ERR"<<setw(12)<<"Hyy_CHI";
-	cout<<setw(12)<<"Width(H)"<<setw(12)<<"Err_W(H)"<<endl;
+	cout<<setw(12)<<"BR(H->yy)"<<setw(12)<<"Hyy_ERR"<<setw(12)<<"Hyy_CHI";
+	cout<<setw(12)<<"BR(H->bb)"<<setw(12)<<"Hbb_ERR"<<setw(12)<<"Hbb_CHI";
+	cout<<setw(12)<<"Width(H)"<<setw(12)<<"Err_W(H)"<<setw(12)<<"Time(s)"<<endl;
 
 	for( int i = 0; i <= 10; i++ )
 	{
 	  clock_t start, end;
 	  start = clock();
-	  effvalues.fboh = (1.0e-10)*pow( 10.0 ,(double)i );
+	  effvalues.fww = (1.0e-10)*pow( 10.0 ,(double)i );
 	  update_effinputs_( &smvalues, &effvalues );
 	  
 	  double vbfratio, hzratio, hwratio, Brhww, Brhzz, bgratio;
@@ -113,20 +141,22 @@ int main( int argc, char ** argv )
 	  double BR_Hww, BR_Hww_Err, BR_Hww_Chi;
 	  double BR_Hgg, BR_Hgg_Err, BR_Hgg_Chi;
 	  double BR_Hyy, BR_Hyy_Err, BR_Hyy_Chi;
+	  double BR_Hbb, BR_Hbb_Err, BR_Hbb_Chi;
 	  double TH, TH_Err, TH_Chi;
 
-	  cout<<scientific<<setprecision(4)<<setw(12)<<effvalues.fbb;
+	  cout<<scientific<<setprecision(4)<<setw(12)<<effvalues.fww;
 
 	  initeffwidths_( &smvalues, &effvalues );
 	  ratio_vbf_2flav_( &smvalues, &effvalues, &vbfratio, &err_vbfratio, &chi_vbfratio );
  	  ratio_pphz_( &smvalues, &effvalues, &hzratio, &err_hzratio, &chi_hzratio );
           ratio_pphw_( &smvalues, &effvalues, &hwratio, &err_hwratio, &chi_hwratio );
 	  ratio_bg_bh_(&smvalues, &effvalues, &bgratio, &err_bgratio, &chi_bgratio );
-	  br_hww_(     &BR_Hww,  &BR_Hww_Err,  &BR_Hww_Chi  );
-          br_hzz_(     &BR_Hzz,  &BR_Hzz_Err,  &BR_Hzz_Chi  );
-          br_hglgl_(   &BR_Hgg,  &BR_Hgg_Err,  &BR_Hgg_Chi  );
-          br_hgaga_(   &BR_Hyy,  &BR_Hyy_Err,  &BR_Hyy_Chi  );
-	  totalwidth_( &TH, &TH_Err, &TH_Chi );
+	  br_hww_(     &smvalues, &effvalues, &BR_Hww,  &BR_Hww_Err,  &BR_Hww_Chi  );
+          br_hzz_(     &smvalues, &effvalues, &BR_Hzz,  &BR_Hzz_Err,  &BR_Hzz_Chi  );
+          br_hglgl_(   &smvalues, &effvalues, &BR_Hgg,  &BR_Hgg_Err,  &BR_Hgg_Chi  );
+          br_hgaga_(   &smvalues, &effvalues, &BR_Hyy,  &BR_Hyy_Err,  &BR_Hyy_Chi  );
+	  br_hbb_(     &smvalues, &effvalues, &BR_Hbb,  &BR_Hbb_Err,  &BR_Hbb_Chi  );
+	  totalwidth_( &smvalues, &effvalues, &TH, &TH_Err, &TH_Chi );
 	 
 	  cout<<setprecision(4)<<scientific<<setw(12)<<vbfratio<<setw(12)<<err_vbfratio<<setw(12)<<chi_vbfratio;
 	  cout<<setprecision(4)<<scientific<<setw(12)<<bgratio<<setw(12)<<err_bgratio<<setw(12)<<chi_bgratio;
@@ -136,6 +166,7 @@ int main( int argc, char ** argv )
           cout<<setprecision(4)<<scientific<<setw(12)<<BR_Hww<<setw(12)<<BR_Hww_Err<<setw(12)<<BR_Hww_Chi;
           cout<<setprecision(4)<<scientific<<setw(12)<<BR_Hgg<<setw(12)<<BR_Hgg_Err<<setw(12)<<BR_Hgg_Chi;
           cout<<setprecision(4)<<scientific<<setw(12)<<BR_Hyy<<setw(12)<<BR_Hyy_Err<<setw(12)<<BR_Hyy_Chi;
+	  cout<<setprecision(4)<<scientific<<setw(12)<<BR_Hbb<<setw(12)<<BR_Hbb_Err<<setw(12)<<BR_Hbb_Chi;
 	  cout<<setprecision(4)<<scientific<<setw(12)<<TH<<setw(12)<<TH_Err;
 	  end = clock();
 	  cout<<setw(12)<<(end-start)/CLOCKS_PER_SEC<<endl;

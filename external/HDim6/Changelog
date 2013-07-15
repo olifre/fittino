@@ -18,9 +18,11 @@
 	:HadronicCS
 	- Functions return ratio to SM Values
 
-2013-0-12
+2013-07-12
 	:General
 	- included file testprog.cc to check calculations and benchmark time per point
 	- included all Branching Ratios in decay.cc (H->Zy not yet)
 	- included b+g->b+H in Hadronic Cross Sections
-	
+
+2013-07-15
+	- decay: introduced higher order corrections via K-factor formalism

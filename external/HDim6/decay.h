@@ -23,35 +23,46 @@
 
 /* global values to be initialized with effective widths and errors in order to calculate Branching Ratios and total width */
 
-static double T_hglgl_eff, T_hgaga_eff, T_helel_eff, T_hmumu_eff, T_htata_eff, T_hupup_eff, T_hdodo_eff, T_hchch_eff, T_hstst_eff, T_hbobo_eff,
+static double T_hglgl_eff, T_hgaga_eff, T_hmumu_eff, T_htata_eff, T_hchch_eff, T_hstst_eff, T_hbobo_eff,
               T_hzz_eff, T_hww_eff, T_eff;
 
-static double err_hglgl_eff, err_hgaga_eff, err_helel_eff, err_hmumu_eff, err_htata_eff, err_hupup_eff, err_hdodo_eff, err_hchch_eff, err_hstst_eff, 
+static double err_hglgl_eff, err_hgaga_eff, err_hmumu_eff, err_htata_eff, err_hchch_eff, err_hstst_eff, 
               err_hbobo_eff, err_hzz_eff, err_hww_eff, err_T_eff;
 
-static double chi_hglgl_eff, chi_hgaga_eff, chi_helel_eff, chi_hmumu_eff, chi_htata_eff, chi_hupup_eff, chi_hdodo_eff, chi_hchch_eff, chi_hstst_eff,
+static double chi_hglgl_eff, chi_hgaga_eff, chi_hmumu_eff, chi_htata_eff, chi_hchch_eff, chi_hstst_eff,
               chi_hbobo_eff, chi_hzz_eff, chi_hww_eff;
 
-/* Initialization of Higgs partial widths in effective model */
+static double T_hglgl_sm, T_hgaga_sm, T_hmumu_sm, T_htata_sm, T_hchch_sm, T_hstst_sm, T_hbobo_sm,
+              T_hzz_sm, T_hww_sm, T_sm;
 
-void initeffwidths_( sminputs * smpar, effinputs * effpar );
+static double err_hglgl_sm, err_hgaga_sm, err_hmumu_sm, err_htata_sm, err_hchch_sm, err_hstst_sm,
+              err_hbobo_sm, err_hzz_sm, err_hww_sm, err_T_sm;
+
+static double chi_hglgl_sm, chi_hgaga_sm, chi_hmumu_sm, chi_htata_sm, chi_hchch_sm, chi_hstst_sm,
+              chi_hbobo_sm, chi_hzz_sm, chi_hww_sm;
+
+
+/* Initialization of Higgs partial widths in effective and standard model */
+
+void initeffwidths_( sminputs * smpar, effinputs * effpar ); // initialize tree level effective widths
+void initsmwidths_(  sminputs * smpar ); //initialize tree level sm widths
 
 /* Returns the total width */
 
-void totalwidth_( double * tWidth, double * tError, double * tChi );
+void totalwidth_( sminputs * smpar, effinputs * effpar, double * tWidth, double * tError, double * tChi );
 
 /* Branching Ratios */
 
-void br_hbb_(     double * br, double * err, double * chi );
-void br_hcc_(     double * br, double * err, double * chi );
-void br_hss_(     double * br, double * err, double * chi );
-void br_htautau_( double * br, double * err, double * chi );
+void br_hbb_(     sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi );
+void br_hcc_(     sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi );
+void br_hss_(     sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi );
+void br_htautau_( sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi );
 
-void br_hww_(     double * br, double * err, double * chi );
-void br_hzz_(     double * br, double * err, double * chi );
+void br_hww_(     sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi );
+void br_hzz_(     sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi );
 
-void br_hglgl_(   double * br, double * err, double * chi );
-void br_hgaga_(   double * br, double * err, double * chi );
+void br_hglgl_(   sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi );
+void br_hgaga_(   sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi );
 
 /* only Top-Loops- and W-Loops in Photon decay included */
 
@@ -62,12 +73,12 @@ void hgaga_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pEr
 
 void htata_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
 void hmumu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
-void helel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
+// void helel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
 
 /* Hadronische Zweikoerperzerfaelle */
 
-void hupup_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
-void hdodo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
+// void hupup_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
+// void hdodo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
 void hchch_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
 void hstst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
 void hbobo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
