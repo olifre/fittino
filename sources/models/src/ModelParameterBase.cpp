@@ -17,9 +17,6 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <iomanip>
-
-#include "Messenger.h"
 #include "ModelParameterBase.h"
 
 Fittino::ModelParameterBase::ModelParameterBase( std::string name,
@@ -35,7 +32,11 @@ Fittino::ModelParameterBase::ModelParameterBase( std::string name,
           _lowerBound( lowerBound ),
           _upperBound( upperBound ),
           _fixed( fixed ),
-          ParameterBase( name, plotName, value, plotLowerBound, plotUpperBound ) {
+          ParameterBase( name,
+                         plotName,
+                         value,
+                         plotLowerBound,
+                         plotUpperBound ) {
 
 }
 
@@ -71,23 +72,5 @@ void Fittino::ModelParameterBase::SetValue( double value ) {
 
     if (!_fixed)
         _value = value;
-
-}
-
-void Fittino::ModelParameterBase::PrintStatus() const {
-
-    Messenger& messenger = Messenger::GetInstance();
-
-    messenger << Messenger::INFO
-              << "    "
-              << std::left
-              << std::setw( 20 )
-              << _name
-              << std::right
-              << std::setw( 9 )
-              << std::setprecision( 2 )
-              << std::scientific
-              << _value
-              << Messenger::Endl;
 
 }

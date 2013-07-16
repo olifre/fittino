@@ -44,6 +44,8 @@ namespace Fittino {
                              std::string plotName,
                              std::string unit,
                              std::string plotUnit,
+                             double      plotLowerBound,
+                             double      plotUpperBound,
                              double      measuredValue,
                              double      measuredError );
       /*!

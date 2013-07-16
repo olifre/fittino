@@ -18,10 +18,6 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <iomanip>
-
-//#include "ConfigurationException.h"
-#include "Messenger.h"
 #include "ParameterBase.h"
 
 Fittino::ParameterBase::ParameterBase( std::string name,
@@ -29,71 +25,17 @@ Fittino::ParameterBase::ParameterBase( std::string name,
 	                               double      value,
                                        double      plotLowerBound,
                                        double      plotUpperBound )
-        : _name( name ),
-          _plotName( plotName ),
-          _value( value ),
-          _plotLowerBound( plotLowerBound ),
-          _plotUpperBound( plotUpperBound ) {
+        : Quantity( name,
+                    plotName,
+                    value,
+                    plotLowerBound,
+                    plotUpperBound ) {
 
     //CheckConsistency();
 
 }
 
 Fittino::ParameterBase::~ParameterBase() {
-
-}
-
-double Fittino::ParameterBase::GetPlotLowerBound() const {
-
-    return _plotLowerBound;
-
-}
-
-double Fittino::ParameterBase::GetPlotUpperBound() const {
-
-    return _plotUpperBound;
-
-}
-
-double Fittino::ParameterBase::GetValue() const {
-
-    return _value;
-
-}
-
-void Fittino::ParameterBase::SetValue( double value ) {
-
-    _value = value;
-
-}
-
-std::string Fittino::ParameterBase::GetName() const {
-
-    return _name;
-
-}
-
-void Fittino::ParameterBase::PrintStatus() const {
-
-    Messenger& messenger = Messenger::GetInstance();
-
-    messenger << Messenger::INFO
-              << "    "
-              << std::left
-              << std::setw( 43 )
-              << _name
-              << std::right
-              << std::setw( 9 )
-              << std::setprecision( 2 )
-              << std::scientific
-              << _value
-              << Messenger::Endl;
-
-}
-
-std::string Fittino::ParameterBase::GetPlotName() const {
-
-    return _plotName;
 
 }
 

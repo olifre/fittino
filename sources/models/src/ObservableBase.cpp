@@ -27,12 +27,19 @@ Fittino::ObservableBase::ObservableBase( std::string name,
                                          std::string plotName,
                                          std::string unit,
                                          std::string plotUnit,
+                                         double      plotLowerBound,
+                                         double      plotUpperBound,
                                          double      measuredValue,
                                          double      measuredError )
         : _deviation( 0. ),
           _measuredError( measuredError ),
           _measuredValue( measuredValue ),
-          PredictionBase( name, plotName, unit, plotUnit ) {
+          PredictionBase( name,
+                          plotName,
+                          unit,
+                          plotUnit,
+                          plotLowerBound,
+                          plotUpperBound ) {
 
    _predictedValue = 0.;
 

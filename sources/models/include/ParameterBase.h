@@ -21,7 +21,7 @@
 #ifndef FITTINO_PARAMETERBASE_H
 #define FITTINO_PARAMETERBASE_H
 
-#include <string>
+#include "Quantity.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -32,64 +32,24 @@ namespace Fittino {
    *  \ingroup models
    *  \brief Base class for parameters.
    */
-  class ParameterBase {
+  class ParameterBase : public Quantity {
 
     public:
       /*!
        *  Takes as input the name and value of the parameter.
        */
-                          ParameterBase( std::string name,
-                                         std::string plotName,
-                                         double      value,
-                                         double      plotLowerBound,
-                                         double      plotUpperBound );
+      ParameterBase( std::string name,
+                     std::string plotName,
+                     double      value,
+                     double      plotLowerBound,
+                     double      plotUpperBound );
       /*!
        *  Standard destructor.
        */
-                          ~ParameterBase();
-      double              GetPlotLowerBound() const;
-      double              GetPlotUpperBound() const;
-      /*!
-       *  Returns the value of the parameter.
-       */
-      double              GetValue() const;
-      /*!
-       *  Sets the value of the parameter.
-       */
-      void                SetValue( double value );
-       /*!
-       *  Returns the name of the parameter.
-       */
-      std::string         GetName() const;
-
-    public:
-      /*!
-       *  Prints the parameter status on screen.
-       */
-      virtual void        PrintStatus() const;
-      /*!
-       *  Returns the name of the axis title.
-       */
-      virtual std::string GetPlotName() const;
-
-    protected:
-      double              _plotLowerBound;
-      double              _plotUpperBound;
-      /*!
-       *  Value of the parameter.
-       */
-      double              _value;
-      /*!
-       *  Name of the parameter.
-       */
-      std::string         _name;
-      /*!
-       *  Name of the axis in the plot.
-       */
-      std::string         _plotName;
+      ~ParameterBase();
 
     //private:
-    //  void                CheckConsistency() const;
+    //  void CheckConsistency() const;
 
   };
 

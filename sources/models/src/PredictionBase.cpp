@@ -22,31 +22,24 @@
 #include "Messenger.h"
 #include "PredictionBase.h"
 
-Fittino::PredictionBase::PredictionBase( std::string name, 
+Fittino::PredictionBase::PredictionBase( std::string name,
                                          std::string plotName,
                                          std::string unit,
-                                         std::string plotUnit )
+                                         std::string plotUnit,
+                                         double      plotLowerBound,
+                                         double      plotUpperBound )
          : _predictedValue( 0. ),
-           _name( name ),
-           _plotName( plotName ),
            _unit( unit ),
-           _plotUnit( plotUnit ){
+           _plotUnit( plotUnit ),
+           Quantity( name,
+                     plotName,
+                     0.,
+                     plotLowerBound,
+                     plotUpperBound ) {
 
 }
 
 Fittino::PredictionBase::~PredictionBase() {
-
-}
-
-std::string Fittino::PredictionBase::GetName() const {
-
-    return _name;
-
-}
-
-std::string Fittino::PredictionBase::GetPlotName() const {
-
-    return _plotName;
 
 }
 

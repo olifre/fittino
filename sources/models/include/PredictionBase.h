@@ -22,6 +22,8 @@
 
 #include <string>
 
+#include "Quantity.h"
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -31,22 +33,22 @@ namespace Fittino {
    *  \ingroup models
    *  \brief Base class for predictions.
    */
-  class PredictionBase {
+  class PredictionBase : public Quantity {
 
     public:
       /*!
        *  Standard constructor.
        */
                      PredictionBase( std::string name,
-                                     std::string plotName, 
+                                     std::string plotName,
                                      std::string unit,
-                                     std::string plotUnit );
+                                     std::string plotUnit,
+                                     double      plotLowerBound,
+                                     double      plotUpperBound );
       /*!
        *  Standard destructor.
        */
                      ~PredictionBase();
-      std::string    GetName() const;
-      std::string    GetPlotName() const;
       std::string    GetUnit() const;
       std::string    GetPlotUnit() const;
 
@@ -57,8 +59,6 @@ namespace Fittino {
 
     protected:
       double         _predictedValue;
-      std::string    _name;
-      std::string    _plotName;
       std::string    _unit;
       std::string    _plotUnit;
 

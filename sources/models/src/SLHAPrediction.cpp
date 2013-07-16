@@ -25,6 +25,8 @@ Fittino::SLHAPrediction::SLHAPrediction( std::string              name,
                                          std::string              plotName,
                                          std::string              unit,
                                          std::string              plotUnit,
+                                         double                   plotLowerBound,
+                                         double                   plotUpperBound,
                                          SLHAModelCalculatorBase* slhaModelCalculator,
                                          std::string              blockName,
                                          std::string              id,
@@ -33,7 +35,12 @@ Fittino::SLHAPrediction::SLHAPrediction( std::string              name,
           _firstId( id ),
           _blockName( blockName ),
           _slhaModelCalculator( slhaModelCalculator ),
-          PredictionBase( name, plotName, unit, plotUnit ) {
+          PredictionBase( name,
+                          plotName,
+                          unit,
+                          plotUnit,
+                          plotLowerBound,
+                          plotUpperBound ) {
 
     _predictedValue = 0.;
     _secondId = "";
@@ -44,6 +51,8 @@ Fittino::SLHAPrediction::SLHAPrediction( std::string              name,
                                          std::string              plotName,
                                          std::string              unit,
                                          std::string              plotUnit,
+                                         double                   plotLowerBound,
+                                         double                   plotUpperBound,
                                          SLHAModelCalculatorBase* slhaModelCalculator,
                                          std::string              blockName,
                                          std::string              firstId,
@@ -54,7 +63,12 @@ Fittino::SLHAPrediction::SLHAPrediction( std::string              name,
           _secondId( secondId ),
           _blockName( blockName ),
           _slhaModelCalculator( slhaModelCalculator ),
-          PredictionBase( name, plotName, unit, plotUnit ) {
+          PredictionBase( name,
+                          plotName,
+                          unit,
+                          plotUnit,
+                          plotLowerBound,
+                          plotUpperBound ) {
 
     _predictedValue = 0.;
 

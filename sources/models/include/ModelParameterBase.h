@@ -68,12 +68,6 @@ namespace Fittino {
        */
       void         SetValue( double value );
 
-    public:
-      /*!
-       *  Prints the parameter status on screen.
-       */
-      virtual void PrintStatus() const;
-
     protected:
       /*!
        *  If true, the parameter value is not updated by the analysis tool. Per default it is set\n
