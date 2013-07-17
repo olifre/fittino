@@ -42,14 +42,12 @@ void ratio_bb_h_( sminputs * smpar, effinputs * effpar, double * ratio, double *
 
 void ratio_ggh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err, double * chisq ) 
 {
-  /* Die Parameter stammen aus der effektiven Madgraph-Theorie                  */
-  /* Siehe auch cp3.irmp.ucl.ac.be/projects/madgraph/wiki/Models/HiggsEffective */
-  /* Aufgerufen am 12.06.2013                                                   */
-  double tau     = pow(smpar->mh/2./smpar->mto,2.);
-  double gh      = smpar->alphas/3./M_PI/smpar->vev*(1.+7./30.*tau*2./21.*pow(tau,2.)+26./525.*pow(tau,3.));
-  double ghggSM  = -1/4./sqrt(2.)*gh;
-  double ghggESM = -smpar->alphas/8./M_PI*effpar->fgg*smpar->vev;
-  *ratio         = pow((ghggSM+ghggESM)/ghggSM,2.0);
+  double mh = smpar->mh;
+  double mt = smpar->mto;
+  double z = pow( mt/mh, 2. );
+  double I = (2.*z - 2*z*(4.*z - 1)*pow(asin(1/2./sqrt(z)), 2.));
+  double factor = pow(1+effpar->fgg*pow(smpar->vev,2)/2./pow(smpar->mto,2)/I, 2);
+  *ratio         = factor;
   *err           = 0;
   *chisq         = 1;
 };

@@ -30,3 +30,10 @@
 	- removed insignificant decay channels
 	:inputs
 	- sminputs now includes SM Higgs Branching ratios and width (Source LHC Higgs CS Working Group)
+
+2013-07-17
+	:decay
+	- Variable names now consistent
+
+	:All
+	- SM Loops in Higgs-Digluon-Couling approximated by top-loop, removed effective approach

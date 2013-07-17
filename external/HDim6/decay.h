@@ -66,48 +66,48 @@ void br_hgaga_(   sminputs * smpar, effinputs * effpar, double * br, double * er
 
 /* only Top-Loops- and W-Loops in Photon decay included */
 
-void hglgl_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
-void hgaga_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
+void hglgl_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
+void hgaga_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
 
 /* Leptonische Zweikoerperzerfaelle */
 
-void htata_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
-void hmumu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
-// void helel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
+void htata_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
+void hmumu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
+// void helel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
 
 /* Hadronische Zweikoerperzerfaelle */
 
-// void hupup_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
-// void hdodo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
-void hchch_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
-void hstst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
-void hbobo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError );
+// void hupup_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
+// void hdodo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
+void hchch_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
+void hstst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
+void hbobo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
 
 /* Dreikoerperzerfaelle ueber schwache Eichbosonen */
 /* Um Vierkoerperzerfaelle zu erhalten, muss mit den */
 /* entsprechenden Branching Rations multipliziert werden */
 
-void hztata_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi );
-void hzmumu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi );
-void hzelel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi );
-void hznunu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi );
+void hztata_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
+void hzmumu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
+void hzelel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
+void hznunu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
 
-void hzdodo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi );
-void hzupup_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi );
-void hzstst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi );
-void hzchch_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi );
-void hzbobo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi );
+void hzdodo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
+void hzupup_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
+void hzstst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
+void hzchch_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
+void hzbobo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
 
-void hwtanta_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi );
-void hwmunmu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi );
-void hwelnel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi );
+void hwtanta_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
+void hwmunmu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
+void hwelnel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
 
-void hwupdo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi );
-void hwupst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi );
-void hwupbo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi );
-void hwchdo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi );
-void hwchst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi );
-void hwchbo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi );
+void hwupdo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
+void hwupst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
+void hwupbo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
+void hwchdo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
+void hwchst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
+void hwchbo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
 
 /* Interne Integration der differentiellen Zerfallsbreiten */
 

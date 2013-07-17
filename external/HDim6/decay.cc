@@ -161,35 +161,34 @@ void br_hzz_( sminputs * smpar, effinputs * effpar, double * br, double * err, d
 /* Die verwendeten Formeln sind dem PDG Review (rpp2012-rev-cross-section-formulae.pdf) entnommen, aufgerufen am 23.05.2012    */
 /* Leptonische Zweikoerperzerfaelle */
 
-void hglgl_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hglgl_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
-  double mh = SMpar->mh;
-  double sw = SMpar->sw;
-  double mw = SMpar->mz * sqrt( 1 - pow( sw, 2. ) );
-  double mt = SMpar->mto;
-  
-  double factor = SMpar->alphae * pow( SMpar->alphas, 2. ) / 72. / pow(M_PI,2) / pow( mw*sw, 2. );
+  double mh = smpar->mh;
+  double mt = smpar->mto;
+     
   double z = pow( mt/mh, 2. );
-  double I = 3.*(2.*z - 2*z*(4.*z - 1)*pow(asin(1/2./sqrt(z)), 2.));
-  double gHgg = sqrt(factor)*I + Effpar->fgg;
+  double I = (2.*z - 2*z*(4.*z - 1)*pow(asin(1/2./sqrt(z)), 2.));
+  double smvalue = pow(smpar->mh,3)*pow(smpar->alphas,2)/8./pow(smpar->vev,2)/pow(M_PI,2)*pow(I,2);
+
+  double factor = pow(1+effpar->fgg*pow(smpar->vev,2)/2./pow(smpar->mto,2)/I, 2);
   
-  *pWidth = 2./M_PI*pow(mh,3.)*pow(gHgg, 2.);
+  *pWidth = smvalue*factor;
   *pError = 0;
 };
 
-void hgaga_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hgaga_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
-  double mh = SMpar->mh;
-  double sw = SMpar->sw;
-  double mw = SMpar->mz * sqrt( 1 - pow( sw, 2. ) );
-  double factor = pow( SMpar->alphae, 3. )/16./pow(M_PI,2)/pow(mw*sw,2.);
+  double mh = smpar->mh;
+  double sw = smpar->sw;
+  double mw = smpar->mz * sqrt( 1 - pow( sw, 2. ) );
+  double factor = pow( smpar->alphae, 3. )/16./pow(M_PI,2)/pow(mw*sw,2.);
   /* Neglecting all contributions from light particles, only particles in the loop are W-Boson and t-Quark */
-  double mt = SMpar->mto;
+  double mt = smpar->mto;
   double zt = pow( mt/mh, 2. );
   double zw = pow( mw/mh, 2. );
   
-  double v = SMpar->vev;
-  double gyy = -M_PI*SMpar->alphae*v*(Effpar->fww + Effpar->fbb);
+  double v = smpar->vev;
+  double gyy = -M_PI*smpar->alphae*v*(effpar->fww + effpar->fbb);
   
   double It = 3.*(2.*zt + 2.*zt*(1.-4.*zt)*pow(asin(1/2./sqrt(zt)), 2.));
   double Iw = 3.*zw*(1.-2.*zw)*(-2.)*pow(asin(1/2./sqrt(zw)), 2.) - 3.*zw - 0.5;
@@ -198,93 +197,93 @@ void hgaga_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pEr
   *pError = 0;
 };
 
-void htata_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void htata_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
-  double mf  = SMpar->mta;
-  double mh  = SMpar->mh;
-  double v   = SMpar->vev;
-  double ffH = Effpar->ftah;
+  double mf  = smpar->mta;
+  double mh  = smpar->mh;
+  double v   = smpar->vev;
+  double ffH = effpar->ftah;
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2.)/mf*ffH,2)*pow(1.-pow(2.*mf/mh,2),1.5);
   *pError = 0;
 };
 
-void hmumu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hmumu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
-  double mf = SMpar->mmu;
-  double mh = SMpar->mh;
-  double v   = SMpar->vev;
-  double ffH = Effpar->fmuh;
+  double mf = smpar->mmu;
+  double mh = smpar->mh;
+  double v   = smpar->vev;
+  double ffH = effpar->fmuh;
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*pow(1-pow(2.*mf/mh,2),1.5);  
   *pError = 0;
 };
 
-void helel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void helel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
-  double mf = SMpar->mel;
-  double mh = SMpar->mh;
-  double v   = SMpar->vev;
-  double ffH = Effpar->felh;
+  double mf = smpar->mel;
+  double mh = smpar->mh;
+  double v   = smpar->vev;
+  double ffH = effpar->felh;
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*pow(1-pow(2.*mf/mh,2),1.5);
   *pError = 0;
 };
 
 /* Hadronische Zweikoerperzerfaelle */
 
-void hupup_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hupup_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
-  double mf = SMpar->mup;
-  double mh = SMpar->mh;
-  double v   = SMpar->vev;
-  double ffH = Effpar->fuph;
+  double mf = smpar->mup;
+  double mh = smpar->mh;
+  double v   = smpar->vev;
+  double ffH = effpar->fuph;
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
   *pError = 0;
 };
 
-void hdodo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hdodo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
-  double mf = SMpar->mdo;
-  double mh = SMpar->mh;
-  double v   = SMpar->vev;
-  double ffH = Effpar->fdoh;
+  double mf = smpar->mdo;
+  double mh = smpar->mh;
+  double v   = smpar->vev;
+  double ffH = effpar->fdoh;
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
   *pError = 0;
 };
 
-void hchch_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hchch_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
-  double mf = SMpar->mch;
-  double mh = SMpar->mh;
-  double v   = SMpar->vev;
-  double ffH = Effpar->fchh;
+  double mf = smpar->mch;
+  double mh = smpar->mh;
+  double v   = smpar->vev;
+  double ffH = effpar->fchh;
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
   *pError = 0;
 };
 
-void hstst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hstst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
-  double mf = SMpar->mst;
-  double mh = SMpar->mh;
-  double v   = SMpar->vev;
-  double ffH = Effpar->fsth;
+  double mf = smpar->mst;
+  double mh = smpar->mh;
+  double v   = smpar->vev;
+  double ffH = effpar->fsth;
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
   *pError = 0;
 };
 
-void hbobo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError )
+void hbobo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
-  double mf = SMpar->mbo;
-  double mh = SMpar->mh;
-  double v   = SMpar->vev;
-  double ffH = Effpar->fboh;
+  double mf = smpar->mbo;
+  double mh = smpar->mh;
+  double v   = smpar->vev;
+  double ffH = effpar->fboh;
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
   *pError = 0;
 };
 
-void hznunu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
+void hznunu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {  
   size_t dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, 0, 0, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0, 
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
+  double par[] = { smpar->mh, smpar->mz, 0, 0, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0, 
+                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -315,11 +314,11 @@ void hznunu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hztata_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
+void hztata_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {  
   size_t dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, SMpar->mta, SMpar->mta, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mta, smpar->mta, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
+                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -350,11 +349,11 @@ void hztata_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hzmumu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
+void hzmumu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, SMpar->mmu, SMpar->mmu, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mmu, smpar->mmu, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
+                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -385,11 +384,11 @@ void hzmumu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hzelel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
+void hzelel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, SMpar->mel, SMpar->mel, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy }; 
+  double par[] = { smpar->mh, smpar->mz, smpar->mel, smpar->mel, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
+                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy }; 
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -420,11 +419,11 @@ void hzelel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hzdodo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
+void hzdodo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, SMpar->mdo, SMpar->mdo, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mdo, smpar->mdo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
+                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -454,11 +453,11 @@ void hzdodo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hzupup_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
+void hzupup_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, SMpar->mup, SMpar->mup, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mup, smpar->mup, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
+                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -489,11 +488,11 @@ void hzupup_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hzstst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
+void hzstst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, SMpar->mst, SMpar->mst, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mst, smpar->mst, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
+                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -523,11 +522,11 @@ void hzstst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hzchch_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
+void hzchch_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {  
   size_t dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, SMpar->mch, SMpar->mch, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mch, smpar->mch, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
+                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -558,11 +557,11 @@ void hzchch_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hzbobo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
+void hzbobo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, SMpar->mbo, SMpar->mbo, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mbo, smpar->mbo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
+                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -593,11 +592,11 @@ void hzbobo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hwtanta_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
+void hwtanta_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, 0, SMpar->mta, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
+  double par[] = { smpar->mh, smpar->mz, 0, smpar->mta, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
+                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -628,11 +627,11 @@ void hwtanta_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * p
   *pError = error;
 };
 
-void hwmunmu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
+void hwmunmu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, 0, SMpar->mmu, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
+  double par[] = { smpar->mh, smpar->mz, 0, smpar->mmu, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
+                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -663,11 +662,11 @@ void hwmunmu_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * p
   *pError = error;
 };
 
-void hwelnel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
+void hwelnel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, 0, SMpar->mel, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, 0,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
+  double par[] = { smpar->mh, smpar->mz, 0, smpar->mel, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
+                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -698,11 +697,11 @@ void hwelnel_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * p
   *pError = error;
 };
 
-void hwupdo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
+void hwupdo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, SMpar->mup, SMpar->mdo, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, SMpar->vud,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mup, smpar->mdo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vud,
+                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -733,11 +732,11 @@ void hwupdo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hwupst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
+void hwupst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, SMpar->mup, SMpar->mst, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, SMpar->vus,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mup, smpar->mst, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vus,
+                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -768,11 +767,11 @@ void hwupst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hwupbo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
+void hwupbo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, SMpar->mup, SMpar->mbo, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, SMpar->vub, 
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mup, smpar->mbo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vub, 
+                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -803,11 +802,11 @@ void hwupbo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hwchdo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
+void hwchdo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, SMpar->mch, SMpar->mdo, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, SMpar->vcd,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mch, smpar->mdo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vcd,
+                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -838,11 +837,11 @@ void hwchdo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hwchst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
+void hwchst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, SMpar->mch, SMpar->mst, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, SMpar->vcs,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mch, smpar->mst, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vcs,
+                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -873,11 +872,11 @@ void hwchst_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pE
   *pError = error;
 };
 
-void hwchbo_( sminputs * SMpar, effinputs * Effpar, double * pWidth, double * pError, double * chi )
+void hwchbo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double par[] = { SMpar->mh, SMpar->mz, SMpar->mch, SMpar->mbo, sqrt( SMpar->alphae*4*M_PI ), SMpar->sw, SMpar->vcb,
-                   Effpar->g1hzz, Effpar->g2hzz, Effpar->g3hzz, Effpar->g1hww, Effpar->g2hww, Effpar->g3hww, Effpar->g1hzy, Effpar->g2hzy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mch, smpar->mbo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vcb,
+                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
