@@ -113,7 +113,6 @@ int main( int argc, char ** argv )
 	cout<<"Initialisiere Standardmodell-Breiten...";
 	initsmwidths_( &smvalues );
 	cout<<"done"<<endl;
-	
 	cout<<endl<<"Starte Scan..."<<endl<<endl;
 
 	cout<<setw(12)<<"fww"<<setw(12)<<"VBF"<<setw(12)<<"VBF_ERR"<<setw(12)<<"VBF_CHI";
@@ -145,7 +144,6 @@ int main( int argc, char ** argv )
 	  double TH, TH_Err, TH_Chi;
 
 	  cout<<scientific<<setprecision(4)<<setw(12)<<effvalues.fww;
-
 	  initeffwidths_( &smvalues, &effvalues );
 	  ratio_vbf_2flav_( &smvalues, &effvalues, &vbfratio, &err_vbfratio, &chi_vbfratio );
  	  ratio_pphz_( &smvalues, &effvalues, &hzratio, &err_hzratio, &chi_hzratio );
@@ -157,7 +155,6 @@ int main( int argc, char ** argv )
           br_hgaga_(   &smvalues, &effvalues, &BR_Hyy,  &BR_Hyy_Err,  &BR_Hyy_Chi  );
 	  br_hbb_(     &smvalues, &effvalues, &BR_Hbb,  &BR_Hbb_Err,  &BR_Hbb_Chi  );
 	  totalwidth_( &smvalues, &effvalues, &TH, &TH_Err, &TH_Chi );
-	 
 	  cout<<setprecision(4)<<scientific<<setw(12)<<vbfratio<<setw(12)<<err_vbfratio<<setw(12)<<chi_vbfratio;
 	  cout<<setprecision(4)<<scientific<<setw(12)<<bgratio<<setw(12)<<err_bgratio<<setw(12)<<chi_bgratio;
 	  cout<<setprecision(4)<<scientific<<setw(12)<<hwratio<<setw(12)<<err_hwratio<<setw(12)<<chi_hwratio;

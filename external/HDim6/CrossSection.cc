@@ -2,44 +2,44 @@
 
 /* Initialisierung zur Berechnung der Standardmodell-Wirkungsquerschnitte */
 
-void init_(         sminputs * SMparam )
+void init_(         sminputs * smpar )
 {
   double err;
   effinputs temp;
   temp.fbb = 0; temp.fww = 0; temp.fgg = 0; temp.fb = 0; temp.fw = 0; 
   temp.fuph = 0; temp.fdoh = 0; temp.fchh = 0; temp.fsth = 0; temp.fboh = 0; temp.ftoh = 0; temp.felh = 0; temp.fmuh = 0; temp.ftah = 0;
   temp.ghyy = 0; temp.g1hzz = 0; temp.g2hzz = 0; temp.g3hzz = 0; temp.g1hww = 0; temp.g2hww = 0; temp.g3hww = 0; temp.g1hzy = 0; temp.g2hzy = 0;
-  uu_zh_( SMparam, &temp, &uu_zh_sm, &err );
-  dd_zh_( SMparam, &temp, &dd_zh_sm, &err ); 
-  cc_zh_( SMparam, &temp, &cc_zh_sm, &err );
-  ss_zh_( SMparam, &temp, &ss_zh_sm, &err );
-  bb_zh_( SMparam, &temp, &bb_zh_sm, &err );
+  uu_zh_( smpar, &temp, &uu_zh_sm, &err );
+  dd_zh_( smpar, &temp, &dd_zh_sm, &err ); 
+  cc_zh_( smpar, &temp, &cc_zh_sm, &err );
+  ss_zh_( smpar, &temp, &ss_zh_sm, &err );
+  bb_zh_( smpar, &temp, &bb_zh_sm, &err );
   
-  ud_wh_( SMparam, &temp, &ud_wh_sm, &err );
-  us_wh_( SMparam, &temp, &us_wh_sm, &err );
-  ub_wh_( SMparam, &temp, &ub_wh_sm, &err );
-  cd_wh_( SMparam, &temp, &cd_wh_sm, &err );
-  cs_wh_( SMparam, &temp, &cs_wh_sm, &err );
-  cb_wh_( SMparam, &temp, &cb_wh_sm, &err );
+  ud_wh_( smpar, &temp, &ud_wh_sm, &err );
+  us_wh_( smpar, &temp, &us_wh_sm, &err );
+  ub_wh_( smpar, &temp, &ub_wh_sm, &err );
+  cd_wh_( smpar, &temp, &cd_wh_sm, &err );
+  cs_wh_( smpar, &temp, &cs_wh_sm, &err );
+  cb_wh_( smpar, &temp, &cb_wh_sm, &err );
 };
 
 /* Berechnung der Ratios */
 
-void ratio_tth_(   sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err ) 
+void ratio_tth_(   sminputs * smpar, effinputs * effpar, double * ratio, double * err ) 
 {
   /* Ratio given through modified Yukawa-Coupling! */
-  *ratio = pow(1.0 - pow(SMparam->vev,3)/sqrt(2)/SMparam->mto*ESMparam->ftoh, 2);
+  *ratio = pow(1.0 - pow(smpar->vev,3)/sqrt(2)/smpar->mto*effpar->ftoh, 2);
   *err   = 0;
 };
 
-void ratio_bb_h_(   sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err ) 
+void ratio_bb_h_(   sminputs * smpar, effinputs * effpar, double * ratio, double * err ) 
 {
   /* Ratio given through modified Yukawa-Coupling! */
-  *ratio = pow(1.0 - pow(SMparam->vev,3)/sqrt(2)/SMparam->mbo*ESMparam->fboh, 2);
+  *ratio = pow(1.0 - pow(smpar->vev,3)/sqrt(2)/smpar->mbo*effpar->fboh, 2);
   *err   = 0;
 };
 
-void ratio_ggh_(   sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err ) 
+void ratio_ggh_(   sminputs * smpar, effinputs * effpar, double * ratio, double * err ) 
 {
   double mh = smpar->mh;
   double mt = smpar->mto;
@@ -50,100 +50,100 @@ void ratio_ggh_(   sminputs * SMparam, effinputs * ESMparam, double * ratio, dou
   *err           = 0;
 };
 
-void ratio_uu_zh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err )
+void ratio_uu_zh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err )
 {
   double cs, _err;
-  uu_zh_( SMparam, ESMparam, &cs, &_err );
+  uu_zh_( smpar, effpar, &cs, &_err );
   *ratio = cs/uu_zh_sm;
   *err   = _err/cs;
 };
 
-void ratio_dd_zh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err )
+void ratio_dd_zh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err )
 {
   double cs, _err;
-  dd_zh_( SMparam, ESMparam, &cs, &_err );
+  dd_zh_( smpar, effpar, &cs, &_err );
   *ratio = cs/dd_zh_sm;
   *err   = _err/cs;
 };
 
-void ratio_cc_zh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err )
+void ratio_cc_zh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err )
 {
   double cs, _err;
-  cc_zh_( SMparam, ESMparam, &cs, &_err );
+  cc_zh_( smpar, effpar, &cs, &_err );
   *ratio = cs/cc_zh_sm;
   *err   = _err/cs;
 };
 
-void ratio_ss_zh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err )
+void ratio_ss_zh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err )
 {
   double cs, _err;
-  ss_zh_( SMparam, ESMparam, &cs, &_err );
+  ss_zh_( smpar, effpar, &cs, &_err );
   *ratio = cs/ss_zh_sm;
   *err   = _err/cs;
 };
 
-void ratio_bb_zh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err )
+void ratio_bb_zh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err )
 {
   double cs, _err;
-  bb_zh_( SMparam, ESMparam, &cs, &_err );
+  bb_zh_( smpar, effpar, &cs, &_err );
   *ratio = cs/bb_zh_sm;
   *err   = _err/cs;
 };
 
-void ratio_ud_wh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err )
+void ratio_ud_wh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err )
 {
   double cs, _err;
-  ud_wh_( SMparam, ESMparam, &cs, &_err );
+  ud_wh_( smpar, effpar, &cs, &_err );
   *ratio = cs/ud_wh_sm;
   *err   = _err/cs;
 };
 
-void ratio_us_wh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err )
+void ratio_us_wh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err )
 {
   double cs, _err;
-  us_wh_( SMparam, ESMparam, &cs, &_err );
+  us_wh_( smpar, effpar, &cs, &_err );
   *ratio = cs/us_wh_sm;
   *err   = _err/cs;
 };
 
-void ratio_ub_wh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err )
+void ratio_ub_wh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err )
 {
   double cs, _err;
-  ub_wh_( SMparam, ESMparam, &cs, &_err );
+  ub_wh_( smpar, effpar, &cs, &_err );
   *ratio = cs/ub_wh_sm;
   *err   = _err/cs;
 };
 
-void ratio_cd_wh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err )
+void ratio_cd_wh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err )
 {
   double cs, _err;
-  cd_wh_( SMparam, ESMparam, &cs, &_err );
+  cd_wh_( smpar, effpar, &cs, &_err );
   *ratio = cs/cd_wh_sm;
   *err   = _err/cs;
 };
 
-void ratio_cs_wh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err )
+void ratio_cs_wh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err )
 {
   double cs, _err;
-  cs_wh_( SMparam, ESMparam, &cs, &_err );
+  cs_wh_( smpar, effpar, &cs, &_err );
   *ratio = cs/cs_wh_sm;
   *err   = _err/cs;
 };
 
-void ratio_cb_wh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err )
+void ratio_cb_wh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err )
 {
   double cs, _err;
-  cb_wh_( SMparam, ESMparam, &cs, &_err );
+  cb_wh_( smpar, effpar, &cs, &_err );
   *ratio = cs/cb_wh_sm;
   *err   = _err/cs;
 };
 
 // H-Radiation from Z-Boson
-void uu_zh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err ) {
-  int dim = 1;
+void uu_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
+  size_t dim = 1;
  
-  double par[] = { SMparam->mh, SMparam->mz, SMparam->mup, sqrt( SMparam->alphae*4*M_PI ), SMparam->sw, SMparam->s, 0, 0, ESMparam->g1hww, 
-                   ESMparam->g2hww, ESMparam->g3hww, ESMparam->g1hzz, ESMparam->g2hzz, ESMparam->g3hzz, ESMparam->g1hzy, ESMparam->g2hzy, ESMparam->ghyy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mup, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, 0, 0, effpar->g1hww, 
+                   effpar->g2hww, effpar->g3hww, effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hzy, effpar->g2hzy, effpar->ghyy };
   double result, error;
   
   double xl[] = { 0 };
@@ -166,11 +166,11 @@ void uu_zh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * e
   *cSec = result;
   *err  = error;
 };
-void cc_zh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err ) {
-  int dim = 1;
+void cc_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
+  size_t dim = 1;
  
-  double par[] = { SMparam->mh, SMparam->mz, SMparam->mch, sqrt( SMparam->alphae*4*M_PI ), SMparam->sw, SMparam->s, 0, 0, ESMparam->g1hww, 
-                   ESMparam->g2hww, ESMparam->g3hww, ESMparam->g1hzz, ESMparam->g2hzz, ESMparam->g3hzz, ESMparam->g1hzy, ESMparam->g2hzy, ESMparam->ghyy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mch, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, 0, 0, effpar->g1hww, 
+                   effpar->g2hww, effpar->g3hww, effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hzy, effpar->g2hzy, effpar->ghyy };
   double result, error;
   
   double xl[] = { 0 };
@@ -193,11 +193,11 @@ void cc_zh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * e
   *cSec = result;
   *err  = error;
 };
-void dd_zh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err ) {
-  int dim = 1;
+void dd_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
+  size_t dim = 1;
  
-  double par[] = { SMparam->mh, SMparam->mz, SMparam->mdo, sqrt( SMparam->alphae*4*M_PI ), SMparam->sw, SMparam->s, 0, 0, ESMparam->g1hww, 
-                   ESMparam->g2hww, ESMparam->g3hww, ESMparam->g1hzz, ESMparam->g2hzz, ESMparam->g3hzz, ESMparam->g1hzy, ESMparam->g2hzy, ESMparam->ghyy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mdo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, 0, 0, effpar->g1hww, 
+                   effpar->g2hww, effpar->g3hww, effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hzy, effpar->g2hzy, effpar->ghyy };
   double result, error;
   
   double xl[] = { 0 };
@@ -220,11 +220,11 @@ void dd_zh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * e
   *cSec = result;
   *err  = error;
 };
-void ss_zh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err ) {
-  int dim = 1;
+void ss_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
+  size_t dim = 1;
  
-  double par[] = { SMparam->mh, SMparam->mz, SMparam->mst, sqrt( SMparam->alphae*4*M_PI ), SMparam->sw, SMparam->s, 0, 0, ESMparam->g1hww, 
-                   ESMparam->g2hww, ESMparam->g3hww, ESMparam->g1hzz, ESMparam->g2hzz, ESMparam->g3hzz, ESMparam->g1hzy, ESMparam->g2hzy, ESMparam->ghyy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mst, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, 0, 0, effpar->g1hww, 
+                   effpar->g2hww, effpar->g3hww, effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hzy, effpar->g2hzy, effpar->ghyy };
   double result, error;
   
   double xl[] = { 0 };
@@ -247,11 +247,11 @@ void ss_zh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * e
   *cSec = result;
   *err  = error;
 };
-void bb_zh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err ) {
-  int dim = 1;
+void bb_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
+  size_t dim = 1;
  
-  double par[] = { SMparam->mh, SMparam->mz, SMparam->mbo, sqrt( SMparam->alphae*4*M_PI ), SMparam->sw, SMparam->s, 0, 0, ESMparam->g1hww, 
-                   ESMparam->g2hww, ESMparam->g3hww, ESMparam->g1hzz, ESMparam->g2hzz, ESMparam->g3hzz, ESMparam->g1hzy, ESMparam->g2hzy, ESMparam->ghyy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mbo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, 0, 0, effpar->g1hww, 
+                   effpar->g2hww, effpar->g3hww, effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hzy, effpar->g2hzy, effpar->ghyy };
   double result, error;
   
   double xl[] = { 0 };
@@ -276,11 +276,11 @@ void bb_zh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * e
 };
 
 // H-Radiation from W-Boson
-void ud_wh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err ) {
-  int dim = 1;
+void ud_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
+  size_t dim = 1;
  
-  double par[] = { SMparam->mh, SMparam->mz, SMparam->mdo, SMparam->mup, sqrt( SMparam->alphae*4*M_PI ), SMparam->sw, SMparam->s, SMparam->vud, ESMparam->g1hww, 
-                   ESMparam->g2hww, ESMparam->g3hww, ESMparam->g1hzz, ESMparam->g2hzz, ESMparam->g3hzz, ESMparam->g1hzy, ESMparam->g2hzy, ESMparam->ghyy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mdo, smpar->mup, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, smpar->vud, effpar->g1hww, 
+                   effpar->g2hww, effpar->g3hww, effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hzy, effpar->g2hzy, effpar->ghyy };
   double result, error;
   
   double xl[] = { 0 };
@@ -303,11 +303,11 @@ void ud_wh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * e
   *cSec = result;
   *err  = error;
 };
-void us_wh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err ) {
-  int dim = 1;
+void us_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
+  size_t dim = 1;
  
-  double par[] = { SMparam->mh, SMparam->mz, SMparam->mst, SMparam->mup, sqrt( SMparam->alphae*4*M_PI ), SMparam->sw, SMparam->s, SMparam->vus, ESMparam->g1hww, 
-                   ESMparam->g2hww, ESMparam->g3hww, ESMparam->g1hzz, ESMparam->g2hzz, ESMparam->g3hzz, ESMparam->g1hzy, ESMparam->g2hzy, ESMparam->ghyy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mst, smpar->mup, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, smpar->vus, effpar->g1hww, 
+                   effpar->g2hww, effpar->g3hww, effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hzy, effpar->g2hzy, effpar->ghyy };
   double result, error;
   
   double xl[] = { 0 };
@@ -330,11 +330,11 @@ void us_wh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * e
   *cSec = result;
   *err  = error;
 };
-void ub_wh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err ) {
-  int dim = 1;
+void ub_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
+  size_t dim = 1;
  
-  double par[] = { SMparam->mh, SMparam->mz, SMparam->mbo, SMparam->mup, sqrt( SMparam->alphae*4*M_PI ), SMparam->sw, SMparam->s, SMparam->vub, ESMparam->g1hww, 
-                   ESMparam->g2hww, ESMparam->g3hww, ESMparam->g1hzz, ESMparam->g2hzz, ESMparam->g3hzz, ESMparam->g1hzy, ESMparam->g2hzy, ESMparam->ghyy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mbo, smpar->mup, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, smpar->vub, effpar->g1hww, 
+                   effpar->g2hww, effpar->g3hww, effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hzy, effpar->g2hzy, effpar->ghyy };
   double result, error;
   
   double xl[] = { 0 };
@@ -357,11 +357,11 @@ void ub_wh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * e
   *cSec = result;
   *err  = error;
 };
-void cd_wh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err ) {
-  int dim = 1;
+void cd_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
+  size_t dim = 1;
  
-  double par[] = { SMparam->mh, SMparam->mz, SMparam->mdo, SMparam->mch, sqrt( SMparam->alphae*4*M_PI ), SMparam->sw, SMparam->s, SMparam->vcd, ESMparam->g1hww, 
-                   ESMparam->g2hww, ESMparam->g3hww, ESMparam->g1hzz, ESMparam->g2hzz, ESMparam->g3hzz, ESMparam->g1hzy, ESMparam->g2hzy, ESMparam->ghyy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mdo, smpar->mch, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, smpar->vcd, effpar->g1hww, 
+                   effpar->g2hww, effpar->g3hww, effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hzy, effpar->g2hzy, effpar->ghyy };
   double result, error;
   
   double xl[] = { 0 };
@@ -384,11 +384,11 @@ void cd_wh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * e
   *cSec = result;
   *err  = error;
 };
-void cs_wh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err ) {
-  int dim = 1;
+void cs_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
+  size_t dim = 1;
   
-  double par[] = { SMparam->mh, SMparam->mz, SMparam->mst, SMparam->mch, sqrt( SMparam->alphae*4*M_PI ), SMparam->sw, SMparam->s, SMparam->vcs, ESMparam->g1hww, 
-                   ESMparam->g2hww, ESMparam->g3hww, ESMparam->g1hzz, ESMparam->g2hzz, ESMparam->g3hzz, ESMparam->g1hzy, ESMparam->g2hzy, ESMparam->ghyy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mst, smpar->mch, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, smpar->vcs, effpar->g1hww, 
+                   effpar->g2hww, effpar->g3hww, effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hzy, effpar->g2hzy, effpar->ghyy };
   double result, error;
   
   double xl[] = { 0 };
@@ -411,11 +411,11 @@ void cs_wh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * e
   *cSec = result;
   *err  = error;
 };
-void cb_wh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err ) {
-  int dim = 1;
+void cb_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
+  size_t dim = 1;
   
-  double par[] = { SMparam->mh, SMparam->mz, SMparam->mbo, SMparam->mch, sqrt( SMparam->alphae*4*M_PI ), SMparam->sw, SMparam->s, SMparam->vcb, ESMparam->g1hww, 
-                   ESMparam->g2hww, ESMparam->g3hww, ESMparam->g1hzz, ESMparam->g2hzz, ESMparam->g3hzz, ESMparam->g1hzy, ESMparam->g2hzy, ESMparam->ghyy };
+  double par[] = { smpar->mh, smpar->mz, smpar->mbo, smpar->mch, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, smpar->vcb, effpar->g1hww, 
+                   effpar->g2hww, effpar->g3hww, effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hzy, effpar->g2hzy, effpar->ghyy };
   double result, error;
   
   double xl[] = { 0 };
@@ -438,12 +438,6 @@ void cb_wh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * e
   *cSec = result;
   *err  = error;
 };
-
-// H-Production in Gluon Fusion
-void gg_h(  sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err ) {};
-// H-Production in VBF
-
-/* Interne Funktionen */
 
 double m_qqp_WH( double * x, size_t dim, void * param )
 {
@@ -459,12 +453,12 @@ double m_qqp_WH( double * x, size_t dim, void * param )
   double g1hww = ((double*)param)[8];
   double g2hww = ((double*)param)[9];
   double g3hww = ((double*)param)[10];
-  double g1hzz = ((double*)param)[11];
-  double g2hzz = ((double*)param)[12];
-  double g3hzz = ((double*)param)[13];
-  double g1hzy = ((double*)param)[14];
-  double g2hzy = ((double*)param)[15];
-  double ghyy  = ((double*)param)[16];
+  //double g1hzz = ((double*)param)[11];
+  //double g2hzz = ((double*)param)[12];
+  //double g3hzz = ((double*)param)[13];
+  //double g1hzy = ((double*)param)[14];
+  //double g2hzy = ((double*)param)[15];
+  //double ghyy  = ((double*)param)[16];
   
   /* Berechnete Groessen */
   double cw = sqrt(1-sw*sw);
@@ -994,16 +988,16 @@ double m_dD_ZH( double * x, size_t dim, void * param )
   double ee = ((double*)param)[3];
   double sw = ((double*)param)[4];
   double s  = ((double*)param)[5];
-  double ckm= ((double*)param)[7];
-  double g1hww = ((double*)param)[8];
-  double g2hww = ((double*)param)[9];
-  double g3hww = ((double*)param)[10];
+  //double ckm= ((double*)param)[7];
+  //double g1hww = ((double*)param)[8];
+  //double g2hww = ((double*)param)[9];
+  //double g3hww = ((double*)param)[10];
   double g1hzz = ((double*)param)[11];
   double g2hzz = ((double*)param)[12];
-  double g3hzz = ((double*)param)[13];
+  //double g3hzz = ((double*)param)[13];
   double g1hzy = ((double*)param)[14];
   double g2hzy = ((double*)param)[15];
-  double ghyy  = ((double*)param)[16];
+  //double ghyy  = ((double*)param)[16];
   
   /* Berechnete Groessen */
   double cw = sqrt(1-sw*sw);
@@ -1793,21 +1787,17 @@ double m_uU_ZH( double * x, size_t dim, void * param )
   double ee = ((double*)param)[3];
   double sw = ((double*)param)[4];
   double s  = ((double*)param)[5];
-  double ckm= ((double*)param)[7];
-  double g1hww = ((double*)param)[8];
-  double g2hww = ((double*)param)[9];
-  double g3hww = ((double*)param)[10];
+  //double ckm= ((double*)param)[7];
+  //double g1hww = ((double*)param)[8];
+  //double g2hww = ((double*)param)[9];
+  //double g3hww = ((double*)param)[10];
   double g1hzz = ((double*)param)[11];
   double g2hzz = ((double*)param)[12];
-  double g3hzz = ((double*)param)[13];
+  //double g3hzz = ((double*)param)[13];
   double g1hzy = ((double*)param)[14];
   double g2hzy = ((double*)param)[15];
-  double ghyy  = ((double*)param)[16];
-  /*
-  printf("Erhaltene Parameter in uU_ZH: \n");
-  printf("mh = %f, mz = %f, mq = %f, ee = %f, sw = %f, s = %f, ckm = %f\n", mh, mz, mq, ee, sw, s, ckm);
-  printf("g1hww = %f, g2hww = %f, g3hww = %f, g1hzz = %f, g2hzz = %f, g3hzz = %f, g1hzy = %f, g2hzy = %f, ghyy = %f\n", g1hww, g2hww, g3hww, g1hzz, g2hzz, g3hzz, g1hzy, g2hzy, ghyy );
-  /*
+  //double ghyy  = ((double*)param)[16];
+
   /* Berechnete Groessen */
   double cw = sqrt(1-sw*sw);
   double mw = mz*cw;

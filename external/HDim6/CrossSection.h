@@ -16,45 +16,40 @@ static double uu_zh_sm = 0, cc_zh_sm = 0, dd_zh_sm = 0, ss_zh_sm = 0, bb_zh_sm =
 static double ud_wh_sm = 0, us_wh_sm = 0, ub_wh_sm = 0, cd_wh_sm = 0, cs_wh_sm = 0, cb_wh_sm = 0;
 
 /* Zum Initialisieren der Standardmodellwerte */
-void init_(         sminputs * SMparam );
+void init_(         sminputs * smpar );
 
 /* Ratios */
-void ratio_tth_(   sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err );
-void ratio_bb_h_(  sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err ) ;
-void ratio_ggh_(   sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err );
+void ratio_tth_(   sminputs * smpar, effinputs * effpar, double * ratio, double * err );
+void ratio_bb_h_(  sminputs * smpar, effinputs * effpar, double * ratio, double * err ) ;
+void ratio_ggh_(   sminputs * smpar, effinputs * effpar, double * ratio, double * err );
 
-void ratio_uu_zh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err );
-void ratio_dd_zh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err );
-void ratio_cc_zh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err );
-void ratio_ss_zh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err );
-void ratio_bb_zh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err );
+void ratio_uu_zh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err );
+void ratio_dd_zh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err );
+void ratio_cc_zh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err );
+void ratio_ss_zh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err );
+void ratio_bb_zh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err );
 
-void ratio_ud_wh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err );
-void ratio_us_wh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err );
-void ratio_ub_wh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err );
-void ratio_cd_wh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err );
-void ratio_cs_wh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err );
-void ratio_cb_wh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err );
+void ratio_ud_wh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err );
+void ratio_us_wh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err );
+void ratio_ub_wh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err );
+void ratio_cd_wh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err );
+void ratio_cs_wh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err );
+void ratio_cb_wh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err );
 
 // H-Radiation from Z-Boson
-void uu_zh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err );
-void cc_zh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err );
-void dd_zh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err );
-void ss_zh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err );
-void bb_zh_(  sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err );
+void uu_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err );
+void cc_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err );
+void dd_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err );
+void ss_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err );
+void bb_zh_(  sminputs * smpar, effinputs * effpar, double * cSec, double * err );
 
 // H-Radiation from W-Boson
-void ud_wh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err );
-void us_wh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err );
-void ub_wh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err );
-void cd_wh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err );
-void cs_wh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err );
-void cb_wh_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err );
-
-// H-Production in Gluon Fusion
-void gg_h_(  sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err );
-
-// H-Production in VBF
+void ud_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err );
+void us_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err );
+void ub_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err );
+void cd_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err );
+void cs_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err );
+void cb_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err );
 
 /* Interne Funktionen */
 
