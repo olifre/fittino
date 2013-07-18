@@ -19,7 +19,7 @@
 
 #include "Configuration.h"
 #include "CMSSMModel.h"
-#include "Observable.h"
+//#include "Observable.h"
 #include "SLHAChi2Contribution.h"
 #include "SLHAParameter.h"
 #include "SLHAPrediction.h"
