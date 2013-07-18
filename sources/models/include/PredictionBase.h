@@ -39,28 +39,26 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                     PredictionBase( std::string name,
-                                     std::string plotName,
-                                     std::string unit,
-                                     std::string plotUnit,
-                                     double      plotLowerBound,
-                                     double      plotUpperBound );
+                   PredictionBase( std::string name,
+                                   std::string plotName,
+                                   std::string unit,
+                                   std::string plotUnit,
+                                   double      plotLowerBound,
+                                   double      plotUpperBound );
       /*!
        *  Standard destructor.
        */
-                     ~PredictionBase();
-      std::string    GetUnit() const;
-      std::string    GetPlotUnit() const;
+                   ~PredictionBase();
+      std::string  GetUnit() const;
+      std::string  GetPlotUnit() const;
 
     public:
-      virtual void   UpdatePrediction() = 0;
-      virtual void   PrintStatus() const;
-      virtual double GetPredictedValue() const;
+      virtual void Update() = 0;
+      virtual void PrintStatus() const;
 
     protected:
-      double         _predictedValue;
-      std::string    _unit;
-      std::string    _plotUnit;
+      std::string  _unit;
+      std::string  _plotUnit;
 
   };
 

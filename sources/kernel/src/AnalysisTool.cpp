@@ -81,7 +81,7 @@ void Fittino::AnalysisTool::FillTree() {
 
     for ( unsigned int i = 0; i < _model->GetNumberOfPredictions(); ++i ) {
 
-        _leafVector[i + _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters()] = _model->GetPredictionVector()->at( i )->GetPredictedValue();
+        _leafVector[i + _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters()] = _model->GetPredictionVector()->at( i )->GetValue();
 
     }
 

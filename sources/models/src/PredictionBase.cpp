@@ -28,8 +28,7 @@ Fittino::PredictionBase::PredictionBase( std::string name,
                                          std::string plotUnit,
                                          double      plotLowerBound,
                                          double      plotUpperBound )
-         : _predictedValue( 0. ),
-           _unit( unit ),
+         : _unit( unit ),
            _plotUnit( plotUnit ),
            Quantity( name,
                      plotName,
@@ -68,7 +67,7 @@ void Fittino::PredictionBase::PrintStatus() const {
               << std::setw( 9 )
               << std::setprecision( 2 )
               << std::scientific
-              << _predictedValue;
+              << _value;
 
     if ( _unit != "" ) {
 
@@ -79,11 +78,5 @@ void Fittino::PredictionBase::PrintStatus() const {
     }
 
     messenger << Messenger::Endl;
-
-}
-
-double Fittino::PredictionBase::GetPredictedValue() const {
-
-    return _predictedValue;
 
 }

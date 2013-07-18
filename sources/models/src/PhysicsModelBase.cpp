@@ -24,8 +24,9 @@
 #include "Messenger.h"
 #include "ModelCalculatorBase.h"
 #include "ModelParameterBase.h"
-#include "ObservableBase.h"
+#include "Observable.h"
 #include "PhysicsModelBase.h"
+#include "PredictionBase.h"
 
 Fittino::PhysicsModelBase::PhysicsModelBase() {
 
@@ -57,7 +58,7 @@ double Fittino::PhysicsModelBase::Evaluate() {
 
     for ( unsigned int i = 0; i < _predictionVector.size(); ++i ) {
 
-        _predictionVector[i]->UpdatePrediction();
+        _predictionVector[i]->Update();
 
     }
 
@@ -92,7 +93,7 @@ void Fittino::PhysicsModelBase::PrintStatus() const {
     if ( _observableVector.size() != 0 ) {
 
         messenger << Messenger::Endl;
-        messenger << Messenger::INFO << "   Summary of the " << this->GetName() << " predictions:"  << Messenger::Endl;
+        messenger << Messenger::INFO << "   Summary of the " << this->GetName() << " observables:"  << Messenger::Endl;
         messenger << Messenger::Endl;
         messenger << Messenger::INFO << "    Observable          Predicted value                 Measured value    Deviation" << Messenger::Endl;
         messenger << Messenger::Endl;
@@ -177,7 +178,7 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
 
     for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
 
-        chi2 += pow( ( _observableVector[i]->GetPredictedValue() - _observableVector[i]->GetMeasuredValue() ) / _observableVector[i]->GetMeasuredError(), 2 );
+        chi2 += pow( ( _observableVector[i]->GetPrediction()->GetValue() - _observableVector[i]->GetMeasuredValue() ) / _observableVector[i]->GetMeasuredError(), 2 );
 
     }
 

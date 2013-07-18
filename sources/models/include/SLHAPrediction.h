@@ -69,7 +69,7 @@ namespace Fittino {
        *  Standard destructor.
        */
                                ~SLHAPrediction();
-      virtual void             UpdatePrediction();
+      virtual void             Update();
 
     private:
       int                      _columnIndex;

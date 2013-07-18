@@ -42,7 +42,6 @@ Fittino::SLHAPrediction::SLHAPrediction( std::string              name,
                           plotLowerBound,
                           plotUpperBound ) {
 
-    _predictedValue = 0.;
     _secondId = "";
 
 }
@@ -70,24 +69,22 @@ Fittino::SLHAPrediction::SLHAPrediction( std::string              name,
                           plotLowerBound,
                           plotUpperBound ) {
 
-    _predictedValue = 0.;
-
 }
 
 Fittino::SLHAPrediction::~SLHAPrediction() {
 
 }
 
-void Fittino::SLHAPrediction::UpdatePrediction() {
+void Fittino::SLHAPrediction::Update() {
 
     if ( _secondId == "" ) {
 
-        _predictedValue = _slhaModelCalculator->GetDataStorage()->GetEntry( _blockName, _firstId, _columnIndex );
+        _value = _slhaModelCalculator->GetDataStorage()->GetEntry( _blockName, _firstId, _columnIndex );
 
     }
     else {
 
-        _predictedValue = _slhaModelCalculator->GetDataStorage()->GetEntry( _blockName, _firstId, _secondId, _columnIndex );
+        _value = _slhaModelCalculator->GetDataStorage()->GetEntry( _blockName, _firstId, _secondId, _columnIndex );
 
     }
 

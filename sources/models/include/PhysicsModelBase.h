@@ -29,7 +29,7 @@
 namespace Fittino {
 
   class ModelCalculatorBase;
-  class ObservableBase;
+  class Observable;
 
   /*!
    *  \ingroup models
@@ -55,7 +55,7 @@ namespace Fittino {
 
     protected:
       std::vector<ModelCalculatorBase*> _modelCalculatorVector;
-      std::vector<ObservableBase*>      _observableVector;
+      std::vector<Observable*>          _observableVector;
 
       /*! \cond UML */
     private:
