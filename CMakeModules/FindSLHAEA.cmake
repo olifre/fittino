@@ -37,6 +37,6 @@ ELSE(${SLHAEA_INCLUDE_DIR} MATCHES "SLHAEA_INCLUDE_DIR-NOTFOUND")
 
     # If the path to the SLHAea installation is found print this message.
 
-    MESSAGE(STATUS "SLHAea version:")
+    MESSAGE(STATUS "SLHAea found")
 
 ENDIF(${SLHAEA_INCLUDE_DIR} MATCHES "SLHAEA_INCLUDE_DIR-NOTFOUND")

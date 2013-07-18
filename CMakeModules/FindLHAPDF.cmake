@@ -25,7 +25,7 @@ SET(LHAPDF_INCLUDE_DIR "LHAPDF_INCLUDE_DIR-NOTFOUND")
 
 # Look for the location of the file "slhaea.h".
 
-FIND_PATH(LHAPDF_INCLUDE_DIR LHAPDF/LHAPDF.h PATHS ${LHAPDF_INSTALLATION_PATH} ../lhapdf)
+FIND_PATH(LHAPDF_INCLUDE_DIR LHAPDF/LHAPDF.h PATHS ${LHAPDF_INSTALLATION_PATH}/include ../lhapdf/include)
 
 IF(${LHAPDF_INCLUDE_DIR} MATCHES "LHAPDF_INCLUDE_DIR-NOTFOUND")
 
@@ -35,8 +35,15 @@ IF(${LHAPDF_INCLUDE_DIR} MATCHES "LHAPDF_INCLUDE_DIR-NOTFOUND")
 
 ELSE(${LHAPDF_INCLUDE_DIR} MATCHES "LHAPDF_INCLUDE_DIR-NOTFOUND")
 
+    # The following command extracts the LHAPDF version number as the first 5
+    # characters in the 5. line of the file ChangeLog located in the LHAPDF
+    # installation path.
+    # TODO: Make this command more flexible. 
+
+    EXECUTE_PROCESS(COMMAND sed -n 5p ${LHAPDF_INSTALLATION_PATH}/ChangeLog COMMAND cut -c 1-5 OUTPUT_VARIABLE LHAPDF_FOUND_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
+
     # If the path to the LHAPDF installation is found print this message.
 
-    MESSAGE(STATUS "LHAPDF version:")
+    MESSAGE(STATUS "LHAPDF version: " ${LHAPDF_FOUND_VERSION})
 
 ENDIF(${LHAPDF_INCLUDE_DIR} MATCHES "LHAPDF_INCLUDE_DIR-NOTFOUND")
