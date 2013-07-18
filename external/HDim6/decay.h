@@ -24,22 +24,22 @@
 /* global values to be initialized with effective widths and errors in order to calculate Branching Ratios and total width */
 
 static double T_hglgl_eff, T_hgaga_eff, T_hmumu_eff, T_htata_eff, T_hchch_eff, T_hstst_eff, T_hbobo_eff,
-              T_hzz_eff, T_hww_eff, T_eff;
+              T_hzz_eff, T_hww_eff, T_eff, T_hgaz_eff;
 
 static double err_hglgl_eff, err_hgaga_eff, err_hmumu_eff, err_htata_eff, err_hchch_eff, err_hstst_eff, 
-              err_hbobo_eff, err_hzz_eff, err_hww_eff, err_T_eff;
+              err_hbobo_eff, err_hzz_eff, err_hww_eff, err_T_eff, err_hgaz_eff;
 
 static double chi_hglgl_eff, chi_hgaga_eff, chi_hmumu_eff, chi_htata_eff, chi_hchch_eff, chi_hstst_eff,
-              chi_hbobo_eff, chi_hzz_eff, chi_hww_eff;
+              chi_hbobo_eff, chi_hzz_eff, chi_hww_eff, chi_hgaz_eff;
 
 static double T_hglgl_sm, T_hgaga_sm, T_hmumu_sm, T_htata_sm, T_hchch_sm, T_hstst_sm, T_hbobo_sm,
-              T_hzz_sm, T_hww_sm, T_sm;
+              T_hzz_sm, T_hww_sm, T_sm, T_hgaz_sm;
 
 static double err_hglgl_sm, err_hgaga_sm, err_hmumu_sm, err_htata_sm, err_hchch_sm, err_hstst_sm,
-              err_hbobo_sm, err_hzz_sm, err_hww_sm, err_T_sm;
+              err_hbobo_sm, err_hzz_sm, err_hww_sm, err_T_sm, err_hgaz_sm;
 
 static double chi_hglgl_sm, chi_hgaga_sm, chi_hmumu_sm, chi_htata_sm, chi_hchch_sm, chi_hstst_sm,
-              chi_hbobo_sm, chi_hzz_sm, chi_hww_sm;
+              chi_hbobo_sm, chi_hzz_sm, chi_hww_sm, chi_hgaz_sm;
 
 
 /* Initialization of Higgs partial widths in effective and standard model */
@@ -63,11 +63,13 @@ void br_hzz_(     sminputs * smpar, effinputs * effpar, double * br, double * er
 
 void br_hglgl_(   sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi );
 void br_hgaga_(   sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi );
+void br_hgaz_(    sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi );
 
 /* only Top-Loops- and W-Loops in Photon decay included */
 
 void hglgl_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
 void hgaga_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
+void hgaz_(  sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
 
 /* Leptonische Zweikoerperzerfaelle */
 

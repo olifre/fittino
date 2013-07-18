@@ -2,9 +2,10 @@
 
 void initeffwidths_( sminputs * smpar, effinputs * effpar )
 {
-  /* H_gluglu & H_Digamma */
+  /* H_gluglu & H_Digamma and HZgamma */
   hglgl_( smpar, effpar, &T_hglgl_eff, &err_hglgl_eff );
   hgaga_( smpar, effpar, &T_hgaga_eff, &err_hgaga_eff );
+  hgaz_(  smpar, effpar, &T_hgaz_eff,  &err_hgaz_eff  );
   /* H_difermion */
   // helel_( smpar, effpar, &T_helel_eff, &err_helel_eff );
   hmumu_( smpar, effpar, &T_hmumu_eff, &err_hmumu_eff );
@@ -15,7 +16,7 @@ void initeffwidths_( sminputs * smpar, effinputs * effpar )
   hstst_( smpar, effpar, &T_hstst_eff, &err_hstst_eff );
   hbobo_( smpar, effpar, &T_hbobo_eff, &err_hbobo_eff );
   chi_hmumu_eff = 1; chi_htata_eff = 1; chi_hchch_eff = 1; chi_hstst_eff = 1;
-  chi_hbobo_eff = 1; chi_hgaga_eff = 1; chi_hglgl_eff = 1;
+  chi_hbobo_eff = 1; chi_hgaga_eff = 1; chi_hglgl_eff = 1; chi_hgaz_eff  = 1;
   
   double buffer1, buffer2, buffer3;
   T_hzz_eff = 0, chi_hzz_eff = 1, err_hzz_eff = 0;
@@ -48,9 +49,10 @@ void initsmwidths_( sminputs * smpar )
   temp.fbb = 0; temp.fww = 0; temp.fgg = 0; temp.fb = 0; temp.fw = 0; 
   temp.fuph = 0; temp.fdoh = 0; temp.fchh = 0; temp.fsth = 0; temp.fboh = 0; temp.ftoh = 0; temp.felh = 0; temp.fmuh = 0; temp.ftah = 0;
   temp.ghyy = 0; temp.g1hzz = 0; temp.g2hzz = 0; temp.g3hzz = 0; temp.g1hww = 0; temp.g2hww = 0; temp.g3hww = 0; temp.g1hzy = 0; temp.g2hzy = 0;
-  /* H_gluglu & H_Digamma */
+  /* H_gluglu & H_Digamma and HZgamma */
   hglgl_( smpar, &temp, &T_hglgl_sm, &err_hglgl_sm );
   hgaga_( smpar, &temp, &T_hgaga_sm, &err_hgaga_sm );
+  hgaz_(  smpar, &temp, &T_hgaz_sm,  &err_hgaz_sm  );
   /* H_difermion */                                                                                                                                                                                  
   hmumu_( smpar, &temp, &T_hmumu_sm, &err_hmumu_sm );
   htata_( smpar, &temp, &T_htata_sm, &err_htata_sm );
@@ -58,7 +60,7 @@ void initsmwidths_( sminputs * smpar )
   hstst_( smpar, &temp, &T_hstst_sm, &err_hstst_sm );
   hbobo_( smpar, &temp, &T_hbobo_sm, &err_hbobo_sm );
   chi_hmumu_sm = 1; chi_htata_sm = 1; chi_hchch_sm = 1; chi_hstst_sm = 1;
-  chi_hbobo_sm = 1; chi_hgaga_sm = 1; chi_hglgl_sm = 1;
+  chi_hbobo_sm = 1; chi_hgaga_sm = 1; chi_hglgl_sm = 1; chi_hgaz_sm  = 1;
 
   double buffer1, buffer2, buffer3;
   T_hzz_sm = 0, chi_hzz_sm = 1, err_hzz_sm = 0;
@@ -148,6 +150,13 @@ void br_hglgl_( sminputs * smpar, effinputs * effpar, double * br, double * err,
   *chi = chi_hglgl_eff;
 };
 
+void br_hgaz_(  sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi )
+{
+  *br = T_hgaz_eff/T_eff*T_sm/T_hgaz_sm*smpar->br_h_yz;
+  *err = 0;
+  *chi = 1;
+};
+
 void br_hzz_( sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi )
 {
   *br = T_hzz_eff/T_eff*T_sm/T_hzz_sm*smpar->br_h_zz;
@@ -194,6 +203,12 @@ void hgaga_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double Iw = 3.*zw*(1.-2.*zw)*(-2.)*pow(asin(1/2./sqrt(zw)), 2.) - 3.*zw - 0.5;
   double gHyy = (sqrt(factor)*(It + Iw) + gyy);
   *pWidth = pow( mh, 3. ) / 4./M_PI * pow( gHyy, 2. );
+  *pError = 0;
+};
+
+void hgaz_(  sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
+{
+  *pWidth = 1e-7;
   *pError = 0;
 };
 

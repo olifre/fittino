@@ -37,3 +37,7 @@
 
 	:All
 	- SM Loops in Higgs-Digluon-Couling approximated by top-loop, removed effective approach
+
+2013-07-17
+	:decay
+	- Higgs to Gamma+Z included (dummy), value in inputs.h

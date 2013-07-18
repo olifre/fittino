@@ -60,6 +60,7 @@ struct sminputs {
   double br_h_zz, err_h_zz;
   double br_h_gg, err_h_gg;
   double br_h_yy, err_h_yy;  
+  double br_h_yz, err_h_yz;
   double sm_width, sm_width_err;
 };
 
