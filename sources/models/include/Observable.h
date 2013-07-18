@@ -1,12 +1,12 @@
-/* $Id$ */
+/* $Id: Observable.h 1444 2013-07-16 16:54:46Z uhlenbrock@PHYSIK.UNI-BONN.DE $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        ObservableBase.h                                                 *
+* File        Observable.h                                                     *
 *                                                                              *
-* Description Base class for observables                                       *
+* Description Class for observables                                            *
 *                                                                              *
 * Authors     Sebastian Heer        <s6seheer@uni-bonn.de>                     *
 *             Mathias   Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>            *
@@ -18,54 +18,52 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_OBSERVABLEBASE_H
-#define FITTINO_OBSERVABLEBASE_H
-
-#include <string>
-
-#include "PredictionBase.h"
+#ifndef FITTINO_OBSERVABLE_H
+#define FITTINO_OBSERVABLE_H
 
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
 
+  class PredictionBase;
+
   /*!
    *  \ingroup models
-   *  \brief Base class for observables.
+   *  \brief Class for observables.
    */
-  class ObservableBase : public PredictionBase {
+  class Observable {
 
     public:
       /*!
-       *  Standard constructor.
+       *  Constructor.
        */
-             ObservableBase( std::string name,
-                             std::string plotName,
-                             std::string unit,
-                             std::string plotUnit,
-                             double      plotLowerBound,
-                             double      plotUpperBound,
-                             double      measuredValue,
-                             double      measuredError );
+                      Observable( PredictionBase* prediction,
+                                  double          measuredValue,
+                                  double          measuredError );
       /*!
        *  Standard destructor.
        */
-             ~ObservableBase();
-      void   PrintStatus() const;
-      double GetMeasuredError() const;
-      double GetMeasuredValue() const;
+                      ~Observable();
+      void            PrintStatus() const;
+      double          GetMeasuredError() const;
+      double          GetMeasuredValue() const;
+      PredictionBase* GetPrediction();
+
+    public:
+      virtual void    UpdatePrediction();
 
     protected:
-      double _deviation;
-      double _measuredError;
-      double _measuredValue;
+      double          _deviation;
+      double          _measuredError;
+      double          _measuredValue;
+      PredictionBase* _prediction;
 
     protected:
-      double CalculateDeviation();
+      double          CalculateDeviation();
 
   };
 
 }
 
-#endif // FITTINO_OBSERVABLEBASE_H
+#endif // FITTINO_OBSERVABLE_H

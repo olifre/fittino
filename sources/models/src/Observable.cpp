@@ -1,12 +1,12 @@
-/* $Id$ */
+/* $Id: Observable.cpp 1444 2013-07-16 16:54:46Z uhlenbrock@PHYSIK.UNI-BONN.DE $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        ObservableBase.cpp                                               *
+* File        Observable.cpp                                                   *
 *                                                                              *
-* Description Base class for observables                                       *
+* Description Class for observables                                            *
 *                                                                              *
 * Authors     Sebastian Heer        <s6seheer@uni-bonn.de>                     *
 *             Mathias   Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>            *
@@ -21,35 +21,23 @@
 #include <iomanip>
 
 #include "Messenger.h"
-#include "ObservableBase.h"
+#include "Observable.h"
+#include "PredictionBase.h"
 
-Fittino::ObservableBase::ObservableBase( std::string name,
-                                         std::string plotName,
-                                         std::string unit,
-                                         std::string plotUnit,
-                                         double      plotLowerBound,
-                                         double      plotUpperBound,
-                                         double      measuredValue,
-                                         double      measuredError )
+Fittino::Observable::Observable( PredictionBase* prediction,
+                                 double          measuredValue,
+                                 double          measuredError )
         : _deviation( 0. ),
           _measuredError( measuredError ),
           _measuredValue( measuredValue ),
-          PredictionBase( name,
-                          plotName,
-                          unit,
-                          plotUnit,
-                          plotLowerBound,
-                          plotUpperBound ) {
+          _prediction( prediction ) {
+}
 
-   _predictedValue = 0.;
+Fittino::Observable::~Observable() {
 
 }
 
-Fittino::ObservableBase::~ObservableBase() {
-
-}
-
-void Fittino::ObservableBase::PrintStatus() const {
+void Fittino::Observable::PrintStatus() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
@@ -57,12 +45,12 @@ void Fittino::ObservableBase::PrintStatus() const {
               << "    "
               << std::left
               << std::setw( 18 )
-              << _name 
+              << _prediction->GetName()
               << std::right
               << std::setw( 17 )
               << std::setprecision( 5 )
               << std::scientific
-              << _predictedValue
+              << _prediction->GetValue()
               << std::right
               << std::setw( 15 )
               << _measuredValue
@@ -83,18 +71,32 @@ void Fittino::ObservableBase::PrintStatus() const {
 
 }
 
-double Fittino::ObservableBase::GetMeasuredError() const {
+double Fittino::Observable::GetMeasuredError() const {
 
     return _measuredError;
 }
 
-double Fittino::ObservableBase::GetMeasuredValue() const {
+double Fittino::Observable::GetMeasuredValue() const {
 
     return _measuredValue;
 }
 
-double Fittino::ObservableBase::CalculateDeviation() {
+double Fittino::Observable::CalculateDeviation() {
 
-    _deviation = ( _predictedValue - _measuredValue ) / _measuredError;
+    _deviation = ( _prediction->GetValue() - _measuredValue ) / _measuredError;
+
+}
+
+Fittino::PredictionBase* Fittino::Observable::GetPrediction() {
+
+   return _prediction;
+
+}
+
+void Fittino::Observable::UpdatePrediction() {
+
+    _prediction->Update();
+
+    this->CalculateDeviation();
 
 }
