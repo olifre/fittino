@@ -125,6 +125,7 @@ namespace Fittino {
        *  Standard destructor.
        */
                                       ~Controller();
+      void                            HandleOptions( int argc, char** argv );
       /*!
        *  When Fittino is called without arguments or with the -h/--help option this method\n
        *  prints a help screen with further instructions on how to use Fittino.

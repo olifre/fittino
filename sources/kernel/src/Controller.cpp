@@ -34,6 +34,7 @@
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "OptimizerBase.h"
+//#include "PlotterBase.h"
 #include "SamplerBase.h"
 
 Fittino::Controller* Fittino::Controller::GetInstance() {
@@ -50,68 +51,21 @@ Fittino::Controller* Fittino::Controller::GetInstance() {
 
 void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
-    // If Fittino is called without options or arguments print a help text with further instructions
-    // and exit.
-
-    if ( argc == 1 ) {
-
-        Controller::PrintHelp();
-        exit( EXIT_SUCCESS );
-
-    }
-
-    // Otherwise use getopt() to handle given command line options. For more informations on
-    // getopt() have a look at the manpage of getopt(3).
-
-    static struct option options[] = {
-
-        {"help",       no_argument,       0, 'h'},
-        {"input-file", required_argument, 0, 'i'},
-        {"data-file",  required_argument, 0, 'd'},
-        {"seed",       required_argument, 0, 's'},
-        {0,            0,                 0,  0 }
-
-    };
-
-    int optionIndex = 0;
-    int optionCode = -1;
-    opterr = 0;
-
     try {
 
-        while ( true ) {
+	// If Fittino is called without options or arguments print a help text with further
+	// instructions and exit.
 
-            optionCode = getopt_long( argc, argv, ":hi:d:s:", options, &optionIndex );
+        if ( argc == 1 ) {
 
-            if ( optionCode == -1 ) break;
-
-            switch ( optionCode ) {
-
-                case 'h':
-                    Controller::PrintHelp();
-                    exit( EXIT_SUCCESS );
-
-                case 'i':
-                    _inputFileName = std::string( optarg );
-                    continue;
-
-                case 'd':
-                    _dataFileName = std::string( optarg );
-                    continue;
-
-                case 's':
-                    _randomSeed = atoi( optarg );
-                    continue;
-
-                case ':':
-                    throw InputException( "Missing option parameter." );
-
-                default:
-                    throw InputException( "Unknown option(s)" );
-
-            }
+            Controller::PrintHelp();
+            exit( EXIT_SUCCESS );
 
         }
+
+        // Otherwise handle given command line options.
+
+        Controller::HandleOptions( argc, argv );
 
 	// Print a welcome logo.
 
@@ -159,6 +113,13 @@ void Fittino::Controller::ExecuteFittino() const {
             delete sampler;
 
 	}
+        //else if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::PLOTTING ) {
+
+        //    PlotterBase* plotter = factory.CreatePlotter( Configuration::GetInstance()->GetPlotterType(), model, _dataFileName );
+        //    plotter->PerformAnalysis();
+        //    delete plotter;
+
+        //}
         else {
 
             throw ConfigurationException( "Configured execution mode unknown." );
@@ -191,6 +152,61 @@ Fittino::Controller::Controller()
 }
 
 Fittino::Controller::~Controller() {
+
+}
+
+void Fittino::Controller::HandleOptions( int argc, char** argv ) {
+
+    // Use getopt() to handle given command line options. For more informations on getopt() have a
+    // look at the manpage of getopt(3).
+
+    static struct option options[] = {
+
+        {"help",       no_argument,       0, 'h'},
+        {"input-file", required_argument, 0, 'i'},
+        {"data-file",  required_argument, 0, 'd'},
+        {"seed",       required_argument, 0, 's'},
+        {0,            0,                 0,  0 }
+
+    };
+
+    int optionIndex = 0;
+    int optionCode = -1;
+    opterr = 0;
+
+    while ( true ) {
+
+        optionCode = getopt_long( argc, argv, ":hi:d:s:", options, &optionIndex );
+
+        if ( optionCode == -1 ) break;
+
+        switch ( optionCode ) {
+
+            case 'h':
+                Controller::PrintHelp();
+                exit( EXIT_SUCCESS );
+
+            case 'i':
+                _inputFileName = std::string( optarg );
+                continue;
+
+            case 'd':
+                _dataFileName = std::string( optarg );
+                continue;
+
+            case 's':
+                _randomSeed = atoi( optarg );
+                continue;
+
+            case ':':
+                throw InputException( "Missing option parameter." );
+
+            default:
+                throw InputException( "Unknown option(s)" );
+
+        }
+
+    }
 
 }
 
@@ -238,8 +254,7 @@ const Fittino::Configuration::FileFormat Fittino::Controller::DetermineInputFile
             throw InputException( "Invalid input file name. The input file has to be specified with the option flag -i/--input-file and its suffix must be .xml (XML format)." );
 
         }
-
-        if ( !_inputFileName.compare( _inputFileName.length() - 4, 4, ".xml" ) ) {
+        else if ( !_inputFileName.compare( _inputFileName.length() - 4, 4, ".xml" ) ) {
 
             return Configuration::XML;
 
