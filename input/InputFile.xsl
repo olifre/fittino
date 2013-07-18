@@ -38,7 +38,7 @@
       <tr><td>X</td><td><xsl:value-of select="@X"/></td></tr>
       <tr><td>Y</td><td><xsl:value-of select="@Y"/></td></tr>
     </xsl:when>
-    <xsl:when test="@ModelType = 'MSUGRA'">
+    <xsl:when test="@ModelType = 'CMSSM'">
       <tr><td>ModelType</td><td><xsl:value-of select="@ModelType"/></td></tr>
       <tr><td>A0</td><td><xsl:value-of select="@A0"/></td></tr>
       <tr><td>M0</td><td><xsl:value-of select="@M0"/></td></tr>

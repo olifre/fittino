@@ -4,9 +4,9 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        MSUGRAModel.h                                                    *
+* File        CMSSMModel.h                                                     *
 *                                                                              *
-* Description Implementation of the MSUGRA model                               *
+* Description Implementation of the CMSSM model                                *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -17,8 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_MSUGRAMODEL_H
-#define FITTINO_MSUGRAMODEL_H
+#ifndef FITTINO_CMSSMMODEL_H
+#define FITTINO_CMSSMMODEL_H
 
 #include "PhysicsModelBase.h"
 
@@ -29,26 +29,26 @@ namespace Fittino {
 
   /*!
    *  \ingroup models
-   *  \brief Implementation of the MSUGRA model.
+   *  \brief Implementation of the CMSSM model.
    */
-  class MSUGRAModel : public PhysicsModelBase {
+  class CMSSMModel : public PhysicsModelBase {
 
     public:
       /*!
        *  Standard constructor.
        */
-                           MSUGRAModel();
+                           CMSSMModel();
       /*!
        *  Standard destructor.
        */
-                           ~MSUGRAModel();
+                           ~CMSSMModel();
       /*!
        *  Virtual copy constructor.
        */
-      virtual MSUGRAModel* Clone() const;
+      virtual CMSSMModel* Clone() const;
 
   };
 
 }
 
-#endif // FITTINO_MSUGRAMODEL_H
+#endif // FITTINO_CMSSMMODEL_H

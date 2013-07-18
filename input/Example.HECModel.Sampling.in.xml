@@ -38,7 +38,7 @@
    />
 
   <Sampler
-   NumberOfIterations = "0"
+   NumberOfIterations = "500000"
    SamplerType        = "MarkovChain"
    />
 

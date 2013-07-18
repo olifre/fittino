@@ -14,13 +14,13 @@
   Mode CDATA #REQUIRED
 >
 
-<!ELEMENT Model (Rosenbrock|MSUGRA)>
+<!ELEMENT Model (Rosenbrock|CMSSM)>
 <!ATTLIST Model
   Universality   CDATA #IMPLIED
 >
 
 <!ELEMENT Rosenbrock (Parameter+)>
-<!ELEMENT MSUGRA (Parameter+)>
+<!ELEMENT CMSSM (Parameter+)>
 
 <!ELEMENT Parameter EMPTY>
 <!ATTLIST Parameter

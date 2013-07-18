@@ -59,10 +59,11 @@ namespace Fittino {
       static Configuration*                 GetInstance();
 
     public:
-      enum                                  ExecutionMode { OPTIMIZATION, SAMPLING };
+      enum                                  ExecutionMode { OPTIMIZATION, PLOTTING, SAMPLING };
       enum                                  FileFormat { SLHA, XML };
-      enum                                  ModelType { HEC, MSUGRA, ROSENBROCK };
+      enum                                  ModelType { HEC, CMSSM, ROSENBROCK };
       enum                                  OptimizerType { GENETICALGORITHM, MINUIT, PARTICLESWARM, SIMULATEDANNEALING };
+      //enum                                PlotterType { CONTOUR, SCATTER };
       enum                                  SamplerType { MARKOVCHAIN, SIMPLE };
 
     public:
@@ -84,6 +85,10 @@ namespace Fittino {
        *  Returns the configured optimizer type.
        */
       OptimizerType                         GetOptimizerType() const;
+      /*!
+       *  Returns the configured plotter type.
+       */
+      //PlotterType                         GetPlotterType() const;
       /*!
        *  Returns the configured sampler type.
        */

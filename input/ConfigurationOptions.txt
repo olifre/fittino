@@ -42,7 +42,7 @@ $Id$
      ModelType     Parameters
  
      HEC
-     MSUGRA        A0, M0, M12, TanBeta
+     CMSSM         A0, M0, M12, TanBeta
      Rosenbrock    Dimensions, X1 - X4
      
 <Optimizer>

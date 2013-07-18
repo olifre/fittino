@@ -51,6 +51,11 @@ Fittino::Configuration::ExecutionMode Fittino::Configuration::GetExecutionMode()
         return Configuration::OPTIMIZATION;
 
     }
+    //else if ( ( *_steeringParameterMap )[key] == "PLOTTING" ) {
+
+    //    return Configuration::PLOTTING;
+
+    //}
     else if ( ( *_steeringParameterMap )[key] == "SAMPLING" ) {
 
         return Configuration::SAMPLING;
@@ -73,9 +78,9 @@ Fittino::Configuration::ModelType Fittino::Configuration::GetModelType() const {
         return Configuration::HEC;
 
     }
-    else if ( ( *_steeringParameterMap )[key] == "MSUGRA" ) {
+    else if ( ( *_steeringParameterMap )[key] == "CMSSM" ) {
 
-        return Configuration::MSUGRA;
+        return Configuration::CMSSM;
 
     }
     else if ( ( *_steeringParameterMap )[key] == "Rosenbrock" ) {
@@ -122,6 +127,28 @@ Fittino::Configuration::OptimizerType Fittino::Configuration::GetOptimizerType()
     }
 
 }
+
+//Fittino::Configuration::PlotterType Fittino::Configuration::GetPlotterType() const {
+//
+//    const std::string key = "PlotterType";
+//
+//    if ( ( *_steeringParameterMap )[key] == "Contour" ) {
+//
+//        return Configuration::CONTOUR;
+//
+//    }
+//    else if ( ( *_steeringParameterMap )[key] == "Scatter" ) {
+//
+//        return Configuration::SCATTER;
+//
+//    }
+//    else {
+//
+//        throw ConfigurationException( "Configured plotter type unknown." );
+//
+//    }
+//
+//}
 
 Fittino::Configuration::SamplerType Fittino::Configuration::GetSamplerType() const {
 

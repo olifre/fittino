@@ -2,7 +2,7 @@
 	             ExecutionMode,
                      Model,
 		     Observable*,
-                     (Optimizer|Sampler),
+                     (Optimizer|Sampler|Plotter),
                      GeneticAlgorithmOptimizer?,
                      ParticleSwarmOptimizer?,
                      SimulatedAnnealingOptimizer?)>
@@ -45,6 +45,11 @@
   AbortCriterium     CDATA #REQUIRED
   NumberOfIterations CDATA #REQUIRED
   OptimizerType      CDATA #REQUIRED
+>
+
+<!ELEMENT Plotter EMPTY>
+<!ATTLIST Plotter 
+  PlotterType CDATA #REQUIRED
 >
 
 <!ELEMENT Sampler EMPTY>

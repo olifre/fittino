@@ -6,9 +6,9 @@
 <!--                                                                         -->
 <!-- Project     Fittino - A SUSY Parameter Fitting Package                  -->
 <!--                                                                         -->
-<!-- File        Example.MSUGRAModel.Sampling.in.xml                         -->
+<!-- File        Example.CMSSMModel.Sampling.in.xml                          -->
 <!--                                                                         -->
-<!-- Description Configuration example for the MSUGRA model                  -->
+<!-- Description Configuration example for the CMSSM model                   -->
 <!--                                                                         -->
 <!-- Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>         -->
 <!--                                                                         -->
@@ -33,7 +33,7 @@
    />
 
   <Model
-   ModelType = "MSUGRA"
+   ModelType = "CMSSM"
    A0        = "-300."
    M0        = "100."
    M12       = "250."

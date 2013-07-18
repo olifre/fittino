@@ -40,8 +40,8 @@
   <xsl:apply-templates/>
 </xsl:template>
 
-<xsl:template match="MSUGRA">
-  <tr><td colspan="2">MSUGRA</td></tr>
+<xsl:template match="CMSSM">
+  <tr><td colspan="2">CMSSM</td></tr>
   <xsl:apply-templates/>
 </xsl:template>
 

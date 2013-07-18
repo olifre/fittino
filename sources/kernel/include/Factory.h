@@ -31,6 +31,7 @@ namespace Fittino {
   class DataStorageBase;
   class ModelBase;
   class OptimizerBase;
+  //class PlotterBase;
   class SamplerBase;
 
   /*!
@@ -85,6 +86,7 @@ namespace Fittino {
        *    <li> MARKOVCHAIN\n
        *  </ul>
        */
+      //PlotterBase* const   CreatePlotter( const Configuration::PlotterType& plotterType, ModelBase* model, std::string dataFileName ) const;
       SamplerBase* const     CreateSampler( const Configuration::SamplerType& samplerType, ModelBase* model ) const;
 
   };
