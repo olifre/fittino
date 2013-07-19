@@ -45,7 +45,7 @@ void ratio_ggh_(   sminputs * smpar, effinputs * effpar, double * ratio, double 
   double mt = smpar->mto;
   double z = pow( mt/mh, 2. );
   double I = (2.*z - 2*z*(4.*z - 1)*pow(asin(1/2./sqrt(z)), 2.));
-  double factor = pow(1+effpar->fgg*pow(smpar->vev,2)/2./pow(smpar->mto,2)/I, 2);
+  double factor = pow(1+effpar->fgg*M_PI*pow(smpar->vev,2)*sqrt(2)/smpar->alphas/I, 2);
   *ratio         = factor;  
   *err           = 0;
 };

@@ -39,7 +39,7 @@ void initeffwidths_( sminputs * smpar, effinputs * effpar )
   hwchdo_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
   hwchst_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
   hwchbo_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
-  T_eff = T_hglgl_eff+T_hgaga_eff+T_hmumu_eff+T_htata_eff+T_hbobo_eff+T_hchch_eff+T_hstst_eff+T_hww_eff+T_hzz_eff;
+  T_eff = T_hglgl_eff+T_hgaga_eff+T_hmumu_eff+T_htata_eff+T_hbobo_eff+T_hchch_eff+T_hstst_eff+T_hww_eff+T_hzz_eff+T_hgaz_eff;
   err_T_eff = err_hww_eff + err_hzz_eff; /* Die anderen werden nicht numerisch berechnet, Fehler sind daher hier Null */
 };
 
@@ -83,7 +83,7 @@ void initsmwidths_( sminputs * smpar )
   hwchdo_( smpar, &temp, &buffer1, &buffer2, &buffer3 );  T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
   hwchst_( smpar, &temp, &buffer1, &buffer2, &buffer3 );  T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
   hwchbo_( smpar, &temp, &buffer1, &buffer2, &buffer3 );  T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
-  T_sm = T_hglgl_sm+T_hgaga_sm+T_hmumu_sm+T_htata_sm+T_hbobo_sm+T_hchch_sm+T_hstst_sm+T_hww_sm+T_hzz_sm;
+  T_sm = T_hglgl_sm+T_hgaga_sm+T_hmumu_sm+T_htata_sm+T_hbobo_sm+T_hchch_sm+T_hstst_sm+T_hww_sm+T_hzz_sm+T_hgaz_sm;
   err_T_sm = err_hww_sm + err_hzz_sm; /* Die anderen werden nicht numerisch berechnet, Fehler sind daher hier Null */
 
 };
@@ -153,8 +153,8 @@ void br_hglgl_( sminputs * smpar, effinputs * effpar, double * br, double * err,
 void br_hgaz_(  sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi )
 {
   *br = T_hgaz_eff/T_eff*T_sm/T_hgaz_sm*smpar->br_h_yz;
-  *err = 0;
-  *chi = 1;
+  *err = T_hgaz_eff/T_eff*T_sm/T_hgaz_sm*smpar->err_h_yz;
+  *chi = chi_hgaz_eff;
 };
 
 void br_hzz_( sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi )
@@ -177,9 +177,9 @@ void hglgl_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
      
   double z = pow( mt/mh, 2. );
   double I = (2.*z - 2*z*(4.*z - 1)*pow(asin(1/2./sqrt(z)), 2.));
-  double smvalue = pow(smpar->mh,3)*pow(smpar->alphas,2)/8./pow(smpar->vev,2)/pow(M_PI,2)*pow(I,2);
+  double smvalue = pow(smpar->mh,3)*pow(smpar->alphas,2)/8./pow(smpar->vev,2)/pow(M_PI,3)*pow(I,2);
 
-  double factor = pow(1+effpar->fgg*pow(smpar->vev,2)/2./pow(smpar->mto,2)/I, 2);
+  double factor = pow(1+effpar->fgg*M_PI*pow(smpar->vev,2)*sqrt(2)/smpar->alphas/I, 2);
   
   *pWidth = smvalue*factor;
   *pError = 0;
@@ -188,27 +188,32 @@ void hglgl_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
 void hgaga_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
   double mh = smpar->mh;
-  double sw = smpar->sw;
-  double mw = smpar->mz * sqrt( 1 - pow( sw, 2. ) );
-  double factor = pow( smpar->alphae, 3. )/16./pow(M_PI,2)/pow(mw*sw,2.);
-  /* Neglecting all contributions from light particles, only particles in the loop are W-Boson and t-Quark */
+  double mw = smpar->mw;
   double mt = smpar->mto;
+ 
   double zt = pow( mt/mh, 2. );
   double zw = pow( mw/mh, 2. );
   
-  double v = smpar->vev;
-  double gyy = -M_PI*smpar->alphae*v*(effpar->fww + effpar->fbb);
-  
-  double It = 3.*(2.*zt + 2.*zt*(1.-4.*zt)*pow(asin(1/2./sqrt(zt)), 2.));
+  double It = 3.*(2.*zt - 2.*zt*(4.*zt - 1)*pow(asin(1/2./sqrt(zt)), 2.));
   double Iw = 3.*zw*(1.-2.*zw)*(-2.)*pow(asin(1/2./sqrt(zw)), 2.) - 3.*zw - 0.5;
-  double gHyy = (sqrt(factor)*(It + Iw) + gyy);
-  *pWidth = pow( mh, 3. ) / 4./M_PI * pow( gHyy, 2. );
+  
+  double smvalue = pow(mh,3)/16./M_PI/pow(smpar->vev,2)*pow(smpar->alphae/M_PI,2)*pow((It + Iw), 2);
+  double factor  = pow(1+effpar->ghyy*2.*M_PI*smpar->vev/smpar->alphae/(It+Iw), 2);
+  *pWidth = factor*smvalue;
   *pError = 0;
 };
 
 void hgaz_(  sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
-  *pWidth = 1e-7;
+  double Atop = 0.3; //Approximated for mH < mtop
+  double Aw   = -4.6 + 0.3*pow(smpar->mh/smpar->mw,2);
+  double cw   = sqrt(1-pow(smpar->sw,2));
+  double I    = (1-16./3.*pow(smpar->sw,2))/cw*Atop + Aw;
+  double smwidth = pow(smpar->mw,2)*pow(smpar->mh,3)*smpar->alphae/128./pow(M_PI,4)/pow(smpar->vev,2)*pow(1.-pow(smpar->mz/smpar->mh,2),3)*pow(I,2);
+  double C    = smpar->mw/2./M_PI/pow(smpar->vev,2)/I*sqrt(smpar->alphae/M_PI);
+  double factor  = pow(1+(effpar->g1hzy+2.*effpar->g2hzy)/C,2);
+  
+  *pWidth = smwidth * factor;
   *pError = 0;
 };
 

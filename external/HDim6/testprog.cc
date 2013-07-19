@@ -87,6 +87,7 @@ int main( int argc, char ** argv )
 	smvalues.br_h_gg      = 0.0857;
 	smvalues.sm_width     = 4.07e-3;
 	smvalues.sm_width_err = 0.16e-3;
+	smvalues.br_h_yz      = 1.54e-3;
 
 	smvalues.err_h_bb     = 0.577*0.033;
 	smvalues.err_h_cc     = 0.0291*0.122;
@@ -97,7 +98,7 @@ int main( int argc, char ** argv )
         smvalues.err_h_ww     = 0.215*0.043;
 	smvalues.err_h_yy     = 2.28e-3*0.05;
 	smvalues.err_h_gg     = 0.0857*0.1;
-
+	smvalues.err_h_yz     = 1.54e-3*0.09;
 	LHAPDF::initPDFSet( pdfset, LHAPDF::LHGRID, 0 );
 
 	/* Initialize run */
@@ -124,6 +125,7 @@ int main( int argc, char ** argv )
 	cout<<setw(12)<<"BR(H->GG*)"<<setw(12)<<"HGG_ERR"<<setw(12)<<"HGG_CHI";
 	cout<<setw(12)<<"BR(H->yy)"<<setw(12)<<"Hyy_ERR"<<setw(12)<<"Hyy_CHI";
 	cout<<setw(12)<<"BR(H->bb)"<<setw(12)<<"Hbb_ERR"<<setw(12)<<"Hbb_CHI";
+	cout<<setw(12)<<"BR(H->zy)"<<setw(12)<<"Hzy_ERR"<<setw(12)<<"HZY_CHI";
 	cout<<setw(12)<<"Width(H)"<<setw(12)<<"Err_W(H)"<<setw(12)<<"Time(s)"<<endl;
 
 	for( int i = 0; i <= 10; i++ )
@@ -141,6 +143,7 @@ int main( int argc, char ** argv )
 	  double BR_Hgg, BR_Hgg_Err, BR_Hgg_Chi;
 	  double BR_Hyy, BR_Hyy_Err, BR_Hyy_Chi;
 	  double BR_Hbb, BR_Hbb_Err, BR_Hbb_Chi;
+	  double BR_Hzy, BR_Hzy_Err, BR_Hzy_Chi;
 	  double TH, TH_Err, TH_Chi;
 
 	  cout<<scientific<<setprecision(4)<<setw(12)<<effvalues.fww;
@@ -154,6 +157,7 @@ int main( int argc, char ** argv )
           br_hglgl_(   &smvalues, &effvalues, &BR_Hgg,  &BR_Hgg_Err,  &BR_Hgg_Chi  );
           br_hgaga_(   &smvalues, &effvalues, &BR_Hyy,  &BR_Hyy_Err,  &BR_Hyy_Chi  );
 	  br_hbb_(     &smvalues, &effvalues, &BR_Hbb,  &BR_Hbb_Err,  &BR_Hbb_Chi  );
+	  br_hgaz_(    &smvalues, &effvalues, &BR_Hzy,  &BR_Hzy_Err,  &BR_Hzy_Chi  );
 	  totalwidth_( &smvalues, &effvalues, &TH, &TH_Err, &TH_Chi );
 	  cout<<setprecision(4)<<scientific<<setw(12)<<vbfratio<<setw(12)<<err_vbfratio<<setw(12)<<chi_vbfratio;
 	  cout<<setprecision(4)<<scientific<<setw(12)<<bgratio<<setw(12)<<err_bgratio<<setw(12)<<chi_bgratio;
@@ -164,6 +168,7 @@ int main( int argc, char ** argv )
           cout<<setprecision(4)<<scientific<<setw(12)<<BR_Hgg<<setw(12)<<BR_Hgg_Err<<setw(12)<<BR_Hgg_Chi;
           cout<<setprecision(4)<<scientific<<setw(12)<<BR_Hyy<<setw(12)<<BR_Hyy_Err<<setw(12)<<BR_Hyy_Chi;
 	  cout<<setprecision(4)<<scientific<<setw(12)<<BR_Hbb<<setw(12)<<BR_Hbb_Err<<setw(12)<<BR_Hbb_Chi;
+	  cout<<setprecision(4)<<scientific<<setw(12)<<BR_Hzy<<setw(12)<<BR_Hzy_Err<<setw(12)<<BR_Hzy_Err;
 	  cout<<setprecision(4)<<scientific<<setw(12)<<TH<<setw(12)<<TH_Err;
 	  end = clock();
 	  cout<<setw(12)<<(end-start)/CLOCKS_PER_SEC<<endl;
