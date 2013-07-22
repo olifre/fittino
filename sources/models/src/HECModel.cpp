@@ -221,7 +221,7 @@ Fittino::HECModel::HECModel() {
     //                                                 "HiggsSignalsAdditionalPredictions",
     //                                                 "17", 1 ) ); 
 
-    //_predictionVector.push_back( new SLHAPrediction( "BR_hgg", "BR(h#rightarrowgg)",\
+    //_predictionVector.push_back( new SLHAPrediction( "BR_hgg", "BR(h#rightarrowgg)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
@@ -327,367 +327,367 @@ Fittino::HECModel::HECModel() {
     //                                                 "32", 1 ) );
 
     ////_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_inclusive_ATL", "#mu_{h#gamma#gamma}inclusive-ATL",
-    ////                                                   "", "",
-    ////                                                   0., 1.e6,
-    ////                                                   slhaModelCalculator,
-    ////                                                   "HiggsSignalsPeakObservables",
-    ////                                                   "1", "17", 2 ) );
+    ////                                                 "", "",
+    ////                                                 0., 1.e6,
+    ////                                                 slhaModelCalculator,
+    ////                                                 "HiggsSignalsPeakObservables",
+    ////                                                 "1", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_1lep_ATL", "#mu_{h#gamma#gamma}1lep-ATL",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_1lep_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (1lep)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "1", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_conv_central_highPTt_ATL", "#mu_{h#gamma#gamma}conv-central-highPTt-AT",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_conv_central_highPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (conv.-central-highPTt)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "2", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_conv_central_lowPTt_ATL", "#mu_{h#gamma#gamma}conv-central-lowPTt-ATL",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_conv_central_lowPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (conv.-central-lowPTt)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "3", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_conv_rest_highPTt_ATL", "#mu_{h#gamma#gamma}conv-rest-highPTt-ATL",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_conv_rest_highPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (conv.-rest-highPTt)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "4", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_conv_rest_lowPTt_ATL", "#mu_{h#gamma#gamma}conv-rest-lowPTt-ATL",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_conv_rest_lowPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (conv.-rest-lowPTt)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "5", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_conv_trans_ATL", "#mu_{h#gamma#gamma}conv-trans-ATL",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_conv_trans_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (conv.trans.)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "6", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_ETmiss_ATL", "#mu_{h#gamma#gamma}ETmiss-ATL",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_ETmiss_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (ETmiss)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "7", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_highmass2jetloose_ATL", "#mu_{h#gamma#gamma}highmass2jetloose-ATL",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_highmass2jetloose_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (highmass2jet,loose)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "8", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_highmass2jettight_ATL", "#mu_{h#gamma#gamma}highmass2jettight-ATL",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_highmass2jettight_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (highmass2jet,tight)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "9", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_lowmass2jet_ATL", "#mu_{h#gamma#gamma}lowmass2jet-ATL",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_lowmass2jet_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (lowmass2jet)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "10", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_unconv_central_highPTt_ATL", "#mu_{h#gamma#gamma}unconv-central-highPTt-ATL",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_unconv_central_highPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (unconv.-central-highPTt)",
     //                                                 "", "",
     //                                                 0., 1.e6, 
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "11", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_unconv_central_lowPTt_ATL", "#mu_{h#gamma#gamma}unconv-central-lowPTt-ATL",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_unconv_central_lowPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (unconv.-central-lowPTt)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "12", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_unconv_rest_highPTt_ATL", "#mu_{h#gamma#gamma}unconv-rest-highPTt-ATL",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_unconv_rest_highPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (unconv.-rest-highPTt)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "13", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_unconv_rest_lowPTt_ATL", "#mu_{h#gamma#gamma}unconv-rest-lowPTt-ATL",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_unconv_rest_lowPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (unconv.-rest-lowPTt)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "14", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_htautau_ATL", "#mu_{h#tau#tau}ATL",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_htautau_ATL", "ATL (pp)#rightarrowh#rightarrow#tau#tau",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "15", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hWWlnulnu_ATL", "#mu_{hWWlnunu}ATL",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hWWlnulnu_ATL", "ATL (pp)#rightarrowh#rightarrowWW#rightarrowl#nul#nu",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "16", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_VBFWWlnulnu_ATL", "#mu_{VBFWWlnulnu}ATL",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_VBFWWlnulnu_ATL", "ATL (pp)#rightarrowVBF#rightarrowWW#rightarrowl#nul#nu",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "17", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hZZ4l_ATL", "#mu_{hZZ4l}ATL",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hZZ4l_ATL", "ATL (pp)#rightarrowh#rightarrowZZ#rightarrow4l",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "18", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_VhVbb_ATL", "#mu_{VhVbb}ATL",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_VhVbb_ATL", "ATL (pp)#rightarrowVh#rightarrowVb#bar{b}",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "19", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_CDF", "#mu_{h#gamma#gamma}CDF",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_CDF", "CDF (pp)#rightarrowh#rightarrow#gamma#gamma",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "20", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_htautau_CDF", "#mu_{h#tau#tau}CDF",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_htautau_CDF", "CDF (pp)#rightarrowh#rightarrow#tau#tau",
     //                                                 "", "",
     //                                                 0., 1.e6, slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "21", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hWW_CDF", "#mu_{hWW}CDF",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hWW_CDF", "CDF (pp)#rightarrowh#rightarrowWW",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "22", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_tthttbb_CDF", "#mu_{tthttb}CDF",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_tthttbb_CDF", "CDF (pp)#rightarrowt#bar{t}h#rightarrowttbb",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "23", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_VhVbb_CDF", "#mu_{VhVbb}CDF",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_VhVbb_CDF", "CDF (pp)#rightarrowVh#rightarrowVb#bar{b}",
     //                                                 "", "", 0., 1.e6, slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "24", "17", 2 ) );
 
     ////_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_inclusive_CMS","#mu_{h#gamma#gamma}inclusive-CMS",
-    ////                                                   "", "",
-    ////                                                   0., 1.e6,
-    ////                                                   slhaModelCalculator,
-    ////                                                   "HiggsSignalsPeakObservables",
-    ////                                                   "12", "17", 2 ) );
+    ////                                                 "", "",
+    ////                                                 0., 1.e6,
+    ////                                                 slhaModelCalculator,
+    ////                                                 "HiggsSignalsPeakObservables",
+    ////                                                 "12", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_2jet_CMS", "#mu_{h#gamma#gamma}2jet-CMS",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_2jet_CMS", "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (2jet)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "25", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_2jetloose_CMS",  "#mu_{h#gamma#gamma}2jetloose-CMS",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_2jetloose_CMS",  "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (2jet-loose)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "26", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_2jettight_CMS",  "#mu_{h#gamma#gamma}2jettight-CMS",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_2jettight_CMS",  "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (2jet-tight)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "27", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_e_CMS","#mu_{h#gamma#gamma}e-CMS",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_e_CMS","CMS (pp)#rightarrowh#rightarrow#gamma#gamma (e)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "28", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_inclusive_CMS", "#mu_{h#gamma#gamma}inclusive-CMS",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_inclusive_CMS", "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (inclusive)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "29", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_ETmiss_CMS", "#mu_{h#gamma#gamma}ETmiss-CMS",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_ETmiss_CMS", "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (ETmiss)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "30", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_mu_CMS", "#mu_{h#gamma#gamma}#mu-CMS",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_mu_CMS", "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (#mu)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "31", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_htautau_01jet_CMS", "#mu_{h#tau#tau}0-1jet-CMS",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_htautau_01jet_CMS", "CMS (pp)#rightarrowh#rightarrow#tau#tau (0/1 jet)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "32", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hWW_01jet_CMS", "#mu_{hWW}0-1jet-CMS",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hWW_01jet_CMS", "CMS (pp)#rightarrowh#rightarrowWW (0/1 jet)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "33", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hZZ4l_01jet_CMS", "#mu_{hZZ4l}0-1jet-CMS",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hZZ4l_01jet_CMS", "CMS (pp)#rightarrowh#rightarrowZZ#rightarrow4l (0/1 jet)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "34", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hZZ4l_2jet_CMS", "#mu_{hZZ4l}2jet-CMS",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hZZ4l_2jet_CMS", "CMS (pp)#rightarrowh#rightarrowZZ#rightarrow4l (2jet)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "35", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_tthttbb_CMS", "#mu_{tthttb}CMS",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_tthttbb_CMS", "CMS (pp)#rightarrowt#bar{t}h#rightarrowttb#bar{b}",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "36", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_VBFtautau_CMS", "#mu_{VBF#tau#tau}CMS",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_VBFtautau_CMS", "CMS (pp)#rightarrowVBF#rightarrow#tau#tau",
     //                                                 "", "",
     //                                                 0., 1.e6, 
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "37", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_VBFWW_CMS", "#mu_{VBFWW}CMS",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_VBFWW_CMS", "CMS (pp)#rightarrowVBF#rightarrowWW",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "38", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_VhVbb_CMS", "#mu_{VhVbb}CMS",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_VhVbb_CMS", "CMS (pp)#rightarrowVh#rightarrowVb#bar{b}",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "39", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_VhVtautau_CMS", "#mu_{VhV#tau#tau}CMS",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_VhVtautau_CMS", "CMS (pp)#rightarrowVh#rightarrowV#tau#tau",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "40", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_WhWWW_CMS", "#mu_{WhWWW}CMS",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_WhWWW_CMS", "CMS (pp)#rightarrowWh#rightarrowWWW",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "41", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hbb_D0", "#mu_{hbb}DO",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hbb_D0", "D#slash{0} (pp)#rightarrowh#rightarrowb#bar{b}",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "42", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_D0", "#mu_{h#gamma#gamma}DO",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_D0", "D#slash{0} (pp)#rightarrowh#rightarrow#gamma#gamma",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "43", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_htautau_D0", "#mu_{h#tau#tau}DO",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_htautau_D0", "D#slash{0} (pp)#rightarrowh#rightarrow#tau#tau",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "44", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hWW_D0", "#mu_{hWw}DO",
+    //_predictionVector.push_back( new SLHAPrediction( "Mu_hWW_D0", "D#slash{0} (pp)#rightarrowh#rightarrowWW",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsPeakObservables",
     //                                                 "45", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "R_htautau", "R^{h}_{#tau#tau}",
+    //_predictionVector.push_back( new SLHAPrediction( "R_htautau", "R(h#rightarrow#tau#tau)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsAdditionalPredictions",
     //                                                 "4", 1 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "R_hbb", "R^{h}_{bb}",
+    //_predictionVector.push_back( new SLHAPrediction( "R_hbb", "R(h#rightarrowb#bar{b})",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsAdditionalPredictions",
     //                                                 "5", 1 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "R_Vhbb", "R^{h}_{bb}(Vh)",
+    //_predictionVector.push_back( new SLHAPrediction( "R_Vhbb", "R(Vh#rightarrowVb#bar{b}}",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsAdditionalPredictions",
     //                                                 "6", 1 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "R_hWW", "R^{h}_{WW}",
+    //_predictionVector.push_back( new SLHAPrediction( "R_hWW", "R(h#rightarrowWW)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsAdditionalPredictions",
     //                                                 "1", 1 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "R_hZZ", "R^{h}_{ZZ}",
+    //_predictionVector.push_back( new SLHAPrediction( "R_hZZ", "R(h#rightarrowZZ)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
     //                                                 "HiggsSignalsAdditionalPredictions",
     //                                                 "2", 1 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "R_hgammagamma", "R^{h}_{#gamma#gamma}",
+    //_predictionVector.push_back( new SLHAPrediction( "R_hgammagamma", "R(h#rightarrow#gamma#gamma)",
     //                                                 "", "",
     //                                                 0., 1.e6,
     //                                                 slhaModelCalculator,
@@ -695,40 +695,40 @@ Fittino::HECModel::HECModel() {
     //                                                 "3", 1 ) );
 
     ////_predictionVector.push_back( new SLHAPrediction( "Masss",
-    ////                                                   "GeV",
-    ////                                                   slhaModelCalculator,
-    ////                                                   "", "",
-    ////                                                   0 ) );
+    ////                                                 "GeV",
+    ////                                                 slhaModelCalculator,
+    ////                                                 "", "",
+    ////                                                 0 ) );
 
     ////_predictionVector.push_back( new SLHAPrediction( "Massc",
-    ////                                                   "GeV",
-    ////                                                   slhaModelCalculator,
-    ////                                                   "", "",
-    ////                                                   1 ) );
+    ////                                                 "GeV",
+    ////                                                 slhaModelCalculator,
+    ////                                                 "", "",
+    ////                                                 1 ) );
 
     ////_predictionVector.push_back( new SLHAPrediction( "Massb",
-    ////                                                   "GeV",
-    ////                                                   slhaModelCalculator,
-    ////                                                   "", "",
-    ////                                                   1 ) );
+    ////                                                 "GeV",
+    ////                                                 slhaModelCalculator,
+    ////                                                 "", "",
+    ////                                                 1 ) );
 
     ////_predictionVector.push_back( new SLHAPrediction( "Masst",
-    ////                                                   "GeV",
-    ////                                                   slhaModelCalculator,
-    ////                                                   "", "",
-    ////                                                   1 ) );
+    ////                                                 "GeV",
+    ////                                                 slhaModelCalculator,
+    ////                                                 "", "",
+    ////                                                 1 ) );
 
     ////_predictionVector.push_back( new SLHAPrediction( "Massmu",
-    ////                                                   "GeV",
-    ////                                                   slhaModelCalculator,
-    ////                                                   "", "",
-    ////                                                   1 ) );
+    ////                                                 "GeV",
+    ////                                                 slhaModelCalculator,
+    ////                                                 "", "",
+    ////                                                 1 ) );
 
     ////_predictionVector.push_back( new SLHAPrediction( "Masstau",
-    ////                                                   "GeV",
-    ////                                                   slhaModelCalculator,
-    ////                                                   "", "",
-    ////                                                   1 ) );
+    ////                                                 "GeV",
+    ////                                                 slhaModelCalculator,
+    ////                                                 "", "",
+    ////                                                 1 ) );
 
     //_chi2ContributionVector.push_back( new SLHAChi2Contribution( "HiggsSignals",
     //                                                             slhaModelCalculator,
