@@ -10,6 +10,7 @@
 #             If successful, it adds SLHAEA to Fittino as a cmake module.      #
 #                                                                              #
 # Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              #
+#             Bjoern Sarrazin     <sarrazin@physik.uni-bonn.de>                #
 #                                                                              #
 # Licence     This program is free software; you can redistribute it and/or    #
 #             modify it under the terms of the GNU General Public License as   #
@@ -18,25 +19,12 @@
 #                                                                              #
 ################################################################################
 
-# The variable SLHAEA_INCLUDE_DIR is set to "SLHAEA_INCLUDE_DIR-NOTFOUND" which is the default
-# value.
+include(FindPackageHandleStandardArgs)
 
-SET(SLHAEA_INCLUDE_DIR "SLHAEA_INCLUDE_DIR-NOTFOUND")
+FIND_PATH(SLHAEA_INCLUDE_DIR slhaea.h HINTS ${SLHAEA_INSTALLATION_PATH} PATHS ../slhaea)
 
-# Look for the location of the file "slhaea.h".
+set(SLHAEA_INCLUDE_DIRS ${SLHAEA_INCLUDE_DIR} )
 
-FIND_PATH(SLHAEA_INCLUDE_DIR slhaea.h PATHS ${SLHAEA_INSTALLATION_PATH} ../slhaea)
+find_package_handle_standard_args(SLHAEA REQUIRED_VARS SLHAEA_INCLUDE_DIR )
 
-IF(${SLHAEA_INCLUDE_DIR} MATCHES "SLHAEA_INCLUDE_DIR-NOTFOUND")
 
-    # If the path to the SLHAea installation is not found print this message.
-
-    MESSAGE(FATAL_ERROR "\nRequired module SLHAEA not found.\nPlease specify the path to your SLHAea installation in the file CMakeLists.txt in the Fittino root directory.\n")
-
-ELSE(${SLHAEA_INCLUDE_DIR} MATCHES "SLHAEA_INCLUDE_DIR-NOTFOUND")
-
-    # If the path to the SLHAea installation is found print this message.
-
-    MESSAGE(STATUS "SLHAea found")
-
-ENDIF(${SLHAEA_INCLUDE_DIR} MATCHES "SLHAEA_INCLUDE_DIR-NOTFOUND")

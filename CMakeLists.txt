@@ -55,7 +55,7 @@ FIND_PACKAGE(ROOT)
 
 # Specify the installation path of "SLHAea". The default path is "../slhaea".
 # SET(SLHAEA_INSTALLATION_PATH <slhaea/installation/path>)
-FIND_PACKAGE(SLHAEA)
+FIND_PACKAGE(SLHAEA REQUIRED)
 
 # Optional: Specify the installation path of the executable "SPheno". The default path is
 # "../SPheno/bin".
