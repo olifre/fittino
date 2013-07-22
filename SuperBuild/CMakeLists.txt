@@ -1,4 +1,4 @@
-
+# $Id$ #
 ################################################################################
 #                                                                              #
 # Project     Fittino - A SUSY Parameter Fitting Package                       #
@@ -24,7 +24,7 @@ SET(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
 
 SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../CMakeModules)
 
-SET( FITTINO_DEPENDENCIES )
+SET(FITTINO_DEPENDENCIES)
 
 INCLUDE(ExternalProject)
 
@@ -39,10 +39,9 @@ IF(NOT SLHAEA_FOUND)
     INSTALL_COMMAND ""
     UPDATE_COMMAND ""
     )
-  EXTERNALPROJECT_GET_PROPERTY(slhaea SOURCE_DIR) 
-  MESSAGE("Source dir is ${SOURCE_DIR}")
+  EXTERNALPROJECT_GET_PROPERTY(slhaea SOURCE_DIR)
   SET(SLHAEA_INSTALLATION_PATH  ${SOURCE_DIR})
-  LIST( APPEND FITTINO_DEPENDENCIES slhaea )
+  LIST(APPEND FITTINO_DEPENDENCIES slhaea)
 ENDIF(NOT SLHAEA_FOUND)
 
 EXTERNALPROJECT_ADD(
@@ -51,11 +50,10 @@ EXTERNALPROJECT_ADD(
   DOWNLOAD_COMMAND "" 
   UPDATE_COMMAND   "" 
   SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..    
-#  BINARY_DIR ${CMAKE_CURRENTSOURCE_DIR}/build
+  # BINARY_DIR ${CMAKE_CURRENTSOURCE_DIR}/build
   PREFIX "./fittino2"
   CMAKE_ARGS -DSLHAEA_INSTALLATION_PATH=${SLHAEA_INSTALLATION_PATH}
   )
-
 
 # ExternalProject_Add_Step(fittino2 "forceconfigure"
 #     COMMAND ${CMAKE_COMMAND} -E echo "Force configure of fittino2."
@@ -63,19 +61,8 @@ EXTERNALPROJECT_ADD(
 #     DEPENDERS configure
 #     ALWAYS 1) 
 
-
-ExternalProject_Add_Step(fittino2 "forcebuild"
+EXTERNALPROJECT_ADD_STEP(fittino2 "forcebuild"
     COMMAND ${CMAKE_COMMAND} -E echo "Force build of fittino2."
     DEPENDEES configure
     DEPENDERS build
-    ALWAYS 1) 
-  
-
-
-
-
-
-
-  
-
-
+    ALWAYS 1)
