@@ -19,12 +19,10 @@
 #                                                                              #
 ################################################################################
 
-include(FindPackageHandleStandardArgs)
+INCLUDE(FindPackageHandleStandardArgs)
 
 FIND_PATH(SLHAEA_INCLUDE_DIR slhaea.h HINTS ${SLHAEA_INSTALLATION_PATH} PATHS ../slhaea)
 
-set(SLHAEA_INCLUDE_DIRS ${SLHAEA_INCLUDE_DIR} )
+SET(SLHAEA_INCLUDE_DIRS ${SLHAEA_INCLUDE_DIR})
 
-find_package_handle_standard_args(SLHAEA REQUIRED_VARS SLHAEA_INCLUDE_DIR )
-
-
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(SLHAEA REQUIRED_VARS SLHAEA_INCLUDE_DIR)
