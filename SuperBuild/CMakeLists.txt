@@ -1,4 +1,5 @@
 # $Id$ #
+
 ################################################################################
 #                                                                              #
 # Project     Fittino - A SUSY Parameter Fitting Package                       #
@@ -36,7 +37,7 @@ IF(NOT SLHAEA_FOUND)
     slhaea
     PREFIX "external/slhaea"
     GIT_REPOSITORY https://github.com/fthomas/slhaea
-    GIT_TAG "v0.1" 
+    GIT_TAG "v0.1"
     INSTALL_COMMAND ""
     UPDATE_COMMAND ""
     )
@@ -49,10 +50,10 @@ ENDIF(NOT SLHAEA_FOUND)
 
 EXTERNALPROJECT_ADD(
   fittino2
-  DEPENDS ${FITTINO_DEPENDENCIES} 
-  DOWNLOAD_COMMAND "" 
-  UPDATE_COMMAND   "" 
-  SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..    
+  DEPENDS ${FITTINO_DEPENDENCIES}
+  DOWNLOAD_COMMAND ""
+  UPDATE_COMMAND   ""
+  SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..
   # BINARY_DIR ${CMAKE_CURRENTSOURCE_DIR}/build
   PREFIX "./fittino2"
   CMAKE_ARGS -DSLHAEA_INSTALLATION_PATH=${SLHAEA_INSTALLATION_PATH}
@@ -62,7 +63,7 @@ EXTERNALPROJECT_ADD(
 #     COMMAND ${CMAKE_COMMAND} -E echo "Force configure of fittino2."
 #     DEPENDEES update
 #     DEPENDERS configure
-#     ALWAYS 1) 
+#     ALWAYS 1)
 
 EXTERNALPROJECT_ADD_STEP(fittino2 "forcebuild"
     COMMAND ${CMAKE_COMMAND} -E echo "Force build of fittino2."
