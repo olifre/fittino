@@ -37,11 +37,11 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                           CMSSMModel();
+                          CMSSMModel();
       /*!
        *  Standard destructor.
        */
-                           ~CMSSMModel();
+                          ~CMSSMModel();
       /*!
        *  Virtual copy constructor.
        */
