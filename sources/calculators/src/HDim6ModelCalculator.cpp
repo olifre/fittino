@@ -1,4 +1,4 @@
-
+/* $Id$ */ 
 
 /*******************************************************************************
 *                                                                              *
@@ -24,7 +24,6 @@
 #include "HDim6/VBF.h"
 
 #include "HDim6ModelCalculator.h"
-
 
 
 Fittino::HDim6ModelCalculator::HDim6ModelCalculator() {
