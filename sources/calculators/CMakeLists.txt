@@ -31,7 +31,7 @@ INCLUDE_DIRECTORIES(${SLHAEA_INCLUDE_DIR})
 AUX_SOURCE_DIRECTORY(src sources)
 
 IF(NOT LHAPDF_FOUND)
-  list(REMOVE_ITEM sources "src/HDim6ModelCalculator.cpp")
+  LIST(REMOVE_ITEM sources "src/HDim6ModelCalculator.cpp")
 ENDIF(NOT LHAPDF_FOUND)
 
 ADD_LIBRARY(calculators ${sources})

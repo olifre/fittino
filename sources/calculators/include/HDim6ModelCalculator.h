@@ -22,7 +22,6 @@
 
 #include "ModelCalculatorBase.h"
 
-
 /*!
  *  \brief Fittino namespace.
  */
@@ -39,6 +38,8 @@ namespace Fittino {
        *  Standard constructor.
        */
                    HDim6ModelCalculator();
+
+    public:
       /*!
        *  Standard destructor.
        */

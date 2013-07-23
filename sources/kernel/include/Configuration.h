@@ -59,13 +59,13 @@ namespace Fittino {
       static Configuration*                 GetInstance();
 
     public:
+      enum                                  CalculatorType { HDIM6 };
       enum                                  ExecutionMode { OPTIMIZATION, PLOTTING, SAMPLING };
       enum                                  FileFormat { SLHA, XML };
       enum                                  ModelType { HEC, CMSSM, ROSENBROCK };
       enum                                  OptimizerType { GENETICALGORITHM, MINUIT, PARTICLESWARM, SIMULATEDANNEALING };
       //enum                                PlotterType { CONTOUR, SCATTER };
       enum                                  SamplerType { MARKOVCHAIN, SIMPLE };
-      enum                                  CalculatorType { HDIM6 };
 
     public:
       /*!

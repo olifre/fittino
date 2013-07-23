@@ -31,10 +31,10 @@ namespace Fittino {
 
   class DataStorageBase;
   class ModelBase;
+  class ModelCalculatorBase;
   class OptimizerBase;
   //class PlotterBase;
   class SamplerBase;
-  class ModelCalculatorBase;
 
   /*!
    *  \ingroup kernel
@@ -46,11 +46,12 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                             Factory();
+                                 Factory();
       /*!
        *  Standard destructor.
        */
-                             ~Factory();
+                                ~Factory();
+    public:
       /*!
        *  Returns a concrete data storage according to the file format passed as an argument.\n
        *  Supported file formats are
@@ -59,7 +60,7 @@ namespace Fittino {
        *    <li> XML\n
        *  </ul>
        */
-      DataStorageBase* const CreateDataStorage( const Configuration::FileFormat& fileFormat ) const;
+      DataStorageBase* const     CreateDataStorage( const Configuration::FileFormat& fileFormat ) const;
       /*!
        *  Returns a concrete model according to the model type passed as an argument. Supported\n
        *  model types are
@@ -69,7 +70,15 @@ namespace Fittino {
        *    <li> ROSENBROCK\n
        *  </ul>
        */
-      ModelBase* const       CreateModel( const Configuration::ModelType& modelType ) const;
+      ModelBase* const           CreateModel( const Configuration::ModelType& modelType ) const;
+      /*!
+       *  Returns a concrete calculator according to the calculator type passed as an argument. Supported\n
+       *  calculator types are
+       *  <ul>
+       *    <li> HDIM6\n	
+       *  </ul>
+       */
+      ModelCalculatorBase* const CreateCalculator( const Configuration::CalculatorType& calculatorType ) const;
       /*!
        *  Returns a concrete parameter optimizer according to the optimizer type passed as an\n
        *  argument. Supported optimizer types are
@@ -80,7 +89,7 @@ namespace Fittino {
        *    <li> SIMULATEDANNEALING\n
        *  </ul>
        */
-      OptimizerBase* const   CreateOptimizer( const Configuration::OptimizerType& optimizerType, ModelBase* model ) const;
+      OptimizerBase* const       CreateOptimizer( const Configuration::OptimizerType& optimizerType, ModelBase* model ) const;
       /*!
        *  Returns a concrete parameter sampler according to the sampler type passed as an\n
        *  argument.  Supported sampler types are
@@ -89,17 +98,7 @@ namespace Fittino {
        *  </ul>
        */
       //PlotterBase* const   CreatePlotter( const Configuration::PlotterType& plotterType, ModelBase* model, std::string dataFileName ) const;
-      SamplerBase* const     CreateSampler( const Configuration::SamplerType& samplerType, ModelBase* model ) const;
-
-      /*!
-       *  Returns a concrete calculator according to the calculator type passed as an argument. Supported\n
-       *  calculator types are
-       *  <ul>
-       *    <li> HDIM6\n	
-       *  </ul>
-       */
-      ModelCalculatorBase* const  CreateCalculator( const Configuration::CalculatorType& calculatorType ) const;
-
+      SamplerBase* const         CreateSampler( const Configuration::SamplerType& samplerType, ModelBase* model ) const;
 
   };
 

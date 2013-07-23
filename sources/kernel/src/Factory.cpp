@@ -20,10 +20,12 @@
 *******************************************************************************/
 
 #include "CMSSMModel.h"
+#include "ConfigurationException.h"
 //#include "ContourPlotter.h"
 #include "DataStorageBase.h"
 #include "Factory.h"
 #include "GeneticAlgorithmOptimizer.h"
+#include "HDim6ModelCalculator.h"
 #include "HECModel.h"
 #include "MarkovChainSampler.h"
 #include "MinuitOptimizer.h"
@@ -37,8 +39,6 @@
 #include "SimpleSampler.h"
 #include "SimulatedAnnealingOptimizer.h"
 #include "XMLDataStorage.h"
-#include "HDim6ModelCalculator.h"
-#include "ConfigurationException.h"
 
 Fittino::Factory::Factory() {
 
@@ -126,21 +126,19 @@ Fittino::SamplerBase* const Fittino::Factory::CreateSampler( const Fittino::Conf
 
 Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator(const Fittino::Configuration::CalculatorType& calculatorType) const {
 
-  switch ( calculatorType ) {
+    switch ( calculatorType ) {
   
-  case Configuration::HDIM6:
-    
+        case Configuration::HDIM6:
     
 #ifdef LHAPDF_FOUND
 
-    return new HDim6ModelCalculator();
+            return new HDim6ModelCalculator();
 
 #else
 
-    throw ConfigurationException( "Trying to use HDim6Calculator but Fittino was build without LHAPDF." );
+           throw ConfigurationException( "Trying to use HDim6Calculator but Fittino was build without LHAPDF." );
 
 #endif
-
 
   }
 
