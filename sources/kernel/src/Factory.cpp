@@ -76,6 +76,26 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const Fittino::Configur
 
 }
 
+Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator(const Fittino::Configuration::CalculatorType& calculatorType) const {
+
+    switch ( calculatorType ) {
+  
+        case Configuration::HDIM6:
+    
+#ifdef LHAPDF_FOUND
+
+            return new HDim6ModelCalculator();
+
+#else
+
+            throw ConfigurationException( "Trying to use HDim6Calculator but Fittino was build without LHAPDF." );
+
+#endif
+
+  }
+
+}
+
 Fittino::OptimizerBase* const Fittino::Factory::CreateOptimizer( const Fittino::Configuration::OptimizerType& optimizerType, Fittino::ModelBase* model ) const {
 
     switch ( optimizerType ) {
@@ -121,25 +141,5 @@ Fittino::SamplerBase* const Fittino::Factory::CreateSampler( const Fittino::Conf
             return new SimpleSampler( model );
 
     }
-
-}
-
-Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator(const Fittino::Configuration::CalculatorType& calculatorType) const {
-
-    switch ( calculatorType ) {
-  
-        case Configuration::HDIM6:
-    
-#ifdef LHAPDF_FOUND
-
-            return new HDim6ModelCalculator();
-
-#else
-
-           throw ConfigurationException( "Trying to use HDim6Calculator but Fittino was build without LHAPDF." );
-
-#endif
-
-  }
 
 }
