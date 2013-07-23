@@ -42,7 +42,7 @@ namespace Fittino {
       /*!
        *  Standard destructor.
        */
-                   ~HDim6ModelCalculator();
+      virtual      ~HDim6ModelCalculator();
 
     public:
       virtual void CalculatePredictions( PhysicsModelBase* model );

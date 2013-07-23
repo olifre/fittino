@@ -65,6 +65,7 @@ namespace Fittino {
       enum                                  OptimizerType { GENETICALGORITHM, MINUIT, PARTICLESWARM, SIMULATEDANNEALING };
       //enum                                PlotterType { CONTOUR, SCATTER };
       enum                                  SamplerType { MARKOVCHAIN, SIMPLE };
+      enum                                  CalculatorType { HDIM6 };
 
     public:
       /*!

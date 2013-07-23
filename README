@@ -47,5 +47,11 @@
 
   make
 
-- If the compilation is successful an executable called "fittino" is produced in
+  If the compilation is successful an executable called "fittino" is produced in
   build/sources/kernel
+
+- To install Fittino type
+
+  make install
+
+  This copies the executable "fittino" to bin/fittino.

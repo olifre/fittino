@@ -8,7 +8,8 @@
 #                                                                              #
 # Description Cmake configuration file for the external directory.             #
 #                                                                              #
-# Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              #
+# Authors     Bjoern Sarrazin     <sarrazin@physik.uni-bonn.de>                #
+#             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              #
 #                                                                              #
 # Licence     This program is free software; you can redistribute it and/or    #
 #             modify it under the terms of the GNU General Public License as   #
@@ -17,4 +18,6 @@
 #                                                                              #
 ################################################################################
 
-ADD_SUBDIRECTORY(HDim6)
+IF(LHAPDF_FOUND)
+  ADD_SUBDIRECTORY(HDim6)
+ENDIF(LHAPDF_FOUND)

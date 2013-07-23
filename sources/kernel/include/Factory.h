@@ -9,7 +9,8 @@
 * Description Factory class for creating file handlers, models, optimizers     *
 *             and samplers                                                     *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Bjoern Sarrazin     <sarrazin@physik.uni-bonn.de>                *
+*             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -33,6 +34,7 @@ namespace Fittino {
   class OptimizerBase;
   //class PlotterBase;
   class SamplerBase;
+  class ModelCalculatorBase;
 
   /*!
    *  \ingroup kernel
@@ -88,6 +90,16 @@ namespace Fittino {
        */
       //PlotterBase* const   CreatePlotter( const Configuration::PlotterType& plotterType, ModelBase* model, std::string dataFileName ) const;
       SamplerBase* const     CreateSampler( const Configuration::SamplerType& samplerType, ModelBase* model ) const;
+
+      /*!
+       *  Returns a concrete calculator according to the calculator type passed as an argument. Supported\n
+       *  calculator types are
+       *  <ul>
+       *    <li> HDIM6\n	
+       *  </ul>
+       */
+      ModelCalculatorBase* const  CreateCalculator( const Configuration::CalculatorType& calculatorType ) const;
+
 
   };
 

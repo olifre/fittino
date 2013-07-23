@@ -8,7 +8,8 @@
 #                                                                              #
 # Description Cmake configuration file for the calculators directory.          #
 #                                                                              #
-# Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              #
+# Authors     Bjoern Sarrazin     <sarrazin@physik.uni-bonn.de>                #
+#             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              #
 #                                                                              #
 # Licence     This program is free software; you can redistribute it and/or    #
 #             modify it under the terms of the GNU General Public License as   #
@@ -28,5 +29,9 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${SLHAEA_INCLUDE_DIR})
 
 AUX_SOURCE_DIRECTORY(src sources)
+
+IF(NOT LHAPDF_FOUND)
+  list(REMOVE_ITEM sources "src/HDim6ModelCalculator.cpp")
+ENDIF(NOT LHAPDF_FOUND)
 
 ADD_LIBRARY(calculators ${sources})

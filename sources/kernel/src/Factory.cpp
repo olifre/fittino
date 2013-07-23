@@ -9,7 +9,8 @@
 * Description Factory class for creating input file interpreters, models,      *
 *             optimizers and samplers                                          *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Bjoern Sarrazin     <sarrazin@physik.uni-bonn.de>                *
+*             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -36,6 +37,8 @@
 #include "SimpleSampler.h"
 #include "SimulatedAnnealingOptimizer.h"
 #include "XMLDataStorage.h"
+#include "HDim6ModelCalculator.h"
+#include "ConfigurationException.h"
 
 Fittino::Factory::Factory() {
 
@@ -118,5 +121,27 @@ Fittino::SamplerBase* const Fittino::Factory::CreateSampler( const Fittino::Conf
             return new SimpleSampler( model );
 
     }
+
+}
+
+Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator(const Fittino::Configuration::CalculatorType& calculatorType) const {
+
+  switch ( calculatorType ) {
+  
+  case Configuration::HDIM6:
+    
+    
+#ifdef LHAPDF_FOUND
+
+    return new HDim6ModelCalculator();
+
+#else
+
+    throw ConfigurationException( "Trying to use HDim6Calculator but Fittino was build without LHAPDF." );
+
+#endif
+
+
+  }
 
 }

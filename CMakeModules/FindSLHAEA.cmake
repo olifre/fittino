@@ -9,8 +9,8 @@
 # Description This macro tries to find a local SLHAEA installation.            #
 #             If successful, it adds SLHAEA to Fittino as a cmake module.      #
 #                                                                              #
-# Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              #
-#             Bjoern Sarrazin     <sarrazin@physik.uni-bonn.de>                #
+# Authors     Bjoern Sarrazin     <sarrazin@physik.uni-bonn.de>                #
+#             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              #
 #                                                                              #
 # Licence     This program is free software; you can redistribute it and/or    #
 #             modify it under the terms of the GNU General Public License as   #

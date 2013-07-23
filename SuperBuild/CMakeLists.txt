@@ -19,7 +19,7 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.7 FATAL_ERROR)
 
-PROJECT(FittinoSuperBuild)
+PROJECT(fittino_superbuild)
 
 SET(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
 
@@ -53,9 +53,9 @@ IF(NOT SLHAEA_FOUND)
 ENDIF(NOT SLHAEA_FOUND)
 
 EXTERNALPROJECT_ADD(
-  fittino2
+  fittino
   DEPENDS ${FITTINO_DEPENDENCIES}
-  PREFIX "./fittino2"
+  PREFIX "./fittino"
   SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..
   # BINARY_DIR ${CMAKE_CURRENTSOURCE_DIR}/build
   DOWNLOAD_COMMAND ""
@@ -63,14 +63,14 @@ EXTERNALPROJECT_ADD(
   CMAKE_ARGS -DSLHAEA_INSTALLATION_PATH=${SLHAEA_INSTALLATION_PATH} -DBOOST_ROOT=${BOOST_ROOT}
   )
 
-# ExternalProject_Add_Step(fittino2 "forceconfigure"
-#     COMMAND ${CMAKE_COMMAND} -E echo "Force configure of fittino2."
+# ExternalProject_Add_Step(fittino "forceconfigure"
+#     COMMAND ${CMAKE_COMMAND} -E echo "Force configure of fittino."
 #     DEPENDEES update
 #     DEPENDERS configure
 #     ALWAYS 1)
 
-EXTERNALPROJECT_ADD_STEP(fittino2 "forcebuild"
-    COMMAND ${CMAKE_COMMAND} -E echo "Force build of fittino2."
+EXTERNALPROJECT_ADD_STEP(fittino "forcebuild"
+    COMMAND ${CMAKE_COMMAND} -E echo "Force build of fittino."
     DEPENDEES configure
     DEPENDERS build
     ALWAYS 1)

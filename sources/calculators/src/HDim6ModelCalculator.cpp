@@ -37,6 +37,10 @@ Fittino::HDim6ModelCalculator::~HDim6ModelCalculator() {
 
 }
 
+void Fittino::HDim6ModelCalculator::CalculatePredictions( PhysicsModelBase* model ) {
+
+}
+
 void Fittino::HDim6ModelCalculator::Initialize() const {
 
 }
