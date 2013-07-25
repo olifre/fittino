@@ -139,8 +139,8 @@ void Fittino::ContourPlotter::Execute() {
             Double_t yBestFitValue[1] = { 0. };
 
             _tree->GetEntry( bestFitEntry );
-            xBestFitValue[0] = TMath::Abs( _leafVector[iQuantity1] + 1 ) - 1;
-            yBestFitValue[0] = TMath::Abs( _leafVector[iQuantity2] + 1 ) - 1;
+            xBestFitValue[0] = _leafVector[iQuantity1]; 
+            yBestFitValue[0] = _leafVector[iQuantity2]; 
 
             TGraph* BestFitValue = new TGraph( 1, xBestFitValue, yBestFitValue );
             BestFitValue->SetMarkerStyle(25);
