@@ -40,7 +40,7 @@ namespace Fittino {
   class Quantity;
 
   /*!
-   *  \ingroup kernel
+   *  \ingroup plotters
    *  \brief Base class for plotting.
    */
   class PlotterBase : public AnalysisTool {

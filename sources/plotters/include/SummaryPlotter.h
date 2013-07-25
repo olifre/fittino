@@ -32,7 +32,7 @@ namespace Fittino {
   class ModelBase;
 
   /*!
-   *  \ingroup kernel
+   *  \ingroup plotters
    *  \brief Class for plotting a summary of the fitted quantities.
    */
   class SummaryPlotter : public PlotterBase {

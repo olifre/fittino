@@ -587,6 +587,8 @@ INPUT                  = "." \
                          "../sources/kernel/src" \
                          "../sources/optimizers/include" \
                          "../sources/optimizers/src" \
+                         "../sources/plotters/include" \
+                         "../sources/plotters/src" \
                          "../sources/samplers/include" \
                          "../sources/samplers/src"
 
