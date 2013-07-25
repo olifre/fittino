@@ -75,6 +75,12 @@ Fittino::SLHAPrediction::~SLHAPrediction() {
 
 }
 
+std::string Fittino::SLHAPrediction::GetPlotUnit() const {
+
+    return _plotUnit;
+
+}
+
 void Fittino::SLHAPrediction::Update() {
 
     if ( _secondId == "" ) {
@@ -87,5 +93,15 @@ void Fittino::SLHAPrediction::Update() {
         _value = _slhaModelCalculator->GetDataStorage()->GetEntry( _blockName, _firstId, _secondId, _columnIndex );
 
     }
+
+}
+
+std::string Fittino::SLHAPrediction::GetPlotName() const {
+
+   std::string plotName = _plotName;
+
+   if ( _plotUnit != "" ) plotName += " [" + this->GetPlotUnit() + "]";
+
+   return plotName;
 
 }

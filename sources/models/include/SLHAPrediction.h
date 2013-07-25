@@ -69,7 +69,11 @@ namespace Fittino {
        *  Standard destructor.
        */
                                ~SLHAPrediction();
+       std::string             GetPlotUnit() const;
+
+    public:
       virtual void             Update();
+      virtual std::string      GetPlotName() const;
 
     private:
       int                      _columnIndex;
