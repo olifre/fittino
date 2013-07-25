@@ -64,7 +64,7 @@ namespace Fittino {
       enum                                  FileFormat { SLHA, XML };
       enum                                  ModelType { HEC, CMSSM, ROSENBROCK };
       enum                                  OptimizerType { GENETICALGORITHM, MINUIT, PARTICLESWARM, SIMULATEDANNEALING };
-      //enum                                PlotterType { CONTOUR, SCATTER };
+      enum                                  PlotterType { CONTOUR, SCATTER, SUMMARY };
       enum                                  SamplerType { MARKOVCHAIN, SIMPLE };
 
     public:
@@ -89,7 +89,7 @@ namespace Fittino {
       /*!
        *  Returns the configured plotter type.
        */
-      //PlotterType                         GetPlotterType() const;
+      PlotterType                           GetPlotterType() const;
       /*!
        *  Returns the configured sampler type.
        */

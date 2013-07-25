@@ -20,8 +20,8 @@
 *******************************************************************************/
 
 #include "CMSSMModel.h"
+#include "ContourPlotter.h"
 #include "ConfigurationException.h"
-//#include "ContourPlotter.h"
 #include "DataStorageBase.h"
 #include "Factory.h"
 #include "GeneticAlgorithmOptimizer.h"
@@ -32,12 +32,13 @@
 #include "ModelBase.h"
 #include "OptimizerBase.h"
 #include "ParticleSwarmOptimizer.h"
-//#include "PlotterBase.h"
+#include "PlotterBase.h"
 #include "RosenbrockModel.h"
 #include "SamplerBase.h"
-//#include "ScatterPlotter.h"
+#include "ScatterPlotter.h"
 #include "SimpleSampler.h"
 #include "SimulatedAnnealingOptimizer.h"
+#include "SummaryPlotter.h"
 #include "XMLDataStorage.h"
 
 Fittino::Factory::Factory() {
@@ -116,19 +117,22 @@ Fittino::OptimizerBase* const Fittino::Factory::CreateOptimizer( const Fittino::
 
 }
 
-//Fittino::PlotterBase* const Fittino::Factory::CreatePlotter( const Fittino::Configuration::PlotterType& plotterType, Fittino::ModelBase* model, std::string dataFileName ) const {
-//
-//    switch ( plotterType ) {
-//
-//        case Configuration::CONTOUR:
-//            return new ContourPlotter( model, dataFileName );
-//
-//        case Configuration::SCATTER:
-//            return new ScatterPlotter( model, dataFileName );
-//
-//    }
-//
-//}
+Fittino::PlotterBase* const Fittino::Factory::CreatePlotter( const Fittino::Configuration::PlotterType& plotterType, Fittino::ModelBase* model, std::string dataFileName ) const {
+
+    switch ( plotterType ) {
+
+        case Configuration::CONTOUR:
+            return new ContourPlotter( model, dataFileName );
+
+        case Configuration::SCATTER:
+            return new ScatterPlotter( model, dataFileName );
+
+        case Configuration::SUMMARY:
+            return new SummaryPlotter( model, dataFileName );
+
+    }
+
+}
 
 Fittino::SamplerBase* const Fittino::Factory::CreateSampler( const Fittino::Configuration::SamplerType& samplerType, Fittino::ModelBase* model ) const {
 

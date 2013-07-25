@@ -34,7 +34,7 @@
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "OptimizerBase.h"
-//#include "PlotterBase.h"
+#include "PlotterBase.h"
 #include "SamplerBase.h"
 
 Fittino::Controller* Fittino::Controller::GetInstance() {
@@ -113,13 +113,13 @@ void Fittino::Controller::ExecuteFittino() const {
             delete sampler;
 
 	}
-        //else if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::PLOTTING ) {
+        else if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::PLOTTING ) {
 
-        //    PlotterBase* plotter = factory.CreatePlotter( Configuration::GetInstance()->GetPlotterType(), model, _dataFileName );
-        //    plotter->PerformAnalysis();
-        //    delete plotter;
+            PlotterBase* plotter = factory.CreatePlotter( Configuration::GetInstance()->GetPlotterType(), model, _dataFileName );
+            plotter->PerformAnalysis();
+            delete plotter;
 
-        //}
+        }
         else {
 
             throw ConfigurationException( "Configured execution mode unknown." );

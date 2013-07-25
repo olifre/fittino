@@ -51,11 +51,11 @@ Fittino::Configuration::ExecutionMode Fittino::Configuration::GetExecutionMode()
         return Configuration::OPTIMIZATION;
 
     }
-    //else if ( ( *_steeringParameterMap )[key] == "PLOTTING" ) {
+    else if ( ( *_steeringParameterMap )[key] == "PLOTTING" ) {
 
-    //    return Configuration::PLOTTING;
+        return Configuration::PLOTTING;
 
-    //}
+    }
     else if ( ( *_steeringParameterMap )[key] == "SAMPLING" ) {
 
         return Configuration::SAMPLING;
@@ -128,27 +128,32 @@ Fittino::Configuration::OptimizerType Fittino::Configuration::GetOptimizerType()
 
 }
 
-//Fittino::Configuration::PlotterType Fittino::Configuration::GetPlotterType() const {
-//
-//    const std::string key = "PlotterType";
-//
-//    if ( ( *_steeringParameterMap )[key] == "Contour" ) {
-//
-//        return Configuration::CONTOUR;
-//
-//    }
-//    else if ( ( *_steeringParameterMap )[key] == "Scatter" ) {
-//
-//        return Configuration::SCATTER;
-//
-//    }
-//    else {
-//
-//        throw ConfigurationException( "Configured plotter type unknown." );
-//
-//    }
-//
-//}
+Fittino::Configuration::PlotterType Fittino::Configuration::GetPlotterType() const {
+
+    const std::string key = "PlotterType";
+
+    if ( ( *_steeringParameterMap )[key] == "Contour" ) {
+
+        return Configuration::CONTOUR;
+
+    }
+    else if ( ( *_steeringParameterMap )[key] == "Scatter" ) {
+
+        return Configuration::SCATTER;
+
+    }
+    else if ( ( *_steeringParameterMap )[key] == "Summary" ) {
+
+        return Configuration::SUMMARY;
+
+    }
+    else {
+
+        throw ConfigurationException( "Configured plotter type unknown." );
+
+    }
+
+}
 
 Fittino::Configuration::SamplerType Fittino::Configuration::GetSamplerType() const {
 
