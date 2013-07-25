@@ -40,6 +40,9 @@ namespace Fittino {
   class Quantity;
 
   /*!
+   *  \defgroup plotters
+   */
+  /*!
    *  \ingroup plotters
    *  \brief Base class for plotting.
    */
