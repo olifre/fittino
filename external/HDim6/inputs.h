@@ -95,6 +95,20 @@ struct effinputs {
   double g1hww;                // coefficient of FS(W+)W-(mu)del(nu,H) + h.c. Vertex
   double g2hww;                // coefficient of FS(W+) FS(W-) H Vertex
   double g3hww;                // coefficient of H W+(mu)W-(mu)-Vertex
+  
+  /* damping coefficients (unitarity, Alex), descriptions to follow */
+
+  double nbb;
+  double nww;
+  double nb;
+  double nw;
+  double ngg;
+
+  double rbb;
+  double rww;
+  double rb;
+  double rw;
+  double rgg;
 };
 
 void update_effinputs_( sminputs * smvalues, effinputs * effvalues );

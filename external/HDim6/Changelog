@@ -41,3 +41,7 @@
 2013-07-17
 	:decay
 	- Higgs to Gamma+Z included (dummy), value in inputs.h
+
+2013-07-26
+	:inputs
+	- Added coefficients for damping
