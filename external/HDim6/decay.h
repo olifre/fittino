@@ -45,9 +45,9 @@ static double chi_hglgl_sm, chi_hgaga_sm, chi_hmumu_sm, chi_htata_sm, chi_hchch_
 /* Initialization of Higgs partial widths in effective and standard model */
 
 void initeffwidths_( sminputs * smpar, effinputs * effpar ); // initialize tree level effective widths
-void initsmwidths_(  sminputs * smpar ); //initialize tree level sm widths
+void initsmwidths_(  sminputs * smpar );                     //initialize tree level sm widths
 
-/* Returns the total width */
+/* Totale Breite */
 
 void totalwidth_( sminputs * smpar, effinputs * effpar, double * tWidth, double * tError, double * tChi );
 
@@ -65,19 +65,19 @@ void br_hglgl_(   sminputs * smpar, effinputs * effpar, double * br, double * er
 void br_hgaga_(   sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi );
 void br_hgaz_(    sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi );
 
-/* only Top-Loops- and W-Loops in Photon decay included */
+/* Zerfaelle ueber Top- und W-Loops */
 
 void hglgl_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
 void hgaga_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
 void hgaz_(  sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
 
-/* Leptonische Zweikoerperzerfaelle */
+/* Zerfaelle in zwei Leptonen */
 
 void htata_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
 void hmumu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
 // void helel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
 
-/* Hadronische Zweikoerperzerfaelle */
+/* Zerfaelle in zwei Quarks */
 
 // void hupup_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
 // void hdodo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
@@ -85,9 +85,12 @@ void hchch_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
 void hstst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
 void hbobo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );
 
+/* Zerfaelle in elektroschwache Eichbosonen mit der Naeherung das ein Boson On-Shell ist */
+
+void hww_(     sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
+void hzz_(     sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
+
 /* Dreikoerperzerfaelle ueber schwache Eichbosonen */
-/* Um Vierkoerperzerfaelle zu erhalten, muss mit den */
-/* entsprechenden Branching Rations multipliziert werden */
 
 void hztata_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );
 void hzmumu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi );

@@ -45,3 +45,7 @@
 2013-07-26
 	:inputs
 	- Added coefficients for damping
+
+2013-07-26
+	:decay
+	- added functions to calculate partial width for decay to two electroweak gauge bosons, hww_ and hzz_

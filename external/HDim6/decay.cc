@@ -18,27 +18,9 @@ void initeffwidths_( sminputs * smpar, effinputs * effpar )
   chi_hmumu_eff = 1; chi_htata_eff = 1; chi_hchch_eff = 1; chi_hstst_eff = 1;
   chi_hbobo_eff = 1; chi_hgaga_eff = 1; chi_hglgl_eff = 1; chi_hgaz_eff  = 1;
   
-  double buffer1, buffer2, buffer3;
-  T_hzz_eff = 0, chi_hzz_eff = 1, err_hzz_eff = 0;
-  hztata_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hzz_eff += buffer1; err_hzz_eff += buffer2; chi_hzz_eff = (fabs(chi_hzz_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_eff );
-  hzmumu_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hzz_eff += buffer1; err_hzz_eff += buffer2; chi_hzz_eff = (fabs(chi_hzz_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_eff );
-  hzelel_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hzz_eff += buffer1; err_hzz_eff += buffer2; chi_hzz_eff = (fabs(chi_hzz_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_eff );
-  hzupup_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hzz_eff += buffer1; err_hzz_eff += buffer2; chi_hzz_eff = (fabs(chi_hzz_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_eff );
-  hzdodo_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hzz_eff += buffer1; err_hzz_eff += buffer2; chi_hzz_eff = (fabs(chi_hzz_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_eff );
-  hzchch_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hzz_eff += buffer1; err_hzz_eff += buffer2; chi_hzz_eff = (fabs(chi_hzz_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_eff );
-  hzstst_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hzz_eff += buffer1; err_hzz_eff += buffer2; chi_hzz_eff = (fabs(chi_hzz_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_eff );
-  hzbobo_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hzz_eff += buffer1; err_hzz_eff += buffer2; chi_hzz_eff = (fabs(chi_hzz_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_eff );
-  hznunu_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hzz_eff += buffer1; err_hzz_eff += buffer2; chi_hzz_eff = (fabs(chi_hzz_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_eff );
-  buffer1 = 0; buffer2 = 0; buffer3 = 0; T_hww_eff = 0; chi_hww_eff = 1; err_hww_eff = 0;
-  hwtanta_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
-  hwmunmu_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
-  hwelnel_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
-  hwupdo_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
-  hwupst_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
-  hwupbo_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
-  hwchdo_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
-  hwchst_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
-  hwchbo_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  T_hww_eff += buffer1; err_hww_eff += buffer2; chi_hww_eff = (fabs(chi_hww_eff - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_eff );
+  hzz_( smpar, effpar, &T_hzz_eff, &err_hzz_eff, &chi_hzz_eff );
+  hww_( smpar, effpar, &T_hww_eff, &err_hww_eff, &chi_hww_eff );
+
   T_eff = T_hglgl_eff+T_hgaga_eff+T_hmumu_eff+T_htata_eff+T_hbobo_eff+T_hchch_eff+T_hstst_eff+T_hww_eff+T_hzz_eff+T_hgaz_eff;
   err_T_eff = err_hww_eff + err_hzz_eff; /* Die anderen werden nicht numerisch berechnet, Fehler sind daher hier Null */
 };
@@ -62,27 +44,9 @@ void initsmwidths_( sminputs * smpar )
   chi_hmumu_sm = 1; chi_htata_sm = 1; chi_hchch_sm = 1; chi_hstst_sm = 1;
   chi_hbobo_sm = 1; chi_hgaga_sm = 1; chi_hglgl_sm = 1; chi_hgaz_sm  = 1;
 
-  double buffer1, buffer2, buffer3;
-  T_hzz_sm = 0, chi_hzz_sm = 1, err_hzz_sm = 0;
-  hztata_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hzz_sm += buffer1; err_hzz_sm += buffer2; chi_hzz_sm = (fabs(chi_hzz_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_sm );
-  hzmumu_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hzz_sm += buffer1; err_hzz_sm += buffer2; chi_hzz_sm = (fabs(chi_hzz_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_sm );
-  hzelel_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hzz_sm += buffer1; err_hzz_sm += buffer2; chi_hzz_sm = (fabs(chi_hzz_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_sm );
-  hzupup_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hzz_sm += buffer1; err_hzz_sm += buffer2; chi_hzz_sm = (fabs(chi_hzz_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_sm );
-  hzdodo_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hzz_sm += buffer1; err_hzz_sm += buffer2; chi_hzz_sm = (fabs(chi_hzz_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_sm );
-  hzchch_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hzz_sm += buffer1; err_hzz_sm += buffer2; chi_hzz_sm = (fabs(chi_hzz_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_sm );
-  hzstst_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hzz_sm += buffer1; err_hzz_sm += buffer2; chi_hzz_sm = (fabs(chi_hzz_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_sm );
-  hzbobo_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hzz_sm += buffer1; err_hzz_sm += buffer2; chi_hzz_sm = (fabs(chi_hzz_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_sm );
-  hznunu_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hzz_sm += buffer1; err_hzz_sm += buffer2; chi_hzz_sm = (fabs(chi_hzz_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hzz_sm );
-  buffer1 = 0; buffer2 = 0; buffer3 = 0; T_hww_sm = 0; chi_hww_sm = 1; err_hww_sm = 0;
-  hwtanta_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
-  hwmunmu_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
-  hwelnel_( smpar, &temp, &buffer1, &buffer2, &buffer3 ); T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
-  hwupdo_( smpar, &temp, &buffer1, &buffer2, &buffer3 );  T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
-  hwupst_( smpar, &temp, &buffer1, &buffer2, &buffer3 );  T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
-  hwupbo_( smpar, &temp, &buffer1, &buffer2, &buffer3 );  T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
-  hwchdo_( smpar, &temp, &buffer1, &buffer2, &buffer3 );  T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
-  hwchst_( smpar, &temp, &buffer1, &buffer2, &buffer3 );  T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
-  hwchbo_( smpar, &temp, &buffer1, &buffer2, &buffer3 );  T_hww_sm += buffer1; err_hww_sm += buffer2; chi_hww_sm = (fabs(chi_hww_sm - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi_hww_sm );
+  hzz_( smpar, &temp, &T_hzz_sm, &err_hzz_sm, &chi_hzz_sm );
+  hww_( smpar, &temp, &T_hww_sm, &err_hww_sm, &chi_hww_sm );
+
   T_sm = T_hglgl_sm+T_hgaga_sm+T_hmumu_sm+T_htata_sm+T_hbobo_sm+T_hchch_sm+T_hstst_sm+T_hww_sm+T_hzz_sm+T_hgaz_sm;
   err_T_sm = err_hww_sm + err_hzz_sm; /* Die anderen werden nicht numerisch berechnet, Fehler sind daher hier Null */
 
@@ -217,6 +181,8 @@ void hgaz_(  sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   *pError = 0;
 };
 
+// Zerfaelle in zwei Leptonen
+
 void htata_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
   double mf  = smpar->mta;
@@ -237,6 +203,7 @@ void hmumu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   *pError = 0;
 };
 
+/*
 void helel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
   double mf = smpar->mel;
@@ -245,10 +212,10 @@ void helel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double ffH = effpar->felh;
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*pow(1-pow(2.*mf/mh,2),1.5);
   *pError = 0;
-};
+};*/
 
-/* Hadronische Zweikoerperzerfaelle */
-
+/* Zerfaelle in zwei Quarks */
+/*
 void hupup_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
   double mf = smpar->mup;
@@ -268,6 +235,7 @@ void hdodo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
   *pError = 0;
 };
+*/
 
 void hchch_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
@@ -298,6 +266,46 @@ void hbobo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
   *pError = 0;
 };
+
+/* Zerfaelle in zwei Eichbosonen, gebildet durch Summierung der zugehoerigen Dreikoerperzerfaelle */
+
+void hzz_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * pChi )
+{
+  double width = 0, error = 0, chi = 1;
+  double buffer1 = 0, buffer2 = 0, buffer3 = 0;
+  hztata_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
+  hzmumu_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
+  hzelel_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
+  hzupup_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
+  hzdodo_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
+  hzchch_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
+  hzstst_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
+  hzbobo_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
+  hznunu_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
+  *pWidth = width;
+  *pError = error;
+  *pChi   = chi;
+};
+
+void hww_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * pChi )
+{  
+  double width = 0, error = 0, chi = 1;
+  double buffer1 = 0, buffer2 = 0, buffer3 = 0;
+  hwtanta_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
+  hwmunmu_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
+  hwelnel_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
+  hwupdo_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
+  hwupst_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
+  hwupbo_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
+  hwchdo_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
+  hwchst_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
+  hwchbo_( smpar, effpar, &buffer1, &buffer2, &buffer3 );  width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
+  *pWidth = width;
+  *pError = error;
+  *pChi   = chi;
+};
+
+/* Dreikoerperzerfaelle in ein on-shell und ein off-shell Eichboson mit anschliessendem Zerfall des Eichbosons */
 
 void hznunu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {  
