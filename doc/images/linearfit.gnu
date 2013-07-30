@@ -1,10 +1,10 @@
 f(x) = a*x + b
-set style line 1 lt 3 lw 1 pt 6 ps 1 
+set style line 1 lt 3 lw 1 pt 6 ps 1
 set xlabel "Higgs mass [GeV]"
 set ylabel ""
 set mxtics 5
 set mytics 4
-set key left top 
+set key left top
 fit [123:129] f(x) "hgg.txt" using 1:3 via a, b # 1:3 means plot the first column vs the third
 set term png
 set output "hgg_tt.png"
