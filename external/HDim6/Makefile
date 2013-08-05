@@ -23,5 +23,8 @@ inputs.o : inputs.cc
 VBF.o : VBF.cc
 	gcc -c -Wall -I/net/home/lxtsfs1/tpe/bheller/Programme/LHAPDF/include VBF.cc -o VBF.o
 
+gaugecpl.o : gaugecpl.cc
+	gcc -c -Wall gaugecpl.cc
+
 clean: 
-	rm -f inputs.o CrossSectionHad.o CrossSection.o decay.o VBF.o testprog.o testprog 
+	rm -f inputs.o CrossSectionHad.o CrossSection.o decay.o VBF.o testprog.o testprog gaugecpl.o

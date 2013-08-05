@@ -49,3 +49,10 @@
 2013-07-26
 	:decay
 	- added functions to calculate partial width for decay to two electroweak gauge bosons, hww_ and hzz_
+
+2013-08-05
+	:General
+	- added gaugecpl.h and gaugecpl.cc, providing functions to calculate coefficients for triple and 
+	  quartic gauge boson vertices
+	:vbf.cc
+	- removed error in Lorentz-Trafo

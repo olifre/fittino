@@ -506,14 +506,19 @@ double dd_ddh_massless( double * x, size_t dim, void * params )
   
   double cXi    = (pow(sqrt(s)-k30-k40,2)-pow(mh,2)-pow(k3v,2)-pow(k4v,2))/2./k3v/k4v;
   double sXi    = sqrt(1-pow(cXi,2));
+
 #ifdef CUTS
+  /* Parameter beta der Lorentz-Transformation */
+  double beta = (x1-x2)/(x1+x2);
+
   /* Phasenraum-Cuts */
+  /* Transversamimpuls aendert sich unter LT nicht, Rapiditaet erhaelt konstante Verschiebung */
   double pt4 = k4v*stheta;
   if( pt4 < 20 ) return 0;
   double pt3 = k3v*sqrt(ctheta*ctheta*cos(eta)*cos(eta)*sXi*sXi + stheta*stheta*cXi*cXi+2*stheta*ctheta*sXi*cXi*cos(eta)+sin(eta)*sin(eta)*sXi*sXi);
   if( pt3 < 20 ) return 0;
-  double rap4 = 0.5*log((k30+k30*ctheta)/(k30-k30*ctheta));
-  double rap3 = 0.5*log((k30*(1+ctheta*cXi-stheta*cos(eta)*sXi))/(k30*(1-ctheta*cXi+stheta*cos(eta)*sXi)));
+  double rap4 = 0.5*log((k30+k30*ctheta)/(k30-k30*ctheta))+0.5*log((1-beta)/(1+beta));
+  double rap3 = 0.5*log((k30*(1+ctheta*cXi-stheta*cos(eta)*sXi))/(k30*(1-ctheta*cXi+stheta*cos(eta)*sXi)))+0.5*log((1-beta)/(1+beta));
   if( rap4 > 4.5 || rap3 > 4.5 ) return 0;
   if( rap3*rap4 > 0 ) return 0;
   if( abs( rap3 - rap4 ) < 4 ) return 0;
@@ -10190,12 +10195,15 @@ double ud_duh_NoCKM_massless( double * x, size_t dim, void * params )
   double sXi    = sqrt(1-pow(cXi,2));
 #ifdef CUTS
   /* Phasenraum-Cuts */
+  /* Parameter beta fuer Lorentztransformationen */
+  double beta = (x1-x2)/(x1+x2);
+
   double pt4 = k4v*stheta;
   if( pt4 < 20 ) return 0;
   double pt3 = k3v*sqrt(ctheta*ctheta*cos(eta)*cos(eta)*sXi*sXi + stheta*stheta*cXi*cXi+2*stheta*ctheta*sXi*cXi*cos(eta)+sin(eta)*sin(eta)*sXi*sXi);
   if( pt3 < 20 ) return 0;
-  double rap4 = 0.5*log((k30+k30*ctheta)/(k30-k30*ctheta));
-  double rap3 = 0.5*log((k30*(1+ctheta*cXi-stheta*cos(eta)*sXi))/(k30*(1-ctheta*cXi+stheta*cos(eta)*sXi)));
+  double rap4 = 0.5*log((k30+k30*ctheta)/(k30-k30*ctheta))+0.5*log((1-beta)/(1+beta));
+  double rap3 = 0.5*log((k30*(1+ctheta*cXi-stheta*cos(eta)*sXi))/(k30*(1-ctheta*cXi+stheta*cos(eta)*sXi)))+0.5*log((1-beta)/(1+beta));
   if( rap4 > 4.5 || rap3 > 4.5 ) return 0;
   if( rap3*rap4 > 0 ) return 0;
   if( abs( rap3 - rap4 ) < 4 ) return 0;
@@ -13147,12 +13155,14 @@ double ud_duh_CKMsQ_massless( double * x, size_t dim, void * params )
   double sXi    = sqrt(1-pow(cXi,2));
 #ifdef CUTS
   /* Phasenraum-Cuts */
+  double beta = (x1-x2)/(x1+x2);
+
   double pt4 = k4v*stheta;
   if( pt4 < 20 ) return 0;
   double pt3 = k3v*sqrt(ctheta*ctheta*cos(eta)*cos(eta)*sXi*sXi + stheta*stheta*cXi*cXi+2*stheta*ctheta*sXi*cXi*cos(eta)+sin(eta)*sin(eta)*sXi*sXi);
   if( pt3 < 20 ) return 0;
-  double rap4 = 0.5*log((k30+k30*ctheta)/(k30-k30*ctheta));
-  double rap3 = 0.5*log((k30*(1+ctheta*cXi-stheta*cos(eta)*sXi))/(k30*(1-ctheta*cXi+stheta*cos(eta)*sXi)));
+  double rap4 = 0.5*log((k30+k30*ctheta)/(k30-k30*ctheta))+0.5*log((1-beta)/(1+beta));
+  double rap3 = 0.5*log((k30*(1+ctheta*cXi-stheta*cos(eta)*sXi))/(k30*(1-ctheta*cXi+stheta*cos(eta)*sXi)))+0.5*log((1-beta)/(1+beta));
   if( rap4 > 4.5 || rap3 > 4.5 ) return 0;
   if( rap3*rap4 > 0 ) return 0;
   if( abs( rap3 - rap4 ) < 4 ) return 0;
