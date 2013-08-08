@@ -18,7 +18,7 @@
  *             published by the Free Software Foundation; either version 3 of  *
  *             the License, or (at your option) any later version.             *
  *                                                                             *
- *******************************************************************************/
+ ******************************************************************************/
 
 #include <cstdlib>
 #include <ctime>
@@ -41,12 +41,9 @@ Fittino::Particle::Particle( double c1, double c2, Fittino::ModelBase* model, in
 
     _randomGenerator->SetSeed( seed );
 
-    for ( unsigned int n = 0; n < _model->GetNumberOfParameters(); n++ ) {
+    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
-        /*!
-         *  \todo Short-term: Get initial position ranges from bounds on parameters. 
-	 */
-        _position.push_back( _randomGenerator->Uniform( -3., 3. ) );
+        _position.push_back( _randomGenerator->Uniform( _model->GetParameterVector()->at( i )->GetLowerBound(), _model->GetParameterVector()->at( i )->GetUpperBound() ) );
         _velocity.push_back( 0. );
 
     }
@@ -67,9 +64,9 @@ void Fittino::Particle::UpdateVelocity() {
 
     for ( unsigned int i = 0; i < _velocity.size(); i++ ) {
 
-        _velocity[i] =   _velocity[i]
-                       + _c1 * randomNumber1 * ( _personalBestModel->GetParameterVector()->at( i )->GetValue() - _position[i] )
-                       + _c2 * randomNumber2 * ( _globalBestModel->GetParameterVector()->at( i )->GetValue() - _position[i] );
+        _velocity.at( i ) =   _velocity.at( i )
+                            + _c1 * randomNumber1 * ( _personalBestModel->GetParameterVector()->at( i )->GetValue() - _position.at( i ) )
+                            + _c2 * randomNumber2 * ( _globalBestModel->GetParameterVector()->at( i )->GetValue() - _position.at( i ) );
 
     }
 
@@ -79,7 +76,7 @@ void Fittino::Particle::UpdatePosition() {
 
     for ( unsigned int i = 0; i < _position.size(); i++ ) {
 
-        _position[i] = _position[i] + _velocity[i];
+        _position.at( i ) = _position.at( i ) + _velocity.at( i );
 
     }
 
@@ -92,7 +89,7 @@ void Fittino::Particle::UpdateModel() {
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
-        ( *_model->SetParameterVector() )[i]->SetValue( _position[i] );
+        _model->SetParameterVector()->at( i )->SetValue( _position.at( i ) );
 
     }
 
