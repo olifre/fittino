@@ -9,7 +9,7 @@
 * Description Factory class for creating input file interpreters, models,      *
 *             optimizers and samplers                                          *
 *                                                                              *
-* Authors     Bjoern Sarrazin     <sarrazin@physik.uni-bonn.de>                *
+* Authors     Bjoern  Sarrazin    <sarrazin@physik.uni-bonn.de>                *
 *             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
@@ -64,11 +64,11 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const Fittino::Configur
 
     switch ( modelType ) {
 
-        case Configuration::HEC:
-            return new HECModel();
-
         case Configuration::CMSSM:
             return new CMSSMModel();
+
+        case Configuration::HEC:
+            return new HECModel();
 
         case Configuration::ROSENBROCK:
             return new RosenbrockModel();

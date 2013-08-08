@@ -9,7 +9,7 @@
 * Description Factory class for creating file handlers, models, optimizers     *
 *             and samplers                                                     *
 *                                                                              *
-* Authors     Bjoern Sarrazin     <sarrazin@physik.uni-bonn.de>                *
+* Authors     Bjoern  Sarrazin    <sarrazin@physik.uni-bonn.de>                *
 *             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
@@ -66,8 +66,8 @@ namespace Fittino {
        *  Returns a concrete model according to the model type passed as an argument. Supported\n
        *  model types are
        *  <ul>
-       *    <li> HEC\n	
-       *    <li> MSUGRA\n
+       *    <li> CMSSM\n
+       *    <li> HEC\n
        *    <li> ROSENBROCK\n
        *  </ul>
        */
@@ -76,7 +76,7 @@ namespace Fittino {
        *  Returns a concrete calculator according to the calculator type passed as an argument. Supported\n
        *  calculator types are
        *  <ul>
-       *    <li> HDIM6\n	
+       *    <li> HDIM6\n
        *  </ul>
        */
       ModelCalculatorBase* const CreateCalculator( const Configuration::CalculatorType& calculatorType, const PhysicsModelBase* model ) const;
@@ -96,9 +96,10 @@ namespace Fittino {
        *  argument.  Supported sampler types are
        *  <ul>
        *    <li> MARKOVCHAIN\n
+       *    <li> SIMPLE\n
        *  </ul>
        */
-      PlotterBase* const     CreatePlotter( const Configuration::PlotterType& plotterType, ModelBase* model, std::string dataFileName ) const;
+      PlotterBase* const         CreatePlotter( const Configuration::PlotterType& plotterType, ModelBase* model, std::string dataFileName ) const;
       SamplerBase* const         CreateSampler( const Configuration::SamplerType& samplerType, ModelBase* model ) const;
 
   };

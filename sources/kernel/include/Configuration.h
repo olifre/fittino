@@ -62,7 +62,7 @@ namespace Fittino {
       enum                                  CalculatorType { HDIM6 };
       enum                                  ExecutionMode { OPTIMIZATION, PLOTTING, SAMPLING };
       enum                                  FileFormat { SLHA, XML };
-      enum                                  ModelType { HEC, CMSSM, ROSENBROCK };
+      enum                                  ModelType { CMSSM, HEC, ROSENBROCK };
       enum                                  OptimizerType { GENETICALGORITHM, MINUIT, PARTICLESWARM, SIMULATEDANNEALING };
       enum                                  PlotterType { CONTOUR, SCATTER, SUMMARY };
       enum                                  SamplerType { MARKOVCHAIN, SIMPLE };

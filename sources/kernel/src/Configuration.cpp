@@ -73,12 +73,12 @@ Fittino::Configuration::ModelType Fittino::Configuration::GetModelType() const {
 
     const std::string key = "ModelType";
 
-    if ( ( *_steeringParameterMap )[key] == "HEC" ) {
+    if ( ( *_steeringParameterMap )[key] == "CMSSM" ) {
 
         return Configuration::HEC;
 
     }
-    else if ( ( *_steeringParameterMap )[key] == "CMSSM" ) {
+    else if ( ( *_steeringParameterMap )[key] == "HEC" ) {
 
         return Configuration::CMSSM;
 
