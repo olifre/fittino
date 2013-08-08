@@ -92,6 +92,16 @@ namespace Fittino {
        */
       OptimizerBase* const       CreateOptimizer( const Configuration::OptimizerType& optimizerType, ModelBase* model ) const;
       /*!
+       *  Returns a concrete plotter according to the plotter type passed as an argument. Supported
+       *  plotter types are
+       *  <ul>
+       *    <li> CONTOUR\n
+       *    <li> SCATTER\n
+       *    <li> SUMMARY\n
+       *  </ul>
+       */
+      PlotterBase* const         CreatePlotter( const Configuration::PlotterType& plotterType, ModelBase* model, std::string dataFileName ) const;
+      /*!
        *  Returns a concrete parameter sampler according to the sampler type passed as an\n
        *  argument.  Supported sampler types are
        *  <ul>
@@ -99,7 +109,6 @@ namespace Fittino {
        *    <li> SIMPLE\n
        *  </ul>
        */
-      PlotterBase* const         CreatePlotter( const Configuration::PlotterType& plotterType, ModelBase* model, std::string dataFileName ) const;
       SamplerBase* const         CreateSampler( const Configuration::SamplerType& samplerType, ModelBase* model ) const;
 
   };
