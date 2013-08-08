@@ -33,14 +33,6 @@
  *  \todo Long-term: Write a comprehensive developer's guide.
  *
  *  \todo Long-term: Write a comprehensive user's guide.
- *
- *  \todo Mid-term: Write classes to handle output.
- *
- *  \todo Mid-term: Write an adapter for an external SLHA file parser (Mathias).
- *
- *  \todo Mid-term: Include workspaces (Matthias).
- *
- *  \todo Short-term: Update doc/Doxyfile.
  */
 
 /*!

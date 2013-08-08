@@ -92,7 +92,7 @@ namespace Fittino {
        */
       OptimizerBase* const       CreateOptimizer( const Configuration::OptimizerType& optimizerType, ModelBase* model ) const;
       /*!
-       *  Returns a concrete plotter according to the plotter type passed as an argument. Supported
+       *  Returns a concrete plotter according to the plotter type passed as an argument. Supported\n
        *  plotter types are
        *  <ul>
        *    <li> CONTOUR\n
