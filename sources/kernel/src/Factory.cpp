@@ -21,6 +21,7 @@
 
 #include "CMSSMModel.h"
 #include "ContourPlotter.h"
+#include "Configuration.h"
 #include "ConfigurationException.h"
 #include "DataStorageBase.h"
 #include "Factory.h"

@@ -75,12 +75,12 @@ Fittino::Configuration::ModelType Fittino::Configuration::GetModelType() const {
 
     if ( ( *_steeringParameterMap )[key] == "CMSSM" ) {
 
-        return Configuration::HEC;
+        return Configuration::CMSSM;
 
     }
     else if ( ( *_steeringParameterMap )[key] == "HEC" ) {
 
-        return Configuration::CMSSM;
+        return Configuration::HEC;
 
     }
     else if ( ( *_steeringParameterMap )[key] == "Rosenbrock" ) {

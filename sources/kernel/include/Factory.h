@@ -22,13 +22,12 @@
 #ifndef FITTINO_FACTORY_H
 #define FITTINO_FACTORY_H
 
-#include "Configuration.h"
-
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
 
+  class Configuration;
   class DataStorageBase;
   class ModelBase;
   class ModelCalculatorBase;
@@ -52,6 +51,7 @@ namespace Fittino {
        *  Standard destructor.
        */
                                 ~Factory();
+
     public:
       /*!
        *  Returns a concrete data storage according to the file format passed as an argument.\n
