@@ -37,7 +37,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                   SPhenoSLHAModelCalculator();
+                   SPhenoSLHAModelCalculator( const PhysicsModelBase* model );
       /*!
        *  Standard destructor.
        */
@@ -53,8 +53,8 @@ namespace Fittino {
      *  be eventually replaced.
      */
       virtual void CallExecutable();
-      virtual void CallFunction( PhysicsModelBase* model );
-      virtual void ConfigureInput( PhysicsModelBase* model );
+      virtual void CallFunction();
+      virtual void ConfigureInput();
 
       /*! \endcond UML */
 

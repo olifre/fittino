@@ -33,6 +33,7 @@ namespace Fittino {
   class ModelBase;
   class ModelCalculatorBase;
   class OptimizerBase;
+  class PhysicsModelBase;
   class PlotterBase;
   class SamplerBase;
 
@@ -78,7 +79,7 @@ namespace Fittino {
        *    <li> HDIM6\n	
        *  </ul>
        */
-      ModelCalculatorBase* const CreateCalculator( const Configuration::CalculatorType& calculatorType ) const;
+      ModelCalculatorBase* const CreateCalculator( const Configuration::CalculatorType& calculatorType, const PhysicsModelBase* model ) const;
       /*!
        *  Returns a concrete parameter optimizer according to the optimizer type passed as an\n
        *  argument. Supported optimizer types are

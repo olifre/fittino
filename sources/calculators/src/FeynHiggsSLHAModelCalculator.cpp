@@ -19,7 +19,8 @@
 
 #include "FeynHiggsSLHAModelCalculator.h"
 
-Fittino::FeynHiggsSLHAModelCalculator::FeynHiggsSLHAModelCalculator() {
+Fittino::FeynHiggsSLHAModelCalculator::FeynHiggsSLHAModelCalculator( const PhysicsModelBase* model)
+        : SLHAModelCalculatorBase(model) {
 
     _name = "FeynHiggs";
 
@@ -33,6 +34,6 @@ void Fittino::FeynHiggsSLHAModelCalculator::Initialize() const {
 
 }
 
-void Fittino::FeynHiggsSLHAModelCalculator::ConfigureInput( PhysicsModelBase* model ) {
+void Fittino::FeynHiggsSLHAModelCalculator::ConfigureInput() {
 
 }

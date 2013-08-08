@@ -42,7 +42,7 @@ double Fittino::PhysicsModelBase::Evaluate() {
 
     for ( unsigned int i = 0; i < _modelCalculatorVector.size(); ++i ) {
 
-        _modelCalculatorVector[i]->CalculatePredictions( this );
+        _modelCalculatorVector[i]->CalculatePredictions();
 
     }
 

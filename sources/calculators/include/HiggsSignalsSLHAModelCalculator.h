@@ -121,7 +121,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                   HiggsSignalsSLHAModelCalculator();
+                   HiggsSignalsSLHAModelCalculator( const PhysicsModelBase* model );
       /*!
        *  Standard destructor.
        */
@@ -549,8 +549,8 @@ namespace Fittino {
 
     private:
       virtual void CallExecutable();
-      virtual void CallFunction( PhysicsModelBase* model );
-      virtual void ConfigureInput( PhysicsModelBase* model );
+      virtual void CallFunction();
+      virtual void ConfigureInput();
   
   };
 

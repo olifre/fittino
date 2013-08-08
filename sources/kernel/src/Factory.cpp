@@ -77,7 +77,7 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const Fittino::Configur
 
 }
 
-Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator(const Fittino::Configuration::CalculatorType& calculatorType) const {
+Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator( const Fittino::Configuration::CalculatorType& calculatorType, const PhysicsModelBase* model ) const {
 
     switch ( calculatorType ) {
   
@@ -85,7 +85,7 @@ Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator(const Fit
     
 #ifdef LHAPDF_FOUND
 
-            return new HDim6ModelCalculator();
+            return new HDim6ModelCalculator( model );
 
 #else
 

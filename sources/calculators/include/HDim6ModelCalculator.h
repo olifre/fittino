@@ -37,7 +37,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                   HDim6ModelCalculator();
+                   HDim6ModelCalculator( const PhysicsModelBase* model );
 
     public:
       /*!
@@ -46,13 +46,13 @@ namespace Fittino {
       virtual      ~HDim6ModelCalculator();
 
     public:
-      virtual void CalculatePredictions( PhysicsModelBase* model );
+      virtual void CalculatePredictions();
       virtual void Initialize() const;
 
     private:
       virtual void CallExecutable();
-      virtual void CallFunction( PhysicsModelBase* model );
-      virtual void ConfigureInput( PhysicsModelBase* model );
+      virtual void CallFunction();
+      virtual void ConfigureInput();
 
   };
 

@@ -50,7 +50,7 @@ Fittino::CMSSMModel::CMSSMModel() {
                                                    "", "",
                                                    1., 0., 1.e3, 0., 1.e3, "3" ) );
 
-    SPhenoSLHAModelCalculator* slhaModelCalculator = new SPhenoSLHAModelCalculator();
+    SPhenoSLHAModelCalculator* slhaModelCalculator = new SPhenoSLHAModelCalculator( this );
     _modelCalculatorVector.push_back( slhaModelCalculator );
 
     _observableVector.push_back( new Observable( new SLHAPrediction( "O_Bsg_npf", "BR(b#rightarrows#gamma)",

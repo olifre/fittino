@@ -20,8 +20,9 @@
 #include "SLHAModelCalculatorBase.h"
 #include "SLHAeaSLHADataStorage.h"
 
-Fittino::SLHAModelCalculatorBase::SLHAModelCalculatorBase()
-        : _slhaInputFileName( "" ),
+Fittino::SLHAModelCalculatorBase::SLHAModelCalculatorBase( const PhysicsModelBase* model )
+        : ModelCalculatorBase( model ),
+          _slhaInputFileName( "" ),
           _slhaOutputFileName( "" ),
           _slhaInputDataStorage( new SLHAeaSLHADataStorage() ),
           _slhaOutputDataStorage( new SLHAeaSLHADataStorage() ) {
@@ -44,9 +45,9 @@ std::string Fittino::SLHAModelCalculatorBase::String( double x ) {
 
 }
 
-void Fittino::SLHAModelCalculatorBase::CalculatePredictions( Fittino::PhysicsModelBase* model ) {
+void Fittino::SLHAModelCalculatorBase::CalculatePredictions() {
 
-    ConfigureInput( model );
+    ConfigureInput();
 
     switch ( _callMethod ) {
 
@@ -61,7 +62,7 @@ void Fittino::SLHAModelCalculatorBase::CalculatePredictions( Fittino::PhysicsMod
 
         case FUNCTION: {
 
-            CallFunction( model );
+            CallFunction();
             _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
 	    break;
 

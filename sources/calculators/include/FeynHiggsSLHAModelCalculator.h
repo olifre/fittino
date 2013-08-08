@@ -37,7 +37,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                   FeynHiggsSLHAModelCalculator();
+                   FeynHiggsSLHAModelCalculator( const PhysicsModelBase* model );
       /*!
        *  Standard destructor.
        */
@@ -47,7 +47,7 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-      void         ConfigureInput( PhysicsModelBase* model );
+      void         ConfigureInput();
 
       /*! \endcond UML */
 

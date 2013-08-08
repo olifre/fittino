@@ -41,7 +41,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                           SLHAModelCalculatorBase();
+                           SLHAModelCalculatorBase( const PhysicsModelBase* model );
       /*!
        *  Standard destructor.
        */
@@ -53,7 +53,7 @@ namespace Fittino {
       std::string          String( double x );
 
     public:
-      virtual void         CalculatePredictions( PhysicsModelBase* model );
+      virtual void         CalculatePredictions();
 
     protected:
       std::string          _slhaInputFileName;

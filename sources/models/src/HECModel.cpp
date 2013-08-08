@@ -141,7 +141,7 @@ Fittino::HECModel::HECModel() {
     //_parameterVector.push_back( new PhysicsParameter( "BR_hjhihi",         "BR(h_{j}#rightarrowh_{i}h_{i}}",   0.,    "",    "",  0.1,    0.,   1.,    0.,   1., true  ) );
     //_parameterVector.push_back( new PhysicsParameter( "Gamma_hInvisible",  "#Gamma(h#rightarrowInvisible)",    0., "GeV", "GeV", 0.01,    0.,   1.,    0.,   1., false ) );
 
-    //SLHAModelCalculatorBase* slhaModelCalculator = new HiggsSignalsSLHAModelCalculator();
+    //SLHAModelCalculatorBase* slhaModelCalculator = new HiggsSignalsSLHAModelCalculator( this );
     //_modelCalculatorVector.push_back( slhaModelCalculator );
 
     //_predictionVector.push_back( new SLHAPrediction( "Gamma_hTotal", "#Gamma_{h}^{Total}",

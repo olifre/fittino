@@ -25,10 +25,10 @@
 
 #include "HDim6ModelCalculator.h"
 
+Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* model )
+        :ModelCalculatorBase( model ){
 
-Fittino::HDim6ModelCalculator::HDim6ModelCalculator() {
-
-    _name = "HDim6ModelCalculator";
+            _name = "HDim6ModelCalculator";
 
 }
 
@@ -36,7 +36,7 @@ Fittino::HDim6ModelCalculator::~HDim6ModelCalculator() {
 
 }
 
-void Fittino::HDim6ModelCalculator::CalculatePredictions( PhysicsModelBase* model ) {
+void Fittino::HDim6ModelCalculator::CalculatePredictions() {
 
 }
 
@@ -48,17 +48,15 @@ void Fittino::HDim6ModelCalculator::CallExecutable() {
 
 }
 
-void Fittino::HDim6ModelCalculator::CallFunction( PhysicsModelBase* model ) {
+void Fittino::HDim6ModelCalculator::CallFunction() {
 
   effinputs effinputs;
   sminputs  SMparam;
 
   init_(   &SMparam );
-  
 
 }
 
-
-void Fittino::HDim6ModelCalculator::ConfigureInput( PhysicsModelBase* model ) {
+void Fittino::HDim6ModelCalculator::ConfigureInput() {
 
 }

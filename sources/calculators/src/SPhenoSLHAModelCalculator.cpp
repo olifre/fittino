@@ -32,13 +32,14 @@
 #include "SLHAParameter.h"
 #include "SPhenoSLHAModelCalculator.h"
 
-Fittino::SPhenoSLHAModelCalculator::SPhenoSLHAModelCalculator() {
+Fittino::SPhenoSLHAModelCalculator::SPhenoSLHAModelCalculator( const PhysicsModelBase* model )
+        :SLHAModelCalculatorBase( model ) {
 
-    _callMethod         = EXECUTABLE;
-    _executableName     = "./SPheno";
-    _name               = "SPheno";
-    _slhaInputFileName  = "LesHouches.in";
-    _slhaOutputFileName = "SPheno.spc";
+            _callMethod         = EXECUTABLE;
+            _executableName     = "./SPheno";
+            _name               = "SPheno";
+            _slhaInputFileName  = "LesHouches.in";
+            _slhaOutputFileName = "SPheno.spc";
 
 }
 
@@ -50,13 +51,13 @@ void Fittino::SPhenoSLHAModelCalculator::Initialize() const {
 
 }
 
-void Fittino::SPhenoSLHAModelCalculator::ConfigureInput( PhysicsModelBase* model ) {
+void Fittino::SPhenoSLHAModelCalculator::ConfigureInput() {
 
     // Write block "MODSEL".
 
     _slhaInputDataStorage->AddBlock( "MODSEL:BLOCK MODSEL:# Model selection" );
 
-    _slhaInputDataStorage->AddLine( "MODSEL:1:1:# " + model->GetName() );
+    _slhaInputDataStorage->AddLine( "MODSEL:1:1:# " + _model->GetName() );
     _slhaInputDataStorage->AddLine( "MODSEL:12:1000:# Q_EWSB (fixed)" );
 
     // Write block "SMINPUTS".
@@ -75,14 +76,14 @@ void Fittino::SPhenoSLHAModelCalculator::ConfigureInput( PhysicsModelBase* model
 
     _slhaInputDataStorage->AddBlock( "MINPAR:BLOCK MINPAR:# Input parameters" );
 
-    for ( unsigned int i = 0; i < model->GetNumberOfParameters(); i++ ) {
+    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
         std::stringstream tmpStream;
         std::string tmpString;
 
-        //tmpStream << model->GetParameterVector()->at( i )->GetID()    << ":"
-        //          << model->GetParameterVector()->at( i )->GetValue() << ":"
-        //          << "#" << model->GetParameterVector()->at( i )->GetName();
+        //tmpStream << _model->GetParameterVector()->at( i )->GetID()    << ":"
+        //          << _model->GetParameterVector()->at( i )->GetValue() << ":"
+        //          << "#" << _model->GetParameterVector()->at( i )->GetName();
 
         tmpStream >> tmpString;
 
@@ -188,6 +189,6 @@ void Fittino::SPhenoSLHAModelCalculator::CallExecutable() {
 
 }
 
-void Fittino::SPhenoSLHAModelCalculator::CallFunction( PhysicsModelBase* model ) {
+void Fittino::SPhenoSLHAModelCalculator::CallFunction() {
 
 }

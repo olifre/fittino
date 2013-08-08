@@ -29,7 +29,8 @@
 #include "PhysicsModelBase.h"
 #include "SLHADataStorageBase.h"
 
-Fittino::HiggsSignalsSLHAModelCalculator::HiggsSignalsSLHAModelCalculator() {
+Fittino::HiggsSignalsSLHAModelCalculator::HiggsSignalsSLHAModelCalculator(const PhysicsModelBase* model)
+  : SLHAModelCalculatorBase( model ) {
 
     _name               = "HiggsSignals";
     _slhaOutputFileName = "HS-output.slha";
@@ -279,111 +280,111 @@ double Fittino::HiggsSignalsSLHAModelCalculator::CalculateBR( double g2hjxx,
 
 }
 
-void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* model ) {
+void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction() {
 
     // Identify the model parameters with the variables needed by HiggsSignals.
 
-    double massh          = model->GetParameterVector()->at( 0 )->GetValue();
+    double massh          = _model->GetParameterVector()->at( 0 )->GetValue();
 
     // Setting 4 : All up-type quarks and all down-type quarks and leptons are the same. Additionally the W and Z boson are fitted universally
     
-    double g2hjss_s       = pow( 1 + model->GetParameterVector()->at(  1 )->GetValue(), 2 );
-    double g2hjss_p       = pow( 1 + model->GetParameterVector()->at(  2 )->GetValue(), 2 );
-    double g2hjcc_s       = pow( 1 + model->GetParameterVector()->at(  3 )->GetValue(), 2 );
-    double g2hjcc_p       = pow( 1 + model->GetParameterVector()->at(  4 )->GetValue(), 2 );
+    double g2hjss_s       = pow( 1 + _model->GetParameterVector()->at(  1 )->GetValue(), 2 );
+    double g2hjss_p       = pow( 1 + _model->GetParameterVector()->at(  2 )->GetValue(), 2 );
+    double g2hjcc_s       = pow( 1 + _model->GetParameterVector()->at(  3 )->GetValue(), 2 );
+    double g2hjcc_p       = pow( 1 + _model->GetParameterVector()->at(  4 )->GetValue(), 2 );
     double g2hjbb_s       = g2hjss_s;
-    double g2hjbb_p       = pow( 1 + model->GetParameterVector()->at(  5 )->GetValue(), 2 );
+    double g2hjbb_p       = pow( 1 + _model->GetParameterVector()->at(  5 )->GetValue(), 2 );
     double g2hjtt_s       = g2hjcc_s;
-    double g2hjtt_p       = pow( 1 + model->GetParameterVector()->at(  6 )->GetValue(), 2 );
-    double g2hjmumu_s     = pow( 1 + model->GetParameterVector()->at(  7 )->GetValue(), 2 );
-    double g2hjmumu_p     = pow( 1 + model->GetParameterVector()->at(  8 )->GetValue(), 2 );
+    double g2hjtt_p       = pow( 1 + _model->GetParameterVector()->at(  6 )->GetValue(), 2 );
+    double g2hjmumu_s     = pow( 1 + _model->GetParameterVector()->at(  7 )->GetValue(), 2 );
+    double g2hjmumu_p     = pow( 1 + _model->GetParameterVector()->at(  8 )->GetValue(), 2 );
     double g2hjtautau_s   = g2hjmumu_s;
-    double g2hjtautau_p   = pow( 1 + model->GetParameterVector()->at(  9 )->GetValue(), 2 );
-    double g2hjWW         = pow( 1 + model->GetParameterVector()->at( 10 )->GetValue(), 2 );
+    double g2hjtautau_p   = pow( 1 + _model->GetParameterVector()->at(  9 )->GetValue(), 2 );
+    double g2hjWW         = pow( 1 + _model->GetParameterVector()->at( 10 )->GetValue(), 2 );
     double g2hjZZ         = g2hjWW;
-    double g2hjZga        = pow( 1 + model->GetParameterVector()->at( 11 )->GetValue(), 2 );
-    double g2hjgaga       = pow( 1 + model->GetParameterVector()->at( 12 )->GetValue(), 2 );
-    double g2hjgg         = pow( 1 + model->GetParameterVector()->at( 13 )->GetValue(), 2 );
-    double g2hjggZ        = pow( 1 + model->GetParameterVector()->at( 14 )->GetValue(), 2 );
-    double g2hjhiZ        = pow( 1 + model->GetParameterVector()->at( 15 )->GetValue(), 2 );
+    double g2hjZga        = pow( 1 + _model->GetParameterVector()->at( 11 )->GetValue(), 2 );
+    double g2hjgaga       = pow( 1 + _model->GetParameterVector()->at( 12 )->GetValue(), 2 );
+    double g2hjgg         = pow( 1 + _model->GetParameterVector()->at( 13 )->GetValue(), 2 );
+    double g2hjggZ        = pow( 1 + _model->GetParameterVector()->at( 14 )->GetValue(), 2 );
+    double g2hjhiZ        = pow( 1 + _model->GetParameterVector()->at( 15 )->GetValue(), 2 );
                                                                      
-    double BR_hjhihi      = model->GetParameterVector()->at( 16 )->GetValue();
-    double GammaInvisible = model->GetParameterVector()->at( 17 )->GetValue();
+    double BR_hjhihi      = _model->GetParameterVector()->at( 16 )->GetValue();
+    double GammaInvisible = _model->GetParameterVector()->at( 17 )->GetValue();
 
     // Setting 3 : All up-type quarks and all down-type quarks and leptons are the same.
 
-    //double g2hjss_s       = pow( 1 + model->GetParameterVector()->at(  1 )->GetValue(), 2 );
-    //double g2hjss_p       = pow( 1 + model->GetParameterVector()->at(  2 )->GetValue(), 2 );
-    //double g2hjcc_s       = pow( 1 + model->GetParameterVector()->at(  3 )->GetValue(), 2 );
-    //double g2hjcc_p       = pow( 1 + model->GetParameterVector()->at(  4 )->GetValue(), 2 );
+    //double g2hjss_s       = pow( 1 + _model->GetParameterVector()->at(  1 )->GetValue(), 2 );
+    //double g2hjss_p       = pow( 1 + _model->GetParameterVector()->at(  2 )->GetValue(), 2 );
+    //double g2hjcc_s       = pow( 1 + _model->GetParameterVector()->at(  3 )->GetValue(), 2 );
+    //double g2hjcc_p       = pow( 1 + _model->GetParameterVector()->at(  4 )->GetValue(), 2 );
     //double g2hjbb_s       = g2hjss_s;
-    //double g2hjbb_p       = pow( 1 + model->GetParameterVector()->at(  5 )->GetValue(), 2 );
+    //double g2hjbb_p       = pow( 1 + _model->GetParameterVector()->at(  5 )->GetValue(), 2 );
     //double g2hjtt_s       = g2hjcc_s;
-    //double g2hjtt_p       = pow( 1 + model->GetParameterVector()->at(  6 )->GetValue(), 2 );
-    //double g2hjmumu_s     = pow( 1 + model->GetParameterVector()->at(  7 )->GetValue(), 2 );
-    //double g2hjmumu_p     = pow( 1 + model->GetParameterVector()->at(  8 )->GetValue(), 2 );
+    //double g2hjtt_p       = pow( 1 + _model->GetParameterVector()->at(  6 )->GetValue(), 2 );
+    //double g2hjmumu_s     = pow( 1 + _model->GetParameterVector()->at(  7 )->GetValue(), 2 );
+    //double g2hjmumu_p     = pow( 1 + _model->GetParameterVector()->at(  8 )->GetValue(), 2 );
     //double g2hjtautau_s   = g2hjmumu_s;
-    //double g2hjtautau_p   = pow( 1 + model->GetParameterVector()->at(  9 )->GetValue(), 2 );
-    //double g2hjWW         = pow( 1 + model->GetParameterVector()->at( 10 )->GetValue(), 2 );
-    //double g2hjZZ         = pow( 1 + model->GetParameterVector()->at( 11 )->GetValue(), 2 );
-    //double g2hjZga        = pow( 1 + model->GetParameterVector()->at( 12 )->GetValue(), 2 );
-    //double g2hjgaga       = pow( 1 + model->GetParameterVector()->at( 13 )->GetValue(), 2 );
-    //double g2hjgg         = pow( 1 + model->GetParameterVector()->at( 14 )->GetValue(), 2 );
-    //double g2hjggZ        = pow( 1 + model->GetParameterVector()->at( 15 )->GetValue(), 2 );
-    //double g2hjhiZ        = pow( 1 + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
+    //double g2hjtautau_p   = pow( 1 + _model->GetParameterVector()->at(  9 )->GetValue(), 2 );
+    //double g2hjWW         = pow( 1 + _model->GetParameterVector()->at( 10 )->GetValue(), 2 );
+    //double g2hjZZ         = pow( 1 + _model->GetParameterVector()->at( 11 )->GetValue(), 2 );
+    //double g2hjZga        = pow( 1 + _model->GetParameterVector()->at( 12 )->GetValue(), 2 );
+    //double g2hjgaga       = pow( 1 + _model->GetParameterVector()->at( 13 )->GetValue(), 2 );
+    //double g2hjgg         = pow( 1 + _model->GetParameterVector()->at( 14 )->GetValue(), 2 );
+    //double g2hjggZ        = pow( 1 + _model->GetParameterVector()->at( 15 )->GetValue(), 2 );
+    //double g2hjhiZ        = pow( 1 + _model->GetParameterVector()->at( 16 )->GetValue(), 2 );
 
-    //double BR_hjhihi      = model->GetParameterVector()->at( 17 )->GetValue();
-    //double GammaInvisible = model->GetParameterVector()->at( 18 )->GetValue();
+    //double BR_hjhihi      = _model->GetParameterVector()->at( 17 )->GetValue();
+    //double GammaInvisible = _model->GetParameterVector()->at( 18 )->GetValue();
 
     // Setting 2 : All up-type quarks are the same.
 
-    //double g2hjss_s       = pow( 1 + model->GetParameterVector()->at(  1 )->GetValue(), 2 );
-    //double g2hjss_p       = pow( 1 + model->GetParameterVector()->at(  2 )->GetValue(), 2 );
-    //double g2hjcc_s       = pow( 1 + model->GetParameterVector()->at(  3 )->GetValue(), 2 );
-    //double g2hjcc_p       = pow( 1 + model->GetParameterVector()->at(  4 )->GetValue(), 2 );
-    //double g2hjbb_s       = pow( 1 + model->GetParameterVector()->at(  5 )->GetValue(), 2 );
-    //double g2hjbb_p       = pow( 1 + model->GetParameterVector()->at(  6 )->GetValue(), 2 );
+    //double g2hjss_s       = pow( 1 + _model->GetParameterVector()->at(  1 )->GetValue(), 2 );
+    //double g2hjss_p       = pow( 1 + _model->GetParameterVector()->at(  2 )->GetValue(), 2 );
+    //double g2hjcc_s       = pow( 1 + _model->GetParameterVector()->at(  3 )->GetValue(), 2 );
+    //double g2hjcc_p       = pow( 1 + _model->GetParameterVector()->at(  4 )->GetValue(), 2 );
+    //double g2hjbb_s       = pow( 1 + _model->GetParameterVector()->at(  5 )->GetValue(), 2 );
+    //double g2hjbb_p       = pow( 1 + _model->GetParameterVector()->at(  6 )->GetValue(), 2 );
     //double g2hjtt_s       = g2hjcc_s;
-    //double g2hjtt_p       = pow( 1 + model->GetParameterVector()->at(  7 )->GetValue(), 2 );
-    //double g2hjmumu_s     = pow( 1 + model->GetParameterVector()->at(  8 )->GetValue(), 2 );
-    //double g2hjmumu_p     = pow( 1 + model->GetParameterVector()->at(  9 )->GetValue(), 2 );
-    //double g2hjtautau_s   = pow( 1 + model->GetParameterVector()->at( 10 )->GetValue(), 2 );
-    //double g2hjtautau_p   = pow( 1 + model->GetParameterVector()->at( 11 )->GetValue(), 2 );
-    //double g2hjWW         = pow( 1 + model->GetParameterVector()->at( 12 )->GetValue(), 2 );
-    //double g2hjZZ         = pow( 1 + model->GetParameterVector()->at( 13 )->GetValue(), 2 );
-    //double g2hjZga        = pow( 1 + model->GetParameterVector()->at( 14 )->GetValue(), 2 );
-    //double g2hjgaga       = pow( 1 + model->GetParameterVector()->at( 15 )->GetValue(), 2 );
-    //double g2hjgg         = pow( 1 + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
-    //double g2hjggZ        = pow( 1 + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
-    //double g2hjhiZ        = pow( 1 + model->GetParameterVector()->at( 18 )->GetValue(), 2 );
+    //double g2hjtt_p       = pow( 1 + _model->GetParameterVector()->at(  7 )->GetValue(), 2 );
+    //double g2hjmumu_s     = pow( 1 + _model->GetParameterVector()->at(  8 )->GetValue(), 2 );
+    //double g2hjmumu_p     = pow( 1 + _model->GetParameterVector()->at(  9 )->GetValue(), 2 );
+    //double g2hjtautau_s   = pow( 1 + _model->GetParameterVector()->at( 10 )->GetValue(), 2 );
+    //double g2hjtautau_p   = pow( 1 + _model->GetParameterVector()->at( 11 )->GetValue(), 2 );
+    //double g2hjWW         = pow( 1 + _model->GetParameterVector()->at( 12 )->GetValue(), 2 );
+    //double g2hjZZ         = pow( 1 + _model->GetParameterVector()->at( 13 )->GetValue(), 2 );
+    //double g2hjZga        = pow( 1 + _model->GetParameterVector()->at( 14 )->GetValue(), 2 );
+    //double g2hjgaga       = pow( 1 + _model->GetParameterVector()->at( 15 )->GetValue(), 2 );
+    //double g2hjgg         = pow( 1 + _model->GetParameterVector()->at( 16 )->GetValue(), 2 );
+    //double g2hjggZ        = pow( 1 + _model->GetParameterVector()->at( 17 )->GetValue(), 2 );
+    //double g2hjhiZ        = pow( 1 + _model->GetParameterVector()->at( 18 )->GetValue(), 2 );
 
-    //double BR_hjhihi      = model->GetParameterVector()->at( 19 )->GetValue();
-    //double GammaInvisible = model->GetParameterVector()->at( 20 )->GetValue();
+    //double BR_hjhihi      = _model->GetParameterVector()->at( 19 )->GetValue();
+    //double GammaInvisible = _model->GetParameterVector()->at( 20 )->GetValue();
 
     // Setting 1 : No constraints.
 
-    //double g2hjss_s       = pow( 1 + model->GetParameterVector()->at(  1 )->GetValue(), 2 );
-    //double g2hjss_p       = pow( 1 + model->GetParameterVector()->at(  2 )->GetValue(), 2 );
-    //double g2hjcc_s       = pow( 1 + model->GetParameterVector()->at(  3 )->GetValue(), 2 );
-    //double g2hjcc_p       = pow( 1 + model->GetParameterVector()->at(  4 )->GetValue(), 2 );
-    //double g2hjbb_s       = pow( 1 + model->GetParameterVector()->at(  5 )->GetValue(), 2 );
-    //double g2hjbb_p       = pow( 1 + model->GetParameterVector()->at(  6 )->GetValue(), 2 );
-    //double g2hjtt_s       = pow( 1 + model->GetParameterVector()->at(  7 )->GetValue(), 2 );
-    //double g2hjtt_p       = pow( 1 + model->GetParameterVector()->at(  8 )->GetValue(), 2 );
-    //double g2hjmumu_s     = pow( 1 + model->GetParameterVector()->at(  9 )->GetValue(), 2 );
-    //double g2hjmumu_p     = pow( 1 + model->GetParameterVector()->at( 10 )->GetValue(), 2 );
-    //double g2hjtautau_s   = pow( 1 + model->GetParameterVector()->at( 11 )->GetValue(), 2 );
-    //double g2hjtautau_p   = pow( 1 + model->GetParameterVector()->at( 12 )->GetValue(), 2 );
-    //double g2hjWW         = pow( 1 + model->GetParameterVector()->at( 13 )->GetValue(), 2 );
-    //double g2hjZZ         = pow( 1 + model->GetParameterVector()->at( 14 )->GetValue(), 2 );
-    //double g2hjZga        = pow( 1 + model->GetParameterVector()->at( 15 )->GetValue(), 2 );
-    //double g2hjgaga       = pow( 1 + model->GetParameterVector()->at( 16 )->GetValue(), 2 );
-    //double g2hjgg         = pow( 1 + model->GetParameterVector()->at( 17 )->GetValue(), 2 );
-    //double g2hjggZ        = pow( 1 + model->GetParameterVector()->at( 18 )->GetValue(), 2 );
-    //double g2hjhiZ        = pow( 1 + model->GetParameterVector()->at( 19 )->GetValue(), 2 );
+    //double g2hjss_s       = pow( 1 + _model->GetParameterVector()->at(  1 )->GetValue(), 2 );
+    //double g2hjss_p       = pow( 1 + _model->GetParameterVector()->at(  2 )->GetValue(), 2 );
+    //double g2hjcc_s       = pow( 1 + _model->GetParameterVector()->at(  3 )->GetValue(), 2 );
+    //double g2hjcc_p       = pow( 1 + _model->GetParameterVector()->at(  4 )->GetValue(), 2 );
+    //double g2hjbb_s       = pow( 1 + _model->GetParameterVector()->at(  5 )->GetValue(), 2 );
+    //double g2hjbb_p       = pow( 1 + _model->GetParameterVector()->at(  6 )->GetValue(), 2 );
+    //double g2hjtt_s       = pow( 1 + _model->GetParameterVector()->at(  7 )->GetValue(), 2 );
+    //double g2hjtt_p       = pow( 1 + _model->GetParameterVector()->at(  8 )->GetValue(), 2 );
+    //double g2hjmumu_s     = pow( 1 + _model->GetParameterVector()->at(  9 )->GetValue(), 2 );
+    //double g2hjmumu_p     = pow( 1 + _model->GetParameterVector()->at( 10 )->GetValue(), 2 );
+    //double g2hjtautau_s   = pow( 1 + _model->GetParameterVector()->at( 11 )->GetValue(), 2 );
+    //double g2hjtautau_p   = pow( 1 + _model->GetParameterVector()->at( 12 )->GetValue(), 2 );
+    //double g2hjWW         = pow( 1 + _model->GetParameterVector()->at( 13 )->GetValue(), 2 );
+    //double g2hjZZ         = pow( 1 + _model->GetParameterVector()->at( 14 )->GetValue(), 2 );
+    //double g2hjZga        = pow( 1 + _model->GetParameterVector()->at( 15 )->GetValue(), 2 );
+    //double g2hjgaga       = pow( 1 + _model->GetParameterVector()->at( 16 )->GetValue(), 2 );
+    //double g2hjgg         = pow( 1 + _model->GetParameterVector()->at( 17 )->GetValue(), 2 );
+    //double g2hjggZ        = pow( 1 + _model->GetParameterVector()->at( 18 )->GetValue(), 2 );
+    //double g2hjhiZ        = pow( 1 + _model->GetParameterVector()->at( 19 )->GetValue(), 2 );
 
-    //double BR_hjhihi      = model->GetParameterVector()->at( 20 )->GetValue();
-    //double GammaInvisible = model->GetParameterVector()->at( 21 )->GetValue();
+    //double BR_hjhihi      = _model->GetParameterVector()->at( 20 )->GetValue();
+    //double GammaInvisible = _model->GetParameterVector()->at( 21 )->GetValue();
 
     // Calculate the total width of the Higgs boson.
 
@@ -502,14 +503,14 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
     // Calculate the SM variations of the loop induced couplings.
 
-    double g2_SM_hgammagamma = Calculateg2hgammagamma( 1 + model->GetParameterVector()->at(  5 )->GetValue(),
-                                                       1 + model->GetParameterVector()->at(  7 )->GetValue(),
-                                                       1 + model->GetParameterVector()->at( 11 )->GetValue(),
-                                                       1 + model->GetParameterVector()->at( 13 )->GetValue(),
-                                                       1 + model->GetParameterVector()->at( 14 )->GetValue(), massh );
+    double g2_SM_hgammagamma = Calculateg2hgammagamma( 1 + _model->GetParameterVector()->at(  5 )->GetValue(),
+                                                       1 + _model->GetParameterVector()->at(  7 )->GetValue(),
+                                                       1 + _model->GetParameterVector()->at( 11 )->GetValue(),
+                                                       1 + _model->GetParameterVector()->at( 13 )->GetValue(),
+                                                       1 + _model->GetParameterVector()->at( 14 )->GetValue(), massh );
 
-    double g2_SM_hgg = Calculateg2hgg( 1 + model->GetParameterVector()->at( 5 )->GetValue(),
-                                       1 + model->GetParameterVector()->at( 7 )->GetValue(), massh );
+    double g2_SM_hgg = Calculateg2hgg( 1 + _model->GetParameterVector()->at( 5 )->GetValue(),
+                                       1 + _model->GetParameterVector()->at( 7 )->GetValue(), massh );
 
     // Set the upper limit of the total width of the Higgs boson.
 
@@ -571,6 +572,6 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction( PhysicsModelBase* m
 
 }
 
-void Fittino::HiggsSignalsSLHAModelCalculator::ConfigureInput( PhysicsModelBase* model ) {
+void Fittino::HiggsSignalsSLHAModelCalculator::ConfigureInput() {
 
 }

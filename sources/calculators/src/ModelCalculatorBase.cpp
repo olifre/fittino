@@ -19,10 +19,11 @@
 
 #include "ModelCalculatorBase.h"
 
-Fittino::ModelCalculatorBase::ModelCalculatorBase()
+Fittino::ModelCalculatorBase::ModelCalculatorBase( const PhysicsModelBase* model )
         : _name( "" ),
           _callMethod( FUNCTION ),
-          _executableName( "" ) {
+          _executableName( "" ),
+          _model( model ) {
 
 }
 

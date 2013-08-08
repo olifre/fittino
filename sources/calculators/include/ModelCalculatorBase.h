@@ -42,7 +42,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                   ModelCalculatorBase();
+                   ModelCalculatorBase( const PhysicsModelBase* model );
       /*!
        *  Standard destructor.
        */
@@ -50,7 +50,7 @@ namespace Fittino {
       std::string  GetName() const;
 
     public:
-      virtual void CalculatePredictions( PhysicsModelBase* model ) = 0;
+      virtual void CalculatePredictions() = 0;
       virtual void Initialize() const = 0;
 
     protected:
@@ -60,11 +60,12 @@ namespace Fittino {
       std::string  _executableName;
       std::string  _name;
       CallMethod   _callMethod;
+      const PhysicsModelBase* _model;
 
     protected:
       virtual void CallExecutable() = 0;
-      virtual void CallFunction( PhysicsModelBase* model ) = 0;
-      virtual void ConfigureInput( PhysicsModelBase* model ) = 0;
+      virtual void CallFunction() = 0;
+      virtual void ConfigureInput() = 0;
 
   };
 
