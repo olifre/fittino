@@ -52,6 +52,10 @@ namespace Fittino {
                    ~ModelParameterBase();
       bool         IsFixed() const;
       /*!
+       *  Returns true when the parameter value has been set.
+       */
+      bool         IsUpdated() const;
+      /*!
        *  Returns the error of the parameter.
        */
       double       GetError() const;
@@ -63,6 +67,10 @@ namespace Fittino {
        *  Returns the upper bound of the parameter.
        */
       double       GetUpperBound() const;
+      /*!
+       *  Sets the return value of IsUpdated().  
+       */
+      void         SetUpdated( bool updated );
      /*!
        *  Sets the value of the parameter.
        */
@@ -78,6 +86,7 @@ namespace Fittino {
        *  Error of the parameter. Analysis tools use this value as the parameter-dependent\n
        *  "stepwidth".
        */
+      bool         _updated;
       double       _error;
       /*!
        *  Lower bound of the parameter.

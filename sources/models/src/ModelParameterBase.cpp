@@ -32,6 +32,7 @@ Fittino::ModelParameterBase::ModelParameterBase( std::string name,
           _lowerBound( lowerBound ),
           _upperBound( upperBound ),
           _fixed( fixed ),
+	  _updated( true ),
           ParameterBase( name,
                          plotName,
                          value,
@@ -47,6 +48,12 @@ Fittino::ModelParameterBase::~ModelParameterBase() {
 bool Fittino::ModelParameterBase::IsFixed() const {
 
     return _fixed;
+
+}
+
+bool Fittino::ModelParameterBase::IsUpdated() const {
+
+    return _updated;
 
 }
 
@@ -68,9 +75,19 @@ double Fittino::ModelParameterBase::GetUpperBound() const {
 
 }
 
+void Fittino::ModelParameterBase::SetUpdated( bool updated ) {
+
+    _updated = updated;
+
+}
+
 void Fittino::ModelParameterBase::SetValue( double value ) {
 
-    if (!_fixed)
+    if ( !_fixed ) {
+
         _value = value;
+	_updated = true;
+
+    }
 
 }
