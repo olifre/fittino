@@ -128,10 +128,6 @@ namespace Fittino {
       /*! \cond UML */
     private:   
       /*!
-       *  True when _chi2 corresponds to the current parameter values.
-       */
-      bool                                      _evaluated;
-      /*!
        *  Value returned by Evaluate(). 
        */
       double                                    _chi2;

@@ -24,9 +24,8 @@
 #include "PredictionBase.h"
 
 Fittino::ModelBase::ModelBase()
-        : _name( "" ),
-          _evaluated( false ) {
-
+  : _name( "" ) {
+  
 }
 
 Fittino::ModelBase::~ModelBase() {
@@ -35,10 +34,22 @@ Fittino::ModelBase::~ModelBase() {
 
 double Fittino::ModelBase::GetChi2() {
 
-    if ( !_evaluated ) {
+    bool evaluate = false;
+
+    for ( unsigned int i=0; i<GetNumberOfParameters(); i++ ) {
+
+      if ( GetParameterVector()->at(i)->IsUpdated() ) {
+
+          evaluate = true;
+	  GetParameterVector()->at(i)->SetUpdated( false );
+
+      }
+
+    }
+
+    if ( evaluate ) {
 
         _chi2 = Evaluate();
-        _evaluated = true;
 
     }
 
@@ -90,7 +101,6 @@ const std::vector<Fittino::PredictionBase*>* Fittino::ModelBase::GetPredictionVe
 
 std::vector<Fittino::ModelParameterBase*>* Fittino::ModelBase::SetParameterVector() {
 
-    _evaluated = false;
     return &_parameterVector;
 
 }
