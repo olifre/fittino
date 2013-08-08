@@ -19,6 +19,7 @@
 *******************************************************************************/
 
 #include "Chi2ContributionBase.h"
+#include "ConfigurationException.h"
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
 #include "PredictionBase.h"
@@ -77,13 +78,27 @@ int Fittino::ModelBase::GetNumberOfPredictions() const {
 
 void Fittino::ModelBase::AddParameter( ModelParameterBase* parameter ) {
 
-  _parameterVector.push_back( parameter );
+    _parameterVector.push_back( parameter );
+
+    if ( !_parameterMap.insert( std::make_pair( parameter->GetName(), parameter ) ).second ) {
+
+      std::string message = "Parameter with name " + parameter->GetName() + "has already been added to model " + GetName();
+
+      throw ConfigurationException( message ); //TODO: Dedicated exception class ?
+
+    }
 
 }
 
 std::string Fittino::ModelBase::GetName() const {
 
     return _name;
+
+}
+
+const std::map<std::string, Fittino::ModelParameterBase*>* Fittino::ModelBase::GetParameterMap() const {
+
+  return &_parameterMap;
 
 }
 
