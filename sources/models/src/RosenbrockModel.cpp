@@ -39,7 +39,7 @@ Fittino::RosenbrockModel::RosenbrockModel() {
         parameterName << "X" << i + 1;
         parameterPlotName.str( "" );
         parameterPlotName << "X" << i + 1;
-        _parameterVector.push_back( new ModelParameterBase( parameterName.str(), parameterPlotName.str(), configuration->GetSteeringParameter( parameterName.str(), 0. ), 1., -10., 10., -10., 10. ) );
+        AddParameter( new ModelParameterBase( parameterName.str(), parameterPlotName.str(), configuration->GetSteeringParameter( parameterName.str(), 0. ), 1., -10., 10., -10., 10. ) );
 
     }
 
@@ -55,9 +55,9 @@ double Fittino::RosenbrockModel::TestModelFunction() {
 
     double rosenbrock = 0;
 
-    for ( unsigned int i = 1; i < _parameterVector.size(); i++ ) {
+    for ( unsigned int i = 1; i < GetNumberOfParameters(); i++ ) {
 
-        rosenbrock += pow( 1 - _parameterVector.at( i - 1 )->GetValue(), 2 ) + 100 * pow( _parameterVector.at( i )->GetValue() - pow( _parameterVector.at( i - 1 )->GetValue(), 2 ), 2 );
+      rosenbrock += pow( 1 - GetParameterVector()->at( i - 1 )->GetValue(), 2 ) + 100 * pow( GetParameterVector()->at( i )->GetValue() - pow( GetParameterVector()->at( i - 1 )->GetValue(), 2 ), 2 );
     }
 
     return rosenbrock;

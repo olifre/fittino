@@ -39,7 +39,7 @@ void Fittino::TestModelBase::PrintStatus() const {
 
     for ( unsigned int i = 0; i < GetNumberOfParameters(); i++ ) {
 
-        _parameterVector[i]->PrintStatus();
+      GetParameterVector()->at(i)->PrintStatus();
 
     }
 
@@ -58,7 +58,7 @@ void Fittino::TestModelBase::Initialize() const {
 
     for ( unsigned int i = 0; i < GetNumberOfParameters(); i++ ) {
 
-        _parameterVector[i]->PrintStatus();
+      GetParameterVector()->at(i)->PrintStatus();
 
     }
 

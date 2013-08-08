@@ -75,6 +75,12 @@ int Fittino::ModelBase::GetNumberOfPredictions() const {
 
 }
 
+void Fittino::ModelBase::AddParameter( ModelParameterBase* parameter ) {
+
+  _parameterVector.push_back( parameter );
+
+}
+
 std::string Fittino::ModelBase::GetName() const {
 
     return _name;
