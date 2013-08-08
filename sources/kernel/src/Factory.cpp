@@ -20,9 +20,9 @@
 *******************************************************************************/
 
 #include "CMSSMModel.h"
-#include "ContourPlotter.h"
 #include "Configuration.h"
 #include "ConfigurationException.h"
+#include "ContourPlotter.h"
 #include "DataStorageBase.h"
 #include "Factory.h"
 #include "GeneticAlgorithmOptimizer.h"
