@@ -28,7 +28,7 @@ Fittino::SimpleSampler::SimpleSampler( Fittino::ModelBase* model )
 
     for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-        _model->SetParameterVector()->at( k )->SetValue( _model->GetParameterVector()->at( k )->GetLowerBound() );
+        _model->GetParameterVector()->at( k )->SetValue( _model->GetParameterVector()->at( k )->GetLowerBound() );
 
     }
 
@@ -52,7 +52,7 @@ void Fittino::SimpleSampler::ResetValues( unsigned int iParameter ) {
 
     for ( unsigned int i = 0; i < iParameter; i++ ) {
 
-        _model->SetParameterVector()->at( i )->SetValue( _model->GetParameterVector()->at( i )->GetLowerBound() );
+        _model->GetParameterVector()->at( i )->SetValue( _model->GetParameterVector()->at( i )->GetLowerBound() );
 
     }
 
@@ -96,6 +96,6 @@ void Fittino::SimpleSampler::UpdateModel() {
 
 void Fittino::SimpleSampler::UpdateValues( unsigned int iParameter ) {
 
-    _model->SetParameterVector()->at( iParameter )->SetValue( _model->GetParameterVector()->at( iParameter )->GetValue() + _model->GetParameterVector()->at( iParameter )->GetError() );
+    _model->GetParameterVector()->at( iParameter )->SetValue( _model->GetParameterVector()->at( iParameter )->GetValue() + _model->GetParameterVector()->at( iParameter )->GetError() );
 
 }

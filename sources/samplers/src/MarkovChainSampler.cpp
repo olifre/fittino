@@ -90,7 +90,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
         for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-            _model->SetParameterVector()->at( k )->SetValue( _model->GetParameterVector()->at( k )->GetValue() + _randomGenerator.Gaus( 0., _model->GetParameterVector()->at( k )->GetError() ) );
+            _model->GetParameterVector()->at( k )->SetValue( _model->GetParameterVector()->at( k )->GetValue() + _randomGenerator.Gaus( 0., _model->GetParameterVector()->at( k )->GetError() ) );
 
         }
 
@@ -137,8 +137,8 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
         for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-            if (    _model->SetParameterVector()->at( k )->GetValue() < _model->SetParameterVector()->at( k )->GetLowerBound()
-                 || _model->SetParameterVector()->at( k )->GetValue() > _model->SetParameterVector()->at( k )->GetUpperBound() ) {
+            if (    _model->GetParameterVector()->at( k )->GetValue() < _model->GetParameterVector()->at( k )->GetLowerBound()
+                 || _model->GetParameterVector()->at( k )->GetValue() > _model->GetParameterVector()->at( k )->GetUpperBound() ) {
 
                 pointAccepted = false;
                 GetStatusParameterVector()->at( 2 )->SetValue( pointAccepted );
@@ -166,7 +166,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
             for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-                _model->SetParameterVector()->at( k )->SetValue( _previousParameterValues.at( k ) );
+                _model->GetParameterVector()->at( k )->SetValue( _previousParameterValues.at( k ) );
 
             }
 
@@ -181,7 +181,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
     //    for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-    //        _model->SetParameterVector()->at( k )->SetValue( _previousParameterValues.at( k ) );
+    //        _model->GetParameterVector()->at( k )->SetValue( _previousParameterValues.at( k ) );
 
     //    }
     //

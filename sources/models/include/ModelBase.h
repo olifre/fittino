@@ -84,10 +84,6 @@ namespace Fittino {
        *  Returns the predictions of the model as a vector.
        */
       const std::vector<PredictionBase*>*       GetPredictionVector() const;
-      /*!
-       *  Returns the parameters of the model as a vector.
-       */
-      std::vector<ModelParameterBase*>*         SetParameterVector();
 
     public:
       virtual void                              PrintStatus() const = 0;

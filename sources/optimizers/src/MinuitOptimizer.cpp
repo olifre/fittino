@@ -70,7 +70,7 @@ void Fittino::MinuitOptimizer::UpdateModel() {
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
-        _model->SetParameterVector()->at( i )->SetValue( minuitResult.UserParameters().Value( i ) );
+        _model->GetParameterVector()->at( i )->SetValue( minuitResult.UserParameters().Value( i ) );
 
     }
 

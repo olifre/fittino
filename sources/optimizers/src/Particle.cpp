@@ -89,7 +89,7 @@ void Fittino::Particle::UpdateModel() {
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
-        _model->SetParameterVector()->at( i )->SetValue( _position.at( i ) );
+        _model->GetParameterVector()->at( i )->SetValue( _position.at( i ) );
 
     }
 

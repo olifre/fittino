@@ -98,9 +98,3 @@ const std::vector<Fittino::PredictionBase*>* Fittino::ModelBase::GetPredictionVe
     return &_predictionVector;
 
 }
-
-std::vector<Fittino::ModelParameterBase*>* Fittino::ModelBase::SetParameterVector() {
-
-    return &_parameterVector;
-
-}
