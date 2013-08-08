@@ -53,10 +53,6 @@ namespace Fittino {
        *  Returns the value of the quantity.
        */
       double              GetValue() const;
-      /*!
-       *  Sets the value of the quantity.
-       */
-      void                SetValue( double value );
        /*!
        *  Returns the name of the quantity.
        */
@@ -67,6 +63,10 @@ namespace Fittino {
        *  Prints the quantity status on screen.
        */
       virtual void        PrintStatus() const;
+      /*!
+       *  Sets the value of the quantity.
+       */
+      virtual void        SetValue( double value );
       /*!
        *  Returns the name of the axis title.
        */
