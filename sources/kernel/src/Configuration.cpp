@@ -21,6 +21,9 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <boost/property_tree/ptree.hpp>
+#include "boost/property_tree/xml_parser.hpp"
+
 #include "Configuration.h"
 #include "ConfigurationException.h"
 
@@ -39,6 +42,12 @@ Fittino::Configuration* Fittino::Configuration::GetInstance() {
 void Fittino::Configuration::AddSteeringParameter( const std::string& key, const std::string& value ) {
 
     ( *_steeringParameterMap )[key] = value;
+
+}
+
+void Fittino::Configuration::ReadFile( std::string fileName ) {
+
+  boost::property_tree::read_xml( fileName, *_propertyTree );
 
 }
 
@@ -209,15 +218,23 @@ Fittino::Messenger::VerbosityLevel Fittino::Configuration::GetVerbosityLevel() c
 
 }
 
+const boost::property_tree::ptree* Fittino::Configuration::GetPropertyTree() const {
+
+  return _propertyTree;
+
+}
+
 Fittino::Configuration* Fittino::Configuration::_instance = 0;
 
 Fittino::Configuration::Configuration()
-        : _steeringParameterMap( new SteeringParameterMap() ) {
+    : _steeringParameterMap( new SteeringParameterMap() )
+    , _propertyTree ( new boost::property_tree::ptree() ) {
 
 }
 
 Fittino::Configuration::~Configuration() {
 
     delete _steeringParameterMap;
+    delete _propertyTree;
 
 }

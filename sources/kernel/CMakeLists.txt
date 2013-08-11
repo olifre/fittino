@@ -23,6 +23,7 @@ IF(LHAPDF_FOUND)
 ENDIF(LHAPDF_FOUND)
 ADD_DEFINITIONS(`root-config --cflags`)
 
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(./include)
 INCLUDE_DIRECTORIES(../calculators/include)
 INCLUDE_DIRECTORIES(../datastorages/include)

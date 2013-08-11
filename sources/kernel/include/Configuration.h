@@ -33,6 +33,19 @@
 #include "OptimizerBase.h"
 #include "SamplerBase.h"
 
+namespace boost {
+
+  namespace property_tree {
+
+    template < class Key, class Data, class KeyCompare >
+      class basic_ptree;
+
+    typedef basic_ptree< std::string, std::string, std::less<std::string> > ptree;
+
+  }
+
+}
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -75,6 +88,10 @@ namespace Fittino {
        */
       void                                  AddSteeringParameter( const std::string& key, const std::string& value );
       /*!
+       *  Reads an xml file in the property tree.
+       */
+      void                                  ReadFile( std::string fileName );
+      /*!
        *  Returns the configured execution mode.
        */
       ExecutionMode                         GetExecutionMode() const;
@@ -99,6 +116,12 @@ namespace Fittino {
        */
       Messenger::VerbosityLevel             GetVerbosityLevel() const;
 
+    public:  
+      /*!
+       *  Returns the property tree.
+       */
+      const boost::property_tree::ptree*    GetPropertyTree() const;
+
     public:
       template<class SteeringParameterType>
       /*!
@@ -115,6 +138,10 @@ namespace Fittino {
       static Configuration*                 _instance;
 
     private:
+      /*!
+       *  Stores the configured steering parameters in a tree.
+       */
+      boost::property_tree::ptree*          _propertyTree;
       /*!
        *  Stores the configured steering parameters in an easy accessible key-value pair.
        */

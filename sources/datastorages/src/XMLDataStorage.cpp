@@ -97,4 +97,6 @@ void Fittino::XMLDataStorage::ReadFile( const std::string& xmlInputFileName ) co
 
     delete xmlParser;
 
+    Configuration::GetInstance()->ReadFile( xmlInputFileName );
+
 }
