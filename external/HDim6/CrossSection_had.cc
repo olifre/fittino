@@ -1,3 +1,5 @@
+#include <LHAPDF/LHAPDF.h>
+
 #include "CrossSection_had.h"
 
 /* Initialisierung zur Berechnung der Standardmodell-Wirkungsquerschnitte */

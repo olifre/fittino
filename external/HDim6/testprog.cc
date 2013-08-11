@@ -5,6 +5,7 @@
 
 // Zur Zeitmessung
 #include <time.h>
+#include <LHAPDF/LHAPDF.h>
 
 #include "CrossSection_had.h"
 #include "decay.h"

@@ -11,9 +11,6 @@
 #include <gsl/gsl_monte_miser.h>
 #include <gsl/gsl_monte_vegas.h>
 
-/* LHAPDF Header */
-#include <LHAPDF/LHAPDF.h>
-
 /* Typdefinitionen */
 #include "inputs.h"
 

@@ -9,7 +9,8 @@
 # Description This macro tries to find a local LHAPDF installation.            #
 #             If successful, it adds LHAPDF to Fittino as a cmake module.      #
 #                                                                              #
-# Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              #
+# Authors     Bjoern  Sarrazin    <sarrazin@physik.uni-bonn.de>                #
+#             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              #    
 #                                                                              #
 # Licence     This program is free software; you can redistribute it and/or    #
 #             modify it under the terms of the GNU General Public License as   #
@@ -18,32 +19,24 @@
 #                                                                              #
 ################################################################################
 
-# The variable LHAPDF_INCLUDE_DIR is set to "LHAPDF_INCLUDE_DIR-NOTFOUND" which is the default
-# value.
+INCLUDE(FindPackageHandleStandardArgs)
 
-SET(LHAPDF_INCLUDE_DIR "LHAPDF_INCLUDE_DIR-NOTFOUND")
+FIND_PROGRAM(LHAPDF_CONFIG_EXECUTABLE lhapdf-config PATHS ${LHAPDF_INSTALLATION_PATH}/bin)
 
-# Look for the location of the file "slhaea.h".
+IF(LHAPDF_CONFIG_EXECUTABLE) 
 
-FIND_PATH(LHAPDF_INCLUDE_DIR LHAPDF/LHAPDF.h PATHS ${LHAPDF_INSTALLATION_PATH}/include ../lhapdf/include)
+    EXECUTE_PROCESS(COMMAND ${LHAPDF_CONFIG_EXECUTABLE} --incdir OUTPUT_VARIABLE LHAPDF_CONFIG_INCLUDE_DIR OUTPUT_STRIP_TRAILING_WHITESPACE)
+    FIND_PATH(LHAPDF_INCLUDE_DIR NAMES LHAPDF/LHAPDF.h HINTS ${LHAPDF_CONFIG_INCLUDE_DIR} NO_DEFAULT_PATH)
+    SET(LHAPDF_INCLUDE_DIRS ${LHAPDF_INCLUDE_DIR})
 
-IF(${LHAPDF_INCLUDE_DIR} MATCHES "LHAPDF_INCLUDE_DIR-NOTFOUND")
+    EXECUTE_PROCESS(COMMAND ${LHAPDF_CONFIG_EXECUTABLE} --libdir OUTPUT_VARIABLE LHAPDF_CONFIG_LIBRARY_DIR OUTPUT_STRIP_TRAILING_WHITESPACE)
+    FIND_LIBRARY(LHAPDF_LIBRARY NAMES libLHAPDF.a PATHS ${LHAPDF_CONFIG_LIBRARY_DIR} NO_DEFAULT_PATH)
+    SET(LHAPDF_LIBRARIES ${LHAPDF_LIBRARY})	
 
-    # If the path to the LHAPDF installation is not found print this message.
+ELSE(LHAPDF_CONFIG_EXECUTABLE)
 
-    MESSAGE(FATAL_ERROR "\nRequired module LHAPDF not found.\nPlease specify the path to your LHAPDF installation in the file CMakeLists.txt in the Fittino root directory.\n")
+    MESSAGE(STATUS "lhapdf-config not found.")
 
-ELSE(${LHAPDF_INCLUDE_DIR} MATCHES "LHAPDF_INCLUDE_DIR-NOTFOUND")
+ENDIF(LHAPDF_CONFIG_EXECUTABLE)
 
-    # The following command extracts the LHAPDF version number as the first 5
-    # characters in the 5. line of the file ChangeLog located in the LHAPDF
-    # installation path.
-    # TODO: Make this command more flexible. 
-
-    EXECUTE_PROCESS(COMMAND sed -n 5p ${LHAPDF_INSTALLATION_PATH}/ChangeLog COMMAND cut -c 1-5 OUTPUT_VARIABLE LHAPDF_FOUND_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-    # If the path to the LHAPDF installation is found print this message.
-
-    MESSAGE(STATUS "LHAPDF version: " ${LHAPDF_FOUND_VERSION})
-
-ENDIF(${LHAPDF_INCLUDE_DIR} MATCHES "LHAPDF_INCLUDE_DIR-NOTFOUND")
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(LHAPDF DEFAULT_MSG LHAPDF_INCLUDE_DIRS LHAPDF_LIBRARIES)

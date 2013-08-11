@@ -17,7 +17,7 @@
 #                                                                              #
 ################################################################################
 
-INCLUDE_DIRECTORIES(${LHAPDF_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${LHAPDF_INCLUDE_DIRS})
 
 AUX_SOURCE_DIRECTORY(. sources)
 

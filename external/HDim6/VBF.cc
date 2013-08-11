@@ -1,3 +1,5 @@
+#include <LHAPDF/LHAPDF.h>
+
 #include "VBF.h"
 #define CUTS
 

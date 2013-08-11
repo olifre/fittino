@@ -9,9 +9,6 @@
 #include <gsl/gsl_monte_miser.h>
 #include <gsl/gsl_monte_vegas.h>
 
-/* LHA PDF */
-#include <LHAPDF/LHAPDF.h>
-
 /* Typdefinitionen */
 #pragma once
 #include "inputs.h"

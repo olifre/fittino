@@ -64,7 +64,7 @@ FIND_PACKAGE(SLHAEA REQUIRED)
 
 # Optional: Specify the installation path of "LHAPDF".
 # SET(LHAPDF_INSTALLATION_PATH <lhapdf/installation/path>)
-# FIND_PACKAGE(LHAPDF)
+FIND_PACKAGE(LHAPDF)
 
 ADD_SUBDIRECTORY(external)
 ADD_SUBDIRECTORY(sources)
