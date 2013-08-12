@@ -56,6 +56,8 @@ Fittino::PlotterBase::PlotterBase( ModelBase* model, std::string& dataFileName )
     fittinoStyle->SetOptStat(0);
     fittinoStyle->SetPalette(1);
 
+    fittinoStyle->SetFrameBorderMode(0);
+
     fittinoStyle->SetPadTopMargin(0.05);
     fittinoStyle->SetPadRightMargin(0.08);
     fittinoStyle->SetPadBottomMargin(0.16);

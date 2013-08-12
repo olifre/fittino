@@ -23,7 +23,9 @@
 #include "TGraph.h"
 #include "TH2F.h"
 #include "TLegend.h"
+#include "TMath.h"
 #include "TROOT.h"
+#include "TStyle.h"
 #include "TTree.h"
 
 #include "ContourPlotter.h"
@@ -36,6 +38,8 @@ Fittino::ContourPlotter::ContourPlotter( ModelBase* model, std::string& dataFile
         : PlotterBase( model, dataFileName ) {
 
     _name = "contour plotter";
+    _logX = false;
+    _logY = false;
 
 }
 
@@ -58,9 +62,14 @@ void Fittino::ContourPlotter::UpdateModel() {
 void Fittino::ContourPlotter::Execute() {
 
     _pad->SetRightMargin(0.15);
+    _pad->SetLeftMargin(0.15);
+    _pad->SetBottomMargin(0.15);
 
     _activeQuantityVector.push_back( "P_M0" );
     _activeQuantityVector.push_back( "P_M12" );
+
+    // _activeQuantityVector.push_back( "O_massNeutralino1" );
+    // _activeQuantityVector.push_back( "af_direct" );
 
     float chi2, lowestChi2 = 1.e99;
     Int_t bestFitEntry;
@@ -88,16 +97,67 @@ void Fittino::ContourPlotter::Execute() {
             Int_t iQuantity1 = _leafMap.find( _activeQuantityVector.at( iActiveQuantity1 ) )->second;
             Int_t iQuantity2 = _leafMap.find( _activeQuantityVector.at( iActiveQuantity2 ) )->second;
 
-            // Create a histogram.
+	    // x axis
 
-            TString histogramName  = _quantityVector.at( iQuantity1 )->GetName() + _quantityVector.at( iQuantity2 )->GetName();
-            TString histogramTitle = histogramName;
             Double_t lowerBound1 = _quantityVector.at( iQuantity1 )->GetPlotLowerBound();
             Double_t upperBound1 = _quantityVector.at( iQuantity1 )->GetPlotUpperBound();
+
+	    if ( _logX ) {
+
+                lowerBound1 = TMath::Log10( lowerBound1 );
+                upperBound1 = TMath::Log10( upperBound1 );
+
+	    }
+
+	    int nxBins = 100;
+
+	    double xbins[nxBins + 1];
+
+	    for ( unsigned int iBin = 0; iBin < nxBins + 1; iBin++ ) {
+
+	      xbins[iBin] = lowerBound1 + iBin * ( upperBound1 - lowerBound1 ) / double( nxBins );
+	      
+	      if ( _logX ) {
+
+                xbins[iBin] = TMath::Power( 10, xbins[iBin] );
+
+	      }
+
+	    }
+
+	    // y axis
+
             Double_t lowerBound2 = _quantityVector.at( iQuantity2 )->GetPlotLowerBound();
             Double_t upperBound2 = _quantityVector.at( iQuantity2 )->GetPlotUpperBound();
 
-            TH2F histogram = TH2F( histogramName, histogramTitle, 100, lowerBound1, upperBound1, 100, lowerBound2, upperBound2 );
+	    if ( _logY ) {
+
+	      lowerBound2 = TMath::Log10( lowerBound2 );
+	      upperBound2 = TMath::Log10( upperBound2 );
+
+	    }
+	    
+	    int nyBins = 100;
+
+	    double ybins[nyBins+1];
+
+	    for ( unsigned int iBin = 0; iBin < nyBins + 1; iBin++ ) {
+
+	      ybins[iBin] = lowerBound2 + iBin * ( upperBound2 - lowerBound2 ) / double( nyBins );
+	      
+	      if ( _logY ) {
+
+                ybins[iBin] = TMath::Power( 10, ybins[iBin] );
+
+	      }
+
+	    }
+
+            // Create a histogram.
+
+            TString histogramName = _quantityVector.at( iQuantity1 )->GetName() + _quantityVector.at( iQuantity2 )->GetName();
+            TString histogramTitle = histogramName;
+            TH2F histogram = TH2F( histogramName, histogramTitle, nxBins, xbins, nyBins , ybins );
 
             // Set all bins to 50.
 
@@ -122,6 +182,9 @@ void Fittino::ContourPlotter::Execute() {
 
             TH2F* tmpHist = (TH2F*)histogram.Clone();
 
+	    tmpHist->GetXaxis()->SetTitleOffset(1.40);
+	    tmpHist->GetYaxis()->SetTitleOffset(1.35);
+
             for ( Int_t iBinX = 0; iBinX <= tmpHist->ProjectionX()->GetNbinsX(); ++iBinX ) {
 
                 for ( Int_t iBinY = 0; iBinY <= tmpHist->ProjectionY()->GetNbinsX(); ++iBinY ) {
@@ -139,12 +202,12 @@ void Fittino::ContourPlotter::Execute() {
             Double_t yBestFitValue[1] = { 0. };
 
             _tree->GetEntry( bestFitEntry );
-            xBestFitValue[0] = _leafVector[iQuantity1]; 
-            yBestFitValue[0] = _leafVector[iQuantity2]; 
+            xBestFitValue[0] = _leafVector[iQuantity1];
+            yBestFitValue[0] = _leafVector[iQuantity2];
 
             TGraph* BestFitValue = new TGraph( 1, xBestFitValue, yBestFitValue );
-            BestFitValue->SetMarkerStyle(25);
-            BestFitValue->SetMarkerColor( kRed );
+            BestFitValue->SetMarkerStyle(29); // star: 25
+            BestFitValue->SetMarkerColor( kRed ); // kBlack
 
             // Set the SM value.
 
@@ -160,6 +223,8 @@ void Fittino::ContourPlotter::Execute() {
             dummy2->SetLineStyle(2);
 
             TLegend legend = TLegend( 0.52, 0.63, 0.78, 0.86 );
+	    // astro:  TLegend legend = TLegend( 0.52, 0.63, 0.78, 0.86 );
+
             legend.SetShadowColor(0);
             legend.SetBorderSize(1);
             legend.SetLineColor(0);
@@ -170,8 +235,8 @@ void Fittino::ContourPlotter::Execute() {
             legend.SetFillColor(0);
             legend.AddEntry( SMValue, "SM", "p" );
             legend.AddEntry( BestFitValue, "Best Fit Point", "p" );
-            legend.AddEntry( dummy, "68 % CL", "l" );
-            legend.AddEntry( dummy2, "95 % CL", "l" );
+            legend.AddEntry( dummy, "1D 68 % CL", "l" );
+            legend.AddEntry( dummy2, "2D 95 % CL", "l" );
 
             // Define the color palette.
 
@@ -184,12 +249,23 @@ void Fittino::ContourPlotter::Execute() {
             TColor::CreateGradientColorTable(Number,Length,Red,Green,Blue,nb);
             tmpHist->SetContour(nb);
 
+	    // different color palette for z axis range from 0 to 6
+            // const UInt_t Number = 2;
+            // Double_t Red[Number]    = { 0.00, 1.00 };
+            // Double_t Green[Number]  = { 1.00, 1.00};
+            // Double_t Blue[Number]   = { 1.00, 0.00 };
+            // Double_t Length[3] = { 0.0, 1./6., 1. };
+            // Int_t nb = 36;
+            // TColor::CreateGradientColorTable(Number,Length,Red,Green,Blue,nb);
+            // tmpHist->SetContour(nb);
+
             Double_t levels[2] = { 1., 6. };
        
             tmpHist->GetXaxis()->SetTitle( _quantityVector.at( iQuantity1 )->GetPlotName().c_str() );
             tmpHist->GetYaxis()->SetTitle( _quantityVector.at( iQuantity2 )->GetPlotName().c_str() );
             tmpHist->GetZaxis()->SetTitle( "#Delta#chi^{2}" );
             tmpHist->GetZaxis()->SetRangeUser( 0., 10. );
+	    // tmpHist->GetZaxis()->SetRangeUser( 0., 6. );
 
             histogram.SetContour(2, levels);
 
@@ -201,40 +277,85 @@ void Fittino::ContourPlotter::Execute() {
 
             TList* list = 0;
             TList* list2 = 0;
+
             if ( contours ) list = (TList*)contours->At(1);
             if ( contours ) list2 = (TList*)contours->At(0);
+
+	    tmpHist->Draw( "COLZ" );
+
             TGraph* gr1 = 0;
             TGraph* gr2 = 0;
-            if ( list ) gr1 = (TGraph*)list->First();
-            if ( list2 ) gr2 = (TGraph*)list2->First();
 
-            if ( gr1 ) gr1->SetMarkerStyle(20);
-            if ( gr1 ) gr1->SetLineStyle(2);
-            if ( gr2 ) gr2->SetLineStyle(1);
-            if ( gr1 ) gr1->SetMarkerColor(kBlack);
-            if ( gr1 ) gr1->SetLineColor(kBlack);
-            if ( gr2 ) gr2->SetLineColor(kBlack);
-            if ( gr1 ) gr1->Draw("PSAME");
+            if ( list ) {
 
-            tmpHist->Draw( "COLZ" );
+	      int nGraphsPerContour = list->GetSize();
 
-            TGraph* gc = 0;
-            if ( gr1 ) gc = (TGraph*)gr1->Clone();
-            if ( gc ) gc->Draw("C");
+	      for ( int iGraph = 0; iGraph < nGraphsPerContour; iGraph++ ) {
 
-            TGraph* gc2 = 0;
-            if ( gr2 ) gc2 = (TGraph*)gr2->Clone();
-            if ( gc2 ) gc2->Draw("C");
+		TGraph* gr1 = (TGraph*) list->At(iGraph);
+	      
+		if ( gr1 ) gr1->SetMarkerStyle(20);
+		if ( gr1 ) gr1->SetLineStyle(2);
+		if ( gr1 ) gr1->SetMarkerColor(kBlack);
+		if ( gr1 ) gr1->SetLineColor(kBlack);
+		if ( gr1 ) gr1->Draw("C");
+
+	      }
+
+	    }
+
+            if ( list2 ) {
+
+	      int nGraphsPerContour = list2->GetSize();
+
+	      for ( int iGraph = 0; iGraph < nGraphsPerContour; iGraph++ ) {
+
+		TGraph* gr2 = (TGraph*) list2->At(iGraph);
+
+		if ( gr2 ) gr2->SetLineColor(kBlack);
+		if ( gr2 ) gr2->SetLineStyle(1);
+		if ( gr2 ) gr2->Draw("C");
+
+	      }
+
+	    }
             
             SMValue->Draw( "PSAME" );
 
             BestFitValue->Draw( "PSAME" );
 
+	    // 	    TGraph graph("dd_xenon100_2012.dat"); 
+	    // 	    graph.Draw("C");
+	    // 	    graph.SetLineColor(kBlue);
+	    //      TGraph graph2("xenon1t.txt");
+	    // 	    graph2.SetLineColor(kRed);
+	    // 	    double x,y;
+	    //      for(unsigned int ip=0; ip<graph2.GetN(); ip++){
+	    //      graph2.GetPoint(ip, x, y);
+	    //      graph2.SetPoint(ip, x,1.e36*y);
+	    // 	    }       
+	    //      graph2.Draw("C");
+	    //      legend.AddEntry( &graph, "Xenon100 (2012)", "l" );
+	    //      legend.AddEntry( &graph2, "Xenon1T  (2017)", "l" );
+
             legend.Draw( "SAME" );
+
+	    if ( _logX ) {
+
+	      _canvas.SetLogx();
+	      
+	    }
+
+	    if ( _logY ) {
+
+	      _canvas.SetLogy();
+
+	    }
 
             _canvas.Update();
 
             TString plotname = _quantityVector.at( iQuantity1 )->GetName() + "Vs" + _quantityVector.at( iQuantity2 )->GetName();
+
             _canvas.SaveAs( plotname + ".eps", "RECREATE" );
 
         }
