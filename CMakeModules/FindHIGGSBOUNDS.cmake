@@ -19,6 +19,8 @@
 #                                                                              #
 ################################################################################
 
+INCLUDE(FindPackageHandleStandardArgs)
+
 # The variable HIGGSBOUNDS_LIBRARIES is set to "HIGGSBOUNDS_LIBRARIES-NOTFOUND" which is the default value.
 
 SET(HIGGSBOUNDS_LIBRARIES "HIGGSBOUNDS_LIBRARIES-NOTFOUND")
@@ -41,3 +43,5 @@ ELSE(${HIGGSBOUNDS_LIBRARIES} MATCHES "HIGGSBOUNDS_LIBRARIES-NOTFOUND")
     MESSAGE(STATUS "HiggsBounds found")
 
 ENDIF(${HIGGSBOUNDS_LIBRARIES} MATCHES "HIGGSBOUNDS_LIBRARIES-NOTFOUND")
+
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(HIGGSBOUNDS DEFAULT_MSG HIGGSBOUNDS_LIBRARIES)

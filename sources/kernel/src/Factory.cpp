@@ -69,7 +69,16 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const Fittino::Configur
             return new CMSSMModel();
 
         case Configuration::HEC:
+
+#if defined(HIGGSBOUNDS_FOUND) && defined(HIGGSSIGNALS_FOUND)
+
             return new HECModel();
+
+#else
+
+            throw ConfigurationException( "Trying to use HECModel but Fittino was build without HIGGSBOUNDS and/or HIGGSSIGNALS." );
+
+#endif
 
         case Configuration::ROSENBROCK:
             return new RosenbrockModel();

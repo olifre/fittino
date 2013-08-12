@@ -19,6 +19,8 @@
 #                                                                              #
 ################################################################################
 
+INCLUDE(FindPackageHandleStandardArgs)
+
 # The variable HIGGSSIGNALS_LIBRARIES is set to "HIGGSSIGNALS_LIBRARIES-NOTFOUND" which is the default value.
 
 SET(HIGGSSIGNALS_LIBRARIES "HIGGSSIGNALS_LIBRARIES-NOTFOUND")
@@ -41,3 +43,5 @@ ELSE(${HIGGSSIGNALS_LIBRARIES} MATCHES "HIGGSSIGNALS_LIBRARIES-NOTFOUND")
     MESSAGE(STATUS "HiggsSignals found")
 
 ENDIF(${HIGGSSIGNALS_LIBRARIES} MATCHES "HIGGSSIGNALS_LIBRARIES-NOTFOUND")
+
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(HIGGSSIGNALS DEFAULT_MSG HIGGSSIGNALS_LIBRARIES)
