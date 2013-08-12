@@ -82,7 +82,7 @@ void Fittino::ModelBase::AddParameter( ModelParameterBase* parameter ) {
 
     if ( !_parameterMap.insert( std::make_pair( parameter->GetName(), parameter ) ).second ) {
 
-      std::string message = "Parameter with name " + parameter->GetName() + "has already been added to model " + GetName();
+      std::string message = "Parameter with name " + parameter->GetName() + " has already been added to model " + GetName();
 
       throw ConfigurationException( message ); //TODO: Dedicated exception class ?
 

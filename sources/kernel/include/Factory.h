@@ -50,7 +50,7 @@ namespace Fittino {
       /*!
        *  Standard destructor.
        */
-                                ~Factory();
+                                 ~Factory();
 
     public:
       /*!
