@@ -42,11 +42,11 @@ SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
 
 # Optional: Specify the installation path of "HiggsBounds".
 # SET(HIGGSBOUNDS_INSTALLATION_PATH <higgsbounds/installation/path>)
-# FIND_PACKAGE(HIGGSBOUNDS)
+FIND_PACKAGE(HIGGSBOUNDS)
 
 # Optional: Specify the installation path of "HiggsSignals".
 # SET(HIGGSSIGNALS_INSTALLATION_PATH <higgssignals/installation/path>)
-# FIND_PACKAGE(HIGGSSIGNALS)
+FIND_PACKAGE(HIGGSSIGNALS)
 
 # Specify the installation path of the executable "root-config". By default, it is assumed that the
 # environment variable ROOTSYS is set and that the installation path is "ROOTSYS/bin".

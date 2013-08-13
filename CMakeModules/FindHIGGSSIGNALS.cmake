@@ -21,27 +21,8 @@
 
 INCLUDE(FindPackageHandleStandardArgs)
 
-# The variable HIGGSSIGNALS_LIBRARIES is set to "HIGGSSIGNALS_LIBRARIES-NOTFOUND" which is the default value.
+FIND_LIBRARY(HIGGSSIGNALS_LIBRARY NAMES HS PATHS ${HIGGSSIGNALS_INSTALLATION_PATH})
 
-SET(HIGGSSIGNALS_LIBRARIES "HIGGSSIGNALS_LIBRARIES-NOTFOUND")
-
-# Look for the location of the HiggsSignals libraries.
-
-FIND_LIBRARY(HIGGSSIGNALS_LIBRARY NAMES HS PATHS ${HIGGSSIGNALS_INSTALLATION_PATH} NO_DEFAULT_PATH)
 SET(HIGGSSIGNALS_LIBRARIES ${HIGGSSIGNALS_LIBRARY})
-
-IF(${HIGGSSIGNALS_LIBRARIES} MATCHES "HIGGSSIGNALS_LIBRARIES-NOTFOUND")
-
-    # If the path to the HiggsSignals installation is not found print this message.
-
-    MESSAGE(WARNING "\nOptional libraries for HiggsSignals not found.\nIf you want to use them, please specify the path to your HiggsSignals installation in the file CMakeLists.txt in the Fittino root directory.\nContinuing with the cmake configuration.\n")
-
-ELSE(${HIGGSSIGNALS_LIBRARIES} MATCHES "HIGGSSIGNALS_LIBRARIES-NOTFOUND")
-
-    # If the path to the HiggsSignals installation is found print this message.
-
-    MESSAGE(STATUS "HiggsSignals found")
-
-ENDIF(${HIGGSSIGNALS_LIBRARIES} MATCHES "HIGGSSIGNALS_LIBRARIES-NOTFOUND")
 
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(HIGGSSIGNALS DEFAULT_MSG HIGGSSIGNALS_LIBRARIES)

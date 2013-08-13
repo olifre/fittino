@@ -21,27 +21,8 @@
 
 INCLUDE(FindPackageHandleStandardArgs)
 
-# The variable HIGGSBOUNDS_LIBRARIES is set to "HIGGSBOUNDS_LIBRARIES-NOTFOUND" which is the default value.
+FIND_LIBRARY(HIGGSBOUNDS_LIBRARY NAMES HB PATHS ${HIGGSBOUNDS_INSTALLATION_PATH})
 
-SET(HIGGSBOUNDS_LIBRARIES "HIGGSBOUNDS_LIBRARIES-NOTFOUND")
-
-# Look for the location of the HiggsBounds libraries.
-
-FIND_LIBRARY(HIGGSBOUNDS_LIBRARY NAMES HB PATHS ${HIGGSBOUNDS_INSTALLATION_PATH} NO_DEFAULT_PATH)
 SET(HIGGSBOUNDS_LIBRARIES ${HIGGSBOUNDS_LIBRARY})
-
-IF(${HIGGSBOUNDS_LIBRARIES} MATCHES "HIGGSBOUNDS_LIBRARIES-NOTFOUND")
-
-    # If the path to the HiggsBounds installation is not found print this message.
-
-    MESSAGE(WARNING "\nOptional libraries for HiggsBounds not found.\nIf you want to use them, please specify the path to your HiggsBounds installation in the file CMakeLists.txt in the Fittino root directory.\nContinuing with the cmake configuration.\n")
-
-ELSE(${HIGGSBOUNDS_LIBRARIES} MATCHES "HIGGSBOUNDS_LIBRARIES-NOTFOUND")
-
-    # If the path to the HiggsBounds installation is found print this message.
-
-    MESSAGE(STATUS "HiggsBounds found")
-
-ENDIF(${HIGGSBOUNDS_LIBRARIES} MATCHES "HIGGSBOUNDS_LIBRARIES-NOTFOUND")
 
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(HIGGSBOUNDS DEFAULT_MSG HIGGSBOUNDS_LIBRARIES)
