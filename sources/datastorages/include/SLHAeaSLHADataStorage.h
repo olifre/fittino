@@ -51,7 +51,7 @@ namespace Fittino {
       virtual void   ReadFile( const std::string& slhaInputFileName );
       virtual void   WriteFile( const std::string& slhaOutputFileName ) const;
 
-    public:
+    private:
       SLHAea::Coll   _slhaeaDataStorage;
 
   };
