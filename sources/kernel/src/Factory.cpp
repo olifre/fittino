@@ -27,6 +27,7 @@
 #include "Factory.h"
 #include "GeneticAlgorithmOptimizer.h"
 #include "HDim6ModelCalculator.h"
+#include "HDim6Model.h"
 #include "HECModel.h"
 #include "MarkovChainSampler.h"
 #include "MinuitOptimizer.h"
@@ -68,6 +69,9 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const Fittino::Configur
         case Configuration::CMSSM:
             return new CMSSMModel();
 
+        case Configuration::HDIM6:
+            return new HDim6Model();
+
         case Configuration::HEC:
 
 #if defined(HIGGSBOUNDS_FOUND) && defined(HIGGSSIGNALS_FOUND)
@@ -91,7 +95,7 @@ Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator( const Fi
 
     switch ( calculatorType ) {
   
-        case Configuration::HDIM6:
+        case Configuration::HDIM6CALCULATOR:
     
 #ifdef LHAPDF_FOUND
 
