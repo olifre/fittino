@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "ModelCalculatorBase.h"
+#include "SimpleDataStorage.h"
 
 Fittino::ModelCalculatorBase::ModelCalculatorBase( const PhysicsModelBase* model )
         : _name( "" ),
@@ -25,9 +26,13 @@ Fittino::ModelCalculatorBase::ModelCalculatorBase( const PhysicsModelBase* model
           _executableName( "" ),
           _model( model ) {
 
+  _simpleOutputDataStorage = new SimpleDataStorage();
+
 }
 
 Fittino::ModelCalculatorBase::~ModelCalculatorBase() {
+
+  delete _simpleOutputDataStorage;
 
 }
 
@@ -36,3 +41,9 @@ std::string Fittino::ModelCalculatorBase::GetName() const {
     return _name;
 
 }
+
+const Fittino::SimpleDataStorage* Fittino::ModelCalculatorBase::GetSimpleOutputDataStorage() const {
+
+  return _simpleOutputDataStorage;
+
+};

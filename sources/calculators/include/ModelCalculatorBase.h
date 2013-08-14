@@ -28,6 +28,7 @@
 namespace Fittino {
 
   class PhysicsModelBase;
+  class SimpleDataStorage;
 
   /*!
    *  \defgroup calculators
@@ -42,30 +43,34 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                   ModelCalculatorBase( const PhysicsModelBase* model );
+                                    ModelCalculatorBase( const PhysicsModelBase* model );
       /*!
        *  Standard destructor.
        */
-                   ~ModelCalculatorBase();
-      std::string  GetName() const;
+                                    ~ModelCalculatorBase();
+      std::string                   GetName() const;
+
+    public:  
+      const SimpleDataStorage*      GetSimpleOutputDataStorage() const;
 
     public:
-      virtual void CalculatePredictions() = 0;
-      virtual void Initialize() const = 0;
+      virtual void                  CalculatePredictions() = 0;
+      virtual void                  Initialize() const = 0;
 
     protected:
-      enum         CallMethod { EXECUTABLE, FUNCTION };
+      enum                          CallMethod { EXECUTABLE, FUNCTION };
 
     protected:
-      std::string  _executableName;
-      std::string  _name;
-      CallMethod   _callMethod;
-      const PhysicsModelBase* _model;
+      std::string                   _executableName;
+      std::string                   _name;
+      CallMethod                    _callMethod;
+      const PhysicsModelBase*       _model;
+      SimpleDataStorage*            _simpleOutputDataStorage;
 
     protected:
-      virtual void CallExecutable() = 0;
-      virtual void CallFunction() = 0;
-      virtual void ConfigureInput() = 0;
+      virtual void                  CallExecutable() = 0;
+      virtual void                  CallFunction() = 0;
+      virtual void                  ConfigureInput() = 0;
 
   };
 

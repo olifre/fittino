@@ -1,14 +1,14 @@
-/* $Id$ */ 
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        HDim6ModelCalculator.cpp                                         *
+* File        SimpleDataStorage.cpp                                            *
 *                                                                              *
-* Description Wrapper class for HDim6                                          * 
+* Description Class for storage of doubles                                     *
 *                                                                              *
-* Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
+* Authors     Bjoern Sarrazin  <uhlenbrock@physik.uni-bonn.de>                 *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -17,47 +17,36 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "HDim6/CrossSection.h" 
-#include "HDim6/CrossSection_had.h" 
-#include "HDim6/decay.h" 
-#include "HDim6/inputs.h" 
-#include "HDim6/VBF.h"
+#include <map>
+#include <string>
 
-#include "HDim6ModelCalculator.h"
+#include "SimpleDataStorage.h"
 
-Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* model )
-        :ModelCalculatorBase( model ){
+Fittino::SimpleDataStorage::SimpleDataStorage() {
 
-    _name = "HDim6ModelCalculator";
-    //    _simple
+  _map = new std::map<std::string, double>;
 
 }
 
-Fittino::HDim6ModelCalculator::~HDim6ModelCalculator() {
+Fittino::SimpleDataStorage::~SimpleDataStorage() {
+
+  delete _map;
 
 }
 
-void Fittino::HDim6ModelCalculator::CalculatePredictions() {
+std::map<std::string, double>* Fittino::SimpleDataStorage::GetMap() {
+
+  return _map;
 
 }
 
-void Fittino::HDim6ModelCalculator::Initialize() const {
+const std::map<std::string, double>* Fittino::SimpleDataStorage::GetMap() const {
+
+  return _map;
 
 }
 
-void Fittino::HDim6ModelCalculator::CallExecutable() {
+void Fittino::SimpleDataStorage::ReadFile( const std::string& inputFileName ) const {
 
-}
-
-void Fittino::HDim6ModelCalculator::CallFunction() {
-
-  effinputs effinputs;
-  sminputs  SMparam;
-
-  init_(   &SMparam );
-
-}
-
-void Fittino::HDim6ModelCalculator::ConfigureInput() {
 
 }
