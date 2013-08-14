@@ -40,15 +40,20 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                   SimpleDataStorage();
+                                           SimpleDataStorage();
       /*!
        *  Standard destructor.
        */
-                   ~SimpleDataStorage();
+                                           ~SimpleDataStorage();
+      /*!
+       *  Adds an non yet existing entry.
+       */
+
+      void                                 AddEntry(std::string name, double value);
       /*!
        *  Returns the map containing the stored doubles.
        */
-      std::map<std::string, double>* GetMap();
+      std::map<std::string, double>*       GetMap();
 
     public:  
       /*!
@@ -60,10 +65,10 @@ namespace Fittino {
       /*!
        *  Dummy function. 
        */
-      virtual void ReadFile( const std::string& inputFileName ) const;
+      virtual void                         ReadFile( const std::string& inputFileName ) const;
 
     private:  
-      std::map<std::string, double>* _map;
+      std::map<std::string, double>*       _map;
 
   };
 

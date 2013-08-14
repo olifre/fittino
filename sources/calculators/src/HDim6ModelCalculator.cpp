@@ -29,7 +29,6 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* mod
         :ModelCalculatorBase( model ){
 
     _name = "HDim6ModelCalculator";
-    //    _simple
 
 }
 

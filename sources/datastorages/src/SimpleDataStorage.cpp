@@ -20,6 +20,7 @@
 #include <map>
 #include <string>
 
+#include "ConfigurationException.h"
 #include "SimpleDataStorage.h"
 
 Fittino::SimpleDataStorage::SimpleDataStorage() {
@@ -31,6 +32,18 @@ Fittino::SimpleDataStorage::SimpleDataStorage() {
 Fittino::SimpleDataStorage::~SimpleDataStorage() {
 
   delete _map;
+
+}
+
+void Fittino::SimpleDataStorage::AddEntry( std::string name, double value ) {
+
+    if ( !_map->insert( std::make_pair( name, value ) ).second ) {
+
+        std::string message = "Entry with name " + name + " has already been added to simple data storage ";
+
+	throw ConfigurationException( message ); //TODO: Dedicated exception class ?
+
+    }
 
 }
 
