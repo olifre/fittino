@@ -54,9 +54,10 @@ namespace Fittino {
       virtual void PrintSteeringParameters() const;
       virtual void UpdateModel();
 
-    private:  
+    private:
       bool         _logX;
       bool         _logY;
+
   };
 
 }

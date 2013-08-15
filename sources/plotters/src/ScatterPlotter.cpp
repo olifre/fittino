@@ -19,8 +19,12 @@
 
 #include <sstream>
 
+#include "TCanvas.h"
 #include "TFile.h"
+#include "TGraph.h"
 #include "TH1F.h"
+#include "TH2F.h"
+#include "TROOT.h"
 #include "TTree.h"
 
 #include "ModelBase.h"
@@ -32,6 +36,14 @@ Fittino::ScatterPlotter::ScatterPlotter( ModelBase* model, std::string& dataFile
         : PlotterBase( model, dataFileName ) {
 
     _name = "scatter plotter";
+
+    _canvas = new TCanvas( "Canvas", "Canvas", 600, 600 );
+
+    gROOT->SetStyle( "FITTINO" );
+    gROOT->ForceStyle();
+
+    _pad = (TPad*)_canvas->cd();
+    _pad->SetTicks( 1, 1 );
 
 }
 
@@ -88,16 +100,23 @@ void Fittino::ScatterPlotter::Execute() {
 
         TString parameterName = _quantityVector.at( iQuantity )->GetName();
 
-        //_tree->Draw( "Chi2-" + lowestChi2String + ":TMath::Abs(" + parameterName + "+1)-1", "Chi2<"+ lowestChi2String + "+10&&TMath::Abs(Delta_Bosons_hWZ+1)-1<=0", "" );
-        _tree->Draw( "Chi2-" + lowestChi2String + ":TMath::Abs(" + parameterName + "+1)-1", "Chi2<"+ lowestChi2String + "+10", "" );
+        TString histogramName = parameterName;
+        TString histogramTitle = histogramName;
+        TH2F histogram = TH2F( histogramName, histogramTitle, 10, _quantityVector.at( iQuantity )->GetPlotLowerBound(), _quantityVector.at( iQuantity )->GetPlotUpperBound(), 10, 0., 10. );
 
-        ( (TH1F*)_canvas.GetPrimitive( "htemp" ) )->GetXaxis()->SetTitle( ( _quantityVector.at( iQuantity )->GetPlotName() ).c_str() );
+        histogram.Draw( "AXIS" );
 
-        ( (TH1F*)_canvas.GetPrimitive( "htemp" ) )->GetYaxis()->SetRangeUser( 0., 10. );
-        ( (TH1F*)_canvas.GetPrimitive( "htemp" ) )->GetYaxis()->SetTitle( "#Delta#chi^{2}" );
+        _tree->Draw( "Chi2-" + lowestChi2String + ":TMath::Abs(" + parameterName + "+1)-1", "Chi2<"+ lowestChi2String + "+10", "SAME" );
 
-        _canvas.Update();
-        _canvas.SaveAs( parameterName + ".png", "RECREATE" );
+        histogram.GetXaxis()->SetTitle( ( _quantityVector.at( iQuantity )->GetPlotName() ).c_str() );
+        histogram.GetXaxis()->SetTitleOffset( 1.1 );
+        histogram.GetXaxis()->SetRangeUser( _quantityVector.at( iQuantity )->GetPlotLowerBound(), _quantityVector.at( iQuantity )->GetPlotUpperBound() );
+
+        histogram.GetYaxis()->SetRangeUser( 0., 10. );
+        histogram.GetYaxis()->SetTitle( "#Delta#chi^{2}" );
+
+        _canvas->Update();
+        _canvas->SaveAs( parameterName + ".png", "RECREATE" );
 
     }
 

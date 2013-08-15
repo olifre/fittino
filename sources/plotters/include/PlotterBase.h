@@ -6,7 +6,7 @@
 *                                                                              *
 * File        PlotterBase.h                                                    *
 *                                                                              *
-* Description Base class for plotting                                          *
+* Description Base class for plotters                                          *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -23,12 +23,11 @@
 #include <map>
 #include <string>
 
-#include "TCanvas.h"
-#include "TLegend.h"
-#include "TPad.h"
-
 #include "AnalysisTool.h"
 
+class TCanvas;
+class TPad;
+class TStyle;
 class TTree;
 
 /*!
@@ -44,7 +43,7 @@ namespace Fittino {
    */
   /*!
    *  \ingroup plotters
-   *  \brief Base class for plotting.
+   *  \brief Base class for plotters.
    */
   class PlotterBase : public AnalysisTool {
 
@@ -63,10 +62,10 @@ namespace Fittino {
       std::map<std::string,int> _leafMap;
       std::vector<float>        _leafVector;
       std::vector<std::string>  _activeQuantityVector;
-      TCanvas                   _canvas;
+      TCanvas*                  _canvas;
       TFile*                    _dataFile;
-      TLegend                   _legend;
       TPad*                     _pad;
+      TStyle*                   _fittinoStyle;
       TTree*                    _tree;
       std::vector<Quantity*>    _quantityVector;
 
