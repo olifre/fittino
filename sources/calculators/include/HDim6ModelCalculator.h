@@ -22,6 +22,9 @@
 
 #include "ModelCalculatorBase.h"
 
+struct effinputs;
+struct sminputs;
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -48,6 +51,14 @@ namespace Fittino {
     public:
       virtual void CalculatePredictions();
       virtual void Initialize() const;
+
+    private:  
+      sminputs*    _smvalues;
+      effinputs*   _effvalues;
+
+    private:   
+      void         CalculateGamma();
+      void         InitializeSimpleOutputDataStorage();
 
     private:
       virtual void CallExecutable();
