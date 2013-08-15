@@ -20,6 +20,7 @@
 #include "HDim6Model.h"
 #include "HDim6ModelCalculator.h"
 #include "PhysicsParameter.h"
+#include "SimplePrediction.h"
 
 Fittino::HDim6Model::HDim6Model() {
 
@@ -28,33 +29,37 @@ Fittino::HDim6Model::HDim6Model() {
     double      value          = 0;
     std::string unit           = "GeV-2";
     std::string plotUnit       = "GeV^{-2}";
-    double      lowerBound     = 0;
-    double      upperBound     = 1e-4;
+    double      error          = 10;
+    double      lowerBound     = 1e-10;
+    double      upperBound     = 1;
     double      plotLowerBound = 0;
     double      plotUpperBound = 1e-4;
     
     // these will parametrize our grid
-    AddParameter( new PhysicsParameter( "F_B", "F_{B}", value, unit, plotUnit, lowerBound, upperBound, plotLowerBound, plotUpperBound, false ) );
-    AddParameter( new PhysicsParameter( "F_W", "F_{W}", value, unit, plotUnit, lowerBound, upperBound, plotLowerBound, plotUpperBound, false ) );
-    AddParameter( new PhysicsParameter( "F_WW", "F_{WW}", value, unit, plotUnit, lowerBound, upperBound, plotLowerBound, plotUpperBound, false ) );
+    AddParameter( new PhysicsParameter( "F_B", "F_{B}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    AddParameter( new PhysicsParameter( "F_W", "F_{W}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    AddParameter( new PhysicsParameter( "F_WW", "F_{WW}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, false ) );
 
     // these will be free in the fit as well
-    AddParameter( new PhysicsParameter( "F_gg", "F_{gg}", value, unit, plotUnit, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_b", "F_{b}", value, unit, plotUnit, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_tau", "F_{#tau}", value, unit, plotUnit, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    AddParameter( new PhysicsParameter( "F_gg", "F_{gg}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    AddParameter( new PhysicsParameter( "F_b", "F_{b}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    AddParameter( new PhysicsParameter( "F_tau", "F_{#tau}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
     
     // these we keep fixed
-    AddParameter( new PhysicsParameter( "F_BB", "F_{BB}", value, unit, plotUnit, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_u", "F_{u}", value, unit, plotUnit, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_d", "F_{d}", value, unit, plotUnit, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_c", "F_{c}", value, unit, plotUnit, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_s", "F_{s}", value, unit, plotUnit, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_t", "F_{t}", value, unit, plotUnit, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_e", "F_{e}", value, unit, plotUnit, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_mu", "F_{#mu}", value, unit, plotUnit, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    AddParameter( new PhysicsParameter( "F_BB", "F_{BB}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    AddParameter( new PhysicsParameter( "F_u", "F_{u}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    AddParameter( new PhysicsParameter( "F_d", "F_{d}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    AddParameter( new PhysicsParameter( "F_c", "F_{c}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    AddParameter( new PhysicsParameter( "F_s", "F_{s}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    AddParameter( new PhysicsParameter( "F_t", "F_{t}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    AddParameter( new PhysicsParameter( "F_e", "F_{e}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    AddParameter( new PhysicsParameter( "F_mu", "F_{#mu}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
 
     HDim6ModelCalculator* hdim6ModelCalculator = new HDim6ModelCalculator( this );
+
     _modelCalculatorVector.push_back( hdim6ModelCalculator );
+
+    _predictionVector.push_back( new SimplePrediction( "GammaTot_h", "#Gamma_{h}", "GeV", "GeV", 0, 1, hdim6ModelCalculator ) );
 
     PhysicsModelBase::Initialize();
 
