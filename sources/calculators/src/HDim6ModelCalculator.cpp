@@ -263,10 +263,10 @@ void Fittino::HDim6ModelCalculator::CalculateXS() {
                 & _simpleOutputDataStorage->GetMap()->at("XS_normSM_tth_error"),
                 & _simpleOutputDataStorage->GetMap()->at("XS_normSM_tth_chi2") );
 
-    // ratio_bg_bh_( _smvalues, _effvalues,
-    //             & _simpleOutputDataStorage->GetMap()->at("XS_normSM_Zh"),
-    //             & _simpleOutputDataStorage->GetMap()->at("XS_normSM_Zh_error"),
-    //             & _simpleOutputDataStorage->GetMap()->at("XS_normSM_Zh_chi2") );
+    ratio_bg_bh_( _smvalues, _effvalues,
+                & _simpleOutputDataStorage->GetMap()->at("XS_normSM_bh"),
+                & _simpleOutputDataStorage->GetMap()->at("XS_normSM_bh_error"),
+                & _simpleOutputDataStorage->GetMap()->at("XS_normSM_bh_chi2") );
 
     ratio_vbf_5flav_( _smvalues, _effvalues,
 		      & _simpleOutputDataStorage->GetMap()->at("XS_normSM_qqh"),
@@ -348,6 +348,10 @@ void Fittino::HDim6ModelCalculator::InitializeSimpleOutputDataStorage() {
     _simpleOutputDataStorage->AddEntry("XS_normSM_tth", -1);
     _simpleOutputDataStorage->AddEntry("XS_normSM_tth_error", -1);
     _simpleOutputDataStorage->AddEntry("XS_normSM_tth_chi2", -1);
+
+    _simpleOutputDataStorage->AddEntry("XS_normSM_bh", -1);
+    _simpleOutputDataStorage->AddEntry("XS_normSM_bh_error", -1);
+    _simpleOutputDataStorage->AddEntry("XS_normSM_bh_chi2", -1);
     
     _simpleOutputDataStorage->AddEntry("XS_normSM_qqh", -1);
     _simpleOutputDataStorage->AddEntry("XS_normSM_qqh_error", -1);
@@ -388,14 +392,6 @@ void Fittino::HDim6ModelCalculator::CallFunction() {
     CalculateXS();
     CalculateTripleGaugeCouplings();
     CalculateQuarticGaugeCouplings();
-
-    //     ratio_vbf_2flav_( _smvalues, _effvalues, &vbfratio, &err_vbfratio, &chi_vbfratio );
-    //     ratio_pphz_( _smvalues, _effvalues, &hzratio, &err_hzratio, &chi_hzratio );
-    //     ratio_pphw_( _smvalues, _effvalues, &hwratio, &err_hwratio, &chi_hwratio );
-  
-    //     ratio_bg_bh_( _smvalues, _effvalues, &bgratio, &err_bgratio, &chi_bgratio );
-  
-    //    init_(   &SMparam );
 
 }
 

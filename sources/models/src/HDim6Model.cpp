@@ -30,7 +30,7 @@ Fittino::HDim6Model::HDim6Model() {
     std::string unit           = "GeV-2";
     std::string plotUnit       = "GeV^{-2}";
     double      error          = 10;
-    double      lowerBound     = 1e-10;
+    double      lowerBound     = 0;
     double      upperBound     = 1;
     double      plotLowerBound = 0;
     double      plotUpperBound = 1e-4;
@@ -73,7 +73,7 @@ Fittino::HDim6Model::HDim6Model() {
     _predictionVector.push_back( new SimplePrediction( "XS_normSM_ggh", "ggh/ggh^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
     _predictionVector.push_back( new SimplePrediction( "XS_normSM_bbh", "bbh/bbh^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
     _predictionVector.push_back( new SimplePrediction( "XS_normSM_tth", "tth/tth^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    //    _predictionVector.push_back( new SimplePrediction( "XS_normSM_", "tth/tth^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    _predictionVector.push_back( new SimplePrediction( "XS_normSM_bh", "bh/bh^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
     _predictionVector.push_back( new SimplePrediction( "XS_normSM_qqh", "qqh/qqh^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
     _predictionVector.push_back( new SimplePrediction( "XS_normSM_Wh", "Wh/Wh^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
     _predictionVector.push_back( new SimplePrediction( "XS_normSM_Zh", "Zh/Zh^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
