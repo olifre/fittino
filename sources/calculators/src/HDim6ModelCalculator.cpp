@@ -17,9 +17,12 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <LHAPDF/LHAPDF.h>
+
 #include "HDim6/CrossSection.h" 
 #include "HDim6/CrossSection_had.h" 
 #include "HDim6/decay.h" 
+#include "HDim6/gaugecpl.h"
 #include "HDim6/inputs.h" 
 #include "HDim6/VBF.h"
 
@@ -33,7 +36,8 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* mod
 
     _name = "HDim6ModelCalculator";
 
-    InitializeSimpleOutputDataStorage();
+    // lhapdf-getdata CT10.LHgrid
+    _pdfSet = "CT10";
 
     _smvalues  = new sminputs();
 
@@ -95,6 +99,8 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* mod
 
     _effvalues = new effinputs();
 
+    InitializeSimpleOutputDataStorage();
+
 }
 
 Fittino::HDim6ModelCalculator::~HDim6ModelCalculator() {
@@ -112,6 +118,14 @@ void Fittino::HDim6ModelCalculator::CalculatePredictions() {
 }
 
 void Fittino::HDim6ModelCalculator::Initialize() const {
+
+    if ( _pdfDirectory !="" ){
+
+        LHAPDF::setPDFPath( _pdfDirectory );
+
+    }
+    
+    LHAPDF::initPDFSet( _pdfSet, LHAPDF::LHGRID, 0 );  
 
     // Initialisiere VBF SM-Werte...
     vbf_init_cs_( _smvalues );
@@ -133,50 +147,141 @@ void Fittino::HDim6ModelCalculator::CalculateGamma(){
                  & _simpleOutputDataStorage->GetMap()->at("GammaTot_h_unc"),
                  & _simpleOutputDataStorage->GetMap()->at("GammaTot_h_chi2") );
 
+    _simpleOutputDataStorage->GetMap()->at("GammaTot_normSM_h") = _simpleOutputDataStorage->GetMap()->at("GammaTot_h") / _smvalues->sm_width;
+
     br_hss_    ( _smvalues, _effvalues, 
                  & _simpleOutputDataStorage->GetMap()->at("BR_hss"),
                  & _simpleOutputDataStorage->GetMap()->at("BR_hss_unc"),
                  & _simpleOutputDataStorage->GetMap()->at("BR_hss_chi2") );
+
+    _simpleOutputDataStorage->GetMap()->at("BR_normSM_hss") = _simpleOutputDataStorage->GetMap()->at("BR_hss") / _smvalues->br_h_ss;
 
     br_hcc_    ( _smvalues, _effvalues, 
                  & _simpleOutputDataStorage->GetMap()->at("BR_hcc"),
                  & _simpleOutputDataStorage->GetMap()->at("BR_hcc_unc"),
                  & _simpleOutputDataStorage->GetMap()->at("BR_hcc_chi2") );
 
+    _simpleOutputDataStorage->GetMap()->at("BR_normSM_hcc") = _simpleOutputDataStorage->GetMap()->at("BR_hcc") / _smvalues->br_h_cc;
+
     br_hbb_    ( _smvalues, _effvalues, 
                  & _simpleOutputDataStorage->GetMap()->at("BR_hbb"),
                  & _simpleOutputDataStorage->GetMap()->at("BR_hbb_unc"),
                  & _simpleOutputDataStorage->GetMap()->at("BR_hbb_chi2") );
+
+    _simpleOutputDataStorage->GetMap()->at("BR_normSM_hbb") = _simpleOutputDataStorage->GetMap()->at("BR_hbb") / _smvalues->br_h_bb;
 
     br_htautau_( _smvalues, _effvalues, 
                  & _simpleOutputDataStorage->GetMap()->at("BR_htautau"),
                  & _simpleOutputDataStorage->GetMap()->at("BR_htautau_unc"),
                  & _simpleOutputDataStorage->GetMap()->at("BR_htautau_chi2") );
 
+    _simpleOutputDataStorage->GetMap()->at("BR_normSM_htautau") = _simpleOutputDataStorage->GetMap()->at("BR_htautau") / _smvalues->br_h_tautau;
+
     br_hww_    ( _smvalues, _effvalues, 
                  & _simpleOutputDataStorage->GetMap()->at("BR_hWW"),
                  & _simpleOutputDataStorage->GetMap()->at("BR_hWW_unc"),
                  & _simpleOutputDataStorage->GetMap()->at("BR_hWW_chi2") );
+
+    _simpleOutputDataStorage->GetMap()->at("BR_normSM_hWW") = _simpleOutputDataStorage->GetMap()->at("BR_hWW") / _smvalues->br_h_ww;
 
     br_hzz_    ( _smvalues, _effvalues, 
                  & _simpleOutputDataStorage->GetMap()->at("BR_hZZ"),
                  & _simpleOutputDataStorage->GetMap()->at("BR_hZZ_unc"),
                  & _simpleOutputDataStorage->GetMap()->at("BR_hZZ_chi2") );
 
+    _simpleOutputDataStorage->GetMap()->at("BR_normSM_hZZ") = _simpleOutputDataStorage->GetMap()->at("BR_hZZ") / _smvalues->br_h_zz;
+
     br_hglgl_  ( _smvalues, _effvalues, 
                  & _simpleOutputDataStorage->GetMap()->at("BR_hgg"),
                  & _simpleOutputDataStorage->GetMap()->at("BR_hgg_unc"),
                  & _simpleOutputDataStorage->GetMap()->at("BR_hgg_chi2") );
+
+    _simpleOutputDataStorage->GetMap()->at("BR_normSM_hgg") = _simpleOutputDataStorage->GetMap()->at("BR_hgg") / _smvalues->br_h_gg;
 
     br_hgaga_  ( _smvalues, _effvalues, 
                  & _simpleOutputDataStorage->GetMap()->at("BR_hgaga"),
                  & _simpleOutputDataStorage->GetMap()->at("BR_hgaga_unc"),
                  & _simpleOutputDataStorage->GetMap()->at("BR_hgaga_chi2") );
 
+    _simpleOutputDataStorage->GetMap()->at("BR_normSM_hgaga") = _simpleOutputDataStorage->GetMap()->at("BR_hgaga") / _smvalues->br_h_yy;
+
     br_hgaz_   ( _smvalues, _effvalues, 
                  & _simpleOutputDataStorage->GetMap()->at("BR_hZga"),
                  & _simpleOutputDataStorage->GetMap()->at("BR_hZga_unc"),
                  & _simpleOutputDataStorage->GetMap()->at("BR_hZga_chi2") );
+
+    _simpleOutputDataStorage->GetMap()->at("BR_normSM_hZga") = _simpleOutputDataStorage->GetMap()->at("BR_hZga") / _smvalues->br_h_yz;
+
+}
+
+void Fittino::HDim6ModelCalculator::CalculateTripleGaugeCouplings() {
+
+    _simpleOutputDataStorage->GetMap()->at("Delta_kappa_ga") = d_kappa_y ( _smvalues, _effvalues );
+
+    _simpleOutputDataStorage->GetMap()->at("Delta_kappa_Z" ) = d_kappa_z ( _smvalues, _effvalues );
+
+    _simpleOutputDataStorage->GetMap()->at("Delta_g1_ga"   ) = d_g1_y    ( _smvalues, _effvalues );
+
+    _simpleOutputDataStorage->GetMap()->at("Delta_g1_Z"    ) = d_g1_z    ( _smvalues, _effvalues );
+
+}
+
+void Fittino::HDim6ModelCalculator::CalculateQuarticGaugeCouplings() {
+
+    _simpleOutputDataStorage->GetMap()->at("Delta_g1_WW"  ) = d_g1_ww ( _smvalues, _effvalues );
+
+    _simpleOutputDataStorage->GetMap()->at("Delta_g2_WW"  ) = d_g2_ww ( _smvalues, _effvalues );
+
+    _simpleOutputDataStorage->GetMap()->at("Delta_g1_gaga") = d_g1_yy ( _smvalues, _effvalues );
+
+    _simpleOutputDataStorage->GetMap()->at("Delta_g2_gaga") = d_g2_yy ( _smvalues, _effvalues );
+
+    _simpleOutputDataStorage->GetMap()->at("Delta_g1_ZZ"  ) = d_g1_zz ( _smvalues, _effvalues );
+
+    _simpleOutputDataStorage->GetMap()->at("Delta_g2_ZZ"  ) = d_g2_zz ( _smvalues, _effvalues );
+
+    _simpleOutputDataStorage->GetMap()->at("Delta_g1_Zga" ) = d_g1_zy ( _smvalues, _effvalues );
+
+    _simpleOutputDataStorage->GetMap()->at("Delta_g2_Zga" ) = d_g2_zy ( _smvalues, _effvalues );
+
+}
+
+void Fittino::HDim6ModelCalculator::CalculateXS() {
+
+    ratio_ggh_( _smvalues, _effvalues,
+                & _simpleOutputDataStorage->GetMap()->at("XS_normSM_ggh"),
+                & _simpleOutputDataStorage->GetMap()->at("XS_normSM_ggh_error"),
+                & _simpleOutputDataStorage->GetMap()->at("XS_normSM_ggh_chi2") );
+
+    ratio_bb_h_( _smvalues, _effvalues,
+                & _simpleOutputDataStorage->GetMap()->at("XS_normSM_bbh"),
+                & _simpleOutputDataStorage->GetMap()->at("XS_normSM_bbh_error"),
+                & _simpleOutputDataStorage->GetMap()->at("XS_normSM_bbh_chi2") );
+
+    ratio_tth_( _smvalues, _effvalues,
+                & _simpleOutputDataStorage->GetMap()->at("XS_normSM_tth"),
+                & _simpleOutputDataStorage->GetMap()->at("XS_normSM_tth_error"),
+                & _simpleOutputDataStorage->GetMap()->at("XS_normSM_tth_chi2") );
+
+    // ratio_bg_bh_( _smvalues, _effvalues,
+    //             & _simpleOutputDataStorage->GetMap()->at("XS_normSM_Zh"),
+    //             & _simpleOutputDataStorage->GetMap()->at("XS_normSM_Zh_error"),
+    //             & _simpleOutputDataStorage->GetMap()->at("XS_normSM_Zh_chi2") );
+
+    ratio_vbf_5flav_( _smvalues, _effvalues,
+		      & _simpleOutputDataStorage->GetMap()->at("XS_normSM_qqh"),
+                      & _simpleOutputDataStorage->GetMap()->at("XS_normSM_qqh_error"), 
+                      & _simpleOutputDataStorage->GetMap()->at("XS_normSM_qqh_chi2") );
+
+    ratio_pphw_( _smvalues, _effvalues,
+                & _simpleOutputDataStorage->GetMap()->at("XS_normSM_Wh"),
+                & _simpleOutputDataStorage->GetMap()->at("XS_normSM_Wh_error"),
+                & _simpleOutputDataStorage->GetMap()->at("XS_normSM_Wh_chi2") );
+
+    ratio_pphz_( _smvalues, _effvalues,
+                & _simpleOutputDataStorage->GetMap()->at("XS_normSM_Zh"),
+                & _simpleOutputDataStorage->GetMap()->at("XS_normSM_Zh_error"),
+                & _simpleOutputDataStorage->GetMap()->at("XS_normSM_Zh_chi2") );
 
 }
 
@@ -185,42 +290,90 @@ void Fittino::HDim6ModelCalculator::InitializeSimpleOutputDataStorage() {
     _simpleOutputDataStorage->AddEntry("GammaTot_h", -1);
     _simpleOutputDataStorage->AddEntry("GammaTot_h_unc", -1);
     _simpleOutputDataStorage->AddEntry("GammaTot_h_chi2", -1);
+    _simpleOutputDataStorage->AddEntry("GammaTot_normSM_h", -1);
 
     _simpleOutputDataStorage->AddEntry("BR_hss", -1);
     _simpleOutputDataStorage->AddEntry("BR_hss_unc", -1);
     _simpleOutputDataStorage->AddEntry("BR_hss_chi2", -1);
+    _simpleOutputDataStorage->AddEntry("BR_normSM_hss",-1 );
 
     _simpleOutputDataStorage->AddEntry("BR_hcc", -1);
     _simpleOutputDataStorage->AddEntry("BR_hcc_unc", -1);
     _simpleOutputDataStorage->AddEntry("BR_hcc_chi2", -1);
+    _simpleOutputDataStorage->AddEntry("BR_normSM_hcc", -1);
 
     _simpleOutputDataStorage->AddEntry("BR_hbb", -1);
     _simpleOutputDataStorage->AddEntry("BR_hbb_unc", -1);
     _simpleOutputDataStorage->AddEntry("BR_hbb_chi2", -1);
+    _simpleOutputDataStorage->AddEntry("BR_normSM_hbb", -1);
 
     _simpleOutputDataStorage->AddEntry("BR_htautau", -1);
     _simpleOutputDataStorage->AddEntry("BR_htautau_unc", -1);
     _simpleOutputDataStorage->AddEntry("BR_htautau_chi2", -1);
+    _simpleOutputDataStorage->AddEntry("BR_normSM_htautau", -1);
 
     _simpleOutputDataStorage->AddEntry("BR_hWW", -1);
     _simpleOutputDataStorage->AddEntry("BR_hWW_unc", -1);
     _simpleOutputDataStorage->AddEntry("BR_hWW_chi2", -1);
+    _simpleOutputDataStorage->AddEntry("BR_normSM_hWW", -1);
 
     _simpleOutputDataStorage->AddEntry("BR_hZZ", -1);
     _simpleOutputDataStorage->AddEntry("BR_hZZ_unc", -1);
     _simpleOutputDataStorage->AddEntry("BR_hZZ_chi2", -1);
+    _simpleOutputDataStorage->AddEntry("BR_normSM_hZZ", -1);
 
     _simpleOutputDataStorage->AddEntry("BR_hgg", -1);
     _simpleOutputDataStorage->AddEntry("BR_hgg_unc", -1);
     _simpleOutputDataStorage->AddEntry("BR_hgg_chi2", -1);
+    _simpleOutputDataStorage->AddEntry("BR_normSM_hgg", -1);
 
     _simpleOutputDataStorage->AddEntry("BR_hgaga", -1);
     _simpleOutputDataStorage->AddEntry("BR_hgaga_unc", -1);
     _simpleOutputDataStorage->AddEntry("BR_hgaga_chi2", -1);
+    _simpleOutputDataStorage->AddEntry("BR_normSM_hgaga", -1);
 
     _simpleOutputDataStorage->AddEntry("BR_hZga", -1);
     _simpleOutputDataStorage->AddEntry("BR_hZga_unc", -1);
     _simpleOutputDataStorage->AddEntry("BR_hZga_chi2", -1);
+    _simpleOutputDataStorage->AddEntry("BR_normSM_hZga", -1);
+
+    _simpleOutputDataStorage->AddEntry("XS_normSM_ggh", -1);
+    _simpleOutputDataStorage->AddEntry("XS_normSM_ggh_error", -1);
+    _simpleOutputDataStorage->AddEntry("XS_normSM_ggh_chi2", -1);
+
+    _simpleOutputDataStorage->AddEntry("XS_normSM_bbh", -1);
+    _simpleOutputDataStorage->AddEntry("XS_normSM_bbh_error", -1);
+    _simpleOutputDataStorage->AddEntry("XS_normSM_bbh_chi2", -1);
+    
+    _simpleOutputDataStorage->AddEntry("XS_normSM_tth", -1);
+    _simpleOutputDataStorage->AddEntry("XS_normSM_tth_error", -1);
+    _simpleOutputDataStorage->AddEntry("XS_normSM_tth_chi2", -1);
+    
+    _simpleOutputDataStorage->AddEntry("XS_normSM_qqh", -1);
+    _simpleOutputDataStorage->AddEntry("XS_normSM_qqh_error", -1);
+    _simpleOutputDataStorage->AddEntry("XS_normSM_qqh_chi2", -1);
+    
+    _simpleOutputDataStorage->AddEntry("XS_normSM_Wh", -1);
+    _simpleOutputDataStorage->AddEntry("XS_normSM_Wh_error", -1);
+    _simpleOutputDataStorage->AddEntry("XS_normSM_Wh_chi2", -1);
+
+    _simpleOutputDataStorage->AddEntry("XS_normSM_Zh", -1);
+    _simpleOutputDataStorage->AddEntry("XS_normSM_Zh_error", -1);
+    _simpleOutputDataStorage->AddEntry("XS_normSM_Zh_chi2", -1);
+
+    _simpleOutputDataStorage->AddEntry("Delta_kappa_ga", -1);
+    _simpleOutputDataStorage->AddEntry("Delta_kappa_Z", -1);
+    _simpleOutputDataStorage->AddEntry("Delta_g1_ga", -1);
+    _simpleOutputDataStorage->AddEntry("Delta_g1_Z", -1);
+
+    _simpleOutputDataStorage->AddEntry("Delta_g1_WW", -1);
+    _simpleOutputDataStorage->AddEntry("Delta_g2_WW", -1);
+    _simpleOutputDataStorage->AddEntry("Delta_g1_gaga", -1);
+    _simpleOutputDataStorage->AddEntry("Delta_g2_gaga", -1);
+    _simpleOutputDataStorage->AddEntry("Delta_g1_ZZ", -1);
+    _simpleOutputDataStorage->AddEntry("Delta_g2_ZZ", -1);
+    _simpleOutputDataStorage->AddEntry("Delta_g1_Zga", -1);
+    _simpleOutputDataStorage->AddEntry("Delta_g2_Zga", -1);
 
 }
 
@@ -232,6 +385,9 @@ void Fittino::HDim6ModelCalculator::CallExecutable() {
 void Fittino::HDim6ModelCalculator::CallFunction() {
 
     CalculateGamma();  
+    CalculateXS();
+    CalculateTripleGaugeCouplings();
+    CalculateQuarticGaugeCouplings();
 
     //     ratio_vbf_2flav_( _smvalues, _effvalues, &vbfratio, &err_vbfratio, &chi_vbfratio );
     //     ratio_pphz_( _smvalues, _effvalues, &hzratio, &err_hzratio, &chi_hzratio );

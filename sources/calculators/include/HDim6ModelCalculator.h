@@ -53,11 +53,16 @@ namespace Fittino {
       virtual void Initialize() const;
 
     private:  
+      std::string  _pdfDirectory;
+      std::string  _pdfSet;
       sminputs*    _smvalues;
       effinputs*   _effvalues;
 
     private:   
       void         CalculateGamma();
+      void         CalculateTripleGaugeCouplings();
+      void         CalculateQuarticGaugeCouplings();
+      void         CalculateXS();
       void         InitializeSimpleOutputDataStorage();
 
     private:
