@@ -169,15 +169,65 @@ void hgaga_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
 
 void hgaz_(  sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
-  double Atop = 0.3; //Approximated for mH < mtop
-  double Aw   = -4.6 + 0.3*pow(smpar->mh/smpar->mw,2);
-  double cw   = sqrt(1-pow(smpar->sw,2));
-  double I    = (1-16./3.*pow(smpar->sw,2))/cw*Atop + Aw;
-  double smwidth = pow(smpar->mw,2)*pow(smpar->mh,3)*smpar->alphae/128./pow(M_PI,4)/pow(smpar->vev,2)*pow(1.-pow(smpar->mz/smpar->mh,2),3)*pow(I,2);
-  double C    = smpar->mw/2./M_PI/pow(smpar->vev,2)/I*sqrt(smpar->alphae/M_PI);
-  double factor  = pow(1+(effpar->g1hzy+2.*effpar->g2hzy)/C,2);
+  double mf      = smpar->mto;
+  double mz      = smpar->mz;
+  double sw      = smpar->sw;
+
+  double alpha   = smpar->alphae;
+
+  double cw      = sqrt(1-sw*sw);
+  double mw      = mz*cw;
+  double mh      = smpar->mh;
+
+  double ftop    = effpar->ftoh;
   
-  *pWidth = smwidth * factor;
+  // Definitiond des Higgs-Erwartungswertes im Standardmodell ist v = 2*MW*sw/ee;
+  double v       = smpar->vev;
+
+  double tauf    = 4*pow(mf/mh,2);
+  double tauw    = 4*pow(mw/mh,2);
+  double lambdaf = 4*pow(mf/mz,2);
+  double lambdaw = 4*pow(mw/mz,2);
+  
+  /* Nur gueltig wenn taux >= 1, was fuer mH approx 125GeV und Standard W,T-Massen erfuellt ist */
+  /* W-Funktionen */
+  double gtauw   = sqrt(tauw - 1)*asin(1/sqrt(tauw));
+  double glambdaw= sqrt(lambdaw-1)*asin(1/sqrt(lambdaw));
+  double ftauw   = pow(asin(1/sqrt(tauw)),2);
+  double flambdaw= pow(asin(1/sqrt(lambdaw)),2);
+
+  /* Fermion-Funktionen */
+  double gtauf   = sqrt(tauf - 1)*asin(1/sqrt(tauf));
+  double glambdaf= sqrt(lambdaf-1)*asin(1/sqrt(lambdaf));
+  double ftauf   = pow(asin(1/sqrt(tauf)),2);
+  double flambdaf= pow(asin(1/sqrt(lambdaf)),2);
+
+  /* Integrale fuer Top- und W */
+  double I1f     = tauf*lambdaf/2./(tauf-lambdaf)+pow(tauf*lambdaf,2)/2./pow(tauf-lambdaf,2)*(ftauf-flambdaf)+pow(tauf,2)*lambdaf/pow(tauf-lambdaf,2)*(gtauf-glambdaf);
+  double I2f     = -tauf*lambdaf/2./(tauf-lambdaf)*(ftauf-flambdaf);
+  double I1w     = tauw*lambdaw/2./(tauw-lambdaw)+pow(tauw*lambdaw,2)/2./pow(tauw-lambdaw,2)*(ftauw-flambdaw)+pow(tauw,2)*lambdaw/pow(tauw-lambdaw,2)*(gtauw-glambdaw);
+  double I2w     = -tauw*lambdaw/2./(tauw-lambdaw)*(ftauw-flambdaw);
+
+  /* Die Amplituden stammen aus "The Higgs Hunters Guide", aber aus Gruenden der Uebersichtlichkeit wurde ein Faktor 1/sw aus den einzelnen Teilen herausgezogen */
+  double Aw      = -cw*(4.*(3.-sw*sw/cw/cw)*I2w + ((1+2./tauw)*sw*sw/cw/cw-(5+2./tauw))*I1w);
+  /* Es besteht eine Diskrepanz zwischen Angaben in "The Higgs Hunters Guide" und Arxiv 0503172v2 "Anatomy of electroweak symmetry breaking in Bezug auf das */
+  /* Vorzeichen der naechsten Amplitude. Benutze hier die Konvention mit negativem Vorzeichen die mit den experimentellen Werten besser uebereinstimmt.      */
+  double Af      = -3*2*2./3.*(0.5-4./3.*sw*sw)/cw*(I1f-I2f);
+
+  /* total amplitude                                                                         */
+  /* Vergleiche Vorzeichen vor Af mit Angabe ueber der Berechnung von Af                     */
+  /* Amplitude wiederum aus dem "Higgs Hunters Guide", aber diesmal g/2/Mw durch 1/v ersetzt */
+  // Ohne ersetzes v: double A       = alpha*g/4/M_PI/mw/sw*(Af+Aw); 
+  
+  double A       = alpha/2/M_PI/v/sw*((1-pow(v,3)/sqrt(2)/mf*ftop)*Af+Aw);
+  double GammaSM = 1./32./M_PI*pow(A,2)*pow(mh,3)*pow(1-pow(mz/mh,2),3);
+  
+  /* Berechnung der Breite im effektiven Modell, siehe Dokumentation */
+  
+  double C       = sqrt(32.0*M_PI*GammaSM/pow(mh*(1-pow(mz/mh,2)),3));
+  double Gamma   = 1.0/32.0/M_PI*pow(mh*(1-pow(mz/mh,2)),3)*pow((C+effpar->g1hzy+2.0*effpar->g2hzy),2);
+  
+  *pWidth = Gamma;
   *pError = 0;
 };
 

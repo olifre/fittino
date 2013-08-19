@@ -56,3 +56,7 @@
 	  quartic gauge boson vertices
 	:vbf.cc
 	- removed error in Lorentz-Trafo
+
+2013-08-19
+	:decay
+	- H->Zy complete
