@@ -219,14 +219,11 @@ void hgaz_(  sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   /* Amplitude wiederum aus dem "Higgs Hunters Guide", aber diesmal g/2/Mw durch 1/v ersetzt */
   // Ohne ersetzes v: double A       = alpha*g/4/M_PI/mw/sw*(Af+Aw); 
   
-  double A       = alpha/2/M_PI/v/sw*((1-pow(v,3)/sqrt(2)/mf*ftop)*Af+Aw);
-  double GammaSM = 1./32./M_PI*pow(A,2)*pow(mh,3)*pow(1-pow(mz/mh,2),3);
+  double A       = alpha/2/M_PI/v/sw*((1-pow(v,3)/sqrt(2)/mf*ftop)*Af+Aw)+effpar->g1hzy+2*effpar->g2hzy;
+  double Gamma   = 1./32./M_PI*pow(A,2)*pow(mh,3)*pow(1-pow(mz/mh,2),3);
   
   /* Berechnung der Breite im effektiven Modell, siehe Dokumentation */
-  
-  double C       = sqrt(32.0*M_PI*GammaSM/pow(mh*(1-pow(mz/mh,2)),3));
-  double Gamma   = 1.0/32.0/M_PI*pow(mh*(1-pow(mz/mh,2)),3)*pow((C+effpar->g1hzy+2.0*effpar->g2hzy),2);
-  
+    
   *pWidth = Gamma;
   *pError = 0;
 };
