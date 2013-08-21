@@ -42,6 +42,8 @@
 #include "SimulatedAnnealingOptimizer.h"
 #include "SummaryPlotter.h"
 #include "XMLDataStorage.h"
+#include "CovariantSampler.h"
+#include "CorrelatedSampler.h"
 
 Fittino::Factory::Factory() {
 
@@ -157,6 +159,12 @@ Fittino::SamplerBase* const Fittino::Factory::CreateSampler( const Fittino::Conf
 
         case Configuration::SIMPLE:
             return new SimpleSampler( model );
+
+        case Configuration::COVARIANT:
+            return new CovariantSampler( model);
+
+        case Configuration::CORRELATED :
+            return new CorrelatedSampler( model);
 
     }
 

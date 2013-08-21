@@ -55,6 +55,7 @@
 <!ELEMENT Sampler EMPTY>
 <!ATTLIST Sampler
   NumberOfIterations CDATA #IMPLIED
+  UpdateCovariancesAfter CDATA #IMPLIED
   SamplerType        CDATA #REQUIRED
 >
 

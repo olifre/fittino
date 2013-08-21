@@ -183,9 +183,23 @@ Fittino::Configuration::SamplerType Fittino::Configuration::GetSamplerType() con
         return Configuration::SIMPLE;
 
     }
+    else if ( ( *_steeringParameterMap )[key] == "Covariant" ) {
+
+        return Configuration::COVARIANT;
+
+
+    }
+    else if ( ( *_steeringParameterMap )[key] == "Correlated" ) {
+
+        return Configuration::CORRELATED;
+
+
+    }
+
+
     else {
 
-        throw ConfigurationException( "Configured sampler type unknown." );
+        throw ConfigurationException( "Configured sampler type unknown MOD." );
 
     }
 
