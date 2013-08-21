@@ -156,14 +156,14 @@ void k_hss_( sminputs * smpar, effinputs * effpar, double * k, double * err, dou
 void k_htautau_( sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi )
 {
   *k = T_htata_eff/T_htata_sm;
-  *err = err_htata_eff/T_eff*T_sm/T_htata_sm;
+  *err = err_htata_eff/T_htata_sm;
   *chi = chi_htata_eff;
 };
 
 void k_hww_( sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi )
 {
   *k = T_hww_eff/T_hww_sm;
-  *err = (err_hww_eff/T_hww_sm + T_hww_eff/T_hww_sm + T_hww_eff/pow(T_hww_sm,2)*err_hww_sm);
+  *err = (err_hww_eff/T_hww_sm + T_hww_eff/pow(T_hww_sm,2)*err_hww_sm);
   *chi = chi_hww_eff;
 };
 
@@ -191,7 +191,7 @@ void k_hgaz_(  sminputs * smpar, effinputs * effpar, double * k, double * err, d
 void k_hzz_( sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi )
 {
   *k = T_hzz_eff/T_hzz_sm;
-  *err = (err_hzz_eff/T_eff*T_sm/T_hzz_sm + T_hzz_eff/T_eff*T_sm/pow(T_hzz_sm,2)*err_hzz_sm);
+  *err = (err_hzz_eff/T_hzz_sm + T_hzz_eff/pow(T_hzz_sm,2)*err_hzz_sm);
   *chi = chi_hzz_eff;
 };
 
