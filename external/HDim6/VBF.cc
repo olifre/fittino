@@ -37,8 +37,8 @@ void ratio_vbf_5flav_( sminputs * smpar, effinputs * effpar, double * ratio, dou
 {
   double result, err, chi;
   udcsb_jjh_( smpar, effpar, &result, &err, &chi );
-  *ratio = result / cs_2flavorSM;
-  *error = err / cs_2flavorSM + result / pow( cs_2flavorSM, 2 ) * err_2flavorSM;
+  *ratio = result / cs_5flavorSM;
+  *error = err / cs_5flavorSM + result / pow( cs_5flavorSM, 2 ) * err_5flavorSM;
   *chisq = chi;
 };
 
