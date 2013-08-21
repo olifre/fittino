@@ -60,3 +60,9 @@
 2013-08-19
 	:decay
 	- H->Zy complete
+
+2013-08-21
+	:decay
+	- added functions to calculate K-factor of branching rations
+	:VBF
+	- removed error in normalization
