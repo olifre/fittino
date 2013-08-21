@@ -65,6 +65,21 @@ void br_hglgl_(   sminputs * smpar, effinputs * effpar, double * br, double * er
 void br_hgaga_(   sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi );
 void br_hgaz_(    sminputs * smpar, effinputs * effpar, double * br, double * err, double * chi );
 
+/* K-Faktor der Branching Rations BR(eff)/BR(SM)|Tree */
+
+void k_hbb_(     sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi );
+void k_hcc_(     sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi );
+void k_hss_(     sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi );
+void k_htautau_( sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi );
+
+void k_hww_(     sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi );
+void k_hzz_(     sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi );
+
+void k_hglgl_(   sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi );
+void k_hgaga_(   sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi );
+void k_hgaz_(    sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi );
+
+
 /* Zerfaelle ueber Top- und W-Loops */
 
 void hglgl_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError );

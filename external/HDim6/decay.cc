@@ -130,6 +130,74 @@ void br_hzz_( sminputs * smpar, effinputs * effpar, double * br, double * err, d
   *chi = chi_hzz_eff;
 };
 
+/* K-Faktoren der branching Rations BR(eff)/BR(SM)|Tree */
+
+void k_hbb_( sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi )
+{
+  *k = T_hbobo_eff/T_eff*T_sm/T_hbobo_sm;
+  *err = T_hbobo_eff/T_eff*T_sm/T_hbobo_sm;
+  *chi = chi_hbobo_eff;
+};
+
+void k_hcc_( sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi )
+{
+  *k = T_hchch_eff/T_eff*T_sm/T_hchch_sm;
+  *err = T_hchch_eff/T_eff*T_sm/T_hchch_sm;
+  *chi = chi_hchch_eff;
+};
+
+void k_hss_( sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi )
+{
+  *k = T_hstst_eff/T_eff*T_sm/T_hstst_sm;
+  *err = T_hstst_eff/T_eff*T_sm/T_hstst_sm;
+  *chi = chi_hchch_eff;
+};
+
+void k_htautau_( sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi )
+{
+  *k = T_htata_eff/T_eff*T_sm/T_htata_sm;
+  *err = T_htata_eff/T_eff*T_sm/T_htata_sm;
+  *chi = chi_htata_eff;
+};
+
+void k_hww_( sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi )
+{
+  *k = T_hww_eff/T_eff*T_sm/T_hww_sm*smpar->br_h_ww;
+  *err = (err_hww_eff/T_eff*T_sm/T_hww_sm + T_hww_eff/pow(T_eff,2)*err_T_eff*T_sm/T_hww_sm + \
+          T_hww_eff/T_eff*err_T_sm/T_hww_sm + T_hww_eff/T_eff*T_sm/pow(T_hww_sm,2)*err_hww_sm);
+  *chi = chi_hww_eff;
+};
+
+void k_hgaga_( sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi )
+{
+  *k = T_hgaga_eff/T_eff*T_sm/T_hgaga_sm;
+  *err = T_hgaga_eff/T_eff*T_sm/T_hgaga_sm;
+  *chi = chi_hgaga_eff;
+};
+
+void k_hglgl_( sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi )
+{
+  *k =  T_hglgl_eff/T_eff*T_sm/T_hglgl_sm;
+  *err = T_hglgl_eff/T_eff*T_sm/T_hglgl_sm;
+  *chi = chi_hglgl_eff;
+};
+
+void k_hgaz_(  sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi )
+{
+  *k = T_hgaz_eff/T_eff*T_sm/T_hgaz_sm;
+  *err = T_hgaz_eff/T_eff*T_sm/T_hgaz_sm;
+  *chi = chi_hgaz_eff;
+};
+
+void k_hzz_( sminputs * smpar, effinputs * effpar, double * k, double * err, double * chi )
+{
+  *k = T_hzz_eff/T_eff*T_sm/T_hzz_sm;
+  *err = (err_hzz_eff/T_eff*T_sm/T_hzz_sm + T_hzz_eff/pow(T_eff,2)*err_T_eff*T_sm/T_hzz_sm + \
+          T_hzz_eff/T_eff*err_T_sm/T_hzz_sm + T_hzz_eff/T_eff*T_sm/pow(T_hzz_sm,2)*err_hzz_sm);
+  *chi = chi_hzz_eff;
+};
+
+
 /* Die folgenden Funktionen berechnen die Zerfallsbreiten des Higgs-Bosons im Rahmen der effektiven Feldtheorie auf Tree-Level */
 /* Die verwendeten Formeln sind dem PDG Review (rpp2012-rev-cross-section-formulae.pdf) entnommen, aufgerufen am 23.05.2012    */
 /* Leptonische Zweikoerperzerfaelle */

@@ -153,12 +153,12 @@ int main( int argc, char ** argv )
  	  ratio_pphz_( &smvalues, &effvalues, &hzratio, &err_hzratio, &chi_hzratio );
           ratio_pphw_( &smvalues, &effvalues, &hwratio, &err_hwratio, &chi_hwratio );
 	  ratio_bg_bh_(&smvalues, &effvalues, &bgratio, &err_bgratio, &chi_bgratio );
-	  br_hww_(     &smvalues, &effvalues, &BR_Hww,  &BR_Hww_Err,  &BR_Hww_Chi  );
-          br_hzz_(     &smvalues, &effvalues, &BR_Hzz,  &BR_Hzz_Err,  &BR_Hzz_Chi  );
-          br_hglgl_(   &smvalues, &effvalues, &BR_Hgg,  &BR_Hgg_Err,  &BR_Hgg_Chi  );
-          br_hgaga_(   &smvalues, &effvalues, &BR_Hyy,  &BR_Hyy_Err,  &BR_Hyy_Chi  );
-	  br_hbb_(     &smvalues, &effvalues, &BR_Hbb,  &BR_Hbb_Err,  &BR_Hbb_Chi  );
-	  br_hgaz_(    &smvalues, &effvalues, &BR_Hzy,  &BR_Hzy_Err,  &BR_Hzy_Chi  );
+	  k_hww_(     &smvalues, &effvalues, &BR_Hww,  &BR_Hww_Err,  &BR_Hww_Chi  );
+          k_hzz_(     &smvalues, &effvalues, &BR_Hzz,  &BR_Hzz_Err,  &BR_Hzz_Chi  );
+          k_hglgl_(   &smvalues, &effvalues, &BR_Hgg,  &BR_Hgg_Err,  &BR_Hgg_Chi  );
+          k_hgaga_(   &smvalues, &effvalues, &BR_Hyy,  &BR_Hyy_Err,  &BR_Hyy_Chi  );
+	  k_hbb_(     &smvalues, &effvalues, &BR_Hbb,  &BR_Hbb_Err,  &BR_Hbb_Chi  );
+	  k_hgaz_(    &smvalues, &effvalues, &BR_Hzy,  &BR_Hzy_Err,  &BR_Hzy_Chi  );
 	  totalwidth_( &smvalues, &effvalues, &TH, &TH_Err, &TH_Chi );
 	  cout<<setprecision(4)<<scientific<<setw(12)<<vbfratio<<setw(12)<<err_vbfratio<<setw(12)<<chi_vbfratio;
 	  cout<<setprecision(4)<<scientific<<setw(12)<<bgratio<<setw(12)<<err_bgratio<<setw(12)<<chi_bgratio;
