@@ -78,7 +78,7 @@ namespace Fittino {
       enum                                  ModelType { CMSSM, HDIM6, HEC, ROSENBROCK };
       enum                                  OptimizerType { GENETICALGORITHM, MINUIT, PARTICLESWARM, SIMULATEDANNEALING };
       enum                                  PlotterType { CONTOUR, SCATTER, SUMMARY };
-      enum                                  SamplerType { MARKOVCHAIN, SIMPLE };
+      enum                                  SamplerType { MARKOVCHAIN, SIMPLE, COVARIANT, CORRELATED };
 
     public:
       /*!
