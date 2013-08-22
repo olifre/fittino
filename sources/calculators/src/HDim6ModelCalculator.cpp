@@ -216,33 +216,33 @@ void Fittino::HDim6ModelCalculator::CalculateGamma(){
 
 void Fittino::HDim6ModelCalculator::CalculateTripleGaugeCouplings() {
 
-    _simpleOutputDataStorage->GetMap()->at("Delta_kappa_ga") = d_kappa_y ( _smvalues, _effvalues );
+    _simpleOutputDataStorage->GetMap()->at("Delta_kappa_ga") = HDim6::d_kappa_y ( _smvalues, _effvalues );
 
-    _simpleOutputDataStorage->GetMap()->at("Delta_kappa_Z" ) = d_kappa_z ( _smvalues, _effvalues );
+    _simpleOutputDataStorage->GetMap()->at("Delta_kappa_Z" ) = HDim6::d_kappa_z ( _smvalues, _effvalues );
 
-    _simpleOutputDataStorage->GetMap()->at("Delta_g1_ga"   ) = d_g1_y    ( _smvalues, _effvalues );
+    _simpleOutputDataStorage->GetMap()->at("Delta_g1_ga"   ) = HDim6::d_g1_y    ( _smvalues, _effvalues );
 
-    _simpleOutputDataStorage->GetMap()->at("Delta_g1_Z"    ) = d_g1_z    ( _smvalues, _effvalues );
+    _simpleOutputDataStorage->GetMap()->at("Delta_g1_Z"    ) = HDim6::d_g1_z    ( _smvalues, _effvalues );
 
 }
 
 void Fittino::HDim6ModelCalculator::CalculateQuarticGaugeCouplings() {
 
-    _simpleOutputDataStorage->GetMap()->at("Delta_g1_WW"  ) = d_g1_ww ( _smvalues, _effvalues );
+    _simpleOutputDataStorage->GetMap()->at("Delta_g1_WW"  ) = HDim6::d_g1_ww ( _smvalues, _effvalues );
 
-    _simpleOutputDataStorage->GetMap()->at("Delta_g2_WW"  ) = d_g2_ww ( _smvalues, _effvalues );
+    _simpleOutputDataStorage->GetMap()->at("Delta_g2_WW"  ) = HDim6::d_g2_ww ( _smvalues, _effvalues );
 
-    _simpleOutputDataStorage->GetMap()->at("Delta_g1_gaga") = d_g1_yy ( _smvalues, _effvalues );
+    _simpleOutputDataStorage->GetMap()->at("Delta_g1_gaga") = HDim6::d_g1_yy ( _smvalues, _effvalues );
 
-    _simpleOutputDataStorage->GetMap()->at("Delta_g2_gaga") = d_g2_yy ( _smvalues, _effvalues );
+    _simpleOutputDataStorage->GetMap()->at("Delta_g2_gaga") = HDim6::d_g2_yy ( _smvalues, _effvalues );
 
-    _simpleOutputDataStorage->GetMap()->at("Delta_g1_ZZ"  ) = d_g1_zz ( _smvalues, _effvalues );
+    _simpleOutputDataStorage->GetMap()->at("Delta_g1_ZZ"  ) = HDim6::d_g1_zz ( _smvalues, _effvalues );
 
-    _simpleOutputDataStorage->GetMap()->at("Delta_g2_ZZ"  ) = d_g2_zz ( _smvalues, _effvalues );
+    _simpleOutputDataStorage->GetMap()->at("Delta_g2_ZZ"  ) = HDim6::d_g2_zz ( _smvalues, _effvalues );
 
-    _simpleOutputDataStorage->GetMap()->at("Delta_g1_Zga" ) = d_g1_zy ( _smvalues, _effvalues );
+    _simpleOutputDataStorage->GetMap()->at("Delta_g1_Zga" ) = HDim6::d_g1_zy ( _smvalues, _effvalues );
 
-    _simpleOutputDataStorage->GetMap()->at("Delta_g2_Zga" ) = d_g2_zy ( _smvalues, _effvalues );
+    _simpleOutputDataStorage->GetMap()->at("Delta_g2_Zga" ) = HDim6::d_g2_zy ( _smvalues, _effvalues );
 
 }
 
