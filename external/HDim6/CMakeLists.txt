@@ -1,12 +1,12 @@
-# $Id$ #
+# $Id: CMakeLists.txt 1280 2013-03-28 11:23:49Z uhlenbrock@PHYSIK.UNI-BONN.DE $ #
 
 ################################################################################
 #                                                                              #
 # Project     Fittino - A SUSY Parameter Fitting Package                       #
 #                                                                              #
-# File        README                                                           #
+# File        CMakeLists.txt                                                   #
 #                                                                              #
-# Description Useful information about the program setup and installation      #
+# Description Cmake configuration file for the HDim6 directory.                #
 #                                                                              #
 # Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              #
 #                                                                              #
@@ -17,41 +17,8 @@
 #                                                                              #
 ################################################################################
 
-1. Requirements
----------------
+INCLUDE_DIRECTORIES(${LHAPDF_INCLUDE_DIRS})
 
-- The following external programs/libraries are mandatory in order to compile
-  Fittino
+AUX_SOURCE_DIRECTORY(. sources)
 
-  Boost  (http://www.boost.org)
-  ROOT   (http://root.cern.ch/drupal)
-  slhaea (http://fthomas.github.com/slhaea)
-
-2. Installation
----------------
-
-- Change to the build directory
-
-  cd build
-
-- In order to configure cmake type
-
-  cmake ..
-
-  If this fails, it is most likly due to a library which is needed by Fittino
-  (see Requirements) but not found by cmake. In this case edit CMakeLists.txt
-  in the Fittino main directory to set the locations of the required libraries
-  manually
-
-- To build Fittino type
-
-  make
-
-  If the compilation is successful an executable called "fittino" is produced in
-  build/sources/kernel
-
-- To install Fittino type
-
-  make install
-
-  This copies the executable "fittino" to bin/fittino.
+ADD_LIBRARY(HDim6 ${sources})

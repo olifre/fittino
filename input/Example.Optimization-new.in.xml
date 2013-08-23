@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<?xml-stylesheet type="text/xsl" href="InputFile-new.xsl"?>
+<!DOCTYPE InputFile PUBLIC "" "InputFile-new.dtd" >
+
+<!-- $Id$ -->
+
+<!--#########################################################################-->
+<!--                                                                         -->
+<!-- Project     Fittino - A SUSY Parameter Fitting Package                  -->
+<!--                                                                         -->
+<!-- File        Example.optimization.in.xml                                 -->
+<!--                                                                         -->
+<!-- Description This is an example optimization Fittino input file in XML   -->
+<!--             format.                                                     -->
+<!--                                                                         -->
+<!-- Authors     Mathias Uhlenbrock <uhlenbrock@physik.uni-bonn.de>          -->
+<!--             Peter Wienemann <wienemann@physik.uni-bonn.de>              -->
+<!--                                                                         -->
+<!-- Licence     This program is free software; you can redistribute it      -->
+<!--             and/or modify it under the terms of the GNU General Public  -->
+<!--             License as published by the Free Software Foundation;       -->
+<!--             either version 3 of he License, or (at your option) any     -->
+<!--             later version.                                              -->
+<!--                                                                         -->
+<!--#########################################################################-->
+
+<InputFile>
+
+  <!--
+   The VerbosityLevel node specifies the degree of information which is printed out on the screen.
+   The supported verbosity levels are listed in the table below:
+
+       Level         Description 
+
+       ALWAYS        Default verbosity level
+       VERBOSE
+       DEBUG
+       INFO
+
+   -->
+
+  <VerbosityLevel
+   Level = "ALWAYS"
+   />
+
+  <!--
+   The ExecutionMode node specifies the main execution mode of Fittino. If OPTIMIZATION is set,
+   Fittino tries to find the optimal parameter set of a given model w.r.t. experimental observation.
+   -->
+
+  <ExecutionMode
+   Mode = "OPTIMIZATION"
+   />
+
+  <!--
+   The Model node specifies the model to be optimized.
+   Supported models and their parameters are listed in the table below:
+
+       Model         Parameters
+
+       CMSSM         A0, M0, M12, TanBeta (not yet fully implemented)
+       Rosenbrock    X, Y
+
+   -->
+
+  <Model>
+
+<!--
+    Universality = "X=Y"
+-->
+
+    <Rosenbrock>
+
+       <Parameter
+          Name  = "X"
+	  Value = "2.56"
+	  Error = "0.5"
+	  Fixed = "false"
+	  Range = "[:]"
+       />
+
+       <Parameter
+          Name  = "Y"
+	  Value = "-1.54"
+	  Error = "0.5"
+	  Fixed = "false"
+	  Range = "[:]"
+       />
+
+    </Rosenbrock>
+
+  </Model>
+
+
+  <!--
+   The Optimizer node specifies the optimization algorithm and optimizer settings.
+   Supported optimizer algorithms are:
+
+      * GeneticAlgorithm
+      * Minuit
+      * ParticleSwarm
+      * SimulatedAnnealing
+
+  -->
+
+  <Optimizer
+   AbortCriterium     = "1.e-5"
+   NumberOfIterations = "500">
+
+     <SimulatedAnnealingOptimizer
+	InitialTemperature         = "600."
+	TemperatureReductionFactor = "0.5"
+     />
+
+<!--
+     <GeneticAlgorithmOptimizer
+      MutationRate      = "0.5"
+      SizeOfPopulation  = "100"
+      />
+   
+     <ParticleSwarmOptimizer
+      C1                = "0.01"
+      C2                = "0.01"
+      NumberOfParticles = "100"
+      />
+-->
+
+   </Optimizer>
+
+</InputFile>

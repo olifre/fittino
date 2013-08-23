@@ -1,3 +1,0 @@
-.L XXPLOTDIR/ConvertMarkovChainHist2DtoContours2D.C
-ConvertMarkovChainHist2DtoContours2D( "markovContours.root", "markovHists.root", 0, "XXMODEL")
-.q

@@ -1,0 +1,68 @@
+2013-07-11
+	:General
+	- removed unused variables in matrix element (eliminate compiler warnings)
+	- removed unused functions from code
+	- included uncertainty propagation due to Monte Carlo Integration
+	- Functions return chisq-Value of Integrator (In case there are several integrations
+	  the value with the largest deviation from 1 is returned)
+	- two header files sminputs.h and effinputs.h combined to inputs.h, inputs.h, provides
+	  a function to update the effective inputs (couplings) after coefficients have been set
+
+	:Decay
+	- Included Calculation of total width in the effective framework
+
+	:VBF
+	- Functions to calculate VBF Cross Section in the 2,4 and 5 flavor scheme, normalized
+	  on the corresponding Standard Model Cross Section
+
+	:HadronicCS
+	- Functions return ratio to SM Values
+
+2013-07-12
+	:General
+	- included file testprog.cc to check calculations and benchmark time per point
+	- included all Branching Ratios in decay.cc (H->Zy not yet)
+	- included b+g->b+H in Hadronic Cross Sections
+
+2013-07-15
+	:decay
+	- introduced higher order corrections via K-factor formalism
+	- removed insignificant decay channels
+	:inputs
+	- sminputs now includes SM Higgs Branching ratios and width (Source LHC Higgs CS Working Group)
+
+2013-07-17
+	:decay
+	- Variable names now consistent
+
+	:All
+	- SM Loops in Higgs-Digluon-Couling approximated by top-loop, removed effective approach
+
+2013-07-17
+	:decay
+	- Higgs to Gamma+Z included (dummy), value in inputs.h
+
+2013-07-26
+	:inputs
+	- Added coefficients for damping
+
+2013-07-26
+	:decay
+	- added functions to calculate partial width for decay to two electroweak gauge bosons, hww_ and hzz_
+
+2013-08-05
+	:General
+	- added gaugecpl.h and gaugecpl.cc, providing functions to calculate coefficients for triple and 
+	  quartic gauge boson vertices
+	:vbf.cc
+	- removed error in Lorentz-Trafo
+
+2013-08-19
+	:decay
+	- H->Zy complete
+
+2013-08-21
+	:decay
+	- added functions to calculate K-factor of branching rations
+	:VBF
+	- removed error in normalization

@@ -4,9 +4,9 @@
 #                                                                              #
 # Project     Fittino - A SUSY Parameter Fitting Package                       #
 #                                                                              #
-# File        README                                                           #
+# File        CMakeLists.txt                                                   #
 #                                                                              #
-# Description Useful information about the program setup and installation      #
+# Description Cmake configuration file for the datastorages directory.         #
 #                                                                              #
 # Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              #
 #                                                                              #
@@ -17,41 +17,17 @@
 #                                                                              #
 ################################################################################
 
-1. Requirements
----------------
+ADD_DEFINITIONS(`root-config --cflags`)
 
-- The following external programs/libraries are mandatory in order to compile
-  Fittino
+INCLUDE_DIRECTORIES(./include)
+INCLUDE_DIRECTORIES(../exceptions/include)
+INCLUDE_DIRECTORIES(../kernel/include)
+INCLUDE_DIRECTORIES(../models/include)
+INCLUDE_DIRECTORIES(../optimizers/include)
+INCLUDE_DIRECTORIES(../samplers/include)
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${SLHAEA_INCLUDE_DIR})
 
-  Boost  (http://www.boost.org)
-  ROOT   (http://root.cern.ch/drupal)
-  slhaea (http://fthomas.github.com/slhaea)
+AUX_SOURCE_DIRECTORY(src sources)
 
-2. Installation
----------------
-
-- Change to the build directory
-
-  cd build
-
-- In order to configure cmake type
-
-  cmake ..
-
-  If this fails, it is most likly due to a library which is needed by Fittino
-  (see Requirements) but not found by cmake. In this case edit CMakeLists.txt
-  in the Fittino main directory to set the locations of the required libraries
-  manually
-
-- To build Fittino type
-
-  make
-
-  If the compilation is successful an executable called "fittino" is produced in
-  build/sources/kernel
-
-- To install Fittino type
-
-  make install
-
-  This copies the executable "fittino" to bin/fittino.
+ADD_LIBRARY(datastorages ${sources})

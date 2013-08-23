@@ -1,3 +1,0 @@
-.L XXPLOTDIR/Plot2SigmaMarkovContours.C
-Plot2SigmaMarkovContours("XXMODEL",0, 0, "fittinologoSPRING12.png", "", "markovHists.root","XXMODEL","file2","Tag2","file3","Tag3", "file4","Tag4", "file5", "Tag5", "file6", "Tag6" )
-.q

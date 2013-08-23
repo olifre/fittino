@@ -1,5 +1,0 @@
-fitParameter M0          27.6       GeV +-  46.3164 GeV
-fitParameter M12         303.4      GeV +-  78.7682 GeV
-fitParameter A0          143.2      GeV +-  527.426  GeV
-fitParameter TanBeta      9.0          +-  2.9553
-fitParameter QEWSB      1000. GeV +- 1.44529 GeV

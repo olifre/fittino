@@ -1,5 +1,0 @@
-fitParameter Lambda     307629 GeV +- 20685.8  GeV
-fitParameter Mmess     334662 GeV +-  536.566   GeV
-fitParameter TanBeta        19.4  +-   13.2018
-fitParameter cGrav         446.1  +-   536.566
-fitParameter QEWSB      1000. GeV +- 1.07313 GeV

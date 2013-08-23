@@ -1,5 +1,0 @@
-.X ChainBuilder2.C
-chain.Process("EdgeDetection.C")
-.L EdgeDetectionAlgorithm.C+ 
-EdgeDetectionAlgorithm(false)
-.q
