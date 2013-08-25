@@ -17,6 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
+#include "Factory.h"
+#include "Configuration.h"
 #include "HDim6Model.h"
 #include "HDim6ModelCalculator.h"
 #include "PhysicsParameter.h"
@@ -55,11 +57,13 @@ Fittino::HDim6Model::HDim6Model() {
     AddParameter( new PhysicsParameter( "F_e", "F_{e}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
     AddParameter( new PhysicsParameter( "F_mu", "F_{#mu}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
 
-    HDim6ModelCalculator* hdim6ModelCalculator = new HDim6ModelCalculator( this );
+    const Factory factory;
+    
+    ModelCalculatorBase* hdim6ModelCalculator = factory.CreateCalculator(Configuration::HDIM6CALCULATOR, this);
 
     _modelCalculatorVector.push_back( hdim6ModelCalculator );
 
-    _predictionVector.push_back( new SimplePrediction( "GammaTot_normSM_h", "#Gamma_{h}/#Gamma_{h}^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    _predictionVector.push_back( new SimplePrediction( "Gamma_normSM_hTotal", "#Gamma_{h}/#Gamma_{h}^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
     _predictionVector.push_back( new SimplePrediction( "BR_normSM_hss", "BR(h#rightarrowss)/BR^{SM}(h#rightarrowss)", "", "", 0.01, 100, hdim6ModelCalculator ) );
     _predictionVector.push_back( new SimplePrediction( "BR_normSM_hcc", "BR(h#rightarrowcc)/BR^{SM}(h#rightarrowcc)", "", "", 0.01, 100, hdim6ModelCalculator ) );
     _predictionVector.push_back( new SimplePrediction( "BR_normSM_hbb", "BR(h#rightarrowbb)/BR^{SM}(h#rightarrowbb)", "", "", 0.01, 100, hdim6ModelCalculator ) );

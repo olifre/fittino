@@ -22,6 +22,8 @@
 #ifndef FITTINO_FACTORY_H
 #define FITTINO_FACTORY_H
 
+#include "Configuration.h"
+
 /*!
  *  \brief Fittino namespace.
  */
