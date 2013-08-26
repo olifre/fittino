@@ -1,5 +1,48 @@
 #include "inputs.h"
 
+bool sminputs::operator==( const sminputs& rhs ) {
+
+    if ( alphae != rhs.alphae ) return false;
+    if ( alphas != rhs.alphas ) return false;
+
+    if ( sw != rhs.sw ) return false;
+
+    if ( mel != rhs.mel ) return false;
+    if ( mmu != rhs.mmu ) return false;
+    if ( mta != rhs.mta ) return false;
+
+    if ( mup != rhs.mup ) return false;
+    if ( mdo != rhs.mdo ) return false;
+    if ( mch != rhs.mch ) return false;
+    if ( mst != rhs.mst ) return false;
+    if ( mto != rhs.mto ) return false;
+    if ( mbo != rhs.mbo ) return false;
+
+    if ( mw != rhs.mw ) return false;
+    if ( mz != rhs.mz ) return false;
+    if ( mh != rhs.mh ) return false;
+
+    if ( vev != rhs.vev ) return false;
+
+    if ( wz != rhs.wz ) return false;
+    if ( ww != rhs.ww ) return false;
+
+    if ( vud != rhs.vud ) return false;
+    if ( vus != rhs.vus ) return false;
+    if ( vub != rhs.vub ) return false;
+    if ( vcd != rhs.vcd ) return false;
+    if ( vcs != rhs.vcs ) return false;
+    if ( vcb != rhs.vcb ) return false;
+    if ( vtd != rhs.vtd ) return false;
+    if ( vts != rhs.vts ) return false;
+    if ( vtb != rhs.vtb ) return false;
+
+    if ( s != rhs.s ) return false;
+
+    return true;
+
+}
+
 void update_effinputs_( sminputs * smvalues, effinputs * effvalues )
 {
   double ee = sqrt( 4.*M_PI*smvalues->alphae );

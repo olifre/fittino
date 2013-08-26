@@ -62,6 +62,9 @@ struct sminputs {
   double br_h_yy, err_h_yy;  
   double br_h_yz, err_h_yz;
   double sm_width, sm_width_err;
+
+  bool operator==( const sminputs& rhs );
+
 };
 
 struct effinputs {
