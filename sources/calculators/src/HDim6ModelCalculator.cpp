@@ -49,6 +49,8 @@ extern "C" {
     double smbr_hzz_    ( double* massh );
     double smgamma_h_   ( double* massh );
 
+    void initialize_higgsbounds_int_(int* nH, int* nHplus, int* whichanalysis);
+  
 }
 
 Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* model )
@@ -58,6 +60,8 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* mod
 
     // lhapdf-getdata CT10.LHgrid
     _pdfSet = "CT10";
+
+    _previousSMValues = new sminputs();
 
     _smvalues  = new sminputs();
 
@@ -110,7 +114,8 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* mod
 }
 
 Fittino::HDim6ModelCalculator::~HDim6ModelCalculator() {
-
+  
+    delete _previousSMValues;
     delete _smvalues;
     delete _effvalues;
     delete _effsmvalues;
@@ -134,11 +139,10 @@ void Fittino::HDim6ModelCalculator::Initialize() const {
     
     LHAPDF::initPDFSet( _pdfSet, LHAPDF::LHGRID, 0 );  
 
-    // Initialisiere VBF SM-Werte...
-    vbf_init_cs_( _smvalues );
-
-    // Initialisiere Hadronische CS...    
-    init_hadronic_cs_( _smvalues );
+    int nHzero = 1;
+    int nHplus = 0;
+    int whichanalysis = 1;
+    initialize_higgsbounds_int_( &nHzero, &nHplus, &whichanalysis );
   
 }
 
@@ -190,8 +194,8 @@ void Fittino::HDim6ModelCalculator::CalculateGamma() {
 
 void Fittino::HDim6ModelCalculator::CalculateGammaLO( bool doSM ) {
 
-  std::string tag;
-  effinputs* effvalues;
+    std::string tag;
+    effinputs* effvalues;
 
     if ( doSM ) {
       
@@ -286,9 +290,9 @@ void Fittino::HDim6ModelCalculator::CalculateGammaSM() {
 
     for ( unsigned int i = 0; i < _decayChannels.size(); i++ ) {
       
-        _simpleOutputDataStorage->GetMap()->at( tag + _decayChannels[i] )
+        _simpleOutputDataStorage      ->GetMap()->at( tag + _decayChannels[i]      )
    	    = _simpleOutputDataStorage->GetMap()->at( "BR_SM_" + _decayChannels[i] )
-            * _simpleOutputDataStorage->GetMap()->at( "Gamma_SM_hTotal" );
+            * _simpleOutputDataStorage->GetMap()->at( "Gamma_SM_hTotal"            );
 
     }
 
@@ -367,31 +371,31 @@ void Fittino::HDim6ModelCalculator::CalculateXS() {
 
 void Fittino::HDim6ModelCalculator::InitializeSimpleOutputDataStorage() {
 
-     _simpleOutputDataStorage->AddEntry( "Gamma_hTotal" , 0 );
-     _simpleOutputDataStorage->AddEntry( "Gamma_SM_hTotal" , 0 );
-     _simpleOutputDataStorage->AddEntry( "Gamma_normSM_hTotal" , 0 );
+    _simpleOutputDataStorage->AddEntry( "Gamma_hTotal" , 0 );
+    _simpleOutputDataStorage->AddEntry( "Gamma_SM_hTotal" , 0 );
+    _simpleOutputDataStorage->AddEntry( "Gamma_normSM_hTotal" , 0 );
 
-     _simpleOutputDataStorage->AddEntry("Gamma_LO_hWW_chi2" , 0 );
-     _simpleOutputDataStorage->AddEntry("Gamma_LO_hZZ_chi2" , 0 );
-     _simpleOutputDataStorage->AddEntry("Gamma_SM_LO_hWW_chi2" , 0 );
-     _simpleOutputDataStorage->AddEntry("Gamma_SM_LO_hZZ_chi2" , 0 );
+    _simpleOutputDataStorage->AddEntry("Gamma_LO_hWW_chi2" , 0 );
+    _simpleOutputDataStorage->AddEntry("Gamma_LO_hZZ_chi2" , 0 );
+    _simpleOutputDataStorage->AddEntry("Gamma_SM_LO_hWW_chi2" , 0 );
+    _simpleOutputDataStorage->AddEntry("Gamma_SM_LO_hZZ_chi2" , 0 );
 
-     for ( unsigned int i = 0; i < _decayChannels.size(); i++ ) {
+    for ( unsigned int i = 0; i < _decayChannels.size(); i++ ) {
 
-       _simpleOutputDataStorage->AddEntry("Gamma_LO_" + _decayChannels[i] , 0 );
-       _simpleOutputDataStorage->AddEntry("Gamma_SM_LO_" + _decayChannels[i] , 0 );
-       _simpleOutputDataStorage->AddEntry("Gamma_LO_" + _decayChannels[i] + "_error", 0 );
-       _simpleOutputDataStorage->AddEntry("Gamma_SM_LO_" + _decayChannels[i] + "_error", 0 );
+        _simpleOutputDataStorage->AddEntry("Gamma_LO_" + _decayChannels[i] , 0 );
+        _simpleOutputDataStorage->AddEntry("Gamma_SM_LO_" + _decayChannels[i] , 0 );
+        _simpleOutputDataStorage->AddEntry("Gamma_LO_" + _decayChannels[i] + "_error", 0 );
+        _simpleOutputDataStorage->AddEntry("Gamma_SM_LO_" + _decayChannels[i] + "_error", 0 );
 
-       _simpleOutputDataStorage->AddEntry("Gamma_" + _decayChannels[i] , 0 );
-       _simpleOutputDataStorage->AddEntry("Gamma_SM_" + _decayChannels[i] , 0 );
-       _simpleOutputDataStorage->AddEntry("Gamma_normSM_" + _decayChannels[i] , 0 );
+        _simpleOutputDataStorage->AddEntry("Gamma_" + _decayChannels[i] , 0 );
+        _simpleOutputDataStorage->AddEntry("Gamma_SM_" + _decayChannels[i] , 0 );
+        _simpleOutputDataStorage->AddEntry("Gamma_normSM_" + _decayChannels[i] , 0 );
 
-       _simpleOutputDataStorage->AddEntry("BR_" + _decayChannels[i] , 0 );
-       _simpleOutputDataStorage->AddEntry("BR_SM_" + _decayChannels[i] , 0 );
-       _simpleOutputDataStorage->AddEntry("BR_normSM_" + _decayChannels[i] , 0 );
+        _simpleOutputDataStorage->AddEntry("BR_" + _decayChannels[i] , 0 );
+        _simpleOutputDataStorage->AddEntry("BR_SM_" + _decayChannels[i] , 0 );
+        _simpleOutputDataStorage->AddEntry("BR_normSM_" + _decayChannels[i] , 0 );
 
-     }
+    }
 
     _simpleOutputDataStorage->AddEntry("XS_normSM_ggh", -1);
     _simpleOutputDataStorage->AddEntry("XS_normSM_ggh_error", -1);
@@ -443,7 +447,25 @@ void Fittino::HDim6ModelCalculator::CallExecutable() {
 
 void Fittino::HDim6ModelCalculator::CallFunction() {
 
-    CalculateGammaLO( true ); // TODO: only if SM values have changed
+    if ( _smvalues->mh != _previousSMValues->mh ) {
+
+      CalculateBRSM();
+      CalculateGammaSM();
+
+    }
+
+    _smValuesChanged = (*_previousSMValues != *_smvalues );
+
+    if ( _smValuesChanged ) {
+
+      CalculateGammaLO( true ); 
+      vbf_init_cs_( _smvalues );
+      init_hadronic_cs_( _smvalues );
+      
+      *_previousSMValues = *_smvalues;
+
+    }
+
     CalculateGammaLO( false );
     CalculateGammaNormSM();
     CalculateGamma();

@@ -55,11 +55,13 @@ namespace Fittino {
 
     private:  
       bool                     _interpolateGamma;
+      bool                     _smValuesChanged;
       std::string              _pdfDirectory;
       std::string              _pdfSet;
       std::vector<std::string> _decayChannels;
       effinputs*               _effsmvalues;
       effinputs*               _effvalues;
+      sminputs*                _previousSMValues;
       sminputs*                _smvalues;
 
     private:   
