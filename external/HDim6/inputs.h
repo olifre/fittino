@@ -107,12 +107,18 @@ struct effinputs {
   double nb;
   double nw;
   double ngg;
+  double ntop;
+  double nbot;
+  double ntau;
 
   double rbb;
   double rww;
   double rb;
   double rw;
   double rgg;
+  double rtop;
+  double rbot;
+  double rtau;
 };
 
 void update_effinputs_( sminputs * smvalues, effinputs * effvalues );
