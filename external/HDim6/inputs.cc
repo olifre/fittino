@@ -1,6 +1,6 @@
 #include "inputs.h"
 
-bool sminputs::operator==( const sminputs& rhs ) {
+bool sminputs::operator==( const sminputs& rhs ) const {
 
     if ( alphae != rhs.alphae ) return false;
     if ( alphas != rhs.alphas ) return false;
@@ -40,6 +40,12 @@ bool sminputs::operator==( const sminputs& rhs ) {
     if ( s != rhs.s ) return false;
 
     return true;
+
+}
+
+bool sminputs::operator!=(const sminputs& rhs) const {
+
+    return !operator==(rhs);
 
 }
 
