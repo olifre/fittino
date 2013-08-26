@@ -8,7 +8,8 @@
 *                                                                              *
 * Description Wrapper class for HDim6                                          *
 *                                                                              *
-* Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
+* Authors     Bastian Heller    <bastian.heller@rwth-aachen.de>                *
+*             Bjoern  Sarrazin  <sarrazin@physik.uni-bonn.de>                  *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -40,44 +41,43 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                   HDim6ModelCalculator( const PhysicsModelBase* model );
+                               HDim6ModelCalculator( const PhysicsModelBase* model );
 
     public:
       /*!
        *  Standard destructor.
        */
-      virtual      ~HDim6ModelCalculator();
+      virtual                  ~HDim6ModelCalculator();
 
     public:
-      virtual void CalculatePredictions();
-      virtual void Initialize() const;
+      virtual void             CalculatePredictions();
+      virtual void             Initialize() const;
 
     private:  
-      bool         _interpolateGamma;
-      std::string  _pdfDirectory;
-      std::string  _pdfSet;
-      sminputs*    _smvalues;
-      effinputs*   _effvalues;
-      effinputs*   _effsmvalues;
+      bool                     _interpolateGamma;
+      std::string              _pdfDirectory;
+      std::string              _pdfSet;
       std::vector<std::string> _decayChannels;
+      effinputs*               _effsmvalues;
+      effinputs*               _effvalues;
+      sminputs*                _smvalues;
 
     private:   
-      void         CalculateGamma();
-      void         CalculateGammaSM();
-      void         CalculateBRSM();
-      void         CalculateGammaLO( bool doSM );
-      void         CalculateGammaNormSM();
-      void         CalculateBR();
-
-      void         CalculateTripleGaugeCouplings();
-      void         CalculateQuarticGaugeCouplings();
-      void         CalculateXS();
-      void         InitializeSimpleOutputDataStorage();
+      void                     CalculateBR();
+      void                     CalculateBRSM();
+      void                     CalculateGamma();
+      void                     CalculateGammaLO( bool doSM );
+      void                     CalculateGammaNormSM();
+      void                     CalculateGammaSM();
+      void                     CalculateTripleGaugeCouplings();
+      void                     CalculateQuarticGaugeCouplings();
+      void                     CalculateXS();
+      void                     InitializeSimpleOutputDataStorage();
 
     private:
-      virtual void CallExecutable();
-      virtual void CallFunction();
-      virtual void ConfigureInput();
+      virtual void             CallExecutable();
+      virtual void             CallFunction();
+      virtual void             ConfigureInput();
 
   };
 
