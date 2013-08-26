@@ -94,8 +94,6 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* mod
     _effvalues   = new effinputs();
     _effsmvalues = new effinputs();
 
-
-
     _decayChannels.push_back( "hbb" );
     _decayChannels.push_back( "hcc" );
     _decayChannels.push_back( "hss" );
@@ -108,7 +106,6 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* mod
     _decayChannels.push_back( "hZga" );
 
     InitializeSimpleOutputDataStorage();
-    
 
 }
 
@@ -153,8 +150,6 @@ void Fittino::HDim6ModelCalculator::CalculateBR(){
 	    = _simpleOutputDataStorage->GetMap()->at( "Gamma_" + _decayChannels[i] )
             / _simpleOutputDataStorage->GetMap()->at( "Gamma_hTotal" );
 
-	
-
     }
 
 }
@@ -173,7 +168,6 @@ void Fittino::HDim6ModelCalculator::CalculateBRSM() {
     _simpleOutputDataStorage->GetMap()->at( tag + "hWW" ) = smbr_hww_( &_smvalues->mh);
     _simpleOutputDataStorage->GetMap()->at( tag + "hZga" ) = smbr_hzgam_( &_smvalues->mh);
     _simpleOutputDataStorage->GetMap()->at( tag + "hZZ" ) = smbr_hzz_( &_smvalues->mh);
-
 
 }
 
@@ -262,26 +256,25 @@ void Fittino::HDim6ModelCalculator::CalculateGammaLO( bool doSM ) {
 
 void Fittino::HDim6ModelCalculator::CalculateGammaNormSM() {
 
-  for ( unsigned int i = 0; i < _decayChannels.size(); i++ ) {
+    for ( unsigned int i = 0; i < _decayChannels.size(); i++ ) {
 
-    if ( _interpolateGamma ) {
+        if ( _interpolateGamma ) { 
 
-      if ( _decayChannels[i]=="hWW" || _decayChannels[i]=="hZZ" ) {
+            if ( _decayChannels[i]=="hWW" || _decayChannels[i]=="hZZ" ) {
 
-	// do the interpolation here
+	        // do the interpolation here
 
-	continue;
+                continue;
 
-      }
+            }
+
+        }
+
+        _simpleOutputDataStorage      ->GetMap()->at( "Gamma_normSM_" + _decayChannels[i] )
+            = _simpleOutputDataStorage->GetMap()->at( "Gamma_LO_"     + _decayChannels[i] ) 
+            / _simpleOutputDataStorage->GetMap()->at( "Gamma_SM_LO_"  + _decayChannels[i] ); 
 
     }
-
-      _simpleOutputDataStorage      ->GetMap()->at( "Gamma_normSM_" + _decayChannels[i] )
-          = _simpleOutputDataStorage->GetMap()->at( "Gamma_LO_"     + _decayChannels[i] ) 
-          / _simpleOutputDataStorage->GetMap()->at( "Gamma_SM_LO_"  + _decayChannels[i] ); 
-
-
-  }
 
 }
 
@@ -300,6 +293,7 @@ void Fittino::HDim6ModelCalculator::CalculateGammaSM() {
     }
 
 }
+
 void Fittino::HDim6ModelCalculator::CalculateTripleGaugeCouplings() {
 
     _simpleOutputDataStorage->GetMap()->at("Delta_kappa_ga") = HDim6::d_kappa_y ( _smvalues, _effvalues );
