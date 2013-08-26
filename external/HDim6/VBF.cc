@@ -1,7 +1,6 @@
 #include <LHAPDF/LHAPDF.h>
 
 #include "VBF.h"
-#define CUTS
 
 void vbf_init_cs_( sminputs * smpar )
 {
@@ -10,27 +9,7 @@ void vbf_init_cs_( sminputs * smpar )
   temp.fuph = 0; temp.fdoh = 0; temp.fchh = 0; temp.fsth = 0; temp.fboh = 0; temp.ftoh = 0; temp.felh = 0; temp.fmuh = 0; temp.ftah = 0;
   temp.ghyy = 0; temp.g1hzz = 0; temp.g2hzz = 0; temp.g3hzz = 0; temp.g1hww = 0; temp.g2hww = 0; temp.g3hww = 0; temp.g1hzy = 0; temp.g2hzy = 0;
 
-  u_and_d_jjh_( smpar, &temp, &cs_2flavorSM, &err_2flavorSM, &chi_2flavorSM );
-  udcs_jjh_(    smpar, &temp, &cs_4flavorSM, &err_4flavorSM, &chi_4flavorSM );
   udcsb_jjh_(   smpar, &temp, &cs_5flavorSM, &err_5flavorSM, &chi_5flavorSM );
-};
-
-void ratio_vbf_2flav_( sminputs * smpar, effinputs * effpar, double * ratio, double * error, double * chisq )
-{
-  double result, err, chi;
-  u_and_d_jjh_( smpar, effpar, &result, &err, &chi );
-  *ratio = result / cs_2flavorSM;
-  *error = err / cs_2flavorSM + result / pow( cs_2flavorSM, 2 ) * err_2flavorSM;
-  *chisq = chi;
-};
-
-void ratio_vbf_4flav_( sminputs * smpar, effinputs * effpar, double * ratio, double * error, double * chisq )
-{
-  double result, err, chi;
-  udcs_jjh_( smpar, effpar, &result, &err, &chi );
-  *ratio = result / cs_4flavorSM;
-  *error = err / cs_4flavorSM + result / pow( cs_4flavorSM, 2 ) * err_4flavorSM;
-  *chisq = chi;
 };
 
 void ratio_vbf_5flav_( sminputs * smpar, effinputs * effpar, double * ratio, double * error, double * chisq )
@@ -40,76 +19,6 @@ void ratio_vbf_5flav_( sminputs * smpar, effinputs * effpar, double * ratio, dou
   *ratio = result / cs_5flavorSM;
   *error = err / cs_5flavorSM + result / pow( cs_5flavorSM, 2 ) * err_5flavorSM;
   *chisq = chi;
-};
-
-void u_and_d_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err, double * chisq )
-{
-  VBFParam par;
-  par.sm = *smpar;
-  par.eff = *effpar;
-  
-  double xl[] = {0,0,0,0,0,0};
-  double xu[] = {1,1,1,1,1,1};
-  double result, error;
-  
-  size_t dim = 6;
-  const gsl_rng_type * T;
-  gsl_rng * r;
-  size_t calls = NCALLS;
-  
-  gsl_monte_function G = {ud_jjh, dim, &par};
-  gsl_rng_env_setup();
-  T = gsl_rng_default;
-  r = gsl_rng_alloc( T );
-  {
-    gsl_monte_vegas_state * s = gsl_monte_vegas_alloc( dim );
-    int k = 0;
-    do
-    {    
-      gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
-      k++;
-    }
-    while ( (fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.5) && (k <= NRUN));
-    *chisq = gsl_monte_vegas_chisq( s );
-    gsl_monte_vegas_free( s );
-  };
-  *cs = result;
-  *err = error;
-};
-
-void udcs_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err, double * chisq )
-{
-  VBFParam par;
-  par.sm = *smpar;
-  par.eff = *effpar;
-  
-  double xl[] = {0,0,0,0,0,0};
-  double xu[] = {1,1,1,1,1,1};
-  double result, error;
-  
-  size_t dim = 6;
-  const gsl_rng_type * T;
-  gsl_rng * r;
-  size_t calls = NCALLS;
-  
-  gsl_monte_function G = {udcs_jjh, dim, &par};
-  gsl_rng_env_setup();
-  T = gsl_rng_default;
-  r = gsl_rng_alloc( T );
-  {
-    gsl_monte_vegas_state * s = gsl_monte_vegas_alloc( dim );
-    int k = 0;
-    do
-    {    
-      gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
-      k++;
-    }
-    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.5) && (k<=NRUN));
-    *chisq = gsl_monte_vegas_chisq( s );
-    gsl_monte_vegas_free( s );
-  };
-  *cs = result;
-  *err = error;
 };
 
 void udcsb_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err, double * chisq )
@@ -139,7 +48,7 @@ void udcsb_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
       k++;
     }
-    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.5) && ( k < NRUN ));
+    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.3) && ( k < NRUN ));
     *chisq = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
@@ -516,14 +425,17 @@ double dd_ddh_massless( double * x, size_t dim, void * params )
   /* Phasenraum-Cuts */
   /* Transversamimpuls aendert sich unter LT nicht, Rapiditaet erhaelt konstante Verschiebung */
   double pt4 = k4v*stheta;
-  if( pt4 < 20 ) return 0;
+  if( pt4 < pt4min ) return 0;
   double pt3 = k3v*sqrt(ctheta*ctheta*cos(eta)*cos(eta)*sXi*sXi + stheta*stheta*cXi*cXi+2*stheta*ctheta*sXi*cXi*cos(eta)+sin(eta)*sin(eta)*sXi*sXi);
-  if( pt3 < 20 ) return 0;
+  if( pt3 < pt3min ) return 0;
+  
+  /*
   double rap4 = 0.5*log((k30+k30*ctheta)/(k30-k30*ctheta))+0.5*log((1-beta)/(1+beta));
   double rap3 = 0.5*log((k30*(1+ctheta*cXi-stheta*cos(eta)*sXi))/(k30*(1-ctheta*cXi+stheta*cos(eta)*sXi)))+0.5*log((1-beta)/(1+beta));
   if( rap4 > 4.5 || rap3 > 4.5 ) return 0;
   if( rap3*rap4 > 0 ) return 0;
   if( abs( rap3 - rap4 ) < 4 ) return 0;
+  */
 #endif
 
   /* Berechnung der kinematischen Invarianten */
@@ -2944,7 +2856,7 @@ double g3452,g3793,g3589,g3349,g3597,g3453,g3588,g3348,g3523,g3603,g3581,g3369,g
 g3407,g3331,g3381,g3579,g3351,g3336,g3599,g3592,g3350,g3449,g3360,g3414,g3450,g3362,g3404,g3364,g3580,g3499,g3399,g3397,g3480,g3380,g3382,g3385,g3386,g3390,g3391,g3395,g3396,g3419,g3418,g3424,g3447,g3448,g3456,g3457,g3488,g3521,g3529,g3619,g3643,g3644,g3651,g3642,g3626,g3704,g3762,g3785,g3654,g3718,g3617,g3678,g3672,g3618,g3689,g3633,g3784,g3620,g3694,g3730,g3621,g3622,g3783,g3623,g3698,g3624,g3657,g3646,g3638,g3658,g3625,g3662,g3663,g3628,g3632,g3637,g3681,g3782,g3647,g3627,g3630,g3655,g3664,g3631,g3635,g3636,g3666,g3634,g3639,g3640,g3656,g3641,g3781,g3789,g3645,g3648,g3690,g3671,g3691,g3723,g3650,g3705,g3674,g3649,g3652,g3741,g3653,g3768,g3780,g3659,g3759,g3682,g3758,g3697,g3722,g3660,g3766,g3661,g3665,g3667,g3677,g3668,g3669,g3670,g3673,g3706,g3675,g3676,g3699,g3679,g3700,g3680,g3683,g3684,g3714,g3685,g3686,g3701,g3687,g3688,g3692,g3695,g3763,g3696,g3703,g3717,g3771,g3707,g3708,g3709,g3710,g3712,g3713,g3720,g3724,g3725,g3726,g3774,g3775,g3728,g3729,g3734,g3743,g3778,g3753,g3754,g3755,g3756,g3757,g3760,
 g3761,g3764,g3765,g3767,g3769,g3770,g3772,g3773,g3776,g3777,g3779,g3786,g3787,g3788,g3790,g3795,g3267,g3258,g3615,g3387,g3590,msq13;
 {
-  double t0 =0;
+    double t0 =0;
     g3452=g2hzz*x13;
     g3793=ee*ee;
     g3589=g3793*g3793;
@@ -6678,14 +6590,16 @@ double uu_uuh_massless( double * x, size_t dim, void * params )
 #ifdef CUTS
   /* Phasenraum-Cuts */
   double pt4 = k4v*stheta;
-  if( pt4 < 20 ) return 0;
+  if( pt4 < pt4min ) return 0;
   double pt3 = k3v*sqrt(ctheta*ctheta*cos(eta)*cos(eta)*sXi*sXi + stheta*stheta*cXi*cXi+2*stheta*ctheta*sXi*cXi*cos(eta)+sin(eta)*sin(eta)*sXi*sXi);
-  if( pt3 < 20 ) return 0;
+  if( pt3 < pt3min ) return 0;
+  /*
   double rap4 = 0.5*log((k30+k30*ctheta)/(k30-k30*ctheta));
   double rap3 = 0.5*log((k30*(1+ctheta*cXi-stheta*cos(eta)*sXi))/(k30*(1-ctheta*cXi+stheta*cos(eta)*sXi)));
   if( rap4 > 4.5 || rap3 > 4.5 ) return 0;
   if( rap3*rap4 > 0 ) return 0;
-  if( abs( rap3 - rap4 ) < 4 ) return 0;
+  if( abs( rap3 - rap4 ) < 4 ) return 0; 
+  */
 #endif
 
   /* Berechnung der kinematischen Invarianten */
@@ -10201,14 +10115,16 @@ double ud_duh_NoCKM_massless( double * x, size_t dim, void * params )
   double beta = (x1-x2)/(x1+x2);
 
   double pt4 = k4v*stheta;
-  if( pt4 < 20 ) return 0;
+  if( pt4 < pt4min ) return 0;
   double pt3 = k3v*sqrt(ctheta*ctheta*cos(eta)*cos(eta)*sXi*sXi + stheta*stheta*cXi*cXi+2*stheta*ctheta*sXi*cXi*cos(eta)+sin(eta)*sin(eta)*sXi*sXi);
-  if( pt3 < 20 ) return 0;
+  if( pt3 < pt3min ) return 0;
+  /*
   double rap4 = 0.5*log((k30+k30*ctheta)/(k30-k30*ctheta))+0.5*log((1-beta)/(1+beta));
   double rap3 = 0.5*log((k30*(1+ctheta*cXi-stheta*cos(eta)*sXi))/(k30*(1-ctheta*cXi+stheta*cos(eta)*sXi)))+0.5*log((1-beta)/(1+beta));
   if( rap4 > 4.5 || rap3 > 4.5 ) return 0;
   if( rap3*rap4 > 0 ) return 0;
-  if( abs( rap3 - rap4 ) < 4 ) return 0;
+  if( abs( rap3 - rap4 ) < 4 ) return 0; 
+  */
 #endif
 
   /* Berechnung der kinematischen Invarianten */
@@ -13160,14 +13076,16 @@ double ud_duh_CKMsQ_massless( double * x, size_t dim, void * params )
   double beta = (x1-x2)/(x1+x2);
 
   double pt4 = k4v*stheta;
-  if( pt4 < 20 ) return 0;
+  if( pt4 < pt4min ) return 0;
   double pt3 = k3v*sqrt(ctheta*ctheta*cos(eta)*cos(eta)*sXi*sXi + stheta*stheta*cXi*cXi+2*stheta*ctheta*sXi*cXi*cos(eta)+sin(eta)*sin(eta)*sXi*sXi);
-  if( pt3 < 20 ) return 0;
+  if( pt3 < pt3min ) return 0;
+  /*
   double rap4 = 0.5*log((k30+k30*ctheta)/(k30-k30*ctheta))+0.5*log((1-beta)/(1+beta));
   double rap3 = 0.5*log((k30*(1+ctheta*cXi-stheta*cos(eta)*sXi))/(k30*(1-ctheta*cXi+stheta*cos(eta)*sXi)))+0.5*log((1-beta)/(1+beta));
   if( rap4 > 4.5 || rap3 > 4.5 ) return 0;
   if( rap3*rap4 > 0 ) return 0;
   if( abs( rap3 - rap4 ) < 4 ) return 0;
+  */
 #endif
 
   /* Berechnung der kinematischen Invarianten */
