@@ -54,26 +54,28 @@ namespace Fittino {
       virtual void             Initialize() const;
 
     private:  
+      bool                     _gridParametersChanged;
       bool                     _interpolateGamma;
+      bool                     _interpolateXS;
       bool                     _smValuesChanged;
       std::string              _pdfDirectory;
       std::string              _pdfSet;
       std::vector<std::string> _decayChannels;
       effinputs*               _effsmvalues;
       effinputs*               _effvalues;
+      effinputs*               _previousEffValues;
       sminputs*                _previousSMValues;
       sminputs*                _smvalues;
 
     private:   
       void                     CalculateBR();
       void                     CalculateBRSM();
-      void                     CalculateGamma();
-      void                     CalculateGammaLO( bool doSM );
-      void                     CalculateGammaNormSM();
-      void                     CalculateGammaSM();
-      void                     CalculateTripleGaugeCouplings();
+      void                     CalculateLO( bool doSM );
+      void                     CalculateNormSM();
       void                     CalculateQuarticGaugeCouplings();
-      void                     CalculateXS();
+      void                     CalculateTripleGaugeCouplings();
+      void                     ComparePreviousEffValues();
+      void                     ComparePreviousSMValues();
       void                     InitializeSimpleOutputDataStorage();
 
     private:
