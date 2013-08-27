@@ -149,7 +149,7 @@ int main( int argc, char ** argv )
 
 	  cout<<scientific<<setprecision(4)<<setw(12)<<effvalues.fww;
 	  initeffwidths_( &smvalues, &effvalues );
-	  ratio_vbf_2flav_( &smvalues, &effvalues, &vbfratio, &err_vbfratio, &chi_vbfratio );
+	  ratio_vbf_5flav_( &smvalues, &effvalues, &vbfratio, &err_vbfratio, &chi_vbfratio );
  	  ratio_pphz_( &smvalues, &effvalues, &hzratio, &err_hzratio, &chi_hzratio );
           ratio_pphw_( &smvalues, &effvalues, &hwratio, &err_hwratio, &chi_hwratio );
 	  ratio_bg_bh_(&smvalues, &effvalues, &bgratio, &err_bgratio, &chi_bgratio );
