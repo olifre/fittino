@@ -19,7 +19,7 @@ typedef struct {
    effinputs eff;
 }VBFParam;
 
-#define NCALLS 10000
+#define NCALLS 15000
 #define NRUN   30
 
 // Cuts
@@ -41,10 +41,6 @@ void ratio_vbf_5flav_( sminputs * smpar, effinputs * effpar, double * ratio, dou
 
 void udcsb_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err, double * chisq );
 double udcsb_jjh( double * x, size_t dim, void * params );
-
-/* Voller Querschnitt pp->XX H */
-void cs_pp_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err );
-double pp_jjh_( double * x, size_t dim, void * params );
 
 /* Diagramme */
 double dd_ddh_massless(   double * x, size_t dim, void * params );

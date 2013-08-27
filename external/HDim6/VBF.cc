@@ -56,143 +56,6 @@ void udcsb_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err
   *err = error; 
 };
 
-double ud_jjh( double * x, size_t dim, void * params )
-{
-  VBFParam * par = (VBFParam*)params;
-  sminputs smpar = par->sm;
-  double ckm[] = { smpar.vud, smpar.vus, smpar.vub, smpar.vcd, smpar.vcs, smpar.vcb };
-  int    pdg[] = { 1, 2, 3, 4, 5 };
-  double mh = smpar.mh;
-  
-  double x1 = x[4]*(1-pow(smpar.mh,2)/smpar.s) + pow(smpar.mh,2)/smpar.s;
-  double x2 = x[5]*(1-pow(smpar.mh,2)/smpar.s/x1) + pow(smpar.mh,2)/smpar.s/x1;
-  
-  double uu_uuh       = uu_uuh_massless(   x, dim, par );
-  double dd_ddh       = dd_ddh_massless(   x, dim, par );
-  double ud_dpuph     = ud_dpuph_massless( x, dim, par );
-  double ud_duh_NoCKM = ud_duh_NoCKM_massless( x, dim, par );
-  double ud_duh_CKMsQ = ud_duh_CKMsQ_massless( x, dim, par );
-  
-  double dsig = 0;
-  /* Loop over initial states */
-  for( int i = 0; i < 2; i++ )
-  {
-
-    for( int j = 0; j < 2; j++ )
-    {
-      double xfx_i_x1 = LHAPDF::xfx(x1,mh,pdg[i]);
-      double xfx_j_x1 = LHAPDF::xfx(x1,mh,pdg[j]);
-      double xfx_i_x2 = LHAPDF::xfx(x2,mh,pdg[i]);
-      double xfx_j_x2 = LHAPDF::xfx(x2,mh,pdg[j]);
-      if( (pdg[i] == pdg[j]) && !(pdg[i]%2) )
-      {
-	dsig += 1./x1/x2*xfx_i_x1*xfx_j_x2*uu_uuh;
-      };
-      if( (pdg[i] == pdg[j]) && (pdg[i]%2) )
-      {
-	dsig += 1./x1/x2*xfx_i_x1*xfx_j_x2*dd_ddh;
-      };
-      if( (pdg[i] != pdg[j]) && ( pdg[j]%2 && !(pdg[i]%2) ) )
-      {
-	/* Quark i ist up-Quark, Quark j ist d-Quark */
-	for( int k = 0; k < 5; k++ )
-	{
-	  for( int l = 0; l < 5; l++ )
-	  {
-	    if((pdg[k] == pdg[j]) && (pdg[l] == pdg[i]) && (pdg[k] == pdg[j]))  {
-	      int zeile = (pdg[i]==4);
-	      int spalte = pdg[j]/2;
-	      int element = spalte+zeile*3;
-	      
-	      dsig += 1./x1/x2*(xfx_i_x1*xfx_j_x2+xfx_j_x1*xfx_i_x2)*(ud_duh_CKMsQ*pow(ckm[element],2) + ud_duh_NoCKM + ud_dpuph*pow(ckm[element],4));
-	    };
-	    if( ( pdg[k]%2 && !(pdg[l]%2)) && ((pdg[l] != pdg[i]) && (pdg[k] != pdg[j])))
-	    {
-	      int zeile1  = (pdg[i]==4);
-	      int spalte1 = pdg[k]/2;
-	      int zeile2  = (pdg[j]==4);
-	      int spalte2 = pdg[l]/2;
-	      int elem1 = spalte1+zeile1*3;
-	      int elem2 = spalte2+zeile2*3;
-	      dsig += 2./x1/x2*(xfx_i_x1*xfx_j_x2+xfx_j_x1*xfx_i_x2)*ud_dpuph*pow(ckm[elem1]*ckm[elem2],2);
-	    };
-	  };
-	};
-      };
-    };
-  };
-  
-  return dsig;
-};
-
-double udcs_jjh( double * x, size_t dim, void * params )
-{
-  VBFParam * par = (VBFParam*)params;
-  sminputs smpar = par->sm;
-  double ckm[] = { smpar.vud, smpar.vus, smpar.vub, smpar.vcd, smpar.vcs, smpar.vcb };
-  int    pdg[] = { 1, 2, 3, 4, 5 };
-  double mh = smpar.mh;
-  
-  double x1 = x[4]*(1-pow(smpar.mh,2)/smpar.s) + pow(smpar.mh,2)/smpar.s;
-  double x2 = x[5]*(1-pow(smpar.mh,2)/smpar.s/x1) + pow(smpar.mh,2)/smpar.s/x1;
-  
-  double uu_uuh       = uu_uuh_massless(   x, dim, par );
-  double dd_ddh       = dd_ddh_massless(   x, dim, par );
-  double ud_dpuph     = ud_dpuph_massless( x, dim, par );
-  double ud_duh_NoCKM = ud_duh_NoCKM_massless( x, dim, par );
-  double ud_duh_CKMsQ = ud_duh_CKMsQ_massless( x, dim, par );
-  
-  double dsig = 0;
-  /* Loop over initial states */
-  for( int i = 0; i < 4; i++ )
-  {
-    for( int j = 0; j < 4; j++ )
-    {
-      double xfx_i_x1 = LHAPDF::xfx(x1,mh,pdg[i]);
-      double xfx_j_x1 = LHAPDF::xfx(x1,mh,pdg[j]);
-      double xfx_i_x2 = LHAPDF::xfx(x2,mh,pdg[i]);
-      double xfx_j_x2 = LHAPDF::xfx(x2,mh,pdg[j]);
-      if( (pdg[i] == pdg[j]) && !(pdg[i]%2) )
-      {
-	dsig += 1./x1/x2*xfx_i_x1*xfx_j_x2*uu_uuh;
-      };
-      if( (pdg[i] == pdg[j]) && (pdg[i]%2) )
-      {
-	dsig += 1./x1/x2*xfx_i_x1*xfx_j_x2*dd_ddh;
-      };
-      if( (pdg[i] != pdg[j]) && ( pdg[j]%2 && !(pdg[i]%2) ) )
-      {
-	/* Quark i ist up-Quark, Quark j ist d-Quark */
-	for( int k = 0; k < 5; k++ )
-	{
-	  for( int l = 0; l < 5; l++ )
-	  {
-	    if((pdg[k] == pdg[j]) && (pdg[l] == pdg[i]) && (pdg[k] == pdg[j]))  {
-	      int zeile = (pdg[i]==4);
-	      int spalte = pdg[j]/2;
-	      int element = spalte+zeile*3;
-	      
-	      dsig += 1./x1/x2*(xfx_i_x1*xfx_j_x2+xfx_j_x1*xfx_i_x2)*(ud_duh_CKMsQ*pow(ckm[element],2) + ud_duh_NoCKM + ud_dpuph*pow(ckm[element],4));
-	    };
-	    if( ( pdg[k]%2 && !(pdg[l]%2)) && ((pdg[l] != pdg[i]) && (pdg[k] != pdg[j])))
-	    {
-	      int zeile1  = (pdg[i]==4);
-	      int spalte1 = pdg[k]/2;
-	      int zeile2  = (pdg[j]==4);
-	      int spalte2 = pdg[l]/2;
-	      int elem1 = spalte1+zeile1*3;
-	      int elem2 = spalte2+zeile2*3;
-	      dsig += 2./x1/x2*(xfx_i_x1*xfx_j_x2+xfx_j_x1*xfx_i_x2)*ud_dpuph*pow(ckm[elem1]*ckm[elem2],2);
-	    };
-	  };
-	};
-      };
-    };
-  };
-  
-  return dsig;
-};
-
 double udcsb_jjh( double * x, size_t dim, void * params )
 {
   VBFParam * par = (VBFParam*)params;
@@ -261,109 +124,6 @@ double udcsb_jjh( double * x, size_t dim, void * params )
   return dsig;
 };
 
-
-void cs_pp_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err )
-{  
-  VBFParam par;
-  par.sm = *smpar;
-  par.eff = *effpar;
-  
-  double xl[] = {0,0,0,0,0,0};
-  double xu[] = {1,1,1,1,1,1};
-  double result, error;
-  
-  size_t dim = 6;
-  const gsl_rng_type * T;
-  gsl_rng * r;
-  size_t calls = NCALLS;
-  
-  gsl_monte_function G = {pp_jjh_, dim, &par};
-  gsl_rng_env_setup();
-  T = gsl_rng_default;
-  r = gsl_rng_alloc( T );
-  {
-    gsl_monte_vegas_state * s = gsl_monte_vegas_alloc( dim );
-    do
-    {    
-      gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
-    }
-    while (fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.5);
-    gsl_monte_vegas_free( s );
-  };
-  *cs = result;
-  *err = error;
-};
-
-
-double pp_jjh_( double * x, size_t dim, void * params )
-{
-  VBFParam * par = (VBFParam*)params;
-  sminputs smpar = par->sm;
-  double ckm[] = { smpar.vud, smpar.vus, smpar.vub, smpar.vcd, smpar.vcs, smpar.vcb };
-  int    pdg[] = { 1, 2, 3, 4, 5 };
-  double mh = smpar.mh;
-  
-  double x1 = x[4]*(1-pow(smpar.mh,2)/smpar.s) + pow(smpar.mh,2)/smpar.s;
-  double x2 = x[5]*(1-pow(smpar.mh,2)/smpar.s/x1) + pow(smpar.mh,2)/smpar.s/x1;
-  
-  double uu_uuh       = uu_uuh_massless(   x, dim, par );
-  double dd_ddh       = dd_ddh_massless(   x, dim, par );
-  double ud_dpuph     = ud_dpuph_massless( x, dim, par );
-  double ud_duh_NoCKM = ud_duh_NoCKM_massless( x, dim, par );
-  double ud_duh_CKMsQ = ud_duh_CKMsQ_massless( x, dim, par );
-  
-  double dsig = 0;
-  /* Loop over initial states */
-  for( int i = 0; i < 2; i++ )
-  {
-
-    for( int j = 0; j < 2; j++ )
-    {
-      double xfx_i_x1 = LHAPDF::xfx(x1,mh,pdg[i]);
-      double xfx_j_x1 = LHAPDF::xfx(x1,mh,pdg[j]);
-      double xfx_i_x2 = LHAPDF::xfx(x2,mh,pdg[i]);
-      double xfx_j_x2 = LHAPDF::xfx(x2,mh,pdg[j]);
-      if( (pdg[i] == pdg[j]) && !(pdg[i]%2) )
-      {
-	dsig += 1./x1/x2*xfx_i_x1*xfx_j_x2*uu_uuh;
-      };
-      if( (pdg[i] == pdg[j]) && (pdg[i]%2) )
-      {
-	dsig += 1./x1/x2*xfx_i_x1*xfx_j_x2*dd_ddh;
-      };
-      if( (pdg[i] != pdg[j]) && ( pdg[j]%2 && !(pdg[i]%2) ) )
-      {
-	/* Quark i ist up-Quark, Quark j ist d-Quark */
-	for( int k = 0; k < 5; k++ )
-	{
-	  for( int l = 0; l < 5; l++ )
-	  {
-	    if((pdg[k] == pdg[j]) && (pdg[l] == pdg[i]) && (pdg[k] == pdg[j]))  {
-	      int zeile = (pdg[i]==4);
-	      int spalte = pdg[j]/2;
-	      int element = spalte+zeile*3;
-	      
-	      dsig += 1./x1/x2*(xfx_i_x1*xfx_j_x2+xfx_j_x1*xfx_i_x2)*(ud_duh_CKMsQ*pow(ckm[element],2) + ud_duh_NoCKM + ud_dpuph*pow(ckm[element],4));
-	    };
-	    if( ( pdg[k]%2 && !(pdg[l]%2)) && ((pdg[l] != pdg[i]) && (pdg[k] != pdg[j])))
-	    {
-	      int zeile1  = (pdg[i]==4);
-	      int spalte1 = pdg[k]/2;
-	      int zeile2  = (pdg[j]==4);
-	      int spalte2 = pdg[l]/2;
-	      int elem1 = spalte1+zeile1*3;
-	      int elem2 = spalte2+zeile2*3;
-	      dsig += 2./x1/x2*(xfx_i_x1*xfx_j_x2+xfx_j_x1*xfx_i_x2)*ud_dpuph*pow(ckm[elem1]*ckm[elem2],2);
-	    };
-	  };
-	};
-      };
-    };
-  };
-  
-  return dsig;
-};
-
 double dd_ddh_massless( double * x, size_t dim, void * params )
 {
   VBFParam par = *(VBFParam*)params;
@@ -376,9 +136,6 @@ double dd_ddh_massless( double * x, size_t dim, void * params )
   double sw = par.sm.sw;
   double ee = sqrt(4.*M_PI*par.sm.alphae);
   double s    = x1*x2*par.sm.s;
-  //double g1hww = par.eff.g1hww;
-  //double g2hww = par.eff.g2hww;
-  //double g3hww = par.eff.g3hww;
   double g1hzz = par.eff.g1hzz;
   double g2hzz = par.eff.g2hzz;
   //double g3hzz = par.eff.g3hzz;
@@ -419,23 +176,10 @@ double dd_ddh_massless( double * x, size_t dim, void * params )
   double sXi    = sqrt(1-pow(cXi,2));
 
 #ifdef CUTS
-  /* Parameter beta der Lorentz-Transformation */
-  double beta = (x1-x2)/(x1+x2);
-
-  /* Phasenraum-Cuts */
-  /* Transversamimpuls aendert sich unter LT nicht, Rapiditaet erhaelt konstante Verschiebung */
   double pt4 = k4v*stheta;
-  if( pt4 < pt4min ) return 0;
+  if( fabs(pt4) < pt4min ) return 0;
   double pt3 = k3v*sqrt(ctheta*ctheta*cos(eta)*cos(eta)*sXi*sXi + stheta*stheta*cXi*cXi+2*stheta*ctheta*sXi*cXi*cos(eta)+sin(eta)*sin(eta)*sXi*sXi);
-  if( pt3 < pt3min ) return 0;
-  
-  /*
-  double rap4 = 0.5*log((k30+k30*ctheta)/(k30-k30*ctheta))+0.5*log((1-beta)/(1+beta));
-  double rap3 = 0.5*log((k30*(1+ctheta*cXi-stheta*cos(eta)*sXi))/(k30*(1-ctheta*cXi+stheta*cos(eta)*sXi)))+0.5*log((1-beta)/(1+beta));
-  if( rap4 > 4.5 || rap3 > 4.5 ) return 0;
-  if( rap3*rap4 > 0 ) return 0;
-  if( abs( rap3 - rap4 ) < 4 ) return 0;
-  */
+  if( fabs(pt3) < pt3min ) return 0;
 #endif
 
   /* Berechnung der kinematischen Invarianten */
@@ -6546,9 +6290,6 @@ double uu_uuh_massless( double * x, size_t dim, void * params )
   double sw = par.sm.sw;
   double ee = sqrt(4.*M_PI*par.sm.alphae);
   double s    = x1*x2*par.sm.s;
-  //double g1hww = par.eff.g1hww;
-  //double g2hww = par.eff.g2hww;
-  //double g3hww = par.eff.g3hww;
   double g1hzz = par.eff.g1hzz;
   double g2hzz = par.eff.g2hzz;
   //double g3hzz = par.eff.g3hzz;
@@ -6587,19 +6328,12 @@ double uu_uuh_massless( double * x, size_t dim, void * params )
   
   double cXi    = (pow(sqrt(s)-k30-k40,2)-pow(m5,2)-pow(k3v,2)-pow(k4v,2))/2./k3v/k4v;
   double sXi    = sqrt(1-pow(cXi,2));
+
 #ifdef CUTS
-  /* Phasenraum-Cuts */
   double pt4 = k4v*stheta;
-  if( pt4 < pt4min ) return 0;
+  if( fabs(pt4) < pt4min ) return 0;
   double pt3 = k3v*sqrt(ctheta*ctheta*cos(eta)*cos(eta)*sXi*sXi + stheta*stheta*cXi*cXi+2*stheta*ctheta*sXi*cXi*cos(eta)+sin(eta)*sin(eta)*sXi*sXi);
-  if( pt3 < pt3min ) return 0;
-  /*
-  double rap4 = 0.5*log((k30+k30*ctheta)/(k30-k30*ctheta));
-  double rap3 = 0.5*log((k30*(1+ctheta*cXi-stheta*cos(eta)*sXi))/(k30*(1-ctheta*cXi+stheta*cos(eta)*sXi)));
-  if( rap4 > 4.5 || rap3 > 4.5 ) return 0;
-  if( rap3*rap4 > 0 ) return 0;
-  if( abs( rap3 - rap4 ) < 4 ) return 0; 
-  */
+  if( fabs(pt3) < pt3min ) return 0;
 #endif
 
   /* Berechnung der kinematischen Invarianten */
@@ -10067,10 +9801,7 @@ double ud_duh_NoCKM_massless( double * x, size_t dim, void * params )
   double mz = par.sm.mz;
   double sw = par.sm.sw;
   double ee = sqrt(4.*M_PI*par.sm.alphae);
-  double s= x1*x2*par.sm.s;
-  //double g1hww = par.eff.g1hww;
-  //double g2hww = par.eff.g2hww;
-  //double g3hww = par.eff.g3hww;
+  double s  = x1*x2*par.sm.s;
   double g1hzz = par.eff.g1hzz;
   double g2hzz = par.eff.g2hzz;
   //double g3hzz = par.eff.g3hzz;
@@ -10081,7 +9812,6 @@ double ud_duh_NoCKM_massless( double * x, size_t dim, void * params )
   /* Daraus berechnet */
   double cw   = sqrt(1-pow(sw,2));
   double mw   = mz*cw;
-  //std::cout<<"s = "<<s<<" mh = "<<mh<<" mz = "<<mz<<" ee = "<<ee<<std::endl;
   /* Berechne den einlaufenden Impuls im CMS */
   double pi   = sqrt(pow(s+m2*m2-m1*m1,2)/4./s-m2*m2);
   double E1   = sqrt(m1*m1 + pi*pi);
@@ -10110,21 +9840,10 @@ double ud_duh_NoCKM_massless( double * x, size_t dim, void * params )
   double cXi    = (pow(sqrt(s)-k30-k40,2)-pow(m5,2)-pow(k3v,2)-pow(k4v,2))/2./k3v/k4v;
   double sXi    = sqrt(1-pow(cXi,2));
 #ifdef CUTS
-  /* Phasenraum-Cuts */
-  /* Parameter beta fuer Lorentztransformationen */
-  double beta = (x1-x2)/(x1+x2);
-
   double pt4 = k4v*stheta;
-  if( pt4 < pt4min ) return 0;
+  if( fabs(pt4) < pt4min ) return 0;
   double pt3 = k3v*sqrt(ctheta*ctheta*cos(eta)*cos(eta)*sXi*sXi + stheta*stheta*cXi*cXi+2*stheta*ctheta*sXi*cXi*cos(eta)+sin(eta)*sin(eta)*sXi*sXi);
-  if( pt3 < pt3min ) return 0;
-  /*
-  double rap4 = 0.5*log((k30+k30*ctheta)/(k30-k30*ctheta))+0.5*log((1-beta)/(1+beta));
-  double rap3 = 0.5*log((k30*(1+ctheta*cXi-stheta*cos(eta)*sXi))/(k30*(1-ctheta*cXi+stheta*cos(eta)*sXi)))+0.5*log((1-beta)/(1+beta));
-  if( rap4 > 4.5 || rap3 > 4.5 ) return 0;
-  if( rap3*rap4 > 0 ) return 0;
-  if( abs( rap3 - rap4 ) < 4 ) return 0; 
-  */
+  if( fabs(pt3) < pt3min ) return 0;
 #endif
 
   /* Berechnung der kinematischen Invarianten */
@@ -13034,7 +12753,6 @@ double ud_duh_CKMsQ_massless( double * x, size_t dim, void * params )
   double g3hww = par.eff.g3hww;
   double g1hzz = par.eff.g1hzz;
   double g2hzz = par.eff.g2hzz;
-  //double g3hzz = par.eff.g3hzz;
   double g1hzy = par.eff.g1hzy;
   double g2hzy = par.eff.g2hzy;
   double ghyy  = par.eff.ghyy;
@@ -13043,8 +12761,6 @@ double ud_duh_CKMsQ_massless( double * x, size_t dim, void * params )
   /* Daraus berechnet */
   double cw   = sqrt(1-pow(sw,2));
   double mw   = mz*cw;
-  //std::cout<<"s = "<<s<<" mh = "<<mh<<" mz = "<<mz<<" ee = "<<ee<<std::endl;
-  /* Berechne den einlaufenden Impuls im CMS */
   double pi   = sqrt(pow(s+m2*m2-m1*m1,2)/4./s-m2*m2);
   double E1   = sqrt(m1*m1 + pi*pi);
   double E2   = sqrt(m2*m2 + pi*pi);
@@ -13073,19 +12789,10 @@ double ud_duh_CKMsQ_massless( double * x, size_t dim, void * params )
   double sXi    = sqrt(1-pow(cXi,2));
 #ifdef CUTS
   /* Phasenraum-Cuts */
-  double beta = (x1-x2)/(x1+x2);
-
   double pt4 = k4v*stheta;
-  if( pt4 < pt4min ) return 0;
+  if( fabs(pt4) < pt4min ) return 0;
   double pt3 = k3v*sqrt(ctheta*ctheta*cos(eta)*cos(eta)*sXi*sXi + stheta*stheta*cXi*cXi+2*stheta*ctheta*sXi*cXi*cos(eta)+sin(eta)*sin(eta)*sXi*sXi);
-  if( pt3 < pt3min ) return 0;
-  /*
-  double rap4 = 0.5*log((k30+k30*ctheta)/(k30-k30*ctheta))+0.5*log((1-beta)/(1+beta));
-  double rap3 = 0.5*log((k30*(1+ctheta*cXi-stheta*cos(eta)*sXi))/(k30*(1-ctheta*cXi+stheta*cos(eta)*sXi)))+0.5*log((1-beta)/(1+beta));
-  if( rap4 > 4.5 || rap3 > 4.5 ) return 0;
-  if( rap3*rap4 > 0 ) return 0;
-  if( abs( rap3 - rap4 ) < 4 ) return 0;
-  */
+  if( fabs(pt3) < pt3min ) return 0;
 #endif
 
   /* Berechnung der kinematischen Invarianten */
@@ -14591,14 +14298,9 @@ double ud_dpuph_massless( double * x, size_t dim, void * params )
 #ifdef CUTS
   /* Phasenraum-Cuts */
   double pt4 = k4v*stheta;
-  if( pt4 < 20 ) return 0;
+  if( fabs(pt4) < 5 ) return 0;
   double pt3 = k3v*sqrt(ctheta*ctheta*cos(eta)*cos(eta)*sXi*sXi + stheta*stheta*cXi*cXi+2*stheta*ctheta*sXi*cXi*cos(eta)+sin(eta)*sin(eta)*sXi*sXi);
-  if( pt3 < 20 ) return 0;
-  double rap4 = 0.5*log((k30+k30*ctheta)/(k30-k30*ctheta));
-  double rap3 = 0.5*log((k30*(1+ctheta*cXi-stheta*cos(eta)*sXi))/(k30*(1-ctheta*cXi+stheta*cos(eta)*sXi)));
-  if( rap4 > 4.5 || rap3 > 4.5 ) return 0;
-  if( rap3*rap4 > 0 ) return 0;
-  if( abs( rap3 - rap4 ) < 4 ) return 0;
+  if( fabs(pt3) < 5 ) return 0;
 #endif
 
   /* Berechnung der kinematischen Invarianten */
