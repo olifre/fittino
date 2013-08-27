@@ -25,6 +25,9 @@
 #include <string>
 #include <vector>
 
+#include "Collection.h"
+#include "PredictionBase.h"
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -74,6 +77,10 @@ namespace Fittino {
        */
       void                                              AddParameter( ModelParameterBase* parameter );
       /*!
+       *  Adds a prediction to the model.
+       */
+      void                                              AddPrediction( PredictionBase* prediction );	
+      /*!
        *  Returns the name of the model.
        */
       std::string                                       GetName() const;
@@ -95,6 +102,10 @@ namespace Fittino {
        *  Returns the predictions of the model as a vector.
        */
       const std::vector<PredictionBase*>*               GetPredictionVector() const;
+      /*!
+       *  Returns the predictions of the model as a collection.
+       */
+      const Collection<PredictionBase*>*                GetCollectionOfPredictions() const;
 
     public:
       virtual void                                      PrintStatus() const = 0;
@@ -142,6 +153,10 @@ namespace Fittino {
        *  Stores the model parameters.
        */
       std::map<std::string, ModelParameterBase*>        _parameterMap;
+      /*!
+       *  Stores the predictions.
+       */
+      Collection<PredictionBase*>                       _collectionOfPredictions;
 
     private:
       /*!
