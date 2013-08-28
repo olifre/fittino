@@ -558,7 +558,5 @@ void Fittino::HDim6ModelCalculator::ConfigureInput() {
     _effvalues->fmuh = _model->GetParameterMap()->at( "F_mu"  )->GetValue();
     _effvalues->ftah = _model->GetParameterMap()->at( "F_tau" )->GetValue();
 
-    // Calculate Triple-Vertex Couplings in effvalues
-    update_effinputs_( _smvalues, _effvalues );
 
 }
