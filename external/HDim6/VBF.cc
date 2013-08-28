@@ -47,7 +47,7 @@ void udcsb_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
       k++;
     }
-    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.3) && ( k < NRUN ));
+    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && ( k < NRUN ));
     *chisq = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };

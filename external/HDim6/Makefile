@@ -1,4 +1,4 @@
-default: decay.o CrossSectionHad.o inputs.o VBF.o CrossSection.o
+default: decay.o CrossSectionHad.o inputs.o VBF.o CrossSection.o gaugecpl.o
 
 testprog : testprog.o decay.o CrossSectionHad.o inputs.o VBF.o
 	gcc -Wall -o testprog testprog.o inputs.o CrossSectionHad.o decay.o VBF.o -Wl,-rpath=/net/home/lxtsfs1/tpe/bheller/Programme/LHAPDF/lib -L/net/home/lxtsfs1/tpe/bheller/Programme/LHAPDF/lib -lstdc++ -lLHAPDF -lgsl -lgslcblas\

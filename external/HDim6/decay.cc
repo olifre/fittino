@@ -437,8 +437,7 @@ void hznunu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
   double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
   double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
   double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
-
+  
   double par[] = { smpar->mh, smpar->mz, 0, 0, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0, 
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
@@ -482,8 +481,7 @@ void hztata_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
   double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
   double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
   double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
-
+  
   double par[] = { smpar->mh, smpar->mz, smpar->mta, smpar->mta, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
@@ -527,8 +525,7 @@ void hzmumu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
   double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
   double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
   double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
-
+  
   double par[] = { smpar->mh, smpar->mz, smpar->mmu, smpar->mmu, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
@@ -572,8 +569,7 @@ void hzelel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
   double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
   double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
   double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
-
+  
   double par[] = { smpar->mh, smpar->mz, smpar->mel, smpar->mel, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy }; 
   double result, error;
@@ -618,8 +614,7 @@ void hzdodo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
   double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
   double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
   double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
-
+  
   double par[] = { smpar->mh, smpar->mz, smpar->mdo, smpar->mdo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
@@ -662,8 +657,7 @@ void hzupup_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
   double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
   double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
   double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
-
+  
   double par[] = { smpar->mh, smpar->mz, smpar->mup, smpar->mup, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
@@ -708,8 +702,7 @@ void hzstst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
   double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
   double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
   double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
-
+  
   double par[] = { smpar->mh, smpar->mz, smpar->mst, smpar->mst, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
@@ -753,7 +746,6 @@ void hzchch_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
   double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
   double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
   double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, smpar->mch, smpar->mch, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -799,7 +791,6 @@ void hzbobo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
   double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
   double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
   double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, smpar->mbo, smpar->mbo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -844,7 +835,6 @@ void hwtanta_( sminputs * smpar, effinputs * effpar, double * pWidth, double * p
   double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
   double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
   double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, 0, smpar->mta, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -889,7 +879,6 @@ void hwmunmu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * p
   double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
   double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
   double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, 0, smpar->mmu, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -934,7 +923,6 @@ void hwelnel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * p
   double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
   double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
   double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, 0, smpar->mel, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -979,7 +967,6 @@ void hwupdo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
   double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
   double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
   double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, smpar->mup, smpar->mdo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vud,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -1024,7 +1011,6 @@ void hwupst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
   double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
   double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
   double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, smpar->mup, smpar->mst, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vus,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -1069,7 +1055,6 @@ void hwupbo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
   double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
   double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
   double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, smpar->mup, smpar->mbo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vub, 
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -1115,7 +1100,6 @@ void hwchdo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
   double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
   double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
   double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, smpar->mch, smpar->mdo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vcd,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -1160,7 +1144,6 @@ void hwchst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
   double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
   double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
   double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, smpar->mch, smpar->mst, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vcs,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -1205,7 +1188,6 @@ void hwchbo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
   double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
   double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
   double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, smpar->mch, smpar->mbo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vcb,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };

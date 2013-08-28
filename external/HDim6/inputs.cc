@@ -57,13 +57,13 @@ double ghyy_(  sminputs * smpar, effinputs * effpar, double s )
     s = 0;
   double fww = effpar->fww/pow(1+s/effpar->rww,effpar->nww);
   double fbb = effpar->fbb/pow(1+s/effpar->rbb,effpar->nbb);
-  double fb  = effpar->fb/pow( 1+s/effpar->rb, effpar->nb );
-  double fw  = effpar->fw/pow( 1+s/effpar->rw, effpar->nw );
-  double fgg = effpar->fgg/pow(1+s/effpar->rgg,effpar->ngg);
+  //double fb  = effpar->fb/pow( 1+s/effpar->rb, effpar->nb );
+  //double fw  = effpar->fw/pow( 1+s/effpar->rw, effpar->nw );
+  //double fgg = effpar->fgg/pow(1+s/effpar->rgg,effpar->ngg);
   
   double g   = sqrt( 4.0*M_PI*smpar->alphae )/smpar->sw;
   double sw  = smpar->sw;
-  double cw  = sqrt(1-sw*sw);
+  //double cw  = sqrt(1-sw*sw);
   double pref= g*g*smpar->vev/2.0;
   return - pref*pow(sw,2)*(fbb+fww)/2.0;
 };
@@ -73,16 +73,16 @@ double ghgg_(  sminputs * smpar, effinputs * effpar, double s )
   if( effpar->override_unitarity )
     s = 0;
  
-  double fww = effpar->fww/pow(1+s/effpar->rww,effpar->nww);
-  double fbb = effpar->fbb/pow(1+s/effpar->rbb,effpar->nbb);
-  double fb  = effpar->fb/pow( 1+s/effpar->rb, effpar->nb );
-  double fw  = effpar->fw/pow( 1+s/effpar->rw, effpar->nw );
+  //double fww = effpar->fww/pow(1+s/effpar->rww,effpar->nww);
+  //double fbb = effpar->fbb/pow(1+s/effpar->rbb,effpar->nbb);
+  //double fb  = effpar->fb/pow( 1+s/effpar->rb, effpar->nb );
+  //double fw  = effpar->fw/pow( 1+s/effpar->rw, effpar->nw );
   double fgg = effpar->fgg/pow(1+s/effpar->rgg,effpar->ngg);
 
-  double g   = sqrt( 4.0*M_PI*smpar->alphae )/smpar->sw;
-  double sw  = smpar->sw;
-  double cw  = sqrt(1-sw*sw);
-  double pref= g*g*smpar->vev/2.0;
+  //double g   = sqrt( 4.0*M_PI*smpar->alphae )/smpar->sw;
+  //double sw  = smpar->sw;
+  //double cw  = sqrt(1-sw*sw);
+  //double pref= g*g*smpar->vev/2.0;
   return fgg*smpar->vev;
 };
 
@@ -91,11 +91,11 @@ double g1hzy_( sminputs * smpar, effinputs * effpar, double s )
   if( effpar->override_unitarity )
     s = 0;
  
-  double fww = effpar->fww/pow(1+s/effpar->rww,effpar->nww);
-  double fbb = effpar->fbb/pow(1+s/effpar->rbb,effpar->nbb);
+  //double fww = effpar->fww/pow(1+s/effpar->rww,effpar->nww);
+  //double fbb = effpar->fbb/pow(1+s/effpar->rbb,effpar->nbb);
   double fb  = effpar->fb/pow( 1+s/effpar->rb, effpar->nb );
   double fw  = effpar->fw/pow( 1+s/effpar->rw, effpar->nw );
-  double fgg = effpar->fgg/pow(1+s/effpar->rgg,effpar->ngg);
+  //double fgg = effpar->fgg/pow(1+s/effpar->rgg,effpar->ngg);
 
   double g   = sqrt( 4.0*M_PI*smpar->alphae )/smpar->sw;
   double sw  = smpar->sw;
@@ -111,9 +111,9 @@ double g2hzy_( sminputs * smpar, effinputs * effpar, double s )
  
   double fww = effpar->fww/pow(1+s/effpar->rww,effpar->nww);
   double fbb = effpar->fbb/pow(1+s/effpar->rbb,effpar->nbb);
-  double fb  = effpar->fb/pow( 1+s/effpar->rb, effpar->nb );
-  double fw  = effpar->fw/pow( 1+s/effpar->rw, effpar->nw );
-  double fgg = effpar->fgg/pow(1+s/effpar->rgg,effpar->ngg);
+  //double fb  = effpar->fb/pow( 1+s/effpar->rb, effpar->nb );
+  //double fw  = effpar->fw/pow( 1+s/effpar->rw, effpar->nw );
+  //double fgg = effpar->fgg/pow(1+s/effpar->rgg,effpar->ngg);
 
   double g   = sqrt( 4.0*M_PI*smpar->alphae )/smpar->sw;
   double sw  = smpar->sw;
@@ -127,11 +127,11 @@ double g1hzz_( sminputs * smpar, effinputs * effpar, double s )
   if( effpar->override_unitarity )
     s = 0;
  
-  double fww = effpar->fww/pow(1+s/effpar->rww,effpar->nww);
-  double fbb = effpar->fbb/pow(1+s/effpar->rbb,effpar->nbb);
+  //double fww = effpar->fww/pow(1+s/effpar->rww,effpar->nww);
+  //double fbb = effpar->fbb/pow(1+s/effpar->rbb,effpar->nbb);
   double fb  = effpar->fb/pow( 1+s/effpar->rb, effpar->nb );
   double fw  = effpar->fw/pow( 1+s/effpar->rw, effpar->nw );
-  double fgg = effpar->fgg/pow(1+s/effpar->rgg,effpar->ngg);
+  //double fgg = effpar->fgg/pow(1+s/effpar->rgg,effpar->ngg);
 
   double g   = sqrt( 4.0*M_PI*smpar->alphae )/smpar->sw;
   double sw  = smpar->sw;
@@ -147,9 +147,9 @@ double g2hzz_( sminputs * smpar, effinputs * effpar, double s )
  
   double fww = effpar->fww/pow(1+s/effpar->rww,effpar->nww);
   double fbb = effpar->fbb/pow(1+s/effpar->rbb,effpar->nbb);
-  double fb  = effpar->fb/pow( 1+s/effpar->rb, effpar->nb );
-  double fw  = effpar->fw/pow( 1+s/effpar->rw, effpar->nw );
-  double fgg = effpar->fgg/pow(1+s/effpar->rgg,effpar->ngg);
+  //double fb  = effpar->fb/pow( 1+s/effpar->rb, effpar->nb );
+  //double fw  = effpar->fw/pow( 1+s/effpar->rw, effpar->nw );
+  //double fgg = effpar->fgg/pow(1+s/effpar->rgg,effpar->ngg);
 
   double g   = sqrt( 4.0*M_PI*smpar->alphae )/smpar->sw;
   double sw  = smpar->sw;
@@ -162,12 +162,13 @@ double g3hzz_( sminputs * smpar, effinputs * effpar, double s )
 {
   if( effpar->override_unitarity )
     s = 0;
- 
+  /*
   double fww = effpar->fww/pow(1+s/effpar->rww,effpar->nww);
   double fbb = effpar->fbb/pow(1+s/effpar->rbb,effpar->nbb);
   double fb  = effpar->fb/pow( 1+s/effpar->rb, effpar->nb );
   double fw  = effpar->fw/pow( 1+s/effpar->rw, effpar->nw );
   double fgg = effpar->fgg/pow(1+s/effpar->rgg,effpar->ngg);
+  */
   return 0;
 };
 
@@ -175,16 +176,16 @@ double g1hww_( sminputs * smpar, effinputs * effpar, double s )
 {
   if( effpar->override_unitarity )
     s = 0;
- 
-  double fww = effpar->fww/pow(1+s/effpar->rww,effpar->nww);
-  double fbb = effpar->fbb/pow(1+s/effpar->rbb,effpar->nbb);
-  double fb  = effpar->fb/pow( 1+s/effpar->rb, effpar->nb );
+  
+  //double fww = effpar->fww/pow(1+s/effpar->rww,effpar->nww);
+  //double fbb = effpar->fbb/pow(1+s/effpar->rbb,effpar->nbb);
+  //double fb  = effpar->fb/pow( 1+s/effpar->rb, effpar->nb );
   double fw  = effpar->fw/pow( 1+s/effpar->rw, effpar->nw );
-  double fgg = effpar->fgg/pow(1+s/effpar->rgg,effpar->ngg);
+  //double fgg = effpar->fgg/pow(1+s/effpar->rgg,effpar->ngg);
 
   double g   = sqrt( 4.0*M_PI*smpar->alphae )/smpar->sw;
-  double sw  = smpar->sw;
-  double cw  = sqrt(1-sw*sw);
+  //double sw  = smpar->sw;
+  //double cw  = sqrt(1-sw*sw);
   double pref= g*g*smpar->vev/2.0;
   return pref*fw/2.0;
 };
@@ -195,14 +196,14 @@ double g2hww_( sminputs * smpar, effinputs * effpar, double s )
     s = 0;
  
   double fww = effpar->fww/pow(1+s/effpar->rww,effpar->nww);
-  double fbb = effpar->fbb/pow(1+s/effpar->rbb,effpar->nbb);
-  double fb  = effpar->fb/pow( 1+s/effpar->rb, effpar->nb );
-  double fw  = effpar->fw/pow( 1+s/effpar->rw, effpar->nw );
-  double fgg = effpar->fgg/pow(1+s/effpar->rgg,effpar->ngg);
+  //double fbb = effpar->fbb/pow(1+s/effpar->rbb,effpar->nbb);
+  //double fb  = effpar->fb/pow( 1+s/effpar->rb, effpar->nb );
+  //double fw  = effpar->fw/pow( 1+s/effpar->rw, effpar->nw );
+  //double fgg = effpar->fgg/pow(1+s/effpar->rgg,effpar->ngg);
 
   double g   = sqrt( 4.0*M_PI*smpar->alphae )/smpar->sw;
-  double sw  = smpar->sw;
-  double cw  = sqrt(1-sw*sw);
+  //double sw  = smpar->sw;
+  //double cw  = sqrt(1-sw*sw);
   double pref= g*g*smpar->vev/2.0;
   return -pref*fww;
 };
@@ -211,11 +212,12 @@ double g3hww_( sminputs * smpar, effinputs * effpar, double s )
 {
   if( effpar->override_unitarity )
     s = 0;
- 
+  /*
   double fww = effpar->fww/pow(1+s/effpar->rww,effpar->nww);
   double fbb = effpar->fbb/pow(1+s/effpar->rbb,effpar->nbb);
   double fb  = effpar->fb/pow( 1+s/effpar->rb, effpar->nb );
   double fw  = effpar->fw/pow( 1+s/effpar->rw, effpar->nw );
   double fgg = effpar->fgg/pow(1+s/effpar->rgg,effpar->ngg);
+  */
   return 0;
 };

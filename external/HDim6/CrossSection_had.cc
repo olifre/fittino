@@ -47,7 +47,7 @@ void ratio_ggh_( sminputs * smpar, effinputs * effpar, double * ratio, double * 
   double mt = smpar->mto;
   double z = pow( mt/mh, 2. );
   double I = (2.*z - 2*z*(4.*z - 1)*pow(asin(1/2./sqrt(z)), 2.));
-  double fgg = effpar->fgg*(1+smpar->mh/effpar->rgg,effpar->ngg);
+  double fgg = effpar->fgg/pow(1+smpar->mh/effpar->rgg,effpar->ngg);
   double factor = pow(1+fgg*pow(smpar->vev,2)*sqrt(2)*M_PI/smpar->alphas/I, 2);
   *ratio         = factor;
   *err           = 0;
@@ -755,7 +755,7 @@ double m_dD_ZH( double * x, size_t dim, void * param )
 {
   radparam * par = (radparam*)param;
   double mq = par->mq1;
-  double ckm= par->ckm;
+  //double ckm= par->ckm;
   int pdg1 = par->PDG1;
   int pdg2 = par->PDG2;
 
@@ -1561,7 +1561,7 @@ double m_uU_ZH( double * x, size_t dim, void * param )
   /* Parameter */
   radparam * par = (radparam*)param;
   double mq = par->mq1;
-  double ckm= par->ckm;
+  //double ckm= par->ckm;
   int pdg1 = par->PDG1;
   int pdg2 = par->PDG2;
 
