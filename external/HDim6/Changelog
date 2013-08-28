@@ -66,3 +66,6 @@
 	- added functions to calculate K-factor of branching rations
 	:VBF
 	- removed error in normalization
+
+2013-08-28:
+	- Included Form Factors in all processes

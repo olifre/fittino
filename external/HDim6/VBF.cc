@@ -7,8 +7,7 @@ void vbf_init_cs_( sminputs * smpar )
   effinputs temp;
   temp.fbb = 0; temp.fww = 0; temp.fgg = 0; temp.fb = 0; temp.fw = 0; 
   temp.fuph = 0; temp.fdoh = 0; temp.fchh = 0; temp.fsth = 0; temp.fboh = 0; temp.ftoh = 0; temp.felh = 0; temp.fmuh = 0; temp.ftah = 0;
-  temp.ghyy = 0; temp.g1hzz = 0; temp.g2hzz = 0; temp.g3hzz = 0; temp.g1hww = 0; temp.g2hww = 0; temp.g3hww = 0; temp.g1hzy = 0; temp.g2hzy = 0;
-
+ 
   udcsb_jjh_(   smpar, &temp, &cs_5flavorSM, &err_5flavorSM, &chi_5flavorSM );
 };
 
@@ -136,12 +135,12 @@ double dd_ddh_massless( double * x, size_t dim, void * params )
   double sw = par.sm.sw;
   double ee = sqrt(4.*M_PI*par.sm.alphae);
   double s    = x1*x2*par.sm.s;
-  double g1hzz = par.eff.g1hzz;
-  double g2hzz = par.eff.g2hzz;
+  double g1hzz = g1hzz_( &par.sm, &par.eff, s );
+  double g2hzz = g2hzz_( &par.sm, &par.eff, s ); 
   //double g3hzz = par.eff.g3hzz;
-  double g1hzy = par.eff.g1hzy;
-  double g2hzy = par.eff.g2hzy;
-  double ghyy  = par.eff.ghyy;
+  double g1hzy = g1hzy_( &par.sm, &par.eff, s );
+  double g2hzy = g2hzy_( &par.sm, &par.eff, s );
+  double ghyy  = ghyy_(  &par.sm, &par.eff, s );
  
   /* Daraus berechnet */
   double cw   = sqrt(1-pow(sw,2));
@@ -6290,12 +6289,12 @@ double uu_uuh_massless( double * x, size_t dim, void * params )
   double sw = par.sm.sw;
   double ee = sqrt(4.*M_PI*par.sm.alphae);
   double s    = x1*x2*par.sm.s;
-  double g1hzz = par.eff.g1hzz;
-  double g2hzz = par.eff.g2hzz;
+  double g1hzz = g1hzz_( &par.sm, &par.eff, s );
+  double g2hzz = g2hzz_( &par.sm, &par.eff, s );
   //double g3hzz = par.eff.g3hzz;
-  double g1hzy = par.eff.g1hzy;
-  double g2hzy = par.eff.g2hzy;
-  double ghyy  = par.eff.ghyy;
+  double g1hzy = g1hzy_( &par.sm, &par.eff, s );
+  double g2hzy = g2hzy_( &par.sm, &par.eff, s );
+  double ghyy  = ghyy_(  &par.sm, &par.eff, s );
   double mh   = m5;
   /* Daraus berechnet */
   double cw   = sqrt(1-pow(sw,2));
@@ -9802,12 +9801,12 @@ double ud_duh_NoCKM_massless( double * x, size_t dim, void * params )
   double sw = par.sm.sw;
   double ee = sqrt(4.*M_PI*par.sm.alphae);
   double s  = x1*x2*par.sm.s;
-  double g1hzz = par.eff.g1hzz;
-  double g2hzz = par.eff.g2hzz;
+  double g1hzz = g1hzz_( &par.sm, &par.eff, s );
+  double g2hzz = g2hzz_( &par.sm, &par.eff, s );
   //double g3hzz = par.eff.g3hzz;
-  double g1hzy = par.eff.g1hzy;
-  double g2hzy = par.eff.g2hzy;
-  double ghyy  = par.eff.ghyy;
+  double g1hzy = g1hzy_( &par.sm, &par.eff, s );
+  double g2hzy = g2hzy_( &par.sm, &par.eff, s );
+  double ghyy  = ghyy_(  &par.sm, &par.eff, s );
   double mh   = m5;
   /* Daraus berechnet */
   double cw   = sqrt(1-pow(sw,2));
@@ -12748,14 +12747,14 @@ double ud_duh_CKMsQ_massless( double * x, size_t dim, void * params )
   double sw = par.sm.sw;
   double ee = sqrt(4.*M_PI*par.sm.alphae);
   double s= x1*x2*par.sm.s;
-  double g1hww = par.eff.g1hww;
-  double g2hww = par.eff.g2hww;
-  double g3hww = par.eff.g3hww;
-  double g1hzz = par.eff.g1hzz;
-  double g2hzz = par.eff.g2hzz;
-  double g1hzy = par.eff.g1hzy;
-  double g2hzy = par.eff.g2hzy;
-  double ghyy  = par.eff.ghyy;
+  double g1hww = g1hww_( &par.sm, &par.eff, s );
+  double g2hww = g2hww_( &par.sm, &par.eff, s );
+  double g3hww = g3hww_( &par.sm, &par.eff, s );
+  double g1hzz = g1hzz_( &par.sm, &par.eff, s );
+  double g2hzz = g2hzz_( &par.sm, &par.eff, s );
+  double g1hzy = g1hzy_( &par.sm, &par.eff, s );
+  double g2hzy = g1hzy_( &par.sm, &par.eff, s );
+  double ghyy  = ghyy_(  &par.sm, &par.eff, s );
   double mh   = m5;
   double vud  = 1;
   /* Daraus berechnet */
@@ -14254,9 +14253,9 @@ double ud_dpuph_massless( double * x, size_t dim, void * params )
   double sw = par.sm.sw;
   double ee = sqrt(4.*M_PI*par.sm.alphae);
   double s    = x1*x2*par.sm.s;
-  double g1hww = par.eff.g1hww;
-  double g2hww = par.eff.g2hww;
-  double g3hww = par.eff.g3hww;
+  double g1hww = g1hww_( &par.sm, &par.eff, s );
+  double g2hww = g2hww_( &par.sm, &par.eff, s );
+  double g3hww = g3hww_( &par.sm, &par.eff, s );
   //double g1hzz = par.eff.g1hzz;
   //double g2hzz = par.eff.g2hzz;
   //double g3hzz = par.eff.g3hzz;

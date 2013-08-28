@@ -10,7 +10,6 @@ void init_hadronic_cs_( sminputs * smpar )
 
   temp.fbb = 0; temp.fww = 0; temp.fgg = 0; temp.fb = 0; temp.fw = 0; 
   temp.fuph = 0; temp.fdoh = 0; temp.fchh = 0; temp.fsth = 0; temp.fboh = 0; temp.ftoh = 0; temp.felh = 0; temp.fmuh = 0; temp.ftah = 0;
-  temp.ghyy = 0; temp.g1hzz = 0; temp.g2hzz = 0; temp.g3hzz = 0; temp.g1hww = 0; temp.g2hww = 0; temp.g3hww = 0; temp.g1hzy = 0; temp.g2hzy = 0;
  
   HWRadiation_( smpar, &temp, &pp_wh_sm, &err_wh_sm, &chi_wh_sm );
   HZRadiation_( smpar, &temp, &pp_zh_sm, &err_zh_sm, &chi_zh_sm );
@@ -48,7 +47,8 @@ void ratio_ggh_( sminputs * smpar, effinputs * effpar, double * ratio, double * 
   double mt = smpar->mto;
   double z = pow( mt/mh, 2. );
   double I = (2.*z - 2*z*(4.*z - 1)*pow(asin(1/2./sqrt(z)), 2.));
-  double factor = pow(1+effpar->fgg*pow(smpar->vev,2)*sqrt(2)*M_PI/smpar->alphas/I, 2);
+  double fgg = effpar->fgg*(1+smpar->mh/effpar->rgg,effpar->ngg);
+  double factor = pow(1+fgg*pow(smpar->vev,2)*sqrt(2)*M_PI/smpar->alphas/I, 2);
   *ratio         = factor;
   *err           = 0;
   *chisq         = 1;
@@ -92,15 +92,25 @@ void HZRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double *
   /* Loop over Initial Quarks */
   for( int i = 1; i <= 5; i++ )
   {
+    radparam par;
+    par.mq1    = mq[i];
+    par.mq2    = mq[i];
+    par.ckm    = 0;
+    par.PDG1   = i;
+    par.PDG2   = -i;
+    par.smpar  = *smpar;
+    par.effpar = *effpar;
+    /*
     double par[] = { smpar->mh, smpar->mz, mq[i], sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, 0, 0, effpar->g1hww, 
 		     effpar->g2hww, effpar->g3hww, effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hzy, effpar->g2hzy, effpar->ghyy, (double)i, -(double)i };
+    */
     if(!(i%2)) 
     {
-        G = (gsl_monte_function){ m_uU_ZH, dim, par };
+        G = (gsl_monte_function){ m_uU_ZH, dim, &par };
     }
     else
     {
-        G = (gsl_monte_function){ m_dD_ZH, dim, par };
+        G = (gsl_monte_function){ m_dD_ZH, dim, &par };
     };      
     gsl_monte_vegas_state * s = gsl_monte_vegas_alloc( dim );
     int k = 0;
@@ -163,10 +173,19 @@ void HWRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double *
 	if( j == 5 )
 	  vckm = smpar->vcb;
       };
+      radparam par;
+      par.mq1    = mq[j];
+      par.mq2    = mq[i];
+      par.PDG1   = i;
+      par.PDG2   = -j;
+      par.ckm    = vckm;
+      par.smpar  = *smpar;
+      par.effpar = *effpar;
+      /*
       double par[] = { smpar->mh, smpar->mz, mq[j], mq[i], sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, vckm, effpar->g1hww, 
 		       effpar->g2hww, effpar->g3hww, effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hzy, effpar->g2hzy, effpar->ghyy, (double)i, -(double)j };
-
-      gsl_monte_function G = { &m_qqp_WH, dim, par };
+      */
+      gsl_monte_function G = { &m_qqp_WH, dim, &par };
       gsl_monte_vegas_state * s = gsl_monte_vegas_alloc( dim );
       int k = 0;
       do {
@@ -189,25 +208,20 @@ void HWRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double *
 double m_qqp_WH( double * x, size_t dim, void * param )
 {
   /* Parameter */
-  double mh = ((double*)param)[0];
-  double mz = ((double*)param)[1];
-  double mb = ((double*)param)[2];
-  double mc = ((double*)param)[3];
-  double ee = ((double*)param)[4];
-  double sw = ((double*)param)[5];
-  double S  = ((double*)param)[6];
-  double ckm= ((double*)param)[7];
-  double g1hww = ((double*)param)[8];
-  double g2hww = ((double*)param)[9];
-  double g3hww = ((double*)param)[10];
-  //double g1hzz = ((double*)param)[11];
-  //double g2hzz = ((double*)param)[12];
-  //double g3hzz = ((double*)param)[13];
-  //double g1hzy = ((double*)param)[14];
-  //double g2hzy = ((double*)param)[15];
-  //double ghyy  = ((double*)param)[16];
-  int pdg1 = (int)((double*)param)[17];
-  int pdg2 = (int)((double*)param)[18];
+  radparam * par = (radparam*)param;
+  double mb = par->mq1;
+  double mc = par->mq2;
+  double ckm= par->ckm;
+  int pdg1 = par->PDG1;
+  int pdg2 = par->PDG2;
+
+  effinputs effpar = par->effpar;
+  sminputs  smpar  = par->smpar;
+  double mh = smpar.mh;
+  double mz = smpar.mz;
+  double ee = sqrt(4*M_PI*smpar.alphae);
+  double sw = smpar.sw;
+  double S  = smpar.s;
   
   /* Berechnete Groessen */
   double cw = sqrt(1-sw*sw);
@@ -217,6 +231,10 @@ double m_qqp_WH( double * x, size_t dim, void * param )
   double x1 = x[1]*(1-pow(mw+mh,2)/S) + pow(mw+mh,2)/S;
   double x2 = x[2]*(1-pow(mw+mh,2)/S/x1) + pow(mw+mh,2)/S/x1;
   double s = S*x1*x2;
+
+  double g1hww = g1hww_( &smpar, &effpar, s );
+  double g2hww = g2hww_( &smpar, &effpar, s );
+  double g3hww = g3hww_( &smpar, &effpar, s );
   
   double tmin, tmax;
   tbounds( mb, mc, mw, mh, s, &tmin, &tmax );
@@ -735,25 +753,19 @@ double m_qqp_WH( double * x, size_t dim, void * param )
 
 double m_dD_ZH( double * x, size_t dim, void * param )
 {
-  /* Parameter */
-  double mh = ((double*)param)[0];
-  double mz = ((double*)param)[1];
-  double mq = ((double*)param)[2];
-  double ee = ((double*)param)[3];
-  double sw = ((double*)param)[4];
-  double S  = ((double*)param)[5];
-  //double ckm= ((double*)param)[7];
-  //double g1hww = ((double*)param)[8];
-  //double g2hww = ((double*)param)[9];
-  //double g3hww = ((double*)param)[10];
-  double g1hzz = ((double*)param)[11];
-  double g2hzz = ((double*)param)[12];
-  //double g3hzz = ((double*)param)[13];
-  double g1hzy = ((double*)param)[14];
-  double g2hzy = ((double*)param)[15];
-  //double ghyy  = ((double*)param)[16];
-  int pdg1 = (int)((double*)param)[17];
-  int pdg2 = (int)((double*)param)[18];
+  radparam * par = (radparam*)param;
+  double mq = par->mq1;
+  double ckm= par->ckm;
+  int pdg1 = par->PDG1;
+  int pdg2 = par->PDG2;
+
+  effinputs effpar = par->effpar;
+  sminputs  smpar  = par->smpar;
+  double mh = smpar.mh;
+  double mz = smpar.mz;
+  double ee = sqrt(4*M_PI*smpar.alphae);
+  double sw = smpar.sw;
+  double S  = smpar.s;
   
   /* Berechnete Groessen */
   double cw = sqrt(1-sw*sw);
@@ -763,6 +775,11 @@ double m_dD_ZH( double * x, size_t dim, void * param )
   double x1 = x[1]*(1-pow(mz+mh,2)/S)+pow(mz+mh,2)/S;
   double x2 = x[2]*(1-pow(mz+mh,2)/S/x1) + pow(mz+mh,2)/S/x1;
   double s = S*x1*x2;
+
+  double g1hzz = g1hzz_( &smpar, &effpar, s );
+  double g2hzz = g2hzz_( &smpar, &effpar, s );
+  double g1hzy = g1hzy_( &smpar, &effpar, s );
+  double g2hzy = g2hzy_( &smpar, &effpar, s );
   
   double tmin, tmax;
   tbounds( mq, mq, mz, mh, s, &tmin, &tmax );
@@ -1542,24 +1559,19 @@ double g2863,g3091,g3111,g2787,g3084,g2761,g3083,g2705,g2702,g3086,g2885,g2795,g
 double m_uU_ZH( double * x, size_t dim, void * param )
 {
   /* Parameter */
-  double mh = ((double*)param)[0];
-  double mz = ((double*)param)[1];
-  double mq = ((double*)param)[2];
-  double ee = ((double*)param)[3];
-  double sw = ((double*)param)[4];
-  double S  = ((double*)param)[5];
-  //double ckm= ((double*)param)[7];
-  //double g1hww = ((double*)param)[8];
-  //double g2hww = ((double*)param)[9];
-  //double g3hww = ((double*)param)[10];
-  double g1hzz = ((double*)param)[11];
-  double g2hzz = ((double*)param)[12];
-  //double g3hzz = ((double*)param)[13];
-  double g1hzy = ((double*)param)[14];
-  double g2hzy = ((double*)param)[15];
-  //double ghyy  = ((double*)param)[16];
-  int pdg1 = (int)((double*)param)[17];
-  int pdg2 = (int)((double*)param)[18];
+  radparam * par = (radparam*)param;
+  double mq = par->mq1;
+  double ckm= par->ckm;
+  int pdg1 = par->PDG1;
+  int pdg2 = par->PDG2;
+
+  effinputs effpar = par->effpar;
+  sminputs  smpar  = par->smpar;
+  double mz = smpar.mz;
+  double mh = smpar.mh;
+  double sw = smpar.sw;
+  double ee = sqrt(4*M_PI*smpar.alphae);
+  double S  = smpar.s;
   
   /* Berechnete Groessen */
   double cw = sqrt(1-sw*sw);
@@ -1570,6 +1582,11 @@ double m_uU_ZH( double * x, size_t dim, void * param )
   double x1 = x[1]*(1-pow(mz+mh,2)/S) + pow(mh+mz,2)/S;
   double x2 = x[2]*(1-pow(mz+mh,2)/S/x1) + pow(mh+mz,2)/S/x1;
   double s  = x1*x2*S;
+
+  double g1hzz = g1hzz_( &smpar, &effpar, s );
+  double g2hzz = g2hzz_( &smpar, &effpar, s );
+  double g1hzy = g1hzy_( &smpar, &effpar, s );
+  double g2hzy = g2hzy_( &smpar, &effpar, s );
   
   double tmin, tmax;
   tbounds( mq, mq, mz, mh, s, &tmin, &tmax );

@@ -9,7 +9,7 @@
 
 #include "CrossSection_had.h"
 #include "decay.h"
-#include "VBF.h"
+//#include "VBF.h"
 
 using namespace std;
 
@@ -43,8 +43,24 @@ int main( int argc, char ** argv )
 	effvalues.felh = 0;
 	effvalues.fmuh = 0;
 	effvalues.ftah = 0;
-	effvalues.ghyy = 0;
-  
+
+	// Derzeit von Hand auf eins gesetzt, muessen spaeter in den Fit
+	effvalues.nbb  = 1;
+	effvalues.nww  = 1;
+	effvalues.nb   = 1;
+	effvalues.nw   = 1;
+	effvalues.ngg  = 1;
+	effvalues.rbb  = 1;
+	effvalues.rww  = 1;
+	effvalues.rgg  = 1;
+	effvalues.rw   = 1;
+	effvalues.rb   = 1;
+
+	// Effekte der obigen Variablen AUS
+	effvalues.override_unitarity = 1;
+	
+	// Standardmodellwerte der PDG
+
 	smvalues.mel    = 0.511e-3;
 	smvalues.mmu    = 0.10565;
 	smvalues.mta    = 1.777;
@@ -104,10 +120,10 @@ int main( int argc, char ** argv )
 
 	/* Initialize run */
 	cout<<"Initialisiere Kopplungen... ";
-	update_effinputs_( &smvalues, &effvalues ); //Calculates Triple-Vertex Couplings in effvalues
+	//update_effinputs_( &smvalues, &effvalues ); //Calculates Triple-Vertex Couplings in effvalues
 	cout<<"done"<<endl;
 	cout<<"Initialisiere VBF SM-Werte...";
-	vbf_init_cs_( &smvalues );
+	//vbf_init_cs_( &smvalues );
 	cout<<"done"<<endl;
 	cout<<"Initialisiere Hadronische CS...";
 	init_hadronic_cs_( &smvalues );
@@ -134,7 +150,7 @@ int main( int argc, char ** argv )
 	  clock_t start, end;
 	  start = clock();
 	  effvalues.fww = (1.0e-10)*pow( 10.0 ,(double)i );
-	  update_effinputs_( &smvalues, &effvalues );
+	  //update_effinputs_( &smvalues, &effvalues );
 	  
 	  double vbfratio, hzratio, hwratio, Brhww, Brhzz, bgratio;
 	  double err_vbfratio, err_hzratio, err_hwratio, err_Brhww, err_Brhzz, err_bgratio;
@@ -149,9 +165,9 @@ int main( int argc, char ** argv )
 
 	  cout<<scientific<<setprecision(4)<<setw(12)<<effvalues.fww;
 	  initeffwidths_( &smvalues, &effvalues );
-	  ratio_vbf_5flav_( &smvalues, &effvalues, &vbfratio, &err_vbfratio, &chi_vbfratio );
- 	  ratio_pphz_( &smvalues, &effvalues, &hzratio, &err_hzratio, &chi_hzratio );
-          ratio_pphw_( &smvalues, &effvalues, &hwratio, &err_hwratio, &chi_hwratio );
+	  //ratio_vbf_5flav_( &smvalues, &effvalues, &vbfratio, &err_vbfratio, &chi_vbfratio );
+ 	  HZRadiation_( &smvalues, &effvalues, &hzratio, &err_hzratio, &chi_hzratio );
+          HWRadiation_( &smvalues, &effvalues, &hwratio, &err_hwratio, &chi_hwratio );
 	  ratio_bg_bh_(&smvalues, &effvalues, &bgratio, &err_bgratio, &chi_bgratio );
 	  k_hww_(     &smvalues, &effvalues, &BR_Hww,  &BR_Hww_Err,  &BR_Hww_Chi  );
           k_hzz_(     &smvalues, &effvalues, &BR_Hzz,  &BR_Hzz_Err,  &BR_Hzz_Chi  );

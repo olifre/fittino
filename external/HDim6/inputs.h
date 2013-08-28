@@ -87,19 +87,6 @@ struct effinputs {
   double fmuh;                 // Modification of Yukawa-Coupling to Muons         -- not relevant for fit, = 0
   double ftah;                 // Modification of Yukawa-Coupling to Taus          
    
-   /* Calculated Couplings to tensor structure */
-   /* This coefficients have to be calculated from above given parameters */
-
-  double ghyy;                 // coefficient of H FS(A)FS(A)-Vertex
-  double g1hzy;                // coefficient of del(nu,H) FS(A)*del(mu,Z)-Vertex
-  double g2hzy;                // coefficient of H FS(A)FS(Z)-Vertex
-  double g1hzz;                // coefficient of FS(Z)*Z(mu)*del(nu,H)-Vertex
-  double g2hzz;                // coefficient of H FS(Z)FS(Z)-Vertex
-  double g3hzz;                // coefficient of H Z(mu)Z(mu)-Vertex
-  double g1hww;                // coefficient of FS(W+)W-(mu)del(nu,H) + h.c. Vertex
-  double g2hww;                // coefficient of FS(W+) FS(W-) H Vertex
-  double g3hww;                // coefficient of H W+(mu)W-(mu)-Vertex
-  
   /* damping coefficients (unitarity, Alex), descriptions to follow */
 
   double nbb;
@@ -119,6 +106,20 @@ struct effinputs {
   double rtop;
   double rbot;
   double rtau;
+
+  // set to one to neglect effects of unitarity_coefficients
+  int override_unitarity;
 };
 
-void update_effinputs_( sminputs * smvalues, effinputs * effvalues );
+// Calculate the vertex factors for effective interactions
+
+double ghyy_(  sminputs * smpar, effinputs * effpar, double s );
+double ghgg_(  sminputs * smpar, effinputs * effpar, double s );
+double g1hzy_( sminputs * smpar, effinputs * effpar, double s );
+double g2hzy_( sminputs * smpar, effinputs * effpar, double s );
+double g1hzz_( sminputs * smpar, effinputs * effpar, double s );
+double g2hzz_( sminputs * smpar, effinputs * effpar, double s );
+double g3hzz_( sminputs * smpar, effinputs * effpar, double s );
+double g1hww_( sminputs * smpar, effinputs * effpar, double s );
+double g2hww_( sminputs * smpar, effinputs * effpar, double s );
+double g3hww_( sminputs * smpar, effinputs * effpar, double s );

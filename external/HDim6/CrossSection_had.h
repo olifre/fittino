@@ -16,6 +16,14 @@
 #define NCalls 10000
 #define Nstep  50
 
+struct radparam{
+  sminputs  smpar;
+  effinputs effpar;
+  int PDG1, PDG2;
+  double mq1, mq2;
+  double ckm;
+};
+
 using namespace std;
 
 static double pp_zh_sm, pp_wh_sm, err_zh_sm, err_wh_sm, chi_zh_sm, chi_wh_sm;

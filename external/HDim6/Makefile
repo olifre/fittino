@@ -1,20 +1,11 @@
 default: decay.o CrossSectionHad.o inputs.o VBF.o CrossSection.o
 
-testvbf : testvbf.o decay.o CrossSectionHad.o inputs.o VBF.o
-	gcc -Wall -o testvbf testvbf.o VBF.o inputs.o CrossSectionHad.o decay.o -Wl,-rpath=/net/home/lxtsfs1/tpe/bheller/Programme/LHAPDF/lib -L/net/home/lxtsfs1/tpe/bheller/Programme/LHAPDF/lib -lstdc++ -lLHAPDF -lgsl -lgslcblas\
-         -lm -fopenmp
-
-
-testvbf.o: testvbf.cc VBF.o CrossSectionHad.o inputs.o decay.o
-	gcc -c -Wall -o testvbf.o -I/net/home/lxtsfs1/tpe/bheller/Programme/LHAPDF/include -c testvbf.cc -fopenmp
-
-
 testprog : testprog.o decay.o CrossSectionHad.o inputs.o VBF.o
-	gcc -Wall -o testprog testprog.o VBF.o inputs.o CrossSectionHad.o decay.o -Wl,-rpath=/net/home/lxtsfs1/tpe/bheller/Programme/LHAPDF/lib -L/net/home/lxtsfs1/tpe/bheller/Programme/LHAPDF/lib -lstdc++ -lLHAPDF -lgsl -lgslcblas\
+	gcc -Wall -o testprog testprog.o inputs.o CrossSectionHad.o decay.o VBF.o -Wl,-rpath=/net/home/lxtsfs1/tpe/bheller/Programme/LHAPDF/lib -L/net/home/lxtsfs1/tpe/bheller/Programme/LHAPDF/lib -lstdc++ -lLHAPDF -lgsl -lgslcblas\
          -lm -fopenmp
 
 
-testprog.o: testprog.cc VBF.o CrossSectionHad.o inputs.o decay.o
+testprog.o: testprog.cc CrossSectionHad.o inputs.o decay.o VBF.o
 	gcc -c -Wall -o testprog.o -I/net/home/lxtsfs1/tpe/bheller/Programme/LHAPDF/include -c testprog.cc -fopenmp
 
 decay.o : decay.cc

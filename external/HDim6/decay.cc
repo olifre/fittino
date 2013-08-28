@@ -30,7 +30,7 @@ void initsmwidths_( sminputs * smpar )
   effinputs temp;
   temp.fbb = 0; temp.fww = 0; temp.fgg = 0; temp.fb = 0; temp.fw = 0; 
   temp.fuph = 0; temp.fdoh = 0; temp.fchh = 0; temp.fsth = 0; temp.fboh = 0; temp.ftoh = 0; temp.felh = 0; temp.fmuh = 0; temp.ftah = 0;
-  temp.ghyy = 0; temp.g1hzz = 0; temp.g2hzz = 0; temp.g3hzz = 0; temp.g1hww = 0; temp.g2hww = 0; temp.g3hww = 0; temp.g1hzy = 0; temp.g2hzy = 0;
+  
   /* H_gluglu & H_Digamma and HZgamma */
   hglgl_( smpar, &temp, &T_hglgl_sm, &err_hglgl_sm );
   hgaga_( smpar, &temp, &T_hgaga_sm, &err_hgaga_sm );
@@ -204,12 +204,13 @@ void hglgl_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
 {
   double mh = smpar->mh;
   double mt = smpar->mto;
+  double fgg = effpar->fgg/pow(1+smpar->mh/effpar->rgg,effpar->ngg);
      
   double z = pow( mt/mh, 2. );
   double I = (2.*z - 2*z*(4.*z - 1)*pow(asin(1/2./sqrt(z)), 2.));
   double smvalue = pow(smpar->mh,3)*pow(smpar->alphas,2)/8./pow(smpar->vev,2)/pow(M_PI,3)*pow(I,2);
 
-  double factor = pow(1+effpar->fgg*M_PI*pow(smpar->vev,2)*sqrt(2)/smpar->alphas/I, 2);
+  double factor = pow(1+fgg*M_PI*pow(smpar->vev,2)*sqrt(2)/smpar->alphas/I, 2);
   
   *pWidth = smvalue*factor;
   *pError = 0;
@@ -227,8 +228,10 @@ void hgaga_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double It = 3.*(2.*zt - 2.*zt*(4.*zt - 1)*pow(asin(1/2./sqrt(zt)), 2.));
   double Iw = 3.*zw*(1.-2.*zw)*(-2.)*pow(asin(1/2./sqrt(zw)), 2.) - 3.*zw - 0.5;
   
+  double ghyy    = ghyy_( smpar, effpar, smpar->mh );
+
   double smvalue = pow(mh,3)/16./M_PI/pow(smpar->vev,2)*pow(smpar->alphae/M_PI,2)*pow((It + Iw), 2);
-  double factor  = pow(1+effpar->ghyy*2.*M_PI*smpar->vev/smpar->alphae/(It+Iw), 2);
+  double factor  = pow(1+ghyy*2.*M_PI*smpar->vev/smpar->alphae/(It+Iw), 2);
   *pWidth = factor*smvalue;
   *pError = 0;
 };
@@ -246,6 +249,9 @@ void hgaz_(  sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double mh      = smpar->mh;
 
   double ftop    = effpar->ftoh;
+
+  double g1hzy   = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy   = g2hzy_( smpar, effpar, smpar->mh );
   
   // Definitiond des Higgs-Erwartungswertes im Standardmodell ist v = 2*MW*sw/ee;
   double v       = smpar->vev;
@@ -285,7 +291,7 @@ void hgaz_(  sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   /* Amplitude wiederum aus dem "Higgs Hunters Guide", aber diesmal g/2/Mw durch 1/v ersetzt */
   // Ohne ersetzes v: double A       = alpha*g/4/M_PI/mw/sw*(Af+Aw); 
   
-  double A       = alpha/2/M_PI/v/sw*((1-pow(v,3)/sqrt(2)/mf*ftop)*Af+Aw)+effpar->g1hzy+2*effpar->g2hzy;
+  double A       = alpha/2/M_PI/v/sw*((1-pow(v,3)/sqrt(2)/mf*ftop)*Af+Aw)+g1hzy+2*g2hzy;
   double Gamma   = 1./32./M_PI*pow(A,2)*pow(mh,3)*pow(1-pow(mz/mh,2),3);
   
   /* Berechnung der Breite im effektiven Modell, siehe Dokumentation */
@@ -423,8 +429,18 @@ void hww_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pErro
 void hznunu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {  
   size_t dim = 2;
+  double g1hww = g1hww_( smpar, effpar, smpar->mh );
+  double g2hww = g2hww_( smpar, effpar, smpar->mh );
+  double g3hww = g3hww_( smpar, effpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
+
   double par[] = { smpar->mh, smpar->mz, 0, 0, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0, 
-                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
+                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -458,8 +474,18 @@ void hznunu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 void hztata_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {  
   size_t dim = 2;
+  double g1hww = g1hww_( smpar, effpar, smpar->mh );
+  double g2hww = g2hww_( smpar, effpar, smpar->mh );
+  double g3hww = g3hww_( smpar, effpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
+
   double par[] = { smpar->mh, smpar->mz, smpar->mta, smpar->mta, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
-                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
+                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -493,8 +519,18 @@ void hztata_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 void hzmumu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
+  double g1hww = g1hww_( smpar, effpar, smpar->mh );
+  double g2hww = g2hww_( smpar, effpar, smpar->mh );
+  double g3hww = g3hww_( smpar, effpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
+
   double par[] = { smpar->mh, smpar->mz, smpar->mmu, smpar->mmu, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
-                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
+                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -528,8 +564,18 @@ void hzmumu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 void hzelel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
+  double g1hww = g1hww_( smpar, effpar, smpar->mh );
+  double g2hww = g2hww_( smpar, effpar, smpar->mh );
+  double g3hww = g3hww_( smpar, effpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
+
   double par[] = { smpar->mh, smpar->mz, smpar->mel, smpar->mel, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
-                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy }; 
+                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy }; 
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -563,8 +609,19 @@ void hzelel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 void hzdodo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
+
+  double g1hww = g1hww_( smpar, effpar, smpar->mh );
+  double g2hww = g2hww_( smpar, effpar, smpar->mh );
+  double g3hww = g3hww_( smpar, effpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
+
   double par[] = { smpar->mh, smpar->mz, smpar->mdo, smpar->mdo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
-                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
+                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -597,8 +654,18 @@ void hzdodo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 void hzupup_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
+  double g1hww = g1hww_( smpar, effpar, smpar->mh );
+  double g2hww = g2hww_( smpar, effpar, smpar->mh );
+  double g3hww = g3hww_( smpar, effpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
+
   double par[] = { smpar->mh, smpar->mz, smpar->mup, smpar->mup, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
-                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
+                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -632,8 +699,19 @@ void hzupup_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 void hzstst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
+
+  double g1hww = g1hww_( smpar, effpar, smpar->mh );
+  double g2hww = g2hww_( smpar, effpar, smpar->mh );
+  double g3hww = g3hww_( smpar, effpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
+
   double par[] = { smpar->mh, smpar->mz, smpar->mst, smpar->mst, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
-                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
+                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -666,8 +744,19 @@ void hzstst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 void hzchch_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {  
   size_t dim = 2;
+
+  double g1hww = g1hww_( smpar, effpar, smpar->mh );
+  double g2hww = g2hww_( smpar, effpar, smpar->mh );
+  double g3hww = g3hww_( smpar, effpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
+
   double par[] = { smpar->mh, smpar->mz, smpar->mch, smpar->mch, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
-                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
+                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -701,8 +790,19 @@ void hzchch_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 void hzbobo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
+
+  double g1hww = g1hww_( smpar, effpar, smpar->mh );
+  double g2hww = g2hww_( smpar, effpar, smpar->mh );
+  double g3hww = g3hww_( smpar, effpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
+
   double par[] = { smpar->mh, smpar->mz, smpar->mbo, smpar->mbo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
-                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
+                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -736,8 +836,18 @@ void hzbobo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 void hwtanta_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
+  double g1hww = g1hww_( smpar, effpar, smpar->mh );
+  double g2hww = g2hww_( smpar, effpar, smpar->mh );
+  double g3hww = g3hww_( smpar, effpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
+
   double par[] = { smpar->mh, smpar->mz, 0, smpar->mta, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
-                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
+                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -771,8 +881,18 @@ void hwtanta_( sminputs * smpar, effinputs * effpar, double * pWidth, double * p
 void hwmunmu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
+  double g1hww = g1hww_( smpar, effpar, smpar->mh );
+  double g2hww = g2hww_( smpar, effpar, smpar->mh );
+  double g3hww = g3hww_( smpar, effpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
+
   double par[] = { smpar->mh, smpar->mz, 0, smpar->mmu, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
-                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
+                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -806,8 +926,18 @@ void hwmunmu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * p
 void hwelnel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
+  double g1hww = g1hww_( smpar, effpar, smpar->mh );
+  double g2hww = g2hww_( smpar, effpar, smpar->mh );
+  double g3hww = g3hww_( smpar, effpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
+
   double par[] = { smpar->mh, smpar->mz, 0, smpar->mel, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
-                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
+                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -841,8 +971,18 @@ void hwelnel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * p
 void hwupdo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
+  double g1hww = g1hww_( smpar, effpar, smpar->mh );
+  double g2hww = g2hww_( smpar, effpar, smpar->mh );
+  double g3hww = g3hww_( smpar, effpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
+
   double par[] = { smpar->mh, smpar->mz, smpar->mup, smpar->mdo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vud,
-                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
+                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -876,8 +1016,18 @@ void hwupdo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 void hwupst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
+  double g1hww = g1hww_( smpar, effpar, smpar->mh );
+  double g2hww = g2hww_( smpar, effpar, smpar->mh );
+  double g3hww = g3hww_( smpar, effpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
+
   double par[] = { smpar->mh, smpar->mz, smpar->mup, smpar->mst, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vus,
-                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
+                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -911,8 +1061,18 @@ void hwupst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 void hwupbo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
+  double g1hww = g1hww_( smpar, effpar, smpar->mh );
+  double g2hww = g2hww_( smpar, effpar, smpar->mh );
+  double g3hww = g3hww_( smpar, effpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
+
   double par[] = { smpar->mh, smpar->mz, smpar->mup, smpar->mbo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vub, 
-                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
+                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -946,8 +1106,19 @@ void hwupbo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 void hwchdo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
+
+  double g1hww = g1hww_( smpar, effpar, smpar->mh );
+  double g2hww = g2hww_( smpar, effpar, smpar->mh );
+  double g3hww = g3hww_( smpar, effpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
+
   double par[] = { smpar->mh, smpar->mz, smpar->mch, smpar->mdo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vcd,
-                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
+                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -981,8 +1152,18 @@ void hwchdo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 void hwchst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
+  double g1hww = g1hww_( smpar, effpar, smpar->mh );
+  double g2hww = g2hww_( smpar, effpar, smpar->mh );
+  double g3hww = g3hww_( smpar, effpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
+
   double par[] = { smpar->mh, smpar->mz, smpar->mch, smpar->mst, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vcs,
-                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
+                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
@@ -1016,8 +1197,18 @@ void hwchst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 void hwchbo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
+  double g1hww = g1hww_( smpar, effpar, smpar->mh );
+  double g2hww = g2hww_( smpar, effpar, smpar->mh );
+  double g3hww = g3hww_( smpar, effpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  double ghyy  = ghyy_(  smpar, effpar, smpar->mh );
+
   double par[] = { smpar->mh, smpar->mz, smpar->mch, smpar->mbo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vcb,
-                   effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hww, effpar->g2hww, effpar->g3hww, effpar->g1hzy, effpar->g2hzy };
+                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
   double result, error;
   
   double xl[] = { 0, 0 };
