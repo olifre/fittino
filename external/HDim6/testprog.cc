@@ -9,7 +9,7 @@
 
 #include "CrossSection_had.h"
 #include "decay.h"
-//#include "VBF.h"
+#include "VBF.h"
 
 using namespace std;
 
@@ -119,11 +119,8 @@ int main( int argc, char ** argv )
 	LHAPDF::initPDFSet( pdfset, LHAPDF::LHGRID, 0 );
 
 	/* Initialize run */
-	cout<<"Initialisiere Kopplungen... ";
-	//update_effinputs_( &smvalues, &effvalues ); //Calculates Triple-Vertex Couplings in effvalues
-	cout<<"done"<<endl;
-	cout<<"Initialisiere VBF SM-Werte...";
-	//vbf_init_cs_( &smvalues );
+ 	cout<<"Initialisiere VBF SM-Werte...";
+	vbf_init_cs_( &smvalues );
 	cout<<"done"<<endl;
 	cout<<"Initialisiere Hadronische CS...";
 	init_hadronic_cs_( &smvalues );
@@ -150,7 +147,6 @@ int main( int argc, char ** argv )
 	  clock_t start, end;
 	  start = clock();
 	  effvalues.fww = (1.0e-10)*pow( 10.0 ,(double)i );
-	  //update_effinputs_( &smvalues, &effvalues );
 	  
 	  double vbfratio, hzratio, hwratio, Brhww, Brhzz, bgratio;
 	  double err_vbfratio, err_hzratio, err_hwratio, err_Brhww, err_Brhzz, err_bgratio;
@@ -165,7 +161,7 @@ int main( int argc, char ** argv )
 
 	  cout<<scientific<<setprecision(4)<<setw(12)<<effvalues.fww;
 	  initeffwidths_( &smvalues, &effvalues );
-	  //ratio_vbf_5flav_( &smvalues, &effvalues, &vbfratio, &err_vbfratio, &chi_vbfratio );
+	  ratio_vbf_5flav_( &smvalues, &effvalues, &vbfratio, &err_vbfratio, &chi_vbfratio );
  	  HZRadiation_( &smvalues, &effvalues, &hzratio, &err_hzratio, &chi_hzratio );
           HWRadiation_( &smvalues, &effvalues, &hwratio, &err_hwratio, &chi_hwratio );
 	  ratio_bg_bh_(&smvalues, &effvalues, &bgratio, &err_bgratio, &chi_bgratio );
