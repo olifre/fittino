@@ -66,5 +66,9 @@ FIND_PACKAGE(SLHAEA REQUIRED)
 # SET(LHAPDF_INSTALLATION_PATH <lhapdf/installation/path>)
 FIND_PACKAGE(LHAPDF)
 
+# Optional: Specify the installation path of "FeynHiggs".
+# SET(FEYNHIGGS_INSTALLATION_PATH <lhapdf/installation/path>)
+FIND_PACKAGE(FEYNHIGGS)
+
 ADD_SUBDIRECTORY(external)
 ADD_SUBDIRECTORY(sources)

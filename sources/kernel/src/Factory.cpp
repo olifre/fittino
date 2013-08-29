@@ -25,6 +25,7 @@
 #include "ContourPlotter.h"
 #include "DataStorageBase.h"
 #include "Factory.h"
+#include "FeynHiggsModelCalculator.h"
 #include "GeneticAlgorithmOptimizer.h"
 #include "HDim6ModelCalculator.h"
 #include "HDim6Model.h"
@@ -32,6 +33,7 @@
 #include "MarkovChainSampler.h"
 #include "MinuitOptimizer.h"
 #include "ModelBase.h"
+#include "MSSM3Model.h"
 #include "OptimizerBase.h"
 #include "ParticleSwarmOptimizer.h"
 #include "PlotterBase.h"
@@ -82,9 +84,12 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const Fittino::Configur
 
 #else
 
-            throw ConfigurationException( "Trying to use HECModel but Fittino was build without HIGGSBOUNDS and/or HIGGSSIGNALS." );
+            throw ConfigurationException( "Trying to use HECModel but Fittino was built without HIGGSBOUNDS and/or HIGGSSIGNALS." );
 
 #endif
+
+        case Configuration::MSSM3:
+            return new MSSM3Model();
 
         case Configuration::ROSENBROCK:
             return new RosenbrockModel();
@@ -105,7 +110,19 @@ Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator( const Fi
 
 #else
 
-            throw ConfigurationException( "Trying to use HDim6Calculator but Fittino was build without LHAPDF." );
+            throw ConfigurationException( "Trying to use HDim6Calculator but Fittino was built without LHAPDF." );
+
+#endif
+
+        case Configuration::FEYNHIGGSCALCULATOR:
+
+#if defined FEYNHIGGS
+
+            return new FeynHiggsModelCalculator( model );
+
+#else
+
+            throw ConfigurationException( "Trying to use FeynHiggsCalculator but Fittino was built without FeynHiggs." );
 
 #endif
 
