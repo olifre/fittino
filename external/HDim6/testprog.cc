@@ -130,7 +130,7 @@ int main( int argc, char ** argv )
 	cout<<"done"<<endl;
 	cout<<endl<<"Starte Scan..."<<endl<<endl;
 
-	cout<<setw(12)<<"fww"<<setw(12)<<"VBF"<<setw(12)<<"VBF_ERR"<<setw(12)<<"VBF_CHI";
+	cout<<setw(12)<<"fb"<<setw(12)<<"VBF"<<setw(12)<<"VBF_ERR"<<setw(12)<<"VBF_CHI";
 	cout<<setw(12)<<"bg-hb"<<setw(12)<<"bg-hb-ERR"<<setw(12)<<"bg-hb-CHI";
         cout<<setw(12)<<"HW"<<setw(12)<<"HW_ERR"<<setw(12)<<"HW_CHI";
 	cout<<setw(12)<<"HZ"<<setw(12)<<"HZ_ERR"<<setw(12)<<"HZ_CHI";
@@ -159,7 +159,7 @@ int main( int argc, char ** argv )
 	  double BR_Hzy, BR_Hzy_Err, BR_Hzy_Chi;
 	  double TH, TH_Err, TH_Chi;
 
-	  cout<<scientific<<setprecision(4)<<setw(12)<<effvalues.fww;
+	  cout<<scientific<<setprecision(4)<<setw(12)<<effvalues.fb;
 	  initeffwidths_( &smvalues, &effvalues );
 	  udcsb_jjh_( &smvalues, &effvalues, &vbfratio, &err_vbfratio, &chi_vbfratio );
  	  HZRadiation_( &smvalues, &effvalues, &hzratio, &err_hzratio, &chi_hzratio );

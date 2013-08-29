@@ -19,8 +19,8 @@ typedef struct {
    effinputs eff;
 }VBFParam;
 
-#define NCALLS 10000
-#define NRUN   30
+#define NCALLS 40000
+#define NRUN   10
 
 // Cuts
 #define pt3min 5

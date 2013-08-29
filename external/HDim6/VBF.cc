@@ -47,7 +47,7 @@ void udcsb_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
       k++;
     }
-    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.3) && ( k < NRUN ));
+    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.4) && ( k < NRUN ));
     *chisq = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
@@ -98,8 +98,8 @@ double udcsb_jjh( double * x, size_t dim, void * params )
 	  for( int l = 0; l < 5; l++ )
 	  {
 	    if((pdg[k] == pdg[j]) && (pdg[l] == pdg[i]) && (pdg[k] == pdg[j]))  {
-	      int zeile = (pdg[i]==4);
-	      int spalte = pdg[j]/2;
+	      int zeile   = (pdg[i]==4);
+	      int spalte  = pdg[j]/2;
 	      int element = spalte+zeile*3;
 	      
 	      dsig += 1./x1/x2*(xfx_i_x1*xfx_j_x2+xfx_j_x1*xfx_i_x2)*(ud_duh_CKMsQ*pow(ckm[element],2) + ud_duh_NoCKM + ud_dpuph*pow(ckm[element],4));
@@ -110,8 +110,8 @@ double udcsb_jjh( double * x, size_t dim, void * params )
 	      int spalte1 = pdg[k]/2;
 	      int zeile2  = (pdg[j]==4);
 	      int spalte2 = pdg[l]/2;
-	      int elem1 = spalte1+zeile1*3;
-	      int elem2 = spalte2+zeile2*3;
+	      int elem1   = spalte1+zeile1*3;
+	      int elem2   = spalte2+zeile2*3;
 	      dsig += 2./x1/x2*(xfx_i_x1*xfx_j_x2+xfx_j_x1*xfx_i_x2)*ud_dpuph*pow(ckm[elem1]*ckm[elem2],2);
 	    };
 	  };
