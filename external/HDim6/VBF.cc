@@ -47,7 +47,7 @@ void udcsb_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
       k++;
     }
-    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2) && ( k < NRUN ));
+    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.3) && ( k < NRUN ));
     *chisq = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
@@ -12753,7 +12753,7 @@ double ud_duh_CKMsQ_massless( double * x, size_t dim, void * params )
   double g1hzz = g1hzz_( &par.sm, &par.eff, s );
   double g2hzz = g2hzz_( &par.sm, &par.eff, s );
   double g1hzy = g1hzy_( &par.sm, &par.eff, s );
-  double g2hzy = g1hzy_( &par.sm, &par.eff, s );
+  double g2hzy = g2hzy_( &par.sm, &par.eff, s );
   double ghyy  = ghyy_(  &par.sm, &par.eff, s );
   double mh   = m5;
   double vud  = 1;

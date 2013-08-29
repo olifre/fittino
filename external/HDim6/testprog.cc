@@ -142,11 +142,11 @@ int main( int argc, char ** argv )
 	cout<<setw(12)<<"BR(H->zy)"<<setw(12)<<"Hzy_ERR"<<setw(12)<<"HZY_CHI";
 	cout<<setw(12)<<"Width(H)"<<setw(12)<<"Err_W(H)"<<setw(12)<<"Time(s)"<<endl;
 
-	for( int i = 0; i <= 10; i++ )
+	for( int i = 0; i <= 20; i++ )
 	{
 	  clock_t start, end;
 	  start = clock();
-	  effvalues.fww = (1.0e-10)*pow( 10.0 ,(double)i );
+	  effvalues.fb = 1.0e-4/20.0*(double)i;
 	  
 	  double vbfratio, hzratio, hwratio, Brhww, Brhzz, bgratio;
 	  double err_vbfratio, err_hzratio, err_hwratio, err_Brhww, err_Brhzz, err_bgratio;
@@ -161,7 +161,7 @@ int main( int argc, char ** argv )
 
 	  cout<<scientific<<setprecision(4)<<setw(12)<<effvalues.fww;
 	  initeffwidths_( &smvalues, &effvalues );
-	  ratio_vbf_5flav_( &smvalues, &effvalues, &vbfratio, &err_vbfratio, &chi_vbfratio );
+	  udcsb_jjh_( &smvalues, &effvalues, &vbfratio, &err_vbfratio, &chi_vbfratio );
  	  HZRadiation_( &smvalues, &effvalues, &hzratio, &err_hzratio, &chi_hzratio );
           HWRadiation_( &smvalues, &effvalues, &hwratio, &err_hwratio, &chi_hwratio );
 	  ratio_bg_bh_(&smvalues, &effvalues, &bgratio, &err_bgratio, &chi_bgratio );
