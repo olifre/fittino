@@ -161,9 +161,9 @@ int main( int argc, char ** argv )
 
 	  cout<<scientific<<setprecision(4)<<setw(12)<<effvalues.fb;
 	  initeffwidths_( &smvalues, &effvalues );
-	  udcsb_jjh_( &smvalues, &effvalues, &vbfratio, &err_vbfratio, &chi_vbfratio );
- 	  HZRadiation_( &smvalues, &effvalues, &hzratio, &err_hzratio, &chi_hzratio );
-          HWRadiation_( &smvalues, &effvalues, &hwratio, &err_hwratio, &chi_hwratio );
+	  ratio_vbf_5flav_( &smvalues, &effvalues, &vbfratio, &err_vbfratio, &chi_vbfratio );
+ 	  ratio_pphz_( &smvalues, &effvalues, &hzratio, &err_hzratio, &chi_hzratio );
+          ratio_pphw_( &smvalues, &effvalues, &hwratio, &err_hwratio, &chi_hwratio );
 	  ratio_bg_bh_(&smvalues, &effvalues, &bgratio, &err_bgratio, &chi_bgratio );
 	  k_hww_(     &smvalues, &effvalues, &BR_Hww,  &BR_Hww_Err,  &BR_Hww_Chi  );
           k_hzz_(     &smvalues, &effvalues, &BR_Hzz,  &BR_Hzz_Err,  &BR_Hzz_Chi  );

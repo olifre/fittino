@@ -33,7 +33,7 @@ void udcsb_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err
   size_t dim = 6;
   const gsl_rng_type * T;
   gsl_rng * r;
-  size_t calls = NCALLS;
+  size_t calls = VBFCALLS;
   
   gsl_monte_function G = {udcsb_jjh, dim, &par};
   gsl_rng_env_setup();
@@ -47,7 +47,7 @@ void udcsb_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
       k++;
     }
-    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.4) && ( k < NRUN ));
+    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.4) && ( k < VBFRUN ));
     *chisq = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };

@@ -4,9 +4,9 @@
 /* Rueckgabewert ist die Zerfallsbreite in GeV, wird in pWidth abgelegt */
 
 /* Standardbibliotheke */
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
+#include <iostream>
+#include <cstdlib>
+#include <cmath>
 
 /* Bibliotheken der GSL zur numerischen Integration */
 #include <gsl/gsl_math.h>
@@ -15,11 +15,16 @@
 #include <gsl/gsl_monte_miser.h>
 #include <gsl/gsl_monte_vegas.h>
 
+/* Komplexe Zahlen */
+#include <complex>
+
 /* Typdefinitionen */
 #include "inputs.h"
 
-#define NSteps 30
-#define NCalls 10000
+using namespace std;
+
+#define DSteps 30
+#define DCalls 10000
 
 /* global values to be initialized with effective widths and errors in order to calculate Branching Ratios and total width */
 
@@ -143,3 +148,10 @@ double mHZnN(  double * x, size_t dim, void * par );	// H to ZZ* to two Neutrino
 double _E2S(double m12, double m1sq, double m2sq);
 double _E3S(double Msq, double m12, double m3sq);
 void _m23lim(double Msq, double m1sq, double m2sq, double m3sq, double m12, double * m23max, double * m23min );
+
+/* Amplituden und Schleifenfunktionen fuer H->yy,H->gg und H->Zy */
+
+complex< double > f_(  double tau );
+complex< double > g_(  double tau );
+complex< double > I1_( double a, double b );
+complex< double > I2_( double a, double b );

@@ -13,7 +13,8 @@ void init_hadronic_cs_( sminputs * smpar )
  
   HWRadiation_( smpar, &temp, &pp_wh_sm, &err_wh_sm, &chi_wh_sm );
   HZRadiation_( smpar, &temp, &pp_zh_sm, &err_zh_sm, &chi_zh_sm );
-  std::cout<<"pp->wh = "<<pp_wh_sm<<" pp->zh = "<<pp_zh_sm<<std::endl;
+  Gluonfusion_( smpar, &temp, &ggh_sm, &err_ggh_sm, &chi_ggh_sm );
+  std::cout<<"pp->wh = "<<pp_wh_sm<<" pp->zh = "<<pp_zh_sm<<" gg->h = "<<ggh_sm<<std::endl;
 };
 
 /* Berechnung der Ratios */
@@ -43,15 +44,11 @@ void ratio_bb_h_( sminputs * smpar, effinputs * effpar, double * ratio, double *
 
 void ratio_ggh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err, double * chisq ) 
 {
-  double mh = smpar->mh;
-  double mt = smpar->mto;
-  double z = pow( mt/mh, 2. );
-  double I = (2.*z - 2*z*(4.*z - 1)*pow(asin(1/2./sqrt(z)), 2.));
-  double fgg = effpar->fgg/pow(1+smpar->mh/effpar->rgg,effpar->ngg);
-  double factor = pow(1+fgg*pow(smpar->vev,2)*sqrt(2)*M_PI/smpar->alphas/I, 2);
-  *ratio         = factor;
-  *err           = 0;
-  *chisq         = 1;
+  double cs = 0, error = 0, chi = 0;
+  Gluonfusion_( smpar, effpar, &cs, &error, &chi );
+  *ratio = cs/ggh_sm;
+  *err   = error/ggh_sm + cs/pow(ggh_sm,2)*err_ggh_sm;
+  *chisq         = chi;
 };
 
 void ratio_pphw_( sminputs * smpar, effinputs * effpar, double * ratio, double * err, double * chisq ) {
@@ -70,6 +67,39 @@ void ratio_pphz_(  sminputs * smpar, effinputs * effpar, double * ratio, double 
   *chisq = chi;
 };
 
+void Gluonfusion_( sminputs * smpar, effinputs * effpar, double * cSec, double * err, double * chisq )
+{
+   double xl    = 0;
+   double xu    = 1;
+   size_t calls = CSCalls;
+   size_t dim   = 1;
+   
+   const gsl_rng_type * T; 
+   gsl_rng * r;
+
+   T = gsl_rng_default;
+   r = gsl_rng_alloc( T );
+   
+   gsl_monte_function G;
+ 
+   double result=0, error=0;
+   radparam par;
+   par.smpar  = *smpar;
+   par.effpar = *effpar;
+   {
+     G = (gsl_monte_function){ggH, dim, &par};
+     gsl_monte_vegas_state * s = gsl_monte_vegas_alloc( dim );
+     int k = 0;
+     do{
+      gsl_monte_vegas_integrate( &G,&xl,&xu,dim,calls,r,s,&result,&error); }
+     while( fabs( gsl_monte_vegas_chisq( s )) > 0.5 && k < CSstep );
+     *chisq = gsl_monte_vegas_chisq( s );
+     gsl_monte_vegas_free( s );
+   };
+   
+   *cSec = result;
+   *err  = error;
+};
 
 void HZRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double * err, double * chisq ) 
 {  
@@ -82,7 +112,7 @@ void HZRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double *
   
   const gsl_rng_type * T; 
   gsl_rng * r;
-  size_t calls = NCalls;
+  size_t calls = CSCalls;
   
   gsl_rng_env_setup();
   T = gsl_rng_default;
@@ -117,7 +147,7 @@ void HZRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double *
     do {
       k++;
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
-    } while (fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.5 && k < Nstep );  
+    } while (fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.5 && k < CSstep );  
     double chi = gsl_monte_vegas_chisq( s );
     *chisq = (fabs(*chisq-1) > fabs(chi-1) ? *chisq : chi );
     gsl_monte_vegas_free( s );
@@ -140,7 +170,7 @@ void HWRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double *
   
   const gsl_rng_type * T; 
   gsl_rng * r;
-  size_t calls = NCalls;
+  size_t calls = CSCalls;
   
   gsl_rng_env_setup();
   T = gsl_rng_default;
@@ -191,7 +221,7 @@ void HWRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double *
       do {
 	k++;
 	gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
-      } while (fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.5 && k < Nstep );
+      } while (fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.5 && k < CSstep );
       double chi = gsl_monte_vegas_chisq(s);
       *chisq = (fabs(*chisq-1) > fabs(chi-1) ? *chisq : chi );
       gsl_monte_vegas_free( s );
@@ -2388,4 +2418,41 @@ double _beta( double m3, double m4, double s )
 double _pi( double m1, double m2, double s )
 {
   return sqrt(1./4./s*pow(s+m2*m2-m1*m1, 2)-m2*m2);
+};
+
+double ggH( double * x, size_t dim, void * param )
+{
+   radparam * par = (radparam*)param;
+   sminputs  smpar = par->smpar;
+   effinputs effpar = par->effpar;
+   
+   double mf[] = { smpar.mup, smpar.mdo, smpar.mch, smpar.mst, smpar.mto, smpar.mbo };
+   double ef[] = { 2./3.,     -1./3.,    2./3.,     -1./3.,    2./3.,     -1./3.    };
+   double ff[] = {effpar.fuph, effpar.fdoh, effpar.fchh, effpar.fsth, effpar.ftoh, effpar.fboh };   
+   complex<double> Af( 0, 0 );
+   for( int i = 0; i < 6; i++ )
+   {
+      double tau = 4.*pow(mf[i]/smpar.mh,2);
+      complex< double > ftau( 0, 0 );
+      if( tau >= 1.0 )
+      {
+	ftau =complex< double >( pow(asin(1/sqrt(tau)),2) , 0 );
+      }
+      else
+      {
+	double np = 1+sqrt(1-tau);
+	double nm = 1-sqrt(1-tau);
+	double re = log(np/nm);
+	double im = -M_PI;
+	ftau = -1.0/4.0*pow(complex< double >( re, im ),2);
+      }
+      Af += -2.0*tau*(complex<double>(1,0)+(1-tau)*ftau)*3.0*ef[i]*ef[i]*smpar.alphas/2.0/M_PI/smpar.vev*(1-pow(smpar.vev,3)/sqrt(2.0)/mf[i]*ff[i]);
+   };
+   complex<double> Aano(-4*ghgg_( &smpar, &effpar, smpar.mh ), 0);
+   complex<double> A = Af + Aano;
+   double Gamma = pow(smpar.mh,3)/64.0/M_PI*abs(A)*abs(A);
+   
+   double x1 = *x*(1-pow(smpar.mh,2)/smpar.s)+pow(smpar.mh,2)/smpar.s;
+   double x2 = pow(smpar.mh,2)/x1/smpar.s;
+   return 1.0/x1/x2*LHAPDF::xfx(x1,smpar.mh,0)*LHAPDF::xfx(x2,smpar.mh,0)/x1/smpar.s*pow(M_PI,2)/8.0/smpar.mh*Gamma*(1-pow(smpar.mh,2)/smpar.s)/2.57e3*1e12;
 };
