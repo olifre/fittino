@@ -2427,7 +2427,6 @@ double ggH( double * x, size_t dim, void * param )
    effinputs effpar = par->effpar;
    
    double mf[] = { smpar.mup, smpar.mdo, smpar.mch, smpar.mst, smpar.mto, smpar.mbo };
-   double ef[] = { 2./3.,     -1./3.,    2./3.,     -1./3.,    2./3.,     -1./3.    };
    double ff[] = {effpar.fuph, effpar.fdoh, effpar.fchh, effpar.fsth, effpar.ftoh, effpar.fboh };   
    complex<double> Af( 0, 0 );
    for( int i = 0; i < 6; i++ )
@@ -2446,7 +2445,7 @@ double ggH( double * x, size_t dim, void * param )
 	double im = -M_PI;
 	ftau = -1.0/4.0*pow(complex< double >( re, im ),2);
       }
-      Af += -2.0*tau*(complex<double>(1,0)+(1-tau)*ftau)*3.0*ef[i]*ef[i]*smpar.alphas/2.0/M_PI/smpar.vev*(1-pow(smpar.vev,3)/sqrt(2.0)/mf[i]*ff[i]);
+      Af += -tau*(complex<double>(1,0)+(1-tau)*ftau)*sqrt(2)*smpar.alphas/M_PI/smpar.vev*(1-pow(smpar.vev,3)/sqrt(2.0)/mf[i]*ff[i]);
    };
    complex<double> Aano(-4*ghgg_( &smpar, &effpar, smpar.mh ), 0);
    complex<double> A = Af + Aano;
