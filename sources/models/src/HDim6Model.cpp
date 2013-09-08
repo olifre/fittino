@@ -40,11 +40,12 @@ Fittino::HDim6Model::HDim6Model() {
     // these will parametrize our grid
     AddParameter( new PhysicsParameter( "F_B", "F_{B}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
     AddParameter( new PhysicsParameter( "F_W", "F_{W}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_WW", "F_{WW}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, false ) );
+    AddParameter( new PhysicsParameter( "F_WW", "F_{WW}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
 
     // these will be free in the fit as well
-    AddParameter( new PhysicsParameter( "F_gg", "F_{gg}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    AddParameter( new PhysicsParameter( "F_gg", "F_{gg}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, false ) );
     AddParameter( new PhysicsParameter( "F_b", "F_{b}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    AddParameter( new PhysicsParameter( "F_t", "F_{t}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
     AddParameter( new PhysicsParameter( "F_tau", "F_{#tau}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
     
     // these we keep fixed
@@ -53,7 +54,6 @@ Fittino::HDim6Model::HDim6Model() {
     AddParameter( new PhysicsParameter( "F_d", "F_{d}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
     AddParameter( new PhysicsParameter( "F_c", "F_{c}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
     AddParameter( new PhysicsParameter( "F_s", "F_{s}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_t", "F_{t}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
     AddParameter( new PhysicsParameter( "F_e", "F_{e}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
     AddParameter( new PhysicsParameter( "F_mu", "F_{#mu}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
 

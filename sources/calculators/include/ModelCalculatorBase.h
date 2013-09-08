@@ -22,6 +22,8 @@
 
 #include <string>
 
+#include "TStopwatch.h"
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -63,9 +65,13 @@ namespace Fittino {
     protected:
       std::string                   _executableName;
       std::string                   _name;
+      TStopwatch                    _stopwatch;
       CallMethod                    _callMethod;
       const PhysicsModelBase*       _model;
       SimpleDataStorage*            _simpleOutputDataStorage;
+
+    protected: 
+      void                          StopTime( std::string name ); 
 
     protected:
       virtual void                  CallExecutable() = 0;

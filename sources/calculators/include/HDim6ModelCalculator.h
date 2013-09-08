@@ -61,6 +61,8 @@ namespace Fittino {
       std::string              _pdfDirectory;
       std::string              _pdfSet;
       std::vector<std::string> _decayChannels;
+      std::vector<std::string> _productionChannelsLO;
+      std::vector<std::string> _productionChannelsOnlyRatio;
       effinputs*               _effsmvalues;
       effinputs*               _effvalues;
       effinputs*               _previousEffValues;
@@ -77,6 +79,7 @@ namespace Fittino {
       void                     ComparePreviousEffValues();
       void                     ComparePreviousSMValues();
       void                     InitializeSimpleOutputDataStorage();
+      void                     SetDefaultOutputs();
 
     private:
       virtual void             CallExecutable();

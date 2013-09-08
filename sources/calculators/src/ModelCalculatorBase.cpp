@@ -47,3 +47,15 @@ const Fittino::SimpleDataStorage* Fittino::ModelCalculatorBase::GetSimpleOutputD
   return _simpleOutputDataStorage;
 
 };
+
+void Fittino::ModelCalculatorBase::StopTime( std::string name ) {
+
+    _stopwatch.Stop();
+
+    _simpleOutputDataStorage->GetMap()->at( name + "_realtime" )
+        = _stopwatch.RealTime();
+
+    _simpleOutputDataStorage->GetMap()->at( name + "_cputime" )
+        = _stopwatch.CpuTime();
+
+}
