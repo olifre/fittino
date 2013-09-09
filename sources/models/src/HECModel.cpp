@@ -17,18 +17,22 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <stdlib.h>
+#include <time.h>
+
 #include "HECModel.h"
-#include "InputException.h"
 #include "HiggsSignalsSLHAModelCalculator.h"
+#include "InputException.h"
 #include "PhysicsParameter.h"
 #include "SLHAChi2Contribution.h"
 #include "SLHAPrediction.h"
 
-#include <iostream>
-#include <stdlib.h>
-#include <time.h>
-
 Fittino::HECModel::HECModel() {
+
+    /*!
+     *  \todo Short-term: Make random starting values for parameters globally configurable.
+     *  \todo Short-term: Clean up once decided how to handle universalities.
+     */
 
     double a, b; // Parameters used for rand()-function; a is the minimum value, b is the maximum.
 
@@ -52,101 +56,148 @@ Fittino::HECModel::HECModel() {
 
     _name = "HEC model";
 
-    //AddParameter( new PhysicsParameter( "Alpha_EM",          "#alpha_{em}",       128.952, "GeV", "GeV", 0.1,  50., 150., true  ) );
-    //AddParameter( new PhysicsParameter( "Alpha_S",           "#alpha_{S}",         0.1184, "GeV", "GeV", 0.1, -50.,  50., true  ) );
-    //AddParameter( new PhysicsParameter( "G_F",               "G_{F}",        1.1663787e-5,    "",    "", 0.1,  -5.,   5., true  ) );
+    // All parameters are free. Starting values are at the SM prediction. The Higgs mass is 126 GeV.
 
-    //AddParameter( new PhysicsParameter( "Mass_h",              "m_{h}",                                    rMassh, "GeV", "GeV", 0.02,  123., 129.,   123., 129., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_quarks_s_hdd",  "#Delta^{quarks}_{s}(hdd)",                     rb,    "",    "",  0.1, -101.,  99.,    -1.,   2., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_p_hss",         "#Delta_{p}(hss)",                             -1.,    "",    "",  0.1, -101.,  99.,    -1.,   2., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_quarks_s_huu",  "#Delta^{quarks}_{s}(huu)",                     rc,    "",    "",  0.2, -101.,  99.,    -1.,   2., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_p_hcc",         "#Delta_{p}(hcc)",                             -1.,    "",    "",  0.1, -101.,  99.,    -1.,   2., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_p_hbb",         "#Delta_{p}(hbb)",                             -1.,    "",    "",  0.1, -101.,  99.,    -1.,   2., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_p_htt",         "#Delta_{p}(htt)",                             -1.,    "",    "",  0.1, -101.,  99.,    -1.,   2., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_leptons_s_hdd", "#Delta^{leptons}_{s}(hdd)",                  rtau,    "",    "",  0.1, -101.,  99.,    -1.,   2., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_p_hmumu",       "#Delta_{p}(h#mu#mu)",                         -1.,    "",    "",  0.1, -101.,  99.,    -1.,   2., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_p_htautau",     "#Delta_{p}(h#tau#tau)",                       -1.,    "",    "",  0.1, -101.,  99.,    -1.,   2., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_Bosons_hWZ",    "#Delta^{Bosons}(hWZ)",                         rW,    "",    "",  0.2, -101.,  99.,    -1.,   2., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_hZgamma",       "#Delta(hZ#gamma)",                             0.,    "",    "",  0.1, -101.,  99.,    -1.,   2., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_hgammagamma",   "#Delta(h#gamma#gamma)",                    rgamma,    "",    "",  0.1, -101.,  99.,    -1.,   2., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_hgg",           "#Delta(hgg)",                                  rg,    "",    "",  0.2, -101.,  99.,    -1.,   2., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_hggZ",          "#Delta(hggZ)",                                 0.,    "",    "",  0.1, -101.,  99.,    -1.,   2., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_hihjZ",         "#Delta(h_{i}h_{j}Z)",                         -1.,    "",    "",  0.1, -101.,  99.,    -1.,   2., true  ) );
-    //AddParameter( new PhysicsParameter( "BR_hjhihi",           "BR(h_{j}#rightarrowh_{i}h_{i}}",               0.,    "",    "",  0.1,    0.,   1.,     0.,   1., true  ) );
-    //AddParameter( new PhysicsParameter( "Gamma_hInvisible",    "#Gamma(h#rightarrowInvisible)",                0., "GeV", "GeV", 0.01,    0.,   1.,     0.,   1., true  ) );
+    AddParameter( new PhysicsParameter( "Mass_h",            "m_{h}",                                        126., "GeV", "GeV", 0.01,  123., 129.,  123.,  129., false ) );
+    AddParameter( new PhysicsParameter( "Delta_s_hss",       "#Delta_{s}(hss)",                                0.,    "",    "",  0.1, -101.,  99., -101.,   99., true  ) );
+    AddParameter( new PhysicsParameter( "Delta_p_hss",       "#Delta_{p}(hss)",                               -1.,    "",    "",  0.1, -101.,  99., -101.,   99., true  ) );
+    AddParameter( new PhysicsParameter( "Delta_s_hcc",       "#Delta_{s}(hcc)",                                0.,    "",    "",  0.1, -101.,  99., -101.,   99., false ) );
+    AddParameter( new PhysicsParameter( "Delta_p_hcc",       "#Delta_{p}(hcc)",                               -1.,    "",    "",  0.1, -101.,  99., -101.,   99., true  ) );
+    AddParameter( new PhysicsParameter( "Delta_s_hbb",       "#Delta_{s}(hbb)",                                0.,    "",    "",  0.1, -101.,  99., -101.,   99., false ) );
+    AddParameter( new PhysicsParameter( "Delta_p_hbb",       "#Delta_{p}(hbb)",                               -1.,    "",    "",  0.1, -101.,  99., -101.,   99., true  ) );
+    AddParameter( new PhysicsParameter( "Delta_s_htt",       "#Delta_{s}(htt)",                                0.,    "",    "",  0.1, -101.,  99., -101.,   99., false ) );
+    AddParameter( new PhysicsParameter( "Delta_p_htt",       "#Delta_{p}(htt)",                               -1.,    "",    "",  0.1, -101.,  99., -101.,   99., true  ) );
+    AddParameter( new PhysicsParameter( "Delta_s_hmumu",     "#Delta_{s}(h#mu#mu)",                            0.,    "",    "",  0.1, -101.,  99., -101.,   99., true  ) );
+    AddParameter( new PhysicsParameter( "Delta_p_hmumu",     "#Delta_{p}(h#mu#mu)",                           -1.,    "",    "",  0.1, -101.,  99., -101.,   99., true  ) );
+    AddParameter( new PhysicsParameter( "Delta_s_htautau",   "#Delta_{s}(h#tau#tau)",                          0.,    "",    "",  0.1, -101.,  99., -101.,   99., false ) );
+    AddParameter( new PhysicsParameter( "Delta_p_htautau",   "#Delta_{p}(h#tau#tau)",                         -1.,    "",    "",  0.1, -101.,  99., -101.,   99., true  ) );
+    AddParameter( new PhysicsParameter( "Delta_hWW",         "#Delta(hWW)",                                    0.,    "",    "",  0.1, -101.,  99., -101.,   99., false ) );
+    AddParameter( new PhysicsParameter( "Delta_hZZ",         "#Delta(hZZ)",                                    0.,    "",    "",  0.1, -101.,  99., -101.,   99., false ) );
+    AddParameter( new PhysicsParameter( "Delta_hZgamma",     "#Delta(hZ#gamma)",                               0.,    "",    "",  0.1, -101.,  99., -101.,   99., true  ) );
+    AddParameter( new PhysicsParameter( "Delta_hgammagamma", "#Delta(h#gamma#gamma)",                          0.,    "",    "",  0.1, -101.,  99., -101.,   99., false ) );
+    AddParameter( new PhysicsParameter( "Delta_hgg",         "#Delta(hgg)",                                    0.,    "",    "",  0.1, -101.,  99., -101.,   99., false ) );
+    AddParameter( new PhysicsParameter( "Delta_hggZ",        "#Delta(hggZ)",                                   0.,    "",    "",  0.1, -101.,  99., -101.,   99., true  ) );
+    AddParameter( new PhysicsParameter( "Delta_hihjZ",       "#Delta(h_{i}h_{j}Z)",                           -1.,    "",    "",  0.1, -101.,  99., -101.,   99., true  ) );
+    AddParameter( new PhysicsParameter( "BR_hjhihi",         "BR(h_{j}#rightarrowh_{i}h_{i}}",                 0.,    "",    "",  0.1,    0.,   1.,    0.,    1., true  ) );
+    AddParameter( new PhysicsParameter( "Gamma_hInvisible",  "#Gamma(h#rightarrowInvisible)",                  0., "GeV", "GeV", 0.01,    0.,   1.,    0.,    1., false ) );
 
-    AddParameter( new PhysicsParameter( "Mass_h",              "m_{h}",                                    rMassh, "GeV", "GeV", 0.02,  123., 129.,  123., 129., false ) );
-    AddParameter( new PhysicsParameter( "Delta_quarks_s_hdd",  "#Delta^{quarks}_{s}(hdd)",                     rb,    "",    "", 0.05,    3.,  20., -101.,  99., false ) );
-    AddParameter( new PhysicsParameter( "Delta_p_hss",         "#Delta_{p}(hss)",                             -1.,    "",    "",  0.1, -101.,  99., -101.,  99., true  ) );
-    AddParameter( new PhysicsParameter( "Delta_quarks_s_huu",  "#Delta^{quarks}_{s}(huu)",                     rt,    "",    "",  0.1,  -32.,  30., -101.,  99., false ) );
-    AddParameter( new PhysicsParameter( "Delta_p_hcc",         "#Delta_{p}(hcc)",                             -1.,    "",    "",  0.1, -101.,  99., -101.,  99., true  ) );
-    AddParameter( new PhysicsParameter( "Delta_p_hbb",         "#Delta_{p}(hbb)",                             -1.,    "",    "",  0.1, -101.,  99., -101.,  99., true  ) );
-    AddParameter( new PhysicsParameter( "Delta_p_htt",         "#Delta_{p}(htt)",                             -1.,    "",    "",  0.1, -101.,  99., -101.,  99., true  ) );
-    AddParameter( new PhysicsParameter( "Delta_leptons_s_hdd", "#Delta^{leptons}_{s}(hdd)",                  rtau,    "",    "", 0.02,  -3.5,  1.5, -101.,  99., false ) );
-    AddParameter( new PhysicsParameter( "Delta_p_hmumu",       "#Delta_{p}(h#mu#mu)",                         -1.,    "",    "",  0.1, -101.,  99., -101.,  99., true  ) );
-    AddParameter( new PhysicsParameter( "Delta_p_htautau",     "#Delta_{p}(h#tau#tau)",                       -1.,    "",    "",  0.1, -101.,  99., -101.,  99., true  ) );
-    AddParameter( new PhysicsParameter( "Delta_hWW",           "#Delta(hWW)",                                  rW,    "",    "", 0.02,   -3.,   1., -101.,  99., false ) );
-    AddParameter( new PhysicsParameter( "Delta_hZZ",           "#Delta(hZZ)",                                  rZ,    "",    "", 0.02,   -3.,   1., -101.,  99., false ) );
-    AddParameter( new PhysicsParameter( "Delta_hZgamma",       "#Delta(hZ#gamma)",                             0.,    "",    "",  0.1, -101.,  99., -101.,  99., true  ) );
-    AddParameter( new PhysicsParameter( "Delta_hgammagamma",   "#Delta(h#gamma#gamma)",                    rgamma,    "",    "", 0.02,   -4.,   2., -101.,  99., false ) );
-    AddParameter( new PhysicsParameter( "Delta_hgg",           "#Delta(hgg)",                                  rg,    "",    "", 0.05,    5.,  40., -101.,  99., false ) );
-    AddParameter( new PhysicsParameter( "Delta_hggZ",          "#Delta(hggZ)",                                 0.,    "",    "",  0.1, -101.,  99., -101.,  99., true  ) );
-    AddParameter( new PhysicsParameter( "Delta_hihjZ",         "#Delta(h_{i}h_{j}Z)",                         -1.,    "",    "",  0.1, -101.,  99., -101.,  99., true  ) );
-    AddParameter( new PhysicsParameter( "BR_hjhihi",           "BR(h_{j}#rightarrowh_{i}h_{i}}",               0.,    "",    "",  0.1,    0.,   1.,    0.,   1., true  ) );
-    AddParameter( new PhysicsParameter( "Gamma_hInvisible",    "#Gamma(h#rightarrowInvisible)",  rGammahInvisible, "GeV", "GeV", 0.01,    0.,   1.,    0.,   1., false ) );
+    // All parameters are free. Random starting values. Setting for standard plots.
 
-    //AddParameter( new PhysicsParameter( "Mass_h",            "m_{h}",                                    rMassh, "GeV", "GeV", 0.02,  123., 129.,  124., 130., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_s_hss",       "#Delta_{s}(hss)",                              0.,    "",    "", 0.01, -101.,  99.,   -1.,   7., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_p_hss",       "#Delta_{p}(hss)",                             -1.,    "",    "", 0.01, -101.,  99.,   -1.,   7., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_s_hcc",       "#Delta_{s}(hcc)",                              rc,    "",    "", 0.02,  -12.,  10.,   -1., 200., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_p_hcc",       "#Delta_{p}(hcc)",                             -1.,    "",    "", 0.01, -101.,  99.,   -1.,   7., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_s_hbb",       "#Delta_{s}(hbb)",                              rb,    "",    "", .001,   -1.,   3.,   -1.,  21., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_p_hbb",       "#Delta_{p}(hbb)",                             -1.,    "",    "", 0.01, -101.,  99.,   -1.,   7., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_s_htt",       "#Delta_{s}(htt)",                              rt,    "",    "", 0.02,  -17.,  15.,   -1.,  17., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_p_htt",       "#Delta_{p}(htt)",                             -1.,    "",    "", 0.01, -101.,  99.,   -1.,   7., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_s_hmumu",     "#Delta_{s}(h#mu#mu)",                          0.,    "",    "", 0.01, -101.,  99.,   -1.,   7., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_p_hmumu",     "#Delta_{p}(h#mu#mu)",                         -1.,    "",    "", 0.01, -101.,  99.,   -1.,   7., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_s_htautau",   "#Delta_{s}(h#tau#tau)",                      rtau,    "",    "", 0.01,   -8.,   6.,   -1.,   9., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_p_htautau",   "#Delta_{p}(h#tau#tau)",                       -1.,    "",    "", 0.01, -101.,  99.,   -1.,   7., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_hWW",         "#Delta(hWW)",                                  rW,    "",    "", 0.02,   -6.,   4.,   -1.,   9., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_hZZ",         "#Delta(hZZ)",                                  rZ,    "",    "", 0.02,   -6.,   4.,   -1.,   9., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_hZgamma",     "#Delta(hZ#gamma)",                             0.,    "",    "", 0.01, -101.,  99.,   -1.,   7., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_hgammagamma", "#Delta(h#gamma#gamma)",                    rgamma,    "",    "", 0.01,   -7.,   5.,   -1.,   9., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_hgg",         "#Delta(hgg)",                                  rg,    "",    "", .001,   -4.,   2.,   -1.,  40., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_hggZ",        "#Delta(hggZ)",                                 0.,    "",    "", 0.01, -101.,  99.,   -1.,   7., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_hihjZ",       "#Delta(h_{i}h_{j}Z)",                         -1.,    "",    "", 0.01, -101.,  99.,   -1.,   7., true  ) );
-    //AddParameter( new PhysicsParameter( "BR_hjhihi",         "BR(h_{j}#rightarrowh_{i}h_{i}}",               0.,    "",    "", 0.01,    0.,   1.,    0.,   1., true  ) );
-    //AddParameter( new PhysicsParameter( "Gamma_hInvisible",  "#Gamma(h#rightarrowInvisible)",  rGammahInvisible, "GeV", "GeV", 0.01,    0.,   1.,    0.,   1., false ) );
+    //AddParameter( new PhysicsParameter( "Mass_h",            "m_{h}",                                      rMassh, "GeV", "GeV", 0.01,  123., 129.,  124., 127.5, false ) );
+    //AddParameter( new PhysicsParameter( "Delta_s_hss",       "#Delta_{s}(hss)",                                0.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hss",       "#Delta_{p}(hss)",                               -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_s_hcc",       "#Delta_{s}(hcc)",                                rc,    "",    "",  0.1, -101.,  99.,   -1.,   95., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hcc",       "#Delta_{p}(hcc)",                               -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_s_hbb",       "#Delta_{s}(hbb)",                                rb,    "",    "",  0.1, -101.,  99.,   -1.,   21., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hbb",       "#Delta_{p}(hbb)",                               -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_s_htt",       "#Delta_{s}(htt)",                                rt,    "",    "",  0.1, -101.,  99.,   -1.,   17., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_htt",       "#Delta_{p}(htt)",                               -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_s_hmumu",     "#Delta_{s}(h#mu#mu)",                            0.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hmumu",     "#Delta_{p}(h#mu#mu)",                           -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_s_htautau",   "#Delta_{s}(h#tau#tau)",                        rtau,    "",    "",  0.1, -101.,  99.,   -1.,    6., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_htautau",   "#Delta_{p}(h#tau#tau)",                         -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_hWW",         "#Delta(hWW)",                                    rW,    "",    "",  0.1, -101.,  99.,   -1.,    4., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_hZZ",         "#Delta(hZZ)",                                    rZ,    "",    "",  0.1, -101.,  99.,   -1.,    6., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_hZgamma",     "#Delta(hZ#gamma)",                               0.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_hgammagamma", "#Delta(h#gamma#gamma)",                      rgamma,    "",    "",  0.1, -101.,  99.,   -1.,    6., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_hgg",         "#Delta(hgg)",                                    rg,    "",    "",  0.1, -101.,  99.,   -1.,   50., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_hggZ",        "#Delta(hggZ)",                                   0.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_hihjZ",       "#Delta(h_{i}h_{j}Z)",                           -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "BR_hjhihi",         "BR(h_{j}#rightarrowh_{i}h_{i}}",                 0.,    "",    "",  0.1,    0.,   1.,    0.,    1., true  ) );
+    //AddParameter( new PhysicsParameter( "Gamma_hInvisible",  "#Gamma(h#rightarrowInvisible)",                  0., "GeV", "GeV", 0.01,    0.,   1., 1.e-3,    1., true  ) );
 
-    //AddParameter( new PhysicsParameter( "Mass_h",            "m_{h}",                          126., "GeV", "GeV", 0.02,  123., 129.,  123., 129., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_s_hss",       "#Delta_{s}(hss)",                  0.,    "",    "",  0.1,  -12.,  10.,  -12.,  10., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_p_hss",       "#Delta_{p}(hss)",                 -1.,    "",    "",  0.1,  -12.,  10.,  -12.,  10., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_s_hcc",       "#Delta_{s}(hcc)",                  0.,    "",    "",  0.1,  -12.,  10.,  -12.,  10., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_p_hcc",       "#Delta_{p}(hcc)",                 -1.,    "",    "",  0.1,  -12.,  10.,  -12.,  10., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_s_hbb",       "#Delta_{s}(hbb)",                  0.,    "",    "",  0.1,  -12.,  10.,  -12.,  10., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_p_hbb",       "#Delta_{p}(hbb)",                 -1.,    "",    "",  0.1,  -12.,  10.,  -12.,  10., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_s_htt",       "#Delta_{s}(htt)",                  0.,    "",    "",  0.2,  -12.,  10.,  -12.,  10., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_p_htt",       "#Delta_{p}(htt)",                 -1.,    "",    "",  0.1,  -12.,  10.,  -12.,  10., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_s_hmumu",     "#Delta_{s}(h#mu#mu)",              0.,    "",    "",  0.1,  -12.,  10.,  -12.,  10., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_p_hmumu",     "#Delta_{p}(h#mu#mu)",             -1.,    "",    "",  0.1,  -12.,  10.,  -12.,  10., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_s_htautau",   "#Delta_{s}(h#tau#tau)",            0.,    "",    "",  0.1,  -12.,  10.,  -12.,  10., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_p_htautau",   "#Delta_{p}(h#tau#tau)",           -1.,    "",    "",  0.1,  -12.,  10.,  -12.,  10., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_hWW",         "#Delta(hWW)",                      0.,    "",    "",  0.2,  -12.,  10.,  -12.,  10., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_hZZ",         "#Delta(hZZ)",                      0.,    "",    "",  0.2,  -12.,  10.,  -12.,  10., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_hZgamma",     "#Delta(hZ#gamma)",                 0.,    "",    "",  0.1,  -12.,  10.,  -12.,  10., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_hgammagamma", "#Delta(h#gamma#gamma)",            0.,    "",    "",  0.1,  -12.,  10.,  -12.,  10., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_hgg",         "#Delta(hgg)",                      0.,    "",    "",  0.2,  -12.,  10.,  -12.,  10., false ) );
-    //AddParameter( new PhysicsParameter( "Delta_hggZ",        "#Delta(hggZ)",                     0.,    "",    "",  0.1,  -12.,  10.,  -12.,  10., true  ) );
-    //AddParameter( new PhysicsParameter( "Delta_hihjZ",       "#Delta(h_{i}h_{j}Z)",             -1.,    "",    "",  0.1,  -12.,  10.,  -12.,  10., true  ) );
-    //AddParameter( new PhysicsParameter( "BR_hjhihi",         "BR(h_{j}#rightarrowh_{i}h_{i}}",   0.,    "",    "",  0.1,    0.,   1.,    0.,   1., true  ) );
-    //AddParameter( new PhysicsParameter( "Gamma_hInvisible",  "#Gamma(h#rightarrowInvisible)",    0., "GeV", "GeV", 0.01,    0.,   1.,    0.,   1., false ) );
+    // Up-type quarks, down-type quarks, down-type leptons are universal. Setting for "zoomed-out" plots.
+
+    //AddParameter( new PhysicsParameter( "Mass_h",              "m_{h}",                                    rMassh, "GeV", "GeV", 0.01,  123., 129.,  124., 127.5, false ) );
+    //AddParameter( new PhysicsParameter( "Delta_quarks_s_hdd",  "#Delta^{quarks}_{s}(hdd)",                     rb,    "",    "",  0.1, -101.,  99.,   -1.,   21., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hss",         "#Delta_{p}(hss)",                             -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_quarks_s_huu",  "#Delta^{quarks}_{s}(huu)",                     rt,    "",    "",  0.1, -101.,  99.,   -1.,   17., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hcc",         "#Delta_{p}(hcc)",                             -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hbb",         "#Delta_{p}(hbb)",                             -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_htt",         "#Delta_{p}(htt)",                             -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_leptons_s_hdd", "#Delta^{leptons}_{s}(hdd)",                  rtau,    "",    "",  0.1, -101.,  99.,   -1.,    6., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hmumu",       "#Delta_{p}(h#mu#mu)",                         -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_htautau",     "#Delta_{p}(h#tau#tau)",                       -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_hWW",           "#Delta(hWW)",                                  rW,    "",    "",  0.1, -101.,  99.,   -1.,    4., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_hZZ",           "#Delta(hZZ)",                                  rZ,    "",    "",  0.1, -101.,  99.,   -1.,    6., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_hZgamma",       "#Delta(hZ#gamma)",                             0.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_hgammagamma",   "#Delta(h#gamma#gamma)",                    rgamma,    "",    "",  0.1, -101.,  99.,   -1.,    6., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_hgg",           "#Delta(hgg)",                                  rg,    "",    "",  0.1, -101.,  99.,   -1.,   50., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_hggZ",          "#Delta(hggZ)",                                 0.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_hihjZ",         "#Delta(h_{i}h_{j}Z)",                         -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "BR_hjhihi",           "BR(h_{j}#rightarrowh_{i}h_{i}}",               0.,    "",    "",  0.1,    0.,   1.,    0.,    1., true  ) );
+    //AddParameter( new PhysicsParameter( "Gamma_hInvisible",    "#Gamma(h#rightarrowInvisible)",  rGammahInvisible, "GeV", "GeV", 0.01,    0.,   1., 1.e-3,    1., false ) );
+
+    // Up-type quarks, down-type quarks, down-type leptons are universal. Setting for "zoomed-in" plots.
+
+    //AddParameter( new PhysicsParameter( "Mass_h",              "m_{h}",                                    rMassh, "GeV", "GeV", 0.02,  123., 129.,  123.,  129., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_quarks_s_hdd",  "#Delta^{quarks}_{s}(hdd)",                     rb,    "",    "", 0.05, -101.,  99.,   -1.,    2., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hss",         "#Delta_{p}(hss)",                             -1.,    "",    "",  0.1, -101.,  99.,   -1.,    2., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_quarks_s_huu",  "#Delta^{quarks}_{s}(huu)",                     rt,    "",    "",  0.1, -101.,  99.,   -1.,    4., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hcc",         "#Delta_{p}(hcc)",                             -1.,    "",    "",  0.1, -101.,  99.,   -1.,    2., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hbb",         "#Delta_{p}(hbb)",                             -1.,    "",    "",  0.1, -101.,  99.,   -1.,    2., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_htt",         "#Delta_{p}(htt)",                             -1.,    "",    "",  0.1, -101.,  99.,   -1.,    2., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_leptons_s_hdd", "#Delta^{leptons}_{s}(hdd)",                  rtau,    "",    "", 0.02, -101.,  99.,   -1.,    2., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hmumu",       "#Delta_{p}(h#mu#mu)",                         -1.,    "",    "",  0.1, -101.,  99.,   -1.,    2., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_htautau",     "#Delta_{p}(h#tau#tau)",                       -1.,    "",    "",  0.1, -101.,  99.,   -1.,    2., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_hWW",           "#Delta(hWW)",                                  rW,    "",    "", 0.02, -101.,  99.,   -1.,    2., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_hZZ",           "#Delta(hZZ)",                                  rZ,    "",    "", 0.02, -101.,  99.,   -1.,    2., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_hZgamma",       "#Delta(hZ#gamma)",                             0.,    "",    "",  0.1, -101.,  99.,   -1.,    2., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_hgammagamma",   "#Delta(h#gamma#gamma)",                    rgamma,    "",    "", 0.02, -101.,  99.,   -1.,    2., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_hgg",           "#Delta(hgg)",                                  rg,    "",    "", 0.05, -101.,  99.,   -1.,    2., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_hggZ",          "#Delta(hggZ)",                                 0.,    "",    "",  0.1, -101.,  99.,   -1.,    2., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_hihjZ",         "#Delta(h_{i}h_{j}Z)",                         -1.,    "",    "",  0.1, -101.,  99.,   -1.,    2., true  ) );
+    //AddParameter( new PhysicsParameter( "BR_hjhihi",           "BR(h_{j}#rightarrowh_{i}h_{i}}",               0.,    "",    "",  0.1,    0.,   1.,    0.,    1., true  ) );
+    //AddParameter( new PhysicsParameter( "Gamma_hInvisible",    "#Gamma(h#rightarrowInvisible)",  rGammahInvisible, "GeV", "GeV", 0.01,    0.,   1.,    0.,    1., false ) );
+
+    // Up-type quarks, down-type quarks, down-type leptons, W and Z bosons are universal. Setting for "zoomed-out" plots.
+
+    //AddParameter( new PhysicsParameter( "Mass_h",              "m_{h}",                                    rMassh, "GeV", "GeV", 0.02,  123., 129.,  124., 127.5, false ) );
+    //AddParameter( new PhysicsParameter( "Delta_quarks_s_hdd",  "#Delta^{quarks}_{s}(hdd)",                     rb,    "",    "",  0.1, -101.,  99.,   -1.,   21., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hss",         "#Delta_{p}(hss)",                             -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_quarks_s_huu",  "#Delta^{quarks}_{s}(huu)",                     rc,    "",    "",  0.2, -101.,  99.,   -1.,   17., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hcc",         "#Delta_{p}(hcc)",                             -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hbb",         "#Delta_{p}(hbb)",                             -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_htt",         "#Delta_{p}(htt)",                             -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_leptons_s_hdd", "#Delta^{leptons}_{s}(hdd)",                  rtau,    "",    "",  0.1, -101.,  99.,   -1.,    6., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hmumu",       "#Delta_{p}(h#mu#mu)",                         -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_htautau",     "#Delta_{p}(h#tau#tau)",                       -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_Bosons_hWZ",    "#Delta^{bosons}(hVV)",                         rW,    "",    "",  0.2, -101.,  99.,   -1.,    4., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_hZgamma",       "#Delta(hZ#gamma)",                             0.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_hgammagamma",   "#Delta(h#gamma#gamma)",                    rgamma,    "",    "",  0.1, -101.,  99.,   -1.,    6., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_hgg",           "#Delta(hgg)",                                  rg,    "",    "",  0.2, -101.,  99.,   -1.,   50., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_hggZ",          "#Delta(hggZ)",                                 0.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_hihjZ",         "#Delta(h_{i}h_{j}Z)",                         -1.,    "",    "",  0.1, -101.,  99.,   -1.,    7., true  ) );
+    //AddParameter( new PhysicsParameter( "BR_hjhihi",           "BR(h_{j}#rightarrowh_{i}h_{i}}",               0.,    "",    "",  0.1,    0.,   1.,    0.,    1., true  ) );
+    //AddParameter( new PhysicsParameter( "Gamma_hInvisible",    "#Gamma(h#rightarrowInvisible)",                0., "GeV", "GeV", 0.01,    0.,   1., 1.e-3,    1., true  ) );
+
+    // Up-type quarks, down-type quarks, down-type leptons, W and Z bosons are universal. Setting for "zoomed-in" plots.
+
+    //AddParameter( new PhysicsParameter( "Mass_h",              "m_{h}",                                    rMassh, "GeV", "GeV", 0.02,  123., 129.,  123.,  129., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_quarks_s_hdd",  "#Delta^{quarks}_{s}(hdd)",                     rb,    "",    "",  0.1, -101.,  99.,   -1.,    2., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hss",         "#Delta_{p}(hss)",                             -1.,    "",    "",  0.1, -101.,  99.,   -1.,    2., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_quarks_s_huu",  "#Delta^{quarks}_{s}(huu)",                     rc,    "",    "",  0.2, -101.,  99.,   -1.,    4., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hcc",         "#Delta_{p}(hcc)",                             -1.,    "",    "",  0.1, -101.,  99.,   -1.,    2., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hbb",         "#Delta_{p}(hbb)",                             -1.,    "",    "",  0.1, -101.,  99.,   -1.,    2., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_htt",         "#Delta_{p}(htt)",                             -1.,    "",    "",  0.1, -101.,  99.,   -1.,    2., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_leptons_s_hdd", "#Delta^{leptons}_{s}(hdd)",                  rtau,    "",    "",  0.1, -101.,  99.,   -1.,    2., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_hmumu",       "#Delta_{p}(h#mu#mu)",                         -1.,    "",    "",  0.1, -101.,  99.,   -1.,    2., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_p_htautau",     "#Delta_{p}(h#tau#tau)",                       -1.,    "",    "",  0.1, -101.,  99.,   -1.,    2., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_Bosons_hWZ",    "#Delta^{bosons}(hVV)",                         rW,    "",    "",  0.2, -101.,  99.,   -1.,    2., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_hZgamma",       "#Delta(hZ#gamma)",                             0.,    "",    "",  0.1, -101.,  99.,   -1.,    2., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_hgammagamma",   "#Delta(h#gamma#gamma)",                    rgamma,    "",    "",  0.1, -101.,  99.,   -1.,    2., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_hgg",           "#Delta(hgg)",                                  rg,    "",    "",  0.2, -101.,  99.,   -1.,    2., false ) );
+    //AddParameter( new PhysicsParameter( "Delta_hggZ",          "#Delta(hggZ)",                                 0.,    "",    "",  0.1, -101.,  99.,   -1.,    2., true  ) );
+    //AddParameter( new PhysicsParameter( "Delta_hihjZ",         "#Delta(h_{i}h_{j}Z)",                         -1.,    "",    "",  0.1, -101.,  99.,   -1.,    2., true  ) );
+    //AddParameter( new PhysicsParameter( "BR_hjhihi",           "BR(h_{j}#rightarrowh_{i}h_{i}}",               0.,    "",    "",  0.1,    0.,   1.,    0.,    1., true  ) );
+    //AddParameter( new PhysicsParameter( "Gamma_hInvisible",    "#Gamma(h#rightarrowInvisible)",                0., "GeV", "GeV", 0.01,    0.,   1.,    0.,    1., true  ) );
 
     SLHAModelCalculatorBase* slhaModelCalculator = new HiggsSignalsSLHAModelCalculator( this );
     _modelCalculatorVector.push_back( slhaModelCalculator );
 
-    _predictionVector.push_back( new SLHAPrediction( "Gamma_hTotal", "#Gamma_{h}^{Total}",
+    _predictionVector.push_back( new SLHAPrediction( "Gamma_hTotal", "#Gamma_{h}^{total}",
                                                      "GeV", "GeV",
-                                                     0., 1.,
+                                                     1.e-3, 1.,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "7", 1  ) );
@@ -158,7 +209,7 @@ Fittino::HECModel::HECModel() {
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "8", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_s_hcc", "BR(h#rightarrowcc)",                           
+    _predictionVector.push_back( new SLHAPrediction( "BR_s_hcc", "BR(h#rightarrowcc)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
@@ -178,7 +229,7 @@ Fittino::HECModel::HECModel() {
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "11", 1 ) );
- 
+
     _predictionVector.push_back( new SLHAPrediction( "BR_s_hmumu", "BR(h#rightarrow#mu#mu)",
                                                      "", "",
                                                      0., 1.e6,
@@ -219,7 +270,7 @@ Fittino::HECModel::HECModel() {
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
-                                                     "17", 1 ) ); 
+                                                     "17", 1 ) );
 
     _predictionVector.push_back( new SLHAPrediction( "BR_hgg", "BR(h#rightarrowgg)",
                                                      "", "",
@@ -326,13 +377,6 @@ Fittino::HECModel::HECModel() {
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "32", 1 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_inclusive_ATL", "#mu_{h#gamma#gamma}inclusive-ATL",
-    //                                                 "", "",
-    //                                                 0., 1.e6,
-    //                                                 slhaModelCalculator,
-    //                                                 "HiggsSignalsPeakObservables",
-    //                                                 "1", "17", 2 ) );
-
     _predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_1lep_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (1lep)",
                                                      "", "",
                                                      0., 1.e6,
@@ -405,7 +449,7 @@ Fittino::HECModel::HECModel() {
 
     _predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_unconv_central_highPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (unconv.-central-highPTt)",
                                                      "", "",
-                                                     0., 1.e6, 
+                                                     0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "11", "17", 2 ) );
@@ -498,13 +542,6 @@ Fittino::HECModel::HECModel() {
                                                      "HiggsSignalsPeakObservables",
                                                      "24", "17", 2 ) );
 
-    //_predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_inclusive_CMS","#mu_{h#gamma#gamma}inclusive-CMS",
-    //                                                 "", "",
-    //                                                 0., 1.e6,
-    //                                                 slhaModelCalculator,
-    //                                                 "HiggsSignalsPeakObservables",
-    //                                                 "12", "17", 2 ) );
-
     _predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_2jet_CMS", "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (2jet)",
                                                      "", "",
                                                      0., 1.e6,
@@ -526,7 +563,7 @@ Fittino::HECModel::HECModel() {
                                                      "HiggsSignalsPeakObservables",
                                                      "27", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_e_CMS","CMS (pp)#rightarrowh#rightarrow#gamma#gamma (e)",
+    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_e_CMS", "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (e)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
@@ -591,7 +628,7 @@ Fittino::HECModel::HECModel() {
 
     _predictionVector.push_back( new SLHAPrediction( "Mu_VBFtautau_CMS", "CMS (pp)#rightarrowVBF#rightarrow#tau#tau",
                                                      "", "",
-                                                     0., 1.e6, 
+                                                     0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "37", "17", 2 ) );
@@ -666,7 +703,7 @@ Fittino::HECModel::HECModel() {
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "5", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "R_Vhbb", "R(Vh#rightarrowVb#bar{b}}",
+    _predictionVector.push_back( new SLHAPrediction( "R_Vhbb", "R(Vh#rightarrowVb#bar{b})",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
@@ -693,42 +730,6 @@ Fittino::HECModel::HECModel() {
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "3", 1 ) );
-
-    //_predictionVector.push_back( new SLHAPrediction( "Masss",
-    //                                                 "GeV",
-    //                                                 slhaModelCalculator,
-    //                                                 "", "",
-    //                                                 0 ) );
-
-    //_predictionVector.push_back( new SLHAPrediction( "Massc",
-    //                                                 "GeV",
-    //                                                 slhaModelCalculator,
-    //                                                 "", "",
-    //                                                 1 ) );
-
-    //_predictionVector.push_back( new SLHAPrediction( "Massb",
-    //                                                 "GeV",
-    //                                                 slhaModelCalculator,
-    //                                                 "", "",
-    //                                                 1 ) );
-
-    //_predictionVector.push_back( new SLHAPrediction( "Masst",
-    //                                                 "GeV",
-    //                                                 slhaModelCalculator,
-    //                                                 "", "",
-    //                                                 1 ) );
-
-    //_predictionVector.push_back( new SLHAPrediction( "Massmu",
-    //                                                 "GeV",
-    //                                                 slhaModelCalculator,
-    //                                                 "", "",
-    //                                                 1 ) );
-
-    //_predictionVector.push_back( new SLHAPrediction( "Masstau",
-    //                                                 "GeV",
-    //                                                 slhaModelCalculator,
-    //                                                 "", "",
-    //                                                 1 ) );
 
     _chi2ContributionVector.push_back( new SLHAChi2Contribution( "HiggsSignals",
                                                                  slhaModelCalculator,
