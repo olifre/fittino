@@ -23,6 +23,7 @@
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
 #include "PredictionBase.h"
+#include <iostream>
 
 Fittino::ModelBase::ModelBase()
   : _name( "" ) {
@@ -53,8 +54,8 @@ double Fittino::ModelBase::GetChi2() {
         _chi2 = Evaluate();
 
     }
-
-    return _chi2;
+    
+		return _chi2;
 
 }
 

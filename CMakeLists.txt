@@ -34,18 +34,18 @@ SET(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
 
 # Specify the installation path of "Boost" which is required by SLHAea. There is only need to change
 # this when the installation path differs from the default.
-# SET(BOOST_ROOT <boost/installation/path>)
+SET(BOOST_ROOT /afs/naf.desy.de/user/m/mhamer/sonas/mylocal)
 FIND_PACKAGE(Boost 1.34.0 REQUIRED)
 
 # Specify user-defined modules required by Fittino.
 SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
 
 # Optional: Specify the installation path of "HiggsBounds".
-# SET(HIGGSBOUNDS_INSTALLATION_PATH <higgsbounds/installation/path>)
+SET(HIGGSBOUNDS_INSTALLATION_PATH /afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/HiggsBounds-4.0.0)
 FIND_PACKAGE(HIGGSBOUNDS)
 
 # Optional: Specify the installation path of "HiggsSignals".
-# SET(HIGGSSIGNALS_INSTALLATION_PATH <higgssignals/installation/path>)
+SET(HIGGSSIGNALS_INSTALLATION_PATH /afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/HiggsSignals-1.0.0)
 FIND_PACKAGE(HIGGSSIGNALS)
 
 # Specify the installation path of the executable "root-config". By default, it is assumed that the
@@ -54,7 +54,7 @@ FIND_PACKAGE(HIGGSSIGNALS)
 FIND_PACKAGE(ROOT)
 
 # Specify the installation path of "SLHAea". The default path is "../slhaea".
-# SET(SLHAEA_INSTALLATION_PATH <slhaea/installation/path>)
+SET(SLHAEA_INSTALLATION_PATH /afs/naf.desy.de/user/m/mhamer/sonas/fthomas-slhaea-f326852)
 FIND_PACKAGE(SLHAEA REQUIRED)
 
 # Optional: Specify the installation path of the executable "SPheno". The default path is
@@ -67,7 +67,7 @@ FIND_PACKAGE(SLHAEA REQUIRED)
 FIND_PACKAGE(LHAPDF)
 
 # Optional: Specify the installation path of "FeynHiggs".
-# SET(FEYNHIGGS_INSTALLATION_PATH <lhapdf/installation/path>)
+SET(FEYNHIGGS_INSTALLATION_PATH /afs/naf.desy.de/group/atlas/scratch/fittino/theorycodes/FeynHiggs-2.9.5)
 FIND_PACKAGE(FEYNHIGGS)
 
 ADD_SUBDIRECTORY(external)

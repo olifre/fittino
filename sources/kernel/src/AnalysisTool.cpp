@@ -86,11 +86,9 @@ void Fittino::AnalysisTool::FillTree() {
     }
 
     for ( unsigned int i = 0; i < GetNumberOfStatusParameters(); ++i ) {
-
         _leafVector[i + _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions()] = GetStatusParameterVector()->at( i )->GetValue();
 
     }
-
     _tree->Fill();
 
 }

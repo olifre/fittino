@@ -55,15 +55,15 @@ namespace Fittino {
        *  between a model and any class deriving from AnalysisTool (especially the concrete\n
        *  optimizer or sampler classes) is established.
        */
-                                         AnalysisTool( ModelBase* model );
+      AnalysisTool( ModelBase* model );
       /*!
        *  Standard destructor.
        */
-                                         ~AnalysisTool();
+      ~AnalysisTool();
       /*!
        *  Template method . It subdivides the tool's exectution into three
        *  It is usually called directly after the creation of a concrete analysis tool.
-       */ 
+       */
       void                               PerformAnalysis();
 
     protected:
@@ -93,7 +93,14 @@ namespace Fittino {
        *  Stores the status parameters.
        */
       std::vector<ParameterBase*>        _statusParameterVector;
-
+      /*!
+       *  The output tree.
+       */
+      TTree*														 _tree;
+      /*!
+       *  The variables used to fill the tree.
+       */
+      std::vector<float>                 _leafVector;
     protected:
       /*!
        *  Prints the result of the execution of a particuar analysis tool. It is declared virtual\n
@@ -134,13 +141,11 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-      std::vector<float>                 _leafVector;
       /*!
        *  A ROOT file which stores the tool's output. The default name of the file is\n
        *  "Fittino.out.root".
        */
       TFile                              _outputFile;
-      TTree*                             _tree;
 
     private:
       virtual void                       Execute() = 0;

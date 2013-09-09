@@ -21,6 +21,7 @@
 #define FITTINO_MARKOVCHAINSAMPLER_H
 
 #include "SamplerBase.h"
+#include "TBranch.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -37,11 +38,11 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                             MarkovChainSampler( ModelBase* model );
+      MarkovChainSampler( ModelBase* model );
       /*!
        *  Standard destructor.
        */
-                             ~MarkovChainSampler();
+      ~MarkovChainSampler();
 
       /*! \cond UML */
     private:
@@ -53,6 +54,12 @@ namespace Fittino {
        */
       unsigned int           _numberOfIterations;
       std::vector<double>    _previousParameterValues;
+      unsigned int					 _acceptCounter;
+
+      /*!
+       *  Used to count how often a point is accepted.
+       */
+      TBranch*							  _branchPointAccepted;
 
     private:
       virtual void           Execute();
