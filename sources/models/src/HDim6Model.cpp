@@ -57,6 +57,7 @@ Fittino::HDim6Model::HDim6Model() {
     AddParameter( new PhysicsParameter( "F_s", "F_{s}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
     AddParameter( new PhysicsParameter( "F_e", "F_{e}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
     AddParameter( new PhysicsParameter( "F_mu", "F_{#mu}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    AddParameter( new PhysicsParameter( "mass_h", "m_{h}", 125, "GeV", "GeV", 0, 125, 125, 125, 125, true ) );
 
     const Factory factory;
     

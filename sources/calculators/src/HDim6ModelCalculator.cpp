@@ -188,11 +188,19 @@ void Fittino::HDim6ModelCalculator::CalculateBR(){
 
     }
 
+    _simpleOutputDataStorage->GetMap()->at( "Gamma_normSM_hTotal" )
+        =  _simpleOutputDataStorage->GetMap()->at( "Gamma_hTotal" )
+        /  _simpleOutputDataStorage->GetMap()->at( "Gamma_SM_hTotal" );
+
     for ( unsigned int i = 0; i < _decayChannels.size(); i++ ) {
 
         _simpleOutputDataStorage      ->GetMap()->at( "BR_"    + _decayChannels[i] )
 	    = _simpleOutputDataStorage->GetMap()->at( "Gamma_" + _decayChannels[i] )
             / _simpleOutputDataStorage->GetMap()->at( "Gamma_hTotal" );
+
+        _simpleOutputDataStorage      ->GetMap()->at( "BR_normSM_"    + _decayChannels[i] )
+            = _simpleOutputDataStorage   ->GetMap()->at( "BR_"    + _decayChannels[i] )
+            / _simpleOutputDataStorage      ->GetMap()->at( "BR_SM_"    + _decayChannels[i] );
 
     }
 
@@ -592,7 +600,7 @@ void Fittino::HDim6ModelCalculator::ConfigureInput() {
 
     _smvalues->mz     = 91.1876;
     _smvalues->mw     = 80.385;
-    _smvalues->mh     = 125;
+    _smvalues->mh     = _model->GetParameterMap()->at( "mass_h" )->GetValue();
 
     _smvalues->alphae = 0.0078186;
     _smvalues->alphas = 0.11819;

@@ -142,8 +142,41 @@ void Fittino::HiggsSignalsHadXSModelCalculator::Initialize() const {
 
     int nHzero = 1;
     int nHplus = 0;
-
     initialize_higgssignals_latestresults_( &nHzero, &nHplus );
+
+    
+    int output_level = 0; // 0: silent, 1: screen output , 2: even more output
+    setup_output_level_( &output_level );
+
+    int pdf = 2; // 1: box, 2: gaussian, 3: both
+    setup_pdf_( &pdf );
+
+    double dm = 0.;
+    higgssignals_neutral_input_massuncertainty_( &dm );
+
+    //int corr_mu = 1;
+    //int corr_mh = 1;
+    //setup_correlations_( &corr_mu, &corr_mh );
+
+    double range = 1000.;
+    setup_assignmentrange_( &range );
+
+    int iterations = 0;
+    setup_higgs_to_peaks_assignment_iterations_( &iterations );
+
+    double dCS[5], dBR[5];
+    dCS[0] = 0.147;  // single higgs
+    dCS[1] = 0.028; // VBF
+    dCS[2] = 0.037; // HW
+    dCS[3] = 0.051; // HZ
+    dCS[4] = 0.12;  // ttH
+    dBR[0] = 0.054; // gammagamma
+    dBR[1] = 0.048; // WW
+    dBR[2] = 0.048; // ZZ
+    dBR[3] = 0.061; // tautau
+    dBR[4] = 0.028; // bbbar
+    setup_rate_uncertainties_( dCS, dBR );
+
   
 }
 
@@ -158,53 +191,62 @@ void Fittino::HiggsSignalsHadXSModelCalculator::CallExecutable() {
 }
 
 void Fittino::HiggsSignalsHadXSModelCalculator::CallFunction() {
+  
+    int nobs = 1;
+    int mode = 1; // 1, 2, 3 for peak-centered, masse-centered chi^2 method or both
+    double Chisq_mu, Chisq_mh, Chisq, Pvalue;
+    //    run_higgssignals_( &mode, &Chisq_mu, &Chisq_mh, &Chisq, &nobs, &Pvalue );
 
 }
 
 void Fittino::HiggsSignalsHadXSModelCalculator::ConfigureInput() {
 
-    
+  //    double CP = 0;
+  double CP = 1;
+    double CS_lep_X = 0;
+    double CS_lhc8_hj_ratio = _model->GetCollectionOfPredictions()->GetMap()->at("XS_normSM_ggh")->GetValue()
+                            + _model->GetCollectionOfPredictions()->GetMap()->at("XS_normSM_bbh")->GetValue();
+    double BR_hjinvisible = 0;
+    double BR_hjhihi = 0;
 
     higgsbounds_neutral_input_hadr_(
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // massh
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // GammaTotal
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CP
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_lep_bbhj_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_lep_tautauhj_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_lep_hjhi_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_tev_hj_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_tev_hjb_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_tev_hjW_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_tev_hjZ_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_tev_vbf_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_tev_tthj_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_lhc7_hj_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_lhc7_hjb_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_lhc7_hjW_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_lhc7_hjZ_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_lhc7_vbf_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_lhc7_tthj_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_lhc8_hj_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_lhc8_hjb_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_lhc8_hjW_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_lhc8_hjZ_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_lhc8_vbf_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // CS_lhc8_tthj_ratio
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // BR_hjss
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // BR_hjcc
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // BR_hjbb
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // BR_hjmumu
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // BR_hjtautau
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // BR_hjWW
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // BR_hjZZ
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // BR_hjZga
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // BR_hjgaga
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // BR_hjgg
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue(), // BR_hjinvisible
-                                    &_model->GetCollectionOfPredictions()->GetMap()->at("")->GetValue()  // BR_hjhihi
+                                    &_model->GetParameterMap()->at("mass_h")->GetValue(),                             // massh
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("Gamma_hTotal")->GetValue(),  // GammaTotal
+                                    &CP,                                                                              // CP
+                                    &CS_lep_X,                                                                        // CS_lep_bbhj_ratio
+                                    &CS_lep_X,                                                                        // CS_lep_tautauhj_ratio
+                                    &CS_lep_X,                                                                        // CS_lep_hjhi_ratio
+                                    &CS_lhc8_hj_ratio,                                                                // CS_tev_hj_ratio
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("XS_normSM_bh")->GetValue(),  // CS_tev_hjb_ratio
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("XS_normSM_Wh")->GetValue(),  // CS_tev_hjW_ratio
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("XS_normSM_Zh")->GetValue(),  // CS_tev_hjZ_ratio
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("XS_normSM_qqh")->GetValue(), // CS_tev_vbf_ratio
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("XS_normSM_tth")->GetValue(), // CS_tev_tthj_ratio
+                                    &CS_lhc8_hj_ratio,                                                                // CS_lhc7_hj_ratio
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("XS_normSM_bh")->GetValue(),  // CS_lhc7_hjb_ratio
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("XS_normSM_Wh")->GetValue(),  // CS_lhc7_hjW_ratio
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("XS_normSM_Zh")->GetValue(),  // CS_lhc7_hjZ_ratio
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("XS_normSM_qqh")->GetValue(), // CS_lhc7_vbf_ratio
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("XS_normSM_tth")->GetValue(), // CS_lhc7_tthj_ratio
+                                    &CS_lhc8_hj_ratio,                                                                // CS_lhc8_hj_ratio
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("XS_normSM_bh")->GetValue(),  // CS_lhc8_hjb_ratio
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("XS_normSM_Wh")->GetValue(),  // CS_lhc8_hjW_ratio
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("XS_normSM_Zh")->GetValue(),  // CS_lhc8_hjZ_ratio
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("XS_normSM_qqh")->GetValue(), // CS_lhc8_vbf_ratio
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("XS_normSM_tth")->GetValue(), // CS_lhc8_tthj_ratio
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("BR_hss")->GetValue(),        // BR_hjss
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("BR_hcc")->GetValue(),        // BR_hjcc
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("BR_hbb")->GetValue(),        // BR_hjbb
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("BR_hmumu")->GetValue(),      // BR_hjmumu
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("BR_htautau")->GetValue(),    // BR_hjtautau
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("BR_hWW")->GetValue(),        // BR_hjWW
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("BR_hZZ")->GetValue(),        // BR_hjZZ
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("BR_hZga")->GetValue(),       // BR_hjZga
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("BR_hgaga")->GetValue(),      // BR_hjgaga
+                                    &_model->GetCollectionOfPredictions()->GetMap()->at("BR_hgg")->GetValue(),        // BR_hjgg
+                                    &BR_hjinvisible,                                                                  // BR_hjinvisible  
+                                    &BR_hjhihi                                                                        // BR_hjhihi
                                     );
 
-
-  //GetPrediction
 
 }
