@@ -51,7 +51,7 @@ double Fittino::Quantity::GetPlotUpperBound() const {
 
 }
 
-double Fittino::Quantity::GetValue() const {
+const double& Fittino::Quantity::GetValue() const {
 
     return _value;
 

@@ -52,7 +52,7 @@ namespace Fittino {
       /*!
        *  Returns the value of the quantity.
        */
-      double              GetValue() const;
+      const double&       GetValue() const;
        /*!
        *  Returns the name of the quantity.
        */

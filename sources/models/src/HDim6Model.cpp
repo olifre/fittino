@@ -62,8 +62,10 @@ Fittino::HDim6Model::HDim6Model() {
     
     ModelCalculatorBase* hdim6ModelCalculator = factory.CreateCalculator(Configuration::HDIM6CALCULATOR, this);
 
-    _modelCalculatorVector.push_back( hdim6ModelCalculator );
+    ModelCalculatorBase* higgssignalsModelCalculator = factory.CreateCalculator(Configuration::HIGGSSIGNALSHADXSCALCULATOR, this);
 
+    _modelCalculatorVector.push_back( hdim6ModelCalculator );
+    _modelCalculatorVector.push_back( higgssignalsModelCalculator );
 
     std::map<std::string, double>::const_iterator it;
 
