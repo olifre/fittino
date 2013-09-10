@@ -30,6 +30,7 @@
 #include "HDim6ModelCalculator.h"
 #include "HDim6Model.h"
 #include "HECModel.h"
+#include "HiggsSignalsHadXSModelCalculator.h"
 #include "MarkovChainSampler.h"
 #include "MinuitOptimizer.h"
 #include "ModelBase.h"
@@ -111,6 +112,18 @@ Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator( const Fi
 #else
 
             throw ConfigurationException( "Trying to use HDim6Calculator but Fittino was built without LHAPDF." );
+
+#endif
+
+        case Configuration::HIGGSSIGNALSHADXSCALCULATOR: 
+
+#if defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
+            
+	    return new HiggsSignalsHadXSModelCalculator( model );
+
+#else
+
+            throw ConfigurationException( "Trying to use HiggsSignalsHadXSModelCalculator but Fittino was built without HiggsBounds or HiggsSignals." );
 
 #endif
 
