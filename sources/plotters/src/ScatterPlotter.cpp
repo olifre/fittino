@@ -33,16 +33,17 @@
 #include "ScatterPlotter.h"
 
 Fittino::ScatterPlotter::ScatterPlotter( ModelBase* model, std::string& dataFileName )
-        : PlotterBase( model, dataFileName ) {
+    : PlotterBase( model, dataFileName ) {
 
-    _name = "scatter plotter";
+    _name       = "scatter plotter";
+    _xLogScale  = false;
 
     _canvas = new TCanvas( "Canvas", "Canvas", 600, 600 );
 
     gROOT->SetStyle( "FITTINO" );
     gROOT->ForceStyle();
 
-    _pad = (TPad*)_canvas->cd();
+    _pad = ( TPad* )_canvas->cd();
     _pad->SetTicks( 1, 1 );
 
 }
@@ -67,7 +68,7 @@ void Fittino::ScatterPlotter::Execute() {
 
     // Specify the list of quantities to be plotted.
 
-    _activeQuantityVector.push_back( "Mass_h" );
+    // _activeQuantityVector.push_back( "Mass_h" ); // Example
 
     // Search for the lowest chi2.
 
@@ -106,7 +107,10 @@ void Fittino::ScatterPlotter::Execute() {
 
         histogram.Draw( "AXIS" );
 
-        _tree->Draw( "Chi2-" + lowestChi2String + ":TMath::Abs(" + parameterName + "+1)-1", "Chi2<"+ lowestChi2String + "+10", "SAME" );
+        if ( _xLogScale ) _pad->SetLogx( 1 );
+        else _pad->SetLogx( 0 );
+
+        _tree->Draw( "Chi2-" + lowestChi2String + ":" + parameterName, "Chi2<" + lowestChi2String + "+10", "SAME" );
 
         histogram.GetXaxis()->SetTitle( ( _quantityVector.at( iQuantity )->GetPlotName() ).c_str() );
         histogram.GetXaxis()->SetTitleOffset( 1.1 );
