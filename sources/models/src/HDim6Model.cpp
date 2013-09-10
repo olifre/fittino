@@ -22,6 +22,7 @@
 #include "HDim6Model.h"
 #include "HDim6ModelCalculator.h"
 #include "PhysicsParameter.h"
+#include "SimpleDataStorage.h"
 #include "SimplePrediction.h"
 
 Fittino::HDim6Model::HDim6Model() {
@@ -63,38 +64,47 @@ Fittino::HDim6Model::HDim6Model() {
 
     _modelCalculatorVector.push_back( hdim6ModelCalculator );
 
-    _predictionVector.push_back( new SimplePrediction( "Gamma_normSM_hTotal", "#Gamma_{h}/#Gamma_{h}^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "BR_normSM_hss", "BR(h#rightarrowss)/BR^{SM}(h#rightarrowss)", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "BR_normSM_hcc", "BR(h#rightarrowcc)/BR^{SM}(h#rightarrowcc)", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "BR_normSM_hbb", "BR(h#rightarrowbb)/BR^{SM}(h#rightarrowbb)", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "BR_normSM_htautau", "BR(h#rightarrow#tau#tau)/BR^{SM}(h#rightarrow#tau#tau)", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "BR_normSM_hWW", "BR(h#rightarrowWW)/BR^{SM}(h#rightarrowWW)", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "BR_normSM_hZZ", "BR(h#rightarrowZZ)/BR^{SM}(h#rightarrowZZ)", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "BR_normSM_hgg", "BR(h#rightarrowgg)/BR^{SM}(h#rightarrowgg)", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "BR_normSM_hgaga", "BR(h#rightarrow#gamma#gamma)/BR^{SM}(h#rightarrow#gamma#gamma)", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "BR_normSM_hZga", "BR(h#rightarrowZ#gamma)/BR^{SM}(h#rightarrowZ#gamma)", "", "", 0.01, 100, hdim6ModelCalculator ) );
 
-    _predictionVector.push_back( new SimplePrediction( "XS_normSM_ggh", "ggh/ggh^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "XS_normSM_bbh", "bbh/bbh^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "XS_normSM_tth", "tth/tth^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "XS_normSM_bh", "bh/bh^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "XS_normSM_qqh", "qqh/qqh^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "XS_normSM_Wh", "Wh/Wh^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "XS_normSM_Zh", "Zh/Zh^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    std::map<std::string, double>::const_iterator it;
 
-    _predictionVector.push_back( new SimplePrediction( "Delta_kappa_ga", "#Delta #kappa^{#gamma}", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "Delta_kappa_Z", "#Delta #kappa^{Z}", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "Delta_g1_ga", "#Delta g_{1}^{#gamma}", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "Delta_g1_Z", "#Delta g_{1}^{Z}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    const std::map<std::string, double>* map = hdim6ModelCalculator->GetSimpleOutputDataStorage()->GetMap();
+    
+    for(it = map->begin(); it != map->end(); it++) {
 
-    _predictionVector.push_back( new SimplePrediction( "Delta_g1_WW", "#Delta g_{1}^{WW}", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "Delta_g2_WW", "#Delta g_{2}^{WW}", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "Delta_g1_gaga", "#Delta g_{1}^{#gamma#gamma}", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "Delta_g2_gaga", "#Delta g_{2}^{#gamma#gamma}", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "Delta_g1_ZZ", "#Delta g_{1}^{ZZ}", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "Delta_g2_ZZ", "#Delta g_{2}^{ZZ}", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "Delta_g1_Zga", "#Delta g_{1}^{Z#gamma}", "", "", 0.01, 100, hdim6ModelCalculator ) );
-    _predictionVector.push_back( new SimplePrediction( "Delta_g2_Zga", "#Delta g_{2}^{Z#gamma}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+      AddPrediction( new SimplePrediction( it->first, it->first, "", "", 0,0, hdim6ModelCalculator  ) );
+
+    }
+
+
+    //     _predictionVector.push_back( new SimplePrediction( "Gamma_normSM_hTotal", "#Gamma_{h}/#Gamma_{h}^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "BR_normSM_hss", "BR(h#rightarrowss)/BR^{SM}(h#rightarrowss)", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "BR_normSM_hcc", "BR(h#rightarrowcc)/BR^{SM}(h#rightarrowcc)", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "BR_normSM_hbb", "BR(h#rightarrowbb)/BR^{SM}(h#rightarrowbb)", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "BR_normSM_htautau", "BR(h#rightarrow#tau#tau)/BR^{SM}(h#rightarrow#tau#tau)", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "BR_normSM_hWW", "BR(h#rightarrowWW)/BR^{SM}(h#rightarrowWW)", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "BR_normSM_hZZ", "BR(h#rightarrowZZ)/BR^{SM}(h#rightarrowZZ)", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "BR_normSM_hgg", "BR(h#rightarrowgg)/BR^{SM}(h#rightarrowgg)", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "BR_normSM_hgaga", "BR(h#rightarrow#gamma#gamma)/BR^{SM}(h#rightarrow#gamma#gamma)", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "BR_normSM_hZga", "BR(h#rightarrowZ#gamma)/BR^{SM}(h#rightarrowZ#gamma)", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "XS_normSM_ggh", "ggh/ggh^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "XS_normSM_bbh", "bbh/bbh^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "XS_normSM_tth", "tth/tth^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "XS_normSM_bh", "bh/bh^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "XS_normSM_qqh", "qqh/qqh^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "XS_normSM_Wh", "Wh/Wh^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "XS_normSM_Zh", "Zh/Zh^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "Delta_kappa_ga", "#Delta #kappa^{#gamma}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "Delta_kappa_Z", "#Delta #kappa^{Z}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "Delta_g1_ga", "#Delta g_{1}^{#gamma}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "Delta_g1_Z", "#Delta g_{1}^{Z}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "Delta_g1_WW", "#Delta g_{1}^{WW}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "Delta_g2_WW", "#Delta g_{2}^{WW}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "Delta_g1_gaga", "#Delta g_{1}^{#gamma#gamma}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "Delta_g2_gaga", "#Delta g_{2}^{#gamma#gamma}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "Delta_g1_ZZ", "#Delta g_{1}^{ZZ}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "Delta_g2_ZZ", "#Delta g_{2}^{ZZ}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "Delta_g1_Zga", "#Delta g_{1}^{Z#gamma}", "", "", 0.01, 100, hdim6ModelCalculator ) );
+    //     _predictionVector.push_back( new SimplePrediction( "Delta_g2_Zga", "#Delta g_{2}^{Z#gamma}", "", "", 0.01, 100, hdim6ModelCalculator ) );
 
     PhysicsModelBase::Initialize();
 
