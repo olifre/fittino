@@ -104,7 +104,7 @@ Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator( const Fi
   
         case Configuration::HDIM6CALCULATOR:
     
-#if defined LHAPDF_FOUND  && defined HIGGSBOUNDS_FOUND
+#if defined LHAPDF_FOUND  && defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
 
             return new HDim6ModelCalculator( model );
 
