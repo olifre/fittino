@@ -30,6 +30,7 @@ Fittino::Observable::Observable( PredictionBase* prediction,
         : _deviation( 0. ),
           _measuredError( measuredError ),
           _measuredValue( measuredValue ),
+					_bestFitPrediction( 0. ),
           _prediction( prediction ) {
 }
 
@@ -93,10 +94,22 @@ Fittino::PredictionBase* Fittino::Observable::GetPrediction() {
 
 }
 
+void Fittino::Observable::SetBestFitPrediction( double value ) {
+		
+		_bestFitPrediction = value;
+
+}
+
 void Fittino::Observable::UpdatePrediction() {
 
     _prediction->Update();
 
     this->CalculateDeviation();
+
+}
+
+void Fittino::Observable::SmearMeasuredValue( TRandom *randomGenerator ) {
+
+		_measuredValue = randomGenerator->Gaus( _bestFitPrediction, _measuredError );
 
 }

@@ -21,6 +21,8 @@
 #ifndef FITTINO_OBSERVABLE_H
 #define FITTINO_OBSERVABLE_H
 
+#include "TRandom.h"
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -49,14 +51,17 @@ namespace Fittino {
       double          GetMeasuredError() const;
       double          GetMeasuredValue() const;
       PredictionBase* GetPrediction();
+			void						SetBestFitPrediction( double );
 
     public:
       virtual void    UpdatePrediction();
+			virtual void		SmearMeasuredValue( TRandom* );
 
     protected:
       double          _deviation;
       double          _measuredError;
       double          _measuredValue;
+			double					_bestFitPrediction;
       PredictionBase* _prediction;
 
     protected:
