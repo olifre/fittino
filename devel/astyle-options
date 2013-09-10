@@ -1,6 +1,7 @@
 --indent=spaces=4
 --indent-switches
 --brackets=attach
+--break-closing-brackets
 --style=java
 --pad-oper
 --pad-paren-in
