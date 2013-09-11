@@ -161,21 +161,21 @@ void Fittino::HiggsSignalsHadXSModelCalculator::Initialize() const {
     double range = 1000.;
     setup_assignmentrange_( &range );
 
-    int iterations = 0;
-    setup_higgs_to_peaks_assignment_iterations_( &iterations );
+//     int iterations = 0;
+//     setup_higgs_to_peaks_assignment_iterations_( &iterations );
 
-    double dCS[5], dBR[5];
-    dCS[0] = 0.147;  // single higgs
-    dCS[1] = 0.028; // VBF
-    dCS[2] = 0.037; // HW
-    dCS[3] = 0.051; // HZ
-    dCS[4] = 0.12;  // ttH
-    dBR[0] = 0.054; // gammagamma
-    dBR[1] = 0.048; // WW
-    dBR[2] = 0.048; // ZZ
-    dBR[3] = 0.061; // tautau
-    dBR[4] = 0.028; // bbbar
-    setup_rate_uncertainties_( dCS, dBR );
+//     double dCS[5], dBR[5];
+//     dCS[0] = 0.147;  // single higgs
+//     dCS[1] = 0.028; // VBF
+//     dCS[2] = 0.037; // HW
+//     dCS[3] = 0.051; // HZ
+//     dCS[4] = 0.12;  // ttH
+//     dBR[0] = 0.054; // gammagamma
+//     dBR[1] = 0.048; // WW
+//     dBR[2] = 0.048; // ZZ
+//     dBR[3] = 0.061; // tautau
+//     dBR[4] = 0.028; // bbbar
+//     setup_rate_uncertainties_( dCS, dBR );
 
   
 }
@@ -195,7 +195,7 @@ void Fittino::HiggsSignalsHadXSModelCalculator::CallFunction() {
     int nobs = 1;
     int mode = 1; // 1, 2, 3 for peak-centered, masse-centered chi^2 method or both
     double Chisq_mu, Chisq_mh, Chisq, Pvalue;
-    //    run_higgssignals_( &mode, &Chisq_mu, &Chisq_mh, &Chisq, &nobs, &Pvalue );
+    run_higgssignals_( &mode, &Chisq_mu, &Chisq_mh, &Chisq, &nobs, &Pvalue );
 
 }
 

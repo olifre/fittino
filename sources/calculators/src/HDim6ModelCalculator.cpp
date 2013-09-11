@@ -167,7 +167,7 @@ void Fittino::HDim6ModelCalculator::Initialize() const {
 
     int nHzero = 1;
     int nHplus = 0;
-    int whichanalysis = 1;
+    int whichanalysis = 3;
 
     initialize_higgsbounds_int_( &nHzero, &nHplus, &whichanalysis );
   
