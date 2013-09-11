@@ -24,7 +24,7 @@
 #include <ctime>
 #include <iostream>
 
-#include "TRandom.h"
+#include "TRandom3.h"
 
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
@@ -36,7 +36,7 @@ Fittino::Particle::Particle( double c1, double c2, Fittino::ModelBase* model, in
         : _c1( c1 ),
           _c2( c2 ),
           _personalBestChi2( 1.e99 ),
-          _randomGenerator( new TRandom() ),
+          _randomGenerator( new TRandom3() ),
           _model( model ) {
 
     _randomGenerator->SetSeed( seed );

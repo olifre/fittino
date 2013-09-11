@@ -108,7 +108,7 @@ void Fittino::Observable::UpdatePrediction() {
 
 }
 
-void Fittino::Observable::SmearMeasuredValue( TRandom *randomGenerator ) {
+void Fittino::Observable::SmearMeasuredValue( TRandom3* randomGenerator ) {
 
 		_measuredValue = randomGenerator->Gaus( _bestFitPrediction, _measuredError );
 

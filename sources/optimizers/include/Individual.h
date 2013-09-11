@@ -22,7 +22,7 @@
 
 #include <vector>
 
-class TRandom;
+class TRandom3;
 
 /*!
  *  \brief Fittino namespace.
@@ -61,7 +61,7 @@ namespace Fittino {
       double              _chi2;
       double              _mutationRate;
       std::vector<double> _genes;
-      TRandom*            _randomGenerator;
+      TRandom3*            _randomGenerator;
       ModelBase*          _model;
 
   };

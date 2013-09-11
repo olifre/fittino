@@ -17,7 +17,7 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "TRandom.h"
+#include "TRandom3.h"
 
 #include "Individual.h"
 #include "ModelBase.h"
@@ -26,7 +26,7 @@
 Fittino::Individual::Individual( Fittino::ModelBase* model, double mutationRate, int seed ):
     _model ( model ) ,
     _mutationRate ( mutationRate ),
-    _randomGenerator( new TRandom() ),
+    _randomGenerator( new TRandom3() ),
     _chi2 ( 1e99 ) {
     _updatedChi2 = false;
     _randomGenerator->SetSeed( seed );

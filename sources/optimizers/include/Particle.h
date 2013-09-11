@@ -25,7 +25,7 @@
 
 #include <vector>
 
-class TRandom;
+class TRandom3;
 
 /*!
  *  \brief Fittino namespace.
@@ -59,7 +59,7 @@ namespace Fittino {
       double              _personalBestChi2;
       std::vector<double> _position;
       std::vector<double> _velocity;
-      TRandom*            _randomGenerator;
+      TRandom3*            _randomGenerator;
       ModelBase*          _model;
       ModelBase*          _personalBestModel;
 

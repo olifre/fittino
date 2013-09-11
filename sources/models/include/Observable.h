@@ -21,7 +21,7 @@
 #ifndef FITTINO_OBSERVABLE_H
 #define FITTINO_OBSERVABLE_H
 
-#include "TRandom.h"
+#include "TRandom3.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -55,7 +55,7 @@ namespace Fittino {
 
     public:
       virtual void    UpdatePrediction();
-			virtual void		SmearMeasuredValue( TRandom* );
+			virtual void		SmearMeasuredValue( TRandom3* );
 
     protected:
       double          _deviation;

@@ -26,7 +26,7 @@
 #include <vector>
 
 #include "TFile.h"
-#include "TRandom.h"
+#include "TRandom3.h"
 
 class TTree;
 
@@ -82,7 +82,7 @@ namespace Fittino {
       /*!
        *  Random number generator.
        */
-      TRandom                            _randomGenerator;
+      TRandom3                           _randomGenerator;
       /*!
        *  Pointer to the model to be analysed. Via this pointer an association between the model\n
        *  and any class deriving from AnalysisTool (especially the concrete optimizer or sampler\n
