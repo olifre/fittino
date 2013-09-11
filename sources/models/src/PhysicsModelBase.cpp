@@ -193,3 +193,12 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
     return chi2;
 
 }
+
+void Fittino::PhysicsModelBase::SmearObservables( TRandom3* randomGenerator ) {
+		
+		for( int i = 0; i < _observableVector.size(); ++i ) {
+
+				_observableVector[i]->SmearMeasuredValue( randomGenerator );
+	
+		}
+}

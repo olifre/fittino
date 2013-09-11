@@ -23,6 +23,8 @@
 
 #include "ModelBase.h"
 
+class TRandom3;
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -49,6 +51,7 @@ namespace Fittino {
 
     public:
       virtual void                      PrintStatus() const;
+			void															SmearObservables( TRandom3* );
 
     protected:
       virtual void                      Initialize() const;
