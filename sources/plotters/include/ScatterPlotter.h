@@ -6,7 +6,7 @@
 *                                                                              *
 * File        ScatterPlotter.h                                                 *
 *                                                                              *
-* Description Class plotting 2D scatter plots                                  *
+* Description Class for plotting 2D scatter plots                              *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *

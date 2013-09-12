@@ -6,7 +6,7 @@
 *                                                                              *
 * File        ContourPlotter.h                                                 *
 *                                                                              *
-* Description Class plotting 2D contour plots                                  *
+* Description Class for plotting 2D contour plots                              *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
