@@ -160,59 +160,59 @@ namespace Fittino {
       /*!
        *
        */
-      double       dm;
+      double       _dm;
       /*!
        *
        */
-      double       range;
+      double       _range;
       /*!
        *  4 0 = HZ production.
        */
-      int          ChannelID;
+      int          _ChannelID;
       /*!
        *  collider = 1, 2, 3 for TEV, LHC7 or LHC8.
        */
-      int          collider;
+      int          _collider;
       /*!
        *  0: writes only block HiggsSignalsResults, 1: writes all blocks.
        */
-      int          detailed;
+      int          _detailed;
       /*!
        *
        */
-      int          iterations;
+      int          _iterations;
       /*!
        *  1, 2, 3 for peak-centered, masse-centered chi^2 method or both.
        */
-      int          mode;
+      int          _mode;
       /*!
        *
        */
-      int          NChannels;
+      int          _NChannels;
       /*!
        *  Number of Higgs particles.
        */
-      int          nH;
+      int          _nH;
       /*!
        *
        */
-      int          nHplus;
+      int          _nHplus;
       /*!
        *
        */
-      int          nHzero;
+      int          _nHzero;
       /*!
        *
        */
-      int          nobs;
+      int          _nobs;
       /*!
        *  0: silent, 1: screen output, 2: even more output.
        */
-      int          output_level;
+      int          _output_level;
       /*!
        *  1: box, 2: gaussian, 3: both.
        */
-      int          pdf;
+      int          _pdf;
 
     private:
       double       CalculateBRhInvisible( double GammaTotal, double GammahInvisible );

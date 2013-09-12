@@ -29,24 +29,31 @@
 #include "PhysicsModelBase.h"
 #include "SLHADataStorageBase.h"
 
-Fittino::HiggsSignalsSLHAModelCalculator::HiggsSignalsSLHAModelCalculator(const PhysicsModelBase* model)
-  : SLHAModelCalculatorBase( model ) {
+Fittino::HiggsSignalsSLHAModelCalculator::HiggsSignalsSLHAModelCalculator( const PhysicsModelBase* model )
+    : SLHAModelCalculatorBase( model ) {
 
-    _name               = "HiggsSignals";
-    _slhaOutputFileName = "HS-output.slha";
-    //nHzero            = 1;
-    //nHplus            = 0;
-    //output_level      = 0; // 0: silent, 1: screen output, 2: even more output
-    //pdf               = 2; // 1: box, 2: gaussian, 3: both
-    //range             = 2.;
-    //iterations        = 0;
-    nobs                =  1;
-    mode                =  1; // 1, 2, 3 for peak-centered, masse-centered chi^2 method or both
-    detailed            =  1; // 0: writes only block HiggsSignalsResults, 1: writes all blocks
-    nH                  =  1; // Number of Higgs particles
-    collider            =  3; // collider = 1, 2, 3 for TEV, LHC7 or LHC8
-    NChannels           =  1;
-    ChannelID           = 40; // 4 0 = HZ production
+    /*!
+     *  \todo Initialize const configuration parameters here.
+     */
+
+    _name                = "HiggsSignals";
+    _slhaOutputFileName  = "HS-output.slha";
+    //_nHzero            = 1;
+    //_nHplus            = 0;
+    //_output_level      = 0; // 0: silent, 1: screen output, 2: even more output
+    //_pdf               = 2; // 1: box, 2: gaussian, 3: both
+    //_dm                = 0.;
+    //_range             = 2.;
+    //_corr_mu           = 1;
+    //_corr_mh           = 1;
+    //_iterations        = 0;
+    _nobs                =  1;
+    _mode                =  1; // 1, 2, 3 for peak-centered, masse-centered chi^2 method or both
+    _detailed            =  1; // 0: writes only block HiggsSignalsResults, 1: writes all blocks
+    _nH                  =  1; // Number of Higgs particles
+    _collider            =  3; // _collider = 1, 2, 3 for TEV, LHC7 or LHC8
+    _NChannels           =  1;
+    _ChannelID           = 40; // 4 0 = HZ production
 
 }
 
@@ -56,28 +63,28 @@ Fittino::HiggsSignalsSLHAModelCalculator::~HiggsSignalsSLHAModelCalculator() {
 
 void Fittino::HiggsSignalsSLHAModelCalculator::Initialize() const {
 
-    int nHzero = 1;
-    int nHplus = 0;
-    initialize_higgssignals_latestresults_( &nHzero, &nHplus );
+    int _nHzero = 1;
+    int _nHplus = 0;
+    initialize_higgssignals_latestresults_( &_nHzero, &_nHplus );
 
-    int output_level = 0; // 0: silent, 1: screen output , 2: even more output
-    setup_output_level_( &output_level );
+    int _output_level = 0; // 0: silent, 1: screen output , 2: even more output
+    setup_output_level_( &_output_level );
 
-    int pdf = 2; // 1: box, 2: gaussian, 3: both
-    setup_pdf_( &pdf );
+    int _pdf = 2; // 1: box, 2: gaussian, 3: both
+    setup_pdf_( &_pdf );
 
-    double dm = 0.;
-    higgssignals_neutral_input_massuncertainty_( &dm );
+    double _dm = 0.;
+    higgssignals_neutral_input_massuncertainty_( &_dm );
 
-    //int corr_mu = 1;
-    //int corr_mh = 1;
-    //setup_correlations_( &corr_mu, &corr_mh );
+    //int _corr_mu = 1;
+    //int _corr_mh = 1;
+    //setup_correlations_( &_corr_mu, &_corr_mh );
 
-    double range = 2.;
-    setup_assignmentrange_( &range );
+    double _range = 2.;
+    setup_assignmentrange_( &_range );
 
-    int iterations = 0;
-    setup_higgs_to_peaks_assignment_iterations_( &iterations );
+    int _iterations = 0;
+    setup_higgs_to_peaks_assignment_iterations_( &_iterations );
 
 }
 
@@ -93,12 +100,12 @@ double Fittino::HiggsSignalsSLHAModelCalculator::CalculateBRhInvisible( double G
 }
 
 double Fittino::HiggsSignalsSLHAModelCalculator::CalculateBRhInvisibleLimit( double x ) {
- 
+
     double f;
 
     if ( x < 1. ) {
 
-       f =    3090.5 * pow( x, 10 ) - 16155 * pow( x, 9 ) + 36200.6 * pow( x, 8 ) - 45432.4 * pow( x, 7 ) 
+        f =   3090.5 * pow( x, 10 ) - 16155 * pow( x, 9 ) + 36200.6 * pow( x, 8 ) - 45432.4 * pow( x, 7 )
             + 35006.7 * pow( x, 6 ) - 17068.7 * pow( x, 5 ) + 5228.65 * pow( x, 4 ) - 963.046 * pow( x, 3 )
             + 100.961 * pow( x, 2 );
 
@@ -116,19 +123,23 @@ double Fittino::HiggsSignalsSLHAModelCalculator::CalculateBRhInvisibleLimit( dou
 double Fittino::HiggsSignalsSLHAModelCalculator::Calculateg2hgg( double ghbb,
                                                                  double ghtt,
                                                                  double massh ) {
-   
+
     double g2hgg;
 
     try {
 
         if  ( massh >= 123 && massh <= 129. ) {
 
-            g2hgg = ghtt * ghtt * ( -9.10e-04 * massh +  1.23e00 );
-                  + ghbb * ghbb * ( -2.86e-04 * massh + 4.74e-02 );
-                  + ghtt * ghbb * (  1.12e-03 * massh - 2.73e-01 );
+            g2hgg =   ghtt * ghtt * ( -9.10e-04 * massh +  1.23e00 );
+                    + ghbb * ghbb * ( -2.86e-04 * massh + 4.74e-02 );
+                    + ghtt * ghbb * (  1.12e-03 * massh - 2.73e-01 );
 
-        } 
-        else { throw ConfigurationException( "Higgs mass out of range." ); }
+        }
+        else {
+
+            throw ConfigurationException( "Higgs mass out of range." );
+
+        }
 
     }
     catch ( const ConfigurationException& configurationException ) {
@@ -155,19 +166,23 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Calculateg2hgammagamma( double 
 
         if  ( massh >= 123 && massh <= 129. ) {
 
-            g2hgammagamma = ghtt     * ghtt     * ( -5.85e-04 * massh + 1.45e-01 );
-                          + ghbb     * ghbb     * ( -6.74e-07 * massh + 1.04e-04 );
-                          + ghWW     * ghWW     * ( -2.48e-03 * massh +  1.90e00 );
-                          + ghtt     * ghbb     * (  3.51e-05 * massh - 6.16e-03 );
-                          + ghtt     * ghWW     * (  3.30e-03 * massh -  1.09e00 );
-                          + ghbb     * ghWW     * ( -1.39e-04 * massh + 2.58e-02 );
-                          + ghtautau * ghtautau * ( -7.89e-07 * massh + 1.22e-04 );
-                          + ghtt     * ghtautau * (  3.78e-05 * massh - 6.64e-03 );
-                          + ghbb     * ghtautau * ( -1.46e-06 * massh + 2.25e-04 );
-                          + ghtautau * ghWW     * ( -1.50e-04 * massh + 2.78e-02 );
+            g2hgammagamma =   ghtt     * ghtt     * ( -5.85e-04 * massh + 1.45e-01 );
+                            + ghbb     * ghbb     * ( -6.74e-07 * massh + 1.04e-04 );
+                            + ghWW     * ghWW     * ( -2.48e-03 * massh +  1.90e00 );
+                            + ghtt     * ghbb     * (  3.51e-05 * massh - 6.16e-03 );
+                            + ghtt     * ghWW     * (  3.30e-03 * massh -  1.09e00 );
+                            + ghbb     * ghWW     * ( -1.39e-04 * massh + 2.58e-02 );
+                            + ghtautau * ghtautau * ( -7.89e-07 * massh + 1.22e-04 );
+                            + ghtt     * ghtautau * (  3.78e-05 * massh - 6.64e-03 );
+                            + ghbb     * ghtautau * ( -1.46e-06 * massh + 2.25e-04 );
+                            + ghtautau * ghWW     * ( -1.50e-04 * massh + 2.78e-02 );
 
         }
-        else { throw ConfigurationException( "Higgs mass out of range." ); }
+        else {
+
+            throw ConfigurationException( "Higgs mass out of range." );
+
+        }
 
     }
     catch ( const ConfigurationException& configurationException ) {
@@ -197,10 +212,10 @@ double Fittino::HiggsSignalsSLHAModelCalculator::CalculateSinglehUncertainty( do
     }
     else {
 
-        singlehUncertainty = ( g2hgg * __theory_collidersfunctions_MOD_lhc8_rh_gg( &massh ) * dhgg
-                           +   g2hbb * __theory_collidersfunctions_MOD_lhc8_rh_bb( &massh ) * dhbb )
-                           / ( g2hgg * __theory_collidersfunctions_MOD_lhc8_rh_gg( &massh )
-                           +   g2hbb * __theory_collidersfunctions_MOD_lhc8_rh_bb( &massh ) );
+        singlehUncertainty =   ( g2hgg * __theory_collidersfunctions_MOD_lhc8_rh_gg( &massh ) * dhgg
+                             +   g2hbb * __theory_collidersfunctions_MOD_lhc8_rh_bb( &massh ) * dhbb )
+                             / ( g2hgg * __theory_collidersfunctions_MOD_lhc8_rh_gg( &massh )
+                             +   g2hbb * __theory_collidersfunctions_MOD_lhc8_rh_bb( &massh ) );
 
     }
 
@@ -284,34 +299,38 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction() {
 
     // Identify the model parameters with the variables needed by HiggsSignals.
 
-    double massh          = _model->GetParameterVector()->at( 0 )->GetValue();
+    double massh          = _model->GetParameterMap()->at( "Mass_h" )->GetValue();
 
-    // Setting 4 : All up-type quarks and all down-type quarks and leptons are the same. Additionally the W and Z boson are fitted universally
+    /*!
+     *  \todo Cleanup once model parameter conversion is implemented.
+     */
+
+    // Setting 3 : All up-type quarks and all down-type quarks and leptons are the same. Additionally the W and Z boson are fitted universally
+
+    //double g2hjss_s       = pow( 1 + _model->GetParameterVector()->at(  1 )->GetValue(), 2 );
+    //double g2hjss_p       = pow( 1 + _model->GetParameterVector()->at(  2 )->GetValue(), 2 );
+    //double g2hjcc_s       = pow( 1 + _model->GetParameterVector()->at(  3 )->GetValue(), 2 );
+    //double g2hjcc_p       = pow( 1 + _model->GetParameterVector()->at(  4 )->GetValue(), 2 );
+    //double g2hjbb_s       = g2hjss_s;
+    //double g2hjbb_p       = pow( 1 + _model->GetParameterVector()->at(  5 )->GetValue(), 2 );
+    //double g2hjtt_s       = g2hjcc_s;
+    //double g2hjtt_p       = pow( 1 + _model->GetParameterVector()->at(  6 )->GetValue(), 2 );
+    //double g2hjmumu_s     = pow( 1 + _model->GetParameterVector()->at(  7 )->GetValue(), 2 );
+    //double g2hjmumu_p     = pow( 1 + _model->GetParameterVector()->at(  8 )->GetValue(), 2 );
+    //double g2hjtautau_s   = g2hjmumu_s;
+    //double g2hjtautau_p   = pow( 1 + _model->GetParameterVector()->at(  9 )->GetValue(), 2 );
+    //double g2hjWW         = pow( 1 + _model->GetParameterVector()->at( 10 )->GetValue(), 2 );
+    //double g2hjZZ         = g2hjWW;
+    //double g2hjZga        = pow( 1 + _model->GetParameterVector()->at( 11 )->GetValue(), 2 );
+    //double g2hjgaga       = pow( 1 + _model->GetParameterVector()->at( 12 )->GetValue(), 2 );
+    //double g2hjgg         = pow( 1 + _model->GetParameterVector()->at( 13 )->GetValue(), 2 );
+    //double g2hjggZ        = pow( 1 + _model->GetParameterVector()->at( 14 )->GetValue(), 2 );
+    //double g2hjhiZ        = pow( 1 + _model->GetParameterVector()->at( 15 )->GetValue(), 2 );
     
-    double g2hjss_s       = pow( 1 + _model->GetParameterVector()->at(  1 )->GetValue(), 2 );
-    double g2hjss_p       = pow( 1 + _model->GetParameterVector()->at(  2 )->GetValue(), 2 );
-    double g2hjcc_s       = pow( 1 + _model->GetParameterVector()->at(  3 )->GetValue(), 2 );
-    double g2hjcc_p       = pow( 1 + _model->GetParameterVector()->at(  4 )->GetValue(), 2 );
-    double g2hjbb_s       = g2hjss_s;
-    double g2hjbb_p       = pow( 1 + _model->GetParameterVector()->at(  5 )->GetValue(), 2 );
-    double g2hjtt_s       = g2hjcc_s;
-    double g2hjtt_p       = pow( 1 + _model->GetParameterVector()->at(  6 )->GetValue(), 2 );
-    double g2hjmumu_s     = pow( 1 + _model->GetParameterVector()->at(  7 )->GetValue(), 2 );
-    double g2hjmumu_p     = pow( 1 + _model->GetParameterVector()->at(  8 )->GetValue(), 2 );
-    double g2hjtautau_s   = g2hjmumu_s;
-    double g2hjtautau_p   = pow( 1 + _model->GetParameterVector()->at(  9 )->GetValue(), 2 );
-    double g2hjWW         = pow( 1 + _model->GetParameterVector()->at( 10 )->GetValue(), 2 );
-    double g2hjZZ         = g2hjWW;
-    double g2hjZga        = pow( 1 + _model->GetParameterVector()->at( 11 )->GetValue(), 2 );
-    double g2hjgaga       = pow( 1 + _model->GetParameterVector()->at( 12 )->GetValue(), 2 );
-    double g2hjgg         = pow( 1 + _model->GetParameterVector()->at( 13 )->GetValue(), 2 );
-    double g2hjggZ        = pow( 1 + _model->GetParameterVector()->at( 14 )->GetValue(), 2 );
-    double g2hjhiZ        = pow( 1 + _model->GetParameterVector()->at( 15 )->GetValue(), 2 );
-                                                                     
-    double BR_hjhihi      = _model->GetParameterVector()->at( 16 )->GetValue();
-    double GammaInvisible = _model->GetParameterVector()->at( 17 )->GetValue();
+    //double BR_hjhihi      = _model->GetParameterVector()->at( 16 )->GetValue();
+    //double GammaInvisible = _model->GetParameterVector()->at( 17 )->GetValue();
 
-    // Setting 3 : All up-type quarks and all down-type quarks and leptons are the same.
+    // Setting 2 : All up-type quarks and all down-type quarks and leptons are the same.
 
     //double g2hjss_s       = pow( 1 + _model->GetParameterVector()->at(  1 )->GetValue(), 2 );
     //double g2hjss_p       = pow( 1 + _model->GetParameterVector()->at(  2 )->GetValue(), 2 );
@@ -336,55 +355,30 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction() {
     //double BR_hjhihi      = _model->GetParameterVector()->at( 17 )->GetValue();
     //double GammaInvisible = _model->GetParameterVector()->at( 18 )->GetValue();
 
-    // Setting 2 : All up-type quarks are the same.
-
-    //double g2hjss_s       = pow( 1 + _model->GetParameterVector()->at(  1 )->GetValue(), 2 );
-    //double g2hjss_p       = pow( 1 + _model->GetParameterVector()->at(  2 )->GetValue(), 2 );
-    //double g2hjcc_s       = pow( 1 + _model->GetParameterVector()->at(  3 )->GetValue(), 2 );
-    //double g2hjcc_p       = pow( 1 + _model->GetParameterVector()->at(  4 )->GetValue(), 2 );
-    //double g2hjbb_s       = pow( 1 + _model->GetParameterVector()->at(  5 )->GetValue(), 2 );
-    //double g2hjbb_p       = pow( 1 + _model->GetParameterVector()->at(  6 )->GetValue(), 2 );
-    //double g2hjtt_s       = g2hjcc_s;
-    //double g2hjtt_p       = pow( 1 + _model->GetParameterVector()->at(  7 )->GetValue(), 2 );
-    //double g2hjmumu_s     = pow( 1 + _model->GetParameterVector()->at(  8 )->GetValue(), 2 );
-    //double g2hjmumu_p     = pow( 1 + _model->GetParameterVector()->at(  9 )->GetValue(), 2 );
-    //double g2hjtautau_s   = pow( 1 + _model->GetParameterVector()->at( 10 )->GetValue(), 2 );
-    //double g2hjtautau_p   = pow( 1 + _model->GetParameterVector()->at( 11 )->GetValue(), 2 );
-    //double g2hjWW         = pow( 1 + _model->GetParameterVector()->at( 12 )->GetValue(), 2 );
-    //double g2hjZZ         = pow( 1 + _model->GetParameterVector()->at( 13 )->GetValue(), 2 );
-    //double g2hjZga        = pow( 1 + _model->GetParameterVector()->at( 14 )->GetValue(), 2 );
-    //double g2hjgaga       = pow( 1 + _model->GetParameterVector()->at( 15 )->GetValue(), 2 );
-    //double g2hjgg         = pow( 1 + _model->GetParameterVector()->at( 16 )->GetValue(), 2 );
-    //double g2hjggZ        = pow( 1 + _model->GetParameterVector()->at( 17 )->GetValue(), 2 );
-    //double g2hjhiZ        = pow( 1 + _model->GetParameterVector()->at( 18 )->GetValue(), 2 );
-
-    //double BR_hjhihi      = _model->GetParameterVector()->at( 19 )->GetValue();
-    //double GammaInvisible = _model->GetParameterVector()->at( 20 )->GetValue();
-
     // Setting 1 : No constraints.
 
-    //double g2hjss_s       = pow( 1 + _model->GetParameterVector()->at(  1 )->GetValue(), 2 );
-    //double g2hjss_p       = pow( 1 + _model->GetParameterVector()->at(  2 )->GetValue(), 2 );
-    //double g2hjcc_s       = pow( 1 + _model->GetParameterVector()->at(  3 )->GetValue(), 2 );
-    //double g2hjcc_p       = pow( 1 + _model->GetParameterVector()->at(  4 )->GetValue(), 2 );
-    //double g2hjbb_s       = pow( 1 + _model->GetParameterVector()->at(  5 )->GetValue(), 2 );
-    //double g2hjbb_p       = pow( 1 + _model->GetParameterVector()->at(  6 )->GetValue(), 2 );
-    //double g2hjtt_s       = pow( 1 + _model->GetParameterVector()->at(  7 )->GetValue(), 2 );
-    //double g2hjtt_p       = pow( 1 + _model->GetParameterVector()->at(  8 )->GetValue(), 2 );
-    //double g2hjmumu_s     = pow( 1 + _model->GetParameterVector()->at(  9 )->GetValue(), 2 );
-    //double g2hjmumu_p     = pow( 1 + _model->GetParameterVector()->at( 10 )->GetValue(), 2 );
-    //double g2hjtautau_s   = pow( 1 + _model->GetParameterVector()->at( 11 )->GetValue(), 2 );
-    //double g2hjtautau_p   = pow( 1 + _model->GetParameterVector()->at( 12 )->GetValue(), 2 );
-    //double g2hjWW         = pow( 1 + _model->GetParameterVector()->at( 13 )->GetValue(), 2 );
-    //double g2hjZZ         = pow( 1 + _model->GetParameterVector()->at( 14 )->GetValue(), 2 );
-    //double g2hjZga        = pow( 1 + _model->GetParameterVector()->at( 15 )->GetValue(), 2 );
-    //double g2hjgaga       = pow( 1 + _model->GetParameterVector()->at( 16 )->GetValue(), 2 );
-    //double g2hjgg         = pow( 1 + _model->GetParameterVector()->at( 17 )->GetValue(), 2 );
-    //double g2hjggZ        = pow( 1 + _model->GetParameterVector()->at( 18 )->GetValue(), 2 );
-    //double g2hjhiZ        = pow( 1 + _model->GetParameterVector()->at( 19 )->GetValue(), 2 );
+    double g2hjss_s       = pow( 1 + _model->GetParameterMap()->at( "Delta_s_hss"       )->GetValue(), 2 );
+    double g2hjss_p       = pow( 1 + _model->GetParameterMap()->at( "Delta_p_hss"       )->GetValue(), 2 );
+    double g2hjcc_s       = pow( 1 + _model->GetParameterMap()->at( "Delta_s_hcc"       )->GetValue(), 2 );
+    double g2hjcc_p       = pow( 1 + _model->GetParameterMap()->at( "Delta_p_hcc"       )->GetValue(), 2 );
+    double g2hjbb_s       = pow( 1 + _model->GetParameterMap()->at( "Delta_s_hbb"       )->GetValue(), 2 );
+    double g2hjbb_p       = pow( 1 + _model->GetParameterMap()->at( "Delta_p_hbb"       )->GetValue(), 2 );
+    double g2hjtt_s       = pow( 1 + _model->GetParameterMap()->at( "Delta_s_htt"       )->GetValue(), 2 );
+    double g2hjtt_p       = pow( 1 + _model->GetParameterMap()->at( "Delta_p_htt"       )->GetValue(), 2 );
+    double g2hjmumu_s     = pow( 1 + _model->GetParameterMap()->at( "Delta_s_hmumu"     )->GetValue(), 2 );
+    double g2hjmumu_p     = pow( 1 + _model->GetParameterMap()->at( "Delta_p_hmumu"     )->GetValue(), 2 );
+    double g2hjtautau_s   = pow( 1 + _model->GetParameterMap()->at( "Delta_s_htautau"   )->GetValue(), 2 );
+    double g2hjtautau_p   = pow( 1 + _model->GetParameterMap()->at( "Delta_p_htautau"   )->GetValue(), 2 );
+    double g2hjWW         = pow( 1 + _model->GetParameterMap()->at( "Delta_hWW"         )->GetValue(), 2 );
+    double g2hjZZ         = pow( 1 + _model->GetParameterMap()->at( "Delta_hZZ"         )->GetValue(), 2 );
+    double g2hjZga        = pow( 1 + _model->GetParameterMap()->at( "Delta_hZgamma"     )->GetValue(), 2 );
+    double g2hjgaga       = pow( 1 + _model->GetParameterMap()->at( "Delta_hgammagamma" )->GetValue(), 2 );
+    double g2hjgg         = pow( 1 + _model->GetParameterMap()->at( "Delta_hgg"         )->GetValue(), 2 );
+    double g2hjggZ        = pow( 1 + _model->GetParameterMap()->at( "Delta_hggZ"        )->GetValue(), 2 );
+    double g2hjhiZ        = pow( 1 + _model->GetParameterMap()->at( "Delta_hihjZ"       )->GetValue(), 2 );
 
-    //double BR_hjhihi      = _model->GetParameterVector()->at( 20 )->GetValue();
-    //double GammaInvisible = _model->GetParameterVector()->at( 21 )->GetValue();
+    double BR_hjhihi      = _model->GetParameterMap()->at( "BR_hjhihi"        )->GetValue();
+    double GammaInvisible = _model->GetParameterMap()->at( "Gamma_hInvisible" )->GetValue();
 
     // Calculate the total width of the Higgs boson.
 
@@ -439,20 +433,20 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction() {
     // Run HiggsSignals.
 
     double Chisq_mu, Chisq_mh, Chisq, Pvalue;
-    run_higgssignals_( &mode, &Chisq_mu, &Chisq_mh, &Chisq, &nobs, &Pvalue );
+    run_higgssignals_( &_mode, &Chisq_mu, &Chisq_mh, &Chisq, &_nobs, &Pvalue );
 
     // Write the HiggsSignals output to file.
 
     system( "rm HS-output.slha" );
 
-    __io_MOD_higgssignals_create_slha_output_default( &detailed );
+    __io_MOD_higgssignals_create_slha_output_default( &_detailed );
 
     // Calculate additional HiggsSignals predictions.
 
     // Calculate the R values.
 
     double R_H_WW, R_H_ZZ, R_H_gammagamma, R_H_tautau, R_H_bb, R_VH_bb;
-    get_rvalues_( &nH, &collider, &R_H_WW, &R_H_ZZ, &R_H_gammagamma, &R_H_tautau, &R_H_bb, &R_VH_bb );
+    get_rvalues_( &_nH, &_collider, &R_H_WW, &R_H_ZZ, &R_H_gammagamma, &R_H_tautau, &R_H_bb, &R_VH_bb );
 
     // SM predictions of the branching fractions.
 
@@ -471,23 +465,23 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction() {
     // Calculate the branching fractions.
 
     double BR_s_hss       = CalculateBR( g2hjss_s,     massh, GammaTotal, BR_SM_s_hss );
-    double BR_s_hcc       = CalculateBR( g2hjcc_s,     massh, GammaTotal, BR_SM_s_hcc ); 
-    double BR_s_hbb       = CalculateBR( g2hjbb_s,     massh, GammaTotal, BR_SM_s_hbb ); 
-    double BR_s_htt       = CalculateBR( g2hjtt_s,     massh, GammaTotal, BR_SM_s_htt ); 
-    double BR_s_hmumu     = CalculateBR( g2hjmumu_s,   massh, GammaTotal, BR_SM_s_hmumu ); 
-    double BR_s_htautau   = CalculateBR( g2hjtautau_s, massh, GammaTotal, BR_SM_s_htautau ); 
-    double BR_hWW         = CalculateBR( g2hjWW,       massh, GammaTotal, BR_SM_hWW ); 
-    double BR_hZZ         = CalculateBR( g2hjZZ,       massh, GammaTotal, BR_SM_hZZ ); 
-    double BR_hZgamma     = CalculateBR( g2hjZga,      massh, GammaTotal, BR_SM_hZgamma ); 
-    double BR_hgammagamma = CalculateBR( g2hjgaga,     massh, GammaTotal, BR_SM_hgammagamma ); 
+    double BR_s_hcc       = CalculateBR( g2hjcc_s,     massh, GammaTotal, BR_SM_s_hcc );
+    double BR_s_hbb       = CalculateBR( g2hjbb_s,     massh, GammaTotal, BR_SM_s_hbb );
+    double BR_s_htt       = CalculateBR( g2hjtt_s,     massh, GammaTotal, BR_SM_s_htt );
+    double BR_s_hmumu     = CalculateBR( g2hjmumu_s,   massh, GammaTotal, BR_SM_s_hmumu );
+    double BR_s_htautau   = CalculateBR( g2hjtautau_s, massh, GammaTotal, BR_SM_s_htautau );
+    double BR_hWW         = CalculateBR( g2hjWW,       massh, GammaTotal, BR_SM_hWW );
+    double BR_hZZ         = CalculateBR( g2hjZZ,       massh, GammaTotal, BR_SM_hZZ );
+    double BR_hZgamma     = CalculateBR( g2hjZga,      massh, GammaTotal, BR_SM_hZgamma );
+    double BR_hgammagamma = CalculateBR( g2hjgaga,     massh, GammaTotal, BR_SM_hgammagamma );
     double BR_hgg         = CalculateBR( g2hjgg,       massh, GammaTotal, BR_SM_hgg );
 
     //double BR_Total = BR_s_hss + BR_s_hcc + BR_s_hbb + BR_s_htt + BR_s_hmumu + BR_s_htautau + BR_hWW + BR_hZZ + BR_hZgamma + BR_hgammagamma + BR_hgg + BR_hInvisible;
- 
+
     //try {
 
     //    if ( BR_Total > 1. + 1.e-16 && BR_Total < 1. - 1.e-16 ) {
- 
+
     //        throw ConfigurationException( "BR_Total unequal 1" );
 
     //    }
@@ -516,13 +510,13 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction() {
 
     double Gamma_hTotal_Penalty = 0;
 
-    if ( GammaTotal > 1. ) { Gamma_hTotal_Penalty = 1000000.; }
+    if ( GammaTotal > 1. ) Gamma_hTotal_Penalty = 1000000.;
 
     // Calculate the chi2 coming from the measured limit on invisible decays of the Higgs.
 
-    // int NChannels = 1, ChannelID = 40; // 4 0 = HZ production
+    // int _NChannels = 1, _ChannelID = 40; // 4 0 = HZ production
     double HZrate;
-    get_rates_( &nH, &collider, &NChannels, &ChannelID, &HZrate);
+    get_rates_( &_nH, &_collider, &_NChannels, &_ChannelID, &HZrate );
     double BR_hInvisible_Limit = CalculateBRhInvisibleLimit( BR_hInvisible * HZrate );
 
     // Write the additional HiggsSignals predictions to file.
