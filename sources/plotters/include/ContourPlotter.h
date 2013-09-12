@@ -22,8 +22,6 @@
 
 #include "PlotterBase.h"
 
-class TTree;
-
 /*!
  *  \brief Fittino namespace.
  */
@@ -46,7 +44,7 @@ namespace Fittino {
        *  Standard destructor.
        */
                    ~ContourPlotter();
-      //void         PerformAnalysis();
+      //void       PerformAnalysis();
 
     protected:
       virtual void Execute();

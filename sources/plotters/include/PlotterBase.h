@@ -51,28 +51,28 @@ namespace Fittino {
       /*!
        *  Constructor documentation.
        */
-                                PlotterBase( ModelBase* model, std::string& dataFileName );
+                                 PlotterBase( ModelBase* model, std::string& dataFileName );
       /*!
        *  Standard destructor.
        */
-                                ~PlotterBase();
+                                 ~PlotterBase();
 
     protected:
-      std::string               _dataFileName;
-      std::map<std::string,int> _leafMap;
-      std::vector<float>        _leafVector;
-      std::vector<std::string>  _activeQuantityVector;
-      TCanvas*                  _canvas;
-      TFile*                    _dataFile;
-      TPad*                     _pad;
-      TStyle*                   _fittinoStyle;
-      TTree*                    _tree;
-      std::vector<Quantity*>    _quantityVector;
+      std::string                _dataFileName;
+      std::map<std::string, int> _leafMap;
+      std::vector<float>         _leafVector;
+      std::vector<std::string>   _activeQuantityVector;
+      TCanvas*                   _canvas;
+      TFile*                     _dataFile;
+      TPad*                      _pad;
+      TStyle*                    _fittinoStyle;
+      TTree*                     _tree;
+      std::vector<Quantity*>     _quantityVector;
 
     protected:
-      virtual void              PrintResult() const;
-      virtual void              PrintSteeringParameters() const;
-      virtual void              UpdateModel();
+      virtual void               PrintResult() const;
+      virtual void               PrintSteeringParameters() const;
+      virtual void               UpdateModel();
 
   };
 
