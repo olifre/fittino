@@ -27,6 +27,7 @@
 
 #include "Collection.h"
 #include "PredictionBase.h"
+#include "TRandom3.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -113,6 +114,11 @@ namespace Fittino {
        *  Returns a pointer to a copy of the model.
        */
       virtual ModelBase*                                Clone() const = 0;
+			/*!
+			 *  Smears the observables (if existent)
+			 */
+			virtual void																			SmearObservables( TRandom3* ) = 0;
+			
 
     protected:
       /*!
@@ -163,7 +169,7 @@ namespace Fittino {
        *  Evaluates the chi2 function.  
        */
       virtual double                                    Evaluate() = 0;
-
+			
       /*! \endcond UML */
 
   };

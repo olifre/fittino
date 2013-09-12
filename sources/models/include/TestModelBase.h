@@ -43,6 +43,7 @@ namespace Fittino {
        */
                      ~TestModelBase();
       virtual void   PrintStatus() const;
+			virtual void	 SmearObservables( TRandom3* ) {}
 
     protected:
       virtual void   Initialize() const;
