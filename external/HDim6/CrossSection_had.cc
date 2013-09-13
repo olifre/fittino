@@ -92,7 +92,7 @@ void Gluonfusion_( sminputs * smpar, effinputs * effpar, double * cSec, double *
      int k = 0;
      do{
       gsl_monte_vegas_integrate( &G,&xl,&xu,dim,calls,r,s,&result,&error); }
-     while( fabs( gsl_monte_vegas_chisq( s )) > 0.5 && k < CSstep );
+     while( fabs( gsl_monte_vegas_chisq( s ) - 1 ) > 0.2 && k < CSstep );
      *chisq = gsl_monte_vegas_chisq( s );
      gsl_monte_vegas_free( s );
    };
@@ -211,10 +211,6 @@ void HWRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double *
       par.ckm    = vckm;
       par.smpar  = *smpar;
       par.effpar = *effpar;
-      /*
-      double par[] = { smpar->mh, smpar->mz, mq[j], mq[i], sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, vckm, effpar->g1hww, 
-		       effpar->g2hww, effpar->g3hww, effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hzy, effpar->g2hzy, effpar->ghyy, (double)i, -(double)j };
-      */
       gsl_monte_function G = { &m_qqp_WH, dim, &par };
       gsl_monte_vegas_state * s = gsl_monte_vegas_alloc( dim );
       int k = 0;
@@ -227,6 +223,22 @@ void HWRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double *
       gsl_monte_vegas_free( s );
       cs     += result;
       toterr += error;
+
+      par.PDG1   = -i;
+      par.PDG2   = j;
+      G = (gsl_monte_function){ &m_qqp_WH, dim, &par };
+      s = gsl_monte_vegas_alloc( dim );
+      k = 0;
+      do {
+	k++;
+	gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
+      } while (fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.5 && k < CSstep );
+      chi = gsl_monte_vegas_chisq(s);
+      *chisq = (fabs(*chisq-1) > fabs(chi-1) ? *chisq : chi );
+      gsl_monte_vegas_free( s );
+      cs     += result;
+      toterr += error;
+     
       j += 2;
     }while( j <= 5 );
     i += 2;
@@ -2801,8 +2813,7 @@ double ggH( double * x, size_t dim, void * param )
    };
    complex<double> Aano(-4*ghgg_( &smpar, &effpar, smpar.mh ), 0);
    complex<double> A = Af + Aano;
-   double Gamma = pow(smpar.mh,3)/64.0/M_PI*abs(A)*abs(A);
-   
+   double Gamma = pow(smpar.mh,3)/64.0/M_PI*abs(A*A);
    double x1 = *x*(1-pow(smpar.mh,2)/smpar.s)+pow(smpar.mh,2)/smpar.s;
    double x2 = pow(smpar.mh,2)/x1/smpar.s;
    return 1.0/x1/x2*LHAPDF::xfx(x1,smpar.mh,0)*LHAPDF::xfx(x2,smpar.mh,0)/x1/smpar.s*pow(M_PI,2)/8.0/smpar.mh*Gamma*(1-pow(smpar.mh,2)/smpar.s)/2.57e3*1e12;

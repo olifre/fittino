@@ -78,18 +78,54 @@ double udcsb_jjh( double * x, size_t dim, void * params )
   {
     for( int j = 0; j < 5; j++ )
     {
-      double xfx_i_x1 = LHAPDF::xfx(x1,mh,pdg[i]);
-      double xfx_j_x1 = LHAPDF::xfx(x1,mh,pdg[j]);
-      double xfx_i_x2 = LHAPDF::xfx(x2,mh,pdg[i]);
-      double xfx_j_x2 = LHAPDF::xfx(x2,mh,pdg[j]);
+      double xfx_i_x1  = LHAPDF::xfx(x1,mh,pdg[i]);  // Quark 1 mit x1
+      double xfx_j_x1  = LHAPDF::xfx(x1,mh,pdg[j]);  // Quark 2 mit x1
+      double xfx_i_x2  = LHAPDF::xfx(x2,mh,pdg[i]);  // Quark 1 mit x2
+      double xfx_j_x2  = LHAPDF::xfx(x2,mh,pdg[j]);  // Quark 2 mit x2
+      double xfx_mi_x1 = LHAPDF::xfx(x1,mh,-pdg[i]); // Antiquark 1 mit x1
+      double xfx_mj_x1 = LHAPDF::xfx(x1,mh,-pdg[j]); // Antiquark 2 mit x1
+      double xfx_mi_x2 = LHAPDF::xfx(x2,mh,-pdg[i]); // Antiquark 1 mit x2
+      double xfx_mj_x2 = LHAPDF::xfx(x2,mh,-pdg[j]); // Antiquark 2 mit x2
+
       if( (pdg[i] == pdg[j]) && !(pdg[i]%2) )
       {
-	dsig += 1./x1/x2*xfx_i_x1*xfx_j_x2*uu_uuh;
+	dsig += 1./x1/x2*xfx_i_x1*xfx_j_x2*uu_uuh;                                                               // Nur up-quarks beteiligt
+	dsig += 1./x1/x2*xfx_mi_x1*xfx_mj_x2*uu_uuh;                                                             // Nur anti-up-quarks beteiligt
+	dsig += 2./x1/x2*(xfx_mi_x1*xfx_j_x2+xfx_mi_x2*xfx_j_x1 + xfx_i_x1*xfx_mj_x2+xfx_i_x2*xfx_mj_x1)*uu_uuh; // Ein Quark, ein Antiquark
+	// Der Faktor 2 tritt auf um den von Comphep eingetragenen Symmetriefaktor aufzuheben der sich im Falle gleicher Quarks im Endzustand ergaebe
       };
       if( (pdg[i] == pdg[j]) && (pdg[i]%2) )
       {
-	dsig += 1./x1/x2*xfx_i_x1*xfx_j_x2*dd_ddh;
+	dsig += 1./x1/x2*xfx_i_x1*xfx_j_x2*dd_ddh;                                                               // Nur d-quarks beteiligt
+	dsig += 1./x1/x2*xfx_mi_x1*xfx_mj_x2*dd_ddh;                                                             // Nur anti-d-quarks beteiligt
+	dsig += 2./x1/x2*(xfx_mi_x1*xfx_j_x2+xfx_mi_x2*xfx_j_x2 + xfx_i_x1*xfx_mj_x2+xfx_i_x2*xfx_mj_x1)*dd_ddh; // Ein Quark, ein Antiquark 
+	// Der Faktor 2 tritt auf um den von Comphep eingetragenen Symmetriefaktor aufzuheben...
       };
+      if( !(pdg[i]%2) && !(pdg[j]%2)) // Beide sind up-Quarks, aber nicht notwendigerweise gleich
+	{
+	  for( int k = 0; k < 3; k++ ) // Summiert über das erste mögliche d-quark im Endzustand
+	    {
+	      for( int l = 0; l < 3; l++) // Summiert über das zweite mögliche d-Quark im Endzustand
+		{
+		  double ckm1 = ckm[(pdg[i]==4)*3+k];
+		  double ckm2 = ckm[(pdg[j]==4)*3+k];
+		  dsig += 1./x1/x2*(xfx_mi_x1*xfx_j_x2+xfx_mi_x2*xfx_j_x1)*ud_dpuph*pow(ckm1*ckm2,2);
+		};
+	    };
+	};
+      if( (pdg[i]%2) && (pdg[j]%2)) // Beide sind d-Quarks, aber nicht notwendigerweise gleich
+	{
+	  for( int k = 0; k < 2; k++ )
+	    {
+	      for( int l = 0; l < 2; l++ )
+		{
+		  // Zaehle die beiden moeglichen u-typ quarks im Endzustand
+		  double ckm1 = ckm[3*k+i/2];
+		  double ckm2 = ckm[3*l+j/2];
+		  dsig += 1./x1/x2*(xfx_mi_x1*xfx_j_x2+xfx_mi_x2*xfx_j_x1)*ud_dpuph*pow(ckm1*ckm2,2);
+		};
+	    };
+	};
       if( (pdg[i] != pdg[j]) && ( pdg[j]%2 && !(pdg[i]%2) ) )
       {
 	/* Quark i ist up-Quark, Quark j ist d-Quark */
@@ -97,12 +133,14 @@ double udcsb_jjh( double * x, size_t dim, void * params )
 	{
 	  for( int l = 0; l < 5; l++ )
 	  {
-	    if((pdg[k] == pdg[j]) && (pdg[l] == pdg[i]) && (pdg[k] == pdg[j]))  {
+	    if((pdg[k] == pdg[j]) && (pdg[l] == pdg[i]) )  {
 	      int zeile   = (pdg[i]==4);
 	      int spalte  = pdg[j]/2;
 	      int element = spalte+zeile*3;
 	      
-	      dsig += 1./x1/x2*(xfx_i_x1*xfx_j_x2+xfx_j_x1*xfx_i_x2)*(ud_duh_CKMsQ*pow(ckm[element],2) + ud_duh_NoCKM + ud_dpuph*pow(ckm[element],4));
+	      dsig += 1./x1/x2*(xfx_i_x1*xfx_j_x2+xfx_j_x1*xfx_i_x2)*(ud_duh_CKMsQ*pow(ckm[element],2) + ud_duh_NoCKM + ud_dpuph*pow(ckm[element],4));     // Nur quarks
+	      dsig += 1./x1/x2*(xfx_mi_x1*xfx_mj_x2+xfx_mj_x1*xfx_mi_x2)*(ud_duh_CKMsQ*pow(ckm[element],2) + ud_duh_NoCKM + ud_dpuph*pow(ckm[element],4)); // Nur antiquarks
+	      dsig += 1./x1/x2*(xfx_mi_x1*xfx_j_x2+xfx_mi_x2*xfx_j_x1+xfx_i_x1*xfx_mj_x2+xfx_i_x2*xfx_mj_x1)*ud_duh_NoCKM; // Ein Quark und ein Antiquark, W tritt nicht auf
 	    };
 	    if( ( pdg[k]%2 && !(pdg[l]%2)) && ((pdg[l] != pdg[i]) && (pdg[k] != pdg[j])))
 	    {
@@ -112,7 +150,8 @@ double udcsb_jjh( double * x, size_t dim, void * params )
 	      int spalte2 = pdg[l]/2;
 	      int elem1   = spalte1+zeile1*3;
 	      int elem2   = spalte2+zeile2*3;
-	      dsig += 2./x1/x2*(xfx_i_x1*xfx_j_x2+xfx_j_x1*xfx_i_x2)*ud_dpuph*pow(ckm[elem1]*ckm[elem2],2);
+	      dsig += 2./x1/x2*(xfx_i_x1*xfx_j_x2+xfx_j_x1*xfx_i_x2)*ud_dpuph*pow(ckm[elem1]*ckm[elem2],2);       // Die Quarks an jedem Strang sind verschieden
+	      dsig += 2./x1/x2*(xfx_mi_x1*xfx_mj_x2 + xfx_mj_x1*xfx_mi_x2)*ud_dpuph*pow(ckm[elem1]*ckm[elem2],2); // Die Antiquarks an jedem Strang sind verschieden
 	    };
 	  };
 	};

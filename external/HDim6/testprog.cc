@@ -119,70 +119,32 @@ int main( int argc, char ** argv )
 	LHAPDF::initPDFSet( pdfset, LHAPDF::LHGRID, 0 );
 
 	/* Initialize run */
- 	cout<<"Initialisiere VBF SM-Werte...";
-	vbf_init_cs_( &smvalues );
-	cout<<"done"<<endl;
 	cout<<"Initialisiere Hadronische CS...";
 	init_hadronic_cs_( &smvalues );
 	cout<<"done"<<endl;
-	cout<<"Initialisiere Standardmodell-Breiten...";
+	cout<<"Initialisiere Breiten...";
 	initsmwidths_( &smvalues );
 	cout<<"done"<<endl;
 	cout<<endl<<"Starte Scan..."<<endl<<endl;
 
-	cout<<setw(12)<<"fb"<<setw(12)<<"VBF"<<setw(12)<<"VBF_ERR"<<setw(12)<<"VBF_CHI";
-	cout<<setw(12)<<"bg-hb"<<setw(12)<<"bg-hb-ERR"<<setw(12)<<"bg-hb-CHI";
-        cout<<setw(12)<<"HW"<<setw(12)<<"HW_ERR"<<setw(12)<<"HW_CHI";
-	cout<<setw(12)<<"HZ"<<setw(12)<<"HZ_ERR"<<setw(12)<<"HZ_CHI";
-	cout<<setw(12)<<"BR(H->ZZ*)"<<setw(12)<<"HZZ_ERR"<<setw(12)<<"HZZ_CHI";
-	cout<<setw(12)<<"BR(H->WW*)"<<setw(12)<<"HWW_ERR"<<setw(12)<<"HWW_CHI";
-	cout<<setw(12)<<"BR(H->GG*)"<<setw(12)<<"HGG_ERR"<<setw(12)<<"HGG_CHI";
-	cout<<setw(12)<<"BR(H->yy)"<<setw(12)<<"Hyy_ERR"<<setw(12)<<"Hyy_CHI";
-	cout<<setw(12)<<"BR(H->bb)"<<setw(12)<<"Hbb_ERR"<<setw(12)<<"Hbb_CHI";
-	cout<<setw(12)<<"BR(H->zy)"<<setw(12)<<"Hzy_ERR"<<setw(12)<<"HZY_CHI";
-	cout<<setw(12)<<"Width(H)"<<setw(12)<<"Err_W(H)"<<setw(12)<<"Time(s)"<<endl;
+	cout<<setw(12)<<"fb";
+	cout<<setw(12)<<"VBF (CS)"<<setw(12)<<"VBF (Err)"<<setw(12)<<"VBF (Chi)";
+	cout<<setw(12)<<"WH  (CS)"<<setw(12)<<"WH  (Err)"<<setw(12)<<"WH  (Chi)";
+	cout<<setw(12)<<"Time(s)"<<endl;
 
 	for( int i = 0; i <= 20; i++ )
 	{
 	  clock_t start, end;
 	  start = clock();
-	  effvalues.fb = 1.0e-4/20.0*(double)i;
-	  
-	  double vbfratio, hzratio, hwratio, Brhww, Brhzz, bgratio;
-	  double err_vbfratio, err_hzratio, err_hwratio, err_Brhww, err_Brhzz, err_bgratio;
-	  double chi_vbfratio, chi_hzratio, chi_hwratio, chi_Brhww, chi_Brhzz, chi_bgratio;
-	  double BR_Hzz, BR_Hzz_Err, BR_Hzz_Chi;
-	  double BR_Hww, BR_Hww_Err, BR_Hww_Chi;
-	  double BR_Hgg, BR_Hgg_Err, BR_Hgg_Chi;
-	  double BR_Hyy, BR_Hyy_Err, BR_Hyy_Chi;
-	  double BR_Hbb, BR_Hbb_Err, BR_Hbb_Chi;
-	  double BR_Hzy, BR_Hzy_Err, BR_Hzy_Chi;
-	  double TH, TH_Err, TH_Chi;
-
+	  effvalues.fb = 1e-4/20.0*(double)i;
+	 
+	  double VBF, VBF_err, VBF_chi;
+	  double WH,  WH_err,  WH_chi;
+	  udcsb_jjh_( &smvalues, &effvalues, &VBF, &VBF_err, &VBF_chi);
+	  HWRadiation_( &smvalues, &effvalues, &WH, &WH_err, &WH_chi );
 	  cout<<scientific<<setprecision(4)<<setw(12)<<effvalues.fb;
-	  initeffwidths_( &smvalues, &effvalues );
-	  ratio_vbf_5flav_( &smvalues, &effvalues, &vbfratio, &err_vbfratio, &chi_vbfratio );
- 	  ratio_pphz_( &smvalues, &effvalues, &hzratio, &err_hzratio, &chi_hzratio );
-          ratio_pphw_( &smvalues, &effvalues, &hwratio, &err_hwratio, &chi_hwratio );
-	  ratio_bg_bh_(&smvalues, &effvalues, &bgratio, &err_bgratio, &chi_bgratio );
-	  k_hww_(     &smvalues, &effvalues, &BR_Hww,  &BR_Hww_Err,  &BR_Hww_Chi  );
-          k_hzz_(     &smvalues, &effvalues, &BR_Hzz,  &BR_Hzz_Err,  &BR_Hzz_Chi  );
-          k_hglgl_(   &smvalues, &effvalues, &BR_Hgg,  &BR_Hgg_Err,  &BR_Hgg_Chi  );
-          k_hgaga_(   &smvalues, &effvalues, &BR_Hyy,  &BR_Hyy_Err,  &BR_Hyy_Chi  );
-	  k_hbb_(     &smvalues, &effvalues, &BR_Hbb,  &BR_Hbb_Err,  &BR_Hbb_Chi  );
-	  k_hgaz_(    &smvalues, &effvalues, &BR_Hzy,  &BR_Hzy_Err,  &BR_Hzy_Chi  );
-	  totalwidth_( &smvalues, &effvalues, &TH, &TH_Err, &TH_Chi );
-	  cout<<setprecision(4)<<scientific<<setw(12)<<vbfratio<<setw(12)<<err_vbfratio<<setw(12)<<chi_vbfratio;
-	  cout<<setprecision(4)<<scientific<<setw(12)<<bgratio<<setw(12)<<err_bgratio<<setw(12)<<chi_bgratio;
-	  cout<<setprecision(4)<<scientific<<setw(12)<<hwratio<<setw(12)<<err_hwratio<<setw(12)<<chi_hwratio;
-	  cout<<setprecision(4)<<scientific<<setw(12)<<hzratio<<setw(12)<<err_hzratio<<setw(12)<<chi_hzratio;
-	  cout<<setprecision(4)<<scientific<<setw(12)<<BR_Hzz<<setw(12)<<BR_Hzz_Err<<setw(12)<<BR_Hzz_Chi;
-          cout<<setprecision(4)<<scientific<<setw(12)<<BR_Hww<<setw(12)<<BR_Hww_Err<<setw(12)<<BR_Hww_Chi;
-          cout<<setprecision(4)<<scientific<<setw(12)<<BR_Hgg<<setw(12)<<BR_Hgg_Err<<setw(12)<<BR_Hgg_Chi;
-          cout<<setprecision(4)<<scientific<<setw(12)<<BR_Hyy<<setw(12)<<BR_Hyy_Err<<setw(12)<<BR_Hyy_Chi;
-	  cout<<setprecision(4)<<scientific<<setw(12)<<BR_Hbb<<setw(12)<<BR_Hbb_Err<<setw(12)<<BR_Hbb_Chi;
-	  cout<<setprecision(4)<<scientific<<setw(12)<<BR_Hzy<<setw(12)<<BR_Hzy_Err<<setw(12)<<BR_Hzy_Err;
-	  cout<<setprecision(4)<<scientific<<setw(12)<<TH<<setw(12)<<TH_Err;
+	  cout<<scientific<<setw(12)<<VBF<<setw(12)<<VBF_err<<setw(12)<<VBF_chi;
+	  cout<<scientific<<setw(12)<<WH<<setw(12)<<WH_err<<setw(12)<<WH_chi;
 	  end = clock();
 	  cout<<setw(12)<<(end-start)/CLOCKS_PER_SEC<<endl;
 	};
