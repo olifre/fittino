@@ -28,14 +28,16 @@ void init_(         sminputs * smpar )
 void ratio_tth_(   sminputs * smpar, effinputs * effpar, double * ratio, double * err ) 
 {
   /* Ratio given through modified Yukawa-Coupling! */
-  *ratio = pow(1.0 - pow(smpar->vev,3)/sqrt(2)/smpar->mto*effpar->ftoh, 2);
+  double s = 2.*smpar->mto + smpar->mh;
+  *ratio = pow(ftoh_( smpar, effpar, s), 2);
   *err   = 0;
 };
 
 void ratio_bb_h_(   sminputs * smpar, effinputs * effpar, double * ratio, double * err ) 
 {
   /* Ratio given through modified Yukawa-Coupling! */
-  *ratio = pow(1.0 - pow(smpar->vev,3)/sqrt(2)/smpar->mbo*effpar->fboh, 2);
+  double s = smpar->mh;
+  *ratio = pow(fboh_( smpar, effpar, s ),2);
   *err   = 0;
 };
 

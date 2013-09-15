@@ -34,6 +34,11 @@ int main( int argc, char ** argv )
 	effvalues.fgg  = 0;
 	effvalues.fb   = 0;
 	effvalues.fw   = 0;
+	effvalues.fbw  = 0;
+	effvalues.fp1  = 0;
+	effvalues.fp2  = 0;
+	effvalues.fp3  = 0;
+	effvalues.fp4  = 0;
 	effvalues.fuph = 0;
 	effvalues.fdoh = 0;
 	effvalues.fchh = 0;
@@ -50,11 +55,22 @@ int main( int argc, char ** argv )
 	effvalues.nb   = 1;
 	effvalues.nw   = 1;
 	effvalues.ngg  = 1;
+	effvalues.nbw  = 1;
+	effvalues.np1  = 1;
+	effvalues.np2  = 1;
+	effvalues.np3  = 1;
+	effvalues.np4  = 1;
+
 	effvalues.rbb  = 1;
 	effvalues.rww  = 1;
 	effvalues.rgg  = 1;
 	effvalues.rw   = 1;
 	effvalues.rb   = 1;
+	effvalues.rbw  = 1;
+	effvalues.rp1  = 1;
+	effvalues.rp2  = 1;
+	effvalues.rp3  = 1;
+	effvalues.rp4  = 1;
 
 	// Effekte der obigen Variablen AUS
 	effvalues.override_unitarity = 1;
@@ -90,6 +106,7 @@ int main( int argc, char ** argv )
 	smvalues.vtb    = 0.89;
 	smvalues.vev    = smvalues.mw*smvalues.sw/sqrt(4.0*3.14159*smvalues.alphae)*2.0;
 	smvalues.s      = pow( 7000,2 );
+	smvalues.Gf     = 1.16637e-5; // Fermi Konstante
 
 	// Standardmodell-Higgs-Breiten nach CERN LHC Higgs Cross-Section Working Group (Yellow Report Pages)
 

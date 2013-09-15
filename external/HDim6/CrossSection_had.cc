@@ -22,14 +22,16 @@ void init_hadronic_cs_( sminputs * smpar )
 void ratio_tth_( sminputs * smpar, effinputs * effpar, double * ratio, double * err, double * chisq ) 
 {
   /* Ratio given through modified Yukawa-Coupling! */
-  *ratio = pow(1.0 - pow(smpar->vev,3)/sqrt(2)/smpar->mto*effpar->ftoh, 2);
+  double s = smpar->mh + 2.*smpar->mto;
+  *ratio = pow(ftoh_( smpar, effpar, s), 2);
   *err   = 0;
   *chisq = 1;
 };
 
 void ratio_bg_bh_(sminputs * smpar, effinputs * effpar, double * ratio, double * err, double * chisq )
 {
-  *ratio = pow(1-pow(smpar->vev,3)/sqrt(2)/smpar->mbo*effpar->fboh,2);
+  double s = smpar->mh + smpar->mbo;
+  *ratio = pow(fboh_( smpar, effpar, s ),2);
   *err   = 0;
   *chisq = 1;
 };
@@ -37,7 +39,7 @@ void ratio_bg_bh_(sminputs * smpar, effinputs * effpar, double * ratio, double *
 void ratio_bb_h_( sminputs * smpar, effinputs * effpar, double * ratio, double * err, double * chisq ) 
 {
   /* Ratio given through modified Yukawa-Coupling! */
-  *ratio = pow(1.0 - pow(smpar->vev,3)/sqrt(2)/smpar->mbo*effpar->fboh, 2);
+  *ratio = pow(fboh_( smpar, effpar, smpar->mh), 2);
   *err   = 0;
   *chisq = 1;
 };

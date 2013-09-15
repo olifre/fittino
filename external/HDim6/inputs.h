@@ -5,6 +5,7 @@ struct sminputs {
   /* Coupling Constants */
   double alphae;		// Electromagnetic Coupling Constants
   double alphas;		// Strong Coupling Constant
+  double Gf;                    // Fermi Constant
   
   /* Weinberg Angle */
   double sw;			// Sine of the Weinberg Angle
@@ -74,6 +75,13 @@ struct effinputs {
   double fgg;			// Coefficient of PhiFS(G)FS(G)Phi
   double fb;			// Coefficient of (DPhi)FS(B)(DPhi)
   double fw;			// Coefficient of (DPhi)FS(W)(DPhi)
+  double fbw;                   // Coefficient of Phi FS(W) FS(B) Phi, normally zero
+
+  double fp1;                   // Coefficient of (DPhi*Phi)(Phi*DPhi)     = 0 (Tyler Corbett, neq 0 Pomarol)
+  double fp2;                   // Coefficient of .5*d(Phi*Phi)*d(Phi*Phi) = 0 (Tyler Corbett, neq 0 Pomarol)
+  double fp3;                   // Coefficient of 1/3*(Phi*Phi)^6          = 0 (Tyler Corbett, Pomarol)
+  double fp4;                   // Coefficient of DPhi*DPhi*(Phi*Phi)      = 0 (Tyler Corbett, Pomarol)
+
    
    /* Additional Yukawa Coefficients */
   double fuph;                 // Modification of Yukawa-Coupling to up-Quarks     -- not relevant for fit, = 0
@@ -94,6 +102,13 @@ struct effinputs {
   double nb;
   double nw;
   double ngg;
+  double nbw;
+
+  double np1;
+  double np2;
+  double np3;
+  double np4;
+
   double ntop;
   double nbot;
   double ntau;
@@ -103,6 +118,13 @@ struct effinputs {
   double rb;
   double rw;
   double rgg;
+  double rbw;
+
+  double rp1;
+  double rp2;
+  double rp3;
+  double rp4;
+
   double rtop;
   double rbot;
   double rtau;
@@ -123,3 +145,13 @@ double g3hzz_( sminputs * smpar, effinputs * effpar, double s );
 double g1hww_( sminputs * smpar, effinputs * effpar, double s );
 double g2hww_( sminputs * smpar, effinputs * effpar, double s );
 double g3hww_( sminputs * smpar, effinputs * effpar, double s );
+
+double fuph_(  sminputs * smpar, effinputs * effpar, double s );
+double fdoh_(  sminputs * smpar, effinputs * effpar, double s );
+double fchh_(  sminputs * smpar, effinputs * effpar, double s );
+double fsth_(  sminputs * smpar, effinputs * effpar, double s );
+double ftoh_(  sminputs * smpar, effinputs * effpar, double s );
+double fboh_(  sminputs * smpar, effinputs * effpar, double s );
+double ftah_(  sminputs * smpar, effinputs * effpar, double s );
+double fmuh_(  sminputs * smpar, effinputs * effpar, double s );
+double felh_(  sminputs * smpar, effinputs * effpar, double s );

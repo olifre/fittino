@@ -294,8 +294,8 @@ void htata_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double mf  = smpar->mta;
   double mh  = smpar->mh;
   double v   = smpar->vev;
-  double ffH = effpar->ftah;
-  *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2.)/mf*ffH,2)*pow(1.-pow(2.*mf/mh,2),1.5);
+  double ffH = ftah_( smpar, effpar, mh );
+  *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(ffH,2)*pow(1.-pow(2.*mf/mh,2),1.5);
   *pError = 0;
 };
 
@@ -304,8 +304,8 @@ void hmumu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double mf = smpar->mmu;
   double mh = smpar->mh;
   double v   = smpar->vev;
-  double ffH = effpar->fmuh;
-  *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*pow(1-pow(2.*mf/mh,2),1.5);  
+  double ffH = fmuh_( smpar, effpar, mh );
+  *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(ffH,2)*pow(1-pow(2.*mf/mh,2),1.5);  
   *pError = 0;
 };
 
@@ -348,8 +348,8 @@ void hchch_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double mf = smpar->mch;
   double mh = smpar->mh;
   double v   = smpar->vev;
-  double ffH = effpar->fchh;
-  *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
+  double ffH = fchh_( smpar, effpar, mh );
+  *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
   *pError = 0;
 };
 
@@ -358,8 +358,8 @@ void hstst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double mf = smpar->mst;
   double mh = smpar->mh;
   double v   = smpar->vev;
-  double ffH = effpar->fsth;
-  *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
+  double ffH = fsth_( smpar, effpar, mh );
+  *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
   *pError = 0;
 };
 
@@ -368,8 +368,8 @@ void hbobo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double mf = smpar->mbo;
   double mh = smpar->mh;
   double v   = smpar->vev;
-  double ffH = effpar->fboh;
-  *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(1-pow(v,3.)/sqrt(2)/mf*ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
+  double ffH = fboh_( smpar, effpar, mh );
+  *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
   *pError = 0;
 };
 
