@@ -103,6 +103,8 @@ void Fittino::MarkovChainSampler::UpdateModel() {
     // Calclate chi2.
 
     double chi2 = _model->GetChi2();
+    _chi2 = chi2;
+    GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
 
     // Calculate likelihood.
 
@@ -126,7 +128,8 @@ void Fittino::MarkovChainSampler::UpdateModel() {
         pointAccepted = true;
         //GetStatusParameterVector()->at( 2 )->SetValue( pointAccepted );
 
-    } else {
+    }
+    else {
 
         double randomThreshold = _randomGenerator.Uniform( 0., 1. );
         if ( rho > randomThreshold ) {
@@ -188,7 +191,8 @@ void Fittino::MarkovChainSampler::UpdateModel() {
         _acceptCounter = 1;
         _branchPointAccepted->SetStatus( 0 );
 
-    } else {
+    }
+    else {
 
         // save point and increment counter for last accepted point.
         this->FillTree();
