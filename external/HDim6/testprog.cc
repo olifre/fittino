@@ -87,13 +87,15 @@ int main( int argc, char ** argv )
 	smvalues.mto    = 173.5;
 	smvalues.mbo    = 4.18;
 
-	smvalues.mz     = 91.1876;
-	smvalues.mw     = 80.385;
-	smvalues.mh     = 125;
-
 	smvalues.alphae = 0.0078186;
 	smvalues.alphas = 0.11819;
-	smvalues.sw     = 0.48079;
+	smvalues.Gf     = 1.16637e-5;
+	smvalues.mz     = 91.1876;
+	smvalues.sw     = sqrt( ( 1 - sqrt( 1-pow(2,1.5)*M_PI*smvalues.alphae/pow(smvalues.mz,2)/smvalues.Gf ) )/2.0 );
+	//smvalues.sw     = 0.48079;
+
+	smvalues.mw     = smvalues.mz*sqrt(1-smvalues.sw*smvalues.sw);
+	smvalues.mh     = 125;
 
 	smvalues.vud    = 0.97483;
 	smvalues.vus    = 0.2229;
@@ -106,7 +108,6 @@ int main( int argc, char ** argv )
 	smvalues.vtb    = 0.89;
 	smvalues.vev    = smvalues.mw*smvalues.sw/sqrt(4.0*3.14159*smvalues.alphae)*2.0;
 	smvalues.s      = pow( 7000,2 );
-	smvalues.Gf     = 1.16637e-5; // Fermi Konstante
 
 	// Standardmodell-Higgs-Breiten nach CERN LHC Higgs Cross-Section Working Group (Yellow Report Pages)
 

@@ -133,6 +133,25 @@ struct effinputs {
   int override_unitarity;
 };
 
+// Minimale Struktur die die Pomarol-Koeffizienten zusammenfasst
+
+struct pominput{
+  double kgg;  // Coefficient of gs^2H^2FS(G)FS(G)
+  double kbb;  // Coefficient of g'^2H^2FS(B)FS(B)
+  double ch;   // Coefficient of 1/2*(d_mu H^2)^2
+  double khvp; // kappa_hv_+ Coefficient of (O_HW+O_HB)/2
+  double khvm; // kappa_hv_- Coefficient of (O_HW-O_HB)/2
+  double cvm;  // c_v-       Coefficient of (O_W-O_B)/2
+  double cmp;  // c_v+       Coefficient of (O_W+O_B)/2  
+};
+
+// Funktion rechnet die Pomarol-Koeffizienten in Eboli-Koeffizienten um //
+// Umrechnung betrifft nur die Operatoren im Higgs-Eichboson-Sektor     //
+// Fermionoperatoren werden NICHT umgerechnet                           //
+// Da die W-Masse und v in den Umrechnungen benoetigt werden, muessen die SM-Inputs gesetzt werden!
+
+void pom_to_eboli( pominput * pomdata, effinputs * effdata, sminputs * smdata );
+
 // Calculate the vertex factors for effective interactions
 
 double ghyy_(  sminputs * smpar, effinputs * effpar, double s );
@@ -155,3 +174,4 @@ double fboh_(  sminputs * smpar, effinputs * effpar, double s );
 double ftah_(  sminputs * smpar, effinputs * effpar, double s );
 double fmuh_(  sminputs * smpar, effinputs * effpar, double s );
 double felh_(  sminputs * smpar, effinputs * effpar, double s );
+
