@@ -11,12 +11,30 @@ void vbf_init_cs_( sminputs * smpar )
   udcsb_jjh_(   smpar, &temp, &cs_5flavorSM, &err_5flavorSM, &chi_5flavorSM );
 };
 
+void vbf_init_2flav_sm_( sminputs * smpar )
+{
+  effinputs temp;
+  temp.fbb = 0; temp.fww = 0; temp.fgg = 0; temp.fb = 0; temp.fw = 0; 
+  temp.fuph = 0; temp.fdoh = 0; temp.fchh = 0; temp.fsth = 0; temp.fboh = 0; temp.ftoh = 0; temp.felh = 0; temp.fmuh = 0; temp.ftah = 0;
+ 
+  ud_jjh_(   smpar, &temp, &cs_2flavorSM, &err_2flavorSM, &chi_2flavorSM );
+};
+
 void ratio_vbf_5flav_( sminputs * smpar, effinputs * effpar, double * ratio, double * error, double * chisq )
 {
   double result, err, chi;
   udcsb_jjh_( smpar, effpar, &result, &err, &chi );
   *ratio = result / cs_5flavorSM;
   *error = err / cs_5flavorSM + result / pow( cs_5flavorSM, 2 ) * err_5flavorSM;
+  *chisq = chi;
+};
+
+void ratio_vbf_2flav_( sminputs * smpar, effinputs * effpar, double * ratio, double * error, double * chisq )
+{
+  double result, err, chi;
+  ud_jjh_( smpar, effpar, &result, &err, &chi );
+  *ratio = result / cs_5flavorSM;
+  *error = err / cs_2flavorSM + result / pow( cs_2flavorSM, 2 ) * err_2flavorSM;
   *chisq = chi;
 };
 
@@ -77,6 +95,148 @@ double udcsb_jjh( double * x, size_t dim, void * params )
   for( int i = 0; i < 5; i++ )
   {
     for( int j = 0; j < 5; j++ )
+    {
+      double xfx_i_x1  = LHAPDF::xfx(x1,mh,pdg[i]);  // Quark 1 mit x1
+      double xfx_j_x1  = LHAPDF::xfx(x1,mh,pdg[j]);  // Quark 2 mit x1
+      double xfx_i_x2  = LHAPDF::xfx(x2,mh,pdg[i]);  // Quark 1 mit x2
+      double xfx_j_x2  = LHAPDF::xfx(x2,mh,pdg[j]);  // Quark 2 mit x2
+      double xfx_mi_x1 = LHAPDF::xfx(x1,mh,-pdg[i]); // Antiquark 1 mit x1
+      double xfx_mj_x1 = LHAPDF::xfx(x1,mh,-pdg[j]); // Antiquark 2 mit x1
+      double xfx_mi_x2 = LHAPDF::xfx(x2,mh,-pdg[i]); // Antiquark 1 mit x2
+      double xfx_mj_x2 = LHAPDF::xfx(x2,mh,-pdg[j]); // Antiquark 2 mit x2
+
+      if( (pdg[i] == pdg[j]) && !(pdg[i]%2) )
+      {
+	dsig += 1./x1/x2*xfx_i_x1*xfx_j_x2*uu_uuh;                                                               // Nur up-quarks beteiligt
+	dsig += 1./x1/x2*xfx_mi_x1*xfx_mj_x2*uu_uuh;                                                             // Nur anti-up-quarks beteiligt
+	dsig += 2./x1/x2*(xfx_mi_x1*xfx_j_x2+xfx_mi_x2*xfx_j_x1 + xfx_i_x1*xfx_mj_x2+xfx_i_x2*xfx_mj_x1)*uu_uuh; // Ein Quark, ein Antiquark
+	// Der Faktor 2 tritt auf um den von Comphep eingetragenen Symmetriefaktor aufzuheben der sich im Falle gleicher Quarks im Endzustand ergaebe
+      };
+      if( (pdg[i] == pdg[j]) && (pdg[i]%2) )
+      {
+	dsig += 1./x1/x2*xfx_i_x1*xfx_j_x2*dd_ddh;                                                               // Nur d-quarks beteiligt
+	dsig += 1./x1/x2*xfx_mi_x1*xfx_mj_x2*dd_ddh;                                                             // Nur anti-d-quarks beteiligt
+	dsig += 2./x1/x2*(xfx_mi_x1*xfx_j_x2+xfx_mi_x2*xfx_j_x2 + xfx_i_x1*xfx_mj_x2+xfx_i_x2*xfx_mj_x1)*dd_ddh; // Ein Quark, ein Antiquark 
+	// Der Faktor 2 tritt auf um den von Comphep eingetragenen Symmetriefaktor aufzuheben...
+      };
+      if( !(pdg[i]%2) && !(pdg[j]%2)) // Beide sind up-Quarks, aber nicht notwendigerweise gleich
+	{
+	  for( int k = 0; k < 3; k++ ) // Summiert über das erste mögliche d-quark im Endzustand
+	    {
+	      for( int l = 0; l < 3; l++) // Summiert über das zweite mögliche d-Quark im Endzustand
+		{
+		  double ckm1 = ckm[(pdg[i]==4)*3+k];
+		  double ckm2 = ckm[(pdg[j]==4)*3+k];
+		  dsig += 1./x1/x2*(xfx_mi_x1*xfx_j_x2+xfx_mi_x2*xfx_j_x1)*ud_dpuph*pow(ckm1*ckm2,2);
+		};
+	    };
+	};
+      if( (pdg[i]%2) && (pdg[j]%2)) // Beide sind d-Quarks, aber nicht notwendigerweise gleich
+	{
+	  for( int k = 0; k < 2; k++ )
+	    {
+	      for( int l = 0; l < 2; l++ )
+		{
+		  // Zaehle die beiden moeglichen u-typ quarks im Endzustand
+		  double ckm1 = ckm[3*k+i/2];
+		  double ckm2 = ckm[3*l+j/2];
+		  dsig += 1./x1/x2*(xfx_mi_x1*xfx_j_x2+xfx_mi_x2*xfx_j_x1)*ud_dpuph*pow(ckm1*ckm2,2);
+		};
+	    };
+	};
+      if( (pdg[i] != pdg[j]) && ( pdg[j]%2 && !(pdg[i]%2) ) )
+      {
+	/* Quark i ist up-Quark, Quark j ist d-Quark */
+	for( int k = 0; k < 5; k++ )
+	{
+	  for( int l = 0; l < 5; l++ )
+	  {
+	    if((pdg[k] == pdg[j]) && (pdg[l] == pdg[i]) )  {
+	      int zeile   = (pdg[i]==4);
+	      int spalte  = pdg[j]/2;
+	      int element = spalte+zeile*3;
+	      
+	      dsig += 1./x1/x2*(xfx_i_x1*xfx_j_x2+xfx_j_x1*xfx_i_x2)*(ud_duh_CKMsQ*pow(ckm[element],2) + ud_duh_NoCKM + ud_dpuph*pow(ckm[element],4));     // Nur quarks
+	      dsig += 1./x1/x2*(xfx_mi_x1*xfx_mj_x2+xfx_mj_x1*xfx_mi_x2)*(ud_duh_CKMsQ*pow(ckm[element],2) + ud_duh_NoCKM + ud_dpuph*pow(ckm[element],4)); // Nur antiquarks
+	      dsig += 1./x1/x2*(xfx_mi_x1*xfx_j_x2+xfx_mi_x2*xfx_j_x1+xfx_i_x1*xfx_mj_x2+xfx_i_x2*xfx_mj_x1)*ud_duh_NoCKM; // Ein Quark und ein Antiquark, W tritt nicht auf
+	    };
+	    if( ( pdg[k]%2 && !(pdg[l]%2)) && ((pdg[l] != pdg[i]) && (pdg[k] != pdg[j])))
+	    {
+	      int zeile1  = (pdg[i]==4);
+	      int spalte1 = pdg[k]/2;
+	      int zeile2  = (pdg[j]==4);
+	      int spalte2 = pdg[l]/2;
+	      int elem1   = spalte1+zeile1*3;
+	      int elem2   = spalte2+zeile2*3;
+	      dsig += 2./x1/x2*(xfx_i_x1*xfx_j_x2+xfx_j_x1*xfx_i_x2)*ud_dpuph*pow(ckm[elem1]*ckm[elem2],2);       // Die Quarks an jedem Strang sind verschieden
+	      dsig += 2./x1/x2*(xfx_mi_x1*xfx_mj_x2 + xfx_mj_x1*xfx_mi_x2)*ud_dpuph*pow(ckm[elem1]*ckm[elem2],2); // Die Antiquarks an jedem Strang sind verschieden
+	    };
+	  };
+	};
+      };
+    };
+  };
+  
+  return dsig;
+};
+
+void ud_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err, double * chisq )
+{
+  VBFParam par;
+  par.sm = *smpar;
+  par.eff = *effpar;
+  
+  double xl[] = {0,0,0,0,0,0};
+  double xu[] = {1,1,1,1,1,1};
+  double result, error;
+  
+  size_t dim = 6;
+  const gsl_rng_type * T;
+  gsl_rng * r;
+  size_t calls = VBFCALLS;
+  
+  gsl_monte_function G = {ud_jjh, dim, &par};
+  gsl_rng_env_setup();
+  T = gsl_rng_default;
+  r = gsl_rng_alloc( T );
+  {
+    int k = 0;
+    gsl_monte_vegas_state * s = gsl_monte_vegas_alloc( dim );
+    do
+    {    
+      gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
+      k++;
+    }
+    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.4) && ( k < VBFRUN ));
+    *chisq = gsl_monte_vegas_chisq( s );
+    gsl_monte_vegas_free( s );
+  };
+  *cs = result;
+  *err = error; 
+};
+
+double ud_jjh( double * x, size_t dim, void * params )
+{
+  VBFParam * par = (VBFParam*)params;
+  sminputs smpar = par->sm;
+  double ckm[] = { smpar.vud, smpar.vus, smpar.vub, smpar.vcd, smpar.vcs, smpar.vcb };
+  int    pdg[] = { 1, 2, 3, 4, 5 };
+  double mh = smpar.mh;
+  
+  double x1 = x[4]*(1-pow(smpar.mh,2)/smpar.s) + pow(smpar.mh,2)/smpar.s;
+  double x2 = x[5]*(1-pow(smpar.mh,2)/smpar.s/x1) + pow(smpar.mh,2)/smpar.s/x1;
+  
+  double uu_uuh       = uu_uuh_massless(   x, dim, par );
+  double dd_ddh       = dd_ddh_massless(   x, dim, par );
+  double ud_dpuph     = ud_dpuph_massless( x, dim, par );
+  double ud_duh_NoCKM = ud_duh_NoCKM_massless( x, dim, par );
+  double ud_duh_CKMsQ = ud_duh_CKMsQ_massless( x, dim, par );
+  
+  double dsig = 0;
+  /* Loop over initial states */
+  for( int i = 0; i < 2; i++ )
+  {
+    for( int j = 0; j < 2; j++ )
     {
       double xfx_i_x1  = LHAPDF::xfx(x1,mh,pdg[i]);  // Quark 1 mit x1
       double xfx_j_x1  = LHAPDF::xfx(x1,mh,pdg[j]);  // Quark 2 mit x1

@@ -158,7 +158,7 @@ int main( int argc, char ** argv )
 	 
 	  double VBF, VBF_err, VBF_chi;
 	  double WH,  WH_err,  WH_chi;
-	  udcsb_jjh_( &smvalues, &effvalues, &VBF, &VBF_err, &VBF_chi);
+	  ud_jjh_( &smvalues, &effvalues, &VBF, &VBF_err, &VBF_chi);
 	  HWRadiation_( &smvalues, &effvalues, &WH, &WH_err, &WH_chi );
 	  cout<<scientific<<setprecision(4)<<setw(12)<<effvalues.fb;
 	  cout<<scientific<<setw(12)<<VBF<<setw(12)<<VBF_err<<setw(12)<<VBF_chi;
