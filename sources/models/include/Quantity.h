@@ -38,55 +38,55 @@ namespace Fittino {
        *  Takes as input the name and value of the quantity as well as
        *  information for plotting.
        */
-                          Quantity( std::string name,
-                                    std::string plotName,
-                                    double      value,
-                                    double      plotLowerBound,
-                                    double      plotUpperBound );
+                            Quantity( std::string name,
+                                      std::string plotName,
+                                      double      value,
+                                      double      plotLowerBound,
+                                      double      plotUpperBound );
       /*!
        *  Standard destructor.
        */
-                          ~Quantity();
-      double              GetPlotLowerBound() const;
-      double              GetPlotUpperBound() const;
-      /*!
-       *  Returns the value of the quantity.
-       */
-      const double&       GetValue() const;
+                            ~Quantity();
+      double                GetPlotLowerBound() const;
+      double                GetPlotUpperBound() const;
        /*!
        *  Returns the name of the quantity.
        */
-      std::string         GetName() const;
+      std::string           GetName() const;
 
     public:
       /*!
+       *  Returns the value of the quantity.
+       */
+      virtual const double& GetValue() const;
+      /*!
        *  Prints the quantity status on screen.
        */
-      virtual void        PrintStatus() const;
+      virtual void          PrintStatus() const;
       /*!
        *  Sets the value of the quantity.
        */
-      virtual void        SetValue( double value );
+      virtual void          SetValue( double value );
       /*!
        *  Returns the name of the axis title.
        */
-      virtual std::string GetPlotName() const;
+      virtual std::string   GetPlotName() const;
 
     protected:
-      double              _plotLowerBound;
-      double              _plotUpperBound;
+      double                _plotLowerBound;
+      double                _plotUpperBound;
       /*!
        *  Value of the quantity.
        */
-      double              _value;
+      double                _value;
       /*!
        *  Name of the quantity.
        */
-      std::string         _name;
+      std::string           _name;
       /*!
        *  Name of the axis in the plot.
        */
-      std::string         _plotName;
+      std::string           _plotName;
 
   };
 
