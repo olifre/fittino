@@ -203,13 +203,18 @@ void k_hzz_( sminputs * smpar, effinputs * effpar, double * k, double * err, dou
 void hglgl_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
   double mf[] = {smpar->mup, smpar->mdo, smpar->mch, smpar->mst, smpar->mto, smpar->mbo };
-  double ff[] = {effpar->fuph, effpar->fdoh, effpar->fchh, effpar->fsth, effpar->ftoh, effpar->fboh };
+  double ff[] = { fuph_( smpar, effpar, smpar->mh ),
+		  fdoh_( smpar, effpar, smpar->mh ), 
+		  fchh_( smpar, effpar, smpar->mh ),
+		  fsth_( smpar, effpar, smpar->mh ), 
+		  ftoh_( smpar, effpar, smpar->mh ),
+		  fboh_( smpar, effpar, smpar->mh ) };
   complex<double> Af(0,0); // Fermionschleife
   double tau = 0;
   for( int i = 0; i < 6; i++ )
     {
       tau = 4.0*pow(mf[i],2)/pow(smpar->mh,2);
-      Af += -tau*(complex<double>(1,0)+(1-tau)*f_(tau))*sqrt(2)*smpar->alphas/M_PI/smpar->vev*(1-pow(smpar->vev,3)/sqrt(2.0)/mf[i]*ff[i]);
+      Af += -tau*(complex<double>(1,0)+(1-tau)*f_(tau))*sqrt(2)*smpar->alphas/M_PI/smpar->vev*ff[i];
     }; 
 
   complex<double> Aano(-4*ghgg_( smpar, effpar, smpar->mh ), 0);
@@ -226,7 +231,15 @@ void hgaga_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double mf[] = {smpar->mup, smpar->mdo, smpar->mch, smpar->mst, smpar->mto, smpar->mbo, smpar->mel, smpar->mmu, smpar->mta };
   double ef[] = {2./3.,      -1./3.,     2./3.,      -1./3.,     2./3.,      -1./3.,     -1,         -1,         -1         };
   double Nc[] = {3,          3,          3,          3,          3,          3,          1,          1,          1          };
-  double ff[] = {effpar->fuph, effpar->fdoh, effpar->fchh, effpar->fsth, effpar->ftoh, effpar->fboh, effpar->felh, effpar->fmuh, effpar->ftah };
+  double ff[] = { fuph_( smpar, effpar, smpar->mh ),
+		  fdoh_( smpar, effpar, smpar->mh ),
+		  fchh_( smpar, effpar, smpar->mh ), 
+		  fsth_( smpar, effpar, smpar->mh ), 
+		  ftoh_( smpar, effpar, smpar->mh ),
+		  fboh_( smpar, effpar, smpar->mh ),
+		  felh_( smpar, effpar, smpar->mh ),
+		  fmuh_( smpar, effpar, smpar->mh ), 
+		  ftah_( smpar, effpar, smpar->mh ) };
   complex<double> Af(0,0); // Fermionschleife
   complex<double> Aw(0,0); //W-Schleife
   double tau = 0;
@@ -234,7 +247,7 @@ void hgaga_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
     {
       complex<double> eins(1,0);
       tau = 4.0*pow(mf[i],2)/pow(smpar->mh,2);
-      Af += -2.0*tau*(eins+(1-tau)*f_(tau))*Nc[i]*ef[i]*ef[i]*smpar->alphae/2.0/M_PI/smpar->vev*(1-pow(smpar->vev,3)/sqrt(2.0)/mf[i]*ff[i]);
+      Af += -2.0*tau*(eins+(1-tau)*f_(tau))*Nc[i]*ef[i]*ef[i]*smpar->alphae/2.0/M_PI/smpar->vev*ff[i];
     };
   double cw = sqrt(1-pow(smpar->sw,2));
   tau = 4.0*pow(smpar->mz*cw/smpar->mh,2);
@@ -255,7 +268,16 @@ void hgaz_(  sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double t3[]    = {0.5,        -0.5,       0.5,        -0.5,       0.5,        -0.5,       -0.5,       -0.5,       -0.5      };
   double ef[]    = {2./3.,      -1./3.,     2./3.,      -1./3.,     2./3.,      -1./3.,     -1,         -1,         -1        };
   double Nc[]    = {3,          3,          3,          3,          3,          3,          1,          1,          1         };
-  double ff[]    = {effpar->fuph, effpar->fdoh, effpar->fchh, effpar->fsth, effpar->ftoh, effpar->fboh, effpar->felh, effpar->fmuh, effpar->ftah };
+  double ff[] = { fuph_( smpar, effpar, smpar->mh ),
+		  fdoh_( smpar, effpar, smpar->mh ),
+		  fchh_( smpar, effpar, smpar->mh ), 
+		  fsth_( smpar, effpar, smpar->mh ), 
+		  ftoh_( smpar, effpar, smpar->mh ),
+		  fboh_( smpar, effpar, smpar->mh ),
+		  felh_( smpar, effpar, smpar->mh ),
+		  fmuh_( smpar, effpar, smpar->mh ), 
+		  ftah_( smpar, effpar, smpar->mh ) };
+ 
   double mz      = smpar->mz;
   double sw      = smpar->sw;
   double cw      = sqrt(1-sw*sw);
@@ -274,7 +296,7 @@ void hgaz_(  sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
     {
       tau    = 4.0*pow(mf[i]/mh,2);
       lambda = 4.0*pow(mf[i]/mz,2);
-      Af+=smpar->alphae/2.0/M_PI/smpar->vev * Nc[i]*(-2.0*ef[i])*(t3[i]-2.0*ef[i]*sw*sw)/sw/cw*(I1_(tau,lambda)-I2_(tau,lambda))*(1-pow(smpar->vev,3)/sqrt(2)/mf[i]*ff[i]);
+      Af+=smpar->alphae/2.0/M_PI/smpar->vev * Nc[i]*(-2.0*ef[i])*(t3[i]-2.0*ef[i]*sw*sw)/sw/cw*(I1_(tau,lambda)-I2_(tau,lambda))*ff[i];
     };
   double tauw    = 4*pow(mw/mh,2);
   double lambdaw = 4*pow(mw/mz,2);

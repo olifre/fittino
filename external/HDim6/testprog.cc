@@ -148,21 +148,25 @@ int main( int argc, char ** argv )
 	cout<<setw(12)<<"fb";
 	cout<<setw(12)<<"VBF (CS)"<<setw(12)<<"VBF (Err)"<<setw(12)<<"VBF (Chi)";
 	cout<<setw(12)<<"WH  (CS)"<<setw(12)<<"WH  (Err)"<<setw(12)<<"WH  (Chi)";
+	cout<<setw(12)<<"ggH (CS)"<<setw(12)<<"ggH (Err)"<<setw(12)<<"ggH (Chi)";
 	cout<<setw(12)<<"Time(s)"<<endl;
 
 	for( int i = 0; i <= 20; i++ )
 	{
 	  clock_t start, end;
 	  start = clock();
-	  effvalues.fb = 1e-4/20.0*(double)i;
+	  effvalues.fp2 = 1e-7/20.0*(double)i;
 	 
 	  double VBF, VBF_err, VBF_chi;
 	  double WH,  WH_err,  WH_chi;
-	  ud_jjh_( &smvalues, &effvalues, &VBF, &VBF_err, &VBF_chi);
-	  HWRadiation_( &smvalues, &effvalues, &WH, &WH_err, &WH_chi );
-	  cout<<scientific<<setprecision(4)<<setw(12)<<effvalues.fb;
+	  double ggH, ggH_err, ggH_chi;
+	  ud_jjh_(      &smvalues, &effvalues, &VBF, &VBF_err, &VBF_chi);
+	  HWRadiation_( &smvalues, &effvalues, &WH,  &WH_err,  &WH_chi );
+	  Gluonfusion_( &smvalues, &effvalues, &ggH, &ggH_err, &ggH_chi );
+	  cout<<scientific<<setprecision(4)<<setw(12)<<effvalues.fp2;
 	  cout<<scientific<<setw(12)<<VBF<<setw(12)<<VBF_err<<setw(12)<<VBF_chi;
 	  cout<<scientific<<setw(12)<<WH<<setw(12)<<WH_err<<setw(12)<<WH_chi;
+	  cout<<scientific<<setw(12)<<ggH<<setw(12)<<ggH_err<<setw(12)<<ggH_chi;
 	  end = clock();
 	  cout<<setw(12)<<(end-start)/CLOCKS_PER_SEC<<endl;
 	};

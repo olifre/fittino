@@ -11,9 +11,9 @@ void init_hadronic_cs_( sminputs * smpar )
   temp.fbb = 0; temp.fww = 0; temp.fgg = 0; temp.fb = 0; temp.fw = 0; 
   temp.fuph = 0; temp.fdoh = 0; temp.fchh = 0; temp.fsth = 0; temp.fboh = 0; temp.ftoh = 0; temp.felh = 0; temp.fmuh = 0; temp.ftah = 0;
  
-  HWRadiation_( smpar, &temp, &pp_wh_sm, &err_wh_sm, &chi_wh_sm );
-  HZRadiation_( smpar, &temp, &pp_zh_sm, &err_zh_sm, &chi_zh_sm );
-  Gluonfusion_( smpar, &temp, &ggh_sm, &err_ggh_sm, &chi_ggh_sm );
+  HWRadiation_( smpar, &temp, &pp_wh_sm, &err_wh_sm,  &chi_wh_sm );
+  HZRadiation_( smpar, &temp, &pp_zh_sm, &err_zh_sm,  &chi_zh_sm );
+  Gluonfusion_( smpar, &temp, &ggh_sm,   &err_ggh_sm, &chi_ggh_sm );
   std::cout<<"pp->wh = "<<pp_wh_sm<<" pp->zh = "<<pp_zh_sm<<" gg->h = "<<ggh_sm<<std::endl;
 };
 
@@ -31,7 +31,7 @@ void ratio_tth_( sminputs * smpar, effinputs * effpar, double * ratio, double * 
 void ratio_bg_bh_(sminputs * smpar, effinputs * effpar, double * ratio, double * err, double * chisq )
 {
   double s = smpar->mh + smpar->mbo;
-  *ratio = pow(fboh_( smpar, effpar, s ),2);
+  *ratio = pow( fboh_( smpar, effpar, s ),2);
   *err   = 0;
   *chisq = 1;
 };
@@ -39,7 +39,7 @@ void ratio_bg_bh_(sminputs * smpar, effinputs * effpar, double * ratio, double *
 void ratio_bb_h_( sminputs * smpar, effinputs * effpar, double * ratio, double * err, double * chisq ) 
 {
   /* Ratio given through modified Yukawa-Coupling! */
-  *ratio = pow(fboh_( smpar, effpar, smpar->mh), 2);
+  *ratio = pow( fboh_( smpar, effpar, smpar->mh), 2);
   *err   = 0;
   *chisq = 1;
 };
@@ -2793,7 +2793,12 @@ double ggH( double * x, size_t dim, void * param )
    effinputs effpar = par->effpar;
    
    double mf[] = { smpar.mup, smpar.mdo, smpar.mch, smpar.mst, smpar.mto, smpar.mbo };
-   double ff[] = {effpar.fuph, effpar.fdoh, effpar.fchh, effpar.fsth, effpar.ftoh, effpar.fboh };   
+   double ff[] = { fuph_( &smpar, &effpar, smpar.mh ), 
+		   fdoh_( &smpar, &effpar, smpar.mh ),
+		   fchh_( &smpar, &effpar, smpar.mh ), 
+		   fsth_( &smpar, &effpar, smpar.mh ), 
+		   ftoh_( &smpar, &effpar, smpar.mh ), 
+		   fboh_( &smpar, &effpar, smpar.mh ) };   
    complex<double> Af( 0, 0 );
    for( int i = 0; i < 6; i++ )
    {
@@ -2811,7 +2816,7 @@ double ggH( double * x, size_t dim, void * param )
 	double im = -M_PI;
 	ftau = -1.0/4.0*pow(complex< double >( re, im ),2);
       }
-      Af += -tau*(complex<double>(1,0)+(1-tau)*ftau)*sqrt(2)*smpar.alphas/M_PI/smpar.vev*(1-pow(smpar.vev,3)/sqrt(2.0)/mf[i]*ff[i]);
+      Af += -tau*(complex<double>(1,0)+(1-tau)*ftau)*sqrt(2)*smpar.alphas/M_PI/smpar.vev*ff[i];
    };
    complex<double> Aano(-4*ghgg_( &smpar, &effpar, smpar.mh ), 0);
    complex<double> A = Af + Aano;
