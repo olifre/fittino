@@ -61,8 +61,6 @@ Fittino::SimplePrediction::~SimplePrediction() {
 
 void Fittino::SimplePrediction::Update() {
 
-    _value = _referenceValue;
-
 }
 
 const double& Fittino::SimplePrediction::GetValue() const {
