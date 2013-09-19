@@ -41,35 +41,38 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                    SimplePrediction( std::string name,
-                                      std::string plotName,
-                                      std::string unit,
-                                      std::string plotUnit,
-                                      double plotLowerBound,
-                                      double plotUpperBound,
-                                      const double& value );
+                            SimplePrediction( std::string name,
+                                              std::string plotName,
+                                              std::string unit,
+                                              std::string plotUnit,
+                                              double plotLowerBound,
+                                              double plotUpperBound,
+                                              const double& value );
 
       /*!
        *  Alternative constructor.
        */
-                    SimplePrediction( std::string name,
-                                      std::string plotName,
-                                      std::string unit,
-                                      std::string plotUnit,
-                                      double plotLowerBound,
-                                      double plotUpperBound,
-                                      const ModelCalculatorBase* calculator );
+                            SimplePrediction( std::string name,
+                                              std::string plotName,
+                                              std::string unit,
+                                              std::string plotUnit,
+                                              double plotLowerBound,
+                                              double plotUpperBound,
+                                              const ModelCalculatorBase* calculator );
 
       /*!
        *  Standard destructor.
        */
-                    ~SimplePrediction();
-
-    public:
-      virtual void  Update();
+                            ~SimplePrediction();
 
     private:
-      const double& _referenceValue;       
+      const double&         _referenceValue;       
+
+    public:
+      virtual void          Update();
+
+    public:  
+      virtual const double& GetValue() const;
 
   };
 

@@ -60,24 +60,31 @@ Fittino::HDim6Model::HDim6Model() {
     AddParameter( new PhysicsParameter( "mass_h", "m_{h}", 125, "GeV", "GeV", 0, 125, 125, 125, 125, true ) );
 
     const Factory factory;
-    
+
     ModelCalculatorBase* hdim6ModelCalculator = factory.CreateCalculator(Configuration::HDIM6CALCULATOR, this);
 
-    ModelCalculatorBase* higgssignalsModelCalculator = factory.CreateCalculator(Configuration::HIGGSSIGNALSHADXSCALCULATOR, this);
-
     _modelCalculatorVector.push_back( hdim6ModelCalculator );
-    _modelCalculatorVector.push_back( higgssignalsModelCalculator );
 
-    std::map<std::string, double>::const_iterator it;
-
-    const std::map<std::string, double>* map = hdim6ModelCalculator->GetSimpleOutputDataStorage()->GetMap();
+    std::map<std::string, const double*>::const_iterator it;
+    const std::map<std::string, const double*>* map = hdim6ModelCalculator->GetCollectionOfDoubles().GetMap();
     
     for(it = map->begin(); it != map->end(); it++) {
 
-      AddPrediction( new SimplePrediction( it->first, it->first, "", "", 0,0, hdim6ModelCalculator  ) );
+      AddPrediction( new SimplePrediction( "HDim6_" + it->first, "HDim6_" + it->first, "", "", 0,0, *(it->second)  ) );
 
     }
+    
+    ModelCalculatorBase* higgssignalsModelCalculator = factory.CreateCalculator(Configuration::HIGGSSIGNALSHADXSCALCULATOR, this);
 
+    _modelCalculatorVector.push_back( higgssignalsModelCalculator );
+
+    map  = higgssignalsModelCalculator->GetCollectionOfDoubles().GetMap();
+
+    for(it = map->begin(); it != map->end(); it++) {
+
+      AddPrediction( new SimplePrediction( "HS_" + it->first, "HS_" + it->first, "", "", 0,0, *(it->second)  ) );
+
+    }
 
     //     _predictionVector.push_back( new SimplePrediction( "Gamma_normSM_hTotal", "#Gamma_{h}/#Gamma_{h}^{SM}", "", "", 0.01, 100, hdim6ModelCalculator ) );
     //     _predictionVector.push_back( new SimplePrediction( "BR_normSM_hss", "BR(h#rightarrowss)/BR^{SM}(h#rightarrowss)", "", "", 0.01, 100, hdim6ModelCalculator ) );
@@ -110,6 +117,8 @@ Fittino::HDim6Model::HDim6Model() {
     //     _predictionVector.push_back( new SimplePrediction( "Delta_g2_Zga", "#Delta g_{2}^{Z#gamma}", "", "", 0.01, 100, hdim6ModelCalculator ) );
 
     PhysicsModelBase::Initialize();
+
+   
 
 }
 

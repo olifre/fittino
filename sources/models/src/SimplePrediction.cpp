@@ -64,3 +64,9 @@ void Fittino::SimplePrediction::Update() {
     _value = _referenceValue;
 
 }
+
+const double& Fittino::SimplePrediction::GetValue() const {
+
+  return _referenceValue;
+
+}

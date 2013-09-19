@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        Collection.h                                                     *
+* File        CollectionBase.h                                                 *
 *                                                                              *
 * Description Template for collection classes                                  *
 *                                                                              *
@@ -20,40 +20,65 @@
 #ifndef COLLECTION_H
 #define COLLECTION_H
 
-#include "CollectionBase.h"
+#include <map>
+#include <string>
+#include <vector>
 
 namespace Fittino {
 
   template<class T>
-    class Collection : public CollectionBase<T> {
+    class Collection {
+
+  public:
+                                    Collection();
+    virtual                         ~Collection();
+    void                            AddElement( const std::string& name, const T& element );
+
+  public:  
+    const std::map<std::string, T>* GetMap() const;
+    const std::vector<T>*           GetVector() const;
 
   private:  
-    virtual std::string             GetName( T element ) ;  
-
-  };
-
-  template<class T>
-    class Collection<T*> : public CollectionBase<T*> {
-
-  private:  
-    virtual std::string             GetName( T* element ) ;  
+    std::map<std::string, T>        _map;
+    std::vector<T>                  _vector;
 
   };
 
 }
 
 template<class T>
-std::string Fittino::Collection<T>::GetName( T element ) {
-  
-  return element.GetName();
+Fittino::Collection<T>::Collection() {
 
 }
 
 template<class T>
-std::string Fittino::Collection<T*>::GetName( T* element ) {
-  
-  return element->GetName();
+Fittino::Collection<T>::~Collection() {
+
+}
+
+template<class T>
+void Fittino::Collection<T>::AddElement( const std::string& name, const T& element ){
+
+  _vector.push_back( element );
+
+  std::pair<std::string,T> pair( name, element );
+  _map.insert( pair );
+
+}
+
+template<class T>
+const std::map<std::string,T>* Fittino::Collection<T>::GetMap() const {
+
+  return &_map;
+
+}
+
+template<class T>
+const std::vector<T>* Fittino::Collection<T>::GetVector() const {
+
+  return &_vector;
 
 }
 
 #endif
+

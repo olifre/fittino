@@ -25,9 +25,10 @@
 #include <string>
 #include <vector>
 
+#include "TRandom3.h"
+
 #include "Collection.h"
 #include "PredictionBase.h"
-#include "TRandom3.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -106,7 +107,7 @@ namespace Fittino {
       /*!
        *  Returns the predictions of the model as a collection.
        */
-      const Collection<PredictionBase*>*                GetCollectionOfPredictions() const;
+      const Collection<PredictionBase*>&                GetCollectionOfPredictions() const;
 
     public:
       virtual void                                      PrintStatus() const = 0;

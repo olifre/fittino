@@ -27,7 +27,7 @@
 
 Fittino::ModelBase::ModelBase()
   : _name( "" ) {
-  
+
 }
 
 Fittino::ModelBase::~ModelBase() {
@@ -93,8 +93,8 @@ void Fittino::ModelBase::AddParameter( ModelParameterBase* parameter ) {
 
 void Fittino::ModelBase::AddPrediction( PredictionBase* prediction ) {
 
-    _collectionOfPredictions.AddElement( prediction );
-    _predictionVector.push_back( prediction );
+  _collectionOfPredictions.AddElement( prediction->GetName(), prediction );
+  _predictionVector.push_back( prediction );
 
 }
 
@@ -128,8 +128,8 @@ const std::vector<Fittino::PredictionBase*>* Fittino::ModelBase::GetPredictionVe
 
 }
 
-const Fittino::Collection<Fittino::PredictionBase*>* Fittino::ModelBase::GetCollectionOfPredictions() const {
+const Fittino::Collection<Fittino::PredictionBase*>& Fittino::ModelBase::GetCollectionOfPredictions() const {
   
-    return &_collectionOfPredictions;
+    return _collectionOfPredictions;
 
 }

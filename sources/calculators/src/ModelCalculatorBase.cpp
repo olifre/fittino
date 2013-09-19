@@ -42,6 +42,12 @@ std::string Fittino::ModelCalculatorBase::GetName() const {
 
 }
 
+const Fittino::Collection< const double* >& Fittino::ModelCalculatorBase::GetCollectionOfDoubles() const {
+
+  return _collectionOfDoubles;
+
+}
+
 const Fittino::SimpleDataStorage* Fittino::ModelCalculatorBase::GetSimpleOutputDataStorage() const {
 
   return _simpleOutputDataStorage;
@@ -52,10 +58,10 @@ void Fittino::ModelCalculatorBase::StopTime( std::string name ) {
 
     _stopwatch.Stop();
 
-    _simpleOutputDataStorage->GetMap()->at( name + "_realtime" )
+    _simpleOutputDataStorage->GetMap()->at( "realtime_" + name )
         = _stopwatch.RealTime();
 
-    _simpleOutputDataStorage->GetMap()->at( name + "_cputime" )
+    _simpleOutputDataStorage->GetMap()->at( "cputime_" + name )
         = _stopwatch.CpuTime();
 
 }

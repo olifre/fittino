@@ -21,7 +21,9 @@
 #define FITTINO_MODELCALCULATORBASE_H
 
 #include <string>
+#include <map>
 
+#include "Collection.h"
 #include "TStopwatch.h"
 
 /*!
@@ -53,6 +55,7 @@ namespace Fittino {
       std::string                   GetName() const;
 
     public:  
+      const Collection<const double*>& GetCollectionOfDoubles() const;
       const SimpleDataStorage*      GetSimpleOutputDataStorage() const;
 
     public:
@@ -67,6 +70,7 @@ namespace Fittino {
       std::string                   _name;
       TStopwatch                    _stopwatch;
       CallMethod                    _callMethod;
+      Collection< const double* >   _collectionOfDoubles;
       const PhysicsModelBase*       _model;
       SimpleDataStorage*            _simpleOutputDataStorage;
 

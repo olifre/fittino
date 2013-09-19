@@ -21,6 +21,7 @@
 #ifndef FITTINO_HDIM6MODELCALCULATOR_H
 #define FITTINO_HDIM6MODELCALCULATOR_H
 
+#include <map>
 #include "ModelCalculatorBase.h"
 
 struct effinputs;
@@ -54,32 +55,91 @@ namespace Fittino {
       virtual void             Initialize() const;
 
     private:  
-      bool                     _gridParametersChanged;
-      bool                     _interpolateGamma;
-      bool                     _interpolateXS;
-      bool                     _smValuesChanged;
+      double                   _Delta_g1_gaga;
+      double                   _Delta_g1_Gamma;
+      double                   _Delta_g1_WW;
+      double                   _Delta_g1_Z;
+      double                   _Delta_g1_Zga;
+      double                   _Delta_g1_ZZ;
+      double                   _Delta_g2_gaga;
+      double                   _Delta_g2_WW;
+      double                   _Delta_g2_Zga;
+      double                   _Delta_g2_ZZ;
+      double                   _Delta_kappa_Gamma;
+      double                   _Delta_kappa_Z;
+      double                   _Gamma_hbb;
+      double                   _Gamma_hcc;
+      double                   _Gamma_hgaga;
+      double                   _Gamma_hgg;
+      double                   _Gamma_hmumu;
+      double                   _Gamma_hss;
+      double                   _Gamma_htautau;
+      double                   _Gamma_hWW;
+      double                   _Gamma_hZga;
+      double                   _Gamma_hZZ;
+      double                   _normSM_Gamma_hbb;
+      double                   _normSM_Gamma_hcc;
+      double                   _normSM_Gamma_hgaga;
+      double                   _normSM_Gamma_hgg;
+      double                   _normSM_Gamma_hmumu;
+      double                   _normSM_Gamma_hZga;
+      double                   _normSM_Gamma_hss;
+      double                   _normSM_Gamma_htautau;
+      double                   _normSM_Gamma_hWW;
+      double                   _normSM_Gamma_hZZ;
+      double                   _normSM_xs_bbh;
+      double                   _normSM_xs_bh;
+      double                   _normSM_xs_ggh;
+      double                   _normSM_xs_qqh;
+      double                   _normSM_xs_tth;
+      double                   _normSM_xs_Wh;
+      double                   _normSM_xs_Zh;
+      double                   _SM_Gamma_hbb;
+      double                   _SM_Gamma_hcc;
+      double                   _SM_Gamma_hgg;
+      double                   _SM_Gamma_hgaga;
+      double                   _SM_Gamma_hmumu;
+      double                   _SM_Gamma_hss;
+      double                   _SM_Gamma_htautau;
+      double                   _SM_Gamma_hWW;
+      double                   _SM_Gamma_hZga;
+      double                   _SM_Gamma_hZZ;
+      double                   _SM_xs_ggh;
+      double                   _SM_xs_qqh;
+      double                   _SM_xs_Wh;
+      double                   _SM_xs_Zh;
+      double                   _xs_ggh;
+      double                   _xs_qqh;
+      double                   _xs_Wh;
+      double                   _xs_Zh;
       std::string              _pdfDirectory;
       std::string              _pdfSet;
-      std::vector<std::string> _decayChannels;
-      std::vector<std::string> _productionChannelsLO;
-      std::vector<std::string> _productionChannelsOnlyRatio;
       effinputs*               _effsmvalues;
       effinputs*               _effvalues;
       effinputs*               _previousEffValues;
       sminputs*                _previousSMValues;
       sminputs*                _smvalues;
 
+    private:  
+      const double&            _f_B;
+      const double&            _f_BB;
+      const double&            _f_gg;
+      const double&            _f_b; 
+      const double&            _f_c;     
+      const double&            _f_d;   
+      const double&            _f_e;   
+      const double&            _f_mu;  
+      const double&            _f_s;   
+      const double&            _f_t;   
+      const double&            _f_tau; 
+      const double&            _f_u;   
+      const double&            _f_W;
+      const double&            _f_WW;
+      const double&            _mass_h;
+
     private:   
-      void                     CalculateBR();
-      void                     CalculateBRSM();
-      void                     CalculateLO( bool doSM );
-      void                     CalculateNormSM();
-      void                     CalculateQuarticGaugeCouplings();
-      void                     CalculateTripleGaugeCouplings();
       void                     ComparePreviousEffValues();
       void                     ComparePreviousSMValues();
-      void                     InitializeSimpleOutputDataStorage();
-      void                     SetDefaultOutputs();
 
     private:
       virtual void             CallExecutable();
