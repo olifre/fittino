@@ -142,7 +142,7 @@ struct pominput{
   double khvp; // kappa_hv_+ Coefficient of (O_HW+O_HB)/2
   double khvm; // kappa_hv_- Coefficient of (O_HW-O_HB)/2
   double cvm;  // c_v-       Coefficient of (O_W-O_B)/2
-  double cmp;  // c_v+       Coefficient of (O_W+O_B)/2  
+  double cvp;  // c_v+       Coefficient of (O_W+O_B)/2  
 };
 
 // Funktion rechnet die Pomarol-Koeffizienten in Eboli-Koeffizienten um //
