@@ -65,9 +65,6 @@ bool sminputs::operator==( const sminputs& rhs ) const {
 
     if ( vev != rhs.vev ) return false;
 
-    if ( wz != rhs.wz ) return false;
-    if ( ww != rhs.ww ) return false;
-
     if ( vud != rhs.vud ) return false;
     if ( vus != rhs.vus ) return false;
     if ( vub != rhs.vub ) return false;
@@ -97,10 +94,8 @@ effinputs::effinputs() {
     this->fgg  = 0;
     this->fb   = 0;
     this->fw   = 0;
-    this->fbw  = 0;
     this->fp1  = 0;
     this->fp2  = 0;
-    this->fp3  = 0;
     this->fp4  = 0;
     this->fuph = 0;
     this->fdoh = 0;
@@ -123,7 +118,6 @@ effinputs::effinputs() {
     this->nbw  = 1;
     this->np1  = 1;
     this->np2  = 1;
-    this->np3  = 1;
     this->np4  = 1;
     this->ntop = 1;
     this->nbot = 1;
@@ -137,7 +131,6 @@ effinputs::effinputs() {
     this->rbw  = 1;
     this->rp1  = 1;
     this->rp2  = 1;
-    this->rp3  = 1;
     this->rp4  = 1;
     this->rtop = 1;
     this->rbot = 1;
@@ -157,7 +150,6 @@ pominput::pominput() {
   this->khvp = 0; 
   this->khvm = 0; 
   this->cvm  = 0;  
-  this->cvp  = 0;  
 
 };
 

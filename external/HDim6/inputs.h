@@ -35,10 +35,6 @@ struct sminputs {
   
   double vev;
   
-  /* Widths */
-  double wz;			// Z-decay Width (SM)
-  double ww;			// W-decay Width (SM)
-  
   /* CKM Matrix Elements */
   
   double vud;
@@ -83,13 +79,10 @@ struct effinputs {
   double fgg;			// Coefficient of PhiFS(G)FS(G)Phi
   double fb;			// Coefficient of (DPhi)FS(B)(DPhi)
   double fw;			// Coefficient of (DPhi)FS(W)(DPhi)
-  double fbw;                   // Coefficient of Phi FS(W) FS(B) Phi, normally zero
 
   double fp1;                   // Coefficient of (DPhi*Phi)(Phi*DPhi)     = 0 (Tyler Corbett, neq 0 Pomarol)
   double fp2;                   // Coefficient of .5*d(Phi*Phi)*d(Phi*Phi) = 0 (Tyler Corbett, neq 0 Pomarol)
-  double fp3;                   // Coefficient of 1/3*(Phi*Phi)^6          = 0 (Tyler Corbett, Pomarol)
   double fp4;                   // Coefficient of DPhi*DPhi*(Phi*Phi)      = 0 (Tyler Corbett, Pomarol)
-
    
    /* Additional Yukawa Coefficients */
   double fuph;                 // Modification of Yukawa-Coupling to up-Quarks     -- not relevant for fit, = 0
@@ -114,7 +107,6 @@ struct effinputs {
 
   double np1;
   double np2;
-  double np3;
   double np4;
 
   double ntop;
@@ -130,7 +122,6 @@ struct effinputs {
 
   double rp1;
   double rp2;
-  double rp3;
   double rp4;
 
   double rtop;
@@ -155,7 +146,6 @@ struct pominput{
   double khvp; // kappa_hv_+ Coefficient of (O_HW+O_HB)/2
   double khvm; // kappa_hv_- Coefficient of (O_HW-O_HB)/2
   double cvm;  // c_v-       Coefficient of (O_W-O_B)/2
-  double cvp;  // c_v+       Coefficient of (O_W+O_B)/2  
 
   double c_y_uph; 
   double c_y_doh;

@@ -34,10 +34,8 @@ int main( int argc, char ** argv )
 	effvalues.fgg  = 0;
 	effvalues.fb   = 0;
 	effvalues.fw   = 0;
-	effvalues.fbw  = 0;
 	effvalues.fp1  = 0;
 	effvalues.fp2  = 0;
-	effvalues.fp3  = 0;
 	effvalues.fp4  = 0;
 	effvalues.fuph = 0;
 	effvalues.fdoh = 0;
@@ -58,7 +56,6 @@ int main( int argc, char ** argv )
 	effvalues.nbw  = 1;
 	effvalues.np1  = 1;
 	effvalues.np2  = 1;
-	effvalues.np3  = 1;
 	effvalues.np4  = 1;
 
 	effvalues.rbb  = 1;
@@ -69,7 +66,6 @@ int main( int argc, char ** argv )
 	effvalues.rbw  = 1;
 	effvalues.rp1  = 1;
 	effvalues.rp2  = 1;
-	effvalues.rp3  = 1;
 	effvalues.rp4  = 1;
 
 	// Effekte der obigen Variablen AUS
