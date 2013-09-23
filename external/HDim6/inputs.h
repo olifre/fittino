@@ -74,14 +74,14 @@ struct effinputs {
   effinputs();
   ~effinputs();
 
-  double fbb;			// Coefficient of PhiFS(B)FS(B)Phi                 -- currently not in operator base, = 0, might change though
+  double fbb;			// Coefficient of PhiFS(B)FS(B)Phi          (Tyler Corbett: = 0, Pomerol: neq 0 )
   double fww;			// Coefficient of PhiFS(W)FS(W)Phi
   double fgg;			// Coefficient of PhiFS(G)FS(G)Phi
   double fb;			// Coefficient of (DPhi)FS(B)(DPhi)
   double fw;			// Coefficient of (DPhi)FS(W)(DPhi)
 
-  double fp1;                   // Coefficient of (DPhi*Phi)(Phi*DPhi)     = 0 (Tyler Corbett, neq 0 Pomarol)
-  double fp2;                   // Coefficient of .5*d(Phi*Phi)*d(Phi*Phi) = 0 (Tyler Corbett, neq 0 Pomarol)
+  double fp1;                   // Coefficient of (DPhi*Phi)(Phi*DPhi)     = 0 (Tyler Corbett, Pomarol)
+  double fp2;                   // Coefficient of .5*d(Phi*Phi)*d(Phi*Phi)  (Tyler Corbett: =0, Pomarol: neq 0)
   double fp4;                   // Coefficient of DPhi*DPhi*(Phi*Phi)      = 0 (Tyler Corbett, Pomarol)
    
    /* Additional Yukawa Coefficients */
@@ -89,7 +89,7 @@ struct effinputs {
   double fdoh;                 // Modification of Yukawa-Coupling to down-Quarks   -- not relevant for fit, = 0
   double fchh;                 // Modification of Yukawa-Coupling to charm-Quarks  -- not relevant for fit, = 0
   double fsth;                 // Modification of Yukawa-Coupling to strange-Quarks-- not relevant for fit, = 0
-  double ftoh;                 // Modification of Yukawa-Coupling to top-Quarks    -- not relevant for fit, = 0, in my opinion it should however be considered
+  double ftoh;                 // Modification of Yukawa-Coupling to top-Quarks    (Tyler Corbett: =0, Pomerol: neq 0)
   double fboh;                 // Modification of Yukawa-Coupling to bottom-Quarks
    
   double felh;                 // Modification of Yukawa-Coupling to Electrons     -- not relevant for fit, = 0
@@ -160,8 +160,6 @@ struct pominput{
 };
 
 // Funktion rechnet die Pomarol-Koeffizienten in Eboli-Koeffizienten um //
-// Umrechnung betrifft nur die Operatoren im Higgs-Eichboson-Sektor     //
-// Fermionoperatoren werden NICHT umgerechnet                           //
 // Da die W-Masse und v in den Umrechnungen benoetigt werden, muessen die SM-Inputs gesetzt werden!
 
 void pom_to_eboli( pominput * pomdata, effinputs * effdata, sminputs * smdata );
