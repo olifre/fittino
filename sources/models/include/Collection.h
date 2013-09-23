@@ -33,6 +33,8 @@ namespace Fittino {
                                     Collection();
     virtual                         ~Collection();
     void                            AddElement( const std::string& name, const T& element );
+    const T&                        At( int index ) const;
+    const T&                        At( std::string name ) const;
 
   public:  
     const std::map<std::string, T>* GetMap() const;
@@ -77,6 +79,20 @@ template<class T>
 const std::vector<T>* Fittino::Collection<T>::GetVector() const {
 
   return &_vector;
+
+}
+
+template<class T>
+const T& Fittino::Collection<T>::At( int index ) const {
+
+  return _vector.at( index );
+
+}
+
+template<class T>
+const T& Fittino::Collection<T>::At( std::string name ) const {
+
+  return _map.at( name );
 
 }
 
