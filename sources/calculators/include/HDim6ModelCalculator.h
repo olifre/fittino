@@ -124,18 +124,32 @@ namespace Fittino {
       const double&            _f_B;
       const double&            _f_BB;
       const double&            _f_gg;
-      const double&            _f_b; 
-      const double&            _f_c;     
-      const double&            _f_d;   
-      const double&            _f_e;   
-      const double&            _f_mu;  
-      const double&            _f_s;   
-      const double&            _f_t;   
-      const double&            _f_tau; 
-      const double&            _f_u;   
+      const double&            _f_b;
+      const double&            _f_c;
+      const double&            _f_d;
+      const double&            _f_e;
+      const double&            _f_mu;
+      const double&            _f_s;
+      const double&            _f_t;
+      const double&            _f_tau;
+      const double&            _f_u;
       const double&            _f_W;
       const double&            _f_WW;
       const double&            _mass_h;
+
+      
+/*       double _kappa_BB; */
+/*       double _kappa_GG; */
+
+/*       double _c_H;  */
+/*       double _c_V_p;  */
+
+/*       double _k_m; */
+
+/*       double _kappa_HV_m; */
+/*       double _c_V_m;  */
+
+
 
     private:   
       void                     ComparePreviousEffValues();

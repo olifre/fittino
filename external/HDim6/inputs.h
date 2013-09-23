@@ -157,6 +157,16 @@ struct pominput{
   double cvm;  // c_v-       Coefficient of (O_W-O_B)/2
   double cvp;  // c_v+       Coefficient of (O_W+O_B)/2  
 
+  double c_y_uph; 
+  double c_y_doh;
+  double c_y_chh;
+  double c_y_sth;
+  double c_y_toh;
+  double c_y_boh;
+  double c_y_elh;
+  double c_y_muh;
+  double c_y_tah;
+
 };
 
 // Funktion rechnet die Pomarol-Koeffizienten in Eboli-Koeffizienten um //

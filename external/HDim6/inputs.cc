@@ -175,6 +175,19 @@ void pom_to_eboli( pominput * pomdata, effinputs * effdata, sminputs * smdata )
   effdata->fbb = -2.0 * pomdata->cvm/pow(smdata->mw,2) -  4.0 * pomdata->kbb/pow(smdata->mw,2);
   effdata->fp2 =  pomdata->ch/pow( smdata->vev, 2 );
   effdata->fgg =  pomdata->kgg/pow( smdata->mw, 2 ) * 4.0 * M_PI * smdata->alphas;
+
+  double kFermion = sqrt(2) / pow( smdata->vev, 3 );
+  
+  effdata->fuph = pomdata->c_y_uph * smdata->mup * kFermion;   
+  effdata->fdoh = pomdata->c_y_doh * smdata->mdo * kFermion;
+  effdata->fchh = pomdata->c_y_chh * smdata->mch * kFermion;
+  effdata->fsth = pomdata->c_y_sth * smdata->mst * kFermion;
+  effdata->ftoh = pomdata->c_y_toh * smdata->mto * kFermion;
+  effdata->fboh = pomdata->c_y_boh * smdata->mbo * kFermion;
+  effdata->felh = pomdata->c_y_elh * smdata->mel * kFermion;
+  effdata->fmuh = pomdata->c_y_muh * smdata->mmu * kFermion; 
+  effdata->ftah = pomdata->c_y_tah * smdata->mta * kFermion;
+
 };
 
 double ghyy_(  sminputs * smpar, effinputs * effpar, double s )
