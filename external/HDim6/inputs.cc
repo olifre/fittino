@@ -1,5 +1,46 @@
 #include "inputs.h"
 
+sminputs::sminputs() {
+
+	this->alphae = 0.0078186;
+	this->alphas = 0.11819;
+	this->Gf     = 1.16637e-5;
+	this->mz     = 91.1876;
+	this->mh     = 125;
+
+  	this->mel    = 0.511e-3;
+	this->mmu    = 0.10565;
+	this->mta    = 1.777;
+	this->mup    = 0.0023;
+	this->mdo    = 0.0048;
+	this->mch    = 1.275;
+	this->mst    = 0.095;
+	this->mto    = 173.5;
+	this->mbo    = 4.18;
+
+	this->vud    = 0.97483;
+	this->vus    = 0.2229;
+	this->vub    = 0.0036;
+	this->vcd    = 0.23;
+	this->vcs    = 0.97389;
+	this->vcb    = 40.9e-3;
+	this->vtd    = 8.4e-3;
+	this->vts    = 42.9e-3;
+	this->vtb    = 0.89;
+
+	this->s      = pow( 8000,2 );
+
+	this->sw     = sqrt( ( 1 - sqrt( 1-pow(2,1.5)*M_PI*this->alphae/pow(this->mz,2)/this->Gf ) )/2.0 );
+	this->mw     = this->mz*sqrt(1-this->sw*this->sw);
+	this->vev    = this->mw*this->sw/sqrt(4.0*3.14159*this->alphae)*2.0;
+
+}
+
+sminputs::~sminputs() {
+
+
+}
+
 bool sminputs::operator==( const sminputs& rhs ) const {
 
     if ( alphae != rhs.alphae ) return false;
@@ -46,6 +87,81 @@ bool sminputs::operator==( const sminputs& rhs ) const {
 bool sminputs::operator!=(const sminputs& rhs) const {
 
     return !operator==(rhs);
+
+}
+
+effinputs::effinputs() {
+
+    this->fbb  = 0;
+    this->fww  = 0;
+    this->fgg  = 0;
+    this->fb   = 0;
+    this->fw   = 0;
+    this->fbw  = 0;
+    this->fp1  = 0;
+    this->fp2  = 0;
+    this->fp3  = 0;
+    this->fp4  = 0;
+    this->fuph = 0;
+    this->fdoh = 0;
+    this->fchh = 0;
+    this->fsth = 0;
+    this->ftoh = 0;
+    this->fboh = 0;
+    this->felh = 0;
+    this->fmuh = 0;
+    this->ftah = 0;
+
+    // Effekte der folgenden Variablen AUS
+    this->override_unitarity = 1;
+
+    this->nbb  = 1;
+    this->nww  = 1;
+    this->ngg  = 1;
+    this->nb   = 1;
+    this->nw   = 1;
+    this->nbw  = 1;
+    this->np1  = 1;
+    this->np2  = 1;
+    this->np3  = 1;
+    this->np4  = 1;
+    this->ntop = 1;
+    this->nbot = 1;
+    this->ntau = 1;
+
+    this->rbb  = 1;
+    this->rww  = 1;
+    this->rgg  = 1;
+    this->rb   = 1;
+    this->rw   = 1;
+    this->rbw  = 1;
+    this->rp1  = 1;
+    this->rp2  = 1;
+    this->rp3  = 1;
+    this->rp4  = 1;
+    this->rtop = 1;
+    this->rbot = 1;
+    this->rtau = 1;
+
+}
+
+effinputs::~effinputs() {
+
+}
+
+pominput::pominput() {
+
+  this->kgg  = 0;  
+  this->kbb  = 0;  
+  this->ch   = 0;   
+  this->khvp = 0; 
+  this->khvm = 0; 
+  this->cvm  = 0;  
+  this->cvp  = 0;  
+
+};
+
+pominput::~pominput() {
 
 }
 

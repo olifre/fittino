@@ -2,6 +2,10 @@
 #include <cmath>
 
 struct sminputs {
+
+  sminputs();
+  ~sminputs();
+
   /* Coupling Constants */
   double alphae;		// Electromagnetic Coupling Constants
   double alphas;		// Strong Coupling Constant
@@ -70,6 +74,10 @@ struct sminputs {
 };
 
 struct effinputs {
+
+  effinputs();
+  ~effinputs();
+
   double fbb;			// Coefficient of PhiFS(B)FS(B)Phi                 -- currently not in operator base, = 0, might change though
   double fww;			// Coefficient of PhiFS(W)FS(W)Phi
   double fgg;			// Coefficient of PhiFS(G)FS(G)Phi
@@ -99,9 +107,9 @@ struct effinputs {
 
   double nbb;
   double nww;
+  double ngg;
   double nb;
   double nw;
-  double ngg;
   double nbw;
 
   double np1;
@@ -115,9 +123,9 @@ struct effinputs {
 
   double rbb;
   double rww;
+  double rgg;
   double rb;
   double rw;
-  double rgg;
   double rbw;
 
   double rp1;
@@ -131,11 +139,16 @@ struct effinputs {
 
   // set to one to neglect effects of unitarity_coefficients
   int override_unitarity;
+
 };
 
 // Minimale Struktur die die Pomarol-Koeffizienten zusammenfasst
 
 struct pominput{
+
+  pominput();
+  ~pominput();
+
   double kgg;  // Coefficient of gs^2H^2FS(G)FS(G)
   double kbb;  // Coefficient of g'^2H^2FS(B)FS(B)
   double ch;   // Coefficient of 1/2*(d_mu H^2)^2
@@ -143,6 +156,7 @@ struct pominput{
   double khvm; // kappa_hv_- Coefficient of (O_HW-O_HB)/2
   double cvm;  // c_v-       Coefficient of (O_W-O_B)/2
   double cvp;  // c_v+       Coefficient of (O_W+O_B)/2  
+
 };
 
 // Funktion rechnet die Pomarol-Koeffizienten in Eboli-Koeffizienten um //

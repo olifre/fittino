@@ -66,7 +66,7 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* mod
     _previousSMValues  = new sminputs();
     _previousSMValues->s = -1;
 
-    _effvalues         = new effinputs();
+    _effvalues       = new effinputs();
     _effvalues->override_unitarity = 1; // 0: use coefficients to preserve unitarity, 1: unitarity violated
 
     _smvalues          = new sminputs();
