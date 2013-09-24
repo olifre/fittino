@@ -51,9 +51,6 @@ void Fittino::TreeSampler::Execute() {
         _iterationCounter++;
         GetStatusParameterVector()->at( 1 )->SetValue( _iterationCounter );
 
-        _chi2 = _model->GetChi2();
-        GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
-
         AnalysisTool::PrintStatus();
 
         this->UpdateModel();
@@ -72,8 +69,8 @@ void Fittino::TreeSampler::PrintSteeringParameters() const {
 
 void Fittino::TreeSampler::UpdateModel() {
 
-    double chi2 = _model->GetChi2();
-    GetStatusParameterVector()->at( 0 )->SetValue( chi2 );
+    GetStatusParameterVector()->at( 0 )->SetValue( _model->GetChi2() );
+    
     for( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
         _model->GetParameterVector()->at( k )->SetValue( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetParameterVector()->at( k )->GetName() ) );
     }
