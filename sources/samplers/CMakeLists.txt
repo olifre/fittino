@@ -24,6 +24,8 @@ INCLUDE_DIRECTORIES(../exceptions/include)
 INCLUDE_DIRECTORIES(../kernel/include)
 INCLUDE_DIRECTORIES(../models/include)
 INCLUDE_DIRECTORIES(../optimizers/include)
+INCLUDE_DIRECTORIES(../calculators/include)
+INCLUDE_DIRECTORIES(../datastorages/include)
 
 AUX_SOURCE_DIRECTORY(src sources)
 
