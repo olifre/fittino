@@ -8,13 +8,13 @@
 *                                                                              *
 * Description Base class for Fittino physics models                            *
 *                                                                              *
-* Authors     Sebastian Heer        <s6seheer@uni-bonn.de>                     *     
+* Authors     Sebastian Heer        <s6seheer@uni-bonn.de>                     *
 *             Mathias   Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>            *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*       published by the Free Software Foundation; either version 3 of   *
+*       the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -86,7 +86,7 @@ void Fittino::PhysicsModelBase::PrintStatus() const {
 
     for ( unsigned int i = 0; i < GetNumberOfParameters(); ++i ) {
 
-        GetParameterVector()->at(i)->PrintStatus();
+        GetParameterVector()->at( i )->PrintStatus();
 
     }
 
@@ -149,7 +149,7 @@ void Fittino::PhysicsModelBase::Initialize() const {
 
     for ( unsigned int i = 0; i < GetNumberOfParameters(); i++ ) {
 
-      GetParameterVector()->at(i)->PrintStatus();
+        GetParameterVector()->at( i )->PrintStatus();
 
     }
 
@@ -174,7 +174,7 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
     double chi2 = 0.;
 
     // Calculate the chi2 contributions of all observables. Eventually replace
-    // this formula to allow for correlated observables. 
+    // this formula to allow for correlated observables.
 
     for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
 
@@ -186,7 +186,7 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
 
     for ( unsigned int i = 0; i < _chi2ContributionVector.size(); ++i ) {
 
-	chi2 += _chi2ContributionVector[i]->GetValue();
+        chi2 += _chi2ContributionVector[i]->GetValue();
 
     }
 
@@ -195,10 +195,16 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
 }
 
 void Fittino::PhysicsModelBase::SmearObservables( TRandom3* randomGenerator ) {
-		
-		for( int i = 0; i < _observableVector.size(); ++i ) {
 
-				_observableVector[i]->SmearMeasuredValue( randomGenerator );
-	
-		}
+    for( int i = 0; i < _observableVector.size(); ++i ) {
+
+        _observableVector[i]->SmearMeasuredValue( randomGenerator );
+
+    }
+}
+
+std::vector<Fittino::ModelCalculatorBase*> Fittino::PhysicsModelBase::GetModelCalculatorVector() {
+
+    return _modelCalculatorVector;
+
 }
