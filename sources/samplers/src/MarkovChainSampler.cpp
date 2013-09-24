@@ -21,13 +21,15 @@
 
 #include <cmath>
 
+#include "TTree.h"
+#include "TBranch.h"
+
 #include "Configuration.h"
 #include "MarkovChainSampler.h"
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
 #include "ModelCalculatorException.h"
-#include "TTree.h"
 
 Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model )
     : SamplerBase( model ),

@@ -21,7 +21,9 @@
 #define FITTINO_MARKOVCHAINSAMPLER_H
 
 #include "SamplerBase.h"
-#include "TBranch.h"
+
+class TBranch;
+
 
 /*!
  *  \brief Fittino namespace.
