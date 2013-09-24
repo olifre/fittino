@@ -13,8 +13,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*       published by the Free Software Foundation; either version 3 of   *
+*       the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -38,6 +38,7 @@ namespace Fittino {
   class Chi2ContributionBase;
   class ModelParameterBase;
   class PredictionBase;
+  class ModelCalculatorBase;
 
   /*!
    *  \defgroup models
@@ -81,13 +82,13 @@ namespace Fittino {
       /*!
        *  Adds a prediction to the model.
        */
-      void                                              AddPrediction( PredictionBase* prediction );	
+      void                                              AddPrediction( PredictionBase* prediction );
       /*!
        *  Returns the name of the model.
        */
       std::string                                       GetName() const;
 
-    public:  
+    public:
       /*!
        *  Returns the parameters of the model as a map.
        */
@@ -115,11 +116,11 @@ namespace Fittino {
        *  Returns a pointer to a copy of the model.
        */
       virtual ModelBase*                                Clone() const = 0;
-			/*!
-			 *  Smears the observables (if existent)
-			 */
-			virtual void																			SmearObservables( TRandom3* ) = 0;
-			
+      /*!
+       *  Smears the observables (if existent)
+       */
+      virtual void                                       SmearObservables( TRandom3* ) = 0;
+      virtual std::vector<ModelCalculatorBase*>*         GetModelCalculatorVector() = 0;
 
     protected:
       /*!
@@ -147,9 +148,9 @@ namespace Fittino {
       virtual void                                      Initialize() const = 0;
 
       /*! \cond UML */
-    private:   
+    private:
       /*!
-       *  Value returned by Evaluate(). 
+       *  Value returned by Evaluate().
        */
       double                                            _chi2;
       /*!
@@ -167,10 +168,10 @@ namespace Fittino {
 
     private:
       /*!
-       *  Evaluates the chi2 function.  
+       *  Evaluates the chi2 function.
        */
       virtual double                                    Evaluate() = 0;
-			
+
       /*! \endcond UML */
 
   };

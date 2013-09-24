@@ -26,7 +26,7 @@
 #include <iostream>
 
 Fittino::ModelBase::ModelBase()
-  : _name( "" ) {
+    : _name( "" ) {
 
 }
 
@@ -38,14 +38,14 @@ double Fittino::ModelBase::GetChi2() {
 
     bool evaluate = false;
 
-    for ( unsigned int i=0; i<GetNumberOfParameters(); i++ ) {
+    for ( unsigned int i = 0; i < GetNumberOfParameters(); i++ ) {
 
-      if ( GetParameterVector()->at(i)->IsUpdated() ) {
+        if ( GetParameterVector()->at( i )->IsUpdated() ) {
 
-          evaluate = true;
-	  GetParameterVector()->at(i)->SetUpdated( false );
+            evaluate = true;
+            GetParameterVector()->at( i )->SetUpdated( false );
 
-      }
+        }
 
     }
 
@@ -54,8 +54,8 @@ double Fittino::ModelBase::GetChi2() {
         _chi2 = Evaluate();
 
     }
-    
-		return _chi2;
+
+    return _chi2;
 
 }
 
@@ -83,9 +83,9 @@ void Fittino::ModelBase::AddParameter( ModelParameterBase* parameter ) {
 
     if ( !_parameterMap.insert( std::make_pair( parameter->GetName(), parameter ) ).second ) {
 
-      std::string message = "Parameter with name " + parameter->GetName() + " has already been added to model " + GetName();
+        std::string message = "Parameter with name " + parameter->GetName() + " has already been added to model " + GetName();
 
-      throw ConfigurationException( message ); //TODO: Dedicated exception class ?
+        throw ConfigurationException( message ); //TODO: Dedicated exception class ?
 
     }
 
@@ -93,8 +93,8 @@ void Fittino::ModelBase::AddParameter( ModelParameterBase* parameter ) {
 
 void Fittino::ModelBase::AddPrediction( PredictionBase* prediction ) {
 
-  _collectionOfPredictions.AddElement( prediction->GetName(), prediction );
-  _predictionVector.push_back( prediction );
+    _collectionOfPredictions.AddElement( prediction->GetName(), prediction );
+    _predictionVector.push_back( prediction );
 
 }
 
@@ -106,7 +106,7 @@ std::string Fittino::ModelBase::GetName() const {
 
 const std::map<std::string, Fittino::ModelParameterBase*>* Fittino::ModelBase::GetParameterMap() const {
 
-  return &_parameterMap;
+    return &_parameterMap;
 
 }
 
@@ -129,7 +129,7 @@ const std::vector<Fittino::PredictionBase*>* Fittino::ModelBase::GetPredictionVe
 }
 
 const Fittino::Collection<Fittino::PredictionBase*>& Fittino::ModelBase::GetCollectionOfPredictions() const {
-  
+
     return _collectionOfPredictions;
 
 }

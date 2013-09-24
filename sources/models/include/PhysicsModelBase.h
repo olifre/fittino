@@ -52,7 +52,9 @@ namespace Fittino {
     public:
       virtual void                      PrintStatus() const;
       virtual void                      SmearObservables( TRandom3* );
-      std::vector<ModelCalculatorBase*> GetModelCalculatorVector();
+      
+    public:
+      virtual std::vector<ModelCalculatorBase*>*          GetModelCalculatorVector();
 
     protected:
       virtual void                      Initialize() const;

@@ -203,8 +203,8 @@ void Fittino::PhysicsModelBase::SmearObservables( TRandom3* randomGenerator ) {
     }
 }
 
-std::vector<Fittino::ModelCalculatorBase*> Fittino::PhysicsModelBase::GetModelCalculatorVector() {
+std::vector<Fittino::ModelCalculatorBase*>* Fittino::PhysicsModelBase::GetModelCalculatorVector() {
 
-    return _modelCalculatorVector;
+    return &_modelCalculatorVector;
 
 }
