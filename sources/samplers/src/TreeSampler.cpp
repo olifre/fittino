@@ -33,8 +33,8 @@
 
 Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model )
     : SamplerBase( model ),
-      _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", 1 ) ) {
-
+      _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", 1 ) ),
+      _isToyRun( Configuration::GetInstance()->GetSteeringParameter( "PerformToyRun", false ) ) {
     _name = "Tree sampler";
 
 }
@@ -45,6 +45,7 @@ Fittino::TreeSampler::~TreeSampler() {
 
 void Fittino::TreeSampler::Execute() {
 
+    if( _isToyRun ) _model->SmearObservables( &_randomGenerator );
 
     while ( _iterationCounter < _numberOfIterations ) {
 

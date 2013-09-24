@@ -47,6 +47,10 @@ namespace Fittino {
        *  Stores the configured maximal number of iteration steps.
        */
       unsigned int           _numberOfIterations;
+      /*!
+       *  Switch to enable Toy runs.
+       */
+      bool                   _isToyRun;
 
       /*!
        *  Used to count how often a point is accepted.
