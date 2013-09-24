@@ -200,6 +200,12 @@ Fittino::Configuration::SamplerType Fittino::Configuration::GetSamplerType() con
 
 
     }
+    else if ( ( *_steeringParameterMap )[key] == "Tree" ) {
+
+        return Configuration::TREE;
+
+
+    }
 
 
     else {

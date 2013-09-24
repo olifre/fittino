@@ -47,6 +47,7 @@
 #include "XMLDataStorage.h"
 #include "CovariantSampler.h"
 #include "CorrelatedSampler.h"
+#include "TreeSampler.h"
 
 Fittino::Factory::Factory() {
 
@@ -196,6 +197,8 @@ Fittino::SamplerBase* const Fittino::Factory::CreateSampler( const Fittino::Conf
         case Configuration::CORRELATED :
             return new CorrelatedSampler( model);
 
+        case Configuration::TREE:
+            return new TreeSampler( model);
     }
 
 }
