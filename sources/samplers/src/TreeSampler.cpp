@@ -16,6 +16,7 @@
 *******************************************************************************/
 
 #include <iostream>
+#include <stdlib.h>
 
 #include <cmath>
 
@@ -30,12 +31,20 @@
 #include "ModelCalculatorException.h"
 #include "ModelCalculatorBase.h"
 #include "SimpleDataStorage.h"
+#include "ConfigurationException.h"
 
 Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model )
     : SamplerBase( model ),
       _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", 1 ) ),
       _isToyRun( Configuration::GetInstance()->GetSteeringParameter( "PerformToyRun", false ) ) {
     _name = "Tree sampler";
+
+    if( !_model->GetModelCalculatorVector() ) {
+        throw ConfigurationException( "CalculatorVector is a NULL-pointer (did you specify a TestModel?)" );
+    }
+    else if( _model->GetModelCalculatorVector()->size() == 0 ) {
+        throw ConfigurationException( "Could not find a calculator associated to specified model." );
+    }
 
 }
 
@@ -71,7 +80,7 @@ void Fittino::TreeSampler::PrintSteeringParameters() const {
 void Fittino::TreeSampler::UpdateModel() {
 
     GetStatusParameterVector()->at( 0 )->SetValue( _model->GetChi2() );
-    
+
     for( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
         _model->GetParameterVector()->at( k )->SetValue( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetParameterVector()->at( k )->GetName() ) );
     }
