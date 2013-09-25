@@ -56,6 +56,9 @@
 <!ATTLIST Sampler
   NumberOfIterations CDATA #IMPLIED
   UpdateCovariancesAfter CDATA #IMPLIED
+  PerformToyRun      CDATA #IMPLIED 
+  InputFileName      CDATA #IMPLIED
+  InputTreeName      CDATA #IMPLIED
   SamplerType        CDATA #REQUIRED
 >
 

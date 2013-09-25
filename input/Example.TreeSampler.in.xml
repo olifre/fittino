@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding='UTF-8'?>
 
-<!-- $Id$ -->
+<!-- $Id: Example.CMSSMModel.Sampling.in.xml 1449 2013-07-18 22:28:48Z uhlenbrock@PHYSIK.UNI-BONN.DE $ -->
 
 <!--#########################################################################-->
 <!--                                                                         -->
 <!-- Project     Fittino - A SUSY Parameter Fitting Package                  -->
 <!--                                                                         -->
-<!-- File        Example.MarkovChainSampler.in.xml                           -->
+<!-- File        Example.CMSSMModel.Sampling.in.xml                          -->
 <!--                                                                         -->
-<!-- Description Configuration example for the Markov Chain parameter        -->
-<!--             sampler                                                     -->
+<!-- Description Configuration example for the CMSSM model                   -->
 <!--                                                                         -->
 <!-- Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>         -->
 <!--                                                                         -->
@@ -34,16 +33,19 @@
    />
 
   <Model
-   ModelType  = "Rosenbrock"
-   Dimensions = "3"
-   X1         = "0."
-   X2         = "0."
-   X3         = "0."
+   ModelType = "CMSSM"
+   A0        = "-300."
+   M0        = "100."
+   M12       = "250."
+   TanBeta   = "10."
    />
 
   <Sampler
-   NumberOfIterations = "100000"
-   SamplerType        = "MarkovChain"
+   NumberOfIterations = "500"
+   PerformToyRun      = "0"
+   InputFileName      = "Fittino.old.root"
+   InputTreeName      = "Tree"
+   SamplerType        = "Tree"
    />
 
 </InputFile>
