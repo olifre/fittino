@@ -21,6 +21,8 @@
 
 #include "TTree.h"
 #include "TFile.h"
+#include "TObjArray.h"
+#include "TLeaf.h"
 
 #include "TreeCalculator.h"
 #include "SimpleDataStorage.h"
@@ -45,6 +47,9 @@ Fittino::TreeCalculator::TreeCalculator( const PhysicsModelBase* model, std::str
         std::cout << "\n" << configurationException.what() << "\n" << std::endl;
         exit( EXIT_FAILURE );
     }
+
+    FillSimpleDataStorage();
+    SetAllBranchAddresses();
 
 }
 
@@ -72,4 +77,17 @@ void Fittino::TreeCalculator::SetAllBranchAddresses() {
         _inputTree -> SetBranchAddress( ( *itr ).first.c_str(), &( *itr ).second );
 
     }
+}
+
+void Fittino::TreeCalculator::FillSimpleDataStorage() {
+
+    TObjArray *arrayOfLeaves = _inputTree->GetListOfLeaves();
+
+    for( unsigned int i = 0; i < arrayOfLeaves->GetEntries(); ++i ) {
+        TLeaf *leaf = ( TLeaf* )arrayOfLeaves->At( i );
+        if( !strcmp( leaf->GetTypeName(), "Double_t" ) ) {
+            _simpleOutputDataStorage->AddEntry( std::string( leaf->GetName() ), 0. );
+        }
+    }
+
 }

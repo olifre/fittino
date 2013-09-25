@@ -44,10 +44,6 @@ namespace Fittino {
        *  Standard destructor.
        */
                           ~TreeCalculator();
-      /*!
-       *  Set All Branch Addresses in the tree
-       */
-      void                SetAllBranchAddresses();
 
     public:
       virtual void        CalculatePredictions();
@@ -56,6 +52,13 @@ namespace Fittino {
       TFile*              _inputFile;
       TTree*              _inputTree;
       int                 _currentEntry;
+    
+    private:
+      /*!
+       *  Set All Branch Addresses in the tree
+       */
+      void                SetAllBranchAddresses();
+      void                FillSimpleDataStorage();
 
   };
 
