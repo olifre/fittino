@@ -91,3 +91,20 @@ void Fittino::TreeCalculator::FillSimpleDataStorage() {
     }
 
 }
+
+void Fittino::TreeCalculator::Initialize() const {
+
+}
+
+void Fittino::TreeCalculator::CallExecutable() {
+
+}
+
+void Fittino::TreeCalculator::CallFunction() {
+
+}
+
+void Fittino::TreeCalculator::ConfigureInput() {
+
+}
+
