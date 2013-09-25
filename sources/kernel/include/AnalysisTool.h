@@ -14,8 +14,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*       published by the Free Software Foundation; either version 3 of   *
+*       the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -96,11 +96,11 @@ namespace Fittino {
       /*!
        *  The output tree.
        */
-      TTree*														 _tree;
+      TTree*                             _tree;
       /*!
        *  The variables used to fill the tree.
        */
-      std::vector<float>                 _leafVector;
+      std::vector<double>                _leafVector;
     protected:
       /*!
        *  Prints the result of the execution of a particuar analysis tool. It is declared virtual\n
