@@ -39,7 +39,29 @@ Fittino::CMSSMModel::CMSSMModel() {
 
         TreeCalculator *treeCalculator = new TreeCalculator( this, propertyTree->get<std::string>( "InputFile.Sampler.<xmlattr>.InputFileName" ), propertyTree->get<std::string>( "InputFile.Sampler.<xmlattr>.InputTreeName" ) );
         _modelCalculatorVector.push_back( treeCalculator );
+
+
+        AddParameter( new SLHAParameter( "P_A0", "A_{0}",
+                                         propertyTree->get<double>( "InputFile.Model.<xmlattr>.A0" ),
+                                         "GeV", "GeV",
+                                         1., -1.e5, 1.e5, -1.e5, 1.e5, "5" ) );
+
+        AddParameter( new SLHAParameter( "P_M0", "M_{0}",
+                                         propertyTree->get<double>( "InputFile.Model.<xmlattr>.M0" ),
+                                         "GeV", "GeV",
+                                         1., -1.e5, 1.e5, 0., 2300., "1" ) );
+
+        AddParameter( new SLHAParameter( "P_M12", "M_{1/2}",
+                                         propertyTree->get<double>( "InputFile.Model.<xmlattr>.M12" ),
+                                         "GeV", "GeV",
+                                         1., -1.e5, 1.e5,  500., 3500., "2" ) );
+
+        AddParameter( new SLHAParameter( "P_TanBeta", "tan#beta",
+                                         propertyTree->get<double>( "InputFile.Model.<xmlattr>.TanBeta" ),
+                                         "", "",
+                                         1., 0., 1.e3, 0., 1.e3, "3" ) );
         PhysicsModelBase::Initialize();
+
     }
     else {
 
