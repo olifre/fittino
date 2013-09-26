@@ -212,6 +212,6 @@ std::vector<Fittino::ModelCalculatorBase*>* Fittino::PhysicsModelBase::GetModelC
 void Fittino::PhysicsModelBase::AddObservable( Observable* observable ) {
 
     _observableVector.push_back( observable );
-    _predictionVector.push_back( observable->GetPrediction() );
+    AddPrediction( observable->GetPrediction() );
 
 }
