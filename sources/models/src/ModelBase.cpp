@@ -148,8 +148,8 @@ void Fittino::ModelBase::InitializeParameters() {
     const boost::property_tree::ptree* propertyTree = configuration->GetPropertyTree();
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type & v, propertyTree->get_child( "InputFile" ) ) {
-        if( v.first == "Parameter" ) {
-            
+        if ( v.first == "Parameter" ) {
+
             std::string name = v.second.get<std::string>( "<xmlattr>.Name" );
             std::string plotName = v.second.get<std::string>( "<xmlattr>.plotName", name );
             std::string unit = v.second.get<std::string>( "<xmlattr>.Unit", "" );
@@ -163,14 +163,26 @@ void Fittino::ModelBase::InitializeParameters() {
             double plotUpperBound = v.second.get<double>( "<xmlattr>.PlotUpperBound", 0. );
             bool fixed = v.second.get<bool>( "<xmlattr>.Fixed", false );
 
-            if( v.second.get<std::string>( "<xmlattr>.Type" ) == "SLHA" ) {
-                
+            if ( v.second.get<std::string>( "<xmlattr>.Type" ) == "SLHA" ) {
+
                 AddParameter( new SLHAParameter( name, plotName, value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, id, fixed ) );
 
             }
-        
+
+            else if ( v.second.get<std::string>( "<xmlattr>.Type" ) == "Base" ) {
+
+                AddParameter( new ModelParameterBase( name, plotName, value, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, fixed ) );
+
+            }
+
+            else if ( v.second.get<std::string>( "<xmlattr>.Type" ) == "Physics" ) {
+
+                AddParameter( new PhysicsParameter( name, plotName, value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, fixed ) );
+
+            }
+
         }
-    
+
     }
 
 }
