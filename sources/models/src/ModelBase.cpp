@@ -149,6 +149,7 @@ void Fittino::ModelBase::InitializeParameters() {
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type & v, propertyTree->get_child( "InputFile" ) ) {
         if( v.first == "Parameter" ) {
+            
             std::string name = v.second.get<std::string>( "<xmlattr>.Name" );
             std::string plotName = v.second.get<std::string>( "<xmlattr>.plotName", name );
             std::string unit = v.second.get<std::string>( "<xmlattr>.Unit", "" );
@@ -163,11 +164,13 @@ void Fittino::ModelBase::InitializeParameters() {
             bool fixed = v.second.get<bool>( "<xmlattr>.Fixed", false );
 
             if( v.second.get<std::string>( "<xmlattr>.Type" ) == "SLHA" ) {
-                std::cout << "will add a paramter with the following attributes " << name << " " << plotName << " " <<  value << " " << unit << " " << plotUnit << " " << error << " " << lowerBound << " " << upperBound << " " << plotLowerBound << " " << plotUpperBound << " " << id << " " << fixed << std::endl;
+                
                 AddParameter( new SLHAParameter( name, plotName, value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, id, fixed ) );
 
             }
+        
         }
+    
     }
 
 }
