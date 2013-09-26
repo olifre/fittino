@@ -48,6 +48,10 @@ namespace Fittino {
        *  Standard destructor.
        */
                                         ~PhysicsModelBase();
+      /*!
+       *  Adds an observable to the model. 
+       */
+      void                              AddObservable( Observable *observable );              
 
     public:
       virtual void                      PrintStatus() const;
