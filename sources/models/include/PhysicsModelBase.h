@@ -31,6 +31,7 @@ class TRandom3;
 namespace Fittino {
 
   class ModelCalculatorBase;
+  class Observable;
 
   /*!
    *  \ingroup models
@@ -60,6 +61,7 @@ namespace Fittino {
 
     protected:
       std::vector<ModelCalculatorBase*> _modelCalculatorVector;
+      std::vector<Observable*>          _observableVector;
 
       /*! \cond UML */
     private:
