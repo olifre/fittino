@@ -39,7 +39,18 @@
    M12       = "250."
    TanBeta   = "10."
    />
-
+  
+  <Observable
+   Name          = "O_massNeutralino1"
+   MeasuredValue = "150"
+   Error1        = "5"
+   />
+  
+  <Observable
+   Name          = "O_massNeutralino2"
+   MeasuredValue = "230"
+   Error1        = "5"
+   />
   <Sampler
    NumberOfIterations = "500"
    PerformToyRun      = "0"
@@ -47,5 +58,4 @@
    InputTreeName      = "Tree"
    SamplerType        = "Tree"
    />
-
 </InputFile>
