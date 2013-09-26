@@ -1,6 +1,7 @@
 <!ELEMENT InputFile (VerbosityLevel,
 	             ExecutionMode,
                      Model,
+                     Parameter*,
 		     Observable*,
                      (Optimizer|Sampler|Plotter),
                      GeneticAlgorithmOptimizer?,

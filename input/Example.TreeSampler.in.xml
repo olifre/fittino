@@ -39,7 +39,87 @@
    M12       = "250."
    TanBeta   = "10."
    />
+ 
+  <Parameter
+   Type             = "SLHA"
+   Name             = "P_M0"
+   PlotName         = "M_{0}"
+   Value            = "100"
+   Error            = "1"
+   LowerBound       = "-1.e5"
+   UpperBound       = "1.e5"
+   PlotLowerBound   = "-1.e5"
+   PlotUpperBound   = "1.e5"
+   Unit             = "GeV"
+   PlotUnit         = "GeV"
+   ID               = "1"
+   Fixed            = "0"
+  />
   
+  <Parameter
+   Type             = "SLHA"
+   Name             = "P_M12"
+   PlotName         = "M_{1/2}"
+   Value            = "250"
+   Error            = "1"
+   LowerBound       = "-1.e5"
+   UpperBound       = "1.e5"
+   PlotLowerBound   = "-1.e5"
+   PlotUpperBound   = "1.e5"
+   Unit             = "GeV"
+   PlotUnit         = "GeV"
+   ID               = "2"
+   Fixed            = "0"
+  />
+
+  <Parameter
+   Type             = "SLHA"
+   Name             = "P_A0"
+   PlotName         = "A_{0}"
+   Value            = "-300"
+   Error            = "1"
+   LowerBound       = "-1.e5"
+   UpperBound       = "1.e5"
+   PlotLowerBound   = "-1.e5"
+   PlotUpperBound   = "1.e5"
+   Unit             = "GeV"
+   PlotUnit         = "GeV"
+   ID               = "5"
+   Fixed            = "0"
+  />
+  
+  <Parameter
+   Type             = "SLHA"
+   Name             = "P_TanBeta"
+   PlotName         = "tan#beta"
+   Value            = "100"
+   Error            = "1"
+   LowerBound       = "0."
+   UpperBound       = "1.e2"
+   PlotLowerBound   = "0."
+   PlotUpperBound   = "1.e2"
+   Unit             = ""
+   PlotUnit         = ""
+   ID               = "3"
+   Fixed            = "0"
+  />
+  
+  <Parameter
+   Type             = "SLHA"
+   Name             = "P_SignMu"
+   PlotName         = "sign #mu}"
+   Value            = "1"
+   Error            = "1"
+   LowerBound       = "-1"
+   UpperBound       = "1"
+   PlotLowerBound   = "-1"
+   PlotUpperBound   = "1"
+   Unit             = ""
+   PlotUnit         = ""
+   ID               = "4"
+   Fixed            = "1"
+  />
+
   <Observable
    Name          = "O_massNeutralino1"
    MeasuredValue = "150"
@@ -51,6 +131,7 @@
    MeasuredValue = "230"
    Error1        = "5"
    />
+  
   <Sampler
    NumberOfIterations = "500"
    PerformToyRun      = "0"
