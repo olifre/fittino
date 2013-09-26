@@ -13,8 +13,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*       published by the Free Software Foundation; either version 3 of   *
+*       the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -42,7 +42,8 @@ namespace Fittino {
        */
                       Observable( PredictionBase* prediction,
                                   double          measuredValue,
-                                  double          measuredError );
+                                  double          measuredError,
+                                  double          bestFitPrediction = 0 );
       /*!
        *  Standard destructor.
        */
@@ -51,17 +52,17 @@ namespace Fittino {
       double          GetMeasuredError() const;
       double          GetMeasuredValue() const;
       PredictionBase* GetPrediction();
-			void						SetBestFitPrediction( double );
+      void            SetBestFitPrediction( double );
 
     public:
       virtual void    UpdatePrediction();
-			virtual void		SmearMeasuredValue( TRandom3* );
+      virtual void    SmearMeasuredValue( TRandom3* );
 
     protected:
       double          _deviation;
       double          _measuredError;
       double          _measuredValue;
-			double					_bestFitPrediction;
+      double          _bestFitPrediction;
       PredictionBase* _prediction;
 
     protected:

@@ -13,8 +13,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*        published by the Free Software Foundation; either version 3 of   *
+*        the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -26,11 +26,12 @@
 
 Fittino::Observable::Observable( PredictionBase* prediction,
                                  double          measuredValue,
-                                 double          measuredError )
+                                 double          measuredError,
+                                 double          bestFitPrediction )
         : _deviation( 0. ),
           _measuredError( measuredError ),
           _measuredValue( measuredValue ),
-					_bestFitPrediction( 0. ),
+          _bestFitPrediction( bestFitPrediction ),
           _prediction( prediction ) {
 }
 
@@ -95,8 +96,8 @@ Fittino::PredictionBase* Fittino::Observable::GetPrediction() {
 }
 
 void Fittino::Observable::SetBestFitPrediction( double value ) {
-		
-		_bestFitPrediction = value;
+    
+    _bestFitPrediction = value;
 
 }
 
@@ -110,6 +111,6 @@ void Fittino::Observable::UpdatePrediction() {
 
 void Fittino::Observable::SmearMeasuredValue( TRandom3* randomGenerator ) {
 
-		_measuredValue = randomGenerator->Gaus( _bestFitPrediction, _measuredError );
+    _measuredValue = randomGenerator->Gaus( _bestFitPrediction, _measuredError );
 
 }
