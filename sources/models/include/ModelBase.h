@@ -171,6 +171,10 @@ namespace Fittino {
        *  Evaluates the chi2 function.
        */
       virtual double                                    Evaluate() = 0;
+      /*!
+       *  Setup all Parameters
+       */
+      void                                              InitializeParameters();
 
       /*! \endcond UML */
 

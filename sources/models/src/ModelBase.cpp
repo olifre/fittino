@@ -18,15 +18,23 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+#include <boost/foreach.hpp>
+
 #include "Chi2ContributionBase.h"
+#include "Configuration.h"
 #include "ConfigurationException.h"
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
 #include "PredictionBase.h"
+#include "SLHAParameter.h"
 #include <iostream>
 
 Fittino::ModelBase::ModelBase()
     : _name( "" ) {
+
+    InitializeParameters();
 
 }
 
@@ -131,5 +139,35 @@ const std::vector<Fittino::PredictionBase*>* Fittino::ModelBase::GetPredictionVe
 const Fittino::Collection<Fittino::PredictionBase*>& Fittino::ModelBase::GetCollectionOfPredictions() const {
 
     return _collectionOfPredictions;
+
+}
+
+void Fittino::ModelBase::InitializeParameters() {
+
+    Configuration *configuration = Configuration::GetInstance();
+    const boost::property_tree::ptree* propertyTree = configuration->GetPropertyTree();
+
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & v, propertyTree->get_child( "InputFile" ) ) {
+        if( v.first == "Parameter" ) {
+            std::string name = v.second.get<std::string>( "<xmlattr>.Name" );
+            std::string plotName = v.second.get<std::string>( "<xmlattr>.plotName", name );
+            std::string unit = v.second.get<std::string>( "<xmlattr>.Unit", "" );
+            std::string plotUnit = v.second.get<std::string>( "<xmlattr>.PlotUnit", unit );
+            std::string id = v.second.get<std::string>( "<xmlattr>.ID", "" );
+            double value = v.second.get<double>( "<xmlattr>.Value" );
+            double error = v.second.get<double>( "<xmlattr>.Error" );
+            double lowerBound = v.second.get<double>( "<xmlattr>.LowerBound", 0. );
+            double upperBound = v.second.get<double>( "<xmlattr>.UpperBound", 0. );
+            double plotLowerBound = v.second.get<double>( "<xmlattr>.PlotLowerBound", 0. );
+            double plotUpperBound = v.second.get<double>( "<xmlattr>.PlotUpperBound", 0. );
+            bool fixed = v.second.get<bool>( "<xmlattr>.Fixed", false );
+
+            if( v.second.get<std::string>( "<xmlattr>.Type" ) == "SLHA" ) {
+                std::cout << "will add a paramter with the following attributes " << name << " " << plotName << " " <<  value << " " << unit << " " << plotUnit << " " << error << " " << lowerBound << " " << upperBound << " " << plotLowerBound << " " << plotUpperBound << " " << id << " " << fixed << std::endl;
+                AddParameter( new SLHAParameter( name, plotName, value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, id, fixed ) );
+
+            }
+        }
+    }
 
 }
