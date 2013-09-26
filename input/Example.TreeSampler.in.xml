@@ -121,15 +121,17 @@
   />
 
   <Observable
-   Name          = "O_massNeutralino1"
-   MeasuredValue = "150"
-   Error1        = "5"
+   Name              = "O_massNeutralino1"
+   MeasuredValue     = "150"
+   Error1            = "5"
+   BestFitPrediction = "160"
    />
   
   <Observable
-   Name          = "O_massNeutralino2"
-   MeasuredValue = "230"
-   Error1        = "5"
+   Name              = "O_massNeutralino2"
+   MeasuredValue     = "230"
+   Error1            = "5"
+   BestFitPrediction = "225"
    />
   
   <Sampler
