@@ -134,10 +134,10 @@ int main( int argc, char ** argv )
 
 	/* Initialize run */
 	cout<<"Initialisiere Hadronische CS...";
-	init_hadronic_cs_( &smvalues );
+	//	init_hadronic_cs_( &smvalues );
 	cout<<"done"<<endl;
 	cout<<"Initialisiere Breiten...";
-	initsmwidths_( &smvalues );
+	//initsmwidths_( &smvalues );
 	cout<<"done"<<endl;
 	cout<<endl<<"Starte Scan..."<<endl<<endl;
 
@@ -158,7 +158,7 @@ int main( int argc, char ** argv )
 	  double ggH, ggH_err, ggH_chi;
 	  ud_jjh_(      &smvalues, &effvalues, &VBF, &VBF_err, &VBF_chi);
 	  HWRadiation_( &smvalues, &effvalues, &WH,  &WH_err,  &WH_chi );
-	  Gluonfusion_( &smvalues, &effvalues, &ggH, &ggH_err, &ggH_chi );
+	  HZRadiation_( &smvalues, &effvalues, &ggH, &ggH_err, &ggH_chi );
 	  cout<<scientific<<setprecision(4)<<setw(12)<<effvalues.fp2;
 	  cout<<scientific<<setw(12)<<VBF<<setw(12)<<VBF_err<<setw(12)<<VBF_chi;
 	  cout<<scientific<<setw(12)<<WH<<setw(12)<<WH_err<<setw(12)<<WH_chi;

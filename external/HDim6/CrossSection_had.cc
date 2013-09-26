@@ -83,7 +83,7 @@ void Gluonfusion_( sminputs * smpar, effinputs * effpar, double * cSec, double *
    r = gsl_rng_alloc( T );
    
    gsl_monte_function G;
- 
+   *chisq = 1;
    double result=0, error=0;
    radparam par;
    par.smpar  = *smpar;
@@ -120,6 +120,7 @@ void HZRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double *
   T = gsl_rng_default;
   r = gsl_rng_alloc( T );
   
+  *chisq = 1;
   gsl_monte_function G;
   /* Loop over Initial Quarks */
   for( int i = 1; i <= 5; i++ )
@@ -149,7 +150,7 @@ void HZRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double *
     do {
       k++;
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
-    } while (fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.5 && k < CSstep );  
+    } while (fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2 && k < CSstep );  
     double chi = gsl_monte_vegas_chisq( s );
     *chisq = (fabs(*chisq-1) > fabs(chi-1) ? *chisq : chi );
     gsl_monte_vegas_free( s );
@@ -177,7 +178,7 @@ void HWRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double *
   gsl_rng_env_setup();
   T = gsl_rng_default;
   r = gsl_rng_alloc( T );
-  
+  *chisq = 1;
   /* Loop over Initial Quarks */
   int i = 2, j = 1;
   do
@@ -219,7 +220,7 @@ void HWRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double *
       do {
 	k++;
 	gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
-      } while (fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.5 && k < CSstep );
+      } while (fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2 && k < CSstep );
       double chi = gsl_monte_vegas_chisq(s);
       *chisq = (fabs(*chisq-1) > fabs(chi-1) ? *chisq : chi );
       gsl_monte_vegas_free( s );
@@ -234,7 +235,7 @@ void HWRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double *
       do {
 	k++;
 	gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
-      } while (fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.5 && k < CSstep );
+      } while (fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.2 && k < CSstep );
       chi = gsl_monte_vegas_chisq(s);
       *chisq = (fabs(*chisq-1) > fabs(chi-1) ? *chisq : chi );
       gsl_monte_vegas_free( s );
