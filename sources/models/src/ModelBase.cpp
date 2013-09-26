@@ -23,6 +23,7 @@
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
 #include "PredictionBase.h"
+#include "Observable.h"
 #include <iostream>
 
 Fittino::ModelBase::ModelBase()
@@ -77,6 +78,12 @@ int Fittino::ModelBase::GetNumberOfPredictions() const {
 
 }
 
+int Fittino::ModelBase::GetNumberOfObservables() const {
+
+    return _observableVector.size();
+
+}
+
 void Fittino::ModelBase::AddParameter( ModelParameterBase* parameter ) {
 
     _parameterVector.push_back( parameter );
@@ -125,6 +132,12 @@ const std::vector<Fittino::ModelParameterBase*>* Fittino::ModelBase::GetParamete
 const std::vector<Fittino::PredictionBase*>* Fittino::ModelBase::GetPredictionVector() const {
 
     return &_predictionVector;
+
+}
+
+const std::vector<Fittino::Observable*>* Fittino::ModelBase::GetObservableVector() const {
+
+    return &_observableVector;
 
 }
 

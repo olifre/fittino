@@ -39,6 +39,7 @@ namespace Fittino {
   class ModelParameterBase;
   class PredictionBase;
   class ModelCalculatorBase;
+  class Observable;
 
   /*!
    *  \defgroup models
@@ -76,6 +77,10 @@ namespace Fittino {
        */
       int                                               GetNumberOfPredictions() const;
       /*!
+       *  Returns the number of observables of the model.
+       */
+      int                                               GetNumberOfObservables() const;
+      /*!
        *  Adds a parameter to the model.
        */
       void                                              AddParameter( ModelParameterBase* parameter );
@@ -106,9 +111,14 @@ namespace Fittino {
        */
       const std::vector<PredictionBase*>*               GetPredictionVector() const;
       /*!
+       *  Returns the observables of the model as a vector.
+       */
+      const std::vector<Observable*>*               GetObservableVector() const;
+      /*!
        *  Returns the predictions of the model as a collection.
        */
       const Collection<PredictionBase*>&                GetCollectionOfPredictions() const;
+    
 
     public:
       virtual void                                      PrintStatus() const = 0;
@@ -135,6 +145,11 @@ namespace Fittino {
        *  Stores the predictions.
        */
       std::vector<PredictionBase*>                      _predictionVector;
+      /*!
+       *  Stores the observables.
+       */
+      std::vector<Observable*>                      _observableVector;
+    
 
     protected:
       /*!

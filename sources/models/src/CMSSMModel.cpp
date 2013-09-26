@@ -25,6 +25,7 @@
 #include "Observable.h"
 #include "SLHAParameter.h"
 #include "SLHAPrediction.h"
+#include "SimplePrediction.h"
 #include "SPhenoSLHAModelCalculator.h"
 #include "TreeCalculator.h"
 
@@ -60,6 +61,20 @@ Fittino::CMSSMModel::CMSSMModel() {
                                          propertyTree->get<double>( "InputFile.Model.<xmlattr>.TanBeta" ),
                                          "", "",
                                          1., 0., 1.e3, 0., 1.e3, "3" ) );
+        
+        BOOST_FOREACH(const boost::property_tree::ptree::value_type &v, propertyTree->get_child("InputFile") ) {
+            if( v.first == "Observable" ) {
+                _observableVector.push_back( new Observable( new SimplePrediction( v.second.get<std::string>("<xmlattr>.Name"), v.second.get<std::string>("<xmlattr>.Name"), "", "", v.second.get<double>("<xmlattr>.MeasuredValue")-10*v.second.get<double>("<xmlattr>.Error1"), v.second.get<double>("<xmlattr>.MeasuredValue")+10*v.second.get<double>("<xmlattr>.Error1"), treeCalculator ), v.second.get<double>("<xmlattr>.MeasuredValue"), v.second.get<double>("<xmlattr>.Error1") ) );
+ 
+                /*
+                std::cout << "read observable from config: " << std::endl;
+                std::cout << "\t name is  " << v.second.get<std::string>("<xmlattr>.Name") << std::endl;
+                std::cout << "\t value is " << v.second.get<double>("<xmlattr>.MeasuredValue") << std::endl;
+                std::cout << "\t error is " << v.second.get<double>("<xmlattr>.Error1") << std::endl;
+                */
+            }
+        }
+
         PhysicsModelBase::Initialize();
 
     }
