@@ -61,11 +61,12 @@ Fittino::CMSSMModel::CMSSMModel() {
                                          propertyTree->get<double>( "InputFile.Model.<xmlattr>.TanBeta" ),
                                          "", "",
                                          1., 0., 1.e3, 0., 1.e3, "3" ) );
-        
-        BOOST_FOREACH(const boost::property_tree::ptree::value_type &v, propertyTree->get_child("InputFile") ) {
+
+        BOOST_FOREACH( const boost::property_tree::ptree::value_type & v, propertyTree->get_child( "InputFile" ) ) {
             if( v.first == "Observable" ) {
-                _observableVector.push_back( new Observable( new SimplePrediction( v.second.get<std::string>("<xmlattr>.Name"), v.second.get<std::string>("<xmlattr>.Name"), "", "", v.second.get<double>("<xmlattr>.MeasuredValue")-10*v.second.get<double>("<xmlattr>.Error1"), v.second.get<double>("<xmlattr>.MeasuredValue")+10*v.second.get<double>("<xmlattr>.Error1"), treeCalculator ), v.second.get<double>("<xmlattr>.MeasuredValue"), v.second.get<double>("<xmlattr>.Error1") ) );
- 
+
+                AddObservable( new Observable( new SimplePrediction( v.second.get<std::string>( "<xmlattr>.Name" ), v.second.get<std::string>( "<xmlattr>.Name" ), "", "", v.second.get<double>( "<xmlattr>.MeasuredValue" ) - 10 * v.second.get<double>( "<xmlattr>.Error1" ), v.second.get<double>( "<xmlattr>.MeasuredValue" ) + 10 * v.second.get<double>( "<xmlattr>.Error1" ), treeCalculator ), v.second.get<double>( "<xmlattr>.MeasuredValue" ), v.second.get<double>( "<xmlattr>.Error1" ) ) );
+
                 /*
                 std::cout << "read observable from config: " << std::endl;
                 std::cout << "\t name is  " << v.second.get<std::string>("<xmlattr>.Name") << std::endl;
@@ -103,13 +104,13 @@ Fittino::CMSSMModel::CMSSMModel() {
         SPhenoSLHAModelCalculator* slhaModelCalculator = new SPhenoSLHAModelCalculator( this );
         _modelCalculatorVector.push_back( slhaModelCalculator );
 
-        _observableVector.push_back( new Observable( new SLHAPrediction( "O_Bsg_npf", "BR(b#rightarrows#gamma)",
-                                     "", "",
-                                     0., 1.e6,
-                                     slhaModelCalculator,
-                                     "SPhenoLowEnergy",
-                                     " 1", 1 ),
-                                     3.55e-04, 0.53e-04 ) );
+        _AddObservable( new Observable( new SLHAPrediction( "O_Bsg_npf", "BR(b#rightarrows#gamma)",
+                                        "", "",
+                                        0., 1.e6,
+                                        slhaModelCalculator,
+                                        "SPhenoLowEnergy",
+                                        " 1", 1 ),
+                                        3.55e-04, 0.53e-04 ) );
 
         _predictionVector.push_back( new SLHAPrediction( "O_massNeutralino1", "m_{#chi_{1}^{0}}",
                                      "GeV", "GeV",
