@@ -31,6 +31,23 @@
   X4         CDATA #IMPLIED
 >
 
+<!ELEMENT Parameter EMPTY>
+<!ATTLIST Parameter
+  Type           CDATA #REQUIRED
+  Name           CDATA #REQUIRED
+  PlotName       CDATA #IMPLIED
+  Value          CDATA #REQUIRED
+  Error          CDATA #REQUIRED
+  LowerBound     CDATA #IMPLIED
+  UpperBound     CDATA #IMPLIED
+  PlotLowerBound CDATA #REQUIRED
+  PlotUpperBound CDATA #REQUIRED
+  Unit           CDATA #IMPLIED
+  PlotUnit       CDATA #IMPLIED
+  ID             CDATA #IMPLIED
+  Fixed          CDATA #IMPLIED
+>
+
 <!ELEMENT Observable EMPTY>
 <!ATTLIST Observable
   Name          CDATA #REQUIRED
