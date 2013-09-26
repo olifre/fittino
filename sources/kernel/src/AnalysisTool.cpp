@@ -32,6 +32,8 @@
 #include "ModelParameterBase.h"
 #include "ParameterBase.h"
 #include "PredictionBase.h"
+#include "Observable.h"
+
 
 Fittino::AnalysisTool::AnalysisTool( ModelBase* model )
     : _chi2( 1.e99 ),
@@ -85,8 +87,14 @@ void Fittino::AnalysisTool::FillTree() {
 
     }
 
+    for ( unsigned int i = 0; i < _model->GetNumberOfObservables(); ++i ) {
+
+        _leafVector[i + _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions()] = _model->GetObservableVector()->at( i )->GetPrediction()->GetValue();
+
+    }
+
     for ( unsigned int i = 0; i < GetNumberOfStatusParameters(); ++i ) {
-        _leafVector[i + _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions()] = GetStatusParameterVector()->at( i )->GetValue();
+        _leafVector[i + _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + _model->GetNumberOfObservables()] = GetStatusParameterVector()->at( i )->GetValue();
 
     }
     _tree->Fill();
@@ -147,7 +155,7 @@ void Fittino::AnalysisTool::InitializeAnalysisTool() {
 
 void Fittino::AnalysisTool::InitializeBranches() {
 
-    _leafVector = std::vector<double>( _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + GetNumberOfStatusParameters() );
+    _leafVector = std::vector<double>( _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + _model->GetNumberOfObservables() + GetNumberOfStatusParameters() );
 
     for ( unsigned int i = 0; i < _model->GetNumberOfChi2Contributions(); ++i ) {
 
@@ -172,11 +180,19 @@ void Fittino::AnalysisTool::InitializeBranches() {
         //_model->GetPredictionVector()->at( i )->GetName().c_str() );
 
     }
+    
+    for ( unsigned int i = 0; i < _model->GetNumberOfObservables(); ++i ) {
+
+        _tree->Branch( _model->GetObservableVector()->at( i )->GetPrediction()->GetName().c_str(),
+                       &_leafVector[i + _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions()] );
+        //_model->GetPredictionVector()->at( i )->GetName().c_str() );
+
+    }
 
     for ( unsigned int i = 0; i < GetNumberOfStatusParameters(); ++i ) {
 
         _tree->Branch( GetStatusParameterVector()->at( i )->GetName().c_str(),
-                       &_leafVector[i + _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions()] );
+                       &_leafVector[i + _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions() + _model->GetNumberOfObservables()] );
         //GetStatusParameterVector()->at( i )->GetName().c_str() );
 
     }
