@@ -51,11 +51,12 @@
 
 <!ELEMENT Observable EMPTY>
 <!ATTLIST Observable
-  Name          CDATA #REQUIRED
-  MeasuredValue CDATA #REQUIRED
-  Error1        CDATA #REQUIRED
-  Error2        CDATA #IMPLIED
-  Error3        CDATA #IMPLIED
+  Name               CDATA #REQUIRED
+  MeasuredValue      CDATA #REQUIRED
+  Error1             CDATA #REQUIRED
+  Error2             CDATA #IMPLIED
+  Error3             CDATA #IMPLIED
+  BestFitPrediction  CDATA #IMPLIED
 >
 
 <!ELEMENT Optimizer EMPTY>
