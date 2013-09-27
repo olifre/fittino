@@ -49,9 +49,9 @@ namespace Fittino {
        */
                                                      ~PhysicsModelBase();
       /*!
-       *  Adds an observable to the model. 
+       *  Adds an observable to the model.
        */
-      void                                           AddObservable( Observable *observable );              
+      void                                           AddObservable( Observable *observable );
       /*!
        *  Adds a calculator to the model.
        */
@@ -60,11 +60,11 @@ namespace Fittino {
        *  Returns the predictions of the model as a collection.
        */
       const Collection<ModelCalculatorBase*>&        GetCollectionOfCalculators() const;
- 
+
     public:
       virtual void                                   PrintStatus() const;
       virtual void                                   SmearObservables( TRandom3* );
-      
+
     public:
       virtual std::vector<ModelCalculatorBase*>*     GetModelCalculatorVector();
 
@@ -87,6 +87,8 @@ namespace Fittino {
     private:
       virtual double                                 Evaluate();
 
+      void                                           InitializeCalculators();
+      void                                           InitializeObservables();
       /*! \endcond UML */
 
     private:

@@ -38,23 +38,6 @@ Fittino::CMSSMModel::CMSSMModel() {
     const boost::property_tree::ptree* propertyTree = configuration->GetPropertyTree();
     if( propertyTree->get<std::string>( "InputFile.Sampler.<xmlattr>.SamplerType" ) == "Tree" ) {
 
-        TreeCalculator *treeCalculator = new TreeCalculator( this, propertyTree->get<std::string>( "InputFile.Sampler.<xmlattr>.InputFileName" ), propertyTree->get<std::string>( "InputFile.Sampler.<xmlattr>.InputTreeName" ) );
-        _modelCalculatorVector.push_back( treeCalculator );
-
-        BOOST_FOREACH( const boost::property_tree::ptree::value_type & v, propertyTree->get_child( "InputFile" ) ) {
-            if( v.first == "Observable" ) {
-
-                AddObservable( new Observable( new SimplePrediction( v.second.get<std::string>( "<xmlattr>.Name" ), v.second.get<std::string>( "<xmlattr>.Name" ), "", "", v.second.get<double>( "<xmlattr>.MeasuredValue" ) - 10 * v.second.get<double>( "<xmlattr>.Error1" ), v.second.get<double>( "<xmlattr>.MeasuredValue" ) + 10 * v.second.get<double>( "<xmlattr>.Error1" ), treeCalculator ), v.second.get<double>( "<xmlattr>.MeasuredValue" ), v.second.get<double>( "<xmlattr>.Error1" ), v.second.get<double>( "<xmlattr>.BestFitPrediction", 0. ) ) );
-
-                /*
-                std::cout << "read observable from config: " << std::endl;
-                std::cout << "\t name is  " << v.second.get<std::string>("<xmlattr>.Name") << std::endl;
-                std::cout << "\t value is " << v.second.get<double>("<xmlattr>.MeasuredValue") << std::endl;
-                std::cout << "\t error is " << v.second.get<double>("<xmlattr>.Error1") << std::endl;
-                */
-            }
-        }
-
         PhysicsModelBase::Initialize();
 
     }

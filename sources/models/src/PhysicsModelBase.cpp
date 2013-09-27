@@ -18,8 +18,13 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+#include <boost/foreach.hpp>
+
 #include <cmath>
 
+#include "Factory.h"
 #include "Chi2ContributionBase.h"
 #include "Messenger.h"
 #include "ModelCalculatorBase.h"
@@ -27,9 +32,21 @@
 #include "Observable.h"
 #include "PhysicsModelBase.h"
 #include "PredictionBase.h"
+#include "SimplePrediction.h"
 #include "Collection.h"
+#include "Configuration.h"
+#include "TreeCalculator.h"
+#include "FeynHiggsModelCalculator.h"
+#include "FeynHiggsSLHAModelCalculator.h"
+#include "HDim6ModelCalculator.h"
+#include "HiggsSignalsHadXSModelCalculator.h"
+#include "HiggsSignalsSLHAModelCalculator.h"
+#include "SPhenoSLHAModelCalculator.h"
 
 Fittino::PhysicsModelBase::PhysicsModelBase() {
+
+    InitializeCalculators();
+    InitializeObservables();
 
 }
 
@@ -158,6 +175,7 @@ void Fittino::PhysicsModelBase::Initialize() const {
     messenger << Messenger::ALWAYS << "   Initializing the list of model calculators" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
+
     for ( unsigned int i = 0; i < _modelCalculatorVector.size(); i++ ) {
 
         messenger << Messenger::ALWAYS << "    Initializing " << _modelCalculatorVector[i]->GetName() << Messenger::Endl;
@@ -218,7 +236,7 @@ void Fittino::PhysicsModelBase::AddObservable( Observable* observable ) {
 }
 
 void Fittino::PhysicsModelBase::AddCalculator( ModelCalculatorBase* calculator ) {
-    
+
     _collectionOfCalculators.AddElement( calculator->GetName(), calculator );
     _modelCalculatorVector.push_back( calculator );
 
@@ -227,5 +245,78 @@ void Fittino::PhysicsModelBase::AddCalculator( ModelCalculatorBase* calculator )
 const Fittino::Collection<Fittino::ModelCalculatorBase*>& Fittino::PhysicsModelBase::GetCollectionOfCalculators() const {
 
     return _collectionOfCalculators;
+
+}
+
+void Fittino::PhysicsModelBase::InitializeCalculators() {
+
+    const Factory factory;
+
+    Configuration *configuration = Configuration::GetInstance();
+    const boost::property_tree::ptree* propertyTree = configuration->GetPropertyTree();
+
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & v, propertyTree->get_child( "InputFile" ) ) {
+        if ( v.first == "Calculator" ) {
+            std::string calculatorType = v.second.get<std::string>( "<xmlattr>.Type" );
+            if ( calculatorType == "Tree" ) {
+                
+                AddCalculator( factory.CreateCalculator( Configuration::TREECALCULATOR, this ) );
+
+            }
+
+            else if ( calculatorType == "FeynHiggs" ) {
+
+                AddCalculator( factory.CreateCalculator( Configuration::FEYNHIGGSCALCULATOR, this ) );
+
+            }
+
+            else if ( calculatorType == "FeynHiggsSLHA" ) {
+
+                AddCalculator( factory.CreateCalculator( Configuration::FEYNHIGGSSLHACALCULATOR, this ) );
+
+            }
+
+            else if ( calculatorType == "HDim6" ) {
+
+                AddCalculator( factory.CreateCalculator( Configuration::HDIM6CALCULATOR, this ) );
+
+            }
+
+            else if ( calculatorType == "HiggsSignalsHadXS" ) {
+
+                AddCalculator( factory.CreateCalculator( Configuration::HIGGSSIGNALSHADXSCALCULATOR, this ) );
+
+            }
+
+            else if ( calculatorType == "HiggsSignalsSLHA" ) {
+
+                AddCalculator( factory.CreateCalculator( Configuration::HIGGSSIGNALSSLHACALCULATOR, this ) );
+
+            }
+
+            else if ( calculatorType == "SPhenoSLHA" ) {
+
+                AddCalculator( factory.CreateCalculator( Configuration::SPHENOSLHACALCULATOR, this ) );
+
+            }
+
+        }
+
+    }
+
+}
+
+void Fittino::PhysicsModelBase::InitializeObservables() {
+
+    Configuration *configuration = Configuration::GetInstance();
+    const boost::property_tree::ptree* propertyTree = configuration->GetPropertyTree();
+
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & v, propertyTree->get_child( "InputFile" ) ) {
+        if ( v.first == "Observable" ) {
+
+            AddObservable( new Observable( new SimplePrediction( v.second.get<std::string>( "<xmlattr>.Name" ), v.second.get<std::string>( "<xmlattr>.Name" ), "", "", v.second.get<double>( "<xmlattr>.MeasuredValue" ) - 10 * v.second.get<double>( "<xmlattr>.Error1" ), v.second.get<double>( "<xmlattr>.MeasuredValue" ) + 10 * v.second.get<double>( "<xmlattr>.Error1" ), _collectionOfCalculators.At( v.second.get<std::string>( "<xmlattr>.CalculatorName" ) ) ), v.second.get<double>( "<xmlattr>.MeasuredValue" ), v.second.get<double>( "<xmlattr>.Error1" ), v.second.get<double>( "<xmlattr>.BestFitPrediction", 0. ) ) );
+
+        }
+    }
 
 }
