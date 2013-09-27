@@ -2,7 +2,8 @@
 	             ExecutionMode,
                      Model,
                      Parameter*,
-		     Observable*,
+                     Calculator*,
+		             Observable*,
                      (Optimizer|Sampler|Plotter),
                      GeneticAlgorithmOptimizer?,
                      ParticleSwarmOptimizer?,
@@ -49,9 +50,17 @@
   Fixed          CDATA #IMPLIED
 >
 
+<!ELEMENT Calculator EMPTY>
+<!ATTLIST Calculator
+  Type               CDATA #REQUIRED
+  InputFileName      CDATA #IMPLIED
+  InputTreeName      CDATA #IMPLIED
+>
+
 <!ELEMENT Observable EMPTY>
 <!ATTLIST Observable
   Name               CDATA #REQUIRED
+  CalculatorName     CDATA #REQUIRED
   MeasuredValue      CDATA #REQUIRED
   Error1             CDATA #REQUIRED
   Error2             CDATA #IMPLIED

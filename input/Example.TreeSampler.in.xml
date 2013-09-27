@@ -120,23 +120,23 @@
    Fixed            = "1"
   />
 
+  <Calculator
+   Type              = "Tree"
+   InputFileName     = "Fittino.old.root"
+   InputTreeName     = "Tree"
+  />
+
   <Observable
    Name              = "O_massNeutralino1"
+   CalculatorName    = "Tree"
    MeasuredValue     = "150"
    Error1            = "5"
    BestFitPrediction = "160"
    />
   
-  <Observable
-   Name              = "O_massNeutralino2"
-   MeasuredValue     = "230"
-   Error1            = "5"
-   BestFitPrediction = "225"
-   />
-  
   <Sampler
    NumberOfIterations = "500"
-   PerformToyRun      = "0"
+   PerformToyRun      = "1"
    InputFileName      = "Fittino.old.root"
    InputTreeName      = "Tree"
    SamplerType        = "Tree"
