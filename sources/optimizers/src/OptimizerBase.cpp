@@ -30,10 +30,10 @@
 #include "ModelParameterBase.h"
 #include "OptimizerBase.h"
 
-Fittino::OptimizerBase::OptimizerBase( ModelBase* model )
+Fittino::OptimizerBase::OptimizerBase( ModelBase* model, int randomSeed )
         : _abortCriterium( Configuration::GetInstance()->GetSteeringParameter( "AbortCriterium", 1e-6 ) ),
           _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", 10000 ) ),
-          AnalysisTool( model ) {
+          AnalysisTool( model, randomSeed ) {
 
 }
 

@@ -37,64 +37,29 @@
 
 Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* model )
     :ModelCalculatorBase( model ),
-     _f_BB   ( _model->GetParameterMap()->at( "F_BB"   )->GetValue() ),
-     _f_WW   ( _model->GetParameterMap()->at( "F_WW"   )->GetValue() ),
-     _f_gg   ( _model->GetParameterMap()->at( "F_gg"   )->GetValue() ),
-     _f_B    ( _model->GetParameterMap()->at( "F_B"    )->GetValue() ),
-     _f_W    ( _model->GetParameterMap()->at( "F_W"    )->GetValue() ),
-     _f_u    ( _model->GetParameterMap()->at( "F_u"    )->GetValue() ),
-     _f_d    ( _model->GetParameterMap()->at( "F_d"    )->GetValue() ),
-     _f_c    ( _model->GetParameterMap()->at( "F_c"    )->GetValue() ),
-     _f_s    ( _model->GetParameterMap()->at( "F_s"    )->GetValue() ),
-     _f_t    ( _model->GetParameterMap()->at( "F_t"    )->GetValue() ),
-     _f_b    ( _model->GetParameterMap()->at( "F_b"    )->GetValue() ),
-     _f_e    ( _model->GetParameterMap()->at( "F_e"    )->GetValue() ),
-     _f_mu   ( _model->GetParameterMap()->at( "F_mu"   )->GetValue() ),
-     _f_tau  ( _model->GetParameterMap()->at( "F_tau"  )->GetValue() ),
-     _mass_h ( _model->GetParameterMap()->at( "mass_h" )->GetValue() ) {
+     _a_minus       ( _model->GetParameterMap()->at( "a_minus" )->GetValue() ),
+     _a_plus        ( _model->GetParameterMap()->at( "a_plus" )->GetValue() ),
+     _c_H           ( _model->GetParameterMap()->at( "c_H" )->GetValue()   ),
+     _c_y_b         ( _model->GetParameterMap()->at( "c_y_b" )->GetValue() ),
+     _c_y_t         ( _model->GetParameterMap()->at( "c_y_t" )->GetValue() ),
+     _c_y_tau       ( _model->GetParameterMap()->at( "c_y_tau" )->GetValue() ),
+     _kappa_BB      ( _model->GetParameterMap()->at( "kappa_BB" )->GetValue() ),
+     _kappa_GG      ( _model->GetParameterMap()->at( "kappa_GG" )->GetValue() ),
+     _kappa_HV_plus ( _model->GetParameterMap()->at( "kappa_HV_plus" )->GetValue() ),
+     _mass_h        ( _model->GetParameterMap()->at( "mass_h" )->GetValue()        ) {
 
     _name = "HDim6ModelCalculator";
 
     // lhapdf-getdata CT10.LHgrid
     _pdfSet = "CT10";
+    _pdfDirectory = "";
 
-    _effsmvalues       = new effinputs();
+    _first = true;
 
-    _previousEffValues = new effinputs();
-    _previousEffValues->override_unitarity = -1;
-
-    _previousSMValues  = new sminputs();
-    _previousSMValues->s = -1;
-
-    _effvalues       = new effinputs();
-    _effvalues->override_unitarity = 1; // 0: use coefficients to preserve unitarity, 1: unitarity violated
-
-    _smvalues          = new sminputs();
-    _smvalues->mel    = 0.511e-3;
-    _smvalues->mmu    = 0.10565;
-    _smvalues->mta    = 1.777;
-    _smvalues->mup    = 0.0023;
-    _smvalues->mdo    = 0.0048;
-    _smvalues->mch    = 1.275;
-    _smvalues->mst    = 0.095;
-    _smvalues->mto    = 173.5;
-    _smvalues->mbo    = 4.18;
-    _smvalues->mz     = 91.1876;
-    _smvalues->mw     = 80.385;
-    _smvalues->Gf     = 1.16637e-5;
-    _smvalues->alphae = 0.0078186;
-    _smvalues->alphas = 0.11819;
-    _smvalues->sw     = 0.48079;
-    _smvalues->vud    = 0.97483;
-    _smvalues->vus    = 0.2229;
-    _smvalues->vub    = 0.0036;
-    _smvalues->vcd    = 0.23;
-    _smvalues->vcs    = 0.97389;
-    _smvalues->vcb    = 40.9e-3;
-    _smvalues->vtd    = 8.4e-3;
-    _smvalues->vts    = 42.9e-3;
-    _smvalues->vtb    = 0.89;
-    _smvalues->s      = pow( 7000,2 );
+    _effsmvalues        = new effinputs();
+    _effvalues          = new effinputs();
+    _pomvalues          = new pominput();
+    _smvalues           = new sminputs();
     
     _collectionOfDoubles.AddElement( "normSM_Gamma_hgg",     &_normSM_Gamma_hgg );
     _collectionOfDoubles.AddElement( "normSM_Gamma_htautau", &_normSM_Gamma_htautau );
@@ -114,15 +79,41 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* mod
     _collectionOfDoubles.AddElement( "normSM_xs_Zh",  &_normSM_xs_Zh );
     _collectionOfDoubles.AddElement( "normSM_xs_bh",  &_normSM_xs_bh );
 
+    _collectionOfDoubles.AddElement( "c_V_minus",       &_c_V_minus );
+    _collectionOfDoubles.AddElement( "kappa_HV_minus",  &_kappa_HV_minus );
+    _collectionOfDoubles.AddElement( "kappa_Zgamma",    &_kappa_Zgamma );
+
+    _collectionOfDoubles.AddElement( "f_BB",    &_effvalues->fbb );
+    _collectionOfDoubles.AddElement( "f_WW",    &_effvalues->fww );
+    _collectionOfDoubles.AddElement( "f_GG",    &_effvalues->fgg );
+    _collectionOfDoubles.AddElement( "f_B",     &_effvalues->fb );    
+    _collectionOfDoubles.AddElement( "f_W",     &_effvalues->fw );
+    _collectionOfDoubles.AddElement( "f_t",     &_effvalues->ftoh );
+    _collectionOfDoubles.AddElement( "f_b",     &_effvalues->fboh );
+    _collectionOfDoubles.AddElement( "f_tau",   &_effvalues->ftah );
+    _collectionOfDoubles.AddElement( "f_phi_2", &_effvalues->fp2 );
+
+    _SM_Gamma_hZZ = 1;
+    _SM_Gamma_hWW = 1;
+    _SM_xs_qqh = 1;
+    _SM_xs_Wh = 1;
+    _SM_xs_Zh = 1;
+
+    _Gamma_hZZ = 1;
+    _Gamma_hWW = 1;
+    _xs_qqh = 1;
+    _xs_Wh = 1;
+    _xs_Zh = 1;
+
+
 }
 
 Fittino::HDim6ModelCalculator::~HDim6ModelCalculator() {
 
     delete _effvalues;
+    delete _pomvalues;
     delete _effsmvalues;
     delete _smvalues;
-    delete _previousEffValues;
-    delete _previousSMValues;
 
 }
 
@@ -149,22 +140,19 @@ void Fittino::HDim6ModelCalculator::CallFunction() {
 
     double error, chi2;
 
-    bool gridParametersChanged
-      = (    _previousEffValues->fb  != _effvalues->fb
-          || _previousEffValues->fw  != _effvalues->fw
-          || _previousEffValues->fww != _effvalues->fww );
+    bool _new_mh = ( _first || _previous_mass_h != _mass_h );
 
-    *_previousEffValues = *_effvalues;
+    bool _new_gridParameters
+        = (    _first
+            || _previous_a_minus       != _a_minus
+            || _previous_a_plus        != _a_plus
+            || _previous_c_H           != _c_H
+            || _previous_kappa_BB      != _kappa_BB   
+            || _previous_kappa_HV_plus != _kappa_HV_plus );
+    
+    if ( _new_mh ) {
 
-    bool smValuesChanged 
-      = ( *_previousSMValues != *_smvalues );
-
-    if ( smValuesChanged ) {
-
-        _smvalues->vev   = 2.0 * _smvalues->mw * _smvalues->sw
-                         / sqrt( 4.0 * TMath::Pi()*_smvalues->alphae );
-
-        *_previousSMValues = *_smvalues;
+        _previous_mass_h = _mass_h;
 
         hglgl_      ( _smvalues, _effsmvalues, &_SM_Gamma_hgg,     &error       );
         hgaga_      ( _smvalues, _effsmvalues, &_SM_Gamma_hgaga,   &error       );
@@ -174,22 +162,34 @@ void Fittino::HDim6ModelCalculator::CallFunction() {
         hchch_      ( _smvalues, _effsmvalues, &_SM_Gamma_hcc,     &error       );
         hstst_      ( _smvalues, _effsmvalues, &_SM_Gamma_hss,     &error       );
         hbobo_      ( _smvalues, _effsmvalues, &_SM_Gamma_hbb,     &error       );
-        hzz_        ( _smvalues, _effsmvalues, &_SM_Gamma_hZZ,     &error, &chi2 ); 
-        hww_        ( _smvalues, _effsmvalues, &_SM_Gamma_hWW,     &error, &chi2 ); 
-        Gluonfusion_( _smvalues, _effsmvalues, &_SM_xs_ggh,        &error, &chi2 );
-        udcsb_jjh_  ( _smvalues, _effsmvalues, &_SM_xs_qqh,        &error, &chi2 );
-        HWRadiation_( _smvalues, _effsmvalues, &_SM_xs_Wh,         &error, &chi2 );
-        HZRadiation_( _smvalues, _effsmvalues, &_SM_xs_Zh,         &error, &chi2 );
+        //Gluonfusion_( _smvalues, _effsmvalues, &_SM_xs_ggh,        &error, &chi2 );
+        //hzz_        ( _smvalues, _effsmvalues, &_SM_Gamma_hZZ,     &error, &chi2 ); 
+        //hww_        ( _smvalues, _effsmvalues, &_SM_Gamma_hWW,     &error, &chi2 ); 
+        //        udcsb_jjh_  ( _smvalues, _effsmvalues, &_SM_xs_qqh,        &error, &chi2 );
+        //        ud_jjh_( _smvalues, _effsmvalues, &_SM_xs_qqh,        &error, &chi2 );
+        //HWRadiation_( _smvalues, _effsmvalues, &_SM_xs_Wh,         &error, &chi2 );
+        //HZRadiation_( _smvalues, _effsmvalues, &_SM_xs_Zh,         &error, &chi2 );
 
     }
 
-    if ( smValuesChanged || gridParametersChanged ) {
+    if ( _new_gridParameters ) {
+
+      _previous_a_minus       = _a_minus;
+      _previous_a_plus        = _a_plus;
+      _previous_c_H           = _c_H;
+      _previous_kappa_BB      = _kappa_BB;
+      _previous_kappa_HV_plus = _kappa_HV_plus; 
+
+    }
+
+    if ( _new_mh || _new_gridParameters ) {
       
-        hzz_        ( _smvalues, _effvalues, &_Gamma_hZZ, &error, &chi2 ); 
-        hww_        ( _smvalues, _effvalues, &_Gamma_hWW, &error, &chi2 ); 
-        udcsb_jjh_  ( _smvalues, _effvalues, &_xs_qqh,    &error, &chi2 );
-        HWRadiation_( _smvalues, _effvalues, &_xs_Wh,     &error, &chi2 );
-        HZRadiation_( _smvalues, _effvalues, &_xs_Zh,     &error, &chi2 );
+      //hzz_        ( _smvalues, _effvalues, &_Gamma_hZZ, &error, &chi2 ); 
+       // hww_        ( _smvalues, _effvalues, &_Gamma_hWW, &error, &chi2 ); 
+        //        udcsb_jjh_  ( _smvalues, _effvalues, &_xs_qqh,    &error, &chi2 );
+        //        ud_jjh_  ( _smvalues, _effvalues, &_xs_qqh,    &error, &chi2 );
+      // HWRadiation_( _smvalues, _effvalues, &_xs_Wh,     &error, &chi2 );
+      //HZRadiation_( _smvalues, _effvalues, &_xs_Zh,     &error, &chi2 );
 
     }
 
@@ -201,7 +201,7 @@ void Fittino::HDim6ModelCalculator::CallFunction() {
     hchch_      ( _smvalues, _effvalues, &_Gamma_hcc,        &error       );
     hstst_      ( _smvalues, _effvalues, &_Gamma_hss,        &error       );
     hbobo_      ( _smvalues, _effvalues, &_Gamma_hbb,        &error       );
-    Gluonfusion_( _smvalues, _effvalues, &_xs_ggh,           &error, &chi2 );
+    //Gluonfusion_( _smvalues, _effvalues, &_xs_ggh,           &error, &chi2 );
     ratio_bb_h_ ( _smvalues, _effvalues, &_normSM_xs_bbh,    &error, &chi2 );
     ratio_tth_  ( _smvalues, _effvalues, &_normSM_xs_tth,    &error, &chi2 );
     ratio_bg_bh_( _smvalues, _effvalues, &_normSM_xs_bh,     &error, &chi2 );
@@ -234,6 +234,8 @@ void Fittino::HDim6ModelCalculator::CallFunction() {
     _normSM_xs_Wh         = _xs_Wh         / _SM_xs_Wh;
     _normSM_xs_Zh         = _xs_Zh         / _SM_xs_Zh;
 
+    _first = false;
+
 }
 
 void Fittino::HDim6ModelCalculator::ComparePreviousEffValues() {
@@ -253,20 +255,36 @@ void Fittino::HDim6ModelCalculator::CallExecutable() {
 
 void Fittino::HDim6ModelCalculator::ConfigureInput() {
 
-    _effvalues->fbb  = _f_BB;
-    _effvalues->fww  = _f_WW;
-    _effvalues->fgg  = _f_gg;
-    _effvalues->fb   = _f_B;
-    _effvalues->fw   = _f_W;
-    _effvalues->fuph = _f_u;
-    _effvalues->fdoh = _f_d;
-    _effvalues->fchh = _f_c;
-    _effvalues->fsth = _f_s;
-    _effvalues->ftoh = _f_t;
-    _effvalues->fboh = _f_b;
-    _effvalues->felh = _f_e;
-    _effvalues->fmuh = _f_mu;
-    _effvalues->ftah = _f_tau;
-    _smvalues ->mh   = _mass_h;
+    _c_V_minus      = ( _a_plus + _a_minus ) / 2.;
+    _kappa_HV_minus = ( _a_plus - _a_minus ) / 2.;
+    _kappa_Zgamma   = - _kappa_HV_minus / 2. - 2 * TMath::Power( _smvalues->sw, 2) * _kappa_BB;
+
+    _smvalues ->mh      = _mass_h;
+    _pomvalues->ch      = _c_H;
+    _pomvalues->cvm     = _c_V_minus;
+    _pomvalues->c_y_toh = _c_y_t;
+    _pomvalues->c_y_boh = _c_y_b;
+    _pomvalues->c_y_tah = _c_y_tau;
+    _pomvalues->kbb     = _kappa_BB;
+    _pomvalues->kgg     = _kappa_GG;
+    _pomvalues->khvm    = _kappa_HV_minus;
+    _pomvalues->khvp    = _kappa_HV_plus;
+
+    pom_to_eboli( _pomvalues, _effvalues, _smvalues );    
+
+    //     _effvalues->fbb  = _f_BB;
+    //     _effvalues->fww  = _f_WW;
+    //     _effvalues->fgg  = _f_gg;
+    //     _effvalues->fb   = _f_B;
+    //     _effvalues->fw   = _f_W;
+    //     _effvalues->fuph = _f_u;
+    //     _effvalues->fdoh = _f_d;
+    //     _effvalues->fchh = _f_c;
+    //     _effvalues->fsth = _f_s;
+    //     _effvalues->ftoh = _f_t;
+    //     _effvalues->fboh = _f_b;
+    //     _effvalues->felh = _f_e;
+    //     _effvalues->fmuh = _f_mu;
+    //     _effvalues->ftah = _f_tau;
 
 }

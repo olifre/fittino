@@ -39,7 +39,7 @@ namespace Fittino {
       /*!
        *  Creates a random a sorted random population
        */
-      GeneticAlgorithmOptimizer( ModelBase* model );
+      GeneticAlgorithmOptimizer( ModelBase* model, int randomSeed );
       /*!
        *  Standard destructor
        */

@@ -53,7 +53,7 @@ namespace Fittino {
        *  between a model and the concrete optimizer is established.
        */
 
-                   OptimizerBase( ModelBase* model );
+      OptimizerBase( ModelBase* model, int randomSeed );
       /*!
        *  Standard destructor.
        */

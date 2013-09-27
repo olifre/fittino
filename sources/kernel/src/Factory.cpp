@@ -31,6 +31,7 @@
 #include "HDim6Model.h"
 #include "HECModel.h"
 #include "HiggsSignalsHadXSModelCalculator.h"
+#include "HiggsSignalsSLHAModelCalculator.h"
 #include "MarkovChainSampler.h"
 #include "MinuitOptimizer.h"
 #include "ModelBase.h"
@@ -142,23 +143,11 @@ Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator( const Fi
 
 #endif
 
-        case Configuration::FEYNHIGGSSLHACALCULATOR:
-
-#if defined FEYNHIGGS
-
-            return new FeynHiggsSLHAModelCalculator( model );
-
-#else
-
-            throw ConfigurationException( "Trying to use FeynHiggsSLHACalculator but Fittino was built without FeynHiggs." );
-
-#endif
-
         case Configuration::HIGGSSIGNALSSLHACALCULATOR:
 
-#if defined FEYNHIGGS
+#if defined(HIGGSBOUNDS_FOUND) && defined(HIGGSSIGNALS_FOUND)
 
-            return new HiggsSignalsSLHACalculator( model );
+            return new HiggsSignalsSLHAModelCalculator( model );
 
 #else
 
@@ -178,61 +167,61 @@ Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator( const Fi
 
 }
 
-Fittino::OptimizerBase* const Fittino::Factory::CreateOptimizer( const Fittino::Configuration::OptimizerType& optimizerType, Fittino::ModelBase* model ) const {
+Fittino::OptimizerBase* const Fittino::Factory::CreateOptimizer( const Fittino::Configuration::OptimizerType& optimizerType, Fittino::ModelBase* model, int randomSeed ) const {
 
     switch ( optimizerType ) {
 
         case Configuration::GENETICALGORITHM:
-            return new GeneticAlgorithmOptimizer( model );
+            return new GeneticAlgorithmOptimizer( model, randomSeed );
 
         case Configuration::MINUIT:
-            return new MinuitOptimizer( model );
+            return new MinuitOptimizer( model, randomSeed );
 
         case Configuration::PARTICLESWARM:
-            return new ParticleSwarmOptimizer( model );
+            return new ParticleSwarmOptimizer( model, randomSeed );
 
         case Configuration::SIMULATEDANNEALING:
-            return new SimulatedAnnealingOptimizer( model );
+            return new SimulatedAnnealingOptimizer( model, randomSeed );
 
     }
 
 }
 
-Fittino::PlotterBase* const Fittino::Factory::CreatePlotter( const Fittino::Configuration::PlotterType& plotterType, Fittino::ModelBase* model, std::string dataFileName ) const {
+Fittino::PlotterBase* const Fittino::Factory::CreatePlotter( const Fittino::Configuration::PlotterType& plotterType, Fittino::ModelBase* model, std::string dataFileName, int randomSeed ) const {
 
     switch ( plotterType ) {
 
         case Configuration::CONTOUR:
-            return new ContourPlotter( model, dataFileName );
+            return new ContourPlotter( model, dataFileName, randomSeed );
 
         case Configuration::SCATTER:
-            return new ScatterPlotter( model, dataFileName );
+            return new ScatterPlotter( model, dataFileName, randomSeed );
 
         case Configuration::SUMMARY:
-            return new SummaryPlotter( model, dataFileName );
+            return new SummaryPlotter( model, dataFileName, randomSeed );
 
     }
 
 }
 
-Fittino::SamplerBase* const Fittino::Factory::CreateSampler( const Fittino::Configuration::SamplerType& samplerType, Fittino::ModelBase* model ) const {
+Fittino::SamplerBase* const Fittino::Factory::CreateSampler( const Fittino::Configuration::SamplerType& samplerType, Fittino::ModelBase* model, int randomSeed ) const {
 
     switch ( samplerType ) {
 
         case Configuration::MARKOVCHAIN:
-            return new MarkovChainSampler( model );
+            return new MarkovChainSampler( model, randomSeed );
 
         case Configuration::SIMPLE:
-            return new SimpleSampler( model );
+            return new SimpleSampler( model, randomSeed );
 
         case Configuration::COVARIANT:
-            return new CovariantSampler( model );
+            return new CovariantSampler( model, randomSeed );
 
         case Configuration::CORRELATED :
-            return new CorrelatedSampler( model );
+            return new CorrelatedSampler( model, randomSeed );
 
         case Configuration::TREE:
-            return new TreeSampler( model );
+            return new TreeSampler( model, randomSeed );
     }
 
 }

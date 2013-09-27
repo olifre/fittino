@@ -55,7 +55,7 @@ namespace Fittino {
        *  between a model and any class deriving from AnalysisTool (especially the concrete\n
        *  optimizer or sampler classes) is established.
        */
-      AnalysisTool( ModelBase* model );
+      AnalysisTool( ModelBase* model, int randomSeed );
       /*!
        *  Standard destructor.
        */

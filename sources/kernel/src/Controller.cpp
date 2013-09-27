@@ -101,21 +101,21 @@ void Fittino::Controller::ExecuteFittino() const {
 
         if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::OPTIMIZATION ) {
 
-            OptimizerBase* const optimizer = factory.CreateOptimizer( Configuration::GetInstance()->GetOptimizerType(), model );
+            OptimizerBase* const optimizer = factory.CreateOptimizer( Configuration::GetInstance()->GetOptimizerType(), model, _randomSeed );
             optimizer->PerformAnalysis();
             delete optimizer;
 
         }
         else if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::SAMPLING ) {
 
-            SamplerBase* const sampler = factory.CreateSampler( Configuration::GetInstance()->GetSamplerType(), model );
+            SamplerBase* const sampler = factory.CreateSampler( Configuration::GetInstance()->GetSamplerType(), model, _randomSeed );
             sampler->PerformAnalysis();
             delete sampler;
 
 	}
         else if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::PLOTTING ) {
 
-            PlotterBase* plotter = factory.CreatePlotter( Configuration::GetInstance()->GetPlotterType(), model, _dataFileName );
+            PlotterBase* plotter = factory.CreatePlotter( Configuration::GetInstance()->GetPlotterType(), model, _dataFileName, _randomSeed );
             plotter->PerformAnalysis();
             delete plotter;
 

@@ -39,8 +39,8 @@
 #include "Quantity.h"
 #include "SummaryPlotter.h"
 
-Fittino::SummaryPlotter::SummaryPlotter( ModelBase* model, std::string& dataFileName )
-        : PlotterBase( model, dataFileName ) {
+Fittino::SummaryPlotter::SummaryPlotter( ModelBase* model, std::string& dataFileName, int randomSeed )
+    : PlotterBase( model, dataFileName, randomSeed ) {
 
     _name = "summary plotter";
 

@@ -20,8 +20,8 @@
 #include "Messenger.h"
 #include "SamplerBase.h"
 
-Fittino::SamplerBase::SamplerBase( ModelBase* model )
-        : AnalysisTool( model ) {
+Fittino::SamplerBase::SamplerBase( ModelBase* model, int randomSeed )
+    : AnalysisTool( model, randomSeed ) {
 
 }
 

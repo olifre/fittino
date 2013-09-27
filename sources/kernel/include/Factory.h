@@ -92,7 +92,7 @@ namespace Fittino {
        *    <li> SIMULATEDANNEALING\n
        *  </ul>
        */
-      OptimizerBase* const       CreateOptimizer( const Configuration::OptimizerType& optimizerType, ModelBase* model ) const;
+      OptimizerBase* const       CreateOptimizer( const Configuration::OptimizerType& optimizerType, ModelBase* model, int randomSeed ) const;
       /*!
        *  Returns a concrete plotter according to the plotter type passed as an argument. Supported\n
        *  plotter types are
@@ -102,7 +102,7 @@ namespace Fittino {
        *    <li> SUMMARY\n
        *  </ul>
        */
-      PlotterBase* const         CreatePlotter( const Configuration::PlotterType& plotterType, ModelBase* model, std::string dataFileName ) const;
+      PlotterBase* const         CreatePlotter( const Configuration::PlotterType& plotterType, ModelBase* model, std::string dataFileName, int randomSeed ) const;
       /*!
        *  Returns a concrete parameter sampler according to the sampler type passed as an\n
        *  argument.  Supported sampler types are
@@ -111,7 +111,7 @@ namespace Fittino {
        *    <li> SIMPLE\n
        *  </ul>
        */
-      SamplerBase* const         CreateSampler( const Configuration::SamplerType& samplerType, ModelBase* model ) const;
+      SamplerBase* const         CreateSampler( const Configuration::SamplerType& samplerType, ModelBase* model, int randomSeed ) const;
 
   };
 

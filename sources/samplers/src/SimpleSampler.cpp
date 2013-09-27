@@ -16,13 +16,14 @@
 *	      the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
+#include <iostream>
 
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
 #include "SimpleSampler.h"
 
-Fittino::SimpleSampler::SimpleSampler( Fittino::ModelBase* model )
-          : SamplerBase( model ) {
+Fittino::SimpleSampler::SimpleSampler( Fittino::ModelBase* model, int randomSeed )
+  : SamplerBase( model, randomSeed ) {
 
     _name = "simple parameter sampler";
 

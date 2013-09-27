@@ -40,7 +40,7 @@ Fittino::HiggsSignalsHadXSModelCalculator::HiggsSignalsHadXSModelCalculator( con
      _normSM_xs_ggh       ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_xs_ggh"        )->GetValue() ),
      _normSM_xs_bbh       ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_xs_bbh"        )->GetValue() ),
      _normSM_xs_qqh       ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_xs_qqh"        )->GetValue() ),
-     _normSM_xs_tth       ( model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_xs_tth"        )->GetValue() ),
+     _normSM_xs_tth       ( model->GetCollectionOfPredictions().GetMap()->at(  "HDim6_normSM_xs_tth"        )->GetValue() ),
      _normSM_xs_Wh        ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_xs_Wh"         )->GetValue() ),
      _normSM_xs_Zh        ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_xs_Zh"         )->GetValue() ),
      _normSM_xs_bh        ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_xs_bh"         )->GetValue() ),
@@ -77,7 +77,8 @@ Fittino::HiggsSignalsHadXSModelCalculator::HiggsSignalsHadXSModelCalculator( con
 
     int nHzero = 1;
     int nHplus = 0;
-    initialize_higgssignals_latestresults_( &nHzero, &nHplus );
+    std::string expdata = "LHC_mail_14_07_2013_HS_new_observable_set";
+    initialize_higgssignals_( &nHzero, &nHplus, expdata );
     
     int output_level = 0; 
     setup_output_level_( &output_level );
@@ -202,6 +203,7 @@ void Fittino::HiggsSignalsHadXSModelCalculator::CallFunction() {
                                     &_normSM_xs_lep, // CS_lep_bbhj_ratio
                                     &_normSM_xs_lep, // CS_lep_tautauhj_ratio
                                     &_normSM_xs_lep, // CS_lep_hjhi_ratio
+                                    &_normSM_xs_lep, // CS_lep_hjhi_ratio ?
                                     &_normSM_xs_tev, // CS_tev_hj_ratio
                                     &_normSM_xs_tev, // CS_tev_hjb_ratio
                                     &_normSM_xs_tev, // CS_tev_hjW_ratio

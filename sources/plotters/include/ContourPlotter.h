@@ -39,7 +39,7 @@ namespace Fittino {
       /*!
        *  Constructor documentation.
        */
-                   ContourPlotter( ModelBase* model, std::string& dataFileName );
+      ContourPlotter( ModelBase* model, std::string& dataFileName, int randomSeed );
       /*!
        *  Standard destructor.
        */

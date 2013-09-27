@@ -30,34 +30,29 @@ Fittino::HDim6Model::HDim6Model() {
     _name = "HDim6 model";
 
     double      value          = 0;
-    std::string unit           = "GeV-2";
-    std::string plotUnit       = "GeV^{-2}";
-    double      error          = 10;
-    double      lowerBound     = 0;
-    double      upperBound     = 1;
-    double      plotLowerBound = 0;
-    double      plotUpperBound = 1e-4;
+    std::string unit           = "";
+    std::string plotUnit       = "";
+    double      error          = 1;
+    double      lowerBound     = 1;
+    double      upperBound     = 10;
+    double      plotLowerBound = lowerBound;
+    double      plotUpperBound = upperBound;
     
     // these will parametrize our grid
-    AddParameter( new PhysicsParameter( "F_B", "F_{B}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_W", "F_{W}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_WW", "F_{WW}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    //    AddParameter( new PhysicsParameter( "kappa_BB", "kappa_BB", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, false ) );
+    //    AddParameter( new PhysicsParameter( "c_H", "c_H", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    //    AddParameter( new PhysicsParameter( "a_minus", "a_minus", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
 
-    // these will be free in the fit as well
-    AddParameter( new PhysicsParameter( "F_gg", "F_{gg}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, false ) );
-    AddParameter( new PhysicsParameter( "F_b", "F_{b}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_t", "F_{t}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_tau", "F_{#tau}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+//     // these will be free in the fit as well
+//     AddParameter( new PhysicsParameter( "kappa_GG", "kappa_GG", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+//     AddParameter( new PhysicsParameter( "c_y_b", "c_y_b", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+//     AddParameter( new PhysicsParameter( "c_y_t", "c_y_t", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+//     AddParameter( new PhysicsParameter( "c_y_tau", "c_y_tau", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
     
-    // these we keep fixed
-    AddParameter( new PhysicsParameter( "F_BB", "F_{BB}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_u", "F_{u}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_d", "F_{d}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_c", "F_{c}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_s", "F_{s}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_e", "F_{e}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "F_mu", "F_{#mu}", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-    AddParameter( new PhysicsParameter( "mass_h", "m_{h}", 125, "GeV", "GeV", 0, 125, 125, 125, 125, true ) );
+//     // these we keep fixed
+//     AddParameter( new PhysicsParameter( "mass_h", "m_{h}", 125, "GeV", "GeV", 0, 125, 125, 125, 125, true ) );
+//     AddParameter( new PhysicsParameter( "kappa_HV_plus", "kappa_HV_plus", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+//     AddParameter( new PhysicsParameter( "a_plus", "a_plus", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
 
     const Factory factory;
 

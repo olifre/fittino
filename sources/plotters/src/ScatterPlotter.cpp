@@ -32,8 +32,8 @@
 #include "PlotterBase.h"
 #include "ScatterPlotter.h"
 
-Fittino::ScatterPlotter::ScatterPlotter( ModelBase* model, std::string& dataFileName )
-    : PlotterBase( model, dataFileName ) {
+Fittino::ScatterPlotter::ScatterPlotter( ModelBase* model, std::string& dataFileName, int randomSeed )
+    : PlotterBase( model, dataFileName, randomSeed ) {
 
     _name       = "scatter plotter";
     _xLogScale  = false;

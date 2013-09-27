@@ -40,7 +40,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                             MarkovChainSampler( ModelBase* model );
+      MarkovChainSampler( ModelBase* model, int randomSeed );
       /*!
        *  Standard destructor.
        */

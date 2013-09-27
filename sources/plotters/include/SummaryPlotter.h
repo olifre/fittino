@@ -39,7 +39,7 @@ namespace Fittino {
       /*!
        *  Constructor documentation.
        */
-                   SummaryPlotter( ModelBase* model, std::string& dataFileName );
+      SummaryPlotter( ModelBase* model, std::string& dataFileName, int randomSeed );
       /*!
        *  Standard destructor.
        */

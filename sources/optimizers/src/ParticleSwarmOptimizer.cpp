@@ -27,8 +27,8 @@
 #include "Messenger.h"
 #include "ParticleSwarmOptimizer.h"
 
-Fittino::ParticleSwarmOptimizer::ParticleSwarmOptimizer( Fittino::ModelBase* model )
-        : OptimizerBase( model ) {
+Fittino::ParticleSwarmOptimizer::ParticleSwarmOptimizer( Fittino::ModelBase* model, int randomSeed )
+    : OptimizerBase( model, randomSeed ) {
 
     _name = "particle swarm optimization algorithm";
 

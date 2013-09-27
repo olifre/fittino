@@ -35,8 +35,8 @@
 #include <cstdlib>
 #include <fstream>
 
-Fittino::CorrelatedSampler::CorrelatedSampler( Fittino::ModelBase* model )
-        : SamplerBase( model ),
+Fittino::CorrelatedSampler::CorrelatedSampler( Fittino::ModelBase* model, int randomSeed )
+    : SamplerBase( model, randomSeed ),
           _previousChi2( 1.e99 ),
           //_previousChi2( model->GetChi2() ),
           _previousLikelihood( 1.e-99 ),

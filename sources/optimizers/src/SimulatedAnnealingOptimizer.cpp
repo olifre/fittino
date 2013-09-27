@@ -26,8 +26,8 @@
 #include "ModelParameterBase.h"
 #include "SimulatedAnnealingOptimizer.h"
 
-Fittino::SimulatedAnnealingOptimizer::SimulatedAnnealingOptimizer( Fittino::ModelBase* model )
-        : OptimizerBase( model ) {
+Fittino::SimulatedAnnealingOptimizer::SimulatedAnnealingOptimizer( Fittino::ModelBase* model, int randomSeed )
+  : OptimizerBase( model, randomSeed ) {
 
     _name = "simulated annealing optimization algorithm";
 

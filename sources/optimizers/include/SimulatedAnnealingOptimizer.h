@@ -37,7 +37,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                   SimulatedAnnealingOptimizer( ModelBase* model );
+      SimulatedAnnealingOptimizer( ModelBase* model, int randomSeed );
       /*!
        *  Standard destructor.
        */

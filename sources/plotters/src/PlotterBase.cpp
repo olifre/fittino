@@ -27,13 +27,13 @@
 #include "PredictionBase.h"
 #include "Quantity.h"
 
-Fittino::PlotterBase::PlotterBase( ModelBase* model, std::string& dataFileName )
+Fittino::PlotterBase::PlotterBase( ModelBase* model, std::string& dataFileName, int randomSeed )
         : _dataFileName( dataFileName ),
           _canvas( 0 ),
           _dataFile( TFile::Open( _dataFileName.c_str(), "READ" ) ),
           _tree( ( TTree* )_dataFile->Get( "Tree" ) ),
           //_tree( (TTree*)_dataFile->Get( "markovChain" ) ),
-          AnalysisTool( model ) {
+          AnalysisTool( model, randomSeed ) {
 
     _name = "basic plotter";
 

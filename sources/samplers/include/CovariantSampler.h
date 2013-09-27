@@ -44,7 +44,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                             CovariantSampler( ModelBase* model );
+      CovariantSampler( ModelBase* model, int randomSeed );
       /*!
        *  Standard destructor.
        */

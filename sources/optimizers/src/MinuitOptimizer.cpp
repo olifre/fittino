@@ -28,8 +28,8 @@
 #include "MinuitAdapter.h"
 #include "ModelParameterBase.h"
 
-Fittino::MinuitOptimizer::MinuitOptimizer( Fittino::ModelBase* model )
-        : OptimizerBase( model ) {
+Fittino::MinuitOptimizer::MinuitOptimizer( Fittino::ModelBase* model, int randomSeed )
+    : OptimizerBase( model, randomSeed ) {
 
     _name =  "Minuit optimization algorithm";
 

@@ -24,8 +24,8 @@
 #include "Messenger.h"
 
 
-Fittino::GeneticAlgorithmOptimizer::GeneticAlgorithmOptimizer( Fittino::ModelBase* model )
-       : OptimizerBase( model ) {
+Fittino::GeneticAlgorithmOptimizer::GeneticAlgorithmOptimizer( Fittino::ModelBase* model, int randomSeed )
+  : OptimizerBase( model, randomSeed ) {
 
     _name = "genetic algorithm optimizer";
     _mutationRate = Configuration::GetInstance()->GetSteeringParameter( "MutationRate", 0.5 );

@@ -48,7 +48,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                            ParticleSwarmOptimizer( ModelBase* model );
+    ParticleSwarmOptimizer( ModelBase* model, int randomSeed );
       /*!
        *  Standard destructor.
        */

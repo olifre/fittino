@@ -51,7 +51,7 @@ namespace Fittino {
       /*!
        *  Constructor documentation.
        */
-                                 PlotterBase( ModelBase* model, std::string& dataFileName );
+      PlotterBase( ModelBase* model, std::string& dataFileName, int randomSeed );
       /*!
        *  Standard destructor.
        */

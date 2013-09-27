@@ -17,8 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_FEYNHIGGSMODELCALCULATOR_H
-#define FITTINO_FEYNHIGGSMODELCALCULATOR_H
+#ifndef FITTINO_FEYNHIGGSSLHAMODELCALCULATOR_H
+#define FITTINO_FEYNHIGGSSLHAMODELCALCULATOR_H
 
 #include "SLHAModelCalculatorBase.h"
 
@@ -55,4 +55,4 @@ namespace Fittino {
 
 }
 
-#endif // FITTINO_FEYNHIGGSMODELCALCULATOR_H
+#endif // FITTINO_FEYNHIGGSSLHAMODELCALCULATOR_H

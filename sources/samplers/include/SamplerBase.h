@@ -41,7 +41,7 @@ namespace Fittino {
        *  Takes as input a pointer to the model to be analysed. Via this pointer an association\n
        *  between a model and the concrete sampler is established.
        */
-                   SamplerBase( ModelBase* model );
+      SamplerBase( ModelBase* model, int randomSeed );
       /*!
        *  Standard destructor.
        */

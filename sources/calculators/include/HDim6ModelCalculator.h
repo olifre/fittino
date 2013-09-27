@@ -25,6 +25,7 @@
 #include "ModelCalculatorBase.h"
 
 struct effinputs;
+struct pominput;
 struct sminputs;
 
 /*!
@@ -55,6 +56,7 @@ namespace Fittino {
       virtual void             Initialize() const;
 
     private:  
+      bool                     _first;
       double                   _Delta_g1_gaga;
       double                   _Delta_g1_Gamma;
       double                   _Delta_g1_WW;
@@ -67,6 +69,20 @@ namespace Fittino {
       double                   _Delta_g2_ZZ;
       double                   _Delta_kappa_Gamma;
       double                   _Delta_kappa_Z;
+      double                   _f_B;
+      double                   _f_BB;
+      double                   _f_gg;
+      double                   _f_b;
+      double                   _f_c;
+      double                   _f_d;
+      double                   _f_e;
+      double                   _f_mu;
+      double                   _f_s;
+      double                   _f_t;
+      double                   _f_tau;
+      double                   _f_u;
+      double                   _f_W;
+      double                   _f_WW;
       double                   _Gamma_hbb;
       double                   _Gamma_hcc;
       double                   _Gamma_hgaga;
@@ -94,6 +110,12 @@ namespace Fittino {
       double                   _normSM_xs_tth;
       double                   _normSM_xs_Wh;
       double                   _normSM_xs_Zh;
+      double                   _previous_a_minus;
+      double                   _previous_a_plus;
+      double                   _previous_c_H;
+      double                   _previous_kappa_BB;
+      double                   _previous_kappa_HV_plus;
+      double                   _previous_mass_h;
       double                   _SM_Gamma_hbb;
       double                   _SM_Gamma_hcc;
       double                   _SM_Gamma_hgg;
@@ -116,40 +138,26 @@ namespace Fittino {
       std::string              _pdfSet;
       effinputs*               _effsmvalues;
       effinputs*               _effvalues;
-      effinputs*               _previousEffValues;
+      pominput*                _pomvalues;
+      pominput*                _previousPomValues;
       sminputs*                _previousSMValues;
       sminputs*                _smvalues;
+      
+      double                   _c_V_minus;
+      double                   _kappa_HV_minus;
+      double                   _kappa_Zgamma;
 
     private:  
-      const double&            _f_B;
-      const double&            _f_BB;
-      const double&            _f_gg;
-      const double&            _f_b;
-      const double&            _f_c;
-      const double&            _f_d;
-      const double&            _f_e;
-      const double&            _f_mu;
-      const double&            _f_s;
-      const double&            _f_t;
-      const double&            _f_tau;
-      const double&            _f_u;
-      const double&            _f_W;
-      const double&            _f_WW;
-      const double&            _mass_h;
-
-      
-/*       double _kappa_BB; */
-/*       double _kappa_GG; */
-
-/*       double _c_H;  */
-/*       double _c_V_p;  */
-
-/*       double _k_m; */
-
-/*       double _kappa_HV_m; */
-/*       double _c_V_m;  */
-
-
+      const double&           _a_minus;
+      const double&           _a_plus;
+      const double&           _c_H;
+      const double&           _c_y_b;
+      const double&           _c_y_t;
+      const double&           _c_y_tau;
+      const double&           _kappa_BB;
+      const double&           _kappa_GG;
+      const double&           _kappa_HV_plus;
+      const double&           _mass_h;
 
     private:   
       void                     ComparePreviousEffValues();

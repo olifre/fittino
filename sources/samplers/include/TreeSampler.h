@@ -35,7 +35,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                             TreeSampler( ModelBase* model );
+      TreeSampler( ModelBase* model, int randomSeed );
       /*!
        *  Standard destructor.
        */

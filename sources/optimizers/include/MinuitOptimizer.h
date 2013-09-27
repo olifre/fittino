@@ -39,7 +39,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                                      MinuitOptimizer( ModelBase* model );
+                                      MinuitOptimizer( ModelBase* model, int randomSeed  );
       /*!
        *  Standard destructor.
        */

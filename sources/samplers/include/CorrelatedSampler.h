@@ -46,7 +46,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                             CorrelatedSampler( ModelBase* model );
+      CorrelatedSampler( ModelBase* model, int randomSeed );
       /*!
        *  Standard destructor.
        */

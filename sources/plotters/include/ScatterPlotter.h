@@ -39,7 +39,7 @@ namespace Fittino {
       /*!
        *  Constructor documentation.
        */
-                   ScatterPlotter( ModelBase* model, std::string& dataFileName );
+      ScatterPlotter( ModelBase* model, std::string& dataFileName, int randomSeed );
       /*!
        *  Standard destructor.
        */

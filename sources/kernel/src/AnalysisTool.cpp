@@ -33,13 +33,13 @@
 #include "ParameterBase.h"
 #include "PredictionBase.h"
 
-Fittino::AnalysisTool::AnalysisTool( ModelBase* model )
+Fittino::AnalysisTool::AnalysisTool( ModelBase* model, int randomSeed )
     : _chi2( 1.e99 ),
       _iterationCounter( 0 ),
       _model( model ),
       _name( "" ),
       _outputFile( "Fittino.out.root", "RECREATE" ),
-      _randomGenerator(),
+      _randomGenerator( randomSeed ),
       _tree( new TTree( "Tree", "Tree" ) ) {
 
     _statusParameterVector.push_back( new ParameterBase( "Chi2",             "#chi^2",           1.e99, 0., 100.  ) ),

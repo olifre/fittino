@@ -35,8 +35,8 @@
 #include "PredictionBase.h"
 #include "Quantity.h"
 
-Fittino::ContourPlotter::ContourPlotter( ModelBase* model, std::string& dataFileName )
-        : PlotterBase( model, dataFileName ) {
+Fittino::ContourPlotter::ContourPlotter( ModelBase* model, std::string& dataFileName, int randomSeed )
+    : PlotterBase( model, dataFileName, randomSeed ) {
 
     _name = "contour plotter";
     _logX = false;

@@ -33,8 +33,8 @@
 #include "SimpleDataStorage.h"
 #include "ConfigurationException.h"
 
-Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model )
-    : SamplerBase( model ),
+Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, int randomSeed )
+    : SamplerBase( model, randomSeed ),
       _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", 1 ) ),
       _isToyRun( Configuration::GetInstance()->GetSteeringParameter( "PerformToyRun", false ) ) {
     _name = "Tree sampler";

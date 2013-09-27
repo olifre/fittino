@@ -17,6 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <string>
+
 extern "C" {
 
   double smgamma_h_      ( const double* massh );
@@ -62,6 +64,8 @@ extern "C" {
                     double* R_VH_bb
                     );
 
+  void initialize_higgssignals_( const int* nHzero, const int* nHplus, const char* expdata, int expdata_length );
+
   void initialize_higgssignals_for_fittino_  ( const int* nHzero, const int* nHplus );
   void initialize_higgssignals_latestresults_( const int* nHzero, const int* nHplus );
 
@@ -72,6 +76,7 @@ extern "C" {
                                        const double* CS_lep_bbhj_ratio,
                                        const double* CS_lep_tautauhj_ratio,
                                        const double* CS_lep_hjhi_ratio,
+                                       const double* CS_lep_hjhi_ratio1,//?
                                        const double* CS_tev_hj_ratio,
                                        const double* CS_tev_hjb_ratio,
                                        const double* CS_tev_hjW_ratio,
@@ -121,5 +126,12 @@ extern "C" {
   void setup_output_level_( const int* output_level );
   void setup_pdf_( const int* pdf );
   void setup_rate_uncertainties_( const double dCS[], const double dBR[] );
+
+}
+
+
+void initialize_higgssignals_( const int* nHzero, const int* nHplus, std::string expdata ) {
+
+  initialize_higgssignals_( nHzero, nHplus, expdata.c_str(), expdata.size() );
 
 }
