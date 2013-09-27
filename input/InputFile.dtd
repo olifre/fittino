@@ -73,6 +73,8 @@
   PlotUpperBound     CDATA #IMPLIED
   BlockName          CDATA #IMPLIED
   ID                 CDATA #IMPLIED
+  FirstID            CDATA #IMPLIED
+  SecondID           CDATA #IMPLIED
   ColumnIndex        CDATA #IMPLIED
 >
 
