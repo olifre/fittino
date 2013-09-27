@@ -1,8 +1,8 @@
 <!ELEMENT InputFile (VerbosityLevel,
 	             ExecutionMode,
                      Model,
-                     Parameter*,
-		     Observable*,
+                     Parameter?,
+		     Observable?,
                      (Optimizer|Sampler|Plotter),
                      GeneticAlgorithmOptimizer?,
                      ParticleSwarmOptimizer?,
@@ -41,8 +41,8 @@
   Error          CDATA #REQUIRED
   LowerBound     CDATA #IMPLIED
   UpperBound     CDATA #IMPLIED
-  PlotLowerBound CDATA #REQUIRED
-  PlotUpperBound CDATA #REQUIRED
+  PlotLowerBound CDATA #IMPLIED
+  PlotUpperBound CDATA #IMPLIED
   Unit           CDATA #IMPLIED
   PlotUnit       CDATA #IMPLIED
   ID             CDATA #IMPLIED

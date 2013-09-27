@@ -37,7 +37,9 @@
    />
 
   <Sampler
-   SamplerType = "Simple"
+   NumberOfIterations = "1"
+   SamplerType = "MarkovChain"
+
    />
 
 </InputFile>
