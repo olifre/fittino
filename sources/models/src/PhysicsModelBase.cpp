@@ -10,6 +10,7 @@
 *                                                                              *
 * Authors     Sebastian Heer        <s6seheer@uni-bonn.de>                     *
 *             Mathias   Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>            *
+*             Matthias Hamer        <mhamer@gwdg.de>                           *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -33,6 +34,7 @@
 #include "PhysicsModelBase.h"
 #include "PredictionBase.h"
 #include "SimplePrediction.h"
+#include "SLHAPrediction.h"
 #include "Collection.h"
 #include "Configuration.h"
 #include "TreeCalculator.h"
@@ -259,7 +261,7 @@ void Fittino::PhysicsModelBase::InitializeCalculators() {
         if ( v.first == "Calculator" ) {
             std::string calculatorType = v.second.get<std::string>( "<xmlattr>.Type" );
             if ( calculatorType == "Tree" ) {
-                
+
                 AddCalculator( factory.CreateCalculator( Configuration::TREECALCULATOR, this ) );
 
             }
@@ -314,7 +316,44 @@ void Fittino::PhysicsModelBase::InitializeObservables() {
     BOOST_FOREACH( const boost::property_tree::ptree::value_type & v, propertyTree->get_child( "InputFile" ) ) {
         if ( v.first == "Observable" ) {
 
-            AddObservable( new Observable( new SimplePrediction( v.second.get<std::string>( "<xmlattr>.Name" ), v.second.get<std::string>( "<xmlattr>.Name" ), "", "", v.second.get<double>( "<xmlattr>.MeasuredValue" ) - 10 * v.second.get<double>( "<xmlattr>.Error1" ), v.second.get<double>( "<xmlattr>.MeasuredValue" ) + 10 * v.second.get<double>( "<xmlattr>.Error1" ), _collectionOfCalculators.At( v.second.get<std::string>( "<xmlattr>.CalculatorName" ) ) ), v.second.get<double>( "<xmlattr>.MeasuredValue" ), v.second.get<double>( "<xmlattr>.Error1" ), v.second.get<double>( "<xmlattr>.BestFitPrediction", 0. ) ) );
+            std::string name = v.second.get<std::string>( "<xmlattr>.Name" );
+            std::string type = v.second.get<std::string>( "<xmlattr>.PredictionType" );
+            double measuredValue = v.second.get<double>( "<xmlattr>.MeasuredValue" );
+            double measuredError =  v.second.get<double>( "<xmlattr>.Error1" );
+            double bestFitPrediction = v.second.get<double>( "<xmlattr>.BestFitPrediction", 0. );
+
+            std::string plotName = v.second.get<std::string>( "<xmlattr>.PlotName", name );
+            std::string unit = v.second.get<std::string>( "<xmlattr>.Unit", "" );
+            std::string plotUnit = v.second.get<std::string>( "<xmlattr>.PlotUnit", unit );
+            std::string id = v.second.get<std::string>( "<xmlattr>.ID", "" );
+            std::string firstId = v.second.get<std::string>( "<xmlattr>.FirstID", "" );
+            std::string secondId = v.second.get<std::string>( "<xmlattr>.SecondID", "" );
+            std::string blockName = v.second.get<std::string>( "<xmlattr>.BlockName", "" );
+            int columnIndex = v.second.get<int> ( "<xmlattr>.ColumnIndex", 0 );
+            double plotLowerBound = v.second.get<double>( "<xmlattr>.PlotLowerBound", measuredValue - 10.*measuredError );
+            double plotUpperBound = v.second.get<double>( "<xmlattr>.PlotUpperBound", measuredValue + 10.*measuredError );
+
+            if( type == "Simple" ) {
+
+                AddObservable( new Observable( new SimplePrediction( name, name, unit, plotUnit, plotLowerBound , plotUpperBound, _collectionOfCalculators.At( v.second.get<std::string>( "<xmlattr>.CalculatorName" ) ) ), measuredValue, measuredError, bestFitPrediction ) );
+
+            }
+
+            else if ( type == "SLHA" ) {
+
+                if( firstId == "" || secondId == "" ) {
+
+                    AddObservable( new Observable( new SLHAPrediction( name, name, unit, plotUnit, plotLowerBound, plotUpperBound, static_cast<SLHAModelCalculatorBase*>( _collectionOfCalculators.At( v.second.get<std::string>( "<xmlattr>.CalculatorName" ) ) ), blockName, id, columnIndex ), measuredValue, measuredError, bestFitPrediction ) );
+
+                }
+
+                else {
+
+                    AddObservable( new Observable( new SLHAPrediction( name, name, unit, plotUnit, plotLowerBound, plotUpperBound, static_cast<SLHAModelCalculatorBase*>( _collectionOfCalculators.At( v.second.get<std::string>( "<xmlattr>.CalculatorName" ) ) ), blockName, firstId, secondId, columnIndex ), measuredValue, measuredError, bestFitPrediction ) );
+
+                }
+
+            }
 
         }
     }
