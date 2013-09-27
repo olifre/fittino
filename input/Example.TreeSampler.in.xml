@@ -132,6 +132,7 @@
    MeasuredValue     = "150"
    Error1            = "5"
    BestFitPrediction = "160"
+   PredictionType    = "Simple"
    />
   
   <Sampler
