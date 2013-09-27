@@ -151,7 +151,7 @@ void Fittino::ModelBase::InitializeParameters() {
         if ( v.first == "Parameter" ) {
 
             std::string name = v.second.get<std::string>( "<xmlattr>.Name" );
-            std::string plotName = v.second.get<std::string>( "<xmlattr>.plotName", name );
+            std::string plotName = v.second.get<std::string>( "<xmlattr>.PlotName", name );
             std::string unit = v.second.get<std::string>( "<xmlattr>.Unit", "" );
             std::string plotUnit = v.second.get<std::string>( "<xmlattr>.PlotUnit", unit );
             std::string id = v.second.get<std::string>( "<xmlattr>.ID", "" );
