@@ -48,6 +48,8 @@
 #include "CovariantSampler.h"
 #include "CorrelatedSampler.h"
 #include "TreeSampler.h"
+#include "TreeCalculator.h"
+#include "SPhenoSLHAModelCalculator.h"
 
 Fittino::Factory::Factory() {
 
@@ -103,9 +105,9 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const Fittino::Configur
 Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator( const Fittino::Configuration::CalculatorType& calculatorType, const PhysicsModelBase* model ) const {
 
     switch ( calculatorType ) {
-  
+
         case Configuration::HDIM6CALCULATOR:
-    
+
 #if defined LHAPDF_FOUND  && defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
 
             return new HDim6ModelCalculator( model );
@@ -116,11 +118,11 @@ Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator( const Fi
 
 #endif
 
-        case Configuration::HIGGSSIGNALSHADXSCALCULATOR: 
+        case Configuration::HIGGSSIGNALSHADXSCALCULATOR:
 
 #if defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
-            
-	    return new HiggsSignalsHadXSModelCalculator( model );
+
+            return new HiggsSignalsHadXSModelCalculator( model );
 
 #else
 
@@ -140,7 +142,39 @@ Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator( const Fi
 
 #endif
 
-  }
+        case Configuration::FEYNHIGGSSLHACALCULATOR:
+
+#if defined FEYNHIGGS
+
+            return new FeynHiggsSLHAModelCalculator( model );
+
+#else
+
+            throw ConfigurationException( "Trying to use FeynHiggsSLHACalculator but Fittino was built without FeynHiggs." );
+
+#endif
+
+        case Configuration::HIGGSSIGNALSSLHACALCULATOR:
+
+#if defined FEYNHIGGS
+
+            return new HiggsSignalsSLHACalculator( model );
+
+#else
+
+            throw ConfigurationException( "Trying to use HiggsSignalsHadXSModelCalculator but Fittino was built without HiggsBounds or HiggsSignals." );
+
+#endif
+
+        case Configuration::TREECALCULATOR:
+
+            return new TreeCalculator( model );
+
+        case Configuration::SPHENOSLHACALCULATOR:
+
+            return new SPhenoSLHAModelCalculator( model );
+
+    }
 
 }
 
@@ -192,13 +226,13 @@ Fittino::SamplerBase* const Fittino::Factory::CreateSampler( const Fittino::Conf
             return new SimpleSampler( model );
 
         case Configuration::COVARIANT:
-            return new CovariantSampler( model);
+            return new CovariantSampler( model );
 
         case Configuration::CORRELATED :
-            return new CorrelatedSampler( model);
+            return new CorrelatedSampler( model );
 
         case Configuration::TREE:
-            return new TreeSampler( model);
+            return new TreeSampler( model );
     }
 
 }
