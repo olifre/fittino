@@ -27,6 +27,7 @@
 #include "Observable.h"
 #include "PhysicsModelBase.h"
 #include "PredictionBase.h"
+#include "Collection.h"
 
 Fittino::PhysicsModelBase::PhysicsModelBase() {
 
@@ -213,5 +214,18 @@ void Fittino::PhysicsModelBase::AddObservable( Observable* observable ) {
 
     _observableVector.push_back( observable );
     AddPrediction( observable->GetPrediction() );
+
+}
+
+void Fittino::PhysicsModelBase::AddCalculator( ModelCalculatorBase* calculator ) {
+    
+    _collectionOfCalculators.AddElement( calculator->GetName(), calculator );
+    _modelCalculatorVector.push_back( calculator );
+
+}
+
+const Fittino::Collection<Fittino::ModelCalculatorBase*>& Fittino::PhysicsModelBase::GetCollectionOfCalculators() const {
+
+    return _collectionOfCalculators;
 
 }

@@ -43,29 +43,37 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                                        PhysicsModelBase();
+                                                     PhysicsModelBase();
       /*!
        *  Standard destructor.
        */
-                                        ~PhysicsModelBase();
+                                                     ~PhysicsModelBase();
       /*!
        *  Adds an observable to the model. 
        */
-      void                              AddObservable( Observable *observable );              
-
+      void                                           AddObservable( Observable *observable );              
+      /*!
+       *  Adds a calculator to the model.
+       */
+      void                                           AddCalculator( ModelCalculatorBase *calculator );
+      /*!
+       *  Returns the predictions of the model as a collection.
+       */
+      const Collection<ModelCalculatorBase*>&        GetCollectionOfCalculators() const;
+ 
     public:
-      virtual void                      PrintStatus() const;
-      virtual void                      SmearObservables( TRandom3* );
+      virtual void                                   PrintStatus() const;
+      virtual void                                   SmearObservables( TRandom3* );
       
     public:
-      virtual std::vector<ModelCalculatorBase*>*          GetModelCalculatorVector();
+      virtual std::vector<ModelCalculatorBase*>*     GetModelCalculatorVector();
 
     protected:
-      virtual void                      Initialize() const;
+      virtual void                                   Initialize() const;
 
     protected:
-      std::vector<ModelCalculatorBase*> _modelCalculatorVector;
-      std::vector<Observable*>          _observableVector;
+      std::vector<ModelCalculatorBase*>              _modelCalculatorVector;
+      std::vector<Observable*>                       _observableVector;
 
       /*! \cond UML */
     private:
@@ -74,12 +82,18 @@ namespace Fittino {
        *  \todo Eventually generalize this function to allow for correlated
        *  observables.
        */
-      double                            CalculateChi2();
+      double                                         CalculateChi2();
 
     private:
-      virtual double                    Evaluate();
+      virtual double                                 Evaluate();
 
       /*! \endcond UML */
+
+    private:
+      /*!
+       *  Stores the calculators.
+       */
+      Collection<ModelCalculatorBase*>               _collectionOfCalculators;
 
   };
 
