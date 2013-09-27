@@ -128,7 +128,7 @@
 
   <Observable
    Name              = "O_massNeutralino1"
-   CalculatorName    = "Tree"
+   CalculatorName    = "TreeCalculator"
    MeasuredValue     = "150"
    Error1            = "5"
    BestFitPrediction = "160"

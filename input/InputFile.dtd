@@ -66,6 +66,14 @@
   Error2             CDATA #IMPLIED
   Error3             CDATA #IMPLIED
   BestFitPrediction  CDATA #IMPLIED
+  PredictionType     CDATA #REQUIRED
+  PlotName           CDATA #IMPLIED
+  PlotUnit           CDATA #IMPLIED
+  PlotLowerBound     CDATA #IMPLIED
+  PlotUpperBound     CDATA #IMPLIED
+  BlockName          CDATA #IMPLIED
+  ID                 CDATA #IMPLIED
+  ColumnIndex        CDATA #IMPLIED
 >
 
 <!ELEMENT Optimizer EMPTY>
