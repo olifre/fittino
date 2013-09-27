@@ -68,6 +68,7 @@
   BestFitPrediction  CDATA #IMPLIED
   PredictionType     CDATA #REQUIRED
   PlotName           CDATA #IMPLIED
+  Unit               CDATA #IMPLIED
   PlotUnit           CDATA #IMPLIED
   PlotLowerBound     CDATA #IMPLIED
   PlotUpperBound     CDATA #IMPLIED
