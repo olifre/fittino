@@ -19,6 +19,7 @@
 
 ADD_DEFINITIONS(`root-config --cflags`)
 
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(./include)
 INCLUDE_DIRECTORIES(../exceptions/include)
 INCLUDE_DIRECTORIES(../kernel/include)

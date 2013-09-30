@@ -20,6 +20,10 @@
 
 #include <cmath>
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+#include <boost/foreach.hpp>
+
 #include "TTree.h"
 #include "TBranch.h"
 
@@ -32,10 +36,11 @@
 #include "ModelCalculatorBase.h"
 #include "SimpleDataStorage.h"
 #include "ConfigurationException.h"
+#include "TDirectory.h"
 
 Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, int randomSeed )
     : SamplerBase( model, randomSeed ),
-      _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", 1 ) ),
+      _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", -1 ) ),
       _isToyRun( Configuration::GetInstance()->GetSteeringParameter( "PerformToyRun", false ) ) {
     _name = "Tree sampler";
 
@@ -44,6 +49,47 @@ Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, int randomSeed )
     }
     else if( _model->GetModelCalculatorVector()->size() == 0 ) {
         throw ConfigurationException( "Could not find a calculator associated to specified model." );
+    }
+    
+
+    // number of iterations is read from the input file, if it is not defined, or set to -1, in the input file
+    // wow...this is ugly! there needs to be some better way to handle this:
+    const boost::property_tree::ptree* propertyTree = Configuration::GetInstance()->GetPropertyTree();
+    std::string filename = propertyTree->get<std::string>( "InputFile.Sampler.<xmlattr>.InputFileName", "Fittino.old.root" );
+    std::string treename = propertyTree->get<std::string>( "InputFile.Sampler.<xmlattr>.InputTreeName", "Tree1" );
+    
+    if( _numberOfIterations == -1 ) {
+        
+        // if the tree in the input file has name/title "Tree", it will overwrite the existing tree from the AnalysisTool. Therefore delete that tree:
+        delete _tree;
+        
+        // now save the address of the _outputFile from the AnalysisTool in some temporary variable:
+        TDirectory *tempDirectory = gDirectory;
+        // now open the input file: this will overwrite gDirectory
+        TFile *f = new TFile( filename.c_str(), "READ" );
+        
+        // check for the tree in the input file, and set the number of iterations
+        if( (TTree*)f->Get( treename.c_str() ) ) {
+            
+            _numberOfIterations = ((TTree*)f->Get( treename.c_str() ))->GetEntries();
+        
+        }
+        
+        else {
+            
+            throw ConfigurationException( "Could not read number of iterations from given input file/input tree. ");
+        
+        }
+        // now close the file;
+        f->Close();
+        //re-set the gDirectory variable to it's original value (_inputFile)
+        gDirectory = tempDirectory;
+        // delete the pointer 
+        delete f;
+
+        //re-create the output tree
+        _tree = new TTree("Tree","Tree");
+
     }
 
 }
