@@ -61,3 +61,9 @@ std::string Fittino::Chi2ContributionBase::GetName() const {
     return _name;
 
 }
+
+void Fittino::Chi2ContributionBase::SetValue( double chi2 ) {
+
+    _chi2 = chi2;
+
+}

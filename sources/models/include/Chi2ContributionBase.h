@@ -46,9 +46,10 @@ namespace Fittino {
 
     public:
       double       GetValue() const;
+      void         SetValue( double chi2 );
       void         PrintStatus() const;
       std::string  GetName() const;
-
+      
     protected:
       double       _chi2;
       std::string  _name;
