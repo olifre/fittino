@@ -53,8 +53,6 @@
 <!ELEMENT Calculator EMPTY>
 <!ATTLIST Calculator
   Type               CDATA #REQUIRED
-  InputFileName      CDATA #IMPLIED
-  InputTreeName      CDATA #IMPLIED
 >
 
 <!ELEMENT Observable EMPTY>
