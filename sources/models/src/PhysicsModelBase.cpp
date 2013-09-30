@@ -263,7 +263,9 @@ void Fittino::PhysicsModelBase::InitializeCalculators() {
             if ( calculatorType == "Tree" ) {
 
                 AddCalculator( factory.CreateCalculator( Configuration::TREECALCULATOR, this ) );
-
+                static_cast<TreeCalculator*>(GetCollectionOfCalculators().At( "TreeCalculator" ))->SetInputFileName( v.second.get<std::string>("<xmlattr>.InputFileName", "Fittino.old.root" ) );
+                static_cast<TreeCalculator*>(GetCollectionOfCalculators().At( "TreeCalculator" ))->SetInputTreeName( v.second.get<std::string>("<xmlattr>.InputTreeName", "Tree" ) );
+                static_cast<TreeCalculator*>(GetCollectionOfCalculators().At( "TreeCalculator" ))->OpenInputTree();
             }
 
             else if ( calculatorType == "FeynHiggs" ) {
