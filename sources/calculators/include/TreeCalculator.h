@@ -39,7 +39,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                          TreeCalculator( const PhysicsModelBase* model, std::string inputFileName = "Fittino.old.root", std::string inputTreeName = "Tree" );
+                          TreeCalculator( const PhysicsModelBase* model );
       /*!
        *  Standard destructor.
        */
@@ -51,12 +51,17 @@ namespace Fittino {
       virtual void        CallExecutable();
       virtual void        ConfigureInput();
       virtual void        Initialize() const;
-    
+      void                SetInputFileName( std::string inputFileName );
+      void                SetInputTreeName( std::string inputTreeName );
+      void                OpenInputTree();
+
     private:
       TFile*              _inputFile;
       TTree*              _inputTree;
       int                 _currentEntry;
-    
+      std::string         _inputFileName;
+      std::string         _inputTreeName;
+
     private:
       /*!
        *  Set All Branch Addresses in the tree

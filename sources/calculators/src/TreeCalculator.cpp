@@ -28,28 +28,14 @@
 #include "SimpleDataStorage.h"
 #include "ConfigurationException.h"
 
-Fittino::TreeCalculator::TreeCalculator( const PhysicsModelBase* model, std::string inputFileName, std::string inputTreeName )
-    : ModelCalculatorBase( model ),
-      _inputFile( new TFile( inputFileName.c_str() ) ) {
+Fittino::TreeCalculator::TreeCalculator( const PhysicsModelBase* model )
+    : ModelCalculatorBase( model ) {
 
     _name = "TreeCalculator";
     _currentEntry = 0;
-
-    try {
-        if( !_inputFile ) {
-            throw ConfigurationException( "Specified input file could not be opened." );
-        }
-        else if( !( _inputTree = ( TTree* )_inputFile->Get( inputTreeName.c_str() ) ) ) {
-            throw ConfigurationException( "Specified input tree could not be retrieved from input file." );
-        }
-    }
-    catch ( const ConfigurationException& configurationException ) {
-        std::cout << "\n" << configurationException.what() << "\n" << std::endl;
-        exit( EXIT_FAILURE );
-    }
-
-    FillSimpleDataStorage();
-    SetAllBranchAddresses();
+    _inputFile = NULL;
+    _inputFileName = "Fittino.old.root";
+    _inputTreeName = "Tree";
 
 }
 
@@ -68,6 +54,39 @@ void Fittino::TreeCalculator::CalculatePredictions() {
 
 }
 
+void Fittino::TreeCalculator::SetInputFileName( std::string inputFileName ) {
+
+    _inputFileName = inputFileName;
+
+}
+
+void Fittino::TreeCalculator::SetInputTreeName( std::string inputTreeName ) {
+
+    _inputTreeName = inputTreeName;
+
+}
+
+void Fittino::TreeCalculator::OpenInputTree() {
+
+    _inputFile = new TFile( _inputFileName.c_str() );
+
+    try {
+        if( !_inputFile ) {
+            throw ConfigurationException( "Specified input file could not be opened." );
+        }
+        else if( !( _inputTree = ( TTree* )_inputFile->Get( _inputTreeName.c_str() ) ) ) {
+            throw ConfigurationException( "Specified input tree could not be retrieved from input file." );
+        }
+    }
+    catch ( const ConfigurationException& configurationException ) {
+        std::cout << "\n" << configurationException.what() << "\n" << std::endl;
+        exit( EXIT_FAILURE );
+    }
+
+    FillSimpleDataStorage();
+    SetAllBranchAddresses();
+
+}
 
 
 void Fittino::TreeCalculator::SetAllBranchAddresses() {
