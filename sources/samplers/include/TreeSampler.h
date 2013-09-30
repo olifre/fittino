@@ -53,14 +53,16 @@ namespace Fittino {
       bool                   _isToyRun;
 
       /*!
-       *  Used to count how often a point is accepted.
+       * used to store the content of the output ntuple for a ToyRun:
        */
+      double                 _lowestChi2;
+      int                    _bestFitIndex;
 
     private:
       virtual void           Execute();
       virtual void           PrintSteeringParameters() const;
       virtual void           UpdateModel();
-
+    
       /*! \endcond UML */
 
   };

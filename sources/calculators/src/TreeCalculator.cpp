@@ -54,6 +54,18 @@ void Fittino::TreeCalculator::CalculatePredictions() {
 
 }
 
+void Fittino::TreeCalculator::CalculatePredictions( int index, bool resetCurrentIndex ) {
+    
+    _inputTree->GetEntry( index );
+    if( resetCurrentIndex ) _currentEntry = index+1;
+
+}
+
+void Fittino::TreeCalculator::SetCurrentEntry( int currentEntry ) {
+    
+    _currentEntry = currentEntry;
+}
+
 void Fittino::TreeCalculator::SetInputFileName( std::string inputFileName ) {
 
     _inputFileName = inputFileName;

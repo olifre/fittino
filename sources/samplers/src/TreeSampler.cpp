@@ -34,14 +34,18 @@
 #include "ModelParameterBase.h"
 #include "ModelCalculatorException.h"
 #include "ModelCalculatorBase.h"
+#include "Chi2ContributionBase.h"
 #include "SimpleDataStorage.h"
 #include "ConfigurationException.h"
 #include "TDirectory.h"
+#include "TreeCalculator.h"
 
 Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, int randomSeed )
     : SamplerBase( model, randomSeed ),
       _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", -1 ) ),
-      _isToyRun( Configuration::GetInstance()->GetSteeringParameter( "PerformToyRun", false ) ) {
+      _isToyRun( Configuration::GetInstance()->GetSteeringParameter( "PerformToyRun", false ) ),
+      _lowestChi2( 1.e99 ),
+      _bestFitIndex( 0 ) {
     _name = "Tree sampler";
 
     if( !_model->GetModelCalculatorVector() ) {
@@ -100,8 +104,11 @@ Fittino::TreeSampler::~TreeSampler() {
 
 void Fittino::TreeSampler::Execute() {
 
-    if( _isToyRun ) _model->SmearObservables( &_randomGenerator );
-
+    if( _isToyRun ) {
+    
+      _model->SmearObservables( &_randomGenerator );
+    
+    }
     while ( _iterationCounter < _numberOfIterations ) {
 
         _iterationCounter++;
@@ -112,7 +119,21 @@ void Fittino::TreeSampler::Execute() {
         this->UpdateModel();
 
     }
+    
+    
+    if( _isToyRun ) {
+      
+      static_cast<TreeCalculator*>(_model->GetModelCalculatorVector()->at( 0 ))->SetCurrentEntry( _bestFitIndex );
+      GetStatusParameterVector()->at(0)->SetValue( _model->GetChi2() );
+      GetStatusParameterVector()->at(1)->SetValue( _bestFitIndex + 1);
+      for( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+        _model->GetParameterVector()->at( k )->SetValue( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetParameterVector()->at( k )->GetName() ) );
+      }
 
+      this->FillTree();
+    
+    }
+   
 }
 
 void Fittino::TreeSampler::PrintSteeringParameters() const {
@@ -125,11 +146,25 @@ void Fittino::TreeSampler::PrintSteeringParameters() const {
 
 void Fittino::TreeSampler::UpdateModel() {
 
-    GetStatusParameterVector()->at( 0 )->SetValue( _model->GetChi2() );
+  double chi2 = _model->GetChi2();
+  GetStatusParameterVector()->at( 0 )->SetValue( chi2 );
 
-    for( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
-        _model->GetParameterVector()->at( k )->SetValue( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetParameterVector()->at( k )->GetName() ) );
-    }
-
+  for( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+    _model->GetParameterVector()->at( k )->SetValue( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetParameterVector()->at( k )->GetName() ) );
+  }
+    
+  
+  if( !_isToyRun ) {
     this->FillTree();
+  }
+  
+  else {
+    
+    if( _lowestChi2 > chi2 ) {
+      _lowestChi2 = chi2;
+      _bestFitIndex = _iterationCounter-1; 
+    } 
+     
+  }
+  
 }

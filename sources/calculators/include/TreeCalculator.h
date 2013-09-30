@@ -54,7 +54,8 @@ namespace Fittino {
       void                SetInputFileName( std::string inputFileName );
       void                SetInputTreeName( std::string inputTreeName );
       void                OpenInputTree();
-
+      void                CalculatePredictions( int index, bool resetCurrentIndex = false );
+      void                SetCurrentEntry( int currentEntry );
     private:
       TFile*              _inputFile;
       TTree*              _inputTree;
