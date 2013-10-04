@@ -91,12 +91,13 @@
 
 <!ELEMENT Sampler EMPTY>
 <!ATTLIST Sampler
-  NumberOfIterations CDATA #IMPLIED
-  UpdateCovariancesAfter CDATA #IMPLIED
-  PerformToyRun      CDATA #IMPLIED 
-  InputFileName      CDATA #IMPLIED
-  InputTreeName      CDATA #IMPLIED
-  SamplerType        CDATA #REQUIRED
+  NumberOfIterations      CDATA #IMPLIED
+  UpdateCovariancesAfter  CDATA #IMPLIED
+  PerformToyRun           CDATA #IMPLIED 
+  DetermineBestFitValues  CDATA #IMPLIED
+  InputFileName           CDATA #IMPLIED
+  InputTreeName           CDATA #IMPLIED
+  SamplerType             CDATA #REQUIRED
 >
 
 <!ELEMENT GeneticAlgorithmOptimizer EMPTY>

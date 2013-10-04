@@ -144,7 +144,7 @@
   
   <Sampler
    NumberOfIterations = "-1"
-   PerformToyRun      = "0"
+   PerformToyRun      = "1"
    InputFileName      = "Fittino.old.root"
    InputTreeName      = "Tree"
    SamplerType        = "Tree"
