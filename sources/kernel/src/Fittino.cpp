@@ -45,6 +45,8 @@ int main( int argc, char** argv ) {
 
     /*!
      *  \todo Short-term: Discuss usage of exceptions here.
+     *  \todo Short-term: Overhaul FindROOT.cmake making use of FindPackageHandleStandardArgs.
+     *  \todo Short-term: Write FindGSL.cmake module making use of gsl-config to get the version, the needed libraries etc. Remove explcit linking of -lm -lgslcblas.
      */
 
     //try {
