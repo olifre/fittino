@@ -40,6 +40,7 @@ namespace Fittino {
   class ModelParameterBase;
   class PredictionBase;
   class ModelCalculatorBase;
+  class Observable;
 
   /*!
    *  \defgroup models
@@ -122,6 +123,7 @@ namespace Fittino {
        */
       virtual void                                       SmearObservables( TRandom3* ) = 0;
       virtual std::vector<ModelCalculatorBase*>*         GetModelCalculatorVector() = 0;
+      virtual std::vector<Observable*>*                  GetObservableVector() = 0;
 
     protected:
       /*!

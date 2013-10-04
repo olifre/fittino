@@ -31,6 +31,7 @@
 #include "TreeSampler.h"
 #include "Messenger.h"
 #include "ModelBase.h"
+#include "Observable.h"
 #include "ModelParameterBase.h"
 #include "ModelCalculatorException.h"
 #include "ModelCalculatorBase.h"
@@ -44,8 +45,11 @@ Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, int randomSeed )
     : SamplerBase( model, randomSeed ),
       _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", -1 ) ),
       _isToyRun( Configuration::GetInstance()->GetSteeringParameter( "PerformToyRun", false ) ),
+      _determineBestFitValues( Configuration::GetInstance()->GetSteeringParameter( "DetermineBestFitValues", false ) ),
       _lowestChi2( 1.e99 ),
-      _bestFitIndex( 0 ) {
+      _bestFitIndex( 0 ),
+      _inputLowestChi2( 1.e99 ),
+      _inputBestFitIndex( 0 ) {
     _name = "Tree sampler";
 
     if( !_model->GetModelCalculatorVector() ) {
@@ -105,7 +109,12 @@ Fittino::TreeSampler::~TreeSampler() {
 void Fittino::TreeSampler::Execute() {
 
     if( _isToyRun ) {
-    
+      
+      if( _determineBestFitValues ) {
+
+        DetermineBestFitValues();
+
+      }
       _model->SmearObservables( &_randomGenerator );
     
     }
@@ -167,4 +176,34 @@ void Fittino::TreeSampler::UpdateModel() {
      
   }
   
+}
+
+void Fittino::TreeSampler::DetermineBestFitValues() {
+
+  int counter = 0;
+  while( counter < _numberOfIterations ) {
+
+    double chi2 = _model->GetChi2();
+    
+    if( chi2 < _inputLowestChi2 ) { 
+      
+      _inputLowestChi2 = chi2;
+      _inputBestFitIndex = counter;
+    
+    }
+    
+    static_cast<TreeCalculator*>(_model->GetModelCalculatorVector()->at( 0 ))->CalculatePredictions( _inputBestFitIndex );
+   
+    std::vector<Observable*>* observableVector = _model->GetObservableVector();
+
+    for( int i = 0; i < observableVector->size(); ++i ) {
+      
+      observableVector->at(i)->SetBestFitPrediction( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( observableVector->at(i)->GetPrediction()->GetName() ) );
+    
+    }
+
+  }
+  
+  static_cast<TreeCalculator*>(_model->GetModelCalculatorVector()->at( 0 ))->SetCurrentEntry( 0 );
+
 }

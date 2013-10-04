@@ -51,12 +51,20 @@ namespace Fittino {
        *  Switch to enable Toy runs.
        */
       bool                   _isToyRun;
-
+      /*!
+       *  Switch to enable determination of best fit values from input file.
+       */
+      bool                   _determineBestFitValues;
       /*!
        * used to store the content of the output ntuple for a ToyRun:
        */
       double                 _lowestChi2;
       int                    _bestFitIndex;
+      double                 _inputLowestChi2;
+      int                    _inputBestFitIndex;
+
+    private:
+      void                   DetermineBestFitValues();
 
     private:
       virtual void           Execute();
