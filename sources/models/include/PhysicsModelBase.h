@@ -68,6 +68,7 @@ namespace Fittino {
 
     public:
       virtual std::vector<ModelCalculatorBase*>*     GetModelCalculatorVector();
+      std::vector<Observable*>*                      GetObservableVector(); 
 
     protected:
       virtual void                                   Initialize() const;

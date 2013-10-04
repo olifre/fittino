@@ -250,6 +250,12 @@ const Fittino::Collection<Fittino::ModelCalculatorBase*>& Fittino::PhysicsModelB
 
 }
 
+std::vector<Fittino::Observable*>* Fittino::PhysicsModelBase::GetObservableVector() {
+
+    return &_observableVector;
+
+}
+
 void Fittino::PhysicsModelBase::InitializeCalculators() {
 
     const Factory factory;
