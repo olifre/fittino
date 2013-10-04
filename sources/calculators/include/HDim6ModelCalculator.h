@@ -57,6 +57,11 @@ namespace Fittino {
 
     private:  
       bool                     _first;
+      double                   _cputime_gridNoVBF;
+      double                   _cputime_ggh;
+      double                   _cputime_qqh_2flavor;
+      double                   _cputime_qqh_5flavor;
+      double                   _cputime_remaining;
       double                   _Delta_g1_gaga;
       double                   _Delta_g1_Gamma;
       double                   _Delta_g1_WW;
@@ -106,7 +111,8 @@ namespace Fittino {
       double                   _normSM_xs_bbh;
       double                   _normSM_xs_bh;
       double                   _normSM_xs_ggh;
-      double                   _normSM_xs_qqh;
+      double                   _normSM_xs_qqh_2flavor;
+      double                   _normSM_xs_qqh_5flavor;
       double                   _normSM_xs_tth;
       double                   _normSM_xs_Wh;
       double                   _normSM_xs_Zh;
@@ -114,6 +120,7 @@ namespace Fittino {
       double                   _previous_a_plus;
       double                   _previous_c_H;
       double                   _previous_kappa_BB;
+      double                   _previous_kappa_GG;
       double                   _previous_kappa_HV_plus;
       double                   _previous_mass_h;
       double                   _SM_Gamma_hbb;
@@ -127,11 +134,13 @@ namespace Fittino {
       double                   _SM_Gamma_hZga;
       double                   _SM_Gamma_hZZ;
       double                   _SM_xs_ggh;
-      double                   _SM_xs_qqh;
+      double                   _SM_xs_qqh_2flavor;
+      double                   _SM_xs_qqh_5flavor;
       double                   _SM_xs_Wh;
       double                   _SM_xs_Zh;
       double                   _xs_ggh;
-      double                   _xs_qqh;
+      double                   _xs_qqh_2flavor;
+      double                   _xs_qqh_5flavor;
       double                   _xs_Wh;
       double                   _xs_Zh;
       std::string              _pdfDirectory;

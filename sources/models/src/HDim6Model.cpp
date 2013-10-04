@@ -29,30 +29,30 @@ Fittino::HDim6Model::HDim6Model() {
 
     _name = "HDim6 model";
 
-    double      value          = 0;
-    std::string unit           = "";
-    std::string plotUnit       = "";
-    double      error          = 1;
-    double      lowerBound     = 1;
-    double      upperBound     = 10;
-    double      plotLowerBound = lowerBound;
-    double      plotUpperBound = upperBound;
+    //     double      value          = 0;
+    //     std::string unit           = "";
+    //     std::string plotUnit       = "";
+    //     double      error          = 1;
+    //     double      lowerBound     = 1;
+    //     double      upperBound     = 10;
+    //     double      plotLowerBound = lowerBound;
+    //     double      plotUpperBound = upperBound;
     
     // these will parametrize our grid
     //    AddParameter( new PhysicsParameter( "kappa_BB", "kappa_BB", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, false ) );
     //    AddParameter( new PhysicsParameter( "c_H", "c_H", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
     //    AddParameter( new PhysicsParameter( "a_minus", "a_minus", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
 
-//     // these will be free in the fit as well
-//     AddParameter( new PhysicsParameter( "kappa_GG", "kappa_GG", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-//     AddParameter( new PhysicsParameter( "c_y_b", "c_y_b", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-//     AddParameter( new PhysicsParameter( "c_y_t", "c_y_t", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-//     AddParameter( new PhysicsParameter( "c_y_tau", "c_y_tau", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    //     // these will be free in the fit as well
+    //     AddParameter( new PhysicsParameter( "kappa_GG", "kappa_GG", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    //     AddParameter( new PhysicsParameter( "c_y_b", "c_y_b", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    //     AddParameter( new PhysicsParameter( "c_y_t", "c_y_t", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    //     AddParameter( new PhysicsParameter( "c_y_tau", "c_y_tau", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
     
-//     // these we keep fixed
-//     AddParameter( new PhysicsParameter( "mass_h", "m_{h}", 125, "GeV", "GeV", 0, 125, 125, 125, 125, true ) );
-//     AddParameter( new PhysicsParameter( "kappa_HV_plus", "kappa_HV_plus", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
-//     AddParameter( new PhysicsParameter( "a_plus", "a_plus", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    //     // these we keep fixed
+    //     AddParameter( new PhysicsParameter( "mass_h", "m_{h}", 125, "GeV", "GeV", 0, 125, 125, 125, 125, true ) );
+    //     AddParameter( new PhysicsParameter( "kappa_HV_plus", "kappa_HV_plus", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
+    //     AddParameter( new PhysicsParameter( "a_plus", "a_plus", value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, true ) );
 
     const Factory factory;
 
@@ -112,8 +112,6 @@ Fittino::HDim6Model::HDim6Model() {
     //     _predictionVector.push_back( new SimplePrediction( "Delta_g2_Zga", "#Delta g_{2}^{Z#gamma}", "", "", 0.01, 100, hdim6ModelCalculator ) );
 
     PhysicsModelBase::Initialize();
-
-   
 
 }
 
