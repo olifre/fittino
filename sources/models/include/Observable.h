@@ -51,6 +51,7 @@ namespace Fittino {
       void            PrintStatus() const;
       double          GetMeasuredError() const;
       double          GetMeasuredValue() const;
+      double          GetBestFitPrediction() const;
       PredictionBase* GetPrediction();
       void            SetBestFitPrediction( double );
 

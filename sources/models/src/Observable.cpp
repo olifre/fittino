@@ -95,6 +95,12 @@ Fittino::PredictionBase* Fittino::Observable::GetPrediction() {
 
 }
 
+double Fittino::Observable::GetBestFitPrediction() const {
+
+  return _bestFitPrediction;
+
+}
+
 void Fittino::Observable::SetBestFitPrediction( double value ) {
     
     _bestFitPrediction = value;
