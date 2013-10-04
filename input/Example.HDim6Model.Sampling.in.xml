@@ -36,10 +36,111 @@
    ModelType = "HDim6"
    />
 
+
+  <Parameter
+   Type             = "Physics"
+   Name             = "c_H"
+   Value            = "0"
+   Error            = "1e-4"
+   LowerBound       = "-1e-1"
+
+   UpperBound       = "+1e-1"
+   Fixed            = "1"
+  />
+
+  <Parameter
+   Type             = "Physics"
+   Name             = "kappa_BB"
+   Value            = "0"
+   Error            = "1e-3"
+   LowerBound       = "-5e-3"
+   UpperBound       = "+5e-3"
+   Fixed            = "0"
+  />
+
+  <Parameter
+   Type             = "Physics"
+   Name             = "a_minus"
+   Value            = "0"
+   Error            = "1e-4"
+   LowerBound       = "-1e-1"
+   UpperBound       = "+1e-1"
+   Fixed            = "1"
+  />
+
+  <Parameter
+   Type             = "Physics"
+   Name             = "kappa_GG"
+   Value            = "0"
+   Error            = "1e-4"
+   LowerBound       = "-1e-1"
+   UpperBound       = "+1e-1"
+   Fixed            = "1"
+  />
+
+  <Parameter
+   Type             = "Physics"
+   Name             = "c_y_b"
+   Value            = "0"
+   Error            = "1e-4"
+   LowerBound       = "-1e-1"
+   UpperBound       = "+1e-1"
+   Fixed            = "1"
+  />
+
+  <Parameter
+   Type             = "Physics"
+   Name             = "c_y_t"
+   Value            = "0"
+   Error            = "1e-4"
+   LowerBound       = "-1e-1"
+   UpperBound       = "+1e-1"
+   Fixed            = "1"
+  />
+
+  <Parameter
+   Type             = "Physics"
+   Name             = "c_y_tau"
+   Value            = "0"
+   Error            = "1e-4"
+   LowerBound       = "-1e-1"
+   UpperBound       = "+1e-1"
+   Fixed            = "1"
+  />
+
+  <Parameter
+   Type             = "Physics"
+   Name             = "mass_h"
+   Value            = "125.5"
+   Error            = "0"
+   LowerBound       = "125"
+   UpperBound       = "126"
+   Fixed            = "1"
+  />
+
+  <Parameter
+   Type             = "Physics"
+   Name             = "kappa_HV_plus"
+   Value            = "0"
+   Error            = "1e-4"
+   LowerBound       = "-1e-1"
+   UpperBound       = "+1e-1"
+   Fixed            = "1"
+  />
+
+  <Parameter
+   Type             = "Physics"
+   Name             = "a_plus"
+   Value            = "0"
+   Error            = "1e-4"
+   LowerBound       = "-1e-1"
+   UpperBound       = "+1e-1"
+   Fixed            = "1"
+  />
+
   <Sampler
    NumberOfIterations = "1"
    SamplerType = "MarkovChain"
-
    />
 
 </InputFile>
