@@ -184,6 +184,9 @@ void Fittino::TreeSampler::DetermineBestFitValues() {
   while( counter < _numberOfIterations ) {
 
     double chi2 = _model->GetChi2();
+    for( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+      _model->GetParameterVector()->at( k )->SetValue( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetParameterVector()->at( k )->GetName() ) );
+    }
     
     if( chi2 < _inputLowestChi2 ) { 
       
@@ -191,16 +194,19 @@ void Fittino::TreeSampler::DetermineBestFitValues() {
       _inputBestFitIndex = counter;
     
     }
-    
-    static_cast<TreeCalculator*>(_model->GetModelCalculatorVector()->at( 0 ))->CalculatePredictions( _inputBestFitIndex );
-   
-    std::vector<Observable*>* observableVector = _model->GetObservableVector();
+  
+    counter++;
 
-    for( int i = 0; i < observableVector->size(); ++i ) {
+  }
+  //std::cout << "input best fit index is " << _inputBestFitIndex << " with chi2 " << _inputLowestChi2 << std::endl;
+  static_cast<TreeCalculator*>(_model->GetModelCalculatorVector()->at( 0 ))->CalculatePredictions( _inputBestFitIndex );
+   
+  std::vector<Observable*>* observableVector = _model->GetObservableVector();
+
+  for( int i = 0; i < observableVector->size(); ++i ) {
       
-      observableVector->at(i)->SetBestFitPrediction( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( observableVector->at(i)->GetPrediction()->GetName() ) );
-    
-    }
+    observableVector->at(i)->SetBestFitPrediction( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( observableVector->at(i)->GetPrediction()->GetName() ) );
+    //std::cout << "determined best fit predcition for observable " << observableVector->at(i)->GetPrediction()->GetName() << "  = " << observableVector->at(i)->GetBestFitPrediction() << std::endl;
 
   }
   
