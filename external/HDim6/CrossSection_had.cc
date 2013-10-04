@@ -2826,3 +2826,42 @@ double ggH( double * x, size_t dim, void * param )
    double x2 = pow(smpar.mh,2)/x1/smpar.s;
    return 1.0/x1/x2*LHAPDF::xfx(x1,smpar.mh,0)*LHAPDF::xfx(x2,smpar.mh,0)/x1/smpar.s*pow(M_PI,2)/8.0/smpar.mh*Gamma*(1-pow(smpar.mh,2)/smpar.s)/2.57e3*1e12;
 };
+
+void k_ggh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err, double * chisq )
+{
+  *chisq = 1;
+  *err   = 0;
+  sminputs  smpar  = *SMparam;
+  effinputs effpar = *ESMparam;
+  double mf[] = { smpar.mup, smpar.mdo, smpar.mch, smpar.mst, smpar.mto, smpar.mbo };
+  double ff[] = { fuph_( &smpar, &effpar, smpar.mh ), 
+	          fdoh_( &smpar, &effpar, smpar.mh ),
+	          fchh_( &smpar, &effpar, smpar.mh ), 
+	          fsth_( &smpar, &effpar, smpar.mh ), 
+	          ftoh_( &smpar, &effpar, smpar.mh ), 
+	          fboh_( &smpar, &effpar, smpar.mh ) };   
+   complex<double> Af( 0, 0 );
+   complex<double> Af0( 0, 0 );
+   complex<double> A(-4*ghgg_( &smpar, &effpar, smpar.mh ), 0);
+   for( int i = 0; i < 6; i++ )
+   {
+      double tau = 4.*pow(mf[i]/smpar.mh,2);
+      complex< double > ftau( 0, 0 );
+      if( tau >= 1.0 )
+      {
+	ftau =complex< double >( pow(asin(1/sqrt(tau)),2) , 0 );
+      }
+      else
+      {
+	double np = 1+sqrt(1-tau);
+	double nm = 1-sqrt(1-tau);
+	double re = log(np/nm);
+	double im = -M_PI;
+	ftau = -1.0/4.0*pow(complex< double >( re, im ),2);
+      }
+      Af += -tau*(complex<double>(1,0)+(1-tau)*ftau)*sqrt(2)*smpar.alphas/M_PI/smpar.vev*ff[i];
+      Af0+= -tau*(complex<double>(1,0)+(1-tau)*ftau)*sqrt(2)*smpar.alphas/M_PI/smpar.vev;
+   };
+   complex<double> kappa = (Af + A)/Af0;
+   *ratio = pow(abs(kappa),2);
+};

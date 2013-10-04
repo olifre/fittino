@@ -39,6 +39,10 @@ void ratio_pphw_(  sminputs * SMparam, effinputs * ESMparam, double * ratio, dou
 void ratio_pphz_(  sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err, double * chisq );
 void ratio_bg_bh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err, double * chisq );
 
+/* Simplified K-Factor for ggH */
+
+void k_ggh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err, double * chisq );
+
 /* Processes */
 
 void HZRadiation_( sminputs * SMparam, effinputs * ESMparam, double * cSec, double * err, double * chisq );
