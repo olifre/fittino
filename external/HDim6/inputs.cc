@@ -164,7 +164,7 @@ void pom_to_eboli( pominput * pomdata, effinputs * effdata, sminputs * smdata )
   effdata->fw  =  2.0 * pomdata->khvp/pow(smdata->mw,2) + 4.0 * (pomdata->cvm + pomdata->khvm)/pow(smdata->mw,2);
   effdata->fb  =  2.0 * pomdata->khvp/pow(smdata->mw,2) - 4.0 * (pomdata->cvm + pomdata->khvm)/pow(smdata->mw,2);
   effdata->fww = -2.0 * pomdata->cvm/pow(smdata->mw,2);
-  effdata->fbb = -2.0 * pomdata->cvm/pow(smdata->mw,2) -  4.0 * pomdata->kbb/pow(smdata->mw,2);
+  effdata->fbb =  2.0 * pomdata->cvm/pow(smdata->mw,2) -  4.0 * pomdata->kbb/pow(smdata->mw,2);
   effdata->fp2 =  pomdata->ch/pow( smdata->vev, 2 );
   effdata->fgg =  pomdata->kgg/pow( smdata->mw, 2 ) * 4.0 * M_PI * smdata->alphas;
 
