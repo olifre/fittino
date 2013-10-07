@@ -111,6 +111,10 @@ namespace Fittino {
        *  Returns the predictions of the model as a collection.
        */
       const Collection<PredictionBase*>&                GetCollectionOfPredictions() const;
+      /*!
+       *  Returns the parameters as a collection.
+       */
+      const Collection<ModelParameterBase*>&                 GetCollectionOfParameters() const;
 
     public:
       virtual void                                      PrintStatus() const = 0;
@@ -168,7 +172,10 @@ namespace Fittino {
        *  Stores the predictions.
        */
       Collection<PredictionBase*>                       _collectionOfPredictions;
-
+      /*!
+       *  Stores the parameters
+       */
+      Collection<ModelParameterBase*>                        _collectionOfParameters;
     private:
       /*!
        *  Evaluates the chi2 function.

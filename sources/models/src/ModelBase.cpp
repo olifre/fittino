@@ -97,7 +97,7 @@ void Fittino::ModelBase::AddParameter( ModelParameterBase* parameter ) {
         throw ConfigurationException( message ); //TODO: Dedicated exception class ?
 
     }
-
+    _collectionOfParameters.AddElement( parameter->GetName(), parameter );
 }
 
 void Fittino::ModelBase::AddPrediction( PredictionBase* prediction ) {
@@ -140,6 +140,12 @@ const std::vector<Fittino::PredictionBase*>* Fittino::ModelBase::GetPredictionVe
 const Fittino::Collection<Fittino::PredictionBase*>& Fittino::ModelBase::GetCollectionOfPredictions() const {
 
     return _collectionOfPredictions;
+
+}
+
+const Fittino::Collection<Fittino::ModelParameterBase*>& Fittino::ModelBase::GetCollectionOfParameters() const {
+
+    return _collectionOfParameters;
 
 }
 
