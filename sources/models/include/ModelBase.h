@@ -86,6 +86,10 @@ namespace Fittino {
        */
       void                                              AddPrediction( PredictionBase* prediction );
       /*!
+       *  Adds a chi2 contribution to the model.
+       */
+      void                                              AddChi2Contribution( Chi2ContributionBase* chi2Contribution );
+      /*!
        *  Returns the name of the model.
        */
       std::string                                       GetName() const;
@@ -112,9 +116,13 @@ namespace Fittino {
        */
       const Collection<PredictionBase*>&                GetCollectionOfPredictions() const;
       /*!
+       *  Returns the chi2 contributions of the model as a collection.
+       */
+      const Collection<Chi2ContributionBase*>&          GetCollectionOfChi2Contributions() const;
+      /*!
        *  Returns the parameters as a collection.
        */
-      const Collection<ModelParameterBase*>&                 GetCollectionOfParameters() const;
+      const Collection<ModelParameterBase*>&            GetCollectionOfParameters() const;
 
     public:
       virtual void                                      PrintStatus() const = 0;
@@ -173,9 +181,13 @@ namespace Fittino {
        */
       Collection<PredictionBase*>                       _collectionOfPredictions;
       /*!
+       *  Stores the Chi2 contributions
+       */
+      Collection<Chi2ContributionBase*>                 _collectionOfChi2Contributions;
+      /*!
        *  Stores the parameters
        */
-      Collection<ModelParameterBase*>                        _collectionOfParameters;
+      Collection<ModelParameterBase*>                   _collectionOfParameters;
     private:
       /*!
        *  Evaluates the chi2 function.

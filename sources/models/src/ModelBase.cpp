@@ -107,6 +107,13 @@ void Fittino::ModelBase::AddPrediction( PredictionBase* prediction ) {
 
 }
 
+void Fittino::ModelBase::AddChi2Contribution( Chi2ContributionBase* chi2Contribution ) {
+
+    _collectionOfChi2Contributions.AddElement( chi2Contribution->GetName(), chi2Contribution );
+    _chi2ContributionVector.push_back( chi2Contribution );
+
+}
+
 std::string Fittino::ModelBase::GetName() const {
 
     return _name;
@@ -140,6 +147,12 @@ const std::vector<Fittino::PredictionBase*>* Fittino::ModelBase::GetPredictionVe
 const Fittino::Collection<Fittino::PredictionBase*>& Fittino::ModelBase::GetCollectionOfPredictions() const {
 
     return _collectionOfPredictions;
+
+}
+
+const Fittino::Collection<Fittino::Chi2ContributionBase*>& Fittino::ModelBase::GetCollectionOfChi2Contributions() const {
+
+    return _collectionOfChi2Contributions;
 
 }
 
