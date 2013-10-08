@@ -113,6 +113,28 @@ void Fittino::LHCModelCalculator::CalculatePredictions() {
 
 }
 
+void Fittino::LHCModelCalculator::UpdateAnalysisHistogram( std::string name, std::string fileName, std::string newHistogramName, std::vector<std::string> relevantParameters ) {
+
+  TFile *f = new TFile( fileName.c_str(), "OPEN" );
+  if( relevantParameters.size() == 1 ) {
+    delete _chi2Histograms1D.at( name );
+    _chi2Histograms1D.at(name) = (TH1D*)(f->Get( newHistogramName.c_str() )->Clone(""));
+  }
+  else if( relevantParameters.size() == 2 ) {
+    delete _chi2Histograms2D.at( name );
+    _chi2Histograms2D.at(name) = (TH2D*)(f->Get( newHistogramName.c_str() )->Clone(""));
+  }
+  else if( relevantParameters.size() == 3 ) {
+    delete _chi2Histograms3D.at( name );
+    _chi2Histograms3D.at(name) = (TH3D*)(f->Get( newHistogramName.c_str() )->Clone(""));
+  }
+  else if( relevantParameters.size() > 3 ) {
+    delete _chi2HistogramsnD.at( name );
+    _chi2HistogramsnD.at(name) = (THnSparseD*)(f->Get( newHistogramName.c_str() )->Clone(""));
+  }
+  f->Close();
+}
+
 void Fittino::LHCModelCalculator::Initialize() const {
 
 }

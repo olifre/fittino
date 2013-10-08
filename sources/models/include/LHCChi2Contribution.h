@@ -18,8 +18,11 @@
 #ifndef FITTINO_LHCCHI2CONTRIBUTION_H
 #define FITTINO_LHCCHI2CONTRIBUTION_H
 
+#include <vector>
+
 #include "Chi2ContributionBase.h"
 
+class TRandom3;
 /*!
  *  \brief Fittino namespace.
  */
@@ -38,15 +41,32 @@ namespace Fittino {
        *  Standard constructor.
        */
                                LHCChi2Contribution( std::string              name,
+                                                    std::string              fileName,
+                                                    std::string              histogramName,
+                                                    std::vector<std::string> relevantParameters,
+                                                    double                   nObs,
+                                                    double                   nExpSM,
+                                                    double                   nExpBestFit,
+                                                    double                   systematicErrorBG,
+                                                    double                   systematicErrorSignal,
                                                     LHCModelCalculator* lhcModelCalculator );
       /*!
        *  Standard destructor.
        */
                                ~LHCChi2Contribution();
       virtual void             UpdateValue();
+      void                     SmearNObs( TRandom3* );
 
     private:
       LHCModelCalculator*      _lhcModelCalculator;
+      std::string              _fileName;
+      std::string              _histogramName;
+      std::vector<std::string> _relevantParameters;
+      double                   _nObs;
+      double                   _nExpSM;
+      double                   _nExpBestFit;
+      double                   _systematicErrorBG;
+      double                   _systematicErrorSignal;
 
   };
 

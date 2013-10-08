@@ -57,6 +57,7 @@ namespace Fittino {
       virtual void        ConfigureInput();
       virtual void        Initialize() const;
       void                AddAnalysis( std::string name, std::string fileName, std::string histName, std::vector<std::string> relevantParameters );
+      void                UpdateAnalysisHistogram( std::string name, std::string fileName, std::string newHistogramName, std::vector<std::string> relevantParameters );
 
     private:
       std::map<std::string, TH1D*>                    _chi2Histograms1D;
