@@ -272,6 +272,7 @@ void Fittino::PhysicsModelBase::InitializeCalculators() {
                 static_cast<TreeCalculator*>(GetCollectionOfCalculators().At( "TreeCalculator" ))->SetInputFileName( propertyTree->get<std::string>("InputFile.Sampler.<xmlattr>.InputFileName", "Fittino.old.root" ) );
                 static_cast<TreeCalculator*>(GetCollectionOfCalculators().At( "TreeCalculator" ))->SetInputTreeName( propertyTree->get<std::string>("InputFile.Sampler.<xmlattr>.InputTreeName", "Tree" ) );
                 static_cast<TreeCalculator*>(GetCollectionOfCalculators().At( "TreeCalculator" ))->OpenInputTree();
+            
             }
 
             else if ( calculatorType == "FeynHiggs" ) {
@@ -307,6 +308,12 @@ void Fittino::PhysicsModelBase::InitializeCalculators() {
             else if ( calculatorType == "SPhenoSLHA" ) {
 
                 AddCalculator( factory.CreateCalculator( Configuration::SPHENOSLHACALCULATOR, this ) );
+
+            }
+
+            else if ( calculatorType == "LHC" ) {
+
+                AddCalculator( factory.CreateCalculator( Configuration::LHCCALCULATOR, this ) );
 
             }
 
