@@ -72,7 +72,7 @@ namespace Fittino {
       static Configuration*                 GetInstance();
 
     public:
-      enum                                  CalculatorType { FEYNHIGGSCALCULATOR, HIGGSSIGNALSHADXSCALCULATOR, HDIM6CALCULATOR, FEYNHIGGSSLHACALCULATOR, HIGGSSIGNALSSLHACALCULATOR, SPHENOSLHACALCULATOR, TREECALCULATOR };
+      enum                                  CalculatorType { FEYNHIGGSCALCULATOR, HIGGSSIGNALSHADXSCALCULATOR, HDIM6CALCULATOR, FEYNHIGGSSLHACALCULATOR, HIGGSSIGNALSSLHACALCULATOR, SPHENOSLHACALCULATOR, TREECALCULATOR, LHCCALCULATOR };
       enum                                  ExecutionMode { OPTIMIZATION, PLOTTING, SAMPLING };
       enum                                  FileFormat { SLHA, XML };
       enum                                  ModelType { CMSSM, HDIM6, HEC, MSSM3, ROSENBROCK };

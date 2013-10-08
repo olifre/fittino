@@ -51,6 +51,7 @@
 #include "TreeSampler.h"
 #include "TreeCalculator.h"
 #include "SPhenoSLHAModelCalculator.h"
+#include "LHCModelCalculator.h"
 
 Fittino::Factory::Factory() {
 
@@ -162,6 +163,10 @@ Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator( const Fi
         case Configuration::SPHENOSLHACALCULATOR:
 
             return new SPhenoSLHAModelCalculator( model );
+
+        case Configuration::LHCCALCULATOR:
+
+            return new LHCModelCalculator( model );
 
     }
 
