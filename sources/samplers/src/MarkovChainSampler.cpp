@@ -72,8 +72,6 @@ void Fittino::MarkovChainSampler::Execute() {
         _chi2 = _model->GetChi2();
         GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
 
-        AnalysisTool::PrintStatus();
-
         this->UpdateModel();
 
     }
@@ -95,11 +93,12 @@ void Fittino::MarkovChainSampler::UpdateModel() {
     //this->FillTree();
 
     // Update model.
-
-    for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+    if( _iterationCounter != 1 ) {
+      for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
         _model->GetParameterVector()->at( k )->SetValue( _model->GetParameterVector()->at( k )->GetValue() + _randomGenerator.Gaus( 0., _model->GetParameterVector()->at( k )->GetError() ) );
 
+      }
     }
 
     // Calclate chi2.
@@ -107,6 +106,8 @@ void Fittino::MarkovChainSampler::UpdateModel() {
     double chi2 = _model->GetChi2();
     _chi2 = chi2;
     GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
+
+    AnalysisTool::PrintStatus();
 
     // Calculate likelihood.
 
@@ -118,6 +119,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
     //GetStatusParameterVector()->at( 2 )->SetValue( pointAccepted );
 
     double rho = 0.;
+
 
     if ( _previousLikelihood > 0. ) {
 
@@ -142,7 +144,6 @@ void Fittino::MarkovChainSampler::UpdateModel() {
         }
 
     }
-
     // Further check if any parameter value is out of bounds.
 
     for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
