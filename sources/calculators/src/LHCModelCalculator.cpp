@@ -131,12 +131,12 @@ void Fittino::LHCModelCalculator::CalculatePredictions() {
       double binCenter = (*itr).second->GetAxis( i )->GetBinCenter( binIndex );
       
       if( binCenter >= parameterValues.at(i) && !overFlow ) {
-        closestHigherValues.push_back((*itr).second->GetAxis( i )->GetBinCenter(binIndex+1));
-        closestLowerValues.push_back((*itr).second->GetAxis( i )->GetBinCenter(binIndex));
-      }
-      else {
         closestHigherValues.push_back((*itr).second->GetAxis( i )->GetBinCenter(binIndex));
         closestLowerValues.push_back((*itr).second->GetAxis( i )->GetBinCenter(binIndex-1));
+      }
+      else {
+        closestHigherValues.push_back((*itr).second->GetAxis( i )->GetBinCenter(binIndex+1));
+        closestLowerValues.push_back((*itr).second->GetAxis( i )->GetBinCenter(binIndex));
       }
         
     }
@@ -170,10 +170,12 @@ void Fittino::LHCModelCalculator::CalculatePredictions() {
       }
       chi2Values.clear();
       for( unsigned int i = 0; i < chi2ValuesTemp.size(); ++i ) {
-        chi2Values.at(i) = chi2ValuesTemp.at(i);
+        chi2Values.push_back( chi2ValuesTemp.at(i) );
       }
       interpolateCoordinate += 1;
     }
+    chi2Value = chi2Values.at(0);
+    _simpleOutputDataStorage->GetMap()->at( (*itr).first ) = chi2Value; 
   }
 
 }
