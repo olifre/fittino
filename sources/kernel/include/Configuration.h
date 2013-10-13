@@ -30,8 +30,6 @@
 
 #include "Messenger.h"
 #include "ModelBase.h"
-#include "OptimizerBase.h"
-#include "SamplerBase.h"
 
 namespace boost {
 
