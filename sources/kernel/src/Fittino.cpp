@@ -31,6 +31,14 @@
  *  The central object is the Fittino::Controller.
  */
 
+/*!
+ *  \todo Long-term: Document the code.
+ *  \todo Long-term: Write a comprehensive developer's guide.
+ *  \todo Long-term: Write a comprehensive user's guide.
+ *  \todo Short-term: Overhaul FindROOT.cmake making use of FindPackageHandleStandardArgs.
+ *  \todo Short-term: Write FindGSL.cmake module making use of gsl-config to get the version, the needed libraries etc. Remove explcit linking of -lm -lgslcblas.
+ */
+
 //#include <iostream>
 
 #include "Controller.h"
@@ -43,10 +51,8 @@ using namespace Fittino;
 
 int main( int argc, char** argv ) {
 
-    /*!
+    /*!  
      *  \todo Short-term: Discuss usage of exceptions here.
-     *  \todo Short-term: Overhaul FindROOT.cmake making use of FindPackageHandleStandardArgs.
-     *  \todo Short-term: Write FindGSL.cmake module making use of gsl-config to get the version, the needed libraries etc. Remove explcit linking of -lm -lgslcblas.
      */
 
     //try {

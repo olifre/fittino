@@ -28,14 +28,6 @@
 #include "Configuration.h"
 
 /*!
- *  \todo Long-term: Document the code.
- *
- *  \todo Long-term: Write a comprehensive developer's guide.
- *
- *  \todo Long-term: Write a comprehensive user's guide.
- */
-
-/*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
