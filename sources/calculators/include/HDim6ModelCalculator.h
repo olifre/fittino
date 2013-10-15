@@ -56,9 +56,10 @@ namespace Fittino {
       virtual void             Initialize() const;
 
     private:  
+      bool                     _calculate_xs_qqh_2flavor;
+      bool                     _calculate_xs_qqh_5flavor;
       bool                     _first;
       double                   _cputime_gridNoVBF;
-      double                   _cputime_ggh;
       double                   _cputime_qqh_2flavor;
       double                   _cputime_qqh_5flavor;
       double                   _cputime_remaining;
@@ -74,20 +75,6 @@ namespace Fittino {
       double                   _Delta_g2_ZZ;
       double                   _Delta_kappa_Gamma;
       double                   _Delta_kappa_Z;
-      double                   _f_B;
-      double                   _f_BB;
-      double                   _f_gg;
-      double                   _f_b;
-      double                   _f_c;
-      double                   _f_d;
-      double                   _f_e;
-      double                   _f_mu;
-      double                   _f_s;
-      double                   _f_t;
-      double                   _f_tau;
-      double                   _f_u;
-      double                   _f_W;
-      double                   _f_WW;
       double                   _Gamma_hbb;
       double                   _Gamma_hcc;
       double                   _Gamma_hgaga;
@@ -116,12 +103,11 @@ namespace Fittino {
       double                   _normSM_xs_tth;
       double                   _normSM_xs_Wh;
       double                   _normSM_xs_Zh;
-      double                   _previous_a_minus;
-      double                   _previous_a_plus;
-      double                   _previous_c_H;
-      double                   _previous_kappa_BB;
-      double                   _previous_kappa_GG;
-      double                   _previous_kappa_HV_plus;
+      double                   _previous_f_B;
+      double                   _previous_f_BB;
+      double                   _previous_f_W;
+      double                   _previous_f_WW;
+      double                   _previous_f_phi_2;
       double                   _previous_mass_h;
       double                   _SM_Gamma_hbb;
       double                   _SM_Gamma_hcc;
@@ -133,40 +119,46 @@ namespace Fittino {
       double                   _SM_Gamma_hWW;
       double                   _SM_Gamma_hZga;
       double                   _SM_Gamma_hZZ;
-      double                   _SM_xs_ggh;
       double                   _SM_xs_qqh_2flavor;
       double                   _SM_xs_qqh_5flavor;
       double                   _SM_xs_Wh;
       double                   _SM_xs_Zh;
-      double                   _xs_ggh;
       double                   _xs_qqh_2flavor;
       double                   _xs_qqh_5flavor;
       double                   _xs_Wh;
       double                   _xs_Zh;
+
       std::string              _pdfDirectory;
       std::string              _pdfSet;
       effinputs*               _effsmvalues;
       effinputs*               _effvalues;
-      pominput*                _pomvalues;
-      pominput*                _previousPomValues;
-      sminputs*                _previousSMValues;
       sminputs*                _smvalues;
-      
-      double                   _c_V_minus;
-      double                   _kappa_HV_minus;
-      double                   _kappa_Zgamma;
+
+      double           _P_a_minus;
+      double           _P_a_plus;
+      double           _P_c_H;
+      double           _P_c_V_minus;
+      double           _P_c_y_b;
+      double           _P_c_y_t;
+      double           _P_c_y_tau;
+      double           _P_kappa_BB;
+      double           _P_kappa_GG;
+      double           _P_kappa_HV_plus;
+      double           _P_kappa_HV_minus;
+      double           _P_kappa_Zgamma;
 
     private:  
-      const double&           _a_minus;
-      const double&           _a_plus;
-      const double&           _c_H;
-      const double&           _c_y_b;
-      const double&           _c_y_t;
-      const double&           _c_y_tau;
-      const double&           _kappa_BB;
-      const double&           _kappa_GG;
-      const double&           _kappa_HV_plus;
-      const double&           _mass_h;
+      const double&  _f_B;
+      const double&  _f_b;
+      const double&  _f_BB;
+      const double&  _f_gg;
+      const double&  _f_phi_2;
+      const double&  _f_t;
+      const double&  _f_tau;
+      const double&  _f_W;
+      const double&  _f_WW;
+      const double&  _mass_h;
+
 
     private:   
       void                     ComparePreviousEffValues();

@@ -17,9 +17,12 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <boost/property_tree/ptree.hpp>
+
 #include <iostream>
 
 #include "CHiggsSignals.h"
+#include "Configuration.h"
 #include "HiggsSignalsHadXSModelCalculator.h"
 #include "ModelParameterBase.h"
 #include "PhysicsModelBase.h"
@@ -75,9 +78,17 @@ Fittino::HiggsSignalsHadXSModelCalculator::HiggsSignalsHadXSModelCalculator( con
     _collectionOfDoubles.AddElement( "chi2_mu"            , &_chi2_mu);
     _collectionOfDoubles.AddElement( "pvalue"             , &_pvalue);
 
+    Configuration *configuration = Configuration::GetInstance();
+    const boost::property_tree::ptree* propertyTree = configuration->GetPropertyTree();
+    
+
+
     int nHzero = 1;
     int nHplus = 0;
-    std::string expdata = "LHC_mail_14_07_2013_HS_new_observable_set";
+    //std::string expdata = "LHC_mail_14_07_2013_HS_new_observable_set";
+
+    std::string expdata = propertyTree->get<std::string>( "InputFile.HiggsSignalsHadXSCalculator.ExpData" );
+    std::cout<<"Using ExpData = "<<expdata<<std::endl;
     initialize_higgssignals_( &nHzero, &nHplus, expdata );
     
     int output_level = 0; 

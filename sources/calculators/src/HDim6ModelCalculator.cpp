@@ -37,16 +37,20 @@
 
 Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* model )
     :ModelCalculatorBase( model ),
-     _a_minus       ( _model->GetParameterMap()->at( "a_minus" )->GetValue() ),
-     _a_plus        ( _model->GetParameterMap()->at( "a_plus" )->GetValue() ),
-     _c_H           ( _model->GetParameterMap()->at( "c_H" )->GetValue()   ),
-     _c_y_b         ( _model->GetParameterMap()->at( "c_y_b" )->GetValue() ),
-     _c_y_t         ( _model->GetParameterMap()->at( "c_y_t" )->GetValue() ),
-     _c_y_tau       ( _model->GetParameterMap()->at( "c_y_tau" )->GetValue() ),
-     _kappa_BB      ( _model->GetParameterMap()->at( "kappa_BB" )->GetValue() ),
-     _kappa_GG      ( _model->GetParameterMap()->at( "kappa_GG" )->GetValue() ),
-     _kappa_HV_plus ( _model->GetParameterMap()->at( "kappa_HV_plus" )->GetValue() ),
-     _mass_h        ( _model->GetParameterMap()->at( "mass_h" )->GetValue()        ) {
+
+     _f_B     ( _model->GetParameterMap()->at( "f_B"     )->GetValue() ),
+     _f_BB    ( _model->GetParameterMap()->at( "f_BB"    )->GetValue() ),
+     _f_W     ( _model->GetParameterMap()->at( "f_W"     )->GetValue() ),
+     _f_WW    ( _model->GetParameterMap()->at( "f_WW"    )->GetValue() ),
+     _f_gg    ( _model->GetParameterMap()->at( "f_GG"    )->GetValue() ),
+     _f_phi_2 ( _model->GetParameterMap()->at( "f_Phi_2" )->GetValue() ),
+     _f_t     ( _model->GetParameterMap()->at( "f_t"     )->GetValue() ),
+     _f_b     ( _model->GetParameterMap()->at( "f_b"     )->GetValue() ),
+     _f_tau   ( _model->GetParameterMap()->at( "f_tau"   )->GetValue() ),
+     _mass_h  ( _model->GetParameterMap()->at( "mass_h"  )->GetValue() ) {
+
+    _calculate_xs_qqh_2flavor = true;
+    _calculate_xs_qqh_5flavor = true;
 
     _name = "HDim6ModelCalculator";
 
@@ -58,68 +62,48 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* mod
 
     _effsmvalues        = new effinputs();
     _effvalues          = new effinputs();
-    _pomvalues          = new pominput();
     _smvalues           = new sminputs();
-    
-    _collectionOfDoubles.AddElement( "normSM_Gamma_hgg",     &_normSM_Gamma_hgg );
-    _collectionOfDoubles.AddElement( "normSM_Gamma_htautau", &_normSM_Gamma_htautau );
-    _collectionOfDoubles.AddElement( "normSM_Gamma_hmumu",   &_normSM_Gamma_hmumu );
-    _collectionOfDoubles.AddElement( "normSM_Gamma_hgaga",   &_normSM_Gamma_hgaga );
-    _collectionOfDoubles.AddElement( "normSM_Gamma_hWW",     &_normSM_Gamma_hWW );
-    _collectionOfDoubles.AddElement( "normSM_Gamma_hZZ", &_normSM_Gamma_hZZ );
-    _collectionOfDoubles.AddElement( "normSM_Gamma_hZga",  &_normSM_Gamma_hZga );
-    _collectionOfDoubles.AddElement( "normSM_Gamma_hbb",  &_normSM_Gamma_hbb );
-    _collectionOfDoubles.AddElement( "normSM_Gamma_hcc",  &_normSM_Gamma_hcc );
-    _collectionOfDoubles.AddElement( "normSM_Gamma_hss",  &_normSM_Gamma_hss );
-    _collectionOfDoubles.AddElement( "normSM_xs_ggh",  &_normSM_xs_ggh );
-    _collectionOfDoubles.AddElement( "normSM_xs_bbh",  &_normSM_xs_bbh );
-    _collectionOfDoubles.AddElement( "normSM_xs_qqh_2flavor",  &_normSM_xs_qqh_2flavor );
-    _collectionOfDoubles.AddElement( "normSM_xs_qqh_5flavor",  &_normSM_xs_qqh_5flavor );
-    _collectionOfDoubles.AddElement( "normSM_xs_tth",  &_normSM_xs_tth );
-    _collectionOfDoubles.AddElement( "normSM_xs_Wh",  &_normSM_xs_Wh );
-    _collectionOfDoubles.AddElement( "normSM_xs_Zh",  &_normSM_xs_Zh );
-    _collectionOfDoubles.AddElement( "normSM_xs_bh",  &_normSM_xs_bh );
 
-    _collectionOfDoubles.AddElement( "c_V_minus",       &_c_V_minus );
-    _collectionOfDoubles.AddElement( "kappa_HV_minus",  &_kappa_HV_minus );
-    _collectionOfDoubles.AddElement( "kappa_Zgamma",    &_kappa_Zgamma );
+    _collectionOfDoubles.AddElement( "cputime_gridNoVBF",     &_cputime_gridNoVBF     );
 
-    _collectionOfDoubles.AddElement( "f_BB",    &_effvalues->fbb );
-    _collectionOfDoubles.AddElement( "f_WW",    &_effvalues->fww );
-    _collectionOfDoubles.AddElement( "f_GG",    &_effvalues->fgg );
-    _collectionOfDoubles.AddElement( "f_B",     &_effvalues->fb );    
-    _collectionOfDoubles.AddElement( "f_W",     &_effvalues->fw );
-    _collectionOfDoubles.AddElement( "f_t",     &_effvalues->ftoh );
-    _collectionOfDoubles.AddElement( "f_b",     &_effvalues->fboh );
-    _collectionOfDoubles.AddElement( "f_tau",   &_effvalues->ftah );
-    _collectionOfDoubles.AddElement( "f_phi_2", &_effvalues->fp2 );
+    if ( _calculate_xs_qqh_2flavor ) {
 
-    _collectionOfDoubles.AddElement( "cputime_gridNoVBF",   &_cputime_gridNoVBF   );
-    _collectionOfDoubles.AddElement( "cputime_ggh",         &_cputime_ggh         );
-    _collectionOfDoubles.AddElement( "cputime_qqh_2flavor", &_cputime_qqh_2flavor );
-    _collectionOfDoubles.AddElement( "cputime_qqh_5flavor", &_cputime_qqh_5flavor );
-    _collectionOfDoubles.AddElement( "cputime_remaining",   &_cputime_remaining   );
+        _collectionOfDoubles.AddElement( "normSM_xs_qqh_2flavor", &_normSM_xs_qqh_2flavor );
 
-    _SM_Gamma_hZZ = 1;
-    _SM_Gamma_hWW = 1;
-    _SM_xs_qqh_2flavor = 1;
-    _SM_xs_qqh_5flavor = 1;
-    _SM_xs_Wh = 1;
-    _SM_xs_Zh = 1;
+    }
 
-    _Gamma_hZZ = 1;
-    _Gamma_hWW = 1;
-    _xs_qqh_2flavor = 1;
-    _xs_qqh_5flavor = 1;
-    _xs_Wh = 1;
-    _xs_Zh = 1;
+    if ( _calculate_xs_qqh_5flavor ) {
+
+        _collectionOfDoubles.AddElement( "normSM_xs_qqh_5flavor", &_normSM_xs_qqh_5flavor );
+
+    }
+
+    _collectionOfDoubles.AddElement( "cputime_remaining",     &_cputime_remaining     );
+    _collectionOfDoubles.AddElement( "normSM_Gamma_hgg",      &_normSM_Gamma_hgg      );
+    _collectionOfDoubles.AddElement( "normSM_Gamma_htautau",  &_normSM_Gamma_htautau  );
+    _collectionOfDoubles.AddElement( "normSM_Gamma_hmumu",    &_normSM_Gamma_hmumu    );
+    _collectionOfDoubles.AddElement( "normSM_Gamma_hgaga",    &_normSM_Gamma_hgaga    );
+    _collectionOfDoubles.AddElement( "normSM_Gamma_hWW",      &_normSM_Gamma_hWW      );
+    _collectionOfDoubles.AddElement( "normSM_Gamma_hZZ",      &_normSM_Gamma_hZZ      );
+    _collectionOfDoubles.AddElement( "normSM_Gamma_hZga",     &_normSM_Gamma_hZga     );
+    _collectionOfDoubles.AddElement( "normSM_Gamma_hbb",      &_normSM_Gamma_hbb      );
+    _collectionOfDoubles.AddElement( "normSM_Gamma_hcc",      &_normSM_Gamma_hcc      );
+    _collectionOfDoubles.AddElement( "normSM_Gamma_hss",      &_normSM_Gamma_hss      );
+    _collectionOfDoubles.AddElement( "normSM_xs_ggh",         &_normSM_xs_ggh         );
+    _collectionOfDoubles.AddElement( "normSM_xs_bbh",         &_normSM_xs_bbh         );
+    _collectionOfDoubles.AddElement( "normSM_xs_tth",         &_normSM_xs_tth         );
+    _collectionOfDoubles.AddElement( "normSM_xs_Wh",          &_normSM_xs_Wh          );
+    _collectionOfDoubles.AddElement( "normSM_xs_Zh",          &_normSM_xs_Zh          );
+    _collectionOfDoubles.AddElement( "normSM_xs_bh",          &_normSM_xs_bh          );
+    //     _collectionOfDoubles.AddElement( "P_c_V_minus",           &_P_c_V_minus           );
+    //     _collectionOfDoubles.AddElement( "P_kappa_HV_minus",      &_P_kappa_HV_minus      );
+    //     _collectionOfDoubles.AddElement( "P_kappa_Zgamma",        &_P_kappa_Zgamma        );
 
 }
 
 Fittino::HDim6ModelCalculator::~HDim6ModelCalculator() {
 
     delete _effvalues;
-    delete _pomvalues;
     delete _effsmvalues;
     delete _smvalues;
 
@@ -146,110 +130,46 @@ void Fittino::HDim6ModelCalculator::Initialize() const{
 
 void Fittino::HDim6ModelCalculator::CallFunction() {
 
-    double error, chi2;
+    bool new_mh = ( _first || _previous_mass_h != _mass_h );
 
-    bool _new_mh = ( _first || _previous_mass_h != _mass_h );
+    if ( new_mh )  _previous_mass_h = _mass_h;
 
-    bool _new_gridParameters
+    bool new_gridParameters
         = (    _first
-            || _previous_a_minus       != _a_minus
-            || _previous_a_plus        != _a_plus
-            || _previous_c_H           != _c_H
-            || _previous_kappa_BB      != _kappa_BB   
-            || _previous_kappa_HV_plus != _kappa_HV_plus );
-
-    bool _new_kappa_GG = ( _first || _previous_kappa_GG != _kappa_GG );
-    
-    if ( _new_mh ) {
-
-        _previous_mass_h = _mass_h;
-
-        ud_jjh_     ( _smvalues, _effsmvalues, &_SM_xs_qqh_2flavor,        &error, &chi2 );
-        udcsb_jjh_  ( _smvalues, _effsmvalues, &_SM_xs_qqh_5flavor,        &error, &chi2 );
-        hzz_        ( _smvalues, _effsmvalues, &_SM_Gamma_hZZ,     &error, &chi2 ); 
-        hww_        ( _smvalues, _effsmvalues, &_SM_Gamma_hWW,     &error, &chi2 ); 
-        HWRadiation_( _smvalues, _effsmvalues, &_SM_xs_Wh,         &error, &chi2 );
-        HZRadiation_( _smvalues, _effsmvalues, &_SM_xs_Zh,         &error, &chi2 );
-        Gluonfusion_( _smvalues, _effsmvalues, &_SM_xs_ggh,        &error, &chi2 );
-        hglgl_      ( _smvalues, _effsmvalues, &_SM_Gamma_hgg,     &error       );
-        hgaga_      ( _smvalues, _effsmvalues, &_SM_Gamma_hgaga,   &error       );
-        hgaz_       ( _smvalues, _effsmvalues, &_SM_Gamma_hZga,    &error       );
-        hmumu_      ( _smvalues, _effsmvalues, &_SM_Gamma_hmumu,   &error       );
-        htata_      ( _smvalues, _effsmvalues, &_SM_Gamma_htautau, &error       );
-        hchch_      ( _smvalues, _effsmvalues, &_SM_Gamma_hcc,     &error       );
-        hstst_      ( _smvalues, _effsmvalues, &_SM_Gamma_hss,     &error       );
-        hbobo_      ( _smvalues, _effsmvalues, &_SM_Gamma_hbb,     &error       );
-        
-    }
-
-    if ( _new_gridParameters ) {
-
-        _previous_a_minus       = _a_minus;
-        _previous_a_plus        = _a_plus;
-        _previous_c_H           = _c_H;
-        _previous_kappa_BB      = _kappa_BB;
-        _previous_kappa_HV_plus = _kappa_HV_plus; 
-
-    }
-
-    if ( _new_kappa_GG ) {
-      
-        _previous_kappa_GG = _kappa_GG ;
-
-    }
-
-    if ( _new_mh || _new_gridParameters ) {
-
-        _stopwatch.Start();
-
-        ud_jjh_  ( _smvalues, _effvalues, &_xs_qqh_2flavor,    &error, &chi2 );
-
-        _stopwatch.Stop();
-        _cputime_qqh_2flavor = _stopwatch.CpuTime();
-        _stopwatch.Start();
-
-        udcsb_jjh_  ( _smvalues, _effvalues, &_xs_qqh_5flavor,    &error, &chi2 );
-
-        _stopwatch.Stop();
-        _cputime_qqh_5flavor = _stopwatch.CpuTime();
-        _stopwatch.Start();
-
-        hzz_        ( _smvalues, _effvalues, &_Gamma_hZZ, &error, &chi2 ); 
-        hww_        ( _smvalues, _effvalues, &_Gamma_hWW, &error, &chi2 ); 
-        HWRadiation_( _smvalues, _effvalues, &_xs_Wh,     &error, &chi2 );
-        HZRadiation_( _smvalues, _effvalues, &_xs_Zh,     &error, &chi2 );
-
-        _stopwatch.Stop();
-        _cputime_gridNoVBF = _stopwatch.CpuTime();
-
-    }
-
-
-    if ( _new_mh || _new_kappa_GG ) {
-
-        _stopwatch.Start();
-
-        Gluonfusion_( _smvalues, _effvalues, &_xs_ggh,           &error, &chi2 );
-
-        _stopwatch.Stop();
-        _cputime_ggh = _stopwatch.CpuTime();
-
-    }
+            || new_mh
+            || _previous_f_B     != _f_B
+            || _previous_f_BB    != _f_BB
+            || _previous_f_W     != _f_W
+            || _previous_f_WW    != _f_WW
+            || _previous_f_phi_2 != _f_phi_2 );
 
     
-    _stopwatch.Start();
+    if ( new_gridParameters ) {
 
-    hglgl_      ( _smvalues, _effvalues, &_Gamma_hgg,        &error       ); 
-    hgaga_      ( _smvalues, _effvalues, &_Gamma_hgaga,      &error       );
-    hgaz_       ( _smvalues, _effvalues, &_Gamma_hZga,       &error       );
-    hmumu_      ( _smvalues, _effvalues, &_Gamma_hmumu,      &error       );
-    htata_      ( _smvalues, _effvalues, &_Gamma_htautau,    &error       );
-    hchch_      ( _smvalues, _effvalues, &_Gamma_hcc,        &error       );
-    hstst_      ( _smvalues, _effvalues, &_Gamma_hss,        &error       );
-    hbobo_      ( _smvalues, _effvalues, &_Gamma_hbb,        &error       );
-    ratio_bb_h_ ( _smvalues, _effvalues, &_normSM_xs_bbh,    &error, &chi2 );
-    ratio_tth_  ( _smvalues, _effvalues, &_normSM_xs_tth,    &error, &chi2 );
-    ratio_bg_bh_( _smvalues, _effvalues, &_normSM_xs_bh,     &error, &chi2 );
+        _previous_f_B     = _f_B;
+        _previous_f_BB    = _f_BB;
+        _previous_f_W     = _f_W;
+        _previous_f_WW    = _f_WW;
+        _previous_f_phi_2 = _f_phi_2;
+
+    }
+
+    if ( _first )  _first = false;  
+
+    // todo: calculate pomerol coefficients here
+
+    _P_a_minus        = 0;
+    _P_a_plus         = 0;
+    _P_c_H            = 0;
+    _P_c_V_minus      = ( _P_a_plus + _P_a_minus ) / 2.;
+    _P_c_y_b          = 0;
+    _P_c_y_t          = 0;
+    _P_c_y_tau        = 0;
+    _P_kappa_BB       = 0;
+    _P_kappa_GG       = 0;
+    _P_kappa_HV_plus  = 0;
+    _P_kappa_HV_minus = ( _P_a_plus - _P_a_minus ) / 2.;
+    _P_kappa_Zgamma   = - _P_kappa_HV_minus / 2. - 2 * TMath::Power( _smvalues->sw, 2) * _P_kappa_BB;
 
     _Delta_g1_WW       = HDim6::d_g1_ww  ( _smvalues, _effvalues );
     _Delta_g2_WW       = HDim6::d_g2_ww  ( _smvalues, _effvalues );
@@ -264,28 +184,90 @@ void Fittino::HDim6ModelCalculator::CallFunction() {
     _Delta_g1_Gamma    = HDim6::d_g1_y   ( _smvalues, _effvalues );
     _Delta_g1_Z        = HDim6::d_g1_z   ( _smvalues, _effvalues );
 
-    _stopwatch.Stop();
-    _cputime_remaining = _stopwatch.CpuTime();
+    double error, chi2;
 
-    _normSM_Gamma_hZZ     = _Gamma_hZZ     / _SM_Gamma_hZZ;
-    _normSM_Gamma_hWW     = _Gamma_hWW     / _SM_Gamma_hWW;
-    _normSM_Gamma_hgg     = _Gamma_hgg     / _SM_Gamma_hgg;
-    _normSM_Gamma_hgaga   = _Gamma_hgaga   / _SM_Gamma_hgaga;
-    _normSM_Gamma_hZga    = _Gamma_hZga    / _SM_Gamma_hZga;
-    _normSM_Gamma_hmumu   = _Gamma_hmumu   / _SM_Gamma_hmumu;
+    if ( new_mh ) hglgl_( _smvalues, _effsmvalues, &_SM_Gamma_hgg,           &error        );
+    hglgl_( _smvalues, _effvalues, &_Gamma_hgg,           &error        );
+    _normSM_Gamma_hgg = _Gamma_hgg / _SM_Gamma_hgg;
+
+    if ( new_mh ) hgaga_( _smvalues, _effsmvalues, &_SM_Gamma_hgaga,         &error        );
+    hgaga_( _smvalues, _effvalues, &_Gamma_hgaga,         &error        );
+    _normSM_Gamma_hgaga = _Gamma_hgaga / _SM_Gamma_hgaga;
+
+    if ( new_mh ) hgaz_( _smvalues, _effsmvalues, &_SM_Gamma_hZga,          &error        );
+    hgaz_( _smvalues, _effvalues, &_Gamma_hZga,          &error        );
+    _normSM_Gamma_hZga = _Gamma_hZga / _SM_Gamma_hZga;
+
+    if ( new_mh ) hmumu_( _smvalues, _effsmvalues, &_SM_Gamma_hmumu,         &error        );
+    hmumu_( _smvalues, _effvalues, &_Gamma_hmumu,         &error        );
+    _normSM_Gamma_hmumu = _Gamma_hmumu / _SM_Gamma_hmumu;
+
+    if ( new_mh ) htata_( _smvalues, _effsmvalues, &_SM_Gamma_htautau,       &error        );
+    htata_( _smvalues, _effvalues, &_Gamma_htautau,       &error        );
     _normSM_Gamma_htautau = _Gamma_htautau / _SM_Gamma_htautau;
-    _normSM_Gamma_hcc     = _Gamma_hcc     / _SM_Gamma_hcc;
-    _normSM_Gamma_hss     = _Gamma_hss     / _SM_Gamma_hss;
-    _normSM_Gamma_hbb     = _Gamma_hbb     / _SM_Gamma_hbb;
-    _normSM_xs_ggh        = _xs_ggh        / _SM_xs_ggh;
-    _normSM_xs_qqh_2flavor        = _xs_qqh_2flavor        / _SM_xs_qqh_2flavor;
-    _normSM_xs_qqh_5flavor        = _xs_qqh_5flavor        / _SM_xs_qqh_5flavor;
-    _normSM_xs_Wh         = _xs_Wh         / _SM_xs_Wh;
-    _normSM_xs_Zh         = _xs_Zh         / _SM_xs_Zh;
 
-    _first = false;
+    if ( new_mh ) hchch_ ( _smvalues, _effsmvalues, &_SM_Gamma_hcc,           &error        );
+    hchch_ ( _smvalues, _effvalues, &_Gamma_hcc,           &error        );
+    _normSM_Gamma_hcc = _Gamma_hcc / _SM_Gamma_hcc;
 
+    if ( new_mh ) hstst_ ( _smvalues, _effsmvalues, &_SM_Gamma_hss,           &error        );
+    hstst_ ( _smvalues, _effvalues, &_Gamma_hss,           &error        );
+    _normSM_Gamma_hss = _Gamma_hss / _SM_Gamma_hss;
+
+    if ( new_mh ) hbobo_ ( _smvalues, _effsmvalues, &_SM_Gamma_hbb,           &error        );
+    hbobo_ ( _smvalues, _effvalues, &_Gamma_hbb,           &error        );
+    _normSM_Gamma_hbb = _Gamma_hbb / _SM_Gamma_hbb;
+
+    if ( new_gridParameters )  {
+
+        if ( new_mh ) hzz_  ( _smvalues, _effsmvalues, &_SM_Gamma_hZZ, &error, &chi2 ); 
+        hzz_  ( _smvalues, _effvalues, &_Gamma_hZZ, &error, &chi2 ); 
+        _normSM_Gamma_hZZ = _Gamma_hZZ / _SM_Gamma_hZZ;
+        
+
+        if ( new_mh ) hww_  ( _smvalues, _effsmvalues, &_SM_Gamma_hWW, &error, &chi2 ); 
+        hww_  ( _smvalues, _effvalues, &_Gamma_hWW, &error, &chi2 ); 
+        _normSM_Gamma_hWW = _Gamma_hWW / _SM_Gamma_hWW;
+        
+    }
+
+    // todo: calc xs in own class, possible to set cms
+
+    k_ggh_      ( _smvalues, _effvalues, &_normSM_xs_ggh,    &error, &chi2 );
+    ratio_bb_h_ ( _smvalues, _effvalues, &_normSM_xs_bbh,    &error, &chi2 );
+    ratio_tth_  ( _smvalues, _effvalues, &_normSM_xs_tth,    &error, &chi2 );
+    ratio_bg_bh_( _smvalues, _effvalues, &_normSM_xs_bh,     &error, &chi2 );
+    
+    if ( new_gridParameters ) {
+
+      if ( new_mh ) HWRadiation_( _smvalues, _effsmvalues, &_SM_xs_Wh, &error, &chi2 );
+      HWRadiation_( _smvalues, _effvalues, &_xs_Wh, &error, &chi2 );
+      _normSM_xs_Wh  = _xs_Wh / _SM_xs_Wh;
+
+      if ( new_mh ) HZRadiation_( _smvalues, _effsmvalues, &_SM_xs_Zh, &error, &chi2 );
+      HZRadiation_( _smvalues, _effvalues, &_xs_Zh, &error, &chi2 );
+      _normSM_xs_Zh = _xs_Zh / _SM_xs_Zh;
+
+    }
+
+    if ( _calculate_xs_qqh_2flavor && new_gridParameters ) {
+
+      if ( new_mh )  ud_jjh_( _smvalues, _effsmvalues, &_SM_xs_qqh_2flavor, &error, &chi2 );
+      ud_jjh_( _smvalues, _effvalues, &_xs_qqh_2flavor,    &error, &chi2 );
+      _normSM_xs_qqh_2flavor = _xs_qqh_2flavor / _SM_xs_qqh_2flavor;
+
+    }
+
+    if ( _calculate_xs_qqh_5flavor && new_gridParameters ) {
+
+      if ( new_mh )  ud_jjh_( _smvalues, _effsmvalues, &_SM_xs_qqh_5flavor, &error, &chi2 );
+      ud_jjh_( _smvalues, _effvalues,   &_xs_qqh_5flavor,    &error, &chi2 );
+      _normSM_xs_qqh_5flavor = _xs_qqh_5flavor / _SM_xs_qqh_5flavor;
+
+    }
+    
 }
+
 
 void Fittino::HDim6ModelCalculator::ComparePreviousEffValues() {
 
@@ -304,21 +286,15 @@ void Fittino::HDim6ModelCalculator::CallExecutable() {
 
 void Fittino::HDim6ModelCalculator::ConfigureInput() {
 
-    _c_V_minus      = ( _a_plus + _a_minus ) / 2.;
-    _kappa_HV_minus = ( _a_plus - _a_minus ) / 2.;
-    _kappa_Zgamma   = - _kappa_HV_minus / 2. - 2 * TMath::Power( _smvalues->sw, 2) * _kappa_BB;
-
-    _smvalues ->mh      = _mass_h;
-    _pomvalues->ch      = _c_H;
-    _pomvalues->cvm     = _c_V_minus;
-    _pomvalues->c_y_toh = _c_y_t;
-    _pomvalues->c_y_boh = _c_y_b;
-    _pomvalues->c_y_tah = _c_y_tau;
-    _pomvalues->kbb     = _kappa_BB;
-    _pomvalues->kgg     = _kappa_GG;
-    _pomvalues->khvm    = _kappa_HV_minus;
-    _pomvalues->khvp    = _kappa_HV_plus;
-
-    pom_to_eboli( _pomvalues, _effvalues, _smvalues );    
+    _effvalues->fb   = _f_B;
+    _effvalues->fbb  = (_f_BB + _f_WW )/2.;
+    _effvalues->fw   = _f_W;
+    _effvalues->fww  = (_f_BB - _f_WW )/2.;
+    _effvalues->fgg  = _f_gg;
+    _effvalues->fp2  = _f_phi_2;
+    _effvalues->fboh = _f_b;
+    _effvalues->ftoh = _f_t;
+    _effvalues->ftah = _f_tau;
+    _smvalues ->mh   = _mass_h;
 
 }
