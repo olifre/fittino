@@ -65,6 +65,10 @@ namespace Fittino {
     public:
       virtual void                                   PrintStatus() const;
       virtual void                                   SmearObservables( TRandom3* );
+      /*!
+       *  Virtual copy constructor.
+       */
+      virtual PhysicsModelBase*                      Clone() const;
 
     public:
       virtual std::vector<ModelCalculatorBase*>*     GetModelCalculatorVector();

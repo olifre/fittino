@@ -224,6 +224,12 @@ void Fittino::PhysicsModelBase::SmearObservables( TRandom3* randomGenerator ) {
     }
 }
 
+Fittino::PhysicsModelBase* Fittino::PhysicsModelBase::Clone() const{
+
+  return new PhysicsModelBase( *this );
+
+}
+
 std::vector<Fittino::ModelCalculatorBase*>* Fittino::PhysicsModelBase::GetModelCalculatorVector() {
 
     return &_modelCalculatorVector;
