@@ -3,7 +3,8 @@
                      Model,
                      Parameter*,
                      Calculator*,
-		             Observable*,
+                     HiggsSignalsHadXSCalculator*,
+                     Observable*,
                      (Optimizer|Sampler|Plotter),
                      GeneticAlgorithmOptimizer?,
                      ParticleSwarmOptimizer?,
@@ -54,6 +55,12 @@
 <!ATTLIST Calculator
   Type               CDATA #REQUIRED
 >
+
+<!ELEMENT HiggsSignalsHadXSCalculator (ExpData)>
+<!ELEMENT ExpData (#PCDATA) >
+<!-- <!ATTLIST HiggsSignalsHadXSCalculator -->
+<!--   ExpData            CDATA #REQUIRED -->
+<!-- > -->
 
 <!ELEMENT Observable EMPTY>
 <!ATTLIST Observable

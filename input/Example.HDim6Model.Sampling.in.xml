@@ -36,21 +36,39 @@
    ModelType = "HDim6"
    />
 
-
   <Parameter
    Type             = "Physics"
-   Name             = "c_H"
+   Name             = "f_B"
    Value            = "0"
    Error            = "1e-4"
    LowerBound       = "-1e-1"
-
    UpperBound       = "+1e-1"
    Fixed            = "1"
   />
 
   <Parameter
    Type             = "Physics"
-   Name             = "kappa_BB"
+   Name             = "f_BB"
+   Value            = "0"
+   Error            = "1e-4"
+   LowerBound       = "-1e-1"
+   UpperBound       = "+1e-1"
+   Fixed            = "1"
+  />
+
+  <Parameter
+   Type             = "Physics"
+   Name             = "f_W"
+   Value            = "0"
+   Error            = "1e-4"
+   LowerBound       = "-1e-1"
+   UpperBound       = "+1e-1"
+   Fixed            = "1"
+  />
+
+  <Parameter
+   Type             = "Physics"
+   Name             = "f_WW"
    Value            = "0"
    Error            = "1e-3"
    LowerBound       = "-5e-3"
@@ -60,7 +78,7 @@
 
   <Parameter
    Type             = "Physics"
-   Name             = "a_minus"
+   Name             = "f_GG"
    Value            = "0"
    Error            = "1e-4"
    LowerBound       = "-1e-1"
@@ -70,7 +88,7 @@
 
   <Parameter
    Type             = "Physics"
-   Name             = "kappa_GG"
+   Name             = "f_Phi_2"
    Value            = "0"
    Error            = "1e-4"
    LowerBound       = "-1e-1"
@@ -80,7 +98,18 @@
 
   <Parameter
    Type             = "Physics"
-   Name             = "c_y_b"
+   Name             = "f_t"
+   Value            = "0"
+   Error            = "1e-4"
+   LowerBound       = "-1e-1"
+   UpperBound       = "+1e-1"
+   Fixed            = "1"
+  />
+
+ 
+  <Parameter
+   Type             = "Physics"
+   Name             = "f_b"
    Value            = "0"
    Error            = "1e-4"
    LowerBound       = "-1e-1"
@@ -90,7 +119,7 @@
 
   <Parameter
    Type             = "Physics"
-   Name             = "c_y_t"
+   Name             = "f_tau"
    Value            = "0"
    Error            = "1e-4"
    LowerBound       = "-1e-1"
@@ -98,17 +127,7 @@
    Fixed            = "1"
   />
 
-  <Parameter
-   Type             = "Physics"
-   Name             = "c_y_tau"
-   Value            = "0"
-   Error            = "1e-4"
-   LowerBound       = "-1e-1"
-   UpperBound       = "+1e-1"
-   Fixed            = "1"
-  />
-
-  <Parameter
+ <Parameter
    Type             = "Physics"
    Name             = "mass_h"
    Value            = "125.5"
@@ -116,31 +135,15 @@
    LowerBound       = "125"
    UpperBound       = "126"
    Fixed            = "1"
-  />
+ />
 
-  <Parameter
-   Type             = "Physics"
-   Name             = "kappa_HV_plus"
-   Value            = "0"
-   Error            = "1e-4"
-   LowerBound       = "-1e-1"
-   UpperBound       = "+1e-1"
-   Fixed            = "1"
-  />
-
-  <Parameter
-   Type             = "Physics"
-   Name             = "a_plus"
-   Value            = "0"
-   Error            = "1e-4"
-   LowerBound       = "-1e-1"
-   UpperBound       = "+1e-1"
-   Fixed            = "1"
-  />
+ <HiggsSignalsHadXSCalculator>
+<!--     <ExpData>  latestresults </ExpData>  -->
+    <ExpData>  mail_14_07_2013_HS_new_observable_set </ExpData>
+ </HiggsSignalsHadXSCalculator>  
 
   <Sampler
-   NumberOfIterations = "1"
-   SamplerType = "MarkovChain"
+   SamplerType = "Simple"
    />
 
 </InputFile>
