@@ -51,6 +51,11 @@ namespace Fittino {
    */
   class ModelBase {
 
+  /*!
+   * \todo Short-term: Remove _predictionvector, _chi2ContributionVector, _parameterVector
+   * \todo Short-term: Add _collectionOfQuantities for unified access by name to all quantities
+   */
+
     public:
       /*!
        *  Standard constructor.

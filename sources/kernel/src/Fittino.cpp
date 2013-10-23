@@ -37,6 +37,7 @@
  *  \todo Long-term: Write a comprehensive user's guide.
  *  \todo Short-term: Overhaul FindROOT.cmake making use of FindPackageHandleStandardArgs.
  *  \todo Short-term: Write FindGSL.cmake module making use of gsl-config to get the version, the needed libraries etc. Remove explcit linking of -lm -lgslcblas.
+ *  \todo Short-term: In xml input files use subtags instead of attributes
  */
 
 //#include <iostream>
