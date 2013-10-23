@@ -38,6 +38,11 @@ namespace Fittino {
        *  Standard constructor.
        */
 
+                   SimpleSampler( ModelBase* model, const boost::property_tree::ptree& ptree );
+      /*!
+       *  Standard constructor.
+       */
+
                    SimpleSampler( ModelBase* model, int randomSeed );
       /*!
        *  Standard destructor.

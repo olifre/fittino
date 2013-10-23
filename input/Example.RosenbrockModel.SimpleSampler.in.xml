@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding='UTF-8'?>
+
+<InputFile>
+
+  <VerbosityLevel>ALWAYS</VerbosityLevel>
+
+  <Model>
+    <RosenbrockModel>
+
+      <ModelParameter>
+        <name>X1</name>
+        <error>0.01</error>
+        <lowerBound>-2</lowerBound>
+        <upperBound>2</upperBound>
+      </ModelParameter>
+
+      <ModelParameter>
+        <name>X2</name>
+        <error>0.01</error>
+        <lowerBound>-2</lowerBound>
+        <upperBound>2</upperBound>
+      </ModelParameter>
+
+    </RosenbrockModel>
+  </Model>
+
+  <Tool>
+    <SimpleSampler></SimpleSampler>
+  </Tool>
+
+</InputFile>
+

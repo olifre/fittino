@@ -40,6 +40,10 @@ namespace Fittino {
        */
                                RosenbrockModel();
       /*!
+       *  Standard constructor.
+       */
+                               RosenbrockModel( const boost::property_tree::ptree& ptree  ); 
+      /*!
        *  Standard destructor.
        */
                                ~RosenbrockModel();

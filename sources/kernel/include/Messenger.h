@@ -56,6 +56,7 @@ namespace Fittino {
        */
                                 ~Messenger();
       void                      Send();
+      void                      SetVerbosityLevel( const std::string&    verbosityLevel );
       void                      SetVerbosityLevel( const VerbosityLevel& verbosityLevel );
 
     public:

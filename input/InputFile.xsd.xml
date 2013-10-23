@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:element name="InputFile" type="InputFile" />
+
+<xs:complexType name="InputFile">
+  <xs:sequence>
+    <xs:element name="VerbosityLevel" type="VerbosityLevel"/>
+    <xs:element name="Model"          type="Model"         />
+    <xs:element name="Tool"           type="Tool"          />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:simpleType name="VerbosityLevel">
+  <xs:restriction base="xs:string">
+    <xs:enumeration value="ALWAYS"/>
+    <xs:enumeration value="INFO"  />
+  </xs:restriction>
+</xs:simpleType> 
+
+<xs:complexType name="Model">
+  <xs:choice>
+    <xs:element name="RosenbrockModel" type="RosenbrockModel"/>
+    <xs:element name="PhysicsModel"    type="PhysicsModel"   />
+  </xs:choice>
+</xs:complexType>
+
+<xs:complexType name="Tool">
+  <xs:choice>
+    <xs:element name="SimpleSampler"      type="SimpleSampler"     />
+    <xs:element name="MarkovChainSampler" type="MarkovChainSampler"/>
+  </xs:choice>
+</xs:complexType>
+
+<xs:complexType name="SimpleSampler">
+  <xs:complexContent>
+    <xs:extension base="AnalysisTool">
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="MarkovChainSampler">
+  <xs:complexContent>
+    <xs:extension base="AnalysisTool">
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="AnalysisTool">
+</xs:complexType>
+
+<xs:complexType name="RosenbrockModel">
+  <xs:sequence>
+    <xs:element name="ModelParameter"   type="ModelParameter"  minOccurs="1" maxOccurs="unbounded"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="PhysicsModel">
+  <xs:sequence>
+    <xs:element name="Name"             type="xs:string"                                          />
+    <xs:element name="ModelParameter"   type="ModelParameter"  minOccurs="0" maxOccurs="unbounded"/>
+    <xs:element name="Calculators"      type="Calculators"                                        />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ModelParameter">
+  <xs:sequence>
+    <xs:element name="name" type="xs:string" />
+    <xs:element name="value" type="xs:decimal" minOccurs="0" />
+    <xs:element name="error" type="xs:decimal" minOccurs="0" />
+    <xs:element name="lowerBound" type="xs:decimal" minOccurs="0" />
+    <xs:element name="upperBound" type="xs:decimal" minOccurs="0" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Calculators">
+  <xs:choice minOccurs="0" maxOccurs="unbounded">
+    <xs:element name="HiggsSignalsCalculator" type="HiggsSignalsCalculator" />  
+    <xs:element name="HDim6Calculator"        type="HDim6Calculator"        />  
+  </xs:choice>
+</xs:complexType>
+
+<xs:complexType name="HDim6Calculator">
+  <xs:sequence>
+    <xs:element name="Name" type="xs:string" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="HiggsSignalsCalculator">
+  <xs:sequence>
+    <xs:element name="Name" type="xs:string" />
+  </xs:sequence>
+</xs:complexType>
+
+</xs:schema> 

@@ -17,6 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "ModelParameterBase.h"
 
 Fittino::ModelParameterBase::ModelParameterBase( std::string name,
@@ -40,6 +42,22 @@ Fittino::ModelParameterBase::ModelParameterBase( std::string name,
                          plotUpperBound ) {
 
 }
+
+Fittino::ModelParameterBase::ModelParameterBase( const boost::property_tree::ptree& ptree )
+  : _error( ptree.get<double>("error", 0.1 ) ),
+    _lowerBound( ptree.get<double>("lowerBound", 0. ) ),
+    _upperBound( ptree.get<double>("upperBound", 1. ) ),
+    _fixed( ptree.get<bool>("fixed", false ) ),
+    _updated( true ),
+    ParameterBase( ptree.get<std::string>( "name"), 
+                   ptree.get<std::string>( "name"), 
+                   ptree.get<double>("value", 0 ),
+                   ptree.get<double>( "plotLowerBound", _lowerBound ),
+                   ptree.get<double>( "plotUpperBound", _upperBound ) ) {
+
+
+}
+
 
 Fittino::ModelParameterBase::~ModelParameterBase() {
 

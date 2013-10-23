@@ -22,6 +22,19 @@
 #include "ModelParameterBase.h"
 #include "SimpleSampler.h"
 
+Fittino::SimpleSampler::SimpleSampler( ModelBase* model, const boost::property_tree::ptree& ptree )
+  : SamplerBase( model, 0 ) {
+
+    _name = "simple parameter sampler";
+
+    for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+
+        _model->GetParameterVector()->at( k )->SetValue( _model->GetParameterVector()->at( k )->GetLowerBound() );
+
+    }
+
+}
+
 Fittino::SimpleSampler::SimpleSampler( Fittino::ModelBase* model, int randomSeed )
   : SamplerBase( model, randomSeed ) {
 

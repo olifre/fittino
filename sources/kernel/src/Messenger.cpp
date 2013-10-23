@@ -21,6 +21,7 @@
 #include <iostream>
 
 #include "Configuration.h"
+#include "ConfigurationException.h"
 #include "Messenger.h"
 
 const std::string& Fittino::Messenger::_dashedLine = std::string( 85, '-' );
@@ -60,6 +61,26 @@ void Fittino::Messenger::Send() {
     }
 
     this->str( "" );
+
+}
+
+void Fittino::Messenger::SetVerbosityLevel( const std::string& verbosityLevel ) {
+
+    if ( verbosityLevel == "INFO" ) {
+
+        SetVerbosityLevel(INFO);
+
+    }
+    else if ( verbosityLevel == "ALWAYS" ) {
+
+        SetVerbosityLevel(ALWAYS);
+
+    }
+    else {
+
+        throw ConfigurationException( "Verbosity level unknown." );
+
+    }
 
 }
 

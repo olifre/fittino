@@ -100,6 +100,8 @@ namespace Fittino {
        */
       std::string                     _dataFileName;
 
+      boost::property_tree::ptree*    _propertyTree;
+
     private:
       /*!
        *  Standard constructor.

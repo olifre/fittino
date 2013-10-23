@@ -21,6 +21,9 @@
 #include <cmath>
 #include <sstream>
 
+#include <boost/foreach.hpp>
+#include <boost/property_tree/ptree.hpp>
+
 #include "Configuration.h"
 #include "ModelParameterBase.h"
 #include "RosenbrockModel.h"
@@ -40,6 +43,24 @@ Fittino::RosenbrockModel::RosenbrockModel() {
         parameterPlotName.str( "" );
         parameterPlotName << "X" << i + 1;
         AddParameter( new ModelParameterBase( parameterName.str(), parameterPlotName.str(), configuration->GetSteeringParameter( parameterName.str(), 0. ), 1., -10., 10., -10., 10. ) );
+
+    }
+
+    TestModelBase::Initialize();
+
+}
+
+Fittino::RosenbrockModel::RosenbrockModel( const boost::property_tree::ptree& ptree  ) {
+
+    _name = "Rosenbrock model";
+
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree )  {
+
+      if ( node.first == "ModelParameter" ) {
+
+          AddParameter( new ModelParameterBase( node.second ) );
+
+      }
 
     }
 

@@ -29,6 +29,7 @@
  */
 namespace Fittino {
 
+  class AnalysisTool;
   class Configuration;
   class DataStorageBase;
   class ModelBase;
@@ -56,6 +57,10 @@ namespace Fittino {
 
     public:
       /*!
+       *  Returns a concrete analysis tool.
+       */
+      AnalysisTool* const        CreateAnalysisTool( const std::string& type, ModelBase* model, const boost::property_tree::ptree& ptree ) const;
+      /*!
        *  Returns a concrete data storage according to the file format passed as an argument.\n
        *  Supported file formats are
        *  <ul>
@@ -74,6 +79,10 @@ namespace Fittino {
        *  </ul>
        */
       ModelBase* const           CreateModel( const Configuration::ModelType& modelType ) const;
+      /*!
+       *  Returns a concrete model.
+       */
+      ModelBase* const           CreateModel( const std::string& type, const boost::property_tree::ptree& ptree ) const;
       /*!
        *  Returns a concrete calculator according to the calculator type passed as an argument. Supported\n
        *  calculator types are

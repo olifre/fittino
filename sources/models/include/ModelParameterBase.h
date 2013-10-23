@@ -20,6 +20,8 @@
 #ifndef FITTINO_MODELPARAMETERBASE_H
 #define FITTINO_MODELPARAMETERBASE_H
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "ParameterBase.h"
 
 /*!
@@ -46,6 +48,11 @@ namespace Fittino {
                                        double      plotLowerBound,
                                        double      plotUpperBound,
                                        bool        fixed = false );
+
+      /*!
+       *  Standard constructor.
+       */
+                   ModelParameterBase( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

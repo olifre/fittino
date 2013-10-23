@@ -61,12 +61,42 @@ Fittino::Factory::~Factory() {
 
 }
 
+Fittino::AnalysisTool* const Fittino::Factory::CreateAnalysisTool( const std::string& type, ModelBase* model, const boost::property_tree::ptree& ptree ) const {
+
+    if ( type == "SimpleSampler" ) {
+
+        return new SimpleSampler( model, ptree );
+
+    }
+    else if ( type == "MarkovChainSampler" ) {
+
+      // return new MarkovChainSampler( model, ptree );
+
+    }
+
+}
+
 Fittino::DataStorageBase* const Fittino::Factory::CreateDataStorage( const Fittino::Configuration::FileFormat& fileFormat ) const {
 
     switch ( fileFormat ) {
 
         case Configuration::XML:
             return new XMLDataStorage();
+
+    }
+
+}
+
+Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type, const boost::property_tree::ptree& ptree ) const {
+
+    if ( type == "PhysicsModel" ) {
+
+        // return new PhysicsModel( ptree );
+
+    }
+    else if ( type == "RosenbrockModel" ) {
+                  
+        return new RosenbrockModel( ptree );
 
     }
 

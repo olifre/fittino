@@ -25,6 +25,10 @@
 #include <cstdlib>
 #include <iostream>
 
+#include <boost/foreach.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+
 #include "Configuration.h"
 #include "ConfigurationException.h"
 #include "Controller.h"
@@ -78,9 +82,21 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
         fittinoInputDataStorage->ReadFile( _inputFileName );
         delete fittinoInputDataStorage;
 
-	// Set the level of output verbosity.
+        boost::property_tree::read_xml( _inputFileName, *_propertyTree );
 
-        Messenger::GetInstance().SetVerbosityLevel( Configuration::GetInstance()->GetVerbosityLevel() );
+        if ( _propertyTree->get_child("InputFile").count("Tool") != 0 ) {
+
+            std::string verbosityLevel = _propertyTree->get<std::string>("InputFile.VerbosityLevel");
+
+            Messenger::GetInstance().SetVerbosityLevel( verbosityLevel );
+
+        }
+        else {
+              
+            // Set the level of output verbosity.
+            Messenger::GetInstance().SetVerbosityLevel( Configuration::GetInstance()->GetVerbosityLevel() );
+
+        }
 
     }
     catch ( const InputException& inputException ) {
@@ -97,37 +113,55 @@ void Fittino::Controller::ExecuteFittino() const {
     try {
 
         const Factory factory;
-        ModelBase* const model = factory.CreateModel( Configuration::GetInstance()->GetModelType() );
 
-        if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::OPTIMIZATION ) {
+        if ( _propertyTree->get_child("InputFile").count("Tool") != 0 ) {
 
-            OptimizerBase* const optimizer = factory.CreateOptimizer( Configuration::GetInstance()->GetOptimizerType(), model, _randomSeed );
-            optimizer->PerformAnalysis();
-            delete optimizer;
+          const boost::property_tree::ptree::value_type& modelNode = *( _propertyTree->get_child("InputFile.Model").begin() );
+          ModelBase* model = factory.CreateModel( modelNode.first, modelNode.second );
 
-        }
-        else if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::SAMPLING ) {
+          const boost::property_tree::ptree::value_type& toolNode = *( _propertyTree->get_child("InputFile.Tool").begin() );
+          AnalysisTool* tool = factory.CreateAnalysisTool( toolNode.first, model, toolNode.second );
 
-            SamplerBase* const sampler = factory.CreateSampler( Configuration::GetInstance()->GetSamplerType(), model, _randomSeed );
-            sampler->PerformAnalysis();
-            delete sampler;
+          tool->PerformAnalysis();
 
-	}
-        else if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::PLOTTING ) {
-
-            PlotterBase* plotter = factory.CreatePlotter( Configuration::GetInstance()->GetPlotterType(), model, _dataFileName, _randomSeed );
-            plotter->PerformAnalysis();
-            delete plotter;
+          delete tool;
+          delete model;
 
         }
         else {
 
-            throw ConfigurationException( "Configured execution mode unknown." );
+            ModelBase* model = factory.CreateModel( Configuration::GetInstance()->GetModelType() );
+
+            if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::OPTIMIZATION ) {
+
+                OptimizerBase* const optimizer = factory.CreateOptimizer( Configuration::GetInstance()->GetOptimizerType(), model, _randomSeed );
+                optimizer->PerformAnalysis();
+                delete optimizer;
+
+            }
+            else if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::SAMPLING ) {
+
+                SamplerBase* const sampler = factory.CreateSampler( Configuration::GetInstance()->GetSamplerType(), model, _randomSeed );
+                sampler->PerformAnalysis();
+                delete sampler;
+
+            }
+            else if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::PLOTTING ) {
+
+                PlotterBase* plotter = factory.CreatePlotter( Configuration::GetInstance()->GetPlotterType(), model, _dataFileName, _randomSeed );
+                plotter->PerformAnalysis();
+                delete plotter;
+
+            }
+            else {
+
+                throw ConfigurationException( "Configured execution mode unknown." );
+
+            }
+
+            delete model;
 
         }
-
-        delete model;
-
     }
     catch ( const ConfigurationException& configurationException ) {
 
@@ -147,11 +181,14 @@ Fittino::Controller* Fittino::Controller::_instance = 0;
 Fittino::Controller::Controller()
         : _randomSeed( 0 ),
           _dataFileName( "" ),
-          _inputFileName( "" ) {
+          _inputFileName( "" ),
+          _propertyTree( new boost::property_tree::ptree() ) {
 
 }
 
 Fittino::Controller::~Controller() {
+
+  delete _propertyTree;
 
 }
 

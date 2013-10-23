@@ -53,9 +53,9 @@ void Fittino::XMLDataStorage::ReadFile( const std::string& xmlInputFileName ) co
 
     TDOMParser* const xmlParser = new TDOMParser();
 
-    // Switch on XML file validation.
+    // Switch off XML file validation.
 
-    xmlParser->SetValidate();
+    xmlParser->SetValidate(0);
 
     // Check if XML input file can be parsed.
 
