@@ -50,7 +50,7 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* mod
      _mass_h  ( _model->GetParameterMap()->at( "mass_h"  )->GetValue() ) {
 
     _calculate_xs_qqh_2flavor = true;
-    _calculate_xs_qqh_5flavor = true;
+    _calculate_xs_qqh_5flavor = false;
 
     _name = "HDim6ModelCalculator";
 
@@ -64,8 +64,6 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* mod
     _effvalues          = new effinputs();
     _smvalues           = new sminputs();
 
-    _collectionOfDoubles.AddElement( "cputime_gridNoVBF",     &_cputime_gridNoVBF     );
-
     if ( _calculate_xs_qqh_2flavor ) {
 
         _collectionOfDoubles.AddElement( "normSM_xs_qqh_2flavor", &_normSM_xs_qqh_2flavor );
@@ -78,7 +76,6 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* mod
 
     }
 
-    _collectionOfDoubles.AddElement( "cputime_remaining",     &_cputime_remaining     );
     _collectionOfDoubles.AddElement( "normSM_Gamma_hgg",      &_normSM_Gamma_hgg      );
     _collectionOfDoubles.AddElement( "normSM_Gamma_htautau",  &_normSM_Gamma_htautau  );
     _collectionOfDoubles.AddElement( "normSM_Gamma_hmumu",    &_normSM_Gamma_hmumu    );
