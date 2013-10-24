@@ -138,8 +138,8 @@
  />
 
  <HiggsSignalsHadXSCalculator>
-<!--     <ExpData>  latestresults </ExpData>  -->
-    <ExpData>  mail_14_07_2013_HS_new_observable_set </ExpData>
+    <ExpData>  latestresults </ExpData>
+<!--     <ExpData>  mail_14_07_2013_HS_new_observable_set </ExpData>  -->
  </HiggsSignalsHadXSCalculator>  
 
   <Sampler
