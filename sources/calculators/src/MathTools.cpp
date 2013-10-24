@@ -37,7 +37,7 @@ double Fittino::MathTools::InterpolateND( THnSparse *histogram, std::vector<doub
     if( parameterValues.at( i ) > maxValue ) {
       parameterValues.at( i ) = maxValue;
     }
-    if( parameterValues.at( i ) < minValue ) {
+    if( parameterValues.at( i ) <= minValue ) {
       parameterValues.at( i ) = minValue;
       underFlow = true;
     }
