@@ -2,7 +2,6 @@
 --indent-namespaces
 --indent=spaces=2
 --indent-switches
---brackets=attach
 --style=java
 --pad-oper
 --pad-paren-in
