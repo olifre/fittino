@@ -48,7 +48,7 @@
 
   <Parameter
    Type             = "Physics"
-   Name             = "f_BB"
+   Name             = "f_BB_p_f_WW"
    Value            = "0"
    Error            = "1e-4"
    LowerBound       = "-1e-1"
@@ -68,7 +68,7 @@
 
   <Parameter
    Type             = "Physics"
-   Name             = "f_WW"
+   Name             = "f_BB_m_f_WW"
    Value            = "0"
    Error            = "1e-3"
    LowerBound       = "-5e-3"

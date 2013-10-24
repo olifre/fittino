@@ -75,6 +75,8 @@ namespace Fittino {
       double                   _Delta_g2_ZZ;
       double                   _Delta_kappa_Gamma;
       double                   _Delta_kappa_Z;
+      double                   _f_BB;
+      double                   _f_WW;
       double                   _Gamma_hbb;
       double                   _Gamma_hcc;
       double                   _Gamma_hgaga;
@@ -150,13 +152,13 @@ namespace Fittino {
     private:  
       const double&  _f_B;
       const double&  _f_b;
-      const double&  _f_BB;
+      const double&  _f_BB_p_f_WW;
+      const double&  _f_BB_m_f_WW;
       const double&  _f_gg;
       const double&  _f_phi_2;
       const double&  _f_t;
       const double&  _f_tau;
       const double&  _f_W;
-      const double&  _f_WW;
       const double&  _mass_h;
 
 

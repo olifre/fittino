@@ -38,16 +38,16 @@
 Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* model )
     :ModelCalculatorBase( model ),
 
-     _f_B     ( _model->GetParameterMap()->at( "f_B"     )->GetValue() ),
-     _f_BB    ( _model->GetParameterMap()->at( "f_BB"    )->GetValue() ),
-     _f_W     ( _model->GetParameterMap()->at( "f_W"     )->GetValue() ),
-     _f_WW    ( _model->GetParameterMap()->at( "f_WW"    )->GetValue() ),
-     _f_gg    ( _model->GetParameterMap()->at( "f_GG"    )->GetValue() ),
-     _f_phi_2 ( _model->GetParameterMap()->at( "f_Phi_2" )->GetValue() ),
-     _f_t     ( _model->GetParameterMap()->at( "f_t"     )->GetValue() ),
-     _f_b     ( _model->GetParameterMap()->at( "f_b"     )->GetValue() ),
-     _f_tau   ( _model->GetParameterMap()->at( "f_tau"   )->GetValue() ),
-     _mass_h  ( _model->GetParameterMap()->at( "mass_h"  )->GetValue() ) {
+     _f_B         ( _model->GetParameterMap()->at( "f_B"     )->GetValue() ),
+     _f_BB_p_f_WW ( _model->GetParameterMap()->at( "f_BB_p_f_WW"    )->GetValue() ),
+     _f_W         ( _model->GetParameterMap()->at( "f_W"     )->GetValue() ),
+     _f_BB_m_f_WW ( _model->GetParameterMap()->at( "f_BB_m_f_WW"    )->GetValue() ),
+     _f_gg        ( _model->GetParameterMap()->at( "f_GG"    )->GetValue() ),
+     _f_phi_2     ( _model->GetParameterMap()->at( "f_Phi_2" )->GetValue() ),
+     _f_t         ( _model->GetParameterMap()->at( "f_t"     )->GetValue() ),
+     _f_b         ( _model->GetParameterMap()->at( "f_b"     )->GetValue() ),
+     _f_tau       ( _model->GetParameterMap()->at( "f_tau"   )->GetValue() ),
+     _mass_h      ( _model->GetParameterMap()->at( "mass_h"  )->GetValue() ) {
 
     _calculate_xs_qqh_2flavor = true;
     _calculate_xs_qqh_5flavor = false;
@@ -76,6 +76,8 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* mod
 
     }
 
+    _collectionOfDoubles.AddElement( "f_BB",                  &_f_BB                  );
+    _collectionOfDoubles.AddElement( "f_WW",                  &_f_WW                  );
     _collectionOfDoubles.AddElement( "normSM_Gamma_hgg",      &_normSM_Gamma_hgg      );
     _collectionOfDoubles.AddElement( "normSM_Gamma_htautau",  &_normSM_Gamma_htautau  );
     _collectionOfDoubles.AddElement( "normSM_Gamma_hmumu",    &_normSM_Gamma_hmumu    );
@@ -167,6 +169,9 @@ void Fittino::HDim6ModelCalculator::CallFunction() {
     _P_kappa_HV_plus  = 0;
     _P_kappa_HV_minus = ( _P_a_plus - _P_a_minus ) / 2.;
     _P_kappa_Zgamma   = - _P_kappa_HV_minus / 2. - 2 * TMath::Power( _smvalues->sw, 2) * _P_kappa_BB;
+
+    _f_BB = _effvalues->fbb;  
+    _f_WW = _effvalues->fww;  
 
     _Delta_g1_WW       = HDim6::d_g1_ww  ( _smvalues, _effvalues );
     _Delta_g2_WW       = HDim6::d_g2_ww  ( _smvalues, _effvalues );
@@ -284,9 +289,9 @@ void Fittino::HDim6ModelCalculator::CallExecutable() {
 void Fittino::HDim6ModelCalculator::ConfigureInput() {
 
     _effvalues->fb   = _f_B;
-    _effvalues->fbb  = (_f_BB + _f_WW )/2.;
+    _effvalues->fbb  = ( _f_BB_p_f_WW + _f_BB_m_f_WW )/2.;
     _effvalues->fw   = _f_W;
-    _effvalues->fww  = (_f_BB - _f_WW )/2.;
+    _effvalues->fww  = ( _f_BB_p_f_WW - _f_BB_m_f_WW )/2.;
     _effvalues->fgg  = _f_gg;
     _effvalues->fp2  = _f_phi_2;
     _effvalues->fboh = _f_b;
