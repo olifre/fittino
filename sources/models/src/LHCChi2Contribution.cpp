@@ -18,17 +18,21 @@
 #include <vector>
 #include <sstream>
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/foreach.hpp>
+
 #include "TRandom3.h"
 
 #include "LHCChi2Contribution.h"
 #include "LHCModelCalculator.h"
 #include "SimpleDataStorage.h"
+#include "Collection.h"
 
 Fittino::LHCChi2Contribution::LHCChi2Contribution( std::string name,
         std::string fileName,
         std::string histogramName,
         std::vector<std::string> relevantParameters,
-        double nObs,
+        int nObs,
         double nExpSM,
         double nExpBestFit,
         double systematicErrorBG,
@@ -44,14 +48,36 @@ Fittino::LHCChi2Contribution::LHCChi2Contribution( std::string name,
       _lhcModelCalculator( lhcModelCalculator ),
       Chi2ContributionBase( name ) {
 
-      relevantParameters = relevantParameters;
+      _relevantParameters = relevantParameters;
       std::stringstream nObs_ss;
       nObs_ss << nObs;
-      std::string nObs_s;
-      nObs_ss >> nObs_s;
       std::string actualHistogramName = _histogramName + "_nObs" + nObs_ss.str();
       _lhcModelCalculator->AddAnalysis( _name, _fileName, actualHistogramName, _relevantParameters );
 
+}
+
+Fittino::LHCChi2Contribution::LHCChi2Contribution( const boost::property_tree::ptree& ptree, 
+                                                   Fittino::Collection<ModelCalculatorBase*>* calculators )
+    : _fileName( ptree.get<std::string>( "fileName" ) ),
+      _histogramName( ptree.get<std::string>( "histogramName" ) ),
+      _nObs( ptree.get<int>( "nObs") ),
+      _nExpSM( ptree.get<double>( "nExpSM" ) ),
+      _nExpBestFit( ptree.get<double>( "nExpBestFit" ) ),
+      _systematicErrorBG( ptree.get<double>( "systematicErrorBG" ) ),
+      _systematicErrorSignal( ptree.get<double>( "systematicErrorSignal" ) ),
+      _lhcModelCalculator( static_cast<LHCModelCalculator*>(calculators->At( ptree.get<std::string>( "calculatorName", "LHCModelCalculator" ) ) ) ),
+      Chi2ContributionBase( ptree.get<std::string>( "name" ) ) {
+
+      BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree ) {
+        if( node.first == "RelevantParameter" ) {
+            _relevantParameters.push_back( node.second.data() );
+        }
+      }
+      std::stringstream nObs_ss;
+      nObs_ss << _nObs;
+      std::string actualHistogramName = _histogramName + "_nObs" + nObs_ss.str();
+      _lhcModelCalculator->AddAnalysis( _name, _fileName, actualHistogramName, _relevantParameters );
+       
 }
 
 Fittino::LHCChi2Contribution::~LHCChi2Contribution() {

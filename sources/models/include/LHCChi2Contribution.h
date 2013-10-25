@@ -21,6 +21,7 @@
 #include <vector>
 
 #include "Chi2ContributionBase.h"
+#include "Collection.h"
 
 class TRandom3;
 /*!
@@ -28,6 +29,7 @@ class TRandom3;
  */
 namespace Fittino {
 
+  class ModelCalculatorBase;
   class LHCModelCalculator;
 
   /*!
@@ -38,18 +40,22 @@ namespace Fittino {
 
     public:
       /*!
-       *  Standard constructor.
+       *  Old standard constructor. Takes several variables as input
        */
                                LHCChi2Contribution( std::string              name,
                                                     std::string              fileName,
                                                     std::string              histogramName,
                                                     std::vector<std::string> relevantParameters,
-                                                    double                   nObs,
+                                                    int                      nObs,
                                                     double                   nExpSM,
                                                     double                   nExpBestFit,
                                                     double                   systematicErrorBG,
                                                     double                   systematicErrorSignal,
                                                     LHCModelCalculator* lhcModelCalculator );
+      /*!
+       *  Standard constuctor.
+       */
+                                LHCChi2Contribution( const boost::property_tree::ptree& ptree, Fittino::Collection<ModelCalculatorBase*>* calculators );
       /*!
        *  Standard destructor.
        */
@@ -62,7 +68,7 @@ namespace Fittino {
       std::string              _fileName;
       std::string              _histogramName;
       std::vector<std::string> _relevantParameters;
-      double                   _nObs;
+      int                      _nObs;
       double                   _nExpSM;
       double                   _nExpBestFit;
       double                   _systematicErrorBG;
