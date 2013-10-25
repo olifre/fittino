@@ -99,7 +99,6 @@ namespace Fittino {
        *  The name of the data file.
        */
       std::string                     _dataFileName;
-
       boost::property_tree::ptree*    _propertyTree;
 
     private:

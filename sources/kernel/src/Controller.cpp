@@ -117,10 +117,14 @@ void Fittino::Controller::ExecuteFittino() const {
         if ( _propertyTree->get_child("InputFile").count("Tool") != 0 ) {
 
           const boost::property_tree::ptree::value_type& modelNode = *( _propertyTree->get_child("InputFile.Model").begin() );
-          ModelBase* model = factory.CreateModel( modelNode.first, modelNode.second );
+          std::string modelType = modelNode.first;
+          const boost::property_tree::ptree& modelTree = modelNode.second;
+          ModelBase* model = factory.CreateModel( modelType, modelTree );
 
           const boost::property_tree::ptree::value_type& toolNode = *( _propertyTree->get_child("InputFile.Tool").begin() );
-          AnalysisTool* tool = factory.CreateAnalysisTool( toolNode.first, model, toolNode.second );
+          std::string toolType = toolNode.first;
+          const boost::property_tree::ptree& toolTree = toolNode.second;
+          AnalysisTool* tool = factory.CreateAnalysisTool( toolType, model, toolTree );
 
           tool->PerformAnalysis();
 
