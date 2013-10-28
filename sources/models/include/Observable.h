@@ -21,6 +21,8 @@
 #ifndef FITTINO_OBSERVABLE_H
 #define FITTINO_OBSERVABLE_H
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "TRandom3.h"
 
 /*!
@@ -44,6 +46,10 @@ namespace Fittino {
                                   double          measuredValue,
                                   double          measuredError,
                                   double          bestFitPrediction = 0 );
+      /*!
+       *  Standard constructor
+       */
+                      Observable( const boost::property_tree::ptree& ptree, PredictionBase* prediction );
       /*!
        *  Standard destructor.
        */

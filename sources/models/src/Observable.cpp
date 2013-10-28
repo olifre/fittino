@@ -19,6 +19,9 @@
 *******************************************************************************/
 
 #include <iomanip>
+#include <math.h>
+
+#include <boost/property_tree/ptree.hpp>
 
 #include "Messenger.h"
 #include "Observable.h"
@@ -33,6 +36,19 @@ Fittino::Observable::Observable( PredictionBase* prediction,
           _measuredValue( measuredValue ),
           _bestFitPrediction( bestFitPrediction ),
           _prediction( prediction ) {
+}
+
+Fittino::Observable::Observable( const boost::property_tree::ptree& ptree, PredictionBase* prediction ) 
+                   : _deviation( 0. ),
+                     _measuredValue( ptree.get<double>( "measuredValues" ) ),
+                     _bestFitPrediction( ptree.get<double>( "bestFitPrediction" ) ),
+                     _prediction( prediction ) {
+
+    double error1 = ptree.get<double>( "measuredError1" );
+    double error2 = ptree.get<double>( "measuredError2", 0. );
+    double error3 = ptree.get<double>( "measuredError3", 0. );
+    _measuredError = sqrt( error1*error1 + error2*error2 + error3*error3 );
+
 }
 
 Fittino::Observable::~Observable() {

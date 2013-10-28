@@ -19,6 +19,8 @@
 
 #include <iomanip>
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "Messenger.h"
 #include "PhysicsParameter.h"
 
@@ -45,6 +47,13 @@ Fittino::PhysicsParameter::PhysicsParameter( std::string name,
                               plotLowerBound,
                               plotUpperBound,
                               fixed ) {
+
+}
+
+Fittino::PhysicsParameter::PhysicsParameter( const boost::property_tree::ptree& ptree )
+                         : _unit( ptree.get<std::string>( "unit" ) ),
+                           _plotUnit( ptree.get<std::string>( "plotUnit" ) ),
+                           ModelParameterBase( ptree ) {
 
 }
 

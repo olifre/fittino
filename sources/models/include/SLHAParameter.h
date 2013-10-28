@@ -20,6 +20,8 @@
 #ifndef FITTINO_SLHAPARAMETER_H
 #define FITTINO_SLHAPARAMETER_H
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "PhysicsParameter.h"
 
 /*!
@@ -40,7 +42,7 @@ namespace Fittino {
 
     public:
       /*!
-       *  Standard constructor.
+       *  Constructor taking name, plotName, value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, id and fixed flag.
        */
                   SLHAParameter( std::string name,
                                  std::string plotName,
@@ -54,6 +56,10 @@ namespace Fittino {
                                  double      plotUpperBound,
                                  std::string id,
                                  bool        fixed = false );
+      /*!
+       *  Standard constructor
+       */
+                  SLHAParameter( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

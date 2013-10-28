@@ -20,6 +20,8 @@
 #ifndef FITTINO_PHYSICSPARAMETER_H
 #define FITTINO_PHYSICSPARAMETER_H
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "ModelParameterBase.h"
 
 /*!
@@ -37,7 +39,7 @@ namespace Fittino {
 
     public:
       /*!
-       *  Standard constructor.
+       *  Constructor. Takes name, plotName, value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound and the fixed flag.
        */
                    PhysicsParameter( std::string name,
                                      std::string plotName,
@@ -50,6 +52,10 @@ namespace Fittino {
                                      double      plotLowerBound,
                                      double      plotUpperBound,
                                      bool        fixed = false );
+      /*!
+       *  Standard constructor
+       */ 
+                    PhysicsParameter( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

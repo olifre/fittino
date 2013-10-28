@@ -18,6 +18,8 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "ParameterBase.h"
 
 Fittino::ParameterBase::ParameterBase( std::string name,
@@ -32,6 +34,11 @@ Fittino::ParameterBase::ParameterBase( std::string name,
                     plotUpperBound ) {
 
     //CheckConsistency();
+
+}
+
+Fittino::ParameterBase::ParameterBase( const boost::property_tree::ptree& ptree ) 
+                      : Quantity( ptree ) {
 
 }
 

@@ -17,6 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "SLHAParameter.h"
 
 Fittino::SLHAParameter::SLHAParameter( std::string name,
@@ -44,6 +46,12 @@ Fittino::SLHAParameter::SLHAParameter( std::string name,
                             plotLowerBound,
                             plotUpperBound,
                             fixed ) {
+
+}
+
+Fittino::SLHAParameter::SLHAParameter( const boost::property_tree::ptree& ptree )
+                      : _id( ptree.get<std::string>( "id" ) ),
+                        PhysicsParameter( ptree ) {
 
 }
 
