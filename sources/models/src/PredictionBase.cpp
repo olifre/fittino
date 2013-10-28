@@ -19,6 +19,8 @@
 
 #include <iomanip>
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "Messenger.h"
 #include "PredictionBase.h"
 
@@ -35,6 +37,13 @@ Fittino::PredictionBase::PredictionBase( std::string name,
                      0.,
                      plotLowerBound,
                      plotUpperBound ) {
+
+}
+
+Fittino::PredictionBase::PredictionBase( const boost::property_tree::ptree& ptree ) 
+        : _unit( ptree.get<std::string>( "unit" ) ),
+          _plotUnit( ptree.get<std::string>( "plotUnit" ) ),
+          Quantity( ptree ) {
 
 }
 

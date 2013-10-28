@@ -22,6 +22,8 @@
 
 #include <string>
 
+#include <boost/property_tree/ptree.hpp>
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -43,6 +45,10 @@ namespace Fittino {
                                       double      value,
                                       double      plotLowerBound,
                                       double      plotUpperBound );
+      /*!
+       *  Standard constructor
+       */
+                            Quantity( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

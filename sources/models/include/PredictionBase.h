@@ -22,6 +22,8 @@
 
 #include <string>
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "Quantity.h"
 
 /*!
@@ -37,7 +39,7 @@ namespace Fittino {
 
     public:
       /*!
-       *  Standard constructor.
+       *  Constructor taking name, plotName, unit, plotUnit, plotLowerBound and plotUpperBound as an input 
        */
                    PredictionBase( std::string name,
                                    std::string plotName,
@@ -45,6 +47,10 @@ namespace Fittino {
                                    std::string plotUnit,
                                    double      plotLowerBound,
                                    double      plotUpperBound );
+      /*!
+       *  Standard constructor
+       */
+                   PredictionBase( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
