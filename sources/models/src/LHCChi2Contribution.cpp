@@ -26,7 +26,6 @@
 #include "LHCChi2Contribution.h"
 #include "LHCModelCalculator.h"
 #include "SimpleDataStorage.h"
-#include "Collection.h"
 
 Fittino::LHCChi2Contribution::LHCChi2Contribution( std::string name,
         std::string fileName,
@@ -57,7 +56,7 @@ Fittino::LHCChi2Contribution::LHCChi2Contribution( std::string name,
 }
 
 Fittino::LHCChi2Contribution::LHCChi2Contribution( const boost::property_tree::ptree& ptree, 
-                                                   Fittino::Collection<ModelCalculatorBase*>* calculators )
+                                                   LHCModelCalculator *lhcModelCalculator )
     : _fileName( ptree.get<std::string>( "fileName" ) ),
       _histogramName( ptree.get<std::string>( "histogramName" ) ),
       _nObs( ptree.get<int>( "nObs") ),
@@ -65,7 +64,7 @@ Fittino::LHCChi2Contribution::LHCChi2Contribution( const boost::property_tree::p
       _nExpBestFit( ptree.get<double>( "nExpBestFit" ) ),
       _systematicErrorBG( ptree.get<double>( "systematicErrorBG" ) ),
       _systematicErrorSignal( ptree.get<double>( "systematicErrorSignal" ) ),
-      _lhcModelCalculator( static_cast<LHCModelCalculator*>(calculators->At( ptree.get<std::string>( "calculatorName", "LHCModelCalculator" ) ) ) ),
+      _lhcModelCalculator( lhcModelCalculator ),
       Chi2ContributionBase( ptree.get<std::string>( "name" ) ) {
 
       BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree ) {

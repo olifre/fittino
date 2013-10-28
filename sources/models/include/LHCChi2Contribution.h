@@ -21,7 +21,6 @@
 #include <vector>
 
 #include "Chi2ContributionBase.h"
-#include "Collection.h"
 
 class TRandom3;
 /*!
@@ -29,7 +28,6 @@ class TRandom3;
  */
 namespace Fittino {
 
-  class ModelCalculatorBase;
   class LHCModelCalculator;
 
   /*!
@@ -55,7 +53,7 @@ namespace Fittino {
       /*!
        *  Standard constuctor.
        */
-                                LHCChi2Contribution( const boost::property_tree::ptree& ptree, Fittino::Collection<ModelCalculatorBase*>* calculators );
+                                LHCChi2Contribution( const boost::property_tree::ptree& ptree, LHCModelCalculator* lhcModelCalculator );
       /*!
        *  Standard destructor.
        */
