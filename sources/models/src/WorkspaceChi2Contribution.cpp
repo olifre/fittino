@@ -19,6 +19,8 @@
 
 #include <fstream>
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "RooAbsPdf.h"
 #include "RooAbsReal.h"
 #include "RooRealVar.h"
@@ -58,6 +60,13 @@ Fittino::WorkspaceChi2Contribution::WorkspaceChi2Contribution( std::string name,
     //_predictionFileName = predictionFileName;
 
     //_workspace->Print();
+
+}
+
+Fittino::WorkspaceChi2Contribution::WorkspaceChi2Contribution( const boost::property_tree::ptree& ptree ) 
+                                  : _workspaceFile( new TFile( (ptree.get<std::string>( "fileName" ) ).c_str() ) ),
+                                    _workspace( new RooWorkspace() ),
+                                    Chi2ContributionBase( ptree ) {
 
 }
 

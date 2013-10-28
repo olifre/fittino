@@ -17,6 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "SLHAChi2Contribution.h"
 #include "SLHADataStorageBase.h"
 #include "SLHAModelCalculatorBase.h"
@@ -31,6 +33,15 @@ Fittino::SLHAChi2Contribution::SLHAChi2Contribution( std::string name,
 	  _blockName( blockName ),
 	  _slhaModelCalculator( slhaModelCalculator ),
           Chi2ContributionBase( name ) {
+
+}
+
+Fittino::SLHAChi2Contribution::SLHAChi2Contribution( const boost::property_tree::ptree& ptree, SLHAModelCalculatorBase* slhaModelCalculator ) 
+                             : _columnIndex( ptree.get<int>( "columnIndex" ) ),
+                               _id( ptree.get<std::string>( "id" ) ),
+                               _blockName( ptree.get<std::string>( "blockName" ) ),
+                               _slhaModelCalculator( slhaModelCalculator ),
+                               Chi2ContributionBase( ptree ) {
 
 }
 

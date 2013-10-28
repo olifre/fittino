@@ -22,6 +22,8 @@
 
 #include <string>
 
+#include <boost/property_tree/ptree.hpp>
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -35,9 +37,13 @@ namespace Fittino {
 
     public:
       /*!
-       *  Standard constructor.
+       *  Constructor taking a name as an argument.
        */
                    Chi2ContributionBase( std::string name );
+      /*!
+       *  Standard Constructor
+       */ 
+                   Chi2ContributionBase( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

@@ -65,7 +65,7 @@ Fittino::LHCChi2Contribution::LHCChi2Contribution( const boost::property_tree::p
       _systematicErrorBG( ptree.get<double>( "systematicErrorBG" ) ),
       _systematicErrorSignal( ptree.get<double>( "systematicErrorSignal" ) ),
       _lhcModelCalculator( lhcModelCalculator ),
-      Chi2ContributionBase( ptree.get<std::string>( "name" ) ) {
+      Chi2ContributionBase( ptree ) {
 
       BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree ) {
         if( node.first == "RelevantParameter" ) {

@@ -20,6 +20,8 @@
 #ifndef FITTINO_SLHACHI2CONTRIBUTION_H
 #define FITTINO_SLHACHI2CONTRIBUTION_H
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "Chi2ContributionBase.h"
 
 /*!
@@ -37,13 +39,17 @@ namespace Fittino {
 
     public:
       /*!
-       *  Standard constructor.
+       *  Constructor taking name, blockName, id, column index and SLHACalculator as input.
        */
                                SLHAChi2Contribution( std::string              name,
                                                      SLHAModelCalculatorBase* slhaModelCalculator,
                                                      std::string              blockName,
                                                      std::string              id,
                                                      int                      columnIndex );
+      /*!
+       *  Standard constructor
+       */
+                              SLHAChi2Contribution( const boost::property_tree::ptree& ptree, SLHAModelCalculatorBase* slhaModelCalculator );
       /*!
        *  Standard destructor.
        */

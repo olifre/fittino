@@ -20,6 +20,8 @@
 #ifndef FITTINO_WORKSPACECHI2CONTRIBUTION_H
 #define FITTINO_WORKSPACECHI2CONTRIBUTION_H
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "Chi2ContributionBase.h"
 
 class RooAbsReal;
@@ -45,6 +47,10 @@ namespace Fittino {
                                                std::string fileName,
                                                std::string workspaceName,
                                                std::string predictionFileName );
+      /*!
+       *  Standard constructor
+       */
+                    WorkspaceChi2Contribution( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

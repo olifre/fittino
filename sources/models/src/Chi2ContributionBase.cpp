@@ -19,12 +19,20 @@
 
 #include <iomanip>
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "Messenger.h"
 #include "Chi2ContributionBase.h"
 
 Fittino::Chi2ContributionBase::Chi2ContributionBase( std::string name )
                              : _chi2( 0. ),
                                _name( name ) {
+
+}
+
+Fittino::Chi2ContributionBase::Chi2ContributionBase( const boost::property_tree::ptree& ptree ) 
+                             : _chi2( 0. ),
+                               _name( ptree.get<std::string>( "name" ) ) {
 
 }
 
