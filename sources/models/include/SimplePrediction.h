@@ -22,6 +22,8 @@
 
 #include <string>
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "PredictionBase.h"
 
 /*!
@@ -39,7 +41,7 @@ namespace Fittino {
 
     public:
       /*!
-       *  Standard constructor.
+       * Constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound and value.
        */
                             SimplePrediction( std::string name,
                                               std::string plotName,
@@ -50,7 +52,7 @@ namespace Fittino {
                                               const double& value );
 
       /*!
-       *  Alternative constructor.
+       *  Alternative constructori taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound and a calculator.
        */
                             SimplePrediction( std::string name,
                                               std::string plotName,
@@ -60,6 +62,14 @@ namespace Fittino {
                                               double plotUpperBound,
                                               const ModelCalculatorBase* calculator );
 
+      /*!
+       *  Standard constructor.
+       */
+                            SimplePrediction( const boost::property_tree::ptree& ptree, const double& value );
+      /*!
+       *  Alternative constructor.
+       */
+                            SimplePrediction( const boost::property_tree::ptree& ptree, const ModelCalculatorBase* calculator );
       /*!
        *  Standard destructor.
        */

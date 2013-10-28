@@ -22,6 +22,8 @@
 
 #include <string>
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "PredictionBase.h"
 
 /*!
@@ -39,7 +41,7 @@ namespace Fittino {
 
     public:
       /*!
-       *  Standard constructor.
+       *  Constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound, blockName, id, columnIndex and a calculator.
        */
                                SLHAPrediction( std::string              name,
                                                std::string              plotName,
@@ -52,7 +54,7 @@ namespace Fittino {
                                                std::string              id,
                                                int                      columnIndex );
       /*!
-       *  Alternative constructor.
+       *  Alternative constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound, blcokName, firstId, secondId, columnIndex and a claculator.
        */
                                SLHAPrediction( std::string              name,
                                                std::string              plotName,
@@ -65,6 +67,10 @@ namespace Fittino {
                                                std::string              firstId,
                                                std::string              secondId,
                                                int                      columnIndex );
+      /*!
+       *  Standard Constructor
+       */
+                              SLHAPrediction( const boost::property_tree::ptree& ptree, SLHAModelCalculatorBase* slhaModelCalculator );
       /*!
        *  Standard destructor.
        */

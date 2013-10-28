@@ -17,6 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "SLHADataStorageBase.h"
 #include "SLHAModelCalculatorBase.h"
 #include "SLHAPrediction.h"
@@ -68,6 +70,16 @@ Fittino::SLHAPrediction::SLHAPrediction( std::string              name,
                           plotUnit,
                           plotLowerBound,
                           plotUpperBound ) {
+
+}
+
+Fittino::SLHAPrediction::SLHAPrediction( const boost::property_tree::ptree& ptree, SLHAModelCalculatorBase* slhaModelCalculator )
+       : _columnIndex( ptree.get<int>( "columnIndex" ) ),
+         _firstId( ptree.get<std::string>( "firstId" ) ),
+         _secondId( ptree.get<std::string>( "secondId", "" ) ),
+         _blockName( ptree.get<std::string>( "blockName" ) ),
+         _slhaModelCalculator( slhaModelCalculator ),
+         PredictionBase( ptree ) {
 
 }
 
