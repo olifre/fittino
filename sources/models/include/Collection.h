@@ -47,8 +47,6 @@ namespace Fittino {
   public:  
     const T*                        At( int index )        const;
     const T*                        At( std::string name ) const;
-    const std::map<std::string, T*>* GetMap()              const;
-    const std::vector<T*>*           GetVector()           const;
 
   private:  
     std::map<std::string, T*>        _map;
@@ -103,20 +101,6 @@ void Fittino::Collection<T*>::AddElement( const std::string& name, T* element ){
     throw ConfigurationException( message ); //TODO: Dedicated exception class ?
 
   }
-
-}
-
-template<class T>
-const std::map<std::string,T*>* Fittino::Collection<T*>::GetMap() const {
-
-  return &_map;
-
-}
-
-template<class T>
-const std::vector<T*>* Fittino::Collection<T*>::GetVector() const {
-
-  return &_vector;
 
 }
 
