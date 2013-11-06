@@ -1,150 +1,230 @@
 <?xml version="1.0" encoding='UTF-8'?>
 
-<!-- $Id$ -->
-
-<!--#########################################################################-->
-<!--                                                                         -->
-<!-- Project     Fittino - A SUSY Parameter Fitting Package                  -->
-<!--                                                                         -->
-<!-- File        Example.HDim6Model.Sampling.in.xml                          -->
-<!--                                                                         -->
-<!-- Description Configuration example for the HDim6 model                   -->
-<!--                                                                         -->
-<!-- Authors     Bjoern Sarrazin  <sarrazin@physikuni-bonn.de>               --> 
-<!--                                                                         -->
-<!-- Licence     This program is free software; you can redistribute it      -->
-<!--             and/or modify it under the terms of the GNU General Public  -->
-<!--             License as published by the Free Software Foundation;       -->
-<!--             either version 3 of he License, or (at your option) any     -->
-<!--             later version.                                              -->
-<!--                                                                         -->
-<!--#########################################################################-->
-
-<!DOCTYPE InputFile PUBLIC "" "InputFile.dtd">
-
 <InputFile>
 
-  <VerbosityLevel
-   Level = "INFO"
-   />
+  <VerbosityLevel>ALWAYS</VerbosityLevel>
 
-  <ExecutionMode
-   Mode = "SAMPLING"
-   />
+  <Model>
+    <PhysicsModel>
 
-  <Model
-   ModelType = "HDim6"
-   />
+      <Name>HDim6Model</Name>
 
-  <Parameter
-   Type             = "Physics"
-   Name             = "f_B"
-   Value            = "0"
-   Error            = "1e-4"
-   LowerBound       = "-1e-1"
-   UpperBound       = "+1e-1"
-   Fixed            = "1"
-  />
+      <ModelParameter>
+        <name>f_B</name>
+        <value>0</value>
+        <error>1e-6</error>
+        <lowerBound>-1e-2</lowerBound>
+        <upperBound>+1e-2</upperBound>
+        <fixed>true</fixed>       
+      </ModelParameter>
 
-  <Parameter
-   Type             = "Physics"
-   Name             = "f_BB_p_f_WW"
-   Value            = "0"
-   Error            = "1e-4"
-   LowerBound       = "-1e-1"
-   UpperBound       = "+1e-1"
-   Fixed            = "1"
-  />
+      <ModelParameter>
+        <name>f_BB_p_f_WW</name>
+        <value>0</value>
+        <error>1e-6</error>
+        <lowerBound>-1e-2</lowerBound>
+        <upperBound>+1e-2</upperBound>
+        <fixed>false</fixed>       
+      </ModelParameter>
 
-  <Parameter
-   Type             = "Physics"
-   Name             = "f_W"
-   Value            = "0"
-   Error            = "1e-4"
-   LowerBound       = "-1e-1"
-   UpperBound       = "+1e-1"
-   Fixed            = "1"
-  />
+      <ModelParameter>
+        <name>f_BB_m_f_WW</name>
+        <value>0</value>
+        <error>1e-6</error>
+        <lowerBound>-1e-2</lowerBound>
+        <upperBound>+1e-2</upperBound>
+        <fixed>false</fixed>       
+      </ModelParameter>
 
-  <Parameter
-   Type             = "Physics"
-   Name             = "f_BB_m_f_WW"
-   Value            = "0"
-   Error            = "1e-3"
-   LowerBound       = "-5e-3"
-   UpperBound       = "+5e-3"
-   Fixed            = "0"
-  />
+      <ModelParameter>
+        <name>f_W</name>
+        <value>0</value>
+        <error>1e-6</error>
+        <lowerBound>-1e-2</lowerBound>
+        <upperBound>+1e-2</upperBound>
+        <fixed>true</fixed>       
+      </ModelParameter>
 
-  <Parameter
-   Type             = "Physics"
-   Name             = "f_GG"
-   Value            = "0"
-   Error            = "1e-4"
-   LowerBound       = "-1e-1"
-   UpperBound       = "+1e-1"
-   Fixed            = "1"
-  />
+      <ModelParameter>
+        <name>f_GG</name>
+        <value>0</value>
+        <error>1e-6</error>
+        <lowerBound>-1e-2</lowerBound>
+        <upperBound>+1e-2</upperBound>
+        <fixed>false</fixed>       
+      </ModelParameter>
 
-  <Parameter
-   Type             = "Physics"
-   Name             = "f_Phi_2"
-   Value            = "0"
-   Error            = "1e-4"
-   LowerBound       = "-1e-1"
-   UpperBound       = "+1e-1"
-   Fixed            = "1"
-  />
+      <ModelParameter>
+        <name>f_Phi_2</name>
+        <value>0</value>
+        <error>1e-6</error>
+        <lowerBound>-1e-2</lowerBound>
+        <upperBound>+1e-2</upperBound>
+        <fixed>false</fixed>       
+      </ModelParameter>
 
-  <Parameter
-   Type             = "Physics"
-   Name             = "f_t"
-   Value            = "0"
-   Error            = "1e-4"
-   LowerBound       = "-1e-1"
-   UpperBound       = "+1e-1"
-   Fixed            = "1"
-  />
+      <ModelParameter>
+        <name>f_t</name>
+        <value>0</value>
+        <error>1e-6</error>
+        <lowerBound>-1e-2</lowerBound>
+        <upperBound>+1e-2</upperBound>
+        <fixed>false</fixed>       
+      </ModelParameter>
 
- 
-  <Parameter
-   Type             = "Physics"
-   Name             = "f_b"
-   Value            = "0"
-   Error            = "1e-4"
-   LowerBound       = "-1e-1"
-   UpperBound       = "+1e-1"
-   Fixed            = "1"
-  />
+      <ModelParameter>
+        <name>f_b</name>
+        <value>0</value>
+        <error>1e-6</error>
+        <lowerBound>-1e-2</lowerBound>
+        <upperBound>+1e-2</upperBound>
+        <fixed>false</fixed>       
+      </ModelParameter>
 
-  <Parameter
-   Type             = "Physics"
-   Name             = "f_tau"
-   Value            = "0"
-   Error            = "1e-4"
-   LowerBound       = "-1e-1"
-   UpperBound       = "+1e-1"
-   Fixed            = "1"
-  />
+      <ModelParameter>
+        <name>f_tau</name>
+        <value>0</value>
+        <error>1e-6</error>
+        <lowerBound>-1e-2</lowerBound>
+        <upperBound>+1e-2</upperBound>
+        <fixed>false</fixed>       
+      </ModelParameter>
 
- <Parameter
-   Type             = "Physics"
-   Name             = "mass_h"
-   Value            = "125.5"
-   Error            = "0"
-   LowerBound       = "125"
-   UpperBound       = "126"
-   Fixed            = "1"
- />
+      <ModelParameter>
+        <name>mass_h</name>
+        <value>125.5</value>
+        <error>0</error>
+        <lowerBound>125</lowerBound>
+        <upperBound>126</upperBound>
+        <fixed>true</fixed>       
+      </ModelParameter>
 
- <HiggsSignalsHadXSCalculator>
-    <ExpData>  latestresults </ExpData>
-<!--     <ExpData>  mail_14_07_2013_HS_new_observable_set </ExpData>  -->
- </HiggsSignalsHadXSCalculator>  
+      <Calculators>
 
-  <Sampler
-   SamplerType = "MarkovChain"
-   NumberOfIterations = "1"
-   />
+        <HDim6Calculator>
+        <name>HDim6Calculator</name>
+        </HDim6Calculator>
+
+        <RegressionCalculator>
+          <name>RegressionCalculator</name>
+          <Variable>
+            <Name>f_BB_m_f_WW</Name>
+            <NameInWeightFiles>f_BB_m_f_WW</NameInWeightFiles>
+          </Variable>
+          <Variable>
+            <Name>f_BB_p_f_WW</Name>
+            <NameInWeightFiles>f_BB_p_f_WW</NameInWeightFiles>
+          </Variable>
+          <Variable>
+            <Name>f_Phi_2</Name>
+            <NameInWeightFiles>f_Phi_2</NameInWeightFiles>
+          </Variable>
+          <MVA>
+            <WeightFile>TMVARegression_hWW.weights.xml</WeightFile>
+            <Target>normSM_Gamma_hWW</Target>
+          </MVA>
+        </RegressionCalculator>
+
+        <RegressionCalculator>
+          <name>RegressionCalculator2</name>
+          <Variable>
+            <Name>f_BB_m_f_WW</Name>
+            <NameInWeightFiles>f_BB_m_f_WW</NameInWeightFiles>
+          </Variable>
+          <Variable>
+            <Name>f_BB_p_f_WW</Name>
+            <NameInWeightFiles>f_BB_p_f_WW</NameInWeightFiles>
+          </Variable>
+          <Variable>
+            <Name>f_Phi_2</Name>
+            <NameInWeightFiles>f_Phi_2</NameInWeightFiles>
+          </Variable>
+          <MVA>
+            <WeightFile>TMVARegression_hZZ.weights.xml</WeightFile>
+            <Target>normSM_Gamma_hZZ</Target>
+          </MVA>
+        </RegressionCalculator>
+
+        <RegressionCalculator>
+          <name>RegressionCalculator3</name>
+          <Variable>
+            <Name>f_BB_m_f_WW</Name>
+            <NameInWeightFiles>f_BB_m_f_WW</NameInWeightFiles>
+          </Variable>
+          <Variable>
+            <Name>f_BB_p_f_WW</Name>
+            <NameInWeightFiles>f_BB_p_f_WW</NameInWeightFiles>
+          </Variable>
+          <Variable>
+            <Name>f_Phi_2</Name>
+            <NameInWeightFiles>f_Phi_2</NameInWeightFiles>
+          </Variable>
+          <MVA>
+            <WeightFile>TMVARegression_qqh.weights.xml</WeightFile>
+            <Target>normSM_xs_qqh_2flavor</Target>
+          </MVA>
+        </RegressionCalculator>
+
+
+        <RegressionCalculator>
+          <name>RegressionCalculator4</name>
+          <Variable>
+            <Name>f_BB_m_f_WW</Name>
+            <NameInWeightFiles>f_BB_m_f_WW</NameInWeightFiles>
+          </Variable>
+          <Variable>
+            <Name>f_BB_p_f_WW</Name>
+            <NameInWeightFiles>f_BB_p_f_WW</NameInWeightFiles>
+          </Variable>
+          <Variable>
+            <Name>f_Phi_2</Name>
+            <NameInWeightFiles>f_Phi_2</NameInWeightFiles>
+          </Variable>
+          <MVA>
+            <WeightFile>TMVARegression_Wh.weights.xml</WeightFile>
+            <Target>normSM_xs_Wh</Target>
+          </MVA>
+        </RegressionCalculator>
+
+
+        <RegressionCalculator>
+          <name>RegressionCalculator5</name>
+          <Variable>
+            <Name>f_BB_m_f_WW</Name>
+            <NameInWeightFiles>f_BB_m_f_WW</NameInWeightFiles>
+          </Variable>
+          <Variable>
+            <Name>f_BB_p_f_WW</Name>
+            <NameInWeightFiles>f_BB_p_f_WW</NameInWeightFiles>
+          </Variable>
+          <Variable>
+            <Name>f_Phi_2</Name>
+            <NameInWeightFiles>f_Phi_2</NameInWeightFiles>
+          </Variable>
+          <MVA>
+            <WeightFile>TMVARegression_Zh.weights.xml</WeightFile>
+            <Target>normSM_xs_Zh</Target>
+          </MVA>
+        </RegressionCalculator>
+
+        <HiggsSignalsCalculator>
+        <name>HiggsSignalsCalculator</name>
+        <ExpData>LHC_latestResults_25_10_2013</ExpData>
+        </HiggsSignalsCalculator>
+
+      </Calculators>
+
+      <Chi2Contribution>HS_chi2_mu</Chi2Contribution>
+
+    </PhysicsModel>
+  </Model>
+
+  <Tool>
+  <MarkovChainSampler>
+    <numberOfIterations>100000</numberOfIterations>
+    <randomSeed>0</randomSeed>
+  </MarkovChainSampler>
+  </Tool>
 
 </InputFile>
+
