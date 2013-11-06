@@ -43,6 +43,10 @@
 <xs:complexType name="MarkovChainSampler">
   <xs:complexContent>
     <xs:extension base="AnalysisTool">
+    <xs:sequence>
+      <xs:element name="numberOfIterations" type="xs:integer" />
+      <xs:element name="randomSeed" type="xs:integer"  />
+    </xs:sequence>
     </xs:extension>
   </xs:complexContent>
 </xs:complexType>
@@ -61,16 +65,18 @@
     <xs:element name="Name"             type="xs:string"                                          />
     <xs:element name="ModelParameter"   type="ModelParameter"  minOccurs="0" maxOccurs="unbounded"/>
     <xs:element name="Calculators"      type="Calculators"                                        />
+    <xs:element name="Chi2Contribution" type="xs:string"       minOccurs="0" maxOccurs="unbounded"/>
   </xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="ModelParameter">
   <xs:sequence>
     <xs:element name="name" type="xs:string" />
-    <xs:element name="value" type="xs:decimal" minOccurs="0" />
-    <xs:element name="error" type="xs:decimal" minOccurs="0" />
-    <xs:element name="lowerBound" type="xs:decimal" minOccurs="0" />
-    <xs:element name="upperBound" type="xs:decimal" minOccurs="0" />
+    <xs:element name="value" type="xs:double" minOccurs="0" />
+    <xs:element name="error" type="xs:double" minOccurs="0" />
+    <xs:element name="lowerBound" type="xs:double" minOccurs="0" />
+    <xs:element name="upperBound" type="xs:double" minOccurs="0" />
+    <xs:element name="fixed" type="xs:boolean" minOccurs="0" />
   </xs:sequence>
 </xs:complexType>
 
@@ -78,19 +84,46 @@
   <xs:choice minOccurs="0" maxOccurs="unbounded">
     <xs:element name="HiggsSignalsCalculator" type="HiggsSignalsCalculator" />  
     <xs:element name="HDim6Calculator"        type="HDim6Calculator"        />  
+    <xs:element name="RegressionCalculator"        type="RegressionCalculator"   />  
   </xs:choice>
 </xs:complexType>
 
 <xs:complexType name="HDim6Calculator">
   <xs:sequence>
-    <xs:element name="Name" type="xs:string" />
+    <xs:element name="name" type="xs:string" />
   </xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="HiggsSignalsCalculator">
   <xs:sequence>
-    <xs:element name="Name" type="xs:string" />
+    <xs:element name="name" type="xs:string" />
+    <xs:element name="ExpData" type="xs:string" />
   </xs:sequence>
 </xs:complexType>
+
+<xs:complexType name="RegressionCalculator">
+  <xs:sequence>
+    <xs:element name="name" type="xs:string" />
+     <xs:element name="Variable" type="Variable" minOccurs="0" maxOccurs="unbounded" />
+     <xs:element name="MVA" type="MVA" minOccurs="0" maxOccurs="unbounded" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Variable">
+  <xs:sequence>
+    <xs:element name="Name" type="xs:string" />
+    <xs:element name="NameInWeightFiles" type="xs:string" />
+  </xs:sequence>
+</xs:complexType >
+
+<xs:complexType name="MVA">
+  <xs:sequence>
+    <xs:element name="WeightFile" type="xs:string"  />
+    <xs:element name="Target" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+  </xs:sequence>
+</xs:complexType >
+
+
+
 
 </xs:schema> 
