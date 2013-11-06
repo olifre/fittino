@@ -27,67 +27,62 @@
 #include "ModelParameterBase.h"
 #include "PhysicsModelBase.h"
 #include "SimpleDataStorage.h"
+#include "SimplePrediction.h"
 
-Fittino::HiggsSignalsHadXSModelCalculator::HiggsSignalsHadXSModelCalculator( const PhysicsModelBase* model )
-    :ModelCalculatorBase  ( model                                                                                    ),
-     _normSM_Gamma_hgg    ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_Gamma_hgg"      )->GetValue() ),
-     _normSM_Gamma_htautau( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_Gamma_htautau"  )->GetValue() ),
-     _normSM_Gamma_hmumu  ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_Gamma_hmumu"    )->GetValue() ),
-     _normSM_Gamma_hgaga  ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_Gamma_hgaga"    )->GetValue() ),
-     _normSM_Gamma_hWW    ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_Gamma_hWW"      )->GetValue() ),
-     _normSM_Gamma_hZZ    ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_Gamma_hZZ"      )->GetValue() ),
-     _normSM_Gamma_hZga   ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_Gamma_hZga"     )->GetValue() ),
-     _normSM_Gamma_hbb    ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_Gamma_hbb"      )->GetValue() ),
-     _normSM_Gamma_hcc    ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_Gamma_hcc"      )->GetValue() ),
-     _normSM_Gamma_hss    ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_Gamma_hss"      )->GetValue() ),
-     _normSM_xs_ggh       ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_xs_ggh"         )->GetValue() ),
-     _normSM_xs_bbh       ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_xs_bbh"         )->GetValue() ),
-     _normSM_xs_qqh       ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_xs_qqh_2flavor" )->GetValue() ),
-     _normSM_xs_tth       ( model->GetCollectionOfPredictions().GetMap()->at(  "HDim6_normSM_xs_tth"         )->GetValue() ),
-     _normSM_xs_Wh        ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_xs_Wh"          )->GetValue() ),
-     _normSM_xs_Zh        ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_xs_Zh"          )->GetValue() ),
-     _normSM_xs_bh        ( _model->GetCollectionOfPredictions().GetMap()->at( "HDim6_normSM_xs_bh"          )->GetValue() ),
-     _normSM_xs_lep       ( 0                                                                                        ),
-     _normSM_xs_tev       ( 0                                                                                        ),
-     _mass_h              ( _model->GetParameterMap()                     ->at( "mass_h"               )->GetValue() ),
-     _mode                ( 1                                                                                        ),
-     _BR_hInvisible       ( 0                                                                                        ),
-     _BR_hHH              ( 0                                                                                        ), 
-     _CP                  ( 1                                                                                        ) {
+Fittino::HiggsSignalsHadXSModelCalculator::HiggsSignalsHadXSModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree )
+    :ModelCalculatorBase  ( model                                                                         ),
+     _normSM_Gamma_hgg    ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hgg"      )->GetValue() ),
+     _normSM_Gamma_htautau( _model->GetCollectionOfQuantities().At( "normSM_Gamma_htautau"  )->GetValue() ),
+     _normSM_Gamma_hmumu  ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hmumu"    )->GetValue() ),
+     _normSM_Gamma_hgaga  ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hgaga"    )->GetValue() ),
+     _normSM_Gamma_hWW    ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hWW"      )->GetValue() ),
+     _normSM_Gamma_hZZ    ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hZZ"      )->GetValue() ),
+     _normSM_Gamma_hZga   ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hZga"     )->GetValue() ),
+     _normSM_Gamma_hbb    ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hbb"      )->GetValue() ),
+     _normSM_Gamma_hcc    ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hcc"      )->GetValue() ),
+     _normSM_Gamma_hss    ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hss"      )->GetValue() ),
+     _normSM_xs_ggh       ( _model->GetCollectionOfQuantities().At( "normSM_xs_ggh"         )->GetValue() ),
+     _normSM_xs_bbh       ( _model->GetCollectionOfQuantities().At( "normSM_xs_bbh"         )->GetValue() ),
+     _normSM_xs_qqh       ( _model->GetCollectionOfQuantities().At( "normSM_xs_qqh_2flavor" )->GetValue() ),
+     _normSM_xs_tth       ( _model->GetCollectionOfQuantities().At( "normSM_xs_tth"         )->GetValue() ),
+     _normSM_xs_Wh        ( _model->GetCollectionOfQuantities().At( "normSM_xs_Wh"          )->GetValue() ),
+     _normSM_xs_Zh        ( _model->GetCollectionOfQuantities().At( "normSM_xs_Zh"          )->GetValue() ),
+     _normSM_xs_bh        ( _model->GetCollectionOfQuantities().At( "normSM_xs_bh"          )->GetValue() ),
+     _normSM_xs_lep       ( 0                                                                             ),
+     _normSM_xs_tev       ( 0                                                                             ),
+     _mass_h              ( _model->GetCollectionOfQuantities().At( "mass_h"                )->GetValue() ),
+     _mode                ( 1                                                                             ),
+     _BR_hInvisible       ( 0                                                                             ),
+     _BR_hHH              ( 0                                                                             ), 
+     _CP                  ( 1                                                                             ) {
 
     _name = "HiggsSignalsHadXSModelCalculator";
 
-    _collectionOfDoubles.AddElement( "normSM_BR_hbb"      , &_normSM_BR_hbb);  
-    _collectionOfDoubles.AddElement( "normSM_BR_hcc"      , &_normSM_BR_hcc);
-    _collectionOfDoubles.AddElement( "normSM_BR_hgaga"    , &_normSM_BR_hgaga);
-    _collectionOfDoubles.AddElement( "normSM_BR_hgg"      , &_normSM_BR_hgg);
-    _collectionOfDoubles.AddElement( "normSM_BR_hmumu"    , &_normSM_BR_hmumu);
-    _collectionOfDoubles.AddElement( "normSM_BR_hss"      , &_normSM_BR_hss);
-    _collectionOfDoubles.AddElement( "normSM_BR_htautau"  , &_normSM_BR_htautau);
-    _collectionOfDoubles.AddElement( "normSM_BR_hWW"      , &_normSM_BR_hWW);
-    _collectionOfDoubles.AddElement( "normSM_BR_hZga"     , &_normSM_BR_hZga);
-    _collectionOfDoubles.AddElement( "normSM_BR_hZZ"      , &_normSM_BR_hZZ);
-    _collectionOfDoubles.AddElement( "normSM_Gamma_hTotal", &_normSM_Gamma_hTotal);
-    _collectionOfDoubles.AddElement( "normSM_xs_h"        , &_normSM_xs_h);
-    _collectionOfDoubles.AddElement( "weight_xs_ggh"      , &_weight_xs_ggh);
-    _collectionOfDoubles.AddElement( "weight_xs_ggh_2"    , &_weight_xs_ggh_2);
-    _collectionOfDoubles.AddElement( "weight_xs_bbh"      , &_weight_xs_bbh);
-    _collectionOfDoubles.AddElement( "weight_xs_bbh_2"    , &_weight_xs_bbh_2);
-    _collectionOfDoubles.AddElement( "chi2"               , &_chi2);
-    _collectionOfDoubles.AddElement( "chi2_mass_h"        , &_chi2_mass_h);
-    _collectionOfDoubles.AddElement( "chi2_mu"            , &_chi2_mu);
-    _collectionOfDoubles.AddElement( "pvalue"             , &_pvalue);
-
-    Configuration *configuration = Configuration::GetInstance();
-    const boost::property_tree::ptree* propertyTree = configuration->GetPropertyTree();
-    
-
+    AddQuantity( new SimplePrediction( "normSM_BR_hbb"      , "", _normSM_BR_hbb       ) );  
+    AddQuantity( new SimplePrediction( "normSM_BR_hcc"      , "", _normSM_BR_hcc       ) );
+    AddQuantity( new SimplePrediction( "normSM_BR_hgaga"    , "", _normSM_BR_hgaga     ) );
+    AddQuantity( new SimplePrediction( "normSM_BR_hgg"      , "", _normSM_BR_hgg       ) );
+    AddQuantity( new SimplePrediction( "normSM_BR_hmumu"    , "", _normSM_BR_hmumu     ) );
+    AddQuantity( new SimplePrediction( "normSM_BR_hss"      , "", _normSM_BR_hss       ) );
+    AddQuantity( new SimplePrediction( "normSM_BR_htautau"  , "", _normSM_BR_htautau   ) );
+    AddQuantity( new SimplePrediction( "normSM_BR_hWW"      , "", _normSM_BR_hWW       ) );
+    AddQuantity( new SimplePrediction( "normSM_BR_hZga"     , "", _normSM_BR_hZga      ) );
+    AddQuantity( new SimplePrediction( "normSM_BR_hZZ"      , "", _normSM_BR_hZZ       ) );
+    AddQuantity( new SimplePrediction( "normSM_Gamma_hTotal", "", _normSM_Gamma_hTotal ) );
+    AddQuantity( new SimplePrediction( "normSM_xs_h"        , "", _normSM_xs_h         ) );
+    AddQuantity( new SimplePrediction( "HS_weight_xs_ggh"   , "", _weight_xs_ggh       ) );
+    AddQuantity( new SimplePrediction( "HS_weight_xs_ggh_2" , "", _weight_xs_ggh_2     ) );
+    AddQuantity( new SimplePrediction( "HS_weight_xs_bbh"   , "", _weight_xs_bbh       ) );
+    AddQuantity( new SimplePrediction( "HS_weight_xs_bbh_2" , "", _weight_xs_bbh_2     ) );
+    AddQuantity( new SimplePrediction( "HS_chi2"            , "", _chi2                ) );  
+    AddQuantity( new SimplePrediction( "HS_chi2_mass_h"     , "", _chi2_mass_h         ) );
+    AddQuantity( new SimplePrediction( "HS_chi2_mu"         , "", _chi2_mu             ) );
+    AddQuantity( new SimplePrediction( "HS_pvalue"          , "", _pvalue              ) ); 
 
     int nHzero = 1;
     int nHplus = 0;
     //std::string expdata = "LHC_mail_14_07_2013_HS_new_observable_set";
-
-    std::string expdata = propertyTree->get<std::string>( "InputFile.HiggsSignalsHadXSCalculator.ExpData" );
+    std::string expdata = ptree.get<std::string>( "ExpData" );
     std::cout<<"Using ExpData = "<<expdata<<std::endl;
     initialize_higgssignals_( &nHzero, &nHplus, expdata );
     

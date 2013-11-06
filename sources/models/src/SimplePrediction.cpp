@@ -24,6 +24,20 @@
 #include "SimplePrediction.h"
 
 Fittino::SimplePrediction::SimplePrediction( std::string   name,
+					     std::string   unit,
+					     const double& value )
+    : _referenceValue( value ),
+      PredictionBase( name,
+		      name,
+		      unit,
+		      unit,
+		      0,
+		      1 ) {
+
+}
+
+
+Fittino::SimplePrediction::SimplePrediction( std::string   name,
 					     std::string   plotName,
 					     std::string   unit,
 					     std::string   plotUnit,

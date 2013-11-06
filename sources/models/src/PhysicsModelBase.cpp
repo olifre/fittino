@@ -32,6 +32,7 @@
 #include "ModelParameterBase.h"
 #include "Observable.h"
 #include "PhysicsModelBase.h"
+#include "PhysicsParameter.h"
 #include "PredictionBase.h"
 #include "SimplePrediction.h"
 #include "SLHAPrediction.h"
@@ -45,6 +46,35 @@
 #include "HiggsSignalsSLHAModelCalculator.h"
 #include "SPhenoSLHAModelCalculator.h"
 
+
+Fittino::PhysicsModelBase::PhysicsModelBase( const boost::property_tree::ptree& ptree ) {
+
+  _name = ptree.get<std::string>( "Name" );
+
+  Factory factory;
+
+  BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
+
+    if ( node.first == "ModelParameter" ) AddParameter( new PhysicsParameter( node.second ) );
+
+  }
+
+  BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child("Calculators") ) {
+  
+    AddCalculator( factory.CreateCalculator( node.first, this, node.second ) );
+
+  }
+
+  BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
+
+    if ( node.first == "Chi2Contribution" ) AddChi2Contribution( node.second.get_value<std::string>() );
+
+  }
+
+  Initialize();
+
+}
+
 Fittino::PhysicsModelBase::PhysicsModelBase() {
 
     InitializeCalculators();
@@ -53,6 +83,12 @@ Fittino::PhysicsModelBase::PhysicsModelBase() {
 }
 
 Fittino::PhysicsModelBase::~PhysicsModelBase() {
+
+}
+
+void Fittino::PhysicsModelBase::AddChi2Contribution( const std::string& name ) {
+
+  _collectionOfChi2Quantities.AddElement( GetCollectionOfQuantities().At( name ) );
 
 }
 
@@ -211,6 +247,12 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
 
     }
 
+    for ( unsigned int i = 0; i < _collectionOfChi2Quantities.GetNumberOfElements(); i++ ) {
+
+      chi2 += _collectionOfChi2Quantities.At(i)->GetValue();
+
+    }
+
     return chi2;
 
 }
@@ -248,6 +290,14 @@ void Fittino::PhysicsModelBase::AddCalculator( ModelCalculatorBase* calculator )
     _collectionOfCalculators.AddElement( calculator->GetName(), calculator );
     _modelCalculatorVector.push_back( calculator );
 
+    const Collection<const PredictionBase*>& col = calculator->GetCollectionOfQuantities(); 
+
+    for (unsigned int i = 0; i< col.GetNumberOfElements(); i++ ) {
+
+      AddPrediction( col.At(i) );
+
+    }
+
 }
 
 const Fittino::Collection<Fittino::ModelCalculatorBase*>& Fittino::PhysicsModelBase::GetCollectionOfCalculators() const {
@@ -275,9 +325,9 @@ void Fittino::PhysicsModelBase::InitializeCalculators() {
             if ( calculatorType == "Tree" ) {
 
                 AddCalculator( factory.CreateCalculator( Configuration::TREECALCULATOR, this ) );
-                static_cast<TreeCalculator*>(GetCollectionOfCalculators().At( "TreeCalculator" ))->SetInputFileName( propertyTree->get<std::string>("InputFile.Sampler.<xmlattr>.InputFileName", "Fittino.old.root" ) );
-                static_cast<TreeCalculator*>(GetCollectionOfCalculators().At( "TreeCalculator" ))->SetInputTreeName( propertyTree->get<std::string>("InputFile.Sampler.<xmlattr>.InputTreeName", "Tree" ) );
-                static_cast<TreeCalculator*>(GetCollectionOfCalculators().At( "TreeCalculator" ))->OpenInputTree();
+                static_cast<TreeCalculator*>(GetCollectionOfCalculators().GetMap()->at( "TreeCalculator" ))->SetInputFileName( propertyTree->get<std::string>("InputFile.Sampler.<xmlattr>.InputFileName", "Fittino.old.root" ) );
+                static_cast<TreeCalculator*>(GetCollectionOfCalculators().GetMap()->at( "TreeCalculator" ))->SetInputTreeName( propertyTree->get<std::string>("InputFile.Sampler.<xmlattr>.InputTreeName", "Tree" ) );
+                static_cast<TreeCalculator*>(GetCollectionOfCalculators().GetMap()->at( "TreeCalculator" ))->OpenInputTree();
             
             }
 

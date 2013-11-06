@@ -82,7 +82,7 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
         fittinoInputDataStorage->ReadFile( _inputFileName );
         delete fittinoInputDataStorage;
 
-        boost::property_tree::read_xml( _inputFileName, *_propertyTree );
+        boost::property_tree::read_xml( _inputFileName, *_propertyTree, boost::property_tree::xml_parser::no_comments );
 
         if ( _propertyTree->get_child("InputFile").count("Tool") != 0 ) {
 

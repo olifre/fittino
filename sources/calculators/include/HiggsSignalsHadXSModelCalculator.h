@@ -22,6 +22,18 @@
 
 #include "ModelCalculatorBase.h"
 
+namespace boost {
+
+  namespace property_tree {
+
+    template < class Key, class Data, class KeyCompare > class basic_ptree;
+    typedef basic_ptree< std::string, std::string, std::less<std::string> > ptree;
+
+  }
+
+}
+
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -39,7 +51,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                   HiggsSignalsHadXSModelCalculator( const PhysicsModelBase* model );
+    HiggsSignalsHadXSModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree );
 
     public:
       /*!
@@ -144,8 +156,6 @@ namespace Fittino {
       const double& _normSM_xs_tth;
       const double& _normSM_xs_Wh;
       const double& _normSM_xs_Zh;
-
-      const double* _direct;
 
     private:
       virtual void CallExecutable();

@@ -56,6 +56,8 @@ namespace Fittino {
                                  ~Factory();
 
     public:
+
+      ModelCalculatorBase*  CreateCalculator( const std::string& type, const PhysicsModelBase* model, const boost::property_tree::ptree& ptree ) const; 
       /*!
        *  Returns a concrete analysis tool.
        */

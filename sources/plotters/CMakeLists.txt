@@ -24,6 +24,7 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(./include)
 INCLUDE_DIRECTORIES(../kernel/include)
 INCLUDE_DIRECTORIES(../models/include)
+INCLUDE_DIRECTORIES(../exceptions/include)
 
 AUX_SOURCE_DIRECTORY(src sources)
 

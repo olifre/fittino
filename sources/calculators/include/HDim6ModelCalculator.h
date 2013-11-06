@@ -24,6 +24,18 @@
 #include <map>
 #include "ModelCalculatorBase.h"
 
+namespace boost {
+
+  namespace property_tree {
+
+    template < class Key, class Data, class KeyCompare > class basic_ptree;
+    typedef basic_ptree< std::string, std::string, std::less<std::string> > ptree;
+
+  }
+
+}
+
+
 struct effinputs;
 struct pominput;
 struct sminputs;
@@ -43,7 +55,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                               HDim6ModelCalculator( const PhysicsModelBase* model );
+    HDim6ModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree );
 
     public:
       /*!
@@ -56,13 +68,13 @@ namespace Fittino {
       virtual void             Initialize() const;
 
     private:  
+      bool                     _calculate_Gamma_hWW ;
+      bool                     _calculate_Gamma_hZZ;
       bool                     _calculate_xs_qqh_2flavor;
       bool                     _calculate_xs_qqh_5flavor;
+      bool                     _calculate_xs_Wh;
+      bool                     _calculate_xs_Zh;
       bool                     _first;
-      double                   _cputime_gridNoVBF;
-      double                   _cputime_qqh_2flavor;
-      double                   _cputime_qqh_5flavor;
-      double                   _cputime_remaining;
       double                   _Delta_g1_gaga;
       double                   _Delta_g1_Gamma;
       double                   _Delta_g1_WW;
@@ -111,6 +123,18 @@ namespace Fittino {
       double                   _previous_f_WW;
       double                   _previous_f_phi_2;
       double                   _previous_mass_h;
+      double                   _P_a_minus;
+      double                   _P_a_plus;
+      double                   _P_c_H;
+      double                   _P_c_V_minus;
+      double                   _P_c_y_b;
+      double                   _P_c_y_t;
+      double                   _P_c_y_tau;
+      double                   _P_kappa_BB;
+      double                   _P_kappa_GG;
+      double                   _P_kappa_HV_plus;
+      double                   _P_kappa_HV_minus;
+      double                   _P_kappa_Zgamma;
       double                   _SM_Gamma_hbb;
       double                   _SM_Gamma_hcc;
       double                   _SM_Gamma_hgg;
@@ -129,37 +153,24 @@ namespace Fittino {
       double                   _xs_qqh_5flavor;
       double                   _xs_Wh;
       double                   _xs_Zh;
-
       std::string              _pdfDirectory;
       std::string              _pdfSet;
       effinputs*               _effsmvalues;
       effinputs*               _effvalues;
       sminputs*                _smvalues;
 
-      double           _P_a_minus;
-      double           _P_a_plus;
-      double           _P_c_H;
-      double           _P_c_V_minus;
-      double           _P_c_y_b;
-      double           _P_c_y_t;
-      double           _P_c_y_tau;
-      double           _P_kappa_BB;
-      double           _P_kappa_GG;
-      double           _P_kappa_HV_plus;
-      double           _P_kappa_HV_minus;
-      double           _P_kappa_Zgamma;
 
     private:  
-      const double&  _f_B;
-      const double&  _f_b;
-      const double&  _f_BB_p_f_WW;
-      const double&  _f_BB_m_f_WW;
-      const double&  _f_gg;
-      const double&  _f_phi_2;
-      const double&  _f_t;
-      const double&  _f_tau;
-      const double&  _f_W;
-      const double&  _mass_h;
+      const double&            _f_B;
+      const double&            _f_b;
+      const double&            _f_BB_p_f_WW;
+      const double&            _f_BB_m_f_WW;
+      const double&            _f_gg;
+      const double&            _f_phi_2;
+      const double&            _f_t;
+      const double&            _f_tau;
+      const double&            _f_W;
+      const double&            _mass_h;
 
 
     private:   

@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "ModelCalculatorBase.h"
+#include "PredictionBase.h"
 #include "SimpleDataStorage.h"
 
 Fittino::ModelCalculatorBase::ModelCalculatorBase( const PhysicsModelBase* model )
@@ -42,17 +43,11 @@ std::string Fittino::ModelCalculatorBase::GetName() const {
 
 }
 
-const Fittino::Collection< const double* >& Fittino::ModelCalculatorBase::GetCollectionOfDoubles() const {
-
-  return _collectionOfDoubles;
-
-}
-
 const Fittino::SimpleDataStorage* Fittino::ModelCalculatorBase::GetSimpleOutputDataStorage() const {
 
   return _simpleOutputDataStorage;
 
-};
+}
 
 void Fittino::ModelCalculatorBase::StopTime( std::string name ) {
 
@@ -63,5 +58,19 @@ void Fittino::ModelCalculatorBase::StopTime( std::string name ) {
 
     _simpleOutputDataStorage->GetMap()->at( "cputime_" + name )
         = _stopwatch.CpuTime();
+
+}
+
+const Fittino::Collection<const Fittino::PredictionBase*>& Fittino::ModelCalculatorBase::GetCollectionOfQuantities() const { 
+
+  return _collectionOfQuantities;
+
+}
+
+
+
+void  Fittino::ModelCalculatorBase::AddQuantity( const Fittino::PredictionBase* prediction ) {
+
+    _collectionOfQuantities.AddElement( prediction );
 
 }

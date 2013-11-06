@@ -32,6 +32,13 @@
 #include "SLHAParameter.h"
 #include <iostream>
 
+const Fittino::Collection<const Fittino::Quantity*>&  Fittino::ModelBase::GetCollectionOfQuantities() const{
+
+
+  return _collectionOfQuantities;
+
+}
+
 Fittino::ModelBase::ModelBase()
     : _name( "" ) {
 
@@ -98,12 +105,16 @@ void Fittino::ModelBase::AddParameter( ModelParameterBase* parameter ) {
 
     }
     _collectionOfParameters.AddElement( parameter->GetName(), parameter );
+
+    _collectionOfQuantities.AddElement( parameter->GetName(), parameter );
 }
 
-void Fittino::ModelBase::AddPrediction( PredictionBase* prediction ) {
+void Fittino::ModelBase::AddPrediction( const PredictionBase* prediction ) {
 
-    _collectionOfPredictions.AddElement( prediction->GetName(), prediction );
-    _predictionVector.push_back( prediction );
+    _collectionOfPredictions.AddElement( prediction );
+    _predictionVector.push_back( const_cast<PredictionBase*>( prediction ) );
+
+    _collectionOfQuantities.AddElement( prediction );
 
 }
 
@@ -113,6 +124,7 @@ void Fittino::ModelBase::AddChi2Contribution( Chi2ContributionBase* chi2Contribu
     _chi2ContributionVector.push_back( chi2Contribution );
 
 }
+
 
 std::string Fittino::ModelBase::GetName() const {
 
@@ -144,7 +156,7 @@ const std::vector<Fittino::PredictionBase*>* Fittino::ModelBase::GetPredictionVe
 
 }
 
-const Fittino::Collection<Fittino::PredictionBase*>& Fittino::ModelBase::GetCollectionOfPredictions() const {
+const Fittino::Collection<const Fittino::PredictionBase*>& Fittino::ModelBase::GetCollectionOfPredictions() const {
 
     return _collectionOfPredictions;
 

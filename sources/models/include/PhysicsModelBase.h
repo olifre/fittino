@@ -24,6 +24,17 @@
 
 #include "ModelBase.h"
 
+namespace boost {
+
+  namespace property_tree {
+
+    template < class Key, class Data, class KeyCompare > class basic_ptree;
+    typedef basic_ptree< std::string, std::string, std::less<std::string> > ptree;
+
+  }
+
+}
+
 class TRandom3;
 
 /*!
@@ -44,7 +55,12 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
+    PhysicsModelBase( const boost::property_tree::ptree& ptree );
+      /*!
+       *  Standard constructor.
+       */
                                                      PhysicsModelBase();
+
       /*!
        *  Standard destructor.
        */
@@ -57,6 +73,7 @@ namespace Fittino {
        *  Adds a calculator to the model.
        */
       void                                           AddCalculator( ModelCalculatorBase *calculator );
+      void                                           AddChi2Contribution( const std::string& name ); 
       /*!
        *  Returns the predictions of the model as a collection.
        */

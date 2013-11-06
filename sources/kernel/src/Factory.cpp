@@ -39,6 +39,7 @@
 #include "OptimizerBase.h"
 #include "ParticleSwarmOptimizer.h"
 #include "PlotterBase.h"
+#include "RegressionCalculator.h"
 #include "RosenbrockModel.h"
 #include "SamplerBase.h"
 #include "ScatterPlotter.h"
@@ -70,11 +71,58 @@ Fittino::AnalysisTool* const Fittino::Factory::CreateAnalysisTool( const std::st
     }
     else if ( type == "MarkovChainSampler" ) {
 
-      // return new MarkovChainSampler( model, ptree );
+      return new MarkovChainSampler( model, ptree );
+
+    }
+    else {
+
+      throw ConfigurationException( "AnalysisTool type" + type + " not known." );
+    
+    }
+
+}
+
+Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::string& type, const PhysicsModelBase* model, const boost::property_tree::ptree& ptree ) const {
+
+    if ( type == "HDim6Calculator" ) {
+
+#if defined LHAPDF_FOUND  && defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
+      
+      return new HDim6ModelCalculator( model, ptree );
+
+#else
+
+    throw ConfigurationException( "Trying to use HDim6Calculator but Fittino was built without LHAPDF." );
+
+#endif
+
+    }
+    else if ( type == "HiggsSignalsCalculator" ) {
+
+#if defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
+
+      return new HiggsSignalsHadXSModelCalculator( model, ptree );
+
+#else
+
+      throw ConfigurationException( "Trying to use HiggsSignalsHadXSModelCalculator but Fittino was built without HiggsBounds or HiggsSignals." );
+
+#endif
+
+    }
+    else if ( type == "RegressionCalculator" ) {
+      
+      return new RegressionCalculator( model, ptree );
+
+    }
+    else {
+
+      throw ConfigurationException( "Calculator type" + type + "not known." );
 
     }
 
 }
+
 
 Fittino::DataStorageBase* const Fittino::Factory::CreateDataStorage( const Fittino::Configuration::FileFormat& fileFormat ) const {
 
@@ -91,7 +139,7 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
 
     if ( type == "PhysicsModel" ) {
 
-        // return new PhysicsModel( ptree );
+      return new PhysicsModelBase( ptree );
 
     }
     else if ( type == "RosenbrockModel" ) {
@@ -138,29 +186,29 @@ Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator( const Fi
 
     switch ( calculatorType ) {
 
-        case Configuration::HDIM6CALCULATOR:
+//         case Configuration::HDIM6CALCULATOR:
 
-#if defined LHAPDF_FOUND  && defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
+// #if defined LHAPDF_FOUND  && defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
 
-            return new HDim6ModelCalculator( model );
+//             return new HDim6ModelCalculator( model );
 
-#else
+// #else
 
-            throw ConfigurationException( "Trying to use HDim6Calculator but Fittino was built without LHAPDF." );
+//             throw ConfigurationException( "Trying to use HDim6Calculator but Fittino was built without LHAPDF." );
 
-#endif
+// #endif
 
-        case Configuration::HIGGSSIGNALSHADXSCALCULATOR:
+//         case Configuration::HIGGSSIGNALSHADXSCALCULATOR:
 
-#if defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
+// #if defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
 
-            return new HiggsSignalsHadXSModelCalculator( model );
+//             return new HiggsSignalsHadXSModelCalculator( model );
 
-#else
+// #else
 
-            throw ConfigurationException( "Trying to use HiggsSignalsHadXSModelCalculator but Fittino was built without HiggsBounds or HiggsSignals." );
+//             throw ConfigurationException( "Trying to use HiggsSignalsHadXSModelCalculator but Fittino was built without HiggsBounds or HiggsSignals." );
 
-#endif
+// #endif
 
         case Configuration::FEYNHIGGSCALCULATOR:
 

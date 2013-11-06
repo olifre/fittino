@@ -23,14 +23,18 @@
 #include <string>
 #include <map>
 
-#include "Collection.h"
 #include "TStopwatch.h"
+
+#include "Collection.h"
+#include "Quantity.h"
+
 
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
 
+  class PredictionBase;
   class PhysicsModelBase;
   class SimpleDataStorage;
 
@@ -55,7 +59,7 @@ namespace Fittino {
       std::string                   GetName() const;
 
     public:  
-      const Collection<const double*>& GetCollectionOfDoubles() const;
+      const Collection<const PredictionBase*>&   GetCollectionOfQuantities() const;
       const SimpleDataStorage*      GetSimpleOutputDataStorage() const;
 
     public:
@@ -64,15 +68,16 @@ namespace Fittino {
 
     protected:
       enum                          CallMethod { EXECUTABLE, FUNCTION };
+      void                          AddQuantity( const PredictionBase* prediction );
 
     protected:
       std::string                   _executableName;
       std::string                   _name;
       TStopwatch                    _stopwatch;
       CallMethod                    _callMethod;
-      Collection< const double* >   _collectionOfDoubles;
       const PhysicsModelBase*       _model;
       SimpleDataStorage*            _simpleOutputDataStorage;
+      Collection<const PredictionBase*>        _collectionOfQuantities;
 
     protected: 
       void                          StopTime( std::string name ); 
@@ -81,7 +86,7 @@ namespace Fittino {
       virtual void                  CallExecutable() = 0;
       virtual void                  CallFunction() = 0;
       virtual void                  ConfigureInput() = 0;
-
+      
   };
 
 }

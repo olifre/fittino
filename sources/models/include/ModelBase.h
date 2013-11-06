@@ -89,11 +89,12 @@ namespace Fittino {
       /*!
        *  Adds a prediction to the model.
        */
-      void                                              AddPrediction( PredictionBase* prediction );
+      void                                              AddPrediction( const PredictionBase* prediction );
       /*!
        *  Adds a chi2 contribution to the model.
        */
       void                                              AddChi2Contribution( Chi2ContributionBase* chi2Contribution );
+
       /*!
        *  Returns the name of the model.
        */
@@ -119,7 +120,7 @@ namespace Fittino {
       /*!
        *  Returns the predictions of the model as a collection.
        */
-      const Collection<PredictionBase*>&                GetCollectionOfPredictions() const;
+      const Collection<const PredictionBase*>&                GetCollectionOfPredictions() const;
       /*!
        *  Returns the chi2 contributions of the model as a collection.
        */
@@ -128,6 +129,8 @@ namespace Fittino {
        *  Returns the parameters as a collection.
        */
       const Collection<ModelParameterBase*>&            GetCollectionOfParameters() const;
+
+      const Collection<const Quantity*>&                GetCollectionOfQuantities() const;
 
     public:
       virtual void                                      PrintStatus() const = 0;
@@ -154,7 +157,7 @@ namespace Fittino {
       /*!
        *  Stores the predictions.
        */
-      std::vector<PredictionBase*>                      _predictionVector;
+      std::vector<PredictionBase*>                _predictionVector;
 
     protected:
       /*!
@@ -166,6 +169,10 @@ namespace Fittino {
        *  is also the place where third party code is initialized.
        */
       virtual void                                      Initialize() const = 0;
+
+      Collection<const Quantity*>                       _collectionOfQuantities;
+
+      Collection<const Quantity*>                       _collectionOfChi2Quantities;
 
       /*! \cond UML */
     private:
@@ -184,7 +191,7 @@ namespace Fittino {
       /*!
        *  Stores the predictions.
        */
-      Collection<PredictionBase*>                       _collectionOfPredictions;
+      Collection<const PredictionBase*>                       _collectionOfPredictions;
       /*!
        *  Stores the Chi2 contributions
        */
@@ -193,6 +200,8 @@ namespace Fittino {
        *  Stores the parameters
        */
       Collection<ModelParameterBase*>                   _collectionOfParameters;
+
+
     private:
       /*!
        *  Evaluates the chi2 function.

@@ -41,6 +41,7 @@ namespace Fittino {
        *  Standard constructor.
        */
       MarkovChainSampler( ModelBase* model, int randomSeed );
+      MarkovChainSampler( ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

@@ -40,6 +40,12 @@ namespace Fittino {
   class SimplePrediction : public PredictionBase {
 
     public:
+
+      /*!
+       * Constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound and value.
+       */
+                            SimplePrediction( std::string name, std::string unit, const double& value );
+
       /*!
        * Constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound and value.
        */
@@ -52,7 +58,7 @@ namespace Fittino {
                                               const double& value );
 
       /*!
-       *  Alternative constructori taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound and a calculator.
+       *  Alternative constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound and a calculator.
        */
                             SimplePrediction( std::string name,
                                               std::string plotName,

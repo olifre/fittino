@@ -31,6 +31,35 @@
 #include "ModelParameterBase.h"
 #include "ModelCalculatorException.h"
 
+
+Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
+  : SamplerBase( model, ptree.get<int>( "randomSeed" ) ), 
+
+  _previousChi2( 1.e99 ),
+    //_previousChi2( model->GetChi2() ),
+    _previousLikelihood( 1.e-99 ),
+    //_previousLikelihood( exp( -1. * _previousChi2 / 2. ) ),
+      _previousParameterValues( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
+      _acceptCounter( 1 ),
+      _previousRho( 1. ),
+    _numberOfIterations( ptree.get<int>( "numberOfIterations" ) ) {
+
+    _name = "Markov chain parameter sampler";
+
+    for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+
+        _previousParameterValues.at( k ) = _model->GetParameterVector()->at( k )->GetValue();
+
+    }
+
+    _statusParameterVector.push_back( new ParameterBase( "PointAccepted", "PointAccepted", 0. , 0., 1. ) );
+  
+  
+
+}
+
+
+
 Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, int randomSeed )
     : SamplerBase( model, randomSeed ),
       _previousChi2( 1.e99 ),
