@@ -207,7 +207,7 @@ void Fittino::FeynHiggsModelCalculator::SetParameters(){
 
     _mass_t        = 173;
 
-    _m_susy        = _model->GetParameterMap()->at("MSusy")->GetValue();
+    _m_susy        = _model->GetCollectionOfParameters().At("MSusy")->GetValue();
 
     _m_1           = _m_susy;
     _m_2           = _m_susy;
@@ -236,13 +236,13 @@ void Fittino::FeynHiggsModelCalculator::SetParameters(){
     _mass_A0       = _m_susy;
     _mass_Hp       = _m_susy;
 
-    _Re_mu         = _m_susy*_model->GetParameterMap()->at("signMu")->GetValue();
+    _Re_mu         = _m_susy*_model->GetCollectionOfParameters().At("signMu")->GetValue();
     _Im_mu         = 0;
     _mu            = std::complex<double>(_Re_mu, _Im_mu);
 
-    _tanBeta       = _model->GetParameterMap()->at("TanBeta")->GetValue();
+    _tanBeta       = _model->GetCollectionOfParameters().At("TanBeta")->GetValue();
 
-    double Xt =  _model->GetParameterMap()->at("relXt")->GetValue()*_m_susy;
+    double Xt =  _model->GetCollectionOfParameters().At("relXt")->GetValue()*_m_susy;
 
     _Re_A_t        = Xt+_Re_mu/_tanBeta;
     _Im_A_t        = 0;

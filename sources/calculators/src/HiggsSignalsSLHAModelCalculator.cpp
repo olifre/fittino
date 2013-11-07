@@ -299,7 +299,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction() {
 
     // Identify the model parameters with the variables needed by HiggsSignals.
 
-    double massh          = _model->GetParameterMap()->at( "Mass_h" )->GetValue();
+    double massh          = _model->GetCollectionOfParameters().At( "Mass_h" )->GetValue();
 
     /*!
      *  \todo Cleanup once model parameter conversion is implemented.
@@ -357,28 +357,28 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction() {
 
     // Setting 1 : No constraints.
 
-    double g2hjss_s       = pow( 1 + _model->GetParameterMap()->at( "Delta_s_hss"       )->GetValue(), 2 );
-    double g2hjss_p       = pow( 1 + _model->GetParameterMap()->at( "Delta_p_hss"       )->GetValue(), 2 );
-    double g2hjcc_s       = pow( 1 + _model->GetParameterMap()->at( "Delta_s_hcc"       )->GetValue(), 2 );
-    double g2hjcc_p       = pow( 1 + _model->GetParameterMap()->at( "Delta_p_hcc"       )->GetValue(), 2 );
-    double g2hjbb_s       = pow( 1 + _model->GetParameterMap()->at( "Delta_s_hbb"       )->GetValue(), 2 );
-    double g2hjbb_p       = pow( 1 + _model->GetParameterMap()->at( "Delta_p_hbb"       )->GetValue(), 2 );
-    double g2hjtt_s       = pow( 1 + _model->GetParameterMap()->at( "Delta_s_htt"       )->GetValue(), 2 );
-    double g2hjtt_p       = pow( 1 + _model->GetParameterMap()->at( "Delta_p_htt"       )->GetValue(), 2 );
-    double g2hjmumu_s     = pow( 1 + _model->GetParameterMap()->at( "Delta_s_hmumu"     )->GetValue(), 2 );
-    double g2hjmumu_p     = pow( 1 + _model->GetParameterMap()->at( "Delta_p_hmumu"     )->GetValue(), 2 );
-    double g2hjtautau_s   = pow( 1 + _model->GetParameterMap()->at( "Delta_s_htautau"   )->GetValue(), 2 );
-    double g2hjtautau_p   = pow( 1 + _model->GetParameterMap()->at( "Delta_p_htautau"   )->GetValue(), 2 );
-    double g2hjWW         = pow( 1 + _model->GetParameterMap()->at( "Delta_hWW"         )->GetValue(), 2 );
-    double g2hjZZ         = pow( 1 + _model->GetParameterMap()->at( "Delta_hZZ"         )->GetValue(), 2 );
-    double g2hjZga        = pow( 1 + _model->GetParameterMap()->at( "Delta_hZgamma"     )->GetValue(), 2 );
-    double g2hjgaga       = pow( 1 + _model->GetParameterMap()->at( "Delta_hgammagamma" )->GetValue(), 2 );
-    double g2hjgg         = pow( 1 + _model->GetParameterMap()->at( "Delta_hgg"         )->GetValue(), 2 );
-    double g2hjggZ        = pow( 1 + _model->GetParameterMap()->at( "Delta_hggZ"        )->GetValue(), 2 );
-    double g2hjhiZ        = pow( 1 + _model->GetParameterMap()->at( "Delta_hihjZ"       )->GetValue(), 2 );
+    double g2hjss_s       = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_s_hss"       )->GetValue(), 2 );
+    double g2hjss_p       = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_p_hss"       )->GetValue(), 2 );
+    double g2hjcc_s       = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_s_hcc"       )->GetValue(), 2 );
+    double g2hjcc_p       = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_p_hcc"       )->GetValue(), 2 );
+    double g2hjbb_s       = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_s_hbb"       )->GetValue(), 2 );
+    double g2hjbb_p       = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_p_hbb"       )->GetValue(), 2 );
+    double g2hjtt_s       = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_s_htt"       )->GetValue(), 2 );
+    double g2hjtt_p       = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_p_htt"       )->GetValue(), 2 );
+    double g2hjmumu_s     = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_s_hmumu"     )->GetValue(), 2 );
+    double g2hjmumu_p     = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_p_hmumu"     )->GetValue(), 2 );
+    double g2hjtautau_s   = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_s_htautau"   )->GetValue(), 2 );
+    double g2hjtautau_p   = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_p_htautau"   )->GetValue(), 2 );
+    double g2hjWW         = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_hWW"         )->GetValue(), 2 );
+    double g2hjZZ         = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_hZZ"         )->GetValue(), 2 );
+    double g2hjZga        = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_hZgamma"     )->GetValue(), 2 );
+    double g2hjgaga       = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_hgammagamma" )->GetValue(), 2 );
+    double g2hjgg         = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_hgg"         )->GetValue(), 2 );
+    double g2hjggZ        = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_hggZ"        )->GetValue(), 2 );
+    double g2hjhiZ        = pow( 1 + _model->GetCollectionOfParameters().At( "Delta_hihjZ"       )->GetValue(), 2 );
 
-    double BR_hjhihi      = _model->GetParameterMap()->at( "BR_hjhihi"        )->GetValue();
-    double GammaInvisible = _model->GetParameterMap()->at( "Gamma_hInvisible" )->GetValue();
+    double BR_hjhihi      = _model->GetCollectionOfParameters().At( "BR_hjhihi"        )->GetValue();
+    double GammaInvisible = _model->GetCollectionOfParameters().At( "Gamma_hInvisible" )->GetValue();
 
     // Calculate the total width of the Higgs boson.
 

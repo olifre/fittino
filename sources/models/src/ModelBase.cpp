@@ -97,13 +97,6 @@ void Fittino::ModelBase::AddParameter( ModelParameterBase* parameter ) {
 
     _parameterVector.push_back( parameter );
 
-    if ( !_parameterMap.insert( std::make_pair( parameter->GetName(), parameter ) ).second ) {
-
-        std::string message = "Parameter with name " + parameter->GetName() + " has already been added to model " + GetName();
-
-        throw ConfigurationException( message ); //TODO: Dedicated exception class ?
-
-    }
     _collectionOfParameters.AddElement( parameter->GetName(), parameter );
 
     _collectionOfQuantities.AddElement( parameter->GetName(), parameter );
@@ -132,11 +125,11 @@ std::string Fittino::ModelBase::GetName() const {
 
 }
 
-const std::map<std::string, Fittino::ModelParameterBase*>* Fittino::ModelBase::GetParameterMap() const {
+// const std::map<std::string, Fittino::ModelParameterBase*>* Fittino::ModelBase::GetParameterMap() const {
 
-    return &_parameterMap;
+//     return &_parameterMap;
 
-}
+// }
 
 const std::vector<Fittino::Chi2ContributionBase*>* Fittino::ModelBase::GetChi2ContributionVector() const {
 

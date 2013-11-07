@@ -22,7 +22,6 @@
 #ifndef FITTINO_MODELBASE_H
 #define FITTINO_MODELBASE_H
 
-#include <map>
 #include <string>
 #include <vector>
 
@@ -102,10 +101,6 @@ namespace Fittino {
 
     public:
       /*!
-       *  Returns the parameters of the model as a map.
-       */
-      const std::map<std::string, ModelParameterBase*>* GetParameterMap() const;
-      /*!
        *  Returns the chi2 contributions of the model as a vector.
        */
       const std::vector<Chi2ContributionBase*>*         GetChi2ContributionVector() const;
@@ -184,10 +179,6 @@ namespace Fittino {
        *  Stores the model parameters.
        */
       std::vector<ModelParameterBase*>                  _parameterVector;
-      /*!
-       *  Stores the model parameters.
-       */
-      std::map<std::string, ModelParameterBase*>        _parameterMap;
       /*!
        *  Stores the predictions.
        */
