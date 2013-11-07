@@ -36,12 +36,6 @@ namespace boost {
 
 }
 
-namespace TMVA {
-
-  class Reader;
-
-}
-
 /*!
  *  \brief Fittino namespace.
  */
@@ -51,6 +45,10 @@ namespace Fittino {
   class RegressionMVA;
   class RegressionVariable;
 
+  /*!
+   *  \ingroup calculators
+   *  \brief Wrapper class for TMVA::Reader::EvaluateRegression()
+   */
   class RegressionCalculator : public ModelCalculatorBase {
 
   public:
@@ -68,19 +66,18 @@ namespace Fittino {
     virtual void                  Initialize() const;
 
   private:
-  TMVA::Reader                    _reader;
-  Collection<RegressionMVA*>      _collectionOfMVAs;
-  std::vector<const double*>      _vectorOfDoubleVariables;
-  std::vector<float*>             _vectorOfFloatVariables;
+    TMVA::Reader                    _reader;
+    Collection<RegressionMVA*>      _collectionOfMVAs;
+    std::vector<const double*>      _vectorOfDoubleVariables;
+    std::vector<float*>             _vectorOfFloatVariables;
 
   private:
-  virtual void                    CallExecutable();
-  virtual void                    CallFunction();
-  virtual void                    ConfigureInput();
+    virtual void                    CallExecutable();
+    virtual void                    CallFunction();
+    virtual void                    ConfigureInput();
   
   };
 
 }
-
 
 #endif

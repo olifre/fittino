@@ -26,8 +26,6 @@
 #include "TStopwatch.h"
 
 #include "Collection.h"
-#include "Quantity.h"
-
 
 /*!
  *  \brief Fittino namespace.

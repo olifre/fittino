@@ -20,8 +20,9 @@
 #include <boost/foreach.hpp>
 #include <boost/property_tree/ptree.hpp>
 
+#include "TMVA/Reader.h"
+
 #include "ConfigurationException.h"
-#include "RegressionCalculator.h"
 #include "RegressionMVA.h"
 #include "SimplePrediction.h"
 
@@ -77,7 +78,6 @@ void Fittino::RegressionMVA::Update() {
   }
   
 }
-
 
 Fittino::Collection<Fittino::PredictionBase*>&  Fittino::RegressionMVA::GetCollectionOfQuantities() {
 

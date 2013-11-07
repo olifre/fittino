@@ -27,10 +27,19 @@
 
 #include "ConfigurationException.h"
 
+/*!
+ *  \brief Fittino namespace.
+ */
 namespace Fittino {
-
+    /*!
+   *  \ingroup models
+   *  \brief Template for collection classes. Only specification for pointers is implemented. 
+   */
   template<class T> class Collection;
-
+    /*!
+   *  \ingroup models
+   *  \brief template for collection of pointers.
+   */
   template<class T> class Collection<T*> {
 
   public:
