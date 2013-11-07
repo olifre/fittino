@@ -31,15 +31,6 @@
  *  The central object is the Fittino::Controller.
  */
 
-/*!
- *  \todo Long-term: Document the code.
- *  \todo Long-term: Write a comprehensive developer's guide.
- *  \todo Long-term: Write a comprehensive user's guide.
- *  \todo Short-term: Overhaul FindROOT.cmake making use of FindPackageHandleStandardArgs.
- *  \todo Short-term: Write FindGSL.cmake module making use of gsl-config to get the version, the needed libraries etc. Remove explcit linking of -lm -lgslcblas.
- *  \todo Short-term: In xml input files use subtags instead of attributes
- */
-
 //#include <iostream>
 
 #include "Controller.h"
@@ -47,8 +38,6 @@
 //#include "SLHAFileException.h"
 //#include "ModelCalculatorException.h"
 //#include "OptimizerException.h"
-
-using namespace Fittino;
 
 int main( int argc, char** argv ) {
 
@@ -58,7 +47,7 @@ int main( int argc, char** argv ) {
 
     //try {
 
-    Controller* controller = Controller::GetInstance();
+    Fittino::Controller* controller = Fittino::Controller::GetInstance();
 
     controller->InitializeFittino( argc, argv );
     controller->ExecuteFittino();
