@@ -20,6 +20,8 @@
 #ifndef FITTINO_TESTMODELBASE_H
 #define FITTINO_TESTMODELBASE_H
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "ModelBase.h"
 
 /*!
@@ -38,6 +40,10 @@ namespace Fittino {
        *  Standard constructor.
        */
                      TestModelBase();
+      /*!
+       *
+       */
+                     TestModelBase( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

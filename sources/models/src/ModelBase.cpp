@@ -46,6 +46,12 @@ Fittino::ModelBase::ModelBase()
 
 }
 
+Fittino::ModelBase::ModelBase( const boost::property_tree::ptree& ptree )
+    : _name("") {
+    
+    
+}
+
 Fittino::ModelBase::~ModelBase() {
 
 }

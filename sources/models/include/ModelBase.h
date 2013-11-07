@@ -25,6 +25,8 @@
 #include <string>
 #include <vector>
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "TRandom3.h"
 
 #include "Collection.h"
@@ -60,6 +62,10 @@ namespace Fittino {
        *  Standard constructor.
        */
                                                         ModelBase();
+      /*!
+       *  Constructor using a property tree
+       */
+                                                        ModelBase( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

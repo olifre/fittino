@@ -17,11 +17,17 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "Messenger.h"
 #include "ModelParameterBase.h"
 #include "TestModelBase.h"
 
 Fittino::TestModelBase::TestModelBase() {
+
+}
+
+Fittino::TestModelBase::TestModelBase( const boost::property_tree::ptree& ptree ) {
 
 }
 

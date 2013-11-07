@@ -55,7 +55,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-    PhysicsModelBase( const boost::property_tree::ptree& ptree );
+                                                     PhysicsModelBase( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard constructor.
        */
