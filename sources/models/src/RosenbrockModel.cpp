@@ -50,19 +50,10 @@ Fittino::RosenbrockModel::RosenbrockModel() {
 
 }
 
-Fittino::RosenbrockModel::RosenbrockModel( const boost::property_tree::ptree& ptree  ) {
+Fittino::RosenbrockModel::RosenbrockModel( const boost::property_tree::ptree& ptree  ) 
+        : TestModelBase( ptree ) {
 
     _name = "Rosenbrock model";
-
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree )  {
-
-      if ( node.first == "ModelParameter" ) {
-
-          AddParameter( new ModelParameterBase( node.second ) );
-
-      }
-
-    }
 
     TestModelBase::Initialize();
 

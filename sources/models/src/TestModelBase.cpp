@@ -27,7 +27,8 @@ Fittino::TestModelBase::TestModelBase() {
 
 }
 
-Fittino::TestModelBase::TestModelBase( const boost::property_tree::ptree& ptree ) {
+Fittino::TestModelBase::TestModelBase( const boost::property_tree::ptree& ptree ) 
+        : ModelBase( ptree ) {
 
 }
 

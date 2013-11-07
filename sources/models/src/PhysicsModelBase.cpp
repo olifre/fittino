@@ -47,18 +47,13 @@
 #include "SPhenoSLHAModelCalculator.h"
 
 
-Fittino::PhysicsModelBase::PhysicsModelBase( const boost::property_tree::ptree& ptree ) {
+Fittino::PhysicsModelBase::PhysicsModelBase( const boost::property_tree::ptree& ptree )
+        : ModelBase( ptree ) {
 
   _name = ptree.get<std::string>( "Name" );
 
   Factory factory;
-
-  BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
-
-    if ( node.first == "ModelParameter" ) AddParameter( new PhysicsParameter( node.second ) );
-
-  }
-
+  
   BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child("Calculators") ) {
   
     AddCalculator( factory.CreateCalculator( node.first, this, node.second ) );
