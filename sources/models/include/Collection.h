@@ -34,19 +34,20 @@ namespace Fittino {
   template<class T> class Collection<T*> {
 
   public:
-                                    Collection();
-    virtual                         ~Collection();
+    Collection();
+
+  public:
     void                            AddElement( T* element );
     void                            AddElement( const std::string& name, T* element );
-     T*                             At( int index ) ;
-     T*                             At( std::string name ) ;
-    unsigned int                    GetNumberOfElements() const;
     void                            Delete();
-                                   
 
   public:  
-    const T*                        At( int index )        const;
-    const T*                        At( std::string name ) const;
+     T*                             At( int index )        const;
+     T*                             At( std::string name ) const;
+    unsigned int                    GetNumberOfElements()  const;
+
+  public:  
+    virtual                         ~Collection();
 
   private:  
     std::map<std::string, T*>        _map;
@@ -55,9 +56,6 @@ namespace Fittino {
   };
 
 }
-
-
-
 
 template<class T>
 Fittino::Collection<T*>::Collection() {
@@ -105,14 +103,14 @@ void Fittino::Collection<T*>::AddElement( const std::string& name, T* element ){
 }
 
 template<class T>
-const T* Fittino::Collection<T*>::At( int index ) const {
+T* Fittino::Collection<T*>::At( int index ) const {
 
   return _vector.at( index );
 
 }
 
 template<class T>
-const T* Fittino::Collection<T*>::At( std::string name ) const {
+T* Fittino::Collection<T*>::At( std::string name ) const {
 
   try {
 
@@ -127,28 +125,6 @@ const T* Fittino::Collection<T*>::At( std::string name ) const {
 
 }
 
-template<class T>
-T* Fittino::Collection<T*>::At( int index )  {
-
-  return _vector.at( index );
-
-}
-
-template<class T>
-T* Fittino::Collection<T*>::At( std::string name ) {
-
-  try {
-
-    return _map.at( name );
-
-  }
-  catch (const std::out_of_range& ) {
-
-    throw ConfigurationException( "ELement with name " + name + " not contained in Collection." ); //TODO: Dedicated exception class ?
-    
-  }
-
-}
 
 template<class T>
 unsigned int Fittino::Collection<T*>::GetNumberOfElements() const {

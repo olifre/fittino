@@ -326,8 +326,8 @@ void Fittino::PhysicsModelBase::InitializeCalculators() {
 
                 AddCalculator( factory.CreateCalculator( Configuration::TREECALCULATOR, this ) );
 
-                /* \todo The following should be done in the constructor avoiding static_cast and const_cast */
-                TreeCalculator* treecalc = const_cast<TreeCalculator*>(static_cast<const TreeCalculator*>(GetCollectionOfCalculators().At( "TreeCalculator" )));
+                /* \todo The following should be done in the constructor avoiding static_cast and allowing to remove function GetCollectionOfCalculators  */
+                TreeCalculator* treecalc = static_cast<const TreeCalculator*>(GetCollectionOfCalculators().At( "TreeCalculator" ));
                 treecalc->SetInputFileName( propertyTree->get<std::string>("InputFile.Sampler.<xmlattr>.InputFileName", "Fittino.old.root" ) );
                 treecalc->SetInputTreeName( propertyTree->get<std::string>("InputFile.Sampler.<xmlattr>.InputTreeName", "Tree" ) );
                 treecalc->OpenInputTree();
