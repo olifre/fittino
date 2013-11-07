@@ -49,7 +49,8 @@ Fittino::ModelBase::ModelBase()
 Fittino::ModelBase::ModelBase( const boost::property_tree::ptree& ptree )
     : _name("") {
     
-    
+   InitializeParameters( ptree );
+
 }
 
 Fittino::ModelBase::~ModelBase() {
@@ -213,6 +214,20 @@ void Fittino::ModelBase::InitializeParameters() {
             }
 
         }
+
+    }
+
+}
+
+void Fittino::ModelBase::InitializeParameters( const boost::property_tree::ptree& ptree ) {
+
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree ) {
+    
+      if( node.first == "ModelParameter" ) {
+
+        AddParameter( new ModelParameterBase( node.second ) );
+
+      }
 
     }
 

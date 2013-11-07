@@ -208,7 +208,10 @@ namespace Fittino {
        *  Setup all Parameters
        */
       void                                              InitializeParameters();
-
+      /*!
+       *  Setup all Parameters using a ptree
+       */
+      void                                              InitializeParameters( const boost::property_tree::ptree& ptree );
       /*! \endcond UML */
 
   };
