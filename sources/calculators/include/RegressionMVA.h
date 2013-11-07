@@ -43,6 +43,10 @@ namespace Fittino {
 
   class PredictionBase;
 
+  /*!
+   *  \ingroup calculators
+   *  \brief Helper class for RegressionCalculator representing a multivariate analysis
+   */
   class RegressionMVA {
 
   public:
