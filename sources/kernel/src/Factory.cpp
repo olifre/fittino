@@ -115,6 +115,34 @@ Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::str
       return new RegressionCalculator( model, ptree );
 
     }
+    else if ( type == "LHCCalculator" ) {
+        
+      return new LHCModelCalculator( model );
+
+    }
+    else if ( type == "TreeCalculator" ) {
+    
+      return new TreeCalculator( model );
+
+    }
+    else if ( type == "FeynHiggsCalculator" ) {
+
+#if defined FEYNHIGGS
+
+            return new FeynHiggsModelCalculator( model );
+
+#else
+
+            throw ConfigurationException( "Trying to use FeynHiggsCalculator but Fittino was built without FeynHiggs." );
+
+#endif
+    }
+    else if ( type == "SPhenoCalculator" ) {
+
+      return new SPhenoSLHAModelCalculator( model );
+    
+    }
+
     else {
 
       throw ConfigurationException( "Calculator type" + type + "not known." );
