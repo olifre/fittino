@@ -257,6 +257,11 @@ void Fittino::PhysicsModelBase::SmearObservables( TRandom3* randomGenerator ) {
         _observableVector[i]->SmearMeasuredValue( randomGenerator );
 
     }
+    for( int i = 0; i < _chi2ContributionVector.size(); ++i ) {
+
+        _chi2ContributionVector[i]->SmearObservation( randomGenerator );
+
+    }
 
 }
 
