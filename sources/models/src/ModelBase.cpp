@@ -63,10 +63,10 @@ double Fittino::ModelBase::GetChi2() {
 
     for ( unsigned int i = 0; i < GetNumberOfParameters(); i++ ) {
 
-        if ( GetParameterVector()->at( i )->IsUpdated() ) {
+        if ( GetCollectionOfParameters().At( i )->IsUpdated() ) {
 
             evaluate = true;
-            GetParameterVector()->at( i )->SetUpdated( false );
+            GetCollectionOfParameters().At( i )->SetUpdated( false );
 
         }
 
@@ -90,7 +90,7 @@ int Fittino::ModelBase::GetNumberOfChi2Contributions() const {
 
 int Fittino::ModelBase::GetNumberOfParameters() const {
 
-    return _parameterVector.size();
+  return GetCollectionOfParameters().GetNumberOfElements();
 
 }
 
@@ -101,8 +101,6 @@ int Fittino::ModelBase::GetNumberOfPredictions() const {
 }
 
 void Fittino::ModelBase::AddParameter( ModelParameterBase* parameter ) {
-
-    _parameterVector.push_back( parameter );
 
     _collectionOfParameters.AddElement( parameter->GetName(), parameter );
 
@@ -132,21 +130,9 @@ std::string Fittino::ModelBase::GetName() const {
 
 }
 
-// const std::map<std::string, Fittino::ModelParameterBase*>* Fittino::ModelBase::GetParameterMap() const {
-
-//     return &_parameterMap;
-
-// }
-
 const std::vector<Fittino::Chi2ContributionBase*>* Fittino::ModelBase::GetChi2ContributionVector() const {
 
     return &_chi2ContributionVector;
-
-}
-
-const std::vector<Fittino::ModelParameterBase*>* Fittino::ModelBase::GetParameterVector() const {
-
-    return &_parameterVector;
 
 }
 

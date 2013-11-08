@@ -48,7 +48,7 @@ Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, cons
 
     for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-        _previousParameterValues.at( k ) = _model->GetParameterVector()->at( k )->GetValue();
+        _previousParameterValues.at( k ) = _model->GetCollectionOfParameters().At( k )->GetValue();
 
     }
 
@@ -75,7 +75,7 @@ Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, int 
 
     for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-        _previousParameterValues.at( k ) = _model->GetParameterVector()->at( k )->GetValue();
+        _previousParameterValues.at( k ) = _model->GetCollectionOfParameters().At( k )->GetValue();
 
     }
 
@@ -125,7 +125,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
     if( _iterationCounter != 1 ) {
       for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-        _model->GetParameterVector()->at( k )->SetValue( _model->GetParameterVector()->at( k )->GetValue() + _randomGenerator.Gaus( 0., _model->GetParameterVector()->at( k )->GetError() ) );
+        _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfParameters().At( k )->GetValue() + _randomGenerator.Gaus( 0., _model->GetCollectionOfParameters().At( k )->GetError() ) );
 
       }
     }
@@ -177,8 +177,8 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
     for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-        if (    _model->GetParameterVector()->at( k )->GetValue() < _model->GetParameterVector()->at( k )->GetLowerBound()
-                || _model->GetParameterVector()->at( k )->GetValue() > _model->GetParameterVector()->at( k )->GetUpperBound() ) {
+        if (    _model->GetCollectionOfParameters().At( k )->GetValue() < _model->GetCollectionOfParameters().At( k )->GetLowerBound()
+                || _model->GetCollectionOfParameters().At( k )->GetValue() > _model->GetCollectionOfParameters().At( k )->GetUpperBound() ) {
 
             pointAccepted = false;
             //GetStatusParameterVector()->at( 2 )->SetValue( pointAccepted );
@@ -195,7 +195,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
         _previousLikelihood = likelihood;
         for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-            _previousParameterValues.at( k ) = _model->GetParameterVector()->at( k )->GetValue();
+            _previousParameterValues.at( k ) = _model->GetCollectionOfParameters().At( k )->GetValue();
 
         }
         this->FillTree();
@@ -234,7 +234,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
         for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-            _model->GetParameterVector()->at( k )->SetValue( _previousParameterValues.at( k ) );
+            _model->GetCollectionOfParameters().At( k )->SetValue( _previousParameterValues.at( k ) );
 
         }
 
@@ -249,7 +249,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
     //    for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-    //        _model->GetParameterVector()->at( k )->SetValue( _previousParameterValues.at( k ) );
+    //        _model->GetCollectionOfParameters().At( k )->SetValue( _previousParameterValues.at( k ) );
 
     //    }
     //

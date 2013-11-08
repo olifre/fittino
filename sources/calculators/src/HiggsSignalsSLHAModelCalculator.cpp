@@ -307,53 +307,53 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction() {
 
     // Setting 3 : All up-type quarks and all down-type quarks and leptons are the same. Additionally the W and Z boson are fitted universally
 
-    //double g2hjss_s       = pow( 1 + _model->GetParameterVector()->at(  1 )->GetValue(), 2 );
-    //double g2hjss_p       = pow( 1 + _model->GetParameterVector()->at(  2 )->GetValue(), 2 );
-    //double g2hjcc_s       = pow( 1 + _model->GetParameterVector()->at(  3 )->GetValue(), 2 );
-    //double g2hjcc_p       = pow( 1 + _model->GetParameterVector()->at(  4 )->GetValue(), 2 );
+    //double g2hjss_s       = pow( 1 + _model->GetCollectionOfParameters().At(  1 )->GetValue(), 2 );
+    //double g2hjss_p       = pow( 1 + _model->GetCollectionOfParameters().At(  2 )->GetValue(), 2 );
+    //double g2hjcc_s       = pow( 1 + _model->GetCollectionOfParameters().At(  3 )->GetValue(), 2 );
+    //double g2hjcc_p       = pow( 1 + _model->GetCollectionOfParameters().At(  4 )->GetValue(), 2 );
     //double g2hjbb_s       = g2hjss_s;
-    //double g2hjbb_p       = pow( 1 + _model->GetParameterVector()->at(  5 )->GetValue(), 2 );
+    //double g2hjbb_p       = pow( 1 + _model->GetCollectionOfParameters().At(  5 )->GetValue(), 2 );
     //double g2hjtt_s       = g2hjcc_s;
-    //double g2hjtt_p       = pow( 1 + _model->GetParameterVector()->at(  6 )->GetValue(), 2 );
-    //double g2hjmumu_s     = pow( 1 + _model->GetParameterVector()->at(  7 )->GetValue(), 2 );
-    //double g2hjmumu_p     = pow( 1 + _model->GetParameterVector()->at(  8 )->GetValue(), 2 );
+    //double g2hjtt_p       = pow( 1 + _model->GetCollectionOfParameters().At(  6 )->GetValue(), 2 );
+    //double g2hjmumu_s     = pow( 1 + _model->GetCollectionOfParameters().At(  7 )->GetValue(), 2 );
+    //double g2hjmumu_p     = pow( 1 + _model->GetCollectionOfParameters().At(  8 )->GetValue(), 2 );
     //double g2hjtautau_s   = g2hjmumu_s;
-    //double g2hjtautau_p   = pow( 1 + _model->GetParameterVector()->at(  9 )->GetValue(), 2 );
-    //double g2hjWW         = pow( 1 + _model->GetParameterVector()->at( 10 )->GetValue(), 2 );
+    //double g2hjtautau_p   = pow( 1 + _model->GetCollectionOfParameters().At(  9 )->GetValue(), 2 );
+    //double g2hjWW         = pow( 1 + _model->GetCollectionOfParameters().At( 10 )->GetValue(), 2 );
     //double g2hjZZ         = g2hjWW;
-    //double g2hjZga        = pow( 1 + _model->GetParameterVector()->at( 11 )->GetValue(), 2 );
-    //double g2hjgaga       = pow( 1 + _model->GetParameterVector()->at( 12 )->GetValue(), 2 );
-    //double g2hjgg         = pow( 1 + _model->GetParameterVector()->at( 13 )->GetValue(), 2 );
-    //double g2hjggZ        = pow( 1 + _model->GetParameterVector()->at( 14 )->GetValue(), 2 );
-    //double g2hjhiZ        = pow( 1 + _model->GetParameterVector()->at( 15 )->GetValue(), 2 );
+    //double g2hjZga        = pow( 1 + _model->GetCollectionOfParameters().At( 11 )->GetValue(), 2 );
+    //double g2hjgaga       = pow( 1 + _model->GetCollectionOfParameters().At( 12 )->GetValue(), 2 );
+    //double g2hjgg         = pow( 1 + _model->GetCollectionOfParameters().At( 13 )->GetValue(), 2 );
+    //double g2hjggZ        = pow( 1 + _model->GetCollectionOfParameters().At( 14 )->GetValue(), 2 );
+    //double g2hjhiZ        = pow( 1 + _model->GetCollectionOfParameters().At( 15 )->GetValue(), 2 );
     
-    //double BR_hjhihi      = _model->GetParameterVector()->at( 16 )->GetValue();
-    //double GammaInvisible = _model->GetParameterVector()->at( 17 )->GetValue();
+    //double BR_hjhihi      = _model->GetCollectionOfParameters().At( 16 )->GetValue();
+    //double GammaInvisible = _model->GetCollectionOfParameters().At( 17 )->GetValue();
 
     // Setting 2 : All up-type quarks and all down-type quarks and leptons are the same.
 
-    //double g2hjss_s       = pow( 1 + _model->GetParameterVector()->at(  1 )->GetValue(), 2 );
-    //double g2hjss_p       = pow( 1 + _model->GetParameterVector()->at(  2 )->GetValue(), 2 );
-    //double g2hjcc_s       = pow( 1 + _model->GetParameterVector()->at(  3 )->GetValue(), 2 );
-    //double g2hjcc_p       = pow( 1 + _model->GetParameterVector()->at(  4 )->GetValue(), 2 );
+    //double g2hjss_s       = pow( 1 + _model->GetCollectionOfParameters().At(  1 )->GetValue(), 2 );
+    //double g2hjss_p       = pow( 1 + _model->GetCollectionOfParameters().At(  2 )->GetValue(), 2 );
+    //double g2hjcc_s       = pow( 1 + _model->GetCollectionOfParameters().At(  3 )->GetValue(), 2 );
+    //double g2hjcc_p       = pow( 1 + _model->GetCollectionOfParameters().At(  4 )->GetValue(), 2 );
     //double g2hjbb_s       = g2hjss_s;
-    //double g2hjbb_p       = pow( 1 + _model->GetParameterVector()->at(  5 )->GetValue(), 2 );
+    //double g2hjbb_p       = pow( 1 + _model->GetCollectionOfParameters().At(  5 )->GetValue(), 2 );
     //double g2hjtt_s       = g2hjcc_s;
-    //double g2hjtt_p       = pow( 1 + _model->GetParameterVector()->at(  6 )->GetValue(), 2 );
-    //double g2hjmumu_s     = pow( 1 + _model->GetParameterVector()->at(  7 )->GetValue(), 2 );
-    //double g2hjmumu_p     = pow( 1 + _model->GetParameterVector()->at(  8 )->GetValue(), 2 );
+    //double g2hjtt_p       = pow( 1 + _model->GetCollectionOfParameters().At(  6 )->GetValue(), 2 );
+    //double g2hjmumu_s     = pow( 1 + _model->GetCollectionOfParameters().At(  7 )->GetValue(), 2 );
+    //double g2hjmumu_p     = pow( 1 + _model->GetCollectionOfParameters().At(  8 )->GetValue(), 2 );
     //double g2hjtautau_s   = g2hjmumu_s;
-    //double g2hjtautau_p   = pow( 1 + _model->GetParameterVector()->at(  9 )->GetValue(), 2 );
-    //double g2hjWW         = pow( 1 + _model->GetParameterVector()->at( 10 )->GetValue(), 2 );
-    //double g2hjZZ         = pow( 1 + _model->GetParameterVector()->at( 11 )->GetValue(), 2 );
-    //double g2hjZga        = pow( 1 + _model->GetParameterVector()->at( 12 )->GetValue(), 2 );
-    //double g2hjgaga       = pow( 1 + _model->GetParameterVector()->at( 13 )->GetValue(), 2 );
-    //double g2hjgg         = pow( 1 + _model->GetParameterVector()->at( 14 )->GetValue(), 2 );
-    //double g2hjggZ        = pow( 1 + _model->GetParameterVector()->at( 15 )->GetValue(), 2 );
-    //double g2hjhiZ        = pow( 1 + _model->GetParameterVector()->at( 16 )->GetValue(), 2 );
+    //double g2hjtautau_p   = pow( 1 + _model->GetCollectionOfParameters().At(  9 )->GetValue(), 2 );
+    //double g2hjWW         = pow( 1 + _model->GetCollectionOfParameters().At( 10 )->GetValue(), 2 );
+    //double g2hjZZ         = pow( 1 + _model->GetCollectionOfParameters().At( 11 )->GetValue(), 2 );
+    //double g2hjZga        = pow( 1 + _model->GetCollectionOfParameters().At( 12 )->GetValue(), 2 );
+    //double g2hjgaga       = pow( 1 + _model->GetCollectionOfParameters().At( 13 )->GetValue(), 2 );
+    //double g2hjgg         = pow( 1 + _model->GetCollectionOfParameters().At( 14 )->GetValue(), 2 );
+    //double g2hjggZ        = pow( 1 + _model->GetCollectionOfParameters().At( 15 )->GetValue(), 2 );
+    //double g2hjhiZ        = pow( 1 + _model->GetCollectionOfParameters().At( 16 )->GetValue(), 2 );
 
-    //double BR_hjhihi      = _model->GetParameterVector()->at( 17 )->GetValue();
-    //double GammaInvisible = _model->GetParameterVector()->at( 18 )->GetValue();
+    //double BR_hjhihi      = _model->GetCollectionOfParameters().At( 17 )->GetValue();
+    //double GammaInvisible = _model->GetCollectionOfParameters().At( 18 )->GetValue();
 
     // Setting 1 : No constraints.
 
@@ -497,14 +497,14 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction() {
 
     // Calculate the SM variations of the loop induced couplings.
 
-    double g2_SM_hgammagamma = Calculateg2hgammagamma( 1 + _model->GetParameterVector()->at(  5 )->GetValue(),
-                                                       1 + _model->GetParameterVector()->at(  7 )->GetValue(),
-                                                       1 + _model->GetParameterVector()->at( 11 )->GetValue(),
-                                                       1 + _model->GetParameterVector()->at( 13 )->GetValue(),
-                                                       1 + _model->GetParameterVector()->at( 14 )->GetValue(), massh );
+    double g2_SM_hgammagamma = Calculateg2hgammagamma( 1 + _model->GetCollectionOfParameters().At(  5 )->GetValue(),
+                                                       1 + _model->GetCollectionOfParameters().At(  7 )->GetValue(),
+                                                       1 + _model->GetCollectionOfParameters().At( 11 )->GetValue(),
+                                                       1 + _model->GetCollectionOfParameters().At( 13 )->GetValue(),
+                                                       1 + _model->GetCollectionOfParameters().At( 14 )->GetValue(), massh );
 
-    double g2_SM_hgg = Calculateg2hgg( 1 + _model->GetParameterVector()->at( 5 )->GetValue(),
-                                       1 + _model->GetParameterVector()->at( 7 )->GetValue(), massh );
+    double g2_SM_hgg = Calculateg2hgg( 1 + _model->GetCollectionOfParameters().At( 5 )->GetValue(),
+                                       1 + _model->GetCollectionOfParameters().At( 7 )->GetValue(), massh );
 
     // Set the upper limit of the total width of the Higgs boson.
 

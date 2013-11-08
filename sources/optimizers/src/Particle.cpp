@@ -43,7 +43,7 @@ Fittino::Particle::Particle( double c1, double c2, Fittino::ModelBase* model, in
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
-        _position.push_back( _randomGenerator->Uniform( _model->GetParameterVector()->at( i )->GetLowerBound(), _model->GetParameterVector()->at( i )->GetUpperBound() ) );
+        _position.push_back( _randomGenerator->Uniform( _model->GetCollectionOfParameters().At( i )->GetLowerBound(), _model->GetCollectionOfParameters().At( i )->GetUpperBound() ) );
         _velocity.push_back( 0. );
 
     }
@@ -65,8 +65,8 @@ void Fittino::Particle::UpdateVelocity() {
     for ( unsigned int i = 0; i < _velocity.size(); i++ ) {
 
         _velocity.at( i ) =   _velocity.at( i )
-                            + _c1 * randomNumber1 * ( _personalBestModel->GetParameterVector()->at( i )->GetValue() - _position.at( i ) )
-                            + _c2 * randomNumber2 * ( _globalBestModel->GetParameterVector()->at( i )->GetValue() - _position.at( i ) );
+                            + _c1 * randomNumber1 * ( _personalBestModel->GetCollectionOfParameters().At( i )->GetValue() - _position.at( i ) )
+          + _c2 * randomNumber2 * ( _globalBestModel->GetCollectionOfParameters().At( i )->GetValue() - _position.at( i ) );
 
     }
 
@@ -89,7 +89,7 @@ void Fittino::Particle::UpdateModel() {
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
-        _model->GetParameterVector()->at( i )->SetValue( _position.at( i ) );
+      _model->GetCollectionOfParameters().At( i )->SetValue( _position.at( i ) );
 
     }
 

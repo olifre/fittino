@@ -75,7 +75,7 @@ void Fittino::AnalysisTool::FillTree() {
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
 
-        _leafVector[i + _model->GetNumberOfChi2Contributions()] = _model->GetParameterVector()->at( i )->GetValue();
+        _leafVector[i + _model->GetNumberOfChi2Contributions()] = _model->GetCollectionOfParameters().At( i )->GetValue();
 
     }
 
@@ -159,9 +159,9 @@ void Fittino::AnalysisTool::InitializeBranches() {
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
 
-        _tree->Branch( _model->GetParameterVector()->at( i )->GetName().c_str(),
+        _tree->Branch( _model->GetCollectionOfParameters().At( i )->GetName().c_str(),
                        &_leafVector[i + _model->GetNumberOfChi2Contributions()] );
-        //_model->GetParameterVector()->at( i )->GetName().c_str() );
+        //_model->GetCollectionOfParameters().At( i )->GetName().c_str() );
 
     }
 

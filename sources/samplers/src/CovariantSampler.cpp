@@ -59,8 +59,8 @@ Fittino::CovariantSampler::CovariantSampler( Fittino::ModelBase* model, int rand
 
     for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-        _previousParameterValues.at( k ) = _model->GetParameterVector()->at( k )->GetValue();
-        _currentExpectationValues.at( k ) = _model->GetParameterVector()->at(k)->GetValue();
+        _previousParameterValues.at( k ) = _model->GetCollectionOfParameters().At( k )->GetValue();
+        _currentExpectationValues.at( k ) = _model->GetCollectionOfParameters().At(k)->GetValue();
         _covarianceMatrix[k][k] = 1.;
         _expectationMatrix[k][k] = (_currentExpectationValues[k])*(_currentExpectationValues[k]);
         for (unsigned int i = k+1; i < _model->GetNumberOfParameters(); i++ ) {
@@ -96,18 +96,18 @@ void Fittino::CovariantSampler::UpdateExpectations() {
         case 0: break;
         case 1: for(unsigned int i = 0; i < _model->GetNumberOfParameters(); i++){
 
-                    _currentExpectationValues[i] = (_currentExpectationValues[i] + _model->GetParameterVector()->at(i)->GetValue()) / 2;
+                    _currentExpectationValues[i] = (_currentExpectationValues[i] + _model->GetCollectionOfParameters().At(i)->GetValue()) / 2;
                     for(unsigned int k = i; k < _model->GetNumberOfParameters(); k++){
-                       _expectationMatrix[i][k] = (_expectationMatrix[i][k] + (_model->GetParameterVector()->at(i)->GetValue() * _model->GetParameterVector()->at(k)->GetValue())) / 2;
+                       _expectationMatrix[i][k] = (_expectationMatrix[i][k] + (_model->GetCollectionOfParameters().At(i)->GetValue() * _model->GetCollectionOfParameters().At(k)->GetValue())) / 2;
                        _expectationMatrix[k][i] = _expectationMatrix[i][k];
                     }
                 }
                 break;
         default: for(unsigned int i = 0; i < _model->GetNumberOfParameters(); i++){
 
-                    _currentExpectationValues[i] = (((_numberOfAcceptedPoints - 1) * _currentExpectationValues[i]) + _model->GetParameterVector()->at(i)->GetValue()) / _numberOfAcceptedPoints;
+                    _currentExpectationValues[i] = (((_numberOfAcceptedPoints - 1) * _currentExpectationValues[i]) + _model->GetCollectionOfParameters().At(i)->GetValue()) / _numberOfAcceptedPoints;
                     for(unsigned int k = i; k < _model->GetNumberOfParameters(); k++){
-                       _expectationMatrix[i][k] = (((_numberOfAcceptedPoints - 1)*_expectationMatrix[i][k]) + (_model->GetParameterVector()->at(i)->GetValue() * _model->GetParameterVector()->at(k)->GetValue())) / _numberOfAcceptedPoints;
+                       _expectationMatrix[i][k] = (((_numberOfAcceptedPoints - 1)*_expectationMatrix[i][k]) + (_model->GetCollectionOfParameters().At(i)->GetValue() * _model->GetCollectionOfParameters().At(k)->GetValue())) / _numberOfAcceptedPoints;
                        _expectationMatrix[k][i] = _expectationMatrix[i][k];
                     }
                 }
@@ -145,14 +145,14 @@ void Fittino::CovariantSampler::UpdateParameters() {
 
     int p = rand() % _model->GetNumberOfParameters();
 
-    double randomStep = 0.1*_randomGenerator.Gaus( 0., _model->GetParameterVector()->at( p)->GetError());
-    _model->GetParameterVector()->at(p)->SetValue(_model->GetParameterVector()->at( p )->GetValue() +  randomStep);
+    double randomStep = 0.1*_randomGenerator.Gaus( 0., _model->GetCollectionOfParameters().At( p)->GetError());
+    _model->GetCollectionOfParameters().At(p)->SetValue(_model->GetCollectionOfParameters().At( p )->GetValue() +  randomStep);
 
     for (unsigned int i = 0; i < _model->GetNumberOfParameters(); i++){
 
-        double a = 0.1*_randomGenerator.Gaus( 0., _model->GetParameterVector()->at( i )->GetError());
+        double a = 0.1*_randomGenerator.Gaus( 0., _model->GetCollectionOfParameters().At( i )->GetError());
         if (i != p) {
-            _model->GetParameterVector()->at(i)->SetValue(_model->GetParameterVector()->at( i )->GetValue() +  (randomStep*_covarianceMatrix[i][p])*(a*(1-_covarianceMatrix[i][p])));
+            _model->GetCollectionOfParameters().At(i)->SetValue(_model->GetCollectionOfParameters().At( i )->GetValue() +  (randomStep*_covarianceMatrix[i][p])*(a*(1-_covarianceMatrix[i][p])));
         }
 
     }
@@ -202,7 +202,7 @@ void Fittino::CovariantSampler::CalculateStandardDeviations(){
 
     for(unsigned int i = 0; i < _model->GetNumberOfParameters(); i++){
         _standardDeviations[i] = pow(_covarianceMatrix(i,i), 0.5);
-        std::cout<<_model->GetParameterVector()->at(i)->GetName()<<" : "<<_standardDeviations[i]<<"\n";
+        std::cout<<_model->GetCollectionOfParameters().At(i)->GetName()<<" : "<<_standardDeviations[i]<<"\n";
     }
 }
 
@@ -222,7 +222,7 @@ void Fittino::CovariantSampler::CalculateStepWidth(){
     double step = 0;
 
     for(unsigned int i = 0; i < _model->GetNumberOfParameters(); i++){
-        step += pow((_previousParameterValues.at(i) - _model->GetParameterVector()->at(i)->GetValue()), 2);
+        step += pow((_previousParameterValues.at(i) - _model->GetCollectionOfParameters().At(i)->GetValue()), 2);
     }
     GetStatusParameterVector()->at(3)->SetValue(pow(step, 0.5));
 }
@@ -283,7 +283,7 @@ void Fittino::CovariantSampler::UpdateModel() {
             // Write point into _acceptedPoints.
 
             for(unsigned int i = 0; i < _model->GetNumberOfParameters(); i++){
-                _acceptedPoints(_iterationCounter-1, i) = _model->GetParameterVector()->at(i)->GetValue();
+                _acceptedPoints(_iterationCounter-1, i) = _model->GetCollectionOfParameters().At(i)->GetValue();
             }
 
             CalculateStepWidth();
@@ -297,7 +297,7 @@ void Fittino::CovariantSampler::UpdateModel() {
 
             for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-                _model->GetParameterVector()->at( k )->SetValue( _previousParameterValues.at( k ) );
+                _model->GetCollectionOfParameters().At( k )->SetValue( _previousParameterValues.at( k ) );
 
             }
 

@@ -29,7 +29,7 @@ Fittino::SimpleSampler::SimpleSampler( ModelBase* model, const boost::property_t
 
     for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-        _model->GetParameterVector()->at( k )->SetValue( _model->GetParameterVector()->at( k )->GetLowerBound() );
+        _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfParameters().At( k )->GetLowerBound() );
 
     }
 
@@ -42,7 +42,7 @@ Fittino::SimpleSampler::SimpleSampler( Fittino::ModelBase* model, int randomSeed
 
     for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-        _model->GetParameterVector()->at( k )->SetValue( _model->GetParameterVector()->at( k )->GetLowerBound() );
+        _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfParameters().At( k )->GetLowerBound() );
 
     }
 
@@ -66,7 +66,7 @@ void Fittino::SimpleSampler::ResetValues( unsigned int iParameter ) {
 
     for ( unsigned int i = 0; i < iParameter; i++ ) {
 
-        _model->GetParameterVector()->at( i )->SetValue( _model->GetParameterVector()->at( i )->GetLowerBound() );
+        _model->GetCollectionOfParameters().At( i )->SetValue( _model->GetCollectionOfParameters().At( i )->GetLowerBound() );
 
     }
 
@@ -76,10 +76,10 @@ void Fittino::SimpleSampler::Scan( unsigned int iParameter ) {
 
     if ( iParameter > 0 ) {
 
-         while ( _model->GetParameterVector()->at( iParameter )->GetValue() <= _model->GetParameterVector()->at( iParameter )->GetUpperBound() ) {
+         while ( _model->GetCollectionOfParameters().At( iParameter )->GetValue() <= _model->GetCollectionOfParameters().At( iParameter )->GetUpperBound() ) {
 
             Scan( iParameter - 1 );
-            if ( _model->GetParameterVector()->at( iParameter )->IsFixed() ) break;
+            if ( _model->GetCollectionOfParameters().At( iParameter )->IsFixed() ) break;
             ResetValues( iParameter );
             UpdateValues( iParameter );
 
@@ -88,14 +88,14 @@ void Fittino::SimpleSampler::Scan( unsigned int iParameter ) {
     }
     else {
 
-        while ( _model->GetParameterVector()->at( iParameter )->GetValue() <= _model->GetParameterVector()->at( iParameter )->GetUpperBound() ) {
+        while ( _model->GetCollectionOfParameters().At( iParameter )->GetValue() <= _model->GetCollectionOfParameters().At( iParameter )->GetUpperBound() ) {
 
             _iterationCounter++;
             _chi2 = _model->GetChi2();
             GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
             this->PrintStatus();
             this->FillTree();
-            if ( _model->GetParameterVector()->at( iParameter )->IsFixed() ) break;
+            if ( _model->GetCollectionOfParameters().At( iParameter )->IsFixed() ) break;
             UpdateValues( iParameter );
 
         }
@@ -110,6 +110,6 @@ void Fittino::SimpleSampler::UpdateModel() {
 
 void Fittino::SimpleSampler::UpdateValues( unsigned int iParameter ) {
 
-    _model->GetParameterVector()->at( iParameter )->SetValue( _model->GetParameterVector()->at( iParameter )->GetValue() + _model->GetParameterVector()->at( iParameter )->GetError() );
+    _model->GetCollectionOfParameters().At( iParameter )->SetValue( _model->GetCollectionOfParameters().At( iParameter )->GetValue() + _model->GetCollectionOfParameters().At( iParameter )->GetError() );
 
 }

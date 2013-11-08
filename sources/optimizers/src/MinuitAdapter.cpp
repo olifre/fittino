@@ -33,7 +33,7 @@ double Fittino::MinuitAdapter::operator()( const std::vector< double >& paramete
 
         std::cout << parameterVector[i] << std::endl;
 
-        ( *_model->GetParameterVector() )[i]->SetValue( parameterVector[i] );
+        _model->GetCollectionOfParameters().At( i )->SetValue( parameterVector[i] );
 
     }
 

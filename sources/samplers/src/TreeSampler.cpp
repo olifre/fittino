@@ -136,7 +136,7 @@ void Fittino::TreeSampler::Execute() {
       GetStatusParameterVector()->at(0)->SetValue( _model->GetChi2() );
       GetStatusParameterVector()->at(1)->SetValue( _bestFitIndex + 1);
       for( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
-        _model->GetParameterVector()->at( k )->SetValue( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetParameterVector()->at( k )->GetName() ) );
+        _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetCollectionOfParameters().At( k )->GetName() ) );
       }
 
       this->FillTree();
@@ -159,7 +159,7 @@ void Fittino::TreeSampler::UpdateModel() {
   GetStatusParameterVector()->at( 0 )->SetValue( chi2 );
 
   for( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
-    _model->GetParameterVector()->at( k )->SetValue( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetParameterVector()->at( k )->GetName() ) );
+    _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetCollectionOfParameters().At( k )->GetName() ) );
   }
     
   
@@ -185,7 +185,7 @@ void Fittino::TreeSampler::DetermineBestFitValues() {
 
     double chi2 = _model->GetChi2();
     for( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
-      _model->GetParameterVector()->at( k )->SetValue( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetParameterVector()->at( k )->GetName() ) );
+      _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetCollectionOfParameters().At( k )->GetName() ) );
     }
     
     if( chi2 < _inputLowestChi2 ) { 

@@ -63,8 +63,8 @@ Fittino::CorrelatedSampler::CorrelatedSampler( Fittino::ModelBase* model, int ra
 
     for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-        _previousParameterValues.at( k ) = _model->GetParameterVector()->at( k )->GetValue();
-        _currentExpectationValues.at( k ) = _model->GetParameterVector()->at( k )->GetValue();
+        _previousParameterValues.at( k ) = _model->GetCollectionOfParameters().At( k )->GetValue();
+        _currentExpectationValues.at( k ) = _model->GetCollectionOfParameters().At( k )->GetValue();
         _covarianceMatrix[k][k] = 1.;
         _expectationMatrix[k][k] = (_currentExpectationValues[k])*(_currentExpectationValues[k]);
         for (unsigned int i = k+1; i < _model->GetNumberOfParameters(); i++ ) {
@@ -151,7 +151,7 @@ TO DO:
 
    for (unsigned int i = 0; i < _model->GetNumberOfParameters(); i++){
        y[i] += _currentExpectationValues.at(i);
-       _model->GetParameterVector()->at(i)->SetValue(y[i]);
+       _model->GetCollectionOfParameters().At(i)->SetValue(y[i]);
    }
 
 }
@@ -193,18 +193,18 @@ void Fittino::CorrelatedSampler::UpdateExpectations() {
         case 0: break;
         case 1: for(unsigned int i = 0; i < _model->GetNumberOfParameters(); i++){
 
-                    _currentExpectationValues[i] = (_currentExpectationValues[i] + _model->GetParameterVector()->at(i)->GetValue()) / 2;
+                    _currentExpectationValues[i] = (_currentExpectationValues[i] + _model->GetCollectionOfParameters().At(i)->GetValue()) / 2;
                     for(unsigned int k = i; k < _model->GetNumberOfParameters(); k++){
-                       _expectationMatrix[i][k] = (_expectationMatrix[i][k] + (_model->GetParameterVector()->at(i)->GetValue() * _model->GetParameterVector()->at(k)->GetValue())) / 2;
+                       _expectationMatrix[i][k] = (_expectationMatrix[i][k] + (_model->GetCollectionOfParameters().At(i)->GetValue() * _model->GetCollectionOfParameters().At(k)->GetValue())) / 2;
                        _expectationMatrix[k][i] = _expectationMatrix[i][k];
                     }
                 }
                 break;
         default: for(unsigned int i = 0; i < _model->GetNumberOfParameters(); i++){
 
-                    _currentExpectationValues[i] = (((_numberOfAcceptedPoints - 1) * _currentExpectationValues[i]) + _model->GetParameterVector()->at(i)->GetValue()) / _numberOfAcceptedPoints;
+                    _currentExpectationValues[i] = (((_numberOfAcceptedPoints - 1) * _currentExpectationValues[i]) + _model->GetCollectionOfParameters().At(i)->GetValue()) / _numberOfAcceptedPoints;
                     for(unsigned int k = i; k < _model->GetNumberOfParameters(); k++){
-                       _expectationMatrix[i][k] = (((_numberOfAcceptedPoints - 1)*_expectationMatrix[i][k]) + (_model->GetParameterVector()->at(i)->GetValue() * _model->GetParameterVector()->at(k)->GetValue())) / _numberOfAcceptedPoints;
+                       _expectationMatrix[i][k] = (((_numberOfAcceptedPoints - 1)*_expectationMatrix[i][k]) + (_model->GetCollectionOfParameters().At(i)->GetValue() * _model->GetCollectionOfParameters().At(k)->GetValue())) / _numberOfAcceptedPoints;
                        _expectationMatrix[k][i] = _expectationMatrix[i][k];
                     }
                 }
@@ -275,7 +275,7 @@ void Fittino::CorrelatedSampler::CalculateStandardDeviations(){
 
     for(unsigned int i = 0; i < _model->GetNumberOfParameters(); i++){
         _standardDeviations[i] = pow(_covarianceMatrix(i,i), 0.5);
-        std::cout<<_model->GetParameterVector()->at(i)->GetName()<<" : "<<_standardDeviations[i]<<"\n";
+        std::cout<<_model->GetCollectionOfParameters().At(i)->GetName()<<" : "<<_standardDeviations[i]<<"\n";
     }
 }
 
@@ -298,7 +298,7 @@ void Fittino::CorrelatedSampler::CalculateStepWidth(){
 
     double step = 0;
     for(unsigned int i = 0; i < _model->GetNumberOfParameters(); i++){
-        step += pow((_previousParameterValues.at(i) - _model->GetParameterVector()->at(i)->GetValue()), 2);
+        step += pow((_previousParameterValues.at(i) - _model->GetCollectionOfParameters().At(i)->GetValue()), 2);
     }
     GetStatusParameterVector()->at(3)->SetValue(pow(step, 0.5));
 }
@@ -361,11 +361,11 @@ void Fittino::CorrelatedSampler::UpdateModel() {
             CalculateStepWidth();
             for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-                _previousParameterValues.at( k ) = _model->GetParameterVector()->at( k )->GetValue();
+                _previousParameterValues.at( k ) = _model->GetCollectionOfParameters().At( k )->GetValue();
 
                 // Write point into _acceptedPoints.
 
-                _acceptedPoints(_numberOfAcceptedPoints, k) = _model->GetParameterVector()->at( k )->GetValue();
+                _acceptedPoints(_numberOfAcceptedPoints, k) = _model->GetCollectionOfParameters().At( k )->GetValue();
 
             }
             _numberOfAcceptedPoints++;
@@ -377,7 +377,7 @@ void Fittino::CorrelatedSampler::UpdateModel() {
 
             for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-                _model->GetParameterVector()->at( k )->SetValue( _previousParameterValues.at( k ) );
+                _model->GetCollectionOfParameters().At( k )->SetValue( _previousParameterValues.at( k ) );
 
             }
 

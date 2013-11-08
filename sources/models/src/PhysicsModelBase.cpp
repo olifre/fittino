@@ -137,7 +137,7 @@ void Fittino::PhysicsModelBase::PrintStatus() const {
 
     for ( unsigned int i = 0; i < GetNumberOfParameters(); ++i ) {
 
-        GetParameterVector()->at( i )->PrintStatus();
+        GetCollectionOfParameters().At( i )->PrintStatus();
 
     }
 
@@ -200,7 +200,7 @@ void Fittino::PhysicsModelBase::Initialize() const {
 
     for ( unsigned int i = 0; i < GetNumberOfParameters(); i++ ) {
 
-        GetParameterVector()->at( i )->PrintStatus();
+        GetCollectionOfParameters().At( i )->PrintStatus();
 
     }
 

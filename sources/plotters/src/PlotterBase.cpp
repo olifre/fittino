@@ -77,7 +77,7 @@ Fittino::PlotterBase::PlotterBase( ModelBase* model, std::string& dataFileName, 
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
 
-        _quantityVector.push_back( _model->GetParameterVector()->at( i ) );
+        _quantityVector.push_back( _model->GetCollectionOfParameters().At( i ) );
 
     }
 

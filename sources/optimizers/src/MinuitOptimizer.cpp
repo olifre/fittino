@@ -36,7 +36,7 @@ Fittino::MinuitOptimizer::MinuitOptimizer( Fittino::ModelBase* model, int random
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
         double x;
-        _minuitUserParameters.Add( _model->GetParameterVector()->at( i )->GetName(), x, _model->GetParameterVector()->at( i )->GetValue() );
+        _minuitUserParameters.Add( _model->GetCollectionOfParameters().At( i )->GetName(), x, _model->GetCollectionOfParameters().At( i )->GetValue() );
 
     }
 
@@ -70,7 +70,7 @@ void Fittino::MinuitOptimizer::UpdateModel() {
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
-        _model->GetParameterVector()->at( i )->SetValue( minuitResult.UserParameters().Value( i ) );
+        _model->GetCollectionOfParameters().At( i )->SetValue( minuitResult.UserParameters().Value( i ) );
 
     }
 

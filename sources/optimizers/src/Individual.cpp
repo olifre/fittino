@@ -90,7 +90,7 @@ void Fittino::Individual::UpdateModel() {
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
-        ( *_model->GetParameterVector() )[i]->SetValue( _genes[i] );
+        _model->GetCollectionOfParameters().At( i )->SetValue( _genes[i] );
 
     }
 

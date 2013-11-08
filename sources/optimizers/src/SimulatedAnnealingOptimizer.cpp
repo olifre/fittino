@@ -108,7 +108,7 @@ void Fittino::SimulatedAnnealingOptimizer::UpdateModel() {
 
                 // Update of the model.
 
-                _model->GetParameterVector()->at( k )->SetValue( _model->GetParameterVector()->at( k )->GetValue() + _randomGenerator.Uniform( -1, 1 ) * stepWidth[k] );
+                _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfParameters().At( k )->GetValue() + _randomGenerator.Uniform( -1, 1 ) * stepWidth[k] );
 
                 double newChi2 = _model->GetChi2();
 

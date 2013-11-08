@@ -111,10 +111,6 @@ namespace Fittino {
        */
       const std::vector<Chi2ContributionBase*>*         GetChi2ContributionVector() const;
       /*!
-       *  Returns the parameters of the model as a vector.
-       */
-      const std::vector<ModelParameterBase*>*           GetParameterVector() const;
-      /*!
        *  Returns the predictions of the model as a vector.
        */
       const std::vector<PredictionBase*>*               GetPredictionVector() const;
@@ -181,10 +177,6 @@ namespace Fittino {
        *  Value returned by Evaluate().
        */
       double                                            _chi2;
-      /*!
-       *  Stores the model parameters.
-       */
-      std::vector<ModelParameterBase*>                  _parameterVector;
       /*!
        *  Stores the predictions.
        */

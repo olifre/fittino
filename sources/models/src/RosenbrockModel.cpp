@@ -69,7 +69,7 @@ double Fittino::RosenbrockModel::TestModelFunction() {
 
     for ( unsigned int i = 1; i < GetNumberOfParameters(); i++ ) {
 
-      rosenbrock += pow( 1 - GetParameterVector()->at( i - 1 )->GetValue(), 2 ) + 100 * pow( GetParameterVector()->at( i )->GetValue() - pow( GetParameterVector()->at( i - 1 )->GetValue(), 2 ), 2 );
+      rosenbrock += pow( 1 - GetCollectionOfParameters().At( i - 1 )->GetValue(), 2 ) + 100 * pow( GetCollectionOfParameters().At( i )->GetValue() - pow( GetCollectionOfParameters().At( i - 1 )->GetValue(), 2 ), 2 );
     }
 
     return rosenbrock;
