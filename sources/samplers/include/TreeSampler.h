@@ -18,6 +18,8 @@
 #ifndef FITTINO_TREESAMPLER_H
 #define FITTINO_TREESAMPLER_H
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "SamplerBase.h"
 
 /*!
@@ -33,9 +35,13 @@ namespace Fittino {
 
     public:
       /*!
-       *  Standard constructor.
+       *  Constructor taking model and randomSeed as an input.
        */
       TreeSampler( ModelBase* model, int randomSeed );
+      /*!
+       *  Standard constructor.
+       */
+      TreeSampler( ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

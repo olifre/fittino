@@ -102,6 +102,51 @@ Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, int randomSeed )
 
 }
 
+Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree ) 
+    : SamplerBase( model, ptree.get<int>( "randomSeed" ) ),
+      _numberOfIterations( ptree.get<int> ( "numberOfIterations", -1 ) ),
+      _isToyRun( ptree.get<bool>( "performToyRun", false ) ),
+      _determineBestFitValues( ptree.get<bool>( "determineBestFitValues", false ) ),
+      _lowestChi2( 1.e99 ),
+      _bestFitIndex( 0 ),
+      _inputLowestChi2( 1.e99 ),
+      _inputBestFitIndex( 0 ) {
+
+      if( !_model->GetModelCalculatorVector() ) {
+        throw ConfigurationException( "CalculatorVector is a NULL-pointer (did you specify a TestModel?)" );
+      }
+      else if( _model->GetModelCalculatorVector()->size() == 0 ) {
+        throw ConfigurationException( "Could not find a calculator associated to specified model." );
+      }
+      
+      //still ugly...
+      std::string filename = ptree.get<std::string>( "InputFileName", "Fittino.old.root" );
+      std::string treename = ptree.get<std::string>( "InputTreeName", "Tree1" );
+
+      if( _numberOfIterations == -1 ) {
+       
+        TDirectory *tempDirectory = gDirectory;
+        TFile *f = new TFile( filename.c_str(), "READ" );
+        if( (TTree*)f->Get( treename.c_str() ) ) {
+
+           _numberOfIterations = ((TTree*)f->Get( treename.c_str() ))->GetEntries();
+
+        }
+
+        else {
+
+          throw ConfigurationException( "Could not read number of iterations from given input file/input tree. ");
+
+        }
+
+        f->Close();
+        gDirectory = tempDirectory;
+        delete f;
+        _tree = new TTree( "Tree", "Tree" );
+
+     }
+}
+
 Fittino::TreeSampler::~TreeSampler() {
 
 }
