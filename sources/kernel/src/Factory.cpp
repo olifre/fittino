@@ -132,7 +132,7 @@ Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::str
     }
     else if ( type == "TreeCalculator" ) {
     
-      return new TreeCalculator( model );
+      return new TreeCalculator( model, ptree );
 
     }
     else if ( type == "FeynHiggsCalculator" ) {

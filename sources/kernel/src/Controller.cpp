@@ -115,6 +115,7 @@ void Fittino::Controller::ExecuteFittino() const {
         const Factory factory;
 
         if ( _propertyTree->get_child("InputFile").count("Tool") != 0 ) {
+          
 
           const boost::property_tree::ptree::value_type& modelNode = *( _propertyTree->get_child("InputFile.Model").begin() );
           std::string modelType = modelNode.first;
