@@ -77,11 +77,13 @@ Fittino::PhysicsModelBase::~PhysicsModelBase() {
 
 }
 
+
 void Fittino::PhysicsModelBase::AddChi2Contribution( const std::string& name ) {
 
   _collectionOfChi2Quantities.AddElement( GetCollectionOfQuantities().At( name ) );
 
 }
+
 
 double Fittino::PhysicsModelBase::Evaluate() {
 
@@ -447,5 +449,15 @@ void Fittino::PhysicsModelBase::InitializeObservables( const boost::property_tre
 
   }  
 
+}
+
+void Fittino::PhysicsModelBase::InitializeChi2Contributions( const boost::property_tree::ptree& ptree ) {
+
+  Factory factory;
+  BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree.get_child("Chi2Contributions") ) {
+  
+    AddChi2Contribution( factory.CreateChi2Contribution( node.first, node.second, GetCollectionOfCalculators() ) );
+
+  }
 
 }

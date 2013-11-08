@@ -98,7 +98,7 @@ namespace Fittino {
       /*!
        *  Adds a chi2 contribution to the model.
        */
-      void                                              AddChi2Contribution( Chi2ContributionBase* chi2Contribution );
+      void                                              AddChi2Contribution( const Chi2ContributionBase* chi2Contribution );
 
       /*!
        *  Returns the name of the model.
@@ -117,11 +117,11 @@ namespace Fittino {
       /*!
        *  Returns the predictions of the model as a collection.
        */
-      const Collection<const PredictionBase*>&                GetCollectionOfPredictions() const;
+      const Collection<const PredictionBase*>&          GetCollectionOfPredictions() const;
       /*!
        *  Returns the chi2 contributions of the model as a collection.
        */
-      const Collection<Chi2ContributionBase*>&          GetCollectionOfChi2Contributions() const;
+      const Collection<const Chi2ContributionBase*>&    GetCollectionOfChi2Contributions() const;
       /*!
        *  Returns the parameters as a collection.
        */
@@ -180,11 +180,11 @@ namespace Fittino {
       /*!
        *  Stores the predictions.
        */
-      Collection<const PredictionBase*>                       _collectionOfPredictions;
+      Collection<const PredictionBase*>                 _collectionOfPredictions;
       /*!
        *  Stores the Chi2 contributions
        */
-      Collection<Chi2ContributionBase*>                 _collectionOfChi2Contributions;
+      Collection<const Chi2ContributionBase*>           _collectionOfChi2Contributions;
       /*!
        *  Stores the parameters
        */

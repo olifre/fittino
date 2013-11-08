@@ -73,6 +73,7 @@ namespace Fittino {
        *  Adds a calculator to the model.
        */
       void                                           AddCalculator( ModelCalculatorBase *calculator );
+      using ModelBase::AddChi2Contribution;
       void                                           AddChi2Contribution( const std::string& name ); 
       /*!
        *  Returns the predictions of the model as a collection.
