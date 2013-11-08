@@ -27,6 +27,7 @@
 class RooAbsReal;
 class RooWorkspace;
 class TFile;
+class TRandom3;
 
 /*!
  *  \brief Fittino namepsace.
@@ -59,7 +60,7 @@ namespace Fittino {
        *  Update prediction for new set of parameters.
        */
       virtual void  UpdateValue();
-
+      virtual void  SmearObservation( TRandom3* );
       /*! \cond UML */
     private:
       /*!

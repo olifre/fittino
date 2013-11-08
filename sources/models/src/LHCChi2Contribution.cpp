@@ -89,7 +89,7 @@ void Fittino::LHCChi2Contribution::UpdateValue() {
 
 }
 
-void Fittino::LHCChi2Contribution::SmearNObs( TRandom3* randomGenerator ) {
+void Fittino::LHCChi2Contribution::SmearObservation( TRandom3* randomGenerator ) {
 
     double nObsNew = randomGenerator->Poisson( _nExpSM*randomGenerator->Gaus(1., _systematicErrorBG) + _nExpBestFit*randomGenerator->Gaus(1., _systematicErrorSignal ) );
     std::stringstream nObsNew_ss;

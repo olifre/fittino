@@ -19,6 +19,8 @@
 
 #include <boost/property_tree/ptree.hpp>
 
+#include "TRandom3.h"
+
 #include "SLHAChi2Contribution.h"
 #include "SLHADataStorageBase.h"
 #include "SLHAModelCalculatorBase.h"
@@ -52,5 +54,9 @@ Fittino::SLHAChi2Contribution::~SLHAChi2Contribution() {
 void Fittino::SLHAChi2Contribution::UpdateValue() {
 
     _chi2 = _slhaModelCalculator->GetDataStorage()->GetEntry( _blockName, _id, _columnIndex );
+
+}
+
+void Fittino::SLHAChi2Contribution::SmearObservation( TRandom3* rndm ) {
 
 }

@@ -24,6 +24,8 @@
 
 #include "Chi2ContributionBase.h"
 
+class TRandom3;
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -55,6 +57,7 @@ namespace Fittino {
        */
                                ~SLHAChi2Contribution();
       virtual void             UpdateValue();
+      virtual void             SmearObservation( TRandom3* );
 
     private:
       int                      _columnIndex;

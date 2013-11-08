@@ -59,7 +59,7 @@ namespace Fittino {
        */
                                ~LHCChi2Contribution();
       virtual void             UpdateValue();
-      void                     SmearNObs( TRandom3* );
+      virtual void             SmearObservation( TRandom3* );
 
     private:
       LHCModelCalculator*      _lhcModelCalculator;

@@ -257,6 +257,7 @@ void Fittino::PhysicsModelBase::SmearObservables( TRandom3* randomGenerator ) {
         _observableVector[i]->SmearMeasuredValue( randomGenerator );
 
     }
+
 }
 
 Fittino::PhysicsModelBase* Fittino::PhysicsModelBase::Clone() const{

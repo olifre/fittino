@@ -26,6 +26,7 @@
 #include "RooRealVar.h"
 #include "RooWorkspace.h"
 #include "TFile.h"
+#include "TRandom3.h"
 
 #include "ConfigurationException.h"
 #include "WorkspaceChi2Contribution.h"
@@ -97,5 +98,9 @@ void Fittino::WorkspaceChi2Contribution::UpdateValue() {
 
     //CalculateChi2();
     //CalculateDeviation();
+
+}
+
+void Fittino::WorkspaceChi2Contribution::SmearObservation( TRandom3 *rndm ) {
 
 }

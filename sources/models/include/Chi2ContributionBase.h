@@ -24,6 +24,8 @@
 
 #include <boost/property_tree/ptree.hpp>
 
+class TRandom3;
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -49,6 +51,7 @@ namespace Fittino {
        */
                    ~Chi2ContributionBase();
       virtual void UpdateValue() = 0;
+      virtual void SmearObservation( TRandom3* ) = 0;
 
     public:
       double       GetValue() const;
