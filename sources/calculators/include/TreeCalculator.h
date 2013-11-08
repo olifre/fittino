@@ -18,6 +18,7 @@
 #ifndef FITTINO_TREECALCULATOR_H
 #define FITTINO_TREECALCULATOR_H
 
+#include <boost/property_tree/ptree.hpp>
 
 #include "ModelCalculatorBase.h"
 
@@ -37,9 +38,13 @@ namespace Fittino {
 
     public:
       /*!
-       *  Standard constructor.
+       *  Old standard constructor.
        */
                           TreeCalculator( const PhysicsModelBase* model );
+      /*!
+       *  Standard constructor.
+       */
+                          TreeCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

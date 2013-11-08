@@ -19,6 +19,8 @@
 
 #include <iostream>
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "TTree.h"
 #include "TFile.h"
 #include "TObjArray.h"
@@ -36,6 +38,18 @@ Fittino::TreeCalculator::TreeCalculator( const PhysicsModelBase* model )
     _inputFile = NULL;
     _inputFileName = "Fittino.old.root";
     _inputTreeName = "Tree";
+
+}
+
+Fittino::TreeCalculator::TreeCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree )
+    : ModelCalculatorBase( model ) {
+
+    _name = "TreeCalculator";
+    _currentEntry = 0;
+    _inputFile = NULL;
+    _inputFileName = ptree.get<std::string>( "InputFileName", "Fittino.old.root" ); 
+    _inputTreeName = ptree.get<std::string>( "InputTreeName", "Tree" );
+    OpenInputTree();
 
 }
 
