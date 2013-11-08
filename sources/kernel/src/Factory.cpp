@@ -53,6 +53,11 @@
 #include "TreeCalculator.h"
 #include "SPhenoSLHAModelCalculator.h"
 #include "LHCModelCalculator.h"
+#include "SimplePrediction.h"
+#include "SLHAPrediction.h"
+#include "Observable.h"
+#include "SLHAChi2Contribution.h"
+#include "LHCChi2Contribution.h"
 
 Fittino::Factory::Factory() {
 
@@ -333,6 +338,47 @@ Fittino::SamplerBase* const Fittino::Factory::CreateSampler( const Fittino::Conf
 
         case Configuration::TREE:
             return new TreeSampler( model, randomSeed );
+    }
+
+}
+
+Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::ModelCalculatorBase*>& calculators ) const {
+
+    std::string type = ptree.get<std::string>( "PredictionType" );
+    
+    ModelCalculatorBase *calculator = calculators.At( ptree.get<std::string>( "CalculatorName" ) );
+   
+    if( type == "Simple" ) {
+
+      return new Observable( ptree, new SimplePrediction( ptree, calculator ) );
+
+    }
+    else if( type == "SLHA" ) {
+  
+      return new Observable( ptree, new SLHAPrediction( ptree, static_cast<SLHAModelCalculatorBase*>(calculator) ) );
+
+    }
+    else {
+
+      throw ConfigurationException( "Prediction type" + type + " not known." );
+    
+    }
+    
+}
+
+Fittino::Chi2ContributionBase* const Fittino::Factory::CreateChi2Contribution( const std::string& type, const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::ModelCalculatorBase*>& calculators ) const {
+
+    ModelCalculatorBase *calculator = calculators.At( ptree.get<std::string>( "CalculatorName") );
+
+    if( type == "SLHAChi2Contribution" ) {
+
+      return new SLHAChi2Contribution( ptree, static_cast<SLHAModelCalculatorBase*>(calculator) );
+
+    }
+    else if( type == "LHCChi2Contribution" ) {
+
+      return new LHCChi2Contribution( ptree, static_cast<LHCModelCalculator*>(calculator) );
+
     }
 
 }

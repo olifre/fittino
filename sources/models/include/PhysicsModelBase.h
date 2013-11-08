@@ -112,6 +112,9 @@ namespace Fittino {
 
       void                                           InitializeCalculators();
       void                                           InitializeObservables();
+      void                                           InitializeCalculators( const boost::property_tree::ptree& ptree );
+      void                                           InitializeObservables( const boost::property_tree::ptree& ptree );
+      void                                           InitializeChi2Contributions( const boost::property_tree::ptree& ptree );
       /*! \endcond UML */
 
     private:

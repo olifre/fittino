@@ -22,6 +22,7 @@
 #ifndef FITTINO_FACTORY_H
 #define FITTINO_FACTORY_H
 
+#include "Collection.h"
 #include "Configuration.h"
 
 /*!
@@ -123,7 +124,14 @@ namespace Fittino {
        *  </ul>
        */
       SamplerBase* const         CreateSampler( const Configuration::SamplerType& samplerType, ModelBase* model, int randomSeed ) const;
-
+     /*!
+      *  Returns an Observable with a prediction according to the type specified in the ptree.
+      */
+      Observable* const          CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::ModelCalculatorBase*>& calculators ) const;
+     /*!
+      *  Returns a Chi2Contribution according to the type passed as an argument.
+      */
+      Chi2ContributionBase* const          CreateChi2Contribution( const std::string& type, const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::ModelCalculatorBase*>& calculators ) const;
   };
 
 }

@@ -54,12 +54,8 @@ Fittino::PhysicsModelBase::PhysicsModelBase( const boost::property_tree::ptree& 
 
   Factory factory;
   
-  BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child("Calculators") ) {
-  
-    AddCalculator( factory.CreateCalculator( node.first, this, node.second ) );
-
-  }
-
+  InitializeCalculators( ptree );
+  InitializeObservables( ptree );
   BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
 
     if ( node.first == "Chi2Contribution" ) AddChi2Contribution( node.second.get_value<std::string>() );
@@ -377,6 +373,18 @@ void Fittino::PhysicsModelBase::InitializeCalculators() {
 
 }
 
+void Fittino::PhysicsModelBase::InitializeCalculators( const boost::property_tree::ptree& ptree ) {
+
+  Factory factory;
+
+  BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child("Calculators") ) {
+  
+    AddCalculator( factory.CreateCalculator( node.first, this, node.second ) );
+
+  }
+
+}
+
 void Fittino::PhysicsModelBase::InitializeObservables() {
 
     Configuration *configuration = Configuration::GetInstance();
@@ -426,5 +434,18 @@ void Fittino::PhysicsModelBase::InitializeObservables() {
 
         }
     }
+
+}
+
+void Fittino::PhysicsModelBase::InitializeObservables( const boost::property_tree::ptree& ptree ) {
+  
+  Factory factory;
+
+  BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child("Observables") ) {
+
+    AddObservable( factory.CreateObservable( node.second, GetCollectionOfCalculators() ) );
+
+  }  
+
 
 }
