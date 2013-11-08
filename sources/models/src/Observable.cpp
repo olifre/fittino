@@ -40,7 +40,7 @@ Fittino::Observable::Observable( PredictionBase* prediction,
 
 Fittino::Observable::Observable( const boost::property_tree::ptree& ptree, PredictionBase* prediction ) 
                    : _deviation( 0. ),
-                     _measuredValue( ptree.get<double>( "measuredValues" ) ),
+                     _measuredValue( ptree.get<double>( "measuredValue" ) ),
                      _bestFitPrediction( ptree.get<double>( "bestFitPrediction" ) ),
                      _prediction( prediction ) {
 
