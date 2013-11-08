@@ -79,6 +79,11 @@ Fittino::AnalysisTool* const Fittino::Factory::CreateAnalysisTool( const std::st
       return new MarkovChainSampler( model, ptree );
 
     }
+    else if ( type == "TreeSampler" ) {
+      
+      return new TreeSampler( model, ptree );
+    
+    }
     else {
 
       throw ConfigurationException( "AnalysisTool type" + type + " not known." );
