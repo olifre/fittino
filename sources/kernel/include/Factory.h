@@ -31,6 +31,7 @@
 namespace Fittino {
 
   class AnalysisTool;
+  class Chi2ContributionBase;
   class Configuration;
   class DataStorageBase;
   class ModelBase;

@@ -731,20 +731,21 @@ Fittino::HECModel::HECModel() {
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "3", 1 ) );
 
-    _chi2ContributionVector.push_back( new SLHAChi2Contribution( "HiggsSignals",
-                                                                 slhaModelCalculator,
-                                                                 "HiggsSignalsResults",
-                                                                 "12", 1 ) );
+    /* \todo: AddChi2 contributions via ModelBase::AddChi2Contribution */
+    //     _chi2ContributionVector.push_back( new SLHAChi2Contribution( "HiggsSignals",
+    //                                                                  slhaModelCalculator,
+    //                                                                  "HiggsSignalsResults",
+    //                                                                  "12", 1 ) );
 
-    _chi2ContributionVector.push_back( new SLHAChi2Contribution( "Gamma_hTotal_Penalty",
-                                                                 slhaModelCalculator,
-                                                                 "HiggsSignalsAdditionalPredictions",
-                                                                 "33", 1 ) );
+    //     _chi2ContributionVector.push_back( new SLHAChi2Contribution( "Gamma_hTotal_Penalty",
+    //                                                                  slhaModelCalculator,
+    //                                                                  "HiggsSignalsAdditionalPredictions",
+    //                                                                  "33", 1 ) );
 
-    _chi2ContributionVector.push_back( new SLHAChi2Contribution( "BR_hInvisible_Limit",
-                                                                 slhaModelCalculator,
-                                                                 "HiggsSignalsAdditionalPredictions",
-                                                                 "34", 1 ) );
+    //     _chi2ContributionVector.push_back( new SLHAChi2Contribution( "BR_hInvisible_Limit",
+    //                                                                  slhaModelCalculator,
+    //                                                                  "HiggsSignalsAdditionalPredictions",
+    //                                                                  "34", 1 ) );
 
     PhysicsModelBase::Initialize();
 

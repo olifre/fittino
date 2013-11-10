@@ -111,14 +111,6 @@ double Fittino::PhysicsModelBase::Evaluate() {
 
     }
 
-    // Update additional chi2 terms.
-
-    for ( unsigned int i = 0; i < _chi2ContributionVector.size(); ++i ) {
-
-        _chi2ContributionVector[i]->UpdateValue();
-
-    }
-
     // Calculate and return the resulting chi2.
 
     return PhysicsModelBase::CalculateChi2();
@@ -169,15 +161,15 @@ void Fittino::PhysicsModelBase::PrintStatus() const {
 
     }
 
-    if ( _chi2ContributionVector.size() != 0 ) {
+    if ( _collectionOfChi2Quantities.GetNumberOfElements() != 0 ) {
 
         messenger << Messenger::Endl;
         messenger << Messenger::INFO << "   Summary of chi2 terms:"  << Messenger::Endl;
         messenger << Messenger::Endl;
 
-        for ( unsigned int i = 0; i < _chi2ContributionVector.size(); ++i ) {
+        for ( unsigned int i = 0; i < _collectionOfChi2Quantities.GetNumberOfElements(); ++i ) {
 
-            _chi2ContributionVector[i]->PrintStatus();
+          _collectionOfChi2Quantities.At( i )->PrintStatus();
 
         }
 
@@ -234,12 +226,6 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
 
     // Add additional chi2 terms.
 
-    for ( unsigned int i = 0; i < _chi2ContributionVector.size(); ++i ) {
-
-        chi2 += _chi2ContributionVector[i]->GetValue();
-
-    }
-
     for ( unsigned int i = 0; i < _collectionOfChi2Quantities.GetNumberOfElements(); i++ ) {
 
       chi2 += _collectionOfChi2Quantities.At(i)->GetValue();
@@ -255,11 +241,6 @@ void Fittino::PhysicsModelBase::SmearObservables( TRandom3* randomGenerator ) {
     for( int i = 0; i < _observableVector.size(); ++i ) {
 
         _observableVector[i]->SmearMeasuredValue( randomGenerator );
-
-    }
-    for( int i = 0; i < _chi2ContributionVector.size(); ++i ) {
-
-        _chi2ContributionVector[i]->SmearObservation( randomGenerator );
 
     }
 

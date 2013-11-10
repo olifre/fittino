@@ -37,7 +37,6 @@
  */
 namespace Fittino {
 
-  class Chi2ContributionBase;
   class ModelParameterBase;
   class PredictionBase;
   class ModelCalculatorBase;
@@ -76,10 +75,6 @@ namespace Fittino {
        */
       double                                            GetChi2();
       /*!
-       *  Returns the number of chi2 contributions which add up to the total chi2.
-       */
-      int                                               GetNumberOfChi2Contributions() const;
-      /*!
        *  Returns the number of parameters of the model.
        */
       int                                               GetNumberOfParameters() const;
@@ -101,10 +96,6 @@ namespace Fittino {
       std::string                                       GetName() const;
 
     public:
-      /*!
-       *  Returns the chi2 contributions of the model as a vector.
-       */
-      const std::vector<Chi2ContributionBase*>*         GetChi2ContributionVector() const;
       /*!
        *  Returns the predictions of the model as a vector.
        */
@@ -134,10 +125,6 @@ namespace Fittino {
        *  Name of the model.
        */
       std::string                                       _name;
-      /*!
-       *  Stores the chi2 contributions of the model.
-       */
-      std::vector<Chi2ContributionBase*>                _chi2ContributionVector;
       /*!
        *  Stores the predictions.
        */

@@ -23,7 +23,6 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
 
-#include "Chi2ContributionBase.h"
 #include "Configuration.h"
 #include "ConfigurationException.h"
 #include "ModelBase.h"
@@ -82,12 +81,6 @@ double Fittino::ModelBase::GetChi2() {
 
 }
 
-int Fittino::ModelBase::GetNumberOfChi2Contributions() const {
-
-    return _chi2ContributionVector.size();
-
-}
-
 int Fittino::ModelBase::GetNumberOfParameters() const {
 
   return GetCollectionOfParameters().GetNumberOfElements();
@@ -119,12 +112,6 @@ void Fittino::ModelBase::AddPrediction( const PredictionBase* prediction ) {
 std::string Fittino::ModelBase::GetName() const {
 
     return _name;
-
-}
-
-const std::vector<Fittino::Chi2ContributionBase*>* Fittino::ModelBase::GetChi2ContributionVector() const {
-
-    return &_chi2ContributionVector;
 
 }
 
