@@ -193,7 +193,7 @@ Fittino::HECModel::HECModel() {
     //AddParameter( new PhysicsParameter( "Gamma_hInvisible",    "#Gamma(h#rightarrowInvisible)",                0., "GeV", "GeV", 0.01,    0.,   1.,    0.,    1., true  ) );
 
     SLHAModelCalculatorBase* slhaModelCalculator = new HiggsSignalsSLHAModelCalculator( this );
-    _modelCalculatorVector.push_back( slhaModelCalculator );
+    AddCalculator( slhaModelCalculator );
 
     AddPrediction( new SLHAPrediction( "Gamma_hTotal", "#Gamma_{h}^{total}",
                                                      "GeV", "GeV",

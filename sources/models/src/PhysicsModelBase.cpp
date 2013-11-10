@@ -89,9 +89,9 @@ double Fittino::PhysicsModelBase::Evaluate() {
 
     // Let the calculators calculate the model predictions.
 
-    for ( unsigned int i = 0; i < _modelCalculatorVector.size(); ++i ) {
+    for ( unsigned int i = 0; i < _collectionOfCalculators.GetNumberOfElements(); ++i ) {
 
-        _modelCalculatorVector[i]->CalculatePredictions();
+        _collectionOfCalculators.At( i )->CalculatePredictions();
 
     }
 
@@ -191,11 +191,11 @@ void Fittino::PhysicsModelBase::Initialize() const {
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
 
-    for ( unsigned int i = 0; i < _modelCalculatorVector.size(); i++ ) {
+    for ( unsigned int i = 0; i < _collectionOfCalculators.GetNumberOfElements(); i++ ) {
 
-        messenger << Messenger::ALWAYS << "    Initializing " << _modelCalculatorVector[i]->GetName() << Messenger::Endl;
+        messenger << Messenger::ALWAYS << "    Initializing " << _collectionOfCalculators.At( i )->GetName() << Messenger::Endl;
 
-        _modelCalculatorVector[i]->Initialize();
+        _collectionOfCalculators.At( i )->Initialize();
 
     }
 
@@ -260,7 +260,6 @@ void Fittino::PhysicsModelBase::AddObservable( Observable* observable ) {
 void Fittino::PhysicsModelBase::AddCalculator( ModelCalculatorBase* calculator ) {
 
     _collectionOfCalculators.AddElement( calculator->GetName(), calculator );
-    _modelCalculatorVector.push_back( calculator );
 
     const Collection<const PredictionBase*>& col = calculator->GetCollectionOfQuantities(); 
 

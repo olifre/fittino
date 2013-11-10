@@ -57,7 +57,6 @@ Fittino::HDim6Model::HDim6Model() {
     const Factory factory;
 
     ModelCalculatorBase* hdim6ModelCalculator = factory.CreateCalculator(Configuration::HDIM6CALCULATOR, this);
-    _modelCalculatorVector.push_back( hdim6ModelCalculator );
     AddCalculator( hdim6ModelCalculator );
 
     
