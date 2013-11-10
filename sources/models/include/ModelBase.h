@@ -96,11 +96,6 @@ namespace Fittino {
        */
       void                                              AddPrediction( const PredictionBase* prediction );
       /*!
-       *  Adds a chi2 contribution to the model.
-       */
-      void                                              AddChi2Contribution( const Chi2ContributionBase* chi2Contribution );
-
-      /*!
        *  Returns the name of the model.
        */
       std::string                                       GetName() const;

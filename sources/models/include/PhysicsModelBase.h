@@ -73,7 +73,7 @@ namespace Fittino {
        *  Adds a calculator to the model.
        */
       void                                           AddCalculator( ModelCalculatorBase *calculator );
-      using ModelBase::AddChi2Contribution;
+
       void                                           AddChi2Contribution( const std::string& name ); 
       /*!
        *  Returns the predictions of the model as a collection.
@@ -115,7 +115,6 @@ namespace Fittino {
       void                                           InitializeObservables();
       void                                           InitializeCalculators( const boost::property_tree::ptree& ptree );
       void                                           InitializeObservables( const boost::property_tree::ptree& ptree );
-      void                                           InitializeChi2Contributions( const boost::property_tree::ptree& ptree );
       /*! \endcond UML */
 
     private:

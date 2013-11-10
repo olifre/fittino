@@ -116,13 +116,6 @@ void Fittino::ModelBase::AddPrediction( const PredictionBase* prediction ) {
 
 }
 
-void Fittino::ModelBase::AddChi2Contribution( const Chi2ContributionBase* chi2Contribution ) {
-
-    _chi2ContributionVector.push_back( const_cast<Chi2ContributionBase*>( chi2Contribution ) );
-
-}
-
-
 std::string Fittino::ModelBase::GetName() const {
 
     return _name;
