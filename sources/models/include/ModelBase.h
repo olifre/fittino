@@ -97,10 +97,6 @@ namespace Fittino {
 
     public:
       /*!
-       *  Returns the predictions of the model as a vector.
-       */
-      const std::vector<PredictionBase*>*               GetPredictionVector() const;
-      /*!
        *  Returns the parameters as a collection.
        */
       const Collection<ModelParameterBase*>&            GetCollectionOfParameters() const;

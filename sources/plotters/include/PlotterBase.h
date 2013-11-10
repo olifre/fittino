@@ -67,7 +67,7 @@ namespace Fittino {
       TPad*                      _pad;
       TStyle*                    _fittinoStyle;
       TTree*                     _tree;
-      std::vector<Quantity*>     _quantityVector;
+      std::vector<const Quantity*>     _quantityVector;
 
     protected:
       virtual void               PrintResult() const;

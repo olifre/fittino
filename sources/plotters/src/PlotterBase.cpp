@@ -75,15 +75,9 @@ Fittino::PlotterBase::PlotterBase( ModelBase* model, std::string& dataFileName, 
 
     // Fill the quantity vector.
 
-    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
+    for ( unsigned int i = 0; i < _model->GetCollectionOfQuantities().GetNumberOfElements(); ++i ) {
 
-        _quantityVector.push_back( _model->GetCollectionOfParameters().At( i ) );
-
-    }
-
-    for ( unsigned int i = 0; i < _model->GetNumberOfPredictions(); ++i ) {
-
-        _quantityVector.push_back( _model->GetPredictionVector()->at( i ) );
+        _quantityVector.push_back( _model->GetCollectionOfQuantities().At( i ) );
 
     }
 

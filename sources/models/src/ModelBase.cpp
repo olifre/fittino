@@ -115,12 +115,6 @@ std::string Fittino::ModelBase::GetName() const {
 
 }
 
-const std::vector<Fittino::PredictionBase*>* Fittino::ModelBase::GetPredictionVector() const {
-
-    return &_predictionVector;
-
-}
-
 const Fittino::Collection<Fittino::ModelParameterBase*>& Fittino::ModelBase::GetCollectionOfParameters() const {
 
     return _collectionOfParameters;
