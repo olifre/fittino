@@ -169,10 +169,6 @@ namespace Fittino {
        */
       Collection<const PredictionBase*>                 _collectionOfPredictions;
       /*!
-       *  Stores the Chi2 contributions
-       */
-      Collection<const Chi2ContributionBase*>           _collectionOfChi2Contributions;
-      /*!
        *  Stores the parameters
        */
       Collection<ModelParameterBase*>                   _collectionOfParameters;
