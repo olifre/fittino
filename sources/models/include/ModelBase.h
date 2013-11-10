@@ -115,10 +115,6 @@ namespace Fittino {
        */
       const std::vector<PredictionBase*>*               GetPredictionVector() const;
       /*!
-       *  Returns the chi2 contributions of the model as a collection.
-       */
-      const Collection<const Chi2ContributionBase*>&    GetCollectionOfChi2Contributions() const;
-      /*!
        *  Returns the parameters as a collection.
        */
       const Collection<ModelParameterBase*>&            GetCollectionOfParameters() const;
