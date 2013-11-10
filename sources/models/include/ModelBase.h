@@ -124,7 +124,8 @@ namespace Fittino {
       /*!
        *  Stores the predictions.
        */
-      std::vector<PredictionBase*>                _predictionVector;
+      Collection<const PredictionBase*>                 _collectionOfPredictions;
+
 
     protected:
       /*!
@@ -137,7 +138,7 @@ namespace Fittino {
        */
       virtual void                                      Initialize() const = 0;
 
-      Collection<const Quantity*>                       _collectionOfQuantities;
+
       /*! \cond UML */
     private:
       /*!
@@ -145,13 +146,11 @@ namespace Fittino {
        */
       double                                            _chi2;
       /*!
-       *  Stores the predictions.
-       */
-      Collection<const PredictionBase*>                 _collectionOfPredictions;
-      /*!
        *  Stores the parameters
        */
       Collection<ModelParameterBase*>                   _collectionOfParameters;
+
+      Collection<const Quantity*>                       _collectionOfQuantities;
 
 
     private:

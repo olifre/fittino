@@ -89,7 +89,7 @@ int Fittino::ModelBase::GetNumberOfParameters() const {
 
 int Fittino::ModelBase::GetNumberOfPredictions() const {
 
-    return _predictionVector.size();
+    return _collectionOfPredictions.GetNumberOfElements();
 
 }
 
@@ -103,8 +103,6 @@ void Fittino::ModelBase::AddParameter( ModelParameterBase* parameter ) {
 void Fittino::ModelBase::AddPrediction( const PredictionBase* prediction ) {
 
     _collectionOfPredictions.AddElement( prediction );
-    _predictionVector.push_back( const_cast<PredictionBase*>( prediction ) );
-
     _collectionOfQuantities.AddElement( prediction );
 
 }

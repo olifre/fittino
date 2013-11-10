@@ -74,19 +74,19 @@ Fittino::CMSSMModel::CMSSMModel() {
                                        " 1", 1 ),
                                        3.55e-04, 0.53e-04 ) );
 
-        _predictionVector.push_back( new SLHAPrediction( "O_massNeutralino1", "m_{#chi_{1}^{0}}",
-                                     "GeV", "GeV",
-                                     5., 1500.,
-                                     slhaModelCalculator,
-                                     "mass",
-                                     "dummy", 0 ) );
+        AddPrediction( new SLHAPrediction( "O_massNeutralino1", "m_{#chi_{1}^{0}}",
+                                           "GeV", "GeV",
+                                           5., 1500.,
+                                           slhaModelCalculator,
+                                           "mass",
+                                           "dummy", 0 ) );
 
-        _predictionVector.push_back( new SLHAPrediction( "af_direct", "#sigma^{SI}",
-                                     "pb", "pb",
-                                     1.e-12, 1.e-2 ,
-                                     slhaModelCalculator,
-                                     "dummy",
-                                     "dummy", 0 ) );
+        AddPrediction( new SLHAPrediction( "af_direct", "#sigma^{SI}",
+                                           "pb", "pb",
+                                           1.e-12, 1.e-2 ,
+                                           slhaModelCalculator,
+                                           "dummy",
+                                           "dummy", 0 ) );
 
         PhysicsModelBase::Initialize();
     }

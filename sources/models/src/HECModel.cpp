@@ -195,536 +195,536 @@ Fittino::HECModel::HECModel() {
     SLHAModelCalculatorBase* slhaModelCalculator = new HiggsSignalsSLHAModelCalculator( this );
     _modelCalculatorVector.push_back( slhaModelCalculator );
 
-    _predictionVector.push_back( new SLHAPrediction( "Gamma_hTotal", "#Gamma_{h}^{total}",
+    AddPrediction( new SLHAPrediction( "Gamma_hTotal", "#Gamma_{h}^{total}",
                                                      "GeV", "GeV",
                                                      1.e-3, 1.,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "7", 1  ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_s_hss", "BR(h#rightarrowss)",
+    AddPrediction( new SLHAPrediction( "BR_s_hss", "BR(h#rightarrowss)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "8", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_s_hcc", "BR(h#rightarrowcc)",
+    AddPrediction( new SLHAPrediction( "BR_s_hcc", "BR(h#rightarrowcc)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "9", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_s_hbb", "BR(h#rightarrowbb)",
+    AddPrediction( new SLHAPrediction( "BR_s_hbb", "BR(h#rightarrowbb)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "10", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_s_htt", "BR(h#rightarrowtt)",
+    AddPrediction( new SLHAPrediction( "BR_s_htt", "BR(h#rightarrowtt)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "11", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_s_hmumu", "BR(h#rightarrow#mu#mu)",
+    AddPrediction( new SLHAPrediction( "BR_s_hmumu", "BR(h#rightarrow#mu#mu)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "12", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_s_htautau", "BR(h#rightarrow#tau#tau)",
+    AddPrediction( new SLHAPrediction( "BR_s_htautau", "BR(h#rightarrow#tau#tau)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "13", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_hWW", "BR(h#rightarrowWW)",
+    AddPrediction( new SLHAPrediction( "BR_hWW", "BR(h#rightarrowWW)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "14", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_hZZ", "BR(h#rightarrowZZ)",
+    AddPrediction( new SLHAPrediction( "BR_hZZ", "BR(h#rightarrowZZ)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "15", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_hZgamma", "BR(h#rightarrowZ#gamma)",
+    AddPrediction( new SLHAPrediction( "BR_hZgamma", "BR(h#rightarrowZ#gamma)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "16", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_hgammagamma", "BR(h#rightarrow#gamma#gamma)",
+    AddPrediction( new SLHAPrediction( "BR_hgammagamma", "BR(h#rightarrow#gamma#gamma)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "17", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_hgg", "BR(h#rightarrowgg)",
+    AddPrediction( new SLHAPrediction( "BR_hgg", "BR(h#rightarrowgg)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "18", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_SM_s_hss", "BR(h#rightarrowss)^{SM}",
+    AddPrediction( new SLHAPrediction( "BR_SM_s_hss", "BR(h#rightarrowss)^{SM}",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "19", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_SM_s_hcc", "BR(h#rightarrowcc)^{SM}",
+    AddPrediction( new SLHAPrediction( "BR_SM_s_hcc", "BR(h#rightarrowcc)^{SM}",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "20", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_SM_s_hbb", "BR(h#rightarrowbb)^{SM}",
+    AddPrediction( new SLHAPrediction( "BR_SM_s_hbb", "BR(h#rightarrowbb)^{SM}",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "21", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_SM_s_htt", "BR(h#rightarrowtt)^{SM}",
+    AddPrediction( new SLHAPrediction( "BR_SM_s_htt", "BR(h#rightarrowtt)^{SM}",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "22", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_SM_s_hmumu", "BR(h#rightarrow#mu#mu)^{SM}",
+    AddPrediction( new SLHAPrediction( "BR_SM_s_hmumu", "BR(h#rightarrow#mu#mu)^{SM}",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "23", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_SM_s_htautau", "BR(h#rightarrow#tau#tau)^{SM}",
+    AddPrediction( new SLHAPrediction( "BR_SM_s_htautau", "BR(h#rightarrow#tau#tau)^{SM}",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "24", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_SM_hWW", "BR(h#rightarrowWW)^{SM}",
+    AddPrediction( new SLHAPrediction( "BR_SM_hWW", "BR(h#rightarrowWW)^{SM}",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "25", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_SM_hZZ", "BR(h#rightarrowZZ)^{SM}",
+    AddPrediction( new SLHAPrediction( "BR_SM_hZZ", "BR(h#rightarrowZZ)^{SM}",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "26", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_SM_hZgamma", "BR(h#rightarrowZ#gamma)^{SM}",
+    AddPrediction( new SLHAPrediction( "BR_SM_hZgamma", "BR(h#rightarrowZ#gamma)^{SM}",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "27", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_SM_hgammagamma", "BR(h#rightarrow#gamma#gamma)^{SM}",
+    AddPrediction( new SLHAPrediction( "BR_SM_hgammagamma", "BR(h#rightarrow#gamma#gamma)^{SM}",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "28", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_SM_hgg", "BR(h#rightarrowgg)^{SM}",
+    AddPrediction( new SLHAPrediction( "BR_SM_hgg", "BR(h#rightarrowgg)^{SM}",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "29", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "BR_hInvisible", "BR(h#rightarrowInvisible)",
+    AddPrediction( new SLHAPrediction( "BR_hInvisible", "BR(h#rightarrowInvisible)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "30", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "g2_SM_hgammagamma", "g^{2}(h#gamma#gamma)^{SM}",
+    AddPrediction( new SLHAPrediction( "g2_SM_hgammagamma", "g^{2}(h#gamma#gamma)^{SM}",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "31", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "g2_SM_hgg", "g^{2}(hgg)^{SM}",
+    AddPrediction( new SLHAPrediction( "g2_SM_hgg", "g^{2}(hgg)^{SM}",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "32", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_1lep_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (1lep)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammgamma_1lep_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (1lep)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "1", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_conv_central_highPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (conv.-central-highPTt)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammgamma_conv_central_highPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (conv.-central-highPTt)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "2", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_conv_central_lowPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (conv.-central-lowPTt)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammgamma_conv_central_lowPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (conv.-central-lowPTt)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "3", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_conv_rest_highPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (conv.-rest-highPTt)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammgamma_conv_rest_highPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (conv.-rest-highPTt)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "4", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_conv_rest_lowPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (conv.-rest-lowPTt)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammgamma_conv_rest_lowPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (conv.-rest-lowPTt)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "5", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_conv_trans_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (conv.trans.)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammgamma_conv_trans_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (conv.trans.)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "6", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_ETmiss_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (ETmiss)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammgamma_ETmiss_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (ETmiss)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "7", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_highmass2jetloose_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (highmass2jet,loose)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammgamma_highmass2jetloose_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (highmass2jet,loose)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "8", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_highmass2jettight_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (highmass2jet,tight)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammgamma_highmass2jettight_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (highmass2jet,tight)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "9", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_lowmass2jet_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (lowmass2jet)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammgamma_lowmass2jet_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (lowmass2jet)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "10", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_unconv_central_highPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (unconv.-central-highPTt)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammgamma_unconv_central_highPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (unconv.-central-highPTt)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "11", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_unconv_central_lowPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (unconv.-central-lowPTt)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammgamma_unconv_central_lowPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (unconv.-central-lowPTt)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "12", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_unconv_rest_highPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (unconv.-rest-highPTt)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammgamma_unconv_rest_highPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (unconv.-rest-highPTt)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "13", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammgamma_unconv_rest_lowPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (unconv.-rest-lowPTt)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammgamma_unconv_rest_lowPTt_ATL", "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (unconv.-rest-lowPTt)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "14", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_htautau_ATL", "ATL (pp)#rightarrowh#rightarrow#tau#tau",
+    AddPrediction( new SLHAPrediction( "Mu_htautau_ATL", "ATL (pp)#rightarrowh#rightarrow#tau#tau",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "15", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hWWlnulnu_ATL", "ATL (pp)#rightarrowh#rightarrowWW#rightarrowl#nul#nu",
+    AddPrediction( new SLHAPrediction( "Mu_hWWlnulnu_ATL", "ATL (pp)#rightarrowh#rightarrowWW#rightarrowl#nul#nu",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "16", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_VBFWWlnulnu_ATL", "ATL (pp)#rightarrowVBF#rightarrowWW#rightarrowl#nul#nu",
+    AddPrediction( new SLHAPrediction( "Mu_VBFWWlnulnu_ATL", "ATL (pp)#rightarrowVBF#rightarrowWW#rightarrowl#nul#nu",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "17", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hZZ4l_ATL", "ATL (pp)#rightarrowh#rightarrowZZ#rightarrow4l",
+    AddPrediction( new SLHAPrediction( "Mu_hZZ4l_ATL", "ATL (pp)#rightarrowh#rightarrowZZ#rightarrow4l",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "18", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_VhVbb_ATL", "ATL (pp)#rightarrowVh#rightarrowVb#bar{b}",
+    AddPrediction( new SLHAPrediction( "Mu_VhVbb_ATL", "ATL (pp)#rightarrowVh#rightarrowVb#bar{b}",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "19", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_CDF", "CDF (pp)#rightarrowh#rightarrow#gamma#gamma",
+    AddPrediction( new SLHAPrediction( "Mu_hgammagamma_CDF", "CDF (pp)#rightarrowh#rightarrow#gamma#gamma",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "20", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_htautau_CDF", "CDF (pp)#rightarrowh#rightarrow#tau#tau",
+    AddPrediction( new SLHAPrediction( "Mu_htautau_CDF", "CDF (pp)#rightarrowh#rightarrow#tau#tau",
                                                      "", "",
                                                      0., 1.e6, slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "21", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hWW_CDF", "CDF (pp)#rightarrowh#rightarrowWW",
+    AddPrediction( new SLHAPrediction( "Mu_hWW_CDF", "CDF (pp)#rightarrowh#rightarrowWW",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "22", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_tthttbb_CDF", "CDF (pp)#rightarrowt#bar{t}h#rightarrowttbb",
+    AddPrediction( new SLHAPrediction( "Mu_tthttbb_CDF", "CDF (pp)#rightarrowt#bar{t}h#rightarrowttbb",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "23", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_VhVbb_CDF", "CDF (pp)#rightarrowVh#rightarrowVb#bar{b}",
+    AddPrediction( new SLHAPrediction( "Mu_VhVbb_CDF", "CDF (pp)#rightarrowVh#rightarrowVb#bar{b}",
                                                      "", "", 0., 1.e6, slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "24", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_2jet_CMS", "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (2jet)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammagamma_2jet_CMS", "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (2jet)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "25", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_2jetloose_CMS",  "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (2jet-loose)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammagamma_2jetloose_CMS",  "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (2jet-loose)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "26", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_2jettight_CMS",  "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (2jet-tight)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammagamma_2jettight_CMS",  "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (2jet-tight)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "27", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_e_CMS", "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (e)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammagamma_e_CMS", "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (e)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "28", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_inclusive_CMS", "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (inclusive)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammagamma_inclusive_CMS", "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (inclusive)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "29", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_ETmiss_CMS", "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (ETmiss)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammagamma_ETmiss_CMS", "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (ETmiss)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "30", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_mu_CMS", "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (#mu)",
+    AddPrediction( new SLHAPrediction( "Mu_hgammagamma_mu_CMS", "CMS (pp)#rightarrowh#rightarrow#gamma#gamma (#mu)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "31", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_htautau_01jet_CMS", "CMS (pp)#rightarrowh#rightarrow#tau#tau (0/1 jet)",
+    AddPrediction( new SLHAPrediction( "Mu_htautau_01jet_CMS", "CMS (pp)#rightarrowh#rightarrow#tau#tau (0/1 jet)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "32", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hWW_01jet_CMS", "CMS (pp)#rightarrowh#rightarrowWW (0/1 jet)",
+    AddPrediction( new SLHAPrediction( "Mu_hWW_01jet_CMS", "CMS (pp)#rightarrowh#rightarrowWW (0/1 jet)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "33", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hZZ4l_01jet_CMS", "CMS (pp)#rightarrowh#rightarrowZZ#rightarrow4l (0/1 jet)",
+    AddPrediction( new SLHAPrediction( "Mu_hZZ4l_01jet_CMS", "CMS (pp)#rightarrowh#rightarrowZZ#rightarrow4l (0/1 jet)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "34", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hZZ4l_2jet_CMS", "CMS (pp)#rightarrowh#rightarrowZZ#rightarrow4l (2jet)",
+    AddPrediction( new SLHAPrediction( "Mu_hZZ4l_2jet_CMS", "CMS (pp)#rightarrowh#rightarrowZZ#rightarrow4l (2jet)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "35", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_tthttbb_CMS", "CMS (pp)#rightarrowt#bar{t}h#rightarrowttb#bar{b}",
+    AddPrediction( new SLHAPrediction( "Mu_tthttbb_CMS", "CMS (pp)#rightarrowt#bar{t}h#rightarrowttb#bar{b}",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "36", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_VBFtautau_CMS", "CMS (pp)#rightarrowVBF#rightarrow#tau#tau",
+    AddPrediction( new SLHAPrediction( "Mu_VBFtautau_CMS", "CMS (pp)#rightarrowVBF#rightarrow#tau#tau",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "37", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_VBFWW_CMS", "CMS (pp)#rightarrowVBF#rightarrowWW",
+    AddPrediction( new SLHAPrediction( "Mu_VBFWW_CMS", "CMS (pp)#rightarrowVBF#rightarrowWW",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "38", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_VhVbb_CMS", "CMS (pp)#rightarrowVh#rightarrowVb#bar{b}",
+    AddPrediction( new SLHAPrediction( "Mu_VhVbb_CMS", "CMS (pp)#rightarrowVh#rightarrowVb#bar{b}",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "39", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_VhVtautau_CMS", "CMS (pp)#rightarrowVh#rightarrowV#tau#tau",
+    AddPrediction( new SLHAPrediction( "Mu_VhVtautau_CMS", "CMS (pp)#rightarrowVh#rightarrowV#tau#tau",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "40", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_WhWWW_CMS", "CMS (pp)#rightarrowWh#rightarrowWWW",
+    AddPrediction( new SLHAPrediction( "Mu_WhWWW_CMS", "CMS (pp)#rightarrowWh#rightarrowWWW",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "41", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hbb_D0", "D#slash{0} (pp)#rightarrowh#rightarrowb#bar{b}",
+    AddPrediction( new SLHAPrediction( "Mu_hbb_D0", "D#slash{0} (pp)#rightarrowh#rightarrowb#bar{b}",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "42", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hgammagamma_D0", "D#slash{0} (pp)#rightarrowh#rightarrow#gamma#gamma",
+    AddPrediction( new SLHAPrediction( "Mu_hgammagamma_D0", "D#slash{0} (pp)#rightarrowh#rightarrow#gamma#gamma",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "43", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_htautau_D0", "D#slash{0} (pp)#rightarrowh#rightarrow#tau#tau",
+    AddPrediction( new SLHAPrediction( "Mu_htautau_D0", "D#slash{0} (pp)#rightarrowh#rightarrow#tau#tau",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "44", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "Mu_hWW_D0", "D#slash{0} (pp)#rightarrowh#rightarrowWW",
+    AddPrediction( new SLHAPrediction( "Mu_hWW_D0", "D#slash{0} (pp)#rightarrowh#rightarrowWW",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsPeakObservables",
                                                      "45", "17", 2 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "R_htautau", "R(h#rightarrow#tau#tau)",
+    AddPrediction( new SLHAPrediction( "R_htautau", "R(h#rightarrow#tau#tau)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "4", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "R_hbb", "R(h#rightarrowb#bar{b})",
+    AddPrediction( new SLHAPrediction( "R_hbb", "R(h#rightarrowb#bar{b})",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "5", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "R_Vhbb", "R(Vh#rightarrowVb#bar{b})",
+    AddPrediction( new SLHAPrediction( "R_Vhbb", "R(Vh#rightarrowVb#bar{b})",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "6", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "R_hWW", "R(h#rightarrowWW)",
+    AddPrediction( new SLHAPrediction( "R_hWW", "R(h#rightarrowWW)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "1", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "R_hZZ", "R(h#rightarrowZZ)",
+    AddPrediction( new SLHAPrediction( "R_hZZ", "R(h#rightarrowZZ)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,
                                                      "HiggsSignalsAdditionalPredictions",
                                                      "2", 1 ) );
 
-    _predictionVector.push_back( new SLHAPrediction( "R_hgammagamma", "R(h#rightarrow#gamma#gamma)",
+    AddPrediction( new SLHAPrediction( "R_hgammagamma", "R(h#rightarrow#gamma#gamma)",
                                                      "", "",
                                                      0., 1.e6,
                                                      slhaModelCalculator,

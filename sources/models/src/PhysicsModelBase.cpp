@@ -14,8 +14,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*       published by the Free Software Foundation; either version 3 of   *
-*       the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -103,14 +103,6 @@ double Fittino::PhysicsModelBase::Evaluate() {
 
     }
 
-    // Update any further predictions.
-
-    for ( unsigned int i = 0; i < _predictionVector.size(); ++i ) {
-
-        _predictionVector[i]->Update();
-
-    }
-
     // Calculate and return the resulting chi2.
 
     return PhysicsModelBase::CalculateChi2();
@@ -147,15 +139,15 @@ void Fittino::PhysicsModelBase::PrintStatus() const {
 
     }
 
-    if ( _predictionVector.size() != 0 ) {
+    if ( _collectionOfPredictions.GetNumberOfElements() != 0 ) {
 
         messenger << Messenger::Endl;
         messenger << Messenger::INFO << "   Summary of the " << this->GetName() << " predictions:"  << Messenger::Endl;
         messenger << Messenger::Endl;
 
-        for ( unsigned int i = 0; i < _predictionVector.size(); ++i ) {
+        for ( unsigned int i = 0; i < _collectionOfPredictions.GetNumberOfElements(); ++i ) {
 
-            _predictionVector[i]->PrintStatus();
+          _collectionOfPredictions.At( i )->PrintStatus();
 
         }
 
