@@ -58,7 +58,7 @@ void Fittino::Chi2ContributionBase::PrintStatus() const {
 
 }
 
-double Fittino::Chi2ContributionBase::GetValue() const {
+const double& Fittino::Chi2ContributionBase::GetValue() const {
 
     return _chi2;
 

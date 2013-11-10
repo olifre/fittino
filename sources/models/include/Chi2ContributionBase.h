@@ -41,27 +41,27 @@ namespace Fittino {
       /*!
        *  Constructor taking a name as an argument.
        */
-                   Chi2ContributionBase( std::string name );
+                    Chi2ContributionBase( std::string name );
       /*!
        *  Standard Constructor
        */ 
-                   Chi2ContributionBase( const boost::property_tree::ptree& ptree );
+                    Chi2ContributionBase( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
-                   ~Chi2ContributionBase();
-      virtual void UpdateValue() = 0;
-      virtual void SmearObservation( TRandom3* ) = 0;
+                    ~Chi2ContributionBase();
+      virtual void  UpdateValue() = 0;
+      virtual void  SmearObservation( TRandom3* ) = 0;
 
     public:
-      double       GetValue() const;
-      void         SetValue( double chi2 );
-      void         PrintStatus() const;
-      std::string  GetName() const;
+      const double& GetValue() const;
+      void          SetValue( double chi2 );
+      void          PrintStatus() const;
+      std::string   GetName() const;
       
     protected:
-      double       _chi2;
-      std::string  _name;
+      double        _chi2;
+      std::string   _name;
 
   };
 

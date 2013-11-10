@@ -205,18 +205,15 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
         _branchPointAccepted->SetStatus( 1 );
         GetStatusParameterVector()->at( 2 )->SetValue( _acceptCounter );
-        _leafVector[2 + _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions()] = ( float )_acceptCounter;
         _branchPointAccepted->Fill();
 
         GetStatusParameterVector()->at( 2 )->SetValue( 0. );
-        _leafVector[2 + _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions()] = 0.;
         for( unsigned int j = 0; j < _acceptCounter - 1; j++ ) {
             _branchPointAccepted->Fill();
         }
 
         if( pointAccepted && _iterationCounter == _numberOfIterations ) {
             GetStatusParameterVector()->at( 2 )->SetValue( 1. );
-            _leafVector[2 + _model->GetNumberOfChi2Contributions() + _model->GetNumberOfParameters() + _model->GetNumberOfPredictions()] = 1.;
             _branchPointAccepted->Fill();
         }
 

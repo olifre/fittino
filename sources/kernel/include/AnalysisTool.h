@@ -97,10 +97,6 @@ namespace Fittino {
        *  The output tree.
        */
       TTree*                             _tree;
-      /*!
-       *  The variables used to fill the tree.
-       */
-      std::vector<double>                _leafVector;
     protected:
       /*!
        *  Prints the result of the execution of a particuar analysis tool. It is declared virtual\n
