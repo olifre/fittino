@@ -142,12 +142,6 @@ const std::vector<Fittino::PredictionBase*>* Fittino::ModelBase::GetPredictionVe
 
 }
 
-const Fittino::Collection<const Fittino::PredictionBase*>& Fittino::ModelBase::GetCollectionOfPredictions() const {
-
-    return _collectionOfPredictions;
-
-}
-
 const Fittino::Collection<const Fittino::Chi2ContributionBase*>& Fittino::ModelBase::GetCollectionOfChi2Contributions() const {
 
     return _collectionOfChi2Contributions;
