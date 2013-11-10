@@ -98,6 +98,7 @@ namespace Fittino {
     protected:
       std::vector<ModelCalculatorBase*>              _modelCalculatorVector;
       std::vector<Observable*>                       _observableVector;
+      Collection<const Quantity*>                    _collectionOfChi2Quantities;
 
       /*! \cond UML */
     private:

@@ -142,9 +142,6 @@ namespace Fittino {
       virtual void                                      Initialize() const = 0;
 
       Collection<const Quantity*>                       _collectionOfQuantities;
-
-      Collection<const Quantity*>                       _collectionOfChi2Quantities;
-
       /*! \cond UML */
     private:
       /*!
