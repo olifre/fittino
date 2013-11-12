@@ -41,12 +41,12 @@
 
 Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree )
     :ModelCalculatorBase( model ),
-     _calculate_Gamma_hZZ     ( false ),
-     _calculate_Gamma_hWW     ( false ),
-     _calculate_xs_Wh         ( false ),
-     _calculate_xs_Zh         ( false ),
-     _calculate_xs_qqh_2flavor( false ),
-     _calculate_xs_qqh_5flavor( false ),
+     _calculate_Gamma_hWW     ( ptree.get<bool>( "calculate_Gamma_hWW"      ) ),
+     _calculate_Gamma_hZZ     ( ptree.get<bool>( "calculate_Gamma_hZZ"      ) ),
+     _calculate_xs_qqh_2flavor( ptree.get<bool>( "calculate_xs_qqh_2flavor" ) ),
+     _calculate_xs_qqh_5flavor( ptree.get<bool>( "calculate_xs_qqh_5flavor" ) ),
+     _calculate_xs_Wh         ( ptree.get<bool>( "calculate_xs_Wh"          ) ),
+     _calculate_xs_Zh         ( ptree.get<bool>( "calculate_xs_Zh"          ) ),
      _effsmvalues ( new effinputs() ),
      _effvalues   ( new effinputs() ),
      _first       ( true ),
@@ -114,9 +114,9 @@ void Fittino::HDim6ModelCalculator::Initialize() const{
         LHAPDF::setPDFPath( _pdfDirectory );
 
     }
-    
-    LHAPDF::initPDFSet( _pdfSet, LHAPDF::LHGRID, 0 );  
 
+    LHAPDF::initPDFSet( _pdfSet, LHAPDF::LHGRID, 0 ); 
+    
 }
 
 void Fittino::HDim6ModelCalculator::CallFunction() {

@@ -102,110 +102,14 @@
       <Calculators>
 
         <HDim6Calculator>
-        <name>HDim6Calculator</name>
+          <name>HDim6Calculator</name>
+          <calculate_Gamma_hWW>true</calculate_Gamma_hWW>
+          <calculate_Gamma_hZZ>true</calculate_Gamma_hZZ>
+          <calculate_xs_qqh_2flavor>true</calculate_xs_qqh_2flavor>
+          <calculate_xs_qqh_5flavor>false</calculate_xs_qqh_5flavor>
+          <calculate_xs_Wh>true</calculate_xs_Wh>
+          <calculate_xs_Zh>true</calculate_xs_Zh>
         </HDim6Calculator>
-
-        <RegressionCalculator>
-          <name>RegressionCalculator</name>
-          <Variable>
-            <Name>f_BB_m_f_WW</Name>
-            <NameInWeightFiles>f_BB_m_f_WW</NameInWeightFiles>
-          </Variable>
-          <Variable>
-            <Name>f_BB_p_f_WW</Name>
-            <NameInWeightFiles>f_BB_p_f_WW</NameInWeightFiles>
-          </Variable>
-          <Variable>
-            <Name>f_Phi_2</Name>
-            <NameInWeightFiles>f_Phi_2</NameInWeightFiles>
-          </Variable>
-          <MVA>
-            <WeightFile>TMVARegression_hWW.weights.xml</WeightFile>
-            <Target>normSM_Gamma_hWW</Target>
-          </MVA>
-        </RegressionCalculator>
-
-        <RegressionCalculator>
-          <name>RegressionCalculator2</name>
-          <Variable>
-            <Name>f_BB_m_f_WW</Name>
-            <NameInWeightFiles>f_BB_m_f_WW</NameInWeightFiles>
-          </Variable>
-          <Variable>
-            <Name>f_BB_p_f_WW</Name>
-            <NameInWeightFiles>f_BB_p_f_WW</NameInWeightFiles>
-          </Variable>
-          <Variable>
-            <Name>f_Phi_2</Name>
-            <NameInWeightFiles>f_Phi_2</NameInWeightFiles>
-          </Variable>
-          <MVA>
-            <WeightFile>TMVARegression_hZZ.weights.xml</WeightFile>
-            <Target>normSM_Gamma_hZZ</Target>
-          </MVA>
-        </RegressionCalculator>
-
-        <RegressionCalculator>
-          <name>RegressionCalculator3</name>
-          <Variable>
-            <Name>f_BB_m_f_WW</Name>
-            <NameInWeightFiles>f_BB_m_f_WW</NameInWeightFiles>
-          </Variable>
-          <Variable>
-            <Name>f_BB_p_f_WW</Name>
-            <NameInWeightFiles>f_BB_p_f_WW</NameInWeightFiles>
-          </Variable>
-          <Variable>
-            <Name>f_Phi_2</Name>
-            <NameInWeightFiles>f_Phi_2</NameInWeightFiles>
-          </Variable>
-          <MVA>
-            <WeightFile>TMVARegression_qqh.weights.xml</WeightFile>
-            <Target>normSM_xs_qqh_2flavor</Target>
-          </MVA>
-        </RegressionCalculator>
-
-
-        <RegressionCalculator>
-          <name>RegressionCalculator4</name>
-          <Variable>
-            <Name>f_BB_m_f_WW</Name>
-            <NameInWeightFiles>f_BB_m_f_WW</NameInWeightFiles>
-          </Variable>
-          <Variable>
-            <Name>f_BB_p_f_WW</Name>
-            <NameInWeightFiles>f_BB_p_f_WW</NameInWeightFiles>
-          </Variable>
-          <Variable>
-            <Name>f_Phi_2</Name>
-            <NameInWeightFiles>f_Phi_2</NameInWeightFiles>
-          </Variable>
-          <MVA>
-            <WeightFile>TMVARegression_Wh.weights.xml</WeightFile>
-            <Target>normSM_xs_Wh</Target>
-          </MVA>
-        </RegressionCalculator>
-
-
-        <RegressionCalculator>
-          <name>RegressionCalculator5</name>
-          <Variable>
-            <Name>f_BB_m_f_WW</Name>
-            <NameInWeightFiles>f_BB_m_f_WW</NameInWeightFiles>
-          </Variable>
-          <Variable>
-            <Name>f_BB_p_f_WW</Name>
-            <NameInWeightFiles>f_BB_p_f_WW</NameInWeightFiles>
-          </Variable>
-          <Variable>
-            <Name>f_Phi_2</Name>
-            <NameInWeightFiles>f_Phi_2</NameInWeightFiles>
-          </Variable>
-          <MVA>
-            <WeightFile>TMVARegression_Zh.weights.xml</WeightFile>
-            <Target>normSM_xs_Zh</Target>
-          </MVA>
-        </RegressionCalculator>
 
         <HiggsSignalsCalculator>
         <name>HiggsSignalsCalculator</name>
@@ -214,6 +118,8 @@
 
       </Calculators>
 
+      <Observables></Observables>
+
       <Chi2Contribution>HS_chi2_mu</Chi2Contribution>
 
     </PhysicsModel>
@@ -221,7 +127,7 @@
 
   <Tool>
   <MarkovChainSampler>
-    <numberOfIterations>100000</numberOfIterations>
+    <numberOfIterations>1</numberOfIterations>
     <randomSeed>0</randomSeed>
   </MarkovChainSampler>
   </Tool>

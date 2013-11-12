@@ -65,6 +65,7 @@
     <xs:element name="Name"             type="xs:string"                                          />
     <xs:element name="ModelParameter"   type="ModelParameter"  minOccurs="0" maxOccurs="unbounded"/>
     <xs:element name="Calculators"      type="Calculators"                                        />
+    <xs:element name="Observables"      type="Observables"                                        />
     <xs:element name="Chi2Contribution" type="xs:string"       minOccurs="0" maxOccurs="unbounded"/>
   </xs:sequence>
 </xs:complexType>
@@ -84,13 +85,19 @@
   <xs:choice minOccurs="0" maxOccurs="unbounded">
     <xs:element name="HiggsSignalsCalculator" type="HiggsSignalsCalculator" />  
     <xs:element name="HDim6Calculator"        type="HDim6Calculator"        />  
-    <xs:element name="RegressionCalculator"        type="RegressionCalculator"   />  
+    <xs:element name="RegressionCalculator"   type="RegressionCalculator"   />  
   </xs:choice>
 </xs:complexType>
 
 <xs:complexType name="HDim6Calculator">
   <xs:sequence>
-    <xs:element name="name" type="xs:string" />
+    <xs:element name="name"                     type="xs:string"  />
+    <xs:element name="calculate_Gamma_hWW"      type="xs:boolean" />
+    <xs:element name="calculate_Gamma_hZZ"      type="xs:boolean" />
+    <xs:element name="calculate_xs_qqh_2flavor" type="xs:boolean" />
+    <xs:element name="calculate_xs_qqh_5flavor" type="xs:boolean" />
+    <xs:element name="calculate_xs_Wh"          type="xs:boolean" />
+    <xs:element name="calculate_xs_Zh"          type="xs:boolean" />
   </xs:sequence>
 </xs:complexType>
 
@@ -123,7 +130,8 @@
   </xs:sequence>
 </xs:complexType >
 
-
+<xs:complexType name="Observables">
+</xs:complexType>
 
 
 </xs:schema> 
