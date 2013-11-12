@@ -37,8 +37,8 @@ Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, cons
 
   _previousChi2( ptree.get<double>("Chi2", 1.e99) ),
     //_previousChi2( model->GetChi2() ),
-    //_previousLikelihood( 1.e-99 ),
-    _previousLikelihood( exp( -1. * _previousChi2 / 2. ) ),
+    _previousLikelihood( 1.e-99 ),
+    //_previousLikelihood( exp( -1. * _previousChi2 / 2. ) ),
      _previousParameterValues( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
      _acceptCounter( 1 ),
      _previousRho( 1. ),
@@ -189,7 +189,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
     }
 
     if ( pointAccepted || _iterationCounter == _numberOfIterations ) {
-
+        
         _previousRho        = rho;
         _previousChi2       = chi2;
         _previousLikelihood = likelihood;
@@ -201,17 +201,8 @@ void Fittino::MarkovChainSampler::UpdateModel() {
         this->FillTree();
 
         if( _iterationCounter == 1 ) return;
-        if( !pointAccepted ) {
-            _acceptCounter++;
-            // Reset the parameter values.
+        if( !pointAccepted ) _acceptCounter++;
 
-            for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
-
-                _model->GetCollectionOfParameters().At( k )->SetValue( _previousParameterValues.at( k ) );
-
-            }  
-            
-        }
         _branchPointAccepted->SetStatus( 1 );
         GetStatusParameterVector()->at( 2 )->SetValue( _acceptCounter );
         _branchPointAccepted->Fill();
