@@ -25,6 +25,8 @@
 #include <string>
 #include <vector>
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "TFile.h"
 #include "TRandom3.h"
 
@@ -56,6 +58,10 @@ namespace Fittino {
        *  optimizer or sampler classes) is established.
        */
       AnalysisTool( ModelBase* model, int randomSeed );
+      /*!
+       *  Standard constructor.
+       */
+      AnalysisTool( ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

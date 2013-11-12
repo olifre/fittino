@@ -23,6 +23,8 @@
 #include <iostream>
 #include <sstream>
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "TTree.h"
 
 #include "AnalysisTool.h"
@@ -44,6 +46,19 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase* model, int randomSeed )
 
     _statusParameterVector.push_back( new ParameterBase( "Chi2",             "#chi^2",           1.e99, 0., 100.  ) ),
                                       _statusParameterVector.push_back( new ParameterBase( "IterationCounter", "IterationCounter", 0,     0., 1.e10 ) );
+
+}
+
+Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tree::ptree& ptree ) 
+    : _chi2( ptree.get<double>("Chi2", 1.e99) ),
+      _iterationCounter( ptree.get<unsigned int>("IterationCounter", 0) ),
+      _name( ptree.get<std::string>("Name", "") ),
+      _outputFile( (ptree.get<std::string>("OutputFile", "Fittino.out.root")).c_str(), "RECREATE" ),
+      _randomGenerator( ptree.get<int>("randomSeed", 0) ),
+      _tree( new TTree( (ptree.get<std::string>("OutputTree", "Tree")).c_str(), (ptree.get<std::string>("OutputTree", "Tree")).c_str() ) ) {
+
+      _statusParameterVector.push_back( new ParameterBase( "Chi2",             "#chi^2",           _chi2, 0., 100.  ) ),
+      _statusParameterVector.push_back( new ParameterBase( "IterationCounter", "IterationCounter", _iterationCounter,     0., 1.e10 ) );
 
 }
 
