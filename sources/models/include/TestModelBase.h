@@ -54,7 +54,6 @@ namespace Fittino {
       virtual std::vector<Observable*>* GetObservableVector() { return NULL; }
     protected:
       virtual void   Initialize() const;
-
       /*! \cond UML */
     private:
       virtual double Evaluate();

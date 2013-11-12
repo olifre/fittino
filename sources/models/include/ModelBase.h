@@ -94,6 +94,10 @@ namespace Fittino {
        *  Returns the name of the model.
        */
       std::string                                       GetName() const;
+      /*!
+       *  Returns the property tree.
+       */
+      boost::property_tree::ptree                       GetPropertyTree();
 
     public:
       /*!
@@ -115,6 +119,11 @@ namespace Fittino {
       virtual void                                       SmearObservables( TRandom3* ) = 0;
       virtual std::vector<ModelCalculatorBase*>*         GetModelCalculatorVector() = 0;
       virtual std::vector<Observable*>*                  GetObservableVector() = 0;
+      /*!
+       * Update the property tree.
+       */
+      void                                              UpdatePropertyTree();
+
 
     protected:
       /*!
@@ -125,7 +134,10 @@ namespace Fittino {
        *  Stores the predictions.
        */
       Collection<const PredictionBase*>                 _collectionOfPredictions;
-
+      /*
+       *
+       */
+      boost::property_tree::ptree                       _ptree;
 
     protected:
       /*!
@@ -137,7 +149,6 @@ namespace Fittino {
        *  is also the place where third party code is initialized.
        */
       virtual void                                      Initialize() const = 0;
-
 
       /*! \cond UML */
     private:
