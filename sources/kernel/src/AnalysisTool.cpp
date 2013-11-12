@@ -60,6 +60,8 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tre
       _statusParameterVector.push_back( new ParameterBase( "Chi2",             "#chi^2",           _chi2, 0., 100.  ) ),
       _statusParameterVector.push_back( new ParameterBase( "IterationCounter", "IterationCounter", _iterationCounter,     0., 1.e10 ) );
 
+      _ptree = ptree;
+
 }
 
 Fittino::AnalysisTool::~AnalysisTool() {
@@ -188,5 +190,18 @@ void Fittino::AnalysisTool::TerminateAnalysisTool() {
 void Fittino::AnalysisTool::WriteResultToFile() const {
 
     _tree->Write();
+
+}
+
+void Fittino::AnalysisTool::UpdatePropertyTree() {
+
+    _ptree.put("Chi2", _chi2);
+    _ptree.put("iterationCounter", _iterationCounter);
+
+}
+
+boost::property_tree::ptree Fittino::AnalysisTool::GetPropertyTree() {
+
+    return _ptree;
 
 }

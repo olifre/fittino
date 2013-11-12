@@ -71,7 +71,10 @@ namespace Fittino {
        *  It is usually called directly after the creation of a concrete analysis tool.
        */
       void                               PerformAnalysis();
-
+      /*!
+       *  Function to retrieve the updated property tree from this tool.
+       */
+      boost::property_tree::ptree        GetPropertyTree();
     protected:
       /*!
        *  The chi2 of the model.
@@ -103,6 +106,10 @@ namespace Fittino {
        *  The output tree.
        */
       TTree*                             _tree;
+      /*!
+       *  A copy of the input property tree, to be used for storing information for output-xml files (e.g. interface files for concatenating Markov Chains.
+       */
+       boost::property_tree::ptree       _ptree;
     protected:
       /*!
        *  Prints the result of the execution of a particuar analysis tool. It is declared virtual\n
@@ -119,7 +126,10 @@ namespace Fittino {
        *  concrete analysis tool.
        */
       virtual void                       UpdateModel() = 0;
-
+      /*!
+       *  Function to update values in the output property tree. Hm, maybe this has to become virtual?
+       */ 
+       void                              UpdatePropertyTree();
     protected:
       /*!
        *  Returns the number of status parameters.
