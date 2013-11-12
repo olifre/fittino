@@ -41,7 +41,15 @@
 
 Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree )
     :ModelCalculatorBase( model ),
-
+     _calculate_Gamma_hZZ     ( false ),
+     _calculate_Gamma_hWW     ( false ),
+     _calculate_xs_Wh         ( false ),
+     _calculate_xs_Zh         ( false ),
+     _calculate_xs_qqh_2flavor( false ),
+     _calculate_xs_qqh_5flavor( false ),
+     _effsmvalues ( new effinputs() ),
+     _effvalues   ( new effinputs() ),
+     _first       ( true ),
      _f_B         ( _model->GetCollectionOfQuantities().At( "f_B"         )->GetValue() ),
      _f_BB_p_f_WW ( _model->GetCollectionOfQuantities().At( "f_BB_p_f_WW" )->GetValue() ),
      _f_W         ( _model->GetCollectionOfQuantities().At( "f_W"         )->GetValue() ),
@@ -52,26 +60,9 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* mod
      _f_b         ( _model->GetCollectionOfQuantities().At( "f_b"         )->GetValue() ),
      _f_tau       ( _model->GetCollectionOfQuantities().At( "f_tau"       )->GetValue() ),
      _mass_h      ( _model->GetCollectionOfQuantities().At( "mass_h"      )->GetValue() ), 
-     _first       ( true                                                                ){
-
-  _calculate_Gamma_hZZ      = false;
-  _calculate_Gamma_hWW      = false;
-  _calculate_xs_Wh          = false;
-  _calculate_xs_Zh          = false;
-  _calculate_xs_qqh_2flavor = false;
-  _calculate_xs_qqh_5flavor = false;
-
-  
-
-    // lhapdf-getdata CT10.LHgrid
-    _pdfSet = "CT10";
-    _pdfDirectory = "";
-
-    _first = true;
-
-    _effsmvalues        = new effinputs();
-    _effvalues          = new effinputs();
-    _smvalues           = new sminputs();
+     _pdfSet      ( "CT10" ),  // lhapdf-getdata CT10.LHgrid
+     _pdfDirectory( "" ),
+     _smvalues ( new sminputs() ) {
 
     _name = "HDim6ModelCalculator";
     
@@ -268,7 +259,6 @@ void Fittino::HDim6ModelCalculator::CallFunction() {
     }
     
 }
-
 
 void Fittino::HDim6ModelCalculator::ComparePreviousEffValues() {
 

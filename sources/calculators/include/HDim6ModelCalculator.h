@@ -35,7 +35,6 @@ namespace boost {
 
 }
 
-
 struct effinputs;
 struct pominput;
 struct sminputs;
