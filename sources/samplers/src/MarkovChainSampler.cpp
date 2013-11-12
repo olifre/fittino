@@ -201,8 +201,17 @@ void Fittino::MarkovChainSampler::UpdateModel() {
         this->FillTree();
 
         if( _iterationCounter == 1 ) return;
-        if( !pointAccepted ) _acceptCounter++;
+        if( !pointAccepted ) {
+            _acceptCounter++;
+            // Reset the parameter values.
 
+            for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+
+                _model->GetCollectionOfParameters().At( k )->SetValue( _previousParameterValues.at( k ) );
+
+            }  
+            
+        }
         _branchPointAccepted->SetStatus( 1 );
         GetStatusParameterVector()->at( 2 )->SetValue( _acceptCounter );
         _branchPointAccepted->Fill();
