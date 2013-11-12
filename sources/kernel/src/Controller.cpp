@@ -81,8 +81,8 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
         const DataStorageBase* const fittinoInputDataStorage = factory.CreateDataStorage( Controller::DetermineInputFileFormat() );
         fittinoInputDataStorage->ReadFile( _inputFileName );
         delete fittinoInputDataStorage;
-
-        boost::property_tree::read_xml( _inputFileName, *_propertyTree, boost::property_tree::xml_parser::no_comments );
+           
+        boost::property_tree::read_xml( _inputFileName, *_propertyTree, boost::property_tree::xml_parser::trim_whitespace|boost::property_tree::xml_parser::no_comments );
 
         if ( _propertyTree->get_child("InputFile").count("Tool") != 0 ) {
 
@@ -129,6 +129,13 @@ void Fittino::Controller::ExecuteFittino() const {
 
           tool->PerformAnalysis();
 
+          boost::property_tree::ptree outputPtree;
+          outputPtree.put( "InputFile.VerbosityLevel", _propertyTree->get<std::string>("InputFile.VerbosityLevel") );
+          outputPtree.put_child( "InputFile.Model." + modelType, model->GetPropertyTree() );
+          outputPtree.put_child( "InputFile.Tool." + toolType , tool->GetPropertyTree() );
+          boost::property_tree::xml_writer_settings<char> settings('\t', 1);
+          write_xml( "FittinoInterfaceFile.xml", outputPtree, std::locale(), settings );
+          
           delete tool;
           delete model;
 

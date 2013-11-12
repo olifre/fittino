@@ -22,6 +22,7 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <math.h>
 
 #include <boost/property_tree/ptree.hpp>
 
@@ -198,11 +199,12 @@ void Fittino::AnalysisTool::UpdatePropertyTree() {
 
     _ptree.put("Chi2", _chi2);
     _ptree.put("iterationCounter", _iterationCounter);
-
+    _ptree.put("Likelihood", exp( -1. *_chi2/2.));
 }
 
 boost::property_tree::ptree Fittino::AnalysisTool::GetPropertyTree() {
 
+    UpdatePropertyTree();
     return _ptree;
 
 }
