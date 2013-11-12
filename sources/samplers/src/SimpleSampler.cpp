@@ -23,7 +23,7 @@
 #include "SimpleSampler.h"
 
 Fittino::SimpleSampler::SimpleSampler( ModelBase* model, const boost::property_tree::ptree& ptree )
-  : SamplerBase( model, 0 ) {
+  : SamplerBase( model, ptree ) {
 
     _name = "simple parameter sampler";
 

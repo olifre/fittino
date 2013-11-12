@@ -103,7 +103,7 @@ Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, int randomSeed )
 }
 
 Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree ) 
-    : SamplerBase( model, ptree.get<int>( "randomSeed" ) ),
+    : SamplerBase( model, ptree ),
       _numberOfIterations( ptree.get<int> ( "numberOfIterations", -1 ) ),
       _isToyRun( ptree.get<bool>( "performToyRun", false ) ),
       _determineBestFitValues( ptree.get<bool>( "determineBestFitValues", false ) ),
@@ -112,6 +112,8 @@ Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, const boost::prope
       _inputLowestChi2( 1.e99 ),
       _inputBestFitIndex( 0 ) {
 
+      _name = "Tree Sampler";
+      
       if( !_model->GetModelCalculatorVector() ) {
         throw ConfigurationException( "CalculatorVector is a NULL-pointer (did you specify a TestModel?)" );
       }

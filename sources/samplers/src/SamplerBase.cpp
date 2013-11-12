@@ -17,11 +17,18 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "Messenger.h"
 #include "SamplerBase.h"
 
 Fittino::SamplerBase::SamplerBase( ModelBase* model, int randomSeed )
     : AnalysisTool( model, randomSeed ) {
+
+}
+
+Fittino::SamplerBase::SamplerBase( ModelBase* model, const boost::property_tree::ptree& ptree )
+    : AnalysisTool( model, ptree ) {
 
 }
 

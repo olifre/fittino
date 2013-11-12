@@ -33,16 +33,16 @@
 
 
 Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
-  : SamplerBase( model, ptree.get<int>( "randomSeed" ) ), 
+  : SamplerBase( model, ptree ), 
 
-  _previousChi2( 1.e99 ),
+  _previousChi2( ptree.get<double>("Chi2", 1.e99) ),
     //_previousChi2( model->GetChi2() ),
-    _previousLikelihood( 1.e-99 ),
-    //_previousLikelihood( exp( -1. * _previousChi2 / 2. ) ),
-      _previousParameterValues( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
-      _acceptCounter( 1 ),
-      _previousRho( 1. ),
-    _numberOfIterations( ptree.get<int>( "numberOfIterations" ) ) {
+    //_previousLikelihood( 1.e-99 ),
+    _previousLikelihood( exp( -1. * _previousChi2 / 2. ) ),
+     _previousParameterValues( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
+     _acceptCounter( 1 ),
+     _previousRho( 1. ),
+    _numberOfIterations( _iterationCounter + ptree.get<int>( "numberOfIterations" ) ) {
 
     _name = "Markov chain parameter sampler";
 

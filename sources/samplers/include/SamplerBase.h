@@ -20,6 +20,8 @@
 #ifndef FITTINO_SAMPLERBASE_H
 #define FITTINO_SAMPLERBASE_H
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "AnalysisTool.h"
 
 /*!
@@ -42,6 +44,10 @@ namespace Fittino {
        *  between a model and the concrete sampler is established.
        */
       SamplerBase( ModelBase* model, int randomSeed );
+      /*!
+       *
+       */
+      SamplerBase( ModelBase *model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
