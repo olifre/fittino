@@ -180,17 +180,20 @@ void Fittino::ModelBase::InitializeParameters( const boost::property_tree::ptree
 }
 
 boost::property_tree::ptree Fittino::ModelBase::GetPropertyTree() {
-
+  
+  UpdatePropertyTree();
   return _ptree;
 
 }
 
 void Fittino::ModelBase::UpdatePropertyTree() {
 
-    BOOST_FOREACH( boost::property_tree::ptree::value_type& node, _ptree.get_child("Parameter") ) {
-
-        node.second.put( "value", _collectionOfParameters.At( node.second.get<std::string>("name") )->GetValue() );
-
+    BOOST_FOREACH( boost::property_tree::ptree::value_type& node, _ptree ) {
+        if( node.first == "ModelParameter" ) {
+            
+            node.second.put( "value", _collectionOfParameters.At( node.second.get<std::string>("name") )->GetValue() );
+        
+        }
     }
 
 }
