@@ -49,6 +49,7 @@
 #include "XMLDataStorage.h"
 #include "CovariantSampler.h"
 #include "CorrelatedSampler.h"
+#include "NewCorrelatedSampler.h"
 #include "TreeSampler.h"
 #include "TreeCalculator.h"
 #include "SPhenoSLHAModelCalculator.h"
@@ -58,6 +59,7 @@
 #include "Observable.h"
 #include "SLHAChi2Contribution.h"
 #include "LHCChi2Contribution.h"
+
 
 Fittino::Factory::Factory() {
 
@@ -340,6 +342,9 @@ Fittino::SamplerBase* const Fittino::Factory::CreateSampler( const Fittino::Conf
 
         case Configuration::CORRELATED :
             return new CorrelatedSampler( model, randomSeed );
+
+        case Configuration::NEWCORRELATED :
+            return new NewCorrelatedSampler( model, randomSeed );
 
         case Configuration::TREE:
             return new TreeSampler( model, randomSeed );
