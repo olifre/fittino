@@ -138,24 +138,18 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
     AnalysisTool::PrintStatus();
 
-    // Calculate likelihood.
 
-    double likelihood = exp( -1. * chi2 / 2. );
+    // Calculate DeltaChi2 and likelihood;
+    double DeltaChi2 = _chi2 - _previousChi2;
+    double likelihood = exp(-1.*_chi2/2.);
 
     // Decide whether point shall be accepted.
 
     bool pointAccepted = false;
     //GetStatusParameterVector()->at( 2 )->SetValue( pointAccepted );
 
-    double rho = 0.;
-
-
-    if ( _previousLikelihood > 0. ) {
-
-        rho = likelihood / _previousLikelihood;
-
-    }
-
+    double rho = exp(-DeltaChi2/2.);
+    
     if ( rho > 1. ) {
 
         pointAccepted = true;
