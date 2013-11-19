@@ -230,7 +230,38 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
     }
     else {
+        
+        // if an interface file was used, and the first point in the new run was not accepted, fill that point into the ntuple first!
+        if( _iterationCounter == _numberOfFirstIteration ) {
+            double firstNewChi2 = _chi2;
+        
+            std::vector<double> firstNewPointParameterValues;
+            for( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+                firstNewPointParameterValues.push_back( _model->GetCollectionOfParameters().At( k )->GetValue() );
+            }
+        
+            for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
+                _model->GetCollectionOfParameters().At( k )->SetValue( _previousParameterValues.at( k ) );
+
+            }
+            _chi2 = _previousChi2;
+            GetStatusParameterVector()->at( 0 ) -> SetValue( _chi2 );
+            this->FillTree();
+        
+            _iterationCounter++;
+            GetStatusParameterVector()->at( 1 )->SetValue( _iterationCounter );
+ 
+            // now reset everything to the first new point           
+            _chi2 = firstNewChi2;
+            GetStatusParameterVector()->at( 0 ) -> SetValue( _chi2 );
+            for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+
+                _model->GetCollectionOfParameters().At( k )->SetValue( firstNewPointParameterValues.at( k ) );
+            
+            }
+            
+        }
         // save point and increment counter for last accepted point.
         this->FillTree();
         _acceptCounter++;
