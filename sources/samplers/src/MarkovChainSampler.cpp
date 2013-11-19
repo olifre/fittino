@@ -35,11 +35,12 @@
 Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
   : SamplerBase( model, ptree ), 
 
-  _previousChi2( ptree.get<double>("Chi2", 1.e99) ),
+    _previousChi2( ptree.get<double>("Chi2", 1.e99) ),
     //_previousChi2( model->GetChi2() ),
-     _previousParameterValues( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
-     _acceptCounter( 1 ),
-     _previousRho( 1. ),
+    _previousParameterValues( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
+    _acceptCounter( 1 ),
+    _previousRho( 1. ),
+    _numberOfFirstIteration( _iterationCounter+1 ),
     _numberOfIterations( _iterationCounter + ptree.get<int>( "numberOfIterations" ) ) {
 
     _name = "Markov chain parameter sampler";
@@ -94,8 +95,8 @@ void Fittino::MarkovChainSampler::Execute() {
         _iterationCounter++;
         GetStatusParameterVector()->at( 1 )->SetValue( _iterationCounter );
 
-        _chi2 = _model->GetChi2();
-        GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
+        //_chi2 = _model->GetChi2();
+        //GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
 
         this->UpdateModel();
 
@@ -131,7 +132,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
     double chi2 = _model->GetChi2();
     _chi2 = chi2;
     GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
-
+    
     AnalysisTool::PrintStatus();
 
 
@@ -192,7 +193,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
         }
         this->FillTree();
 
-        if( _iterationCounter == 1 ) return;
+        if( _iterationCounter == _numberOfFirstIteration ) return;
         if( !pointAccepted ) {
             
             chi2 = _previousChi2;
