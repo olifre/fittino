@@ -198,7 +198,7 @@ void Fittino::AnalysisTool::WriteResultToFile() const {
 void Fittino::AnalysisTool::UpdatePropertyTree() {
 
     _ptree.put("Chi2", _chi2);
-    _ptree.put("iterationCounter", _iterationCounter);
+    _ptree.put("IterationCounter", _iterationCounter);
 
 }
 
