@@ -50,7 +50,6 @@ namespace Fittino {
       /*! \cond UML */
     private:
       double                 _previousChi2;
-      double                 _previousLikelihood;
       double                 _previousRho;
       /*!
        *  Stores the configured maximal number of iteration steps.
