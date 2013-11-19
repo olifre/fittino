@@ -178,18 +178,37 @@ void Fittino::MarkovChainSampler::UpdateModel() {
     }
 
     if ( pointAccepted || _iterationCounter == _numberOfIterations ) {
+       
+        if ( pointAccepted ) {
+            _previousRho        = rho;
+            _previousChi2       = chi2;
         
-        _previousRho        = rho;
-        _previousChi2       = chi2;
-        for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+            for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-            _previousParameterValues.at( k ) = _model->GetCollectionOfParameters().At( k )->GetValue();
+                _previousParameterValues.at( k ) = _model->GetCollectionOfParameters().At( k )->GetValue();
 
+            }
+        
         }
         this->FillTree();
 
         if( _iterationCounter == 1 ) return;
-        if( !pointAccepted ) _acceptCounter++;
+        if( !pointAccepted ) {
+            
+            chi2 = _previousChi2;
+            rho = _previousRho;
+            _chi2 = chi2;
+            GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
+            
+            for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+
+                _model->GetCollectionOfParameters().At( k )->SetValue( _previousParameterValues.at( k ) );
+
+            }
+
+            _acceptCounter++;
+
+        }
 
         _branchPointAccepted->SetStatus( 1 );
         GetStatusParameterVector()->at( 2 )->SetValue( _acceptCounter );
