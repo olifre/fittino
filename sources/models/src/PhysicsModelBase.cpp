@@ -258,7 +258,7 @@ void Fittino::PhysicsModelBase::AddObservable( Observable* observable ) {
 }
 
 void Fittino::PhysicsModelBase::AddCalculator( ModelCalculatorBase* calculator ) {
-
+    
     _collectionOfCalculators.AddElement( calculator->GetName(), calculator );
 
     const Collection<const PredictionBase*>& col = calculator->GetCollectionOfQuantities(); 
@@ -272,7 +272,7 @@ void Fittino::PhysicsModelBase::AddCalculator( ModelCalculatorBase* calculator )
 }
 
 const Fittino::Collection<Fittino::ModelCalculatorBase*>& Fittino::PhysicsModelBase::GetCollectionOfCalculators() const {
-
+    
     return _collectionOfCalculators;
 
 }

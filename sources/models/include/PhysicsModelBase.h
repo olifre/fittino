@@ -78,7 +78,7 @@ namespace Fittino {
       /*!
        *  Returns the predictions of the model as a collection.
        */
-      const Collection<ModelCalculatorBase*>&        GetCollectionOfCalculators() const;
+      virtual const Collection<ModelCalculatorBase*>&    GetCollectionOfCalculators() const;
 
     public:
       virtual void                                   PrintStatus() const;

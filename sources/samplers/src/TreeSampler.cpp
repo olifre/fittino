@@ -40,6 +40,7 @@
 #include "ConfigurationException.h"
 #include "TDirectory.h"
 #include "TreeCalculator.h"
+#include "PhysicsModelBase.h"
 
 Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, int randomSeed )
     : SamplerBase( model, randomSeed ),
@@ -55,7 +56,7 @@ Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, int randomSeed )
     if( !_model->GetModelCalculatorVector() ) {
         throw ConfigurationException( "CalculatorVector is a NULL-pointer (did you specify a TestModel?)" );
     }
-    else if( _model->GetModelCalculatorVector()->size() == 0 ) {
+    else if( _model->GetCollectionOfCalculators().GetNumberOfElements() == 0 ) {
         throw ConfigurationException( "Could not find a calculator associated to specified model." );
     }
     
@@ -117,7 +118,7 @@ Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, const boost::prope
       if( !_model->GetModelCalculatorVector() ) {
         throw ConfigurationException( "CalculatorVector is a NULL-pointer (did you specify a TestModel?)" );
       }
-      else if( _model->GetModelCalculatorVector()->size() == 0 ) {
+      else if( _model->GetCollectionOfCalculators().GetNumberOfElements() == 0 ) {
         throw ConfigurationException( "Could not find a calculator associated to specified model." );
       }
       
@@ -179,11 +180,11 @@ void Fittino::TreeSampler::Execute() {
     
     if( _isToyRun ) {
       
-      static_cast<TreeCalculator*>(_model->GetModelCalculatorVector()->at( 0 ))->SetCurrentEntry( _bestFitIndex );
+      static_cast<TreeCalculator*>(_model->GetCollectionOfCalculators().At( 0 ))->SetCurrentEntry( _bestFitIndex );
       GetStatusParameterVector()->at(0)->SetValue( _model->GetChi2() );
       GetStatusParameterVector()->at(1)->SetValue( _bestFitIndex + 1);
       for( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
-        _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetCollectionOfParameters().At( k )->GetName() ) );
+        _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfCalculators().At( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetCollectionOfParameters().At( k )->GetName() ) );
       }
 
       this->FillTree();
@@ -206,7 +207,7 @@ void Fittino::TreeSampler::UpdateModel() {
   GetStatusParameterVector()->at( 0 )->SetValue( chi2 );
 
   for( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
-    _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetCollectionOfParameters().At( k )->GetName() ) );
+    _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfCalculators().At( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetCollectionOfParameters().At( k )->GetName() ) );
   }
     
   
@@ -232,7 +233,7 @@ void Fittino::TreeSampler::DetermineBestFitValues() {
 
     double chi2 = _model->GetChi2();
     for( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
-      _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetCollectionOfParameters().At( k )->GetName() ) );
+      _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfCalculators().At( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetCollectionOfParameters().At( k )->GetName() ) );
     }
     
     if( chi2 < _inputLowestChi2 ) { 
@@ -246,17 +247,17 @@ void Fittino::TreeSampler::DetermineBestFitValues() {
 
   }
   //std::cout << "input best fit index is " << _inputBestFitIndex << " with chi2 " << _inputLowestChi2 << std::endl;
-  static_cast<TreeCalculator*>(_model->GetModelCalculatorVector()->at( 0 ))->CalculatePredictions( _inputBestFitIndex );
+  static_cast<TreeCalculator*>(_model->GetCollectionOfCalculators().At( 0 ))->CalculatePredictions( _inputBestFitIndex );
    
   std::vector<Observable*>* observableVector = _model->GetObservableVector();
 
   for( int i = 0; i < observableVector->size(); ++i ) {
       
-    observableVector->at(i)->SetBestFitPrediction( _model->GetModelCalculatorVector()->at( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( observableVector->at(i)->GetPrediction()->GetName() ) );
+    observableVector->at(i)->SetBestFitPrediction( _model->GetCollectionOfCalculators().At( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( observableVector->at(i)->GetPrediction()->GetName() ) );
     //std::cout << "determined best fit predcition for observable " << observableVector->at(i)->GetPrediction()->GetName() << "  = " << observableVector->at(i)->GetBestFitPrediction() << std::endl;
 
   }
   
-  static_cast<TreeCalculator*>(_model->GetModelCalculatorVector()->at( 0 ))->SetCurrentEntry( 0 );
+  static_cast<TreeCalculator*>(_model->GetCollectionOfCalculators().At( 0 ))->SetCurrentEntry( 0 );
 
 }
