@@ -51,11 +51,11 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* mod
      _effvalues   ( new effinputs() ),
      _first       ( true ),
      _f_B         ( _model->GetCollectionOfQuantities().At( "f_B"         )->GetValue() ),
-     _f_BB_p_f_WW ( _model->GetCollectionOfQuantities().At( "f_BB_p_f_WW" )->GetValue() ),
+     _f_VV_plus   ( _model->GetCollectionOfQuantities().At( "f_VV_plus"   )->GetValue() ),
      _f_W         ( _model->GetCollectionOfQuantities().At( "f_W"         )->GetValue() ),
-     _f_BB_m_f_WW ( _model->GetCollectionOfQuantities().At( "f_BB_m_f_WW" )->GetValue() ),
-     _f_gg        ( _model->GetCollectionOfQuantities().At( "f_GG"        )->GetValue() ),
-     _f_phi_2     ( _model->GetCollectionOfQuantities().At( "f_Phi_2"     )->GetValue() ),
+     _f_VV_minus  ( _model->GetCollectionOfQuantities().At( "f_VV_minus"  )->GetValue() ),
+     _f_GG        ( _model->GetCollectionOfQuantities().At( "f_GG"        )->GetValue() ),
+     _f_Phi_2     ( _model->GetCollectionOfQuantities().At( "f_Phi_2"     )->GetValue() ),
      _f_t         ( _model->GetCollectionOfQuantities().At( "f_t"         )->GetValue() ),
      _f_b         ( _model->GetCollectionOfQuantities().At( "f_b"         )->GetValue() ),
      _f_tau       ( _model->GetCollectionOfQuantities().At( "f_tau"       )->GetValue() ),
@@ -80,9 +80,7 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* mod
     AddQuantity( new SimplePrediction( "normSM_xs_bbh"       , ""     , _normSM_xs_bbh        ) );
     AddQuantity( new SimplePrediction( "normSM_xs_tth"       , ""     , _normSM_xs_tth        ) );
     AddQuantity( new SimplePrediction( "normSM_xs_bh"        , ""     , _normSM_xs_bh         ) );
-    //     AddQuantity( "P_c_V_minus",           &_P_c_V_minus           );
-    //     AddQuantity( "P_kappa_HV_minus",      &_P_kappa_HV_minus      );
-    //     AddQuantity( "P_kappa_Zgamma",        &_P_kappa_Zgamma        );
+
     if ( _calculate_Gamma_hZZ      ) AddQuantity( new SimplePrediction( "normSM_Gamma_hZZ",      "", _normSM_Gamma_hZZ      ) );
     if ( _calculate_Gamma_hWW      ) AddQuantity( new SimplePrediction( "normSM_Gamma_hWW",      "", _normSM_Gamma_hWW      ) );    
     if ( _calculate_xs_qqh_2flavor ) AddQuantity( new SimplePrediction( "normSM_xs_qqh_2flavor", "", _normSM_xs_qqh_2flavor ) );
@@ -126,11 +124,11 @@ void Fittino::HDim6ModelCalculator::CallFunction() {
     bool new_gridParameters = (
                                _first
                                || new_mh
-                               || _previous_f_B     != _f_B
-                               || _previous_f_BB    != _f_BB
-                               || _previous_f_W     != _f_W
-                               || _previous_f_WW    != _f_WW
-                               || _previous_f_phi_2 != _f_phi_2
+                               || _previous_f_B        != _f_B
+                               || _previous_f_VV_plus  != _f_VV_plus
+                               || _previous_f_VV_minus != _f_VV_minus
+                               || _previous_f_W        != _f_W
+                               || _previous_f_Phi_2    != _f_Phi_2
                                );
 
     if ( _first )  _first = false;  
@@ -140,30 +138,16 @@ void Fittino::HDim6ModelCalculator::CallFunction() {
     if ( new_gridParameters ) {
 
         _previous_f_B     = _f_B;
-        _previous_f_BB    = _f_BB;
         _previous_f_W     = _f_W;
-        _previous_f_WW    = _f_WW;
-        _previous_f_phi_2 = _f_phi_2;
+        _previous_f_VV_plus = _f_VV_plus;
+        _previous_f_VV_minus = _f_VV_minus;
+        _previous_f_Phi_2 = _f_Phi_2;
 
     }
 
-    // todo: calculate pomerol coefficients here
-
-    _P_a_minus        = 0;
-    _P_a_plus         = 0;
-    _P_c_H            = 0;
-    _P_c_V_minus      = ( _P_a_plus + _P_a_minus ) / 2.;
-    _P_c_y_b          = 0;
-    _P_c_y_t          = 0;
-    _P_c_y_tau        = 0;
-    _P_kappa_BB       = 0;
-    _P_kappa_GG       = 0;
-    _P_kappa_HV_plus  = 0;
-    _P_kappa_HV_minus = ( _P_a_plus - _P_a_minus ) / 2.;
-    _P_kappa_Zgamma   = - _P_kappa_HV_minus / 2. - 2 * TMath::Power( _smvalues->sw, 2) * _P_kappa_BB;
-
     _f_BB = _effvalues->fbb;  
     _f_WW = _effvalues->fww;  
+    _f_g =  - _effvalues->fgg * 8 * TMath::Pi() / ( _smvalues->alphas * _smvalues->vev );
 
     _Delta_g1_WW       = HDim6::d_g1_ww  ( _smvalues, _effvalues );
     _Delta_g2_WW       = HDim6::d_g2_ww  ( _smvalues, _effvalues );
@@ -277,16 +261,15 @@ void Fittino::HDim6ModelCalculator::CallExecutable() {
 
 void Fittino::HDim6ModelCalculator::ConfigureInput() {
 
-    _effvalues->fb   = _f_B;
-    _effvalues->fbb  = ( _f_BB_p_f_WW + _f_BB_m_f_WW )/2.;
-    _effvalues->fw   = _f_W;
-    _effvalues->fww  = ( _f_BB_p_f_WW - _f_BB_m_f_WW )/2.;
-    _effvalues->fgg  = _f_gg;
-    _effvalues->fp2  = _f_phi_2;
-    _effvalues->fboh = _f_b;
-    _effvalues->ftoh = _f_t;
-    _effvalues->ftah = _f_tau;
+    _effvalues->fb   = 1e-6 * _f_B;
+    _effvalues->fbb  = 1e-6 * ( _f_VV_plus - _f_VV_minus );
+    _effvalues->fw   = 1e-6 * _f_W;
+    _effvalues->fww  = 1e-6 * ( _f_VV_plus + _f_VV_minus );
+    _effvalues->fgg  = 1e-6 * _f_GG;
+    _effvalues->fp2  = 1e-6 * _f_Phi_2;
+    _effvalues->fboh = 1e-6 * _f_b;
+    _effvalues->ftoh = 1e-6 * _f_t;
+    _effvalues->ftah = 1e-6 * _f_tau;
     _smvalues ->mh   = _mass_h;
 
 }
-

@@ -12,81 +12,81 @@
       <ModelParameter>
         <name>f_B</name>
         <value>0</value>
-        <error>1e-6</error>
-        <lowerBound>-1e-2</lowerBound>
-        <upperBound>+1e-2</upperBound>
+        <error>1</error>
+        <lowerBound>-1000</lowerBound>
+        <upperBound>+1000</upperBound>
         <fixed>true</fixed>       
       </ModelParameter>
 
       <ModelParameter>
-        <name>f_BB_p_f_WW</name>
+        <name>f_VV_plus</name>
         <value>0</value>
-        <error>1e-6</error>
-        <lowerBound>-1e-2</lowerBound>
-        <upperBound>+1e-2</upperBound>
+        <error>1</error>
+        <lowerBound>-1000</lowerBound>
+        <upperBound>+1000</upperBound>
         <fixed>false</fixed>       
       </ModelParameter>
 
       <ModelParameter>
-        <name>f_BB_m_f_WW</name>
+        <name>f_VV_minus</name>
         <value>0</value>
-        <error>1e-6</error>
-        <lowerBound>-1e-2</lowerBound>
-        <upperBound>+1e-2</upperBound>
+        <error>1</error>
+        <lowerBound>-1000</lowerBound>
+        <upperBound>+1000</upperBound>
         <fixed>false</fixed>       
       </ModelParameter>
 
       <ModelParameter>
         <name>f_W</name>
         <value>0</value>
-        <error>1e-6</error>
-        <lowerBound>-1e-2</lowerBound>
-        <upperBound>+1e-2</upperBound>
+        <error>1</error>
+        <lowerBound>-1000</lowerBound>
+        <upperBound>+1000</upperBound>
         <fixed>true</fixed>       
       </ModelParameter>
 
       <ModelParameter>
         <name>f_GG</name>
         <value>0</value>
-        <error>1e-6</error>
-        <lowerBound>-1e-2</lowerBound>
-        <upperBound>+1e-2</upperBound>
+        <error>1</error>
+        <lowerBound>-1000</lowerBound>
+        <upperBound>+1000</upperBound>
         <fixed>false</fixed>       
       </ModelParameter>
 
       <ModelParameter>
         <name>f_Phi_2</name>
         <value>0</value>
-        <error>1e-6</error>
-        <lowerBound>-1e-2</lowerBound>
-        <upperBound>+1e-2</upperBound>
+        <error>1</error>
+        <lowerBound>-1000</lowerBound>
+        <upperBound>+1000</upperBound>
         <fixed>false</fixed>       
       </ModelParameter>
 
       <ModelParameter>
         <name>f_t</name>
         <value>0</value>
-        <error>1e-6</error>
-        <lowerBound>-1e-2</lowerBound>
-        <upperBound>+1e-2</upperBound>
+        <error>1</error>
+        <lowerBound>-1000</lowerBound>
+        <upperBound>+1000</upperBound>
         <fixed>false</fixed>       
       </ModelParameter>
 
       <ModelParameter>
         <name>f_b</name>
         <value>0</value>
-        <error>1e-6</error>
-        <lowerBound>-1e-2</lowerBound>
-        <upperBound>+1e-2</upperBound>
+        <error>1</error>
+        <lowerBound>-1000</lowerBound>
+        <upperBound>+1000</upperBound>
         <fixed>false</fixed>       
       </ModelParameter>
 
       <ModelParameter>
         <name>f_tau</name>
         <value>0</value>
-        <error>1e-6</error>
-        <lowerBound>-1e-2</lowerBound>
-        <upperBound>+1e-2</upperBound>
+        <error>1</error>
+        <lowerBound>-1000</lowerBound>
+        <upperBound>+1000</upperBound>
         <fixed>false</fixed>       
       </ModelParameter>
 
@@ -128,7 +128,7 @@
   <Tool>
   <MarkovChainSampler>
     <numberOfIterations>1</numberOfIterations>
-    <randomSeed>0</randomSeed>
+    <randomSeed>1</randomSeed>
   </MarkovChainSampler>
   </Tool>
 

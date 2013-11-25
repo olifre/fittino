@@ -87,6 +87,7 @@ namespace Fittino {
       double                   _Delta_kappa_Gamma;
       double                   _Delta_kappa_Z;
       double                   _f_BB;
+      double                   _f_g;
       double                   _f_WW;
       double                   _Gamma_hbb;
       double                   _Gamma_hcc;
@@ -117,23 +118,11 @@ namespace Fittino {
       double                   _normSM_xs_Wh;
       double                   _normSM_xs_Zh;
       double                   _previous_f_B;
-      double                   _previous_f_BB;
+      double                   _previous_f_VV_plus;
       double                   _previous_f_W;
-      double                   _previous_f_WW;
-      double                   _previous_f_phi_2;
+      double                   _previous_f_VV_minus;
+      double                   _previous_f_Phi_2;
       double                   _previous_mass_h;
-      double                   _P_a_minus;
-      double                   _P_a_plus;
-      double                   _P_c_H;
-      double                   _P_c_V_minus;
-      double                   _P_c_y_b;
-      double                   _P_c_y_t;
-      double                   _P_c_y_tau;
-      double                   _P_kappa_BB;
-      double                   _P_kappa_GG;
-      double                   _P_kappa_HV_plus;
-      double                   _P_kappa_HV_minus;
-      double                   _P_kappa_Zgamma;
       double                   _SM_Gamma_hbb;
       double                   _SM_Gamma_hcc;
       double                   _SM_Gamma_hgg;
@@ -158,19 +147,17 @@ namespace Fittino {
       effinputs*               _effvalues;
       sminputs*                _smvalues;
 
-
     private:  
       const double&            _f_B;
       const double&            _f_b;
-      const double&            _f_BB_p_f_WW;
-      const double&            _f_BB_m_f_WW;
-      const double&            _f_gg;
-      const double&            _f_phi_2;
+      const double&            _f_VV_plus;
+      const double&            _f_VV_minus;
+      const double&            _f_GG;
+      const double&            _f_Phi_2;
       const double&            _f_t;
       const double&            _f_tau;
       const double&            _f_W;
       const double&            _mass_h;
-
 
     private:   
       void                     ComparePreviousEffValues();

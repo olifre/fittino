@@ -78,6 +78,11 @@ Fittino::HiggsSignalsHadXSModelCalculator::HiggsSignalsHadXSModelCalculator( con
     AddQuantity( new SimplePrediction( "HS_chi2_mass_h"     , "", _chi2_mass_h         ) );
     AddQuantity( new SimplePrediction( "HS_chi2_mu"         , "", _chi2_mu             ) );
     AddQuantity( new SimplePrediction( "HS_pvalue"          , "", _pvalue              ) ); 
+    AddQuantity( new SimplePrediction( "HS_R_H_WW"          , "", _R_H_WW              ) ); 
+    AddQuantity( new SimplePrediction( "HS_R_H_ZZ"          , "", _R_H_ZZ              ) ); 
+    AddQuantity( new SimplePrediction( "HS_R_H_gaga"        , "", _R_H_gaga            ) ); 
+    AddQuantity( new SimplePrediction( "HS_R_H_bb"          , "", _R_H_bb              ) ); 
+    AddQuantity( new SimplePrediction( "HS_R_VH_bb"         , "", _R_VH_bb             ) ); 
 
     int nHzero = 1;
     int nHplus = 0;
@@ -86,7 +91,7 @@ Fittino::HiggsSignalsHadXSModelCalculator::HiggsSignalsHadXSModelCalculator( con
     std::cout<<"Using ExpData = "<<expdata<<std::endl;
     initialize_higgssignals_( &nHzero, &nHplus, expdata );
     
-    int output_level = 0; 
+    int output_level = 0;
     setup_output_level_( &output_level );
 
     int pdf = 2; 
@@ -244,6 +249,21 @@ void Fittino::HiggsSignalsHadXSModelCalculator::CallFunction() {
 
     
     run_higgssignals_( &_mode, &_chi2_mu, &_chi2_mass_h, &_chi2, &_nobs, &_pvalue );
+
+    int i = 1;
+    int collider = 3;
+    
+    get_rvalues_( &i, 
+                  &collider,
+                  &_R_H_WW, 
+                  &_R_H_ZZ, 
+                  &_R_H_gaga,
+                  &_R_H_tautau,
+                  &_R_H_bb,
+                  &_R_VH_bb );
+
+
+
 
 }
 

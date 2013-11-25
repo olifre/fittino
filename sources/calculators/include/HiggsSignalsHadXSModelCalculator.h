@@ -106,6 +106,12 @@ namespace Fittino {
       double _normSM_xs_lep;
       double _normSM_xs_tev;
       double _pvalue;
+      double _R_H_WW;
+      double _R_H_ZZ;
+      double _R_H_gaga;
+      double _R_H_bb;
+      double _R_H_tautau;
+      double _R_VH_bb;
       double _SM_BR_hbb;
       double _SM_BR_hcc;
       double _SM_BR_hgaga;
