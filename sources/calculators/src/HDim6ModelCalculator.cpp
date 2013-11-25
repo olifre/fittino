@@ -145,10 +145,6 @@ void Fittino::HDim6ModelCalculator::CallFunction() {
 
     }
 
-    _f_BB = _effvalues->fbb;  
-    _f_WW = _effvalues->fww;  
-    _f_g =  - _effvalues->fgg * 8 * TMath::Pi() / ( _smvalues->alphas * _smvalues->vev );
-
     _Delta_g1_WW       = HDim6::d_g1_ww  ( _smvalues, _effvalues );
     _Delta_g2_WW       = HDim6::d_g2_ww  ( _smvalues, _effvalues );
     _Delta_g1_gaga     = HDim6::d_g1_yy  ( _smvalues, _effvalues );
@@ -258,18 +254,23 @@ void Fittino::HDim6ModelCalculator::CallExecutable() {
 
 }
 
-
 void Fittino::HDim6ModelCalculator::ConfigureInput() {
 
+    _f_BB = _f_VV_plus - _f_VV_minus;
+    _f_WW = _f_VV_plus + _f_VV_minus;
+
+    _f_g  =  - _f_GG * 8 * TMath::Pi() / ( _smvalues->alphas * _smvalues->vev );
+
     _effvalues->fb   = 1e-6 * _f_B;
-    _effvalues->fbb  = 1e-6 * ( _f_VV_plus - _f_VV_minus );
+    _effvalues->fbb  = 1e-6 * _f_BB;
     _effvalues->fw   = 1e-6 * _f_W;
-    _effvalues->fww  = 1e-6 * ( _f_VV_plus + _f_VV_minus );
+    _effvalues->fww  = 1e-6 * _f_WW;
     _effvalues->fgg  = 1e-6 * _f_GG;
     _effvalues->fp2  = 1e-6 * _f_Phi_2;
     _effvalues->fboh = 1e-6 * _f_b;
     _effvalues->ftoh = 1e-6 * _f_t;
     _effvalues->ftah = 1e-6 * _f_tau;
+
     _smvalues ->mh   = _mass_h;
 
 }
