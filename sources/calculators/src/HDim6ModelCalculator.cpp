@@ -222,14 +222,14 @@ void Fittino::HDim6ModelCalculator::CallFunction() {
         if ( _calculate_xs_Wh )          HWRadiation_( _smvalues, _effsmvalues, &_SM_xs_Wh,          &error, &chi2 );
         if ( _calculate_xs_Zh )          HZRadiation_( _smvalues, _effsmvalues, &_SM_xs_Zh,          &error, &chi2 );
         if ( _calculate_xs_qqh_2flavor ) ud_jjh_     ( _smvalues, _effsmvalues, &_SM_xs_qqh_2flavor, &error, &chi2 );
-        if ( _calculate_xs_qqh_5flavor ) ud_jjh_     ( _smvalues, _effsmvalues, &_SM_xs_qqh_5flavor, &error, &chi2 );
+        if ( _calculate_xs_qqh_5flavor ) udcsb_jjh_  ( _smvalues, _effsmvalues, &_SM_xs_qqh_5flavor, &error, &chi2 );
 
       }
 
       if ( _calculate_xs_Wh )          HWRadiation_( _smvalues, _effvalues, &_xs_Wh,          &error, &chi2 );
       if ( _calculate_xs_Zh )          HZRadiation_( _smvalues, _effvalues, &_xs_Zh,          &error, &chi2 );
       if ( _calculate_xs_qqh_2flavor ) ud_jjh_     ( _smvalues, _effvalues, &_xs_qqh_2flavor, &error, &chi2 );
-      if ( _calculate_xs_qqh_5flavor ) ud_jjh_     ( _smvalues, _effvalues, &_xs_qqh_5flavor, &error, &chi2 );
+      if ( _calculate_xs_qqh_5flavor ) udcsb_jjh_  ( _smvalues, _effvalues, &_xs_qqh_5flavor, &error, &chi2 );
       
       if ( _calculate_xs_Wh )          _normSM_xs_Wh          = _xs_Wh          / _SM_xs_Wh;
       if ( _calculate_xs_Zh )          _normSM_xs_Zh          = _xs_Zh          / _SM_xs_Zh;
