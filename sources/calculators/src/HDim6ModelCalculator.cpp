@@ -66,8 +66,8 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModelBase* mod
 
     _name = "HDim6ModelCalculator";
     
-    AddQuantity( new SimplePrediction( "f_BB"                , "GeV-2", _f_BB                 ) );
-    AddQuantity( new SimplePrediction( "f_WW"                , "GeV-2", _f_WW                 ) );
+    AddQuantity( new SimplePrediction( "f_BB"                , "TeV-2", _f_BB                 ) );
+    AddQuantity( new SimplePrediction( "f_WW"                , "TeV-2", _f_WW                 ) );
     AddQuantity( new SimplePrediction( "normSM_Gamma_hgg"    , ""     , _normSM_Gamma_hgg     ) );
     AddQuantity( new SimplePrediction( "normSM_Gamma_htautau", ""     , _normSM_Gamma_htautau ) );
     AddQuantity( new SimplePrediction( "normSM_Gamma_hmumu"  , ""     , _normSM_Gamma_hmumu   ) );
