@@ -140,7 +140,7 @@ Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::str
 
 #if defined FEYNHIGGS
 
-            return new FeynHiggsModelCalculator( model );
+      return new FeynHiggsModelCalculator( model, ptree );
 
 #else
 
@@ -245,18 +245,6 @@ Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator( const Fi
 //             throw ConfigurationException( "Trying to use HiggsSignalsHadXSModelCalculator but Fittino was built without HiggsBounds or HiggsSignals." );
 
 // #endif
-
-        case Configuration::FEYNHIGGSCALCULATOR:
-
-#if defined FEYNHIGGS
-
-            return new FeynHiggsModelCalculator( model );
-
-#else
-
-            throw ConfigurationException( "Trying to use FeynHiggsCalculator but Fittino was built without FeynHiggs." );
-
-#endif
 
         case Configuration::HIGGSSIGNALSSLHACALCULATOR:
 

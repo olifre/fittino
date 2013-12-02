@@ -19,6 +19,9 @@
 
 #include <iostream>
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/foreach.hpp>
+
 #include "TMath.h"
 
 #include "CFeynHiggs.h"
@@ -28,7 +31,7 @@
 #include "PhysicsModelBase.h"
 #include "SimplePrediction.h"
 
-Fittino::FeynHiggsModelCalculator::FeynHiggsModelCalculator( const PhysicsModelBase* model)
+Fittino::FeynHiggsModelCalculator::FeynHiggsModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree )
         : ModelCalculatorBase(model) {
 
     _name = "FeynHiggs";
@@ -37,6 +40,23 @@ Fittino::FeynHiggsModelCalculator::FeynHiggsModelCalculator( const PhysicsModelB
 
     FHSetFlagsString(&_error,flags.c_str() );
     if ( _error ) exit(_error); 
+
+
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree ) {
+    
+      if( node.first == "Input" ) {
+
+        std::string name     = node.second.get<std::string>( "Name" );
+        std::string quantity = node.second.get<std::string>( "Value" );
+
+        const double& value = _model->GetCollectionOfQuantities().At( quantity )->GetValue();
+        // std::string   unit  = _model->GetCollectionOfQuantities().At( quantity )->GetUnit(); Quantity does not yet have a unit
+
+        _input.AddElement( new SimplePrediction( name, "" , value ) ) ;
+
+      }
+
+    }
 
 }
 

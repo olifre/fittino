@@ -22,12 +22,28 @@
 
 #include <complex>
 
+#include "Collection.h"
 #include "ModelCalculatorBase.h"
+
+namespace boost {
+
+  namespace property_tree {
+
+    template < class Key, class Data, class KeyCompare >
+      class basic_ptree;
+
+    typedef basic_ptree< std::string, std::string, std::less<std::string> > ptree;
+
+  }
+
+}
 
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
+
+  class SimplePrediction;
 
   /*!
    *  \ingroup calculators
@@ -39,7 +55,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                   FeynHiggsModelCalculator( const PhysicsModelBase* model );
+    FeynHiggsModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
@@ -205,6 +221,8 @@ namespace Fittino {
       double _gamma_h_gg_smratio;
 
       double _gamma_h_tot_smratio;
+      
+      Collection<SimplePrediction*> _input;
       
       /*! \endcond UML */
 
