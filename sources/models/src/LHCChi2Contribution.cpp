@@ -57,13 +57,13 @@ Fittino::LHCChi2Contribution::LHCChi2Contribution( std::string name,
 
 Fittino::LHCChi2Contribution::LHCChi2Contribution( const boost::property_tree::ptree& ptree, 
                                                    LHCModelCalculator *lhcModelCalculator )
-    : _fileName( ptree.get<std::string>( "fileName" ) ),
-      _histogramName( ptree.get<std::string>( "histogramName" ) ),
-      _nObs( ptree.get<int>( "nObs") ),
-      _nExpSM( ptree.get<double>( "nExpSM" ) ),
-      _nExpBestFit( ptree.get<double>( "nExpBestFit" ) ),
-      _systematicErrorBG( ptree.get<double>( "systematicErrorBG" ) ),
-      _systematicErrorSignal( ptree.get<double>( "systematicErrorSignal" ) ),
+    : _fileName( ptree.get<std::string>( "FileName" ) ),
+      _histogramName( ptree.get<std::string>( "HistogramName" ) ),
+      _nObs( ptree.get<int>( "NObs") ),
+      _nExpSM( ptree.get<double>( "NExpSM" ) ),
+      _nExpBestFit( ptree.get<double>( "NExpBestFit" ) ),
+      _systematicErrorBG( ptree.get<double>( "SystematicErrorBG" ) ),
+      _systematicErrorSignal( ptree.get<double>( "SystematicErrorSignal" ) ),
       _lhcModelCalculator( lhcModelCalculator ),
       Chi2ContributionBase( ptree ) {
 

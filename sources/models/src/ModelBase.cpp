@@ -130,7 +130,7 @@ void Fittino::ModelBase::InitializeParameters() {
 
             std::string name = v.second.get<std::string>( "<xmlattr>.Name" );
             std::string plotName = v.second.get<std::string>( "<xmlattr>.PlotName", name );
-            std::string unit = v.second.get<std::string>( "<xmlattr>.Unit", "" );
+                std::string unit = v.second.get<std::string>( "<xmlattr>.Unit", "" );
             std::string plotUnit = v.second.get<std::string>( "<xmlattr>.PlotUnit", unit );
             std::string id = v.second.get<std::string>( "<xmlattr>.ID", "" );
             double value = v.second.get<double>( "<xmlattr>.Value" );
@@ -191,7 +191,7 @@ void Fittino::ModelBase::UpdatePropertyTree() {
     BOOST_FOREACH( boost::property_tree::ptree::value_type& node, _ptree ) {
         if( node.first == "ModelParameter" ) {
             
-            node.second.put( "value", _collectionOfParameters.At( node.second.get<std::string>("name") )->GetValue() );
+            node.second.put( "Value", _collectionOfParameters.At( node.second.get<std::string>("Name") )->GetValue() );
         
         }
     }

@@ -102,9 +102,9 @@ Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, int randomSeed )
 
 Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree ) 
     : SamplerBase( model, ptree ),
-      _numberOfIterations( ptree.get<int> ( "numberOfIterations", -1 ) ),
-      _isToyRun( ptree.get<bool>( "performToyRun", false ) ),
-      _determineBestFitValues( ptree.get<bool>( "determineBestFitValues", false ) ),
+      _numberOfIterations( ptree.get<int> ( "NumberOfIterations", -1 ) ),
+      _isToyRun( ptree.get<bool>( "PerformToyRun", false ) ),
+      _determineBestFitValues( ptree.get<bool>( "DetermineBestFitValues", false ) ),
       _lowestChi2( 1.e99 ),
       _bestFitIndex( 0 ),
       _inputLowestChi2( 1.e99 ),

@@ -65,7 +65,7 @@ Fittino::WorkspaceChi2Contribution::WorkspaceChi2Contribution( std::string name,
 }
 
 Fittino::WorkspaceChi2Contribution::WorkspaceChi2Contribution( const boost::property_tree::ptree& ptree ) 
-                                  : _workspaceFile( new TFile( (ptree.get<std::string>( "fileName" ) ).c_str() ) ),
+                                  : _workspaceFile( new TFile( (ptree.get<std::string>( "FileName" ) ).c_str() ) ),
                                     _workspace( new RooWorkspace() ),
                                     Chi2ContributionBase( ptree ) {
 

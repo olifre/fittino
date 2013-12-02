@@ -51,8 +51,8 @@ Fittino::PhysicsParameter::PhysicsParameter( std::string name,
 }
 
 Fittino::PhysicsParameter::PhysicsParameter( const boost::property_tree::ptree& ptree )
-  : _unit( ptree.get<std::string>( "unit", "" ) ),
-    _plotUnit( ptree.get<std::string>( "plotUnit", "" ) ),
+  : _unit( ptree.get<std::string>( "Unit", "" ) ),
+    _plotUnit( ptree.get<std::string>( "PlotUnit", "" ) ),
                            ModelParameterBase( ptree ) {
 
 }

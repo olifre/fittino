@@ -32,7 +32,7 @@ Fittino::Chi2ContributionBase::Chi2ContributionBase( std::string name )
 
 Fittino::Chi2ContributionBase::Chi2ContributionBase( const boost::property_tree::ptree& ptree ) 
                              : _chi2( 0. ),
-                               _name( ptree.get<std::string>( "name" ) ) {
+                                   _name( ptree.get<std::string>( "Name" ) ) {
 
 }
 

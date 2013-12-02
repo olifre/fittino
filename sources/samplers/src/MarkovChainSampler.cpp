@@ -41,7 +41,7 @@ Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, cons
     _acceptCounter( 1 ),
     _previousRho( 1. ),
     _numberOfFirstIteration( _iterationCounter+1 ),
-    _numberOfIterations( _iterationCounter + ptree.get<int>( "numberOfIterations" ) ) {
+    _numberOfIterations( _iterationCounter + ptree.get<int>( "NumberOfIterations" ) ) {
 
     _name = "Markov chain parameter sampler";
 

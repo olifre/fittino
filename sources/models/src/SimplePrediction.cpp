@@ -78,7 +78,7 @@ Fittino::SimplePrediction::SimplePrediction( const boost::property_tree::ptree& 
 }
 
 Fittino::SimplePrediction::SimplePrediction( const boost::property_tree::ptree& ptree, const ModelCalculatorBase* calculator )
-    : _referenceValue( calculator->GetSimpleOutputDataStorage()->GetMap()->at( ptree.get<std::string>( "name" ) ) ), 
+    : _referenceValue( calculator->GetSimpleOutputDataStorage()->GetMap()->at( ptree.get<std::string>( "Name" ) ) ), 
       PredictionBase( ptree ) {
 
 }

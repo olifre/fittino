@@ -56,7 +56,7 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tre
       _name( ptree.get<std::string>("Name", "") ),
       _model( model ),
       _outputFile( (ptree.get<std::string>("OutputFile", "Fittino.out.root")).c_str(), "RECREATE" ),
-      _randomGenerator( ptree.get<int>("randomSeed", 0) ),
+      _randomGenerator( ptree.get<int>("RandomSeed", 0) ),
       _tree( new TTree( (ptree.get<std::string>("OutputTree", "Tree")).c_str(), (ptree.get<std::string>("OutputTree", "Tree")).c_str() ) ) {
 
       _statusParameterVector.push_back( new ParameterBase( "Chi2",             "#chi^2",           _chi2, 0., 100.  ) ),

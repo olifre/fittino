@@ -38,11 +38,11 @@ Fittino::Quantity::Quantity( std::string name,
 }
 
 Fittino::Quantity::Quantity( const boost::property_tree::ptree& ptree ) 
-        : _name( ptree.get<std::string>( "name" ) ), 
-          _plotName( ptree.get<std::string>( "plotName" ) ),
-          _value( ptree.get<double>( "value", 0. ) ),
-          _plotLowerBound( ptree.get<double>( "plotLowerBound" ) ),
-          _plotUpperBound( ptree.get<double>( "plotUpperBound" ) ) {
+        : _name( ptree.get<std::string>( "Name" ) ), 
+          _plotName( ptree.get<std::string>( "PlotName" ) ),
+          _value( ptree.get<double>( "Value", 0. ) ),
+          _plotLowerBound( ptree.get<double>( "PlotLowerBound" ) ),
+          _plotUpperBound( ptree.get<double>( "PlotUpperBound" ) ) {
 
 }
 

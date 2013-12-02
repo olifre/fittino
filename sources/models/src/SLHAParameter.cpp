@@ -50,7 +50,7 @@ Fittino::SLHAParameter::SLHAParameter( std::string name,
 }
 
 Fittino::SLHAParameter::SLHAParameter( const boost::property_tree::ptree& ptree )
-                      : _id( ptree.get<std::string>( "id" ) ),
+                      : _id( ptree.get<std::string>( "ID" ) ),
                         PhysicsParameter( ptree ) {
 
 }

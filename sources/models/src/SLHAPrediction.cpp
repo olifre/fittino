@@ -74,10 +74,10 @@ Fittino::SLHAPrediction::SLHAPrediction( std::string              name,
 }
 
 Fittino::SLHAPrediction::SLHAPrediction( const boost::property_tree::ptree& ptree, SLHAModelCalculatorBase* slhaModelCalculator )
-       : _columnIndex( ptree.get<int>( "columnIndex" ) ),
-         _firstId( ptree.get<std::string>( "firstId" ) ),
-         _secondId( ptree.get<std::string>( "secondId", "" ) ),
-         _blockName( ptree.get<std::string>( "blockName" ) ),
+       : _columnIndex( ptree.get<int>( "ColumnIndex" ) ),
+         _firstId( ptree.get<std::string>( "FirstId" ) ),
+         _secondId( ptree.get<std::string>( "SecondId", "" ) ),
+         _blockName( ptree.get<std::string>( "BlockName" ) ),
          _slhaModelCalculator( slhaModelCalculator ),
          PredictionBase( ptree ) {
 

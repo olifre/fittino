@@ -39,9 +39,9 @@ Fittino::SLHAChi2Contribution::SLHAChi2Contribution( std::string name,
 }
 
 Fittino::SLHAChi2Contribution::SLHAChi2Contribution( const boost::property_tree::ptree& ptree, SLHAModelCalculatorBase* slhaModelCalculator ) 
-                             : _columnIndex( ptree.get<int>( "columnIndex" ) ),
-                               _id( ptree.get<std::string>( "id" ) ),
-                               _blockName( ptree.get<std::string>( "blockName" ) ),
+                             : _columnIndex( ptree.get<int>( "ColumnIndex" ) ),
+                               _id( ptree.get<std::string>( "ID" ) ),
+                               _blockName( ptree.get<std::string>( "BlockName" ) ),
                                _slhaModelCalculator( slhaModelCalculator ),
                                Chi2ContributionBase( ptree ) {
 

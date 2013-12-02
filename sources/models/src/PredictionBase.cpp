@@ -41,8 +41,8 @@ Fittino::PredictionBase::PredictionBase( std::string name,
 }
 
 Fittino::PredictionBase::PredictionBase( const boost::property_tree::ptree& ptree ) 
-        : _unit( ptree.get<std::string>( "unit" ) ),
-          _plotUnit( ptree.get<std::string>( "plotUnit" ) ),
+        : _unit( ptree.get<std::string>( "Unit" ) ),
+          _plotUnit( ptree.get<std::string>( "PlotUnit" ) ),
           Quantity( ptree ) {
 
 }
