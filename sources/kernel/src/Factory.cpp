@@ -28,7 +28,6 @@
 #include "FeynHiggsModelCalculator.h"
 #include "GeneticAlgorithmOptimizer.h"
 #include "HDim6ModelCalculator.h"
-#include "HDim6Model.h"
 #include "HECModel.h"
 #include "HiggsSignalsHadXSModelCalculator.h"
 #include "HiggsSignalsSLHAModelCalculator.h"
@@ -196,9 +195,6 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const Fittino::Configur
 
         case Configuration::CMSSM:
             return new CMSSMModel();
-
-        case Configuration::HDIM6:
-            return new HDim6Model();
 
         case Configuration::HEC:
 

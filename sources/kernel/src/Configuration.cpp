@@ -87,11 +87,6 @@ Fittino::Configuration::ModelType Fittino::Configuration::GetModelType() const {
         return Configuration::CMSSM;
 
     }
-    else if ( ( *_steeringParameterMap )[key] == "HDim6" ) {
-
-        return Configuration::HDIM6;
-
-    }
     else if ( ( *_steeringParameterMap )[key] == "HEC" ) {
 
         return Configuration::HEC;
