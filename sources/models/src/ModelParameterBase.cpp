@@ -49,8 +49,8 @@ Fittino::ModelParameterBase::ModelParameterBase( const boost::property_tree::ptr
     _upperBound( ptree.get<double>("UpperBound", 1. ) ),
     _fixed( ptree.get<bool>("Fixed", false ) ),
     _updated( true ),
-    ParameterBase( ptree.get<std::string>( "name"), 
-                   ptree.get<std::string>( "name"), 
+    ParameterBase( ptree.get<std::string>( "Name"), 
+                   ptree.get<std::string>( "Name"), 
                    ptree.get<double>("Value", 0 ),
                    ptree.get<double>( "PlotLowerBound", _lowerBound ),
                    ptree.get<double>( "PlotUpperBound", _upperBound ) ) {
