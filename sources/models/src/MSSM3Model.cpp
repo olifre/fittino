@@ -41,7 +41,7 @@ Fittino::MSSM3Model::MSSM3Model() {
 
     Factory factory;
     ModelCalculatorBase* feynHiggsModelCalculator = factory.CreateCalculator(Configuration::FEYNHIGGSCALCULATOR, this);
-    _modelCalculatorVector.push_back( feynHiggsModelCalculator );
+    //_modelCalculatorVector.push_back( feynHiggsModelCalculator );
 
     PredictionBase* pred = 0;
 

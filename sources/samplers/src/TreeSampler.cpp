@@ -53,10 +53,7 @@ Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, int randomSeed )
       _inputBestFitIndex( 0 ) {
     _name = "Tree sampler";
 
-    if( !_model->GetModelCalculatorVector() ) {
-        throw ConfigurationException( "CalculatorVector is a NULL-pointer (did you specify a TestModel?)" );
-    }
-    else if( _model->GetCollectionOfCalculators().GetNumberOfElements() == 0 ) {
+    if( _model->GetCollectionOfCalculators().GetNumberOfElements() == 0 ) {
         throw ConfigurationException( "Could not find a calculator associated to specified model." );
     }
     
@@ -115,10 +112,7 @@ Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, const boost::prope
 
       _name = "Tree Sampler";
       
-      if( !_model->GetModelCalculatorVector() ) {
-        throw ConfigurationException( "CalculatorVector is a NULL-pointer (did you specify a TestModel?)" );
-      }
-      else if( _model->GetCollectionOfCalculators().GetNumberOfElements() == 0 ) {
+      if( _model->GetCollectionOfCalculators().GetNumberOfElements() == 0 ) {
         throw ConfigurationException( "Could not find a calculator associated to specified model." );
       }
       

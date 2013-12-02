@@ -244,12 +244,6 @@ Fittino::PhysicsModelBase* Fittino::PhysicsModelBase::Clone() const{
 
 }
 
-std::vector<Fittino::ModelCalculatorBase*>* Fittino::PhysicsModelBase::GetModelCalculatorVector() {
-
-    return &_modelCalculatorVector;
-
-}
-
 void Fittino::PhysicsModelBase::AddObservable( Observable* observable ) {
 
     _observableVector.push_back( observable );
