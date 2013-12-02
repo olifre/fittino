@@ -8,17 +8,17 @@
     <RosenbrockModel>
 
       <ModelParameter>
-        <name>X1</name>
-        <error>0.01</error>
-        <lowerBound>-2</lowerBound>
-        <upperBound>2</upperBound>
+        <Name>X1</Name>
+        <Error>0.01</Error>
+        <LowerBound>-2</LowerBound>
+        <UpperBound>2</UpperBound>
       </ModelParameter>
 
       <ModelParameter>
-        <name>X2</name>
-        <error>0.01</error>
-        <lowerBound>-2</lowerBound>
-        <upperBound>2</upperBound>
+        <Name>X2</Name>
+        <Error>0.01</Error>
+        <LowerBound>-2</LowerBound>
+        <UpperBound>2</UpperBound>
       </ModelParameter>
 
     </RosenbrockModel>

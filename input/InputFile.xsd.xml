@@ -44,8 +44,8 @@
   <xs:complexContent>
     <xs:extension base="AnalysisTool">
     <xs:sequence>
-      <xs:element name="numberOfIterations" type="xs:integer" />
-      <xs:element name="randomSeed" type="xs:integer"  />
+      <xs:element name="NumberOfIterations" type="xs:integer" />
+      <xs:element name="RandomSeed" type="xs:integer"  />
     </xs:sequence>
     </xs:extension>
   </xs:complexContent>
@@ -72,12 +72,12 @@
 
 <xs:complexType name="ModelParameter">
   <xs:sequence>
-    <xs:element name="name" type="xs:string" />
-    <xs:element name="value" type="xs:double" minOccurs="0" />
-    <xs:element name="error" type="xs:double" minOccurs="0" />
-    <xs:element name="lowerBound" type="xs:double" minOccurs="0" />
-    <xs:element name="upperBound" type="xs:double" minOccurs="0" />
-    <xs:element name="fixed" type="xs:boolean" minOccurs="0" />
+    <xs:element name="Name" type="xs:string" />
+    <xs:element name="Value" type="xs:double" minOccurs="0" />
+    <xs:element name="Error" type="xs:double" minOccurs="0" />
+    <xs:element name="LowerBound" type="xs:double" minOccurs="0" />
+    <xs:element name="UpperBound" type="xs:double" minOccurs="0" />
+    <xs:element name="Fixed" type="xs:boolean" minOccurs="0" />
   </xs:sequence>
 </xs:complexType>
 
@@ -91,7 +91,7 @@
 
 <xs:complexType name="HDim6Calculator">
   <xs:sequence>
-    <xs:element name="name"                     type="xs:string"  />
+    <xs:element name="Name"                     type="xs:string"  />
     <xs:element name="calculate_Gamma_hWW"      type="xs:boolean" />
     <xs:element name="calculate_Gamma_hZZ"      type="xs:boolean" />
     <xs:element name="calculate_xs_qqh_2flavor" type="xs:boolean" />
@@ -103,14 +103,14 @@
 
 <xs:complexType name="HiggsSignalsCalculator">
   <xs:sequence>
-    <xs:element name="name" type="xs:string" />
+    <xs:element name="Name" type="xs:string" />
     <xs:element name="ExpData" type="xs:string" />
   </xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="RegressionCalculator">
   <xs:sequence>
-    <xs:element name="name" type="xs:string" />
+    <xs:element name="Name" type="xs:string" />
      <xs:element name="Variable" type="Variable" minOccurs="0" maxOccurs="unbounded" />
      <xs:element name="MVA" type="MVA" minOccurs="0" maxOccurs="unbounded" />
   </xs:sequence>
