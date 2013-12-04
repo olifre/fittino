@@ -32,7 +32,6 @@ IF(LHAPDF_FOUND)
 ENDIF(LHAPDF_FOUND)
 ADD_DEFINITIONS(`root-config --cflags`)
 
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(./include)
 INCLUDE_DIRECTORIES(../calculators/include)
 INCLUDE_DIRECTORIES(../datastorages/include)
@@ -73,4 +72,10 @@ IF(LHAPDF_FOUND)
   # TARGET_LINK_LIBRARIES(fittino -lstdc++)
 ENDIF(LHAPDF_FOUND)
 TARGET_LINK_LIBRARIES(fittino -lgfortran)
+
+IF(Boost_FOUND)
+  include_directories(${Boost_INCLUDE_DIRS})
+  target_link_libraries(fittino ${Boost_LIBRARIES})
+ENDIF(Boost_FOUND)
+
 INSTALL(TARGETS fittino DESTINATION bin)

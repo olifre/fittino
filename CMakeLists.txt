@@ -35,7 +35,7 @@ SET(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
 # Specify the installation path of "Boost" which is required by SLHAea. There is only need to change
 # this when the installation path differs from the default.
 # SET(BOOST_ROOT <boost/installation/path>)
-FIND_PACKAGE(Boost 1.34.0 REQUIRED)
+FIND_PACKAGE(Boost 1.34.0 COMPONENTS filesystem system REQUIRED)
 
 # Specify user-defined modules required by Fittino.
 SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
