@@ -7,7 +7,7 @@ void vbf_init_cs_( sminputs * smpar )
   effinputs temp;
   temp.fbb = 0; temp.fww = 0; temp.fgg = 0; temp.fb = 0; temp.fw = 0; 
   temp.fuph = 0; temp.fdoh = 0; temp.fchh = 0; temp.fsth = 0; temp.fboh = 0; temp.ftoh = 0; temp.felh = 0; temp.fmuh = 0; temp.ftah = 0;
- 
+ printf("ALEX vbf init call");
   udcsb_jjh_(   smpar, &temp, &cs_5flavorSM, &err_5flavorSM, &chi_5flavorSM );
 };
 
@@ -16,13 +16,14 @@ void vbf_init_2flav_sm_( sminputs * smpar )
   effinputs temp;
   temp.fbb = 0; temp.fww = 0; temp.fgg = 0; temp.fb = 0; temp.fw = 0; 
   temp.fuph = 0; temp.fdoh = 0; temp.fchh = 0; temp.fsth = 0; temp.fboh = 0; temp.ftoh = 0; temp.felh = 0; temp.fmuh = 0; temp.ftah = 0;
- 
+ printf("ALEX vbf 2flav sm call");
   ud_jjh_(   smpar, &temp, &cs_2flavorSM, &err_2flavorSM, &chi_2flavorSM );
 };
 
 void ratio_vbf_5flav_( sminputs * smpar, effinputs * effpar, double * ratio, double * error, double * chisq )
 {
   double result, err, chi;
+  printf("ALEX 2flav params:\n fbb: %10.10f\n fww: %10.10f\n fgg: %10.10f\n fb: %10.10f\n fw: %10.10f\n",effpar->fbb,effpar->fww, effpar->fgg, effpar->fb, effpar->fw);
   udcsb_jjh_( smpar, effpar, &result, &err, &chi );
   *ratio = result / cs_5flavorSM;
   *error = err / cs_5flavorSM + result / pow( cs_5flavorSM, 2 ) * err_5flavorSM;
@@ -32,6 +33,7 @@ void ratio_vbf_5flav_( sminputs * smpar, effinputs * effpar, double * ratio, dou
 void ratio_vbf_2flav_( sminputs * smpar, effinputs * effpar, double * ratio, double * error, double * chisq )
 {
   double result, err, chi;
+  printf("ALEX 2flav params:\n fbb: %10.10f\n fww: %10.10f\n fgg: %10.10f\n fb: %10.10f\n fw: %10.10f\n",effpar->fbb,effpar->fww, effpar->fgg, effpar->fb, effpar->fw);
   ud_jjh_( smpar, effpar, &result, &err, &chi );
   *ratio = result / cs_5flavorSM;
   *error = err / cs_2flavorSM + result / pow( cs_2flavorSM, 2 ) * err_2flavorSM;
@@ -43,7 +45,7 @@ void udcsb_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err
   VBFParam par;
   par.sm = *smpar;
   par.eff = *effpar;
-  
+
   double xl[] = {0,0,0,0,0,0};
   double xu[] = {1,1,1,1,1,1};
   double result, error;
@@ -52,7 +54,8 @@ void udcsb_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err
   const gsl_rng_type * T;
   gsl_rng * r;
   size_t calls = VBFCALLS;
-  
+   printf("ALEX 5flav params:\n fbb: %10.10f\n fww: %10.10f\n fgg: %10.10f\n fb: %10.10f\n fw: %10.10f\n",effpar->fbb,effpar->fww, effpar->fgg, effpar->fb, effpar->fw);
+ 
   gsl_monte_function G = {udcsb_jjh, dim, &par};
   gsl_rng_env_setup();
   T = gsl_rng_default;
@@ -63,9 +66,11 @@ void udcsb_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err
     do
     {    
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
+	printf("\n ALEX, chisquare of VBF udscb:run %i, chi2 %f \n",k,(double)gsl_monte_vegas_chisq(s));
       k++;
     }
-    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.4) && ( k < VBFRUN ));
+//    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.4) && ( k < VBFRUN ));
+    while (((gsl_monte_vegas_chisq (s) - 1.0) > 0.4) && ( k < VBFRUN ));
     *chisq = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
@@ -185,7 +190,8 @@ void ud_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err, d
   VBFParam par;
   par.sm = *smpar;
   par.eff = *effpar;
-  
+  printf("ALEX 2flav params:\n fbb: %10.10f\n fww: %10.10f\n fgg: %10.10f\n fb: %10.10f\n fw: %10.10f\n",effpar->fbb,effpar->fww, effpar->fgg, effpar->fb, effpar->fw);
+
   double xl[] = {0,0,0,0,0,0};
   double xu[] = {1,1,1,1,1,1};
   double result, error;
@@ -205,9 +211,11 @@ void ud_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err, d
     do
     {    
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
+	printf("\n ALEX, chisquare of VBF ud:run %i, chi2 %f \n",k,(double)gsl_monte_vegas_chisq(s));
       k++;
     }
-    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.4) && ( k < VBFRUN ));
+while (((gsl_monte_vegas_chisq (s) - 1.0) > 0.4) && ( k < VBFRUN ));
+//    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.4) && ( k < VBFRUN ));
     *chisq = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
