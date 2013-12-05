@@ -45,7 +45,8 @@ namespace Fittino {
                       Observable( PredictionBase* prediction,
                                   double          measuredValue,
                                   double          measuredError,
-                                  double          bestFitPrediction = 0 );
+                                  double          bestFitPrediction = 0,
+                                  bool            noFit = false );
       /*!
        *  Standard constructor
        */
@@ -60,6 +61,7 @@ namespace Fittino {
       double          GetBestFitPrediction() const;
       PredictionBase* GetPrediction();
       void            SetBestFitPrediction( double );
+      bool            IsNoFitObservable();
 
     public:
       virtual void    UpdatePrediction();
@@ -70,6 +72,7 @@ namespace Fittino {
       double          _measuredError;
       double          _measuredValue;
       double          _bestFitPrediction;
+      bool            _noFit;
       PredictionBase* _prediction;
 
     protected:

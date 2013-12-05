@@ -30,11 +30,13 @@
 Fittino::Observable::Observable( PredictionBase* prediction,
                                  double          measuredValue,
                                  double          measuredError,
-                                 double          bestFitPrediction )
+                                 double          bestFitPrediction,
+                                 bool            noFit )
         : _deviation( 0. ),
           _measuredError( measuredError ),
           _measuredValue( measuredValue ),
           _bestFitPrediction( bestFitPrediction ),
+          _noFit( noFit ),
           _prediction( prediction ) {
 }
 
@@ -42,6 +44,7 @@ Fittino::Observable::Observable( const boost::property_tree::ptree& ptree, Predi
                    : _deviation( 0. ),
                      _measuredValue( ptree.get<double>( "MeasuredValue" ) ),
                      _bestFitPrediction( ptree.get<double>( "BestFitPrediction" ) ),
+                     _noFit( ptree.get<bool>( "NoFit", false ) ),
                      _prediction( prediction ) {
 
     double error1 = ptree.get<double>( "MeasuredError1" );
@@ -134,5 +137,11 @@ void Fittino::Observable::UpdatePrediction() {
 void Fittino::Observable::SmearMeasuredValue( TRandom3* randomGenerator ) {
 
     _measuredValue = randomGenerator->Gaus( _bestFitPrediction, _measuredError );
+
+}
+
+bool Fittino::Observable::IsNoFitObservable() {
+
+    return _noFit;
 
 }
