@@ -52,9 +52,6 @@ Fittino::TreeCalculator::TreeCalculator( const PhysicsModelBase* model, const bo
     _inputTreeName = ptree.get<std::string>( "InputTreeName", "Tree" );
     OpenInputTree();
     CreateDefaultPredictions();
-    for( unsigned int i = 0; i < GetCollectionOfQuantities().GetNumberOfElements(); ++i ) {
-        std::cout << "have prediction with naem " << GetCollectionOfQuantities().At(i)->GetName() << std::endl;
-    }
 
 }
 
