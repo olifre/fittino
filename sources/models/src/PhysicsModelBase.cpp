@@ -211,7 +211,8 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
     // this formula to allow for correlated observables.
 
     for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
-
+        
+        if( _observableVector[i]->IsNoFitObservable() ) continue;
         chi2 += pow( ( _observableVector[i]->GetPrediction()->GetValue() - _observableVector[i]->GetMeasuredValue() ) / _observableVector[i]->GetMeasuredError(), 2 );
 
     }
