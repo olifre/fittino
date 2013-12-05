@@ -174,12 +174,11 @@ void Fittino::TreeSampler::Execute() {
     
     if( _isToyRun ) {
       
-      static_cast<TreeCalculator*>(_model->GetCollectionOfCalculators().At( 0 ))->SetCurrentEntry( _bestFitIndex );
+      
+      // find and fill only the best fit point into the ntuple;
+      _model->GetCollectionOfParameters().At( 0 )->SetValue( _bestFitIndex );
       GetStatusParameterVector()->at(0)->SetValue( _model->GetChi2() );
       GetStatusParameterVector()->at(1)->SetValue( _bestFitIndex + 1);
-      for( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
-        _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfCalculators().At( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetCollectionOfParameters().At( k )->GetName() ) );
-      }
 
       this->FillTree();
     
@@ -199,11 +198,9 @@ void Fittino::TreeSampler::UpdateModel() {
 
   double chi2 = _model->GetChi2();
   GetStatusParameterVector()->at( 0 )->SetValue( chi2 );
-
-  for( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
-    _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfCalculators().At( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetCollectionOfParameters().At( k )->GetName() ) );
-  }
-    
+  
+  // the model parameter is the iteration. Increase that by one each time the model is updated.
+  _model->GetCollectionOfParameters().At( 0 )->SetValue( _model->GetCollectionOfParameters().At( 0 )->GetValue() + 1. );
   
   if( !_isToyRun ) {
     this->FillTree();
@@ -222,14 +219,15 @@ void Fittino::TreeSampler::UpdateModel() {
 
 void Fittino::TreeSampler::DetermineBestFitValues() {
 
+  // loop over all iterations and find the best fit value:
   int counter = 0;
   while( counter < _numberOfIterations ) {
 
+    // set the model paramter to the current iteration and get the chi2:
+    _model->GetCollectionOfParameters().At( 0 )->SetValue( (double)counter );
     double chi2 = _model->GetChi2();
-    for( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
-      _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfCalculators().At( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( _model->GetCollectionOfParameters().At( k )->GetName() ) );
-    }
-    
+
+    // check if chi2 is smaller than the lowest chi2 so far, and if yes, update values of best fit index and best fit chi2:
     if( chi2 < _inputLowestChi2 ) { 
       
       _inputLowestChi2 = chi2;
@@ -240,18 +238,21 @@ void Fittino::TreeSampler::DetermineBestFitValues() {
     counter++;
 
   }
-  //std::cout << "input best fit index is " << _inputBestFitIndex << " with chi2 " << _inputLowestChi2 << std::endl;
-  static_cast<TreeCalculator*>(_model->GetCollectionOfCalculators().At( 0 ))->CalculatePredictions( _inputBestFitIndex );
-   
+  
+  // set model parameter value to best fit index and get the predictiosn at the best fit index:
+  _model->GetCollectionOfParameters().At( 0 )->SetValue( (double)_inputBestFitIndex );
+  _model->GetCollectionOfCalculators().At( 0 )->CalculatePredictions();
+  
+  // set the best fit predictions for all observables of the original model; this will now include the physical model parameters:
   std::vector<Observable*>* observableVector = _model->GetObservableVector();
 
   for( int i = 0; i < observableVector->size(); ++i ) {
       
     observableVector->at(i)->SetBestFitPrediction( _model->GetCollectionOfCalculators().At( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( observableVector->at(i)->GetPrediction()->GetName() ) );
-    //std::cout << "determined best fit predcition for observable " << observableVector->at(i)->GetPrediction()->GetName() << "  = " << observableVector->at(i)->GetBestFitPrediction() << std::endl;
 
   }
   
-  static_cast<TreeCalculator*>(_model->GetCollectionOfCalculators().At( 0 ))->SetCurrentEntry( 0 );
+  // reset the model parameter to 0:
+  _model->GetCollectionOfParameters().At( 0 )->SetValue( 0. );
 
 }

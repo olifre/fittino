@@ -2,9 +2,9 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        LHCModelCalculator.cpp                                               *
+* File        LHCModelCalculator.cpp                                           *
 *                                                                              *
-* Description Base class for SLHA compatible model calculators                 *
+* Description Base class for LHC Calculator                                    *
 *                                                                              *
 * Authors     Matthias Hamer  <mhamer@gwdg.de>                                 *
 *                                                                              *

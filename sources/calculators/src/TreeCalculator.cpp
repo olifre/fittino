@@ -29,12 +29,13 @@
 #include "TreeCalculator.h"
 #include "SimpleDataStorage.h"
 #include "ConfigurationException.h"
+#include "PhysicsModelBase.h"
+#include "ModelParameterBase.h"
 
 Fittino::TreeCalculator::TreeCalculator( const PhysicsModelBase* model )
     : ModelCalculatorBase( model ) {
 
     _name = "TreeCalculator";
-    _currentEntry = 0;
     _inputFile = NULL;
     _inputFileName = "Fittino.old.root";
     _inputTreeName = "Tree";
@@ -45,7 +46,6 @@ Fittino::TreeCalculator::TreeCalculator( const PhysicsModelBase* model, const bo
     : ModelCalculatorBase( model ) {
 
     _name = "TreeCalculator";
-    _currentEntry = 0;
     _inputFile = NULL;
     _inputFileName = ptree.get<std::string>( "InputFileName", "Fittino.old.root" ); 
     _inputTreeName = ptree.get<std::string>( "InputTreeName", "Tree" );
@@ -64,20 +64,8 @@ Fittino::TreeCalculator::~TreeCalculator() {
 
 void Fittino::TreeCalculator::CalculatePredictions() {
 
-    _inputTree->GetEntry( _currentEntry++ );
+    _inputTree->GetEntry( (int)(_model->GetCollectionOfParameters().At( 0 )->GetValue() ));
 
-}
-
-void Fittino::TreeCalculator::CalculatePredictions( int index, bool resetCurrentIndex ) {
-    
-    _inputTree->GetEntry( index );
-    if( resetCurrentIndex ) _currentEntry = index+1;
-
-}
-
-void Fittino::TreeCalculator::SetCurrentEntry( int currentEntry ) {
-    
-    _currentEntry = currentEntry;
 }
 
 void Fittino::TreeCalculator::SetInputFileName( std::string inputFileName ) {
