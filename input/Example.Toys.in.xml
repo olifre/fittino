@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding='UTF-8'?>
+
+<InputFile>
+
+  <VerbosityLevel>ALWAYS</VerbosityLevel>
+
+  <Model>
+    <PhysicsModel>
+      <Name>CMSSMPseudoModel</Name>
+    
+      <ModelParameter>
+        <Name>P_Iteration</Name>
+        <Error>1</Error>
+        <LowerBound>0</LowerBound>
+        <UpperBound>1.e99</UpperBound>
+      </ModelParameter>
+  
+      <Calculators>
+        <TreeCalculator>
+          <InputFileName>Fittino.old.root</InputFileName>
+          <InputTreeName>Tree1</InputTreeName>
+        </TreeCalculator>
+      </Calculators>
+
+      <Observables>
+        <Observable>
+          <Name>P_M0</Name>
+          <CalculatorName>TreeCalculator</CalculatorName>
+          <MeasuredValue>-1</MeasuredValue>
+          <MeasuredError1>37.5</MeasuredError1>
+          <BestFitPrediction>1533.1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit>GeV</Unit>
+          <PlotUnit>GeV></PlotUnit>
+          <PlotName>M0</PlotName>
+          <PlotLowerBound>0</PlotLowerBound>
+          <PlotUpperBound>10000</PlotUpperBound>
+          <NoFit>1</NoFit>
+        </Observable>
+        <Observable>
+          <Name>P_M12</Name>
+          <CalculatorName>TreeCalculator</CalculatorName>
+          <MeasuredValue>-1</MeasuredValue>
+          <MeasuredError1>37.5</MeasuredError1>
+          <BestFitPrediction>1533.1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit>GeV</Unit>
+          <PlotUnit>GeV></PlotUnit>
+          <PlotName>M12</PlotName>
+          <PlotLowerBound>0</PlotLowerBound>
+          <PlotUpperBound>10000</PlotUpperBound>
+          <NoFit>1</NoFit>
+        </Observable>
+        <Observable>
+          <Name>O_massNeutralino1</Name>
+          <CalculatorName>TreeCalculator</CalculatorName>
+          <MeasuredValue>1557.11</MeasuredValue>
+          <MeasuredError1>37.5</MeasuredError1>
+          <BestFitPrediction>1533.1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit>GeV</Unit>
+          <PlotUnit>GeV></PlotUnit>
+          <PlotName>mN1</PlotName>
+          <PlotLowerBound>0</PlotLowerBound>
+          <PlotUpperBound>10000</PlotUpperBound>
+        </Observable>
+        <Observable>
+          <Name>O_massNeutralino2</Name>
+          <CalculatorName>TreeCalculator</CalculatorName>
+          <MeasuredValue>2505.35</MeasuredValue>
+          <MeasuredError1>62.5</MeasuredError1>
+          <BestFitPrediction>2517.9</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit>GeV</Unit>
+          <PlotUnit>GeV></PlotUnit>
+          <PlotName>mN2</PlotName>
+          <PlotLowerBound>0</PlotLowerBound>
+          <PlotUpperBound>10000</PlotUpperBound>
+        </Observable>
+        <Observable>
+          <Name>O_massNeutralino3</Name>
+          <CalculatorName>TreeCalculator</CalculatorName>
+          <MeasuredValue>3595.91</MeasuredValue>
+          <MeasuredError1>87.5</MeasuredError1>
+          <BestFitPrediction>3502.7</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit>GeV</Unit>
+          <PlotUnit>GeV></PlotUnit>
+          <PlotName>mN3</PlotName>
+          <PlotLowerBound>0</PlotLowerBound>
+          <PlotUpperBound>10000</PlotUpperBound>
+        </Observable>
+        <Observable>
+          <Name>O_massNeutralino4</Name>
+          <CalculatorName>TreeCalculator</CalculatorName>
+          <MeasuredValue>4446.40</MeasuredValue>
+          <MeasuredError1>112.5</MeasuredError1>
+          <BestFitPrediction>4487.0</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit>GeV</Unit>
+          <PlotUnit>GeV></PlotUnit>
+          <PlotName>mN4</PlotName>
+          <PlotLowerBound>0</PlotLowerBound>
+          <PlotUpperBound>10000</PlotUpperBound>
+        </Observable>
+        <Observable>
+          <Name>O_massStop1</Name>
+          <CalculatorName>TreeCalculator</CalculatorName>
+          <MeasuredValue>1968.75</MeasuredValue>
+          <MeasuredError1>50</MeasuredError1>
+          <BestFitPrediction>2025.5</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit>GeV</Unit>
+          <PlotUnit>GeV></PlotUnit>
+          <PlotName>mSt1</PlotName>
+          <PlotLowerBound>0</PlotLowerBound>
+          <PlotUpperBound>10000</PlotUpperBound>
+        </Observable>
+
+      </Observables>
+      <Chi2Contributions>
+      </Chi2Contributions>
+    </PhysicsModel>
+  </Model>
+
+  <Tool>
+    <TreeSampler>
+      <NumberOfIterations>-1</NumberOfIterations>
+      <PerformToyRun>1</PerformToyRun>
+      <RandomSeed>1</RandomSeed>
+      <InputFileName>Fittino.old.root</InputFileName>
+      <InputTreeName>Tree1</InputTreeName>
+    </TreeSampler>
+  </Tool>
+
+</InputFile>
+
