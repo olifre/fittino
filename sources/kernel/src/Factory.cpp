@@ -336,6 +336,40 @@ Fittino::SamplerBase* const Fittino::Factory::CreateSampler( const Fittino::Conf
 
 }
 
+Fittino::PredictionBase* const Fittino::Factory::CreatePrediction( const boost::property_tree::ptree& ptree, const Fittino::ModelCalculatorBase* calculator ) {
+
+    std::string type = ptree.get<std::string>( "PredictionType", "NONE" );
+    
+    if ( type == "Simple" ) {
+        
+        return new SimplePrediction( ptree, calculator );
+
+    }
+    else {
+
+        throw ConfigurationException( "Prediction type " + type + " not known, or requires a more specific definition of the calculator than ModelCalculatorBase." );
+    
+    }
+
+}
+
+Fittino::PredictionBase* const Fittino::Factory::CreatePrediction( const boost::property_tree::ptree& ptree, Fittino::SLHAModelCalculatorBase* calculator ) {
+
+    std::string type = ptree.get<std::string>( "PredictionType", "NONE" );
+    
+    if ( type == "SLHA" ) {
+        
+        return new SLHAPrediction( ptree, calculator );
+
+    }
+    else {
+
+        throw ConfigurationException( "Prediction type " + type + " not known, or incompatible with SLHAModelCalculatorBase." );
+    
+    }
+    
+}
+
 Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::ModelCalculatorBase*>& calculators ) const {
 
     std::string type = ptree.get<std::string>( "PredictionType" );

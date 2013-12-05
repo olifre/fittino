@@ -36,6 +36,7 @@ namespace Fittino {
   class DataStorageBase;
   class ModelBase;
   class ModelCalculatorBase;
+  class SLHAModelCalculatorBase;
   class OptimizerBase;
   class PhysicsModelBase;
   class PlotterBase;
@@ -125,6 +126,11 @@ namespace Fittino {
        *  </ul>
        */
       SamplerBase* const         CreateSampler( const Configuration::SamplerType& samplerType, ModelBase* model, int randomSeed ) const;
+     /*!
+      *  Returns a Prediction according to the type specified in the ptree.
+      */
+     PredictionBase* const       CreatePrediction( const boost::property_tree::ptree& ptree, const Fittino::ModelCalculatorBase* calculator );
+     PredictionBase* const       CreatePrediction( const boost::property_tree::ptree& ptree, Fittino::SLHAModelCalculatorBase* calculator );
      /*!
       *  Returns an Observable with a prediction according to the type specified in the ptree.
       */
