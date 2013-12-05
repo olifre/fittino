@@ -27,6 +27,8 @@
 
 #include "Collection.h"
 
+#include <boost/property_tree/ptree.hpp>
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -57,7 +59,7 @@ namespace Fittino {
       std::string                   GetName() const;
 
     public:  
-      const Collection<const PredictionBase*>&   GetCollectionOfQuantities() const;
+      const Collection<PredictionBase*>&   GetCollectionOfQuantities() const;
       const SimpleDataStorage*      GetSimpleOutputDataStorage() const;
 
     public:
@@ -66,7 +68,7 @@ namespace Fittino {
 
     protected:
       enum                          CallMethod { EXECUTABLE, FUNCTION };
-      void                          AddQuantity( const PredictionBase* prediction );
+      void                          AddQuantity( PredictionBase* prediction );
 
     protected:
       std::string                   _executableName;
@@ -75,7 +77,7 @@ namespace Fittino {
       CallMethod                    _callMethod;
       const PhysicsModelBase*       _model;
       SimpleDataStorage*            _simpleOutputDataStorage;
-      Collection<const PredictionBase*>        _collectionOfQuantities;
+      Collection<PredictionBase*>   _collectionOfQuantities;
 
     protected: 
       void                          StopTime( std::string name ); 
@@ -84,7 +86,7 @@ namespace Fittino {
       virtual void                  CallExecutable() = 0;
       virtual void                  CallFunction() = 0;
       virtual void                  ConfigureInput() = 0;
-      
+
   };
 
 }

@@ -248,15 +248,24 @@ Fittino::PhysicsModelBase* Fittino::PhysicsModelBase::Clone() const{
 void Fittino::PhysicsModelBase::AddObservable( Observable* observable ) {
 
     _observableVector.push_back( observable );
-    AddPrediction( observable->GetPrediction() );
+    bool predictionIsKnown = false;
+    for( unsigned int i = 0; i < GetCollectionOfPredictions().GetNumberOfElements(); ++i ) {
+        if( observable->GetPrediction()->GetName() == GetCollectionOfPredictions().At(i)->GetName() ) {
+            predictionIsKnown = true;
+        }
+    }
 
+
+    if( !predictionIsKnown ) {
+        AddPrediction( observable->GetPrediction() );
+    }
 }
 
 void Fittino::PhysicsModelBase::AddCalculator( ModelCalculatorBase* calculator ) {
     
     _collectionOfCalculators.AddElement( calculator->GetName(), calculator );
 
-    const Collection<const PredictionBase*>& col = calculator->GetCollectionOfQuantities(); 
+    const Collection<PredictionBase*>& col = calculator->GetCollectionOfQuantities(); 
 
     for (unsigned int i = 0; i< col.GetNumberOfElements(); i++ ) {
 
@@ -418,7 +427,7 @@ void Fittino::PhysicsModelBase::InitializeObservables( const boost::property_tre
 
   BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child("Observables") ) {
 
-    AddObservable( factory.CreateObservable( node.second, GetCollectionOfCalculators() ) );
+    AddObservable( factory.CreateObservable( node.second, GetCollectionOfPredictions(), GetCollectionOfCalculators() ) );
 
   }  
 

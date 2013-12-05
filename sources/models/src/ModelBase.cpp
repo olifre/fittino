@@ -33,8 +33,13 @@
 
 const Fittino::Collection<const Fittino::Quantity*>&  Fittino::ModelBase::GetCollectionOfQuantities() const{
 
-
   return _collectionOfQuantities;
+
+}
+
+const Fittino::Collection<Fittino::PredictionBase*>&  Fittino::ModelBase::GetCollectionOfPredictions() const{
+
+  return _collectionOfPredictions;
 
 }
 
@@ -101,7 +106,7 @@ void Fittino::ModelBase::AddParameter( ModelParameterBase* parameter ) {
     _collectionOfQuantities.AddElement( parameter->GetName(), parameter );
 }
 
-void Fittino::ModelBase::AddPrediction( const PredictionBase* prediction ) {
+void Fittino::ModelBase::AddPrediction( PredictionBase* prediction ) {
 
     _collectionOfPredictions.AddElement( prediction );
     _collectionOfQuantities.AddElement( prediction );

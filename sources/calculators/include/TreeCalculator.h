@@ -71,6 +71,7 @@ namespace Fittino {
        */
       void                SetAllBranchAddresses();
       void                FillSimpleDataStorage();
+      void                CreateDefaultPredictions();
 
   };
 

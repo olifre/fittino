@@ -89,7 +89,7 @@ namespace Fittino {
       /*!
        *  Adds a prediction to the model.
        */
-      void                                              AddPrediction( const PredictionBase* prediction );
+      void                                              AddPrediction( PredictionBase* prediction );
       /*!
        *  Returns the name of the model.
        */
@@ -106,6 +106,8 @@ namespace Fittino {
       const Collection<ModelParameterBase*>&            GetCollectionOfParameters() const;
 
       const Collection<const Quantity*>&                GetCollectionOfQuantities() const;
+
+      const Collection<PredictionBase*>&                GetCollectionOfPredictions() const;
 
     public:
       virtual void                                      PrintStatus() const = 0;
@@ -133,7 +135,7 @@ namespace Fittino {
       /*!
        *  Stores the predictions.
        */
-      Collection<const PredictionBase*>                 _collectionOfPredictions;
+      Collection<PredictionBase*>                       _collectionOfPredictions;
       /*
        *
        */

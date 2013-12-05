@@ -176,7 +176,7 @@ void Fittino::TreeSampler::Execute() {
       
       
       // find and fill only the best fit point into the ntuple;
-      _model->GetCollectionOfParameters().At( 0 )->SetValue( _bestFitIndex );
+      _model->GetCollectionOfParameters().At( 0 )->SetValue( (double)_bestFitIndex );
       GetStatusParameterVector()->at(0)->SetValue( _model->GetChi2() );
       GetStatusParameterVector()->at(1)->SetValue( _bestFitIndex + 1);
 
@@ -198,7 +198,7 @@ void Fittino::TreeSampler::UpdateModel() {
 
   double chi2 = _model->GetChi2();
   GetStatusParameterVector()->at( 0 )->SetValue( chi2 );
-  
+     
   // the model parameter is the iteration. Increase that by one each time the model is updated.
   _model->GetCollectionOfParameters().At( 0 )->SetValue( _model->GetCollectionOfParameters().At( 0 )->GetValue() + 1. );
   

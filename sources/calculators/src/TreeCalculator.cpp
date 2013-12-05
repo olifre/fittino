@@ -31,6 +31,7 @@
 #include "ConfigurationException.h"
 #include "PhysicsModelBase.h"
 #include "ModelParameterBase.h"
+#include "Factory.h"
 
 Fittino::TreeCalculator::TreeCalculator( const PhysicsModelBase* model )
     : ModelCalculatorBase( model ) {
@@ -50,6 +51,10 @@ Fittino::TreeCalculator::TreeCalculator( const PhysicsModelBase* model, const bo
     _inputFileName = ptree.get<std::string>( "InputFileName", "Fittino.old.root" ); 
     _inputTreeName = ptree.get<std::string>( "InputTreeName", "Tree" );
     OpenInputTree();
+    CreateDefaultPredictions();
+    for( unsigned int i = 0; i < GetCollectionOfQuantities().GetNumberOfElements(); ++i ) {
+        std::cout << "have prediction with naem " << GetCollectionOfQuantities().At(i)->GetName() << std::endl;
+    }
 
 }
 
@@ -122,7 +127,7 @@ void Fittino::TreeCalculator::FillSimpleDataStorage() {
             _simpleOutputDataStorage->AddEntry( std::string( leaf->GetName() ), 0. );
         }
     }
-
+    
 }
 
 void Fittino::TreeCalculator::Initialize() const {
@@ -141,3 +146,23 @@ void Fittino::TreeCalculator::ConfigureInput() {
 
 }
 
+void Fittino::TreeCalculator::CreateDefaultPredictions( ) {
+
+    Factory factory;
+    TObjArray *arrayOfLeaves = _inputTree->GetListOfLeaves();
+    for( unsigned int i = 0; i < arrayOfLeaves->GetEntries(); ++i ) {
+        TLeaf *leaf = ( TLeaf* )arrayOfLeaves->At( i );
+        if( !strcmp( leaf->GetTypeName(), "Double_t" ) ) {
+            boost::property_tree::ptree ptree;
+            ptree.put("Name", leaf->GetName() );
+            ptree.put("PlotName", leaf->GetName() );
+            ptree.put("Unit", "" );
+            ptree.put("PlotUnit", "" );
+            ptree.put("PlotUpperBound", 10000. );
+            ptree.put("PlotLowerBound", -10000. );
+            ptree.put("PredictionType", "Simple" );
+            AddQuantity( factory.CreatePrediction( ptree, this ) ); 
+        }
+    }
+
+}

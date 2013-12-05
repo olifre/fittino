@@ -61,7 +61,7 @@ void Fittino::ModelCalculatorBase::StopTime( std::string name ) {
 
 }
 
-const Fittino::Collection<const Fittino::PredictionBase*>& Fittino::ModelCalculatorBase::GetCollectionOfQuantities() const { 
+const Fittino::Collection<Fittino::PredictionBase*>& Fittino::ModelCalculatorBase::GetCollectionOfQuantities() const { 
 
   return _collectionOfQuantities;
 
@@ -69,7 +69,7 @@ const Fittino::Collection<const Fittino::PredictionBase*>& Fittino::ModelCalcula
 
 
 
-void  Fittino::ModelCalculatorBase::AddQuantity( const Fittino::PredictionBase* prediction ) {
+void  Fittino::ModelCalculatorBase::AddQuantity( Fittino::PredictionBase* prediction ) {
 
     _collectionOfQuantities.AddElement( prediction );
 
