@@ -134,7 +134,8 @@ namespace Fittino {
      /*!
       *  Returns an Observable with a prediction according to the type specified in the ptree.
       */
-      Observable* const          CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::ModelCalculatorBase*>& calculators ) const;
+     Observable* const          CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::ModelCalculatorBase*>& calculators ) const;
+     Observable* const          CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::PredictionBase*>& predictions, const Fittino::Collection<Fittino::ModelCalculatorBase*>& calculators ) const;
      /*!
       *  Returns a Chi2Contribution according to the type passed as an argument.
       */
