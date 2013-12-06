@@ -46,6 +46,7 @@
 #include "HiggsSignalsSLHAModelCalculator.h"
 #include "SPhenoSLHAModelCalculator.h"
 #include "TMatrixDSym.h"
+#include "TVectorD.h"
 
 Fittino::PhysicsModelBase::PhysicsModelBase( const boost::property_tree::ptree& ptree )
         : ModelBase( ptree ) {
@@ -211,13 +212,21 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
     // Calculate the chi2 contributions of all observables. Eventually replace
     // this formula to allow for correlated observables.
 
+    std::vector<double> deviationVector;
     for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
         
         if( _observableVector[i]->IsNoFitObservable() ) continue;
-        chi2 += pow( ( _observableVector[i]->GetPrediction()->GetValue() - _observableVector[i]->GetMeasuredValue() ) / _observableVector[i]->GetMeasuredError(), 2 );
+        deviationVector.push_back( _observableVector[i]->GetPrediction()->GetValue() - _observableVector[i]->GetMeasuredValue() );
+        //chi2 += pow( ( _observableVector[i]->GetPrediction()->GetValue() - _observableVector[i]->GetMeasuredValue() ) / _observableVector[i]->GetMeasuredError(), 2 );
 
     }
-
+    if( deviationVector.size() > 0 ) { 
+        TVectorD tDeviationVector( deviationVector.size(), &deviationVector[0] );
+        TVectorD tDeviationVector2 = tDeviationVector;
+        tDeviationVector2 *= *(_invertedFitObservableCovarianceMatrix);
+        chi2 += tDeviationVector2*tDeviationVector;
+    }
+   
     // Add additional chi2 terms.
 
     for ( unsigned int i = 0; i < _collectionOfChi2Quantities.GetNumberOfElements(); i++ ) {
@@ -233,9 +242,9 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
 void Fittino::PhysicsModelBase::SmearObservables( TRandom3* randomGenerator ) {
 
     for( int i = 0; i < _observableVector.size(); ++i ) {
-
+        
         _observableVector[i]->SmearMeasuredValue( randomGenerator );
-
+    
     }
 
 }
@@ -550,11 +559,11 @@ void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::propert
     }
     //std::cout << "done. no printing stuff" << std::endl;
 
-    unorderedCovarianceMatrix->Print();
-    std::cout << "rows corresponding to observables " << std::endl;
-    for( std::map<std::string,int>::const_iterator itr = _observableIndexInCovarianceMatrix.begin(); itr != _observableIndexInCovarianceMatrix.end(); ++itr ) {
-        std::cout << (*itr).first << "\t\t==!==\t\t" << (*itr).second << std::endl;
-    }
+    //unorderedCovarianceMatrix->Print();
+    //std::cout << "rows corresponding to observables " << std::endl;
+    //for( std::map<std::string,int>::const_iterator itr = _observableIndexInCovarianceMatrix.begin(); itr != _observableIndexInCovarianceMatrix.end(); ++itr ) {
+    //    std::cout << (*itr).first << "\t\t==!==\t\t" << (*itr).second << std::endl;
+    //}
     
     _observableCovarianceMatrix = new TMatrixDSym( unorderedCovarianceMatrix->GetNrows() );
     for( int i = 0; i < _observableVector.size(); ++i ) {
@@ -569,7 +578,34 @@ void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::propert
 
     }
 
-    std::cout << "------------------------" << std::endl;
-    _observableCovarianceMatrix->Print();
+    //std::cout << "------------------------" << std::endl;
+    //_observableCovarianceMatrix->Print();
+    int nFitObservables = 0;
+    for( int i = 0; i < _observableVector.size(); ++i ) {
+        if(_observableVector[i]->IsNoFitObservable() ) continue;
+        nFitObservables += 1;
+    }
+    _fitObservableCovarianceMatrix = new TMatrixDSym( nFitObservables );
+    
+    int fitObs_x = 0;
+    int fitObs_y = 0;
 
+    for( int i = 0; i < _observableVector.size(); ++i ) {
+        fitObs_y = 0;
+        
+        if(_observableVector[i]->IsNoFitObservable() ) continue;
+        
+        for( int j = 0; j < _observableVector.size(); ++j ) {
+            
+            if(_observableVector[j]->IsNoFitObservable() ) continue;
+            
+            (*_fitObservableCovarianceMatrix)[fitObs_x][fitObs_y] = (*_observableCovarianceMatrix)[i][j];
+            fitObs_y++;
+        
+        }
+        fitObs_x++;
+    }
+    _fitObservableCovarianceMatrix -> Print();
+    //std::cout << "the inveretd matrix has " << _fitObservableCovarianceMatrix->Invert().GetNrows() << std::endl;
+    _invertedFitObservableCovarianceMatrix = new TMatrixDSym(_fitObservableCovarianceMatrix->Invert());    
 }

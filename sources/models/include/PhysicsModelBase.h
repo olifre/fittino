@@ -99,6 +99,8 @@ namespace Fittino {
       std::vector<Observable*>                       _observableVector;
       Collection<const Quantity*>                    _collectionOfChi2Quantities;
       TMatrixDSym*                                   _observableCovarianceMatrix;
+      TMatrixDSym*                                   _fitObservableCovarianceMatrix;
+      TMatrixDSym*                                   _invertedFitObservableCovarianceMatrix;
       Collection<TMatrixDSym*>                       _collectionOfCovarianceMatrices;
       std::map<std::string,int>                      _observableIndexInCovarianceMatrix;
       /*! \cond UML */
