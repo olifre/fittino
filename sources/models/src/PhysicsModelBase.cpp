@@ -481,8 +481,8 @@ void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::propert
 
     int nRowsTotal = _observableVector.size();
     //std::cout << "covariacne matrix with " << nRowsTotal << " will be created" << std::endl;
-    _covarianceMatrix = new TMatrixDSym( nRowsTotal );
-    //_covarianceMatrix->Print();
+    TMatrixDSym *unorderedCovarianceMatrix = new TMatrixDSym( nRowsTotal );
+    //unorderedCovarianceMatrix->Print();
 
     int nDimActiveMatrices = 0;
     if( _collectionOfCovarianceMatrices.GetNumberOfElements() > 0 ) {
@@ -513,13 +513,13 @@ void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::propert
             for( int y = 0; y < nRowsTotal; ++y ) {
                 if( x >= nDimActiveMatrices || y >= nDimActiveMatrices || y < nDimOffset || y >= nDimOffset + nDimActiveMatrix ) {
                 
-                    (*_covarianceMatrix)[x][y] = 0.;
+                    (*unorderedCovarianceMatrix)[x][y] = 0.;
             
                 }
 
                 else {
                 
-                    (*_covarianceMatrix)[x][y] = (*activeMatrix)[x-nDimOffset][y-nDimOffset];
+                    (*unorderedCovarianceMatrix)[x][y] = (*activeMatrix)[x-nDimOffset][y-nDimOffset];
             
                 }
         
@@ -545,14 +545,31 @@ void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::propert
         if( isCorrelatedObservable ) continue;
         _observableIndexInCovarianceMatrix.insert(std::pair<std::string,int>( observableName, _observableIndexInCovarianceMatrix.size() ) );
         //std::cout << "i is equal to " << i << " trying to fill matrix at index " << uncorrelatedIndex << std::endl;
-        (*_covarianceMatrix)[uncorrelatedIndex][uncorrelatedIndex] = _observableVector[i]->GetMeasuredError()*_observableVector[i]->GetMeasuredError();
+        (*unorderedCovarianceMatrix)[uncorrelatedIndex][uncorrelatedIndex] = _observableVector[i]->GetMeasuredError()*_observableVector[i]->GetMeasuredError();
         uncorrelatedIndex += 1;
     }
     //std::cout << "done. no printing stuff" << std::endl;
 
-    _covarianceMatrix->Print();
+    unorderedCovarianceMatrix->Print();
     std::cout << "rows corresponding to observables " << std::endl;
     for( std::map<std::string,int>::const_iterator itr = _observableIndexInCovarianceMatrix.begin(); itr != _observableIndexInCovarianceMatrix.end(); ++itr ) {
         std::cout << (*itr).first << "\t\t==!==\t\t" << (*itr).second << std::endl;
     }
+    
+    _observableCovarianceMatrix = new TMatrixDSym( unorderedCovarianceMatrix->GetNrows() );
+    for( int i = 0; i < _observableVector.size(); ++i ) {
+
+        for( int j = 0; j < _observableVector.size(); ++j ) {
+
+            int oldIndex_x = _observableIndexInCovarianceMatrix.at( _observableVector[i]->GetPrediction()->GetName() );
+            int oldIndex_y = _observableIndexInCovarianceMatrix.at( _observableVector[j]->GetPrediction()->GetName() );
+            (*_observableCovarianceMatrix)[i][j] = (*unorderedCovarianceMatrix)[oldIndex_x][oldIndex_y];
+    
+        }
+
+    }
+
+    std::cout << "------------------------" << std::endl;
+    _observableCovarianceMatrix->Print();
+
 }
