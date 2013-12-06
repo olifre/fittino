@@ -158,6 +158,7 @@ void Fittino::TreeCalculator::CreateDefaultPredictions( ) {
             ptree.put("PlotUpperBound", 10000. );
             ptree.put("PlotLowerBound", -10000. );
             ptree.put("PredictionType", "Simple" );
+            if( !strcmp(leaf->GetName(), "Chi2") ) continue;
             AddQuantity( factory.CreatePrediction( ptree, this ) ); 
         }
     }
