@@ -23,6 +23,7 @@
 #define FITTINO_PHYSICSMODELBASE_H
 
 #include "ModelBase.h"
+#include "TMatrixDSym.h"
 
 namespace boost {
 
@@ -97,7 +98,9 @@ namespace Fittino {
     protected:
       std::vector<Observable*>                       _observableVector;
       Collection<const Quantity*>                    _collectionOfChi2Quantities;
-
+      TMatrixDSym*                                   _covarianceMatrix;
+      Collection<TMatrixDSym*>                       _collectionOfCovarianceMatrices;
+      std::map<std::string,int>                      _observableIndexInCovarianceMatrix;
       /*! \cond UML */
     private:
       /*!
@@ -114,6 +117,7 @@ namespace Fittino {
       void                                           InitializeObservables();
       void                                           InitializeCalculators( const boost::property_tree::ptree& ptree );
       void                                           InitializeObservables( const boost::property_tree::ptree& ptree );
+      void                                           InitializeCovarianceMatrix( const boost::property_tree::ptree& ptree );
       /*! \endcond UML */
 
     private:

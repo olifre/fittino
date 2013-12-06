@@ -45,7 +45,7 @@
 #include "HiggsSignalsHadXSModelCalculator.h"
 #include "HiggsSignalsSLHAModelCalculator.h"
 #include "SPhenoSLHAModelCalculator.h"
-
+#include "TMatrixDSym.h"
 
 Fittino::PhysicsModelBase::PhysicsModelBase( const boost::property_tree::ptree& ptree )
         : ModelBase( ptree ) {
@@ -56,6 +56,7 @@ Fittino::PhysicsModelBase::PhysicsModelBase( const boost::property_tree::ptree& 
   
   InitializeCalculators( ptree );
   InitializeObservables( ptree );
+  InitializeCovarianceMatrix( ptree );
   BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
 
     if ( node.first == "Chi2Contribution" ) AddChi2Contribution( node.second.get_value<std::string>() );
@@ -433,3 +434,125 @@ void Fittino::PhysicsModelBase::InitializeObservables( const boost::property_tre
 
 }
 
+void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::property_tree::ptree& ptree ) {
+
+    //std::cout << "now generating the independen matrices" << std::endl;
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree.get_child("CovarianceMatrices" ) ) {
+
+        int nRows = 0;
+        
+        BOOST_FOREACH( const boost::property_tree::ptree::value_type &node2, node.second  ) {
+            
+            if( node2.first == "Row" ) {
+            
+                nRows += 1;
+            
+            }
+            
+        }
+        
+        TMatrixDSym *mat = new TMatrixDSym( nRows );
+        int row = 0;
+        int col = 0;
+        BOOST_FOREACH( const boost::property_tree::ptree::value_type &node2, node.second ) {
+            if( node2.first == "Row" ) {
+                col = 0;
+                BOOST_FOREACH( const boost::property_tree::ptree::value_type &node3, node2.second) {
+                    if( node3.first == "ObservableName" ) {
+                        _observableIndexInCovarianceMatrix.insert(std::pair<std::string, int>( node3.second.data(), _observableIndexInCovarianceMatrix.size() ));
+                    }
+                    if( node3.first == "Col" ) {
+                        (*mat)[row][col] = atof(node3.second.data().c_str() );
+                        col++;
+                    }
+                }
+                row++;
+            }
+        }
+        char matname[20];
+        //std::cout << "got matrix " << std::endl;
+        //mat->Print();
+        sprintf(matname, "covMat_%i", _collectionOfCovarianceMatrices.GetNumberOfElements() );
+        _collectionOfCovarianceMatrices.AddElement( matname, mat );
+        
+    }
+    
+    //std::cout << "done. now filling the full matrix" << std::endl;
+
+    int nRowsTotal = _observableVector.size();
+    //std::cout << "covariacne matrix with " << nRowsTotal << " will be created" << std::endl;
+    _covarianceMatrix = new TMatrixDSym( nRowsTotal );
+    //_covarianceMatrix->Print();
+
+    int nDimActiveMatrices = 0;
+    if( _collectionOfCovarianceMatrices.GetNumberOfElements() > 0 ) {
+        int idxActiveMatrix = 0;
+        TMatrixDSym *activeMatrix = _collectionOfCovarianceMatrices.At( idxActiveMatrix ) ;
+        int nDimActiveMatrix = activeMatrix->GetNrows();
+        int nDimOffset = 0;
+        
+        for( int i = 0; i < _collectionOfCovarianceMatrices.GetNumberOfElements(); ++i ) {
+            nDimActiveMatrices += _collectionOfCovarianceMatrices.At( i ) -> GetNrows();
+        }
+    
+        //std::cout << "starting the actual fill process " << std::endl;
+        for( int x = 0; x < nRowsTotal; ++x ) {
+        
+            if( x - nDimOffset >= activeMatrix->GetNrows() ) {
+                nDimOffset += activeMatrix->GetNrows();
+                idxActiveMatrix += 1;
+            
+                if( idxActiveMatrix < _collectionOfCovarianceMatrices.GetNumberOfElements() ) {
+                    //std::cout << "trying to access matrix at position " << idxActiveMatrix << std::endl;
+                    activeMatrix = _collectionOfCovarianceMatrices.At( idxActiveMatrix ); 
+                    nDimActiveMatrix = activeMatrix->GetNrows();
+                }
+        
+            }
+
+            for( int y = 0; y < nRowsTotal; ++y ) {
+                if( x >= nDimActiveMatrices || y >= nDimActiveMatrices || y < nDimOffset || y >= nDimOffset + nDimActiveMatrix ) {
+                
+                    (*_covarianceMatrix)[x][y] = 0.;
+            
+                }
+
+                else {
+                
+                    (*_covarianceMatrix)[x][y] = (*activeMatrix)[x-nDimOffset][y-nDimOffset];
+            
+                }
+        
+            }
+        }
+    
+    }
+    //std::cout << "done. now filling the remaining rows" << std::endl;
+
+    int uncorrelatedIndex = nDimActiveMatrices;
+    //std::cout << "I have " << _observableVector.size() << " observables " << std::endl;
+    for( unsigned int i = 0; i < _observableVector.size(); ++i ) {
+        
+        std::string observableName = _observableVector[i]->GetPrediction()->GetName();
+        bool isCorrelatedObservable = false;
+        for( std::map<std::string,int>::const_iterator itr = _observableIndexInCovarianceMatrix.begin(); itr != _observableIndexInCovarianceMatrix.end(); ++itr ) {
+            if( (*itr).first == observableName ) {
+                isCorrelatedObservable = true;
+                break;
+            }
+            
+        }
+        if( isCorrelatedObservable ) continue;
+        _observableIndexInCovarianceMatrix.insert(std::pair<std::string,int>( observableName, _observableIndexInCovarianceMatrix.size() ) );
+        //std::cout << "i is equal to " << i << " trying to fill matrix at index " << uncorrelatedIndex << std::endl;
+        (*_covarianceMatrix)[uncorrelatedIndex][uncorrelatedIndex] = _observableVector[i]->GetMeasuredError()*_observableVector[i]->GetMeasuredError();
+        uncorrelatedIndex += 1;
+    }
+    //std::cout << "done. no printing stuff" << std::endl;
+
+    _covarianceMatrix->Print();
+    std::cout << "rows corresponding to observables " << std::endl;
+    for( std::map<std::string,int>::const_iterator itr = _observableIndexInCovarianceMatrix.begin(); itr != _observableIndexInCovarianceMatrix.end(); ++itr ) {
+        std::cout << (*itr).first << "\t\t==!==\t\t" << (*itr).second << std::endl;
+    }
+}
