@@ -34,7 +34,6 @@
 #include "MarkovChainSampler.h"
 #include "MinuitOptimizer.h"
 #include "ModelBase.h"
-#include "MSSM3Model.h"
 #include "OptimizerBase.h"
 #include "ParticleSwarmOptimizer.h"
 #include "PlotterBase.h"
@@ -207,9 +206,6 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const Fittino::Configur
             throw ConfigurationException( "Trying to use HECModel but Fittino was built without HIGGSBOUNDS and/or HIGGSSIGNALS." );
 
 #endif
-
-        case Configuration::MSSM3:
-            return new MSSM3Model();
 
         case Configuration::ROSENBROCK:
             return new RosenbrockModel();

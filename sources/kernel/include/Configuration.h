@@ -73,7 +73,7 @@ namespace Fittino {
       enum                                  CalculatorType { FEYNHIGGSCALCULATOR, HIGGSSIGNALSHADXSCALCULATOR, HDIM6CALCULATOR, FEYNHIGGSSLHACALCULATOR, HIGGSSIGNALSSLHACALCULATOR, SPHENOSLHACALCULATOR, TREECALCULATOR, LHCCALCULATOR };
       enum                                  ExecutionMode { OPTIMIZATION, PLOTTING, SAMPLING };
       enum                                  FileFormat { SLHA, XML };
-      enum                                  ModelType { CMSSM, HDIM6, HEC, MSSM3, ROSENBROCK };
+      enum                                  ModelType { CMSSM, HEC, ROSENBROCK };
       enum                                  OptimizerType { GENETICALGORITHM, MINUIT, PARTICLESWARM, SIMULATEDANNEALING };
       enum                                  PlotterType { CONTOUR, SCATTER, SUMMARY };
       enum                                  SamplerType { MARKOVCHAIN, NEWCORRELATED, SIMPLE, COVARIANT, CORRELATED, TREE };

@@ -92,11 +92,6 @@ Fittino::Configuration::ModelType Fittino::Configuration::GetModelType() const {
         return Configuration::HEC;
 
     }
-    else if ( ( *_steeringParameterMap )[key] == "MSSM3" ) {
-
-        return Configuration::MSSM3;
-
-    }
     else if ( ( *_steeringParameterMap )[key] == "Rosenbrock" ) {
 
         return Configuration::ROSENBROCK;
