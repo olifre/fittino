@@ -445,11 +445,11 @@ void Fittino::PhysicsModelBase::InitializeObservables( const boost::property_tre
 
 void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::property_tree::ptree& ptree ) {
 
-    //std::cout << "now generating the independen matrices" << std::endl;
+    // first step: read the covariance matrices as defind in the input file. 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree.get_child("CovarianceMatrices" ) ) {
 
         int nRows = 0;
-        
+        // find out the number of dimensions of the matrix
         BOOST_FOREACH( const boost::property_tree::ptree::value_type &node2, node.second  ) {
             
             if( node2.first == "Row" ) {
@@ -460,6 +460,7 @@ void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::propert
             
         }
         
+        // create matrix and fill matrix with the numbers from the input file. also, fill the _observableIndeCovarianceMatrix-map with the names of the observables for later re-ordering of the map.
         TMatrixDSym *mat = new TMatrixDSym( nRows );
         int row = 0;
         int col = 0;
@@ -467,9 +468,11 @@ void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::propert
             if( node2.first == "Row" ) {
                 col = 0;
                 BOOST_FOREACH( const boost::property_tree::ptree::value_type &node3, node2.second) {
+                    // assign one dimension to one observable:
                     if( node3.first == "ObservableName" ) {
                         _observableIndexInCovarianceMatrix.insert(std::pair<std::string, int>( node3.second.data(), _observableIndexInCovarianceMatrix.size() ));
                     }
+                    // fill the matrix:
                     if( node3.first == "Col" ) {
                         (*mat)[row][col] = atof(node3.second.data().c_str() );
                         col++;
@@ -478,54 +481,62 @@ void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::propert
                 row++;
             }
         }
+
+        // set matrix name and fill the collection of covariance matrices:
+        
         char matname[20];
-        //std::cout << "got matrix " << std::endl;
-        //mat->Print();
         sprintf(matname, "covMat_%i", _collectionOfCovarianceMatrices.GetNumberOfElements() );
         _collectionOfCovarianceMatrices.AddElement( matname, mat );
         
     }
     
-    //std::cout << "done. now filling the full matrix" << std::endl;
-
+    
+    // now generate the full covariance matrix. 
+    // number of dimensions corresponds to number of observables:
     int nRowsTotal = _observableVector.size();
-    //std::cout << "covariacne matrix with " << nRowsTotal << " will be created" << std::endl;
+    
+    // first create the unordered matrix:
     TMatrixDSym *unorderedCovarianceMatrix = new TMatrixDSym( nRowsTotal );
-    //unorderedCovarianceMatrix->Print();
 
+
+    // the number of observables, for which a covariance matrix was specified in the input file 
     int nDimActiveMatrices = 0;
+    
+    // if any covariance matrix has been defined in the input file, use these to fill the full matrix first:
     if( _collectionOfCovarianceMatrices.GetNumberOfElements() > 0 ) {
+       
         int idxActiveMatrix = 0;
         TMatrixDSym *activeMatrix = _collectionOfCovarianceMatrices.At( idxActiveMatrix ) ;
         int nDimActiveMatrix = activeMatrix->GetNrows();
         int nDimOffset = 0;
-        
+       
+    // find out for how many observables a covariance matrix was defined:
         for( int i = 0; i < _collectionOfCovarianceMatrices.GetNumberOfElements(); ++i ) {
             nDimActiveMatrices += _collectionOfCovarianceMatrices.At( i ) -> GetNrows();
         }
     
-        //std::cout << "starting the actual fill process " << std::endl;
+    // now fill the full matrix
         for( int x = 0; x < nRowsTotal; ++x ) {
-        
+       
+    // go to the next matrix, if all rows/columns from the current matrix have been transferred to the full matrix
             if( x - nDimOffset >= activeMatrix->GetNrows() ) {
                 nDimOffset += activeMatrix->GetNrows();
                 idxActiveMatrix += 1;
             
                 if( idxActiveMatrix < _collectionOfCovarianceMatrices.GetNumberOfElements() ) {
-                    //std::cout << "trying to access matrix at position " << idxActiveMatrix << std::endl;
                     activeMatrix = _collectionOfCovarianceMatrices.At( idxActiveMatrix ); 
                     nDimActiveMatrix = activeMatrix->GetNrows();
                 }
         
             }
-
+    // fill all columns not included in the current active matrix with a 0. the diagonal elements will be replaced by the actual uncertainty squared later
             for( int y = 0; y < nRowsTotal; ++y ) {
                 if( x >= nDimActiveMatrices || y >= nDimActiveMatrices || y < nDimOffset || y >= nDimOffset + nDimActiveMatrix ) {
                 
                     (*unorderedCovarianceMatrix)[x][y] = 0.;
             
                 }
-
+    // fill the elements in the full matrix with the entries from the current active matrix when appropriate:
                 else {
                 
                     (*unorderedCovarianceMatrix)[x][y] = (*activeMatrix)[x-nDimOffset][y-nDimOffset];
@@ -536,10 +547,9 @@ void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::propert
         }
     
     }
-    //std::cout << "done. now filling the remaining rows" << std::endl;
 
+    // now fill the remaining diagonal elements
     int uncorrelatedIndex = nDimActiveMatrices;
-    //std::cout << "I have " << _observableVector.size() << " observables " << std::endl;
     for( unsigned int i = 0; i < _observableVector.size(); ++i ) {
         
         std::string observableName = _observableVector[i]->GetPrediction()->GetName();
@@ -552,19 +562,14 @@ void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::propert
             
         }
         if( isCorrelatedObservable ) continue;
+
         _observableIndexInCovarianceMatrix.insert(std::pair<std::string,int>( observableName, _observableIndexInCovarianceMatrix.size() ) );
-        //std::cout << "i is equal to " << i << " trying to fill matrix at index " << uncorrelatedIndex << std::endl;
         (*unorderedCovarianceMatrix)[uncorrelatedIndex][uncorrelatedIndex] = _observableVector[i]->GetMeasuredError()*_observableVector[i]->GetMeasuredError();
         uncorrelatedIndex += 1;
     }
-    //std::cout << "done. no printing stuff" << std::endl;
-
-    //unorderedCovarianceMatrix->Print();
-    //std::cout << "rows corresponding to observables " << std::endl;
-    //for( std::map<std::string,int>::const_iterator itr = _observableIndexInCovarianceMatrix.begin(); itr != _observableIndexInCovarianceMatrix.end(); ++itr ) {
-    //    std::cout << (*itr).first << "\t\t==!==\t\t" << (*itr).second << std::endl;
-    //}
     
+   
+    // now sort the matrix in the same order as the _observableVector is ordered.
     _observableCovarianceMatrix = new TMatrixDSym( unorderedCovarianceMatrix->GetNrows() );
     for( int i = 0; i < _observableVector.size(); ++i ) {
 
@@ -578,8 +583,9 @@ void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::propert
 
     }
 
-    //std::cout << "------------------------" << std::endl;
-    //_observableCovarianceMatrix->Print();
+    // now create a matrix for the observables actually used in the fit:
+    
+    // find out how many observables there are:
     int nFitObservables = 0;
     for( int i = 0; i < _observableVector.size(); ++i ) {
         if(_observableVector[i]->IsNoFitObservable() ) continue;
@@ -587,9 +593,10 @@ void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::propert
     }
     _fitObservableCovarianceMatrix = new TMatrixDSym( nFitObservables );
     
+
+    // fill the matrix:
     int fitObs_x = 0;
     int fitObs_y = 0;
-
     for( int i = 0; i < _observableVector.size(); ++i ) {
         fitObs_y = 0;
         
@@ -605,7 +612,7 @@ void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::propert
         }
         fitObs_x++;
     }
-    _fitObservableCovarianceMatrix -> Print();
-    //std::cout << "the inveretd matrix has " << _fitObservableCovarianceMatrix->Invert().GetNrows() << std::endl;
+
+    // create the inverted matrix for the calculation of the chi2:
     _invertedFitObservableCovarianceMatrix = new TMatrixDSym(_fitObservableCovarianceMatrix->Invert());    
 }
