@@ -120,6 +120,8 @@
 
       <Observables></Observables>
 
+      <CovarianceMatrices></CovarianceMatrices>
+
       <Chi2Contribution>HS_chi2_mu</Chi2Contribution>
 
     </PhysicsModel>
