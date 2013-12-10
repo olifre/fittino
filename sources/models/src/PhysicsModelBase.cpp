@@ -272,7 +272,7 @@ void Fittino::PhysicsModelBase::SmearObservables( TRandom3* randomGenerator ) {
     TVectorD tObservableVector( _observableVector.size() );
     for( int i = 0; i < _observableVector.size(); ++i ) {
         
-        tObservableVector[i] = _observableVector.at(i)->GetMeasuredValue();
+        tObservableVector[i] = _observableVector.at(i)->GetBestFitPrediction();
 
     }
     TVectorD tTransformedObservableVector( _observableVector.size() );
