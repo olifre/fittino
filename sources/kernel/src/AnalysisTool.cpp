@@ -149,6 +149,12 @@ void Fittino::AnalysisTool::InitializeBranches() {
       _tree->Branch( _model->GetCollectionOfQuantities().At( i )->GetName().c_str(),
                        const_cast<double*>(&_model->GetCollectionOfQuantities().At( i )->GetValue() ) );
     }
+    
+    for ( unsigned int i = 0; i < _model->GetCollectionOfChi2Contributions().GetNumberOfElements(); ++i ) {
+
+      _tree->Branch( _model->GetCollectionOfChi2Contributions().At( i )->GetName().c_str(),
+                       const_cast<double*>(&_model->GetCollectionOfChi2Contributions().At( i )->GetValue() ) );
+    }
 
     for ( unsigned int i = 0; i < GetNumberOfStatusParameters(); ++i ) {
 

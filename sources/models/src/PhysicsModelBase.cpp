@@ -111,6 +111,12 @@ double Fittino::PhysicsModelBase::Evaluate() {
 
     }
 
+    for ( unsigned int i = 0; i < _collectionOfChi2Contributions.GetNumberOfElements(); ++i ) {
+
+        _collectionOfChi2Contributions.At(i)->UpdateValue();
+
+    }
+
     // Calculate and return the resulting chi2.
 
     return PhysicsModelBase::CalculateChi2();
@@ -232,13 +238,13 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
         tDeviationVector2 *= *(_invertedFitObservableCovarianceMatrix);
         chi2 += tDeviationVector2*tDeviationVector;
     }
-   
+  
     // Add additional chi2 terms.
 
     for ( unsigned int i = 0; i < _collectionOfChi2Quantities.GetNumberOfElements(); i++ ) {
 
       chi2 += _collectionOfChi2Quantities.At(i)->GetValue();
-
+    
     }
 
     for ( unsigned int i = 0; i < _collectionOfChi2Contributions.GetNumberOfElements(); ++i ) {
@@ -328,7 +334,6 @@ void Fittino::PhysicsModelBase::SmearObservations( TRandom3* randomGenerator ) {
     for ( int i = 0; i < _collectionOfChi2Contributions.GetNumberOfElements(); ++i ) {
     
         _collectionOfChi2Contributions.At(i)->SmearObservation( randomGenerator );
-        std::cout << "smeared chi2 contribution with name " << _collectionOfChi2Contributions.At(i)->GetName() << std::endl;
 
     }
 

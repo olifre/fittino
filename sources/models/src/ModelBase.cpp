@@ -43,6 +43,12 @@ const Fittino::Collection<Fittino::PredictionBase*>&  Fittino::ModelBase::GetCol
 
 }
 
+const Fittino::Collection<Fittino::Chi2ContributionBase*>& Fittino::ModelBase::GetCollectionOfChi2Contributions() const {
+    
+    return _collectionOfChi2Contributions;
+
+}
+
 Fittino::ModelBase::ModelBase()
     : _name( "" ) {
 
@@ -124,6 +130,8 @@ const Fittino::Collection<Fittino::ModelParameterBase*>& Fittino::ModelBase::Get
     return _collectionOfParameters;
 
 }
+
+
 
 void Fittino::ModelBase::InitializeParameters() {
 

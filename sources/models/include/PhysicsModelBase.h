@@ -100,7 +100,7 @@ namespace Fittino {
     protected:
       std::vector<Observable*>                       _observableVector;
       Collection<const Quantity*>                    _collectionOfChi2Quantities;
-      Collection<Chi2ContributionBase*>              _collectionOfChi2Contributions;
+      //Collection<Chi2ContributionBase*>              _collectionOfChi2Contributions;
       TMatrixDSym*                                   _observableCovarianceMatrix;
       TMatrixDSym*                                   _fitObservableCovarianceMatrix;
       TMatrixDSym*                                   _invertedFitObservableCovarianceMatrix;

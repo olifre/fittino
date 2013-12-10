@@ -31,6 +31,7 @@
 
 #include "Collection.h"
 #include "PredictionBase.h"
+#include "Chi2ContributionBase.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -41,6 +42,7 @@ namespace Fittino {
   class PredictionBase;
   class ModelCalculatorBase;
   class Observable;
+  class Chi2ContributionBase;
 
   /*!
    *  \defgroup models
@@ -109,6 +111,8 @@ namespace Fittino {
 
       const Collection<PredictionBase*>&                GetCollectionOfPredictions() const;
 
+      const Collection<Chi2ContributionBase*>&          GetCollectionOfChi2Contributions() const;
+
     public:
       virtual void                                      PrintStatus() const = 0;
       /*!
@@ -164,7 +168,10 @@ namespace Fittino {
       Collection<ModelParameterBase*>                   _collectionOfParameters;
 
       Collection<const Quantity*>                       _collectionOfQuantities;
+    
+    protected:
 
+      Collection<Chi2ContributionBase*>                 _collectionOfChi2Contributions;
 
     private:
       /*!
