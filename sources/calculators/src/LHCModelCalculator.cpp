@@ -22,23 +22,37 @@
 #include <vector>
 #include <string>
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/foreach.hpp>
+
 #include "TFile.h"
 #include "TH1D.h"
 #include "TH2D.h"
 #include "TH3D.h"
 #include "THnSparse.h"
 
+#include "Factory.h"
 #include "PhysicsModelBase.h"
 #include "ModelParameterBase.h"
 #include "LHCModelCalculator.h"
 #include "SimpleDataStorage.h"
 #include "ConfigurationException.h"
 #include "MathTools.h"
+#include "Chi2ContributionBase.h"
+#include "LHCChi2Contribution.h"
 
 Fittino::LHCModelCalculator::LHCModelCalculator( const PhysicsModelBase* model )
     : ModelCalculatorBase( model ) {
 
     _name = "LHCModelCalculator";
+
+}
+
+Fittino::LHCModelCalculator::LHCModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree )
+    : ModelCalculatorBase( model ) {
+
+    _name = "LHCModelCalculator";
+    CreateChi2Contributions( ptree );
 
 }
 
@@ -133,6 +147,18 @@ void Fittino::LHCModelCalculator::UpdateAnalysisHistogram( std::string name, std
     _chi2HistogramsnD.at(name) = (THnSparseD*)(f->Get( newHistogramName.c_str() )->Clone(""));
   }
   f->Close();
+}
+
+void Fittino::LHCModelCalculator::CreateChi2Contributions( const boost::property_tree::ptree& ptree ) {
+
+    Factory factory;
+
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree.get_child("Chi2Contributions") ) {
+        
+       AddChi2Contribution( factory.CreateChi2Contribution( node.second, this ) );
+
+    }
+
 }
 
 void Fittino::LHCModelCalculator::Initialize() const {

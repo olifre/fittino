@@ -44,6 +44,7 @@ class TRandom3;
 namespace Fittino {
 
   class ModelCalculatorBase;
+  class Chi2ContributionBase;
   class Observable;
 
   /*!
@@ -76,6 +77,7 @@ namespace Fittino {
       void                                           AddCalculator( ModelCalculatorBase *calculator );
 
       void                                           AddChi2Contribution( const std::string& name ); 
+      void                                           AddChi2Contribution( Chi2ContributionBase* contribution ); 
       /*!
        *  Returns the predictions of the model as a collection.
        */
@@ -83,7 +85,7 @@ namespace Fittino {
 
     public:
       virtual void                                   PrintStatus() const;
-      virtual void                                   SmearObservables( TRandom3* );
+      virtual void                                   SmearObservations( TRandom3* );
       /*!
        *  Virtual copy constructor.
        */
@@ -98,6 +100,7 @@ namespace Fittino {
     protected:
       std::vector<Observable*>                       _observableVector;
       Collection<const Quantity*>                    _collectionOfChi2Quantities;
+      Collection<Chi2ContributionBase*>              _collectionOfChi2Contributions;
       TMatrixDSym*                                   _observableCovarianceMatrix;
       TMatrixDSym*                                   _fitObservableCovarianceMatrix;
       TMatrixDSym*                                   _invertedFitObservableCovarianceMatrix;

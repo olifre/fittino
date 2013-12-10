@@ -49,7 +49,7 @@ namespace Fittino {
        */
                      ~TestModelBase();
       virtual void   PrintStatus() const;
-      virtual void  SmearObservables( TRandom3* ) {}
+      virtual void  SmearObservations( TRandom3* ) {}
       virtual std::vector<Observable*>* GetObservableVector() { return NULL; }
       virtual const Collection<ModelCalculatorBase*>& GetCollectionOfCalculators() const { return *(new Collection<ModelCalculatorBase*>); }
     protected:

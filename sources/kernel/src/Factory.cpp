@@ -127,7 +127,7 @@ Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::str
     }
     else if ( type == "LHCCalculator" ) {
         
-      return new LHCModelCalculator( model );
+      return new LHCModelCalculator( model, ptree );
 
     }
     else if ( type == "TreeCalculator" ) {

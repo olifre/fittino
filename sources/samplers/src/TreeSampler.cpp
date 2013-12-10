@@ -157,7 +157,7 @@ void Fittino::TreeSampler::Execute() {
         DetermineBestFitValues();
 
       }
-      _model->SmearObservables( &_randomGenerator );
+      _model->SmearObservations( &_randomGenerator );
     
     }
     while ( _iterationCounter < _numberOfIterations ) {

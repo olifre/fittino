@@ -37,6 +37,7 @@ namespace Fittino {
   class PredictionBase;
   class PhysicsModelBase;
   class SimpleDataStorage;
+  class Chi2ContributionBase;
 
   /*!
    *  \defgroup calculators
@@ -59,8 +60,9 @@ namespace Fittino {
       std::string                   GetName() const;
 
     public:  
-      const Collection<PredictionBase*>&   GetCollectionOfQuantities() const;
-      const SimpleDataStorage*      GetSimpleOutputDataStorage() const;
+      const Collection<PredictionBase*>&        GetCollectionOfQuantities() const;
+      const Collection<Chi2ContributionBase*>&  GetCollectionOfChi2Contributions() const;
+      const SimpleDataStorage*                  GetSimpleOutputDataStorage() const;
 
     public:
       virtual void                  CalculatePredictions() = 0;
@@ -69,6 +71,7 @@ namespace Fittino {
     protected:
       enum                          CallMethod { EXECUTABLE, FUNCTION };
       void                          AddQuantity( PredictionBase* prediction );
+      void                          AddChi2Contribution( Chi2ContributionBase* chi2Contribution );
 
     protected:
       std::string                   _executableName;
@@ -78,6 +81,7 @@ namespace Fittino {
       const PhysicsModelBase*       _model;
       SimpleDataStorage*            _simpleOutputDataStorage;
       Collection<PredictionBase*>   _collectionOfQuantities;
+      Collection<Chi2ContributionBase*> _collectionOfChi2Contributions;
 
     protected: 
       void                          StopTime( std::string name ); 

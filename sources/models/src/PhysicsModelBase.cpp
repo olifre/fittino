@@ -87,6 +87,11 @@ void Fittino::PhysicsModelBase::AddChi2Contribution( const std::string& name ) {
 
 }
 
+void Fittino::PhysicsModelBase::AddChi2Contribution( Fittino::Chi2ContributionBase* contribution ) {
+
+  _collectionOfChi2Contributions.AddElement( contribution );
+
+}
 
 double Fittino::PhysicsModelBase::Evaluate() {
 
@@ -236,11 +241,12 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
 
     }
 
+
     return chi2;
 
 }
 
-void Fittino::PhysicsModelBase::SmearObservables( TRandom3* randomGenerator ) {
+void Fittino::PhysicsModelBase::SmearObservations( TRandom3* randomGenerator ) {
     /*
     for( int i = 0; i < _observableVector.size(); ++i ) {
         
@@ -252,7 +258,7 @@ void Fittino::PhysicsModelBase::SmearObservables( TRandom3* randomGenerator ) {
     // Smear all observbles according to the covariance matrix:
     // First, determine the eigenvectors and eigenvalues of that matrix:
     //std::cout << "the covariance matrix is " << std::endl;
-    _observableCovarianceMatrix->Print();
+    //_observableCovarianceMatrix->Print();
     //std::cout << "-------------------------------------------------------" << std::endl;
     TMatrixDSymEigen eigenMatrix( *_observableCovarianceMatrix );
     TVectorD eigenValues = eigenMatrix.GetEigenValues();
@@ -308,9 +314,17 @@ void Fittino::PhysicsModelBase::SmearObservables( TRandom3* randomGenerator ) {
 
         _observableVector[i]->SetMeasuredValue( tObservableVector[i] );
 
-        std::cout << "using smeared value for observable " << _observableVector[i]->GetPrediction()->GetName() << " : " << _observableVector[i]->GetMeasuredValue() << std::endl;
+        std::cout << "using smeared value for observable " << _observableVector[i]->GetPrediction()->GetName() << " \t: " << _observableVector[i]->GetMeasuredValue() << " \t: " << (_observableVector[i]->GetMeasuredValue() - _observableVector[i]->GetBestFitPrediction())/_observableVector[i]->GetMeasuredError() << std::endl;
     }
     
+
+    // now smear the observations for the chi2 contributions:
+    for ( int i = 0; i < _collectionOfChi2Contributions.GetNumberOfElements(); ++i ) {
+    
+        _collectionOfChi2Contributions.At(i)->SmearObservation( randomGenerator );
+        std::cout << "smeared chi2 contribution with name " << _collectionOfChi2Contributions.At(i)->GetName() << std::endl;
+
+    }
 
 }
 
@@ -345,6 +359,14 @@ void Fittino::PhysicsModelBase::AddCalculator( ModelCalculatorBase* calculator )
     for (unsigned int i = 0; i< col.GetNumberOfElements(); i++ ) {
 
       AddPrediction( col.At(i) );
+
+    }
+
+    const Collection<Chi2ContributionBase*>& col2 = calculator->GetCollectionOfChi2Contributions();
+
+    for ( unsigned int i = 0; i < col2.GetNumberOfElements(); ++i ) {
+    
+        AddChi2Contribution( col2.At(i) );
 
     }
 

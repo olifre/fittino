@@ -19,6 +19,7 @@
 
 #include "ModelCalculatorBase.h"
 #include "PredictionBase.h"
+#include "Chi2ContributionBase.h"
 #include "SimpleDataStorage.h"
 
 Fittino::ModelCalculatorBase::ModelCalculatorBase( const PhysicsModelBase* model )
@@ -67,10 +68,20 @@ const Fittino::Collection<Fittino::PredictionBase*>& Fittino::ModelCalculatorBas
 
 }
 
+const Fittino::Collection<Fittino::Chi2ContributionBase*>& Fittino::ModelCalculatorBase::GetCollectionOfChi2Contributions() const {
 
+  return _collectionOfChi2Contributions;
+
+}
 
 void  Fittino::ModelCalculatorBase::AddQuantity( Fittino::PredictionBase* prediction ) {
 
     _collectionOfQuantities.AddElement( prediction );
+
+}
+
+void  Fittino::ModelCalculatorBase::AddChi2Contribution( Fittino::Chi2ContributionBase* chi2Contribution ) {
+
+    _collectionOfChi2Contributions.AddElement( chi2Contribution );
 
 }

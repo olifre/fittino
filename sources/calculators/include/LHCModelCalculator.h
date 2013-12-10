@@ -22,12 +22,15 @@
 #include <vector>
 #include <string>
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "ModelCalculatorBase.h"
 #include "THnSparse.h"
 
 class TH1D;
 class TH2D;
 class TH3D;
+class Chi2ContributionBase;
 
 /*!
  *  \brief Fittino namespace.
@@ -45,6 +48,10 @@ namespace Fittino {
        *  Standard constructor.
        */
                            LHCModelCalculator( const PhysicsModelBase* model );
+      /*!
+       *  Another constructor using property trees.
+       */
+                           LHCModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
@@ -65,6 +72,9 @@ namespace Fittino {
       std::map<std::string, TH3D*>                    _chi2Histograms3D;
       std::map<std::string, THnSparseD*>              _chi2HistogramsnD;
       std::map<std::string, std::vector<std::string> > _relevantParametersMap;
+
+    private:
+      void                CreateChi2Contributions( const boost::property_tree::ptree& ptree );
 
   };
 
