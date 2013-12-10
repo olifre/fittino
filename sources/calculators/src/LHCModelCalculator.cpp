@@ -97,43 +97,49 @@ void Fittino::LHCModelCalculator::AddAnalysis( std::string name, std::string fil
 
 void Fittino::LHCModelCalculator::CalculatePredictions() {
 
-  // try to find model parameter values in the list of parameters from the model and fill a vector with the values;
   std::map<std::string, std::vector<double> > parameterValueMap;
+  
+  // loop over the analyses
   for ( std::map<std::string, std::vector<std::string> >::const_iterator itr = _relevantParametersMap.begin(); itr != _relevantParametersMap.end(); ++itr ) {
     
     std::vector<double> parameterValues;
     bool isInListOfParameters = false;
     bool isInListOfObservables = false;
+    // now loop over the parameters:
+    // try to find model parameter values in the list of parameters from the model and fill a vector with the values;
+    
+    for( int j = 0; j < (*itr).second.size(); ++j ) { 
 
-    for( int i = 0; i < _model->GetCollectionOfParameters().GetNumberOfElements(); ++i ) {
-        if( (*itr).first == _model->GetCollectionOfParameters().At(i)->GetName() ) {
-            parameterValues.push_back( _model->GetCollectionOfParameters().At(i)->GetValue() );
-            isInListOfParameters = true;
-            std::cout << "found " << (*itr).first << " in the list of model parameters" << std::endl;
-            break;
-        }
-    }
-
-    // if not found in the list of parameters, try to find it in the list of observables...for now
-    if( !isInListOfParameters ) {
-
-        for( int i = 0; i < _model->GetCollectionOfPredictions().GetNumberOfElements(); ++i ) {
-            if( (*itr).first == _model->GetCollectionOfPredictions().At(i)->GetName() ) {
-                parameterValues.push_back( _model->GetCollectionOfPredictions().At(i)->GetValue() );
-                isInListOfObservables = true;
-                std::cout << "found " << (*itr).first << " in lsit of the observables" << std::endl;
+        for( int i = 0; i < _model->GetCollectionOfParameters().GetNumberOfElements(); ++i ) {
+            if( (*itr).second.at(j) == _model->GetCollectionOfParameters().At(i)->GetName() ) {
+                parameterValues.push_back( _model->GetCollectionOfParameters().At(i)->GetValue() );
+                isInListOfParameters = true;
                 break;
             }
         }
 
+    // if not found in the list of parameters, try to find it in the list of observables...for now
+        if( !isInListOfParameters ) {
+
+            for( int i = 0; i < _model->GetCollectionOfPredictions().GetNumberOfElements(); ++i ) {
+                if( (*itr).second.at(j) == _model->GetCollectionOfPredictions().At(i)->GetName() ) {
+                    parameterValues.push_back( _model->GetCollectionOfPredictions().At(i)->GetValue() );
+                    isInListOfObservables = true;
+                    break;
+                }
+            }
+
+        }
+
+        if( !isInListOfParameters && !isInListOfObservables ) {
+
+            throw ConfigurationException( "In LHCChi2Calculator: Won't be able to set values for relevant parameter in LHC Chi2 Contribution" );
+
+        }
+    
     }
 
-    if( !isInListOfParameters && !isInListOfObservables ) {
-
-        throw ConfigurationException( "In LHCChi2Calculator: Won't be able to set values for relevant parameter in LHC Chi2 Contribution" );
-
-    }
-
+    // loops complete. all parameters should have been filled.
     if( parameterValues.size() != (*itr).second.size() ) {
         
         throw ConfigurationException(  "In LHCChi2Calculator: Number of assigned parameters does not match number of relevant parameters! Something is wrong!" );
