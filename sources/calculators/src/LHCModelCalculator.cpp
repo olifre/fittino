@@ -30,6 +30,7 @@
 #include "TH2D.h"
 #include "TH3D.h"
 #include "THnSparse.h"
+#include "TDirectory.h"
 
 #include "Factory.h"
 #include "PhysicsModelBase.h"
@@ -69,6 +70,10 @@ void Fittino::LHCModelCalculator::AddAnalysis( std::string name, std::string fil
 
     _relevantParametersMap.insert( std::pair<std::string, std::vector<std::string> >( name, relevantParameters ) );
     _simpleOutputDataStorage->AddEntry( name, 0. );
+    
+    // save the old gDirectory:
+    TDirectory *tempDir = gDirectory;
+
     TFile *f = new TFile( fileName.c_str(), "OPEN" );
     
     if( relevantParameters.size() == 1 ) {
@@ -92,6 +97,9 @@ void Fittino::LHCModelCalculator::AddAnalysis( std::string name, std::string fil
       
     }
     f->Close();
+
+    // and restore the original gDirectory:
+    gDirectory = tempDir;
 
 }
 
@@ -190,6 +198,9 @@ void Fittino::LHCModelCalculator::CalculatePredictions() {
 
 void Fittino::LHCModelCalculator::UpdateAnalysisHistogram( std::string name, std::string fileName, std::string newHistogramName, std::vector<std::string> relevantParameters ) {
 
+  // save the old TDirectory first:
+  TDirectory *tempDir = gDirectory;
+
   TFile *f = new TFile( fileName.c_str(), "OPEN" );
   if( relevantParameters.size() == 1 ) {
     delete _chi2Histograms1D.at( name );
@@ -208,6 +219,10 @@ void Fittino::LHCModelCalculator::UpdateAnalysisHistogram( std::string name, std
     _chi2HistogramsnD.at(name) = (THnSparseD*)(f->Get( newHistogramName.c_str() )->Clone(""));
   }
   f->Close();
+  
+  // reset the directory:
+  gDirectory = tempDir;
+
 }
 
 void Fittino::LHCModelCalculator::CreateChi2Contributions( const boost::property_tree::ptree& ptree ) {
