@@ -97,5 +97,5 @@ void Fittino::LHCChi2Contribution::SmearObservation( TRandom3* randomGenerator )
         
     std::string actualHistogramName = _histogramName + "_nObs_" + nObsNew_ss.str(); 
     _lhcModelCalculator->UpdateAnalysisHistogram( _name, _fileName, actualHistogramName, _relevantParameters );
-    std::cout << "using LHC chi2 contribution with new nObs: " << nObsNew_ss << std::endl;
+    std::cout << "using LHC chi2 contribution with new nObs: " << nObsNew_ss.str() << std::endl;
 }
