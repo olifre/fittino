@@ -241,6 +241,12 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
 
     }
 
+    for ( unsigned int i = 0; i < _collectionOfChi2Contributions.GetNumberOfElements(); ++i ) {
+    
+      chi2 += _collectionOfChi2Contributions.At(i)->GetValue();
+
+    }
+
 
     return chi2;
 
