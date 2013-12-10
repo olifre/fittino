@@ -423,3 +423,9 @@ Fittino::Chi2ContributionBase* const Fittino::Factory::CreateChi2Contribution( c
     }
 
 }
+
+Fittino::Chi2ContributionBase* const Fittino::Factory::CreateChi2Contribution( const boost::property_tree::ptree& ptree, Fittino::LHCModelCalculator* calculator ) {
+
+    return new LHCChi2Contribution( ptree, calculator );
+
+}
