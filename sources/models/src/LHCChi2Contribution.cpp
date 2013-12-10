@@ -74,7 +74,7 @@ Fittino::LHCChi2Contribution::LHCChi2Contribution( const boost::property_tree::p
       }
       std::stringstream nObs_ss;
       nObs_ss << _nObs;
-      std::string actualHistogramName = _histogramName + "_nObs" + nObs_ss.str();
+      std::string actualHistogramName = _histogramName + "_nObs_" + nObs_ss.str();
       _lhcModelCalculator->AddAnalysis( _name, _fileName, actualHistogramName, _relevantParameters );
        
 }
@@ -94,8 +94,8 @@ void Fittino::LHCChi2Contribution::SmearObservation( TRandom3* randomGenerator )
     double nObsNew = randomGenerator->Poisson( _nExpSM*randomGenerator->Gaus(1., _systematicErrorBG) + _nExpBestFit*randomGenerator->Gaus(1., _systematicErrorSignal ) );
     std::stringstream nObsNew_ss;
     nObsNew_ss << nObsNew;
-    
-    std::string actualHistogramName = _histogramName + "_nObs" + nObsNew_ss.str(); 
+        
+    std::string actualHistogramName = _histogramName + "_nObs_" + nObsNew_ss.str(); 
     _lhcModelCalculator->UpdateAnalysisHistogram( _name, _fileName, actualHistogramName, _relevantParameters );
-
+    std::cout << "using LHC chi2 contribution with new nObs: " << nObsNew_ss << std::endl;
 }

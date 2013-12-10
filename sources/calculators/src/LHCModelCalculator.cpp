@@ -40,6 +40,7 @@
 #include "MathTools.h"
 #include "Chi2ContributionBase.h"
 #include "LHCChi2Contribution.h"
+#include "Observable.h"
 
 Fittino::LHCModelCalculator::LHCModelCalculator( const PhysicsModelBase* model )
     : ModelCalculatorBase( model ) {
@@ -96,17 +97,68 @@ void Fittino::LHCModelCalculator::AddAnalysis( std::string name, std::string fil
 
 void Fittino::LHCModelCalculator::CalculatePredictions() {
 
+  // try to find model parameter values in the list of parameters from the model and fill a vector with the values;
+  std::map<std::string, std::vector<double> > parameterValueMap;
+  for ( std::map<std::string, std::vector<std::string> >::const_iterator itr = _relevantParametersMap.begin(); itr != _relevantParametersMap.end(); ++itr ) {
+    
+    std::vector<double> parameterValues;
+    bool isInListOfParameters = false;
+    bool isInListOfObservables = false;
+
+    for( int i = 0; i < _model->GetCollectionOfParameters().GetNumberOfElements(); ++i ) {
+        if( (*itr).first == _model->GetCollectionOfParameters().At(i)->GetName() ) {
+            parameterValues.push_back( _model->GetCollectionOfParameters().At(i)->GetValue() );
+            isInListOfParameters = true;
+            std::cout << "found " << (*itr).first << " in the list of model parameters" << std::endl;
+            break;
+        }
+    }
+
+    // if not found in the list of parameters, try to find it in the list of observables...for now
+    if( !isInListOfParameters ) {
+
+        for( int i = 0; i < _model->GetCollectionOfPredictions().GetNumberOfElements(); ++i ) {
+            if( (*itr).first == _model->GetCollectionOfPredictions().At(i)->GetName() ) {
+                parameterValues.push_back( _model->GetCollectionOfPredictions().At(i)->GetValue() );
+                isInListOfObservables = true;
+                std::cout << "found " << (*itr).first << " in lsit of the observables" << std::endl;
+                break;
+            }
+        }
+
+    }
+
+    if( !isInListOfParameters && !isInListOfObservables ) {
+
+        throw ConfigurationException( "In LHCChi2Calculator: Won't be able to set values for relevant parameter in LHC Chi2 Contribution" );
+
+    }
+
+    if( parameterValues.size() != (*itr).second.size() ) {
+        
+        throw ConfigurationException(  "In LHCChi2Calculator: Number of assigned parameters does not match number of relevant parameters! Something is wrong!" );
+
+    }
+    // if found, add it:
+    parameterValueMap.insert( std::pair<std::string, std::vector<double> >( (*itr).first, parameterValues ) );
+    
+
+  }
+
+
   for( std::map<std::string, TH1D*>::const_iterator itr = _chi2Histograms1D.begin(); itr != _chi2Histograms1D.end(); ++itr ) {
     //int binx = (*itr).second->GetXaxis()->FindFixBin( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(0))->GetValue() );
     //_simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> GetBinContent( binx );
-    _simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> Interpolate( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(0))->GetValue() );
+    //_simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> Interpolate( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(0))->GetValue() );
+    _simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> Interpolate( parameterValueMap.at((*itr).first).at(0) );
   }
   
   for( std::map<std::string, TH2D*>::const_iterator itr = _chi2Histograms2D.begin(); itr != _chi2Histograms2D.end(); ++itr ) {
     //int binx = (*itr).second->GetXaxis()->FindFixBin( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(0))->GetValue() );
     //int biny = (*itr).second->GetXaxis()->FindFixBin( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(1))->GetValue() );
     //_simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> GetBinContent( binx, biny );
-    _simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> Interpolate( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(0))->GetValue(), _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(1))->GetValue() );
+    //_simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> Interpolate( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(0))->GetValue(), _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(1))->GetValue() );
+    _simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> Interpolate( parameterValueMap.at((*itr).first).at(0), parameterValueMap.at((*itr).first).at(1) );
  }
   
   for( std::map<std::string, TH3D*>::const_iterator itr = _chi2Histograms3D.begin(); itr != _chi2Histograms3D.end(); ++itr ) {
@@ -114,15 +166,18 @@ void Fittino::LHCModelCalculator::CalculatePredictions() {
     //int biny = (*itr).second->GetXaxis()->FindFixBin( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(1))->GetValue() );
     //int binz = (*itr).second->GetXaxis()->FindFixBin( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(2))->GetValue() );
     //_simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> GetBinContent( binx, biny, binz );
-    _simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> Interpolate( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(0))->GetValue(), _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(1))->GetValue(), _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(2))->GetValue() );
+    //_simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> Interpolate( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(0))->GetValue(), _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(1))->GetValue(), _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(2))->GetValue() );
+    _simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> Interpolate( parameterValueMap.at((*itr).first).at(0), parameterValueMap.at((*itr).first).at(1), parameterValueMap.at((*itr).first).at(2) );
   }
 
   for( std::map<std::string, THnSparseD*>::const_iterator itr = _chi2HistogramsnD.begin(); itr != _chi2HistogramsnD.end(); ++itr ) {
+    /*
     std::vector<double> parameterValues;
     for( unsigned int i = 0; i < _relevantParametersMap.at( (*itr).first).size(); ++i ) {
       parameterValues.push_back( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(i))->GetValue() );
     }
-    _simpleOutputDataStorage->GetMap()->at( (*itr).first ) = Fittino::MathTools::InterpolateND( (*itr).second, parameterValues ); 
+    */
+    _simpleOutputDataStorage->GetMap()->at( (*itr).first ) = Fittino::MathTools::InterpolateND( (*itr).second, parameterValueMap.at((*itr).first) ); 
   }
 
 }
