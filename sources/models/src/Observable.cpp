@@ -102,6 +102,12 @@ double Fittino::Observable::GetMeasuredValue() const {
     return _measuredValue;
 }
 
+void Fittino::Observable::SetMeasuredValue( double value ) {
+
+    _measuredValue = value;
+
+}
+
 double Fittino::Observable::CalculateDeviation() {
 
     _deviation = ( _prediction->GetValue() - _measuredValue ) / _measuredError;

@@ -61,6 +61,7 @@ namespace Fittino {
       double          GetBestFitPrediction() const;
       PredictionBase* GetPrediction();
       void            SetBestFitPrediction( double );
+      void            SetMeasuredValue( double );
       bool            IsNoFitObservable();
 
     public:

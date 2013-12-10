@@ -46,6 +46,7 @@
 #include "HiggsSignalsSLHAModelCalculator.h"
 #include "SPhenoSLHAModelCalculator.h"
 #include "TMatrixDSym.h"
+#include "TMatrixDSymEigen.h"
 #include "TVectorD.h"
 
 Fittino::PhysicsModelBase::PhysicsModelBase( const boost::property_tree::ptree& ptree )
@@ -240,12 +241,76 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
 }
 
 void Fittino::PhysicsModelBase::SmearObservables( TRandom3* randomGenerator ) {
-
+    /*
     for( int i = 0; i < _observableVector.size(); ++i ) {
         
         _observableVector[i]->SmearMeasuredValue( randomGenerator );
     
     }
+    */
+
+    // Smear all observbles according to the covariance matrix:
+    // First, determine the eigenvectors and eigenvalues of that matrix:
+    //std::cout << "the covariance matrix is " << std::endl;
+    _observableCovarianceMatrix->Print();
+    //std::cout << "-------------------------------------------------------" << std::endl;
+    TMatrixDSymEigen eigenMatrix( *_observableCovarianceMatrix );
+    TVectorD eigenValues = eigenMatrix.GetEigenValues();
+    TMatrixD eigenVectorsInverse = eigenMatrix.GetEigenVectors();
+    TMatrixD eigenVectors = eigenMatrix.GetEigenVectors();
+    
+    eigenVectorsInverse.Invert();
+
+    //std::cout << "the eigenvalues are " << std::endl;
+    //eigenValues.Print();
+    //std::cout << "-------------------------------------------------------" << std::endl;
+    //std::cout << "the eigenvector matrix is " << std::endl;
+    //eigenVectors.Print();
+    //std::cout << "-------------------------------------------------------" << std::endl;
+    
+    // now transform the observable vector:
+    TVectorD tObservableVector( _observableVector.size() );
+    for( int i = 0; i < _observableVector.size(); ++i ) {
+        
+        tObservableVector[i] = _observableVector.at(i)->GetMeasuredValue();
+
+    }
+    TVectorD tTransformedObservableVector( _observableVector.size() );
+    tTransformedObservableVector = eigenVectorsInverse*tObservableVector;
+    //std::cout << " and now the ev matrix is " << std::endl;
+    //eigenVectors.Print();
+
+    //std::cout << "the observable vector is " << std::endl;
+    //tObservableVector.Print();
+    //std::cout << "-------------------------------------------------------" << std::endl;
+    //std::cout << "the transformed observable vector is " << std::endl;
+    //tTransformedObservableVector.Print();
+    //std::cout << "-------------------------------------------------------" << std::endl;
+
+    // now smear
+    TVectorD smearedVector( _observableVector.size() );
+    for( int i = 0; i < _observableVector.size(); ++i ) {
+        
+        smearedVector[i] = randomGenerator->Gaus( tTransformedObservableVector[i], sqrt(eigenValues[i]) );
+
+    }
+    //std::cout << "the smeared, transformed observable vector is " << std::endl;
+    //smearedVector.Print();
+    //std::cout << "-------------------------------------------------------" << std::endl;
+    // now transform back
+    //std::cout << "will now multiply " << std::endl;
+    //eigenVectors.Print();
+    //std::cout << " and " << std::endl;
+    //smearedVector.Print();
+    
+    tObservableVector = eigenVectors*smearedVector;
+    for( int i = 0; i < _observableVector.size(); ++i ) {
+
+        _observableVector[i]->SetMeasuredValue( tObservableVector[i] );
+
+        std::cout << "using smeared value for observable " << _observableVector[i]->GetPrediction()->GetName() << " : " << _observableVector[i]->GetMeasuredValue() << std::endl;
+    }
+    
 
 }
 
