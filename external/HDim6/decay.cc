@@ -1291,6 +1291,7 @@ double mHWl( double * x, size_t dim, void * par )
 
   msq = msq * (pow(mh - mw,2) - pow(ml,2)) * (m23max - m23min);
   double width = 1/pow(2.*M_PI,3)/32./pow(mh,3)*msq;
+  if( width < 0 ) return 0;
   return 2*width; // Factor 2 because there is W-
 };
 
@@ -1326,6 +1327,7 @@ double mHWqqp( double * x, size_t dim, void * par )
   
   msq = msq * (pow(mh - mw,2) - pow(m3 + m4,2)) * (m23max - m23min);
   double width = 1/pow(2.*M_PI,3)/32./pow(mh,3)*msq;
+  if( width < 0 ) return 0;
   return 2*width;	// Factor 2 because there is W-
 };
 
@@ -1432,6 +1434,7 @@ double mHZlL( double * x, size_t dim, void * par )
 
   double msq_tot = ( msq1 + msq2 + msq3 ) * (pow(mh - mz,2) - pow(mt + mt,2)) * (m23max - m23min);
   double width = 1/pow(2.*M_PI,3)/32./pow(mh,3)*msq_tot;
+  if( width < 0 ) return 0;
   return width;
 };
 
