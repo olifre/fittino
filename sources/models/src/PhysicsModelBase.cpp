@@ -29,6 +29,7 @@
 #include "Chi2ContributionBase.h"
 #include "Messenger.h"
 #include "ModelCalculatorBase.h"
+#include "ModelCalculatorException.h"
 #include "ModelParameterBase.h"
 #include "Observable.h"
 #include "PhysicsModelBase.h"
@@ -97,9 +98,18 @@ double Fittino::PhysicsModelBase::Evaluate() {
 
     // Let the calculators calculate the model predictions.
 
-    for ( unsigned int i = 0; i < _collectionOfCalculators.GetNumberOfElements(); ++i ) {
+    try {
 
-        _collectionOfCalculators.At( i )->CalculatePredictions();
+        for ( unsigned int i = 0; i < _collectionOfCalculators.GetNumberOfElements(); ++i ) {
+
+            _collectionOfCalculators.At( i )->CalculatePredictions();
+
+        }
+
+    }
+    catch(  ModelCalculatorException ){
+    
+        return 100000;
 
     }
 
