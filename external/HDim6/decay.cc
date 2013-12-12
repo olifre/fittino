@@ -489,7 +489,7 @@ void hznunu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
     gsl_monte_vegas_free( s );
   };
   
-  *pWidth = result;
+  *pWidth = 3.0*result;
   *pError = error;
 };
 
