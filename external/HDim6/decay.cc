@@ -399,34 +399,20 @@ void hbobo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
 
 void hzz_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * pChi )
 {
-printf("\n ------------------------------------ HZZ Decay -----------------------------------\n");
-//ALEX
-printf("effpar:\n fbb: %f \n fww: %f \n fgg: %f \n fb: %f \n fw: %f \n ", effpar->fbb, effpar->fww, effpar->fgg, effpar->fb, effpar->fw);
-
   double width = 0, error = 0, chi = 1;
   double buffer1 = 0, buffer2 = 0, buffer3 = 0;
   hztata_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
-printf("\n tata: %f",buffer1);
   hzmumu_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
-printf("\n mumu: %f",buffer1);
   hzelel_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
-printf("\n elel: %f",buffer1);
   hzupup_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
-printf("\n upup: %f",buffer1);
   hzdodo_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
-printf("\n dodo: %f",buffer1);
   hzchch_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
-printf("\n chch: %f",buffer1);
   hzstst_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
-printf("\n stst: %f",buffer1);
   hzbobo_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
-printf("\n bobo: %f", buffer1);
   hznunu_( smpar, effpar, &buffer1, &buffer2, &buffer3 ); width += buffer1; error += buffer2; chi = (fabs(chi - 1 ) < fabs(buffer3 - 1) ? buffer3 : chi );
-printf("\n nunu: %f",buffer1);
   *pWidth = width;
   *pError = error;
   *pChi   = chi;
-printf("\n ----------------------------------------------------------------------------------\n");
 };
 
 void hww_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * pChi )
