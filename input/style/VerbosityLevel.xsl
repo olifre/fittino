@@ -1,14 +1,17 @@
-<?xml version="1.0" encoding='UTF-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 
-<!-- $Id: Example.CMSSMModel.Sampling.in.xml 1449 2013-07-18 22:28:48Z uhlenbrock@PHYSIK.UNI-BONN.DE $ -->
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+<!-- $Id $ -->
 
 <!--#########################################################################-->
 <!--                                                                         -->
 <!-- Project     Fittino - A SUSY Parameter Fitting Package                  -->
 <!--                                                                         -->
-<!-- File        Example.CMSSMModel.Sampling.in.xml                          -->
+<!-- File        VerbosityLevel.xsl                                          -->
 <!--                                                                         -->
-<!-- Description Configuration example for the CMSSM model                   -->
+<!-- Description This file contains the xsl template which specifies how to  -->
+<!--             display the level of verbosity                              -->
 <!--                                                                         -->
 <!-- Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>         -->
 <!--                                                                         -->
@@ -20,29 +23,13 @@
 <!--                                                                         -->
 <!--#########################################################################-->
 
-<!DOCTYPE InputFile PUBLIC "" "InputFile.dtd">
+<xsl:template match="VerbosityLevel">
+  <!-- Displays the level of verbosity -->
+  <p>
+    <table>
+      <tr><td><b><xsl:value-of select="local-name()"/></b></td><td><xsl:value-of select="."/></td></tr>
+    </table>
+  </p>
+</xsl:template>
 
-<InputFile>
-
-  <VerbosityLevel
-   Level = "ALWAYS"
-   />
-
-  <ExecutionMode
-   Mode = "SAMPLING"
-   />
-
-  <Model
-   ModelType = "CMSSM"
-   A0        = "-300."
-   M0        = "100."
-   M12       = "250."
-   TanBeta   = "10."
-   />
-
-  <Sampler
-   NumberOfIterations = "500"
-   SamplerType        = "MarkovChain"
-   />
-
-</InputFile>
+</xsl:stylesheet>

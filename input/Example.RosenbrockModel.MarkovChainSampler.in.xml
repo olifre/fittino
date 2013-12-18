@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding='UTF-8'?>
+<?xml-stylesheet type="text/xsl" href="style/InputFile.xsl"?>
 
 <!-- $Id: Example.MarkovChainSampler.in.xml 1602 2013-09-25 16:14:35Z mhamer $ -->
 
@@ -6,7 +7,7 @@
 <!--                                                                         -->
 <!-- Project     Fittino - A SUSY Parameter Fitting Package                  -->
 <!--                                                                         -->
-<!-- File        Example.MarkovChainSampler.in.xml                           -->
+<!-- File        Example.RosenbrockModel.MarkovChainSampler.in.xml           -->
 <!--                                                                         -->
 <!-- Description Configuration example for the Markov Chain parameter        -->
 <!--             sampler                                                     -->
@@ -21,29 +22,57 @@
 <!--                                                                         -->
 <!--#########################################################################-->
 
-<!DOCTYPE InputFile PUBLIC "" "InputFile.dtd">
-
 <InputFile>
 
-  <VerbosityLevel
-   Level = "ALWAYS"
-   />
+  <VerbosityLevel>INFO</VerbosityLevel>
 
-  <ExecutionMode
-   Mode = "SAMPLING"
-   />
+  <Model>
 
-  <Model
-   ModelType  = "Rosenbrock"
-   Dimensions = "3"
-   X1         = "0."
-   X2         = "0."
-   X3         = "0."
-   />
+    <RosenbrockModel>
 
-  <Sampler
-   NumberOfIterations = "10000"
-   SamplerType        = "MarkovChain"
-   />
+      <Name>3D RosenbrockModel</Name>
+
+      <ModelParameter>
+        <Name>X1</Name>
+        <!--<PlotName>x_1</PlotName>-->
+        <Value>2.56</Value>
+        <Error>0.1</Error>
+        <LowerBound>-4.</LowerBound>
+        <UpperBound>4.</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+      <ModelParameter>
+        <Name>X2</Name>
+        <!--<PlotName>x_2</PlotName>-->
+        <Value>-1.34</Value>
+        <Error>0.1</Error>
+        <LowerBound>-4.</LowerBound>
+        <UpperBound>4.</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+      <ModelParameter>
+        <Name>X3</Name>
+        <!--<PlotName>x_3</PlotName>-->
+        <Value>-0.61</Value>
+        <Error>0.1</Error>
+        <LowerBound>-4.</LowerBound>
+        <UpperBound>4.</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+    </RosenbrockModel>
+
+  </Model>
+
+  <Tool>
+
+    <MarkovChainSampler>
+      <NumberOfIterations>5</NumberOfIterations>
+      <RandomSeed>2</RandomSeed>
+    </MarkovChainSampler>
+
+  </Tool>
 
 </InputFile>
