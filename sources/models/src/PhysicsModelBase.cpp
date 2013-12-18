@@ -721,6 +721,8 @@ void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::propert
         fitObs_x++;
     }
 
+    // now set the toleracne of the matrix:
+    _fitObservableCovarianceMatrix->SetTol(1.e-40);
     // create the inverted matrix for the calculation of the chi2:
     _invertedFitObservableCovarianceMatrix = new TMatrixDSym(_fitObservableCovarianceMatrix->Invert());    
 }
