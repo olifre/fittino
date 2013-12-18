@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
 <!-- $Id$ -->
 
 <!--#########################################################################-->
@@ -24,33 +22,35 @@
 <!--                                                                         -->
 <!--#########################################################################-->
 
-<xsl:template match="Tool">
-  <!-- Prints a headline with the tool's name and the individual configuration items -->
-  <p>
-    <!-- Headline -->
-    <table>
-      <tr><td><b>Tool</b></td><xsl:for-each select="*"><td><xsl:value-of select="local-name()"/></td></xsl:for-each></tr>
-    </table>
-  </p>
-  <!-- Specify here the existing tool templates -->
-  <xsl:apply-templates select="MarkovChainSampler | SimpleSampler | TreeSampler"/>
-</xsl:template>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<!-- Individual configuration of samplers -->
-
-<xsl:template match="MarkovChainSampler | SimpleSampler | TreeSampler">
-  <!-- Prints a list of the individual configuration items -->
-  <p>
-    <table>
-      <xsl:for-each select="*">
-        <!-- Create a new row for every configuration item -->
-        <!-- TODO: Leading empty cells still have to be inserted manually -->
-        <tr>
-          <td></td><td><xsl:value-of select="local-name()"/></td><td align="right"><xsl:value-of select="."/></td>
-        </tr>
-      </xsl:for-each>
-    </table>
-  </p>
-</xsl:template>
+  <xsl:template match="Tool">
+    <!-- Prints a headline with the tool's name and the individual configuration items -->
+    <p>
+      <!-- Headline -->
+      <table>
+        <tr><td><b>Tool</b></td><xsl:for-each select="*"><td><xsl:value-of select="local-name()"/></td></xsl:for-each></tr>
+      </table>
+    </p>
+    <!-- Specify here the existing tool templates -->
+    <xsl:apply-templates select="MarkovChainSampler | SimpleSampler | TreeSampler"/>
+  </xsl:template>
+  
+  <!-- Individual configuration of samplers -->
+  
+  <xsl:template match="MarkovChainSampler | SimpleSampler | TreeSampler">
+    <!-- Prints a list of the individual configuration items -->
+    <p>
+      <table>
+        <xsl:for-each select="*">
+          <!-- Create a new row for every configuration item -->
+          <!-- TODO: Leading empty cells still have to be inserted manually -->
+          <tr>
+            <td></td><td><xsl:value-of select="local-name()"/></td><td align="right"><xsl:value-of select="."/></td>
+          </tr>
+        </xsl:for-each>
+      </table>
+    </p>
+  </xsl:template>
 
 </xsl:stylesheet>

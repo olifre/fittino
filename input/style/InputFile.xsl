@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-
 <!-- $Id$ -->
 
 <!--#########################################################################-->
@@ -25,33 +23,35 @@
 <!--                                                                         -->
 <!--#########################################################################-->
 
-<xsl:include href="VerbosityLevel.xsl"/>
-<xsl:include href="Model.xsl"/>
-<xsl:include href="Tool.xsl"/>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<xsl:template match="InputFile">
-  <!-- This template defines the overall outline of the html document -->
-  <!-- It mainly provides basic style definitions and groups the top level nodes -->
-  <html>
-    <head>
-      <title>
-        Fittino Input File
-      </title>
-      <!-- The basic style definitions go here -->
-      <style type="text/css">
-        <!-- Defines the font used in the document body -->
-        body { font-size:13px; font-family:"Monospace"; }
-        <!-- Cell content in tables is displayed with an offset of 50px to the left -->
-        td { border-left:50px solid white; }
-      </style>
-    </head>
-    <body>
-      <!-- Grouping of the top level nodes -->
-      <xsl:apply-templates select="VerbosityLevel"/>
-      <xsl:apply-templates select="Model"/>
-      <xsl:apply-templates select="Tool"/>
-    </body>
-  </html>
-</xsl:template>
+  <xsl:include href="VerbosityLevel.xsl"/>
+  <xsl:include href="Model.xsl"/>
+  <xsl:include href="Tool.xsl"/>
+  
+  <xsl:template match="InputFile">
+    <!-- This template defines the overall outline of the html document -->
+    <!-- It mainly provides basic style definitions and groups the top level nodes -->
+    <html>
+      <head>
+        <title>
+          Fittino Input File
+        </title>
+        <!-- The basic style definitions go here -->
+        <style type="text/css">
+          <!-- Defines the font used in the document body -->
+          body { font-size:13px; font-family:"Monospace"; }
+          <!-- Cell content in tables is displayed with an offset of 50px to the left -->
+          td { border-left:50px solid white; }
+        </style>
+      </head>
+      <body>
+        <!-- Grouping of the top level nodes -->
+        <xsl:apply-templates select="VerbosityLevel"/>
+        <xsl:apply-templates select="Model"/>
+        <xsl:apply-templates select="Tool"/>
+      </body>
+    </html>
+  </xsl:template>
 
 </xsl:stylesheet>
