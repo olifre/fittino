@@ -114,7 +114,7 @@
 
         <HiggsSignalsCalculator>
         <Name>HiggsSignalsCalculator</Name>
-        <ExpData>LHC_latestResults_25_10_2013</ExpData>
+        <ExpData>latestresults-1.2.0-CMSgaga125p7</ExpData>
         </HiggsSignalsCalculator>
 
       </Calculators>
