@@ -78,10 +78,11 @@ Fittino::HiggsSignalsHadXSModelCalculator::HiggsSignalsHadXSModelCalculator( con
     AddQuantity( new SimplePrediction( "HS_chi2_mass_h"     , "", _chi2_mass_h         ) );
     AddQuantity( new SimplePrediction( "HS_chi2_mu"         , "", _chi2_mu             ) );
     AddQuantity( new SimplePrediction( "HS_pvalue"          , "", _pvalue              ) ); 
+    AddQuantity( new SimplePrediction( "HS_R_H_bb"          , "", _R_H_bb              ) ); 
+    AddQuantity( new SimplePrediction( "HS_R_H_gaga"        , "", _R_H_gaga            ) ); 
+    AddQuantity( new SimplePrediction( "HS_R_H_tautau"      , "", _R_H_tautau          ) ); 
     AddQuantity( new SimplePrediction( "HS_R_H_WW"          , "", _R_H_WW              ) ); 
     AddQuantity( new SimplePrediction( "HS_R_H_ZZ"          , "", _R_H_ZZ              ) ); 
-    AddQuantity( new SimplePrediction( "HS_R_H_gaga"        , "", _R_H_gaga            ) ); 
-    AddQuantity( new SimplePrediction( "HS_R_H_bb"          , "", _R_H_bb              ) ); 
     AddQuantity( new SimplePrediction( "HS_R_VH_bb"         , "", _R_VH_bb             ) ); 
 
     int nHzero = 1;
