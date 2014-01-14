@@ -259,7 +259,7 @@ void Fittino::HDim6ModelCalculator::ConfigureInput() {
     _f_BB = _f_VV_plus - _f_VV_minus;
     _f_WW = _f_VV_plus + _f_VV_minus;
 
-    _f_g  =  - _f_GG * 8 * TMath::Pi() / ( _smvalues->alphas * _smvalues->vev );
+    _f_g  =  - _f_GG * 8 * TMath::Pi() / ( _smvalues->alphas ); // f_g as defined in 1211.4580v4.pdf eq 38 but without factor of vev ( because of units ).
 
     _effvalues->fb   = 1e-6 * _f_B;
     _effvalues->fbb  = 1e-6 * _f_BB;
