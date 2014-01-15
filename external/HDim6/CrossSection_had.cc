@@ -419,6 +419,16 @@ double ggH( double * x, size_t dim, void * param )
    effinputs effpar = par->effpar;
  
    double mf[] = { smpar.mup, smpar.mdo, smpar.mch, smpar.mst, smpar.mto, smpar.mbo };
+
+  // Alex : set anomalous yukawas to zero in ggh interaction
+  effpar.ftoh=0;
+  effpar.fboh=0;
+  effpar.fsth=0;
+  effpar.fchh=0;
+  effpar.fdoh=0;
+  effpar.fuph=0;
+  // xelA
+
    double ff[] = { fuph_( &smpar, &effpar, smpar.mh ), 
 		   fdoh_( &smpar, &effpar, smpar.mh ),
 		   fchh_( &smpar, &effpar, smpar.mh ), 
@@ -461,6 +471,12 @@ void k_ggh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * 
   double mf[] = { smpar.mup, smpar.mdo, smpar.mch, smpar.mst, smpar.mto, smpar.mbo };
   // Alex : set anomalous yukawas to zero in ggh interaction
   effpar.ftoh=0;
+  effpar.fboh=0;
+  effpar.fsth=0;
+  effpar.fchh=0;
+  effpar.fdoh=0;
+  effpar.fuph=0;
+  // xelA
   double ff[] = { fuph_( &smpar, &effpar, smpar.mh ), 
 	          fdoh_( &smpar, &effpar, smpar.mh ),
 	          fchh_( &smpar, &effpar, smpar.mh ), 

@@ -202,13 +202,24 @@ void k_hzz_( sminputs * smpar, effinputs * effpar, double * k, double * err, dou
 
 void hglgl_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError )
 {
+  // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  effinputs myeffpar=*effpar; 
+
+  myeffpar.ftoh=0;
+  myeffpar.fboh=0;
+  myeffpar.fsth=0;
+  myeffpar.fchh=0;
+  myeffpar.fdoh=0;
+  myeffpar.fuph=0;
+  // xelA
+
   double mf[] = {smpar->mup, smpar->mdo, smpar->mch, smpar->mst, smpar->mto, smpar->mbo };
-  double ff[] = { fuph_( smpar, effpar, smpar->mh ),
-		  fdoh_( smpar, effpar, smpar->mh ), 
-		  fchh_( smpar, effpar, smpar->mh ),
-		  fsth_( smpar, effpar, smpar->mh ), 
-		  ftoh_( smpar, effpar, smpar->mh ),
-		  fboh_( smpar, effpar, smpar->mh ) };
+  double ff[] = { fuph_( smpar, &myeffpar, smpar->mh ),
+		  fdoh_( smpar, &myeffpar, smpar->mh ), 
+		  fchh_( smpar, &myeffpar, smpar->mh ),
+		  fsth_( smpar, &myeffpar, smpar->mh ), 
+		  ftoh_( smpar, &myeffpar, smpar->mh ),
+		  fboh_( smpar, &myeffpar, smpar->mh ) };
   complex<double> Af(0,0); // Fermionschleife
   double tau = 0;
   for( int i = 0; i < 6; i++ )
@@ -217,7 +228,7 @@ void hglgl_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
       Af += -tau*(complex<double>(1,0)+(1-tau)*f_(tau))*sqrt(2)*smpar->alphas/M_PI/smpar->vev*ff[i];
     }; 
 
-  complex<double> Aano(-4*ghgg_( smpar, effpar, smpar->mh ), 0);
+  complex<double> Aano(-4*ghgg_( smpar, &myeffpar, smpar->mh ), 0);
  
   complex< double > A = Af + Aano;
   double Gamma = pow(smpar->mh,3)/64.0/M_PI*abs(A)*abs(A);
@@ -231,15 +242,31 @@ void hgaga_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double mf[] = {smpar->mup, smpar->mdo, smpar->mch, smpar->mst, smpar->mto, smpar->mbo, smpar->mel, smpar->mmu, smpar->mta };
   double ef[] = {2./3.,      -1./3.,     2./3.,      -1./3.,     2./3.,      -1./3.,     -1,         -1,         -1         };
   double Nc[] = {3,          3,          3,          3,          3,          3,          1,          1,          1          };
-  double ff[] = { fuph_( smpar, effpar, smpar->mh ),
-		  fdoh_( smpar, effpar, smpar->mh ),
-		  fchh_( smpar, effpar, smpar->mh ), 
-		  fsth_( smpar, effpar, smpar->mh ), 
-		  ftoh_( smpar, effpar, smpar->mh ),
-		  fboh_( smpar, effpar, smpar->mh ),
-		  felh_( smpar, effpar, smpar->mh ),
-		  fmuh_( smpar, effpar, smpar->mh ), 
-		  ftah_( smpar, effpar, smpar->mh ) };
+
+
+  // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  effinputs myeffpar=*effpar; 
+
+  myeffpar.ftoh=0;
+  myeffpar.fboh=0;
+  myeffpar.fsth=0;
+  myeffpar.fchh=0;
+  myeffpar.fdoh=0;
+  myeffpar.fuph=0;
+  myeffpar.felh=0;
+  myeffpar.fmuh=0;
+  myeffpar.ftah=0;
+  // xelA
+
+  double ff[] = { fuph_( smpar, &myeffpar, smpar->mh ),
+		  fdoh_( smpar, &myeffpar, smpar->mh ),
+		  fchh_( smpar, &myeffpar, smpar->mh ), 
+		  fsth_( smpar, &myeffpar, smpar->mh ), 
+		  ftoh_( smpar, &myeffpar, smpar->mh ),
+		  fboh_( smpar, &myeffpar, smpar->mh ),
+		  felh_( smpar, &myeffpar, smpar->mh ),
+		  fmuh_( smpar, &myeffpar, smpar->mh ), 
+		  ftah_( smpar, &myeffpar, smpar->mh ) };
   complex<double> Af(0,0); // Fermionschleife
   complex<double> Aw(0,0); //W-Schleife
   double tau = 0;
@@ -253,7 +280,7 @@ void hgaga_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   tau = 4.0*pow(smpar->mz*cw/smpar->mh,2);
   Aw  = (complex<double>(2+3*tau,0)+3.0*tau*(2.0-tau)*f_(tau))*smpar->alphae/2.0/M_PI/smpar->vev;
 
-  complex<double> Aano(-4*ghyy_( smpar, effpar, smpar->mh ), 0);
+  complex<double> Aano(-4*ghyy_( smpar, &myeffpar, smpar->mh ), 0);
  
   complex< double > A = Af + Aw + Aano;
   double Gamma = 1.0*pow(smpar->mh,3)/64.0/M_PI*abs(A)*abs(A);
@@ -268,15 +295,33 @@ void hgaz_(  sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double t3[]    = {0.5,        -0.5,       0.5,        -0.5,       0.5,        -0.5,       -0.5,       -0.5,       -0.5      };
   double ef[]    = {2./3.,      -1./3.,     2./3.,      -1./3.,     2./3.,      -1./3.,     -1,         -1,         -1        };
   double Nc[]    = {3,          3,          3,          3,          3,          3,          1,          1,          1         };
-  double ff[] = { fuph_( smpar, effpar, smpar->mh ),
-		  fdoh_( smpar, effpar, smpar->mh ),
-		  fchh_( smpar, effpar, smpar->mh ), 
-		  fsth_( smpar, effpar, smpar->mh ), 
-		  ftoh_( smpar, effpar, smpar->mh ),
-		  fboh_( smpar, effpar, smpar->mh ),
-		  felh_( smpar, effpar, smpar->mh ),
-		  fmuh_( smpar, effpar, smpar->mh ), 
-		  ftah_( smpar, effpar, smpar->mh ) };
+
+  // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  effinputs myeffpar=*effpar; 
+
+  myeffpar.ftoh=0;
+  myeffpar.fboh=0;
+  myeffpar.fsth=0;
+  myeffpar.fchh=0;
+  myeffpar.fdoh=0;
+  myeffpar.fuph=0;
+  myeffpar.felh=0;
+  myeffpar.fmuh=0;
+  myeffpar.ftah=0;
+
+  // xelA
+
+
+
+  double ff[] = { fuph_( smpar, &myeffpar, smpar->mh ),
+		  fdoh_( smpar, &myeffpar, smpar->mh ),
+		  fchh_( smpar, &myeffpar, smpar->mh ), 
+		  fsth_( smpar, &myeffpar, smpar->mh ), 
+		  ftoh_( smpar, &myeffpar, smpar->mh ),
+		  fboh_( smpar, &myeffpar, smpar->mh ),
+		  felh_( smpar, &myeffpar, smpar->mh ),
+		  fmuh_( smpar, &myeffpar, smpar->mh ), 
+		  ftah_( smpar, &myeffpar, smpar->mh ) };
  
   double mz      = smpar->mz;
   double sw      = smpar->sw;
@@ -284,8 +329,8 @@ void hgaz_(  sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double mw      = mz*cw;
   double mh      = smpar->mh;
 
-  double g1hzy   = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy   = g2hzy_( smpar, effpar, smpar->mh );
+  double g1hzy   = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy   = g2hzy_( smpar, &myeffpar, smpar->mh );
 
   complex< double > Af( 0, 0 );
   complex< double > Aw( 0, 0 );
