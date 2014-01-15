@@ -57,7 +57,7 @@
 
       <ModelParameter>
         <Name>f_Phi_2</Name>
-        <Value>0</Value>
+        <Value>0.000001</Value>
         <Error>1</Error>
         <LowerBound>-1000</LowerBound>
         <UpperBound>+1000</UpperBound>

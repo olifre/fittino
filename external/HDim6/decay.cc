@@ -475,7 +475,7 @@ void hznunu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
     gsl_monte_vegas_free( s );
   };
   
-  *pWidth = 3.0*result;
+  *pWidth = 3.0*result; // The 3.0 is for three generations of Neutrinos
   *pError = error;
 };
 

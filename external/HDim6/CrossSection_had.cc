@@ -46,6 +46,7 @@ void ratio_bb_h_( sminputs * smpar, effinputs * effpar, double * ratio, double *
 
 void ratio_ggh_( sminputs * smpar, effinputs * effpar, double * ratio, double * err, double * chisq ) 
 {
+printf("\n ratio_ggh_ was called\n");
   double cs = 0, error = 0, chi = 0;
   Gluonfusion_( smpar, effpar, &cs, &error, &chi );
   *ratio = cs/ggh_sm;
@@ -88,6 +89,8 @@ void Gluonfusion_( sminputs * smpar, effinputs * effpar, double * cSec, double *
    radparam par;
    par.smpar  = *smpar;
    par.effpar = *effpar;
+   printf("Gluonfusion_ was called ------------------");
+   par.effpar.ftoh=0; // ALEX We ignore the anomalous top yukawa in the loop!
    {
      G = (gsl_monte_function){ggH, dim, &par};
      gsl_monte_vegas_state * s = gsl_monte_vegas_alloc( dim );
@@ -414,7 +417,7 @@ double ggH( double * x, size_t dim, void * param )
    radparam * par = (radparam*)param;
    sminputs  smpar = par->smpar;
    effinputs effpar = par->effpar;
-   
+ 
    double mf[] = { smpar.mup, smpar.mdo, smpar.mch, smpar.mst, smpar.mto, smpar.mbo };
    double ff[] = { fuph_( &smpar, &effpar, smpar.mh ), 
 		   fdoh_( &smpar, &effpar, smpar.mh ),
@@ -456,6 +459,8 @@ void k_ggh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * 
   sminputs  smpar  = *SMparam;
   effinputs effpar = *ESMparam;
   double mf[] = { smpar.mup, smpar.mdo, smpar.mch, smpar.mst, smpar.mto, smpar.mbo };
+  // Alex : set anomalous yukawas to zero in ggh interaction
+  effpar.ftoh=0;
   double ff[] = { fuph_( &smpar, &effpar, smpar.mh ), 
 	          fdoh_( &smpar, &effpar, smpar.mh ),
 	          fchh_( &smpar, &effpar, smpar.mh ), 

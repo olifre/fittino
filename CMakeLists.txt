@@ -41,20 +41,29 @@ FIND_PACKAGE(Boost 1.47.0 COMPONENTS filesystem system REQUIRED)
 SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
 
 # Optional: Specify the installation path of "HiggsBounds".
-# SET(HIGGSBOUNDS_INSTALLATION_PATH <higgsbounds/installation/path>)
-FIND_PACKAGE(HIGGSBOUNDS)
+ SET(HIGGSBOUNDS_INSTALLATION_PATH ~/HiggsBounds/HiggsBounds-4.0.0)
+ FIND_PACKAGE(HIGGSBOUNDS)
 
 # Optional: Specify the installation path of "HiggsSignals".
-# SET(HIGGSSIGNALS_INSTALLATION_PATH <higgssignals/installation/path>)
-FIND_PACKAGE(HIGGSSIGNALS)
+ SET(HIGGSSIGNALS_INSTALLATION_PATH ~/HiggsBounds/HiggsSignals-1.0.0)
+ FIND_PACKAGE(HIGGSSIGNALS)
 
 # Specify the installation path of the executable "root-config". By default, it is assumed that the
 # environment variable ROOTSYS is set and that the installation path is "ROOTSYS/bin".
-# SET(ROOT_CONFIG_INSTALLATION_PATH ROOTSYS/bin)
+SET(ROOT_CONFIG_INSTALLATION_PATH /home/aknochel/ROOT/root/bin)
+
+SET(ROOT_FOAM_LIBRARY /home/aknochel/ROOT/root/lib/libFoam.so)
+SET(ROOT_MATHMORE_LIBRARY /home/aknochel/ROOT/root/lib/libMathMore.so)
+SET(ROOT_MINUIT2_LIBRARY /home/aknochel/ROOT/root/lib/libMinuit2.so)
+SET(ROOT_MINUIT_LIBRARY /home/aknochel/ROOT/root/lib/libMinuit.so)
+SET(ROOT_ROOFITCORE_LIBRARY /home/aknochel/ROOT/root/lib/libRooFitCore.so)
+SET(ROOT_ROOFIT_LIBRARY /home/aknochel/ROOT/root/lib/libRooFit.so)
+SET(ROOT_XMLPARSER_LIBRARY /home/aknochel/ROOT/root/lib/libXMLParser.so)
+
 FIND_PACKAGE(ROOT)
 
 # Specify the installation path of "SLHAea". The default path is "../slhaea".
-# SET(SLHAEA_INSTALLATION_PATH <slhaea/installation/path>)
+SET(SLHAEA_INSTALLATION_PATH /home/aknochel/Fittino)
 FIND_PACKAGE(SLHAEA REQUIRED)
 
 # Optional: Specify the installation path of the executable "SPheno". The default path is
