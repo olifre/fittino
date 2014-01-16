@@ -145,15 +145,24 @@ void ratio_cb_wh_( sminputs * smpar, effinputs * effpar, double * ratio, double 
 void uu_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
   size_t dim = 1;
 
-  double g1hww = g1hww_( smpar, effpar, smpar->s );
-  double g2hww = g2hww_( smpar, effpar, smpar->s );
-  double g3hww = g3hww_( smpar, effpar, smpar->s );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->s );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->s );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->s );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->s );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->s );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->s );
+  // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  effinputs myeffpar=*effpar;
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->s );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->s );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->s );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->s );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->s );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->s );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->s );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->s );
+  double ghyy  = ghyy_(  smpar, &myeffpar, smpar->s );
   //double ghgg  = ghgg_(  smpar, effpar, smpar->s );
  
   double par[] = { smpar->mh, smpar->mz, smpar->mup, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, 0, 0, 
@@ -177,20 +186,31 @@ void uu_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err )
     gsl_monte_vegas_free( s );
   };
   
-  *cSec = result;
+  *cSec = result*higgsrenorm2(smpar,effpar);
   *err  = error;
 };
 void cc_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
   size_t dim = 1;
-  double g1hww = g1hww_( smpar, effpar, smpar->s );
-  double g2hww = g2hww_( smpar, effpar, smpar->s );
-  double g3hww = g3hww_( smpar, effpar, smpar->s );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->s );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->s );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->s );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->s );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->s );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->s );
+
+  // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  effinputs myeffpar=*effpar;
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->s );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->s );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->s );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->s );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->s );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->s );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->s );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->s );
+  double ghyy  = ghyy_(  smpar, &myeffpar, smpar->s );
   //double ghgg  = ghgg_(  smpar, effpar, smpar->s );
  
   double par[] = { smpar->mh, smpar->mz, smpar->mch, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, 0, 0, g1hww, 
@@ -214,20 +234,31 @@ void cc_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err )
     gsl_monte_vegas_free( s );
   };
   
-  *cSec = result;
+  *cSec = result*higgsrenorm2(smpar,effpar);
   *err  = error;
 };
 void dd_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
   size_t dim = 1;
-  double g1hww = g1hww_( smpar, effpar, smpar->s );
-  double g2hww = g2hww_( smpar, effpar, smpar->s );
-  double g3hww = g3hww_( smpar, effpar, smpar->s );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->s );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->s );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->s );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->s );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->s );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->s );
+
+  // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  effinputs myeffpar=*effpar;
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->s );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->s );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->s );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->s );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->s );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->s );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->s );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->s );
+  double ghyy  = ghyy_(  smpar, &myeffpar, smpar->s );
   //double ghgg  = ghgg_(  smpar, effpar, smpar->s );
  
   double par[] = { smpar->mh, smpar->mz, smpar->mdo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, 0, 0, g1hww, 
@@ -251,20 +282,30 @@ void dd_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err )
     gsl_monte_vegas_free( s );
   };
   
-  *cSec = result;
+  *cSec = result*higgsrenorm2(smpar,effpar);
   *err  = error;
 };
 void ss_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
   size_t dim = 1;
-  double g1hww = g1hww_( smpar, effpar, smpar->s );
-  double g2hww = g2hww_( smpar, effpar, smpar->s );
-  double g3hww = g3hww_( smpar, effpar, smpar->s );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->s );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->s );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->s );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->s );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->s );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->s );
+
+  // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  effinputs myeffpar=*effpar;
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->s );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->s );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->s );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->s );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->s );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->s );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->s );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->s );
+  double ghyy  = ghyy_(  smpar, &myeffpar, smpar->s );
   //double ghgg  = ghgg_(  smpar, effpar, smpar->s );
  
   double par[] = { smpar->mh, smpar->mz, smpar->mst, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, 0, 0, g1hww, 
@@ -288,20 +329,30 @@ void ss_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err )
     gsl_monte_vegas_free( s );
   };
   
-  *cSec = result;
+  *cSec = result*higgsrenorm2(smpar,effpar);
   *err  = error;
 };
 void bb_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
   size_t dim = 1;
-  double g1hww = g1hww_( smpar, effpar, smpar->s );
-  double g2hww = g2hww_( smpar, effpar, smpar->s );
-  double g3hww = g3hww_( smpar, effpar, smpar->s );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->s );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->s );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->s );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->s );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->s );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->s );
+
+  // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  effinputs myeffpar=*effpar;
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->s );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->s );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->s );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->s );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->s );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->s );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->s );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->s );
+  double ghyy  = ghyy_(  smpar, &myeffpar, smpar->s );
   //double ghgg  = ghgg_(  smpar, effpar, smpar->s );
  
   double par[] = { smpar->mh, smpar->mz, smpar->mbo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, 0, 0, g1hww, 
@@ -325,22 +376,33 @@ void bb_zh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err )
     gsl_monte_vegas_free( s );
   };
   
-  *cSec = result;
+  *cSec = result*higgsrenorm2(smpar,effpar);
   *err  = error;
 };
 
 // H-Radiation from W-Boson
 void ud_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
   size_t dim = 1;
-  double g1hww = g1hww_( smpar, effpar, smpar->s );
-  double g2hww = g2hww_( smpar, effpar, smpar->s );
-  double g3hww = g3hww_( smpar, effpar, smpar->s );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->s );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->s );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->s );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->s );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->s );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->s );
+
+  // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  effinputs myeffpar=*effpar;
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->s );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->s );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->s );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->s );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->s );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->s );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->s );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->s );
+  double ghyy  = ghyy_(  smpar, &myeffpar, smpar->s );
   //double ghgg  = ghgg_(  smpar, effpar, smpar->s );
  
   double par[] = { smpar->mh, smpar->mz, smpar->mdo, smpar->mup, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, smpar->vud, g1hww, 
@@ -364,21 +426,30 @@ void ud_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err )
     gsl_monte_vegas_free( s );
   };
   
-  *cSec = result;
+  *cSec = result*higgsrenorm2(smpar,effpar);
   *err  = error;
 };
 void us_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
   size_t dim = 1;
- 
-  double g1hww = g1hww_( smpar, effpar, smpar->s );
-  double g2hww = g2hww_( smpar, effpar, smpar->s );
-  double g3hww = g3hww_( smpar, effpar, smpar->s );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->s );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->s );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->s );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->s );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->s );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->s );
+
+   // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  effinputs myeffpar=*effpar;
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->s );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->s );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->s );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->s );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->s );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->s );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->s );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->s );
+  double ghyy  = ghyy_(  smpar, &myeffpar, smpar->s );
   //double ghgg  = ghgg_(  smpar, effpar, smpar->s );
 
   double par[] = { smpar->mh, smpar->mz, smpar->mst, smpar->mup, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, smpar->vus, g1hww, 
@@ -402,21 +473,30 @@ void us_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err )
     gsl_monte_vegas_free( s );
   };
   
-  *cSec = result;
+  *cSec = result*higgsrenorm2(smpar,effpar);
   *err  = error;
 };
 void ub_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
   size_t dim = 1;
- 
-  double g1hww = g1hww_( smpar, effpar, smpar->s );
-  double g2hww = g2hww_( smpar, effpar, smpar->s );
-  double g3hww = g3hww_( smpar, effpar, smpar->s );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->s );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->s );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->s );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->s );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->s );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->s );
+
+   // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  effinputs myeffpar=*effpar;
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->s );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->s );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->s );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->s );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->s );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->s );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->s );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->s );
+  double ghyy  = ghyy_(  smpar, &myeffpar, smpar->s );
   //double ghgg  = ghgg_(  smpar, effpar, smpar->s );
 
   double par[] = { smpar->mh, smpar->mz, smpar->mbo, smpar->mup, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, smpar->vub, g1hww, 
@@ -440,20 +520,31 @@ void ub_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err )
     gsl_monte_vegas_free( s );
   };
   
-  *cSec = result;
+  *cSec = result*higgsrenorm2(smpar,effpar);
   *err  = error;
 };
 void cd_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
   size_t dim = 1;
-  double g1hww = g1hww_( smpar, effpar, smpar->s );
-  double g2hww = g2hww_( smpar, effpar, smpar->s );
-  double g3hww = g3hww_( smpar, effpar, smpar->s );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->s );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->s );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->s );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->s );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->s );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->s );
+
+  // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  effinputs myeffpar=*effpar;
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->s );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->s );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->s );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->s );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->s );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->s );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->s );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->s );
+  double ghyy  = ghyy_(  smpar, &myeffpar, smpar->s );
   //double ghgg  = ghgg_(  smpar, effpar, smpar->s );
  
   double par[] = { smpar->mh, smpar->mz, smpar->mdo, smpar->mch, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, smpar->vcd, g1hww, 
@@ -477,20 +568,31 @@ void cd_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err )
     gsl_monte_vegas_free( s );
   };
   
-  *cSec = result;
+  *cSec = result*higgsrenorm2(smpar,effpar);
   *err  = error;
 };
 void cs_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
   size_t dim = 1;
-  double g1hww = g1hww_( smpar, effpar, smpar->s );
-  double g2hww = g2hww_( smpar, effpar, smpar->s );
-  double g3hww = g3hww_( smpar, effpar, smpar->s );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->s );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->s );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->s );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->s );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->s );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->s );
+
+  // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  effinputs myeffpar=*effpar;
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->s );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->s );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->s );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->s );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->s );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->s );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->s );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->s );
+  double ghyy  = ghyy_(  smpar, &myeffpar, smpar->s );
   //double ghgg  = ghgg_(  smpar, effpar, smpar->s );
   
   double par[] = { smpar->mh, smpar->mz, smpar->mst, smpar->mch, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, smpar->vcs, g1hww, 
@@ -514,21 +616,30 @@ void cs_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err )
     gsl_monte_vegas_free( s );
   };
   
-  *cSec = result;
+  *cSec = result*higgsrenorm2(smpar,effpar);
   *err  = error;
 };
 void cb_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err ) {
   size_t dim = 1;
 
-  double g1hww = g1hww_( smpar, effpar, smpar->s );
-  double g2hww = g2hww_( smpar, effpar, smpar->s );
-  double g3hww = g3hww_( smpar, effpar, smpar->s );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->s );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->s );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->s );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->s );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->s );
-  double ghyy  = ghyy_(  smpar, effpar, smpar->s );
+  // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  effinputs myeffpar=*effpar;
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->s );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->s );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->s );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->s );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->s );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->s );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->s );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->s );
+  double ghyy  = ghyy_(  smpar, &myeffpar, smpar->s );
   //double ghgg  = ghgg_(  smpar, effpar, smpar->s );
   
   double par[] = { smpar->mh, smpar->mz, smpar->mbo, smpar->mch, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, smpar->vcb, g1hww, 
@@ -552,7 +663,7 @@ void cb_wh_( sminputs * smpar, effinputs * effpar, double * cSec, double * err )
     gsl_monte_vegas_free( s );
   };
   
-  *cSec = result;
+  *cSec = result*higgsrenorm2(smpar,effpar);
   *err  = error;
 };
 
