@@ -23,7 +23,17 @@ void ratio_tth_( sminputs * smpar, effinputs * effpar, double * ratio, double * 
 {
   /* Ratio given through modified Yukawa-Coupling! */
   double s = smpar->mh + 2.*smpar->mto;
-  *ratio = pow(ftoh_( smpar, effpar, s), 2);
+
+  // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  effinputs myeffpar=*effpar; 
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+  *ratio = pow(ftoh_( smpar, &myeffpar, s), 2)*higgsrenorm2(smpar,effpar);
   *err   = 0;
   *chisq = 1;
 };
@@ -31,15 +41,35 @@ void ratio_tth_( sminputs * smpar, effinputs * effpar, double * ratio, double * 
 void ratio_bg_bh_(sminputs * smpar, effinputs * effpar, double * ratio, double * err, double * chisq )
 {
   double s = smpar->mh + smpar->mbo;
-  *ratio = pow( fboh_( smpar, effpar, s ),2);
+
+  // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  effinputs myeffpar=*effpar; 
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+  *ratio = pow( fboh_( smpar, &myeffpar, s ),2)*higgsrenorm2(smpar,effpar);
   *err   = 0;
   *chisq = 1;
 };
 
 void ratio_bb_h_( sminputs * smpar, effinputs * effpar, double * ratio, double * err, double * chisq ) 
 {
+
+  // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  effinputs myeffpar=*effpar; 
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
   /* Ratio given through modified Yukawa-Coupling! */
-  *ratio = pow( fboh_( smpar, effpar, smpar->mh), 2);
+  *ratio = pow( fboh_( smpar, &myeffpar, smpar->mh), 2)*higgsrenorm2(smpar,effpar);
   *err   = 0;
   *chisq = 1;
 };
@@ -136,6 +166,16 @@ void HZRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double *
     par.PDG2   = -i;
     par.smpar  = *smpar;
     par.effpar = *effpar;
+
+  // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  par.effpar.fp1=0;
+  par.effpar.fp2=0;
+  par.effpar.fp4=0;
+  // xelA
+
+
     /*
     double par[] = { smpar->mh, smpar->mz, mq[i], sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->s, 0, 0, effpar->g1hww, 
 		     effpar->g2hww, effpar->g3hww, effpar->g1hzz, effpar->g2hzz, effpar->g3hzz, effpar->g1hzy, effpar->g2hzy, effpar->ghyy, (double)i, -(double)i };
@@ -161,7 +201,7 @@ void HZRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double *
     toterr += error;
       
   };
-  *cSec = cs;
+  *cSec = cs*higgsrenorm2(smpar,effpar);
   *err  = toterr;  
 };
 
@@ -217,6 +257,16 @@ void HWRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double *
       par.ckm    = vckm;
       par.smpar  = *smpar;
       par.effpar = *effpar;
+
+  // Alex : set anomalous yukawas to zero in ggh interaction. For this reason reroute effpars to a local variable
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  par.effpar.fp1=0;
+  par.effpar.fp2=0;
+  par.effpar.fp4=0;
+  // xelA
+
+
       gsl_monte_function G = { &m_qqp_WH, dim, &par };
       gsl_monte_vegas_state * s = gsl_monte_vegas_alloc( dim );
       int k = 0;
@@ -249,7 +299,7 @@ void HWRadiation_( sminputs * smpar, effinputs * effpar, double * cSec, double *
     }while( j <= 5 );
     i += 2;
   }while( i <= 4 );
-  *cSec = cs;
+  *cSec = cs*higgsrenorm2(smpar,effpar);
   *err  = toterr;  
 };
 
