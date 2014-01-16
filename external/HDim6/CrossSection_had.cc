@@ -89,8 +89,8 @@ void Gluonfusion_( sminputs * smpar, effinputs * effpar, double * cSec, double *
    radparam par;
    par.smpar  = *smpar;
    par.effpar = *effpar;
-   printf("Gluonfusion_ was called ------------------");
-   par.effpar.ftoh=0; // ALEX We ignore the anomalous top yukawa in the loop!
+   
+
    {
      G = (gsl_monte_function){ggH, dim, &par};
      gsl_monte_vegas_state * s = gsl_monte_vegas_alloc( dim );
@@ -102,7 +102,7 @@ void Gluonfusion_( sminputs * smpar, effinputs * effpar, double * cSec, double *
      gsl_monte_vegas_free( s );
    };
    
-   *cSec = result;
+   *cSec = result; // *higgsrenorm2(smpar,effpar);
    *err  = error;
 };
 
@@ -427,6 +427,12 @@ double ggH( double * x, size_t dim, void * param )
   effpar.fchh=0;
   effpar.fdoh=0;
   effpar.fuph=0;
+   // Alex
+        effpar.fp1=0; // We kill off the effect of the Higgs rescaling
+        effpar.fp2=0; // We kill off the effect of the Higgs rescaling
+        effpar.fp4=0; // We kill off the effect of the Higgs rescaling
+   // xelA
+
   // xelA
 
    double ff[] = { fuph_( &smpar, &effpar, smpar.mh ), 
@@ -459,7 +465,8 @@ double ggH( double * x, size_t dim, void * param )
    double Gamma = pow(smpar.mh,3)/64.0/M_PI*abs(A*A);
    double x1 = *x*(1-pow(smpar.mh,2)/smpar.s)+pow(smpar.mh,2)/smpar.s;
    double x2 = pow(smpar.mh,2)/x1/smpar.s;
-   return 1.0/x1/x2*LHAPDF::xfx(x1,smpar.mh,0)*LHAPDF::xfx(x2,smpar.mh,0)/x1/smpar.s*pow(M_PI,2)/8.0/smpar.mh*Gamma*(1-pow(smpar.mh,2)/smpar.s)/2.57e3*1e12;
+   double returnvalue=1.0/x1/x2*LHAPDF::xfx(x1,smpar.mh,0)*LHAPDF::xfx(x2,smpar.mh,0)/x1/smpar.s*pow(M_PI,2)/8.0/smpar.mh*Gamma*(1-pow(smpar.mh,2)/smpar.s)/2.57e3*1e12;
+   return returnvalue*higgsrenorm2(&(par->smpar),&(par->effpar));
 };
 
 void k_ggh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * err, double * chisq )
@@ -476,6 +483,13 @@ void k_ggh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * 
   effpar.fchh=0;
   effpar.fdoh=0;
   effpar.fuph=0;
+
+   // Alex
+        effpar.fp1=0; // We kill off the effect of the Higgs rescaling
+        effpar.fp2=0; // We kill off the effect of the Higgs rescaling
+        effpar.fp4=0; // We kill off the effect of the Higgs rescaling
+   // xelA
+
   // xelA
   double ff[] = { fuph_( &smpar, &effpar, smpar.mh ), 
 	          fdoh_( &smpar, &effpar, smpar.mh ),
@@ -506,5 +520,5 @@ void k_ggh_( sminputs * SMparam, effinputs * ESMparam, double * ratio, double * 
       Af0+= -tau*(complex<double>(1,0)+(1-tau)*ftau)*sqrt(2)*smpar.alphas/M_PI/smpar.vev;
    };
    complex<double> kappa = (Af + A)/Af0;
-   *ratio = pow(abs(kappa),2);
+   *ratio = pow(abs(kappa),2)*higgsrenorm2(SMparam,ESMparam);
 };
