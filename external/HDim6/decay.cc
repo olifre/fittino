@@ -211,6 +211,13 @@ void hglgl_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   myeffpar.fchh=0;
   myeffpar.fdoh=0;
   myeffpar.fuph=0;
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+
+
   // xelA
 
   double mf[] = {smpar->mup, smpar->mdo, smpar->mch, smpar->mst, smpar->mto, smpar->mbo };
@@ -233,7 +240,7 @@ void hglgl_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   complex< double > A = Af + Aano;
   double Gamma = pow(smpar->mh,3)/64.0/M_PI*abs(A)*abs(A);
   
-  *pWidth = Gamma;
+  *pWidth = Gamma*higgsrenorm2(smpar,effpar);
   *pError = 0;
 };
 
@@ -256,6 +263,13 @@ void hgaga_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   myeffpar.felh=0;
   myeffpar.fmuh=0;
   myeffpar.ftah=0;
+  // Also kill off the Higgs rescaling effect because it is 
+  // implemented inconsistently between the fermion contributions
+  // and the vector boson contributions to the loop. Will then add the
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
   // xelA
 
   double ff[] = { fuph_( smpar, &myeffpar, smpar->mh ),
@@ -285,7 +299,8 @@ void hgaga_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   complex< double > A = Af + Aw + Aano;
   double Gamma = 1.0*pow(smpar->mh,3)/64.0/M_PI*abs(A)*abs(A);
   
-  *pWidth = Gamma;
+  *pWidth = Gamma*higgsrenorm2(smpar,effpar);
+;
   *pError = 0;
 };
 
@@ -308,6 +323,13 @@ void hgaz_(  sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   myeffpar.felh=0;
   myeffpar.fmuh=0;
   myeffpar.ftah=0;
+  // Also kill off the Higgs rescaling effect because it is 
+  // implemented inconsistently between the fermion contributions
+  // and the vector boson contributions to the loop. Will then add the
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
 
   // xelA
 
@@ -350,7 +372,8 @@ void hgaz_(  sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   complex< double > A = Aw + Af + Aano;
   double Gamma = pow(mh,3)*pow(1-pow(mz/mh,2),3)/32.0/M_PI*abs(A)*abs(A);
   
-  *pWidth = Gamma;
+  *pWidth = Gamma*higgsrenorm2(smpar,effpar);
+;
   *pError = 0;
 };
 
@@ -361,8 +384,22 @@ void htata_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double mf  = smpar->mta;
   double mh  = smpar->mh;
   double v   = smpar->vev;
-  double ffH = ftah_( smpar, effpar, mh );
+
+  // Alex
+  effinputs myeffpar=*effpar; 
+
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+
+  // xelA
+
+  double ffH = ftah_( smpar, &myeffpar, mh );
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(ffH,2)*pow(1.-pow(2.*mf/mh,2),1.5);
+  *pWidth = *pWidth*higgsrenorm2(smpar,effpar);
+
   *pError = 0;
 };
 
@@ -371,8 +408,23 @@ void hmumu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double mf = smpar->mmu;
   double mh = smpar->mh;
   double v   = smpar->vev;
-  double ffH = fmuh_( smpar, effpar, mh );
-  *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(ffH,2)*pow(1-pow(2.*mf/mh,2),1.5);  
+
+  // Alex
+  effinputs myeffpar=*effpar; 
+
+  // Also kill off the Higgs rescaling effect, add
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+
+  // xelA
+
+
+  double ffH = fmuh_( smpar, &myeffpar, mh );
+  *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(ffH,2)*pow(1-pow(2.*mf/mh,2),1.5); 
+  *pWidth = *pWidth*higgsrenorm2(smpar,effpar);
+
   *pError = 0;
 };
 
@@ -415,8 +467,23 @@ void hchch_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double mf = smpar->mch;
   double mh = smpar->mh;
   double v   = smpar->vev;
-  double ffH = fchh_( smpar, effpar, mh );
+
+  // Alex
+  effinputs myeffpar=*effpar; 
+
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+
+  // xelA
+
+
+  double ffH = fchh_( smpar, &myeffpar, mh );
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
+  *pWidth = *pWidth*higgsrenorm2(smpar,effpar);
+
   *pError = 0;
 };
 
@@ -425,8 +492,23 @@ void hstst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double mf = smpar->mst;
   double mh = smpar->mh;
   double v   = smpar->vev;
-  double ffH = fsth_( smpar, effpar, mh );
+
+  // Alex
+  effinputs myeffpar=*effpar; 
+
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+
+  // xelA
+
+
+  double ffH = fsth_( smpar, &myeffpar, mh );
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
+  *pWidth = *pWidth*higgsrenorm2(smpar,effpar);
+
   *pError = 0;
 };
 
@@ -435,8 +517,22 @@ void hbobo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pEr
   double mf = smpar->mbo;
   double mh = smpar->mh;
   double v   = smpar->vev;
-  double ffH = fboh_( smpar, effpar, mh );
+
+  // Alex
+  effinputs myeffpar=*effpar; 
+
+  // Also kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+
+  // xelA
+
+  double ffH = fboh_( smpar, &myeffpar, mh );
   *pWidth = pow(mf,2.)*mh/8./M_PI/v/v*pow(ffH,2)*3.*pow(1-pow(2.*mf/mh,2),1.5);
+  *pWidth = *pWidth*higgsrenorm2(smpar,effpar);
+
   *pError = 0;
 };
 
@@ -483,14 +579,24 @@ void hww_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pErro
 void hznunu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {  
   size_t dim = 2;
-  double g1hww = g1hww_( smpar, effpar, smpar->mh );
-  double g2hww = g2hww_( smpar, effpar, smpar->mh );
-  double g3hww = g3hww_( smpar, effpar, smpar->mh );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+
+  // Alex 
+  effinputs myeffpar=*effpar; 
+  // Kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->mh );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->mh );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->mh );
   
   double par[] = { smpar->mh, smpar->mz, 0, 0, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0, 
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -520,21 +626,32 @@ void hznunu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
     gsl_monte_vegas_free( s );
   };
   
-  *pWidth = 3.0*result; // The 3.0 is for three generations of Neutrinos
+  *pWidth = 3.0*result*higgsrenorm2(smpar,effpar); // The 3.0 is for three generations of Neutrinos
   *pError = error;
 };
 
 void hztata_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {  
   size_t dim = 2;
-  double g1hww = g1hww_( smpar, effpar, smpar->mh );
-  double g2hww = g2hww_( smpar, effpar, smpar->mh );
-  double g3hww = g3hww_( smpar, effpar, smpar->mh );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+
+  // Alex 
+  effinputs myeffpar=*effpar; 
+  // Kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->mh );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->mh );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->mh );
   
   double par[] = { smpar->mh, smpar->mz, smpar->mta, smpar->mta, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -564,21 +681,32 @@ void hztata_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
     gsl_monte_vegas_free( s );
   };
   
-  *pWidth = result;
+  *pWidth = result*higgsrenorm2(smpar,effpar);
   *pError = error;
 };
 
 void hzmumu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double g1hww = g1hww_( smpar, effpar, smpar->mh );
-  double g2hww = g2hww_( smpar, effpar, smpar->mh );
-  double g3hww = g3hww_( smpar, effpar, smpar->mh );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+
+  // Alex 
+  effinputs myeffpar=*effpar; 
+  // Kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->mh );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->mh );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->mh );
   
   double par[] = { smpar->mh, smpar->mz, smpar->mmu, smpar->mmu, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -608,21 +736,31 @@ void hzmumu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
     gsl_monte_vegas_free( s );
   };
   
-  *pWidth = result;
+  *pWidth = result*higgsrenorm2(smpar,effpar);
   *pError = error;
 };
 
 void hzelel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double g1hww = g1hww_( smpar, effpar, smpar->mh );
-  double g2hww = g2hww_( smpar, effpar, smpar->mh );
-  double g3hww = g3hww_( smpar, effpar, smpar->mh );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+
+  // Alex 
+  effinputs myeffpar=*effpar; 
+  // Kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->mh );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->mh );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->mh );
  
 //printf("\n mHZlL-g1hzz: %f", g1hzz); 
 //printf("\n mHZlL-g2hzz: %f", g2hzz); 
@@ -661,7 +799,7 @@ void hzelel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
     gsl_monte_vegas_free( s );
   };
   
-  *pWidth = result;
+  *pWidth = result*higgsrenorm2(smpar,effpar);
   *pError = error;
 };
 
@@ -669,14 +807,23 @@ void hzdodo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 {
   size_t dim = 2;
 
-  double g1hww = g1hww_( smpar, effpar, smpar->mh );
-  double g2hww = g2hww_( smpar, effpar, smpar->mh );
-  double g3hww = g3hww_( smpar, effpar, smpar->mh );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  // Alex 
+  effinputs myeffpar=*effpar; 
+  // Kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->mh );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->mh );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->mh );
  
 //printf("\n mHZdd-g1hzz: %f", g1hzz); 
 //printf("\n mHZdd-g2hzz: %f", g2hzz); 
@@ -712,21 +859,32 @@ void hzdodo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
     *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
-  *pWidth = result;
+  *pWidth = result*higgsrenorm2(smpar,effpar);
   *pError = error;
 };
 
 void hzupup_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double g1hww = g1hww_( smpar, effpar, smpar->mh );
-  double g2hww = g2hww_( smpar, effpar, smpar->mh );
-  double g3hww = g3hww_( smpar, effpar, smpar->mh );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+
+  // Alex 
+  effinputs myeffpar=*effpar; 
+  // Kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->mh );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->mh );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->mh );
   
   double par[] = { smpar->mh, smpar->mz, smpar->mup, smpar->mup, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -756,7 +914,7 @@ void hzupup_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
     gsl_monte_vegas_free( s );
   };
   
-  *pWidth = result;
+  *pWidth = result*higgsrenorm2(smpar,effpar);
   *pError = error;
 };
 
@@ -764,14 +922,23 @@ void hzstst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 {
   size_t dim = 2;
 
-  double g1hww = g1hww_( smpar, effpar, smpar->mh );
-  double g2hww = g2hww_( smpar, effpar, smpar->mh );
-  double g3hww = g3hww_( smpar, effpar, smpar->mh );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  // Alex 
+  effinputs myeffpar=*effpar; 
+  // Kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->mh );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->mh );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->mh );
   
   double par[] = { smpar->mh, smpar->mz, smpar->mst, smpar->mst, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -800,7 +967,7 @@ void hzstst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
     *chi = gsl_monte_vegas_chisq( s );
     gsl_monte_vegas_free( s );
   };
-  *pWidth = result;
+  *pWidth = result*higgsrenorm2(smpar,effpar);
   *pError = error;
 };
 
@@ -808,14 +975,23 @@ void hzchch_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 {  
   size_t dim = 2;
 
-  double g1hww = g1hww_( smpar, effpar, smpar->mh );
-  double g2hww = g2hww_( smpar, effpar, smpar->mh );
-  double g3hww = g3hww_( smpar, effpar, smpar->mh );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  // Alex 
+  effinputs myeffpar=*effpar; 
+  // Kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->mh );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->mh );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, smpar->mch, smpar->mch, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -845,7 +1021,7 @@ void hzchch_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
     gsl_monte_vegas_free( s );
   };
   
-  *pWidth = result;
+  *pWidth = result*higgsrenorm2(smpar,effpar);
   *pError = error;
 };
 
@@ -853,14 +1029,23 @@ void hzbobo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 {
   size_t dim = 2;
 
-  double g1hww = g1hww_( smpar, effpar, smpar->mh );
-  double g2hww = g2hww_( smpar, effpar, smpar->mh );
-  double g3hww = g3hww_( smpar, effpar, smpar->mh );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  // Alex 
+  effinputs myeffpar=*effpar; 
+  // Kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->mh );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->mh );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, smpar->mbo, smpar->mbo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -890,21 +1075,32 @@ void hzbobo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
     gsl_monte_vegas_free( s );
   };
   
-  *pWidth = result;
+  *pWidth = result*higgsrenorm2(smpar,effpar);
   *pError = error;
 };
 
 void hwtanta_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double g1hww = g1hww_( smpar, effpar, smpar->mh );
-  double g2hww = g2hww_( smpar, effpar, smpar->mh );
-  double g3hww = g3hww_( smpar, effpar, smpar->mh );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+
+  // Alex 
+  effinputs myeffpar=*effpar; 
+  // Kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->mh );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->mh );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, 0, smpar->mta, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -934,21 +1130,31 @@ void hwtanta_( sminputs * smpar, effinputs * effpar, double * pWidth, double * p
     gsl_monte_vegas_free( s );
   };
   
-  *pWidth = result;
+  *pWidth = result*higgsrenorm2(smpar,effpar);
   *pError = error;
 };
 
 void hwmunmu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double g1hww = g1hww_( smpar, effpar, smpar->mh );
-  double g2hww = g2hww_( smpar, effpar, smpar->mh );
-  double g3hww = g3hww_( smpar, effpar, smpar->mh );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+
+  // Alex 
+  effinputs myeffpar=*effpar; 
+  // Kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->mh );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->mh );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, 0, smpar->mmu, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -978,21 +1184,32 @@ void hwmunmu_( sminputs * smpar, effinputs * effpar, double * pWidth, double * p
     gsl_monte_vegas_free( s );
   };
   
-  *pWidth = result;
+  *pWidth = result*higgsrenorm2(smpar,effpar);
   *pError = error;
 };
 
 void hwelnel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double g1hww = g1hww_( smpar, effpar, smpar->mh );
-  double g2hww = g2hww_( smpar, effpar, smpar->mh );
-  double g3hww = g3hww_( smpar, effpar, smpar->mh );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+
+  // Alex 
+  effinputs myeffpar=*effpar; 
+  // Kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->mh );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->mh );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, 0, smpar->mel, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -1022,21 +1239,32 @@ void hwelnel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * p
     gsl_monte_vegas_free( s );
   };
   
-  *pWidth = result;
+  *pWidth = result*higgsrenorm2(smpar,effpar);
   *pError = error;
 };
 
 void hwupdo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double g1hww = g1hww_( smpar, effpar, smpar->mh );
-  double g2hww = g2hww_( smpar, effpar, smpar->mh );
-  double g3hww = g3hww_( smpar, effpar, smpar->mh );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+
+  // Alex 
+  effinputs myeffpar=*effpar; 
+  // Kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->mh );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->mh );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, smpar->mup, smpar->mdo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vud,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -1066,21 +1294,32 @@ void hwupdo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
     gsl_monte_vegas_free( s );
   };
   
-  *pWidth = result;
+  *pWidth = result*higgsrenorm2(smpar,effpar);
   *pError = error;
 };
 
 void hwupst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double g1hww = g1hww_( smpar, effpar, smpar->mh );
-  double g2hww = g2hww_( smpar, effpar, smpar->mh );
-  double g3hww = g3hww_( smpar, effpar, smpar->mh );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+
+  // Alex 
+  effinputs myeffpar=*effpar; 
+  // Kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->mh );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->mh );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, smpar->mup, smpar->mst, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vus,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -1110,21 +1349,32 @@ void hwupst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
     gsl_monte_vegas_free( s );
   };
   
-  *pWidth = result;
+  *pWidth = result*higgsrenorm2(smpar,effpar);
   *pError = error;
 };
 
 void hwupbo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double g1hww = g1hww_( smpar, effpar, smpar->mh );
-  double g2hww = g2hww_( smpar, effpar, smpar->mh );
-  double g3hww = g3hww_( smpar, effpar, smpar->mh );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+
+  // Alex 
+  effinputs myeffpar=*effpar; 
+  // Kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->mh );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->mh );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, smpar->mup, smpar->mbo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vub, 
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -1154,7 +1404,7 @@ void hwupbo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
     gsl_monte_vegas_free( s );
   };
   
-  *pWidth = result;
+  *pWidth = result*higgsrenorm2(smpar,effpar);
   *pError = error;
 };
 
@@ -1162,14 +1412,23 @@ void hwchdo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 {
   size_t dim = 2;
 
-  double g1hww = g1hww_( smpar, effpar, smpar->mh );
-  double g2hww = g2hww_( smpar, effpar, smpar->mh );
-  double g3hww = g3hww_( smpar, effpar, smpar->mh );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+  // Alex 
+  effinputs myeffpar=*effpar; 
+  // Kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->mh );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->mh );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, smpar->mch, smpar->mdo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vcd,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -1199,21 +1458,32 @@ void hwchdo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
     gsl_monte_vegas_free( s );
   };
   
-  *pWidth = result;
+  *pWidth = result*higgsrenorm2(smpar,effpar);
   *pError = error;
 };
 
 void hwchst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double g1hww = g1hww_( smpar, effpar, smpar->mh );
-  double g2hww = g2hww_( smpar, effpar, smpar->mh );
-  double g3hww = g3hww_( smpar, effpar, smpar->mh );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+
+  // Alex 
+  effinputs myeffpar=*effpar; 
+  // Kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->mh );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->mh );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, smpar->mch, smpar->mst, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vcs,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -1243,21 +1513,32 @@ void hwchst_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
     gsl_monte_vegas_free( s );
   };
   
-  *pWidth = result;
+  *pWidth = result*higgsrenorm2(smpar,effpar);
   *pError = error;
 };
 
 void hwchbo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pError, double * chi )
 {
   size_t dim = 2;
-  double g1hww = g1hww_( smpar, effpar, smpar->mh );
-  double g2hww = g2hww_( smpar, effpar, smpar->mh );
-  double g3hww = g3hww_( smpar, effpar, smpar->mh );
-  double g1hzz = g1hzz_( smpar, effpar, smpar->mh );
-  double g2hzz = g2hzz_( smpar, effpar, smpar->mh );
-  double g3hzz = g3hzz_( smpar, effpar, smpar->mh );
-  double g1hzy = g1hzy_( smpar, effpar, smpar->mh );
-  double g2hzy = g2hzy_( smpar, effpar, smpar->mh );
+
+  // Alex 
+  effinputs myeffpar=*effpar; 
+  // Kill off the Higgs rescaling effect, add 
+  // Higgs renormalization effect globally
+  myeffpar.fp1=0;
+  myeffpar.fp2=0;
+  myeffpar.fp4=0;
+  // xelA
+
+
+  double g1hww = g1hww_( smpar, &myeffpar, smpar->mh );
+  double g2hww = g2hww_( smpar, &myeffpar, smpar->mh );
+  double g3hww = g3hww_( smpar, &myeffpar, smpar->mh );
+  double g1hzz = g1hzz_( smpar, &myeffpar, smpar->mh );
+  double g2hzz = g2hzz_( smpar, &myeffpar, smpar->mh );
+  double g3hzz = g3hzz_( smpar, &myeffpar, smpar->mh );
+  double g1hzy = g1hzy_( smpar, &myeffpar, smpar->mh );
+  double g2hzy = g2hzy_( smpar, &myeffpar, smpar->mh );
 
   double par[] = { smpar->mh, smpar->mz, smpar->mch, smpar->mbo, sqrt( smpar->alphae*4*M_PI ), smpar->sw, smpar->vcb,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
@@ -1287,7 +1568,7 @@ void hwchbo_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
     gsl_monte_vegas_free( s );
   };
   
-  *pWidth = result;
+  *pWidth = result*higgsrenorm2(smpar,effpar);
   *pError = error;
 };
 

@@ -187,3 +187,5 @@ double ftah_(  sminputs * smpar, effinputs * effpar, double s );
 double fmuh_(  sminputs * smpar, effinputs * effpar, double s );
 double felh_(  sminputs * smpar, effinputs * effpar, double s );
 
+double higgsrenorm2(sminputs * smpar, effinputs * effpar); // For a global treatment of the scaling of couplings with f_p2 O_H
+

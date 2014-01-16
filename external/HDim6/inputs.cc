@@ -391,3 +391,11 @@ double felh_(  sminputs * smpar, effinputs * effpar, double s )
   double fp4 = effpar->fp4/pow(1+s/effpar->rp4,effpar->np4);
   return 1-pow(smpar->vev/2.0,2)*(fp1+2*fp2+fp4)-pow(smpar->vev,3)/sqrt(2)/smpar->mel*effpar->felh;
 };
+
+double higgsrenorm2(sminputs * smpar, effinputs * effpar)
+{
+ // The square of the Higgs field renormalization as it will to our
+ // approximation be inherited by all cross sections and decay widths
+ // involving one Higgs.
+ return 1.0/(1.0 + (effpar->fp2)*pow(smpar->vev,2) );
+}
