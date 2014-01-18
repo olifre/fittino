@@ -33,12 +33,30 @@
       </table>
     </p>
     <!-- Specify here the existing tool templates -->
-    <xsl:apply-templates select="MarkovChainSampler | SimpleSampler | TreeSampler"/>
+    <xsl:apply-templates select="ContourPlotter |
+                                 GeneticAlgorithmOptimizer |
+                                 MarkovChainSampler |
+                                 MinuitOptimizer |
+                                 ParticleSwarmOptimizer |
+                                 ScatterPlotter |
+                                 SimpleSampler |
+                                 SimulatedAnnealingOptimizer |
+                                 SummaryPlotter |
+                                 TreeSampler"/>
   </xsl:template>
   
   <!-- Individual configuration of samplers -->
   
-  <xsl:template match="MarkovChainSampler | SimpleSampler | TreeSampler">
+  <xsl:template match="ContourPlotter |
+                       GeneticAlgorithmOptimizer |
+                       MarkovChainSampler |
+                       MinuitOptimizer |
+                       ParticleSwarmOptimizer |
+                       ScatterPlotter |
+                       SimpleSampler |
+                       SimulatedAnnealingOptimizer |
+                       SummaryPlotter |
+                       TreeSampler">
     <!-- Prints a list of the individual configuration items -->
     <p>
       <table>

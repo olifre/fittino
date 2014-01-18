@@ -43,13 +43,24 @@
       <!-- TODO: Leading empty cells still have to be inserted manually -->
       <!-- Define a table containing the model parameter configuration information -->
       <table>
-        <tr><td></td><td><b>ModelParameter</b></td><td><b>Value</b></td><td><b>Error</b></td><td><b>LowerBound</b></td><td><b>UpperBound</b></td><td><b>Status</b></td></tr>
+        <tr>
+          <td></td>
+          <td><b>ModelParameter</b></td>
+          <td align="right"><b>Value</b></td>
+          <td aligh="right"><b>Error</b></td>
+          <td aligh="right"><b>LowerBound</b></td>
+          <td aligh="right"><b>UpperBound</b></td>
+          <td aligh="right"><b>Status</b></td>
+        </tr>
         <xsl:apply-templates select="ModelParameter"/>
       </table>
     </p>
     <xsl:apply-templates select="Observables"/>
+      <table>
+        <tr><td></td><td><b>Chi2Contributions</b></td></tr>
+        <xsl:apply-templates select="Chi2Contribution"/>
+      </table>
     <xsl:apply-templates select="CovarianceMatrices"/>
-    <xsl:apply-templates select="Chi2Contributions"/>
     <xsl:apply-templates select="Calculators"/>
   </xsl:template>
   
@@ -92,7 +103,15 @@
     <p>
       <!-- Defines a table containing the observable configuration information -->
       <table>
-        <tr><td></td><td><b>Observable</b></td><td><b>MeasuredValue</b></td><td><b>MeasuredError</b></td><td><b>Unit</b></td><td><b>Calculator</b></td><td><b>Status</b></td></tr>
+        <tr>
+          <td></td>
+          <td><b>Observable</b></td>
+          <td align="right"><b>MeasuredValue</b></td>
+          <td align="right"><b>MeasuredError</b></td>
+          <td align="right"><b>Unit</b></td>
+          <td align="right"><b>Calculator</b></td>
+          <td align="right"><b>Status</b></td>
+        </tr>
         <xsl:apply-templates select="Observable"/>
       </table>
     </p>
@@ -166,24 +185,13 @@
     </p>
   </xsl:template>
   
-  <!-- Chi2Contributions -->
-  
-  <xsl:template match="Chi2Contributions">
-    <!-- Prints a headline and a list of the specified chi2 contributions -->
-    <p>
-      <!-- Headline -->
-      <table>
-        <tr><td></td><td><b>Chi2Contributions</b></td></tr>
-        <xsl:apply-templates select="Chi2Contribution"/>
-      </table>
-    </p>
-  </xsl:template>
+  <!-- Chi2Contribution -->
   
   <xsl:template match="Chi2Contribution">
     <!-- Displays the name of the chi2 contribution -->
     <tr>
       <td></td>
-      <xsl:apply-templates select="Name"/>
+      <td><xsl:value-of select="."/></td>
     </tr>
   </xsl:template>
   
@@ -246,7 +254,7 @@
       <table>
       <!-- Headline -->
         <tr>
-          <td></td><td><b>Calculator chain</b></td>
+          <td></td><td><b>CalculatorChain</b></td>
         </tr>
         <tr>
           <td></td>
@@ -262,12 +270,30 @@
       </table>
     </p>
     <!-- Specify here the existing calculator templates -->
-    <xsl:apply-templates select="HDim6Calculator | HiggsSignalsCalculator | TreeCalculator"/>
+    <xsl:apply-templates select="FeynHiggsCalculator |
+                                 FeynHiggsSLHACalculator |
+                                 HDim6Calculator |
+                                 HECModelCalculator |
+                                 HiggsSignalsCalculator |
+                                 HiggsSignalsSLHACalculator |
+                                 LHCLimitCalculator |
+                                 RegressionCalculator |
+                                 SPhenoSLHACalculator |
+                                 TreeCalculator"/>
   </xsl:template>
   
   <!-- Individual configuration of the calculators -->
   
-  <xsl:template match="HDim6Calculator | HiggsSignalsCalculator | TreeCalculator">
+  <xsl:template match="FeynHiggsCalculator |
+                       FeynHiggsSLHACalculator |
+                       HDim6Calculator |
+                       HECModelCalculator |
+                       HiggsSignalsCalculator |
+                       HiggsSignalsSLHACalculator |
+                       LHCLimitCalculator |
+                       RegressionCalculator |
+                       SPhenoSLHACalculator |
+                       TreeCalculator">
     <!-- Prints a headline and a list of the individual configuration items -->
     <p>
       <!-- Headline -->
@@ -281,7 +307,7 @@
           <xsl:for-each select="*[not(self::Name)]">
             <!-- Create a new row for every configuration item -->
             <tr>
-              <td></td><td></td><td><xsl:value-of select="local-name()"/></td><td><xsl:value-of select="."/></td>
+              <td></td><td></td><td><xsl:value-of select="local-name()"/></td><td align="right"><xsl:value-of select="."/></td>
             </tr>
           </xsl:for-each>
         </table>
