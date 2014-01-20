@@ -185,6 +185,8 @@ double udcsb_jjh( double * x, size_t dim, void * params )
   return dsig;
 };
 
+// ------- TWO FLAVOR -------------------------
+
 void ud_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err, double * chisq )
 {
   VBFParam par;
@@ -330,6 +332,10 @@ double ud_jjh( double * x, size_t dim, void * params )
   return dsig;
 };
 
+
+// --------------- MATRIX ELEMENTS ----------------------
+
+
 double dd_ddh_massless( double * x, size_t dim, void * params )
 {
   VBFParam par = *(VBFParam*)params;
@@ -342,6 +348,15 @@ double dd_ddh_massless( double * x, size_t dim, void * params )
   double sw = par.sm.sw;
   double ee = sqrt(4.*M_PI*par.sm.alphae);
   double s    = x1*x2*par.sm.s;
+  
+// Alex
+
+par.eff.fp1=0;
+par.eff.fp2=0;
+par.eff.fp4=0;
+
+// xelA
+
   double g1hzz = g1hzz_( &par.sm, &par.eff, s );
   double g2hzz = g2hzz_( &par.sm, &par.eff, s ); 
   double g3hzz = g3hzz_( &par.sm, &par.eff, s );
@@ -399,7 +414,7 @@ double dd_ddh_massless( double * x, size_t dim, void * params )
  
   double dP3  = (k30max-k30min)*(k40max-k40min)*4.*M_PI/8./pow(2*M_PI,4);
   double dsig = (msq1+msq2+msq3+msq4+msq5+msq6+msq5+msq7+msq8+msq9+msq10+msq11+msq12+msq13+msq14+msq15+msq16+msq17+msq18+msq19+msq20)/4./pi/sqrt(s)*dP3/2.57e3*1e12*(1-pow(mh,2)/par.sm.s)*(1-pow(mh,2)/par.sm.s/x1);
-  return dsig;
+  return dsig*higgsrenorm2(&par.sm,&((*(VBFParam*)params).eff) ); // Alex  
 
 };
 
@@ -415,6 +430,17 @@ double uu_uuh_massless( double * x, size_t dim, void * params )
   double sw = par.sm.sw;
   double ee = sqrt(4.*M_PI*par.sm.alphae);
   double s    = x1*x2*par.sm.s;
+
+// Alex
+
+par.eff.fp1=0;
+par.eff.fp2=0;
+par.eff.fp4=0;
+
+// xelA
+
+
+
   double g1hzz = g1hzz_( &par.sm, &par.eff, s );
   double g2hzz = g2hzz_( &par.sm, &par.eff, s );
   double g3hzz = g3hzz_( &par.sm, &par.eff, s );
@@ -472,7 +498,8 @@ double uu_uuh_massless( double * x, size_t dim, void * params )
 
   double dP3	= (k30max-k30min)*(k40max-k40min)*4.*M_PI/8./pow(2*M_PI,4);
   double dsig =  (msq1+msq2+msq3+msq4+msq5+msq5+msq6+msq7+msq8+msq9+msq10+msq11+msq12+msq13+msq14+msq15+msq16+msq17+msq18+msq19+msq20)/4./pi/sqrt(s)*dP3/2.57e3*1e12*(1-pow(mh,2)/par.sm.s)*(1-pow(mh,2)/par.sm.s/x1);
-  return dsig;
+  return dsig*higgsrenorm2(&par.sm,&((*(VBFParam*)params).eff) ); // Alex  
+
 };
 
 double ud_duh_NoCKM_massless( double * x, size_t dim, void * params )
@@ -486,6 +513,18 @@ double ud_duh_NoCKM_massless( double * x, size_t dim, void * params )
   double sw = par.sm.sw;
   double ee = sqrt(4.*M_PI*par.sm.alphae);
   double s  = x1*x2*par.sm.s;
+
+
+// Alex
+
+par.eff.fp1=0;
+par.eff.fp2=0;
+par.eff.fp4=0;
+
+// xelA
+
+
+
   double g1hzz = g1hzz_( &par.sm, &par.eff, s );
   double g2hzz = g2hzz_( &par.sm, &par.eff, s );
   double g3hzz = g3hzz_( &par.sm, &par.eff, s );
@@ -541,7 +580,8 @@ double ud_duh_NoCKM_massless( double * x, size_t dim, void * params )
 
   double dP3	= (k30max-k30min)*(k40max-k40min)*4.*M_PI/8./pow(2*M_PI,4);
   double dsig =  (msq6+msq7+msq8+msq9+msq10+msq11+msq12+msq13+msq14+msq15)/4./pi/sqrt(s)*dP3/2.57e3*1e12*(1-pow(mh,2)/par.sm.s)*(1-pow(mh,2)/par.sm.s/x1);
-  return dsig;
+  return dsig*higgsrenorm2(&par.sm,&((*(VBFParam*)params).eff) ); // Alex  
+
 };
 double ud_duh_CKMsQ_massless( double * x, size_t dim, void * params )
 {
@@ -554,6 +594,17 @@ double ud_duh_CKMsQ_massless( double * x, size_t dim, void * params )
   double sw = par.sm.sw;
   double ee = sqrt(4.*M_PI*par.sm.alphae);
   double s= x1*x2*par.sm.s;
+
+// Alex
+
+par.eff.fp1=0;
+par.eff.fp2=0;
+par.eff.fp4=0;
+
+// xelA
+
+
+
   double g1hww = g1hww_( &par.sm, &par.eff, s );
   double g2hww = g2hww_( &par.sm, &par.eff, s );
   double g3hww = g3hww_( &par.sm, &par.eff, s );
@@ -614,7 +665,9 @@ double ud_duh_CKMsQ_massless( double * x, size_t dim, void * params )
 
   double dP3	= (k30max-k30min)*(k40max-k40min)*4.*M_PI/8./pow(2*M_PI,4);
   double dsig =  (msq2+msq3+msq4+msq5)/4./pi/sqrt(s)*dP3/2.57e3*1e12*(1-pow(mh,2)/par.sm.s)*(1-pow(mh,2)/par.sm.s/x1);
-  return dsig;
+
+  return dsig*higgsrenorm2(&par.sm,&((*(VBFParam*)params).eff) ); // Alex  
+
 };
 
 double ud_dpuph_massless( double * x, size_t dim, void * params )
@@ -628,6 +681,17 @@ double ud_dpuph_massless( double * x, size_t dim, void * params )
   double sw = par.sm.sw;
   double ee = sqrt(4.*M_PI*par.sm.alphae);
   double s    = x1*x2*par.sm.s;
+
+// Alex
+
+par.eff.fp1=0;
+par.eff.fp2=0;
+par.eff.fp4=0;
+
+// xelA
+
+
+
   double g1hww = g1hww_( &par.sm, &par.eff, s );
   double g2hww = g2hww_( &par.sm, &par.eff, s );
   double g3hww = g3hww_( &par.sm, &par.eff, s );
@@ -684,5 +748,7 @@ double ud_dpuph_massless( double * x, size_t dim, void * params )
 
   double dP3	= (k30max-k30min)*(k40max-k40min)*4.*M_PI/8./pow(2*M_PI,4);
   double dsigT =  msq1/4./pi/sqrt(s)*dP3/2.57e3*1e12*(1-pow(mh,2)/par.sm.s)*(1-pow(mh,2)/par.sm.s/x1);
-  return dsigT;
+
+  return dsigT*higgsrenorm2(&par.sm,&((*(VBFParam*)params).eff) ); // Alex  
+
 };
