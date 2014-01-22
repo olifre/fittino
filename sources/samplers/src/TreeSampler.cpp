@@ -115,7 +115,9 @@ Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, const boost::prope
       if( _model->GetCollectionOfCalculators().GetNumberOfElements() == 0 ) {
         throw ConfigurationException( "Could not find a calculator associated to specified model." );
       }
-      
+     
+        
+
       //still ugly...
       std::string filename = ptree.get<std::string>( "InputFileName", "Fittino.old.root" );
       std::string treename = ptree.get<std::string>( "InputTreeName", "Tree1" );
@@ -142,6 +144,25 @@ Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, const boost::prope
         _tree = new TTree( "Tree", "Tree" );
 
      }
+
+    if( _isToyRun ) {
+        TDirectory *tempDirectory = gDirectory;
+        _outputFile = new TFile("SmallOutputFile.root", "RECREATE" );
+        _outputTree = new TTree("SmallOutputTree", "SmallOutputTree" );
+        for( unsigned int i = 0; i < _model->GetCollectionOfPredictions().GetNumberOfElements(); ++i ) {
+            if( _model->GetCollectionOfPredictions().At(i)->GetName().find("P_") != std::string::npos ) {
+                _currentPhysicsParameters.push_back(0.);
+            }
+        }
+        int curIdx = 0;
+        for( unsigned int i = 0; i < _model->GetCollectionOfPredictions().GetNumberOfElements(); ++i ) {
+            if( _model->GetCollectionOfPredictions().At(i)->GetName().find("P_") != std::string::npos ) {
+                _outputTree->Branch(_model->GetCollectionOfPredictions().At(i)->GetName().c_str(), &_currentPhysicsParameters.at(curIdx++) );
+            }
+        }
+        _outputTree->Branch( "Chi2", &_currentChi2 );
+        gDirectory = tempDirectory;
+    }
 }
 
 Fittino::TreeSampler::~TreeSampler() {
@@ -168,19 +189,39 @@ void Fittino::TreeSampler::Execute() {
         AnalysisTool::PrintStatus();
 
         this->UpdateModel();
-
+        
+        if( _isToyRun ) {
+            _currentChi2 = GetStatusParameterVector()->at(0)->GetValue();
+            int curIdx = 0;
+            for( unsigned int i = 0; i < _model->GetCollectionOfPredictions().GetNumberOfElements(); ++i ) {
+                if( _model->GetCollectionOfPredictions().At(i)->GetName().find("P_") != std::string::npos ) {
+                    _currentPhysicsParameters.at(curIdx++) = _model->GetCollectionOfPredictions().At(i)->GetValue(); 
+                }
+            }
+            _outputTree -> Fill();
+        }
     }
     
     
+    // Temporarily, all points are filled into the output ntuple!
     if( _isToyRun ) {
       
       
       // find and fill only the best fit point into the ntuple;
-      _model->GetCollectionOfParameters().At( 0 )->SetValue( (double)_bestFitIndex );
+
+      _model->GetCollectionOfParameters().At( 0 )->SetValue( (double)_bestFitIndex + 1.);
       GetStatusParameterVector()->at(0)->SetValue( _model->GetChi2() );
       GetStatusParameterVector()->at(1)->SetValue( _bestFitIndex + 1);
 
       this->FillTree();
+    
+      TDirectory *tempDirectory = gDirectory;
+    
+
+      gDirectory = _outputFile;
+      _outputTree->Write();
+      _outputFile->Close();
+      gDirectory = tempDirectory;
     
     }
    
@@ -202,18 +243,22 @@ void Fittino::TreeSampler::UpdateModel() {
   // the model parameter is the iteration. Increase that by one each time the model is updated.
   _model->GetCollectionOfParameters().At( 0 )->SetValue( _model->GetCollectionOfParameters().At( 0 )->GetValue() + 1. );
   
+  // temporarily fill all entries in the tree, even if it's a toyrun:
+  //this->FillTree();
+  
   if( !_isToyRun ) {
     this->FillTree();
   }
-  
+
   else {
-    
+     
     if( _lowestChi2 > chi2 ) {
       _lowestChi2 = chi2;
-      _bestFitIndex = _iterationCounter-1; 
+      _bestFitIndex = _iterationCounter-1;
     } 
      
   }
+  
   
 }
 

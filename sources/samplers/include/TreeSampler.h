@@ -19,6 +19,8 @@
 #define FITTINO_TREESAMPLER_H
 
 #include <boost/property_tree/ptree.hpp>
+#include "TTree.h"
+#include "TFile.h"
 
 #include "SamplerBase.h"
 
@@ -68,6 +70,10 @@ namespace Fittino {
       int                    _bestFitIndex;
       double                 _inputLowestChi2;
       int                    _inputBestFitIndex;
+      TFile                  *_outputFile;
+      TTree                  *_outputTree;
+      double                 _currentChi2;
+      std::vector<double>    _currentPhysicsParameters;
 
     private:
       void                   DetermineBestFitValues();
