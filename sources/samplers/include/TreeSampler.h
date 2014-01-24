@@ -74,6 +74,7 @@ namespace Fittino {
       TTree                  *_outputTree;
       double                 _currentChi2;
       std::vector<double>    _currentPhysicsParameters;
+      int                    _firstIteration;
 
     private:
       void                   DetermineBestFitValues();

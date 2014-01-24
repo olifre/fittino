@@ -32,7 +32,6 @@ Fittino::ParameterBase::ParameterBase( std::string name,
                     value,
                     plotLowerBound,
                     plotUpperBound ) {
-
     //CheckConsistency();
 
 }

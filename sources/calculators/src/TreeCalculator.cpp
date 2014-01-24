@@ -65,7 +65,7 @@ Fittino::TreeCalculator::~TreeCalculator() {
 
 
 void Fittino::TreeCalculator::CalculatePredictions() {
-
+    
     _inputTree->GetEntry( (int)(_model->GetCollectionOfParameters().At( 0 )->GetValue() ));
 
 }
@@ -120,7 +120,7 @@ void Fittino::TreeCalculator::FillSimpleDataStorage() {
 
     for( unsigned int i = 0; i < arrayOfLeaves->GetEntries(); ++i ) {
         TLeaf *leaf = ( TLeaf* )arrayOfLeaves->At( i );
-        if( !strcmp( leaf->GetTypeName(), "Double_t" ) ) {
+        if( !strcmp( leaf->GetTypeName(), "Double_t" ) || !strcmp( leaf->GetTypeName(), "Float_t") ) {
             _simpleOutputDataStorage->AddEntry( std::string( leaf->GetName() ), 0. );
         }
     }
@@ -149,6 +149,7 @@ void Fittino::TreeCalculator::CreateDefaultPredictions( ) {
     TObjArray *arrayOfLeaves = _inputTree->GetListOfLeaves();
     for( unsigned int i = 0; i < arrayOfLeaves->GetEntries(); ++i ) {
         TLeaf *leaf = ( TLeaf* )arrayOfLeaves->At( i );
+        if( !strcmp( leaf->GetName(), "P_Iteration" ) ) continue;
         if( !strcmp( leaf->GetTypeName(), "Double_t" ) ) {
             boost::property_tree::ptree ptree;
             ptree.put("Name", leaf->GetName() );

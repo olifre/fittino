@@ -110,6 +110,8 @@ Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, const boost::prope
       _inputLowestChi2( 1.e99 ),
       _inputBestFitIndex( 0 ) {
 
+      
+      _firstIteration = _model->GetCollectionOfParameters().At(0)->GetValue();
       _name = "Tree Sampler";
       
       if( _model->GetCollectionOfCalculators().GetNumberOfElements() == 0 ) {
@@ -154,11 +156,17 @@ Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, const boost::prope
                 _currentPhysicsParameters.push_back(0.);
             }
         }
+        for( unsigned int i = 0; i < _model->GetCollectionOfParameters().GetNumberOfElements(); ++i ) {
+            _currentPhysicsParameters.push_back(0.);
+        }
         int curIdx = 0;
         for( unsigned int i = 0; i < _model->GetCollectionOfPredictions().GetNumberOfElements(); ++i ) {
             if( _model->GetCollectionOfPredictions().At(i)->GetName().find("P_") != std::string::npos ) {
                 _outputTree->Branch(_model->GetCollectionOfPredictions().At(i)->GetName().c_str(), &_currentPhysicsParameters.at(curIdx++) );
             }
+        }
+        for( unsigned int i = 0; i < _model->GetCollectionOfParameters().GetNumberOfElements(); ++i ) {
+            _outputTree->Branch(_model->GetCollectionOfParameters().At(i)->GetName().c_str(), &_currentPhysicsParameters.at(curIdx++) );
         }
         _outputTree->Branch( "Chi2", &_currentChi2 );
         gDirectory = tempDirectory;
@@ -197,6 +205,9 @@ void Fittino::TreeSampler::Execute() {
                 if( _model->GetCollectionOfPredictions().At(i)->GetName().find("P_") != std::string::npos ) {
                     _currentPhysicsParameters.at(curIdx++) = _model->GetCollectionOfPredictions().At(i)->GetValue(); 
                 }
+            }
+            for( unsigned int i = 0; i < _model->GetCollectionOfParameters().GetNumberOfElements(); ++i ) {
+                _currentPhysicsParameters.at(curIdx++) = _model->GetCollectionOfParameters().At(i)->GetValue(); 
             }
             _outputTree -> Fill();
         }
@@ -254,7 +265,7 @@ void Fittino::TreeSampler::UpdateModel() {
      
     if( _lowestChi2 > chi2 ) {
       _lowestChi2 = chi2;
-      _bestFitIndex = _iterationCounter-1;
+      _bestFitIndex = _firstIteration + _iterationCounter-2;
     } 
      
   }
