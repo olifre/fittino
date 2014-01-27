@@ -40,13 +40,18 @@ ENDIF()
 # subdirectory called bin is created which contains the executable.
 SET(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
 
+# Specify user-defined modules required by Fittino.
+SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
+
+# Specify the directory of the executable "root-config". By default, it is assumed that the
+# environment variable ROOTSYS is set and that the directory is "ROOTSYS/bin/".
+# SET(ROOT_CONFIG_DIR)
+FIND_PACKAGE( ROOT 5.20.00 REQUIRED )
+
 # Specify the installation path of "Boost" which is required by SLHAea. There is only need to change
 # this when the installation path differs from the default.
 # SET(BOOST_ROOT <boost/installation/path>)
 FIND_PACKAGE(Boost 1.47.0 COMPONENTS filesystem system REQUIRED)
-
-# Specify user-defined modules required by Fittino.
-SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
 
 # Optional: Specify the directory of the executable gsl-config.
 # SET(GSL_CONFIG_DIR)
@@ -64,11 +69,6 @@ FIND_PACKAGE(HIGGSSIGNALS)
 # SET(FEYNHIGGS_INSTALLATION_PATH <lhapdf/installation/path>)
 FIND_PACKAGE(FEYNHIGGS)
 
-# Specify the directory of the executable "root-config". By default, it is assumed that the
-# environment variable ROOTSYS is set and that the directory is "ROOTSYS/bin/".
-# SET(ROOT_CONFIG_DIR)
-FIND_PACKAGE( ROOT 5.20.00 REQUIRED )
-
 # Optional: Specify the installation path of "SLHAea". The default path is "../slhaea".
 # SET(SLHAEA_INSTALLATION_PATH <slhaea/installation/path>)
 FIND_PACKAGE(SLHAEA)
@@ -80,8 +80,7 @@ FIND_PACKAGE(SLHAEA)
 
 # Optional: Specify the installation path of "LHAPDF".
 # SET(LHAPDF_INSTALLATION_PATH <lhapdf/installation/path>)
-FIND_PACKAGE(LHAPDF)
-
+FIND_PACKAGE(LHAPDF 5.8.9 EXACT)
 
 ADD_SUBDIRECTORY(external)
 ADD_SUBDIRECTORY(sources)

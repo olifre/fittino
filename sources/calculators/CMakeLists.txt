@@ -25,7 +25,6 @@ INCLUDE_DIRECTORIES(../datastorages/include)
 INCLUDE_DIRECTORIES(../models/include)
 INCLUDE_DIRECTORIES(../kernel/include)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${LHAPDF_INCLUDE_DIRS})
 
 AUX_SOURCE_DIRECTORY(src sources)
 
@@ -40,11 +39,28 @@ IF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND)
   LIST(REMOVE_ITEM sources "src/HDim6ModelCalculator.cpp")
   LIST(REMOVE_ITEM sources "src/HiggsSignalsHadXSModelCalculator.cpp")
 ENDIF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND)
+
 IF(NOT LHAPDF_FOUND OR NOT GSL_FOUND)
   LIST(REMOVE_ITEM sources "src/HDim6ModelCalculator.cpp")
 ENDIF()
 
 
-
 ADD_LIBRARY(calculators ${sources})
-SET_TARGET_PROPERTIES(calculators PROPERTIES COMPILE_FLAGS ${ROOT_COMPILE_FLAGS})
+
+GET_PROPERTY(compile_flags TARGET calculators PROPERTY COMPILE_FLAGS)
+
+SET(compile_flags "${compile_flags} ${ROOT_COMPILE_FLAGS}")
+
+IF(LHAPDF_FOUND)
+    SET(compile_flags "${compile_flags} ${LHAPDF_COMPILE_FLAGS}")
+ENDIF()
+
+IF(GSL_FOUND)
+    SET(compile_flags "${compile_flags} ${GSL_COMPILE_FLAGS}")
+ENDIF()
+
+
+SET_TARGET_PROPERTIES(calculators PROPERTIES COMPILE_FLAGS ${compile_flags})
+
+
+
