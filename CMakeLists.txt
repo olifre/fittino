@@ -28,6 +28,14 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6 FATAL_ERROR)
 # Specify the name of the project.
 PROJECT(fittino CXX)
 
+ENABLE_LANGUAGE( C       OPTIONAL )
+ENABLE_LANGUAGE( Fortran OPTIONAL )
+
+IF( CMAKE_C_COMPILER_WORKS AND CMAKE_Fortran_COMPILER_WORKS )
+    INCLUDE( FortranCInterface ) 
+    FORTRANCINTERFACE_VERIFY( CXX QUIET )
+ENDIF()
+
 # Specify the installation directory for the fittino executable. After the installation a
 # subdirectory called bin is created which contains the executable.
 SET(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
@@ -48,6 +56,10 @@ FIND_PACKAGE(HIGGSBOUNDS)
 # SET(HIGGSSIGNALS_INSTALLATION_PATH <higgssignals/installation/path>)
 FIND_PACKAGE(HIGGSSIGNALS)
 
+# Optional: Specify the installation path of "FeynHiggs".
+# SET(FEYNHIGGS_INSTALLATION_PATH <lhapdf/installation/path>)
+FIND_PACKAGE(FEYNHIGGS)
+
 # Specify the directory of the executable "root-config". By default, it is assumed that the
 # environment variable ROOTSYS is set and that the directory is "ROOTSYS/bin/".
 # SET(ROOT_CONFIG_DIR)
@@ -66,9 +78,6 @@ FIND_PACKAGE(SLHAEA REQUIRED)
 # SET(LHAPDF_INSTALLATION_PATH <lhapdf/installation/path>)
 FIND_PACKAGE(LHAPDF)
 
-# Optional: Specify the installation path of "FeynHiggs".
-# SET(FEYNHIGGS_INSTALLATION_PATH <lhapdf/installation/path>)
-FIND_PACKAGE(FEYNHIGGS)
 
 ADD_SUBDIRECTORY(external)
 ADD_SUBDIRECTORY(sources)
