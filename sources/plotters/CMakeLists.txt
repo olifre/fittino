@@ -17,8 +17,6 @@
 #                                                                              #
 ################################################################################
 
-ADD_DEFINITIONS(`root-config --cflags`)
-
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(./include)
@@ -29,3 +27,5 @@ INCLUDE_DIRECTORIES(../exceptions/include)
 AUX_SOURCE_DIRECTORY(src sources)
 
 ADD_LIBRARY(plotters ${sources})
+
+SET_TARGET_PROPERTIES( plotters PROPERTIES COMPILE_FLAGS ${ROOT_COMPILE_FLAGS} )

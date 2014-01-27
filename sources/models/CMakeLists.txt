@@ -17,8 +17,6 @@
 #                                                                              #
 ################################################################################
 
-ADD_DEFINITIONS(`root-config --cflags`)
-
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(./include)
 INCLUDE_DIRECTORIES(../calculators/include)
@@ -35,3 +33,5 @@ IF(NOT HIGGSBOUNDS_FOUND AND NOT HIGGSSIGNALS_FOUND)
 ENDIF(NOT HIGGSBOUNDS_FOUND AND NOT HIGGSSIGNALS_FOUND)
 
 ADD_LIBRARY(models ${sources})
+
+SET_TARGET_PROPERTIES(models PROPERTIES COMPILE_FLAGS ${ROOT_COMPILE_FLAGS})

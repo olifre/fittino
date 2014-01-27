@@ -17,8 +17,6 @@
 #                                                                              #
 ################################################################################
 
-ADD_DEFINITIONS(`root-config --cflags`)
-
 INCLUDE_DIRECTORIES(./include)
 INCLUDE_DIRECTORIES(../exceptions/include)
 INCLUDE_DIRECTORIES(../kernel/include)
@@ -31,3 +29,5 @@ INCLUDE_DIRECTORIES(${SLHAEA_INCLUDE_DIR})
 AUX_SOURCE_DIRECTORY(src sources)
 
 ADD_LIBRARY(datastorages ${sources})
+
+SET_TARGET_PROPERTIES( datastorages PROPERTIES COMPILE_FLAGS ${ROOT_COMPILE_FLAGS} )

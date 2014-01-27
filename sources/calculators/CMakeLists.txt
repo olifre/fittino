@@ -18,8 +18,6 @@
 #                                                                              #
 ################################################################################
 
-ADD_DEFINITIONS(`root-config --cflags`)
-
 INCLUDE_DIRECTORIES(../../external)
 INCLUDE_DIRECTORIES(./include)
 INCLUDE_DIRECTORIES(../exceptions/include)
@@ -48,3 +46,4 @@ IF(NOT LHAPDF_FOUND)
 ENDIF(NOT LHAPDF_FOUND)
 
 ADD_LIBRARY(calculators ${sources})
+SET_TARGET_PROPERTIES(calculators PROPERTIES COMPILE_FLAGS ${ROOT_COMPILE_FLAGS})
