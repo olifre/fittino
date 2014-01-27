@@ -26,7 +26,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6 FATAL_ERROR)
 
 # Specify the name of the project.
-PROJECT(fittino)
+PROJECT(fittino CXX)
 
 # Specify the installation directory for the fittino executable. After the installation a
 # subdirectory called bin is created which contains the executable.
