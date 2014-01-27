@@ -20,9 +20,13 @@
 #ifndef FITTINO_SLHAEASLHADATASTORAGE_H
 #define FITTINO_SLHAEASLHADATASTORAGE_H
 
-#include "slhaea.h"
-
 #include "SLHADataStorageBase.h"
+
+namespace SLHAea{
+
+  class Coll;
+
+}
 
 /*!
  *  \brief Fittino namespace.
@@ -52,7 +56,7 @@ namespace Fittino {
       virtual void   WriteFile( const std::string& slhaOutputFileName ) const;
 
     private:
-      SLHAea::Coll   _slhaeaDataStorage;
+      SLHAea::Coll*   _slhaeaDataStorage;
 
   };
 

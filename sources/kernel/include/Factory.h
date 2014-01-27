@@ -36,6 +36,7 @@ namespace Fittino {
   class DataStorageBase;
   class ModelBase;
   class ModelCalculatorBase;
+  class SLHADataStorageBase;
   class SLHAModelCalculatorBase;
   class LHCModelCalculator;
   class OptimizerBase;
@@ -142,7 +143,11 @@ namespace Fittino {
       */
       Chi2ContributionBase* const          CreateChi2Contribution( const std::string& type, const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::ModelCalculatorBase*>& calculators ) const;
       Chi2ContributionBase* const          CreateChi2Contribution( const boost::property_tree::ptree& ptree, Fittino::LHCModelCalculator* calculator );
+
+  SLHADataStorageBase* CreateSLHAeaSLHADataStorage();
   };
+
+
 
 }
 

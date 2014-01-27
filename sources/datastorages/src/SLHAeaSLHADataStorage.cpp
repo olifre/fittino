@@ -19,15 +19,21 @@
 
 #include <fstream>
 
+#include "slhaea.h"
+
 #include "PhysicsModelBase.h"
 #include "SLHAFileException.h"
 #include "SLHAeaSLHADataStorage.h"
 
 Fittino::SLHAeaSLHADataStorage::SLHAeaSLHADataStorage() {
 
+  _slhaeaDataStorage = new SLHAea::Coll();
+
 }
 
 Fittino::SLHAeaSLHADataStorage::~SLHAeaSLHADataStorage() {
+
+  delete _slhaeaDataStorage;
 
 }
 
@@ -36,7 +42,7 @@ double Fittino::SLHAeaSLHADataStorage::GetEntry( const std::string& blockName, c
     double entry = 0.;
 
     std::stringstream stringstream;
-    stringstream << _slhaeaDataStorage.at( blockName ).at( firstIndex ).at( secondIndex );
+    stringstream << _slhaeaDataStorage->at( blockName ).at( firstIndex ).at( secondIndex );
     stringstream >> entry;
 
     return entry;
@@ -48,7 +54,7 @@ double Fittino::SLHAeaSLHADataStorage::GetEntry( const std::string& blockName, c
     double entry = 0.;
 
     std::stringstream stringstream;
-    stringstream << _slhaeaDataStorage.at( blockName ).at( firstIndex, secondIndex ).at( thirdIndex );
+    stringstream << _slhaeaDataStorage->at( blockName ).at( firstIndex, secondIndex ).at( thirdIndex );
     stringstream >> entry;
 
     return entry;
@@ -71,7 +77,7 @@ void Fittino::SLHAeaSLHADataStorage::AddBlock( const std::string& path ) {
 
     SLHAea::Block block(tmpStream);
 
-    _slhaeaDataStorage[blockName] = block;
+    (*_slhaeaDataStorage)[blockName] = block;
 
 }
 
@@ -102,7 +108,7 @@ void Fittino::SLHAeaSLHADataStorage::AddLine( const std::string& path ) {
  
     }
 
-    _slhaeaDataStorage[blockName][""] << line;
+    (*_slhaeaDataStorage)[blockName][""] << line;
 
 }
 
@@ -111,8 +117,8 @@ void Fittino::SLHAeaSLHADataStorage::ReadFile( const std::string& slhaInputFileN
     std::ifstream file( slhaInputFileName.c_str() );
 
     if ( file.is_open() ) {
-
-        _slhaeaDataStorage = SLHAea::Coll( file );
+      
+        *_slhaeaDataStorage = SLHAea::Coll( file );
 
     }
     else {
@@ -126,7 +132,7 @@ void Fittino::SLHAeaSLHADataStorage::ReadFile( const std::string& slhaInputFileN
 void Fittino::SLHAeaSLHADataStorage::WriteFile( const std::string& slhaOutputFileName ) const {
 
     std::ofstream file( slhaOutputFileName.c_str() );
-    file << _slhaeaDataStorage;
+    file << *_slhaeaDataStorage;
     file.close();
 
 }

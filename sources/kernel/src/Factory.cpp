@@ -43,6 +43,7 @@
 #include "ScatterPlotter.h"
 #include "SimpleSampler.h"
 #include "SimulatedAnnealingOptimizer.h"
+#include "SLHAeaSLHADataStorage.h"
 #include "SummaryPlotter.h"
 #include "XMLDataStorage.h"
 #include "CovariantSampler.h"
@@ -89,6 +90,20 @@ Fittino::AnalysisTool* const Fittino::Factory::CreateAnalysisTool( const std::st
       throw ConfigurationException( "AnalysisTool type" + type + " not known." );
     
     }
+
+}
+
+Fittino::SLHADataStorageBase* Fittino::Factory::CreateSLHAeaSLHADataStorage(){
+
+#if defined SLHAEA
+      
+      return new SLHAeaSLHADataStorage();
+
+#else
+
+    throw ConfigurationException( "Trying to use SLHAeaSLHADataStorage but Fittino was built without SLHAEA." );
+
+#endif
 
 }
 
