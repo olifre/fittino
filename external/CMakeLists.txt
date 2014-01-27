@@ -18,6 +18,6 @@
 #                                                                              #
 ################################################################################
 
-IF(LHAPDF_FOUND)
+IF(LHAPDF_FOUND AND GSL_FOUND)
   ADD_SUBDIRECTORY(HDim6)
-ENDIF(LHAPDF_FOUND)
+ENDIF()

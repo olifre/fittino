@@ -96,7 +96,7 @@ Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::str
 
     if ( type == "HDim6Calculator" ) {
 
-#if defined LHAPDF_FOUND  && defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
+#if defined LHAPDF_FOUND  && defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND && defined GSL
       
       return new HDim6ModelCalculator( model, ptree );
 

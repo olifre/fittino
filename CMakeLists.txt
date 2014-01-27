@@ -48,6 +48,10 @@ FIND_PACKAGE(Boost 1.47.0 COMPONENTS filesystem system REQUIRED)
 # Specify user-defined modules required by Fittino.
 SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
 
+# Optional: Specify the directory of the executable gsl-config.
+# SET(GSL_CONFIG_DIR)
+FIND_PACKAGE( GSL )
+
 # Optional: Specify the installation path of "HiggsBounds".
 # SET(HIGGSBOUNDS_INSTALLATION_PATH <higgsbounds/installation/path>)
 FIND_PACKAGE(HIGGSBOUNDS)

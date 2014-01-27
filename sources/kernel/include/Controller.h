@@ -24,7 +24,6 @@
  *  \todo Long-term: Document the code.
  *  \todo Long-term: Write a comprehensive developer's guide.
  *  \todo Long-term: Write a comprehensive user's guide.
- *  \todo Short-term: Write FindGSL.cmake module making use of gsl-config to get the version, the needed libraries etc. Remove explcit linking of -lm -lgslcblas.
  *  \todo Short-term: In xml input files use subtags instead of attributes
  */
 
