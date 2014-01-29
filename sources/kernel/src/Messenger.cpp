@@ -20,7 +20,6 @@
 #include <iomanip>
 #include <iostream>
 
-#include "Configuration.h"
 #include "ConfigurationException.h"
 #include "Messenger.h"
 
