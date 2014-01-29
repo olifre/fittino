@@ -27,8 +27,8 @@
 #include "ConfigurationException.h"
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
+#include "PhysicsParameter.h"
 #include "PredictionBase.h"
-#include "SLHAParameter.h"
 #include <iostream>
 
 const Fittino::Collection<const Fittino::Quantity*>&  Fittino::ModelBase::GetCollectionOfQuantities() const{
@@ -154,13 +154,7 @@ void Fittino::ModelBase::InitializeParameters() {
             double plotUpperBound = v.second.get<double>( "<xmlattr>.PlotUpperBound", 0. );
             bool fixed = v.second.get<bool>( "<xmlattr>.Fixed", false );
 
-            if ( v.second.get<std::string>( "<xmlattr>.Type" ) == "SLHA" ) {
-
-                AddParameter( new SLHAParameter( name, plotName, value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, id, fixed ) );
-
-            }
-
-            else if ( v.second.get<std::string>( "<xmlattr>.Type" ) == "Base" ) {
+            if ( v.second.get<std::string>( "<xmlattr>.Type" ) == "Base" ) {
 
                 AddParameter( new ModelParameterBase( name, plotName, value, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, fixed ) );
 

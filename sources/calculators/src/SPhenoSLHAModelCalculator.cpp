@@ -32,7 +32,6 @@
 
 #include "PhysicsModelBase.h"
 #include "SLHADataStorageBase.h"
-#include "SLHAParameter.h"
 #include "SPhenoSLHAModelCalculator.h"
 #include "SLHALine.h"
 
