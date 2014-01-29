@@ -19,7 +19,6 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "CMSSMModel.h"
 #include "Configuration.h"
 #include "ConfigurationException.h"
 #include "ContourPlotter.h"
@@ -206,9 +205,6 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
 Fittino::ModelBase* const Fittino::Factory::CreateModel( const Fittino::Configuration::ModelType& modelType ) const {
 
     switch ( modelType ) {
-
-        case Configuration::CMSSM:
-            return new CMSSMModel();
 
         case Configuration::HEC:
 
