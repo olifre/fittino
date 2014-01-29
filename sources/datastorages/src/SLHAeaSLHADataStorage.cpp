@@ -24,6 +24,7 @@
 #include "PhysicsModelBase.h"
 #include "SLHAFileException.h"
 #include "SLHAeaSLHADataStorage.h"
+#include "SLHALine.h"
 
 Fittino::SLHAeaSLHADataStorage::SLHAeaSLHADataStorage() {
 
@@ -78,6 +79,14 @@ void Fittino::SLHAeaSLHADataStorage::AddBlock( const std::string& path ) {
     SLHAea::Block block(tmpStream);
 
     (*_slhaeaDataStorage)[blockName] = block;
+
+}
+
+void Fittino::SLHAeaSLHADataStorage::AddLine( const SLHALine& line ) {
+
+    SLHAea::Line slhaealine;
+    slhaealine << line.GetIndex() << line.GetValue() << line.GetComment();
+    (*_slhaeaDataStorage)[line.GetBlock()][""] << slhaealine;
 
 }
 

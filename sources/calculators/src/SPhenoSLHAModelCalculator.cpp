@@ -27,23 +27,43 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#include "boost/property_tree/ptree.hpp"
+#include <boost/foreach.hpp>
+
 #include "PhysicsModelBase.h"
 #include "SLHADataStorageBase.h"
 #include "SLHAParameter.h"
 #include "SPhenoSLHAModelCalculator.h"
+#include "SLHALine.h"
 
-Fittino::SPhenoSLHAModelCalculator::SPhenoSLHAModelCalculator( const PhysicsModelBase* model )
+Fittino::SPhenoSLHAModelCalculator::SPhenoSLHAModelCalculator( const boost::property_tree::ptree& ptree, const PhysicsModelBase* model )
         :SLHAModelCalculatorBase( model ) {
 
-            _callMethod         = EXECUTABLE;
-            _executableName     = "./SPheno";
-            _name               = "SPheno";
-            _slhaInputFileName  = "LesHouches.in";
-            _slhaOutputFileName = "SPheno.spc";
+    _callMethod         = EXECUTABLE;
+    _executableName     = "../SPheno";
+    _name               = "SPheno";
+    _slhaInputFileName  = "LesHouches.in";
+    _slhaOutputFileName = "SPheno.spc";
+    
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
+
+        if ( node.first == "SLHALine" ) {
+	  
+	  _lines.push_back( new SLHALine( node.second, model ) );
+
+	}
+
+    }
 
 }
 
 Fittino::SPhenoSLHAModelCalculator::~SPhenoSLHAModelCalculator() {
+
+  for ( unsigned int i=0; i<_lines.size(); i++ ) {
+
+    delete _lines[i];
+
+  }
 
 }
 
@@ -76,7 +96,7 @@ void Fittino::SPhenoSLHAModelCalculator::ConfigureInput() {
 
     _slhaInputDataStorage->AddBlock( "MINPAR:BLOCK MINPAR:# Input parameters" );
 
-    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
+    for ( unsigned int i = 0; i < _lines.size(); i++ ) {
 
         std::stringstream tmpStream;
         std::string tmpString;
@@ -87,9 +107,9 @@ void Fittino::SPhenoSLHAModelCalculator::ConfigureInput() {
 
         tmpStream >> tmpString;
 
-        _slhaInputDataStorage->AddLine( "MINPAR:" + tmpString );
+        _slhaInputDataStorage->AddLine( *_lines.at(i) );
 
-    }
+      }
 
     _slhaInputDataStorage->AddLine( "MINPAR:4:1.:# Input parameters" );
 

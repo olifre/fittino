@@ -30,6 +30,7 @@
 namespace Fittino {
 
   class PhysicsModelBase;
+  class SLHALine;
 
   /*!
    *  \ingroup datastorages
@@ -50,6 +51,7 @@ namespace Fittino {
       virtual double GetEntry( const std::string& blockName, const std::string& firstIndex, const std::string& secondIndex, const int thirdIndex ) = 0;
       virtual void   AddBlock( const std::string& path ) = 0;
       virtual void   AddLine( const std::string& path ) = 0;
+      virtual void   AddLine( const SLHALine& line ) = 0;
       virtual void   ReadFile( const std::string& slhaInputFileName ) = 0;
       virtual void   ReadFile( const std::string& slhaInputFileName ) const;
       virtual void   WriteFile( const std::string& slhaOutputFileName ) const = 0;

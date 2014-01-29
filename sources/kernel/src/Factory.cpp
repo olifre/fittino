@@ -164,7 +164,7 @@ Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::str
     }
     else if ( type == "SPhenoCalculator" ) {
 
-      return new SPhenoSLHAModelCalculator( model );
+      return new SPhenoSLHAModelCalculator( ptree, model );
     
     }
 
@@ -273,9 +273,9 @@ Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator( const Fi
 
             return new TreeCalculator( model );
 
-        case Configuration::SPHENOSLHACALCULATOR:
+        // case Configuration::SPHENOSLHACALCULATOR:
 
-            return new SPhenoSLHAModelCalculator( model );
+        //     return new SPhenoSLHAModelCalculator( model );
 
         case Configuration::LHCCALCULATOR:
 

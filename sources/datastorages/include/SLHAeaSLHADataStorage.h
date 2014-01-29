@@ -33,6 +33,8 @@ namespace SLHAea{
  */
 namespace Fittino {
 
+  class SLHALine;
+
   /*!
    *  \ingroup datastorages
    *  \brief Wrapper class for SLHAea SLHA data storages.
@@ -52,6 +54,7 @@ namespace Fittino {
       virtual double GetEntry( const std::string& blockName, const std::string& firstIndex, const std::string& secondIndex, const int thirdIndex );
       virtual void   AddBlock( const std::string& path );
       virtual void   AddLine( const std::string& path );
+      virtual void   AddLine( const SLHALine& line );
       virtual void   ReadFile( const std::string& slhaInputFileName );
       virtual void   WriteFile( const std::string& slhaOutputFileName ) const;
 

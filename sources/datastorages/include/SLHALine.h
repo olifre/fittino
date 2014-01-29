@@ -1,28 +1,26 @@
-/* $Id$ */
+/* $Id: SimpleDataStorage.h 1509 2013-08-14 13:49:24Z sarrazin $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        SPhenoSLHAModelCalculator.h                                      *
+* File        SLHALine.h                                                       *
 *                                                                              *
-* Description Wrapper class for SPheno                                         *
+* Description Stores information of one line of an SLHA file                   *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_SPHENOSLHAMODELCALCULATOR_H
-#define FITTINO_SPHENOSLHAMODELCALCULATOR_H
+#ifndef FITTINO_SLHALINE_H
+#define FITTINO_SLHALINE_H
 
-#include <vector>
-
-#include "SLHAModelCalculatorBase.h"
+#include <string>
 
 namespace boost {
 
@@ -40,44 +38,38 @@ namespace boost {
  */
 namespace Fittino {
 
-  class SLHALine;
+  class ModelBase;
 
   /*!
-   *  \ingroup calculators
-   *  \brief Wrapper class for SPheno.
+   *  \ingroup datastorages
+   *  \brief Class for storage of one SLHA file line
    */
-  class SPhenoSLHAModelCalculator : public SLHAModelCalculatorBase {
+  class SLHALine {
 
     public:
       /*!
        *  Standard constructor.
        */
-    SPhenoSLHAModelCalculator( const boost::property_tree::ptree& ptree, const PhysicsModelBase* model );
+      SLHALine( std::string block, std::string index, const double& value, std::string comment );
+      SLHALine( const boost::property_tree::ptree& ptree, const ModelBase* model );
       /*!
        *  Standard destructor.
        */
-                   ~SPhenoSLHAModelCalculator();
+      ~SLHALine();
 
-    public:
-      virtual void Initialize() const;
+      std::string   GetBlock() const;
+      std::string   GetIndex() const;
+      std::string   GetValue() const;
+      std::string   GetComment() const; 
 
-      /*! \cond UML */
     private:
-      std::vector< SLHALine* > _lines;
-  
-    private:
-    /*!
-     *  \todo Short-term: The method CallExecutable() is copied from the old fittino code. It should\n
-     *  be eventually replaced.
-     */
-      virtual void CallExecutable();
-      virtual void CallFunction();
-      virtual void ConfigureInput();
-
-      /*! \endcond UML */
-
+      const double& _value;  
+      std::string   _block;
+      std::string   _comment;
+      std::string   _index;
+      
   };
 
 }
 
-#endif // FITTINO_SPHENOSLHAMODELCALCULATOR_H
+#endif // FITTINO_SIMPLEDATASTORAGE_H
