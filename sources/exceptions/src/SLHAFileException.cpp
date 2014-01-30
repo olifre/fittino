@@ -22,6 +22,6 @@
 #include "SLHAFileException.h"
 
 Fittino::SLHAFileException::SLHAFileException( const std::string& message )
-        : ExceptionBase( "Fittino::SLHAFileException: " + message ) {
+    : ExceptionBase( "Fittino::SLHAFileException: " + message ) {
 
 }

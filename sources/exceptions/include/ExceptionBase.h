@@ -30,7 +30,7 @@
 namespace Fittino {
 
   /*!
-   *  \defgroup exceptions 
+   *  \defgroup exceptions
    */
   /*!
    *  \ingroup exceptions
@@ -62,7 +62,7 @@ namespace Fittino {
        *  is caught and the what() method is called. The message is supposed to provide the user\n
        *  with further information about the occurred exception.
        */
-                        ExceptionBase( const std::string& message );
+      ExceptionBase( const std::string& message );
       /*!
        *  Standard destructor.
        */
