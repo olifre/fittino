@@ -12,12 +12,10 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
-
-#include <iostream>
 
 #include "Minuit2/FunctionMinimum.h"
 #include "Minuit2/MnMigrad.h"
@@ -28,10 +26,10 @@
 #include "MinuitAdapter.h"
 #include "ModelParameterBase.h"
 
-Fittino::MinuitOptimizer::MinuitOptimizer( Fittino::ModelBase* model, int randomSeed )
-    : OptimizerBase( model, randomSeed ) {
+Fittino::MinuitOptimizer::MinuitOptimizer( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
+    : OptimizerBase( model, ptree ) {
 
-    _name =  "Minuit optimization algorithm";
+    _name = ptree.get<std::string>( "Name", "Minuit optimization algorithm" );
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 

@@ -14,8 +14,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -70,25 +70,45 @@ Fittino::Factory::~Factory() {
 
 Fittino::AnalysisTool* const Fittino::Factory::CreateAnalysisTool( const std::string& type, ModelBase* model, const boost::property_tree::ptree& ptree ) const {
 
-    if ( type == "SimpleSampler" ) {
+    if ( type == "GeneticAlgorithmOptimizer" ) {
 
-        return new SimpleSampler( model, ptree );
+        return new GeneticAlgorithmOptimizer( model, ptree );
+
+    }
+    else if ( type == "MinuitOptimizer" ) {
+
+        return new MinuitOptimizer( model, ptree );
 
     }
     else if ( type == "MarkovChainSampler" ) {
 
-      return new MarkovChainSampler( model, ptree );
+        return new MarkovChainSampler( model, ptree );
+
+    }
+    else if ( type == "ParticleSwarmOptimizer" ) {
+
+        return new ParticleSwarmOptimizer( model, ptree );
+
+    }
+    else if ( type == "SimpleSampler" ) {
+
+        return new SimpleSampler( model, ptree );
+
+    }
+    if ( type == "SimulatedAnnealingOptimizer" ) {
+
+        return new SimulatedAnnealingOptimizer( model, ptree );
 
     }
     else if ( type == "TreeSampler" ) {
-      
-      return new TreeSampler( model, ptree );
-    
+
+        return new TreeSampler( model, ptree );
+
     }
     else {
 
-      throw ConfigurationException( "AnalysisTool type" + type + " not known." );
-    
+        throw ConfigurationException( "AnalysisTool type " + type + " not known." );
+
     }
 
 }
@@ -231,9 +251,6 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const Fittino::Configur
 
 #endif
 
-        case Configuration::ROSENBROCK:
-            return new RosenbrockModel();
-
     }
 
 }
@@ -289,26 +306,6 @@ Fittino::ModelCalculatorBase* const Fittino::Factory::CreateCalculator( const Fi
         case Configuration::LHCCALCULATOR:
 
             return new LHCModelCalculator( model );
-
-    }
-
-}
-
-Fittino::OptimizerBase* const Fittino::Factory::CreateOptimizer( const Fittino::Configuration::OptimizerType& optimizerType, Fittino::ModelBase* model, int randomSeed ) const {
-
-    switch ( optimizerType ) {
-
-        case Configuration::GENETICALGORITHM:
-            return new GeneticAlgorithmOptimizer( model, randomSeed );
-
-        case Configuration::MINUIT:
-            return new MinuitOptimizer( model, randomSeed );
-
-        case Configuration::PARTICLESWARM:
-            return new ParticleSwarmOptimizer( model, randomSeed );
-
-        case Configuration::SIMULATEDANNEALING:
-            return new SimulatedAnnealingOptimizer( model, randomSeed );
 
     }
 

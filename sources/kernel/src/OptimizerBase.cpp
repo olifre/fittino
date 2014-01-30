@@ -10,13 +10,13 @@
 *                                                                              *
 * Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
 *             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
-*	      Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
-*	      Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
+*             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+*             Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -24,16 +24,24 @@
 #include <iostream>
 #include <sstream>
 
-#include "Configuration.h"
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
 #include "OptimizerBase.h"
 
 Fittino::OptimizerBase::OptimizerBase( ModelBase* model, int randomSeed )
-        : _abortCriterium( Configuration::GetInstance()->GetSteeringParameter( "AbortCriterium", 1e-6 ) ),
-          _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", 10000 ) ),
-          AnalysisTool( model, randomSeed ) {
+    : _abortCriterium    ( 1.e-6             ),
+      _numberOfIterations( 10000             ),
+      AnalysisTool       ( model, randomSeed ) {
+
+}
+
+Fittino::OptimizerBase::OptimizerBase( ModelBase* model, const boost::property_tree::ptree& ptree )
+    : _abortCriterium    ( ptree.get<double>( "AbortCriterium",     0.000001 ) ),
+      _numberOfIterations( ptree.get<int>   ( "NumberOfIterations", 10000    ) ),
+      AnalysisTool       ( model, ptree.get<int>( "RandomSeed", 0) ) {
+
+    _name = ptree.get<std::string>( "Name", "optimizer" );
 
 }
 

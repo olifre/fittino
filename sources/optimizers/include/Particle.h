@@ -10,13 +10,13 @@
 *                                                                              *
 * Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
 *             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
-*	      Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
-*	      Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
+*             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+*             Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -45,13 +45,13 @@ namespace Fittino {
       static ModelBase*   _globalBestModel;
 
     public:
-                          Particle( double c1, double c2, ModelBase* model, int seed );
-                          ~Particle();
+      Particle( double c1, double c2, ModelBase* model, int seed );
+      ~Particle();
       void                UpdateModel();
 
-    private:
-      //static float        _c1;
-      //static float        _c2;
+      //private:
+      //static float      _c1;
+      //static float      _c2;
 
     private:
       float               _c1;

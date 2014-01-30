@@ -37,7 +37,6 @@
 #include "InputException.h"
 #include "Messenger.h"
 #include "ModelBase.h"
-#include "OptimizerBase.h"
 #include "PlotterBase.h"
 #include "SamplerBase.h"
 
@@ -143,14 +142,7 @@ void Fittino::Controller::ExecuteFittino() const {
 
             ModelBase* model = factory.CreateModel( Configuration::GetInstance()->GetModelType() );
 
-            if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::OPTIMIZATION ) {
-
-                OptimizerBase* const optimizer = factory.CreateOptimizer( Configuration::GetInstance()->GetOptimizerType(), model, _randomSeed );
-                optimizer->PerformAnalysis();
-                delete optimizer;
-
-            }
-            else if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::SAMPLING ) {
+            if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::SAMPLING ) {
 
                 SamplerBase* const sampler = factory.CreateSampler( Configuration::GetInstance()->GetSamplerType(), model, _randomSeed );
                 sampler->PerformAnalysis();

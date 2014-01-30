@@ -12,29 +12,26 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
 #include <cmath>
-#include <iostream>
 #include <vector>
 
-#include "Configuration.h"
 #include "Messenger.h"
+#include "ModelBase.h"
 #include "ModelParameterBase.h"
 #include "SimulatedAnnealingOptimizer.h"
 
-Fittino::SimulatedAnnealingOptimizer::SimulatedAnnealingOptimizer( Fittino::ModelBase* model, int randomSeed )
-  : OptimizerBase( model, randomSeed ) {
+Fittino::SimulatedAnnealingOptimizer::SimulatedAnnealingOptimizer( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
+    : _initialTemperature        ( ptree.get<double>( "InitialTemperature",         5.  ) ),
+      _temperatureReductionFactor( ptree.get<double>( "TemperatureReductionFactor", 0.5 ) ),
+      _temperature( _initialTemperature ),
+      OptimizerBase( model, ptree ) {
 
-    _name = "simulated annealing optimization algorithm";
-
-    _initialTemperature = Configuration::GetInstance()->GetSteeringParameter( "InitialTemperature", 5. );
-    _temperatureReductionFactor = Configuration::GetInstance()->GetSteeringParameter( "TemperatureReductionFactor", 0.5 );
-
-    _temperature = _initialTemperature;
+    _name = ptree.get<std::string>( "Name", "simulated annealing optimization algorithm" );
 
 }
 

@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -38,19 +38,19 @@ namespace Fittino {
   class Individual {
 
     public:
-                          Individual( ModelBase* model, double mutationRate, int seed );
-                          ~Individual();
+      Individual( ModelBase* model, double mutationRate, int seed );
+      ~Individual();
       bool                UpdatedChi2();
       double              GetGene( int index );
       void                Mutation();
-                          /*!
-                           *  Calls UpdateModel() and than sets the chi2 according to that model.
-                           */
+      /*!
+       *  Calls UpdateModel() and than sets the chi2 according to that model.
+       */
       void                UpdateChi2();
       void                SetGene( int index, double newValue );
-                          /*!
-                           *  Sets the pointed model according to the genes.
-                           */
+      /*!
+       *  Sets the pointed model according to the genes.
+       */
       void                UpdateModel();
 
     public:

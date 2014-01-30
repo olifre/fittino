@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -29,17 +29,19 @@
 namespace Fittino {
 
   /*!
+   *  \defgroup optimizers
+   */
+  /*!
    *  \ingroup optimizers
    *  \brief Class for genetic algorithm parameter optimizer.
    */
   class GeneticAlgorithmOptimizer : public OptimizerBase {
 
     public:
-
       /*!
        *  Creates a random a sorted random population
        */
-      GeneticAlgorithmOptimizer( ModelBase* model, int randomSeed );
+      GeneticAlgorithmOptimizer( ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor
        */
@@ -48,7 +50,6 @@ namespace Fittino {
       /*! \cond UML */
 
     private:
-
       double                  _mutationRate;
       unsigned int            _numberOfFamilies;
       unsigned int            _numberOfGenes;
@@ -63,7 +64,6 @@ namespace Fittino {
       std::vector<Individual> _secondChildren;
 
     private:
-
       void                     CalculateMatingProbabilities();
       void                     CrossOver();
       void                     MutatePopulation();
@@ -71,6 +71,7 @@ namespace Fittino {
       void                     Replace();
       void                     SortPopulation();
 
+    private:
       virtual void             PrintSteeringParameters() const;
       /*!
        *  By simulating evolution the created population in changed. The fittest individual of the new population determines how the model is updated.

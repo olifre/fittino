@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -23,11 +23,12 @@
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
 
-Fittino::Individual::Individual( Fittino::ModelBase* model, double mutationRate, int seed ):
-    _model ( model ) ,
-    _mutationRate ( mutationRate ),
-    _randomGenerator( new TRandom3() ),
-    _chi2 ( 1e99 ) {
+Fittino::Individual::Individual( Fittino::ModelBase* model, double mutationRate, int seed )
+    : _model ( model ) ,
+      _mutationRate ( mutationRate ),
+      _randomGenerator( new TRandom3() ),
+      _chi2 ( 1e99 ) {
+
     _updatedChi2 = false;
     _randomGenerator->SetSeed( seed );
 
@@ -38,6 +39,7 @@ Fittino::Individual::Individual( Fittino::ModelBase* model, double mutationRate,
     }
 
     UpdateChi2();
+
 }
 
 Fittino::Individual::~Individual() {
@@ -101,5 +103,3 @@ bool Fittino::Individual::operator<( const Individual& individual ) const {
     return this->_chi2 < individual._chi2;
 
 }
-
-

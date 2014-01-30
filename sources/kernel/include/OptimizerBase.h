@@ -10,13 +10,13 @@
 *                                                                              *
 * Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
 *             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
-*	      Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
-*	      Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
+*             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+*             Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -31,10 +31,7 @@
 namespace Fittino {
 
   /*!
-   *  \defgroup optimizers
-   */
-  /*!
-   *  \ingroup optimizers
+   *  \ingroup kernel 
    *  \brief Base class for Fittino parameter optimizers.
    *
    *  Supported parameter optimizers are
@@ -54,6 +51,7 @@ namespace Fittino {
        */
 
       OptimizerBase( ModelBase* model, int randomSeed );
+      OptimizerBase( ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

@@ -10,31 +10,26 @@
 *                                                                              *
 * Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
 *             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
-*	      Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
-*	      Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
+*             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+*             Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
-#include <iostream>
-#include <sstream>
-
-#include "Configuration.h"
 #include "Messenger.h"
 #include "ParticleSwarmOptimizer.h"
 
-Fittino::ParticleSwarmOptimizer::ParticleSwarmOptimizer( Fittino::ModelBase* model, int randomSeed )
-    : OptimizerBase( model, randomSeed ) {
+Fittino::ParticleSwarmOptimizer::ParticleSwarmOptimizer( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
+    : _c1               ( ptree.get<double>( "C1"               , 0.01 ) ),
+      _c2               ( ptree.get<double>( "C2"               , 0.01 ) ),
+      _numberOfParticles( ptree.get<int>   ( "NumberOfParticles", 20   ) ),
+      OptimizerBase( model, ptree ) {
 
-    _name = "particle swarm optimization algorithm";
-
-    _c1 = Configuration::GetInstance()->GetSteeringParameter( "C1", 0.01 );
-    _c2 = Configuration::GetInstance()->GetSteeringParameter( "C2", 0.01 );
-    _numberOfParticles = Configuration::GetInstance()->GetSteeringParameter( "NumberOfParticles", 20 );
+    _name = ptree.get<std::string>( "Name", "particle swarm optimization algorithm" );
 
     for ( unsigned int n = 0; n < _numberOfParticles; n++ ) {
 
