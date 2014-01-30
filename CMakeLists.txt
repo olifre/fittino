@@ -28,14 +28,6 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6 FATAL_ERROR)
 # Specify the name of the project.
 PROJECT(fittino CXX)
 
-ENABLE_LANGUAGE( C       OPTIONAL )
-ENABLE_LANGUAGE( Fortran OPTIONAL )
-
-IF( CMAKE_C_COMPILER_WORKS AND CMAKE_Fortran_COMPILER_WORKS )
-    INCLUDE( FortranCInterface ) 
-    FORTRANCINTERFACE_VERIFY( CXX QUIET )
-ENDIF()
-
 # Specify the installation directory for the fittino executable. After the installation a
 # subdirectory called bin is created which contains the executable.
 SET(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
@@ -47,6 +39,8 @@ SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
 # environment variable ROOTSYS is set and that the directory is "ROOTSYS/bin/".
 # SET(ROOT_CONFIG_DIR)
 FIND_PACKAGE( ROOT 5.20.00 REQUIRED )
+
+FIND_PACKAGE( GFORTRANLIB )
 
 # Specify the installation path of "Boost" which is required by SLHAea. There is only need to change
 # this when the installation path differs from the default.
