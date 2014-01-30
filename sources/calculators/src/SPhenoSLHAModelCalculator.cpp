@@ -27,6 +27,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#include <boost/filesystem.hpp>
 #include "boost/property_tree/ptree.hpp"
 #include <boost/foreach.hpp>
 
@@ -199,6 +200,18 @@ void Fittino::SPhenoSLHAModelCalculator::CallExecutable() {
 
 
 void Fittino::SPhenoSLHAModelCalculator::CalculatePredictions() {
+
+    if ( boost::filesystem::exists( _slhaInputFileName ) ) {
+
+        boost::filesystem::rename( _slhaInputFileName, _slhaInputFileName + ".last" );
+
+    }
+
+    if ( boost::filesystem::exists( _slhaOutputFileName ) ) {
+
+        boost::filesystem::rename( _slhaOutputFileName, _slhaOutputFileName + ".last" );
+
+    }
 
     ConfigureInput();
 
