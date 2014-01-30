@@ -17,13 +17,13 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "FeynHiggsSLHAModelCalculator.h"
 #include "CFeynHiggs.h"
 #include "CSLHA.h"
 
+#include "FeynHiggsSLHAModelCalculator.h"
 
-Fittino::FeynHiggsSLHAModelCalculator::FeynHiggsSLHAModelCalculator(  const PhysicsModelBase* model, const boost::property_tree::ptree& ptree)
-  : FeynHiggsModelCalculatorBase(model, ptree) {
+Fittino::FeynHiggsSLHAModelCalculator::FeynHiggsSLHAModelCalculator(  const PhysicsModelBase* model, const boost::property_tree::ptree& ptree )
+  : FeynHiggsModelCalculatorBase( model, ptree ) {
 
     _name = "FeynHiggs";
 
@@ -35,15 +35,13 @@ Fittino::FeynHiggsSLHAModelCalculator::~FeynHiggsSLHAModelCalculator() {
 
 void Fittino::FeynHiggsSLHAModelCalculator::CalculatePredictions() {
 
-  int error;
   COMPLEX slhadata[nslhadata];
-  std::string filename;
 
-  SLHARead(&error, slhadata, filename.c_str(), 1);
+  SLHARead( &_error, slhadata, _fileName.c_str(), 1 );
   // if( error ) 
   //exit(error);
 
-  FHSetSLHA(&error, slhadata);
+  FHSetSLHA( &_error, slhadata );
   // if( error )
   //exit(error);
 

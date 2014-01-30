@@ -45,16 +45,17 @@ namespace Fittino {
        *  Standard destructor.
        */
       virtual ~FeynHiggsModelCalculatorBase();
-      
-      virtual void Initialize() const;
+
+    protected:  
+      int         _error;
+      std::string _fileName;
+
+
+    protected:  
       void Calculate();
 
       /*! \cond UML */
-    private:
-
-
     private:  
-      int    _error;
 
       double _m_h;
 

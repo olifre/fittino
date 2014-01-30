@@ -38,6 +38,8 @@
 Fittino::FeynHiggsModelCalculator::FeynHiggsModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree )
   : FeynHiggsModelCalculatorBase( model, ptree ) {
 
+    _fileName = "FeynHiggs.in";
+
     BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree ) {
     
       if( node.first == "Parameter" ) {
@@ -62,15 +64,13 @@ Fittino::FeynHiggsModelCalculator::~FeynHiggsModelCalculator() {
 
 void Fittino::FeynHiggsModelCalculator::CalculatePredictions() {
 
-    std::string fileName = "FeynHiggs.in";
+    if ( boost::filesystem::exists( _fileName ) ) {
 
-    if ( boost::filesystem::exists( fileName ) ) {
-
-        boost::filesystem::rename( fileName, fileName + ".last" );
+        boost::filesystem::rename( _fileName, _fileName + ".last" );
 
     }
    
-    std::ofstream file( fileName.c_str() );
+    std::ofstream file( _fileName.c_str() );
 
     for ( int i = 0; i < _input.GetNumberOfElements(); i++ ) {
 
@@ -82,8 +82,7 @@ void Fittino::FeynHiggsModelCalculator::CalculatePredictions() {
     
     RealType    record     [nrecord];
     COMPLEX     slhadata   [nslhadata];
-
-    FHReadRecord( &_error, record, slhadata, fileName.c_str() ); 
+    FHReadRecord( &_error, record, slhadata, _fileName.c_str() ); 
 
     if ( _error != 2 ) {
       

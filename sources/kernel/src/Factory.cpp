@@ -25,6 +25,7 @@
 #include "DataStorageBase.h"
 #include "Factory.h"
 #include "FeynHiggsModelCalculator.h"
+#include "FeynHiggsSLHAModelCalculator.h"
 #include "GeneticAlgorithmOptimizer.h"
 #include "HDim6ModelCalculator.h"
 #include "HECModel.h"
@@ -158,6 +159,18 @@ Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::str
 #else
 
             throw ConfigurationException( "Trying to use FeynHiggsCalculator but Fittino was built without FeynHiggs." );
+
+#endif
+    }
+    else if ( type == "FeynHiggsSLHACalculator" ) {
+
+#if defined FEYNHIGGS
+
+      return new FeynHiggsSLHAModelCalculator( model, ptree );
+
+#else
+
+            throw ConfigurationException( "Trying to use FeynHiggsSLHACalculator but Fittino was built without FeynHiggs." );
 
 #endif
     }

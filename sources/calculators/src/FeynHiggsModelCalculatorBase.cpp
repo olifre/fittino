@@ -72,12 +72,6 @@ Fittino::FeynHiggsModelCalculatorBase::~FeynHiggsModelCalculatorBase() {
 
 }
 
-void Fittino::FeynHiggsModelCalculatorBase::Initialize() const {
-
-}
-
-
-
 void Fittino::FeynHiggsModelCalculatorBase::Calculate() {
 
     int         fast = 0;
