@@ -72,13 +72,18 @@ Fittino::FeynHiggsModelCalculatorBase::~FeynHiggsModelCalculatorBase() {
 
 }
 
-void Fittino::FeynHiggsModelCalculatorBase::CalculatePredictions() {
+void Fittino::FeynHiggsModelCalculatorBase::Initialize() const {
 
-  
+}
+
+
+
+void Fittino::FeynHiggsModelCalculatorBase::Calculate() {
 
     int         fast = 0;
     double      sqrts = 8;
     ComplexType SAeff;
+
     ComplexType UHiggs     [3][3];
     ComplexType ZHiggs     [3][3];
     ComplexType couplings  [ncouplings];
@@ -86,26 +91,10 @@ void Fittino::FeynHiggsModelCalculatorBase::CalculatePredictions() {
     RealType    MHiggs     [4];
     RealType    gammas     [ngammas];
     RealType    gammasms   [ngammasms];
-    RealType    record     [nrecord];
+
     RealType    prodxs     [nprodxs];
-    COMPLEX     slhadata   [nslhadata];
-
-    ConfigureInput();
 
 
-    FHLoopRecord( &_error, record                             );
-
-    if ( _error != 0 ) {
-
-    }
-
-
-    FHSetRecord ( &_error, record                             );
-
-    if ( _error != 0 ) {
-
-    }
-    
     FHHiggsCorr ( &_error, MHiggs, &SAeff, UHiggs, ZHiggs     );
 
 
@@ -135,15 +124,12 @@ void Fittino::FeynHiggsModelCalculatorBase::CalculatePredictions() {
 
     }
 
-
-
     FHHiggsProd( &_error, sqrts, prodxs );
 
     if ( _error != 0 ) {
 
     }
         
-
     _normSM_Gamma_h_gamma_gamma = Gamma   ( H0VV( 1, 1       ) ) / GammaSM   ( H0VV( 1, 1       ) );
     _normSM_Gamma_h_Z_gamma     = Gamma   ( H0VV( 1, 2       ) ) / GammaSM   ( H0VV( 1, 2       ) );
     _normSM_Gamma_h_Z_Z         = Gamma   ( H0VV( 1, 3       ) ) / GammaSM   ( H0VV( 1, 3       ) );
@@ -163,17 +149,4 @@ void Fittino::FeynHiggsModelCalculatorBase::CalculatePredictions() {
     _normSM_sigma_Zh            = Zh      ( 1                  ) / ZhSM      ( 1                  ); 
 
 
-    FHLoopRecord( &_error, record                             );
-
-    if ( _error != -1 ) {
-      
-    }
-
-  
 }
-
-void Fittino::FeynHiggsModelCalculatorBase::Initialize() const {
-
-}
-
-

@@ -22,20 +22,6 @@
 
 #include "FeynHiggsModelCalculatorBase.h"
 
-namespace boost {
-
-  namespace property_tree {
-
-    template < class Key, class Data, class KeyCompare >
-      class basic_ptree;
-
-    typedef basic_ptree< std::string, std::string, std::less<std::string> > ptree;
-
-  }
-
-}
-
-
 /*!
  *  \brief Fittino namespace.
  */
@@ -55,13 +41,11 @@ namespace Fittino {
       /*!
        *  Standard destructor.
        */
-                   ~FeynHiggsSLHAModelCalculator();
-
-      virtual void Initialize() const;
+     ~FeynHiggsSLHAModelCalculator();
 
       /*! \cond UML */
     private:
-      void         ConfigureInput();
+      void         CalculatePredictions();
 
       /*! \endcond UML */
 
@@ -69,4 +53,4 @@ namespace Fittino {
 
 }
 
-#endif // FITTINO_FEYNHIGGSSLHAMODELCALCULATOR_H
+#endif

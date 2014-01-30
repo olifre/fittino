@@ -24,7 +24,6 @@
 
 Fittino::ModelCalculatorBase::ModelCalculatorBase( const PhysicsModelBase* model )
         : _name( "" ),
-          _executableName( "" ),
           _model( model ) {
 
   _simpleOutputDataStorage = new SimpleDataStorage();
@@ -37,6 +36,10 @@ Fittino::ModelCalculatorBase::~ModelCalculatorBase() {
 
 }
 
+void Fittino::ModelCalculatorBase::Initialize() const {
+
+}
+
 std::string Fittino::ModelCalculatorBase::GetName() const {
 
     return _name;
@@ -46,18 +49,6 @@ std::string Fittino::ModelCalculatorBase::GetName() const {
 const Fittino::SimpleDataStorage* Fittino::ModelCalculatorBase::GetSimpleOutputDataStorage() const {
 
   return _simpleOutputDataStorage;
-
-}
-
-void Fittino::ModelCalculatorBase::StopTime( std::string name ) {
-
-    _stopwatch.Stop();
-
-    _simpleOutputDataStorage->GetMap()->at( "realtime_" + name )
-        = _stopwatch.RealTime();
-
-    _simpleOutputDataStorage->GetMap()->at( "cputime_" + name )
-        = _stopwatch.CpuTime();
 
 }
 

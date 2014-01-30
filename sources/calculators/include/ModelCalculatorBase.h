@@ -23,8 +23,6 @@
 #include <string>
 #include <map>
 
-#include "TStopwatch.h"
-
 #include "Collection.h"
 
 /*!
@@ -64,23 +62,18 @@ namespace Fittino {
 
     public:
       virtual void                  CalculatePredictions() = 0;
-      virtual void                  Initialize() const = 0;
+      virtual void                  Initialize() const;
 
     protected:
       void                          AddQuantity( PredictionBase* prediction );
       void                          AddChi2Contribution( Chi2ContributionBase* chi2Contribution );
 
     protected:
-      std::string                   _executableName;
       std::string                   _name;
-      TStopwatch                    _stopwatch;
       const PhysicsModelBase*       _model;
       SimpleDataStorage*            _simpleOutputDataStorage;
       Collection<PredictionBase*>   _collectionOfQuantities;
       Collection<Chi2ContributionBase*> _collectionOfChi2Contributions;
-
-    protected: 
-      void                          StopTime( std::string name ); 
 
   };
 

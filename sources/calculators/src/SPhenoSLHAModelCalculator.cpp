@@ -66,10 +66,6 @@ Fittino::SPhenoSLHAModelCalculator::~SPhenoSLHAModelCalculator() {
 
 }
 
-void Fittino::SPhenoSLHAModelCalculator::Initialize() const {
-
-}
-
 void Fittino::SPhenoSLHAModelCalculator::ConfigureInput() {
 
     // Write block "MODSEL".

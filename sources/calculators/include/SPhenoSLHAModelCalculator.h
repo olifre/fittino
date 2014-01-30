@@ -59,12 +59,12 @@ namespace Fittino {
                    ~SPhenoSLHAModelCalculator();
 
     public:
-      virtual void Initialize() const;
       virtual void CalculatePredictions();
 
       /*! \cond UML */
     private:
       std::vector< SLHALine* > _lines;
+      std::string              _executableName;
   
     private:
     /*!

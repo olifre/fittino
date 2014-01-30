@@ -38,7 +38,6 @@
 Fittino::FeynHiggsModelCalculator::FeynHiggsModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree )
   : FeynHiggsModelCalculatorBase( model, ptree ) {
 
-
     BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree ) {
     
       if( node.first == "Parameter" ) {
@@ -54,7 +53,6 @@ Fittino::FeynHiggsModelCalculator::FeynHiggsModelCalculator( const PhysicsModelB
       }
 
     }
-    
 
 }
 
@@ -62,7 +60,7 @@ Fittino::FeynHiggsModelCalculator::~FeynHiggsModelCalculator() {
 
 }
 
-void Fittino::FeynHiggsModelCalculator::ConfigureInput() {
+void Fittino::FeynHiggsModelCalculator::CalculatePredictions() {
 
     std::string fileName = "FeynHiggs.in";
 
@@ -82,18 +80,7 @@ void Fittino::FeynHiggsModelCalculator::ConfigureInput() {
 
     file.close();
     
-    int         fast = 0;
-    double      sqrts = 8;
-    ComplexType SAeff;
-    ComplexType UHiggs     [3][3];
-    ComplexType ZHiggs     [3][3];
-    ComplexType couplings  [ncouplings];
-    ComplexType couplingsms[ncouplingsms];
-    RealType    MHiggs     [4];
-    RealType    gammas     [ngammas];
-    RealType    gammasms   [ngammasms];
     RealType    record     [nrecord];
-    RealType    prodxs     [nprodxs];
     COMPLEX     slhadata   [nslhadata];
 
     FHReadRecord( &_error, record, slhadata, fileName.c_str() ); 
@@ -102,14 +89,25 @@ void Fittino::FeynHiggsModelCalculator::ConfigureInput() {
       
     }
 
+    FHLoopRecord( &_error, record );
+
+    if ( _error != 0 ) {
+
+    }
+
+    FHSetRecord ( &_error, record );
+
+    if ( _error != 0 ) {
+
+    }
+
+    Calculate();
+
+    FHLoopRecord( &_error, record );
+
+    if ( _error != -1 ) {
+      
+    }
+
 }
-
- 
-  
-
-
-void Fittino::FeynHiggsModelCalculator::Initialize() const {
-
-}
-
 

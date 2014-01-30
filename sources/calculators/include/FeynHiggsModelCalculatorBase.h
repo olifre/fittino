@@ -20,12 +20,8 @@
 #ifndef FITTINO_FEYNHIGGSMODELCALCULATORBASE_H
 #define FITTINO_FEYNHIGGSMODELCALCULATORBASE_H
 
-#include <complex>
-
-#include "Collection.h"
-#include "PtreeForwardDeclaration.h"
 #include "ModelCalculatorBase.h"
-
+#include "PtreeForwardDeclaration.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -50,12 +46,12 @@ namespace Fittino {
        */
       virtual ~FeynHiggsModelCalculatorBase();
       
-      virtual void CalculatePredictions();
       virtual void Initialize() const;
+      void Calculate();
 
       /*! \cond UML */
     private:
-      virtual void ConfigureInput() =0;
+
 
     private:  
       int    _error;
@@ -80,8 +76,6 @@ namespace Fittino {
       double _normSM_Gamma_h_W_W;
       double _normSM_Gamma_h_g_g;
       double _normSM_Gamma_h_total;
-      
-      Collection<SimplePrediction*> _input;
       
       /*! \endcond UML */
 

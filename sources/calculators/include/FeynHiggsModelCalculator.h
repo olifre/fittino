@@ -20,11 +20,8 @@
 #ifndef FITTINO_FEYNHIGGSMODELCALCULATOR_H
 #define FITTINO_FEYNHIGGSMODELCALCULATOR_H
 
-#include <complex>
-
 #include "Collection.h"
 #include "FeynHiggsModelCalculatorBase.h"
-
 
 /*!
  *  \brief Fittino namespace.
@@ -49,36 +46,14 @@ namespace Fittino {
        */
       ~FeynHiggsModelCalculator();
                    
-      virtual void Initialize() const;
-      virtual void ConfigureInput();
-
       /*! \cond UML */
     private:
+      void CalculatePredictions();
 
     private:  
+      double _m_h;
       int    _error;
 
-      double _m_h;
-
-      double _normSM_sigma_ggh;
-      double _normSM_sigma_ggh_2;
-      double _normSM_sigma_bbh;
-      double _normSM_sigma_qqh;
-      double _normSM_sigma_tth;
-      double _normSM_sigma_Wh;
-      double _normSM_sigma_Zh;
-
-      double _normSM_Gamma_h_tau_tau;
-      double _normSM_Gamma_h_c_c;
-      double _normSM_Gamma_h_s_s;
-      double _normSM_Gamma_h_b_b;
-      double _normSM_Gamma_h_gamma_gamma;
-      double _normSM_Gamma_h_Z_gamma;
-      double _normSM_Gamma_h_Z_Z;
-      double _normSM_Gamma_h_W_W;
-      double _normSM_Gamma_h_g_g;
-      double _normSM_Gamma_h_total;
-      
       Collection<SimplePrediction*> _input;
       
       /*! \endcond UML */
@@ -87,4 +62,4 @@ namespace Fittino {
 
 }
 
-#endif // FITTINO_FEYNHIGGSMODELCALCULATOR_H
+#endif 
