@@ -23,20 +23,9 @@
 #include <complex>
 
 #include "Collection.h"
+#include "PtreeForwardDeclaration.h"
 #include "ModelCalculatorBase.h"
 
-namespace boost {
-
-  namespace property_tree {
-
-    template < class Key, class Data, class KeyCompare >
-      class basic_ptree;
-
-    typedef basic_ptree< std::string, std::string, std::less<std::string> > ptree;
-
-  }
-
-}
 
 /*!
  *  \brief Fittino namespace.

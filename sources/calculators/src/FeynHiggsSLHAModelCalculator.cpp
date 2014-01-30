@@ -44,9 +44,11 @@ void Fittino::FeynHiggsSLHAModelCalculator::ConfigureInput() {
   std::string filename;
 
   SLHARead(&error, slhadata, filename.c_str(), 1);
-  if( error ) exit(error);
+  // if( error ) 
+  //exit(error);
 
   FHSetSLHA(&error, slhadata);
-  if( error ) exit(error);
+  // if( error )
+  //exit(error);
   
 }

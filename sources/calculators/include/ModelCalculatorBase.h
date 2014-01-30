@@ -27,8 +27,6 @@
 
 #include "Collection.h"
 
-#include <boost/property_tree/ptree.hpp>
-
 /*!
  *  \brief Fittino namespace.
  */
