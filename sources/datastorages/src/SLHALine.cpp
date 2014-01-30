@@ -25,16 +25,8 @@
 Fittino::SLHALine::SLHALine( const boost::property_tree::ptree& ptree, const ModelBase* model ) 
   :_value  ( model->GetCollectionOfQuantities().At( ptree.get<std::string>("Value") )->GetValue() ),
    _block  ( ptree.get<std::string>("Block")                                                      ),
-   _comment( ptree.get<std::string>("Comment")                                                    ),
+   _comment( ptree.get<std::string>("Comment", "# " + ptree.get<std::string>("Value")  )          ),
    _index  ( ptree.get<std::string>("Index")                                                      ) {
-
-}
-
-Fittino::SLHALine::SLHALine( std::string block, std::string index, const double& value, std::string comment )
-  :_value( value ),
-   _block( block ),
-   _comment( comment ),
-   _index( index ) {
 
 }
 

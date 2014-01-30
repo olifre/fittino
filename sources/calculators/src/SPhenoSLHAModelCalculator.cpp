@@ -75,14 +75,12 @@ void Fittino::SPhenoSLHAModelCalculator::ConfigureInput() {
     // Write block "MODSEL".
 
     _slhaInputDataStorage->AddBlock( "MODSEL:BLOCK MODSEL:# Model selection" );
-
     _slhaInputDataStorage->AddLine( "MODSEL:1:1:# " + _model->GetName() );
     _slhaInputDataStorage->AddLine( "MODSEL:12:1000:# Q_EWSB (fixed)" );
 
     // Write block "SMINPUTS".
 
     _slhaInputDataStorage->AddBlock( "SMINPUTS:BLOCK SMINPUTS:# Standard model inputs" );
-
     _slhaInputDataStorage->AddLine( "SMINPUTS:1:1.279250e+02:# 1/alpha_em (fixed)" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:2:1.166370e-05:# G_F (fixed)" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:3:1.176000e-01:# alpha_s (fixed)" );
@@ -95,27 +93,10 @@ void Fittino::SPhenoSLHAModelCalculator::ConfigureInput() {
 
     _slhaInputDataStorage->AddBlock( "MINPAR:BLOCK MINPAR:# Input parameters" );
 
-    for ( unsigned int i = 0; i < _lines.size(); i++ ) {
-
-        std::stringstream tmpStream;
-        std::string tmpString;
-
-        //tmpStream << _model->GetParameterVector()->at( i )->GetID()    << ":"
-        //          << _model->GetParameterVector()->at( i )->GetValue() << ":"
-        //          << "#" << _model->GetParameterVector()->at( i )->GetName();
-
-        tmpStream >> tmpString;
-
-        _slhaInputDataStorage->AddLine( *_lines.at(i) );
-
-      }
-
-    _slhaInputDataStorage->AddLine( "MINPAR:4:1.:# Input parameters" );
 
     // Write block "SPHENOINPUT".
 
     _slhaInputDataStorage->AddBlock( "SPHENOINPUT:BLOCK SPHENOINPUT:# SPheno specific input" );
-
     _slhaInputDataStorage->AddLine( "SPHENOINPUT:1:0:# error level" );
     _slhaInputDataStorage->AddLine( "SPHENOINPUT:2:0:# if 1, then SPA conventions are used" );
     _slhaInputDataStorage->AddLine( "SPHENOINPUT:11:1:# calculate branching ratios" );
@@ -130,6 +111,14 @@ void Fittino::SPhenoSLHAModelCalculator::ConfigureInput() {
     _slhaInputDataStorage->AddLine( "SPHENOINPUT:32:0:# require strict unification g_1=g_2=g_3 if '1' is set" );
     _slhaInputDataStorage->AddLine( "SPHENOINPUT:63:1.270000e+00:# m_c(Q) (fixed)" );
     _slhaInputDataStorage->AddLine( "SPHENOINPUT:80:1:# SPheno exits with non-zero value for sure" );
+
+    // Add parameter point dependent lines to block "MINPAR".
+
+    for ( unsigned int i = 0; i < _lines.size(); i++ ) {
+
+        _slhaInputDataStorage->AddLine( *_lines.at(i) );
+
+      }
 
 }
 

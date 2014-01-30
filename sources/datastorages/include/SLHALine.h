@@ -50,7 +50,6 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      SLHALine( std::string block, std::string index, const double& value, std::string comment );
       SLHALine( const boost::property_tree::ptree& ptree, const ModelBase* model );
       /*!
        *  Standard destructor.
