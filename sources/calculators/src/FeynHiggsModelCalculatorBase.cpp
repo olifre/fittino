@@ -20,10 +20,10 @@
 #include <iostream>
 #include <fstream>
 
-#include <boost/property_tree/ptree.hpp>
 #include <boost/foreach.hpp>
 #include "boost/format.hpp"
 #include <boost/filesystem.hpp>
+#include <boost/property_tree/ptree.hpp>
 
 #include "TMath.h"
 
@@ -74,35 +74,16 @@ Fittino::FeynHiggsModelCalculatorBase::~FeynHiggsModelCalculatorBase() {
 
 void Fittino::FeynHiggsModelCalculatorBase::Calculate() {
 
-    int         fast = 0;
-    double      sqrts = 8;
-    ComplexType SAeff;
+    // calculate masses, sin(alpha), UHiggs & ZHiggs matrices
 
-    ComplexType UHiggs     [3][3];
-    ComplexType ZHiggs     [3][3];
-    ComplexType couplings  [ncouplings];
-    ComplexType couplingsms[ncouplingsms];
-    RealType    MHiggs     [4];
-    RealType    gammas     [ngammas];
-    RealType    gammasms   [ngammasms];
+    RealType    MHiggs[4];
+    ComplexType SAeff, UHiggs[3][3], ZHiggs[3][3];
 
-    RealType    prodxs     [nprodxs];
-
-
-    FHHiggsCorr ( &_error, MHiggs, &SAeff, UHiggs, ZHiggs     );
-
+    FHHiggsCorr( &_error, MHiggs, &SAeff, UHiggs, ZHiggs );
 
     if ( _error != 0 ) {
 
     }
-
-    //FHSelectUZ(&_error, 1, 1, 1); // U
-    FHSelectUZ( &_error, 1, 2, 1 ); // Z
-
-    if ( _error != 0 ) {
-
-    }
-
 
     _m_h = MHiggs[0];
 
@@ -112,35 +93,54 @@ void Fittino::FeynHiggsModelCalculatorBase::Calculate() {
 
     }
 
+    // select UHiggs or ZHiggs for calculation of couplings and gammas
+
+    FHSelectUZ( &_error, 1, 2, 1 );
+
+    if ( _error != 0 ) {
+
+    }
+
+    // calulate couplings and gammas
+
+    ComplexType couplings[ncouplings], couplingsms[ncouplingsms];
+    RealType    gammas[ngammas], gammasms[ngammasms];
+    int    fast  = 0;
+
     FHCouplings( &_error, couplings, couplingsms, gammas, gammasms, fast );
     
     if ( _error != 0 ) {
 
     }
 
+    _normSM_Gamma_h_gamma_gamma = Gamma( H0VV( 1, 1       ) ) / GammaSM   ( H0VV( 1, 1       ) );
+    _normSM_Gamma_h_Z_gamma     = Gamma( H0VV( 1, 2       ) ) / GammaSM   ( H0VV( 1, 2       ) );
+    _normSM_Gamma_h_Z_Z         = Gamma( H0VV( 1, 3       ) ) / GammaSM   ( H0VV( 1, 3       ) );
+    _normSM_Gamma_h_W_W         = Gamma( H0VV( 1, 4       ) ) / GammaSM   ( H0VV( 1, 4       ) );
+    _normSM_Gamma_h_g_g         = Gamma( H0VV( 1, 5       ) ) / GammaSM   ( H0VV( 1, 5       ) );
+    _normSM_Gamma_h_tau_tau     = Gamma( H0FF( 1, 2, 3, 3 ) ) / GammaSM   ( H0FF( 1, 2, 3, 3 ) );
+    _normSM_Gamma_h_c_c         = Gamma( H0FF( 1, 3, 2, 2 ) ) / GammaSM   ( H0FF( 1, 3, 2, 2 ) );
+    _normSM_Gamma_h_s_s         = Gamma( H0FF( 1, 4, 2, 2 ) ) / GammaSM   ( H0FF( 1, 4, 2, 2 ) ); 
+    _normSM_Gamma_h_b_b         = Gamma( H0FF( 1, 4, 3, 3 ) ) / GammaSM   ( H0FF( 1, 4, 3, 3 ) );
+
+    _normSM_Gamma_h_total = GammaTot( 1 ) / GammaSMTot( 1 );
+
+    // calculate xs
+
+    double sqrts = 8;
+    RealType    prodxs     [nprodxs];
     FHHiggsProd( &_error, sqrts, prodxs );
 
     if ( _error != 0 ) {
 
     }
         
-    _normSM_Gamma_h_gamma_gamma = Gamma   ( H0VV( 1, 1       ) ) / GammaSM   ( H0VV( 1, 1       ) );
-    _normSM_Gamma_h_Z_gamma     = Gamma   ( H0VV( 1, 2       ) ) / GammaSM   ( H0VV( 1, 2       ) );
-    _normSM_Gamma_h_Z_Z         = Gamma   ( H0VV( 1, 3       ) ) / GammaSM   ( H0VV( 1, 3       ) );
-    _normSM_Gamma_h_W_W         = Gamma   ( H0VV( 1, 4       ) ) / GammaSM   ( H0VV( 1, 4       ) );
-    _normSM_Gamma_h_g_g         = Gamma   ( H0VV( 1, 5       ) ) / GammaSM   ( H0VV( 1, 5       ) );
-    _normSM_Gamma_h_tau_tau     = Gamma   ( H0FF( 1, 2, 3, 3 ) ) / GammaSM   ( H0FF( 1, 2, 3, 3 ) );
-    _normSM_Gamma_h_c_c         = Gamma   ( H0FF( 1, 3, 2, 2 ) ) / GammaSM   ( H0FF( 1, 3, 2, 2 ) );
-    _normSM_Gamma_h_s_s         = Gamma   ( H0FF( 1, 4, 2, 2 ) ) / GammaSM   ( H0FF( 1, 4, 2, 2 ) ); 
-    _normSM_Gamma_h_b_b         = Gamma   ( H0FF( 1, 4, 3, 3 ) ) / GammaSM   ( H0FF( 1, 4, 3, 3 ) );
-    _normSM_Gamma_h_total       = GammaTot( 1                  ) / GammaSMTot( 1                  );
-    _normSM_sigma_ggh           = ggh     ( 1                  ) / gghSM     ( 1                  ); 
-    _normSM_sigma_ggh_2         = ggh2    ( 1                  ) / gghSM     ( 1                  );
-    _normSM_sigma_bbh           = bbh     ( 1                  ) / bbhSM     ( 1                  );
-    _normSM_sigma_qqh           = qqh     ( 1                  ) / qqhSM     ( 1                  );
-    _normSM_sigma_tth           = tth     ( 1                  ) / tthSM     ( 1                  );
-    _normSM_sigma_Wh            = Wh      ( 1                  ) / WhSM      ( 1                  ); 
-    _normSM_sigma_Zh            = Zh      ( 1                  ) / ZhSM      ( 1                  ); 
-
+    _normSM_sigma_ggh   = ggh ( 1 ) / gghSM( 1 ); 
+    _normSM_sigma_ggh_2 = ggh2( 1 ) / gghSM( 1 );
+    _normSM_sigma_bbh   = bbh ( 1 ) / bbhSM( 1 );
+    _normSM_sigma_qqh   = qqh ( 1 ) / qqhSM( 1 );
+    _normSM_sigma_tth   = tth ( 1 ) / tthSM( 1 );
+    _normSM_sigma_Wh    = Wh  ( 1 ) / WhSM ( 1 ); 
+    _normSM_sigma_Zh    = Zh  ( 1 ) / ZhSM ( 1 ); 
 
 }
