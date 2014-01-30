@@ -21,20 +21,11 @@
 *******************************************************************************/
 
 #include <iomanip>
-#include <iostream>
-#include <sstream>
 
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
 #include "OptimizerBase.h"
-
-Fittino::OptimizerBase::OptimizerBase( ModelBase* model, int randomSeed )
-    : _abortCriterium    ( 1.e-6             ),
-      _numberOfIterations( 10000             ),
-      AnalysisTool       ( model, randomSeed ) {
-
-}
 
 Fittino::OptimizerBase::OptimizerBase( ModelBase* model, const boost::property_tree::ptree& ptree )
     : _abortCriterium    ( ptree.get<double>( "AbortCriterium",     0.000001 ) ),

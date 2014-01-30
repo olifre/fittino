@@ -50,7 +50,6 @@ namespace Fittino {
        *  between a model and the concrete optimizer is established.
        */
 
-      OptimizerBase( ModelBase* model, int randomSeed );
       OptimizerBase( ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
