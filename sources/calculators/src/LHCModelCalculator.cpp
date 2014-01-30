@@ -242,14 +242,3 @@ void Fittino::LHCModelCalculator::Initialize() const {
 
 }
 
-void Fittino::LHCModelCalculator::CallExecutable() {
-
-}
-
-void Fittino::LHCModelCalculator::CallFunction() {
-
-}
-
-void Fittino::LHCModelCalculator::ConfigureInput() {
-
-}

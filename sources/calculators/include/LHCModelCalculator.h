@@ -59,9 +59,6 @@ namespace Fittino {
     
     public:
       virtual void        CalculatePredictions();
-      virtual void        CallFunction();
-      virtual void        CallExecutable();
-      virtual void        ConfigureInput();
       virtual void        Initialize() const;
       void                AddAnalysis( std::string name, std::string fileName, std::string histName, std::vector<std::string> relevantParameters );
       void                UpdateAnalysisHistogram( std::string name, std::string fileName, std::string newHistogramName, std::vector<std::string> relevantParameters );

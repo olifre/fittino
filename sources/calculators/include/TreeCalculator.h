@@ -52,9 +52,6 @@ namespace Fittino {
 
     public:
       virtual void        CalculatePredictions();
-      virtual void        CallFunction();
-      virtual void        CallExecutable();
-      virtual void        ConfigureInput();
       virtual void        Initialize() const;
       void                SetInputFileName( std::string inputFileName );
       void                SetInputTreeName( std::string inputTreeName );

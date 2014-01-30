@@ -66,9 +66,6 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-      virtual void CallExecutable();
-      virtual void CallFunction();
-      void         ConfigureInput();
 
     private:  
       int    _error;

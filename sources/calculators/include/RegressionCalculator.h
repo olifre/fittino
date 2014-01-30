@@ -70,11 +70,6 @@ namespace Fittino {
     Collection<RegressionMVA*>      _collectionOfMVAs;
     std::vector<const double*>      _vectorOfDoubleVariables;
     std::vector<float*>             _vectorOfFloatVariables;
-
-  private:
-    virtual void                    CallExecutable();
-    virtual void                    CallFunction();
-    virtual void                    ConfigureInput();
   
   };
 

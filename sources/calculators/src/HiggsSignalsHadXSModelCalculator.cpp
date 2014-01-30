@@ -110,24 +110,13 @@ Fittino::HiggsSignalsHadXSModelCalculator::~HiggsSignalsHadXSModelCalculator() {
 
 }
 
-void Fittino::HiggsSignalsHadXSModelCalculator::CalculatePredictions() {
-
-    ConfigureInput(); 
-    CallFunction();
-
-}
-
 void Fittino::HiggsSignalsHadXSModelCalculator::Initialize() const {
 
   
 }
 
 
-void Fittino::HiggsSignalsHadXSModelCalculator::CallExecutable() {
-
-}
-
-void Fittino::HiggsSignalsHadXSModelCalculator::CallFunction() {
+void Fittino::HiggsSignalsHadXSModelCalculator::CalculatePredictions() {
 
     _SM_BR_hss       = smbr_hss_                                 ( &_mass_h );
     _SM_BR_hcc       = smbr_hcc_                                 ( &_mass_h );
@@ -268,8 +257,4 @@ void Fittino::HiggsSignalsHadXSModelCalculator::CallFunction() {
 
 }
 
-void Fittino::HiggsSignalsHadXSModelCalculator::ConfigureInput() {
-
-    
-}
 

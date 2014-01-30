@@ -250,10 +250,6 @@ void Fittino::HDim6ModelCalculator::ComparePreviousSMValues() {
 
 }
 
-void Fittino::HDim6ModelCalculator::CallExecutable() {
-
-}
-
 void Fittino::HDim6ModelCalculator::ConfigureInput() {
 
     _f_BB = _f_VV_plus - _f_VV_minus;

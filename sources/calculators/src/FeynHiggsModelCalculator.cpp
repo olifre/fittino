@@ -211,15 +211,4 @@ void Fittino::FeynHiggsModelCalculator::Initialize() const {
 
 }
 
-void Fittino::FeynHiggsModelCalculator::CallExecutable() {
-
-}
-
-void Fittino::FeynHiggsModelCalculator::CallFunction() {
-
-}
-
-void Fittino::FeynHiggsModelCalculator::ConfigureInput() {
-
-}
 

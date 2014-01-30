@@ -90,14 +90,3 @@ void Fittino::RegressionCalculator::Initialize() const {
 
 }
 
-void Fittino::RegressionCalculator::CallExecutable() {
-
-}
-
-void Fittino::RegressionCalculator::CallFunction(){
-
-}
-
-void Fittino::RegressionCalculator::ConfigureInput(){
-
-}

@@ -163,11 +163,6 @@ namespace Fittino {
       const double& _normSM_xs_Wh;
       const double& _normSM_xs_Zh;
 
-    private:
-      virtual void CallExecutable();
-      virtual void CallFunction();
-      virtual void ConfigureInput();
-
   };
 
 }

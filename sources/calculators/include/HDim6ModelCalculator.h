@@ -164,7 +164,6 @@ namespace Fittino {
       void                     ComparePreviousSMValues();
 
     private:
-      virtual void             CallExecutable();
       virtual void             CallFunction();
       virtual void             ConfigureInput();
 

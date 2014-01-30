@@ -131,18 +131,6 @@ void Fittino::TreeCalculator::Initialize() const {
 
 }
 
-void Fittino::TreeCalculator::CallExecutable() {
-
-}
-
-void Fittino::TreeCalculator::CallFunction() {
-
-}
-
-void Fittino::TreeCalculator::ConfigureInput() {
-
-}
-
 void Fittino::TreeCalculator::CreateDefaultPredictions( ) {
 
     Factory factory;
