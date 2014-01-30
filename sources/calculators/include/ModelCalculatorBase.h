@@ -69,7 +69,6 @@ namespace Fittino {
       virtual void                  Initialize() const = 0;
 
     protected:
-      enum                          CallMethod { EXECUTABLE, FUNCTION };
       void                          AddQuantity( PredictionBase* prediction );
       void                          AddChi2Contribution( Chi2ContributionBase* chi2Contribution );
 
@@ -77,7 +76,6 @@ namespace Fittino {
       std::string                   _executableName;
       std::string                   _name;
       TStopwatch                    _stopwatch;
-      CallMethod                    _callMethod;
       const PhysicsModelBase*       _model;
       SimpleDataStorage*            _simpleOutputDataStorage;
       Collection<PredictionBase*>   _collectionOfQuantities;
@@ -85,11 +83,6 @@ namespace Fittino {
 
     protected: 
       void                          StopTime( std::string name ); 
-
-    protected:
-      virtual void                  CallExecutable() = 0;
-      virtual void                  CallFunction() = 0;
-      virtual void                  ConfigureInput() = 0;
 
   };
 

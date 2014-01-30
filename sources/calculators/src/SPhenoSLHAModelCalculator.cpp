@@ -38,7 +38,6 @@
 Fittino::SPhenoSLHAModelCalculator::SPhenoSLHAModelCalculator( const boost::property_tree::ptree& ptree, const PhysicsModelBase* model )
         :SLHAModelCalculatorBase( model ) {
 
-    _callMethod         = EXECUTABLE;
     _executableName     = "../SPheno";
     _name               = "SPheno";
     _slhaInputFileName  = "LesHouches.in";
@@ -198,6 +197,16 @@ void Fittino::SPhenoSLHAModelCalculator::CallExecutable() {
 
 }
 
-void Fittino::SPhenoSLHAModelCalculator::CallFunction() {
+
+void Fittino::SPhenoSLHAModelCalculator::CalculatePredictions() {
+
+    ConfigureInput();
+
+    _slhaInputDataStorage->WriteFile( _slhaInputFileName );
+
+    CallExecutable();
+
+    _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
 
 }
+

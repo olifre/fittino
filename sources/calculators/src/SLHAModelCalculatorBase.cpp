@@ -50,33 +50,6 @@ std::string Fittino::SLHAModelCalculatorBase::String( double x ) {
 
 }
 
-void Fittino::SLHAModelCalculatorBase::CalculatePredictions() {
-
-    ConfigureInput();
-
-    switch ( _callMethod ) {
-
-        case EXECUTABLE: {
-
-            _slhaInputDataStorage->WriteFile( _slhaInputFileName );
-            CallExecutable();
-            _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
-	    break;
-
-        }
-
-        case FUNCTION: {
-
-            CallFunction();
-            _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
-	    break;
-
-        }
-
-    }
-
-}
-
 Fittino::SLHADataStorageBase* Fittino::SLHAModelCalculatorBase::GetDataStorage() {
 
     return _slhaOutputDataStorage;

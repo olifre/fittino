@@ -129,6 +129,7 @@ namespace Fittino {
 
     public:
       virtual void Initialize() const;
+      virtual void CalculatePredictions();
 
       /*! \cond UML */
     private:

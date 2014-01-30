@@ -24,7 +24,6 @@
 
 Fittino::ModelCalculatorBase::ModelCalculatorBase( const PhysicsModelBase* model )
         : _name( "" ),
-          _callMethod( FUNCTION ),
           _executableName( "" ),
           _model( model ) {
 

@@ -60,6 +60,7 @@ namespace Fittino {
 
     public:
       virtual void Initialize() const;
+      virtual void CalculatePredictions();
 
       /*! \cond UML */
     private:
@@ -71,7 +72,6 @@ namespace Fittino {
      *  be eventually replaced.
      */
       virtual void CallExecutable();
-      virtual void CallFunction();
       virtual void ConfigureInput();
 
       /*! \endcond UML */

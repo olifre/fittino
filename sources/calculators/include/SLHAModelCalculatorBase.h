@@ -53,7 +53,6 @@ namespace Fittino {
       std::string          String( double x );
 
     public:
-      virtual void         CalculatePredictions();
 
     protected:
       std::string          _slhaInputFileName;

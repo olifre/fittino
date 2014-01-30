@@ -88,6 +88,18 @@ void Fittino::HiggsSignalsSLHAModelCalculator::Initialize() const {
 
 }
 
+void Fittino::HiggsSignalsSLHAModelCalculator::CalculatePredictions() {
+
+    ConfigureInput();
+
+    _slhaInputDataStorage->WriteFile( _slhaInputFileName );
+
+    CallExecutable();
+
+    _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
+  
+}
+
 void Fittino::HiggsSignalsSLHAModelCalculator::CallExecutable() {
 
 }
