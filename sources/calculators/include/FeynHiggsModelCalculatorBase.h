@@ -1,10 +1,10 @@
-/* $Id$ */
+/* $Id: FeynHiggsModelCalculator.h 1835 2014-01-30 11:13:34Z sarrazin $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        FeynHiggsModelCalculator.h                                       *
+* File        FeynHiggsModelCalculatorBase.h                                   *
 *                                                                              *
 * Description Wrapper class for FeynHiggs                                      *
 *                                                                              *
@@ -17,13 +17,13 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_FEYNHIGGSMODELCALCULATOR_H
-#define FITTINO_FEYNHIGGSMODELCALCULATOR_H
+#ifndef FITTINO_FEYNHIGGSMODELCALCULATORBASE_H
+#define FITTINO_FEYNHIGGSMODELCALCULATORBASE_H
 
 #include <complex>
 
 #include "Collection.h"
-#include "FeynHiggsModelCalculatorBase.h"
+#include "ModelCalculatorBase.h"
 
 namespace boost {
 
@@ -49,23 +49,24 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Wrapper class for FeynHiggs.
    */
-  class FeynHiggsModelCalculator : public FeynHiggsModelCalculatorBase {
+  class FeynHiggsModelCalculatorBase : public ModelCalculatorBase {
 
     public:
       /*!
        *  Standard constructor.
        */
-      FeynHiggsModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree );
+      FeynHiggsModelCalculatorBase( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
-      ~FeynHiggsModelCalculator();
-                   
+      virtual ~FeynHiggsModelCalculatorBase();
+      
+      virtual void CalculatePredictions();
       virtual void Initialize() const;
-      virtual void ConfigureInput();
 
       /*! \cond UML */
     private:
+      virtual void ConfigureInput() =0;
 
     private:  
       int    _error;
@@ -99,4 +100,4 @@ namespace Fittino {
 
 }
 
-#endif // FITTINO_FEYNHIGGSMODELCALCULATOR_H
+#endif 
