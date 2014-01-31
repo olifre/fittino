@@ -30,7 +30,7 @@
 Fittino::OptimizerBase::OptimizerBase( ModelBase* model, const boost::property_tree::ptree& ptree )
     : _abortCriterium    ( ptree.get<double>( "AbortCriterium",     0.000001 ) ),
       _numberOfIterations( ptree.get<int>   ( "NumberOfIterations", 10000    ) ),
-      AnalysisTool       ( model, ptree.get<int>( "RandomSeed", 0) ) {
+      AnalysisTool       ( model, ptree ) {
 
     _name = ptree.get<std::string>( "Name", "optimizer" );
 
