@@ -20,6 +20,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "boost/property_tree/ptree.hpp"
+
 #include "HECModel.h"
 #include "HiggsSignalsSLHAModelCalculator.h"
 #include "InputException.h"
@@ -27,7 +29,8 @@
 #include "SLHAChi2Contribution.h"
 #include "SLHAPrediction.h"
 
-Fittino::HECModel::HECModel() {
+Fittino::HECModel::HECModel( const boost::property_tree::ptree& ptree)
+    :PhysicsModelBase( ptree ){
 
     /*!
      *  \todo Short-term: Make random starting values for parameters globally configurable.

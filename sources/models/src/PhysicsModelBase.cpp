@@ -70,13 +70,6 @@ Fittino::PhysicsModelBase::PhysicsModelBase( const boost::property_tree::ptree& 
 
 }
 
-Fittino::PhysicsModelBase::PhysicsModelBase() {
-
-    InitializeCalculators();
-    InitializeObservables();
-
-}
-
 Fittino::PhysicsModelBase::~PhysicsModelBase() {
 
 }
@@ -405,76 +398,6 @@ std::vector<Fittino::Observable*>* Fittino::PhysicsModelBase::GetObservableVecto
 
 }
 
-void Fittino::PhysicsModelBase::InitializeCalculators() {
-
-    const Factory factory;
-
-    Configuration *configuration = Configuration::GetInstance();
-    const boost::property_tree::ptree* propertyTree = configuration->GetPropertyTree();
-
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type & v, propertyTree->get_child( "InputFile" ) ) {
-        if ( v.first == "Calculator" ) {
-            std::string calculatorType = v.second.get<std::string>( "<xmlattr>.Type" );
-            if ( calculatorType == "Tree" ) {
-
-                AddCalculator( factory.CreateCalculator( Configuration::TREECALCULATOR, this ) );
-
-                /* \todo The following should be done in the constructor avoiding static_cast and allowing to remove function GetCollectionOfCalculators  */
-                TreeCalculator* treecalc = static_cast<TreeCalculator*>(GetCollectionOfCalculators().At( "TreeCalculator" ));
-                treecalc->SetInputFileName( propertyTree->get<std::string>("InputFile.Sampler.<xmlattr>.InputFileName", "Fittino.old.root" ) );
-                treecalc->SetInputTreeName( propertyTree->get<std::string>("InputFile.Sampler.<xmlattr>.InputTreeName", "Tree" ) );
-                treecalc->OpenInputTree();
-            
-            }
-
-            else if ( calculatorType == "FeynHiggs" ) {
-
-                AddCalculator( factory.CreateCalculator( Configuration::FEYNHIGGSCALCULATOR, this ) );
-
-            }
-
-            else if ( calculatorType == "FeynHiggsSLHA" ) {
-
-                AddCalculator( factory.CreateCalculator( Configuration::FEYNHIGGSSLHACALCULATOR, this ) );
-
-            }
-
-            else if ( calculatorType == "HDim6" ) {
-
-                AddCalculator( factory.CreateCalculator( Configuration::HDIM6CALCULATOR, this ) );
-
-            }
-
-            else if ( calculatorType == "HiggsSignalsHadXS" ) {
-
-                AddCalculator( factory.CreateCalculator( Configuration::HIGGSSIGNALSHADXSCALCULATOR, this ) );
-
-            }
-
-            else if ( calculatorType == "HiggsSignalsSLHA" ) {
-
-                AddCalculator( factory.CreateCalculator( Configuration::HIGGSSIGNALSSLHACALCULATOR, this ) );
-
-            }
-
-            else if ( calculatorType == "SPhenoSLHA" ) {
-
-                AddCalculator( factory.CreateCalculator( Configuration::SPHENOSLHACALCULATOR, this ) );
-
-            }
-
-            else if ( calculatorType == "LHC" ) {
-
-                AddCalculator( factory.CreateCalculator( Configuration::LHCCALCULATOR, this ) );
-
-            }
-
-        }
-
-    }
-
-}
-
 void Fittino::PhysicsModelBase::InitializeCalculators( const boost::property_tree::ptree& ptree ) {
 
   Factory factory;
@@ -484,58 +407,6 @@ void Fittino::PhysicsModelBase::InitializeCalculators( const boost::property_tre
     AddCalculator( factory.CreateCalculator( node.first, this, node.second ) );
 
   }
-
-}
-
-void Fittino::PhysicsModelBase::InitializeObservables() {
-
-    Configuration *configuration = Configuration::GetInstance();
-    const boost::property_tree::ptree* propertyTree = configuration->GetPropertyTree();
-
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type & v, propertyTree->get_child( "InputFile" ) ) {
-        if ( v.first == "Observable" ) {
-
-            std::string name = v.second.get<std::string>( "<xmlattr>.Name" );
-            std::string type = v.second.get<std::string>( "<xmlattr>.PredictionType" );
-            double measuredValue = v.second.get<double>( "<xmlattr>.MeasuredValue" );
-            double measuredError =  v.second.get<double>( "<xmlattr>.Error1" );
-            double bestFitPrediction = v.second.get<double>( "<xmlattr>.BestFitPrediction", 0. );
-
-            std::string plotName = v.second.get<std::string>( "<xmlattr>.PlotName", name );
-            std::string unit = v.second.get<std::string>( "<xmlattr>.Unit", "" );
-            std::string plotUnit = v.second.get<std::string>( "<xmlattr>.PlotUnit", unit );
-            std::string id = v.second.get<std::string>( "<xmlattr>.ID", "" );
-            std::string firstId = v.second.get<std::string>( "<xmlattr>.FirstID", "" );
-            std::string secondId = v.second.get<std::string>( "<xmlattr>.SecondID", "" );
-            std::string blockName = v.second.get<std::string>( "<xmlattr>.BlockName", "" );
-            int columnIndex = v.second.get<int> ( "<xmlattr>.ColumnIndex", 0 );
-            double plotLowerBound = v.second.get<double>( "<xmlattr>.PlotLowerBound", measuredValue - 10.*measuredError );
-            double plotUpperBound = v.second.get<double>( "<xmlattr>.PlotUpperBound", measuredValue + 10.*measuredError );
-
-            if( type == "Simple" ) {
-
-                AddObservable( new Observable( new SimplePrediction( name, name, unit, plotUnit, plotLowerBound , plotUpperBound, _collectionOfCalculators.At( v.second.get<std::string>( "<xmlattr>.CalculatorName" ) ) ), measuredValue, measuredError, bestFitPrediction ) );
-
-            }
-
-            else if ( type == "SLHA" ) {
-
-                if( firstId == "" || secondId == "" ) {
-
-                    AddObservable( new Observable( new SLHAPrediction( name, name, unit, plotUnit, plotLowerBound, plotUpperBound, static_cast<SLHAModelCalculatorBase*>( _collectionOfCalculators.At( v.second.get<std::string>( "<xmlattr>.CalculatorName" ) ) ), blockName, id, columnIndex ), measuredValue, measuredError, bestFitPrediction ) );
-
-                }
-
-                else {
-
-                    AddObservable( new Observable( new SLHAPrediction( name, name, unit, plotUnit, plotLowerBound, plotUpperBound, static_cast<SLHAModelCalculatorBase*>( _collectionOfCalculators.At( v.second.get<std::string>( "<xmlattr>.CalculatorName" ) ) ), blockName, firstId, secondId, columnIndex ), measuredValue, measuredError, bestFitPrediction ) );
-
-                }
-
-            }
-
-        }
-    }
 
 }
 

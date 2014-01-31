@@ -75,27 +75,12 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
         Controller::PrintLogo();
 
 	// Create a data storage depending on the input file format and parse the input file.
-
-        const Factory factory;
-        const DataStorageBase* const fittinoInputDataStorage = factory.CreateDataStorage( Controller::DetermineInputFileFormat() );
-        fittinoInputDataStorage->ReadFile( _inputFileName );
-        delete fittinoInputDataStorage;
            
         boost::property_tree::read_xml( _inputFileName, *_propertyTree, boost::property_tree::xml_parser::trim_whitespace|boost::property_tree::xml_parser::no_comments );
-
-        if ( _propertyTree->get_child("InputFile").count("Tool") != 0 ) {
 
             std::string verbosityLevel = _propertyTree->get<std::string>("InputFile.VerbosityLevel");
 
             Messenger::GetInstance().SetVerbosityLevel( verbosityLevel );
-
-        }
-        else {
-              
-            // Set the level of output verbosity.
-            Messenger::GetInstance().SetVerbosityLevel( Configuration::GetInstance()->GetVerbosityLevel() );
-
-        }
 
     }
     catch ( const InputException& inputException ) {
@@ -112,8 +97,6 @@ void Fittino::Controller::ExecuteFittino() const {
     try {
 
         const Factory factory;
-
-        if ( _propertyTree->get_child("InputFile").count("Tool") != 0 ) {
           
           const boost::property_tree::ptree::value_type& modelNode = *( _propertyTree->get_child("InputFile.Model").begin() );
           std::string modelType = modelNode.first;
@@ -137,34 +120,6 @@ void Fittino::Controller::ExecuteFittino() const {
           delete tool;
           delete model;
 
-        }
-        else {
-
-            ModelBase* model = factory.CreateModel( Configuration::GetInstance()->GetModelType() );
-
-            if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::SAMPLING ) {
-
-                SamplerBase* const sampler = factory.CreateSampler( Configuration::GetInstance()->GetSamplerType(), model, _randomSeed );
-                sampler->PerformAnalysis();
-                delete sampler;
-
-            }
-            else if ( Configuration::GetInstance()->GetExecutionMode() == Configuration::PLOTTING ) {
-
-                PlotterBase* plotter = factory.CreatePlotter( Configuration::GetInstance()->GetPlotterType(), model, _dataFileName, _randomSeed );
-                plotter->PerformAnalysis();
-                delete plotter;
-
-            }
-            else {
-
-                throw ConfigurationException( "Configured execution mode unknown." );
-
-            }
-
-            delete model;
-
-        }
     }
     catch ( const ConfigurationException& configurationException ) {
 

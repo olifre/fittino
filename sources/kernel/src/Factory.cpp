@@ -208,18 +208,6 @@ Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::str
 
 }
 
-
-Fittino::DataStorageBase* const Fittino::Factory::CreateDataStorage( const Fittino::Configuration::FileFormat& fileFormat ) const {
-
-    switch ( fileFormat ) {
-
-        case Configuration::XML:
-            return new XMLDataStorage();
-
-    }
-
-}
-
 Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type, const boost::property_tree::ptree& ptree ) const {
 
     if ( type == "PhysicsModel" ) {
@@ -230,26 +218,6 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
     else if ( type == "RosenbrockModel" ) {
                   
         return new RosenbrockModel( ptree );
-
-    }
-
-}
-
-Fittino::ModelBase* const Fittino::Factory::CreateModel( const Fittino::Configuration::ModelType& modelType ) const {
-
-    switch ( modelType ) {
-
-        case Configuration::HEC:
-
-#if defined(HIGGSBOUNDS_FOUND) && defined(HIGGSSIGNALS_FOUND)
-
-            return new HECModel();
-
-#else
-
-            throw ConfigurationException( "Trying to use HECModel but Fittino was built without HIGGSBOUNDS and/or HIGGSSIGNALS." );
-
-#endif
 
     }
 

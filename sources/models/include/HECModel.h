@@ -21,6 +21,7 @@
 #define FITTINO_HECMODEL_H
 
 #include "PhysicsModelBase.h"
+#include "PtreeForwardDeclaration.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -37,7 +38,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                        HECModel();
+      HECModel( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

@@ -59,11 +59,6 @@ namespace Fittino {
        */
                                                      PhysicsModelBase( const boost::property_tree::ptree& ptree );
       /*!
-       *  Standard constructor.
-       */
-                                                     PhysicsModelBase();
-
-      /*!
        *  Standard destructor.
        */
                                                      ~PhysicsModelBase();
@@ -118,8 +113,6 @@ namespace Fittino {
     private:
       virtual double                                 Evaluate();
 
-      void                                           InitializeCalculators();
-      void                                           InitializeObservables();
       void                                           InitializeCalculators( const boost::property_tree::ptree& ptree );
       void                                           InitializeObservables( const boost::property_tree::ptree& ptree );
       void                                           InitializeCovarianceMatrix( const boost::property_tree::ptree& ptree );
