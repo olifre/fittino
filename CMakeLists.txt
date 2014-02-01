@@ -63,6 +63,12 @@ FIND_PACKAGE(HIGGSSIGNALS)
 # SET(FEYNHIGGS_INSTALLATION_PATH <lhapdf/installation/path>)
 FIND_PACKAGE(FEYNHIGGS)
 
+IF( NOT DEFINED FEYNHIGGS_QUAD ) 
+
+    SET( FEYNHIGGS_QUAD TRUE )
+
+ENDIF()
+
 # Optional: Specify the installation path of "SLHAea". The default path is "../slhaea".
 # SET(SLHAEA_INSTALLATION_PATH <slhaea/installation/path>)
 FIND_PACKAGE(SLHAEA)

@@ -28,13 +28,23 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 AUX_SOURCE_DIRECTORY(src sources)
 
-IF(FEYNHIGGS_FOUND)
+IF( FEYNHIGGS_FOUND )
+
   INCLUDE_DIRECTORIES(${FEYNHIGGS_INCLUDE_DIRS})  
-ELSE(FEYNHIGGS_FOUND)
+
+  IF( FEYNHIGGS_QUAD )
+
+      ADD_DEFINITIONS( -DQUAD=1 )
+
+  ENDIF()
+
+ELSE()
+
   LIST(REMOVE_ITEM sources "src/FeynHiggsModelCalculatorBase.cpp")
   LIST(REMOVE_ITEM sources "src/FeynHiggsModelCalculator.cpp")
   LIST(REMOVE_ITEM sources "src/FeynHiggsSLHAModelCalculator.cpp")
-ENDIF(FEYNHIGGS_FOUND)
+
+ENDIF()
 
 IF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND)
   LIST(REMOVE_ITEM sources "src/HiggsSignalsSLHAModelCalculator.cpp")
