@@ -45,7 +45,6 @@
 #include "SimulatedAnnealingOptimizer.h"
 #include "SLHAeaSLHADataStorage.h"
 #include "SummaryPlotter.h"
-#include "XMLDataStorage.h"
 #include "CovariantSampler.h"
 #include "CorrelatedSampler.h"
 #include "NewCorrelatedSampler.h"
