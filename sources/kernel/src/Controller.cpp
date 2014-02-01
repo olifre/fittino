@@ -10,13 +10,13 @@
 *                                                                              *
 * Authors     Philip  Bechtle     <philip.bechtle@desy.de>                     *
 *             Klaus   Desch       <desch@physik.uni-bonn.de>                   *
-*	      Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
-*	      Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
+*             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+*             Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -25,20 +25,16 @@
 #include <cstdlib>
 #include <iostream>
 
-#include <boost/foreach.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
-#include "Configuration.h"
+#include "AnalysisTool.h"
 #include "ConfigurationException.h"
 #include "Controller.h"
-#include "DataStorageBase.h"
 #include "Factory.h"
 #include "InputException.h"
 #include "Messenger.h"
 #include "ModelBase.h"
-#include "PlotterBase.h"
-#include "SamplerBase.h"
 
 Fittino::Controller* Fittino::Controller::GetInstance() {
 
@@ -56,8 +52,8 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
     try {
 
-	// If Fittino is called without options or arguments print a help text with further
-	// instructions and exit.
+        // If Fittino is called without options or arguments print a help text with further
+        // instructions and exit.
 
         if ( argc == 1 ) {
 
@@ -70,17 +66,21 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
         Controller::HandleOptions( argc, argv );
 
-	// Print a welcome logo.
+        // Print a welcome logo.
 
         Controller::PrintLogo();
 
-	// Create a data storage depending on the input file format and parse the input file.
-           
-        boost::property_tree::read_xml( _inputFileName, *_propertyTree, boost::property_tree::xml_parser::trim_whitespace|boost::property_tree::xml_parser::no_comments );
+        // A given XML input file is parsed, and the configuration items are stored in the input
+        // property tree.
 
-            std::string verbosityLevel = _propertyTree->get<std::string>("InputFile.VerbosityLevel");
+        Controller::CheckInputFileFormat();
 
-            Messenger::GetInstance().SetVerbosityLevel( verbosityLevel );
+        boost::property_tree::read_xml( _inputFileName, *_inputPtree, boost::property_tree::xml_parser::trim_whitespace | boost::property_tree::xml_parser::no_comments );
+
+        // Set the verbosity level of the output text.
+
+        std::string verbosityLevel = _inputPtree->get<std::string>( "InputFile.VerbosityLevel" );
+        Messenger::GetInstance().SetVerbosityLevel( verbosityLevel );
 
     }
     catch ( const InputException& inputException ) {
@@ -97,28 +97,25 @@ void Fittino::Controller::ExecuteFittino() const {
     try {
 
         const Factory factory;
-          
-          const boost::property_tree::ptree::value_type& modelNode = *( _propertyTree->get_child("InputFile.Model").begin() );
-          std::string modelType = modelNode.first;
-          const boost::property_tree::ptree& modelTree = modelNode.second;
-          ModelBase* model = factory.CreateModel( modelType, modelTree );
-    
-          const boost::property_tree::ptree::value_type& toolNode = *( _propertyTree->get_child("InputFile.Tool").begin() );
-          std::string toolType = toolNode.first;
-          const boost::property_tree::ptree& toolTree = toolNode.second;
-          AnalysisTool* tool = factory.CreateAnalysisTool( toolType, model, toolTree );
-            
-          tool->PerformAnalysis();
 
-          boost::property_tree::ptree outputPtree;
-          outputPtree.put( "InputFile.VerbosityLevel", _propertyTree->get<std::string>("InputFile.VerbosityLevel") );
-          outputPtree.put_child( "InputFile.Model." + modelType, model->GetPropertyTree() );
-          outputPtree.put_child( "InputFile.Tool." + toolType , tool->GetPropertyTree() );
-          boost::property_tree::xml_writer_settings<char> settings('\t', 1);
-          write_xml( "FittinoInterfaceFile.xml", outputPtree, std::locale(), settings );
-          
-          delete tool;
-          delete model;
+        const boost::property_tree::ptree::value_type& modelNode = *( _inputPtree->get_child( "InputFile.Model" ).begin() );
+        std::string modelType = modelNode.first;
+        const boost::property_tree::ptree& modelTree = modelNode.second;
+        ModelBase* model = factory.CreateModel( modelType, modelTree );
+
+        const boost::property_tree::ptree::value_type& toolNode = *( _inputPtree->get_child( "InputFile.Tool" ).begin() );
+        std::string toolType = toolNode.first;
+        const boost::property_tree::ptree& toolTree = toolNode.second;
+        AnalysisTool* tool = factory.CreateAnalysisTool( toolType, model, toolTree );
+
+        tool->PerformAnalysis();
+
+        _outputPtree->put( "InputFile.VerbosityLevel", _inputPtree->get<std::string>( "InputFile.VerbosityLevel" ) );
+        _outputPtree->put_child( "InputFile.Model." + modelType, model->GetPropertyTree() );
+        _outputPtree->put_child( "InputFile.Tool." + toolType , tool->GetPropertyTree() );
+
+        delete tool;
+        delete model;
 
     }
     catch ( const ConfigurationException& configurationException ) {
@@ -132,21 +129,26 @@ void Fittino::Controller::ExecuteFittino() const {
 
 void Fittino::Controller::TerminateFittino() const {
 
+    boost::property_tree::xml_writer_settings<char> settings( '\t', 1 );
+    boost::property_tree::write_xml( "FittinoInterfaceFile.xml", *_outputPtree, std::locale(), settings );
+
 }
 
 Fittino::Controller* Fittino::Controller::_instance = 0;
 
 Fittino::Controller::Controller()
-        : _randomSeed( 0 ),
-          _dataFileName( "" ),
-          _inputFileName( "" ),
-          _propertyTree( new boost::property_tree::ptree() ) {
+    : _randomSeed( 0 ),
+      _dataFileName( "" ),
+      _inputFileName( "" ),
+      _inputPtree( new boost::property_tree::ptree() ),
+      _outputPtree( new boost::property_tree::ptree() ) {
 
 }
 
 Fittino::Controller::~Controller() {
 
-  delete _propertyTree;
+    delete _inputPtree;
+    delete _outputPtree;
 
 }
 
@@ -240,21 +242,16 @@ void Fittino::Controller::PrintLogo() const {
 
 }
 
-const Fittino::Configuration::FileFormat Fittino::Controller::DetermineInputFileFormat() const {
+void Fittino::Controller::CheckInputFileFormat() const {
 
     try {
 
-        if ( _inputFileName.length() < 5 ) {
+        if ( _inputFileName.length() == 0 ) {
 
-            throw InputException( "Invalid input file name. The input file has to be specified with the option flag -i/--input-file and its suffix must be .xml (XML format)." );
-
-        }
-        else if ( !_inputFileName.compare( _inputFileName.length() - 4, 4, ".xml" ) ) {
-
-            return Configuration::XML;
+            throw InputException( "The input file has to be specified with the option flag -i/--input-file" );
 
         }
-        else {
+        else if ( _inputFileName.compare( _inputFileName.length() - 4, 4, ".xml" ) ) {
 
             throw InputException( "Input file suffix must be .xml (XML format)." );
 
