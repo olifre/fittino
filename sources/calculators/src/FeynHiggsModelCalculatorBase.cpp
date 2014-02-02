@@ -105,7 +105,7 @@ void Fittino::FeynHiggsModelCalculatorBase::Calculate() {
 
     ComplexType couplings[ncouplings], couplingsms[ncouplingsms];
     RealType    gammas[ngammas], gammasms[ngammasms];
-    int    fast  = 0;
+    int    fast  = 1;
 
     FHCouplings( &_error, couplings, couplingsms, gammas, gammasms, fast );
     

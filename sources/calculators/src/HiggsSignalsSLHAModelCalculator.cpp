@@ -224,10 +224,10 @@ double Fittino::HiggsSignalsSLHAModelCalculator::CalculateSinglehUncertainty( do
     }
     else {
 
-        singlehUncertainty =   ( g2hgg * __theory_collidersfunctions_MOD_lhc8_rh_gg( &massh ) * dhgg
-                             +   g2hbb * __theory_collidersfunctions_MOD_lhc8_rh_bb( &massh ) * dhbb )
-                             / ( g2hgg * __theory_collidersfunctions_MOD_lhc8_rh_gg( &massh )
-                             +   g2hbb * __theory_collidersfunctions_MOD_lhc8_rh_bb( &massh ) );
+      //        singlehUncertainty =   ( g2hgg * __theory_collidersfunctions_MOD_lhc8_rh_gg( &massh ) * dhgg
+      //                             +   g2hbb * __theory_collidersfunctions_MOD_lhc8_rh_bb( &massh ) * dhbb )
+      //                             / ( g2hgg * __theory_collidersfunctions_MOD_lhc8_rh_gg( &massh )
+      //                             +   g2hbb * __theory_collidersfunctions_MOD_lhc8_rh_bb( &massh ) );
 
     }
 
@@ -451,7 +451,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CallFunction() {
 
     system( "rm HS-output.slha" );
 
-    __io_MOD_higgssignals_create_slha_output_default( &_detailed );
+    //    __io_MOD_higgssignals_create_slha_output_default( &_detailed );
 
     // Calculate additional HiggsSignals predictions.
 

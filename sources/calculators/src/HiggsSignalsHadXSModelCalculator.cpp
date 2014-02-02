@@ -71,9 +71,7 @@ Fittino::HiggsSignalsHadXSModelCalculator::HiggsSignalsHadXSModelCalculator( con
     AddQuantity( new SimplePrediction( "normSM_Gamma_hTotal", "", _normSM_Gamma_hTotal ) );
     AddQuantity( new SimplePrediction( "normSM_xs_h"        , "", _normSM_xs_h         ) );
     AddQuantity( new SimplePrediction( "HS_weight_xs_ggh"   , "", _weight_xs_ggh       ) );
-    AddQuantity( new SimplePrediction( "HS_weight_xs_ggh_2" , "", _weight_xs_ggh_2     ) );
     AddQuantity( new SimplePrediction( "HS_weight_xs_bbh"   , "", _weight_xs_bbh       ) );
-    AddQuantity( new SimplePrediction( "HS_weight_xs_bbh_2" , "", _weight_xs_bbh_2     ) );
     AddQuantity( new SimplePrediction( "HS_chi2"            , "", _chi2                ) );  
     AddQuantity( new SimplePrediction( "HS_chi2_mass_h"     , "", _chi2_mass_h         ) );
     AddQuantity( new SimplePrediction( "HS_chi2_mu"         , "", _chi2_mu             ) );
@@ -131,8 +129,6 @@ void Fittino::HiggsSignalsHadXSModelCalculator::CalculatePredictions() {
     _SM_Gamma_hTotal = smgamma_h_                                ( &_mass_h );
     _SM_xs_ggh       = smcs_lhc8_gg_h_                           ( &_mass_h );
     _SM_xs_bbh       = smcs_lhc8_bb_h_                           ( &_mass_h ); 
-    _weight_xs_ggh_2 = __theory_collidersfunctions_MOD_lhc8_rh_gg( &_mass_h ); 
-    _weight_xs_bbh_2 = __theory_collidersfunctions_MOD_lhc8_rh_bb( &_mass_h ); 
 
     _SM_Gamma_hss     = _SM_Gamma_hTotal * _SM_BR_hss;
     _SM_Gamma_hcc     = _SM_Gamma_hTotal * _SM_BR_hcc;

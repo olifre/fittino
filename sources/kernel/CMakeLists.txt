@@ -86,6 +86,19 @@ IF ( GFORTRANLIB_FOUND )
 
     TARGET_LINK_LIBRARIES( fittino ${GFORTRAN_LIBRARIES} )
 
+ENDIF()
+
+IF ( IFORTLIB_FOUND )
+
+    TARGET_LINK_LIBRARIES( fittino ${IFORT_LIBRARIES} )
+
+ENDIF()
+
+IF ( GFORTRANLIB_FOUND OR IFORTLIB_FOUND )
+
+    #SET(FEYNHIGGS_LINK_FLAGS "-L/afs/desy.de/SL/6/x86_64/opt/intel/2013/composer_xe_2013.5.192/compiler/lib/intel64 -lifcore -lifport -lsvml")
+    # SET( link_flags "${link_flags} ${FEYNHIGGS_LINK_FLAGS}" ) 
+
     IF( FEYNHIGGS_FOUND )
 
         ADD_DEFINITIONS( -DFEYNHIGGS )

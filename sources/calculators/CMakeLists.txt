@@ -47,15 +47,18 @@ ELSE()
 ENDIF()
 
 IF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND)
+
   LIST(REMOVE_ITEM sources "src/HiggsSignalsSLHAModelCalculator.cpp")
   LIST(REMOVE_ITEM sources "src/HDim6ModelCalculator.cpp")
   LIST(REMOVE_ITEM sources "src/HiggsSignalsHadXSModelCalculator.cpp")
+
 ENDIF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND)
 
 IF(NOT LHAPDF_FOUND OR NOT GSL_FOUND)
-  LIST(REMOVE_ITEM sources "src/HDim6ModelCalculator.cpp")
-ENDIF()
 
+  LIST(REMOVE_ITEM sources "src/HDim6ModelCalculator.cpp")
+
+ENDIF()
 
 ADD_LIBRARY(calculators ${sources})
 
@@ -71,8 +74,4 @@ IF(GSL_FOUND)
     SET(compile_flags "${compile_flags} ${GSL_COMPILE_FLAGS}")
 ENDIF()
 
-
 SET_TARGET_PROPERTIES(calculators PROPERTIES COMPILE_FLAGS ${compile_flags})
-
-
-

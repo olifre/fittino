@@ -41,6 +41,7 @@ SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
 FIND_PACKAGE( ROOT 5.20.00 REQUIRED )
 
 FIND_PACKAGE( GFORTRANLIB )
+FIND_PACKAGE( IFORTLIB )
 
 # Specify the installation path of "Boost" which is required by SLHAea. There is only need to change
 # this when the installation path differs from the default.

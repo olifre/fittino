@@ -137,9 +137,7 @@ namespace Fittino {
       double _SM_xs_ggh;
       double _SM_xs_h;
       double _weight_xs_bbh;
-      double _weight_xs_bbh_2;
       double _weight_xs_ggh;
-      double _weight_xs_ggh_2;
       int _mode;
       int _nobs;
 
