@@ -49,9 +49,10 @@ IF( ROOT_CONFIG_EXECUTABLE )
     STRING( REGEX REPLACE "^[0-9]+\\.([0-9][0-9])+\\/[0-9][0-9]+.*" "\\1" ROOT_VERSION_MINOR "${ROOT_VERSION}" )
     STRING( REGEX REPLACE "^[0-9]+\\.[0-9][0-9]+\\/([0-9][0-9]+)"   "\\1" ROOT_VERSION_PATCH "${ROOT_VERSION}" )
 
-    SET( ROOT_VERSION_STRING "${ROOT_VERSION_MAJOR}.${ROOT_VERSION_MINOR}.${ROOT_VERSION_PATCH}"                                                                     ) 
-    SET( ROOT_COMPILE_FLAGS  "${ROOT_CFLAGS}"                                                                                                                        )
+    SET( ROOT_VERSION_STRING "${ROOT_VERSION_MAJOR}.${ROOT_VERSION_MINOR}.${ROOT_VERSION_PATCH}" ) 
+    SET( ROOT_COMPILE_FLAGS  "${ROOT_CFLAGS}" )
     SET( ROOT_LINK_FLAGS     "${ROOT_LIBS} -lFoam -lMinuit -lMinuit2 -lRooFit -lRooFitCore -lMathMore -lXMLParser -lTreePlayer -lMLP -lXMLIO -lTMVA ${ROOT_LDFLAGS}" )
+    SET( ROOT_LIBRARY_DIRS   "${ROOT_LIBDIR}" )
 
 ENDIF()
 

@@ -67,7 +67,9 @@ GET_PROPERTY(compile_flags TARGET calculators PROPERTY COMPILE_FLAGS)
 SET(compile_flags "${compile_flags} ${ROOT_COMPILE_FLAGS}")
 
 IF(LHAPDF_FOUND)
-    SET(compile_flags "${compile_flags} ${LHAPDF_COMPILE_FLAGS}")
+
+    INCLUDE_DIRECTORIES(${LHAPDF_INCLUDE_DIRS})
+
 ENDIF()
 
 IF(GSL_FOUND)

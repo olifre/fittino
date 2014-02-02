@@ -18,6 +18,12 @@
 #                                                                              #
 ################################################################################
 
+IF( ROOT_FOUND )
+
+    LINK_DIRECTORIES( ${ROOT_LIBRARY_DIRS} )
+
+ENDIF()
+
 AUX_SOURCE_DIRECTORY( ./src sources )
 
 ADD_EXECUTABLE( fittino ${sources} )
@@ -65,14 +71,14 @@ ENDIF()
 IF( GSL_FOUND )
 
     ADD_DEFINITIONS( -DGSL )
-    SET( link_flags "${link_flags} ${GSL_LINK_FLAGS}" )
+    TARGET_LINK_LIBRARIES(fittino ${GSL_LIBRARIES})
 
 ENDIF()
 
 IF( LHAPDF_FOUND )
 
     ADD_DEFINITIONS( -DLHAPDF_FOUND )
-    SET( link_flags "${link_flags} ${LHAPDF_LINK_FLAGS}" )
+    TARGET_LINK_LIBRARIES( fittino ${LHAPDF_LIBRARIES} )  
 
 ENDIF( LHAPDF_FOUND )
 
@@ -95,9 +101,6 @@ IF ( IFORTLIB_FOUND )
 ENDIF()
 
 IF ( GFORTRANLIB_FOUND OR IFORTLIB_FOUND )
-
-    #SET(FEYNHIGGS_LINK_FLAGS "-L/afs/desy.de/SL/6/x86_64/opt/intel/2013/composer_xe_2013.5.192/compiler/lib/intel64 -lifcore -lifport -lsvml")
-    # SET( link_flags "${link_flags} ${FEYNHIGGS_LINK_FLAGS}" ) 
 
     IF( FEYNHIGGS_FOUND )
 

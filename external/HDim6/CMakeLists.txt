@@ -17,9 +17,10 @@
 #                                                                              #
 ################################################################################
 
+INCLUDE_DIRECTORIES(${GSL_INCLUDE_DIRS}   )
+INCLUDE_DIRECTORIES(${LHAPDF_INCLUDE_DIRS})
 
 AUX_SOURCE_DIRECTORY(. sources)
 
 ADD_LIBRARY(HDim6 ${sources})
 
-SET_TARGET_PROPERTIES( HDim6 PROPERTIES COMPILE_FLAGS "${GSL_COMPILE_FLAGS} ${LHAPDF_COMPILE_FLAGS}" )

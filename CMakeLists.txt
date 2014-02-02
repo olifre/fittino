@@ -35,6 +35,11 @@ SET(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
 # Specify user-defined modules required by Fittino.
 SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
 
+# RPATH settings
+SET( CMAKE_SKIP_BUILD_RPATH           FALSE )
+SET( CMAKE_BUILD_WITH_INSTALL_RPATH   FALSE ) 
+SET( CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE )
+
 # Specify the directory of the executable "root-config". By default, it is assumed that the
 # environment variable ROOTSYS is set and that the directory is "ROOTSYS/bin/".
 # SET(ROOT_CONFIG_DIR)
