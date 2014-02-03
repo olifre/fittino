@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -27,17 +27,17 @@
 #include "PredictionBase.h"
 #include "Quantity.h"
 
-Fittino::PlotterBase::PlotterBase( ModelBase* model, std::string& dataFileName, int randomSeed )
-        : _dataFileName( dataFileName ),
-          _canvas( 0 ),
-          _dataFile( TFile::Open( _dataFileName.c_str(), "READ" ) ),
-          _tree( ( TTree* )_dataFile->Get( "Tree" ) ),
-          //_tree( (TTree*)_dataFile->Get( "markovChain" ) ),
-          AnalysisTool( model, randomSeed ) {
+Fittino::PlotterBase::PlotterBase( ModelBase* model, const boost::property_tree::ptree& ptree )
+    : _dataFileName( ptree.get<std::string>( "DataFileName", "Fittino.out.root" ) ),
+      _canvas( 0 ),
+      _dataFile( TFile::Open( _dataFileName.c_str(), "READ" ) ),
+      _tree( ( TTree* )_dataFile->Get( "Tree" ) ),
+      //_tree( (TTree*)_dataFile->Get( "markovChain" ) ),
+      AnalysisTool( model, ptree ) {
 
     _name = "basic plotter";
 
-    _leafVector = std::vector<float>( _tree->GetListOfLeaves()->GetSize() );
+    _leafVector = std::vector<double>( _tree->GetListOfLeaves()->GetSize() );
 
     Int_t font = 42; // Helvetica
     Double_t tsize = 0.04;
@@ -86,7 +86,7 @@ Fittino::PlotterBase::PlotterBase( ModelBase* model, std::string& dataFileName, 
     for ( unsigned int i = 0; i < _quantityVector.size(); ++i ) {
 
         _tree->SetBranchAddress( _quantityVector.at( i )->GetName().c_str(), &_leafVector.at( i ) );
-        _leafMap.insert( std::pair<std::string,int>( _quantityVector.at( i )->GetName().c_str(), i ) );
+        _leafMap.insert( std::pair<std::string, int>( _quantityVector.at( i )->GetName().c_str(), i ) );
 
     }
 

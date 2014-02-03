@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -39,8 +39,8 @@
 #include "Quantity.h"
 #include "SummaryPlotter.h"
 
-Fittino::SummaryPlotter::SummaryPlotter( ModelBase* model, std::string& dataFileName, int randomSeed )
-    : PlotterBase( model, dataFileName, randomSeed ) {
+Fittino::SummaryPlotter::SummaryPlotter( ModelBase* model, const boost::property_tree::ptree& ptree )
+    : PlotterBase( model, ptree ) {
 
     _name = "summary plotter";
 
@@ -49,7 +49,7 @@ Fittino::SummaryPlotter::SummaryPlotter( ModelBase* model, std::string& dataFile
     gROOT->SetStyle( "FITTINO" );
     gROOT->ForceStyle();
 
-    _pad = (TPad*)_canvas->cd();
+    _pad = ( TPad* )_canvas->cd();
     _pad->SetTicks( 1, 1 );
     //_pad->SetTopMargin( 0.03 );
     _pad->SetTopMargin( 0.14 );
@@ -234,7 +234,7 @@ void Fittino::SummaryPlotter::Execute() {
 
             _tree->GetEntry( iEntry );
 
-            if ( ( chi2 - lowestChi2 ) <= 4. &&  ( chi2 - lowestChi2 ) > 1.) {
+            if ( ( chi2 - lowestChi2 ) <= 4. &&  ( chi2 - lowestChi2 ) > 1. ) {
 
                 histogram.SetBinContent( histogram.ProjectionX()->FindBin( _leafVector[iQuantity] ), 2 * ( _activeQuantityVector.size() - iActiveQuantity ), 0.8 );
 
@@ -249,7 +249,7 @@ void Fittino::SummaryPlotter::Execute() {
         _tree->GetEntry( bestFitEntry );
         xBestFitValue[iActiveQuantity] = TMath::Abs( _leafVector[iQuantity] + 1 ) - 1;
         yBestFitValue[iActiveQuantity] = 2 * ( _activeQuantityVector.size() - iActiveQuantity ) - 0.5;
- 
+
     }
 
     // Set all other bins to zero.
@@ -273,7 +273,7 @@ void Fittino::SummaryPlotter::Execute() {
     //BestFitValue->SetMarkerSize( 0.6 );
     BestFitValue->SetMarkerColor( 10 );
 
-    TGraph* BestFitValue2 = (TGraph*)BestFitValue->Clone();
+    TGraph* BestFitValue2 = ( TGraph* )BestFitValue->Clone();
     BestFitValue2->SetMarkerStyle( 25 );
     BestFitValue2->SetMarkerSize( 2. );
     //BestFitValue2->SetMarkerSize( 0.6 );
@@ -310,7 +310,7 @@ void Fittino::SummaryPlotter::Execute() {
     text.SetTextAngle( 0 );
 
     for ( int iLabel = 0; iLabel < _activeQuantityVector.size(); ++iLabel ) {
-        
+
         std::cout << iLabel << " " << axisNames[iLabel] << std::endl;
 
         y = histogram.GetYaxis()->GetBinCenter( 2 * ( iLabel + 1 ) );
@@ -342,24 +342,24 @@ void Fittino::SummaryPlotter::Execute() {
     BestFitValueMarker.SetMarkerColor( kRed );
 
     TLegend legend = TLegend( 0.05, 0.88, 0.32, 0.97 );
-    legend.SetShadowColor(0);
-    legend.SetBorderSize(1);
-    legend.SetLineColor(0);
+    legend.SetShadowColor( 0 );
+    legend.SetBorderSize( 1 );
+    legend.SetLineColor( 0 );
     Int_t font = 42; // Helvetica
     Double_t tsize = 0.04;
-    legend.SetTextSize(tsize);
-    legend.SetTextFont(font);
-    legend.SetFillColor(0);
+    legend.SetTextSize( tsize );
+    legend.SetTextFont( font );
+    legend.SetFillColor( 0 );
     legend.AddEntry( &BestFitValueMarker, "Best fit value", "p" );
     legend.AddEntry( &line, "SM expectation", "l" );
 
     TLegend legend2 = TLegend( 0.42, 0.88, 0.69, 0.97 );
-    legend2.SetShadowColor(0);
-    legend2.SetBorderSize(1);
-    legend2.SetLineColor(0);
-    legend2.SetTextSize(tsize);
-    legend2.SetTextFont(font);
-    legend2.SetFillColor(0);
+    legend2.SetShadowColor( 0 );
+    legend2.SetBorderSize( 1 );
+    legend2.SetLineColor( 0 );
+    legend2.SetTextSize( tsize );
+    legend2.SetTextFont( font );
+    legend2.SetFillColor( 0 );
     legend2.AddEntry( &histogram2, "68 % CL", "f" );
     legend2.AddEntry( &histogram, "95 % CL", "f" );
 

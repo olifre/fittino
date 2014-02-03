@@ -48,6 +48,41 @@ Fittino::Controller* Fittino::Controller::GetInstance() {
 
 }
 
+void Fittino::Controller::ExecuteFittino() const {
+
+    try {
+
+        const Factory factory;
+
+        const boost::property_tree::ptree::value_type& modelNode = *( _inputPtree->get_child( "InputFile.Model" ).begin() );
+        std::string modelType = modelNode.first;
+        const boost::property_tree::ptree& modelTree = modelNode.second;
+        ModelBase* model = factory.CreateModel( modelType, modelTree );
+
+        const boost::property_tree::ptree::value_type& toolNode = *( _inputPtree->get_child( "InputFile.Tool" ).begin() );
+        std::string toolType = toolNode.first;
+        const boost::property_tree::ptree& toolTree = toolNode.second;
+        AnalysisTool* tool = factory.CreateAnalysisTool( toolType, model, toolTree );
+
+        tool->PerformAnalysis();
+
+        _outputPtree->put( "InputFile.VerbosityLevel", _inputPtree->get<std::string>( "InputFile.VerbosityLevel" ) );
+        _outputPtree->put_child( "InputFile.Model." + modelType, model->GetPropertyTree() );
+        _outputPtree->put_child( "InputFile.Tool." + toolType , tool->GetPropertyTree() );
+
+        delete tool;
+        delete model;
+
+    }
+    catch ( const ConfigurationException& configurationException ) {
+
+        std::cout << "\n" << configurationException.what() << "\n" << std::endl;
+        exit( EXIT_FAILURE );
+
+    }
+
+}
+
 void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
     try {
@@ -92,41 +127,6 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
 }
 
-void Fittino::Controller::ExecuteFittino() const {
-
-    try {
-
-        const Factory factory;
-
-        const boost::property_tree::ptree::value_type& modelNode = *( _inputPtree->get_child( "InputFile.Model" ).begin() );
-        std::string modelType = modelNode.first;
-        const boost::property_tree::ptree& modelTree = modelNode.second;
-        ModelBase* model = factory.CreateModel( modelType, modelTree );
-
-        const boost::property_tree::ptree::value_type& toolNode = *( _inputPtree->get_child( "InputFile.Tool" ).begin() );
-        std::string toolType = toolNode.first;
-        const boost::property_tree::ptree& toolTree = toolNode.second;
-        AnalysisTool* tool = factory.CreateAnalysisTool( toolType, model, toolTree );
-
-        tool->PerformAnalysis();
-
-        _outputPtree->put( "InputFile.VerbosityLevel", _inputPtree->get<std::string>( "InputFile.VerbosityLevel" ) );
-        _outputPtree->put_child( "InputFile.Model." + modelType, model->GetPropertyTree() );
-        _outputPtree->put_child( "InputFile.Tool." + toolType , tool->GetPropertyTree() );
-
-        delete tool;
-        delete model;
-
-    }
-    catch ( const ConfigurationException& configurationException ) {
-
-        std::cout << "\n" << configurationException.what() << "\n" << std::endl;
-        exit( EXIT_FAILURE );
-
-    }
-
-}
-
 void Fittino::Controller::TerminateFittino() const {
 
     boost::property_tree::xml_writer_settings<char> settings( '\t', 1 );
@@ -137,9 +137,7 @@ void Fittino::Controller::TerminateFittino() const {
 Fittino::Controller* Fittino::Controller::_instance = 0;
 
 Fittino::Controller::Controller()
-    : _randomSeed( 0 ),
-      _dataFileName( "" ),
-      _inputFileName( "" ),
+    : _inputFileName( "" ),
       _inputPtree( new boost::property_tree::ptree() ),
       _outputPtree( new boost::property_tree::ptree() ) {
 
@@ -152,6 +150,31 @@ Fittino::Controller::~Controller() {
 
 }
 
+void Fittino::Controller::CheckInputFileFormat() const {
+
+    try {
+
+        if ( _inputFileName.length() == 0 ) {
+
+            throw InputException( "The input file has to be specified with the option flag -i/--input-file" );
+
+        }
+        else if ( _inputFileName.compare( _inputFileName.length() - 4, 4, ".xml" ) ) {
+
+            throw InputException( "Input file suffix must be .xml (XML format)." );
+
+        }
+
+    }
+    catch ( const InputException& inputException ) {
+
+        std::cout << "\n" << inputException.what() << "\n" << std::endl;
+        exit( EXIT_FAILURE );
+
+    }
+
+}
+
 void Fittino::Controller::HandleOptions( int argc, char** argv ) {
 
     // Use getopt() to handle given command line options. For more informations on getopt() have a
@@ -161,8 +184,6 @@ void Fittino::Controller::HandleOptions( int argc, char** argv ) {
 
         {"help",       no_argument,       0, 'h'},
         {"input-file", required_argument, 0, 'i'},
-        {"data-file",  required_argument, 0, 'd'},
-        {"seed",       required_argument, 0, 's'},
         {0,            0,                 0,  0 }
 
     };
@@ -185,14 +206,6 @@ void Fittino::Controller::HandleOptions( int argc, char** argv ) {
 
             case 'i':
                 _inputFileName = std::string( optarg );
-                continue;
-
-            case 'd':
-                _dataFileName = std::string( optarg );
-                continue;
-
-            case 's':
-                _randomSeed = atoi( optarg );
                 continue;
 
             case ':':
@@ -222,11 +235,6 @@ void Fittino::Controller::PrintHelp() const {
     messenger << Messenger::ALWAYS << "      Fittino uses the input file FILE. The input file suffix must" << Messenger::Endl;
     messenger << Messenger::ALWAYS << "      be .xml (XML format)." << Messenger::Endl;
     messenger << Messenger::ALWAYS << "      Several example input files can be found at fittino2/input." << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  -d, --data-file=FILE" << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "      Fittino uses the data file FILE. The data file suffix must" << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "      be .root (ROOT format)." << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  -s, --seed=SEED" << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "      Fittino uses the given random number generator seed." << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
 }
@@ -239,30 +247,5 @@ void Fittino::Controller::PrintLogo() const {
     messenger << Messenger::ALWAYS << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  Welcome to Fittino" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
-
-}
-
-void Fittino::Controller::CheckInputFileFormat() const {
-
-    try {
-
-        if ( _inputFileName.length() == 0 ) {
-
-            throw InputException( "The input file has to be specified with the option flag -i/--input-file" );
-
-        }
-        else if ( _inputFileName.compare( _inputFileName.length() - 4, 4, ".xml" ) ) {
-
-            throw InputException( "Input file suffix must be .xml (XML format)." );
-
-        }
-
-    }
-    catch ( const InputException& inputException ) {
-
-        std::cout << "\n" << inputException.what() << "\n" << std::endl;
-        exit( EXIT_FAILURE );
-
-    }
 
 }

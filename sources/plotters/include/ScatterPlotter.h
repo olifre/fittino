@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -39,11 +39,11 @@ namespace Fittino {
       /*!
        *  Constructor documentation.
        */
-      ScatterPlotter( ModelBase* model, std::string& dataFileName, int randomSeed );
+      ScatterPlotter( ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
-                   ~ScatterPlotter();
+      ~ScatterPlotter();
       //void       PerformAnalysis();
 
     protected:

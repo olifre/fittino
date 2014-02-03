@@ -23,7 +23,7 @@
 #define FITTINO_FACTORY_H
 
 #include "Collection.h"
-#include "Configuration.h"
+#include "PtreeForwardDeclaration.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -32,16 +32,14 @@ namespace Fittino {
 
   class AnalysisTool;
   class Chi2ContributionBase;
-  class Configuration;
-  class DataStorageBase;
+  class LHCModelCalculator;
   class ModelBase;
   class ModelCalculatorBase;
+  class Observable;
+  class PhysicsModelBase;
+  class PredictionBase;
   class SLHADataStorageBase;
   class SLHAModelCalculatorBase;
-  class LHCModelCalculator;
-  class PhysicsModelBase;
-  class PlotterBase;
-  class SamplerBase;
 
   /*!
    *  \ingroup kernel
@@ -60,24 +58,30 @@ namespace Fittino {
       ~Factory();
 
     public:
-      ModelCalculatorBase*        CreateCalculator( const std::string& type, const PhysicsModelBase* model, const boost::property_tree::ptree& ptree ) const; 
+      ModelCalculatorBase*        CreateCalculator( const std::string& type, const PhysicsModelBase* model, const boost::property_tree::ptree& ptree ) const;
       /*!
        *  Returns a concrete analysis tool\n
        *  Supported analysis tools are
        *  <ul>
-       *    <li> GENETICALGORITHM\n
-       *    <li> MINUIT\n
-       *    <li> PARTICLESWARM\n
-       *    <li> SIMULATEDANNEALING\n
+       *    <li> MarkovChainSampler
+       *    <li> SimpleSampler
+       *    <li> TreeSampler
+       *    <li> GeneticAlgorithmOptimizer\n
+       *    <li> MinuitOptimizer\n
+       *    <li> ParticleSwarmOptimizer\n
+       *    <li> SimulatedAnnealingOptimizer\n
+       *    <li> ContourPlotter\n
+       *    <li> ScatterPlotter\n
+       *    <li> SummaryPlotter\n
        *  </ul>
        */
       AnalysisTool* const         CreateAnalysisTool( const std::string& type, ModelBase* model, const boost::property_tree::ptree& ptree ) const;
       /*!
-       *  Returns a concrete data storage according to the file format passed as an argument.\n
-       *  Supported file formats are
+       *  Returns a concrete model according to type.\n
+       *  Supported models are
        *  <ul>
-       *    <li> SLHA\n
-       *    <li> XML\n
+       *    <li> PhysicsModel\n
+       *    <li> RosenbrockModel\n
        *  </ul>
        */
       ModelBase* const            CreateModel( const std::string& type, const boost::property_tree::ptree& ptree ) const;
@@ -99,8 +103,6 @@ namespace Fittino {
       SLHADataStorageBase*        CreateSLHAeaSLHADataStorage();
 
   };
-
-
 
 }
 

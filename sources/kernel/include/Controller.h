@@ -90,18 +90,16 @@ namespace Fittino {
       /*! \cond UML */
     private:
       /*!
-       *  External seed as passed as an argument to Fittino.
-       */
-      int                          _randomSeed;
-      /*!
        *  The name of the input file.
        */
       std::string                  _inputFileName;
       /*!
-       *  The name of the data file.
+       *  Property tree which stores the configuration items of Fittino.
        */
-      std::string                  _dataFileName;
       boost::property_tree::ptree* _inputPtree;
+      /*!
+       *  Property tree which stores the status of Fittino after Execute().
+       */
       boost::property_tree::ptree* _outputPtree;
 
     private:
@@ -117,6 +115,9 @@ namespace Fittino {
        *  Check the format of the input file. The supported input file format is XML.
        */
       void                         CheckInputFileFormat() const;
+      /*!
+       *  Handles the Fittino options given at the command line.
+       */
       void                         HandleOptions( int argc, char** argv );
       /*!
        *  When Fittino is called without arguments or with the -h/--help option this method\n

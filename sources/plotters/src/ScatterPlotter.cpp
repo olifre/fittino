@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -32,8 +32,8 @@
 #include "PlotterBase.h"
 #include "ScatterPlotter.h"
 
-Fittino::ScatterPlotter::ScatterPlotter( ModelBase* model, std::string& dataFileName, int randomSeed )
-    : PlotterBase( model, dataFileName, randomSeed ) {
+Fittino::ScatterPlotter::ScatterPlotter( ModelBase* model, const boost::property_tree::ptree& ptree )
+    : PlotterBase( model, ptree ) {
 
     _name       = "scatter plotter";
     _xLogScale  = false;
@@ -69,10 +69,13 @@ void Fittino::ScatterPlotter::Execute() {
     // Specify the list of quantities to be plotted.
 
     // _activeQuantityVector.push_back( "Mass_h" ); // Example
+    _activeQuantityVector.push_back( "X1" ); // Example
+    _activeQuantityVector.push_back( "X2" ); // Example
+    _activeQuantityVector.push_back( "X3" ); // Example
 
     // Search for the lowest chi2.
 
-    float chi2, lowestChi2 = 1.e99;
+    double chi2, lowestChi2 = 1.e99;
 
     _tree->SetBranchAddress( "Chi2", &chi2 );
 
