@@ -42,64 +42,6 @@
 #include "TreeCalculator.h"
 #include "PhysicsModelBase.h"
 
-Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, int randomSeed )
-    : SamplerBase( model, randomSeed ),
-      _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", -1 ) ),
-      _isToyRun( Configuration::GetInstance()->GetSteeringParameter( "PerformToyRun", false ) ),
-      _determineBestFitValues( Configuration::GetInstance()->GetSteeringParameter( "DetermineBestFitValues", false ) ),
-      _lowestChi2( 1.e99 ),
-      _bestFitIndex( 0 ),
-      _inputLowestChi2( 1.e99 ),
-      _inputBestFitIndex( 0 ) {
-    _name = "Tree sampler";
-
-    if( _model->GetCollectionOfCalculators().GetNumberOfElements() == 0 ) {
-        throw ConfigurationException( "Could not find a calculator associated to specified model." );
-    }
-    
-
-    // number of iterations is read from the input file, if it is not defined, or set to -1, in the input file
-    // wow...this is ugly! there needs to be some better way to handle this:
-    const boost::property_tree::ptree* propertyTree = Configuration::GetInstance()->GetPropertyTree();
-    std::string filename = propertyTree->get<std::string>( "InputFile.Sampler.<xmlattr>.InputFileName", "Fittino.old.root" );
-    std::string treename = propertyTree->get<std::string>( "InputFile.Sampler.<xmlattr>.InputTreeName", "Tree1" );
-    
-    if( _numberOfIterations == -1 ) {
-        
-        // if the tree in the input file has name/title "Tree", it will overwrite the existing tree from the AnalysisTool. Therefore delete that tree:
-        delete _tree;
-        
-        // now save the address of the _outputFile from the AnalysisTool in some temporary variable:
-        TDirectory *tempDirectory = gDirectory;
-        // now open the input file: this will overwrite gDirectory
-        TFile *f = new TFile( filename.c_str(), "READ" );
-        
-        // check for the tree in the input file, and set the number of iterations
-        if( (TTree*)f->Get( treename.c_str() ) ) {
-            
-            _numberOfIterations = ((TTree*)f->Get( treename.c_str() ))->GetEntries();
-        
-        }
-        
-        else {
-            
-            throw ConfigurationException( "Could not read number of iterations from given input file/input tree. ");
-        
-        }
-        // now close the file;
-        f->Close();
-        //re-set the gDirectory variable to it's original value (_inputFile)
-        gDirectory = tempDirectory;
-        // delete the pointer 
-        delete f;
-
-        //re-create the output tree
-        _tree = new TTree("Tree","Tree");
-
-    }
-
-}
-
 Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree ) 
     : SamplerBase( model, ptree ),
       _numberOfIterations( ptree.get<int> ( "NumberOfIterations", -1 ) ),
@@ -117,8 +59,6 @@ Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, const boost::prope
       if( _model->GetCollectionOfCalculators().GetNumberOfElements() == 0 ) {
         throw ConfigurationException( "Could not find a calculator associated to specified model." );
       }
-     
-        
 
       //still ugly...
       std::string filename = ptree.get<std::string>( "InputFileName", "Fittino.old.root" );

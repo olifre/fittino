@@ -37,10 +37,6 @@ namespace Fittino {
 
     public:
       /*!
-       *  Constructor taking model and randomSeed as an input.
-       */
-      TreeSampler( ModelBase* model, int randomSeed );
-      /*!
        *  Standard constructor.
        */
       TreeSampler( ModelBase* model, const boost::property_tree::ptree& ptree );

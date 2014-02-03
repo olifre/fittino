@@ -80,48 +80,7 @@ namespace Fittino {
        *    <li> XML\n
        *  </ul>
        */
-      DataStorageBase* const      CreateDataStorage( const Configuration::FileFormat& fileFormat ) const;
-      /*!
-       *  Returns a concrete model according to the model type passed as an argument. Supported\n
-       *  model types are
-       *  <ul>
-       *    <li> CMSSM\n
-       *    <li> HEC\n
-       *    <li> ROSENBROCK\n
-       *  </ul>
-       */
-      ModelBase* const            CreateModel( const Configuration::ModelType& modelType ) const;
-      /*!
-       *  Returns a concrete model.
-       */
       ModelBase* const            CreateModel( const std::string& type, const boost::property_tree::ptree& ptree ) const;
-      /*!
-       *  Returns a concrete calculator according to the calculator type passed as an argument. Supported\n
-       *  calculator types are
-       *  <ul>
-       *    <li> HDIM6\n
-       *  </ul>
-       */
-      ModelCalculatorBase* const  CreateCalculator( const Configuration::CalculatorType& calculatorType, const PhysicsModelBase* model ) const;
-      /*!
-       *  Returns a concrete plotter according to the plotter type passed as an argument. Supported\n
-       *  plotter types are
-       *  <ul>
-       *    <li> CONTOUR\n
-       *    <li> SCATTER\n
-       *    <li> SUMMARY\n
-       *  </ul>
-       */
-      PlotterBase* const          CreatePlotter( const Configuration::PlotterType& plotterType, ModelBase* model, std::string dataFileName, int randomSeed ) const;
-      /*!
-       *  Returns a concrete parameter sampler according to the sampler type passed as an\n
-       *  argument.  Supported sampler types are
-       *  <ul>
-       *    <li> MARKOVCHAIN\n
-       *    <li> SIMPLE\n
-       *  </ul>
-       */
-      SamplerBase* const          CreateSampler( const Configuration::SamplerType& samplerType, ModelBase* model, int randomSeed ) const;
       /*!
        *  Returns a Prediction according to the type specified in the ptree.
        */
