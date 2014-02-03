@@ -30,30 +30,30 @@ Fittino::ModelParameterBase::ModelParameterBase( std::string name,
                                                  double      plotLowerBound,
                                                  double      plotUpperBound,
                                                  bool        fixed )
-        : _error( error ),
-          _lowerBound( lowerBound ),
-          _upperBound( upperBound ),
-          _fixed( fixed ),
-	  _updated( true ),
-          ParameterBase( name,
-                         plotName,
-                         value,
-                         plotLowerBound,
-                         plotUpperBound ) {
+    : _error( error ),
+      _lowerBound( lowerBound ),
+      _upperBound( upperBound ),
+      _fixed( fixed ),
+      _updated( true ),
+      ParameterBase( name,
+                     plotName,
+                     value,
+                     plotLowerBound,
+                     plotUpperBound ) {
 
 }
 
 Fittino::ModelParameterBase::ModelParameterBase( const boost::property_tree::ptree& ptree )
-  : _error( ptree.get<double>("Error", 0.1 ) ),
-    _lowerBound( ptree.get<double>("LowerBound", 0. ) ),
-    _upperBound( ptree.get<double>("UpperBound", 1. ) ),
-    _fixed( ptree.get<bool>("Fixed", false ) ),
-    _updated( true ),
-    ParameterBase( ptree.get<std::string>( "Name"), 
-                   ptree.get<std::string>( "Name"), 
-                   ptree.get<double>("Value", 0 ),
-                   ptree.get<double>( "PlotLowerBound", _lowerBound ),
-                   ptree.get<double>( "PlotUpperBound", _upperBound ) ) {
+    : _error( ptree.get<double>( "Error", 0.1 ) ),
+      _lowerBound( ptree.get<double>( "LowerBound", 0. ) ),
+      _upperBound( ptree.get<double>( "UpperBound", 1. ) ),
+      _fixed( ptree.get<bool>( "Fixed", false ) ),
+      _updated( true ),
+      ParameterBase( ptree.get<std::string>( "Name" ),
+                     ptree.get<std::string>( "PlotName", ptree.get<std::string>( "Name" ) ),
+                     ptree.get<double>( "Value", 0 ),
+                     ptree.get<double>( "PlotLowerBound", _lowerBound ),
+                     ptree.get<double>( "PlotUpperBound", _upperBound ) ) {
 
 
 }
@@ -104,7 +104,7 @@ void Fittino::ModelParameterBase::SetValue( double value ) {
     if ( !_fixed ) {
 
         _value = value;
-	_updated = true;
+        _updated = true;
 
     }
 
