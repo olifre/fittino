@@ -22,7 +22,6 @@
 #include <iostream>
 
 #include "CHiggsSignals.h"
-#include "Configuration.h"
 #include "HiggsSignalsHadXSModelCalculator.h"
 #include "ModelParameterBase.h"
 #include "PhysicsModelBase.h"
@@ -88,7 +87,7 @@ Fittino::HiggsSignalsHadXSModelCalculator::HiggsSignalsHadXSModelCalculator( con
     //std::string expdata = "LHC_mail_14_07_2013_HS_new_observable_set";
     std::string expdata = ptree.get<std::string>( "ExpData" );
     std::cout<<"Using ExpData = "<<expdata<<std::endl;
-    initialize_higgssignals_( &nHzero, &nHplus, expdata );
+    initialize_higgssignals_( &nHzero, &nHplus, expdata.c_str(), expdata.size() );
     
     int output_level = 0;
     setup_output_level_( &output_level );
