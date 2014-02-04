@@ -357,7 +357,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CalculatePredictions() {
 
     system( "rm HS-output.slha" );
 
-    __io_MOD_higgssignals_create_slha_output_default( &_detailed );
+    // __io_MOD_higgssignals_create_slha_output_default( &_detailed );
 
     // Write the additional HiggsSignals predictions to file.
 

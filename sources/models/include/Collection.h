@@ -128,7 +128,7 @@ T* Fittino::Collection<T*>::At( std::string name ) const {
   }
   catch (const std::out_of_range& ) {
 
-    throw ConfigurationException( "ELement with name " + name + " not contained in Collection." ); //TODO: Dedicated exception class ?
+    throw ConfigurationException( "Element with name " + name + " not contained in Collection." ); //TODO: Dedicated exception class ?
     
   }
 
