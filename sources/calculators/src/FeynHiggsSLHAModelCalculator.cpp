@@ -36,6 +36,8 @@ Fittino::FeynHiggsSLHAModelCalculator::~FeynHiggsSLHAModelCalculator() {
 
 void Fittino::FeynHiggsSLHAModelCalculator::CalculatePredictions() {
 
+  SetFlags();
+
   COMPLEX slhadata[nslhadata];
 
   SLHARead( &_error, slhadata, _fileName.c_str(), 1 );

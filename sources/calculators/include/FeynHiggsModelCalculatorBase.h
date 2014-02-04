@@ -53,11 +53,12 @@ namespace Fittino {
 
     protected:  
       void Calculate();
+      void SetFlags();
 
       /*! \cond UML */
     private:  
 
-      double _m_h;
+      double _mass_h;
 
       double _normSM_sigma_ggh;
       double _normSM_sigma_ggh_2;

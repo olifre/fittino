@@ -40,14 +40,7 @@ Fittino::FeynHiggsModelCalculatorBase::FeynHiggsModelCalculatorBase( const Physi
 
     _name = "FeynHiggs";
 
-    std::string flags = "400242110";
-
-    FHSetFlagsString( &_error, flags.c_str() );
-
-    if ( _error != 0 ) {
-
-    }
-
+    AddQuantity( new SimplePrediction( "Mass_h",                     "", _mass_h                     ) );  
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_gamma_gamma", "", _normSM_Gamma_h_gamma_gamma ) );  
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_Z_gamma"    , "", _normSM_Gamma_h_Z_gamma     ) );      
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_Z_Z"        , "", _normSM_Gamma_h_Z_Z         ) );         
@@ -72,6 +65,18 @@ Fittino::FeynHiggsModelCalculatorBase::~FeynHiggsModelCalculatorBase() {
 
 }
 
+void Fittino::FeynHiggsModelCalculatorBase::SetFlags() {
+
+    std::string flags = "400242110";
+
+    FHSetFlagsString( &_error, flags.c_str() );
+
+    if ( _error != 0 ) {
+
+    }
+
+}
+
 void Fittino::FeynHiggsModelCalculatorBase::Calculate() {
 
     // calculate masses, sin(alpha), UHiggs & ZHiggs matrices
@@ -85,9 +90,9 @@ void Fittino::FeynHiggsModelCalculatorBase::Calculate() {
 
     }
 
-    _m_h = MHiggs[0];
+    _mass_h = MHiggs[0];
 
-    if ( _m_h < 1. ) {
+    if ( _mass_h < 1. ) {
 
         std::cout<<"Problem in mh calculation"<<std::endl;
 

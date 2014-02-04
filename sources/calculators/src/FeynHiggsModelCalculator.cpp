@@ -79,7 +79,9 @@ void Fittino::FeynHiggsModelCalculator::CalculatePredictions() {
     }
 
     file.close();
-    
+
+    SetFlags();
+
     RealType    record     [nrecord];
     COMPLEX     slhadata   [nslhadata];
     FHReadRecord( &_error, record, slhadata, _fileName.c_str() ); 
