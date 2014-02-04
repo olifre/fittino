@@ -24,7 +24,24 @@
  *  \todo Long-term: Document the code.
  *  \todo Long-term: Write a comprehensive developer's guide.
  *  \todo Long-term: Write a comprehensive user's guide.
- *  \todo Short-term: In xml input files use subtags instead of attributes
+ *  \todo Long-term: Redefine kernel and keep it clean. 
+ *  \todo Long-term: Discuss calculator interface (Mathias) 
+ *  \todo Long-term: Discuss plotters and there relation to other anaylistools
+ *  \todo Check if all branch names are unique (probably in AnalysisTool::InitializeBranches)
+ *  \todo TreeSampler configuration: Set name of parameter to be used as looping parameter
+ *  \todo MeasuredErrors: Allow arbitrary number. Give names.
+ *  \todo Remove simpledatastorage from ModelCalculatorBase
+ *  \todo Update Observable - prediction relation
+ *  \todo Complete removal of obsolete configuration
+ *  \todo Remove again the Chi2Contribution
+ *  \todo Rename PhysicsModelBase in PhysicsModel
+ *  \todo Rename all ModelCalculators in Calculators
+ *  \todo Update the xml definition file
+ *  \todo Update the xml style file
+ *  \todo Make chi2 a model quantitiy  ? 
+ *  \todo Make name of chi2 branch configurable
+ *  \todo More general: Make all quantity names / branch names configurable? 
+ *  \todo Make configurable if quantities should be used / be written to ntuple (especially TreeCalculator but also in general) ?
  */
 
 #ifndef FITTINO_CONTROLLER_H
