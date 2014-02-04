@@ -13,8 +13,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -23,87 +23,15 @@
 
 #include "SLHAModelCalculatorBase.h"
 
-extern "C" {
+namespace boost {
 
-  double smbr_hss_( double* massh );
-  double smbr_hcc_( double* massh );
-  double smbr_hbb_( double* massh );
-  double smbr_htoptop_( double* massh );
-  double smbr_hmumu_( double* massh );
-  double smbr_htautau_( double* massh );
-  double smbr_hgamgam_( double* massh );
-  double smbr_hgg_( double* massh );
-  double smbr_hww_( double* massh );
-  double smbr_hzgam_( double* massh );
-  double smbr_hzz_( double* massh );
-  double smgamma_h_( double* massh );
+  namespace property_tree {
 
-  double __theory_collidersfunctions_MOD_lhc8_rh_bb( double* massh );
-  double __theory_collidersfunctions_MOD_lhc8_rh_gg( double* massh );
+    template < class Key, class Data, class KeyCompare > class basic_ptree;
+    typedef basic_ptree< std::string, std::string, std::less<std::string> > ptree;
 
-  void finish_higgssignals_();
-  void get_rates_(
-                   int*    ii,
-                   int*    collider,
-                   int*    Nchannels,
-                   int*    IDchannels,
-                   double* rate
-                 ); 
-  void get_rvalues_(
-                   int*    nH,
-                   int*    collider,
-                   double* R_H_WW,
-                   double* R_H_ZZ,
-                   double* R_H_gaga,
-                   double* R_H_tautau,
-                   double* R_H_bb,
-                   double* R_VH_bb
-                   );
-  void higgsbounds_neutral_input_effc_(
-                   double* massh,
-                   double* GammaTotal,
-                   double* g2hjss_s,
-                   double* g2hjss_p,
-                   double* g2hjcc_s,
-                   double* g2hjcc_p,
-                   double* g2hjbb_s,
-                   double* g2hjbb_p,
-                   double* g2hjtt_s,
-                   double* g2hjtt_p,
-                   double* g2hjmumu_s,
-                   double* g2hjmumu_p,
-                   double* g2hjtautau_s,
-                   double* g2hjtautau_p,
-                   double* g2hjWW,
-                   double* g2hjZZ,
-                   double* g2hjZga,
-                   double* g2hjgaga,
-                   double* g2hjgg,
-                   double* g2hjggZ,
-                   double* g2hjhiZ,
-                   double* BR_hjinvisible,
-                   double* BR_hjhihi
-                                      );
-  void higgssignals_neutral_input_massuncertainty_( double* dm );
-  void initialize_higgssignals_for_fittino_( int* nHzero, int* nHplus );
-  void initialize_higgssignals_latestresults_( int* nHzero, int* nHplus );
-  void run_higgssignals_(
-                   int*    mode,
-                   double* Chisq_mu,
-                   double* Chisq_mh,
-                   double* Chisq,
-                   int*    nobs,
-                   double* Pvalue
-                        );
-  void setup_assignmentrange_( double* range );
-  void setup_correlations_( int* corr_mu, int* corr_mh);
-  void setup_higgs_to_peaks_assignment_iterations_( int* iterations );
-  void setup_output_level_( int* output_level );
-  void setup_pdf_( int* pdf );
-  void setup_rate_uncertainties_( double dCS[], double dBR[] );
- 
-  void __io_MOD_higgssignals_create_slha_output_default( int* detailed );
-  
+  }
+
 }
 
 /*!
@@ -121,14 +49,14 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                   HiggsSignalsSLHAModelCalculator( const PhysicsModelBase* model );
+      HiggsSignalsSLHAModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
-                   ~HiggsSignalsSLHAModelCalculator();
+      ~HiggsSignalsSLHAModelCalculator();
 
     public:
-      virtual void Initialize() const;
+      virtual void  Initialize() const;
       virtual void CalculatePredictions();
 
       /*! \cond UML */
@@ -138,85 +66,192 @@ namespace Fittino {
        *  the HiggsSignals manual) by interpolating between pure bbh and ggh\n
        *  production.
        */
-      double       CalculateSinglehUncertainty(
-                                        double dhbb,
-                                        double dhgg,
-                                        double g2hbb,
-                                        double g2hgg,
-                                        double massh
-                                              );
+      double        CalculateSinglehUncertainty(
+                                                 double d_hbb,
+                                                 double d_hgg,
+                                                 double g2_hbb,
+                                                 double g2_hgg,
+                                                 double mass_h
+                                               );
       /*!
        *  Set the (relative) rate uncertainties.
        */
-      void         SetRateUncertainties(
-                                        double g2hjbb_s,
-                                        double g2hjbb_p,
-                                        double g2hjgg,
-                                        double massh
-                                       );
+      void          SetRateUncertainties       (
+                                                 double g2_hibb_s,
+                                                 double g2_hibb_p,
+                                                 double g2_higg,
+                                                 double mass_h
+                                               );
 
       /*! \endcond UML */
 
     private:
+      double        _Gamma_hTotal;
+      double        _BR_hss;
+      double        _BR_hcc;
+      double        _BR_hbb;
+      double        _BR_htt;
+      double        _BR_hmumu;
+      double        _BR_htautau;
+      double        _BR_hWW;
+      double        _BR_hZZ;
+      double        _BR_hZgamma;
+      double        _BR_hgammagamma;
+      double        _BR_hgg;
+      double        _BR_hss_SM;
+      double        _BR_hcc_SM;
+      double        _BR_hbb_SM;
+      double        _BR_htt_SM;
+      double        _BR_hmumu_SM;
+      double        _BR_htautau_SM;
+      double        _BR_hWW_SM;
+      double        _BR_hZZ_SM;
+      double        _BR_hZgamma_SM;
+      double        _BR_hgammagamma_SM;
+      double        _BR_hgg_SM;
+      double        _BR_hInvisible;
+      double        _g2_SM_hgammagamma;
+      double        _g2_SM_hgg;
+      double        _BR_hInvisible_Limit;
+      double        _chi2;
+      double        _chi2_massh;
+      double        _chi2_mu;
       /*!
        *
        */
-      double       _dm;
+      double        _dm;
       /*!
        *
        */
-      double       _range;
+      double        _Gamma_hTotal_Penalty;
+      double        _Mu_hgammgamma_1lep_ATL;
+      double        _Mu_hgammgamma_conv_central_highPTt_ATL;
+      double        _Mu_hgammgamma_conv_central_lowPTt_ATL;
+      double        _Mu_hgammgamma_conv_rest_highPTt_ATL;
+      double        _Mu_hgammgamma_conv_rest_lowPTt_ATL;
+      double        _Mu_hgammgamma_conv_trans_ATL;
+      double        _Mu_hgammgamma_ETmiss_ATL;
+      double        _Mu_hgammgamma_highmass2jetloose_ATL;
+      double        _Mu_hgammgamma_highmass2jettight_ATL;
+      double        _Mu_hgammgamma_lowmass2jet_ATL;
+      double        _Mu_hgammgamma_unconv_central_highPTt_ATL;
+      double        _Mu_hgammgamma_unconv_central_lowPTt_ATL;
+      double        _Mu_hgammgamma_unconv_rest_highPTt_ATL;
+      double        _Mu_hgammgamma_unconv_rest_lowPTt_ATL;
+      double        _Mu_htautau_ATL;
+      double        _Mu_hWWlnulnu_ATL;
+      double        _Mu_VBFWWlnulnu_ATL;
+      double        _Mu_hZZ4l_ATL;
+      double        _Mu_VhVbb_ATL;
+      double        _Mu_hgammagamma_CDF;
+      double        _Mu_htautau_CDF;
+      double        _Mu_hWW_CDF;
+      double        _Mu_tthttbb_CDF;
+      double        _Mu_VhVbb_CDF;
+      double        _Mu_hgammagamma_2jet_CMS;
+      double        _Mu_hgammagamma_2jetloose_CMS;
+      double        _Mu_hgammagamma_2jettight_CMS;
+      double        _Mu_hgammagamma_e_CMS;
+      double        _Mu_hgammagamma_inclusive_CMS;
+      double        _Mu_hgammagamma_ETmiss_CMS;
+      double        _Mu_hgammagamma_mu_CMS;
+      double        _Mu_htautau_01jet_CMS;
+      double        _Mu_hWW_01jet_CMS;
+      double        _Mu_hZZ4l_01jet_CMS;
+      double        _Mu_hZZ4l_2jet_CMS;
+      double        _Mu_tthttbb_CMS;
+      double        _Mu_VBFtautau_CMS;
+      double        _Mu_VBFWW_CMS;
+      double        _Mu_VhVbb_CMS;
+      double        _Mu_VhVtautau_CMS;
+      double        _Mu_WhWWW_CMS;
+      double        _Mu_hbb_D0;
+      double        _Mu_hgammagamma_D0;
+      double        _Mu_htautau_D0;
+      double        _Mu_hWW_D0;
+      double        _pvalue;
+      double        _range;
+      double        _R_H_WW;
+      double        _R_H_ZZ;
+      double        _R_H_gammagamma;
+      double        _R_H_tautau;
+      double        _R_H_bb;
+      double        _R_VH_bb;
       /*!
        *  4 0 = HZ production.
        */
-      int          _ChannelID;
+      int           _channelID;
       /*!
        *  collider = 1, 2, 3 for TEV, LHC7 or LHC8.
        */
-      int          _collider;
+      int           _collider;
       /*!
        *  0: writes only block HiggsSignalsResults, 1: writes all blocks.
        */
-      int          _detailed;
+      int           _detailed;
       /*!
        *
        */
-      int          _iterations;
+      int           _iterations;
       /*!
        *  1, 2, 3 for peak-centered, masse-centered chi^2 method or both.
        */
-      int          _mode;
+      int           _mode;
       /*!
        *
        */
-      int          _NChannels;
+      int           _nChannels;
       /*!
        *  Number of Higgs particles.
        */
-      int          _nH;
+      int           _nH;
       /*!
        *
        */
-      int          _nHplus;
+      int           _nHplus;
       /*!
        *
        */
-      int          _nHzero;
+      int           _nHzero;
       /*!
        *
        */
-      int          _nobs;
+      int           _nobs;
       /*!
        *  0: silent, 1: screen output, 2: even more output.
        */
-      int          _output_level;
+      int           _output_level;
       /*!
        *  1: box, 2: gaussian, 3: both.
        */
-      int          _pdf;
+      int           _pdf;
 
     private:
-      double       CalculateBRhInvisible( double GammaTotal, double GammahInvisible );
+      double const& _BR_hihjhj;
+      double const& _g_hiss_s;
+      double const& _g_hiss_p;
+      double const& _g_hicc_s;
+      double const& _g_hicc_p;
+      double const& _g_hibb_s;
+      double const& _g_hibb_p;
+      double const& _g_hitt_s;
+      double const& _g_hitt_p;
+      double const& _g_himumu_s;
+      double const& _g_himumu_p;
+      double const& _g_hitautau_s;
+      double const& _g_hitautau_p;
+      double const& _g_hiWW;
+      double const& _g_hiZZ;
+      double const& _g_hiZga;
+      double const& _g_higaga;
+      double const& _g_higg;
+      double const& _g_higgZ;
+      double const& _g_hihjZ;
+      double const& _GammaInvisible;
+      double const& _mass_h;
+
+    private:
+      double        CalculateBRhInvisible( double Gamma_hTotal, double Gamma_hInvisible );
       /*!
        *  Calculates the limit of BRInvisible and returns a \f$ \chi^{2}\f$. The calculation \n
        *  is given by a polynomial fit of 10th degree. \n
@@ -230,7 +265,7 @@ namespace Fittino {
        *  parabel = \f$3.322x^{2} + 4.92x\f$ \n
        *  The data shown in the fit can found in the images directory of the documentation, called brinvisible.txt
        */
-      double       CalculateBRhInvisibleLimit( double x );
+      double        CalculateBRhInvisibleLimit( double x );
       /*!
        *  Calculates the SM Delta for the gluon gluon coupling that consists of \n
        *  other Higgs couplings: \n
@@ -312,11 +347,11 @@ namespace Fittino {
        *  A gnuplot script to reproduce the plots, called linearfit.gnu, \n
        *  can be found in the images directory of the documentation.
        */
-      double       Calculateg2hgg(
-                                        double ghbb,
-                                        double ghtt,
-                                        double massh
-                                         );
+      double        Calculateg2hgg        (
+                                            double g_hbb,
+                                            double g_htt,
+                                            double mass_h
+                                          );
       /*!
        *  Calculates the SM Delta for the phonton photon coupling that consists of \n
        *  other Higgs couplings: \n
@@ -496,14 +531,14 @@ namespace Fittino {
        *  A gnuplot script to reproduce the plots, called linearfit.gnu, \n
        *  can be found in the images directory of the documentation.
        */
-      double       Calculateg2hgammagamma(
-                                        double ghbb,
-                                        double ghtt,
-                                        double ghtautau,
-                                        double ghWW,
-                                        double ghZZ,
-                                        double massh
-                                         );
+      double        Calculateg2hgammagamma(
+                                            double g_hbb,
+                                            double g_htt,
+                                            double g_htautau,
+                                            double g_hWW,
+                                            double g_hZZ,
+                                            double mass_h
+                                          );
       /*!
        *  Calculates the total width of the Higgs boson depending on its mass\n
        *  and couplings: \n
@@ -511,24 +546,24 @@ namespace Fittino {
        *  The Sum is over all couplings that were provided with the \n
        *  corresponding SM-Branching Ratio from Higgs Signals. \n
        *  GammaInvisible is used as free parameter in the model. \n
-       *  If GammaTotal exceeds 1 GeV, the Chi2 contribution rises to 1M,\n
+       *  If GammahTotal exceeds 1 GeV, the Chi2 contribution rises to 1M,\n
        *  forcing the MarkovChain backwards.
        */
-      double       CalculateGammaTotal(
-                                        double massh,
-                                        double g2hjss_s,
-                                        double g2hjcc_s,
-                                        double g2hjbb_s,
-                                        double g2hjtt_s,
-                                        double g2hjmumu_s,
-                                        double g2hjtautau_s,
-                                        double g2hjWW,
-                                        double g2hjZZ,
-                                        double g2hjZga,
-                                        double g2hjgaga,
-                                        double g2hjgg,
-                                        double GammaInvisible
-                                      );
+      double        CalculateGammahTotal  (
+                                            double mass_h,
+                                            double g2_hiss_s,
+                                            double g2_hicc_s,
+                                            double g2_hibb_s,
+                                            double g2_hitt_s,
+                                            double g2_himumu_s,
+                                            double g2_hitautau_s,
+                                            double g2_hiWW,
+                                            double g2_hiZZ,
+                                            double g2_hiZga,
+                                            double g2_higaga,
+                                            double g2_higg,
+                                            double Gamma_hInvisible
+                                          );
 
       /*!
        *  Calculates the total width of the Higgs boson depending on its mass\n
@@ -537,22 +572,16 @@ namespace Fittino {
        *  The Sum is over all couplings that were provided with the \n
        *  corresponding SM-Branching Ratio from Higgs Signals. \n
        *  GammaInvisible is used as free parameter in the model. \n
-       *  If GammaTotal exceeds 1 GeV, the Chi2 contribution rises to 1M,\n
+       *  If GammahTotal exceeds 1 GeV, the Chi2 contribution rises to 1M,\n
        *  forcing the MarkovChain backwards.
        */
-      double       CalculateBR(
-                                        double g2hjxx,
-                                        double massh,
-                                        double GammaTotal,
-                                        double BR_SM
-                                      );
+      double        CalculateBR           (
+                                            double g2_hixx,
+                                            double mass_h,
+                                            double Gamma_hTotal,
+                                            double BR_SM
+                                          );
 
-
-    private:
-      virtual void CallExecutable();
-      virtual void CallFunction();
-      virtual void ConfigureInput();
-  
   };
 
 }

@@ -21,38 +21,39 @@
 
 #include "ConfigurationException.h"
 #include "ContourPlotter.h"
+#include "CorrelatedSampler.h"
+#include "CovariantSampler.h"
 #include "DataStorageBase.h"
 #include "Factory.h"
 #include "FeynHiggsModelCalculator.h"
 #include "FeynHiggsSLHAModelCalculator.h"
 #include "GeneticAlgorithmOptimizer.h"
 #include "HDim6ModelCalculator.h"
-#include "HECModel.h"
+#include "HECModelCalculator.h"
 #include "HiggsSignalsHadXSModelCalculator.h"
 #include "HiggsSignalsSLHAModelCalculator.h"
+#include "LHCChi2Contribution.h"
+#include "LHCModelCalculator.h"
 #include "MarkovChainSampler.h"
 #include "MinuitOptimizer.h"
 #include "ModelBase.h"
+#include "NewCorrelatedSampler.h"
+#include "Observable.h"
 #include "ParticleSwarmOptimizer.h"
+#include "PhysicsModelBase.h"
 #include "RegressionCalculator.h"
 #include "RosenbrockModel.h"
 #include "ScatterPlotter.h"
+#include "SimplePrediction.h"
 #include "SimpleSampler.h"
 #include "SimulatedAnnealingOptimizer.h"
-#include "SLHAeaSLHADataStorage.h"
-#include "SummaryPlotter.h"
-#include "CovariantSampler.h"
-#include "CorrelatedSampler.h"
-#include "NewCorrelatedSampler.h"
-#include "TreeSampler.h"
-#include "TreeCalculator.h"
-#include "SPhenoSLHAModelCalculator.h"
-#include "LHCModelCalculator.h"
-#include "SimplePrediction.h"
-#include "SLHAPrediction.h"
-#include "Observable.h"
 #include "SLHAChi2Contribution.h"
-#include "LHCChi2Contribution.h"
+#include "SLHAeaSLHADataStorage.h"
+#include "SLHAPrediction.h"
+#include "SPhenoSLHAModelCalculator.h"
+#include "SummaryPlotter.h"
+#include "TreeCalculator.h"
+#include "TreeSampler.h"
 
 Fittino::Factory::Factory() {
 
@@ -151,6 +152,11 @@ Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::str
 #endif
 
     }
+    else if ( type == "HECModelCalculator" ) {
+
+        return new HECModelCalculator( model, ptree );
+
+    }
     else if ( type == "HiggsSignalsCalculator" ) {
 
 #if defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
@@ -160,6 +166,19 @@ Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::str
 #else
 
         throw ConfigurationException( "Trying to use HiggsSignalsHadXSModelCalculator but Fittino was built without HiggsBounds or HiggsSignals." );
+
+#endif
+
+    }
+    else if ( type == "HiggsSignalsSLHACalculator" ) {
+
+#if defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
+
+        return new HiggsSignalsSLHAModelCalculator( model, ptree );
+
+#else
+
+        throw ConfigurationException( "Trying to use HiggsSignalsSLHAModelCalculator but Fittino was built without HiggsBounds or HiggsSignals." );
 
 #endif
 
