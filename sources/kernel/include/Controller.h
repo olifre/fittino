@@ -41,7 +41,10 @@
  *  \todo Make chi2 a model quantitiy  ? 
  *  \todo Make name of chi2 branch configurable
  *  \todo More general: Make all quantity names / branch names configurable? 
- *  \todo Make configurable if quantities should be used / be written to ntuple (especially TreeCalculator but also in general) ?
+ *  \todo Make configurable if quantities are added to the model / are written to ntuple (especially TreeCalculator but also in general) ?
+ *  \todo Common base class for markovChain sampler and correlated sampler
+ *  \todo Add RandomSampler, a sampler with fixed sampling density (usefull for random grid production)
+ *  \todo When RandomSampler is implemented, use parameter limits as hard limits in markovchain. Discuss what to do when limit is reached (new random point? mirror point?)
  */
 
 #ifndef FITTINO_CONTROLLER_H
