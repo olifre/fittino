@@ -43,8 +43,9 @@ extern "C" {
   double smcs_lhc8_vbf_h_( const double* massh );
   double smcs_lhc8_tth_  ( const double* massh );
 
-  double __theory_collidersfunctions_MOD_lhc8_rh_bb( const double* massh );
-  double __theory_collidersfunctions_MOD_lhc8_rh_gg( const double* massh );
+  // double __theory_collidersfunctions_MOD_lhc8_rh_bb( const double* massh );
+  // double __theory_collidersfunctions_MOD_lhc8_rh_gg( const double* massh );
+  // void __io_MOD_higgssignals_create_slha_output_default( int* detailed );
 
   void finish_higgssignals_();
 
@@ -156,7 +157,7 @@ extern "C" {
   void setup_pdf_( const int* pdf );
   void setup_rate_uncertainties_( const double dCS[], const double dBR[] );
 
-  void __io_MOD_higgssignals_create_slha_output_default( int* detailed );
+
 
 }
 
