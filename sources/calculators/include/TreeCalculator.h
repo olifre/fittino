@@ -61,7 +61,7 @@ namespace Fittino {
       TTree*              _inputTree;
       std::string         _inputFileName;
       std::string         _inputTreeName;
-
+      std::vector<std::string> _excludedLeaves;
     private:
       /*!
        *  Set All Branch Addresses in the tree

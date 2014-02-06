@@ -20,6 +20,7 @@
 #include <iostream>
 
 #include <boost/property_tree/ptree.hpp>
+#include <boost/foreach.hpp>
 
 #include "TTree.h"
 #include "TFile.h"
@@ -50,6 +51,18 @@ Fittino::TreeCalculator::TreeCalculator( const PhysicsModelBase* model, const bo
     _inputFile = NULL;
     _inputFileName = ptree.get<std::string>( "InputFileName", "Fittino.old.root" ); 
     _inputTreeName = ptree.get<std::string>( "InputTreeName", "Tree" );
+    
+    
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
+
+        if ( node.first == "ExcludeLeaf" ) {
+           
+           _excludedLeaves.push_back( node.second.get_value<std::string>() );
+        
+        }
+
+    }
+    
     OpenInputTree();
     CreateDefaultPredictions();
 
@@ -137,7 +150,14 @@ void Fittino::TreeCalculator::CreateDefaultPredictions( ) {
     TObjArray *arrayOfLeaves = _inputTree->GetListOfLeaves();
     for( unsigned int i = 0; i < arrayOfLeaves->GetEntries(); ++i ) {
         TLeaf *leaf = ( TLeaf* )arrayOfLeaves->At( i );
-        if( !strcmp( leaf->GetName(), "P_Iteration" ) ) continue;
+        bool excludeLeaf = false;
+        for( unsigned int j = 0; j < _excludedLeaves.size(); ++j ) {
+            if( !strcmp( leaf->GetName(), _excludedLeaves.at(j).c_str() ) ) {
+                excludeLeaf = true;
+            }
+        }
+        if( excludeLeaf ) continue;
+
         if( !strcmp( leaf->GetTypeName(), "Double_t" ) ) {
             boost::property_tree::ptree ptree;
             ptree.put("Name", leaf->GetName() );
@@ -147,7 +167,6 @@ void Fittino::TreeCalculator::CreateDefaultPredictions( ) {
             ptree.put("PlotUpperBound", 10000. );
             ptree.put("PlotLowerBound", -10000. );
             ptree.put("PredictionType", "Simple" );
-            if( !strcmp(leaf->GetName(), "Chi2") ) continue;
             AddQuantity( factory.CreatePrediction( ptree, this ) ); 
         }
     }
