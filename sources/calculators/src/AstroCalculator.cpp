@@ -105,10 +105,10 @@ void Fittino::AstroCalculator::SetupMeasuredValues() {
     
     for( unsigned int i = 0; i < _chi2ContributionNames.size(); ++i ) {
         
-        std::string name = _chi2ContributionNames.at(i);
+        std::string name = _yValueNames.at(i);
         for( unsigned int j = 0; j < _model->GetObservableVector()->size(); ++j ) {
 
-            if( _model -> GetObservableVector() -> at(j) -> GetPrediction() -> GetName() == "Measurement"+name ) {
+            if( _model -> GetObservableVector() -> at(j) -> GetPrediction() -> GetName() == name ) {
                 _measuredValues.at(i) = _model->GetObservableVector()->at(j)->GetMeasuredValue();
                 break;
             }
