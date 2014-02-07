@@ -240,7 +240,7 @@ void Fittino::TreeSampler::DetermineBestFitValues() {
   _model->GetCollectionOfCalculators().At( 0 )->CalculatePredictions();
   
   // set the best fit predictions for all observables of the original model; this will now include the physical model parameters:
-  std::vector<Observable*>* observableVector = _model->GetObservableVector();
+  const std::vector<Observable*>* observableVector = _model->GetObservableVector();
 
   for( int i = 0; i < observableVector->size(); ++i ) {
       

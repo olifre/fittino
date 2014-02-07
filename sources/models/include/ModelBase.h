@@ -123,7 +123,7 @@ namespace Fittino {
        *  Smears the observables (if existent)
        */
       virtual void                                       SmearObservations( TRandom3* ) = 0;
-      virtual std::vector<Observable*>*                  GetObservableVector() = 0;
+      virtual const std::vector<Observable*>*            GetObservableVector() const = 0;
       virtual const Collection<ModelCalculatorBase*>&    GetCollectionOfCalculators() const = 0;
       /*!
        * Update the property tree.

@@ -213,6 +213,7 @@ void Fittino::PhysicsModelBase::Initialize() const {
         messenger << Messenger::ALWAYS << "    Initializing " << _collectionOfCalculators.At( i )->GetName() << Messenger::Endl;
 
         _collectionOfCalculators.At( i )->Initialize();
+        _collectionOfCalculators.At( i )->SetupMeasuredValues();
 
     }
 
@@ -339,6 +340,13 @@ void Fittino::PhysicsModelBase::SmearObservations( TRandom3* randomGenerator ) {
         _collectionOfChi2Contributions.At(i)->SmearObservation( randomGenerator );
 
     }
+    
+    // now re-setup the observables for all the calculators.
+    for ( unsigned int i = 0; i < _collectionOfCalculators.GetNumberOfElements(); i++ ) {
+
+        _collectionOfCalculators.At( i )->SetupMeasuredValues();
+    
+    }
 
 }
 
@@ -392,7 +400,7 @@ const Fittino::Collection<Fittino::ModelCalculatorBase*>& Fittino::PhysicsModelB
 
 }
 
-std::vector<Fittino::Observable*>* Fittino::PhysicsModelBase::GetObservableVector() {
+const std::vector<Fittino::Observable*>* Fittino::PhysicsModelBase::GetObservableVector() const {
 
     return &_observableVector;
 
