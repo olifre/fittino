@@ -27,6 +27,7 @@
  *  \todo Long-term: Redefine kernel and keep it clean (Mathias).
  *  \todo Long-term: Discuss Calculator interface (Mathias).
  *  \todo Long-term: Discuss Plotters and their relation to other analysis tools.
+ *  \todo Clean up Quantities/Predictions/Parameters.
  *  \todo Check if all branch names are unique (probably in AnalysisTool::InitializeBranches).
  *  \todo TreeSampler configuration: Set name of parameter to be used as looping parameter.
  *  \todo MeasuredErrors: Allow arbitrary number. Give names.

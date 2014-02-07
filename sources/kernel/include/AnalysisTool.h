@@ -109,6 +109,7 @@ namespace Fittino {
       ModelBase*                         _model;
       /*!
        *  Stores the status parameters.
+       *  \todo Short-term: Replace vector with Collection.
        */
       std::vector<ParameterBase*>        _statusParameterVector;
 
@@ -146,12 +147,13 @@ namespace Fittino {
        */
       void                               PrintStatus() const;
       /*!
-       *  Returns the status parameters as a vector.
-       */
-      /*!
        *  Function to update values in the output property tree. Hm, maybe this has to become virtual?
        */
       void                               UpdatePropertyTree();
+      /*!
+       *  Returns the list of status parameters.
+       *  \todo Short-term: Eventually replace with GetCollectionOfStatusParameters().
+       */
       const std::vector<ParameterBase*>* GetStatusParameterVector() const;
 
       /*! \cond UML */
