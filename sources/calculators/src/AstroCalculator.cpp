@@ -63,6 +63,7 @@ Fittino::AstroCalculator::AstroCalculator( const PhysicsModelBase* model, const 
             _theoryUncertainties.push_back( node.second.get<double>( "TheoryUncertainty" ) );
             _widthFormulas.push_back( TF1("", (node.second.get<std::string>( "WidthFormula" ) ).c_str() ) );
             _limitFormulas.push_back( TF1("", (node.second.get<std::string>( "LimitFormula" ) ).c_str() ) );
+            _measuredValues.push_back( 0. );
             AddQuantity( new SimplePrediction( name, "", _simpleOutputDataStorage -> GetMap() -> at(name) ) ); 
 
         }
@@ -96,7 +97,6 @@ void Fittino::AstroCalculator::CalculatePredictions() {
         else {
             _simpleOutputDataStorage -> GetMap() -> at( name ) = 0.;
         }
-        std::cout << "chi2 contrib is " << _simpleOutputDataStorage -> GetMap() -> at(name) << std::endl;
 
     }
     
@@ -115,7 +115,6 @@ void Fittino::AstroCalculator::SetupMeasuredValues() {
             }
         }
     }
-
 }
 
 void Fittino::AstroCalculator::Initialize() const {
