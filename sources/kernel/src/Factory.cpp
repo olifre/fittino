@@ -19,6 +19,7 @@
 *                                                                              *
 *******************************************************************************/
 
+#include "AstroCalculator.h"
 #include "ConfigurationException.h"
 #include "ContourPlotter.h"
 #include "CorrelatedSampler.h"
@@ -31,7 +32,7 @@
 #include "HDim6ModelCalculator.h"
 #include "HECModelCalculator.h"
 #include "HiggsSignalsHadXSModelCalculator.h"
-#include "HiggsSignalsSLHAModelCalculator.h"
+#include "HiggsSignalsSLHACalculator.h"
 #include "LHCChi2Contribution.h"
 #include "LHCModelCalculator.h"
 #include "MarkovChainSampler.h"
@@ -53,7 +54,6 @@
 #include "SPhenoSLHAModelCalculator.h"
 #include "SummaryPlotter.h"
 #include "TreeCalculator.h"
-#include "AstroCalculator.h"
 #include "TreeSampler.h"
 
 Fittino::Factory::Factory() {
@@ -175,11 +175,11 @@ Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::str
 
 #if defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
 
-        return new HiggsSignalsSLHAModelCalculator( model, ptree );
+        return new HiggsSignalsSLHACalculator( model, ptree );
 
 #else
 
-        throw ConfigurationException( "Trying to use HiggsSignalsSLHAModelCalculator but Fittino was built without HiggsBounds or HiggsSignals." );
+        throw ConfigurationException( "Trying to use HiggsSignalsSLHACalculator but Fittino was built without HiggsBounds or HiggsSignals." );
 
 #endif
 

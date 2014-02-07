@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        HiggsSignalsSLHAModelCalculator.cpp                              *
+* File        HiggsSignalsSLHACalculator.cpp                                   *
 *                                                                              *
 * Description Wrapper class for HiggsSignals                                   *
 *                                                                              *
@@ -22,14 +22,14 @@
 
 #include "CHiggsSignals.h"
 #include "ConfigurationException.h"
-#include "HiggsSignalsSLHAModelCalculator.h"
+#include "HiggsSignalsSLHACalculator.h"
 #include "PhysicsModel.h"
 #include "SLHADataStorageBase.h"
 #include "SimplePrediction.h"
 
-Fittino::HiggsSignalsSLHAModelCalculator::HiggsSignalsSLHAModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::HiggsSignalsSLHACalculator::HiggsSignalsSLHACalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     : SLHAModelCalculatorBase( model ),
-      // Initialize steering parameters of the HiggsSignalsSLHAModelCalculator.
+      // Initialize steering parameters of the HiggsSignalsSLHACalculator.
       _channelID             ( ptree.get<int>( "ChannelID",   40 ) ),
       _collider              ( ptree.get<int>( "Collider",     3 ) ),
       ///_corr_mh            ( ptree.get<int>( "Corrmh",       1 ) ),
@@ -84,7 +84,7 @@ Fittino::HiggsSignalsSLHAModelCalculator::HiggsSignalsSLHAModelCalculator( const
    
     /// Initialize steering parameters common to all SLHA calculators.
 
-    _name               = ptree.get<std::string>( "Name",               "HiggsSignalsSLHAModelCalculator" );
+    _name               = ptree.get<std::string>( "Name",               "HiggsSignalsSLHACalculator" );
     _slhaOutputFileName = ptree.get<std::string>( "SLHAOutputFileName", "HS-output.slha"                  );
 
     /*!
@@ -186,11 +186,11 @@ Fittino::HiggsSignalsSLHAModelCalculator::HiggsSignalsSLHAModelCalculator( const
 
 }
 
-Fittino::HiggsSignalsSLHAModelCalculator::~HiggsSignalsSLHAModelCalculator() {
+Fittino::HiggsSignalsSLHACalculator::~HiggsSignalsSLHACalculator() {
 
 }
 
-void Fittino::HiggsSignalsSLHAModelCalculator::Initialize() const {
+void Fittino::HiggsSignalsSLHACalculator::Initialize() const {
 
     /*!
      *  \todo Remove const attribute.
@@ -198,7 +198,7 @@ void Fittino::HiggsSignalsSLHAModelCalculator::Initialize() const {
 
 }
 
-void Fittino::HiggsSignalsSLHAModelCalculator::CalculatePredictions() {
+void Fittino::HiggsSignalsSLHACalculator::CalculatePredictions() {
 
     // Calculate the squares of the coupling constants.
 
@@ -452,14 +452,14 @@ void Fittino::HiggsSignalsSLHAModelCalculator::CalculatePredictions() {
 
 }
 
-double Fittino::HiggsSignalsSLHAModelCalculator::CalculateBRhInvisible( double Gamma_hTotal, double Gamma_hInvisible ) {
+double Fittino::HiggsSignalsSLHACalculator::CalculateBRhInvisible( double Gamma_hTotal, double Gamma_hInvisible ) {
 
     if ( Gamma_hTotal <= 1.e-16 ) return 0.;
     else return Gamma_hInvisible / Gamma_hTotal;
 
 }
 
-double Fittino::HiggsSignalsSLHAModelCalculator::CalculateBRhInvisibleLimit( double x ) {
+double Fittino::HiggsSignalsSLHACalculator::CalculateBRhInvisibleLimit( double x ) {
 
     double f;
 
@@ -480,9 +480,9 @@ double Fittino::HiggsSignalsSLHAModelCalculator::CalculateBRhInvisibleLimit( dou
 
 }
 
-double Fittino::HiggsSignalsSLHAModelCalculator::Calculateg2hgg( double g_hbb,
-                                                                 double g_htt,
-                                                                 double mass_h ) {
+double Fittino::HiggsSignalsSLHACalculator::Calculateg2hgg( double g_hbb,
+                                                            double g_htt,
+                                                            double mass_h ) {
 
     double g2_hgg;
 
@@ -513,12 +513,12 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Calculateg2hgg( double g_hbb,
 
 }
 
-double Fittino::HiggsSignalsSLHAModelCalculator::Calculateg2hgammagamma( double g_hbb,
-                                                                         double g_htt,
-                                                                         double g_htautau,
-                                                                         double g_hWW,
-                                                                         double g_hZZ,
-                                                                         double mass_h ) {
+double Fittino::HiggsSignalsSLHACalculator::Calculateg2hgammagamma( double g_hbb,
+                                                                    double g_htt,
+                                                                    double g_htautau,
+                                                                    double g_hWW,
+                                                                    double g_hZZ,
+                                                                    double mass_h ) {
 
     double g2_hgammagamma;
 
@@ -556,11 +556,11 @@ double Fittino::HiggsSignalsSLHAModelCalculator::Calculateg2hgammagamma( double 
 
 }
 
-double Fittino::HiggsSignalsSLHAModelCalculator::CalculateSinglehUncertainty( double d_hbb,
-                                                                              double d_hgg,
-                                                                              double g2_hbb,
-                                                                              double g2_hgg,
-                                                                              double mass_h ) {
+double Fittino::HiggsSignalsSLHACalculator::CalculateSinglehUncertainty( double d_hbb,
+                                                                         double d_hgg,
+                                                                         double g2_hbb,
+                                                                         double g2_hgg,
+                                                                         double mass_h ) {
 
     double singlehUncertainty;
     double vsmall = 1.e-16;
@@ -583,19 +583,19 @@ double Fittino::HiggsSignalsSLHAModelCalculator::CalculateSinglehUncertainty( do
 
 }
 
-double Fittino::HiggsSignalsSLHAModelCalculator::CalculateGammahTotal( double mass_h,
-                                                                       double g2_hiss_s,
-                                                                       double g2_hicc_s,
-                                                                       double g2_hibb_s,
-                                                                       double g2_hitt_s,
-                                                                       double g2_himumu_s,
-                                                                       double g2_hitautau_s,
-                                                                       double g2_hiWW,
-                                                                       double g2_hiZZ,
-                                                                       double g2_hiZga,
-                                                                       double g2_higaga,
-                                                                       double g2_higg,
-                                                                       double Gamma_hInvisible ) {
+double Fittino::HiggsSignalsSLHACalculator::CalculateGammahTotal( double mass_h,
+                                                                  double g2_hiss_s,
+                                                                  double g2_hicc_s,
+                                                                  double g2_hibb_s,
+                                                                  double g2_hitt_s,
+                                                                  double g2_himumu_s,
+                                                                  double g2_hitautau_s,
+                                                                  double g2_hiWW,
+                                                                  double g2_hiZZ,
+                                                                  double g2_hiZga,
+                                                                  double g2_higaga,
+                                                                  double g2_higg,
+                                                                  double Gamma_hInvisible ) {
 
     double Gamma_hTotal = smgamma_h_( &mass_h )
                           * ( 1
@@ -616,10 +616,10 @@ double Fittino::HiggsSignalsSLHAModelCalculator::CalculateGammahTotal( double ma
 
 }
 
-void Fittino::HiggsSignalsSLHAModelCalculator::SetRateUncertainties( double g2_hibb_s,
-                                                                     double g2_hibb_p,
-                                                                     double g2_higg,
-                                                                     double mass_h ) {
+void Fittino::HiggsSignalsSLHACalculator::SetRateUncertainties( double g2_hibb_s,
+                                                                double g2_hibb_p,
+                                                                double g2_higg,
+                                                                double mass_h ) {
 
     double dCS[5], dBR[5];
 
@@ -644,10 +644,10 @@ void Fittino::HiggsSignalsSLHAModelCalculator::SetRateUncertainties( double g2_h
 
 }
 
-double Fittino::HiggsSignalsSLHAModelCalculator::CalculateBR( double g2_hixx,
-                                                              double mass_h,
-                                                              double Gamma_hTotal,
-                                                              double BR_SM ) {
+double Fittino::HiggsSignalsSLHACalculator::CalculateBR( double g2_hixx,
+                                                         double mass_h,
+                                                         double Gamma_hTotal,
+                                                         double BR_SM ) {
 
     double BR = g2_hixx * ( smgamma_h_( &mass_h ) / Gamma_hTotal ) * BR_SM;
 

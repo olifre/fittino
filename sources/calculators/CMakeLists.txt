@@ -13,8 +13,8 @@
 #                                                                              #
 # Licence     This program is free software; you can redistribute it and/or    #
 #             modify it under the terms of the GNU General Public License as   #
-#	      published by the Free Software Foundation; either version 3 of   #
-#	      the License, or (at your option) any later version.              #
+#             published by the Free Software Foundation; either version 3 of   #
+#             the License, or (at your option) any later version.              #
 #                                                                              #
 ################################################################################
 
@@ -48,9 +48,9 @@ ENDIF()
 
 IF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND)
 
-  LIST(REMOVE_ITEM sources "src/HiggsSignalsSLHAModelCalculator.cpp")
   LIST(REMOVE_ITEM sources "src/HDim6ModelCalculator.cpp")
   LIST(REMOVE_ITEM sources "src/HiggsSignalsHadXSModelCalculator.cpp")
+  LIST(REMOVE_ITEM sources "src/HiggsSignalsSLHACalculator.cpp")
 
 ENDIF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND)
 

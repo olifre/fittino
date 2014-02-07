@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        HiggsSignalsSLHAModelCalculator.h                                *
+* File        HiggsSignalsSLHACalculator.h                                     *
 *                                                                              *
 * Description Wrapper class for HiggsSignals                                   *
 *                                                                              *
@@ -43,17 +43,17 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Wrapper class for HiggsSignals.
    */
-  class HiggsSignalsSLHAModelCalculator : public SLHAModelCalculatorBase {
+  class HiggsSignalsSLHACalculator : public SLHAModelCalculatorBase {
 
     public:
       /*!
        *  Standard constructor.
        */
-      HiggsSignalsSLHAModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+      HiggsSignalsSLHACalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
-      ~HiggsSignalsSLHAModelCalculator();
+      ~HiggsSignalsSLHACalculator();
 
     public:
       virtual void  Initialize() const;
