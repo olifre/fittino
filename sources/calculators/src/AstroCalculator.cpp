@@ -50,21 +50,22 @@ Fittino::AstroCalculator::AstroCalculator( const PhysicsModelBase* model, const 
     : ModelCalculatorBase( model ) {
 
     _name = "AstroCalculator";
-   
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child("Chi2Contribution") ) {
+    if( ptree.count("Chi2Contribution" ) != 0 ) {
+        BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child("Chi2Contribution") ) {
     
-        std::string name = node.second.get<std::string>("Name");
-        _chi2ContributionNames.push_back( name );
-        _simpleOutputDataStorage -> AddEntry( name, 0. );
-        _xValueNames.push_back( node.second.get<std::string>( "XValue" ) );
-        _yValueNames.push_back( node.second.get<std::string>( "YValue" ) );
-        _dataPointFileNames.push_back( node.second.get<std::string>( "FileName" ) ); 
-        _exclusionGraphs.push_back( TGraph(_dataPointFileNames.at(_dataPointFileNames.size()-1).c_str()) );
-        _theoryUncertainties.push_back( node.second.get<double>( "TheoryUncertainty" ) );
-        _widthFormulas.push_back( TF1("", (node.second.get<std::string>( "WidthFormula" ) ).c_str() ) );
-        _limitFormulas.push_back( TF1("", (node.second.get<std::string>( "LimitFormula" ) ).c_str() ) );
-        AddQuantity( new SimplePrediction( name, "", _simpleOutputDataStorage -> GetMap() -> at(name) ) ); 
+            std::string name = node.second.get<std::string>("Name");
+            _chi2ContributionNames.push_back( name );
+            _simpleOutputDataStorage -> AddEntry( name, 0. );
+            _xValueNames.push_back( node.second.get<std::string>( "XValue" ) );
+            _yValueNames.push_back( node.second.get<std::string>( "YValue" ) );
+            _dataPointFileNames.push_back( node.second.get<std::string>( "FileName" ) ); 
+            _exclusionGraphs.push_back( TGraph(_dataPointFileNames.at(_dataPointFileNames.size()-1).c_str()) );
+            _theoryUncertainties.push_back( node.second.get<double>( "TheoryUncertainty" ) );
+            _widthFormulas.push_back( TF1("", (node.second.get<std::string>( "WidthFormula" ) ).c_str() ) );
+            _limitFormulas.push_back( TF1("", (node.second.get<std::string>( "LimitFormula" ) ).c_str() ) );
+            AddQuantity( new SimplePrediction( name, "", _simpleOutputDataStorage -> GetMap() -> at(name) ) ); 
 
+        }
     }
 
 }
