@@ -40,6 +40,7 @@
 #include "Collection.h"
 #include "Configuration.h"
 #include "TreeCalculator.h"
+#include "AstroCalculator.h"
 #include "FeynHiggsModelCalculator.h"
 #include "FeynHiggsSLHAModelCalculator.h"
 #include "HDim6ModelCalculator.h"

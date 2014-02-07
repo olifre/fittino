@@ -53,6 +53,7 @@
 #include "SPhenoSLHAModelCalculator.h"
 #include "SummaryPlotter.h"
 #include "TreeCalculator.h"
+#include "AstroCalculator.h"
 #include "TreeSampler.h"
 
 Fittino::Factory::Factory() {
@@ -196,6 +197,11 @@ Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::str
     else if ( type == "TreeCalculator" ) {
 
         return new TreeCalculator( model, ptree );
+
+    }
+    else if( type == "AstroCalculator" ) {
+
+        return new AstroCalculator( model, ptree );
 
     }
     else if ( type == "FeynHiggsCalculator" )  {
