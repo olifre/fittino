@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        SPhenoSLHAModelCalculator.h                                      *
+* File        SPhenoSLHACalculator.h                                           *
 *                                                                              *
 * Description Wrapper class for SPheno                                         *
 *                                                                              *
@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -46,33 +46,33 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Wrapper class for SPheno.
    */
-  class SPhenoSLHAModelCalculator : public SLHAModelCalculatorBase {
+  class SPhenoSLHACalculator : public SLHAModelCalculatorBase {
 
     public:
       /*!
        *  Standard constructor.
        */
-    SPhenoSLHAModelCalculator( const boost::property_tree::ptree& ptree, const PhysicsModel* model );
+      SPhenoSLHACalculator( const boost::property_tree::ptree& ptree, const PhysicsModel* model );
       /*!
        *  Standard destructor.
        */
-                   ~SPhenoSLHAModelCalculator();
+      ~SPhenoSLHACalculator();
 
     public:
-      virtual void CalculatePredictions();
+      virtual void           CalculatePredictions();
 
       /*! \cond UML */
     private:
-      std::vector< SLHALine* > _lines;
-      std::string              _executableName;
-  
+      std::vector<SLHALine*> _lines;
+      std::string            _executableName;
+
     private:
-    /*!
-     *  \todo Short-term: The method CallExecutable() is copied from the old fittino code. It should\n
-     *  be eventually replaced.
-     */
-      virtual void CallExecutable();
-      virtual void ConfigureInput();
+      /*!
+       *  \todo Short-term: The method CallExecutable() is copied from the old fittino code. It should\n
+       *  be eventually replaced.
+       */
+      virtual void           CallExecutable();
+      virtual void           ConfigureInput();
 
       /*! \endcond UML */
 

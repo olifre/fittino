@@ -51,7 +51,7 @@
 #include "SLHAChi2Contribution.h"
 #include "SLHAeaSLHADataStorage.h"
 #include "SLHAPrediction.h"
-#include "SPhenoSLHAModelCalculator.h"
+#include "SPhenoSLHACalculator.h"
 #include "SummaryPlotter.h"
 #include "TreeCalculator.h"
 #include "TreeSampler.h"
@@ -232,7 +232,7 @@ Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::str
     }
     else if ( type == "SPhenoCalculator" ) {
 
-        return new SPhenoSLHAModelCalculator( ptree, model );
+        return new SPhenoSLHACalculator( ptree, model );
 
     }
     else {

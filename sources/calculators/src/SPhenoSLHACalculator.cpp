@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        SPhenoSLHAModelCalculator.cpp                                    *
+* File        SPhenoSLHACalculator.cpp                                         *
 *                                                                              *
 * Description Wrapper class for SPheno                                         *
 *                                                                              *
@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -33,40 +33,64 @@
 
 #include "PhysicsModel.h"
 #include "SLHADataStorageBase.h"
-#include "SPhenoSLHAModelCalculator.h"
+#include "SPhenoSLHACalculator.h"
 #include "SLHALine.h"
 
-Fittino::SPhenoSLHAModelCalculator::SPhenoSLHAModelCalculator( const boost::property_tree::ptree& ptree, const PhysicsModel* model )
-        :SLHAModelCalculatorBase( model ) {
+Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const boost::property_tree::ptree& ptree, const PhysicsModel* model )
+    : SLHAModelCalculatorBase( model ) {
 
     _executableName     = "../SPheno";
     _name               = "SPheno";
     _slhaInputFileName  = "LesHouches.in";
     _slhaOutputFileName = "SPheno.spc";
-    
+
     BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
 
         if ( node.first == "SLHALine" ) {
-	  
-	  _lines.push_back( new SLHALine( node.second, model ) );
 
-	}
+            _lines.push_back( new SLHALine( node.second, model ) );
+
+        }
 
     }
 
 }
 
-Fittino::SPhenoSLHAModelCalculator::~SPhenoSLHAModelCalculator() {
+Fittino::SPhenoSLHACalculator::~SPhenoSLHACalculator() {
 
-  for ( unsigned int i=0; i<_lines.size(); i++ ) {
+    for ( unsigned int i = 0; i < _lines.size(); i++ ) {
 
-    delete _lines[i];
+        delete _lines[i];
 
-  }
+    }
 
 }
 
-void Fittino::SPhenoSLHAModelCalculator::ConfigureInput() {
+void Fittino::SPhenoSLHACalculator::CalculatePredictions() {
+
+    if ( boost::filesystem::exists( _slhaInputFileName ) ) {
+
+        boost::filesystem::rename( _slhaInputFileName, _slhaInputFileName + ".last" );
+
+    }
+
+    if ( boost::filesystem::exists( _slhaOutputFileName ) ) {
+
+        boost::filesystem::rename( _slhaOutputFileName, _slhaOutputFileName + ".last" );
+
+    }
+
+    ConfigureInput();
+
+    _slhaInputDataStorage->WriteFile( _slhaInputFileName );
+
+    CallExecutable();
+
+    _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
+
+}
+
+void Fittino::SPhenoSLHACalculator::ConfigureInput() {
 
     // Write block "MODSEL".
 
@@ -112,13 +136,13 @@ void Fittino::SPhenoSLHAModelCalculator::ConfigureInput() {
 
     for ( unsigned int i = 0; i < _lines.size(); i++ ) {
 
-        _slhaInputDataStorage->AddLine( *_lines.at(i) );
+        _slhaInputDataStorage->AddLine( *_lines.at( i ) );
 
-      }
+    }
 
 }
 
-void Fittino::SPhenoSLHAModelCalculator::CallExecutable() {
+void Fittino::SPhenoSLHACalculator::CallExecutable() {
 
     int returnValue = 0;
 
@@ -126,7 +150,7 @@ void Fittino::SPhenoSLHAModelCalculator::CallExecutable() {
     int status = 0;
     int child_pid = 0;
 
-     // Get a child process.
+    // Get a child process.
 
     if ( ( pid = fork() ) < 0 ) {
 
@@ -140,19 +164,19 @@ void Fittino::SPhenoSLHAModelCalculator::CallExecutable() {
 
     if ( pid == 0 ) {
 
-      // The child executes the code inside this if.
+        // The child executes the code inside this if.
 
-      child_pid = getpid();
-      //char* argv[2];
-      //argv[0] = "";
-      //argv[1] = 0;
+        child_pid = getpid();
+        //char* argv[2];
+        //argv[0] = "";
+        //argv[1] = 0;
 
-      //char* const argv[] = { "", NULL };
-      char* argv[1] = { NULL };
-      
-      returnValue = execve( _executableName.c_str(), argv, NULL);
-      _exit( 255 );
-      //returnValue = system( _executableName.c_str() );
+        //char* const argv[] = { "", NULL };
+        char* argv[1] = { NULL };
+
+        returnValue = execve( _executableName.c_str(), argv, NULL );
+        _exit( 255 );
+        //returnValue = system( _executableName.c_str() );
 
     }
     else {
@@ -193,29 +217,3 @@ void Fittino::SPhenoSLHAModelCalculator::CallExecutable() {
     //return 0;
 
 }
-
-
-void Fittino::SPhenoSLHAModelCalculator::CalculatePredictions() {
-
-    if ( boost::filesystem::exists( _slhaInputFileName ) ) {
-
-        boost::filesystem::rename( _slhaInputFileName, _slhaInputFileName + ".last" );
-
-    }
-
-    if ( boost::filesystem::exists( _slhaOutputFileName ) ) {
-
-        boost::filesystem::rename( _slhaOutputFileName, _slhaOutputFileName + ".last" );
-
-    }
-
-    ConfigureInput();
-
-    _slhaInputDataStorage->WriteFile( _slhaInputFileName );
-
-    CallExecutable();
-
-    _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
-
-}
-

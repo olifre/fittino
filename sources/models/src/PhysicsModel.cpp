@@ -45,7 +45,6 @@
 #include "FeynHiggsSLHAModelCalculator.h"
 #include "HDim6ModelCalculator.h"
 #include "HiggsSignalsHadXSModelCalculator.h"
-#include "SPhenoSLHAModelCalculator.h"
 #include "TMatrixDSym.h"
 #include "TMatrixDSymEigen.h"
 #include "TVectorD.h"
