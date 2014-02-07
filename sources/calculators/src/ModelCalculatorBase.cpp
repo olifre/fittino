@@ -75,3 +75,7 @@ void  Fittino::ModelCalculatorBase::AddChi2Contribution( Fittino::Chi2Contributi
     _collectionOfChi2Contributions.AddElement( chi2Contribution );
 
 }
+
+void Fittino::ModelCalculatorBase::SetupMeasuredValues( ) {
+
+}
