@@ -17,8 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_SPHENOSLHAMODELCALCULATOR_H
-#define FITTINO_SPHENOSLHAMODELCALCULATOR_H
+#ifndef FITTINO_SPHENOSLHACALCULATOR_H
+#define FITTINO_SPHENOSLHACALCULATOR_H
 
 #include <vector>
 
@@ -80,4 +80,4 @@ namespace Fittino {
 
 }
 
-#endif // FITTINO_SPHENOSLHAMODELCALCULATOR_H
+#endif // FITTINO_SPHENOSLHACALCULATOR_H

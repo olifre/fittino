@@ -18,8 +18,8 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_HIGGSSIGNALSSLHAMODELCALCULATOR_H
-#define FITTINO_HIGGSSIGNALSSLHAMODELCALCULATOR_H
+#ifndef FITTINO_HIGGSSIGNALSSLHACALCULATOR_H
+#define FITTINO_HIGGSSIGNALSSLHACALCULATOR_H
 
 #include "SLHAModelCalculatorBase.h"
 
@@ -586,4 +586,4 @@ namespace Fittino {
 
 }
 
-#endif // FITTINO_HIGGSSIGNALSSLHAMODELCALCULATOR_H
+#endif // FITTINO_HIGGSSIGNALSSLHACALCULATOR_H

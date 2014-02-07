@@ -19,8 +19,8 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_PHYSICSMODELBASE_H
-#define FITTINO_PHYSICSMODELBASE_H
+#ifndef FITTINO_PHYSICSMODEL_H
+#define FITTINO_PHYSICSMODEL_H
 
 #include "ModelBase.h"
 #include "TMatrixDSym.h"
@@ -128,4 +128,4 @@ namespace Fittino {
 
 }
 
-#endif // FITTINO_PHYSICSMODELBASE_H
+#endif // FITTINO_PHYSICSMODEL_H
