@@ -90,27 +90,24 @@ void Fittino::AstroCalculator::CalculatePredictions() {
         _limitFormulas.at(i).SetParameter( 1, _widthFormulas.at(i).Eval(0) );
         double width = _widthFormulas.at(i).Eval(0);
         double csLimit = width*TMath::Sqrt(_limitFormulas.at(i).Eval(0));
-        
         if( yValue > csLimit ) {
             _simpleOutputDataStorage -> GetMap() -> at( name ) = ( yValue - csLimit )*(yValue - csLimit)/width/width;
         }
         else {
             _simpleOutputDataStorage -> GetMap() -> at( name ) = 0.;
         }
-
     }
     
 }
 
 void Fittino::AstroCalculator::SetupMeasuredValues() {
-    
     for( unsigned int i = 0; i < _chi2ContributionNames.size(); ++i ) {
-        
         std::string name = _yValueNames.at(i);
         for( unsigned int j = 0; j < _model->GetObservableVector()->size(); ++j ) {
 
             if( _model -> GetObservableVector() -> at(j) -> GetPrediction() -> GetName() == name ) {
                 _measuredValues.at(i) = _model->GetObservableVector()->at(j)->GetMeasuredValue();
+                
                 break;
             }
         }

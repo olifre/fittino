@@ -55,7 +55,7 @@ namespace Fittino {
     public:
       virtual void        CalculatePredictions();
       virtual void        Initialize() const;
-      void                SetupMeasuredValues();
+      virtual void        SetupMeasuredValues();
 
     private:
       std::vector<std::string>              _chi2ContributionNames;
