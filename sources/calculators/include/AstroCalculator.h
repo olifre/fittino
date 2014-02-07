@@ -15,8 +15,8 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_TREECALCULATOR_H
-#define FITTINO_TREECALCULATOR_H
+#ifndef FITTINO_ASTROCALCULATOR_H
+#define FITTINO_ASTROCALCULATOR_H
 
 #include <boost/property_tree/ptree.hpp>
 
@@ -72,4 +72,4 @@ namespace Fittino {
 
 }
 
-#endif // FITTINO_TREECALCULATOR_H
+#endif // FITTINO_ASTROCALCULATOR_H
