@@ -51,8 +51,8 @@ Fittino::AstroCalculator::AstroCalculator( const PhysicsModelBase* model, const 
 
     _name = "AstroCalculator";
     if( ptree.count("Chi2Contribution" ) != 0 ) {
-        BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child("Chi2Contribution") ) {
-    
+        BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) { //.get_child("Chi2Contribution") ) {
+            if( node.first != "Chi2Contribution" ) continue;
             std::string name = node.second.get<std::string>("Name");
             _chi2ContributionNames.push_back( name );
             _simpleOutputDataStorage -> AddEntry( name, 0. );
@@ -96,6 +96,7 @@ void Fittino::AstroCalculator::CalculatePredictions() {
         else {
             _simpleOutputDataStorage -> GetMap() -> at( name ) = 0.;
         }
+        std::cout << "chi2 contrib is " << _simpleOutputDataStorage -> GetMap() -> at(name) << std::endl;
 
     }
     
