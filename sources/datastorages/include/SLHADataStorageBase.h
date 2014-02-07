@@ -29,7 +29,7 @@
  */
 namespace Fittino {
 
-  class PhysicsModelBase;
+  class PhysicsModel;
   class SLHALine;
 
   /*!

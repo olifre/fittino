@@ -14,8 +14,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*       published by the Free Software Foundation; either version 3 of   *
-*       the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -75,6 +75,7 @@ namespace Fittino {
        *  Function to retrieve the updated property tree from this tool.
        */
       boost::property_tree::ptree        GetPropertyTree();
+
     protected:
       /*!
        *  The chi2 of the model.
@@ -89,9 +90,17 @@ namespace Fittino {
        */
       std::string                        _name;
       /*!
+       *  A copy of the input property tree, to be used for storing information for output-xml files (e.g. interface files for concatenating Markov Chains.
+       */
+      boost::property_tree::ptree        _ptree;
+      /*!
        *  Random number generator.
        */
       TRandom3                           _randomGenerator;
+      /*!
+       *  The output tree.
+       */
+      TTree*                             _tree;
       /*!
        *  Pointer to the model to be analysed. Via this pointer an association between the model\n
        *  and any class deriving from AnalysisTool (especially the concrete optimizer or sampler\n
@@ -102,14 +111,7 @@ namespace Fittino {
        *  Stores the status parameters.
        */
       std::vector<ParameterBase*>        _statusParameterVector;
-      /*!
-       *  The output tree.
-       */
-      TTree*                             _tree;
-      /*!
-       *  A copy of the input property tree, to be used for storing information for output-xml files (e.g. interface files for concatenating Markov Chains.
-       */
-       boost::property_tree::ptree       _ptree;
+
     protected:
       /*!
        *  Prints the result of the execution of a particuar analysis tool. It is declared virtual\n
@@ -126,10 +128,7 @@ namespace Fittino {
        *  concrete analysis tool.
        */
       virtual void                       UpdateModel() = 0;
-      /*!
-       *  Function to update values in the output property tree. Hm, maybe this has to become virtual?
-       */ 
-       void                              UpdatePropertyTree();
+
     protected:
       /*!
        *  Returns the number of status parameters.
@@ -149,6 +148,10 @@ namespace Fittino {
       /*!
        *  Returns the status parameters as a vector.
        */
+      /*!
+       *  Function to update values in the output property tree. Hm, maybe this has to become virtual?
+       */
+      void                               UpdatePropertyTree();
       const std::vector<ParameterBase*>* GetStatusParameterVector() const;
 
       /*! \cond UML */

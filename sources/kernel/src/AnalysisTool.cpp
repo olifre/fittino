@@ -1,4 +1,5 @@
 /* $Id$ */
+
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
@@ -13,17 +14,12 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
 #include <iomanip>
-#include <iostream>
-#include <sstream>
-#include <math.h>
-
-#include <boost/property_tree/ptree.hpp>
 
 #include "TTree.h"
 
@@ -31,9 +27,7 @@
 #include "Chi2ContributionBase.h"
 #include "Messenger.h"
 #include "ModelBase.h"
-#include "ModelParameterBase.h"
 #include "ParameterBase.h"
-#include "PredictionBase.h"
 
 Fittino::AnalysisTool::AnalysisTool( ModelBase* model, int randomSeed )
     : _chi2( 1.e99 ),
@@ -44,24 +38,24 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase* model, int randomSeed )
       _randomGenerator( randomSeed ),
       _tree( new TTree( "Tree", "Tree" ) ) {
 
-    _statusParameterVector.push_back( new ParameterBase( "Chi2",             "#chi^2",           1.e99, 0., 100.  ) ),
-                                      _statusParameterVector.push_back( new ParameterBase( "IterationCounter", "IterationCounter", 0,     0., 1.e10 ) );
+    _statusParameterVector.push_back( new ParameterBase( "Chi2",             "#chi^2",           1.e99, 0., 100.  ) );
+    _statusParameterVector.push_back( new ParameterBase( "IterationCounter", "IterationCounter", 0,     0., 1.e10 ) );
 
 }
 
-Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tree::ptree& ptree ) 
-    : _chi2( ptree.get<double>("Chi2", 1.e99) ),
-      _iterationCounter( ptree.get<unsigned int>("IterationCounter", 0) ),
-      _name( ptree.get<std::string>("Name", "") ),
+Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tree::ptree& ptree )
+    : _chi2( ptree.get<double>( "Chi2", 1.e99 ) ),
+      _iterationCounter( ptree.get<unsigned int>( "IterationCounter", 0 ) ),
+      _name( ptree.get<std::string>( "Name", "" ) ),
       _model( model ),
-      _outputFile( (ptree.get<std::string>("OutputFile", "Fittino.out.root")).c_str(), "RECREATE" ),
-      _randomGenerator( ptree.get<int>("RandomSeed", 0) ),
-      _tree( new TTree( (ptree.get<std::string>("OutputTree", "Tree")).c_str(), (ptree.get<std::string>("OutputTree", "Tree")).c_str() ) ) {
+      _outputFile( ( ptree.get<std::string>( "OutputFile", "Fittino.out.root" ) ).c_str(), "RECREATE" ),
+      _randomGenerator( ptree.get<int>( "RandomSeed", 0 ) ),
+      _tree( new TTree( ( ptree.get<std::string>( "OutputTree", "Tree" ) ).c_str(), ( ptree.get<std::string>( "OutputTree", "Tree" ) ).c_str() ) ) {
 
-      _statusParameterVector.push_back( new ParameterBase( "Chi2",             "#chi^2",           _chi2, 0., 100.  ) ),
-      _statusParameterVector.push_back( new ParameterBase( "IterationCounter", "IterationCounter", _iterationCounter,     0., 1.e10 ) );
+    _statusParameterVector.push_back( new ParameterBase( "Chi2",             "#chi^2",           _chi2,             0., 100.  ) );
+    _statusParameterVector.push_back( new ParameterBase( "IterationCounter", "IterationCounter", _iterationCounter, 0., 1.e10 ) );
 
-      _ptree = ptree;
+    _ptree = ptree;
 
 }
 
@@ -74,6 +68,13 @@ void Fittino::AnalysisTool::PerformAnalysis() {
     AnalysisTool::InitializeAnalysisTool();
     AnalysisTool::ExecuteAnalysisTool();
     AnalysisTool::TerminateAnalysisTool();
+
+}
+
+boost::property_tree::ptree Fittino::AnalysisTool::GetPropertyTree() {
+
+    UpdatePropertyTree();
+    return _ptree;
 
 }
 
@@ -104,6 +105,13 @@ void Fittino::AnalysisTool::PrintStatus() const {
     messenger << Messenger::INFO << Messenger::Endl;
     messenger << Messenger::INFO << std::scientific << std::setprecision( 2 ) << "    Sum                                         " << _model->GetChi2() << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
+
+}
+
+void Fittino::AnalysisTool::UpdatePropertyTree() {
+
+    _ptree.put( "Chi2", _chi2 );
+    _ptree.put( "IterationCounter", _iterationCounter );
 
 }
 
@@ -145,20 +153,20 @@ void Fittino::AnalysisTool::InitializeBranches() {
 
     for ( unsigned int i = 0; i < _model->GetCollectionOfQuantities().GetNumberOfElements(); ++i ) {
 
-      _tree->Branch( _model->GetCollectionOfQuantities().At( i )->GetName().c_str(),
-                       const_cast<double*>(&_model->GetCollectionOfQuantities().At( i )->GetValue() ) );
+        _tree->Branch( _model->GetCollectionOfQuantities().At( i )->GetName().c_str(),
+                       const_cast<double*>( &_model->GetCollectionOfQuantities().At( i )->GetValue() ) );
     }
-    
+
     for ( unsigned int i = 0; i < _model->GetCollectionOfChi2Contributions().GetNumberOfElements(); ++i ) {
 
-      _tree->Branch( _model->GetCollectionOfChi2Contributions().At( i )->GetName().c_str(),
-                       const_cast<double*>(&_model->GetCollectionOfChi2Contributions().At( i )->GetValue() ) );
+        _tree->Branch( _model->GetCollectionOfChi2Contributions().At( i )->GetName().c_str(),
+                       const_cast<double*>( &_model->GetCollectionOfChi2Contributions().At( i )->GetValue() ) );
     }
 
     for ( unsigned int i = 0; i < GetNumberOfStatusParameters(); ++i ) {
 
         _tree->Branch( GetStatusParameterVector()->at( i )->GetName().c_str(),
-                       const_cast<double*>(&GetStatusParameterVector()->at( i )->GetValue() ) );
+                       const_cast<double*>( &GetStatusParameterVector()->at( i )->GetValue() ) );
 
     }
 
@@ -197,19 +205,5 @@ void Fittino::AnalysisTool::TerminateAnalysisTool() {
 void Fittino::AnalysisTool::WriteResultToFile() const {
 
     _tree->Write();
-
-}
-
-void Fittino::AnalysisTool::UpdatePropertyTree() {
-
-    _ptree.put("Chi2", _chi2);
-    _ptree.put("IterationCounter", _iterationCounter);
-
-}
-
-boost::property_tree::ptree Fittino::AnalysisTool::GetPropertyTree() {
-
-    UpdatePropertyTree();
-    return _ptree;
 
 }

@@ -33,20 +33,20 @@
 #include "AstroCalculator.h"
 #include "SimpleDataStorage.h"
 #include "ConfigurationException.h"
-#include "PhysicsModelBase.h"
+#include "PhysicsModel.h"
 #include "ModelParameterBase.h"
 #include "Factory.h"
 #include "SimplePrediction.h"
 #include "Observable.h"
 
-Fittino::AstroCalculator::AstroCalculator( const PhysicsModelBase* model )
+Fittino::AstroCalculator::AstroCalculator( const PhysicsModel* model )
     : ModelCalculatorBase( model ) {
 
     _name = "AstroCalculator";
 
 }
 
-Fittino::AstroCalculator::AstroCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree )
+Fittino::AstroCalculator::AstroCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     : ModelCalculatorBase( model ) {
 
     _name = "AstroCalculator";

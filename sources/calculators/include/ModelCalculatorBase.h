@@ -31,7 +31,7 @@
 namespace Fittino {
 
   class PredictionBase;
-  class PhysicsModelBase;
+  class PhysicsModel;
   class SimpleDataStorage;
   class Chi2ContributionBase;
 
@@ -48,7 +48,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                                    ModelCalculatorBase( const PhysicsModelBase* model );
+                                    ModelCalculatorBase( const PhysicsModel* model );
       /*!
        *  Standard destructor.
        */
@@ -71,7 +71,7 @@ namespace Fittino {
 
     protected:
       std::string                   _name;
-      const PhysicsModelBase*       _model;
+      const PhysicsModel*       _model;
       SimpleDataStorage*            _simpleOutputDataStorage;
       Collection<PredictionBase*>   _collectionOfQuantities;
       Collection<Chi2ContributionBase*> _collectionOfChi2Contributions;

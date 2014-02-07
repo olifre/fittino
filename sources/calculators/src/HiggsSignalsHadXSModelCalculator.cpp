@@ -24,11 +24,11 @@
 #include "CHiggsSignals.h"
 #include "HiggsSignalsHadXSModelCalculator.h"
 #include "ModelParameterBase.h"
-#include "PhysicsModelBase.h"
+#include "PhysicsModel.h"
 #include "SimpleDataStorage.h"
 #include "SimplePrediction.h"
 
-Fittino::HiggsSignalsHadXSModelCalculator::HiggsSignalsHadXSModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree )
+Fittino::HiggsSignalsHadXSModelCalculator::HiggsSignalsHadXSModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     :ModelCalculatorBase  ( model                                                                         ),
      _normSM_Gamma_hgg    ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hgg"      )->GetValue() ),
      _normSM_Gamma_htautau( _model->GetCollectionOfQuantities().At( "normSM_Gamma_htautau"  )->GetValue() ),

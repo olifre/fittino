@@ -36,7 +36,7 @@ namespace Fittino {
   class ModelBase;
   class ModelCalculatorBase;
   class Observable;
-  class PhysicsModelBase;
+  class PhysicsModel;
   class PredictionBase;
   class SLHADataStorageBase;
   class SLHAModelCalculatorBase;
@@ -58,7 +58,7 @@ namespace Fittino {
       ~Factory();
 
     public:
-      ModelCalculatorBase*        CreateCalculator( const std::string& type, const PhysicsModelBase* model, const boost::property_tree::ptree& ptree ) const;
+      ModelCalculatorBase*        CreateCalculator( const std::string& type, const PhysicsModel* model, const boost::property_tree::ptree& ptree ) const;
       /*!
        *  Returns a concrete analysis tool\n
        *  Supported analysis tools are

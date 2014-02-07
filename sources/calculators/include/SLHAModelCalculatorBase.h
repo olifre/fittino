@@ -41,7 +41,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                           SLHAModelCalculatorBase( const PhysicsModelBase* model );
+                           SLHAModelCalculatorBase( const PhysicsModel* model );
       /*!
        *  Standard destructor.
        */

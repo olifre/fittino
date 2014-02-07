@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        PhysicsModelBase.cpp                                             *
+* File        PhysicsModel.cpp                                                 *
 *                                                                              *
 * Description Base class for Fittino physics models                            *
 *                                                                              *
@@ -32,7 +32,7 @@
 #include "ModelCalculatorException.h"
 #include "ModelParameterBase.h"
 #include "Observable.h"
-#include "PhysicsModelBase.h"
+#include "PhysicsModel.h"
 #include "PhysicsParameter.h"
 #include "PredictionBase.h"
 #include "SimplePrediction.h"
@@ -51,44 +51,44 @@
 #include "TMatrixDSymEigen.h"
 #include "TVectorD.h"
 
-Fittino::PhysicsModelBase::PhysicsModelBase( const boost::property_tree::ptree& ptree )
-        : ModelBase( ptree ) {
+Fittino::PhysicsModel::PhysicsModel( const boost::property_tree::ptree& ptree )
+    : ModelBase( ptree ) {
 
-  _name = ptree.get<std::string>( "Name" );
+    _name = ptree.get<std::string>( "Name" );
 
-  Factory factory;
-  
-  InitializeCalculators( ptree );
-  InitializeObservables( ptree );
-  InitializeCovarianceMatrix( ptree );
-  BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
+    Factory factory;
 
-    if ( node.first == "Chi2Contribution" ) AddChi2Contribution( node.second.get_value<std::string>() );
+    InitializeCalculators( ptree );
+    InitializeObservables( ptree );
+    InitializeCovarianceMatrix( ptree );
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
 
-  }
+        if ( node.first == "Chi2Contribution" ) AddChi2Contribution( node.second.get_value<std::string>() );
 
-  Initialize();
+    }
 
-}
-
-Fittino::PhysicsModelBase::~PhysicsModelBase() {
+    Initialize();
 
 }
 
-
-void Fittino::PhysicsModelBase::AddChi2Contribution( const std::string& name ) {
-
-  _collectionOfChi2Quantities.AddElement( GetCollectionOfQuantities().At( name ) );
+Fittino::PhysicsModel::~PhysicsModel() {
 
 }
 
-void Fittino::PhysicsModelBase::AddChi2Contribution( Fittino::Chi2ContributionBase* contribution ) {
 
-  _collectionOfChi2Contributions.AddElement( contribution );
+void Fittino::PhysicsModel::AddChi2Contribution( const std::string& name ) {
+
+    _collectionOfChi2Quantities.AddElement( GetCollectionOfQuantities().At( name ) );
 
 }
 
-double Fittino::PhysicsModelBase::Evaluate() {
+void Fittino::PhysicsModel::AddChi2Contribution( Fittino::Chi2ContributionBase* contribution ) {
+
+    _collectionOfChi2Contributions.AddElement( contribution );
+
+}
+
+double Fittino::PhysicsModel::Evaluate() {
 
     // Let the calculators calculate the model predictions.
 
@@ -101,8 +101,8 @@ double Fittino::PhysicsModelBase::Evaluate() {
         }
 
     }
-    catch(  ModelCalculatorException ){
-    
+    catch(  ModelCalculatorException ) {
+
         return 100000;
 
     }
@@ -117,17 +117,17 @@ double Fittino::PhysicsModelBase::Evaluate() {
 
     for ( unsigned int i = 0; i < _collectionOfChi2Contributions.GetNumberOfElements(); ++i ) {
 
-        _collectionOfChi2Contributions.At(i)->UpdateValue();
+        _collectionOfChi2Contributions.At( i )->UpdateValue();
 
     }
 
     // Calculate and return the resulting chi2.
 
-    return PhysicsModelBase::CalculateChi2();
+    return PhysicsModel::CalculateChi2();
 
 }
 
-void Fittino::PhysicsModelBase::PrintStatus() const {
+void Fittino::PhysicsModel::PrintStatus() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
@@ -165,7 +165,7 @@ void Fittino::PhysicsModelBase::PrintStatus() const {
 
         for ( unsigned int i = 0; i < _collectionOfPredictions.GetNumberOfElements(); ++i ) {
 
-          _collectionOfPredictions.At( i )->PrintStatus();
+            _collectionOfPredictions.At( i )->PrintStatus();
 
         }
 
@@ -179,7 +179,7 @@ void Fittino::PhysicsModelBase::PrintStatus() const {
 
         for ( unsigned int i = 0; i < _collectionOfChi2Quantities.GetNumberOfElements(); ++i ) {
 
-          _collectionOfChi2Quantities.At( i )->PrintStatus();
+            _collectionOfChi2Quantities.At( i )->PrintStatus();
 
         }
 
@@ -187,7 +187,7 @@ void Fittino::PhysicsModelBase::PrintStatus() const {
 
 }
 
-void Fittino::PhysicsModelBase::Initialize() const {
+void Fittino::PhysicsModel::Initialize() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
@@ -222,7 +222,7 @@ void Fittino::PhysicsModelBase::Initialize() const {
 
 }
 
-double Fittino::PhysicsModelBase::CalculateChi2() {
+double Fittino::PhysicsModel::CalculateChi2() {
 
     double chi2 = 0.;
 
@@ -231,30 +231,30 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
 
     std::vector<double> deviationVector;
     for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
-        
+
         if( _observableVector[i]->IsNoFitObservable() ) continue;
         deviationVector.push_back( _observableVector[i]->GetPrediction()->GetValue() - _observableVector[i]->GetMeasuredValue() );
         //chi2 += pow( ( _observableVector[i]->GetPrediction()->GetValue() - _observableVector[i]->GetMeasuredValue() ) / _observableVector[i]->GetMeasuredError(), 2 );
 
     }
-    if( deviationVector.size() > 0 ) { 
+    if( deviationVector.size() > 0 ) {
         TVectorD tDeviationVector( deviationVector.size(), &deviationVector[0] );
         TVectorD tDeviationVector2 = tDeviationVector;
-        tDeviationVector2 *= *(_invertedFitObservableCovarianceMatrix);
-        chi2 += tDeviationVector2*tDeviationVector;
+        tDeviationVector2 *= *( _invertedFitObservableCovarianceMatrix );
+        chi2 += tDeviationVector2 * tDeviationVector;
     }
-  
+
     // Add additional chi2 terms.
 
     for ( unsigned int i = 0; i < _collectionOfChi2Quantities.GetNumberOfElements(); i++ ) {
 
-      chi2 += _collectionOfChi2Quantities.At(i)->GetValue();
-    
+        chi2 += _collectionOfChi2Quantities.At( i )->GetValue();
+
     }
 
     for ( unsigned int i = 0; i < _collectionOfChi2Contributions.GetNumberOfElements(); ++i ) {
-    
-      chi2 += _collectionOfChi2Contributions.At(i)->GetValue();
+
+        chi2 += _collectionOfChi2Contributions.At( i )->GetValue();
 
     }
 
@@ -263,12 +263,12 @@ double Fittino::PhysicsModelBase::CalculateChi2() {
 
 }
 
-void Fittino::PhysicsModelBase::SmearObservations( TRandom3* randomGenerator ) {
+void Fittino::PhysicsModel::SmearObservations( TRandom3* randomGenerator ) {
     /*
     for( int i = 0; i < _observableVector.size(); ++i ) {
-        
+
         _observableVector[i]->SmearMeasuredValue( randomGenerator );
-    
+
     }
     */
 
@@ -281,7 +281,7 @@ void Fittino::PhysicsModelBase::SmearObservations( TRandom3* randomGenerator ) {
     TVectorD eigenValues = eigenMatrix.GetEigenValues();
     TMatrixD eigenVectorsInverse = eigenMatrix.GetEigenVectors();
     TMatrixD eigenVectors = eigenMatrix.GetEigenVectors();
-    
+
     eigenVectorsInverse.Invert();
 
     //std::cout << "the eigenvalues are " << std::endl;
@@ -290,16 +290,16 @@ void Fittino::PhysicsModelBase::SmearObservations( TRandom3* randomGenerator ) {
     //std::cout << "the eigenvector matrix is " << std::endl;
     //eigenVectors.Print();
     //std::cout << "-------------------------------------------------------" << std::endl;
-    
+
     // now transform the observable vector:
     TVectorD tObservableVector( _observableVector.size() );
     for( int i = 0; i < _observableVector.size(); ++i ) {
-        
-        tObservableVector[i] = _observableVector.at(i)->GetBestFitPrediction();
+
+        tObservableVector[i] = _observableVector.at( i )->GetBestFitPrediction();
 
     }
     TVectorD tTransformedObservableVector( _observableVector.size() );
-    tTransformedObservableVector = eigenVectorsInverse*tObservableVector;
+    tTransformedObservableVector = eigenVectorsInverse * tObservableVector;
     //std::cout << " and now the ev matrix is " << std::endl;
     //eigenVectors.Print();
 
@@ -313,8 +313,8 @@ void Fittino::PhysicsModelBase::SmearObservations( TRandom3* randomGenerator ) {
     // now smear
     TVectorD smearedVector( _observableVector.size() );
     for( int i = 0; i < _observableVector.size(); ++i ) {
-        
-        smearedVector[i] = randomGenerator->Gaus( tTransformedObservableVector[i], sqrt(eigenValues[i]) );
+
+        smearedVector[i] = randomGenerator->Gaus( tTransformedObservableVector[i], sqrt( eigenValues[i] ) );
 
     }
     //std::cout << "the smeared, transformed observable vector is " << std::endl;
@@ -325,43 +325,43 @@ void Fittino::PhysicsModelBase::SmearObservations( TRandom3* randomGenerator ) {
     //eigenVectors.Print();
     //std::cout << " and " << std::endl;
     //smearedVector.Print();
-    
-    tObservableVector = eigenVectors*smearedVector;
+
+    tObservableVector = eigenVectors * smearedVector;
     for( int i = 0; i < _observableVector.size(); ++i ) {
 
         _observableVector[i]->SetMeasuredValue( tObservableVector[i] );
-        
-        std::cout << "using smeared value for observable " << _observableVector[i]->GetPrediction()->GetName() << " \t: " << _observableVector[i]->GetMeasuredValue() << " \t: " << (_observableVector[i]->GetMeasuredValue() - _observableVector[i]->GetBestFitPrediction())/_observableVector[i]->GetMeasuredError() << std::endl;
+
+        std::cout << "using smeared value for observable " << _observableVector[i]->GetPrediction()->GetName() << " \t: " << _observableVector[i]->GetMeasuredValue() << " \t: " << ( _observableVector[i]->GetMeasuredValue() - _observableVector[i]->GetBestFitPrediction() ) / _observableVector[i]->GetMeasuredError() << std::endl;
     }
-    
+
 
     // now smear the observations for the chi2 contributions:
     for ( int i = 0; i < _collectionOfChi2Contributions.GetNumberOfElements(); ++i ) {
-    
-        _collectionOfChi2Contributions.At(i)->SmearObservation( randomGenerator );
+
+        _collectionOfChi2Contributions.At( i )->SmearObservation( randomGenerator );
 
     }
-    
+
     // now re-setup the observables for all the calculators.
     for ( unsigned int i = 0; i < _collectionOfCalculators.GetNumberOfElements(); i++ ) {
         _collectionOfCalculators.At( i )->SetupMeasuredValues();
-    
+
     }
 
 }
 
-Fittino::PhysicsModelBase* Fittino::PhysicsModelBase::Clone() const{
+Fittino::PhysicsModel* Fittino::PhysicsModel::Clone() const {
 
-  return new PhysicsModelBase( *this );
+    return new PhysicsModel( *this );
 
 }
 
-void Fittino::PhysicsModelBase::AddObservable( Observable* observable ) {
+void Fittino::PhysicsModel::AddObservable( Observable* observable ) {
 
     _observableVector.push_back( observable );
     bool predictionIsKnown = false;
     for( unsigned int i = 0; i < GetCollectionOfPredictions().GetNumberOfElements(); ++i ) {
-        if( observable->GetPrediction()->GetName() == GetCollectionOfPredictions().At(i)->GetName() ) {
+        if( observable->GetPrediction()->GetName() == GetCollectionOfPredictions().At( i )->GetName() ) {
             predictionIsKnown = true;
         }
     }
@@ -372,96 +372,96 @@ void Fittino::PhysicsModelBase::AddObservable( Observable* observable ) {
     }
 }
 
-void Fittino::PhysicsModelBase::AddCalculator( ModelCalculatorBase* calculator ) {
-    
+void Fittino::PhysicsModel::AddCalculator( ModelCalculatorBase* calculator ) {
+
     _collectionOfCalculators.AddElement( calculator->GetName(), calculator );
 
-    const Collection<PredictionBase*>& col = calculator->GetCollectionOfQuantities(); 
+    const Collection<PredictionBase*>& col = calculator->GetCollectionOfQuantities();
 
-    for (unsigned int i = 0; i< col.GetNumberOfElements(); i++ ) {
+    for ( unsigned int i = 0; i < col.GetNumberOfElements(); i++ ) {
 
-      AddPrediction( col.At(i) );
+        AddPrediction( col.At( i ) );
 
     }
 
     const Collection<Chi2ContributionBase*>& col2 = calculator->GetCollectionOfChi2Contributions();
 
     for ( unsigned int i = 0; i < col2.GetNumberOfElements(); ++i ) {
-    
-        AddChi2Contribution( col2.At(i) );
+
+        AddChi2Contribution( col2.At( i ) );
 
     }
 
 }
 
-const Fittino::Collection<Fittino::ModelCalculatorBase*>& Fittino::PhysicsModelBase::GetCollectionOfCalculators() const {
-    
+const Fittino::Collection<Fittino::ModelCalculatorBase*>& Fittino::PhysicsModel::GetCollectionOfCalculators() const {
+
     return _collectionOfCalculators;
 
 }
 
-const std::vector<Fittino::Observable*>* Fittino::PhysicsModelBase::GetObservableVector() const {
+const std::vector<Fittino::Observable*>* Fittino::PhysicsModel::GetObservableVector() const {
 
     return &_observableVector;
 
 }
 
-void Fittino::PhysicsModelBase::InitializeCalculators( const boost::property_tree::ptree& ptree ) {
+void Fittino::PhysicsModel::InitializeCalculators( const boost::property_tree::ptree& ptree ) {
 
-  Factory factory;
+    Factory factory;
 
-  BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child("Calculators") ) {
-  
-    AddCalculator( factory.CreateCalculator( node.first, this, node.second ) );
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child( "Calculators" ) ) {
 
-  }
+        AddCalculator( factory.CreateCalculator( node.first, this, node.second ) );
 
-}
-
-void Fittino::PhysicsModelBase::InitializeObservables( const boost::property_tree::ptree& ptree ) {
-  
-  Factory factory;
-
-  BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child("Observables") ) {
-
-    AddObservable( factory.CreateObservable( node.second, GetCollectionOfPredictions(), GetCollectionOfCalculators() ) );
-
-  }  
+    }
 
 }
 
-void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::property_tree::ptree& ptree ) {
+void Fittino::PhysicsModel::InitializeObservables( const boost::property_tree::ptree& ptree ) {
 
-    // first step: read the covariance matrices as defind in the input file. 
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree.get_child("CovarianceMatrices" ) ) {
+    Factory factory;
+
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child( "Observables" ) ) {
+
+        AddObservable( factory.CreateObservable( node.second, GetCollectionOfPredictions(), GetCollectionOfCalculators() ) );
+
+    }
+
+}
+
+void Fittino::PhysicsModel::InitializeCovarianceMatrix( const boost::property_tree::ptree& ptree ) {
+
+    // first step: read the covariance matrices as defind in the input file.
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child( "CovarianceMatrices" ) ) {
 
         int nRows = 0;
         // find out the number of dimensions of the matrix
-        BOOST_FOREACH( const boost::property_tree::ptree::value_type &node2, node.second  ) {
-            
+        BOOST_FOREACH( const boost::property_tree::ptree::value_type & node2, node.second  ) {
+
             if( node2.first == "Row" ) {
-            
+
                 nRows += 1;
-            
+
             }
-            
+
         }
-        
+
         // create matrix and fill matrix with the numbers from the input file. also, fill the _observableIndeCovarianceMatrix-map with the names of the observables for later re-ordering of the map.
         TMatrixDSym *mat = new TMatrixDSym( nRows );
         int row = 0;
         int col = 0;
-        BOOST_FOREACH( const boost::property_tree::ptree::value_type &node2, node.second ) {
+        BOOST_FOREACH( const boost::property_tree::ptree::value_type & node2, node.second ) {
             if( node2.first == "Row" ) {
                 col = 0;
-                BOOST_FOREACH( const boost::property_tree::ptree::value_type &node3, node2.second) {
+                BOOST_FOREACH( const boost::property_tree::ptree::value_type & node3, node2.second ) {
                     // assign one dimension to one observable:
                     if( node3.first == "ObservableName" ) {
-                        _observableIndexInCovarianceMatrix.insert(std::pair<std::string, int>( node3.second.data(), _observableIndexInCovarianceMatrix.size() ));
+                        _observableIndexInCovarianceMatrix.insert( std::pair<std::string, int>( node3.second.data(), _observableIndexInCovarianceMatrix.size() ) );
                     }
                     // fill the matrix:
                     if( node3.first == "Col" ) {
-                        (*mat)[row][col] = atof(node3.second.data().c_str() );
+                        ( *mat )[row][col] = atof( node3.second.data().c_str() );
                         col++;
                     }
                 }
@@ -470,92 +470,92 @@ void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::propert
         }
 
         // set matrix name and fill the collection of covariance matrices:
-        
+
         char matname[20];
-        sprintf(matname, "covMat_%i", _collectionOfCovarianceMatrices.GetNumberOfElements() );
+        sprintf( matname, "covMat_%i", _collectionOfCovarianceMatrices.GetNumberOfElements() );
         _collectionOfCovarianceMatrices.AddElement( matname, mat );
-        
+
     }
-    
-    
-    // now generate the full covariance matrix. 
+
+
+    // now generate the full covariance matrix.
     // number of dimensions corresponds to number of observables:
     int nRowsTotal = _observableVector.size();
-    
+
     // first create the unordered matrix:
     TMatrixDSym *unorderedCovarianceMatrix = new TMatrixDSym( nRowsTotal );
 
 
-    // the number of observables, for which a covariance matrix was specified in the input file 
+    // the number of observables, for which a covariance matrix was specified in the input file
     int nDimActiveMatrices = 0;
-    
+
     // if any covariance matrix has been defined in the input file, use these to fill the full matrix first:
     if( _collectionOfCovarianceMatrices.GetNumberOfElements() > 0 ) {
-       
+
         int idxActiveMatrix = 0;
         TMatrixDSym *activeMatrix = _collectionOfCovarianceMatrices.At( idxActiveMatrix ) ;
         int nDimActiveMatrix = activeMatrix->GetNrows();
         int nDimOffset = 0;
-       
-    // find out for how many observables a covariance matrix was defined:
+
+        // find out for how many observables a covariance matrix was defined:
         for( int i = 0; i < _collectionOfCovarianceMatrices.GetNumberOfElements(); ++i ) {
             nDimActiveMatrices += _collectionOfCovarianceMatrices.At( i ) -> GetNrows();
         }
-    
-    // now fill the full matrix
+
+        // now fill the full matrix
         for( int x = 0; x < nRowsTotal; ++x ) {
-       
-    // go to the next matrix, if all rows/columns from the current matrix have been transferred to the full matrix
+
+            // go to the next matrix, if all rows/columns from the current matrix have been transferred to the full matrix
             if( x - nDimOffset >= activeMatrix->GetNrows() ) {
                 nDimOffset += activeMatrix->GetNrows();
                 idxActiveMatrix += 1;
-            
+
                 if( idxActiveMatrix < _collectionOfCovarianceMatrices.GetNumberOfElements() ) {
-                    activeMatrix = _collectionOfCovarianceMatrices.At( idxActiveMatrix ); 
+                    activeMatrix = _collectionOfCovarianceMatrices.At( idxActiveMatrix );
                     nDimActiveMatrix = activeMatrix->GetNrows();
                 }
-        
+
             }
-    // fill all columns not included in the current active matrix with a 0. the diagonal elements will be replaced by the actual uncertainty squared later
+            // fill all columns not included in the current active matrix with a 0. the diagonal elements will be replaced by the actual uncertainty squared later
             for( int y = 0; y < nRowsTotal; ++y ) {
                 if( x >= nDimActiveMatrices || y >= nDimActiveMatrices || y < nDimOffset || y >= nDimOffset + nDimActiveMatrix ) {
-                
-                    (*unorderedCovarianceMatrix)[x][y] = 0.;
-            
+
+                    ( *unorderedCovarianceMatrix )[x][y] = 0.;
+
                 }
-    // fill the elements in the full matrix with the entries from the current active matrix when appropriate:
+                // fill the elements in the full matrix with the entries from the current active matrix when appropriate:
                 else {
-                
-                    (*unorderedCovarianceMatrix)[x][y] = (*activeMatrix)[x-nDimOffset][y-nDimOffset];
-            
+
+                    ( *unorderedCovarianceMatrix )[x][y] = ( *activeMatrix )[x - nDimOffset][y - nDimOffset];
+
                 }
-        
+
             }
         }
-    
+
     }
 
     // now fill the remaining diagonal elements
     int uncorrelatedIndex = nDimActiveMatrices;
     for( unsigned int i = 0; i < _observableVector.size(); ++i ) {
-        
+
         std::string observableName = _observableVector[i]->GetPrediction()->GetName();
         bool isCorrelatedObservable = false;
-        for( std::map<std::string,int>::const_iterator itr = _observableIndexInCovarianceMatrix.begin(); itr != _observableIndexInCovarianceMatrix.end(); ++itr ) {
-            if( (*itr).first == observableName ) {
+        for( std::map<std::string, int>::const_iterator itr = _observableIndexInCovarianceMatrix.begin(); itr != _observableIndexInCovarianceMatrix.end(); ++itr ) {
+            if( ( *itr ).first == observableName ) {
                 isCorrelatedObservable = true;
                 break;
             }
-            
+
         }
         if( isCorrelatedObservable ) continue;
 
-        _observableIndexInCovarianceMatrix.insert(std::pair<std::string,int>( observableName, _observableIndexInCovarianceMatrix.size() ) );
-        (*unorderedCovarianceMatrix)[uncorrelatedIndex][uncorrelatedIndex] = _observableVector[i]->GetMeasuredError()*_observableVector[i]->GetMeasuredError();
+        _observableIndexInCovarianceMatrix.insert( std::pair<std::string, int>( observableName, _observableIndexInCovarianceMatrix.size() ) );
+        ( *unorderedCovarianceMatrix )[uncorrelatedIndex][uncorrelatedIndex] = _observableVector[i]->GetMeasuredError() * _observableVector[i]->GetMeasuredError();
         uncorrelatedIndex += 1;
     }
-    
-   
+
+
     // now sort the matrix in the same order as the _observableVector is ordered.
     _observableCovarianceMatrix = new TMatrixDSym( unorderedCovarianceMatrix->GetNrows() );
     for( int i = 0; i < _observableVector.size(); ++i ) {
@@ -564,44 +564,44 @@ void Fittino::PhysicsModelBase::InitializeCovarianceMatrix( const boost::propert
 
             int oldIndex_x = _observableIndexInCovarianceMatrix.at( _observableVector[i]->GetPrediction()->GetName() );
             int oldIndex_y = _observableIndexInCovarianceMatrix.at( _observableVector[j]->GetPrediction()->GetName() );
-            (*_observableCovarianceMatrix)[i][j] = (*unorderedCovarianceMatrix)[oldIndex_x][oldIndex_y];
-    
+            ( *_observableCovarianceMatrix )[i][j] = ( *unorderedCovarianceMatrix )[oldIndex_x][oldIndex_y];
+
         }
 
     }
 
     // now create a matrix for the observables actually used in the fit:
-    
+
     // find out how many observables there are:
     int nFitObservables = 0;
     for( int i = 0; i < _observableVector.size(); ++i ) {
-        if(_observableVector[i]->IsNoFitObservable() ) continue;
+        if( _observableVector[i]->IsNoFitObservable() ) continue;
         nFitObservables += 1;
     }
     _fitObservableCovarianceMatrix = new TMatrixDSym( nFitObservables );
-    
+
 
     // fill the matrix:
     int fitObs_x = 0;
     int fitObs_y = 0;
     for( int i = 0; i < _observableVector.size(); ++i ) {
         fitObs_y = 0;
-        
-        if(_observableVector[i]->IsNoFitObservable() ) continue;
-        
+
+        if( _observableVector[i]->IsNoFitObservable() ) continue;
+
         for( int j = 0; j < _observableVector.size(); ++j ) {
-            
-            if(_observableVector[j]->IsNoFitObservable() ) continue;
-            
-            (*_fitObservableCovarianceMatrix)[fitObs_x][fitObs_y] = (*_observableCovarianceMatrix)[i][j];
+
+            if( _observableVector[j]->IsNoFitObservable() ) continue;
+
+            ( *_fitObservableCovarianceMatrix )[fitObs_x][fitObs_y] = ( *_observableCovarianceMatrix )[i][j];
             fitObs_y++;
-        
+
         }
         fitObs_x++;
     }
 
     // now set the toleracne of the matrix:
-    _fitObservableCovarianceMatrix->SetTol(1.e-40);
+    _fitObservableCovarianceMatrix->SetTol( 1.e-40 );
     // create the inverted matrix for the calculation of the chi2:
-    _invertedFitObservableCovarianceMatrix = new TMatrixDSym(_fitObservableCovarianceMatrix->Invert());    
+    _invertedFitObservableCovarianceMatrix = new TMatrixDSym( _fitObservableCovarianceMatrix->Invert() );
 }

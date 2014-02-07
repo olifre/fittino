@@ -40,7 +40,6 @@
 #include "ConfigurationException.h"
 #include "TDirectory.h"
 #include "TreeCalculator.h"
-#include "PhysicsModelBase.h"
 
 Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree ) 
     : SamplerBase( model, ptree ),

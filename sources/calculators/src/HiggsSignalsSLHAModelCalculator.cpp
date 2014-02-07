@@ -23,11 +23,11 @@
 #include "CHiggsSignals.h"
 #include "ConfigurationException.h"
 #include "HiggsSignalsSLHAModelCalculator.h"
-#include "PhysicsModelBase.h"
+#include "PhysicsModel.h"
 #include "SLHADataStorageBase.h"
 #include "SimplePrediction.h"
 
-Fittino::HiggsSignalsSLHAModelCalculator::HiggsSignalsSLHAModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree )
+Fittino::HiggsSignalsSLHAModelCalculator::HiggsSignalsSLHAModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     : SLHAModelCalculatorBase( model ),
       // Initialize steering parameters of the HiggsSignalsSLHAModelCalculator.
       _channelID             ( ptree.get<int>( "ChannelID",   40 ) ),

@@ -32,10 +32,10 @@
 
 #include "FeynHiggsModelCalculator.h"
 #include "ModelParameterBase.h"
-#include "PhysicsModelBase.h"
+#include "PhysicsModel.h"
 #include "SimplePrediction.h"
 
-Fittino::FeynHiggsModelCalculator::FeynHiggsModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree )
+Fittino::FeynHiggsModelCalculator::FeynHiggsModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
   : FeynHiggsModelCalculatorBase( model, ptree ) {
 
     _fileName = "FeynHiggs.in";

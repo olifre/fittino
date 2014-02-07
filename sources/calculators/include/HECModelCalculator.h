@@ -60,7 +60,7 @@ namespace Fittino {
       /*!
        *
        */
-      HECModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree );
+      HECModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

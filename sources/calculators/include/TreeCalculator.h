@@ -40,11 +40,11 @@ namespace Fittino {
       /*!
        *  Old standard constructor.
        */
-                          TreeCalculator( const PhysicsModelBase* model );
+                          TreeCalculator( const PhysicsModel* model );
       /*!
        *  Standard constructor.
        */
-                          TreeCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree );
+                          TreeCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

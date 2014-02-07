@@ -20,11 +20,11 @@
 #include <boost/foreach.hpp>
 #include <boost/property_tree/ptree.hpp>
 
-#include "PhysicsModelBase.h"
+#include "PhysicsModel.h"
 #include "RegressionCalculator.h"
 #include "RegressionMVA.h"
 
-Fittino::RegressionCalculator::RegressionCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree  )
+Fittino::RegressionCalculator::RegressionCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree  )
   :ModelCalculatorBase( model ),
    _reader ( "!Color:!Silent" ) {
 

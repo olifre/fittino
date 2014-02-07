@@ -40,7 +40,7 @@
 #include "NewCorrelatedSampler.h"
 #include "Observable.h"
 #include "ParticleSwarmOptimizer.h"
-#include "PhysicsModelBase.h"
+#include "PhysicsModel.h"
 #include "RegressionCalculator.h"
 #include "RosenbrockModel.h"
 #include "ScatterPlotter.h"
@@ -138,7 +138,7 @@ Fittino::SLHADataStorageBase* Fittino::Factory::CreateSLHAeaSLHADataStorage() {
 
 }
 
-Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::string& type, const PhysicsModelBase* model, const boost::property_tree::ptree& ptree ) const {
+Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::string& type, const PhysicsModel* model, const boost::property_tree::ptree& ptree ) const {
 
     if ( type == "HDim6Calculator" ) {
 
@@ -247,7 +247,7 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
 
     if ( type == "PhysicsModel" ) {
 
-        return new PhysicsModelBase( ptree );
+        return new PhysicsModel( ptree );
 
     }
     else if ( type == "RosenbrockModel" ) {

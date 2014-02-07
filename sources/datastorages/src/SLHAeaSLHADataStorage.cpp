@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -21,20 +21,19 @@
 
 #include "slhaea.h"
 
-#include "PhysicsModelBase.h"
 #include "SLHAFileException.h"
 #include "SLHAeaSLHADataStorage.h"
 #include "SLHALine.h"
 
 Fittino::SLHAeaSLHADataStorage::SLHAeaSLHADataStorage() {
 
-  _slhaeaDataStorage = new SLHAea::Coll();
+    _slhaeaDataStorage = new SLHAea::Coll();
 
 }
 
 Fittino::SLHAeaSLHADataStorage::~SLHAeaSLHADataStorage() {
 
-  delete _slhaeaDataStorage;
+    delete _slhaeaDataStorage;
 
 }
 
@@ -72,13 +71,13 @@ void Fittino::SLHAeaSLHADataStorage::AddBlock( const std::string& path ) {
     while ( tmpPath.find_first_of( ":" ) <= tmpPath.length() ) {
 
         tmpPath.erase( 0, tmpPath.find_first_of( ":" ) + 1 );
-        tmpStream << tmpPath.substr(0, tmpPath.find_first_of( ":" ) );
- 
+        tmpStream << tmpPath.substr( 0, tmpPath.find_first_of( ":" ) );
+
     }
 
-    SLHAea::Block block(tmpStream);
+    SLHAea::Block block( tmpStream );
 
-    (*_slhaeaDataStorage)[blockName] = block;
+    ( *_slhaeaDataStorage )[blockName] = block;
 
 }
 
@@ -86,7 +85,7 @@ void Fittino::SLHAeaSLHADataStorage::AddLine( const SLHALine& line ) {
 
     SLHAea::Line slhaealine;
     slhaealine << line.GetIndex() << line.GetValue() << line.GetComment();
-    (*_slhaeaDataStorage)[line.GetBlock()][""] << slhaealine;
+    ( *_slhaeaDataStorage )[line.GetBlock()][""] << slhaealine;
 
 }
 
@@ -113,11 +112,11 @@ void Fittino::SLHAeaSLHADataStorage::AddLine( const std::string& path ) {
     while ( tmpPath.find_first_of( ":" ) <= tmpPath.length() ) {
 
         tmpPath.erase( 0, tmpPath.find_first_of( ":" ) + 1 );
-        line << tmpPath.substr(0, tmpPath.find_first_of( ":" ) );
- 
+        line << tmpPath.substr( 0, tmpPath.find_first_of( ":" ) );
+
     }
 
-    (*_slhaeaDataStorage)[blockName][""] << line;
+    ( *_slhaeaDataStorage )[blockName][""] << line;
 
 }
 
@@ -126,7 +125,7 @@ void Fittino::SLHAeaSLHADataStorage::ReadFile( const std::string& slhaInputFileN
     std::ifstream file( slhaInputFileName.c_str() );
 
     if ( file.is_open() ) {
-      
+
         *_slhaeaDataStorage = SLHAea::Coll( file );
 
     }

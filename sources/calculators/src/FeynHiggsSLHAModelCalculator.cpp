@@ -22,7 +22,7 @@
 
 #include "FeynHiggsSLHAModelCalculator.h"
 
-Fittino::FeynHiggsSLHAModelCalculator::FeynHiggsSLHAModelCalculator(  const PhysicsModelBase* model, const boost::property_tree::ptree& ptree )
+Fittino::FeynHiggsSLHAModelCalculator::FeynHiggsSLHAModelCalculator(  const PhysicsModel* model, const boost::property_tree::ptree& ptree )
   : FeynHiggsModelCalculatorBase( model, ptree ) {
 
     _name = "FeynHiggs";

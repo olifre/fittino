@@ -41,7 +41,7 @@ namespace boost {
  */
 namespace Fittino {
 
-  class PhysicsModelBase;
+  class PhysicsModel;
   class RegressionMVA;
   class RegressionVariable;
 
@@ -55,7 +55,7 @@ namespace Fittino {
     /*!
      *  Standard constructor.
      */
-    RegressionCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree );
+    RegressionCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
     /*!
      *  Standard destructor.
      */

@@ -54,7 +54,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-    HDim6ModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree );
+    HDim6ModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
 
     public:
       /*!

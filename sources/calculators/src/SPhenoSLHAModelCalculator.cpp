@@ -31,12 +31,12 @@
 #include "boost/property_tree/ptree.hpp"
 #include <boost/foreach.hpp>
 
-#include "PhysicsModelBase.h"
+#include "PhysicsModel.h"
 #include "SLHADataStorageBase.h"
 #include "SPhenoSLHAModelCalculator.h"
 #include "SLHALine.h"
 
-Fittino::SPhenoSLHAModelCalculator::SPhenoSLHAModelCalculator( const boost::property_tree::ptree& ptree, const PhysicsModelBase* model )
+Fittino::SPhenoSLHAModelCalculator::SPhenoSLHAModelCalculator( const boost::property_tree::ptree& ptree, const PhysicsModel* model )
         :SLHAModelCalculatorBase( model ) {
 
     _executableName     = "../SPheno";

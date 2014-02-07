@@ -42,11 +42,11 @@ namespace Fittino {
       /*!
        *  Old standard constructor.
        */
-                          AstroCalculator( const PhysicsModelBase* model );
+                          AstroCalculator( const PhysicsModel* model );
       /*!
        *  Standard constructor.
        */
-                          AstroCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree );
+                          AstroCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

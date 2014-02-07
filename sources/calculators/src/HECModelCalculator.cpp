@@ -20,10 +20,10 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include "HECModelCalculator.h"
-#include "PhysicsModelBase.h"
+#include "PhysicsModel.h"
 #include "SimplePrediction.h"
 
-Fittino::HECModelCalculator::HECModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree )
+Fittino::HECModelCalculator::HECModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     : ModelCalculatorBase( model ),
       // Initialize input quantities.
       _Delta_hss_s      ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "Delta_hss_s.Name",       "Delta_hss_s"       ) )->GetValue() ),

@@ -33,7 +33,7 @@
 #include "TDirectory.h"
 
 #include "Factory.h"
-#include "PhysicsModelBase.h"
+#include "PhysicsModel.h"
 #include "ModelParameterBase.h"
 #include "LHCModelCalculator.h"
 #include "SimpleDataStorage.h"
@@ -43,14 +43,14 @@
 #include "LHCChi2Contribution.h"
 #include "Observable.h"
 
-Fittino::LHCModelCalculator::LHCModelCalculator( const PhysicsModelBase* model )
+Fittino::LHCModelCalculator::LHCModelCalculator( const PhysicsModel* model )
     : ModelCalculatorBase( model ) {
 
     _name = "LHCModelCalculator";
 
 }
 
-Fittino::LHCModelCalculator::LHCModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree )
+Fittino::LHCModelCalculator::LHCModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     : ModelCalculatorBase( model ) {
 
     _name = "LHCModelCalculator";

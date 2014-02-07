@@ -24,27 +24,25 @@
  *  \todo Long-term: Document the code.
  *  \todo Long-term: Write a comprehensive developer's guide.
  *  \todo Long-term: Write a comprehensive user's guide.
- *  \todo Long-term: Redefine kernel and keep it clean. 
- *  \todo Long-term: Discuss calculator interface (Mathias) 
- *  \todo Long-term: Discuss plotters and there relation to other anaylistools
- *  \todo Check if all branch names are unique (probably in AnalysisTool::InitializeBranches)
- *  \todo TreeSampler configuration: Set name of parameter to be used as looping parameter
+ *  \todo Long-term: Redefine kernel and keep it clean (Mathias).
+ *  \todo Long-term: Discuss Calculator interface (Mathias).
+ *  \todo Long-term: Discuss Plotters and their relation to other analysis tools.
+ *  \todo Check if all branch names are unique (probably in AnalysisTool::InitializeBranches).
+ *  \todo TreeSampler configuration: Set name of parameter to be used as looping parameter.
  *  \todo MeasuredErrors: Allow arbitrary number. Give names.
- *  \todo Remove simpledatastorage from ModelCalculatorBase
- *  \todo Update Observable - prediction relation
- *  \todo Complete removal of obsolete configuration
- *  \todo Remove again the Chi2Contribution
- *  \todo Rename PhysicsModelBase in PhysicsModel
- *  \todo Rename all ModelCalculators in Calculators
- *  \todo Update the xml definition file
- *  \todo Update the xml style file
- *  \todo Make chi2 a model quantitiy  ? 
- *  \todo Make name of chi2 branch configurable
- *  \todo More general: Make all quantity names / branch names configurable? 
- *  \todo Make configurable if quantities are added to the model / are written to ntuple (especially TreeCalculator but also in general) ?
- *  \todo Common base class for markovChain sampler and correlated sampler
- *  \todo Add RandomSampler, a sampler with fixed sampling density (usefull for random grid production)
- *  \todo When RandomSampler is implemented, use parameter limits as hard limits in markovchain. Discuss what to do when limit is reached (new random point? mirror point?)
+ *  \todo Remove SimpleDataStorage from ModelCalculatorBase.
+ *  \todo Update Observable - Prediction relation.
+ *  \todo Complete removal of obsolete Configuration.
+ *  \todo Remove again the Chi2Contribution.
+ *  \todo Rename all ModelCalculators in Calculators (Mathias).
+ *  \todo Update the xml definition file.
+ *  \todo Make chi2 a model quantitiy?
+ *  \todo Make name of chi2 branch configurable.
+ *  \todo More general: Make all quantity names/branch names configurable?
+ *  \todo Make configurable if quantities are added to the model/are written to ntuple (especially TreeCalculator but also in general)?
+ *  \todo Common base class for MarkovChainSampler and CorrelatedSampler.
+ *  \todo Add RandomSampler, a sampler with fixed sampling density (usefull for random grid production).
+ *  \todo When RandomSampler is implemented, use parameter limits as hard limits in markovchain. Discuss what to do when limit is reached (new random point? mirror point?).
  */
 
 #ifndef FITTINO_CONTROLLER_H

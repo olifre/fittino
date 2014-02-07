@@ -47,11 +47,11 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                           LHCModelCalculator( const PhysicsModelBase* model );
+                           LHCModelCalculator( const PhysicsModel* model );
       /*!
        *  Another constructor using property trees.
        */
-                           LHCModelCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree );
+                           LHCModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

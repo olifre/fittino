@@ -20,10 +20,11 @@
 #include <sstream>
 
 #include "Factory.h"
-#include "SLHAModelCalculatorBase.h"
+#include "PhysicsModel.h"
 #include "SLHAeaSLHADataStorage.h"
+#include "SLHAModelCalculatorBase.h"
 
-Fittino::SLHAModelCalculatorBase::SLHAModelCalculatorBase( const PhysicsModelBase* model )
+Fittino::SLHAModelCalculatorBase::SLHAModelCalculatorBase( const PhysicsModel* model )
     : ModelCalculatorBase( model ),
       _slhaInputFileName( "" ),
       _slhaOutputFileName( "" ),

@@ -22,7 +22,7 @@
 #include "Chi2ContributionBase.h"
 #include "SimpleDataStorage.h"
 
-Fittino::ModelCalculatorBase::ModelCalculatorBase( const PhysicsModelBase* model )
+Fittino::ModelCalculatorBase::ModelCalculatorBase( const PhysicsModel* model )
         : _name( "" ),
           _model( model ) {
 

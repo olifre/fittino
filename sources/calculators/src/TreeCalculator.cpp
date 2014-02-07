@@ -30,11 +30,11 @@
 #include "TreeCalculator.h"
 #include "SimpleDataStorage.h"
 #include "ConfigurationException.h"
-#include "PhysicsModelBase.h"
+#include "PhysicsModel.h"
 #include "ModelParameterBase.h"
 #include "Factory.h"
 
-Fittino::TreeCalculator::TreeCalculator( const PhysicsModelBase* model )
+Fittino::TreeCalculator::TreeCalculator( const PhysicsModel* model )
     : ModelCalculatorBase( model ) {
 
     _name = "TreeCalculator";
@@ -44,7 +44,7 @@ Fittino::TreeCalculator::TreeCalculator( const PhysicsModelBase* model )
 
 }
 
-Fittino::TreeCalculator::TreeCalculator( const PhysicsModelBase* model, const boost::property_tree::ptree& ptree )
+Fittino::TreeCalculator::TreeCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     : ModelCalculatorBase( model ) {
 
     _name = "TreeCalculator";
