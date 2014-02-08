@@ -40,9 +40,9 @@ IF( FEYNHIGGS_FOUND )
 
 ELSE()
 
-  LIST(REMOVE_ITEM sources "src/FeynHiggsModelCalculatorBase.cpp")
-  LIST(REMOVE_ITEM sources "src/FeynHiggsModelCalculator.cpp")
-  LIST(REMOVE_ITEM sources "src/FeynHiggsSLHAModelCalculator.cpp")
+  LIST(REMOVE_ITEM sources "src/FeynHiggsCalculatorBase.cpp")
+  LIST(REMOVE_ITEM sources "src/FeynHiggsCalculator.cpp")
+  LIST(REMOVE_ITEM sources "src/FeynHiggsSLHACalculator.cpp")
 
 ENDIF()
 

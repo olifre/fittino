@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        FeynHiggsModelCalculatorBase.cpp                                 *
+* File        FeynHiggsCalculatorBase.cpp                                      *
 *                                                                              *
 * Description Wrapper class for FeynHiggs                                      *
 *                                                                              *
@@ -30,12 +30,12 @@
 #include "CFeynHiggs.h"
 #include "CSLHA.h"
 
-#include "FeynHiggsModelCalculatorBase.h"
+#include "FeynHiggsCalculatorBase.h"
 #include "ModelParameterBase.h"
 #include "PhysicsModel.h"
 #include "SimplePrediction.h"
 
-Fittino::FeynHiggsModelCalculatorBase::FeynHiggsModelCalculatorBase( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::FeynHiggsCalculatorBase::FeynHiggsCalculatorBase( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
         : ModelCalculatorBase( model ) {
 
     _name = "FeynHiggs";
@@ -61,11 +61,11 @@ Fittino::FeynHiggsModelCalculatorBase::FeynHiggsModelCalculatorBase( const Physi
 
 }
 
-Fittino::FeynHiggsModelCalculatorBase::~FeynHiggsModelCalculatorBase() {
+Fittino::FeynHiggsCalculatorBase::~FeynHiggsCalculatorBase() {
 
 }
 
-void Fittino::FeynHiggsModelCalculatorBase::SetFlags() {
+void Fittino::FeynHiggsCalculatorBase::SetFlags() {
 
     std::string flags = "400242110";
 
@@ -77,7 +77,7 @@ void Fittino::FeynHiggsModelCalculatorBase::SetFlags() {
 
 }
 
-void Fittino::FeynHiggsModelCalculatorBase::Calculate() {
+void Fittino::FeynHiggsCalculatorBase::Calculate() {
 
     // calculate masses, sin(alpha), UHiggs & ZHiggs matrices
 

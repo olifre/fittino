@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        FeynHiggsSLHAModelCalculator.cpp                                 *
+* File        FeynHiggsSLHACalculator.h                                        *
 *                                                                              *
 * Description Wrapper class for FeynHiggs                                      *
 *                                                                              *
@@ -12,42 +12,45 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
-#include "CFeynHiggs.h"
-#include "CSLHA.h"
+#ifndef FITTINO_FEYNHIGGSSLHACALCULATOR_H
+#define FITTINO_FEYNHIGGSSLHACALCULATOR_H
 
-#include "FeynHiggsSLHAModelCalculator.h"
+#include "FeynHiggsCalculatorBase.h"
 
-Fittino::FeynHiggsSLHAModelCalculator::FeynHiggsSLHAModelCalculator(  const PhysicsModel* model, const boost::property_tree::ptree& ptree )
-  : FeynHiggsModelCalculatorBase( model, ptree ) {
+/*!
+ *  \brief Fittino namespace.
+ */
+namespace Fittino {
 
-    _name = "FeynHiggs";
-    _fileName = "SPheno.spc";
+  /*!
+   *  \ingroup calculators
+   *  \brief Wrapper class for FeynHiggs.
+   */
+  class FeynHiggsSLHACalculator : public FeynHiggsCalculatorBase {
+
+    public:
+      /*!
+       *  Standard constructor.
+       */
+    FeynHiggsSLHACalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+      /*!
+       *  Standard destructor.
+       */
+     ~FeynHiggsSLHACalculator();
+
+      /*! \cond UML */
+    private:
+      void         CalculatePredictions();
+
+      /*! \endcond UML */
+
+  };
 
 }
 
-Fittino::FeynHiggsSLHAModelCalculator::~FeynHiggsSLHAModelCalculator() {
-
-}
-
-void Fittino::FeynHiggsSLHAModelCalculator::CalculatePredictions() {
-
-  SetFlags();
-
-  COMPLEX slhadata[nslhadata];
-
-  SLHARead( &_error, slhadata, _fileName.c_str(), 1 );
-  // if( error ) 
-  //exit(error);
-
-  FHSetSLHA( &_error, slhadata );
-  // if( error )
-  //exit(error);
-
-  Calculate();
-  
-}
+#endif

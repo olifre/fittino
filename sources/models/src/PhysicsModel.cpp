@@ -40,8 +40,6 @@
 #include "Collection.h"
 #include "TreeCalculator.h"
 #include "AstroCalculator.h"
-#include "FeynHiggsModelCalculator.h"
-#include "FeynHiggsSLHAModelCalculator.h"
 #include "TMatrixDSym.h"
 #include "TMatrixDSymEigen.h"
 #include "TVectorD.h"

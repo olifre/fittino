@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        FeynHiggsModelCalculator.cpp                                     *
+* File        FeynHiggsCalculator.cpp                                          *
 *                                                                              *
 * Description Wrapper class for FeynHiggs                                      *
 *                                                                              *
@@ -30,13 +30,13 @@
 #include "CFeynHiggs.h"
 #include "CSLHA.h"
 
-#include "FeynHiggsModelCalculator.h"
+#include "FeynHiggsCalculator.h"
 #include "ModelParameterBase.h"
 #include "PhysicsModel.h"
 #include "SimplePrediction.h"
 
-Fittino::FeynHiggsModelCalculator::FeynHiggsModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
-  : FeynHiggsModelCalculatorBase( model, ptree ) {
+Fittino::FeynHiggsCalculator::FeynHiggsCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+  : FeynHiggsCalculatorBase( model, ptree ) {
 
     _fileName = "FeynHiggs.in";
 
@@ -58,11 +58,11 @@ Fittino::FeynHiggsModelCalculator::FeynHiggsModelCalculator( const PhysicsModel*
 
 }
 
-Fittino::FeynHiggsModelCalculator::~FeynHiggsModelCalculator() {
+Fittino::FeynHiggsCalculator::~FeynHiggsCalculator() {
 
 }
 
-void Fittino::FeynHiggsModelCalculator::CalculatePredictions() {
+void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     if ( boost::filesystem::exists( _fileName ) ) {
 

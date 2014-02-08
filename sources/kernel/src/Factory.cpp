@@ -26,8 +26,8 @@
 #include "CovariantSampler.h"
 #include "DataStorageBase.h"
 #include "Factory.h"
-#include "FeynHiggsModelCalculator.h"
-#include "FeynHiggsSLHAModelCalculator.h"
+#include "FeynHiggsCalculator.h"
+#include "FeynHiggsSLHACalculator.h"
 #include "GeneticAlgorithmOptimizer.h"
 #include "HDim6Calculator.h"
 #include "HECCalculator.h"
@@ -208,7 +208,7 @@ Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::str
 
 #if defined FEYNHIGGS
 
-        return new FeynHiggsModelCalculator( model, ptree );
+        return new FeynHiggsCalculator( model, ptree );
 
 #else
 
@@ -221,7 +221,7 @@ Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::str
 
 #if defined FEYNHIGGS
 
-        return new FeynHiggsSLHAModelCalculator( model, ptree );
+        return new FeynHiggsSLHACalculator( model, ptree );
 
 #else
 
