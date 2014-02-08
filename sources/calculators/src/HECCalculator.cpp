@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        HECModelCalculator.cpp                                           *
+* File        HECCalculator.cpp                                                *
 *                                                                              *
 * Description Converts HEC model parameters into HiggsSignals input variables  *
 *                                                                              *
@@ -19,11 +19,11 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-#include "HECModelCalculator.h"
+#include "HECCalculator.h"
 #include "PhysicsModel.h"
 #include "SimplePrediction.h"
 
-Fittino::HECModelCalculator::HECModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::HECCalculator::HECCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     : ModelCalculatorBase( model ),
       // Initialize input quantities.
       _Delta_hss_s      ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "Delta_hss_s.Name",       "Delta_hss_s"       ) )->GetValue() ),
@@ -48,7 +48,7 @@ Fittino::HECModelCalculator::HECModelCalculator( const PhysicsModel* model, cons
 
     // Initialize steering parameters common to all calculators.
 
-    _name = ptree.get<std::string>( "Name", "HECModelCalculator" );
+    _name = ptree.get<std::string>( "Name", "HECCalculator" );
 
     // Add predictions.
 
@@ -94,25 +94,25 @@ Fittino::HECModelCalculator::HECModelCalculator( const PhysicsModel* model, cons
 
 }
 
-Fittino::HECModelCalculator::~HECModelCalculator() {
+Fittino::HECCalculator::~HECCalculator() {
 
 }
 
-void Fittino::HECModelCalculator::CalculatePredictions() {
+void Fittino::HECCalculator::CalculatePredictions() {
 
     CallFunction();
 
 }
 
-void Fittino::HECModelCalculator::Initialize() const {
+void Fittino::HECCalculator::Initialize() const {
 
 }
 
-void Fittino::HECModelCalculator::CallExecutable() {
+void Fittino::HECCalculator::CallExecutable() {
 
 }
 
-void Fittino::HECModelCalculator::CallFunction() {
+void Fittino::HECCalculator::CallFunction() {
 
     _g_hiss_s     = 1 + _Delta_hss_s;
     _g_hiss_p     = 1 + _Delta_hss_p;
@@ -136,6 +136,6 @@ void Fittino::HECModelCalculator::CallFunction() {
 
 }
 
-void Fittino::HECModelCalculator::ConfigureInput() {
+void Fittino::HECCalculator::ConfigureInput() {
 
 }

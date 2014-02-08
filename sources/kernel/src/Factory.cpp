@@ -30,7 +30,7 @@
 #include "FeynHiggsSLHAModelCalculator.h"
 #include "GeneticAlgorithmOptimizer.h"
 #include "HDim6ModelCalculator.h"
-#include "HECModelCalculator.h"
+#include "HECCalculator.h"
 #include "HiggsSignalsHadXSModelCalculator.h"
 #include "HiggsSignalsSLHACalculator.h"
 #include "LHCChi2Contribution.h"
@@ -153,9 +153,9 @@ Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::str
 #endif
 
     }
-    else if ( type == "HECModelCalculator" ) {
+    else if ( type == "HECCalculator" ) {
 
-        return new HECModelCalculator( model, ptree );
+        return new HECCalculator( model, ptree );
 
     }
     else if ( type == "HiggsSignalsCalculator" ) {

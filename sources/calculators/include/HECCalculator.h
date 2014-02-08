@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        HECModelCalculator.h                                             *
+* File        HECCalculator.h                                                  *
 *                                                                              *
 * Description Converts the HEC model parameters into the HiggsSignals input    *
 *             variables                                                        *
@@ -18,21 +18,11 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_HECMODELCALCULATOR_H
-#define FITTINO_HECMODELCALCULATOR_H
+#ifndef FITTINO_HECCALCULATOR_H
+#define FITTINO_HECCALCULATOR_H
 
 #include "ModelCalculatorBase.h"
-
-namespace boost {
-
-  namespace property_tree {
-
-    template < class Key, class Data, class KeyCompare > class basic_ptree;
-    typedef basic_ptree< std::string, std::string, std::less<std::string> > ptree;
-
-  }
-
-}
+#include "PtreeForwardDeclaration.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -54,17 +44,17 @@ namespace Fittino {
    *  interference terms may play a role, the original coupling constants are\n
    *  passed as arguments.
    */
-  class HECModelCalculator : public ModelCalculatorBase {
+  class HECCalculator : public ModelCalculatorBase {
 
     public:
       /*!
        *
        */
-      HECModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+      HECCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
-      ~HECModelCalculator();
+      ~HECCalculator();
 
     public:
       virtual void  CalculatePredictions();
@@ -124,4 +114,4 @@ namespace Fittino {
 
 }
 
-#endif // FITTINO_HECMODELCALCULATOR_H
+#endif // FITTINO_HECCALCULATOR_H
