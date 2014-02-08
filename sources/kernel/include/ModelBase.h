@@ -45,10 +45,7 @@ namespace Fittino {
   class Chi2ContributionBase;
 
   /*!
-   *  \defgroup models
-   */
-  /*!
-   *  \ingroup models
+   *  \ingroup kernel
    *  \brief Base class for Fittino models.
    */
   class ModelBase {

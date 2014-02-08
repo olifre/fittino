@@ -39,7 +39,9 @@
 
 namespace Fittino {
 
-
+  /*!
+   *  \ingroup samplers
+   */
   class NewCorrelatedSampler : public SamplerBase {
 
     public:

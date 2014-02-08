@@ -4,9 +4,9 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        SLHACalculatorBase.h                                             *
+* File        SamplerBase.h                                                    *
 *                                                                              *
-* Description Base class for SLHA compatible model calculators                 *
+* Description Base class for Fittino parameter samplers                        *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -17,47 +17,41 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_SLHACALCULATORBASE_H
-#define FITTINO_SLHACALCULATORBASE_H
+#ifndef FITTINO_SAMPLERBASE_H
+#define FITTINO_SAMPLERBASE_H
 
-#include "CalculatorBase.h"
+#include "AnalysisTool.h"
 
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
 
-  class SLHADataStorageBase;
-
   /*!
-   *  \ingroup calculators
-   *  \brief Base class for SLHA compatible model calculators.
+   *  \ingroup kernel
+   *  \brief Base class for Fittino parameter samplers.
    */
-  class SLHACalculatorBase : public CalculatorBase {
+  class SamplerBase : public AnalysisTool {
 
     public:
       /*!
-       *  Standard constructor.
+       *  Takes as input a pointer to the model to be analysed. Via this pointer an association\n
+       *  between a model and the concrete sampler is established.
        */
-      SLHACalculatorBase( const PhysicsModel* model );
+      SamplerBase( ModelBase *model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
-      ~SLHACalculatorBase();
-      SLHADataStorageBase* GetDataStorage();
-      /*!
-       *  Converts a double variable to a string.
-       */
-      std::string          String( double x );
+      virtual      ~SamplerBase();
 
-    protected:
-      std::string          _slhaInputFileName;
-      std::string          _slhaOutputFileName;
-      SLHADataStorageBase* _slhaInputDataStorage;
-      SLHADataStorageBase* _slhaOutputDataStorage;
+      /*! \cond UML */
+    private:
+      virtual void PrintResult() const;
+
+      /*! \endcond UML */
 
   };
 
 }
 
-#endif // FITTINO_SLHACALCULATORBASE_H
+#endif // FITTINO_SAMPLERBASE_H

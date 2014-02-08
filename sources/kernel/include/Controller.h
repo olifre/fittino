@@ -24,7 +24,6 @@
  *  \todo Long-term: Document the code.
  *  \todo Long-term: Write a comprehensive developer's guide.
  *  \todo Long-term: Write a comprehensive user's guide.
- *  \todo Long-term: Redefine kernel and keep it clean (Mathias).
  *  \todo Long-term: Discuss Calculator interface (Mathias).
  *  \todo Long-term: Discuss Plotters and their relation to other analysis tools.
  *  \todo Clean up Quantities/Predictions/Parameters.
@@ -34,7 +33,6 @@
  *  \todo Remove SimpleDataStorage from ModelCalculatorBase.
  *  \todo Update Observable - Prediction relation.
  *  \todo Remove again the Chi2Contribution.
- *  \todo Rename all ModelCalculators in Calculators (Mathias).
  *  \todo Update the xml definition file.
  *  \todo Make chi2 a model quantitiy?
  *  \todo Make name of chi2 branch configurable.

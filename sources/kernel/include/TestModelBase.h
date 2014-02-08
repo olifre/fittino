@@ -30,7 +30,7 @@
 namespace Fittino {
 
   /*!
-   *  \ingroup models
+   *  \ingroup kernel
    *  \brief Base class for Fittino test models.
    */
   class TestModelBase : public ModelBase {

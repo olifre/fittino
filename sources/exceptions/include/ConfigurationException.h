@@ -29,6 +29,9 @@
 namespace Fittino {
 
   /*!
+   *  \defgroup exceptions
+   */
+  /*!
    *  \ingroup exceptions
    *  \brief Fittino configuration exception class.
    *

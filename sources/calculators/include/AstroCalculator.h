@@ -33,6 +33,9 @@ class TF1;
 namespace Fittino {
 
   /*!
+   *  \defgroup calculators
+   */
+  /*!
    *  \ingroup calculators
    *  \brief Class for a Tree Calculator
    */

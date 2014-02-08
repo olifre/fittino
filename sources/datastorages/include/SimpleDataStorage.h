@@ -31,6 +31,9 @@
 namespace Fittino {
 
   /*!
+   *  \defgroup datastorages
+   */
+  /*!
    *  \ingroup datastorages
    *  \brief Class for storage of doubles.
    */

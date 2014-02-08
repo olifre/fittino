@@ -30,10 +30,7 @@
 namespace Fittino {
 
   /*!
-   *  \defgroup exceptions
-   */
-  /*!
-   *  \ingroup exceptions
+   *  \ingroup kernel
    *  \brief Fittino exception base class.
    *
    *  Exceptions make up the backbone of the error handling system in Fittino. This class provides\n

@@ -48,6 +48,9 @@ namespace Fittino {
   class Observable;
 
   /*!
+   *  \defgroup models
+   */
+  /*!
    *  \ingroup models
    *  \brief Base class for Fittino physics models.
    */

@@ -4,9 +4,9 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        SamplerBase.h                                                    *
+* File        DataStorageBase.h                                                *
 *                                                                              *
-* Description Base class for Fittino parameter samplers                        *
+* Description Base class for data storages                                     *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -17,10 +17,10 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_SAMPLERBASE_H
-#define FITTINO_SAMPLERBASE_H
+#ifndef FITTINO_DATASTORAGEBASE_H
+#define FITTINO_DATASTORAGEBASE_H
 
-#include "AnalysisTool.h"
+#include <string>
 
 /*!
  *  \brief Fittino namespace.
@@ -28,33 +28,29 @@
 namespace Fittino {
 
   /*!
-   *  \defgroup samplers
+   *  \ingroup kernel
+   *  \brief Base class for data storages.
    */
-  /*!
-   *  \ingroup samplers
-   *  \brief Base class for Fittino parameter samplers.
-   */
-  class SamplerBase : public AnalysisTool {
+  class DataStorageBase {
 
     public:
       /*!
-       *  Takes as input a pointer to the model to be analysed. Via this pointer an association\n
-       *  between a model and the concrete sampler is established.
+       *  Standard constructor.
        */
-      SamplerBase( ModelBase *model, const boost::property_tree::ptree& ptree );
+                   DataStorageBase();
       /*!
        *  Standard destructor.
        */
-      virtual      ~SamplerBase();
-
-      /*! \cond UML */
-    private:
-      virtual void PrintResult() const;
-
-      /*! \endcond UML */
+      virtual      ~DataStorageBase();
+      /*!
+       *  Parses the input file given as an argument. After calling this method the Configuration\n
+       *  instance is initialized and the steering parameters specified in the input file can be\n
+       *  retrieved via dedicated getter functions.
+       */
+      virtual void ReadFile( const std::string& inputFileName ) const = 0;
 
   };
 
 }
 
-#endif // FITTINO_SAMPLERBASE_H
+#endif // FITTINO_DATASTORAGEBASE_H

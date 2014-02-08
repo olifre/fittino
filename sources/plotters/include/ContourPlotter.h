@@ -30,6 +30,9 @@ namespace Fittino {
   class ModelBase;
 
   /*!
+   *  \defgroup plotters
+   */
+  /*!
    *  \ingroup plotters
    *  \brief Class for plotting 2D contour plots.
    */

@@ -35,10 +35,7 @@ namespace Fittino {
   class Chi2ContributionBase;
 
   /*!
-   *  \defgroup calculators
-   */
-  /*!
-   *  \ingroup calculators
+   *  \ingroup kernel
    *  \brief Base class for calculators.
    */
   class CalculatorBase {

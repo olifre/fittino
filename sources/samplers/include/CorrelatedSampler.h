@@ -37,6 +37,9 @@
 namespace Fittino {
 
   /*!
+   *  \defgroup samplers
+   */
+  /*!
    *  \ingroup samplers
    *  \brief Class for covariant parameter sampler.
    */

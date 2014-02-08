@@ -4,56 +4,60 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        DataStorageBase.h                                                *
+* File        SLHACalculatorBase.h                                             *
 *                                                                              *
-* Description Base class for data storages                                     *
+* Description Base class for SLHA compatible model calculators                 *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_DATASTORAGEBASE_H
-#define FITTINO_DATASTORAGEBASE_H
+#ifndef FITTINO_SLHACALCULATORBASE_H
+#define FITTINO_SLHACALCULATORBASE_H
 
-#include <string>
+#include "CalculatorBase.h"
 
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
 
+  class SLHADataStorageBase;
+
   /*!
-   *  \defgroup datastorages
+   *  \ingroup kernel
+   *  \brief Base class for SLHA compatible model calculators.
    */
-  /*!
-   *  \ingroup datastorages 
-   *  \brief Base class for data storages.
-   */
-  class DataStorageBase {
+  class SLHACalculatorBase : public CalculatorBase {
 
     public:
       /*!
        *  Standard constructor.
        */
-                   DataStorageBase();
+      SLHACalculatorBase( const PhysicsModel* model );
       /*!
        *  Standard destructor.
        */
-      virtual      ~DataStorageBase();
+      ~SLHACalculatorBase();
+      SLHADataStorageBase* GetDataStorage();
       /*!
-       *  Parses the input file given as an argument. After calling this method the Configuration\n
-       *  instance is initialized and the steering parameters specified in the input file can be\n
-       *  retrieved via dedicated getter functions.
+       *  Converts a double variable to a string.
        */
-      virtual void ReadFile( const std::string& inputFileName ) const = 0;
+      std::string          String( double x );
+
+    protected:
+      std::string          _slhaInputFileName;
+      std::string          _slhaOutputFileName;
+      SLHADataStorageBase* _slhaInputDataStorage;
+      SLHADataStorageBase* _slhaOutputDataStorage;
 
   };
 
 }
 
-#endif // FITTINO_DATASTORAGEBASE_H
+#endif // FITTINO_SLHACALCULATORBASE_H
