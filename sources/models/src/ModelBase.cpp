@@ -23,7 +23,6 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
 
-#include "Configuration.h"
 #include "ConfigurationException.h"
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
@@ -46,13 +45,6 @@ const Fittino::Collection<Fittino::PredictionBase*>&  Fittino::ModelBase::GetCol
 const Fittino::Collection<Fittino::Chi2ContributionBase*>& Fittino::ModelBase::GetCollectionOfChi2Contributions() const {
     
     return _collectionOfChi2Contributions;
-
-}
-
-Fittino::ModelBase::ModelBase()
-    : _name( "" ) {
-
-    InitializeParameters();
 
 }
 
@@ -128,47 +120,6 @@ std::string Fittino::ModelBase::GetName() const {
 const Fittino::Collection<Fittino::ModelParameterBase*>& Fittino::ModelBase::GetCollectionOfParameters() const {
 
     return _collectionOfParameters;
-
-}
-
-
-
-void Fittino::ModelBase::InitializeParameters() {
-
-    Configuration *configuration = Configuration::GetInstance();
-    const boost::property_tree::ptree* propertyTree = configuration->GetPropertyTree();
-
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type & v, propertyTree->get_child( "InputFile" ) ) {
-        if ( v.first == "Parameter" ) {
-
-            std::string name = v.second.get<std::string>( "<xmlattr>.Name" );
-            std::string plotName = v.second.get<std::string>( "<xmlattr>.PlotName", name );
-            std::string unit = v.second.get<std::string>( "<xmlattr>.Unit", "" );
-            std::string plotUnit = v.second.get<std::string>( "<xmlattr>.PlotUnit", unit );
-            std::string id = v.second.get<std::string>( "<xmlattr>.ID", "" );
-            double value = v.second.get<double>( "<xmlattr>.Value" );
-            double error = v.second.get<double>( "<xmlattr>.Error" );
-            double lowerBound = v.second.get<double>( "<xmlattr>.LowerBound", 0. );
-            double upperBound = v.second.get<double>( "<xmlattr>.UpperBound", 0. );
-            double plotLowerBound = v.second.get<double>( "<xmlattr>.PlotLowerBound", 0. );
-            double plotUpperBound = v.second.get<double>( "<xmlattr>.PlotUpperBound", 0. );
-            bool fixed = v.second.get<bool>( "<xmlattr>.Fixed", false );
-
-            if ( v.second.get<std::string>( "<xmlattr>.Type" ) == "Base" ) {
-
-                AddParameter( new ModelParameterBase( name, plotName, value, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, fixed ) );
-
-            }
-
-            else if ( v.second.get<std::string>( "<xmlattr>.Type" ) == "Physics" ) {
-
-                AddParameter( new PhysicsParameter( name, plotName, value, unit, plotUnit, error, lowerBound, upperBound, plotLowerBound, plotUpperBound, fixed ) );
-
-            }
-
-        }
-
-    }
 
 }
 

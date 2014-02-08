@@ -38,7 +38,6 @@
 #include "SimplePrediction.h"
 #include "SLHAPrediction.h"
 #include "Collection.h"
-#include "Configuration.h"
 #include "TreeCalculator.h"
 #include "AstroCalculator.h"
 #include "FeynHiggsModelCalculator.h"
