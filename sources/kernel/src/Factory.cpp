@@ -275,7 +275,7 @@ Fittino::PredictionBase* const Fittino::Factory::CreatePrediction( const boost::
 
 }
 
-Fittino::PredictionBase* const Fittino::Factory::CreatePrediction( const boost::property_tree::ptree& ptree, Fittino::SLHAModelCalculatorBase* calculator ) {
+Fittino::PredictionBase* const Fittino::Factory::CreatePrediction( const boost::property_tree::ptree& ptree, Fittino::SLHACalculatorBase* calculator ) {
 
     std::string type = ptree.get<std::string>( "PredictionType", "NONE" );
 
@@ -286,7 +286,7 @@ Fittino::PredictionBase* const Fittino::Factory::CreatePrediction( const boost::
     }
     else {
 
-        throw ConfigurationException( "Prediction type " + type + " not known, or incompatible with SLHAModelCalculatorBase." );
+        throw ConfigurationException( "Prediction type " + type + " not known, or incompatible with SLHACalculatorBase." );
 
     }
 
@@ -305,7 +305,7 @@ Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::prop
     }
     else if ( type == "SLHA" ) {
 
-        return new Observable( ptree, new SLHAPrediction( ptree, static_cast<SLHAModelCalculatorBase*>( calculator ) ) );
+        return new Observable( ptree, new SLHAPrediction( ptree, static_cast<SLHACalculatorBase*>( calculator ) ) );
 
     }
     else {
@@ -339,7 +339,7 @@ Fittino::Chi2ContributionBase* const Fittino::Factory::CreateChi2Contribution( c
 
     if ( type == "SLHAChi2Contribution" ) {
 
-        return new SLHAChi2Contribution( ptree, static_cast<SLHAModelCalculatorBase*>( calculator ) );
+        return new SLHAChi2Contribution( ptree, static_cast<SLHACalculatorBase*>( calculator ) );
 
     }
     else if ( type == "LHCChi2Contribution" ) {

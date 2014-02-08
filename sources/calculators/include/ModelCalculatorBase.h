@@ -6,14 +6,14 @@
 *                                                                              *
 * File        ModelCalculatorBase.h                                            *
 *                                                                              *
-* Description Base class for model calculators                                 *
+* Description Base class for calculators                                       *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -21,7 +21,6 @@
 #define FITTINO_MODELCALCULATORBASE_H
 
 #include <string>
-#include <map>
 
 #include "Collection.h"
 
@@ -48,33 +47,48 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                                    ModelCalculatorBase( const PhysicsModel* model );
+      ModelCalculatorBase( const PhysicsModel* model );
       /*!
        *  Standard destructor.
        */
-                                    ~ModelCalculatorBase();
-      std::string                   GetName() const;
-
-    public:  
-      const Collection<PredictionBase*>&        GetCollectionOfQuantities() const;
-      const Collection<Chi2ContributionBase*>&  GetCollectionOfChi2Contributions() const;
-      const SimpleDataStorage*                  GetSimpleOutputDataStorage() const;
+      ~ModelCalculatorBase();
+      std::string                              GetName() const;
 
     public:
-      virtual void                  CalculatePredictions() = 0;
-      virtual void                  Initialize() const;
-      virtual void                  SetupMeasuredValues();
+      /*!
+       *  \todo Remove.
+       */
+      const Collection<Chi2ContributionBase*>& GetCollectionOfChi2Contributions() const;
+      const Collection<PredictionBase*>&       GetCollectionOfQuantities() const;
+      /*!
+       *  \todo Remove.
+       */
+      const SimpleDataStorage*                 GetSimpleOutputDataStorage() const;
+
+    public:
+      virtual void                             CalculatePredictions() = 0;
+      virtual void                             Initialize() const;
+      virtual void                             SetupMeasuredValues();
 
     protected:
-      void                          AddQuantity( PredictionBase* prediction );
-      void                          AddChi2Contribution( Chi2ContributionBase* chi2Contribution );
+      /*!
+       *  \todo Remove.
+       */
+      void                                     AddChi2Contribution( Chi2ContributionBase* chi2Contribution );
+      void                                     AddQuantity( PredictionBase* prediction );
 
     protected:
-      std::string                   _name;
-      const PhysicsModel*       _model;
-      SimpleDataStorage*            _simpleOutputDataStorage;
-      Collection<PredictionBase*>   _collectionOfQuantities;
-      Collection<Chi2ContributionBase*> _collectionOfChi2Contributions;
+      std::string                              _name;
+      const PhysicsModel*                      _model;
+      /*!
+       *  \todo Remove.
+       */
+      SimpleDataStorage*                       _simpleOutputDataStorage;
+      /*!
+       *  \todo Remove.
+       */
+      Collection<Chi2ContributionBase*>        _collectionOfChi2Contributions;
+      Collection<PredictionBase*>              _collectionOfQuantities;
 
   };
 

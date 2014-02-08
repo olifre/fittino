@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -23,26 +23,26 @@
 
 #include "SLHAChi2Contribution.h"
 #include "SLHADataStorageBase.h"
-#include "SLHAModelCalculatorBase.h"
+#include "SLHACalculatorBase.h"
 
 Fittino::SLHAChi2Contribution::SLHAChi2Contribution( std::string name,
-                                                     SLHAModelCalculatorBase* slhaModelCalculator,
-                                                     std::string              blockName,
-                                                     std::string              id,
-                                                     int                      columnIndex )
+                                                     SLHACalculatorBase* slhaCalculator,
+                                                     std::string         blockName,
+                                                     std::string         id,
+                                                     int                 columnIndex )
         : _columnIndex( columnIndex ),
           _id( id ),
-	  _blockName( blockName ),
-	  _slhaModelCalculator( slhaModelCalculator ),
+          _blockName( blockName ),
+          _slhaCalculator( slhaCalculator ),
           Chi2ContributionBase( name ) {
 
 }
 
-Fittino::SLHAChi2Contribution::SLHAChi2Contribution( const boost::property_tree::ptree& ptree, SLHAModelCalculatorBase* slhaModelCalculator ) 
+Fittino::SLHAChi2Contribution::SLHAChi2Contribution( const boost::property_tree::ptree& ptree, SLHACalculatorBase* slhaCalculator )
                              : _columnIndex( ptree.get<int>( "ColumnIndex" ) ),
                                _id( ptree.get<std::string>( "ID" ) ),
                                _blockName( ptree.get<std::string>( "BlockName" ) ),
-                               _slhaModelCalculator( slhaModelCalculator ),
+                               _slhaCalculator( slhaCalculator ),
                                Chi2ContributionBase( ptree ) {
 
 }
@@ -53,7 +53,7 @@ Fittino::SLHAChi2Contribution::~SLHAChi2Contribution() {
 
 void Fittino::SLHAChi2Contribution::UpdateValue() {
 
-    _chi2 = _slhaModelCalculator->GetDataStorage()->GetEntry( _blockName, _id, _columnIndex );
+    _chi2 = _slhaCalculator->GetDataStorage()->GetEntry( _blockName, _id, _columnIndex );
 
 }
 

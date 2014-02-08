@@ -39,7 +39,7 @@ namespace Fittino {
   class PhysicsModel;
   class PredictionBase;
   class SLHADataStorageBase;
-  class SLHAModelCalculatorBase;
+  class SLHACalculatorBase;
 
   /*!
    *  \ingroup kernel
@@ -89,7 +89,7 @@ namespace Fittino {
        *  Returns a Prediction according to the type specified in the ptree.
        */
       PredictionBase* const       CreatePrediction( const boost::property_tree::ptree& ptree, const Fittino::ModelCalculatorBase* calculator );
-      PredictionBase* const       CreatePrediction( const boost::property_tree::ptree& ptree, Fittino::SLHAModelCalculatorBase* calculator );
+      PredictionBase* const       CreatePrediction( const boost::property_tree::ptree& ptree, Fittino::SLHACalculatorBase* calculator );
       /*!
        *  Returns an Observable with a prediction according to the type specified in the ptree.
        */

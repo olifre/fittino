@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -23,16 +23,16 @@
 #include "SimpleDataStorage.h"
 
 Fittino::ModelCalculatorBase::ModelCalculatorBase( const PhysicsModel* model )
-        : _name( "" ),
-          _model( model ) {
+    : _name( "" ),
+      _model( model ) {
 
-  _simpleOutputDataStorage = new SimpleDataStorage();
+    _simpleOutputDataStorage = new SimpleDataStorage();
 
 }
 
 Fittino::ModelCalculatorBase::~ModelCalculatorBase() {
 
-  delete _simpleOutputDataStorage;
+    delete _simpleOutputDataStorage;
 
 }
 
@@ -52,15 +52,15 @@ const Fittino::SimpleDataStorage* Fittino::ModelCalculatorBase::GetSimpleOutputD
 
 }
 
-const Fittino::Collection<Fittino::PredictionBase*>& Fittino::ModelCalculatorBase::GetCollectionOfQuantities() const { 
+const Fittino::Collection<Fittino::PredictionBase*>& Fittino::ModelCalculatorBase::GetCollectionOfQuantities() const {
 
-  return _collectionOfQuantities;
+    return _collectionOfQuantities;
 
 }
 
 const Fittino::Collection<Fittino::Chi2ContributionBase*>& Fittino::ModelCalculatorBase::GetCollectionOfChi2Contributions() const {
 
-  return _collectionOfChi2Contributions;
+    return _collectionOfChi2Contributions;
 
 }
 

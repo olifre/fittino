@@ -20,10 +20,6 @@
 #ifndef FITTINO_SLHAPREDICTION_H
 #define FITTINO_SLHAPREDICTION_H
 
-#include <string>
-
-#include <boost/property_tree/ptree.hpp>
-
 #include "PredictionBase.h"
 
 /*!
@@ -31,7 +27,7 @@
  */
 namespace Fittino {
 
-  class SLHAModelCalculatorBase;
+  class SLHACalculatorBase;
 
   /*!
    *  \ingroup models
@@ -41,52 +37,54 @@ namespace Fittino {
 
     public:
       /*!
-       *  Constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound, blockName, id, columnIndex and a calculator.
+       *  Constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound,
+       *  blockName, id, columnIndex and a calculator.
        */
-                               SLHAPrediction( std::string              name,
-                                               std::string              plotName,
-                                               std::string              unit,
-                                               std::string              plotUnit,
-                                               double                   plotLowerBound,
-                                               double                   plotUpperBound,
-                                               SLHAModelCalculatorBase* slhaModelCalculator,
-                                               std::string              blockName,
-                                               std::string              id,
-                                               int                      columnIndex );
+      SLHAPrediction( std::string         name,
+                      std::string         plotName,
+                      std::string         unit,
+                      std::string         plotUnit,
+                      double              plotLowerBound,
+                      double              plotUpperBound,
+                      SLHACalculatorBase* slhaCalculator,
+                      std::string         blockName,
+                      std::string         id,
+                      int                 columnIndex );
       /*!
-       *  Alternative constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound, blcokName, firstId, secondId, columnIndex and a claculator.
+       *  Alternative constructor taking name, plotName, unit, plotUnit, plotLowerBound,
+       *  plotUpperBound, blcokName, firstId, secondId, columnIndex and a claculator.
        */
-                               SLHAPrediction( std::string              name,
-                                               std::string              plotName,
-                                               std::string              unit,
-                                               std::string              plotUnit,
-                                               double                   plotLowerBound,
-                                               double                   plotUpperBound,
-                                               SLHAModelCalculatorBase* slhaModelCalculator,
-                                               std::string              blockName,
-                                               std::string              firstId,
-                                               std::string              secondId,
-                                               int                      columnIndex );
+      SLHAPrediction( std::string         name,
+                      std::string         plotName,
+                      std::string         unit,
+                      std::string         plotUnit,
+                      double              plotLowerBound,
+                      double              plotUpperBound,
+                      SLHACalculatorBase* slhaCalculator,
+                      std::string         blockName,
+                      std::string         firstId,
+                      std::string         secondId,
+                      int                 columnIndex );
       /*!
        *  Standard Constructor
        */
-                              SLHAPrediction( const boost::property_tree::ptree& ptree, SLHAModelCalculatorBase* slhaModelCalculator );
+      SLHAPrediction( const boost::property_tree::ptree& ptree, SLHACalculatorBase* slhaCalculator );
       /*!
        *  Standard destructor.
        */
-                               ~SLHAPrediction();
-       std::string             GetPlotUnit() const;
+      ~SLHAPrediction();
+      std::string         GetPlotUnit() const;
 
     public:
-      virtual void             Update();
-      virtual std::string      GetPlotName() const;
+      virtual void        Update();
+      virtual std::string GetPlotName() const;
 
     private:
-      int                      _columnIndex;
-      std::string              _firstId;
-      std::string              _secondId;
-      std::string              _blockName;
-      SLHAModelCalculatorBase* _slhaModelCalculator;
+      int                 _columnIndex;
+      std::string         _firstId;
+      std::string         _secondId;
+      std::string         _blockName;
+      SLHACalculatorBase* _slhaCalculator;
 
   };
 

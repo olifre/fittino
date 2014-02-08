@@ -37,7 +37,7 @@
 #include "SLHALine.h"
 
 Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const boost::property_tree::ptree& ptree, const PhysicsModel* model )
-    : SLHAModelCalculatorBase( model ) {
+    : SLHACalculatorBase( model ) {
 
     _executableName     = "../SPheno";
     _name               = "SPheno";

@@ -22,7 +22,7 @@
 
 #include <vector>
 
-#include "SLHAModelCalculatorBase.h"
+#include "SLHACalculatorBase.h"
 
 namespace boost {
 
@@ -46,7 +46,7 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Wrapper class for SPheno.
    */
-  class SPhenoSLHACalculator : public SLHAModelCalculatorBase {
+  class SPhenoSLHACalculator : public SLHACalculatorBase {
 
     public:
       /*!

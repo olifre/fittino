@@ -17,69 +17,67 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <boost/property_tree/ptree.hpp>
-
 #include "SLHADataStorageBase.h"
-#include "SLHAModelCalculatorBase.h"
+#include "SLHACalculatorBase.h"
 #include "SLHAPrediction.h"
 
-Fittino::SLHAPrediction::SLHAPrediction( std::string              name,
-                                         std::string              plotName,
-                                         std::string              unit,
-                                         std::string              plotUnit,
-                                         double                   plotLowerBound,
-                                         double                   plotUpperBound,
-                                         SLHAModelCalculatorBase* slhaModelCalculator,
-                                         std::string              blockName,
-                                         std::string              id,
-                                         int                      columnIndex )
-        : _columnIndex( columnIndex ),
-          _firstId( id ),
-          _blockName( blockName ),
-          _slhaModelCalculator( slhaModelCalculator ),
-          PredictionBase( name,
-                          plotName,
-                          unit,
-                          plotUnit,
-                          plotLowerBound,
-                          plotUpperBound ) {
+Fittino::SLHAPrediction::SLHAPrediction( std::string         name,
+                                         std::string         plotName,
+                                         std::string         unit,
+                                         std::string         plotUnit,
+                                         double              plotLowerBound,
+                                         double              plotUpperBound,
+                                         SLHACalculatorBase* slhaCalculator,
+                                         std::string         blockName,
+                                         std::string         id,
+                                         int                 columnIndex )
+    : _columnIndex( columnIndex ),
+      _firstId( id ),
+      _blockName( blockName ),
+      _slhaCalculator( slhaCalculator ),
+      PredictionBase( name,
+                      plotName,
+                      unit,
+                      plotUnit,
+                      plotLowerBound,
+                      plotUpperBound ) {
 
     _secondId = "";
 
 }
 
-Fittino::SLHAPrediction::SLHAPrediction( std::string              name,
-                                         std::string              plotName,
-                                         std::string              unit,
-                                         std::string              plotUnit,
-                                         double                   plotLowerBound,
-                                         double                   plotUpperBound,
-                                         SLHAModelCalculatorBase* slhaModelCalculator,
-                                         std::string              blockName,
-                                         std::string              firstId,
-                                         std::string              secondId,
-                                         int                      columnIndex )
-        : _columnIndex( columnIndex ),
-          _firstId( firstId ),
-          _secondId( secondId ),
-          _blockName( blockName ),
-          _slhaModelCalculator( slhaModelCalculator ),
-          PredictionBase( name,
-                          plotName,
-                          unit,
-                          plotUnit,
-                          plotLowerBound,
-                          plotUpperBound ) {
+Fittino::SLHAPrediction::SLHAPrediction( std::string         name,
+                                         std::string         plotName,
+                                         std::string         unit,
+                                         std::string         plotUnit,
+                                         double              plotLowerBound,
+                                         double              plotUpperBound,
+                                         SLHACalculatorBase* slhaCalculator,
+                                         std::string         blockName,
+                                         std::string         firstId,
+                                         std::string         secondId,
+                                         int                 columnIndex )
+    : _columnIndex( columnIndex ),
+      _firstId( firstId ),
+      _secondId( secondId ),
+      _blockName( blockName ),
+      _slhaCalculator( slhaCalculator ),
+      PredictionBase( name,
+                      plotName,
+                      unit,
+                      plotUnit,
+                      plotLowerBound,
+                      plotUpperBound ) {
 
 }
 
-Fittino::SLHAPrediction::SLHAPrediction( const boost::property_tree::ptree& ptree, SLHAModelCalculatorBase* slhaModelCalculator )
-       : _columnIndex( ptree.get<int>( "ColumnIndex" ) ),
-         _firstId( ptree.get<std::string>( "FirstId" ) ),
-         _secondId( ptree.get<std::string>( "SecondId", "" ) ),
-         _blockName( ptree.get<std::string>( "BlockName" ) ),
-         _slhaModelCalculator( slhaModelCalculator ),
-         PredictionBase( ptree ) {
+Fittino::SLHAPrediction::SLHAPrediction( const boost::property_tree::ptree& ptree, SLHACalculatorBase* slhaCalculator )
+    : _columnIndex( ptree.get<int>( "ColumnIndex" ) ),
+      _firstId( ptree.get<std::string>( "FirstId" ) ),
+      _secondId( ptree.get<std::string>( "SecondId", "" ) ),
+      _blockName( ptree.get<std::string>( "BlockName" ) ),
+      _slhaCalculator( slhaCalculator ),
+      PredictionBase( ptree ) {
 
 }
 
@@ -97,12 +95,12 @@ void Fittino::SLHAPrediction::Update() {
 
     if ( _secondId == "" ) {
 
-        _value = _slhaModelCalculator->GetDataStorage()->GetEntry( _blockName, _firstId, _columnIndex );
+        _value = _slhaCalculator->GetDataStorage()->GetEntry( _blockName, _firstId, _columnIndex );
 
     }
     else {
 
-        _value = _slhaModelCalculator->GetDataStorage()->GetEntry( _blockName, _firstId, _secondId, _columnIndex );
+        _value = _slhaCalculator->GetDataStorage()->GetEntry( _blockName, _firstId, _secondId, _columnIndex );
 
     }
 
@@ -110,10 +108,10 @@ void Fittino::SLHAPrediction::Update() {
 
 std::string Fittino::SLHAPrediction::GetPlotName() const {
 
-   std::string plotName = _plotName;
+    std::string plotName = _plotName;
 
-   if ( _plotUnit != "" ) plotName += " [" + this->GetPlotUnit() + "]";
+    if ( _plotUnit != "" ) plotName += " [" + this->GetPlotUnit() + "]";
 
-   return plotName;
+    return plotName;
 
 }

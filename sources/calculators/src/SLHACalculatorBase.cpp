@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        SLHAModelCalculatorBase.cpp                                      *
+* File        SLHACalculatorBase.cpp                                           *
 *                                                                              *
 * Description Base class for SLHA compatible model calculators                 *
 *                                                                              *
@@ -22,9 +22,9 @@
 #include "Factory.h"
 #include "PhysicsModel.h"
 #include "SLHAeaSLHADataStorage.h"
-#include "SLHAModelCalculatorBase.h"
+#include "SLHACalculatorBase.h"
 
-Fittino::SLHAModelCalculatorBase::SLHAModelCalculatorBase( const PhysicsModel* model )
+Fittino::SLHACalculatorBase::SLHACalculatorBase( const PhysicsModel* model )
     : ModelCalculatorBase( model ),
       _slhaInputFileName( "" ),
       _slhaOutputFileName( "" ),
@@ -37,11 +37,11 @@ Fittino::SLHAModelCalculatorBase::SLHAModelCalculatorBase( const PhysicsModel* m
 
 }
 
-Fittino::SLHAModelCalculatorBase::~SLHAModelCalculatorBase() {
+Fittino::SLHACalculatorBase::~SLHACalculatorBase() {
 
 }
 
-std::string Fittino::SLHAModelCalculatorBase::String( double x ) {
+std::string Fittino::SLHACalculatorBase::String( double x ) {
 
     std::stringstream tmpStream_x;
     std::string tmpString_x;
@@ -53,7 +53,7 @@ std::string Fittino::SLHAModelCalculatorBase::String( double x ) {
 
 }
 
-Fittino::SLHADataStorageBase* Fittino::SLHAModelCalculatorBase::GetDataStorage() {
+Fittino::SLHADataStorageBase* Fittino::SLHACalculatorBase::GetDataStorage() {
 
     return _slhaOutputDataStorage;
 

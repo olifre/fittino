@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -31,7 +31,7 @@ class TRandom3;
  */
 namespace Fittino {
 
-  class SLHAModelCalculatorBase;
+  class SLHACalculatorBase;
 
   /*!
    *  \ingroup models
@@ -43,27 +43,27 @@ namespace Fittino {
       /*!
        *  Constructor taking name, blockName, id, column index and SLHACalculator as input.
        */
-                               SLHAChi2Contribution( std::string              name,
-                                                     SLHAModelCalculatorBase* slhaModelCalculator,
-                                                     std::string              blockName,
-                                                     std::string              id,
-                                                     int                      columnIndex );
+      SLHAChi2Contribution( std::string         name,
+                            SLHACalculatorBase* slhaCalculator,
+                            std::string         blockName,
+                            std::string         id,
+                            int                 columnIndex );
       /*!
        *  Standard constructor
        */
-                              SLHAChi2Contribution( const boost::property_tree::ptree& ptree, SLHAModelCalculatorBase* slhaModelCalculator );
+      SLHAChi2Contribution( const boost::property_tree::ptree& ptree, SLHACalculatorBase* slhaCalculator );
       /*!
        *  Standard destructor.
        */
-                               ~SLHAChi2Contribution();
-      virtual void             UpdateValue();
-      virtual void             SmearObservation( TRandom3* );
+      ~SLHAChi2Contribution();
+      virtual void        UpdateValue();
+      virtual void        SmearObservation( TRandom3* );
 
     private:
-      int                      _columnIndex;
-      std::string              _id;
-      std::string              _blockName;
-      SLHAModelCalculatorBase* _slhaModelCalculator;
+      int                 _columnIndex;
+      std::string         _id;
+      std::string         _blockName;
+      SLHACalculatorBase* _slhaCalculator;
 
   };
 

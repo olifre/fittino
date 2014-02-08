@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        SLHAModelCalculatorBase.h                                        *
+* File        SLHACalculatorBase.h                                             *
 *                                                                              *
 * Description Base class for SLHA compatible model calculators                 *
 *                                                                              *
@@ -12,15 +12,13 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_SLHAMODELCALCULATORBASE_H
-#define FITTINO_SLHAMODELCALCULATORBASE_H
-
-#include <string>
+#ifndef FITTINO_SLHACALCULATORBASE_H
+#define FITTINO_SLHACALCULATORBASE_H
 
 #include "ModelCalculatorBase.h"
 
@@ -35,24 +33,22 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Base class for SLHA compatible model calculators.
    */
-  class SLHAModelCalculatorBase : public ModelCalculatorBase {
+  class SLHACalculatorBase : public ModelCalculatorBase {
 
     public:
       /*!
        *  Standard constructor.
        */
-                           SLHAModelCalculatorBase( const PhysicsModel* model );
+      SLHACalculatorBase( const PhysicsModel* model );
       /*!
        *  Standard destructor.
        */
-                           ~SLHAModelCalculatorBase();
+      ~SLHACalculatorBase();
       SLHADataStorageBase* GetDataStorage();
-      /*!   
+      /*!
        *  Converts a double variable to a string.
        */
       std::string          String( double x );
-
-    public:
 
     protected:
       std::string          _slhaInputFileName;
@@ -64,4 +60,4 @@ namespace Fittino {
 
 }
 
-#endif // FITTINO_SLHAMODELCALCULATORBASE_H
+#endif // FITTINO_SLHACALCULATORBASE_H
