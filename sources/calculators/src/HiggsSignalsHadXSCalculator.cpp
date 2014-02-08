@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        HiggsSignalsHadXSModelCalculator.cpp                             *
+* File        HiggsSignalsHadXSCalculator.cpp                                  *
 *                                                                              *
 * Description Wrapper class for HiggsSignals using whichinput=hadr             *
                                                                                *
@@ -22,13 +22,13 @@
 #include <iostream>
 
 #include "CHiggsSignals.h"
-#include "HiggsSignalsHadXSModelCalculator.h"
+#include "HiggsSignalsHadXSCalculator.h"
 #include "ModelParameterBase.h"
 #include "PhysicsModel.h"
 #include "SimpleDataStorage.h"
 #include "SimplePrediction.h"
 
-Fittino::HiggsSignalsHadXSModelCalculator::HiggsSignalsHadXSModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::HiggsSignalsHadXSCalculator::HiggsSignalsHadXSCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     :ModelCalculatorBase  ( model                                                                         ),
      _normSM_Gamma_hgg    ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hgg"      )->GetValue() ),
      _normSM_Gamma_htautau( _model->GetCollectionOfQuantities().At( "normSM_Gamma_htautau"  )->GetValue() ),
@@ -55,7 +55,7 @@ Fittino::HiggsSignalsHadXSModelCalculator::HiggsSignalsHadXSModelCalculator( con
      _BR_hHH              ( 0                                                                             ), 
      _CP                  ( 1                                                                             ) {
 
-    _name = "HiggsSignalsHadXSModelCalculator";
+    _name = "HiggsSignalsHadXSCalculator";
 
     AddQuantity( new SimplePrediction( "normSM_BR_hbb"      , "", _normSM_BR_hbb       ) );  
     AddQuantity( new SimplePrediction( "normSM_BR_hcc"      , "", _normSM_BR_hcc       ) );
@@ -103,17 +103,17 @@ Fittino::HiggsSignalsHadXSModelCalculator::HiggsSignalsHadXSModelCalculator( con
                                                            
 }
 
-Fittino::HiggsSignalsHadXSModelCalculator::~HiggsSignalsHadXSModelCalculator() {
+Fittino::HiggsSignalsHadXSCalculator::~HiggsSignalsHadXSCalculator() {
 
 }
 
-void Fittino::HiggsSignalsHadXSModelCalculator::Initialize() const {
+void Fittino::HiggsSignalsHadXSCalculator::Initialize() const {
 
   
 }
 
 
-void Fittino::HiggsSignalsHadXSModelCalculator::CalculatePredictions() {
+void Fittino::HiggsSignalsHadXSCalculator::CalculatePredictions() {
 
     _SM_BR_hss       = smbr_hss_                                 ( &_mass_h );
     _SM_BR_hcc       = smbr_hcc_                                 ( &_mass_h );

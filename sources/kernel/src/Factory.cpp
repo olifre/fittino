@@ -31,7 +31,7 @@
 #include "GeneticAlgorithmOptimizer.h"
 #include "HDim6Calculator.h"
 #include "HECCalculator.h"
-#include "HiggsSignalsHadXSModelCalculator.h"
+#include "HiggsSignalsHadXSCalculator.h"
 #include "HiggsSignalsSLHACalculator.h"
 #include "LHCChi2Contribution.h"
 #include "LHCModelCalculator.h"
@@ -162,11 +162,11 @@ Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::str
 
 #if defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
 
-        return new HiggsSignalsHadXSModelCalculator( model, ptree );
+        return new HiggsSignalsHadXSCalculator( model, ptree );
 
 #else
 
-        throw ConfigurationException( "Trying to use HiggsSignalsHadXSModelCalculator but Fittino was built without HiggsBounds or HiggsSignals." );
+        throw ConfigurationException( "Trying to use HiggsSignalsHadXSCalculator but Fittino was built without HiggsBounds or HiggsSignals." );
 
 #endif
 

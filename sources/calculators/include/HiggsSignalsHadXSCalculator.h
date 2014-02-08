@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        HiggsSignalsHadXSModelCalculator.h                               *
+* File        HiggsSignalsHadXSCalculator.h                                    *
 *                                                                              *
 * Description Wrapper class for HiggsSignals using whichinput=hadr             *
 *                                                                              *
@@ -17,8 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_HIGGSSIGNALSHADXSMODELCALCULATOR_H
-#define FITTINO_HIGGSSIGNALSHADXSMODELCALCULATOR_H
+#ifndef FITTINO_HIGGSSIGNALSHADXSCALCULATOR_H
+#define FITTINO_HIGGSSIGNALSHADXSCALCULATOR_H
 
 #include "ModelCalculatorBase.h"
 
@@ -45,19 +45,19 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Wrapper class for HiggsSignals using whichinput=hadr
    */
-  class HiggsSignalsHadXSModelCalculator : public ModelCalculatorBase {
+  class HiggsSignalsHadXSCalculator : public ModelCalculatorBase {
 
     public:
       /*!
        *  Standard constructor.
        */
-    HiggsSignalsHadXSModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+    HiggsSignalsHadXSCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
 
     public:
       /*!
        *  Standard destructor.
        */
-      virtual      ~HiggsSignalsHadXSModelCalculator();
+      virtual      ~HiggsSignalsHadXSCalculator();
 
     public:
       virtual void CalculatePredictions();
@@ -165,4 +165,4 @@ namespace Fittino {
 
 }
 
-#endif // FITTINO_HIGGSSIGNALSHADXSMODELCALCULATOR_H
+#endif // FITTINO_HIGGSSIGNALSHADXSCALCULATOR_H
