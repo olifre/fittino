@@ -273,7 +273,7 @@
     <xsl:apply-templates select="FeynHiggsCalculator |
                                  FeynHiggsSLHACalculator |
                                  HDim6Calculator |
-                                 HECModelCalculator |
+                                 HECCalculator |
                                  HiggsSignalsCalculator |
                                  HiggsSignalsSLHACalculator |
                                  LHCLimitCalculator |
@@ -287,7 +287,7 @@
   <xsl:template match="FeynHiggsCalculator |
                        FeynHiggsSLHACalculator |
                        HDim6Calculator |
-                       HECModelCalculator |
+                       HECCalculator |
                        HiggsSignalsCalculator |
                        HiggsSignalsSLHACalculator |
                        LHCLimitCalculator |
