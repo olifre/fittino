@@ -48,15 +48,15 @@ ENDIF()
 
 IF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND)
 
-  LIST(REMOVE_ITEM sources "src/HDim6ModelCalculator.cpp")
-  LIST(REMOVE_ITEM sources "src/HiggsSignalsHadXSModelCalculator.cpp")
+  LIST(REMOVE_ITEM sources "src/HDim6Calculator.cpp")
+  LIST(REMOVE_ITEM sources "src/HiggsSignalsHadXSCalculator.cpp")
   LIST(REMOVE_ITEM sources "src/HiggsSignalsSLHACalculator.cpp")
 
 ENDIF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND)
 
 IF(NOT LHAPDF_FOUND OR NOT GSL_FOUND)
 
-  LIST(REMOVE_ITEM sources "src/HDim6ModelCalculator.cpp")
+  LIST(REMOVE_ITEM sources "src/HDim6Calculator.cpp")
 
 ENDIF()
 

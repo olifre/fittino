@@ -28,7 +28,7 @@
 #include "SimplePrediction.h"
 
 Fittino::HiggsSignalsSLHACalculator::HiggsSignalsSLHACalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
-    : SLHAModelCalculatorBase( model ),
+    : SLHACalculatorBase( model ),
       // Initialize steering parameters of the HiggsSignalsSLHACalculator.
       _channelID             ( ptree.get<int>( "ChannelID",   40 ) ),
       _collider              ( ptree.get<int>( "Collider",     3 ) ),
