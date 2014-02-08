@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        HDim6ModelCalculator.h                                           *
+* File        HDim6Calculator.h                                                *
 *                                                                              *
 * Description Wrapper class for HDim6                                          *
 *                                                                              *
@@ -18,8 +18,8 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_HDIM6MODELCALCULATOR_H
-#define FITTINO_HDIM6MODELCALCULATOR_H
+#ifndef FITTINO_HDIM6CALCULATOR_H
+#define FITTINO_HDIM6CALCULATOR_H
 
 #include <map>
 #include "ModelCalculatorBase.h"
@@ -48,19 +48,19 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Wrapper class for HDim6 
    */
-  class HDim6ModelCalculator : public ModelCalculatorBase {
+  class HDim6Calculator : public ModelCalculatorBase {
 
     public:
       /*!
        *  Standard constructor.
        */
-    HDim6ModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+    HDim6Calculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
 
     public:
       /*!
        *  Standard destructor.
        */
-      virtual                  ~HDim6ModelCalculator();
+      virtual                  ~HDim6Calculator();
 
     public:
       virtual void             CalculatePredictions();
@@ -171,4 +171,4 @@ namespace Fittino {
 
 }
 
-#endif // FITTINO_HDIM6MODELCALCULATOR_H
+#endif // FITTINO_HDIM6CALCULATOR_H

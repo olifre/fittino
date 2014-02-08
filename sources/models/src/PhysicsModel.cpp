@@ -42,7 +42,6 @@
 #include "AstroCalculator.h"
 #include "FeynHiggsModelCalculator.h"
 #include "FeynHiggsSLHAModelCalculator.h"
-#include "HDim6ModelCalculator.h"
 #include "HiggsSignalsHadXSModelCalculator.h"
 #include "TMatrixDSym.h"
 #include "TMatrixDSymEigen.h"

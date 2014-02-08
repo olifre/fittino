@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        HDim6ModelCalculator.cpp                                         *
+* File        HDim6Calculator.cpp                                              *
 *                                                                              *
 * Description Wrapper class for HDim6                                          * 
 *                                                                              *
@@ -33,13 +33,13 @@
 #include "HDim6/inputs.h" 
 #include "HDim6/VBF.h"
 
-#include "HDim6ModelCalculator.h"
+#include "HDim6Calculator.h"
 #include "ModelParameterBase.h"
 #include "PhysicsModel.h"
 #include "SimpleDataStorage.h"
 #include "SimplePrediction.h"
 
-Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::HDim6Calculator::HDim6Calculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     :ModelCalculatorBase( model ),
      _calculate_Gamma_hWW     ( ptree.get<bool>( "calculate_Gamma_hWW"      ) ),
      _calculate_Gamma_hZZ     ( ptree.get<bool>( "calculate_Gamma_hZZ"      ) ),
@@ -64,7 +64,7 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModel* model, 
      _pdfDirectory( "" ),
      _smvalues ( new sminputs() ) {
 
-    _name = "HDim6ModelCalculator";
+    _name = "HDim6Calculator";
     
     AddQuantity( new SimplePrediction( "f_BB"                , "TeV-2", _f_BB                 ) );
     AddQuantity( new SimplePrediction( "f_WW"                , "TeV-2", _f_WW                 ) );
@@ -90,7 +90,7 @@ Fittino::HDim6ModelCalculator::HDim6ModelCalculator( const PhysicsModel* model, 
 
 }
 
-Fittino::HDim6ModelCalculator::~HDim6ModelCalculator() {
+Fittino::HDim6Calculator::~HDim6Calculator() {
 
     delete _effvalues;
     delete _effsmvalues;
@@ -98,14 +98,14 @@ Fittino::HDim6ModelCalculator::~HDim6ModelCalculator() {
 
 }
 
-void Fittino::HDim6ModelCalculator::CalculatePredictions() {
+void Fittino::HDim6Calculator::CalculatePredictions() {
 
     ConfigureInput();
     CallFunction();
 
 }
 
-void Fittino::HDim6ModelCalculator::Initialize() const{
+void Fittino::HDim6Calculator::Initialize() const{
 
     if ( _pdfDirectory !="" ){
 
@@ -117,7 +117,7 @@ void Fittino::HDim6ModelCalculator::Initialize() const{
     
 }
 
-void Fittino::HDim6ModelCalculator::CallFunction() {
+void Fittino::HDim6Calculator::CallFunction() {
 
     bool new_mh = ( _first || _previous_mass_h != _mass_h );
 
@@ -240,17 +240,17 @@ void Fittino::HDim6ModelCalculator::CallFunction() {
     
 }
 
-void Fittino::HDim6ModelCalculator::ComparePreviousEffValues() {
+void Fittino::HDim6Calculator::ComparePreviousEffValues() {
 
 
 }
 
-void Fittino::HDim6ModelCalculator::ComparePreviousSMValues() {
+void Fittino::HDim6Calculator::ComparePreviousSMValues() {
 
 
 }
 
-void Fittino::HDim6ModelCalculator::ConfigureInput() {
+void Fittino::HDim6Calculator::ConfigureInput() {
 
     _f_BB = _f_VV_plus - _f_VV_minus;
     _f_WW = _f_VV_plus + _f_VV_minus;

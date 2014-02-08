@@ -29,7 +29,7 @@
 #include "FeynHiggsModelCalculator.h"
 #include "FeynHiggsSLHAModelCalculator.h"
 #include "GeneticAlgorithmOptimizer.h"
-#include "HDim6ModelCalculator.h"
+#include "HDim6Calculator.h"
 #include "HECCalculator.h"
 #include "HiggsSignalsHadXSModelCalculator.h"
 #include "HiggsSignalsSLHACalculator.h"
@@ -144,7 +144,7 @@ Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::str
 
 #if defined LHAPDF_FOUND  && defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND && defined GSL
 
-        return new HDim6ModelCalculator( model, ptree );
+        return new HDim6Calculator( model, ptree );
 
 #else
 
