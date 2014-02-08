@@ -27,7 +27,6 @@
 #include "TTree.h"
 #include "TBranch.h"
 
-#include "Configuration.h"
 #include "TreeSampler.h"
 #include "Messenger.h"
 #include "ModelBase.h"

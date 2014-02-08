@@ -24,7 +24,6 @@
 #include "TMatrixD.h"
 #include "TMatrixDSym.h"
 #include "TMatrixDSymEigen.h"
-#include "Configuration.h"
 #include "NewCorrelatedSampler.h"
 #include "Messenger.h"
 #include "ModelBase.h"
@@ -34,8 +33,8 @@
 #include <fstream>
 #include <sstream>
 
-Fittino::NewCorrelatedSampler::NewCorrelatedSampler( Fittino::ModelBase* model, int randomSeed )
-        : SamplerBase( model, randomSeed ),
+Fittino::NewCorrelatedSampler::NewCorrelatedSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
+        : SamplerBase( model, ptree ),
           _previousChi2( 1.e99 ),
           //_previousChi2( model->GetChi2() ),
           _previousLikelihood( 1.e-99 ),
@@ -47,9 +46,9 @@ Fittino::NewCorrelatedSampler::NewCorrelatedSampler( Fittino::ModelBase* model, 
           _covarianceMatrix(TMatrixDSym( _model->GetNumberOfParameters())),
           _expectationMatrix(TMatrixDSym(_model->GetNumberOfParameters())),
           _previousRho( 1. ),
-          _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", 10000 ) ),
-          _updateAfter( Configuration::GetInstance()->GetSteeringParameter( "UpdateCovariancesAfter", 10000 ) ),
-          _memorySize( Configuration::GetInstance()->GetSteeringParameter( "MemorySize", 10000 ) ),
+          _numberOfIterations( ptree.get<int>( "NumberOfIterations", 10000 ) ),
+          _updateAfter( ptree.get<int>( "UpdateCovariancesAfter", 10000 ) ),
+          _memorySize( ptree.get<int>( "MemorySize", 10000 ) ),
           _acceptedPoints( TMatrixD(_numberOfIterations, _model->GetNumberOfParameters() )),
           _memory( std::queue<std::vector<double> >()),
           _maxEigenValue(0),

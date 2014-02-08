@@ -46,7 +46,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      CorrelatedSampler( ModelBase* model, int randomSeed );
+      CorrelatedSampler( ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

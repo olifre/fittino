@@ -57,10 +57,6 @@ namespace Fittino {
        *  between a model and any class deriving from AnalysisTool (especially the concrete\n
        *  optimizer or sampler classes) is established.
        */
-      AnalysisTool( ModelBase* model, int randomSeed );
-      /*!
-       *  Standard constructor.
-       */
       AnalysisTool( ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.

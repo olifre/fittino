@@ -33,7 +33,6 @@
  *  \todo MeasuredErrors: Allow arbitrary number. Give names.
  *  \todo Remove SimpleDataStorage from ModelCalculatorBase.
  *  \todo Update Observable - Prediction relation.
- *  \todo Complete removal of obsolete Configuration.
  *  \todo Remove again the Chi2Contribution.
  *  \todo Rename all ModelCalculators in Calculators (Mathias).
  *  \todo Update the xml definition file.

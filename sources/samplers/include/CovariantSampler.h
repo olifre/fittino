@@ -44,7 +44,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      CovariantSampler( ModelBase* model, int randomSeed );
+      CovariantSampler( ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

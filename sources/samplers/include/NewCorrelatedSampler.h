@@ -44,7 +44,7 @@ namespace Fittino {
 
     public:
 
-                             NewCorrelatedSampler( ModelBase* model, int randomSeed );
+                             NewCorrelatedSampler( ModelBase* model, const boost::property_tree::ptree& ptree );
                              ~NewCorrelatedSampler();
 
     private:

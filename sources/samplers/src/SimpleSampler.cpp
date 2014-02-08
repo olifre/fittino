@@ -12,31 +12,17 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
-#include <iostream>
 
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
 #include "SimpleSampler.h"
 
 Fittino::SimpleSampler::SimpleSampler( ModelBase* model, const boost::property_tree::ptree& ptree )
-  : SamplerBase( model, ptree ) {
-
-    _name = "simple parameter sampler";
-
-    for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
-
-        _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfParameters().At( k )->GetLowerBound() );
-
-    }
-
-}
-
-Fittino::SimpleSampler::SimpleSampler( Fittino::ModelBase* model, int randomSeed )
-  : SamplerBase( model, randomSeed ) {
+    : SamplerBase( model, ptree ) {
 
     _name = "simple parameter sampler";
 
@@ -76,7 +62,7 @@ void Fittino::SimpleSampler::Scan( unsigned int iParameter ) {
 
     if ( iParameter > 0 ) {
 
-         while ( _model->GetCollectionOfParameters().At( iParameter )->GetValue() <= _model->GetCollectionOfParameters().At( iParameter )->GetUpperBound() ) {
+        while ( _model->GetCollectionOfParameters().At( iParameter )->GetValue() <= _model->GetCollectionOfParameters().At( iParameter )->GetUpperBound() ) {
 
             Scan( iParameter - 1 );
             if ( _model->GetCollectionOfParameters().At( iParameter )->IsFixed() ) break;

@@ -37,27 +37,13 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-
-                   SimpleSampler( ModelBase* model, const boost::property_tree::ptree& ptree );
-      /*!
-       *  Standard constructor.
-       */
-
-                   SimpleSampler( ModelBase* model, int randomSeed );
+      SimpleSampler( ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
-                   ~SimpleSampler();
+      ~SimpleSampler();
 
       /*! \cond UML */
-    private:
-      virtual void Execute();
-      virtual void PrintSteeringParameters() const;
-      /*!
-       *  Call Scan() for the last parameter to start the recursion.
-       */
-      virtual void UpdateModel();
-
     private:
       void         ResetValues( unsigned int iParameter );
       /*!
@@ -71,6 +57,14 @@ namespace Fittino {
        *  - leave previous parameters unchanged
       */
       void         UpdateValues( unsigned int iParameter );
+
+    private:
+      virtual void Execute();
+      virtual void PrintSteeringParameters() const;
+      /*!
+       *  Call Scan() for the last parameter to start the recursion.
+       */
+      virtual void UpdateModel();
 
       /*! \endcond UML */
 

@@ -29,20 +29,6 @@
 #include "ModelBase.h"
 #include "ParameterBase.h"
 
-Fittino::AnalysisTool::AnalysisTool( ModelBase* model, int randomSeed )
-    : _chi2( 1.e99 ),
-      _iterationCounter( 0 ),
-      _model( model ),
-      _name( "" ),
-      _outputFile( "Fittino.out.root", "RECREATE" ),
-      _randomGenerator( randomSeed ),
-      _tree( new TTree( "Tree", "Tree" ) ) {
-
-    _statusParameterVector.push_back( new ParameterBase( "Chi2",             "#chi^2",           1.e99, 0., 100.  ) );
-    _statusParameterVector.push_back( new ParameterBase( "IterationCounter", "IterationCounter", 0,     0., 1.e10 ) );
-
-}
-
 Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tree::ptree& ptree )
     : _chi2( ptree.get<double>( "Chi2", 1.e99 ) ),
       _iterationCounter( ptree.get<unsigned int>( "IterationCounter", 0 ) ),

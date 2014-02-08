@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -24,13 +24,11 @@
 #include "TTree.h"
 #include "TBranch.h"
 
-#include "Configuration.h"
 #include "MarkovChainSampler.h"
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
 #include "ModelCalculatorException.h"
-
 
 Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
   : SamplerBase( model, ptree ), 
@@ -54,29 +52,6 @@ Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, cons
     _statusParameterVector.push_back( new ParameterBase( "PointAccepted", "PointAccepted", 0. , 0., 1. ) );
   
   
-
-}
-
-
-
-Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, int randomSeed )
-    : SamplerBase( model, randomSeed ),
-      _previousChi2( 1.e99 ),
-      //_previousChi2( model->GetChi2() ),
-      _previousParameterValues( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
-      _acceptCounter( 1 ),
-      _previousRho( 1. ),
-      _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", 10000 ) ) {
-
-    _name = "Markov chain parameter sampler";
-
-    for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
-
-        _previousParameterValues.at( k ) = _model->GetCollectionOfParameters().At( k )->GetValue();
-
-    }
-
-    _statusParameterVector.push_back( new ParameterBase( "PointAccepted", "PointAccepted", 0. , 0., 1. ) );
 
 }
 

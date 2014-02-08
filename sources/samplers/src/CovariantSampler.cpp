@@ -4,17 +4,17 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        CovariantSampler.cpp                                           *
+* File        CovariantSampler.cpp                                             *
 *                                                                              *
-* Description Class for covariant parameter sampler                         *
+* Description Class for covariant parameter sampler                            *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>
-              Pia Kullik          <kullik@informatik.uni-bonn.de>              *
+* Authors     Pia     Kullik      <kullik@informatik.uni-bonn.de>              *
+*             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -23,7 +23,6 @@
 #include "TMath.h"
 #include "TMatrixD.h"
 
-#include "Configuration.h"
 #include "CovariantSampler.h"
 #include "Messenger.h"
 #include "ModelBase.h"
@@ -32,8 +31,8 @@
 #include <cstdlib>
 #include <fstream>
 
-Fittino::CovariantSampler::CovariantSampler( Fittino::ModelBase* model, int randomSeed )
-    : SamplerBase( model, randomSeed ),
+Fittino::CovariantSampler::CovariantSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
+    : SamplerBase( model, ptree ),
           _previousChi2( 1.e99 ),
           //_previousChi2( model->GetChi2() ),
           _previousLikelihood( 1.e-99 ),
@@ -45,8 +44,8 @@ Fittino::CovariantSampler::CovariantSampler( Fittino::ModelBase* model, int rand
           _covarianceMatrix(TMatrixD(_model->GetNumberOfParameters(), _model->GetNumberOfParameters() )),
           _expectationMatrix(TMatrixD(_model->GetNumberOfParameters(), _model->GetNumberOfParameters() )),
           _previousRho( 1. ),
-          _numberOfIterations( Configuration::GetInstance()->GetSteeringParameter( "NumberOfIterations", 10000 ) ),
-          _updateAfter( Configuration::GetInstance()->GetSteeringParameter( "UpdateCovariancesAfter", 10000 )),
+          _numberOfIterations( ptree.get<int>( "NumberOfIterations", 10000 ) ),
+          _updateAfter( ptree.get<int>( "UpdateCovariancesAfter", 10000 )),
           _acceptedPoints(TMatrixD(_numberOfIterations, _model->GetNumberOfParameters() ))
           {
 
@@ -80,8 +79,6 @@ Fittino::CovariantSampler::CovariantSampler( Fittino::ModelBase* model, int rand
 
 
 }
-
-
 
 Fittino::CovariantSampler::~CovariantSampler() {
 
