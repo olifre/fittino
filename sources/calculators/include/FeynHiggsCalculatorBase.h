@@ -20,7 +20,7 @@
 #ifndef FITTINO_FEYNHIGGSCALCULATORBASE_H
 #define FITTINO_FEYNHIGGSCALCULATORBASE_H
 
-#include "ModelCalculatorBase.h"
+#include "CalculatorBase.h"
 #include "PtreeForwardDeclaration.h"
 
 /*!
@@ -34,7 +34,7 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Wrapper class for FeynHiggs.
    */
-  class FeynHiggsCalculatorBase : public ModelCalculatorBase {
+  class FeynHiggsCalculatorBase : public CalculatorBase {
 
     public:
       /*!

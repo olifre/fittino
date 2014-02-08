@@ -25,7 +25,7 @@
 #include "RegressionMVA.h"
 
 Fittino::RegressionCalculator::RegressionCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree  )
-  :ModelCalculatorBase( model ),
+  :CalculatorBase( model ),
    _reader ( "!Color:!Silent" ) {
 
   _name = ptree.get<std::string>("name");

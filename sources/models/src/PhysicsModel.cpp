@@ -28,7 +28,7 @@
 #include "Factory.h"
 #include "Chi2ContributionBase.h"
 #include "Messenger.h"
-#include "ModelCalculatorBase.h"
+#include "CalculatorBase.h"
 #include "ModelCalculatorException.h"
 #include "ModelParameterBase.h"
 #include "Observable.h"
@@ -365,7 +365,7 @@ void Fittino::PhysicsModel::AddObservable( Observable* observable ) {
     }
 }
 
-void Fittino::PhysicsModel::AddCalculator( ModelCalculatorBase* calculator ) {
+void Fittino::PhysicsModel::AddCalculator( CalculatorBase* calculator ) {
 
     _collectionOfCalculators.AddElement( calculator->GetName(), calculator );
 
@@ -387,7 +387,7 @@ void Fittino::PhysicsModel::AddCalculator( ModelCalculatorBase* calculator ) {
 
 }
 
-const Fittino::Collection<Fittino::ModelCalculatorBase*>& Fittino::PhysicsModel::GetCollectionOfCalculators() const {
+const Fittino::Collection<Fittino::CalculatorBase*>& Fittino::PhysicsModel::GetCollectionOfCalculators() const {
 
     return _collectionOfCalculators;
 

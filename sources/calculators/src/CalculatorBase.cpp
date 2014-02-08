@@ -4,9 +4,9 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        ModelCalculatorBase.cpp                                          *
+* File        CalculatorBase.cpp                                               *
 *                                                                              *
-* Description Base class for model calculators                                 *
+* Description Base class for calculators                                       *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -17,12 +17,12 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "ModelCalculatorBase.h"
+#include "CalculatorBase.h"
 #include "PredictionBase.h"
 #include "Chi2ContributionBase.h"
 #include "SimpleDataStorage.h"
 
-Fittino::ModelCalculatorBase::ModelCalculatorBase( const PhysicsModel* model )
+Fittino::CalculatorBase::CalculatorBase( const PhysicsModel* model )
     : _name( "" ),
       _model( model ) {
 
@@ -30,52 +30,52 @@ Fittino::ModelCalculatorBase::ModelCalculatorBase( const PhysicsModel* model )
 
 }
 
-Fittino::ModelCalculatorBase::~ModelCalculatorBase() {
+Fittino::CalculatorBase::~CalculatorBase() {
 
     delete _simpleOutputDataStorage;
 
 }
 
-void Fittino::ModelCalculatorBase::Initialize() const {
+void Fittino::CalculatorBase::Initialize() const {
 
 }
 
-std::string Fittino::ModelCalculatorBase::GetName() const {
+std::string Fittino::CalculatorBase::GetName() const {
 
     return _name;
 
 }
 
-const Fittino::SimpleDataStorage* Fittino::ModelCalculatorBase::GetSimpleOutputDataStorage() const {
+const Fittino::SimpleDataStorage* Fittino::CalculatorBase::GetSimpleOutputDataStorage() const {
 
   return _simpleOutputDataStorage;
 
 }
 
-const Fittino::Collection<Fittino::PredictionBase*>& Fittino::ModelCalculatorBase::GetCollectionOfQuantities() const {
+const Fittino::Collection<Fittino::PredictionBase*>& Fittino::CalculatorBase::GetCollectionOfQuantities() const {
 
     return _collectionOfQuantities;
 
 }
 
-const Fittino::Collection<Fittino::Chi2ContributionBase*>& Fittino::ModelCalculatorBase::GetCollectionOfChi2Contributions() const {
+const Fittino::Collection<Fittino::Chi2ContributionBase*>& Fittino::CalculatorBase::GetCollectionOfChi2Contributions() const {
 
     return _collectionOfChi2Contributions;
 
 }
 
-void  Fittino::ModelCalculatorBase::AddQuantity( Fittino::PredictionBase* prediction ) {
+void  Fittino::CalculatorBase::AddQuantity( Fittino::PredictionBase* prediction ) {
 
     _collectionOfQuantities.AddElement( prediction );
 
 }
 
-void  Fittino::ModelCalculatorBase::AddChi2Contribution( Fittino::Chi2ContributionBase* chi2Contribution ) {
+void  Fittino::CalculatorBase::AddChi2Contribution( Fittino::Chi2ContributionBase* chi2Contribution ) {
 
     _collectionOfChi2Contributions.AddElement( chi2Contribution );
 
 }
 
-void Fittino::ModelCalculatorBase::SetupMeasuredValues() {
+void Fittino::CalculatorBase::SetupMeasuredValues() {
 
 }

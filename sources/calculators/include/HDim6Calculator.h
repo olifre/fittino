@@ -22,7 +22,7 @@
 #define FITTINO_HDIM6CALCULATOR_H
 
 #include <map>
-#include "ModelCalculatorBase.h"
+#include "CalculatorBase.h"
 
 namespace boost {
 
@@ -48,7 +48,7 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Wrapper class for HDim6 
    */
-  class HDim6Calculator : public ModelCalculatorBase {
+  class HDim6Calculator : public CalculatorBase {
 
     public:
       /*!

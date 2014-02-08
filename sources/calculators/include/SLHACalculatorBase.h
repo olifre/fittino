@@ -20,7 +20,7 @@
 #ifndef FITTINO_SLHACALCULATORBASE_H
 #define FITTINO_SLHACALCULATORBASE_H
 
-#include "ModelCalculatorBase.h"
+#include "CalculatorBase.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -33,7 +33,7 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Base class for SLHA compatible model calculators.
    */
-  class SLHACalculatorBase : public ModelCalculatorBase {
+  class SLHACalculatorBase : public CalculatorBase {
 
     public:
       /*!

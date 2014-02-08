@@ -43,7 +43,7 @@ class TRandom3;
  */
 namespace Fittino {
 
-  class ModelCalculatorBase;
+  class CalculatorBase;
   class Chi2ContributionBase;
   class Observable;
 
@@ -65,42 +65,42 @@ namespace Fittino {
       /*!
        *  Adds an observable to the model.
        */
-      void                                            AddObservable( Observable *observable );
+      void                                       AddObservable( Observable *observable );
       /*!
        *  Adds a calculator to the model.
        */
-      void                                            AddCalculator( ModelCalculatorBase *calculator );
+      void                                       AddCalculator( CalculatorBase *calculator );
 
-      void                                            AddChi2Contribution( const std::string& name );
-      void                                            AddChi2Contribution( Chi2ContributionBase* contribution );
+      void                                       AddChi2Contribution( const std::string& name );
+      void                                       AddChi2Contribution( Chi2ContributionBase* contribution );
       /*!
        *  Returns the predictions of the model as a collection.
        */
-      virtual const Collection<ModelCalculatorBase*>& GetCollectionOfCalculators() const;
+      virtual const Collection<CalculatorBase*>& GetCollectionOfCalculators() const;
 
     public:
-      virtual void                                    PrintStatus() const;
-      virtual void                                    SmearObservations( TRandom3* );
+      virtual void                               PrintStatus() const;
+      virtual void                               SmearObservations( TRandom3* );
       /*!
        *  Virtual copy constructor.
        */
-      virtual PhysicsModel*                           Clone() const;
+      virtual PhysicsModel*                      Clone() const;
 
     public:
-      virtual const std::vector<Observable*>*         GetObservableVector() const;
+      virtual const std::vector<Observable*>*    GetObservableVector() const;
 
     protected:
-      virtual void                                    Initialize() const;
+      virtual void                               Initialize() const;
 
     protected:
-      std::vector<Observable*>                        _observableVector;
-      Collection<const Quantity*>                     _collectionOfChi2Quantities;
-      //Collection<Chi2ContributionBase*>             _collectionOfChi2Contributions;
-      TMatrixDSym*                                    _observableCovarianceMatrix;
-      TMatrixDSym*                                    _fitObservableCovarianceMatrix;
-      TMatrixDSym*                                    _invertedFitObservableCovarianceMatrix;
-      Collection<TMatrixDSym*>                        _collectionOfCovarianceMatrices;
-      std::map<std::string, int>                      _observableIndexInCovarianceMatrix;
+      std::vector<Observable*>                   _observableVector;
+      Collection<const Quantity*>                _collectionOfChi2Quantities;
+      //Collection<Chi2ContributionBase*>        _collectionOfChi2Contributions;
+      TMatrixDSym*                               _observableCovarianceMatrix;
+      TMatrixDSym*                               _fitObservableCovarianceMatrix;
+      TMatrixDSym*                               _invertedFitObservableCovarianceMatrix;
+      Collection<TMatrixDSym*>                   _collectionOfCovarianceMatrices;
+      std::map<std::string, int>                 _observableIndexInCovarianceMatrix;
       /*! \cond UML */
     private:
       /*!
@@ -108,21 +108,21 @@ namespace Fittino {
        *  \todo Eventually generalize this function to allow for correlated
        *  observables.
        */
-      double                                          CalculateChi2();
+      double                                     CalculateChi2();
 
     private:
-      virtual double                                  Evaluate();
+      virtual double                             Evaluate();
 
-      void                                            InitializeCalculators( const boost::property_tree::ptree& ptree );
-      void                                            InitializeObservables( const boost::property_tree::ptree& ptree );
-      void                                            InitializeCovarianceMatrix( const boost::property_tree::ptree& ptree );
+      void                                       InitializeCalculators( const boost::property_tree::ptree& ptree );
+      void                                       InitializeObservables( const boost::property_tree::ptree& ptree );
+      void                                       InitializeCovarianceMatrix( const boost::property_tree::ptree& ptree );
       /*! \endcond UML */
 
     private:
       /*!
        *  Stores the calculators.
        */
-      Collection<ModelCalculatorBase*>                _collectionOfCalculators;
+      Collection<CalculatorBase*>                _collectionOfCalculators;
 
   };
 

@@ -29,7 +29,7 @@
 #include "SimplePrediction.h"
 
 Fittino::HiggsSignalsHadXSCalculator::HiggsSignalsHadXSCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
-    :ModelCalculatorBase  ( model                                                                         ),
+    :CalculatorBase       ( model                                                                         ),
      _normSM_Gamma_hgg    ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hgg"      )->GetValue() ),
      _normSM_Gamma_htautau( _model->GetCollectionOfQuantities().At( "normSM_Gamma_htautau"  )->GetValue() ),
      _normSM_Gamma_hmumu  ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hmumu"    )->GetValue() ),

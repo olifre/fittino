@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*       published by the Free Software Foundation; either version 3 of   *
-*       the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -39,21 +39,23 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                     TestModelBase();
+      TestModelBase();
       /*!
        *
        */
-                     TestModelBase( const boost::property_tree::ptree& ptree );
+      TestModelBase( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
-                     ~TestModelBase();
+      ~TestModelBase();
       virtual void   PrintStatus() const;
-      virtual void  SmearObservations( TRandom3* ) {}
-      virtual const std::vector<Observable*>* GetObservableVector() const { return NULL; }
-      virtual const Collection<ModelCalculatorBase*>& GetCollectionOfCalculators() const { return *(new Collection<ModelCalculatorBase*>); }
+      virtual void   SmearObservations( TRandom3* ) {}
+      virtual const  std::vector<Observable*>* GetObservableVector() const { return NULL; }
+      virtual const  Collection<CalculatorBase*>& GetCollectionOfCalculators() const { return *(new Collection<CalculatorBase*>); }
+
     protected:
       virtual void   Initialize() const;
+
       /*! \cond UML */
     private:
       virtual double Evaluate();

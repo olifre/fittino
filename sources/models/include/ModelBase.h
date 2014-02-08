@@ -40,7 +40,7 @@ namespace Fittino {
 
   class ModelParameterBase;
   class PredictionBase;
-  class ModelCalculatorBase;
+  class CalculatorBase;
   class Observable;
   class Chi2ContributionBase;
 
@@ -66,70 +66,70 @@ namespace Fittino {
        *  Returns the chi2 of the comparison between the predicted observables of the model and\n
        *  the measured observables. In the case of a test model simply returns the function value.
        */
-      double                                          GetChi2();
+      double                                     GetChi2();
       /*!
        *  Returns the number of parameters of the model.
        */
-      int                                             GetNumberOfParameters() const;
+      int                                        GetNumberOfParameters() const;
       /*!
        *  Returns the number of predictions of the model.
        */
-      int                                             GetNumberOfPredictions() const;
+      int                                        GetNumberOfPredictions() const;
       /*!
        *  Adds a parameter to the model.
        */
-      void                                            AddParameter( ModelParameterBase* parameter );
+      void                                       AddParameter( ModelParameterBase* parameter );
       /*!
        *  Adds a prediction to the model.
        */
-      void                                            AddPrediction( PredictionBase* prediction );
+      void                                       AddPrediction( PredictionBase* prediction );
       /*!
        * Update the property tree.
        */
-      void                                            UpdatePropertyTree();
+      void                                       UpdatePropertyTree();
       /*!
        *  Returns the name of the model.
        */
-      std::string                                     GetName() const;
+      std::string                                GetName() const;
       /*!
        *  Returns the property tree.
        */
-      boost::property_tree::ptree                     GetPropertyTree();
+      boost::property_tree::ptree                GetPropertyTree();
       /*!
        *  Returns the parameters as a collection.
        */
-      const Collection<ModelParameterBase*>&          GetCollectionOfParameters() const;
-      const Collection<const Quantity*>&              GetCollectionOfQuantities() const;
-      const Collection<PredictionBase*>&              GetCollectionOfPredictions() const;
-      const Collection<Chi2ContributionBase*>&        GetCollectionOfChi2Contributions() const;
+      const Collection<ModelParameterBase*>&     GetCollectionOfParameters() const;
+      const Collection<const Quantity*>&         GetCollectionOfQuantities() const;
+      const Collection<PredictionBase*>&         GetCollectionOfPredictions() const;
+      const Collection<Chi2ContributionBase*>&   GetCollectionOfChi2Contributions() const;
 
     public:
-      virtual void                                    PrintStatus() const = 0;
+      virtual void                               PrintStatus() const = 0;
       /*!
        *  Smears the observables (if existent).
        */
-      virtual void                                    SmearObservations( TRandom3* ) = 0;
-      virtual const std::vector<Observable*>*         GetObservableVector() const = 0;
-      virtual const Collection<ModelCalculatorBase*>& GetCollectionOfCalculators() const = 0;
+      virtual void                               SmearObservations( TRandom3* ) = 0;
+      virtual const std::vector<Observable*>*    GetObservableVector() const = 0;
+      virtual const Collection<CalculatorBase*>& GetCollectionOfCalculators() const = 0;
       /*!
        *  Returns a pointer to a copy of the model.
        */
-      virtual ModelBase*                              Clone() const = 0;
+      virtual ModelBase*                         Clone() const = 0;
 
     protected:
       /*!
        *  Name of the model.
        */
-      std::string                                     _name;
+      std::string                                _name;
       /*
        *
        */
-      boost::property_tree::ptree                     _ptree;
-      Collection<Chi2ContributionBase*>               _collectionOfChi2Contributions;
+      boost::property_tree::ptree                _ptree;
+      Collection<Chi2ContributionBase*>          _collectionOfChi2Contributions;
       /*!
        *  Stores the predictions.
        */
-      Collection<PredictionBase*>                     _collectionOfPredictions;
+      Collection<PredictionBase*>                _collectionOfPredictions;
 
     protected:
       /*!
@@ -140,29 +140,29 @@ namespace Fittino {
        *  model calculators) sometimes does not differ between initialization and printing, this\n
        *  is also the place where third party code is initialized.
        */
-      virtual void                                    Initialize() const = 0;
+      virtual void                               Initialize() const = 0;
 
       /*! \cond UML */
     private:
       /*!
        *  Value returned by Evaluate().
        */
-      double                                          _chi2;
+      double                                     _chi2;
       /*!
        *  Setup all parameters using a ptree.
        */
-      void                                            InitializeParameters( const boost::property_tree::ptree& ptree );
+      void                                       InitializeParameters( const boost::property_tree::ptree& ptree );
       /*!
        *  Stores the parameters.
        */
-      Collection<ModelParameterBase*>                 _collectionOfParameters;
-      Collection<const Quantity*>                     _collectionOfQuantities;
+      Collection<ModelParameterBase*>            _collectionOfParameters;
+      Collection<const Quantity*>                _collectionOfQuantities;
 
     private:
       /*!
        *  Evaluates the chi2 function.
        */
-      virtual double                                  Evaluate() = 0;
+      virtual double                             Evaluate() = 0;
 
       /*! \endcond UML */
 

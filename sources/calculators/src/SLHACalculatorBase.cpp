@@ -25,7 +25,7 @@
 #include "SLHACalculatorBase.h"
 
 Fittino::SLHACalculatorBase::SLHACalculatorBase( const PhysicsModel* model )
-    : ModelCalculatorBase( model ),
+    : CalculatorBase( model ),
       _slhaInputFileName( "" ),
       _slhaOutputFileName( "" ),
       _slhaInputDataStorage( 0 ),

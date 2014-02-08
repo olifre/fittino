@@ -19,7 +19,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-#include "ModelCalculatorBase.h"
+#include "CalculatorBase.h"
 #include "SimpleDataStorage.h"
 #include "SimplePrediction.h"
 
@@ -60,7 +60,7 @@ Fittino::SimplePrediction::SimplePrediction( std::string                name,
 					     std::string                plotUnit,
 					     double                     plotLowerBound,
 					     double                     plotUpperBound,
-					     const ModelCalculatorBase* calculator )
+					     const CalculatorBase* calculator )
     : _referenceValue( calculator->GetSimpleOutputDataStorage()->GetMap()->at( name ) ),
       PredictionBase( name,
 		      plotName,
@@ -77,7 +77,7 @@ Fittino::SimplePrediction::SimplePrediction( const boost::property_tree::ptree& 
 
 }
 
-Fittino::SimplePrediction::SimplePrediction( const boost::property_tree::ptree& ptree, const ModelCalculatorBase* calculator )
+Fittino::SimplePrediction::SimplePrediction( const boost::property_tree::ptree& ptree, const CalculatorBase* calculator )
     : _referenceValue( calculator->GetSimpleOutputDataStorage()->GetMap()->at( ptree.get<std::string>( "Name" ) ) ), 
       PredictionBase( ptree ) {
 

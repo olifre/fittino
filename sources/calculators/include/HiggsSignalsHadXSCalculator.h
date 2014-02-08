@@ -20,7 +20,7 @@
 #ifndef FITTINO_HIGGSSIGNALSHADXSCALCULATOR_H
 #define FITTINO_HIGGSSIGNALSHADXSCALCULATOR_H
 
-#include "ModelCalculatorBase.h"
+#include "CalculatorBase.h"
 
 namespace boost {
 
@@ -45,7 +45,7 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Wrapper class for HiggsSignals using whichinput=hadr
    */
-  class HiggsSignalsHadXSCalculator : public ModelCalculatorBase {
+  class HiggsSignalsHadXSCalculator : public CalculatorBase {
 
     public:
       /*!

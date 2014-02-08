@@ -40,7 +40,7 @@
 #include "SimplePrediction.h"
 
 Fittino::HDim6Calculator::HDim6Calculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
-    :ModelCalculatorBase( model ),
+    :CalculatorBase( model ),
      _calculate_Gamma_hWW     ( ptree.get<bool>( "calculate_Gamma_hWW"      ) ),
      _calculate_Gamma_hZZ     ( ptree.get<bool>( "calculate_Gamma_hZZ"      ) ),
      _calculate_xs_qqh_2flavor( ptree.get<bool>( "calculate_xs_qqh_2flavor" ) ),

@@ -34,7 +34,7 @@ namespace Fittino {
   class Chi2ContributionBase;
   class LHCModelCalculator;
   class ModelBase;
-  class ModelCalculatorBase;
+  class CalculatorBase;
   class Observable;
   class PhysicsModel;
   class PredictionBase;
@@ -58,7 +58,7 @@ namespace Fittino {
       ~Factory();
 
     public:
-      ModelCalculatorBase*        CreateCalculator( const std::string& type, const PhysicsModel* model, const boost::property_tree::ptree& ptree ) const;
+      CalculatorBase*        CreateCalculator( const std::string& type, const PhysicsModel* model, const boost::property_tree::ptree& ptree ) const;
       /*!
        *  Returns a concrete analysis tool\n
        *  Supported analysis tools are
@@ -88,17 +88,17 @@ namespace Fittino {
       /*!
        *  Returns a Prediction according to the type specified in the ptree.
        */
-      PredictionBase* const       CreatePrediction( const boost::property_tree::ptree& ptree, const Fittino::ModelCalculatorBase* calculator );
+      PredictionBase* const       CreatePrediction( const boost::property_tree::ptree& ptree, const Fittino::CalculatorBase* calculator );
       PredictionBase* const       CreatePrediction( const boost::property_tree::ptree& ptree, Fittino::SLHACalculatorBase* calculator );
       /*!
        *  Returns an Observable with a prediction according to the type specified in the ptree.
        */
-      Observable* const           CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::ModelCalculatorBase*>& calculators ) const;
-      Observable* const           CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::PredictionBase*>& predictions, const Fittino::Collection<Fittino::ModelCalculatorBase*>& calculators ) const;
+      Observable* const           CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const;
+      Observable* const           CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::PredictionBase*>& predictions, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const;
       /*!
        *  Returns a Chi2Contribution according to the type passed as an argument.
        */
-      Chi2ContributionBase* const CreateChi2Contribution( const std::string& type, const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::ModelCalculatorBase*>& calculators ) const;
+      Chi2ContributionBase* const CreateChi2Contribution( const std::string& type, const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const;
       Chi2ContributionBase* const CreateChi2Contribution( const boost::property_tree::ptree& ptree, Fittino::LHCModelCalculator* calculator );
       SLHADataStorageBase*        CreateSLHAeaSLHADataStorage();
 

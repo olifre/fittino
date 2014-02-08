@@ -31,7 +31,7 @@
  */
 namespace Fittino {
 
-  class ModelCalculatorBase;
+  class CalculatorBase;
 
   /*!
    *  \ingroup models
@@ -66,7 +66,7 @@ namespace Fittino {
                                               std::string plotUnit,
                                               double plotLowerBound,
                                               double plotUpperBound,
-                                              const ModelCalculatorBase* calculator );
+                                              const CalculatorBase* calculator );
 
       /*!
        *  Standard constructor.
@@ -75,7 +75,7 @@ namespace Fittino {
       /*!
        *  Alternative constructor.
        */
-                            SimplePrediction( const boost::property_tree::ptree& ptree, const ModelCalculatorBase* calculator );
+                            SimplePrediction( const boost::property_tree::ptree& ptree, const CalculatorBase* calculator );
       /*!
        *  Standard destructor.
        */

@@ -2,7 +2,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        AstroCalculator.h                                                 *
+* File        AstroCalculator.h                                                *
 *                                                                              *
 * Description Class for a simple tree calculator                               *
 *                                                                              *
@@ -20,7 +20,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-#include "ModelCalculatorBase.h"
+#include "CalculatorBase.h"
 
 class TTree;
 class TFile;
@@ -36,7 +36,7 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Class for a Tree Calculator
    */
-  class AstroCalculator : public ModelCalculatorBase {
+  class AstroCalculator : public CalculatorBase {
 
     public:
       /*!

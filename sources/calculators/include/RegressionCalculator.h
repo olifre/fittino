@@ -23,7 +23,7 @@
 #include "TMVA/Reader.h"
 
 #include "Collection.h"
-#include "ModelCalculatorBase.h"
+#include "CalculatorBase.h"
 
 namespace boost {
 
@@ -49,7 +49,7 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Wrapper class for TMVA::Reader::EvaluateRegression()
    */
-  class RegressionCalculator : public ModelCalculatorBase {
+  class RegressionCalculator : public CalculatorBase {
 
   public:
     /*!

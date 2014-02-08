@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        ModelCalculatorBase.h                                            *
+* File        CalculatorBase.h                                                 *
 *                                                                              *
 * Description Base class for calculators                                       *
 *                                                                              *
@@ -17,8 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_MODELCALCULATORBASE_H
-#define FITTINO_MODELCALCULATORBASE_H
+#ifndef FITTINO_CALCULATORBASE_H
+#define FITTINO_CALCULATORBASE_H
 
 #include <string>
 
@@ -39,19 +39,19 @@ namespace Fittino {
    */
   /*!
    *  \ingroup calculators
-   *  \brief Base class for model calculators.
+   *  \brief Base class for calculators.
    */
-  class ModelCalculatorBase {
+  class CalculatorBase {
 
     public:
       /*!
        *  Standard constructor.
        */
-      ModelCalculatorBase( const PhysicsModel* model );
+      CalculatorBase( const PhysicsModel* model );
       /*!
        *  Standard destructor.
        */
-      ~ModelCalculatorBase();
+      ~CalculatorBase();
       std::string                              GetName() const;
 
     public:
@@ -94,4 +94,4 @@ namespace Fittino {
 
 }
 
-#endif // FITTINO_MODELCALCULATORBASE_H
+#endif // FITTINO_CALCULATORBASE_H

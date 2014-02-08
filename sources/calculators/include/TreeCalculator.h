@@ -20,7 +20,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-#include "ModelCalculatorBase.h"
+#include "CalculatorBase.h"
 
 class TTree;
 class TFile;
@@ -34,7 +34,7 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Class for a Tree Calculator
    */
-  class TreeCalculator : public ModelCalculatorBase {
+  class TreeCalculator : public CalculatorBase {
 
     public:
       /*!

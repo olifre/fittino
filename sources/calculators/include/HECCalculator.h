@@ -21,7 +21,7 @@
 #ifndef FITTINO_HECCALCULATOR_H
 #define FITTINO_HECCALCULATOR_H
 
-#include "ModelCalculatorBase.h"
+#include "CalculatorBase.h"
 #include "PtreeForwardDeclaration.h"
 
 /*!
@@ -44,7 +44,7 @@ namespace Fittino {
    *  interference terms may play a role, the original coupling constants are\n
    *  passed as arguments.
    */
-  class HECCalculator : public ModelCalculatorBase {
+  class HECCalculator : public CalculatorBase {
 
     public:
       /*!

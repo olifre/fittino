@@ -36,7 +36,7 @@
 #include "SimplePrediction.h"
 
 Fittino::FeynHiggsCalculatorBase::FeynHiggsCalculatorBase( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
-        : ModelCalculatorBase( model ) {
+        : CalculatorBase( model ) {
 
     _name = "FeynHiggs";
 

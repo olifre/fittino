@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        RegressionMVA.cpp                                                  *
+* File        RegressionMVA.cpp                                                *
 *                                                                              *
 * Description Helper class for RegressionCalculator                            *
 *                                                                              *

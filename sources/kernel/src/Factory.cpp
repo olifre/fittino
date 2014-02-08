@@ -138,7 +138,7 @@ Fittino::SLHADataStorageBase* Fittino::Factory::CreateSLHAeaSLHADataStorage() {
 
 }
 
-Fittino::ModelCalculatorBase* Fittino::Factory::CreateCalculator( const std::string& type, const PhysicsModel* model, const boost::property_tree::ptree& ptree ) const {
+Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& type, const PhysicsModel* model, const boost::property_tree::ptree& ptree ) const {
 
     if ( type == "HDim6Calculator" ) {
 
@@ -258,7 +258,7 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
 
 }
 
-Fittino::PredictionBase* const Fittino::Factory::CreatePrediction( const boost::property_tree::ptree& ptree, const Fittino::ModelCalculatorBase* calculator ) {
+Fittino::PredictionBase* const Fittino::Factory::CreatePrediction( const boost::property_tree::ptree& ptree, const Fittino::CalculatorBase* calculator ) {
 
     std::string type = ptree.get<std::string>( "PredictionType", "NONE" );
 
@@ -269,7 +269,7 @@ Fittino::PredictionBase* const Fittino::Factory::CreatePrediction( const boost::
     }
     else {
 
-        throw ConfigurationException( "Prediction type " + type + " not known, or requires a more specific definition of the calculator than ModelCalculatorBase." );
+        throw ConfigurationException( "Prediction type " + type + " not known, or requires a more specific definition of the calculator than CalculatorBase." );
 
     }
 
@@ -292,11 +292,11 @@ Fittino::PredictionBase* const Fittino::Factory::CreatePrediction( const boost::
 
 }
 
-Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::ModelCalculatorBase*>& calculators ) const {
+Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const {
 
     std::string type = ptree.get<std::string>( "PredictionType" );
 
-    ModelCalculatorBase *calculator = calculators.At( ptree.get<std::string>( "CalculatorName" ) );
+    CalculatorBase *calculator = calculators.At( ptree.get<std::string>( "CalculatorName" ) );
 
     if ( type == "Simple" ) {
 
@@ -316,7 +316,7 @@ Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::prop
 
 }
 
-Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::PredictionBase*>& predictions, const Fittino::Collection<Fittino::ModelCalculatorBase*>& calculators ) const {
+Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::PredictionBase*>& predictions, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const {
 
     std::string name = ptree.get<std::string>( "PredictionName", "NONE" );
     for ( unsigned int i = 0; i < predictions.GetNumberOfElements(); ++i ) {
@@ -333,9 +333,9 @@ Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::prop
 
 }
 
-Fittino::Chi2ContributionBase* const Fittino::Factory::CreateChi2Contribution( const std::string& type, const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::ModelCalculatorBase*>& calculators ) const {
+Fittino::Chi2ContributionBase* const Fittino::Factory::CreateChi2Contribution( const std::string& type, const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const {
 
-    ModelCalculatorBase *calculator = calculators.At( ptree.get<std::string>( "CalculatorName" ) );
+    CalculatorBase *calculator = calculators.At( ptree.get<std::string>( "CalculatorName" ) );
 
     if ( type == "SLHAChi2Contribution" ) {
 

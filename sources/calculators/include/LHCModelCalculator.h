@@ -4,7 +4,7 @@
 *                                                                              *
 * File        LHCModelCalculator.h                                             *
 *                                                                              *
-* Description Base class for LHC model calculators                 *
+* Description Base class for LHC model calculators                             *
 *                                                                              *
 * Authors     Matthias Hamer  <mhamer@gwdg.de>                                 *
 *                                                                              *
@@ -24,7 +24,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-#include "ModelCalculatorBase.h"
+#include "CalculatorBase.h"
 #include "THnSparse.h"
 
 class TH1D;
@@ -41,7 +41,7 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Base class for LHC model calculators.
    */
-  class LHCModelCalculator : public ModelCalculatorBase {
+  class LHCModelCalculator : public CalculatorBase {
 
     public:
       /*!

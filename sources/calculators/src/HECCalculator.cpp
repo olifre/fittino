@@ -24,7 +24,7 @@
 #include "SimplePrediction.h"
 
 Fittino::HECCalculator::HECCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
-    : ModelCalculatorBase( model ),
+    : CalculatorBase( model ),
       // Initialize input quantities.
       _Delta_hss_s      ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "Delta_hss_s.Name",       "Delta_hss_s"       ) )->GetValue() ),
       _Delta_hss_p      ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "Delta_hss_p.Name",       "Delta_hss_p"       ) )->GetValue() ),
