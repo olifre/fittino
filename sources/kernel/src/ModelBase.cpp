@@ -19,40 +19,20 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
+#include <boost/property_tree/ptree.hpp>
 
 #include "ConfigurationException.h"
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
 #include "PhysicsParameter.h"
 #include "PredictionBase.h"
-#include <iostream>
-
-const Fittino::Collection<const Fittino::Quantity*>&  Fittino::ModelBase::GetCollectionOfQuantities() const{
-
-  return _collectionOfQuantities;
-
-}
-
-const Fittino::Collection<Fittino::PredictionBase*>&  Fittino::ModelBase::GetCollectionOfPredictions() const{
-
-  return _collectionOfPredictions;
-
-}
-
-const Fittino::Collection<Fittino::Chi2ContributionBase*>& Fittino::ModelBase::GetCollectionOfChi2Contributions() const {
-    
-    return _collectionOfChi2Contributions;
-
-}
 
 Fittino::ModelBase::ModelBase( const boost::property_tree::ptree& ptree )
-    : _name("") {
-   
-   _ptree = ptree;
-   InitializeParameters( ptree );
+    : _name( "" ) {
+
+    _ptree = ptree;
+    InitializeParameters( ptree );
 
 }
 
@@ -87,7 +67,7 @@ double Fittino::ModelBase::GetChi2() {
 
 int Fittino::ModelBase::GetNumberOfParameters() const {
 
-  return GetCollectionOfParameters().GetNumberOfElements();
+    return GetCollectionOfParameters().GetNumberOfElements();
 
 }
 
@@ -100,8 +80,8 @@ int Fittino::ModelBase::GetNumberOfPredictions() const {
 void Fittino::ModelBase::AddParameter( ModelParameterBase* parameter ) {
 
     _collectionOfParameters.AddElement( parameter->GetName(), parameter );
-
     _collectionOfQuantities.AddElement( parameter->GetName(), parameter );
+
 }
 
 void Fittino::ModelBase::AddPrediction( PredictionBase* prediction ) {
@@ -111,9 +91,35 @@ void Fittino::ModelBase::AddPrediction( PredictionBase* prediction ) {
 
 }
 
+void Fittino::ModelBase::UpdatePropertyTree() {
+
+    BOOST_FOREACH( boost::property_tree::ptree::value_type & node, _ptree ) {
+
+        if ( node.first == "ModelParameter" ) {
+
+            node.second.put( "Value", _collectionOfParameters.At( node.second.get<std::string>( "Name" ) )->GetValue() );
+
+        }
+    }
+
+}
+
 std::string Fittino::ModelBase::GetName() const {
 
     return _name;
+
+}
+
+boost::property_tree::ptree Fittino::ModelBase::GetPropertyTree() {
+
+    UpdatePropertyTree();
+    return _ptree;
+
+}
+
+const Fittino::Collection<Fittino::Chi2ContributionBase*>& Fittino::ModelBase::GetCollectionOfChi2Contributions() const {
+
+    return _collectionOfChi2Contributions;
 
 }
 
@@ -123,35 +129,28 @@ const Fittino::Collection<Fittino::ModelParameterBase*>& Fittino::ModelBase::Get
 
 }
 
+const Fittino::Collection<Fittino::PredictionBase*>&  Fittino::ModelBase::GetCollectionOfPredictions() const {
+
+    return _collectionOfPredictions;
+
+}
+
+const Fittino::Collection<const Fittino::Quantity*>&  Fittino::ModelBase::GetCollectionOfQuantities() const {
+
+    return _collectionOfQuantities;
+
+}
+
 void Fittino::ModelBase::InitializeParameters( const boost::property_tree::ptree& ptree ) {
 
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree ) {
-    
-      if( node.first == "ModelParameter" ) {
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
 
-        AddParameter( new ModelParameterBase( node.second ) );
+        if ( node.first == "ModelParameter" ) {
 
-      }
+            AddParameter( new ModelParameterBase( node.second ) );
 
-    }
-
-}
-
-boost::property_tree::ptree Fittino::ModelBase::GetPropertyTree() {
-  
-  UpdatePropertyTree();
-  return _ptree;
-
-}
-
-void Fittino::ModelBase::UpdatePropertyTree() {
-
-    BOOST_FOREACH( boost::property_tree::ptree::value_type& node, _ptree ) {
-        if( node.first == "ModelParameter" ) {
-            
-            node.second.put( "Value", _collectionOfParameters.At( node.second.get<std::string>("Name") )->GetValue() );
-        
         }
+
     }
 
 }

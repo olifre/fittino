@@ -22,9 +22,6 @@
 #ifndef FITTINO_MODELBASE_H
 #define FITTINO_MODELBASE_H
 
-#include <string>
-#include <vector>
-
 #include <boost/property_tree/ptree.hpp>
 
 #include "TRandom3.h"
@@ -92,13 +89,13 @@ namespace Fittino {
        *  Returns the property tree.
        */
       boost::property_tree::ptree                GetPropertyTree();
+      const Collection<Chi2ContributionBase*>&   GetCollectionOfChi2Contributions() const;
       /*!
        *  Returns the parameters as a collection.
        */
       const Collection<ModelParameterBase*>&     GetCollectionOfParameters() const;
-      const Collection<const Quantity*>&         GetCollectionOfQuantities() const;
       const Collection<PredictionBase*>&         GetCollectionOfPredictions() const;
-      const Collection<Chi2ContributionBase*>&   GetCollectionOfChi2Contributions() const;
+      const Collection<const Quantity*>&         GetCollectionOfQuantities() const;
 
     public:
       virtual void                               PrintStatus() const = 0;
@@ -106,21 +103,18 @@ namespace Fittino {
        *  Smears the observables (if existent).
        */
       virtual void                               SmearObservations( TRandom3* ) = 0;
-      virtual const std::vector<Observable*>*    GetObservableVector() const = 0;
-      virtual const Collection<CalculatorBase*>& GetCollectionOfCalculators() const = 0;
       /*!
        *  Returns a pointer to a copy of the model.
        */
       virtual ModelBase*                         Clone() const = 0;
+      virtual const std::vector<Observable*>*    GetObservableVector() const = 0;
+      virtual const Collection<CalculatorBase*>& GetCollectionOfCalculators() const = 0;
 
     protected:
       /*!
        *  Name of the model.
        */
       std::string                                _name;
-      /*
-       *
-       */
       boost::property_tree::ptree                _ptree;
       Collection<Chi2ContributionBase*>          _collectionOfChi2Contributions;
       /*!
@@ -146,14 +140,16 @@ namespace Fittino {
        */
       double                                     _chi2;
       /*!
-       *  Setup all parameters using a ptree.
-       */
-      void                                       InitializeParameters( const boost::property_tree::ptree& ptree );
-      /*!
        *  Stores the parameters.
        */
       Collection<ModelParameterBase*>            _collectionOfParameters;
       Collection<const Quantity*>                _collectionOfQuantities;
+
+    private:
+      /*!
+       *  Setup all parameters using a ptree.
+       */
+      void                                       InitializeParameters( const boost::property_tree::ptree& ptree );
 
     private:
       /*!

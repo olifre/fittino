@@ -39,27 +39,23 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      TestModelBase();
-      /*!
-       *
-       */
       TestModelBase( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
       ~TestModelBase();
-      virtual void   PrintStatus() const;
-      virtual void   SmearObservations( TRandom3* ) {}
-      virtual const  std::vector<Observable*>* GetObservableVector() const { return NULL; }
-      virtual const  Collection<CalculatorBase*>& GetCollectionOfCalculators() const { return *(new Collection<CalculatorBase*>); }
+      virtual void                               PrintStatus() const;
+      virtual void                               SmearObservations( TRandom3* ) {}
+      virtual const std::vector<Observable*>*    GetObservableVector() const { return NULL; }
+      virtual const Collection<CalculatorBase*>& GetCollectionOfCalculators() const { return *(new Collection<CalculatorBase*>); }
 
     protected:
-      virtual void   Initialize() const;
+      virtual void                               Initialize() const;
 
       /*! \cond UML */
     private:
-      virtual double Evaluate();
-      virtual double TestModelFunction() = 0;
+      virtual double                             Evaluate();
+      virtual double                             TestModelFunction() = 0;
 
       /*! \endcond UML */
 

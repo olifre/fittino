@@ -23,8 +23,8 @@
 #include "ModelParameterBase.h"
 #include "TestModelBase.h"
 
-Fittino::TestModelBase::TestModelBase( const boost::property_tree::ptree& ptree ) 
-        : ModelBase( ptree ) {
+Fittino::TestModelBase::TestModelBase( const boost::property_tree::ptree& ptree )
+    : ModelBase( ptree ) {
 
 }
 
