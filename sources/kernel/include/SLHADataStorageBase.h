@@ -20,8 +20,6 @@
 #ifndef FITTINO_SLHADATASTORAGEBASE_H
 #define FITTINO_SLHADATASTORAGEBASE_H
 
-#include <string>
-
 #include "DataStorageBase.h"
 
 /*!
@@ -42,11 +40,11 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                     SLHADataStorageBase();
+      SLHADataStorageBase();
       /*!
        *  Standard destructor.
        */
-                     ~SLHADataStorageBase();
+      ~SLHADataStorageBase();
       virtual double GetEntry( const std::string& blockName, const std::string& firstIndex, const int secondIndex ) = 0;
       virtual double GetEntry( const std::string& blockName, const std::string& firstIndex, const std::string& secondIndex, const int thirdIndex ) = 0;
       virtual void   AddBlock( const std::string& path ) = 0;

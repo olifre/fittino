@@ -111,23 +111,6 @@ namespace Fittino {
 
     protected:
       /*!
-       *  Prints the result of the execution of a particuar analysis tool. It is declared virtual\n
-       *  because the result output is different for optimizers and samplers.
-       */
-      virtual void                       PrintResult() const = 0;
-      /*!
-       *  Prints the steering parameters of a particuar analysis tool.
-       *  \todo Short-term: Write a function that does always the correct formatting.
-       */
-      virtual void                       PrintSteeringParameters() const = 0;
-      /*!
-       *  Causes the tool to propose a new model. How this is done has to be specified by any\n
-       *  concrete analysis tool.
-       */
-      virtual void                       UpdateModel() = 0;
-
-    protected:
-      /*!
        *  Returns the number of status parameters.
        */
       int                                GetNumberOfStatusParameters() const;
@@ -152,6 +135,23 @@ namespace Fittino {
        */
       const std::vector<ParameterBase*>* GetStatusParameterVector() const;
 
+    protected:
+      /*!
+       *  Prints the result of the execution of a particuar analysis tool. It is declared virtual\n
+       *  because the result output is different for optimizers and samplers.
+       */
+      virtual void                       PrintResult() const = 0;
+      /*!
+       *  Prints the steering parameters of a particuar analysis tool.
+       *  \todo Short-term: Write a function that does always the correct formatting.
+       */
+      virtual void                       PrintSteeringParameters() const = 0;
+      /*!
+       *  Causes the tool to propose a new model. How this is done has to be specified by any\n
+       *  concrete analysis tool.
+       */
+      virtual void                       UpdateModel() = 0;
+
       /*! \cond UML */
     private:
       /*!
@@ -161,15 +161,15 @@ namespace Fittino {
       TFile                              _outputFile;
 
     private:
-      virtual void                       Execute() = 0;
-
-    private:
       void                               ExecuteAnalysisTool();
       void                               InitializeAnalysisTool();
       void                               InitializeBranches();
       void                               PrintConfiguration() const;
       void                               TerminateAnalysisTool();
       void                               WriteResultToFile() const;
+
+    private:
+      virtual void                       Execute() = 0;
 
       /*! \endcond UML */
 

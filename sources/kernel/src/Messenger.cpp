@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -40,8 +40,8 @@ Fittino::Messenger& Fittino::Messenger::GetInstance() {
 }
 
 Fittino::Messenger::Messenger()
-        : _actualVerbosityLevel( Messenger::ALWAYS ),
-          _verbosityLevel( Messenger::ALWAYS ) {
+    : _actualVerbosityLevel( Messenger::ALWAYS ),
+      _verbosityLevel( Messenger::ALWAYS ) {
 
 }
 
@@ -55,7 +55,7 @@ void Fittino::Messenger::Send() {
 
         std::cout << std::setiosflags( std::ios::fixed )
                   << this->str()
-		  << std::endl;
+                  << std::endl;
 
     }
 
@@ -67,12 +67,12 @@ void Fittino::Messenger::SetVerbosityLevel( const std::string& verbosityLevel ) 
 
     if ( verbosityLevel == "INFO" ) {
 
-        SetVerbosityLevel(INFO);
+        SetVerbosityLevel( INFO );
 
     }
     else if ( verbosityLevel == "ALWAYS" ) {
 
-        SetVerbosityLevel(ALWAYS);
+        SetVerbosityLevel( ALWAYS );
 
     }
     else {
@@ -89,21 +89,21 @@ void Fittino::Messenger::SetVerbosityLevel( const VerbosityLevel& verbosityLevel
 
 }
 
-Fittino::Messenger& Fittino::Messenger::operator<<( std::ios& ( *_f )( std::ios& ) ) {
+Fittino::Messenger& Fittino::Messenger::operator<<( std::ios & ( *_f )( std::ios& ) ) {
 
     ( _f )( *this );
     return *this;
 
 }
 
-Fittino::Messenger& Fittino::Messenger::operator<<( std::ostream& ( *_f )( std::ostream& ) ) {
+Fittino::Messenger& Fittino::Messenger::operator<<( std::ostream & ( *_f )( std::ostream& ) ) {
 
     ( _f )( *this );
     return *this;
 
 }
 
-Fittino::Messenger& Fittino::Messenger::operator<<( Fittino::Messenger& ( *_f )( Fittino::Messenger& ) ) {
+Fittino::Messenger& Fittino::Messenger::operator<<( Fittino::Messenger & ( *_f )( Fittino::Messenger& ) ) {
 
     return ( _f )( *this );
 

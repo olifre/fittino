@@ -18,8 +18,8 @@
 *******************************************************************************/
 
 #include "CalculatorBase.h"
-#include "PredictionBase.h"
 #include "Chi2ContributionBase.h"
+#include "PredictionBase.h"
 #include "SimpleDataStorage.h"
 
 Fittino::CalculatorBase::CalculatorBase( const PhysicsModel* model )
@@ -36,25 +36,9 @@ Fittino::CalculatorBase::~CalculatorBase() {
 
 }
 
-void Fittino::CalculatorBase::Initialize() const {
-
-}
-
 std::string Fittino::CalculatorBase::GetName() const {
 
     return _name;
-
-}
-
-const Fittino::SimpleDataStorage* Fittino::CalculatorBase::GetSimpleOutputDataStorage() const {
-
-  return _simpleOutputDataStorage;
-
-}
-
-const Fittino::Collection<Fittino::PredictionBase*>& Fittino::CalculatorBase::GetCollectionOfQuantities() const {
-
-    return _collectionOfQuantities;
 
 }
 
@@ -64,9 +48,23 @@ const Fittino::Collection<Fittino::Chi2ContributionBase*>& Fittino::CalculatorBa
 
 }
 
-void  Fittino::CalculatorBase::AddQuantity( Fittino::PredictionBase* prediction ) {
+const Fittino::Collection<Fittino::PredictionBase*>& Fittino::CalculatorBase::GetCollectionOfQuantities() const {
 
-    _collectionOfQuantities.AddElement( prediction );
+    return _collectionOfQuantities;
+
+}
+
+const Fittino::SimpleDataStorage* Fittino::CalculatorBase::GetSimpleOutputDataStorage() const {
+
+    return _simpleOutputDataStorage;
+
+}
+
+void Fittino::CalculatorBase::Initialize() const {
+
+}
+
+void Fittino::CalculatorBase::SetupMeasuredValues() {
 
 }
 
@@ -76,6 +74,8 @@ void  Fittino::CalculatorBase::AddChi2Contribution( Fittino::Chi2ContributionBas
 
 }
 
-void Fittino::CalculatorBase::SetupMeasuredValues() {
+void  Fittino::CalculatorBase::AddQuantity( Fittino::PredictionBase* prediction ) {
+
+    _collectionOfQuantities.AddElement( prediction );
 
 }

@@ -31,7 +31,7 @@
 namespace Fittino {
 
   /*!
-   *  \ingroup kernel 
+   *  \ingroup kernel
    *  \brief Base class for Fittino parameter optimizers.
    *
    *  Supported parameter optimizers are

@@ -21,7 +21,6 @@
 #define FITTINO_PLOTTERBASE_H
 
 #include <map>
-#include <string>
 
 #include "AnalysisTool.h"
 

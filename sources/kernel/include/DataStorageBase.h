@@ -37,7 +37,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                   DataStorageBase();
+      DataStorageBase();
       /*!
        *  Standard destructor.
        */

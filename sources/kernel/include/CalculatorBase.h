@@ -20,8 +20,6 @@
 #ifndef FITTINO_CALCULATORBASE_H
 #define FITTINO_CALCULATORBASE_H
 
-#include <string>
-
 #include "Collection.h"
 
 /*!
@@ -68,13 +66,6 @@ namespace Fittino {
       virtual void                             SetupMeasuredValues();
 
     protected:
-      /*!
-       *  \todo Remove.
-       */
-      void                                     AddChi2Contribution( Chi2ContributionBase* chi2Contribution );
-      void                                     AddQuantity( PredictionBase* prediction );
-
-    protected:
       std::string                              _name;
       const PhysicsModel*                      _model;
       /*!
@@ -86,6 +77,13 @@ namespace Fittino {
        */
       Collection<Chi2ContributionBase*>        _collectionOfChi2Contributions;
       Collection<PredictionBase*>              _collectionOfQuantities;
+
+    protected:
+      /*!
+       *  \todo Remove.
+       */
+      void                                     AddChi2Contribution( Chi2ContributionBase* chi2Contribution );
+      void                                     AddQuantity( PredictionBase* prediction );
 
   };
 

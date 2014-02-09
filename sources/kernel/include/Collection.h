@@ -21,8 +21,7 @@
 #define COLLECTION_H
 
 #include <map>
-#include <stdexcept>  
-#include <string>
+#include <stdexcept>
 #include <vector>
 
 #include "ConfigurationException.h"
@@ -31,36 +30,37 @@
  *  \brief Fittino namespace.
  */
 namespace Fittino {
-    /*!
-   *  \ingroup kernel
-   *  \brief Template for collection classes. Only specification for pointers is implemented. 
-   */
+
+  /*!
+  *   \ingroup kernel
+  *   \brief Template for collection classes. Only specification for pointers is implemented.
+  */
   template<class T> class Collection;
-    /*!
-   *  \ingroup kernel
-   *  \brief template for collection of pointers.
-   */
+  /*!
+  *   \ingroup kernel
+  *   \brief template for collection of pointers.
+  */
   template<class T> class Collection<T*> {
 
-  public:
-    Collection();
+    public:
+      Collection();
 
-  public:
-    void                            AddElement( T* element );
-    void                            AddElement( const std::string& name, T* element );
-    void                            Delete();
+    public:
+      void                      AddElement( T* element );
+      void                      AddElement( const std::string& name, T* element );
+      void                      Delete();
 
-  public:  
-     T*                             At( int index )        const;
-     T*                             At( std::string name ) const;
-    unsigned int                    GetNumberOfElements()  const;
+    public:
+      T*                        At( int index ) const;
+      T*                        At( std::string name ) const;
+      unsigned int              GetNumberOfElements() const;
 
-  public:  
-    virtual                         ~Collection();
+    public:
+      virtual                   ~Collection();
 
-  private:  
-    std::map<std::string, T*>        _map;
-    std::vector<T*>                  _vector;
+    private:
+      std::map<std::string, T*> _map;
+      std::vector<T*>           _vector;
 
   };
 
@@ -82,30 +82,30 @@ void Fittino::Collection<T*>::AddElement( T* element ) {
   _vector.push_back( element );
   std::string name = element->GetName();
 
-  std::pair<std::string,T*> pair( name, element );
+  std::pair<std::string, T*> pair( name, element );
 
   if ( ! _map.insert( pair ).second ) {
 
     std::string message = "Element with name " + name + " has already been added.";
 
-    throw ConfigurationException( message ); //TODO: Dedicated exception class ?
+    throw ConfigurationException( message ); // TODO: Dedicated exception class ?
 
   }
 
 }
 
 template<class T>
-void Fittino::Collection<T*>::AddElement( const std::string& name, T* element ){
+void Fittino::Collection<T*>::AddElement( const std::string& name, T* element ) {
 
   _vector.push_back( element );
 
-  std::pair<std::string,T*> pair( name, element );
+  std::pair<std::string, T*> pair( name, element );
 
   if ( ! _map.insert( pair ).second ) {
 
     std::string message = "Element with name " + name + " has already been added.";
 
-    throw ConfigurationException( message ); //TODO: Dedicated exception class ?
+    throw ConfigurationException( message ); // TODO: Dedicated exception class ?
 
   }
 
@@ -125,15 +125,13 @@ T* Fittino::Collection<T*>::At( std::string name ) const {
 
     return _map.at( name );
 
-  }
-  catch (const std::out_of_range& ) {
+  } catch ( const std::out_of_range& ) {
 
-    throw ConfigurationException( "Element with name " + name + " not contained in Collection." ); //TODO: Dedicated exception class ?
-    
+    throw ConfigurationException( "Element with name " + name + " not contained in Collection." ); // TODO: Dedicated exception class ?
+
   }
 
 }
-
 
 template<class T>
 unsigned int Fittino::Collection<T*>::GetNumberOfElements() const {
@@ -142,11 +140,10 @@ unsigned int Fittino::Collection<T*>::GetNumberOfElements() const {
 
 }
 
-
 template<class T>
 void Fittino::Collection<T*>::Delete()  {
 
-  for  (int i=0; i<_vector.size(); i++ ){
+  for ( int i = 0; i < _vector.size(); i++ ) {
 
     delete _vector[i];
 
@@ -157,6 +154,4 @@ void Fittino::Collection<T*>::Delete()  {
 
 }
 
-
-#endif
-
+#endif // COLLECTION_H

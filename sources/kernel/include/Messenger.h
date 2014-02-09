@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -50,19 +50,19 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                                Messenger();
+      Messenger();
       /*!
        *  Standard destructor.
        */
-                                ~Messenger();
+      ~Messenger();
       void                      Send();
       void                      SetVerbosityLevel( const std::string&    verbosityLevel );
       void                      SetVerbosityLevel( const VerbosityLevel& verbosityLevel );
 
     public:
-      Messenger&                operator<<( std::ios& ( *_f )( std::ios& ) );
-      Messenger&                operator<<( std::ostream& ( *_f )( std::ostream& ) );
-      Messenger&                operator<<( Messenger& ( *_f )( Messenger& ) );
+      Messenger&                operator<<( std::ios & ( *_f )( std::ios& ) );
+      Messenger&                operator<<( std::ostream & ( *_f )( std::ostream& ) );
+      Messenger&                operator<<( Messenger & ( *_f )( Messenger& ) );
       Messenger&                operator<<( VerbosityLevel verbosityLevel );
       template<class T>
       Messenger&                operator<<( T arg );

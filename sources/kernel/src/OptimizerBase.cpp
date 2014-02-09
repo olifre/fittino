@@ -75,14 +75,14 @@ void Fittino::OptimizerBase::PrintResult() const {
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
         messenger << Messenger::ALWAYS
-	          << "    "
+                  << "    "
                   << std::left
                   << std::setw( 11 )
                   << _model->GetCollectionOfParameters().At( i )->GetName()
                   << std::right
                   << std::setw( 9 )
                   << _model->GetCollectionOfParameters().At( i )->GetValue()
-		  << Messenger::Endl;
+                  << Messenger::Endl;
 
     }
 
