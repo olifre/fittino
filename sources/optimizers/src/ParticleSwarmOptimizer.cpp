@@ -20,6 +20,7 @@
 *                                                                              *
 *******************************************************************************/
 
+#include "ConfigurationException.h"
 #include "Messenger.h"
 #include "ParticleSwarmOptimizer.h"
 
@@ -39,6 +40,8 @@ Fittino::ParticleSwarmOptimizer::ParticleSwarmOptimizer( Fittino::ModelBase* mod
         _particleSwarm.push_back( particle );
 
     }
+
+    throw ConfigurationException( "WARNING: Optimizer does not work because of broken Model::Clone(). Fix that first!" );
 
 }
 

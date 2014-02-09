@@ -43,11 +43,11 @@ namespace Fittino {
       bool                UpdatedChi2();
       double              GetGene( int index );
       void                Mutation();
+      void                SetGene( int index, double newValue );
       /*!
        *  Calls UpdateModel() and than sets the chi2 according to that model.
        */
       void                UpdateChi2();
-      void                SetGene( int index, double newValue );
       /*!
        *  Sets the pointed model according to the genes.
        */

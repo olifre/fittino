@@ -21,9 +21,25 @@
 #include "ModelParameterBase.h"
 
 Fittino::MinuitAdapter::MinuitAdapter( ModelBase* model )
-        : _model( model) {
+    : _model( model ) {
 
-} 
+}
+
+Fittino::MinuitAdapter::~MinuitAdapter() {
+
+}
+
+double Fittino::MinuitAdapter::Up() const {
+
+    return _errorDef;
+
+}
+
+void Fittino::MinuitAdapter::SetErrorDef( double err ) {
+
+    _errorDef = err;
+
+}
 
 double Fittino::MinuitAdapter::operator()( const std::vector< double >& parameterVector ) const {
 

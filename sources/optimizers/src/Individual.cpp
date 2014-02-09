@@ -17,8 +17,6 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "TRandom3.h"
-
 #include "Individual.h"
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
@@ -46,9 +44,9 @@ Fittino::Individual::~Individual() {
 
 }
 
-bool Fittino::Individual::UpdatedChi2(){
+bool Fittino::Individual::UpdatedChi2() {
 
-  return _updatedChi2;
+    return _updatedChi2;
 
 }
 
@@ -73,18 +71,18 @@ void Fittino::Individual::Mutation() {
 
 }
 
-void Fittino::Individual::UpdateChi2() {
-
-  UpdateModel();
-    _chi2 = _model->GetChi2();
-    _updatedChi2=true;
-
-}
-
 void Fittino::Individual::SetGene( int index, double newValue ) {
 
     _genes[index] = newValue;
-    _updatedChi2=false;
+    _updatedChi2 = false;
+
+}
+
+void Fittino::Individual::UpdateChi2() {
+
+    UpdateModel();
+    _chi2 = _model->GetChi2();
+    _updatedChi2 = true;
 
 }
 

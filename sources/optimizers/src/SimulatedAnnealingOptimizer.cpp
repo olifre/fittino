@@ -18,7 +18,6 @@
 *******************************************************************************/
 
 #include <cmath>
-#include <vector>
 
 #include "Messenger.h"
 #include "ModelBase.h"
@@ -32,6 +31,8 @@ Fittino::SimulatedAnnealingOptimizer::SimulatedAnnealingOptimizer( Fittino::Mode
       OptimizerBase( model, ptree ) {
 
     _name = ptree.get<std::string>( "Name", "simulated annealing optimization algorithm" );
+
+    throw ConfigurationException( "WARNING: Optimizer does not work because of broken Model::Clone(). Fix that first!" );
 
 }
 

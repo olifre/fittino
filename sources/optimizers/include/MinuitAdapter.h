@@ -43,17 +43,17 @@ namespace Fittino {
       /*!
        *  Standard destructor.
        */
-      virtual             ~MinuitAdapter() { ; }
+      virtual             ~MinuitAdapter();
 
     public:
       /*!
        *  Error definition
        */
-      virtual double      Up() const { return _errorDef; }
+      virtual double      Up() const;
       /*!
        *  Set error definition
        */
-      virtual void        SetErrorDef( double err ) { _errorDef = err; }
+      virtual void        SetErrorDef( double err );
       /*!
        *  Function to be minimized
        */
