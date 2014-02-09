@@ -20,8 +20,6 @@
 #ifndef FITTINO_TESTMODELBASE_H
 #define FITTINO_TESTMODELBASE_H
 
-#include <boost/property_tree/ptree.hpp>
-
 #include "ModelBase.h"
 
 /*!
