@@ -20,6 +20,7 @@
 INCLUDE_DIRECTORIES(./include)
 INCLUDE_DIRECTORIES(../kernel/include)
 
+FILE( GLOB includes ./include/*.h ) 
 AUX_SOURCE_DIRECTORY(src sources)
 
-ADD_LIBRARY(exceptions ${sources})
+ADD_LIBRARY(exceptions ${includes} ${sources})

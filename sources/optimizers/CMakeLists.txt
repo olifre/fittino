@@ -24,8 +24,9 @@ INCLUDE_DIRECTORIES(../kernel/include)
 INCLUDE_DIRECTORIES(../models/include)
 INCLUDE_DIRECTORIES(../samplers/include)
 
+FILE( GLOB includes ./include/*.h )
 AUX_SOURCE_DIRECTORY(src sources)
 
-ADD_LIBRARY(optimizers ${sources})
+ADD_LIBRARY(optimizers ${includes} ${sources})
 
 SET_TARGET_PROPERTIES( optimizers PROPERTIES COMPILE_FLAGS ${ROOT_COMPILE_FLAGS} )

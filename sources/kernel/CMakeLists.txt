@@ -24,9 +24,9 @@ IF( ROOT_FOUND )
 
 ENDIF()
 
+FILE( GLOB includes ./include/*.h )
 AUX_SOURCE_DIRECTORY( ./src sources )
-
-ADD_EXECUTABLE( fittino ${sources} )
+ADD_EXECUTABLE( fittino ${includes} ${sources} )
 
 GET_PROPERTY( compile_flags TARGET fittino PROPERTY COMPILE_FLAGS )
 GET_PROPERTY( link_flags    TARGET fittino PROPERTY LINK_FLAGS    )

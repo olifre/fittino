@@ -25,6 +25,7 @@ INCLUDE_DIRECTORIES(../optimizers/include)
 INCLUDE_DIRECTORIES(../samplers/include)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
+FILE( GLOB includes ./include/*.h )
 AUX_SOURCE_DIRECTORY(src sources)
 
 IF(SLHAEA_FOUND)
@@ -33,7 +34,6 @@ ELSE()
   LIST(REMOVE_ITEM sources "src/SLHAeaSLHADataStorage.cpp")
 ENDIF()
 
-
-ADD_LIBRARY(datastorages ${sources})
+ADD_LIBRARY(datastorages ${includes} ${sources})
 
 SET_TARGET_PROPERTIES( datastorages PROPERTIES COMPILE_FLAGS ${ROOT_COMPILE_FLAGS} )

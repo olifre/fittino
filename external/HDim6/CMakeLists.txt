@@ -20,7 +20,8 @@
 INCLUDE_DIRECTORIES(${GSL_INCLUDE_DIRS}   )
 INCLUDE_DIRECTORIES(${LHAPDF_INCLUDE_DIRS})
 
+FILE( GLOB includes includes *.h )
 AUX_SOURCE_DIRECTORY(. sources)
 
-ADD_LIBRARY(HDim6 ${sources})
+ADD_LIBRARY(HDim6 ${includes} ${sources})
 

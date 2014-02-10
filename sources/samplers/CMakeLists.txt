@@ -26,7 +26,8 @@ INCLUDE_DIRECTORIES(../optimizers/include)
 INCLUDE_DIRECTORIES(../calculators/include)
 INCLUDE_DIRECTORIES(../datastorages/include)
 
+FILE( GLOB includes ./include/*.h )
 AUX_SOURCE_DIRECTORY(src sources)
 
-ADD_LIBRARY(samplers ${sources})
+ADD_LIBRARY(samplers ${includes} ${sources})
 SET_TARGET_PROPERTIES(samplers PROPERTIES COMPILE_FLAGS ${ROOT_COMPILE_FLAGS})

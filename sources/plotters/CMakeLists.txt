@@ -24,8 +24,9 @@ INCLUDE_DIRECTORIES(../kernel/include)
 INCLUDE_DIRECTORIES(../models/include)
 INCLUDE_DIRECTORIES(../exceptions/include)
 
+FILE( GLOB includes ./include/*.h )
 AUX_SOURCE_DIRECTORY(src sources)
 
-ADD_LIBRARY(plotters ${sources})
+ADD_LIBRARY(plotters ${includes} ${sources})
 
 SET_TARGET_PROPERTIES( plotters PROPERTIES COMPILE_FLAGS ${ROOT_COMPILE_FLAGS} )

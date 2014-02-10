@@ -18,6 +18,9 @@
 #                                                                              #
 ################################################################################
 
+FILE( GLOB includes ./include/*.h )
+AUX_SOURCE_DIRECTORY(src sources)
+
 INCLUDE_DIRECTORIES(../../external)
 INCLUDE_DIRECTORIES(./include)
 INCLUDE_DIRECTORIES(../exceptions/include)
@@ -25,8 +28,6 @@ INCLUDE_DIRECTORIES(../datastorages/include)
 INCLUDE_DIRECTORIES(../models/include)
 INCLUDE_DIRECTORIES(../kernel/include)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
-
-AUX_SOURCE_DIRECTORY(src sources)
 
 IF( FEYNHIGGS_FOUND )
 
@@ -60,7 +61,7 @@ IF(NOT LHAPDF_FOUND OR NOT GSL_FOUND)
 
 ENDIF()
 
-ADD_LIBRARY(calculators ${sources})
+ADD_LIBRARY(calculators ${includes} ${sources})
 
 GET_PROPERTY(compile_flags TARGET calculators PROPERTY COMPILE_FLAGS)
 
