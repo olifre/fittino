@@ -30,57 +30,57 @@
 
 Fittino::HiggsSignalsHadXSCalculator::HiggsSignalsHadXSCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     :CalculatorBase       ( model                                                                         ),
-     _normSM_Gamma_hgg    ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hgg"      )->GetValue() ),
-     _normSM_Gamma_htautau( _model->GetCollectionOfQuantities().At( "normSM_Gamma_htautau"  )->GetValue() ),
-     _normSM_Gamma_hmumu  ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hmumu"    )->GetValue() ),
-     _normSM_Gamma_hgaga  ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hgaga"    )->GetValue() ),
-     _normSM_Gamma_hWW    ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hWW"      )->GetValue() ),
-     _normSM_Gamma_hZZ    ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hZZ"      )->GetValue() ),
-     _normSM_Gamma_hZga   ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hZga"     )->GetValue() ),
-     _normSM_Gamma_hbb    ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hbb"      )->GetValue() ),
-     _normSM_Gamma_hcc    ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hcc"      )->GetValue() ),
-     _normSM_Gamma_hss    ( _model->GetCollectionOfQuantities().At( "normSM_Gamma_hss"      )->GetValue() ),
-     _normSM_xs_ggh       ( _model->GetCollectionOfQuantities().At( "normSM_xs_ggh"         )->GetValue() ),
-     _normSM_xs_bbh       ( _model->GetCollectionOfQuantities().At( "normSM_xs_bbh"         )->GetValue() ),
-     _normSM_xs_qqh       ( _model->GetCollectionOfQuantities().At( "normSM_xs_qqh_2flavor" )->GetValue() ),
-     _normSM_xs_tth       ( _model->GetCollectionOfQuantities().At( "normSM_xs_tth"         )->GetValue() ),
-     _normSM_xs_Wh        ( _model->GetCollectionOfQuantities().At( "normSM_xs_Wh"          )->GetValue() ),
-     _normSM_xs_Zh        ( _model->GetCollectionOfQuantities().At( "normSM_xs_Zh"          )->GetValue() ),
-     _normSM_xs_bh        ( _model->GetCollectionOfQuantities().At( "normSM_xs_bh"          )->GetValue() ),
-     _normSM_xs_lep       ( 1                                                                             ),
-     _normSM_xs_tev       ( 1                                                                             ),
-     _mass_h              ( _model->GetCollectionOfQuantities().At( "mass_h"                )->GetValue() ),
-     _mode                ( 1                                                                             ),
-     _BR_hInvisible       ( 0                                                                             ),
-     _BR_hHH              ( 0                                                                             ), 
-     _CP                  ( 1                                                                             ) {
+     _normSM_Gamma_hgg    ( _model->GetCollectionOfQuantities().At( "NormSM_Gamma_h_g_g"         )->GetValue() ),
+     _normSM_Gamma_htautau( _model->GetCollectionOfQuantities().At( "NormSM_Gamma_h_tau_tau"     )->GetValue() ),
+     _normSM_Gamma_hmumu  ( _model->GetCollectionOfQuantities().At( "NormSM_Gamma_h_mu_mu"       )->GetValue() ),
+     _normSM_Gamma_hgaga  ( _model->GetCollectionOfQuantities().At( "NormSM_Gamma_h_gamma_gamma" )->GetValue() ),
+     _normSM_Gamma_hWW    ( _model->GetCollectionOfQuantities().At( "NormSM_Gamma_h_W_W"         )->GetValue() ),
+     _normSM_Gamma_hZZ    ( _model->GetCollectionOfQuantities().At( "NormSM_Gamma_h_Z_Z"         )->GetValue() ),
+     _normSM_Gamma_hZga   ( _model->GetCollectionOfQuantities().At( "NormSM_Gamma_h_Z_ga"        )->GetValue() ),
+     _normSM_Gamma_hbb    ( _model->GetCollectionOfQuantities().At( "NormSM_Gamma_h_b_b"         )->GetValue() ),
+     _normSM_Gamma_hcc    ( _model->GetCollectionOfQuantities().At( "NormSM_Gamma_h_c_c"         )->GetValue() ),
+     _normSM_Gamma_hss    ( _model->GetCollectionOfQuantities().At( "NormSM_Gamma_h_s_s"         )->GetValue() ),
+     _normSM_xs_ggh       ( _model->GetCollectionOfQuantities().At( "NormSM_xs_ggh"              )->GetValue() ),
+     _normSM_xs_bbh       ( _model->GetCollectionOfQuantities().At( "NormSM_xs_bbh"              )->GetValue() ),
+     _normSM_xs_qqh       ( _model->GetCollectionOfQuantities().At( "NormSM_xs_qqh_2flavor"      )->GetValue() ),
+     _normSM_xs_tth       ( _model->GetCollectionOfQuantities().At( "NormSM_xs_tth"              )->GetValue() ),
+     _normSM_xs_Wh        ( _model->GetCollectionOfQuantities().At( "NormSM_xs_Wh"               )->GetValue() ),
+     _normSM_xs_Zh        ( _model->GetCollectionOfQuantities().At( "NormSM_xs_Zh"               )->GetValue() ),
+     _normSM_xs_bh        ( _model->GetCollectionOfQuantities().At( "NormSM_xs_bh"               )->GetValue() ),
+     _normSM_xs_lep       ( 1                                                                                  ),
+     _normSM_xs_tev       ( 1                                                                                  ),
+     _mass_h              ( _model->GetCollectionOfQuantities().At( "mass_h"                )->GetValue()      ),
+     _mode                ( 1                                                                                  ),
+     _BR_hInvisible       ( 0                                                                                  ),
+     _BR_hHH              ( 0                                                                                  ), 
+     _CP                  ( 1                                                                                  ) {
 
     _name = "HiggsSignalsHadXSCalculator";
 
-    AddQuantity( new SimplePrediction( "normSM_BR_hbb"      , "", _normSM_BR_hbb       ) );  
-    AddQuantity( new SimplePrediction( "normSM_BR_hcc"      , "", _normSM_BR_hcc       ) );
-    AddQuantity( new SimplePrediction( "normSM_BR_hgaga"    , "", _normSM_BR_hgaga     ) );
-    AddQuantity( new SimplePrediction( "normSM_BR_hgg"      , "", _normSM_BR_hgg       ) );
-    AddQuantity( new SimplePrediction( "normSM_BR_hmumu"    , "", _normSM_BR_hmumu     ) );
-    AddQuantity( new SimplePrediction( "normSM_BR_hss"      , "", _normSM_BR_hss       ) );
-    AddQuantity( new SimplePrediction( "normSM_BR_htautau"  , "", _normSM_BR_htautau   ) );
-    AddQuantity( new SimplePrediction( "normSM_BR_hWW"      , "", _normSM_BR_hWW       ) );
-    AddQuantity( new SimplePrediction( "normSM_BR_hZga"     , "", _normSM_BR_hZga      ) );
-    AddQuantity( new SimplePrediction( "normSM_BR_hZZ"      , "", _normSM_BR_hZZ       ) );
-    AddQuantity( new SimplePrediction( "normSM_Gamma_hTotal", "", _normSM_Gamma_hTotal ) );
-    AddQuantity( new SimplePrediction( "normSM_xs_h"        , "", _normSM_xs_h         ) );
-    AddQuantity( new SimplePrediction( "HS_weight_xs_ggh"   , "", _weight_xs_ggh       ) );
-    AddQuantity( new SimplePrediction( "HS_weight_xs_bbh"   , "", _weight_xs_bbh       ) );
-    AddQuantity( new SimplePrediction( "HS_chi2"            , "", _chi2                ) );  
-    AddQuantity( new SimplePrediction( "HS_chi2_mass_h"     , "", _chi2_mass_h         ) );
-    AddQuantity( new SimplePrediction( "HS_chi2_mu"         , "", _chi2_mu             ) );
-    AddQuantity( new SimplePrediction( "HS_pvalue"          , "", _pvalue              ) ); 
-    AddQuantity( new SimplePrediction( "HS_R_H_bb"          , "", _R_H_bb              ) ); 
-    AddQuantity( new SimplePrediction( "HS_R_H_gaga"        , "", _R_H_gaga            ) ); 
-    AddQuantity( new SimplePrediction( "HS_R_H_tautau"      , "", _R_H_tautau          ) ); 
-    AddQuantity( new SimplePrediction( "HS_R_H_WW"          , "", _R_H_WW              ) ); 
-    AddQuantity( new SimplePrediction( "HS_R_H_ZZ"          , "", _R_H_ZZ              ) ); 
-    AddQuantity( new SimplePrediction( "HS_R_VH_bb"         , "", _R_VH_bb             ) ); 
+    AddQuantity( new SimplePrediction( "NormSM_BR_h_b_b"        , "", _normSM_BR_hbb       ) );  
+    AddQuantity( new SimplePrediction( "NormSM_BR_h_c_c"        , "", _normSM_BR_hcc       ) );
+    AddQuantity( new SimplePrediction( "NormSM_BR_h_gamma_gamma", "", _normSM_BR_hgaga     ) );
+    AddQuantity( new SimplePrediction( "NormSM_BR_h_g_g"        , "", _normSM_BR_hgg       ) );
+    AddQuantity( new SimplePrediction( "NormSM_BR_h_mu_mu"      , "", _normSM_BR_hmumu     ) );
+    AddQuantity( new SimplePrediction( "NormSM_BR_h_s_s"        , "", _normSM_BR_hss       ) );
+    AddQuantity( new SimplePrediction( "NormSM_BR_h_tau_tau"    , "", _normSM_BR_htautau   ) );
+    AddQuantity( new SimplePrediction( "NormSM_BR_h_W_W"        , "", _normSM_BR_hWW       ) );
+    AddQuantity( new SimplePrediction( "NormSM_BR_h_Z_gamma"    , "", _normSM_BR_hZga      ) );
+    AddQuantity( new SimplePrediction( "NormSM_BR_h_Z_Z"        , "", _normSM_BR_hZZ       ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_hTotal"    , "", _normSM_Gamma_hTotal ) );
+    AddQuantity( new SimplePrediction( "NormSM_xs_h"            , "", _normSM_xs_h         ) );
+    AddQuantity( new SimplePrediction( "HS_weight_xs_ggh"       , "", _weight_xs_ggh       ) );
+    AddQuantity( new SimplePrediction( "HS_weight_xs_bbh"       , "", _weight_xs_bbh       ) );
+    AddQuantity( new SimplePrediction( "HS_chi2"                , "", _chi2                ) );  
+    AddQuantity( new SimplePrediction( "HS_chi2_mass_h"         , "", _chi2_mass_h         ) );
+    AddQuantity( new SimplePrediction( "HS_chi2_mu"             , "", _chi2_mu             ) );
+    AddQuantity( new SimplePrediction( "HS_pvalue"              , "", _pvalue              ) ); 
+    AddQuantity( new SimplePrediction( "HS_R_H_bb"              , "", _R_H_bb              ) ); 
+    AddQuantity( new SimplePrediction( "HS_R_H_gaga"            , "", _R_H_gaga            ) ); 
+    AddQuantity( new SimplePrediction( "HS_R_H_tautau"          , "", _R_H_tautau          ) ); 
+    AddQuantity( new SimplePrediction( "HS_R_H_WW"              , "", _R_H_WW              ) ); 
+    AddQuantity( new SimplePrediction( "HS_R_H_ZZ"              , "", _R_H_ZZ              ) ); 
+    AddQuantity( new SimplePrediction( "HS_R_VH_bb"             , "", _R_VH_bb             ) ); 
 
     int nHzero = 1;
     int nHplus = 0;

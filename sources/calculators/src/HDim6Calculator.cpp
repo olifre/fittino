@@ -66,27 +66,27 @@ Fittino::HDim6Calculator::HDim6Calculator( const PhysicsModel* model, const boos
 
     _name = "HDim6Calculator";
     
-    AddQuantity( new SimplePrediction( "f_BB"                , "TeV-2", _f_BB                 ) );
-    AddQuantity( new SimplePrediction( "f_WW"                , "TeV-2", _f_WW                 ) );
-    AddQuantity( new SimplePrediction( "normSM_Gamma_hgg"    , ""     , _normSM_Gamma_hgg     ) );
-    AddQuantity( new SimplePrediction( "normSM_Gamma_htautau", ""     , _normSM_Gamma_htautau ) );
-    AddQuantity( new SimplePrediction( "normSM_Gamma_hmumu"  , ""     , _normSM_Gamma_hmumu   ) );
-    AddQuantity( new SimplePrediction( "normSM_Gamma_hgaga"  , ""     , _normSM_Gamma_hgaga   ) );
-    AddQuantity( new SimplePrediction( "normSM_Gamma_hZga"   , ""     , _normSM_Gamma_hZga    ) );
-    AddQuantity( new SimplePrediction( "normSM_Gamma_hbb"    , ""     , _normSM_Gamma_hbb     ) );
-    AddQuantity( new SimplePrediction( "normSM_Gamma_hcc"    , ""     , _normSM_Gamma_hcc     ) );
-    AddQuantity( new SimplePrediction( "normSM_Gamma_hss"    , ""     , _normSM_Gamma_hss     ) );
-    AddQuantity( new SimplePrediction( "normSM_xs_ggh"       , ""     , _normSM_xs_ggh        ) );
-    AddQuantity( new SimplePrediction( "normSM_xs_bbh"       , ""     , _normSM_xs_bbh        ) );
-    AddQuantity( new SimplePrediction( "normSM_xs_tth"       , ""     , _normSM_xs_tth        ) );
-    AddQuantity( new SimplePrediction( "normSM_xs_bh"        , ""     , _normSM_xs_bh         ) );
+    AddQuantity( new SimplePrediction( "f_BB"                      , "TeV-2", _f_BB                 ) );
+    AddQuantity( new SimplePrediction( "f_WW"                      , "TeV-2", _f_WW                 ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_g_g"        , ""     , _normSM_Gamma_hgg     ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_tau_tau"    , ""     , _normSM_Gamma_htautau ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_mu_mu"      , ""     , _normSM_Gamma_hmumu   ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_gamma_gamma", ""     , _normSM_Gamma_hgaga   ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_Z_ga"       , ""     , _normSM_Gamma_hZga    ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_b_b"        , ""     , _normSM_Gamma_hbb     ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_c_c"        , ""     , _normSM_Gamma_hcc     ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_s_s"        , ""     , _normSM_Gamma_hss     ) );
+    AddQuantity( new SimplePrediction( "NormSM_xs_ggh"             , ""     , _normSM_xs_ggh        ) );
+    AddQuantity( new SimplePrediction( "NormSM_xs_bbh"             , ""     , _normSM_xs_bbh        ) );
+    AddQuantity( new SimplePrediction( "NormSM_xs_tth"             , ""     , _normSM_xs_tth        ) );
+    AddQuantity( new SimplePrediction( "NormSM_xs_bh"              , ""     , _normSM_xs_bh         ) );
 
-    if ( _calculate_Gamma_hZZ      ) AddQuantity( new SimplePrediction( "normSM_Gamma_hZZ",      "", _normSM_Gamma_hZZ      ) );
-    if ( _calculate_Gamma_hWW      ) AddQuantity( new SimplePrediction( "normSM_Gamma_hWW",      "", _normSM_Gamma_hWW      ) );    
-    if ( _calculate_xs_qqh_2flavor ) AddQuantity( new SimplePrediction( "normSM_xs_qqh_2flavor", "", _normSM_xs_qqh_2flavor ) );
-    if ( _calculate_xs_qqh_5flavor ) AddQuantity( new SimplePrediction( "normSM_xs_qqh_5flavor", "", _normSM_xs_qqh_5flavor ) );
-    if ( _calculate_xs_Wh          ) AddQuantity( new SimplePrediction( "normSM_xs_Wh",          "", _normSM_xs_Wh          ) );
-    if ( _calculate_xs_Zh          ) AddQuantity( new SimplePrediction( "normSM_xs_Zh",          "", _normSM_xs_Zh          ) );
+    if ( _calculate_Gamma_hZZ      ) AddQuantity( new SimplePrediction( "NormSM_Gamma_h_Z_Z",      "", _normSM_Gamma_hZZ      ) );
+    if ( _calculate_Gamma_hWW      ) AddQuantity( new SimplePrediction( "NormSM_Gamma_h_W_W",      "", _normSM_Gamma_hWW      ) );    
+    if ( _calculate_xs_qqh_2flavor ) AddQuantity( new SimplePrediction( "NormSM_xs_qqh_2flavor", "", _normSM_xs_qqh_2flavor ) );
+    if ( _calculate_xs_qqh_5flavor ) AddQuantity( new SimplePrediction( "NormSM_xs_qqh_5flavor", "", _normSM_xs_qqh_5flavor ) );
+    if ( _calculate_xs_Wh          ) AddQuantity( new SimplePrediction( "NormSM_xs_Wh",          "", _normSM_xs_Wh          ) );
+    if ( _calculate_xs_Zh          ) AddQuantity( new SimplePrediction( "NormSM_xs_Zh",          "", _normSM_xs_Zh          ) );
 
 }
 
