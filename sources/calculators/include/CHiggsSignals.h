@@ -1,4 +1,4 @@
-/* $Id: HiggsSignalsHadXSModelCalculator.cpp 1567 2013-09-11 12:04:18Z sarrazin $ */
+/* $Id: HiggsSignalsHadXSCalculator.cpp 1567 2013-09-11 12:04:18Z sarrazin $ */
 
 /*******************************************************************************
 *                                                                              *

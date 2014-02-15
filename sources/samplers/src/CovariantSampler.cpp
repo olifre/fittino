@@ -27,7 +27,7 @@
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
-#include "ModelCalculatorException.h"
+//#include "CalculatorException.h"
 #include <cstdlib>
 #include <fstream>
 
@@ -301,7 +301,7 @@ void Fittino::CovariantSampler::UpdateModel() {
         }
 
     //}
-    //catch ( const ModelCalculatorException& modelCalculatorException ) {
+    //catch ( const CalculatorException& modelCalculatorException ) {
 
     //    std::cout << "\n" << modelCalculatorException.what() << "\n" << std::endl;
     //

@@ -32,7 +32,6 @@
 #include "ModelBase.h"
 #include "Observable.h"
 #include "ModelParameterBase.h"
-#include "ModelCalculatorException.h"
 #include "CalculatorBase.h"
 #include "Chi2ContributionBase.h"
 #include "SimpleDataStorage.h"

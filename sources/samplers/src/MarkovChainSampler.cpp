@@ -28,7 +28,7 @@
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
-#include "ModelCalculatorException.h"
+//#include "CalculatorException.h"
 
 Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
   : SamplerBase( model, ptree ), 
@@ -252,7 +252,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
     }
 
     //}
-    //catch ( const ModelCalculatorException& modelCalculatorException ) {
+    //catch ( const CalculatorException& modelCalculatorException ) {
 
     //    std::cout << "\n" << modelCalculatorException.what() << "\n" << std::endl;
     //

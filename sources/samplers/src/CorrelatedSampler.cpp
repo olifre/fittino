@@ -30,7 +30,6 @@
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
-#include "ModelCalculatorException.h"
 #include <cstdlib>
 #include <fstream>
 

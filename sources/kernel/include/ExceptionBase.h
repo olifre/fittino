@@ -47,7 +47,7 @@ namespace Fittino {
    *      option parameters. They are also thrown if the format of the input file cannot be\n
    *      detected or if parsing errors have occurred.
    *    <li> SLHAFileException
-   *    <li> ModelCalculatorException
+   *    <li> CalculatorException
    *    <li> OptimizerException
    *  </ul>
    */

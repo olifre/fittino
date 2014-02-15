@@ -30,7 +30,7 @@
  *  \todo Check if all branch names are unique (probably in AnalysisTool::InitializeBranches).
  *  \todo TreeSampler configuration: Set name of parameter to be used as looping parameter.
  *  \todo MeasuredErrors: Allow arbitrary number. Give names.
- *  \todo Remove SimpleDataStorage from ModelCalculatorBase.
+ *  \todo Remove SimpleDataStorage from CalculatorBase.
  *  \todo Update Observable - Prediction relation.
  *  \todo Remove again the Chi2Contribution.
  *  \todo Update the xml definition file.

@@ -29,7 +29,7 @@
 #include "Chi2ContributionBase.h"
 #include "Messenger.h"
 #include "CalculatorBase.h"
-#include "ModelCalculatorException.h"
+#include "CalculatorException.h"
 #include "ModelParameterBase.h"
 #include "Observable.h"
 #include "PhysicsModel.h"
@@ -94,7 +94,7 @@ double Fittino::PhysicsModel::Evaluate() {
         }
 
     }
-    catch(  ModelCalculatorException ) {
+    catch(  CalculatorException ) {
 
         return 100000;
 
