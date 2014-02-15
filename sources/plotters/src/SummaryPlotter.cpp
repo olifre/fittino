@@ -35,7 +35,6 @@
 
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
-#include "PredictionBase.h"
 #include "Quantity.h"
 #include "SummaryPlotter.h"
 

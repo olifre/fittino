@@ -27,37 +27,29 @@ Fittino::ModelParameterBase::ModelParameterBase( std::string name,
                                                  double      error,
                                                  double      lowerBound,
                                                  double      upperBound,
-                                                 double      plotLowerBound,
-                                                 double      plotUpperBound,
                                                  bool        fixed )
     : _error( error ),
-      _lowerBound( lowerBound ),
-      _upperBound( upperBound ),
       _fixed( fixed ),
       _updated( true ),
       ParameterBase( name,
                      plotName,
                      value,
-                     plotLowerBound,
-                     plotUpperBound ) {
+                     lowerBound,
+                     upperBound ) {
 
 }
 
 Fittino::ModelParameterBase::ModelParameterBase( const boost::property_tree::ptree& ptree )
     : _error( ptree.get<double>( "Error", 0.1 ) ),
-      _lowerBound( ptree.get<double>( "LowerBound", 0. ) ),
-      _upperBound( ptree.get<double>( "UpperBound", 1. ) ),
       _fixed( ptree.get<bool>( "Fixed", false ) ),
       _updated( true ),
       ParameterBase( ptree.get<std::string>( "Name" ),
                      ptree.get<std::string>( "PlotName", ptree.get<std::string>( "Name" ) ),
                      ptree.get<double>( "Value", 0 ),
-                     ptree.get<double>( "PlotLowerBound", _lowerBound ),
-                     ptree.get<double>( "PlotUpperBound", _upperBound ) ) {
-
+                     ptree.get<double>( "LowerBound", _lowerBound ),
+                     ptree.get<double>( "UpperBound", _upperBound ) ) {
 
 }
-
 
 Fittino::ModelParameterBase::~ModelParameterBase() {
 
@@ -78,18 +70,6 @@ bool Fittino::ModelParameterBase::IsUpdated() const {
 double Fittino::ModelParameterBase::GetError() const {
 
     return _error;
-
-}
-
-double Fittino::ModelParameterBase::GetLowerBound() const {
-
-    return _lowerBound;
-
-}
-
-double Fittino::ModelParameterBase::GetUpperBound() const {
-
-    return _upperBound;
 
 }
 

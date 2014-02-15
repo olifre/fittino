@@ -106,7 +106,7 @@ void Fittino::ScatterPlotter::Execute() {
 
         TString histogramName = parameterName;
         TString histogramTitle = histogramName;
-        TH2F histogram = TH2F( histogramName, histogramTitle, 10, _quantityVector.at( iQuantity )->GetPlotLowerBound(), _quantityVector.at( iQuantity )->GetPlotUpperBound(), 10, 0., 10. );
+        TH2F histogram = TH2F( histogramName, histogramTitle, 10, _quantityVector.at( iQuantity )->GetLowerBound(), _quantityVector.at( iQuantity )->GetUpperBound(), 10, 0., 10. );
 
         histogram.Draw( "AXIS" );
 
@@ -117,7 +117,7 @@ void Fittino::ScatterPlotter::Execute() {
 
         histogram.GetXaxis()->SetTitle( ( _quantityVector.at( iQuantity )->GetPlotName() ).c_str() );
         histogram.GetXaxis()->SetTitleOffset( 1.1 );
-        histogram.GetXaxis()->SetRangeUser( _quantityVector.at( iQuantity )->GetPlotLowerBound(), _quantityVector.at( iQuantity )->GetPlotUpperBound() );
+        histogram.GetXaxis()->SetRangeUser( _quantityVector.at( iQuantity )->GetLowerBound(), _quantityVector.at( iQuantity )->GetUpperBound() );
 
         histogram.GetYaxis()->SetRangeUser( 0., 10. );
         histogram.GetYaxis()->SetTitle( "#Delta#chi^{2}" );

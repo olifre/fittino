@@ -32,7 +32,6 @@
 #include "ContourPlotter.h"
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
-#include "PredictionBase.h"
 #include "Quantity.h"
 
 Fittino::ContourPlotter::ContourPlotter( ModelBase* model, const boost::property_tree::ptree& ptree )
@@ -122,12 +121,12 @@ void Fittino::ContourPlotter::Execute() {
 
             // x axis
 
-            Double_t lowerBound1 = _quantityVector.at( iQuantity1 )->GetPlotLowerBound();
-            Double_t upperBound1 = _quantityVector.at( iQuantity1 )->GetPlotUpperBound();
+            Double_t lowerBound1 = _quantityVector.at( iQuantity1 )->GetLowerBound();
+            Double_t upperBound1 = _quantityVector.at( iQuantity1 )->GetUpperBound();
 
             if ( _logX ) {
 
-                if ( _quantityVector.at( iQuantity1 )->GetPlotLowerBound() > 0. ) {
+                if ( _quantityVector.at( iQuantity1 )->GetLowerBound() > 0. ) {
 
                     lowerBound1 = TMath::Log10( lowerBound1 );
                     upperBound1 = TMath::Log10( upperBound1 );
@@ -146,7 +145,7 @@ void Fittino::ContourPlotter::Execute() {
 
                 if ( _logX ) {
 
-                    if ( _quantityVector.at( iQuantity1 )->GetPlotLowerBound() > 0. ) {
+                    if ( _quantityVector.at( iQuantity1 )->GetLowerBound() > 0. ) {
 
                         xbins[iBin] = TMath::Power( 10, xbins[iBin] );
 
@@ -158,12 +157,12 @@ void Fittino::ContourPlotter::Execute() {
 
             // y axis
 
-            Double_t lowerBound2 = _quantityVector.at( iQuantity2 )->GetPlotLowerBound();
-            Double_t upperBound2 = _quantityVector.at( iQuantity2 )->GetPlotUpperBound();
+            Double_t lowerBound2 = _quantityVector.at( iQuantity2 )->GetLowerBound();
+            Double_t upperBound2 = _quantityVector.at( iQuantity2 )->GetUpperBound();
 
             if ( _logY ) {
 
-                if ( _quantityVector.at( iQuantity2 )->GetPlotLowerBound() > 0. ) {
+                if ( _quantityVector.at( iQuantity2 )->GetLowerBound() > 0. ) {
 
                     lowerBound2 = TMath::Log10( lowerBound2 );
                     upperBound2 = TMath::Log10( upperBound2 );
@@ -182,7 +181,7 @@ void Fittino::ContourPlotter::Execute() {
 
                 if ( _logY ) {
 
-                    if ( _quantityVector.at( iQuantity2 )->GetPlotLowerBound() > 0. ) {
+                    if ( _quantityVector.at( iQuantity2 )->GetLowerBound() > 0. ) {
 
                         ybins[iBin] = TMath::Power( 10, ybins[iBin] );
 
@@ -379,14 +378,14 @@ void Fittino::ContourPlotter::Execute() {
 
             if ( _logX ) {
 
-                if ( _quantityVector.at( iQuantity1 )->GetPlotLowerBound() > 0. ) _canvas->SetLogx();
+                if ( _quantityVector.at( iQuantity1 )->GetLowerBound() > 0. ) _canvas->SetLogx();
                 else _canvas->SetLogx( 0 );
 
             }
 
             if ( _logY ) {
 
-                if ( _quantityVector.at( iQuantity2 )->GetPlotLowerBound() > 0. ) {
+                if ( _quantityVector.at( iQuantity2 )->GetLowerBound() > 0. ) {
 
                     std::cout << "set logscale" << std::endl;
                     _canvas->SetLogy();

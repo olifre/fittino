@@ -20,8 +20,6 @@
 #ifndef FITTINO_MODELPARAMETERBASE_H
 #define FITTINO_MODELPARAMETERBASE_H
 
-#include <boost/property_tree/ptree.hpp>
-
 #include "ParameterBase.h"
 
 /*!
@@ -39,70 +37,51 @@ namespace Fittino {
       /*!
        *  Takes as input the name and starting value of the parameter.
        */
-                   ModelParameterBase( std::string name,
-                                       std::string plotName,
-                                       double      value,
-                                       double      error,
-                                       double      lowerBound,
-                                       double      upperBound,
-                                       double      plotLowerBound,
-                                       double      plotUpperBound,
-                                       bool        fixed = false );
-
+      ModelParameterBase( std::string name,
+                          std::string plotName,
+                          double      value,
+                          double      error,
+                          double      lowerBound,
+                          double      upperBound,
+                          bool        fixed = false );
       /*!
        *  Standard constructor.
        */
-                   ModelParameterBase( const boost::property_tree::ptree& ptree );
+      ModelParameterBase( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
-                   ~ModelParameterBase();
-      bool         IsFixed() const;
+      ~ModelParameterBase();
+      bool   IsFixed() const;
       /*!
        *  Returns true when the parameter value has been set.
        */
-      bool         IsUpdated() const;
+      bool   IsUpdated() const;
       /*!
        *  Returns the error of the parameter.
        */
-      double       GetError() const;
-      /*!
-       *  Returns the lower bound of the parameter.
-       */
-      double       GetLowerBound() const;
-      /*!
-       *  Returns the upper bound of the parameter.
-       */
-      double       GetUpperBound() const;
+      double GetError() const;
       /*!
        *  Sets the return value of IsUpdated().  
        */
-      void         SetUpdated( bool updated );
+      void   SetUpdated( bool updated );
      /*!
        *  Sets the value of the parameter.
        */
-      void         SetValue( double value );
+      void   SetValue( double value );
 
     protected:
       /*!
        *  If true, the parameter value is not updated by the analysis tool. Per default it is set\n
        *  to false.
        */
-      bool         _fixed;
+      bool   _fixed;
       /*!
        *  Error of the parameter. Analysis tools use this value as the parameter-dependent\n
        *  "stepwidth".
        */
-      bool         _updated;
-      double       _error;
-      /*!
-       *  Lower bound of the parameter.
-       */
-      double       _lowerBound;
-      /*!
-       *  Upper bound of the parameter.
-       */
-      double       _upperBound;
+      bool   _updated;
+      double _error;
 
   };
 

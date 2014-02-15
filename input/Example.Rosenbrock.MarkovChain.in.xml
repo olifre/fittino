@@ -34,7 +34,7 @@
 
       <ModelParameter>
         <Name>X1</Name>
-        <!--<PlotName>x_1</PlotName>-->
+        <PlotName>x_1</PlotName>
         <Value>2.56</Value>
         <Error>0.1</Error>
         <LowerBound>-4.</LowerBound>
@@ -44,7 +44,7 @@
 
       <ModelParameter>
         <Name>X2</Name>
-        <!--<PlotName>x_2</PlotName>-->
+        <PlotName>x_2</PlotName>
         <Value>-1.34</Value>
         <Error>0.1</Error>
         <LowerBound>-4.</LowerBound>
@@ -54,7 +54,7 @@
 
       <ModelParameter>
         <Name>X3</Name>
-        <!--<PlotName>x_3</PlotName>-->
+        <PlotName>x_3</PlotName>
         <Value>-0.61</Value>
         <Error>0.1</Error>
         <LowerBound>-4.</LowerBound>

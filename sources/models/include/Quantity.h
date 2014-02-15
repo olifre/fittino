@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -40,21 +40,27 @@ namespace Fittino {
        *  Takes as input the name and value of the quantity as well as
        *  information for plotting.
        */
-                            Quantity( std::string name,
-                                      std::string plotName,
-                                      double      value,
-                                      double      plotLowerBound,
-                                      double      plotUpperBound );
+      Quantity( std::string name,
+                std::string plotName,
+                double      value,
+                double      lowerBound,
+                double      upperBound );
       /*!
        *  Standard constructor
        */
-                            Quantity( const boost::property_tree::ptree& ptree );
+      Quantity( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
-                            ~Quantity();
-      double                GetPlotLowerBound() const;
-      double                GetPlotUpperBound() const;
+      ~Quantity();
+      /*!
+       *  Returns the lower bound of the quantity.
+       */
+      double                GetLowerBound() const;
+      /*!
+       *  Returns the upper bound of the quantity.
+       */
+      double                GetUpperBound() const;
        /*!
        *  Returns the name of the quantity.
        */
@@ -79,8 +85,14 @@ namespace Fittino {
       virtual std::string   GetPlotName() const;
 
     protected:
-      double                _plotLowerBound;
-      double                _plotUpperBound;
+      /*!
+       *  Lower bound of the quantity.
+       */
+      double                _lowerBound;
+      /*!
+       *  Upper bound of the quantity.
+       */
+      double                _upperBound;
       /*!
        *  Value of the quantity.
        */

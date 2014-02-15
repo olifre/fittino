@@ -12,14 +12,12 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
 #include <iomanip>
-
-#include <boost/property_tree/ptree.hpp>
 
 #include "Messenger.h"
 #include "PhysicsParameter.h"
@@ -32,21 +30,17 @@ Fittino::PhysicsParameter::PhysicsParameter( std::string name,
                                              double      error,
                                              double      lowerBound,
                                              double      upperBound,
-                                             double      plotLowerBound,
-                                             double      plotUpperBound,
                                              bool        fixed )
 
-	: _unit( unit ),
-          _plotUnit( plotUnit ),
-          ModelParameterBase( name,
-                              plotName,
-                              value,
-                              error,
-                              lowerBound,
-                              upperBound,
-                              plotLowerBound,
-                              plotUpperBound,
-                              fixed ) {
+    : _unit( unit ),
+      _plotUnit( plotUnit ),
+      ModelParameterBase( name,
+                          plotName,
+                          value,
+                          error,
+                          lowerBound,
+                          upperBound,
+                          fixed ) {
 
 }
 

@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -26,14 +26,14 @@
 
 Fittino::Quantity::Quantity( std::string name,
                              std::string plotName,
-	                     double      value,
-                             double      plotLowerBound,
-                             double      plotUpperBound )
+                             double      value,
+                             double      lowerBound,
+                             double      upperBound )
         : _name( name ),
           _plotName( plotName ),
           _value( value ),
-          _plotLowerBound( plotLowerBound ),
-          _plotUpperBound( plotUpperBound ) {
+          _lowerBound( lowerBound ),
+          _upperBound( upperBound ) {
 
 }
 
@@ -41,8 +41,8 @@ Fittino::Quantity::Quantity( const boost::property_tree::ptree& ptree )
         : _name( ptree.get<std::string>( "Name" ) ), 
           _plotName( ptree.get<std::string>( "PlotName" ) ),
           _value( ptree.get<double>( "Value", 0. ) ),
-          _plotLowerBound( ptree.get<double>( "PlotLowerBound" ) ),
-          _plotUpperBound( ptree.get<double>( "PlotUpperBound" ) ) {
+          _lowerBound( ptree.get<double>( "LowerBound" ) ),
+          _upperBound( ptree.get<double>( "UpperBound" ) ) {
 
 }
 
@@ -50,15 +50,15 @@ Fittino::Quantity::~Quantity() {
 
 }
 
-double Fittino::Quantity::GetPlotLowerBound() const {
+double Fittino::Quantity::GetLowerBound() const {
 
-    return _plotLowerBound;
+    return _lowerBound;
 
 }
 
-double Fittino::Quantity::GetPlotUpperBound() const {
+double Fittino::Quantity::GetUpperBound() const {
 
-    return _plotUpperBound;
+    return _upperBound;
 
 }
 

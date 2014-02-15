@@ -164,8 +164,8 @@ void Fittino::TreeCalculator::CreateDefaultPredictions( ) {
             ptree.put("PlotName", leaf->GetName() );
             ptree.put("Unit", "" );
             ptree.put("PlotUnit", "" );
-            ptree.put("PlotUpperBound", 10000. );
-            ptree.put("PlotLowerBound", -10000. );
+            ptree.put("UpperBound", 10000. );
+            ptree.put("LowerBound", -10000. );
             ptree.put("PredictionType", "Simple" );
             AddQuantity( factory.CreatePrediction( ptree, this ) ); 
         }

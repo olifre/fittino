@@ -13,15 +13,13 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
 #ifndef FITTINO_PARAMETERBASE_H
 #define FITTINO_PARAMETERBASE_H
-
-#include <boost/property_tree/ptree.hpp>
 
 #include "Quantity.h"
 
@@ -43,8 +41,8 @@ namespace Fittino {
       ParameterBase( std::string name,
                      std::string plotName,
                      double      value,
-                     double      plotLowerBound,
-                     double      plotUpperBound );
+                     double      lowerBound,
+                     double      upperBound );
       /*!
        *  Standard constructor.
        */

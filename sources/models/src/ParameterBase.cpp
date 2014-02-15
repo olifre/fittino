@@ -13,8 +13,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -24,20 +24,21 @@
 
 Fittino::ParameterBase::ParameterBase( std::string name,
                                        std::string plotName,
-	                               double      value,
-                                       double      plotLowerBound,
-                                       double      plotUpperBound )
-        : Quantity( name,
-                    plotName,
-                    value,
-                    plotLowerBound,
-                    plotUpperBound ) {
+                                       double      value,
+                                       double      lowerBound,
+                                       double      upperBound )
+    : Quantity( name,
+                plotName,
+                value,
+                lowerBound,
+                upperBound ) {
+
     //CheckConsistency();
 
 }
 
 Fittino::ParameterBase::ParameterBase( const boost::property_tree::ptree& ptree ) 
-                      : Quantity( ptree ) {
+    : Quantity( ptree ) {
 
 }
 
