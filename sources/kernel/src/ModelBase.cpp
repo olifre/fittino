@@ -25,7 +25,6 @@
 #include "ConfigurationException.h"
 #include "ModelBase.h"
 #include "ModelParameterBase.h"
-#include "PhysicsParameter.h"
 #include "PredictionBase.h"
 
 Fittino::ModelBase::ModelBase( const boost::property_tree::ptree& ptree )

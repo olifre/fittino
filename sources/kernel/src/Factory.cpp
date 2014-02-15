@@ -48,7 +48,6 @@
 #include "SimulatedAnnealingOptimizer.h"
 #include "SLHAChi2Contribution.h"
 #include "SLHAeaSLHADataStorage.h"
-#include "SLHAPrediction.h"
 #include "SPhenoSLHACalculator.h"
 #include "SummaryPlotter.h"
 #include "TreeCalculator.h"
@@ -278,23 +277,6 @@ Fittino::PredictionBase* const Fittino::Factory::CreatePrediction( const boost::
 
 }
 
-Fittino::PredictionBase* const Fittino::Factory::CreatePrediction( const boost::property_tree::ptree& ptree, Fittino::SLHACalculatorBase* calculator ) {
-
-    std::string type = ptree.get<std::string>( "PredictionType", "NONE" );
-
-    if ( type == "SLHA" ) {
-
-        return new SLHAPrediction( ptree, calculator );
-
-    }
-    else {
-
-        throw ConfigurationException( "Prediction type " + type + " not known, or incompatible with SLHACalculatorBase." );
-
-    }
-
-}
-
 Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const {
 
     std::string type = ptree.get<std::string>( "PredictionType" );
@@ -304,11 +286,6 @@ Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::prop
     if ( type == "Simple" ) {
 
         return new Observable( ptree, new SimplePrediction( ptree, calculator ) );
-
-    }
-    else if ( type == "SLHA" ) {
-
-        return new Observable( ptree, new SLHAPrediction( ptree, static_cast<SLHACalculatorBase*>( calculator ) ) );
 
     }
     else {
