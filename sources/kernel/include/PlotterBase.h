@@ -70,6 +70,9 @@ namespace Fittino {
       virtual void                 PrintSteeringParameters() const;
       virtual void                 UpdateModel();
 
+    private:
+      void                         Terminate();
+
   };
 
 }

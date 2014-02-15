@@ -90,3 +90,9 @@ void Fittino::OptimizerBase::PrintResult() const {
     messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
 
 }
+
+void Fittino::OptimizerBase::Terminate() {
+
+    FillTree();
+
+}

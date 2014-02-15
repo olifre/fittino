@@ -71,26 +71,6 @@ int Fittino::ModelBase::GetNumberOfParameters() const {
 
 }
 
-int Fittino::ModelBase::GetNumberOfPredictions() const {
-
-    return _collectionOfPredictions.GetNumberOfElements();
-
-}
-
-void Fittino::ModelBase::AddParameter( ModelParameterBase* parameter ) {
-
-    _collectionOfParameters.AddElement( parameter->GetName(), parameter );
-    _collectionOfQuantities.AddElement( parameter->GetName(), parameter );
-
-}
-
-void Fittino::ModelBase::AddPrediction( PredictionBase* prediction ) {
-
-    _collectionOfPredictions.AddElement( prediction );
-    _collectionOfQuantities.AddElement( prediction );
-
-}
-
 void Fittino::ModelBase::UpdatePropertyTree() {
 
     BOOST_FOREACH( boost::property_tree::ptree::value_type & node, _ptree ) {
@@ -138,6 +118,26 @@ const Fittino::Collection<Fittino::PredictionBase*>&  Fittino::ModelBase::GetCol
 const Fittino::Collection<const Fittino::Quantity*>&  Fittino::ModelBase::GetCollectionOfQuantities() const {
 
     return _collectionOfQuantities;
+
+}
+
+void Fittino::ModelBase::AddPrediction( PredictionBase* prediction ) {
+
+    _collectionOfPredictions.AddElement( prediction );
+    _collectionOfQuantities.AddElement( prediction );
+
+}
+
+int Fittino::ModelBase::GetNumberOfPredictions() const {
+
+    return _collectionOfPredictions.GetNumberOfElements();
+
+}
+
+void Fittino::ModelBase::AddParameter( ModelParameterBase* parameter ) {
+
+    _collectionOfParameters.AddElement( parameter->GetName(), parameter );
+    _collectionOfQuantities.AddElement( parameter->GetName(), parameter );
 
 }
 

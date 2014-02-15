@@ -25,7 +25,6 @@
 #include "ModelParameterBase.h"
 #include "PlotterBase.h"
 #include "PredictionBase.h"
-#include "Quantity.h"
 
 Fittino::PlotterBase::PlotterBase( ModelBase* model, const boost::property_tree::ptree& ptree )
     : _dataFileName( ptree.get<std::string>( "DataFileName", "Fittino.out.root" ) ),
@@ -109,5 +108,9 @@ void Fittino::PlotterBase::PrintSteeringParameters() const {
 }
 
 void Fittino::PlotterBase::UpdateModel() {
+
+}
+
+void Fittino::PlotterBase::Terminate() {
 
 }

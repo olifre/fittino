@@ -22,8 +22,6 @@
 #ifndef FITTINO_MODELBASE_H
 #define FITTINO_MODELBASE_H
 
-#include <boost/property_tree/ptree.hpp>
-
 #include "TRandom3.h"
 
 #include "Chi2ContributionBase.h"
@@ -65,18 +63,6 @@ namespace Fittino {
        *  Returns the number of parameters of the model.
        */
       int                                        GetNumberOfParameters() const;
-      /*!
-       *  Returns the number of predictions of the model.
-       */
-      int                                        GetNumberOfPredictions() const;
-      /*!
-       *  Adds a parameter to the model.
-       */
-      void                                       AddParameter( ModelParameterBase* parameter );
-      /*!
-       *  Adds a prediction to the model.
-       */
-      void                                       AddPrediction( PredictionBase* prediction );
       /*!
        * Update the property tree.
        */
@@ -124,6 +110,12 @@ namespace Fittino {
 
     protected:
       /*!
+       *  Adds a prediction to the model.
+       */
+      void                                       AddPrediction( PredictionBase* prediction );
+
+    protected:
+      /*!
        *  This function is mainly used to provide a dedicated command to print the model\n
        *  configuration to the screen and is usually called at the end of the model constructor\n
        *  after the actual "initialization" of the model is already finished. Therefore, it should\n
@@ -146,6 +138,14 @@ namespace Fittino {
       Collection<const Quantity*>                _collectionOfQuantities;
 
     private:
+      /*!
+       *  Returns the number of predictions of the model.
+       */
+      int                                        GetNumberOfPredictions() const;
+      /*!
+       *  Adds a parameter to the model.
+       */
+      void                                       AddParameter( ModelParameterBase* parameter );
       /*!
        *  Setup all parameters using a ptree.
        */

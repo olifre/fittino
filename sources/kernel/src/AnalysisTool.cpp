@@ -24,7 +24,6 @@
 #include "TTree.h"
 
 #include "AnalysisTool.h"
-#include "Chi2ContributionBase.h"
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "ParameterBase.h"
@@ -172,6 +171,8 @@ void Fittino::AnalysisTool::PrintConfiguration() const {
 }
 
 void Fittino::AnalysisTool::TerminateAnalysisTool() {
+
+    this->Terminate();
 
     Messenger& messenger = Messenger::GetInstance();
 

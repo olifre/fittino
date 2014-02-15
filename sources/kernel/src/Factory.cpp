@@ -20,11 +20,9 @@
 *******************************************************************************/
 
 #include "AstroCalculator.h"
-#include "ConfigurationException.h"
 #include "ContourPlotter.h"
 #include "CorrelatedSampler.h"
 #include "CovariantSampler.h"
-#include "DataStorageBase.h"
 #include "Factory.h"
 #include "FeynHiggsCalculator.h"
 #include "FeynHiggsSLHACalculator.h"
@@ -37,7 +35,6 @@
 #include "LHCModelCalculator.h"
 #include "MarkovChainSampler.h"
 #include "MinuitOptimizer.h"
-#include "ModelBase.h"
 #include "NewCorrelatedSampler.h"
 #include "Observable.h"
 #include "ParticleSwarmOptimizer.h"
@@ -45,6 +42,7 @@
 #include "RegressionCalculator.h"
 #include "RosenbrockModel.h"
 #include "ScatterPlotter.h"
+#include "SimpleOptimizer.h"
 #include "SimplePrediction.h"
 #include "SimpleSampler.h"
 #include "SimulatedAnnealingOptimizer.h"
@@ -95,6 +93,11 @@ Fittino::AnalysisTool* const Fittino::Factory::CreateAnalysisTool( const std::st
     else if ( type == "ScatterPlotter" ) {
 
         return new ScatterPlotter( model, ptree );
+    }
+    else if ( type == "SimpleOptimizer" ) {
+
+        return new SimpleOptimizer( model, ptree );
+
     }
     else if ( type == "SimpleSampler" ) {
 

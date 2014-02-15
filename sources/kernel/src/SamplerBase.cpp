@@ -29,6 +29,10 @@ Fittino::SamplerBase::~SamplerBase() {
 
 }
 
+void Fittino::SamplerBase::Terminate() {
+
+}
+
 void Fittino::SamplerBase::PrintResult() const {
 
     Messenger& messenger = Messenger::GetInstance();

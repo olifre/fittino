@@ -170,6 +170,7 @@ namespace Fittino {
 
     private:
       virtual void                       Execute() = 0;
+      virtual void                       Terminate() = 0;
 
       /*! \endcond UML */
 
