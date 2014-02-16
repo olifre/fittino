@@ -18,8 +18,6 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <boost/property_tree/ptree.hpp>
-
 #include "ParameterBase.h"
 
 Fittino::ParameterBase::ParameterBase( std::string name,

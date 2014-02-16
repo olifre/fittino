@@ -48,7 +48,6 @@ Fittino::FeynHiggsCalculator::FeynHiggsCalculator( const PhysicsModel* model, co
         std::string quantity = node.second.get<std::string>( "Quantity" );
 
         const double& value = _model->GetCollectionOfQuantities().At( quantity )->GetValue();
-        // std::string   unit  = _model->GetCollectionOfQuantities().At( quantity )->GetUnit(); Quantity does not yet have a unit
 
         _input.AddElement( new SimplePrediction( name, "" , value ) ) ;
 

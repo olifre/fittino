@@ -35,16 +35,6 @@ namespace Fittino {
 
     public:
       /*!
-       *  Takes as input the name and starting value of the parameter.
-       */
-      ModelParameterBase( std::string name,
-                          std::string plotName,
-                          double      value,
-                          double      error,
-                          double      lowerBound,
-                          double      upperBound,
-                          bool        fixed = false );
-      /*!
        *  Standard constructor.
        */
       ModelParameterBase( const boost::property_tree::ptree& ptree );
@@ -61,6 +51,7 @@ namespace Fittino {
        *  Returns the error of the parameter.
        */
       double GetError() const;
+      void   PrintStatus() const;
       /*!
        *  Sets the return value of IsUpdated().  
        */

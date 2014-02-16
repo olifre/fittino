@@ -45,6 +45,13 @@ namespace Fittino {
                 double      value,
                 double      lowerBound,
                 double      upperBound );
+      Quantity( std::string name,
+                std::string plotName,
+                double      value,
+                std::string unit,
+                std::string plotUnit,
+                double      lowerBound,
+                double      upperBound );
       /*!
        *  Standard constructor
        */
@@ -86,6 +93,17 @@ namespace Fittino {
 
     protected:
       /*!
+       *  Value of the quantity.
+       */
+      double                _value;
+      /*!
+       *  Name of the quantity.
+       */
+      std::string           _name;
+      std::string           _unit;
+
+    private:
+      /*!
        *  Lower bound of the quantity.
        */
       double                _lowerBound;
@@ -94,17 +112,10 @@ namespace Fittino {
        */
       double                _upperBound;
       /*!
-       *  Value of the quantity.
-       */
-      double                _value;
-      /*!
-       *  Name of the quantity.
-       */
-      std::string           _name;
-      /*!
        *  Name of the axis in the plot.
        */
       std::string           _plotName;
+      std::string           _plotUnit;
 
   };
 

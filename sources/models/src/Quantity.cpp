@@ -29,20 +29,39 @@ Fittino::Quantity::Quantity( std::string name,
                              double      value,
                              double      lowerBound,
                              double      upperBound )
-        : _name( name ),
-          _plotName( plotName ),
-          _value( value ),
-          _lowerBound( lowerBound ),
-          _upperBound( upperBound ) {
+    : _name( name ),
+      _plotName( plotName ),
+      _value( value ),
+      _lowerBound( lowerBound ),
+      _upperBound( upperBound ) {
 
 }
 
-Fittino::Quantity::Quantity( const boost::property_tree::ptree& ptree ) 
-        : _name( ptree.get<std::string>( "Name" ) ), 
-          _plotName( ptree.get<std::string>( "PlotName" ) ),
-          _value( ptree.get<double>( "Value", 0. ) ),
-          _lowerBound( ptree.get<double>( "LowerBound" ) ),
-          _upperBound( ptree.get<double>( "UpperBound" ) ) {
+Fittino::Quantity::Quantity( std::string name,
+                             std::string plotName,
+                             double      value,
+                             std::string unit,
+                             std::string plotUnit,
+                             double      lowerBound,
+                             double      upperBound )
+    : _name( name ),
+      _plotName( plotName ),
+      _value( value ),
+      _unit( unit ),
+      _plotUnit( plotUnit ),
+      _lowerBound( lowerBound ),
+      _upperBound( upperBound ) {
+
+}
+
+Fittino::Quantity::Quantity( const boost::property_tree::ptree& ptree )
+    : _name      ( ptree.get<std::string>( "Name"         ) ),
+      _plotName  ( ptree.get<std::string>( "PlotName", "" ) ),
+      _value     ( ptree.get<double>     ( "Value", 0.    ) ),
+      _unit      ( ptree.get<std::string>( "Unit", ""     ) ),
+      _plotUnit  ( ptree.get<std::string>( "PlotUnit", "" ) ),
+      _lowerBound( ptree.get<double>     ( "LowerBound"   ) ),
+      _upperBound( ptree.get<double>     ( "UpperBound"   ) ) {
 
 }
 
@@ -93,13 +112,26 @@ void Fittino::Quantity::PrintStatus() const {
               << std::setw( 9 )
               << std::setprecision( 2 )
               << std::scientific
-              << _value
-              << Messenger::Endl;
+              << _value;
+
+    if ( _unit != "" ) {
+
+        messenger << std::right
+                  << std::setw( 6 )
+                  << _unit;
+
+    }
+
+    messenger << Messenger::Endl;
 
 }
 
 std::string Fittino::Quantity::GetPlotName() const {
 
-    return _plotName;
+    std::string plotName = _plotName;
+
+    if ( _plotUnit != "" ) plotName += " [" + _plotUnit + "]";
+
+    return plotName;
 
 }

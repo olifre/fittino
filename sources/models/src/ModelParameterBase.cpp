@@ -17,37 +17,16 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <boost/property_tree/ptree.hpp>
+#include <iomanip>
 
 #include "ModelParameterBase.h"
-
-Fittino::ModelParameterBase::ModelParameterBase( std::string name,
-                                                 std::string plotName,
-                                                 double      value,
-                                                 double      error,
-                                                 double      lowerBound,
-                                                 double      upperBound,
-                                                 bool        fixed )
-    : _error( error ),
-      _fixed( fixed ),
-      _updated( true ),
-      ParameterBase( name,
-                     plotName,
-                     value,
-                     lowerBound,
-                     upperBound ) {
-
-}
+#include "Messenger.h"
 
 Fittino::ModelParameterBase::ModelParameterBase( const boost::property_tree::ptree& ptree )
-    : _error( ptree.get<double>( "Error", 0.1 ) ),
-      _fixed( ptree.get<bool>( "Fixed", false ) ),
+    : _error  ( ptree.get<double>( "Error", 0.1   ) ),
+      _fixed  ( ptree.get<bool>  ( "Fixed", false ) ),
       _updated( true ),
-      ParameterBase( ptree.get<std::string>( "Name" ),
-                     ptree.get<std::string>( "PlotName", ptree.get<std::string>( "Name" ) ),
-                     ptree.get<double>( "Value", 0 ),
-                     ptree.get<double>( "LowerBound", _lowerBound ),
-                     ptree.get<double>( "UpperBound", _upperBound ) ) {
+      ParameterBase( ptree ) {
 
 }
 
@@ -87,5 +66,49 @@ void Fittino::ModelParameterBase::SetValue( double value ) {
         _updated = true;
 
     }
+
+}
+
+void Fittino::ModelParameterBase::PrintStatus() const {
+
+    Messenger& messenger = Messenger::GetInstance();
+
+    messenger << Messenger::INFO
+              << "    "
+              << std::left
+              << std::setw( 43 )
+              << _name
+              << std::right
+              << std::setw( 9 )
+              << std::setprecision( 2 )
+              << std::scientific
+              << _value;
+
+    if ( _unit != "" && !_fixed ) {
+
+        messenger << std::right
+                  << std::setw( 6 )
+                  << _unit;
+
+    }
+    else if ( _unit != "" && _fixed ) {
+
+        messenger << std::right
+                  << std::setw( 6 )
+                  << _unit
+                  << std::right
+                  << std::setw( 10 )
+                  << "(fixed)";
+
+    }
+    else if ( _unit == "" && _fixed ) {
+
+        messenger << std::right
+                  << std::setw( 16 )
+                  << "(fixed)";
+
+    }
+
+    messenger << Messenger::Endl;
 
 }

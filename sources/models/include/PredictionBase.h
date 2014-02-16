@@ -20,10 +20,6 @@
 #ifndef FITTINO_PREDICTIONBASE_H
 #define FITTINO_PREDICTIONBASE_H
 
-#include <string>
-
-#include <boost/property_tree/ptree.hpp>
-
 #include "Quantity.h"
 
 /*!
@@ -45,8 +41,8 @@ namespace Fittino {
                                    std::string plotName,
                                    std::string unit,
                                    std::string plotUnit,
-                                   double      plotLowerBound,
-                                   double      plotUpperBound );
+                                   double      lowerBound,
+                                   double      upperBound );
       /*!
        *  Standard constructor
        */
@@ -55,16 +51,9 @@ namespace Fittino {
        *  Standard destructor.
        */
                    ~PredictionBase();
-      std::string  GetUnit() const;
-      std::string  GetPlotUnit() const;
 
     public:
       virtual void Update() = 0;
-      virtual void PrintStatus() const;
-
-    protected:
-      std::string  _unit;
-      std::string  _plotUnit;
 
   };
 

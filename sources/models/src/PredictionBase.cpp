@@ -17,75 +17,29 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <iomanip>
-
-#include <boost/property_tree/ptree.hpp>
-
-#include "Messenger.h"
 #include "PredictionBase.h"
 
 Fittino::PredictionBase::PredictionBase( std::string name,
                                          std::string plotName,
                                          std::string unit,
                                          std::string plotUnit,
-                                         double      plotLowerBound,
-                                         double      plotUpperBound )
-         : _unit( unit ),
-           _plotUnit( plotUnit ),
-           Quantity( name,
-                     plotName,
-                     0.,
-                     plotLowerBound,
-                     plotUpperBound ) {
+                                         double      lowerBound,
+                                         double      upperBound )
+    : Quantity( name,
+                plotName,
+                0.,
+                unit,
+                plotUnit,
+                lowerBound,
+                upperBound ) {
 
 }
 
 Fittino::PredictionBase::PredictionBase( const boost::property_tree::ptree& ptree ) 
-        : _unit( ptree.get<std::string>( "Unit" ) ),
-          _plotUnit( ptree.get<std::string>( "PlotUnit" ) ),
-          Quantity( ptree ) {
+    : Quantity( ptree ) {
 
 }
 
 Fittino::PredictionBase::~PredictionBase() {
-
-}
-
-std::string Fittino::PredictionBase::GetUnit() const {
-
-    return _unit;
-
-}
-
-std::string Fittino::PredictionBase::GetPlotUnit() const {
-
-    return _plotUnit;
-
-}
-
-void Fittino::PredictionBase::PrintStatus() const {
-
-    Messenger& messenger = Messenger::GetInstance();
-
-    messenger << Messenger::INFO
-              << "    "
-              << std::left
-              << std::setw( 43 )
-              << _name
-              << std::right
-              << std::setw( 9 )
-              << std::setprecision( 2 )
-              << std::scientific
-              << GetValue();
-
-    if ( _unit != "" ) {
-
-        messenger << std::right
-                  << std::setw( 6 )
-                  << _unit;
-
-    }
-
-    messenger << Messenger::Endl;
 
 }
