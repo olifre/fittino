@@ -92,12 +92,12 @@ void Fittino::Observable::PrintStatus() const {
 
 }
 
-double Fittino::Observable::GetMeasuredError() const {
+const double& Fittino::Observable::GetMeasuredError() const {
 
     return _measuredError;
 }
 
-double Fittino::Observable::GetMeasuredValue() const {
+const double& Fittino::Observable::GetMeasuredValue() const {
 
     return _measuredValue;
 }
