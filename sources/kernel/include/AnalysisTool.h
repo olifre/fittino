@@ -98,6 +98,10 @@ namespace Fittino {
        */
       TTree*                             _tree;
       /*!
+       *  The tree for the metadata
+       */
+      TTree*                             _metaDataTree;
+      /*!
        *  Pointer to the model to be analysed. Via this pointer an association between the model\n
        *  and any class deriving from AnalysisTool (especially the concrete optimizer or sampler\n
        *  classes) is established.
@@ -121,6 +125,10 @@ namespace Fittino {
        *  tool.
        */
       void                               FillTree();
+      /*!
+       *  Saves some of the meta data for a run: measured values of observables and the uncertainties
+       */
+      void                               FillMetaDataTree();
       /*!
        *  Prints the tool's status to screen.
        */

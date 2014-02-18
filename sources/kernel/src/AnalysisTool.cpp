@@ -27,6 +27,7 @@
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "ParameterBase.h"
+#include "Observable.h"
 
 Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tree::ptree& ptree )
     : _chi2( ptree.get<double>( "Chi2", 1.e99 ) ),
@@ -35,7 +36,8 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tre
       _model( model ),
       _outputFile( ( ptree.get<std::string>( "OutputFile", "Fittino.out.root" ) ).c_str(), "RECREATE" ),
       _randomGenerator( ptree.get<int>( "RandomSeed", 0 ) ),
-      _tree( new TTree( ( ptree.get<std::string>( "OutputTree", "Tree" ) ).c_str(), ( ptree.get<std::string>( "OutputTree", "Tree" ) ).c_str() ) ) {
+      _tree( new TTree( ( ptree.get<std::string>( "OutputTree", "Tree" ) ).c_str(), ( ptree.get<std::string>( "OutputTree", "Tree" ) ).c_str() ) ), 
+      _metaDataTree( new TTree( ( ptree.get<std::string>( "MetaDataTree", "MetaDataTree" ) ).c_str(), ( ptree.get<std::string>( "MetaDataTree", "MetaDataTree" ) ).c_str() ) ) {
 
     _statusParameterVector.push_back( new ParameterBase( "Chi2",             "#chi^2",           _chi2,             0., 100.  ) );
     _statusParameterVector.push_back( new ParameterBase( "IterationCounter", "IterationCounter", _iterationCounter, 0., 1.e10 ) );
@@ -72,6 +74,12 @@ int Fittino::AnalysisTool::GetNumberOfStatusParameters() const {
 void Fittino::AnalysisTool::FillTree() {
 
     _tree->Fill();
+
+}
+
+void Fittino::AnalysisTool::FillMetaDataTree() {
+
+    _metaDataTree->Fill();
 
 }
 
@@ -136,6 +144,9 @@ void Fittino::AnalysisTool::InitializeAnalysisTool() {
 
 void Fittino::AnalysisTool::InitializeBranches() {
 
+    /*
+     * first the output tree
+     */
     for ( unsigned int i = 0; i < _model->GetCollectionOfQuantities().GetNumberOfElements(); ++i ) {
 
         _tree->Branch( _model->GetCollectionOfQuantities().At( i )->GetName().c_str(),
@@ -152,6 +163,17 @@ void Fittino::AnalysisTool::InitializeBranches() {
 
         _tree->Branch( GetStatusParameterVector()->at( i )->GetName().c_str(),
                        const_cast<double*>( &GetStatusParameterVector()->at( i )->GetValue() ) );
+    }
+    /*
+     * now the meta data tree
+     */
+    for ( unsigned int i = 0; i < _model->GetObservableVector()->size(); ++i ) {
+         std::string measuredValueBranchName = "measuredValue_" + _model->GetObservableVector()->at(i)->GetPrediction()->GetName();
+         std::string uncertaintyBranchName = "uncertainty_" + _model->GetObservableVector()->at(i)->GetPrediction()->GetName();
+         _metaDataTree->Branch( measuredValueBranchName.c_str(),
+                                const_cast<double*>( &(_model->GetObservableVector()->at(i)->GetMeasuredValue() ) ) );
+         _metaDataTree->Branch( uncertaintyBranchName.c_str(),
+                                const_cast<double*>( &(_model->GetObservableVector()->at(i)->GetMeasuredError() ) ) );
 
     }
 
@@ -192,5 +214,6 @@ void Fittino::AnalysisTool::TerminateAnalysisTool() {
 void Fittino::AnalysisTool::WriteResultToFile() const {
 
     _tree->Write();
+    _metaDataTree->Write();
 
 }
