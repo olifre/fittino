@@ -77,7 +77,6 @@ Fittino::CovariantSampler::CovariantSampler( Fittino::ModelBase* model, const bo
 
 
 
-
 }
 
 Fittino::CovariantSampler::~CovariantSampler() {
@@ -159,6 +158,7 @@ void Fittino::CovariantSampler::UpdateParameters() {
 void Fittino::CovariantSampler::Execute() {
 
     //Execute the Covariant parameter sampler.
+    this -> FillMetaDataTree();
 
     while ( _iterationCounter < _numberOfIterations ) {
 

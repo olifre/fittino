@@ -80,7 +80,6 @@ Fittino::CorrelatedSampler::CorrelatedSampler( Fittino::ModelBase* model, const 
 
 
 
-
 }
 
 
@@ -235,6 +234,7 @@ void Fittino::CorrelatedSampler::UpdateCovarianceMatrix() {
 void Fittino::CorrelatedSampler::Execute() {
 
     //Execute the Correlated parameter sampler
+    this -> FillMetaDataTree();
 
     while ( _iterationCounter < _numberOfIterations ) {
 

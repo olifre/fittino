@@ -126,6 +126,9 @@ void Fittino::TreeSampler::Execute() {
       _model->SmearObservations( &_randomGenerator );
     
     }
+    
+    this->FillMetaDataTree();
+
     while ( _iterationCounter < _numberOfIterations ) {
 
         _iterationCounter++;

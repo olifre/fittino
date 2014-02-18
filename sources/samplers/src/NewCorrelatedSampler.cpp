@@ -97,7 +97,6 @@ Fittino::NewCorrelatedSampler::NewCorrelatedSampler( Fittino::ModelBase* model, 
 
 
 
-
 }
 
 Fittino::NewCorrelatedSampler::~NewCorrelatedSampler() {
@@ -109,6 +108,7 @@ Fittino::NewCorrelatedSampler::~NewCorrelatedSampler() {
 
 void Fittino::NewCorrelatedSampler::Execute() {
 
+    this->FillMetaDataTree();
 
     while ( _iterationCounter < _numberOfIterations ) {
 

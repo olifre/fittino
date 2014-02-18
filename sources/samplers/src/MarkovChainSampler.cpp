@@ -51,7 +51,6 @@ Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, cons
 
     _statusParameterVector.push_back( new ParameterBase( "PointAccepted", "PointAccepted", 0. , 0., 1. ) );
   
-  
 
 }
 
@@ -61,7 +60,8 @@ Fittino::MarkovChainSampler::~MarkovChainSampler() {
 
 void Fittino::MarkovChainSampler::Execute() {
 
-
+    this -> FillMetaDataTree();  
+    
     _branchPointAccepted = _tree->GetBranch( "PointAccepted" );
     _branchPointAccepted->SetStatus( 0 );
 
