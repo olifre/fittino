@@ -31,12 +31,14 @@ Fittino::Observable::Observable( PredictionBase* prediction,
                                  double          measuredValue,
                                  double          measuredError,
                                  double          bestFitPrediction,
-                                 bool            noFit )
+                                 bool            noFit,
+                                 bool            noSmear )
         : _deviation( 0. ),
           _measuredError( measuredError ),
           _measuredValue( measuredValue ),
           _bestFitPrediction( bestFitPrediction ),
           _noFit( noFit ),
+          _noSmear( noSmear ),
           _prediction( prediction ) {
 }
 
@@ -45,6 +47,7 @@ Fittino::Observable::Observable( const boost::property_tree::ptree& ptree, Predi
                      _measuredValue( ptree.get<double>( "MeasuredValue" ) ),
                      _bestFitPrediction( ptree.get<double>( "BestFitPrediction" ) ),
                      _noFit( ptree.get<bool>( "NoFit", false ) ),
+                     _noSmear( ptree.get<bool>( "NoSmear", false ) ),
                      _prediction( prediction ) {
 
     double error1 = ptree.get<double>( "MeasuredError1" );
@@ -149,5 +152,11 @@ void Fittino::Observable::SmearMeasuredValue( TRandom3* randomGenerator ) {
 bool Fittino::Observable::IsNoFitObservable() {
 
     return _noFit;
+
+}
+
+bool Fittino::Observable::IsNoSmearObservable() {
+
+    return _noSmear;
 
 }

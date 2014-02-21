@@ -156,7 +156,10 @@ extern "C" {
   void setup_output_level_( const int* output_level );
   void setup_pdf_( const int* pdf );
   void setup_rate_uncertainties_( const double dCS[], const double dBR[] );
-
+  
+  void get_number_of_observables_( int* ntotal, int* npeakmu, int* npeakmh, int* nmpred, int* nanalyses );
+  void get_id_of_peakobservable_( int* i, int* obsID );
+  void assign_toyvalues_to_peak_( int* obsID, double* mu_obs, double* mh_obs );
 
 
 }

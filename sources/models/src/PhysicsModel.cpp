@@ -319,9 +319,18 @@ void Fittino::PhysicsModel::SmearObservations( TRandom3* randomGenerator ) {
 
     tObservableVector = eigenVectors * smearedVector;
     for( int i = 0; i < _observableVector.size(); ++i ) {
+        
+        // if observable was defined as noSmearObservable, set the measured value to the best fit prediction
+        if( _observableVector[i]->IsNoSmearObservable() ) {
+            
+            _observableVector[i]->SetMeasuredValue( _observableVector[i]->GetBestFitPrediction() );
 
-        _observableVector[i]->SetMeasuredValue( tObservableVector[i] );
-
+        }
+        else {
+        
+            _observableVector[i]->SetMeasuredValue( tObservableVector[i] );
+        
+        }
         std::cout << "using smeared value for observable " << _observableVector[i]->GetPrediction()->GetName() << " \t: " << _observableVector[i]->GetMeasuredValue() << " \t: " << ( _observableVector[i]->GetMeasuredValue() - _observableVector[i]->GetBestFitPrediction() ) / _observableVector[i]->GetMeasuredError() << std::endl;
     }
 
@@ -335,6 +344,7 @@ void Fittino::PhysicsModel::SmearObservations( TRandom3* randomGenerator ) {
 
     // now re-setup the observables for all the calculators.
     for ( unsigned int i = 0; i < _collectionOfCalculators.GetNumberOfElements(); i++ ) {
+        
         _collectionOfCalculators.At( i )->SetupMeasuredValues();
 
     }

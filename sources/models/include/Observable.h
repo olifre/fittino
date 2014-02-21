@@ -46,7 +46,8 @@ namespace Fittino {
                                   double          measuredValue,
                                   double          measuredError,
                                   double          bestFitPrediction = 0,
-                                  bool            noFit = false );
+                                  bool            noFit = false,
+                                  bool            noSmear = false );
       /*!
        *  Standard constructor
        */
@@ -63,6 +64,7 @@ namespace Fittino {
       void            SetBestFitPrediction( double );
       void            SetMeasuredValue( double );
       bool            IsNoFitObservable();
+      bool            IsNoSmearObservable();
 
     public:
       virtual void    UpdatePrediction();
@@ -74,6 +76,7 @@ namespace Fittino {
       double          _measuredValue;
       double          _bestFitPrediction;
       bool            _noFit;
+      bool            _noSmear;
       PredictionBase* _prediction;
 
     protected:
