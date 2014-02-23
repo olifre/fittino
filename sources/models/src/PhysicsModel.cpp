@@ -32,7 +32,7 @@
 #include "CalculatorException.h"
 #include "Observable.h"
 #include "PhysicsModel.h"
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 #include "PredictionBase.h"
 #include "SimplePrediction.h"
 #include "Collection.h"

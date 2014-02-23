@@ -4,9 +4,9 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        ModelParameterBase.h                                             *
+* File        ModelParameter.h                                                 *
 *                                                                              *
-* Description Base class for model parameters                                  *
+* Description Class for model parameters                                       *
 *                                                                              *
 * Authors     Sebastian Heer  <s6seheer@uni-bonn.de>                           *
 *                                                                              *
@@ -17,8 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_MODELPARAMETERBASE_H
-#define FITTINO_MODELPARAMETERBASE_H
+#ifndef FITTINO_MODELPARAMETER_H
+#define FITTINO_MODELPARAMETER_H
 
 #include "Quantity.h"
 
@@ -29,19 +29,19 @@ namespace Fittino {
 
   /*!
    *  \ingroup kernel
-   *  \brief Base class for model parameters.
+   *  \brief Class for model parameters.
    */
-  class ModelParameterBase : public Quantity {
+  class ModelParameter : public Quantity {
 
     public:
       /*!
        *  Standard constructor.
        */
-      ModelParameterBase( const boost::property_tree::ptree& ptree );
+      ModelParameter( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
-      ~ModelParameterBase();
+      ~ModelParameter();
       bool   IsFixed() const;
       /*!
        *  Returns true when the parameter value has been set.
@@ -78,4 +78,4 @@ namespace Fittino {
 
 }
 
-#endif // FITTINO_MODELPARAMETERBASE_H
+#endif // FITTINO_MODELPARAMETER_H

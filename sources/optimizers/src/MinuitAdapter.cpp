@@ -18,7 +18,7 @@
 *******************************************************************************/
 
 #include "MinuitAdapter.h"
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 
 Fittino::MinuitAdapter::MinuitAdapter( ModelBase* model )
     : _model( model ) {

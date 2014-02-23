@@ -18,7 +18,7 @@
 *******************************************************************************/
 
 #include "ModelBase.h"
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 #include "SimpleSampler.h"
 
 Fittino::SimpleSampler::SimpleSampler( ModelBase* model, const boost::property_tree::ptree& ptree )

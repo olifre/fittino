@@ -31,7 +31,7 @@
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "Observable.h"
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 #include "CalculatorBase.h"
 #include "Chi2ContributionBase.h"
 #include "SimpleDataStorage.h"

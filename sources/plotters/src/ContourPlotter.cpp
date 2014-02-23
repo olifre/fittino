@@ -31,7 +31,7 @@
 
 #include "ContourPlotter.h"
 #include "ModelBase.h"
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 #include "Quantity.h"
 
 Fittino::ContourPlotter::ContourPlotter( ModelBase* model, const boost::property_tree::ptree& ptree )

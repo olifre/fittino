@@ -24,7 +24,7 @@
 #include "Messenger.h"
 #include "MinuitOptimizer.h"
 #include "MinuitAdapter.h"
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 
 Fittino::MinuitOptimizer::MinuitOptimizer( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
     : OptimizerBase( model, ptree ) {

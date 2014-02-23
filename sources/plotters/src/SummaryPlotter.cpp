@@ -34,7 +34,7 @@
 #include "TTree.h"
 
 #include "ModelBase.h"
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 #include "Quantity.h"
 #include "SummaryPlotter.h"
 

@@ -31,7 +31,7 @@
 #include "CSLHA.h"
 
 #include "FeynHiggsCalculatorBase.h"
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 #include "PhysicsModel.h"
 #include "SimplePrediction.h"
 

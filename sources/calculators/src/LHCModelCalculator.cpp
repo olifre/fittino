@@ -34,7 +34,7 @@
 
 #include "Factory.h"
 #include "PhysicsModel.h"
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 #include "LHCModelCalculator.h"
 #include "SimpleDataStorage.h"
 #include "ConfigurationException.h"

@@ -23,7 +23,7 @@
 #include "Messenger.h"
 #include "SimpleOptimizer.h"
 #include "ModelBase.h"
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 
 Fittino::SimpleOptimizer::SimpleOptimizer( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
     : OptimizerBase( model, ptree ),

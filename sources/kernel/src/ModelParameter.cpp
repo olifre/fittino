@@ -4,9 +4,9 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        ModelParameterBase.cpp                                           *
+* File        ModelParameter.cpp                                               *
 *                                                                              *
-* Description Base class for model parameters                                  *
+* Description Class for model parameters                                       *
 *                                                                              *
 * Authors     Sebastian Heer  <s6seheer@uni-bonn.de>                           *
 *                                                                              *
@@ -19,10 +19,10 @@
 
 #include <iomanip>
 
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 #include "Messenger.h"
 
-Fittino::ModelParameterBase::ModelParameterBase( const boost::property_tree::ptree& ptree )
+Fittino::ModelParameter::ModelParameter( const boost::property_tree::ptree& ptree )
     : _error  ( ptree.get<double>( "Error", 0.1   ) ),
       _fixed  ( ptree.get<bool>  ( "Fixed", false ) ),
       _updated( true ),
@@ -30,29 +30,29 @@ Fittino::ModelParameterBase::ModelParameterBase( const boost::property_tree::ptr
 
 }
 
-Fittino::ModelParameterBase::~ModelParameterBase() {
+Fittino::ModelParameter::~ModelParameter() {
 
 }
 
-bool Fittino::ModelParameterBase::IsFixed() const {
+bool Fittino::ModelParameter::IsFixed() const {
 
     return _fixed;
 
 }
 
-bool Fittino::ModelParameterBase::IsUpdated() const {
+bool Fittino::ModelParameter::IsUpdated() const {
 
     return _updated;
 
 }
 
-double Fittino::ModelParameterBase::GetError() const {
+double Fittino::ModelParameter::GetError() const {
 
     return _error;
 
 }
 
-void Fittino::ModelParameterBase::PrintStatus() const {
+void Fittino::ModelParameter::PrintStatus() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
@@ -96,13 +96,13 @@ void Fittino::ModelParameterBase::PrintStatus() const {
 
 }
 
-void Fittino::ModelParameterBase::SetUpdated( bool updated ) {
+void Fittino::ModelParameter::SetUpdated( bool updated ) {
 
     _updated = updated;
 
 }
 
-void Fittino::ModelParameterBase::SetValue( double value ) {
+void Fittino::ModelParameter::SetValue( double value ) {
 
     if ( !_fixed ) {
 

@@ -34,7 +34,7 @@
 #include "SimpleDataStorage.h"
 #include "ConfigurationException.h"
 #include "PhysicsModel.h"
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 #include "Factory.h"
 #include "SimplePrediction.h"
 #include "Observable.h"

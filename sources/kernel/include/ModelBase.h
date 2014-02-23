@@ -33,7 +33,7 @@
  */
 namespace Fittino {
 
-  class ModelParameterBase;
+  class ModelParameter;
   class PredictionBase;
   class CalculatorBase;
   class Observable;
@@ -79,7 +79,7 @@ namespace Fittino {
       /*!
        *  Returns the parameters as a collection.
        */
-      const Collection<ModelParameterBase*>&     GetCollectionOfParameters() const;
+      const Collection<ModelParameter*>&         GetCollectionOfParameters() const;
       const Collection<PredictionBase*>&         GetCollectionOfPredictions() const;
       const Collection<const Quantity*>&         GetCollectionOfQuantities() const;
 
@@ -134,7 +134,7 @@ namespace Fittino {
       /*!
        *  Stores the parameters.
        */
-      Collection<ModelParameterBase*>            _collectionOfParameters;
+      Collection<ModelParameter*>                _collectionOfParameters;
       Collection<const Quantity*>                _collectionOfQuantities;
 
     private:
@@ -145,7 +145,7 @@ namespace Fittino {
       /*!
        *  Adds a parameter to the model.
        */
-      void                                       AddParameter( ModelParameterBase* parameter );
+      void                                       AddParameter( ModelParameter* parameter );
       /*!
        *  Setup all parameters using a ptree.
        */

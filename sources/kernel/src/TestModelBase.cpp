@@ -18,7 +18,7 @@
 *******************************************************************************/
 
 #include "Messenger.h"
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 #include "TestModelBase.h"
 
 Fittino::TestModelBase::TestModelBase( const boost::property_tree::ptree& ptree )

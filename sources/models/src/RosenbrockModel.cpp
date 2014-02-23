@@ -20,7 +20,7 @@
 
 #include <cmath>
 
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 #include "RosenbrockModel.h"
 
 Fittino::RosenbrockModel::RosenbrockModel( const boost::property_tree::ptree& ptree )

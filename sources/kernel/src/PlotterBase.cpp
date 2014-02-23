@@ -22,7 +22,7 @@
 #include "TTree.h"
 
 #include "ModelBase.h"
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 #include "PlotterBase.h"
 #include "PredictionBase.h"
 

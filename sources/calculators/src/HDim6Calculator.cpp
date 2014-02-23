@@ -34,7 +34,7 @@
 #include "HDim6/VBF.h"
 
 #include "HDim6Calculator.h"
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 #include "PhysicsModel.h"
 #include "SimpleDataStorage.h"
 #include "SimplePrediction.h"

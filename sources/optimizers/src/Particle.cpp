@@ -21,7 +21,7 @@
 ******************************************************************************/
 
 #include "ModelBase.h"
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 #include "Particle.h"
 
 double Fittino::Particle::_globalBestChi2 = 1.e99;

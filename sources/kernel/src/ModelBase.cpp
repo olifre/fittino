@@ -24,7 +24,7 @@
 
 #include "ConfigurationException.h"
 #include "ModelBase.h"
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 #include "PredictionBase.h"
 
 Fittino::ModelBase::ModelBase( const boost::property_tree::ptree& ptree )
@@ -102,7 +102,7 @@ const Fittino::Collection<Fittino::Chi2ContributionBase*>& Fittino::ModelBase::G
 
 }
 
-const Fittino::Collection<Fittino::ModelParameterBase*>& Fittino::ModelBase::GetCollectionOfParameters() const {
+const Fittino::Collection<Fittino::ModelParameter*>& Fittino::ModelBase::GetCollectionOfParameters() const {
 
     return _collectionOfParameters;
 
@@ -133,7 +133,7 @@ int Fittino::ModelBase::GetNumberOfPredictions() const {
 
 }
 
-void Fittino::ModelBase::AddParameter( ModelParameterBase* parameter ) {
+void Fittino::ModelBase::AddParameter( ModelParameter* parameter ) {
 
     _collectionOfParameters.AddElement( parameter->GetName(), parameter );
     _collectionOfQuantities.AddElement( parameter->GetName(), parameter );
@@ -146,7 +146,7 @@ void Fittino::ModelBase::InitializeParameters( const boost::property_tree::ptree
 
         if ( node.first == "ModelParameter" ) {
 
-            AddParameter( new ModelParameterBase( node.second ) );
+            AddParameter( new ModelParameter( node.second ) );
 
         }
 

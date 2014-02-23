@@ -26,7 +26,7 @@
 #include "CovariantSampler.h"
 #include "Messenger.h"
 #include "ModelBase.h"
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 //#include "CalculatorException.h"
 #include <cstdlib>
 #include <fstream>

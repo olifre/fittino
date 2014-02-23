@@ -27,7 +27,7 @@
 #include "MarkovChainSampler.h"
 #include "Messenger.h"
 #include "ModelBase.h"
-#include "ModelParameterBase.h"
+#include "ModelParameter.h"
 //#include "CalculatorException.h"
 
 Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
