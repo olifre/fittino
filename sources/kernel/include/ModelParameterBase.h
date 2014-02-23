@@ -28,7 +28,7 @@
 namespace Fittino {
 
   /*!
-   *  \ingroup models
+   *  \ingroup kernel
    *  \brief Base class for model parameters.
    */
   class ModelParameterBase : public Quantity {
