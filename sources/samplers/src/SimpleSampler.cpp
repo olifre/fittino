@@ -40,7 +40,7 @@ Fittino::SimpleSampler::~SimpleSampler() {
 
 void Fittino::SimpleSampler::Execute() {
 
-    this -> FillMetaDataTree();
+    this->FillMetaDataTree();
 
     Scan( _model->GetNumberOfParameters() - 1 );
 

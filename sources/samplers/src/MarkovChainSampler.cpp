@@ -49,7 +49,7 @@ Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, cons
 
     }
 
-    _statusParameterVector.push_back( new ParameterBase( "PointAccepted", "PointAccepted", 0. , 0., 1. ) );
+    _statusParameterVector.push_back( new Quantity( "PointAccepted", "PointAccepted", 0. , 0., 1. ) );
   
 
 }

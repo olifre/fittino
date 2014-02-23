@@ -42,7 +42,7 @@ Fittino::OptimizerBase::~OptimizerBase() {
 
 void Fittino::OptimizerBase::Execute() {
 
-    this -> FillMetaDataTree();
+    this->FillMetaDataTree();
 
     while (  _chi2 > _abortCriterium && _iterationCounter < _numberOfIterations ) {
 

@@ -81,21 +81,25 @@ double Fittino::Quantity::GetUpperBound() const {
 
 }
 
-const double& Fittino::Quantity::GetValue() const {
-
-    return _value;
-
-}
-
-void Fittino::Quantity::SetValue( double value ) {
-
-    _value = value;
-
-}
-
 std::string Fittino::Quantity::GetName() const {
 
     return _name;
+
+}
+
+std::string Fittino::Quantity::GetPlotName() const {
+
+    std::string plotName = _plotName;
+
+    if ( _plotUnit != "" ) plotName += " [" + _plotUnit + "]";
+
+    return plotName;
+
+}
+
+const double& Fittino::Quantity::GetValue() const {
+
+    return _value;
 
 }
 
@@ -126,12 +130,8 @@ void Fittino::Quantity::PrintStatus() const {
 
 }
 
-std::string Fittino::Quantity::GetPlotName() const {
+void Fittino::Quantity::SetValue( double value ) {
 
-    std::string plotName = _plotName;
-
-    if ( _plotUnit != "" ) plotName += " [" + _plotUnit + "]";
-
-    return plotName;
+    _value = value;
 
 }

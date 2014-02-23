@@ -44,50 +44,50 @@ namespace Fittino {
       /*!
        * Constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound and value.
        */
-                            SimplePrediction( std::string name, std::string unit, const double& value );
+      SimplePrediction( std::string name, std::string unit, const double& value );
 
       /*!
        * Constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound and value.
        */
-                            SimplePrediction( std::string name,
-                                              std::string plotName,
-                                              std::string unit,
-                                              std::string plotUnit,
-                                              double plotLowerBound,
-                                              double plotUpperBound,
-                                              const double& value );
+      SimplePrediction( std::string name,
+                        std::string plotName,
+                        std::string unit,
+                        std::string plotUnit,
+                        double plotLowerBound,
+                        double plotUpperBound,
+                        const double& value );
 
       /*!
        *  Alternative constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound and a calculator.
        */
-                            SimplePrediction( std::string name,
-                                              std::string plotName,
-                                              std::string unit,
-                                              std::string plotUnit,
-                                              double plotLowerBound,
-                                              double plotUpperBound,
-                                              const CalculatorBase* calculator );
+      SimplePrediction( std::string name,
+                        std::string plotName,
+                        std::string unit,
+                        std::string plotUnit,
+                        double plotLowerBound,
+                        double plotUpperBound,
+                        const CalculatorBase* calculator );
 
       /*!
        *  Standard constructor.
        */
-                            SimplePrediction( const boost::property_tree::ptree& ptree, const double& value );
+      SimplePrediction( const boost::property_tree::ptree& ptree, const double& value );
       /*!
        *  Alternative constructor.
        */
-                            SimplePrediction( const boost::property_tree::ptree& ptree, const CalculatorBase* calculator );
+      SimplePrediction( const boost::property_tree::ptree& ptree, const CalculatorBase* calculator );
       /*!
        *  Standard destructor.
        */
-                            ~SimplePrediction();
+      ~SimplePrediction();
 
     private:
-      const double&         _referenceValue;       
+      const double&         _referenceValue;
 
     public:
       virtual void          Update();
 
-    public:  
+    public:
       virtual const double& GetValue() const;
 
   };

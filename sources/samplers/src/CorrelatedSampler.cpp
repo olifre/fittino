@@ -54,8 +54,8 @@ Fittino::CorrelatedSampler::CorrelatedSampler( Fittino::ModelBase* model, const 
     _name = "Correlated parameter sampler";
     _numberOfAcceptedPoints = 0;
 
-    _statusParameterVector.push_back( new ParameterBase( "PointAccepted", "PointAccepted", 0. , 0., 1.) );
-    _statusParameterVector.push_back( new ParameterBase( "StepWidth", "StepWidth", 0. , 0., 1.) );
+    _statusParameterVector.push_back( new Quantity( "PointAccepted", "PointAccepted", 0. , 0., 1.) );
+    _statusParameterVector.push_back( new Quantity( "StepWidth", "StepWidth", 0. , 0., 1.) );
 
 
 

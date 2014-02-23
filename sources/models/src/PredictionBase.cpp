@@ -35,7 +35,7 @@ Fittino::PredictionBase::PredictionBase( std::string name,
 
 }
 
-Fittino::PredictionBase::PredictionBase( const boost::property_tree::ptree& ptree ) 
+Fittino::PredictionBase::PredictionBase( const boost::property_tree::ptree& ptree )
     : Quantity( ptree ) {
 
 }

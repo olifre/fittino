@@ -161,7 +161,6 @@ extern "C" {
   void get_id_of_peakobservable_( int* i, int* obsID );
   void assign_toyvalues_to_peak_( int* obsID, double* mu_obs, double* mh_obs );
 
-
 }
 
 #endif // FITTINO_CHIGGSSIGNALS_H

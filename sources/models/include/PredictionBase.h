@@ -35,22 +35,22 @@ namespace Fittino {
 
     public:
       /*!
-       *  Constructor taking name, plotName, unit, plotUnit, plotLowerBound and plotUpperBound as an input 
+       *  Constructor taking name, plotName, unit, plotUnit, plotLowerBound and plotUpperBound as an input
        */
-                   PredictionBase( std::string name,
-                                   std::string plotName,
-                                   std::string unit,
-                                   std::string plotUnit,
-                                   double      lowerBound,
-                                   double      upperBound );
+      PredictionBase( std::string name,
+                      std::string plotName,
+                      std::string unit,
+                      std::string plotUnit,
+                      double      lowerBound,
+                      double      upperBound );
       /*!
        *  Standard constructor
        */
-                   PredictionBase( const boost::property_tree::ptree& ptree );
+      PredictionBase( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
-                   ~PredictionBase();
+      ~PredictionBase();
 
     public:
       virtual void Update() = 0;

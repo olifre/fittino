@@ -52,8 +52,8 @@ Fittino::CovariantSampler::CovariantSampler( Fittino::ModelBase* model, const bo
     _name = "Covariant parameter sampler";
     _numberOfAcceptedPoints = 0;
 
-    _statusParameterVector.push_back( new ParameterBase( "PointAccepted", "PointAccepted", 0. , 0., 1.) );
-    _statusParameterVector.push_back( new ParameterBase( "StepWidth", "StepWidth", 0. , 0., 1.) );
+    _statusParameterVector.push_back( new Quantity( "PointAccepted", "PointAccepted", 0. , 0., 1.) );
+    _statusParameterVector.push_back( new Quantity( "StepWidth", "StepWidth", 0. , 0., 1.) );
 
 
     for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {

@@ -67,12 +67,12 @@ Fittino::NewCorrelatedSampler::NewCorrelatedSampler( Fittino::ModelBase* model, 
     _name = "Correlated parameter sampler";
     _numberOfAcceptedPoints = 0;
     _poppedFirst = false;
-    _statusParameterVector.push_back( new ParameterBase( "PointAccepted", "PointAccepted", 0. , 0., 1.) );
+    _statusParameterVector.push_back( new Quantity( "PointAccepted", "PointAccepted", 0. , 0., 1.) );
 
     for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
         std::ostringstream name;
         name << "StepX" << k+1;
-        _statusParameterVector.push_back( new ParameterBase(name.str(), name.str(), 0., 0., 1.) );
+        _statusParameterVector.push_back( new Quantity(name.str(), name.str(), 0., 0., 1.) );
     }
 
 

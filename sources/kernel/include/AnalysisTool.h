@@ -38,7 +38,7 @@ class TTree;
 namespace Fittino {
 
   class ModelBase;
-  class ParameterBase;
+  class Quantity;
 
   /*!
    *  \ingroup kernel
@@ -66,99 +66,99 @@ namespace Fittino {
        *  Template method . It subdivides the tool's exectution into three
        *  It is usually called directly after the creation of a concrete analysis tool.
        */
-      void                               PerformAnalysis();
+      void                          PerformAnalysis();
       /*!
        *  Function to retrieve the updated property tree from this tool.
        */
-      boost::property_tree::ptree        GetPropertyTree();
+      boost::property_tree::ptree   GetPropertyTree();
 
     protected:
       /*!
        *  The chi2 of the model.
        */
-      double                             _chi2;
+      double                        _chi2;
       /*!
        *  Counts the number of calls to UpdateModel().
        */
-      unsigned int                       _iterationCounter;
+      unsigned int                  _iterationCounter;
       /*!
        *  Name of the analysis tool.
        */
-      std::string                        _name;
+      std::string                   _name;
       /*!
        *  A copy of the input property tree, to be used for storing information for output-xml files (e.g. interface files for concatenating Markov Chains.
        */
-      boost::property_tree::ptree        _ptree;
+      boost::property_tree::ptree   _ptree;
       /*!
        *  Random number generator.
        */
-      TRandom3                           _randomGenerator;
-      /*!
-       *  The output tree.
-       */
-      TTree*                             _tree;
+      TRandom3                      _randomGenerator;
       /*!
        *  The tree for the metadata
        */
-      TTree*                             _metaDataTree;
+      TTree*                        _metaDataTree;
+      /*!
+       *  The output tree.
+       */
+      TTree*                        _tree;
       /*!
        *  Pointer to the model to be analysed. Via this pointer an association between the model\n
        *  and any class deriving from AnalysisTool (especially the concrete optimizer or sampler\n
        *  classes) is established.
        */
-      ModelBase*                         _model;
+      ModelBase*                    _model;
       /*!
        *  Stores the status parameters.
        *  \todo Short-term: Replace vector with Collection.
        */
-      std::vector<ParameterBase*>        _statusParameterVector;
+      std::vector<Quantity*>        _statusParameterVector;
 
     protected:
       /*!
        *  Returns the number of status parameters.
        */
-      int                                GetNumberOfStatusParameters() const;
+      int                           GetNumberOfStatusParameters() const;
+      /*!
+       *  Saves some of the meta data for a run: measured values of observables and the uncertainties
+       */
+      void                          FillMetaDataTree();
       /*!
        *  Saves the tool's current status (steering parameters, model parameters and observable\n
        *  predictions at a certain iteration step) which is eventually written to an output file.\n
        *  At which point of the analysis this is done has to be specified by any concrete analysis\n
        *  tool.
        */
-      void                               FillTree();
-      /*!
-       *  Saves some of the meta data for a run: measured values of observables and the uncertainties
-       */
-      void                               FillMetaDataTree();
+      void                          FillTree();
       /*!
        *  Prints the tool's status to screen.
        */
-      void                               PrintStatus() const;
+      void                          PrintStatus() const;
       /*!
        *  Function to update values in the output property tree. Hm, maybe this has to become virtual?
        */
-      void                               UpdatePropertyTree();
+      void                          UpdatePropertyTree();
       /*!
        *  Returns the list of status parameters.
        *  \todo Short-term: Eventually replace with GetCollectionOfStatusParameters().
        */
-      const std::vector<ParameterBase*>* GetStatusParameterVector() const;
+      const std::vector<Quantity*>* GetStatusParameterVector() const;
 
     protected:
       /*!
        *  Prints the result of the execution of a particuar analysis tool. It is declared virtual\n
        *  because the result output is different for optimizers and samplers.
        */
-      virtual void                       PrintResult() const = 0;
+      virtual void                  PrintResult() const = 0;
       /*!
        *  Prints the steering parameters of a particuar analysis tool.
        *  \todo Short-term: Write a function that does always the correct formatting.
        */
-      virtual void                       PrintSteeringParameters() const = 0;
+      virtual void                  PrintSteeringParameters() const = 0;
       /*!
        *  Causes the tool to propose a new model. How this is done has to be specified by any\n
        *  concrete analysis tool.
        */
-      virtual void                       UpdateModel() = 0;
+      virtual void                  UpdateModel() = 0;
 
       /*! \cond UML */
     private:
@@ -166,19 +166,19 @@ namespace Fittino {
        *  A ROOT file which stores the tool's output. The default name of the file is\n
        *  "Fittino.out.root".
        */
-      TFile                              _outputFile;
+      TFile                         _outputFile;
 
     private:
-      void                               ExecuteAnalysisTool();
-      void                               InitializeAnalysisTool();
-      void                               InitializeBranches();
-      void                               PrintConfiguration() const;
-      void                               TerminateAnalysisTool();
-      void                               WriteResultToFile() const;
+      void                          ExecuteAnalysisTool();
+      void                          InitializeAnalysisTool();
+      void                          InitializeBranches();
+      void                          PrintConfiguration() const;
+      void                          TerminateAnalysisTool();
+      void                          WriteResultToFile() const;
 
     private:
-      virtual void                       Execute() = 0;
-      virtual void                       Terminate() = 0;
+      virtual void                  Execute() = 0;
+      virtual void                  Terminate() = 0;
 
       /*! \endcond UML */
 

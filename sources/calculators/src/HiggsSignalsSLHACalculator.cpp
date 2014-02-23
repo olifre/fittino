@@ -663,10 +663,9 @@ void Fittino::HiggsSignalsSLHACalculator::SetupMeasuredValues() {
     // get number of observable from HiggsSignals and loop over it
     int ntotal, npeakmu, npeakmh, nmpred, nanalyses;
     get_number_of_observables_( &ntotal, &npeakmu, &npeakmh, &nmpred, &nanalyses );
-    
-    
-    for( int i = 1; i <= ntotal; ++i ) {
-        
+
+    for ( int i = 1; i <= ntotal; ++i ) {
+
         double measuredValue_mh = -1.e9;
         double measuredValue_mu = -1.e9;
         std::ostringstream ss_index;
@@ -674,38 +673,38 @@ void Fittino::HiggsSignalsSLHACalculator::SetupMeasuredValues() {
         std::string s_index = ss_index.str();
         std::string fittinoName_mh = "HiggsSignalsObservable_" + s_index + "_mh";
         std::string fittinoName_mu = "HiggsSignalsObservable_" + s_index + "_mu";
-        
+
         // get measured values from the model
-        for( int j = 0; j < _model->GetObservableVector()->size(); ++j ) {
-            
-            if( _model->GetObservableVector()->at(j)->GetPrediction()->GetName() == fittinoName_mh ) {
-            
+        for ( int j = 0; j < _model->GetObservableVector()->size(); ++j ) {
+
+            if ( _model->GetObservableVector()->at(j)->GetPrediction()->GetName() == fittinoName_mh ) {
+
                 measuredValue_mh = _model->GetObservableVector()->at(j)->GetMeasuredValue();
-            
+
             }
-            
-            if( _model->GetObservableVector()->at(j)->GetPrediction()->GetName() == fittinoName_mu ) {
-            
+
+            if ( _model->GetObservableVector()->at(j)->GetPrediction()->GetName() == fittinoName_mu ) {
+
                 measuredValue_mu = _model->GetObservableVector()->at(j)->GetMeasuredValue();
-            
+
             }
-        
+
         }
 
         // test if all observable were acutally defined
-        if( measuredValue_mh < -1.e-8 || measuredValue_mu < -1.e-8 ) {
-            
+        if ( measuredValue_mh < -1.e-8 || measuredValue_mu < -1.e-8 ) {
+
             throw ConfigurationException( "Incomplete set of HiggsSignals Observables: Missing at least one (mu, mh) for HiggsSignalsObservable_ " + s_index );
-        
+
         }
-        
+
         // get observable ID from HiggsSignals
         int obsID = 0;
         get_id_of_peakobservable_( &i, &obsID );
 
         // assign the new values
         assign_toyvalues_to_peak_( &obsID, &measuredValue_mu, &measuredValue_mh );
-    
+
     }
 
 }

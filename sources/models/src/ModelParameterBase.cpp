@@ -26,7 +26,7 @@ Fittino::ModelParameterBase::ModelParameterBase( const boost::property_tree::ptr
     : _error  ( ptree.get<double>( "Error", 0.1   ) ),
       _fixed  ( ptree.get<bool>  ( "Fixed", false ) ),
       _updated( true ),
-      ParameterBase( ptree ) {
+      Quantity( ptree ) {
 
 }
 
@@ -49,23 +49,6 @@ bool Fittino::ModelParameterBase::IsUpdated() const {
 double Fittino::ModelParameterBase::GetError() const {
 
     return _error;
-
-}
-
-void Fittino::ModelParameterBase::SetUpdated( bool updated ) {
-
-    _updated = updated;
-
-}
-
-void Fittino::ModelParameterBase::SetValue( double value ) {
-
-    if ( !_fixed ) {
-
-        _value = value;
-        _updated = true;
-
-    }
 
 }
 
@@ -110,5 +93,22 @@ void Fittino::ModelParameterBase::PrintStatus() const {
     }
 
     messenger << Messenger::Endl;
+
+}
+
+void Fittino::ModelParameterBase::SetUpdated( bool updated ) {
+
+    _updated = updated;
+
+}
+
+void Fittino::ModelParameterBase::SetValue( double value ) {
+
+    if ( !_fixed ) {
+
+        _value = value;
+        _updated = true;
+
+    }
 
 }

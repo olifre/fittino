@@ -20,7 +20,7 @@
 #ifndef FITTINO_MODELPARAMETERBASE_H
 #define FITTINO_MODELPARAMETERBASE_H
 
-#include "ParameterBase.h"
+#include "Quantity.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -31,7 +31,7 @@ namespace Fittino {
    *  \ingroup models
    *  \brief Base class for model parameters.
    */
-  class ModelParameterBase : public ParameterBase {
+  class ModelParameterBase : public Quantity {
 
     public:
       /*!
@@ -53,12 +53,12 @@ namespace Fittino {
       double GetError() const;
       void   PrintStatus() const;
       /*!
-       *  Sets the return value of IsUpdated().  
+       *  Sets the return value of IsUpdated().
        */
       void   SetUpdated( bool updated );
-     /*!
-       *  Sets the value of the parameter.
-       */
+      /*!
+        *  Sets the value of the parameter.
+        */
       void   SetValue( double value );
 
     protected:

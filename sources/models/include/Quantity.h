@@ -68,10 +68,14 @@ namespace Fittino {
        *  Returns the upper bound of the quantity.
        */
       double                GetUpperBound() const;
-       /*!
-       *  Returns the name of the quantity.
-       */
+      /*!
+      *  Returns the name of the quantity.
+      */
       std::string           GetName() const;
+      /*!
+       *  Returns the name of the axis title.
+       */
+      std::string           GetPlotName() const;
 
     public:
       /*!
@@ -86,10 +90,6 @@ namespace Fittino {
        *  Sets the value of the quantity.
        */
       virtual void          SetValue( double value );
-      /*!
-       *  Returns the name of the axis title.
-       */
-      virtual std::string   GetPlotName() const;
 
     protected:
       /*!
