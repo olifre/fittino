@@ -21,6 +21,7 @@
 #include "ExecutorException.h"
 #include "Messenger.h"
 #include "TimeoutExecutorException.h"
+#include <errno.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -44,7 +45,7 @@ Fittino::Executor::Executor( std::string path, std::string arg0 )
   :_path( path ){
 
   _args.push_back( arg0 );
-  _creationTimeout = nullptr;
+  _creationTimeout = NULL;
   _completionTimeout = 0;
 
 }
@@ -104,9 +105,9 @@ void Fittino::Executor::Child() {
 
 	}
 
-	argv[_args.size()] = nullptr; 
+	argv[_args.size()] = NULL;
 	
-	execve( _path.c_str(), &argv[0], nullptr );
+	execve( _path.c_str(), &argv[0], NULL );
 	perror("execve");
 
     }
@@ -274,7 +275,7 @@ void Fittino::Executor::Parent(){
     FD_ZERO( &rfds );
     FD_SET( _pipefds[0], &rfds );
 
-    switch( pselect( _pipefds[0]+1, &rfds, nullptr, nullptr, _creationTimeout, nullptr ) ){
+    switch( pselect( _pipefds[0]+1, &rfds, NULL, NULL, _creationTimeout, NULL ) ){
 
         case -1:
 
