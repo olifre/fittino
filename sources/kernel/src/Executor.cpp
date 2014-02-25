@@ -28,11 +28,8 @@
 #include <sys/wait.h>
 
 #include <iostream>
-#include <sstream>
-#include <vector>
 
 #include "Executor.h"
-#include "ExecutorException.h"
 #include "Messenger.h"
 #include "TimeoutExecutorException.h"
 
@@ -50,6 +47,40 @@ Fittino::Executor::Executor( std::string path, std::string arg0 )
 Fittino::Executor::~Executor() {
 
     delete _creationTimeout;
+
+}
+
+int Fittino::Executor::Execute() {
+
+    if ( pipe( _pipefds ) ) {
+
+        perror( "pipe" );
+        throw ExecutorException( "Failed to create pipe." );
+
+    }
+
+    _pid = fork();
+
+    switch( _pid ) {
+
+        case -1:
+
+            perror( "fork" );
+            throw ExecutorException( "Failed to fork child process." );
+
+        case 0:
+
+            Child();
+            break;
+
+        default:
+
+            Parent();
+            break;
+
+    }
+
+    return _rc;
 
 }
 
@@ -137,40 +168,6 @@ void Fittino::Executor::Child() {
     }
 
     _exit( 0 );
-
-}
-
-int Fittino::Executor::Execute() {
-
-    if ( pipe( _pipefds ) ) {
-
-        perror( "pipe" );
-        throw ExecutorException( "Failed to create pipe." );
-
-    }
-
-    _pid = fork();
-
-    switch( _pid ) {
-
-        case -1:
-
-            perror( "fork" );
-            throw ExecutorException( "Failed to fork child process." );
-
-        case 0:
-
-            Child();
-            break;
-
-        default:
-
-            Parent();
-            break;
-
-    }
-
-    return _rc;
 
 }
 

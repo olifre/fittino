@@ -7,7 +7,7 @@
 * File        InputException.cpp                                               *
 *                                                                              *
 * Description Fittino input exception class. It is thrown in case of erroneous *
-*             input.                                                           *
+*             input                                                            *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *

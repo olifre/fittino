@@ -32,7 +32,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup kernel
-   *  \brief Executes an external program
+   *  \brief Executes an external program.
    */
   class Executor {
 
@@ -44,14 +44,13 @@ namespace Fittino {
       void                     SetCompletionTimeout( double timeout );
       void                     SetCreationTimeout( double timeout );
 
-
     private:
       double                   _completionTimeout;
       int                      _pid;
       int                      _pipefds[2];
       int                      _rc;
       timespec*                _creationTimeout;
-      std::string _path;
+      std::string              _path;
       std::vector<std::string> _args;
 
     private:
@@ -64,4 +63,4 @@ namespace Fittino {
 
 }
 
-#endif  // FITTINO_EXECUTOR_H
+#endif // FITTINO_EXECUTOR_H

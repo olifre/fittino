@@ -29,7 +29,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup exceptions
-   *  \brief Indicated a problem with the execution of an external program
+   *  \brief Indicated a problem with the execution of an external program.
    */
   class TimeoutExecutorException : public ExecutorException {
 

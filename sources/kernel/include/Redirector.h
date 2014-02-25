@@ -29,7 +29,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup kernel
-   *  \brief Redirects stdout and stderr to a file
+   *  \brief Redirects stdout and stderr to a file.
    */
   class Redirector {
 

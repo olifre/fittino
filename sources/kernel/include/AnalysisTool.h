@@ -94,7 +94,7 @@ namespace Fittino {
        */
       TRandom3                      _randomGenerator;
       /*!
-       *  The tree for the metadata
+       *  The tree for the metadata.
        */
       TTree*                        _metaDataTree;
       /*!
@@ -119,7 +119,8 @@ namespace Fittino {
        */
       int                           GetNumberOfStatusParameters() const;
       /*!
-       *  Saves some of the meta data for a run: measured values of observables and the uncertainties
+       *  Saves some of the meta data for a run: measured values of observables and the
+       *  uncertainties.
        */
       void                          FillMetaDataTree();
       /*!
@@ -134,7 +135,8 @@ namespace Fittino {
        */
       void                          PrintStatus() const;
       /*!
-       *  Function to update values in the output property tree. Hm, maybe this has to become virtual?
+       *  Function to update values in the output property tree. Hm, maybe this has to become
+       *  virtual?
        */
       void                          UpdatePropertyTree();
       /*!
