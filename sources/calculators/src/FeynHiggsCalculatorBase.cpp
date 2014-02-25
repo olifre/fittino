@@ -34,6 +34,7 @@
 #include "ModelParameter.h"
 #include "PhysicsModel.h"
 #include "SimplePrediction.h"
+#include "CalculatorException.h"
 
 Fittino::FeynHiggsCalculatorBase::FeynHiggsCalculatorBase( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
         : CalculatorBase( model ) {
@@ -67,8 +68,8 @@ Fittino::FeynHiggsCalculatorBase::~FeynHiggsCalculatorBase() {
 
 void Fittino::FeynHiggsCalculatorBase::SetFlags() {
 
-    std::string flags = "400242110";
-
+    std::string flags = "400243110";
+    
     FHSetFlagsString( &_error, flags.c_str() );
 
     if ( _error != 0 ) {
@@ -94,7 +95,9 @@ void Fittino::FeynHiggsCalculatorBase::Calculate() {
 
     if ( _mass_h < 1. ) {
 
-        std::cout<<"Problem in mh calculation"<<std::endl;
+      
+      throw CalculatorException( _name, "Mass h to small.");
+      
 
     }
 

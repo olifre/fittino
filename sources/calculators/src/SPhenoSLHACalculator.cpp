@@ -23,23 +23,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <signal.h>
 
 #include <sys/types.h>
 #include <sys/wait.h>
 
 #include <boost/filesystem.hpp>
-#include "boost/property_tree/ptree.hpp"
 #include <boost/foreach.hpp>
+#include <boost/lexical_cast.hpp>
+#include "boost/property_tree/ptree.hpp"
+
 
 #include "PhysicsModel.h"
 #include "SLHADataStorageBase.h"
 #include "SPhenoSLHACalculator.h"
 #include "SLHALine.h"
+#include "ConfigurationException.h"
+#include "CalculatorException.h"
 
 Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const boost::property_tree::ptree& ptree, const PhysicsModel* model )
     : SLHACalculatorBase( model ) {
 
-    _executableName     = "../SPheno";
+    _executableName     = "./SPheno";
     _name               = "SPheno";
     _slhaInputFileName  = "LesHouches.in";
     _slhaOutputFileName = "SPheno.spc";
@@ -96,7 +101,7 @@ void Fittino::SPhenoSLHACalculator::ConfigureInput() {
 
     _slhaInputDataStorage->AddBlock( "MODSEL:BLOCK MODSEL:# Model selection" );
     _slhaInputDataStorage->AddLine( "MODSEL:1:1:# " + _model->GetName() );
-    _slhaInputDataStorage->AddLine( "MODSEL:12:1000:# Q_EWSB (fixed)" );
+    //_slhaInputDataStorage->AddLine( "MODSEL:12:1000:# Q_EWSB (fixed)" );
 
     // Write block "SMINPUTS".
 
@@ -106,8 +111,9 @@ void Fittino::SPhenoSLHACalculator::ConfigureInput() {
     _slhaInputDataStorage->AddLine( "SMINPUTS:3:1.176000e-01:# alpha_s (fixed)" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:4:9.118750e+01:# mZ (fixed)" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:5:4.200000e+00:# mb(mb) (fixed)" );
-    _slhaInputDataStorage->AddLine( "SMINPUTS:6:1.724000e+02:# mtop (fixed)" );
+    //    _slhaInputDataStorage->AddLine( "SMINPUTS:6:1.724000e+02:# mtop (fixed)" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:7:1.776840e+00:# mtau (fixed)" );
+
 
     // Write block "MINPAR".
 
@@ -129,7 +135,7 @@ void Fittino::SPhenoSLHACalculator::ConfigureInput() {
     _slhaInputDataStorage->AddLine( "SPHENOINPUT:26:1.00000000E-05:# write only cross sections larger than this value [fb]" );
     _slhaInputDataStorage->AddLine( "SPHENOINPUT:31:-1.00000000E+00:# m_GUT, if < 0 than it determined via g_1=g_2" );
     _slhaInputDataStorage->AddLine( "SPHENOINPUT:32:0:# require strict unification g_1=g_2=g_3 if '1' is set" );
-    _slhaInputDataStorage->AddLine( "SPHENOINPUT:63:1.270000e+00:# m_c(Q) (fixed)" );
+    //    _slhaInputDataStorage->AddLine( "SPHENOINPUT:63:1.270000e+00:# m_c(Q) (fixed)" );
     _slhaInputDataStorage->AddLine( "SPHENOINPUT:80:1:# SPheno exits with non-zero value for sure" );
 
     // Add parameter point dependent lines to block "MINPAR".
@@ -144,76 +150,68 @@ void Fittino::SPhenoSLHACalculator::ConfigureInput() {
 
 void Fittino::SPhenoSLHACalculator::CallExecutable() {
 
-    int returnValue = 0;
 
-    int pid = -2;
-    int status = 0;
-    int child_pid = 0;
+  int status = 0;
+  int pid = fork();
 
-    // Get a child process.
+    switch( pid ) {
 
-    if ( ( pid = fork() ) < 0 ) {
-
-        // NOTE: perror() produces a short error message on the standard error describing the
-        // last error encountered during a call to a system or library function.
-
+    case -1:
+	  
         perror( "fork" );
-        exit( 1 );
 
+	throw ConfigurationException("Could not create child process for SPheno.");
+
+
+    case 0: {   
+
+      const char* argv[] = { "SPheno", 0 };
+
+      execve( _executableName.c_str(), (char**) argv, NULL );
+	
+      _exit( 255 );
     }
-
-    if ( pid == 0 ) {
-
-        // The child executes the code inside this if.
-
-        child_pid = getpid();
-        //char* argv[2];
-        //argv[0] = "";
-        //argv[1] = 0;
-
-        //char* const argv[] = { "", NULL };
-        char* argv[1] = { NULL };
-
-        returnValue = execve( _executableName.c_str(), argv, NULL );
-        _exit( 255 );
-        //returnValue = system( _executableName.c_str() );
-
-    }
-    else {
-
-        // The parent executes this.
+    default:	{    
 
         int counter = 0;
 
-        while ( true ) {
+	while (  waitpid ( pid, &status, WNOHANG ) != pid ) {
 
             counter++;
 
-            if ( waitpid ( pid, &status, WNOHANG ) == pid ) {
+            if ( ( double( counter ) / 10. ) > 10. ) {
 
-                break;
+              kill( pid, 9 );
+              waitpid( -1, &status, 0 );
+              throw  CalculatorException( _name, "Timeout");
 
             }
-            //if ( yyMaxCalculatorTime < ( float )counter / 10. ) {
 
-            //    std::cout << "Killing child process " << pid << " due to too much time" << std::endl;
-            //    kill ( pid, 9 );
-            //    waitpid ( -1, &status, 0 );
-            //    return( 1 );
-
-            //}
             usleep ( 100000 );
+
         }
+
+    }
+    }
+    if ( !WIFEXITED( status ) ) {
+
+      throw ConfigurationException("SPheno did not exit normally.");
+
     }
 
-    //returnValue = WEXITSTATUS( status );
+    int returnValue = WEXITSTATUS( status );
 
-    //if ( returnValue > 0 ) {
+    if ( returnValue == 255 ) {
 
-    //    return returnValue;
+      throw ConfigurationException("SPheno not executed successfully.");
 
-    //}
+    }
 
-    //return 0;
+    if ( returnValue !=0 ) {
+
+      throw  CalculatorException( _name, "Return value " + boost::lexical_cast<std::string>( returnValue ) );
+
+    }
+
 
 }

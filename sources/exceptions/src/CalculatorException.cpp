@@ -6,7 +6,7 @@
 *                                                                              *
 * File        CalculatorException.cpp                                          *
 *                                                                              *
-* Description Fittino input file exception class. It is thrown in case of      *
+* Description Fittino calculator exception class. It is thrown in case of      *
 *             problems with calculations performed by model calculators.       *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
@@ -20,7 +20,25 @@
 
 #include "CalculatorException.h"
 
-Fittino::CalculatorException::CalculatorException( const std::string& message )
-    : ExceptionBase( "Fittino::CalculatorException: " + message ) {
+Fittino::CalculatorException::CalculatorException( const std::string& calculator, const std::string& error )
+  :  _calculator( calculator ),
+     _error( error ),
+     ExceptionBase( "Fittino::CalculatorException: In calculator " + calculator + " the following error occured: " + error + "."   ) {
+  
+}
+
+Fittino::CalculatorException::~CalculatorException() throw() {
+
+}
+
+const std::string& Fittino::CalculatorException::GetCalculator() const {
+
+  return _calculator;
+
+}
+
+const std::string& Fittino::CalculatorException::GetError() const {
+
+  return _error;
 
 }

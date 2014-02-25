@@ -31,18 +31,33 @@ namespace Fittino {
 
   /*!
    *  \ingroup exceptions
-   *  \brief Fittino model calculator exception class.
+   *  \brief Fittino model calculator exception class. It is thrown in case of problems with calculations performed by model calculators.
    */
   class CalculatorException : public ExceptionBase {
 
     public:
       /*!
-       *  Takes as input a message string which is printed on the screen as soon as the exception\n
-       *  is caught and the what() method is called. The message is supposed to provide the user\n
-       *  with further information about the occurred exception.
+       *  Constructor
        */
-      CalculatorException( const std::string& message );
+      CalculatorException( const std::string& calculator, const std::string& error );
+      /*!
+       *  Destructor
+       */
+      virtual ~CalculatorException() throw();
+      /*!
+       *  Returns the name of the calculator in which the exception was thrown.
+       */
+      const std::string& GetCalculator() const;
+      /*!
+       *  Returns the error which triggered the exception to be thrown.
+       */
+      const std::string&   GetError() const;
 
+    private:  
+
+      std::string   _error;
+      std::string   _calculator;
+	
   };
 
 }
