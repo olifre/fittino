@@ -116,7 +116,7 @@ void Fittino::Quantity::PrintStatus() const {
               << std::setw( 9 )
               << std::setprecision( 2 )
               << std::scientific
-              << _value;
+              << GetValue();
 
     if ( _unit != "" ) {
 
