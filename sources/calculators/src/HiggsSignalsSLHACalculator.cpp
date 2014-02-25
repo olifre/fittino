@@ -662,7 +662,7 @@ void Fittino::HiggsSignalsSLHACalculator::SetupMeasuredValues() {
 
     // get number of observable from HiggsSignals and loop over it
     int ntotal, npeakmu, npeakmh, nmpred, nanalyses;
-    get_number_of_observables_( &ntotal, &npeakmu, &npeakmh, &nmpred, &nanalyses );
+    // get_number_of_observables_( &ntotal, &npeakmu, &npeakmh, &nmpred, &nanalyses );
 
     for ( int i = 1; i <= ntotal; ++i ) {
 
@@ -700,7 +700,7 @@ void Fittino::HiggsSignalsSLHACalculator::SetupMeasuredValues() {
 
         // get observable ID from HiggsSignals
         int obsID = 0;
-        get_id_of_peakobservable_( &i, &obsID );
+        // get_id_of_peakobservable_( &i, &obsID );
 
         // assign the new values
         assign_toyvalues_to_peak_( &obsID, &measuredValue_mu, &measuredValue_mh );
