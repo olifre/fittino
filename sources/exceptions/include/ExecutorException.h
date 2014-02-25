@@ -1,4 +1,4 @@
-/* $Id: CalculatorException.h 1900 2014-02-15 13:17:12Z uhlenbrock@PHYSIK.UNI-BONN.DE $ */
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
@@ -29,7 +29,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup exceptions
-   *  \brief Indicated a problem with the execution of an external program
+   *  \brief Indicated a problem with the execution of an external program.
    */
   class ExecutorException : public ExceptionBase {
 

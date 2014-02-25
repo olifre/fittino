@@ -7,7 +7,7 @@
 * File        OptimizerException.h                                             *
 *                                                                              *
 * Description Fittino optimizer exception class. It is thrown in case of       *
-*             problems with optimizers.                                        *
+*             problems with optimizers                                         *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *             Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *

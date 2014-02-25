@@ -1,4 +1,4 @@
-/* $Id: CalculatorException.h 1900 2014-02-15 13:17:12Z uhlenbrock@PHYSIK.UNI-BONN.DE $ */
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
@@ -40,5 +40,4 @@ namespace Fittino {
 
 }
 
-#endif 
-
+#endif // FITTINO_REDIRECTOREXCEPTION_H

@@ -1,4 +1,4 @@
-/* $Id: CalculatorException.cpp 1900 2014-02-15 13:17:12Z uhlenbrock@PHYSIK.UNI-BONN.DE $ */
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
@@ -6,7 +6,7 @@
 *                                                                              *
 * File        RedirectorException.cpp                                          *
 *                                                                              *
-* Description                                                                  * 
+* Description Indicates a problem with redirection                             *
 *                                                                              *
 * Authors     Bjoern Sarrazin <sarrazin@physik.uni-bonn.de>                    *
 *                                                                              *

@@ -7,7 +7,7 @@
 * File        CalculatorException.h                                            *
 *                                                                              *
 * Description Fittino input file exception class. It is thrown in case of      *
-*             problems with calculations performed by model calculators.       *
+*             problems with calculations performed by calculators              *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *             Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
@@ -31,17 +31,18 @@ namespace Fittino {
 
   /*!
    *  \ingroup exceptions
-   *  \brief Fittino model calculator exception class. It is thrown in case of problems with calculations performed by model calculators.
+   *  \brief Fittino model calculator exception class. It is thrown in case of problems with
+   *  calculations performed by model calculators.
    */
   class CalculatorException : public ExceptionBase {
 
     public:
       /*!
-       *  Constructor
+       *  Constructor.
        */
       CalculatorException( const std::string& calculator, const std::string& error );
       /*!
-       *  Destructor
+       *  Destructor.
        */
       virtual ~CalculatorException() throw();
       /*!
@@ -51,13 +52,12 @@ namespace Fittino {
       /*!
        *  Returns the error which triggered the exception to be thrown.
        */
-      const std::string&   GetError() const;
+      const std::string& GetError() const;
 
-    private:  
+    private:
+      std::string        _calculator;
+      std::string        _error;
 
-      std::string   _error;
-      std::string   _calculator;
-	
   };
 
 }
