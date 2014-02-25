@@ -214,27 +214,18 @@ void Fittino::Executor::Parent() {
 
         }
 
-        if ( kill( _pid, SIGKILL ) ) {
+        if ( kill( _pid, SIGKILL ) && errno != ESRCH ) {
 
-            if ( errno != ESRCH ) {
-
-                perror( "kill" );
-                throw ExecutorException( "kill" );
-
-            }
+            perror( "kill" );
+            throw ExecutorException( "kill" );
 
         }
-        else {
-
-            int status = 0;
-
-            if ( waitpid( -1, &status, 0 ) == -1 ) {
-
-                perror( "waitpid" );
-                throw ExecutorException( "waitpid after kill" );
-
-            }
-
+        
+        if ( waitpid( -1, &_status, 0 ) == -1 ) {
+          
+            perror( "waitpid" );
+            throw ExecutorException( "waitpid after kill" );
+          
         }
 
         throw;
@@ -277,11 +268,10 @@ void Fittino::Executor::Read() {
 void Fittino::Executor::Wait() {
 
     double counter = 0;
-    int status = 0;
 
     while ( ( _completionTimeout <= 0 ) || ( counter / 10. < _completionTimeout ) ) {
 
-        int wait = waitpid ( _pid, &status, WNOHANG );
+        int wait = waitpid ( _pid, &_status, WNOHANG );
 
         if ( wait == -1 ) {
 
@@ -297,19 +287,15 @@ void Fittino::Executor::Wait() {
                 throw ExecutorException( "usleep" );
 
             }
-            else {
-                std::cout << "usleep fine" << std::endl;
-
-            }
 
             counter++;
 
         }
         else if ( wait == _pid ) {
 
-            if ( WIFEXITED( status ) ) {
+            if ( WIFEXITED( _status ) ) {
 
-                _rc = WEXITSTATUS( status );
+                _rc = WEXITSTATUS( _status );
                 return;
 
             }

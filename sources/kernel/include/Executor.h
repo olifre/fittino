@@ -49,6 +49,7 @@ namespace Fittino {
       int                      _pid;
       int                      _pipefds[2];
       int                      _rc;
+      int                      _status;
       timespec*                _creationTimeout;
       std::string              _path;
       std::vector<std::string> _args;
