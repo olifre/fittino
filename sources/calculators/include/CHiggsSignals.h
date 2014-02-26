@@ -157,9 +157,16 @@ extern "C" {
   void setup_pdf_( const int* pdf );
   void setup_rate_uncertainties_( const double dCS[], const double dBR[] );
   
-  void get_number_of_observables_( int* ntotal, int* npeakmu, int* npeakmh, int* nmpred, int* nanalyses );
-  void get_id_of_peakobservable_( int* i, int* obsID );
   void assign_toyvalues_to_peak_( int* obsID, double* mu_obs, double* mh_obs );
+
+  void __io_MOD_get_peakinfo_from_hsresults( int* ID, double* mupred, int* domH, int* nHcomb ); 
+  void __io_MOD_get_number_of_observables( int* ntotal, int* npeakmu, int* npeakmh, int* nmpred, int* nanalyses );
+  void __io_MOD_get_id_of_peakobservable( int* ii, int* ID );
+  void __pc_chisq_MOD_print_cov_mh_to_file(int* nH);
+  void __pc_chisq_MOD_print_cov_mu_to_file();
+  void __pc_chisq_MOD_get_peakchi2(int* obsID, double* csqmu, double* csqmh, double* csqmax, double* csqtot); 
+
+
 
 }
 
