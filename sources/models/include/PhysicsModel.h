@@ -112,6 +112,8 @@ namespace Fittino {
        *  observables.
        */
       double                                     CalculateChi2();
+      std::string                                _calculator;
+      std::string                                _error;
 
     private:
       virtual double                             Evaluate();

@@ -23,6 +23,7 @@
 #include <vector>
 
 #include "SLHACalculatorBase.h"
+#include "Executor.h"
 
 namespace boost {
 
@@ -65,13 +66,10 @@ namespace Fittino {
     private:
       std::vector<SLHALine*> _lines;
       std::string            _executableName;
+      int                    _returnValue;
+      Executor               _executor;
 
     private:
-      /*!
-       *  \todo Short-term: The method CallExecutable() is copied from the old fittino code. It should\n
-       *  be eventually replaced.
-       */
-      virtual void           CallExecutable();
       virtual void           ConfigureInput();
 
       /*! \endcond UML */

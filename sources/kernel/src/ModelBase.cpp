@@ -120,6 +120,13 @@ const Fittino::Collection<const Fittino::Quantity*>&  Fittino::ModelBase::GetCol
 
 }
 
+const Fittino::Collection<const Fittino::VariableBase<std::string>*>&  Fittino::ModelBase::GetCollectionOfStringVariables() const {
+
+    return _collectionOfStringVariables;
+
+}
+
+
 void Fittino::ModelBase::AddPrediction( PredictionBase* prediction ) {
 
     _collectionOfPredictions.AddElement( prediction );

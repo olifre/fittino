@@ -33,6 +33,7 @@
 #include "Observable.h"
 #include "PhysicsModel.h"
 #include "ModelParameter.h"
+#include "ReferenceVariable.h"
 #include "PredictionBase.h"
 #include "SimplePrediction.h"
 #include "Collection.h"
@@ -46,6 +47,9 @@ Fittino::PhysicsModel::PhysicsModel( const boost::property_tree::ptree& ptree )
     : ModelBase( ptree ) {
 
     _name = ptree.get<std::string>( "Name" );
+
+    _collectionOfStringVariables.AddElement( "Calculator", new ReferenceVariable<std::string>( "Calculator", _calculator ) );
+    _collectionOfStringVariables.AddElement( "Error"     , new ReferenceVariable<std::string>( "Error", _error ) );
 
     Factory factory;
 
@@ -81,6 +85,9 @@ void Fittino::PhysicsModel::AddChi2Contribution( Fittino::Chi2ContributionBase* 
 
 double Fittino::PhysicsModel::Evaluate() {
 
+    _calculator = "";
+    _error      = "";
+
     // Let the calculators calculate the model predictions.
 
     try {
@@ -92,9 +99,12 @@ double Fittino::PhysicsModel::Evaluate() {
         }
 
     }
-    catch(  CalculatorException ) {
+    catch( const CalculatorException& exception ) {
 
-        return 100000;
+        _calculator = exception.GetCalculator();
+        _error       = exception.GetError();
+
+        return std::numeric_limits<double>::max();
 
     }
 
@@ -176,6 +186,20 @@ void Fittino::PhysicsModel::PrintStatus() const {
 
     }
 
+    if ( _collectionOfStringVariables.GetNumberOfElements() != 0 ) {
+
+        messenger << Messenger::Endl;
+        messenger << Messenger::INFO << "   Summary of string variables:"  << Messenger::Endl;
+        messenger << Messenger::Endl;
+
+        for ( unsigned int i = 0; i < _collectionOfStringVariables.GetNumberOfElements(); ++i ) {
+
+            _collectionOfStringVariables.At( i )->PrintStatus();
+
+        }
+
+    }
+
 }
 
 void Fittino::PhysicsModel::Initialize() const {
@@ -248,7 +272,6 @@ double Fittino::PhysicsModel::CalculateChi2() {
         chi2 += _collectionOfChi2Contributions.At( i )->GetValue();
 
     }
-
 
     return chi2;
 

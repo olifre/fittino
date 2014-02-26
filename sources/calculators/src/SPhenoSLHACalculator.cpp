@@ -40,14 +40,18 @@
 #include "SLHALine.h"
 #include "ConfigurationException.h"
 #include "CalculatorException.h"
+#include "TimeoutExecutorException.h"
 
 Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const boost::property_tree::ptree& ptree, const PhysicsModel* model )
-    : SLHACalculatorBase( model ) {
+  : SLHACalculatorBase( model ),
+    _executor( "./SPheno", "SPheno" ) {
 
     _executableName     = "./SPheno";
     _name               = "SPheno";
     _slhaInputFileName  = "LesHouches.in";
     _slhaOutputFileName = "SPheno.spc";
+
+    _executor.SetCompletionTimeout(5);
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
 
@@ -89,8 +93,23 @@ void Fittino::SPhenoSLHACalculator::CalculatePredictions() {
 
     _slhaInputDataStorage->WriteFile( _slhaInputFileName );
 
-    CallExecutable();
+    try {
 
+        _returnValue = _executor.Execute();
+
+    }
+    catch ( const TimeoutExecutorException& e ) {
+
+        throw CalculatorException( _name, "timeout" );
+
+    }
+
+    if ( _returnValue !=0 ) {
+
+      throw  CalculatorException( _name, "Return value " + boost::lexical_cast<std::string>( _returnValue ) );
+
+    }
+    
     _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
 
 }
@@ -148,70 +167,3 @@ void Fittino::SPhenoSLHACalculator::ConfigureInput() {
 
 }
 
-void Fittino::SPhenoSLHACalculator::CallExecutable() {
-
-
-  int status = 0;
-  int pid = fork();
-
-    switch( pid ) {
-
-    case -1:
-	  
-        perror( "fork" );
-
-	throw ConfigurationException("Could not create child process for SPheno.");
-
-
-    case 0: {   
-
-      const char* argv[] = { "SPheno", 0 };
-
-      execve( _executableName.c_str(), (char**) argv, NULL );
-	
-      _exit( 255 );
-    }
-    default:	{    
-
-        int counter = 0;
-
-	while (  waitpid ( pid, &status, WNOHANG ) != pid ) {
-
-            counter++;
-
-            if ( ( double( counter ) / 10. ) > 10. ) {
-
-              kill( pid, 9 );
-              waitpid( -1, &status, 0 );
-              throw  CalculatorException( _name, "Timeout");
-
-            }
-
-            usleep ( 100000 );
-
-        }
-
-    }
-    }
-    if ( !WIFEXITED( status ) ) {
-
-      throw ConfigurationException("SPheno did not exit normally.");
-
-    }
-
-    int returnValue = WEXITSTATUS( status );
-
-    if ( returnValue == 255 ) {
-
-      throw ConfigurationException("SPheno not executed successfully.");
-
-    }
-
-    if ( returnValue !=0 ) {
-
-      throw  CalculatorException( _name, "Return value " + boost::lexical_cast<std::string>( returnValue ) );
-
-    }
-
-
-}

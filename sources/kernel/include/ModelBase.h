@@ -27,6 +27,7 @@
 #include "Chi2ContributionBase.h"
 #include "Collection.h"
 #include "PredictionBase.h"
+#include "VariableBase.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -82,6 +83,7 @@ namespace Fittino {
       const Collection<ModelParameter*>&         GetCollectionOfParameters() const;
       const Collection<PredictionBase*>&         GetCollectionOfPredictions() const;
       const Collection<const Quantity*>&         GetCollectionOfQuantities() const;
+      const Collection<const VariableBase<std::string>*>&  GetCollectionOfStringVariables() const;
 
     public:
       virtual void                               PrintStatus() const = 0;
@@ -103,6 +105,7 @@ namespace Fittino {
       std::string                                _name;
       boost::property_tree::ptree                _ptree;
       Collection<Chi2ContributionBase*>          _collectionOfChi2Contributions;
+      Collection<const VariableBase<std::string>*> _collectionOfStringVariables;
       /*!
        *  Stores the predictions.
        */
