@@ -26,18 +26,26 @@
  *  \todo Long-term: Write a comprehensive user's guide.
  *  \todo Long-term: Discuss Calculator interface (Mathias).
  *  \todo Long-term: Discuss Plotters and their relation to other analysis tools.
- *  \todo Clean up Quantities/Predictions/Parameters.
- *  \todo Check if all branch names are unique (probably in AnalysisTool::InitializeBranches).
- *  \todo TreeSampler configuration: Set name of parameter to be used as looping parameter.
- *  \todo MeasuredErrors: Allow arbitrary number. Give names.
- *  \todo Remove SimpleDataStorage from CalculatorBase.
- *  \todo Update Observable - Prediction relation.
- *  \todo Remove again the Chi2Contribution.
+ *  \todo Add HiggsBoundsCalculator (needs threading, look at fittino1 for that)
+ *  \todo Add SuperIsoCalculator ( library based )
+ *  \todo Add MicromegasCalculator( library based )
+ *  \todo Add AstroFitCalculator ( using Executor class )
+ *  \todo Long-term Add DarkSUSYCalculator 
+ *  \todo Add FormulaCalculator (a wrapper around TFormula )
+ *  \todo Implement the corrrection of the FH decoupling limit (use above?)
  *  \todo Update the xml definition file.
+ *  \todo Check if all branch names are unique (probably in AnalysisTool::InitializeBranches).
+ *  \todo Remove again the Chi2Contribution.
+ *  \todo Remove SimpleDataStorage from CalculatorBase.
+ *  \todo Use global random number generator ( gRandom or better a singleton wrapper )
+ *  \todo Clean up Quantities/Predictions/Parameters/Variables.
+ *  \todo Update Observable - Prediction relation.
+ *  \todo MeasuredErrors: Allow arbitrary number. Give names.
  *  \todo Make chi2 a model quantitiy?
  *  \todo Make name of chi2 branch configurable.
  *  \todo More general: Make all quantity names/branch names configurable?
  *  \todo Make configurable if quantities are added to the model/are written to ntuple (especially TreeCalculator but also in general)?
+ *  \todo TreeSampler configuration: Set name of parameter to be used as looping parameter. 
  *  \todo Common base class for MarkovChainSampler and CorrelatedSampler.
  *  \todo Add RandomSampler, a sampler with fixed sampling density (usefull for random grid production).
  *  \todo When RandomSampler is implemented, use parameter limits as hard limits in markovchain. Discuss what to do when limit is reached (new random point? mirror point?).
