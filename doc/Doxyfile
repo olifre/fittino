@@ -590,7 +590,9 @@ INPUT                  = "." \
                          "../sources/plotters/include" \
                          "../sources/plotters/src" \
                          "../sources/samplers/include" \
-                         "../sources/samplers/src"
+                         "../sources/samplers/src" \
+                         "../sources/variables/include" \
+                         "../sources/variables/src"
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is
