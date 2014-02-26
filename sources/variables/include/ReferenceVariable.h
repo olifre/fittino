@@ -8,7 +8,7 @@
 *                                                                              *
 * Description Variable which value is a reference                              *
 *                                                                              *
-* Authors     Bjoern Sarrazin         <sarrazin@physik.uni-bonn.de>            *
+* Authors     Bjoern Sarrazin <sarrazin@physik.uni-bonn.de>                    *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -28,17 +28,20 @@
 namespace Fittino {
 
   /*!
-   *  \ingroup Variables
+   *  \defgroup variables
+   */
+  /*!
+   *  \ingroup variables
    *  \brief Variable which value is a reference.
    */
   template< class T >
-    class ReferenceVariable : public VariableBase< T > {
+  class ReferenceVariable : public VariableBase< T > {
 
     public:
       /*!
-       *  Standard constructor
+       *  Standard constructor.
        */
-    ReferenceVariable( const std::string& name, const T& value );
+      ReferenceVariable( const std::string& name, const T& value );
       /*!
        *  Standard destructor.
        */
@@ -46,32 +49,32 @@ namespace Fittino {
       /*!
        *  Returns the value of the variable.
        */
-      const T&     GetValue() const;
+      const T& GetValue() const;
 
     private:
-      const T&      _value;
+      const T& _value;
 
   };
 
   template< class T>
   ReferenceVariable< T >::ReferenceVariable( const std::string& name, const T& value )
     : VariableBase< T >( name ),
-    _value ( value ){
+      _value ( value ) {
 
   }
 
   template< class T >
-    ReferenceVariable< T >::~ReferenceVariable(){
+  ReferenceVariable< T >::~ReferenceVariable() {
 
-  }  
+  }
 
   template< class T >
   const T& ReferenceVariable< T >::GetValue() const {
 
     return _value;
-    
+
   }
 
 }
 
-#endif
+#endif // FITTINO_REFERENCEVARIABLE_H
