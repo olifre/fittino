@@ -17,13 +17,10 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <iostream>
-#include <sstream>
-
+#include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <signal.h>
 
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -33,25 +30,23 @@
 #include <boost/lexical_cast.hpp>
 #include "boost/property_tree/ptree.hpp"
 
-
+#include "CalculatorException.h"
 #include "PhysicsModel.h"
 #include "SLHADataStorageBase.h"
-#include "SPhenoSLHACalculator.h"
 #include "SLHALine.h"
-#include "ConfigurationException.h"
-#include "CalculatorException.h"
+#include "SPhenoSLHACalculator.h"
 #include "TimeoutExecutorException.h"
 
 Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const boost::property_tree::ptree& ptree, const PhysicsModel* model )
-  : SLHACalculatorBase( model ),
-    _executor( "./SPheno", "SPheno" ) {
+    : SLHACalculatorBase( model ),
+      _executor( "./SPheno", "SPheno" ) {
 
     _executableName     = "./SPheno";
     _name               = "SPheno";
     _slhaInputFileName  = "LesHouches.in";
     _slhaOutputFileName = "SPheno.spc";
 
-    _executor.SetCompletionTimeout(5);
+    _executor.SetCompletionTimeout( 5 );
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
 
@@ -104,12 +99,12 @@ void Fittino::SPhenoSLHACalculator::CalculatePredictions() {
 
     }
 
-    if ( _returnValue !=0 ) {
+    if ( _returnValue != 0 ) {
 
-      throw  CalculatorException( _name, "Return value " + boost::lexical_cast<std::string>( _returnValue ) );
+        throw  CalculatorException( _name, "Return value " + boost::lexical_cast<std::string>( _returnValue ) );
 
     }
-    
+
     _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
 
 }
