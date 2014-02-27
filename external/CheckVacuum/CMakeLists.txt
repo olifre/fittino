@@ -1,4 +1,4 @@
-# $Id: CMakeLists.txt 1233 2013-03-10 22:35:18Z uhlenbrock@PHYSIK.UNI-BONN.DE $ #
+# $Id$ #
 
 ################################################################################
 #                                                                              #
@@ -6,10 +6,9 @@
 #                                                                              #
 # File        CMakeLists.txt                                                   #
 #                                                                              #
-# Description Cmake configuration file for the external directory.             #
+# Description Cmake configuration file for the CheckVacuum directory.          #
 #                                                                              #
-# Authors     Bjoern Sarrazin     <sarrazin@physik.uni-bonn.de>                #
-#             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              #
+# Authors     Bjoern Sarrazin <sarrazin@physik.uni-bonn.de>                    #
 #                                                                              #
 # Licence     This program is free software; you can redistribute it and/or    #
 #             modify it under the terms of the GNU General Public License as   #
@@ -18,8 +17,7 @@
 #                                                                              #
 ################################################################################
 
-IF(LHAPDF_FOUND AND GSL_FOUND)
-  ADD_SUBDIRECTORY(HDim6)
-ENDIF()
+FILE( GLOB includes includes *.h )
 
-ADD_SUBDIRECTORY(CheckVacuum)
+ADD_LIBRARY(checkvacuum ${includes})
+SET_TARGET_PROPERTIES(checkvacuum PROPERTIES LINKER_LANGUAGE CXX)
