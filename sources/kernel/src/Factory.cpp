@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "AstroCalculator.h"
+#include "CheckVacuumCalculator.h"
 #include "ContourPlotter.h"
 #include "CorrelatedSampler.h"
 #include "CovariantSampler.h"
@@ -142,7 +143,13 @@ Fittino::SLHADataStorageBase* Fittino::Factory::CreateSLHAeaSLHADataStorage() {
 
 Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& type, const PhysicsModel* model, const boost::property_tree::ptree& ptree ) const {
 
-    if ( type == "HDim6Calculator" ) {
+    if ( type == "CheckVacuumCalculator" ) {
+
+      return new CheckVacuumCalculator( model, ptree );
+
+    }
+
+    else if ( type == "HDim6Calculator" ) {
 
 #if defined LHAPDF_FOUND  && defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND && defined GSL
 
