@@ -19,5 +19,5 @@
 
 FILE( GLOB includes includes *.h )
 
-ADD_LIBRARY(checkvacuum ${includes})
+ADD_LIBRARY(checkvacuum ${includes} CheckVacuum.cpp)
 SET_TARGET_PROPERTIES(checkvacuum PROPERTIES LINKER_LANGUAGE CXX)
