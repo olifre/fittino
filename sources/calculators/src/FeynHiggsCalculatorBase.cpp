@@ -30,11 +30,12 @@
 #include "CFeynHiggs.h"
 #include "CSLHA.h"
 
+#include "CalculatorException.h"
 #include "FeynHiggsCalculatorBase.h"
 #include "ModelParameter.h"
 #include "PhysicsModel.h"
+#include "Redirector.h"
 #include "SimplePrediction.h"
-#include "CalculatorException.h"
 
 Fittino::FeynHiggsCalculatorBase::FeynHiggsCalculatorBase( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
         : CalculatorBase( model ) {
@@ -66,19 +67,28 @@ Fittino::FeynHiggsCalculatorBase::~FeynHiggsCalculatorBase() {
 
 }
 
-void Fittino::FeynHiggsCalculatorBase::SetFlags() {
+void Fittino::FeynHiggsCalculatorBase::CalculatePredictions() {
+
+    std::string outputFile( "FeynHiggs.out" );
+
+    if ( boost::filesystem::exists( outputFile ) ) {
+
+        boost::filesystem::rename( outputFile, outputFile + ".last" );
+        
+    }
+
+    Redirector redirector( outputFile );
+    redirector.Start();
 
     std::string flags = "400243110";
-    
+
     FHSetFlagsString( &_error, flags.c_str() );
 
     if ( _error != 0 ) {
 
     }
 
-}
-
-void Fittino::FeynHiggsCalculatorBase::Calculate() {
+    ConfigureInput();
 
     // calculate masses, sin(alpha), UHiggs & ZHiggs matrices
 
@@ -95,9 +105,7 @@ void Fittino::FeynHiggsCalculatorBase::Calculate() {
 
     if ( _mass_h < 1. ) {
 
-      
-      throw CalculatorException( _name, "Mass h to small.");
-      
+      throw CalculatorException( _name, "Mass h less than 1 GeV.");
 
     }
 
@@ -149,6 +157,8 @@ void Fittino::FeynHiggsCalculatorBase::Calculate() {
     _normSM_sigma_qqh   = qqh ( 1 ) / qqhSM( 1 );
     _normSM_sigma_tth   = tth ( 1 ) / tthSM( 1 );
     _normSM_sigma_Wh    = Wh  ( 1 ) / WhSM ( 1 ); 
-    _normSM_sigma_Zh    = Zh  ( 1 ) / ZhSM ( 1 ); 
+    _normSM_sigma_Zh    = Zh  ( 1 ) / ZhSM ( 1 );
+
+    redirector.Stop();
 
 }

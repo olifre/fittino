@@ -46,14 +46,11 @@ namespace Fittino {
        */
       virtual ~FeynHiggsCalculatorBase();
 
-    protected:  
+      void CalculatePredictions();
+
+    protected:
       int         _error;
       std::string _fileName;
-
-
-    protected:  
-      void Calculate();
-      void SetFlags();
 
       /*! \cond UML */
     private:  
@@ -78,7 +75,9 @@ namespace Fittino {
       double _normSM_Gamma_h_W_W;
       double _normSM_Gamma_h_g_g;
       double _normSM_Gamma_h_total;
-      
+
+      virtual void ConfigureInput() = 0;
+
       /*! \endcond UML */
 
   };

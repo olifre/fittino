@@ -61,7 +61,7 @@ Fittino::FeynHiggsCalculator::~FeynHiggsCalculator() {
 
 }
 
-void Fittino::FeynHiggsCalculator::CalculatePredictions() {
+void Fittino::FeynHiggsCalculator::ConfigureInput() {
 
     if ( boost::filesystem::exists( _fileName ) ) {
 
@@ -78,8 +78,6 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     }
 
     file.close();
-
-    SetFlags();
 
     RealType    record     [nrecord];
     COMPLEX     slhadata   [nslhadata];
@@ -99,14 +97,6 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     if ( _error != 0 ) {
 
-    }
-
-    Calculate();
-
-    FHLoopRecord( &_error, record );
-
-    if ( _error != -1 ) {
-      
     }
 
 }

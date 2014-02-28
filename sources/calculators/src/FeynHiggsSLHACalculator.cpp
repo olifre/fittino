@@ -34,9 +34,7 @@ Fittino::FeynHiggsSLHACalculator::~FeynHiggsSLHACalculator() {
 
 }
 
-void Fittino::FeynHiggsSLHACalculator::CalculatePredictions() {
-
-  SetFlags();
+void Fittino::FeynHiggsSLHACalculator::ConfigureInput() {
 
   COMPLEX slhadata[nslhadata];
 
@@ -48,6 +46,5 @@ void Fittino::FeynHiggsSLHACalculator::CalculatePredictions() {
   // if( error )
   //exit(error);
 
-  Calculate();
   
 }

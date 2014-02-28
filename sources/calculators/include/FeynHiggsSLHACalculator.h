@@ -45,7 +45,7 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-      void         CalculatePredictions();
+      void         ConfigureInput();
 
       /*! \endcond UML */
 
