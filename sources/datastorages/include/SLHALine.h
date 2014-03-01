@@ -46,7 +46,6 @@ namespace Fittino {
        *  Standard destructor.
        */
       ~SLHALine();
-
       std::string   GetBlock() const;
       std::string   GetIndex() const;
       std::string   GetValue() const;
