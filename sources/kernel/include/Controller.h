@@ -48,7 +48,6 @@
  *  \todo Remove again the Chi2Contribution ( or at least print them )
  *  \todo Remove SimpleDataStorage from CalculatorBase.
  *  \todo Use global random number generator ( gRandom or better a singleton wrapper )
- *  \todo Clean up Quantities/Predictions/Parameters/Variables.
  *  \todo Update Observable - Prediction relation.
  *  \todo MeasuredErrors: Allow arbitrary number. Give names.
  *  \todo Make chi2 a model quantitiy?
