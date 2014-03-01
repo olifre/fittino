@@ -32,7 +32,7 @@ namespace Fittino {
 
   class AnalysisTool;
   class Chi2ContributionBase;
-  class LHCModelCalculator;
+  class LHCLimitCalculator;
   class ModelBase;
   class CalculatorBase;
   class Observable;
@@ -97,7 +97,7 @@ namespace Fittino {
        *  Returns a Chi2Contribution according to the type passed as an argument.
        */
       Chi2ContributionBase* const CreateChi2Contribution( const std::string& type, const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const;
-      Chi2ContributionBase* const CreateChi2Contribution( const boost::property_tree::ptree& ptree, Fittino::LHCModelCalculator* calculator );
+      Chi2ContributionBase* const CreateChi2Contribution( const boost::property_tree::ptree& ptree, Fittino::LHCLimitCalculator* calculator );
       SLHADataStorageBase*        CreateSLHAeaSLHADataStorage();
 
   };

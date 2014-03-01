@@ -2,7 +2,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        LHCModelCalculator.cpp                                           *
+* File        LHCLimitCalculator.cpp                                           *
 *                                                                              *
 * Description Base class for LHC Calculator                                    *
 *                                                                              *
@@ -35,7 +35,7 @@
 #include "Factory.h"
 #include "PhysicsModel.h"
 #include "ModelParameter.h"
-#include "LHCModelCalculator.h"
+#include "LHCLimitCalculator.h"
 #include "SimpleDataStorage.h"
 #include "ConfigurationException.h"
 #include "MathTools.h"
@@ -43,26 +43,26 @@
 #include "LHCChi2Contribution.h"
 #include "Observable.h"
 
-Fittino::LHCModelCalculator::LHCModelCalculator( const PhysicsModel* model )
+Fittino::LHCLimitCalculator::LHCLimitCalculator( const PhysicsModel* model )
     : CalculatorBase( model ) {
 
-    _name = "LHCModelCalculator";
+    _name = "LHCLimitCalculator";
 
 }
 
-Fittino::LHCModelCalculator::LHCModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::LHCLimitCalculator::LHCLimitCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model ) {
 
-    _name = "LHCModelCalculator";
+    _name = "LHCLimitCalculator";
     CreateChi2Contributions( ptree );
 
 }
 
-Fittino::LHCModelCalculator::~LHCModelCalculator() {
+Fittino::LHCLimitCalculator::~LHCLimitCalculator() {
 
 }
 
-void Fittino::LHCModelCalculator::AddAnalysis( std::string name, std::string fileName, std::string histName, std::vector<std::string> relevantParameters ) {
+void Fittino::LHCLimitCalculator::AddAnalysis( std::string name, std::string fileName, std::string histName, std::vector<std::string> relevantParameters ) {
 
     if( relevantParameters.size() == 0 ) return;
 
@@ -103,7 +103,7 @@ void Fittino::LHCModelCalculator::AddAnalysis( std::string name, std::string fil
 
 }
 
-void Fittino::LHCModelCalculator::CalculatePredictions() {
+void Fittino::LHCLimitCalculator::CalculatePredictions() {
 
   std::map<std::string, std::vector<double> > parameterValueMap;
   
@@ -197,7 +197,7 @@ void Fittino::LHCModelCalculator::CalculatePredictions() {
 
 }
 
-void Fittino::LHCModelCalculator::UpdateAnalysisHistogram( std::string name, std::string fileName, std::string newHistogramName, std::vector<std::string> relevantParameters ) {
+void Fittino::LHCLimitCalculator::UpdateAnalysisHistogram( std::string name, std::string fileName, std::string newHistogramName, std::vector<std::string> relevantParameters ) {
 
   // save the old TDirectory first:
   TDirectory *tempDir = gDirectory;
@@ -226,7 +226,7 @@ void Fittino::LHCModelCalculator::UpdateAnalysisHistogram( std::string name, std
 
 }
 
-void Fittino::LHCModelCalculator::CreateChi2Contributions( const boost::property_tree::ptree& ptree ) {
+void Fittino::LHCLimitCalculator::CreateChi2Contributions( const boost::property_tree::ptree& ptree ) {
 
     Factory factory;
 
@@ -238,7 +238,7 @@ void Fittino::LHCModelCalculator::CreateChi2Contributions( const boost::property
 
 }
 
-void Fittino::LHCModelCalculator::Initialize() const {
+void Fittino::LHCLimitCalculator::Initialize() const {
 
 }
 

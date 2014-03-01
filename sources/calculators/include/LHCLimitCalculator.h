@@ -2,7 +2,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        LHCModelCalculator.h                                             *
+* File        LHCLimitCalculator.h                                             *
 *                                                                              *
 * Description Base class for LHC model calculators                             *
 *                                                                              *
@@ -41,21 +41,21 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Base class for LHC model calculators.
    */
-  class LHCModelCalculator : public CalculatorBase {
+  class LHCLimitCalculator : public CalculatorBase {
 
     public:
       /*!
        *  Standard constructor.
        */
-                           LHCModelCalculator( const PhysicsModel* model );
+                           LHCLimitCalculator( const PhysicsModel* model );
       /*!
        *  Another constructor using property trees.
        */
-                           LHCModelCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+                           LHCLimitCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
-                           ~LHCModelCalculator();
+                           ~LHCLimitCalculator();
     
     public:
       virtual void        CalculatePredictions();

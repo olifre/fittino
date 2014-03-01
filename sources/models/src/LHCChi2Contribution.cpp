@@ -24,7 +24,7 @@
 #include "TRandom3.h"
 
 #include "LHCChi2Contribution.h"
-#include "LHCModelCalculator.h"
+#include "LHCLimitCalculator.h"
 #include "SimpleDataStorage.h"
 
 Fittino::LHCChi2Contribution::LHCChi2Contribution( std::string name,
@@ -36,7 +36,7 @@ Fittino::LHCChi2Contribution::LHCChi2Contribution( std::string name,
         double nExpBestFit,
         double systematicErrorBG,
         double systematicErrorSignal,
-        LHCModelCalculator* lhcModelCalculator )
+        LHCLimitCalculator* lhcLimitCalculator )
     : _fileName( fileName ),
       _histogramName( histogramName ),
       _nObs( nObs ),
@@ -44,19 +44,18 @@ Fittino::LHCChi2Contribution::LHCChi2Contribution( std::string name,
       _nExpBestFit( nExpBestFit ),
       _systematicErrorBG( systematicErrorBG ),
       _systematicErrorSignal( systematicErrorSignal ),
-      _lhcModelCalculator( lhcModelCalculator ),
+      _lhcLimitCalculator( lhcLimitCalculator ),
       Chi2ContributionBase( name ) {
 
       _relevantParameters = relevantParameters;
       std::stringstream nObs_ss;
       nObs_ss << nObs;
       std::string actualHistogramName = _histogramName + "_nObs" + nObs_ss.str();
-      _lhcModelCalculator->AddAnalysis( _name, _fileName, actualHistogramName, _relevantParameters );
+      _lhcLimitCalculator->AddAnalysis( _name, _fileName, actualHistogramName, _relevantParameters );
 
 }
 
-Fittino::LHCChi2Contribution::LHCChi2Contribution( const boost::property_tree::ptree& ptree, 
-                                                   LHCModelCalculator *lhcModelCalculator )
+Fittino::LHCChi2Contribution::LHCChi2Contribution( const boost::property_tree::ptree& ptree, LHCLimitCalculator *lhcLimitCalculator )
     : _fileName( ptree.get<std::string>( "FileName" ) ),
       _histogramName( ptree.get<std::string>( "HistogramName" ) ),
       _nObs( ptree.get<int>( "NObs") ),
@@ -64,7 +63,7 @@ Fittino::LHCChi2Contribution::LHCChi2Contribution( const boost::property_tree::p
       _nExpBestFit( ptree.get<double>( "NExpBestFit" ) ),
       _systematicErrorBG( ptree.get<double>( "SystematicErrorBG" ) ),
       _systematicErrorSignal( ptree.get<double>( "SystematicErrorSignal" ) ),
-      _lhcModelCalculator( lhcModelCalculator ),
+      _lhcLimitCalculator( lhcLimitCalculator ),
       Chi2ContributionBase( ptree ) {
 
       BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree ) {
@@ -75,7 +74,7 @@ Fittino::LHCChi2Contribution::LHCChi2Contribution( const boost::property_tree::p
       std::stringstream nObs_ss;
       nObs_ss << _nObs;
       std::string actualHistogramName = _histogramName + "_nObs_" + nObs_ss.str();
-      _lhcModelCalculator->AddAnalysis( _name, _fileName, actualHistogramName, _relevantParameters );
+      _lhcLimitCalculator->AddAnalysis( _name, _fileName, actualHistogramName, _relevantParameters );
        
 }
 
@@ -85,7 +84,7 @@ Fittino::LHCChi2Contribution::~LHCChi2Contribution() {
 
 void Fittino::LHCChi2Contribution::UpdateValue() {
 
-    _chi2 = _lhcModelCalculator->GetSimpleOutputDataStorage()->GetMap()->at( _name );
+    _chi2 = _lhcLimitCalculator->GetSimpleOutputDataStorage()->GetMap()->at( _name );
 
 }
 
@@ -96,6 +95,6 @@ void Fittino::LHCChi2Contribution::SmearObservation( TRandom3* randomGenerator )
     nObsNew_ss << nObsNew;
         
     std::string actualHistogramName = _histogramName + "_nObs_" + nObsNew_ss.str(); 
-    _lhcModelCalculator->UpdateAnalysisHistogram( _name, _fileName, actualHistogramName, _relevantParameters );
+    _lhcLimitCalculator->UpdateAnalysisHistogram( _name, _fileName, actualHistogramName, _relevantParameters );
     std::cout << "using LHC chi2 contribution with new nObs: " << nObsNew_ss.str() << std::endl;
 }

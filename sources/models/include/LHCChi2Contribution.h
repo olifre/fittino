@@ -2,9 +2,9 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        LHCChi2Contribution.h                                           *
+* File        LHCChi2Contribution.h                                            *
 *                                                                              *
-* Description Class for LHC chi2 contributions                                *
+* Description Class for LHC chi2 contributions                                 *
 *                                                                              *
 * Authors     Matthias Hamer <mhamer@gwdg.de>                                  *
 *                                                                              *
@@ -28,7 +28,7 @@ class TRandom3;
  */
 namespace Fittino {
 
-  class LHCModelCalculator;
+  class LHCLimitCalculator;
 
   /*!
    *  \ingroup models
@@ -49,11 +49,11 @@ namespace Fittino {
                                                     double                   nExpBestFit,
                                                     double                   systematicErrorBG,
                                                     double                   systematicErrorSignal,
-                                                    LHCModelCalculator* lhcModelCalculator );
+                                                    LHCLimitCalculator*      lhcLimitCalculator );
       /*!
        *  Standard constuctor.
        */
-                                LHCChi2Contribution( const boost::property_tree::ptree& ptree, LHCModelCalculator* lhcModelCalculator );
+                                LHCChi2Contribution( const boost::property_tree::ptree& ptree, LHCLimitCalculator* lhcLimitCalculator );
       /*!
        *  Standard destructor.
        */
@@ -62,7 +62,7 @@ namespace Fittino {
       virtual void             SmearObservation( TRandom3* );
 
     private:
-      LHCModelCalculator*      _lhcModelCalculator;
+      LHCLimitCalculator*      _lhcLimitCalculator;
       std::string              _fileName;
       std::string              _histogramName;
       std::vector<std::string> _relevantParameters;

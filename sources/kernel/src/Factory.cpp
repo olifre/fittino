@@ -33,7 +33,7 @@
 #include "HiggsSignalsHadXSCalculator.h"
 #include "HiggsSignalsSLHACalculator.h"
 #include "LHCChi2Contribution.h"
-#include "LHCModelCalculator.h"
+#include "LHCLimitCalculator.h"
 #include "MarkovChainSampler.h"
 #include "MinuitOptimizer.h"
 #include "NewCorrelatedSampler.h"
@@ -200,7 +200,7 @@ Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& 
     }
     else if ( type == "LHCCalculator" ) {
 
-        return new LHCModelCalculator( model, ptree );
+        return new LHCLimitCalculator( model, ptree );
 
     }
     else if ( type == "TreeCalculator" ) {
@@ -331,13 +331,13 @@ Fittino::Chi2ContributionBase* const Fittino::Factory::CreateChi2Contribution( c
     }
     else if ( type == "LHCChi2Contribution" ) {
 
-        return new LHCChi2Contribution( ptree, static_cast<LHCModelCalculator*>( calculator ) );
+        return new LHCChi2Contribution( ptree, static_cast<LHCLimitCalculator*>( calculator ) );
 
     }
 
 }
 
-Fittino::Chi2ContributionBase* const Fittino::Factory::CreateChi2Contribution( const boost::property_tree::ptree& ptree, Fittino::LHCModelCalculator* calculator ) {
+Fittino::Chi2ContributionBase* const Fittino::Factory::CreateChi2Contribution( const boost::property_tree::ptree& ptree, Fittino::LHCLimitCalculator* calculator ) {
 
     return new LHCChi2Contribution( ptree, calculator );
 
