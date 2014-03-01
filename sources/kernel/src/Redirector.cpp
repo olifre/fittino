@@ -27,6 +27,12 @@
 #include "Redirector.h"
 #include "RedirectorException.h"
 
+extern "C" {
+
+    void fortranflush_();
+
+}
+
 Fittino::Redirector::Redirector( std::string fileName )
     : _fileName ( fileName ),
       _redirecting( false ) {
@@ -58,6 +64,12 @@ void Fittino::Redirector::Start() {
 
     }
 
+#ifdef FEYNHIGGS
+
+    fortranflush_();
+
+#endif
+
     StartRedirection( stdout, _fd_stdout );
     StartRedirection( stderr, _fd_stderr );
 
@@ -80,6 +92,12 @@ void Fittino::Redirector::Stop() {
     }
 
     _redirecting = false;
+
+#ifdef FEYNHIGGS
+
+    fortranflush_();
+
+#endif
 
     StopRedirection( stdout, _fd_stdout );
     StopRedirection( stderr, _fd_stderr );
