@@ -17,21 +17,18 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <map>
-#include <string>
-
 #include "ConfigurationException.h"
 #include "SimpleDataStorage.h"
 
 Fittino::SimpleDataStorage::SimpleDataStorage() {
 
-  _map = new std::map<std::string, double>;
+    _map = new std::map<std::string, double>;
 
 }
 
 Fittino::SimpleDataStorage::~SimpleDataStorage() {
 
-  delete _map;
+    delete _map;
 
 }
 
@@ -41,7 +38,7 @@ void Fittino::SimpleDataStorage::AddEntry( std::string name, double value ) {
 
         std::string message = "Entry with name " + name + " has already been added to simple data storage ";
 
-	throw ConfigurationException( message ); //TODO: Dedicated exception class ?
+        throw ConfigurationException( message ); // TODO: Dedicated exception class?
 
     }
 
@@ -49,13 +46,13 @@ void Fittino::SimpleDataStorage::AddEntry( std::string name, double value ) {
 
 std::map<std::string, double>* Fittino::SimpleDataStorage::GetMap() {
 
-  return _map;
+    return _map;
 
 }
 
 const std::map<std::string, double>* Fittino::SimpleDataStorage::GetMap() const {
 
-  return _map;
+    return _map;
 
 }
 

@@ -21,7 +21,6 @@
 #define FITTINO_SIMPLEDATASTORAGE_H
 
 #include <map>
-#include <string>
 
 #include "DataStorageBase.h"
 
@@ -43,34 +42,31 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                                           SimpleDataStorage();
+      SimpleDataStorage();
       /*!
        *  Standard destructor.
        */
-                                           ~SimpleDataStorage();
+      ~SimpleDataStorage();
       /*!
        *  Adds an non yet existing entry.
        */
-
-      void                                 AddEntry(std::string name, double value);
+      void                                 AddEntry( std::string name, double value );
       /*!
        *  Returns the map containing the stored doubles.
        */
       std::map<std::string, double>*       GetMap();
-
-    public:  
       /*!
        *  Returns the map containing the stored doubles.
        */
       const std::map<std::string, double>* GetMap() const;
 
-    public:    		   
+    public:
       /*!
-       *  Dummy function. 
+       *  Dummy function.
        */
       virtual void                         ReadFile( const std::string& inputFileName ) const;
 
-    private:  
+    private:
       std::map<std::string, double>*       _map;
 
   };

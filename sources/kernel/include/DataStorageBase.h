@@ -38,6 +38,8 @@ namespace Fittino {
        *  Standard constructor.
        */
       DataStorageBase();
+
+    public:
       /*!
        *  Standard destructor.
        */

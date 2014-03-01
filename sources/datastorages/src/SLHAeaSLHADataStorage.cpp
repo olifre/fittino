@@ -21,8 +21,8 @@
 
 #include "slhaea.h"
 
-#include "SLHAFileException.h"
 #include "SLHAeaSLHADataStorage.h"
+#include "SLHAFileException.h"
 #include "SLHALine.h"
 
 Fittino::SLHAeaSLHADataStorage::SLHAeaSLHADataStorage() {
@@ -120,7 +120,7 @@ void Fittino::SLHAeaSLHADataStorage::AddLine( const std::string& path ) {
 
 }
 
-void Fittino::SLHAeaSLHADataStorage::ReadFile( const std::string& slhaInputFileName ) {
+void Fittino::SLHAeaSLHADataStorage::ReadFile( const std::string& slhaInputFileName ) const {
 
     std::ifstream file( slhaInputFileName.c_str() );
 

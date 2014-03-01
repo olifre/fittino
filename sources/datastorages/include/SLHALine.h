@@ -22,16 +22,7 @@
 
 #include <string>
 
-namespace boost {
-
-  namespace property_tree {
-
-    template < class Key, class Data, class KeyCompare > class basic_ptree;
-    typedef basic_ptree< std::string, std::string, std::less<std::string> > ptree;
-
-  }
-
-}
+#include "PtreeForwardDeclaration.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -59,16 +50,16 @@ namespace Fittino {
       std::string   GetBlock() const;
       std::string   GetIndex() const;
       std::string   GetValue() const;
-      std::string   GetComment() const; 
+      std::string   GetComment() const;
 
     private:
-      const double& _value;  
+      const double& _value;
       std::string   _block;
       std::string   _comment;
       std::string   _index;
-      
+
   };
 
 }
 
-#endif // FITTINO_SIMPLEDATASTORAGE_H
+#endif // FITTINO_SLHALINE_H
