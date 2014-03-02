@@ -18,9 +18,6 @@
 *******************************************************************************/
 
 #include <cmath>
-#include <iostream>
-#include <string>
-#include <sstream>
 
 #include "CHiggsSignals.h"
 #include "ConfigurationException.h"
