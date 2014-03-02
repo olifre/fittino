@@ -38,18 +38,6 @@ Fittino::SimpleSampler::~SimpleSampler() {
 
 }
 
-void Fittino::SimpleSampler::Execute() {
-
-    this->FillMetaDataTree();
-
-    Scan( _model->GetNumberOfParameters() - 1 );
-
-}
-
-void Fittino::SimpleSampler::PrintSteeringParameters() const {
-
-}
-
 void Fittino::SimpleSampler::ResetValues( unsigned int iParameter ) {
 
     for ( unsigned int i = 0; i < iParameter; i++ ) {
@@ -92,12 +80,24 @@ void Fittino::SimpleSampler::Scan( unsigned int iParameter ) {
 
 }
 
-void Fittino::SimpleSampler::UpdateModel() {
-
-}
-
 void Fittino::SimpleSampler::UpdateValues( unsigned int iParameter ) {
 
     _model->GetCollectionOfParameters().At( iParameter )->SetValue( _model->GetCollectionOfParameters().At( iParameter )->GetValue() + _model->GetCollectionOfParameters().At( iParameter )->GetError() );
+
+}
+
+void Fittino::SimpleSampler::Execute() {
+
+    this->FillMetaDataTree();
+
+    Scan( _model->GetNumberOfParameters() - 1 );
+
+}
+
+void Fittino::SimpleSampler::PrintSteeringParameters() const {
+
+}
+
+void Fittino::SimpleSampler::UpdateModel() {
 
 }
