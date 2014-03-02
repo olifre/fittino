@@ -41,32 +41,32 @@ namespace Fittino {
        * Constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound and value.
        */
       SimplePrediction(
-                        std::string name,
-                        std::string unit,
+                        std::string   name,
+                        std::string   unit,
                         const double& value
                       );
       /*!
        * Constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound and value.
        */
       SimplePrediction(
-                        std::string name,
-                        std::string plotName,
-                        std::string unit,
-                        std::string plotUnit,
-                        double plotLowerBound,
-                        double plotUpperBound,
+                        std::string   name,
+                        std::string   plotName,
+                        std::string   unit,
+                        std::string   plotUnit,
+                        double        plotLowerBound,
+                        double        plotUpperBound,
                         const double& value
                       );
       /*!
        *  Alternative constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound and a calculator.
        */
       SimplePrediction(
-                        std::string name,
-                        std::string plotName,
-                        std::string unit,
-                        std::string plotUnit,
-                        double plotLowerBound,
-                        double plotUpperBound,
+                        std::string           name,
+                        std::string           plotName,
+                        std::string           unit,
+                        std::string           plotUnit,
+                        double                plotLowerBound,
+                        double                plotUpperBound,
                         const CalculatorBase* calculator
                       );
       /*!

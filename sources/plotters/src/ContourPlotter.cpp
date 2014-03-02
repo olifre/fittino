@@ -17,8 +17,6 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <iostream>
-
 #include "TCanvas.h"
 #include "TColor.h"
 #include "TGraph.h"
