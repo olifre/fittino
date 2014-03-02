@@ -17,8 +17,6 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <boost/property_tree/ptree.hpp>
-
 #include "CalculatorBase.h"
 #include "SimpleDataStorage.h"
 #include "SimplePrediction.h"

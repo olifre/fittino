@@ -36,6 +36,12 @@ Fittino::RosenbrockModel::~RosenbrockModel() {
 
 }
 
+Fittino::RosenbrockModel* Fittino::RosenbrockModel::Clone() const {
+
+    return new RosenbrockModel( *this );
+
+}
+
 double Fittino::RosenbrockModel::TestModelFunction() {
 
     double rosenbrock = 0;
@@ -47,11 +53,5 @@ double Fittino::RosenbrockModel::TestModelFunction() {
     }
 
     return rosenbrock;
-
-}
-
-Fittino::RosenbrockModel* Fittino::RosenbrockModel::Clone() const {
-
-    return new RosenbrockModel( *this );
 
 }
