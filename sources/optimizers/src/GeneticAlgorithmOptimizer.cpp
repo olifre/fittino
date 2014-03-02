@@ -8,7 +8,7 @@
 *                                                                              *
 * Description Class for genetic algorithm optimizer                            *
 *                                                                              *
-* Authors     Bjoern Sarrazin <bjoern.sarrazin@desy.de                         *
+* Authors     Bjoern Sarrazin  <bjoern.sarrazin@desy.de                        *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *

@@ -8,7 +8,7 @@
 *                                                                              *
 * Description Indicates a problem with redirection                             *
 *                                                                              *
-* Authors     Bjoern Sarrazin <sarrazin@physik.uni-bonn.de>                    *
+* Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *

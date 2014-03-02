@@ -42,10 +42,6 @@ namespace Fittino {
        */
       CalculatorException( const std::string& calculator, const std::string& error );
       /*!
-       *  Destructor.
-       */
-      virtual ~CalculatorException() throw();
-      /*!
        *  Returns the name of the calculator in which the exception was thrown.
        */
       const std::string& GetCalculator() const;
@@ -53,6 +49,12 @@ namespace Fittino {
        *  Returns the error which triggered the exception to be thrown.
        */
       const std::string& GetError() const;
+
+    public:
+      /*!
+       *  Destructor.
+       */
+      virtual            ~CalculatorException() throw();
 
     private:
       std::string        _calculator;

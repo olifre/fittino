@@ -21,13 +21,9 @@
 #include "CalculatorException.h"
 
 Fittino::CalculatorException::CalculatorException( const std::string& calculator, const std::string& error )
-    :  _calculator( calculator ),
-       _error( error ),
-       ExceptionBase( "Fittino::CalculatorException: In calculator " + calculator + " the following error occured: " + error + "." ) {
-
-}
-
-Fittino::CalculatorException::~CalculatorException() throw() {
+    : _calculator( calculator ),
+      _error( error ),
+      ExceptionBase( "Fittino::CalculatorException: In calculator " + calculator + " the following error occured: " + error + "." ) {
 
 }
 
@@ -40,5 +36,9 @@ const std::string& Fittino::CalculatorException::GetCalculator() const {
 const std::string& Fittino::CalculatorException::GetError() const {
 
     return _error;
+
+}
+
+Fittino::CalculatorException::~CalculatorException() throw() {
 
 }

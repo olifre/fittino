@@ -8,7 +8,7 @@
 *                                                                              *
 * Description Class for genetic algorithm optimizer                            *
 *                                                                              *
-* Authors     Bjoern Sarrazin <bjoern.sarrazin@desy.de>                        *
+* Authors     Bjoern Sarrazin  <bjoern.sarrazin@desy.de>                       *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -64,19 +64,19 @@ namespace Fittino {
       std::vector<Individual> _secondChildren;
 
     private:
-      void                     CalculateMatingProbabilities();
-      void                     CrossOver();
-      void                     MutatePopulation();
-      void                     Pair();
-      void                     Replace();
-      void                     SortPopulation();
+      void                    CalculateMatingProbabilities();
+      void                    CrossOver();
+      void                    MutatePopulation();
+      void                    Pair();
+      void                    Replace();
+      void                    SortPopulation();
 
     private:
-      virtual void             PrintSteeringParameters() const;
+      virtual void            PrintSteeringParameters() const;
       /*!
        *  By simulating evolution the created population in changed. The fittest individual of the new population determines how the model is updated.
        */
-      virtual void             UpdateModel();
+      virtual void            UpdateModel();
 
       /*! \endcond UML */
 
