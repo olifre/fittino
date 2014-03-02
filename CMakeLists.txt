@@ -26,7 +26,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.6 FATAL_ERROR)
 
 # Specify the name of the project.
-PROJECT(fittino CXX)
+PROJECT(fittino CXX C)
 
 # Specify the installation directory for the fittino executable. After the installation a
 # subdirectory called bin is created which contains the executable.
@@ -87,6 +87,8 @@ FIND_PACKAGE(SLHAEA)
 # Optional: Specify the installation path of "LHAPDF".
 # SET(LHAPDF_INSTALLATION_PATH <lhapdf/installation/path>)
 FIND_PACKAGE(LHAPDF 5.8.9 EXACT)
+
+FIND_PACKAGE( X11 )
 
 ADD_SUBDIRECTORY(external)
 ADD_SUBDIRECTORY(sources)
