@@ -21,7 +21,6 @@
 #include "Minuit2/MnMigrad.h"
 #include "Minuit2/MnPrint.h"
 
-#include "Messenger.h"
 #include "MinuitOptimizer.h"
 #include "MinuitAdapter.h"
 #include "ModelParameter.h"

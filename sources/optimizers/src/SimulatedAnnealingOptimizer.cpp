@@ -19,7 +19,6 @@
 
 #include <cmath>
 
-#include "Messenger.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
 #include "SimulatedAnnealingOptimizer.h"

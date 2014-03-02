@@ -20,7 +20,6 @@
 #include "TDirectory.h"
 #include "TTree.h"
 
-#include "Messenger.h"
 #include "SimpleOptimizer.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"

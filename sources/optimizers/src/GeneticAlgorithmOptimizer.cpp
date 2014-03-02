@@ -20,7 +20,6 @@
 #include <algorithm>
 
 #include "GeneticAlgorithmOptimizer.h"
-#include "Messenger.h"
 #include "ModelBase.h"
 
 Fittino::GeneticAlgorithmOptimizer::GeneticAlgorithmOptimizer( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
