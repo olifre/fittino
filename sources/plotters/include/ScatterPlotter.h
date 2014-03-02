@@ -44,7 +44,6 @@ namespace Fittino {
        *  Standard destructor.
        */
       ~ScatterPlotter();
-      //void       PerformAnalysis();
 
     protected:
       virtual void Execute();

@@ -32,7 +32,6 @@
 #include "ContourPlotter.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
-#include "Quantity.h"
 
 Fittino::ContourPlotter::ContourPlotter( ModelBase* model, const boost::property_tree::ptree& ptree )
     : PlotterBase( model, ptree ) {
@@ -53,18 +52,6 @@ Fittino::ContourPlotter::ContourPlotter( ModelBase* model, const boost::property
 }
 
 Fittino::ContourPlotter::~ContourPlotter() {
-
-}
-
-void Fittino::ContourPlotter::PrintResult() const {
-
-}
-
-void Fittino::ContourPlotter::PrintSteeringParameters() const {
-
-}
-
-void Fittino::ContourPlotter::UpdateModel() {
 
 }
 
@@ -404,5 +391,17 @@ void Fittino::ContourPlotter::Execute() {
         }
 
     }
+
+}
+
+void Fittino::ContourPlotter::PrintResult() const {
+
+}
+
+void Fittino::ContourPlotter::PrintSteeringParameters() const {
+
+}
+
+void Fittino::ContourPlotter::UpdateModel() {
 
 }

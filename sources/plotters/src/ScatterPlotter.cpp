@@ -17,8 +17,6 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <sstream>
-
 #include "TCanvas.h"
 #include "TFile.h"
 #include "TGraph.h"
@@ -29,7 +27,6 @@
 
 #include "ModelBase.h"
 #include "ModelParameter.h"
-#include "PlotterBase.h"
 #include "ScatterPlotter.h"
 
 Fittino::ScatterPlotter::ScatterPlotter( ModelBase* model, const boost::property_tree::ptree& ptree )
@@ -49,18 +46,6 @@ Fittino::ScatterPlotter::ScatterPlotter( ModelBase* model, const boost::property
 }
 
 Fittino::ScatterPlotter::~ScatterPlotter() {
-
-}
-
-void Fittino::ScatterPlotter::PrintResult() const {
-
-}
-
-void Fittino::ScatterPlotter::PrintSteeringParameters() const {
-
-}
-
-void Fittino::ScatterPlotter::UpdateModel() {
 
 }
 
@@ -126,5 +111,17 @@ void Fittino::ScatterPlotter::Execute() {
         _canvas->SaveAs( parameterName + ".png", "RECREATE" );
 
     }
+
+}
+
+void Fittino::ScatterPlotter::PrintResult() const {
+
+}
+
+void Fittino::ScatterPlotter::PrintSteeringParameters() const {
+
+}
+
+void Fittino::ScatterPlotter::UpdateModel() {
 
 }

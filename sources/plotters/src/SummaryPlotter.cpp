@@ -17,10 +17,6 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <iostream>
-#include <map>
-#include <vector>
-
 #include "TCanvas.h"
 #include "TColor.h"
 #include "TGraph.h"
@@ -35,7 +31,6 @@
 
 #include "ModelBase.h"
 #include "ModelParameter.h"
-#include "Quantity.h"
 #include "SummaryPlotter.h"
 
 Fittino::SummaryPlotter::SummaryPlotter( ModelBase* model, const boost::property_tree::ptree& ptree )
@@ -64,18 +59,6 @@ Fittino::SummaryPlotter::SummaryPlotter( ModelBase* model, const boost::property
 }
 
 Fittino::SummaryPlotter::~SummaryPlotter() {
-
-}
-
-void Fittino::SummaryPlotter::PrintResult() const {
-
-}
-
-void Fittino::SummaryPlotter::PrintSteeringParameters() const {
-
-}
-
-void Fittino::SummaryPlotter::UpdateModel() {
 
 }
 
@@ -379,5 +362,17 @@ void Fittino::SummaryPlotter::Execute() {
 
     TString plotname = "SummaryPlot";
     _canvas->SaveAs( plotname + ".eps", "RECREATE" );
+
+}
+
+void Fittino::SummaryPlotter::PrintResult() const {
+
+}
+
+void Fittino::SummaryPlotter::PrintSteeringParameters() const {
+
+}
+
+void Fittino::SummaryPlotter::UpdateModel() {
 
 }
