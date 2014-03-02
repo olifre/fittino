@@ -81,14 +81,6 @@ void Fittino::SLHAeaSLHADataStorage::AddBlock( const std::string& path ) {
 
 }
 
-void Fittino::SLHAeaSLHADataStorage::AddLine( const SLHALine& line ) {
-
-    SLHAea::Line slhaealine;
-    slhaealine << line.GetIndex() << line.GetValue() << line.GetComment();
-    ( *_slhaeaDataStorage )[line.GetBlock()][""] << slhaealine;
-
-}
-
 void Fittino::SLHAeaSLHADataStorage::AddLine( const std::string& path ) {
 
     // This function creates a new SLHA line within an existing SLHA block. The individual data
@@ -117,6 +109,14 @@ void Fittino::SLHAeaSLHADataStorage::AddLine( const std::string& path ) {
     }
 
     ( *_slhaeaDataStorage )[blockName][""] << line;
+
+}
+
+void Fittino::SLHAeaSLHADataStorage::AddLine( const SLHALine& line ) {
+
+    SLHAea::Line slhaealine;
+    slhaealine << line.GetIndex() << line.GetValue() << line.GetComment();
+    ( *_slhaeaDataStorage )[line.GetBlock()][""] << slhaealine;
 
 }
 

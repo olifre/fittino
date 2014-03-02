@@ -33,7 +33,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup datastorages
-   *  \brief Class for storage of one SLHA file line
+   *  \brief Class for storage of one SLHA file line.
    */
   class SLHALine {
 
@@ -47,9 +47,9 @@ namespace Fittino {
        */
       ~SLHALine();
       std::string   GetBlock() const;
+      std::string   GetComment() const;
       std::string   GetIndex() const;
       std::string   GetValue() const;
-      std::string   GetComment() const;
 
     private:
       const double& _value;

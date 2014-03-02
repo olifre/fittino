@@ -40,15 +40,15 @@ std::string Fittino::SLHALine::GetBlock() const {
 
 }
 
-std::string Fittino::SLHALine::GetIndex() const {
-
-    return _index;
-
-}
-
 std::string Fittino::SLHALine::GetComment() const {
 
     return _comment;
+
+}
+
+std::string Fittino::SLHALine::GetIndex() const {
+
+    return _index;
 
 }
 
