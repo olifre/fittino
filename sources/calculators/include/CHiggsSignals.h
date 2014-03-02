@@ -1,4 +1,4 @@
-/* $Id: HiggsSignalsHadXSCalculator.cpp 1567 2013-09-11 12:04:18Z sarrazin $ */
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
@@ -24,6 +24,9 @@
 
 extern "C" {
 
+  // double __theory_collidersfunctions_MOD_lhc8_rh_bb( const double* massh );
+  // double __theory_collidersfunctions_MOD_lhc8_rh_gg( const double* massh );
+
   double smgamma_h_      ( const double* massh );
   double smbr_hww_       ( const double* massh );
   double smbr_hzz_       ( const double* massh );
@@ -43,9 +46,17 @@ extern "C" {
   double smcs_lhc8_vbf_h_( const double* massh );
   double smcs_lhc8_tth_  ( const double* massh );
 
-  // double __theory_collidersfunctions_MOD_lhc8_rh_bb( const double* massh );
-  // double __theory_collidersfunctions_MOD_lhc8_rh_gg( const double* massh );
+  void __io_MOD_get_id_of_peakobservable( int* ii, int* ID );
+  void __io_MOD_get_number_of_observables( int* ntotal, int* npeakmu, int* npeakmh, int* nmpred, int* nanalyses );
+  void __io_MOD_get_peakinfo_from_hsresults( int* ID, double* mupred, int* domH, int* nHcomb ); 
+
   // void __io_MOD_higgssignals_create_slha_output_default( int* detailed );
+
+  void __pc_chisq_MOD_get_peakchi2(int* obsID, double* csqmu, double* csqmh, double* csqmax, double* csqtot); 
+  void __pc_chisq_MOD_print_cov_mh_to_file(int* nH);
+  void __pc_chisq_MOD_print_cov_mu_to_file();
+
+  void assign_toyvalues_to_peak_( int* obsID, double* mu_obs, double* mh_obs );
 
   void finish_higgssignals_();
 
@@ -106,7 +117,7 @@ extern "C" {
                                         const double* CS_lep_bbhj_ratio,
                                         const double* CS_lep_tautauhj_ratio,
                                         const double* CS_lep_hjhi_ratio,
-                                        const double* CS_lep_hjhi_ratio1,//?
+                                        const double* CS_lep_hjhi_ratio1, // ?
                                         const double* CS_tev_hj_ratio,
                                         const double* CS_tev_hjb_ratio,
                                         const double* CS_tev_hjW_ratio,
@@ -157,17 +168,6 @@ extern "C" {
   void setup_pdf_( const int* pdf );
   void setup_rate_uncertainties_( const double dCS[], const double dBR[] );
   
-  void assign_toyvalues_to_peak_( int* obsID, double* mu_obs, double* mh_obs );
-
-  void __io_MOD_get_peakinfo_from_hsresults( int* ID, double* mupred, int* domH, int* nHcomb ); 
-  void __io_MOD_get_number_of_observables( int* ntotal, int* npeakmu, int* npeakmh, int* nmpred, int* nanalyses );
-  void __io_MOD_get_id_of_peakobservable( int* ii, int* ID );
-  void __pc_chisq_MOD_print_cov_mh_to_file(int* nH);
-  void __pc_chisq_MOD_print_cov_mu_to_file();
-  void __pc_chisq_MOD_get_peakchi2(int* obsID, double* csqmu, double* csqmh, double* csqmax, double* csqtot); 
-
-
-
 }
 
 #endif // FITTINO_CHIGGSSIGNALS_H

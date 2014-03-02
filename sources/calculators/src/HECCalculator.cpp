@@ -1,4 +1,4 @@
-/* $Id: $ */
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
@@ -16,8 +16,6 @@
 *             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
-
-#include <boost/property_tree/ptree.hpp>
 
 #include "HECCalculator.h"
 #include "PhysicsModel.h"
@@ -100,20 +98,6 @@ Fittino::HECCalculator::~HECCalculator() {
 
 void Fittino::HECCalculator::CalculatePredictions() {
 
-    CallFunction();
-
-}
-
-void Fittino::HECCalculator::Initialize() const {
-
-}
-
-void Fittino::HECCalculator::CallExecutable() {
-
-}
-
-void Fittino::HECCalculator::CallFunction() {
-
     _g_hiss_s     = 1 + _Delta_hss_s;
     _g_hiss_p     = 1 + _Delta_hss_p;
     _g_hicc_s     = 1 + _Delta_hcc_s;
@@ -136,6 +120,6 @@ void Fittino::HECCalculator::CallFunction() {
 
 }
 
-void Fittino::HECCalculator::ConfigureInput() {
+void Fittino::HECCalculator::Initialize() const {
 
 }

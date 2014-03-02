@@ -1,4 +1,4 @@
-/* $Id: $ */
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
@@ -102,11 +102,6 @@ namespace Fittino {
       const double& _Delta_hgg;
       const double& _Delta_hggZ;
       const double& _Delta_hihjZ;
-
-    private:
-      virtual void  CallExecutable();
-      virtual void  CallFunction();
-      virtual void  ConfigureInput();
 
       /*! \endcond UML */
 
