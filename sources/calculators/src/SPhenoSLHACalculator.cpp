@@ -17,9 +17,6 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <sys/types.h>
-#include <sys/wait.h>
-
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
