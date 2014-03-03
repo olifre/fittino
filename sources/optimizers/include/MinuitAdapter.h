@@ -40,12 +40,12 @@ namespace Fittino {
        *  Standard constructor.
        */
       MinuitAdapter( ModelBase* model );
+
+    public:
       /*!
        *  Standard destructor.
        */
       virtual             ~MinuitAdapter();
-
-    public:
       /*!
        *  Error definition
        */

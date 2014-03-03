@@ -49,23 +49,19 @@ namespace Fittino {
       ~Particle();
       void                UpdateModel();
 
-      //private:
-      //static float      _c1;
-      //static float      _c2;
-
     private:
       float               _c1;
       float               _c2;
       double              _personalBestChi2;
       std::vector<double> _position;
       std::vector<double> _velocity;
-      TRandom3*            _randomGenerator;
+      TRandom3*           _randomGenerator;
       ModelBase*          _model;
       ModelBase*          _personalBestModel;
 
     private:
-      void                UpdateVelocity();
       void                UpdatePosition();
+      void                UpdateVelocity();
 
   };
 

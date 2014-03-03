@@ -26,6 +26,8 @@
 
 double Fittino::Particle::_globalBestChi2 = 1.e99;
 
+Fittino::ModelBase* Fittino::Particle::_globalBestModel;
+
 Fittino::Particle::Particle( double c1, double c2, Fittino::ModelBase* model, int seed )
     : _c1( c1 ),
       _c2( c2 ),
@@ -48,31 +50,6 @@ Fittino::Particle::Particle( double c1, double c2, Fittino::ModelBase* model, in
 }
 
 Fittino::Particle::~Particle() {
-
-}
-
-void Fittino::Particle::UpdateVelocity() {
-
-    double randomNumber1 = _randomGenerator->Uniform( 0., 1. );
-    double randomNumber2 = _randomGenerator->Uniform( 0., 1. );
-
-    for ( unsigned int i = 0; i < _velocity.size(); i++ ) {
-
-        _velocity.at( i ) =  _velocity.at( i )
-                             + _c1 * randomNumber1 * ( _personalBestModel->GetCollectionOfParameters().At( i )->GetValue() - _position.at( i ) )
-                             + _c2 * randomNumber2 * ( _globalBestModel->GetCollectionOfParameters().At( i )->GetValue() - _position.at( i ) );
-
-    }
-
-}
-
-void Fittino::Particle::UpdatePosition() {
-
-    for ( unsigned int i = 0; i < _position.size(); i++ ) {
-
-        _position.at( i ) = _position.at( i ) + _velocity.at( i );
-
-    }
 
 }
 
@@ -104,4 +81,27 @@ void Fittino::Particle::UpdateModel() {
 
 }
 
-Fittino::ModelBase* Fittino::Particle::_globalBestModel;
+void Fittino::Particle::UpdatePosition() {
+
+    for ( unsigned int i = 0; i < _position.size(); i++ ) {
+
+        _position.at( i ) = _position.at( i ) + _velocity.at( i );
+
+    }
+
+}
+
+void Fittino::Particle::UpdateVelocity() {
+
+    double randomNumber1 = _randomGenerator->Uniform( 0., 1. );
+    double randomNumber2 = _randomGenerator->Uniform( 0., 1. );
+
+    for ( unsigned int i = 0; i < _velocity.size(); i++ ) {
+
+        _velocity.at( i ) =  _velocity.at( i )
+                             + _c1 * randomNumber1 * ( _personalBestModel->GetCollectionOfParameters().At( i )->GetValue() - _position.at( i ) )
+                             + _c2 * randomNumber2 * ( _globalBestModel->GetCollectionOfParameters().At( i )->GetValue() - _position.at( i ) );
+
+    }
+
+}
