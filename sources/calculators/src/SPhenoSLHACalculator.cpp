@@ -17,18 +17,12 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-
 #include <sys/types.h>
 #include <sys/wait.h>
 
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
-#include "boost/property_tree/ptree.hpp"
 
 #include "CalculatorException.h"
 #include "PhysicsModel.h"
@@ -161,4 +155,3 @@ void Fittino::SPhenoSLHACalculator::ConfigureInput() {
     }
 
 }
-

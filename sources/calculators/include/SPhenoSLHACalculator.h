@@ -20,21 +20,9 @@
 #ifndef FITTINO_SPHENOSLHACALCULATOR_H
 #define FITTINO_SPHENOSLHACALCULATOR_H
 
-#include <vector>
-
-#include "SLHACalculatorBase.h"
 #include "Executor.h"
-
-namespace boost {
-
-  namespace property_tree {
-
-    template < class Key, class Data, class KeyCompare > class basic_ptree;
-    typedef basic_ptree< std::string, std::string, std::less<std::string> > ptree;
-
-  }
-
-}
+#include "PtreeForwardDeclaration.h"
+#include "SLHACalculatorBase.h"
 
 /*!
  *  \brief Fittino namespace.
