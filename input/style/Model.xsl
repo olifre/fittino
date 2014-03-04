@@ -278,7 +278,7 @@
                                  HiggsSignalsSLHACalculator |
                                  LHCLimitCalculator |
                                  RegressionCalculator |
-                                 SPhenoSLHACalculator |
+                                 SPhenoCalculator |
                                  TreeCalculator"/>
   </xsl:template>
   
@@ -292,7 +292,7 @@
                        HiggsSignalsSLHACalculator |
                        LHCLimitCalculator |
                        RegressionCalculator |
-                       SPhenoSLHACalculator |
+                       SPhenoCalculator |
                        TreeCalculator">
     <!-- Prints a headline and a list of the individual configuration items -->
     <p>
