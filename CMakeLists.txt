@@ -32,6 +32,8 @@ PROJECT(fittino CXX C)
 # subdirectory called bin is created which contains the executable.
 SET(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
 
+SET( CMAKE_FIND_LIBRARY_PREFIXES "lib" "" )
+
 # Specify user-defined modules required by Fittino.
 SET(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMakeModules)
 
