@@ -35,6 +35,7 @@
 #include "LHCChi2Contribution.h"
 #include "LHCLimitCalculator.h"
 #include "MarkovChainSampler.h"
+#include "MicromegasCalculator.h"
 #include "MinuitOptimizer.h"
 #include "NewCorrelatedSampler.h"
 #include "Observable.h"
@@ -189,6 +190,19 @@ Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& 
 #else
 
         throw ConfigurationException( "Trying to use HiggsSignalsSLHACalculator but Fittino was built without HiggsBounds or HiggsSignals." );
+
+#endif
+
+    }
+    else if ( type == "MicromegasCalculator") {
+
+#ifdef MICROMEGAS
+
+        return new MicromegasCalculator( model, ptree );
+
+#else 
+
+        throw ConfigurationException(" Trying to use MicromegasCalculator but Fittino was built without Micromegas.");
 
 #endif
 
