@@ -172,20 +172,6 @@ void Fittino::PhysicsModel::PrintStatus() const {
 
     }
 
-    if ( _collectionOfChi2Quantities.GetNumberOfElements() != 0 ) {
-
-        messenger << Messenger::Endl;
-        messenger << Messenger::INFO << "   Summary of chi2 terms:"  << Messenger::Endl;
-        messenger << Messenger::Endl;
-
-        for ( unsigned int i = 0; i < _collectionOfChi2Quantities.GetNumberOfElements(); ++i ) {
-
-            _collectionOfChi2Quantities.At( i )->PrintStatus();
-
-        }
-
-    }
-
     if ( _collectionOfStringVariables.GetNumberOfElements() != 0 ) {
 
         messenger << Messenger::Endl;
@@ -195,6 +181,20 @@ void Fittino::PhysicsModel::PrintStatus() const {
         for ( unsigned int i = 0; i < _collectionOfStringVariables.GetNumberOfElements(); ++i ) {
 
             _collectionOfStringVariables.At( i )->PrintStatus();
+
+        }
+
+    }
+
+    if ( _collectionOfChi2Quantities.GetNumberOfElements() != 0 ) {
+
+        messenger << Messenger::Endl;
+        messenger << Messenger::INFO << "   Summary of chi2 terms:"  << Messenger::Endl;
+        messenger << Messenger::Endl;
+
+        for ( unsigned int i = 0; i < _collectionOfChi2Quantities.GetNumberOfElements(); ++i ) {
+
+            _collectionOfChi2Quantities.At( i )->PrintStatus();
 
         }
 
