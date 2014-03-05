@@ -270,13 +270,14 @@
       </table>
     </p>
     <!-- Specify here the existing calculator templates -->
-    <xsl:apply-templates select="FeynHiggsCalculator |
+    <xsl:apply-templates select="AstroCalculator |
+                                 FeynHiggsCalculator |
                                  FeynHiggsSLHACalculator |
                                  HDim6Calculator |
                                  HECCalculator |
                                  HiggsSignalsCalculator |
                                  HiggsSignalsSLHACalculator |
-                                 LHCLimitCalculator |
+                                 LHCCalculator |
                                  RegressionCalculator |
                                  SPhenoCalculator |
                                  TreeCalculator"/>
@@ -284,13 +285,14 @@
   
   <!-- Individual configuration of the calculators -->
   
-  <xsl:template match="FeynHiggsCalculator |
+  <xsl:template match="AstroCalculator |
+                       FeynHiggsCalculator |
                        FeynHiggsSLHACalculator |
                        HDim6Calculator |
                        HECCalculator |
                        HiggsSignalsCalculator |
                        HiggsSignalsSLHACalculator |
-                       LHCLimitCalculator |
+                       LHCCalculator |
                        RegressionCalculator |
                        SPhenoCalculator |
                        TreeCalculator">
