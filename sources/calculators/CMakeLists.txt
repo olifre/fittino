@@ -54,6 +54,13 @@ IF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND)
 
 ENDIF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND)
 
+IF( NOT MICROMEGAS_FOUND )
+
+    LIST( REMOVE_ITEM sources "src/MicromegasCalculator.cpp" )
+    LIST( REMOVE_ITEM sources "src/MicromegasWrapper.cpp" )
+    
+ENDIF()
+
 IF(NOT SLHAEA_FOUND)
 
   LIST(REMOVE_ITEM sources "src/SPhenoSLHACalculator.cpp")
@@ -94,11 +101,6 @@ IF( MICROMEGAS_FOUND )
   INCLUDE_DIRECTORIES( ${MICROMEGAS_INCLUDE_DIRS} )  
   SET(compile_flags "${compile_flags} -I/usr/include")
 
-ELSE()
-
-    LIST( REMOVE_ITEM sources "src/MicromegasCalculator.cpp" )
-    LIST( REMOVE_ITEM sources "src/MicromegasWrapper.cpp" )
-    
 ENDIF()
 
 SET_TARGET_PROPERTIES(calculators PROPERTIES COMPILE_FLAGS ${compile_flags})
