@@ -72,15 +72,6 @@ IF(NOT LHAPDF_FOUND OR NOT GSL_FOUND)
 
 ENDIF()
 
-IF( MICROMEGAS_FOUND )
-
-  INCLUDE_DIRECTORIES( ${MICROMEGAS_INCLUDE_DIRS} )  
-
-ELSE()
-
-    LIST( REMOVE_ITEM sources "src/MicromegasCalculator.cpp" )
-    
-ENDIF()
 
 ADD_LIBRARY(calculators ${includes} ${sources})
 
@@ -98,5 +89,16 @@ IF(GSL_FOUND)
     SET(compile_flags "${compile_flags} ${GSL_COMPILE_FLAGS}")
 ENDIF()
 
-SET_TARGET_PROPERTIES(calculators PROPERTIES COMPILE_FLAGS ${compile_flags})
+IF( MICROMEGAS_FOUND )
 
+  INCLUDE_DIRECTORIES( ${MICROMEGAS_INCLUDE_DIRS} )  
+  SET(compile_flags "${compile_flags} -I/usr/include")
+
+ELSE()
+
+    LIST( REMOVE_ITEM sources "src/MicromegasCalculator.cpp" )
+    LIST( REMOVE_ITEM sources "src/MicromegasWrapper.cpp" )
+    
+ENDIF()
+
+SET_TARGET_PROPERTIES(calculators PROPERTIES COMPILE_FLAGS ${compile_flags})
