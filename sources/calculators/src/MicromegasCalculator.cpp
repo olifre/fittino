@@ -17,17 +17,12 @@
  *                                                                              *
  *******************************************************************************/
 
-
 #include <boost/property_tree/ptree.hpp>
-
-//#include "pmodel.h"
-//#include "micromegas.h"
-//#include "micromegas_aux.h"
 
 #include "MicromegasCalculator.h"
 
 Fittino::MicromegasCalculator::MicromegasCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
-:CalculatorBase( model ) {
+:MicromegasWrapper( model ) {
 
 
 
@@ -37,6 +32,3 @@ Fittino::MicromegasCalculator::~MicromegasCalculator() {
 
 }
 
-void Fittino::MicromegasCalculator::CalculatePredictions() {
-
-}

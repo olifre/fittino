@@ -4,7 +4,7 @@
  *                                                                              *
  * Project     Fittino - A SUSY Parameter Fitting Package                       *
  *                                                                              *
- * File        MicromegasCalculator.h                                           *
+ * File        MicromegasWrapper.cpp                                            *
  *                                                                              *
  * Description Wrapper class for Micromegas                                     *
  *                                                                              *
@@ -18,23 +18,23 @@
  *******************************************************************************/
 
 
-#ifndef FITTINO_MICROMEGASCALCULATOR_H
-#define FITTINO_MICROMEGASCALCULATOR_H
+#include "pmodel.h"
+#include "micromegas.h"
+#include "micromegas_aux.h"
 
 #include "MicromegasWrapper.h"
 
-namespace Fittino {
+Fittino::MicromegasWrapper::MicromegasWrapper( const PhysicsModel* model )
+:CalculatorBase( model ) {
 
-    class MicromegasCalculator: public MicromegasWrapper {
-
-    public:
-
-        MicromegasCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
-        ~MicromegasCalculator();
-
-    };
 
 
 }
 
-#endif
+Fittino::MicromegasWrapper::~MicromegasWrapper() {
+
+}
+
+void Fittino::MicromegasWrapper::CalculatePredictions() {
+
+}
