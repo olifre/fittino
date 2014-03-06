@@ -79,6 +79,15 @@ IF(NOT LHAPDF_FOUND OR NOT GSL_FOUND)
 
 ENDIF()
 
+IF( SUPERISO_FOUND )
+
+    INCLUDE_DIRECTORIES( ${SUPERISO_INCLUDE_DIRS} )
+    
+ELSE()
+
+    LIST( REMOVE_ITEM sources "src/SuperIsoCalculator.cpp" )
+
+ENDIF()
 
 ADD_LIBRARY(calculators ${includes} ${sources})
 

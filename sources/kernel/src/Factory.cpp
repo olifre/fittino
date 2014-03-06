@@ -52,6 +52,7 @@
 #include "SLHAeaSLHADataStorage.h"
 #include "SPhenoSLHACalculator.h"
 #include "SummaryPlotter.h"
+#include "SuperIsoCalculator.h"
 #include "TreeCalculator.h"
 #include "TreeSampler.h"
 
@@ -256,6 +257,19 @@ Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& 
     else if ( type == "SPhenoCalculator" ) {
 
         return new SPhenoSLHACalculator( ptree, model );
+
+    }
+    else if ( type == "SuperIsoCalculator" ) {
+
+#ifdef SUPERISO
+
+        return new SuperIsoCalculator( model, ptree );
+
+#else
+
+        throw ConfigurationException( "Trying to use SuperIsoCalculator but Fittino was built without SuperIso." );
+
+#endif
 
     }
     else {
