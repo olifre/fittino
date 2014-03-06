@@ -21,6 +21,8 @@
 #ifndef FITTINO_MICROMEGASWRAPPER_H
 #define FITTINO_MICROMEGASWRAPPER_H
 
+#include <string>
+
 #include "CalculatorBase.h"
 
 namespace Fittino {
@@ -30,8 +32,16 @@ namespace Fittino {
     public:
 
         MicromegasWrapper( const PhysicsModel* model );
-        ~MicromegasWrapper();
+        virtual ~MicromegasWrapper();
         void CalculatePredictions();
+
+    protected:
+
+        std::string _inputFile;
+        double _omegah2;
+
+    private:
+
 
     };
 

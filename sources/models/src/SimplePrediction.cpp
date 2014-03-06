@@ -21,6 +21,8 @@
 #include "SimpleDataStorage.h"
 #include "SimplePrediction.h"
 
+#include <boost/property_tree/ptree.hpp>
+
 Fittino::SimplePrediction::SimplePrediction( std::string   name,
                                              std::string   unit,
                                              const double& value )

@@ -22,6 +22,8 @@
 #include "ModelParameter.h"
 #include "Messenger.h"
 
+#include <boost/property_tree/ptree.hpp>
+
 Fittino::ModelParameter::ModelParameter( const boost::property_tree::ptree& ptree )
     : _error  ( ptree.get<double>( "Error", 0.1   ) ),
       _fixed  ( ptree.get<bool>  ( "Fixed", false ) ),

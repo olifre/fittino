@@ -20,12 +20,15 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include "MicromegasCalculator.h"
+#include "SimplePrediction.h"
 
 Fittino::MicromegasCalculator::MicromegasCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
 :MicromegasWrapper( model ) {
 
+    _inputFile = ptree.get<std::string>( "InputFile");
 
-
+     AddQuantity( new SimplePrediction( "Omega", "", _omegah2 ) );
+    
 }
 
 Fittino::MicromegasCalculator::~MicromegasCalculator() {
