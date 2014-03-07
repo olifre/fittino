@@ -21,7 +21,6 @@
 #define FITTINO_SIMPLEPREDICTION_H
 
 #include "PredictionBase.h"
-#include "PtreeForwardDeclaration.h" 
 
 /*!
  *  \brief Fittino namespace.
@@ -31,14 +30,14 @@ namespace Fittino {
   class CalculatorBase;
 
   /*!
-   *  \ingroup models
-   *  \brief Class for simple predictions
+   *  \ingroup kernel
+   *  \brief Class for simple predictions.
    */
   class SimplePrediction : public PredictionBase {
 
     public:
       /*!
-       * Constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound and value.
+       *  Constructor taking name, unit and value.
        */
       SimplePrediction(
                         std::string   name,
@@ -46,27 +45,27 @@ namespace Fittino {
                         const double& value
                       );
       /*!
-       * Constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound and value.
+	   *  Constructor taking name, plotName, unit, plotUnit, lowerBound, upperBound and value.
        */
       SimplePrediction(
                         std::string   name,
                         std::string   plotName,
                         std::string   unit,
                         std::string   plotUnit,
-                        double        plotLowerBound,
-                        double        plotUpperBound,
+                        double        lowerBound,
+                        double        upperBound,
                         const double& value
                       );
       /*!
-       *  Alternative constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound and a calculator.
+       *  Constructor taking name, plotName, unit, plotUnit, lowerBound, upperBound and a calculator.
        */
       SimplePrediction(
                         std::string           name,
                         std::string           plotName,
                         std::string           unit,
                         std::string           plotUnit,
-                        double                plotLowerBound,
-                        double                plotUpperBound,
+                        double                lowerBound,
+                        double                upperBound,
                         const CalculatorBase* calculator
                       );
       /*!

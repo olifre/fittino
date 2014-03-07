@@ -28,14 +28,14 @@
 namespace Fittino {
 
   /*!
-   *  \ingroup models
+   *  \ingroup kernel
    *  \brief Base class for predictions.
    */
   class PredictionBase : public Quantity {
 
     public:
       /*!
-       *  Constructor taking name, plotName, unit, plotUnit, plotLowerBound and plotUpperBound as an input
+	   *  Constructor taking name, plotName, unit, plotUnit, lowerBound and upperBound as input.
        */
       PredictionBase( std::string name,
                       std::string plotName,
@@ -44,7 +44,7 @@ namespace Fittino {
                       double      lowerBound,
                       double      upperBound );
       /*!
-       *  Standard constructor
+       *  Standard constructor.
        */
       PredictionBase( const boost::property_tree::ptree& ptree );
       /*!

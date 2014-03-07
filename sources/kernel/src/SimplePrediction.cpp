@@ -40,16 +40,16 @@ Fittino::SimplePrediction::SimplePrediction( std::string   name,
                                              std::string   plotName,
                                              std::string   unit,
                                              std::string   plotUnit,
-                                             double        plotLowerBound,
-                                             double        plotUpperBound,
+                                             double        lowerBound,
+                                             double        upperBound,
                                              const double& value )
     : _referenceValue( value ),
       PredictionBase( name,
                       plotName,
                       unit,
                       plotUnit,
-                      plotLowerBound,
-                      plotUpperBound ) {
+                      lowerBound,
+                      upperBound ) {
 
 }
 
@@ -57,16 +57,16 @@ Fittino::SimplePrediction::SimplePrediction( std::string           name,
                                              std::string           plotName,
                                              std::string           unit,
                                              std::string           plotUnit,
-                                             double                plotLowerBound,
-                                             double                plotUpperBound,
+                                             double                lowerBound,
+                                             double                upperBound,
                                              const CalculatorBase* calculator )
     : _referenceValue( calculator->GetSimpleOutputDataStorage()->GetMap()->at( name ) ),
       PredictionBase( name,
                       plotName,
                       unit,
                       plotUnit,
-                      plotLowerBound,
-                      plotUpperBound ) {
+                      lowerBound,
+                      upperBound ) {
 
 }
 
