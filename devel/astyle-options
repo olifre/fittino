@@ -1,6 +1,7 @@
 --indent=spaces=4
 --indent-switches
 --break-closing-brackets
+--max-instatement-indent=80
 --style=java
 --pad-oper
 --pad-paren-in

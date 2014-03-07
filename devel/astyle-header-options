@@ -2,6 +2,7 @@
 --indent-namespaces
 --indent=spaces=2
 --indent-switches
+--max-instatement-indent=80
 --style=java
 --pad-oper
 --pad-paren-in
