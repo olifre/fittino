@@ -39,35 +39,29 @@ namespace Fittino {
       /*!
        *  Constructor taking name, unit and value.
        */
-      SimplePrediction(
-                        std::string   name,
+      SimplePrediction( std::string   name,
                         std::string   unit,
-                        const double& value
-                      );
+                        const double& value );
       /*!
-	   *  Constructor taking name, plotName, unit, plotUnit, lowerBound, upperBound and value.
+       *  Constructor taking name, plotName, unit, plotUnit, lowerBound, upperBound and value.
        */
-      SimplePrediction(
-                        std::string   name,
+      SimplePrediction( std::string   name,
                         std::string   plotName,
                         std::string   unit,
                         std::string   plotUnit,
                         double        lowerBound,
                         double        upperBound,
-                        const double& value
-                      );
+                        const double& value );
       /*!
        *  Constructor taking name, plotName, unit, plotUnit, lowerBound, upperBound and a calculator.
        */
-      SimplePrediction(
-                        std::string           name,
+      SimplePrediction( std::string           name,
                         std::string           plotName,
                         std::string           unit,
                         std::string           plotUnit,
                         double                lowerBound,
                         double                upperBound,
-                        const CalculatorBase* calculator
-                      );
+                        const CalculatorBase* calculator );
       /*!
        *  Standard constructor.
        */
