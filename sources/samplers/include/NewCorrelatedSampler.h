@@ -2,7 +2,7 @@
 // NEW VERSION:
 
 
-/* $Id: NewCorrelatedSampler.h 1280 2013-03-28 11:23:49Z uhlenbrock@PHYSIK.UNI-BONN.DE $ */
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
