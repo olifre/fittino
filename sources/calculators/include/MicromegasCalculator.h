@@ -1,40 +1,44 @@
 /* $Id$ */
 
 /*******************************************************************************
- *                                                                              *
- * Project     Fittino - A SUSY Parameter Fitting Package                       *
- *                                                                              *
- * File        MicromegasCalculator.h                                           *
- *                                                                              *
- * Description Wrapper class for Micromegas                                     *
- *                                                                              *
- * Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
- *                                                                              *
- * Licence     This program is free software; you can redistribute it and/or    *
- *             modify it under the terms of the GNU General Public License as   *
- *             published by the Free Software Foundation; either version 3 of   *
- *             the License, or (at your option) any later version.              *
- *                                                                              *
- *******************************************************************************/
-
+*                                                                              *
+* Project     Fittino - A SUSY Parameter Fitting Package                       *
+*                                                                              *
+* File        MicromegasCalculator.h                                           *
+*                                                                              *
+* Description Wrapper class for Micromegas                                     *
+*                                                                              *
+* Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
+*                                                                              *
+* Licence     This program is free software; you can redistribute it and/or    *
+*             modify it under the terms of the GNU General Public License as   *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
+*                                                                              *
+*******************************************************************************/
 
 #ifndef FITTINO_MICROMEGASCALCULATOR_H
 #define FITTINO_MICROMEGASCALCULATOR_H
 
 #include "MicromegasWrapper.h"
 
+/*!
+ *  \brief Fittino namespace.
+ */
 namespace Fittino {
 
-    class MicromegasCalculator: public MicromegasWrapper {
+  /*!
+   *  \ingroup calculators
+   *  \brief Wrapper class for Micromegas.
+   */
+  class MicromegasCalculator : public MicromegasWrapper {
 
     public:
+      MicromegasCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+      ~MicromegasCalculator();
 
-        MicromegasCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
-        ~MicromegasCalculator();
-
-    };
-
+  };
 
 }
 
-#endif
+#endif // FITTINO_MICROMEGASCALCULATOR_H
