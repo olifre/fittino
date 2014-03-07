@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding='UTF-8'?>
 <?xml-stylesheet type="text/xsl" href="style/InputFile.xsl"?>
 
-<!-- $Id: $ -->
+<!-- $Id$ -->
 
 <!--#########################################################################-->
 <!--                                                                         -->
@@ -26,6 +26,7 @@
   <VerbosityLevel>ALWAYS</VerbosityLevel>
 
   <Model>
+
     <RosenbrockModel>
 
       <ModelParameter>
@@ -43,6 +44,7 @@
       </ModelParameter>
 
     </RosenbrockModel>
+
   </Model>
 
   <Tool>
