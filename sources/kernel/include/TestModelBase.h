@@ -43,8 +43,17 @@ namespace Fittino {
        */
       ~TestModelBase();
       virtual void                               PrintStatus() const;
+      /*!
+       *  \todo Remove when no longer used by derived classes (Matthias).
+       */
       virtual void                               SmearObservations( TRandom3* ) {}
+      /*!
+       *  \todo Remove when no longer used by derived classes (Matthias).
+       */
       virtual const std::vector<Observable*>*    GetObservableVector() const { return NULL; }
+      /*!
+       *  \todo Remove when no longer used by derived classes (Matthias).
+       */
       virtual const Collection<CalculatorBase*>& GetCollectionOfCalculators() const { return *(new Collection<CalculatorBase*>); }
 
     protected:

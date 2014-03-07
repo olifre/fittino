@@ -17,21 +17,18 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <sstream>
-
 #include "Factory.h"
 #include "PhysicsModel.h"
-#include "SLHAeaSLHADataStorage.h"
 #include "SLHACalculatorBase.h"
+#include "SLHAeaSLHADataStorage.h"
 
 Fittino::SLHACalculatorBase::SLHACalculatorBase( const PhysicsModel* model )
     : CalculatorBase( model ),
       _slhaInputFileName( "" ),
-      _slhaOutputFileName( "" ),
-      _slhaInputDataStorage( 0 ),
-      _slhaOutputDataStorage( 0 ) {
+      _slhaOutputFileName( "" ) {
 
     Factory factory;
+
     _slhaInputDataStorage  = factory.CreateSLHAeaSLHADataStorage();
     _slhaOutputDataStorage = factory.CreateSLHAeaSLHADataStorage();
 

@@ -48,39 +48,40 @@ namespace Fittino {
        */
       ~CalculatorBase();
       std::string                              GetName() const;
-
-    public:
       /*!
-       *  \todo Remove.
+       *  \todo Remove when no longer used by derived classes (Matthias).
        */
       const Collection<Chi2ContributionBase*>& GetCollectionOfChi2Contributions() const;
       const Collection<PredictionBase*>&       GetCollectionOfQuantities() const;
       /*!
-       *  \todo Remove.
+       *  \todo Remove when no longer used by derived classes (Matthias).
        */
       const SimpleDataStorage*                 GetSimpleOutputDataStorage() const;
 
     public:
       virtual void                             CalculatePredictions() = 0;
       virtual void                             Initialize() const;
+      /*!
+       *  \todo Remove when no longer used by derived classes (Matthias).
+       */
       virtual void                             SetupMeasuredValues();
 
     protected:
       std::string                              _name;
       const PhysicsModel*                      _model;
       /*!
-       *  \todo Remove.
+       *  \todo Remove when no longer used by derived classes (Matthias).
        */
       SimpleDataStorage*                       _simpleOutputDataStorage;
       /*!
-       *  \todo Remove.
+       *  \todo Remove when no longer used by derived classes (Matthias).
        */
       Collection<Chi2ContributionBase*>        _collectionOfChi2Contributions;
       Collection<PredictionBase*>              _collectionOfQuantities;
 
     protected:
       /*!
-       *  \todo Remove.
+       *  \todo Remove when no longer used by derived classes (Matthias).
        */
       void                                     AddChi2Contribution( Chi2ContributionBase* chi2Contribution );
       void                                     AddQuantity( PredictionBase* prediction );

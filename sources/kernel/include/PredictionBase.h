@@ -35,7 +35,7 @@ namespace Fittino {
 
     public:
       /*!
-	   *  Constructor taking name, plotName, unit, plotUnit, lowerBound and upperBound as input.
+       *  Constructor taking name, plotName, unit, plotUnit, lowerBound and upperBound as input.
        */
       PredictionBase( std::string name,
                       std::string plotName,

@@ -220,12 +220,12 @@ void Fittino::Executor::Parent() {
             throw ExecutorException( "kill" );
 
         }
-        
+
         if ( waitpid( -1, &_status, 0 ) == -1 ) {
-          
+
             perror( "waitpid" );
             throw ExecutorException( "waitpid after kill" );
-          
+
         }
 
         throw;

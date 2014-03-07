@@ -73,7 +73,6 @@ void Fittino::Redirector::Start() {
     StartRedirection( stdout, _fd_stdout );
     StartRedirection( stderr, _fd_stderr );
 
-
     if ( close( _fd_file ) ) {
 
         perror( "close" );
@@ -162,7 +161,6 @@ void Fittino::Redirector::StopRedirection( FILE* stream, int& backup ) {
 
         perror( "dup2" );
         throw RedirectorException( "dup2" );
-
 
     }
 

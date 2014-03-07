@@ -20,12 +20,9 @@
 *******************************************************************************/
 
 #include <boost/foreach.hpp>
-#include <boost/property_tree/ptree.hpp>
 
-#include "ConfigurationException.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
-#include "PredictionBase.h"
 
 Fittino::ModelBase::ModelBase( const boost::property_tree::ptree& ptree )
     : _name( "" ) {
@@ -108,24 +105,23 @@ const Fittino::Collection<Fittino::ModelParameter*>& Fittino::ModelBase::GetColl
 
 }
 
-const Fittino::Collection<Fittino::PredictionBase*>&  Fittino::ModelBase::GetCollectionOfPredictions() const {
+const Fittino::Collection<Fittino::PredictionBase*>& Fittino::ModelBase::GetCollectionOfPredictions() const {
 
     return _collectionOfPredictions;
 
 }
 
-const Fittino::Collection<const Fittino::Quantity*>&  Fittino::ModelBase::GetCollectionOfQuantities() const {
+const Fittino::Collection<const Fittino::Quantity*>& Fittino::ModelBase::GetCollectionOfQuantities() const {
 
     return _collectionOfQuantities;
 
 }
 
-const Fittino::Collection<const Fittino::VariableBase<std::string>*>&  Fittino::ModelBase::GetCollectionOfStringVariables() const {
+const Fittino::Collection<const Fittino::VariableBase<std::string>*>& Fittino::ModelBase::GetCollectionOfStringVariables() const {
 
     return _collectionOfStringVariables;
 
 }
-
 
 void Fittino::ModelBase::AddPrediction( PredictionBase* prediction ) {
 

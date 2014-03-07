@@ -17,7 +17,6 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "Messenger.h"
 #include "ModelParameter.h"
 #include "TestModelBase.h"
 

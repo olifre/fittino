@@ -23,16 +23,13 @@
 #include <getopt.h>
 
 #include <cstdlib>
-#include <iostream>
 
 #include <boost/property_tree/xml_parser.hpp>
 
 #include "AnalysisTool.h"
-#include "ConfigurationException.h"
 #include "Controller.h"
 #include "Factory.h"
 #include "InputException.h"
-#include "Messenger.h"
 #include "ModelBase.h"
 
 Fittino::Controller* Fittino::Controller::GetInstance() {

@@ -8,7 +8,7 @@
 *                                                                              *
 * Description Base class for variables                                         *
 *                                                                              *
-* Authors     Bjoern Sarrazin         <sarrazin@physik.uni-bonn.de>            *
+* Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -20,8 +20,8 @@
 #ifndef FITTINO_VARIABLEBASE_H
 #define FITTINO_VARIABLEBASE_H
 
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 #include <string>
 
 #include "Messenger.h"
@@ -35,7 +35,7 @@ namespace Fittino {
    *  \ingroup kernel
    *  \brief Base class for variables.
    */
-  template< class T >
+  template<class T>
   class VariableBase {
 
     public:
@@ -44,45 +44,34 @@ namespace Fittino {
        */
       VariableBase( const std::string& name );
       /*!
-       *  Standard destructor.
-       */
-      virtual ~VariableBase();
-      /*!
       *  Returns the name of the variable.
       */
-      const std::string&  GetName() const;
+      void               PrintStatus() const;
+      const std::string& GetName() const;
+
+    public:
+      /*!
+       *  Standard destructor.
+       */
+      virtual            ~VariableBase();
       /*!
        *  Returns the value of the variable.
        */
-      virtual const T&     GetValue() const = 0;
-
-      void PrintStatus() const;
+      virtual const T&   GetValue() const = 0;
 
     private:
-      std::string           _name;
+      std::string        _name;
 
   };
 
-  template< class T >
-  VariableBase< T >::VariableBase( const std::string& name )
-    : _name ( name ){
+  template<class T>
+  VariableBase<T>::VariableBase( const std::string& name )
+    : _name ( name ) {
 
   }
 
-  template< class T >
-    VariableBase< T >::~VariableBase(){
-
-  }  
-
-  template< class T >
-  const std::string& VariableBase< T >::GetName() const {
-
-    return _name;
-
-  }
-
-  template< class T >
-  void VariableBase< T >::PrintStatus() const {
+  template<class T>
+  void VariableBase<T>::PrintStatus() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
@@ -97,8 +86,21 @@ namespace Fittino {
               << std::scientific
               << GetValue()
               << Messenger::Endl;
+
+  }
+
+  template<class T>
+  const std::string& VariableBase<T>::GetName() const {
+
+    return _name;
+
+  }
+
+  template<class T>
+  VariableBase<T>::~VariableBase() {
+
   }
 
 }
 
-#endif
+#endif // FITTINO_VARIABLEBASE_H

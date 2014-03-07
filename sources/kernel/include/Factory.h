@@ -86,17 +86,26 @@ namespace Fittino {
       ModelBase* const            CreateModel( const std::string& type, const boost::property_tree::ptree& ptree ) const;
       /*!
        *  Returns a Prediction according to the type specified in the ptree.
+       *  \todo Remove when no longer used by derived classes (Matthias).
        */
       PredictionBase* const       CreatePrediction( const boost::property_tree::ptree& ptree, const Fittino::CalculatorBase* calculator );
       /*!
        *  Returns an Observable with a prediction according to the type specified in the ptree.
+       *  \todo Remove when no longer used by derived classes (Matthias).
        */
       Observable* const           CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const;
+      /*!
+       *  \todo Remove when no longer used by derived classes (Matthias).
+       */
       Observable* const           CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::PredictionBase*>& predictions, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const;
       /*!
        *  Returns a Chi2Contribution according to the type passed as an argument.
+       *  \todo Remove when no longer used by derived classes (Matthias).
        */
       Chi2ContributionBase* const CreateChi2Contribution( const std::string& type, const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const;
+      /*!
+       *  \todo Remove when no longer used by derived classes (Matthias).
+       */
       Chi2ContributionBase* const CreateChi2Contribution( const boost::property_tree::ptree& ptree, Fittino::LHCLimitCalculator* calculator );
       SLHADataStorageBase*        CreateSLHAeaSLHADataStorage();
 

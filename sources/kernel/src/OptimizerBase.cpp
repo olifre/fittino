@@ -20,9 +20,6 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <iomanip>
-
-#include "Messenger.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
 #include "OptimizerBase.h"

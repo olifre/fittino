@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        AnalysisTool.h                                                   *
+* File        AnalysisTool.cpp                                                 *
 *                                                                              *
 * Description Abstract class which provides basic functionality for analysis   *
 *             tools like optimizers or samplers                                *
@@ -19,14 +19,10 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <iomanip>
-
 #include "TTree.h"
 
 #include "AnalysisTool.h"
-#include "Messenger.h"
 #include "ModelBase.h"
-#include "Quantity.h"
 #include "Observable.h"
 
 Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tree::ptree& ptree )
@@ -96,7 +92,7 @@ void Fittino::AnalysisTool::PrintStatus() const {
     messenger << Messenger::INFO << Messenger::Endl;
     messenger << Messenger::INFO << std::scientific << "    ----------------------------------------------------" << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
-    messenger << Messenger::INFO << std::scientific << std::setprecision( 2 ) << "    Sum                                         " << _model->GetChi2() << Messenger::Endl;
+    messenger << Messenger::INFO << std::scientific << std::setprecision( 2 ) << "    Total chi2                                  " << _model->GetChi2() << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
 
 }

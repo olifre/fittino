@@ -39,6 +39,8 @@ namespace Fittino {
        *  between a model and the concrete sampler is established.
        */
       SamplerBase( ModelBase *model, const boost::property_tree::ptree& ptree );
+
+    public:
       /*!
        *  Standard destructor.
        */

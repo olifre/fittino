@@ -24,39 +24,41 @@
  *  \todo Long-term: Document the code.
  *  \todo Long-term: Write a comprehensive developer's guide.
  *  \todo Long-term: Write a comprehensive user's guide.
- *  \todo Long-term Use an issue tracker like Redmine instead of this list.
- *  \todo Long-term Find a way to use xml style file online.
+ *  \todo Long-term: Update the xml definition file.
+ *  \todo Long-term: Use an issue tracker like Redmine instead of this list.
+ *  \todo Long-term: Find a way to use xml style file online.
  *  \todo Long-term: Discuss Calculator interface (Mathias).
- *  \todo Long-term: Discuss Plotters and their relation to other analysis tools.
- *  \todo Add HiggsBoundsCalculator (needs threading, look at fittino1 for that)
- *  \todo Add SuperIsoCalculator ( library based )
- *  \todo Add MicromegasCalculator( library based )
- *  \todo Add AstroFitCalculator ( using Executor class )
- *  \todo Long-term Add DarkSUSYCalculator 
- *  \todo Make sure AstroCalculator works with AstroFit database
- *  \todo Add FormulaCalculator (a wrapper around TFormula )
- *  \todo Implement the corrrection of the FH decoupling limit (use FormulaCalculator?)
- *  \todo Add HiggsSignalsPartonicInputCalculator
- *  \todo Common base class for different HS calculators
- *  \todo Implement toys in the common base class ( or temporarily in HiggsSignalsHECCalculator )
- *  \todo In HiggsSignals: Add wrapper functions for modul functions to HiggsSignals_subroutines
- *  \todo Update the xml definition file.
+ *  \todo Long-term: Further develop plotters (Mathias).
+ *  \todo Remove MathTools (Matthias).
+ *  \todo Remove again the Chi2Contribution (or at least print them) (Matthias).
+ *  \todo Add MicromegasCalculator (library based) (Bjoern).
+ *  \todo Add SuperIsoCalculator (library based) (Bjoern).
+ *  \todo Add HiggsBoundsCalculator (needs threading, look at fittino1 for that).
+ *  \todo Add AstroFitCalculator (using Executor class).
+ *  \todo Add DarkSUSYCalculator.
+ *  \todo Add FormulaCalculator (a wrapper around TFormula).
+ *  \todo Add HiggsSignalsPartonicInputCalculator.
+ *  \todo Add RandomSampler, a sampler with fixed sampling density (usefull for random grid production).
+ *  \todo Add buggy point removal.
+ *  \todo Add toy plots.
+ *  \todo Add _collectionOfMetaQuantities (or so) to class ModelBase and fill with everything which
+ *  should be stored in the meta data tree.
+ *  \todo Make sure AstroCalculator works with AstroFit database.
+ *  \todo Implement the corrrection of the FH decoupling limit (use FormulaCalculator?).
+ *  \todo Common base class for different HS calculators.
+ *  \todo Implement toys in the common base class (or temporarily in HiggsSignalsHECCalculator).
+ *  \todo In HiggsSignals: Add wrapper functions for modul functions to HiggsSignals_subroutines.
  *  \todo Check if all branch names are unique (probably in AnalysisTool::InitializeBranches).
- *  \todo Fix that all model predictions are printed with value 0 in first TreeSampler iteration
- *  \todo Add buggy point removal
- *  \todo Add toy plots 
- *  \todo Remove again the Chi2Contribution ( or at least print them )
- *  \todo Remove SimpleDataStorage from CalculatorBase.
- *  \todo Use global random number generator ( gRandom or better a singleton wrapper )
+ *  \todo Fix that all model predictions are printed with value 0 in first TreeSampler iteration.
+ *  \todo Use global random number generator (gRandom or better a singleton wrapper).
  *  \todo Update Observable - Prediction relation.
  *  \todo MeasuredErrors: Allow arbitrary number. Give names.
  *  \todo Make chi2 a model quantitiy?
  *  \todo Make name of chi2 branch configurable.
  *  \todo More general: Make all quantity names/branch names configurable?
  *  \todo Make configurable if quantities are added to the model/are written to ntuple (especially TreeCalculator but also in general)?
- *  \todo TreeSampler configuration: Set name of parameter to be used as looping parameter. 
- *  \todo Common base class for MarkovChainSampler and CorrelatedSampler.
- *  \todo Add RandomSampler, a sampler with fixed sampling density (usefull for random grid production).
+ *  \todo TreeSampler configuration: Set name of parameter to be used as looping parameter.
+ *  \todo Common base class for MarkovChainSampler and CorrelatedSampler (Matthias?).
  *  \todo When RandomSampler is implemented, use parameter limits as hard limits in markovchain. Discuss what to do when limit is reached (new random point? mirror point?).
  */
 

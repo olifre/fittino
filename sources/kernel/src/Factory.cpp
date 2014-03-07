@@ -65,7 +65,7 @@ Fittino::Factory::~Factory() {
 }
 
 Fittino::AnalysisTool* const Fittino::Factory::CreateAnalysisTool( const std::string& type, ModelBase* model,
-        const boost::property_tree::ptree& ptree ) const {
+                                                                   const boost::property_tree::ptree& ptree ) const {
 
     if ( type == "ContourPlotter" ) {
 
@@ -147,7 +147,7 @@ Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& 
 
     if ( type == "CheckVacuumCalculator" ) {
 
-      return new CheckVacuumCalculator( model, ptree );
+        return new CheckVacuumCalculator( model, ptree );
 
     }
 
@@ -195,15 +195,15 @@ Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& 
 #endif
 
     }
-    else if ( type == "MicromegasCalculator") {
+    else if ( type == "MicromegasCalculator" ) {
 
 #ifdef MICROMEGAS
 
         return new MicromegasCalculator( model, ptree );
 
-#else 
+#else
 
-        throw ConfigurationException(" Trying to use MicromegasCalculator but Fittino was built without Micromegas.");
+        throw ConfigurationException( " Trying to use MicromegasCalculator but Fittino was built without Micromegas." );
 
 #endif
 

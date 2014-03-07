@@ -8,9 +8,9 @@
 *                                                                              *
 * Description Base class for Fittino models                                    *
 *                                                                              *
-* Authors     Sebastian Heer        <s6seheer@uni-bonn.de>                     *
+* Authors     Matthias  Hamer       <mhamer@gwdg.de>                           *
+*             Sebastian Heer        <s6seheer@uni-bonn.de>                     *
 *             Mathias   Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>            *
-*             Matthias Hamer        <mhamer@gwdg.de>                           *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -59,63 +59,81 @@ namespace Fittino {
        *  Returns the chi2 of the comparison between the predicted observables of the model and\n
        *  the measured observables. In the case of a test model simply returns the function value.
        */
-      double                                     GetChi2();
+      double                                              GetChi2();
       /*!
        *  Returns the number of parameters of the model.
        */
-      int                                        GetNumberOfParameters() const;
+      int                                                 GetNumberOfParameters() const;
       /*!
        * Update the property tree.
        */
-      void                                       UpdatePropertyTree();
+      void                                                UpdatePropertyTree();
       /*!
        *  Returns the name of the model.
        */
-      std::string                                GetName() const;
+      std::string                                         GetName() const;
       /*!
        *  Returns the property tree.
        */
-      boost::property_tree::ptree                GetPropertyTree();
-      const Collection<Chi2ContributionBase*>&   GetCollectionOfChi2Contributions() const;
+      boost::property_tree::ptree                         GetPropertyTree();
+      /*!
+       *  \todo Remove when no longer used by derived classes (Matthias).
+       */
+      const Collection<Chi2ContributionBase*>&            GetCollectionOfChi2Contributions() const;
       /*!
        *  Returns the parameters as a collection.
        */
-      const Collection<ModelParameter*>&         GetCollectionOfParameters() const;
-      const Collection<PredictionBase*>&         GetCollectionOfPredictions() const;
-      const Collection<const Quantity*>&         GetCollectionOfQuantities() const;
-      const Collection<const VariableBase<std::string>*>&  GetCollectionOfStringVariables() const;
+      const Collection<ModelParameter*>&                  GetCollectionOfParameters() const;
+      /*!
+       *  \todo Move to PhysicsModel (Matthias).
+       */
+      const Collection<PredictionBase*>&                  GetCollectionOfPredictions() const;
+      const Collection<const Quantity*>&                  GetCollectionOfQuantities() const;
+      const Collection<const VariableBase<std::string>*>& GetCollectionOfStringVariables() const;
 
     public:
-      virtual void                               PrintStatus() const = 0;
+      virtual void                                        PrintStatus() const = 0;
       /*!
        *  Smears the observables (if existent).
+       *  \todo Move to PhysicsModel and replace public function by a switch (Matthias).
        */
-      virtual void                               SmearObservations( TRandom3* ) = 0;
+      virtual void                                        SmearObservations( TRandom3* ) = 0;
       /*!
        *  Returns a pointer to a copy of the model.
        */
-      virtual ModelBase*                         Clone() const = 0;
-      virtual const std::vector<Observable*>*    GetObservableVector() const = 0;
-      virtual const Collection<CalculatorBase*>& GetCollectionOfCalculators() const = 0;
+      virtual ModelBase*                                  Clone() const = 0;
+      /*!
+       *  \todo Remove when no longer used by derived classes (Matthias).
+       */
+      virtual const std::vector<Observable*>*             GetObservableVector() const = 0;
+      /*!
+       *  \todo Remove when no longer used by derived classes (Matthias).
+       */
+      virtual const Collection<CalculatorBase*>&          GetCollectionOfCalculators() const = 0;
 
     protected:
       /*!
        *  Name of the model.
        */
-      std::string                                _name;
-      boost::property_tree::ptree                _ptree;
-      Collection<Chi2ContributionBase*>          _collectionOfChi2Contributions;
-      Collection<const VariableBase<std::string>*> _collectionOfStringVariables;
+      std::string                                         _name;
+      boost::property_tree::ptree                         _ptree;
+      /*!
+       *  \todo Remove when no longer used by derived classes (Matthias).
+       */
+      Collection<Chi2ContributionBase*>                   _collectionOfChi2Contributions;
       /*!
        *  Stores the predictions.
+       *  \todo Move to PhysicsModel (Matthias).
        */
-      Collection<PredictionBase*>                _collectionOfPredictions;
+      Collection<PredictionBase*>                         _collectionOfPredictions;
+      Collection<const VariableBase<std::string>*>        _collectionOfStringVariables;
 
     protected:
       /*!
        *  Adds a prediction to the model.
+       *  \todo Move to PhysicsModel (Matthias).
        */
-      void                                       AddPrediction( PredictionBase* prediction );
+      void                                                AddPrediction( PredictionBase* prediction );
 
     protected:
       /*!
@@ -126,39 +144,40 @@ namespace Fittino {
        *  model calculators) sometimes does not differ between initialization and printing, this\n
        *  is also the place where third party code is initialized.
        */
-      virtual void                               Initialize() const = 0;
+      virtual void                                        Initialize() const = 0;
 
       /*! \cond UML */
     private:
       /*!
        *  Value returned by Evaluate().
        */
-      double                                     _chi2;
+      double                                              _chi2;
       /*!
        *  Stores the parameters.
        */
-      Collection<ModelParameter*>                _collectionOfParameters;
-      Collection<const Quantity*>                _collectionOfQuantities;
+      Collection<ModelParameter*>                         _collectionOfParameters;
+      Collection<const Quantity*>                         _collectionOfQuantities;
 
     private:
       /*!
        *  Returns the number of predictions of the model.
+       *  \todo Move to PhysicsModel (Matthias).
        */
-      int                                        GetNumberOfPredictions() const;
+      int                                                 GetNumberOfPredictions() const;
       /*!
        *  Adds a parameter to the model.
        */
-      void                                       AddParameter( ModelParameter* parameter );
+      void                                                AddParameter( ModelParameter* parameter );
       /*!
        *  Setup all parameters using a ptree.
        */
-      void                                       InitializeParameters( const boost::property_tree::ptree& ptree );
+      void                                                InitializeParameters( const boost::property_tree::ptree& ptree );
 
     private:
       /*!
        *  Evaluates the chi2 function.
        */
-      virtual double                             Evaluate() = 0;
+      virtual double                                      Evaluate() = 0;
 
       /*! \endcond UML */
 

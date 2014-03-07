@@ -63,8 +63,8 @@ namespace Fittino {
        */
       ~AnalysisTool();
       /*!
-       *  Template method . It subdivides the tool's exectution into three
-       *  It is usually called directly after the creation of a concrete analysis tool.
+       *  Template method. It subdivides the tool's exectution into three It is usually called
+       *  directly after the creation of a concrete analysis tool.
        */
       void                          PerformAnalysis();
       /*!
@@ -86,7 +86,8 @@ namespace Fittino {
        */
       std::string                   _name;
       /*!
-       *  A copy of the input property tree, to be used for storing information for output-xml files (e.g. interface files for concatenating Markov Chains.
+       *  A copy of the input property tree, to be used for storing information for output-xml files
+       *  (e.g. interface files for concatenating Markov Chains.
        */
       boost::property_tree::ptree   _ptree;
       /*!

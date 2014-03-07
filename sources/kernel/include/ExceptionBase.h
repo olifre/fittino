@@ -39,15 +39,9 @@ namespace Fittino {
    *  Supported Fittino exceptions are
    *  <ul>
    *    <li> CalculatorException
-   *    <li> ConfigurationException\n
-   *      Configuration exceptions are thrown if an inconsistent configuration is detected, e.g.\n
-   *      steering parameters unknown to Fittino.
+   *    <li> ConfigurationException
    *    <li> ExecutorException
-   *    <li> InputException\n
-   *      Input exceptions are thrown if Fittino is called with formally invalid input of any kind\n
-   *      e.g with unknown options, an invalid combination of options or if there are missing\n
-   *      option parameters. They are also thrown if the format of the input file cannot be\n
-   *      detected or if parsing errors have occurred.
+   *    <li> InputException
    *    <li> OptimizerException
    *    <li> RedirectorException
    *    <li> SLHAFileException

@@ -24,7 +24,6 @@
 #include "ModelBase.h"
 #include "ModelParameter.h"
 #include "PlotterBase.h"
-#include "PredictionBase.h"
 
 Fittino::PlotterBase::PlotterBase( ModelBase* model, const boost::property_tree::ptree& ptree )
     : _dataFileName( ptree.get<std::string>( "DataFileName", "Fittino.out.root" ) ),
