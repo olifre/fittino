@@ -37,7 +37,7 @@ ELSE(${SPHENO_EXECUTABLE} MATCHES "SPHENO_EXECUTABLE-NOTFOUND")
     # If the path to the SPheno installation is found create a symbolic link to the executable and
     # print a message.
 
-    EXECUTE_PROCESS(COMMAND ln -s ${SPHENO_INSTALLATION_PATH}/SPheno SPheno)
+    EXECUTE_PROCESS(COMMAND ln -s ../${SPHENO_INSTALLATION_PATH}/SPheno ../bin/SPheno)
     MESSAGE(STATUS "SPheno version:")
 
 ENDIF(${SPHENO_EXECUTABLE} MATCHES "SPHENO_EXECUTABLE-NOTFOUND")
