@@ -1,4 +1,4 @@
-/* $Id$ */ 
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
@@ -6,7 +6,8 @@
 *                                                                              *
 * File        RegressionMVA.h                                                  *
 *                                                                              *
-* Description Helper class for RegressionCalculator                            *
+* Description Helper class for RegressionCalculator representing a             *
+*             multivariate analysis                                            *
 *                                                                              *
 * Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
 *                                                                              *
@@ -21,17 +22,7 @@
 #define FITTINO_REGRESSIONMVA_H
 
 #include "Collection.h"
-
-namespace boost {
-
-  namespace property_tree {
-
-    template < class Key, class Data, class KeyCompare > class basic_ptree;
-    typedef basic_ptree< std::string, std::string, std::less<std::string> > ptree;
-
-  }
-
-}
+#include "PtreeForwardDeclaration.h"
 
 namespace TMVA {
 
@@ -39,37 +30,35 @@ namespace TMVA {
 
 }
 
+/*!
+ *  \brief Fittino namespace.
+ */
 namespace Fittino {
 
   class PredictionBase;
 
   /*!
    *  \ingroup calculators
-   *  \brief Helper class for RegressionCalculator representing a multivariate analysis
+   *  \brief Helper class for RegressionCalculator representing a multivariate analysis.
    */
   class RegressionMVA {
 
-  public:
-    RegressionMVA( TMVA::Reader& reader, const boost::property_tree::ptree& ptree );
-    ~RegressionMVA( );
+    public:
+      RegressionMVA( TMVA::Reader& reader, const boost::property_tree::ptree& ptree );
+      ~RegressionMVA();
+      void                         Update();
+      const std::string&           GetName() const;
+      Collection<PredictionBase*>& GetCollectionOfQuantities();
 
-  public:
-    void                                    Update();
-    Collection< PredictionBase*>&           GetCollectionOfQuantities() ;
-
-  public:
-    const std::string&                      GetName() const;
-    
-  private:
-    std::string                            _name;
-    std::vector<double*>                   _vectorOfDoubleTargets;
-    std::vector<float >                    _vectorOfFloatTargets;
-    TMVA::Reader&                          _reader;  
-    Collection<PredictionBase*>            _collectionOfQuantities;
+    private:
+      std::string                  _name;
+      std::vector<double*>         _vectorOfDoubleTargets;
+      std::vector<float >          _vectorOfFloatTargets;
+      TMVA::Reader&                _reader;
+      Collection<PredictionBase*>  _collectionOfQuantities;
 
   };
 
 }
 
-
-#endif
+#endif // FITTINO_REGRESSIONMVA_H
