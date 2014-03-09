@@ -40,7 +40,7 @@
 Fittino::FeynHiggsCalculatorBase::FeynHiggsCalculatorBase( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
         : CalculatorBase( model ) {
 
-    _name = "FeynHiggs";
+    _name = "FeynHiggsCalculator";
 
     AddQuantity( new SimplePrediction( "Mass_h",                     "", _mass_h                     ) );  
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_gamma_gamma", "", _normSM_Gamma_h_gamma_gamma ) );  

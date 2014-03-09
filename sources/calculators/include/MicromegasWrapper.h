@@ -20,8 +20,6 @@
 #ifndef FITTINO_MICROMEGASWRAPPER_H
 #define FITTINO_MICROMEGASWRAPPER_H
 
-#include <string>
-
 #include "CalculatorBase.h"
 
 /*!

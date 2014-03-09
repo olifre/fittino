@@ -25,7 +25,7 @@
 Fittino::FeynHiggsSLHACalculator::FeynHiggsSLHACalculator(  const PhysicsModel* model, const boost::property_tree::ptree& ptree )
   : FeynHiggsCalculatorBase( model, ptree ) {
 
-    _name = "FeynHiggs";
+    _name = "FeynHiggsCalculator";
     _fileName = "SPheno.spc";
 
 }

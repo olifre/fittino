@@ -33,7 +33,7 @@ Fittino::CheckVacuumCalculator::CheckVacuumCalculator( const PhysicsModel* model
      _tanbeta( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "TanBeta" ) )->GetValue() ), 
      _signmu ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "SignMu" ) )->GetValue()  ) {
 
-    _name = "CheckVacuum";
+    _name = "CheckVacuumCalculator";
 
     _checkVacuum = new CheckVacuum( _gridfile );
     

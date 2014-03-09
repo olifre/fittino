@@ -33,7 +33,7 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const boost::property_tree:
       _executor( "./SPheno", "SPheno" ) {
 
     _executableName     = "./SPheno";
-    _name               = "SPheno";
+    _name               = "SPhenoCalculator";
     _slhaInputFileName  = "LesHouches.in";
     _slhaOutputFileName = "SPheno.spc";
 

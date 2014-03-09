@@ -28,7 +28,7 @@ Fittino::RegressionCalculator::RegressionCalculator( const PhysicsModel* model, 
   :CalculatorBase( model ),
    _reader ( "!Color:!Silent" ) {
 
-  _name = ptree.get<std::string>("name");
+  _name = ptree.get<std::string>( "Name", "RegressionCalculator" );
 
    BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree ) {
 
