@@ -51,6 +51,7 @@ namespace Fittino {
        *  Returns the error of the parameter.
        */
       double GetError() const;
+      void   Initialize() const;
       void   PrintStatus() const;
       /*!
        *  Sets the return value of IsUpdated().
@@ -73,6 +74,12 @@ namespace Fittino {
        */
       bool   _updated;
       double _error;
+
+      /*! \cond UML */
+    private:
+      void   ConsistencyCheck() const;
+
+      /*! \endcond UML */
 
   };
 

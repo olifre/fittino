@@ -215,7 +215,7 @@ void Fittino::PhysicsModel::Initialize() const {
 
     for ( unsigned int i = 0; i < GetNumberOfParameters(); i++ ) {
 
-        GetCollectionOfParameters().At( i )->PrintStatus();
+        GetCollectionOfParameters().At( i )->Initialize();
 
     }
 

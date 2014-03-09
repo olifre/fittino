@@ -93,6 +93,15 @@ namespace Fittino {
 
     protected:
       /*!
+       *  Lower bound of the quantity.
+       */
+      double                _lowerBound;
+      /*!
+       *  Upper bound of the quantity.
+       */
+      double                _upperBound;
+
+      /*!
        *  Value of the quantity.
        */
       double                _value;
@@ -103,14 +112,6 @@ namespace Fittino {
       std::string           _unit;
 
     private:
-      /*!
-       *  Lower bound of the quantity.
-       */
-      double                _lowerBound;
-      /*!
-       *  Upper bound of the quantity.
-       */
-      double                _upperBound;
       /*!
        *  Name of the axis in the plot.
        */

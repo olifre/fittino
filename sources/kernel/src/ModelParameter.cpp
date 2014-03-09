@@ -19,6 +19,7 @@
 
 #include <iomanip>
 
+#include "ConfigurationException.h"
 #include "ModelParameter.h"
 #include "Messenger.h"
 
@@ -51,6 +52,14 @@ bool Fittino::ModelParameter::IsUpdated() const {
 double Fittino::ModelParameter::GetError() const {
 
     return _error;
+
+}
+
+void Fittino::ModelParameter::Initialize() const {
+
+    ConsistencyCheck();
+
+    PrintStatus();
 
 }
 
@@ -110,6 +119,18 @@ void Fittino::ModelParameter::SetValue( double value ) {
 
         _value = value;
         _updated = true;
+
+    }
+
+}
+
+void Fittino::ModelParameter::ConsistencyCheck() const {
+
+    // Check if starting values are within bounds.
+
+    if ( _value < _lowerBound || _value > _upperBound ) {
+
+        throw ConfigurationException( "Parameter " + _name + ": Starting value out of bounds." );
 
     }
 
