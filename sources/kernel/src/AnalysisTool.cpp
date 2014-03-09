@@ -92,7 +92,17 @@ void Fittino::AnalysisTool::PrintStatus() const {
     messenger << Messenger::INFO << Messenger::Endl;
     messenger << Messenger::INFO << std::scientific << "    ----------------------------------------------------" << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
-    messenger << Messenger::INFO << std::scientific << std::setprecision( 2 ) << "    Total chi2                                  " << _model->GetChi2() << Messenger::Endl;
+    messenger << Messenger::INFO
+              << "    "
+              << std::left
+              << std::setw( 43 )
+              << "Total chi2"
+              << std::right
+              << std::setw( 9 )
+              << std::setprecision( 2 )
+              << std::scientific
+              << _model->GetChi2() << Messenger::Endl;
+
     messenger << Messenger::INFO << Messenger::Endl;
 
 }
