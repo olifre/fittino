@@ -70,26 +70,12 @@ Fittino::HiggsSignalsSLHACalculator::HiggsSignalsSLHACalculator( const PhysicsMo
       _GammaInvisible        ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "Gamma_hInvisible.Name", "Gamma_hInvisible" ) )->GetValue() ),
       _mass_h                ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "mass_h.Name",           "mass_h"           ) )->GetValue() ) {
 
-    /// \todo Decide later how to handle default quantities.
-    ///
-    ///try { _mass_h = _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "mass_h.Name", "mass_h" ) )->GetValue(); }
-    ///catch ( const ConfigurationException& configurationException ) {
-
-    ///    std::cout << "\n" << "WARNING: " << configurationException.what()  << std::endl;
-    ///    std::cout         << "         " << "Using default value." << "\n" << std::endl;
-    ///    AddQuantity( new SimplePrediction( "mass_h", "m_{h}", "GeV", "GeV", 0., 1.e6, _mass_h_default ) );
-    ///    _mass_h = GetCollectionOfQuantities().At( "mass_h" )->GetValue();
-
-    ///}
-   
-    /// Initialize steering parameters common to all SLHA calculators.
+    // Initialize steering parameters common to all SLHA calculators.
 
     _name               = ptree.get<std::string>( "Name",               "HiggsSignalsSLHACalculator" );
     _slhaOutputFileName = ptree.get<std::string>( "SLHAOutputFileName", "HS-output.slha"                  );
 
-    /*!
-     *  Add predictions.
-     */
+    // Add predictions.
 
     AddQuantity( new SimplePrediction( "Mu_hgammgamma_1lep_ATL",                   "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (1lep)",                    "",    "",    0.,    1.e6, _Mu_hgammgamma_1lep_ATL                   ) );
     AddQuantity( new SimplePrediction( "Mu_hgammgamma_conv_central_highPTt_ATL",   "ATL (pp)#rightarrowh#rightarrow#gamma#gamma (conv.-central-highPTt)",   "",    "",    0.,    1.e6, _Mu_hgammgamma_conv_central_highPTt_ATL   ) );

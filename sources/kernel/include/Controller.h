@@ -60,6 +60,7 @@
  *  \todo TreeSampler configuration: Set name of parameter to be used as looping parameter.
  *  \todo Common base class for MarkovChainSampler and CorrelatedSampler (Matthias?).
  *  \todo When RandomSampler is implemented, use parameter limits as hard limits in markovchain. Discuss what to do when limit is reached (new random point? mirror point?).
+ *  \todo Decide if and how to handle default quantities of the calculators.
  */
 
 #ifndef FITTINO_CONTROLLER_H
