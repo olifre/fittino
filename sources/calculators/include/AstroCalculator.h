@@ -59,7 +59,7 @@ namespace Fittino {
 
     public:
       virtual void        CalculatePredictions();
-      virtual void        Initialize() const;
+      virtual void        Initialize();
       virtual void        SetupMeasuredValues();
 
     private:

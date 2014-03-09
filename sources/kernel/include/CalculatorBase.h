@@ -60,7 +60,7 @@ namespace Fittino {
 
     public:
       virtual void                             CalculatePredictions() = 0;
-      virtual void                             Initialize() const;
+      virtual void                             Initialize();
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
        */

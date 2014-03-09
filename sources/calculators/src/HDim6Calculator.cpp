@@ -105,7 +105,7 @@ void Fittino::HDim6Calculator::CalculatePredictions() {
 
 }
 
-void Fittino::HDim6Calculator::Initialize() const{
+void Fittino::HDim6Calculator::Initialize() {
 
     if ( _pdfDirectory !="" ){
 

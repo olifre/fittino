@@ -142,7 +142,7 @@ void Fittino::TreeCalculator::FillSimpleDataStorage() {
     
 }
 
-void Fittino::TreeCalculator::Initialize() const {
+void Fittino::TreeCalculator::Initialize() {
 
 }
 

@@ -46,7 +46,7 @@ namespace Fittino {
       ~HiggsSignalsSLHACalculator();
 
     public:
-      virtual void  Initialize() const;
+      virtual void  Initialize();
       virtual void  CalculatePredictions();
       virtual void  SetupMeasuredValues();
 

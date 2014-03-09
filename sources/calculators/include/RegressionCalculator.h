@@ -63,7 +63,7 @@ namespace Fittino {
 
   public:  
     virtual void                  CalculatePredictions();
-    virtual void                  Initialize() const;
+    virtual void                  Initialize();
 
   private:
     TMVA::Reader                    _reader;

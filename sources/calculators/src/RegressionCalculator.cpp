@@ -86,7 +86,6 @@ void Fittino::RegressionCalculator::CalculatePredictions() {
 
 }
 
-void Fittino::RegressionCalculator::Initialize() const {
+void Fittino::RegressionCalculator::Initialize() {
 
 }
-

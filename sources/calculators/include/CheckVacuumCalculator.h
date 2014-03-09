@@ -49,7 +49,7 @@ namespace Fittino {
 
     public:  
       void             CalculatePredictions();
-      void             Initialize() const;
+      void             Initialize();
 
     private:  
       const double&            _m0;

@@ -202,7 +202,7 @@ void Fittino::PhysicsModel::PrintStatus() const {
 
 }
 
-void Fittino::PhysicsModel::Initialize() const {
+void Fittino::PhysicsModel::Initialize() {
 
     Messenger& messenger = Messenger::GetInstance();
 

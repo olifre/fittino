@@ -57,7 +57,7 @@ namespace Fittino {
       virtual const Collection<CalculatorBase*>& GetCollectionOfCalculators() const { return *(new Collection<CalculatorBase*>); }
 
     protected:
-      virtual void                               Initialize() const;
+      virtual void                               Initialize();
 
       /*! \cond UML */
     private:

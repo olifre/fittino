@@ -120,6 +120,6 @@ void Fittino::HECCalculator::CalculatePredictions() {
 
 }
 
-void Fittino::HECCalculator::Initialize() const {
+void Fittino::HECCalculator::Initialize() {
 
 }

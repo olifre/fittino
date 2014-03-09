@@ -107,7 +107,7 @@ Fittino::HiggsSignalsHadXSCalculator::~HiggsSignalsHadXSCalculator() {
 
 }
 
-void Fittino::HiggsSignalsHadXSCalculator::Initialize() const {
+void Fittino::HiggsSignalsHadXSCalculator::Initialize() {
 
   
 }

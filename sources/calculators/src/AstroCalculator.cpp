@@ -125,6 +125,6 @@ void Fittino::AstroCalculator::SetupMeasuredValues() {
 
 }
 
-void Fittino::AstroCalculator::Initialize() const {
+void Fittino::AstroCalculator::Initialize() {
 
 }

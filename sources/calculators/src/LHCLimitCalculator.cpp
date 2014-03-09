@@ -240,7 +240,7 @@ void Fittino::LHCLimitCalculator::CreateChi2Contributions( const boost::property
 
 }
 
-void Fittino::LHCLimitCalculator::Initialize() const {
+void Fittino::LHCLimitCalculator::Initialize() {
 
 }
 

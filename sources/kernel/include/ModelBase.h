@@ -144,7 +144,7 @@ namespace Fittino {
        *  model calculators) sometimes does not differ between initialization and printing, this\n
        *  is also the place where third party code is initialized.
        */
-      virtual void                                        Initialize() const = 0;
+      virtual void                                        Initialize() = 0;
 
       /*! \cond UML */
     private:

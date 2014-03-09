@@ -62,11 +62,10 @@ Fittino::HiggsSignalsHECCalculator::~HiggsSignalsHECCalculator() {
 
 }
 
-void Fittino::HiggsSignalsHECCalculator::Initialize() const {
+void Fittino::HiggsSignalsHECCalculator::Initialize() {
 
   
 }
-
 
 void Fittino::HiggsSignalsHECCalculator::CalculatePredictions() {
 

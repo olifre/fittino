@@ -45,7 +45,7 @@ void Fittino::TestModelBase::PrintStatus() const {
 
 }
 
-void Fittino::TestModelBase::Initialize() const {
+void Fittino::TestModelBase::Initialize() {
 
     Messenger& messenger = Messenger::GetInstance();
 

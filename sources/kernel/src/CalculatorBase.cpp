@@ -60,7 +60,7 @@ const Fittino::SimpleDataStorage* Fittino::CalculatorBase::GetSimpleOutputDataSt
 
 }
 
-void Fittino::CalculatorBase::Initialize() const {
+void Fittino::CalculatorBase::Initialize() {
 
 }
 

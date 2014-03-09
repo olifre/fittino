@@ -54,7 +54,7 @@ namespace Fittino {
 
     public:
       virtual void        CalculatePredictions();
-      virtual void        Initialize() const;
+      virtual void        Initialize();
       void                SetInputFileName( std::string inputFileName );
       void                SetInputTreeName( std::string inputTreeName );
       void                OpenInputTree();

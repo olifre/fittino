@@ -88,18 +88,6 @@ Fittino::HiggsSignalsSLHACalculator::HiggsSignalsSLHACalculator( const PhysicsMo
     _slhaOutputFileName = ptree.get<std::string>( "SLHAOutputFileName", "HS-output.slha"                  );
 
     /*!
-     *  \todo Move back to Intitialize() function when not longer const.
-     */
-
-    initialize_higgssignals_latestresults_( &_nHzero, &_nHplus );
-    setup_output_level_( &_output_level );
-    setup_pdf_( &_pdf );
-    higgssignals_neutral_input_massuncertainty_( &_dm );
-    ///setup_correlations_( &_corr_mu, &_corr_mh );
-    setup_assignmentrange_( &_range );
-    setup_higgs_to_peaks_assignment_iterations_( &_iterations );
-
-    /*!
      *  Add predictions.
      */
 
@@ -190,11 +178,15 @@ Fittino::HiggsSignalsSLHACalculator::~HiggsSignalsSLHACalculator() {
 
 }
 
-void Fittino::HiggsSignalsSLHACalculator::Initialize() const {
+void Fittino::HiggsSignalsSLHACalculator::Initialize() {
 
-    /*!
-     *  \todo Remove const attribute.
-     */
+    initialize_higgssignals_latestresults_( &_nHzero, &_nHplus );
+    setup_output_level_( &_output_level );
+    setup_pdf_( &_pdf );
+    higgssignals_neutral_input_massuncertainty_( &_dm );
+    ///setup_correlations_( &_corr_mu, &_corr_mh );
+    setup_assignmentrange_( &_range );
+    setup_higgs_to_peaks_assignment_iterations_( &_iterations );
 
 }
 

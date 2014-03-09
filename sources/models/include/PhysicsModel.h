@@ -93,7 +93,7 @@ namespace Fittino {
       virtual const std::vector<Observable*>*    GetObservableVector() const;
 
     protected:
-      virtual void                               Initialize() const;
+      virtual void                               Initialize();
 
     protected:
       std::vector<Observable*>                   _observableVector;

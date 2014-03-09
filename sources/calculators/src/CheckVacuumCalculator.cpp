@@ -55,7 +55,6 @@ void Fittino::CheckVacuumCalculator::CalculatePredictions() {
 
 }
 
-void Fittino::CheckVacuumCalculator::Initialize() const{
+void Fittino::CheckVacuumCalculator::Initialize() {
 
 }
-
