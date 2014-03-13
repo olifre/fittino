@@ -57,6 +57,7 @@ namespace Fittino {
       virtual void   AddBlock( const std::string& path );
       virtual void   AddLine( const std::string& path );
       virtual void   AddLine( const SLHALine& line );
+      virtual void   Clear();
       virtual void   ReadFile( const std::string& slhaInputFileName ) const;
       virtual void   WriteFile( const std::string& slhaOutputFileName ) const;
 

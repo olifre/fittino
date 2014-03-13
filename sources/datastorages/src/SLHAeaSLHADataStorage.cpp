@@ -120,6 +120,12 @@ void Fittino::SLHAeaSLHADataStorage::AddLine( const SLHALine& line ) {
 
 }
 
+void Fittino::SLHAeaSLHADataStorage::Clear() {
+
+    _slhaeaDataStorage->clear();
+
+}
+
 void Fittino::SLHAeaSLHADataStorage::ReadFile( const std::string& slhaInputFileName ) const {
 
     std::ifstream file( slhaInputFileName.c_str() );
