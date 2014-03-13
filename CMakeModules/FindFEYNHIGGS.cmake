@@ -6,8 +6,7 @@
 #                                                                              #
 # File        FindFEYNHIGGS.cmake                                              #
 #                                                                              #
-# Description This macro tries to find a local LHAPDF installation.            #
-#             If successful, it adds LHAPDF to Fittino as a cmake module.      #
+# Description This macro tries to find a local FEYNHIGGS installation.         #
 #                                                                              #
 # Authors     Bjoern  Sarrazin    <sarrazin@physik.uni-bonn.de>                #
 #                                                                              #
