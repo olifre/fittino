@@ -64,7 +64,7 @@ void Fittino::Redirector::Start() {
 
     }
 
-#ifdef FEYNHIGGS
+#ifdef FORTRANFLUSH
 
     fortranflush_();
 
@@ -92,7 +92,7 @@ void Fittino::Redirector::Stop() {
 
     _redirecting = false;
 
-#ifdef FEYNHIGGS
+#ifdef FORTRANFLUSH
 
     fortranflush_();
 
