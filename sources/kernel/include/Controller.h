@@ -29,6 +29,7 @@
  *  \todo Long-term: Find a way to use xml style file online.
  *  \todo Long-term: Discuss Calculator interface (Mathias).
  *  \todo Long-term: Further develop plotters (Mathias).
+ *  \todo Long-term: Add tests ?
  *  \todo Remove MathTools (Matthias).
  *  \todo Remove again the Chi2Contribution (or at least print them) (Matthias).
  *  \todo Add MicromegasCalculator (library based) (Bjoern).
@@ -53,6 +54,9 @@
  *  \todo Use global random number generator (gRandom or better a singleton wrapper).
  *  \todo Update Observable - Prediction relation.
  *  \todo MeasuredErrors: Allow arbitrary number. Give names.
+ *  \todo Introduce parameter point dependent errors, correlations, covariances.
+ *  \todo Allow asymmetric errors.
+ *  \todo Add LSPCalculator ( a calculator which determines the LSP ) 
  *  \todo Make chi2 a model quantitiy?
  *  \todo Make name of chi2 branch configurable.
  *  \todo More general: Make all quantity names/branch names configurable?
