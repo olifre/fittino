@@ -36,35 +36,17 @@ namespace Fittino {
   class SLHAPrediction : public PredictionBase {
 
     public:
-      /*!
-       *  Constructor taking name, plotName, unit, plotUnit, plotLowerBound, plotUpperBound,
-       *  blockName, id, columnIndex and a calculator.
-       */
       SLHAPrediction( std::string         name,
-                      std::string         plotName,
                       std::string         unit,
-                      std::string         plotUnit,
-                      double              plotLowerBound,
-                      double              plotUpperBound,
                       SLHADataStorageBase* slhadatastorage,
                       std::string         blockName,
-                      std::string         id,
-                      int                 columnIndex );
-      /*!
-       *  Alternative constructor taking name, plotName, unit, plotUnit, plotLowerBound,
-       *  plotUpperBound, blcokName, firstId, secondId, columnIndex and a claculator.
-       */
-      SLHAPrediction( std::string         name,
-                      std::string         plotName,
-                      std::string         unit,
-                      std::string         plotUnit,
-                      double              plotLowerBound,
-                      double              plotUpperBound,
-                      SLHADataStorageBase* slhadatastorage,
-                      std::string         blockName,
+                      int columnIndex,
                       std::string         firstId,
                       std::string         secondId,
-                      int                 columnIndex );
+                      std::string         thirdId,
+                     std::string         fourthId        );
+
+
       /*!
        *  Standard Constructor
        */
@@ -81,6 +63,8 @@ namespace Fittino {
       int                 _columnIndex;
       std::string         _firstId;
       std::string         _secondId;
+      std::string         _thirdId;
+      std::string         _fourthId;
       std::string         _blockName;
       SLHADataStorageBase* _slhadatastorage;
 
