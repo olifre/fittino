@@ -195,7 +195,7 @@ void Fittino::Executor::Parent() {
 
             case 0:
 
-                throw ExecutorException( "Timeout in creating process" );
+                throw ExecutorException( "Timeout in creating process." );
 
             default:
 
@@ -224,7 +224,7 @@ void Fittino::Executor::Parent() {
         if ( waitpid( -1, &_status, 0 ) == -1 ) {
 
             perror( "waitpid" );
-            throw ExecutorException( "waitpid after kill" );
+            throw ExecutorException( "Waitpid after kill." );
 
         }
 
@@ -259,7 +259,7 @@ void Fittino::Executor::Read() {
 
         default:
 
-            throw ExecutorException( "Child reports problems" );
+            throw ExecutorException( "Child reports problems." );
 
     }
 
@@ -314,6 +314,6 @@ void Fittino::Executor::Wait() {
 
     } // while
 
-    throw TimeoutExecutorException( "timeout in exec" );
+    throw TimeoutExecutorException( "Timeout in exec." );
 
 }

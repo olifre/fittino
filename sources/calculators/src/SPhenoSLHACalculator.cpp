@@ -86,7 +86,7 @@ void Fittino::SPhenoSLHACalculator::CalculatePredictions() {
     }
     catch ( const TimeoutExecutorException& e ) {
 
-        throw CalculatorException( _name, "timeout" );
+        throw CalculatorException( _name, "Timeout" );
 
     }
 
