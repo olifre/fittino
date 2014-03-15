@@ -46,7 +46,7 @@ namespace Fittino {
 
     private:
       double                   _completionTimeout;
-      int                      _pid;
+      pid_t                    _pid;
       int                      _pipefds[2];
       int                      _rc;
       int                      _status;
