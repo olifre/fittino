@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "TTree.h"
+#include "TLeaf.h"
 
 #include "AnalysisTool.h"
 #include "ModelBase.h"
@@ -58,6 +59,28 @@ boost::property_tree::ptree Fittino::AnalysisTool::GetPropertyTree() {
 
     UpdatePropertyTree();
     return _ptree;
+
+}
+
+void Fittino::AnalysisTool::AddBranch( TTree* tree, std::string name, std::string type,  const void* address ) {
+
+    TObjArray *arrayOfLeaves = tree->GetListOfLeaves();
+
+    for( unsigned int i = 0; i < arrayOfLeaves->GetEntries(); ++i ) {
+
+        TLeaf *leaf = ( TLeaf* ) arrayOfLeaves->At( i );
+
+        if( leaf->GetName() == name ) {
+
+            throw ConfigurationException("Leaf name already exists.");
+
+        }
+
+    }
+
+     TBranch* branch = tree->Branch( name.c_str(), const_cast<void*>( address ), ( name + "/" + type ).c_str() );
+
+    branch->GetLeaf( name.c_str() )->SetTitle( "" );
 
 }
 
@@ -154,26 +177,34 @@ void Fittino::AnalysisTool::InitializeBranches() {
 
     for ( unsigned int i = 0; i < _model->GetCollectionOfQuantities().GetNumberOfElements(); ++i ) {
 
-        _tree->Branch( _model->GetCollectionOfQuantities().At( i )->GetName().c_str(),
-                       const_cast<double*>( &_model->GetCollectionOfQuantities().At( i )->GetValue() ) );
+        AddBranch( _tree, 
+                   _model->GetCollectionOfQuantities().At( i )->GetName(),
+                   "D",
+                   &_model->GetCollectionOfQuantities().At( i )->GetValue() );
     }
 
     for ( unsigned int i = 0; i < _model->GetCollectionOfStringVariables().GetNumberOfElements(); ++i ) {
 
-        _tree->Branch( _model->GetCollectionOfStringVariables().At( i )->GetName().c_str(),
-                       const_cast<std::string*>( &_model->GetCollectionOfStringVariables().At( i )->GetValue() ) );
+        AddBranch( _tree,
+                  _model->GetCollectionOfStringVariables().At( i )->GetName(),
+                  "C",
+                  &_model->GetCollectionOfStringVariables().At( i )->GetValue() );
     }
 
     for ( unsigned int i = 0; i < _model->GetCollectionOfChi2Contributions().GetNumberOfElements(); ++i ) {
 
-        _tree->Branch( _model->GetCollectionOfChi2Contributions().At( i )->GetName().c_str(),
-                       const_cast<double*>( &_model->GetCollectionOfChi2Contributions().At( i )->GetValue() ) );
+        AddBranch( _tree,
+                  _model->GetCollectionOfChi2Contributions().At( i )->GetName(),
+                  "D",
+                  &_model->GetCollectionOfChi2Contributions().At( i )->GetValue() );
     }
 
     for ( unsigned int i = 0; i < GetNumberOfStatusParameters(); ++i ) {
 
-        _tree->Branch( GetStatusParameterVector()->at( i )->GetName().c_str(),
-                       const_cast<double*>( &GetStatusParameterVector()->at( i )->GetValue() ) );
+        AddBranch( _tree, 
+                  GetStatusParameterVector()->at( i )->GetName(),
+                  "D",
+                  &GetStatusParameterVector()->at( i )->GetValue() );
     }
 
     // Now initialize the branches of the meta data tree.
@@ -185,11 +216,15 @@ void Fittino::AnalysisTool::InitializeBranches() {
             std::string measuredValueBranchName = "measuredValue_" + _model->GetObservableVector()->at( i )->GetPrediction()->GetName();
             std::string uncertaintyBranchName = "uncertainty_" + _model->GetObservableVector()->at( i )->GetPrediction()->GetName();
 
-            _metaDataTree->Branch( measuredValueBranchName.c_str(),
-                                   const_cast<double*>( &( _model->GetObservableVector()->at( i )->GetMeasuredValue() ) ) );
+            AddBranch( _metaDataTree, 
+                      measuredValueBranchName,
+                      "D",
+                      & _model->GetObservableVector()->at( i )->GetMeasuredValue() );
 
-            _metaDataTree->Branch( uncertaintyBranchName.c_str(),
-                                   const_cast<double*>( &( _model->GetObservableVector()->at( i )->GetMeasuredError() ) ) );
+            AddBranch( _metaDataTree, 
+                      uncertaintyBranchName,
+                      "D",
+                      & _model->GetObservableVector()->at( i )->GetMeasuredError() );
 
         }
 

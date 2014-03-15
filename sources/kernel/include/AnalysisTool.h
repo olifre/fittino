@@ -116,6 +116,11 @@ namespace Fittino {
 
     protected:
       /*!
+       *  Checks for uniqueness of the branch name and adds branch to tree.
+       *  \todo Create a wrapper class for TTree and make this a member function of that class.
+       */
+      void AddBranch( TTree* tree, std::string name, std::string type, const void* address );
+      /*!
        *  Returns the number of status parameters.
        */
       int                           GetNumberOfStatusParameters() const;
