@@ -26,8 +26,8 @@
 
 Fittino::SimpleOptimizer::SimpleOptimizer( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
     : OptimizerBase( model, ptree ),
-      _bestEntry( 0 ),
-      _iEntry( 0 ),
+      _bestEntry( model->GetCollectionOfParameters().At( 0 )->GetValue() ),
+      _iEntry( model->GetCollectionOfParameters().At( 0 )->GetValue() ),
       _stepWidth( model->GetCollectionOfParameters().At( 0 )->GetError() ),
       _inputFileName( ptree.get<std::string>( "InputFileName", "Fittino.in.root" ) ) {
 
