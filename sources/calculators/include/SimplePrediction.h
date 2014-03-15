@@ -30,7 +30,7 @@ namespace Fittino {
   class CalculatorBase;
 
   /*!
-   *  \ingroup kernel
+   *  \ingroup calculators
    *  \brief Class for simple predictions.
    */
   class SimplePrediction : public PredictionBase {
