@@ -102,6 +102,8 @@ void Fittino::SPhenoSLHACalculator::CalculatePredictions() {
 
 void Fittino::SPhenoSLHACalculator::ConfigureInput() {
 
+    _slhaInputDataStorage->Clear();
+
     // Write block "MODSEL".
 
     _slhaInputDataStorage->AddBlock( "MODSEL:BLOCK MODSEL:# Model selection" );
