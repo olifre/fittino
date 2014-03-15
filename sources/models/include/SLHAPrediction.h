@@ -27,7 +27,7 @@
  */
 namespace Fittino {
 
-  class SLHACalculatorBase;
+  class SLHADataStorageBase;
 
   /*!
    *  \ingroup models
@@ -46,7 +46,7 @@ namespace Fittino {
                       std::string         plotUnit,
                       double              plotLowerBound,
                       double              plotUpperBound,
-                      SLHACalculatorBase* slhaCalculator,
+                      SLHADataStorageBase* slhadatastorage,
                       std::string         blockName,
                       std::string         id,
                       int                 columnIndex );
@@ -60,7 +60,7 @@ namespace Fittino {
                       std::string         plotUnit,
                       double              plotLowerBound,
                       double              plotUpperBound,
-                      SLHACalculatorBase* slhaCalculator,
+                      SLHADataStorageBase* slhadatastorage,
                       std::string         blockName,
                       std::string         firstId,
                       std::string         secondId,
@@ -68,7 +68,7 @@ namespace Fittino {
       /*!
        *  Standard Constructor
        */
-      SLHAPrediction( const boost::property_tree::ptree& ptree, SLHACalculatorBase* slhaCalculator );
+      SLHAPrediction( const boost::property_tree::ptree& ptree, SLHADataStorageBase* slhadatastorage );
       /*!
        *  Standard destructor.
        */
@@ -82,7 +82,7 @@ namespace Fittino {
       std::string         _firstId;
       std::string         _secondId;
       std::string         _blockName;
-      SLHACalculatorBase* _slhaCalculator;
+      SLHADataStorageBase* _slhadatastorage;
 
   };
 
