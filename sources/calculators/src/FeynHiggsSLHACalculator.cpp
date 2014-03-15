@@ -8,7 +8,8 @@
 *                                                                              *
 * Description Wrapper class for FeynHiggs                                      *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Bjoern  Sarrazin    <sarrazin@physik.uni-bonn.de>                *
+*             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -23,7 +24,7 @@
 #include "FeynHiggsSLHACalculator.h"
 
 Fittino::FeynHiggsSLHACalculator::FeynHiggsSLHACalculator(  const PhysicsModel* model, const boost::property_tree::ptree& ptree )
-  : FeynHiggsCalculatorBase( model, ptree ) {
+    : FeynHiggsCalculatorBase( model, ptree ) {
 
     _name = "FeynHiggsCalculator";
     _fileName = "SPheno.spc";
@@ -36,15 +37,14 @@ Fittino::FeynHiggsSLHACalculator::~FeynHiggsSLHACalculator() {
 
 void Fittino::FeynHiggsSLHACalculator::ConfigureInput() {
 
-  COMPLEX slhadata[nslhadata];
+    COMPLEX slhadata[nslhadata];
 
-  SLHARead( &_error, slhadata, _fileName.c_str(), 1 );
-  // if( error ) 
-  //exit(error);
+    SLHARead( &_error, slhadata, _fileName.c_str(), 1 );
+    //if( error )
+    //    exit(error);
 
-  FHSetSLHA( &_error, slhadata );
-  // if( error )
-  //exit(error);
+    FHSetSLHA( &_error, slhadata );
+    //if( error )
+    //    exit(error);
 
-  
 }

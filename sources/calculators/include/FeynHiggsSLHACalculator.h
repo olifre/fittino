@@ -8,7 +8,8 @@
 *                                                                              *
 * Description Wrapper class for FeynHiggs                                      *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Bjoern  Sarrazin    <sarrazin@physik.uni-bonn.de>                *
+*             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -37,15 +38,15 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-    FeynHiggsSLHACalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+      FeynHiggsSLHACalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
-     ~FeynHiggsSLHACalculator();
+      ~FeynHiggsSLHACalculator();
 
       /*! \cond UML */
     private:
-      void         ConfigureInput();
+      void ConfigureInput();
 
       /*! \endcond UML */
 
@@ -53,4 +54,4 @@ namespace Fittino {
 
 }
 
-#endif
+#endif // FITTINO_FEYNHIGGSSLHACALCULATOR_H

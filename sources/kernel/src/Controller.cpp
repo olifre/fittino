@@ -106,7 +106,10 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
         Controller::CheckInputFileFormat();
 
-        boost::property_tree::read_xml( _inputFileName, *_inputPtree, boost::property_tree::xml_parser::trim_whitespace | boost::property_tree::xml_parser::no_comments );
+        boost::property_tree::read_xml( _inputFileName,
+                                        *_inputPtree,
+                                        boost::property_tree::xml_parser::trim_whitespace |
+                                        boost::property_tree::xml_parser::no_comments );
 
         // Set the verbosity level of the output text.
 

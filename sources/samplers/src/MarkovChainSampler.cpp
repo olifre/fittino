@@ -8,7 +8,8 @@
 *                                                                              *
 * Description Class for Markov chain parameter sampler                         *
 *                                                                              *
-* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Matthias  Hamer     <mhamer@gwdg.de>                             *
+*             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
