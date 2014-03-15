@@ -19,7 +19,6 @@
 *******************************************************************************/
 
 #include "CFeynHiggs.h"
-#include "CSLHA.h"
 
 #include "FeynHiggsSLHACalculator.h"
 
@@ -37,13 +36,12 @@ Fittino::FeynHiggsSLHACalculator::~FeynHiggsSLHACalculator() {
 
 void Fittino::FeynHiggsSLHACalculator::ConfigureInput() {
 
-    COMPLEX slhadata[nslhadata];
 
-    SLHARead( &_error, slhadata, _fileName.c_str(), 1 );
+    SLHARead( &_error, _slhadata, _fileName.c_str(), 1 );
     //if( error )
     //    exit(error);
 
-    FHSetSLHA( &_error, slhadata );
+    FHSetSLHA( &_error, _slhadata );
     //if( error )
     //    exit(error);
 

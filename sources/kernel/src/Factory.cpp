@@ -26,7 +26,11 @@
 #include "CovariantSampler.h"
 #include "Factory.h"
 #include "FeynHiggsCalculator.h"
+
+#ifdef FEYNHIGGS
 #include "FeynHiggsSLHACalculator.h"
+#endif
+
 #include "GeneticAlgorithmOptimizer.h"
 #include "HDim6Calculator.h"
 #include "HECCalculator.h"

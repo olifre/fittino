@@ -21,6 +21,8 @@
 #ifndef FITTINO_FEYNHIGGSSLHACALCULATOR_H
 #define FITTINO_FEYNHIGGSSLHACALCULATOR_H
 
+#include "CSLHA.h"
+
 #include "FeynHiggsCalculatorBase.h"
 
 /*!
@@ -45,6 +47,9 @@ namespace Fittino {
       ~FeynHiggsSLHACalculator();
 
       /*! \cond UML */
+    private:
+      COMPLEX _slhadata[nslhadata];
+
     private:
       void ConfigureInput();
 
