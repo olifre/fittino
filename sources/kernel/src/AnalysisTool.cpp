@@ -19,8 +19,9 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "TTree.h"
+#include "TFile.h"
 #include "TLeaf.h"
+#include "TTree.h"
 
 #include "AnalysisTool.h"
 #include "ModelBase.h"
@@ -31,7 +32,7 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tre
       _iterationCounter( ptree.get<unsigned int>( "IterationCounter", 0 ) ),
       _name( ptree.get<std::string>( "Name", "" ) ),
       _model( model ),
-      _outputFile( ( ptree.get<std::string>( "OutputFile", "Fittino.out.root" ) ).c_str(), "RECREATE" ),
+      _outputFile( new TFile( ( ptree.get<std::string>( "OutputFile", "Fittino.out.root" ) ).c_str(), "RECREATE" ) ),
       _randomGenerator( ptree.get<int>( "RandomSeed", 0 ) ),
       _metaDataTree( new TTree( ( ptree.get<std::string>( "MetaDataTree", "MetaDataTree" ) ).c_str(), ( ptree.get<std::string>( "MetaDataTree", "MetaDataTree" ) ).c_str() ) ),
       _tree( new TTree( ( ptree.get<std::string>( "OutputTree", "Tree" ) ).c_str(), ( ptree.get<std::string>( "OutputTree", "Tree" ) ).c_str() ) ) {
@@ -62,31 +63,31 @@ boost::property_tree::ptree Fittino::AnalysisTool::GetPropertyTree() {
 
 }
 
-void Fittino::AnalysisTool::AddBranch( TTree* tree, std::string name, std::string type,  const void* address ) {
+int Fittino::AnalysisTool::GetNumberOfStatusParameters() const {
+
+    return _statusParameterVector.size();
+
+}
+
+void Fittino::AnalysisTool::AddBranch( TTree* tree, std::string name, std::string type, const void* address ) {
 
     TObjArray *arrayOfLeaves = tree->GetListOfLeaves();
 
-    for( unsigned int i = 0; i < arrayOfLeaves->GetEntries(); ++i ) {
+    for ( unsigned int i = 0; i < arrayOfLeaves->GetEntries(); ++i ) {
 
         TLeaf *leaf = ( TLeaf* ) arrayOfLeaves->At( i );
 
-        if( leaf->GetName() == name ) {
+        if ( leaf->GetName() == name ) {
 
-            throw ConfigurationException("Leaf name already exists.");
+            throw ConfigurationException( "Leaf name " + name + " already exists." );
 
         }
 
     }
 
-     TBranch* branch = tree->Branch( name.c_str(), const_cast<void*>( address ), ( name + "/" + type ).c_str() );
+    TBranch* branch = tree->Branch( name.c_str(), const_cast<void*>( address ), ( name + "/" + type ).c_str() );
 
     branch->GetLeaf( name.c_str() )->SetTitle( "" );
-
-}
-
-int Fittino::AnalysisTool::GetNumberOfStatusParameters() const {
-
-    return _statusParameterVector.size();
 
 }
 
@@ -177,34 +178,38 @@ void Fittino::AnalysisTool::InitializeBranches() {
 
     for ( unsigned int i = 0; i < _model->GetCollectionOfQuantities().GetNumberOfElements(); ++i ) {
 
-        AddBranch( _tree, 
+        AddBranch( _tree,
                    _model->GetCollectionOfQuantities().At( i )->GetName(),
                    "D",
                    &_model->GetCollectionOfQuantities().At( i )->GetValue() );
+
     }
 
     for ( unsigned int i = 0; i < _model->GetCollectionOfStringVariables().GetNumberOfElements(); ++i ) {
 
         AddBranch( _tree,
-                  _model->GetCollectionOfStringVariables().At( i )->GetName(),
-                  "C",
-                  &_model->GetCollectionOfStringVariables().At( i )->GetValue() );
+                   _model->GetCollectionOfStringVariables().At( i )->GetName(),
+                   "C",
+                   &_model->GetCollectionOfStringVariables().At( i )->GetValue() );
+
     }
 
     for ( unsigned int i = 0; i < _model->GetCollectionOfChi2Contributions().GetNumberOfElements(); ++i ) {
 
         AddBranch( _tree,
-                  _model->GetCollectionOfChi2Contributions().At( i )->GetName(),
-                  "D",
-                  &_model->GetCollectionOfChi2Contributions().At( i )->GetValue() );
+                   _model->GetCollectionOfChi2Contributions().At( i )->GetName(),
+                   "D",
+                   &_model->GetCollectionOfChi2Contributions().At( i )->GetValue() );
+
     }
 
     for ( unsigned int i = 0; i < GetNumberOfStatusParameters(); ++i ) {
 
-        AddBranch( _tree, 
-                  GetStatusParameterVector()->at( i )->GetName(),
-                  "D",
-                  &GetStatusParameterVector()->at( i )->GetValue() );
+        AddBranch( _tree,
+                   GetStatusParameterVector()->at( i )->GetName(),
+                   "D",
+                   &GetStatusParameterVector()->at( i )->GetValue() );
+
     }
 
     // Now initialize the branches of the meta data tree.
@@ -216,15 +221,15 @@ void Fittino::AnalysisTool::InitializeBranches() {
             std::string measuredValueBranchName = "measuredValue_" + _model->GetObservableVector()->at( i )->GetPrediction()->GetName();
             std::string uncertaintyBranchName = "uncertainty_" + _model->GetObservableVector()->at( i )->GetPrediction()->GetName();
 
-            AddBranch( _metaDataTree, 
-                      measuredValueBranchName,
-                      "D",
-                      & _model->GetObservableVector()->at( i )->GetMeasuredValue() );
+            AddBranch( _metaDataTree,
+                       measuredValueBranchName,
+                       "D",
+                       & _model->GetObservableVector()->at( i )->GetMeasuredValue() );
 
-            AddBranch( _metaDataTree, 
-                      uncertaintyBranchName,
-                      "D",
-                      & _model->GetObservableVector()->at( i )->GetMeasuredError() );
+            AddBranch( _metaDataTree,
+                       uncertaintyBranchName,
+                       "D",
+                       & _model->GetObservableVector()->at( i )->GetMeasuredError() );
 
         }
 
@@ -260,7 +265,7 @@ void Fittino::AnalysisTool::TerminateAnalysisTool() {
 
     this->WriteResultToFile();
 
-    _outputFile.Close();
+    _outputFile->Close();
 
 }
 

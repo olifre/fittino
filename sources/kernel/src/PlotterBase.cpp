@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "TCanvas.h"
+#include "TFile.h"
 #include "TStyle.h"
 #include "TTree.h"
 

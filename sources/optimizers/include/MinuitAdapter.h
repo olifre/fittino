@@ -57,7 +57,7 @@ namespace Fittino {
       /*!
        *  Function to be minimized
        */
-      virtual double      operator()( const std::vector< double >& parameterVector ) const;
+      virtual double      operator()( const std::vector<double>& parameterVector ) const;
 
       /*! \cond UML */
     private:

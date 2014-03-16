@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "TDirectory.h"
+#include "TFile.h"
 #include "TTree.h"
 
 #include "SimpleOptimizer.h"

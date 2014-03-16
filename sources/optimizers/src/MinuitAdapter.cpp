@@ -41,7 +41,7 @@ void Fittino::MinuitAdapter::SetErrorDef( double err ) {
 
 }
 
-double Fittino::MinuitAdapter::operator()( const std::vector< double >& parameterVector ) const {
+double Fittino::MinuitAdapter::operator()( const std::vector<double>& parameterVector ) const {
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 

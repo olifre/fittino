@@ -27,9 +27,9 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-#include "TFile.h"
 #include "TRandom3.h"
 
+class TFile;
 class TTree;
 
 /*!
@@ -116,14 +116,14 @@ namespace Fittino {
 
     protected:
       /*!
-       *  Checks for uniqueness of the branch name and adds branch to tree.
-       *  \todo Create a wrapper class for TTree and make this a member function of that class.
-       */
-      void AddBranch( TTree* tree, std::string name, std::string type, const void* address );
-      /*!
        *  Returns the number of status parameters.
        */
       int                           GetNumberOfStatusParameters() const;
+      /*!
+       *  Checks for uniqueness of the branch name and adds branch to tree.
+       *  \todo Create a wrapper class for TTree and make this a member function of that class.
+       */
+      void                          AddBranch( TTree* tree, std::string name, std::string type, const void* address );
       /*!
        *  Saves some of the meta data for a run: measured values of observables and the
        *  uncertainties.
@@ -174,7 +174,7 @@ namespace Fittino {
        *  A ROOT file which stores the tool's output. The default name of the file is\n
        *  "Fittino.out.root".
        */
-      TFile                         _outputFile;
+      TFile*                        _outputFile;
 
     private:
       void                          ExecuteAnalysisTool();
