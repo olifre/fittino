@@ -30,34 +30,31 @@ namespace Fittino {
   class SLHADataStorageBase;
 
   /*!
-   *  \ingroup models
+   *  \ingroup calculators
    *  \brief Class for SLHA observables.
    */
   class SLHAPrediction : public PredictionBase {
 
     public:
-      SLHAPrediction( std::string         name,
-                      std::string         unit,
+      SLHAPrediction( std::string          name,
+                      std::string          unit,
                       SLHADataStorageBase* slhadatastorage,
-                      std::string         blockName,
-                      int                 columnIndex,
-                      std::string         firstId,
-                      std::string         secondId,
-                      std::string         thirdId,
-                      std::string          fourthId        );
-
-      SLHAPrediction( std::string         name,
-                      std::string         unit,
+                      std::string          blockName,
+                      int                  columnIndex,
+                      std::string          firstId,
+                      std::string          secondId,
+                      std::string          thirdId,
+                      std::string          fourthId );
+      SLHAPrediction( std::string          name,
+                      std::string          unit,
                       SLHADataStorageBase* slhadatastorage,
-                      std::string         blockName,
-                      int                 columnIndex,
-                     std::string         firstId,
-                     std::string         secondId,
-                     std::string         thirdId,
-                     std::string         fourthId,
-                     double              defaultValue );
-
-
+                      std::string          blockName,
+                      int                  columnIndex,
+                      std::string          firstId,
+                      std::string          secondId,
+                      std::string          thirdId,
+                      std::string          fourthId,
+                      double               defaultValue );
       /*!
        *  Standard Constructor
        */
@@ -68,17 +65,17 @@ namespace Fittino {
       ~SLHAPrediction();
 
     public:
-      virtual void        Update();
+      virtual void         Update();
 
     private:
-      bool                _useDefaultValue;
-      double              _defaultValue;
-      int                 _columnIndex;
-      std::string         _firstId;
-      std::string         _secondId;
-      std::string         _thirdId;
-      std::string         _fourthId;
-      std::string         _blockName;
+      bool                 _useDefaultValue;
+      double               _defaultValue;
+      int                  _columnIndex;
+      std::string          _firstId;
+      std::string          _fourthId;
+      std::string          _secondId;
+      std::string          _thirdId;
+      std::string          _blockName;
       SLHADataStorageBase* _slhadatastorage;
 
   };

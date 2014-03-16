@@ -72,12 +72,6 @@ double Fittino::SLHAeaSLHADataStorage::GetEntry( const std::string& blockName, c
     stringstream >> entry;
 
     return entry;
-    
-}
-
-void Fittino::SLHAeaSLHADataStorage::SetEntry( double value, const std::string& blockName, const int columnIndex, const std::string& firstIndex, const std::string& secondIndex, const std::string& thirdIndex,  const std::string fourthIndex ) {
-
-    _slhaeaDataStorage->at( blockName ).at( firstIndex, secondIndex, thirdIndex, fourthIndex ).at( columnIndex ) =  ( boost::format( "%.8e" ) % value ).str();
 
 }
 
@@ -160,6 +154,12 @@ void Fittino::SLHAeaSLHADataStorage::ReadFile( const std::string& slhaInputFileN
         throw SLHAFileException( "SLHA file could not be opened." );
 
     }
+
+}
+
+void Fittino::SLHAeaSLHADataStorage::SetEntry( double value, const std::string& blockName, const int columnIndex, const std::string& firstIndex, const std::string& secondIndex, const std::string& thirdIndex, const std::string fourthIndex ) {
+
+    _slhaeaDataStorage->at( blockName ).at( firstIndex, secondIndex, thirdIndex, fourthIndex ).at( columnIndex ) = ( boost::format( "%.8e" ) % value ).str();
 
 }
 
