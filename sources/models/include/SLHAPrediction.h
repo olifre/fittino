@@ -40,11 +40,22 @@ namespace Fittino {
                       std::string         unit,
                       SLHADataStorageBase* slhadatastorage,
                       std::string         blockName,
-                      int columnIndex,
+                      int                 columnIndex,
                       std::string         firstId,
                       std::string         secondId,
                       std::string         thirdId,
-                     std::string         fourthId        );
+                      std::string          fourthId        );
+
+      SLHAPrediction( std::string         name,
+                      std::string         unit,
+                      SLHADataStorageBase* slhadatastorage,
+                      std::string         blockName,
+                      int                 columnIndex,
+                     std::string         firstId,
+                     std::string         secondId,
+                     std::string         thirdId,
+                     std::string         fourthId,
+                     double              defaultValue );
 
 
       /*!
@@ -60,6 +71,8 @@ namespace Fittino {
       virtual void        Update();
 
     private:
+      bool                _useDefaultValue;
+      double              _defaultValue;
       int                 _columnIndex;
       std::string         _firstId;
       std::string         _secondId;

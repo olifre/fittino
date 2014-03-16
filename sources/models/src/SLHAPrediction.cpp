@@ -27,7 +27,7 @@ Fittino::SLHAPrediction::SLHAPrediction( std::string         name,
                                         std::string         unit,
                                         SLHADataStorageBase* slhadatastorage,
                                         std::string         blockName,
-                                        int columnIndex,
+                                        int                 columnIndex,
                                         std::string         firstId,
                                         std::string         secondId,
                                         std::string         thirdId,
@@ -39,6 +39,36 @@ _thirdId( thirdId ),
 _fourthId( fourthId),
 _blockName( blockName ),
 _slhadatastorage( slhadatastorage ),
+_useDefaultValue( false ),
+_defaultValue( 0 ),
+PredictionBase( name,
+               name,
+               unit,
+               unit,
+               0,
+               0 ) {
+
+}
+
+Fittino::SLHAPrediction::SLHAPrediction( std::string         name,
+                                        std::string         unit,
+                                        SLHADataStorageBase* slhadatastorage,
+                                        std::string         blockName,
+                                        int                 columnIndex,
+                                        std::string         firstId,
+                                        std::string         secondId,
+                                        std::string         thirdId,
+                                        std::string         fourthId,
+                                        double              defaultValue )
+: _columnIndex( columnIndex ),
+_firstId( firstId ),
+_secondId( secondId ),
+_thirdId( thirdId ),
+_fourthId( fourthId),
+_blockName( blockName ),
+_slhadatastorage( slhadatastorage ),
+_useDefaultValue ( true ),
+_defaultValue ( defaultValue ),
 PredictionBase( name,
                name,
                unit,
@@ -66,20 +96,24 @@ Fittino::SLHAPrediction::~SLHAPrediction() {
 
 void Fittino::SLHAPrediction::Update() {
 
-    if ( _secondId == "" ) {
-
-        _value = _slhadatastorage->GetEntry( _blockName, _firstId, _columnIndex );
-
-    }
-    else if ( _thirdId == "" ){
-
-        _value = _slhadatastorage->GetEntry( _blockName, _firstId, _secondId, _columnIndex );
-
-    }
-    else {
+    try {
 
         _value = _slhadatastorage->GetEntry( _blockName, _columnIndex,_firstId, _secondId, _thirdId, _fourthId );
+
+    }
+    catch( const std::out_of_range& e ) {
+
+        if ( _useDefaultValue ) {
+
+            _value = _defaultValue;
+
+        }
+        else {
+
+            throw;
+
+        }
+
     }
 
 }
-
