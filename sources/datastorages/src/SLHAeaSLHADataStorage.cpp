@@ -19,6 +19,8 @@
 
 #include <fstream>
 
+#include "boost/format.hpp"
+
 #include "slhaea.h"
 
 #include "SLHAeaSLHADataStorage.h"
@@ -71,6 +73,12 @@ double Fittino::SLHAeaSLHADataStorage::GetEntry( const std::string& blockName, c
 
     return entry;
     
+}
+
+void Fittino::SLHAeaSLHADataStorage::SetEntry( double value, const std::string& blockName, const int columnIndex, const std::string& firstIndex, const std::string& secondIndex, const std::string& thirdIndex,  const std::string fourthIndex ) {
+
+    _slhaeaDataStorage->at( blockName ).at( firstIndex, secondIndex, thirdIndex, fourthIndex ).at( columnIndex ) =  ( boost::format( "%.8e" ) % value ).str();
+
 }
 
 void Fittino::SLHAeaSLHADataStorage::AddBlock( const std::string& path ) {

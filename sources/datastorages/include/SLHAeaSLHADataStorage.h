@@ -60,6 +60,7 @@ namespace Fittino {
       virtual void   AddLine( const SLHALine& line );
       virtual void   Clear();
       virtual void   ReadFile( const std::string& slhaInputFileName ) const;
+      void SetEntry( double value, const std::string& blockName, const int columnIndex, const std::string& firstIndex, const std::string& secondIndex, const std::string& thirdIndex,  const std::string fourthIndex );
       virtual void   WriteFile( const std::string& slhaOutputFileName ) const;
 
     private:
