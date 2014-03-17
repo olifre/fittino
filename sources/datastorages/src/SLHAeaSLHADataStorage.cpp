@@ -116,6 +116,12 @@ void Fittino::SLHAeaSLHADataStorage::Clear() {
 
 }
 
+void Fittino::SLHAeaSLHADataStorage::ReplaceBlock( std::string name, std::string block ) {
+
+    _slhaeaDataStorage->at( name ).str( block );
+
+}
+
 void Fittino::SLHAeaSLHADataStorage::ReadFile( const std::string& slhaInputFileName ) const {
 
     std::ifstream file( slhaInputFileName.c_str() );
@@ -146,3 +152,11 @@ void Fittino::SLHAeaSLHADataStorage::WriteFile( const std::string& slhaOutputFil
     file.close();
 
 }
+
+
+std::string Fittino::SLHAeaSLHADataStorage::GetBlock( std::string name ) const {
+
+    return _slhaeaDataStorage->at( name ).str();
+
+}
+
