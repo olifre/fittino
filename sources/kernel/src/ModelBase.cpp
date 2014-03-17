@@ -34,6 +34,8 @@ Fittino::ModelBase::ModelBase( const boost::property_tree::ptree& ptree )
 
 Fittino::ModelBase::~ModelBase() {
 
+    _collectionOfParameters.Delete();
+
 }
 
 double Fittino::ModelBase::GetChi2() {

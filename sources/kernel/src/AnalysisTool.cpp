@@ -46,6 +46,16 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tre
 
 Fittino::AnalysisTool::~AnalysisTool() {
 
+    delete _outputFile;
+    delete _metaDataTree;
+    delete _tree;
+
+    for ( unsigned int i = 0; i < _statusParameterVector.size(); ++i ) {
+
+        delete _statusParameterVector[i];
+
+    }
+
 }
 
 void Fittino::AnalysisTool::PerformAnalysis() {

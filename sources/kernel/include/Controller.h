@@ -56,7 +56,7 @@
  *  \todo MeasuredErrors: Allow arbitrary number. Give names.
  *  \todo Introduce parameter point dependent errors, correlations, covariances.
  *  \todo Allow asymmetric errors.
- *  \todo Add LSPCalculator ( a calculator which determines the LSP ) 
+ *  \todo Add LSPCalculator ( a calculator which determines the LSP )
  *  \todo Make chi2 a model quantitiy?
  *  \todo Make name of chi2 branch configurable.
  *  \todo More general: Make all quantity names/branch names configurable?

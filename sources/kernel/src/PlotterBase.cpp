@@ -96,6 +96,7 @@ Fittino::PlotterBase::~PlotterBase() {
     delete _canvas;
     delete _tree;
     delete _dataFile;
+    delete _fittinoStyle;
 
 }
 
