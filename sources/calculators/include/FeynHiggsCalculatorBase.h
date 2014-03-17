@@ -53,9 +53,10 @@ namespace Fittino {
       std::string _fileName;
 
       /*! \cond UML */
-    private:  
 
       double _mass_h;
+
+  private:
 
       double _normSM_sigma_ggh;
       double _normSM_sigma_ggh_2;
@@ -77,6 +78,7 @@ namespace Fittino {
       double _normSM_Gamma_h_total;
 
       virtual void ConfigureInput() = 0;
+      virtual void WriteOutput() = 0;
 
       /*! \endcond UML */
 

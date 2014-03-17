@@ -49,9 +49,9 @@ namespace Fittino {
       /*! \cond UML */
     private:
       void ConfigureInput();
+      void WriteOutput();
 
     private:  
-      double _m_h;
       int    _error;
 
       Collection<SimplePrediction*> _input;

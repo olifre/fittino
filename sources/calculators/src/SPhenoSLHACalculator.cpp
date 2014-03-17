@@ -27,10 +27,11 @@
 #include "SLHALine.h"
 #include "SPhenoSLHACalculator.h"
 #include "TimeoutExecutorException.h"
+#include "SLHAPrediction.h"
 
 Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const boost::property_tree::ptree& ptree, const PhysicsModel* model )
-    : SLHACalculatorBase( model ),
-      _executor( "./SPheno", "SPheno" ) {
+: SLHACalculatorBase( model ),
+_executor( "./SPheno", "SPheno" ) {
 
     _executableName     = "./SPheno";
     _name               = "SPhenoCalculator";
@@ -48,6 +49,39 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const boost::property_tree:
         }
 
     }
+
+    AddQuantity( new SLHAPrediction( "Mass_~dL"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000001", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~uL"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000002", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~sL"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000003", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~cL"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000004", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~b1"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000005", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~t1"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000006", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~eL"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000011", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~nueL"  , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000012", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~muL"   , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000013", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~numuL" , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000014", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~tau1"  , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000015", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~nutauL", "GeV", _slhaOutputDataStorage, "MASS", 1, "1000016", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~dR"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "2000001", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~uR"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "2000002", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~sR"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "2000003", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~cR"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "2000004", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~b2"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "2000005", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~t2"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "2000006", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~eR"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "2000011", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~muR"   , "GeV", _slhaOutputDataStorage, "MASS", 1, "2000013", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~tau2"  , "GeV", _slhaOutputDataStorage, "MASS", 1, "2000015", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~g"     , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000021", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~chi01" , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000022", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~chi02" , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000023", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~chip1" , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000024", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~chi03" , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000025", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~chi04" , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000035", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Mass_~chip2" , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000037", "", "", "" ) );
+
+    AddQuantity( new SLHAPrediction( "Gamma_~chi02_Total", "",_slhaOutputDataStorage, "1000023", 2, "DECAY", "", "", "" ) );
+
+    AddQuantity( new SLHAPrediction( "BR_~chi02_e_~eR"   , "", 0, _slhaOutputDataStorage, "1000023", 0, "(any)", "2", "11", "2000011" ) );
 
 }
 
@@ -97,6 +131,12 @@ void Fittino::SPhenoSLHACalculator::CalculatePredictions() {
     }
 
     _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
+
+    for ( unsigned int i = 0; i < _collectionOfQuantities.GetNumberOfElements(); ++i ) {
+
+            _collectionOfQuantities.At( i )->Update();
+
+    }
 
 }
 

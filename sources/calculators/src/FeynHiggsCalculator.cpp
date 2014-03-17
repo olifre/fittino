@@ -101,3 +101,8 @@ void Fittino::FeynHiggsCalculator::ConfigureInput() {
 
 }
 
+void Fittino::FeynHiggsCalculator::WriteOutput() {
+
+    
+
+}

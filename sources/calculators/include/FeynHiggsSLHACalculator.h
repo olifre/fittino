@@ -30,6 +30,8 @@
  */
 namespace Fittino {
 
+    class SLHADataStorageBase;
+
   /*!
    *  \ingroup calculators
    *  \brief Wrapper class for FeynHiggs.
@@ -49,9 +51,12 @@ namespace Fittino {
       /*! \cond UML */
     private:
       COMPLEX _slhadata[nslhadata];
+      SLHADataStorageBase* _slhadatastorage;
+
 
     private:
       void ConfigureInput();
+      void WriteOutput();
 
       /*! \endcond UML */
 

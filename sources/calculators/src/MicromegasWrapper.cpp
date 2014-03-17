@@ -23,6 +23,7 @@
 #include "micromegas.h"
 #include "micromegas_aux.h"
 
+#include "CalculatorException.h"
 #include "MicromegasWrapper.h"
 
 Fittino::MicromegasWrapper::MicromegasWrapper( const PhysicsModel* model )
@@ -40,7 +41,7 @@ void Fittino::MicromegasWrapper::CalculatePredictions() {
 
     if ( lesHinput( &te[0] ) ) {
 
-        std::cerr << "runmicromegas failed to open Les Houches file" << std::endl;
+        throw ConfigurationException( "Micromegas: Problem with input file." );
 
     }
 
@@ -48,7 +49,8 @@ void Fittino::MicromegasWrapper::CalculatePredictions() {
 
     if ( sortOddParticles( lspName ) ) {
 
-        std::cerr << "runmicromegas cannot calculate relic density for " << lspName << " LSPs" << std::endl;
+        throw CalculatorException( _name, "LSP" );
+
     }
 
     int spin2, charge3, cdim;
@@ -60,10 +62,9 @@ void Fittino::MicromegasWrapper::CalculatePredictions() {
     _omegah2 = darkOmega( &Xf, fast, Beps );
 
     if ( _omegah2 < 0 ) {
+        
+        throw CalculatorException( _name, "Negative omega." );
 
-        std::cerr << "Problem with DM relic density calculation" << std::endl;
     }
-
-    std::cout << "omega h^2 = " << _omegah2 << std::endl;
 
 }

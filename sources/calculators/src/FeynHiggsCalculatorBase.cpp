@@ -159,6 +159,8 @@ void Fittino::FeynHiggsCalculatorBase::CalculatePredictions() {
     _normSM_sigma_Wh    = Wh  ( 1 ) / WhSM ( 1 ); 
     _normSM_sigma_Zh    = Zh  ( 1 ) / ZhSM ( 1 );
 
+    WriteOutput();
+
     redirector.Stop();
 
 }
