@@ -52,7 +52,6 @@
 #include "SimplePrediction.h"
 #include "SimpleSampler.h"
 #include "SimulatedAnnealingOptimizer.h"
-#include "SLHAChi2Contribution.h"
 #include "SLHAeaSLHADataStorage.h"
 #include "SPhenoSLHACalculator.h"
 #include "SummaryPlotter.h"
@@ -355,13 +354,8 @@ Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::prop
 Fittino::Chi2ContributionBase* const Fittino::Factory::CreateChi2Contribution( const std::string& type, const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const {
 
     CalculatorBase *calculator = calculators.At( ptree.get<std::string>( "CalculatorName" ) );
-
-    if ( type == "SLHAChi2Contribution" ) {
-
-        return new SLHAChi2Contribution( ptree, static_cast<SLHACalculatorBase*>( calculator ) );
-
-    }
-    else if ( type == "LHCChi2Contribution" ) {
+    
+    if ( type == "LHCChi2Contribution" ) {
 
         return new LHCChi2Contribution( ptree, static_cast<LHCLimitCalculator*>( calculator ) );
 
