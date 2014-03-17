@@ -52,7 +52,6 @@ namespace Fittino {
       ~SLHAeaSLHADataStorage();
 
     public:
-      virtual double GetEntry( const std::string& blockName, const std::string& firstIndex, const std::string& secondIndex, const int thirdIndex );
       virtual double GetEntry( const std::string& blockName, const int columnIndex, const std::string& firstIndex, const std::string& secondIndex, const std::string& thirdIndex, const std::string fourthIndex );
       virtual void   AddBlock( const std::string& path );
       virtual void   AddLine( const std::string& path );
