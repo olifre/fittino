@@ -57,11 +57,31 @@ namespace Fittino {
        */
       virtual                  ~SuperIsoCalculator();
 
-
       virtual void             CalculatePredictions();
 
     private:
+      std::string _slhafile;
+
+      double _amu;
+      double _delta0;
       double _bsgamma;
+      double _bsmumu;
+      double _bsmumu_untag;
+      double _bdmumu;
+      double _btaunu;
+      double _normSM_btaunu;
+      double _bdtaunu;
+      double _bdtaunu_bdenu;
+      double _dmunu;
+      double _dsmunu;
+      double _dstaunu;
+      double _kmunu_pimunu;
+      double _rmu23;
+      double _excludedHiggsMass;
+      double _excludedSusyMass;
+      double _nmssmColliderExcluded;
+      double _nmssmTheoryExcluded;
+      double _chargedLSP;
 
   };
 
