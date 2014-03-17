@@ -50,14 +50,14 @@ Fittino::SLHAPrediction::SLHAPrediction( std::string          name,
 
 Fittino::SLHAPrediction::SLHAPrediction( std::string          name,
                                          std::string          unit,
+                                         double               defaultValue,
                                          SLHADataStorageBase* slhadatastorage,
                                          std::string          blockName,
                                          int                  columnIndex,
                                          std::string          firstId,
                                          std::string          secondId,
                                          std::string          thirdId,
-                                         std::string          fourthId,
-                                         double               defaultValue )
+                                         std::string          fourthId )
     : _columnIndex( columnIndex ),
       _firstId( firstId ),
       _secondId( secondId ),

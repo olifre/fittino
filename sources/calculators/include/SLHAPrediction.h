@@ -47,14 +47,14 @@ namespace Fittino {
                       std::string          fourthId );
       SLHAPrediction( std::string          name,
                       std::string          unit,
+                      double               defaultValue,
                       SLHADataStorageBase* slhadatastorage,
                       std::string          blockName,
                       int                  columnIndex,
                       std::string          firstId,
                       std::string          secondId,
                       std::string          thirdId,
-                      std::string          fourthId,
-                      double               defaultValue );
+                      std::string          fourthId );
       /*!
        *  Standard Constructor
        */
