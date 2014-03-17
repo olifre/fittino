@@ -190,7 +190,7 @@ void Fittino::AnalysisTool::InitializeBranches() {
         AddBranch( _tree,
                    _model->GetCollectionOfStringVariables().At( i )->GetName(),
                    "C",
-                   &_model->GetCollectionOfStringVariables().At( i )->GetValue() );
+                   _model->GetCollectionOfStringVariables().At( i )->GetValue().c_str() );
 
     }
 
