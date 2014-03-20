@@ -20,6 +20,7 @@
 #ifndef FITTINO_FEYNHIGGSCALCULATORBASE_H
 #define FITTINO_FEYNHIGGSCALCULATORBASE_H
 
+#include "FeynHiggsTypes.h"
 #include "CalculatorBase.h"
 #include "PtreeForwardDeclaration.h"
 
@@ -29,6 +30,7 @@
 namespace Fittino {
 
   class SimplePrediction;
+    class FeynHiggsChannel;
 
   /*!
    *  \ingroup calculators
@@ -57,6 +59,13 @@ namespace Fittino {
       double _mass_h;
 
   private:
+      void AddChannel( std::string higgsName, std::string channelName, int channelNumber, bool SM );
+
+      std::vector< FeynHiggsChannel* > _channels;
+      FHRealType*    _gammas;
+      FHRealType*    _gammasms;
+      FHComplexType* _couplings;
+      FHComplexType* _couplingsms;
 
       double _normSM_sigma_ggh;
       double _normSM_sigma_ggh_2;
@@ -66,23 +75,13 @@ namespace Fittino {
       double _normSM_sigma_Wh;
       double _normSM_sigma_Zh;
 
-      double _normSM_Gamma_h_tau_tau;
-      double _normSM_Gamma_h_c_c;
-      double _normSM_Gamma_h_s_s;
-      double _normSM_Gamma_h_b_b;
-      double _normSM_Gamma_h_gamma_gamma;
-      double _normSM_Gamma_h_Z_gamma;
-      double _normSM_Gamma_h_Z_Z;
-      double _normSM_Gamma_h_W_W;
-      double _normSM_Gamma_h_g_g;
-      double _normSM_Gamma_h_total;
-
       virtual void ConfigureInput() = 0;
       virtual void WriteOutput() = 0;
 
       /*! \endcond UML */
 
   };
+
 
 }
 

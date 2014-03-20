@@ -25,8 +25,6 @@
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
 
-#include "TMath.h"
-
 #include "CFeynHiggs.h"
 #include "CSLHA.h"
 
@@ -37,29 +35,84 @@
 #include "Redirector.h"
 #include "SimplePrediction.h"
 
+#include "FeynHiggsChannel.h"
+
 Fittino::FeynHiggsCalculatorBase::FeynHiggsCalculatorBase( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
-        : CalculatorBase( model ) {
+: CalculatorBase( model ) {
 
     _name = "FeynHiggsCalculator";
 
-    AddQuantity( new SimplePrediction( "Mass_h",                     "", _mass_h                     ) );  
-    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_gamma_gamma", "", _normSM_Gamma_h_gamma_gamma ) );  
-    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_Z_gamma"    , "", _normSM_Gamma_h_Z_gamma     ) );      
-    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_Z_Z"        , "", _normSM_Gamma_h_Z_Z         ) );         
-    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_W_W"        , "", _normSM_Gamma_h_W_W         ) );        
-    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_g_g"        , "", _normSM_Gamma_h_g_g         ) );        
-    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_tau_tau"    , "", _normSM_Gamma_h_tau_tau     ) );    
-    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_c_c"        , "", _normSM_Gamma_h_c_c         ) );         
-    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_s_s"        , "", _normSM_Gamma_h_s_s         ) );         
-    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_b_b"        , "", _normSM_Gamma_h_b_b         ) );         
-    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_total"      , "", _normSM_Gamma_h_total       ) );       
-    AddQuantity( new SimplePrediction( "NormSM_sigma_ggh"          , "", _normSM_sigma_ggh           ) );          
-    AddQuantity( new SimplePrediction( "NormSM_sigma_ggh_2"        , "", _normSM_sigma_ggh_2         ) );         
-    AddQuantity( new SimplePrediction( "NormSM_sigma_bbh"          , "", _normSM_sigma_bbh           ) );          
-    AddQuantity( new SimplePrediction( "NormSM_sigma_qqh"          , "", _normSM_sigma_qqh           ) );          
-    AddQuantity( new SimplePrediction( "NormSM_sigma_tth"          , "", _normSM_sigma_tth           ) );          
-    AddQuantity( new SimplePrediction( "NormSM_sigma_Wh"           , "", _normSM_sigma_Wh            ) );           
+    AddQuantity( new SimplePrediction( "Mass_h",                     "", _mass_h                     ) );
+    AddQuantity( new SimplePrediction( "NormSM_sigma_ggh"          , "", _normSM_sigma_ggh           ) );
+    AddQuantity( new SimplePrediction( "NormSM_sigma_ggh_2"        , "", _normSM_sigma_ggh_2         ) );
+    AddQuantity( new SimplePrediction( "NormSM_sigma_bbh"          , "", _normSM_sigma_bbh           ) );
+    AddQuantity( new SimplePrediction( "NormSM_sigma_qqh"          , "", _normSM_sigma_qqh           ) );
+    AddQuantity( new SimplePrediction( "NormSM_sigma_tth"          , "", _normSM_sigma_tth           ) );
+    AddQuantity( new SimplePrediction( "NormSM_sigma_Wh"           , "", _normSM_sigma_Wh            ) );
     AddQuantity( new SimplePrediction( "NormSM_sigma_Zh"           , "", _normSM_sigma_Zh            ) );
+
+    _gammas = new FHRealType[ngammas];
+    _gammasms = new FHRealType[ngammasms];
+    _couplings = new FHComplexType[ncouplings];
+    _couplingsms = new FHComplexType[ncouplingsms];
+
+    std::string higgs[4] = { "h0", "H0", "A0" , "H+" };
+    std::string nu[3] = { "nue", "numu", "nutau" };
+    std::string lepton[3] = { "e", "mu", "tau" };
+    std::string up[3] = { "u", "c", "t" };
+    std::string down[3] = { "d", "s", "b"};
+
+    for ( unsigned int iHiggs = 1; iHiggs < 4; iHiggs++ ) {
+
+        std::string higgsName = higgs[iHiggs-1];
+
+        AddChannel( higgsName, "gamma_gamma", H0VV( iHiggs, 1 ), true );
+        AddChannel( higgsName, "Z_gamma"    , H0VV( iHiggs, 2 ), true );
+        AddChannel( higgsName, "Z_Z"        , H0VV( iHiggs, 3 ), true );
+        AddChannel( higgsName, "W_W"        , H0VV( iHiggs, 4 ), true );
+        AddChannel( higgsName, "g_g"        , H0VV( iHiggs, 3 ), true );
+
+        AddChannel( higgsName, "nue_nue",     H0FF( iHiggs, 1, 1, 1 ), true );
+        AddChannel( higgsName, "numu_numu",   H0FF( iHiggs, 1, 2, 2 ), true );
+        AddChannel( higgsName, "nutau_nutau", H0FF( iHiggs, 1, 3, 3 ), true );
+        AddChannel( higgsName, "e_e",         H0FF( iHiggs, 2, 1, 1 ), true );
+        AddChannel( higgsName, "mu_mu",       H0FF( iHiggs, 2, 2, 2 ), true );
+        AddChannel( higgsName, "tau_tau",     H0FF( iHiggs, 2, 3, 3 ), true );
+        AddChannel( higgsName, "u_u",         H0FF( iHiggs, 3, 1, 1 ), true );
+        AddChannel( higgsName, "c_c",         H0FF( iHiggs, 3, 2, 2 ), true );
+        AddChannel( higgsName, "t_t",         H0FF( iHiggs, 3, 3, 3 ), true );
+        AddChannel( higgsName, "d_d",         H0FF( iHiggs, 4, 1, 1 ), true );
+        AddChannel( higgsName, "s_s",         H0FF( iHiggs, 4, 2, 2 ), true );
+        AddChannel( higgsName, "b_b",         H0FF( iHiggs, 4, 3, 3 ), true );
+
+        AddChannel( higgsName, "~chi01_~chi01", H0ChaCha( iHiggs, 1, 1 ), false );
+        AddChannel( higgsName, "~chi01_~chi02", H0ChaCha( iHiggs, 1, 2 ), false );
+        AddChannel( higgsName, "~chi02_~chi01", H0ChaCha( iHiggs, 2, 1 ), false );
+        AddChannel( higgsName, "~chi02_~chi02", H0ChaCha( iHiggs, 2, 2 ), false );
+
+        AddChannel( higgsName, "Z_" + higgsName, H0HH( iHiggs, 1, 1 ), true ); // SM?
+
+
+        for ( unsigned int iHiggs1 = 1; iHiggs1 < 5; iHiggs1++ ) {
+
+
+        }
+
+    }
+
+}
+
+void Fittino::FeynHiggsCalculatorBase::AddChannel( std::string higgsName, std::string channelName, int channelNumber, bool SM ) {
+
+    FeynHiggsChannel* calc = new FeynHiggsChannel( _gammas, _gammasms, _couplings, _couplingsms, higgsName,  channelName, channelNumber, SM );
+
+    _channels.push_back( calc );
+
+    for ( unsigned int iQuantity = 0; iQuantity < calc->GetCollectionOfQuantities().GetNumberOfElements(); iQuantity++ ) {
+
+        AddQuantity( calc->GetCollectionOfQuantities().At( iQuantity ) );
+
+    }
 
 }
 
@@ -120,26 +173,13 @@ void Fittino::FeynHiggsCalculatorBase::CalculatePredictions() {
     // calulate couplings and gammas
 
     ComplexType couplings[ncouplings], couplingsms[ncouplingsms];
-    RealType    gammas[ngammas], gammasms[ngammasms];
-    int    fast  = 1;
+        int    fast  = 1;
 
-    FHCouplings( &_error, couplings, couplingsms, gammas, gammasms, fast );
+    FHCouplings( &_error, couplings, couplingsms, _gammas, _gammasms, fast );
     
     if ( _error != 0 ) {
 
     }
-
-    _normSM_Gamma_h_gamma_gamma = Gamma( H0VV( 1, 1       ) ) / GammaSM   ( H0VV( 1, 1       ) );
-    _normSM_Gamma_h_Z_gamma     = Gamma( H0VV( 1, 2       ) ) / GammaSM   ( H0VV( 1, 2       ) );
-    _normSM_Gamma_h_Z_Z         = Gamma( H0VV( 1, 3       ) ) / GammaSM   ( H0VV( 1, 3       ) );
-    _normSM_Gamma_h_W_W         = Gamma( H0VV( 1, 4       ) ) / GammaSM   ( H0VV( 1, 4       ) );
-    _normSM_Gamma_h_g_g         = Gamma( H0VV( 1, 5       ) ) / GammaSM   ( H0VV( 1, 5       ) );
-    _normSM_Gamma_h_tau_tau     = Gamma( H0FF( 1, 2, 3, 3 ) ) / GammaSM   ( H0FF( 1, 2, 3, 3 ) );
-    _normSM_Gamma_h_c_c         = Gamma( H0FF( 1, 3, 2, 2 ) ) / GammaSM   ( H0FF( 1, 3, 2, 2 ) );
-    _normSM_Gamma_h_s_s         = Gamma( H0FF( 1, 4, 2, 2 ) ) / GammaSM   ( H0FF( 1, 4, 2, 2 ) ); 
-    _normSM_Gamma_h_b_b         = Gamma( H0FF( 1, 4, 3, 3 ) ) / GammaSM   ( H0FF( 1, 4, 3, 3 ) );
-
-    _normSM_Gamma_h_total = GammaTot( 1 ) / GammaSMTot( 1 );
 
     // calculate xs
 
@@ -162,5 +202,11 @@ void Fittino::FeynHiggsCalculatorBase::CalculatePredictions() {
     WriteOutput();
 
     redirector.Stop();
+
+    for ( unsigned int i = 0; i< _channels.size(); i++ ) {
+
+        _channels.at( i )->CalculatePredictions();
+
+    }
 
 }

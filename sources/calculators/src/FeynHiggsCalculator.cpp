@@ -25,8 +25,6 @@
 #include "boost/format.hpp"
 #include <boost/filesystem.hpp>
 
-#include "TMath.h"
-
 #include "CFeynHiggs.h"
 #include "CSLHA.h"
 
