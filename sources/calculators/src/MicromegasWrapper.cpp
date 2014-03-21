@@ -62,7 +62,7 @@ void Fittino::MicromegasWrapper::CalculatePredictions() {
     _omegah2 = darkOmega( &Xf, fast, Beps );
 
     if ( _omegah2 < 0 ) {
-        
+
         throw CalculatorException( _name, "Negative omega." );
 
     }

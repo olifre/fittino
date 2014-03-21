@@ -48,44 +48,39 @@ extern "C" {
 
   void __io_MOD_get_id_of_peakobservable( int* ii, int* ID );
   void __io_MOD_get_number_of_observables( int* ntotal, int* npeakmu, int* npeakmh, int* nmpred, int* nanalyses );
-  void __io_MOD_get_peakinfo_from_hsresults( int* ID, double* mupred, int* domH, int* nHcomb ); 
+  void __io_MOD_get_peakinfo_from_hsresults( int* ID, double* mupred, int* domH, int* nHcomb );
 
   // void __io_MOD_higgssignals_create_slha_output_default( int* detailed );
 
-  void __pc_chisq_MOD_get_peakchi2(int* obsID, double* csqmu, double* csqmh, double* csqmax, double* csqtot); 
-  void __pc_chisq_MOD_print_cov_mh_to_file(int* nH);
+  void __pc_chisq_MOD_get_peakchi2( int* obsID, double* csqmu, double* csqmh, double* csqmax, double* csqtot );
+  void __pc_chisq_MOD_print_cov_mh_to_file( int* nH );
   void __pc_chisq_MOD_print_cov_mu_to_file();
 
   void assign_toyvalues_to_peak_( int* obsID, double* mu_obs, double* mh_obs );
 
   void finish_higgssignals_();
 
-  void get_rates_(
-                   const int* ii,
+  void get_rates_( const int* ii,
                    const int* collider,
                    const int* Nchannels,
                    const int* IDchannels,
-                   double*    rate
-                 ); 
+                   double*    rate );
 
-  void get_rvalues_(
-                     const int* nH,
+  void get_rvalues_( const int* nH,
                      const int* collider,
                      double*    R_H_WW,
                      double*    R_H_ZZ,
                      double*    R_H_gaga,
                      double*    R_H_tautau,
                      double*    R_H_bb,
-                     double*    R_VH_bb
-                   );
+                     double*    R_VH_bb );
 
   void initialize_higgssignals_( const int* nHzero, const int* nHplus, const char* expdata, int expdata_length );
 
   void initialize_higgssignals_for_fittino_  ( const int* nHzero, const int* nHplus );
   void initialize_higgssignals_latestresults_( const int* nHzero, const int* nHplus );
 
-  void higgsbounds_neutral_input_effc_(
-                                        const double* mass_h,
+  void higgsbounds_neutral_input_effc_( const double* mass_h,
                                         const double* GammaTotal,
                                         const double* g2hjss_s,
                                         const double* g2hjss_p,
@@ -107,11 +102,9 @@ extern "C" {
                                         const double* g2hjggZ,
                                         const double* g2hjhiZ,
                                         const double* BR_hjinvisible,
-                                        const double* BR_hjhihi
-                                      );
+                                        const double* BR_hjhihi );
 
-  void higgsbounds_neutral_input_hadr_(
-                                        const double* massh,
+  void higgsbounds_neutral_input_hadr_( const double* massh,
                                         const double* GammaTotal,
                                         const double* CP,
                                         const double* CS_lep_bbhj_ratio,
@@ -147,27 +140,24 @@ extern "C" {
                                         const double* BR_hjgaga,
                                         const double* BR_hjgg,
                                         const double* BR_hjinvisible,
-                                        const double* BR_hjhihi
-                                      );
-                                         
+                                        const double* BR_hjhihi );
+
   void higgssignals_neutral_input_massuncertainty_( const double* dm );
 
-  void run_higgssignals_(
-                          const int* mode,
+  void run_higgssignals_( const int* mode,
                           double*    Chisq_mu,
                           double*    Chisq_mh,
                           double*    Chisq,
                           int*       nobs,
-                          double*    Pvalue
-                        );
+                          double*    Pvalue );
 
   void setup_assignmentrange_( const double* range );
-  void setup_correlations_( const int* corr_mu, const int* corr_mh);
+  void setup_correlations_( const int* corr_mu, const int* corr_mh );
   void setup_higgs_to_peaks_assignment_iterations_( const int* iterations );
   void setup_output_level_( const int* output_level );
   void setup_pdf_( const int* pdf );
   void setup_rate_uncertainties_( const double dCS[], const double dBR[] );
-  
+
 }
 
 #endif // FITTINO_CHIGGSSIGNALS_H

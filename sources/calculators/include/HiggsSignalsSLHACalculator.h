@@ -57,22 +57,18 @@ namespace Fittino {
        *  the HiggsSignals manual) by interpolating between pure bbh and ggh\n
        *  production.
        */
-      double        CalculateSinglehUncertainty(
-                                                 double d_hbb,
+      double        CalculateSinglehUncertainty( double d_hbb,
                                                  double d_hgg,
                                                  double g2_hbb,
                                                  double g2_hgg,
-                                                 double mass_h
-                                               );
+                                                 double mass_h );
       /*!
        *  Set the (relative) rate uncertainties.
        */
-      void          SetRateUncertainties       (
-                                                 double g2_hibb_s,
+      void          SetRateUncertainties       ( double g2_hibb_s,
                                                  double g2_hibb_p,
                                                  double g2_higg,
-                                                 double mass_h
-                                               );
+                                                 double mass_h );
 
       /*! \endcond UML */
 
@@ -338,11 +334,9 @@ namespace Fittino {
        *  A gnuplot script to reproduce the plots, called linearfit.gnu, \n
        *  can be found in the images directory of the documentation.
        */
-      double        Calculateg2hgg        (
-                                            double g_hbb,
+      double        Calculateg2hgg        ( double g_hbb,
                                             double g_htt,
-                                            double mass_h
-                                          );
+                                            double mass_h );
       /*!
        *  Calculates the SM Delta for the phonton photon coupling that consists of \n
        *  other Higgs couplings: \n
@@ -522,14 +516,12 @@ namespace Fittino {
        *  A gnuplot script to reproduce the plots, called linearfit.gnu, \n
        *  can be found in the images directory of the documentation.
        */
-      double        Calculateg2hgammagamma(
-                                            double g_hbb,
+      double        Calculateg2hgammagamma( double g_hbb,
                                             double g_htt,
                                             double g_htautau,
                                             double g_hWW,
                                             double g_hZZ,
-                                            double mass_h
-                                          );
+                                            double mass_h );
       /*!
        *  Calculates the total width of the Higgs boson depending on its mass\n
        *  and couplings: \n
@@ -540,8 +532,7 @@ namespace Fittino {
        *  If GammahTotal exceeds 1 GeV, the Chi2 contribution rises to 1M,\n
        *  forcing the MarkovChain backwards.
        */
-      double        CalculateGammahTotal  (
-                                            double mass_h,
+      double        CalculateGammahTotal  ( double mass_h,
                                             double g2_hiss_s,
                                             double g2_hicc_s,
                                             double g2_hibb_s,
@@ -553,8 +544,7 @@ namespace Fittino {
                                             double g2_hiZga,
                                             double g2_higaga,
                                             double g2_higg,
-                                            double Gamma_hInvisible
-                                          );
+                                            double Gamma_hInvisible );
 
       /*!
        *  Calculates the total width of the Higgs boson depending on its mass\n
@@ -566,12 +556,10 @@ namespace Fittino {
        *  If GammahTotal exceeds 1 GeV, the Chi2 contribution rises to 1M,\n
        *  forcing the MarkovChain backwards.
        */
-      double        CalculateBR           (
-                                            double g2_hixx,
+      double        CalculateBR           ( double g2_hixx,
                                             double mass_h,
                                             double Gamma_hTotal,
-                                            double BR_SM
-                                          );
+                                            double BR_SM );
 
   };
 

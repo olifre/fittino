@@ -30,8 +30,8 @@
 #include "SLHAPrediction.h"
 
 Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const boost::property_tree::ptree& ptree, const PhysicsModel* model )
-: SLHACalculatorBase( model ),
-_executor( "./SPheno", "SPheno" ) {
+    : SLHACalculatorBase( model ),
+      _executor( "./SPheno", "SPheno" ) {
 
     _executableName     = "./SPheno";
     _name               = "SPhenoCalculator";
@@ -79,7 +79,7 @@ _executor( "./SPheno", "SPheno" ) {
     AddQuantity( new SLHAPrediction( "Mass_~chi04" , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000035", "", "", "" ) );
     AddQuantity( new SLHAPrediction( "Mass_~chip2" , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000037", "", "", "" ) );
 
-    AddQuantity( new SLHAPrediction( "Gamma_~chi02_Total", "",_slhaOutputDataStorage, "1000023", 2, "DECAY", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Gamma_~chi02_Total", "", _slhaOutputDataStorage, "1000023", 2, "DECAY", "", "", "" ) );
 
     AddQuantity( new SLHAPrediction( "BR_~chi02_e_~eR"   , "", 0, _slhaOutputDataStorage, "1000023", 0, "(any)", "2", "11", "2000011" ) );
 
@@ -134,7 +134,7 @@ void Fittino::SPhenoSLHACalculator::CalculatePredictions() {
 
     for ( unsigned int i = 0; i < _collectionOfQuantities.GetNumberOfElements(); ++i ) {
 
-            _collectionOfQuantities.At( i )->Update();
+        _collectionOfQuantities.At( i )->Update();
 
     }
 
@@ -158,7 +158,7 @@ void Fittino::SPhenoSLHACalculator::ConfigureInput() {
     _slhaInputDataStorage->AddLine( "SMINPUTS:3:1.176000e-01:# alpha_s (fixed)" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:4:9.118750e+01:# mZ (fixed)" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:5:4.200000e+00:# mb(mb) (fixed)" );
-    //    _slhaInputDataStorage->AddLine( "SMINPUTS:6:1.724000e+02:# mtop (fixed)" );
+    //_slhaInputDataStorage->AddLine( "SMINPUTS:6:1.724000e+02:# mtop (fixed)" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:7:1.776840e+00:# mtau (fixed)" );
 
 
@@ -182,7 +182,7 @@ void Fittino::SPhenoSLHACalculator::ConfigureInput() {
     _slhaInputDataStorage->AddLine( "SPHENOINPUT:26:1.00000000E-05:# write only cross sections larger than this value [fb]" );
     _slhaInputDataStorage->AddLine( "SPHENOINPUT:31:-1.00000000E+00:# m_GUT, if < 0 than it determined via g_1=g_2" );
     _slhaInputDataStorage->AddLine( "SPHENOINPUT:32:0:# require strict unification g_1=g_2=g_3 if '1' is set" );
-    //    _slhaInputDataStorage->AddLine( "SPHENOINPUT:63:1.270000e+00:# m_c(Q) (fixed)" );
+    //_slhaInputDataStorage->AddLine( "SPHENOINPUT:63:1.270000e+00:# m_c(Q) (fixed)" );
     _slhaInputDataStorage->AddLine( "SPHENOINPUT:80:1:# SPheno exits with non-zero value for sure" );
 
     // Add parameter point dependent lines to block "MINPAR".
