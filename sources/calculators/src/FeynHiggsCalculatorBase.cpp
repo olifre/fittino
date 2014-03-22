@@ -24,7 +24,7 @@
 #include "boost/format.hpp"
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
-
+#include <boost/lexical_cast.hpp>
 #include "CFeynHiggs.h"
 #include "CSLHA.h"
 
@@ -36,12 +36,25 @@
 #include "SimplePrediction.h"
 
 #include "FeynHiggsChannel.h"
+#include "FeynHiggsFermionicChannel.h"
+#include "FeynHiggsBosonicChannel.h"
 
 Fittino::FeynHiggsCalculatorBase::FeynHiggsCalculatorBase( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
-: CalculatorBase( model ) {
+: CalculatorBase( model ),
+_gammas     ( new FHRealType   [ngammas     ] ),
+_gammasms   ( new FHRealType   [ngammasms   ] ),
+_couplings  ( new FHComplexType[ncouplings  ] ),
+_couplingsms( new FHComplexType[ncouplingsms] ),
+_nu     { "",  "nue", "numu", "nutau" },
+_lepton { "", "e", "mu", "tau"        },
+_up     { "", "u", "c", "t"           },
+_down   { "", "d", "s", "b"           },
+_neu    { "", "~chi01", "~chi02", "~chi03", "~chi04" },
+_cha    { "", "~chip1", "~chip2" },
+_higgs  { "", "h0", "H0", "A0", "Hp" } {
 
     _name = "FeynHiggsCalculator";
-
+    
     AddQuantity( new SimplePrediction( "Mass_h",                     "", _mass_h                     ) );
     AddQuantity( new SimplePrediction( "NormSM_sigma_ggh"          , "", _normSM_sigma_ggh           ) );
     AddQuantity( new SimplePrediction( "NormSM_sigma_ggh_2"        , "", _normSM_sigma_ggh_2         ) );
@@ -51,50 +64,76 @@ Fittino::FeynHiggsCalculatorBase::FeynHiggsCalculatorBase( const PhysicsModel* m
     AddQuantity( new SimplePrediction( "NormSM_sigma_Wh"           , "", _normSM_sigma_Wh            ) );
     AddQuantity( new SimplePrediction( "NormSM_sigma_Zh"           , "", _normSM_sigma_Zh            ) );
 
-    _gammas = new FHRealType[ngammas];
-    _gammasms = new FHRealType[ngammasms];
-    _couplings = new FHComplexType[ncouplings];
-    _couplingsms = new FHComplexType[ncouplingsms];
+    //AddChannels_HpHV    ();
+    //AddChannels_HpNeuCha();
 
-    std::string higgs[4] = { "h0", "H0", "A0" , "H+" };
-    std::string nu[3] = { "nue", "numu", "nutau" };
-    std::string lepton[3] = { "e", "mu", "tau" };
-    std::string up[3] = { "u", "c", "t" };
-    std::string down[3] = { "d", "s", "b"};
-
-    for ( unsigned int iHiggs = 1; iHiggs < 4; iHiggs++ ) {
-
-        std::string higgsName = higgs[iHiggs-1];
-
-        AddChannel( higgsName, "gamma_gamma", H0VV( iHiggs, 1 ), true );
-        AddChannel( higgsName, "Z_gamma"    , H0VV( iHiggs, 2 ), true );
-        AddChannel( higgsName, "Z_Z"        , H0VV( iHiggs, 3 ), true );
-        AddChannel( higgsName, "W_W"        , H0VV( iHiggs, 4 ), true );
-        AddChannel( higgsName, "g_g"        , H0VV( iHiggs, 3 ), true );
-
-        AddChannel( higgsName, "nue_nue",     H0FF( iHiggs, 1, 1, 1 ), true );
-        AddChannel( higgsName, "numu_numu",   H0FF( iHiggs, 1, 2, 2 ), true );
-        AddChannel( higgsName, "nutau_nutau", H0FF( iHiggs, 1, 3, 3 ), true );
-        AddChannel( higgsName, "e_e",         H0FF( iHiggs, 2, 1, 1 ), true );
-        AddChannel( higgsName, "mu_mu",       H0FF( iHiggs, 2, 2, 2 ), true );
-        AddChannel( higgsName, "tau_tau",     H0FF( iHiggs, 2, 3, 3 ), true );
-        AddChannel( higgsName, "u_u",         H0FF( iHiggs, 3, 1, 1 ), true );
-        AddChannel( higgsName, "c_c",         H0FF( iHiggs, 3, 2, 2 ), true );
-        AddChannel( higgsName, "t_t",         H0FF( iHiggs, 3, 3, 3 ), true );
-        AddChannel( higgsName, "d_d",         H0FF( iHiggs, 4, 1, 1 ), true );
-        AddChannel( higgsName, "s_s",         H0FF( iHiggs, 4, 2, 2 ), true );
-        AddChannel( higgsName, "b_b",         H0FF( iHiggs, 4, 3, 3 ), true );
-
-        AddChannel( higgsName, "~chi01_~chi01", H0ChaCha( iHiggs, 1, 1 ), false );
-        AddChannel( higgsName, "~chi01_~chi02", H0ChaCha( iHiggs, 1, 2 ), false );
-        AddChannel( higgsName, "~chi02_~chi01", H0ChaCha( iHiggs, 2, 1 ), false );
-        AddChannel( higgsName, "~chi02_~chi02", H0ChaCha( iHiggs, 2, 2 ), false );
-
-        AddChannel( higgsName, "Z_" + higgsName, H0HH( iHiggs, 1, 1 ), true ); // SM?
+    // AddChannels_HpFF    ( 1, _nu, _lepton );
+    //AddChannels_HpFF    ( 2, _up, _down   );
+    //AddChannels_HpSfSf  ( 1, _nu, _lepton );
+    //AddChannels_HpSfSf  ( 2, _up, _down   );
 
 
-        for ( unsigned int iHiggs1 = 1; iHiggs1 < 5; iHiggs1++ ) {
+    for ( unsigned int iHiggs = 1; iHiggs <= 3; iHiggs++ ) {
 
+        std::string higgsName = _higgs[iHiggs];
+
+        AddChannels_H0VV    ( iHiggs, higgsName );
+        AddChannels_H0HV    ( iHiggs, higgsName );
+        AddChannels_H0HH    ( iHiggs, higgsName );
+        //AddChannels_H0NeuNeu( iHiggs, higgsName );
+        //AddChannels_H0ChaCha( iHiggs, higgsName );
+
+        AddChannels_H0FF    ( iHiggs, higgsName, 1, _nu     );
+        AddChannels_H0FF    ( iHiggs, higgsName, 2, _lepton );
+        AddChannels_H0FF    ( iHiggs, higgsName, 3, _up     );
+        AddChannels_H0FF    ( iHiggs, higgsName, 4, _down   );
+        //AddChannels_H0SfSf  ( iHiggs, higgsName, 1, _nu     );
+        //AddChannels_H0SfSf  ( iHiggs, higgsName, 2, _lepton );
+        //AddChannels_H0SfSf  ( iHiggs, higgsName, 3, _up     );
+        //AddChannels_H0SfSf  ( iHiggs, higgsName, 4, _down   );
+
+    }
+    
+}
+
+void Fittino::FeynHiggsCalculatorBase::AddChannels_HpNeuCha() {
+
+
+    for (unsigned int iNeu = 1; iNeu <= 4; iNeu++ ) {
+
+        for (unsigned int iCha = 1; iCha <= 2; iCha++ ) {
+
+            std::string channel = _neu[iNeu] + "_" + _cha[iCha];
+
+            AddChannel( "Hp", channel, HpNeuCha( iNeu, iCha ) , true, false );
+
+        }
+        
+    }
+
+}
+
+void Fittino::FeynHiggsCalculatorBase::AddChannels_HpHV() {
+
+    for (unsigned int iHiggs = 1; iHiggs<=3; iHiggs++ ) {
+
+        AddChannel( "Hp", _higgs[iHiggs] + "_W", HpHV( 1 ), false, false );
+
+    }
+
+}
+
+void Fittino::FeynHiggsCalculatorBase::AddChannels_H0FF( unsigned int iHiggs, std::string higgsName, unsigned int type, std::string* names ) {
+
+    for ( unsigned int iGen1 = 1; iGen1 <= 3; iGen1++ ) {
+
+        for ( unsigned int iGen2 = 1; iGen2 <= 3; iGen2++ ) {
+
+            if ( iGen1 != iGen2 ) continue;
+
+            std::string channel = names[iGen1] + "_" + names[iGen2];
+
+            AddChannel( higgsName, channel, H0FF( iHiggs, type, iGen1, iGen2 ), true, true );
 
         }
 
@@ -102,9 +141,141 @@ Fittino::FeynHiggsCalculatorBase::FeynHiggsCalculatorBase( const PhysicsModel* m
 
 }
 
-void Fittino::FeynHiggsCalculatorBase::AddChannel( std::string higgsName, std::string channelName, int channelNumber, bool SM ) {
+void Fittino::FeynHiggsCalculatorBase::AddChannels_H0ChaCha( unsigned int iHiggs, std::string higgsName ) {
 
-    FeynHiggsChannel* calc = new FeynHiggsChannel( _gammas, _gammasms, _couplings, _couplingsms, higgsName,  channelName, channelNumber, SM );
+    AddChannel( higgsName, "~chip1_~chip1", H0ChaCha( iHiggs, 1, 1 ), true, false );
+    AddChannel( higgsName, "~chip1_~chip2", H0ChaCha( iHiggs, 1, 2 ), true, false );
+    AddChannel( higgsName, "~chip2_~chip1", H0ChaCha( iHiggs, 2, 1 ), true, false );
+    AddChannel( higgsName, "~chip2_~chip2", H0ChaCha( iHiggs, 2, 2 ), true, false );
+
+}
+
+void Fittino::FeynHiggsCalculatorBase::AddChannels_HpFF( unsigned int type, std::string* names1, std::string* names2 ) {
+
+    for ( unsigned int iGen1 = 1; iGen1 <= 3; iGen1++ ) {
+
+        for ( unsigned int iGen2 = 1; iGen2 <= 3; iGen2++ ) {
+
+            AddChannel( "Hp", names1[iGen1] + "_" + names2[iGen2], HpFF( type, iGen1, iGen2 ), true, false );
+
+        }
+
+    }
+
+}
+
+void Fittino::FeynHiggsCalculatorBase::AddChannels_H0NeuNeu( unsigned int iHiggs, std::string higgsName ) {
+
+    for ( unsigned int iNeu1 = 1; iNeu1 <= 4; iNeu1++ ) {
+
+        for ( unsigned int iNeu2 = 1; iNeu2 <= 4; iNeu2++ ) {
+
+            AddChannel( higgsName, _neu[iNeu1] + "_" + _neu[iNeu2], H0NeuNeu( iHiggs, iNeu1, iNeu2 ), true, false );
+
+        }
+
+    }
+
+}
+
+void Fittino::FeynHiggsCalculatorBase::AddChannels_H0HV( unsigned int iHiggs, std::string higgsName ) {
+
+    AddChannel( higgsName, "h0_Z", H0HV( iHiggs, 1 ), false, false );
+    AddChannel( higgsName, "H0_Z", H0HV( iHiggs, 2 ), false, false );
+    AddChannel( higgsName, "A0_Z", H0HV( iHiggs, 3 ), false, false );
+
+}
+
+void Fittino::FeynHiggsCalculatorBase::AddChannels_H0HH( unsigned int iHiggs, std::string higgsName ) {
+
+    for ( unsigned int iHiggs1 = 1; iHiggs1 <= 4; iHiggs1++ ) {
+
+        for ( unsigned int iHiggs2 = 1; iHiggs2 <= 4; iHiggs2++ ) {
+
+            AddChannel( _higgs[iHiggs], _higgs[iHiggs1] + "_" + _higgs[iHiggs2] ,  H0HH( iHiggs, iHiggs1, iHiggs2 ), false, false );
+
+        }
+
+    }
+
+}
+
+void Fittino::FeynHiggsCalculatorBase::AddChannels_H0VV( unsigned int iHiggs, std::string higgsName ) {
+
+    AddChannel( higgsName, "gamma_gamma", H0VV( iHiggs, 1 ), false, true );
+    AddChannel( higgsName, "Z_gamma"    , H0VV( iHiggs, 2 ), false, true );
+    AddChannel( higgsName, "Z_Z"        , H0VV( iHiggs, 3 ), false, true );
+    AddChannel( higgsName, "W_W"        , H0VV( iHiggs, 4 ), false, true );
+    AddChannel( higgsName, "g_g"        , H0VV( iHiggs, 3 ), false, true );
+
+}
+
+
+
+void Fittino::FeynHiggsCalculatorBase::AddChannels_H0SfSf( int iHiggs, std::string higgsName, unsigned int type, std::string* names ) {
+    
+    for ( unsigned int iSfermion1 =1; iSfermion1 <=2; iSfermion1++ ) {
+        
+        for ( unsigned int iSfermion2 =1; iSfermion2 <=2; iSfermion2++ ) {
+
+            for ( unsigned int iGen = 1; iGen <=3; iGen++ ) {
+
+                std::string channel;
+                channel += "~" + names[iGen] + boost::lexical_cast<std::string>( iSfermion1 );
+                channel += "_";
+                channel += "~" + names[iGen] + boost::lexical_cast<std::string>( iSfermion2 );
+
+                AddChannel( higgsName, channel, H0SfSf( iHiggs, iSfermion1, iSfermion2, type, iGen ), false, false );
+                        
+            }
+
+        }
+        
+    }
+
+}
+
+void Fittino::FeynHiggsCalculatorBase::AddChannels_HpSfSf( unsigned int type, std::string* names1, std::string* names2 ) {
+
+    for ( unsigned int iSfermion1 = 1; iSfermion1 <= 2; iSfermion1++ ) {
+
+        for ( unsigned int iSfermion2 =1; iSfermion2 <=2; iSfermion2++ ) {
+
+            for ( unsigned int iGen1 = 1; iGen1 <=3; iGen1++ ) {
+
+                for ( unsigned int iGen2 = 1; iGen2 <= 3; iGen2++ ) {
+
+                    std::string channel;
+                    channel += "~" + names1[iGen1] + boost::lexical_cast<std::string>( iSfermion1 );
+                    channel += "_";
+                    channel += "~" + names2[iGen2] + boost::lexical_cast<std::string>( iSfermion2 );
+
+                    AddChannel( "Hp", channel,  HpSfSf( iSfermion1, iSfermion2, type, iGen1, iGen2 ), false, false );
+
+                }
+
+            }
+
+        }
+
+    }
+
+}
+
+void Fittino::FeynHiggsCalculatorBase::AddChannel( std::string higgsName, std::string channelName, int channelNumber, bool fermionic, bool SM ) {
+
+    FeynHiggsChannel* calc;
+
+    if ( fermionic ) {
+
+        calc = new FeynHiggsFermionicChannel( _gammas, _gammasms, _couplings, _couplingsms, higgsName,  channelName, channelNumber, SM );
+
+    }
+    else {
+        
+        calc = new FeynHiggsBosonicChannel( _gammas, _gammasms, _couplings, _couplingsms, higgsName,  channelName, channelNumber, SM );
+
+    }
 
     _channels.push_back( calc );
 
@@ -172,10 +343,10 @@ void Fittino::FeynHiggsCalculatorBase::CalculatePredictions() {
 
     // calulate couplings and gammas
 
-    ComplexType couplings[ncouplings], couplingsms[ncouplingsms];
+    //ComplexType couplings[ncouplings], couplingsms[ncouplingsms];
         int    fast  = 1;
 
-    FHCouplings( &_error, couplings, couplingsms, _gammas, _gammasms, fast );
+    FHCouplings( &_error, _couplings, _couplingsms, _gammas, _gammasms, fast );
     
     if ( _error != 0 ) {
 

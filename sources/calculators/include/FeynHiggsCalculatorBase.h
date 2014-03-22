@@ -59,7 +59,18 @@ namespace Fittino {
       double _mass_h;
 
   private:
-      void AddChannel( std::string higgsName, std::string channelName, int channelNumber, bool SM );
+      void AddChannel( std::string higgsName, std::string channelName, int channelNumber, bool fermionic, bool SM );
+      void AddChannels_H0SfSf  ( int iHiggs, std::string higgsName, unsigned int type, std::string* names );
+      void AddChannels_HpSfSf  ( unsigned int type, std::string* names1, std::string* names2 );
+      void AddChannels_HpFF    ( unsigned int type, std::string* names1, std::string* names2 );
+      void AddChannels_H0FF    ( unsigned int iHiggs, std::string higgsName, unsigned type, std::string* names );
+      void AddChannels_H0HH    ( unsigned int iHiggs, std::string higgsName );
+      void AddChannels_H0VV    ( unsigned int iHiggs, std::string higgsName );
+      void AddChannels_H0HV    ( unsigned int iHiggs, std::string higgsName );
+      void AddChannels_H0NeuNeu( unsigned int iHiggs, std::string higgsName );
+      void AddChannels_H0ChaCha( unsigned int iHiggs, std::string higgsName );
+      void AddChannels_HpHV();
+      void AddChannels_HpNeuCha();
 
       std::vector< FeynHiggsChannel* > _channels;
       FHRealType*    _gammas;
@@ -74,6 +85,15 @@ namespace Fittino {
       double _normSM_sigma_tth;
       double _normSM_sigma_Wh;
       double _normSM_sigma_Zh;
+
+      std::string _higgs [5];
+      std::string _nu    [4];
+      std::string _lepton[4];
+      std::string _up    [4];
+      std::string _down  [4];
+      std::string _neu   [5];
+      std::string _cha   [3];
+      
 
       virtual void ConfigureInput() = 0;
       virtual void WriteOutput() = 0;

@@ -79,9 +79,9 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const boost::property_tree:
     AddQuantity( new SLHAPrediction( "Mass_~chi04" , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000035", "", "", "" ) );
     AddQuantity( new SLHAPrediction( "Mass_~chip2" , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000037", "", "", "" ) );
 
-    AddQuantity( new SLHAPrediction( "Gamma_~chi02_Total", "", _slhaOutputDataStorage, "1000023", 2, "DECAY", "", "", "" ) );
+    AddQuantity( new SLHAPrediction( "Gamma_~chi02_Total", "GeV", _slhaOutputDataStorage, "1000023", 2, "DECAY", "", "", "" ) );
 
-    AddQuantity( new SLHAPrediction( "BR_~chi02_e_~eR"   , "", 0, _slhaOutputDataStorage, "1000023", 0, "(any)", "2", "11", "2000011" ) );
+    AddQuantity( new SLHAPrediction( "BR_~chi02_to_e_~eR"   , "", 0, _slhaOutputDataStorage, "1000023", 0, "(any)", "2", "11", "2000011" ) );
 
 }
 

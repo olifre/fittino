@@ -62,6 +62,8 @@ namespace Fittino {
 
         int _channel;
         bool _doSM;
+        std::string _higgsName;
+        std::string _channelName;
 
     private:
         double _normSM_Gamma;

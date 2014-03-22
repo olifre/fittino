@@ -1,4 +1,4 @@
-/* $Id$ */
+/* $Id: FeynHiggsFermionicChannel.h 2015 2014-03-20 13:21:19Z sarrazin $ */
 
 /*******************************************************************************
  *                                                                              *
@@ -17,8 +17,8 @@
  *                                                                              *
  *******************************************************************************/
 
-#ifndef FITTINO_FEYNHIGGSFERMIONICCHANNEL_H
-#define FITTINO_FEYNHIGGSFERMIONICCHANNEL_H
+#ifndef FITTINO_FEYNHIGGSBOSONICCHANNEL_H
+#define FITTINO_FEYNHIGGSBOSONICCHANNEL_H
 
 #include "FeynHiggsChannel.h"
 #include "FeynHiggsTypes.h"
@@ -35,36 +35,30 @@ namespace Fittino {
      *  \ingroup calculators
      *  \brief Wrapper class for FeynHiggs.
      */
-    class FeynHiggsFermionicChannel : public FeynHiggsChannel {
+    class FeynHiggsBosonicChannel : public FeynHiggsChannel {
 
     public:
         /*!
          *  Standard constructor.
          */
-        FeynHiggsFermionicChannel( FHRealType* gammas, FHRealType* gammasms, FHComplexType* couplings, FHComplexType* couplingsms, std::string higgsName, std::string channelName, int channelNumber, bool SM );
+        FeynHiggsBosonicChannel( FHRealType* gammas, FHRealType* gammasms, FHComplexType* couplings, FHComplexType* couplingsms, std::string higgsName, std::string channelName, int channelNumber, bool SM );
         /*!
          *  Standard destructor.
          */
-        virtual ~FeynHiggsFermionicChannel();
+        virtual ~FeynHiggsBosonicChannel();
 
         void CalculatePredictions();
         /*! \cond UML */
     private:
 
-        double _model_gs2;
-        double _model_gp2;
-        double _model_gsPhi;
-        double _model_gpPhi;
+        double _model_g2;
+        double _model_gPhi;
 
-        double _sm_gs2;
-        double _sm_gp2;
-        double _sm_gsPhi;
-        double _sm_gpPhi;
+        double _sm_g2;
+        double _sm_gPhi;
 
-        double _normSM_gs2;
-        double _normSM_gp2;
-        double _normSM_gsPhi;
-        double _normSM_gpPhi;
+        double _normSM_g2;
+        double _normSM_gPhi;
 
         /*! \endcond UML */
         

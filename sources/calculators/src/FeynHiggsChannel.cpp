@@ -40,6 +40,14 @@ Fittino::FeynHiggsChannel::FeynHiggsChannel( FHRealType* gammas, FHRealType* gam
 
     _name = "FeynHiggsChannel";
     _channel = channelNumber;
+    _higgsName = higgsName;
+    _channelName = channelName;
+
+    if ( _higgsName != "h0" && _higgsName != "A0" && _higgsName != "H0" && _higgsName != "Hp" ) {
+
+        throw ConfigurationException("Unknown Higgs.");
+
+    }
 
     _doSM = SM;
 
