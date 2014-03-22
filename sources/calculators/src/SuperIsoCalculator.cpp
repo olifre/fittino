@@ -35,21 +35,21 @@ Fittino::SuperIsoCalculator::SuperIsoCalculator( const PhysicsModel* model, cons
 
     _slhafile = "SPheno.spc";
 
-    AddQuantity( new SimplePrediction( "a_mu"                      , "", _amu            ) );
-    AddQuantity( new SimplePrediction( "delta0_B_K*_gamma"         , "", _delta0         ) );
-    AddQuantity( new SimplePrediction( "BR_b_s_gamma"              , "", _bsgamma        ) );
-    AddQuantity( new SimplePrediction( "BR_Bs_mu_mu"               , "", _bsmumu         ) );
-    AddQuantity( new SimplePrediction( "UntaggedBR_Bs_mu_mu"       , "", _bsmumu_untag   ) );
-    AddQuantity( new SimplePrediction( "BR_Bd_mu_mu"               , "", _bdmumu         ) );
-    AddQuantity( new SimplePrediction( "BR_B_tau_nu"               , "", _btaunu         ) );
-    AddQuantity( new SimplePrediction( "NormSM_BR_B_tau_nu"        , "", _normSM_btaunu  ) );
-    AddQuantity( new SimplePrediction( "BR_B_D_tau_nu"             , "", _bdtaunu        ) );
-    AddQuantity( new SimplePrediction( "R_BR_D_tau_nu_BR_D_e_nu"   , "", _bdtaunu_bdenu  ) );
-    AddQuantity( new SimplePrediction( "BR_D_mu_nu"                , "", _dmunu          ) );
-    AddQuantity( new SimplePrediction( "BR_Ds_mu_nu"               , "", _dsmunu         ) );
-    AddQuantity( new SimplePrediction( "BR_Ds_tau_nu"              , "", _dstaunu        ) );
-    AddQuantity( new SimplePrediction( "R_BR_K_mu_nu_BR_pi_mu_nu"  , "", _kmunu_pimunu   ) );
-    AddQuantity( new SimplePrediction( "Rmu23_K_mu_nu"             , "", _rmu23          ) );
+    AddQuantity( new SimplePrediction( "a_mu"                      , "", _amu                   ) );
+    AddQuantity( new SimplePrediction( "delta0_B_K*_gamma"         , "", _delta0                ) );
+    AddQuantity( new SimplePrediction( "BR_b_s_gamma"              , "", _bsgamma               ) );
+    AddQuantity( new SimplePrediction( "BR_Bs_mu_mu"               , "", _bsmumu                ) );
+    AddQuantity( new SimplePrediction( "UntaggedBR_Bs_mu_mu"       , "", _bsmumu_untag          ) );
+    AddQuantity( new SimplePrediction( "BR_Bd_mu_mu"               , "", _bdmumu                ) );
+    AddQuantity( new SimplePrediction( "BR_B_tau_nu"               , "", _btaunu                ) );
+    AddQuantity( new SimplePrediction( "NormSM_BR_B_tau_nu"        , "", _normSM_btaunu         ) );
+    AddQuantity( new SimplePrediction( "BR_B_D_tau_nu"             , "", _bdtaunu               ) );
+    AddQuantity( new SimplePrediction( "R_BR_D_tau_nu_BR_D_e_nu"   , "", _bdtaunu_bdenu         ) );
+    AddQuantity( new SimplePrediction( "BR_D_mu_nu"                , "", _dmunu                 ) );
+    AddQuantity( new SimplePrediction( "BR_Ds_mu_nu"               , "", _dsmunu                ) );
+    AddQuantity( new SimplePrediction( "BR_Ds_tau_nu"              , "", _dstaunu               ) );
+    AddQuantity( new SimplePrediction( "R_BR_K_mu_nu_BR_pi_mu_nu"  , "", _kmunu_pimunu          ) );
+    AddQuantity( new SimplePrediction( "Rmu23_K_mu_nu"             , "", _rmu23                 ) );
     AddQuantity( new SimplePrediction( "ChargedLSP"                , "", _chargedLSP            ) );
     AddQuantity( new SimplePrediction( "ExcludedHiggsMass"         , "", _excludedHiggsMass     ) );
     AddQuantity( new SimplePrediction( "ExcludedSusyMass"          , "", _excludedSusyMass      ) );
