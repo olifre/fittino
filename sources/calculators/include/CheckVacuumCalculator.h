@@ -1,4 +1,4 @@
-/* $Id$ */ 
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
@@ -8,7 +8,7 @@
 *                                                                              *
 * Description Wrapper class for CheckVacuum                                    *
 *                                                                              *
-* Authors     Bjoern  Sarrazin  <sarrazin@physik.uni-bonn.de>                  *
+* Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -20,9 +20,8 @@
 #ifndef FITTINO_CHECKVACUUMCALCULATOR_H
 #define FITTINO_CHECKVACUUMCALCULATOR_H
 
-#include "PtreeForwardDeclaration.h"
-
 #include "CalculatorBase.h"
+#include "PtreeForwardDeclaration.h"
 
 class CheckVacuum;
 
@@ -33,7 +32,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup calculators
-   *  \brief Wrapper class for CheckVacuum
+   *  \brief Wrapper class for CheckVacuum.
    */
   class CheckVacuumCalculator : public CalculatorBase {
 
@@ -41,30 +40,32 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-    CheckVacuumCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+      CheckVacuumCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
-    ~CheckVacuumCalculator();
+      ~CheckVacuumCalculator();
+      void          CalculatePredictions();
+      void          Initialize();
 
-    public:  
-      void             CalculatePredictions();
-      void             Initialize();
+      /*! \cond UML */
+    private:
+      double        _vacuumLifetime;
+      double        _vacuumStability;
+      std::string   _gridfile;
+      CheckVacuum*  _checkVacuum;
 
-    private:  
-      const double&            _m0;
-      const double&            _m12;
-      const double&            _a0;
-      const double&            _tanbeta;
-      const double&            _signmu;
+    private:
+      const double& _m0;
+      const double& _m12;
+      const double& _a0;
+      const double& _tanbeta;
+      const double& _signmu;
 
-      double            _vacuumStability;
-      double            _vacuumLifetime;
-      std::string              _gridfile;
-      CheckVacuum*             _checkVacuum;
+      /*! \endcond UML */
 
   };
 
 }
 
-#endif
+#endif // FITTINO_CHECKVACUUMCALCULATOR_H

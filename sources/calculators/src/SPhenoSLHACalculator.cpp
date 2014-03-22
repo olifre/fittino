@@ -161,11 +161,9 @@ void Fittino::SPhenoSLHACalculator::ConfigureInput() {
     //_slhaInputDataStorage->AddLine( "SMINPUTS:6:1.724000e+02:# mtop (fixed)" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:7:1.776840e+00:# mtau (fixed)" );
 
-
     // Write block "MINPAR".
 
     _slhaInputDataStorage->AddBlock( "MINPAR:BLOCK MINPAR:# Input parameters" );
-
 
     // Write block "SPHENOINPUT".
 
