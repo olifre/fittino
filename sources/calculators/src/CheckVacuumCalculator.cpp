@@ -17,9 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <boost/property_tree/ptree.hpp>
-
 #include "CheckVacuum/CheckVacuum.h"
+
 #include "CheckVacuumCalculator.h"
 #include "PhysicsModel.h"
 #include "SimplePrediction.h"
