@@ -1,4 +1,4 @@
-/* $Id$ */ 
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
@@ -18,71 +18,70 @@
 *******************************************************************************/
 
 #include <boost/foreach.hpp>
-#include <boost/property_tree/ptree.hpp>
 
 #include "PhysicsModel.h"
 #include "RegressionCalculator.h"
 #include "RegressionMVA.h"
 
 Fittino::RegressionCalculator::RegressionCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree  )
-  :CalculatorBase( model ),
-   _reader ( "!Color:!Silent" ) {
+    : CalculatorBase( model ),
+      _reader ( "!Color:!Silent" ) {
 
-  _name = ptree.get<std::string>( "Name", "RegressionCalculator" );
+    _name = ptree.get<std::string>( "Name", "RegressionCalculator" );
 
-   BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree ) {
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
 
-     if ( node.first == "Variable" ) {
+        if ( node.first == "Variable" ) {
 
-       std::string name             = node.second.get<std::string>("Name"            );
-       std::string nameInWeightFile = node.second.get<std::string>("NameInWeightFiles");
-       
-       const double* doubleVariable = &_model->GetCollectionOfQuantities().At( name )->GetValue();
-       float*        floatVariable  = new float();
+            std::string name             = node.second.get<std::string>( "Name"            );
+            std::string nameInWeightFile = node.second.get<std::string>( "NameInWeightFiles" );
 
-       _vectorOfDoubleVariables.push_back( doubleVariable );
-       _vectorOfFloatVariables .push_back( floatVariable  );
-       
-       _reader.AddVariable( nameInWeightFile, floatVariable );
-       
-     }
-     else if ( node.first == "MVA" ) {
+            const double* doubleVariable = &_model->GetCollectionOfQuantities().At( name )->GetValue();
+            float*        floatVariable  = new float();
 
-       RegressionMVA* mva = new RegressionMVA( _reader, node.second );
+            _vectorOfDoubleVariables.push_back( doubleVariable );
+            _vectorOfFloatVariables.push_back( floatVariable  );
 
-       Collection< PredictionBase*>& col = mva->GetCollectionOfQuantities();
+            _reader.AddVariable( nameInWeightFile, floatVariable );
 
-       for ( unsigned int i = 0; i < col.GetNumberOfElements(); ++i ) {
+        }
+        else if ( node.first == "MVA" ) {
 
-         AddQuantity( col.At( i ) );
-         
-       }
+            RegressionMVA* mva = new RegressionMVA( _reader, node.second );
 
-       _collectionOfMVAs.AddElement( mva ); 
+            Collection< PredictionBase*>& col = mva->GetCollectionOfQuantities();
 
-     }
+            for ( unsigned int i = 0; i < col.GetNumberOfElements(); ++i ) {
 
-   }
+                AddQuantity( col.At( i ) );
+
+            }
+
+            _collectionOfMVAs.AddElement( mva );
+
+        }
+
+    }
 
 }
-   
+
 Fittino::RegressionCalculator::~RegressionCalculator() {
 
-} 
+}
 
 void Fittino::RegressionCalculator::CalculatePredictions() {
 
-  for ( unsigned int i = 0; i < _vectorOfFloatVariables.size(); ++i ) {
+    for ( unsigned int i = 0; i < _vectorOfFloatVariables.size(); ++i ) {
 
-    *_vectorOfFloatVariables.at( i ) = *_vectorOfDoubleVariables.at( i );
+        *_vectorOfFloatVariables.at( i ) = *_vectorOfDoubleVariables.at( i );
 
-  }
+    }
 
-  for ( unsigned int i = 0; i < _collectionOfMVAs.GetNumberOfElements(); ++i ) {
+    for ( unsigned int i = 0; i < _collectionOfMVAs.GetNumberOfElements(); ++i ) {
 
-    _collectionOfMVAs.At( i )->Update();
+        _collectionOfMVAs.At( i )->Update();
 
-  }
+    }
 
 }
 

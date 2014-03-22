@@ -52,10 +52,10 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-      std::vector<SLHALine*> _lines;
-      std::string            _executableName;
       int                    _returnValue;
+      std::string            _executableName;
       Executor               _executor;
+      std::vector<SLHALine*> _lines;
 
     private:
       virtual void           ConfigureInput();

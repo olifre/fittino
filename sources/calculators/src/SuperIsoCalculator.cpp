@@ -1,4 +1,4 @@
-/* $Id$ */ 
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
@@ -6,9 +6,9 @@
 *                                                                              *
 * File        SuperIsoCalculator.cpp                                           *
 *                                                                              *
-* Description Wrapper class for SuperIso                                       * 
+* Description Wrapper class for SuperIso                                       *
 *                                                                              *
-* Authors     Bjoern  Sarrazin  <sarrazin@physik.uni-bonn.de>                  *
+* Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -20,39 +20,41 @@
 #include <boost/property_tree/ptree.hpp>
 
 extern "C" {
+
 #include "include.h"
+
 }
+
 #include "SimplePrediction.h"
 #include "SuperIsoCalculator.h"
 
 Fittino::SuperIsoCalculator::SuperIsoCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
-  :CalculatorBase( model ) {
+    : CalculatorBase( model ) {
 
-      _name = "SuperIsoCalculator";
+    _name = "SuperIsoCalculator";
 
-      _slhafile = "SPheno.spc";
+    _slhafile = "SPheno.spc";
 
-      AddQuantity( new SimplePrediction( "a_mu"                      , "", _amu            ) );
-      AddQuantity( new SimplePrediction( "delta0_B_K*_gamma"         , "", _delta0         ) );
-      AddQuantity( new SimplePrediction( "BR_b_s_gamma"              , "", _bsgamma        ) );
-      AddQuantity( new SimplePrediction( "BR_Bs_mu_mu"               , "", _bsmumu         ) );
-      AddQuantity( new SimplePrediction( "UntaggedBR_Bs_mu_mu"       , "", _bsmumu_untag   ) );
-      AddQuantity( new SimplePrediction( "BR_Bd_mu_mu"               , "", _bdmumu         ) );
-      AddQuantity( new SimplePrediction( "BR_B_tau_nu"               , "", _btaunu         ) );
-      AddQuantity( new SimplePrediction( "NormSM_BR_B_tau_nu"        , "", _normSM_btaunu  ) );
-      AddQuantity( new SimplePrediction( "BR_B_D_tau_nu"             , "", _bdtaunu        ) );
-      AddQuantity( new SimplePrediction( "R_BR_D_tau_nu_BR_D_e_nu"   , "", _bdtaunu_bdenu  ) );
-      AddQuantity( new SimplePrediction( "BR_D_mu_nu"                , "", _dmunu          ) );
-      AddQuantity( new SimplePrediction( "BR_Ds_mu_nu"               , "", _dsmunu         ) );
-      AddQuantity( new SimplePrediction( "BR_Ds_tau_nu"              , "", _dstaunu        ) );
-      AddQuantity( new SimplePrediction( "R_BR_K_mu_nu_BR_pi_mu_nu"  , "", _kmunu_pimunu   ) );
-      AddQuantity( new SimplePrediction( "Rmu23_K_mu_nu"             , "", _rmu23          ) );
-      AddQuantity( new SimplePrediction( "ChargedLSP"                , "", _chargedLSP            ) );
-      AddQuantity( new SimplePrediction( "ExcludedHiggsMass"         , "", _excludedHiggsMass     ) );
-      AddQuantity( new SimplePrediction( "ExcludedSusyMass"          , "", _excludedSusyMass      ) );
-      AddQuantity( new SimplePrediction( "NMSSMColliderExcluded"     , "", _nmssmColliderExcluded ) );
-      AddQuantity( new SimplePrediction( "NMSSMTheoryExcluded"       , "", _nmssmTheoryExcluded   ) );
-
+    AddQuantity( new SimplePrediction( "a_mu"                      , "", _amu            ) );
+    AddQuantity( new SimplePrediction( "delta0_B_K*_gamma"         , "", _delta0         ) );
+    AddQuantity( new SimplePrediction( "BR_b_s_gamma"              , "", _bsgamma        ) );
+    AddQuantity( new SimplePrediction( "BR_Bs_mu_mu"               , "", _bsmumu         ) );
+    AddQuantity( new SimplePrediction( "UntaggedBR_Bs_mu_mu"       , "", _bsmumu_untag   ) );
+    AddQuantity( new SimplePrediction( "BR_Bd_mu_mu"               , "", _bdmumu         ) );
+    AddQuantity( new SimplePrediction( "BR_B_tau_nu"               , "", _btaunu         ) );
+    AddQuantity( new SimplePrediction( "NormSM_BR_B_tau_nu"        , "", _normSM_btaunu  ) );
+    AddQuantity( new SimplePrediction( "BR_B_D_tau_nu"             , "", _bdtaunu        ) );
+    AddQuantity( new SimplePrediction( "R_BR_D_tau_nu_BR_D_e_nu"   , "", _bdtaunu_bdenu  ) );
+    AddQuantity( new SimplePrediction( "BR_D_mu_nu"                , "", _dmunu          ) );
+    AddQuantity( new SimplePrediction( "BR_Ds_mu_nu"               , "", _dsmunu         ) );
+    AddQuantity( new SimplePrediction( "BR_Ds_tau_nu"              , "", _dstaunu        ) );
+    AddQuantity( new SimplePrediction( "R_BR_K_mu_nu_BR_pi_mu_nu"  , "", _kmunu_pimunu   ) );
+    AddQuantity( new SimplePrediction( "Rmu23_K_mu_nu"             , "", _rmu23          ) );
+    AddQuantity( new SimplePrediction( "ChargedLSP"                , "", _chargedLSP            ) );
+    AddQuantity( new SimplePrediction( "ExcludedHiggsMass"         , "", _excludedHiggsMass     ) );
+    AddQuantity( new SimplePrediction( "ExcludedSusyMass"          , "", _excludedSusyMass      ) );
+    AddQuantity( new SimplePrediction( "NMSSMColliderExcluded"     , "", _nmssmColliderExcluded ) );
+    AddQuantity( new SimplePrediction( "NMSSMTheoryExcluded"       , "", _nmssmTheoryExcluded   ) );
 
 }
 
@@ -69,28 +71,27 @@ void Fittino::SuperIsoCalculator::CalculatePredictions() {
     switch( test ) {
 
         case -4:
-            throw ConfigurationException("SuperIso: Input file missing." );
+            throw ConfigurationException( "SuperIso: Input file missing." );
 
         case -3:
-            throw ConfigurationException("SuperIso: Input file invalid." );
+            throw ConfigurationException( "SuperIso: Input file invalid." );
 
         case -2:
-            throw ConfigurationException("SuperIso: Model not implemented." );
+            throw ConfigurationException( "SuperIso: Model not implemented." );
 
         case -1:
-            throw ConfigurationException("SuperIso: Invalid point." );
+            throw ConfigurationException( "SuperIso: Invalid point." );
 
         case 2:
-            throw ConfigurationException("SuperIso: FV! Only MFV tested." );
+            throw ConfigurationException( "SuperIso: FV! Only MFV tested." );
 
         case 3:
-            throw ConfigurationException("SuperIso: NMSSM. Unexpected." );
+            throw ConfigurationException( "SuperIso: NMSSM. Unexpected." );
 
         case 10:
-            throw ConfigurationException("SuperIso: THDM Unexpected." );
+            throw ConfigurationException( "SuperIso: THDM Unexpected." );
 
     }
-
 
     if ( test < 0 ) {
 
@@ -98,26 +99,25 @@ void Fittino::SuperIsoCalculator::CalculatePredictions() {
 
     }
 
-    _amu            = muon_gm2_calculator      ( &file[0] );
-    _delta0         = delta0_calculator        ( &file[0] );
-    _bsgamma        = bsgamma_calculator       ( &file[0] );
-    _bsmumu         = Bsmumu_calculator        ( &file[0] );
-    _bsmumu_untag   = Bsmumu_untag_calculator  ( &file[0] );
-    _bdmumu         = Bdmumu_calculator        ( &file[0] );
-    _btaunu         = Btaunu_calculator        ( &file[0] );
-    _normSM_btaunu  = RBtaunu_calculator       ( &file[0] );
-    _bdtaunu        = BDtaunu_calculator       ( &file[0] );
-    _bdtaunu_bdenu  = BDtaunu_BDenu_calculator ( &file[0] );
-    _dmunu          = Dmunu_calculator         ( &file[0] );
-    _dsmunu         = Dsmunu_calculator        ( &file[0] );
-    _dstaunu        = Dstaunu_calculator       ( &file[0] );
-    _kmunu_pimunu   = Kmunu_pimunu_calculator  ( &file[0] );
-    _rmu23          = Rmu23_calculator         ( &file[0] );
-    _chargedLSP            = charged_LSP_calculator   ( &file[0] );
+    _amu                   = muon_gm2_calculator           ( &file[0] );
+    _delta0                = delta0_calculator             ( &file[0] );
+    _bsgamma               = bsgamma_calculator            ( &file[0] );
+    _bsmumu                = Bsmumu_calculator             ( &file[0] );
+    _bsmumu_untag          = Bsmumu_untag_calculator       ( &file[0] );
+    _bdmumu                = Bdmumu_calculator             ( &file[0] );
+    _btaunu                = Btaunu_calculator             ( &file[0] );
+    _normSM_btaunu         = RBtaunu_calculator            ( &file[0] );
+    _bdtaunu               = BDtaunu_calculator            ( &file[0] );
+    _bdtaunu_bdenu         = BDtaunu_BDenu_calculator      ( &file[0] );
+    _dmunu                 = Dmunu_calculator              ( &file[0] );
+    _dsmunu                = Dsmunu_calculator             ( &file[0] );
+    _dstaunu               = Dstaunu_calculator            ( &file[0] );
+    _kmunu_pimunu          = Kmunu_pimunu_calculator       ( &file[0] );
+    _rmu23                 = Rmu23_calculator              ( &file[0] );
+    _chargedLSP            = charged_LSP_calculator        ( &file[0] );
     _excludedHiggsMass     = excluded_Higgs_mass_calculator( &file[0] );
-    _excludedSusyMass      = excluded_SUSY_mass_calculator( &file[0] );
-    _nmssmColliderExcluded = NMSSM_collider_excluded( &file[0] );
-    _nmssmTheoryExcluded   = NMSSM_theory_excluded( &file[0] );
+    _excludedSusyMass      = excluded_SUSY_mass_calculator ( &file[0] );
+    _nmssmColliderExcluded = NMSSM_collider_excluded       ( &file[0] );
+    _nmssmTheoryExcluded   = NMSSM_theory_excluded         ( &file[0] );
 
 }
-

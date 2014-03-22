@@ -1,4 +1,4 @@
-/* $Id$ */ 
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
@@ -22,19 +22,8 @@
 
 #include "TMVA/Reader.h"
 
-#include "Collection.h"
 #include "CalculatorBase.h"
-
-namespace boost {
-
-  namespace property_tree {
-
-    template < class Key, class Data, class KeyCompare > class basic_ptree;
-    typedef basic_ptree< std::string, std::string, std::less<std::string> > ptree;
-
-  }
-
-}
+#include "PtreeForwardDeclaration.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -47,32 +36,35 @@ namespace Fittino {
 
   /*!
    *  \ingroup calculators
-   *  \brief Wrapper class for TMVA::Reader::EvaluateRegression()
+   *  \brief Wrapper class for TMVA::Reader::EvaluateRegression().
    */
   class RegressionCalculator : public CalculatorBase {
 
-  public:
-    /*!
-     *  Standard constructor.
-     */
-    RegressionCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
-    /*!
-     *  Standard destructor.
-     */
-    ~RegressionCalculator();
+    public:
+      /*!
+       *  Standard constructor.
+       */
+      RegressionCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+      /*!
+       *  Standard destructor.
+       */
+      ~RegressionCalculator();
 
-  public:  
-    virtual void                  CalculatePredictions();
-    virtual void                  Initialize();
+    public:
+      virtual void               CalculatePredictions();
+      virtual void               Initialize();
 
-  private:
-    TMVA::Reader                    _reader;
-    Collection<RegressionMVA*>      _collectionOfMVAs;
-    std::vector<const double*>      _vectorOfDoubleVariables;
-    std::vector<float*>             _vectorOfFloatVariables;
-  
+      /*! \cond UML */
+    private:
+      std::vector<float*>        _vectorOfFloatVariables;
+      std::vector<const double*> _vectorOfDoubleVariables;
+      TMVA::Reader               _reader;
+      Collection<RegressionMVA*> _collectionOfMVAs;
+
+      /*! \endcond UML */
+
   };
 
 }
 
-#endif
+#endif // FITTINO_REGRESSIONCALCULATOR_H

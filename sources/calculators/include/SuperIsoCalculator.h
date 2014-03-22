@@ -1,4 +1,4 @@
-/* $Id$ */ 
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
@@ -8,8 +8,7 @@
 *                                                                              *
 * Description Wrapper class for HDim6                                          *
 *                                                                              *
-* Authors     Bjoern  Sarrazin  <sarrazin@physik.uni-bonn.de>                  *
-*                                                                              *
+* Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -22,17 +21,7 @@
 #define FITTINO_SUPERISOCALCULATOR_H
 
 #include "CalculatorBase.h"
-
-namespace boost {
-
-  namespace property_tree {
-
-    template < class Key, class Data, class KeyCompare > class basic_ptree;
-    typedef basic_ptree< std::string, std::string, std::less<std::string> > ptree;
-
-  }
-
-}
+#include "PtreeForwardDeclaration.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -41,7 +30,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup calculators
-   *  \brief Wrapper class for SuperIso
+   *  \brief Wrapper class for SuperIso.
    */
   class SuperIsoCalculator : public CalculatorBase {
 
@@ -49,42 +38,43 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-    SuperIsoCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+      SuperIsoCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
 
     public:
       /*!
        *  Standard destructor.
        */
-      virtual                  ~SuperIsoCalculator();
+      virtual      ~SuperIsoCalculator();
+      virtual void CalculatePredictions();
 
-      virtual void             CalculatePredictions();
-
+      /*! \cond UML */
     private:
-      std::string _slhafile;
+      double       _amu;
+      double       _delta0;
+      double       _bsgamma;
+      double       _bsmumu;
+      double       _bsmumu_untag;
+      double       _bdmumu;
+      double       _btaunu;
+      double       _normSM_btaunu;
+      double       _bdtaunu;
+      double       _bdtaunu_bdenu;
+      double       _dmunu;
+      double       _dsmunu;
+      double       _dstaunu;
+      double       _kmunu_pimunu;
+      double       _rmu23;
+      double       _excludedHiggsMass;
+      double       _excludedSusyMass;
+      double       _nmssmColliderExcluded;
+      double       _nmssmTheoryExcluded;
+      double       _chargedLSP;
+      std::string  _slhafile;
 
-      double _amu;
-      double _delta0;
-      double _bsgamma;
-      double _bsmumu;
-      double _bsmumu_untag;
-      double _bdmumu;
-      double _btaunu;
-      double _normSM_btaunu;
-      double _bdtaunu;
-      double _bdtaunu_bdenu;
-      double _dmunu;
-      double _dsmunu;
-      double _dstaunu;
-      double _kmunu_pimunu;
-      double _rmu23;
-      double _excludedHiggsMass;
-      double _excludedSusyMass;
-      double _nmssmColliderExcluded;
-      double _nmssmTheoryExcluded;
-      double _chargedLSP;
+      /*! \endcond UML */
 
   };
 
 }
 
-#endif
+#endif // FITTINO_SUPERISOCALCULATOR_H

@@ -26,18 +26,18 @@
 Fittino::CheckVacuumCalculator::CheckVacuumCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model ),
       _gridfile( ptree.get<std::string>( "GridFile" ) ),
-      _m0     ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "M0" ) )->GetValue()      ),
-      _m12    ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "M12" ) )->GetValue()     ),
-      _a0     ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "A0" ) )->GetValue()      ),
-      _tanbeta( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "TanBeta" ) )->GetValue() ),
-      _signmu ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "SignMu" ) )->GetValue()  ) {
+      _m0      ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "M0"      ) )->GetValue() ),
+      _m12     ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "M12"     ) )->GetValue() ),
+      _a0      ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "A0"      ) )->GetValue() ),
+      _tanbeta ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "TanBeta" ) )->GetValue() ),
+      _signmu  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "SignMu"  ) )->GetValue() ) {
 
     _name = "CheckVacuumCalculator";
 
-    _checkVacuum = new CheckVacuum( _gridfile );
-
-    AddQuantity( new SimplePrediction( "VacuumStability", "", _vacuumStability ) );
     AddQuantity( new SimplePrediction( "VacuumLifetime" , "", _vacuumLifetime  ) );
+    AddQuantity( new SimplePrediction( "VacuumStability", "", _vacuumStability ) );
+
+    _checkVacuum = new CheckVacuum( _gridfile );
 
 }
 
