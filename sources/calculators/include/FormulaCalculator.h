@@ -20,10 +20,10 @@
 #ifndef FITTINO_FORMULACALCULATOR_H
 #define FITTINO_FORMULACALCULATOR_H
 
-#include "TFormula.h"
-
 #include "CalculatorBase.h"
 #include "PtreeForwardDeclaration.h"
+
+class TFormula;
 
 /*!
  *  \brief Fittino namespace.
@@ -63,7 +63,7 @@ namespace Fittino {
         const double* _z;
         const double* _t;
         const boost::property_tree::ptree& _ptree;
-        TFormula _formula;
+        TFormula* _formula;
 
     private:
         void InitializeVariable( std::string name, const double*& variable );

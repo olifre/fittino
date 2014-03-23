@@ -17,6 +17,8 @@
  *                                                                              *
  *******************************************************************************/
 
+#include "TFormula.h"
+
 #include "FormulaCalculator.h"
 #include "PhysicsModel.h"
 #include "SimplePrediction.h"
@@ -31,16 +33,16 @@ _y( &_defaultValue ),
 _z( &_defaultValue ),
 _t( &_defaultValue ),
 _ptree( ptree ),
-_formula( ptree.get<std::string>( "Name" ).c_str(), ptree.get<std::string>( "Formula" ).c_str() ) {
+_formula( new TFormula( ptree.get<std::string>( "Name" ).c_str(), ptree.get<std::string>( "Formula" ).c_str() ) ) {
 
     InitializeVariable( "x", _x );
     InitializeVariable( "y", _y );
     InitializeVariable( "z", _z );
     InitializeVariable( "t", _t );
 
-    _name = _formula.GetName();
+    _name = _formula->GetName();
 
-    if ( _formula.GetNdim() < 1 ) {
+    if ( _formula->GetNdim() < 1 ) {
 
         throw ConfigurationException("Invalid formula.");
 
@@ -51,6 +53,8 @@ _formula( ptree.get<std::string>( "Name" ).c_str(), ptree.get<std::string>( "For
 }
 
 Fittino::FormulaCalculator::~FormulaCalculator() {
+
+    delete _formula;
 
 }
 
@@ -64,7 +68,7 @@ void Fittino::FormulaCalculator::InitializeVariable( std::string name, const dou
 
 void Fittino::FormulaCalculator::CalculatePredictions() {
 
-    _result = _formula.Eval( *_x, *_y, *_z, *_t );
+    _result = _formula->Eval( *_x, *_y, *_z, *_t );
 
 }
 
