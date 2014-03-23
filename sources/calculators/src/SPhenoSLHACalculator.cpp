@@ -29,7 +29,7 @@
 #include "TimeoutExecutorException.h"
 #include "SLHAPrediction.h"
 
-Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const boost::property_tree::ptree& ptree, const PhysicsModel* model )
+Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     : SLHACalculatorBase( model ),
       _executor( "./SPheno", "SPheno" ) {
 

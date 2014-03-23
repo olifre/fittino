@@ -23,7 +23,7 @@
 #include "PhysicsModel.h"
 #include "SimplePrediction.h"
 
-Fittino::FormulaCalculator::FormulaCalculator( const boost::property_tree::ptree& ptree, const Fittino::PhysicsModel* model )
+Fittino::FormulaCalculator::FormulaCalculator( const Fittino::PhysicsModel* model, const boost::property_tree::ptree& ptree )
 : CalculatorBase( model ),
 _defaultValue( 0 ),
 _result( 0 ),

@@ -201,7 +201,7 @@ Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& 
     }
     else if ( type == "FormulaCalculator" ) {
 
-        return new FormulaCalculator( ptree, model );
+        return new FormulaCalculator( model, ptree );
 
     }
     else if ( type == "MicromegasCalculator" ) {
@@ -265,7 +265,7 @@ Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& 
     }
     else if ( type == "SPhenoCalculator" ) {
 
-        return new SPhenoSLHACalculator( ptree, model );
+        return new SPhenoSLHACalculator( model, ptree );
 
     }
     else if ( type == "SuperIsoCalculator" ) {
