@@ -17,11 +17,20 @@
 *                                                                              *
 *******************************************************************************/
 
+/*!
+ *  \brief boost namespace.
+ */
 namespace boost {
 
+  /*!
+   *  \brief property_tree namespace.
+   */
   namespace property_tree {
 
     template < class Key, class Data, class KeyCompare >
+    /*!
+     *  \brief Class basic_ptree.
+     */
     class basic_ptree;
 
     typedef basic_ptree< std::string, std::string, std::less<std::string> > ptree;

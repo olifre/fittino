@@ -21,19 +21,8 @@
 #ifndef FITTINO_HDIM6CALCULATOR_H
 #define FITTINO_HDIM6CALCULATOR_H
 
-#include <map>
 #include "CalculatorBase.h"
-
-namespace boost {
-
-  namespace property_tree {
-
-    template < class Key, class Data, class KeyCompare > class basic_ptree;
-    typedef basic_ptree< std::string, std::string, std::less<std::string> > ptree;
-
-  }
-
-}
+#include "PtreeForwardDeclaration.h"
 
 struct effinputs;
 struct pominput;

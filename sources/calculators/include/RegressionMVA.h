@@ -24,6 +24,9 @@
 #include "Collection.h"
 #include "PtreeForwardDeclaration.h"
 
+/*!
+ *  \brief TMVA namespace.
+ */
 namespace TMVA {
 
   class Reader;

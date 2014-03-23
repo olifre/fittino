@@ -6,8 +6,8 @@
 *                                                                              *
 * File        CalculatorException.h                                            *
 *                                                                              *
-* Description Fittino input file exception class. It is thrown in case of      *
-*             problems with calculations performed by calculators              *
+* Description Thrown in case of problems with calculations performed by one of *
+*             the Calculators                                                  *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *             Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
@@ -31,8 +31,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup exceptions
-   *  \brief Fittino model calculator exception class. It is thrown in case of problems with
-   *  calculations performed by model calculators.
+   *  \brief Thrown in case of problems with calculations performed by one of the Calculators.
    */
   class CalculatorException : public ExceptionBase {
 

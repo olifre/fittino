@@ -6,8 +6,8 @@
 *                                                                              *
 * File        CalculatorException.cpp                                          *
 *                                                                              *
-* Description Fittino calculator exception class. It is thrown in case of      *
-*             problems with calculations performed by model calculators        *
+* Description Thrown in case of problems with calculations performed by one of *
+*             the Calculators                                                  *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *

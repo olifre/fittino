@@ -30,8 +30,10 @@ namespace Fittino {
   /*!
    *  \ingroup calculators
    *  \brief Wrapper class for Micromegas.
-   *   This class introduces an additional "boost free" layer between Micromegas and MicromegasCalculator.
-   *   It is needed because Micromegas uses a function boost conflicting with the boost namespace used in MicromegasCalculator.
+   *
+   *  This class introduces an additional "boost free" layer between Micromegas and\n
+   *  MicromegasCalculator. It is needed because Micromegas uses a function boost conflicting with\n
+   *  the boost namespace used in MicromegasCalculator.
    */
   class MicromegasWrapper: public CalculatorBase {
 

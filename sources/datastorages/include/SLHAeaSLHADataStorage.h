@@ -22,6 +22,9 @@
 
 #include "SLHADataStorageBase.h"
 
+/*!
+ *  \brief SLHAea namespace.
+ */
 namespace SLHAea {
 
   class Coll;

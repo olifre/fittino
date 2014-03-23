@@ -30,6 +30,9 @@ class THnSparse;
  */
 namespace Fittino {
 
+  /*!
+   *  \brief MathTools namespace.
+   */
   namespace MathTools {
  
     double InterpolateND( THnSparse*, std::vector<double> );

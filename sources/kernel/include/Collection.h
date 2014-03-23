@@ -32,14 +32,16 @@
 namespace Fittino {
 
   /*!
-  *   \ingroup kernel
-  *   \brief Template for collection classes. Only specification for pointers is implemented.
-  */
+   *  \ingroup kernel
+   *  \brief Template for collection classes.
+   *
+   *  Only specification for pointers is implemented.
+   */
   template<class T> class Collection;
   /*!
-  *   \ingroup kernel
-  *   \brief template for collection of pointers.
-  */
+   *  \ingroup kernel
+   *  \brief Template for collection of pointers.
+   */
   template<class T> class Collection<T*> {
 
     public:

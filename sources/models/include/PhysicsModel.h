@@ -22,19 +22,10 @@
 #ifndef FITTINO_PHYSICSMODEL_H
 #define FITTINO_PHYSICSMODEL_H
 
-#include "ModelBase.h"
 #include "TMatrixDSym.h"
 
-namespace boost {
-
-  namespace property_tree {
-
-    template < class Key, class Data, class KeyCompare > class basic_ptree;
-    typedef basic_ptree< std::string, std::string, std::less<std::string> > ptree;
-
-  }
-
-}
+#include "ModelBase.h"
+#include "PtreeForwardDeclaration.h"
 
 class TRandom3;
 

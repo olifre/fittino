@@ -41,6 +41,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup samplers
+   *  \brief Class for covariant parameter sampler.
    */
   class NewCorrelatedSampler : public SamplerBase {
 
