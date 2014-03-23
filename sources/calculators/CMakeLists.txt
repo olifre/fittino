@@ -46,6 +46,7 @@ ELSE()
   LIST(REMOVE_ITEM sources "src/FeynHiggsSLHACalculator.cpp")
   LIST(REMOVE_ITEM sources "src/FeynHiggsChannel.cpp")
   LIST(REMOVE_ITEM sources "src/FeynHiggsFermionicChannel.cpp")
+  LIST(REMOVE_ITEM sources "src/FeynHiggsBosonicChannel.cpp")
 
 ENDIF()
 
