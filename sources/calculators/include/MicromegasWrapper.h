@@ -6,7 +6,7 @@
 *                                                                              *
 * File        MicromegasWrapper.h                                              *
 *                                                                              *
-* Description Wrapper class for Micromegas                                     *
+* Description Wrapper class for Micromegas.                                    *
 *                                                                              *
 * Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
 *                                                                              *
@@ -30,6 +30,8 @@ namespace Fittino {
   /*!
    *  \ingroup calculators
    *  \brief Wrapper class for Micromegas.
+   *   This class introduces an additional "boost free" layer between Micromegas and MicromegasCalculator.
+   *   It is needed because Micromegas uses a function boost conflicting with the boost namespace used in MicromegasCalculator.
    */
   class MicromegasWrapper: public CalculatorBase {
 

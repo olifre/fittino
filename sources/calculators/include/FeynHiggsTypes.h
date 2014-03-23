@@ -6,7 +6,10 @@
  *                                                                              *
  * File        FeynHiggsTypes                                                   *
  *                                                                              *
- * Description Wrapper class for FeynHiggs                                      *
+ * Description This file contains typedefs consistent with CFeynHiggs.h.        *
+ *             Using it allows to use these types without including             *
+ *             CFeynHiggs.h. This is sometimes needed because CFeynHiggs.h      *
+ *             contains preprocessor directives which easily lead to conflicts. * 
  *                                                                              *
  * Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
  *                                                                              *

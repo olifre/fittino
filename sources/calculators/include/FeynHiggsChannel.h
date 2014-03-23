@@ -55,10 +55,10 @@ namespace Fittino {
         /*! \cond UML */
     protected:
 
-        FHRealType* gammas;
-        FHRealType* gammasms;
-        FHComplexType* couplings;
-        FHComplexType* couplingsms;
+        FHRealType* gammas;           // FeynHiggs requires to use this name
+        FHRealType* gammasms;         // FeynHiggs requires to use this name
+        FHComplexType* couplings;     // FeynHiggs requires to use this name
+        FHComplexType* couplingsms;   // FeynHiggs requires to use this name
 
         int _channel;
         bool _doSM;
