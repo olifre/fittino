@@ -93,7 +93,6 @@ namespace Fittino {
       std::string _down  [4];
       std::string _neu   [5];
       std::string _cha   [3];
-      
 
       virtual void ConfigureInput() = 0;
       virtual void WriteOutput() = 0;

@@ -31,6 +31,7 @@
 #include "FeynHiggsSLHACalculator.h"
 #endif
 
+#include "FormulaCalculator.h"
 #include "GeneticAlgorithmOptimizer.h"
 #include "HDim6Calculator.h"
 #include "HECCalculator.h"
@@ -196,6 +197,11 @@ Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& 
         throw ConfigurationException( "Trying to use HiggsSignalsSLHACalculator but Fittino was built without HiggsBounds or HiggsSignals." );
 
 #endif
+
+    }
+    else if ( type == "FormulaCalculator" ) {
+
+        return new FormulaCalculator( ptree, model );
 
     }
     else if ( type == "MicromegasCalculator" ) {
