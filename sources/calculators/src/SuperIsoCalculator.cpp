@@ -35,26 +35,26 @@ Fittino::SuperIsoCalculator::SuperIsoCalculator( const PhysicsModel* model, cons
 
     _slhafile = "SPheno.spc";
 
-      AddQuantity( new SimplePrediction( "a_mu"                      , "", _amu            ) );
-      AddQuantity( new SimplePrediction( "delta0_B_to_K*_gamma"         , "", _delta0         ) );
-      AddQuantity( new SimplePrediction( "BR_b_to_s_gamma"              , "", _bsgamma        ) );
-      AddQuantity( new SimplePrediction( "BR_Bs_to_mu_mu"               , "", _bsmumu         ) );
-      AddQuantity( new SimplePrediction( "UntaggedBR_Bs_to_mu_mu"       , "", _bsmumu_untag   ) );
-      AddQuantity( new SimplePrediction( "BR_Bd_to_mu_mu"               , "", _bdmumu         ) );
-      AddQuantity( new SimplePrediction( "BR_B_to_tau_nu"               , "", _btaunu         ) );
-      AddQuantity( new SimplePrediction( "NormSM_BR_B_to_tau_nu"        , "", _normSM_btaunu  ) );
-      AddQuantity( new SimplePrediction( "BR_B_to_D_tau_nu"             , "", _bdtaunu        ) );
-      AddQuantity( new SimplePrediction( "Ratio_BR_D_to_tau_nu_BR_D_to_e_nu", "", _bdtaunu_bdenu  ) );
-      AddQuantity( new SimplePrediction( "BR_D_mu_nu"                , "", _dmunu          ) );
-      AddQuantity( new SimplePrediction( "BR_Ds_mu_nu"               , "", _dsmunu         ) );
-      AddQuantity( new SimplePrediction( "BR_Ds_tau_nu"              , "", _dstaunu        ) );
-      AddQuantity( new SimplePrediction( "Ratio_BR_K_mu_nu_BR_pi_mu_nu"  , "", _kmunu_pimunu   ) );
-      AddQuantity( new SimplePrediction( "Rmu23_K_mu_nu"             , "", _rmu23          ) );
-      AddQuantity( new SimplePrediction( "ChargedLSP"                , "", _chargedLSP            ) );
-      AddQuantity( new SimplePrediction( "ExcludedHiggsMass"         , "", _excludedHiggsMass     ) );
-      AddQuantity( new SimplePrediction( "ExcludedSusyMass"          , "", _excludedSusyMass      ) );
-      AddQuantity( new SimplePrediction( "NMSSMColliderExcluded"     , "", _nmssmColliderExcluded ) );
-      AddQuantity( new SimplePrediction( "NMSSMTheoryExcluded"       , "", _nmssmTheoryExcluded   ) );
+    AddQuantity( new SimplePrediction( "a_mu",                              "", _amu                   ) );
+    AddQuantity( new SimplePrediction( "delta0_B_to_K*_gamma",              "", _delta0                ) );
+    AddQuantity( new SimplePrediction( "BR_b_to_s_gamma",                   "", _bsgamma               ) );
+    AddQuantity( new SimplePrediction( "BR_Bs_to_mu_mu",                    "", _bsmumu                ) );
+    AddQuantity( new SimplePrediction( "UntaggedBR_Bs_to_mu_mu",            "", _bsmumu_untag          ) );
+    AddQuantity( new SimplePrediction( "BR_Bd_to_mu_mu",                    "", _bdmumu                ) );
+    AddQuantity( new SimplePrediction( "BR_B_to_tau_nu",                    "", _btaunu                ) );
+    AddQuantity( new SimplePrediction( "NormSM_BR_B_to_tau_nu",             "", _normSM_btaunu         ) );
+    AddQuantity( new SimplePrediction( "BR_B_to_D_tau_nu",                  "", _bdtaunu               ) );
+    AddQuantity( new SimplePrediction( "Ratio_BR_D_to_tau_nu_BR_D_to_e_nu", "", _bdtaunu_bdenu         ) );
+    AddQuantity( new SimplePrediction( "BR_D_mu_nu",                        "", _dmunu                 ) );
+    AddQuantity( new SimplePrediction( "BR_Ds_mu_nu",                       "", _dsmunu                ) );
+    AddQuantity( new SimplePrediction( "BR_Ds_tau_nu",                      "", _dstaunu               ) );
+    AddQuantity( new SimplePrediction( "Ratio_BR_K_mu_nu_BR_pi_mu_nu",      "", _kmunu_pimunu          ) );
+    AddQuantity( new SimplePrediction( "Rmu23_K_mu_nu",                     "", _rmu23                 ) );
+    AddQuantity( new SimplePrediction( "ChargedLSP",                        "", _chargedLSP            ) );
+    AddQuantity( new SimplePrediction( "ExcludedHiggsMass",                 "", _excludedHiggsMass     ) );
+    AddQuantity( new SimplePrediction( "ExcludedSusyMass",                  "", _excludedSusyMass      ) );
+    AddQuantity( new SimplePrediction( "NMSSMColliderExcluded",             "", _nmssmColliderExcluded ) );
+    AddQuantity( new SimplePrediction( "NMSSMTheoryExcluded",               "", _nmssmTheoryExcluded   ) );
 
 }
 
@@ -66,9 +66,9 @@ void Fittino::SuperIsoCalculator::CalculatePredictions() {
 
     std::vector<char> file( _slhafile.c_str(), _slhafile.c_str() + _slhafile.size() + 1 );
 
-    int test =  test_slha( &file[0] );
+    int test = test_slha( &file[0] );
 
-    switch( test ) {
+    switch ( test ) {
 
         case -4:
             throw ConfigurationException( "SuperIso: Input file missing." );
@@ -89,7 +89,7 @@ void Fittino::SuperIsoCalculator::CalculatePredictions() {
             throw ConfigurationException( "SuperIso: NMSSM. Unexpected." );
 
         case 10:
-            throw ConfigurationException("SuperIso: THDM. Unexpected." );
+            throw ConfigurationException( "SuperIso: THDM. Unexpected." );
 
     }
 
