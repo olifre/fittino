@@ -70,7 +70,7 @@ void Fittino::FeynHiggsFermionicChannel::CalculatePredictions() {
     FHComplexType coup;
 
     coup = RCoupling( _channel ) + LCoupling( _channel );
-    coup  = coup / 2.;
+    coup  = coup / FHComplexType( 2, 0 );
 
     _model_gs2 = std::norm( coup );
     _model_gsPhi = std::arg( coup );
@@ -84,7 +84,7 @@ void Fittino::FeynHiggsFermionicChannel::CalculatePredictions() {
     if ( _doSM ) {
         
         coup = RCouplingSM( _channel ) + LCouplingSM( _channel );
-        coup  = coup / 2.;
+        coup  = coup / FHComplexType( 2, 0 );
 
         _sm_gs2 = std::norm( coup );
         _sm_gsPhi = std::arg( coup );

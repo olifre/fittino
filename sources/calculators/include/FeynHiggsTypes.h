@@ -24,7 +24,7 @@
 
 #if QUAD  
 
-typedef long double RealType
+typedef long double FHRealType;
 
 #else
 
