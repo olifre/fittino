@@ -45,10 +45,8 @@ Fittino::MinuitOptimizer::~MinuitOptimizer() {
 
 void Fittino::MinuitOptimizer::PrintSteeringParameters() const {
 
-    Messenger& messenger = Messenger::GetInstance();
-
-    messenger << Messenger::ALWAYS << "    Abort criterium       " << _abortCriterium     << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "    Number of iterations  " << _numberOfIterations << Messenger::Endl;
+    PrintItem( "NumberOfIterations", _numberOfIterations );
+    PrintItem( "AbortCriterium",     _abortCriterium     );
 
 }
 

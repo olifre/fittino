@@ -46,7 +46,6 @@ namespace Fittino {
       /*!
        *  Standard destructor.
        */
-      virtual ~CalculatorBase();
       std::string                              GetName() const;
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
@@ -59,6 +58,7 @@ namespace Fittino {
       const SimpleDataStorage*                 GetSimpleOutputDataStorage() const;
 
     public:
+      virtual                                  ~CalculatorBase();
       virtual void                             CalculatePredictions() = 0;
       virtual void                             Initialize();
       /*!

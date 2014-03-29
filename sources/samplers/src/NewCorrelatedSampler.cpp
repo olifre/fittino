@@ -434,13 +434,9 @@ void Fittino::NewCorrelatedSampler::CalculateStandardDeviations(){
 
 void Fittino::NewCorrelatedSampler::PrintSteeringParameters() const {
 
-    Messenger& messenger = Messenger::GetInstance();
-
-    messenger << Messenger::ALWAYS << "    Number of iterations     : " << _numberOfIterations << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "    Update covariances after : " << _updateAfter << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "    Memory size              : " << _memorySize << Messenger::Endl;
-
-
+    PrintItem( "NumberOfIterations",      _numberOfIterations );
+    PrintItem( "UpdtateCovariancesAfter", _updateAfter        );
+    PrintItem( "MemorySize",              _memorySize         );
 
 }
 

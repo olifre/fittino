@@ -34,7 +34,10 @@ Fittino::ModelBase::ModelBase( const boost::property_tree::ptree& ptree )
 
 Fittino::ModelBase::~ModelBase() {
 
-    _collectionOfParameters.Delete();
+    _collectionOfQuantities.Delete();
+
+    _collectionOfMetaDataDoubleVariables.Delete();
+    _collectionOfStringVariables.Delete();
 
 }
 
@@ -116,6 +119,12 @@ const Fittino::Collection<Fittino::PredictionBase*>& Fittino::ModelBase::GetColl
 const Fittino::Collection<const Fittino::Quantity*>& Fittino::ModelBase::GetCollectionOfQuantities() const {
 
     return _collectionOfQuantities;
+
+}
+
+const Fittino::Collection<const Fittino::VariableBase<double>*>& Fittino::ModelBase::GetCollectionOfMetaDataDoubleVariables() const {
+
+    return _collectionOfMetaDataDoubleVariables;
 
 }
 

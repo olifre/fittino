@@ -25,30 +25,30 @@
 
 #include "AnalysisTool.h"
 #include "ModelBase.h"
-#include "Observable.h"
 
 Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tree::ptree& ptree )
-    : _chi2( ptree.get<double>( "Chi2", 1.e99 ) ),
-      _iterationCounter( ptree.get<unsigned int>( "IterationCounter", 0 ) ),
-      _name( ptree.get<std::string>( "Name", "" ) ),
-      _model( model ),
-      _outputFile( new TFile( ( ptree.get<std::string>( "OutputFile", "Fittino.out.root" ) ).c_str(), "RECREATE" ) ),
-      _randomGenerator( ptree.get<int>( "RandomSeed", 0 ) ),
-      _metaDataTree( new TTree( ( ptree.get<std::string>( "MetaDataTree", "MetaDataTree" ) ).c_str(), ( ptree.get<std::string>( "MetaDataTree", "MetaDataTree" ) ).c_str() ) ),
-      _tree( new TTree( ( ptree.get<std::string>( "OutputTree", "Tree" ) ).c_str(), ( ptree.get<std::string>( "OutputTree", "Tree" ) ).c_str() ) ) {
+    : _chi2                ( ptree.get<double>      ( "Chi2",                 std::numeric_limits<double>::max() ) ),
+      _iterationCounter    ( ptree.get<unsigned int>( "IterationCounter",     0                                  ) ),
+      _name                ( ptree.get<std::string> ( "Name",                 ""                                 ) ),
+      _model               ( model ),
+      _randomSeed          ( ptree.get<unsigned int>( "RandomSeed",           0                                  ) ),
+      _chi2Name            ( ptree.get<std::string> ( "Chi2Name",             "Chi2"                             ) ),
+      _iterationCounterName( ptree.get<std::string> ( "IterationCounterName", "IterationCounter"                 ) ),
+      _ptree               ( ptree ),
+      _metaDataTreeName    ( ptree.get<std::string> ( "MetaDataTree",         "MetaDataTree"                     ) ),
+      _outputFileName      ( ptree.get<std::string> ( "OutputFile",           "Fittino.out.root"                 ) ),
+      _treeName            ( ptree.get<std::string> ( "OutputTree",           "Tree"                             ) ),
+      _outputFile          ( new TFile( _outputFileName, "RECREATE" ) ),
+      _metaDataTree        ( new TTree( _metaDataTreeName, _metaDataTreeName ) ),
+      _randomGenerator     ( _randomSeed ),
+      _tree                ( new TTree( _treeName, _treeName ) ) {
 
-    _statusParameterVector.push_back( new Quantity( "Chi2",             "#chi^2",           _chi2,             0., 100.  ) );
-    _statusParameterVector.push_back( new Quantity( "IterationCounter", "IterationCounter", _iterationCounter, 0., 1.e10 ) );
-
-    _ptree = ptree;
+    _statusParameterVector.push_back( new Quantity( _chi2Name,             "#chi^2",           _chi2,             0., 100.  ) );
+    _statusParameterVector.push_back( new Quantity( _iterationCounterName, "IterationCounter", _iterationCounter, 0., 1.e10 ) );
 
 }
 
 Fittino::AnalysisTool::~AnalysisTool() {
-
-    delete _outputFile;
-    delete _metaDataTree;
-    delete _tree;
 
     for ( unsigned int i = 0; i < _statusParameterVector.size(); ++i ) {
 
@@ -224,24 +224,12 @@ void Fittino::AnalysisTool::InitializeBranches() {
 
     // Now initialize the branches of the meta data tree.
 
-    if ( _model->GetObservableVector() ) {
+    for ( unsigned int i = 0; i < _model->GetCollectionOfMetaDataDoubleVariables().GetNumberOfElements(); ++i ) {
 
-        for ( unsigned int i = 0; i < _model->GetObservableVector()->size(); ++i ) {
-
-            std::string measuredValueBranchName = "measuredValue_" + _model->GetObservableVector()->at( i )->GetPrediction()->GetName();
-            std::string uncertaintyBranchName = "uncertainty_" + _model->GetObservableVector()->at( i )->GetPrediction()->GetName();
-
-            AddBranch( _metaDataTree,
-                       measuredValueBranchName,
-                       "D",
-                       & _model->GetObservableVector()->at( i )->GetMeasuredValue() );
-
-            AddBranch( _metaDataTree,
-                       uncertaintyBranchName,
-                       "D",
-                       & _model->GetObservableVector()->at( i )->GetMeasuredError() );
-
-        }
+        AddBranch( _metaDataTree,
+                   _model->GetCollectionOfMetaDataDoubleVariables().At( i )->GetName(),
+                   "D",
+                   &_model->GetCollectionOfMetaDataDoubleVariables().At( i )->GetValue() );
 
     }
 
@@ -253,6 +241,15 @@ void Fittino::AnalysisTool::PrintConfiguration() const {
 
     messenger << Messenger::ALWAYS << "   Configuration" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
+
+    PrintItem( "Chi2Name",                     _chi2Name             );
+    PrintItem( "InitialChi2Value",             _chi2                 );
+    PrintItem( "RandomSeed",                   _randomSeed           );
+    PrintItem( "OutputFileName",               _outputFileName       );
+    PrintItem( "OutputTreeName",               _treeName             );
+    PrintItem( "OutputMetaDataTreeName",       _metaDataTreeName     );
+    PrintItem( "IterationCounterName",         _iterationCounterName );
+    PrintItem( "InitialIterationCounterValue", _iterationCounter     );
 
     this->PrintSteeringParameters();
 

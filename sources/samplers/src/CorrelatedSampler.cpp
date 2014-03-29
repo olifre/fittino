@@ -283,9 +283,7 @@ void Fittino::CorrelatedSampler::CalculateStandardDeviations(){
 
 void Fittino::CorrelatedSampler::PrintSteeringParameters() const {
 
-    Messenger& messenger = Messenger::GetInstance();
-
-    messenger << Messenger::ALWAYS << "    Number of iterations         " << _numberOfIterations << Messenger::Endl;
+    PrintItem( "NumberOfIterations", _numberOfIterations );
 
 }
 

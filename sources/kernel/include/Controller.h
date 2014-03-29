@@ -39,11 +39,10 @@
  *  \todo Add DarkSUSYCalculator.
  *  \todo Add FormulaCalculator (a wrapper around TFormula).
  *  \todo Add HiggsSignalsPartonicInputCalculator.
+ *  \todo Add LSPCalculator ( a calculator which determines the LSP )
  *  \todo Add RandomSampler, a sampler with fixed sampling density (usefull for random grid production).
  *  \todo Add buggy point removal.
  *  \todo Add toy plots.
- *  \todo Add _collectionOfMetaQuantities (or so) to class ModelBase and fill with everything which
- *  should be stored in the meta data tree.
  *  \todo Make sure AstroCalculator works with AstroFit database.
  *  \todo Implement the corrrection of the FH decoupling limit (use FormulaCalculator?).
  *  \todo Common base class for different HS calculators.
@@ -56,9 +55,7 @@
  *  \todo MeasuredErrors: Allow arbitrary number. Give names.
  *  \todo Introduce parameter point dependent errors, correlations, covariances.
  *  \todo Allow asymmetric errors.
- *  \todo Add LSPCalculator ( a calculator which determines the LSP )
  *  \todo Make chi2 a model quantitiy?
- *  \todo Make name of chi2 branch configurable.
  *  \todo More general: Make all quantity names/branch names configurable?
  *  \todo Make configurable if quantities are added to the model/are written to ntuple (especially TreeCalculator but also in general)?
  *  \todo TreeSampler configuration: Set name of parameter to be used as looping parameter.

@@ -189,12 +189,10 @@ void Fittino::GeneticAlgorithmOptimizer::SortPopulation() {
 
 void Fittino::GeneticAlgorithmOptimizer::PrintSteeringParameters() const {
 
-    Messenger& messenger = Messenger::GetInstance();
-
-    messenger << Messenger::ALWAYS << "    Abort criterium              " << _abortCriterium     << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "    Number of iterations         " << _numberOfIterations << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "    Mutation rate                " << _mutationRate       << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "    Size of population           " << _sizeOfPopulation   << Messenger::Endl;
+    PrintItem( "NumberOfIterations", _numberOfIterations );
+    PrintItem( "AbortCriterium",     _abortCriterium     );
+    PrintItem( "MutationRate",       _mutationRate       );
+    PrintItem( "SizeOfPopulation",   _sizeOfPopulation   );
 
 }
 

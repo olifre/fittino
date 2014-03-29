@@ -29,6 +29,8 @@
 
 #include "TRandom3.h"
 
+#include "Messenger.h"
+
 class TFile;
 class TTree;
 
@@ -86,23 +88,6 @@ namespace Fittino {
        */
       std::string                   _name;
       /*!
-       *  A copy of the input property tree, to be used for storing information for output-xml files
-       *  (e.g. interface files for concatenating Markov Chains.
-       */
-      boost::property_tree::ptree   _ptree;
-      /*!
-       *  Random number generator.
-       */
-      TRandom3                      _randomGenerator;
-      /*!
-       *  The tree for the metadata.
-       */
-      TTree*                        _metaDataTree;
-      /*!
-       *  The output tree.
-       */
-      TTree*                        _tree;
-      /*!
        *  Pointer to the model to be analysed. Via this pointer an association between the model\n
        *  and any class deriving from AnalysisTool (especially the concrete optimizer or sampler\n
        *  classes) is established.
@@ -146,6 +131,10 @@ namespace Fittino {
        */
       void                          UpdatePropertyTree();
       /*!
+       *  Prints one configuration item to screen.
+       */
+      template<class T> void        PrintItem( const std::string& item, const T& value ) const;
+      /*!
        *  Returns the list of status parameters.
        *  \todo Short-term: Eventually replace with GetCollectionOfStatusParameters().
        */
@@ -159,7 +148,6 @@ namespace Fittino {
       virtual void                  PrintResult() const = 0;
       /*!
        *  Prints the steering parameters of a particuar analysis tool.
-       *  \todo Short-term: Write a function that does always the correct formatting.
        */
       virtual void                  PrintSteeringParameters() const = 0;
       /*!
@@ -170,11 +158,26 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
+      const unsigned int            _randomSeed;
+      std::string                   _chi2Name;
+      std::string                   _iterationCounterName;
+      /*!
+       *  A copy of the input property tree, to be used for storing information for output-xml files
+       *  (e.g. interface files for concatenating Markov Chains.
+       */
+      boost::property_tree::ptree   _ptree;
+      const TString                 _metaDataTreeName;
+      const TString                 _outputFileName;
+      const TString                 _treeName;
       /*!
        *  A ROOT file which stores the tool's output. The default name of the file is\n
        *  "Fittino.out.root".
        */
       TFile*                        _outputFile;
+      /*!
+       *  The tree for the metadata.
+       */
+      TTree*                        _metaDataTree;
 
     private:
       void                          ExecuteAnalysisTool();
@@ -190,8 +193,30 @@ namespace Fittino {
 
       /*! \endcond UML */
 
+    protected:
+      /*!
+       *  Random number generator.
+       */
+      TRandom3                      _randomGenerator;
+      /*!
+       *  The output tree.
+       */
+      TTree*                        _tree;
+
   };
 
 }
+
+template<class T>
+void Fittino::AnalysisTool::PrintItem( const std::string& item, const T& value ) const {
+
+  Messenger& messenger = Messenger::GetInstance();
+
+  const std::string& indent  = std::string( 4, ' ' );
+  const std::string& spacing = std::string( 44 - item.length(), ' ' );
+
+  messenger << Messenger::ALWAYS << indent + item + spacing << value << Messenger::Endl;
+
+};
 
 #endif // FITTINO_ANALYSISTOOL_H

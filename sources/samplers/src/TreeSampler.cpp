@@ -182,9 +182,7 @@ void Fittino::TreeSampler::Execute() {
 
 void Fittino::TreeSampler::PrintSteeringParameters() const {
 
-    Messenger& messenger = Messenger::GetInstance();
-
-    messenger << Messenger::ALWAYS << "    Number of iterations         " << _numberOfIterations << Messenger::Endl;
+    PrintItem( "NumberOfIterations", _numberOfIterations );
 
 }
 

@@ -60,9 +60,7 @@ Fittino::SimpleOptimizer::~SimpleOptimizer() {
 
 void Fittino::SimpleOptimizer::PrintSteeringParameters() const {
 
-    Messenger& messenger = Messenger::GetInstance();
-
-    messenger << Messenger::ALWAYS << "    Number of iterations  " << _numberOfIterations << Messenger::Endl;
+    PrintItem( "NumberOfIterations", _numberOfIterations );
 
 }
 

@@ -55,6 +55,22 @@ Fittino::PhysicsModel::PhysicsModel( const boost::property_tree::ptree& ptree )
 
     InitializeCalculators( ptree );
     InitializeObservables( ptree );
+
+    for ( unsigned int i = 0; i < GetObservableVector()->size(); ++i ) {
+
+        std::string measuredValueBranchName = "measuredValue_" + GetObservableVector()->at( i )->GetPrediction()->GetName();
+        std::string uncertaintyBranchName = "uncertainty_" + GetObservableVector()->at( i )->GetPrediction()->GetName();
+        
+        _collectionOfMetaDataDoubleVariables.AddElement( measuredValueBranchName,
+                                                         new ReferenceVariable<double>( measuredValueBranchName,
+                                                                                        GetObservableVector()->at( i )->GetMeasuredValue() ) );
+        
+        _collectionOfMetaDataDoubleVariables.AddElement( uncertaintyBranchName,
+                                                         new ReferenceVariable<double>( uncertaintyBranchName,
+                                                                                        GetObservableVector()->at( i )->GetMeasuredError() ) );
+
+    }
+
     InitializeCovarianceMatrix( ptree );
     BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
 

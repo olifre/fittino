@@ -89,6 +89,7 @@ namespace Fittino {
        */
       const Collection<PredictionBase*>&                  GetCollectionOfPredictions() const;
       const Collection<const Quantity*>&                  GetCollectionOfQuantities() const;
+      const Collection<const VariableBase<double>*>&      GetCollectionOfMetaDataDoubleVariables() const;
       const Collection<const VariableBase<std::string>*>& GetCollectionOfStringVariables() const;
 
     public:
@@ -126,6 +127,7 @@ namespace Fittino {
        *  \todo Move to PhysicsModel (Matthias).
        */
       Collection<PredictionBase*>                         _collectionOfPredictions;
+      Collection<const VariableBase<double>*>             _collectionOfMetaDataDoubleVariables;
       Collection<const VariableBase<std::string>*>        _collectionOfStringVariables;
 
     protected:
