@@ -101,15 +101,6 @@ namespace Fittino {
 
     protected:
       /*!
-       *  Returns the number of status parameters.
-       */
-      int                           GetNumberOfStatusParameters() const;
-      /*!
-       *  Checks for uniqueness of the branch name and adds branch to tree.
-       *  \todo Create a wrapper class for TTree and make this a member function of that class.
-       */
-      void                          AddBranch( TTree* tree, std::string name, std::string type, const void* address );
-      /*!
        *  Saves some of the meta data for a run: measured values of observables and the
        *  uncertainties.
        */
@@ -125,11 +116,6 @@ namespace Fittino {
        *  Prints the tool's status to screen.
        */
       void                          PrintStatus() const;
-      /*!
-       *  Function to update values in the output property tree. Hm, maybe this has to become
-       *  virtual?
-       */
-      void                          UpdatePropertyTree();
       /*!
        *  Prints one configuration item to screen.
        */
@@ -180,11 +166,25 @@ namespace Fittino {
       TTree*                        _metaDataTree;
 
     private:
+      /*!
+       *  Returns the number of status parameters.
+       */
+      int                           GetNumberOfStatusParameters() const;
+      /*!
+       *  Checks for uniqueness of the branch name and adds branch to tree.
+       *  \todo Create a wrapper class for TTree and make this a member function of that class.
+       */
+      void                          AddBranch( TTree* tree, std::string name, std::string type, const void* address );
       void                          ExecuteAnalysisTool();
       void                          InitializeAnalysisTool();
       void                          InitializeBranches();
       void                          PrintConfiguration() const;
       void                          TerminateAnalysisTool();
+      /*!
+       *  Function to update values in the output property tree. Hm, maybe this has to become
+       *  virtual?
+       */
+      void                          UpdatePropertyTree();
       void                          WriteResultToFile() const;
 
     private:
@@ -193,6 +193,7 @@ namespace Fittino {
 
       /*! \endcond UML */
 
+      // Sorted out of ususal order because initialization depends on items declared earlier.
     protected:
       /*!
        *  Random number generator.

@@ -40,7 +40,7 @@ namespace Fittino {
       const static std::string& _dashedLine;
 
     public:
-      enum                      VerbosityLevel { INFO, DEBUG, VERBOSE, ALWAYS };
+      enum                      VerbosityLevel { VERBOSE, DEBUG, INFO, ALWAYS };
 
     public:
       static Messenger&         Endl( Messenger& messenger );

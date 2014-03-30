@@ -26,10 +26,10 @@
 #include <boost/property_tree/ptree.hpp>
 
 Fittino::ModelParameter::ModelParameter( const boost::property_tree::ptree& ptree )
-    : _error  ( ptree.get<double>( "Error", 0.1   ) ),
+    : Quantity( ptree ),
       _fixed  ( ptree.get<bool>  ( "Fixed", false ) ),
       _updated( true ),
-      Quantity( ptree ) {
+      _error  ( ptree.get<double>( "Error", 0.1   ) ) {
 
 }
 

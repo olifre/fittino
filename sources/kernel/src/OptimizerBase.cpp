@@ -25,9 +25,9 @@
 #include "OptimizerBase.h"
 
 Fittino::OptimizerBase::OptimizerBase( ModelBase* model, const boost::property_tree::ptree& ptree )
-    : _abortCriterium    ( ptree.get<double>( "AbortCriterium",     0.000001 ) ),
-      _numberOfIterations( ptree.get<int>   ( "NumberOfIterations", 10000    ) ),
-      AnalysisTool       ( model, ptree ) {
+    : AnalysisTool       ( model, ptree ),
+      _abortCriterium    ( ptree.get<double>( "AbortCriterium",     0.000001 ) ),
+      _numberOfIterations( ptree.get<int>   ( "NumberOfIterations", 10000    ) ) {
 
     _name = ptree.get<std::string>( "Name", "optimizer" );
 

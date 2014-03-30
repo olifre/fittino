@@ -34,8 +34,8 @@ extern "C" {
 }
 
 Fittino::Redirector::Redirector( std::string fileName )
-    : _fileName ( fileName ),
-      _redirecting( false ) {
+    : _redirecting( false ),
+      _fileName( fileName ) {
 
 }
 

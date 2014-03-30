@@ -40,8 +40,8 @@ Fittino::Messenger& Fittino::Messenger::GetInstance() {
 }
 
 Fittino::Messenger::Messenger()
-    : _actualVerbosityLevel( Messenger::ALWAYS ),
-      _verbosityLevel( Messenger::ALWAYS ) {
+    : _verbosityLevel( Messenger::ALWAYS ),
+      _actualVerbosityLevel( Messenger::ALWAYS ) {
 
 }
 
@@ -65,7 +65,12 @@ void Fittino::Messenger::Send() {
 
 void Fittino::Messenger::SetVerbosityLevel( const std::string& verbosityLevel ) {
 
-    if ( verbosityLevel == "INFO" ) {
+    if ( verbosityLevel == "DEBUG" ) {
+
+        SetVerbosityLevel( DEBUG );
+
+    }
+    else if ( verbosityLevel == "INFO" ) {
 
         SetVerbosityLevel( INFO );
 

@@ -73,34 +73,6 @@ boost::property_tree::ptree Fittino::AnalysisTool::GetPropertyTree() {
 
 }
 
-int Fittino::AnalysisTool::GetNumberOfStatusParameters() const {
-
-    return _statusParameterVector.size();
-
-}
-
-void Fittino::AnalysisTool::AddBranch( TTree* tree, std::string name, std::string type, const void* address ) {
-
-    TObjArray *arrayOfLeaves = tree->GetListOfLeaves();
-
-    for ( unsigned int i = 0; i < arrayOfLeaves->GetEntries(); ++i ) {
-
-        TLeaf *leaf = ( TLeaf* ) arrayOfLeaves->At( i );
-
-        if ( leaf->GetName() == name ) {
-
-            throw ConfigurationException( "Leaf name " + name + " already exists." );
-
-        }
-
-    }
-
-    TBranch* branch = tree->Branch( name.c_str(), const_cast<void*>( address ), ( name + "/" + type ).c_str() );
-
-    branch->GetLeaf( name.c_str() )->SetTitle( "" );
-
-}
-
 void Fittino::AnalysisTool::FillMetaDataTree() {
 
     _metaDataTree->Fill();
@@ -141,16 +113,37 @@ void Fittino::AnalysisTool::PrintStatus() const {
 
 }
 
-void Fittino::AnalysisTool::UpdatePropertyTree() {
-
-    _ptree.put( "Chi2", _chi2 );
-    _ptree.put( "IterationCounter", _iterationCounter );
-
-}
-
 const std::vector<Fittino::Quantity*>* Fittino::AnalysisTool::GetStatusParameterVector() const {
 
     return &_statusParameterVector;
+
+}
+
+int Fittino::AnalysisTool::GetNumberOfStatusParameters() const {
+
+    return _statusParameterVector.size();
+
+}
+
+void Fittino::AnalysisTool::AddBranch( TTree* tree, std::string name, std::string type, const void* address ) {
+
+    TObjArray *arrayOfLeaves = tree->GetListOfLeaves();
+
+    for ( unsigned int i = 0; i < arrayOfLeaves->GetEntries(); ++i ) {
+
+        TLeaf *leaf = ( TLeaf* ) arrayOfLeaves->At( i );
+
+        if ( leaf->GetName() == name ) {
+
+            throw ConfigurationException( "Leaf name " + name + " already exists." );
+
+        }
+
+    }
+
+    TBranch* branch = tree->Branch( name.c_str(), const_cast<void*>( address ), ( name + "/" + type ).c_str() );
+
+    branch->GetLeaf( name.c_str() )->SetTitle( "" );
 
 }
 
@@ -273,6 +266,13 @@ void Fittino::AnalysisTool::TerminateAnalysisTool() {
     this->WriteResultToFile();
 
     _outputFile->Close();
+
+}
+
+void Fittino::AnalysisTool::UpdatePropertyTree() {
+
+    _ptree.put( "Chi2", _chi2 );
+    _ptree.put( "IterationCounter", _iterationCounter );
 
 }
 
