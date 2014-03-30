@@ -45,8 +45,7 @@ Fittino::MinuitOptimizer::~MinuitOptimizer() {
 
 void Fittino::MinuitOptimizer::PrintSteeringParameters() const {
 
-    PrintItem( "NumberOfIterations", _numberOfIterations );
-    PrintItem( "AbortCriterium",     _abortCriterium     );
+    OptimizerBase::PrintSteeringParameters();
 
 }
 

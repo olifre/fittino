@@ -62,6 +62,7 @@
       <Chi2Name>MyChi2</Chi2Name>
       <IterationCounterName>MyIterationCounter</IterationCounterName>
       <InputFileName>Fittino.in.root</InputFileName>
+      <AbortCriterion>0.</AbortCriterion>
     </SimpleOptimizer>
 
   </Tool>

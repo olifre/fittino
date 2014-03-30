@@ -27,7 +27,7 @@ Fittino::GeneticAlgorithmOptimizer::GeneticAlgorithmOptimizer( Fittino::ModelBas
       _sizeOfPopulation( ptree.get<int>   ( "SizeOfPopulation", 20  ) ),
       OptimizerBase    ( model, ptree ) {
 
-    _abortCriterium     = ptree.get<double>     ( "AbortCriterium",     0.00001                       );
+    _abortCriterion     = ptree.get<double>     ( "AbortCriterion",     0.00001                       );
     _name               = ptree.get<std::string>( "Name",               "Genetic Algorithm optimizer" );
     _numberOfIterations = ptree.get<int>        ( "NumberOfIterations", 500                           );
 
@@ -189,10 +189,10 @@ void Fittino::GeneticAlgorithmOptimizer::SortPopulation() {
 
 void Fittino::GeneticAlgorithmOptimizer::PrintSteeringParameters() const {
 
-    PrintItem( "NumberOfIterations", _numberOfIterations );
-    PrintItem( "AbortCriterium",     _abortCriterium     );
-    PrintItem( "MutationRate",       _mutationRate       );
-    PrintItem( "SizeOfPopulation",   _sizeOfPopulation   );
+    OptimizerBase::PrintSteeringParameters();
+
+    PrintItem( "MutationRate",     _mutationRate     );
+    PrintItem( "SizeOfPopulation", _sizeOfPopulation );
 
 }
 

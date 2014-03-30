@@ -60,7 +60,7 @@ Fittino::SimpleOptimizer::~SimpleOptimizer() {
 
 void Fittino::SimpleOptimizer::PrintSteeringParameters() const {
 
-    PrintItem( "NumberOfIterations", _numberOfIterations );
+    OptimizerBase::PrintSteeringParameters();
 
 }
 

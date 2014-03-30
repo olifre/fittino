@@ -24,7 +24,7 @@
 
 <InputFile>
 
-  <VerbosityLevel>INFO</VerbosityLevel>
+  <VerbosityLevel>ALWAYS</VerbosityLevel>
 
   <Model>
 
@@ -59,11 +59,11 @@
   <Tool>
 
     <GeneticAlgorithmOptimizer>
-      <AbortCriterium>0.000001</AbortCriterium>
-      <MutationRate>0.5</MutationRate>
       <Name>Genetic Algorithm optimizer example</Name>
-      <NumberOfIterations>500</NumberOfIterations>
       <RandomSeed>2</RandomSeed>
+      <NumberOfIterations>500</NumberOfIterations>
+      <AbortCriterion>0.000001</AbortCriterion>
+      <MutationRate>0.5</MutationRate>
       <SizeOfPopulation>100</SizeOfPopulation>
     </GeneticAlgorithmOptimizer>
 

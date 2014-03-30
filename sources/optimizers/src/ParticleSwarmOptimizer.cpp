@@ -53,8 +53,8 @@ Fittino::ParticleSwarmOptimizer::~ParticleSwarmOptimizer() {
 
 void Fittino::ParticleSwarmOptimizer::PrintSteeringParameters() const {
 
-    PrintItem( "NumberOfIterations", _numberOfIterations );
-    PrintItem( "AbortCriterium",     _abortCriterium     );
+    OptimizerBase::PrintSteeringParameters();
+
     PrintItem( "NumberOfParticles",  _numberOfParticles  );
     PrintItem( "C1",                 _c1                 );
     PrintItem( "C2",                 _c2                 );

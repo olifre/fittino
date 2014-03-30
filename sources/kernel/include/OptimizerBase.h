@@ -58,14 +58,21 @@ namespace Fittino {
 
     protected:
       /*!
-       *  Stores the configured criterium of a measure of the goodness of fit is compared to\n
-       *  (usually the chi2 of the model).
+       *  Optimizer aborts if the measure of the goodness of fit (usually the chi2 of the model)\n
+       *  is lower than this value. If the value is 0. the optimizer performs the maximal number\n
+       *  of iterations.
        */
-      double       _abortCriterium;
+      double       _abortCriterion;
       /*!
        *  Stores the configured maximal number of iteration steps.
        */
       unsigned int _numberOfIterations;
+
+    protected:
+      /*!
+       *  Prints the steering parameters common to all optimizers.
+       */
+      virtual void PrintSteeringParameters() const = 0;
 
       /*! \cond UML */
     private:

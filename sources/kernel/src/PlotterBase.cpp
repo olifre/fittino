@@ -27,12 +27,12 @@
 #include "PlotterBase.h"
 
 Fittino::PlotterBase::PlotterBase( ModelBase* model, const boost::property_tree::ptree& ptree )
-    : _dataFileName( ptree.get<std::string>( "DataFileName", "Fittino.out.root" ) ),
+    : AnalysisTool( model, ptree ),
+      _dataFileName( ptree.get<std::string>( "DataFileName", "Fittino.out.root" ) ),
       _canvas( 0 ),
       _dataFile( TFile::Open( _dataFileName.c_str(), "READ" ) ),
-      _tree( ( TTree* )_dataFile->Get( "Tree" ) ),
       //_tree( (TTree*)_dataFile->Get( "markovChain" ) ),
-      AnalysisTool( model, ptree ) {
+      _tree( ( TTree* )_dataFile->Get( "Tree" ) ) {
 
     _name = "basic plotter";
 

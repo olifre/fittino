@@ -41,8 +41,8 @@ Fittino::SimulatedAnnealingOptimizer::~SimulatedAnnealingOptimizer() {
 
 void Fittino::SimulatedAnnealingOptimizer::PrintSteeringParameters() const {
 
-    PrintItem( "NumberOfIterations",         _numberOfIterations         );
-    PrintItem( "AbortCriterium",             _abortCriterium             );
+    OptimizerBase::PrintSteeringParameters();
+
     PrintItem( "InitialTemperature",         _initialTemperature         );
     PrintItem( "TemperatureReductionFactor", _temperatureReductionFactor );
 
@@ -78,7 +78,7 @@ void Fittino::SimulatedAnnealingOptimizer::UpdateModel() {
 
         // Within every trial, each parameter is varied one after another and the number of accepted
         // parameter variations is counted. A parameter variation is accepted if the new model has a
-        // better chi2 value or if it fulfills the Metropolis criterium. This is repeated 20 times.
+        // better chi2 value or if it fulfills the Metropolis criterion. This is repeated 20 times.
         // After that the step width for the next iteration of variations is updated for each
         // parameter individually.
 
@@ -109,7 +109,7 @@ void Fittino::SimulatedAnnealingOptimizer::UpdateModel() {
 
                 if ( newChi2 > oldChi2 ) {
 
-                    // This is the Metropolis criterium.
+                    // This is the Metropolis criterion.
 
                     double acceptance = exp( -( newChi2 - oldChi2 ) / _temperature );
                     double randomThreshold = _randomGenerator.Uniform( 0, 1 );
