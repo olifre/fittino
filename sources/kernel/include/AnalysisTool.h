@@ -103,6 +103,8 @@ namespace Fittino {
       /*!
        *  Saves some of the meta data for a run: measured values of observables and the
        *  uncertainties.
+       *  \todo Move into ExecuteAnalysisTool() (and make private) once observable smearing is
+       *  fixed.
        */
       void                          FillMetaDataTree();
       /*!
@@ -193,7 +195,8 @@ namespace Fittino {
 
       /*! \endcond UML */
 
-      // Sorted out of ususal order because initialization depends on items declared earlier.
+    // Sorted out of ususal order because initialization depends on items declared earlier.
+
     protected:
       /*!
        *  Random number generator.
