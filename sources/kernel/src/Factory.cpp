@@ -240,7 +240,7 @@ Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& 
 
 #if defined FEYNHIGGS
 
-        return new FeynHiggsCalculatorBase( model, ptree, "FeynHiggs" );
+        return new FeynHiggsCalculator( model, ptree, "FeynHiggs" );
 
 #else
 
@@ -253,7 +253,7 @@ Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& 
 
 #if defined FEYNHIGGS
 
-        return new FeynHiggsCalculatorBase( model, ptree, "SLHA" );
+        return new FeynHiggsCalculator( model, ptree, "SLHA" );
 
 #else
 

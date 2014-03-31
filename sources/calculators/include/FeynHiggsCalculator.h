@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        FeynHiggsCalculatorBase.h                                        *
+* File        FeynHiggsCalculator.h                                        *
 *                                                                              *
 * Description Wrapper class for FeynHiggs                                      *
 *                                                                              *
@@ -17,8 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_FEYNHIGGSCALCULATORBASE_H
-#define FITTINO_FEYNHIGGSCALCULATORBASE_H
+#ifndef FITTINO_FEYNHIGGSCALCULATOR_H
+#define FITTINO_FEYNHIGGSCALCULATOR_H
 
 #include "FeynHiggsTypes.h"
 #include "CalculatorBase.h"
@@ -39,17 +39,17 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Wrapper class for FeynHiggs.
    */
-  class FeynHiggsCalculatorBase : public CalculatorBase {
+  class FeynHiggsCalculator : public CalculatorBase {
 
     public:
       /*!
        *  Standard constructor.
        */
-      FeynHiggsCalculatorBase( const PhysicsModel* model, const boost::property_tree::ptree& ptree, std::string inputMethod );
+      FeynHiggsCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree, std::string inputMethod );
       /*!
        *  Standard destructor.
        */
-      virtual ~FeynHiggsCalculatorBase();
+      virtual ~FeynHiggsCalculator();
 
       void CalculatePredictions();
 

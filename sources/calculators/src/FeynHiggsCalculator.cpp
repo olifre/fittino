@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        FeynHiggsCalculatorBase.cpp                                      *
+* File        FeynHiggsCalculator.cpp                                      *
 *                                                                              *
 * Description Wrapper class for FeynHiggs                                      *
 *                                                                              *
@@ -42,7 +42,7 @@
 
 #include "SLHADataStorageBase.h"
 
-Fittino::FeynHiggsCalculatorBase::FeynHiggsCalculatorBase( const PhysicsModel* model, const boost::property_tree::ptree& ptree, std::string inputMethod )
+Fittino::FeynHiggsCalculator::FeynHiggsCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree, std::string inputMethod )
 : CalculatorBase( model ),
 _gammas     ( new FHRealType   [ngammas     ] ),
 _gammasms   ( new FHRealType   [ngammasms   ] ),
@@ -133,7 +133,7 @@ _slhadatastorage( NULL ){
     
 }
 
-void Fittino::FeynHiggsCalculatorBase::AddChannels_HpNeuCha() {
+void Fittino::FeynHiggsCalculator::AddChannels_HpNeuCha() {
 
 
     for (unsigned int iNeu = 1; iNeu <= 4; iNeu++ ) {
@@ -150,7 +150,7 @@ void Fittino::FeynHiggsCalculatorBase::AddChannels_HpNeuCha() {
 
 }
 
-void Fittino::FeynHiggsCalculatorBase::AddChannels_HpHV() {
+void Fittino::FeynHiggsCalculator::AddChannels_HpHV() {
 
     for (unsigned int iHiggs = 1; iHiggs<=3; iHiggs++ ) {
 
@@ -160,7 +160,7 @@ void Fittino::FeynHiggsCalculatorBase::AddChannels_HpHV() {
 
 }
 
-void Fittino::FeynHiggsCalculatorBase::AddChannels_H0FF( unsigned int iHiggs, std::string higgsName, unsigned int type, std::string* names ) {
+void Fittino::FeynHiggsCalculator::AddChannels_H0FF( unsigned int iHiggs, std::string higgsName, unsigned int type, std::string* names ) {
 
     for ( unsigned int iGen1 = 1; iGen1 <= 3; iGen1++ ) {
 
@@ -178,7 +178,7 @@ void Fittino::FeynHiggsCalculatorBase::AddChannels_H0FF( unsigned int iHiggs, st
 
 }
 
-void Fittino::FeynHiggsCalculatorBase::AddChannels_H0ChaCha( unsigned int iHiggs, std::string higgsName ) {
+void Fittino::FeynHiggsCalculator::AddChannels_H0ChaCha( unsigned int iHiggs, std::string higgsName ) {
 
     AddChannel( higgsName, "~chip1_~chip1", H0ChaCha( iHiggs, 1, 1 ), true, false );
     AddChannel( higgsName, "~chip1_~chip2", H0ChaCha( iHiggs, 1, 2 ), true, false );
@@ -187,7 +187,7 @@ void Fittino::FeynHiggsCalculatorBase::AddChannels_H0ChaCha( unsigned int iHiggs
 
 }
 
-void Fittino::FeynHiggsCalculatorBase::AddChannels_HpFF( unsigned int type, std::string* names1, std::string* names2 ) {
+void Fittino::FeynHiggsCalculator::AddChannels_HpFF( unsigned int type, std::string* names1, std::string* names2 ) {
 
     for ( unsigned int iGen1 = 1; iGen1 <= 3; iGen1++ ) {
 
@@ -201,7 +201,7 @@ void Fittino::FeynHiggsCalculatorBase::AddChannels_HpFF( unsigned int type, std:
 
 }
 
-void Fittino::FeynHiggsCalculatorBase::AddChannels_H0NeuNeu( unsigned int iHiggs, std::string higgsName ) {
+void Fittino::FeynHiggsCalculator::AddChannels_H0NeuNeu( unsigned int iHiggs, std::string higgsName ) {
 
     for ( unsigned int iNeu1 = 1; iNeu1 <= 4; iNeu1++ ) {
 
@@ -215,7 +215,7 @@ void Fittino::FeynHiggsCalculatorBase::AddChannels_H0NeuNeu( unsigned int iHiggs
 
 }
 
-void Fittino::FeynHiggsCalculatorBase::AddChannels_H0HV( unsigned int iHiggs, std::string higgsName ) {
+void Fittino::FeynHiggsCalculator::AddChannels_H0HV( unsigned int iHiggs, std::string higgsName ) {
 
     AddChannel( higgsName, "h0_Z", H0HV( iHiggs, 1 ), false, false );
     AddChannel( higgsName, "H0_Z", H0HV( iHiggs, 2 ), false, false );
@@ -223,7 +223,7 @@ void Fittino::FeynHiggsCalculatorBase::AddChannels_H0HV( unsigned int iHiggs, st
 
 }
 
-void Fittino::FeynHiggsCalculatorBase::AddChannels_H0HH( unsigned int iHiggs, std::string higgsName ) {
+void Fittino::FeynHiggsCalculator::AddChannels_H0HH( unsigned int iHiggs, std::string higgsName ) {
 
     for ( unsigned int iHiggs1 = 1; iHiggs1 <= 4; iHiggs1++ ) {
 
@@ -237,7 +237,7 @@ void Fittino::FeynHiggsCalculatorBase::AddChannels_H0HH( unsigned int iHiggs, st
 
 }
 
-void Fittino::FeynHiggsCalculatorBase::AddChannels_H0VV( unsigned int iHiggs, std::string higgsName ) {
+void Fittino::FeynHiggsCalculator::AddChannels_H0VV( unsigned int iHiggs, std::string higgsName ) {
 
     AddChannel( higgsName, "gamma_gamma", H0VV( iHiggs, 1 ), false, true );
     AddChannel( higgsName, "Z_gamma"    , H0VV( iHiggs, 2 ), false, true );
@@ -249,7 +249,7 @@ void Fittino::FeynHiggsCalculatorBase::AddChannels_H0VV( unsigned int iHiggs, st
 
 
 
-void Fittino::FeynHiggsCalculatorBase::AddChannels_H0SfSf( int iHiggs, std::string higgsName, unsigned int type, std::string* names ) {
+void Fittino::FeynHiggsCalculator::AddChannels_H0SfSf( int iHiggs, std::string higgsName, unsigned int type, std::string* names ) {
     
     for ( unsigned int iSfermion1 =1; iSfermion1 <=2; iSfermion1++ ) {
         
@@ -272,7 +272,7 @@ void Fittino::FeynHiggsCalculatorBase::AddChannels_H0SfSf( int iHiggs, std::stri
 
 }
 
-void Fittino::FeynHiggsCalculatorBase::AddChannels_HpSfSf( unsigned int type, std::string* names1, std::string* names2 ) {
+void Fittino::FeynHiggsCalculator::AddChannels_HpSfSf( unsigned int type, std::string* names1, std::string* names2 ) {
 
     for ( unsigned int iSfermion1 = 1; iSfermion1 <= 2; iSfermion1++ ) {
 
@@ -299,7 +299,7 @@ void Fittino::FeynHiggsCalculatorBase::AddChannels_HpSfSf( unsigned int type, st
 
 }
 
-void Fittino::FeynHiggsCalculatorBase::AddChannel( std::string higgsName, std::string channelName, int channelNumber, bool fermionic, bool SM ) {
+void Fittino::FeynHiggsCalculator::AddChannel( std::string higgsName, std::string channelName, int channelNumber, bool fermionic, bool SM ) {
 
     FeynHiggsChannel* calc;
 
@@ -324,11 +324,11 @@ void Fittino::FeynHiggsCalculatorBase::AddChannel( std::string higgsName, std::s
 
 }
 
-Fittino::FeynHiggsCalculatorBase::~FeynHiggsCalculatorBase() {
+Fittino::FeynHiggsCalculator::~FeynHiggsCalculator() {
 
 }
 
-void Fittino::FeynHiggsCalculatorBase::CalculatePredictions() {
+void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     std::string outputFile( "FeynHiggs.out" );
 
