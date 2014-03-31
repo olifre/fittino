@@ -59,7 +59,10 @@ namespace Fittino {
 
       /*! \cond UML */
 
-      double _mass_h;
+      double _mass_h0;
+      double _mass_H0;
+      double _mass_A0;
+      double _mass_Hp;
 
   private:
       void AddChannel( std::string higgsName, std::string channelName, int channelNumber, bool fermionic, bool SM );
@@ -101,7 +104,10 @@ namespace Fittino {
 
       Collection<SimplePrediction*> _input;
 
-      SLHADataStorageBase* _slhadatastorage;
+      SLHADataStorageBase* _slhadatastorageSPheno;
+      SLHADataStorageBase* _slhadatastorageFeynHiggs;
+
+      bool _smallObsSet;
 
 
       /*! \endcond UML */

@@ -55,12 +55,18 @@ _down   { "", "d", "s", "b"           },
 _neu    { "", "~chi01", "~chi02", "~chi03", "~chi04" },
 _cha    { "", "~chip1", "~chip2" },
 _higgs  { "", "h0", "H0", "A0", "Hp" },
+_smallObsSet( true ),
 _inputMethod( inputMethod ),
-_slhadatastorage( NULL ){
+_slhadatastorageFeynHiggs( NULL ),
+_slhadatastorageSPheno( NULL ){
 
     _name = "FeynHiggsCalculator";
     
-    AddQuantity( new SimplePrediction( "Mass_h",                     "", _mass_h                     ) );
+    AddQuantity( new SimplePrediction( "Mass_h0",                    "", _mass_h0                    ) );
+    AddQuantity( new SimplePrediction( "Mass_H0",                    "", _mass_H0                    ) );
+    AddQuantity( new SimplePrediction( "Mass_A0",                    "", _mass_A0                    ) );
+    AddQuantity( new SimplePrediction( "Mass_Hp",                    "", _mass_Hp                    ) );
+
     AddQuantity( new SimplePrediction( "NormSM_sigma_ggh"          , "", _normSM_sigma_ggh           ) );
     AddQuantity( new SimplePrediction( "NormSM_sigma_ggh_2"        , "", _normSM_sigma_ggh_2         ) );
     AddQuantity( new SimplePrediction( "NormSM_sigma_bbh"          , "", _normSM_sigma_bbh           ) );
@@ -69,14 +75,17 @@ _slhadatastorage( NULL ){
     AddQuantity( new SimplePrediction( "NormSM_sigma_Wh"           , "", _normSM_sigma_Wh            ) );
     AddQuantity( new SimplePrediction( "NormSM_sigma_Zh"           , "", _normSM_sigma_Zh            ) );
 
-    //AddChannels_HpHV    ();
-    //AddChannels_HpNeuCha();
+    AddChannels_HpHV    ();
+    AddChannels_HpFF    ( 1, _nu, _lepton );
+    AddChannels_HpFF    ( 2, _up, _down   );
 
-    // AddChannels_HpFF    ( 1, _nu, _lepton );
-    //AddChannels_HpFF    ( 2, _up, _down   );
-    //AddChannels_HpSfSf  ( 1, _nu, _lepton );
-    //AddChannels_HpSfSf  ( 2, _up, _down   );
+    if (! _smallObsSet ) {
 
+      AddChannels_HpNeuCha();
+      AddChannels_HpSfSf  ( 1, _nu, _lepton );
+      AddChannels_HpSfSf  ( 2, _up, _down   );
+
+    }
 
     for ( unsigned int iHiggs = 1; iHiggs <= 3; iHiggs++ ) {
 
@@ -85,22 +94,27 @@ _slhadatastorage( NULL ){
         AddChannels_H0VV    ( iHiggs, higgsName );
         AddChannels_H0HV    ( iHiggs, higgsName );
         AddChannels_H0HH    ( iHiggs, higgsName );
-        //AddChannels_H0NeuNeu( iHiggs, higgsName );
-        //AddChannels_H0ChaCha( iHiggs, higgsName );
 
         AddChannels_H0FF    ( iHiggs, higgsName, 1, _nu     );
         AddChannels_H0FF    ( iHiggs, higgsName, 2, _lepton );
         AddChannels_H0FF    ( iHiggs, higgsName, 3, _up     );
         AddChannels_H0FF    ( iHiggs, higgsName, 4, _down   );
-        //AddChannels_H0SfSf  ( iHiggs, higgsName, 1, _nu     );
-        //AddChannels_H0SfSf  ( iHiggs, higgsName, 2, _lepton );
-        //AddChannels_H0SfSf  ( iHiggs, higgsName, 3, _up     );
-        //AddChannels_H0SfSf  ( iHiggs, higgsName, 4, _down   );
+
+        AddChannels_H0NeuNeu( iHiggs, higgsName );
+
+        if ( !_smallObsSet ) {
+
+            AddChannels_H0ChaCha( iHiggs, higgsName );
+            AddChannels_H0SfSf  ( iHiggs, higgsName, 1, _nu     );
+            AddChannels_H0SfSf  ( iHiggs, higgsName, 2, _lepton );
+            AddChannels_H0SfSf  ( iHiggs, higgsName, 3, _up     );
+            AddChannels_H0SfSf  ( iHiggs, higgsName, 4, _down   );
+
+        }
 
     }
 
     if ( _inputMethod == "FeynHiggs" ) {
-
 
         _fileName = "FeynHiggs.in";
 
@@ -126,10 +140,10 @@ _slhadatastorage( NULL ){
 
         Factory factory;
 
-        _slhadatastorage  = factory.CreateSLHAeaSLHADataStorage();
+        _slhadatastorageFeynHiggs  = factory.CreateSLHAeaSLHADataStorage();
+        _slhadatastorageSPheno     = factory.CreateSLHAeaSLHADataStorage();
 
     }
-
     
 }
 
@@ -166,7 +180,7 @@ void Fittino::FeynHiggsCalculator::AddChannels_H0FF( unsigned int iHiggs, std::s
 
         for ( unsigned int iGen2 = 1; iGen2 <= 3; iGen2++ ) {
 
-            if ( iGen1 != iGen2 ) continue;
+          if ( _smallObsSet && ( iGen1 != iGen2 ) ) continue;
 
             std::string channel = names[iGen1] + "_" + names[iGen2];
 
@@ -207,7 +221,9 @@ void Fittino::FeynHiggsCalculator::AddChannels_H0NeuNeu( unsigned int iHiggs, st
 
         for ( unsigned int iNeu2 = 1; iNeu2 <= 4; iNeu2++ ) {
 
-            AddChannel( higgsName, _neu[iNeu1] + "_" + _neu[iNeu2], H0NeuNeu( iHiggs, iNeu1, iNeu2 ), true, false );
+          if ( _smallObsSet && ( iNeu1!=1 || iNeu2 !=1 ) ) continue;
+
+          AddChannel( higgsName, _neu[iNeu1] + "_" + _neu[iNeu2], H0NeuNeu( iHiggs, iNeu1, iNeu2 ), true, false );
 
         }
 
@@ -229,7 +245,7 @@ void Fittino::FeynHiggsCalculator::AddChannels_H0HH( unsigned int iHiggs, std::s
 
         for ( unsigned int iHiggs2 = 1; iHiggs2 <= 4; iHiggs2++ ) {
 
-            AddChannel( _higgs[iHiggs], _higgs[iHiggs1] + "_" + _higgs[iHiggs2] ,  H0HH( iHiggs, iHiggs1, iHiggs2 ), false, false );
+            AddChannel( _higgs[iHiggs], _higgs[iHiggs1] + "_" + _higgs[iHiggs2] ,  H0HH( iHiggs, iHiggs1, iHiggs2 ), false, true );
 
         }
 
@@ -354,9 +370,6 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     if ( _inputMethod == "FeynHiggs" ) {
 
-        _fileName = "FeynHiggs.in";
-
-        
         if ( boost::filesystem::exists( _fileName ) ) {
 
             boost::filesystem::rename( _fileName, _fileName + ".last" );
@@ -373,7 +386,7 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
         file.close();
 
-               FHReadRecord( &_error, record, slhadata, _fileName.c_str() );
+        FHReadRecord( &_error, record, slhadata, _fileName.c_str() );
 
         if ( _error != 2 ) {
 
@@ -394,7 +407,7 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     }
     else if ( _inputMethod == "SLHA" ) {
 
-        _slhadatastorage->ReadFile("SPheno.spc");
+
 
         SLHAClear( slhadata );
         SLHARead( &_error, slhadata, _fileName.c_str(), 1 );
@@ -420,9 +433,12 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     }
 
-    _mass_h = MHiggs[0];
+    _mass_h0 = MHiggs[0];
+    _mass_H0 = MHiggs[1];
+    _mass_A0 = MHiggs[2];
+    _mass_Hp = MHiggs[3];
 
-    if ( _mass_h < 1. ) {
+    if ( _mass_h0 < 1. ) {
 
       throw CalculatorException( _name, "Mass h less than 1 GeV.");
 
@@ -467,19 +483,29 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     if ( _inputMethod == "SLHA" ) {
 
-        // int key = 16;
-        // int key = 255;
-        // FHOutputSLHA( &_error, _slhadata, key );
-        // SLHAWrite(&_error, _slhadata, "FH.slha");
+        int key = 255;
+        FHOutputSLHA( &_error, slhadata, key );
+        SLHAWrite( &_error, slhadata, "FeynHiggs.slha");
 
-        _slhadatastorage->SetEntry(666, "MASS", 1, "35", "", "", "");
-        _slhadatastorage->SetEntry(777, "alpha", 0, "(any)", "# alpha", "", "");
-        _slhadatastorage->WriteFile("NewSPheno.spc");
+        _slhadatastorageSPheno   ->ReadFile("SPheno.spc");        
+        _slhadatastorageFeynHiggs->ReadFile("FeynHiggs.slha");
+
+        _slhadatastorageSPheno->SetEntry( _mass_h0, "MASS", 1, "25", "", "", "" );
+        _slhadatastorageSPheno->SetEntry( _mass_H0, "MASS", 1, "35", "", "", "" );
+        _slhadatastorageSPheno->SetEntry( _mass_A0, "MASS", 1, "36", "", "", "" );
+        _slhadatastorageSPheno->SetEntry( _mass_Hp, "MASS", 1, "37", "", "", "" );
+        
+        //_slhadatastorage->SetEntry(777, "alpha", 0, "(any)", "# alpha", "", "");
+        _slhadatastorageSPheno->ReplaceBlock( "alpha", _slhadatastorageFeynHiggs->GetBlock( "ALPHA" ) );
+
+        _slhadatastorageSPheno->ReplaceBlock( "25", _slhadatastorageFeynHiggs->GetBlock( "25" ) );
+        _slhadatastorageSPheno->ReplaceBlock( "35", _slhadatastorageFeynHiggs->GetBlock( "35" ) );
+        _slhadatastorageSPheno->ReplaceBlock( "36", _slhadatastorageFeynHiggs->GetBlock( "36" ) );
+        _slhadatastorageSPheno->ReplaceBlock( "37", _slhadatastorageFeynHiggs->GetBlock( "37" ) );
+
+        _slhadatastorageSPheno->WriteFile("SPheno_FeynHiggs.slha");
 
     }
-
-
-    //WriteOutput();
 
     redirector.Stop();
 
