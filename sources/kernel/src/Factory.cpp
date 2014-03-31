@@ -25,10 +25,9 @@
 #include "CorrelatedSampler.h"
 #include "CovariantSampler.h"
 #include "Factory.h"
-#include "FeynHiggsCalculator.h"
 
 #ifdef FEYNHIGGS
-#include "FeynHiggsSLHACalculator.h"
+#include "FeynHiggsCalculator.h"
 #endif
 
 #include "FormulaCalculator.h"
@@ -237,11 +236,11 @@ Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& 
         return new AstroCalculator( model, ptree );
 
     }
-    else if ( type == "FeynHiggsCalculator" )  {
+    else if ( type == "FeynHiggsNativeCalculator" )  {
 
 #if defined FEYNHIGGS
 
-        return new FeynHiggsCalculator( model, ptree );
+        return new FeynHiggsCalculatorBase( model, ptree, "FeynHiggs" );
 
 #else
 
@@ -254,7 +253,7 @@ Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& 
 
 #if defined FEYNHIGGS
 
-        return new FeynHiggsSLHACalculator( model, ptree );
+        return new FeynHiggsCalculatorBase( model, ptree, "SLHA" );
 
 #else
 
