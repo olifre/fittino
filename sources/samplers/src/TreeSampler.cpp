@@ -135,10 +135,10 @@ void Fittino::TreeSampler::Execute() {
 
         _iterationCounter++;
         GetStatusParameterVector()->at( 1 )->SetValue( _iterationCounter );
-
-        AnalysisTool::PrintStatus();
-
+        
         this->UpdateModel();
+        
+        AnalysisTool::PrintStatus();
         
         if( _isToyRun ) {
             _currentChi2 = GetStatusParameterVector()->at(0)->GetValue();
