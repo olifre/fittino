@@ -70,8 +70,8 @@ void Fittino::FeynHiggsBosonicChannel::CalculatePredictions() {
     if ( _doSM ) {
 
         coup = CouplingSM( _channel );
-        _model_g2 = std::norm( coup );
-        _model_gPhi = std::arg( coup );
+        _sm_g2 = std::norm( coup );
+        _sm_gPhi = std::arg( coup );
 
         _normSM_g2 = _model_g2 / _sm_g2; 
         _normSM_gPhi = _model_gPhi / _sm_gPhi;
