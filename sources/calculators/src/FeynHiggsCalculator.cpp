@@ -264,7 +264,6 @@ void Fittino::FeynHiggsCalculator::AddChannels_H0VV( unsigned int iHiggs, std::s
 }
 
 
-
 void Fittino::FeynHiggsCalculator::AddChannels_H0SfSf( int iHiggs, std::string higgsName, unsigned int type, std::string* names ) {
     
     for ( unsigned int iSfermion1 =1; iSfermion1 <=2; iSfermion1++ ) {
@@ -358,7 +357,6 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     redirector.Start();
 
     std::string flags = "400243110";
-
     FHSetFlagsString( &_error, flags.c_str() );
 
     if ( _error != 0 ) {
@@ -367,6 +365,8 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     RealType    record     [nrecord];
     COMPLEX     slhadata   [nslhadata];
+
+    // set input
 
     if ( _inputMethod == "FeynHiggs" ) {
 
@@ -406,8 +406,6 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     }
     else if ( _inputMethod == "SLHA" ) {
-
-
 
         SLHAClear( slhadata );
         SLHARead( &_error, slhadata, _fileName.c_str(), 1 );
@@ -453,10 +451,7 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     }
 
     // calulate couplings and gammas
-
-    //ComplexType couplings[ncouplings], couplingsms[ncouplingsms];
-        int    fast  = 1;
-
+    int    fast  = 1;
     FHCouplings( &_error, _couplings, _couplingsms, _gammas, _gammasms, fast );
     
     if ( _error != 0 ) {
@@ -487,9 +482,21 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
         FHOutputSLHA( &_error, slhadata, key );
         SLHAWrite( &_error, slhadata, "FeynHiggs.slha");
 
-        _slhadatastorageSPheno   ->ReadFile("SPheno.spc");        
-        _slhadatastorageFeynHiggs->ReadFile("FeynHiggs.slha");
+    }
 
+    redirector.Stop();
+
+    for ( unsigned int i = 0; i< _channels.size(); i++ ) {
+
+        _channels.at( i )->CalculatePredictions();
+
+    }
+
+    if ( _inputMethod == "SLHA" ) {
+
+        _slhadatastorageSPheno   ->ReadFile("SPheno.spc");
+        _slhadatastorageFeynHiggs->ReadFile("FeynHiggs.slha");
+    
         _slhadatastorageSPheno->SetEntry( _mass_h0, "MASS", 1, "25", "", "", "" );
         _slhadatastorageSPheno->SetEntry( _mass_H0, "MASS", 1, "35", "", "", "" );
         _slhadatastorageSPheno->SetEntry( _mass_A0, "MASS", 1, "36", "", "", "" );
@@ -507,12 +514,6 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     }
 
-    redirector.Stop();
-
-    for ( unsigned int i = 0; i< _channels.size(); i++ ) {
-
-        _channels.at( i )->CalculatePredictions();
-
-    }
-
 }
+
+
