@@ -114,6 +114,18 @@ namespace Fittino {
       double _edmn;
       double _edmHg;
 
+      // FH get para
+
+      double _Abs_Delta_b;
+      double _Arg_Delta_b;
+      double _SAtree;
+
+      // FH HiggsCorr
+
+      double _Abs_sinAlpha;
+      double _Arg_sinAlpha;
+      double _sinAlpha_slha;
+      
       std::string _higgs [5];
       std::string _nu    [4];
       std::string _lepton[4];

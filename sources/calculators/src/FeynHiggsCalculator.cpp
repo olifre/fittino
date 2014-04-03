@@ -82,6 +82,18 @@ _slhadatastorageSPheno( NULL ){
     AddQuantity( new SimplePrediction( "EDM_n", "", _edmn ) );
     AddQuantity( new SimplePrediction( "EDM_Hg", "", _edmHg ) );
 
+    AddQuantity( new SimplePrediction( "Abs_Delta_b", "", _Abs_Delta_b ) );
+    AddQuantity( new SimplePrediction( "Arg_Delta_b", "", _Arg_Delta_b ) );
+    AddQuantity( new SimplePrediction( "sinAlpha_tree", "", _SAtree ) );
+    AddQuantity( new SimplePrediction( "Abs_sinAlpha", "", _Abs_sinAlpha ) );
+    AddQuantity( new SimplePrediction( "Arg_sinAlpha", "", _Arg_sinAlpha ) );
+
+    if ( _inputMethod == "SLHA" ) {
+
+        AddQuantity( new SimplePrediction( "sinAlpha_slha", "", _sinAlpha_slha ) );
+
+    }
+
     AddQuantity( new SimplePrediction( "Mass_h0",                    "", _mass_h0                    ) );
     AddQuantity( new SimplePrediction( "Mass_H0",                    "", _mass_H0                    ) );
     AddQuantity( new SimplePrediction( "Mass_A0",                    "", _mass_A0                    ) );
@@ -459,7 +471,8 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     _mass_A0 = MHiggs[2];
     _mass_Hp = MHiggs[3];
 
-    
+    _Abs_sinAlpha = abs( SAeff );
+    _Arg_sinAlpha = arg( SAeff );
 
     if ( _mass_h0 < 1. ) {
 
@@ -553,6 +566,34 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     _edmHg    = edmHg;
     _ccb      = ccb;
 
+    int nmfv;
+    RealType MSf[3][5][2], MASf[5][6], MCha[2], MNeu[4];
+    ComplexType USf[3][5][2][2], UASf[5][6][6];
+    ComplexType UCha[2][2], VCha[2][2], ZNeu[4][4];
+    ComplexType DeltaMB;
+    RealType MGl;
+    RealType MHtree[4], SAtree;
+
+    FHGetPara( &_error,
+              &nmfv,
+              MSf,
+              USf,
+              MASf,
+              UASf,
+              MCha,
+              UCha,
+              VCha,
+              MNeu,
+              ZNeu,
+              &DeltaMB,
+              &MGl,
+              MHtree,
+              &SAtree) ;
+
+    _Abs_Delta_b = abs( DeltaMB );
+    _Arg_Delta_b = arg( DeltaMB );
+    _SAtree = SAtree;
+
     if ( _inputMethod == "SLHA" ) {
 
         int key = 255;
@@ -579,7 +620,8 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
         _slhadatastorageSPheno->SetEntry( _mass_A0, "MASS", 1, "36", "", "", "" );
         _slhadatastorageSPheno->SetEntry( _mass_Hp, "MASS", 1, "37", "", "", "" );
         
-        //_slhadatastorage->SetEntry(777, "alpha", 0, "(any)", "# alpha", "", "");
+        _sinAlpha_slha = _slhadatastorageFeynHiggs->GetEntry("alpha", 0, "(any)", "# alpha", "", "");
+
         _slhadatastorageSPheno->ReplaceBlock( "alpha", _slhadatastorageFeynHiggs->GetBlock( "ALPHA" ) );
 
         _slhadatastorageSPheno->ReplaceBlock( "25", _slhadatastorageFeynHiggs->GetBlock( "25" ) );
