@@ -134,6 +134,9 @@ _slhadatastorageSPheno( NULL ){
 
     }
 
+    AddChannel( "t", "W_b", tBF(1), true, true );
+    AddChannel( "t", "Hp_b", tBF(2), true, false );
+
     if ( _inputMethod == "FeynHiggs" ) {
 
         _fileName = "FeynHiggs.in";
@@ -550,7 +553,6 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     _edmHg    = edmHg;
     _ccb      = ccb;
 
-
     if ( _inputMethod == "SLHA" ) {
 
         int key = 255;
@@ -588,8 +590,6 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
         _slhadatastorageSPheno->WriteFile("SPheno_FeynHiggs.slha");
 
     }
-
-
 
 }
 
