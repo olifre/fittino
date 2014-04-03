@@ -94,6 +94,26 @@ namespace Fittino {
       double _normSM_sigma_Wh;
       double _normSM_sigma_Zh;
 
+      // FH flavor
+      double _bsgammaMSSM;
+      double _bsgammaSM;
+      double _deltaMsMSSM;
+      double _deltaMsSM;
+      double _bsmumuMSSM;
+      double _bsmumuSM;
+
+      // FH constraints
+      double _ccb;
+      double _gm2;
+      double _Deltarho;
+      double _MWMSSM;
+      double _MWSM;
+      double _SW2MSSM;
+      double _SW2SM;
+      double _edmeTh;
+      double _edmn;
+      double _edmHg;
+
       std::string _higgs [5];
       std::string _nu    [4];
       std::string _lepton[4];

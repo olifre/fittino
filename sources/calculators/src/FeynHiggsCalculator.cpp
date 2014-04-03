@@ -61,7 +61,27 @@ _slhadatastorageFeynHiggs( NULL ),
 _slhadatastorageSPheno( NULL ){
 
     _name = "FeynHiggsCalculator";
-    
+
+    AddQuantity( new SimplePrediction( "BR_b_to_s_gamma", "", _bsgammaMSSM ) );
+    AddQuantity( new SimplePrediction( "SM_BR_b_to_s_gamma", "", _bsgammaSM ) );
+    AddQuantity( new SimplePrediction( "DeltaM_Bs", "", _deltaMsMSSM ) );
+    AddQuantity( new SimplePrediction( "SM_DeltaM_Bs", "", _deltaMsSM ) );
+    AddQuantity( new SimplePrediction( "BR_Bs_to_mu_mubar", "", _bsmumuMSSM ) );
+    AddQuantity( new SimplePrediction( "SM_BR_Bs_to_mu_mubar", "", _bsmumuSM ) );
+
+    AddQuantity( new SimplePrediction( "ColorBreakingMinimum", "", _ccb ) );
+    AddQuantity( new SimplePrediction( "gmin2", "", _gm2 ) );
+    AddQuantity( new SimplePrediction( "DeltaRho", "", _Deltarho ) );
+    AddQuantity( new SimplePrediction( "Mass_W", "", _MWMSSM ) );
+    AddQuantity( new SimplePrediction( "SM_Mass_W", "", _MWSM ) );
+
+    AddQuantity( new SimplePrediction( "sin2thetaW", "", _SW2MSSM ) );
+    AddQuantity( new SimplePrediction( "SM_sin2thetaW", "", _SW2SM ) );
+
+    AddQuantity( new SimplePrediction( "EDM_e_Th", "", _edmeTh ) );
+    AddQuantity( new SimplePrediction( "EDM_n", "", _edmn ) );
+    AddQuantity( new SimplePrediction( "EDM_Hg", "", _edmHg ) );
+
     AddQuantity( new SimplePrediction( "Mass_h0",                    "", _mass_h0                    ) );
     AddQuantity( new SimplePrediction( "Mass_H0",                    "", _mass_H0                    ) );
     AddQuantity( new SimplePrediction( "Mass_A0",                    "", _mass_A0                    ) );
@@ -422,7 +442,7 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     // calculate masses, sin(alpha), UHiggs & ZHiggs matrices
 
-    RealType    MHiggs[4];
+    RealType MHiggs[4];
     ComplexType SAeff, UHiggs[3][3], ZHiggs[3][3];
 
     FHHiggsCorr( &_error, MHiggs, &SAeff, UHiggs, ZHiggs );
@@ -436,6 +456,8 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     _mass_A0 = MHiggs[2];
     _mass_Hp = MHiggs[3];
 
+    
+
     if ( _mass_h0 < 1. ) {
 
       throw CalculatorException( _name, "Mass h less than 1 GeV.");
@@ -445,29 +467,25 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     // select UHiggs or ZHiggs for calculation of couplings and gammas
 
     FHSelectUZ( &_error, 1, 2, 1 );
-
     if ( _error != 0 ) {
 
     }
 
-    // calulate couplings and gammas
-    int    fast  = 1;
+    int fast  = 1;
     FHCouplings( &_error, _couplings, _couplingsms, _gammas, _gammasms, fast );
-    
+
     if ( _error != 0 ) {
 
     }
-
-    // calculate xs
 
     double sqrts = 8;
-    RealType    prodxs     [nprodxs];
+    RealType prodxs[nprodxs];
     FHHiggsProd( &_error, sqrts, prodxs );
 
     if ( _error != 0 ) {
 
     }
-        
+
     _normSM_sigma_ggh   = ggh ( 1 ) / gghSM( 1 ); 
     _normSM_sigma_ggh_2 = ggh2( 1 ) / gghSM( 1 );
     _normSM_sigma_bbh   = bbh ( 1 ) / bbhSM( 1 );
@@ -475,6 +493,63 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     _normSM_sigma_tth   = tth ( 1 ) / tthSM( 1 );
     _normSM_sigma_Wh    = Wh  ( 1 ) / WhSM ( 1 ); 
     _normSM_sigma_Zh    = Zh  ( 1 ) / ZhSM ( 1 );
+
+    RealType bsgammaMSSM;
+    RealType bsgammaSM;
+    RealType deltaMsMSSM;
+    RealType deltaMsSM;
+    RealType bsmumuMSSM;
+    RealType bsmumuSM;
+
+    FHFlavour( &_error,
+               &bsgammaMSSM,
+               &bsgammaSM,
+               &deltaMsMSSM,
+               &deltaMsSM,
+               &bsmumuMSSM,
+               &bsmumuSM );
+
+    _bsgammaMSSM = bsgammaMSSM;
+    _bsgammaSM   = bsgammaSM;
+    _deltaMsMSSM = deltaMsMSSM;
+    _deltaMsSM   = deltaMsSM;
+    _bsmumuMSSM  = bsmumuMSSM;
+    _bsmumuSM    = bsmumuSM;
+
+    RealType gm2;
+    RealType Deltarho;
+    RealType MWMSSM;
+    RealType MWSM;
+    RealType SW2MSSM;
+    RealType SW2SM;
+    RealType edmeTh;
+    RealType edmn;
+    RealType edmHg;
+    int ccb;
+    
+    FHConstraints( &_error,
+                   &gm2,
+                   &Deltarho,
+                   &MWMSSM,
+                   &MWSM,
+                   &SW2MSSM,
+                   &SW2SM,
+                   &edmeTh,
+                   &edmn,
+                   &edmHg,
+                   &ccb);
+
+    _gm2      = gm2;
+    _Deltarho = Deltarho;
+    _MWMSSM   = MWMSSM;
+    _MWSM     = MWSM;
+    _SW2MSSM  = SW2MSSM;
+    _SW2SM    = SW2SM;
+    _edmeTh   = edmeTh;
+    _edmn     = edmn;
+    _edmHg    = edmHg;
+    _ccb      = ccb;
+
 
     if ( _inputMethod == "SLHA" ) {
 
@@ -513,6 +588,8 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
         _slhadatastorageSPheno->WriteFile("SPheno_FeynHiggs.slha");
 
     }
+
+
 
 }
 
