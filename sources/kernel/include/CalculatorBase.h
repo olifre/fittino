@@ -27,10 +27,10 @@
  */
 namespace Fittino {
 
-  class PredictionBase;
-  class PhysicsModel;
-  class SimpleDataStorage;
   class Chi2ContributionBase;
+  class PhysicsModel;
+  class PredictionBase;
+  class SimpleDataStorage;
 
   /*!
    *  \ingroup kernel
@@ -50,12 +50,12 @@ namespace Fittino {
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
-      const Collection<Chi2ContributionBase*>& GetCollectionOfChi2Contributions() const;
-      const Collection<PredictionBase*>&       GetCollectionOfQuantities() const;
+      const SimpleDataStorage*                 GetSimpleOutputDataStorage() const;
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
-      const SimpleDataStorage*                 GetSimpleOutputDataStorage() const;
+      const Collection<Chi2ContributionBase*>& GetCollectionOfChi2Contributions() const;
+      const Collection<PredictionBase*>&       GetCollectionOfQuantities() const;
 
     public:
       virtual                                  ~CalculatorBase();
@@ -89,9 +89,6 @@ namespace Fittino {
        */
       void                                     AddChi2Contribution( Chi2ContributionBase* chi2Contribution );
       void                                     AddQuantity( PredictionBase* prediction );
-
-    private:
-
 
   };
 

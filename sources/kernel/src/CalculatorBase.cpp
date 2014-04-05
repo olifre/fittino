@@ -43,6 +43,12 @@ std::string Fittino::CalculatorBase::GetName() const {
 
 }
 
+const Fittino::SimpleDataStorage* Fittino::CalculatorBase::GetSimpleOutputDataStorage() const {
+
+    return _simpleOutputDataStorage;
+
+}
+
 const Fittino::Collection<Fittino::Chi2ContributionBase*>& Fittino::CalculatorBase::GetCollectionOfChi2Contributions() const {
 
     return _collectionOfChi2Contributions;
@@ -52,12 +58,6 @@ const Fittino::Collection<Fittino::Chi2ContributionBase*>& Fittino::CalculatorBa
 const Fittino::Collection<Fittino::PredictionBase*>& Fittino::CalculatorBase::GetCollectionOfQuantities() const {
 
     return _collectionOfQuantities;
-
-}
-
-const Fittino::SimpleDataStorage* Fittino::CalculatorBase::GetSimpleOutputDataStorage() const {
-
-    return _simpleOutputDataStorage;
 
 }
 

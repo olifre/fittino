@@ -8,7 +8,7 @@
 *                                                                              *
 * Description Base class for quantities                                        *
 *                                                                              *
-* Authors     Mathias   Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>            *
+* Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -29,11 +29,11 @@ Fittino::Quantity::Quantity( std::string name,
                              double      value,
                              double      lowerBound,
                              double      upperBound )
-    : _name( name ),
-      _plotName( plotName ),
+    : _lowerBound( lowerBound ),
+      _upperBound( upperBound ),
       _value( value ),
-      _lowerBound( lowerBound ),
-      _upperBound( upperBound ) {
+      _name( name ),
+      _plotName( plotName ) {
 
 }
 
@@ -44,24 +44,24 @@ Fittino::Quantity::Quantity( std::string name,
                              std::string plotUnit,
                              double      lowerBound,
                              double      upperBound )
-    : _name( name ),
-      _plotName( plotName ),
+    : _lowerBound( lowerBound ),
+      _upperBound( upperBound ),
       _value( value ),
+      _name( name ),
       _unit( unit ),
-      _plotUnit( plotUnit ),
-      _lowerBound( lowerBound ),
-      _upperBound( upperBound ) {
+      _plotName( plotName ),
+      _plotUnit( plotUnit ) {
 
 }
 
 Fittino::Quantity::Quantity( const boost::property_tree::ptree& ptree )
-    : _name      ( ptree.get<std::string>( "Name"         ) ),
-      _plotName  ( ptree.get<std::string>( "PlotName", "" ) ),
+    : _lowerBound( ptree.get<double>     ( "LowerBound"   ) ),
+      _upperBound( ptree.get<double>     ( "UpperBound"   ) ),
       _value     ( ptree.get<double>     ( "Value", 0.    ) ),
+      _name      ( ptree.get<std::string>( "Name"         ) ),
       _unit      ( ptree.get<std::string>( "Unit", ""     ) ),
-      _plotUnit  ( ptree.get<std::string>( "PlotUnit", "" ) ),
-      _lowerBound( ptree.get<double>     ( "LowerBound"   ) ),
-      _upperBound( ptree.get<double>     ( "UpperBound"   ) ) {
+      _plotName  ( ptree.get<std::string>( "PlotName", "" ) ),
+      _plotUnit  ( ptree.get<std::string>( "PlotUnit", "" ) ) {
 
 }
 
@@ -81,11 +81,12 @@ double Fittino::Quantity::GetUpperBound() const {
 
 }
 
-void Fittino::Quantity::SetName(std::string name) {
+void Fittino::Quantity::SetName( std::string name ) {
 
     _name = name;
 
 }
+
 std::string Fittino::Quantity::GetName() const {
 
     return _name;
