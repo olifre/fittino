@@ -20,6 +20,7 @@
 *******************************************************************************/
 
 #include "AstroCalculator.h"
+#include "AstroFitCalculator.h"
 #include "CheckVacuumCalculator.h"
 #include "ContourPlotter.h"
 #include "CorrelatedSampler.h"
@@ -148,7 +149,13 @@ Fittino::SLHADataStorageBase* Fittino::Factory::CreateSLHAeaSLHADataStorage() {
 
 Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& type, const PhysicsModel* model, const boost::property_tree::ptree& ptree ) const {
 
-    if ( type == "CheckVacuumCalculator" ) {
+    if ( type == "AstroFitCalculator" ) {
+
+        return new AstroFitCalculator( model, ptree );
+
+    }
+
+    else if ( type == "CheckVacuumCalculator" ) {
 
         return new CheckVacuumCalculator( model, ptree );
 

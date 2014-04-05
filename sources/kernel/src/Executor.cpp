@@ -33,6 +33,8 @@
 #include "Messenger.h"
 #include "TimeoutExecutorException.h"
 
+extern char** environ;
+
 Fittino::Messenger& messenger = Fittino::Messenger::GetInstance();
 
 Fittino::Executor::Executor( std::string path, std::string arg0 )
@@ -135,7 +137,7 @@ void Fittino::Executor::Child() {
 
         argv[_args.size()] = NULL;
 
-        execve( _path.c_str(), &argv[0], NULL );
+        execve( _path.c_str(), &argv[0], environ );
         perror( "execve" );
 
     }
