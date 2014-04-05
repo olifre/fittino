@@ -24,6 +24,7 @@
 
 Fittino::CalculatorBase::CalculatorBase( const PhysicsModel* model )
     : _name( "" ),
+      _tag( "" ),
       _model( model ) {
 
     _simpleOutputDataStorage = new SimpleDataStorage();
@@ -75,6 +76,12 @@ void  Fittino::CalculatorBase::AddChi2Contribution( Fittino::Chi2ContributionBas
 }
 
 void  Fittino::CalculatorBase::AddQuantity( Fittino::PredictionBase* prediction ) {
+
+    if ( _tag != "" ) {
+
+        prediction->SetName( _tag + "_" + prediction->GetName() );
+
+    }
 
     _collectionOfQuantities.AddElement( prediction );
 

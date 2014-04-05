@@ -68,6 +68,7 @@ namespace Fittino {
 
     protected:
       std::string                              _name;
+      std::string                              _tag;
       const PhysicsModel*                      _model;
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
@@ -77,6 +78,9 @@ namespace Fittino {
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
       Collection<Chi2ContributionBase*>        _collectionOfChi2Contributions;
+      /*!
+       *  \todo Make private in order to require use of AddQuantity.
+       */
       Collection<PredictionBase*>              _collectionOfQuantities;
 
     protected:
@@ -85,6 +89,9 @@ namespace Fittino {
        */
       void                                     AddChi2Contribution( Chi2ContributionBase* chi2Contribution );
       void                                     AddQuantity( PredictionBase* prediction );
+
+    private:
+
 
   };
 

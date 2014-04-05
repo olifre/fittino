@@ -68,6 +68,7 @@ namespace Fittino {
        *  Returns the upper bound of the quantity.
        */
       double                GetUpperBound() const;
+      void                  SetName( std::string name );
       /*!
       *  Returns the name of the quantity.
       */

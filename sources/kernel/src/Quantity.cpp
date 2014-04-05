@@ -81,6 +81,11 @@ double Fittino::Quantity::GetUpperBound() const {
 
 }
 
+void Fittino::Quantity::SetName(std::string name) {
+
+    _name = name;
+
+}
 std::string Fittino::Quantity::GetName() const {
 
     return _name;
