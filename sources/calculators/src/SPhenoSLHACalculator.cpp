@@ -22,6 +22,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include "CalculatorException.h"
+#include "Database.h"
 #include "PhysicsModel.h"
 #include "SLHADataStorageBase.h"
 #include "SLHALine.h"
@@ -34,7 +35,8 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const PhysicsModel* model, 
       _executor( "./SPheno", "SPheno" ) {
 
     _executableName     = "./SPheno";
-    _name               = "SPhenoCalculator";
+    _name               = "SPheno";
+    _tag                = "SPheno";
     _slhaInputFileName  = "LesHouches.in";
     _slhaOutputFileName = "SPheno.spc";
 
@@ -50,38 +52,105 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const PhysicsModel* model, 
 
     }
 
-    AddQuantity( new SLHAPrediction( "Mass_~dL"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000001", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~uL"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000002", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~sL"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000003", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~cL"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000004", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~b1"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000005", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~t1"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000006", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~eL"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000011", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~nueL"  , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000012", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~muL"   , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000013", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~numuL" , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000014", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~tau1"  , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000015", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~nutauL", "GeV", _slhaOutputDataStorage, "MASS", 1, "1000016", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~dR"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "2000001", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~uR"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "2000002", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~sR"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "2000003", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~cR"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "2000004", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~b2"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "2000005", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~t2"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "2000006", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~eR"    , "GeV", _slhaOutputDataStorage, "MASS", 1, "2000011", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~muR"   , "GeV", _slhaOutputDataStorage, "MASS", 1, "2000013", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~tau2"  , "GeV", _slhaOutputDataStorage, "MASS", 1, "2000015", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~g"     , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000021", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~chi01" , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000022", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~chi02" , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000023", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~chip1" , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000024", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~chi03" , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000025", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~chi04" , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000035", "", "", "" ) );
-    AddQuantity( new SLHAPrediction( "Mass_~chip2" , "GeV", _slhaOutputDataStorage, "MASS", 1, "1000037", "", "", "" ) );
+    Database& database = Database::GetInstance();
 
-    AddQuantity( new SLHAPrediction( "Gamma_~chi02_Total", "GeV", _slhaOutputDataStorage, "1000023", 2, "DECAY", "", "", "" ) );
+    AddMass( "Wp" );
+    AddMass( "Z0" );
+    AddParticle( "t" );
 
-    AddQuantity( new SLHAPrediction( "BR_~chi02_to_e_~eR", "", 0, _slhaOutputDataStorage, "1000023", 0, "(any)", "2", "11", "2000011" ) );
+    AddBR( "t", "b", "Wp" );
+    AddBR( "t", "b", "Hp" );
+
+    std::vector<std::string> susyparticles = database.GetSUSYParticles();
+
+    for ( unsigned int iParticle = 0; iParticle < susyparticles.size(); ++iParticle ) {
+
+        AddParticle( susyparticles[iParticle] );
+
+    }
+
+    AddBR( "~chi20", "~eL"  , "ebar");
+    AddBR( "~chi20", "~eR"  , "ebar");
+    AddBR( "~chi20", "~muL" , "mubar");
+    AddBR( "~chi20", "~muR" , "mubar");
+    AddBR( "~chi20", "~tau1", "taubar");
+    AddBR( "~chi20", "~tau2", "taubar");
+
+    AddBR( "~chi20", "~eLbar"  , "e");
+    AddBR( "~chi20", "~eRbar"  , "e");
+    AddBR( "~chi20", "~muLbar" , "mu");
+    AddBR( "~chi20", "~muRbar" , "mu");
+    AddBR( "~chi20", "~tau1bar", "tau");
+    AddBR( "~chi20", "~tau2bar", "tau");
+
+    AddBR( "~chi20", "~chi10"  , "Z0");
+    AddBR( "~chi20", "~chi10"  , "h0");
+
+    AddBR( "~chi1p", "~chi10",   "Wp");
+    AddBR( "~chi1p", "~tau1bar", "nutau");
+    AddBR( "~chi1p", "~tau2bar", "nutau");
+    AddBR( "~chi1p", "~nutauL" , "taubar" );
+    AddBR( "~chi1p", "~numuL" , "mubar" );
+    AddBR( "~chi1p", "~nueL" , "ebar" );
+
+    AddBR( "~eR", "~chi10", "e" );
+    AddBR( "~eR", "~chi20", "e" );
+
+    AddBR( "~eL", "~chi10", "e" );
+    AddBR( "~eL", "~chi20", "e" );
+
+    AddBR( "~tau1", "~chi10", "tau" );
+
+    AddBR( "~tau2", "~chi10", "tau" );
+    AddBR( "~tau2", "~chi20", "tau" );
+    AddBR( "~tau2", "~chi1m", "nutau" );
+    AddBR( "~tau2", "~tau1", "h0" );
+    AddBR( "~tau2", "~tau1", "Z0" );
+
+    AddBR( "~g", "~b1", "bbar" );
+    AddBR( "~g", "~b2", "bbar" );
+    AddBR( "~g", "~t1", "tbar" );
+    AddBR( "~g", "~t2", "tbar" );
+    AddBR( "~g", "~uL", "ubar" );
+    AddBR( "~g", "~uR", "ubar" );
+    AddBR( "~g", "~dL", "dbar" );
+    AddBR( "~g", "~dR", "dbar" );
+
+    AddBR( "~g", "~b1bar", "b" );
+    AddBR( "~g", "~b2bar", "b" );
+    AddBR( "~g", "~t1bar", "t" );
+    AddBR( "~g", "~t2bar", "t" );
+    AddBR( "~g", "~uLbar", "u" );
+    AddBR( "~g", "~uRbar", "u" );
+    AddBR( "~g", "~dLbar", "d" );
+    AddBR( "~g", "~dRbar", "d" );
+
+    AddBR( "~uL", "~chi10", "u" );
+    AddBR( "~uL", "~chi20", "u" );
+    AddBR( "~uL", "~chi1+", "d" );
+    AddBR( "~uL", "~chi2+", "d" );
+
+    AddBR( "~uR", "~chi10", "u" );
+    AddBR( "~uR", "~chi20", "u" );
+    AddBR( "~uR", "~chi1+", "d" );
+    AddBR( "~uR", "~chi2+", "d" );
+
+    AddBR( "~t1", "~chi10", "t" );
+    AddBR( "~t1", "~chi20", "t" );
+    AddBR( "~t1", "~chi1+", "b" );
+    AddBR( "~t1", "~chi2+", "b" );
+
+    AddBR( "~b1", "~chi10", "b" );
+    AddBR( "~b1", "~chi20", "b" );
+    AddBR( "~b1", "~chi1m", "t" );
+    AddBR( "~b1", "~chi2m", "t" );
+    AddBR( "~b1", "~t1",    "Wm" );
+
+    AddBR( "~b2", "~chi10", "b" );
+    AddBR( "~b2", "~chi20", "b" );
+    AddBR( "~b2", "~chi1m", "t" );
+    AddBR( "~b2", "~chi2m", "t" );
+    AddBR( "~b2", "~t1", "Wm" );
 
 }
 
@@ -92,6 +161,48 @@ Fittino::SPhenoSLHACalculator::~SPhenoSLHACalculator() {
         delete _lines[i];
 
     }
+
+}
+
+void Fittino::SPhenoSLHACalculator::AddParticle( std::string particle ) {
+
+    AddMass ( particle );
+    AddWidth( particle );
+
+}
+
+void Fittino::SPhenoSLHACalculator::AddWidth( std::string particle ) {
+
+    std::string name = "GammaTotal_" + particle;
+
+    Database& database = Database::GetInstance();
+    std::string pid = database.GetPIDString( particle );
+
+    AddQuantity( new SLHAPrediction( name, "GeV", _slhaOutputDataStorage, pid, 2, "DECAY", "", "", "" ) );
+
+}
+
+void Fittino::SPhenoSLHACalculator::AddMass( std::string particle ) {
+
+    std::string name = "Mass_" + particle;
+
+    Database& database = Database::GetInstance();
+    std::string pid = database.GetPIDString( particle );
+
+    AddQuantity( new SLHAPrediction( name , "GeV", _slhaOutputDataStorage, "MASS", 1, pid, "", "", "" ) );
+
+}
+
+void Fittino::SPhenoSLHACalculator::AddBR( std::string mother, std::string daughter1, std::string daughter2 ) {
+
+    Database& database = Database::GetInstance();
+    std::string pid0 = database.GetPIDString( mother );
+    std::string pid1 = database.GetPIDString( daughter1 );
+    std::string pid2 = database.GetPIDString( daughter2 );
+
+    std::string name = "BR_" + mother + "_to_" + daughter1 + "_" + daughter2;
+
+    AddQuantity( new SLHAPrediction( name, "", 0, _slhaOutputDataStorage, pid0, 0, "(any)", "2", pid1, pid2 ) );
 
 }
 
@@ -130,6 +241,7 @@ void Fittino::SPhenoSLHACalculator::CalculatePredictions() {
 
     }
 
+    _slhaOutputDataStorage->Clear();
     _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
 
     for ( unsigned int i = 0; i < _collectionOfQuantities.GetNumberOfElements(); ++i ) {
@@ -153,13 +265,14 @@ void Fittino::SPhenoSLHACalculator::ConfigureInput() {
     // Write block "SMINPUTS".
 
     _slhaInputDataStorage->AddBlock( "SMINPUTS:BLOCK SMINPUTS:# Standard model inputs" );
-    _slhaInputDataStorage->AddLine( "SMINPUTS:1:1.279250e+02:# 1/alpha_em (fixed)" );
-    _slhaInputDataStorage->AddLine( "SMINPUTS:2:1.166370e-05:# G_F (fixed)" );
-    _slhaInputDataStorage->AddLine( "SMINPUTS:3:1.176000e-01:# alpha_s (fixed)" );
-    _slhaInputDataStorage->AddLine( "SMINPUTS:4:9.118750e+01:# mZ (fixed)" );
-    _slhaInputDataStorage->AddLine( "SMINPUTS:5:4.200000e+00:# mb(mb) (fixed)" );
+    _slhaInputDataStorage->AddLine( "SMINPUTS:1:1.28952e+02:# 1/alpha_em (fixed)" );
+    _slhaInputDataStorage->AddLine( "SMINPUTS:2:1.1663787e-05:# G_F (fixed)" );
+    _slhaInputDataStorage->AddLine( "SMINPUTS:3:1.185e-01:# alpha_s (fixed)" );
+    _slhaInputDataStorage->AddLine( "SMINPUTS:4:9.11876e+01:# mZ (fixed)" );
+    _slhaInputDataStorage->AddLine( "SMINPUTS:5:4.18e+00:# mb(mb) (fixed)" );
     //_slhaInputDataStorage->AddLine( "SMINPUTS:6:1.724000e+02:# mtop (fixed)" );
-    _slhaInputDataStorage->AddLine( "SMINPUTS:7:1.776840e+00:# mtau (fixed)" );
+    _slhaInputDataStorage->AddLine( "SMINPUTS:7:1.77682e+00:# mtau (fixed)" );
+    _slhaInputDataStorage->AddLine( "SMINPUTS:24:1.275e+00:# mc(mc) (fixed)" );
 
     // Write block "MINPAR".
 
@@ -180,7 +293,6 @@ void Fittino::SPhenoSLHACalculator::ConfigureInput() {
     _slhaInputDataStorage->AddLine( "SPHENOINPUT:26:1.00000000E-05:# write only cross sections larger than this value [fb]" );
     _slhaInputDataStorage->AddLine( "SPHENOINPUT:31:-1.00000000E+00:# m_GUT, if < 0 than it determined via g_1=g_2" );
     _slhaInputDataStorage->AddLine( "SPHENOINPUT:32:0:# require strict unification g_1=g_2=g_3 if '1' is set" );
-    //_slhaInputDataStorage->AddLine( "SPHENOINPUT:63:1.270000e+00:# m_c(Q) (fixed)" );
     _slhaInputDataStorage->AddLine( "SPHENOINPUT:80:1:# SPheno exits with non-zero value for sure" );
 
     // Add parameter point dependent lines to block "MINPAR".
