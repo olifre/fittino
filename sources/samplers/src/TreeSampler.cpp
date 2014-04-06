@@ -138,8 +138,7 @@ void Fittino::TreeSampler::Execute() {
         
         this->UpdateModel();
         
-        AnalysisTool::PrintStatus();
-        
+
         if( _isToyRun ) {
             _currentChi2 = GetStatusParameterVector()->at(0)->GetValue();
             int curIdx = 0;
@@ -188,29 +187,26 @@ void Fittino::TreeSampler::PrintSteeringParameters() const {
 
 void Fittino::TreeSampler::UpdateModel() {
 
-  double chi2 = _model->GetChi2();
-  GetStatusParameterVector()->at( 0 )->SetValue( chi2 );
-     
-  // the model parameter is the iteration. Increase that by one each time the model is updated.
-  _model->GetCollectionOfParameters().At( 0 )->SetValue( _model->GetCollectionOfParameters().At( 0 )->GetValue() + 1. );
-  
-  // temporarily fill all entries in the tree, even if it's a toyrun:
-  //this->FillTree();
-  
-  if( !_isToyRun ) {
-    this->FillTree();
-  }
+    double chi2 = _model->GetChi2();
+    GetStatusParameterVector()->at( 0 )->SetValue( chi2 );
 
-  else {
-     
-    if( _lowestChi2 > chi2 ) {
-      _lowestChi2 = chi2;
-      _bestFitIndex = _firstIteration + _iterationCounter-2;
-    } 
-     
-  }
-  
-  
+    AnalysisTool::PrintStatus();
+
+    if( !_isToyRun ) {
+
+        this->FillTree();
+
+    }
+    else if( _lowestChi2 > chi2 ) {
+
+        _lowestChi2 = chi2;
+        _bestFitIndex = _firstIteration + _iterationCounter-2;
+
+    }
+
+    // the model parameter is the iteration. Increase that by one each time the model is updated.
+    _model->GetCollectionOfParameters().At( 0 )->SetValue( _model->GetCollectionOfParameters().At( 0 )->GetValue() + 1. );
+
 }
 
 void Fittino::TreeSampler::DetermineBestFitValues() {
