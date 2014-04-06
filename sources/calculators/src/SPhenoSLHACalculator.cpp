@@ -26,9 +26,9 @@
 #include "PhysicsModel.h"
 #include "SLHADataStorageBase.h"
 #include "SLHALine.h"
+#include "SLHAPrediction.h"
 #include "SPhenoSLHACalculator.h"
 #include "TimeoutExecutorException.h"
-#include "SLHAPrediction.h"
 
 Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     : SLHACalculatorBase( model ),
@@ -69,29 +69,29 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const PhysicsModel* model, 
 
     }
 
-    AddBR( "~chi20", "~eL"  , "ebar");
-    AddBR( "~chi20", "~eR"  , "ebar");
-    AddBR( "~chi20", "~muL" , "mubar");
-    AddBR( "~chi20", "~muR" , "mubar");
-    AddBR( "~chi20", "~tau1", "taubar");
-    AddBR( "~chi20", "~tau2", "taubar");
+    AddBR( "~chi20", "~eL",   "ebar"   );
+    AddBR( "~chi20", "~eR",   "ebar"   );
+    AddBR( "~chi20", "~muL",  "mubar"  );
+    AddBR( "~chi20", "~muR" , "mubar"  );
+    AddBR( "~chi20", "~tau1", "taubar" );
+    AddBR( "~chi20", "~tau2", "taubar" );
 
-    AddBR( "~chi20", "~eLbar"  , "e");
-    AddBR( "~chi20", "~eRbar"  , "e");
-    AddBR( "~chi20", "~muLbar" , "mu");
-    AddBR( "~chi20", "~muRbar" , "mu");
-    AddBR( "~chi20", "~tau1bar", "tau");
-    AddBR( "~chi20", "~tau2bar", "tau");
+    AddBR( "~chi20", "~eLbar",   "e"   );
+    AddBR( "~chi20", "~eRbar",   "e"   );
+    AddBR( "~chi20", "~muLbar",  "mu"  );
+    AddBR( "~chi20", "~muRbar",  "mu"  );
+    AddBR( "~chi20", "~tau1bar", "tau" );
+    AddBR( "~chi20", "~tau2bar", "tau" );
 
-    AddBR( "~chi20", "~chi10"  , "Z0");
-    AddBR( "~chi20", "~chi10"  , "h0");
+    AddBR( "~chi20", "~chi10", "Z0" );
+    AddBR( "~chi20", "~chi10", "h0" );
 
-    AddBR( "~chi1p", "~chi10",   "Wp");
-    AddBR( "~chi1p", "~tau1bar", "nutau");
-    AddBR( "~chi1p", "~tau2bar", "nutau");
-    AddBR( "~chi1p", "~nutauL" , "taubar" );
-    AddBR( "~chi1p", "~numuL" , "mubar" );
-    AddBR( "~chi1p", "~nueL" , "ebar" );
+    AddBR( "~chi1p", "~chi10",   "Wp"     );
+    AddBR( "~chi1p", "~tau1bar", "nutau"  );
+    AddBR( "~chi1p", "~tau2bar", "nutau"  );
+    AddBR( "~chi1p", "~nutauL",  "taubar" );
+    AddBR( "~chi1p", "~numuL",   "mubar"  );
+    AddBR( "~chi1p", "~nueL",    "ebar"   );
 
     AddBR( "~eR", "~chi10", "e" );
     AddBR( "~eR", "~chi20", "e" );
@@ -101,11 +101,11 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const PhysicsModel* model, 
 
     AddBR( "~tau1", "~chi10", "tau" );
 
-    AddBR( "~tau2", "~chi10", "tau" );
-    AddBR( "~tau2", "~chi20", "tau" );
+    AddBR( "~tau2", "~chi10", "tau"   );
+    AddBR( "~tau2", "~chi20", "tau"   );
     AddBR( "~tau2", "~chi1m", "nutau" );
-    AddBR( "~tau2", "~tau1", "h0" );
-    AddBR( "~tau2", "~tau1", "Z0" );
+    AddBR( "~tau2", "~tau1",  "h0"    );
+    AddBR( "~tau2", "~tau1",  "Z0"    );
 
     AddBR( "~g", "~b1", "bbar" );
     AddBR( "~g", "~b2", "bbar" );
@@ -140,17 +140,17 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const PhysicsModel* model, 
     AddBR( "~t1", "~chi1+", "b" );
     AddBR( "~t1", "~chi2+", "b" );
 
-    AddBR( "~b1", "~chi10", "b" );
-    AddBR( "~b1", "~chi20", "b" );
-    AddBR( "~b1", "~chi1m", "t" );
-    AddBR( "~b1", "~chi2m", "t" );
+    AddBR( "~b1", "~chi10", "b"  );
+    AddBR( "~b1", "~chi20", "b"  );
+    AddBR( "~b1", "~chi1m", "t"  );
+    AddBR( "~b1", "~chi2m", "t"  );
     AddBR( "~b1", "~t1",    "Wm" );
 
-    AddBR( "~b2", "~chi10", "b" );
-    AddBR( "~b2", "~chi20", "b" );
-    AddBR( "~b2", "~chi1m", "t" );
-    AddBR( "~b2", "~chi2m", "t" );
-    AddBR( "~b2", "~t1", "Wm" );
+    AddBR( "~b2", "~chi10", "b"  );
+    AddBR( "~b2", "~chi20", "b"  );
+    AddBR( "~b2", "~chi1m", "t"  );
+    AddBR( "~b2", "~chi2m", "t"  );
+    AddBR( "~b2", "~t1",    "Wm" );
 
 }
 
@@ -161,48 +161,6 @@ Fittino::SPhenoSLHACalculator::~SPhenoSLHACalculator() {
         delete _lines[i];
 
     }
-
-}
-
-void Fittino::SPhenoSLHACalculator::AddParticle( std::string particle ) {
-
-    AddMass ( particle );
-    AddWidth( particle );
-
-}
-
-void Fittino::SPhenoSLHACalculator::AddWidth( std::string particle ) {
-
-    std::string name = "GammaTotal_" + particle;
-
-    Database& database = Database::GetInstance();
-    std::string pid = database.GetPIDString( particle );
-
-    AddQuantity( new SLHAPrediction( name, "GeV", _slhaOutputDataStorage, pid, 2, "DECAY", "", "", "" ) );
-
-}
-
-void Fittino::SPhenoSLHACalculator::AddMass( std::string particle ) {
-
-    std::string name = "Mass_" + particle;
-
-    Database& database = Database::GetInstance();
-    std::string pid = database.GetPIDString( particle );
-
-    AddQuantity( new SLHAPrediction( name , "GeV", _slhaOutputDataStorage, "MASS", 1, pid, "", "", "" ) );
-
-}
-
-void Fittino::SPhenoSLHACalculator::AddBR( std::string mother, std::string daughter1, std::string daughter2 ) {
-
-    Database& database = Database::GetInstance();
-    std::string pid0 = database.GetPIDString( mother );
-    std::string pid1 = database.GetPIDString( daughter1 );
-    std::string pid2 = database.GetPIDString( daughter2 );
-
-    std::string name = "BR_" + mother + "_to_" + daughter1 + "_" + daughter2;
-
-    AddQuantity( new SLHAPrediction( name, "", 0, _slhaOutputDataStorage, pid0, 0, "(any)", "2", pid1, pid2 ) );
 
 }
 
@@ -249,6 +207,48 @@ void Fittino::SPhenoSLHACalculator::CalculatePredictions() {
         _collectionOfQuantities.At( i )->Update();
 
     }
+
+}
+
+void Fittino::SPhenoSLHACalculator::AddBR( std::string mother, std::string daughter1, std::string daughter2 ) {
+
+    Database& database = Database::GetInstance();
+    std::string pid0 = database.GetPIDString( mother );
+    std::string pid1 = database.GetPIDString( daughter1 );
+    std::string pid2 = database.GetPIDString( daughter2 );
+
+    std::string name = "BR_" + mother + "_to_" + daughter1 + "_" + daughter2;
+
+    AddQuantity( new SLHAPrediction( name, "", 0, _slhaOutputDataStorage, pid0, 0, "(any)", "2", pid1, pid2 ) );
+
+}
+
+void Fittino::SPhenoSLHACalculator::AddMass( std::string particle ) {
+
+    std::string name = "Mass_" + particle;
+
+    Database& database = Database::GetInstance();
+    std::string pid = database.GetPIDString( particle );
+
+    AddQuantity( new SLHAPrediction( name , "GeV", _slhaOutputDataStorage, "MASS", 1, pid, "", "", "" ) );
+
+}
+
+void Fittino::SPhenoSLHACalculator::AddParticle( std::string particle ) {
+
+    AddMass ( particle );
+    AddWidth( particle );
+
+}
+
+void Fittino::SPhenoSLHACalculator::AddWidth( std::string particle ) {
+
+    std::string name = "GammaTotal_" + particle;
+
+    Database& database = Database::GetInstance();
+    std::string pid = database.GetPIDString( particle );
+
+    AddQuantity( new SLHAPrediction( name, "GeV", _slhaOutputDataStorage, pid, 2, "DECAY", "", "", "" ) );
 
 }
 

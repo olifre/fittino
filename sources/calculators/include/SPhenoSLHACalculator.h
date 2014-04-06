@@ -46,9 +46,7 @@ namespace Fittino {
        *  Standard destructor.
        */
       ~SPhenoSLHACalculator();
-
-    public:
-      virtual void           CalculatePredictions();
+      void                   CalculatePredictions();
 
       /*! \cond UML */
     private:
@@ -58,11 +56,11 @@ namespace Fittino {
       std::vector<SLHALine*> _lines;
 
     private:
-      virtual void           ConfigureInput();
       void                   AddBR( std::string mother, std::string daughter1, std::string daughter2 );
       void                   AddMass( std::string particle );
       void                   AddParticle( std::string particle );
       void                   AddWidth( std::string particle );
+      void                   ConfigureInput();
 
       /*! \endcond UML */
 

@@ -1,39 +1,53 @@
-/* $Id: TestModelBase.cpp 1982 2014-03-09 12:09:26Z uhlenbrock@PHYSIK.UNI-BONN.DE $ */
+/* $Id$ */
 
 /*******************************************************************************
- *                                                                              *
- * Project     Fittino - A SUSY Parameter Fitting Package                       *
- *                                                                              *
- * File        Database.cpp                                                     *
- *                                                                              *
- * Description Singleton class containing static data                           *
- *                                                                              *
- * Authors     Bjoern Sarrazin <sarrazin@physik.uni-bonn.de>                    *
- *                                                                              *
- * Licence     This program is free software; you can redistribute it and/or    *
- *             modify it under the terms of the GNU General Public License as   *
- *             published by the Free Software Foundation; either version 3 of   *
- *             the License, or (at your option) any later version.              *
- *                                                                              *
- *******************************************************************************/
+*                                                                              *
+* Project     Fittino - A SUSY Parameter Fitting Package                       *
+*                                                                              *
+* File        Database.cpp                                                     *
+*                                                                              *
+* Description Singleton class containing static data                           *
+*                                                                              *
+* Authors     Bjoern Sarrazin <sarrazin@physik.uni-bonn.de>                    *
+*                                                                              *
+* Licence     This program is free software; you can redistribute it and/or    *
+*             modify it under the terms of the GNU General Public License as   *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
+*                                                                              *
+*******************************************************************************/
 
 #include "boost/lexical_cast.hpp"
 
 #include "Database.h"
 
-Fittino::Database& Fittino::Database::GetInstance(){
+Fittino::Database& Fittino::Database::GetInstance() {
 
     static Database instance;
     return instance;
 
 }
 
-Fittino::Database::~Database(){
+int Fittino::Database::GetPID( std::string particle )  {
 
+    return _pid[particle];
 
 }
 
-Fittino::Database::Database(){
+std::string Fittino::Database::GetPIDString( std::string particle ) {
+
+    int pid = GetPID( particle );
+    return boost::lexical_cast<std::string>( pid );
+
+}
+
+const std::vector<std::string>& Fittino::Database::GetSUSYParticles() {
+
+    return _susyparticles;
+
+}
+
+Fittino::Database::Database() {
 
     AddPID( 1, "d", "dbar" );
     AddPID( 2, "u", "ubar" );
@@ -42,21 +56,21 @@ Fittino::Database::Database(){
     AddPID( 5, "b", "bbar" );
     AddPID( 6, "t", "tbar" );
 
-    AddPID( 11, "e", "ebar" );
-    AddPID( 12, "nue", "nuebar" );
-    AddPID( 13, "mu", "mubar" );
-    AddPID( 14, "numu", "numubar" );
-    AddPID( 15, "tau", "taubar" );
-    AddPID( 16, "nutau", "nutaubar");
+    AddPID( 11, "e",     "ebar"     );
+    AddPID( 12, "nue",   "nuebar"   );
+    AddPID( 13, "mu",    "mubar"    );
+    AddPID( 14, "numu",  "numubar"  );
+    AddPID( 15, "tau",   "taubar"   );
+    AddPID( 16, "nutau", "nutaubar" );
 
-    AddPID( 21, "g" );
-    AddPID( 22, "gamma" );
-    AddPID( 23, "Z0" );
+    AddPID( 21, "g"        );
+    AddPID( 22, "gamma"    );
+    AddPID( 23, "Z0"       );
     AddPID( 24, "Wp", "Wm" );
-    AddPID( 25, "h0" );
+    AddPID( 25, "h0"       );
 
-    AddPID( 35, "H0" );
-    AddPID( 36, "A0" );
+    AddPID( 35, "H0"       );
+    AddPID( 36, "A0"       );
     AddPID( 37, "Hp", "Hm" );
 
     AddSUSYParticle( 1000001, "~dL", "~dLbar" );
@@ -95,15 +109,7 @@ Fittino::Database::Database(){
 
 }
 
-const std::vector<std::string>& Fittino::Database::GetSUSYParticles() {
-
-    return _susyparticles;
-
-}
-
-int Fittino::Database::GetPID( std::string particle )  {
-
-    return _pid[particle];
+Fittino::Database::~Database() {
 
 }
 
@@ -111,7 +117,7 @@ void Fittino::Database::AddPID( int pid, std::string particle, std::string antip
 
     AddSinglePID( pid, particle );
 
-    if (antiparticle != "" ) {
+    if ( antiparticle != "" ) {
 
         AddSinglePID( -pid, antiparticle );
 
@@ -119,16 +125,9 @@ void Fittino::Database::AddPID( int pid, std::string particle, std::string antip
 
 }
 
-std::string Fittino::Database::GetPIDString( std::string particle ) {
-
-    int pid = GetPID( particle );
-    return boost::lexical_cast<std::string>( pid );
-
-}
-
 void Fittino::Database::AddSinglePID( int pid, std::string particle ) {
 
-    /* \todo Check if PID already exists */
+    /* \todo Check if PID already exists. */
 
     _pid[particle] = pid;
 
