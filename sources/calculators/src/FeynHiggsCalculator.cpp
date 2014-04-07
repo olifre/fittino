@@ -25,6 +25,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/algorithm/string.hpp>
 #include "CFeynHiggs.h"
 #include "CSLHA.h"
 
@@ -188,6 +189,11 @@ _slhadatastorageSPheno( NULL ){
         }
 
     }
+
+    AddQuantity( new SimplePrediction( "Warning_ZHiggs" , "", _warning_ZHiggs  ) );
+    AddQuantity( new SimplePrediction( "Warning_ExtParQ", "", _warning_ExtParQ ) );
+    AddQuantity( new SimplePrediction( "Warning_Gmin2"  , "", _warning_gmin2   ) );
+    AddQuantity( new SimplePrediction( "Warning_Other"  , "", _warning_other   ) );
 
 }
 
@@ -611,6 +617,26 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
         _channels.at( i )->CalculatePredictions();
 
     }
+
+
+    _warning_ZHiggs  = 0;
+    _warning_ExtParQ = 0;
+    _warning_gmin2   = 0;
+    _warning_other   = 0;
+
+    std::string line;
+    std::ifstream file("FeynHiggs.out");
+    while ( std::getline( file, line ) ) {
+
+        if      ( boost::algorithm::contains( line, "warning: ZHiggs possibly unreliable"           ) )              _warning_ZHiggs  = 1;
+        else if ( boost::algorithm::contains( line, "warning: ExtPar_Q taken to be sqrt(M3SQ M3SU)" ) )              _warning_ExtParQ = 1;
+        else if ( boost::algorithm::contains( line, "warning: g-2 possibly unreliable due to numerical problems" ) ) _warning_gmin2   = 1;
+        else if ( boost::algorithm::contains( line, "warning"                                       ) )              _warning_other   = 1;
+
+    }
+
+    file.close();
+
 
     if ( _inputMethod == "SLHA" ) {
 
