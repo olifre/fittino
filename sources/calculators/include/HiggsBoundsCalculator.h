@@ -1,12 +1,14 @@
+/* $Id$ */
+
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        HiggsBoundsCalculator.h                                     *
+* File        HiggsBoundsCalculator.h                                          *
 *                                                                              *
-* Description Wrapper class for HiggsBounds                                   *
+* Description Wrapper class for HiggsBounds                                    *
 *                                                                              *
-* Authors     Matthias Hamer        <mhamer@gwdg.de>                           *
+* Authors     Matthias Hamer  <mhamer@gwdg.de>                                 *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -18,9 +20,8 @@
 #ifndef FITTINO_HIGGSBOUNDSCALCULATOR_H
 #define FITTINO_HIGGSBOUNDSCALCULATOR_H
 
-#include "PtreeForwardDeclaration.h"
-
 #include "CalculatorBase.h"
+#include "PtreeForwardDeclaration.h"
 
 /*!
  *  \brief Fittino namespace.

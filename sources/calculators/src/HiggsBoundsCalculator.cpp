@@ -1,10 +1,12 @@
+/* $Id$ */
+
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        HiggsBoundsCalculator.cpp                                   *
+* File        HiggsBoundsCalculator.cpp                                        *
 *                                                                              *
-* Description Wrapper class for HiggsSignals                                   *
+* Description Wrapper class for HiggsBounds                                    *
 *                                                                              *
 * Authors     Matthias Hamer  <mhamer@gwdg.de>                                 *
 *                                                                              *
