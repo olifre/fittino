@@ -8,7 +8,7 @@
 #                                                                              #
 # Description Cmake configuration file for the calculators directory.          #
 #                                                                              #
-# Authors     Bjoern Sarrazin     <sarrazin@physik.uni-bonn.de>                #
+# Authors     Bjoern  Sarrazin    <sarrazin@physik.uni-bonn.de>                #
 #             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              #
 #                                                                              #
 # Licence     This program is free software; you can redistribute it and/or    #
@@ -18,7 +18,7 @@
 #                                                                              #
 ################################################################################
 
-FILE( GLOB includes ./include/*.h )
+FILE(GLOB includes ./include/*.h)
 AUX_SOURCE_DIRECTORY(src sources)
 
 INCLUDE_DIRECTORIES(../../external)
@@ -29,64 +29,66 @@ INCLUDE_DIRECTORIES(../models/include)
 INCLUDE_DIRECTORIES(../kernel/include)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
-IF( FEYNHIGGS_FOUND )
+IF(FEYNHIGGS_FOUND)
 
-  INCLUDE_DIRECTORIES(${FEYNHIGGS_INCLUDE_DIRS})  
+    INCLUDE_DIRECTORIES(${FEYNHIGGS_INCLUDE_DIRS})
 
-  IF( FEYNHIGGS_QUAD )
+    IF(FEYNHIGGS_QUAD)
 
-      ADD_DEFINITIONS( -DQUAD=1 )
+        ADD_DEFINITIONS(-DQUAD=1)
 
-  ENDIF()
+    ENDIF()
 
 ELSE()
 
-  LIST(REMOVE_ITEM sources "src/FeynHiggsCalculator.cpp")
-  LIST(REMOVE_ITEM sources "src/FeynHiggsChannel.cpp")
-  LIST(REMOVE_ITEM sources "src/FeynHiggsFermionicChannel.cpp")
-  LIST(REMOVE_ITEM sources "src/FeynHiggsBosonicChannel.cpp")
+    LIST(REMOVE_ITEM sources "src/FeynHiggsBosonicChannel.cpp")
+    LIST(REMOVE_ITEM sources "src/FeynHiggsCalculator.cpp")
+    LIST(REMOVE_ITEM sources "src/FeynHiggsChannel.cpp")
+    LIST(REMOVE_ITEM sources "src/FeynHiggsCrossSection.cpp")
+    LIST(REMOVE_ITEM sources "src/FeynHiggsFermionicChannel.cpp")
+    LIST(REMOVE_ITEM sources "src/FeynHiggsNeutralHiggsCrossSection.cpp")
 
 ENDIF()
 
 IF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND)
 
-  LIST(REMOVE_ITEM sources "src/HDim6Calculator.cpp")
-  LIST(REMOVE_ITEM sources "src/HiggsSignalsHadXSCalculator.cpp")
+    LIST(REMOVE_ITEM sources "src/HDim6Calculator.cpp")
+    LIST(REMOVE_ITEM sources "src/HiggsSignalsHadXSCalculator.cpp")
 
-ENDIF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND)
+ENDIF()
 
-IF( NOT MICROMEGAS_FOUND )
+IF(NOT MICROMEGAS_FOUND)
 
-    LIST( REMOVE_ITEM sources "src/MicromegasCalculator.cpp" )
-    LIST( REMOVE_ITEM sources "src/MicromegasWrapper.cpp" )
+    LIST(REMOVE_ITEM sources "src/MicromegasCalculator.cpp")
+    LIST(REMOVE_ITEM sources "src/MicromegasWrapper.cpp")
     
 ENDIF()
 
 IF(NOT SLHAEA_FOUND)
 
-  LIST(REMOVE_ITEM sources "src/SPhenoSLHACalculator.cpp")
-
-ENDIF(NOT SLHAEA_FOUND)
-
-IF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND OR NOT SLHAEA_FOUND)
-
-  LIST(REMOVE_ITEM sources "src/HiggsSignalsSLHACalculator.cpp")
-
-ENDIF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND OR NOT SLHAEA_FOUND)
-
-IF(NOT LHAPDF_FOUND OR NOT GSL_FOUND)
-
-  LIST(REMOVE_ITEM sources "src/HDim6Calculator.cpp")
+    LIST(REMOVE_ITEM sources "src/SPhenoSLHACalculator.cpp")
 
 ENDIF()
 
-IF( SUPERISO_FOUND )
+IF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND OR NOT SLHAEA_FOUND)
 
-    INCLUDE_DIRECTORIES( ${SUPERISO_INCLUDE_DIRS} )
-    
+    LIST(REMOVE_ITEM sources "src/HiggsSignalsSLHACalculator.cpp")
+
+ENDIF()
+
+IF(NOT LHAPDF_FOUND OR NOT GSL_FOUND)
+
+    LIST(REMOVE_ITEM sources "src/HDim6Calculator.cpp")
+
+ENDIF()
+
+IF(SUPERISO_FOUND)
+
+    INCLUDE_DIRECTORIES(${SUPERISO_INCLUDE_DIRS})
+
 ELSE()
 
-    LIST( REMOVE_ITEM sources "src/SuperIsoCalculator.cpp" )
+    LIST(REMOVE_ITEM sources "src/SuperIsoCalculator.cpp")
 
 ENDIF()
 
@@ -103,12 +105,14 @@ IF(LHAPDF_FOUND)
 ENDIF()
 
 IF(GSL_FOUND)
+
     SET(compile_flags "${compile_flags} ${GSL_COMPILE_FLAGS}")
+
 ENDIF()
 
-IF( MICROMEGAS_FOUND )
+IF(MICROMEGAS_FOUND)
 
-  INCLUDE_DIRECTORIES( ${MICROMEGAS_INCLUDE_DIRS} )  
+  INCLUDE_DIRECTORIES(${MICROMEGAS_INCLUDE_DIRS})  
   SET(compile_flags "${compile_flags} -I/usr/include")
 
 ENDIF()
