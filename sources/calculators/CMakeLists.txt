@@ -57,6 +57,12 @@ IF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND)
 
 ENDIF()
 
+IF(NOT HIGGSBOUNDS_FOUND)
+
+    LIST(REMOVE_ITEM sources "src/HiggsBoundsCalculator.cpp")
+
+ENDIF()
+
 IF(NOT MICROMEGAS_FOUND)
 
     LIST(REMOVE_ITEM sources "src/MicromegasCalculator.cpp")
