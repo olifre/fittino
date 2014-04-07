@@ -50,7 +50,6 @@ namespace Fittino {
       virtual void  SetupMeasuredValues();
 
       /*! \cond UML */
-
     private:
       /*!
        *
@@ -94,6 +93,8 @@ namespace Fittino {
     private:
       void CallHiggsBounds();
       double call_HiggsBoundsWithSLHA();
+
+      /*! \endcond UML */
 
   };
 
