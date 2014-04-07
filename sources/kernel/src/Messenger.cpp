@@ -39,6 +39,39 @@ Fittino::Messenger& Fittino::Messenger::GetInstance() {
 
 }
 
+void Fittino::Messenger::SetVerbosityLevel( const VerbosityLevel& verbosityLevel ) {
+
+    _verbosityLevel = verbosityLevel;
+
+}
+
+Fittino::Messenger& Fittino::Messenger::operator<<( std::ios & ( *_f )( std::ios& ) ) {
+
+    ( _f )( *this );
+    return *this;
+
+}
+
+Fittino::Messenger& Fittino::Messenger::operator<<( std::ostream & ( *_f )( std::ostream& ) ) {
+
+    ( _f )( *this );
+    return *this;
+
+}
+
+Fittino::Messenger& Fittino::Messenger::operator<<( Fittino::Messenger & ( *_f )( Fittino::Messenger& ) ) {
+
+    return ( _f )( *this );
+
+}
+
+Fittino::Messenger& Fittino::Messenger::operator<<( Fittino::Messenger::VerbosityLevel verbosityLevel ) {
+
+    _actualVerbosityLevel = verbosityLevel;
+    return *this;
+
+}
+
 Fittino::Messenger::Messenger()
     : _verbosityLevel( Messenger::ALWAYS ),
       _actualVerbosityLevel( Messenger::ALWAYS ) {
@@ -85,38 +118,5 @@ void Fittino::Messenger::SetVerbosityLevel( const std::string& verbosityLevel ) 
         throw ConfigurationException( "Verbosity level unknown." );
 
     }
-
-}
-
-void Fittino::Messenger::SetVerbosityLevel( const VerbosityLevel& verbosityLevel ) {
-
-    _verbosityLevel = verbosityLevel;
-
-}
-
-Fittino::Messenger& Fittino::Messenger::operator<<( std::ios & ( *_f )( std::ios& ) ) {
-
-    ( _f )( *this );
-    return *this;
-
-}
-
-Fittino::Messenger& Fittino::Messenger::operator<<( std::ostream & ( *_f )( std::ostream& ) ) {
-
-    ( _f )( *this );
-    return *this;
-
-}
-
-Fittino::Messenger& Fittino::Messenger::operator<<( Fittino::Messenger & ( *_f )( Fittino::Messenger& ) ) {
-
-    return ( _f )( *this );
-
-}
-
-Fittino::Messenger& Fittino::Messenger::operator<<( Fittino::Messenger::VerbosityLevel verbosityLevel ) {
-
-    _actualVerbosityLevel = verbosityLevel;
-    return *this;
 
 }
