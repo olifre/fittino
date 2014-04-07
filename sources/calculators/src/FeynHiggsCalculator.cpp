@@ -52,15 +52,16 @@ _nu     { "",  "nue", "numu", "nutau" },
 _lepton { "", "e", "mu", "tau"        },
 _up     { "", "u", "c", "t"           },
 _down   { "", "d", "s", "b"           },
-_neu    { "", "~chi01", "~chi02", "~chi03", "~chi04" },
-_cha    { "", "~chip1", "~chip2" },
+_neu    { "", "~chi10", "~chi20", "~chi30", "~chi40" },
+_cha    { "", "~chi1p", "~chi2p" },
 _higgs  { "", "h0", "H0", "A0", "Hp" },
 _smallObsSet( true ),
 _inputMethod( inputMethod ),
 _slhadatastorageFeynHiggs( NULL ),
 _slhadatastorageSPheno( NULL ){
 
-    _name = "FeynHiggsCalculator";
+    _name = "FeynHiggs";
+    _tag = "FH";
 
     AddQuantity( new SimplePrediction( "BR_b_to_s_gamma", "", _bsgammaMSSM ) );
     AddQuantity( new SimplePrediction( "SM_BR_b_to_s_gamma", "", _bsgammaSM ) );
@@ -98,14 +99,6 @@ _slhadatastorageSPheno( NULL ){
     AddQuantity( new SimplePrediction( "Mass_H0",                    "", _mass_H0                    ) );
     AddQuantity( new SimplePrediction( "Mass_A0",                    "", _mass_A0                    ) );
     AddQuantity( new SimplePrediction( "Mass_Hp",                    "", _mass_Hp                    ) );
-
-    AddQuantity( new SimplePrediction( "NormSM_sigma_ggh"          , "", _normSM_sigma_ggh           ) );
-    AddQuantity( new SimplePrediction( "NormSM_sigma_ggh_2"        , "", _normSM_sigma_ggh_2         ) );
-    AddQuantity( new SimplePrediction( "NormSM_sigma_bbh"          , "", _normSM_sigma_bbh           ) );
-    AddQuantity( new SimplePrediction( "NormSM_sigma_qqh"          , "", _normSM_sigma_qqh           ) );
-    AddQuantity( new SimplePrediction( "NormSM_sigma_tth"          , "", _normSM_sigma_tth           ) );
-    AddQuantity( new SimplePrediction( "NormSM_sigma_Wh"           , "", _normSM_sigma_Wh            ) );
-    AddQuantity( new SimplePrediction( "NormSM_sigma_Zh"           , "", _normSM_sigma_Zh            ) );
 
     AddChannels_HpHV    ();
     AddChannels_HpFF    ( 1, _nu, _lepton );
@@ -179,7 +172,23 @@ _slhadatastorageSPheno( NULL ){
         _slhadatastorageSPheno     = factory.CreateSLHAeaSLHADataStorage();
 
     }
-    
+
+    _crossSections.push_back( new FeynHiggsCrossSection( "1.96" ) );
+    _crossSections.push_back( new FeynHiggsCrossSection( "7" ) );
+    _crossSections.push_back( new FeynHiggsCrossSection( "8" ) );
+    _crossSections.push_back( new FeynHiggsCrossSection( "14" ) );
+
+
+    for (unsigned int iCrossSection = 0; iCrossSection< _crossSections.size(); iCrossSection++ ) {
+
+        for ( unsigned int iQuantity = 0; iQuantity < _crossSections.at( iCrossSection )->GetCollectionOfQuantities().GetNumberOfElements(); iQuantity++ ) {
+
+            AddQuantity( _crossSections.at( iCrossSection )->GetCollectionOfQuantities().At( iQuantity ) );
+            
+        }
+
+    }
+
 }
 
 void Fittino::FeynHiggsCalculator::AddChannels_HpNeuCha() {
@@ -229,10 +238,10 @@ void Fittino::FeynHiggsCalculator::AddChannels_H0FF( unsigned int iHiggs, std::s
 
 void Fittino::FeynHiggsCalculator::AddChannels_H0ChaCha( unsigned int iHiggs, std::string higgsName ) {
 
-    AddChannel( higgsName, "~chip1_~chip1", H0ChaCha( iHiggs, 1, 1 ), true, false );
-    AddChannel( higgsName, "~chip1_~chip2", H0ChaCha( iHiggs, 1, 2 ), true, false );
-    AddChannel( higgsName, "~chip2_~chip1", H0ChaCha( iHiggs, 2, 1 ), true, false );
-    AddChannel( higgsName, "~chip2_~chip2", H0ChaCha( iHiggs, 2, 2 ), true, false );
+    AddChannel( higgsName, "~chi1p_~chi1p", H0ChaCha( iHiggs, 1, 1 ), true, false );
+    AddChannel( higgsName, "~chi1p_~chi2p", H0ChaCha( iHiggs, 1, 2 ), true, false );
+    AddChannel( higgsName, "~chi2p_~chi1p", H0ChaCha( iHiggs, 2, 1 ), true, false );
+    AddChannel( higgsName, "~chi2p_~chi2p", H0ChaCha( iHiggs, 2, 2 ), true, false );
 
 }
 
@@ -494,21 +503,14 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     }
 
-    double sqrts = 8;
-    RealType prodxs[nprodxs];
-    FHHiggsProd( &_error, sqrts, prodxs );
 
-    if ( _error != 0 ) {
+    for ( unsigned int iCrossSection = 0; iCrossSection < _crossSections.size(); iCrossSection++ ) {
+
+
+        _crossSections.at( iCrossSection )->CalculatePredictions();
 
     }
 
-    _normSM_sigma_ggh   = ggh ( 1 ) / gghSM( 1 ); 
-    _normSM_sigma_ggh_2 = ggh2( 1 ) / gghSM( 1 );
-    _normSM_sigma_bbh   = bbh ( 1 ) / bbhSM( 1 );
-    _normSM_sigma_qqh   = qqh ( 1 ) / qqhSM( 1 );
-    _normSM_sigma_tth   = tth ( 1 ) / tthSM( 1 );
-    _normSM_sigma_Wh    = Wh  ( 1 ) / WhSM ( 1 ); 
-    _normSM_sigma_Zh    = Zh  ( 1 ) / ZhSM ( 1 );
 
     RealType bsgammaMSSM;
     RealType bsgammaSM;

@@ -24,6 +24,7 @@
 #include "CalculatorBase.h"
 #include "Collection.h"
 #include "PtreeForwardDeclaration.h"
+#include "FeynHiggsCrossSection.h"
 
 
 /*!
@@ -86,14 +87,6 @@ namespace Fittino {
 
       std::string _inputMethod;
 
-      double _normSM_sigma_ggh;
-      double _normSM_sigma_ggh_2;
-      double _normSM_sigma_bbh;
-      double _normSM_sigma_qqh;
-      double _normSM_sigma_tth;
-      double _normSM_sigma_Wh;
-      double _normSM_sigma_Zh;
-
       // FH flavor
       double _bsgammaMSSM;
       double _bsgammaSM;
@@ -140,6 +133,8 @@ namespace Fittino {
       SLHADataStorageBase* _slhadatastorageFeynHiggs;
 
       bool _smallObsSet;
+
+      std::vector<FeynHiggsCrossSection*> _crossSections;
 
 
       /*! \endcond UML */
