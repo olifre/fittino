@@ -158,6 +158,12 @@ extern "C" {
   void setup_pdf_( const int* pdf );
   void setup_rate_uncertainties_( const double dCS[], const double dBR[] );
 
+  void initialize_higgsbounds_chisqtables_();
+  void initialize_higgsbounds_(int* nH, int* nHplus, char *whichexpt);
+  void higgsbounds_input_slha_(char* filename, int* len);
+  void run_higgsbounds_(int* HBresult, int* channel, double* obsratio, int* ncombined );
+  void hb_calc_stats_(double* theoryUncertainty1s, double* chi2WithoutTheory, double* chi2WithTheory, int* bestChannelChi2 );
+
 }
 
 #endif // FITTINO_CHIGGSSIGNALS_H
