@@ -1,10 +1,10 @@
-/* $Id: HiggsBoundsSLHACalculator.cpp 2058 2014-04-07 20:03:16Z mhamer $ */
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        HiggsBoundsSLHACalculator.cpp                                        *
+* File        HiggsBoundsSLHACalculator.cpp                                    *
 *                                                                              *
 * Description Wrapper class for HiggsBounds                                    *
 *                                                                              *
@@ -28,7 +28,7 @@
 #include "SimplePrediction.h"
 #include "Observable.h"
 
-Fittino::HiggsBoundsSLHACalculator::HiggsBoundsSLHACalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree ) 
+Fittino::HiggsBoundsSLHACalculator::HiggsBoundsSLHACalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     : HiggsBoundsCalculator( model, ptree ) {
 
 }
@@ -43,6 +43,6 @@ void Fittino::HiggsBoundsSLHACalculator::setupHiggsBounds() {
     int length = filename.length();
     char charfilename[256];
     sprintf( charfilename, "%s", filename.c_str() );
-    higgsbounds_input_slha_(charfilename, &length );
+    higgsbounds_input_slha_( charfilename, &length );
 
 }
