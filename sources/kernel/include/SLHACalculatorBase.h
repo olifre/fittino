@@ -44,11 +44,6 @@ namespace Fittino {
        *  Standard destructor.
        */
       ~SLHACalculatorBase();
-      SLHADataStorageBase* GetDataStorage();
-      /*!
-       *  Converts a double variable to a string.
-       */
-      std::string          String( double x );
 
     protected:
       std::string          _slhaInputFileName;

@@ -19,6 +19,8 @@
 
 #include <cmath>
 
+#include <boost/lexical_cast.hpp>
+
 #include "CHiggsSignals.h"
 #include "ConfigurationException.h"
 #include "HiggsSignalsSLHACalculator.h"
@@ -345,40 +347,40 @@ void Fittino::HiggsSignalsSLHACalculator::CalculatePredictions() {
 
     _slhaOutputDataStorage->AddBlock( blockName + ":BLOCK " + blockName + ":# Additional predictions" );
 
-    _slhaOutputDataStorage->AddLine( blockName +  ":1:" + String( _R_H_WW )               + ":# R_H_WW" );
-    _slhaOutputDataStorage->AddLine( blockName +  ":2:" + String( _R_H_ZZ )               + ":# R_H_ZZ" );
-    _slhaOutputDataStorage->AddLine( blockName +  ":3:" + String( _R_H_gammagamma )       + ":# R_H_gammagamma" );
-    _slhaOutputDataStorage->AddLine( blockName +  ":4:" + String( _R_H_tautau )           + ":# R_H_tautau" );
-    _slhaOutputDataStorage->AddLine( blockName +  ":5:" + String( _R_H_bb )               + ":# R_H_bb" );
-    _slhaOutputDataStorage->AddLine( blockName +  ":6:" + String( _R_VH_bb )              + ":# R_VH_bb" );
-    _slhaOutputDataStorage->AddLine( blockName +  ":7:" + String( _Gamma_hTotal )         + ":# Gamma_hTotal" );
-    _slhaOutputDataStorage->AddLine( blockName +  ":8:" + String( _BR_hss )               + ":# BR_hss" );
-    _slhaOutputDataStorage->AddLine( blockName +  ":9:" + String( _BR_hcc )               + ":# BR_hcc" );
-    _slhaOutputDataStorage->AddLine( blockName + ":10:" + String( _BR_hbb )               + ":# BR_hbb" );
-    _slhaOutputDataStorage->AddLine( blockName + ":11:" + String( _BR_htt )               + ":# BR_htt" );
-    _slhaOutputDataStorage->AddLine( blockName + ":12:" + String( _BR_hmumu )             + ":# BR_hmumu" );
-    _slhaOutputDataStorage->AddLine( blockName + ":13:" + String( _BR_htautau )           + ":# BR_htautau" );
-    _slhaOutputDataStorage->AddLine( blockName + ":14:" + String( _BR_hWW )               + ":# BR_hWW" );
-    _slhaOutputDataStorage->AddLine( blockName + ":15:" + String( _BR_hZZ )               + ":# BR_hZZ" );
-    _slhaOutputDataStorage->AddLine( blockName + ":16:" + String( _BR_hZgamma )           + ":# BR_hZgamma" );
-    _slhaOutputDataStorage->AddLine( blockName + ":17:" + String( _BR_hgammagamma )       + ":# BR_hgammagamma" );
-    _slhaOutputDataStorage->AddLine( blockName + ":18:" + String( _BR_hgg )               + ":# BR_hgg" );
-    _slhaOutputDataStorage->AddLine( blockName + ":19:" + String( _BR_hss_SM )            + ":# BR_hss_SM" );
-    _slhaOutputDataStorage->AddLine( blockName + ":20:" + String( _BR_hcc_SM )            + ":# BR_hcc_SM" );
-    _slhaOutputDataStorage->AddLine( blockName + ":21:" + String( _BR_hbb_SM )            + ":# BR_hbb_SM" );
-    _slhaOutputDataStorage->AddLine( blockName + ":22:" + String( _BR_htt_SM )            + ":# BR_htt_SM" );
-    _slhaOutputDataStorage->AddLine( blockName + ":23:" + String( _BR_hmumu_SM )          + ":# BR_hmumu_SM" );
-    _slhaOutputDataStorage->AddLine( blockName + ":24:" + String( _BR_htautau_SM )        + ":# BR_htautau_SM" );
-    _slhaOutputDataStorage->AddLine( blockName + ":25:" + String( _BR_hWW_SM )            + ":# BR_hWW_SM" );
-    _slhaOutputDataStorage->AddLine( blockName + ":26:" + String( _BR_hZZ_SM )            + ":# BR_hZZ_SM" );
-    _slhaOutputDataStorage->AddLine( blockName + ":27:" + String( _BR_hZgamma_SM )        + ":# BR_hZgamma_SM" );
-    _slhaOutputDataStorage->AddLine( blockName + ":28:" + String( _BR_hgammagamma_SM )    + ":# BR_hgammagamma_SM" );
-    _slhaOutputDataStorage->AddLine( blockName + ":29:" + String( _BR_hgg_SM )            + ":# BR_hgg_SM" );
-    _slhaOutputDataStorage->AddLine( blockName + ":30:" + String( _BR_hInvisible )        + ":# BR_hjInvisible" );
-    _slhaOutputDataStorage->AddLine( blockName + ":31:" + String( _g2_SM_hgammagamma )    + ":# g2_SM_hgammagamma" );
-    _slhaOutputDataStorage->AddLine( blockName + ":32:" + String( _g2_SM_hgg )            + ":# g2_SM_hgg" );
-    _slhaOutputDataStorage->AddLine( blockName + ":33:" + String( _Gamma_hTotal_Penalty ) + ":# Gamma_hTotal_Penalty" );
-    _slhaOutputDataStorage->AddLine( blockName + ":34:" + String( _BR_hInvisible_Limit )  + ":# BR_hInvisible_Limit" );
+    _slhaOutputDataStorage->AddLine( blockName +  ":1:" + boost::lexical_cast<std::string>( _R_H_WW )               + ":# R_H_WW" );
+    _slhaOutputDataStorage->AddLine( blockName +  ":2:" + boost::lexical_cast<std::string>( _R_H_ZZ )               + ":# R_H_ZZ" );
+    _slhaOutputDataStorage->AddLine( blockName +  ":3:" + boost::lexical_cast<std::string>( _R_H_gammagamma )       + ":# R_H_gammagamma" );
+    _slhaOutputDataStorage->AddLine( blockName +  ":4:" + boost::lexical_cast<std::string>( _R_H_tautau )           + ":# R_H_tautau" );
+    _slhaOutputDataStorage->AddLine( blockName +  ":5:" + boost::lexical_cast<std::string>( _R_H_bb )               + ":# R_H_bb" );
+    _slhaOutputDataStorage->AddLine( blockName +  ":6:" + boost::lexical_cast<std::string>( _R_VH_bb )              + ":# R_VH_bb" );
+    _slhaOutputDataStorage->AddLine( blockName +  ":7:" + boost::lexical_cast<std::string>( _Gamma_hTotal )         + ":# Gamma_hTotal" );
+    _slhaOutputDataStorage->AddLine( blockName +  ":8:" + boost::lexical_cast<std::string>( _BR_hss )               + ":# BR_hss" );
+    _slhaOutputDataStorage->AddLine( blockName +  ":9:" + boost::lexical_cast<std::string>( _BR_hcc )               + ":# BR_hcc" );
+    _slhaOutputDataStorage->AddLine( blockName + ":10:" + boost::lexical_cast<std::string>( _BR_hbb )               + ":# BR_hbb" );
+    _slhaOutputDataStorage->AddLine( blockName + ":11:" + boost::lexical_cast<std::string>( _BR_htt )               + ":# BR_htt" );
+    _slhaOutputDataStorage->AddLine( blockName + ":12:" + boost::lexical_cast<std::string>( _BR_hmumu )             + ":# BR_hmumu" );
+    _slhaOutputDataStorage->AddLine( blockName + ":13:" + boost::lexical_cast<std::string>( _BR_htautau )           + ":# BR_htautau" );
+    _slhaOutputDataStorage->AddLine( blockName + ":14:" + boost::lexical_cast<std::string>( _BR_hWW )               + ":# BR_hWW" );
+    _slhaOutputDataStorage->AddLine( blockName + ":15:" + boost::lexical_cast<std::string>( _BR_hZZ )               + ":# BR_hZZ" );
+    _slhaOutputDataStorage->AddLine( blockName + ":16:" + boost::lexical_cast<std::string>( _BR_hZgamma )           + ":# BR_hZgamma" );
+    _slhaOutputDataStorage->AddLine( blockName + ":17:" + boost::lexical_cast<std::string>( _BR_hgammagamma )       + ":# BR_hgammagamma" );
+    _slhaOutputDataStorage->AddLine( blockName + ":18:" + boost::lexical_cast<std::string>( _BR_hgg )               + ":# BR_hgg" );
+    _slhaOutputDataStorage->AddLine( blockName + ":19:" + boost::lexical_cast<std::string>( _BR_hss_SM )            + ":# BR_hss_SM" );
+    _slhaOutputDataStorage->AddLine( blockName + ":20:" + boost::lexical_cast<std::string>( _BR_hcc_SM )            + ":# BR_hcc_SM" );
+    _slhaOutputDataStorage->AddLine( blockName + ":21:" + boost::lexical_cast<std::string>( _BR_hbb_SM )            + ":# BR_hbb_SM" );
+    _slhaOutputDataStorage->AddLine( blockName + ":22:" + boost::lexical_cast<std::string>( _BR_htt_SM )            + ":# BR_htt_SM" );
+    _slhaOutputDataStorage->AddLine( blockName + ":23:" + boost::lexical_cast<std::string>( _BR_hmumu_SM )          + ":# BR_hmumu_SM" );
+    _slhaOutputDataStorage->AddLine( blockName + ":24:" + boost::lexical_cast<std::string>( _BR_htautau_SM )        + ":# BR_htautau_SM" );
+    _slhaOutputDataStorage->AddLine( blockName + ":25:" + boost::lexical_cast<std::string>( _BR_hWW_SM )            + ":# BR_hWW_SM" );
+    _slhaOutputDataStorage->AddLine( blockName + ":26:" + boost::lexical_cast<std::string>( _BR_hZZ_SM )            + ":# BR_hZZ_SM" );
+    _slhaOutputDataStorage->AddLine( blockName + ":27:" + boost::lexical_cast<std::string>( _BR_hZgamma_SM )        + ":# BR_hZgamma_SM" );
+    _slhaOutputDataStorage->AddLine( blockName + ":28:" + boost::lexical_cast<std::string>( _BR_hgammagamma_SM )    + ":# BR_hgammagamma_SM" );
+    _slhaOutputDataStorage->AddLine( blockName + ":29:" + boost::lexical_cast<std::string>( _BR_hgg_SM )            + ":# BR_hgg_SM" );
+    _slhaOutputDataStorage->AddLine( blockName + ":30:" + boost::lexical_cast<std::string>( _BR_hInvisible )        + ":# BR_hjInvisible" );
+    _slhaOutputDataStorage->AddLine( blockName + ":31:" + boost::lexical_cast<std::string>( _g2_SM_hgammagamma )    + ":# g2_SM_hgammagamma" );
+    _slhaOutputDataStorage->AddLine( blockName + ":32:" + boost::lexical_cast<std::string>( _g2_SM_hgg )            + ":# g2_SM_hgg" );
+    _slhaOutputDataStorage->AddLine( blockName + ":33:" + boost::lexical_cast<std::string>( _Gamma_hTotal_Penalty ) + ":# Gamma_hTotal_Penalty" );
+    _slhaOutputDataStorage->AddLine( blockName + ":34:" + boost::lexical_cast<std::string>( _BR_hInvisible_Limit )  + ":# BR_hInvisible_Limit" );
 
     _slhaOutputDataStorage->WriteFile( _slhaOutputFileName );
 

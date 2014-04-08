@@ -18,9 +18,7 @@
 *******************************************************************************/
 
 #include "Factory.h"
-#include "PhysicsModel.h"
 #include "SLHACalculatorBase.h"
-#include "SLHAeaSLHADataStorage.h"
 
 Fittino::SLHACalculatorBase::SLHACalculatorBase( const PhysicsModel* model )
     : CalculatorBase( model ),
@@ -35,23 +33,5 @@ Fittino::SLHACalculatorBase::SLHACalculatorBase( const PhysicsModel* model )
 }
 
 Fittino::SLHACalculatorBase::~SLHACalculatorBase() {
-
-}
-
-std::string Fittino::SLHACalculatorBase::String( double x ) {
-
-    std::stringstream tmpStream_x;
-    std::string tmpString_x;
-
-    tmpStream_x << x;
-    tmpStream_x >> tmpString_x;
-
-    return tmpString_x;
-
-}
-
-Fittino::SLHADataStorageBase* Fittino::SLHACalculatorBase::GetDataStorage() {
-
-    return _slhaOutputDataStorage;
 
 }
