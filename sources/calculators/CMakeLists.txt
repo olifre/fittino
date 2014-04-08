@@ -60,6 +60,8 @@ ENDIF()
 IF(NOT HIGGSBOUNDS_FOUND)
 
     LIST(REMOVE_ITEM sources "src/HiggsBoundsCalculator.cpp")
+    LIST(REMOVE_ITEM sources "src/HiggsBoundsSLHACalculator.cpp")
+    LIST(REMOVE_ITEM sources "src/HiggsBoundsHECCalculator.cpp")
 
 ENDIF()
 
