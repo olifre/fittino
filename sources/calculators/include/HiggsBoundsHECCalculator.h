@@ -1,10 +1,10 @@
-/* $Id: HiggsBoundsHECCalculator.h 2058 2014-04-07 20:03:16Z mhamer $ */
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        HiggsBoundsHECCalculator.h                                          *
+* File        HiggsBoundsHECCalculator.h                                       *
 *                                                                              *
 * Description Wrapper class for HiggsBounds                                    *
 *                                                                              *
@@ -44,6 +44,7 @@ namespace Fittino {
        */
       ~HiggsBoundsHECCalculator();
 
+      /*! \cond UML */
     private:
       virtual void setupHiggsBounds();
 

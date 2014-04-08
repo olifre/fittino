@@ -1,8 +1,10 @@
+/* $Id$ */
+
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        HiggsBoundsHECCalculator.cpp                                        *
+* File        HiggsBoundsHECCalculator.cpp                                     *
 *                                                                              *
 * Description Wrapper class for HiggsBounds                                    *
 *                                                                              *
