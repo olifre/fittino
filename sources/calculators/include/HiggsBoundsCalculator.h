@@ -92,54 +92,8 @@ namespace Fittino {
 
     private:
       void CallHiggsBounds();
-      double call_HiggsBoundsWithSLHA();
-      double call_HiggsBoundsEffc();
-      double call_HiggsBounds();
+      virtual void setupHiggsBounds();
       double RunHiggsBounds();
-
-    private:
-      double const& _BR_hihjhj;
-      double const& _g_hiss_s;
-      double const& _g_hiss_p;
-      double const& _g_hicc_s;
-      double const& _g_hicc_p;
-      double const& _g_hibb_s;
-      double const& _g_hibb_p;
-      double const& _g_hitt_s;
-      double const& _g_hitt_p;
-      double const& _g_himumu_s;
-      double const& _g_himumu_p;
-      double const& _g_hitautau_s;
-      double const& _g_hitautau_p;
-      double const& _g_hiWW;
-      double const& _g_hiZZ;
-      double const& _g_hiZga;
-      double const& _g_higaga;
-      double const& _g_higg;
-      double const& _g_higgZ;
-      double const& _g_hihjZ;
-      double const& _GammaInvisible;
-      double const& _mass_h;
-      
-      double        _BR_hInvisible;
-      double        _Gamma_hTotal;
-
-    private:
-      // for details on this function, see HiggsSignalsSLHACalculator. I'll replicate the code here for the time, but maybe we can think of a better solution.
-      double        CalculateBRhInvisible( double Gamma_hTotal, double Gamma_hInvisible );
-      double        CalculateGammahTotal  ( double mass_h,
-                                            double g2_hiss_s,
-                                            double g2_hicc_s,
-                                            double g2_hibb_s,
-                                            double g2_hitt_s,
-                                            double g2_himumu_s,
-                                            double g2_hitautau_s,
-                                            double g2_hiWW,
-                                            double g2_hiZZ,
-                                            double g2_hiZga,
-                                            double g2_higaga,
-                                            double g2_higg,
-                                            double Gamma_hInvisible );
 
       /*! \endcond UML */
 
