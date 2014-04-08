@@ -34,7 +34,6 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const PhysicsModel* model, 
     : SLHACalculatorBase( model ),
       _executor( "./SPheno", "SPheno" ) {
 
-    _executableName     = "./SPheno";
     _name               = "SPheno";
     _tag                = "SPheno";
     _slhaInputFileName  = "LesHouches.in";

@@ -51,7 +51,6 @@ namespace Fittino {
       /*! \cond UML */
     private:
       int                    _returnValue;
-      std::string            _executableName;
       Executor               _executor;
       std::vector<SLHALine*> _lines;
 
