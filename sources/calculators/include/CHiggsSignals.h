@@ -75,10 +75,16 @@ extern "C" {
                      double*    R_H_bb,
                      double*    R_VH_bb );
 
-  void initialize_higgssignals_( const int* nHzero, const int* nHplus, const char* expdata, int expdata_length );
+  void initialize_higgsbounds_( int* nH, int* nHplus, char *whichexpt );
+  void initialize_higgsbounds_chisqtables_();
 
-  void initialize_higgssignals_for_fittino_  ( const int* nHzero, const int* nHplus );
+  void initialize_higgssignals_( const int* nHzero, const int* nHplus, const char* expdata, int expdata_length );
+  void initialize_higgssignals_for_fittino_( const int* nHzero, const int* nHplus );
   void initialize_higgssignals_latestresults_( const int* nHzero, const int* nHplus );
+
+  void hb_calc_stats_( double* theoryUncertainty1s, double* chi2WithoutTheory, double* chi2WithTheory, int* bestChannelChi2 );
+
+  void higgsbounds_input_slha_( char* filename, int* len );
 
   void higgsbounds_neutral_input_effc_( const double* mass_h,
                                         const double* GammaTotal,
@@ -110,7 +116,7 @@ extern "C" {
                                         const double* CS_lep_bbhj_ratio,
                                         const double* CS_lep_tautauhj_ratio,
                                         const double* CS_lep_hjhi_ratio,
-                                        const double* CS_lep_hjhi_ratio1, // ?
+                                        const double* CS_lep_hjhi_ratio1,
                                         const double* CS_tev_hj_ratio,
                                         const double* CS_tev_hjb_ratio,
                                         const double* CS_tev_hjW_ratio,
@@ -144,6 +150,8 @@ extern "C" {
 
   void higgssignals_neutral_input_massuncertainty_( const double* dm );
 
+  void run_higgsbounds_( int* HBresult, int* channel, double* obsratio, int* ncombined );
+
   void run_higgssignals_( const int* mode,
                           double*    Chisq_mu,
                           double*    Chisq_mh,
@@ -157,12 +165,6 @@ extern "C" {
   void setup_output_level_( const int* output_level );
   void setup_pdf_( const int* pdf );
   void setup_rate_uncertainties_( const double dCS[], const double dBR[] );
-
-  void initialize_higgsbounds_chisqtables_();
-  void initialize_higgsbounds_(int* nH, int* nHplus, char *whichexpt);
-  void higgsbounds_input_slha_(char* filename, int* len);
-  void run_higgsbounds_(int* HBresult, int* channel, double* obsratio, int* ncombined );
-  void hb_calc_stats_(double* theoryUncertainty1s, double* chi2WithoutTheory, double* chi2WithTheory, int* bestChannelChi2 );
 
 }
 
