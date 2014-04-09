@@ -29,27 +29,23 @@
  *  \todo Long-term: Find a way to use xml style file online.
  *  \todo Long-term: Discuss Calculator interface (Mathias).
  *  \todo Long-term: Further develop plotters (Mathias).
+ *  \todo Long-term: Add all theorycodes to SuperBuild.
+ *  \todo Long-term: Make HiggsBounds/HiggsSignals usable with ifort
  *  \todo Long-term: Add tests ?
  *  \todo Remove MathTools (Matthias).
  *  \todo Remove again the Chi2Contribution (or at least print them) (Matthias).
- *  \todo Add MicromegasCalculator (library based) (Bjoern).
- *  \todo Add SuperIsoCalculator (library based) (Bjoern).
  *  \todo Add HiggsBoundsCalculator (needs threading, look at fittino1 for that).
- *  \todo Add AstroFitCalculator (using Executor class).
  *  \todo Add DarkSUSYCalculator.
- *  \todo Add FormulaCalculator (a wrapper around TFormula).
  *  \todo Add HiggsSignalsPartonicInputCalculator.
  *  \todo Add LSPCalculator ( a calculator which determines the LSP )
  *  \todo Add RandomSampler, a sampler with fixed sampling density (usefull for random grid production).
- *  \todo Add buggy point removal.
- *  \todo Add toy plots.
- *  \todo Make sure AstroCalculator works with AstroFit database.
+ *  \todo Add buggy point removal. (Matthias?)
+ *  \todo Add toy plots. (Matthias?)
+ *  \todo Make sure AstroCalculator works with AstroFit database. (Matthias?)
  *  \todo Implement the corrrection of the FH decoupling limit (use FormulaCalculator?).
  *  \todo Common base class for different HS calculators.
  *  \todo Implement toys in the common base class (or temporarily in HiggsSignalsHECCalculator).
  *  \todo In HiggsSignals: Add wrapper functions for modul functions to HiggsSignals_subroutines.
- *  \todo Check if all branch names are unique (probably in AnalysisTool::InitializeBranches).
- *  \todo Fix that all model predictions are printed with value 0 in first TreeSampler iteration.
  *  \todo Use global random number generator (gRandom or better a singleton wrapper).
  *  \todo Update Observable - Prediction relation.
  *  \todo MeasuredErrors: Allow arbitrary number. Give names.
