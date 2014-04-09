@@ -30,7 +30,7 @@ Fittino::Database& Fittino::Database::GetInstance() {
 
 int Fittino::Database::GetPID( std::string particle )  {
 
-    return _pid[particle];
+    return _pid.at( particle );
 
 }
 

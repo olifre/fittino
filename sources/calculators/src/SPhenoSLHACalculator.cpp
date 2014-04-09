@@ -126,18 +126,18 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const PhysicsModel* model, 
 
     AddBR( "~uL", "~chi10", "u" );
     AddBR( "~uL", "~chi20", "u" );
-    AddBR( "~uL", "~chi1+", "d" );
-    AddBR( "~uL", "~chi2+", "d" );
+    AddBR( "~uL", "~chi1p", "d" );
+    AddBR( "~uL", "~chi2p", "d" );
 
     AddBR( "~uR", "~chi10", "u" );
     AddBR( "~uR", "~chi20", "u" );
-    AddBR( "~uR", "~chi1+", "d" );
-    AddBR( "~uR", "~chi2+", "d" );
+    AddBR( "~uR", "~chi1p", "d" );
+    AddBR( "~uR", "~chi2p", "d" );
 
     AddBR( "~t1", "~chi10", "t" );
     AddBR( "~t1", "~chi20", "t" );
-    AddBR( "~t1", "~chi1+", "b" );
-    AddBR( "~t1", "~chi2+", "b" );
+    AddBR( "~t1", "~chi1p", "b" );
+    AddBR( "~t1", "~chi2p", "b" );
 
     AddBR( "~b1", "~chi10", "b"  );
     AddBR( "~b1", "~chi20", "b"  );

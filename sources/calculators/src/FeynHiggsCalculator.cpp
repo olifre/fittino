@@ -403,6 +403,20 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
         
     }
 
+    if ( boost::filesystem::exists( "FeynHiggs.spc" ) ) {
+
+      boost::filesystem::rename( "FeynHiggs.spc" , "FeynHiggs.spc.last" );
+        
+    }
+
+    if ( boost::filesystem::exists( "SPheno_FeynHiggs.spc" ) ) {
+
+      boost::filesystem::rename( "SPheno_FeynHiggs.spc" , "SPheno_FeynHiggs.spc.last" );
+        
+    }
+
+
+
     Redirector redirector( outputFile );
     redirector.Start();
 
@@ -606,7 +620,7 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
         int key = 255;
         FHOutputSLHA( &_error, slhadata, key );
-        SLHAWrite( &_error, slhadata, "FeynHiggs.slha");
+        SLHAWrite( &_error, slhadata, "FeynHiggs.spc");
 
     }
 
@@ -641,7 +655,7 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     if ( _inputMethod == "SLHA" ) {
 
         _slhadatastorageSPheno   ->ReadFile("SPheno.spc");
-        _slhadatastorageFeynHiggs->ReadFile("FeynHiggs.slha");
+        _slhadatastorageFeynHiggs->ReadFile("FeynHiggs.spc");
     
         _slhadatastorageSPheno->SetEntry( _mass_h0, "MASS", 1, "25", "", "", "" );
         _slhadatastorageSPheno->SetEntry( _mass_H0, "MASS", 1, "35", "", "", "" );
@@ -657,7 +671,7 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
         _slhadatastorageSPheno->ReplaceBlock( "36", _slhadatastorageFeynHiggs->GetBlock( "36" ) );
         _slhadatastorageSPheno->ReplaceBlock( "37", _slhadatastorageFeynHiggs->GetBlock( "37" ) );
 
-        _slhadatastorageSPheno->WriteFile("SPheno_FeynHiggs.slha");
+        _slhadatastorageSPheno->WriteFile("SPheno_FeynHiggs.spc");
 
     }
 

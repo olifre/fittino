@@ -19,6 +19,7 @@
 
 #include <fstream>
 
+#include "boost/filesystem.hpp"
 #include <boost/property_tree/ptree.hpp>
 
 #include "AstroFitCalculator.h"
@@ -48,6 +49,21 @@ Fittino::AstroFitCalculator::~AstroFitCalculator() {
 }
 
 void Fittino::AstroFitCalculator::CalculatePredictions() {
+
+  if ( boost::filesystem::exists( "AstroFit.spc" ) ) {
+
+    boost::filesystem::rename( "AstroFit.spc" , "AstroFit.spc.last" );
+
+  }
+
+  if ( boost::filesystem::exists( "afout.txt" ) ) {
+
+    boost::filesystem::rename( "afout.txt" , "afout.txt.last" );
+
+  }
+
+
+    boost::filesystem::copy_file( "SPheno_FeynHiggs.spc", "AstroFit.spc" );
 
     _executor.Execute();
 
