@@ -24,6 +24,8 @@
   Fittino
 
   Boost  (http://www.boost.org)
+  CMake  (http://www.cmake.org)
+  GCC    (http://gcc.gnu.org)
   ROOT   (http://root.cern.ch/drupal)
 
 2. Installation
