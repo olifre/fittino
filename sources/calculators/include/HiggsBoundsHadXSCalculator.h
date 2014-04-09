@@ -1,10 +1,10 @@
-/* $Id: HiggsBoundsHadXSCalculator.h 2067 2014-04-08 20:40:11Z uhlenbrock@PHYSIK.UNI-BONN.DE $ */
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        HiggsBoundsHadXSCalculator.h                                       *
+* File        HiggsBoundsHadXSCalculator.h                                     *
 *                                                                              *
 * Description Wrapper class for HiggsBounds                                    *
 *                                                                              *
@@ -134,9 +134,9 @@ namespace Fittino {
       const double& _normSM_xs_Wh;
       const double& _normSM_xs_Zh;
 
-  };
-
       /*! \endcond UML */
+
+  };
 
 }
 

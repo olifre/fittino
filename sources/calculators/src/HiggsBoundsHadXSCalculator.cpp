@@ -1,10 +1,10 @@
-/* $Id: HiggsBoundsHadXSCalculator.cpp 2067 2014-04-08 20:40:11Z uhlenbrock@PHYSIK.UNI-BONN.DE $ */
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        HiggsBoundsHadXSCalculator.cpp                                     *
+* File        HiggsBoundsHadXSCalculator.cpp                                   *
 *                                                                              *
 * Description Wrapper class for HiggsBounds                                    *
 *                                                                              *
