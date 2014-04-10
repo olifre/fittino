@@ -19,6 +19,7 @@
 
 #include "boost/lexical_cast.hpp"
 
+#include "ConfigurationException.h"
 #include "Database.h"
 
 Fittino::Database& Fittino::Database::GetInstance() {
@@ -30,7 +31,16 @@ Fittino::Database& Fittino::Database::GetInstance() {
 
 int Fittino::Database::GetPID( std::string particle )  {
 
+  try {
+
     return _pid.at( particle );
+
+  }
+  catch ( const std::out_of_range& e ) {
+
+    throw ConfigurationException( "PID of " + particle + " not known." );
+
+  }
 
 }
 
@@ -83,7 +93,7 @@ Fittino::Database::Database() {
     AddSUSYParticle( 1000011, "~eL",     "~eLbar"     );
     AddSUSYParticle( 1000012, "~nueL",   "~nueLbar"   );
     AddSUSYParticle( 1000013, "~muL",    "~muLbar"    );
-    AddSUSYParticle( 1000014, "~numueL", "~numueLbar" );
+    AddSUSYParticle( 1000014, "~numuL",  "~numuLbar" );
     AddSUSYParticle( 1000015, "~tau1",   "~tau1bar"   );
     AddSUSYParticle( 1000016, "~nutauL", "~nutauLbar" );
 
