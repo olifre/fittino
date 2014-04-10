@@ -125,7 +125,28 @@ int Fittino::AnalysisTool::GetNumberOfStatusParameters() const {
 
 }
 
-void Fittino::AnalysisTool::AddBranch( TTree* tree, std::string name, std::string type, const void* address ) {
+void Fittino::AnalysisTool::AddBranch( TTree* tree, std::string name, const double& value ) {
+
+  CheckUniqueness( tree, name );
+
+  TBranch* branch = tree->Branch( name.c_str(), &const_cast<double&>( value )  );
+
+  branch->GetLeaf( name.c_str() )->SetTitle( "" ) ;
+
+}
+
+void Fittino::AnalysisTool::AddBranch( TTree* tree, std::string name, const std::string& value ) {
+
+  CheckUniqueness( tree, name );
+
+  TBranch* branch = tree->Branch( name.c_str(), &const_cast<std::string&>( value )  );
+
+  branch->GetLeaf( name.c_str() )->SetTitle( "" ) ;
+
+}
+
+void Fittino::AnalysisTool::CheckUniqueness(TTree* tree, std::string name ) const {
+
 
     TObjArray *arrayOfLeaves = tree->GetListOfLeaves();
 
@@ -140,10 +161,6 @@ void Fittino::AnalysisTool::AddBranch( TTree* tree, std::string name, std::strin
         }
 
     }
-
-    TBranch* branch = tree->Branch( name.c_str(), const_cast<void*>( address ), ( name + "/" + type ).c_str() );
-
-    branch->GetLeaf( name.c_str() )->SetTitle( "" );
 
 }
 
@@ -183,8 +200,7 @@ void Fittino::AnalysisTool::InitializeBranches() {
 
         AddBranch( _tree,
                    _model->GetCollectionOfQuantities().At( i )->GetName(),
-                   "D",
-                   &_model->GetCollectionOfQuantities().At( i )->GetValue() );
+                   _model->GetCollectionOfQuantities().At( i )->GetValue() );
 
     }
 
@@ -192,8 +208,7 @@ void Fittino::AnalysisTool::InitializeBranches() {
 
         AddBranch( _tree,
                    _model->GetCollectionOfStringVariables().At( i )->GetName(),
-                   "C",
-                   _model->GetCollectionOfStringVariables().At( i )->GetValue().c_str() );
+                   _model->GetCollectionOfStringVariables().At( i )->GetValue() );
 
     }
 
@@ -201,8 +216,7 @@ void Fittino::AnalysisTool::InitializeBranches() {
 
         AddBranch( _tree,
                    _model->GetCollectionOfChi2Contributions().At( i )->GetName(),
-                   "D",
-                   &_model->GetCollectionOfChi2Contributions().At( i )->GetValue() );
+                   _model->GetCollectionOfChi2Contributions().At( i )->GetValue() );
 
     }
 
@@ -210,8 +224,7 @@ void Fittino::AnalysisTool::InitializeBranches() {
 
         AddBranch( _tree,
                    GetStatusParameterVector()->at( i )->GetName(),
-                   "D",
-                   &GetStatusParameterVector()->at( i )->GetValue() );
+                   GetStatusParameterVector()->at( i )->GetValue() );
 
     }
 
@@ -221,8 +234,7 @@ void Fittino::AnalysisTool::InitializeBranches() {
 
         AddBranch( _metaDataTree,
                    _model->GetCollectionOfMetaDataDoubleVariables().At( i )->GetName(),
-                   "D",
-                   &_model->GetCollectionOfMetaDataDoubleVariables().At( i )->GetValue() );
+                   _model->GetCollectionOfMetaDataDoubleVariables().At( i )->GetValue() );
 
     }
 

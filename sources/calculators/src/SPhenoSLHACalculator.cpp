@@ -39,7 +39,7 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const PhysicsModel* model, 
     _slhaInputFileName  = "LesHouches.in";
     _slhaOutputFileName = "SPheno.spc";
 
-    _executor.SetCompletionTimeout( 5 );
+    _executor.SetCompletionTimeout( 20 );
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
 

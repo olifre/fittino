@@ -173,10 +173,20 @@ namespace Fittino {
        */
       int                           GetNumberOfStatusParameters() const;
       /*!
-       *  Checks for uniqueness of the branch name and adds branch to tree.
+       *  Adds branch to tree.
        *  \todo Create a wrapper class for TTree and make this a member function of that class.
        */
-      void                          AddBranch( TTree* tree, std::string name, std::string type, const void* address );
+      void                          AddBranch( TTree* tree, std::string name, const double& value );
+      /*!
+       *  Adds branch to tree.
+       *  \todo Create a wrapper class for TTree and make this a member function of that class.
+       */
+      void                          AddBranch( TTree* tree, std::string name, const std::string& value );
+      /*!
+       *  Checks for uniqueness of the branch name. 
+       *  \todo Create a wrapper class for TTree and make this a member function of that class.
+       */
+      void                          CheckUniqueness( TTree* tree, std::string name ) const; 
       void                          ExecuteAnalysisTool();
       void                          InitializeAnalysisTool();
       void                          InitializeBranches();
