@@ -74,6 +74,7 @@ namespace Fittino {
 
     private:
       void                CreateChi2Contributions( const boost::property_tree::ptree& ptree );
+      double              InterpolateND( THnSparse* histogram, std::vector<double> parameterValues );
 
   };
 
