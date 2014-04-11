@@ -62,6 +62,7 @@ namespace Fittino {
     public:
       virtual void        CalculatePredictions();
       virtual void        Initialize();
+      virtual void        SetupMeasuredValues();
       void                AddAnalysis( std::string name, std::string fileName, std::string histName, std::vector<std::string> relevantParameters );
       void                UpdateAnalysisHistogram( std::string name, std::string fileName, std::string newHistogramName, std::vector<std::string> relevantParameters );
 
@@ -71,9 +72,12 @@ namespace Fittino {
       std::map<std::string, TH3D*>                    _chi2Histograms3D;
       std::map<std::string, THnSparseD*>              _chi2HistogramsnD;
       std::map<std::string, std::vector<std::string> > _relevantParametersMap;
+      std::map<std::string, double>                   _chi2Values;
+      std::map<std::string, std::string>              _fileNames;
+      std::map<std::string, std::string>              _histogramNames;
+      std::map<std::string, int>                      _nObs;
 
     private:
-      void                CreateChi2Contributions( const boost::property_tree::ptree& ptree );
       double              InterpolateND( THnSparse* histogram, std::vector<double> parameterValues );
 
   };

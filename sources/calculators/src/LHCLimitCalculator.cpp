@@ -39,9 +39,9 @@
 #include "ModelParameter.h"
 #include "LHCLimitCalculator.h"
 #include "SimpleDataStorage.h"
+#include "SimplePrediction.h"
 #include "ConfigurationException.h"
 #include "Chi2ContributionBase.h"
-#include "LHCChi2Contribution.h"
 #include "Observable.h"
 
 Fittino::LHCLimitCalculator::LHCLimitCalculator( const PhysicsModel* model )
@@ -55,7 +55,29 @@ Fittino::LHCLimitCalculator::LHCLimitCalculator( const PhysicsModel* model, cons
     : CalculatorBase( model ) {
 
     _name = "LHCLimitCalculator";
-    CreateChi2Contributions( ptree );
+    
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree.get_child("Chi2Contributions") ) {
+        std::string analysisName = node.second.get<std::string>( "Name" );
+        _fileNames.insert( std::pair<std::string, std::string>( analysisName, node.second.get<std::string>( "FileName" ) ) );
+        _histogramNames.insert( std::pair<std::string, std::string>( analysisName, node.second.get<std::string>( "HistogramName" ) ) );
+        _nObs.insert( std::pair<std::string, int>( analysisName, node.second.get<int>( "NObs", 0 ) ) );
+        
+        
+        
+        std::vector<std::string> relevantParameters;
+        BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree ) {
+            if( node.first == "RelevantParameter" ) {
+               relevantParameters.push_back( node.second.data() );
+            }
+        }
+        
+        std::stringstream nObs_ss;
+        nObs_ss << _nObs.at( analysisName );
+        std::string actualHistogramName = _histogramNames.at( analysisName ) + "_nObs_" + nObs_ss.str();
+        AddAnalysis( analysisName, _fileNames.at( analysisName ), actualHistogramName, relevantParameters );
+        
+
+    }
 
 }
 
@@ -70,8 +92,9 @@ void Fittino::LHCLimitCalculator::AddAnalysis( std::string name, std::string fil
 
 
     _relevantParametersMap.insert( std::pair<std::string, std::vector<std::string> >( name, relevantParameters ) );
-    _simpleOutputDataStorage->AddEntry( name, 0. );
-    
+    _chi2Values.insert( std::pair<std::string,double>( name, 0. ) );
+    AddQuantity( new SimplePrediction( name+"_chi2", "", _chi2Values.at(name) ) );
+
     // save the old gDirectory:
     TDirectory *tempDir = gDirectory;
 
@@ -162,37 +185,20 @@ void Fittino::LHCLimitCalculator::CalculatePredictions() {
 
 
   for( std::map<std::string, TH1D*>::const_iterator itr = _chi2Histograms1D.begin(); itr != _chi2Histograms1D.end(); ++itr ) {
-    //int binx = (*itr).second->GetXaxis()->FindFixBin( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(0))->GetValue() );
-    //_simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> GetBinContent( binx );
-    //_simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> Interpolate( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(0))->GetValue() );
-    _simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> Interpolate( parameterValueMap.at((*itr).first).at(0) );
+    _chi2Values.at( (*itr).first ) = (*itr).second -> Interpolate( parameterValueMap.at((*itr).first).at(0) );
   }
   
   for( std::map<std::string, TH2D*>::const_iterator itr = _chi2Histograms2D.begin(); itr != _chi2Histograms2D.end(); ++itr ) {
-    //int binx = (*itr).second->GetXaxis()->FindFixBin( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(0))->GetValue() );
-    //int biny = (*itr).second->GetXaxis()->FindFixBin( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(1))->GetValue() );
-    //_simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> GetBinContent( binx, biny );
-    //_simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> Interpolate( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(0))->GetValue(), _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(1))->GetValue() );
-    _simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> Interpolate( parameterValueMap.at((*itr).first).at(0), parameterValueMap.at((*itr).first).at(1) );
+    _chi2Values.at( (*itr).first ) = (*itr).second -> Interpolate( parameterValueMap.at((*itr).first).at(0), parameterValueMap.at((*itr).first).at(1) );
  }
   
   for( std::map<std::string, TH3D*>::const_iterator itr = _chi2Histograms3D.begin(); itr != _chi2Histograms3D.end(); ++itr ) {
-    //int binx = (*itr).second->GetXaxis()->FindFixBin( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(0))->GetValue() );
-    //int biny = (*itr).second->GetXaxis()->FindFixBin( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(1))->GetValue() );
-    //int binz = (*itr).second->GetXaxis()->FindFixBin( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(2))->GetValue() );
-    //_simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> GetBinContent( binx, biny, binz );
-    //_simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> Interpolate( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(0))->GetValue(), _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(1))->GetValue(), _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(2))->GetValue() );
-    _simpleOutputDataStorage->GetMap()->at( (*itr).first ) = (*itr).second -> Interpolate( parameterValueMap.at((*itr).first).at(0), parameterValueMap.at((*itr).first).at(1), parameterValueMap.at((*itr).first).at(2) );
+    
+    _chi2Values.at( (*itr).first ) = (*itr).second -> Interpolate( parameterValueMap.at((*itr).first).at(0), parameterValueMap.at((*itr).first).at(1), parameterValueMap.at((*itr).first).at(2) );
   }
 
   for( std::map<std::string, THnSparseD*>::const_iterator itr = _chi2HistogramsnD.begin(); itr != _chi2HistogramsnD.end(); ++itr ) {
-    /*
-    std::vector<double> parameterValues;
-    for( unsigned int i = 0; i < _relevantParametersMap.at( (*itr).first).size(); ++i ) {
-      parameterValues.push_back( _model->GetCollectionOfParameters().At( _relevantParametersMap.at((*itr).first).at(i))->GetValue() );
-    }
-    */
-    _simpleOutputDataStorage->GetMap()->at( (*itr).first ) = InterpolateND( (*itr).second, parameterValueMap.at((*itr).first) ); 
+    _chi2Values.at( (*itr).first ) = InterpolateND( (*itr).second, parameterValueMap.at((*itr).first) ); 
   
   }
 
@@ -224,18 +230,6 @@ void Fittino::LHCLimitCalculator::UpdateAnalysisHistogram( std::string name, std
   
   // reset the directory:
   gDirectory = tempDir;
-
-}
-
-void Fittino::LHCLimitCalculator::CreateChi2Contributions( const boost::property_tree::ptree& ptree ) {
-
-    Factory factory;
-
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree.get_child("Chi2Contributions") ) {
-        
-       AddChi2Contribution( factory.CreateChi2Contribution( node.second, this ) );
-
-    }
 
 }
 
@@ -337,5 +331,26 @@ double Fittino::LHCLimitCalculator::InterpolateND( THnSparse *histogram, std::ve
 
   // all done. return interplated value:
   return referenceValues.at( 0 );
+
+}
+
+void Fittino::LHCLimitCalculator::SetupMeasuredValues() {
+
+    for( std::map<std::string, std::string>::const_iterator itr = _fileNames.begin(); itr != _fileNames.end(); ++itr ) { 
+    
+        std::string observableName = (*itr).first + "_NObs";
+        int newNObs = 0;
+        for( int i = 0; i < _model->GetObservableVector()->size(); ++i ) {
+            if( observableName == _model->GetObservableVector()->at(i)->GetPrediction()->GetName() ) {
+                newNObs = (int)_model->GetObservableVector()->at(i)->GetMeasuredValue();
+                break;
+            }
+        }
+        std::stringstream newNObs_ss;
+        newNObs_ss << newNObs;
+        std::string actualHistogramName = _histogramNames.at( (*itr).first ) + "_nObs_" + newNObs_ss.str();
+        UpdateAnalysisHistogram( (*itr).first, (*itr).second, actualHistogramName, _relevantParametersMap.at((*itr).first) ); 
+
+    }
 
 }
