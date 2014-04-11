@@ -26,7 +26,6 @@
 #include <cmath>
 
 #include "Factory.h"
-#include "Chi2ContributionBase.h"
 #include "Messenger.h"
 #include "CalculatorBase.h"
 #include "CalculatorException.h"
@@ -93,11 +92,6 @@ void Fittino::PhysicsModel::AddChi2Contribution( const std::string& name ) {
 
 }
 
-void Fittino::PhysicsModel::AddChi2Contribution( Fittino::Chi2ContributionBase* contribution ) {
-
-    _collectionOfChi2Contributions.AddElement( contribution );
-
-}
 
 double Fittino::PhysicsModel::Evaluate() {
 
@@ -132,11 +126,6 @@ double Fittino::PhysicsModel::Evaluate() {
 
     }
 
-    for ( unsigned int i = 0; i < _collectionOfChi2Contributions.GetNumberOfElements(); ++i ) {
-
-        _collectionOfChi2Contributions.At( i )->UpdateValue();
-
-    }
 
     // Calculate and return the resulting chi2.
 
@@ -283,12 +272,6 @@ double Fittino::PhysicsModel::CalculateChi2() {
 
     }
 
-    for ( unsigned int i = 0; i < _collectionOfChi2Contributions.GetNumberOfElements(); ++i ) {
-
-        chi2 += _collectionOfChi2Contributions.At( i )->GetValue();
-
-    }
-
     return chi2;
 
 }
@@ -374,13 +357,6 @@ void Fittino::PhysicsModel::SmearObservations( TRandom3* randomGenerator ) {
     }
 
 
-    // now smear the observations for the chi2 contributions:
-    for ( int i = 0; i < _collectionOfChi2Contributions.GetNumberOfElements(); ++i ) {
-
-        _collectionOfChi2Contributions.At( i )->SmearObservation( randomGenerator );
-
-    }
-
     // now re-setup the observables for all the calculators.
     for ( unsigned int i = 0; i < _collectionOfCalculators.GetNumberOfElements(); i++ ) {
         
@@ -421,14 +397,6 @@ void Fittino::PhysicsModel::AddCalculator( CalculatorBase* calculator ) {
     for ( unsigned int i = 0; i < col.GetNumberOfElements(); i++ ) {
 
         AddPrediction( col.At( i ) );
-
-    }
-
-    const Collection<Chi2ContributionBase*>& col2 = calculator->GetCollectionOfChi2Contributions();
-
-    for ( unsigned int i = 0; i < col2.GetNumberOfElements(); ++i ) {
-
-        AddChi2Contribution( col2.At( i ) );
 
     }
 

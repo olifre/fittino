@@ -98,12 +98,6 @@ boost::property_tree::ptree Fittino::ModelBase::GetPropertyTree() {
 
 }
 
-const Fittino::Collection<Fittino::Chi2ContributionBase*>& Fittino::ModelBase::GetCollectionOfChi2Contributions() const {
-
-    return _collectionOfChi2Contributions;
-
-}
-
 const Fittino::Collection<Fittino::ModelParameter*>& Fittino::ModelBase::GetCollectionOfParameters() const {
 
     return _collectionOfParameters;

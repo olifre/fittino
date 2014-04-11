@@ -212,14 +212,6 @@ void Fittino::AnalysisTool::InitializeBranches() {
 
     }
 
-    for ( unsigned int i = 0; i < _model->GetCollectionOfChi2Contributions().GetNumberOfElements(); ++i ) {
-
-        AddBranch( _tree,
-                   _model->GetCollectionOfChi2Contributions().At( i )->GetName(),
-                   _model->GetCollectionOfChi2Contributions().At( i )->GetValue() );
-
-    }
-
     for ( unsigned int i = 0; i < GetNumberOfStatusParameters(); ++i ) {
 
         AddBranch( _tree,

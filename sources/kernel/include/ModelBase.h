@@ -23,8 +23,8 @@
 #define FITTINO_MODELBASE_H
 
 #include "TRandom3.h"
+#include <boost/property_tree/ptree.hpp>
 
-#include "Chi2ContributionBase.h"
 #include "Collection.h"
 #include "PredictionBase.h"
 #include "VariableBase.h"
@@ -38,7 +38,6 @@ namespace Fittino {
   class PredictionBase;
   class CalculatorBase;
   class Observable;
-  class Chi2ContributionBase;
 
   /*!
    *  \ingroup kernel
@@ -77,10 +76,6 @@ namespace Fittino {
        */
       boost::property_tree::ptree                         GetPropertyTree();
       /*!
-       *  \todo Remove when no longer used by derived classes (Matthias).
-       */
-      const Collection<Chi2ContributionBase*>&            GetCollectionOfChi2Contributions() const;
-      /*!
        *  Returns the parameters as a collection.
        */
       const Collection<ModelParameter*>&                  GetCollectionOfParameters() const;
@@ -118,10 +113,6 @@ namespace Fittino {
        */
       std::string                                         _name;
       boost::property_tree::ptree                         _ptree;
-      /*!
-       *  \todo Remove when no longer used by derived classes (Matthias).
-       */
-      Collection<Chi2ContributionBase*>                   _collectionOfChi2Contributions;
       /*!
        *  Stores the predictions.
        *  \todo Move to PhysicsModel (Matthias).
