@@ -31,13 +31,11 @@
  *  \todo Long-term: Further develop plotters (Mathias).
  *  \todo Long-term: Add all theorycodes to SuperBuild.
  *  \todo Long-term: Make HiggsBounds/HiggsSignals usable with ifort
- *  \todo Long-term: Add tests ?
- *  \todo Remove MathTools (Matthias).
- *  \todo Remove again the Chi2Contribution (or at least print them) (Matthias).
+ *  \todo Long-term: Add DarkSUSYCalculator.
+ *  \todo Long-term: Add tests?
  *  \todo Add HiggsBoundsCalculator (needs threading, look at fittino1 for that).
- *  \todo Add DarkSUSYCalculator.
  *  \todo Add HiggsSignalsPartonicInputCalculator.
- *  \todo Add LSPCalculator ( a calculator which determines the LSP )
+ *  \todo Add LSPCalculator (a calculator which determines the LSP).
  *  \todo Add RandomSampler, a sampler with fixed sampling density (usefull for random grid production).
  *  \todo Add buggy point removal. (Matthias?)
  *  \todo Add toy plots. (Matthias?)

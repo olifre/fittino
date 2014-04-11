@@ -27,7 +27,6 @@
  */
 namespace Fittino {
 
-  class Chi2ContributionBase;
   class PhysicsModel;
   class PredictionBase;
   class SimpleDataStorage;
@@ -51,10 +50,6 @@ namespace Fittino {
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
       const SimpleDataStorage*                 GetSimpleOutputDataStorage() const;
-      /*!
-       *  \todo Remove when no longer used by derived classes (Matthias).
-       */
-      const Collection<Chi2ContributionBase*>& GetCollectionOfChi2Contributions() const;
       const Collection<PredictionBase*>&       GetCollectionOfQuantities() const;
 
     public:
@@ -75,19 +70,11 @@ namespace Fittino {
        */
       SimpleDataStorage*                       _simpleOutputDataStorage;
       /*!
-       *  \todo Remove when no longer used by derived classes (Matthias).
-       */
-      Collection<Chi2ContributionBase*>        _collectionOfChi2Contributions;
-      /*!
        *  \todo Make private in order to require use of AddQuantity.
        */
       Collection<PredictionBase*>              _collectionOfQuantities;
 
     protected:
-      /*!
-       *  \todo Remove when no longer used by derived classes (Matthias).
-       */
-      void                                     AddChi2Contribution( Chi2ContributionBase* chi2Contribution );
       void                                     AddQuantity( PredictionBase* prediction );
 
   };
