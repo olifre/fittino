@@ -41,7 +41,6 @@
 #include "SimpleDataStorage.h"
 #include "SimplePrediction.h"
 #include "ConfigurationException.h"
-#include "Chi2ContributionBase.h"
 #include "Observable.h"
 
 Fittino::LHCLimitCalculator::LHCLimitCalculator( const PhysicsModel* model )

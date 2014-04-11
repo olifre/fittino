@@ -35,7 +35,6 @@
 #include "Observable.h"
 #include "ModelParameter.h"
 #include "CalculatorBase.h"
-#include "Chi2ContributionBase.h"
 #include "SimpleDataStorage.h"
 #include "ConfigurationException.h"
 #include "TDirectory.h"

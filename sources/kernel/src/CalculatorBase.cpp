@@ -18,7 +18,6 @@
 *******************************************************************************/
 
 #include "CalculatorBase.h"
-#include "Chi2ContributionBase.h"
 #include "PredictionBase.h"
 #include "SimpleDataStorage.h"
 
@@ -49,12 +48,6 @@ const Fittino::SimpleDataStorage* Fittino::CalculatorBase::GetSimpleOutputDataSt
 
 }
 
-const Fittino::Collection<Fittino::Chi2ContributionBase*>& Fittino::CalculatorBase::GetCollectionOfChi2Contributions() const {
-
-    return _collectionOfChi2Contributions;
-
-}
-
 const Fittino::Collection<Fittino::PredictionBase*>& Fittino::CalculatorBase::GetCollectionOfQuantities() const {
 
     return _collectionOfQuantities;
@@ -66,12 +59,6 @@ void Fittino::CalculatorBase::Initialize() {
 }
 
 void Fittino::CalculatorBase::SetupMeasuredValues() {
-
-}
-
-void  Fittino::CalculatorBase::AddChi2Contribution( Fittino::Chi2ContributionBase* chi2Contribution ) {
-
-    _collectionOfChi2Contributions.AddElement( chi2Contribution );
 
 }
 
