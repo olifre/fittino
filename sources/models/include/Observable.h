@@ -65,12 +65,16 @@ namespace Fittino {
       void            SetMeasuredValue( double );
       bool            IsNoFitObservable();
       bool            IsNoSmearObservable();
+      std::string     GetSmearingType();
 
     public:
       virtual void    UpdatePrediction();
       virtual void    SmearMeasuredValue( TRandom3* );
 
     protected:
+      double          _error1;
+      double          _error2;
+      double          _error3;
       double          _deviation;
       double          _measuredError;
       double          _measuredValue;
@@ -78,6 +82,7 @@ namespace Fittino {
       bool            _noFit;
       bool            _noSmear;
       PredictionBase* _prediction;
+      std::string     _smearingType;
 
     protected:
       double          CalculateDeviation();

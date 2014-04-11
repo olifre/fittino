@@ -48,6 +48,7 @@ Fittino::Observable::Observable( const boost::property_tree::ptree& ptree, Predi
                      _bestFitPrediction( ptree.get<double>( "BestFitPrediction" ) ),
                      _noFit( ptree.get<bool>( "NoFit", false ) ),
                      _noSmear( ptree.get<bool>( "NoSmear", false ) ),
+                     _smearingType( ptree.get<std::string>( "SmearingType", "Gaus" ) ),
                      _prediction( prediction ) {
 
     double error1 = ptree.get<double>( "MeasuredError1" );
@@ -145,7 +146,27 @@ void Fittino::Observable::UpdatePrediction() {
 
 void Fittino::Observable::SmearMeasuredValue( TRandom3* randomGenerator ) {
 
-    _measuredValue = randomGenerator->Gaus( _bestFitPrediction, _measuredError );
+    if( _smearingType == "Gaus" ) {
+    
+        _measuredValue = randomGenerator->Gaus( _bestFitPrediction, _measuredError );
+    
+    }
+    else if( _smearingType == "Poisson" ) {
+      
+        // we will have to think of a better way to do this. For now, this is for the ATLAS 0 Lepton Analysis.
+        // Smearing works in the following way:
+        // In the input file, set     1) NObs = Number of expected background events
+        //                            2) NExpBestFit = Number of expected events at best fit point == > Number of expected signal events = NExpBestFit - NObs
+        //                            3) MeasuredError1 = systematic uncertainty on the number of background events
+        //                            4) MeausredError2 = systematic uncertainty on the number of signal events
+        _measuredValue = randomGenerator->Poisson( _measuredValue*randomGenerator->Gaus( 1., _error1) + (_bestFitPrediction - _measuredValue)*randomGenerator->Gaus(1., _error2 ));
+   
+    }
+    else {
+
+        std::cout << "Unkonwn SmearingType " << _smearingType << " for observable " << GetPrediction()->GetName() << ". Measured Value will not be smeared. " << std::endl;
+
+    }
 
 }
 
@@ -158,5 +179,11 @@ bool Fittino::Observable::IsNoFitObservable() {
 bool Fittino::Observable::IsNoSmearObservable() {
 
     return _noSmear;
+
+}
+
+std::string Fittino::Observable::GetSmearingType() {
+
+    return _smearingType;
 
 }
