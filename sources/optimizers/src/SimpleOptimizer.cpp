@@ -17,40 +17,19 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "TDirectory.h"
-#include "TFile.h"
-#include "TTree.h"
-
-#include "SimpleOptimizer.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
+#include "SimpleOptimizer.h"
 
 Fittino::SimpleOptimizer::SimpleOptimizer( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
     : OptimizerBase( model, ptree ),
-      _bestEntry( model->GetCollectionOfParameters().At( 0 )->GetValue() ),
-      _iEntry( model->GetCollectionOfParameters().At( 0 )->GetValue() ),
-      _stepWidth( model->GetCollectionOfParameters().At( 0 )->GetError() ),
-      _inputFileName( ptree.get<std::string>( "InputFileName", "Fittino.in.root" ) ) {
+      _bestEntry   ( model->GetCollectionOfParameters().At( 0 )->GetValue() ),
+      _iEntry      ( model->GetCollectionOfParameters().At( 0 )->GetValue() ),
+      _stepWidth   ( model->GetCollectionOfParameters().At( 0 )->GetError() ) {
 
     _name = ptree.get<std::string>( "Name", "simple optimizer" );
 
-    TDirectory *tmpDirectory = gDirectory;
-    TFile* inputFile = new TFile( _inputFileName.c_str(), "READ" );
-
-    if ( ( TTree* )inputFile->Get( _tree->GetName() ) ) {
-
-        _numberOfIterations = ( ( TTree* )inputFile->Get( _tree->GetName() ) )->GetEntries();
-
-    }
-    else {
-
-        throw ConfigurationException( "Could not read number of iterations from given input file/input tree. " );
-
-    }
-
-    inputFile->Close();
-    gDirectory = tmpDirectory;
-    delete inputFile;
+    _numberOfIterations = static_cast<unsigned int>( _model->GetCollectionOfQuantities().At( "TreeIterations" )->GetValue() );
 
 }
 

@@ -6,7 +6,7 @@
 *                                                                              *
 * File        TreeCalculator.h                                                 *
 *                                                                              *
-* Description Class for a simple tree calculator                               *
+* Description Class for a tree calculator                                      *
 *                                                                              *
 * Authors     Matthias Hamer  <mhamer@gwdg.de>                                 *
 *                                                                              *
@@ -20,12 +20,11 @@
 #ifndef FITTINO_TREECALCULATOR_H
 #define FITTINO_TREECALCULATOR_H
 
-#include <boost/property_tree/ptree.hpp>
-
 #include "CalculatorBase.h"
+#include "PtreeForwardDeclaration.h"
 
-class TTree;
 class TFile;
+class TTree;
 
 /*!
  *  \brief Fittino namespace.
@@ -34,43 +33,38 @@ namespace Fittino {
 
   /*!
    *  \ingroup calculators
-   *  \brief Class for a Tree Calculator
+   *  \brief Class for a Tree Calculator.
    */
   class TreeCalculator : public CalculatorBase {
 
     public:
       /*!
-       *  Old standard constructor.
-       */
-                          TreeCalculator( const PhysicsModel* model );
-      /*!
        *  Standard constructor.
        */
-                          TreeCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+      TreeCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
-                          ~TreeCalculator();
+      ~TreeCalculator();
 
     public:
-      virtual void        CalculatePredictions();
-      virtual void        Initialize();
-      void                SetInputFileName( std::string inputFileName );
-      void                SetInputTreeName( std::string inputTreeName );
-      void                OpenInputTree();
+      void                          CalculatePredictions();
+
+      /*! \cond UML */
     private:
-      TFile*              _inputFile;
-      TTree*              _inputTree;
-      std::string         _inputFileName;
-      std::string         _inputTreeName;
-      std::vector<std::string> _excludedLeaves;
+      double                        _numberOfTreeIterations;
+      std::string                   _inputFileName;
+      std::string                   _inputTreeName;
+      std::map<std::string, double> _predictionMap;
+      std::vector<std::string>      _excludedLeaves;
+      TFile*                        _inputFile;
+      TTree*                        _inputTree;
+
     private:
-      /*!
-       *  Set All Branch Addresses in the tree
-       */
-      void                SetAllBranchAddresses();
-      void                FillSimpleDataStorage();
-      void                CreateDefaultPredictions();
+      void                          AddPredictions();
+      void                          OpenInputFile();
+
+      /*! \endcond UML */
 
   };
 

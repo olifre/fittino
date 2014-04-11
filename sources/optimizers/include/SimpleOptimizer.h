@@ -48,7 +48,6 @@ namespace Fittino {
       unsigned int       _bestEntry;
       unsigned int       _iEntry;
       const unsigned int _stepWidth;
-      std::string        _inputFileName;
 
     private:
       virtual void       PrintSteeringParameters() const;

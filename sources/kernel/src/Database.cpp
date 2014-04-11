@@ -8,7 +8,7 @@
 *                                                                              *
 * Description Singleton class containing static data                           *
 *                                                                              *
-* Authors     Bjoern Sarrazin <sarrazin@physik.uni-bonn.de>                    *
+* Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -16,6 +16,8 @@
 *             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
+
+#include <stdexcept>
 
 #include "boost/lexical_cast.hpp"
 
@@ -29,18 +31,18 @@ Fittino::Database& Fittino::Database::GetInstance() {
 
 }
 
-int Fittino::Database::GetPID( std::string particle )  {
+int Fittino::Database::GetPID( std::string particle ) {
 
-  try {
+    try {
 
-    return _pid.at( particle );
+        return _pid.at( particle );
 
-  }
-  catch ( const std::out_of_range& e ) {
+    }
+    catch ( const std::out_of_range& e ) {
 
-    throw ConfigurationException( "PID of " + particle + " not known." );
+        throw ConfigurationException( "PID of " + particle + " not known." );
 
-  }
+    }
 
 }
 
@@ -93,7 +95,7 @@ Fittino::Database::Database() {
     AddSUSYParticle( 1000011, "~eL",     "~eLbar"     );
     AddSUSYParticle( 1000012, "~nueL",   "~nueLbar"   );
     AddSUSYParticle( 1000013, "~muL",    "~muLbar"    );
-    AddSUSYParticle( 1000014, "~numuL",  "~numuLbar" );
+    AddSUSYParticle( 1000014, "~numuL",  "~numuLbar"  );
     AddSUSYParticle( 1000015, "~tau1",   "~tau1bar"   );
     AddSUSYParticle( 1000016, "~nutauL", "~nutauLbar" );
 

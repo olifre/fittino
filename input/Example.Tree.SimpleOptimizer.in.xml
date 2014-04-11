@@ -10,7 +10,7 @@
 <!-- File        Example.Tree.SimpleOptimizer.in.xml                         -->
 <!--                                                                         -->
 <!-- Description Configuration example for the simple parameter optimizer.   -->
-<!--             The optimizer loops over the entries of an input ROOT file  --> 
+<!--             The optimizer loops over the entries of an input ROOT file  -->
 <!--             named Fittino.in.root and looks for the best chi2           -->
 <!--                                                                         -->
 <!-- Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>         -->
@@ -32,7 +32,7 @@
     <PhysicsModel>
 
       <Name>TreeModel</Name>
-    
+
       <ModelParameter>
         <Name>Entry</Name>
         <Error>1</Error>
@@ -45,7 +45,7 @@
       <CovarianceMatrices></CovarianceMatrices>
 
       <Chi2Contribution>Chi2</Chi2Contribution>
-  
+
       <Calculators>
         <TreeCalculator>
           <InputFileName>Fittino.in.root</InputFileName>
@@ -61,7 +61,6 @@
     <SimpleOptimizer>
       <Chi2Name>MyChi2</Chi2Name>
       <IterationCounterName>MyIterationCounter</IterationCounterName>
-      <InputFileName>Fittino.in.root</InputFileName>
       <AbortCriterion>0.</AbortCriterion>
     </SimpleOptimizer>
 
