@@ -6,8 +6,8 @@
 *                                                                              *
 * File        Factory.h                                                        *
 *                                                                              *
-* Description Factory class for creating file handlers, models, optimizers     *
-*             and samplers                                                     *
+* Description Factory class for creating calculators, models, optimizers,      *
+*             plotters and samplers                                            *
 *                                                                              *
 * Authors     Bjoern  Sarrazin    <sarrazin@physik.uni-bonn.de>                *
 *             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
@@ -30,18 +30,17 @@
  */
 namespace Fittino {
 
-  class AnalysisTool;
-  class LHCLimitCalculator;
-  class ModelBase;
   class CalculatorBase;
+  class ModelBase;
   class Observable;
   class PhysicsModel;
   class PredictionBase;
   class SLHADataStorageBase;
+  class Tool;
 
   /*!
    *  \ingroup kernel
-   *  \brief Factory class for creating file handlers, models, optimizers and samplers.
+   *  \brief Factory class for creating calculators, models, optimizers, plotters and samplers.
    */
   class Factory {
 
@@ -56,48 +55,65 @@ namespace Fittino {
       ~Factory();
 
     public:
-      CalculatorBase*             CreateCalculator( const std::string& type, const PhysicsModel* model, const boost::property_tree::ptree& ptree ) const;
       /*!
-       *  Returns a concrete analysis tool\n
-       *  Supported analysis tools are
+       *  Returns a concrete calculator.\n
+       *  Supported calculators are
        *  <ul>
-       *    <li> MarkovChainSampler
-       *    <li> SimpleSampler
-       *    <li> TreeSampler
-       *    <li> GeneticAlgorithmOptimizer\n
-       *    <li> MinuitOptimizer\n
-       *    <li> ParticleSwarmOptimizer\n
-       *    <li> SimulatedAnnealingOptimizer\n
-       *    <li> ContourPlotter\n
-       *    <li> ScatterPlotter\n
-       *    <li> SummaryPlotter\n
+       *    <li>AstroCalculator\n
+       *    <li>AstroFitCalculator\n
+       *    <li>CheckVacuumCalculator\n
+       *    <li>FeynHiggsCalculator\n
+       *    <li>FormulaCalculator\n
+       *    <li>HDim6Calculator\n
+       *    <li>HECCalculator\n
+       *    <li>HiggsBoundsCalculator\n
+       *    <li>HiggsSignalsSLHACalculator\n
+       *    <li>LHCLimitCalculator\n
+       *    <li>MicromegasCalculator\n
+       *    <li>RegressionCalculator\n
+       *    <li>SPhenoSLHACalculator\n
+       *    <li>SuperIsoCalculator\n
+       *    <li>TreeCalculator\n
        *  </ul>
        */
-      AnalysisTool* const         CreateAnalysisTool( const std::string& type, ModelBase* model, const boost::property_tree::ptree& ptree ) const;
+      CalculatorBase* const      CreateCalculator( const std::string& type, const PhysicsModel* model, const boost::property_tree::ptree& ptree ) const;
       /*!
-       *  Returns a concrete model according to type.\n
+       *  Returns a concrete model.\n
        *  Supported models are
        *  <ul>
        *    <li> PhysicsModel\n
        *    <li> RosenbrockModel\n
        *  </ul>
        */
-      ModelBase* const            CreateModel( const std::string& type, const boost::property_tree::ptree& ptree ) const;
-      /*!
-       *  Returns a Prediction according to the type specified in the ptree.
-       *  \todo Remove when no longer used by derived classes (Matthias).
-       */
-      PredictionBase* const       CreatePrediction( const boost::property_tree::ptree& ptree, const Fittino::CalculatorBase* calculator );
+      ModelBase* const           CreateModel( const std::string& type, const boost::property_tree::ptree& ptree ) const;
       /*!
        *  Returns an Observable with a prediction according to the type specified in the ptree.
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
-      Observable* const           CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const;
+      Observable* const          CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const;
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
-      Observable* const           CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::PredictionBase*>& predictions, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const;
-      SLHADataStorageBase*        CreateSLHAeaSLHADataStorage();
+      Observable* const          CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::PredictionBase*>& predictions, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const;
+      SLHADataStorageBase* const CreateSLHAeaSLHADataStorage() const;
+      /*!
+       *  Returns a concrete tool.\n
+       *  Supported tools are
+       *  <ul>
+       *    <li> ContourPlotter\n
+       *    <li> GeneticAlgorithmOptimizer\n
+       *    <li> MarkovChainSampler\n
+       *    <li> MinuitOptimizer\n
+       *    <li> ParticleSwarmOptimizer\n
+       *    <li> ScatterPlotter\n
+       *    <li> SimpleOptimizer\n
+       *    <li> SimpleSampler\n
+       *    <li> SimulatedAnnealingOptimizer\n
+       *    <li> SummaryPlotter\n
+       *    <li> TreeSampler
+       *  </ul>
+       */
+      Tool* const                CreateTool( const std::string& type, ModelBase* model, const boost::property_tree::ptree& ptree ) const;
 
   };
 

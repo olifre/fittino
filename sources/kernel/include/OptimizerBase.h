@@ -39,6 +39,7 @@ namespace Fittino {
    *    <li> genetic algorithm optimizer
    *    <li> Minuit optimizer
    *    <li> particle swarm optimizer
+   *    <li> simple optimizer
    *    <li> simulated annealing optimizer
    *  </ul>
    */
@@ -49,8 +50,9 @@ namespace Fittino {
        *  Takes as input a pointer to the model to be analysed. Via this pointer an association\n
        *  between a model and the concrete optimizer is established.
        */
-
       OptimizerBase( ModelBase* model, const boost::property_tree::ptree& ptree );
+
+    public:
       /*!
        *  Standard destructor.
        */
@@ -72,15 +74,16 @@ namespace Fittino {
       /*!
        *  Prints the steering parameters common to all optimizers.
        */
-      virtual void PrintSteeringParameters() const = 0;
+      void         PrintSteeringParameters() const;
 
       /*! \cond UML */
     private:
-      virtual void Execute();
-      virtual void PrintResult() const;
-      virtual void Terminate();
+      void         Execute();
+      void         PrintResult() const;
+      void         Terminate();
 
       /*! \endcond UML */
+
   };
 
 }

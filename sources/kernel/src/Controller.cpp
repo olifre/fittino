@@ -26,11 +26,11 @@
 
 #include <boost/property_tree/xml_parser.hpp>
 
-#include "AnalysisTool.h"
 #include "Controller.h"
 #include "Factory.h"
 #include "InputException.h"
 #include "ModelBase.h"
+#include "Tool.h"
 
 Fittino::Controller* Fittino::Controller::GetInstance() {
 
@@ -58,9 +58,9 @@ void Fittino::Controller::ExecuteFittino() const {
         const boost::property_tree::ptree::value_type& toolNode = *( _inputPtree->get_child( "InputFile.Tool" ).begin() );
         std::string toolType = toolNode.first;
         const boost::property_tree::ptree& toolTree = toolNode.second;
-        AnalysisTool* tool = factory.CreateAnalysisTool( toolType, model, toolTree );
+        Tool* tool = factory.CreateTool( toolType, model, toolTree );
 
-        tool->PerformAnalysis();
+        tool->PerformTask();
 
         _outputPtree->put( "InputFile.VerbosityLevel", _inputPtree->get<std::string>( "InputFile.VerbosityLevel" ) );
         _outputPtree->put_child( "InputFile.Model." + modelType, model->GetPropertyTree() );

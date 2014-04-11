@@ -22,16 +22,12 @@
 #ifndef FITTINO_ANALYSISTOOL_H
 #define FITTINO_ANALYSISTOOL_H
 
-#include <string>
 #include <vector>
-
-#include <boost/property_tree/ptree.hpp>
 
 #include "TRandom3.h"
 
-#include "Messenger.h"
+#include "Tool.h"
 
-class TFile;
 class TTree;
 
 /*!
@@ -39,7 +35,6 @@ class TTree;
  */
 namespace Fittino {
 
-  class ModelBase;
   class Quantity;
 
   /*!
@@ -51,7 +46,7 @@ namespace Fittino {
    *  a pointer to the model to be analysed, a counter for the number of iteration steps and a\n
    *  random number generator.
    */
-  class AnalysisTool {
+  class AnalysisTool : public Tool {
 
     public:
       /*!
@@ -64,35 +59,8 @@ namespace Fittino {
        *  Standard destructor.
        */
       ~AnalysisTool();
-      /*!
-       *  Template method. It subdivides the tool's exectution into three It is usually called
-       *  directly after the creation of a concrete analysis tool.
-       */
-      void                          PerformAnalysis();
-      /*!
-       *  Function to retrieve the updated property tree from this tool.
-       */
-      boost::property_tree::ptree   GetPropertyTree();
 
     protected:
-      /*!
-       *  The chi2 of the model.
-       */
-      double                        _chi2;
-      /*!
-       *  Counts the number of calls to UpdateModel().
-       */
-      unsigned int                  _iterationCounter;
-      /*!
-       *  Name of the analysis tool.
-       */
-      std::string                   _name;
-      /*!
-       *  Pointer to the model to be analysed. Via this pointer an association between the model\n
-       *  and any class deriving from AnalysisTool (especially the concrete optimizer or sampler\n
-       *  classes) is established.
-       */
-      ModelBase*                    _model;
       /*!
        *  Stores the status parameters.
        *  \todo Short-term: Replace vector with Collection.
@@ -114,54 +82,20 @@ namespace Fittino {
        *  tool.
        */
       void                          FillTree();
-      /*!
-       *  Prints the tool's status to screen.
-       */
-      void                          PrintStatus() const;
-      /*!
-       *  Prints one configuration item to screen.
-       */
-      template<class T> void        PrintItem( const std::string& item, const T& value ) const;
+      void                          PrintSteeringParameters() const;
       /*!
        *  Returns the list of status parameters.
        *  \todo Short-term: Eventually replace with GetCollectionOfStatusParameters().
        */
       const std::vector<Quantity*>* GetStatusParameterVector() const;
 
-    protected:
-      /*!
-       *  Prints the result of the execution of a particuar analysis tool. It is declared virtual\n
-       *  because the result output is different for optimizers and samplers.
-       */
-      virtual void                  PrintResult() const = 0;
-      /*!
-       *  Prints the steering parameters of a particuar analysis tool.
-       */
-      virtual void                  PrintSteeringParameters() const = 0;
-      /*!
-       *  Causes the tool to propose a new model. How this is done has to be specified by any\n
-       *  concrete analysis tool.
-       */
-      virtual void                  UpdateModel() = 0;
-
       /*! \cond UML */
     private:
       const unsigned int            _randomSeed;
       std::string                   _chi2Name;
       std::string                   _iterationCounterName;
-      /*!
-       *  A copy of the input property tree, to be used for storing information for output-xml files
-       *  (e.g. interface files for concatenating Markov Chains.
-       */
-      boost::property_tree::ptree   _ptree;
       const TString                 _metaDataTreeName;
-      const TString                 _outputFileName;
       const TString                 _treeName;
-      /*!
-       *  A ROOT file which stores the tool's output. The default name of the file is\n
-       *  "Fittino.out.root".
-       */
-      TFile*                        _outputFile;
       /*!
        *  The tree for the metadata.
        */
@@ -183,29 +117,17 @@ namespace Fittino {
        */
       void                          AddBranch( TTree* tree, std::string name, const std::string& value );
       /*!
-       *  Checks for uniqueness of the branch name. 
+       *  Checks for uniqueness of the branch name.
        *  \todo Create a wrapper class for TTree and make this a member function of that class.
        */
-      void                          CheckUniqueness( TTree* tree, std::string name ) const; 
-      void                          ExecuteAnalysisTool();
-      void                          InitializeAnalysisTool();
+      void                          CheckUniqueness( TTree* tree, std::string name ) const;
       void                          InitializeBranches();
-      void                          PrintConfiguration() const;
-      void                          TerminateAnalysisTool();
-      /*!
-       *  Function to update values in the output property tree. Hm, maybe this has to become
-       *  virtual?
-       */
-      void                          UpdatePropertyTree();
+      void                          InitializeTool();
       void                          WriteResultToFile() const;
-
-    private:
-      virtual void                  Execute() = 0;
-      virtual void                  Terminate() = 0;
 
       /*! \endcond UML */
 
-    // Sorted out of ususal order because initialization depends on items declared earlier.
+      // Sorted out of ususal order because initialization depends on items declared earlier.
 
     protected:
       /*!
@@ -220,17 +142,5 @@ namespace Fittino {
   };
 
 }
-
-template<class T>
-void Fittino::AnalysisTool::PrintItem( const std::string& item, const T& value ) const {
-
-  Messenger& messenger = Messenger::GetInstance();
-
-  const std::string& indent  = std::string( 4, ' ' );
-  const std::string& spacing = std::string( 44 - item.length(), ' ' );
-
-  messenger << Messenger::ALWAYS << indent + item + spacing << value << Messenger::Endl;
-
-};
 
 #endif // FITTINO_ANALYSISTOOL_H

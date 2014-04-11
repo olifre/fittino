@@ -6,8 +6,8 @@
 *                                                                              *
 * File        Factory.cpp                                                      *
 *                                                                              *
-* Description Factory class for creating input file interpreters, models,      *
-*             optimizers and samplers                                          *
+* Description Factory class for creating calculators, models, optimizers,      *
+*             plotters and samplers                                            *
 *                                                                              *
 * Authors     Bjoern  Sarrazin    <sarrazin@physik.uni-bonn.de>                *
 *             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
@@ -67,99 +67,54 @@ Fittino::Factory::~Factory() {
 
 }
 
-Fittino::AnalysisTool* const Fittino::Factory::CreateAnalysisTool( const std::string& type, ModelBase* model,
-                                                                   const boost::property_tree::ptree& ptree ) const {
+Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::string& type, const PhysicsModel* model, const boost::property_tree::ptree& ptree ) const {
 
-    if ( type == "ContourPlotter" ) {
+    if ( type == "AstroCalculator" ) {
 
-        return new ContourPlotter( model, ptree );
-
-    }
-    else if ( type == "GeneticAlgorithmOptimizer" ) {
-
-        return new GeneticAlgorithmOptimizer( model, ptree );
+        return new AstroCalculator( model, ptree );
 
     }
-    else if ( type == "MinuitOptimizer" ) {
-
-        return new MinuitOptimizer( model, ptree );
-
-    }
-    else if ( type == "MarkovChainSampler" ) {
-
-        return new MarkovChainSampler( model, ptree );
-
-    }
-    else if ( type == "ParticleSwarmOptimizer" ) {
-
-        return new ParticleSwarmOptimizer( model, ptree );
-
-    }
-    else if ( type == "ScatterPlotter" ) {
-
-        return new ScatterPlotter( model, ptree );
-    }
-    else if ( type == "SimpleOptimizer" ) {
-
-        return new SimpleOptimizer( model, ptree );
-
-    }
-    else if ( type == "SimpleSampler" ) {
-
-        return new SimpleSampler( model, ptree );
-
-    }
-    else if ( type == "SummaryPlotter" ) {
-
-        return new SummaryPlotter( model, ptree );
-
-    }
-    else if ( type == "SimulatedAnnealingOptimizer" ) {
-
-        return new SimulatedAnnealingOptimizer( model, ptree );
-
-    }
-    else if ( type == "TreeSampler" ) {
-
-        return new TreeSampler( model, ptree );
-
-    }
-    else {
-
-        throw ConfigurationException( "AnalysisTool type " + type + " not known." );
-
-    }
-
-}
-
-Fittino::SLHADataStorageBase* Fittino::Factory::CreateSLHAeaSLHADataStorage() {
-
-#if defined SLHAEA
-
-    return new SLHAeaSLHADataStorage();
-
-#else
-
-    throw ConfigurationException( "Trying to use SLHAeaSLHADataStorage but Fittino was built without SLHAEA." );
-
-#endif
-
-}
-
-Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& type, const PhysicsModel* model, const boost::property_tree::ptree& ptree ) const {
-
-    if ( type == "AstroFitCalculator" ) {
+    else if ( type == "AstroFitCalculator" ) {
 
         return new AstroFitCalculator( model, ptree );
 
     }
-
     else if ( type == "CheckVacuumCalculator" ) {
 
         return new CheckVacuumCalculator( model, ptree );
 
     }
+    else if ( type == "FeynHiggsNativeCalculator" )  {
 
+#if defined FEYNHIGGS
+
+        return new FeynHiggsCalculator( model, ptree, "FeynHiggs" );
+
+#else
+
+        throw ConfigurationException( "Trying to use FeynHiggsCalculator but Fittino was built without FeynHiggs." );
+
+#endif
+
+    }
+    else if ( type == "FeynHiggsSLHACalculator" ) {
+
+#if defined FEYNHIGGS
+
+        return new FeynHiggsCalculator( model, ptree, "SLHA" );
+
+#else
+
+        throw ConfigurationException( "Trying to use FeynHiggsSLHACalculator but Fittino was built without FeynHiggs." );
+
+#endif
+
+    }
+    else if ( type == "FormulaCalculator" ) {
+
+        return new FormulaCalculator( model, ptree );
+
+    }
     else if ( type == "HDim6Calculator" ) {
 
 #if defined LHAPDF_FOUND  && defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND && defined GSL
@@ -204,9 +159,9 @@ Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& 
 #endif
 
     }
-    else if ( type == "FormulaCalculator" ) {
+    else if ( type == "LHCCalculator" ) {
 
-        return new FormulaCalculator( model, ptree );
+        return new LHCLimitCalculator( model, ptree );
 
     }
     else if ( type == "MicromegasCalculator" ) {
@@ -227,47 +182,6 @@ Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& 
         return new RegressionCalculator( model, ptree );
 
     }
-    else if ( type == "LHCCalculator" ) {
-
-        return new LHCLimitCalculator( model, ptree );
-
-    }
-    else if ( type == "TreeCalculator" ) {
-
-        return new TreeCalculator( model, ptree );
-
-    }
-    else if( type == "AstroCalculator" ) {
-
-        return new AstroCalculator( model, ptree );
-
-    }
-    else if ( type == "FeynHiggsNativeCalculator" )  {
-
-#if defined FEYNHIGGS
-
-        return new FeynHiggsCalculator( model, ptree, "FeynHiggs" );
-
-#else
-
-        throw ConfigurationException( "Trying to use FeynHiggsCalculator but Fittino was built without FeynHiggs." );
-
-#endif
-
-    }
-    else if ( type == "FeynHiggsSLHACalculator" ) {
-
-#if defined FEYNHIGGS
-
-        return new FeynHiggsCalculator( model, ptree, "SLHA" );
-
-#else
-
-        throw ConfigurationException( "Trying to use FeynHiggsSLHACalculator but Fittino was built without FeynHiggs." );
-
-#endif
-
-    }
     else if ( type == "SPhenoCalculator" ) {
 
         return new SPhenoSLHACalculator( model, ptree );
@@ -284,6 +198,11 @@ Fittino::CalculatorBase* Fittino::Factory::CreateCalculator( const std::string& 
         throw ConfigurationException( "Trying to use SuperIsoCalculator but Fittino was built without SuperIso." );
 
 #endif
+
+    }
+    else if ( type == "TreeCalculator" ) {
+
+        return new TreeCalculator( model, ptree );
 
     }
     else {
@@ -304,23 +223,6 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
     else if ( type == "RosenbrockModel" ) {
 
         return new RosenbrockModel( ptree );
-
-    }
-
-}
-
-Fittino::PredictionBase* const Fittino::Factory::CreatePrediction( const boost::property_tree::ptree& ptree, const Fittino::CalculatorBase* calculator ) {
-
-    std::string type = ptree.get<std::string>( "PredictionType", "NONE" );
-
-    if ( type == "Simple" ) {
-
-        return new SimplePrediction( ptree, calculator );
-
-    }
-    else {
-
-        throw ConfigurationException( "Prediction type " + type + " not known, or requires a more specific definition of the calculator than CalculatorBase." );
 
     }
 
@@ -359,5 +261,84 @@ Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::prop
     }
 
     return CreateObservable( ptree, calculators );
+
+}
+
+Fittino::SLHADataStorageBase* const Fittino::Factory::CreateSLHAeaSLHADataStorage() const {
+
+#if defined SLHAEA
+
+    return new SLHAeaSLHADataStorage();
+
+#else
+
+    throw ConfigurationException( "Trying to use SLHAeaSLHADataStorage but Fittino was built without SLHAEA." );
+
+#endif
+
+}
+
+Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, ModelBase* model,
+                                                   const boost::property_tree::ptree& ptree ) const {
+
+    if ( type == "ContourPlotter" ) {
+
+        return new ContourPlotter( model, ptree );
+
+    }
+    else if ( type == "GeneticAlgorithmOptimizer" ) {
+
+        return new GeneticAlgorithmOptimizer( model, ptree );
+
+    }
+    else if ( type == "MarkovChainSampler" ) {
+
+        return new MarkovChainSampler( model, ptree );
+
+    }
+    else if ( type == "MinuitOptimizer" ) {
+
+        return new MinuitOptimizer( model, ptree );
+
+    }
+    else if ( type == "ParticleSwarmOptimizer" ) {
+
+        return new ParticleSwarmOptimizer( model, ptree );
+
+    }
+    else if ( type == "ScatterPlotter" ) {
+
+        return new ScatterPlotter( model, ptree );
+    }
+    else if ( type == "SimpleOptimizer" ) {
+
+        return new SimpleOptimizer( model, ptree );
+
+    }
+    else if ( type == "SimpleSampler" ) {
+
+        return new SimpleSampler( model, ptree );
+
+    }
+    else if ( type == "SimulatedAnnealingOptimizer" ) {
+
+        return new SimulatedAnnealingOptimizer( model, ptree );
+
+    }
+    else if ( type == "SummaryPlotter" ) {
+
+        return new SummaryPlotter( model, ptree );
+
+    }
+    else if ( type == "TreeSampler" ) {
+
+        return new TreeSampler( model, ptree );
+
+    }
+    else {
+
+        throw ConfigurationException( "Tool type " + type + " not known." );
+
+    }
 
 }

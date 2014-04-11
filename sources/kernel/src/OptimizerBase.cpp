@@ -39,6 +39,8 @@ Fittino::OptimizerBase::~OptimizerBase() {
 
 void Fittino::OptimizerBase::PrintSteeringParameters() const {
 
+    AnalysisTool::PrintSteeringParameters();
+
     PrintItem( "NumberOfIterations", _numberOfIterations );
     PrintItem( "AbortCriterion",     _abortCriterion     );
 

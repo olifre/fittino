@@ -17,7 +17,6 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "Messenger.h"
 #include "SamplerBase.h"
 
 Fittino::SamplerBase::SamplerBase( ModelBase* model, const boost::property_tree::ptree& ptree )
@@ -29,14 +28,14 @@ Fittino::SamplerBase::~SamplerBase() {
 
 }
 
-void Fittino::SamplerBase::Terminate() {
-
-}
-
 void Fittino::SamplerBase::PrintResult() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
     messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
+
+}
+
+void Fittino::SamplerBase::Terminate() {
 
 }
