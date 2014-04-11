@@ -37,7 +37,6 @@
 #include "HECCalculator.h"
 #include "HiggsSignalsHadXSCalculator.h"
 #include "HiggsSignalsSLHACalculator.h"
-#include "LHCChi2Contribution.h"
 #include "LHCLimitCalculator.h"
 #include "MarkovChainSampler.h"
 #include "MicromegasCalculator.h"
@@ -360,23 +359,5 @@ Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::prop
     }
 
     return CreateObservable( ptree, calculators );
-
-}
-
-Fittino::Chi2ContributionBase* const Fittino::Factory::CreateChi2Contribution( const std::string& type, const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const {
-
-    CalculatorBase *calculator = calculators.At( ptree.get<std::string>( "CalculatorName" ) );
-
-    if ( type == "LHCChi2Contribution" ) {
-
-        return new LHCChi2Contribution( ptree, static_cast<LHCLimitCalculator*>( calculator ) );
-
-    }
-
-}
-
-Fittino::Chi2ContributionBase* const Fittino::Factory::CreateChi2Contribution( const boost::property_tree::ptree& ptree, Fittino::LHCLimitCalculator* calculator ) {
-
-    return new LHCChi2Contribution( ptree, calculator );
 
 }

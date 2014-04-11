@@ -31,7 +31,6 @@
 namespace Fittino {
 
   class AnalysisTool;
-  class Chi2ContributionBase;
   class LHCLimitCalculator;
   class ModelBase;
   class CalculatorBase;
@@ -98,15 +97,6 @@ namespace Fittino {
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
       Observable* const           CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::PredictionBase*>& predictions, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const;
-      /*!
-       *  Returns a Chi2Contribution according to the type passed as an argument.
-       *  \todo Remove when no longer used by derived classes (Matthias).
-       */
-      Chi2ContributionBase* const CreateChi2Contribution( const std::string& type, const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const;
-      /*!
-       *  \todo Remove when no longer used by derived classes (Matthias).
-       */
-      Chi2ContributionBase* const CreateChi2Contribution( const boost::property_tree::ptree& ptree, Fittino::LHCLimitCalculator* calculator );
       SLHADataStorageBase*        CreateSLHAeaSLHADataStorage();
 
   };
