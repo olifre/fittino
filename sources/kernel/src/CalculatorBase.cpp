@@ -30,12 +30,6 @@ Fittino::CalculatorBase::CalculatorBase( const PhysicsModel* model )
 
 }
 
-Fittino::CalculatorBase::~CalculatorBase() {
-
-    delete _simpleOutputDataStorage;
-
-}
-
 std::string Fittino::CalculatorBase::GetName() const {
 
     return _name;
@@ -51,6 +45,12 @@ const Fittino::SimpleDataStorage* Fittino::CalculatorBase::GetSimpleOutputDataSt
 const Fittino::Collection<Fittino::PredictionBase*>& Fittino::CalculatorBase::GetCollectionOfQuantities() const {
 
     return _collectionOfQuantities;
+
+}
+
+Fittino::CalculatorBase::~CalculatorBase() {
+
+    delete _simpleOutputDataStorage;
 
 }
 

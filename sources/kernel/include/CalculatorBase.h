@@ -45,37 +45,37 @@ namespace Fittino {
       /*!
        *  Standard destructor.
        */
-      std::string                              GetName() const;
+      std::string                        GetName() const;
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
-      const SimpleDataStorage*                 GetSimpleOutputDataStorage() const;
-      const Collection<PredictionBase*>&       GetCollectionOfQuantities() const;
+      const SimpleDataStorage*           GetSimpleOutputDataStorage() const;
+      const Collection<PredictionBase*>& GetCollectionOfQuantities() const;
 
     public:
-      virtual                                  ~CalculatorBase();
-      virtual void                             CalculatePredictions() = 0;
-      virtual void                             Initialize();
+      virtual                            ~CalculatorBase();
+      virtual void                       CalculatePredictions() = 0;
+      virtual void                       Initialize();
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
-      virtual void                             SetupMeasuredValues();
+      virtual void                       SetupMeasuredValues();
 
     protected:
-      std::string                              _name;
-      std::string                              _tag;
-      const PhysicsModel*                      _model;
+      std::string                        _name;
+      std::string                        _tag;
+      const PhysicsModel*                _model;
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
-      SimpleDataStorage*                       _simpleOutputDataStorage;
+      SimpleDataStorage*                 _simpleOutputDataStorage;
       /*!
        *  \todo Make private in order to require use of AddQuantity.
        */
-      Collection<PredictionBase*>              _collectionOfQuantities;
+      Collection<PredictionBase*>        _collectionOfQuantities;
 
     protected:
-      void                                     AddQuantity( PredictionBase* prediction );
+      void                               AddQuantity( PredictionBase* prediction );
 
   };
 
