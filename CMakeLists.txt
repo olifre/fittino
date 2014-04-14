@@ -53,7 +53,7 @@ FIND_PACKAGE( IFORTLIB )
 # Specify the installation path of "Boost" which is required by SLHAea. There is only need to change
 # this when the installation path differs from the default.
 # SET(BOOST_ROOT <boost/installation/path>)
-FIND_PACKAGE(Boost 1.47.0 COMPONENTS filesystem system REQUIRED)
+FIND_PACKAGE(Boost 1.47.0 COMPONENTS filesystem system thread REQUIRED)
 
 # Optional: Specify the directory of the executable gsl-config.
 # SET(GSL_CONFIG_DIR)
