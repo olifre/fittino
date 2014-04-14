@@ -47,7 +47,6 @@ namespace Fittino {
     public:
       virtual void  Initialize();
       virtual void  CalculatePredictions();
-      virtual void  SetupMeasuredValues();
 
       /*! \cond UML */
     private:
@@ -92,7 +91,7 @@ namespace Fittino {
 
     private:
       void CallHiggsBounds();
-      virtual void setupHiggsBounds();
+      virtual void setupHiggsBounds() = 0;
       double RunHiggsBounds();
 
       /*! \endcond UML */
