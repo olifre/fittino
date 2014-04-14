@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        FeynHiggsCalculator.cpp                                      *
+* File        FeynHiggsCalculator.cpp                                          *
 *                                                                              *
 * Description Wrapper class for FeynHiggs                                      *
 *                                                                              *
@@ -420,10 +420,15 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     Redirector redirector( outputFile );
     redirector.Start();
 
-    std::string flags = "400243110";
+    std::string flags;
+    flags = "400242110";  //old
+    // flags = "400243110";  //new
+
     FHSetFlagsString( &_error, flags.c_str() );
 
     if ( _error != 0 ) {
+
+      throw CalculatorException( _name, "FHSetFlagsString" ); 
 
     }
 
@@ -454,17 +459,23 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
         if ( _error != 2 ) {
 
+          throw CalculatorException( _name, "FHReadRecord" ); 
+
         }
         
         FHLoopRecord( &_error, record );
         
         if ( _error != 0 ) {
+
+          throw CalculatorException( _name, "FHLoopRecord" ); 
             
         }
         
         FHSetRecord ( &_error, record );
         
         if ( _error != 0 ) {
+
+          throw CalculatorException( _name, "FHSetRecord" ); 
             
         }
 
@@ -472,15 +483,22 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     else if ( _inputMethod == "SLHA" ) {
 
         SLHAClear( slhadata );
+
         SLHARead( &_error, slhadata, _fileName.c_str(), 1 );
-        //if( error )
-        //    exit(error);
+        
+        if( _error != 0  ) {
+
+          throw CalculatorException( _name, "SLHARead" ); 
+
+        }
 
         FHSetSLHA( &_error, slhadata );
-        //if( error )
-        //    exit(error);
+        
+        if( _error != 0  ) {
 
+          throw CalculatorException( _name, "FHSetSLHA" ); 
 
+        }
 
     }
 
@@ -492,6 +510,8 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     FHHiggsCorr( &_error, MHiggs, &SAeff, UHiggs, ZHiggs );
 
     if ( _error != 0 ) {
+
+        throw CalculatorException( _name, "FHHiggsCorr" ); 
 
     }
 
@@ -505,14 +525,17 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     if ( _mass_h0 < 1. ) {
 
-      throw CalculatorException( _name, "Mass h less than 1 GeV.");
+        throw CalculatorException( _name, "Mass h less than 1 GeV.");
 
     }
 
     // select UHiggs or ZHiggs for calculation of couplings and gammas
 
     FHSelectUZ( &_error, 1, 2, 1 );
+
     if ( _error != 0 ) {
+
+        throw CalculatorException( _name, "FHSelectUZ" ); 
 
     }
 
@@ -520,6 +543,8 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     FHCouplings( &_error, _couplings, _couplingsms, _gammas, _gammasms, fast );
 
     if ( _error != 0 ) {
+
+      throw CalculatorException( _name, "FHCouplings" ); 
 
     }
 
@@ -546,6 +571,13 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
                &deltaMsSM,
                &bsmumuMSSM,
                &bsmumuSM );
+
+    if ( _error != 0 ) {
+      
+      throw CalculatorException( _name, "FHFlavour" ); 
+
+    }
+
 
     _bsgammaMSSM = bsgammaMSSM;
     _bsgammaSM   = bsgammaSM;
@@ -576,6 +608,13 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
                    &edmn,
                    &edmHg,
                    &ccb);
+
+    if ( _error != 0 ) {
+      
+      throw CalculatorException( _name, "FHConstraints" ); 
+
+    }
+
 
     _gm2      = gm2;
     _Deltarho = Deltarho;
@@ -612,6 +651,13 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
               MHtree,
               &SAtree) ;
 
+    if ( _error != 0 ) {
+      
+      throw CalculatorException( _name, "FHGetPara" ); 
+
+    }
+
+
     _Abs_Delta_b = abs( DeltaMB );
     _Arg_Delta_b = arg( DeltaMB );
     _SAtree = SAtree;
@@ -620,7 +666,20 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
         int key = 255;
         FHOutputSLHA( &_error, slhadata, key );
+
+        if ( _error != 0 ) {
+      
+          throw CalculatorException( _name, "FHOutputSLHA" ); 
+
+        }
+
         SLHAWrite( &_error, slhadata, "FeynHiggs.spc");
+
+        if ( _error != 0 ) {
+      
+          throw CalculatorException( _name, "SLHAWrite" ); 
+
+        }
 
     }
 
