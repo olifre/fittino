@@ -433,7 +433,7 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     }
 
-    RealType    record     [nrecord];
+    FHRealType    record     [nrecord];
     COMPLEX     slhadata   [nslhadata];
 
     // set input
@@ -505,8 +505,8 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     // calculate masses, sin(alpha), UHiggs & ZHiggs matrices
 
-    RealType MHiggs[4];
-    ComplexType SAeff, UHiggs[3][3], ZHiggs[3][3];
+    FHRealType MHiggs[4];
+    FHComplexType SAeff, UHiggs[3][3], ZHiggs[3][3];
 
     FHHiggsCorr( &_error, MHiggs, &SAeff, UHiggs, ZHiggs );
 
@@ -558,12 +558,12 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     }
 
 
-    RealType bsgammaMSSM;
-    RealType bsgammaSM;
-    RealType deltaMsMSSM;
-    RealType deltaMsSM;
-    RealType bsmumuMSSM;
-    RealType bsmumuSM;
+    FHRealType bsgammaMSSM;
+    FHRealType bsgammaSM;
+    FHRealType deltaMsMSSM;
+    FHRealType deltaMsSM;
+    FHRealType bsmumuMSSM;
+    FHRealType bsmumuSM;
 
     FHFlavour( &_error,
                &bsgammaMSSM,
@@ -587,15 +587,15 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     _bsmumuMSSM  = bsmumuMSSM;
     _bsmumuSM    = bsmumuSM;
 
-    RealType gm2;
-    RealType Deltarho;
-    RealType MWMSSM;
-    RealType MWSM;
-    RealType SW2MSSM;
-    RealType SW2SM;
-    RealType edmeTh;
-    RealType edmn;
-    RealType edmHg;
+    FHRealType gm2;
+    FHRealType Deltarho;
+    FHRealType MWMSSM;
+    FHRealType MWSM;
+    FHRealType SW2MSSM;
+    FHRealType SW2SM;
+    FHRealType edmeTh;
+    FHRealType edmn;
+    FHRealType edmHg;
     int ccb;
     
     FHConstraints( &_error,
@@ -629,12 +629,12 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     _ccb      = ccb;
 
     int nmfv;
-    RealType MSf[3][5][2], MASf[5][6], MCha[2], MNeu[4];
-    ComplexType USf[3][5][2][2], UASf[5][6][6];
-    ComplexType UCha[2][2], VCha[2][2], ZNeu[4][4];
-    ComplexType DeltaMB;
-    RealType MGl;
-    RealType MHtree[4], SAtree;
+    FHRealType MSf[3][5][2], MASf[5][6], MCha[2], MNeu[4];
+    FHComplexType USf[3][5][2][2], UASf[5][6][6];
+    FHComplexType UCha[2][2], VCha[2][2], ZNeu[4][4];
+    FHComplexType DeltaMB;
+    FHRealType MGl;
+    FHRealType MHtree[4], SAtree;
 
     FHGetPara( &_error,
               &nmfv,
