@@ -269,8 +269,9 @@ void Fittino::SPhenoSLHACalculator::ConfigureInput() {
     _slhaInputDataStorage->AddLine( "SMINPUTS:3:1.185e-01:# alpha_s (fixed)" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:4:9.11876e+01:# mZ (fixed)" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:5:4.18e+00:# mb(mb) (fixed)" );
-    //_slhaInputDataStorage->AddLine( "SMINPUTS:6:1.724000e+02:# mtop (fixed)" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:7:1.77682e+00:# mtau (fixed)" );
+    _slhaInputDataStorage->AddLine( "SMINPUTS:13:1.056583715e-01:# mmu (fixed)" );
+    _slhaInputDataStorage->AddLine( "SMINPUTS:23:9.5e-02:# ms(2GeV) (fixed)" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:24:1.275e+00:# mc(mc) (fixed)" );
 
     // Write block "MINPAR".
