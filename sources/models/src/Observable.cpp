@@ -48,6 +48,7 @@ Fittino::Observable::Observable( const boost::property_tree::ptree& ptree, Predi
                      _bestFitPrediction( ptree.get<double>( "BestFitPrediction" ) ),
                      _noFit( ptree.get<bool>( "NoFit", false ) ),
                      _noSmear( ptree.get<bool>( "NoSmear", false ) ),
+                     _noUpdate( ptree.get<bool>( "NoUpdate", false ) ),
                      _smearingType( ptree.get<std::string>( "SmearingType", "Gaus" ) ),
                      _prediction( prediction ) {
 
@@ -179,6 +180,12 @@ bool Fittino::Observable::IsNoFitObservable() {
 bool Fittino::Observable::IsNoSmearObservable() {
 
     return _noSmear;
+
+}
+
+bool Fittino::Observable::IsNoUpdateObservable() {
+
+    return _noUpdate;
 
 }
 

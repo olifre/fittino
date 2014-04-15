@@ -66,6 +66,7 @@ namespace Fittino {
       bool            IsNoFitObservable();
       bool            IsNoSmearObservable();
       std::string     GetSmearingType();
+      bool            IsNoUpdateObservable();
 
     public:
       virtual void    UpdatePrediction();
@@ -81,6 +82,7 @@ namespace Fittino {
       double          _bestFitPrediction;
       bool            _noFit;
       bool            _noSmear;
+      bool            _noUpdate;
       PredictionBase* _prediction;
       std::string     _smearingType;
 

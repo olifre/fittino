@@ -122,7 +122,11 @@ double Fittino::PhysicsModel::Evaluate() {
 
     for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
 
-        _observableVector[i]->UpdatePrediction();
+        if( !(_observableVector[i]->IsNoUpdateObservable()) ) {
+
+            _observableVector[i]->UpdatePrediction();
+       
+        }
 
     }
 
