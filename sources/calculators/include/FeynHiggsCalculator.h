@@ -137,6 +137,7 @@ namespace Fittino {
       double _warning_ZHiggs;
       double _warning_ExtParQ;
       double _warning_gmin2;
+      double _warning_Ab;
       double _warning_other;
 
       std::vector<FeynHiggsCrossSection*> _crossSections;

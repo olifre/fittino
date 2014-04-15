@@ -194,6 +194,7 @@ _slhadatastorageSPheno( NULL ){
     AddQuantity( new SimplePrediction( "Warning_ExtParQ", "", _warning_ExtParQ ) );
     AddQuantity( new SimplePrediction( "Warning_Gmin2"  , "", _warning_gmin2   ) );
     AddQuantity( new SimplePrediction( "Warning_Other"  , "", _warning_other   ) );
+    AddQuantity( new SimplePrediction( "Warning_Ab"     , "", _warning_Ab      ) );
 
 }
 
@@ -421,8 +422,8 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     redirector.Start();
 
     std::string flags;
-    flags = "400242110";  //old
-    // flags = "400243110";  //new
+    // flags = "400242110";  //old
+    flags = "400243110";  //new
 
     FHSetFlagsString( &_error, flags.c_str() );
 
@@ -695,6 +696,7 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     _warning_ZHiggs  = 0;
     _warning_ExtParQ = 0;
     _warning_gmin2   = 0;
+    _warning_Ab      = 0;
     _warning_other   = 0;
 
     std::string line;
@@ -704,6 +706,7 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
         if      ( boost::algorithm::contains( line, "warning: ZHiggs possibly unreliable"           ) )              _warning_ZHiggs  = 1;
         else if ( boost::algorithm::contains( line, "warning: ExtPar_Q taken to be sqrt(M3SQ M3SU)" ) )              _warning_ExtParQ = 1;
         else if ( boost::algorithm::contains( line, "warning: g-2 possibly unreliable due to numerical problems" ) ) _warning_gmin2   = 1;
+        else if ( boost::algorithm::contains( line, "warning: Questionable Ab from DRbar-to-OS conversion" ) )       _warning_Ab      = 1;
         else if ( boost::algorithm::contains( line, "warning"                                       ) )              _warning_other   = 1;
 
     }
