@@ -32,13 +32,15 @@ Fittino::Observable::Observable( PredictionBase* prediction,
                                  double          measuredError,
                                  double          bestFitPrediction,
                                  bool            noFit,
-                                 bool            noSmear )
+                                 bool            noSmear,
+                                 bool            noUpdate )
         : _deviation( 0. ),
           _measuredError( measuredError ),
           _measuredValue( measuredValue ),
           _bestFitPrediction( bestFitPrediction ),
           _noFit( noFit ),
           _noSmear( noSmear ),
+          _noUpdate( noUpdate ),
           _prediction( prediction ) {
 }
 

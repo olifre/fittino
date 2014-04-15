@@ -47,7 +47,8 @@ namespace Fittino {
                                   double          measuredError,
                                   double          bestFitPrediction = 0,
                                   bool            noFit = false,
-                                  bool            noSmear = false );
+                                  bool            noSmear = false,
+                                  bool            noUpdate = false );
       /*!
        *  Standard constructor
        */
