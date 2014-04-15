@@ -36,6 +36,7 @@
 #include "PhysicsModel.h"
 #include "Redirector.h"
 #include "SimplePrediction.h"
+#include "SLHAPrediction.h"
 
 #include "FeynHiggsChannel.h"
 #include "FeynHiggsFermionicChannel.h"
@@ -89,12 +90,6 @@ _slhadatastorageSPheno( NULL ){
     AddQuantity( new SimplePrediction( "sinAlpha_tree", "", _SAtree ) );
     AddQuantity( new SimplePrediction( "Abs_sinAlpha", "", _Abs_sinAlpha ) );
     AddQuantity( new SimplePrediction( "Arg_sinAlpha", "", _Arg_sinAlpha ) );
-
-    if ( _inputMethod == "SLHA" ) {
-
-        AddQuantity( new SimplePrediction( "sinAlpha_slha", "", _sinAlpha_slha ) );
-
-    }
 
     AddQuantity( new SimplePrediction( "Mass_h0",                    "", _mass_h0                    ) );
     AddQuantity( new SimplePrediction( "Mass_H0",                    "", _mass_H0                    ) );
@@ -172,6 +167,14 @@ _slhadatastorageSPheno( NULL ){
         _slhadatastorageFeynHiggs  = factory.CreateSLHAeaSLHADataStorage();
         _slhadatastorageSPheno     = factory.CreateSLHAeaSLHADataStorage();
 
+        AddQuantity( new SLHAPrediction( "sinAlpha_SLHA" , "", _slhadatastorageFeynHiggs, "ALPHA", 0, "(any)", "# Alpha", "", "") );
+
+        AddQuantity( new SLHAPrediction( "HMIX_Q"      , "", _slhadatastorageFeynHiggs, "HMIX", 3, "BLOCK", "", "", "" ) );
+        AddQuantity( new SLHAPrediction( "HMIX_mu"     , "", _slhadatastorageFeynHiggs, "HMIX", 1, "1", "", "", ""     ) );
+        AddQuantity( new SLHAPrediction( "HMIX_TanBeta", "", _slhadatastorageFeynHiggs, "HMIX", 1, "2", "", "", ""     ) );
+        AddQuantity( new SLHAPrediction( "HMIX_VEV"    , "", _slhadatastorageFeynHiggs, "HMIX", 1, "3", "", "", ""     ) );
+        AddQuantity( new SLHAPrediction( "HMIX_m2A"    , "", _slhadatastorageFeynHiggs, "HMIX", 1, "4", "", "", ""     ) );
+        
     }
 
     _crossSections.push_back( new FeynHiggsCrossSection( "1.96" ) );
@@ -526,7 +529,7 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     if ( _mass_h0 < 1. ) {
 
-        throw CalculatorException( _name, "Mass h less than 1 GeV.");
+        throw CalculatorException( _name, "Mass_h0");
 
     }
 
@@ -718,13 +721,17 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
         _slhadatastorageSPheno   ->ReadFile("SPheno.spc");
         _slhadatastorageFeynHiggs->ReadFile("FeynHiggs.spc");
+
+        for ( unsigned int i = 0; i < _collectionOfQuantities.GetNumberOfElements(); ++i ) {
+
+          _collectionOfQuantities.At( i )->Update();
+
+        }
     
-        _slhadatastorageSPheno->SetEntry( _mass_h0, "MASS", 1, "25", "", "", "" );
-        _slhadatastorageSPheno->SetEntry( _mass_H0, "MASS", 1, "35", "", "", "" );
-        _slhadatastorageSPheno->SetEntry( _mass_A0, "MASS", 1, "36", "", "", "" );
-        _slhadatastorageSPheno->SetEntry( _mass_Hp, "MASS", 1, "37", "", "", "" );
-        
-        _sinAlpha_slha = _slhadatastorageFeynHiggs->GetEntry("alpha", 0, "(any)", "# alpha", "", "");
+         _slhadatastorageSPheno->SetEntry( _mass_h0, "MASS", 1, "25", "", "", "" );
+         _slhadatastorageSPheno->SetEntry( _mass_H0, "MASS", 1, "35", "", "", "" );
+         _slhadatastorageSPheno->SetEntry( _mass_A0, "MASS", 1, "36", "", "", "" );
+         _slhadatastorageSPheno->SetEntry( _mass_Hp, "MASS", 1, "37", "", "", "" );
 
         _slhadatastorageSPheno->ReplaceBlock( "alpha", _slhadatastorageFeynHiggs->GetBlock( "ALPHA" ) );
 

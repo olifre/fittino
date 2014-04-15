@@ -117,7 +117,6 @@ namespace Fittino {
 
       double _Abs_sinAlpha;
       double _Arg_sinAlpha;
-      double _sinAlpha_slha;
       
       std::string _higgs [5];
       std::string _nu    [4];
