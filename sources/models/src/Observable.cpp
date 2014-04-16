@@ -54,10 +54,10 @@ Fittino::Observable::Observable( const boost::property_tree::ptree& ptree, Predi
                      _smearingType( ptree.get<std::string>( "SmearingType", "Gaus" ) ),
                      _prediction( prediction ) {
 
-    double error1 = ptree.get<double>( "MeasuredError1" );
-    double error2 = ptree.get<double>( "MeasuredError2", 0. );
-    double error3 = ptree.get<double>( "MeasuredError3", 0. );
-    _measuredError = sqrt( error1*error1 + error2*error2 + error3*error3 );
+    _error1 = ptree.get<double>( "MeasuredError1" );
+    _error2 = ptree.get<double>( "MeasuredError2", 0. );
+    _error3 = ptree.get<double>( "MeasuredError3", 0. );
+    _measuredError = sqrt( _error1*_error1 + _error2*_error2 + _error3*_error3 );
 
 }
 
