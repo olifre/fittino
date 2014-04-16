@@ -292,6 +292,11 @@ void Fittino::PhysicsModel::SmearObservations( TRandom3* randomGenerator ) {
     // Smear all observbles according to the covariance matrix:
     // First, determine the eigenvectors and eigenvalues of that matrix:
     //std::cout << "the covariance matrix is " << std::endl;
+    
+    // For the moment, also Poisson-type observables are included in this smearing procedure.
+    // Their measured values are smeared again correclty after all Gaussian variables have been smeared!
+
+
     //_observableCovarianceMatrix->Print();
     //std::cout << "-------------------------------------------------------" << std::endl;
     TMatrixDSymEigen eigenMatrix( *_observableCovarianceMatrix );
@@ -352,12 +357,29 @@ void Fittino::PhysicsModel::SmearObservations( TRandom3* randomGenerator ) {
             _observableVector[i]->SetMeasuredValue( _observableVector[i]->GetBestFitPrediction() );
 
         }
-        else {
+
+
+        // if smearing type is different from Gaus( at the moment, the only other type is Poisson),
+        // smear the observed value correctly. This will only yield correct 
+        // results, if this observable is not correlated with any of the other observables
         
-            _observableVector[i]->SetMeasuredValue( tObservableVector[i] );
+        else if( _observableVector[i]->GetSmearingType() != "Gaus" ) {
+        
+            _observableVector[i]->SmearMeasuredValue( randomGenerator );
         
         }
+        
+        // finally, for all Gaussian variable, set the smeared value to the one obtained from 
+        // smearing the eigentvectors of the covariance matrix
+        
+        else {
+            
+            _observableVector[i]->SetMeasuredValue( tObservableVector[i] );
+
+        }
+
         std::cout << "using smeared value for observable " << _observableVector[i]->GetPrediction()->GetName() << " \t: " << _observableVector[i]->GetMeasuredValue() << " \t: " << ( _observableVector[i]->GetMeasuredValue() - _observableVector[i]->GetBestFitPrediction() ) / _observableVector[i]->GetMeasuredError() << std::endl;
+    
     }
 
 
