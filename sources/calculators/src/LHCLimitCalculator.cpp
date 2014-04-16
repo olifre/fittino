@@ -69,10 +69,16 @@ Fittino::LHCLimitCalculator::LHCLimitCalculator( const PhysicsModel* model, cons
                relevantParameters.push_back( node.second.data() );
             }
         }
+        _relevantParametersMap.insert( std::pair<std::string, std::vector<std::string> >( analysisName, relevantParameters ) );
         
         std::stringstream nObs_ss;
         nObs_ss << _nObs.at( analysisName );
         std::string actualHistogramName = _histogramNames.at( analysisName ) + "_nObs_" + nObs_ss.str();
+        
+        std::string predictionName = analysisName + "_NObs";
+        std::string plotName = "Number of observed events for " + analysisName;
+        AddQuantity( new SimplePrediction( predictionName, plotName, "", "", 0., 1.e6, _nObs.at(analysisName) ) );
+        
         AddAnalysis( analysisName, _fileNames.at( analysisName ), actualHistogramName, relevantParameters );
         
 
