@@ -22,6 +22,7 @@
 #include "AstroCalculator.h"
 #include "AstroFitCalculator.h"
 #include "CheckVacuumCalculator.h"
+#include "ContourHistogramMaker.h"
 #include "ContourPlotter.h"
 #include "CorrelatedSampler.h"
 #include "CovariantSampler.h"
@@ -45,9 +46,12 @@
 #include "Observable.h"
 #include "ParticleSwarmOptimizer.h"
 #include "PhysicsModel.h"
+#include "ProfileHistogramMaker.h"
 #include "RegressionCalculator.h"
 #include "RosenbrockModel.h"
 #include "ScatterPlotter.h"
+#include "Simple1DHistogramMaker.h"
+#include "Simple2DHistogramMaker.h"
 #include "SimpleOptimizer.h"
 #include "SimplePrediction.h"
 #include "SimpleSampler.h"
@@ -281,7 +285,12 @@ Fittino::SLHADataStorageBase* const Fittino::Factory::CreateSLHAeaSLHADataStorag
 Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, ModelBase* model,
                                                    const boost::property_tree::ptree& ptree ) const {
 
-    if ( type == "ContourPlotter" ) {
+    if ( type == "ContourHistogramMaker" ) {
+
+        return new ContourHistogramMaker( model, ptree );
+
+    }
+    else if ( type == "ContourPlotter" ) {
 
         return new ContourPlotter( model, ptree );
 
@@ -306,9 +315,25 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
         return new ParticleSwarmOptimizer( model, ptree );
 
     }
+    else if ( type == "ProfileHistogramMaker" ) {
+
+        return new ProfileHistogramMaker( model, ptree );
+
+    }
     else if ( type == "ScatterPlotter" ) {
 
         return new ScatterPlotter( model, ptree );
+
+    }
+    else if ( type == "Simple1DHistogramMaker" ) {
+
+        return new Simple1DHistogramMaker( model, ptree );
+
+    }
+    else if ( type == "Simple2DHistogramMaker" ) {
+
+        return new Simple2DHistogramMaker( model, ptree );
+
     }
     else if ( type == "SimpleOptimizer" ) {
 
