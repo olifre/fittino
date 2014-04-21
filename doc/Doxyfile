@@ -581,6 +581,8 @@ INPUT                  = "." \
                          "../sources/datastorages/src" \
                          "../sources/exceptions/include" \
                          "../sources/exceptions/src" \
+                         "../sources/histogrammakers/include" \
+                         "../sources/histogrammakers/src" \
                          "../sources/models/include" \
                          "../sources/models/src" \
                          "../sources/kernel/include" \

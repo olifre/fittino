@@ -13,8 +13,8 @@
 #                                                                              #
 # Licence     This program is free software; you can redistribute it and/or    #
 #             modify it under the terms of the GNU General Public License as   #
-#	      published by the Free Software Foundation; either version 3 of   #
-#	      the License, or (at your option) any later version.              #
+#             published by the Free Software Foundation; either version 3 of   #
+#             the License, or (at your option) any later version.              #
 #                                                                              #
 ################################################################################
 
@@ -31,23 +31,25 @@ ADD_EXECUTABLE( fittino ${includes} ${sources} )
 GET_PROPERTY( compile_flags TARGET fittino PROPERTY COMPILE_FLAGS )
 GET_PROPERTY( link_flags    TARGET fittino PROPERTY LINK_FLAGS    )
 
-INCLUDE_DIRECTORIES( ./include               )
-INCLUDE_DIRECTORIES( ../calculators/include  )
-INCLUDE_DIRECTORIES( ../datastorages/include )
-INCLUDE_DIRECTORIES( ../exceptions/include   )
-INCLUDE_DIRECTORIES( ../models/include       )
-INCLUDE_DIRECTORIES( ../optimizers/include   )
-INCLUDE_DIRECTORIES( ../plotters/include     )
-INCLUDE_DIRECTORIES( ../samplers/include     )
+INCLUDE_DIRECTORIES( ./include                  )
+INCLUDE_DIRECTORIES( ../calculators/include     )
+INCLUDE_DIRECTORIES( ../datastorages/include    )
+INCLUDE_DIRECTORIES( ../exceptions/include      )
+INCLUDE_DIRECTORIES( ../histogrammakers/include )
+INCLUDE_DIRECTORIES( ../models/include          )
+INCLUDE_DIRECTORIES( ../optimizers/include      )
+INCLUDE_DIRECTORIES( ../plotters/include        )
+INCLUDE_DIRECTORIES( ../samplers/include        )
 
-TARGET_LINK_LIBRARIES( fittino checkvacuum  )
-TARGET_LINK_LIBRARIES( fittino models       )
-TARGET_LINK_LIBRARIES( fittino calculators  )
-TARGET_LINK_LIBRARIES( fittino optimizers   )
-TARGET_LINK_LIBRARIES( fittino plotters     )
-TARGET_LINK_LIBRARIES( fittino samplers     )
-TARGET_LINK_LIBRARIES( fittino datastorages )
-TARGET_LINK_LIBRARIES( fittino exceptions   )
+TARGET_LINK_LIBRARIES( fittino calculators     )
+TARGET_LINK_LIBRARIES( fittino checkvacuum     )
+TARGET_LINK_LIBRARIES( fittino datastorages    )
+TARGET_LINK_LIBRARIES( fittino exceptions      )
+TARGET_LINK_LIBRARIES( fittino histogrammakers )
+TARGET_LINK_LIBRARIES( fittino models          )
+TARGET_LINK_LIBRARIES( fittino optimizers      )
+TARGET_LINK_LIBRARIES( fittino plotters        )
+TARGET_LINK_LIBRARIES( fittino samplers        )
 
 IF( Boost_FOUND )
 
