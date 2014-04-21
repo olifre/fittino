@@ -44,7 +44,7 @@ void Fittino::Tool::PerformTask() {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
+    //messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  Initializing the " << _name << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;

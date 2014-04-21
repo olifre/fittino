@@ -24,6 +24,8 @@
 
 #include <boost/property_tree/ptree.hpp>
 
+#include "TString.h"
+
 #include "Messenger.h"
 
 class TFile;

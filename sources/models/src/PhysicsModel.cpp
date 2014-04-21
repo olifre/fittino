@@ -243,6 +243,7 @@ void Fittino::PhysicsModel::Initialize() {
     }
 
     messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
 
 }
 
