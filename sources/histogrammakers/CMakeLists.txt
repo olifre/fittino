@@ -22,6 +22,7 @@ INCLUDE_DIRECTORIES(../exceptions/include)
 INCLUDE_DIRECTORIES(../kernel/include)
 INCLUDE_DIRECTORIES(../models/include)
 INCLUDE_DIRECTORIES(../plotters/include)
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 FILE(GLOB includes ./include/*.h) 
 AUX_SOURCE_DIRECTORY(src sources)
