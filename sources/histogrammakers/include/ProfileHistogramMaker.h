@@ -1,4 +1,4 @@
-/* $Id: ProfileHistogramMaker.h 1899 2014-02-15 12:57:55Z uhlenbrock@PHYSIK.UNI-BONN.DE $ */
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
@@ -28,7 +28,7 @@
 namespace Fittino {
 
   /*!
-   *  \ingroup kernel
+   *  \ingroup histogrammakers
    *  \brief Class for profile histogram maker.
    */
   class ProfileHistogramMaker : public HistogramMakerBase {

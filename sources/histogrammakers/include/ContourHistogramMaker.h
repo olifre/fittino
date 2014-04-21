@@ -1,4 +1,4 @@
-/* $Id: ContourHistogramMaker.h 1899 2014-02-15 12:57:55Z uhlenbrock@PHYSIK.UNI-BONN.DE $ */
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
@@ -28,7 +28,10 @@
 namespace Fittino {
 
   /*!
-   *  \ingroup kernel
+   *  \defgroup histogrammakers
+   */
+  /*!
+   *  \ingroup histogrammakers
    *  \brief Class for 2D chi2 profile histogram maker.
    */
   class ContourHistogramMaker : public HistogramMakerBase {

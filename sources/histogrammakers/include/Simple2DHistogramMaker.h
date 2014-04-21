@@ -1,4 +1,4 @@
-/* $Id: Simple2DHistogramMaker.h 1899 2014-02-15 12:57:55Z uhlenbrock@PHYSIK.UNI-BONN.DE $ */
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
@@ -28,7 +28,7 @@
 namespace Fittino {
 
   /*!
-   *  \ingroup kernel
+   *  \ingroup histogrammakers
    *  \brief Class for simple 2D histogram maker.
    */
   class Simple2DHistogramMaker : public HistogramMakerBase {
