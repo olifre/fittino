@@ -64,20 +64,15 @@ Fittino::LHCLimitCalculator::LHCLimitCalculator( const PhysicsModel* model, cons
         
         
         std::vector<std::string> relevantParameters;
-        BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree ) {
-            if( node.first == "RelevantParameter" ) {
-               relevantParameters.push_back( node.second.data() );
+        BOOST_FOREACH( const boost::property_tree::ptree::value_type &subnode, node.second ) {
+            if( subnode.first == "RelevantParameter" ) {
+               relevantParameters.push_back( subnode.second.data() );
             }
         }
-        _relevantParametersMap.insert( std::pair<std::string, std::vector<std::string> >( analysisName, relevantParameters ) );
         
         std::stringstream nObs_ss;
         nObs_ss << _nObs.at( analysisName );
         std::string actualHistogramName = _histogramNames.at( analysisName ) + "_nObs_" + nObs_ss.str();
-        
-        std::string predictionName = analysisName + "_NObs";
-        std::string plotName = "Number of observed events for " + analysisName;
-        AddQuantity( new SimplePrediction( predictionName, plotName, "", "", 0., 1.e6, _nObs.at(analysisName) ) );
         
         AddAnalysis( analysisName, _fileNames.at( analysisName ), actualHistogramName, relevantParameters );
         
@@ -92,13 +87,16 @@ Fittino::LHCLimitCalculator::~LHCLimitCalculator() {
 
 void Fittino::LHCLimitCalculator::AddAnalysis( std::string name, std::string fileName, std::string histName, std::vector<std::string> relevantParameters ) {
 
-    if( relevantParameters.size() == 0 ) return;
-
-
-
+    std::string predictionName = name + "_NObs";
+    std::string plotName = "Number of observed events for " + name;
+    AddQuantity( new SimplePrediction( predictionName, plotName, "", "", 0., 1.e6, _nObs.at(name) ) );
+    
     _relevantParametersMap.insert( std::pair<std::string, std::vector<std::string> >( name, relevantParameters ) );
     _chi2Values.insert( std::pair<std::string,double>( name, 0. ) );
     AddQuantity( new SimplePrediction( name+"_chi2", "", _chi2Values.at(name) ) );
+    
+    if( relevantParameters.size() == 0 ) return;
+
 
     // save the old gDirectory:
     TDirectory *tempDir = gDirectory;
