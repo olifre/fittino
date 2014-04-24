@@ -96,6 +96,14 @@ namespace Fittino {
       std::string                   _iterationCounterName;
       const TString                 _metaDataTreeName;
       const TString                 _treeName;
+     /*!
+      * Saves the default status for the model Quantities:
+      * true: All Quantities except for those specified in _noOutputModelQuantitites are written to the output tree
+      * false: Only Quantities specified in _outputModelQuantitiies are written to the output tree.
+      */
+      bool                          _writeAllModelQuantities;
+      std::vector<std::string>      _noOutputModelQuantities;
+      std::vector<std::string>      _outputModelQuantities;
       /*!
        *  The tree for the metadata.
        */

@@ -19,6 +19,8 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <boost/foreach.hpp>
+
 #include "TLeaf.h"
 #include "TTree.h"
 
@@ -32,6 +34,7 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tre
       _iterationCounterName( ptree.get<std::string> ( "IterationCounterName", "IterationCounter" ) ),
       _metaDataTreeName    ( ptree.get<std::string> ( "MetaDataTree",         "MetaDataTree"     ) ),
       _treeName            ( ptree.get<std::string> ( "OutputTree",           "Tree"             ) ),
+      _writeAllModelQuantities( ptree.get<bool>     ( "WriteAllModelQuantities", true            ) ),
       _metaDataTree        ( new TTree( _metaDataTreeName, _metaDataTreeName ) ),
       _randomGenerator     ( _randomSeed ),
       _tree                ( new TTree( _treeName, _treeName ) ) {
@@ -41,6 +44,23 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tre
 
     _statusParameterVector.push_back( new Quantity( _chi2Name,             "#chi^2",           _chi2,             0., 100.  ) );
     _statusParameterVector.push_back( new Quantity( _iterationCounterName, "IterationCounter", _iterationCounter, 0., 1.e10 ) );
+
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type node, ptree ) {
+
+        if( node.first == "OutputModelQuantity" ) {
+
+            _outputModelQuantities.push_back( node.second.data() );
+        
+        }
+
+        else if( node.first == "NoOutputModelQuantity" ) {
+
+            _noOutputModelQuantities.push_back( node.second.data() );
+
+        }
+
+    }
+
 
 }
 
@@ -131,8 +151,72 @@ void Fittino::AnalysisTool::CheckUniqueness( TTree* tree, std::string name ) con
 void Fittino::AnalysisTool::InitializeBranches() {
 
     // First initialize the branches of the output tree.
-
+    
     for ( unsigned int i = 0; i < _model->GetCollectionOfQuantities().GetNumberOfElements(); ++i ) {
+        
+        bool isOutputVariable = false;
+        if( _writeAllModelQuantities ) {
+            
+            isOutputVariable = true;
+            
+            for( unsigned int j = 0; j < _noOutputModelQuantities.size(); ++j ) {
+                
+                if( _model->GetCollectionOfQuantities().At(i)->GetName() == _noOutputModelQuantities.at(j) ) {
+                    
+                    isOutputVariable = false;
+                    break;
+                
+                }
+            
+            }
+            
+            if( !isOutputVariable ) {
+
+                continue;
+
+            }
+
+            for( unsigned int j = 0; j < GetNumberOfStatusParameters(); ++j ) {
+
+                if( _model->GetCollectionOfQuantities().At(i)->GetName() == GetStatusParameterVector()->at(j)->GetName() ) {
+
+                    isOutputVariable = false;
+                    Messenger& messenger = Messenger::GetInstance();
+                    messenger << Messenger::ALWAYS << "The ModelQuantity " << _model->GetCollectionOfQuantities().At(i)->GetName() << " will not be written to the output ntuple, because a StatusParameter with the same name exists." << Messenger::Endl;
+                    break;
+
+                }
+
+            }
+
+            if( !isOutputVariable ) {
+
+                continue;
+
+            }
+        
+        }
+
+        else {
+            
+            for( unsigned int j = 0; j < _outputModelQuantities.size(); ++j ) {
+
+                if( _outputModelQuantities.at(j) == _model->GetCollectionOfQuantities().At(i)->GetName() ) {
+
+                    isOutputVariable = true;
+                    break;
+
+                }
+
+            }
+
+        }
+        
+        if( !isOutputVariable ) {
+
+            continue;
+
+        }
 
         AddBranch( _tree,
                    _model->GetCollectionOfQuantities().At( i )->GetName(),
