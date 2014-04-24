@@ -38,9 +38,6 @@
 #include "HECCalculator.h"
 #include "HiggsSignalsHadXSCalculator.h"
 #include "HiggsSignalsSLHACalculator.h"
-#include "HiggsBoundsHadXSCalculator.h"
-#include "HiggsBoundsSLHACalculator.h"
-#include "HiggsBoundsHECCalculator.h"
 #include "LHCLimitCalculator.h"
 #include "MarkovChainSampler.h"
 #include "MicromegasCalculator.h"
@@ -166,45 +163,6 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 #endif
 
     }
-/*    else if ( type == "HiggsBoundsHECCalculator" ) {
-
-#if defined HIGGSBOUNDS_FOUND
-
-        return new HiggsBoundsHECCalculator( model, ptree );
-
-#else
-
-        throw ConfigurationException( "Trying to use HiggsBoundsHECCalculator but Fittino was built without HiggsBounds." );
-
-#endif
-
-    }
-    else if ( type == "HiggsBoundsHadXSCalculator" ) {
-
-#if defined HIGGSBOUNDS_FOUND
-
-        return new HiggsBoundsHadXSCalculator( model, ptree );
-
-#else
-
-        throw ConfigurationException( "Trying to use HiggsBoundsHadXSCalculator but Fittino was built without HiggsBounds." );
-
-#endif
-
-    }*/
-    else if ( type == "HiggsBoundsSLHACalculator" ) {
-
-#if defined HIGGSBOUNDS_FOUND
-
-        return new HiggsBoundsSLHACalculator( model, ptree );
-
-#else
-    
-        throw ConfigurationException( "Trying to use HiggsBoundsSLHACalculator but Fittino was built without HiggsBounds." );
-
-#endif
-
-    }
     else if ( type == "LHCCalculator" ) {
 
         return new LHCLimitCalculator( model, ptree );
@@ -285,13 +243,6 @@ Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::prop
         return new Observable( ptree, new SimplePrediction( ptree, calculator ) );
 
     }
-    /*
-    else if ( type == "NONE" ) {
-
-        return new Observable( ptree, NULL );
-
-    }
-    */
     else {
 
         throw ConfigurationException( "Prediction type" + type + " not known." );
@@ -306,7 +257,7 @@ Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::prop
     for ( unsigned int i = 0; i < predictions.GetNumberOfElements(); ++i ) {
 
         if ( name == predictions.At( i )->GetName() ) {
-            
+
             return new Observable( ptree, predictions.At( i ) );
 
         }
