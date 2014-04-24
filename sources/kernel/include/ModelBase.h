@@ -86,6 +86,10 @@ namespace Fittino {
       const Collection<const Quantity*>&                  GetCollectionOfQuantities() const;
       const Collection<const VariableBase<double>*>&      GetCollectionOfMetaDataDoubleVariables() const;
       const Collection<const VariableBase<std::string>*>& GetCollectionOfStringVariables() const;
+      /*!
+       * Returns _useExternalChi2
+       */
+      bool                                                UseExternalChi2();
 
     public:
       virtual void                                        PrintStatus() const = 0;
@@ -106,7 +110,6 @@ namespace Fittino {
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
       virtual const Collection<CalculatorBase*>&          GetCollectionOfCalculators() const = 0;
-
     protected:
       /*!
        *  Name of the model.
@@ -145,6 +148,14 @@ namespace Fittino {
        *  Value returned by Evaluate().
        */
       double                                              _chi2;
+      /*!
+       *  Variable to determine if Chi2 should be read from input Ntuple
+       */
+      bool                                                _useExternalChi2;
+      /*!
+       * the name of the external chi2 that is to be used
+       */
+      std::string                                         _externalChi2Name;
       /*!
        *  Stores the parameters.
        */

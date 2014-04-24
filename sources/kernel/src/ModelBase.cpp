@@ -28,6 +28,10 @@ Fittino::ModelBase::ModelBase( const boost::property_tree::ptree& ptree )
     : _name( "" ) {
 
     _ptree = ptree;
+    
+    _useExternalChi2  =  ptree.get<bool>( "UseExternalChi2", false );
+    _externalChi2Name =  ptree.get<std::string>( "ExternalChi2Name", "Chi2" );
+    
     InitializeParameters( ptree );
 
 }
@@ -43,22 +47,33 @@ Fittino::ModelBase::~ModelBase() {
 
 double Fittino::ModelBase::GetChi2() {
 
-    bool evaluate = false;
 
-    for ( unsigned int i = 0; i < GetNumberOfParameters(); i++ ) {
+    if( _useExternalChi2 ) {
 
-        if ( GetCollectionOfParameters().At( i )->IsUpdated() ) {
-
-            evaluate = true;
-            GetCollectionOfParameters().At( i )->SetUpdated( false );
-
-        }
+        _chi2 = _collectionOfQuantities.At( _externalChi2Name )->GetValue();
 
     }
 
-    if ( evaluate ) {
+    else {
 
-        _chi2 = Evaluate();
+        bool evaluate = false;
+
+        for ( unsigned int i = 0; i < GetNumberOfParameters(); i++ ) {
+
+            if ( GetCollectionOfParameters().At( i )->IsUpdated() ) {
+
+                evaluate = true;
+                GetCollectionOfParameters().At( i )->SetUpdated( false );
+
+            }
+
+        }
+
+        if ( evaluate ) {
+
+            _chi2 = Evaluate();
+
+        }
 
     }
 
@@ -161,3 +176,10 @@ void Fittino::ModelBase::InitializeParameters( const boost::property_tree::ptree
     }
 
 }
+
+bool Fittino::ModelBase::UseExternalChi2() {
+
+    return _useExternalChi2;
+
+}
+
