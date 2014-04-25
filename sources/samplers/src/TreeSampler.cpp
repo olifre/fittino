@@ -42,14 +42,7 @@
 
 Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree ) 
     : SamplerBase( model, ptree ),
-      _numberOfIterations( ptree.get<int> ( "NumberOfIterations", -1 ) ),
-      _isToyRun( ptree.get<bool>( "PerformToyRun", false ) ),
-      _determineBestFitValues( ptree.get<bool>( "DetermineBestFitValues", false ) ),
-      _lowestChi2( 1.e99 ),
-      _bestFitIndex( 0 ),
-      _inputLowestChi2( 1.e99 ),
-      _inputBestFitIndex( 0 ) {
-
+      _numberOfIterations( ptree.get<int> ( "NumberOfIterations", -1 ) ) {
       
       _firstIteration = _model->GetCollectionOfParameters().At(0)->GetValue();
       _name = "Tree Sampler";
@@ -85,30 +78,6 @@ Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, const boost::prope
 
      }
 
-    if( _isToyRun ) {
-        TDirectory *tempDirectory = gDirectory;
-        _outputFile = new TFile("SmallOutputFile.root", "RECREATE" );
-        _outputTree = new TTree("SmallOutputTree", "SmallOutputTree" );
-        for( unsigned int i = 0; i < _model->GetCollectionOfPredictions().GetNumberOfElements(); ++i ) {
-            if( _model->GetCollectionOfPredictions().At(i)->GetName().find("P_") != std::string::npos ) {
-                _currentPhysicsParameters.push_back(0.);
-            }
-        }
-        for( unsigned int i = 0; i < _model->GetCollectionOfParameters().GetNumberOfElements(); ++i ) {
-            _currentPhysicsParameters.push_back(0.);
-        }
-        int curIdx = 0;
-        for( unsigned int i = 0; i < _model->GetCollectionOfPredictions().GetNumberOfElements(); ++i ) {
-            if( _model->GetCollectionOfPredictions().At(i)->GetName().find("P_") != std::string::npos ) {
-                _outputTree->Branch(_model->GetCollectionOfPredictions().At(i)->GetName().c_str(), &_currentPhysicsParameters.at(curIdx++) );
-            }
-        }
-        for( unsigned int i = 0; i < _model->GetCollectionOfParameters().GetNumberOfElements(); ++i ) {
-            _outputTree->Branch(_model->GetCollectionOfParameters().At(i)->GetName().c_str(), &_currentPhysicsParameters.at(curIdx++) );
-        }
-        _outputTree->Branch( "Chi2", &_currentChi2 );
-        gDirectory = tempDirectory;
-    }
 }
 
 Fittino::TreeSampler::~TreeSampler() {
@@ -117,17 +86,6 @@ Fittino::TreeSampler::~TreeSampler() {
 
 void Fittino::TreeSampler::Execute() {
 
-    if( _isToyRun ) {
-      
-      if( _determineBestFitValues ) {
-
-        DetermineBestFitValues();
-
-      }
-      _model->SmearObservations( &_randomGenerator );
-    
-    }
-    
     this->FillMetaDataTree();
 
     while ( _iterationCounter < _numberOfIterations ) {
@@ -138,44 +96,9 @@ void Fittino::TreeSampler::Execute() {
         this->UpdateModel();
         
 
-        if( _isToyRun ) {
-            _currentChi2 = GetStatusParameterVector()->at(0)->GetValue();
-            int curIdx = 0;
-            for( unsigned int i = 0; i < _model->GetCollectionOfPredictions().GetNumberOfElements(); ++i ) {
-                if( _model->GetCollectionOfPredictions().At(i)->GetName().find("P_") != std::string::npos ) {
-                    _currentPhysicsParameters.at(curIdx++) = _model->GetCollectionOfPredictions().At(i)->GetValue(); 
-                }
-            }
-            for( unsigned int i = 0; i < _model->GetCollectionOfParameters().GetNumberOfElements(); ++i ) {
-                _currentPhysicsParameters.at(curIdx++) = _model->GetCollectionOfParameters().At(i)->GetValue(); 
-            }
-            _outputTree -> Fill();
-        }
     }
     
     
-    // Temporarily, all points are filled into the output ntuple!
-    if( _isToyRun ) {
-      
-      
-      // find and fill only the best fit point into the ntuple;
-
-      _model->GetCollectionOfParameters().At( 0 )->SetValue( (double)_bestFitIndex + 1.);
-      GetStatusParameterVector()->at(0)->SetValue( _model->GetChi2() );
-      GetStatusParameterVector()->at(1)->SetValue( _bestFitIndex + 1);
-
-      this->FillTree();
-    
-      TDirectory *tempDirectory = gDirectory;
-    
-
-      gDirectory = _outputFile;
-      _outputTree->Write();
-      _outputFile->Close();
-      gDirectory = tempDirectory;
-    
-    }
-   
 }
 
 void Fittino::TreeSampler::PrintSteeringParameters() const {
@@ -191,59 +114,7 @@ void Fittino::TreeSampler::UpdateModel() {
 
     AnalysisTool::PrintStatus();
 
-    if( !_isToyRun ) {
-
-        this->FillTree();
-
-    }
-    else if( _lowestChi2 > chi2 ) {
-
-        _lowestChi2 = chi2;
-        _bestFitIndex = _firstIteration + _iterationCounter-2;
-
-    }
-
     // the model parameter is the iteration. Increase that by one each time the model is updated.
     _model->GetCollectionOfParameters().At( 0 )->SetValue( _model->GetCollectionOfParameters().At( 0 )->GetValue() + 1. );
-
-}
-
-void Fittino::TreeSampler::DetermineBestFitValues() {
-
-  // loop over all iterations and find the best fit value:
-  int counter = 0;
-  while( counter < _numberOfIterations ) {
-
-    // set the model paramter to the current iteration and get the chi2:
-    _model->GetCollectionOfParameters().At( 0 )->SetValue( (double)counter );
-    double chi2 = _model->GetChi2();
-
-    // check if chi2 is smaller than the lowest chi2 so far, and if yes, update values of best fit index and best fit chi2:
-    if( chi2 < _inputLowestChi2 ) { 
-      
-      _inputLowestChi2 = chi2;
-      _inputBestFitIndex = counter;
-    
-    }
-  
-    counter++;
-
-  }
-  
-  // set model parameter value to best fit index and get the predictiosn at the best fit index:
-  _model->GetCollectionOfParameters().At( 0 )->SetValue( (double)_inputBestFitIndex );
-  _model->GetCollectionOfCalculators().At( 0 )->CalculatePredictions();
-  
-  // set the best fit predictions for all observables of the original model; this will now include the physical model parameters:
-  const std::vector<Observable*>* observableVector = _model->GetObservableVector();
-
-  for( int i = 0; i < observableVector->size(); ++i ) {
-      
-    observableVector->at(i)->SetBestFitPrediction( _model->GetCollectionOfCalculators().At( 0 )->GetSimpleOutputDataStorage()->GetMap()->at( observableVector->at(i)->GetPrediction()->GetName() ) );
-
-  }
-  
-  // reset the model parameter to 0:
-  _model->GetCollectionOfParameters().At( 0 )->SetValue( 0. );
 
 }

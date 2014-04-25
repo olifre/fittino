@@ -46,7 +46,7 @@ namespace Fittino {
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
-      virtual void                               SmearObservations( TRandom3* ) {}
+      virtual void                               SetupForToyRun( TRandom3* ) {}
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
        */

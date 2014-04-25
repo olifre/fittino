@@ -72,7 +72,7 @@ namespace Fittino {
 
     public:
       virtual void                               PrintStatus() const;
-      virtual void                               SmearObservations( TRandom3* );
+      virtual void                               SetupForToyRun( TRandom3* );
       /*!
        *  Virtual copy constructor.
        */

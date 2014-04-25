@@ -93,7 +93,7 @@ namespace Fittino {
        *  Smears the observables (if existent).
        *  \todo Move to PhysicsModel and replace public function by a switch (Matthias).
        */
-      virtual void                                        SmearObservations( TRandom3* ) = 0;
+      virtual void                                        SetupForToyRun( TRandom3* ) = 0;
       /*!
        *  Returns a pointer to a copy of the model.
        */

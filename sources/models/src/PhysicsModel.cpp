@@ -281,7 +281,7 @@ double Fittino::PhysicsModel::CalculateChi2() {
 
 }
 
-void Fittino::PhysicsModel::SmearObservations( TRandom3* randomGenerator ) {
+void Fittino::PhysicsModel::SetupForToyRun( TRandom3* randomGenerator ) {
     /*
     for( int i = 0; i < _observableVector.size(); ++i ) {
 

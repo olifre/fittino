@@ -92,6 +92,7 @@ namespace Fittino {
       /*! \cond UML */
     private:
       const unsigned int            _randomSeed;
+      bool                          _performToyRun;
       std::string                   _chi2Name;
       std::string                   _iterationCounterName;
       const TString                 _metaDataTreeName;

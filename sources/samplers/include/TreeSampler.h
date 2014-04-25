@@ -53,29 +53,8 @@ namespace Fittino {
        *  Stores the configured maximal number of iteration steps.
        */
       unsigned int           _numberOfIterations;
-      /*!
-       *  Switch to enable Toy runs.
-       */
-      bool                   _isToyRun;
-      /*!
-       *  Switch to enable determination of best fit values from input file.
-       */
-      bool                   _determineBestFitValues;
-      /*!
-       * used to store the content of the output ntuple for a ToyRun:
-       */
-      double                 _lowestChi2;
-      int                    _bestFitIndex;
-      double                 _inputLowestChi2;
-      int                    _inputBestFitIndex;
-      TFile                  *_outputFile;
-      TTree                  *_outputTree;
-      double                 _currentChi2;
-      std::vector<double>    _currentPhysicsParameters;
+      
       int                    _firstIteration;
-
-    private:
-      void                   DetermineBestFitValues();
 
     private:
       virtual void           Execute();

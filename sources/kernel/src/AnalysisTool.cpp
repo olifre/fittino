@@ -35,6 +35,7 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tre
       _metaDataTreeName    ( ptree.get<std::string> ( "MetaDataTree",         "MetaDataTree"     ) ),
       _treeName            ( ptree.get<std::string> ( "OutputTree",           "Tree"             ) ),
       _writeAllModelQuantities( ptree.get<bool>     ( "WriteAllModelQuantities", true            ) ),
+      _performToyRun       ( ptree.get<bool>        ( "PerformToyRun",        false              ) ),
       _metaDataTree        ( new TTree( _metaDataTreeName, _metaDataTreeName ) ),
       _randomGenerator     ( _randomSeed ),
       _tree                ( new TTree( _treeName, _treeName ) ) {
@@ -61,6 +62,11 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tre
 
     }
 
+    if( _performToyRun ) {
+
+        _model->SetupForToyRun( &_randomGenerator );
+    
+    }
 
 }
 
