@@ -91,20 +91,22 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-      const unsigned int            _randomSeed;
       bool                          _performToyRun;
+      /*!
+       *  Saves the default status for the model Quantities:\n
+       *  true: All Quantities except for those specified in _noOutputModelQuantitites are written\n
+       *  to the output tree.\n
+       *  false: Only Quantities specified in _outputModelQuantitiies are written to the output\n
+       *  tree.
+       */
+      bool                          _writeAllModelQuantities;
+      const unsigned int            _randomSeed;
       std::string                   _chi2Name;
       std::string                   _iterationCounterName;
-      const TString                 _metaDataTreeName;
-      const TString                 _treeName;
-     /*!
-      * Saves the default status for the model Quantities:
-      * true: All Quantities except for those specified in _noOutputModelQuantitites are written to the output tree
-      * false: Only Quantities specified in _outputModelQuantitiies are written to the output tree.
-      */
-      bool                          _writeAllModelQuantities;
       std::vector<std::string>      _noOutputModelQuantities;
       std::vector<std::string>      _outputModelQuantities;
+      const TString                 _metaDataTreeName;
+      const TString                 _treeName;
       /*!
        *  The tree for the metadata.
        */

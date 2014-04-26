@@ -36,11 +36,11 @@
 #include "GeneticAlgorithmOptimizer.h"
 #include "HDim6Calculator.h"
 #include "HECCalculator.h"
+#include "HiggsBoundsHadXSCalculator.h"
+#include "HiggsBoundsHECCalculator.h"
+#include "HiggsBoundsSLHACalculator.h"
 #include "HiggsSignalsHadXSCalculator.h"
 #include "HiggsSignalsSLHACalculator.h"
-#include "HiggsBoundsHadXSCalculator.h"
-#include "HiggsBoundsSLHACalculator.h"
-#include "HiggsBoundsHECCalculator.h"
 #include "LHCLimitCalculator.h"
 #include "MarkovChainSampler.h"
 #include "MicromegasCalculator.h"
@@ -140,6 +140,45 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
         return new HECCalculator( model, ptree );
 
     }
+    else if ( type == "HiggsBoundsHadXSCalculator" ) {
+
+#if defined HIGGSBOUNDS_FOUND
+
+        return new HiggsBoundsHadXSCalculator( model, ptree );
+
+#else
+
+        throw ConfigurationException( "Trying to use HiggsBoundsHadXSCalculator but Fittino was built without HiggsBounds." );
+
+#endif
+
+    }
+    else if ( type == "HiggsBoundsHECCalculator" ) {
+
+#if defined HIGGSBOUNDS_FOUND
+
+        return new HiggsBoundsHECCalculator( model, ptree );
+
+#else
+
+        throw ConfigurationException( "Trying to use HiggsBoundsHECCalculator but Fittino was built without HiggsBounds." );
+
+#endif
+
+    }
+    else if ( type == "HiggsBoundsSLHACalculator" ) {
+
+#if defined HIGGSBOUNDS_FOUND
+
+        return new HiggsBoundsSLHACalculator( model, ptree );
+
+#else
+
+        throw ConfigurationException( "Trying to use HiggsBoundsSLHACalculator but Fittino was built without HiggsBounds." );
+
+#endif
+
+    }
     else if ( type == "HiggsSignalsCalculator" ) {
 
 #if defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
@@ -162,45 +201,6 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 #else
 
         throw ConfigurationException( "Trying to use HiggsSignalsSLHACalculator but Fittino was built without HiggsBounds or HiggsSignals." );
-
-#endif
-
-    }
-    else if ( type == "HiggsBoundsHECCalculator" ) {
-
-#if defined HIGGSBOUNDS_FOUND
-
-        return new HiggsBoundsHECCalculator( model, ptree );
-
-#else
-
-        throw ConfigurationException( "Trying to use HiggsBoundsHECCalculator but Fittino was built without HiggsBounds." );
-
-#endif
-
-    }
-    else if ( type == "HiggsBoundsHadXSCalculator" ) {
-
-#if defined HIGGSBOUNDS_FOUND
-
-        return new HiggsBoundsHadXSCalculator( model, ptree );
-
-#else
-
-        throw ConfigurationException( "Trying to use HiggsBoundsHadXSCalculator but Fittino was built without HiggsBounds." );
-
-#endif
-
-    }
-    else if ( type == "HiggsBoundsSLHACalculator" ) {
-
-#if defined HIGGSBOUNDS_FOUND
-
-        return new HiggsBoundsSLHACalculator( model, ptree );
-
-#else
-    
-        throw ConfigurationException( "Trying to use HiggsBoundsSLHACalculator but Fittino was built without HiggsBounds." );
 
 #endif
 
@@ -306,7 +306,7 @@ Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::prop
     for ( unsigned int i = 0; i < predictions.GetNumberOfElements(); ++i ) {
 
         if ( name == predictions.At( i )->GetName() ) {
-            
+
             return new Observable( ptree, predictions.At( i ) );
 
         }

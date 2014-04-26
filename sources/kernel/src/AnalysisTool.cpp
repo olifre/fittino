@@ -28,17 +28,17 @@
 #include "ModelBase.h"
 
 Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tree::ptree& ptree )
-    : Tool                 ( model, ptree ),
-      _randomSeed          ( ptree.get<unsigned int>( "RandomSeed",           0                  ) ),
-      _chi2Name            ( ptree.get<std::string> ( "Chi2Name",             "Chi2"             ) ),
-      _iterationCounterName( ptree.get<std::string> ( "IterationCounterName", "IterationCounter" ) ),
-      _metaDataTreeName    ( ptree.get<std::string> ( "MetaDataTree",         "MetaDataTree"     ) ),
-      _treeName            ( ptree.get<std::string> ( "OutputTree",           "Tree"             ) ),
-      _writeAllModelQuantities( ptree.get<bool>     ( "WriteAllModelQuantities", true            ) ),
-      _performToyRun       ( ptree.get<bool>        ( "PerformToyRun",        false              ) ),
-      _metaDataTree        ( new TTree( _metaDataTreeName, _metaDataTreeName ) ),
-      _randomGenerator     ( _randomSeed ),
-      _tree                ( new TTree( _treeName, _treeName ) ) {
+    : Tool                    ( model, ptree ),
+      _performToyRun          ( ptree.get<bool>        ( "PerformToyRun",           false              ) ),
+      _writeAllModelQuantities( ptree.get<bool>        ( "WriteAllModelQuantities", true               ) ),
+      _randomSeed             ( ptree.get<unsigned int>( "RandomSeed",              0                  ) ),
+      _chi2Name               ( ptree.get<std::string> ( "Chi2Name",                "Chi2"             ) ),
+      _iterationCounterName   ( ptree.get<std::string> ( "IterationCounterName",    "IterationCounter" ) ),
+      _metaDataTreeName       ( ptree.get<std::string> ( "MetaDataTree",            "MetaDataTree"     ) ),
+      _treeName               ( ptree.get<std::string> ( "OutputTree",              "Tree"             ) ),
+      _metaDataTree           ( new TTree( _metaDataTreeName, _metaDataTreeName ) ),
+      _randomGenerator        ( _randomSeed ),
+      _tree                   ( new TTree( _treeName, _treeName ) ) {
 
     _chi2             = ptree.get<double>      ( "Chi2",             std::numeric_limits<double>::max() );
     _iterationCounter = ptree.get<unsigned int>( "IterationCounter", 0                                  );
@@ -48,13 +48,12 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tre
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type node, ptree ) {
 
-        if( node.first == "OutputModelQuantity" ) {
+        if ( node.first == "OutputModelQuantity" ) {
 
             _outputModelQuantities.push_back( node.second.data() );
-        
-        }
 
-        else if( node.first == "NoOutputModelQuantity" ) {
+        }
+        else if ( node.first == "NoOutputModelQuantity" ) {
 
             _noOutputModelQuantities.push_back( node.second.data() );
 
@@ -62,10 +61,10 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tre
 
     }
 
-    if( _performToyRun ) {
+    if ( _performToyRun ) {
 
         _model->SetupForToyRun( &_randomGenerator );
-    
+
     }
 
 }
@@ -157,57 +156,61 @@ void Fittino::AnalysisTool::CheckUniqueness( TTree* tree, std::string name ) con
 void Fittino::AnalysisTool::InitializeBranches() {
 
     // First initialize the branches of the output tree.
-    
+
     for ( unsigned int i = 0; i < _model->GetCollectionOfQuantities().GetNumberOfElements(); ++i ) {
-        
+
         bool isOutputVariable = false;
-        if( _writeAllModelQuantities ) {
-            
+
+        if ( _writeAllModelQuantities ) {
+
             isOutputVariable = true;
-            
-            for( unsigned int j = 0; j < _noOutputModelQuantities.size(); ++j ) {
-                
-                if( _model->GetCollectionOfQuantities().At(i)->GetName() == _noOutputModelQuantities.at(j) ) {
-                    
+
+            for ( unsigned int j = 0; j < _noOutputModelQuantities.size(); ++j ) {
+
+                if ( _model->GetCollectionOfQuantities().At( i )->GetName() == _noOutputModelQuantities.at( j ) ) {
+
                     isOutputVariable = false;
                     break;
-                
+
                 }
-            
+
             }
-            
-            if( !isOutputVariable ) {
+
+            if ( !isOutputVariable ) {
 
                 continue;
 
             }
 
-            for( unsigned int j = 0; j < GetNumberOfStatusParameters(); ++j ) {
+            for ( unsigned int j = 0; j < GetNumberOfStatusParameters(); ++j ) {
 
-                if( _model->GetCollectionOfQuantities().At(i)->GetName() == GetStatusParameterVector()->at(j)->GetName() ) {
+                if ( _model->GetCollectionOfQuantities().At( i )->GetName() == GetStatusParameterVector()->at( j )->GetName() ) {
 
                     isOutputVariable = false;
                     Messenger& messenger = Messenger::GetInstance();
-                    messenger << Messenger::ALWAYS << "The ModelQuantity " << _model->GetCollectionOfQuantities().At(i)->GetName() << " will not be written to the output ntuple, because a StatusParameter with the same name exists." << Messenger::Endl;
+                    messenger << Messenger::ALWAYS
+                              << "The ModelQuantity "
+                              << _model->GetCollectionOfQuantities().At( i )->GetName()
+                              << " will not be written to the output ntuple, because a StatusParameter with the same name exists."
+                              << Messenger::Endl;
                     break;
 
                 }
 
             }
 
-            if( !isOutputVariable ) {
+            if ( !isOutputVariable ) {
 
                 continue;
 
             }
-        
+
         }
-
         else {
-            
-            for( unsigned int j = 0; j < _outputModelQuantities.size(); ++j ) {
 
-                if( _outputModelQuantities.at(j) == _model->GetCollectionOfQuantities().At(i)->GetName() ) {
+            for ( unsigned int j = 0; j < _outputModelQuantities.size(); ++j ) {
+
+                if ( _outputModelQuantities.at( j ) == _model->GetCollectionOfQuantities().At( i )->GetName() ) {
 
                     isOutputVariable = true;
                     break;
@@ -217,8 +220,8 @@ void Fittino::AnalysisTool::InitializeBranches() {
             }
 
         }
-        
-        if( !isOutputVariable ) {
+
+        if ( !isOutputVariable ) {
 
             continue;
 
