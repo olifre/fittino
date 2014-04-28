@@ -49,8 +49,8 @@ Fittino::PhysicsModel::PhysicsModel( const boost::property_tree::ptree& ptree )
     : ModelBase( ptree ) {
 
     _name       = ptree.get<std::string>( "Name" );
-    _randomSeed = ptree.get<bool>       ( "RandomSeed", 0 );
-
+    _randomSeed = ptree.get<int>        ( "RandomSeed", 0 );
+    _performToyRun = ptree.get<bool>    ( "PerformToyRun", false );
 
     _collectionOfStringVariables.AddElement( "Calculator", new ReferenceVariable<std::string>( "Calculator", _calculator ) );
     _collectionOfStringVariables.AddElement( "Error"     , new ReferenceVariable<std::string>( "Error", _error ) );
@@ -472,6 +472,12 @@ void Fittino::PhysicsModel::InitializeObservables( const boost::property_tree::p
     BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child( "Observables" ) ) {
 
         AddObservable( factory.CreateObservable( node.second, GetCollectionOfPredictions(), GetCollectionOfCalculators() ) );
+
+    }
+
+    if( _performToyRun ) {
+        
+        SetupForToyRun();
 
     }
 
