@@ -1,3 +1,5 @@
+/* $Id$ */
+
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
@@ -6,7 +8,7 @@
 *                                                                              *
 * Description Singleton wrapper class for random number generator              *
 *                                                                              *
-* Authors     Matthias Hamer      <mhamer@cbpf.br>                             *
+* Authors     Matthias Hamer  <mhamer@cbpf.br>                                 *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -25,51 +27,58 @@ class TRandom3;
  */
 namespace Fittino {
 
+  /*!
+   *  \ingroup kernel
+   *  \brief Singleton wrapper class for random number generator.
+   */
   class RandomGenerator {
 
     public:
       /*!
        *  Returns a static pointer to the unique instance of this class.
        */
-      static RandomGenerator*           GetInstance();
-      /*!
-       *  Set the random seed for the generator
-       */
-      void                              SetSeed( unsigned int randomSeed );
-      /*!
-       *  Get the random seed
-       */
-      unsigned int                      GetSeed();
-      /*!
-       *  Get a Gaussian random number with mean mu and standard deviation sigma
-       */
-      double                            Gaus( double mu, double sigma );
-      /*! 
-       * Get a Poissonian random number with mean value lambda
-       */
-      double                            Poisson( double lambda );
-      /*!
-       * Get the actual random generator. 
-       * Do we want this? Or should we stick to wrapper functions for every pdf?
-       */
-      TRandom3*                         GetGenerator();
+      static RandomGenerator* GetInstance();
 
+    public:
+      /*!
+       *  Get a Gaussian random number with mean mu and standard deviation sigma.
+       */
+      double                  Gaus( double mu, double sigma );
+      /*!
+       *  Get a Poissonian random number with mean value lambda.
+       */
+      double                  Poisson( double lambda );
+      /*!
+       *  Get the random seed.
+       */
+      unsigned int            GetSeed();
+      /*!
+       *  Set the random seed for the generator.
+       */
+      void                    SetSeed( unsigned int randomSeed );
+      /*!
+       *  Get the actual random generator.
+       *  Do we want this? Or should we stick to wrapper functions for every pdf?
+       */
+      TRandom3*               GetGenerator();
+
+      /*! \cond UML */
     private:
       /*!
        *  Pointer to the unique instance of this class.
        */
-      static RandomGenerator*           _instance;
+      static RandomGenerator* _instance;
 
     private:
-      /*
-       * The pointer to a TRandom3 generator.
+      /*!
+       *  The random seed.
        */
-       TRandom3*                        _generator;
-      /*
-       * The random seed
+      int                     _randomSeed;
+      /*!
+       *  The pointer to a TRandom3 generator.
        */
-       int                              _randomSeed;
-    
+      TRandom3*               _generator;
+
     private:
       /*!
        *  Standard constructor.
@@ -79,6 +88,8 @@ namespace Fittino {
        *  Standard destructor.
        */
       ~RandomGenerator();
+
+      /*! \endcond UML */
 
   };
 

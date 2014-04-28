@@ -1,12 +1,14 @@
+/* $Id$ */
+
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        RandomGenerator.h                                                *
+* File        RandomGenerator.cpp                                              *
 *                                                                              *
 * Description Singleton wrapper class for random number generator              *
 *                                                                              *
-* Authors     Matthias Hamer      <mhamer@cbpf.br>                             *
+* Authors     Matthias Hamer  <mhamer@cbpf.br>                                 *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -31,12 +33,6 @@ Fittino::RandomGenerator* Fittino::RandomGenerator::GetInstance() {
 
 }
 
-TRandom3* Fittino::RandomGenerator::GetGenerator() {
-
-    return _generator;
-
-}
-
 double Fittino::RandomGenerator::Gaus( double mean, double sigma ) {
 
     return _generator->Gaus( mean, sigma );
@@ -49,6 +45,12 @@ double Fittino::RandomGenerator::Poisson( double lambda ) {
 
 }
 
+unsigned int Fittino::RandomGenerator::GetSeed() {
+
+    return _randomSeed;
+
+}
+
 void Fittino::RandomGenerator::SetSeed( unsigned int seed ) {
 
     _randomSeed = seed;
@@ -56,9 +58,9 @@ void Fittino::RandomGenerator::SetSeed( unsigned int seed ) {
 
 }
 
-unsigned int Fittino::RandomGenerator::GetSeed() {
+TRandom3* Fittino::RandomGenerator::GetGenerator() {
 
-    return _randomSeed;
+    return _generator;
 
 }
 
