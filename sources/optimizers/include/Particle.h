@@ -25,14 +25,13 @@
 
 #include <vector>
 
-#include "RandomGenerator.h"
-
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   class ModelBase;
+  class RandomGenerator;
 
   /**
    *  \ingroup optimizers
@@ -55,9 +54,9 @@ namespace Fittino {
       double              _personalBestChi2;
       std::vector<double> _position;
       std::vector<double> _velocity;
-      RandomGenerator*    _randomGenerator;
       ModelBase*          _model;
       ModelBase*          _personalBestModel;
+      RandomGenerator*    _randomGenerator;
 
     private:
       void                UpdatePosition();

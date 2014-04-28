@@ -22,14 +22,13 @@
 
 #include <vector>
 
-#include "RandomGenerator.h"
-
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
 
   class ModelBase;
+  class RandomGenerator;
 
   /*!
    *  \ingroup optimizers
@@ -61,8 +60,8 @@ namespace Fittino {
       double              _chi2;
       double              _mutationRate;
       std::vector<double> _genes;
-      RandomGenerator*    _randomGenerator;
       ModelBase*          _model;
+      RandomGenerator*    _randomGenerator;
 
   };
 

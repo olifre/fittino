@@ -23,6 +23,7 @@
 #include "ModelBase.h"
 #include "ModelParameter.h"
 #include "Particle.h"
+#include "RandomGenerator.h"
 
 double Fittino::Particle::_globalBestChi2 = 1.e99;
 
@@ -36,9 +37,9 @@ Fittino::Particle::Particle( double c1, double c2, Fittino::ModelBase* model, in
 
     _randomGenerator = Fittino::RandomGenerator::GetInstance();
     if( _randomGenerator->GetSeed() == 0 ) {
-    
+
         _randomGenerator->SetSeed( seed );
-    
+
     }
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {

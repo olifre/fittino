@@ -20,6 +20,7 @@
 #include "Individual.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
+#include "RandomGenerator.h"
 
 Fittino::Individual::Individual( Fittino::ModelBase* model, double mutationRate, int seed )
     : _model ( model ) ,
