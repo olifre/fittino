@@ -90,7 +90,6 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-      bool                          _performToyRun;
       /*!
        *  Saves the default status for the model Quantities:\n
        *  true: All Quantities except for those specified in _noOutputModelQuantitites are written\n
