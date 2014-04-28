@@ -96,7 +96,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
     if( _iterationCounter != 1 ) {
       for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-        _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfParameters().At( k )->GetValue() + _randomGenerator.Gaus( 0., _model->GetCollectionOfParameters().At( k )->GetError() ) );
+        _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfParameters().At( k )->GetValue() + _randomGenerator->Gaus( 0., _model->GetCollectionOfParameters().At( k )->GetError() ) );
 
       }
     }
@@ -128,7 +128,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
     }
     else {
 
-        double randomThreshold = _randomGenerator.Uniform( 0., 1. );
+        double randomThreshold = _randomGenerator->Uniform( 0., 1. );
         if ( rho > randomThreshold ) {
 
             pointAccepted = true;

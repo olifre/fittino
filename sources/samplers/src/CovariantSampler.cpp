@@ -141,12 +141,12 @@ void Fittino::CovariantSampler::UpdateParameters() {
 
     int p = rand() % _model->GetNumberOfParameters();
 
-    double randomStep = 0.1*_randomGenerator.Gaus( 0., _model->GetCollectionOfParameters().At( p)->GetError());
+    double randomStep = 0.1*_randomGenerator->Gaus( 0., _model->GetCollectionOfParameters().At( p)->GetError());
     _model->GetCollectionOfParameters().At(p)->SetValue(_model->GetCollectionOfParameters().At( p )->GetValue() +  randomStep);
 
     for (unsigned int i = 0; i < _model->GetNumberOfParameters(); i++){
 
-        double a = 0.1*_randomGenerator.Gaus( 0., _model->GetCollectionOfParameters().At( i )->GetError());
+        double a = 0.1*_randomGenerator->Gaus( 0., _model->GetCollectionOfParameters().At( i )->GetError());
         if (i != p) {
             _model->GetCollectionOfParameters().At(i)->SetValue(_model->GetCollectionOfParameters().At( i )->GetValue() +  (randomStep*_covarianceMatrix[i][p])*(a*(1-_covarianceMatrix[i][p])));
         }
@@ -261,7 +261,7 @@ void Fittino::CovariantSampler::UpdateModel() {
         }
         else {
 
-            double randomThreshold = _randomGenerator.Uniform( 0., 1. );
+            double randomThreshold = _randomGenerator->Uniform( 0., 1. );
             if ( rho > randomThreshold ) {
 
                 pointAccepted = true;

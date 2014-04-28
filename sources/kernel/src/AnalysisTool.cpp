@@ -29,7 +29,6 @@
 
 Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tree::ptree& ptree )
     : Tool                    ( model, ptree ),
-      _performToyRun          ( ptree.get<bool>        ( "PerformToyRun",           false              ) ),
       _writeAllModelQuantities( ptree.get<bool>        ( "WriteAllModelQuantities", true               ) ),
       _randomSeed             ( ptree.get<unsigned int>( "RandomSeed",              0                  ) ),
       _chi2Name               ( ptree.get<std::string> ( "Chi2Name",                "Chi2"             ) ),
@@ -37,7 +36,6 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tre
       _metaDataTreeName       ( ptree.get<std::string> ( "MetaDataTree",            "MetaDataTree"     ) ),
       _treeName               ( ptree.get<std::string> ( "OutputTree",              "Tree"             ) ),
       _metaDataTree           ( new TTree( _metaDataTreeName, _metaDataTreeName ) ),
-      _randomGenerator        ( _randomSeed ),
       _tree                   ( new TTree( _treeName, _treeName ) ) {
 
     _chi2             = ptree.get<double>      ( "Chi2",             std::numeric_limits<double>::max() );
@@ -45,6 +43,15 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tre
 
     _statusParameterVector.push_back( new Quantity( _chi2Name,             "#chi^2",           _chi2,             0., 100.  ) );
     _statusParameterVector.push_back( new Quantity( _iterationCounterName, "IterationCounter", _iterationCounter, 0., 1.e10 ) );
+
+
+    RandomGenerator* _randomGenerator = Fittino::RandomGenerator::GetInstance();
+    if( _randomGenerator->GetSeed() == 0 ) {
+    
+        _randomGenerator->SetSeed( _randomSeed );
+    
+    }
+
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type node, ptree ) {
 
@@ -58,12 +65,6 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tre
             _noOutputModelQuantities.push_back( node.second.data() );
 
         }
-
-    }
-
-    if ( _performToyRun ) {
-
-        _model->SetupForToyRun( &_randomGenerator );
 
     }
 

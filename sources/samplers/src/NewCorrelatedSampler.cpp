@@ -189,7 +189,7 @@ void Fittino::NewCorrelatedSampler::UpdateModel() {
         }
         else {
 
-            double randomThreshold = _randomGenerator.Uniform(0., 1.);
+            double randomThreshold = _randomGenerator->Uniform(0., 1.);
             if ( rho > randomThreshold) {
 
                 pointAccepted = true;
@@ -368,7 +368,7 @@ void Fittino::NewCorrelatedSampler::DoSampling(){
 
    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++) {
 
-        double newstep = gRandom->Gaus(0., TMath::Sqrt(covariantEigen.GetEigenValues()[i] ) );
+        double newstep = _randomGenerator->Gaus(0., TMath::Sqrt(covariantEigen.GetEigenValues()[i] ) );
         //double newstep = gRandom->Gaus(0., 1.);
         y[i] = newstep;
         //_statusParameterVector[i+3]->SetValue(newstep);

@@ -41,11 +41,16 @@
 #include "TMatrixDSym.h"
 #include "TMatrixDSymEigen.h"
 #include "TVectorD.h"
+#include "RandomGenerator.h"
+#include "RandomGenerator.h"
+
 
 Fittino::PhysicsModel::PhysicsModel( const boost::property_tree::ptree& ptree )
     : ModelBase( ptree ) {
 
-    _name = ptree.get<std::string>( "Name" );
+    _name       = ptree.get<std::string>( "Name" );
+    _randomSeed = ptree.get<bool>       ( "RandomSeed", 0 );
+
 
     _collectionOfStringVariables.AddElement( "Calculator", new ReferenceVariable<std::string>( "Calculator", _calculator ) );
     _collectionOfStringVariables.AddElement( "Error"     , new ReferenceVariable<std::string>( "Error", _error ) );
@@ -281,7 +286,14 @@ double Fittino::PhysicsModel::CalculateChi2() {
 
 }
 
-void Fittino::PhysicsModel::SetupForToyRun( TRandom3* randomGenerator ) {
+void Fittino::PhysicsModel::SetupForToyRun( ) {
+    
+    RandomGenerator *randomGenerator = Fittino::RandomGenerator::GetInstance();
+    if( randomGenerator->GetSeed() == 0 ) {
+        
+        randomGenerator->SetSeed( _randomSeed );
+    
+    }
     /*
     for( int i = 0; i < _observableVector.size(); ++i ) {
 
@@ -366,7 +378,7 @@ void Fittino::PhysicsModel::SetupForToyRun( TRandom3* randomGenerator ) {
         
         else if( _observableVector[i]->GetSmearingType() != "Gaus" ) {
         
-            _observableVector[i]->SmearMeasuredValue( randomGenerator );
+            _observableVector[i]->SmearMeasuredValue( _randomSeed );
         
         }
         

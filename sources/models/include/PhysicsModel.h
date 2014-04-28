@@ -27,7 +27,6 @@
 #include "ModelBase.h"
 #include "PtreeForwardDeclaration.h"
 
-class TRandom3;
 
 /*!
  *  \brief Fittino namespace.
@@ -72,7 +71,7 @@ namespace Fittino {
 
     public:
       virtual void                               PrintStatus() const;
-      virtual void                               SetupForToyRun( TRandom3* );
+      virtual void                               SetupForToyRun( );
       /*!
        *  Virtual copy constructor.
        */
@@ -102,6 +101,8 @@ namespace Fittino {
       double                                     CalculateChi2();
       std::string                                _calculator;
       std::string                                _error;
+      bool                                       _performToyRun;
+      unsigned int                               _randomSeed;
 
     private:
       virtual double                             Evaluate();

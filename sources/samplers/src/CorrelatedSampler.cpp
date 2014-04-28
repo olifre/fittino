@@ -139,7 +139,7 @@ TO DO:
    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++) {
 
 
-        y[i] = gRandom->Gaus(0., TMath::Sqrt( covariantEigen.GetEigenValues()[i] ) );
+        y[i] = _randomGenerator->Gaus(0., TMath::Sqrt( covariantEigen.GetEigenValues()[i] ) );
    }
 
 
@@ -339,7 +339,7 @@ void Fittino::CorrelatedSampler::UpdateModel() {
         }
         else {
 
-            double randomThreshold = _randomGenerator.Uniform( 0., 1. );
+            double randomThreshold = _randomGenerator->Uniform( 0., 1. );
             if ( rho > 0.1*randomThreshold ) {
 
                 pointAccepted = true;

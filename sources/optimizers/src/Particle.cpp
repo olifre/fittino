@@ -32,10 +32,14 @@ Fittino::Particle::Particle( double c1, double c2, Fittino::ModelBase* model, in
     : _c1( c1 ),
       _c2( c2 ),
       _personalBestChi2( 1.e99 ),
-      _randomGenerator( new TRandom3() ),
       _model( model ) {
 
-    _randomGenerator->SetSeed( seed );
+    _randomGenerator = Fittino::RandomGenerator::GetInstance();
+    if( _randomGenerator->GetSeed() == 0 ) {
+    
+        _randomGenerator->SetSeed( seed );
+    
+    }
 
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 

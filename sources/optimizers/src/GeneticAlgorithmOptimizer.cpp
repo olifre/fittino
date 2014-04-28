@@ -39,16 +39,16 @@ Fittino::GeneticAlgorithmOptimizer::GeneticAlgorithmOptimizer( Fittino::ModelBas
 
     for ( unsigned int i = 0; i < _sizeOfPopulation; i++ ) {
 
-        _population.push_back( Individual( _model, _mutationRate, _randomGenerator.Integer( 10000 ) ) );
+        _population.push_back( Individual( _model, _mutationRate, _randomGenerator->Integer( 10000 ) ) );
 
     }
 
     for ( unsigned int i = 0; i < _numberOfFamilies; i++ ) {
 
-        _mothers.push_back( Individual( _model, _mutationRate, _randomGenerator.Integer( 10000 ) ) );
-        _fathers.push_back( Individual( _model, _mutationRate, _randomGenerator.Integer( 10000 ) ) );
-        _firstChildren.push_back( Individual( _model, _mutationRate, _randomGenerator.Integer( 10000 ) ) );
-        _secondChildren.push_back( Individual( _model, _mutationRate, _randomGenerator.Integer( 10000 ) ) );
+        _mothers.push_back( Individual( _model, _mutationRate, _randomGenerator->Integer( 10000 ) ) );
+        _fathers.push_back( Individual( _model, _mutationRate, _randomGenerator->Integer( 10000 ) ) );
+        _firstChildren.push_back( Individual( _model, _mutationRate, _randomGenerator->Integer( 10000 ) ) );
+        _secondChildren.push_back( Individual( _model, _mutationRate, _randomGenerator->Integer( 10000 ) ) );
 
     }
 
@@ -89,8 +89,8 @@ void Fittino::GeneticAlgorithmOptimizer::CrossOver() {
 
     for ( unsigned int i = 0; i < _numberOfFamilies; i++ ) {
 
-        crossoverpoint = gRandom->Integer( _numberOfGenes );
-        weight = gRandom->Uniform( 0, 1 );
+        crossoverpoint = _randomGenerator->Integer( _numberOfGenes );
+        weight = _randomGenerator->Uniform( 0, 1 );
 
         for ( int j = 0; j < crossoverpoint; j++ ) {
 
@@ -132,7 +132,7 @@ void Fittino::GeneticAlgorithmOptimizer::Pair() {
     for ( unsigned int i = 0; i < _numberOfFamilies; i++ ) {
 
         father_equals_mother = true;
-        r1 = gRandom->Uniform( 0, 1 );
+        r1 = _randomGenerator->Uniform( 0, 1 );
 
         for ( unsigned int j = 0; j < _numberOfFamilies; j++ ) {
 
@@ -142,7 +142,7 @@ void Fittino::GeneticAlgorithmOptimizer::Pair() {
 
                 while ( father_equals_mother == true ) {
 
-                    r2 = gRandom->Uniform( 0, 1 );
+                    r2 = _randomGenerator->Uniform( 0, 1 );
 
                     if ( r2 > _cumulativeMatingProbabilities[j + 1] || r2 <= _cumulativeMatingProbabilities[j] ) {
 

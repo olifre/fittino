@@ -22,7 +22,6 @@
 #ifndef FITTINO_MODELBASE_H
 #define FITTINO_MODELBASE_H
 
-#include "TRandom3.h"
 #include <boost/property_tree/ptree.hpp>
 
 #include "Collection.h"
@@ -89,11 +88,6 @@ namespace Fittino {
 
     public:
       virtual void                                        PrintStatus() const = 0;
-      /*!
-       *  Smears the observables (if existent).
-       *  \todo Move to PhysicsModel and replace public function by a switch (Matthias).
-       */
-      virtual void                                        SetupForToyRun( TRandom3* ) = 0;
       /*!
        *  Returns a pointer to a copy of the model.
        */

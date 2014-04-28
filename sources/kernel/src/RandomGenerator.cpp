@@ -45,6 +45,24 @@ double Fittino::RandomGenerator::Poisson( double lambda ) {
 
 }
 
+double Fittino::RandomGenerator::Uniform( double x ) {
+
+    return _generator->Uniform( x );
+
+}
+
+double Fittino::RandomGenerator::Uniform( double x1, double x2 ) {
+
+    return _generator->Uniform( x1, x2 );
+
+}
+
+unsigned int Fittino::RandomGenerator::Integer( unsigned int imax ) {
+
+    return _generator->Integer( imax );
+
+}
+
 unsigned int Fittino::RandomGenerator::GetSeed() {
 
     return _randomSeed;

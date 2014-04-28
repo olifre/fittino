@@ -103,7 +103,7 @@ void Fittino::SimulatedAnnealingOptimizer::UpdateModel() {
 
                 // Update of the model.
 
-                _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfParameters().At( k )->GetValue() + _randomGenerator.Uniform( -1, 1 ) * stepWidth[k] );
+                _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfParameters().At( k )->GetValue() + _randomGenerator->Uniform( -1, 1 ) * stepWidth[k] );
 
                 double newChi2 = _model->GetChi2();
 
@@ -112,7 +112,7 @@ void Fittino::SimulatedAnnealingOptimizer::UpdateModel() {
                     // This is the Metropolis criterion.
 
                     double acceptance = exp( -( newChi2 - oldChi2 ) / _temperature );
-                    double randomThreshold = _randomGenerator.Uniform( 0, 1 );
+                    double randomThreshold = _randomGenerator->Uniform( 0, 1 );
 
                     if ( acceptance > randomThreshold ) {
 

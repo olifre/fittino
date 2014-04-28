@@ -26,6 +26,7 @@
 #include "Messenger.h"
 #include "Observable.h"
 #include "PredictionBase.h"
+#include "RandomGenerator.h"
 
 Fittino::Observable::Observable( PredictionBase* prediction,
                                  double          measuredValue,
@@ -147,7 +148,14 @@ void Fittino::Observable::UpdatePrediction() {
 
 }
 
-void Fittino::Observable::SmearMeasuredValue( TRandom3* randomGenerator ) {
+void Fittino::Observable::SmearMeasuredValue( unsigned int randomSeed ) {
+
+    RandomGenerator* randomGenerator = Fittino::RandomGenerator::GetInstance();
+    if( randomGenerator->GetSeed() == 0 ) {
+    
+        randomGenerator->SetSeed( randomSeed );
+
+    }
 
     if( _smearingType == "Gaus" ) {
     

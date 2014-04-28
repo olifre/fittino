@@ -46,10 +46,6 @@ namespace Fittino {
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
-      virtual void                               SetupForToyRun( TRandom3* ) {}
-      /*!
-       *  \todo Remove when no longer used by derived classes (Matthias).
-       */
       virtual const std::vector<Observable*>*    GetObservableVector() const { return NULL; }
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).

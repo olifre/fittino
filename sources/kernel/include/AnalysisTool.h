@@ -24,9 +24,8 @@
 
 #include <vector>
 
-#include "TRandom3.h"
-
 #include "Tool.h"
+#include "RandomGenerator.h"
 
 class TTree;
 
@@ -144,7 +143,7 @@ namespace Fittino {
       /*!
        *  Random number generator.
        */
-      TRandom3                      _randomGenerator;
+      RandomGenerator*              _randomGenerator;
       /*!
        *  The output tree.
        */

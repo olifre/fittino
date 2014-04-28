@@ -23,8 +23,6 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-#include "TRandom3.h"
-
 /*!
  *  \brief Fittino namespace.
  */
@@ -71,7 +69,7 @@ namespace Fittino {
 
     public:
       virtual void    UpdatePrediction();
-      virtual void    SmearMeasuredValue( TRandom3* );
+      virtual void    SmearMeasuredValue( unsigned int randomSeed = 0 );
 
     protected:
       double          _error1;

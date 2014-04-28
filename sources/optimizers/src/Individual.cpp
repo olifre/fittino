@@ -24,9 +24,9 @@
 Fittino::Individual::Individual( Fittino::ModelBase* model, double mutationRate, int seed )
     : _model ( model ) ,
       _mutationRate ( mutationRate ),
-      _randomGenerator( new TRandom3() ),
       _chi2 ( 1e99 ) {
 
+    _randomGenerator = Fittino::RandomGenerator::GetInstance();
     _updatedChi2 = false;
     _randomGenerator->SetSeed( seed );
 
