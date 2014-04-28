@@ -17,8 +17,8 @@
 #                                                                              #
 ################################################################################
 
-1. Requirements
----------------
+1. Third party software
+------------------------
 
 - The following external programs/libraries are mandatory in order to compile
   Fittino
@@ -28,6 +28,23 @@
   GCC    (http://gcc.gnu.org)
   ROOT   (http://root.cern.ch/drupal)
 
+- The search paths for external software can be influenced by setting the dedicated CMake variables
+
+  BOOST_ROOT 
+  ROOT_CONFIG_DIR
+  GSL_CONFIG_DIR
+  HIGGSBOUNDS_INSTALLATION_PATH
+  HIGGSSIGNALS_INSTALLATION_PATH
+  FEYNHIGGS_INSTALLATION_PATH
+  SLHAEA_INSTALLATION_PATH 
+  LHAPDF_INSTALLATION_PATH 
+
+  and/or via the usual general CMake and environmental variables.
+  
+  Note: CMake variables can be set using CMake arguments in two ways:
+    -  Definition of the variables on the command line ( -D<VARIABLE_NAME>=<VARIABLE_VALUE> )
+    -  Specifying an initial cache file ( -C<PATH_TO_FILE> ) in which the variables are set.
+ 
 2. Installation
 ---------------
 
