@@ -36,7 +36,8 @@ Fittino::Particle::Particle( double c1, double c2, Fittino::ModelBase* model, in
       _model( model ) {
 
     _randomGenerator = Fittino::RandomGenerator::GetInstance();
-    if( _randomGenerator->GetSeed() == 0 ) {
+
+    if ( _randomGenerator->GetSeed() == 0 ) {
 
         _randomGenerator->SetSeed( seed );
 

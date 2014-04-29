@@ -5,3 +5,4 @@
 --style=java
 --pad-oper
 --pad-paren-in
+--pad-header

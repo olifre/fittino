@@ -63,7 +63,7 @@ int Fittino::Executor::Execute() {
 
     _pid = fork();
 
-    switch( _pid ) {
+    switch ( _pid ) {
 
         case -1:
 
@@ -147,7 +147,7 @@ void Fittino::Executor::Child() {
         messenger << Messenger::ALWAYS << exception.what() << Messenger::Endl;
 
     }
-    catch( ... ) {
+    catch ( ... ) {
 
         messenger << Messenger::ALWAYS << "Unknown exception in child process." << Messenger::Endl;
 
@@ -188,7 +188,7 @@ void Fittino::Executor::Parent() {
         FD_ZERO( &rfds );
         FD_SET( _pipefds[0], &rfds );
 
-        switch( pselect( _pipefds[0] + 1, &rfds, NULL, NULL, _creationTimeout, NULL ) ) {
+        switch ( pselect( _pipefds[0] + 1, &rfds, NULL, NULL, _creationTimeout, NULL ) ) {
 
             case -1:
 
@@ -209,7 +209,7 @@ void Fittino::Executor::Parent() {
     }
     catch ( ... ) {
 
-        if( close( _pipefds[0] ) ) {
+        if ( close( _pipefds[0] ) ) {
 
             perror( "close" );
             throw ExecutorException( "close" );
@@ -234,7 +234,7 @@ void Fittino::Executor::Parent() {
 
     }
 
-    if( close( _pipefds[0] ) ) {
+    if ( close( _pipefds[0] ) ) {
 
         perror( "close" );
         throw ExecutorException( "close" );
@@ -247,7 +247,7 @@ void Fittino::Executor::Read() {
 
     int error = 0;
 
-    switch( read( _pipefds[0], &error, sizeof( int ) ) ) {
+    switch ( read( _pipefds[0], &error, sizeof( int ) ) ) {
 
         case -1:
 

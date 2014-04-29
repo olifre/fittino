@@ -97,7 +97,7 @@ void Fittino::SLHAPrediction::Update() {
         _value = _slhadatastorage->GetEntry( _blockName, _columnIndex, _firstId, _secondId, _thirdId, _fourthId );
 
     }
-    catch( const std::out_of_range& e ) {
+    catch ( const std::out_of_range& e ) {
 
         if ( _useDefaultValue ) {
 
