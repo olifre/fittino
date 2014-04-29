@@ -57,15 +57,15 @@ double Fittino::RandomGenerator::Uniform( double x1, double x2 ) {
 
 }
 
-unsigned int Fittino::RandomGenerator::Integer( unsigned int imax ) {
-
-    return _generator->Integer( imax );
-
-}
-
 unsigned int Fittino::RandomGenerator::GetSeed() {
 
     return _randomSeed;
+
+}
+
+unsigned int Fittino::RandomGenerator::Integer( unsigned int imax ) {
+
+    return _generator->Integer( imax );
 
 }
 
@@ -85,9 +85,8 @@ TRandom3* Fittino::RandomGenerator::GetGenerator() {
 Fittino::RandomGenerator* Fittino::RandomGenerator::_instance = 0;
 
 Fittino::RandomGenerator::RandomGenerator()
-    : _randomSeed( 4357 ) {
-
-    _generator = new TRandom3( _randomSeed );
+    : _randomSeed( 4357 ),
+      _generator( new TRandom3( _randomSeed ) ) {
 
 }
 

@@ -25,7 +25,6 @@
 #include <vector>
 
 #include "Tool.h"
-#include "RandomGenerator.h"
 
 class TTree;
 
@@ -35,6 +34,7 @@ class TTree;
 namespace Fittino {
 
   class Quantity;
+  class RandomGenerator;
 
   /*!
    *  \ingroup kernel

@@ -26,6 +26,7 @@
 
 #include "AnalysisTool.h"
 #include "ModelBase.h"
+#include "RandomGenerator.h"
 
 Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tree::ptree& ptree )
     : Tool                    ( model, ptree ),

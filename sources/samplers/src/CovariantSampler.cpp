@@ -18,6 +18,8 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <cstdlib>
+#include <fstream>
 #include <iostream>
 
 #include "TMath.h"
@@ -27,9 +29,7 @@
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
-//#include "CalculatorException.h"
-#include <cstdlib>
-#include <fstream>
+#include "RandomGenerator.h"
 
 Fittino::CovariantSampler::CovariantSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
     : SamplerBase( model, ptree ),

@@ -23,6 +23,7 @@
 #include "ConfigurationException.h"
 #include "Messenger.h"
 #include "ParticleSwarmOptimizer.h"
+#include "RandomGenerator.h"
 
 Fittino::ParticleSwarmOptimizer::ParticleSwarmOptimizer( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
     : _c1               ( ptree.get<double>( "C1"               , 0.01 ) ),

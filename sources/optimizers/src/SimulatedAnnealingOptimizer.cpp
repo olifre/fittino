@@ -21,6 +21,7 @@
 
 #include "ModelBase.h"
 #include "ModelParameter.h"
+#include "RandomGenerator.h"
 #include "SimulatedAnnealingOptimizer.h"
 
 Fittino::SimulatedAnnealingOptimizer::SimulatedAnnealingOptimizer( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )

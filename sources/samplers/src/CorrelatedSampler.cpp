@@ -18,6 +18,8 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <cstdlib>
+#include <fstream>
 #include <iostream>
 
 #include "TMath.h"
@@ -25,13 +27,11 @@
 #include "TMatrixDSym.h"
 #include "TMatrixDSymEigen.h"
 
-
 #include "CorrelatedSampler.h"
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
-#include <cstdlib>
-#include <fstream>
+#include "RandomGenerator.h"
 
 Fittino::CorrelatedSampler::CorrelatedSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
     : SamplerBase( model, ptree ),

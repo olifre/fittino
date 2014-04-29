@@ -49,21 +49,21 @@ namespace Fittino {
        */
       double                  Poisson( double lambda );
       /*!
-       * Get a Uniform random number r with 0 < r <= x
+       * Get a Uniform random number r with 0 < r <= x.
        */
       double                  Uniform( double x );
       /*!
-       * Get a Uniform random number r with x1 < r <= x2
+       * Get a Uniform random number r with x1 < r <= x2.
        */
       double                  Uniform( double x1, double x2 );
-      /*!
-       * Get an Integer random number r with 0 <= r <= imax -1
-       */
-      unsigned int            Integer( unsigned int imax );
       /*!
        *  Get the random seed.
        */
       unsigned int            GetSeed();
+      /*!
+       * Get an Integer random number r with 0 <= r <= imax -1.
+       */
+      unsigned int            Integer( unsigned int imax );
       /*!
        *  Set the random seed for the generator.
        */

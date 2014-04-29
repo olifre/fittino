@@ -29,7 +29,7 @@
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
-//#include "CalculatorException.h"
+#include "RandomGenerator.h"
 
 Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
   : SamplerBase( model, ptree ), 
@@ -81,6 +81,8 @@ void Fittino::MarkovChainSampler::Execute() {
 }
 
 void Fittino::MarkovChainSampler::PrintSteeringParameters() const {
+
+    AnalysisTool::PrintSteeringParameters();
 
     PrintItem( "NumberOfIterations", _numberOfIterations );
 

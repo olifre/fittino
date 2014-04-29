@@ -21,6 +21,7 @@
 
 #include "GeneticAlgorithmOptimizer.h"
 #include "ModelBase.h"
+#include "RandomGenerator.h"
 
 Fittino::GeneticAlgorithmOptimizer::GeneticAlgorithmOptimizer( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
     : _mutationRate    ( ptree.get<double>( "MutationRate",     0.5 ) ),
