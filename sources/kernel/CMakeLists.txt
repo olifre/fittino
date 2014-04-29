@@ -40,6 +40,7 @@ INCLUDE_DIRECTORIES( ../models/include          )
 INCLUDE_DIRECTORIES( ../optimizers/include      )
 INCLUDE_DIRECTORIES( ../plotters/include        )
 INCLUDE_DIRECTORIES( ../samplers/include        )
+INCLUDE_DIRECTORIES( ../tools/include           )
 
 TARGET_LINK_LIBRARIES( fittino calculators     )
 TARGET_LINK_LIBRARIES( fittino checkvacuum     )
@@ -50,6 +51,7 @@ TARGET_LINK_LIBRARIES( fittino models          )
 TARGET_LINK_LIBRARIES( fittino optimizers      )
 TARGET_LINK_LIBRARIES( fittino plotters        )
 TARGET_LINK_LIBRARIES( fittino samplers        )
+TARGET_LINK_LIBRARIES( fittino tools           )
 
 IF( Boost_FOUND )
 
