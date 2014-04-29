@@ -583,16 +583,18 @@ INPUT                  = "." \
                          "../sources/exceptions/src" \
                          "../sources/histogrammakers/include" \
                          "../sources/histogrammakers/src" \
-                         "../sources/models/include" \
-                         "../sources/models/src" \
                          "../sources/kernel/include" \
                          "../sources/kernel/src" \
+                         "../sources/models/include" \
+                         "../sources/models/src" \
                          "../sources/optimizers/include" \
                          "../sources/optimizers/src" \
                          "../sources/plotters/include" \
                          "../sources/plotters/src" \
                          "../sources/samplers/include" \
                          "../sources/samplers/src" \
+                         "../sources/tools/include" \
+                         "../sources/tools/src" \
                          "../sources/variables/include" \
                          "../sources/variables/src"
 

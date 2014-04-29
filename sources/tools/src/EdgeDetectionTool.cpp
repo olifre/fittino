@@ -1,13 +1,15 @@
+/* $Id$ */
+
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
 * File        EdgeDetectionTool.cpp                                            *
 *                                                                              *
-* Description Derived class to run an Edge Detection for finding buggy points  *
+* Description Class to run an Edge Detection for finding buggy points          *
 *                                                                              *
-* Authors     Matthias Hamer        <mhamer@cbpf.br>                           *
-*             Mathias   Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>            *
+* Authors     Matthias Hamer       <mhamer@cbpf.br>                            *
+*             Mathias  Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>             *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
