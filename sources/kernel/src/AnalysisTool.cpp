@@ -44,14 +44,13 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tre
     _statusParameterVector.push_back( new Quantity( _chi2Name,             "#chi^2",           _chi2,             0., 100.  ) );
     _statusParameterVector.push_back( new Quantity( _iterationCounterName, "IterationCounter", _iterationCounter, 0., 1.e10 ) );
 
+    _randomGenerator = Fittino::RandomGenerator::GetInstance();
 
-    RandomGenerator* _randomGenerator = Fittino::RandomGenerator::GetInstance();
-    if( _randomGenerator->GetSeed() == 0 ) {
-    
+    if ( _randomGenerator->GetSeed() == 0 ) {
+
         _randomGenerator->SetSeed( _randomSeed );
-    
-    }
 
+    }
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type node, ptree ) {
 
