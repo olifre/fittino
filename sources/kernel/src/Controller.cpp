@@ -31,6 +31,7 @@
 #include "InputException.h"
 #include "ModelBase.h"
 #include "Tool.h"
+#include "RandomGenerator.h"
 
 Fittino::Controller* Fittino::Controller::GetInstance() {
 
@@ -115,6 +116,13 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
         std::string verbosityLevel = _inputPtree->get<std::string>( "InputFile.VerbosityLevel" );
         Messenger::GetInstance().SetVerbosityLevel( verbosityLevel );
+
+        double randomSeed = _inputPtree->get<double>( "InputFile.RandomSeed", 0 );
+        if( randomSeed != 0 ) {
+            
+            RandomGenerator::GetInstance()->SetSeed( randomSeed );
+        
+        }
 
     }
     catch ( const InputException& inputException ) {

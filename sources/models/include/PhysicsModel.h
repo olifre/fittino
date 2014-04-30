@@ -102,7 +102,6 @@ namespace Fittino {
       std::string                                _calculator;
       std::string                                _error;
       bool                                       _performToyRun;
-      unsigned int                               _randomSeed;
 
     private:
       virtual double                             Evaluate();

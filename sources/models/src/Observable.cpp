@@ -148,14 +148,9 @@ void Fittino::Observable::UpdatePrediction() {
 
 }
 
-void Fittino::Observable::SmearMeasuredValue( unsigned int randomSeed ) {
+void Fittino::Observable::SmearMeasuredValue( ) {
 
     RandomGenerator* randomGenerator = Fittino::RandomGenerator::GetInstance();
-    if( randomGenerator->GetSeed() == 0 ) {
-    
-        randomGenerator->SetSeed( randomSeed );
-
-    }
 
     if( _smearingType == "Gaus" ) {
     

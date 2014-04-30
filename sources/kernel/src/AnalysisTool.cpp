@@ -31,7 +31,6 @@
 Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tree::ptree& ptree )
     : Tool                    ( model, ptree ),
       _writeAllModelQuantities( ptree.get<bool>        ( "WriteAllModelQuantities", true               ) ),
-      _randomSeed             ( ptree.get<unsigned int>( "RandomSeed",              0                  ) ),
       _chi2Name               ( ptree.get<std::string> ( "Chi2Name",                "Chi2"             ) ),
       _iterationCounterName   ( ptree.get<std::string> ( "IterationCounterName",    "IterationCounter" ) ),
       _metaDataTreeName       ( ptree.get<std::string> ( "MetaDataTree",            "MetaDataTree"     ) ),
@@ -46,12 +45,6 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tre
     _statusParameterVector.push_back( new Quantity( _iterationCounterName, "IterationCounter", _iterationCounter, 0., 1.e10 ) );
 
     _randomGenerator = Fittino::RandomGenerator::GetInstance();
-
-    if ( _randomGenerator->GetSeed() == 0 ) {
-
-        _randomGenerator->SetSeed( _randomSeed );
-
-    }
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type node, ptree ) {
 
@@ -98,7 +91,6 @@ void Fittino::AnalysisTool::PrintSteeringParameters() const {
     PrintItem( "InitialChi2Value",             _chi2                 );
     PrintItem( "IterationCounterName",         _iterationCounterName );
     PrintItem( "InitialIterationCounterValue", _iterationCounter     );
-    PrintItem( "RandomSeed",                   _randomSeed           );
     PrintItem( "OutputTreeName",               _treeName             );
     PrintItem( "OutputMetaDataTreeName",       _metaDataTreeName     );
 

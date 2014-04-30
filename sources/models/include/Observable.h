@@ -69,7 +69,7 @@ namespace Fittino {
 
     public:
       virtual void    UpdatePrediction();
-      virtual void    SmearMeasuredValue( unsigned int randomSeed = 0 );
+      virtual void    SmearMeasuredValue( );
 
     protected:
       double          _error1;

@@ -98,7 +98,6 @@ namespace Fittino {
        *  tree.
        */
       bool                          _writeAllModelQuantities;
-      const unsigned int            _randomSeed;
       std::string                   _chi2Name;
       std::string                   _iterationCounterName;
       std::vector<std::string>      _noOutputModelQuantities;

@@ -49,7 +49,6 @@ Fittino::PhysicsModel::PhysicsModel( const boost::property_tree::ptree& ptree )
     : ModelBase( ptree ) {
 
     _name       = ptree.get<std::string>( "Name" );
-    _randomSeed = ptree.get<int>        ( "RandomSeed", 0 );
     _performToyRun = ptree.get<bool>    ( "PerformToyRun", false );
 
     _collectionOfStringVariables.AddElement( "Calculator", new ReferenceVariable<std::string>( "Calculator", _calculator ) );
@@ -289,11 +288,7 @@ double Fittino::PhysicsModel::CalculateChi2() {
 void Fittino::PhysicsModel::SetupForToyRun( ) {
     
     RandomGenerator *randomGenerator = Fittino::RandomGenerator::GetInstance();
-    if( randomGenerator->GetSeed() == 0 ) {
-        
-        randomGenerator->SetSeed( _randomSeed );
     
-    }
     /*
     for( int i = 0; i < _observableVector.size(); ++i ) {
 
@@ -378,7 +373,7 @@ void Fittino::PhysicsModel::SetupForToyRun( ) {
         
         else if( _observableVector[i]->GetSmearingType() != "Gaus" ) {
         
-            _observableVector[i]->SmearMeasuredValue( _randomSeed );
+            _observableVector[i]->SmearMeasuredValue( );
         
         }
         
