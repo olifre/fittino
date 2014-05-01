@@ -113,6 +113,8 @@ void Fittino::TreeSampler::UpdateModel() {
     GetStatusParameterVector()->at( 0 )->SetValue( chi2 );
 
     AnalysisTool::PrintStatus();
+    
+    FillTree();
 
     // the model parameter is the iteration. Increase that by one each time the model is updated.
     _model->GetCollectionOfParameters().At( 0 )->SetValue( _model->GetCollectionOfParameters().At( 0 )->GetValue() + 1. );
