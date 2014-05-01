@@ -32,7 +32,7 @@
         <tr><td><b>Tool</b></td><xsl:for-each select="*"><td><xsl:value-of select="local-name()"/></td></xsl:for-each></tr>
       </table>
     </p>
-    <!-- Specify here the existing tool templates -->
+    <!-- Individual configuration items -->
     <xsl:apply-templates select="ContourPlotter |
                                  GeneticAlgorithmOptimizer |
                                  MarkovChainSampler |
@@ -45,7 +45,7 @@
                                  TreeSampler"/>
   </xsl:template>
   
-  <!-- Individual configuration of samplers -->
+  <!-- Individual configuration items of the tools -->
   
   <xsl:template match="ContourPlotter |
                        GeneticAlgorithmOptimizer |
@@ -64,7 +64,7 @@
           <!-- Create a new row for every configuration item -->
           <!-- TODO: Leading empty cells still have to be inserted manually -->
           <tr>
-            <td></td><td><xsl:value-of select="local-name()"/></td><td align="right"><xsl:value-of select="."/></td>
+            <td></td><td><xsl:value-of select="local-name()"/></td><td class="cell-value"><xsl:value-of select="."/></td>
           </tr>
         </xsl:for-each>
       </table>

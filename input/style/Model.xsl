@@ -46,11 +46,11 @@
         <tr>
           <td></td>
           <td><b>ModelParameter</b></td>
-          <td align="right"><b>Value</b></td>
-          <td aligh="right"><b>Error</b></td>
-          <td aligh="right"><b>LowerBound</b></td>
-          <td aligh="right"><b>UpperBound</b></td>
-          <td aligh="right"><b>Status</b></td>
+          <td class="cell-value"><b>Value</b></td>
+          <td class="cell-value"><b>Error</b></td>
+          <td class="cell-value"><b>LowerBound</b></td>
+          <td class="cell-value"><b>UpperBound</b></td>
+          <td class="cell-value"><b>Status</b></td>
         </tr>
         <xsl:apply-templates select="ModelParameter"/>
       </table>
@@ -106,11 +106,11 @@
         <tr>
           <td></td>
           <td><b>Observable</b></td>
-          <td align="right"><b>MeasuredValue</b></td>
-          <td align="right"><b>MeasuredError</b></td>
-          <td align="right"><b>Unit</b></td>
-          <td align="right"><b>Calculator</b></td>
-          <td align="right"><b>Status</b></td>
+          <td class="cell-value"><b>MeasuredValue</b></td>
+          <td class="cell-value"><b>MeasuredError</b></td>
+          <td class="cell-value"><b>Unit</b></td>
+          <td class="cell-value"><b>Calculator</b></td>
+          <td class="cell-value"><b>Status</b></td>
         </tr>
         <xsl:apply-templates select="Observable"/>
       </table>
@@ -170,14 +170,14 @@
           <tr>
             <td></td><td></td>
             <xsl:for-each select="Row">
-              <td align="right"><xsl:value-of select="ObservableName"/></td>
+              <td class="cell-value"><xsl:value-of select="ObservableName"/></td>
             </xsl:for-each>
           </tr>
         <xsl:for-each select="Row">
           <tr>
             <td></td><td><xsl:value-of select="ObservableName"/></td>
             <xsl:for-each select="Col">
-              <td align="right"><xsl:value-of select="."/></td>
+              <td class="cell-value"><xsl:value-of select="."/></td>
             </xsl:for-each>
           </tr>
         </xsl:for-each>
@@ -211,7 +211,7 @@
                        Unit |
                        UpperBound |
                        Value">
-    <td align="right"><xsl:value-of select="."/></td>
+    <td class="cell-value"><xsl:value-of select="."/></td>
   </xsl:template>
   
   <!-- Parameter status -->
@@ -219,13 +219,13 @@
   <xsl:template match="Fixed">
     <xsl:choose>
       <xsl:when test=".='true'">
-        <td align="right">fixed</td>
+        <td class="cell-value">fixed</td>
       </xsl:when>
       <xsl:when test=".='false'">
-        <td align="right">free</td>
+        <td class="cell-value">free</td>
       </xsl:when>
       <xsl:otherwise>
-        <td align="right" style="color:#FF0000">ERROR</td>
+        <td class="cell-value" style="color:#FF0000">ERROR</td>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -235,13 +235,13 @@
   <xsl:template match="NoFit">
     <xsl:choose>
       <xsl:when test=".='1'">
-        <td align="right">fitted</td>
+        <td class="cell-value">fitted</td>
       </xsl:when>
       <xsl:when test=".='0'">
-        <td align="right">not fitted</td>
+        <td class="cell-value">not fitted</td>
       </xsl:when>
       <xsl:otherwise>
-        <td align="right" style="color:#FF0000">ERROR</td>
+        <td class="cell-value" style="color:#FF0000">ERROR</td>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -309,7 +309,7 @@
           <xsl:for-each select="*[not(self::Name)]">
             <!-- Create a new row for every configuration item -->
             <tr>
-              <td></td><td></td><td><xsl:value-of select="local-name()"/></td><td align="right"><xsl:value-of select="."/></td>
+              <td></td><td></td><td><xsl:value-of select="local-name()"/></td><td class="cell-value"><xsl:value-of select="."/></td>
             </tr>
           </xsl:for-each>
         </table>

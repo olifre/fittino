@@ -40,9 +40,11 @@
         <!-- The basic style definitions go here -->
         <style type="text/css">
           <!-- Defines the font used in the document body -->
-          body { font-size:13px; font-family:"Monospace"; }
+          body { font-size: 13px; font-family: "Monospace"; }
           <!-- Cell content in tables is displayed with an offset of 50px to the left -->
-          td { border-left:50px solid white; }
+          td { border-left: 50px solid white; }
+          <!-- Align cells of this class to  the right -->
+          td.cell-value { text-align: right; }
         </style>
       </head>
       <body>
