@@ -279,7 +279,7 @@ void Fittino::SPhenoSLHACalculator::ConfigureInput() {
     _slhaInputDataStorage->AddBlock( "SMINPUTS:BLOCK SMINPUTS:# Standard model inputs" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:1:1.28952e+02:# 1/alpha_em (fixed)" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:2:1.1663787e-05:# G_F (fixed)" );
-    _slhaInputDataStorage->AddLine( "SMINPUTS:3:1.185e-01:# alpha_s (fixed)" );
+    _slhaInputDataStorage->AddLine( "SMINPUTS:3:1.184e-01:# alpha_s (fixed)" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:4:9.11876e+01:# mZ (fixed)" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:5:4.18e+00:# mb(mb) (fixed)" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:7:1.77682e+00:# mtau (fixed)" );

@@ -50,13 +50,6 @@ _gammas     ( new FHRealType   [ngammas     ] ),
 _gammasms   ( new FHRealType   [ngammasms   ] ),
 _couplings  ( new FHComplexType[ncouplings  ] ),
 _couplingsms( new FHComplexType[ncouplingsms] ),
-_nu     { "",  "nue", "numu", "nutau" },
-_lepton { "", "e", "mu", "tau"        },
-_up     { "", "u", "c", "t"           },
-_down   { "", "d", "s", "b"           },
-_neu    { "", "~chi10", "~chi20", "~chi30", "~chi40" },
-_cha    { "", "~chi1p", "~chi2p" },
-_higgs  { "", "h0", "H0", "A0", "Hp" },
 _smallObsSet( true ),
 _inputMethod( inputMethod ),
 _slhadatastorageFeynHiggs( NULL ),
@@ -64,6 +57,43 @@ _slhadatastorageSPheno( NULL ){
 
     _name = "FeynHiggs";
     _tag = "FH";
+
+    _nu[0] = "";
+    _nu[1] = "nue";
+    _nu[2] = "numu";
+    _nu[3] = "nutau";
+    
+    _lepton[0] = "";
+    _lepton[1] = "e";
+    _lepton[2] = "mu";
+    _lepton[3] = "tau";
+
+    _up[0] = "";
+    _up[1] = "u";
+    _up[2] = "c";
+    _up[3] = "t";
+    
+    _down[0] = "";
+    _down[1] = "d";
+    _down[2] = "s";
+    _down[3] = "b";
+
+    _neu[0] = "";
+    _neu[1] = "~chi10";
+    _neu[2] = "~chi20";
+    _neu[3] = "~chi30";
+    _neu[4] = "~chi40";
+      
+    _cha[0] = "";
+    _cha[1] = "~chi1p";
+    _cha[2] = "~chi2p";
+
+    _higgs[0] = "";
+    _higgs[1] = "h0";
+    _higgs[2] = "H0";
+    _higgs[3] = "A0";
+    _higgs[4] = "Hp";
+      
 
     AddQuantity( new SimplePrediction( "BR_b_to_s_gamma", "", _bsgammaMSSM ) );
     AddQuantity( new SimplePrediction( "SM_BR_b_to_s_gamma", "", _bsgammaSM ) );
@@ -419,14 +449,10 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
         
     }
 
-
-
     Redirector redirector( outputFile );
     redirector.Start();
 
-    std::string flags;
-    // flags = "400242110";  //old
-    flags = "400243110";  //new
+    std::string flags = "400243110"; 
 
     FHSetFlagsString( &_error, flags.c_str() );
 
@@ -552,14 +578,12 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     }
 
-
     for ( unsigned int iCrossSection = 0; iCrossSection < _crossSections.size(); iCrossSection++ ) {
 
 
         _crossSections.at( iCrossSection )->CalculatePredictions();
 
     }
-
 
     FHRealType bsgammaMSSM;
     FHRealType bsgammaSM;
@@ -581,7 +605,6 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
       throw CalculatorException( _name, "FHFlavour" ); 
 
     }
-
 
     _bsgammaMSSM = bsgammaMSSM;
     _bsgammaSM   = bsgammaSM;
@@ -618,7 +641,6 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
       throw CalculatorException( _name, "FHConstraints" ); 
 
     }
-
 
     _gm2      = gm2;
     _Deltarho = Deltarho;
@@ -661,7 +683,6 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     }
 
-
     _Abs_Delta_b = abs( DeltaMB );
     _Arg_Delta_b = arg( DeltaMB );
     _SAtree = SAtree;
@@ -695,7 +716,6 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     }
 
-
     _warning_ZHiggs  = 0;
     _warning_ExtParQ = 0;
     _warning_gmin2   = 0;
@@ -716,7 +736,6 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     file.close();
 
-
     if ( _inputMethod == "SLHA" ) {
 
         _slhadatastorageSPheno   ->ReadFile("SPheno.spc");
@@ -728,22 +747,21 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
         }
     
-         _slhadatastorageSPheno->SetEntry( _mass_h0, "MASS", 1, "25", "", "", "" );
-         _slhadatastorageSPheno->SetEntry( _mass_H0, "MASS", 1, "35", "", "", "" );
-         _slhadatastorageSPheno->SetEntry( _mass_A0, "MASS", 1, "36", "", "", "" );
-         _slhadatastorageSPheno->SetEntry( _mass_Hp, "MASS", 1, "37", "", "", "" );
+        _slhadatastorageSPheno->SetEntry( _MWMSSM,  "MASS", 1, "24", "", "", "" );   
+        _slhadatastorageSPheno->SetEntry( _mass_h0, "MASS", 1, "25", "", "", "" );
+        _slhadatastorageSPheno->SetEntry( _mass_H0, "MASS", 1, "35", "", "", "" );
+        _slhadatastorageSPheno->SetEntry( _mass_A0, "MASS", 1, "36", "", "", "" );
+        _slhadatastorageSPheno->SetEntry( _mass_Hp, "MASS", 1, "37", "", "", "" );
 
         _slhadatastorageSPheno->ReplaceBlock( "alpha", _slhadatastorageFeynHiggs->GetBlock( "ALPHA" ) );
-
-        _slhadatastorageSPheno->ReplaceBlock( "25", _slhadatastorageFeynHiggs->GetBlock( "25" ) );
-        _slhadatastorageSPheno->ReplaceBlock( "35", _slhadatastorageFeynHiggs->GetBlock( "35" ) );
-        _slhadatastorageSPheno->ReplaceBlock( "36", _slhadatastorageFeynHiggs->GetBlock( "36" ) );
-        _slhadatastorageSPheno->ReplaceBlock( "37", _slhadatastorageFeynHiggs->GetBlock( "37" ) );
+        _slhadatastorageSPheno->ReplaceBlock( "Hmix",  _slhadatastorageFeynHiggs->GetBlock( "HMIX"  ) );
+        _slhadatastorageSPheno->ReplaceBlock( "25",    _slhadatastorageFeynHiggs->GetBlock( "25"    ) );
+        _slhadatastorageSPheno->ReplaceBlock( "35",    _slhadatastorageFeynHiggs->GetBlock( "35"    ) );
+        _slhadatastorageSPheno->ReplaceBlock( "36",    _slhadatastorageFeynHiggs->GetBlock( "36"    ) );
+        _slhadatastorageSPheno->ReplaceBlock( "37",    _slhadatastorageFeynHiggs->GetBlock( "37"    ) );
 
         _slhadatastorageSPheno->WriteFile("SPheno_FeynHiggs.spc");
 
     }
 
 }
-
-
