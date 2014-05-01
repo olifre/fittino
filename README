@@ -8,7 +8,8 @@
 #                                                                              #
 # Description Useful information about the program setup and installation      #
 #                                                                              #
-# Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              #
+# Authors     Bjoern Sarrazin     <sarrazin@physik.uni-bonn.de>                #
+#             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              #
 #                                                                              #
 # Licence     This program is free software; you can redistribute it and/or    #
 #             modify it under the terms of the GNU General Public License as   #
@@ -20,13 +21,16 @@
 1. Third party software
 ------------------------
 
-- The following external programs/libraries are mandatory in order to compile
-  Fittino
+- Fittino is designed to run on Unix-like operating systems.
+  It has successfully been tested on Scientific Linux 6 and OS X 10.9.
 
-  Boost  (http://www.boost.org)
-  CMake  (http://www.cmake.org)
-  GCC    (http://gcc.gnu.org)
-  ROOT   (http://root.cern.ch/drupal)
+- The following external programs/libraries are mandatory in order to compile Fittino:
+
+  - The build system generator CMake (http://www.cmake.org).
+  - A build environment supported by CMake. Fittino has successfully been build using GNU make and Xcode.
+  - A C++ compiler. Fittino has been successfully compiled using compilers from the GNU Compiler Collection (http://gcc.gnu.org) and the Clang project ( clang.llvm.org ).
+  - The Boost C++ libraries (http://www.boost.org).
+  - The data analysis framework ROOT (http://root.cern.ch/drupal).
 
 - The search paths for external software can be influenced by setting the dedicated CMake variables
 
