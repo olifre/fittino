@@ -46,6 +46,7 @@ namespace Fittino {
 
     protected:
       double      _omegah2;
+      double      _gmin2;
       std::string _inputFile;
 
   };

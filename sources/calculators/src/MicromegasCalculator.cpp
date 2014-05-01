@@ -26,10 +26,12 @@ Fittino::MicromegasCalculator::MicromegasCalculator( const PhysicsModel* model, 
     : MicromegasWrapper( model ) {
 
     _name = "MicromegasCalculator";
+    _tag = "MicrOMEGAs";
 
     _inputFile = ptree.get<std::string>( "InputFile" );
 
     AddQuantity( new SimplePrediction( "Omega", "", _omegah2 ) );
+    AddQuantity( new SimplePrediction( "a_mu", "", _gmin2 ) );
 
 }
 
