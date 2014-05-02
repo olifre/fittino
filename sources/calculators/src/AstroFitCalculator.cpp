@@ -17,6 +17,8 @@
  *                                                                              *
  *******************************************************************************/
 
+#define BOOST_NO_CXX11_SCOPED_ENUMS
+
 #include <fstream>
 
 #include "boost/filesystem.hpp"
