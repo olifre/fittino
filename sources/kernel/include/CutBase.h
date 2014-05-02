@@ -18,8 +18,6 @@
 #ifndef FITTINO_CUTBASE_H
 #define FITTINO_CUTBASE_H
 
-#include <string>
-
 /*!
  *  \brief Fittino namespace.
  */
