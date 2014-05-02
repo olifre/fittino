@@ -19,6 +19,10 @@
 
 #include <iostream>
 
+#include <complex>
+
+#define complex _Complex
+
 #include "pmodel.h"
 #include "micromegas.h"
 #include "micromegas_aux.h"

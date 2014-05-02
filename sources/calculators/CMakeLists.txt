@@ -122,7 +122,6 @@ ENDIF()
 IF(MICROMEGAS_FOUND)
 
   INCLUDE_DIRECTORIES(${MICROMEGAS_INCLUDE_DIRS})  
-  SET(compile_flags "${compile_flags} -I/usr/include")
 
 ENDIF()
 

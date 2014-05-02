@@ -17,7 +17,11 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <complex>
+
 #include <boost/property_tree/ptree.hpp>
+
+#define complex _Complex
 
 extern "C" {
 
