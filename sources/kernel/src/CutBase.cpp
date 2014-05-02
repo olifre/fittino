@@ -1,10 +1,11 @@
+/* $Id$ */
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        CutBase.cpp                                              *
+* File        CutBase.cpp                                                      *
 *                                                                              *
-* Description Base class for cuts                                     *
+* Description Base class for cuts                                              *
 *                                                                              *
 * Authors     Matthias Hamer      <mhamer@cbpf.br>                             *
 *                                                                              *
