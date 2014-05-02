@@ -21,41 +21,55 @@
 *******************************************************************************/
 
 /*!
- *  \todo Long-term: Document the code.
- *  \todo Long-term: Write a comprehensive developer's guide.
- *  \todo Long-term: Write a comprehensive user's guide.
- *  \todo Long-term: Update the xml definition file.
- *  \todo Long-term: Use an issue tracker like Redmine instead of this list.
- *  \todo Long-term: Find a way to use xml style file online.
- *  \todo Long-term: Discuss Calculator interface (Mathias).
- *  \todo Long-term: Further develop plotters (Mathias).
- *  \todo Long-term: Add all theorycodes to SuperBuild.
- *  \todo Long-term: Make HiggsBounds/HiggsSignals usable with ifort
- *  \todo Long-term: Add DarkSUSYCalculator.
- *  \todo Long-term: Add tests?
- *  \todo Add HiggsBoundsCalculator (needs threading, look at fittino1 for that).
- *  \todo Add HiggsSignalsPartonicInputCalculator.
- *  \todo Add LSPCalculator (a calculator which determines the LSP).
- *  \todo Add RandomSampler, a sampler with fixed sampling density (usefull for random grid production).
- *  \todo Add buggy point removal. (Matthias?)
- *  \todo Add toy plots. (Matthias?)
- *  \todo Make sure AstroCalculator works with AstroFit database. (Matthias?)
- *  \todo Implement the corrrection of the FH decoupling limit (use FormulaCalculator?).
- *  \todo Common base class for different HS calculators.
- *  \todo Implement toys in the common base class (or temporarily in HiggsSignalsHECCalculator).
- *  \todo In HiggsSignals: Add wrapper functions for modul functions to HiggsSignals_subroutines.
- *  \todo Use global random number generator (gRandom or better a singleton wrapper).
- *  \todo Update Observable - Prediction relation.
- *  \todo MeasuredErrors: Allow arbitrary number. Give names.
- *  \todo Introduce parameter point dependent errors, correlations, covariances.
- *  \todo Allow asymmetric errors.
- *  \todo Make chi2 a model quantitiy?
- *  \todo More general: Make all quantity names/branch names configurable?
- *  \todo Make configurable if quantities are added to the model/are written to ntuple (especially TreeCalculator but also in general)?
- *  \todo TreeSampler configuration: Set name of parameter to be used as looping parameter.
- *  \todo Common base class for MarkovChainSampler and CorrelatedSampler (Matthias?).
- *  \todo When RandomSampler is implemented, use parameter limits as hard limits in markovchain. Discuss what to do when limit is reached (new random point? mirror point?).
- *  \todo Decide if and how to handle default quantities of the calculators.
+ *  \todo <B> Documentation: </B>\n
+ *  Long-term: Document the code.\n
+ *  Long-term: Write a comprehensive developer's guide.\n
+ *  Long-term: Write a comprehensive user's guide.\n
+ * 
+ *  \todo <B> Infrastructure: </B> \n
+ *  Long-term: Use an issue tracker like Redmine instead of this list. (Peter?)\n
+ *  Long-term: Add tests\n
+ *  Long-term: Add all theorycodes to SuperBuild.\n
+ *
+ *  \todo <B> xml: </B> \n
+ *   Update the xml definition file. \n
+ *   Integrate xml input file validation to fittino.\n
+ *   Find a way to use xml style files online. (Peter?)\n
+ *
+ *  \todo <B> Calculators: </B> \n
+ *   Long-term: Discuss Calculator interface (Mathias).\n
+ *   Long-term: Decide if and how to handle default quantities of the calculators.\n
+ *   Long-term: Make HiggsBounds/HiggsSignals usable with ifort (Bjoern is working on a proposal)\n
+ *   Add HiggsBoundsCalculator (needs threading, look at fittino1 for that).\n
+ *   Add HiggsSignalsPartonicInputCalculator.\n
+ *   Common base class for different HS calculators.\n
+ *   Implement toys in the common base class (or temporarily in HiggsSignalsHECCalculator).\n
+ *   Implement the corrrection of the FH decoupling limit (use FormulaCalculator?).\n
+ *   Make sure AstroCalculator works with AstroFit database. (Matthias?)\n
+ *   Long-term: Add LSPCalculator (a calculator which determines the LSP).\n
+ *   Long-term: Add DarkSUSYCalculator.\n
+ *   Make all quantity names/branch names configurable?\n
+ *   Make configurable if quantities are added to the model/are written to ntuple (especially TreeCalculator but also in general)?\n
+ *   Add MadGraphCalculator ( Uddhipan, Alex, Bjoern )\n
+ *   Long-term: Add HerwigppCalculator\n 
+ *
+ *  \todo <B> Tools and Plotters: </B>\n
+ *   Long-term: Further develop plotters (Mathias).\n
+ *   Add toy plots. (Matthias?)\n
+ *   Add buggy point removal. (Matthias)\n
+ *
+ *  \todo <B> Samplers: </B>\n
+ *   TreeSampler configuration: Set name of parameter to be used as looping parameter.\n
+ *   Common base class for MarkovChainSampler and CorrelatedSampler (Matthias?).\n
+ *   Add RandomSampler, a sampler with fixed sampling density (usefull for random grid production).\n
+ *   When RandomSampler is implemented, use parameter limits as hard limits in markovchain. Discuss what to do when limit is reached (new random point? mirror point?).\n
+ *
+ *  \todo <B> Models: </B>\n
+ *   Update Observable - Prediction relation.\n
+ *   MeasuredErrors: Allow arbitrary number. Give names.\n
+ *   Introduce parameter point dependent errors, correlations, covariances.\n
+ *   Allow asymmetric errors.\n
+ *   Make chi2 a model quantitiy?\n
  */
 
 #ifndef FITTINO_CONTROLLER_H
