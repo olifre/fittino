@@ -67,8 +67,8 @@ void Fittino::EdgeDetectionTool::InitializeTool() {
         TH2D *histogram = (TH2D*)histogramFile->Get( _histogramNameVector.at(i).c_str() );
         if( !histogram ) {
             
-            Messenger& messenger = Messenger::GetInstance();
-            messenger << Messenger::INFO << "Did not find histogram with name " << _histogramNameVector.at(i) << ". Skipping this histogram! Buggy point removal might be incomplete!" << Messenger::Endl;
+            const std::string exception = "Could not find requested histogram " + _histogramNameVector.at(i) + " in file.";
+            throw ConfigurationException( exception );
 
         }
         
