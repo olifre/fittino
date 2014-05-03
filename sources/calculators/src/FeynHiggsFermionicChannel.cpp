@@ -72,39 +72,38 @@ void Fittino::FeynHiggsFermionicChannel::CalculatePredictions() {
     FHComplexType coup;
 
     coup = RCoupling( _channel ) + LCoupling( _channel );
-    coup  = coup / FHComplexType( 2, 0 );
+    coup = coup / FHComplexType( 2, 0 );
 
-    _model_gs2 = std::abs( coup );
+    _model_gs2   = std::abs( coup );
     _model_gsPhi = std::arg( coup );
 
     coup = RCoupling( _channel) - LCoupling( _channel );
     coup = coup / FHComplexType( 0, 2 );
 
-    _model_gp2 = std::abs( coup );
+    _model_gp2   = std::abs( coup );
     _model_gpPhi = std::arg( coup );
 
     if ( _doSM ) {
         
-        coup = RCouplingSM( _channel ) + LCouplingSM( _channel );
+        coup  = RCouplingSM( _channel ) + LCouplingSM( _channel );
         coup  = coup / FHComplexType( 2, 0 );
 
-        _sm_gs2 = std::abs( coup );
+        _sm_gs2   = std::abs( coup );
         _sm_gsPhi = std::arg( coup );
 
-        _normSM_gs2 = _model_gs2 / _sm_gs2;
+        _normSM_gs2   = _model_gs2 / _sm_gs2;
         _normSM_gsPhi = TVector2::Phi_mpi_pi( _model_gsPhi - _sm_gsPhi );
 
         coup = RCouplingSM( _channel) - LCouplingSM( _channel );
         coup = coup / FHComplexType( 0, 2 );
 
-        _sm_gp2 = std::abs( coup );
+        _sm_gp2   = std::abs( coup );
         _sm_gpPhi = std::arg( coup );
 
-        _normSM_gp2 = _model_gp2 / _sm_gp2;
+        _normSM_gp2   = _model_gp2 / _sm_gp2;
         _normSM_gpPhi = TVector2::Phi_mpi_pi( _model_gpPhi - _sm_gpPhi );
 
     }
-
 
 }
 
