@@ -25,6 +25,8 @@
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
 
+#include "TVector2.h"
+
 #include "CFeynHiggs.h"
 #include "CSLHA.h"
 
@@ -38,16 +40,16 @@
 Fittino::FeynHiggsBosonicChannel::FeynHiggsBosonicChannel( FHRealType* gammas, FHRealType* gammasms, FHComplexType* couplings, FHComplexType* couplingsms, std::string higgsName, std::string channelName, int channelNumber, bool SM )
 : FeynHiggsChannel( gammas, gammasms, couplings, couplingsms, higgsName, channelName, channelNumber, SM ) {
 
-    AddQuantity( new SimplePrediction( "g2_" + higgsName + "_" + channelName, "", _model_g2 ) );
-    AddQuantity( new SimplePrediction( "gPhi_" + higgsName + "_" + channelName, "", _model_gPhi ) );
+    AddQuantity( new SimplePrediction( "Abs_g_" + higgsName + "_" + channelName, "", _model_g2 ) );
+    AddQuantity( new SimplePrediction( "Arg_g_" + higgsName + "_" + channelName, "", _model_gPhi ) );
 
     if ( _doSM ) {
 
-        AddQuantity( new SimplePrediction( "SM_g2_" + higgsName + "_" + channelName, "", _sm_g2 ) );
-        AddQuantity( new SimplePrediction( "SM_gPhi_" + higgsName + "_" + channelName, "", _sm_gPhi ) );
+        AddQuantity( new SimplePrediction( "SM_Abs_g_" + higgsName + "_" + channelName, "", _sm_g2 ) );
+        AddQuantity( new SimplePrediction( "SM_Arg_g_" + higgsName + "_" + channelName, "", _sm_gPhi ) );
 
-        AddQuantity( new SimplePrediction( "NormSM_g2_" + higgsName + "_" + channelName, "", _normSM_g2 ) );
-        AddQuantity( new SimplePrediction( "NormSM_gPhi_" + higgsName + "_" + channelName, "", _normSM_gPhi ) );
+        AddQuantity( new SimplePrediction( "NormSM_Abs_g_" + higgsName + "_" + channelName, "", _normSM_g2 ) );
+        AddQuantity( new SimplePrediction( "DiffSM_Arg_g_" + higgsName + "_" + channelName, "", _normSM_gPhi ) );
 
     }
 
@@ -64,17 +66,17 @@ void Fittino::FeynHiggsBosonicChannel::CalculatePredictions() {
     FHComplexType coup;
 
     coup = Coupling( _channel );
-    _model_g2 = std::norm( coup );
+    _model_g2 = std::abs( coup );
     _model_gPhi = std::arg( coup );
 
     if ( _doSM ) {
 
         coup = CouplingSM( _channel );
-        _sm_g2 = std::norm( coup );
+        _sm_g2 = std::abs( coup );
         _sm_gPhi = std::arg( coup );
 
-        _normSM_g2 = _model_g2 / _sm_g2; 
-        _normSM_gPhi = _model_gPhi / _sm_gPhi;
+        _normSM_g2   =  _model_g2 / _sm_g2;
+        _normSM_gPhi = TVector2::Phi_mpi_pi( _model_gPhi - _sm_gPhi );
 
     }
 

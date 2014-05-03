@@ -56,7 +56,7 @@ _slhadatastorageFeynHiggs( NULL ),
 _slhadatastorageSPheno( NULL ){
 
     _name = "FeynHiggs";
-    _tag = "FH";
+    _tag = "FeynHiggs";
 
     _nu[0] = "";
     _nu[1] = "nue";
@@ -94,22 +94,21 @@ _slhadatastorageSPheno( NULL ){
     _higgs[3] = "A0";
     _higgs[4] = "Hp";
       
-
     AddQuantity( new SimplePrediction( "BR_b_to_s_gamma", "", _bsgammaMSSM ) );
     AddQuantity( new SimplePrediction( "SM_BR_b_to_s_gamma", "", _bsgammaSM ) );
-    AddQuantity( new SimplePrediction( "DeltaM_Bs", "", _deltaMsMSSM ) );
-    AddQuantity( new SimplePrediction( "SM_DeltaM_Bs", "", _deltaMsSM ) );
+    AddQuantity( new SimplePrediction( "Delta_Mass_Bs", "", _deltaMsMSSM ) );
+    AddQuantity( new SimplePrediction( "SM_Delta_Mass_Bs", "", _deltaMsSM ) );
     AddQuantity( new SimplePrediction( "BR_Bs_to_mu_mubar", "", _bsmumuMSSM ) );
     AddQuantity( new SimplePrediction( "SM_BR_Bs_to_mu_mubar", "", _bsmumuSM ) );
 
     AddQuantity( new SimplePrediction( "ColorBreakingMinimum", "", _ccb ) );
-    AddQuantity( new SimplePrediction( "gmin2", "", _gm2 ) );
-    AddQuantity( new SimplePrediction( "DeltaRho", "", _Deltarho ) );
-    AddQuantity( new SimplePrediction( "Mass_W", "", _MWMSSM ) );
-    AddQuantity( new SimplePrediction( "SM_Mass_W", "", _MWSM ) );
+    AddQuantity( new SimplePrediction( "DiffSM_a_mu", "", _gm2 ) );
+    AddQuantity( new SimplePrediction( "Delta_rho", "", _Deltarho ) );
+    AddQuantity( new SimplePrediction( "Mass_Wp", "", _MWMSSM ) );
+    AddQuantity( new SimplePrediction( "SM_Mass_Wp", "", _MWSM ) );
 
-    AddQuantity( new SimplePrediction( "sin2thetaW", "", _SW2MSSM ) );
-    AddQuantity( new SimplePrediction( "SM_sin2thetaW", "", _SW2SM ) );
+    AddQuantity( new SimplePrediction( "sin2_thetaEff", "", _SW2MSSM ) );
+    AddQuantity( new SimplePrediction( "SM_sin2_thetaEff", "", _SW2SM ) );
 
     AddQuantity( new SimplePrediction( "EDM_e_Th", "", _edmeTh ) );
     AddQuantity( new SimplePrediction( "EDM_n", "", _edmn ) );
@@ -117,9 +116,9 @@ _slhadatastorageSPheno( NULL ){
 
     AddQuantity( new SimplePrediction( "Abs_Delta_b", "", _Abs_Delta_b ) );
     AddQuantity( new SimplePrediction( "Arg_Delta_b", "", _Arg_Delta_b ) );
-    AddQuantity( new SimplePrediction( "sinAlpha_tree", "", _SAtree ) );
-    AddQuantity( new SimplePrediction( "Abs_sinAlpha", "", _Abs_sinAlpha ) );
-    AddQuantity( new SimplePrediction( "Arg_sinAlpha", "", _Arg_sinAlpha ) );
+    AddQuantity( new SimplePrediction( "TreeLevel_sin_alpha", "", _SAtree ) );
+    AddQuantity( new SimplePrediction( "Abs_sin_alpha", "", _Abs_sinAlpha ) );
+    AddQuantity( new SimplePrediction( "Arg_sin_alpha", "", _Arg_sinAlpha ) );
 
     AddQuantity( new SimplePrediction( "Mass_h0",                    "", _mass_h0                    ) );
     AddQuantity( new SimplePrediction( "Mass_H0",                    "", _mass_H0                    ) );
@@ -165,8 +164,8 @@ _slhadatastorageSPheno( NULL ){
 
     }
 
-    AddChannel( "t", "W_b", tBF(1), true, true );
-    AddChannel( "t", "Hp_b", tBF(2), true, false );
+    AddChannel( "t", "b_Wp", tBF(1), true, true );
+    AddChannel( "t", "b_Hp", tBF(2), true, false );
 
     if ( _inputMethod == "FeynHiggs" ) {
 
@@ -197,7 +196,7 @@ _slhadatastorageSPheno( NULL ){
         _slhadatastorageFeynHiggs  = factory.CreateSLHAeaSLHADataStorage();
         _slhadatastorageSPheno     = factory.CreateSLHAeaSLHADataStorage();
 
-        AddQuantity( new SLHAPrediction( "sinAlpha_SLHA" , "", _slhadatastorageFeynHiggs, "ALPHA", 0, "(any)", "# Alpha", "", "") );
+        AddQuantity( new SLHAPrediction( "SLHA_sin_alpha" , "", _slhadatastorageFeynHiggs, "ALPHA", 0, "(any)", "# Alpha", "", "") );
 
         AddQuantity( new SLHAPrediction( "HMIX_Q"      , "", _slhadatastorageFeynHiggs, "HMIX", 3, "BLOCK", "", "", "" ) );
         AddQuantity( new SLHAPrediction( "HMIX_mu"     , "", _slhadatastorageFeynHiggs, "HMIX", 1, "1", "", "", ""     ) );
@@ -225,8 +224,8 @@ _slhadatastorageSPheno( NULL ){
 
     AddQuantity( new SimplePrediction( "Warning_ZHiggs" , "", _warning_ZHiggs  ) );
     AddQuantity( new SimplePrediction( "Warning_ExtParQ", "", _warning_ExtParQ ) );
-    AddQuantity( new SimplePrediction( "Warning_Gmin2"  , "", _warning_gmin2   ) );
-    AddQuantity( new SimplePrediction( "Warning_Other"  , "", _warning_other   ) );
+    AddQuantity( new SimplePrediction( "Warning_gmin2"  , "", _warning_gmin2   ) );
+    AddQuantity( new SimplePrediction( "Warning_other"  , "", _warning_other   ) );
     AddQuantity( new SimplePrediction( "Warning_Ab"     , "", _warning_Ab      ) );
 
 }
@@ -252,7 +251,7 @@ void Fittino::FeynHiggsCalculator::AddChannels_HpHV() {
 
     for (unsigned int iHiggs = 1; iHiggs<=3; iHiggs++ ) {
 
-        AddChannel( "Hp", _higgs[iHiggs] + "_W", HpHV( 1 ), false, false );
+        AddChannel( "Hp", _higgs[iHiggs] + "_Wp", HpHV( 1 ), false, false );
 
     }
 
@@ -317,9 +316,9 @@ void Fittino::FeynHiggsCalculator::AddChannels_H0NeuNeu( unsigned int iHiggs, st
 
 void Fittino::FeynHiggsCalculator::AddChannels_H0HV( unsigned int iHiggs, std::string higgsName ) {
 
-    AddChannel( higgsName, "h0_Z", H0HV( iHiggs, 1 ), false, false );
-    AddChannel( higgsName, "H0_Z", H0HV( iHiggs, 2 ), false, false );
-    AddChannel( higgsName, "A0_Z", H0HV( iHiggs, 3 ), false, false );
+    AddChannel( higgsName, "h0_Z0", H0HV( iHiggs, 1 ), false, false );
+    AddChannel( higgsName, "H0_Z0", H0HV( iHiggs, 2 ), false, false );
+    AddChannel( higgsName, "A0_Z0", H0HV( iHiggs, 3 ), false, false );
 
 }
 
@@ -340,9 +339,9 @@ void Fittino::FeynHiggsCalculator::AddChannels_H0HH( unsigned int iHiggs, std::s
 void Fittino::FeynHiggsCalculator::AddChannels_H0VV( unsigned int iHiggs, std::string higgsName ) {
 
     AddChannel( higgsName, "gamma_gamma", H0VV( iHiggs, 1 ), false, true );
-    AddChannel( higgsName, "Z_gamma"    , H0VV( iHiggs, 2 ), false, true );
-    AddChannel( higgsName, "Z_Z"        , H0VV( iHiggs, 3 ), false, true );
-    AddChannel( higgsName, "W_W"        , H0VV( iHiggs, 4 ), false, true );
+    AddChannel( higgsName, "Z0_gamma"    , H0VV( iHiggs, 2 ), false, true );
+    AddChannel( higgsName, "Z0_Z0"        , H0VV( iHiggs, 3 ), false, true );
+    AddChannel( higgsName, "Wp_Wm"        , H0VV( iHiggs, 4 ), false, true );
     AddChannel( higgsName, "g_g"        , H0VV( iHiggs, 3 ), false, true );
 
 }

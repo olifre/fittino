@@ -25,13 +25,13 @@
 Fittino::MicromegasCalculator::MicromegasCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     : MicromegasWrapper( model ) {
 
-    _name = "MicromegasCalculator";
+    _name = "MicrOMEGAs";
     _tag = "MicrOMEGAs";
 
     _inputFile = ptree.get<std::string>( "InputFile" );
 
-    AddQuantity( new SimplePrediction( "Omega", "", _omegah2 ) );
-    AddQuantity( new SimplePrediction( "a_mu", "", _gmin2 ) );
+    AddQuantity( new SimplePrediction( "Omega_h2", "", _omegah2 ) );
+    AddQuantity( new SimplePrediction( "DiffSM_a_mu", "", _gmin2 ) );
 
 }
 

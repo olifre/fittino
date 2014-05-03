@@ -32,14 +32,14 @@ Fittino::AstroFitCalculator::AstroFitCalculator( const PhysicsModel* model, cons
 _executor( "./AstroFit" , "AstroFit" ){
 
     _name = "AstroFit";
-    _tag = "AF";
+    _tag = "AstroFit";
 
-    AddQuantity( new SimplePrediction("Chi2_relic",  "", _chi2_relic  ) );
+    AddQuantity( new SimplePrediction("Chi2_Omega_h2",  "", _chi2_relic  ) );
     AddQuantity( new SimplePrediction("Chi2_svind",  "", _chi2_svind  ) );
     AddQuantity( new SimplePrediction("Chi2_photon", "", _chi2_photon ) );
     AddQuantity( new SimplePrediction("Chi2_direct", "", _chi2_direct ) );
 
-    AddQuantity( new SimplePrediction("relic",  "", _relic  ) );
+    AddQuantity( new SimplePrediction("Omega_h2",  "", _relic  ) );
     AddQuantity( new SimplePrediction("svind",  "", _svind  ) );
     AddQuantity( new SimplePrediction("photon", "", _photon ) );
     AddQuantity( new SimplePrediction("direct", "", _direct ) );
