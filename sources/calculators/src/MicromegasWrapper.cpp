@@ -64,7 +64,7 @@ void Fittino::MicromegasWrapper::CalculatePredictions() {
     int fast = 1;
     double Beps = 1e-6;
     _omegah2 = darkOmega( &Xf, fast, Beps );
-    _gmin2= gmuon();
+    _gmin2 = gmuon();
 
     if ( _omegah2 < 0 ) {
 

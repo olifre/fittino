@@ -1,13 +1,14 @@
 /* $Id$ */
+
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        SplineCut.h                                                        *
+* File        SplineCut.h                                                      *
 *                                                                              *
-* Description Base class for cuts                                              *
+* Description Base class for spline cuts                                       *
 *                                                                              *
-* Authors     Matthias Hamer      <mhamer@cbpf.br>                             *
+* Authors     Matthias Hamer  <mhamer@cbpf.br>                                 *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -30,8 +31,8 @@ class TSpline3;
 namespace Fittino {
 
   /*!
-   *  \ingroup kernel
-   *  \brief Base class for data storages.
+   *  \ingroup tools
+   *  \brief Base class for spline cuts.
    */
   class SplineCut {
 

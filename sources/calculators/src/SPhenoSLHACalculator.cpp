@@ -65,13 +65,13 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const PhysicsModel* model, 
     AddParticle( "Hp" );
     AddParticle( "A0" );
 
-    AddQuantity( new SLHAPrediction( "sinAlpha" , "", _slhaOutputDataStorage, "alpha", 0, "(any)", "# alpha", "", "") );
+    AddQuantity( new SLHAPrediction( "sinAlpha" , "", _slhaOutputDataStorage, "alpha", 0, "(any)", "# alpha", "", "" ) );
 
     AddQuantity( new SLHAPrediction( "HMIX_Q"      , "", _slhaOutputDataStorage, "HMIX", 3, "BLOCK", "", "", "" ) );
     AddQuantity( new SLHAPrediction( "HMIX_mu"     , "", _slhaOutputDataStorage, "HMIX", 1, "1", "", "", ""     ) );
     AddQuantity( new SLHAPrediction( "HMIX_TanBeta", "", _slhaOutputDataStorage, "HMIX", 1, "2", "", "", ""     ) );
     AddQuantity( new SLHAPrediction( "HMIX_VEV"    , "", _slhaOutputDataStorage, "HMIX", 1, "3", "", "", ""     ) );
-    AddQuantity( new SLHAPrediction( "HMIX_m2A"   , "", _slhaOutputDataStorage, "HMIX", 1, "4", "", "", ""     ) );
+    AddQuantity( new SLHAPrediction( "HMIX_m2A"    , "", _slhaOutputDataStorage, "HMIX", 1, "4", "", "", ""     ) );
 
     std::vector<std::string> susyparticles = database.GetSUSYParticles();
 

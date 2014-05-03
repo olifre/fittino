@@ -1,4 +1,5 @@
 /* $Id$ */
+
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
@@ -7,7 +8,7 @@
 *                                                                              *
 * Description Base class for cuts                                              *
 *                                                                              *
-* Authors     Matthias Hamer      <mhamer@cbpf.br>                             *
+* Authors     Matthias Hamer  <mhamer@cbpf.br>                                 *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *

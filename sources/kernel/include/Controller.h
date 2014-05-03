@@ -25,51 +25,51 @@
  *  Long-term: Document the code.\n
  *  Long-term: Write a comprehensive developer's guide.\n
  *  Long-term: Write a comprehensive user's guide.\n
- * 
+ *
  *  \todo <B> Infrastructure: </B> \n
  *  Long-term: Use an issue tracker like Redmine instead of this list. (Peter?)\n
  *  Long-term: Add tests\n
  *  Long-term: Add all theorycodes to SuperBuild.\n
  *
  *  \todo <B> xml: </B> \n
- *   Update the xml definition file. \n
- *   Integrate xml input file validation to fittino.\n
- *   Find a way to use xml style files online. (Peter?)\n
+ *  Update the xml definition file. \n
+ *  Integrate xml input file validation to fittino.\n
+ *  Find a way to use xml style files online. (Peter?)\n
  *
  *  \todo <B> Calculators: </B> \n
- *   Long-term: Discuss Calculator interface (Mathias).\n
- *   Long-term: Decide if and how to handle default quantities of the calculators.\n
- *   Long-term: Make HiggsBounds/HiggsSignals usable with ifort (Bjoern is working on a proposal)\n
- *   Add HiggsBoundsCalculator (needs threading, look at fittino1 for that).\n
- *   Add HiggsSignalsPartonicInputCalculator.\n
- *   Common base class for different HS calculators.\n
- *   Implement toys in the common base class (or temporarily in HiggsSignalsHECCalculator).\n
- *   Implement the corrrection of the FH decoupling limit (use FormulaCalculator?).\n
- *   Make sure AstroCalculator works with AstroFit database. (Matthias?)\n
- *   Long-term: Add LSPCalculator (a calculator which determines the LSP).\n
- *   Long-term: Add DarkSUSYCalculator.\n
- *   Make all quantity names/branch names configurable?\n
- *   Make configurable if quantities are added to the model/are written to ntuple (especially TreeCalculator but also in general)?\n
- *   Add MadGraphCalculator ( Uddhipan, Alex, Bjoern )\n
- *   Long-term: Add HerwigppCalculator\n 
+ *  Long-term: Discuss Calculator interface (Mathias).\n
+ *  Long-term: Decide if and how to handle default quantities of the calculators.\n
+ *  Long-term: Make HiggsBounds/HiggsSignals usable with ifort (Bjoern is working on a proposal)\n
+ *  Add HiggsBoundsCalculator (needs threading, look at fittino1 for that).\n
+ *  Add HiggsSignalsPartonicInputCalculator.\n
+ *  Common base class for different HS calculators.\n
+ *  Implement toys in the common base class (or temporarily in HiggsSignalsHECCalculator).\n
+ *  Implement the corrrection of the FH decoupling limit (use FormulaCalculator?).\n
+ *  Make sure AstroCalculator works with AstroFit database. (Matthias?)\n
+ *  Long-term: Add LSPCalculator (a calculator which determines the LSP).\n
+ *  Long-term: Add DarkSUSYCalculator.\n
+ *  Make all quantity names/branch names configurable?\n
+ *  Make configurable if quantities are added to the model/are written to ntuple (especially TreeCalculator but also in general)?\n
+ *  Add MadGraphCalculator ( Uddhipan, Alex, Bjoern )\n
+ *  Long-term: Add HerwigppCalculator\n
  *
  *  \todo <B> Tools and Plotters: </B>\n
- *   Long-term: Further develop plotters (Mathias).\n
- *   Add toy plots. (Matthias?)\n
- *   Add buggy point removal. (Matthias)\n
+ *  Long-term: Further develop plotters (Mathias).\n
+ *  Add toy plots. (Matthias?)\n
+ *  Add buggy point removal. (Matthias)\n
  *
  *  \todo <B> Samplers: </B>\n
- *   TreeSampler configuration: Set name of parameter to be used as looping parameter.\n
- *   Common base class for MarkovChainSampler and CorrelatedSampler (Matthias?).\n
- *   Add RandomSampler, a sampler with fixed sampling density (usefull for random grid production).\n
- *   When RandomSampler is implemented, use parameter limits as hard limits in markovchain. Discuss what to do when limit is reached (new random point? mirror point?).\n
+ *  TreeSampler configuration: Set name of parameter to be used as looping parameter.\n
+ *  Common base class for MarkovChainSampler and CorrelatedSampler (Matthias?).\n
+ *  Add RandomSampler, a sampler with fixed sampling density (usefull for random grid production).\n
+ *  When RandomSampler is implemented, use parameter limits as hard limits in markovchain. Discuss what to do when limit is reached (new random point? mirror point?).\n
  *
  *  \todo <B> Models: </B>\n
- *   Update Observable - Prediction relation.\n
- *   MeasuredErrors: Allow arbitrary number. Give names.\n
- *   Introduce parameter point dependent errors, correlations, covariances.\n
- *   Allow asymmetric errors.\n
- *   Make chi2 a model quantitiy?\n
+ *  Update Observable - Prediction relation.\n
+ *  MeasuredErrors: Allow arbitrary number. Give names.\n
+ *  Introduce parameter point dependent errors, correlations, covariances.\n
+ *  Allow asymmetric errors.\n
+ *  Make chi2 a model quantitiy?\n
  */
 
 #ifndef FITTINO_CONTROLLER_H
@@ -126,13 +126,13 @@ namespace Fittino {
        */
       void                         TerminateFittino() const;
 
+      /*! \cond UML */
     private:
       /*!
        *  Pointer to the unique instance of this class.
        */
       static Controller*           _instance;
 
-      /*! \cond UML */
     private:
       /*!
        *  The name of the input file.
