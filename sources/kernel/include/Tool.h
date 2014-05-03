@@ -157,7 +157,7 @@ void Fittino::Tool::PrintItem( const std::string& item, const T& value ) const {
   Messenger& messenger = Messenger::GetInstance();
 
   const std::string& indent  = std::string( 4, ' ' );
-  const std::string& spacing = std::string( 44 - item.length(), ' ' );
+  const std::string& spacing = std::string( 51 - item.length(), ' ' );
 
   messenger << Messenger::ALWAYS << indent + item + spacing << value << Messenger::Endl;
 

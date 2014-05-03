@@ -70,7 +70,7 @@ void Fittino::ModelParameter::PrintStatus() const {
     messenger << Messenger::INFO
               << "    "
               << std::left
-              << std::setw( 43 )
+              << std::setw( 50 )
               << _name
               << std::right
               << std::setw( 9 )

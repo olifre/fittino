@@ -73,10 +73,10 @@ void Fittino::Observable::PrintStatus() const {
     messenger << Messenger::INFO
               << "    "
               << std::left
-              << std::setw( 18 )
+              << std::setw( 47 )
               << _prediction->GetName()
               << std::right
-              << std::setw( 17 )
+              << std::setw( 12 )
               << std::setprecision( 5 )
               << std::scientific
               << _prediction->GetValue()

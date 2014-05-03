@@ -64,42 +64,42 @@ namespace Fittino {
 
   };
 
-  template<class T>
-  VariableBase<T>::VariableBase( const std::string& name )
-    : _name ( name ) {
+}
 
-  }
+template<class T>
+Fittino::VariableBase<T>::VariableBase( const std::string& name )
+  : _name ( name ) {
 
-  template<class T>
-  void VariableBase<T>::PrintStatus() const {
+}
 
-    Messenger& messenger = Messenger::GetInstance();
+template<class T>
+void Fittino::VariableBase<T>::PrintStatus() const {
 
-    messenger << Messenger::INFO
-              << "    "
-              << std::left
-              << std::setw( 43 )
-              << _name
-              << std::right
-              << std::setw( 9 )
-              << std::setprecision( 2 )
-              << std::scientific
-              << GetValue()
-              << Messenger::Endl;
+  Messenger& messenger = Messenger::GetInstance();
 
-  }
+  messenger << Messenger::INFO
+            << "    "
+            << std::left
+            << std::setw( 50 )
+            << _name
+            << std::right
+            << std::setw( 9 )
+            << std::setprecision( 2 )
+            << std::scientific
+            << GetValue()
+            << Messenger::Endl;
 
-  template<class T>
-  const std::string& VariableBase<T>::GetName() const {
+}
 
-    return _name;
+template<class T>
+const std::string& Fittino::VariableBase<T>::GetName() const {
 
-  }
+  return _name;
 
-  template<class T>
-  VariableBase<T>::~VariableBase() {
+}
 
-  }
+template<class T>
+Fittino::VariableBase<T>::~VariableBase() {
 
 }
 

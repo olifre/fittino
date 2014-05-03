@@ -74,12 +74,12 @@ void Fittino::Tool::PrintStatus() const {
     _model->PrintStatus();
 
     messenger << Messenger::INFO << Messenger::Endl;
-    messenger << Messenger::INFO << std::scientific << "    ----------------------------------------------------" << Messenger::Endl;
+    messenger << Messenger::INFO << std::scientific << "    -----------------------------------------------------------" << Messenger::Endl;
     messenger << Messenger::INFO << Messenger::Endl;
     messenger << Messenger::INFO
               << "    "
               << std::left
-              << std::setw( 43 )
+              << std::setw( 50 )
               << "Total chi2"
               << std::right
               << std::setw( 9 )

@@ -41,7 +41,7 @@ Fittino::SuperIsoCalculator::SuperIsoCalculator( const PhysicsModel* model, cons
     _slhafile = "SPheno.spc";
 
     AddQuantity( new SimplePrediction( "DiffSM_a_mu",                       "", _amu                   ) );
-    AddQuantity( new SimplePrediction( "delta0_B_to_Kstar_gamma",              "", _delta0                ) );
+    AddQuantity( new SimplePrediction( "delta0_B_to_Kstar_gamma",           "", _delta0                ) );
     AddQuantity( new SimplePrediction( "BR_b_to_s_gamma",                   "", _bsgamma               ) );
     AddQuantity( new SimplePrediction( "BR_Bs_to_mu_mu",                    "", _bsmumu                ) );
     AddQuantity( new SimplePrediction( "UntaggedBR_Bs_to_mu_mu",            "", _bsmumu_untag          ) );

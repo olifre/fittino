@@ -23,7 +23,7 @@
 #include "ConfigurationException.h"
 #include "Messenger.h"
 
-const std::string& Fittino::Messenger::_dashedLine = std::string( 85, '-' );
+const std::string& Fittino::Messenger::_dashedLine = std::string( 109, '-' );
 
 Fittino::Messenger& Fittino::Messenger::Endl( Messenger& messenger ) {
 
