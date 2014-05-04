@@ -113,7 +113,7 @@ void Fittino::Quantity::PrintStatus() const {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    messenger << Messenger::DEBUG
+    messenger << Messenger::INFO
               << "    "
               << std::left
               << std::setw( 50 )
