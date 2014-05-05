@@ -18,10 +18,15 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <boost/foreach.hpp>
+
 #include "TFile.h"
 
 #include "Tool.h"
 #include "ModelBase.h"
+#include "Factory.h"
+#include "CutBase.h"
+#include "Collection.h"
 
 Fittino::Tool::Tool( ModelBase *model, const boost::property_tree::ptree& ptree )
     : _chi2            ( std::numeric_limits<double>::max() ),
@@ -31,6 +36,13 @@ Fittino::Tool::Tool( ModelBase *model, const boost::property_tree::ptree& ptree 
       _ptree           ( ptree ),
       _outputFileName  ( ptree.get<std::string> ( "OutputFile", "Fittino.out.root" ) ),
       _outputFile      ( new TFile( _outputFileName, "RECREATE" ) ) {
+
+    Factory factory;
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child( "Cuts" ) ) {
+
+        _collectionOfCuts.AddElement( factory.CreateCut( node.first, _model, node.second ) );
+
+    }
 
 }
 

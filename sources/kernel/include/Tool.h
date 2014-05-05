@@ -27,6 +27,7 @@
 #include "TString.h"
 
 #include "Messenger.h"
+#include "Collection.h"
 
 class TFile;
 
@@ -36,6 +37,7 @@ class TFile;
 namespace Fittino {
 
   class ModelBase;
+  class CutBase;
 
   /*!
    *  \ingroup kernel
@@ -84,7 +86,10 @@ namespace Fittino {
        *  classes) is established.
        */
       ModelBase*                  _model;
-
+      /*!
+       * Vector containing all cut objects
+       */
+      Fittino::Collection<CutBase*>       _collectionOfCuts;
     protected:
       /*!
        *  Prints the tool's status to screen.
