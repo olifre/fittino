@@ -302,7 +302,7 @@ Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::prop
 
 Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::PredictionBase*>& predictions, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const {
 
-    std::string name = ptree.get<std::string>( "PredictionName", "NONE" );
+    std::string name = ptree.get<std::string>( "Name", "NONE" );
     for ( unsigned int i = 0; i < predictions.GetNumberOfElements(); ++i ) {
 
         if ( name == predictions.At( i )->GetName() ) {
