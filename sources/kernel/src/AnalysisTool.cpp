@@ -27,6 +27,7 @@
 #include "AnalysisTool.h"
 #include "ModelBase.h"
 #include "RandomGenerator.h"
+#include "CutBase.h"
 
 Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tree::ptree& ptree )
     : Tool                    ( model, ptree ),
@@ -81,7 +82,22 @@ void Fittino::AnalysisTool::FillMetaDataTree() {
 
 void Fittino::AnalysisTool::FillTree() {
 
-    _tree->Fill();
+    bool fillTree = true;
+    for( unsigned int i = 0; i < _collectionOfCuts.GetNumberOfElements(); ++i ) {
+
+        if( !_collectionOfCuts.At(i)->IsPassed() ) {
+
+            fillTree = false;
+            break;
+
+        }
+
+    }
+    if( fillTree ) {
+    
+        _tree->Fill();
+    
+    }
 
 }
 
