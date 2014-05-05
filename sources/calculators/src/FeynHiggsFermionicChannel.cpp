@@ -25,6 +25,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
 
+#include "TMath.h"
 #include "TVector2.h"
 
 #include "CFeynHiggs.h"
@@ -92,7 +93,17 @@ void Fittino::FeynHiggsFermionicChannel::CalculatePredictions() {
         _sm_gsPhi = std::arg( coup );
 
         _normSM_gs2   = _model_gs2 / _sm_gs2;
-        _normSM_gsPhi = TVector2::Phi_mpi_pi( _model_gsPhi - _sm_gsPhi );
+
+        if ( TMath::IsNaN( _model_gsPhi - _sm_gsPhi ) ) {
+
+          _normSM_gsPhi =  _model_gsPhi - _sm_gsPhi;
+
+        }
+        else {
+
+          _normSM_gsPhi = TVector2::Phi_mpi_pi( _model_gsPhi - _sm_gsPhi );
+
+        }
 
         coup = RCouplingSM( _channel) - LCouplingSM( _channel );
         coup = coup / FHComplexType( 0, 2 );
@@ -101,7 +112,17 @@ void Fittino::FeynHiggsFermionicChannel::CalculatePredictions() {
         _sm_gpPhi = std::arg( coup );
 
         _normSM_gp2   = _model_gp2 / _sm_gp2;
-        _normSM_gpPhi = TVector2::Phi_mpi_pi( _model_gpPhi - _sm_gpPhi );
+
+        if ( TMath::IsNaN( _model_gpPhi - _sm_gpPhi ) ) {
+
+          _normSM_gpPhi =  _model_gpPhi - _sm_gpPhi;
+
+        }
+        else {
+
+          _normSM_gpPhi = TVector2::Phi_mpi_pi( _model_gpPhi - _sm_gpPhi );
+
+        }
 
     }
 

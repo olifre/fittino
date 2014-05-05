@@ -25,6 +25,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
 
+#include "TMath.h"
 #include "TVector2.h"
 
 #include "CFeynHiggs.h"
@@ -78,9 +79,19 @@ void Fittino::FeynHiggsBosonicChannel::CalculatePredictions() {
         _sm_gPhi = std::arg( coup );
 
         _normSM_g2   =  _model_g2 / _sm_g2;
-        _normSM_gPhi = TVector2::Phi_mpi_pi( _model_gPhi - _sm_gPhi );
 
     }
 
+    if ( TMath::IsNaN( _model_gPhi - _sm_gPhi ) ) {
+
+      _normSM_gPhi =  _model_gPhi - _sm_gPhi;
+
+    }
+    else {
+
+      _normSM_gPhi = TVector2::Phi_mpi_pi( _model_gPhi - _sm_gPhi );
+
+    }
+    
 }
 
