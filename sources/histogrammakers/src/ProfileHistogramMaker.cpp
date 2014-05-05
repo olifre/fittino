@@ -18,42 +18,33 @@
 *******************************************************************************/
 
 #include "TH1D.h"
+#include "TMath.h"
 
 #include "ModelBase.h"
 #include "ModelParameter.h"
 #include "ProfileHistogramMaker.h"
 
 Fittino::ProfileHistogramMaker::ProfileHistogramMaker( ModelBase* model, const boost::property_tree::ptree& ptree )
-    : HistogramMakerBase( model, ptree ) {
+    : Simple1DHistogramMaker( model, ptree ) {
 
     _name = "profile histogram maker";
 
-    // Prepare the list of histograms.
+    // Add some settings specific to profile histograms.
 
     for ( unsigned int iQuantity = 0; iQuantity < _quantityName.size(); ++iQuantity ) {
 
-        std::string histogramName = _quantityName[iQuantity];
+        _histogramVector[iQuantity]->GetYaxis()->SetTitle( "#Delta#chi^{2}" ); // Overwrite the y-axis title.
+        _histogramVector[iQuantity]->GetYaxis()->SetRangeUser( 0., 10. );
 
-        TH1D* histogram = new TH1D( histogramName.c_str(),
-                                    histogramName.c_str(),
-                                    _numberOfBins[iQuantity], _lowerBound[iQuantity], _upperBound[iQuantity] );
+        for ( Int_t iBin = 0; iBin <= _histogramVector[iQuantity]->GetNbinsX() + 1; ++iBin ) {
 
-        histogram->GetXaxis()->SetTitle( _plotName[iQuantity].c_str() );
-        histogram->GetYaxis()->SetTitle( "#Delta#chi^{2}" );
-        histogram->GetYaxis()->SetRangeUser( 0., 10. );
-
-        histogram->SetTitle( 0 );
-        histogram->SetStats( 0 );
-
-        for ( Int_t iBin = 0; iBin <= histogram->GetNbinsX() + 1; ++iBin ) {
-
-            histogram->SetBinContent( iBin, 10. );
+            _histogramVector[iQuantity]->SetBinContent( iBin, 10. );
 
         }
 
-        _histogramVector.push_back( histogram );
-
     }
+
+    // Determine the lowest chi2.
 
     _bestFitEntry = model->GetCollectionOfParameters().At( 0 )->GetValue();
 
@@ -77,26 +68,35 @@ void Fittino::ProfileHistogramMaker::PrintSteeringParameters() const {
 
 void Fittino::ProfileHistogramMaker::UpdateModel() {
 
-    // For each histogram fill the bin associated to the current tree entry with the lowest
+    // For each quantity fill the bin associated to the current tree entry with the lowest
     // normalized chi2.
-
-    double normalizedChi2;
 
     _model->GetCollectionOfParameters().At( 0 )->SetValue( _iEntry );
 
     double chi2 = _model->GetChi2();
 
-    // Loop over all histograms.
+    double normalizedChi2 = chi2 - _lowestChi2;
 
-    for ( unsigned int iHistogram = 0; iHistogram < _histogramVector.size(); ++iHistogram ) {
+    // Loop over all quantities.
 
-        TH1* histogram = _histogramVector[iHistogram];
+    for ( unsigned int iQuantity = 0; iQuantity < _quantityName.size(); ++iQuantity ) {
 
-        normalizedChi2 = chi2 - _lowestChi2;
+        TH1* histogram = _histogramVector[iQuantity];
 
         // Find the bin associated to the current tree entry.
 
-        int bin = histogram->FindBin( _model->GetCollectionOfQuantities().At( histogram->GetName() )->GetValue() );
+        int bin;
+
+        if ( _logScale[iQuantity] ) {
+
+            bin = histogram->FindBin( TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity] )->GetValue() ) );
+
+        }
+        else {
+
+            bin = histogram->FindBin( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity] )->GetValue() );
+
+        }
 
         // Check if the current normalized chi2 is smaller than the previous bin content so far.
 

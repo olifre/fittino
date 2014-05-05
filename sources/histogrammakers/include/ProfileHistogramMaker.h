@@ -20,7 +20,7 @@
 #ifndef FITTINO_PROFILEHISTOGRAMMAKER_H
 #define FITTINO_PROFILEHISTOGRAMMAKER_H
 
-#include "HistogramMakerBase.h"
+#include "Simple1DHistogramMaker.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -31,7 +31,7 @@ namespace Fittino {
    *  \ingroup histogrammakers
    *  \brief Class for profile histogram maker.
    */
-  class ProfileHistogramMaker : public HistogramMakerBase {
+  class ProfileHistogramMaker : public Simple1DHistogramMaker {
 
     public:
       /*!

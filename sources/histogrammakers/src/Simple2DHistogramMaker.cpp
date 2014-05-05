@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "TH2D.h"
+#include "TMath.h"
 
 #include "Simple2DHistogramMaker.h"
 #include "ModelBase.h"
@@ -28,21 +29,85 @@ Fittino::Simple2DHistogramMaker::Simple2DHistogramMaker( ModelBase* model, const
 
     _name = "simple 2D histogram maker";
 
-    // Prepare the list of histograms.
+    // Setup the histograms to be made using the information gathered by the base class.
 
     for ( unsigned int iQuantity1 = 0; iQuantity1 < _quantityName.size(); ++iQuantity1 ) {
 
         for ( unsigned int iQuantity2 = iQuantity1 + 1; iQuantity2 < _quantityName.size(); ++iQuantity2 ) {
 
+            // Histogram name.
+
             std::string histogramName = _quantityName[iQuantity1] + ":" + _quantityName[iQuantity2];
+
+            // Histogram bins of the x-axis.
+
+            double xBins[_numberOfBins[iQuantity1] + 1];
+
+            for ( unsigned int iBin = 0; iBin < _numberOfBins[iQuantity1] + 1; iBin++ ) {
+
+                xBins[iBin] = _lowerBound[iQuantity1] + iBin * ( _upperBound[iQuantity1] - _lowerBound[iQuantity1] ) / double( _numberOfBins[iQuantity1] );
+
+                if ( _logScale[iQuantity1] ) {
+
+                    if ( _lowerBound[iQuantity1] > 0. ) {
+
+                        xBins[iBin] = TMath::Power( 10, xBins[iBin] );
+
+                    }
+
+                }
+
+            }
+
+            // Histogram bins of the y-axis.
+
+            double yBins[_numberOfBins[iQuantity2] + 1];
+
+            for ( unsigned int iBin = 0; iBin < _numberOfBins[iQuantity2] + 1; iBin++ ) {
+
+                yBins[iBin] = _lowerBound[iQuantity2] + iBin * ( _upperBound[iQuantity2] - _lowerBound[iQuantity2] ) / double( _numberOfBins[iQuantity2] );
+
+                if ( _logScale[iQuantity2] ) {
+
+                    if ( _lowerBound[iQuantity2] > 0. ) {
+
+                        yBins[iBin] = TMath::Power( 10, yBins[iBin] );
+
+                    }
+
+                }
+
+            }
 
             TH2D* histogram = new TH2D( histogramName.c_str(),
                                         histogramName.c_str(),
-                                        _numberOfBins[iQuantity1], _lowerBound[iQuantity1], _upperBound[iQuantity1],
-                                        _numberOfBins[iQuantity2], _lowerBound[iQuantity2], _upperBound[iQuantity2] );
+                                        _numberOfBins[iQuantity1], xBins,
+                                        _numberOfBins[iQuantity2], yBins );
 
-            histogram->GetXaxis()->SetTitle( _plotName[iQuantity1].c_str() );
-            histogram->GetYaxis()->SetTitle( _plotName[iQuantity2].c_str() );
+            // Histogram axes' titles.
+
+            if ( _logScale[iQuantity1] ) {
+
+                histogram->GetXaxis()->SetTitle( ( "Log_{10}(" + _plotName[iQuantity1] + ")" ).c_str() );
+
+            }
+            else {
+
+                histogram->GetXaxis()->SetTitle( _plotName[iQuantity1].c_str() );
+
+            }
+
+            if ( _logScale[iQuantity2] ) {
+
+                histogram->GetYaxis()->SetTitle( ( "Log_{10}(" + _plotName[iQuantity2] + ")" ).c_str() );
+
+            }
+            else {
+
+                histogram->GetYaxis()->SetTitle( _plotName[iQuantity2].c_str() );
+
+            }
+
             histogram->GetZaxis()->SetTitle( "Fractions" );
 
             histogram->SetTitle( 0 );
@@ -62,25 +127,52 @@ Fittino::Simple2DHistogramMaker::~Simple2DHistogramMaker() {
 
 void Fittino::Simple2DHistogramMaker::UpdateModel() {
 
+    // Loop over all tree entries and fill simple 2D histograms.
+
     _model->GetCollectionOfParameters().At( 0 )->SetValue( _iEntry );
 
     _chi2 = _model->GetChi2();
 
-    // Loop over all histograms.
+    // Loop over all scheduled quantities.
 
-    for ( unsigned int iHistogram = 0; iHistogram < _histogramVector.size(); ++iHistogram ) {
+    unsigned int iHistogram = 0;
 
-        TH1* histogram = _histogramVector[iHistogram];
+    for ( unsigned int iQuantity1 = 0; iQuantity1 < _quantityName.size(); ++iQuantity1 ) {
 
-        std::string histogramName = std::string( histogram->GetName() );
+        for ( unsigned int iQuantity2 = iQuantity1 + 1; iQuantity2 < _quantityName.size(); ++iQuantity2 ) {
 
-        std::string quantityName1 = histogramName.substr( 0, histogramName.find( ":" ) );
-        std::string quantityName2 = histogramName.substr( quantityName1.length() + 1, histogramName.length() );
+            TH1* histogram = _histogramVector[iHistogram];
 
-        // Fill the histogram.
+            // Fill the histogram.
 
-        histogram->Fill( _model->GetCollectionOfQuantities().At( quantityName1 )->GetValue(),
-                         _model->GetCollectionOfQuantities().At( quantityName2 )->GetValue() );
+            if ( _logScale[iQuantity1] && _logScale[iQuantity1] ) {
+
+                histogram->Fill( TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue() ),
+                                 TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() ) );
+
+            }
+            else if ( _logScale[iQuantity1] && !_logScale[iQuantity1] ) {
+
+                histogram->Fill( TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue() ),
+                                 _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() );
+
+            }
+            else if ( !_logScale[iQuantity1] && _logScale[iQuantity1] ) {
+
+                histogram->Fill( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue(),
+                                 TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() ) );
+
+            }
+            else if ( !_logScale[iQuantity1] && !_logScale[iQuantity1] ) {
+
+                histogram->Fill( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue(),
+                                 _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() );
+
+            }
+
+            iHistogram++;
+
+        }
 
     }
 

@@ -20,6 +20,7 @@
 #include <boost/foreach.hpp>
 
 #include "TH1.h"
+#include "TMath.h"
 
 #include "HistogramMakerBase.h"
 #include "ModelBase.h"
@@ -29,17 +30,59 @@ Fittino::HistogramMakerBase::HistogramMakerBase( ModelBase* model, const boost::
     : Tool( model, ptree ),
       _iEntry( 0 ) {
 
-    // Loop over the scheduled quantities.
+    // Loop over the quantities scheduled in the Fittino input file and fill the histogram
+    // information into appropriate lists for later use.
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
 
         if ( node.first == "Histogram" ) {
 
-            _quantityName.push_back( node.second.get<std::string> ( "Name"         ) );
-            _plotName.push_back    ( node.second.get<std::string> ( "PlotName"     ) );
-            _numberOfBins.push_back( node.second.get<unsigned int>( "NumberOfBins" ) );
-            _lowerBound.push_back  ( node.second.get<double>      ( "LowerBound"   ) );
-            _upperBound.push_back  ( node.second.get<double>      ( "UpperBound"   ) );
+            _quantityName.push_back( node.second.get<std::string> ( "Name"               ) );
+            _plotName.push_back    ( node.second.get<std::string> ( "PlotName"           ) );
+            _numberOfBins.push_back( node.second.get<unsigned int>( "NumberOfBins"       ) );
+            _logScale.push_back    ( node.second.get<bool>        ( "LogScale",    false ) );
+
+            // Depending on whether or not LogScale is set, the histogram upper and lower bounds
+            // are recomputed.
+
+            if ( node.second.get<bool>( "LogScale", false ) ) {
+
+                if ( node.second.get<double>( "LowerBound" ) <= 0. || node.second.get<double>( "UpperBound" ) <= 0. ) {
+
+                    throw ConfigurationException( "Histogram axis set to log scale but boundaries are not positive." );
+
+                }
+                else {
+
+                    _lowerBound.push_back( TMath::Log10( node.second.get<double>( "LowerBound" ) ) );
+                    _upperBound.push_back( TMath::Log10( node.second.get<double>( "UpperBound" ) ) );
+
+                }
+
+            }
+            else {
+
+                _lowerBound.push_back( node.second.get<double>( "LowerBound" ) );
+                _upperBound.push_back( node.second.get<double>( "UpperBound" ) );
+
+            }
+
+        }
+
+    }
+
+    // Detemine the quantity index of each scheduled quantity in the list of model quantities. This
+    // is done because lookup via index is usually faster than lookup via name.
+
+    for ( unsigned int iScheduledQuantity = 0; iScheduledQuantity < _quantityName.size(); ++iScheduledQuantity ) {
+
+        for ( unsigned int iQuantity = 0; iQuantity < _model->GetCollectionOfQuantities().GetNumberOfElements(); ++iQuantity ) {
+
+            if ( _quantityName[iScheduledQuantity] == _model->GetCollectionOfQuantities().At( iQuantity )->GetName() ) {
+
+                _quantityIndex.push_back( iQuantity );
+
+            }
 
         }
 

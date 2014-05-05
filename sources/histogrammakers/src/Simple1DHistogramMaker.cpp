@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "TH1D.h"
+#include "TMath.h"
 
 #include "Simple1DHistogramMaker.h"
 #include "ModelBase.h"
@@ -28,17 +29,51 @@ Fittino::Simple1DHistogramMaker::Simple1DHistogramMaker( ModelBase* model, const
 
     _name = "simple 1D histogram maker";
 
-    // Prepare the list of histograms.
+    // Setup the histograms to be made using the information gathered by the base class.
 
     for ( unsigned int iQuantity = 0; iQuantity < _quantityName.size(); ++iQuantity ) {
 
+        // Histogram name.
+
         std::string histogramName = _quantityName[iQuantity];
+
+        // Histogram bins.
+
+        double xBins[_numberOfBins[iQuantity] + 1];
+
+        for ( unsigned int iBin = 0; iBin < _numberOfBins[iQuantity] + 1; iBin++ ) {
+
+            xBins[iBin] = _lowerBound[iQuantity] + iBin * ( _upperBound[iQuantity] - _lowerBound[iQuantity] ) / double( _numberOfBins[iQuantity] );
+
+            if ( _logScale[iQuantity] ) {
+
+                if ( _lowerBound[iQuantity] > 0. ) {
+
+                    xBins[iBin] = TMath::Power( 10, xBins[iBin] );
+
+                }
+
+            }
+
+        }
 
         TH1D* histogram = new TH1D( histogramName.c_str(),
                                     histogramName.c_str(),
-                                    _numberOfBins[iQuantity], _lowerBound[iQuantity], _upperBound[iQuantity] );
+                                    _numberOfBins[iQuantity], xBins );
 
-        histogram->GetXaxis()->SetTitle( _plotName[iQuantity].c_str() );
+        // Histogram axes' titles.
+
+        if ( _logScale[iQuantity] ) {
+
+            histogram->GetXaxis()->SetTitle( ( "Log_{10}(" + _plotName[iQuantity] + ")" ).c_str() );
+
+        }
+        else {
+
+            histogram->GetXaxis()->SetTitle( _plotName[iQuantity].c_str() );
+
+        }
+
         histogram->GetYaxis()->SetTitle( "Fractions" );
 
         histogram->SetTitle( 0 );
@@ -56,21 +91,30 @@ Fittino::Simple1DHistogramMaker::~Simple1DHistogramMaker() {
 
 void Fittino::Simple1DHistogramMaker::UpdateModel() {
 
+    // Loop over all tree entries and fill simple 1D histograms.
+
     _model->GetCollectionOfParameters().At( 0 )->SetValue( _iEntry );
 
     _chi2 = _model->GetChi2();
 
-    // Loop over all histograms.
+    // Loop over all quantities.
 
-    for ( unsigned int iHistogram = 0; iHistogram < _histogramVector.size(); ++iHistogram ) {
+    for ( unsigned int iQuantity = 0; iQuantity < _quantityName.size(); ++iQuantity ) {
 
-        TH1* histogram = _histogramVector[iHistogram];
-
-        std::string quantityName = std::string( histogram->GetName() );
+        TH1* histogram = _histogramVector[iQuantity];
 
         // Fill the histogram.
 
-        histogram->Fill(  _model->GetCollectionOfQuantities().At( quantityName )->GetValue() );
+        if ( _logScale[iQuantity] ) {
+
+            histogram->Fill( TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity] )->GetValue() ) );
+
+        }
+        else {
+
+            histogram->Fill( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity] )->GetValue() );
+
+        }
 
     }
 

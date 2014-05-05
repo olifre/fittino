@@ -18,52 +18,45 @@
 *******************************************************************************/
 
 #include "TH2D.h"
+#include "TMath.h"
 
 #include "ContourHistogramMaker.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
 
 Fittino::ContourHistogramMaker::ContourHistogramMaker( ModelBase* model, const boost::property_tree::ptree& ptree )
-    : HistogramMakerBase( model, ptree ) {
+    : Simple2DHistogramMaker( model, ptree ) {
 
     _name = "contour histogram maker";
 
-    // Prepare the list of histograms.
+    // Add some settings specific to contour histograms.
+
+    unsigned int iHistogram = 0;
 
     for ( unsigned int iQuantity1 = 0; iQuantity1 < _quantityName.size(); ++iQuantity1 ) {
 
         for ( unsigned int iQuantity2 = iQuantity1 + 1; iQuantity2 < _quantityName.size(); ++iQuantity2 ) {
 
-            std::string histogramName = _quantityName[iQuantity1] + ":" + _quantityName[iQuantity2];
+            _histogramVector[iHistogram]->GetZaxis()->SetTitle( "#Delta#chi^{2}" ); // Overwrite the z-axis title.
+            _histogramVector[iHistogram]->GetZaxis()->SetRangeUser( 0., 10. );
 
-            TH2D* histogram = new TH2D( histogramName.c_str(),
-                                        histogramName.c_str(),
-                                        _numberOfBins[iQuantity1], _lowerBound[iQuantity1], _upperBound[iQuantity1],
-                                        _numberOfBins[iQuantity2], _lowerBound[iQuantity2], _upperBound[iQuantity2] );
+            for ( Int_t iBinX = 0; iBinX <= _histogramVector[iHistogram]->GetNbinsX() + 1; ++iBinX ) {
 
-            histogram->GetXaxis()->SetTitle( _plotName[iQuantity1].c_str() );
-            histogram->GetYaxis()->SetTitle( _plotName[iQuantity2].c_str() );
-            histogram->GetZaxis()->SetTitle( "#Delta#chi^{2}" );
-            histogram->GetZaxis()->SetRangeUser( 0., 10. );
+                for ( Int_t iBinY = 0; iBinY <= _histogramVector[iHistogram]->GetNbinsY() + 1; ++iBinY ) {
 
-            histogram->SetTitle( 0 );
-            histogram->SetStats( 0 );
-
-            for ( Int_t iBinX = 0; iBinX <= histogram->GetNbinsX() + 1; ++iBinX ) {
-
-                for ( Int_t iBinY = 0; iBinY <= histogram->GetNbinsY() + 1; ++iBinY ) {
-
-                    histogram->SetBinContent( iBinX, iBinY, 10. );
+                    _histogramVector[iHistogram]->SetBinContent( iBinX, iBinY, 10. );
 
                 }
 
             }
 
-            _histogramVector.push_back( histogram );
+            iHistogram++;
 
         }
 
     }
+
+    // Determine the lowest chi2.
 
     _bestFitEntry = model->GetCollectionOfParameters().At( 0 )->GetValue();
 
@@ -90,34 +83,59 @@ void Fittino::ContourHistogramMaker::UpdateModel() {
     // For each histogram fill the bin associated to the current tree entry with the lowest
     // normalized chi2.
 
-    double normalizedChi2;
-
     _model->GetCollectionOfParameters().At( 0 )->SetValue( _iEntry );
 
     double chi2 = _model->GetChi2();
 
-    // Loop over all histograms.
+    double normalizedChi2 = chi2 - _lowestChi2;
 
-    for ( unsigned int iHistogram = 0; iHistogram < _histogramVector.size(); ++iHistogram ) {
+    // Loop over all quantities.
 
-        TH1* histogram = _histogramVector[iHistogram];
+    unsigned int iHistogram = 0;
 
-        normalizedChi2 = chi2 - _lowestChi2;
+    for ( unsigned int iQuantity1 = 0; iQuantity1 < _quantityName.size(); ++iQuantity1 ) {
 
-        // Find the bin associated to the current tree entry.
+        for ( unsigned int iQuantity2 = iQuantity1 + 1; iQuantity2 < _quantityName.size(); ++iQuantity2 ) {
 
-        std::string histogramName = std::string( histogram->GetName() );
+            TH1* histogram = _histogramVector[iHistogram];
 
-        std::string quantityName1 = histogramName.substr( 0, histogramName.find( ":" ) );
-        std::string quantityName2 = histogramName.substr( quantityName1.length() + 1, histogramName.length() );
+            // Find the bin associated to the current tree entry.
 
-        int bin = histogram->FindBin( _model->GetCollectionOfQuantities().At( quantityName1 )->GetValue(),
-                                      _model->GetCollectionOfQuantities().At( quantityName2 )->GetValue() );
+            int bin;
 
-        // Check if the current normalized chi2 is smaller than the previous bin content so far.
+            if ( _logScale[iQuantity1] && _logScale[iQuantity2] ) {
 
-        if ( normalizedChi2 < histogram->GetBinContent( bin ) )
-            histogram->SetBinContent( bin, normalizedChi2 );
+                bin = histogram->FindBin( TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue() ),
+                                          TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() ) );
+
+            }
+            else if ( _logScale[iQuantity1] && !_logScale[iQuantity2] ) {
+
+                bin = histogram->FindBin( TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue() ),
+                                          _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() );
+
+            }
+            else if ( !_logScale[iQuantity1] && _logScale[iQuantity2] ) {
+
+                bin = histogram->FindBin( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue(),
+                                          TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() ) );
+
+            }
+            else {
+
+                bin = histogram->FindBin( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue(),
+                                          _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() );
+
+            }
+
+            // Check if the current normalized chi2 is smaller than the previous bin content so far.
+
+            if ( normalizedChi2 < histogram->GetBinContent( bin ) )
+                histogram->SetBinContent( bin, normalizedChi2 );
+
+            iHistogram++;
+
+        }
 
     }
 

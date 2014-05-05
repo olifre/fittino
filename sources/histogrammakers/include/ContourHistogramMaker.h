@@ -20,7 +20,7 @@
 #ifndef FITTINO_CONTOURHISTOGRAMMAKER_H
 #define FITTINO_CONTOURHISTOGRAMMAKER_H
 
-#include "HistogramMakerBase.h"
+#include "Simple2DHistogramMaker.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -34,7 +34,7 @@ namespace Fittino {
    *  \ingroup histogrammakers
    *  \brief Class for 2D chi2 profile histogram maker.
    */
-  class ContourHistogramMaker : public HistogramMakerBase {
+  class ContourHistogramMaker : public Simple2DHistogramMaker {
 
     public:
       /*!

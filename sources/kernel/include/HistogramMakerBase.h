@@ -46,12 +46,41 @@ namespace Fittino {
       ~HistogramMakerBase();
 
     protected:
+      /*!
+       *  Entry in the input file tree.
+       */
       unsigned int              _iEntry;
+      /*!
+       *  Stores whether or not a quantity's axis is set to logscale.
+       */
+      std::vector<bool>         _logScale;
+      /*!
+       *  Stores the lower bound of a quantity.
+       */
       std::vector<double>       _lowerBound;
+      /*!
+       *  Stores the upper bound of a quantity.
+       */
       std::vector<double>       _upperBound;
+      /*!
+       *  Stores the number of histogram bins.
+       */
       std::vector<unsigned int> _numberOfBins;
+      /*!
+       *  Stores the index of a quantity in the model's list of quantities.
+       */
+      std::vector<unsigned int> _quantityIndex;
+      /*!
+       *  Stores the formatted axis label of a quantity.
+       */
       std::vector<std::string>  _plotName;
+      /*!
+       *  Stores the name of a quantity.
+       */
       std::vector<std::string>  _quantityName;
+      /*!
+       *  Stores the histograms to be made.
+       */
       std::vector<TH1*>         _histogramVector;
 
     protected:

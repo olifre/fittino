@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<?xml-stylesheet type="text/xsl" href="style/InputFile.xsl"?>
+
+<!-- $Id: Example.Rosenbrock.MarkovChain.in.xml 1977 2014-03-07 22:18:47Z uhlenbrock@PHYSIK.UNI-BONN.DE $ -->
+
+<!--#########################################################################-->
+<!--                                                                         -->
+<!-- Project     Fittino - A SUSY Parameter Fitting Package                  -->
+<!--                                                                         -->
+<!-- File        Example.Tree.ProfileHistogramMaker.in.xml                   -->
+<!--                                                                         -->
+<!-- Description Configuration example for the simple 1D histogram maker     -->
+<!--                                                                         -->
+<!-- Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>         -->
+<!--                                                                         -->
+<!-- Licence     This program is free software; you can redistribute it      -->
+<!--             and/or modify it under the terms of the GNU General Public  -->
+<!--             License as published by the Free Software Foundation;       -->
+<!--             either version 3 of he License, or (at your option) any     -->
+<!--             later version.                                              -->
+<!--                                                                         -->
+<!--#########################################################################-->
+
+<InputFile>
+
+  <VerbosityLevel>ALWAYS</VerbosityLevel>
+
+  <Model>
+
+    <PhysicsModel>
+
+      <Name>Tree</Name>
+
+      <ModelParameter>
+        <Name>Entry</Name>
+        <Error>1</Error>
+        <LowerBound>0</LowerBound>
+        <UpperBound>1.e99</UpperBound>
+      </ModelParameter>
+
+      <Observables></Observables>
+
+      <CovarianceMatrices></CovarianceMatrices>
+
+      <Chi2Contribution>Chi2</Chi2Contribution>
+
+      <Calculators>
+        <TreeCalculator>
+          <InputFileName>Fittino.in.root</InputFileName>
+        </TreeCalculator>
+      </Calculators>
+
+    </PhysicsModel>
+
+  </Model>
+
+  <Tool>
+
+    <Simple1DHistogramMaker>
+
+      <Histogram>
+        <Name>X1</Name>
+        <PlotName>x_{1}</PlotName>
+        <NumberOfBins>200</NumberOfBins>
+        <LowerBound>-4.</LowerBound>
+        <UpperBound>4.</UpperBound>
+      </Histogram>
+
+      <Histogram>
+        <Name>X2</Name>
+        <PlotName>x_{2}</PlotName>
+        <NumberOfBins>200</NumberOfBins>
+        <LowerBound>-4.</LowerBound>
+        <UpperBound>4.</UpperBound>
+      </Histogram>
+
+      <Histogram>
+        <Name>X3</Name>
+        <PlotName>x_{3}</PlotName>
+        <NumberOfBins>200</NumberOfBins>
+        <LowerBound>-4.</LowerBound>
+        <UpperBound>4.</UpperBound>
+      </Histogram>
+
+      <Histogram>
+        <Name>Chi2</Name>
+        <PlotName>#chi^{2}</PlotName>
+        <LogScale>true</LogScale>
+        <NumberOfBins>200</NumberOfBins>
+        <LowerBound>0.1</LowerBound>
+        <UpperBound>10000.</UpperBound>
+      </Histogram>
+
+    </Simple1DHistogramMaker>
+
+  </Tool>
+
+</InputFile>
