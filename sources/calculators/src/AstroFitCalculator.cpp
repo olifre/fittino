@@ -25,6 +25,7 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include "AstroFitCalculator.h"
+#include "Redirector.h"
 #include "SimplePrediction.h"
 
 Fittino::AstroFitCalculator::AstroFitCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
@@ -52,23 +53,32 @@ Fittino::AstroFitCalculator::~AstroFitCalculator() {
 
 void Fittino::AstroFitCalculator::CalculatePredictions() {
 
-  if ( boost::filesystem::exists( "AstroFit.spc" ) ) {
+    if ( boost::filesystem::exists( "AstroFit.spc" ) ) {
 
-    boost::filesystem::rename( "AstroFit.spc" , "AstroFit.spc.last" );
+        boost::filesystem::rename( "AstroFit.spc" , "AstroFit.spc.last" );
 
-  }
+    }
 
-  if ( boost::filesystem::exists( "afout.txt" ) ) {
+    if ( boost::filesystem::exists( "afout.txt" ) ) {
 
-    boost::filesystem::rename( "afout.txt" , "afout.txt.last" );
+        boost::filesystem::rename( "afout.txt" , "afout.txt.last" );
 
-  }
+    }
 
+    if ( boost::filesystem::exists( "AstroFit.out" ) ) {
+
+        boost::filesystem::rename( "AstroFit.out" , "AstroFit.out.last" );
+
+    }
 
     boost::filesystem::copy_file( "SPheno_FeynHiggs.spc", "AstroFit.spc" );
 
-    _executor.Execute();
+    Redirector redirector( "AstroFit.out" );
 
+    redirector.Start();
+    _executor.Execute();
+    redirector.Stop();
+  
     std::ifstream file("afout.txt");
 
     std::string line;
