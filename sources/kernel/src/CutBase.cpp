@@ -17,12 +17,36 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <sstream>
+#include <boost/property_tree/ptree.hpp>
+
 #include "CutBase.h"
 
-Fittino::CutBase::CutBase() {
+unsigned int Fittino::CutBase::_cutCounter = 0;
+
+Fittino::CutBase::CutBase( const boost::property_tree::ptree& ptree) {
+
+    _cutNumber = _cutCounter;
+    ++_cutCounter;
+    std::stringstream namess;
+    namess << "CutNumber_ " << _cutNumber;
+    
+    _name = ptree.get<std::string>( "Name", namess.str() );
 
 }
 
 Fittino::CutBase::~CutBase() {
+
+}
+
+std::string Fittino::CutBase::GetName() {
+   
+    return _name;
+
+}
+
+unsigned int Fittino::CutBase::GetCutNumber() {
+
+    return _cutNumber;
 
 }

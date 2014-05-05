@@ -20,6 +20,10 @@
 #ifndef FITTINO_CUTBASE_H
 #define FITTINO_CUTBASE_H
 
+#include <string>
+
+#include "PtreeForwardDeclaration.h"
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -35,7 +39,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      CutBase();
+      CutBase( const boost::property_tree::ptree& ptree );
 
     public:
       /*!
@@ -46,6 +50,19 @@ namespace Fittino {
        * Determines whether a cut is passed or not.
        */
       virtual bool IsPassed() = 0;
+      /*!
+       * Get the name of the cut
+       */
+      std::string  GetName();
+      /*!
+       * Get the unique number of the cut
+       */
+      unsigned int GetCutNumber();
+
+    protected:
+      std::string                _name;
+      unsigned int               _cutNumber;
+      static unsigned int        _cutCounter;
 
   };
 
