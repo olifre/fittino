@@ -23,7 +23,7 @@
 #include "SplineCut.h"
 
 Fittino::SplineCut::SplineCut( ModelBase* model, const boost::property_tree::ptree& ptree ) 
-    : CutBase(),
+    : CutBase( ptree ),
       _xValue ( model->GetCollectionOfQuantities().At( ptree.get<std::string>( "XValue" ) )->GetValue() ),
       _yValue ( model->GetCollectionOfQuantities().At( ptree.get<std::string>( "YValue" ) )->GetValue() ) {
 
