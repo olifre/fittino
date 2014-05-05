@@ -25,8 +25,10 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include "AstroFitCalculator.h"
+#include "CalculatorException.h"
 #include "Redirector.h"
 #include "SimplePrediction.h"
+#include "TimeoutExecutorException.h"
 
 Fittino::AstroFitCalculator::AstroFitCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
 :CalculatorBase( model ),
@@ -34,6 +36,8 @@ _executor( "./AstroFit" , "AstroFit" ){
 
     _name = "AstroFit";
     _tag = "AstroFit";
+
+    _executor.SetCompletionTimeout( 20 );
 
     AddQuantity( new SimplePrediction("Chi2_Omega_h2",  "", _chi2_relic  ) );
     AddQuantity( new SimplePrediction("Chi2_svind",  "", _chi2_svind  ) );
@@ -76,7 +80,18 @@ void Fittino::AstroFitCalculator::CalculatePredictions() {
     Redirector redirector( "AstroFit.out" );
 
     redirector.Start();
-    _executor.Execute();
+    
+    try {
+
+        _executor.Execute();
+
+    }
+    catch ( const TimeoutExecutorException& e ) {
+
+        throw CalculatorException( _name, "Timeout" );
+
+    }
+
     redirector.Stop();
   
     std::ifstream file("afout.txt");
