@@ -22,6 +22,7 @@
 
 #include "ModelBase.h"
 #include "PtreeForwardDeclaration.h"
+#include "CutBase.h"
 
 class TSpline3;
 
@@ -29,12 +30,12 @@ class TSpline3;
  *  \brief Fittino namespace.
  */
 namespace Fittino {
-
+    
   /*!
    *  \ingroup tools
    *  \brief Base class for spline cuts.
    */
-  class SplineCut {
+  class SplineCut : public CutBase {
 
     public:
       /*!
