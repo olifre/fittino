@@ -36,6 +36,7 @@ namespace Fittino {
   class PhysicsModel;
   class PredictionBase;
   class SLHADataStorageBase;
+  class CutBase;
   class Tool;
 
   /*!
@@ -114,7 +115,10 @@ namespace Fittino {
        *  </ul>
        */
       Tool* const                CreateTool( const std::string& type, ModelBase* model, const boost::property_tree::ptree& ptree ) const;
-
+      /*!
+       * Returns a cut object. So far the only supported type is a SplineCut
+       */
+      CutBase* const             CreateCut( const std::string& type, ModelBase* model, const boost::property_tree::ptree& ptree ) const;
   };
 
 }

@@ -65,6 +65,7 @@
 #include "SuperIsoCalculator.h"
 #include "TreeCalculator.h"
 #include "TreeSampler.h"
+#include "SplineCut.h"
 
 Fittino::Factory::Factory() {
 
@@ -412,6 +413,21 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
     else {
 
         throw ConfigurationException( "Tool type " + type + " not known." );
+
+    }
+
+}
+
+Fittino::CutBase* const Fittino::Factory::CreateCut( const std::string& type, Fittino::ModelBase* model, const boost::property_tree::ptree& ptree ) const {
+
+    if( type == "SplineCut" ) {
+
+        return new SplineCut( model, ptree );
+
+    }
+    else {
+
+        throw ConfigurationException( "Cut type " + type + " not known." );
 
     }
 
