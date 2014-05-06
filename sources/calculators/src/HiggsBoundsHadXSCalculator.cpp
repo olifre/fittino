@@ -139,8 +139,24 @@ void Fittino::HiggsBoundsHadXSCalculator::setupHiggsBounds() {
     _weight_xs_bbh = _SM_xs_bbh / _SM_xs_h;
     _normSM_xs_h   = _weight_xs_ggh * _normSM_xs_ggh + _weight_xs_bbh * _normSM_xs_bbh; 
 
+    
+    
+    double shift_mass_h = 0.;
+    try {
+
+        shift_mass_h = _model->GetCollectionOfQuantities().At( "DeltaMassHHB" )->GetValue();
+    
+    }
+    catch( std::out_of_range& oor ) {
+
+        shift_mass_h = 0.;
+    
+    }
+    
+    const double mass_h_shifted = _mass_h + shift_mass_h;
+    
     higgsbounds_neutral_input_hadr_(
-                                    &_mass_h,        // massh
+                                    &mass_h_shifted, // massh
                                     &_Gamma_hTotal,  // GammaTotal
                                     &_CP,            // CP
                                     &_normSM_xs_lep, // CS_lep_bbhj_ratio

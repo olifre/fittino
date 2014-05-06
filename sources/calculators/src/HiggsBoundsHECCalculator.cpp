@@ -102,9 +102,22 @@ void Fittino::HiggsBoundsHECCalculator::setupHiggsBounds() {
 
     _BR_hInvisible = CalculateBRhInvisible( _Gamma_hTotal, _GammaInvisible );
 
+
+    double shift_mass_h = 0;
+    try {
+
+        shift_mass_h = _model->GetCollectionOfQuantities().At( "DeltaMassHHB" )->GetValue();
+    
+    }
+    catch( std::out_of_range& oor ) {
+
+        shift_mass_h = 0.;
+    
+    }
+    const double mass_h_shifted = _mass_h + shift_mass_h;
     // Setup HiggsBounds.
     
-    higgsbounds_neutral_input_effc_( &_mass_h,
+    higgsbounds_neutral_input_effc_( &mass_h_shifted,
                                      &_Gamma_hTotal,
                                      &g2_hiss_s,
                                      &g2_hiss_p,
