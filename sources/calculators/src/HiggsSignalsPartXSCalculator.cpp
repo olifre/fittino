@@ -306,6 +306,16 @@ void Fittino::HiggsSignalsPartXSCalculator::CalculatePredictions() {
                                   + BR_hjnutaunutau.at(i) );
     }
 
+    std::vector<double> CS_lep_hjhi_ratio_reformat;
+    std::vector<double> BR_hjhihi_reformat;
+    for( unsigned int j = 0; j < _nHzero; ++j ) {
+        for( unsigned int i = 0; i < _nHzero; ++i ) {
+
+            CS_lep_hjhi_ratio_reformat.push_back( CS_lep_hjhi_ratio.at(i).at(j));
+            BR_hjhihi_reformat.push_back( BR_hjhihi.at(i).at(j) );
+
+        }
+    }
 
     for( int i = 0; i < _nHplus; ++i ) {
 
@@ -324,7 +334,7 @@ void Fittino::HiggsSignalsPartXSCalculator::CalculatePredictions() {
                                     &lep_hjZ_ratio.at(0),
                                     &CS_lep_bbhj_ratio.at(0),
                                     &CS_lep_tautauhj_ratio.at(0),
-                                    &CS_lep_hjhi_ratio.at(0).at(0),
+                                    &CS_lep_hjhi_ratio_reformat.at(0),
                                     &CS_gg_hj_ratio.at(0),
                                     &CS_bb_hj_ratio.at(0),
                                     &CS_bg_hjb_ratio.at(0),
@@ -355,7 +365,7 @@ void Fittino::HiggsSignalsPartXSCalculator::CalculatePredictions() {
                                     &BR_hjgaga.at(0),
                                     &BR_hjgg.at(0),
                                     &BR_hjinvisible.at(0),
-                                    &BR_hjhihi.at(0).at(0) );
+                                    &BR_hjhihi_reformat.at(0) );
 
     higgsbounds_charged_input_(      &mass_h_charged.at(0),
                                     &Gamma_Total_charged.at(0),
