@@ -74,10 +74,14 @@ Fittino::HiggsSignalsPartXSCalculator::HiggsSignalsPartXSCalculator( const Physi
     //For the moment, add defaul names for the MSSM
     std::vector<std::string> namesHzero;
     std::vector<std::string> namesHplus;
+    std::vector<std::string> couplingNames;
     namesHzero.push_back( "h0" );
     namesHzero.push_back( "H0" );
+    couplingNames.push_back( "gs" );
+    couplingNames.push_back( "gs" );
     for( unsigned int i = 2; i < _nHzero; ++i ) {
         namesHzero.push_back( "A0" );
+        couplingNames.push_back( "gp" );
     }
     for( unsigned int i = 0; i < _nHplus; ++i ) {
         namesHplus.push_back( "Hp" );
@@ -92,9 +96,9 @@ Fittino::HiggsSignalsPartXSCalculator::HiggsSignalsPartXSCalculator( const Physi
         _name_mass_h_neutral.push_back       ( ptree.get<std::string>( "MassQName_"                + number.str(), "FeynHiggs_Mass_" + namesHzero.at(i)              ) );
         _name_Gamma_Total_neutral.push_back  ( ptree.get<std::string>( "GammaTotQName_"            + number.str(), "FeynHiggs_GammaTotal_" + namesHzero.at(i)        ) );
         _name_lep_hjZ_ratio.push_back        ( ptree.get<std::string>( "CS_lep_hjZ_ratioQName_"    + number.str(), "FeynHiggs_Abs_g_" + namesHzero.at(i) + "_Z0_Z0"  ) );
-        _name_CS_lep_bbhj_ratio.push_back    ( ptree.get<std::string>( "CS_lep_bbhj_ratioQName_"   + number.str(), "FeynHiggs_Abs_gs_" + namesHzero.at(i) + "_b_b"   ) );
+        _name_CS_lep_bbhj_ratio.push_back    ( ptree.get<std::string>( "CS_lep_bbhj_ratioQName_"   + number.str() ) );
         _name_CS_gg_hj_ratio.push_back       ( ptree.get<std::string>( "CS_gg_hj_ratioQName_"      + number.str(), "FeynHiggs_Abs_g_" + namesHzero.at(i) + "_g_g"   ) );
-        _name_CS_bb_hj_ratio.push_back       ( ptree.get<std::string>( "CS_bb_hj_ratioQName_"      + number.str(), "FeynHiggs_Abs_gp_" + namesHzero.at(i) + "_b_b" ) );
+        _name_CS_bb_hj_ratio.push_back       ( ptree.get<std::string>( "CS_bb_hj_ratioQName_"      + number.str(), "FeynHiggs_Abs_" + couplingNames.at(i) + "_" + namesHzero.at(i) + "_b_b" ) );
         _name_CS_bg_hjb_ratio.push_back      ( ptree.get<std::string>( "CS_bg_hjb_ratioQName_"     + number.str(), "FeynHiggs_" ) );
         _name_CS_ud_hjWp_ratio.push_back     ( ptree.get<std::string>( "CS_ud_hjWp_ratioQName_"    + number.str(), "FeynHiggs_" ) );
         _name_CS_cs_hjWp_ratio.push_back     ( ptree.get<std::string>( "CS_cs_hjWp_ratioQName_"    + number.str(), "FeynHiggs_" ) );
@@ -112,26 +116,20 @@ Fittino::HiggsSignalsPartXSCalculator::HiggsSignalsPartXSCalculator( const Physi
         _name_CS_lhc7_tthj_ratio.push_back   ( ptree.get<std::string>( "CS_lhc7_tthj_ratioQName_"  + number.str(), "FeynHiggs_" ) );
         _name_CS_lhc8_vbf_ratio.push_back    ( ptree.get<std::string>( "CS_lhc8_vbf_ratioQName_"   + number.str(), "FeynHiggs_" ) );
         _name_CS_lhc8_tthj_ratio.push_back   ( ptree.get<std::string>( "CS_lhc8_tthj_ratioQName_"  + number.str(), "FeynHiggs_" ) );
-        _name_BR_hjss.push_back              ( ptree.get<std::string>( "BR_hjssQName_"             + number.str(), "FeynHiggs_" ) );
-        _name_BR_hjcc.push_back              ( ptree.get<std::string>( "BR_hjccQName_"             + number.str(), "FeynHiggs_" ) );
-        _name_BR_hjbb.push_back              ( ptree.get<std::string>( "BR_hjbbQName_"             + number.str(), "FeynHiggs_" ) );
-        _name_BR_hjmumu.push_back            ( ptree.get<std::string>( "BR_hjmumuQName_"           + number.str(), "FeynHiggs_" ) );
-        _name_BR_hjtautau.push_back          ( ptree.get<std::string>( "BR_hjtautauQName_"         + number.str(), "FeynHiggs_" ) );
-        _name_BR_hjWW.push_back              ( ptree.get<std::string>( "BR_hjWWQName_"             + number.str(), "FeynHiggs_" ) );
-        _name_BR_hjZZ.push_back              ( ptree.get<std::string>( "BR_hjZZQName_"             + number.str(), "FeynHiggs_" ) );
-        _name_BR_hjZga.push_back             ( ptree.get<std::string>( "BR_hjZgaQName_"            + number.str(), "FeynHiggs_" ) );
-        _name_BR_hjgaga.push_back            ( ptree.get<std::string>( "BR_hjgagaQName_"           + number.str(), "FeynHiggs_" ) );
-        _name_BR_hjgg.push_back              ( ptree.get<std::string>( "BR_hjggQName_"             + number.str(), "FeynHiggs_" ) );
-        _name_BR_hjchi01chi01.push_back      ( ptree.get<std::string>( "BR_hjchi01chi01QName_"     + number.str(), "FeynHiggs_" ) );
-        _name_BR_hjnuenue.push_back          ( ptree.get<std::string>( "BR_hjnuenueQName_"         + number.str(), "FeynHiggs_" ) );
-        _name_BR_hjnumunumu.push_back        ( ptree.get<std::string>( "BR_hjnumunumuQName_"       + number.str(), "FeynHiggs_" ) );
-        _name_BR_hjnutaunutau.push_back      ( ptree.get<std::string>( "BR_hjnutaunutauQName_"     + number.str(), "FeynHiggs_" ) );
-        _name_BR_tWpb.push_back              ( ptree.get<std::string>( "BR_tWpbQName_"             + number.str(), "FeynHiggs_" ) );
-        _name_BR_tHpjb.push_back             ( ptree.get<std::string>( "BR_tHpjbQName_"            + number.str(), "FeynHiggs_" ) );
-        _name_BR_Hpjcs.push_back             ( ptree.get<std::string>( "BR_HpjcsQName_"            + number.str(), "FeynHiggs_" ) );
-        _name_BR_Hpjcb.push_back             ( ptree.get<std::string>( "BR_HpjcbQName_"            + number.str(), "FeynHiggs_" ) );
-        _name_BR_Hptaunu.push_back           ( ptree.get<std::string>( "BR_HptaunuQName_"          + number.str(), "FeynHiggs_" ) );
-        _name_CS_lep_HpjHmi_ratio.push_back  ( ptree.get<std::string>( "CS_lep_HpjHmi_ratioQName_" + number.str(), "FeynHiggs_" ) ); 
+        _name_BR_hjss.push_back              ( ptree.get<std::string>( "BR_hjssQName_"             + number.str(), "FeynHiggs_BR_" + namesHzero.at(i) + "_to_s_s" ) );
+        _name_BR_hjcc.push_back              ( ptree.get<std::string>( "BR_hjccQName_"             + number.str(), "FeynHiggs_BR_" + namesHzero.at(i) + "_to_c_c" ) );
+        _name_BR_hjbb.push_back              ( ptree.get<std::string>( "BR_hjbbQName_"             + number.str(), "FeynHiggs_BR_" + namesHzero.at(i) + "_to_b_b" ) );
+        _name_BR_hjmumu.push_back            ( ptree.get<std::string>( "BR_hjmumuQName_"           + number.str(), "FeynHiggs_BR_" + namesHzero.at(i) + "_to_mu_mu" ) );
+        _name_BR_hjtautau.push_back          ( ptree.get<std::string>( "BR_hjtautauQName_"         + number.str(), "FeynHiggs_BR_" + namesHzero.at(i) + "_to_tau_tau" ) );
+        _name_BR_hjWW.push_back              ( ptree.get<std::string>( "BR_hjWWQName_"             + number.str(), "FeynHiggs_BR_" + namesHzero.at(i) + "_to_Wp_Wm" ) );
+        _name_BR_hjZZ.push_back              ( ptree.get<std::string>( "BR_hjZZQName_"             + number.str(), "FeynHiggs_BR_" + namesHzero.at(i) + "_to_Z0_Z0" ) );
+        _name_BR_hjZga.push_back             ( ptree.get<std::string>( "BR_hjZgaQName_"            + number.str(), "FeynHiggs_BR_" + namesHzero.at(i) + "_to_Z0_gamma" ) );
+        _name_BR_hjgaga.push_back            ( ptree.get<std::string>( "BR_hjgagaQName_"           + number.str(), "FeynHiggs_BR_" + namesHzero.at(i) + "_to_gamma_gamma" ) );
+        _name_BR_hjgg.push_back              ( ptree.get<std::string>( "BR_hjggQName_"             + number.str(), "FeynHiggs_BR_" + namesHzero.at(i) + "_to_g_g" ) );
+        _name_BR_hjchi01chi01.push_back      ( ptree.get<std::string>( "BR_hjchi01chi01QName_"     + number.str(), "FeynHiggs_BR_" + namesHzero.at(i) + "_to_~chi01_~chi01" ) );
+        _name_BR_hjnuenue.push_back          ( ptree.get<std::string>( "BR_hjnuenueQName_"         + number.str(), "FeynHiggs_BR_" + namesHzero.at(i) + "_to_nue_nue" ) );
+        _name_BR_hjnumunumu.push_back        ( ptree.get<std::string>( "BR_hjnumunumuQName_"       + number.str(), "FeynHiggs_BR_" + namesHzero.at(i) + "_to_numu_numu" ) );
+        _name_BR_hjnutaunutau.push_back      ( ptree.get<std::string>( "BR_hjnutaunutauQName_"     + number.str(), "FeynHiggs_BR_" + namesHzero.at(i) + "_to_nutau_nutau" ) );
     
         std::vector<std::string> BR_hjhihi;
         std::vector<std::string> CS_lep_hjhi;
@@ -155,14 +153,14 @@ Fittino::HiggsSignalsPartXSCalculator::HiggsSignalsPartXSCalculator( const Physi
         std::stringstream number;
         number << i + _nHzero;
         
-        _name_mass_h_charged.push_back       ( ptree.get<std::string>( "MassQName_"                + number.str(), "FeynHiggs_Mass_" + namesHzero.at(i)              ) );
-        _name_Gamma_Total_charged.push_back  ( ptree.get<std::string>( "GammaTotQName_"            + number.str(), "FeynHiggs_GammaTotal_" + namesHzero.at(i)        ) );
+        _name_mass_h_charged.push_back       ( ptree.get<std::string>( "MassQName_"                + number.str(), "FeynHiggs_Mass_" + namesHplus.at(i)              ) );
+        _name_Gamma_Total_charged.push_back  ( ptree.get<std::string>( "GammaTotQName_"            + number.str(), "FeynHiggs_GammaTotal_" + namesHplus.at(i)        ) );
         _name_CS_lep_HpjHmi_ratio.push_back  ( ptree.get<std::string>( "CS_lep_HpjHmi_ratioQName_" + number.str() ) );
-        _name_BR_tWpb.push_back              ( ptree.get<std::string>( "BR_tWpbQName_"             + number.str() ) );
-        _name_BR_tHpjb.push_back             ( ptree.get<std::string>( "BR_tHpjbQName_"            + number.str() ) );
-        _name_BR_Hpjcs.push_back             ( ptree.get<std::string>( "BR_HpjcsQName_"            + number.str() ) );
-        _name_BR_Hpjcb.push_back             ( ptree.get<std::string>( "BR_HpjcbQName_"            + number.str() ) );
-        _name_BR_Hptaunu.push_back           ( ptree.get<std::string>( "BR_HptaunuQName_"          + number.str() ) );
+        _name_BR_tWpb.push_back              ( ptree.get<std::string>( "BR_tWpbQName_"             + number.str(), "FeynHiggs_BR_t_to_b_Wp" ) );
+        _name_BR_tHpjb.push_back             ( ptree.get<std::string>( "BR_tHpjbQName_"            + number.str(), "FeynHiggs_BR_t_to_b_" + namesHplus.at(i) ) );
+        _name_BR_Hpjcs.push_back             ( ptree.get<std::string>( "BR_HpjcsQName_"            + number.str(), "FeynHiggs_BR_" + namesHplus.at(i) + "_to_c_s" ) );
+        _name_BR_Hpjcb.push_back             ( ptree.get<std::string>( "BR_HpjcbQName_"            + number.str(), "FeynHiggs_BR_" + namesHplus.at(i) + "_to_c_b" ) );
+        _name_BR_Hptaunu.push_back           ( ptree.get<std::string>( "BR_HptaunuQName_"          + number.str(), "FeynHiggs_BR_" + namesHplus.at(i) + "_to_nutau_tau" ) );
 
     }
 
