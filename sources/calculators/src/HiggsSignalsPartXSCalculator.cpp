@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include <boost/property_tree/ptree.hpp>
+#include <boost/thread.hpp>
 
 #include <iostream>
 #include <sstream>
@@ -28,6 +29,7 @@
 #include "PhysicsModel.h"
 #include "SimpleDataStorage.h"
 #include "SimplePrediction.h"
+#include "Observable.h"
 
 Fittino::HiggsSignalsPartXSCalculator::HiggsSignalsPartXSCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     :CalculatorBase       ( model                                                                         ) {
@@ -37,6 +39,8 @@ Fittino::HiggsSignalsPartXSCalculator::HiggsSignalsPartXSCalculator( const Physi
     _nHzero             = ptree.get<int>        ( "NHzero",             3                       );
     _nHplus             = ptree.get<int>        ( "NHPlus",             1                       );
     _whichAnalyses      = ptree.get<std::string>( "WhichAnalyses",      "onlyL"                 );
+    _nHzeroHS           = ptree.get<int>        ( "NHzeroHS",           1                       );
+    _nHplusHS           = ptree.get<int>        ( "NHPlusHS",           0                       );
     _HBresult           = -1;
     _channel            = 0;
     _obsratio           = 0.;
@@ -162,13 +166,16 @@ Fittino::HiggsSignalsPartXSCalculator::HiggsSignalsPartXSCalculator( const Physi
 
     }
 
-    int nHzeroHS = 1;
-    int nHplusHS = 0;
+    initialize_higgsbounds_chisqtables_();
+    char whichAnalyses[256];
+    sprintf( whichAnalyses, "%s", _whichAnalyses.c_str() );
+    initialize_higgsbounds_( &_nH, &_nHplus, whichAnalyses );
+
     
     //std::string expdata = "LHC_mail_14_07_2013_HS_new_observable_set";
     std::string expdata = ptree.get<std::string>( "ExpData" );
     std::cout<<"Using ExpData = "<<expdata<<std::endl;
-    initialize_higgssignals_( &nHzeroHS, &nHplusHS, expdata.c_str(), expdata.size() );
+    initialize_higgssignals_( &_nHzeroHS, &_nHplusHS, expdata.c_str(), expdata.size() );
     
     int output_level = 0;
     setup_output_level_( &output_level );
@@ -194,8 +201,8 @@ void Fittino::HiggsSignalsPartXSCalculator::Initialize() {
 }
 
 
-void Fittino::HiggsSignalsPartXSCalculator::CalculatePredictions() {
-    
+void Fittino::HiggsSignalsPartXSCalculator::CallHiggsBounds() {
+
     std::vector<double> mass_h_neutral;
     std::vector<double> Gamma_Total_neutral;
     std::vector<double> mass_h_charged;
@@ -367,7 +374,7 @@ void Fittino::HiggsSignalsPartXSCalculator::CalculatePredictions() {
                                     &BR_hjinvisible.at(0),
                                     &BR_hjhihi_reformat.at(0) );
 
-    higgsbounds_charged_input_(      &mass_h_charged.at(0),
+    higgsbounds_charged_input_(     &mass_h_charged.at(0),
                                     &Gamma_Total_charged.at(0),
                                     &CS_lep_HpjHmi_ratio.at(0),
                                     &BR_tWpb.at(0),
@@ -376,7 +383,67 @@ void Fittino::HiggsSignalsPartXSCalculator::CalculatePredictions() {
                                     &BR_Hpjcb.at(0),
                                     &BR_Hptaunu.at(0) );
 
+    _globalHiggsBoundsChi2 = RunHiggsBounds();
 
+}
+
+double Fittino::HiggsSignalsPartXSCalculator::RunHiggsBounds() {
+
+    run_higgsbounds_( &_HBresult, &_channel, &_obsratio, &_ncombined );
+    if( _HBresult < 0 || _HBresult > 1 ) {
+        
+        return -1.0;
+
+    }
+
+    for( int i = 0; i < _model->GetObservableVector()->size(); ++i ) {
+    
+        std::string name = _model->GetObservableVector()->at(i)->GetPrediction()->GetName();
+        if( name == _name_mass_h_neutral.at(0) ) {
+            _theoryUncertainty1s = _model->GetObservableVector()->at(i)->GetMeasuredError();
+            break;
+        }
+
+    }
+    hb_calc_stats_( &_theoryUncertainty1s, &_chi2WithoutTheory, &_chi2WithTheory, &_bestChannelChi2 );
+    if( _chi2WithoutTheory < 0. ) {
+        
+        return -1.0;
+    
+    }
+
+    if( _chi2WithTheory < 0. && _chi2WithoutTheory > 0. ) {
+
+        return -1.0;
+
+    }
+
+    if( _channel != _bestChannelChi2 ) {
+
+        if( _HBresult == 0 ) {
+            
+            _chi2WithoutTheory = 1000.;
+            _chi2WithTheory = 1000.;
+        
+        }
+
+    }
+    return _chi2WithTheory;
+
+}
+
+void Fittino::HiggsSignalsPartXSCalculator::CalculatePredictions() {
+
+    _globalHiggsBoundsChi2 = -1.;
+    boost::thread threadHB( boost::bind( &Fittino::HiggsSignalsPartXSCalculator::CallHiggsBounds, this ) );
+    threadHB.join();
+    if( _globalHiggsBoundsChi2 < 0 ) {
+        
+        _chi2WithTheory = 10000.;
+        _chi2WithoutTheory = 10000.;
+        _globalHiggsBoundsChi2 = 10000.;
+
+    }
     run_higgssignals_( &_mode, &_chi2_mu, &_chi2_mass_h, &_chi2, &_nobs, &_pvalue );
 
     int i = 1;

@@ -51,7 +51,8 @@ namespace Fittino {
     public:
       virtual void CalculatePredictions();
       virtual void Initialize();
-
+      double       RunHiggsBounds();
+      void         CallHiggsBounds();
 
     private:
       double        _chi2;
@@ -72,6 +73,8 @@ namespace Fittino {
       int           _nH;
       int           _nHplus;
       int           _nHzero;
+      int           _nHplusHS;
+      int           _nHzeroHS;
       double        _globalHiggsBoundsChi2;
       int           _HBresult;
       int           _channel;
