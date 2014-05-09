@@ -97,7 +97,7 @@ Fittino::HiggsSignalsPartXSCalculator::HiggsSignalsPartXSCalculator( const Physi
         _mass_h_neutral_shift.push_back      ( 0. );        
         _name_mass_h_neutral.push_back       ( ptree.get<std::string>( "MassQName_"                + number.str(), "FeynHiggs_Mass_" + namesHzero.at(i)              ) );
         _name_Gamma_Total_neutral.push_back  ( ptree.get<std::string>( "GammaTotQName_"            + number.str(), "FeynHiggs_GammaTotal_" + namesHzero.at(i)        ) );
-        _name_lep_hjZ_ratio.push_back        ( ptree.get<std::string>( "CS_lep_hjZ_ratioQName_"    + number.str(), "FeynHiggs_NormSM_Abs_g_" + namesHzero.at(i) + "_Z0_Z0"  ) );
+        _name_CS_lep_hjZ_ratio.push_back     ( ptree.get<std::string>( "CS_lep_hjZ_ratioQName_"    + number.str(), "FeynHiggs_NormSM_Abs_g_" + namesHzero.at(i) + "_Z0_Z0"  ) );
         _name_CS_lep_bbhj_ratio.push_back    ( ptree.get<std::string>( "CS_lep_bbhj_ratioQName_"   + number.str(), "FeynHiggs_NormSM_Abs_" + couplingNames.at(i) + "_" + namesHzero.at(i) + "_b_b" ) );
         _name_CS_gg_hj_ratio.push_back       ( ptree.get<std::string>( "CS_gg_hj_ratioQName_"      + number.str(), "FeynHiggs_NormSM_Abs_g_" + namesHzero.at(i) + "_g_g"   ) );
         _name_CS_bb_hj_ratio.push_back       ( ptree.get<std::string>( "CS_bb_hj_ratioQName_"      + number.str(), "FeynHiggs_NormSM_Abs_" + couplingNames.at(i) + "_" + namesHzero.at(i) + "_b_b" ) );
@@ -215,7 +215,7 @@ void Fittino::HiggsSignalsPartXSCalculator::CallHiggsBounds() {
     std::vector<double> mass_h_charged;
     std::vector<double> Gamma_Total_charged;
     std::vector<double> CP;
-    std::vector<double> lep_hjZ_ratio;
+    std::vector<double> CS_lep_hjZ_ratio;
     std::vector<double> CS_lep_bbhj_ratio;
     std::vector<std::vector<double> > CS_lep_hjhi_ratio;
     std::vector<double> CS_gg_hj_ratio;
@@ -266,23 +266,23 @@ void Fittino::HiggsSignalsPartXSCalculator::CallHiggsBounds() {
         mass_h_neutral.push_back        ( _model->GetCollectionOfQuantities().At( _name_mass_h_neutral.at( i ) )->GetValue() + _mass_h_neutral_shift.at(i) );
         Gamma_Total_neutral.push_back   ( _model->GetCollectionOfQuantities().At( _name_Gamma_Total_neutral.at(i) )->GetValue() );;
         CP.push_back                    ( i < 2 ? 1 : -1 ); 
-        CS_lep_tautauhj_ratio.push_back ( _model->GetCollectionOfQuantities().At( _name_CS_lep_tautauhj_ratio.at(i))->GetValue() );
-        lep_hjZ_ratio.push_back         ( _model->GetCollectionOfQuantities().At( _name_lep_hjZ_ratio.at(i) )->GetValue() );
-        CS_lep_bbhj_ratio.push_back     ( _model->GetCollectionOfQuantities().At( _name_CS_lep_bbhj_ratio.at(i) )->GetValue() );
+        CS_lep_tautauhj_ratio.push_back ( pow( _model->GetCollectionOfQuantities().At( _name_CS_lep_tautauhj_ratio.at(i))->GetValue(),2 ));
+        CS_lep_hjZ_ratio.push_back      ( pow( _model->GetCollectionOfQuantities().At( _name_CS_lep_hjZ_ratio.at(i) )->GetValue(),2 ));
+        CS_lep_bbhj_ratio.push_back     ( pow( _model->GetCollectionOfQuantities().At( _name_CS_lep_bbhj_ratio.at(i) )->GetValue(),2 ));
         //CS_gg_hj_ratio.push_back        ( _model->GetCollectionOfQuantities().At( _name_CS_gg_hj_ratio.at(i) )->GetValue() );
         CS_gg_hj_ratio.push_back        ( 0. ); 
-        CS_bb_hj_ratio.push_back        ( _model->GetCollectionOfQuantities().At( _name_CS_bb_hj_ratio.at(i) )->GetValue() );
-        CS_bg_hjb_ratio.push_back       ( _model->GetCollectionOfQuantities().At( _name_CS_bg_hjb_ratio.at(i) )->GetValue() );
-        CS_ud_hjWp_ratio.push_back      ( _model->GetCollectionOfQuantities().At( _name_CS_ud_hjWp_ratio.at(i) )->GetValue() );
-        CS_cs_hjWp_ratio.push_back      ( _model->GetCollectionOfQuantities().At( _name_CS_cs_hjWp_ratio.at(i) )->GetValue() );
-        CS_ud_hjWm_ratio.push_back      ( _model->GetCollectionOfQuantities().At( _name_CS_ud_hjWm_ratio.at(i) )->GetValue() );
-        CS_cs_hjWm_ratio.push_back      ( _model->GetCollectionOfQuantities().At( _name_CS_cs_hjWm_ratio.at(i) )->GetValue() );
-        CS_gg_hjZ_ratio.push_back       ( _model->GetCollectionOfQuantities().At( _name_CS_gg_hjZ_ratio.at(i) )->GetValue() );
-        CS_dd_hjZ_ratio.push_back       ( _model->GetCollectionOfQuantities().At( _name_CS_dd_hjZ_ratio.at(i) )->GetValue() );
-        CS_uu_hjZ_ratio.push_back       ( _model->GetCollectionOfQuantities().At( _name_CS_uu_hjZ_ratio.at(i) )->GetValue() );
-        CS_ss_hjZ_ratio.push_back       ( _model->GetCollectionOfQuantities().At( _name_CS_ss_hjZ_ratio.at(i) )->GetValue() );
-        CS_cc_hjZ_ratio.push_back       ( _model->GetCollectionOfQuantities().At( _name_CS_cc_hjZ_ratio.at(i) )->GetValue() );
-        CS_bb_hjZ_ratio.push_back       ( _model->GetCollectionOfQuantities().At( _name_CS_bb_hjZ_ratio.at(i) )->GetValue() );
+        CS_bb_hj_ratio.push_back        ( pow( _model->GetCollectionOfQuantities().At( _name_CS_bb_hj_ratio.at(i) )->GetValue(),2 ));
+        CS_bg_hjb_ratio.push_back       ( pow( _model->GetCollectionOfQuantities().At( _name_CS_bg_hjb_ratio.at(i) )->GetValue(),2) );
+        CS_ud_hjWp_ratio.push_back      ( pow( _model->GetCollectionOfQuantities().At( _name_CS_ud_hjWp_ratio.at(i) )->GetValue(),2) );
+        CS_cs_hjWp_ratio.push_back      ( pow( _model->GetCollectionOfQuantities().At( _name_CS_cs_hjWp_ratio.at(i) )->GetValue(),2) );
+        CS_ud_hjWm_ratio.push_back      ( pow( _model->GetCollectionOfQuantities().At( _name_CS_ud_hjWm_ratio.at(i) )->GetValue(),2) );
+        CS_cs_hjWm_ratio.push_back      ( pow( _model->GetCollectionOfQuantities().At( _name_CS_cs_hjWm_ratio.at(i) )->GetValue(),2) );
+        CS_gg_hjZ_ratio.push_back       ( pow( _model->GetCollectionOfQuantities().At( _name_CS_gg_hjZ_ratio.at(i) )->GetValue(),2 ));
+        CS_dd_hjZ_ratio.push_back       ( pow( _model->GetCollectionOfQuantities().At( _name_CS_dd_hjZ_ratio.at(i) )->GetValue(),2 ));
+        CS_uu_hjZ_ratio.push_back       ( pow( _model->GetCollectionOfQuantities().At( _name_CS_uu_hjZ_ratio.at(i) )->GetValue(),2 ));
+        CS_ss_hjZ_ratio.push_back       ( pow( _model->GetCollectionOfQuantities().At( _name_CS_ss_hjZ_ratio.at(i) )->GetValue(),2 ));
+        CS_cc_hjZ_ratio.push_back       ( pow( _model->GetCollectionOfQuantities().At( _name_CS_cc_hjZ_ratio.at(i) )->GetValue(),2 ));
+        CS_bb_hjZ_ratio.push_back       ( pow( _model->GetCollectionOfQuantities().At( _name_CS_bb_hjZ_ratio.at(i) )->GetValue(),2 ));
         CS_tev_vbf_ratio.push_back      ( _model->GetCollectionOfQuantities().At( _name_CS_tev_vbf_ratio.at(i) )->GetValue() );
         CS_tev_tthj_ratio.push_back     ( _model->GetCollectionOfQuantities().At( _name_CS_tev_tthj_ratio.at(i) )->GetValue() );
         CS_lhc7_vbf_ratio.push_back     ( _model->GetCollectionOfQuantities().At( _name_CS_lhc7_vbf_ratio.at(i) )->GetValue() );
@@ -307,7 +307,7 @@ void Fittino::HiggsSignalsPartXSCalculator::CallHiggsBounds() {
         std::vector<double> br;
         std::vector<double> cs;
         for( int j = 0; j < _nHzero; ++j ) {
-            cs.push_back                ( _model->GetCollectionOfQuantities().At( _name_CS_lep_hjhi_ratio.at(i).at(j) )->GetValue() );
+            cs.push_back                ( pow( _model->GetCollectionOfQuantities().At( _name_CS_lep_hjhi_ratio.at(i).at(j) )->GetValue(),2 ));
             br.push_back                ( _model->GetCollectionOfQuantities().At( _name_BR_hjhihi.at(i).at(j))->GetValue() );       
         }
         CS_lep_hjhi_ratio.push_back( cs );
@@ -324,7 +324,7 @@ void Fittino::HiggsSignalsPartXSCalculator::CallHiggsBounds() {
     for( unsigned int j = 0; j < _nHzero; ++j ) {
         for( unsigned int i = 0; i < _nHzero; ++i ) {
 
-            CS_lep_hjhi_ratio_reformat.push_back( CS_lep_hjhi_ratio.at(i).at(j));
+            CS_lep_hjhi_ratio_reformat.push_back( pow( CS_lep_hjhi_ratio.at(i).at(j),2));
             BR_hjhihi_reformat.push_back( BR_hjhihi.at(i).at(j) );
 
         }
@@ -347,7 +347,7 @@ void Fittino::HiggsSignalsPartXSCalculator::CallHiggsBounds() {
     higgsbounds_neutral_input_part_( &mass_h_neutral.at(0),
                                     &Gamma_Total_neutral.at(0),
                                     &CP.at(0),
-                                    &lep_hjZ_ratio.at(0),
+                                    &CS_lep_hjZ_ratio.at(0),
                                     &CS_lep_bbhj_ratio.at(0),
                                     &CS_lep_tautauhj_ratio.at(0),
                                     &CS_lep_hjhi_ratio_reformat.at(0),

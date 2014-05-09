@@ -99,7 +99,7 @@ namespace Fittino {
       std::vector<std::string> _name_Gamma_Total_charged;
       std::vector<std::string> _name_CP;
       
-      std::vector<std::string> _name_lep_hjZ_ratio;
+      std::vector<std::string> _name_CS_lep_hjZ_ratio;
       std::vector<std::string> _name_CS_lep_bbhj_ratio;
       std::vector<std::string> _name_CS_lep_tautauhj_ratio;
       std::vector<std::vector<std::string> > _name_CS_lep_hjhi_ratio;
