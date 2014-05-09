@@ -51,6 +51,7 @@ namespace Fittino {
     public:
       virtual void CalculatePredictions();
       virtual void Initialize();
+      virtual void SetupMeasuredValues();
       double       RunHiggsBounds();
       void         CallHiggsBounds();
 
@@ -85,6 +86,12 @@ namespace Fittino {
       double        _chi2WithoutTheory;
       int           _bestChannelChi2;
       std::string   _whichAnalyses;
+
+
+      std::vector<double>      _mass_h_neutral_shift;
+      std::vector<double>      _mass_h_charged_shift;
+      std::vector<std::string> _name_mass_h_neutral_shift;
+      std::vector<std::string> _name_mass_h_charged_shift;
 
       std::vector<std::string> _name_mass_h_neutral;
       std::vector<std::string> _name_Gamma_Total_neutral;
