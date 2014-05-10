@@ -84,6 +84,15 @@ extern "C" {
 
   void hb_calc_stats_( double* theoryUncertainty1s, double* chi2WithoutTheory, double* chi2WithTheory, int* bestChannelChi2 );
 
+  void higgsbounds_charged_input_( const double* massh,
+                                   const double* GammaTot,
+                                   const double* CS_lep_HpjHmi_ratio,
+                                   const double* BR_tWpb,
+                                   const double* BR_tHpjb,
+                                   const double* BR_Hpjcs,
+                                   const double* BR_Hpjcb,
+                                   const double* BR_Hptaunu );
+
   void higgsbounds_input_slha_( char* filename, int* len );
 
   void higgsbounds_neutral_input_effc_( const double* mass_h,
@@ -148,7 +157,7 @@ extern "C" {
                                         const double* BR_hjinvisible,
                                         const double* BR_hjhihi );
 
- void higgsbounds_neutral_input_part_(  const double* massh,
+  void higgsbounds_neutral_input_part_( const double* massh,
                                         const double* GammaTot,
                                         const double* CP,
                                         const double* CS_lep_hjZ_ratio,
@@ -186,15 +195,6 @@ extern "C" {
                                         const double* BR_hjgg,
                                         const double* BR_hjinvisible,
                                         const double* BR_hjhihi );
-
- void higgsbounds_charged_input_(       const double* massh,
-                                        const double* GammaTot,
-                                        const double* CS_lep_HpjHmi_ratio,
-                                        const double* BR_tWpb,
-                                        const double* BR_tHpjb,
-                                        const double* BR_Hpjcs,
-                                        const double* BR_Hpjcb,
-                                        const double* BR_Hptaunu );
 
   void higgssignals_neutral_input_massuncertainty_( const double* dm );
 
