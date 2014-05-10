@@ -20,9 +20,9 @@
 #include "TH2D.h"
 #include "TMath.h"
 
-#include "Simple2DHistogramMaker.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
+#include "Simple2DHistogramMaker.h"
 
 Fittino::Simple2DHistogramMaker::Simple2DHistogramMaker( ModelBase* model, const boost::property_tree::ptree& ptree )
     : HistogramMakerBase( model, ptree ) {
@@ -108,7 +108,7 @@ Fittino::Simple2DHistogramMaker::Simple2DHistogramMaker( ModelBase* model, const
 
             }
 
-            histogram->GetZaxis()->SetTitle( "Fractions" );
+            histogram->GetZaxis()->SetTitle( "Number of entries" );
 
             histogram->SetTitle( 0 );
             histogram->SetStats( 0 );

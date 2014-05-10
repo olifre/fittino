@@ -20,9 +20,9 @@
 #include "TH1D.h"
 #include "TMath.h"
 
-#include "Simple1DHistogramMaker.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
+#include "Simple1DHistogramMaker.h"
 
 Fittino::Simple1DHistogramMaker::Simple1DHistogramMaker( ModelBase* model, const boost::property_tree::ptree& ptree )
     : HistogramMakerBase( model, ptree ) {
@@ -74,7 +74,7 @@ Fittino::Simple1DHistogramMaker::Simple1DHistogramMaker( ModelBase* model, const
 
         }
 
-        histogram->GetYaxis()->SetTitle( "Fractions" );
+        histogram->GetYaxis()->SetTitle( "Number of entries" );
 
         histogram->SetTitle( 0 );
         histogram->SetStats( 0 );
