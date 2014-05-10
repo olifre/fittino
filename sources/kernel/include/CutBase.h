@@ -40,29 +40,31 @@ namespace Fittino {
        *  Standard constructor.
        */
       CutBase( const boost::property_tree::ptree& ptree );
+      /*!
+       *  Get the unique number of the cut.
+       */
+      unsigned int        GetCutNumber();
+      /*!
+       *  Get the name of the cut.
+       */
+      std::string         GetName();
 
     public:
       /*!
        *  Standard destructor.
        */
-      virtual      ~CutBase();
+      virtual             ~CutBase();
       /*!
-       * Determines whether a cut is passed or not.
+       *  Determines whether a cut is passed or not.
        */
-      virtual bool IsPassed() = 0;
-      /*!
-       * Get the name of the cut
-       */
-      std::string  GetName();
-      /*!
-       * Get the unique number of the cut
-       */
-      unsigned int GetCutNumber();
+      virtual bool        IsPassed() = 0;
 
     protected:
-      std::string                _name;
-      unsigned int               _cutNumber;
-      static unsigned int        _cutCounter;
+      static unsigned int _cutCounter;
+
+    protected:
+      unsigned int        _cutNumber;
+      std::string         _name;
 
   };
 

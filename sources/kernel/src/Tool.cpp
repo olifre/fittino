@@ -22,29 +22,28 @@
 
 #include "TFile.h"
 
-#include "Tool.h"
-#include "ModelBase.h"
-#include "Factory.h"
 #include "CutBase.h"
-#include "Collection.h"
+#include "Factory.h"
+#include "ModelBase.h"
+#include "Tool.h"
 
 Fittino::Tool::Tool( ModelBase *model, const boost::property_tree::ptree& ptree )
     : _chi2            ( std::numeric_limits<double>::max() ),
       _iterationCounter( 0 ),
-      _name            ( ptree.get<std::string> ( "Name", "" ) ),
+      _name            ( ptree.get<std::string>( "Name", "" ) ),
       _model           ( model ),
       _ptree           ( ptree ),
-      _outputFileName  ( ptree.get<std::string> ( "OutputFile", "Fittino.out.root" ) ),
+      _outputFileName  ( ptree.get<std::string>( "OutputFile", "Fittino.out.root" ) ),
       _outputFile      ( new TFile( _outputFileName, "RECREATE" ) ) {
 
-    if( ptree.count("Cuts") != 0 ) {
-        
+    if ( ptree.count( "Cuts" ) != 0 ) {
+
         Factory factory;
-        
+
         BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child( "Cuts" ) ) {
 
             _collectionOfCuts.AddElement( factory.CreateCut( node.first, _model, node.second ) );
-    
+
         }
 
     }
@@ -61,7 +60,6 @@ void Fittino::Tool::PerformTask() {
 
     Messenger& messenger = Messenger::GetInstance();
 
-    //messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  Initializing the " << _name << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;

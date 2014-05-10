@@ -25,17 +25,17 @@
 #include "TTree.h"
 
 #include "AnalysisTool.h"
+#include "CutBase.h"
 #include "ModelBase.h"
 #include "RandomGenerator.h"
-#include "CutBase.h"
 
 Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tree::ptree& ptree )
     : Tool                    ( model, ptree ),
-      _writeAllModelQuantities( ptree.get<bool>        ( "WriteAllModelQuantities", true               ) ),
-      _chi2Name               ( ptree.get<std::string> ( "Chi2Name",                "Chi2"             ) ),
-      _iterationCounterName   ( ptree.get<std::string> ( "IterationCounterName",    "IterationCounter" ) ),
-      _metaDataTreeName       ( ptree.get<std::string> ( "MetaDataTree",            "MetaDataTree"     ) ),
-      _treeName               ( ptree.get<std::string> ( "OutputTree",              "Tree"             ) ),
+      _writeAllModelQuantities( ptree.get<bool>       ( "WriteAllModelQuantities", true               ) ),
+      _chi2Name               ( ptree.get<std::string>( "Chi2Name",                "Chi2"             ) ),
+      _iterationCounterName   ( ptree.get<std::string>( "IterationCounterName",    "IterationCounter" ) ),
+      _metaDataTreeName       ( ptree.get<std::string>( "MetaDataTree",            "MetaDataTree"     ) ),
+      _treeName               ( ptree.get<std::string>( "OutputTree",              "Tree"             ) ),
       _metaDataTree           ( new TTree( _metaDataTreeName, _metaDataTreeName ) ),
       _tree                   ( new TTree( _treeName, _treeName ) ) {
 
@@ -83,9 +83,9 @@ void Fittino::AnalysisTool::FillMetaDataTree() {
 void Fittino::AnalysisTool::FillTree() {
 
     bool fillTree = true;
-    for( unsigned int i = 0; i < _collectionOfCuts.GetNumberOfElements(); ++i ) {
+    for ( unsigned int i = 0; i < _collectionOfCuts.GetNumberOfElements(); ++i ) {
 
-        if( !_collectionOfCuts.At(i)->IsPassed() ) {
+        if ( !_collectionOfCuts.At( i )->IsPassed() ) {
 
             fillTree = false;
             break;
@@ -93,10 +93,10 @@ void Fittino::AnalysisTool::FillTree() {
         }
 
     }
-    if( fillTree ) {
-    
+    if ( fillTree ) {
+
         _tree->Fill();
-    
+
     }
 
 }

@@ -20,14 +20,12 @@
 #ifndef FITTINO_TOOL_H
 #define FITTINO_TOOL_H
 
-#include <string>
-
 #include <boost/property_tree/ptree.hpp>
 
 #include "TString.h"
 
-#include "Messenger.h"
 #include "Collection.h"
+#include "Messenger.h"
 
 class TFile;
 
@@ -36,8 +34,8 @@ class TFile;
  */
 namespace Fittino {
 
-  class ModelBase;
   class CutBase;
+  class ModelBase;
 
   /*!
    *  \ingroup kernel
@@ -87,9 +85,10 @@ namespace Fittino {
        */
       ModelBase*                  _model;
       /*!
-       * Vector containing all cut objects
+       *  Vector containing all cut objects.
        */
-      Fittino::Collection<CutBase*>       _collectionOfCuts;
+      Collection<CutBase*>        _collectionOfCuts;
+
     protected:
       /*!
        *  Prints the tool's status to screen.
