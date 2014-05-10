@@ -58,24 +58,24 @@ namespace Fittino {
 
   };
 
-  template<class T>
-  ReferenceVariable<T>::ReferenceVariable( const std::string& name, const T& value )
-    : VariableBase<T>( name ),
-      _value ( value ) {
+}
 
-  }
+template<class T>
+Fittino::ReferenceVariable<T>::ReferenceVariable( const std::string& name, const T& value )
+  : VariableBase<T>( name ),
+    _value ( value ) {
 
-  template<class T>
-  const T& ReferenceVariable<T>::GetValue() const {
+}
 
-    return _value;
+template<class T>
+const T& Fittino::ReferenceVariable<T>::GetValue() const {
 
-  }
+  return _value;
 
-  template<class T>
-  ReferenceVariable<T>::~ReferenceVariable() {
+}
 
-  }
+template<class T>
+Fittino::ReferenceVariable<T>::~ReferenceVariable() {
 
 }
 
