@@ -103,4 +103,61 @@ Fittino::VariableBase<T>::~VariableBase() {
 
 }
 
+/*!
+ *  \brief Fittino namespace.
+ */
+namespace Fittino {
+
+  /*!
+   *  \ingroup kernel
+   *  \brief Class for string variables.
+   */
+  template<>
+  class VariableBase<std::string> {
+
+    public:
+      /*!
+       *  Standard constructor
+       */
+      VariableBase( const std::string& name ) : _name ( name ) {}
+      /*!
+      *  Returns the name of the variable.
+      */
+      void                       PrintStatus() const {
+
+        Messenger& messenger = Messenger::GetInstance();
+
+        messenger << Messenger::INFO
+                  << "    "
+                  << std::left
+                  << std::setw( 44 )
+                  << _name
+                  << std::left
+                  << GetValue()
+                  << Messenger::Endl;
+
+      }
+      const std::string&         GetName() const {
+
+        return _name;
+
+      }
+
+    public:
+      /*!
+       *  Standard destructor.
+       */
+      virtual                    ~VariableBase() {}
+      /*!
+       *  Returns the value of the variable.
+       */
+      virtual const std::string& GetValue() const = 0;
+
+    private:
+      std::string                _name;
+
+  };
+
+}
+
 #endif // FITTINO_VARIABLEBASE_H
