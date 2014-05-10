@@ -31,12 +31,12 @@
 namespace Fittino {
 
   class CalculatorBase;
+  class CutBase;
   class ModelBase;
   class Observable;
   class PhysicsModel;
   class PredictionBase;
   class SLHADataStorageBase;
-  class CutBase;
   class Tool;
 
   /*!
@@ -79,6 +79,10 @@ namespace Fittino {
        */
       CalculatorBase* const      CreateCalculator( const std::string& type, const PhysicsModel* model, const boost::property_tree::ptree& ptree ) const;
       /*!
+       *  Returns a cut object. So far the only supported type is a SplineCut.
+       */
+      CutBase* const             CreateCut( const std::string& type, ModelBase* model, const boost::property_tree::ptree& ptree ) const;
+      /*!
        *  Returns a concrete model.\n
        *  Supported models are
        *  <ul>
@@ -115,10 +119,7 @@ namespace Fittino {
        *  </ul>
        */
       Tool* const                CreateTool( const std::string& type, ModelBase* model, const boost::property_tree::ptree& ptree ) const;
-      /*!
-       * Returns a cut object. So far the only supported type is a SplineCut
-       */
-      CutBase* const             CreateCut( const std::string& type, ModelBase* model, const boost::property_tree::ptree& ptree ) const;
+
   };
 
 }

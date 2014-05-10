@@ -62,11 +62,12 @@
 #include "SimulatedAnnealingOptimizer.h"
 #include "SLHAeaSLHADataStorage.h"
 #include "SPhenoSLHACalculator.h"
+#include "SplineCut.h"
+#include "SummaryHistogramMaker.h"
 #include "SummaryPlotter.h"
 #include "SuperIsoCalculator.h"
 #include "TreeCalculator.h"
 #include "TreeSampler.h"
-#include "SplineCut.h"
 
 Fittino::Factory::Factory() {
 
@@ -194,20 +195,6 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 #endif
 
     }
-    else if ( type == "HiggsSignalsSLHACalculator" ) {
-
-#if defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
-
-        return new HiggsSignalsSLHACalculator( model, ptree );
-
-#else
-
-        throw ConfigurationException( "Trying to use HiggsSignalsSLHACalculator but Fittino was built without HiggsBounds or HiggsSignals." );
-
-#endif
-    
-    }
-
     else if ( type == "HiggsSignalsPartXSCalculator" ) {
 
 #if defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
@@ -217,6 +204,19 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 #else
 
         throw ConfigurationException( "Trying to use HiggsSignalsPartXSCalculator but Fittino was built without HiggsBounds or HiggsSignals." );
+
+#endif
+
+    }
+    else if ( type == "HiggsSignalsSLHACalculator" ) {
+
+#if defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
+
+        return new HiggsSignalsSLHACalculator( model, ptree );
+
+#else
+
+        throw ConfigurationException( "Trying to use HiggsSignalsSLHACalculator but Fittino was built without HiggsBounds or HiggsSignals." );
 
 #endif
 
@@ -270,6 +270,21 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     else {
 
         throw ConfigurationException( "Calculator type" + type + "not known." );
+
+    }
+
+}
+
+Fittino::CutBase* const Fittino::Factory::CreateCut( const std::string& type, Fittino::ModelBase* model, const boost::property_tree::ptree& ptree ) const {
+
+    if ( type == "SplineCut" ) {
+
+        return new SplineCut( model, ptree );
+
+    }
+    else {
+
+        throw ConfigurationException( "Cut type " + type + " not known." );
 
     }
 
@@ -415,6 +430,11 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
         return new SimulatedAnnealingOptimizer( model, ptree );
 
     }
+    else if ( type == "SummaryHistogramMaker" ) {
+
+        return new SummaryHistogramMaker( model, ptree );
+
+    }
     else if ( type == "SummaryPlotter" ) {
 
         return new SummaryPlotter( model, ptree );
@@ -428,21 +448,6 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
     else {
 
         throw ConfigurationException( "Tool type " + type + " not known." );
-
-    }
-
-}
-
-Fittino::CutBase* const Fittino::Factory::CreateCut( const std::string& type, Fittino::ModelBase* model, const boost::property_tree::ptree& ptree ) const {
-
-    if( type == "SplineCut" ) {
-
-        return new SplineCut( model, ptree );
-
-    }
-    else {
-
-        throw ConfigurationException( "Cut type " + type + " not known." );
 
     }
 

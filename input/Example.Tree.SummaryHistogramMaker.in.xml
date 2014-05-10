@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<?xml-stylesheet type="text/xsl" href="style/InputFile.xsl"?>
+
+<!-- $Id$ -->
+
+<!--#########################################################################-->
+<!--                                                                         -->
+<!-- Project     Fittino - A SUSY Parameter Fitting Package                  -->
+<!--                                                                         -->
+<!-- File        Example.Tree.SummaryHistogramMaker.in.xml                   -->
+<!--                                                                         -->
+<!-- Description Configuration example for the summary histogram maker       -->
+<!--                                                                         -->
+<!-- Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>         -->
+<!--                                                                         -->
+<!-- Licence     This program is free software; you can redistribute it      -->
+<!--             and/or modify it under the terms of the GNU General Public  -->
+<!--             License as published by the Free Software Foundation;       -->
+<!--             either version 3 of he License, or (at your option) any     -->
+<!--             later version.                                              -->
+<!--                                                                         -->
+<!--#########################################################################-->
+
+<InputFile>
+
+  <VerbosityLevel>ALWAYS</VerbosityLevel>
+
+  <Model>
+
+    <PhysicsModel>
+
+      <Name>Tree</Name>
+
+      <ModelParameter>
+        <Name>Entry</Name>
+        <!-- Set Value to the best fit entry, determined e.g. by running SimpleOptimizer. -->
+        <Value>884192</Value>
+        <Error>1</Error>
+        <LowerBound>0</LowerBound>
+        <UpperBound>1.e99</UpperBound>
+      </ModelParameter>
+
+      <Observables></Observables>
+
+      <CovarianceMatrices></CovarianceMatrices>
+
+      <Chi2Contribution>Chi2</Chi2Contribution>
+
+      <Calculators>
+        <TreeCalculator>
+          <InputFileName>Fittino.in.root</InputFileName>
+        </TreeCalculator>
+      </Calculators>
+
+    </PhysicsModel>
+
+  </Model>
+
+  <Tool>
+
+    <SummaryHistogramMaker>
+
+      <NumberOfBins>35</NumberOfBins>
+      <LowerBound>0.1</LowerBound>
+      <UpperBound>10.</UpperBound>
+      <LogScale>true</LogScale>
+
+      <Quantity>
+        <Name>X1</Name>
+        <PlotName>x_{1}</PlotName>
+      </Quantity>
+
+      <Quantity>
+        <Name>X2</Name>
+        <PlotName>x_{2}</PlotName>
+      </Quantity>
+
+      <Quantity>
+        <Name>X3</Name>
+        <PlotName>x_{3}</PlotName>
+      </Quantity>
+
+    </SummaryHistogramMaker>
+
+  </Tool>
+
+</InputFile>
