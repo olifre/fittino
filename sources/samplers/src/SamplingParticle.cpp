@@ -1,23 +1,27 @@
+/* $Id$ */
+
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
 * File        SamplingParticle.cpp                                             *
 *                                                                              *
-* Description Class for SamplingParticle used in PSO sampler                    *
+* Description Class for SamplingParticle used in PSO sampler                   *
 *                                                                              *
-* Authors     Pia Kullik  <pkullik@uni-bonn.de>              *
+* Authors     Pia Kullik  <pkullik@uni-bonn.de>                                *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of   *
-*	      the License, or (at your option) any later version.              *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
-#include "SamplingParticle.h"
-//#include "ModelParameterBase.h"
 #include <cmath>
+
+//#include "ModelParameterBase.h"
+#include "SamplingParticle.h"
+
 using namespace Fittino;
 
 //SamplingParticle constructor
@@ -85,5 +89,3 @@ void Fittino::SamplingParticle::setCurrentFitness(double value){
 void Fittino::SamplingParticle::setBestFitness(double value){
     this->_bestFitness = value;
 }
-
-
