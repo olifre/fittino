@@ -347,10 +347,7 @@ void Fittino::HiggsSignalsPartXSCalculator::CallHiggsBounds() {
          
 
     }
-    double CS_bb_hj[3];
-    CS_bb_hj[0] = CS_bb_hj_ratio[0];
-    CS_bb_hj[1] = CS_bb_hj_ratio[1];
-    CS_bb_hj[2] = CS_bb_hj_ratio[2];
+    
     higgsbounds_neutral_input_part_( &mass_h_neutral.at(0),
                                     &Gamma_Total_neutral.at(0),
                                     &CP.at(0),
@@ -359,8 +356,7 @@ void Fittino::HiggsSignalsPartXSCalculator::CallHiggsBounds() {
                                     &CS_lep_tautauhj_ratio.at(0),
                                     &CS_lep_hjhi_ratio_reformat.at(0),
                                     &CS_gg_hj_ratio.at(0),
-                                    CS_bb_hj,
-                                    //&CS_bb_hj_ratio.at(0),
+                                    &CS_bb_hj_ratio.at(0),
                                     &CS_bg_hjb_ratio.at(0),
                                     &CS_ud_hjWp_ratio.at(0),
                                     &CS_cs_hjWp_ratio.at(0),
