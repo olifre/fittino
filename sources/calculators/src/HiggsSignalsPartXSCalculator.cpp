@@ -49,7 +49,7 @@ Fittino::HiggsSignalsPartXSCalculator::HiggsSignalsPartXSCalculator( const Physi
     _chi2WithTheory     = 0.;
     _chi2WithoutTheory  = 0.;
     _bestChannelChi2    = 0;
-
+    std::cout << "running with " << _nHzero << " Hzero and " << _nHplus << " HPlus" << std::endl;
     AddQuantity( new SimplePrediction( "HB_result",             "HB_result",             "",    "",    -1.e4,    1.e4, _HBresult  ) ); 
     AddQuantity( new SimplePrediction( "HB_obsratio",           "HB_obsratio",           "",    "",    -1.e4,    1.e4, _obsratio  ) ); 
     AddQuantity( new SimplePrediction( "HB_channel",            "HB_channel",            "",    "",    -1.e4,    1.e4, _channel  ) ); 

@@ -4,11 +4,11 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        HiggsSignalsHadXSCalculator.h                                    *
+* File        HiggsSignalsHadXSCalculator.h                                   *
 *                                                                              *
-* Description Wrapper class for HiggsSignals using whichinput=hadr             *
+* Description Wrapper class for HiggsSignals using whichinput=had              *
 *                                                                              *
-* Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
+* Authors     Matthias Hamer      <mhamer@cbpf.br>                             *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -51,105 +51,102 @@ namespace Fittino {
     public:
       virtual void CalculatePredictions();
       virtual void Initialize();
-
-    private:  
-      double _BR_hbb;
-      double _BR_hcc;
-      double _BR_hgaga;
-      double _BR_hgg;
-      double _BR_hHH;
-      double _BR_hInvisible;
-      double _BR_hmumu;
-      double _BR_hss;
-      double _BR_htautau;
-      double _BR_hWW;
-      double _BR_hZga;
-      double _BR_hZZ;
-      double _chi2;
-      double _chi2_mass_h;
-      double _chi2_mu;
-      double  _CP;
-      double _Gamma_hbb;
-      double _Gamma_hcc;
-      double _Gamma_hgaga;
-      double _Gamma_hgg;
-      double _Gamma_hmumu;
-      double _Gamma_hss;
-      double _Gamma_htautau;
-      double _Gamma_hTotal;
-      double _Gamma_hWW;
-      double _Gamma_hZga;
-      double _Gamma_hZZ;
-      double _normSM_BR_hbb;
-      double _normSM_BR_hcc;
-      double _normSM_BR_hgaga;
-      double _normSM_BR_hgg;
-      double _normSM_BR_hmumu;
-      double _normSM_BR_hss;
-      double _normSM_BR_htautau;
-      double _normSM_BR_hWW;
-      double _normSM_BR_hZga;
-      double _normSM_BR_hZZ;
-      double _normSM_Gamma_hTotal;
-      double _normSM_xs_h;
-      double _normSM_xs_lep;
-      double _normSM_xs_tev;
-      double _pvalue;
-      double _R_H_WW;
-      double _R_H_ZZ;
-      double _R_H_gaga;
-      double _R_H_bb;
-      double _R_H_tautau;
-      double _R_VH_bb;
-      double _SM_BR_hbb;
-      double _SM_BR_hcc;
-      double _SM_BR_hgaga;
-      double _SM_BR_hgg;
-      double _SM_BR_hmumu;
-      double _SM_BR_hss;
-      double _SM_BR_htautau;
-      double _SM_BR_hWW;
-      double _SM_BR_hZga;
-      double _SM_BR_hZZ;
-      double _SM_Gamma_hbb;
-      double _SM_Gamma_hcc;
-      double _SM_Gamma_hgaga;
-      double _SM_Gamma_hgg;
-      double _SM_Gamma_hmumu;
-      double _SM_Gamma_hss;
-      double _SM_Gamma_htautau;
-      double _SM_Gamma_hTotal;
-      double _SM_Gamma_hWW;
-      double _SM_Gamma_hZga;
-      double _SM_Gamma_hZZ;
-      double _SM_xs_bbh;
-      double _SM_xs_ggh;
-      double _SM_xs_h;
-      double _weight_xs_bbh;
-      double _weight_xs_ggh;
-      int _mode;
-      int _nobs;
+      virtual void SetupMeasuredValues();
+      double       RunHiggsBounds();
+      void         CallHiggsBounds();
 
     private:
-      const double& _mass_h;
-      const double& _normSM_Gamma_hbb;
-      const double& _normSM_Gamma_hcc;
-      const double& _normSM_Gamma_hgaga;
-      const double& _normSM_Gamma_hgg;
-      const double& _normSM_Gamma_hmumu;
-      const double& _normSM_Gamma_hss;
-      const double& _normSM_Gamma_htautau;
-      const double& _normSM_Gamma_hWW;
-      const double& _normSM_Gamma_hZga;
-      const double& _normSM_Gamma_hZZ;
-      const double& _normSM_xs_bbh;
-      const double& _normSM_xs_bh;
-      const double& _normSM_xs_ggh;
-      const double& _normSM_xs_qqh;
-      const double& _normSM_xs_tth;
-      const double& _normSM_xs_Wh;
-      const double& _normSM_xs_Zh;
+      double        _chi2;
+      double        _chi2_mass_h;
+      double        _chi2_mu;
+      double        _pvalue;
+      double        _R_H_WW;
+      double        _R_H_ZZ;
+      double        _R_H_gaga;
+      double        _R_H_bb;
+      double        _R_H_tautau;
+      double        _R_VH_bb;
+      double        _weight_xs_bbh;
+      double        _weight_xs_ggh;
+      int           _mode;
+      int           _nobs;
+      
+      int           _nH;
+      int           _nHplus;
+      int           _nHzero;
+      int           _nHplusHS;
+      int           _nHzeroHS;
+      double        _globalHiggsBoundsChi2;
+      int           _HBresult;
+      int           _channel;
+      double        _obsratio;
+      int           _ncombined;
+      double        _theoryUncertainty1s;
+      double        _chi2WithTheory;
+      double        _chi2WithoutTheory;
+      int           _bestChannelChi2;
+      std::string   _whichAnalyses;
 
+
+      std::vector<double>      _mass_h_neutral_shift;
+      std::vector<double>      _mass_h_charged_shift;
+      std::vector<std::string> _name_mass_h_neutral_shift;
+      std::vector<std::string> _name_mass_h_charged_shift;
+
+      std::vector<std::string> _name_mass_h_neutral;
+      std::vector<std::string> _name_Gamma_Total_neutral;
+      std::vector<std::string> _name_mass_h_charged;
+      std::vector<std::string> _name_Gamma_Total_charged;
+      std::vector<std::string> _name_CP;
+      
+      std::vector<std::string> _name_CS_lep_hjZ_ratio;
+      std::vector<std::string> _name_CS_lep_bbhj_ratio;
+      std::vector<std::string> _name_CS_lep_tautauhj_ratio;
+      std::vector<std::vector<std::string> > _name_CS_lep_hjhi_ratio;
+      
+      std::vector<std::string> _name_CS_tev_hj_ratio;
+      std::vector<std::string> _name_CS_tev_hjb_ratio;
+      std::vector<std::string> _name_CS_tev_hjW_ratio;
+      std::vector<std::string> _name_CS_tev_hjZ_ratio;
+      std::vector<std::string> _name_CS_tev_vbf_ratio;
+      std::vector<std::string> _name_CS_tev_tthj_ratio;
+      
+      std::vector<std::string> _name_CS_lhc7_hj_ratio;
+      std::vector<std::string> _name_CS_lhc7_hjb_ratio;
+      std::vector<std::string> _name_CS_lhc7_hjW_ratio;
+      std::vector<std::string> _name_CS_lhc7_hjZ_ratio;
+      std::vector<std::string> _name_CS_lhc7_vbf_ratio;
+      std::vector<std::string> _name_CS_lhc7_tthj_ratio;
+      
+      std::vector<std::string> _name_CS_lhc8_hj_ratio;
+      std::vector<std::string> _name_CS_lhc8_hjb_ratio;
+      std::vector<std::string> _name_CS_lhc8_hjW_ratio;
+      std::vector<std::string> _name_CS_lhc8_hjZ_ratio;
+      std::vector<std::string> _name_CS_lhc8_vbf_ratio;
+      std::vector<std::string> _name_CS_lhc8_tthj_ratio;
+      
+      std::vector<std::string> _name_BR_hjss;
+      std::vector<std::string> _name_BR_hjcc;
+      std::vector<std::string> _name_BR_hjbb;
+      std::vector<std::string> _name_BR_hjmumu;
+      std::vector<std::string> _name_BR_hjtautau;
+      std::vector<std::string> _name_BR_hjWW;
+      std::vector<std::string> _name_BR_hjZZ;
+      std::vector<std::string> _name_BR_hjZga;
+      std::vector<std::string> _name_BR_hjgaga;
+      std::vector<std::string> _name_BR_hjgg;
+      std::vector<std::string> _name_BR_hjchi10chi10;
+      std::vector<std::string> _name_BR_hjnuenue;
+      std::vector<std::string> _name_BR_hjnumunumu;
+      std::vector<std::string> _name_BR_hjnutaunutau;
+      std::vector<std::vector<std::string> > _name_BR_hjhihi;
+      std::vector<std::string> _name_CS_lep_HpjHmi_ratio;
+      std::vector<std::string> _name_BR_tWpb;
+      std::vector<std::string> _name_BR_tHpjb;
+      std::vector<std::string> _name_BR_Hpjcs;
+      std::vector<std::string> _name_BR_Hpjcb;
+      std::vector<std::string> _name_BR_Hptaunu;
+     
   };
 
 }
