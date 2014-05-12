@@ -103,11 +103,10 @@ double Fittino::PhysicsModel::Evaluate() {
     _error      = "";
 
     // Let the calculators calculate the model predictions.
-
     try {
 
         for ( unsigned int i = 0; i < _collectionOfCalculators.GetNumberOfElements(); ++i ) {
-
+            
             _collectionOfCalculators.At( i )->CalculatePredictions();
 
         }

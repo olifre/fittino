@@ -1,4 +1,4 @@
-/* $Id: HiggsSignalsPartXSCalculator.h 2028 2014-03-23 16:55:08Z uhlenbrock@PHYSIK.UNI-BONN.DE $ */ 
+/* $Id$ */ 
 
 /*******************************************************************************
 *                                                                              *
@@ -132,7 +132,7 @@ namespace Fittino {
       std::vector<std::string> _name_BR_hjZga;
       std::vector<std::string> _name_BR_hjgaga;
       std::vector<std::string> _name_BR_hjgg;
-      std::vector<std::string> _name_BR_hjchi01chi01;
+      std::vector<std::string> _name_BR_hjchi10chi10;
       std::vector<std::string> _name_BR_hjnuenue;
       std::vector<std::string> _name_BR_hjnumunumu;
       std::vector<std::string> _name_BR_hjnutaunutau;
