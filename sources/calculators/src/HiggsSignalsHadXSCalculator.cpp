@@ -102,7 +102,9 @@ Fittino::HiggsSignalsHadXSCalculator::HiggsSignalsHadXSCalculator( const Physics
         _name_CS_lep_hjZ_ratio.push_back     ( ptree.get<std::string>( "CS_lep_hjZ_ratioQName_"    + number.str(), "FeynHiggs_NormSM_Abs_g_" + namesHzero.at(i) + "_Z0_Z0"  ) );
         _name_CS_lep_bbhj_ratio.push_back    ( ptree.get<std::string>( "CS_lep_bbhj_ratioQName_"   + number.str(), "FeynHiggs_NormSM_Abs_" + couplingNames.at(i) + "_" + namesHzero.at(i) + "_b_b" ) );
         
+        // this should be the sum of bbh and ggh
         _name_CS_tev_hj_ratio.push_back      ( ptree.get<std::string>( "CS_tev_hj_ratioQName_"     + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_StSth" ) ); 
+        // this should be 
         _name_CS_tev_hjb_ratio.push_back     ( ptree.get<std::string>( "CS_tev_hjb_bratioQName_"   + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_btagbh" ) ); 
         _name_CS_tev_hjW_ratio.push_back     ( ptree.get<std::string>( "CS_tev_hjW_bratioQName_"   + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_Wh" ) ); 
         _name_CS_tev_hjZ_ratio.push_back     ( ptree.get<std::string>( "CS_tev_hjZ_bratioQName_"   + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_Zh" ) ); 

@@ -184,19 +184,19 @@ Fittino::HiggsSignalsPartXSCalculator::HiggsSignalsPartXSCalculator( const Physi
     //std::string expdata = "LHC_mail_14_07_2013_HS_new_observable_set";
     std::string expdata = ptree.get<std::string>( "ExpData" );
     std::cout<<"Using ExpData = "<<expdata<<std::endl;
-    initialize_higgssignals_( &_nHzeroHS, &_nHplusHS, expdata.c_str(), expdata.size() );
+    //initialize_higgssignals_( &_nHzeroHS, &_nHplusHS, expdata.c_str(), expdata.size() );
     
     int output_level = 0;
-    setup_output_level_( &output_level );
+    //setup_output_level_( &output_level );
 
     int pdf = 2; 
-    setup_pdf_( &pdf );
+    //setup_pdf_( &pdf );
 
     double dm = 0.;
-    higgssignals_neutral_input_massuncertainty_( &dm );
+    //higgssignals_neutral_input_massuncertainty_( &dm );
 
     double range = 1000.;
-    setup_assignmentrange_( &range );
+    //setup_assignmentrange_( &range );
                                                            
 }
 
@@ -457,11 +457,12 @@ void Fittino::HiggsSignalsPartXSCalculator::CalculatePredictions() {
         _globalHiggsBoundsChi2 = 10000.;
 
     }
-    run_higgssignals_( &_mode, &_chi2_mu, &_chi2_mass_h, &_chi2, &_nobs, &_pvalue );
+    //run_higgssignals_( &_mode, &_chi2_mu, &_chi2_mass_h, &_chi2, &_nobs, &_pvalue );
 
     int i = 1;
     int collider = 3;
-    
+   
+    /*
     get_rvalues_( &i, 
                   &collider,
                   &_R_H_WW, 
@@ -470,7 +471,7 @@ void Fittino::HiggsSignalsPartXSCalculator::CalculatePredictions() {
                   &_R_H_tautau,
                   &_R_H_bb,
                   &_R_VH_bb );
-
+    */
 
 
 
@@ -505,8 +506,8 @@ void Fittino::HiggsSignalsPartXSCalculator::SetupMeasuredValues() {
     }
     // get number of observable from HiggsSignals and loop over it
     int ntotal, npeakmu, npeakmh, nmpred, nanalyses;
-    __io_MOD_get_number_of_observables( &ntotal, &npeakmu, &npeakmh, &nmpred, &nanalyses );
-
+    //__io_MOD_get_number_of_observables( &ntotal, &npeakmu, &npeakmh, &nmpred, &nanalyses );
+    ntotal = 0;
     for ( int i = 1; i <= ntotal; ++i ) {
 
         double measuredValue_mh = -1.e9;
@@ -537,16 +538,16 @@ void Fittino::HiggsSignalsPartXSCalculator::SetupMeasuredValues() {
         // test if all observable were acutally defined
         if ( measuredValue_mh < -1.e-8 || measuredValue_mu < -1.e-8 ) {
 
-            throw ConfigurationException( "Incomplete set of HiggsSignals Observables: Missing at least one (mu, mh) for HiggsSignalsObservable_ " + s_index );
+            //throw ConfigurationException( "Incomplete set of HiggsSignals Observables: Missing at least one (mu, mh) for HiggsSignalsObservable_ " + s_index );
 
         }
 
         // get observable ID from HiggsSignals
         int obsID = 0;
-        __io_MOD_get_id_of_peakobservable( &i, &obsID );
+        //__io_MOD_get_id_of_peakobservable( &i, &obsID );
 
         // assign the new values
-        assign_toyvalues_to_peak_( &obsID, &measuredValue_mu, &measuredValue_mh );
+        //assign_toyvalues_to_peak_( &obsID, &measuredValue_mu, &measuredValue_mh );
 
     }
 
