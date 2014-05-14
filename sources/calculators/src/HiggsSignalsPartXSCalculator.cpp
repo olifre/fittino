@@ -39,8 +39,6 @@ Fittino::HiggsSignalsPartXSCalculator::HiggsSignalsPartXSCalculator( const Physi
     _nHzero             = ptree.get<int>        ( "NHzero",             3                       );
     _nHplus             = ptree.get<int>        ( "NHPlus",             1                       );
     _whichAnalyses      = ptree.get<std::string>( "WhichAnalyses",      "onlyL"                 );
-    _nHzeroHS           = ptree.get<int>        ( "NHzeroHS",           1                       );
-    _nHplusHS           = ptree.get<int>        ( "NHPlusHS",           0                       );
     _HBresult           = -1;
     _channel            = 0;
     _obsratio           = 0.;
@@ -184,7 +182,7 @@ Fittino::HiggsSignalsPartXSCalculator::HiggsSignalsPartXSCalculator( const Physi
     //std::string expdata = "LHC_mail_14_07_2013_HS_new_observable_set";
     std::string expdata = ptree.get<std::string>( "ExpData" );
     std::cout<<"Using ExpData = "<<expdata<<std::endl;
-    //initialize_higgssignals_( &_nHzeroHS, &_nHplusHS, expdata.c_str(), expdata.size() );
+    //initialize_higgssignals_( &_nHzero, &_nHplus, expdata.c_str(), expdata.size() );
     
     int output_level = 0;
     //setup_output_level_( &output_level );
@@ -192,10 +190,20 @@ Fittino::HiggsSignalsPartXSCalculator::HiggsSignalsPartXSCalculator( const Physi
     int pdf = 2; 
     //setup_pdf_( &pdf );
 
-    double dm = 0.;
-    //higgssignals_neutral_input_massuncertainty_( &dm );
+    for( int i = 0; i < _nHzero; ++i ) {
+    
+        _dm_neut.push_back(0);
 
-    double range = 1000.;
+    }
+    for( int i = 0; i < _nHplus; ++i ) {
+    
+        _dm_charg.push_back(0);
+
+    }
+    //higgssignals_neutral_input_massuncertainty_( &_dm_neut.at(0) );
+    //higgsbounds_set_mass_uncertainties_( &_dm_neut.at(0), &_dm_charg.at(0) );
+
+    double range = 150.;
     //setup_assignmentrange_( &range );
                                                            
 }
@@ -386,23 +394,26 @@ void Fittino::HiggsSignalsPartXSCalculator::CallHiggsBounds() {
                                     &BR_hjgg.at(0),
                                     &BR_hjinvisible.at(0),
                                     &BR_hjhihi_reformat.at(0) );
-
-    higgsbounds_charged_input_(     &mass_h_charged.at(0),
-                                    &Gamma_Total_charged.at(0),
-                                    &CS_lep_HpjHmi_ratio.at(0),
-                                    &BR_tWpb.at(0),
-                                    &BR_tHpjb.at(0),
-                                    &BR_Hpjcs.at(0),
-                                    &BR_Hpjcb.at(0),
-                                    &BR_Hptaunu.at(0) );
-
+    
+    if( _nHplus > 0 ) {
+        higgsbounds_charged_input_(     &mass_h_charged.at(0),
+                                        &Gamma_Total_charged.at(0),
+                                        &CS_lep_HpjHmi_ratio.at(0),
+                                        &BR_tWpb.at(0),
+                                        &BR_tHpjb.at(0),
+                                        &BR_Hpjcs.at(0),
+                                        &BR_Hpjcb.at(0),
+                                        &BR_Hptaunu.at(0) );
+    }
     _globalHiggsBoundsChi2 = RunHiggsBounds();
 
 }
 
 double Fittino::HiggsSignalsPartXSCalculator::RunHiggsBounds() {
 
+    std::cout << "now running higgsbounds " << std::endl;
     run_higgsbounds_( &_HBresult, &_channel, &_obsratio, &_ncombined );
+    std::cout << "hb result is " << _HBresult << " " << _channel << " " << _obsratio << " " << _ncombined << std::endl;
     if( _HBresult < 0 || _HBresult > 1 ) {
         
         return -1.0;
@@ -419,6 +430,7 @@ double Fittino::HiggsSignalsPartXSCalculator::RunHiggsBounds() {
 
     }
     hb_calc_stats_( &_theoryUncertainty1s, &_chi2WithoutTheory, &_chi2WithTheory, &_bestChannelChi2 );
+    std::cout << "hb_calc_stats_result is " << _chi2WithoutTheory << " " << _chi2WithTheory << " " << _bestChannelChi2 << std::endl;
     if( _chi2WithoutTheory < 0. ) {
         
         return -1.0;
@@ -471,7 +483,7 @@ void Fittino::HiggsSignalsPartXSCalculator::CalculatePredictions() {
                   &_R_H_tautau,
                   &_R_H_bb,
                   &_R_VH_bb );
-    */
+   */
 
 
 
@@ -479,7 +491,7 @@ void Fittino::HiggsSignalsPartXSCalculator::CalculatePredictions() {
 
 
 void Fittino::HiggsSignalsPartXSCalculator::SetupMeasuredValues() {
-
+    /* 
     // setup the delta mass values for higgs bounds
     for( int i = 0; i < _model->GetObservableVector()->size(); ++i ) {
        
@@ -504,6 +516,8 @@ void Fittino::HiggsSignalsPartXSCalculator::SetupMeasuredValues() {
         }
 
     }
+    */
+    /*
     // get number of observable from HiggsSignals and loop over it
     int ntotal, npeakmu, npeakmh, nmpred, nanalyses;
     //__io_MOD_get_number_of_observables( &ntotal, &npeakmu, &npeakmh, &nmpred, &nanalyses );
@@ -538,7 +552,7 @@ void Fittino::HiggsSignalsPartXSCalculator::SetupMeasuredValues() {
         // test if all observable were acutally defined
         if ( measuredValue_mh < -1.e-8 || measuredValue_mu < -1.e-8 ) {
 
-            //throw ConfigurationException( "Incomplete set of HiggsSignals Observables: Missing at least one (mu, mh) for HiggsSignalsObservable_ " + s_index );
+    //       throw ConfigurationException( "Incomplete set of HiggsSignals Observables: Missing at least one (mu, mh) for HiggsSignalsObservable_ " + s_index );
 
         }
 
@@ -550,5 +564,5 @@ void Fittino::HiggsSignalsPartXSCalculator::SetupMeasuredValues() {
         //assign_toyvalues_to_peak_( &obsID, &measuredValue_mu, &measuredValue_mh );
 
     }
-
+    */
 }

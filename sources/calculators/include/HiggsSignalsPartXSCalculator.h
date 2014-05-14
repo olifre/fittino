@@ -70,12 +70,12 @@ namespace Fittino {
       double        _weight_xs_ggh;
       int           _mode;
       int           _nobs;
-      
+      std::vector<double> _dm_neut;
+      std::vector<double> _dm_charg;
+
       int           _nH;
       int           _nHplus;
       int           _nHzero;
-      int           _nHplusHS;
-      int           _nHzeroHS;
       double        _globalHiggsBoundsChi2;
       int           _HBresult;
       int           _channel;
