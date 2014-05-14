@@ -80,6 +80,13 @@ Fittino::PhysicsModel::PhysicsModel( const boost::property_tree::ptree& ptree )
         if ( node.first == "Chi2Contribution" ) AddChi2Contribution( node.second.get_value<std::string>() );
 
     }
+    
+    if( _performToyRun ) {
+        
+        SetupForToyRun();
+
+    }
+
 
     Initialize();
 
@@ -466,12 +473,6 @@ void Fittino::PhysicsModel::InitializeObservables( const boost::property_tree::p
     BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child( "Observables" ) ) {
 
         AddObservable( factory.CreateObservable( node.second, GetCollectionOfPredictions(), GetCollectionOfCalculators() ) );
-
-    }
-
-    if( _performToyRun ) {
-        
-        SetupForToyRun();
 
     }
 
