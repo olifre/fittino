@@ -39,8 +39,6 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
     _nHzero             = ptree.get<int>        ( "NHzero",             3                       );
     _nHplus             = ptree.get<int>        ( "NHPlus",             1                       );
     _whichAnalyses      = ptree.get<std::string>( "WhichAnalyses",      "onlyL"                 );
-    _nHzeroHS           = ptree.get<int>        ( "NHzeroHS",           1                       );
-    _nHplusHS           = ptree.get<int>        ( "NHPlusHS",           0                       );
     _HBresult           = -1;
     _channel            = 0;
     _obsratio           = 0.;
@@ -103,20 +101,23 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
         _name_CS_lep_bbhj_ratio.push_back    ( ptree.get<std::string>( "CS_lep_bbhj_ratioQName_"   + number.str(), "FeynHiggs_NormSM_Abs_" + couplingNames.at(i) + "_" + namesHzero.at(i) + "_b_b" ) );
         
         // this should be the sum of bbh and ggh
-        _name_CS_tev_hj_ratio.push_back      ( ptree.get<std::string>( "CS_tev_hj_ratioQName_"     + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_StSth" ) ); 
-        // this should be 
-        _name_CS_tev_hjb_ratio.push_back     ( ptree.get<std::string>( "CS_tev_hjb_bratioQName_"   + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_btagbh" ) ); 
-        _name_CS_tev_hjW_ratio.push_back     ( ptree.get<std::string>( "CS_tev_hjW_bratioQName_"   + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_Wh" ) ); 
-        _name_CS_tev_hjZ_ratio.push_back     ( ptree.get<std::string>( "CS_tev_hjZ_bratioQName_"   + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_Zh" ) ); 
-        _name_CS_tev_vbf_ratio.push_back     ( ptree.get<std::string>( "CS_tev_vbf_ratioQName_"    + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_qqh" ) );
-        _name_CS_tev_tthj_ratio.push_back    ( ptree.get<std::string>( "CS_tev_tthj_ratioQName_"   + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_tth" ) );
-        _name_CS_lhc7_hj_ratio.push_back     ( ptree.get<std::string>( "CS_lhc7_hj_ratioQName_"     + number.str(), "FeynHiggs_CrossSection_7TeV_" + namesHzero.at(i) + "_StSth" ) ); 
+        _name_CS_tev_gghj_ratio.push_back      ( ptree.get<std::string>( "CS_tev_gghj_ratioQName_"  + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_ggh" ) ); 
+        _name_CS_tev_bbhj_ratio.push_back      ( ptree.get<std::string>( "CS_tev_bbhj_ratioQName_"  + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_bbh" ) ); 
+        // this should be 0.; 
+        _name_CS_tev_hjb_ratio.push_back     ( ptree.get<std::string>( "CS_tev_hjb_bratioQName_"    + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_btagbh" ) ); 
+        _name_CS_tev_hjW_ratio.push_back     ( ptree.get<std::string>( "CS_tev_hjW_bratioQName_"    + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_Wh" ) ); 
+        _name_CS_tev_hjZ_ratio.push_back     ( ptree.get<std::string>( "CS_tev_hjZ_bratioQName_"    + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_Zh" ) ); 
+        _name_CS_tev_vbf_ratio.push_back     ( ptree.get<std::string>( "CS_tev_vbf_ratioQName_"     + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_qqh" ) );
+        _name_CS_tev_tthj_ratio.push_back    ( ptree.get<std::string>( "CS_tev_tthj_ratioQName_"    + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_tth" ) );
+        _name_CS_lhc7_gghj_ratio.push_back   ( ptree.get<std::string>( "CS_lhc7_gghjratioQName_"    + number.str(), "FeynHiggs_CrossSection_7TeV_" + namesHzero.at(i) + "_ggh" ) ); 
+        _name_CS_lhc7_bbhj_ratio.push_back   ( ptree.get<std::string>( "CS_lhc7_bbhj_ratioQName_"   + number.str(), "FeynHiggs_CrossSection_7TeV_" + namesHzero.at(i) + "_bbh" ) ); 
         _name_CS_lhc7_hjb_ratio.push_back    ( ptree.get<std::string>( "CS_lhc7_hjb_bratioQName_"   + number.str(), "FeynHiggs_CrossSection_7TeV_" + namesHzero.at(i) + "_btagbh" ) ); 
         _name_CS_lhc7_hjW_ratio.push_back    ( ptree.get<std::string>( "CS_lhc7_hjW_bratioQName_"   + number.str(), "FeynHiggs_CrossSection_7TeV_" + namesHzero.at(i) + "_Wh" ) ); 
         _name_CS_lhc7_hjZ_ratio.push_back    ( ptree.get<std::string>( "CS_lhc7_hjZ_bratioQName_"   + number.str(), "FeynHiggs_CrossSection_7TeV_" + namesHzero.at(i) + "_Zh" ) ); 
         _name_CS_lhc7_vbf_ratio.push_back    ( ptree.get<std::string>( "CS_lhc7_vbf_ratioQName_"    + number.str(), "FeynHiggs_CrossSection_7TeV_" + namesHzero.at(i) + "_qqh" ) );
         _name_CS_lhc7_tthj_ratio.push_back   ( ptree.get<std::string>( "CS_lhc7_tthj_ratioQName_"   + number.str(), "FeynHiggs_CrossSection_7TeV_" + namesHzero.at(i) + "_tth" ) );
-        _name_CS_lhc8_hj_ratio.push_back     ( ptree.get<std::string>( "CS_lhc8_hj_ratioQName_"     + number.str(), "FeynHiggs_CrossSection_8TeV_" + namesHzero.at(i) + "_StSth" ) ); 
+        _name_CS_lhc8_gghj_ratio.push_back   ( ptree.get<std::string>( "CS_lhc8_gghj_ratioQName_"   + number.str(), "FeynHiggs_CrossSection_8TeV_" + namesHzero.at(i) + "_ggh" ) ); 
+        _name_CS_lhc8_bbhj_ratio.push_back   ( ptree.get<std::string>( "CS_lhc8_bbhj_ratioQName_"   + number.str(), "FeynHiggs_CrossSection_8TeV_" + namesHzero.at(i) + "_bbh" ) ); 
         _name_CS_lhc8_hjb_ratio.push_back    ( ptree.get<std::string>( "CS_lhc8_hjb_bratioQName_"   + number.str(), "FeynHiggs_CrossSection_8TeV_" + namesHzero.at(i) + "_btagbh" ) ); 
         _name_CS_lhc8_hjW_ratio.push_back    ( ptree.get<std::string>( "CS_lhc8_hjW_bratioQName_"   + number.str(), "FeynHiggs_CrossSection_8TeV_" + namesHzero.at(i) + "_Wh" ) ); 
         _name_CS_lhc8_hjZ_ratio.push_back    ( ptree.get<std::string>( "CS_lhc8_hjZ_bratioQName_"   + number.str(), "FeynHiggs_CrossSection_8TeV_" + namesHzero.at(i) + "_Zh" ) ); 
@@ -185,7 +186,7 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
     //std::string expdata = "LHC_mail_14_07_2013_HS_new_observable_set";
     std::string expdata = ptree.get<std::string>( "ExpData" );
     std::cout<<"Using ExpData = "<<expdata<<std::endl;
-    //initialize_higgssignals_( &_nHzeroHS, &_nHplusHS, expdata.c_str(), expdata.size() );
+    //initialize_higgssignals_( &_nHzero, &_nHplus, expdata.c_str(), expdata.size() );
     
     int output_level = 0;
     //setup_output_level_( &output_level );
@@ -193,12 +194,14 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
     int pdf = 2; 
     //setup_pdf_( &pdf );
 
-    double dm = 0.;
-    //higgssignals_neutral_input_massuncertainty_( &dm );
+    std::vector<double> dm;
+    for( unsigned int i = 0; i < _nHzero; ++i ) {
+        dm.push_back( 0. ); 
+    }
+    //higgssignals_neutral_input_massuncertainty_( &dm.at(0) );
 
-    double range = 1000.;
+    double range = 150.;
     //setup_assignmentrange_( &range );
-                                                           
 }
 
 Fittino::NewHiggsSignalsHadXSCalculator::~NewHiggsSignalsHadXSCalculator() {
@@ -271,20 +274,26 @@ void Fittino::NewHiggsSignalsHadXSCalculator::CallHiggsBounds() {
         CS_lep_hjZ_ratio.push_back      ( pow( _model->GetCollectionOfQuantities().At( _name_CS_lep_hjZ_ratio.at(i) )->GetValue(),2 ));
         CS_lep_bbhj_ratio.push_back     ( pow( _model->GetCollectionOfQuantities().At( _name_CS_lep_bbhj_ratio.at(i) )->GetValue(),2 ));
         
-        CS_tev_hj_ratio.push_back       ( _model->GetCollectionOfQuantities().At( _name_CS_tev_hj_ratio.at(i) )->GetValue() );
-        CS_tev_hjb_ratio.push_back      ( _model->GetCollectionOfQuantities().At( _name_CS_tev_hjb_ratio.at(i) )->GetValue() );
+        CS_tev_hj_ratio.push_back       ( _model->GetCollectionOfQuantities().At( _name_CS_tev_gghj_ratio.at(i) )->GetValue() 
+                                        + _model->GetCollectionOfQuantities().At( _name_CS_tev_bbhj_ratio.at(i) )->GetValue() );
+        //CS_tev_hjb_ratio.push_back      ( _model->GetCollectionOfQuantities().At( _name_CS_tev_hjb_ratio.at(i) )->GetValue() );
+        CS_tev_hjb_ratio.push_back      ( 0. );
         CS_tev_hjW_ratio.push_back      ( _model->GetCollectionOfQuantities().At( _name_CS_tev_hjW_ratio.at(i) )->GetValue() );
         CS_tev_hjZ_ratio.push_back      ( _model->GetCollectionOfQuantities().At( _name_CS_tev_hjZ_ratio.at(i) )->GetValue() );
         CS_tev_vbf_ratio.push_back      ( _model->GetCollectionOfQuantities().At( _name_CS_tev_vbf_ratio.at(i) )->GetValue() );
         CS_tev_tthj_ratio.push_back     ( _model->GetCollectionOfQuantities().At( _name_CS_tev_tthj_ratio.at(i) )->GetValue() );
-        CS_lhc7_hj_ratio.push_back      ( _model->GetCollectionOfQuantities().At( _name_CS_lhc7_hj_ratio.at(i) )->GetValue() );
-        CS_lhc7_hjb_ratio.push_back     ( _model->GetCollectionOfQuantities().At( _name_CS_lhc7_hjb_ratio.at(i) )->GetValue() );
+        CS_lhc7_hj_ratio.push_back      ( _model->GetCollectionOfQuantities().At( _name_CS_lhc7_gghj_ratio.at(i) )->GetValue() 
+                                        + _model->GetCollectionOfQuantities().At( _name_CS_lhc7_bbhj_ratio.at(i) )->GetValue() );
+        //CS_lhc7_hjb_ratio.push_back     ( _model->GetCollectionOfQuantities().At( _name_CS_lhc7_hjb_ratio.at(i) )->GetValue() );
+        CS_lhc7_hjb_ratio.push_back     ( 0. ); 
         CS_lhc7_hjW_ratio.push_back     ( _model->GetCollectionOfQuantities().At( _name_CS_lhc7_hjW_ratio.at(i) )->GetValue() );
         CS_lhc7_hjZ_ratio.push_back     ( _model->GetCollectionOfQuantities().At( _name_CS_lhc7_hjZ_ratio.at(i) )->GetValue() );
         CS_lhc7_vbf_ratio.push_back     ( _model->GetCollectionOfQuantities().At( _name_CS_lhc7_vbf_ratio.at(i) )->GetValue() );
         CS_lhc7_tthj_ratio.push_back    ( _model->GetCollectionOfQuantities().At( _name_CS_lhc7_tthj_ratio.at(i) )->GetValue() );
-        CS_lhc8_hj_ratio.push_back      ( _model->GetCollectionOfQuantities().At( _name_CS_lhc8_hj_ratio.at(i) )->GetValue() );
-        CS_lhc8_hjb_ratio.push_back     ( _model->GetCollectionOfQuantities().At( _name_CS_lhc8_hjb_ratio.at(i) )->GetValue() );
+        CS_lhc8_hj_ratio.push_back      ( _model->GetCollectionOfQuantities().At( _name_CS_lhc8_gghj_ratio.at(i) )->GetValue() 
+                                        + _model->GetCollectionOfQuantities().At( _name_CS_lhc8_bbhj_ratio.at(i) )->GetValue() );
+        //CS_lhc8_hjb_ratio.push_back     ( _model->GetCollectionOfQuantities().At( _name_CS_lhc8_hjb_ratio.at(i) )->GetValue() );
+        CS_lhc8_hjb_ratio.push_back     ( 0. );
         CS_lhc8_hjW_ratio.push_back     ( _model->GetCollectionOfQuantities().At( _name_CS_lhc8_hjW_ratio.at(i) )->GetValue() );
         CS_lhc8_hjZ_ratio.push_back     ( _model->GetCollectionOfQuantities().At( _name_CS_lhc8_hjZ_ratio.at(i) )->GetValue() );
         CS_lhc8_vbf_ratio.push_back     ( _model->GetCollectionOfQuantities().At( _name_CS_lhc8_vbf_ratio.at(i) )->GetValue() );
@@ -383,15 +392,16 @@ void Fittino::NewHiggsSignalsHadXSCalculator::CallHiggsBounds() {
                                     &BR_hjgg.at(0),
                                     &BR_hjinvisible.at(0),
                                     &BR_hjhihi_reformat.at(0) );
-
-    higgsbounds_charged_input_(     &mass_h_charged.at(0),
-                                    &Gamma_Total_charged.at(0),
-                                    &CS_lep_HpjHmi_ratio.at(0),
-                                    &BR_tWpb.at(0),
-                                    &BR_tHpjb.at(0),
-                                    &BR_Hpjcs.at(0),
-                                    &BR_Hpjcb.at(0),
-                                    &BR_Hptaunu.at(0) );
+    if( _nHplus > 0 ) {
+        higgsbounds_charged_input_(     &mass_h_charged.at(0),
+                                        &Gamma_Total_charged.at(0),
+                                        &CS_lep_HpjHmi_ratio.at(0),
+                                        &BR_tWpb.at(0),
+                                        &BR_tHpjb.at(0),
+                                        &BR_Hpjcs.at(0),
+                                        &BR_Hpjcb.at(0),
+                                        &BR_Hptaunu.at(0) );
+    }
 
     _globalHiggsBoundsChi2 = RunHiggsBounds();
 
@@ -458,8 +468,8 @@ void Fittino::NewHiggsSignalsHadXSCalculator::CalculatePredictions() {
 
     int i = 1;
     int collider = 3;
-    
-    /*get_rvalues_( &i, 
+    /*
+    get_rvalues_( &i, 
                   &collider,
                   &_R_H_WW, 
                   &_R_H_ZZ, 
@@ -500,9 +510,10 @@ void Fittino::NewHiggsSignalsHadXSCalculator::SetupMeasuredValues() {
         }
 
     }
+    /*
     // get number of observable from HiggsSignals and loop over it
     int ntotal, npeakmu, npeakmh, nmpred, nanalyses;
-    //__io_MOD_get_number_of_observables( &ntotal, &npeakmu, &npeakmh, &nmpred, &nanalyses );
+    __io_MOD_get_number_of_observables( &ntotal, &npeakmu, &npeakmh, &nmpred, &nanalyses );
     ntotal = 0;
     for ( int i = 1; i <= ntotal; ++i ) {
 
@@ -546,5 +557,5 @@ void Fittino::NewHiggsSignalsHadXSCalculator::SetupMeasuredValues() {
         //assign_toyvalues_to_peak_( &obsID, &measuredValue_mu, &measuredValue_mh );
 
     }
-
+    */
 }

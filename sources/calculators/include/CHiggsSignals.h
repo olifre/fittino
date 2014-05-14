@@ -197,6 +197,7 @@ extern "C" {
                                         const double* BR_hjhihi );
 
   void higgssignals_neutral_input_massuncertainty_( const double* dm );
+  void higgsbounds_set_mass_uncertainties_( const double* dmn, const double* dmc );
 
   void run_higgsbounds_( int* HBresult, int* channel, double* obsratio, int* ncombined );
 
