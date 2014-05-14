@@ -75,7 +75,12 @@ void Fittino::AstroFitCalculator::CalculatePredictions() {
 
     }
 
-    boost::filesystem::copy_file( "SPheno_FeynHiggs.spc", "AstroFit.spc" );
+    //boost::filesystem::copy_file( "SPheno_FeynHiggs.spc", "AstroFit.spc" );
+    std::ifstream infile("SPheno_FeynHiggs.spc", std::ios::binary);
+    std::ofstream outfile("AstroFit.spc",        std::ios::binary);
+    outfile << infile.rdbuf();
+    infile.close();
+    outfile.close();
 
     Redirector redirector( "AstroFit.out" );
 

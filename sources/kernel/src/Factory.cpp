@@ -260,7 +260,15 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     }
     else if ( type == "SPhenoCalculator" ) {
 
+#ifdef SLHAEA
+
         return new SPhenoSLHACalculator( model, ptree );
+
+#else 
+
+        throw ConfigurationException( " Trying to use SPhenoSLHACalculator but Fittino was built without SLHAea." );
+
+#endif
 
     }
     else if ( type == "SuperIsoCalculator" ) {
