@@ -1,28 +1,27 @@
 /* $Id$ */
 
 /*******************************************************************************
- *                                                                              *
- * Project     Fittino - A SUSY Parameter Fitting Package                       *
- *                                                                              *
- * File        AstroFitCalculator.cpp                                           *
- *                                                                              *
- * Description Wrapper class for AstroFit                                       *
- *                                                                              *
- * Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
- *                                                                              *
- * Licence     This program is free software; you can redistribute it and/or    *
- *             modify it under the terms of the GNU General Public License as   *
- *             published by the Free Software Foundation; either version 3 of   *
- *             the License, or (at your option) any later version.              *
- *                                                                              *
- *******************************************************************************/
+*                                                                              *
+* Project     Fittino - A SUSY Parameter Fitting Package                       *
+*                                                                              *
+* File        AstroFitCalculator.cpp                                           *
+*                                                                              *
+* Description Wrapper class for AstroFit                                       *
+*                                                                              *
+* Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
+*                                                                              *
+* Licence     This program is free software; you can redistribute it and/or    *
+*             modify it under the terms of the GNU General Public License as   *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
+*                                                                              *
+*******************************************************************************/
 
 #define BOOST_NO_CXX11_SCOPED_ENUMS
 
 #include <fstream>
 
 #include "boost/filesystem.hpp"
-#include <boost/property_tree/ptree.hpp>
 
 #include "AstroFitCalculator.h"
 #include "CalculatorException.h"
@@ -31,23 +30,23 @@
 #include "TimeoutExecutorException.h"
 
 Fittino::AstroFitCalculator::AstroFitCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
-:CalculatorBase( model ),
-_executor( "./AstroFit" , "AstroFit" ){
+    : CalculatorBase( model ),
+      _executor( "./AstroFit" , "AstroFit" ) {
 
     _name = "AstroFit";
     _tag = "AstroFit";
 
     _executor.SetCompletionTimeout( 20 );
 
-    AddQuantity( new SimplePrediction("Chi2_Omega_h2",  "", _chi2_relic  ) );
-    AddQuantity( new SimplePrediction("Chi2_svind",  "", _chi2_svind  ) );
-    AddQuantity( new SimplePrediction("Chi2_photon", "", _chi2_photon ) );
-    AddQuantity( new SimplePrediction("Chi2_direct", "", _chi2_direct ) );
+    AddQuantity( new SimplePrediction( "Chi2_Omega_h2",  "", _chi2_relic  ) );
+    AddQuantity( new SimplePrediction( "Chi2_svind",     "", _chi2_svind  ) );
+    AddQuantity( new SimplePrediction( "Chi2_photon",    "", _chi2_photon ) );
+    AddQuantity( new SimplePrediction( "Chi2_direct",    "", _chi2_direct ) );
 
-    AddQuantity( new SimplePrediction("Omega_h2",  "", _relic  ) );
-    AddQuantity( new SimplePrediction("svind",  "", _svind  ) );
-    AddQuantity( new SimplePrediction("photon", "", _photon ) );
-    AddQuantity( new SimplePrediction("direct", "", _direct ) );
+    AddQuantity( new SimplePrediction( "Omega_h2",  "", _relic  ) );
+    AddQuantity( new SimplePrediction( "svind",     "", _svind  ) );
+    AddQuantity( new SimplePrediction( "photon",    "", _photon ) );
+    AddQuantity( new SimplePrediction( "direct",    "", _direct ) );
 
 }
 
@@ -76,8 +75,8 @@ void Fittino::AstroFitCalculator::CalculatePredictions() {
     }
 
     //boost::filesystem::copy_file( "SPheno_FeynHiggs.spc", "AstroFit.spc" );
-    std::ifstream infile("SPheno_FeynHiggs.spc", std::ios::binary);
-    std::ofstream outfile("AstroFit.spc",        std::ios::binary);
+    std::ifstream infile( "SPheno_FeynHiggs.spc", std::ios::binary );
+    std::ofstream outfile( "AstroFit.spc",        std::ios::binary );
     outfile << infile.rdbuf();
     infile.close();
     outfile.close();
@@ -85,7 +84,7 @@ void Fittino::AstroFitCalculator::CalculatePredictions() {
     Redirector redirector( "AstroFit.out" );
 
     redirector.Start();
-    
+
     try {
 
         _executor.Execute();
@@ -98,14 +97,14 @@ void Fittino::AstroFitCalculator::CalculatePredictions() {
     }
 
     redirector.Stop();
-  
-    std::ifstream file("afout.txt");
+
+    std::ifstream file( "afout.txt" );
 
     std::string line;
     std::getline( file, line );
 
     std::map<std::string, double > afout;
-    
+
     while ( file ) {
 
         std::string name;
@@ -114,7 +113,6 @@ void Fittino::AstroFitCalculator::CalculatePredictions() {
         afout[name] = value;
 
     }
-
 
     file.close();
 

@@ -1,21 +1,21 @@
 /* $Id$ */
 
 /*******************************************************************************
- *                                                                              *
- * Project     Fittino - A SUSY Parameter Fitting Package                       *
- *                                                                              *
- * File        AstroFitCalculator.h                                             *
- *                                                                              *
- * Description Wrapper class for AstroFit                                       *
- *                                                                              *
- * Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
- *                                                                              *
- * Licence     This program is free software; you can redistribute it and/or    *
- *             modify it under the terms of the GNU General Public License as   *
- *             published by the Free Software Foundation; either version 3 of   *
- *             the License, or (at your option) any later version.              *
- *                                                                              *
- *******************************************************************************/
+*                                                                              *
+* Project     Fittino - A SUSY Parameter Fitting Package                       *
+*                                                                              *
+* File        AstroFitCalculator.h                                             *
+*                                                                              *
+* Description Wrapper class for AstroFit                                       *
+*                                                                              *
+* Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
+*                                                                              *
+* Licence     This program is free software; you can redistribute it and/or    *
+*             modify it under the terms of the GNU General Public License as   *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
+*                                                                              *
+*******************************************************************************/
 
 #ifndef FITTINO_ASTROFITCALCULATOR_H
 #define FITTINO_ASTROFITCALCULATOR_H
@@ -24,41 +24,37 @@
 #include "Executor.h"
 #include "PtreeForwardDeclaration.h"
 
-
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
 
-    /*!
-     *  \ingroup calculators
-     *  \brief Wrapper class for AstroFit
-     */
-    class AstroFitCalculator : public CalculatorBase {
+  /*!
+   *  \ingroup calculators
+   *  \brief Wrapper class for AstroFit.
+   */
+  class AstroFitCalculator : public CalculatorBase {
 
     public:
-        AstroFitCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree  );
-        ~AstroFitCalculator();
+      AstroFitCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree  );
+      ~AstroFitCalculator();
 
     private:
-        Executor _executor;
-
-        double _relic;
-        double _photon;
-        double _svind;
-        double _direct;
-
-        double _chi2_relic;
-        double _chi2_photon;
-        double _chi2_svind;
-        double _chi2_direct;
+      double   _chi2_direct;
+      double   _chi2_photon;
+      double   _chi2_relic;
+      double   _chi2_svind;
+      double   _direct;
+      double   _photon;
+      double   _relic;
+      double   _svind;
+      Executor _executor;
 
     private:
-        void CalculatePredictions();
-        
+      void     CalculatePredictions();
 
-    };
+  };
 
 }
 
-#endif
+#endif // FITTINO_ASTROFITCALCULATOR_H

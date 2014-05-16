@@ -1,21 +1,21 @@
 /* $Id$ */
 
 /*******************************************************************************
- *                                                                              *
- * Project     Fittino - A SUSY Parameter Fitting Package                       *
- *                                                                              *
- * File        FormulaCalculator.h                                              *
- *                                                                              *
- * Description Wrapper class for TFormula                                       *
- *                                                                              *
- * Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
- *                                                                              *
- * Licence     This program is free software; you can redistribute it and/or    *
- *             modify it under the terms of the GNU General Public License as   *
- *             published by the Free Software Foundation; either version 3 of   *
- *             the License, or (at your option) any later version.              *
- *                                                                              *
- *******************************************************************************/
+*                                                                              *
+* Project     Fittino - A SUSY Parameter Fitting Package                       *
+*                                                                              *
+* File        FormulaCalculator.h                                              *
+*                                                                              *
+* Description Wrapper class for TFormula                                       *
+*                                                                              *
+* Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
+*                                                                              *
+* Licence     This program is free software; you can redistribute it and/or    *
+*             modify it under the terms of the GNU General Public License as   *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
+*                                                                              *
+*******************************************************************************/
 
 #ifndef FITTINO_FORMULACALCULATOR_H
 #define FITTINO_FORMULACALCULATOR_H
@@ -30,48 +30,46 @@ class TFormula;
  */
 namespace Fittino {
 
-    class PhysicsModel;
+  class PhysicsModel;
 
-    /*!
-     *  \ingroup calculators
-     *  \brief Wrapper class for TFormula.
-     *  \todo Add support for parameters.
-     */
-    class FormulaCalculator : public CalculatorBase {
-
-    public:
-        /*!
-         *  Standard constructor.
-         */
-        FormulaCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
-        /*!
-         *  Standard destructor.
-         */
-        ~FormulaCalculator();
+  /*!
+   *  \ingroup calculators
+   *  \brief Wrapper class for TFormula.
+   *  \todo Add support for parameters.
+   */
+  class FormulaCalculator : public CalculatorBase {
 
     public:
-        void CalculatePredictions();
-        void Initialize();
+      /*!
+       *  Standard constructor.
+       */
+      FormulaCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+      /*!
+       *  Standard destructor.
+       */
+      ~FormulaCalculator();
+      void                               CalculatePredictions();
+      void                               Initialize();
 
-        /*! \cond UML */
+      /*! \cond UML */
     private:
-        double _defaultValue;
-        double _result;
-        std::string _unit;
-        const double* _x;
-        const double* _y;
-        const double* _z;
-        const double* _t;
-        const boost::property_tree::ptree& _ptree;
-        TFormula* _formula;
+      double                             _defaultValue;
+      double                             _result;
+      const double*                      _t;
+      const double*                      _x;
+      const double*                      _y;
+      const double*                      _z;
+      std::string                        _unit;
+      const boost::property_tree::ptree& _ptree;
+      TFormula*                          _formula;
 
     private:
-        void InitializeVariable( std::string name, const double*& variable );
+      void                               InitializeVariable( std::string name, const double*& variable );
 
-        /*! \endcond UML */
-        
-    };
-    
+      /*! \endcond UML */
+
+  };
+
 }
 
-#endif
+#endif // FITTINO_FORMULACALCULATOR_H

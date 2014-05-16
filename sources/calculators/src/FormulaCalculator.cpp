@@ -1,21 +1,21 @@
 /* $Id$ */
 
 /*******************************************************************************
- *                                                                              *
- * Project     Fittino - A SUSY Parameter Fitting Package                       *
- *                                                                              *
- * File        FormulaCalculator.cpp                                            *
- *                                                                              *
- * Description Wrapper class for TFormula                                       *
- *                                                                              *
- * Authors     Bjoern Sarrazin     <sarrazin@physik.uni-bonn.de>                *
- *                                                                              *
- * Licence     This program is free software; you can redistribute it and/or    *
- *             modify it under the terms of the GNU General Public License as   *
- *             published by the Free Software Foundation; either version 3 of   *
- *             the License, or (at your option) any later version.              *
- *                                                                              *
- *******************************************************************************/
+*                                                                              *
+* Project     Fittino - A SUSY Parameter Fitting Package                       *
+*                                                                              *
+* File        FormulaCalculator.cpp                                            *
+*                                                                              *
+* Description Wrapper class for TFormula                                       *
+*                                                                              *
+* Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
+*                                                                              *
+* Licence     This program is free software; you can redistribute it and/or    *
+*             modify it under the terms of the GNU General Public License as   *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
+*                                                                              *
+*******************************************************************************/
 
 #include "TFormula.h"
 
@@ -24,16 +24,16 @@
 #include "SimplePrediction.h"
 
 Fittino::FormulaCalculator::FormulaCalculator( const Fittino::PhysicsModel* model, const boost::property_tree::ptree& ptree )
-: CalculatorBase( model ),
-_defaultValue( 0 ),
-_result( 0 ),
-_unit( ptree.get<std::string>( "Unit", "" ) ),
-_x( &_defaultValue ),
-_y( &_defaultValue ),
-_z( &_defaultValue ),
-_t( &_defaultValue ),
-_ptree( ptree ),
-_formula( new TFormula( ptree.get<std::string>( "Name" ).c_str(), ptree.get<std::string>( "Formula" ).c_str() ) ) {
+    : CalculatorBase( model ),
+      _defaultValue( 0 ),
+      _result( 0 ),
+      _unit( ptree.get<std::string>( "Unit", "" ) ),
+      _x( &_defaultValue ),
+      _y( &_defaultValue ),
+      _z( &_defaultValue ),
+      _t( &_defaultValue ),
+      _ptree( ptree ),
+      _formula( new TFormula( ptree.get<std::string>( "Name" ).c_str(), ptree.get<std::string>( "Formula" ).c_str() ) ) {
 
     InitializeVariable( "x", _x );
     InitializeVariable( "y", _y );
@@ -44,7 +44,7 @@ _formula( new TFormula( ptree.get<std::string>( "Name" ).c_str(), ptree.get<std:
 
     if ( _formula->GetNdim() < 1 ) {
 
-        throw ConfigurationException("Invalid formula.");
+        throw ConfigurationException( "Invalid formula." );
 
     }
 
@@ -75,5 +75,3 @@ void Fittino::FormulaCalculator::CalculatePredictions() {
 void Fittino::FormulaCalculator::Initialize() {
 
 }
-
-
