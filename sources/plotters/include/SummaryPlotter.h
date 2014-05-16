@@ -22,6 +22,10 @@
 
 #include "PlotterBase.h"
 
+class TLegend;
+class TLine;
+class TMarker;
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -39,20 +43,28 @@ namespace Fittino {
       /*!
        *  Constructor documentation.
        */
-      SummaryPlotter( ModelBase* model, const boost::property_tree::ptree& ptree );
+      SummaryPlotter( std::vector<TH1*>& histogramVector, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
       ~SummaryPlotter();
 
-    protected:
-      virtual void Execute();
-      virtual void PrintResult() const;
-      virtual void PrintSteeringParameters() const;
-      virtual void UpdateModel();
+      /*! \endcond UML */
+    private:
+      double   _labelOffset;
+      double   _labelSize;
+      int      _color1;
+      int      _color2;
+      TLegend* _legend;
+      TLegend* _legend2;
+      TLine*   _line;
+      TMarker* _bestFitValue;
 
     private:
-      double       _smValue;
+      void     Plot( unsigned int iHistogram );
+      void     PrintSteeringParameters() const;
+
+      /*! \endcond UML */
 
   };
 

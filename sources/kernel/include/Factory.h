@@ -25,6 +25,8 @@
 #include "Collection.h"
 #include "PtreeForwardDeclaration.h"
 
+class TH1;
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -35,6 +37,7 @@ namespace Fittino {
   class ModelBase;
   class Observable;
   class PhysicsModel;
+  class PlotterBase;
   class PredictionBase;
   class SLHADataStorageBase;
   class Tool;
@@ -100,21 +103,29 @@ namespace Fittino {
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
       Observable* const          CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::PredictionBase*>& predictions, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const;
+      /*!
+       *  Returns a concrete plotter.\n
+       *  Supported plotters are
+       *  <ul>
+       *    <li> ContourPlotter\n
+       *    <li> ProfilePlotter\n
+       *    <li> SimplePlotter\n
+       *    <li> SummaryPlotter\n
+       *  </ul>
+       */
+      PlotterBase* const         CreatePlotter( const std::string& type, std::vector<TH1*>& histogramVector, const boost::property_tree::ptree& ptree ) const;
       SLHADataStorageBase* const CreateSLHAeaSLHADataStorage() const;
       /*!
        *  Returns a concrete tool.\n
        *  Supported tools are
        *  <ul>
-       *    <li> ContourPlotter\n
        *    <li> GeneticAlgorithmOptimizer\n
        *    <li> MarkovChainSampler\n
        *    <li> MinuitOptimizer\n
        *    <li> ParticleSwarmOptimizer\n
-       *    <li> ScatterPlotter\n
        *    <li> SimpleOptimizer\n
        *    <li> SimpleSampler\n
        *    <li> SimulatedAnnealingOptimizer\n
-       *    <li> SummaryPlotter\n
        *    <li> TreeSampler
        *  </ul>
        */

@@ -17,101 +17,134 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "TCanvas.h"
-#include "TFile.h"
+#include "TH1.h"
 #include "TStyle.h"
-#include "TTree.h"
+#include "TText.h"
 
-#include "ModelBase.h"
-#include "ModelParameter.h"
+#include "ConfigurationException.h"
+#include "Messenger.h"
 #include "PlotterBase.h"
+#include "Redirector.h"
 
-Fittino::PlotterBase::PlotterBase( ModelBase* model, const boost::property_tree::ptree& ptree )
-    : AnalysisTool( model, ptree ),
-      _dataFileName( ptree.get<std::string>( "DataFileName", "Fittino.out.root" ) ),
-      _canvas( 0 ),
-      _dataFile( TFile::Open( _dataFileName.c_str(), "READ" ) ),
-      //_tree( (TTree*)_dataFile->Get( "markovChain" ) ),
-      _tree( ( TTree* )_dataFile->Get( "Tree" ) ) {
+Fittino::PlotterBase::PlotterBase( std::vector<TH1*>& histogramVector, const boost::property_tree::ptree& ptree )
+    : _textSize       ( 0.04 ),
+      _textFont       ( 42 ), // Helvetica
+      _format         ( ptree.get<std::string>( "Format", "Portrait" ) ),
+      _name           ( "" ),
+      _version        ( "2.0.X" ),
+      _canvas         ( 0 ),
+      _pad            ( 0 ),
+      _fittinoStyle   ( new TStyle( "FITTINO", "Fittino style" ) ),
+      _histogramVector( histogramVector ) {
 
-    _name = "basic plotter";
+    // Format settings.
 
-    _leafVector = std::vector<double>( _tree->GetListOfLeaves()->GetSize() );
+    if ( _format == "Portrait" ) {
 
-    Int_t font = 42; // Helvetica
-    Double_t tsize = 0.04;
+        _canvas = new TCanvas( "Canvas", "Canvas", 800, 600 );
 
-    _fittinoStyle = new TStyle( "FITTINO", "Fittino style" );
+    }
+    else if ( _format == "Square" ) {
+
+        _canvas = new TCanvas( "Canvas", "Canvas", 600, 600 );
+
+    }
+    else if ( _format == "Summary" ) {
+
+        _canvas = new TCanvas( "Canvas", "Canvas", 600, 800 );
+
+    }
+    else {
+
+        throw ConfigurationException( "Plot format not known." );
+
+    }
+
+    // Global style settings.
 
     _fittinoStyle->SetOptTitle( 0 );
     _fittinoStyle->SetOptStat( 0 );
 
-    _fittinoStyle->SetPalette( 1 );
+    _fittinoStyle->SetTextFont( _textFont );
+    _fittinoStyle->SetTextSize( _textSize );
 
-    _fittinoStyle->SetPadTopMargin( 0.05 );
-    _fittinoStyle->SetPadRightMargin( 0.08 );
-    _fittinoStyle->SetPadBottomMargin( 0.16 );
-    _fittinoStyle->SetPadLeftMargin( 0.16 );
-
-    _fittinoStyle->SetTextFont( font );
-    _fittinoStyle->SetTextSize( tsize );
-
-    _fittinoStyle->SetLabelFont( font, "x" );
-    _fittinoStyle->SetTitleFont( font, "x" );
-    _fittinoStyle->SetLabelFont( font, "y" );
-    _fittinoStyle->SetTitleFont( font, "y" );
-    _fittinoStyle->SetLabelFont( font, "z" );
-    _fittinoStyle->SetTitleFont( font, "z" );
-
-    _fittinoStyle->SetLabelSize( tsize, "x" );
-    _fittinoStyle->SetTitleSize( tsize, "x" );
-    _fittinoStyle->SetLabelSize( tsize, "y" );
-    _fittinoStyle->SetTitleSize( tsize, "y" );
-    _fittinoStyle->SetLabelSize( tsize, "z" );
-    _fittinoStyle->SetTitleSize( tsize, "z" );
+    _fittinoStyle->SetTitleOffset( 1.3, "x" );
+    _fittinoStyle->SetTitleOffset( 1.3, "y" );
+    _fittinoStyle->SetTitleOffset( 1.3, "z" );
 
     _fittinoStyle->SetFrameBorderMode( 0 );
-
-    // Fill the quantity vector.
-
-    for ( unsigned int i = 0; i < _model->GetCollectionOfQuantities().GetNumberOfElements(); ++i ) {
-
-        _quantityVector.push_back( _model->GetCollectionOfQuantities().At( i ) );
-
-    }
-
-    // Set the histogram settings.
-
-    for ( unsigned int i = 0; i < _quantityVector.size(); ++i ) {
-
-        _tree->SetBranchAddress( _quantityVector.at( i )->GetName().c_str(), &_leafVector.at( i ) );
-        _leafMap.insert( std::pair<std::string, int>( _quantityVector.at( i )->GetName().c_str(), i ) );
-
-    }
 
 }
 
 Fittino::PlotterBase::~PlotterBase() {
 
     delete _canvas;
-    delete _tree;
-    delete _dataFile;
     delete _fittinoStyle;
 
 }
 
-void Fittino::PlotterBase::PrintResult() const {
+void Fittino::PlotterBase::MakePlots() {
+
+    Messenger& messenger = Messenger::GetInstance();
+
+    messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Making plots" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+
+    // Loop over all histograms.
+
+    for ( unsigned int iHistogram = 0; iHistogram < _histogramVector.size(); ++iHistogram ) {
+
+        messenger << "    Plotting " << _histogramVector[iHistogram]->GetName() << Messenger::Endl;
+
+        // Plot the histograms.
+
+        Plot( iHistogram );
+
+        // Add fittino version.
+
+        TText fittinoVersion;
+        fittinoVersion.SetTextFont( 82 );
+        std::string versionText = "Fittino Version " + _version;
+
+        if ( _format == "Portrait" ) {
+
+            fittinoVersion.DrawTextNDC( 0.590, 0.95, versionText.c_str() );
+
+        }
+        else if ( _format == "Square" ) {
+
+            fittinoVersion.DrawTextNDC( 0.475, 0.95, versionText.c_str() );
+
+        }
+        else if ( _format == "Summary" ) {
+
+            fittinoVersion.SetTextSize( 0.035 );
+            fittinoVersion.DrawTextNDC( 0.05, 0.035, versionText.c_str() );
+
+        }
+
+        // Save the plots to .eps files.
+
+        _canvas->Update();
+
+        Redirector redirector( "/dev/null" );
+        redirector.Start();
+
+        _canvas->SaveAs( static_cast<TString>( _histogramVector[iHistogram]->GetName() ) + ".eps", "RECREATE" );
+
+        redirector.Stop();
+
+    }
+
+    messenger << Messenger::ALWAYS << Messenger::Endl;
 
 }
 
 void Fittino::PlotterBase::PrintSteeringParameters() const {
-
-}
-
-void Fittino::PlotterBase::UpdateModel() {
-
-}
-
-void Fittino::PlotterBase::Terminate() {
 
 }

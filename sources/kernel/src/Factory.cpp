@@ -40,7 +40,6 @@
 #include "HiggsBoundsHECCalculator.h"
 #include "HiggsBoundsSLHACalculator.h"
 #include "HiggsSignalsHadXSCalculator.h"
-#include "NewHiggsSignalsHadXSCalculator.h"
 #include "HiggsSignalsPartXSCalculator.h"
 #include "HiggsSignalsSLHACalculator.h"
 #include "LHCLimitCalculator.h"
@@ -48,16 +47,18 @@
 #include "MicromegasCalculator.h"
 #include "MinuitOptimizer.h"
 #include "NewCorrelatedSampler.h"
+#include "NewHiggsSignalsHadXSCalculator.h"
 #include "Observable.h"
 #include "ParticleSwarmOptimizer.h"
 #include "PhysicsModel.h"
 #include "ProfileHistogramMaker.h"
+#include "ProfilePlotter.h"
 #include "RegressionCalculator.h"
 #include "RosenbrockModel.h"
-#include "ScatterPlotter.h"
 #include "Simple1DHistogramMaker.h"
 #include "Simple2DHistogramMaker.h"
 #include "SimpleOptimizer.h"
+#include "SimplePlotter.h"
 #include "SimplePrediction.h"
 #include "SimpleSampler.h"
 #include "SimulatedAnnealingOptimizer.h"
@@ -209,19 +210,6 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 #endif
 
     }
-    else if ( type == "NewHiggsSignalsHadXSCalculator" ) {
-
-#if defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
-
-        return new NewHiggsSignalsHadXSCalculator( model, ptree );
-
-#else
-
-        throw ConfigurationException( "Trying to use NewHiggsSignalsHadXSCalculator but Fittino was built without HiggsBounds or HiggsSignals." );
-
-#endif
-
-    }
     else if ( type == "HiggsSignalsSLHACalculator" ) {
 
 #if defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
@@ -253,6 +241,19 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 #endif
 
     }
+    else if ( type == "NewHiggsSignalsHadXSCalculator" ) {
+
+#if defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
+
+        return new NewHiggsSignalsHadXSCalculator( model, ptree );
+
+#else
+
+        throw ConfigurationException( "Trying to use NewHiggsSignalsHadXSCalculator but Fittino was built without HiggsBounds or HiggsSignals." );
+
+#endif
+
+    }
     else if ( type == "RegressionCalculator" ) {
 
         return new RegressionCalculator( model, ptree );
@@ -264,7 +265,7 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 
         return new SPhenoSLHACalculator( model, ptree );
 
-#else 
+#else
 
         throw ConfigurationException( " Trying to use SPhenoSLHACalculator but Fittino was built without SLHAea." );
 
@@ -324,6 +325,11 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
         return new RosenbrockModel( ptree );
 
     }
+    else {
+
+        throw ConfigurationException( "Model type " + type + " not known." );
+
+    }
 
 }
 
@@ -333,31 +339,31 @@ Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::prop
     std::string calculatorName = ptree.get<std::string>( "CalculatorName", "NONE" );
 
     CalculatorBase *calculator = NULL;
-    if( calculatorName != "NONE" ) {
-    
+    if ( calculatorName != "NONE" ) {
+
         calculator = calculators.At( ptree.get<std::string>( "CalculatorName", "NONE" ) );
-    
+
     }
 
     if ( type == "Simple" ) {
-    
-        if( calculator ) {
-            
+
+        if ( calculator ) {
+
             return new Observable( ptree, new SimplePrediction( ptree, calculator ) );
         }
         else {
-            return new Observable( ptree, new SimplePrediction( ptree.get<std::string>( "Name"), "", 0. ) );
+            return new Observable( ptree, new SimplePrediction( ptree.get<std::string>( "Name" ), "", 0. ) );
         }
 
     }
-    /* 
+    /*
     else if ( type == "NONE" ) {
 
         return new Observable( ptree, NULL );
 
     }
     */
-    
+
     else {
 
         throw ConfigurationException( "Prediction type" + type + " not known." );
@@ -383,6 +389,36 @@ Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::prop
 
 }
 
+Fittino::PlotterBase* const Fittino::Factory::CreatePlotter( const std::string& type, std::vector<TH1*>& histogramVector, const boost::property_tree::ptree& ptree ) const {
+
+    if ( type == "ContourPlotter" ) {
+
+        return new ContourPlotter( histogramVector, ptree );
+
+    }
+    else if ( type == "ProfilePlotter" ) {
+
+        return new ProfilePlotter( histogramVector, ptree );
+
+    }
+    else if ( type == "SimplePlotter" ) {
+
+        return new SimplePlotter( histogramVector, ptree );
+
+    }
+    else if ( type == "SummaryPlotter" ) {
+
+        return new SummaryPlotter( histogramVector, ptree );
+
+    }
+    else {
+
+        throw ConfigurationException( "Plotter type " + type + " not known." );
+
+    }
+
+}
+
 Fittino::SLHADataStorageBase* const Fittino::Factory::CreateSLHAeaSLHADataStorage() const {
 
 #if defined SLHAEA
@@ -403,11 +439,6 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
     if ( type == "ContourHistogramMaker" ) {
 
         return new ContourHistogramMaker( model, ptree );
-
-    }
-    else if ( type == "ContourPlotter" ) {
-
-        return new ContourPlotter( model, ptree );
 
     }
     else if ( type == "GeneticAlgorithmOptimizer" ) {
@@ -433,11 +464,6 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
     else if ( type == "ProfileHistogramMaker" ) {
 
         return new ProfileHistogramMaker( model, ptree );
-
-    }
-    else if ( type == "ScatterPlotter" ) {
-
-        return new ScatterPlotter( model, ptree );
 
     }
     else if ( type == "Simple1DHistogramMaker" ) {
@@ -468,11 +494,6 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
     else if ( type == "SummaryHistogramMaker" ) {
 
         return new SummaryHistogramMaker( model, ptree );
-
-    }
-    else if ( type == "SummaryPlotter" ) {
-
-        return new SummaryPlotter( model, ptree );
 
     }
     else if ( type == "TreeSampler" ) {

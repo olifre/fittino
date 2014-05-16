@@ -4,9 +4,9 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        ContourPlotter.h                                                 *
+* File        ProfilePlotter.h                                                 *
 *                                                                              *
-* Description Class for plotting 2D contour plots                              *
+* Description Class for plotting chi2 profile plots                            *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -17,47 +17,36 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_CONTOURPLOTTER_H
-#define FITTINO_CONTOURPLOTTER_H
+#ifndef FITTINO_PROFILEPLOTTER_H
+#define FITTINO_PROFILEPLOTTER_H
 
 #include "PlotterBase.h"
-
-class TLegend;
 
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
 
-  class ModelBase;
-
-  /*!
-   *  \defgroup plotters
-   */
   /*!
    *  \ingroup plotters
-   *  \brief Class for plotting 2D contour plots.
+   *  \brief Class for plotting chi2 profile plots.
    */
-  class ContourPlotter : public PlotterBase {
+  class ProfilePlotter : public PlotterBase {
 
     public:
       /*!
        *  Constructor documentation.
        */
-      ContourPlotter( std::vector<TH1*>& histogramVector, const boost::property_tree::ptree& ptree );
+      ProfilePlotter( std::vector<TH1*>& histogramVector, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
-      ~ContourPlotter();
+      ~ProfilePlotter();
 
       /*! \endcond UML */
     private:
-      std::string _style;
-      TLegend*    _legend;
-
-    private:
-      void        Plot( unsigned int iHistogram );
-      void        PrintSteeringParameters() const;
+      void Plot( unsigned int iHistogram );
+      void PrintSteeringParameters() const;
 
       /*! \endcond UML */
 
@@ -65,4 +54,4 @@ namespace Fittino {
 
 }
 
-#endif // FITTINO_CONTOURPLOTTER_H
+#endif // FITTINO_PROFILEPLOTTER_H

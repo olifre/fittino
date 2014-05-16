@@ -20,58 +20,57 @@
 #ifndef FITTINO_PLOTTERBASE_H
 #define FITTINO_PLOTTERBASE_H
 
-#include <map>
+#include <string>
+#include <vector>
 
-#include "AnalysisTool.h"
+#include "PtreeForwardDeclaration.h"
 
 class TCanvas;
+class TH1;
 class TPad;
 class TStyle;
-class TTree;
 
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
 
-  class ModelBase;
-  class Quantity;
-
   /*!
    *  \ingroup kernel
    *  \brief Base class for plotters.
    */
-  class PlotterBase : public AnalysisTool {
+  class PlotterBase {
 
     public:
       /*!
        *  Constructor documentation.
        */
-      PlotterBase( ModelBase* model, const boost::property_tree::ptree& ptree );
+      PlotterBase( std::vector<TH1*>& histogramVector, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
       ~PlotterBase();
+      void               MakePlots();
 
     protected:
-      std::string                  _dataFileName;
-      std::map<std::string, int>   _leafMap;
-      std::vector<double>          _leafVector;
-      std::vector<std::string>     _activeQuantityVector;
-      TCanvas*                     _canvas;
-      TFile*                       _dataFile;
-      TPad*                        _pad;
-      TStyle*                      _fittinoStyle;
-      TTree*                       _tree;
-      std::vector<const Quantity*> _quantityVector;
+      double             _textSize;
+      int                _textFont;
+      std::string        _format;
+      std::string        _name;
+      std::string        _version;
+      TCanvas*           _canvas;
+      TPad*              _pad;
+      TStyle*            _fittinoStyle;
+      std::vector<TH1*>& _histogramVector;
 
     protected:
-      virtual void                 PrintResult() const;
-      virtual void                 PrintSteeringParameters() const;
-      virtual void                 UpdateModel();
+      void               PrintSteeringParameters() const;
 
+      /*! \endcond UML */
     private:
-      void                         Terminate();
+      virtual void       Plot( unsigned int iHistogram ) = 0;
+
+      /*! \endcond UML */
 
   };
 
