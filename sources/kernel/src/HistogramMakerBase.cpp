@@ -19,16 +19,22 @@
 
 #include <boost/foreach.hpp>
 
+#include "TGaxis.h"
 #include "TH1.h"
 #include "TMath.h"
 
+#include "Factory.h"
 #include "HistogramMakerBase.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
+#include "PlotterBase.h"
 
 Fittino::HistogramMakerBase::HistogramMakerBase( ModelBase* model, const boost::property_tree::ptree& ptree )
     : Tool( model, ptree ),
-      _iEntry( 0 ) {
+      _iEntry( 0 ),
+      _globalAxis( new TGaxis() ) {
+
+    _globalAxis->SetMaxDigits( ptree.get<int>( "AxisMaxDigits", 3 ) );
 
     // Loop over the quantities scheduled in the Fittino input file and fill the histogram
     // information into appropriate lists for later use.
@@ -88,9 +94,21 @@ Fittino::HistogramMakerBase::HistogramMakerBase( ModelBase* model, const boost::
 
     }
 
+    // Set the plotter.
+
+    const Factory factory;
+
+    const boost::property_tree::ptree::value_type& plotterNode = *( ptree.get_child( "Plotter" ).begin() );
+    std::string plotterType = plotterNode.first;
+    const boost::property_tree::ptree& plotterTree = plotterNode.second;
+    _plotter = factory.CreatePlotter( plotterType, _histogramVector, plotterTree );
+
 }
 
 Fittino::HistogramMakerBase::~HistogramMakerBase() {
+
+    delete _globalAxis;
+    _globalAxis = 0;
 
 }
 
@@ -113,6 +131,12 @@ void Fittino::HistogramMakerBase::Execute() {
         UpdateModel();
 
         Tool::PrintStatus();
+
+    }
+
+    if ( _plotter ) {
+
+        _plotter->MakePlots();
 
     }
 

@@ -22,12 +22,15 @@
 
 #include "Tool.h"
 
+class TGaxis;
 class TH1;
 
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
+
+  class PlotterBase;
 
   /*!
    *  \ingroup kernel
@@ -82,11 +85,15 @@ namespace Fittino {
        *  Stores the histograms to be made.
        */
       std::vector<TH1*>         _histogramVector;
+      PlotterBase*              _plotter;
 
     protected:
       void                      PrintSteeringParameters() const;
 
       /*! \cond UML */
+    private:
+      TGaxis*                   _globalAxis;
+
     private:
       void                      Execute();
       void                      InitializeTool();

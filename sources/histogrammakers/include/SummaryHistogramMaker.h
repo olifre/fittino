@@ -30,6 +30,8 @@ class TH1;
  */
 namespace Fittino {
 
+  class PlotterBase;
+
   /*!
    *  \defgroup histogrammakers
    */
@@ -88,6 +90,7 @@ namespace Fittino {
        *  Stores the histogram to be made. Needed for compatibility with plotters.
        */
       std::vector<TH1*>         _histogramVector;
+      PlotterBase*              _plotter;
 
       /*! \cond UML */
     private:

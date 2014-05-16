@@ -73,17 +73,24 @@
         <Name>X2</Name>
         <PlotName>x_{2}</PlotName>
         <NumberOfBins>200</NumberOfBins>
-        <LowerBound>-3.</LowerBound>
-        <UpperBound>3.</UpperBound>
+        <LowerBound>-4.</LowerBound>
+        <UpperBound>4.</UpperBound>
       </Histogram>
 
       <Histogram>
         <Name>X3</Name>
         <PlotName>x_{3}</PlotName>
         <NumberOfBins>200</NumberOfBins>
-        <LowerBound>-3.</LowerBound>
-        <UpperBound>3.</UpperBound>
+        <LowerBound>-4.</LowerBound>
+        <UpperBound>4.</UpperBound>
       </Histogram>
+
+      <Plotter>
+        <ContourPlotter>
+          <Format>Square</Format>
+          <Style>Classic</Style>
+        </ContourPlotter>
+      </Plotter>
 
     </ContourHistogramMaker>
 

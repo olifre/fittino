@@ -23,8 +23,10 @@
 #include "TH2D.h"
 #include "TMath.h"
 
+#include "Factory.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
+#include "PlotterBase.h"
 #include "SummaryHistogramMaker.h"
 
 Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const boost::property_tree::ptree& ptree )
@@ -77,7 +79,7 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
 
     // Histogram name.
 
-    std::string histogramName = "Summary1Sigma";
+    std::string histogramName = "Summary";
 
     // Histogram bins.
 
@@ -99,27 +101,29 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
 
     }
 
-    _histogram1Sigma = new TH2D( histogramName.c_str(),
-                                 histogramName.c_str(),
-                                 _numberOfBins, xBins, 2 * _quantityName.size() + 1, 0., 2 * _quantityName.size() + 1 );
-
-    histogramName = "Summary2Sigma";
-
     _histogram2Sigma = new TH2D( histogramName.c_str(),
                                  histogramName.c_str(),
                                  _numberOfBins, xBins, 2 * _quantityName.size() + 1, 0., 2 * _quantityName.size() + 1 );
 
-    _histogram1Sigma->SetTitle( 0 );
-    _histogram1Sigma->SetStats( 0 );
+    // Histogram name.
+
+    histogramName = "Summary1Sigma";
+
+    _histogram1Sigma = new TH2D( histogramName.c_str(),
+                                 histogramName.c_str(),
+                                 _numberOfBins, xBins, 2 * _quantityName.size() + 1, 0., 2 * _quantityName.size() + 1 );
 
     _histogram2Sigma->SetTitle( 0 );
     _histogram2Sigma->SetStats( 0 );
 
-    _histogramVector.push_back( _histogram1Sigma );
+    _histogram2Sigma->GetXaxis()->SetTitle( "Best fit value" );
+    _histogram2Sigma->GetYaxis()->SetNdivisions( 0, kFALSE );
+
     _histogramVector.push_back( _histogram2Sigma );
 
     // Detemine the quantity index of each scheduled quantity in the list of model quantities. This
-    // is done because lookup via index is usually faster than lookup via name.
+    // is done because lookup via index is usually faster than lookup via name. Also set the y-axis
+    // labels.
 
     for ( unsigned int iScheduledQuantity = 0; iScheduledQuantity < _quantityName.size(); ++iScheduledQuantity ) {
 
@@ -133,6 +137,11 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
 
         }
 
+        // Y-axis bin labels.
+
+        _histogram1Sigma->GetYaxis()->SetBinLabel( 2 * ( _quantityName.size() - iScheduledQuantity ), _plotName[iScheduledQuantity].c_str() );
+        _histogram2Sigma->GetYaxis()->SetBinLabel( 2 * ( _quantityName.size() - iScheduledQuantity ), _plotName[iScheduledQuantity].c_str() );
+
     }
 
     // Determine the lowest chi2.
@@ -142,6 +151,15 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
     _model->GetCollectionOfParameters().At( 0 )->SetValue( _bestFitEntry );
     _lowestChi2 = _model->GetChi2();
     _model->GetCollectionOfParameters().At( 0 )->SetValue( _iEntry );
+
+    // Set the plotter.
+
+    const Factory factory;
+
+    const boost::property_tree::ptree::value_type& plotterNode = *( ptree.get_child( "Plotter" ).begin() );
+    std::string plotterType = plotterNode.first;
+    const boost::property_tree::ptree& plotterTree = plotterNode.second;
+    _plotter = factory.CreatePlotter( plotterType, _histogramVector, plotterTree );
 
 }
 
@@ -176,6 +194,14 @@ void Fittino::SummaryHistogramMaker::Execute() {
 
     }
 
+    _histogram2Sigma->Add( _histogram1Sigma );
+
+    if ( _plotter ) {
+
+        _plotter->MakePlots();
+
+    }
+
 }
 
 void Fittino::SummaryHistogramMaker::InitializeTool() {
@@ -195,7 +221,6 @@ void Fittino::SummaryHistogramMaker::Terminate() {
 
 void Fittino::SummaryHistogramMaker::WriteResultToFile() const {
 
-    _histogram1Sigma->Write();
     _histogram2Sigma->Write();
 
 }
@@ -232,9 +257,9 @@ void Fittino::SummaryHistogramMaker::UpdateModel() {
 
         if ( normalizedChi2 <= 1. ) {
 
-            // If the bin corresponds to the 1 sigma region, fill with 0.5.
+            // If the bin corresponds to the 1 sigma region, fill with 1.2.
 
-            _histogram1Sigma->SetBinContent( bin, 2 * ( _quantityName.size() - iQuantity ), 0.5 );
+            _histogram1Sigma->SetBinContent( bin, 2 * ( _quantityName.size() - iQuantity ), 1.2 );
 
         }
         else if ( normalizedChi2 <= 4. &&  normalizedChi2 > 1. ) {

@@ -91,6 +91,12 @@
         <UpperBound>10000.</UpperBound>
       </Histogram>
 
+      <Plotter>
+        <SimplePlotter>
+          <Format>Portrait</Format>
+        </SimplePlotter>
+      </Plotter>
+
     </Simple1DHistogramMaker>
 
   </Tool>

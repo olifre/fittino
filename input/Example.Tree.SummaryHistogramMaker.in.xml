@@ -61,9 +61,8 @@
     <SummaryHistogramMaker>
 
       <NumberOfBins>35</NumberOfBins>
-      <LowerBound>0.1</LowerBound>
-      <UpperBound>10.</UpperBound>
-      <LogScale>true</LogScale>
+      <LowerBound>-4.</LowerBound>
+      <UpperBound>4.</UpperBound>
 
       <Quantity>
         <Name>X1</Name>
@@ -79,6 +78,12 @@
         <Name>X3</Name>
         <PlotName>x_{3}</PlotName>
       </Quantity>
+
+      <Plotter>
+        <SummaryPlotter>
+          <Format>Summary</Format>
+        </SummaryPlotter>
+      </Plotter>
 
     </SummaryHistogramMaker>
 

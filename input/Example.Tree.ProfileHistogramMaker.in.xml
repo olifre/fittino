@@ -85,6 +85,12 @@
         <UpperBound>4.</UpperBound>
       </Histogram>
 
+      <Plotter>
+        <ProfilePlotter>
+          <Format>Portrait</Format>
+        </ProfilePlotter>
+      </Plotter>
+
     </ProfileHistogramMaker>
 
   </Tool>
