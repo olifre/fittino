@@ -109,8 +109,8 @@ void Fittino::TreeSampler::PrintSteeringParameters() const {
 
 void Fittino::TreeSampler::UpdateModel() {
 
-    double chi2 = _model->GetChi2();
-    GetStatusParameterVector()->at( 0 )->SetValue( chi2 );
+    _chi2 = _model->GetChi2();
+    GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
 
     AnalysisTool::PrintStatus();
    
