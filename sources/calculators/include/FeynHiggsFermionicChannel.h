@@ -63,6 +63,8 @@ namespace Fittino {
 
         double _normSM_gs2;
         double _normSM_gp2;
+        double _normSM_Norm_gs;
+        double _normSM_Norm_gp;
         double _normSM_gsPhi;
         double _normSM_gpPhi;
 

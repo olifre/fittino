@@ -55,6 +55,10 @@ Fittino::FeynHiggsFermionicChannel::FeynHiggsFermionicChannel( FHRealType* gamma
 
         AddQuantity( new SimplePrediction( "NormSM_Abs_gs_" + higgsName + "_" + channelName, "", _normSM_gs2 ) );
         AddQuantity( new SimplePrediction( "NormSM_Abs_gp_" + higgsName + "_" + channelName, "", _normSM_gp2 ) );
+
+        AddQuantity( new SimplePrediction( "NormSM_Norm_gs_" + higgsName + "_" + channelName, "", _normSM_Norm_gs ) );
+        AddQuantity( new SimplePrediction( "NormSM_Norm_gp_" + higgsName + "_" + channelName, "", _normSM_Norm_gp ) );
+
         AddQuantity( new SimplePrediction( "DiffSM_Arg_gs_" + higgsName + "_" + channelName, "", _normSM_gsPhi ) );
         AddQuantity( new SimplePrediction( "DiffSM_Arg_gp_" + higgsName + "_" + channelName, "", _normSM_gpPhi ) );
 
@@ -93,6 +97,7 @@ void Fittino::FeynHiggsFermionicChannel::CalculatePredictions() {
         _sm_gsPhi = std::arg( coup );
 
         _normSM_gs2   = _model_gs2 / _sm_gs2;
+        _normSM_Norm_gs   = TMath::Power( _normSM_gs2, 2 );
 
         if ( TMath::IsNaN( _model_gsPhi - _sm_gsPhi ) ) {
 
@@ -112,6 +117,7 @@ void Fittino::FeynHiggsFermionicChannel::CalculatePredictions() {
         _sm_gpPhi = std::arg( coup );
 
         _normSM_gp2   = _model_gp2 / _sm_gp2;
+        _normSM_Norm_gp   = TMath::Power( _normSM_gp2, 2 );
 
         if ( TMath::IsNaN( _model_gpPhi - _sm_gpPhi ) ) {
 

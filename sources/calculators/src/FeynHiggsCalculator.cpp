@@ -46,8 +46,8 @@
 
 Fittino::FeynHiggsCalculator::FeynHiggsCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree, std::string inputMethod )
 : CalculatorBase( model ),
-_gammas     ( new FHRealType   [ngammas     ] ),
-_gammasms   ( new FHRealType   [ngammasms   ] ),
+gammas     ( new FHRealType   [ngammas     ] ),
+gammasms   ( new FHRealType   [ngammasms   ] ),
 _couplings  ( new FHComplexType[ncouplings  ] ),
 _couplingsms( new FHComplexType[ncouplingsms] ),
 _smallObsSet( true ),
@@ -124,6 +124,20 @@ _slhadatastorageSPheno( NULL ){
     AddQuantity( new SimplePrediction( "Mass_H0",                    "", _mass_H0                    ) );
     AddQuantity( new SimplePrediction( "Mass_A0",                    "", _mass_A0                    ) );
     AddQuantity( new SimplePrediction( "Mass_Hp",                    "", _mass_Hp                    ) );
+
+    AddQuantity( new SimplePrediction( "GammaTotal_h0", "", _GammaTotal_h0   ) );
+    AddQuantity( new SimplePrediction( "GammaTotal_H0", "", _GammaTotal_H0   ) );
+    AddQuantity( new SimplePrediction( "GammaTotal_A0", "", _GammaTotal_A0   ) );
+    AddQuantity( new SimplePrediction( "GammaTotal_Hp", "", _GammaTotal_Hp   ) );
+
+    AddQuantity( new SimplePrediction( "SM_GammaTotal_h0", "", _SM_GammaTotal_h0   ) );
+    AddQuantity( new SimplePrediction( "SM_GammaTotal_H0", "", _SM_GammaTotal_H0   ) );
+    AddQuantity( new SimplePrediction( "SM_GammaTotal_A0", "", _SM_GammaTotal_A0   ) );
+
+    AddQuantity( new SimplePrediction( "NormSM_GammaTotal_h0", "", _NormSM_GammaTotal_h0   ) );
+    AddQuantity( new SimplePrediction( "NormSM_GammaTotal_H0", "", _NormSM_GammaTotal_H0   ) );
+    AddQuantity( new SimplePrediction( "NormSM_GammaTotal_A0", "", _NormSM_GammaTotal_A0   ) );
+
 
     AddChannels_HpHV    ();
     AddChannels_HpFF    ( 1, _nu, _lepton );
@@ -403,12 +417,12 @@ void Fittino::FeynHiggsCalculator::AddChannel( std::string higgsName, std::strin
 
     if ( fermionic ) {
 
-        calc = new FeynHiggsFermionicChannel( _gammas, _gammasms, _couplings, _couplingsms, higgsName,  channelName, channelNumber, SM );
+        calc = new FeynHiggsFermionicChannel( gammas, gammasms, _couplings, _couplingsms, higgsName,  channelName, channelNumber, SM );
 
     }
     else {
         
-        calc = new FeynHiggsBosonicChannel( _gammas, _gammasms, _couplings, _couplingsms, higgsName,  channelName, channelNumber, SM );
+        calc = new FeynHiggsBosonicChannel( gammas, gammasms, _couplings, _couplingsms, higgsName,  channelName, channelNumber, SM );
 
     }
 
@@ -569,13 +583,27 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     }
 
     int fast  = 1;
-    FHCouplings( &_error, _couplings, _couplingsms, _gammas, _gammasms, fast );
+    FHCouplings( &_error, _couplings, _couplingsms, gammas, gammasms, fast );
 
     if ( _error != 0 ) {
 
       throw CalculatorException( _name, "FHCouplings" ); 
 
     }
+
+    _GammaTotal_h0 = GammaTot(1);
+    _GammaTotal_H0 = GammaTot(2);
+    _GammaTotal_A0 = GammaTot(3);
+    _GammaTotal_Hp = GammaTot(4);
+    
+    _SM_GammaTotal_h0 = GammaSMTot(1);
+    _SM_GammaTotal_H0 = GammaSMTot(2);
+    _SM_GammaTotal_A0 = GammaSMTot(3);
+
+    _NormSM_GammaTotal_h0 = _GammaTotal_h0 / _SM_GammaTotal_h0;
+    _NormSM_GammaTotal_H0 = _GammaTotal_H0 / _SM_GammaTotal_H0;
+    _NormSM_GammaTotal_A0 = _GammaTotal_A0 / _SM_GammaTotal_A0;
+
 
     for ( unsigned int iCrossSection = 0; iCrossSection < _crossSections.size(); iCrossSection++ ) {
 

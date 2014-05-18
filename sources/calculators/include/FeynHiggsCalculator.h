@@ -65,6 +65,20 @@ namespace Fittino {
       double _mass_A0;
       double _mass_Hp;
 
+      double _GammaTotal_h0;
+      double _GammaTotal_H0;
+      double _GammaTotal_A0;
+      double _GammaTotal_Hp;
+
+      double _NormSM_GammaTotal_h0;
+      double _NormSM_GammaTotal_H0;
+      double _NormSM_GammaTotal_A0;
+      
+      double _SM_GammaTotal_h0;
+      double _SM_GammaTotal_H0;
+      double _SM_GammaTotal_A0;
+      
+
   private:
       void AddChannel( std::string higgsName, std::string channelName, int channelNumber, bool fermionic, bool SM );
       void AddChannels_H0SfSf  ( int iHiggs, std::string higgsName, unsigned int type, std::string* names );
@@ -80,8 +94,8 @@ namespace Fittino {
       void AddChannels_HpNeuCha();
 
       std::vector< FeynHiggsChannel* > _channels;
-      FHRealType*    _gammas;
-      FHRealType*    _gammasms;
+      FHRealType*    gammas; // name required by FH
+      FHRealType*    gammasms; // name required by FH
       FHComplexType* _couplings;
       FHComplexType* _couplingsms;
 

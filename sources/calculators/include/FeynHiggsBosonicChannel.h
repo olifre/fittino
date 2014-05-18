@@ -58,6 +58,7 @@ namespace Fittino {
         double _sm_gPhi;
 
         double _normSM_g2;
+        double _normSM_Norm_g;
         double _normSM_gPhi;
 
         /*! \endcond UML */

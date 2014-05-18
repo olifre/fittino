@@ -50,6 +50,7 @@ Fittino::FeynHiggsBosonicChannel::FeynHiggsBosonicChannel( FHRealType* gammas, F
         AddQuantity( new SimplePrediction( "SM_Arg_g_" + higgsName + "_" + channelName, "", _sm_gPhi ) );
 
         AddQuantity( new SimplePrediction( "NormSM_Abs_g_" + higgsName + "_" + channelName, "", _normSM_g2 ) );
+        AddQuantity( new SimplePrediction( "NormSM_Norm_g_" + higgsName + "_" + channelName, "", _normSM_Norm_g ) );
         AddQuantity( new SimplePrediction( "DiffSM_Arg_g_" + higgsName + "_" + channelName, "", _normSM_gPhi ) );
 
     }
@@ -79,6 +80,7 @@ void Fittino::FeynHiggsBosonicChannel::CalculatePredictions() {
         _sm_gPhi = std::arg( coup );
 
         _normSM_g2   =  _model_g2 / _sm_g2;
+        _normSM_Norm_g = TMath::Power( _normSM_g2, 2 );
 
     }
 
