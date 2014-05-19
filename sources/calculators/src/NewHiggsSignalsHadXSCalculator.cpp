@@ -562,7 +562,7 @@ void Fittino::NewHiggsSignalsHadXSCalculator::SetupMeasuredValues() {
         }
 
         // test if all observable were acutally defined
-        if ( measuredValue_mh < -1.e-8 || measuredValue_mu < -1.e-8 ) {
+        if ( measuredValue_mh < -1.e8 || measuredValue_mu < -1.e8 ) {
 
             throw ConfigurationException( "Incomplete set of HiggsSignals Observables: Missing at least one (mu, mh) for HiggsSignalsObservable_" + s_index );
 
