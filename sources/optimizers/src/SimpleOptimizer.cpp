@@ -28,8 +28,9 @@ Fittino::SimpleOptimizer::SimpleOptimizer( Fittino::ModelBase* model, const boos
       _stepWidth   ( model->GetCollectionOfParameters().At( 0 )->GetError() ) {
 
     _name = ptree.get<std::string>( "Name", "simple optimizer" );
-
-    _numberOfIterations = static_cast<unsigned int>( _model->GetCollectionOfQuantities().At( "TreeIterations" )->GetValue() );
+    
+    _numberOfIterations = ptree.get<unsigned int>("NumberOfIterations");
+//    _numberOfIterations = static_cast<unsigned int>( _model->GetCollectionOfQuantities().At( "TreeIterations" )->GetValue() );
 
 }
 
@@ -50,14 +51,14 @@ void Fittino::SimpleOptimizer::UpdateModel() {
     _model->GetCollectionOfParameters().At( 0 )->SetValue( _iEntry );
 
     double chi2 = _model->GetChi2();
-
     if ( chi2 < _chi2 ) {
 
         _chi2 = chi2;
         _bestEntry = _iEntry;
 
     }
-
+    
     _model->GetCollectionOfParameters().At( 0 )->SetValue( _bestEntry );
-
+    GetStatusParameterVector()->at(0)->SetValue(_chi2);
+    GetStatusParameterVector()->at(1)->SetValue(_bestEntry);
 }
