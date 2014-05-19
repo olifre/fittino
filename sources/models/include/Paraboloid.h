@@ -1,15 +1,14 @@
-/* $Id: Paraboloid.h 1882 2014-02-08 11:44:18Z uhlenbrock@PHYSIK.UNI-BONN.DE $ */
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        Paraboloid.h                                                *
+* File        Paraboloid.h                                                     *
 *                                                                              *
-* Description Implementation of an n-dimensional paraboloid function                        *
+* Description Implementation of an n-dimensional paraboloid function           *
 *                                                                              *
-* Authors     Pia     Kullik      <pkullik@uni-bonn.de>                        *
-*             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Pia Kullik  <pkullik@uni-bonn.de>                                *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *

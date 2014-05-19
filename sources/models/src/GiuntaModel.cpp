@@ -1,16 +1,14 @@
-
-/* $Id: GiuntaModel.cpp 1947 2014-03-02 19:54:40Z uhlenbrock@PHYSIK.UNI-BONN.DE $ */
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        GiuntaModel.cpp                                              *
+* File        GiuntaModel.cpp                                                  *
 *                                                                              *
-* Description Implementation of a n-dimensional GiuntaModel function                           *
+* Description Implementation of a n-dimensional GiuntaModel function           *
 *                                                                              *
-* Authors     Pia     Kullik      <pkullik@uni-bonn.de>                        *
-*             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Pia Kullik  <pkullik@uni-bonn.de>                                *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
