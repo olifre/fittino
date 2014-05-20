@@ -52,7 +52,7 @@ void Fittino::SimpleSampler::Scan( unsigned int iParameter ) {
 
     if ( iParameter > 0 ) {
 
-        while ( _model->GetCollectionOfParameters().At( iParameter )->GetValue() <= _model->GetCollectionOfParameters().At( iParameter )->GetUpperBound() ) {
+        while ( _model->GetCollectionOfParameters().At( iParameter )->GetValue() < _model->GetCollectionOfParameters().At( iParameter )->GetUpperBound() ) {
 
             Scan( iParameter - 1 );
             if ( _model->GetCollectionOfParameters().At( iParameter )->IsFixed() ) break;
@@ -64,7 +64,7 @@ void Fittino::SimpleSampler::Scan( unsigned int iParameter ) {
     }
     else {
 
-        while ( _model->GetCollectionOfParameters().At( iParameter )->GetValue() <= _model->GetCollectionOfParameters().At( iParameter )->GetUpperBound() ) {
+        while ( _model->GetCollectionOfParameters().At( iParameter )->GetValue() < _model->GetCollectionOfParameters().At( iParameter )->GetUpperBound() ) {
 
             _iterationCounter++;
             _chi2 = _model->GetChi2();
