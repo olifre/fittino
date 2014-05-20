@@ -218,7 +218,7 @@ void Fittino::NewHiggsSignalsHadXSCalculator::Initialize() {
 }
 
 
-void Fittino::NewHiggsSignalsHadXSCalculator::SetupHiggsBounds() {
+void Fittino::NewHiggsSignalsHadXSCalculator::SetupHiggsBounds( bool shiftHiggsMass ) {
 
     std::vector<double> mass_h_neutral;
     std::vector<double> Gamma_Total_neutral;
@@ -271,7 +271,12 @@ void Fittino::NewHiggsSignalsHadXSCalculator::SetupHiggsBounds() {
     std::vector<std::vector<double> > BR_hjhihi;
   
     for( int i = 0; i < _nHzero; ++i ) {
-        mass_h_neutral.push_back        ( _model->GetCollectionOfQuantities().At( _name_mass_h_neutral.at( i ) )->GetValue() + _mass_h_neutral_shift.at(i) );
+        if( shiftHiggsMass ) {
+            mass_h_neutral.push_back    ( _model->GetCollectionOfQuantities().At( _name_mass_h_neutral.at( i ) )->GetValue() + _mass_h_neutral_shift.at(i) );
+        }
+        else {
+            mass_h_neutral.push_back    ( _model->GetCollectionOfQuantities().At( _name_mass_h_neutral.at( i ) )->GetValue() );
+        }
         Gamma_Total_neutral.push_back   ( _model->GetCollectionOfQuantities().At( _name_Gamma_Total_neutral.at(i) )->GetValue() );;
         CP.push_back                    ( i < 2 ? 1 : -1 ); 
         CS_lep_tautauhj_ratio.push_back ( pow( _model->GetCollectionOfQuantities().At( _name_CS_lep_tautauhj_ratio.at(i))->GetValue(),2 ));
@@ -409,7 +414,7 @@ void Fittino::NewHiggsSignalsHadXSCalculator::SetupHiggsBounds() {
 
 void Fittino::NewHiggsSignalsHadXSCalculator::CallHiggsBounds() {
     
-    SetupHiggsBounds();
+    SetupHiggsBounds( true );
     _globalHiggsBoundsChi2 = RunHiggsBounds();
 
 }
@@ -471,6 +476,7 @@ void Fittino::NewHiggsSignalsHadXSCalculator::CalculatePredictions() {
         _globalHiggsBoundsChi2 = 10000.;
 
     }
+    SetupHiggsBounds();
     run_higgssignals_( &_mode, &_chi2_mu, &_chi2_mass_h, &_chi2, &_nobs, &_pvalue );
     SetupMeasuredValues();
     int i = 1;

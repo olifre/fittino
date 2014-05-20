@@ -54,7 +54,7 @@ namespace Fittino {
       virtual void SetupMeasuredValues();
       double       RunHiggsBounds();
       void         CallHiggsBounds();
-      void         SetupHiggsBounds();
+      void         SetupHiggsBounds( bool shiftHiggsMas = false);
 
     private:
       double        _chi2;
