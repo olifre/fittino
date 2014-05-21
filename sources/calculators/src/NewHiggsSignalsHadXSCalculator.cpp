@@ -532,19 +532,22 @@ void Fittino::NewHiggsSignalsHadXSCalculator::SetupMeasuredValues() {
     // get number of observable from HiggsSignals and loop over it
     int ntotal, npeakmu, npeakmh, nmpred, nanalyses;
     __io_MOD_get_number_of_observables( &ntotal, &npeakmu, &npeakmh, &nmpred, &nanalyses );
+    /*
     for ( int i = 1; i <= npeakmu; ++i ) {
         int obsID = 0;
         __io_MOD_get_id_of_peakobservable( &i, &obsID );
         double muobs, dmuup, dmulow, mpeak, dm;
         __io_MOD_get_peakinfo( &obsID, &muobs, &dmuup, &dmulow, &mpeak, &dm ); 
         //std::cout << "got peakinfo: " << obsID << "\t" << muobs << " " << dmuup << " " << dmulow << " " << mpeak << " " << dm << std::endl;
-    }
+    }*/
     for ( int i = 1; i <= npeakmu; ++i ) {
 
         double measuredValue_mh = -1.e9;
         double measuredValue_mu = -1.e9;
+        int obsID = 0;
+        __io_MOD_get_id_of_peakobservable( &i, &obsID );
         std::ostringstream ss_index;
-        ss_index << i;
+        ss_index << obsID;
         std::string s_index = ss_index.str();
         std::string fittinoName_mh = "HiggsSignalsObservable_" + s_index + "_mh";
         std::string fittinoName_mu = "HiggsSignalsObservable_" + s_index + "_mu";
@@ -575,8 +578,8 @@ void Fittino::NewHiggsSignalsHadXSCalculator::SetupMeasuredValues() {
         }
 
         // get observable ID from HiggsSignals
-        int obsID = 0;
-        __io_MOD_get_id_of_peakobservable( &i, &obsID );
+        //int obsID = 0;
+        //__io_MOD_get_id_of_peakobservable( &i, &obsID );
         // assign the new values
         assign_toyvalues_to_peak_( &obsID, &measuredValue_mu, &measuredValue_mh );
     
