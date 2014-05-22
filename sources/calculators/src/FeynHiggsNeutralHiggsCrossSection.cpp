@@ -55,7 +55,7 @@ _higgs( higgs ) {
     AddQuantity( new SimplePrediction( _quantityname + "StSth" , "", _StSth ) );
 
     AddQuantity( new SimplePrediction( _quantityname + "ggh2" ,  "", _ggh2  ) );
-    AddQuantity( new SimplePrediction( "NormSM_" + _quantityname + "ggh2" , "", _ggh2 ) );
+    AddQuantity( new SimplePrediction( "NormSM_" + _quantityname + "ggh2" , "", _ggh2NormSM ) );
 
     AddChannel( "bbh"   , _bbh,    _bbhSM,    _bbhNormSM    );
     AddChannel( "btagbh", _btagbh, _btagbhSM, _btagbhNormSM );
