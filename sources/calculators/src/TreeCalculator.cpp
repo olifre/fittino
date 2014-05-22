@@ -22,7 +22,7 @@
 #include "TFile.h"
 #include "TLeaf.h"
 #include "TObjArray.h"
-#include "TTree.h"
+#include "TChain.h"
 
 #include "ModelParameter.h"
 #include "PhysicsModel.h"
@@ -111,27 +111,7 @@ void Fittino::TreeCalculator::AddPredictions( ) {
 
 void Fittino::TreeCalculator::OpenInputFile() {
 
-    _inputFile = new TFile( _inputFileName.c_str() );
-
-    try {
-
-        if ( !_inputFile ) {
-
-            throw ConfigurationException( "Specified input file could not be opened." );
-
-        }
-        else if ( !( _inputTree = ( TTree* )_inputFile->Get( _inputTreeName.c_str() ) ) ) {
-
-            throw ConfigurationException( "Specified input tree could not be retrieved from input file." );
-
-        }
-
-    }
-    catch ( const ConfigurationException& configurationException ) {
-
-        std::cout << "\n" << configurationException.what() << "\n" << std::endl;
-        exit( EXIT_FAILURE );
-
-    }
+    _inputTree = new TChain( _inputTreeName.c_str() );
+    _inputTree->Add( _inputFileName.c_str() );
 
 }

@@ -24,7 +24,7 @@
 #include "PtreeForwardDeclaration.h"
 
 class TFile;
-class TTree;
+class TChain;
 
 /*!
  *  \brief Fittino namespace.
@@ -58,7 +58,7 @@ namespace Fittino {
       std::map<std::string, double> _predictionMap;
       std::vector<std::string>      _excludedLeaves;
       TFile*                        _inputFile;
-      TTree*                        _inputTree;
+      TChain*                       _inputTree;
 
     private:
       void                          AddPredictions();
