@@ -134,12 +134,6 @@ void Fittino::HistogramMakerBase::Execute() {
 
     }
 
-    if ( _plotter ) {
-
-        _plotter->MakePlots();
-
-    }
-
 }
 
 void Fittino::HistogramMakerBase::InitializeTool() {
@@ -154,6 +148,12 @@ void Fittino::HistogramMakerBase::PrintResult() const {
 }
 
 void Fittino::HistogramMakerBase::Terminate() {
+
+    if ( _plotter ) {
+
+        _plotter->MakePlots();
+
+    }
 
 }
 
