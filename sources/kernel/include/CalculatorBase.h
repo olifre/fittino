@@ -69,13 +69,15 @@ namespace Fittino {
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
       SimpleDataStorage*                 _simpleOutputDataStorage;
-      /*!
-       *  \todo Make private in order to require use of AddQuantity.
-       */
-      Collection<PredictionBase*>        _collectionOfQuantities;
 
     protected:
       void                               AddQuantity( PredictionBase* prediction );
+
+      /*! \cond UML */
+    private:
+      Collection<PredictionBase*>        _collectionOfQuantities;
+
+      /*! \endcond UML */
 
   };
 

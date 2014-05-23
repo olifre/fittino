@@ -214,9 +214,9 @@ void Fittino::SPhenoSLHACalculator::CalculatePredictions() {
     _slhaOutputDataStorage->Clear();
     _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
 
-    for ( unsigned int i = 0; i < _collectionOfQuantities.GetNumberOfElements(); ++i ) {
+    for ( unsigned int i = 0; i < GetCollectionOfQuantities().GetNumberOfElements(); ++i ) {
 
-        _collectionOfQuantities.At( i )->Update();
+        GetCollectionOfQuantities().At( i )->Update();
 
     }
 

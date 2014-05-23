@@ -768,9 +768,9 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
         _slhadatastorageSPheno   ->ReadFile("SPheno.spc");
         _slhadatastorageFeynHiggs->ReadFile("FeynHiggs.spc");
 
-        for ( unsigned int i = 0; i < _collectionOfQuantities.GetNumberOfElements(); ++i ) {
+        for ( unsigned int i = 0; i < GetCollectionOfQuantities().GetNumberOfElements(); ++i ) {
 
-          _collectionOfQuantities.At( i )->Update();
+          GetCollectionOfQuantities().At( i )->Update();
 
         }
     
