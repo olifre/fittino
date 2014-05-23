@@ -103,24 +103,30 @@ namespace Fittino {
       std::vector<std::string> _name_CS_lep_tautauhj_ratio;
       std::vector<std::vector<std::string> > _name_CS_lep_hjhi_ratio;
       
-      std::vector<std::string> _name_CS_tev_gghj_ratio;
-      std::vector<std::string> _name_CS_tev_bbhj_ratio;
+      std::vector<std::string> _name_CS_tev_gghj_model;
+      std::vector<std::string> _name_CS_tev_bbhj_model;
+      std::vector<std::string> _name_CS_tev_gghj_SM;
+      std::vector<std::string> _name_CS_tev_bbhj_SM;
       std::vector<std::string> _name_CS_tev_hjb_ratio;
       std::vector<std::string> _name_CS_tev_hjW_ratio;
       std::vector<std::string> _name_CS_tev_hjZ_ratio;
       std::vector<std::string> _name_CS_tev_vbf_ratio;
       std::vector<std::string> _name_CS_tev_tthj_ratio;
       
-      std::vector<std::string> _name_CS_lhc7_gghj_ratio;
-      std::vector<std::string> _name_CS_lhc7_bbhj_ratio;
+      std::vector<std::string> _name_CS_lhc7_gghj_model;
+      std::vector<std::string> _name_CS_lhc7_bbhj_model;
+      std::vector<std::string> _name_CS_lhc7_gghj_SM;
+      std::vector<std::string> _name_CS_lhc7_bbhj_SM;
       std::vector<std::string> _name_CS_lhc7_hjb_ratio;
       std::vector<std::string> _name_CS_lhc7_hjW_ratio;
       std::vector<std::string> _name_CS_lhc7_hjZ_ratio;
       std::vector<std::string> _name_CS_lhc7_vbf_ratio;
       std::vector<std::string> _name_CS_lhc7_tthj_ratio;
       
-      std::vector<std::string> _name_CS_lhc8_gghj_ratio;
-      std::vector<std::string> _name_CS_lhc8_bbhj_ratio;
+      std::vector<std::string> _name_CS_lhc8_gghj_model;
+      std::vector<std::string> _name_CS_lhc8_bbhj_model;
+      std::vector<std::string> _name_CS_lhc8_gghj_SM;
+      std::vector<std::string> _name_CS_lhc8_bbhj_SM;
       std::vector<std::string> _name_CS_lhc8_hjb_ratio;
       std::vector<std::string> _name_CS_lhc8_hjW_ratio;
       std::vector<std::string> _name_CS_lhc8_hjZ_ratio;
