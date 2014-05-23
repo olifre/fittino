@@ -350,20 +350,20 @@ Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::prop
         if ( calculator ) {
 
             return new Observable( ptree, new SimplePrediction( ptree, calculator ) );
+
         }
         else {
+
             return new Observable( ptree, new SimplePrediction( ptree.get<std::string>( "Name" ), "", 0. ) );
+
         }
 
     }
-    /*
-    else if ( type == "NONE" ) {
+    //else if ( type == "NONE" ) {
 
-        return new Observable( ptree, NULL );
+    //    return new Observable( ptree, NULL );
 
-    }
-    */
-
+    //}
     else {
 
         throw ConfigurationException( "Prediction type" + type + " not known." );
