@@ -22,6 +22,8 @@
 
 #include "PlotterBase.h"
 
+#include "TString.h"
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -45,8 +47,14 @@ namespace Fittino {
 
       /*! \endcond UML */
     private:
-      void Plot( unsigned int iHistogram );
-      void PrintSteeringParameters() const;
+      int     _fillColor;
+      int     _fillStyle;
+      int     _lineColor;
+      TString _option;
+
+    private:
+      void    Plot( unsigned int iHistogram );
+      void    PrintSteeringParameters() const;
 
       /*! \endcond UML */
 

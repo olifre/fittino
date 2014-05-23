@@ -17,6 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <boost/property_tree/ptree.hpp>
+
 #include "TCanvas.h"
 #include "TH1.h"
 #include "TROOT.h"
@@ -25,22 +27,42 @@
 #include "SimplePlotter.h"
 
 Fittino::SimplePlotter::SimplePlotter( std::vector<TH1*>& histogramVector, const boost::property_tree::ptree& ptree )
-    : PlotterBase( histogramVector, ptree ) {
+    : PlotterBase( histogramVector, ptree ),
+      _fillColor ( ptree.get<int>        ( "FillColor", 1    ) ), // Black
+      _fillStyle ( ptree.get<int>        ( "FillStyle", 3004 ) ), // Hatched
+      _lineColor ( ptree.get<int>        ( "LineColor", 1    ) ), // Black
+      _option    ( ptree.get<std::string>( "Option",    ""   ) ) {
 
     _name = "simple plotter";
 
     // Style settings.
 
-    _fittinoStyle->SetHistLineColor( kBlack ); // Black
-    _fittinoStyle->SetHistFillColor( kBlack ); // Black
-    _fittinoStyle->SetHistFillStyle( 3004 );   // Hatched
+    _fittinoStyle->SetHistFillColor( _fillColor );
+    _fittinoStyle->SetHistFillStyle( _fillStyle );
+    _fittinoStyle->SetHistLineColor( _lineColor );
 
-    _pad = ( TPad* )_canvas->cd();
+    _option.ToLower();
+
+    if ( _option == "colz" ) {
+
+        _pad->SetRightMargin( 0.15 );
+        _pad->SetLeftMargin( 0.11 );
+        _pad->SetBottomMargin( 0.12 );
+        _pad->SetTopMargin( 0.08 );
+
+    }
+    else {
+
+        _pad->SetRightMargin( 0.10 );
+        _pad->SetLeftMargin( 0.11 );
+        _pad->SetBottomMargin( 0.12 );
+        _pad->SetTopMargin( 0.08 );
+
+    }
+
     _pad->SetTicks( 1, 1 );
-    _pad->SetRightMargin( 0.08 );
-    _pad->SetLeftMargin( 0.12 );
-    _pad->SetBottomMargin( 0.12 );
-    _pad->SetTopMargin( 0.08 );
+
+    gStyle->SetPalette( 1 );
 
     gROOT->SetStyle( "FITTINO" );
     gROOT->ForceStyle();
@@ -53,7 +75,7 @@ Fittino::SimplePlotter::~SimplePlotter() {
 
 void Fittino::SimplePlotter::Plot( unsigned int iHistogram ) {
 
-    _histogramVector[iHistogram]->Draw( "" );
+    _histogramVector[iHistogram]->Draw( _option.Data() );
 
 }
 

@@ -87,7 +87,7 @@
 
       <Plotter>
         <ProfilePlotter>
-          <Format>Portrait</Format>
+          <PageFormat>Landscape</PageFormat>
         </ProfilePlotter>
       </Plotter>
 

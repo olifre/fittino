@@ -53,9 +53,13 @@ namespace Fittino {
       void               MakePlots();
 
     protected:
+      bool               _logScaleX;
+      bool               _logScaleY;
+      bool               _logScaleZ;
       double             _textSize;
       int                _textFont;
-      std::string        _format;
+      std::string        _fileFormat;
+      std::string        _pageFormat;
       std::string        _name;
       std::string        _version;
       TCanvas*           _canvas;

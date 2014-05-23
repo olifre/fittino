@@ -93,7 +93,7 @@
 
       <Plotter>
         <SimplePlotter>
-          <Format>Portrait</Format>
+          <PageFormat>Landscape</PageFormat>
         </SimplePlotter>
       </Plotter>
 

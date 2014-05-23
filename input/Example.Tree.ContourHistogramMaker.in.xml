@@ -87,7 +87,7 @@
 
       <Plotter>
         <ContourPlotter>
-          <Format>Square</Format>
+          <PageFormat>Square</PageFormat>
           <Style>Classic</Style>
         </ContourPlotter>
       </Plotter>

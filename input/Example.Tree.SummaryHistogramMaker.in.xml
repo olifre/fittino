@@ -81,7 +81,7 @@
 
       <Plotter>
         <SummaryPlotter>
-          <Format>Summary</Format>
+          <PageFormat>Square</PageFormat>
         </SummaryPlotter>
       </Plotter>
 

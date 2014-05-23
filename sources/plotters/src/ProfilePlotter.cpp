@@ -38,8 +38,8 @@ Fittino::ProfilePlotter::ProfilePlotter( std::vector<TH1*>& histogramVector, con
 
     _pad = ( TPad* )_canvas->cd();
     _pad->SetTicks( 1, 1 );
-    _pad->SetRightMargin( 0.08 );
-    _pad->SetLeftMargin( 0.12 );
+    _pad->SetRightMargin( 0.10 );
+    _pad->SetLeftMargin( 0.11 );
     _pad->SetBottomMargin( 0.12 );
     _pad->SetTopMargin( 0.08 );
 

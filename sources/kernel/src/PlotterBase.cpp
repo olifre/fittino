@@ -30,9 +30,13 @@
 #include "Redirector.h"
 
 Fittino::PlotterBase::PlotterBase( std::vector<TH1*>& histogramVector, const boost::property_tree::ptree& ptree )
-    : _textSize       ( 0.04 ),
+    : _logScaleX      ( ptree.get<bool>( "LogScaleX", false ) ),
+      _logScaleY      ( ptree.get<bool>( "LogScaleY", false ) ),
+      _logScaleZ      ( ptree.get<bool>( "LogScaleZ", false ) ),
+      _textSize       ( 0.04 ),
       _textFont       ( 42 ), // Helvetica
-      _format         ( ptree.get<std::string>( "Format", "Portrait" ) ),
+      _fileFormat     ( ptree.get<std::string>( "FileFormat", "eps" ) ),
+      _pageFormat     ( ptree.get<std::string>( "PageFormat", "Landscape" ) ),
       _name           ( "" ),
       _version        ( "2.0.X" ),
       _canvas         ( 0 ),
@@ -42,17 +46,17 @@ Fittino::PlotterBase::PlotterBase( std::vector<TH1*>& histogramVector, const boo
 
     // Format settings.
 
-    if ( _format == "Portrait" ) {
+    if ( _pageFormat == "Landscape" ) {
 
         _canvas = new TCanvas( "Canvas", "Canvas", 800, 600 );
 
     }
-    else if ( _format == "Square" ) {
+    else if ( _pageFormat == "Square" ) {
 
         _canvas = new TCanvas( "Canvas", "Canvas", 600, 600 );
 
     }
-    else if ( _format == "Summary" ) {
+    else if ( _pageFormat == "Summary" ) {
 
         _canvas = new TCanvas( "Canvas", "Canvas", 600, 800 );
 
@@ -62,6 +66,12 @@ Fittino::PlotterBase::PlotterBase( std::vector<TH1*>& histogramVector, const boo
         throw ConfigurationException( "Plot format not known." );
 
     }
+
+    _pad = ( TPad* )_canvas->cd();
+
+    if ( _logScaleX ) _pad->SetLogx( 1 );
+    if ( _logScaleY ) _pad->SetLogy( 1 );
+    if ( _logScaleZ ) _pad->SetLogz( 1 );
 
     // Global style settings.
 
@@ -111,17 +121,17 @@ void Fittino::PlotterBase::MakePlots() {
         fittinoVersion.SetTextFont( 82 );
         std::string versionText = "Fittino Version " + _version;
 
-        if ( _format == "Portrait" ) {
+        if ( _pageFormat == "Landscape" ) {
 
-            fittinoVersion.DrawTextNDC( 0.590, 0.95, versionText.c_str() );
-
-        }
-        else if ( _format == "Square" ) {
-
-            fittinoVersion.DrawTextNDC( 0.475, 0.95, versionText.c_str() );
+            fittinoVersion.DrawTextNDC( 0.575, 0.95, versionText.c_str() );
 
         }
-        else if ( _format == "Summary" ) {
+        else if ( _pageFormat == "Square" ) {
+
+            fittinoVersion.DrawTextNDC( 0.460, 0.95, versionText.c_str() );
+
+        }
+        else if ( _pageFormat == "Summary" ) {
 
             fittinoVersion.SetTextSize( 0.035 );
             fittinoVersion.DrawTextNDC( 0.05, 0.035, versionText.c_str() );
@@ -135,7 +145,7 @@ void Fittino::PlotterBase::MakePlots() {
         Redirector redirector( "/dev/null" );
         redirector.Start();
 
-        _canvas->SaveAs( static_cast<TString>( _histogramVector[iHistogram]->GetName() ) + ".eps", "RECREATE" );
+        _canvas->SaveAs( static_cast<TString>( _histogramVector[iHistogram]->GetName() ) + "." + _fileFormat, "RECREATE" );
 
         redirector.Stop();
 
