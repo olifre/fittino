@@ -42,11 +42,9 @@ namespace Fittino {
        *  Standard destructor.
        */
       ~TestModelBase();
+
+    public:
       virtual void                               PrintStatus() const;
-      /*!
-       *  \todo Remove when no longer used by derived classes (Matthias).
-       */
-      virtual const std::vector<Observable*>*    GetObservableVector() const { return NULL; }
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
        */

@@ -33,10 +33,9 @@
  */
 namespace Fittino {
 
+  class CalculatorBase;
   class ModelParameter;
   class PredictionBase;
-  class CalculatorBase;
-  class Observable;
 
   /*!
    *  \ingroup kernel
@@ -92,10 +91,6 @@ namespace Fittino {
        *  Returns a pointer to a copy of the model.
        */
       virtual ModelBase*                                  Clone() const = 0;
-      /*!
-       *  \todo Remove when no longer used by derived classes (Matthias).
-       */
-      virtual const std::vector<Observable*>*             GetObservableVector() const = 0;
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
