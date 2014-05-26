@@ -24,6 +24,9 @@
 
 #include <cstdlib>
 
+#include <boost/interprocess/sync/file_lock.hpp>
+#include <boost/interprocess/sync/scoped_lock.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
 #include "Controller.h"
@@ -57,6 +60,16 @@ void Fittino::Controller::ExecuteFittino() const {
         boost::property_tree::ptree& toolTree = toolNode.second;
         Tool* tool = factory.CreateTool( toolType, model, toolTree );
 
+        if ( !_lockFileName.empty() ) {
+
+            boost::property_tree::xml_writer_settings<char> settings( '\t', 1 );
+            boost::property_tree::write_xml( _inputFileName, *_inputPtree, std::locale(), settings );
+
+            _scopedLock->unlock();
+            
+        }
+        
+        
         tool->PerformTask();
 
         _outputPtree->put( "InputFile.VerbosityLevel", _inputPtree->get<std::string>( "InputFile.VerbosityLevel" ) );
@@ -103,6 +116,13 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
         Controller::CheckInputFileFormat();
 
+        if ( ! _lockFileName.empty() ) {
+
+          _fileLock = new boost::interprocess::file_lock( _lockFileName.c_str() );
+          _scopedLock = new boost::interprocess::scoped_lock<boost::interprocess::file_lock>( *_fileLock );
+
+        }
+
         boost::property_tree::read_xml( _inputFileName,
                                         *_inputPtree,
                                         boost::property_tree::xml_parser::trim_whitespace |
@@ -144,12 +164,18 @@ Fittino::Controller::Controller()
       _inputPtree( new boost::property_tree::ptree() ),
       _outputPtree( new boost::property_tree::ptree() ) {
 
+  _fileLock = 0;
+  _scopedLock = 0;
+  _lockFileName = "";
+
 }
 
 Fittino::Controller::~Controller() {
 
     delete _inputPtree;
     delete _outputPtree;
+    delete _scopedLock;
+    delete _fileLock;
 
 }
 
@@ -187,6 +213,7 @@ void Fittino::Controller::HandleOptions( int argc, char** argv ) {
 
         {"help",       no_argument,       0, 'h'},
         {"input-file", required_argument, 0, 'i'},
+        {"lock-file",  required_argument, 0, 'l'},
         {0,            0,                 0,  0 }
 
     };
@@ -197,7 +224,7 @@ void Fittino::Controller::HandleOptions( int argc, char** argv ) {
 
     while ( true ) {
 
-        optionCode = getopt_long( argc, argv, ":hi:d:s:", options, &optionIndex );
+        optionCode = getopt_long( argc, argv, ":hi:l:", options, &optionIndex );
 
         if ( optionCode == -1 ) break;
 
@@ -210,6 +237,10 @@ void Fittino::Controller::HandleOptions( int argc, char** argv ) {
             case 'i':
                 _inputFileName = std::string( optarg );
                 continue;
+
+            case 'l':  
+              _lockFileName = std::string( optarg );
+              continue;
 
             case ':':
                 throw InputException( "Missing option parameter." );
@@ -237,7 +268,8 @@ void Fittino::Controller::PrintHelp() const {
     messenger << Messenger::ALWAYS << "  -i, --input-file=FILE" << Messenger::Endl;
     messenger << Messenger::ALWAYS << "      Fittino uses the input file FILE. The input file suffix must" << Messenger::Endl;
     messenger << Messenger::ALWAYS << "      be .xml (XML format)." << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "      Several example input files can be found at fittino2/input." << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  -l, --lock-file=FILE" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "      Fittino uses the file FILE for inter process locking." << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
 }

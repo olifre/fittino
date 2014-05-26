@@ -77,7 +77,18 @@
 
 #include <string>
 
+#include "boost/interprocess/interprocess_fwd.hpp"
 #include "PtreeForwardDeclaration.h"
+
+namespace boost {
+
+  namespace interprocess {
+
+    class file_lock;
+
+  }
+
+}
 
 /*!
  *  \brief Fittino namespace.
@@ -137,7 +148,11 @@ namespace Fittino {
       /*!
        *  The name of the input file.
        */
-      std::string                  _inputFileName;
+      std::string                       _inputFileName;
+      std::string                       _lockFileName;
+      boost::interprocess::file_lock*   _fileLock;
+      boost::interprocess::scoped_lock<boost::interprocess::file_lock>* _scopedLock;
+      
       /*!
        *  Property tree which stores the configuration items of Fittino.
        */
