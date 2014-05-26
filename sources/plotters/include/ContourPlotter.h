@@ -52,6 +52,7 @@ namespace Fittino {
 
       /*! \endcond UML */
     private:
+      std::string _format;
       std::string _style;
       TLegend*    _legend;
 
