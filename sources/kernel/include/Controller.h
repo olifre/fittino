@@ -108,7 +108,7 @@ namespace Fittino {
       /*!
        *  Returns a static pointer to the unique instance of this class.
        */
-      static Controller*           GetInstance();
+      static Controller&           GetInstance();
 
     public:
       /*!

@@ -35,11 +35,11 @@
 
 int main( int argc, char** argv ) {
 
-    Fittino::Controller* controller = Fittino::Controller::GetInstance();
+    Fittino::Controller& controller = Fittino::Controller::GetInstance();
 
-    controller->InitializeFittino( argc, argv );
-    controller->ExecuteFittino();
-    controller->TerminateFittino();
+    controller.InitializeFittino( argc, argv );
+    controller.ExecuteFittino();
+    controller.TerminateFittino();
 
     return 0;
 

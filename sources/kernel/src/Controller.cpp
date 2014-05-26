@@ -33,15 +33,11 @@
 #include "Tool.h"
 #include "RandomGenerator.h"
 
-Fittino::Controller* Fittino::Controller::GetInstance() {
+Fittino::Controller& Fittino::Controller::GetInstance() {
 
-    if ( !_instance ) {
+    static Controller instance;
 
-        _instance = new Controller;
-
-    }
-
-    return _instance;
+    return instance;
 
 }
 
