@@ -75,6 +75,9 @@ Fittino::PhysicsModel::PhysicsModel( boost::property_tree::ptree& ptree )
     }
 
     InitializeCovarianceMatrix( ptree );
+    std::cout << "Covariance Matrix" << std::endl;
+    _observableCovarianceMatrix->Print();
+
     BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
 
         if ( node.first == "Chi2Contribution" ) AddChi2Contribution( node.second.get_value<std::string>() );
@@ -128,18 +131,26 @@ double Fittino::PhysicsModel::Evaluate() {
 
     }
 
-    // Instruct the observables to update their predicted values.
+    // Instruct the observables to update their predicted values and find out if there are any relative uncertainties.
 
+    bool hasObsWithRelativeError = false;
     for ( unsigned int i = 0; i < _observableVector.size(); ++i ) {
 
         if( !(_observableVector[i]->IsNoUpdateObservable()) ) {
-
+            
+            if( _observableVector[i]->GetRelativeError() > std::numeric_limits<double>::min() ) {
+                hasObsWithRelativeError = true;
+            }
             _observableVector[i]->UpdatePrediction();
        
         }
 
     }
 
+    // Now update the covariance matrix, if there are any relative Uncertainties;
+    if( hasObsWithRelativeError ) {
+        UpdateCovarianceMatrix();
+    }
 
     // Calculate and return the resulting chi2.
 
@@ -478,6 +489,32 @@ void Fittino::PhysicsModel::InitializeObservables( const boost::property_tree::p
 
 }
 
+void Fittino::PhysicsModel::UpdateCovarianceMatrix( ) {
+   
+    
+    unsigned int nRows = _observableVector.size();
+    int fitx = 0;
+    int fity = 0;
+    for( unsigned int i = 0; i < nRows; ++i ) {
+        
+        for( unsigned int j = 0; j < nRows; ++j ) {
+
+            if( _observableVector[i]->GetRelativeError() > std::numeric_limits<double>::min() || _observableVector[j]->GetRelativeError() > std::numeric_limits<double>::min() ) {
+                (*_observableCovarianceMatrix)[i][j] = (*_observableCorrelationMatrix)[i][j]*_observableVector.at(i)->GetMeasuredError()*_observableVector.at(i)->GetMeasuredError();
+            }
+            if( _observableVector.at(i)->IsNoFitObservable() || _observableVector.at(j)->IsNoFitObservable() ) continue;
+            (*_fitObservableCovarianceMatrix)[fitx][fity] = (*_observableCovarianceMatrix)[i][j];
+            fitx++;
+            fity++;
+
+        }
+
+    }
+    delete _invertedFitObservableCovarianceMatrix;
+    _invertedFitObservableCovarianceMatrix = new TMatrixDSym( _fitObservableCovarianceMatrix->Invert() );
+
+}
+
 void Fittino::PhysicsModel::InitializeCovarianceMatrix( const boost::property_tree::ptree& ptree ) {
 
     // first step: read the covariance matrices as defind in the input file.
@@ -616,6 +653,17 @@ void Fittino::PhysicsModel::InitializeCovarianceMatrix( const boost::property_tr
 
         }
 
+    }
+
+    // now create a correlation matrix; this is to be used in UpdateCovarianceMatrix();
+    _observableCorrelationMatrix = new TMatrixDSym( _observableCovarianceMatrix->GetNrows() );
+    for( int i = 0; i < _observableVector.size(); ++i ) {
+        double err_i = sqrt( (*_observableCovarianceMatrix)[i][i] );
+        for( int j = 0; j < _observableVector.size(); ++j) {
+            double err_j = sqrt( (*_observableCovarianceMatrix)[j][j] );
+            double rho_ij = (*_observableCovarianceMatrix)[i][j]/err_i/err_j;
+            (*_observableCorrelationMatrix)[i][j] = rho_ij;
+        }
     }
 
     // now create a matrix for the observables actually used in the fit:

@@ -87,6 +87,7 @@ namespace Fittino {
       std::vector<Observable*>                   _observableVector;
       Collection<const Quantity*>                _collectionOfChi2Quantities;
       TMatrixDSym*                               _observableCovarianceMatrix;
+      TMatrixDSym*                               _observableCorrelationMatrix;
       TMatrixDSym*                               _fitObservableCovarianceMatrix;
       TMatrixDSym*                               _invertedFitObservableCovarianceMatrix;
       Collection<TMatrixDSym*>                   _collectionOfCovarianceMatrices;
@@ -109,6 +110,7 @@ namespace Fittino {
       void                                       InitializeCalculators( const boost::property_tree::ptree& ptree );
       void                                       InitializeObservables( const boost::property_tree::ptree& ptree );
       void                                       InitializeCovarianceMatrix( const boost::property_tree::ptree& ptree );
+      void                                       UpdateCovarianceMatrix();
       /*! \endcond UML */
 
     private:

@@ -66,6 +66,7 @@ namespace Fittino {
       bool            IsNoSmearObservable();
       std::string     GetSmearingType();
       bool            IsNoUpdateObservable();
+      double          GetRelativeError();
 
     public:
       virtual void    UpdatePrediction();
@@ -75,6 +76,7 @@ namespace Fittino {
       double          _error1;
       double          _error2;
       double          _error3;
+      double          _relativeError;
       double          _deviation;
       double          _measuredError;
       double          _measuredValue;

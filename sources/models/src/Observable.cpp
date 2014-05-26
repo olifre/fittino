@@ -58,7 +58,9 @@ Fittino::Observable::Observable( const boost::property_tree::ptree& ptree, Predi
     _error1 = ptree.get<double>( "MeasuredError1" );
     _error2 = ptree.get<double>( "MeasuredError2", 0. );
     _error3 = ptree.get<double>( "MeasuredError3", 0. );
-    _measuredError = sqrt( _error1*_error1 + _error2*_error2 + _error3*_error3 );
+    _relativeError = ptree.get<double>( "RelativeError", 0. );
+
+    _measuredError = sqrt( _error1*_error1 + _error2*_error2 + _error3*_error3 + _relativeError*_relativeError*_measuredValue*_measuredValue );
 
 }
 
@@ -143,8 +145,20 @@ void Fittino::Observable::SetBestFitPrediction( double value ) {
 void Fittino::Observable::UpdatePrediction() {
 
     _prediction->Update();
-
+    
+    if( _relativeError > std::numeric_limits<double>::min() ) {
+        
+        _measuredError = sqrt( _error1*_error1 + _error2*_error2 + _error3*_error3 + _relativeError*_relativeError*_prediction->GetValue()*_prediction->GetValue() );
+    
+    }
+    
     this->CalculateDeviation();
+
+}
+
+double Fittino::Observable::GetRelativeError() {
+    
+    return _relativeError;
 
 }
 
