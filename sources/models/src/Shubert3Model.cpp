@@ -22,7 +22,7 @@
 #include "ModelParameter.h"
 #include "Shubert3Model.h"
 
-Fittino::Shubert3Model::Shubert3Model( const boost::property_tree::ptree& ptree )
+Fittino::Shubert3Model::Shubert3Model( boost::property_tree::ptree& ptree )
     : TestModelBase( ptree ) {
 
     _name = "Shubert3Model";

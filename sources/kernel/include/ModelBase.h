@@ -47,7 +47,7 @@ namespace Fittino {
       /*!
        *  Constructor using a property tree.
        */
-      ModelBase( const boost::property_tree::ptree& ptree );
+      ModelBase( boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
@@ -101,7 +101,7 @@ namespace Fittino {
        *  Name of the model.
        */
       std::string                                         _name;
-      boost::property_tree::ptree                         _ptree;
+      boost::property_tree::ptree&                        _ptree;
       /*!
        *  Stores the predictions.
        *  \todo Move to PhysicsModel (Matthias).
@@ -153,7 +153,7 @@ namespace Fittino {
       /*!
        *  Setup all parameters using a ptree.
        */
-      void                                                InitializeParameters( const boost::property_tree::ptree& ptree );
+      void                                                InitializeParameters( boost::property_tree::ptree& ptree );
 
     private:
       /*!

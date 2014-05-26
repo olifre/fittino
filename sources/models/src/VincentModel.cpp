@@ -22,7 +22,7 @@
 #include "ModelParameter.h"
 #include "VincentModel.h"
 
-Fittino::VincentModel::VincentModel( const boost::property_tree::ptree& ptree )
+Fittino::VincentModel::VincentModel( boost::property_tree::ptree& ptree )
     : TestModelBase( ptree ) {
 
     _name = "VincentModel";

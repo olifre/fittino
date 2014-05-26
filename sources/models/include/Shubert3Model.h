@@ -37,7 +37,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      Shubert3Model( const boost::property_tree::ptree& ptree );
+      Shubert3Model( boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

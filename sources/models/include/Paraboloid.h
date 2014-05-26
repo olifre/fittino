@@ -37,7 +37,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      Paraboloid( const boost::property_tree::ptree& ptree );
+      Paraboloid( boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

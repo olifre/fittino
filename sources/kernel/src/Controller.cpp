@@ -51,14 +51,14 @@ void Fittino::Controller::ExecuteFittino() const {
 
         const Factory factory;
 
-        const boost::property_tree::ptree::value_type& modelNode = *( _inputPtree->get_child( "InputFile.Model" ).begin() );
+        boost::property_tree::ptree::value_type& modelNode = *( _inputPtree->get_child( "InputFile.Model" ).begin() );
         std::string modelType = modelNode.first;
-        const boost::property_tree::ptree& modelTree = modelNode.second;
+        boost::property_tree::ptree& modelTree = modelNode.second;
         ModelBase* model = factory.CreateModel( modelType, modelTree );
 
-        const boost::property_tree::ptree::value_type& toolNode = *( _inputPtree->get_child( "InputFile.Tool" ).begin() );
+        boost::property_tree::ptree::value_type& toolNode = *( _inputPtree->get_child( "InputFile.Tool" ).begin() );
         std::string toolType = toolNode.first;
-        const boost::property_tree::ptree& toolTree = toolNode.second;
+        boost::property_tree::ptree& toolTree = toolNode.second;
         Tool* tool = factory.CreateTool( toolType, model, toolTree );
 
         tool->PerformTask();

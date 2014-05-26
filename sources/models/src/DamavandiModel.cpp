@@ -22,7 +22,7 @@
 #include "ModelParameter.h"
 #include "DamavandiModel.h"
 
-Fittino::DamavandiModel::DamavandiModel( const boost::property_tree::ptree& ptree )
+Fittino::DamavandiModel::DamavandiModel( boost::property_tree::ptree& ptree )
     : TestModelBase( ptree ) {
 
     _name = "DamavandiModel";

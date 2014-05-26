@@ -24,10 +24,10 @@
 #include "ModelBase.h"
 #include "ModelParameter.h"
 
-Fittino::ModelBase::ModelBase( const boost::property_tree::ptree& ptree )
-    : _name( "" ) {
+Fittino::ModelBase::ModelBase( boost::property_tree::ptree& ptree )
+  : _name( "" ),
+    _ptree ( ptree ){
 
-    _ptree = ptree;
     InitializeParameters( ptree );
 
 }
@@ -79,6 +79,8 @@ void Fittino::ModelBase::UpdatePropertyTree() {
         if ( node.first == "ModelParameter" ) {
 
             node.second.put( "Value", _collectionOfParameters.At( node.second.get<std::string>( "Name" ) )->GetValue() );
+            node.second.put( "LowerBound", _collectionOfParameters.At( node.second.get<std::string>( "Name" ) )->GetLowerBound() );
+            node.second.put( "UpperBound", _collectionOfParameters.At( node.second.get<std::string>( "Name" ) )->GetUpperBound() );
 
         }
     }
@@ -148,9 +150,9 @@ void Fittino::ModelBase::AddParameter( ModelParameter* parameter ) {
 
 }
 
-void Fittino::ModelBase::InitializeParameters( const boost::property_tree::ptree& ptree ) {
+void Fittino::ModelBase::InitializeParameters( boost::property_tree::ptree& ptree ) {
 
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
+    BOOST_FOREACH( boost::property_tree::ptree::value_type & node, ptree ) {
 
         if ( node.first == "ModelParameter" ) {
 

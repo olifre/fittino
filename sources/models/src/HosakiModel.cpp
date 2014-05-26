@@ -22,7 +22,7 @@
 #include "ModelParameter.h"
 #include "HosakiModel.h"
 
-Fittino::HosakiModel::HosakiModel( const boost::property_tree::ptree& ptree )
+Fittino::HosakiModel::HosakiModel( boost::property_tree::ptree& ptree )
     : TestModelBase( ptree ) {
 
     _name = "HosakiModel";

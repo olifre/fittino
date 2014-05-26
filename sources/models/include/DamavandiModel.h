@@ -37,7 +37,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      DamavandiModel( const boost::property_tree::ptree& ptree );
+      DamavandiModel( boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

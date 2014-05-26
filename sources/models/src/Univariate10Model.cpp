@@ -22,7 +22,7 @@
 #include "ModelParameter.h"
 #include "Univariate10Model.h"
 
-Fittino::Univariate10Model::Univariate10Model( const boost::property_tree::ptree& ptree )
+Fittino::Univariate10Model::Univariate10Model( boost::property_tree::ptree& ptree )
     : TestModelBase( ptree ) {
 
     _name = "Univariate10Model";

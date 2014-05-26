@@ -22,7 +22,7 @@
 #include "ModelParameter.h"
 #include "Alpine2Model.h"
 
-Fittino::Alpine2Model::Alpine2Model( const boost::property_tree::ptree& ptree )
+Fittino::Alpine2Model::Alpine2Model( boost::property_tree::ptree& ptree )
     : TestModelBase( ptree ) {
 
     _name = "Alpine2Model";

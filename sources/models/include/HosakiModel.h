@@ -37,7 +37,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      HosakiModel( const boost::property_tree::ptree& ptree );
+      HosakiModel( boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

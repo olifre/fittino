@@ -313,7 +313,7 @@ Fittino::CutBase* const Fittino::Factory::CreateCut( const std::string& type, Fi
 
 }
 
-Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type, const boost::property_tree::ptree& ptree ) const {
+Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type,  boost::property_tree::ptree& ptree ) const {
 
     if ( type == "PhysicsModel" ) {
 

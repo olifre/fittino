@@ -37,7 +37,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      Alpine2Model( const boost::property_tree::ptree& ptree );
+      Alpine2Model( boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

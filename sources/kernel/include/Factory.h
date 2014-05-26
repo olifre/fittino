@@ -93,7 +93,7 @@ namespace Fittino {
        *    <li> RosenbrockModel\n
        *  </ul>
        */
-      ModelBase* const           CreateModel( const std::string& type, const boost::property_tree::ptree& ptree ) const;
+      ModelBase* const           CreateModel( const std::string& type, boost::property_tree::ptree& ptree ) const;
       /*!
        *  Returns an Observable with a prediction according to the type specified in the ptree.
        *  \todo Remove when no longer used by derived classes (Matthias).

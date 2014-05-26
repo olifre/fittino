@@ -38,7 +38,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      VincentModel( const boost::property_tree::ptree& ptree );
+      VincentModel( boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

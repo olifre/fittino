@@ -22,7 +22,7 @@
 #include "ModelParameter.h"
 #include "GiuntaModel.h"
 
-Fittino::GiuntaModel::GiuntaModel( const boost::property_tree::ptree& ptree )
+Fittino::GiuntaModel::GiuntaModel( boost::property_tree::ptree& ptree )
     : TestModelBase( ptree ) {
 
     _name = "GiuntaModel";

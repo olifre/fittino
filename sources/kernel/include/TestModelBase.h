@@ -37,7 +37,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      TestModelBase( const boost::property_tree::ptree& ptree );
+      TestModelBase( boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

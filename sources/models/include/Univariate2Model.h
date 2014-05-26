@@ -38,7 +38,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      Univariate2Model( const boost::property_tree::ptree& ptree );
+      Univariate2Model( boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

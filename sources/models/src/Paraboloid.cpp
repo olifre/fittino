@@ -22,7 +22,7 @@
 #include "ModelParameter.h"
 #include "Paraboloid.h"
 
-Fittino::Paraboloid::Paraboloid( const boost::property_tree::ptree& ptree )
+Fittino::Paraboloid::Paraboloid( boost::property_tree::ptree& ptree )
     : TestModelBase( ptree ) {
 
     _name = "Paraboloid";

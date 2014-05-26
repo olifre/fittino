@@ -49,7 +49,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      PhysicsModel( const boost::property_tree::ptree& ptree );
+      PhysicsModel( boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

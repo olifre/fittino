@@ -25,11 +25,19 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-Fittino::ModelParameter::ModelParameter( const boost::property_tree::ptree& ptree )
+Fittino::ModelParameter::ModelParameter( boost::property_tree::ptree& ptree )
     : Quantity( ptree ),
       _fixed  ( ptree.get<bool>  ( "Fixed", false ) ),
       _updated( true ),
       _error  ( ptree.get<double>( "Error", 0.1   ) ) {
+
+    if ( !_fixed ) {
+
+        ptree.put( "Value" ,      GetUpperBound() );
+        ptree.put( "LowerBound" , GetUpperBound() );
+        ptree.put( "UpperBound" , 2*GetUpperBound() - GetLowerBound() );
+
+    }
 
 }
 

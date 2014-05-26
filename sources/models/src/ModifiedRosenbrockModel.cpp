@@ -23,7 +23,7 @@
 #include "ModelParameter.h"
 #include "ModifiedRosenbrockModel.h"
 
-Fittino::ModifiedRosenbrockModel::ModifiedRosenbrockModel( const boost::property_tree::ptree& ptree )
+Fittino::ModifiedRosenbrockModel::ModifiedRosenbrockModel( boost::property_tree::ptree& ptree )
     : TestModelBase( ptree ) {
 
     _name = "ModifiedRosenbrockModel";

@@ -45,7 +45,7 @@
 #include "RandomGenerator.h"
 
 
-Fittino::PhysicsModel::PhysicsModel( const boost::property_tree::ptree& ptree )
+Fittino::PhysicsModel::PhysicsModel( boost::property_tree::ptree& ptree )
     : ModelBase( ptree ) {
 
     _name       = ptree.get<std::string>( "Name" );

@@ -37,7 +37,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      GiuntaModel( const boost::property_tree::ptree& ptree );
+      GiuntaModel( boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */
