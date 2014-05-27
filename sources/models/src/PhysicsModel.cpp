@@ -504,9 +504,11 @@ void Fittino::PhysicsModel::UpdateCovarianceMatrix( ) {
             }
             if( _observableVector.at(i)->IsNoFitObservable() || _observableVector.at(j)->IsNoFitObservable() ) continue;
             (*_fitObservableCovarianceMatrix)[fitx][fity] = (*_observableCovarianceMatrix)[i][j];
-            fitx++;
             fity++;
 
+        }
+        if( !_observableVector.at(i)->IsNoFitObservable() ) {
+            fitx++;
         }
 
     }
