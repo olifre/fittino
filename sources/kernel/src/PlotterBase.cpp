@@ -123,7 +123,7 @@ void Fittino::PlotterBase::MakePlots() {
 
         if ( _pageFormat == "Landscape" ) {
 
-            fittinoVersion.DrawTextNDC( 0.575, 0.95, versionText.c_str() );
+            fittinoVersion.DrawTextNDC( 0.570, 0.95, versionText.c_str() );
 
         }
         else if ( _pageFormat == "Square" ) {

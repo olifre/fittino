@@ -35,7 +35,7 @@ Fittino::ModelParameter::ModelParameter( boost::property_tree::ptree& ptree )
 
         ptree.put( "Value" ,      GetUpperBound() );
         ptree.put( "LowerBound" , GetUpperBound() );
-        ptree.put( "UpperBound" , 2*GetUpperBound() - GetLowerBound() );
+        ptree.put( "UpperBound" , 2 * GetUpperBound() - GetLowerBound() );
 
     }
 

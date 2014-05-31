@@ -24,9 +24,9 @@
 
 #include <cstdlib>
 
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 
 #include "Controller.h"
@@ -39,7 +39,6 @@
 Fittino::Controller& Fittino::Controller::GetInstance() {
 
     static Controller instance;
-
     return instance;
 
 }
@@ -66,10 +65,9 @@ void Fittino::Controller::ExecuteFittino() const {
             boost::property_tree::write_xml( _inputFileName, *_inputPtree, std::locale(), settings );
 
             _scopedLock->unlock();
-            
+
         }
-        
-        
+
         tool->PerformTask();
 
         _outputPtree->put( "InputFile.VerbosityLevel", _inputPtree->get<std::string>( "InputFile.VerbosityLevel" ) );
@@ -118,8 +116,8 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
         if ( ! _lockFileName.empty() ) {
 
-          _fileLock = new boost::interprocess::file_lock( _lockFileName.c_str() );
-          _scopedLock = new boost::interprocess::scoped_lock<boost::interprocess::file_lock>( *_fileLock );
+            _fileLock = new boost::interprocess::file_lock( _lockFileName.c_str() );
+            _scopedLock = new boost::interprocess::scoped_lock<boost::interprocess::file_lock>( *_fileLock );
 
         }
 
@@ -134,10 +132,10 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
         Messenger::GetInstance().SetVerbosityLevel( verbosityLevel );
 
         double randomSeed = _inputPtree->get<double>( "InputFile.RandomSeed", 0 );
-        if( randomSeed != 0 ) {
-            
+        if ( randomSeed != 0 ) {
+
             RandomGenerator::GetInstance()->SetSeed( randomSeed );
-        
+
         }
 
     }
@@ -164,9 +162,9 @@ Fittino::Controller::Controller()
       _inputPtree( new boost::property_tree::ptree() ),
       _outputPtree( new boost::property_tree::ptree() ) {
 
-  _fileLock = 0;
-  _scopedLock = 0;
-  _lockFileName = "";
+    _fileLock = 0;
+    _scopedLock = 0;
+    _lockFileName = "";
 
 }
 
@@ -238,9 +236,9 @@ void Fittino::Controller::HandleOptions( int argc, char** argv ) {
                 _inputFileName = std::string( optarg );
                 continue;
 
-            case 'l':  
-              _lockFileName = std::string( optarg );
-              continue;
+            case 'l':
+                _lockFileName = std::string( optarg );
+                continue;
 
             case ':':
                 throw InputException( "Missing option parameter." );
@@ -265,10 +263,10 @@ void Fittino::Controller::PrintHelp() const {
     messenger << Messenger::ALWAYS << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  -h, --help" << Messenger::Endl;
     messenger << Messenger::ALWAYS << "      Fittino prints this message." << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  -i, --input-file=FILE" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  -i FILE, --input-file=FILE" << Messenger::Endl;
     messenger << Messenger::ALWAYS << "      Fittino uses the input file FILE. The input file suffix must" << Messenger::Endl;
     messenger << Messenger::ALWAYS << "      be .xml (XML format)." << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "  -l, --lock-file=FILE" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  -l FILE, --lock-file=FILE" << Messenger::Endl;
     messenger << Messenger::ALWAYS << "      Fittino uses the file FILE for inter process locking." << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
 

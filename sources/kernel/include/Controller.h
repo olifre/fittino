@@ -78,17 +78,9 @@
 #include <string>
 
 #include "boost/interprocess/interprocess_fwd.hpp"
+
+#include "FileLockForwardDeclaration.h"
 #include "PtreeForwardDeclaration.h"
-
-namespace boost {
-
-  namespace interprocess {
-
-    class file_lock;
-
-  }
-
-}
 
 /*!
  *  \brief Fittino namespace.
@@ -119,48 +111,47 @@ namespace Fittino {
       /*!
        *  Returns a static pointer to the unique instance of this class.
        */
-      static Controller&           GetInstance();
+      static Controller&                                                GetInstance();
 
     public:
       /*!
        *  Executes Fittino. For that purpose a model inheriting from ModelBase and the required\n
        *  analysis tools inheriting from AnalysisTool are created and put into action.
        */
-      void                         ExecuteFittino() const;
+      void                                                              ExecuteFittino() const;
       /*!
        *  Initializes Fittino. Takes as input the command line arguments specified by the user\n
        *  while invocing Fittino and stores them for future reference.
        */
-      void                         InitializeFittino( int argc, char** argv );
+      void                                                              InitializeFittino( int argc, char** argv );
       /*!
        *  Provides the controlled termination of Fittino.
        */
-      void                         TerminateFittino() const;
+      void                                                              TerminateFittino() const;
 
       /*! \cond UML */
     private:
       /*!
        *  Pointer to the unique instance of this class.
        */
-      static Controller*           _instance;
+      static Controller*                                                _instance;
 
     private:
       /*!
        *  The name of the input file.
        */
-      std::string                       _inputFileName;
-      std::string                       _lockFileName;
-      boost::interprocess::file_lock*   _fileLock;
+      std::string                                                       _inputFileName;
+      std::string                                                       _lockFileName;
+      boost::interprocess::file_lock*                                   _fileLock;
       boost::interprocess::scoped_lock<boost::interprocess::file_lock>* _scopedLock;
-      
       /*!
        *  Property tree which stores the configuration items of Fittino.
        */
-      boost::property_tree::ptree* _inputPtree;
+      boost::property_tree::ptree*                                      _inputPtree;
       /*!
        *  Property tree which stores the status of Fittino after Execute().
        */
-      boost::property_tree::ptree* _outputPtree;
+      boost::property_tree::ptree*                                      _outputPtree;
 
     private:
       /*!
@@ -174,20 +165,20 @@ namespace Fittino {
       /*!
        *  Check the format of the input file. The supported input file format is XML.
        */
-      void                         CheckInputFileFormat() const;
+      void                                                              CheckInputFileFormat() const;
       /*!
        *  Handles the Fittino options given at the command line.
        */
-      void                         HandleOptions( int argc, char** argv );
+      void                                                              HandleOptions( int argc, char** argv );
       /*!
        *  When Fittino is called without arguments or with the -h/--help option this method\n
        *  prints a help screen with further instructions on how to use Fittino.
        */
-      void                         PrintHelp() const;
+      void                                                              PrintHelp() const;
       /*!
        *  Prints a welcome logo.
        */
-      void                         PrintLogo() const;
+      void                                                              PrintLogo() const;
 
       /*! \endcond UML */
 

@@ -8,9 +8,9 @@
 *                                                                              *
 * Description Base class for Fittino models                                    *
 *                                                                              *
-* Authors     Sebastian Heer        <s6seheer@uni-bonn.de>                     *
+* Authors     Matthias  Hamer       <mhamer@gwdg.de>                           *
+*             Sebastian Heer        <s6seheer@uni-bonn.de>                     *
 *             Mathias   Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>            *
-*             Matthias Hamer        <mhamer@gwdg.de>                           *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -25,8 +25,8 @@
 #include "ModelParameter.h"
 
 Fittino::ModelBase::ModelBase( boost::property_tree::ptree& ptree )
-  : _name( "" ),
-    _ptree ( ptree ){
+    : _name( "" ),
+      _ptree ( ptree ) {
 
     InitializeParameters( ptree );
 
@@ -83,6 +83,7 @@ void Fittino::ModelBase::UpdatePropertyTree() {
             node.second.put( "UpperBound", _collectionOfParameters.At( node.second.get<std::string>( "Name" ) )->GetUpperBound() );
 
         }
+
     }
 
 }
