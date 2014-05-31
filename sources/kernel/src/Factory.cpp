@@ -57,6 +57,7 @@
 #include "RosenbrockModel.h"
 #include "Simple1DHistogramMaker.h"
 #include "Simple2DHistogramMaker.h"
+#include "Simple3DHistogramMaker.h"
 #include "SimpleOptimizer.h"
 #include "SimplePlotter.h"
 #include "SimplePrediction.h"
@@ -474,6 +475,11 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
     else if ( type == "Simple2DHistogramMaker" ) {
 
         return new Simple2DHistogramMaker( model, ptree );
+
+    }
+    else if ( type == "Simple3DHistogramMaker" ) {
+
+        return new Simple3DHistogramMaker( model, ptree );
 
     }
     else if ( type == "SimpleOptimizer" ) {
