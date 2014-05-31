@@ -20,6 +20,8 @@
 #ifndef FITTINO_CONTOURPLOTTER_H
 #define FITTINO_CONTOURPLOTTER_H
 
+#include "TString.h"
+
 #include "PlotterBase.h"
 
 class TLegend;
@@ -52,13 +54,29 @@ namespace Fittino {
 
       /*! \endcond UML */
     private:
-      std::string _format;
+      bool        _legendFrame;
+      double      _legendX1;
+      double      _legendX2;
+      double      _legendY1;
+      double      _legendY2;
+      int         _contour1SigmaFillColor;
+      int         _contour1SigmaLineColor;
+      int         _contour1SigmaLineStyle;
+      int         _contour2SigmaFillColor;
+      int         _contour2SigmaLineColor;
+      int         _contour2SigmaLineStyle;
+      int         _totalNumberOfContourLevels;
+      std::string _legendPosition;
       std::string _style;
+      TString     _legendOption;
       TLegend*    _legend;
 
     private:
       void        Plot( unsigned int iHistogram );
       void        PrintSteeringParameters() const;
+      void        SetClassicStyle();
+      void        SetPeachStyle();
+      void        SetPlainStyle();
 
       /*! \endcond UML */
 

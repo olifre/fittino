@@ -33,8 +33,10 @@
 #include "ContourPlotter.h"
 
 Fittino::ContourPlotter::ContourPlotter( std::vector<TH1*>& histogramVector, const boost::property_tree::ptree& ptree )
-    : PlotterBase( histogramVector, ptree ),
-      _style     ( ptree.get<std::string>( "Style", "Plain" ) ) {
+    : PlotterBase    ( histogramVector, ptree ),
+      _legendFrame   ( ptree.get<bool>       ( "LegendFrame",    false         ) ),
+      _legendPosition( ptree.get<std::string>( "LegendPosition", "BottomRight" ) ),
+      _style         ( ptree.get<std::string>( "Style",          "Plain"       ) ) {
 
     _name = "contour plotter";
 
@@ -42,21 +44,10 @@ Fittino::ContourPlotter::ContourPlotter( std::vector<TH1*>& histogramVector, con
 
     _pad = ( TPad* )_canvas->cd();
     _pad->SetTicks( 1, 1 );
-    _pad->SetBottomMargin( 0.12 );
-    _pad->SetTopMargin( 0.08 );
 
-    //if ( _style == "Peach" ) {
-
-    //    _pad->SetRightMargin( 0.16 );
-    //    _pad->SetLeftMargin( 0.10 );
-
-    //}
-    //else {
-
-    _pad->SetRightMargin( 0.08 );
-    _pad->SetLeftMargin( 0.12 );
-
-    //}
+    if      ( _style == "Classic" ) SetClassicStyle();
+    else if ( _style == "Peach"   ) SetPeachStyle();
+    else if ( _style == "Plain"   ) SetPlainStyle();
 
     gROOT->SetStyle( "FITTINO" );
     gROOT->ForceStyle();
@@ -69,33 +60,25 @@ Fittino::ContourPlotter::~ContourPlotter() {
 
 void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
 
-    //if ( _style == "Peach" ) {
+    // Calculate the minimum bin.
 
-    //    // Set the color palette.
+    Int_t minimumBinX = 0;
+    Int_t minimumBinY = 0;
 
-    //    const UInt_t Number = 3;
-    //    Double_t Red[Number]   = { 0.00, 1.00, 1.00 };
-    //    Double_t Green[Number] = { 1.00, 1.00, 0.00 };
-    //    Double_t Blue[Number]  = { 1.00, 0.00, 1.00 };
-    //    Double_t Length[4] = { 0.0, 0.1, 0.6, 1.0 };
-    //    Int_t nb = 10;
-    //    TColor::CreateGradientColorTable( Number, Length, Red, Green, Blue, nb );
-    //    _histogramVector[iHistogram]->SetContour( nb );
+    for ( Int_t iBinX = 0; iBinX <= _histogramVector[iHistogram]->GetNbinsX(); ++iBinX ) {
 
-    //    // Set all bins with entries greater 10 to zero.
+        for ( Int_t iBinY = 0; iBinY <= _histogramVector[iHistogram]->GetNbinsY(); ++iBinY ) {
 
-    //    for ( Int_t iBinX = 0; iBinX <= _histogramVector[iHistogram]->GetNbinsX(); ++iBinX ) {
+            if ( _histogramVector[iHistogram]->GetBinContent( iBinX, iBinY ) <= 0. ) {
 
-    //        for ( Int_t iBinY = 0; iBinY <= _histogramVector[iHistogram]->GetNbinsY(); ++iBinY ) {
+                minimumBinX = iBinX;
+                minimumBinY = iBinY;
 
-    //            if ( _histogramVector[iHistogram]->GetBinContent( iBinX, iBinY ) >= 10. )
-    //                _histogramVector[iHistogram]->SetBinContent( iBinX, iBinY, 0. );
+            }
 
-    //        }
+        }
 
-    //    }
-
-    //}
+    }
 
     // Prepare histogram contours.
 
@@ -109,16 +92,31 @@ void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
 
     // Draw the histogram.
 
-    //if ( _style == "Peach" ) {
+    if ( _style == "Peach" ) {
 
-    //    _histogramVector[iHistogram]->Draw( "COLZ" );
+        _histogramVector[iHistogram]->SetContour( _totalNumberOfContourLevels );
 
-    //}
-    //else {
+        // Set all bins with entries greater 10 to zero.
 
-    _histogramVector[iHistogram]->Draw( "AXIS" );
+        for ( Int_t iBinX = 0; iBinX <= _histogramVector[iHistogram]->GetNbinsX(); ++iBinX ) {
 
-    //}
+            for ( Int_t iBinY = 0; iBinY <= _histogramVector[iHistogram]->GetNbinsY(); ++iBinY ) {
+
+                if ( _histogramVector[iHistogram]->GetBinContent( iBinX, iBinY ) >= 10. )
+                    _histogramVector[iHistogram]->SetBinContent( iBinX, iBinY, 0. );
+
+            }
+
+        }
+
+        _histogramVector[iHistogram]->Draw( "COLZ" );
+
+    }
+    else {
+
+        _histogramVector[iHistogram]->Draw( "AXIS" );
+
+    }
 
     // Draw the contours.
 
@@ -141,19 +139,18 @@ void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
 
             contour1 = ( TGraph* ) listOfGraphsPerContour1->At( iGraph );
 
+            if ( contour1 ) contour1->SetLineStyle( _contour2SigmaLineStyle );
+            if ( contour1 ) contour1->SetLineColor( _contour2SigmaLineColor );
+            if ( contour1 ) contour1->SetFillColor( _contour2SigmaFillColor );
+
             if ( _style == "Classic" ) {
 
-                if ( contour1 ) contour1->SetLineStyle( 1 );
-                if ( contour1 ) contour1->SetLineColor( kBlue - 2 );
-                if ( contour1 ) contour1->SetFillColor( kBlue - 10 );
                 if ( contour1 ) contour1->Draw( "F" );
                 if ( contour1 ) contour1->Draw( "CSAME" );
 
             }
             else {
 
-                if ( contour1 ) contour1->SetLineStyle( 2 );
-                if ( contour1 ) contour1->SetLineColor( kBlack );
                 if ( contour1 ) contour1->Draw( "C" );
 
             }
@@ -171,18 +168,17 @@ void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
             contour2 = ( TGraph* ) listOfGraphsPerContour2->At( iGraph );
 
             if ( contour2 ) contour2->SetLineStyle( 1 );
+            if ( contour2 ) contour2->SetLineColor( _contour1SigmaLineColor );
+            if ( contour2 ) contour2->SetFillColor( _contour1SigmaFillColor );
 
             if ( _style == "Classic" ) {
 
-                if ( contour2 ) contour2->SetLineColor( kBlue - 2 );
-                if ( contour2 ) contour2->SetFillColor( kBlue - 9 );
                 if ( contour2 ) contour2->Draw( "F" );
                 if ( contour2 ) contour2->Draw( "CSAME" );
 
             }
             else {
 
-                if ( contour2 ) contour2->SetLineColor( kBlack );
                 if ( contour2 ) contour2->Draw( "C" );
 
             }
@@ -192,24 +188,6 @@ void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
     }
 
     // Draw the best fit value.
-
-    Int_t minimumBinX = 0;
-    Int_t minimumBinY = 0;
-
-    for ( Int_t iBinX = 0; iBinX <= _histogramVector[iHistogram]->GetNbinsX(); ++iBinX ) {
-
-        for ( Int_t iBinY = 0; iBinY <= _histogramVector[iHistogram]->GetNbinsY(); ++iBinY ) {
-
-            if ( _histogramVector[iHistogram]->GetBinContent( iBinX, iBinY ) <= 0. ) {
-
-                minimumBinX = iBinX;
-                minimumBinY = iBinY;
-
-            }
-
-        }
-
-    }
 
     Double_t bestFitValueX = _histogramVector[iHistogram]->GetXaxis()->GetBinCenter( minimumBinX );
     Double_t bestFitValueY = _histogramVector[iHistogram]->GetYaxis()->GetBinCenter( minimumBinY );
@@ -221,16 +199,7 @@ void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
 
     // Draw the legend.
 
-    if ( _format == "Square" ) {
-
-        _legend = new TLegend( 0.58, 0.17, 0.84, 0.35 );
-
-    }
-    else {
-
-        _legend = new TLegend( 0.65, 0.17, 0.89, 0.35 );
-
-    }
+    _legend = new TLegend( _legendX1, _legendY1, _legendX2, _legendY2 );
 
     _legend->SetShadowColor( 0 );
     _legend->SetBorderSize( 1 );
@@ -238,27 +207,321 @@ void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
     _legend->SetTextSize( _textSize );
     _legend->SetTextFont( _textFont );
     _legend->SetFillColor( 0 );
+
+    if ( _legendFrame ) _legend->SetLineColor( kBlack );
+    else _legend->SetLineColor( 0 );
+
     _legend->AddEntry( bestFitValue, "Best Fit Point", "p" );
-
-    if ( _style == "Classic" ) {
-
-        _legend->AddEntry( contour2, "1D 68% CL", "f" );
-        _legend->AddEntry( contour1, "2D 95% CL", "f" );
-
-    }
-    else {
-
-        _legend->AddEntry( contour2, "1D 68% CL", "l" );
-        _legend->AddEntry( contour1, "2D 95% CL", "l" );
-
-    }
+    _legend->AddEntry( contour2, "1D 68% CL", _legendOption );
+    _legend->AddEntry( contour1, "2D 95% CL", _legendOption );
 
     _legend->Draw( "SAME" );
+
+    // Draw axis again.
 
     _histogramVector[iHistogram]->Draw( "AXISSAME" );
 
 }
 
 void Fittino::ContourPlotter::PrintSteeringParameters() const {
+
+}
+
+void Fittino::ContourPlotter::SetClassicStyle() {
+
+    // Pad settings.
+
+    _pad->SetRightMargin( 0.10 );
+    _pad->SetLeftMargin( 0.11 );
+    _pad->SetBottomMargin( 0.12 );
+    _pad->SetTopMargin( 0.08 );
+
+    // Contour settings.
+
+    _contour1SigmaLineStyle = 1;
+    _contour1SigmaLineColor = kBlue - 2;
+    _contour1SigmaFillColor = kBlue - 9;
+
+    _contour2SigmaLineStyle = 1;
+    _contour2SigmaLineColor = kBlue - 2;
+    _contour2SigmaFillColor = kBlue - 10;
+
+    // Legend settings.
+
+    _legendOption = "f";
+
+    if ( _pageFormat == "Square" ) {
+
+        if ( _legendPosition == "BottomRight" ) {
+
+            _legendX1 = 0.565;
+            _legendX2 = 0.855;
+            _legendY1 = 0.170;
+            _legendY2 = 0.350;
+
+        }
+        else if ( _legendPosition == "TopRight" ) {
+
+            _legendX1 = 0.565;
+            _legendX2 = 0.855;
+            _legendY1 = 0.700;
+            _legendY2 = 0.880;
+
+        }
+        else if ( _legendPosition == "BottomLeft" ) {
+
+            _legendX1 = 0.150;
+            _legendX2 = 0.440;
+            _legendY1 = 0.170;
+            _legendY2 = 0.350;
+
+        }
+        else if ( _legendPosition == "TopLeft" ) {
+
+            _legendX1 = 0.150;
+            _legendX2 = 0.440;
+            _legendY1 = 0.700;
+            _legendY2 = 0.880;
+
+        }
+
+    }
+    else {
+
+        if ( _legendPosition == "BottomRight" ) {
+
+            _legendX1 = 0.645;
+            _legendX2 = 0.865;
+            _legendY1 = 0.170;
+            _legendY2 = 0.350;
+
+        }
+        else if ( _legendPosition == "TopRight" ) {
+
+            _legendX1 = 0.645;
+            _legendX2 = 0.865;
+            _legendY1 = 0.700;
+            _legendY2 = 0.880;
+
+        }
+        else if ( _legendPosition == "BottomLeft" ) {
+
+            _legendX1 = 0.150;
+            _legendX2 = 0.370;
+            _legendY1 = 0.170;
+            _legendY2 = 0.350;
+
+        }
+        else if ( _legendPosition == "TopLeft" ) {
+
+            _legendX1 = 0.150;
+            _legendX2 = 0.370;
+            _legendY1 = 0.700;
+            _legendY2 = 0.880;
+
+        }
+
+    }
+
+}
+
+void Fittino::ContourPlotter::SetPeachStyle() {
+
+    // Pad settings.
+
+    _pad->SetRightMargin( 0.15 );
+    _pad->SetLeftMargin( 0.11 );
+    _pad->SetBottomMargin( 0.12 );
+    _pad->SetTopMargin( 0.08 );
+
+    // Palette settings.
+
+    const UInt_t Number = 3;
+    Double_t Red[Number]   = { 0.00, 1.00, 1.00 };
+    Double_t Green[Number] = { 1.00, 1.00, 0.00 };
+    Double_t Blue[Number]  = { 1.00, 0.00, 1.00 };
+    Double_t Length[4] = { 0.0, 0.1, 0.6, 1.0 };
+    _totalNumberOfContourLevels = 10;
+    TColor::CreateGradientColorTable( Number, Length, Red, Green, Blue, _totalNumberOfContourLevels );
+
+    // Contour settings.
+
+    _contour1SigmaLineStyle = 1;
+    _contour1SigmaLineColor = kBlack;
+
+    _contour2SigmaLineStyle = 2;
+    _contour2SigmaLineColor = kBlack;
+
+    // Legend settings.
+
+    if ( _pageFormat == "Square" ) {
+
+        if ( _legendPosition == "BottomRight" ) {
+
+            _legendX1 = 0.520;
+            _legendX2 = 0.810;
+            _legendY1 = 0.170;
+            _legendY2 = 0.350;
+
+        }
+        else if ( _legendPosition == "TopRight" ) {
+
+            _legendX1 = 0.520;
+            _legendX2 = 0.810;
+            _legendY1 = 0.700;
+            _legendY2 = 0.880;
+
+        }
+        else if ( _legendPosition == "BottomLeft" ) {
+
+            _legendX1 = 0.150;
+            _legendX2 = 0.440;
+            _legendY1 = 0.170;
+            _legendY2 = 0.350;
+
+        }
+        else if ( _legendPosition == "TopLeft" ) {
+
+            _legendX1 = 0.150;
+            _legendX2 = 0.440;
+            _legendY1 = 0.700;
+            _legendY2 = 0.880;
+
+        }
+
+    }
+    else {
+
+        if ( _legendPosition == "BottomRight" ) {
+
+            _legendX1 = 0.590;
+            _legendX2 = 0.815;
+            _legendY1 = 0.170;
+            _legendY2 = 0.350;
+
+        }
+        else if ( _legendPosition == "TopRight" ) {
+
+            _legendX1 = 0.590;
+            _legendX2 = 0.815;
+            _legendY1 = 0.700;
+            _legendY2 = 0.880;
+
+        }
+        else if ( _legendPosition == "BottomLeft" ) {
+
+            _legendX1 = 0.150;
+            _legendX2 = 0.370;
+            _legendY1 = 0.170;
+            _legendY2 = 0.350;
+
+        }
+        else if ( _legendPosition == "TopLeft" ) {
+
+            _legendX1 = 0.150;
+            _legendX2 = 0.370;
+            _legendY1 = 0.700;
+            _legendY2 = 0.880;
+
+        }
+
+    }
+
+    _legendOption = "l";
+
+}
+
+void Fittino::ContourPlotter::SetPlainStyle() {
+
+    // Pad settings.
+
+    _pad->SetRightMargin( 0.10 );
+    _pad->SetLeftMargin( 0.11 );
+    _pad->SetBottomMargin( 0.12 );
+    _pad->SetTopMargin( 0.08 );
+
+    // Contour settings.
+
+    _contour1SigmaLineStyle = 1;
+    _contour1SigmaLineColor = kBlack;
+
+    _contour2SigmaLineStyle = 2;
+    _contour2SigmaLineColor = kBlack;
+
+    // Legend settings.
+
+    _legendOption = "l";
+
+    if ( _pageFormat == "Square" ) {
+
+        if ( _legendPosition == "BottomRight" ) {
+
+            _legendX1 = 0.565;
+            _legendX2 = 0.855;
+            _legendY1 = 0.170;
+            _legendY2 = 0.350;
+
+        }
+        else if ( _legendPosition == "TopRight" ) {
+
+            _legendX1 = 0.565;
+            _legendX2 = 0.855;
+            _legendY1 = 0.700;
+            _legendY2 = 0.880;
+
+        }
+        else if ( _legendPosition == "BottomLeft" ) {
+
+            _legendX1 = 0.150;
+            _legendX2 = 0.440;
+            _legendY1 = 0.170;
+            _legendY2 = 0.350;
+
+        }
+        else if ( _legendPosition == "TopLeft" ) {
+
+            _legendX1 = 0.150;
+            _legendX2 = 0.440;
+            _legendY1 = 0.700;
+            _legendY2 = 0.880;
+
+        }
+
+    }
+    else {
+
+        if ( _legendPosition == "BottomRight" ) {
+
+            _legendX1 = 0.645;
+            _legendX2 = 0.865;
+            _legendY1 = 0.170;
+            _legendY2 = 0.350;
+
+        }
+        else if ( _legendPosition == "TopRight" ) {
+
+            _legendX1 = 0.645;
+            _legendX2 = 0.865;
+            _legendY1 = 0.700;
+            _legendY2 = 0.880;
+
+        }
+        else if ( _legendPosition == "BottomLeft" ) {
+
+            _legendX1 = 0.150;
+            _legendX2 = 0.370;
+            _legendY1 = 0.170;
+            _legendY2 = 0.350;
+        }
+        else if ( _legendPosition == "TopLeft" ) {
+
+            _legendX1 = 0.150;
+            _legendX2 = 0.370;
+            _legendY1 = 0.700;
+            _legendY2 = 0.880;
+
+        }
+
+    }
 
 }
