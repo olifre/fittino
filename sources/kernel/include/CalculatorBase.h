@@ -29,7 +29,6 @@ namespace Fittino {
 
   class PhysicsModel;
   class PredictionBase;
-  class SimpleDataStorage;
 
   /*!
    *  \ingroup kernel
@@ -46,10 +45,6 @@ namespace Fittino {
        *  Standard destructor.
        */
       std::string                        GetName() const;
-      /*!
-       *  \todo Remove when no longer used by derived classes (Matthias).
-       */
-      const SimpleDataStorage*           GetSimpleOutputDataStorage() const;
       const Collection<PredictionBase*>& GetCollectionOfQuantities() const;
 
     public:
@@ -65,10 +60,6 @@ namespace Fittino {
       std::string                        _name;
       std::string                        _tag;
       const PhysicsModel*                _model;
-      /*!
-       *  \todo Remove when no longer used by derived classes (Matthias).
-       */
-      SimpleDataStorage*                 _simpleOutputDataStorage;
 
     protected:
       void                               AddQuantity( PredictionBase* prediction );

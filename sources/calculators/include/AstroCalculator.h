@@ -34,6 +34,8 @@ class TF1;
  */
 namespace Fittino {
 
+  class SimpleDataStorage;
+
   /*!
    *  \defgroup calculators
    */
@@ -72,6 +74,7 @@ namespace Fittino {
       std::vector<double>                   _theoryUncertainties;
       std::vector<TGraph>                   _exclusionGraphs;
       std::vector<double>                   _measuredValues;
+      SimpleDataStorage*                    _simpleOutputDataStorage;
 
   };
 

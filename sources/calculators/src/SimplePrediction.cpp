@@ -18,7 +18,6 @@
 *******************************************************************************/
 
 #include "CalculatorBase.h"
-#include "SimpleDataStorage.h"
 #include "SimplePrediction.h"
 
 #include <boost/property_tree/ptree.hpp>
@@ -53,31 +52,8 @@ Fittino::SimplePrediction::SimplePrediction( std::string   name,
 
 }
 
-Fittino::SimplePrediction::SimplePrediction( std::string           name,
-                                             std::string           plotName,
-                                             std::string           unit,
-                                             std::string           plotUnit,
-                                             double                lowerBound,
-                                             double                upperBound,
-                                             const CalculatorBase* calculator )
-    : _referenceValue( calculator->GetSimpleOutputDataStorage()->GetMap()->at( name ) ),
-      PredictionBase( name,
-                      plotName,
-                      unit,
-                      plotUnit,
-                      lowerBound,
-                      upperBound ) {
-
-}
-
-Fittino::SimplePrediction::SimplePrediction( const boost::property_tree::ptree& ptree, const double& value )
-    : _referenceValue( value ),
-      PredictionBase( ptree ) {
-
-}
-
 Fittino::SimplePrediction::SimplePrediction( const boost::property_tree::ptree& ptree, const CalculatorBase* calculator )
-    : _referenceValue( calculator->GetSimpleOutputDataStorage()->GetMap()->at( ptree.get<std::string>( "Name" ) ) ),
+    : _referenceValue( calculator->GetCollectionOfQuantities().At( ptree.get<std::string>( "Name" ) )->GetValue() ),
       PredictionBase( ptree ) {
 
 }

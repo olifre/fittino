@@ -40,6 +40,7 @@
 #include "Factory.h"
 #include "SimplePrediction.h"
 #include "Observable.h"
+#include "SimpleDataStorage.h"
 
 Fittino::AstroCalculator::AstroCalculator( const PhysicsModel* model )
     : CalculatorBase( model ) {
@@ -49,7 +50,8 @@ Fittino::AstroCalculator::AstroCalculator( const PhysicsModel* model )
 }
 
 Fittino::AstroCalculator::AstroCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
-    : CalculatorBase( model ) {
+    : CalculatorBase( model ),
+      _simpleOutputDataStorage( new SimpleDataStorage() ) {
 
     _name = "AstroCalculator";
     if( ptree.count("Chi2Contribution" ) != 0 ) {

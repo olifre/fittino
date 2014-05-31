@@ -53,20 +53,6 @@ namespace Fittino {
                         double        upperBound,
                         const double& value );
       /*!
-       *  Constructor taking name, plotName, unit, plotUnit, lowerBound, upperBound and a calculator.
-       */
-      SimplePrediction( std::string           name,
-                        std::string           plotName,
-                        std::string           unit,
-                        std::string           plotUnit,
-                        double                lowerBound,
-                        double                upperBound,
-                        const CalculatorBase* calculator );
-      /*!
-       *  Standard constructor.
-       */
-      SimplePrediction( const boost::property_tree::ptree& ptree, const double& value );
-      /*!
        *  Alternative constructor.
        */
       SimplePrediction( const boost::property_tree::ptree& ptree, const CalculatorBase* calculator );
