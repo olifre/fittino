@@ -24,7 +24,7 @@
 #include "CheckVacuumCalculator.h"
 #include "ContourHistogramMaker.h"
 #include "ContourPlotter.h"
-#include "CorrelatedSampler.h"
+//#include "CorrelatedSampler.h"
 #include "CovariantSampler.h"
 #include "Factory.h"
 
@@ -32,6 +32,7 @@
 #include "FeynHiggsCalculator.h"
 #endif
 
+#include "EvolutionarySampler.h"
 #include "FormulaCalculator.h"
 #include "GeneticAlgorithmOptimizer.h"
 #include "HDim6Calculator.h"
@@ -50,6 +51,7 @@
 #include "NewHiggsSignalsHadXSCalculator.h"
 #include "Observable.h"
 #include "ParticleSwarmOptimizer.h"
+#include "ParticleSwarmSampler.h"
 #include "PhysicsModel.h"
 #include "ProfileHistogramMaker.h"
 #include "ProfilePlotter.h"
@@ -71,6 +73,17 @@
 #include "SuperIsoCalculator.h"
 #include "TreeCalculator.h"
 #include "TreeSampler.h"
+
+#include "ModifiedRosenbrockModel.h"
+#include "Univariate10Model.h"
+#include "Univariate2Model.h"
+#include "Alpine2Model.h"
+#include "ParaboloidModel.h"
+#include "HosakiModel.h"
+#include "Shubert3Model.h"
+#include "DamavandiModel.h"
+#include "VincentModel.h"
+#include "GiuntaModel.h"
 
 Fittino::Factory::Factory() {
 
@@ -326,6 +339,56 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
         return new RosenbrockModel( ptree );
 
     }
+    else if ( type == "ModifiedRosenbrockModel" ) {
+
+        return new ModifiedRosenbrockModel( ptree );
+
+    }
+    else if ( type == "Univariate10Model" ) {
+
+        return new Univariate10Model( ptree );
+
+    }
+    else if ( type == "Univariate2Model" ) {
+
+        return new Univariate2Model( ptree );
+
+    }
+    else if ( type == "Alpine2Model" ) {
+
+        return new Alpine2Model( ptree );
+
+    }
+    else if ( type == "ParaboloidModel" ) {
+
+        return new ParaboloidModel( ptree );
+
+    }
+    else if ( type == "HosakiModel" ) {
+
+        return new HosakiModel( ptree );
+
+    }
+    else if ( type == "Shubert3Model" ) {
+
+        return new Shubert3Model( ptree );
+
+    }
+    else if ( type == "DamavandiModel" ) {
+
+        return new DamavandiModel( ptree );
+
+    }
+    else if ( type == "VincentModel" ) {
+
+        return new VincentModel( ptree );
+
+    }
+    else if ( type == "GiuntaModel" ) {
+
+        return new GiuntaModel( ptree );
+
+    }
     else {
 
         throw ConfigurationException( "Model type " + type + " not known." );
@@ -442,6 +505,16 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
         return new ContourHistogramMaker( model, ptree );
 
     }
+    else if ( type == "NewCorrelatedSampler" ) {
+
+        return new NewCorrelatedSampler( model, ptree );
+
+    }
+    else if ( type == "EvolutionarySampler" ) {
+
+        return new EvolutionarySampler( model, ptree );
+
+    }
     else if ( type == "GeneticAlgorithmOptimizer" ) {
 
         return new GeneticAlgorithmOptimizer( model, ptree );
@@ -460,6 +533,11 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
     else if ( type == "ParticleSwarmOptimizer" ) {
 
         return new ParticleSwarmOptimizer( model, ptree );
+
+    }
+    else if ( type == "ParticleSwarmSampler" ) {
+
+        return new ParticleSwarmSampler( model, ptree );
 
     }
     else if ( type == "ProfileHistogramMaker" ) {
