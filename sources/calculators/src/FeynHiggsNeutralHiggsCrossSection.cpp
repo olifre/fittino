@@ -57,13 +57,17 @@ _higgs( higgs ) {
     AddQuantity( new SimplePrediction( _quantityname + "ggh2" ,  "", _ggh2  ) );
     AddQuantity( new SimplePrediction( "NormSM_" + _quantityname + "ggh2" , "", _ggh2NormSM ) );
 
-    AddChannel( "bbh"   , _bbh,    _bbhSM,    _bbhNormSM    );
-    AddChannel( "btagbh", _btagbh, _btagbhSM, _btagbhNormSM );
-    AddChannel( "ggh"   , _ggh,    _gghSM,    _gghNormSM    );
-    AddChannel( "qqh"   , _qqh,    _qqhSM,    _qqhNormSM    );
-    AddChannel( "tth"   , _tth,    _tthSM,    _tthNormSM    );
-    AddChannel( "Wh"    , _Wh,     _WhSM,     _WhNormSM     );
-    AddChannel( "Zh"    , _Zh,     _ZhSM,     _ZhNormSM     );
+    AddQuantity( new SimplePrediction( _quantityname + "singleH2" ,  "", _singleh2  ) );
+    AddQuantity( new SimplePrediction( "NormSM_" + _quantityname + "singleH2" , "", _singleh2NormSM ) );
+
+    AddChannel( "bbh"    , _bbh    ,     _bbhSM, _bbhNormSM     );
+    AddChannel( "btagbh" , _btagbh ,  _btagbhSM, _btagbhNormSM  );
+    AddChannel( "ggh"    , _ggh    ,     _gghSM, _gghNormSM     );
+    AddChannel( "qqh"    , _qqh    ,     _qqhSM, _qqhNormSM     );
+    AddChannel( "tth"    , _tth    ,     _tthSM, _tthNormSM     );
+    AddChannel( "Wh"     , _Wh     ,      _WhSM, _WhNormSM      );
+    AddChannel( "Zh"     , _Zh     ,      _ZhSM, _ZhNormSM      );
+    AddChannel( "singleH", _singleh, _singlehSM, _singlehNormSM );
 
 }
 
@@ -109,5 +113,12 @@ void Fittino::FeynHiggsNeutralHiggsCrossSection::CalculatePredictions() {
     _tthNormSM    = _tth    / _tthSM;
     _WhNormSM     = _Wh     / _WhSM;
     _ZhNormSM     = _Zh     / _ZhSM;
+
+    _singleh   = _ggh   + _bbh;
+    _singlehSM = _gghSM + _bbhSM;
+    _singlehNormSM = _singleh / _singlehSM;
+
+    _singleh2  = _ggh2 + _bbh;
+    _singleh2NormSM = _singleh2 / _singlehSM;
 
 }

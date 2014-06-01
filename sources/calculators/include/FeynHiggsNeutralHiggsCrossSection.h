@@ -72,6 +72,12 @@ namespace Fittino {
         double _WhNormSM;
         double _ZhNormSM;
 
+        double _singleh;
+        double _singlehSM;
+        double _singlehNormSM;
+        double _singleh2;
+        double _singleh2NormSM;
+
         void AddChannel( std::string name, const double& value, const double& valueSM, const double& ratio );
 
     };
