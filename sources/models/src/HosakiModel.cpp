@@ -49,7 +49,6 @@ double Fittino::HosakiModel::TestModelFunction() {
 
     double HosakiModel = 0;
     double x1 = GetCollectionOfParameters().At(0)->GetValue(), x2 = GetCollectionOfParameters().At(1)->GetValue();
-    HosakiModel = (1 - (8*x1) + (7 * pow(x1, 2)) - ((7/3) * pow(x1, 3)) + (0.25 * pow(x1, 4))) * pow(x2, 2) * exp(-x1);
-    return HosakiModel;
+    return (1 + 7*x1*x1 - 8*x1 - 2.33333333333333*x1*x1*x1 + 0.25*x1*x1*x1*x1)*x2* x2*exp(-x2);
 
 }

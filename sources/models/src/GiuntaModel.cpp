@@ -51,10 +51,10 @@ double Fittino::GiuntaModel::TestModelFunction() {
 
     for(int i = 0; i < GetNumberOfParameters(); i++){
 
-        GiuntaModel += pow(sin(ToRadians(1 - ((16 * GetCollectionOfParameters().At(i)->GetValue()) / 15))), 2) - (sin(ToRadians(4 - ((64 * GetCollectionOfParameters().At(i)->GetValue()) / 15))) / 50) - sin(ToRadians(1 - ((16 * GetCollectionOfParameters().At(i)->GetValue()) / 15)));
+        GiuntaModel += pow(sin(1 - (16 * GetCollectionOfParameters().At(i)->GetValue() / 15)), 2) - (sin(4 - ((64 * GetCollectionOfParameters().At(i)->GetValue()) / 15)) / 50) - sin(1 - ((16 * GetCollectionOfParameters().At(i)->GetValue()) / 15));
 
     }
 
-    return 0.6+GiuntaModel;
+    return 10*(0.6+GiuntaModel);
 
 }

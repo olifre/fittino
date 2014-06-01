@@ -47,9 +47,9 @@ double Fittino::Alpine2Model::TestModelFunction() {
 
     for ( unsigned int i = 0; i < GetNumberOfParameters(); i++ ) {
 
-        Alpine2Model *= sqrt(GetCollectionOfParameters().At(i)->GetValue()) * sin(((M_PI*GetCollectionOfParameters().At(i)->GetValue()))/180);
+        Alpine2Model *= sqrt(GetCollectionOfParameters().At(i)->GetValue()) * sin(GetCollectionOfParameters().At(i)->GetValue());
     }
 
-    return Alpine2Model;
+    return -Alpine2Model; //negate to create unique minimum
 
 }

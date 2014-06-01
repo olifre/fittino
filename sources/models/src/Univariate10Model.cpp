@@ -48,6 +48,6 @@ double Fittino::Univariate10Model::ToRadians(double x){
 double Fittino::Univariate10Model::TestModelFunction() {
 
     double x = GetCollectionOfParameters().At(0)->GetValue();
-    return ( -x * sin(ToRadians(x)));
+    return ( -x * sin(x));
 
 }
