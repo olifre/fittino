@@ -17,41 +17,28 @@
  *                                                                              *
  *******************************************************************************/
 
-#include <iostream>
-#include <fstream>
-
-#include <boost/foreach.hpp>
-#include "boost/format.hpp"
-#include <boost/filesystem.hpp>
-#include <boost/property_tree/ptree.hpp>
-
 #include "TMath.h"
-#include "TVector2.h"
 
 #include "CFeynHiggs.h"
 #include "CSLHA.h"
 
 #include "CalculatorException.h"
 #include "FeynHiggsBosonicChannel.h"
-#include "ModelParameter.h"
-#include "PhysicsModel.h"
-#include "Redirector.h"
 #include "SimplePrediction.h"
 
 Fittino::FeynHiggsBosonicChannel::FeynHiggsBosonicChannel( FHRealType* gammas, FHRealType* gammasms, FHComplexType* couplings, FHComplexType* couplingsms, std::string higgsName, std::string channelName, int channelNumber, bool SM )
 : FeynHiggsChannel( gammas, gammasms, couplings, couplingsms, higgsName, channelName, channelNumber, SM ) {
 
-    AddQuantity( new SimplePrediction( "Abs_g_" + higgsName + "_" + channelName, "", _model_g2 ) );
-    AddQuantity( new SimplePrediction( "Arg_g_" + higgsName + "_" + channelName, "", _model_gPhi ) );
+    AddQuantity( new SimplePrediction( "g_Abs_" + higgsName + "_" + channelName, "", _model_g_Abs ) );
+    AddQuantity( new SimplePrediction( "g_Arg_" + higgsName + "_" + channelName, "", _model_g_Arg ) );
 
     if ( _doSM ) {
 
-        AddQuantity( new SimplePrediction( "SM_Abs_g_" + higgsName + "_" + channelName, "", _sm_g2 ) );
-        AddQuantity( new SimplePrediction( "SM_Arg_g_" + higgsName + "_" + channelName, "", _sm_gPhi ) );
+        AddQuantity( new SimplePrediction( "SM_g_Abs_" + higgsName + "_" + channelName, "", _sm_g_Abs ) );
+        AddQuantity( new SimplePrediction( "SM_g_Arg_" + higgsName + "_" + channelName, "", _sm_g_Arg ) );
 
-        AddQuantity( new SimplePrediction( "NormSM_Abs_g_" + higgsName + "_" + channelName, "", _normSM_g2 ) );
-        AddQuantity( new SimplePrediction( "NormSM_Norm_g_" + higgsName + "_" + channelName, "", _normSM_Norm_g ) );
-        AddQuantity( new SimplePrediction( "DiffSM_Arg_g_" + higgsName + "_" + channelName, "", _normSM_gPhi ) );
+        AddQuantity( new SimplePrediction( "NormSM_g_Abs_" + higgsName + "_" + channelName, "", _normSM_g_Abs ) );
+        AddQuantity( new SimplePrediction( "NormSM_g_Abs2_" + higgsName + "_" + channelName, "", _normSM_g_Abs2 ) );
 
     }
 
@@ -69,29 +56,18 @@ void Fittino::FeynHiggsBosonicChannel::CalculatePredictions() {
 
     coup = Coupling( _channel );
 
-    _model_g2   = std::abs( coup );
-    _model_gPhi = std::arg( coup );
+    _model_g_Abs   = std::abs( coup );
+    _model_g_Arg   = std::arg( coup );
 
     if ( _doSM ) {
 
         coup = CouplingSM( _channel );
 
-        _sm_g2   = std::abs( coup );
-        _sm_gPhi = std::arg( coup );
+        _sm_g_Abs   = std::abs( coup );
+        _sm_g_Arg   = std::arg( coup );
 
-        _normSM_g2   =  _model_g2 / _sm_g2;
-        _normSM_Norm_g = TMath::Power( _normSM_g2, 2 );
-
-    }
-
-    if ( TMath::IsNaN( _model_gPhi - _sm_gPhi ) ) {
-
-      _normSM_gPhi =  _model_gPhi - _sm_gPhi;
-
-    }
-    else {
-
-      _normSM_gPhi = TVector2::Phi_mpi_pi( _model_gPhi - _sm_gPhi );
+        _normSM_g_Abs   =  _model_g_Abs / _sm_g_Abs;
+        _normSM_g_Abs2  = TMath::Power( _normSM_g_Abs, 2 );
 
     }
     
