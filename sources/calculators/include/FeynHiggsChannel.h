@@ -4,7 +4,7 @@
  *                                                                              *
  * Project     Fittino - A SUSY Parameter Fitting Package                       *
  *                                                                              *
- * File        FeynHiggsChannel                         *
+ * File        FeynHiggsChannel                                                 *
  *                                                                              *
  * Description Wrapper class for FeynHiggs                                      *
  *                                                                              *
@@ -22,7 +22,6 @@
 
 #include "CalculatorBase.h"
 #include "FeynHiggsTypes.h"
-#include "PtreeForwardDeclaration.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -55,13 +54,13 @@ namespace Fittino {
         /*! \cond UML */
     protected:
 
-        FHRealType* gammas;           // FeynHiggs requires to use this name
-        FHRealType* gammasms;         // FeynHiggs requires to use this name
+        FHRealType*    gammas;           // FeynHiggs requires to use this name
+        FHRealType*    gammasms;         // FeynHiggs requires to use this name
         FHComplexType* couplings;     // FeynHiggs requires to use this name
         FHComplexType* couplingsms;   // FeynHiggs requires to use this name
 
-        int _channel;
-        bool _doSM;
+        int         _channel;
+        bool        _doSM;
         std::string _higgsName;
         std::string _channelName;
 

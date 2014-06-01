@@ -4,7 +4,7 @@
  *                                                                              *
  * Project     Fittino - A SUSY Parameter Fitting Package                       *
  *                                                                              *
- * File        FeynHiggsChannel.cpp                     *
+ * File        FeynHiggsChannel.cpp                                             *
  *                                                                              *
  * Description Wrapper class for FeynHiggs                                      *
  *                                                                              *
@@ -17,22 +17,11 @@
  *                                                                              *
  *******************************************************************************/
 
-#include <iostream>
-#include <fstream>
-
-#include <boost/foreach.hpp>
-#include "boost/format.hpp"
-#include <boost/filesystem.hpp>
-#include <boost/property_tree/ptree.hpp>
-
 #include "CFeynHiggs.h"
 #include "CSLHA.h"
 
 #include "CalculatorException.h"
 #include "FeynHiggsChannel.h"
-#include "ModelParameter.h"
-#include "PhysicsModel.h"
-#include "Redirector.h"
 #include "SimplePrediction.h"
 
 Fittino::FeynHiggsChannel::FeynHiggsChannel( FHRealType* gammas, FHRealType* gammasms, FHComplexType* couplings, FHComplexType* couplingsms, std::string higgsName, std::string channelName, int channelNumber, bool SM )
