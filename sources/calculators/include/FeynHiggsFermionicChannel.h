@@ -22,7 +22,7 @@
 
 #include "FeynHiggsChannel.h"
 #include "FeynHiggsTypes.h"
-#include "PtreeForwardDeclaration.h"
+
 
 /*!
  *  \brief Fittino namespace.
@@ -51,22 +51,20 @@ namespace Fittino {
         /*! \cond UML */
     private:
 
-        double _model_gs2;
-        double _model_gp2;
-        double _model_gsPhi;
-        double _model_gpPhi;
+        double _model_gs_Abs;
+        double _model_gp_Abs;
+        double _model_gs_Arg;
+        double _model_gp_Arg;
 
-        double _sm_gs2;
-        double _sm_gp2;
-        double _sm_gsPhi;
-        double _sm_gpPhi;
+        double _sm_gs_Abs;
+        double _sm_gp_Abs;
+        double _sm_gs_Arg;
+        double _sm_gp_Arg;
 
-        double _normSM_gs2;
-        double _normSM_gp2;
-        double _normSM_Norm_gs;
-        double _normSM_Norm_gp;
-        double _normSM_gsPhi;
-        double _normSM_gpPhi;
+        double _normSM_gs_Abs;
+        double _normSM_gp_Abs;
+        double _normSM_g_Abs;
+        double _normSM_g_Abs2;
 
         /*! \endcond UML */
         

@@ -17,50 +17,38 @@
  *                                                                              *
  *******************************************************************************/
 
-#include <iostream>
-#include <fstream>
-
-#include <boost/foreach.hpp>
-#include "boost/format.hpp"
-#include <boost/filesystem.hpp>
-#include <boost/property_tree/ptree.hpp>
-
 #include "TMath.h"
-#include "TVector2.h"
 
 #include "CFeynHiggs.h"
 #include "CSLHA.h"
 
 #include "CalculatorException.h"
 #include "FeynHiggsFermionicChannel.h"
-#include "ModelParameter.h"
-#include "PhysicsModel.h"
-#include "Redirector.h"
 #include "SimplePrediction.h"
 
 Fittino::FeynHiggsFermionicChannel::FeynHiggsFermionicChannel( FHRealType* gammas, FHRealType* gammasms, FHComplexType* couplings, FHComplexType* couplingsms, std::string higgsName, std::string channelName, int channelNumber, bool SM )
 : FeynHiggsChannel( gammas, gammasms, couplings, couplingsms, higgsName, channelName, channelNumber, SM ) {
 
-    AddQuantity( new SimplePrediction( "Abs_gs_" + higgsName + "_" + channelName, "", _model_gs2 ) );
-    AddQuantity( new SimplePrediction( "Abs_gp_" + higgsName + "_" + channelName, "", _model_gp2 ) );
-    AddQuantity( new SimplePrediction( "Arg_gs_" + higgsName + "_" + channelName, "", _model_gsPhi ) );
-    AddQuantity( new SimplePrediction( "Arg_gp_" + higgsName + "_" + channelName, "", _model_gpPhi ) );
+    AddQuantity( new SimplePrediction( "gs_Abs_" + higgsName + "_" + channelName, "", _model_gs_Abs ) );
+    AddQuantity( new SimplePrediction( "gs_Arg_" + higgsName + "_" + channelName, "", _model_gs_Arg ) );
+
+    AddQuantity( new SimplePrediction( "gp_Abs_" + higgsName + "_" + channelName, "", _model_gp_Abs ) );
+    AddQuantity( new SimplePrediction( "gp_Arg_" + higgsName + "_" + channelName, "", _model_gp_Arg ) );
 
     if ( _doSM ) {
 
-        AddQuantity( new SimplePrediction( "SM_Abs_gs_" + higgsName + "_" + channelName, "", _sm_gs2 ) );
-        AddQuantity( new SimplePrediction( "SM_Abs_gp_" + higgsName + "_" + channelName, "", _sm_gp2 ) );
-        AddQuantity( new SimplePrediction( "SM_Arg_gs_" + higgsName + "_" + channelName, "", _sm_gsPhi ) );
-        AddQuantity( new SimplePrediction( "SM_Arg_gp_" + higgsName + "_" + channelName, "", _sm_gpPhi ) );
+        AddQuantity( new SimplePrediction( "SM_gs_Abs_" + higgsName + "_" + channelName, "", _sm_gs_Abs ) );
+        AddQuantity( new SimplePrediction( "SM_gs_Arg_" + higgsName + "_" + channelName, "", _sm_gs_Arg ) );
 
-        AddQuantity( new SimplePrediction( "NormSM_Abs_gs_" + higgsName + "_" + channelName, "", _normSM_gs2 ) );
-        AddQuantity( new SimplePrediction( "NormSM_Abs_gp_" + higgsName + "_" + channelName, "", _normSM_gp2 ) );
+        AddQuantity( new SimplePrediction( "SM_gp_Abs_" + higgsName + "_" + channelName, "", _sm_gp_Abs ) );
+        AddQuantity( new SimplePrediction( "SM_gp_Arg_" + higgsName + "_" + channelName, "", _sm_gp_Arg ) );
 
-        AddQuantity( new SimplePrediction( "NormSM_Norm_gs_" + higgsName + "_" + channelName, "", _normSM_Norm_gs ) );
-        AddQuantity( new SimplePrediction( "NormSM_Norm_gp_" + higgsName + "_" + channelName, "", _normSM_Norm_gp ) );
+        AddQuantity( new SimplePrediction( "NormSM_gs_Abs_" + higgsName + "_" + channelName, "", _normSM_gs_Abs ) );
 
-        AddQuantity( new SimplePrediction( "DiffSM_Arg_gs_" + higgsName + "_" + channelName, "", _normSM_gsPhi ) );
-        AddQuantity( new SimplePrediction( "DiffSM_Arg_gp_" + higgsName + "_" + channelName, "", _normSM_gpPhi ) );
+        AddQuantity( new SimplePrediction( "NormSM_gp_Abs_" + higgsName + "_" + channelName, "", _normSM_gp_Abs ) );
+
+        AddQuantity( new SimplePrediction( "NormSM_g_Abs" + higgsName + "_" + channelName, "", _normSM_g_Abs ) );
+        AddQuantity( new SimplePrediction( "NormSM_g_Abs2" + higgsName + "_" + channelName, "", _normSM_g_Abs2 ) );
 
     }
 
@@ -79,56 +67,38 @@ void Fittino::FeynHiggsFermionicChannel::CalculatePredictions() {
     coup = RCoupling( _channel ) + LCoupling( _channel );
     coup = coup / FHComplexType( 2, 0 );
 
-    _model_gs2   = std::abs( coup );
-    _model_gsPhi = std::arg( coup );
+    _model_gs_Abs = std::abs( coup );
+    _model_gs_Arg = std::arg( coup );
 
     coup = RCoupling( _channel) - LCoupling( _channel );
     coup = coup / FHComplexType( 0, 2 );
 
-    _model_gp2   = std::abs( coup );
-    _model_gpPhi = std::arg( coup );
+    _model_gp_Abs = std::abs( coup );
+    _model_gp_Arg = std::arg( coup );
 
     if ( _doSM ) {
         
         coup  = RCouplingSM( _channel ) + LCouplingSM( _channel );
         coup  = coup / FHComplexType( 2, 0 );
 
-        _sm_gs2   = std::abs( coup );
-        _sm_gsPhi = std::arg( coup );
-
-        _normSM_gs2   = _model_gs2 / _sm_gs2;
-        _normSM_Norm_gs   = TMath::Power( _normSM_gs2, 2 );
-
-        if ( TMath::IsNaN( _model_gsPhi - _sm_gsPhi ) ) {
-
-          _normSM_gsPhi =  _model_gsPhi - _sm_gsPhi;
-
-        }
-        else {
-
-          _normSM_gsPhi = TVector2::Phi_mpi_pi( _model_gsPhi - _sm_gsPhi );
-
-        }
+        _sm_gs_Abs = std::abs( coup );
+        _sm_gs_Arg = std::arg( coup );
 
         coup = RCouplingSM( _channel) - LCouplingSM( _channel );
         coup = coup / FHComplexType( 0, 2 );
 
-        _sm_gp2   = std::abs( coup );
-        _sm_gpPhi = std::arg( coup );
+        _sm_gp_Abs = std::abs( coup );
+        _sm_gp_Arg = std::arg( coup );
 
-        _normSM_gp2   = _model_gp2 / _sm_gp2;
-        _normSM_Norm_gp   = TMath::Power( _normSM_gp2, 2 );
+        coup = RCoupling( _channel) / RCouplingSM( _channel ) + LCoupling( _channel ) / LCouplingSM( _channel );
+        _normSM_gs_Abs   = std::abs( coup ) / 2.;
 
-        if ( TMath::IsNaN( _model_gpPhi - _sm_gpPhi ) ) {
+        coup = RCoupling( _channel) / RCouplingSM( _channel ) - LCoupling( _channel ) / LCouplingSM( _channel );
+        _normSM_gp_Abs   = std::abs( coup ) / 2.;
 
-          _normSM_gpPhi =  _model_gpPhi - _sm_gpPhi;
+        _normSM_g_Abs2 = TMath::Power( _normSM_gs_Abs, 2 ) + TMath::Power( _normSM_gp_Abs, 2 );
 
-        }
-        else {
-
-          _normSM_gpPhi = TVector2::Phi_mpi_pi( _model_gpPhi - _sm_gpPhi );
-
-        }
+        _normSM_g_Abs   = TMath::Sqrt( _normSM_g_Abs2 );
 
     }
 
