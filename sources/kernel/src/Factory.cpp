@@ -32,7 +32,7 @@
 #include "FeynHiggsCalculator.h"
 #endif
 
-#include "EvolutionarySampler.h"
+//#include "EvolutionarySampler.h"
 #include "FormulaCalculator.h"
 #include "GeneticAlgorithmOptimizer.h"
 #include "HDim6Calculator.h"
@@ -51,7 +51,7 @@
 #include "NewHiggsSignalsHadXSCalculator.h"
 #include "Observable.h"
 #include "ParticleSwarmOptimizer.h"
-#include "ParticleSwarmSampler.h"
+//#include "ParticleSwarmSampler.h"
 #include "PhysicsModel.h"
 #include "ProfileHistogramMaker.h"
 #include "ProfilePlotter.h"
@@ -78,7 +78,7 @@
 #include "Univariate10Model.h"
 #include "Univariate2Model.h"
 #include "Alpine2Model.h"
-#include "ParaboloidModel.h"
+#include "Paraboloid.h"
 #include "HosakiModel.h"
 #include "Shubert3Model.h"
 #include "DamavandiModel.h"
@@ -359,9 +359,9 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
         return new Alpine2Model( ptree );
 
     }
-    else if ( type == "ParaboloidModel" ) {
+    else if ( type == "Paraboloid" ) {
 
-        return new ParaboloidModel( ptree );
+        return new Paraboloid( ptree );
 
     }
     else if ( type == "HosakiModel" ) {
@@ -510,11 +510,11 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
         return new NewCorrelatedSampler( model, ptree );
 
     }
-    else if ( type == "EvolutionarySampler" ) {
+    // else if ( type == "EvolutionarySampler" ) {
 
-        return new EvolutionarySampler( model, ptree );
+    //     return new EvolutionarySampler( model, ptree );
 
-    }
+    // }
     else if ( type == "GeneticAlgorithmOptimizer" ) {
 
         return new GeneticAlgorithmOptimizer( model, ptree );
@@ -535,11 +535,11 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
         return new ParticleSwarmOptimizer( model, ptree );
 
     }
-    else if ( type == "ParticleSwarmSampler" ) {
+    // else if ( type == "ParticleSwarmSampler" ) {
 
-        return new ParticleSwarmSampler( model, ptree );
+    //     return new ParticleSwarmSampler( model, ptree );
 
-    }
+    // }
     else if ( type == "ProfileHistogramMaker" ) {
 
         return new ProfileHistogramMaker( model, ptree );
