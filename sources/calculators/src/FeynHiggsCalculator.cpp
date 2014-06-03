@@ -26,6 +26,9 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
+
+#include "TMath.h"
+
 #include "CFeynHiggs.h"
 #include "CSLHA.h"
 
@@ -53,7 +56,8 @@ _couplingsms( new FHComplexType[ncouplingsms] ),
 _smallObsSet( true ),
 _inputMethod( inputMethod ),
 _slhadatastorageFeynHiggs( NULL ),
-_slhadatastorageSPheno( NULL ){
+_slhadatastorageSPheno( NULL ),
+_Norm_CrossSection_LEP_Hp_Hm( 1 ){
 
     _name = "FeynHiggs";
     _tag = "FeynHiggs";
@@ -93,7 +97,7 @@ _slhadatastorageSPheno( NULL ){
     _higgs[2] = "H0";
     _higgs[3] = "A0";
     _higgs[4] = "Hp";
-      
+
     AddQuantity( new SimplePrediction( "BR_b_to_s_gamma", "", _bsgammaMSSM ) );
     AddQuantity( new SimplePrediction( "SM_BR_b_to_s_gamma", "", _bsgammaSM ) );
     AddQuantity( new SimplePrediction( "Delta_Mass_Bs", "", _deltaMsMSSM ) );
@@ -137,6 +141,25 @@ _slhadatastorageSPheno( NULL ){
     AddQuantity( new SimplePrediction( "NormSM_GammaTotal_h0", "", _NormSM_GammaTotal_h0   ) );
     AddQuantity( new SimplePrediction( "NormSM_GammaTotal_H0", "", _NormSM_GammaTotal_H0   ) );
     AddQuantity( new SimplePrediction( "NormSM_GammaTotal_A0", "", _NormSM_GammaTotal_A0   ) );
+
+    // Normalized quantities for HB/HS
+
+    AddQuantity( new SimplePrediction( "Norm_CrossSection_LEP_Hp_Hm", "", _Norm_CrossSection_LEP_Hp_Hm ) );
+
+    AddQuantity( new SimplePrediction( "GF", "", _GF ) );
+    AddQuantity( new SimplePrediction( "Mass_Z0", "", _Mass_Z0 ) );
+
+    AddQuantity( new SimplePrediction( "Norm_g_Abs2_h0_h0_Z0", "", _Norm_g_Abs2_h0_h0_Z0 ) );
+    AddQuantity( new SimplePrediction( "Norm_g_Abs2_h0_H0_Z0", "", _Norm_g_Abs2_h0_H0_Z0 ) );
+    AddQuantity( new SimplePrediction( "Norm_g_Abs2_h0_A0_Z0", "", _Norm_g_Abs2_h0_A0_Z0 ) );
+
+    AddQuantity( new SimplePrediction( "Norm_g_Abs2_H0_h0_Z0", "", _Norm_g_Abs2_H0_h0_Z0 ) );
+    AddQuantity( new SimplePrediction( "Norm_g_Abs2_H0_H0_Z0", "", _Norm_g_Abs2_H0_H0_Z0 ) );
+    AddQuantity( new SimplePrediction( "Norm_g_Abs2_H0_A0_Z0", "", _Norm_g_Abs2_H0_A0_Z0 ) );
+
+    AddQuantity( new SimplePrediction( "Norm_g_Abs2_A0_h0_Z0", "", _Norm_g_Abs2_A0_h0_Z0 ) );
+    AddQuantity( new SimplePrediction( "Norm_g_Abs2_A0_H0_Z0", "", _Norm_g_Abs2_A0_H0_Z0 ) );
+    AddQuantity( new SimplePrediction( "Norm_g_Abs2_A0_A0_Z0", "", _Norm_g_Abs2_A0_A0_Z0 ) );
 
 
     AddChannels_HpHV    ();
@@ -714,6 +737,26 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     _Arg_Delta_b = arg( DeltaMB );
     _SAtree = SAtree;
 
+    FHRealType invAlfa, AlfasMZ, GF;
+    FHRealType ME, MU, MD, MM, MC, MS, ML, MB;
+    FHRealType MW, MZ;
+    FHRealType CKMlambda, CKMA, CKMrhobar, CKMetabar;
+
+    FHRetrieveSMPara( &_error,
+                      &invAlfa, &AlfasMZ, &GF,
+                      &ME, &MU, &MD, &MM, &MC, &MS, &ML, &MB,
+                      &MW, &MZ,
+                      &CKMlambda, &CKMA, &CKMrhobar, &CKMetabar );
+
+    if ( _error != 0 ) {
+      
+      throw CalculatorException( _name, "FHRetrieveSMPara" ); 
+
+    }
+
+    _GF = GF;
+    _Mass_Z0 = MZ;
+
     if ( _inputMethod == "SLHA" ) {
 
         int key = 255;
@@ -742,6 +785,20 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
         _channels.at( i )->CalculatePredictions();
 
     }
+    
+    double norm = TMath::Sqrt2() * _GF * TMath::Power( _Mass_Z0, 2);
+
+    _Norm_g_Abs2_h0_h0_Z0 = TMath::Power( GetCollectionOfQuantities().At( _tag + "_g_Abs_h0_h0_Z0" )->GetValue(), 2 ) / norm;
+    _Norm_g_Abs2_h0_H0_Z0 = TMath::Power( GetCollectionOfQuantities().At( _tag + "_g_Abs_h0_H0_Z0" )->GetValue(), 2 ) / norm;
+    _Norm_g_Abs2_h0_A0_Z0 = TMath::Power( GetCollectionOfQuantities().At( _tag + "_g_Abs_h0_A0_Z0" )->GetValue(), 2 ) / norm;
+
+    _Norm_g_Abs2_H0_h0_Z0 = TMath::Power( GetCollectionOfQuantities().At( _tag + "_g_Abs_H0_h0_Z0" )->GetValue(), 2 ) / norm;
+    _Norm_g_Abs2_H0_H0_Z0 = TMath::Power( GetCollectionOfQuantities().At( _tag + "_g_Abs_H0_H0_Z0" )->GetValue(), 2 ) / norm;
+    _Norm_g_Abs2_H0_A0_Z0 = TMath::Power( GetCollectionOfQuantities().At( _tag + "_g_Abs_H0_A0_Z0" )->GetValue(), 2 ) / norm;
+
+    _Norm_g_Abs2_A0_h0_Z0 = TMath::Power( GetCollectionOfQuantities().At( _tag + "_g_Abs_A0_h0_Z0" )->GetValue(), 2 ) / norm;
+    _Norm_g_Abs2_A0_H0_Z0 = TMath::Power( GetCollectionOfQuantities().At( _tag + "_g_Abs_A0_H0_Z0" )->GetValue(), 2 ) / norm;
+    _Norm_g_Abs2_A0_A0_Z0 = TMath::Power( GetCollectionOfQuantities().At( _tag + "_g_Abs_A0_A0_Z0" )->GetValue(), 2 ) / norm;
 
     _warning_ZHiggs  = 0;
     _warning_ExtParQ = 0;

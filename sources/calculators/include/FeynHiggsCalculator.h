@@ -77,7 +77,22 @@ namespace Fittino {
       double _SM_GammaTotal_h0;
       double _SM_GammaTotal_H0;
       double _SM_GammaTotal_A0;
-      
+
+      double _Norm_CrossSection_LEP_Hp_Hm;
+      double _Mass_Z0;
+      double _GF;
+
+      double _Norm_g_Abs2_h0_h0_Z0;
+      double _Norm_g_Abs2_h0_H0_Z0;
+      double _Norm_g_Abs2_h0_A0_Z0;
+
+      double _Norm_g_Abs2_H0_h0_Z0;
+      double _Norm_g_Abs2_H0_H0_Z0;
+      double _Norm_g_Abs2_H0_A0_Z0;
+
+      double _Norm_g_Abs2_A0_h0_Z0;
+      double _Norm_g_Abs2_A0_H0_Z0;
+      double _Norm_g_Abs2_A0_A0_Z0;
 
   private:
       void AddChannel( std::string higgsName, std::string channelName, int channelNumber, bool fermionic, bool SM );
