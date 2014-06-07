@@ -22,8 +22,6 @@
 
 #include "HistogramMakerBase.h"
 
-class TH3D;
-
 /*!
  *  \brief Fittino namespace.
  */
