@@ -19,6 +19,7 @@
 *                                                                              *
 *******************************************************************************/
 
+#include "Alpine2Model.h"
 #include "AstroCalculator.h"
 #include "AstroFitCalculator.h"
 #include "CheckVacuumCalculator.h"
@@ -26,15 +27,17 @@
 #include "ContourPlotter.h"
 //#include "CorrelatedSampler.h"
 #include "CovariantSampler.h"
+#include "DamavandiModel.h"
+//#include "EvolutionarySampler.h"
 #include "Factory.h"
 
 #ifdef FEYNHIGGS
 #include "FeynHiggsCalculator.h"
 #endif
 
-//#include "EvolutionarySampler.h"
 #include "FormulaCalculator.h"
 #include "GeneticAlgorithmOptimizer.h"
+#include "GiuntaModel.h"
 #include "HDim6Calculator.h"
 #include "HECCalculator.h"
 #include "HiggsBoundsHadXSCalculator.h"
@@ -43,13 +46,16 @@
 #include "HiggsSignalsHadXSCalculator.h"
 #include "HiggsSignalsPartXSCalculator.h"
 #include "HiggsSignalsSLHACalculator.h"
+#include "HosakiModel.h"
 #include "LHCLimitCalculator.h"
 #include "MarkovChainSampler.h"
 #include "MicromegasCalculator.h"
 #include "MinuitOptimizer.h"
+#include "ModifiedRosenbrockModel.h"
 #include "NewCorrelatedSampler.h"
 #include "NewHiggsSignalsHadXSCalculator.h"
 #include "Observable.h"
+#include "Paraboloid.h"
 #include "ParticleSwarmOptimizer.h"
 //#include "ParticleSwarmSampler.h"
 #include "PhysicsModel.h"
@@ -57,6 +63,7 @@
 #include "ProfilePlotter.h"
 #include "RegressionCalculator.h"
 #include "RosenbrockModel.h"
+#include "Shubert3Model.h"
 #include "Simple1DHistogramMaker.h"
 #include "Simple2DHistogramMaker.h"
 #include "Simple3DHistogramMaker.h"
@@ -73,17 +80,9 @@
 #include "SuperIsoCalculator.h"
 #include "TreeCalculator.h"
 #include "TreeSampler.h"
-
-#include "ModifiedRosenbrockModel.h"
 #include "Univariate10Model.h"
 #include "Univariate2Model.h"
-#include "Alpine2Model.h"
-#include "Paraboloid.h"
-#include "HosakiModel.h"
-#include "Shubert3Model.h"
-#include "DamavandiModel.h"
 #include "VincentModel.h"
-#include "GiuntaModel.h"
 
 Fittino::Factory::Factory() {
 
@@ -329,7 +328,37 @@ Fittino::CutBase* const Fittino::Factory::CreateCut( const std::string& type, Fi
 
 Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type,  boost::property_tree::ptree& ptree ) const {
 
-    if ( type == "PhysicsModel" ) {
+    if ( type == "Alpine2Model" ) {
+
+        return new Alpine2Model( ptree );
+
+    }
+    else if ( type == "DamavandiModel" ) {
+
+        return new DamavandiModel( ptree );
+
+    }
+    else if ( type == "GiuntaModel" ) {
+
+        return new GiuntaModel( ptree );
+
+    }
+    else if ( type == "HosakiModel" ) {
+
+        return new HosakiModel( ptree );
+
+    }
+    else if ( type == "ModifiedRosenbrockModel" ) {
+
+        return new ModifiedRosenbrockModel( ptree );
+
+    }
+    else if ( type == "Paraboloid" ) {
+
+        return new Paraboloid( ptree );
+
+    }
+    else if ( type == "PhysicsModel" ) {
 
         return new PhysicsModel( ptree );
 
@@ -339,9 +368,9 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
         return new RosenbrockModel( ptree );
 
     }
-    else if ( type == "ModifiedRosenbrockModel" ) {
+    else if ( type == "Shubert3Model" ) {
 
-        return new ModifiedRosenbrockModel( ptree );
+        return new Shubert3Model( ptree );
 
     }
     else if ( type == "Univariate10Model" ) {
@@ -354,39 +383,9 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
         return new Univariate2Model( ptree );
 
     }
-    else if ( type == "Alpine2Model" ) {
-
-        return new Alpine2Model( ptree );
-
-    }
-    else if ( type == "Paraboloid" ) {
-
-        return new Paraboloid( ptree );
-
-    }
-    else if ( type == "HosakiModel" ) {
-
-        return new HosakiModel( ptree );
-
-    }
-    else if ( type == "Shubert3Model" ) {
-
-        return new Shubert3Model( ptree );
-
-    }
-    else if ( type == "DamavandiModel" ) {
-
-        return new DamavandiModel( ptree );
-
-    }
     else if ( type == "VincentModel" ) {
 
         return new VincentModel( ptree );
-
-    }
-    else if ( type == "GiuntaModel" ) {
-
-        return new GiuntaModel( ptree );
 
     }
     else {
@@ -505,11 +504,6 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
         return new ContourHistogramMaker( model, ptree );
 
     }
-    else if ( type == "NewCorrelatedSampler" ) {
-
-        return new NewCorrelatedSampler( model, ptree );
-
-    }
     // else if ( type == "EvolutionarySampler" ) {
 
     //     return new EvolutionarySampler( model, ptree );
@@ -528,6 +522,11 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
     else if ( type == "MinuitOptimizer" ) {
 
         return new MinuitOptimizer( model, ptree );
+
+    }
+    else if ( type == "NewCorrelatedSampler" ) {
+
+        return new NewCorrelatedSampler( model, ptree );
 
     }
     else if ( type == "ParticleSwarmOptimizer" ) {

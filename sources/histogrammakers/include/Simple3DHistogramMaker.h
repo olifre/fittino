@@ -47,8 +47,6 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-
-    private:
       void UpdateModel();
 
       /*! \endcond UML */
