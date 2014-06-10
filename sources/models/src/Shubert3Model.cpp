@@ -42,8 +42,8 @@ Fittino::Shubert3Model* Fittino::Shubert3Model::Clone() const {
 }
 
 double Fittino::Shubert3Model::Summand(double x, int j){
-    if (x < 0.25) return sin((j + 1) * 0.25);
-    else if (x > 10) return sin((j + 1) * 10);
+    if (x < 0.25) return 100000.;
+    else if (x > 10) return 100000.;
     else return sin((j + 1) * x);
 }
 
@@ -59,12 +59,13 @@ double Fittino::Shubert3Model::TestModelFunction() {
 
         for (unsigned int j = 0; j < 5; j++){
 
-            Shubert3Model += (j * Summand(GetCollectionOfParameters().At(i)->GetValue(), j)) + j;
+            Shubert3Model += (j * sin((j + 1) * GetCollectionOfParameters().At(i)->GetValue())) + j;
 
         }
 
     }
 
-    return Shubert3Model;
-
+    if(GetCollectionOfParameters().At(0)->GetValue()>=0.25 && GetCollectionOfParameters().At(0)->GetValue()<=10.25 && GetCollectionOfParameters().At(1)->GetValue()>=0.25 && GetCollectionOfParameters().At(1)->GetValue()<=10.25){
+        return Shubert3Model;
+    } else return 1000000.;
 }

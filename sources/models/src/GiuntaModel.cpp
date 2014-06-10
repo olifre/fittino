@@ -51,10 +51,10 @@ double Fittino::GiuntaModel::TestModelFunction() {
 
     for(int i = 0; i < GetNumberOfParameters(); i++){
 
-        GiuntaModel += pow(sin(1 - (16 * GetCollectionOfParameters().At(i)->GetValue() / 15)), 2) - (sin(4 - ((64 * GetCollectionOfParameters().At(i)->GetValue()) / 15)) / 50) - sin(1 - ((16 * GetCollectionOfParameters().At(i)->GetValue()) / 15));
+        GiuntaModel += pow(sin(1 - (16 * 0.2*GetCollectionOfParameters().At(i)->GetValue() / 15)), 2) - (sin(4 - ((64 * 0.2*GetCollectionOfParameters().At(i)->GetValue()) / 15)) / 50) - sin(1 - ((16 * 0.1*GetCollectionOfParameters().At(i)->GetValue()) / 15));
 
     }
-
-    return 10*(0.6+GiuntaModel);
+    if(std::max(GetCollectionOfParameters().At(0)->GetValue(), GetCollectionOfParameters().At(1)->GetValue()) > 5 || std::min(GetCollectionOfParameters().At(0)->GetValue(), GetCollectionOfParameters().At(1)->GetValue()) < -5) return 1000000;
+    else return 30*(0.6+GiuntaModel);
 
 }

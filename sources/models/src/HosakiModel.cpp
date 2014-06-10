@@ -48,7 +48,9 @@ double Fittino::HosakiModel::ToRadians(double x){
 double Fittino::HosakiModel::TestModelFunction() {
 
     double HosakiModel = 0;
-    double x1 = GetCollectionOfParameters().At(0)->GetValue(), x2 = GetCollectionOfParameters().At(1)->GetValue();
-    return (1 + 7*x1*x1 - 8*x1 - 2.33333333333333*x1*x1*x1 + 0.25*x1*x1*x1*x1)*x2* x2*exp(-x2);
+    double x1 = 0.5*GetCollectionOfParameters().At(0)->GetValue(), x2 = 0.5*GetCollectionOfParameters().At(1)->GetValue();
+    HosakiModel =  (1 + 7*x1*x1 - 8*x1 - 2.33333333333333*x1*x1*x1 + 0.25*x1*x1*x1*x1)*x2* x2*exp(-x2);
+    if(std::max(GetCollectionOfParameters().At(0)->GetValue(), GetCollectionOfParameters().At(1)->GetValue()) > 10 || std::min(GetCollectionOfParameters().At(0)->GetValue(), GetCollectionOfParameters().At(1)->GetValue()) < 1) return 1000000;
+    else return (20/1.5) * HosakiModel; //negate to create unique minimum
 
 }

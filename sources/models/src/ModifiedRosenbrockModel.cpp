@@ -49,9 +49,15 @@ double Fittino::ModifiedRosenbrockModel::ToRadians(double x){
 double Fittino::ModifiedRosenbrockModel::TestModelFunction() {
 
     double ModifiedRosenbrockModel = 0;
-    double x1 = GetCollectionOfParameters().At(0)->GetValue(), x2 = GetCollectionOfParameters().At(1)->GetValue();
-    ModifiedRosenbrockModel = 74 + (100*pow((x2 - pow(x1, 2)), 2)) + pow((1, x1), 2) - (400 * exp(-10 * (pow((x1 + 1), 2) + pow((x2 + 1), 2))));
+    ModifiedRosenbrockModel = 74 + (100*pow((GetCollectionOfParameters().At(1)->GetValue() - pow(GetCollectionOfParameters().At(0)->GetValue(), 2)), 2)) + pow((1, GetCollectionOfParameters().At(0)->GetValue()), 2) - (400 * exp(-10 * (pow((GetCollectionOfParameters().At(0)->GetValue() + 1), 2) + pow((GetCollectionOfParameters().At(1)->GetValue() + 1), 2))));
 
-    return ModifiedRosenbrockModel;
+    //if(std::max(GetCollectionOfParameters().At(0)->GetValue(), GetCollectionOfParameters().At(1)->GetValue()) < 8 && std::min(GetCollectionOfParameters().At(0)->GetValue(), GetCollectionOfParameters().At(1)->GetValue()) > -2) return (20/65) * ModifiedRosenbrockModel;
+    //else return 0; //negate to create unique minimum
+
+    //if(std::max(GetCollectionOfParameters().At(0)->GetValue(), GetCollectionOfParameters().At(1)->GetValue()) > 5 || std::min(GetCollectionOfParameters().At(0)->GetValue(), GetCollectionOfParameters().At(1)->GetValue()) < -5) return 1000000;
+    double stretch = 20./115.;
+    std::cout<<stretch<<"\n";
+    return stretch*ModifiedRosenbrockModel;
+    //return GetCollectionOfParameters().At(0)->GetValue();
 
 }
