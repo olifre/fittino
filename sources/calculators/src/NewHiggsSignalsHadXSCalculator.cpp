@@ -301,7 +301,7 @@ void Fittino::NewHiggsSignalsHadXSCalculator::SetupHiggsBounds( bool shiftHiggsM
         if( cs_tev_bbhj_sm < 0. )    cs_tev_bbhj_sm = 0.;
         double cs_tev_hj_sm = cs_tev_gghj_sm + cs_tev_bbhj_sm;
         double cs_tev_hj_model = cs_tev_gghj_model + cs_tev_bbhj_model;
-        double tev_hj_ratio = 1.;
+        double tev_hj_ratio = 0.;
         if( cs_tev_hj_sm > 0. ) tev_hj_ratio = cs_tev_hj_model/cs_tev_hj_sm;
         CS_tev_hj_ratio.push_back( tev_hj_ratio );
         //CS_tev_hj_ratio.push_back       ( (_model->GetCollectionOfQuantities().At( _name_CS_tev_gghj_model.at(i) )->GetValue() 
@@ -324,7 +324,7 @@ void Fittino::NewHiggsSignalsHadXSCalculator::SetupHiggsBounds( bool shiftHiggsM
         if( cs_lhc7_bbhj_sm < 0. )    cs_lhc7_bbhj_sm = 0.;
         double cs_lhc7_hj_sm = cs_lhc7_gghj_sm + cs_lhc7_bbhj_sm;
         double cs_lhc7_hj_model = cs_lhc7_gghj_model + cs_lhc7_bbhj_model;
-        double lhc7_hj_ratio = 1.;
+        double lhc7_hj_ratio = 0.;
         if( cs_lhc7_hj_sm > 0. ) lhc7_hj_ratio = cs_lhc7_hj_model/cs_lhc7_hj_sm;
         CS_lhc7_hj_ratio.push_back( lhc7_hj_ratio );
         //CS_lhc7_hj_ratio.push_back       ( (_model->GetCollectionOfQuantities().At( _name_CS_lhc7_gghj_model.at(i) )->GetValue() 
@@ -347,7 +347,7 @@ void Fittino::NewHiggsSignalsHadXSCalculator::SetupHiggsBounds( bool shiftHiggsM
         if( cs_lhc8_bbhj_sm < 0. )    cs_lhc8_bbhj_sm = 0.;
         double cs_lhc8_hj_sm = cs_lhc8_gghj_sm + cs_lhc8_bbhj_sm;
         double cs_lhc8_hj_model = cs_lhc8_gghj_model + cs_lhc8_bbhj_model;
-        double lhc8_hj_ratio = 1.;
+        double lhc8_hj_ratio = 0.;
         if( cs_lhc8_hj_sm > 0. ) lhc8_hj_ratio = cs_lhc8_hj_model/cs_lhc8_hj_sm;
         CS_lhc8_hj_ratio.push_back( lhc8_hj_ratio );
         //CS_lhc8_hj_ratio.push_back       ( (_model->GetCollectionOfQuantities().At( _name_CS_lhc8_gghj_model.at(i) )->GetValue() 
