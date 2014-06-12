@@ -271,14 +271,8 @@ void Fittino::SPhenoSLHACalculator::ConfigureInput() {
     // Write block "MODSEL".
 
     _slhaInputDataStorage->AddBlock( "MODSEL:BLOCK MODSEL:# Model selection" );
-    if( _model->GetName() == "MSSM" ) {
-        _slhaInputDataStorage->AddLine("MODSEL:1:0:#" + _model->GetName() );
-        _slhaInputDataStorage->AddLine("MODSEL:12:1000:# Q_EWSB (fxied)" );
-    }
-    else {
-        _slhaInputDataStorage->AddLine( "MODSEL:1:1:# " + _model->GetName() );
-        //_slhaInputDataStorage->AddLine( "MODSEL:12:1000:# Q_EWSB (fixed)" );
-    }  
+    _slhaInputDataStorage->AddLine( "MODSEL:1:1:# " + _model->GetName() );
+    //_slhaInputDataStorage->AddLine( "MODSEL:12:1000:# Q_EWSB (fixed)" );
 
     // Write block "SMINPUTS".
 
@@ -293,14 +287,10 @@ void Fittino::SPhenoSLHACalculator::ConfigureInput() {
     _slhaInputDataStorage->AddLine( "SMINPUTS:23:9.5e-02:# ms(2GeV) (fixed)" );
     _slhaInputDataStorage->AddLine( "SMINPUTS:24:1.275e+00:# mc(mc) (fixed)" );
 
-    
-    if( _model->GetName() == "MSSM" ) {
-        _slhaInputDataStorage->AddBlock( "EXTPAR:BLOCK EXTPAR:# Input parameters" );
-        _slhaInputDataStorage->AddLine( "EXTPAR:0:1000");
-    }
     // Write block "MINPAR".
 
     _slhaInputDataStorage->AddBlock( "MINPAR:BLOCK MINPAR:# Input parameters" );
+
     // Write block "SPHENOINPUT".
 
     _slhaInputDataStorage->AddBlock( "SPHENOINPUT:BLOCK SPHENOINPUT:# SPheno specific input" );
