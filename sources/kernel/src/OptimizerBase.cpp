@@ -49,6 +49,7 @@ void Fittino::OptimizerBase::PrintSteeringParameters() const {
 void Fittino::OptimizerBase::Execute() {
 
     this->FillMetaDataTree();
+
     while ( _chi2 > _abortCriterion && _iterationCounter < _numberOfIterations ) {
 
         _iterationCounter++;
@@ -99,7 +100,7 @@ void Fittino::OptimizerBase::PrintResult() const {
 }
 
 void Fittino::OptimizerBase::Terminate() {
-    
+
     FillTree();
 
 }
