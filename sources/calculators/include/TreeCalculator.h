@@ -56,6 +56,8 @@ namespace Fittino {
       std::string                   _inputFileName;
       std::string                   _inputTreeName;
       std::map<std::string, double> _predictionMap;
+      std::map<std::string, std::string*> _strings;
+      
       std::vector<std::string>      _excludedLeaves;
       TFile*                        _inputFile;
       TChain*                       _inputTree;

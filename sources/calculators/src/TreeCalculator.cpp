@@ -27,6 +27,7 @@
 #include "ModelParameter.h"
 #include "PhysicsModel.h"
 #include "SimplePrediction.h"
+#include "ReferenceVariable.h"
 #include "TreeCalculator.h"
 
 Fittino::TreeCalculator::TreeCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
@@ -99,6 +100,15 @@ void Fittino::TreeCalculator::AddPredictions( ) {
             _inputTree->SetBranchAddress( leaf->GetName(), &_predictionMap.at( leaf->GetName() ) );
 
             AddQuantity( new SimplePrediction( leaf->GetName(), "", _predictionMap.at( leaf->GetName() ) ) );
+
+        }
+        else if ( !strcmp( leaf->GetTypeName(), "string" ) ) {
+          
+          _strings.insert( std::make_pair( leaf->GetName(), new std::string() ) );
+
+          _inputTree->SetBranchAddress( leaf->GetName(), &_strings.at( leaf->GetName() ) );
+          
+          AddStringVariable( new ReferenceVariable<std::string> ( leaf->GetName(),  *_strings.at( leaf->GetName() ) ) );
 
         }
 

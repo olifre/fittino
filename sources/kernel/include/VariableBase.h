@@ -143,6 +143,12 @@ namespace Fittino {
 
       }
 
+      void SetName( std::string name ) {
+
+        _name  = name;
+
+      }
+
     public:
       /*!
        *  Standard destructor.

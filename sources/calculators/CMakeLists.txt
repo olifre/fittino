@@ -27,6 +27,7 @@ INCLUDE_DIRECTORIES(../exceptions/include)
 INCLUDE_DIRECTORIES(../datastorages/include)
 INCLUDE_DIRECTORIES(../models/include)
 INCLUDE_DIRECTORIES(../kernel/include)
+INCLUDE_DIRECTORIES(../variables/include)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 IF(FEYNHIGGS_FOUND)

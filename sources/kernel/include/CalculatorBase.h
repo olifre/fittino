@@ -29,6 +29,8 @@ namespace Fittino {
 
   class PhysicsModel;
   class PredictionBase;
+  template<class T>
+    class VariableBase;
 
   /*!
    *  \ingroup kernel
@@ -46,6 +48,7 @@ namespace Fittino {
        */
       std::string                        GetName() const;
       const Collection<PredictionBase*>& GetCollectionOfQuantities() const;
+      const Collection<VariableBase<std::string>*>& GetCollectionOfStringVariables() const;
 
     public:
       virtual                            ~CalculatorBase();
@@ -62,11 +65,13 @@ namespace Fittino {
       const PhysicsModel*                _model;
 
     protected:
+      void                               AddStringVariable( VariableBase<std::string>* variable ); 
       void                               AddQuantity( PredictionBase* prediction );
 
       /*! \cond UML */
     private:
-      Collection<PredictionBase*>        _collectionOfQuantities;
+      Collection<PredictionBase*>            _collectionOfQuantities;
+      Collection<VariableBase<std::string>*> _collectionOfStringVariables;
 
       /*! \endcond UML */
 

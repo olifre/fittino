@@ -19,6 +19,7 @@
 
 #include "CalculatorBase.h"
 #include "PredictionBase.h"
+#include "VariableBase.h"
 
 Fittino::CalculatorBase::CalculatorBase( const PhysicsModel* model )
     : _name( "" ),
@@ -60,5 +61,25 @@ void  Fittino::CalculatorBase::AddQuantity( Fittino::PredictionBase* prediction 
     }
 
     _collectionOfQuantities.AddElement( prediction );
+
+}
+
+
+void  Fittino::CalculatorBase::AddStringVariable( Fittino::VariableBase<std::string>* variable ) {
+
+    if ( _tag != "" ) {
+
+        variable->SetName( _tag + "_" + variable->GetName() );
+
+    }
+
+    _collectionOfStringVariables.AddElement( variable );
+
+}
+
+
+const Fittino::Collection<Fittino::VariableBase<std::string>*>& Fittino::CalculatorBase::GetCollectionOfStringVariables() const {
+
+  return _collectionOfStringVariables;
 
 }
