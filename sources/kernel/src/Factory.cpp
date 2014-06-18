@@ -75,6 +75,8 @@
 #include "SLHAeaSLHADataStorage.h"
 #include "SPhenoSLHACalculator.h"
 #include "SplineCut.h"
+#include "SimpleDoubleCut.h"
+#include "SimpleStringCut.h"
 #include "SummaryHistogramMaker.h"
 #include "SummaryPlotter.h"
 #include "SuperIsoCalculator.h"
@@ -316,6 +318,16 @@ Fittino::CutBase* const Fittino::Factory::CreateCut( const std::string& type, Fi
     if ( type == "SplineCut" ) {
 
         return new SplineCut( model, ptree );
+
+    }
+    else if ( type == "SimpleDoubleCut" ) {
+
+        return new SimpleDoubleCut( model, ptree );
+
+    }
+    else if ( type == "SimpleStringCut" ) {
+
+        return new SimpleStringCut( model, ptree );
 
     }
     else {
