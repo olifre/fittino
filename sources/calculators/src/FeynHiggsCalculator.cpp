@@ -288,7 +288,7 @@ void Fittino::FeynHiggsCalculator::AddChannels_HpHV() {
 
     for (unsigned int iHiggs = 1; iHiggs<=3; iHiggs++ ) {
 
-        AddChannel( "Hp", _higgs[iHiggs] + "_Wp", HpHV( 1 ), false, false );
+        AddChannel( "Hp", _higgs[iHiggs] + "_Wp", HpHV( iHiggs ), false, false );
 
     }
 
@@ -379,7 +379,7 @@ void Fittino::FeynHiggsCalculator::AddChannels_H0VV( unsigned int iHiggs, std::s
     AddChannel( higgsName, "Z0_gamma"    , H0VV( iHiggs, 2 ), false, true );
     AddChannel( higgsName, "Z0_Z0"        , H0VV( iHiggs, 3 ), false, true );
     AddChannel( higgsName, "Wp_Wm"        , H0VV( iHiggs, 4 ), false, true );
-    AddChannel( higgsName, "g_g"        , H0VV( iHiggs, 3 ), false, true );
+    AddChannel( higgsName, "g_g"        , H0VV( iHiggs, 5 ), false, true );
 
 }
 
