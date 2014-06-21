@@ -1,13 +1,14 @@
-/* $Id: SimpleStringCut.cpp 2154 2014-05-05 20:10:35Z mhamer $ */
+/* $Id$ */
+
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
 * File        SimpleStringCut.cpp                                              *
 *                                                                              *
-* Description Base class for cuts                                     *
+* Description Base class for cuts                                              *
 *                                                                              *
-* Authors     Matthias Hamer      <mhamer@cbpf.br>                             *
+* Authors     Matthias Hamer  <mhamer@cbpf.br>                                 *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -43,7 +44,6 @@ Fittino::SimpleStringCut::SimpleStringCut( ModelBase* model, const boost::proper
 }
 
 Fittino::SimpleStringCut::~SimpleStringCut() {
-
 
 }
 

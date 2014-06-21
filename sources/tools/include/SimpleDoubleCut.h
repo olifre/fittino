@@ -1,10 +1,10 @@
-/* $Id: SimpleDoubleCut.h 2150 2014-05-05 18:40:38Z mhamer $ */
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        SimpleDoubleCut.h                                                      *
+* File        SimpleDoubleCut.h                                                *
 *                                                                              *
 * Description Base class for spline cuts                                       *
 *                                                                              *
