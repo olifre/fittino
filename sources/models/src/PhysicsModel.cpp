@@ -51,8 +51,47 @@ Fittino::PhysicsModel::PhysicsModel( boost::property_tree::ptree& ptree )
     _name       = ptree.get<std::string>( "Name" );
     _performToyRun = ptree.get<bool>    ( "PerformToyRun", false );
 
-    _collectionOfStringVariables.AddElement( "Calculator", new ReferenceVariable<std::string>( "Calculator", _calculator ) );
-    _collectionOfStringVariables.AddElement( "Error"     , new ReferenceVariable<std::string>( "Error", _error ) );
+    std::string nameOfErrorVariable = "Error";
+    std::string nameOfCalculatorVariable = "Calculator";
+
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
+
+      if ( node.first == "Variable" ) {
+
+        std::string type = node.second.get<std::string>("Type");
+        std::string name = node.second.get<std::string>("Name");
+
+        if ( type == "Error" ) {
+
+          nameOfErrorVariable = name;
+
+        }
+        else if ( type == "Calculator" ) {
+          
+          nameOfCalculatorVariable = name;
+
+        }
+        else {
+
+          throw ConfigurationException("Unknown variable type: " + type  );
+
+        }
+
+      }
+
+    }
+
+    if ( nameOfErrorVariable != "" ) {
+
+        _collectionOfStringVariables.AddElement( "Error"     , new ReferenceVariable<std::string>( nameOfErrorVariable, _error ) );
+
+    }
+    
+    if ( nameOfCalculatorVariable != "" ) {
+
+        _collectionOfStringVariables.AddElement( "Calculator", new ReferenceVariable<std::string>( nameOfCalculatorVariable, _calculator ) );     
+
+    }
 
     Factory factory;
 
