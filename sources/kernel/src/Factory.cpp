@@ -67,16 +67,16 @@
 #include "Simple1DHistogramMaker.h"
 #include "Simple2DHistogramMaker.h"
 #include "Simple3DHistogramMaker.h"
+#include "SimpleDoubleCut.h"
 #include "SimpleOptimizer.h"
 #include "SimplePlotter.h"
 #include "SimplePrediction.h"
 #include "SimpleSampler.h"
+#include "SimpleStringCut.h"
 #include "SimulatedAnnealingOptimizer.h"
 #include "SLHAeaSLHADataStorage.h"
 #include "SPhenoSLHACalculator.h"
 #include "SplineCut.h"
-#include "SimpleDoubleCut.h"
-#include "SimpleStringCut.h"
 #include "SummaryHistogramMaker.h"
 #include "SummaryPlotter.h"
 #include "SuperIsoCalculator.h"
@@ -315,12 +315,7 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 
 Fittino::CutBase* const Fittino::Factory::CreateCut( const std::string& type, Fittino::ModelBase* model, const boost::property_tree::ptree& ptree ) const {
 
-    if ( type == "SplineCut" ) {
-
-        return new SplineCut( model, ptree );
-
-    }
-    else if ( type == "SimpleDoubleCut" ) {
+    if ( type == "SimpleDoubleCut" ) {
 
         return new SimpleDoubleCut( model, ptree );
 
@@ -328,6 +323,11 @@ Fittino::CutBase* const Fittino::Factory::CreateCut( const std::string& type, Fi
     else if ( type == "SimpleStringCut" ) {
 
         return new SimpleStringCut( model, ptree );
+
+    }
+    else if ( type == "SplineCut" ) {
+
+        return new SplineCut( model, ptree );
 
     }
     else {

@@ -23,8 +23,8 @@
 #include "CalculatorBase.h"
 #include "PtreeForwardDeclaration.h"
 
-class TFile;
 class TChain;
+class TFile;
 
 /*!
  *  \brief Fittino namespace.
@@ -48,23 +48,22 @@ namespace Fittino {
       ~TreeCalculator();
 
     public:
-      void                          CalculatePredictions();
+      void                                CalculatePredictions();
 
       /*! \cond UML */
     private:
-      double                        _numberOfTreeIterations;
-      std::string                   _inputFileName;
-      std::string                   _inputTreeName;
-      std::map<std::string, double> _predictionMap;
+      double                              _numberOfTreeIterations;
+      std::string                         _inputFileName;
+      std::string                         _inputTreeName;
+      std::map<std::string, double>       _predictionMap;
       std::map<std::string, std::string*> _strings;
-      
-      std::vector<std::string>      _excludedLeaves;
-      TFile*                        _inputFile;
-      TChain*                       _inputTree;
+      std::vector<std::string>            _excludedLeaves;
+      TChain*                             _inputTree;
+      TFile*                              _inputFile;
 
     private:
-      void                          AddPredictions();
-      void                          OpenInputFile();
+      void                                AddPredictions();
+      void                                OpenInputFile();
 
       /*! \endcond UML */
 

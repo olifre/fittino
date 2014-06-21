@@ -29,8 +29,8 @@ namespace Fittino {
 
   class PhysicsModel;
   class PredictionBase;
-  template<class T>
-    class VariableBase;
+
+  template<class T> class VariableBase;
 
   /*!
    *  \ingroup kernel
@@ -46,32 +46,32 @@ namespace Fittino {
       /*!
        *  Standard destructor.
        */
-      std::string                        GetName() const;
-      const Collection<PredictionBase*>& GetCollectionOfQuantities() const;
+      std::string                                   GetName() const;
+      const Collection<PredictionBase*>&            GetCollectionOfQuantities() const;
       const Collection<VariableBase<std::string>*>& GetCollectionOfStringVariables() const;
 
     public:
-      virtual                            ~CalculatorBase();
-      virtual void                       CalculatePredictions() = 0;
-      virtual void                       Initialize();
+      virtual                                       ~CalculatorBase();
+      virtual void                                  CalculatePredictions() = 0;
+      virtual void                                  Initialize();
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
-      virtual void                       SetupMeasuredValues();
+      virtual void                                  SetupMeasuredValues();
 
     protected:
-      std::string                        _name;
-      std::string                        _tag;
-      const PhysicsModel*                _model;
+      std::string                                   _name;
+      std::string                                   _tag;
+      const PhysicsModel*                           _model;
 
     protected:
-      void                               AddStringVariable( VariableBase<std::string>* variable ); 
-      void                               AddQuantity( PredictionBase* prediction );
+      void                                          AddQuantity( PredictionBase* prediction );
+      void                                          AddStringVariable( VariableBase<std::string>* variable );
 
       /*! \cond UML */
     private:
-      Collection<PredictionBase*>            _collectionOfQuantities;
-      Collection<VariableBase<std::string>*> _collectionOfStringVariables;
+      Collection<PredictionBase*>                   _collectionOfQuantities;
+      Collection<VariableBase<std::string>*>        _collectionOfStringVariables;
 
       /*! \endcond UML */
 

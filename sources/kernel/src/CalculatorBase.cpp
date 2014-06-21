@@ -40,6 +40,12 @@ const Fittino::Collection<Fittino::PredictionBase*>& Fittino::CalculatorBase::Ge
 
 }
 
+const Fittino::Collection<Fittino::VariableBase<std::string>*>& Fittino::CalculatorBase::GetCollectionOfStringVariables() const {
+
+    return _collectionOfStringVariables;
+
+}
+
 Fittino::CalculatorBase::~CalculatorBase() {
 
 }
@@ -64,7 +70,6 @@ void  Fittino::CalculatorBase::AddQuantity( Fittino::PredictionBase* prediction 
 
 }
 
-
 void  Fittino::CalculatorBase::AddStringVariable( Fittino::VariableBase<std::string>* variable ) {
 
     if ( _tag != "" ) {
@@ -74,12 +79,5 @@ void  Fittino::CalculatorBase::AddStringVariable( Fittino::VariableBase<std::str
     }
 
     _collectionOfStringVariables.AddElement( variable );
-
-}
-
-
-const Fittino::Collection<Fittino::VariableBase<std::string>*>& Fittino::CalculatorBase::GetCollectionOfStringVariables() const {
-
-  return _collectionOfStringVariables;
 
 }
