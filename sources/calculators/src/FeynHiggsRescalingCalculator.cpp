@@ -279,33 +279,33 @@ void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
      _i_Gamma_h_g_g_normSM = _i_GammaTotal_h0 / _SM_GammaTotal_h0; 
         
         // FIXME: do we use the squared values here? NewHSCalculator uses the non-squared values
-     _normSM_g_Abs_h_Z0_Z0   = _i_normSM_g_Abs_h_Z0_Z0; // multiple with scale factor
-     _normSM_g_Abs_h_b_b     = _i_normSM_g_Abs_h_b_b;
-     _normSM_g_Abs_h_tau_tau = _i_normSM_g_Abs_h_tau_tau;
+     _normSM_g_Abs_h_Z0_Z0   = 1.0000*_i_normSM_g_Abs_h_Z0_Z0; // multiple with scale factor
+     _normSM_g_Abs_h_b_b     = sqrt(0.9977)*_i_normSM_g_Abs_h_b_b;
+     _normSM_g_Abs_h_tau_tau = sqrt(0.9976)*_i_normSM_g_Abs_h_tau_tau;
      
-     _TEV_ggh    = _i_TEV_ggh; // multiple with scalefactor
-     _TEV_bbh    = _i_TEV_bbh;   
-     _TEV_btagbh = _i_TEV_btagbh;
-     _TEV_Wh     = _i_TEV_Wh;  
-     _TEV_Zh     = _i_TEV_Zh;   
-     _TEV_qqh    = _i_TEV_qqh;
-     _TEV_tth    = _i_TEV_tth;   
+     _TEV_ggh    = 1.2245*_i_TEV_ggh; // multiple with scalefactor
+     _TEV_bbh    = 0.9968*_i_TEV_bbh;   
+     _TEV_btagbh = 0.9968*_i_TEV_btagbh;
+     _TEV_Wh     = 0.9585*_i_TEV_Wh;  
+     _TEV_Zh     = 0.9585*_i_TEV_Zh;   
+     _TEV_qqh    = 0.9585*_i_TEV_qqh;
+     _TEV_tth    = 0.9586*_i_TEV_tth;   
 
-     _LHC7_ggh    = _i_LHC7_ggh;
-     _LHC7_bbh    = _i_LHC7_bbh;   
-     _LHC7_btagbh = _i_LHC7_btagbh;
-     _LHC7_Wh     = _i_LHC7_Wh;  
-     _LHC7_Zh     = _i_LHC7_Zh;   
-     _LHC7_qqh    = _i_LHC7_qqh;
-     _LHC7_tth    = _i_LHC7_tth;   
+     _LHC7_ggh    = 1.0151*_i_LHC7_ggh;
+     _LHC7_bbh    = 0.9968*_i_LHC7_bbh;   
+     _LHC7_btagbh = 1.0000*_i_LHC7_btagbh;
+     _LHC7_Wh     = 0.9585*_i_LHC7_Wh;  
+     _LHC7_Zh     = 0.9585*_i_LHC7_Zh;   
+     _LHC7_qqh    = 0.9585*_i_LHC7_qqh;
+     _LHC7_tth    = 0.9586*_i_LHC7_tth;   
 
-     _LHC8_ggh    = _i_LHC8_ggh;
-     _LHC8_bbh    = _i_LHC8_bbh;   
-     _LHC8_btagbh = _i_LHC8_btagbh;
-     _LHC8_Wh     = _i_LHC8_Wh;  
-     _LHC8_Zh     = _i_LHC8_Zh;   
-     _LHC8_qqh    = _i_LHC8_qqh;
-     _LHC8_tth    = _i_LHC8_tth;   
+     _LHC8_ggh    = 1.0133*_i_LHC8_ggh;
+     _LHC8_bbh    = 0.9968*_i_LHC8_bbh;   
+     _LHC8_btagbh = 1.0000*_i_LHC8_btagbh;
+     _LHC8_Wh     = 0.9585*_i_LHC8_Wh;  
+     _LHC8_Zh     = 0.9585*_i_LHC8_Zh;   
+     _LHC8_qqh    = 0.9585*_i_LHC8_qqh;
+     _LHC8_tth    = 0.9586*_i_LHC8_tth;   
 
      _LHC14_ggh    = _i_LHC14_ggh;
      _LHC14_bbh    = _i_LHC14_bbh;   
@@ -315,22 +315,22 @@ void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
      _LHC14_qqh    = _i_LHC14_qqh;
      _LHC14_tth    = _i_LHC14_tth;   
 
-     _Gamma_h_g_g         = _i_Gamma_h_g_g;
-     _Gamma_h_Wp_Wm       = _i_Gamma_h_Wp_Wm;
-     _Gamma_h_Z0_Z0       = _i_Gamma_h_Z0_Z0;
-     _Gamma_h_Z0_gamma    = _i_Gamma_h_Z0_gamma;
-     _Gamma_h_gamma_gamma = _i_Gamma_h_gamma_gamma ;
+     _Gamma_h_g_g         = 0.9585*_i_Gamma_h_g_g;
+     _Gamma_h_Wp_Wm       = 0.9585*_i_Gamma_h_Wp_Wm;
+     _Gamma_h_Z0_Z0       = 0.9585*_i_Gamma_h_Z0_Z0;
+     _Gamma_h_Z0_gamma    = 0.9586*_i_Gamma_h_Z0_gamma;
+     _Gamma_h_gamma_gamma = 0.9589*_i_Gamma_h_gamma_gamma ;
      _Gamma_h_nue_nue     = _i_Gamma_h_nue_nue;
      _Gamma_h_e_e         = _i_Gamma_h_e_e;
      _Gamma_h_numu_numu   = _i_Gamma_h_numu_numu;
-     _Gamma_h_mu_mu       = _i_Gamma_h_mu_mu;
+     _Gamma_h_mu_mu       = 0.9997*_i_Gamma_h_mu_mu;
      _Gamma_h_nutau_nutau = _i_Gamma_h_nutau_nutau;
-     _Gamma_h_tau_tau     = _i_Gamma_h_tau_tau;
+     _Gamma_h_tau_tau     = 0.9997*_i_Gamma_h_tau_tau;
      _Gamma_h_u_u         = _i_Gamma_h_u_u;
      _Gamma_h_d_d         = _i_Gamma_h_d_d;
-     _Gamma_h_c_c         = _i_Gamma_h_c_c;
-     _Gamma_h_s_s         = _i_Gamma_h_s_s;
-     _Gamma_h_b_b         = _i_Gamma_h_b_b;
+     _Gamma_h_c_c         = 1.0022*_i_Gamma_h_c_c;
+     _Gamma_h_s_s         = 0.9999*_i_Gamma_h_s_s;
+     _Gamma_h_b_b         = 0.9968*_i_Gamma_h_b_b;
 
      _GammaTotal_h0 = 0;    
      _GammaTotal_h0 += _Gamma_h_g_g;
