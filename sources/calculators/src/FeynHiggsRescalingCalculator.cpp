@@ -319,7 +319,7 @@ void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
      _LHC14_qqh    = _i_LHC14_qqh;
      _LHC14_tth    = _i_LHC14_tth;   
 
-     _Gamma_h_g_g         = 0.9585*_i_Gamma_h_g_g;
+     _Gamma_h_g_g         = 0.9548*_i_Gamma_h_g_g;
      _Gamma_h_Wp_Wm       = 0.9585*_i_Gamma_h_Wp_Wm;
      _Gamma_h_Z0_Z0       = 0.9585*_i_Gamma_h_Z0_Z0;
      _Gamma_h_Z0_gamma    = 0.9586*_i_Gamma_h_Z0_gamma;
