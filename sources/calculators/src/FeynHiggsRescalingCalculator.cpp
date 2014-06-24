@@ -61,6 +61,13 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     _i_LHC8_Zh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_Zh")->GetValue() ),
     _i_LHC8_qqh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_qqh")->GetValue() ),
     _i_LHC8_tth( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_tth")->GetValue() ),
+    _i_LHC14_ggh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_ggh")->GetValue() ),
+    _i_LHC14_bbh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_bbh")->GetValue() ),
+    _i_LHC14_btagbh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_btagbh")->GetValue() ),
+    _i_LHC14_Wh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_Wh")->GetValue() ),
+    _i_LHC14_Zh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_Zh")->GetValue() ),
+    _i_LHC14_qqh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_qqh")->GetValue() ),
+    _i_LHC14_tth( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_tth")->GetValue() ),
     _SM_TEV_ggh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_ggh")->GetValue() ),
     _SM_TEV_bbh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_bbh")->GetValue() ),
     _SM_TEV_btagbh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_btagbh")->GetValue() ),
@@ -82,6 +89,13 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     _SM_LHC8_Zh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_Zh")->GetValue() ),
     _SM_LHC8_qqh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_qqh")->GetValue() ),
     _SM_LHC8_tth( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_tth")->GetValue() ),
+    _SM_LHC14_ggh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_ggh")->GetValue() ),
+    _SM_LHC14_bbh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_bbh")->GetValue() ),
+    _SM_LHC14_btagbh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_btagbh")->GetValue() ),
+    _SM_LHC14_Wh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_Wh")->GetValue() ),
+    _SM_LHC14_Zh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_Zh")->GetValue() ),
+    _SM_LHC14_qqh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_qqh")->GetValue() ),
+    _SM_LHC14_tth( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_tth")->GetValue() ),
     _i_normSM_g_Abs_h_Z0_Z0( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_g_Abs_h0_Z0_Z0")->GetValue() ),
     _i_normSM_g_Abs_h_b_b( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_gs_Abs_h0_b_b")->GetValue() ),
     _i_normSM_g_Abs_h_tau_tau( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_gs_Abs_h0_tau_tau")->GetValue() ) {
@@ -155,6 +169,14 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     AddQuantity( new SimplePrediction( "CrossSection_8TeV_h0_qqh"       , "", _LHC8_qqh                    ) );
     AddQuantity( new SimplePrediction( "CrossSection_8TeV_h0_tth"       , "", _LHC8_tth                    ) );
     
+    AddQuantity( new SimplePrediction( "CrossSection_14TeV_h0_ggh"       , "", _LHC14_ggh                  ) );
+    AddQuantity( new SimplePrediction( "CrossSection_14TeV_h0_bbh"       , "", _LHC14_bbh                  ) );
+    AddQuantity( new SimplePrediction( "CrossSection_14TeV_h0_btagbh"    , "", _LHC14_btagbh               ) );
+    AddQuantity( new SimplePrediction( "CrossSection_14TeV_h0_Wh"        , "", _LHC14_Wh                   ) );
+    AddQuantity( new SimplePrediction( "CrossSection_14TeV_h0_Zh"        , "", _LHC14_Zh                   ) );
+    AddQuantity( new SimplePrediction( "CrossSection_14TeV_h0_qqh"       , "", _LHC14_qqh                  ) );
+    AddQuantity( new SimplePrediction( "CrossSection_14TeV_h0_tth"       , "", _LHC14_tth                  ) );
+    
     AddQuantity( new SimplePrediction( "NormSM_CrossSection_1.96TeV_h0_ggh"    , "", _normSM_TEV_ggh                    ) );
     AddQuantity( new SimplePrediction( "NormSM_CrossSection_1.96TeV_h0_bbh"    , "", _normSM_TEV_bbh                    ) );
     AddQuantity( new SimplePrediction( "NormSM_CrossSection_1.96TeV_h0_btagbh" , "", _normSM_TEV_btagbh                 ) );
@@ -179,6 +201,14 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     AddQuantity( new SimplePrediction( "NormSM_CrossSection_8TeV_h0_qqh"       , "", _normSM_LHC8_qqh                    ) );
     AddQuantity( new SimplePrediction( "NormSM_CrossSection_8TeV_h0_tth"       , "", _normSM_LHC8_tth                    ) );
     
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_14TeV_h0_ggh"       , "", _normSM_LHC14_ggh                  ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_14TeV_h0_bbh"       , "", _normSM_LHC14_bbh                  ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_14TeV_h0_btagbh"    , "", _normSM_LHC14_btagbh               ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_14TeV_h0_Wh"        , "", _normSM_LHC14_Wh                   ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_14TeV_h0_Zh"        , "", _normSM_LHC14_Zh                   ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_14TeV_h0_qqh"       , "", _normSM_LHC14_qqh                  ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_14TeV_h0_tth"       , "", _normSM_LHC14_tth                  ) );
+
     AddQuantity( new SimplePrediction( "NormSM_gs_Abs_h0_tau_tau"       , "", _normSM_g_Abs_h_tau_tau      ) );
     AddQuantity( new SimplePrediction( "NormSM_gs_Abs_h0_b_b"           , "", _normSM_g_Abs_h_b_b          ) );
     AddQuantity( new SimplePrediction( "NormSM_gs_Abs_h0_Z0_Z0"         , "", _normSM_g_Abs_h_Z0_Z0        ) );

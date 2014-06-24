@@ -116,6 +116,14 @@ namespace Fittino {
       double _LHC8_qqh;
       double _LHC8_tth;
       
+      double _LHC14_ggh;
+      double _LHC14_bbh;
+      double _LHC14_btagbh;
+      double _LHC14_Wh;
+      double _LHC14_Zh;
+      double _LHC14_qqh;
+      double _LHC14_tth;
+      
       double _normSM_TEV_ggh;
       double _normSM_TEV_bbh;
       double _normSM_TEV_btagbh;
@@ -139,6 +147,14 @@ namespace Fittino {
       double _normSM_LHC8_Zh;
       double _normSM_LHC8_qqh;
       double _normSM_LHC8_tth;
+      
+      double _normSM_LHC14_ggh;
+      double _normSM_LHC14_bbh;
+      double _normSM_LHC14_btagbh;
+      double _normSM_LHC14_Wh;
+      double _normSM_LHC14_Zh;
+      double _normSM_LHC14_qqh;
+      double _normSM_LHC14_tth;
       
       double _normSM_g_Abs_h_Z0_Z0;
       double _normSM_g_Abs_h_b_b;
@@ -188,6 +204,14 @@ namespace Fittino {
       const double& _i_LHC8_qqh;
       const double& _i_LHC8_tth;
       
+      const double& _i_LHC14_ggh;
+      const double& _i_LHC14_bbh;
+      const double& _i_LHC14_btagbh;
+      const double& _i_LHC14_Wh;
+      const double& _i_LHC14_Zh;
+      const double& _i_LHC14_qqh;
+      const double& _i_LHC14_tth;
+
       const double& _SM_TEV_ggh;
       const double& _SM_TEV_bbh;
       const double& _SM_TEV_btagbh;
@@ -212,6 +236,13 @@ namespace Fittino {
       const double& _SM_LHC8_qqh;
       const double& _SM_LHC8_tth;
 
+      const double& _SM_LHC14_ggh;
+      const double& _SM_LHC14_bbh;
+      const double& _SM_LHC14_btagbh;
+      const double& _SM_LHC14_Wh;
+      const double& _SM_LHC14_Zh;
+      const double& _SM_LHC14_qqh;
+      const double& _SM_LHC14_tth;
 
       const double& _i_normSM_g_Abs_h_Z0_Z0;
       const double& _i_normSM_g_Abs_h_b_b;
