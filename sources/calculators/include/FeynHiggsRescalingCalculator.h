@@ -76,6 +76,29 @@ namespace Fittino {
       const double& _i_Gamma_h_s_s;
       const double& _i_Gamma_h_b_b;
 
+      const double& _i_TEV_ggh;
+      const double& _i_TEV_bbh;
+      const double& _i_TEV_btagbh;
+      const double& _i_TEV_Wh;
+      const double& _i_TEV_Zh;
+      const double& _i_TEV_qqh;
+      const double& _i_TEV_tth;
+
+      const double& _i_LHC7_ggh;
+      const double& _i_LHC7_bbh;
+      const double& _i_LHC7_btagbh;
+      const double& _i_LHC7_Wh;
+      const double& _i_LHC7_Zh;
+      const double& _i_LHC7_qqh;
+      const double& _i_LHC7_tth;
+      
+      const double& _i_LHC8_ggh;
+      const double& _i_LHC8_bbh;
+      const double& _i_LHC8_btagbh;
+      const double& _i_LHC8_Wh;
+      const double& _i_LHC8_Zh;
+      const double& _i_LHC8_qqh;
+      const double& _i_LHC8_tth;
 
       /*! \endcond UML */
 

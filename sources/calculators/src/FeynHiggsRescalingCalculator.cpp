@@ -39,7 +39,28 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     _i_Gamma_h_d_d( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_d_d")->GetValue() ),
     _i_Gamma_h_c_c( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_c_c")->GetValue() ),
     _i_Gamma_h_s_s( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_s_s")->GetValue() ),
-    _i_Gamma_h_b_b( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_b_b")->GetValue() ){
+    _i_Gamma_h_b_b( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_b_b")->GetValue() ),
+    _i_TEV_ggh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_ggh")->GetValue() ),
+    _i_TEV_bbh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_bbh")->GetValue() ),
+    _i_TEV_btagbh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_btagbh")->GetValue() ),
+    _i_TEV_Wh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_Wh")->GetValue() ),
+    _i_TEV_Zh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_Zh")->GetValue() ),
+    _i_TEV_qqh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_qqh")->GetValue() ),
+    _i_TEV_tth( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_tth")->GetValue() ),
+    _i_LHC7_ggh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_ggh")->GetValue() ),
+    _i_LHC7_bbh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_bbh")->GetValue() ),
+    _i_LHC7_btagbh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_btagbh")->GetValue() ),
+    _i_LHC7_Wh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_Wh")->GetValue() ),
+    _i_LHC7_Zh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_Zh")->GetValue() ),
+    _i_LHC7_qqh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_qqh")->GetValue() ),
+    _i_LHC7_tth( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_tth")->GetValue() ),
+    _i_LHC8_ggh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_ggh")->GetValue() ),
+    _i_LHC8_bbh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_bbh")->GetValue() ),
+    _i_LHC8_btagbh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_btagbh")->GetValue() ),
+    _i_LHC8_Wh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_Wh")->GetValue() ),
+    _i_LHC8_Zh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_Zh")->GetValue() ),
+    _i_LHC8_qqh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_qqh")->GetValue() ),
+    _i_LHC8_tth( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_tth")->GetValue() ) {
 
     _name = "FeynHiggsRescaling";
     _tag = "FeynHiggsRescaling";
