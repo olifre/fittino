@@ -58,8 +58,42 @@ namespace Fittino {
 
       double _zero;
 
-      double _i_Gamma_h_g_g;
+      double _Gamma_h_g_g;
+      double _Gamma_h_Wp_Wm;
+      double _Gamma_h_Z0_Z0;
+      double _Gamma_h_Z0_gamma;
+      double _Gamma_h_gamma_gamma;
+      double _Gamma_h_nue_nue;
+      double _Gamma_h_e_e;
+      double _Gamma_h_numu_numu;
+      double _Gamma_h_mu_mu;
+      double _Gamma_nutau_nutau;
+      double _Gamma_tau_tau;
+      double _Gamma_h_u_u;
+      double _Gamma_h_d_d;
+      double _Gamma_h_c_c;
+      double _Gamma_h_s_s;
+      double _Gamma_h_b_b;
+      double _normSM_Gamma_h_g_g;
+      double _normSM_Gamma_h_Wp_Wm;
+      double _normSM_Gamma_h_Z0_Z0;
+      double _normSM_Gamma_h_Z0_gamma;
+      double _normSM_Gamma_h_gamma_gamma;
+      double _normSM_Gamma_h_nue_nue;
+      double _normSM_Gamma_h_e_e;
+      double _normSM_Gamma_h_numu_numu;
+      double _normSM_Gamma_h_mu_mu;
+      double _normSM_Gamma_nutau_nutau;
+      double _normSM_Gamma_tau_tau;
+      double _normSM_Gamma_h_u_u;
+      double _normSM_Gamma_h_d_d;
+      double _normSM_Gamma_h_c_c;
+      double _normSM_Gamma_h_s_s;
+      double _normSM_Gamma_h_b_b;
+      double _GammaTotal_h0;
 
+
+      double _i_Gamma_h_g_g;
       const double& _i_Gamma_h_Wp_Wm;
       const double& _i_Gamma_h_Z0_Z0;
       const double& _i_Gamma_h_Z0_gamma;
@@ -99,6 +133,11 @@ namespace Fittino {
       const double& _i_LHC8_Zh;
       const double& _i_LHC8_qqh;
       const double& _i_LHC8_tth;
+
+      const double& _i_normSM_g_Abs_h_Z0_Z0;
+      const double& _i_normSM_g_Abs_h_b_b;
+      const double& _i_normSM_g_Abs_h_tau_tau;
+
 
       /*! \endcond UML */
 

@@ -60,7 +60,10 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     _i_LHC8_Wh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_Wh")->GetValue() ),
     _i_LHC8_Zh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_Zh")->GetValue() ),
     _i_LHC8_qqh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_qqh")->GetValue() ),
-    _i_LHC8_tth( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_tth")->GetValue() ) {
+    _i_LHC8_tth( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_tth")->GetValue() ),
+    _i_normSM_g_Abs_h_Z0_Z0( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_g_Abs_h0_Z0_Z0")->GetValue() ),
+    _i_normSM_g_Abs_h_b_b( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_gs_Abs_h0_b_b")->GetValue() ),
+    _i_normSM_g_Abs_h_tau_tau( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_gs_Abs_h0_tau_tau")->GetValue() ) {
 
     _name = "FeynHiggsRescaling";
     _tag = "FeynHiggsRescaling";
