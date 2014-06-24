@@ -67,8 +67,8 @@ namespace Fittino {
       double _Gamma_h_e_e;
       double _Gamma_h_numu_numu;
       double _Gamma_h_mu_mu;
-      double _Gamma_nutau_nutau;
-      double _Gamma_tau_tau;
+      double _Gamma_h_nutau_nutau;
+      double _Gamma_h_tau_tau;
       double _Gamma_h_u_u;
       double _Gamma_h_d_d;
       double _Gamma_h_c_c;
@@ -83,8 +83,8 @@ namespace Fittino {
       double _normSM_Gamma_h_e_e;
       double _normSM_Gamma_h_numu_numu;
       double _normSM_Gamma_h_mu_mu;
-      double _normSM_Gamma_nutau_nutau;
-      double _normSM_Gamma_tau_tau;
+      double _normSM_Gamma_h_nutau_nutau;
+      double _normSM_Gamma_h_tau_tau;
       double _normSM_Gamma_h_u_u;
       double _normSM_Gamma_h_d_d;
       double _normSM_Gamma_h_c_c;
@@ -92,8 +92,62 @@ namespace Fittino {
       double _normSM_Gamma_h_b_b;
       double _GammaTotal_h0;
 
+      double _TEV_ggh;
+      double _TEV_bbh;
+      double _TEV_btagbh;
+      double _TEV_Wh;
+      double _TEV_Zh;
+      double _TEV_qqh;
+      double _TEV_tth;
+    
+      double _LHC7_ggh;
+      double _LHC7_bbh;
+      double _LHC7_btagbh;
+      double _LHC7_Wh;
+      double _LHC7_Zh;
+      double _LHC7_qqh;
+      double _LHC7_tth;
+
+      double _LHC8_ggh;
+      double _LHC8_bbh;
+      double _LHC8_btagbh;
+      double _LHC8_Wh;
+      double _LHC8_Zh;
+      double _LHC8_qqh;
+      double _LHC8_tth;
+      
+      double _normSM_TEV_ggh;
+      double _normSM_TEV_bbh;
+      double _normSM_TEV_btagbh;
+      double _normSM_TEV_Wh;
+      double _normSM_TEV_Zh;
+      double _normSM_TEV_qqh;
+      double _normSM_TEV_tth;
+    
+      double _normSM_LHC7_ggh;
+      double _normSM_LHC7_bbh;
+      double _normSM_LHC7_btagbh;
+      double _normSM_LHC7_Wh;
+      double _normSM_LHC7_Zh;
+      double _normSM_LHC7_qqh;
+      double _normSM_LHC7_tth;
+
+      double _normSM_LHC8_ggh;
+      double _normSM_LHC8_bbh;
+      double _normSM_LHC8_btagbh;
+      double _normSM_LHC8_Wh;
+      double _normSM_LHC8_Zh;
+      double _normSM_LHC8_qqh;
+      double _normSM_LHC8_tth;
+      
+      double _normSM_g_Abs_h_Z0_Z0;
+      double _normSM_g_Abs_h_b_b;
+      double _normSM_g_Abs_h_tau_tau;
+
+        
 
       double _i_Gamma_h_g_g;
+      double _i_Gamma_h_g_g_normSM;
       const double& _i_Gamma_h_Wp_Wm;
       const double& _i_Gamma_h_Z0_Z0;
       const double& _i_Gamma_h_Z0_gamma;
@@ -133,6 +187,31 @@ namespace Fittino {
       const double& _i_LHC8_Zh;
       const double& _i_LHC8_qqh;
       const double& _i_LHC8_tth;
+      
+      const double& _SM_TEV_ggh;
+      const double& _SM_TEV_bbh;
+      const double& _SM_TEV_btagbh;
+      const double& _SM_TEV_Wh;
+      const double& _SM_TEV_Zh;
+      const double& _SM_TEV_qqh;
+      const double& _SM_TEV_tth;
+
+      const double& _SM_LHC7_ggh;
+      const double& _SM_LHC7_bbh;
+      const double& _SM_LHC7_btagbh;
+      const double& _SM_LHC7_Wh;
+      const double& _SM_LHC7_Zh;
+      const double& _SM_LHC7_qqh;
+      const double& _SM_LHC7_tth;
+      
+      const double& _SM_LHC8_ggh;
+      const double& _SM_LHC8_bbh;
+      const double& _SM_LHC8_btagbh;
+      const double& _SM_LHC8_Wh;
+      const double& _SM_LHC8_Zh;
+      const double& _SM_LHC8_qqh;
+      const double& _SM_LHC8_tth;
+
 
       const double& _i_normSM_g_Abs_h_Z0_Z0;
       const double& _i_normSM_g_Abs_h_b_b;

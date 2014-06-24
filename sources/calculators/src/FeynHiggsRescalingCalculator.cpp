@@ -61,6 +61,27 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     _i_LHC8_Zh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_Zh")->GetValue() ),
     _i_LHC8_qqh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_qqh")->GetValue() ),
     _i_LHC8_tth( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_tth")->GetValue() ),
+    _SM_TEV_ggh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_ggh")->GetValue() ),
+    _SM_TEV_bbh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_bbh")->GetValue() ),
+    _SM_TEV_btagbh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_btagbh")->GetValue() ),
+    _SM_TEV_Wh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_Wh")->GetValue() ),
+    _SM_TEV_Zh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_Zh")->GetValue() ),
+    _SM_TEV_qqh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_qqh")->GetValue() ),
+    _SM_TEV_tth( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_tth")->GetValue() ),
+    _SM_LHC7_ggh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_ggh")->GetValue() ),
+    _SM_LHC7_bbh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_bbh")->GetValue() ),
+    _SM_LHC7_btagbh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_btagbh")->GetValue() ),
+    _SM_LHC7_Wh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_Wh")->GetValue() ),
+    _SM_LHC7_Zh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_Zh")->GetValue() ),
+    _SM_LHC7_qqh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_qqh")->GetValue() ),
+    _SM_LHC7_tth( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_tth")->GetValue() ),
+    _SM_LHC8_ggh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_ggh")->GetValue() ),
+    _SM_LHC8_bbh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_bbh")->GetValue() ),
+    _SM_LHC8_btagbh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_btagbh")->GetValue() ),
+    _SM_LHC8_Wh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_Wh")->GetValue() ),
+    _SM_LHC8_Zh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_Zh")->GetValue() ),
+    _SM_LHC8_qqh( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_qqh")->GetValue() ),
+    _SM_LHC8_tth( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_tth")->GetValue() ),
     _i_normSM_g_Abs_h_Z0_Z0( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_g_Abs_h0_Z0_Z0")->GetValue() ),
     _i_normSM_g_Abs_h_b_b( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_gs_Abs_h0_b_b")->GetValue() ),
     _i_normSM_g_Abs_h_tau_tau( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_gs_Abs_h0_tau_tau")->GetValue() ) {
@@ -73,42 +94,94 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
 
     AddQuantity( new SimplePrediction( "Gamma_h0_to_g_g_recalc"  , "", _i_Gamma_h_g_g  ) );
 
-    // AddQuantity( new SimplePrediction( "Gamma_h0_to_g_g"         , "", _Gamma_h_g_g         ) );
-    // AddQuantity( new SimplePrediction( "Gamma_h0_to_Wp_Wm"       , "", _Gamma_h_Wp_Wm       ) );
-    // AddQuantity( new SimplePrediction( "Gamma_h0_to_Z0_Z0"       , "", _Gamma_h_Z0_Z0       ) );
-    // AddQuantity( new SimplePrediction( "Gamma_h0_to_Z0_gamma"    , "", _Gamma_h_Z0_gamma    ) );
-    // AddQuantity( new SimplePrediction( "Gamma_h0_to_gamma_gamma" , "", _Gamma_h_gamma_gamma ) );
-    // AddQuantity( new SimplePrediction( "Gamma_h0_to_nue_nue"     , "", _Gamma_h_gamma_gamma ) );
-    // AddQuantity( new SimplePrediction( "Gamma_h0_to_e_e"         , "", _Gamma_h_e_e         ) );
-    // AddQuantity( new SimplePrediction( "Gamma_h0_to_numu_numu"   , "", _Gamma_h_numu_numu   ) );
-    // AddQuantity( new SimplePrediction( "Gamma_h0_to_mu_mu"       , "", _Gamma_h_mu_mu       ) );
-    // AddQuantity( new SimplePrediction( "Gamma_h0_to_nutau_nutau" , "", _Gamma_h_nutau_nutau ) );
-    // AddQuantity( new SimplePrediction( "Gamma_h0_to_tau_tau"     , "", _Gamma_h_tau_tau     ) );
-    // AddQuantity( new SimplePrediction( "Gamma_h0_to_u_u"         , "", _Gamma_h_u_u         ) );
-    // AddQuantity( new SimplePrediction( "Gamma_h0_to_d_d"         , "", _Gamma_h_d_d         ) );
-    // AddQuantity( new SimplePrediction( "Gamma_h0_to_c_c"         , "", _Gamma_h_c_c         ) );
-    // AddQuantity( new SimplePrediction( "Gamma_h0_to_s_s"         , "", _Gamma_h_s_s         ) );
-    // AddQuantity( new SimplePrediction( "Gamma_h0_to_b_b"         , "", _Gamma_h_b_b         ) );
+    AddQuantity( new SimplePrediction( "Gamma_h0_to_g_g"         , "", _Gamma_h_g_g         ) );
+    AddQuantity( new SimplePrediction( "Gamma_h0_to_Wp_Wm"       , "", _Gamma_h_Wp_Wm       ) );
+    AddQuantity( new SimplePrediction( "Gamma_h0_to_Z0_Z0"       , "", _Gamma_h_Z0_Z0       ) );
+    AddQuantity( new SimplePrediction( "Gamma_h0_to_Z0_gamma"    , "", _Gamma_h_Z0_gamma    ) );
+    AddQuantity( new SimplePrediction( "Gamma_h0_to_gamma_gamma" , "", _Gamma_h_gamma_gamma ) );
+    AddQuantity( new SimplePrediction( "Gamma_h0_to_nue_nue"     , "", _Gamma_h_nue_nue     ) ); // FIXME: This was gamma_gamma before. Should it?
+    AddQuantity( new SimplePrediction( "Gamma_h0_to_e_e"         , "", _Gamma_h_e_e         ) );
+    AddQuantity( new SimplePrediction( "Gamma_h0_to_numu_numu"   , "", _Gamma_h_numu_numu   ) );
+    AddQuantity( new SimplePrediction( "Gamma_h0_to_mu_mu"       , "", _Gamma_h_mu_mu       ) );
+    AddQuantity( new SimplePrediction( "Gamma_h0_to_nutau_nutau" , "", _Gamma_h_nutau_nutau ) );
+    AddQuantity( new SimplePrediction( "Gamma_h0_to_tau_tau"     , "", _Gamma_h_tau_tau     ) );
+    AddQuantity( new SimplePrediction( "Gamma_h0_to_u_u"         , "", _Gamma_h_u_u         ) );
+    AddQuantity( new SimplePrediction( "Gamma_h0_to_d_d"         , "", _Gamma_h_d_d         ) );
+    AddQuantity( new SimplePrediction( "Gamma_h0_to_c_c"         , "", _Gamma_h_c_c         ) );
+    AddQuantity( new SimplePrediction( "Gamma_h0_to_s_s"         , "", _Gamma_h_s_s         ) );
+    AddQuantity( new SimplePrediction( "Gamma_h0_to_b_b"         , "", _Gamma_h_b_b         ) );
 
-    // AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_g_g_recalc"  , "", _i_Gamma_h_g_g_normSM       ) );
-    // AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_g_g"         , "", _normSM_Gamma_h_g_g         ) );
-    // AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_Wp_Wm"       , "", _normSM_Gamma_h_Wp_Wm       ) );
-    // AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_Z0_Z0"       , "", _normSM_Gamma_h_Z0_Z0       ) );
-    // AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_Z0_gamma"    , "", _normSM_Gamma_h_Z0_gamma    ) );
-    // AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_gamma_gamma" , "", _normSM_Gamma_h_gamma_gamma ) );
-    // AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_nue_nue"     , "", _normSM_Gamma_h_gamma_gamma ) );
-    // AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_e_e"         , "", _normSM_Gamma_h_e_e         ) );
-    // AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_numu_numu"   , "", _normSM_Gamma_h_numu_numu   ) );
-    // AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_mu_mu"       , "", _Gamma_h_mu_mu       ) );
-    // AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_nutau_nutau" , "", _Gamma_h_nutau_nutau ) );
-    // AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_tau_tau"     , "", _Gamma_h_tau_tau     ) );
-    // AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_u_u"         , "", _Gamma_h_u_u         ) );
-    // AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_d_d"         , "", _Gamma_h_d_d         ) );
-    // AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_c_c"         , "", _Gamma_h_c_c         ) );
-    // AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_s_s"         , "", _Gamma_h_s_s         ) );
-    // AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_b_b"         , "", _Gamma_h_b_b         ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_g_g_recalc"  , "", _i_Gamma_h_g_g_normSM       ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_g_g"         , "", _normSM_Gamma_h_g_g         ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_Wp_Wm"       , "", _normSM_Gamma_h_Wp_Wm       ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_Z0_Z0"       , "", _normSM_Gamma_h_Z0_Z0       ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_Z0_gamma"    , "", _normSM_Gamma_h_Z0_gamma    ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_gamma_gamma" , "", _normSM_Gamma_h_gamma_gamma ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_nue_nue"     , "", _normSM_Gamma_h_gamma_gamma ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_e_e"         , "", _normSM_Gamma_h_e_e         ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_numu_numu"   , "", _normSM_Gamma_h_numu_numu   ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_mu_mu"       , "", _normSM_Gamma_h_mu_mu       ) ); // FIXME: This was not the normSM quantities before. should it?
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_nutau_nutau" , "", _normSM_Gamma_h_nutau_nutau ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_tau_tau"     , "", _normSM_Gamma_h_tau_tau     ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_u_u"         , "", _normSM_Gamma_h_u_u         ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_d_d"         , "", _normSM_Gamma_h_d_d         ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_c_c"         , "", _normSM_Gamma_h_c_c         ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_s_s"         , "", _normSM_Gamma_h_s_s         ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_b_b"         , "", _normSM_Gamma_h_b_b         ) );
 
-    // AddQuantity( new SimplePrediction( "GammaTotal_h0", "", _GammaTotal_h0 ) );
+    AddQuantity( new SimplePrediction( "GammaTotal_h0", "", _GammaTotal_h0 ) );
+
+    AddQuantity( new SimplePrediction( "CrossSection_1.96TeV_h0_ggh"    , "", _TEV_ggh                    ) );
+    AddQuantity( new SimplePrediction( "CrossSection_1.96TeV_h0_bbh"    , "", _TEV_bbh                    ) );
+    AddQuantity( new SimplePrediction( "CrossSection_1.96TeV_h0_btagbh" , "", _TEV_btagbh                 ) );
+    AddQuantity( new SimplePrediction( "CrossSection_1.96TeV_h0_Wh"     , "", _TEV_Wh                     ) );
+    AddQuantity( new SimplePrediction( "CrossSection_1.96TeV_h0_Zh"     , "", _TEV_Zh                     ) );
+    AddQuantity( new SimplePrediction( "CrossSection_1.96TeV_h0_qqh"    , "", _TEV_qqh                    ) );
+    AddQuantity( new SimplePrediction( "CrossSection_1.96TeV_h0_tth"    , "", _TEV_tth                    ) );
+    
+    AddQuantity( new SimplePrediction( "CrossSection_7TeV_h0_ggh"       , "", _LHC7_ggh                    ) );
+    AddQuantity( new SimplePrediction( "CrossSection_7TeV_h0_bbh"       , "", _LHC7_bbh                    ) );
+    AddQuantity( new SimplePrediction( "CrossSection_7TeV_h0_btagbh"    , "", _LHC7_btagbh                 ) );
+    AddQuantity( new SimplePrediction( "CrossSection_7TeV_h0_Wh"        , "", _LHC7_Wh                     ) );
+    AddQuantity( new SimplePrediction( "CrossSection_7TeV_h0_Zh"        , "", _LHC7_Zh                     ) );
+    AddQuantity( new SimplePrediction( "CrossSection_7TeV_h0_qqh"       , "", _LHC7_qqh                    ) );
+    AddQuantity( new SimplePrediction( "CrossSection_7TeV_h0_tth"       , "", _LHC7_tth                    ) );
+
+    AddQuantity( new SimplePrediction( "CrossSection_8TeV_h0_ggh"       , "", _LHC8_ggh                    ) );
+    AddQuantity( new SimplePrediction( "CrossSection_8TeV_h0_bbh"       , "", _LHC8_bbh                    ) );
+    AddQuantity( new SimplePrediction( "CrossSection_8TeV_h0_btagbh"    , "", _LHC8_btagbh                 ) );
+    AddQuantity( new SimplePrediction( "CrossSection_8TeV_h0_Wh"        , "", _LHC8_Wh                     ) );
+    AddQuantity( new SimplePrediction( "CrossSection_8TeV_h0_Zh"        , "", _LHC8_Zh                     ) );
+    AddQuantity( new SimplePrediction( "CrossSection_8TeV_h0_qqh"       , "", _LHC8_qqh                    ) );
+    AddQuantity( new SimplePrediction( "CrossSection_8TeV_h0_tth"       , "", _LHC8_tth                    ) );
+    
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_1.96TeV_h0_ggh"    , "", _normSM_TEV_ggh                    ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_1.96TeV_h0_bbh"    , "", _normSM_TEV_bbh                    ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_1.96TeV_h0_btagbh" , "", _normSM_TEV_btagbh                 ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_1.96TeV_h0_Wh"     , "", _normSM_TEV_Wh                     ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_1.96TeV_h0_Zh"     , "", _normSM_TEV_Zh                     ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_1.96TeV_h0_qqh"    , "", _normSM_TEV_qqh                    ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_1.96TeV_h0_tth"    , "", _normSM_TEV_tth                    ) );
+    
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_7TeV_h0_ggh"       , "", _normSM_LHC7_ggh                    ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_7TeV_h0_bbh"       , "", _normSM_LHC7_bbh                    ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_7TeV_h0_btagbh"    , "", _normSM_LHC7_btagbh                 ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_7TeV_h0_Wh"        , "", _normSM_LHC7_Wh                     ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_7TeV_h0_Zh"        , "", _normSM_LHC7_Zh                     ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_7TeV_h0_qqh"       , "", _normSM_LHC7_qqh                    ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_7TeV_h0_tth"       , "", _normSM_LHC7_tth                    ) );
+
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_8TeV_h0_ggh"       , "", _normSM_LHC8_ggh                    ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_8TeV_h0_bbh"       , "", _normSM_LHC8_bbh                    ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_8TeV_h0_btagbh"    , "", _normSM_LHC8_btagbh                 ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_8TeV_h0_Wh"        , "", _normSM_LHC8_Wh                     ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_8TeV_h0_Zh"        , "", _normSM_LHC8_Zh                     ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_8TeV_h0_qqh"       , "", _normSM_LHC8_qqh                    ) );
+    AddQuantity( new SimplePrediction( "NormSM_CrossSection_8TeV_h0_tth"       , "", _normSM_LHC8_tth                    ) );
+    
+    AddQuantity( new SimplePrediction( "NormSM_gs_Abs_h0_tau_tau"       , "", _normSM_g_Abs_h_tau_tau      ) );
+    AddQuantity( new SimplePrediction( "NormSM_gs_Abs_h0_b_b"           , "", _normSM_g_Abs_h_b_b          ) );
+    AddQuantity( new SimplePrediction( "NormSM_gs_Abs_h0_Z0_Z0"         , "", _normSM_g_Abs_h_Z0_Z0        ) );
 
 }
 
