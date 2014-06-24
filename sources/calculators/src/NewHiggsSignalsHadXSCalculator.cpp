@@ -97,7 +97,7 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
         _name_mass_h_neutral.push_back       ( ptree.get<std::string>( "MassQName_"                + number.str(), "FeynHiggs_Mass_" + namesHzero.at(i)              ) );
         _name_Gamma_Total_neutral.push_back  ( ptree.get<std::string>( "GammaTotQName_"            + number.str(), "FeynHiggs_GammaTotal_" + namesHzero.at(i)        ) );
         //_name_Gamma_Total_neutral.push_back  ( ptree.get<std::string>( "GammaTotQName_"            + number.str(), "SPheno_GammaTotal_" + namesHzero.at(i)        ) );
-        _name_CS_lep_tautauhj_ratio.push_back( ptree.get<std::string>( "CS_lep_tautauhj_ratioQName"+ number.str(), "FeynHiggs_NormSM_" + couplingNames.at(i) + "_Abs_" + namesHzero.at(i) + "_tau_tau" ) );
+        _name_CS_lep_tautauhj_ratio.push_back( ptree.get<std::string>( "CS_lep_tautauhj_ratioQName_"+ number.str(), "FeynHiggs_NormSM_" + couplingNames.at(i) + "_Abs_" + namesHzero.at(i) + "_tau_tau" ) );
         _name_CS_lep_hjZ_ratio.push_back     ( ptree.get<std::string>( "CS_lep_hjZ_ratioQName_"    + number.str(), "FeynHiggs_NormSM_g_Abs_" + namesHzero.at(i) + "_Z0_Z0"  ) );
         _name_CS_lep_bbhj_ratio.push_back    ( ptree.get<std::string>( "CS_lep_bbhj_ratioQName_"   + number.str(), "FeynHiggs_NormSM_" + couplingNames.at(i) + "_Abs_" + namesHzero.at(i) + "_b_b" ) );
         
@@ -105,9 +105,9 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
         _name_CS_tev_bbhj_model.push_back      ( ptree.get<std::string>( "CS_tev_bbhj_modelQName_"  + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_bbh" ) ); 
         _name_CS_tev_gghj_SM.push_back      ( ptree.get<std::string>( "CS_tev_gghj_SMQName_"  + number.str(), "FeynHiggs_SM_CrossSection_1.96TeV_" + namesHzero.at(i) + "_ggh" ) ); 
         _name_CS_tev_bbhj_SM.push_back      ( ptree.get<std::string>( "CS_tev_bbhj_SMQName_"  + number.str(), "FeynHiggs_SM_CrossSection_1.96TeV_" + namesHzero.at(i) + "_bbh" ) ); 
-        _name_CS_tev_hjb_ratio.push_back     ( ptree.get<std::string>( "CS_tev_hjb_bratioQName_"    + number.str(), "FeynHiggs_NormSM_CrossSection_1.96TeV_" + namesHzero.at(i) + "_btagbh" ) ); 
-        _name_CS_tev_hjW_ratio.push_back     ( ptree.get<std::string>( "CS_tev_hjW_bratioQName_"    + number.str(), "FeynHiggs_NormSM_CrossSection_1.96TeV_" + namesHzero.at(i) + "_Wh" ) ); 
-        _name_CS_tev_hjZ_ratio.push_back     ( ptree.get<std::string>( "CS_tev_hjZ_bratioQName_"    + number.str(), "FeynHiggs_NormSM_CrossSection_1.96TeV_" + namesHzero.at(i) + "_Zh" ) ); 
+        _name_CS_tev_hjb_ratio.push_back     ( ptree.get<std::string>( "CS_tev_hjb_ratioQName_"    + number.str(), "FeynHiggs_NormSM_CrossSection_1.96TeV_" + namesHzero.at(i) + "_btagbh" ) ); 
+        _name_CS_tev_hjW_ratio.push_back     ( ptree.get<std::string>( "CS_tev_hjW_ratioQName_"    + number.str(), "FeynHiggs_NormSM_CrossSection_1.96TeV_" + namesHzero.at(i) + "_Wh" ) ); 
+        _name_CS_tev_hjZ_ratio.push_back     ( ptree.get<std::string>( "CS_tev_hjZ_ratioQName_"    + number.str(), "FeynHiggs_NormSM_CrossSection_1.96TeV_" + namesHzero.at(i) + "_Zh" ) ); 
         _name_CS_tev_vbf_ratio.push_back     ( ptree.get<std::string>( "CS_tev_vbf_ratioQName_"     + number.str(), "FeynHiggs_NormSM_CrossSection_1.96TeV_" + namesHzero.at(i) + "_qqh" ) );
         _name_CS_tev_tthj_ratio.push_back    ( ptree.get<std::string>( "CS_tev_tthj_ratioQName_"    + number.str(), "FeynHiggs_NormSM_CrossSection_1.96TeV_" + namesHzero.at(i) + "_tth" ) );
         
