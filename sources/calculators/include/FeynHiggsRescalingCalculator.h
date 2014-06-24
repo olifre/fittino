@@ -248,6 +248,7 @@ namespace Fittino {
       const double& _i_Gamma_h_c_c;
       const double& _i_Gamma_h_s_s;
       const double& _i_Gamma_h_b_b;
+      const double& _i_Gamma_h_chi10_chi10;
 
       const double& _i_TEV_ggh;
       const double& _i_TEV_bbh;

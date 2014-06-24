@@ -43,6 +43,7 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     _i_Gamma_h_c_c( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_c_c")->GetValue() ),
     _i_Gamma_h_s_s( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_s_s")->GetValue() ),
     _i_Gamma_h_b_b( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_b_b")->GetValue() ),
+    _i_Gamma_h_chi10_chi10( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_~chi10_~chi10")->GetValue() ),
     _i_TEV_ggh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_ggh")->GetValue() ),
     _i_TEV_bbh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_bbh")->GetValue() ),
     _i_TEV_btagbh( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_btagbh")->GetValue() ),
@@ -116,7 +117,7 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     AddQuantity( new SimplePrediction( "Gamma_h0_to_Z0_Z0"       , "", _Gamma_h_Z0_Z0       ) );
     AddQuantity( new SimplePrediction( "Gamma_h0_to_Z0_gamma"    , "", _Gamma_h_Z0_gamma    ) );
     AddQuantity( new SimplePrediction( "Gamma_h0_to_gamma_gamma" , "", _Gamma_h_gamma_gamma ) );
-    AddQuantity( new SimplePrediction( "Gamma_h0_to_nue_nue"     , "", _Gamma_h_nue_nue     ) ); // FIXME: This was gamma_gamma before. Should it?
+    AddQuantity( new SimplePrediction( "Gamma_h0_to_nue_nue"     , "", _Gamma_h_nue_nue     ) ); 
     AddQuantity( new SimplePrediction( "Gamma_h0_to_e_e"         , "", _Gamma_h_e_e         ) );
     AddQuantity( new SimplePrediction( "Gamma_h0_to_numu_numu"   , "", _Gamma_h_numu_numu   ) );
     AddQuantity( new SimplePrediction( "Gamma_h0_to_mu_mu"       , "", _Gamma_h_mu_mu       ) );
@@ -137,7 +138,7 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_nue_nue"     , "", _normSM_Gamma_h_gamma_gamma ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_e_e"         , "", _normSM_Gamma_h_e_e         ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_numu_numu"   , "", _normSM_Gamma_h_numu_numu   ) );
-    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_mu_mu"       , "", _normSM_Gamma_h_mu_mu       ) ); // FIXME: This was not the normSM quantities before. should it?
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_mu_mu"       , "", _normSM_Gamma_h_mu_mu       ) ); 
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_nutau_nutau" , "", _normSM_Gamma_h_nutau_nutau ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_tau_tau"     , "", _normSM_Gamma_h_tau_tau     ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_u_u"         , "", _normSM_Gamma_h_u_u         ) );
@@ -275,17 +276,18 @@ void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
      sum += _i_Gamma_h_c_c;
      sum += _i_Gamma_h_s_s;
      sum += _i_Gamma_h_b_b;
+     sum += _i_Gamma_h_chi10_chi10;
 
      _i_Gamma_h_g_g = _i_GammaTotal_h0 - sum; // this is necesarry because the initial h->gg in the ntuple is buggy 
 
      _i_Gamma_h_g_g_normSM = _i_GammaTotal_h0 / _SM_GammaTotal_h0; 
         
         // FIXME: do we use the squared values here? NewHSCalculator uses the non-squared values
-     _normSM_g_Abs_h_Z0_Z0   = 1.0000*_i_normSM_g_Abs_h_Z0_Z0; // multiple with scale factor
+     _normSM_g_Abs_h_Z0_Z0   = 1.0000*_i_normSM_g_Abs_h_Z0_Z0; 
      _normSM_g_Abs_h_b_b     = sqrt(0.9977)*_i_normSM_g_Abs_h_b_b;
      _normSM_g_Abs_h_tau_tau = sqrt(0.9976)*_i_normSM_g_Abs_h_tau_tau;
      
-     _TEV_ggh    = 1.2245*_i_TEV_ggh; // multiple with scalefactor
+     _TEV_ggh    = 1.2245*_i_TEV_ggh; 
      _TEV_bbh    = 0.9968*_i_TEV_bbh;   
      _TEV_btagbh = 0.9968*_i_TEV_btagbh;
      _TEV_Wh     = 0.9585*_i_TEV_Wh;  
