@@ -17,6 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <math.h>
+
 #include <boost/property_tree/ptree.hpp>
 
 #include "PhysicsModel.h"
