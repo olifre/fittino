@@ -325,13 +325,13 @@ void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
      _Gamma_h_Z0_gamma    = 0.9586*_i_Gamma_h_Z0_gamma;
      _Gamma_h_gamma_gamma = 0.9589*_i_Gamma_h_gamma_gamma ;
      _Gamma_h_nue_nue     = _i_Gamma_h_nue_nue;
-     _Gamma_h_e_e         = _i_Gamma_h_e_e;
+     _Gamma_h_e_e         = 0.9997*_i_Gamma_h_e_e;
      _Gamma_h_numu_numu   = _i_Gamma_h_numu_numu;
      _Gamma_h_mu_mu       = 0.9997*_i_Gamma_h_mu_mu;
      _Gamma_h_nutau_nutau = _i_Gamma_h_nutau_nutau;
      _Gamma_h_tau_tau     = 0.9997*_i_Gamma_h_tau_tau;
-     _Gamma_h_u_u         = _i_Gamma_h_u_u;
-     _Gamma_h_d_d         = _i_Gamma_h_d_d;
+     _Gamma_h_u_u         = 1.0022*_i_Gamma_h_u_u;
+     _Gamma_h_d_d         = 0.9999*_i_Gamma_h_d_d;
      _Gamma_h_c_c         = 1.0022*_i_Gamma_h_c_c;
      _Gamma_h_s_s         = 0.9999*_i_Gamma_h_s_s;
      _Gamma_h_b_b         = 0.9968*_i_Gamma_h_b_b;
