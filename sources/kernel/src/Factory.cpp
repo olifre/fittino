@@ -34,7 +34,7 @@
 #ifdef FEYNHIGGS
 #include "FeynHiggsCalculator.h"
 #endif
-
+#include "FeynHiggsRescalingCalculator.h"
 #include "FormulaCalculator.h"
 #include "GeneticAlgorithmOptimizer.h"
 #include "GiuntaModel.h"
@@ -122,6 +122,11 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
         throw ConfigurationException( "Trying to use FeynHiggsCalculator but Fittino was built without FeynHiggs." );
 
 #endif
+
+    }
+    else if ( type == "FeynHiggsRescalingCalculator" ) {
+
+      return new FeynHiggsRescalingCalculator( model, ptree );
 
     }
     else if ( type == "FeynHiggsSLHACalculator" ) {
