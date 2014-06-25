@@ -56,7 +56,7 @@ void Fittino::EdgeDetectionTool::InitializeTool() {
     TDirectory *tempDirectory = gDirectory;
 
     TFile *histogramFile = new TFile( _histogramFileName.c_str(), "OPEN" );
-    if ( histogramFile ) {
+    if ( !histogramFile ) {
 
         throw ConfigurationException( "Could not find file containing the input histograms. Check the filename in the Fittino input file!" );
     
