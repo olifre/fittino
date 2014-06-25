@@ -34,7 +34,7 @@
 
 Fittino::CheckMATECalculator::CheckMATECalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
   : CalculatorBase( model ) {
-  std::cout<<"Hello World!"<<std::endl;
+  std::cout<<"No Hello World! this time"<<std::endl;
    
   _name = "CheckMATE";
 

@@ -108,6 +108,10 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
         return new AstroFitCalculator( model, ptree );
 
     }
+     else if ( type == "CheckMATECalculator" ) {
+
+        return new CheckMATECalculator( model, ptree );
+     }
     else if ( type == "CheckVacuumCalculator" ) {
 
         return new CheckVacuumCalculator( model, ptree );
@@ -319,7 +323,7 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     }
     else {
 
-        throw ConfigurationException( "Calculator type" + type + "not known." );
+        throw ConfigurationException( "Calculator type " + type + " not known." );
 
     }
 
