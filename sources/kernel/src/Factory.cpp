@@ -87,6 +87,7 @@
 #include "Univariate10Model.h"
 #include "Univariate2Model.h"
 #include "VincentModel.h"
+#include "EdgeDetectionTool.h"
 
 Fittino::Factory::Factory() {
 
@@ -610,6 +611,11 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
     else if ( type == "TreeSampler" ) {
 
         return new TreeSampler( model, ptree );
+
+    }
+    else if( type == "EdgeDetectionTool" ) {
+
+        return new EdgeDetectionTool( model, ptree );
 
     }
     else {

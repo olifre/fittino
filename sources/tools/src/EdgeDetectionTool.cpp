@@ -196,8 +196,23 @@ void Fittino::EdgeDetectionTool::Execute() {
     }
 
 }
+void Fittino::EdgeDetectionTool::Terminate() {
 
-void Fittino::EdgeDetectionTool::WriteResultsToFile() const {
+}
+
+void Fittino::EdgeDetectionTool::PrintSteeringParameters() const {
+
+}
+
+void Fittino::EdgeDetectionTool::UpdateModel() { 
+
+}
+
+void Fittino::EdgeDetectionTool::PrintResult() const {
+
+}
+
+void Fittino::EdgeDetectionTool::WriteResultToFile() const {
 
     for ( unsigned int i = 0; i < _splineVector.size(); ++i ) {
 

@@ -51,19 +51,19 @@ namespace Fittino {
       ~EdgeDetectionTool();
 
     protected:
-      virtual void                UpdateModel(); 
+      void                        UpdateModel(); 
 
       /*! \cond UML */
     
     private:
-      virtual void                Execute();
-      virtual void                InitializeTool();
+      void                        Execute();
+      void                        InitializeTool();
       
-      virtual void                PrintResult() const;
+      void                        PrintResult() const;
       
-      virtual void                PrintSteeringParameters() const;
-      virtual void                Terminate();
-      virtual void                WriteResultsToFile() const;
+      void                        PrintSteeringParameters() const;
+      void                        Terminate();
+      void                        WriteResultToFile() const;
 
       /*! \endcond UML */
 
