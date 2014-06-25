@@ -33,8 +33,9 @@ Fittino::EdgeDetectionTool::EdgeDetectionTool( ModelBase *model, const boost::pr
     : Tool                    ( model, ptree ),
       _numberOfCleaningSteps  ( ptree.get<unsigned int>( "NumberOfCleaningSteps", 1 ) ),
       _histogramFileName      ( ptree.get<std::string> ( "HistogramFileName", "" ) ) {
+    
 
-
+    _name = "Edge Detection Tool";
     BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree ) {
 
         if( node.first == "UseHistogram" ) {
@@ -53,18 +54,23 @@ Fittino::EdgeDetectionTool::~EdgeDetectionTool() {
 
 void Fittino::EdgeDetectionTool::InitializeTool() {
 
+
+
     TDirectory *tempDirectory = gDirectory;
 
     TFile *histogramFile = new TFile( _histogramFileName.c_str(), "OPEN" );
+    
+    TDirectory *tempFileDirectory = gDirectory;
+
     if ( !histogramFile ) {
 
         throw ConfigurationException( "Could not find file containing the input histograms. Check the filename in the Fittino input file!" );
     
     }
     
-    for( unsigned int i = 0; i <= _histogramNameVector.size(); ++i ) {
+    for( unsigned int i = 0; i < _histogramNameVector.size(); ++i ) {
 
-        TH2D *histogram = (TH2D*)histogramFile->Get( _histogramNameVector.at(i).c_str() );
+        TH2D *histogram = (TH2D*)(histogramFile->Get( _histogramNameVector.at(i).c_str() ));
         if( !histogram ) {
             
             const std::string exception = "Could not find requested histogram " + _histogramNameVector.at(i) + " in file.";
@@ -74,7 +80,9 @@ void Fittino::EdgeDetectionTool::InitializeTool() {
         
         else {
 
-            _histogramVector.push_back( (TH2D*)histogram->Clone("") );
+            gDirectory = tempDirectory;
+            _histogramVector.push_back( (TH2D*)(histogram->Clone("")) ); 
+            gDirectory = histogramFile;
     
         }
 
@@ -89,19 +97,19 @@ void Fittino::EdgeDetectionTool::InitializeTool() {
 
 void Fittino::EdgeDetectionTool::Execute() {
 
+
     std::vector<TH2D*> hcHistograms;
     std::vector<TH2D*> edgeHistograms;
-
     for( unsigned int i = 0; i < _histogramVector.size(); ++i ) {
-
         //create the high contrast histogram
-        hcHistograms.push_back( (TH2D*)_histogramVector.at(i)->Clone("") );
+        hcHistograms.push_back( ((TH2D*)(_histogramVector.at(i)->Clone())) );
+
         for( int binX = 0; binX <= hcHistograms.at(i)->GetNbinsX(); ++binX ) {
 
             for( int binY = 0; binY <= hcHistograms.at(i)->GetNbinsY(); ++binY ) {
-
+                
                 if( hcHistograms.at(i)->GetBinContent(binX,binY) > 0. ) {
-
+                    
                     hcHistograms.at(i)->SetBinContent(binX,binY, 1.);
 
                 }
@@ -117,7 +125,7 @@ void Fittino::EdgeDetectionTool::Execute() {
         }
 
         //now create the edge hisotgrams and remove the outliers:
-        edgeHistograms.push_back( (TH2D*)_histogramVector.at(i)->Clone("") );
+        edgeHistograms.push_back( ((TH2D*)(_histogramVector.at(i)->Clone(""))) );
         unsigned int cleaningStep = 0;
         while( cleaningStep < _numberOfCleaningSteps ) {
         
@@ -159,7 +167,7 @@ void Fittino::EdgeDetectionTool::Execute() {
             ++cleaningStep;
         
         }
-        
+
         std::vector<double> xvalues;
         std::vector<double> yvalues;
         for( int binX = 0; binX < hcHistograms.at(i)->GetNbinsX(); ++binX ) {
@@ -180,16 +188,18 @@ void Fittino::EdgeDetectionTool::Execute() {
             yvalues.push_back( yval );
 
         }
-        
+
         unsigned int numberOfNodes = xvalues.size();
 
         TGraph *graph = new TGraph( numberOfNodes, &xvalues.at(0), &yvalues.at(0) );
         std::string splineName = _histogramNameVector.at(i) + "_spline";
+        std::string origSplineName = splineName + "_orig";
         TSpline3 *spline = new TSpline3( splineName.c_str(), graph );
         spline->SetLineColor(kRed);
         spline->SetLineWidth(4);
         spline->SetNpx(1000);
-        _splineVector.push_back( (TSpline3*)spline->Clone("") );
+
+        _splineVector.push_back( ((TSpline3*)(spline->Clone(splineName.c_str()))) );
         delete graph;
         delete spline;
 
