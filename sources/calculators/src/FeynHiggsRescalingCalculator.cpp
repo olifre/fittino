@@ -315,7 +315,7 @@ void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
      _LHC14_bbh    = 0.9968*_i_LHC14_bbh;   
      _LHC14_btagbh = 0.9968*_i_LHC14_btagbh;
      _LHC14_Wh     = 0.9585*_i_LHC14_Wh;  
-     _LHC14_Zh     = 0.9585_i_LHC14_Zh;   
+     _LHC14_Zh     = 0.9585*_i_LHC14_Zh;   
      _LHC14_qqh    = 0.9585*_i_LHC14_qqh;
      _LHC14_tth    = 0.9586*_i_LHC14_tth;   
 
