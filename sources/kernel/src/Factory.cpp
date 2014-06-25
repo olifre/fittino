@@ -22,6 +22,7 @@
 #include "Alpine2Model.h"
 #include "AstroCalculator.h"
 #include "AstroFitCalculator.h"
+#include "CheckMATECalculator.h"
 #include "CheckVacuumCalculator.h"
 #include "ContourHistogramMaker.h"
 #include "ContourPlotter.h"
