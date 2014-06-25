@@ -48,6 +48,7 @@
 #include "HiggsSignalsSLHACalculator.h"
 #include "HosakiModel.h"
 #include "LHCLimitCalculator.h"
+#include "MadGraphCalculator.h"
 #include "MarkovChainSampler.h"
 #include "MicromegasCalculator.h"
 #include "MinuitOptimizer.h"
@@ -246,6 +247,11 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     else if ( type == "LHCCalculator" ) {
 
         return new LHCLimitCalculator( model, ptree );
+
+    }
+    else if ( type == "MadGraphCalculator" ) {
+
+        return new MadGraphCalculator( model, ptree );
 
     }
     else if ( type == "MicromegasCalculator" ) {
