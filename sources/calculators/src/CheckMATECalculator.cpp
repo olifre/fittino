@@ -4,9 +4,9 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        MadGraphCalculator.cpp                                           *
+* File        CheckMATECalculator.cpp                                          *
 *                                                                              *
-* Description Wrapper around MadGraph                                          *
+* Description Wrapper around CheckMATE                                         *
 * Authors                                                                      *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
@@ -22,7 +22,7 @@
 
 #include "TMath.h"
 
-#include "MadGraphCalculator.h"
+#include "CheckMATECalculator.h"
 #include "ConfigurationException.h"
 #include "PhysicsModel.h"
 #include "ModelParameter.h"
@@ -32,28 +32,27 @@
 
 #include <iostream>
 
-Fittino::MadGraphCalculator::MadGraphCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::CheckMATECalculator::CheckMATECalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
   : CalculatorBase( model ) {
   std::cout<<"Hello World!"<<std::endl;
    
-  _name = "MadGraph";
+  _name = "CheckMATE";
 
 }
 
-Fittino::MadGraphCalculator::~MadGraphCalculator() {
+Fittino::CheckMATECalculator::~CheckMATECalculator() {
 
 }
 
-
-void Fittino::MadGraphCalculator::CalculatePredictions() {
+void Fittino::CheckMATECalculator::CalculatePredictions() {
     
 }
 
-void Fittino::MadGraphCalculator::SetupMeasuredValues() {
+void Fittino::CheckMATECalculator::SetupMeasuredValues() {
     
 
 }
 
-void Fittino::MadGraphCalculator::Initialize() {
+void Fittino::CheckMATECalculator::Initialize() {
 
 }

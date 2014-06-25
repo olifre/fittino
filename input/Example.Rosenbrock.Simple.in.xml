@@ -23,7 +23,7 @@
 
 <InputFile>
 
-  <VerbosityLevel>ALWAYS</VerbosityLevel>
+  <VerbosityLevel>INFO</VerbosityLevel>
 
   <Model>
 
