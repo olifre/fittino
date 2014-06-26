@@ -592,9 +592,9 @@ void Fittino::NewHiggsSignalsHadXSCalculator::CalculatePredictions() {
         int ncomb, higgsindex;
         double mupred;
         __io_MOD_get_peakinfo_from_hsresults( &obsID, &mupred, &higgsindex, &ncomb );
-        _predicted_mu_fromHSresult.at(i) = mupred;
-        _dominant_higgs_fromHSresult.at(i) = (double)higgsindex;
-        _ncombined_fromHSresult.at(i) = (double)ncomb;
+        _predicted_mu_fromHSresult.at(i-1) = mupred;
+        _dominant_higgs_fromHSresult.at(i-1) = (double)higgsindex;
+        _ncombined_fromHSresult.at(i-1) = (double)ncomb;
         
     
     }
