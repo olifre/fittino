@@ -165,7 +165,6 @@ void Fittino::Simple2DHistogramMaker::UpdateModel() {
             }
             else if ( !_logScale[iQuantity1] && !_logScale[iQuantity1] ) {
 
-                std::cout << "filling histogram with values " << _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1])->GetValue() << " and " << _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2])->GetValue() << std::endl;
                 histogram->Fill( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue(),
                                  _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() );
 
