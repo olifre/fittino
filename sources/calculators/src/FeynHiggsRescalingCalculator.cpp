@@ -124,7 +124,6 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     _tag = "FeynHiggsRescaling";
     _zero = 0;
 
-
     // recalculated
 
     AddQuantity( new SimplePrediction( "BR_H0_to_g_g"          , "", _zero     ) );
@@ -181,8 +180,6 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_s_s"         , "", _normSM_Gamma_h_s_s         ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_b_b"         , "", _normSM_Gamma_h_b_b         ) );
 
-
-
     AddQuantity( new SimplePrediction( "BR_h0_to_g_g"                   , "", _BR_h_g_g                   ) );
     AddQuantity( new SimplePrediction( "BR_h0_to_Wp_Wm"                 , "", _BR_h_Wp_Wm                 ) );
     AddQuantity( new SimplePrediction( "BR_h0_to_Z0_Z0"                 , "", _BR_h_Z0_Z0                 ) );
@@ -200,7 +197,6 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     AddQuantity( new SimplePrediction( "BR_h0_to_s_s"                   , "", _BR_h_s_s                   ) );
     AddQuantity( new SimplePrediction( "BR_h0_to_b_b"                   , "", _BR_h_b_b                   ) );
     AddQuantity( new SimplePrediction( "BR_h0_to_~chi10_~chi10"         , "", _BR_h_chi10_chi10           ) );
-
     
     AddQuantity( new SimplePrediction( "NormSM_BR_h0_to_g_g"                   , "", _normSM_BR_h_g_g                   ) );
     AddQuantity( new SimplePrediction( "NormSM_BR_h0_to_Wp_Wm"                 , "", _normSM_BR_h_Wp_Wm                 ) );
@@ -318,9 +314,7 @@ void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
      sum += _i_Gamma_h_chi10_chi10;
 
      _i_Gamma_h_g_g = _i_GammaTotal_h0 - sum; 
-     _i_BR_h_g_g = _i_Gamma_h_g_g / _SM_GammaTotal_h0; 
-
-
+     _i_BR_h_g_g = _i_Gamma_h_g_g / _i_GammaTotal_h0; 
 
      sum = 0;    
      sum += _SM_Gamma_h_Wp_Wm;
@@ -343,7 +337,6 @@ void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
      _SM_BR_h_g_g    = _SM_Gamma_h_g_g / _SM_GammaTotal_h0;
 
      _i_normSM_Gamma_h_g_g =  _i_Gamma_h_g_g / _SM_Gamma_h_g_g;
-
 
      // finished recalculation of h->gg
         
@@ -504,6 +497,5 @@ void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
      _normSM_LHC14_Zh     = _LHC14_Zh     / _SM_LHC14_Zh;  
      _normSM_LHC14_qqh    = _LHC14_qqh    / _SM_LHC14_qqh;  
      _normSM_LHC14_tth    = _LHC14_tth    / _SM_LHC14_tth;  
-
 
 }
