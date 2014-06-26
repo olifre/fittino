@@ -337,6 +337,7 @@ void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
      _SM_BR_h_g_g    = _SM_Gamma_h_g_g / _SM_GammaTotal_h0;
 
      _i_normSM_Gamma_h_g_g =  _i_Gamma_h_g_g / _SM_Gamma_h_g_g;
+     _i_normSM_BR_h_g_g =  _i_BR_h_g_g / _SM_BR_h_g_g;
 
      // finished recalculation of h->gg
         
