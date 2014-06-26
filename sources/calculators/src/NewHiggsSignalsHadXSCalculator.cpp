@@ -224,6 +224,11 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
     int ntotal, npeakmu, npeakmh, nmpred, nanalyses;
     __io_MOD_get_number_of_observables( &ntotal, &npeakmu, &npeakmh, &nmpred, &nanalyses );
     for ( int i = 1; i <= npeakmu; ++i ) {
+        _predicted_mu_fromHSresult.push_back(0.);
+        _dominant_higgs_fromHSresult.push_back(0.);
+        _ncombined_fromHSresult.push_back(0.);   
+    }
+    for ( int i = 1; i <= npeakmu; ++i ) {
 
         int obsID = 0;
         __io_MOD_get_id_of_peakobservable( &i, &obsID );
@@ -231,9 +236,6 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
         ss_index << obsID;
         std::string s_index = ss_index.str();
         
-        _predicted_mu_fromHSresult.push_back(0.);
-        _dominant_higgs_fromHSresult.push_back(0.);
-        _ncombined_fromHSresult.push_back(0.);   
         AddQuantity( new SimplePrediction( "HS_muPred_ObsID_" + s_index        , "HS_muPred_ObsID_" + s_index         , "", "", -1.e4, 1.e4, _predicted_mu_fromHSresult.at(i-1) ) );
         AddQuantity( new SimplePrediction( "HS_dominant_higgs_ObsID" + s_index , "HS_dominant_higgs_ObsID_" + s_index , "", "", -1.e4, 1.e4, _dominant_higgs_fromHSresult.at(i-1) ) );
         AddQuantity( new SimplePrediction( "HS_ncombined_ObsID_" + s_index     , "HS_ncombined_obsID_" + s_index      , "", "", -1.e4, 1.e4, _ncombined_fromHSresult.at(i-1) ) );
@@ -595,10 +597,8 @@ void Fittino::NewHiggsSignalsHadXSCalculator::CalculatePredictions() {
         _predicted_mu_fromHSresult.at(i-1) = mupred;
         _dominant_higgs_fromHSresult.at(i-1) = (double)higgsindex;
         _ncombined_fromHSresult.at(i-1) = (double)ncomb;
-        
     
     }
-
 
     int i = 1;
     int collider = 3;
