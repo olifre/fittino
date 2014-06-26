@@ -122,12 +122,30 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
 
     _name = "FeynHiggsRescaling";
     _tag = "FeynHiggsRescaling";
+    _zero = 0;
 
-    AddQuantity( new SimplePrediction( "Gamma_A0_to_g_g", "", _zero     ) );
-    AddQuantity( new SimplePrediction( "Gamma_H0_to_g_g", "", _zero     ) );
 
-    AddQuantity( new SimplePrediction( "Gamma_h0_to_g_g_recalc"  , "", _i_Gamma_h_g_g  ) );
+    // recalculated
 
+    AddQuantity( new SimplePrediction( "BR_H0_to_g_g"          , "", _zero     ) );
+    AddQuantity( new SimplePrediction( "BR_A0_to_g_g"          , "", _zero     ) );
+    AddQuantity( new SimplePrediction( "Gamma_A0_to_g_g"       , "", _zero     ) );
+    AddQuantity( new SimplePrediction( "Gamma_H0_to_g_g"       , "", _zero     ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_H0_to_g_g", "", _zero     ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_A0_to_g_g", "", _zero     ) );
+    AddQuantity( new SimplePrediction( "NormSM_BR_H0_to_g_g"   , "", _zero     ) );
+    AddQuantity( new SimplePrediction( "NormSM_BR_A0_to_g_g"   , "", _zero     ) );
+
+    AddQuantity( new SimplePrediction( "Original_Gamma_h0_to_g_g"        , "", _i_Gamma_h_g_g        ) );
+    AddQuantity( new SimplePrediction( "Original_BR_h0_to_g_g"           , "", _i_BR_h_g_g           ) );
+    AddQuantity( new SimplePrediction( "Original_NormSM_Gamma_h0_to_g_g" , "", _i_normSM_Gamma_h_g_g ) );
+    AddQuantity( new SimplePrediction( "Original_NormSM_BR_h0_to_g_g"    , "", _i_normSM_BR_h_g_g    ) );
+    AddQuantity( new SimplePrediction( "Original_SM_BR_h0_to_g_g"        , "", _SM_BR_h_g_g          ) );
+    AddQuantity( new SimplePrediction( "Original_SM_Gamma_h0_to_g_g"     , "", _SM_Gamma_h_g_g       ) );
+
+    // these are the rescaled quantities
+
+    AddQuantity( new SimplePrediction( "GammaTotal_h0"           , "", _GammaTotal_h0       ) );
     AddQuantity( new SimplePrediction( "Gamma_h0_to_g_g"         , "", _Gamma_h_g_g         ) );
     AddQuantity( new SimplePrediction( "Gamma_h0_to_Wp_Wm"       , "", _Gamma_h_Wp_Wm       ) );
     AddQuantity( new SimplePrediction( "Gamma_h0_to_Z0_Z0"       , "", _Gamma_h_Z0_Z0       ) );
@@ -145,7 +163,7 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     AddQuantity( new SimplePrediction( "Gamma_h0_to_s_s"         , "", _Gamma_h_s_s         ) );
     AddQuantity( new SimplePrediction( "Gamma_h0_to_b_b"         , "", _Gamma_h_b_b         ) );
 
-    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_g_g_recalc"  , "", _normSM_Gamma_h_g_g         ) );
+    AddQuantity( new SimplePrediction( "NormSM_GammaTotal_h0"    , "", _normSM_GammaTotal_h0 ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_g_g"         , "", _normSM_Gamma_h_g_g         ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_Wp_Wm"       , "", _normSM_Gamma_h_Wp_Wm       ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_Z0_Z0"       , "", _normSM_Gamma_h_Z0_Z0       ) );
@@ -163,7 +181,7 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_s_s"         , "", _normSM_Gamma_h_s_s         ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_b_b"         , "", _normSM_Gamma_h_b_b         ) );
 
-    AddQuantity( new SimplePrediction( "GammaTotal_h0"                  , "", _GammaTotal_h0 ) );
+
 
     AddQuantity( new SimplePrediction( "BR_h0_to_g_g"                   , "", _BR_h_g_g                   ) );
     AddQuantity( new SimplePrediction( "BR_h0_to_Wp_Wm"                 , "", _BR_h_Wp_Wm                 ) );
@@ -181,6 +199,8 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     AddQuantity( new SimplePrediction( "BR_h0_to_c_c"                   , "", _BR_h_c_c                   ) );
     AddQuantity( new SimplePrediction( "BR_h0_to_s_s"                   , "", _BR_h_s_s                   ) );
     AddQuantity( new SimplePrediction( "BR_h0_to_b_b"                   , "", _BR_h_b_b                   ) );
+    AddQuantity( new SimplePrediction( "BR_h0_to_~chi10_~chi10"         , "", _BR_h_chi10_chi10           ) );
+
     
     AddQuantity( new SimplePrediction( "NormSM_BR_h0_to_g_g"                   , "", _normSM_BR_h_g_g                   ) );
     AddQuantity( new SimplePrediction( "NormSM_BR_h0_to_Wp_Wm"                 , "", _normSM_BR_h_Wp_Wm                 ) );
@@ -298,7 +318,9 @@ void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
      sum += _i_Gamma_h_chi10_chi10;
 
      _i_Gamma_h_g_g = _i_GammaTotal_h0 - sum; 
-     _i_normSM_Gamma_h_g_g = _i_Gamma_h_g_g / _SM_GammaTotal_h0; 
+     _i_BR_h_g_g = _i_Gamma_h_g_g / _SM_GammaTotal_h0; 
+
+
 
      sum = 0;    
      sum += _SM_Gamma_h_Wp_Wm;
@@ -318,6 +340,10 @@ void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
      sum += _SM_Gamma_h_b_b;
 
      _SM_Gamma_h_g_g = _SM_GammaTotal_h0 - sum; 
+     _SM_BR_h_g_g    = _SM_Gamma_h_g_g / _SM_GammaTotal_h0;
+
+     _i_normSM_Gamma_h_g_g =  _i_Gamma_h_g_g / _SM_Gamma_h_g_g;
+
 
      // finished recalculation of h->gg
         
@@ -391,6 +417,7 @@ void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
      _GammaTotal_h0 += _Gamma_h_c_c;
      _GammaTotal_h0 += _Gamma_h_s_s;
      _GammaTotal_h0 += _Gamma_h_b_b;
+     _GammaTotal_h0 += _i_Gamma_h_chi10_chi10;
   
      _BR_h_g_g         = _Gamma_h_g_g         / _GammaTotal_h0;  
      _BR_h_Wp_Wm       = _Gamma_h_Wp_Wm       / _GammaTotal_h0;  
@@ -409,37 +436,7 @@ void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
      _BR_h_s_s         = _Gamma_h_s_s         / _GammaTotal_h0;  
      _BR_h_b_b         = _Gamma_h_b_b         / _GammaTotal_h0;  
 
-     _normSM_TEV_ggh    = _TEV_ggh    / _SM_TEV_ggh;
-     _normSM_TEV_bbh    = _TEV_bbh    / _SM_TEV_bbh;  
-     _normSM_TEV_btagbh = _TEV_btagbh / _SM_TEV_btagbh;  
-     _normSM_TEV_Wh     = _TEV_Wh     / _SM_TEV_Wh;  
-     _normSM_TEV_Zh     = _TEV_Zh     / _SM_TEV_Zh;  
-     _normSM_TEV_qqh    = _TEV_qqh    / _SM_TEV_qqh;  
-     _normSM_TEV_tth    = _TEV_tth    / _SM_TEV_tth;  
-
-     _normSM_LHC7_ggh    = _LHC7_ggh    / _SM_LHC7_ggh;
-     _normSM_LHC7_bbh    = _LHC7_bbh    / _SM_LHC7_bbh;  
-     _normSM_LHC7_btagbh = _LHC7_btagbh / _SM_LHC7_btagbh;  
-     _normSM_LHC7_Wh     = _LHC7_Wh     / _SM_LHC7_Wh;  
-     _normSM_LHC7_Zh     = _LHC7_Zh     / _SM_LHC7_Zh;  
-     _normSM_LHC7_qqh    = _LHC7_qqh    / _SM_LHC7_qqh;  
-     _normSM_LHC7_tth    = _LHC7_tth    / _SM_LHC7_tth;  
-
-     _normSM_LHC8_ggh    = _LHC8_ggh    / _SM_LHC8_ggh;
-     _normSM_LHC8_bbh    = _LHC8_bbh    / _SM_LHC8_bbh;  
-     _normSM_LHC8_btagbh = _LHC8_btagbh / _SM_LHC8_btagbh;  
-     _normSM_LHC8_Wh     = _LHC8_Wh     / _SM_LHC8_Wh;  
-     _normSM_LHC8_Zh     = _LHC8_Zh     / _SM_LHC8_Zh;  
-     _normSM_LHC8_qqh    = _LHC8_qqh    / _SM_LHC8_qqh;  
-     _normSM_LHC8_tth    = _LHC8_tth    / _SM_LHC8_tth;  
-
-     _normSM_LHC14_ggh    = _LHC14_ggh    / _SM_LHC14_ggh;
-     _normSM_LHC14_bbh    = _LHC14_bbh    / _SM_LHC14_bbh;  
-     _normSM_LHC14_btagbh = _LHC14_btagbh / _SM_LHC14_btagbh;  
-     _normSM_LHC14_Wh     = _LHC14_Wh     / _SM_LHC14_Wh;  
-     _normSM_LHC14_Zh     = _LHC14_Zh     / _SM_LHC14_Zh;  
-     _normSM_LHC14_qqh    = _LHC14_qqh    / _SM_LHC14_qqh;  
-     _normSM_LHC14_tth    = _LHC14_tth    / _SM_LHC14_tth;  
+     _BR_h_chi10_chi10 = _i_Gamma_h_chi10_chi10 / _GammaTotal_h0;
 
      _normSM_GammaTotal_h0       = _GammaTotal_h0       / _SM_GammaTotal_h0; 
      _normSM_Gamma_h_g_g         = _Gamma_h_g_g         / _SM_Gamma_h_g_g;
@@ -475,5 +472,38 @@ void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
      _normSM_BR_h_c_c         = _BR_h_c_c         / _SM_Gamma_h_c_c         * _SM_GammaTotal_h0;
      _normSM_BR_h_s_s         = _BR_h_s_s         / _SM_Gamma_h_s_s         * _SM_GammaTotal_h0;
      _normSM_BR_h_b_b         = _BR_h_b_b         / _SM_Gamma_h_b_b         * _SM_GammaTotal_h0;
+
+     _normSM_TEV_ggh    = _TEV_ggh    / _SM_TEV_ggh;
+     _normSM_TEV_bbh    = _TEV_bbh    / _SM_TEV_bbh;  
+     _normSM_TEV_btagbh = _TEV_btagbh / _SM_TEV_btagbh;  
+     _normSM_TEV_Wh     = _TEV_Wh     / _SM_TEV_Wh;  
+     _normSM_TEV_Zh     = _TEV_Zh     / _SM_TEV_Zh;  
+     _normSM_TEV_qqh    = _TEV_qqh    / _SM_TEV_qqh;  
+     _normSM_TEV_tth    = _TEV_tth    / _SM_TEV_tth;  
+
+     _normSM_LHC7_ggh    = _LHC7_ggh    / _SM_LHC7_ggh;
+     _normSM_LHC7_bbh    = _LHC7_bbh    / _SM_LHC7_bbh;  
+     _normSM_LHC7_btagbh = _LHC7_btagbh / _SM_LHC7_btagbh;  
+     _normSM_LHC7_Wh     = _LHC7_Wh     / _SM_LHC7_Wh;  
+     _normSM_LHC7_Zh     = _LHC7_Zh     / _SM_LHC7_Zh;  
+     _normSM_LHC7_qqh    = _LHC7_qqh    / _SM_LHC7_qqh;  
+     _normSM_LHC7_tth    = _LHC7_tth    / _SM_LHC7_tth;  
+
+     _normSM_LHC8_ggh    = _LHC8_ggh    / _SM_LHC8_ggh;
+     _normSM_LHC8_bbh    = _LHC8_bbh    / _SM_LHC8_bbh;  
+     _normSM_LHC8_btagbh = _LHC8_btagbh / _SM_LHC8_btagbh;  
+     _normSM_LHC8_Wh     = _LHC8_Wh     / _SM_LHC8_Wh;  
+     _normSM_LHC8_Zh     = _LHC8_Zh     / _SM_LHC8_Zh;  
+     _normSM_LHC8_qqh    = _LHC8_qqh    / _SM_LHC8_qqh;  
+     _normSM_LHC8_tth    = _LHC8_tth    / _SM_LHC8_tth;  
+
+     _normSM_LHC14_ggh    = _LHC14_ggh    / _SM_LHC14_ggh;
+     _normSM_LHC14_bbh    = _LHC14_bbh    / _SM_LHC14_bbh;  
+     _normSM_LHC14_btagbh = _LHC14_btagbh / _SM_LHC14_btagbh;  
+     _normSM_LHC14_Wh     = _LHC14_Wh     / _SM_LHC14_Wh;  
+     _normSM_LHC14_Zh     = _LHC14_Zh     / _SM_LHC14_Zh;  
+     _normSM_LHC14_qqh    = _LHC14_qqh    / _SM_LHC14_qqh;  
+     _normSM_LHC14_tth    = _LHC14_tth    / _SM_LHC14_tth;  
+
 
 }
