@@ -154,7 +154,7 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
             std::stringstream number2;
             number2 << j;
             BR_hjhihi.push_back( ptree.get<std::string>( "BR_hjhihiQName_" + number.str() + "_" + number2.str(), "FeynHiggs_BR_" + namesHzero.at(i) + "_to_" + namesHzero.at(j) + "_" + namesHzero.at(j) ) );
-            CS_lep_hjhi.push_back( ptree.get<std::string>( "CS_lep_hjhiQName_" + number.str() + "_" + number2.str(), "FeynHiggs_g_Abs2_" + namesHzero.at(i) + "_" + namesHzero.at(j) + "_Z0" ) );
+            CS_lep_hjhi.push_back( ptree.get<std::string>( "CS_lep_hjhiQName_" + number.str() + "_" + number2.str(), "FeynHiggs_Norm_g_Abs2_" + namesHzero.at(i) + "_" + namesHzero.at(j) + "_Z0" ) );
 
 
 
@@ -409,11 +409,14 @@ void Fittino::NewHiggsSignalsHadXSCalculator::SetupHiggsBounds( bool shiftHiggsM
         
         std::vector<double> br;
         std::vector<double> cs;
+        /*
         double GF = 1.1663787e-5;
         double MZ = 9.11876e+1;
         double NORM = GF*sqrt(2)*MZ*MZ;
+        // the normalizsation has been done in Rescaler/FeynHiggsCalculator already
+        */
         for( int j = 0; j < _nHzero; ++j ) {
-            cs.push_back                ( _model->GetCollectionOfQuantities().At( _name_CS_lep_hjhi_ratio.at(i).at(j) )->GetValue()/NORM );
+            cs.push_back                ( _model->GetCollectionOfQuantities().At( _name_CS_lep_hjhi_ratio.at(i).at(j) )->GetValue() );///NORM );
             br.push_back                ( _model->GetCollectionOfQuantities().At( _name_BR_hjhihi.at(i).at(j))->GetValue() );       
         }
         CS_lep_hjhi_ratio.push_back( cs );
