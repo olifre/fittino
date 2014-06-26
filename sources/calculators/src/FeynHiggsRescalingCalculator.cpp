@@ -27,82 +27,98 @@
 
 Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
   : CalculatorBase( model ),
-    _i_GammaTotal_h0      ( model->GetCollectionOfQuantities().At("FeynHiggs_GammaTotal_h0")->GetValue() ),
-    _i_Gamma_h_Wp_Wm      ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_Wp_Wm")->GetValue() ),
-    _i_Gamma_h_Z0_Z0      ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_Z0_Z0")->GetValue() ),
-    _i_Gamma_h_Z0_gamma   ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_Z0_gamma")->GetValue() ),
-    _i_Gamma_h_gamma_gamma( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_gamma_gamma")->GetValue() ),
-    _i_Gamma_h_nue_nue    ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_nue_nue")->GetValue() ),
-    _i_Gamma_h_e_e        ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_e_e")->GetValue() ),
-    _i_Gamma_h_numu_numu  ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_numu_numu")->GetValue() ),
-    _i_Gamma_h_mu_mu      ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_mu_mu")->GetValue() ),
-    _i_Gamma_h_nutau_nutau( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_nutau_nutau")->GetValue() ),
-    _i_Gamma_h_tau_tau    ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_tau_tau")->GetValue() ),
-    _i_Gamma_h_u_u        ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_u_u")->GetValue() ),
-    _i_Gamma_h_d_d        ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_d_d")->GetValue() ),
-    _i_Gamma_h_c_c        ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_c_c")->GetValue() ),
-    _i_Gamma_h_s_s        ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_s_s")->GetValue() ),
-    _i_Gamma_h_b_b        ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_b_b")->GetValue() ),
-    _i_Gamma_h_chi10_chi10( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_~chi10_~chi10")->GetValue() ),
-    _i_TEV_ggh            ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_ggh")->GetValue() ),
-    _i_TEV_bbh            ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_bbh")->GetValue() ),
-    _i_TEV_btagbh         ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_btagbh")->GetValue() ),
-    _i_TEV_Wh             ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_Wh")->GetValue() ),
-    _i_TEV_Zh             ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_Zh")->GetValue() ),
-    _i_TEV_qqh            ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_qqh")->GetValue() ),
-    _i_TEV_tth            ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_tth")->GetValue() ),
-    _i_LHC7_ggh           ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_ggh")->GetValue() ),
-    _i_LHC7_bbh           ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_bbh")->GetValue() ),
-    _i_LHC7_btagbh        ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_btagbh")->GetValue() ),
-    _i_LHC7_Wh            ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_Wh")->GetValue() ),
-    _i_LHC7_Zh            ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_Zh")->GetValue() ),
-    _i_LHC7_qqh           ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_qqh")->GetValue() ),
-    _i_LHC7_tth           ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_tth")->GetValue() ),
-    _i_LHC8_ggh           ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_ggh")->GetValue() ),
-    _i_LHC8_bbh           ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_bbh")->GetValue() ),
-    _i_LHC8_btagbh        ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_btagbh")->GetValue() ),
-    _i_LHC8_Wh            ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_Wh")->GetValue() ),
-    _i_LHC8_Zh            ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_Zh")->GetValue() ),
-    _i_LHC8_qqh           ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_qqh")->GetValue() ),
-    _i_LHC8_tth           ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_tth")->GetValue() ),
-    _i_LHC14_ggh          ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_ggh")->GetValue() ),
-    _i_LHC14_bbh          ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_bbh")->GetValue() ),
-    _i_LHC14_btagbh       ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_btagbh")->GetValue() ),
-    _i_LHC14_Wh           ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_Wh")->GetValue() ),
-    _i_LHC14_Zh           ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_Zh")->GetValue() ),
-    _i_LHC14_qqh          ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_qqh")->GetValue() ),
-    _i_LHC14_tth          ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_tth")->GetValue() ),
-    _SM_TEV_ggh           ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_ggh")->GetValue() ),
-    _SM_TEV_bbh           ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_bbh")->GetValue() ),
-    _SM_TEV_btagbh        ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_btagbh")->GetValue() ),
-    _SM_TEV_Wh            ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_Wh")->GetValue() ),
-    _SM_TEV_Zh            ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_Zh")->GetValue() ),
-    _SM_TEV_qqh           ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_qqh")->GetValue() ),
-    _SM_TEV_tth           ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_tth")->GetValue() ),
-    _SM_LHC7_ggh          ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_ggh")->GetValue() ),
-    _SM_LHC7_bbh          ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_bbh")->GetValue() ),
-    _SM_LHC7_btagbh       ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_btagbh")->GetValue() ),
-    _SM_LHC7_Wh           ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_Wh")->GetValue() ),
-    _SM_LHC7_Zh           ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_Zh")->GetValue() ),
-    _SM_LHC7_qqh          ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_qqh")->GetValue() ),
-    _SM_LHC7_tth          ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_tth")->GetValue() ),
-    _SM_LHC8_ggh          ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_ggh")->GetValue() ),
-    _SM_LHC8_bbh          ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_bbh")->GetValue() ),
-    _SM_LHC8_btagbh       ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_btagbh")->GetValue() ),
-    _SM_LHC8_Wh           ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_Wh")->GetValue() ),
-    _SM_LHC8_Zh           ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_Zh")->GetValue() ),
-    _SM_LHC8_qqh          ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_qqh")->GetValue() ),
-    _SM_LHC8_tth          ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_tth")->GetValue() ),
-    _SM_LHC14_ggh         ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_ggh")->GetValue() ),
-    _SM_LHC14_bbh         ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_bbh")->GetValue() ),
-    _SM_LHC14_btagbh      ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_btagbh")->GetValue() ),
-    _SM_LHC14_Wh          ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_Wh")->GetValue() ),
-    _SM_LHC14_Zh          ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_Zh")->GetValue() ),
-    _SM_LHC14_qqh         ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_qqh")->GetValue() ),
-    _SM_LHC14_tth         ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_tth")->GetValue() ),
-    _i_normSM_g_Abs_h_Z0_Z0  ( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_g_Abs_h0_Z0_Z0")->GetValue() ),
-    _i_normSM_g_Abs_h_b_b    ( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_gs_Abs_h0_b_b")->GetValue() ),
-    _i_normSM_g_Abs_h_tau_tau( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_gs_Abs_h0_tau_tau")->GetValue() ) {
+    _i_GammaTotal_h0         ( model->GetCollectionOfQuantities().At("FeynHiggs_GammaTotal_h0"                    )->GetValue() ),
+    _i_Gamma_h_Wp_Wm         ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_Wp_Wm"                )->GetValue() ),
+    _i_Gamma_h_Z0_Z0         ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_Z0_Z0"                )->GetValue() ),
+    _i_Gamma_h_Z0_gamma      ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_Z0_gamma"             )->GetValue() ),
+    _i_Gamma_h_gamma_gamma   ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_gamma_gamma"          )->GetValue() ),
+    _i_Gamma_h_nue_nue       ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_nue_nue"              )->GetValue() ),
+    _i_Gamma_h_e_e           ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_e_e"                  )->GetValue() ),
+    _i_Gamma_h_numu_numu     ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_numu_numu"            )->GetValue() ),
+    _i_Gamma_h_mu_mu         ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_mu_mu"                )->GetValue() ),
+    _i_Gamma_h_nutau_nutau   ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_nutau_nutau"          )->GetValue() ),
+    _i_Gamma_h_tau_tau       ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_tau_tau"              )->GetValue() ),
+    _i_Gamma_h_u_u           ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_u_u"                  )->GetValue() ),
+    _i_Gamma_h_d_d           ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_d_d"                  )->GetValue() ),
+    _i_Gamma_h_c_c           ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_c_c"                  )->GetValue() ),
+    _i_Gamma_h_s_s           ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_s_s"                  )->GetValue() ),
+    _i_Gamma_h_b_b           ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_b_b"                  )->GetValue() ),
+    _i_Gamma_h_chi10_chi10   ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_~chi10_~chi10"        )->GetValue() ),
+    _i_TEV_ggh               ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_ggh"      )->GetValue() ),
+    _i_TEV_bbh               ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_bbh"      )->GetValue() ),
+    _i_TEV_btagbh            ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_btagbh"   )->GetValue() ),
+    _i_TEV_Wh                ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_Wh"       )->GetValue() ),
+    _i_TEV_Zh                ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_Zh"       )->GetValue() ),
+    _i_TEV_qqh               ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_qqh"      )->GetValue() ),
+    _i_TEV_tth               ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_1.96TeV_h0_tth"      )->GetValue() ),
+    _i_LHC7_ggh              ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_ggh"         )->GetValue() ),
+    _i_LHC7_bbh              ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_bbh"         )->GetValue() ),
+    _i_LHC7_btagbh           ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_btagbh"      )->GetValue() ),
+    _i_LHC7_Wh               ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_Wh"          )->GetValue() ),
+    _i_LHC7_Zh               ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_Zh"          )->GetValue() ),
+    _i_LHC7_qqh              ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_qqh"         )->GetValue() ),
+    _i_LHC7_tth              ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_7TeV_h0_tth"         )->GetValue() ),
+    _i_LHC8_ggh              ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_ggh"         )->GetValue() ),
+    _i_LHC8_bbh              ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_bbh"         )->GetValue() ),
+    _i_LHC8_btagbh           ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_btagbh"      )->GetValue() ),
+    _i_LHC8_Wh               ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_Wh"          )->GetValue() ),
+    _i_LHC8_Zh               ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_Zh"          )->GetValue() ),
+    _i_LHC8_qqh              ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_qqh"         )->GetValue() ),
+    _i_LHC8_tth              ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_8TeV_h0_tth"         )->GetValue() ),
+    _i_LHC14_ggh             ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_ggh"        )->GetValue() ),
+    _i_LHC14_bbh             ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_bbh"        )->GetValue() ),
+    _i_LHC14_btagbh          ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_btagbh"     )->GetValue() ),
+    _i_LHC14_Wh              ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_Wh"         )->GetValue() ),
+    _i_LHC14_Zh              ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_Zh"         )->GetValue() ),
+    _i_LHC14_qqh             ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_qqh"        )->GetValue() ),
+    _i_LHC14_tth             ( model->GetCollectionOfQuantities().At("FeynHiggs_CrossSection_14TeV_h0_tth"        )->GetValue() ),
+    _SM_GammaTotal_h0        ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_GammaTotal_h0"                 )->GetValue() ),
+    _SM_Gamma_h_Wp_Wm        ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_Gamma_h0_to_Wp_Wm"             )->GetValue() ),
+    _SM_Gamma_h_Z0_Z0        ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_Gamma_h0_to_Z0_Z0"             )->GetValue() ),
+    _SM_Gamma_h_Z0_gamma     ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_Gamma_h0_to_Z0_gamma"          )->GetValue() ),
+    _SM_Gamma_h_gamma_gamma  ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_Gamma_h0_to_gamma_gamma"       )->GetValue() ),
+    _SM_Gamma_h_nue_nue      ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_Gamma_h0_to_nue_nue"           )->GetValue() ),
+    _SM_Gamma_h_e_e          ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_Gamma_h0_to_e_e"               )->GetValue() ),
+    _SM_Gamma_h_numu_numu    ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_Gamma_h0_to_numu_numu"         )->GetValue() ),
+    _SM_Gamma_h_mu_mu        ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_Gamma_h0_to_mu_mu"             )->GetValue() ),
+    _SM_Gamma_h_nutau_nutau  ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_Gamma_h0_to_nutau_nutau"       )->GetValue() ),
+    _SM_Gamma_h_tau_tau      ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_Gamma_h0_to_tau_tau"           )->GetValue() ),
+    _SM_Gamma_h_u_u          ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_Gamma_h0_to_u_u"               )->GetValue() ),
+    _SM_Gamma_h_d_d          ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_Gamma_h0_to_d_d"               )->GetValue() ),
+    _SM_Gamma_h_c_c          ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_Gamma_h0_to_c_c"               )->GetValue() ),
+    _SM_Gamma_h_s_s          ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_Gamma_h0_to_s_s"               )->GetValue() ),
+    _SM_Gamma_h_b_b          ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_Gamma_h0_to_b_b"               )->GetValue() ),
+    _SM_TEV_ggh              ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_ggh"   )->GetValue() ),
+    _SM_TEV_bbh              ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_bbh"   )->GetValue() ),
+    _SM_TEV_btagbh           ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_btagbh")->GetValue() ),
+    _SM_TEV_Wh               ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_Wh"    )->GetValue() ),
+    _SM_TEV_Zh               ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_Zh"    )->GetValue() ),
+    _SM_TEV_qqh              ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_qqh"   )->GetValue() ),
+    _SM_TEV_tth              ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_1.96TeV_h0_tth"   )->GetValue() ),
+    _SM_LHC7_ggh             ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_ggh"      )->GetValue() ),
+    _SM_LHC7_bbh             ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_bbh"      )->GetValue() ),
+    _SM_LHC7_btagbh          ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_btagbh"   )->GetValue() ),
+    _SM_LHC7_Wh              ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_Wh"       )->GetValue() ),
+    _SM_LHC7_Zh              ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_Zh"       )->GetValue() ),
+    _SM_LHC7_qqh             ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_qqh"      )->GetValue() ),
+    _SM_LHC7_tth             ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_7TeV_h0_tth"      )->GetValue() ),
+    _SM_LHC8_ggh             ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_ggh"      )->GetValue() ),
+    _SM_LHC8_bbh             ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_bbh"      )->GetValue() ),
+    _SM_LHC8_btagbh          ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_btagbh"   )->GetValue() ),
+    _SM_LHC8_Wh              ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_Wh"       )->GetValue() ),
+    _SM_LHC8_Zh              ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_Zh"       )->GetValue() ),
+    _SM_LHC8_qqh             ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_qqh"      )->GetValue() ),
+    _SM_LHC8_tth             ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_8TeV_h0_tth"      )->GetValue() ),
+    _SM_LHC14_ggh            ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_ggh"     )->GetValue() ),
+    _SM_LHC14_bbh            ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_bbh"     )->GetValue() ),
+    _SM_LHC14_btagbh         ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_btagbh"  )->GetValue() ),
+    _SM_LHC14_Wh             ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_Wh"      )->GetValue() ),
+    _SM_LHC14_Zh             ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_Zh"      )->GetValue() ),
+    _SM_LHC14_qqh            ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_qqh"     )->GetValue() ),
+    _SM_LHC14_tth            ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_tth"     )->GetValue() ),
+    _i_normSM_g_Abs2_h_Z0_Z0  ( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_g_Abs2_h0_Z0_Z0"           )->GetValue() ),
+    _i_normSM_g_Abs2_h_b_b    ( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_g_Abs2h0_b_b"              )->GetValue() ),
+    _i_normSM_g_Abs2_h_tau_tau( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_g_Abs2h0_tau_tau"          )->GetValue() ) {
 
     _name = "FeynHiggsRescaling";
     _tag = "FeynHiggsRescaling";
@@ -129,13 +145,13 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     AddQuantity( new SimplePrediction( "Gamma_h0_to_s_s"         , "", _Gamma_h_s_s         ) );
     AddQuantity( new SimplePrediction( "Gamma_h0_to_b_b"         , "", _Gamma_h_b_b         ) );
 
-    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_g_g_recalc"  , "", _i_Gamma_h_g_g_normSM       ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_g_g_recalc"  , "", _normSM_Gamma_h_g_g         ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_g_g"         , "", _normSM_Gamma_h_g_g         ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_Wp_Wm"       , "", _normSM_Gamma_h_Wp_Wm       ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_Z0_Z0"       , "", _normSM_Gamma_h_Z0_Z0       ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_Z0_gamma"    , "", _normSM_Gamma_h_Z0_gamma    ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_gamma_gamma" , "", _normSM_Gamma_h_gamma_gamma ) );
-    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_nue_nue"     , "", _normSM_Gamma_h_gamma_gamma ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_nue_nue"     , "", _normSM_Gamma_h_nue_nue     ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_e_e"         , "", _normSM_Gamma_h_e_e         ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_numu_numu"   , "", _normSM_Gamma_h_numu_numu   ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h0_to_mu_mu"       , "", _normSM_Gamma_h_mu_mu       ) ); 
@@ -248,9 +264,10 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     AddQuantity( new SimplePrediction( "NormSM_CrossSection_14TeV_h0_qqh"       , "", _normSM_LHC14_qqh                  ) );
     AddQuantity( new SimplePrediction( "NormSM_CrossSection_14TeV_h0_tth"       , "", _normSM_LHC14_tth                  ) );
 
-    AddQuantity( new SimplePrediction( "NormSM_gs_Abs_h0_tau_tau"       , "", _normSM_g_Abs_h_tau_tau      ) );
-    AddQuantity( new SimplePrediction( "NormSM_gs_Abs_h0_b_b"           , "", _normSM_g_Abs_h_b_b          ) );
-    AddQuantity( new SimplePrediction( "NormSM_gs_Abs_h0_Z0_Z0"         , "", _normSM_g_Abs_h_Z0_Z0        ) );
+    AddQuantity( new SimplePrediction( "NormSM_g_Abs2_h0_tau_tau"       , "", _normSM_g_Abs2_h_tau_tau      ) );
+    AddQuantity( new SimplePrediction( "NormSM_g_Abs2_h0_b_b"           , "", _normSM_g_Abs2_h_b_b          ) );
+    AddQuantity( new SimplePrediction( "NormSM_g_Abs2_h0_Z0_Z0"         , "", _normSM_g_Abs2_h_Z0_Z0        ) );
+
 
 }
 
@@ -259,6 +276,8 @@ Fittino::FeynHiggsRescalingCalculator::~FeynHiggsRescalingCalculator() {
 }
 
 void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
+
+  // this is necesarry because the initial h->gg in the ntuple is buggy 
   
      double sum = 0;    
      sum += _i_Gamma_h_Wp_Wm;
@@ -278,14 +297,33 @@ void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
      sum += _i_Gamma_h_b_b;
      sum += _i_Gamma_h_chi10_chi10;
 
-     _i_Gamma_h_g_g = _i_GammaTotal_h0 - sum; // this is necesarry because the initial h->gg in the ntuple is buggy 
+     _i_Gamma_h_g_g = _i_GammaTotal_h0 - sum; 
+     _i_normSM_Gamma_h_g_g = _i_Gamma_h_g_g / _SM_GammaTotal_h0; 
 
-     _i_Gamma_h_g_g_normSM = _i_GammaTotal_h0 / _SM_GammaTotal_h0; 
+     sum = 0;    
+     sum += _SM_Gamma_h_Wp_Wm;
+     sum += _SM_Gamma_h_Z0_Z0;
+     sum += _SM_Gamma_h_Z0_gamma;
+     sum += _SM_Gamma_h_gamma_gamma;
+     sum += _SM_Gamma_h_nue_nue;
+     sum += _SM_Gamma_h_e_e;
+     sum += _SM_Gamma_h_numu_numu;
+     sum += _SM_Gamma_h_mu_mu;
+     sum += _SM_Gamma_h_nutau_nutau;
+     sum += _SM_Gamma_h_tau_tau;
+     sum += _SM_Gamma_h_u_u;
+     sum += _SM_Gamma_h_d_d;
+     sum += _SM_Gamma_h_c_c;
+     sum += _SM_Gamma_h_s_s;
+     sum += _SM_Gamma_h_b_b;
+
+     _SM_Gamma_h_g_g = _SM_GammaTotal_h0 - sum; 
+
+     // finished recalculation of h->gg
         
-        // FIXME: do we use the squared values here? NewHSCalculator uses the non-squared values
-     _normSM_g_Abs_h_Z0_Z0   = 1.0000*_i_normSM_g_Abs_h_Z0_Z0; 
-     _normSM_g_Abs_h_b_b     = sqrt(0.9977)*_i_normSM_g_Abs_h_b_b;
-     _normSM_g_Abs_h_tau_tau = sqrt(0.9976)*_i_normSM_g_Abs_h_tau_tau;
+     _normSM_g_Abs2_h_Z0_Z0   = 1.0000*_i_normSM_g_Abs2_h_Z0_Z0; 
+     _normSM_g_Abs2_h_b_b     = 0.9977*_i_normSM_g_Abs2_h_b_b;
+     _normSM_g_Abs2_h_tau_tau = 0.9976*_i_normSM_g_Abs2_h_tau_tau;
      
      _TEV_ggh    = 1.2245*_i_TEV_ggh; 
      _TEV_bbh    = 0.9968*_i_TEV_bbh;   
@@ -421,21 +459,21 @@ void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
      _normSM_Gamma_h_s_s         = _Gamma_h_s_s         / _SM_Gamma_h_s_s;
      _normSM_Gamma_h_b_b         = _Gamma_h_b_b         / _SM_Gamma_h_b_b;
 
-     _normSM_BR_h_g_g         = _BR_h_g_g         / _SM_BR_h_g_g;
-     _normSM_BR_h_Wp_Wm       = _BR_h_Wp_Wm       / _SM_BR_h_Wp_Wm;
-     _normSM_BR_h_Z0_Z0       = _BR_h_Z0_Z0       / _SM_BR_h_Z0_Z0;
-     _normSM_BR_h_Z0_gamma    = _BR_h_Z0_gamma    / _SM_BR_h_Z0_gamma;
-     _normSM_BR_h_gamma_gamma = _BR_h_gamma_gamma / _SM_BR_h_gamma_gamma;
-     _normSM_BR_h_nue_nue     = _BR_h_nue_nue     / _SM_BR_h_nue_nue;
-     _normSM_BR_h_e_e         = _BR_h_e_e         / _SM_BR_h_e_e;
-     _normSM_BR_h_numu_numu   = _BR_h_numu_numu   / _SM_BR_h_numu_numu;
-     _normSM_BR_h_mu_mu       = _BR_h_mu_mu       / _SM_BR_h_mu_mu;
-     _normSM_BR_h_nutau_nutau = _BR_h_nutau_nutau / _SM_BR_h_nutau_nutau;
-     _normSM_BR_h_tau_tau     = _BR_h_tau_tau     / _SM_BR_h_tau_tau;
-     _normSM_BR_h_u_u         = _BR_h_u_u         / _SM_BR_h_u_u;
-     _normSM_BR_h_d_d         = _BR_h_d_d         / _SM_BR_h_d_d;
-     _normSM_BR_h_c_c         = _BR_h_c_c         / _SM_BR_h_c_c;
-     _normSM_BR_h_s_s         = _BR_h_s_s         / _SM_BR_h_s_s;
-     _normSM_BR_h_b_b         = _BR_h_b_b         / _SM_BR_h_b_b;
+     _normSM_BR_h_g_g         = _BR_h_g_g         / _SM_Gamma_h_g_g         * _SM_GammaTotal_h0;
+     _normSM_BR_h_Wp_Wm       = _BR_h_Wp_Wm       / _SM_Gamma_h_Wp_Wm       * _SM_GammaTotal_h0;
+     _normSM_BR_h_Z0_Z0       = _BR_h_Z0_Z0       / _SM_Gamma_h_Z0_Z0       * _SM_GammaTotal_h0;
+     _normSM_BR_h_Z0_gamma    = _BR_h_Z0_gamma    / _SM_Gamma_h_Z0_gamma    * _SM_GammaTotal_h0;
+     _normSM_BR_h_gamma_gamma = _BR_h_gamma_gamma / _SM_Gamma_h_gamma_gamma * _SM_GammaTotal_h0;
+     _normSM_BR_h_nue_nue     = _BR_h_nue_nue     / _SM_Gamma_h_nue_nue     * _SM_GammaTotal_h0;
+     _normSM_BR_h_e_e         = _BR_h_e_e         / _SM_Gamma_h_e_e         * _SM_GammaTotal_h0;
+     _normSM_BR_h_numu_numu   = _BR_h_numu_numu   / _SM_Gamma_h_numu_numu   * _SM_GammaTotal_h0;
+     _normSM_BR_h_mu_mu       = _BR_h_mu_mu       / _SM_Gamma_h_mu_mu       * _SM_GammaTotal_h0;
+     _normSM_BR_h_nutau_nutau = _BR_h_nutau_nutau / _SM_Gamma_h_nutau_nutau * _SM_GammaTotal_h0;
+     _normSM_BR_h_tau_tau     = _BR_h_tau_tau     / _SM_Gamma_h_tau_tau     * _SM_GammaTotal_h0;
+     _normSM_BR_h_u_u         = _BR_h_u_u         / _SM_Gamma_h_u_u         * _SM_GammaTotal_h0;
+     _normSM_BR_h_d_d         = _BR_h_d_d         / _SM_Gamma_h_d_d         * _SM_GammaTotal_h0;
+     _normSM_BR_h_c_c         = _BR_h_c_c         / _SM_Gamma_h_c_c         * _SM_GammaTotal_h0;
+     _normSM_BR_h_s_s         = _BR_h_s_s         / _SM_Gamma_h_s_s         * _SM_GammaTotal_h0;
+     _normSM_BR_h_b_b         = _BR_h_b_b         / _SM_Gamma_h_b_b         * _SM_GammaTotal_h0;
 
 }

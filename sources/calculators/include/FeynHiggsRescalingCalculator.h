@@ -56,9 +56,20 @@ namespace Fittino {
 
     private:
 
-      double _zero;
+      // we have to recalculate these
+      
+      double _zero; // this will be Gamma, NormSM_Gamma, BR, NormSM_BR for A0/H0->gg 
+      double _i_Gamma_h_g_g;   
+      double _i_BR_Gamma_h_g_g;   
+      double _i_normSM_Gamma_h_g_g;   
+      double _i_normSM_BR_h_g_g;   
+      double _SM_Gamma_h_g_g;   
+      double _SM_BR_h_g_g;   
 
-      double _Gamma_h_g_g;
+      // these are the rescaled quantities
+
+      double _GammaTotal_h0;      
+      double _Gamma_h_g_g;  
       double _Gamma_h_Wp_Wm;
       double _Gamma_h_Z0_Z0;
       double _Gamma_h_Z0_gamma;
@@ -75,6 +86,7 @@ namespace Fittino {
       double _Gamma_h_s_s;
       double _Gamma_h_b_b;
 
+      double _normSM_GammaTotal_h0;
       double _normSM_Gamma_h_g_g;
       double _normSM_Gamma_h_Wp_Wm;
       double _normSM_Gamma_h_Z0_Z0;
@@ -91,25 +103,6 @@ namespace Fittino {
       double _normSM_Gamma_h_c_c;
       double _normSM_Gamma_h_s_s;
       double _normSM_Gamma_h_b_b;
-      double _SM_Gamma_h_g_g;
-      double _SM_Gamma_h_Wp_Wm;
-      double _SM_Gamma_h_Z0_Z0;
-      double _SM_Gamma_h_Z0_gamma;
-      double _SM_Gamma_h_gamma_gamma;
-      double _SM_Gamma_h_nue_nue;
-      double _SM_Gamma_h_e_e;
-      double _SM_Gamma_h_numu_numu;
-      double _SM_Gamma_h_mu_mu;
-      double _SM_Gamma_h_nutau_nutau;
-      double _SM_Gamma_h_tau_tau;
-      double _SM_Gamma_h_u_u;
-      double _SM_Gamma_h_d_d;
-      double _SM_Gamma_h_c_c;
-      double _SM_Gamma_h_s_s;
-      double _SM_Gamma_h_b_b;
-      double _GammaTotal_h0;
-      double _normSM_GammaTotal_h0;
-      double _SM_GammaTotal_h0;
 
       double _TEV_ggh;
       double _TEV_bbh;
@@ -175,9 +168,9 @@ namespace Fittino {
       double _normSM_LHC14_qqh;
       double _normSM_LHC14_tth;
       
-      double _normSM_g_Abs_h_Z0_Z0;
-      double _normSM_g_Abs_h_b_b;
-      double _normSM_g_Abs_h_tau_tau;
+      double _normSM_g_Abs2_h_Z0_Z0;
+      double _normSM_g_Abs2_h_b_b;
+      double _normSM_g_Abs2_h_tau_tau;
 
       double _BR_h_g_g;
       double _BR_h_Wp_Wm;
@@ -212,27 +205,9 @@ namespace Fittino {
       double _normSM_BR_h_c_c;
       double _normSM_BR_h_s_s;
       double _normSM_BR_h_b_b;
-
-      double _SM_BR_h_g_g;
-      double _SM_BR_h_Wp_Wm;
-      double _SM_BR_h_Z0_Z0;
-      double _SM_BR_h_Z0_gamma;
-      double _SM_BR_h_gamma_gamma;
-      double _SM_BR_h_nue_nue;
-      double _SM_BR_h_e_e;
-      double _SM_BR_h_numu_numu;
-      double _SM_BR_h_mu_mu;
-      double _SM_BR_h_nutau_nutau;
-      double _SM_BR_h_tau_tau;
-      double _SM_BR_h_u_u;
-      double _SM_BR_h_d_d;
-      double _SM_BR_h_c_c;
-      double _SM_BR_h_s_s;
-      double _SM_BR_h_b_b;
       
-      double _i_Gamma_h_g_g;
-      double _i_Gamma_h_g_g_normSM;
       const double& _i_GammaTotal_h0;
+      // h->gg is recalculated, see above
       const double& _i_Gamma_h_Wp_Wm;
       const double& _i_Gamma_h_Z0_Z0;
       const double& _i_Gamma_h_Z0_gamma;
@@ -282,6 +257,24 @@ namespace Fittino {
       const double& _i_LHC14_qqh;
       const double& _i_LHC14_tth;
 
+      const double& _SM_GammaTotal_h0; 
+      // h-> gg is recalculated, see above
+      const double& _SM_Gamma_h_Wp_Wm;
+      const double& _SM_Gamma_h_Z0_Z0;
+      const double& _SM_Gamma_h_Z0_gamma;
+      const double& _SM_Gamma_h_gamma_gamma;
+      const double& _SM_Gamma_h_nue_nue;
+      const double& _SM_Gamma_h_e_e;
+      const double& _SM_Gamma_h_numu_numu;
+      const double& _SM_Gamma_h_mu_mu;
+      const double& _SM_Gamma_h_nutau_nutau;
+      const double& _SM_Gamma_h_tau_tau;
+      const double& _SM_Gamma_h_u_u;
+      const double& _SM_Gamma_h_d_d;
+      const double& _SM_Gamma_h_c_c;
+      const double& _SM_Gamma_h_s_s;
+      const double& _SM_Gamma_h_b_b;
+
       const double& _SM_TEV_ggh;
       const double& _SM_TEV_bbh;
       const double& _SM_TEV_btagbh;
@@ -314,9 +307,9 @@ namespace Fittino {
       const double& _SM_LHC14_qqh;
       const double& _SM_LHC14_tth;
 
-      const double& _i_normSM_g_Abs_h_Z0_Z0;
-      const double& _i_normSM_g_Abs_h_b_b;
-      const double& _i_normSM_g_Abs_h_tau_tau;
+      const double& _i_normSM_g_Abs2_h_Z0_Z0;
+      const double& _i_normSM_g_Abs2_h_b_b;
+      const double& _i_normSM_g_Abs2_h_tau_tau;
 
 
       /*! \endcond UML */
