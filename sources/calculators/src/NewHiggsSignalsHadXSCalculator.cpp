@@ -523,8 +523,8 @@ double Fittino::NewHiggsSignalsHadXSCalculator::RunHiggsBounds() {
 
         if( _HBresult == 0 ) {
             
-            //_chi2WithoutTheory = 1000.;
-            //_chi2WithTheory = 1000.;
+            _chi2WithoutTheory += 10000.;
+            _chi2WithTheory += 10000.;
         
         }
 
