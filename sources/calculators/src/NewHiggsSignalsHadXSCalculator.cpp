@@ -201,12 +201,17 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
     setup_pdf_( &pdf );
 
     std::vector<double> dm;
+    std::vector<double> dmhp;
     for( unsigned int i = 0; i < _nHzero; ++i ) {
-        dm.push_back( 0. ); 
+        dm.push_back( 3. ); 
+    }
+    for( unsigned int i = 0; i < _nHplus; ++i ) {
+        dmhp.push_back(3.);
     }
     higgssignals_neutral_input_massuncertainty_( &dm.at(0) );
-
-    double range = 150.;
+    higgsbounds_set_mass_uncertainties_( &dm.at(0), &dmhp.at(0) );
+    
+    double range = 20.;
     setup_assignmentrange_( &range );
 
     SetupHiggsBounds();
@@ -490,6 +495,7 @@ double Fittino::NewHiggsSignalsHadXSCalculator::RunHiggsBounds() {
 
     }
 
+    /*
     for( int i = 0; i < _model->GetObservableVector()->size(); ++i ) {
     
         std::string name = _model->GetObservableVector()->at(i)->GetPrediction()->GetName();
@@ -498,7 +504,8 @@ double Fittino::NewHiggsSignalsHadXSCalculator::RunHiggsBounds() {
             break;
         }
 
-    }
+    }*/
+    _theoryUncertainty1s = 3.;
     hb_calc_stats_( &_theoryUncertainty1s, &_chi2WithoutTheory, &_chi2WithTheory, &_bestChannelChi2 );
     if( _chi2WithoutTheory < 0. ) {
         
