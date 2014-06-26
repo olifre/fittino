@@ -49,12 +49,12 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
     _chi2WithoutTheory  = 0.;
     _bestChannelChi2    = 0;
     std::cout << "running with " << _nHzero << " Hzero and " << _nHplus << " HPlus" << std::endl;
-    AddQuantity( new SimplePrediction( "HB_result",             "HB_result",             "",    "",    -1.e4,    1.e4, _HBresult  ) ); 
+    AddQuantity( new SimplePrediction( "HB_result",             "HB_result",             "",    "",    -1.e4,    1.e4, _HBresult_double  ) ); 
     AddQuantity( new SimplePrediction( "HB_obsratio",           "HB_obsratio",           "",    "",    -1.e4,    1.e4, _obsratio  ) ); 
-    AddQuantity( new SimplePrediction( "HB_channel",            "HB_channel",            "",    "",    -1.e4,    1.e4, _channel  ) ); 
+    AddQuantity( new SimplePrediction( "HB_channel",            "HB_channel",            "",    "",    -1.e4,    1.e4, _channel_double  ) ); 
     AddQuantity( new SimplePrediction( "HB_chi2WithTheory",     "HB_chi2WithTheory",     "",    "",    -1.e4,    1.e4, _chi2WithTheory  ) ); 
     AddQuantity( new SimplePrediction( "HB_chi2WithoutTheory",  "HB_chi2WithoutTheory",  "",    "",    -1.e4,    1.e4, _chi2WithoutTheory  ) ); 
-    AddQuantity( new SimplePrediction( "HB_bestChannelChi2",    "HB_bestChannelChi2",    "",    "",    -1.e4,    1.e4, _bestChannelChi2  ) ); 
+    AddQuantity( new SimplePrediction( "HB_bestChannelChi2",    "HB_bestChannelChi2",    "",    "",    -1.e4,    1.e4, _bestChannelChi2_double  ) ); 
 
 
     AddQuantity( new SimplePrediction( "HS_weight_xs_ggh"       , "", _weight_xs_ggh       ) );
@@ -206,7 +206,7 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
         dm.push_back( 3. ); 
     }
     for( unsigned int i = 0; i < _nHplus; ++i ) {
-        dmhp.push_back(3.);
+        dmhp.push_back( 3. );
     }
     higgssignals_neutral_input_massuncertainty_( &dm.at(0) );
     higgsbounds_set_mass_uncertainties_( &dm.at(0), &dmhp.at(0) );
@@ -214,9 +214,31 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
     double range = 20.;
     setup_assignmentrange_( &range );
 
+
+    // A first dummy run of HS is necessary to initialize all HS internal observable/variables (required in SetupMeasuredValues());
     SetupHiggsBounds();
     
     run_higgssignals_( &_mode, &_chi2_mu, &_chi2_mass_h, &_chi2, &_nobs, &_pvalue );
+   
+    // Add Quantities for peak info from HS
+    int ntotal, npeakmu, npeakmh, nmpred, nanalyses;
+    __io_MOD_get_number_of_observables( &ntotal, &npeakmu, &npeakmh, &nmpred, &nanalyses );
+    for ( int i = 1; i <= npeakmu; ++i ) {
+
+        int obsID = 0;
+        __io_MOD_get_id_of_peakobservable( &i, &obsID );
+        std::ostringstream ss_index;
+        ss_index << obsID;
+        std::string s_index = ss_index.str();
+        
+        _predicted_mu_fromHSresult.push_back(0.);
+        _dominant_higgs_fromHSresult.push_back(0.);
+        _ncombined_fromHSresult.push_back(0.);   
+        AddQuantity( new SimplePrediction( "HS_muPred_ObsID_" + s_index        , "HS_muPred_ObsID_" + s_index         , "", "", -1.e4, 1.e4, _predicted_mu_fromHSresult.at(i-1) ) );
+        AddQuantity( new SimplePrediction( "HS_dominant_higgs_ObsID" + s_index , "HS_dominant_higgs_ObsID_" + s_index , "", "", -1.e4, 1.e4, _dominant_higgs_fromHSresult.at(i-1) ) );
+        AddQuantity( new SimplePrediction( "HS_ncombined_ObsID_" + s_index     , "HS_ncombined_obsID_" + s_index      , "", "", -1.e4, 1.e4, _ncombined_fromHSresult.at(i-1) ) );
+
+     }
 
 }
 
@@ -489,6 +511,9 @@ void Fittino::NewHiggsSignalsHadXSCalculator::CallHiggsBounds() {
 double Fittino::NewHiggsSignalsHadXSCalculator::RunHiggsBounds() {
 
     run_higgsbounds_( &_HBresult, &_channel, &_obsratio, &_ncombined );
+    _HBresult_double = (double)_HBresult;
+    _channel_double  = (double)_channel;
+
     if( _HBresult < 0 || _HBresult > 1 ) {
         
         return -1.0;
@@ -507,6 +532,8 @@ double Fittino::NewHiggsSignalsHadXSCalculator::RunHiggsBounds() {
     }*/
     _theoryUncertainty1s = 3.;
     hb_calc_stats_( &_theoryUncertainty1s, &_chi2WithoutTheory, &_chi2WithTheory, &_bestChannelChi2 );
+    _bestChannelChi2_double = (double)_bestChannelChi2;
+    
     if( _chi2WithoutTheory < 0. ) {
         
         return -1.0;
@@ -548,9 +575,28 @@ void Fittino::NewHiggsSignalsHadXSCalculator::CalculatePredictions() {
     SetupHiggsBounds();
     int dummy1, dummy2, dummy3;
     double dummy4;
-    run_higgsbounds_( &dummy1, &dummy2, &dummy4, &dummy3 );
+    //run_higgsbounds_( &dummy1, &dummy2, &dummy4, &dummy3 );
     run_higgssignals_( &_mode, &_chi2_mu, &_chi2_mass_h, &_chi2, &_nobs, &_pvalue );
-    SetupMeasuredValues();
+    //SetupMeasuredValues();
+    
+    // get peak info from HS for output ntuple
+    int ntotal, npeakmu, npeakmh, nmpred, nanalyses;
+    __io_MOD_get_number_of_observables( &ntotal, &npeakmu, &npeakmh, &nmpred, &nanalyses );
+    for ( int i = 1; i <= npeakmu; ++i ) {
+
+        int obsID = 0;
+        __io_MOD_get_id_of_peakobservable( &i, &obsID );
+        int ncomb, higgsindex;
+        double mupred;
+        __io_MOD_get_peakinfo_from_hsresults( &obsID, &mupred, &higgsindex, &ncomb );
+        _predicted_mu_fromHSresult.at(i) = mupred;
+        _dominant_higgs_fromHSresult.at(i) = (double)higgsindex;
+        _ncombined_fromHSresult.at(i) = (double)ncomb;
+        
+    
+    }
+
+
     int i = 1;
     int collider = 3;
     
