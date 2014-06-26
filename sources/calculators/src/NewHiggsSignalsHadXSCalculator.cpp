@@ -73,14 +73,14 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
     //For the moment, add defaul names for the MSSM
     std::vector<std::string> namesHzero;
     std::vector<std::string> namesHplus;
-    std::vector<std::string> couplingNames;
+    //std::vector<std::string> couplingNames;
     namesHzero.push_back( "h0" );
     namesHzero.push_back( "H0" );
-    couplingNames.push_back( "gs" );
-    couplingNames.push_back( "gs" );
+    //couplingNames.push_back( "gs" );
+    //couplingNames.push_back( "gs" );
     for( unsigned int i = 2; i < _nHzero; ++i ) {
         namesHzero.push_back( "A0" );
-        couplingNames.push_back( "gp" );
+        //couplingNames.push_back( "gp" );
     }
     for( unsigned int i = 0; i < _nHplus; ++i ) {
         namesHplus.push_back( "Hp" );
@@ -97,9 +97,9 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
         _name_mass_h_neutral.push_back       ( ptree.get<std::string>( "MassQName_"                + number.str(), "FeynHiggs_Mass_" + namesHzero.at(i)              ) );
         _name_Gamma_Total_neutral.push_back  ( ptree.get<std::string>( "GammaTotQName_"            + number.str(), "FeynHiggs_GammaTotal_" + namesHzero.at(i)        ) );
         //_name_Gamma_Total_neutral.push_back  ( ptree.get<std::string>( "GammaTotQName_"            + number.str(), "SPheno_GammaTotal_" + namesHzero.at(i)        ) );
-        _name_CS_lep_tautauhj_ratio.push_back( ptree.get<std::string>( "CS_lep_tautauhj_ratioQName_"+ number.str(), "FeynHiggs_NormSM_" + couplingNames.at(i) + "_Abs_" + namesHzero.at(i) + "_tau_tau" ) );
-        _name_CS_lep_hjZ_ratio.push_back     ( ptree.get<std::string>( "CS_lep_hjZ_ratioQName_"    + number.str(), "FeynHiggs_NormSM_g_Abs_" + namesHzero.at(i) + "_Z0_Z0"  ) );
-        _name_CS_lep_bbhj_ratio.push_back    ( ptree.get<std::string>( "CS_lep_bbhj_ratioQName_"   + number.str(), "FeynHiggs_NormSM_" + couplingNames.at(i) + "_Abs_" + namesHzero.at(i) + "_b_b" ) );
+        _name_CS_lep_tautauhj_ratio.push_back( ptree.get<std::string>( "CS_lep_tautauhj_ratioQName_"+ number.str(), "FeynHiggs_NormSM_g_Abs2" + namesHzero.at(i) + "_tau_tau" ) );
+        _name_CS_lep_hjZ_ratio.push_back     ( ptree.get<std::string>( "CS_lep_hjZ_ratioQName_"    + number.str(), "FeynHiggs_NormSM_g_Abs2_" + namesHzero.at(i) + "_Z0_Z0"  ) );
+        _name_CS_lep_bbhj_ratio.push_back    ( ptree.get<std::string>( "CS_lep_bbhj_ratioQName_"   + number.str(), "FeynHiggs_NormSM_g_Abs2" + namesHzero.at(i) + "_b_b" ) );
         
         _name_CS_tev_gghj_model.push_back      ( ptree.get<std::string>( "CS_tev_gghj_modelQName_"  + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_ggh" ) ); 
         _name_CS_tev_bbhj_model.push_back      ( ptree.get<std::string>( "CS_tev_bbhj_modelQName_"  + number.str(), "FeynHiggs_CrossSection_1.96TeV_" + namesHzero.at(i) + "_bbh" ) ); 
@@ -154,7 +154,7 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
             std::stringstream number2;
             number2 << j;
             BR_hjhihi.push_back( ptree.get<std::string>( "BR_hjhihiQName_" + number.str() + "_" + number2.str(), "FeynHiggs_BR_" + namesHzero.at(i) + "_to_" + namesHzero.at(j) + "_" + namesHzero.at(j) ) );
-            CS_lep_hjhi.push_back( ptree.get<std::string>( "CS_lep_hjhiQName_" + number.str() + "_" + number2.str(), "FeynHiggs_g_Abs_" + namesHzero.at(i) + "_" + namesHzero.at(j) + "_Z0" ) );
+            CS_lep_hjhi.push_back( ptree.get<std::string>( "CS_lep_hjhiQName_" + number.str() + "_" + number2.str(), "FeynHiggs_g_Abs2_" + namesHzero.at(i) + "_" + namesHzero.at(j) + "_Z0" ) );
 
 
 
@@ -287,10 +287,15 @@ void Fittino::NewHiggsSignalsHadXSCalculator::SetupHiggsBounds( bool shiftHiggsM
         Gamma_Total_neutral.push_back   ( _model->GetCollectionOfQuantities().At( _name_Gamma_Total_neutral.at(i) )->GetValue() );;
         CP.push_back                    ( i < 2 ? 1 : -1 ); 
         
+        /* 
         CS_lep_tautauhj_ratio.push_back ( pow( _model->GetCollectionOfQuantities().At( _name_CS_lep_tautauhj_ratio.at(i))->GetValue(),2 ));
         CS_lep_hjZ_ratio.push_back      ( pow( _model->GetCollectionOfQuantities().At( _name_CS_lep_hjZ_ratio.at(i) )->GetValue(),2 ));
         CS_lep_bbhj_ratio.push_back     ( pow( _model->GetCollectionOfQuantities().At( _name_CS_lep_bbhj_ratio.at(i) )->GetValue(),2 ));
-       
+        */
+        CS_lep_tautauhj_ratio.push_back ( _model->GetCollectionOfQuantities().At( _name_CS_lep_tautauhj_ratio.at(i))->GetValue());
+        CS_lep_hjZ_ratio.push_back      ( _model->GetCollectionOfQuantities().At( _name_CS_lep_hjZ_ratio.at(i) )->GetValue());
+        CS_lep_bbhj_ratio.push_back     ( _model->GetCollectionOfQuantities().At( _name_CS_lep_bbhj_ratio.at(i) )->GetValue());
+
         double cs_tev_gghj_model = _model->GetCollectionOfQuantities().At( _name_CS_tev_gghj_model.at(i) )->GetValue();
         double cs_tev_bbhj_model = _model->GetCollectionOfQuantities().At( _name_CS_tev_bbhj_model.at(i) )->GetValue();
         double cs_tev_gghj_sm    = _model->GetCollectionOfQuantities().At( _name_CS_tev_gghj_SM.at(i) )->GetValue();
@@ -381,7 +386,7 @@ void Fittino::NewHiggsSignalsHadXSCalculator::SetupHiggsBounds( bool shiftHiggsM
         double MZ = 9.11876e+1;
         double NORM = GF*sqrt(2)*MZ*MZ;
         for( int j = 0; j < _nHzero; ++j ) {
-            cs.push_back                ( pow( _model->GetCollectionOfQuantities().At( _name_CS_lep_hjhi_ratio.at(i).at(j) )->GetValue(),2 )/NORM );
+            cs.push_back                ( _model->GetCollectionOfQuantities().At( _name_CS_lep_hjhi_ratio.at(i).at(j) )->GetValue()/NORM );
             br.push_back                ( _model->GetCollectionOfQuantities().At( _name_BR_hjhihi.at(i).at(j))->GetValue() );       
         }
         CS_lep_hjhi_ratio.push_back( cs );
@@ -398,7 +403,7 @@ void Fittino::NewHiggsSignalsHadXSCalculator::SetupHiggsBounds( bool shiftHiggsM
     for( unsigned int j = 0; j < _nHzero; ++j ) {
         for( unsigned int i = 0; i < _nHzero; ++i ) {
 
-            CS_lep_hjhi_ratio_reformat.push_back( pow( CS_lep_hjhi_ratio.at(i).at(j),2));
+            CS_lep_hjhi_ratio_reformat.push_back( CS_lep_hjhi_ratio.at(i).at(j));
             BR_hjhihi_reformat.push_back( BR_hjhihi.at(i).at(j) );
 
         }
