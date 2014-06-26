@@ -34,7 +34,7 @@ Fittino::SplineCut::SplineCut( ModelBase* model, const boost::property_tree::ptr
     TDirectory *tempDirectory = gDirectory;
 
     TFile *inputFile = new TFile( fileName.c_str() );
-    if( inputFile ) {
+    if( !inputFile ) {
 
         std::string message = "Could not open input file " + fileName + " for SplineCut object";
         throw ConfigurationException( message );
