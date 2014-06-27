@@ -92,6 +92,10 @@ namespace Fittino {
       std::vector<double>      _predicted_mu_fromHSresult;
       std::vector<double>      _dominant_higgs_fromHSresult;
       std::vector<double>      _ncombined_fromHSresult;
+      std::vector<double>      _chi2_mu_from_peak;
+      std::vector<double>      _chi2_mh_from_peak;
+      std::vector<double>      _chi2_max_from_peak;
+      std::vector<double>      _chi2_tot_from_peak;
       bool                     _addedPeakObservableOutput;
 
       std::vector<double>      _mass_h_neutral_shift;

@@ -224,10 +224,17 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
     int ntotal, npeakmu, npeakmh, nmpred, nanalyses;
     __io_MOD_get_number_of_observables( &ntotal, &npeakmu, &npeakmh, &nmpred, &nanalyses );
     for ( int i = 1; i <= npeakmu; ++i ) {
+        
         _predicted_mu_fromHSresult.push_back(0.);
         _dominant_higgs_fromHSresult.push_back(0.);
         _ncombined_fromHSresult.push_back(0.);   
+        _chi2_mu_from_peak.push_back(0.);
+        _chi2_mh_from_peak.push_back(0.);
+        _chi2_max_from_peak.push_back(0.);
+        _chi2_tot_from_peak.push_back(0.);
+    
     }
+
     for ( int i = 1; i <= npeakmu; ++i ) {
 
         int obsID = 0;
@@ -239,6 +246,11 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
         AddQuantity( new SimplePrediction( "HS_muPred_ObsID_" + s_index        , "HS_muPred_ObsID_" + s_index         , "", "", -1.e4, 1.e4, _predicted_mu_fromHSresult.at(i-1) ) );
         AddQuantity( new SimplePrediction( "HS_dominant_higgs_ObsID" + s_index , "HS_dominant_higgs_ObsID_" + s_index , "", "", -1.e4, 1.e4, _dominant_higgs_fromHSresult.at(i-1) ) );
         AddQuantity( new SimplePrediction( "HS_ncombined_ObsID_" + s_index     , "HS_ncombined_obsID_" + s_index      , "", "", -1.e4, 1.e4, _ncombined_fromHSresult.at(i-1) ) );
+        AddQuantity( new SimplePrediction( "HS_chi2_mu_ObsID_" + s_index       , "HS_chi2_mu_ObsID_" + s_index        , "", "", 0.   , 1.e5, _chi2_mu_from_peak.at(i-1) ) );
+        AddQuantity( new SimplePrediction( "HS_chi2_mh_ObsID_" + s_index       , "HS_chi2_mh_ObsID_" + s_index        , "", "", 0.   , 1.e5, _chi2_mh_from_peak.at(i-1) ) );
+        AddQuantity( new SimplePrediction( "HS_chi2_max_ObsID_" + s_index      , "HS_chi2_max_ObsID_" + s_index       , "", "", 0.   , 1.e5, _chi2_max_from_peak.at(i-1) ) );
+        AddQuantity( new SimplePrediction( "HS_chi2_tot_ObsID_" + s_index      , "HS_chi2_tot_ObsID_" + s_index       , "", "", 0.   , 1.e5, _chi2_tot_from_peak.at(i-1) ) );
+        
 
      }
 
@@ -597,7 +609,18 @@ void Fittino::NewHiggsSignalsHadXSCalculator::CalculatePredictions() {
         _predicted_mu_fromHSresult.at(i-1) = mupred;
         _dominant_higgs_fromHSresult.at(i-1) = (double)higgsindex;
         _ncombined_fromHSresult.at(i-1) = (double)ncomb;
-    
+        double peak_chi2_mu  = 0.;
+        double peak_chi2_mh  = 0.;
+        double peak_chi2_max = 0.;
+        double peak_chi2_tot = 0.;;
+        __pc_chisq_MOD_get_peakchi2( &obsID, &peak_chi2_mu, &peak_chi2_mh, &peak_chi2_max, &peak_chi2_tot );
+        
+        _chi2_mu_from_peak.at(i-1)  = peak_chi2_mu;
+        _chi2_mh_from_peak.at(i-1)  = peak_chi2_mh;
+        _chi2_max_from_peak.at(i-1) = peak_chi2_max;
+        _chi2_tot_from_peak.at(i-1) = peak_chi2_tot;
+
+
     }
 
     int i = 1;
