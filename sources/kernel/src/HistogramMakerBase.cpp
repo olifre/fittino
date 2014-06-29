@@ -34,15 +34,19 @@ Fittino::HistogramMakerBase::HistogramMakerBase( ModelBase* model, const boost::
       _iEntry( 0 ),
       _globalAxis( new TGaxis() ) {
 
-    // determine the number of iterations.
-    // if the number of tree iterations is larger than the difference between the upper bound 
+    // Determine the number of iterations.
+    // If the number of tree iterations is larger than the difference between the upper bound
     // and lower bound of the model parameter P_Iteration, this difference is used.
     // also, in that case, set _iEntry to the lower bound.
+
     _numberOfPointsToProcess = _model->GetCollectionOfQuantities().At( "TreeIterations" )->GetValue();
-    int difference = _model->GetCollectionOfQuantities().At("P_Iteration")->GetUpperBound() - _model->GetCollectionOfQuantities().At("P_Iteration")->GetLowerBound();
-    if( difference < _numberOfPointsToProcess ) {
+    int difference = _model->GetCollectionOfQuantities().At( "P_Iteration" )->GetUpperBound() - _model->GetCollectionOfQuantities().At( "P_Iteration" )->GetLowerBound();
+
+    if ( difference < _numberOfPointsToProcess ) {
+
         _numberOfPointsToProcess = difference;
-        _iEntry = _model->GetCollectionOfQuantities().At("P_Iteration")->GetLowerBound();
+        _iEntry = _model->GetCollectionOfQuantities().At( "P_Iteration" )->GetLowerBound();
+
     }
 
     _globalAxis->SetMaxDigits( ptree.get<int>( "AxisMaxDigits", 3 ) );
@@ -134,9 +138,8 @@ void Fittino::HistogramMakerBase::PrintSteeringParameters() const {
 }
 
 void Fittino::HistogramMakerBase::Execute() {
-    
 
-    while ( _iterationCounter < _numberOfPointsToProcess ) { 
+    while ( _iterationCounter < _numberOfPointsToProcess ) {
 
         _iterationCounter++;
 

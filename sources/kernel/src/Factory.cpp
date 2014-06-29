@@ -29,12 +29,14 @@
 //#include "CorrelatedSampler.h"
 #include "CovariantSampler.h"
 #include "DamavandiModel.h"
+#include "EdgeDetectionTool.h"
 //#include "EvolutionarySampler.h"
 #include "Factory.h"
 
 #ifdef FEYNHIGGS
 #include "FeynHiggsCalculator.h"
 #endif
+
 #include "FeynHiggsRescalingCalculator.h"
 #include "FormulaCalculator.h"
 #include "GeneticAlgorithmOptimizer.h"
@@ -87,7 +89,6 @@
 #include "Univariate10Model.h"
 #include "Univariate2Model.h"
 #include "VincentModel.h"
-#include "EdgeDetectionTool.h"
 
 Fittino::Factory::Factory() {
 
@@ -109,10 +110,11 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
         return new AstroFitCalculator( model, ptree );
 
     }
-     else if ( type == "CheckMATECalculator" ) {
+    else if ( type == "CheckMATECalculator" ) {
 
         return new CheckMATECalculator( model, ptree );
-     }
+
+    }
     else if ( type == "CheckVacuumCalculator" ) {
 
         return new CheckVacuumCalculator( model, ptree );
@@ -133,7 +135,7 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     }
     else if ( type == "FeynHiggsRescalingCalculator" ) {
 
-      return new FeynHiggsRescalingCalculator( model, ptree );
+        return new FeynHiggsRescalingCalculator( model, ptree );
 
     }
     else if ( type == "FeynHiggsSLHACalculator" ) {
@@ -533,6 +535,11 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
         return new ContourHistogramMaker( model, ptree );
 
     }
+    else if ( type == "EdgeDetectionTool" ) {
+
+        return new EdgeDetectionTool( model, ptree );
+
+    }
     // else if ( type == "EvolutionarySampler" ) {
 
     //     return new EvolutionarySampler( model, ptree );
@@ -611,11 +618,6 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
     else if ( type == "TreeSampler" ) {
 
         return new TreeSampler( model, ptree );
-
-    }
-    else if( type == "EdgeDetectionTool" ) {
-
-        return new EdgeDetectionTool( model, ptree );
 
     }
     else {

@@ -50,6 +50,10 @@ namespace Fittino {
 
     protected:
       /*!
+       *  Number of points to be processed.
+       */
+      int                       _numberOfPointsToProcess;
+      /*!
        *  Entry in the input file tree.
        */
       unsigned int              _iEntry;
@@ -85,10 +89,6 @@ namespace Fittino {
        *  Stores the histograms to be made.
        */
       std::vector<TH1*>         _histogramVector;
-      /*!
-       *  Number of Iterations to be processed; 
-       */
-      int                       _numberOfPointsToProcess;
       PlotterBase*              _plotter;
 
     protected:
