@@ -38,6 +38,13 @@ Fittino::CheckMATECalculator::CheckMATECalculator( const PhysicsModel* model, co
    
   _name = "CheckMATE";
 
+  Messenger& messenger = Messenger::GetInstance();
+
+  messenger << Messenger::ALWAYS << Messenger::Endl;
+  messenger << Messenger::ALWAYS << "Test line 1" << Messenger::Endl;
+  messenger << Messenger::ALWAYS << Messenger::Endl;
+  messenger << Messenger::ALWAYS << "test line 2" << Messenger::Endl;
+  messenger << Messenger::ALWAYS << Messenger::Endl;
 }
 
 Fittino::CheckMATECalculator::~CheckMATECalculator() {

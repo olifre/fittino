@@ -19,9 +19,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/foreach.hpp>
-
 #include "TMath.h"
-
 #include "MadGraphCalculator.h"
 #include "ConfigurationException.h"
 #include "PhysicsModel.h"
@@ -35,9 +33,20 @@
 Fittino::MadGraphCalculator::MadGraphCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
   : CalculatorBase( model ) {
   std::cout<<"Hello World!"<<std::endl;
-   
+  
   _name = "MadGraph";
+  
+  
+  Messenger& messenger = Messenger::GetInstance();
+  
+  messenger << Messenger::ALWAYS << Messenger::Endl;
+  messenger << Messenger::ALWAYS << "Testing messenger" << Messenger::Endl;
+  messenger << Messenger::ALWAYS << Messenger::Endl;
+  messenger << Messenger::ALWAYS << "remember to change verbosity levels" << Messenger::Endl;
+  messenger << Messenger::ALWAYS << Messenger::Endl;
 
+  std::string configurationOption1 = ptree.get<std::string>( "MyFirstConfigurationOption" );
+  
 }
 
 Fittino::MadGraphCalculator::~MadGraphCalculator() {
