@@ -21,6 +21,9 @@
 
 #include <boost/property_tree/ptree.hpp>
 
+#include "TGraph.h"
+#include "TFile.h"
+
 #include "PhysicsModel.h"
 #include "SimplePrediction.h"
 #include "FeynHiggsRescalingCalculator.h"
@@ -118,12 +121,29 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     _SM_LHC14_tth            ( model->GetCollectionOfQuantities().At("FeynHiggs_SM_CrossSection_14TeV_h0_tth"     )->GetValue() ),
     _i_normSM_g_Abs2_h_Z0_Z0  ( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_g_Abs2_h0_Z0_Z0"           )->GetValue() ),
     _i_normSM_g_Abs2_h_b_b    ( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_g_Abs2h0_b_b"              )->GetValue() ),
-    _i_normSM_g_Abs2_h_tau_tau( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_g_Abs2h0_tau_tau"          )->GetValue() ) {
+    _i_normSM_g_Abs2_h_tau_tau( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_g_Abs2h0_tau_tau"          )->GetValue() ),
+    _i_FeynHiggs_Mass_h0      ( model->GetCollectionOfQuantities().At("FeynHiggs_Mass_h0"                          )->GetValue() ) {
 
     _name = "FeynHiggsRescaling";
     _tag = "FeynHiggsRescaling";
     _zero = 0;
 
+    _HB_BR_filename      = ptree.get<std::string>( "HBBRFileName", "HB_SM_BRs.root");
+    _calcHBNormalizedBRs = ptree.get<bool>( "CalculateHBNormalizedBRs", false );
+    if( _calcHBNormalizedBRs ) {
+        TFile fHBBR(_HB_BR_filename.c_str(), "OPEN" );
+        _gHB_GammaTotal       = (TGraph*)(fHBBR.Get("HB_GammaTotal"));
+        _gHB_BR_h_b_b         = (TGraph*)(fHBBR.Get("HB_hbb"));
+        _gHB_BR_h_c_c         = (TGraph*)(fHBBR.Get("HB_hcc"));
+        _gHB_BR_h_s_s         = (TGraph*)(fHBBR.Get("HB_hss"));
+        _gHB_BR_h_g_g         = (TGraph*)(fHBBR.Get("HB_hgg"));
+        _gHB_BR_h_Wp_Wm       = (TGraph*)(fHBBR.Get("HB_hww"));
+        _gHB_BR_h_Z0_Z0       = (TGraph*)(fHBBR.Get("HB_hzz"));
+        _gHB_BR_h_Z0_gamma    = (TGraph*)(fHBBR.Get("HB_hzgam"));
+        _gHB_BR_h_gamma_gamma = (TGraph*)(fHBBR.Get("HB_hgamgam"));
+        _gHB_BR_h_mu_mu       = (TGraph*)(fHBBR.Get("HB_hmumu"));
+        _gHB_BR_h_tau_tau     = (TGraph*)(fHBBR.Get("HB_htautau"));
+    }
     // recalculated
 
     AddQuantity( new SimplePrediction( "BR_H0_to_g_g"          , "", _zero     ) );
@@ -215,6 +235,19 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
     AddQuantity( new SimplePrediction( "NormSM_BR_h0_to_s_s"                   , "", _normSM_BR_h_s_s                   ) );
     AddQuantity( new SimplePrediction( "NormSM_BR_h0_to_b_b"                   , "", _normSM_BR_h_b_b                   ) );
 
+    if( _calcHBNormalizedBRs ) {
+        AddQuantity( new SimplePrediction( "NormHB_GammaTotal_h0"                  , "", _normHB_GammaTotal                 ) );
+        AddQuantity( new SimplePrediction( "NormHB_BR_h0_to_g_g"                   , "", _normHB_BR_h_g_g                   ) );
+        AddQuantity( new SimplePrediction( "NormHB_BR_h0_to_Wp_Wm"                 , "", _normHB_BR_h_Wp_Wm                 ) );
+        AddQuantity( new SimplePrediction( "NormHB_BR_h0_to_Z0_Z0"                 , "", _normHB_BR_h_Z0_Z0                 ) );
+        AddQuantity( new SimplePrediction( "NormHB_BR_h0_to_Z0_gamma"              , "", _normHB_BR_h_Z0_gamma                 ) );
+        AddQuantity( new SimplePrediction( "NormHB_BR_h0_to_gamma_gamma"           , "", _normHB_BR_h_gamma_gamma              ) );
+        AddQuantity( new SimplePrediction( "NormHB_BR_h0_to_tau_tau"               , "", _normHB_BR_h_tau_tau                  ) );
+        AddQuantity( new SimplePrediction( "NormHB_BR_h0_to_mu_mu"                 , "", _normHB_BR_h_mu_mu                    ) );
+        AddQuantity( new SimplePrediction( "NormHB_BR_h0_to_c_c"                   , "", _normHB_BR_h_c_c                      ) );
+        AddQuantity( new SimplePrediction( "NormHB_BR_h0_to_s_s"                   , "", _normHB_BR_h_s_s                      ) );
+        AddQuantity( new SimplePrediction( "NormHB_BR_h0_to_b_b"                   , "", _normHB_BR_h_b_b                      ) );
+    }
 
     AddQuantity( new SimplePrediction( "CrossSection_1.96TeV_h0_ggh"    , "", _TEV_ggh                    ) );
     AddQuantity( new SimplePrediction( "CrossSection_1.96TeV_h0_bbh"    , "", _TEV_bbh                    ) );
@@ -466,6 +499,46 @@ void Fittino::FeynHiggsRescalingCalculator::CalculatePredictions() {
      _normSM_BR_h_c_c         = _BR_h_c_c         / _SM_Gamma_h_c_c         * _SM_GammaTotal_h0;
      _normSM_BR_h_s_s         = _BR_h_s_s         / _SM_Gamma_h_s_s         * _SM_GammaTotal_h0;
      _normSM_BR_h_b_b         = _BR_h_b_b         / _SM_Gamma_h_b_b         * _SM_GammaTotal_h0;
+    
+     if( _calcHBNormalizedBRs ) {
+        _normHB_GammaTotal = _normSM_GammaTotal_h0          * _gHB_GammaTotal       -> Eval( _i_FeynHiggs_Mass_h0 );
+        _normHB_BR_h_g_g         = _normSM_BR_h_g_g         * _gHB_BR_h_g_g         -> Eval( _i_FeynHiggs_Mass_h0 );
+        _normHB_BR_h_Wp_Wm       = _normSM_BR_h_Wp_Wm       * _gHB_BR_h_Wp_Wm       -> Eval( _i_FeynHiggs_Mass_h0 );
+        _normHB_BR_h_Z0_Z0       = _normSM_BR_h_Z0_Z0       * _gHB_BR_h_Z0_Z0       -> Eval( _i_FeynHiggs_Mass_h0 );
+        _normHB_BR_h_Z0_gamma    = _normSM_BR_h_Z0_gamma    * _gHB_BR_h_Z0_gamma    -> Eval( _i_FeynHiggs_Mass_h0 );
+        _normHB_BR_h_gamma_gamma = _normSM_BR_h_gamma_gamma * _gHB_BR_h_gamma_gamma -> Eval( _i_FeynHiggs_Mass_h0 );
+        _normHB_BR_h_tau_tau     = _normSM_BR_h_tau_tau     * _gHB_BR_h_tau_tau     -> Eval( _i_FeynHiggs_Mass_h0 );
+        _normHB_BR_h_mu_mu       = _normSM_BR_h_mu_mu       * _gHB_BR_h_mu_mu       -> Eval( _i_FeynHiggs_Mass_h0 );
+        _normHB_BR_h_c_c         = _normSM_BR_h_c_c         * _gHB_BR_h_c_c         -> Eval( _i_FeynHiggs_Mass_h0 );
+        _normHB_BR_h_s_s         = _normSM_BR_h_s_s         * _gHB_BR_h_s_s         -> Eval( _i_FeynHiggs_Mass_h0 );
+        _normHB_BR_h_b_b         = _normSM_BR_h_b_b         * _gHB_BR_h_b_b         -> Eval( _i_FeynHiggs_Mass_h0 );
+    /* 
+     double _i_SM_BR_h_g_g         = _SM_Gamma_h_g_g         / _SM_GammaTotal_h0;
+     double _i_SM_BR_h_Wp_Wm       = _SM_Gamma_h_Wp_Wm       / _SM_GammaTotal_h0;
+     double _i_SM_BR_h_Z0_Z0       = _SM_Gamma_h_Z0_Z0       / _SM_GammaTotal_h0;
+     double _i_SM_BR_h_Z0_gamma    = _SM_Gamma_h_Z0_gamma    / _SM_GammaTotal_h0;
+     double _i_SM_BR_h_gamma_gamma = _SM_Gamma_h_gamma_gamma / _SM_GammaTotal_h0;
+     double _i_SM_BR_h_mu_mu       = _SM_Gamma_h_mu_mu       / _SM_GammaTotal_h0;
+     double _i_SM_BR_h_tau_tau     = _SM_Gamma_h_tau_tau     / _SM_GammaTotal_h0;
+     double _i_SM_BR_h_c_c         = _SM_Gamma_h_c_c         / _SM_GammaTotal_h0;
+     double _i_SM_BR_h_s_s         = _SM_Gamma_h_s_s         / _SM_GammaTotal_h0;
+     double _i_SM_BR_h_b_b         = _SM_Gamma_h_b_b         / _SM_GammaTotal_h0;
+    
+        std::cout << "Higgs Mass is " << _i_FeynHiggs_Mass_h0 << std::endl;
+        std::cout << "gamma : " << _normHB_GammaTotal << " ~=~ " << _GammaTotal_h0 << " using " << _gHB_GammaTotal->Eval( _i_FeynHiggs_Mass_h0 ) << " " << _SM_GammaTotal_h0 << std::endl;
+        std::cout << "h_gg  : " << _normHB_BR_h_g_g   << " ~=~ " << _BR_h_g_g      << " using " << _gHB_BR_h_g_g->Eval( _i_FeynHiggs_Mass_h0 ) << " " << _i_SM_BR_h_g_g << std::endl;
+        std::cout << "h_ss  : " << _normHB_BR_h_s_s   << " ~=~ " << _BR_h_s_s      << " using " << _gHB_BR_h_s_s->Eval( _i_FeynHiggs_Mass_h0 ) << " " << _i_SM_BR_h_s_s << std::endl;
+        std::cout << "h_cc  : " << _normHB_BR_h_c_c   << " ~=~ " << _BR_h_c_c      << " using " << _gHB_BR_h_c_c->Eval( _i_FeynHiggs_Mass_h0 ) << " " << _i_SM_BR_h_c_c << std::endl;
+        std::cout << "h_bb  : " << _normHB_BR_h_b_b   << " ~=~ " << _BR_h_b_b      << " using " << _gHB_BR_h_b_b->Eval( _i_FeynHiggs_Mass_h0 ) << " " << _i_SM_BR_h_b_b << std::endl;
+        std::cout << "h_ww  : " << _normHB_BR_h_Wp_Wm << " ~=~ " << _BR_h_Wp_Wm    << " using " << _gHB_BR_h_Wp_Wm->Eval( _i_FeynHiggs_Mass_h0 ) << " " << _i_SM_BR_h_Wp_Wm << std::endl;
+        std::cout << "h_zz  : " << _normHB_BR_h_Z0_Z0 << " ~=~ " << _BR_h_Z0_Z0    << " using " << _gHB_BR_h_Z0_Z0->Eval( _i_FeynHiggs_Mass_h0 ) << " " << _i_SM_BR_h_Z0_Z0 << std::endl;
+        std::cout << "h_zgam  : " << _normHB_BR_h_Z0_gamma << " ~=~ " << _BR_h_Z0_gamma    << " using " << _gHB_BR_h_Z0_gamma ->Eval( _i_FeynHiggs_Mass_h0 ) << " " << _i_SM_BR_h_Z0_gamma << std::endl;
+        std::cout << "h_gamgam  : " << _normHB_BR_h_gamma_gamma << " ~=~ " << _BR_h_gamma_gamma    << " using " << _gHB_BR_h_gamma_gamma ->Eval( _i_FeynHiggs_Mass_h0 ) << " " << _i_SM_BR_h_gamma_gamma << std::endl;
+        std::cout << "h_tautau  : " << _normHB_BR_h_tau_tau << " ~=~ " << _BR_h_tau_tau    << " using " << _gHB_BR_h_tau_tau ->Eval( _i_FeynHiggs_Mass_h0 ) << " " << _i_SM_BR_h_tau_tau << std::endl;
+        std::cout << "h_mumu  : " << _normHB_BR_h_mu_mu << " ~=~ " << _BR_h_mu_mu    << " using " << _gHB_BR_h_mu_mu ->Eval( _i_FeynHiggs_Mass_h0 ) << " " << _i_SM_BR_h_mu_mu << std::endl;
+     */
+     }
+
 
      _normSM_TEV_ggh    = _TEV_ggh    / _SM_TEV_ggh;
      _normSM_TEV_bbh    = _TEV_bbh    / _SM_TEV_bbh;  
