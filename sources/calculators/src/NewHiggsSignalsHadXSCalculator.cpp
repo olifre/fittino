@@ -236,7 +236,7 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
     char whichAnalyses[256];
     sprintf( whichAnalyses, "%s", _whichAnalyses.c_str() );
     initialize_higgsbounds_( &_nHzero, &_nHplus, whichAnalyses );
-    
+
     //std::string expdata = "LHC_mail_14_07_2013_HS_new_observable_set";
     std::string expdata = ptree.get<std::string>( "ExpData" );
     std::cout<<"Using ExpData = "<<expdata<<std::endl;

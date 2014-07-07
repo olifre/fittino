@@ -55,6 +55,7 @@ IF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND)
 
     LIST(REMOVE_ITEM sources "src/HDim6Calculator.cpp")
     LIST(REMOVE_ITEM sources "src/HiggsSignalsHadXSCalculator.cpp")
+    LIST(REMOVE_ITEM sources "src/NewHiggsSignalsHadXSCalculator.cpp")
 
 ENDIF()
 
@@ -64,6 +65,7 @@ IF(NOT HIGGSBOUNDS_FOUND)
     LIST(REMOVE_ITEM sources "src/HiggsBoundsSLHACalculator.cpp")
     LIST(REMOVE_ITEM sources "src/HiggsBoundsHECCalculator.cpp")
     LIST(REMOVE_ITEM sources "src/HiggsBoundsHadXSCalculator.cpp")
+    LIST(REMOVE_ITEM sources "src/FeynHiggsRescalingCalculator.cpp")
 
 ENDIF()
 
