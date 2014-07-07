@@ -25,8 +25,6 @@
 #include "PtreeForwardDeclaration.h"
 
 
-class TGraph;
-
 /*!
  *  \brief Fittino namespace.
  */
@@ -328,20 +326,6 @@ namespace Fittino {
       const double& _i_normSM_g_Abs2_h_tau_tau;
 
       const double& _i_FeynHiggs_Mass_h0;
-
-      TGraph* _gHB_GammaTotal;
-      TGraph* _gHB_BR_h_g_g;
-      TGraph* _gHB_BR_h_Wp_Wm;
-      TGraph* _gHB_BR_h_Z0_Z0;
-      TGraph* _gHB_BR_h_Z0_gamma;
-      TGraph* _gHB_BR_h_gamma_gamma;
-      TGraph* _gHB_BR_h_tau_tau;
-      TGraph* _gHB_BR_h_mu_mu;
-      TGraph* _gHB_BR_h_c_c;
-      TGraph* _gHB_BR_h_s_s;
-      TGraph* _gHB_BR_h_b_b;
-      std::string _HB_BR_filename;
-      bool _calcHBNormalizedBRs;
 
       /*! \endcond UML */
 
