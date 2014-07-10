@@ -530,12 +530,11 @@ void Fittino::PhysicsModel::InitializeObservables( const boost::property_tree::p
 
 void Fittino::PhysicsModel::UpdateCovarianceMatrix( ) {
    
-    
     unsigned int nRows = _observableVector.size();
     int fitx = 0;
     int fity = 0;
     for( unsigned int i = 0; i < nRows; ++i ) {
-        
+        fity = 0; 
         for( unsigned int j = 0; j < nRows; ++j ) {
 
             if( _observableVector[i]->GetRelativeError() > std::numeric_limits<double>::min() || _observableVector[j]->GetRelativeError() > std::numeric_limits<double>::min() ) {
