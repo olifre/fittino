@@ -300,12 +300,12 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Physi
 
     // intialize HiggsBounds for getting SMBRs later.
     initialize_higgsbounds_chisqtables_();
-    char whichAnalyses[256];
+    //char whichAnalyses[256];
     std::string ana( "LandH" );
     int nHzero = 3;
     int nHplus = 1;
-    sprintf( whichAnalyses, "%s", ana.c_str() );
-    initialize_higgsbounds_( &nHzero, &nHplus, whichAnalyses );
+    //sprintf( whichAnalyses, "%s", ana.c_str() );
+    initialize_higgsbounds_( &nHzero, &nHplus, ana.c_str(), ana.length() );
 
 }
 

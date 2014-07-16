@@ -63,9 +63,7 @@ Fittino::HiggsBoundsCalculator::~HiggsBoundsCalculator() {
 void Fittino::HiggsBoundsCalculator::Initialize() {
 
     initialize_higgsbounds_chisqtables_();
-    char whichAnalyses[256];
-    sprintf( whichAnalyses, "%s", _whichAnalyses.c_str() );
-    initialize_higgsbounds_( &_nH, &_nHplus, whichAnalyses );
+    initialize_higgsbounds_( &_nH, &_nHplus, _whichAnalyses.c_str(), _whichAnalyses.length() );
 
 }
 

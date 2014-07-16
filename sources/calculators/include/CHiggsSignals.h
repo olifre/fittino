@@ -75,7 +75,8 @@ extern "C" {
                      double*    R_H_bb,
                      double*    R_VH_bb );
 
-  void initialize_higgsbounds_( int* nH, int* nHplus, char *whichexpt );
+  //void initialize_higgsbounds_( int* nH, int* nHplus, char *whichexpt );
+  void initialize_higgsbounds_( const int* nH, const int* nHplus, const char *whichexpt, int whichexpt_length );
   void initialize_higgsbounds_chisqtables_();
 
   void initialize_higgssignals_( const int* nHzero, const int* nHplus, const char* expdata, int expdata_length );
