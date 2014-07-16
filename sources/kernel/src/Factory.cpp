@@ -135,7 +135,15 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     }
     else if ( type == "FeynHiggsRescalingCalculator" ) {
 
+#if defined HIGGSSIGNALS_FOUND
+
         return new FeynHiggsRescalingCalculator( model, ptree );
+
+#else 
+
+	throw ConfigurationException( "Trying to use FeynHiggsRescalingCalculator but Fittino was built without HiggsBounds." );
+
+#endif
 
     }
     else if ( type == "FeynHiggsSLHACalculator" ) {
