@@ -29,6 +29,9 @@
 #include "SimpleDataStorage.h"
 #include "Executor.h"
 #include <iostream>
+#include <fstream>
+
+
 
 Fittino::MadGraphCalculator::MadGraphCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
   : CalculatorBase( model ),
@@ -68,8 +71,23 @@ void Fittino::MadGraphCalculator::CalculatePredictions() {
 
   std::cout<<"USING _f_B = "<<_f_B<<std::endl;
 
+  std::string originalinputfile = "/afs/atlass01.physik.uni-bonn.de/user/thakur/programs/Madgraph_v2_1_1/a.txt";
+  std::string inputfile = "fittino_madgraph_in.txt"; 
+
+  std::ifstream infile( originalinputfile.c_str(), std::ios::binary );
+  std::ofstream outfile( inputfile.c_str(),    std::ios::binary );
+  outfile << infile.rdbuf();
+  infile.close();
+  outfile.close();
+
+  std::ofstream myfile;
+  myfile.open ( inputfile.c_str(), std::ios::app ) ;
+  myfile << "set fH "<<_f_B<<std::endl;
+  myfile.close();
+
+
   Executor executor("/afs/atlass01.physik.uni-bonn.de/user/thakur/programs/Madgraph_v2_1_1/bin/mg5", "mg5");
-  executor.AddArgument("/afs/atlass01.physik.uni-bonn.de/user/thakur/programs/Madgraph_v2_1_1/a.txt");
+  executor.AddArgument(inputfile);
   executor.Execute();
     
 }
