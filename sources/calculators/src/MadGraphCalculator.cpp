@@ -27,12 +27,18 @@
 #include "Factory.h"
 #include "SimplePrediction.h"
 #include "SimpleDataStorage.h"
-
+#include "Executor.h"
 #include <iostream>
 
 Fittino::MadGraphCalculator::MadGraphCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
-  : CalculatorBase( model ) {
-  std::cout<<"Hello World!"<<std::endl;
+  : CalculatorBase( model ),
+      // Initialize input quantities.                                                                                                                                                      
+      _f_B ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_B.Name","f_B" ) )->GetValue() ),
+      _f_W ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_W.Name", "f_W" ) )->GetValue() ),
+      _f_GG ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_GG.Name", "f_GG" ) )->GetValue() ),
+      _f_t ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_t.Name", "f_t" ) )->GetValue() ) {
+
+ 
   
   _name = "MadGraph";
   
@@ -46,8 +52,12 @@ Fittino::MadGraphCalculator::MadGraphCalculator( const PhysicsModel* model, cons
   messenger << Messenger::ALWAYS << Messenger::Endl;
 
   std::string configurationOption1 = ptree.get<std::string>( "MyFirstConfigurationOption" );
-  
 }
+  
+
+
+
+
 
 Fittino::MadGraphCalculator::~MadGraphCalculator() {
 
@@ -55,6 +65,12 @@ Fittino::MadGraphCalculator::~MadGraphCalculator() {
 
 
 void Fittino::MadGraphCalculator::CalculatePredictions() {
+
+  std::cout<<"USING _f_B = "<<_f_B<<std::endl;
+
+  Executor executor("/afs/atlass01.physik.uni-bonn.de/user/thakur/programs/Madgraph_v2_1_1/bin/mg5", "mg5");
+  executor.AddArgument("/afs/atlass01.physik.uni-bonn.de/user/thakur/programs/Madgraph_v2_1_1/a.txt");
+  executor.Execute();
     
 }
 

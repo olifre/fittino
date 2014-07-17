@@ -1,3 +1,4 @@
+
 /* $Id$ */
 
 /*******************************************************************************
@@ -6,8 +7,8 @@
 *                                                                              *
 * File        CheckMATECalculator.cpp                                          *
 *                                                                              *
-* Description Wrapper around CheckMATE                                         *
-* Authors                                                                      *
+* Description      Wrapper around CheckMATE                                    *
+* Authors: Uddhipan Thakur                                                                      *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -29,36 +30,51 @@
 #include "Factory.h"
 #include "SimplePrediction.h"
 #include "SimpleDataStorage.h"
-
+#include "Executor.h"
 #include <iostream>
 
 Fittino::CheckMATECalculator::CheckMATECalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
-  : CalculatorBase( model ) {
-  std::cout<<"No Hello World! this time"<<std::endl;
+  : CalculatorBase( model ), 
+    // Initialize input quantities.                                                                                                                                                      
+     _a  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "a.Name", "a" ) )->GetValue() ),
+     _b  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "b.Name", "b" ) )->GetValue() ),
+     _c  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "c.Name", "c" ) )->GetValue() ),
+     _d  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "d.Name", "d" ) )->GetValue() ) 
+
+{
+    
+
+    std::cout<<"Hello World!"<<std::endl;
    
-  _name = "CheckMATE";
+    _name = "CheckMATE";
 
-  Messenger& messenger = Messenger::GetInstance();
 
-  messenger << Messenger::ALWAYS << Messenger::Endl;
-  messenger << Messenger::ALWAYS << "Test line 1" << Messenger::Endl;
-  messenger << Messenger::ALWAYS << Messenger::Endl;
-  messenger << Messenger::ALWAYS << "test line 2" << Messenger::Endl;
-  messenger << Messenger::ALWAYS << Messenger::Endl;
+   Messenger& messenger = Messenger::GetInstance();
+
+   messenger << Messenger::ALWAYS << Messenger::Endl;
+   messenger << Messenger::ALWAYS << "Test line 1" << Messenger::Endl;
+   messenger << Messenger::ALWAYS << Messenger::Endl;
+   messenger << Messenger::ALWAYS << "test line 2" << Messenger::Endl;
+   messenger << Messenger::ALWAYS << Messenger::Endl;
+   std::string configurationOption1 = ptree.get<std::string>( "MyFirstConfigurationOption" );
 }
 
 Fittino::CheckMATECalculator::~CheckMATECalculator() {
 
+
 }
 
 void Fittino::CheckMATECalculator::CalculatePredictions() {
-    
+  Executor executor("/afs/atlass01.physik.uni-bonn.de/user/thakur/programs/Madgraph_v2_1_1/bin/mg5", "mg5");
+  executor.AddArgument("/afs/atlass01.physik.uni-bonn.de/user/thakur/programs/Madgraph_v2_1_1/a.txt");
+  executor.Execute();
 }
 
 void Fittino::CheckMATECalculator::SetupMeasuredValues() {
     
 
 }
+
 
 void Fittino::CheckMATECalculator::Initialize() {
 

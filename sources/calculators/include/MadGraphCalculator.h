@@ -61,7 +61,21 @@ namespace Fittino {
       virtual void        SetupMeasuredValues();
 
     private:
-
+ 
+      const double&         _f_B;
+      /*!
+       *
+       */
+      const double&           _f_W;
+      /*!
+       *
+       */
+      const double&           _f_GG;
+      /*!
+       * 
+       */
+      const double&        _f_t;
+      
 
   };
 
