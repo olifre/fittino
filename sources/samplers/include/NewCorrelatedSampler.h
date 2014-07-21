@@ -76,9 +76,12 @@ namespace Fittino {
       int                    _totalPointsge1lt6;
 
       bool                   _poppedFirst;
+      bool                   _useCovariance;
       std::queue< std::vector<double> >           _memory;
 
       unsigned int           _numberOfIterations;
+      double                  _scalingFactor;
+
       std::vector<double>    _previousParameterValues;
       std::vector<double>    _currentExpectationValues;
       std::vector<double>    _standardDeviations;
@@ -88,6 +91,10 @@ namespace Fittino {
       TMatrixD   _acceptedPoints;
       TMatrixD   _eigenVectors;
 
+      std::string _communicationsString;
+      const char* _communicationsPath;
+      std::fstream _communicationsFile;
+
 
     private:
       virtual void           Execute();
@@ -96,9 +103,11 @@ namespace Fittino {
       virtual void           UpdateModel();
       virtual void           DoSampling();
       virtual void           CalculateStandardDeviations();
-      virtual void           CalculateStepWidths();
       virtual void           PushNewPoint();
       virtual void           PopOldestPoint();
+      virtual void           UpdateStatusParameters();
+      virtual void           ReadCommunicationsFile();
+      virtual void           PrintCommunicationsFile();
 
 
 
