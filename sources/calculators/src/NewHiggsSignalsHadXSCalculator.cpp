@@ -44,10 +44,27 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const P
     _channel            = 0;
     _obsratio           = 0.;
     _ncombined          = 0;
-    _theoryUncertainty1s = ptree.get<double>    ( "TheoryUncertainty",  1.5 );
+   // _theoryUncertainty1s = ptree.get<double>    ( "TheoryUncertainty",  1.5 );
     _chi2WithTheory     = 0.;
     _chi2WithoutTheory  = 0.;
     _bestChannelChi2    = 0;
+    
+    for( unsigned int i = 0; i < _nHzero; ++i ) {
+        char nodeName[100];
+        double defaultValue = (i==0) ? 0.024 : 0.003;
+        sprintf( nodeName, "RelativeError_mh_%i", i );
+        std::string sNodeName( nodeName );
+        _mass_h_neutral_relativeUncertainty.push_back( ptree.get<double>( sNodeName, defaultValue ) );
+    }
+    
+    for( unsigned int i = _nHzero; i < _nHplus + _nHzero; ++i ) {
+        char nodeName[100];
+        double defaultValue = 0.003;
+        sprintf( nodeName, "RelativeError_mh_%i", i );
+        std::string sNodeName( nodeName );
+        _mass_h_charged_relativeUncertainty.push_back( ptree.get<double>( sNodeName, defaultValue ) );
+    }
+
     std::cout << "running with " << _nHzero << " Hzero and " << _nHplus << " HPlus" << std::endl;
     AddQuantity( new SimplePrediction( "HB_result",             "HB_result",             "",    "",    -1.e4,    1.e4, _HBresult_double  ) ); 
     AddQuantity( new SimplePrediction( "HB_obsratio",           "HB_obsratio",           "",    "",    -1.e4,    1.e4, _obsratio  ) ); 
@@ -514,6 +531,19 @@ void Fittino::NewHiggsSignalsHadXSCalculator::SetupHiggsBounds( bool shiftHiggsM
          
 
     }
+    
+    // calculated and set the relative uncertainties;
+    std::vector<double> dm;
+    std::vector<double> dmhp;
+    for( unsigned int i = 0; i < _nHzero; ++i ) {
+        dm.push_back( _mass_h_neutral_relativeUncertainty.at(i)*mass_h_neutral.at(i) ); 
+    }
+    for( unsigned int i = 0; i < _nHplus; ++i ) {
+        dmhp.push_back( _mass_h_charged_relativeUncertainty.at(i)*mass_h_charged.at(i) );
+    }
+    higgssignals_neutral_input_massuncertainty_( &dm.at(0) );
+    higgsbounds_set_mass_uncertainties_( &dm.at(0), &dmhp.at(0) );
+
     higgsbounds_neutral_input_hadr_(&mass_h_neutral.at(0),
                                     &Gamma_Total_neutral.at(0),
                                     &CP.at(0),

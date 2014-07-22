@@ -102,6 +102,8 @@ namespace Fittino {
       std::vector<double>      _mass_h_charged_shift;
       std::vector<std::string> _name_mass_h_neutral_shift;
       std::vector<std::string> _name_mass_h_charged_shift;
+      std::vector<double>      _mass_h_neutral_relativeUncertainty;
+      std::vector<double>      _mass_h_charged_relativeUncertainty;
 
       std::vector<std::string> _name_mass_h_neutral;
       std::vector<std::string> _name_Gamma_Total_neutral;
