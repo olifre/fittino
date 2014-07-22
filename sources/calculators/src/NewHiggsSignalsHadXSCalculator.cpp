@@ -612,17 +612,10 @@ double Fittino::NewHiggsSignalsHadXSCalculator::RunHiggsBounds() {
 
     }
 
-    /*
-    for( int i = 0; i < _model->GetObservableVector()->size(); ++i ) {
     
-        std::string name = _model->GetObservableVector()->at(i)->GetPrediction()->GetName();
-        if( name == _name_mass_h_neutral.at(0) ) {
-            _theoryUncertainty1s = _model->GetObservableVector()->at(i)->GetMeasuredError();
-            break;
-        }
-
-    }*/
-    _theoryUncertainty1s = 3.;
+    
+    _theoryUncertainty1s = _mass_h_neutral_relativeUncertainty.at(0)*_model->GetCollectionOfQuantities().At( _name_mass_h_neutral.at( 0 ) )->GetValue();
+    //_theoryUncertainty1s = 3.;
     hb_calc_stats_( &_theoryUncertainty1s, &_chi2WithoutTheory, &_chi2WithTheory, &_bestChannelChi2 );
     _bestChannelChi2_double = (double)_bestChannelChi2;
     
