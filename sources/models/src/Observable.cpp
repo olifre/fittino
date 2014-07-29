@@ -48,7 +48,7 @@ Fittino::Observable::Observable( PredictionBase* prediction,
 Fittino::Observable::Observable( const boost::property_tree::ptree& ptree, PredictionBase* prediction ) 
                    : _deviation( 0. ),
                      _measuredValue( ptree.get<double>( "MeasuredValue" ) ),
-                     _bestFitPrediction( ptree.get<double>( "BestFitPrediction" ) ),
+                     _bestFitPrediction( ptree.get<double>( "BestFitPrediction", 0. ) ),
                      _noFit( ptree.get<bool>( "NoFit", false ) ),
                      _noSmear( ptree.get<bool>( "NoSmear", false ) ),
                      _noUpdate( ptree.get<bool>( "NoUpdate", false ) ),
@@ -60,7 +60,7 @@ Fittino::Observable::Observable( const boost::property_tree::ptree& ptree, Predi
     _error3 = ptree.get<double>( "MeasuredError3", 0. );
     _relativeError = ptree.get<double>( "RelativeError", 0. );
 
-    _measuredError = sqrt( _error1*_error1 + _error2*_error2 + _error3*_error3 + _relativeError*_relativeError*_measuredValue*_measuredValue );
+    _measuredError = sqrt( _error1*_error1 + _error2*_error2 + _error3*_error3 + _relativeError*_relativeError*_bestFitPrediction*_bestFitPrediction);
 
 }
 

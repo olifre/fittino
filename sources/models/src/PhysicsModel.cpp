@@ -504,6 +504,12 @@ const std::vector<Fittino::Observable*>* Fittino::PhysicsModel::GetObservableVec
 
 }
 
+const Fittino::Collection<const Fittino::Quantity*>& Fittino::PhysicsModel::GetCollectionOfChi2Quantities() const {
+
+    return _collectionOfChi2Quantities;
+
+}
+
 void Fittino::PhysicsModel::InitializeCalculators( const boost::property_tree::ptree& ptree ) {
 
     Factory factory;
