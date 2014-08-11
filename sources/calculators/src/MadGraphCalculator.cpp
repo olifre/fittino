@@ -58,10 +58,6 @@ Fittino::MadGraphCalculator::MadGraphCalculator( const PhysicsModel* model, cons
 }
   
 
-
-
-
-
 Fittino::MadGraphCalculator::~MadGraphCalculator() {
 
 }

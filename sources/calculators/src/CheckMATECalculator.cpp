@@ -20,9 +20,7 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/foreach.hpp>
-
 #include "TMath.h"
-
 #include "CheckMATECalculator.h"
 #include "ConfigurationException.h"
 #include "PhysicsModel.h"
@@ -32,21 +30,20 @@
 #include "SimpleDataStorage.h"
 #include "Executor.h"
 #include <iostream>
+#include <fstream>
 
 Fittino::CheckMATECalculator::CheckMATECalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
   : CalculatorBase( model ), 
     // Initialize input quantities.                                                                                                                                                      
-     _a  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "a.Name", "a" ) )->GetValue() ),
-     _b  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "b.Name", "b" ) )->GetValue() ),
-     _c  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "c.Name", "c" ) )->GetValue() ),
-     _d  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "d.Name", "d" ) )->GetValue() ) 
+     _f_B  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_B.Name", "f_B" ) )->GetValue() ),
+     _f_W  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_W.Name", "f_W" ) )->GetValue() ),
+     _f_GG  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_GG.Name", "f_GG" ) )->GetValue() ),
+     _f_t  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_t.Name", "f_t" ) )->GetValue() ) 
 
 {
     
 
-    std::cout<<"Hello World!"<<std::endl;
-   
-    _name = "CheckMATE";
+     _name = "CheckMATE";
 
 
    Messenger& messenger = Messenger::GetInstance();
@@ -65,9 +62,63 @@ Fittino::CheckMATECalculator::~CheckMATECalculator() {
 }
 
 void Fittino::CheckMATECalculator::CalculatePredictions() {
-  Executor executor("/afs/atlass01.physik.uni-bonn.de/user/thakur/programs/Madgraph_v2_1_1/bin/mg5", "mg5");
-  executor.AddArgument("/afs/atlass01.physik.uni-bonn.de/user/thakur/programs/Madgraph_v2_1_1/a.txt");
+  std::cout<<"USING _f_B = "<<_f_B<<std::endl;
+  std::string originalinputfile = "/lustre/user/thakur/programs/CheckMATE/lustreversion/runfittino.txt";
+  std::string inputfile = "fittino_checkmate_in.txt";
+
+  std::ifstream infile( originalinputfile.c_str(), std::ios::binary );
+  std::ofstream outfile( inputfile.c_str(), std::ios::binary );
+  outfile << infile.rdbuf();
+  infile.close();
+  outfile.close();
+
+  std::ofstream myfile;
+  myfile.open ( inputfile.c_str(), std::ios::app ) ;
+  myfile.close();
+ 
+
+  Executor executor("/lustre/user/thakur/programs/CheckMATE/lustreversion/bin/CheckMATE", "CheckMATE");
+  executor.AddArgument(inputfile);
   executor.Execute();
+
+
+  //Storing the cutflow in doubles.
+
+  std::ifstream file( "/lustre/user/thakur/programs/CheckMATE/lustreversion/results/atlas_conf_2013_049/analysis/000_atlas_conf_2013_049_cutflow.dat" );
+  std::string line;
+
+  TString character;
+
+  while ( ! character.BeginsWith( "Cut " ) ) {
+
+    std::getline( file, line );
+    character = line.c_str();  
+
+  }
+
+  
+  //std::map<std::string, double, double, double > afout;
+  
+  while ( file ) {
+
+    //  if (name != "Cut") {}
+
+    
+    std::string name;
+    double Sum_W;
+    double Sum_W2;
+    double Acc;
+    double N_Norm;
+    file >> name >> Sum_W >> Sum_W2 >> Acc >> N_Norm;
+
+    character = name.c_str();
+    //if (character.BeginsWith( " " )) break;
+    if (name=="") break;
+    std::cout<<"name: "<<name<<" acc: "<<Acc<<std::endl;
+    // afout[name] = Sum_W;
+    
+  }
+
 }
 
 void Fittino::CheckMATECalculator::SetupMeasuredValues() {
