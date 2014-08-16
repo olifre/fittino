@@ -83,13 +83,13 @@ namespace Fittino {
 
     private:
       /*!
-       *  The random seed.
-       */
-      int                     _randomSeed;
-      /*!
        *  The pointer to a TRandom3 generator.
        */
       TRandom3*               _generator;
+      /*!
+       *  The random seed.
+       */
+      int                     _randomSeed;
 
     private:
       /*!

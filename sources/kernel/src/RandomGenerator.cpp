@@ -85,8 +85,8 @@ TRandom3* Fittino::RandomGenerator::GetGenerator() {
 Fittino::RandomGenerator* Fittino::RandomGenerator::_instance = 0;
 
 Fittino::RandomGenerator::RandomGenerator()
-    : _randomSeed( 4357 ),
-      _generator( new TRandom3( _randomSeed ) ) {
+  : _generator( new TRandom3()  ),
+    _randomSeed( _generator->GetSeed() ) {
 
 }
 
