@@ -96,6 +96,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
     // Update model.
     if( _iterationCounter != 1 ) {
+
       for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
         _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfParameters().At( k )->GetValue() + _randomGenerator->Gaus( 0., _model->GetCollectionOfParameters().At( k )->GetError() ) );
@@ -221,21 +222,38 @@ void Fittino::MarkovChainSampler::UpdateModel() {
                 _model->GetCollectionOfParameters().At( k )->SetValue( _previousParameterValues.at( k ) );
 
             }
-            _chi2 = _previousChi2;
+	    
+	    _chi2 = _model->GetChi2();
+	    if ( TMath::Abs( _chi2 - _previousChi2 ) > 0.01 ) {
+
+	      throw ConfigurationException("Chi2 from interface file does not fit to provided parameter.");
+
+	    }
+
             GetStatusParameterVector()->at( 0 ) -> SetValue( _chi2 );
             this->FillTree();
         
             _iterationCounter++;
             GetStatusParameterVector()->at( 1 )->SetValue( _iterationCounter );
  
-            // now reset everything to the first new point           
-            _chi2 = firstNewChi2;
-            GetStatusParameterVector()->at( 0 ) -> SetValue( _chi2 );
+
+	    // now reset everything to the first new point           
+            
             for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
                 _model->GetCollectionOfParameters().At( k )->SetValue( firstNewPointParameterValues.at( k ) );
             
             }
+
+	    
+	    _chi2 = _model->GetChi2();
+	    if ( TMath::Abs( _chi2 - firstNewChi2 ) > 0.01 ) {
+
+	      throw ConfigurationException("Inconsistency in chi2.");
+
+	    }
+
+	    GetStatusParameterVector()->at( 0 ) -> SetValue( _chi2 );
             
         }
         // save point and increment counter for last accepted point.
