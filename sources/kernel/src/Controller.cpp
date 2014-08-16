@@ -131,8 +131,15 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
         std::string verbosityLevel = _inputPtree->get<std::string>( "InputFile.VerbosityLevel" );
         Messenger::GetInstance().SetVerbosityLevel( verbosityLevel );
 
-        double randomSeed = _inputPtree->get<double>( "InputFile.RandomSeed", 0 );
-        if ( randomSeed != 0 ) {
+        double randomSeed = _inputPtree->get<double>( "InputFile.RandomSeed", -1 );
+
+	if ( randomSeed ==0 ) {
+
+	  Messenger::GetInstance() << Messenger::ALWAYS << "RandomSeed was set to 0 in the input file. A random random seed will be used." << Messenger::Endl;
+
+	}
+
+        if ( randomSeed >=0 ) {
 
             RandomGenerator::GetInstance()->SetSeed( randomSeed );
 
