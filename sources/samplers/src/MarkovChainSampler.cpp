@@ -34,7 +34,7 @@
 Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
   : SamplerBase( model, ptree ), 
 
-    _previousChi2( ptree.get<double>("Chi2", 1.e99) ),
+    _previousChi2( ptree.get<double>("Chi2", std::numeric_limits<double>::max() ) ),
     //_previousChi2( model->GetChi2() ),
     _previousParameterValues( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
     _acceptCounter( 1 ),
@@ -123,7 +123,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
     double rho = exp(-DeltaChi2/2.);
     
-    if ( rho > 1. ) {
+    if ( rho >= 1. ) {
 
         pointAccepted = true;
         //GetStatusParameterVector()->at( 2 )->SetValue( pointAccepted );
