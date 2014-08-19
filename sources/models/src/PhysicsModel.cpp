@@ -475,6 +475,9 @@ void Fittino::PhysicsModel::AddObservable( Observable* observable ) {
 
     if( !predictionIsKnown ) {
         AddPrediction( observable->GetPrediction() );
+        // also add the deviation as an additional prediction:
+        std::string name = "deviation_" + observable->GetPrediction()->GetName();
+        AddPrediction( new SimplePrediction( name, name, "", "", -100., 100., observable->GetDeviation() ) );
     }
 }
 
@@ -501,6 +504,12 @@ const Fittino::Collection<Fittino::CalculatorBase*>& Fittino::PhysicsModel::GetC
 const std::vector<Fittino::Observable*>* Fittino::PhysicsModel::GetObservableVector() const {
 
     return &_observableVector;
+
+}
+
+const Fittino::Collection<const Fittino::Quantity*>& Fittino::PhysicsModel::GetCollectionOfChi2Quantities() const {
+
+    return _collectionOfChi2Quantities;
 
 }
 

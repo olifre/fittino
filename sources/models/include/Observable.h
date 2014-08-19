@@ -67,6 +67,7 @@ namespace Fittino {
       std::string     GetSmearingType();
       bool            IsNoUpdateObservable();
       double          GetRelativeError();
+      double&         GetDeviation();
 
     public:
       virtual void    UpdatePrediction();

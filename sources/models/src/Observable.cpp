@@ -213,3 +213,9 @@ std::string Fittino::Observable::GetSmearingType() {
     return _smearingType;
 
 }
+
+double& Fittino::Observable::GetDeviation() {
+        
+    return _deviation;
+
+}
