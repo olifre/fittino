@@ -70,10 +70,16 @@ void Fittino::Controller::ExecuteFittino() const {
 
         tool->PerformTask();
 
+	if ( _inputPtree->count( "InputFile.RandomSeed" ) ) {
+	
+	    _outputPtree->put( "InputFile.RandomSeed", _inputPtree->get<std::string>( "InputFile.RandomSeed" ) );
+
+	}
+
         _outputPtree->put( "InputFile.VerbosityLevel", _inputPtree->get<std::string>( "InputFile.VerbosityLevel" ) );
         _outputPtree->put_child( "InputFile.Model." + modelType, model->GetPropertyTree() );
         _outputPtree->put_child( "InputFile.Tool." + toolType , tool->GetPropertyTree() );
-
+        
         delete tool;
         delete model;
 
@@ -133,17 +139,18 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
         double randomSeed = _inputPtree->get<double>( "InputFile.RandomSeed", -1 );
 
-	if ( randomSeed ==0 ) {
-
-	  Messenger::GetInstance() << Messenger::ALWAYS << "RandomSeed was set to 0 in the input file. A random random seed will be used." << Messenger::Endl;
-
-	}
 
         if ( randomSeed >=0 ) {
 
             RandomGenerator::GetInstance()->SetSeed( randomSeed );
 
         }
+
+	if ( randomSeed ==0 ) {
+
+	  Messenger::GetInstance() << Messenger::ALWAYS << "RandomSeed was set to 0 in the input file. A random random seed of "<< RandomGenerator::GetInstance()->GetSeed()<< " is used." << Messenger::Endl;
+
+	}
 
     }
     catch ( const InputException& inputException ) {
