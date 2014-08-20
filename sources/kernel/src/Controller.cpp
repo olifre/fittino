@@ -70,7 +70,7 @@ void Fittino::Controller::ExecuteFittino() const {
 
         tool->PerformTask();
 
-	if ( _inputPtree->count( "InputFile.RandomSeed" ) ) {
+	if ( _inputPtree->get_child( "InputFile").count( "RandomSeed" ) ) {
 	
 	    _outputPtree->put( "InputFile.RandomSeed", _inputPtree->get<std::string>( "InputFile.RandomSeed" ) );
 
