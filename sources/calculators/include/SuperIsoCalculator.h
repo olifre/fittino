@@ -49,6 +49,7 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
+      bool         _requireNeutralinoLSP;
       double       _amu;
       double       _delta0;
       double       _bsgamma;

@@ -21,6 +21,9 @@
 
 #include <boost/property_tree/ptree.hpp>
 
+#include "CalculatorException.h"
+#include "Messenger.h"
+
 #define complex _Complex
 
 extern "C" {
@@ -32,6 +35,8 @@ extern "C" {
 #include "SimplePrediction.h"
 #include "SuperIsoCalculator.h"
 
+
+
 Fittino::SuperIsoCalculator::SuperIsoCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model ) {
 
@@ -39,6 +44,14 @@ Fittino::SuperIsoCalculator::SuperIsoCalculator( const PhysicsModel* model, cons
     _tag = "SuperIso";
 
     _slhafile = "SPheno.spc";
+
+    _requireNeutralinoLSP = ptree.get<bool>("RequireNeutralinoLSP", false );
+
+    if ( _requireNeutralinoLSP ) {
+
+      Messenger::GetInstance() << Messenger::ALWAYS << "SuperIsoCalculator requires neutralino LSP."<< Messenger::Endl;
+
+    }
 
     AddQuantity( new SimplePrediction( "DiffSM_a_mu",                       "", _amu                   ) );
     AddQuantity( new SimplePrediction( "delta0_B_to_Kstar_gamma",           "", _delta0                ) );
@@ -124,5 +137,11 @@ void Fittino::SuperIsoCalculator::CalculatePredictions() {
     _excludedSusyMass      = excluded_SUSY_mass_calculator ( &file[0] );
     _nmssmColliderExcluded = NMSSM_collider_excluded       ( &file[0] );
     _nmssmTheoryExcluded   = NMSSM_theory_excluded         ( &file[0] );
+
+    if ( _requireNeutralinoLSP && _chargedLSP != 0 ) {
+
+        throw CalculatorException( _name, "NoNeutralinoLSP" );
+
+    }
 
 }
