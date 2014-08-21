@@ -41,7 +41,6 @@ namespace Fittino {
 
   /*!
    *  \ingroup samplers
-   *  \brief Class for covariant parameter sampler.
    */
   class NewCorrelatedSampler : public SamplerBase {
 
@@ -61,6 +60,7 @@ namespace Fittino {
       double                 _minX2;
       double                 _maxX2;
       double                 _maxX1;
+      double                 _scalingFactor;
 
       int                    _iterationCounter;
       int                    _numberOfAcceptedPoints;
@@ -77,11 +77,10 @@ namespace Fittino {
 
       bool                   _poppedFirst;
       bool                   _useCovariance;
+
       std::queue< std::vector<double> >           _memory;
 
       unsigned int           _numberOfIterations;
-      double                  _scalingFactor;
-
       std::vector<double>    _previousParameterValues;
       std::vector<double>    _currentExpectationValues;
       std::vector<double>    _standardDeviations;
@@ -90,10 +89,7 @@ namespace Fittino {
       TMatrixDSym   _expectationMatrix;
       TMatrixD   _acceptedPoints;
       TMatrixD   _eigenVectors;
-
-      std::string _communicationsString;
-      const char* _communicationsPath;
-      std::fstream _communicationsFile;
+      //TFile     _communicationsFile;
 
 
     private:
@@ -103,12 +99,11 @@ namespace Fittino {
       virtual void           UpdateModel();
       virtual void           DoSampling();
       virtual void           CalculateStandardDeviations();
+      virtual void           FillStatusParameterVector();
       virtual void           PushNewPoint();
       virtual void           PopOldestPoint();
-      virtual void           UpdateStatusParameters();
-      virtual void           ReadCommunicationsFile();
       virtual void           PrintCommunicationsFile();
-
+      virtual void           ReadCommunicationsFile();
 
 
 
