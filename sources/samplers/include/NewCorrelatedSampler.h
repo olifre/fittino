@@ -78,6 +78,8 @@ namespace Fittino {
       bool                   _poppedFirst;
       bool                   _useCovariance;
 
+      std::string           _interfaceFile;
+
       std::queue< std::vector<double> >           _memory;
 
       unsigned int           _numberOfIterations;
@@ -102,8 +104,8 @@ namespace Fittino {
       virtual void           FillStatusParameterVector();
       virtual void           PushNewPoint();
       virtual void           PopOldestPoint();
-      virtual void           PrintCommunicationsFile();
-      virtual void           ReadCommunicationsFile();
+      virtual void           PrintInterfaceFile();
+      virtual void           ReadInterfaceFile();
 
 
 

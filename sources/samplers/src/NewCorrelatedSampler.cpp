@@ -19,7 +19,6 @@
 *******************************************************************************/
 
 #include <iostream>
-
 #include "TMath.h"
 #include "TMatrixD.h"
 #include "TMatrixDSym.h"
@@ -62,7 +61,9 @@ Fittino::NewCorrelatedSampler::NewCorrelatedSampler( Fittino::ModelBase* model, 
           _totalPointslt1(0),
           _totalPointsge10(0),
           _totalPointsge6lt10(0),
-          _totalPointsge1lt6(0)
+          _totalPointsge1lt6(0),
+          _interfaceFile(ptree.get<std::string>("InterfaceFile", "")),
+          _useCovariance(ptree.get<bool>("UseCovariance", false))
           {
     _name = "Correlated parameter sampler";
     _numberOfAcceptedPoints = 0;
@@ -92,7 +93,6 @@ Fittino::NewCorrelatedSampler::NewCorrelatedSampler( Fittino::ModelBase* model, 
 
         _previousParameterValues.at( k ) = _model->GetCollectionOfParameters().At( k )->GetValue();
         _currentExpectationValues.at( k ) = _model->GetCollectionOfParameters().At( k )->GetValue();
-        //_covarianceMatrix[k][k] = 1.;
         _covarianceMatrix[k][k] = _model->GetCollectionOfParameters().At(k)->GetError();
         _expectationMatrix[k][k] = (_currentExpectationValues[k])*(_currentExpectationValues[k]);
         for (unsigned int i = k+1; i < _model->GetNumberOfParameters(); i++ ) {
@@ -121,7 +121,7 @@ Fittino::NewCorrelatedSampler::~NewCorrelatedSampler() {
 
 void Fittino::NewCorrelatedSampler::Execute() {
 
-    //ReadCommunicationsFile();
+    if(_useCovariance){ReadInterfaceFile();}
     this->FillMetaDataTree();
 
     while ( _iterationCounter < _numberOfIterations ) {
@@ -148,7 +148,7 @@ void Fittino::NewCorrelatedSampler::Execute() {
     this->FillTree();
 
 
-    //PrintCommunicationsFile();
+    if(_useCovariance){PrintInterfaceFile();}
 
 
 
@@ -159,7 +159,7 @@ void Fittino::NewCorrelatedSampler::Execute() {
 void Fittino::NewCorrelatedSampler::UpdateModel() {
 
 
-        this->FillTree();
+        //this->FillTree();
 
 
         this->DoSampling();
@@ -228,6 +228,8 @@ void Fittino::NewCorrelatedSampler::UpdateModel() {
             else if (chi2 >= 6) _accPointsge6lt10++;
             else _accPointsge1lt6++;
 
+            this->FillTree();
+
             if(_model->GetCollectionOfParameters().At( 0)->GetValue() < _minX1) _minX1 = _model->GetCollectionOfParameters().At( 0)->GetValue();
             if(_model->GetCollectionOfParameters().At( 1)->GetValue() < _minX2) _minX2 = _model->GetCollectionOfParameters().At( 1)->GetValue();
             if(_model->GetCollectionOfParameters().At( 0)->GetValue() > _maxX1) _maxX1 = _model->GetCollectionOfParameters().At( 0)->GetValue();
@@ -242,11 +244,15 @@ void Fittino::NewCorrelatedSampler::UpdateModel() {
 
             for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
+                this->FillTree();
+
                 _model->GetCollectionOfParameters().At( k )->SetValue( _previousParameterValues.at(k) );
 
             }
 
         }
+
+
         if(chi2 < 1) _totalPointslt1++;
         else if (chi2 >= 10) _totalPointsge10++;
         else if (chi2 >= 6) _totalPointsge6lt10++;
@@ -455,12 +461,12 @@ void Fittino::NewCorrelatedSampler::FillStatusParameterVector(){
 
 
 
-void Fittino::NewCorrelatedSampler::PrintCommunicationsFile(){
+void Fittino::NewCorrelatedSampler::PrintInterfaceFile(){
     std::vector<std::vector<double> > data;
     std::vector<double> row;
     //_communicationsFile.open("testtalk.txt");
     FILE *dataFile;
-    dataFile = fopen("testtalk.txt", "w");
+    dataFile = fopen(_interfaceFile.c_str(), "w");
 
     //write current point and covariance matrix into one 2D data vector
     for(int i = 0; i < _model->GetNumberOfParameters(); i++){ //current point first
@@ -494,10 +500,10 @@ void Fittino::NewCorrelatedSampler::PrintCommunicationsFile(){
 
 }
 
-void Fittino::NewCorrelatedSampler::ReadCommunicationsFile(){
+void Fittino::NewCorrelatedSampler::ReadInterfaceFile(){
 
-    //_communicationsFile.open("testtalk.txt"); //file "testtalk.txt" must exist in current directory
-    std::ifstream dataFile("testtalk.txt");
+    //std::ifstream dataFile("testtalk.txt");
+    std::ifstream dataFile(_interfaceFile.c_str());
     std::cout<<"opened file\n";
     std::vector<std::vector<double> > data;
     std::cout<<"made data vector\n";
