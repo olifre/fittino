@@ -18,9 +18,9 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <iostream>
-
 #include <cmath>
+
+#include <boost/lexical_cast.hpp>
 
 #include "TTree.h"
 #include "TBranch.h"
@@ -33,9 +33,7 @@
 
 Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
   : SamplerBase( model, ptree ), 
-
     _previousChi2( ptree.get<double>("Chi2", std::numeric_limits<double>::max() ) ),
-    //_previousChi2( model->GetChi2() ),
     _previousParameterValues( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
     _acceptCounter( 1 ),
     _previousRho( 1. ),
@@ -51,7 +49,6 @@ Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, cons
     }
 
     _statusParameterVector.push_back( new Quantity( "PointAccepted", "PointAccepted", 0. , 0., 1. ) );
-  
 
 }
 
@@ -71,13 +68,12 @@ void Fittino::MarkovChainSampler::Execute() {
         _iterationCounter++;
         GetStatusParameterVector()->at( 1 )->SetValue( _iterationCounter );
 
-        //_chi2 = _model->GetChi2();
-        //GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
-
         this->UpdateModel();
 
     }
+
     _branchPointAccepted->SetStatus( 1 );
+
 }
 
 void Fittino::MarkovChainSampler::PrintSteeringParameters() const {
@@ -90,11 +86,6 @@ void Fittino::MarkovChainSampler::PrintSteeringParameters() const {
 
 void Fittino::MarkovChainSampler::UpdateModel() {
 
-    //try {
-
-    //this->FillTree();
-
-    // Update model.
     if( _iterationCounter != 1 ) {
 
       for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
@@ -102,12 +93,11 @@ void Fittino::MarkovChainSampler::UpdateModel() {
         _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfParameters().At( k )->GetValue() + _randomGenerator->Gaus( 0., _model->GetCollectionOfParameters().At( k )->GetError() ) );
 
       }
+
     }
 
-    // Calclate chi2.
+    _chi2 = _model->GetChi2();
 
-    double chi2 = _model->GetChi2();
-    _chi2 = chi2;
     GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
     
     AnalysisTool::PrintStatus();
@@ -159,7 +149,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
        
         if ( pointAccepted ) {
             _previousRho        = rho;
-            _previousChi2       = chi2;
+            _previousChi2       = _chi2;
         
             for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
@@ -172,10 +162,9 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
         if( _iterationCounter == _numberOfFirstIteration ) return;
         if( !pointAccepted ) {
-            
-            chi2 = _previousChi2;
-            rho = _previousRho;
-            _chi2 = chi2;
+
+            rho = _previousRho;            
+            _chi2 = _previousChi2;
             GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
             
             for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
@@ -210,11 +199,15 @@ void Fittino::MarkovChainSampler::UpdateModel() {
         
         // if an interface file was used, and the first point in the new run was not accepted, fill that point into the ntuple first!
         if( _iterationCounter == _numberOfFirstIteration ) {
+
             double firstNewChi2 = _chi2;
         
             std::vector<double> firstNewPointParameterValues;
+
             for( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+
                 firstNewPointParameterValues.push_back( _model->GetCollectionOfParameters().At( k )->GetValue() );
+
             }
         
             for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
@@ -224,13 +217,28 @@ void Fittino::MarkovChainSampler::UpdateModel() {
             }
 	    
 	    _chi2 = _model->GetChi2();
+
 	    if ( TMath::Abs( _chi2 - _previousChi2 ) > 0.01 ) {
 
-	      throw ConfigurationException("Chi2 from interface file does not fit to provided parameter.");
+	      Messenger::GetInstance()<<Messenger::ALWAYS<< "In iteration step "<< _iterationCounter<<Messenger::Endl;
+	      Messenger::GetInstance()<<Messenger::ALWAYS<< "Chi2 from interface file does not fit to provided parameter: Delta Chi2 =  "<< _chi2 - _previousChi2<<Messenger::Endl;
+
+		for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+
+		  Messenger::GetInstance()<<_model->GetCollectionOfParameters().At( k )->GetName()<<" = "<<_model->GetCollectionOfParameters().At( k )->GetValue()<<Messenger::Endl;
+
+		}
+
+		Messenger::GetInstance()<<Messenger::ALWAYS<< "_chi2="<<_chi2<<Messenger::Endl;
+		Messenger::GetInstance()<<Messenger::ALWAYS<< "_previousChi2="<<_previousChi2<<Messenger::Endl;
+
+
+		throw ConfigurationException("Chi2 from interface file does not match. " );
 
 	    }
 
             GetStatusParameterVector()->at( 0 ) -> SetValue( _chi2 );
+
             this->FillTree();
         
             _iterationCounter++;
@@ -244,19 +252,35 @@ void Fittino::MarkovChainSampler::UpdateModel() {
                 _model->GetCollectionOfParameters().At( k )->SetValue( firstNewPointParameterValues.at( k ) );
             
             }
-
 	    
 	    _chi2 = _model->GetChi2();
+
+
 	    if ( TMath::Abs( _chi2 - firstNewChi2 ) > 0.01 ) {
 
-	      throw ConfigurationException("Inconsistency in chi2.");
+		std::string message = "Inconsistency in chi2: Delta chi2 = " + boost::lexical_cast<std::string>( _chi2 - firstNewChi2 ) ;
+
+		Messenger::GetInstance()<<Messenger::ALWAYS<< message<<Messenger::Endl;
+
+		for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+
+		  Messenger::GetInstance()<<Messenger::ALWAYS<<_model->GetCollectionOfParameters().At( k )->GetName()<<" = "<<_model->GetCollectionOfParameters().At( k )->GetValue()<<Messenger::Endl;
+
+		}
+
+		Messenger::GetInstance()<<Messenger::ALWAYS<< "_chi2="<<_chi2<<Messenger::Endl;
+		Messenger::GetInstance()<<Messenger::ALWAYS<< "firstNewChi2="<<firstNewChi2<<Messenger::Endl;
+
+		throw ConfigurationException( "Inconsistency in chi2." );
 
 	    }
 
 	    GetStatusParameterVector()->at( 0 ) -> SetValue( _chi2 );
             
         }
+
         // save point and increment counter for last accepted point.
+
         this->FillTree();
         _acceptCounter++;
 
@@ -269,20 +293,5 @@ void Fittino::MarkovChainSampler::UpdateModel() {
         }
 
     }
-
-    //}
-    //catch ( const CalculatorException& modelCalculatorException ) {
-
-    //    std::cout << "\n" << modelCalculatorException.what() << "\n" << std::endl;
-    //
-    //    // Reset the parameter values.
-
-    //    for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
-
-    //        _model->GetCollectionOfParameters().At( k )->SetValue( _previousParameterValues.at( k ) );
-
-    //    }
-    //
-    //}
 
 }
