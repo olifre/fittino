@@ -435,45 +435,6 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
 
 }
 
-Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const {
-
-    std::string type = ptree.get<std::string>( "PredictionType" );
-    std::string calculatorName = ptree.get<std::string>( "CalculatorName", "NONE" );
-
-    CalculatorBase *calculator = NULL;
-    if ( calculatorName != "NONE" ) {
-
-        calculator = calculators.At( ptree.get<std::string>( "CalculatorName", "NONE" ) );
-
-    }
-
-    if ( type == "Simple" ) {
-
-        if ( calculator ) {
-
-            return new Observable( ptree, new SimplePrediction( ptree, calculator ) );
-
-        }
-        else {
-
-            return new Observable( ptree, new SimplePrediction( ptree.get<std::string>( "Name" ), "", 0. ) );
-
-        }
-
-    }
-    //else if ( type == "NONE" ) {
-
-    //    return new Observable( ptree, NULL );
-
-    //}
-    else {
-
-        throw ConfigurationException( "Prediction type" + type + " not known." );
-
-    }
-
-}
-
 Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::PredictionBase*>& predictions, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const {
 
     std::string name = ptree.get<std::string>( "Name", "NONE" );
@@ -487,7 +448,7 @@ Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::prop
 
     }
 
-    return CreateObservable( ptree, calculators );
+    throw ConfigurationException("No prediction with name " + name +  " exist.");
 
 }
 
