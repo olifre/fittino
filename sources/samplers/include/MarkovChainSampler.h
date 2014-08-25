@@ -48,8 +48,8 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
+      bool                   _pointAccepted;
       double                 _previousChi2;
-      double                 _previousRho;
       /*!
        *  Stores the configured maximal number of iteration steps.
        */
@@ -67,6 +67,8 @@ namespace Fittino {
       virtual void           Execute();
       virtual void           PrintSteeringParameters() const;
       virtual void           UpdateModel();
+      void                   UpdateParameterPoint();
+      bool                   IsAccepted();
 
       /*! \endcond UML */
 

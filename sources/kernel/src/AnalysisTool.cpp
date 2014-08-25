@@ -94,16 +94,11 @@ void Fittino::AnalysisTool::FillTree() {
 
     }
 
-    // double m0 = _model->GetCollectionOfQuantities().At("P_M0")->GetValue(); 
-    //  double hschi2 = _model->GetCollectionOfQuantities().At("Chi2_HSChi2")->GetValue(); 
-    
-    // if ( ( m0<3500 && m0>2500 && hschi2<31.5) || ( hschi2<28 && m0>7000 && m0<8000 ) || hschi2>41.5 ) { //small obs set
-
-    // if ( ( m0<3500 && m0>2500 && hschi2<108) || ( hschi2<102 && m0>7000 && m0<8000 ) || hschi2>116 ) { //large obs set
-
-    // fillTree = false; 
-
-    // }
+    //    double m0 = _model->GetCollectionOfQuantities().At("P_M0")->GetValue(); 
+    //    double hschi2 = _model->GetCollectionOfQuantities().At("Chi2_AbsUnc_MCTopMass_NoHB_PDGHiggsMass_NoHiggsRates")->GetValue(); 
+    //    if ( ( m0<3500 && m0>2500 && hschi2<20.5) || ( hschi2<16.5 && m0>7000 && m0<8000 )  ) { 
+    //      fillTree = false; 
+    //    }
 
     if ( fillTree ) {
 

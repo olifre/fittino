@@ -36,7 +36,6 @@ Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, cons
     _previousChi2( ptree.get<double>("Chi2", std::numeric_limits<double>::max() ) ),
     _previousParameterValues( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
     _acceptCounter( 1 ),
-    _previousRho( 1. ),
     _numberOfFirstIteration( _iterationCounter+1 ),
     _numberOfIterations( _iterationCounter + ptree.get<int>( "NumberOfIterations" ) ) {
 
@@ -84,45 +83,31 @@ void Fittino::MarkovChainSampler::PrintSteeringParameters() const {
 
 }
 
+void Fittino::MarkovChainSampler::UpdateParameterPoint() {
+
+  if( _iterationCounter == 1 ) return;
+
+  for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+
+    _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfParameters().At( k )->GetValue() + _randomGenerator->Gaus( 0., _model->GetCollectionOfParameters().At( k )->GetError() ) );
+
+  }
+
+}
+
 void Fittino::MarkovChainSampler::UpdateModel() {
 
-    if( _iterationCounter != 1 ) {
-
-      for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
-
-        _model->GetCollectionOfParameters().At( k )->SetValue( _model->GetCollectionOfParameters().At( k )->GetValue() + _randomGenerator->Gaus( 0., _model->GetCollectionOfParameters().At( k )->GetError() ) );
-
-      }
-
-    }
+    UpdateParameterPoint();
 
     _chi2 = _model->GetChi2();
-
     GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
-    
+
+    _pointAccepted = IsAccepted();
+
     AnalysisTool::PrintStatus();
-
-    double DeltaChi2 = _chi2 - _previousChi2;
-    double rho = exp(-DeltaChi2/2.);
-    bool pointAccepted = true;
     
-    if ( rho < _randomGenerator->Uniform( 1. ) ) pointAccepted = false;
-    
-    for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+    if ( _pointAccepted ) {
 
-        if (    _model->GetCollectionOfParameters().At( k )->GetValue() < _model->GetCollectionOfParameters().At( k )->GetLowerBound()
-                || _model->GetCollectionOfParameters().At( k )->GetValue() > _model->GetCollectionOfParameters().At( k )->GetUpperBound() ) {
-
-            pointAccepted = false;
-            break;
-
-        }
-
-    }
-    
-    if ( pointAccepted ) {
-
-        _previousRho        = rho;
         _previousChi2       = _chi2;
         
         for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
@@ -133,14 +118,13 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
     }
 
-    if ( pointAccepted || _iterationCounter == _numberOfIterations ) {
+    if ( _pointAccepted || _iterationCounter == _numberOfIterations ) {
     
         this->FillTree();
 
         if( _iterationCounter == _numberOfFirstIteration ) return;
-        if( !pointAccepted ) {
+        if( !_pointAccepted ) {
 
-            rho = _previousRho;            
             _chi2 = _previousChi2;
             GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
             
@@ -163,7 +147,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
             _branchPointAccepted->Fill();
         }
 
-        if( pointAccepted && _iterationCounter == _numberOfIterations ) {
+        if( _pointAccepted && _iterationCounter == _numberOfIterations ) {
             GetStatusParameterVector()->at( 2 )->SetValue( 1. );
             _branchPointAccepted->Fill();
         }
@@ -272,3 +256,27 @@ void Fittino::MarkovChainSampler::UpdateModel() {
     }
 
 }
+
+
+bool Fittino::MarkovChainSampler::IsAccepted() {
+
+    for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+
+        if (    _model->GetCollectionOfParameters().At( k )->GetValue() < _model->GetCollectionOfParameters().At( k )->GetLowerBound()
+                || _model->GetCollectionOfParameters().At( k )->GetValue() > _model->GetCollectionOfParameters().At( k )->GetUpperBound() ) {
+
+          return false;
+
+        }
+
+    }
+
+    double DeltaChi2 = _chi2 - _previousChi2;
+    double rho = exp(-DeltaChi2/2.);
+    double randomThreshold = _randomGenerator->Uniform( 1. );
+    if ( rho < randomThreshold ) return false; 
+
+    return true;
+
+}
+
