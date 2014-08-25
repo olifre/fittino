@@ -7,8 +7,8 @@
 *                                                                              *
 * File        CheckMATECalculator.cpp                                          *
 *                                                                              *
-* Description      Wrapper around CheckMATE                                    *
-* Authors: Uddhipan Thakur                                                                      *
+* Description:  Wrapper around CheckMATE                                       *
+* Authors:      Uddhipan Thakur                                                *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -31,19 +31,62 @@
 #include "Executor.h"
 #include <iostream>
 #include <fstream>
-
+#include <map>
 Fittino::CheckMATECalculator::CheckMATECalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
   : CalculatorBase( model ), 
-    // Initialize input quantities.                                                                                                                                                      
-     _f_B  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_B.Name", "f_B" ) )->GetValue() ),
-     _f_W  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_W.Name", "f_W" ) )->GetValue() ),
-     _f_GG  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_GG.Name", "f_GG" ) )->GetValue() ),
-     _f_t  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_t.Name", "f_t" ) )->GetValue() ) 
 
-{
+    // Initialize input quantities.                                                                                                                                                   \
+                                                                                                                                                                                       
+  _f_B  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_B.Name", "f_B" ) )->GetValue() ),
+  _f_W  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_W.Name", "f_W" ) )->GetValue() ),
+  _f_GG  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_GG.Name", "f_GG" ) )->GetValue() ),
+  _f_t  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_t.Name", "f_t" ) )->GetValue() )
+
     
+{
+  std::ifstream file( "/lustre/user/thakur/programs/CheckMATE/lustreversion/results/atlas_conf_2013_049/analysis/000_atlas_conf_2013_049_cutflow.dat" );
+ std::string line;
+ 
+ TString character;
+ 
+ while ( ! character.BeginsWith( "Cut " ) ) {
+  
+  std::getline( file, line );
+  character = line.c_str();
+  
+ }
 
-     _name = "CheckMATE";
+ std::vector<std::string> vector_name; 
+
+ while ( file ) {
+  
+  std::string name;
+  double weight1;
+  double nevents;
+  double weight2;
+  double acc;
+  file >> name >> weight1 >> weight2 >> acc >> nevents;
+  
+  character = name.c_str();
+  if (name=="") break;
+
+  vector_name.push_back(name);
+  _acc_map[name]=0;
+
+  std::cout<<"name: "<<name<<std::endl;
+    
+  
+ }
+
+ // loop over i
+
+ for(int i = 0; i < vector_name.size(); ++i) {
+
+   AddQuantity( new SimplePrediction(vector_name[i] , "", _acc_map[vector_name[i]] ) );
+   
+ }
+     
+    _name = "CheckMATE";
 
 
    Messenger& messenger = Messenger::GetInstance();
@@ -79,8 +122,10 @@ void Fittino::CheckMATECalculator::CalculatePredictions() {
 
   Executor executor("/lustre/user/thakur/programs/CheckMATE/lustreversion/bin/CheckMATE", "CheckMATE");
   executor.AddArgument(inputfile);
-  executor.Execute();
 
+  std::cout<<"Start ChekMATE execution "<<std::endl;
+  executor.Execute();
+  std::cout<<"Finished ChekMATE execution "<<std::endl;
 
   //Storing the cutflow in doubles.
 
@@ -97,13 +142,10 @@ void Fittino::CheckMATECalculator::CalculatePredictions() {
   }
 
   
-  //std::map<std::string, double, double, double > afout;
-  
+   
   while ( file ) {
 
-    //  if (name != "Cut") {}
-
-    
+        
     std::string name;
     double Sum_W;
     double Sum_W2;
@@ -112,11 +154,10 @@ void Fittino::CheckMATECalculator::CalculatePredictions() {
     file >> name >> Sum_W >> Sum_W2 >> Acc >> N_Norm;
 
     character = name.c_str();
-    //if (character.BeginsWith( " " )) break;
     if (name=="") break;
+    _acc_map[name]=Acc;
     std::cout<<"name: "<<name<<" acc: "<<Acc<<std::endl;
-    // afout[name] = Sum_W;
-    
+        
   }
 
 }

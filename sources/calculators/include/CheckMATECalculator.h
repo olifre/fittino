@@ -23,6 +23,7 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include "CalculatorBase.h"
+#include <map> 
 
 class TTree;
 class TFile;
@@ -60,6 +61,8 @@ namespace Fittino {
       virtual void        Initialize();
       virtual void        SetupMeasuredValues();
 
+           
+
     private:
       int           _f_B;
       /*! 
@@ -74,7 +77,7 @@ namespace Fittino {
        */
       double        _f_t;
 
-
+      std::map<std::string, double> _acc_map;
   };
 
 }
