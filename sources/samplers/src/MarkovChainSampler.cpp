@@ -95,6 +95,33 @@ void Fittino::MarkovChainSampler::UpdateParameterPoint() {
 
 }
 
+void Fittino::MarkovChainSampler::FillBranchPointAccepted() {
+
+    _branchPointAccepted->SetStatus( 1 );
+
+    GetStatusParameterVector()->at( 2 )->SetValue( _acceptCounter );
+    _branchPointAccepted->Fill();
+
+    for( unsigned int j = 0; j < _acceptCounter - 1; j++ ) {
+
+        GetStatusParameterVector()->at( 2 )->SetValue( 0. );
+        _branchPointAccepted->Fill();
+
+    }
+
+    if( _pointAccepted && _iterationCounter == _numberOfIterations ) {
+
+            GetStatusParameterVector()->at( 2 )->SetValue( 1. );
+            _branchPointAccepted->Fill();
+
+    }
+
+    _acceptCounter = 1;
+
+    _branchPointAccepted->SetStatus( 0 );
+
+}
+
 void Fittino::MarkovChainSampler::UpdateModel() {
 
     UpdateParameterPoint();
@@ -138,22 +165,7 @@ void Fittino::MarkovChainSampler::UpdateModel() {
 
         }
 
-        _branchPointAccepted->SetStatus( 1 );
-        GetStatusParameterVector()->at( 2 )->SetValue( _acceptCounter );
-        _branchPointAccepted->Fill();
-
-        GetStatusParameterVector()->at( 2 )->SetValue( 0. );
-        for( unsigned int j = 0; j < _acceptCounter - 1; j++ ) {
-            _branchPointAccepted->Fill();
-        }
-
-        if( _pointAccepted && _iterationCounter == _numberOfIterations ) {
-            GetStatusParameterVector()->at( 2 )->SetValue( 1. );
-            _branchPointAccepted->Fill();
-        }
-
-        _acceptCounter = 1;
-        _branchPointAccepted->SetStatus( 0 );
+        FillBranchPointAccepted();
 
     }
     else {

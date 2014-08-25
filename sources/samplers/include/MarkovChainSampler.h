@@ -68,7 +68,9 @@ namespace Fittino {
       virtual void           PrintSteeringParameters() const;
       virtual void           UpdateModel();
       void                   UpdateParameterPoint();
+      void                   FillBranchPointAccepted();
       bool                   IsAccepted();
+
 
       /*! \endcond UML */
 
