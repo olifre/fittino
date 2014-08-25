@@ -102,62 +102,39 @@ void Fittino::MarkovChainSampler::UpdateModel() {
     
     AnalysisTool::PrintStatus();
 
-
-    // Calculate DeltaChi2 and likelihood;
     double DeltaChi2 = _chi2 - _previousChi2;
-
-    // Decide whether point shall be accepted.
-
-    bool pointAccepted = false;
-    //GetStatusParameterVector()->at( 2 )->SetValue( pointAccepted );
-
     double rho = exp(-DeltaChi2/2.);
+    bool pointAccepted = true;
     
-    if ( rho >= 1. ) {
-
-        pointAccepted = true;
-        //GetStatusParameterVector()->at( 2 )->SetValue( pointAccepted );
-
-    }
-    else {
-
-        double randomThreshold = _randomGenerator->Uniform( 0., 1. );
-        if ( rho > randomThreshold ) {
-
-            pointAccepted = true;
-            //GetStatusParameterVector()->at( 2 )->SetValue( pointAccepted );
-
-        }
-
-    }
-    // Further check if any parameter value is out of bounds.
-
+    if ( rho < _randomGenerator->Uniform( 1. ) ) pointAccepted = false;
+    
     for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
         if (    _model->GetCollectionOfParameters().At( k )->GetValue() < _model->GetCollectionOfParameters().At( k )->GetLowerBound()
                 || _model->GetCollectionOfParameters().At( k )->GetValue() > _model->GetCollectionOfParameters().At( k )->GetUpperBound() ) {
 
             pointAccepted = false;
-            //GetStatusParameterVector()->at( 2 )->SetValue( pointAccepted );
             break;
+
+        }
+
+    }
+    
+    if ( pointAccepted ) {
+
+        _previousRho        = rho;
+        _previousChi2       = _chi2;
+        
+        for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+
+            _previousParameterValues.at( k ) = _model->GetCollectionOfParameters().At( k )->GetValue();
 
         }
 
     }
 
     if ( pointAccepted || _iterationCounter == _numberOfIterations ) {
-       
-        if ( pointAccepted ) {
-            _previousRho        = rho;
-            _previousChi2       = _chi2;
-        
-            for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
-
-                _previousParameterValues.at( k ) = _model->GetCollectionOfParameters().At( k )->GetValue();
-
-            }
-        
-        }
+    
         this->FillTree();
 
         if( _iterationCounter == _numberOfFirstIteration ) return;
