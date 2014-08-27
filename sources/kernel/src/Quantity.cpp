@@ -69,6 +69,14 @@ Fittino::Quantity::~Quantity() {
 
 }
 
+bool Fittino::Quantity::IsInBounds() const {
+
+  if (  GetValue() < GetUpperBound() && GetValue() > GetLowerBound() ) return true;
+
+  return false;
+
+}
+
 double Fittino::Quantity::GetLowerBound() const {
 
     return _lowerBound;

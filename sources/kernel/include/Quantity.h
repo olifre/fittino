@@ -60,6 +60,7 @@ namespace Fittino {
        *  Standard destructor.
        */
       ~Quantity();
+      bool                  IsInBounds() const;
       /*!
        *  Returns the lower bound of the quantity.
        */
