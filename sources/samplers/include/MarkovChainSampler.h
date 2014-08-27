@@ -49,14 +49,17 @@ namespace Fittino {
       /*! \cond UML */
     private:
       bool                   _pointAccepted;
+      bool                   _strictBounds;
       double                 _previousChi2;
+      double                 _firstPointScalefactor;
       /*!
        *  Stores the configured maximal number of iteration steps.
        */
       unsigned int           _numberOfIterations;
       unsigned int           _numberOfFirstIteration;
       std::vector<double>    _previousParameterValues;
-      unsigned int           _acceptCounter;
+      unsigned int           _weight;
+      unsigned int           _numberOfRejectedPoints;
 
       /*!
        *  Used to count how often a point is accepted.
@@ -64,13 +67,16 @@ namespace Fittino {
       TBranch*               _branchPointAccepted;
 
     private:
-      virtual void           Execute();
-      virtual void           PrintSteeringParameters() const;
-      virtual void           UpdateModel();
-      void                   UpdateParameterPoint();
+      void                   Execute();
+      void                   PrintSteeringParameters() const;
+      void                   UpdateModel();
+      virtual void           UpdateParameterPoint( double scalefactor );
       void                   FillBranchPointAccepted();
       bool                   IsAccepted();
-
+      virtual void           UpdateMemory();
+      void                   ResetParameters();
+      void                   CompareChi2();
+      virtual void           UpdatePropertyTree();
 
       /*! \endcond UML */
 
