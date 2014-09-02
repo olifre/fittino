@@ -50,7 +50,8 @@ double Fittino::Alpine2Model::TestModelFunction() {
         Alpine2Model *= sqrt(GetCollectionOfParameters().At(i)->GetValue()) * sin(GetCollectionOfParameters().At(i)->GetValue());
     }
 
-    if(std::max(GetCollectionOfParameters().At(0)->GetValue(), GetCollectionOfParameters().At(1)->GetValue()) > 10 || std::min(GetCollectionOfParameters().At(0)->GetValue(), GetCollectionOfParameters().At(1)->GetValue()) < 1) return 1000000;
-    else return -2.4 * Alpine2Model; //negate to create unique minimum
+    if(GetCollectionOfParameters().At(0)->GetValue()>=GetCollectionOfParameters().At(0)->GetLowerBound() && GetCollectionOfParameters().At(0)->GetValue()<=GetCollectionOfParameters().At(0)->GetUpperBound() && GetCollectionOfParameters().At(1)->GetValue()>=GetCollectionOfParameters().At(1)->GetLowerBound() && GetCollectionOfParameters().At(1)->GetValue()<=GetCollectionOfParameters().At(1)->GetUpperBound()){
+        return -2.4*Alpine2Model;
+    } else return 100000;
 
 }

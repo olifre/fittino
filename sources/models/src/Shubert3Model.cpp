@@ -65,7 +65,7 @@ double Fittino::Shubert3Model::TestModelFunction() {
 
     }
 
-    if(GetCollectionOfParameters().At(0)->GetValue()>=0.25 && GetCollectionOfParameters().At(0)->GetValue()<=10.25 && GetCollectionOfParameters().At(1)->GetValue()>=0.25 && GetCollectionOfParameters().At(1)->GetValue()<=10.25){
+    if(GetCollectionOfParameters().At(0)->GetValue()>=GetCollectionOfParameters().At(0)->GetLowerBound() && GetCollectionOfParameters().At(0)->GetValue()<=GetCollectionOfParameters().At(0)->GetUpperBound() && GetCollectionOfParameters().At(1)->GetValue()>=GetCollectionOfParameters().At(1)->GetLowerBound() && GetCollectionOfParameters().At(1)->GetValue()<=GetCollectionOfParameters().At(1)->GetUpperBound()){
         return Shubert3Model;
     } else return 1000000.;
 }

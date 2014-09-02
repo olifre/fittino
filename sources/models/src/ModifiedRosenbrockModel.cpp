@@ -49,15 +49,17 @@ double Fittino::ModifiedRosenbrockModel::ToRadians(double x){
 double Fittino::ModifiedRosenbrockModel::TestModelFunction() {
 
     double ModifiedRosenbrockModel = 0;
-    ModifiedRosenbrockModel = 74 + (100*pow((GetCollectionOfParameters().At(1)->GetValue() - pow(GetCollectionOfParameters().At(0)->GetValue(), 2)), 2)) + pow((1, GetCollectionOfParameters().At(0)->GetValue()), 2) - (400 * exp(-10 * (pow((GetCollectionOfParameters().At(0)->GetValue() + 1), 2) + pow((GetCollectionOfParameters().At(1)->GetValue() + 1), 2))));
+    ModifiedRosenbrockModel = 74 + (110*pow((GetCollectionOfParameters().At(1)->GetValue() - pow(GetCollectionOfParameters().At(0)->GetValue(), 2)), 2)) + pow((1 - GetCollectionOfParameters().At(0)->GetValue()), 2) - (400 * exp(-10 * (pow((GetCollectionOfParameters().At(0)->GetValue() + 1), 2) + pow((GetCollectionOfParameters().At(1)->GetValue() + 1), 2))));
 
     //if(std::max(GetCollectionOfParameters().At(0)->GetValue(), GetCollectionOfParameters().At(1)->GetValue()) < 8 && std::min(GetCollectionOfParameters().At(0)->GetValue(), GetCollectionOfParameters().At(1)->GetValue()) > -2) return (20/65) * ModifiedRosenbrockModel;
     //else return 0; //negate to create unique minimum
 
     //if(std::max(GetCollectionOfParameters().At(0)->GetValue(), GetCollectionOfParameters().At(1)->GetValue()) > 5 || std::min(GetCollectionOfParameters().At(0)->GetValue(), GetCollectionOfParameters().At(1)->GetValue()) < -5) return 1000000;
     double stretch = 20./115.;
-    std::cout<<stretch<<"\n";
-    return stretch*ModifiedRosenbrockModel;
+    //std::cout<<stretch<<"\n";
+    if(GetCollectionOfParameters().At(0)->GetValue()>=GetCollectionOfParameters().At(0)->GetLowerBound() && GetCollectionOfParameters().At(0)->GetValue()<=GetCollectionOfParameters().At(0)->GetUpperBound() && GetCollectionOfParameters().At(1)->GetValue()>=GetCollectionOfParameters().At(1)->GetLowerBound() && GetCollectionOfParameters().At(1)->GetValue()<=GetCollectionOfParameters().At(1)->GetUpperBound()){
+        return stretch*ModifiedRosenbrockModel;
+    } else return 100000;
     //return GetCollectionOfParameters().At(0)->GetValue();
 
 }

@@ -52,6 +52,8 @@ double Fittino::RosenbrockModel::TestModelFunction() {
 
     }
 
-    return rosenbrock;
-
+    if(GetCollectionOfParameters().At(0)->GetValue()>=GetCollectionOfParameters().At(0)->GetLowerBound() && GetCollectionOfParameters().At(0)->GetValue()<=GetCollectionOfParameters().At(0)->GetUpperBound() && GetCollectionOfParameters().At(1)->GetValue()>=GetCollectionOfParameters().At(1)->GetLowerBound() && GetCollectionOfParameters().At(1)->GetValue()<=GetCollectionOfParameters().At(1)->GetUpperBound()){
+     return rosenbrock;
+    }
+    else return 100000;
 }
