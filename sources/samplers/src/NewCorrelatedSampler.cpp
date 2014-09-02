@@ -121,6 +121,7 @@ Fittino::NewCorrelatedSampler::~NewCorrelatedSampler() {
 
 void Fittino::NewCorrelatedSampler::Execute() {
 
+    std::cout<<_useCovariance<<"\n";
     if(_useCovariance){ReadInterfaceFile();}
     this->FillMetaDataTree();
 
@@ -134,7 +135,7 @@ void Fittino::NewCorrelatedSampler::Execute() {
 
         //AnalysisTool::PrintStatus();
 
-
+        //std::cout<<_chi2<<"is chi2 in iteration "<<_iterationCounter<<"\n";
         this->UpdateModel();
         if(_poppedFirst){
             std::cout<<_iterationCounter;
@@ -147,7 +148,7 @@ void Fittino::NewCorrelatedSampler::Execute() {
     _statusParameterVector.push_back( new Quantity("ScalingFactor", "ScalingFactor", _scalingFactor, _scalingFactor, _scalingFactor));
     this->FillTree();
 
-
+    std::cout<<_useCovariance<<"\n";
     if(_useCovariance){PrintInterfaceFile();}
 
 
@@ -241,10 +242,8 @@ void Fittino::NewCorrelatedSampler::UpdateModel() {
         }
         else {
 
-
+            this->FillTree();
             for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
-
-                this->FillTree();
 
                 _model->GetCollectionOfParameters().At( k )->SetValue( _previousParameterValues.at(k) );
 
@@ -266,10 +265,11 @@ void Fittino::NewCorrelatedSampler::UpdateModel() {
 void Fittino::NewCorrelatedSampler::PushNewPoint(){
 
     _memory.push(_previousParameterValues);
-    //std::cout<<_memory.size()<<" points in queue";
+    std::cout<<_memory.size()<<" points in queue\n";
 
     //update covariance matrix
     if(_numberOfAcceptedPoints >= _updateAfter){
+        std::cout<<_numberOfAcceptedPoints<<" points accepted\n covariance matrix:\n";
 
         for(unsigned int i=0; i<_model->GetNumberOfParameters(); i++){
 
@@ -277,8 +277,10 @@ void Fittino::NewCorrelatedSampler::PushNewPoint(){
 
             _covarianceMatrix[i][k] = _expectationMatrix[i][k] - (_currentExpectationValues.at(i) * _currentExpectationValues.at(k));
             _covarianceMatrix[k][i] = _covarianceMatrix[i][k];
+            std::cout<<_covarianceMatrix[i][k]<<" ";
 
             }
+            std::cout<<"\n";
 
             _standardDeviations[i] = pow(_covarianceMatrix[i][i], 0.5);
 
@@ -288,7 +290,7 @@ void Fittino::NewCorrelatedSampler::PushNewPoint(){
     switch (_memory.size()){
         case 0: break;
         case 1: for(unsigned int i = 0; i < _model->GetNumberOfParameters(); i++){
-
+                    std::cout<<"case 1\n";
                     _currentExpectationValues[i] = _model->GetCollectionOfParameters().At( i)->GetValue();
                     for(unsigned int k = i; k < _model->GetNumberOfParameters(); k++){
                        _expectationMatrix[i][k] = (_model->GetCollectionOfParameters().At( i)->GetValue() * _model->GetCollectionOfParameters().At( k )->GetValue());
@@ -296,13 +298,17 @@ void Fittino::NewCorrelatedSampler::PushNewPoint(){
                     }
                 }
                 break;
-        default: for(unsigned int i = 0; i < _model->GetNumberOfParameters(); i++){
-
+        default: std::cout<<"expectation matrix:\n";
+                for(unsigned int i = 0; i < _model->GetNumberOfParameters(); i++){
+                    std::cout<<"default\n";
                     _currentExpectationValues[i] = (((_memory.size() - 1) * _currentExpectationValues[i]) + _model->GetCollectionOfParameters().At( i)->GetValue()) / _memory.size();
-                    for(unsigned int k = i; k < _model->GetNumberOfParameters(); k++){
+                    //std::cout<<i<<"th expectation value is "<<_currentExpectationValues[i]<<"\n";
+                    for(unsigned int k = 0; k <=i ; k++){
                        _expectationMatrix[i][k] = (((_memory.size() - 1)*_expectationMatrix[i][k]) + (_model->GetCollectionOfParameters().At( i)->GetValue() * _model->GetCollectionOfParameters().At( k )->GetValue())) / _memory.size();
                        _expectationMatrix[k][i] = _expectationMatrix[i][k];
+                       std::cout<<_expectationMatrix[i][k]<<" ";
                     }
+                    std::cout<<"\n";
                 }
                 break;
 
@@ -347,7 +353,7 @@ void Fittino::NewCorrelatedSampler::PopOldestPoint(){
 
 void Fittino::NewCorrelatedSampler::DoSampling(){
 
-
+    //std::cout<<"sampling...\n";
     TVectorD y( _model->GetNumberOfParameters() );
 
     double scalingFactor = 1.;
@@ -386,6 +392,7 @@ void Fittino::NewCorrelatedSampler::DoSampling(){
         double newstep = _randomGenerator->Gaus(0., TMath::Sqrt(covariantEigen.GetEigenValues()[i] ) );
         //double newstep = gRandom->Gaus(0., 1.);
         y[i] = newstep;
+        //std::cout<<"y["<<i<<"] is "<<y[i]<<"\n";
         //_statusParameterVector[i+3]->SetValue(newstep);
 
    }
@@ -398,6 +405,7 @@ void Fittino::NewCorrelatedSampler::DoSampling(){
        //y[i] += _currentExpectationValues.at(i);
        y[i] += _model->GetCollectionOfParameters().At( i)->GetValue();
        _model->GetCollectionOfParameters().At(i)->SetValue(y[i]);
+       //std::cout<<"x"<<i+1<<" = "<<_model->GetCollectionOfParameters().At( i)->GetValue()<<"\n";
    }
 
 }
@@ -462,15 +470,23 @@ void Fittino::NewCorrelatedSampler::FillStatusParameterVector(){
 
 
 void Fittino::NewCorrelatedSampler::PrintInterfaceFile(){
+    std::cout<<"printing interface file\n";
     std::vector<std::vector<double> > data;
     std::vector<double> row;
     //_communicationsFile.open("testtalk.txt");
     FILE *dataFile;
-    dataFile = fopen(_interfaceFile.c_str(), "w");
+    std::cout<<"interface file is "<<_interfaceFile.c_str()<<"\n";
+    //dataFile = fopen(_interfaceFile.c_str(), "w");
+    dataFile = fopen("./data.txt", "w");
 
     //write current point and covariance matrix into one 2D data vector
     for(int i = 0; i < _model->GetNumberOfParameters(); i++){ //current point first
         row.push_back(_model->GetCollectionOfParameters().At(i)->GetValue());
+    }
+    data.push_back(row);
+    row.clear();
+    for(int i = 0; i < _model->GetNumberOfParameters(); i++){ //then expectation values
+        row.push_back(_currentExpectationValues[i]);
     }
     data.push_back(row);
     row.clear();
@@ -481,13 +497,14 @@ void Fittino::NewCorrelatedSampler::PrintInterfaceFile(){
         data.push_back(row);
         row.clear();
     }
-    for(int i = 0; i < _model->GetNumberOfParameters(); i++){
+    for(int i = 0; i < _model->GetNumberOfParameters(); i++){ //then expectation matrix
         for(int j = 0; j < _model->GetNumberOfParameters(); j++){
             row.push_back(_expectationMatrix[i][j]);
         }
         data.push_back(row);
         row.clear();
     }
+
 
     //write data to file
     for(int i = 0; i < data.size(); i++){
@@ -503,7 +520,9 @@ void Fittino::NewCorrelatedSampler::PrintInterfaceFile(){
 void Fittino::NewCorrelatedSampler::ReadInterfaceFile(){
 
     //std::ifstream dataFile("testtalk.txt");
-    std::ifstream dataFile(_interfaceFile.c_str());
+    //std::ifstream dataFile(_interfaceFile.c_str());
+    std::cout<<"interfaceFile is "<<_interfaceFile.c_str()<<"\n";
+    std::ifstream dataFile("./data.txt");
     std::cout<<"opened file\n";
     std::vector<std::vector<double> > data;
     std::cout<<"made data vector\n";
@@ -520,11 +539,13 @@ void Fittino::NewCorrelatedSampler::ReadInterfaceFile(){
             if(line=="") {std::cout<<"break\n"; break;}
             newrow.clear();
             while(ssline >> value){
+                std::cout<<value<<" is current value\n";
                 newrow.push_back(value);
+                std::cout<<newrow[newrow.size()-1]<<" is newest value in newrow\n";
             }
             data.push_back(newrow);
             std::cout<<"pushing row: \n";
-            for(int i = 0; i < newrow.size(); i++){Printf("%.25d ", newrow[i]);}
+            for(int i = 0; i < newrow.size(); i++){std::cout<<data[data.size()-1][i]<<" ";}
             std::cout<<"\n";
             row++;
         }
@@ -535,16 +556,22 @@ void Fittino::NewCorrelatedSampler::ReadInterfaceFile(){
         _useCovariance = true;
         for(int j = 0; j < _model->GetNumberOfParameters(); j++){ //last point from old job
             _model->GetCollectionOfParameters().At(j)->SetValue(data[0][j]);
+            _currentExpectationValues[j] = data[1][j];
         }
         std::cout<<"got old point\n";
         for(int i = 0; i < _model->GetNumberOfParameters(); i++){
             for(int j = 0; j < _model->GetNumberOfParameters(); j++){
-                _covarianceMatrix[i][j] = data[i+1][j];
-                _expectationMatrix[i][j] = data[i+_model->GetNumberOfParameters()][j];
+                _covarianceMatrix[i][j] = data[i+2][j];
+                _expectationMatrix[i][j] = data[i+_model->GetNumberOfParameters()+1][j];
             }
-            _currentExpectationValues[i] = _model->GetCollectionOfParameters().At(i)->GetValue();
         }
         std::cout<<"got matrices\n";
+        //push dummy points to queue
+        for(int i = 0; i < _updateAfter; i++){
+            _memory.push(_currentExpectationValues);
+            _numberOfAcceptedPoints++;
+        }
+        std::cout<<"pushed dummy points\n";
     }
 
     //_communicationsFile.close();
