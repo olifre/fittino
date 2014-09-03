@@ -34,11 +34,35 @@
 #include <map>
 Fittino::CheckMATECalculator::CheckMATECalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
   : CalculatorBase( model ),
-
+    
     _f_t  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_t.Name", "f_t" ) )->GetValue() )
 {
   
-  std::ifstream file( "/lustre/user/thakur/programs/CheckMATE/lustreversion/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_cutflow.dat" );
+  std::cout<<"USING _f_B = "<<_f_B<<std::endl;
+  std::string originalinputfile = "/lustre/user/thakur/programs/CheckMATE/lustreversion/runfittino.txt";
+  std::string inputfile = "fittino_checkmate_in.txt";
+  
+  std::ifstream infile( originalinputfile.c_str(), std::ios::binary );
+  std::ofstream outfile( inputfile.c_str(), std::ios::binary );
+  outfile << infile.rdbuf();
+  infile.close();
+  outfile.close();
+  
+  std::ofstream myfile;
+  myfile.open ( inputfile.c_str(), std::ios::app ) ;
+  myfile.close();
+  
+  
+  Executor executor("/lustre/user/thakur/programs/CheckMATE/lustreversion/bin/CheckMATE", "CheckMATE");
+  executor.AddArgument(inputfile);
+  
+  std::cout<<"Start CheckMATE execution "<<std::endl;
+  executor.Execute();
+  std::cout<<"Finished CheckMATE execution "<<std::endl;
+  
+  
+  std::cout<<"CheckMATE constructor."<<std::endl;
+  std::ifstream file( "/lustre/user/thakur/programs/CheckMATE/lustreversion/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_signal.dat" );
   std::string line;
   
   TString character;
@@ -69,10 +93,9 @@ Fittino::CheckMATECalculator::CheckMATECalculator( const PhysicsModel* model, co
     
     std::cout<<"name: "<<name<<std::endl;
     
-    
   }
   
-  // loop over i
+  // loop over i 
   
   for(int i = 0; i < vector_name.size(); ++i) {
     
@@ -91,11 +114,13 @@ Fittino::CheckMATECalculator::CheckMATECalculator( const PhysicsModel* model, co
   messenger << Messenger::ALWAYS << "test line 2" << Messenger::Endl;
   messenger << Messenger::ALWAYS << Messenger::Endl;
   std::string configurationOption1 = ptree.get<std::string>( "MyFirstConfigurationOption" );
+
+  std::cout<<"Finished CheckMATE constructor."<<std::endl;
+
 }
 
 Fittino::CheckMATECalculator::~CheckMATECalculator() {
-  
-  
+   
 }
 
 void Fittino::CheckMATECalculator::CalculatePredictions() {
@@ -123,7 +148,7 @@ void Fittino::CheckMATECalculator::CalculatePredictions() {
   
   //Storing the cutflow in doubles.
 
-  std::ifstream file( "/lustre/user/thakur/programs/CheckMATE/lustreversion/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_cutflow.dat" );
+  std::ifstream file( "/lustre/user/thakur/programs/CheckMATE/lustreversion/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_signal.dat" );
   std::string line;
 
   TString character;
