@@ -60,9 +60,11 @@ Fittino::CheckMATECalculator::CheckMATECalculator( const PhysicsModel* model, co
   executor.Execute();
   std::cout<<"Finished CheckMATE execution "<<std::endl;
   
-  
   std::cout<<"CheckMATE constructor."<<std::endl;
-  std::ifstream file( "/lustre/user/thakur/programs/CheckMATE/lustreversion/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_signal.dat" );
+
+  //the problem starts here 
+
+  std::ifstream file( "/lustre/user/thakur/programs/CheckMATE/lustreversion/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_cutflow.dat" );
   std::string line;
   
   TString character;
@@ -148,7 +150,7 @@ void Fittino::CheckMATECalculator::CalculatePredictions() {
   
   //Storing the cutflow in doubles.
 
-  std::ifstream file( "/lustre/user/thakur/programs/CheckMATE/lustreversion/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_signal.dat" );
+  std::ifstream file( "/lustre/user/thakur/programs/CheckMATE/lustreversion/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_cutflow.dat" );
   std::string line;
 
   TString character;
