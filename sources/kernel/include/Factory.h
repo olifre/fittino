@@ -94,6 +94,14 @@ namespace Fittino {
        *  </ul>
        */
       ModelBase* const           CreateModel( const std::string& type, boost::property_tree::ptree& ptree ) const;
+      /*!
+       *  Returns an Observable with a prediction according to the type specified in the ptree.
+       *  \todo Remove when no longer used by derived classes (Matthias).
+       */
+      Observable* const          CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const;
+      /*!
+       *  \todo Remove when no longer used by derived classes (Matthias).
+       */
       Observable* const          CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::PredictionBase*>& predictions, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const;
       /*!
        *  Returns a concrete plotter.\n
