@@ -54,7 +54,9 @@ extern "C" {
 
   void __pc_chisq_MOD_get_peakchi2( int* obsID, double* csqmu, double* csqmh, double* csqmax, double* csqtot );
   void __pc_chisq_MOD_print_cov_mh_to_file( int* nH );
+  void __pc_chisq_MOD_print_inverse_cov_mh_to_file( int* nH );
   void __pc_chisq_MOD_print_cov_mu_to_file();
+  void __pc_chisq_MOD_print_inverse_cov_mu_to_file();
 
   void assign_toyvalues_to_peak_( int* obsID, double* mu_obs, double* mh_obs );
 
