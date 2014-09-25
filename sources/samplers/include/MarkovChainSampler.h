@@ -50,14 +50,14 @@ namespace Fittino {
     private:
       bool                   _pointAccepted;
       bool                   _strictBounds;
-      double                 _previousChi2;
+      double                 _chi2OfLastAcceptedPoint;
       double                 _firstPointScalefactor;
       /*!
        *  Stores the configured maximal number of iteration steps.
        */
       unsigned int           _numberOfIterations;
       unsigned int           _numberOfFirstIteration;
-      std::vector<double>    _previousParameterValues;
+      std::vector<double>    _parameterValuesOfLastAcceptedPoint;
       unsigned int           _weight;
       unsigned int           _numberOfRejectedPoints;
 
@@ -67,16 +67,24 @@ namespace Fittino {
       TBranch*               _branchPointAccepted;
 
     private:
-      void                   Execute();
-      void                   PrintSteeringParameters() const;
-      void                   UpdateModel();
-      virtual void           UpdateParameterPoint( double scalefactor );
-      void                   FillBranchPointAccepted();
       bool                   IsAccepted();
-      virtual void           UpdateMemory();
-      void                   ResetParameters();
+      bool                   IsInBounds();
       void                   CompareChi2();
-      virtual void           UpdatePropertyTree();
+      void                   Execute();
+      void                   FillBranchPointAccepted();
+      void                   ResetParameters();
+      void                   UpdateModel();
+      void                   UpdateParameterValuesConsideringBounds( double scalefactor );
+
+    protected:
+      virtual void           UpdateMemory();
+      virtual void           UpdateParameterValues( double scalefactor );
+      virtual void           FinalizeStatus();
+      virtual void           PrintSteeringParameters() const;
+
+    protected:  
+      const std::vector<double>&  GetParameterValuesOfLastAcceptedPoint() const;
+
 
       /*! \endcond UML */
 

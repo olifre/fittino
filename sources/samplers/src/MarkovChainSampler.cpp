@@ -33,7 +33,7 @@
 
 Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
   : SamplerBase( model, ptree ), 
-    _previousParameterValues( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
+    _parameterValuesOfLastAcceptedPoint( std::vector<double>( model->GetNumberOfParameters(), 0. ) ),
     _numberOfFirstIteration( _iterationCounter+1 ),
     _firstPointScalefactor( ptree.get<double>( "FirstPointScaleFactor", 0 ) ),
     _strictBounds( ptree.get<bool>( "StrictBounds", false ) ),
@@ -48,6 +48,8 @@ Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, cons
 
     _iterationCounter == 0 ? _weight = 1 : _weight = 0;
 
+    UpdateMemory();
+
 }
 
 Fittino::MarkovChainSampler::~MarkovChainSampler() {
@@ -61,13 +63,13 @@ void Fittino::MarkovChainSampler::Execute() {
     _branchPointAccepted = _tree->GetBranch( "PointAccepted" );
     _branchPointAccepted->SetStatus( 0 );
     
-    UpdateParameterPoint( _firstPointScalefactor );
+    UpdateParameterValuesConsideringBounds( _firstPointScalefactor );
     UpdateModel();
     UpdateMemory();
 
     while ( _iterationCounter < _numberOfIterations ) {
 
-      UpdateParameterPoint( 1. );
+      UpdateParameterValuesConsideringBounds( 1. );
       UpdateModel();
       CompareChi2();
 
@@ -77,7 +79,7 @@ void Fittino::MarkovChainSampler::Execute() {
 
     _branchPointAccepted->SetStatus( 1 );
 
-    UpdatePropertyTree();
+    FinalizeStatus();
 
 }
 
@@ -99,8 +101,6 @@ void Fittino::MarkovChainSampler::CompareChi2() {
 
       _weight++;
       _numberOfRejectedPoints++;
-
-      ResetParameters();
       
     }
 
@@ -114,23 +114,29 @@ void Fittino::MarkovChainSampler::PrintSteeringParameters() const {
 
 }
 
-void Fittino::MarkovChainSampler::UpdateParameterPoint( double scalefactor ) {
+void Fittino::MarkovChainSampler::UpdateParameterValues( double scalefactor ) {
 
-    for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+  for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
       
-        ModelParameter* parameter = _model->GetCollectionOfParameters().At( k );
+      ModelParameter* parameter = _model->GetCollectionOfParameters().At( i );
+      double value = GetParameterValuesOfLastAcceptedPoint()[i];
+      double step = _randomGenerator->Gaus( 0, parameter->GetError()*scalefactor ); 
 
-        double value = parameter->GetValue();
+      parameter->SetValue( value + step  );
 
-        bool isInBounds = false;
+  }
 
-        while ( !isInBounds ) {
+}
 
-            parameter->SetValue(  _randomGenerator->Gaus( value, parameter->GetError()*scalefactor ) );
+void Fittino::MarkovChainSampler::UpdateParameterValuesConsideringBounds( double scalefactor ) {
 
-            _strictBounds ? isInBounds = parameter->IsInBounds() : isInBounds = true;
+    bool isInBounds = false;
 
-        }
+    while ( !isInBounds ) {
+
+        UpdateParameterValues( scalefactor );
+
+        _strictBounds ? isInBounds = IsInBounds() : isInBounds = true;
 
     }
 
@@ -156,49 +162,55 @@ void Fittino::MarkovChainSampler::FillBranchPointAccepted() {
 
 void Fittino::MarkovChainSampler::UpdateModel() {
     
-  _chi2 = _model->GetChi2();
-  GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
-  GetStatusParameterVector()->at( 1 )->SetValue( _iterationCounter );
-  AnalysisTool::PrintStatus();
-  FillTree();
-  _iterationCounter++;
+    _chi2 = _model->GetChi2();
+    GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
+    GetStatusParameterVector()->at( 1 )->SetValue( _iterationCounter );
+    AnalysisTool::PrintStatus();
+    FillTree();
+    _iterationCounter++;
 
 }
 
 void Fittino::MarkovChainSampler::UpdateMemory() {
 
-  _previousChi2 = _chi2;
+  _chi2OfLastAcceptedPoint = _chi2;
         
   for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-    _previousParameterValues.at( k ) = _model->GetCollectionOfParameters().At( k )->GetValue();
+    _parameterValuesOfLastAcceptedPoint.at( k ) = _model->GetCollectionOfParameters().At( k )->GetValue();
 
   }
 
 }
 
-void Fittino::MarkovChainSampler::ResetParameters() {
+void Fittino::MarkovChainSampler::FinalizeStatus() {
 
-    _chi2 = _previousChi2;
-    GetStatusParameterVector()->at( 0 )->SetValue( _chi2 );
-            
     for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
-        _model->GetCollectionOfParameters().At( k )->SetValue( _previousParameterValues.at( k ) );
+        _model->GetCollectionOfParameters().At( k )->SetValue( _parameterValuesOfLastAcceptedPoint.at( k ) );
 
     }
   
 }
 
+bool Fittino::MarkovChainSampler::IsInBounds() {
+
+  for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+
+    if ( !_model->GetCollectionOfParameters().At( k )->IsInBounds() ) return false;
+
+  }
+
+  return true;
+
+}
+
+
 bool Fittino::MarkovChainSampler::IsAccepted() {
 
-    for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+    if ( !IsInBounds() ) return false;
 
-        if ( !_model->GetCollectionOfParameters().At( k )->IsInBounds() ) return false;
-
-    }
-
-    double DeltaChi2 = _chi2 - _previousChi2;
+    double DeltaChi2 = _chi2 - _chi2OfLastAcceptedPoint;
     double rho = exp(-DeltaChi2/2.);
     double randomThreshold = _randomGenerator->Uniform( 1. );
     if ( rho < randomThreshold ) return false; 
@@ -207,7 +219,8 @@ bool Fittino::MarkovChainSampler::IsAccepted() {
 
 }
 
-void Fittino::MarkovChainSampler::UpdatePropertyTree() {
+const std::vector<double>&  Fittino::MarkovChainSampler::GetParameterValuesOfLastAcceptedPoint() const{
 
+  return _parameterValuesOfLastAcceptedPoint;
 
 }
