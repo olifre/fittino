@@ -49,6 +49,7 @@
 #include "HiggsSignalsHadXSCalculator.h"
 #include "HiggsSignalsPartXSCalculator.h"
 #include "HiggsSignalsSLHACalculator.h"
+#include "HigherOrderMarkovChainSampler.h"
 #include "HosakiModel.h"
 #include "LHCLimitCalculator.h"
 #include "MadGraphCalculator.h"
@@ -60,6 +61,7 @@
 #include "NewHiggsSignalsHadXSCalculator.h"
 #include "Observable.h"
 #include "Paraboloid.h"
+#include "ParaboloidModel.h"
 #include "ParticleSwarmOptimizer.h"
 //#include "ParticleSwarmSampler.h"
 #include "PhysicsModel.h"
@@ -78,6 +80,7 @@
 #include "SimpleSampler.h"
 #include "SimpleStringCut.h"
 #include "SimulatedAnnealingOptimizer.h"
+#include "SlideModel.h"
 #include "SLHAeaSLHADataStorage.h"
 #include "SPhenoSLHACalculator.h"
 #include "SplineCut.h"
@@ -397,6 +400,11 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
         return new Paraboloid( ptree );
 
     }
+    else if ( type == "ParaboloidModel" ) {
+
+        return new ParaboloidModel( ptree );
+
+    }
     else if ( type == "PhysicsModel" ) {
 
         return new PhysicsModel( ptree );
@@ -410,6 +418,11 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
     else if ( type == "Shubert3Model" ) {
 
         return new Shubert3Model( ptree );
+
+    }
+    else if ( type == "SlideModel" ) {
+
+        return new SlideModel( ptree );
 
     }
     else if ( type == "Univariate10Model" ) {
@@ -435,6 +448,45 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
 
 }
 
+Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const {
+
+    std::string type = ptree.get<std::string>( "PredictionType" );
+    std::string calculatorName = ptree.get<std::string>( "CalculatorName", "NONE" );
+
+    CalculatorBase *calculator = NULL;
+    if ( calculatorName != "NONE" ) {
+
+        calculator = calculators.At( ptree.get<std::string>( "CalculatorName", "NONE" ) );
+
+    }
+
+    if ( type == "Simple" ) {
+
+        if ( calculator ) {
+
+            return new Observable( ptree, new SimplePrediction( ptree, calculator ) );
+
+        }
+        else {
+
+            return new Observable( ptree, new SimplePrediction( ptree.get<std::string>( "Name" ), "", 0. ) );
+
+        }
+
+    }
+    //else if ( type == "NONE" ) {
+
+    //    return new Observable( ptree, NULL );
+
+    //}
+    else {
+
+        throw ConfigurationException( "Prediction type" + type + " not known." );
+
+    }
+
+}
+
 Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::PredictionBase*>& predictions, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const {
 
     std::string name = ptree.get<std::string>( "Name", "NONE" );
@@ -448,7 +500,7 @@ Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::prop
 
     }
 
-    throw ConfigurationException("No prediction with name " + name +  " exist.");
+    return CreateObservable( ptree, calculators );
 
 }
 
@@ -517,6 +569,11 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
     else if ( type == "GeneticAlgorithmOptimizer" ) {
 
         return new GeneticAlgorithmOptimizer( model, ptree );
+
+    }
+    else if ( type == "HigherOrderMarkovChainSampler" ) {
+
+        return new HigherOrderMarkovChainSampler( model, ptree );
 
     }
     else if ( type == "MarkovChainSampler" ) {
