@@ -18,11 +18,9 @@
 
 #include <boost/foreach.hpp>
 
-#include <iostream>
 #include "TMath.h"
-//#include "TMatrixD.h"
-//#include "TMatrixDSym.h"
 #include "TMatrixDSymEigen.h"
+
 #include "HigherOrderMarkovChainSampler.h"
 #include "Messenger.h"
 #include "ModelBase.h"
@@ -74,16 +72,6 @@ void Fittino::HigherOrderMarkovChainSampler::UpdateQueue( const boost::property_
       throw ConfigurationException("Entry in queue has wrong number of values.");
 
     }
-
-    std::cout<<"Adding point ";
-
-    for ( unsigned int i=0; i< point.size(); i++ ) {
-
-      std::cout<<point[i]<<" ";
-
-    }
-
-    std::cout<<std::endl;
 
     UpdateQueue( point );
 
