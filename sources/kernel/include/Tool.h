@@ -79,6 +79,11 @@ namespace Fittino {
        */
       std::string                 _name;
       /*!
+       *  A copy of the input property tree, to be used for storing information for output-xml files
+       *  (e.g. interface files for concatenating Markov Chains.
+       */
+      boost::property_tree::ptree _ptree;
+      /*!
        *  Pointer to the model to be analysed. Via this pointer an association between the model\n
        *  and any class deriving from Tool (especially the concrete optimizer or sampler\n
        *  classes) is established.
@@ -108,11 +113,6 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-      /*!
-       *  A copy of the input property tree, to be used for storing information for output-xml files
-       *  (e.g. interface files for concatenating Markov Chains.
-       */
-      boost::property_tree::ptree _ptree;
       const TString               _outputFileName;
       /*!
        *  A ROOT file which stores the tool's output. The default name of the file is\n

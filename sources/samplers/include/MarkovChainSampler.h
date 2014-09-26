@@ -77,6 +77,7 @@ namespace Fittino {
       void                   UpdateParameterValuesConsideringBounds( double scalefactor );
 
     protected:
+      virtual void           InitializeMemory();
       virtual void           UpdateMemory();
       virtual void           UpdateParameterValues( double scalefactor );
       virtual void           FinalizeStatus();

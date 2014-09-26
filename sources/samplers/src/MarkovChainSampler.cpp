@@ -48,11 +48,20 @@ Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, cons
 
     _iterationCounter == 0 ? _weight = 1 : _weight = 0;
 
-    UpdateMemory();
+
 
 }
 
 Fittino::MarkovChainSampler::~MarkovChainSampler() {
+
+}
+
+void Fittino::MarkovChainSampler::InitializeMemory() {
+
+    MarkovChainSampler::UpdateMemory();
+    UpdateParameterValuesConsideringBounds( _firstPointScalefactor );
+    UpdateModel();
+    MarkovChainSampler::UpdateMemory();
 
 }
 
@@ -62,10 +71,8 @@ void Fittino::MarkovChainSampler::Execute() {
     
     _branchPointAccepted = _tree->GetBranch( "PointAccepted" );
     _branchPointAccepted->SetStatus( 0 );
-    
-    UpdateParameterValuesConsideringBounds( _firstPointScalefactor );
-    UpdateModel();
-    UpdateMemory();
+
+    InitializeMemory();
 
     while ( _iterationCounter < _numberOfIterations ) {
 
@@ -184,6 +191,8 @@ void Fittino::MarkovChainSampler::UpdateMemory() {
 }
 
 void Fittino::MarkovChainSampler::FinalizeStatus() {
+
+    _chi2 = _chi2OfLastAcceptedPoint;
 
     for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 

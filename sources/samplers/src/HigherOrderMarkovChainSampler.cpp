@@ -16,18 +16,17 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <boost/foreach.hpp>
+
 #include <iostream>
 #include "TMath.h"
-#include "TMatrixD.h"
-#include "TMatrixDSym.h"
+//#include "TMatrixD.h"
+//#include "TMatrixDSym.h"
 #include "TMatrixDSymEigen.h"
 #include "HigherOrderMarkovChainSampler.h"
 #include "Messenger.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
-#include <cstdlib>
-#include <fstream>
-#include <sstream>
 #include "RandomGenerator.h"
 
 Fittino::HigherOrderMarkovChainSampler::HigherOrderMarkovChainSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
@@ -42,9 +41,113 @@ Fittino::HigherOrderMarkovChainSampler::HigherOrderMarkovChainSampler( Fittino::
 
     _name = "Correlated parameter sampler";
 
+    FillQueue();
+
+    if ( _iterationCounter < _memory.size() ) {
+
+      throw ConfigurationException( "Inconsistency between IterationCounter and size of queue." );
+      
+    }
+
 }
 
 Fittino::HigherOrderMarkovChainSampler::~HigherOrderMarkovChainSampler() {
+
+}
+
+void Fittino::HigherOrderMarkovChainSampler::UpdateQueue( const boost::property_tree::ptree& entry ){ 
+
+    std::vector<double> point;
+
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & value, entry ) {
+      
+      if ( value.first == "Value" ) {
+
+        point.push_back( value.second.get_value<double>() );
+
+      }        
+
+    }
+
+    if ( point.size() != _model->GetNumberOfParameters() ) {
+
+      throw ConfigurationException("Entry in queue has wrong number of values.");
+
+    }
+
+    std::cout<<"Adding point ";
+
+    for ( unsigned int i=0; i< point.size(); i++ ) {
+
+      std::cout<<point[i]<<" ";
+
+    }
+
+    std::cout<<std::endl;
+
+    UpdateQueue( point );
+
+} 
+
+void Fittino::HigherOrderMarkovChainSampler::FillQueue() { 
+
+  if ( !_ptree.count( "Queue" ) ) return;
+    
+  BOOST_FOREACH( const boost::property_tree::ptree::value_type & entry, _ptree.get_child( "Queue" ) ) {
+
+    if ( entry.first == "Entry" ) {
+
+      UpdateQueue( entry.second );
+
+    }
+
+  }
+
+}
+
+void Fittino::HigherOrderMarkovChainSampler::EmptyQueue() {
+    
+    boost::property_tree::ptree queue;
+
+    while ( ! _memory.empty() ) {
+
+        boost::property_tree::ptree entry;
+
+        for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
+          
+            double value = _memory.front()[i];
+
+            entry.add( "Value", value );
+
+        }
+
+        queue.add_child( "Entry", entry );
+
+        _memory.pop();
+
+    }
+
+    _ptree.put_child( "Queue", queue );
+
+}
+
+void Fittino::HigherOrderMarkovChainSampler::InitializeMemory(){
+
+  MarkovChainSampler::InitializeMemory();
+
+    if ( _iterationCounter == 1 ){
+      
+        UpdateQueue( GetParameterValuesOfLastAcceptedPoint() );
+
+    }
+
+}
+
+void Fittino::HigherOrderMarkovChainSampler::UpdateQueue( std::vector<double> point ) {
+
+    PushNewPoint( point );
+
+    if( _memory.size() > _maximalMemorySize ) PopOldestPoint();
 
 }
 
@@ -52,17 +155,15 @@ void Fittino::HigherOrderMarkovChainSampler::UpdateMemory() {
 
     MarkovChainSampler::UpdateMemory();
 
-    PushNewPoint();
-
-    if( _memory.size() > _maximalMemorySize ) PopOldestPoint();
+    UpdateQueue( GetParameterValuesOfLastAcceptedPoint() );
 
 }
 
-void Fittino::HigherOrderMarkovChainSampler::PushNewPoint() {
+void Fittino::HigherOrderMarkovChainSampler::PushNewPoint( std::vector<double> point) {
 
     int oldMemorySize = _memory.size();
 
-    _memory.push( GetParameterValuesOfLastAcceptedPoint() );
+    _memory.push( point );
 
     for(unsigned int i = 0; i < _model->GetNumberOfParameters(); i++){
     
@@ -178,5 +279,7 @@ void Fittino::HigherOrderMarkovChainSampler::PrintSteeringParameters() const {
 void Fittino::HigherOrderMarkovChainSampler::FinalizeStatus() {
 
     MarkovChainSampler::FinalizeStatus();
+
+    EmptyQueue();
 
 }

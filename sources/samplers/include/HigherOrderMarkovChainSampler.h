@@ -50,11 +50,16 @@ namespace Fittino {
       void           PrintSteeringParameters() const;
       void           UpdateMemory();
       void           UpdateParameterValuesUsingCovariance( double scalefactor );
-      void           PushNewPoint();
+      void           UpdateQueue( std::vector<double> point );
+      void           PushNewPoint( std::vector<double> point);
       void           PopOldestPoint();
       void           UpdateCovarianceMatrix();
       void           UpdateParameterValues( double scalefactor );
       void           FinalizeStatus();
+      void           InitializeMemory();
+      void           FillQueue();
+      void           EmptyQueue();
+      void           UpdateQueue( const boost::property_tree::ptree& entry );
 
   };
 
