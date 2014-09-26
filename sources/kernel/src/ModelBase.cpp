@@ -146,8 +146,13 @@ int Fittino::ModelBase::GetNumberOfPredictions() const {
 
 void Fittino::ModelBase::AddParameter( ModelParameter* parameter ) {
 
-    _collectionOfParameters.AddElement( parameter->GetName(), parameter );
-    _collectionOfQuantities.AddElement( parameter->GetName(), parameter );
+  if ( ! parameter->IsFixed() ) {
+
+      _collectionOfParameters.AddElement( parameter->GetName(), parameter );
+
+  }
+
+  _collectionOfQuantities.AddElement( parameter->GetName(), parameter );
 
 }
 
