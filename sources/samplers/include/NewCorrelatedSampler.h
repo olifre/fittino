@@ -99,7 +99,7 @@ namespace Fittino {
       virtual void           PrintSteeringParameters() const;
       virtual void           PrintMatrices();
       virtual void           UpdateModel();
-      virtual void           DoSampling();
+      virtual std::vector<double>           DoSampling();
       virtual void           CalculateStandardDeviations();
       virtual void           FillStatusParameterVector();
       virtual void           PushNewPoint();
