@@ -26,26 +26,30 @@
 #include "ModelBase.h"
 #include "ModelParameter.h"
 #include "RandomGenerator.h"
+#include "SimplePrediction.h"
 
 Fittino::HigherOrderMarkovChainSampler::HigherOrderMarkovChainSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
         : MarkovChainSampler( model, ptree ),
-          _expectationValues( std::vector<double>( _model->GetNumberOfParameters(), 0. ) ),
+          _expectationValues( _model->GetNumberOfParameters(), 0. ),
           _covarianceMatrix( _model->GetNumberOfParameters() ),
           _expectationMatrix( _model->GetNumberOfParameters() ),
           _minimalMemorySize( ptree.get<int>( "MinimalMemorySize", 10000 ) ),
           _maximalMemorySize( ptree.get<int>( "MaximalMemorySize", 10000 ) ),
           _scalingFactor( ptree.get<double>( "ScalingFactor", 1) ),
-          _memory( std::queue<std::vector<double> >() ) {
+	  _memorySize( 0 ),
+          _memory() {
 
     _name = "Correlated parameter sampler";
 
-    FillQueue();
+    PopulateQueue();
 
     if ( _iterationCounter < _memory.size() ) {
 
       throw ConfigurationException( "Inconsistency between IterationCounter and size of queue." );
       
     }
+
+    _statusParameterVector.push_back( new SimplePrediction( "MemorySize", "", _memorySize ) );
 
 }
 
@@ -77,7 +81,7 @@ void Fittino::HigherOrderMarkovChainSampler::UpdateQueue( const boost::property_
 
 } 
 
-void Fittino::HigherOrderMarkovChainSampler::FillQueue() { 
+void Fittino::HigherOrderMarkovChainSampler::PopulateQueue() { 
 
   if ( !_ptree.count( "Queue" ) ) return;
     
@@ -93,7 +97,7 @@ void Fittino::HigherOrderMarkovChainSampler::FillQueue() {
 
 }
 
-void Fittino::HigherOrderMarkovChainSampler::EmptyQueue() {
+void Fittino::HigherOrderMarkovChainSampler::DepopulateQueue() {
     
     boost::property_tree::ptree queue;
 
@@ -136,6 +140,8 @@ void Fittino::HigherOrderMarkovChainSampler::UpdateQueue( std::vector<double> po
     PushNewPoint( point );
 
     if( _memory.size() > _maximalMemorySize ) PopOldestPoint();
+
+    _memorySize = _memory.size();
 
 }
 
@@ -228,17 +234,15 @@ void Fittino::HigherOrderMarkovChainSampler::UpdateParameterValues( double scale
 
 void Fittino::HigherOrderMarkovChainSampler::UpdateParameterValuesUsingCovariance( double scalefactor ) {
 
-    TMatrixDSym mat( _model->GetNumberOfParameters() );
-
-    mat = _covarianceMatrix * TMath::Power( scalefactor, 2 );
-
-    TMatrixDSymEigen covariantEigen = TMatrixDSymEigen( mat );
+    TMatrixDSymEigen covariantEigen(  _covarianceMatrix );
 
     TVectorD y( _model->GetNumberOfParameters() );
 
-    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++) {
+    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
-      y[i] = _randomGenerator->Gaus(0., TMath::Sqrt(covariantEigen.GetEigenValues()[i] ) );
+        double width = scalefactor * TMath::Sqrt( covariantEigen.GetEigenValues()[i] );
+
+	y[i] = _randomGenerator->Gaus( 0., width );
 
     }
 
@@ -268,6 +272,6 @@ void Fittino::HigherOrderMarkovChainSampler::FinalizeStatus() {
 
     MarkovChainSampler::FinalizeStatus();
 
-    EmptyQueue();
+    DepopulateQueue();
 
 }

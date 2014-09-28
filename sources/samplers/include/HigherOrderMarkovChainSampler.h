@@ -41,6 +41,7 @@ namespace Fittino {
       double              _scalingFactor;
       int                 _minimalMemorySize;
       int                 _maximalMemorySize;
+      double              _memorySize;
       std::queue< std::vector<double> >   _memory;
       std::vector<double> _expectationValues;
       TMatrixDSym         _covarianceMatrix;
@@ -57,8 +58,8 @@ namespace Fittino {
       void           UpdateParameterValues( double scalefactor );
       void           FinalizeStatus();
       void           InitializeMemory();
-      void           FillQueue();
-      void           EmptyQueue();
+      void           PopulateQueue();
+      void           DepopulateQueue();
       void           UpdateQueue( const boost::property_tree::ptree& entry );
 
   };
