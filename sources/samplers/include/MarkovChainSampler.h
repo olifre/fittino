@@ -56,7 +56,6 @@ namespace Fittino {
        *  Stores the configured maximal number of iteration steps.
        */
       unsigned int           _numberOfIterations;
-      unsigned int           _numberOfFirstIteration;
       std::vector<double>    _parameterValuesOfLastAcceptedPoint;
       unsigned int           _weight;
       unsigned int           _numberOfRejectedPoints;
