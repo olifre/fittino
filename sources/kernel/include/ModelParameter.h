@@ -61,6 +61,10 @@ namespace Fittino {
         *  Sets the value of the parameter.
         */
       void   SetValue( double value );
+      /*!
+        *  Update property tree. 
+        */
+      void   UpdatePropertyTree();
 
     protected:
       /*!
@@ -76,6 +80,9 @@ namespace Fittino {
       double _error;
 
       /*! \cond UML */
+    private:
+      boost::property_tree::ptree& _ptree;
+
     private:
       void   ConsistencyCheck() const;
 

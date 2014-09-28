@@ -29,6 +29,7 @@ Fittino::ModelParameter::ModelParameter( boost::property_tree::ptree& ptree )
     : Quantity( ptree ),
       _fixed  ( ptree.get<bool>  ( "Fixed", false ) ),
       _updated( true ),
+      _ptree( ptree ),
       _error  ( ptree.get<double>( "Error", 0.1   ) ) {
 
     if ( !_fixed ) {
@@ -141,5 +142,13 @@ void Fittino::ModelParameter::ConsistencyCheck() const {
         throw ConfigurationException( "Parameter " + _name + ": Starting value out of bounds." );
 
     }
+
+}
+
+void Fittino::ModelParameter::UpdatePropertyTree() {
+
+    _ptree.put( "Value", GetValue() );
+    _ptree.put( "LowerBound", GetLowerBound() );
+    _ptree.put( "UpperBound", GetUpperBound() );
 
 }

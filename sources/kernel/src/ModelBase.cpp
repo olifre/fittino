@@ -74,15 +74,9 @@ int Fittino::ModelBase::GetNumberOfParameters() const {
 
 void Fittino::ModelBase::UpdatePropertyTree() {
 
-    BOOST_FOREACH( boost::property_tree::ptree::value_type & node, _ptree ) {
+    for ( unsigned int i = 0; i < GetNumberOfParameters(); i++ ) {
 
-        if ( node.first == "ModelParameter" ) {
-
-            node.second.put( "Value", _collectionOfParameters.At( node.second.get<std::string>( "Name" ) )->GetValue() );
-            node.second.put( "LowerBound", _collectionOfParameters.At( node.second.get<std::string>( "Name" ) )->GetLowerBound() );
-            node.second.put( "UpperBound", _collectionOfParameters.At( node.second.get<std::string>( "Name" ) )->GetUpperBound() );
-
-        }
+        GetCollectionOfParameters().At( i )->UpdatePropertyTree();
 
     }
 
