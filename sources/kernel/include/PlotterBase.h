@@ -26,7 +26,9 @@
 #include "PtreeForwardDeclaration.h"
 
 class TCanvas;
+class TGraph;
 class TH1;
+class TImage;
 class TPad;
 class TStyle;
 
@@ -50,6 +52,7 @@ namespace Fittino {
        *  Standard destructor.
        */
       ~PlotterBase();
+      void               AddGraph( TGraph* graph );
       void               MakePlots();
 
     protected:
@@ -65,15 +68,23 @@ namespace Fittino {
       TCanvas*           _canvas;
       TPad*              _pad;
       TStyle*            _fittinoStyle;
-      std::vector<TH1*>& _histogramVector;
-
+      std::vector<TH1*> _histogramVector;
+      std::vector<TGraph*> _graphVector;
+      
+    private:
+      TImage*            _fittinoLogo;
+      
     protected:
       void               PrintSteeringParameters() const;
 
       /*! \endcond UML */
     private:
       virtual void       Plot( unsigned int iHistogram ) = 0;
-
+      
+    private:
+      void               AddVersion();
+      void               DrawLogo();
+      
       /*! \endcond UML */
 
   };
