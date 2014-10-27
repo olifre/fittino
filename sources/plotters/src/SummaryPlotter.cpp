@@ -24,6 +24,7 @@
 #include "TMarker.h"
 #include "TROOT.h"
 #include "TStyle.h"
+#include "TGraph.h"
 
 #include "ModelBase.h"
 #include "ModelParameter.h"
@@ -32,7 +33,7 @@
 Fittino::SummaryPlotter::SummaryPlotter( std::vector<TH1*>& histogramVector, const boost::property_tree::ptree& ptree )
     : PlotterBase  ( histogramVector, ptree ),
       _labelOffset ( 0.02 ),
-      _labelSize   ( 0.1 ),
+      _labelSize   ( _textSize ),
       _color1      ( kBlue -  8 ), // Dark blue
       _color2      ( kBlue - 10 ), // Light blue
       _line        ( new TLine() ),
@@ -86,7 +87,7 @@ void Fittino::SummaryPlotter::Plot( unsigned int iHistogram ) {
 
     // Draw the histogram.
 
-    _histogramVector.at( iHistogram )->Draw( "AXIS" );
+    _histogramVector.at( iHistogram )->Draw( "COL" );
 
     _histogramVector.at( iHistogram )->GetYaxis()->SetLabelSize( _labelSize );
     _histogramVector.at( iHistogram )->GetYaxis()->SetLabelOffset( _labelOffset );
@@ -95,6 +96,7 @@ void Fittino::SummaryPlotter::Plot( unsigned int iHistogram ) {
 
     _line->DrawLine( 1., 0., 1., _histogramVector.at( iHistogram )->GetYaxis()->GetXmax() );
 
+    _histogramVector.at( iHistogram )->Draw( "COLSAME" );
     _histogramVector.at( iHistogram )->Draw( "COLSAME" );
 
     // Draw the legends.
@@ -129,7 +131,15 @@ void Fittino::SummaryPlotter::Plot( unsigned int iHistogram ) {
     _legend->Draw( "SAME" );
     _legend2->Draw( "SAME" );
 
-    _histogramVector.at( iHistogram )->Draw( "AXISSAME" );
+    for ( unsigned int i = 0; i < _graphVector.size(); i++ ) {
+        
+        _graphVector[i]->SetLineWidth( 4 );
+        _graphVector[i]->SetLineColor( kRed );
+        _graphVector[i]->Draw("LSAME");
+    
+    }
+    
+    gPad->RedrawAxis();
 
 }
 
