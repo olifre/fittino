@@ -33,7 +33,7 @@
 Fittino::SummaryPlotter::SummaryPlotter( std::vector<TH1*>& histogramVector, const boost::property_tree::ptree& ptree )
     : PlotterBase  ( histogramVector, ptree ),
       _labelOffset ( 0.02 ),
-      _labelSize   ( _textSize ),
+      _labelSize   ( 0.05 ),
       _color1      ( kBlue -  8 ), // Dark blue
       _color2      ( kBlue - 10 ), // Light blue
       _line        ( new TLine() ),
@@ -87,10 +87,12 @@ void Fittino::SummaryPlotter::Plot( unsigned int iHistogram ) {
 
     // Draw the histogram.
 
-    _histogramVector.at( iHistogram )->Draw( "COL" );
-
     _histogramVector.at( iHistogram )->GetYaxis()->SetLabelSize( _labelSize );
     _histogramVector.at( iHistogram )->GetYaxis()->SetLabelOffset( _labelOffset );
+    
+    _histogramVector.at( iHistogram )->GetYaxis()->SetTickSize(0);
+    
+    _histogramVector.at( iHistogram )->Draw( "COL" );
 
     // Draw a vertical dashed line to indicate the expectation.
 
@@ -108,15 +110,15 @@ void Fittino::SummaryPlotter::Plot( unsigned int iHistogram ) {
     dummyHistogram2->SetFillColor( _color2 );
     dummyHistogram2->SetLineColor( _color2 );
 
-    _legend = new TLegend( 0.05, 0.88, 0.32, 0.97 );
+    _legend = new TLegend( 0.70, 0.88, 0.93, 0.97 );
     _legend->SetShadowColor( 0 );
     _legend->SetBorderSize( 1 );
     _legend->SetLineColor( 0 );
     _legend->SetTextSize( _textSize );
     _legend->SetTextFont( _textFont );
     _legend->SetFillColor( 0 );
-    _legend->AddEntry( _bestFitValue, "Best fit value", "p" );
-    _legend->AddEntry( _line, "Expected value", "l" );
+    _legend->AddEntry( _graphVector[0], "Best fit value", "l" );
+    _legend->AddEntry( _bestFitValue, "Data", "p" );
 
     _legend2 = new TLegend( 0.42, 0.88, 0.69, 0.97 );
     _legend2->SetShadowColor( 0 );
