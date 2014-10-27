@@ -17,6 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <boost/foreach.hpp>
+
 #include "TCanvas.h"
 #include "TH2D.h"
 #include "TLegend.h"
@@ -25,6 +27,7 @@
 #include "TROOT.h"
 #include "TStyle.h"
 #include "TGraph.h"
+#include "TGraphAsymmErrors.h"
 
 #include "ModelBase.h"
 #include "ModelParameter.h"
@@ -32,6 +35,7 @@
 
 Fittino::SummaryPlotter::SummaryPlotter( std::vector<TH1*>& histogramVector, const boost::property_tree::ptree& ptree )
     : PlotterBase  ( histogramVector, ptree ),
+      _data        ( new TGraphAsymmErrors() ),
       _labelOffset ( 0.02 ),
       _labelSize   ( 0.05 ),
       _color1      ( kBlue -  8 ), // Dark blue
@@ -68,6 +72,33 @@ Fittino::SummaryPlotter::SummaryPlotter( std::vector<TH1*>& histogramVector, con
 
     gROOT->SetStyle( "FITTINO" );
     gROOT->ForceStyle();
+          
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
+        
+        if ( node.first != "DataPoint" ) continue;
+        
+        std::string name = node.second.get<std::string>("Name");
+        double value = node.second.get<double>("Value");
+        double elow = node.second.get<double>("ErrorLow");
+        double ehigh = node.second.get<double>("ErrorHigh");
+        
+        int bin = _histogramVector.at( 0 )->GetYaxis()->FindBin( name.c_str() );
+          
+        if ( bin < 0 ) {
+              
+            throw ConfigurationException("Label does not exist.");
+              
+        }
+          
+        double yvalue =_histogramVector.at( 0 )->GetYaxis()->GetBinCenter(bin);
+        
+        int iDataPoint = _data->GetN();
+        
+        _data->SetPoint( iDataPoint, value, yvalue);
+        _data->SetPointEXlow( iDataPoint, elow);
+        _data->SetPointEXhigh(iDataPoint, ehigh);
+        
+    }
 
 }
 
@@ -86,8 +117,6 @@ Fittino::SummaryPlotter::~SummaryPlotter() {
 }
 
 void Fittino::SummaryPlotter::Plot( unsigned int iHistogram ) {
-
-    // Draw the histogram.
     
     _histogramVector.at( iHistogram )->GetXaxis()->SetTitle( _title.c_str() );
     _histogramVector.at( iHistogram )->GetXaxis()->SetNdivisions( _ndivisions );
@@ -106,7 +135,19 @@ void Fittino::SummaryPlotter::Plot( unsigned int iHistogram ) {
 
     _histogramVector.at( iHistogram )->Draw( "COLSAME" );
     _histogramVector.at( iHistogram )->Draw( "COLSAME" );
+    
+    for ( unsigned int i = 0; i < _graphVector.size(); i++ ) {
+        
+        _graphVector[i]->SetLineWidth( 4 );
+        _graphVector[i]->SetLineColor( kRed );
+        _graphVector[i]->Draw( "LSAME" );
+        
+    }
 
+    _data->SetMarkerStyle( kFullDotLarge );
+    _data->Draw( "PZEsame" );
+    
+    
     // Draw the legends.
 
     TH2D* dummyHistogram1 = ( TH2D* )_histogramVector.at( iHistogram )->Clone();
@@ -138,14 +179,6 @@ void Fittino::SummaryPlotter::Plot( unsigned int iHistogram ) {
 
     _legend->Draw( "SAME" );
     _legend2->Draw( "SAME" );
-
-    for ( unsigned int i = 0; i < _graphVector.size(); i++ ) {
-        
-        _graphVector[i]->SetLineWidth( 4 );
-        _graphVector[i]->SetLineColor( kRed );
-        _graphVector[i]->Draw("LSAME");
-    
-    }
     
     gPad->RedrawAxis();
 

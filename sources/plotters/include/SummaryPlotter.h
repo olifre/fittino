@@ -22,6 +22,7 @@
 
 #include "PlotterBase.h"
 
+class TGraphAsymmErrors;
 class TLegend;
 class TLine;
 class TMarker;
@@ -57,6 +58,7 @@ namespace Fittino {
       int      _color2;
       int      _ndivisions;
       std::string _title;
+      TGraphAsymmErrors* _data;
       TLegend* _legend;
       TLegend* _legend2;
       TLine*   _line;
