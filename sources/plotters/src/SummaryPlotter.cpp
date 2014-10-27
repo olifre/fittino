@@ -165,7 +165,7 @@ void Fittino::SummaryPlotter::Plot( unsigned int iHistogram ) {
     _legend->SetTextFont( _textFont );
     _legend->SetFillColor( 0 );
     _legend->AddEntry( _graphVector[0], "Best fit value", "l" );
-    _legend->AddEntry( _bestFitValue, "Data", "p" );
+    _legend->AddEntry( _data, "Data", "lp" );
 
     _legend2 = new TLegend( 0.42, 0.88, 0.69, 0.97 );
     _legend2->SetShadowColor( 0 );
