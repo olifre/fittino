@@ -120,3 +120,9 @@ void Fittino::Messenger::SetVerbosityLevel( const std::string& verbosityLevel ) 
     }
 
 }
+
+Fittino::Messenger::VerbosityLevel Fittino::Messenger::GetVerbosityLevel() const {
+    
+    return _verbosityLevel;
+    
+}

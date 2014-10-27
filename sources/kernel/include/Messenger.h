@@ -48,6 +48,7 @@ namespace Fittino {
 
     public:
       void                      SetVerbosityLevel( const std::string& verbosityLevel );
+      VerbosityLevel            GetVerbosityLevel() const;
 
     public:
       Messenger&                operator<<( std::ios & ( *_f )( std::ios& ) );
