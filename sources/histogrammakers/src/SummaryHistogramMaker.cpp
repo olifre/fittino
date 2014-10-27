@@ -20,6 +20,7 @@
 #include <boost/foreach.hpp>
 
 #include "TGaxis.h"
+#include "TGraph.h"
 #include "TH2D.h"
 #include "TMath.h"
 
@@ -32,7 +33,6 @@
 Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const boost::property_tree::ptree& ptree )
     : Tool         ( model, ptree ),
       _logScale    ( ptree.get<bool>( "LogScale", false ) ),
-      _iEntry      ( 0 ),
       _numberOfBins( ptree.get<unsigned int>( "NumberOfBins", 35 ) ),
       _globalAxis  ( new TGaxis() ) {
 
@@ -143,24 +143,37 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
         _histogram2Sigma->GetYaxis()->SetBinLabel( 2 * ( _quantityName.size() - iScheduledQuantity ), _plotName[iScheduledQuantity].c_str() );
 
     }
-
-    // Determine the lowest chi2.
-
-    _bestFitEntry = model->GetCollectionOfParameters().At( 0 )->GetValue();
-
-    _model->GetCollectionOfParameters().At( 0 )->SetValue( _bestFitEntry );
-    _lowestChi2 = _model->GetChi2();
-    _model->GetCollectionOfParameters().At( 0 )->SetValue( _iEntry );
-
-    // Set the plotter.
-
+    
     const Factory factory;
+          
+    const boost::property_tree::ptree::value_type& plotterNode =  *(ptree.get_child( "Plotter" ).begin());
+          std::string plotterType = plotterNode.first;
 
-    const boost::property_tree::ptree::value_type& plotterNode = *( ptree.get_child( "Plotter" ).begin() );
-    std::string plotterType = plotterNode.first;
-    const boost::property_tree::ptree& plotterTree = plotterNode.second;
-    _plotter = factory.CreatePlotter( plotterType, _histogramVector, plotterTree );
-
+    _plotter = factory.CreatePlotter( plotterType, _histogramVector, plotterNode.second );
+          
+          
+    _bestFitEntry = model->GetCollectionOfParameters().At(0)->GetValue();
+    _lowestChi2 = _model->GetChi2();
+          
+    for ( unsigned int iQuantity = 0; iQuantity < _quantityName.size(); ++iQuantity ) {
+                
+        double bestFitValue = _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity] )->GetValue();
+        
+        int bin = 2 * ( _quantityName.size() - iQuantity );
+        
+        double low = _histogram2Sigma->GetYaxis()->GetBinLowEdge( bin );
+        double up = _histogram2Sigma->GetYaxis()->GetBinUpEdge( bin );
+        TGraph* graph = new TGraph(2);
+        graph->SetPoint(0, bestFitValue, low);
+        graph->SetPoint(1, bestFitValue, up);
+        graph->Print();
+        _plotter->AddGraph( graph );
+        
+    }
+          
+    int lowerBound = model->GetCollectionOfParameters().At( 0 )->GetLowerBound();
+    _model->GetCollectionOfParameters().At( 0 )->SetValue( lowerBound);
+ 
 }
 
 Fittino::SummaryHistogramMaker::~SummaryHistogramMaker() {
@@ -183,14 +196,18 @@ void Fittino::SummaryHistogramMaker::PrintSteeringParameters() const {
 }
 
 void Fittino::SummaryHistogramMaker::Execute() {
-
-    while ( _iterationCounter < _model->GetCollectionOfQuantities().At( "TreeIterations" )->GetValue() ) {
-
-        _iterationCounter++;
+    
+    _iterationCounter = _model->GetCollectionOfParameters().At(0)->GetLowerBound();
+    
+    int upperBound = _model->GetCollectionOfParameters().At(0)->GetUpperBound();
+    
+    while ( _iterationCounter < upperBound ) {
 
         UpdateModel();
 
         Tool::PrintStatus();
+        
+        _iterationCounter++;
 
     }
 
@@ -225,11 +242,30 @@ void Fittino::SummaryHistogramMaker::WriteResultToFile() const {
 
 }
 
+int Fittino::SummaryHistogramMaker::FindBin( double value ) {
+    
+    int bin;
+
+    if ( _logScale ) {
+    
+        bin = _histogram1Sigma->ProjectionX()->FindBin( TMath::Log10( value ) );
+    
+    }
+    else {
+    
+        bin = _histogram1Sigma->ProjectionX()->FindBin( value );
+    
+    }
+    
+    return bin;
+    
+}
+
 void Fittino::SummaryHistogramMaker::UpdateModel() {
 
     // For each quantity fill the bins corresponding to the 1 and 2 sigma regions.
 
-    _model->GetCollectionOfParameters().At( 0 )->SetValue( _iEntry );
+    _model->GetCollectionOfParameters().At( 0 )->SetValue( _iterationCounter );
 
     double chi2 = _model->GetChi2();
 
@@ -240,20 +276,7 @@ void Fittino::SummaryHistogramMaker::UpdateModel() {
     for ( unsigned int iQuantity = 0; iQuantity < _quantityName.size(); ++iQuantity ) {
 
         // Find the bin associated to the current tree entry.
-
-        int bin;
-
-        if ( _logScale ) {
-
-            bin = _histogram1Sigma->ProjectionX()->FindBin( TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity] )->GetValue() ) );
-
-        }
-        else {
-
-            bin = _histogram1Sigma->ProjectionX()->FindBin( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity] )->GetValue() );
-
-        }
-
+        int bin = FindBin( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity] )->GetValue() );
 
         if ( normalizedChi2 <= 1. ) {
 
@@ -271,9 +294,5 @@ void Fittino::SummaryHistogramMaker::UpdateModel() {
         }
 
     }
-
-    // Update the tree entry.
-
-    _iEntry++;
 
 }

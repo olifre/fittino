@@ -23,6 +23,7 @@
 #include "Tool.h"
 
 class TGaxis;
+class TGraph;
 class TH1;
 
 /*!
@@ -64,11 +65,7 @@ namespace Fittino {
        *  Stores the upper bound of the histogram.
        */
       double                    _upperBound;
-      /*!
-       *  Entry in the input file tree.
-       */
-      unsigned int              _iEntry;
-      /*!
+       /*!
        *  Stores the number of histogram bins.
        */
       unsigned int              _numberOfBins;
@@ -90,6 +87,7 @@ namespace Fittino {
        *  Stores the histogram to be made. Needed for compatibility with plotters.
        */
       std::vector<TH1*>         _histogramVector;
+      std::vector<TGraph*>       _graphVector;
       PlotterBase*              _plotter;
 
       /*! \cond UML */
@@ -99,6 +97,7 @@ namespace Fittino {
       TGaxis*                   _globalAxis;
 
     private:
+      int                       FindBin( double value );
       void                      Execute();
       void                      InitializeTool();
       void                      PrintResult() const;
