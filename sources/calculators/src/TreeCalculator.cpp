@@ -34,6 +34,7 @@ Fittino::TreeCalculator::TreeCalculator( const PhysicsModel* model, const boost:
     : CalculatorBase         ( model ),
       _numberOfTreeIterations( 0. ),
       _inputFileName         ( ptree.get<std::string>( "InputFileName", "Fittino.old.root" ) ),
+      _excludeAllLeaves(  ptree.get<bool>("ExcludeAllLeaves", false ) ),
       _inputTreeName         ( ptree.get<std::string>( "InputTreeName", "Tree"             ) ),
       _inputFile             ( 0 ),
       _inputTree             ( 0 ) {
@@ -46,6 +47,11 @@ Fittino::TreeCalculator::TreeCalculator( const PhysicsModel* model, const boost:
 
             _excludedLeaves.push_back( node.second.get_value<std::string>() );
 
+        }
+        else if ( node.first == "IncludeLeaf" ) {
+            
+            _includedLeaves.push_back( node.second.get_value<std::string>() );
+            
         }
 
     }
@@ -90,13 +96,26 @@ void Fittino::TreeCalculator::AddPredictions( ) {
             }
 
         }
+        
+        if ( _excludeAllLeaves ) excludeLeaf = true;
+        
+        for ( unsigned int j = 0; j < _includedLeaves.size(); ++j ) {
+            
+            if ( !strcmp( leaf->GetName(), _includedLeaves.at( j ).c_str() ) ) {
+                
+                excludeLeaf = false;
+                
+            }
+            
+        }
+        
 
         if ( excludeLeaf ) continue;
 
         if ( !strcmp( leaf->GetTypeName(), "Double_t" ) ) {
 
             _predictionMap.insert( std::make_pair( leaf->GetName(), 0. ) );
-
+            _inputTree->SetBranchStatus(leaf->GetName(), 1) ;
             _inputTree->SetBranchAddress( leaf->GetName(), &_predictionMap.at( leaf->GetName() ) );
 
             AddQuantity( new SimplePrediction( leaf->GetName(), "", _predictionMap.at( leaf->GetName() ) ) );
@@ -123,5 +142,6 @@ void Fittino::TreeCalculator::OpenInputFile() {
 
     _inputTree = new TChain( _inputTreeName.c_str() );
     _inputTree->Add( _inputFileName.c_str() );
+    _inputTree->SetBranchStatus( "*", 0) ;
 
 }
