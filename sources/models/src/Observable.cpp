@@ -184,7 +184,7 @@ void Fittino::Observable::SmearMeasuredValue( ) {
     }
     else {
 
-        std::cout << "Unkonwn SmearingType " << _smearingType << " for observable " << GetPrediction()->GetName() << ". Measured Value will not be smeared. " << std::endl;
+      Messenger::GetInstance() << Messenger::ALWAYS << "Unkonwn SmearingType " << _smearingType << " for observable " << GetPrediction()->GetName() << ". Measured Value will not be smeared. " << Messenger::Endl;
 
     }
 
