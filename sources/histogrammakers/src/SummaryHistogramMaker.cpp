@@ -116,9 +116,6 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
     _histogram2Sigma->SetTitle( 0 );
     _histogram2Sigma->SetStats( 0 );
 
-    _histogram2Sigma->GetXaxis()->SetTitle( "Best fit value" );
-    _histogram2Sigma->GetYaxis()->SetNdivisions( 0, kFALSE );
-
     _histogramVector.push_back( _histogram2Sigma );
 
     // Detemine the quantity index of each scheduled quantity in the list of model quantities. This
@@ -166,7 +163,6 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
         TGraph* graph = new TGraph(2);
         graph->SetPoint(0, bestFitValue, low);
         graph->SetPoint(1, bestFitValue, up);
-        graph->Print();
         _plotter->AddGraph( graph );
         
     }

@@ -37,6 +37,8 @@ Fittino::SummaryPlotter::SummaryPlotter( std::vector<TH1*>& histogramVector, con
       _color1      ( kBlue -  8 ), // Dark blue
       _color2      ( kBlue - 10 ), // Light blue
       _line        ( new TLine() ),
+      _ndivisions  ( ptree.get<int>( "NDivisions", 510 ) ),
+      _title( ptree.get<std::string>( "Title", "" ) ),
       _bestFitValue( new TMarker( 0., 0.9, 29 ) ) {
 
     _name = "summary plotter";
@@ -86,6 +88,10 @@ Fittino::SummaryPlotter::~SummaryPlotter() {
 void Fittino::SummaryPlotter::Plot( unsigned int iHistogram ) {
 
     // Draw the histogram.
+    
+    _histogramVector.at( iHistogram )->GetXaxis()->SetTitle( _title.c_str() );
+    _histogramVector.at( iHistogram )->GetXaxis()->SetNdivisions( _ndivisions );
+    _histogramVector.at( iHistogram )->GetYaxis()->SetNdivisions( 0, kFALSE );
 
     _histogramVector.at( iHistogram )->GetYaxis()->SetLabelSize( _labelSize );
     _histogramVector.at( iHistogram )->GetYaxis()->SetLabelOffset( _labelOffset );
