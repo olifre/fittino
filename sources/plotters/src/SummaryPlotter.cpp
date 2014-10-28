@@ -38,6 +38,7 @@ Fittino::SummaryPlotter::SummaryPlotter( std::vector<TH1*>& histogramVector, con
       _data        ( new TGraphAsymmErrors() ),
       _labelOffset ( 0.02 ),
       _labelSize   ( 0.05 ),
+      _labelsLeft  ( ptree.get<bool>( "LabelsLeft", true ) ),
       _color1      ( kBlue -  8 ), // Dark blue
       _color2      ( kBlue - 10 ), // Light blue
       _line        ( new TLine() ),
@@ -67,8 +68,19 @@ Fittino::SummaryPlotter::SummaryPlotter( std::vector<TH1*>& histogramVector, con
     _pad = ( TPad* )_canvas->cd();
     _pad->SetTicks( 1, 1 );
     _pad->SetTopMargin( 0.14 );
-    _pad->SetRightMargin( 0.05 );
-    _pad->SetLeftMargin( 0.40 );
+
+    if ( _labelsLeft ) {
+              
+        _pad->SetRightMargin( 0.05 );
+        _pad->SetLeftMargin( 0.40 );
+        
+    }
+    else {
+        
+        _pad->SetRightMargin( 0.40 );
+        _pad->SetLeftMargin( 0.05 );
+   
+    }
 
     gROOT->SetStyle( "FITTINO" );
     gROOT->ForceStyle();
@@ -118,6 +130,10 @@ Fittino::SummaryPlotter::~SummaryPlotter() {
 
 void Fittino::SummaryPlotter::Plot( unsigned int iHistogram ) {
     
+    std::string option = "COL";
+    
+    if ( !_labelsLeft ) option += "Y+";
+    
     _histogramVector.at( iHistogram )->GetXaxis()->SetTitle( _title.c_str() );
     _histogramVector.at( iHistogram )->GetXaxis()->SetNdivisions( _ndivisions );
     _histogramVector.at( iHistogram )->GetYaxis()->SetNdivisions( 0, kFALSE );
@@ -127,14 +143,14 @@ void Fittino::SummaryPlotter::Plot( unsigned int iHistogram ) {
     
     _histogramVector.at( iHistogram )->GetYaxis()->SetTickSize(0);
     
-    _histogramVector.at( iHistogram )->Draw( "COL" );
+    _histogramVector.at( iHistogram )->Draw( option.c_str() );
 
     // Draw a vertical dashed line to indicate the expectation.
 
     _line->DrawLine( 1., 0., 1., _histogramVector.at( iHistogram )->GetYaxis()->GetXmax() );
 
-    _histogramVector.at( iHistogram )->Draw( "COLSAME" );
-    _histogramVector.at( iHistogram )->Draw( "COLSAME" );
+    _histogramVector.at( iHistogram )->Draw( ( option + "SAME" ).c_str() );
+    _histogramVector.at( iHistogram )->Draw( ( option + "SAME" ).c_str() );
     
     for ( unsigned int i = 0; i < _graphVector.size(); i++ ) {
         
@@ -157,7 +173,16 @@ void Fittino::SummaryPlotter::Plot( unsigned int iHistogram ) {
     dummyHistogram2->SetFillColor( _color2 );
     dummyHistogram2->SetLineColor( _color2 );
 
-    _legend = new TLegend( 0.70, 0.88, 0.93, 0.97 );
+    if ( _labelsLeft ) {
+    
+        _legend = new TLegend( 0.70, 0.88, 0.93, 0.97 );
+        
+    }
+    else {
+        
+        _legend = new TLegend( 0.33, 0.88, 0.55, 0.97 );
+        
+    }
     _legend->SetShadowColor( 0 );
     _legend->SetBorderSize( 1 );
     _legend->SetLineColor( 0 );
@@ -172,7 +197,16 @@ void Fittino::SummaryPlotter::Plot( unsigned int iHistogram ) {
         
     }
 
-    _legend2 = new TLegend( 0.42, 0.88, 0.69, 0.97 );
+    if ( _labelsLeft ) {
+        
+        _legend2 = new TLegend( 0.42, 0.88, 0.69, 0.97 );
+        
+    }
+    else {
+        
+        _legend2 = new TLegend( 0.05, 0.88, 0.32, 0.97 );
+        
+    }
     _legend2->SetShadowColor( 0 );
     _legend2->SetBorderSize( 1 );
     _legend2->SetLineColor( 0 );

@@ -52,6 +52,7 @@ namespace Fittino {
 
       /*! \endcond UML */
     private:
+      bool     _labelsLeft;
       double   _labelOffset;
       double   _labelSize;
       int      _color1;
@@ -63,6 +64,7 @@ namespace Fittino {
       TLegend* _legend2;
       TLine*   _line;
       TMarker* _bestFitValue;
+      
 
     private:
       void     Plot( unsigned int iHistogram );
