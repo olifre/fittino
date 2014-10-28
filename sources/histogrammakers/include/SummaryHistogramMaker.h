@@ -92,12 +92,15 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
+      bool                      _spacing;
+      bool                      _borders;
       double                    _lowestChi2;
       unsigned int              _bestFitEntry;
       TGaxis*                   _globalAxis;
 
     private:
       int                       FindBin( double value );
+      int                       FindBinY( int iQuantity );
       void                      Execute();
       void                      InitializeTool();
       void                      PrintResult() const;

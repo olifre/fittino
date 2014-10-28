@@ -34,6 +34,8 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
     : Tool         ( model, ptree ),
       _logScale    ( ptree.get<bool>( "LogScale", false ) ),
       _numberOfBins( ptree.get<unsigned int>( "NumberOfBins", 35 ) ),
+      _spacing( ptree.get<bool>("Spacing", true ) ),
+      _borders( ptree.get<bool>("Borders", true ) ),
       _globalAxis  ( new TGaxis() ) {
 
     _globalAxis->SetMaxDigits( ptree.get<int>( "AxisMaxDigits", 3 ) );
@@ -100,10 +102,17 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
         }
 
     }
-
+          
+          
+    int nybins = _quantityName.size();
+          
+    if ( _spacing ) nybins = 2 * nybins - 1;
+          
+    if ( _borders ) nybins += 2;
+          
     _histogram2Sigma = new TH2D( histogramName.c_str(),
                                  histogramName.c_str(),
-                                 _numberOfBins, xBins, 2 * _quantityName.size() + 1, 0., 2 * _quantityName.size() + 1 );
+                                 _numberOfBins, xBins, nybins , 0., nybins );
 
     // Histogram name.
 
@@ -111,7 +120,7 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
 
     _histogram1Sigma = new TH2D( histogramName.c_str(),
                                  histogramName.c_str(),
-                                 _numberOfBins, xBins, 2 * _quantityName.size() + 1, 0., 2 * _quantityName.size() + 1 );
+                                 _numberOfBins, xBins, nybins, 0., nybins );
 
     _histogram2Sigma->SetTitle( 0 );
     _histogram2Sigma->SetStats( 0 );
@@ -135,9 +144,11 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
         }
 
         // Y-axis bin labels.
-
-        _histogram1Sigma->GetYaxis()->SetBinLabel( 2 * ( _quantityName.size() - iScheduledQuantity ), _plotName[iScheduledQuantity].c_str() );
-        _histogram2Sigma->GetYaxis()->SetBinLabel( 2 * ( _quantityName.size() - iScheduledQuantity ), _plotName[iScheduledQuantity].c_str() );
+        
+        int ybin = FindBinY( iScheduledQuantity );
+        
+        _histogram1Sigma->GetYaxis()->SetBinLabel(ybin , _plotName[iScheduledQuantity].c_str() );
+        _histogram2Sigma->GetYaxis()->SetBinLabel(ybin, _plotName[iScheduledQuantity].c_str() );
 
     }
     
@@ -156,7 +167,7 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
                 
         double bestFitValue = _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity] )->GetValue();
         
-        int bin = 2 * ( _quantityName.size() - iQuantity );
+        int bin = FindBinY( iQuantity );
         
         double low = _histogram2Sigma->GetYaxis()->GetBinLowEdge( bin );
         double up = _histogram2Sigma->GetYaxis()->GetBinUpEdge( bin );
@@ -257,6 +268,17 @@ int Fittino::SummaryHistogramMaker::FindBin( double value ) {
     
 }
 
+int Fittino::SummaryHistogramMaker::FindBinY( int iQuantity ) {
+    
+    int ybin = _quantityName.size() - iQuantity;
+    
+    if ( _spacing ) ybin = 2 * ybin - 1 ;
+    if ( _borders ) ybin += 1;
+    
+    return ybin;
+    
+}
+
 void Fittino::SummaryHistogramMaker::UpdateModel() {
 
     // For each quantity fill the bins corresponding to the 1 and 2 sigma regions.
@@ -271,21 +293,22 @@ void Fittino::SummaryHistogramMaker::UpdateModel() {
 
     for ( unsigned int iQuantity = 0; iQuantity < _quantityName.size(); ++iQuantity ) {
 
-        // Find the bin associated to the current tree entry.
+        int ybin = FindBinY( iQuantity );
+
         int bin = FindBin( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity] )->GetValue() );
 
         if ( normalizedChi2 <= 1. ) {
 
             // If the bin corresponds to the 1 sigma region, fill with 1.2.
 
-            _histogram1Sigma->SetBinContent( bin, 2 * ( _quantityName.size() - iQuantity ), 1.2 );
+            _histogram1Sigma->SetBinContent( bin, ybin , 1.2 );
 
         }
         else if ( normalizedChi2 <= 4. &&  normalizedChi2 > 1. ) {
 
             // If the bin corresponds to the 2 sigma region, fill with 0.8.
 
-            _histogram2Sigma->SetBinContent( bin, 2 * ( _quantityName.size() - iQuantity ), 0.8 );
+            _histogram2Sigma->SetBinContent( bin, ybin, 0.8 );
 
         }
 
