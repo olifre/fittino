@@ -111,7 +111,40 @@ Fittino::SummaryPlotter::SummaryPlotter( std::vector<TH1*>& histogramVector, con
         _data->SetPointEXhigh(iDataPoint, ehigh);
         
     }
-
+    
+    double default_xlow = _histogramVector.at( 0 )->GetXaxis()->GetXmin();
+    double default_xup = _histogramVector.at( 0 )->GetXaxis()->GetXmax();
+          
+    double xlow = ptree.get<double>( "LowerBound", default_xlow );
+    double xup = ptree.get<double>( "UpperBound", default_xup );
+          
+    int nbinsy = _histogramVector.at( 0 )->GetYaxis()->GetNbins();
+    double ylow = _histogramVector.at( 0 )->GetYaxis()->GetXmin();
+    double yup = _histogramVector.at( 0 )->GetYaxis()->GetXmax();
+          
+    _emptyHistogram = new TH2D( "h", "", 2, xlow, xup, nbinsy, ylow, yup );
+    
+    for ( unsigned int i = 0; i < nbinsy; i++ ) {
+              
+        _emptyHistogram->GetYaxis()->SetBinLabel(i, _histogramVector.at( 0 )->GetYaxis()->GetBinLabel(i) );
+              
+    }
+          
+    _emptyHistogram->GetXaxis()->SetTitle( _title.c_str() );
+    _emptyHistogram->GetXaxis()->SetNdivisions( _ndivisions );
+    _emptyHistogram->GetYaxis()->SetNdivisions( 0, kFALSE );
+          
+    _emptyHistogram->GetYaxis()->SetLabelSize( _labelSize );
+    _emptyHistogram->GetYaxis()->SetLabelOffset( _labelOffset );
+          
+    _emptyHistogram->GetYaxis()->SetTickSize(0);
+          
+    std::string option = "COL";
+          
+    if ( !_labelsLeft ) option += "Y+";
+ 
+    _emptyHistogram->Draw( option.c_str() );
+          
 }
 
 Fittino::SummaryPlotter::~SummaryPlotter() {
@@ -130,27 +163,14 @@ Fittino::SummaryPlotter::~SummaryPlotter() {
 
 void Fittino::SummaryPlotter::Plot( unsigned int iHistogram ) {
     
-    std::string option = "COL";
-    
-    if ( !_labelsLeft ) option += "Y+";
-    
-    _histogramVector.at( iHistogram )->GetXaxis()->SetTitle( _title.c_str() );
-    _histogramVector.at( iHistogram )->GetXaxis()->SetNdivisions( _ndivisions );
-    _histogramVector.at( iHistogram )->GetYaxis()->SetNdivisions( 0, kFALSE );
-
-    _histogramVector.at( iHistogram )->GetYaxis()->SetLabelSize( _labelSize );
-    _histogramVector.at( iHistogram )->GetYaxis()->SetLabelOffset( _labelOffset );
-    
-    _histogramVector.at( iHistogram )->GetYaxis()->SetTickSize(0);
-    
-    _histogramVector.at( iHistogram )->Draw( option.c_str() );
+    _histogramVector.at( iHistogram )->Draw( "COLSAME");
 
     // Draw a vertical dashed line to indicate the expectation.
 
     _line->DrawLine( 1., 0., 1., _histogramVector.at( iHistogram )->GetYaxis()->GetXmax() );
 
-    _histogramVector.at( iHistogram )->Draw( ( option + "SAME" ).c_str() );
-    _histogramVector.at( iHistogram )->Draw( ( option + "SAME" ).c_str() );
+    _histogramVector.at( iHistogram )->Draw( "COLSAME" );
+    _histogramVector.at( iHistogram )->Draw( "COLSAME" );
     
     for ( unsigned int i = 0; i < _graphVector.size(); i++ ) {
         

@@ -60,6 +60,7 @@ namespace Fittino {
       int      _ndivisions;
       std::string _title;
       TGraphAsymmErrors* _data;
+      TH2D*  _emptyHistogram;
       TLegend* _legend;
       TLegend* _legend2;
       TLine*   _line;
