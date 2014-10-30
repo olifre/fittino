@@ -81,7 +81,7 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
 
     // Histogram name.
 
-    std::string histogramName = "Summary";
+    std::string histogramName = ptree.get<std::string> ( "Name", "Summary" ) ;
 
     // Histogram bins.
 
@@ -132,6 +132,8 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
     // labels.
 
     for ( unsigned int iScheduledQuantity = 0; iScheduledQuantity < _quantityName.size(); ++iScheduledQuantity ) {
+        
+        _model->GetCollectionOfQuantities().At( _quantityName[iScheduledQuantity] );
 
         for ( unsigned int iQuantity = 0; iQuantity < _model->GetCollectionOfQuantities().GetNumberOfElements(); ++iQuantity ) {
 
@@ -209,6 +211,11 @@ void Fittino::SummaryHistogramMaker::Execute() {
     int upperBound = _model->GetCollectionOfParameters().At(0)->GetUpperBound();
     
     while ( _iterationCounter < upperBound ) {
+        
+        if (  _iterationCounter % 100000 == 0 ) {
+            Messenger::GetInstance()<<Messenger::ALWAYS<<"Heartbeat: IterationCounter = "<<_iterationCounter<<Messenger::Endl;
+            
+        }
 
         UpdateModel();
 

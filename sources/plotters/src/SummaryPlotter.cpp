@@ -68,17 +68,18 @@ Fittino::SummaryPlotter::SummaryPlotter( std::vector<TH1*>& histogramVector, con
     _pad = ( TPad* )_canvas->cd();
     _pad->SetTicks( 1, 1 );
     _pad->SetTopMargin( 0.14 );
+    _pad->SetBottomMargin( 0.12 );
 
     if ( _labelsLeft ) {
               
-        _pad->SetRightMargin( 0.05 );
+        _pad->SetRightMargin( 0.06 );
         _pad->SetLeftMargin( 0.40 );
         
     }
     else {
         
         _pad->SetRightMargin( 0.40 );
-        _pad->SetLeftMargin( 0.05 );
+        _pad->SetLeftMargin( 0.06 );
    
     }
 
@@ -124,7 +125,7 @@ Fittino::SummaryPlotter::SummaryPlotter( std::vector<TH1*>& histogramVector, con
           
     _emptyHistogram = new TH2D( "h", "", 2, xlow, xup, nbinsy, ylow, yup );
     
-    for ( unsigned int i = 0; i < nbinsy; i++ ) {
+    for ( unsigned int i = 1; i <= nbinsy; i++ ) {
               
         _emptyHistogram->GetYaxis()->SetBinLabel(i, _histogramVector.at( 0 )->GetYaxis()->GetBinLabel(i) );
               
