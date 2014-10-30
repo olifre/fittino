@@ -168,8 +168,6 @@ void Fittino::SummaryPlotter::Plot( unsigned int iHistogram ) {
 
     // Draw a vertical dashed line to indicate the expectation.
 
-    _line->DrawLine( 1., 0., 1., _histogramVector.at( iHistogram )->GetYaxis()->GetXmax() );
-
     _histogramVector.at( iHistogram )->Draw( "COLSAME" );
     _histogramVector.at( iHistogram )->Draw( "COLSAME" );
     
@@ -180,6 +178,8 @@ void Fittino::SummaryPlotter::Plot( unsigned int iHistogram ) {
         _graphVector[i]->Draw( "LSAME" );
         
     }
+    
+    _line->DrawLine( 1., 0., 1., _histogramVector.at( iHistogram )->GetYaxis()->GetXmax() );
 
     _data->SetMarkerStyle( kFullDotLarge );
     _data->Draw( "PZEsame" );
