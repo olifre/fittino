@@ -35,7 +35,6 @@ Fittino::TreeCalculator::TreeCalculator( const PhysicsModel* model, const boost:
       _numberOfTreeIterations( 0. ),
       _inputFileName         ( ptree.get<std::string>( "InputFileName", "Fittino.old.root" ) ),
       _excludeAllLeaves(  ptree.get<bool>("ExcludeAllLeaves", false ) ),
-      _inputTreeName         ( ptree.get<std::string>( "InputTreeName", "Tree"             ) ),
       _inputFile             ( 0 ),
       _inputTree             ( 0 ) {
 
@@ -53,8 +52,20 @@ Fittino::TreeCalculator::TreeCalculator( const PhysicsModel* model, const boost:
             _includedLeaves.push_back( node.second.get_value<std::string>() );
             
         }
+        else if ( node.first == "InputTreeName" ) {
+            
+            _inputTreeName.push_back( node.second.get_value<std::string>() );
+            
+        }
 
     }
+         
+    if ( _inputTreeName.empty() ) {
+    
+        _inputTreeName.push_back("Tree");
+              
+    }
+          
 
     OpenInputFile();
     AddPredictions();
@@ -78,12 +89,12 @@ void Fittino::TreeCalculator::CalculatePredictions() {
 }
 
 void Fittino::TreeCalculator::AddPredictions( ) {
+    
+    TIterator *iter = _inputTree->GetIteratorOnAllLeaves();
+    
+    while ( TObject* obj = (*iter)() ) {
 
-    TObjArray *arrayOfLeaves = _inputTree->GetListOfLeaves();
-
-    for ( unsigned int i = 0; i < arrayOfLeaves->GetEntries(); ++i ) {
-
-        TLeaf *leaf = ( TLeaf* )arrayOfLeaves->At( i );
+        TLeaf *leaf = ( TLeaf* ) obj;
 
         bool excludeLeaf = false;
 
@@ -140,8 +151,17 @@ void Fittino::TreeCalculator::AddPredictions( ) {
 
 void Fittino::TreeCalculator::OpenInputFile() {
 
-    _inputTree = new TChain( _inputTreeName.c_str() );
+    _inputTree = new TChain( _inputTreeName.at(0).c_str() );
     _inputTree->Add( _inputFileName.c_str() );
+    
+    for ( unsigned int i = 1; i < _inputTreeName.size(); i++ ) {
+
+        TChain* chain = new TChain( _inputTreeName.at(i).c_str() );
+        chain->Add( _inputFileName.c_str() );
+        _inputTree->AddFriend( chain );
+        
+    }
+    
     _inputTree->SetBranchStatus( "*", 0) ;
 
 }

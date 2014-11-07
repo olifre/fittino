@@ -55,7 +55,7 @@ namespace Fittino {
       bool                                _excludeAllLeaves;
       double                              _numberOfTreeIterations;
       std::string                         _inputFileName;
-      std::string                         _inputTreeName;
+      std::vector<std::string>            _inputTreeName;
       std::map<std::string, double>       _predictionMap;
       std::map<std::string, std::string*> _strings;
       std::vector<std::string>            _includedLeaves;
