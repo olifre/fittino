@@ -19,7 +19,9 @@
 
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.7 FATAL_ERROR)
 
-PROJECT(fittino_superbuild)
+
+PROJECT(fittino_superbuild CXX)
+ENABLE_LANGUAGE(Fortran C)
 
 SET(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
 
@@ -31,15 +33,16 @@ INCLUDE(ExternalProject)
 
 FIND_PACKAGE(Boost 1.47.0 REQUIRED)
 
-FIND_PACKAGE(SLHAEA QUIET)
-
-IF(NOT SLHAEA_FOUND)
+IF( BUILTIN_SLHAEA )	
 
   EXTERNALPROJECT_ADD(
     slhaea
     PREFIX "external/slhaea"
-    GIT_REPOSITORY https://github.com/fthomas/slhaea
-    GIT_TAG "v0.1"
+#    GIT_REPOSITORY https://github.com/fthomas/slhaea
+#     GIT_TAG "v0.1"
+DOWNLOAD_NAME slhaea.tar.gz
+URL http://github.com/fthomas/slhaea/tarball/master
+    CONFIGURE_COMMAND ""
     UPDATE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND ""
@@ -50,7 +53,26 @@ IF(NOT SLHAEA_FOUND)
   SET(SLHAEA_INSTALLATION_PATH  ${SOURCE_DIR})
   LIST(APPEND FITTINO_DEPENDENCIES slhaea)
 
-ENDIF(NOT SLHAEA_FOUND)
+ENDIF()
+
+IF(BUILTIN_SPHENO)
+
+EXTERNALPROJECT_ADD(
+    spheno 
+    PREFIX "external/spheno"
+    URL http://www.hepforge.org/archive/spheno/SPheno-3.2.4.tar.gz
+    URL_MD5 970f523b967afcade5cf779bbff98df8
+    UPDATE_COMMAND ""
+#    DOWNLOAD_COMMAND "curl -LO http://www.hepforge.org/archive/spheno/SPheno-3.2.4.tar.gz; cmake -E tar xvf http://www.hepforge.org/archive/spheno/SPheno-3.2.4.tar.gz"
+    BUILD_IN_SOURCE 1
+    BUILD_COMMAND $(MAKE) F90=ifort2013 
+    CONFIGURE_COMMAND ""
+    INSTALL_COMMAND ""
+)  
+
+ENDIF()
+
+IF(BUILD_FITTINO)
 
 EXTERNALPROJECT_ADD(
   fittino
@@ -74,3 +96,5 @@ EXTERNALPROJECT_ADD_STEP(fittino "forcebuild"
     DEPENDEES configure
     DEPENDERS build
     ALWAYS 1)
+
+ENDIF()
