@@ -62,19 +62,19 @@ namespace Fittino {
 
     private:
  
-      const double&         _f_B;
+      const double&         _fH;
       /*!
        *
        */
-      const double&           _f_W;
+      const double&           _cHW;
       /*!
        *
        */
-      const double&           _f_GG;
+      const double&           _cHB;
       /*!
        * 
        */
-      const double&        _f_t;
+      const double&        _cBB;
       
 
   };

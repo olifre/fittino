@@ -1,4 +1,3 @@
-
 /* $Id$ */
 
 /*******************************************************************************
@@ -35,11 +34,11 @@
 Fittino::CheckMATECalculator::CheckMATECalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
   : CalculatorBase( model ),
     
-    _f_t  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_t.Name", "f_t" ) )->GetValue() )
+    _cHW  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cHW.Name", "cHW" ) )->GetValue() )
 {
   
-  std::cout<<"USING _f_B = "<<_f_B<<std::endl;
-  std::string originalinputfile = "/lustre/user/thakur/programs/CheckMATE/lustreversion/runfittino.txt";
+  std::cout<<"USING _cHW = "<<_cHW<<std::endl;
+  std::string originalinputfile = "/lustre/user/thakur/programs/CheckMATE/CheckMATE-1.1.14/runfittino.txt";
   std::string inputfile = "fittino_checkmate_in.txt";
   
   std::ifstream infile( originalinputfile.c_str(), std::ios::binary );
@@ -53,7 +52,7 @@ Fittino::CheckMATECalculator::CheckMATECalculator( const PhysicsModel* model, co
   myfile.close();
   
   
-  Executor executor("/lustre/user/thakur/programs/CheckMATE/lustreversion/bin/CheckMATE", "CheckMATE");
+  Executor executor("/lustre/user/thakur/programs/CheckMATE/CheckMATE-1.1.14/bin/CheckMATE", "CheckMATE");
   executor.AddArgument(inputfile);
   
   std::cout<<"Start CheckMATE execution "<<std::endl;
@@ -61,20 +60,22 @@ Fittino::CheckMATECalculator::CheckMATECalculator( const PhysicsModel* model, co
   std::cout<<"Finished CheckMATE execution "<<std::endl;
   
   std::cout<<"CheckMATE constructor."<<std::endl;
-
+  
   //the problem starts here 
-
-  std::ifstream file( "/lustre/user/thakur/programs/CheckMATE/lustreversion/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_cutflow.dat" );
+  
+  std::ifstream file( "/lustre/user/thakur/programs/CheckMATE/CheckMATE-1.1.14/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_signal.dat" );
   std::string line;
   
   TString character;
   
-  while ( ! character.BeginsWith( "Cut " ) ) {
+  while ( ! character.BeginsWith( "SR " ) ) {
     
     std::getline( file, line );
     character = line.c_str();
     
   }
+  
+  std::cout<<"error, dude"<<std::endl;
   
   std::vector<std::string> vector_name; 
   
@@ -126,8 +127,8 @@ Fittino::CheckMATECalculator::~CheckMATECalculator() {
 }
 
 void Fittino::CheckMATECalculator::CalculatePredictions() {
-  std::cout<<"USING _f_B = "<<_f_B<<std::endl;
-  std::string originalinputfile = "/lustre/user/thakur/programs/CheckMATE/lustreversion/runfittino.txt";
+  std::cout<<"USING _cHW = "<<_cHW<<std::endl;
+  std::string originalinputfile = "/lustre/user/thakur/programs/CheckMATE/CheckMATE-1.1.14/runfittino.txt";
   std::string inputfile = "fittino_checkmate_in.txt";
   
   std::ifstream infile( originalinputfile.c_str(), std::ios::binary );
@@ -141,7 +142,7 @@ void Fittino::CheckMATECalculator::CalculatePredictions() {
   myfile.close();
   
   
-  Executor executor("/lustre/user/thakur/programs/CheckMATE/lustreversion/bin/CheckMATE", "CheckMATE");
+  Executor executor("/lustre/user/thakur/programs/CheckMATE/CheckMATE-1.1.14/bin/CheckMATE", "CheckMATE");
   executor.AddArgument(inputfile);
 
   std::cout<<"Start ChekMATE execution "<<std::endl;
@@ -150,12 +151,12 @@ void Fittino::CheckMATECalculator::CalculatePredictions() {
   
   //Storing the cutflow in doubles.
 
-  std::ifstream file( "/lustre/user/thakur/programs/CheckMATE/lustreversion/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_cutflow.dat" );
+  std::ifstream file( "/lustre/user/thakur/programs/CheckMATE/CheckMATE-1.1.14/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_signal.dat" );
   std::string line;
 
   TString character;
   
-  while ( ! character.BeginsWith( "Cut " ) ) {
+  while ( ! character.BeginsWith( "SR " ) ) {
     
     std::getline( file, line );
     character = line.c_str();  

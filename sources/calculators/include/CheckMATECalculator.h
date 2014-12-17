@@ -63,21 +63,32 @@ namespace Fittino {
 
            
 
-    private:
-      int           _f_B;
-      /*! 
-       */
-      int           _f_W;
-      /*!                                                                                                                                                                                
-       *                                                                                                                                                                                 
-       */
-      int           _f_GG;
-      /*!                                                                                                                                                                                
-       *                                                                                                                                                                                 
-       */
-      double        _f_t;
+                                                                                                                                                     
+                                                                                                                                                                 
+                                                                                                                                                                           
+                                                                                                                                                            
+  private:
 
-      std::map<std::string, double> _acc_map;
+      int            _fH;
+      /*!                                                                                                                                                                                                    
+       *                                                                                                                                                                                                     
+       */
+      int           _cHW;
+      /*!                                                                                                                                                                                                    
+       *                                                                                                                                                                                                     
+       */
+      int           _cHB;
+      /*!                                                                                                                                                                                                    
+       *                                                                                                                                                                                                     
+       */
+      int           _cBB;
+
+
+                                                                                                                                                    
+                                                                                                                                                                                                                                                                                                                                              
+                                                                                                                                                                                                                                                                                                                                      
+                                                                                                                                                                                      
+  std::map<std::string, double> _acc_map;
   };
 
 }

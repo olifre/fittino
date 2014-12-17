@@ -36,10 +36,10 @@
 Fittino::MadGraphCalculator::MadGraphCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
   : CalculatorBase( model ),
     // Initialize input quantities.                                                                                                                                                      
-    _f_B ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_B.Name","f_B" ) )->GetValue() ),
-    _f_W ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_W.Name", "f_W" ) )->GetValue() ),
-    _f_GG ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_GG.Name", "f_GG" ) )->GetValue() ),
-    _f_t ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "f_t.Name", "f_t" ) )->GetValue() ) {
+    _fH ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "fH.Name","fH" ) )->GetValue() ),
+    _cHW ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cHW.Name", "cHW" ) )->GetValue() ),
+    _cHB ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cHB.Name", "cHB" ) )->GetValue() ),
+    _cBB ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cBB.Name", "cBB" ) )->GetValue() ) {
   
   
   
@@ -65,7 +65,7 @@ Fittino::MadGraphCalculator::~MadGraphCalculator() {
 
 void Fittino::MadGraphCalculator::CalculatePredictions() {
 
-  std::cout<<"USING _f_B = "<<_f_B<<std::endl;
+  std::cout<<"USING _cHW = "<<_cHW<<std::endl;
   
   std::string originalinputfile = "/afs/atlass01.physik.uni-bonn.de/user/thakur/programs/Madgraph_v2_1_1/runmadgraph.txt";
   std::string inputfile = "fittino_madgraph_in.txt"; 
@@ -78,11 +78,11 @@ void Fittino::MadGraphCalculator::CalculatePredictions() {
 
   std::ofstream myfile;
   myfile.open ( inputfile.c_str(), std::ios::app ) ;
-  myfile << "set fH "<<_f_B<<std::endl;
+  myfile << "set cHW "<<_cHW<<std::endl;
   myfile.close();
   
   
-  Executor executor("/afs/atlass01.physik.uni-bonn.de/user/thakur/programs/Madgraph_v2_1_1/bin/mg5", "mg5");
+  Executor executor("/afs/atlass01.physik.uni-bonn.de/user/thakur/programs/Madgraph_v2_1_1/bin/mg5_aMC", "mg5_aMC");
   executor.AddArgument(inputfile);
   executor.Execute();
   
