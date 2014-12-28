@@ -20,9 +20,9 @@
 
 CMAKE_MINIMUM_REQUIRED( VERSION 2.6 FATAL_ERROR )
 
-PROJECT( fittino CXX )
+PROJECT( fittino NONE )
 
-ENABLE_LANGUAGE( C )
+INCLUDE( build/CMakeLists.txt OPTIONAL )
 
 SET( CMAKE_CXX_FLAGS                   "${CMAKE_CXX_FLAGS} -std=c++03"  )
 SET( CMAKE_INSTALL_PREFIX              ${CMAKE_SOURCE_DIR}              )
@@ -31,6 +31,16 @@ SET( CMAKE_MODULE_PATH                 ${CMAKE_SOURCE_DIR}/CMakeModules )
 SET( CMAKE_SKIP_BUILD_RPATH            FALSE                            )
 SET( CMAKE_BUILD_WITH_INSTALL_RPATH    FALSE                            ) 
 SET( CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE                             )
+
+IF( NOT DEFINED FEYNHIGGS_QUAD )
+
+    SET( FEYNHIGGS_QUAD TRUE )
+
+ENDIF()
+
+ENABLE_LANGUAGE( CXX )
+ENABLE_LANGUAGE( C )
+# ENABLE_LANGUAGE( Fortran )
 
 FIND_PACKAGE( Boost 1.47.0 COMPONENTS filesystem system thread REQUIRED )
 FIND_PACKAGE( ROOT 5.20.00 REQUIRED                                     )
@@ -46,12 +56,6 @@ FIND_PACKAGE( HIGGSSIGNALS                                              )
 FIND_PACKAGE( FEYNHIGGS                                                 )
 FIND_PACKAGE( GFORTRANLIB                                               )
 FIND_PACKAGE( IFORTLIB                                                  )
-
-IF( NOT DEFINED FEYNHIGGS_QUAD ) 
-
-    SET( FEYNHIGGS_QUAD TRUE )
-
-ENDIF()
 
 ADD_SUBDIRECTORY( external )
 ADD_SUBDIRECTORY( sources  )
