@@ -79,7 +79,6 @@ namespace Fittino {
 
     public:
       virtual const std::vector<Observable*>*    GetObservableVector() const;
-      const Collection<const Quantity*>&         GetCollectionOfChi2Quantities() const;
 
     protected:
       virtual void                               Initialize();
