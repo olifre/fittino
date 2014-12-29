@@ -115,6 +115,11 @@ namespace Fittino {
       Collection<const VariableBase<double>*>             _collectionOfMetaDataDoubleVariables;
       Collection<const VariableBase<std::string>*>        _collectionOfStringVariables;
       std::vector<Observable*>                   _observableVector;
+      /*!
+       *  Stores the calculators.
+       */
+      Collection<CalculatorBase*>                _collectionOfCalculators;
+
 
 
   protected:

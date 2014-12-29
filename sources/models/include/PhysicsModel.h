@@ -112,10 +112,6 @@ namespace Fittino {
       /*! \endcond UML */
 
     private:
-      /*!
-       *  Stores the calculators.
-       */
-      Collection<CalculatorBase*>                _collectionOfCalculators;
 
   };
 
