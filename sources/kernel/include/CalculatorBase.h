@@ -27,6 +27,7 @@
  */
 namespace Fittino {
 
+  class ModelBase;
   class PhysicsModel;
   class PredictionBase;
 
@@ -42,7 +43,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      CalculatorBase( const PhysicsModel* model );
+      CalculatorBase( const ModelBase* model );
       /*!
        *  Standard destructor.
        */
@@ -62,7 +63,7 @@ namespace Fittino {
     protected:
       std::string                                   _name;
       std::string                                   _tag;
-      const PhysicsModel*                           _model;
+      const ModelBase*                              _model;
 
     protected:
       void                                          AddQuantity( PredictionBase* prediction );

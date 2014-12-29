@@ -43,14 +43,14 @@
 #include "ConfigurationException.h"
 #include "Observable.h"
 
-Fittino::LHCLimitCalculator::LHCLimitCalculator( const PhysicsModel* model )
+Fittino::LHCLimitCalculator::LHCLimitCalculator( const ModelBase* model )
     : CalculatorBase( model ) {
 
     _name = "LHCLimitCalculator";
 
 }
 
-Fittino::LHCLimitCalculator::LHCLimitCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::LHCLimitCalculator::LHCLimitCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model ) {
 
     _name = "LHCLimitCalculator";

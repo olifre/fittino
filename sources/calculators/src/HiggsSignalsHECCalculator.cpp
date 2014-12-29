@@ -28,7 +28,7 @@
 #include "SimpleDataStorage.h"
 #include "SimplePrediction.h"
 
-Fittino::HiggsSignalsHECCalculator::HiggsSignalsHECCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::HiggsSignalsHECCalculator::HiggsSignalsHECCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
   :CalculatorBase       ( model                                                                         ){
 
     _name = "HiggsSignalsHadXSCalculator";

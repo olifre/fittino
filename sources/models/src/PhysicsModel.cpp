@@ -502,11 +502,7 @@ const Fittino::Collection<Fittino::CalculatorBase*>& Fittino::PhysicsModel::GetC
 
 }
 
-const std::vector<Fittino::Observable*>* Fittino::PhysicsModel::GetObservableVector() const {
 
-    return &_observableVector;
-
-}
 
 void Fittino::PhysicsModel::InitializeCalculators( const boost::property_tree::ptree& ptree ) {
 

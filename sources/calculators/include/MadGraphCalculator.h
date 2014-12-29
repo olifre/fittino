@@ -49,7 +49,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                          MadGraphCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+                          MadGraphCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

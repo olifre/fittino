@@ -28,7 +28,7 @@
 #include "SimplePrediction.h"
 #include "Observable.h"
 
-Fittino::HiggsBoundsSLHACalculator::HiggsBoundsSLHACalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::HiggsBoundsSLHACalculator::HiggsBoundsSLHACalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : HiggsBoundsCalculator( model, ptree ) {
 
 }

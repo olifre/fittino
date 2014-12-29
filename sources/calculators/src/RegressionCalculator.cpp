@@ -23,7 +23,7 @@
 #include "RegressionCalculator.h"
 #include "RegressionMVA.h"
 
-Fittino::RegressionCalculator::RegressionCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree  )
+Fittino::RegressionCalculator::RegressionCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree  )
     : CalculatorBase( model ),
       _reader ( "!Color:!Silent" ) {
 

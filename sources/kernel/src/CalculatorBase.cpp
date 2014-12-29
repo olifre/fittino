@@ -20,8 +20,9 @@
 #include "CalculatorBase.h"
 #include "PredictionBase.h"
 #include "VariableBase.h"
+#include "PhysicsModel.h"
 
-Fittino::CalculatorBase::CalculatorBase( const PhysicsModel* model )
+Fittino::CalculatorBase::CalculatorBase( const ModelBase* model )
     : _name( "" ),
       _tag( "" ),
       _model( model ) {

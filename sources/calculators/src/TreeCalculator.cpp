@@ -30,7 +30,7 @@
 #include "SimplePrediction.h"
 #include "TreeCalculator.h"
 
-Fittino::TreeCalculator::TreeCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::TreeCalculator::TreeCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase         ( model ),
       _numberOfTreeIterations( 0. ),
       _inputFileName         ( ptree.get<std::string>( "InputFileName", "Fittino.old.root" ) ),

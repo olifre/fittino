@@ -40,7 +40,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      CheckVacuumCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+      CheckVacuumCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

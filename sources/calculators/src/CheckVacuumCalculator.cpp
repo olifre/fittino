@@ -23,7 +23,7 @@
 #include "PhysicsModel.h"
 #include "SimplePrediction.h"
 
-Fittino::CheckVacuumCalculator::CheckVacuumCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::CheckVacuumCalculator::CheckVacuumCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model ),
       _gridfile( ptree.get<std::string>( "GridFile" ) ),
       _m0      ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "M0"      ) )->GetValue() ),

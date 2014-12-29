@@ -34,7 +34,7 @@ namespace Fittino {
   class MicromegasCalculator : public MicromegasWrapper {
 
     public:
-      MicromegasCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+      MicromegasCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree );
       ~MicromegasCalculator();
 
   };

@@ -31,7 +31,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
-Fittino::CheckMATECalculator::CheckMATECalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::CheckMATECalculator::CheckMATECalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
   : CalculatorBase( model ),
     
     _cHW  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cHW.Name", "cHW" ) )->GetValue() )

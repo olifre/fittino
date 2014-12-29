@@ -33,7 +33,7 @@
 
 
 
-Fittino::MadGraphCalculator::MadGraphCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::MadGraphCalculator::MadGraphCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
   : CalculatorBase( model ),
     // Initialize input quantities.                                                                                                                                                      
     _fH ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "fH.Name","fH" ) )->GetValue() ),

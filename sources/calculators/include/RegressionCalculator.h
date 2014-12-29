@@ -44,7 +44,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      RegressionCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+      RegressionCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

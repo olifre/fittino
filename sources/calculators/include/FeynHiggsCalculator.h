@@ -46,7 +46,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      FeynHiggsCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree, std::string inputMethod );
+      FeynHiggsCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree, std::string inputMethod );
       /*!
        *  Standard destructor.
        */

@@ -38,7 +38,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      HiggsBoundsHECCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+      HiggsBoundsHECCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

@@ -38,7 +38,7 @@
 #include "SimpleDataStorage.h"
 #include "SimplePrediction.h"
 
-Fittino::HDim6Calculator::HDim6Calculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::HDim6Calculator::HDim6Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model ),
       _calculate_Gamma_hWW     ( ptree.get<bool>( "calculate_Gamma_hWW"      ) ),
       _calculate_Gamma_hZZ     ( ptree.get<bool>( "calculate_Gamma_hZZ"      ) ),

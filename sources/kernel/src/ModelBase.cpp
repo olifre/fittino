@@ -125,6 +125,12 @@ const Fittino::Collection<const Fittino::VariableBase<std::string>*>& Fittino::M
 
 }
 
+const std::vector<Fittino::Observable*>* Fittino::ModelBase::GetObservableVector() const {
+
+    return &_observableVector;
+
+}
+
 void Fittino::ModelBase::AddPrediction( PredictionBase* prediction ) {
 
     _collectionOfPredictions.AddElement( prediction );

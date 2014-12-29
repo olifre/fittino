@@ -37,7 +37,7 @@ extern "C" {
 
 
 
-Fittino::SuperIsoCalculator::SuperIsoCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::SuperIsoCalculator::SuperIsoCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model ) {
 
     _name = "SuperIso";

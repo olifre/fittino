@@ -28,7 +28,7 @@
 #include "SimplePrediction.h"
 #include "Observable.h"
 
-Fittino::HiggsBoundsHECCalculator::HiggsBoundsHECCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree ) 
+Fittino::HiggsBoundsHECCalculator::HiggsBoundsHECCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : HiggsBoundsCalculator( model, ptree ),
       // Initialize input quantities.
       _BR_hihjhj             ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "BR_hihjhj.Name",        "BR_hihjhj"        ) )->GetValue() ),

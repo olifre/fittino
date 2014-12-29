@@ -30,7 +30,7 @@
 #include "CalculatorException.h"
 #include "MicromegasWrapper.h"
 
-Fittino::MicromegasWrapper::MicromegasWrapper( const PhysicsModel* model )
+Fittino::MicromegasWrapper::MicromegasWrapper( const ModelBase* model )
     : CalculatorBase( model ) {
 
 }

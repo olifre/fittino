@@ -47,7 +47,7 @@
 
 #include "SLHADataStorageBase.h"
 
-Fittino::FeynHiggsCalculator::FeynHiggsCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree, std::string inputMethod )
+Fittino::FeynHiggsCalculator::FeynHiggsCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree, std::string inputMethod )
 : CalculatorBase( model ),
 gammas     ( new FHRealType   [ngammas     ] ),
 gammasms   ( new FHRealType   [ngammasms   ] ),

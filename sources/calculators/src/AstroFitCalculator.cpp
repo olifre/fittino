@@ -25,11 +25,12 @@
 
 #include "AstroFitCalculator.h"
 #include "CalculatorException.h"
+#include "PhysicsModel.h"
 #include "Redirector.h"
 #include "SimplePrediction.h"
 #include "TimeoutExecutorException.h"
 
-Fittino::AstroFitCalculator::AstroFitCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::AstroFitCalculator::AstroFitCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model ),
       _executor( "./AstroFit" , "AstroFit" ) {
 

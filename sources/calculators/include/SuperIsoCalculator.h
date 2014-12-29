@@ -38,7 +38,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      SuperIsoCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+      SuperIsoCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree );
 
     public:
       /*!

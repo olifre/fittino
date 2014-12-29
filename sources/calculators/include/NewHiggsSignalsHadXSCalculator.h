@@ -40,7 +40,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-    NewHiggsSignalsHadXSCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+    NewHiggsSignalsHadXSCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree );
 
     public:
       /*!

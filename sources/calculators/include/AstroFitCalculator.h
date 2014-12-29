@@ -36,7 +36,7 @@ namespace Fittino {
   class AstroFitCalculator : public CalculatorBase {
 
     public:
-      AstroFitCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree  );
+      AstroFitCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree  );
       ~AstroFitCalculator();
 
     private:

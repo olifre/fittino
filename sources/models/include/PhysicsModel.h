@@ -78,13 +78,11 @@ namespace Fittino {
       virtual PhysicsModel*                      Clone() const;
 
     public:
-      virtual const std::vector<Observable*>*    GetObservableVector() const;
 
     protected:
       virtual void                               Initialize();
 
     protected:
-      std::vector<Observable*>                   _observableVector;
       Collection<const Quantity*>                _collectionOfChi2Quantities;
       TMatrixDSym*                               _observableCovarianceMatrix;
       TMatrixDSym*                               _observableCorrelationMatrix;

@@ -43,7 +43,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      FormulaCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+      FormulaCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

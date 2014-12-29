@@ -26,7 +26,7 @@
 #include "FeynHiggsRescalingCalculator.h"
 #include "CHiggsSignals.h"
 
-Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
   : CalculatorBase( model ),
     _i_GammaTotal_h0         ( model->GetCollectionOfQuantities().At("FeynHiggs_GammaTotal_h0"                    )->GetValue() ),
     _i_Gamma_h_Wp_Wm         ( model->GetCollectionOfQuantities().At("FeynHiggs_Gamma_h0_to_Wp_Wm"                )->GetValue() ),

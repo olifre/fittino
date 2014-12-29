@@ -50,7 +50,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-                       CheckMATECalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+                       CheckMATECalculator( const ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

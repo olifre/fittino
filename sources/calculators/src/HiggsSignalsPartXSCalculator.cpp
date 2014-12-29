@@ -31,7 +31,7 @@
 #include "SimplePrediction.h"
 #include "Observable.h"
 
-Fittino::HiggsSignalsPartXSCalculator::HiggsSignalsPartXSCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree )
+Fittino::HiggsSignalsPartXSCalculator::HiggsSignalsPartXSCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     :CalculatorBase       ( model                                                                         ) {
     
     _name               = ptree.get<std::string>( "Name",               "HiggsSignalsCalculator" );

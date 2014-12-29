@@ -41,7 +41,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      SPhenoSLHACalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+      SPhenoSLHACalculator( const ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
        */

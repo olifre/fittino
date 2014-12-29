@@ -36,6 +36,7 @@ namespace Fittino {
   class CalculatorBase;
   class ModelParameter;
   class PredictionBase;
+    class Observable;
 
   /*!
    *  \ingroup kernel
@@ -85,7 +86,11 @@ namespace Fittino {
       const Collection<const VariableBase<double>*>&      GetCollectionOfMetaDataDoubleVariables() const;
       const Collection<const VariableBase<std::string>*>& GetCollectionOfStringVariables() const;
 
-    public:
+      /* Currently needed by AstroCalculator, should be removed! */
+      virtual const std::vector<Observable*>*             GetObservableVector() const;
+
+
+  public:
       virtual void                                        PrintStatus() const = 0;
       /*!
        *  Returns a pointer to a copy of the model.
@@ -109,8 +114,10 @@ namespace Fittino {
       Collection<PredictionBase*>                         _collectionOfPredictions;
       Collection<const VariableBase<double>*>             _collectionOfMetaDataDoubleVariables;
       Collection<const VariableBase<std::string>*>        _collectionOfStringVariables;
+      std::vector<Observable*>                   _observableVector;
 
-    protected:
+
+  protected:
       /*!
        *  Adds a prediction to the model.
        *  \todo Move to PhysicsModel (Matthias).

@@ -38,7 +38,7 @@ namespace Fittino {
   class MicromegasWrapper: public CalculatorBase {
 
     public:
-      MicromegasWrapper( const PhysicsModel* model );
+      MicromegasWrapper( const ModelBase* model );
       void        CalculatePredictions();
 
     public:

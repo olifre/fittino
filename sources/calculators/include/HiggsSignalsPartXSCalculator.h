@@ -40,7 +40,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-    HiggsSignalsPartXSCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree );
+    HiggsSignalsPartXSCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree );
 
     public:
       /*!

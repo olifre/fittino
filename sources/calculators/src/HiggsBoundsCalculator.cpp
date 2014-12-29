@@ -28,7 +28,7 @@
 #include "SimplePrediction.h"
 #include "Observable.h"
 
-Fittino::HiggsBoundsCalculator::HiggsBoundsCalculator( const PhysicsModel* model, const boost::property_tree::ptree& ptree ) 
+Fittino::HiggsBoundsCalculator::HiggsBoundsCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model ) {
 
     // Initialize steering parameters common to all SLHA calculators.
