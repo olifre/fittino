@@ -128,10 +128,6 @@ namespace Fittino {
        *  \todo Move to PhysicsModel (Matthias).
        */
       void                                                AddPrediction( PredictionBase* prediction );
-    /*!
-     *  Adds a calculator to the model.
-     */
-    void                                       AddCalculator( CalculatorBase *calculator );
 
 
   protected:
@@ -164,6 +160,10 @@ namespace Fittino {
        */
       int                                                 GetNumberOfPredictions() const;
       /*!
+      *  Adds a calculator to the model.
+      */
+      void                                       AddCalculator( CalculatorBase *calculator );
+    /*!
        *  Adds a parameter to the model.
        */
       void                                                AddParameter( ModelParameter* parameter );
