@@ -22,6 +22,7 @@
 #include <boost/foreach.hpp>
 
 #include "CalculatorBase.h"
+#include "Factory.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
 
@@ -30,6 +31,8 @@ Fittino::ModelBase::ModelBase( boost::property_tree::ptree& ptree )
       _ptree ( ptree ) {
 
     InitializeParameters( ptree );
+    InitializeCalculators( ptree );
+
 
 }
 
@@ -183,5 +186,17 @@ void Fittino::ModelBase::InitializeParameters( boost::property_tree::ptree& ptre
         }
 
     }
+
+}
+
+void Fittino::ModelBase::InitializeCalculators( const boost::property_tree::ptree& ptree ) {
+
+    Factory factory;
+
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child( "Calculators" ) ) {
+
+                    AddCalculator( factory.CreateCalculator( node.first, this, node.second ) );
+
+                }
 
 }

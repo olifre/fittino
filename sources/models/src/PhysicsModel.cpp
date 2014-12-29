@@ -95,7 +95,6 @@ Fittino::PhysicsModel::PhysicsModel( boost::property_tree::ptree& ptree )
 
     Factory factory;
 
-    InitializeCalculators( ptree );
     InitializeObservables( ptree );
 
     for ( unsigned int i = 0; i < GetObservableVector()->size(); ++i ) {
@@ -491,17 +490,7 @@ const Fittino::Collection<Fittino::CalculatorBase*>& Fittino::PhysicsModel::GetC
 
 
 
-void Fittino::PhysicsModel::InitializeCalculators( const boost::property_tree::ptree& ptree ) {
 
-    Factory factory;
-
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree.get_child( "Calculators" ) ) {
-
-        AddCalculator( factory.CreateCalculator( node.first, this, node.second ) );
-
-    }
-
-}
 
 void Fittino::PhysicsModel::InitializeObservables( const boost::property_tree::ptree& ptree ) {
 
