@@ -80,7 +80,7 @@ namespace Fittino {
        *    <li>TreeCalculator\n
        *  </ul>
        */
-      CalculatorBase* const      CreateCalculator( const std::string& type, const PhysicsModel* model, const boost::property_tree::ptree& ptree ) const;
+      CalculatorBase* const      CreateCalculator( const std::string& type, const ModelBase* model, const boost::property_tree::ptree& ptree ) const;
       /*!
        *  Returns a cut object. So far the only supported type is a SplineCut.
        */

@@ -101,7 +101,7 @@ Fittino::Factory::~Factory() {
 
 }
 
-Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::string& type, const PhysicsModel* model, const boost::property_tree::ptree& ptree ) const {
+Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::string& type, const ModelBase* model, const boost::property_tree::ptree& ptree ) const {
 
     if ( type == "AstroCalculator" ) {
 
