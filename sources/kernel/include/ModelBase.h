@@ -128,8 +128,13 @@ namespace Fittino {
        *  \todo Move to PhysicsModel (Matthias).
        */
       void                                                AddPrediction( PredictionBase* prediction );
+    /*!
+     *  Adds a calculator to the model.
+     */
+    void                                       AddCalculator( CalculatorBase *calculator );
 
-    protected:
+
+  protected:
       /*!
        *  This function is mainly used to provide a dedicated command to print the model\n
        *  configuration to the screen and is usually called at the end of the model constructor\n

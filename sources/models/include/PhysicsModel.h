@@ -58,10 +58,6 @@ namespace Fittino {
        *  Adds an observable to the model.
        */
       void                                       AddObservable( Observable *observable );
-      /*!
-       *  Adds a calculator to the model.
-       */
-      void                                       AddCalculator( CalculatorBase *calculator );
 
       void                                       AddChi2Contribution( const std::string& name );
       /*!

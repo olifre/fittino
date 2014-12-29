@@ -21,6 +21,7 @@
 
 #include <boost/foreach.hpp>
 
+#include "CalculatorBase.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
 
@@ -137,6 +138,21 @@ void Fittino::ModelBase::AddPrediction( PredictionBase* prediction ) {
     _collectionOfQuantities.AddElement( prediction );
 
 }
+
+void Fittino::ModelBase::AddCalculator( CalculatorBase* calculator ) {
+
+    _collectionOfCalculators.AddElement( calculator->GetName(), calculator );
+
+    const Collection<PredictionBase*>& col = calculator->GetCollectionOfQuantities();
+
+    for ( unsigned int i = 0; i < col.GetNumberOfElements(); i++ ) {
+
+        AddPrediction( col.At( i ) );
+
+    }
+
+}
+
 
 int Fittino::ModelBase::GetNumberOfPredictions() const {
 

@@ -482,19 +482,6 @@ void Fittino::PhysicsModel::AddObservable( Observable* observable ) {
     AddPrediction( new SimplePrediction( name, name, "", "", -100., 100., observable->GetDeviation() ) );
 }
 
-void Fittino::PhysicsModel::AddCalculator( CalculatorBase* calculator ) {
-
-    _collectionOfCalculators.AddElement( calculator->GetName(), calculator );
-
-    const Collection<PredictionBase*>& col = calculator->GetCollectionOfQuantities();
-
-    for ( unsigned int i = 0; i < col.GetNumberOfElements(); i++ ) {
-
-        AddPrediction( col.At( i ) );
-
-    }
-
-}
 
 const Fittino::Collection<Fittino::CalculatorBase*>& Fittino::PhysicsModel::GetCollectionOfCalculators() const {
 
