@@ -22,6 +22,7 @@
 #include <boost/foreach.hpp>
 
 #include "CalculatorBase.h"
+#include "CalculatorException.h"
 #include "Factory.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
@@ -33,13 +34,11 @@ Fittino::ModelBase::ModelBase( boost::property_tree::ptree& ptree )
     InitializeParameters( ptree );
     InitializeCalculators( ptree );
 
-
 }
 
 Fittino::ModelBase::~ModelBase() {
 
     _collectionOfQuantities.Delete();
-
     _collectionOfMetaDataDoubleVariables.Delete();
     _collectionOfStringVariables.Delete();
 
@@ -156,7 +155,6 @@ void Fittino::ModelBase::AddCalculator( CalculatorBase* calculator ) {
 
 }
 
-
 int Fittino::ModelBase::GetNumberOfPredictions() const {
 
     return _collectionOfPredictions.GetNumberOfElements();
@@ -198,5 +196,75 @@ void Fittino::ModelBase::InitializeCalculators( const boost::property_tree::ptre
                     AddCalculator( factory.CreateCalculator( node.first, this, node.second ) );
 
                 }
+
+}
+
+// todo: discuss this function, should return value of Chi2Quantity and set error branch
+double Fittino::ModelBase::Evaluate() {
+
+    try {
+
+        for ( unsigned int i = 0; i < _collectionOfCalculators.GetNumberOfElements(); ++i ) {
+
+            _collectionOfCalculators.At( i )->CalculatePredictions();
+
+        }
+
+    }
+    catch( const CalculatorException& exception ) {
+
+        return std::numeric_limits<double>::max();
+
+    }
+
+    return 0;
+
+}
+
+void Fittino::ModelBase::PrintStatus() const {
+
+    Messenger& messenger = Messenger::GetInstance();
+
+    messenger << Messenger::INFO << Messenger::Endl;
+    messenger << Messenger::INFO << "   Set of the " << this->GetName() << " parameters:" << Messenger::Endl;
+    messenger << Messenger::INFO << Messenger::Endl;
+
+    for ( unsigned int i = 0; i < GetNumberOfParameters(); ++i ) {
+
+        GetCollectionOfParameters().At( i )->PrintStatus();
+
+    }
+
+    if ( _collectionOfPredictions.GetNumberOfElements() != 0 ) {
+
+        messenger << Messenger::Endl;
+        messenger << Messenger::INFO << "   Summary of the " << this->GetName() << " predictions:"  << Messenger::Endl;
+        messenger << Messenger::Endl;
+
+        for ( unsigned int i = 0; i < _collectionOfPredictions.GetNumberOfElements(); ++i ) {
+
+            _collectionOfPredictions.At( i )->PrintStatus();
+
+        }
+
+    }
+
+}
+
+// todo this function should not be needed. For the moment implement an empty version.
+void Fittino::ModelBase::Initialize() {
+
+}
+
+const Fittino::Collection<Fittino::CalculatorBase*>& Fittino::ModelBase::GetCollectionOfCalculators() const {
+
+    return _collectionOfCalculators;
+
+}
+
+// todo: discuss what this function should actually do...
+Fittino::ModelBase *Fittino::ModelBase::Clone() {
+
+    return new ModelBase( *this );
 
 }

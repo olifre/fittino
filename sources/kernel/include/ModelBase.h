@@ -91,15 +91,15 @@ namespace Fittino {
 
 
   public:
-      virtual void                                        PrintStatus() const = 0;
+      virtual void                                        PrintStatus() const;
       /*!
        *  Returns a pointer to a copy of the model.
        */
-      virtual ModelBase*                                  Clone() const = 0;
+      virtual ModelBase*                                  Clone();
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
-      virtual const Collection<CalculatorBase*>&          GetCollectionOfCalculators() const = 0;
+      virtual const Collection<CalculatorBase*>&          GetCollectionOfCalculators() const;
 
     protected:
       /*!
@@ -139,7 +139,7 @@ namespace Fittino {
        *  model calculators) sometimes does not differ between initialization and printing, this\n
        *  is also the place where third party code is initialized.
        */
-      virtual void                                        Initialize() = 0;
+      virtual void                                        Initialize() ;
 
       /*! \cond UML */
     private:
@@ -162,7 +162,7 @@ namespace Fittino {
       /*!
       *  Adds a calculator to the model.
       */
-      void                                       AddCalculator( CalculatorBase *calculator );
+      void                                                AddCalculator( CalculatorBase *calculator );
     /*!
        *  Adds a parameter to the model.
        */
@@ -178,7 +178,7 @@ namespace Fittino {
       /*!
        *  Evaluates the chi2 function.
        */
-      virtual double                                      Evaluate() = 0;
+      virtual double                                      Evaluate();
 
       /*! \endcond UML */
 

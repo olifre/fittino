@@ -60,10 +60,7 @@ namespace Fittino {
       void                                       AddObservable( Observable *observable );
 
       void                                       AddChi2Contribution( const std::string& name );
-      /*!
-       *  Returns the predictions of the model as a collection.
-       */
-      virtual const Collection<CalculatorBase*>& GetCollectionOfCalculators() const;
+
 
     public:
       virtual void                               PrintStatus() const;

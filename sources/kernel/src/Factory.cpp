@@ -440,6 +440,11 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
         return new VincentModel( ptree );
 
     }
+    else if ( type == "ModelBase" ) {
+
+        return new ModelBase( ptree );
+
+    }
     else {
 
         throw ConfigurationException( "Model type " + type + " not known." );

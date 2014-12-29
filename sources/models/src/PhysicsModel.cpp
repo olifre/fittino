@@ -482,11 +482,6 @@ void Fittino::PhysicsModel::AddObservable( Observable* observable ) {
 }
 
 
-const Fittino::Collection<Fittino::CalculatorBase*>& Fittino::PhysicsModel::GetCollectionOfCalculators() const {
-
-    return _collectionOfCalculators;
-
-}
 
 
 
