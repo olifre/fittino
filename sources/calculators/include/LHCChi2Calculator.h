@@ -21,9 +21,11 @@
 #define FITTINO_LHCCHI2CALCULATOR_H
 
 #include <vector>
+
 #include "THnSparse.h"
-#include "PtreeForwardDeclaration.h"
+
 #include "CalculatorBase.h"
+#include "PtreeForwardDeclaration.h"
 
 class TH1D;
 /*!

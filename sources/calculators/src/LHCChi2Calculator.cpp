@@ -26,7 +26,6 @@
 #include "TFile.h"
 #include "TH1D.h"
 #include "TMath.h"
-#include "TDirectory.h"
 
 #include "ModelBase.h"
 #include "LHCChi2Calculator.h"
