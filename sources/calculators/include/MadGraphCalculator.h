@@ -34,8 +34,6 @@ class TF1;
  */
 namespace Fittino {
 
-  class SimpleDataStorage;
-
   /*!
    *  \defgroup calculators
    */
