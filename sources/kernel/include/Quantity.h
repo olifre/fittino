@@ -20,6 +20,7 @@
 #ifndef FITTINO_QUANTITY_H
 #define FITTINO_QUANTITY_H
 
+#include <limits>
 #include <string>
 
 #include "PtreeForwardDeclaration.h"
@@ -43,8 +44,8 @@ namespace Fittino {
       Quantity( std::string name,
                 std::string plotName,
                 double      value,
-                double      lowerBound,
-                double      upperBound );
+                double      lowerBound = - std::numeric_limits<double>::infinity(),
+                double      upperBound =   std::numeric_limits<double>::infinity() );
       Quantity( std::string name,
                 std::string plotName,
                 double      value,
