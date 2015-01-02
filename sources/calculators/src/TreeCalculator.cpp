@@ -69,6 +69,7 @@ Fittino::TreeCalculator::TreeCalculator( const ModelBase* model, const boost::pr
 
     OpenInputFile();
     AddPredictions();
+    CalculatePredictions();
 
 }
 
