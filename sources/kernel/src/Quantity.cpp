@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include <iomanip>
+#include <limits>
 
 #include <boost/property_tree/ptree.hpp>
 
@@ -55,8 +56,8 @@ Fittino::Quantity::Quantity( std::string name,
 }
 
 Fittino::Quantity::Quantity( const boost::property_tree::ptree& ptree )
-    : _lowerBound( ptree.get<double>     ( "LowerBound"   ) ),
-      _upperBound( ptree.get<double>     ( "UpperBound"   ) ),
+    : _lowerBound( ptree.get<double>     ( "LowerBound", - std::numeric_limits<double>::infinity()  ) ),
+      _upperBound( ptree.get<double>     ( "UpperBound",  std::numeric_limits<double>::infinity()  ) ),
       _value     ( ptree.get<double>     ( "Value", 0.    ) ),
       _name      ( ptree.get<std::string>( "Name"         ) ),
       _unit      ( ptree.get<std::string>( "Unit", ""     ) ),
@@ -71,7 +72,7 @@ Fittino::Quantity::~Quantity() {
 
 bool Fittino::Quantity::IsInBounds() const {
 
-  if (  GetValue() < GetUpperBound() && GetValue() > GetLowerBound() ) return true;
+  if (  GetValue() <= GetUpperBound() && GetValue() >= GetLowerBound() ) return true;
 
   return false;
 
@@ -147,5 +148,9 @@ void Fittino::Quantity::PrintStatus() const {
 void Fittino::Quantity::SetValue( double value ) {
 
     _value = value;
+
+}
+
+void Fittino::Quantity::Update() {
 
 }

@@ -93,6 +93,8 @@ namespace Fittino {
        */
       virtual void          SetValue( double value );
 
+      virtual void          Update();
+
     protected:
       /*!
        *  Lower bound of the quantity.

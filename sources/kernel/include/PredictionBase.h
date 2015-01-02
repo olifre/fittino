@@ -52,9 +52,6 @@ namespace Fittino {
        */
       ~PredictionBase();
 
-    public:
-      virtual void Update() = 0;
-
   };
 
 }
