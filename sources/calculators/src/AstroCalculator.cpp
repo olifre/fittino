@@ -42,13 +42,6 @@
 #include "Observable.h"
 #include "SimpleDataStorage.h"
 
-Fittino::AstroCalculator::AstroCalculator( const ModelBase* model )
-    : CalculatorBase( model ) {
-
-    _name = "AstroCalculator";
-
-}
-
 Fittino::AstroCalculator::AstroCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model ),
       _simpleOutputDataStorage( new SimpleDataStorage() ) {

@@ -46,13 +46,9 @@ namespace Fittino {
   class AstroCalculator : public CalculatorBase {
 
     public:
-      /*!
-       *  Old standard constructor.
-       */
-                          AstroCalculator( const ModelBase* model );
-      /*!
-       *  Standard constructor.
-       */
+    /*!
+     *  Standard constructor.
+     */
                           AstroCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
