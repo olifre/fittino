@@ -82,7 +82,7 @@ void Fittino::MadGraphCalculator::CalculatePredictions() {
   myfile.close();
   
   
-  Executor executor("/afs/atlass01.physik.uni-bonn.de/user/thakur/programs/Madgraph_v2_1_1/bin/mg5_aMC", "mg5_aMC");
+  Executor executor("/afs/atlass01.physik.uni-bonn.de/user/thakur/programs/Madgraph_v2_1_1/bin/mg5_aMC", "mg5");
   executor.AddArgument(inputfile);
   executor.Execute();
   

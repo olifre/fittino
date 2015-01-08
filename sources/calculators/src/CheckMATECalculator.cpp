@@ -61,8 +61,7 @@ Fittino::CheckMATECalculator::CheckMATECalculator( const ModelBase* model, const
   
   std::cout<<"CheckMATE constructor."<<std::endl;
   
-  //the problem starts here 
-  
+    
   std::ifstream file( "/lustre/user/thakur/programs/CheckMATE/CheckMATE-1.1.14/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_signal.dat" );
   std::string line;
   
@@ -75,8 +74,7 @@ Fittino::CheckMATECalculator::CheckMATECalculator( const ModelBase* model, const
     
   }
   
-  std::cout<<"error, dude"<<std::endl;
-  
+   
   std::vector<std::string> vector_name; 
   
   while ( file ) {
