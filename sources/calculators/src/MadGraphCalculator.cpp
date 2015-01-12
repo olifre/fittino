@@ -67,7 +67,7 @@ void Fittino::MadGraphCalculator::CalculatePredictions() {
 
   std::cout<<"USING _cHW = "<<_cHW<<std::endl;
   
-  std::string originalinputfile = "/afs/atlass01.physik.uni-bonn.de/user/thakur/programs/Madgraph_v2_1_1/runmadgraph.txt";
+  std::string originalinputfile = "/lustre/user/thakur/programs/Madgraph_v2_1_1/runmadgraph.txt";
   std::string inputfile = "fittino_madgraph_in.txt"; 
 
   std::ifstream infile( originalinputfile.c_str(), std::ios::binary );
@@ -82,7 +82,7 @@ void Fittino::MadGraphCalculator::CalculatePredictions() {
   myfile.close();
   
   
-  Executor executor("/afs/atlass01.physik.uni-bonn.de/user/thakur/programs/Madgraph_v2_1_1/bin/mg5_aMC", "mg5");
+  Executor executor("/lustre/user/thakur/programs/Madgraph_v2_1_1/bin/mg5_aMC", "mg5_aMC");
   executor.AddArgument(inputfile);
   executor.Execute();
   

@@ -137,8 +137,8 @@ void Fittino::Executor::Child() {
 
         argv[_args.size()] = NULL;
 
-        execve( _path.c_str(), &argv[0], environ );
-        perror( "execve" );
+        execv( _path.c_str(), &argv[0]);
+        perror( "execv" );
 
     }
     catch ( const std::exception& exception  ) {
