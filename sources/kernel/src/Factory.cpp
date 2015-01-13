@@ -24,6 +24,7 @@
 #include "AstroFitCalculator.h"
 #include "CheckMATECalculator.h"
 #include "CheckVacuumCalculator.h"
+#include "Chi2Calculator.h"
 #include "ContourHistogramMaker.h"
 #include "ContourPlotter.h"
 //#include "CorrelatedSampler.h"
@@ -122,6 +123,11 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     else if ( type == "CheckVacuumCalculator" ) {
 
         return new CheckVacuumCalculator( model, ptree );
+
+    }
+    else if ( type == "Chi2Calculator" ) {
+
+        return new Chi2Calculator( model, ptree );
 
     }
     else if ( type == "FeynHiggsNativeCalculator" )  {
@@ -498,7 +504,7 @@ Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::prop
 
 }
 
-Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::PredictionBase*>& predictions, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const {
+Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::Quantity*>& predictions, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const {
 
     std::string name = ptree.get<std::string>( "Name", "NONE" );
     for ( unsigned int i = 0; i < predictions.GetNumberOfElements(); ++i ) {

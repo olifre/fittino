@@ -81,7 +81,7 @@ namespace Fittino {
       /*!
        *  \todo Move to PhysicsModel (Matthias).
        */
-      const Collection<PredictionBase*>&                  GetCollectionOfPredictions() const;
+      const Collection<Quantity*>&                        GetCollectionOfPredictions() const;
       const Collection<const Quantity*>&                  GetCollectionOfQuantities() const;
       const Collection<const VariableBase<double>*>&      GetCollectionOfMetaDataDoubleVariables() const;
       const Collection<const VariableBase<std::string>*>& GetCollectionOfStringVariables() const;
@@ -111,7 +111,7 @@ namespace Fittino {
        *  Stores the predictions.
        *  \todo Move to PhysicsModel (Matthias).
        */
-      Collection<PredictionBase*>                         _collectionOfPredictions;
+      Collection<Quantity*>                         _collectionOfPredictions;
       Collection<const VariableBase<double>*>             _collectionOfMetaDataDoubleVariables;
       Collection<const VariableBase<std::string>*>        _collectionOfStringVariables;
       std::vector<Observable*>                   _observableVector;
@@ -127,7 +127,7 @@ namespace Fittino {
        *  Adds a prediction to the model.
        *  \todo Move to PhysicsModel (Matthias).
        */
-      void                                                AddPrediction( PredictionBase* prediction );
+      void                                                AddPrediction( Quantity* prediction );
 
 
   protected:

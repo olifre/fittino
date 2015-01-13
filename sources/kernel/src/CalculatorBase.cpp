@@ -35,7 +35,7 @@ std::string Fittino::CalculatorBase::GetName() const {
 
 }
 
-const Fittino::Collection<Fittino::PredictionBase*>& Fittino::CalculatorBase::GetCollectionOfQuantities() const {
+const Fittino::Collection<Fittino::Quantity*>& Fittino::CalculatorBase::GetCollectionOfQuantities() const {
 
     return _collectionOfQuantities;
 
@@ -59,7 +59,7 @@ void Fittino::CalculatorBase::SetupMeasuredValues() {
 
 }
 
-void  Fittino::CalculatorBase::AddQuantity( Fittino::PredictionBase* prediction ) {
+void  Fittino::CalculatorBase::AddQuantity( Fittino::Quantity* prediction ) {
 
     if ( _tag != "" ) {
 

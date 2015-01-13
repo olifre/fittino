@@ -41,6 +41,7 @@ namespace Fittino {
   class PredictionBase;
   class SLHADataStorageBase;
   class Tool;
+    class Quantity;
 
   /*!
    *  \ingroup kernel
@@ -102,7 +103,7 @@ namespace Fittino {
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
-      Observable* const          CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::PredictionBase*>& predictions, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const;
+      Observable* const          CreateObservable( const boost::property_tree::ptree& ptree, const Fittino::Collection<Fittino::Quantity*>& predictions, const Fittino::Collection<Fittino::CalculatorBase*>& calculators ) const;
       /*!
        *  Returns a concrete plotter.\n
        *  Supported plotters are

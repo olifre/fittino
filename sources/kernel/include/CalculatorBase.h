@@ -29,7 +29,7 @@ namespace Fittino {
 
   class ModelBase;
   class PhysicsModel;
-  class PredictionBase;
+    class Quantity;
 
   template<class T> class VariableBase;
 
@@ -48,7 +48,7 @@ namespace Fittino {
        *  Standard destructor.
        */
       std::string                                   GetName() const;
-      const Collection<PredictionBase*>&            GetCollectionOfQuantities() const;
+      const Collection<Quantity*>&                  GetCollectionOfQuantities() const;
       const Collection<VariableBase<std::string>*>& GetCollectionOfStringVariables() const;
 
     public:
@@ -66,12 +66,12 @@ namespace Fittino {
       const ModelBase*                              _model;
 
     protected:
-      void                                          AddQuantity( PredictionBase* prediction );
+      void                                          AddQuantity( Quantity* prediction );
       void                                          AddStringVariable( VariableBase<std::string>* variable );
 
       /*! \cond UML */
     private:
-      Collection<PredictionBase*>                   _collectionOfQuantities;
+      Collection<Quantity*>                         _collectionOfQuantities;
       Collection<VariableBase<std::string>*>        _collectionOfStringVariables;
 
       /*! \endcond UML */

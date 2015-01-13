@@ -22,6 +22,7 @@
 #define FITTINO_OBSERVABLE_H
 
 #include <boost/property_tree/ptree.hpp>
+#include <Quantity.h>
 
 /*!
  *  \brief Fittino namespace.
@@ -29,6 +30,7 @@
 namespace Fittino {
 
   class PredictionBase;
+    class Quantity;
 
   /*!
    *  \ingroup models
@@ -40,17 +42,17 @@ namespace Fittino {
       /*!
        *  Constructor.
        */
-                      Observable( PredictionBase* prediction,
-                                  double          measuredValue,
-                                  double          measuredError,
-                                  double          bestFitPrediction = 0,
-                                  bool            noFit = false,
-                                  bool            noSmear = false,
-                                  bool            noUpdate = false );
+                      Observable(Quantity *prediction,
+                              double measuredValue,
+                              double measuredError,
+                              double bestFitPrediction = 0,
+                              bool noFit = false,
+                              bool noSmear = false,
+                              bool noUpdate = false);
       /*!
        *  Standard constructor
        */
-                      Observable( const boost::property_tree::ptree& ptree, PredictionBase* prediction );
+                      Observable(const boost::property_tree::ptree &ptree, Quantity *prediction);
       /*!
        *  Standard destructor.
        */
@@ -59,7 +61,7 @@ namespace Fittino {
       const double&   GetMeasuredError() const;
       const double&   GetMeasuredValue() const;
       double          GetBestFitPrediction() const;
-      PredictionBase* GetPrediction();
+      Quantity* GetPrediction();
       void            SetBestFitPrediction( double );
       void            SetMeasuredValue( double );
       bool            IsNoFitObservable();
@@ -85,7 +87,7 @@ namespace Fittino {
       bool            _noFit;
       bool            _noSmear;
       bool            _noUpdate;
-      PredictionBase* _prediction;
+      Quantity* _prediction;
       std::string     _smearingType;
 
     protected:

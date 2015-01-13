@@ -28,13 +28,13 @@
 #include "PredictionBase.h"
 #include "RandomGenerator.h"
 
-Fittino::Observable::Observable( PredictionBase* prediction,
-                                 double          measuredValue,
-                                 double          measuredError,
-                                 double          bestFitPrediction,
-                                 bool            noFit,
-                                 bool            noSmear,
-                                 bool            noUpdate )
+Fittino::Observable::Observable(Quantity *prediction,
+        double measuredValue,
+        double measuredError,
+        double bestFitPrediction,
+        bool noFit,
+        bool noSmear,
+        bool noUpdate)
         : _deviation( 0. ),
           _measuredError( measuredError ),
           _measuredValue( measuredValue ),
@@ -45,7 +45,7 @@ Fittino::Observable::Observable( PredictionBase* prediction,
           _prediction( prediction ) {
 }
 
-Fittino::Observable::Observable( const boost::property_tree::ptree& ptree, PredictionBase* prediction ) 
+Fittino::Observable::Observable(const boost::property_tree::ptree &ptree, Quantity *prediction)
                    : _deviation( 0. ),
                      _measuredValue( ptree.get<double>( "MeasuredValue" ) ),
                      _bestFitPrediction( ptree.get<double>( "BestFitPrediction", 0. ) ),
@@ -124,7 +124,7 @@ double Fittino::Observable::CalculateDeviation() {
 
 }
 
-Fittino::PredictionBase* Fittino::Observable::GetPrediction() {
+Fittino::Quantity* Fittino::Observable::GetPrediction() {
 
    return _prediction;
 

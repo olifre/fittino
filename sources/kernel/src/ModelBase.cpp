@@ -104,7 +104,7 @@ const Fittino::Collection<Fittino::ModelParameter*>& Fittino::ModelBase::GetColl
 
 }
 
-const Fittino::Collection<Fittino::PredictionBase*>& Fittino::ModelBase::GetCollectionOfPredictions() const {
+const Fittino::Collection<Fittino::Quantity*>& Fittino::ModelBase::GetCollectionOfPredictions() const {
 
     return _collectionOfPredictions;
 
@@ -134,7 +134,7 @@ const std::vector<Fittino::Observable*>* Fittino::ModelBase::GetObservableVector
 
 }
 
-void Fittino::ModelBase::AddPrediction( PredictionBase* prediction ) {
+void Fittino::ModelBase::AddPrediction( Quantity* prediction ) {
 
     _collectionOfPredictions.AddElement( prediction );
     _collectionOfQuantities.AddElement( prediction );
@@ -145,7 +145,7 @@ void Fittino::ModelBase::AddCalculator( CalculatorBase* calculator ) {
 
     _collectionOfCalculators.AddElement( calculator->GetName(), calculator );
 
-    const Collection<PredictionBase*>& col = calculator->GetCollectionOfQuantities();
+    const Collection<Quantity*>& col = calculator->GetCollectionOfQuantities();
 
     for ( unsigned int i = 0; i < col.GetNumberOfElements(); i++ ) {
 
