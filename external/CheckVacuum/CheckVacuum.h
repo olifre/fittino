@@ -121,10 +121,10 @@ inline CheckVacuum::CheckVacuum (std::string Datafile)
 	double SignMuCondition=DataMatrix[j][3]- SignMu_in; //Checks if input point and data have the same sign(mu)
 	if(SignMuCondition == 0) // if they do, calculate normalized distance. 
 	{
-	Distance = std::pow(DataMatrix[j][0]-mzero_in,2)/mzeroRange + 
-	std::pow(DataMatrix[j][1]-mhalf_in,2)/mhalfRange +
-	std::pow(DataMatrix[j][2]-TanB_in,2)/TanBRange +
-	std::pow(DataMatrix[j][4]- Azero_in,2)/AzeroRange;
+		Distance = std::pow(DataMatrix[j][0]-mzero_in,2) / std::pow(mzeroRange,2) +
+				   std::pow(DataMatrix[j][1]-mhalf_in,2) / std::pow(mhalfRange,2) +
+				   std::pow(DataMatrix[j][2]-TanB_in,2) / std::pow(TanBRange,2) +
+				   std::pow(DataMatrix[j][4]- Azero_in,2) / std::pow(AzeroRange,2);
 	}
 	else
 	{
