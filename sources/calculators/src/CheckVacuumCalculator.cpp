@@ -49,7 +49,16 @@ Fittino::CheckVacuumCalculator::~CheckVacuumCalculator() {
 
 void Fittino::CheckVacuumCalculator::CalculatePredictions() {
 
+    // The Stability function takes in m_0, m_1/2, Tan(beta), sign(mu) and A_0.
+    // It outputs 1 , 0 or -1 for stable, long-lived and short-lived
+
     _vacuumStability = _checkVacuum->Stability( _m0, _m12, _tanbeta, _signmu, _a0 );
+
+    // The Lifetime function takes in m_0, m_1/2, Tan(beta), sign(mu) and A_0.
+    // If the input point is short-lived it outputs the lifetime in universe ages
+    // If the input point is long-lived  it outputs 1e+6
+    // If the input point is stable it outputs -1
+
     _vacuumLifetime  = _checkVacuum->Lifetime ( _m0, _m12, _tanbeta, _signmu, _a0 );
 
 }
