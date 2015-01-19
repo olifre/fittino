@@ -20,6 +20,7 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include "TCanvas.h"
+#include "TGaxis.h"
 #include "TH1.h"
 #include "TROOT.h"
 #include "TStyle.h"
@@ -40,13 +41,14 @@ Fittino::SimplePlotter::SimplePlotter( std::vector<TH1*>& histogramVector, const
     _fittinoStyle->SetHistFillColor( _fillColor );
     _fittinoStyle->SetHistFillStyle( _fillStyle );
     _fittinoStyle->SetHistLineColor( _lineColor );
+    _fittinoStyle->SetTitleOffset(1.7, "y");
 
     _option.ToLower();
 
     if ( _option == "colz" ) {
 
-        _pad->SetRightMargin( 0.15 );
-        _pad->SetLeftMargin( 0.11 );
+        _pad->SetRightMargin( 0.16 );
+        _pad->SetLeftMargin( 0.15 );
         _pad->SetBottomMargin( 0.12 );
         _pad->SetTopMargin( 0.08 );
 
@@ -63,7 +65,7 @@ Fittino::SimplePlotter::SimplePlotter( std::vector<TH1*>& histogramVector, const
     _pad->SetTicks( 1, 1 );
 
     gStyle->SetPalette( 1 );
-
+    TGaxis::SetExponentOffset(+0.02, -0.06, "x");
     gROOT->SetStyle( "FITTINO" );
     gROOT->ForceStyle();
 
@@ -76,6 +78,7 @@ Fittino::SimplePlotter::~SimplePlotter() {
 void Fittino::SimplePlotter::Plot( unsigned int iHistogram ) {
 
     _histogramVector[iHistogram]->Draw( _option.Data() );
+    gPad->RedrawAxis();
 
 }
 
