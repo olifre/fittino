@@ -22,6 +22,7 @@
 
 #include "ModelBase.h"
 #include "ModelParameter.h"
+#include "PlotterBase.h"
 #include "Simple2DHistogramMaker.h"
 
 Fittino::Simple2DHistogramMaker::Simple2DHistogramMaker( ModelBase* model, const boost::property_tree::ptree& ptree )
@@ -37,7 +38,7 @@ Fittino::Simple2DHistogramMaker::Simple2DHistogramMaker( ModelBase* model, const
 
             // Histogram name.
 
-            std::string histogramName = _quantityName[iQuantity1] + ":" + _quantityName[iQuantity2];
+            std::string histogramName = _quantityName[iQuantity1] + "_" + _quantityName[iQuantity2];
 
             // Histogram bins of the x-axis.
 
@@ -49,11 +50,7 @@ Fittino::Simple2DHistogramMaker::Simple2DHistogramMaker( ModelBase* model, const
 
                 if ( _logScale[iQuantity1] ) {
 
-                    if ( _lowerBound[iQuantity1] > 0. ) {
-
                         xBins[iBin] = TMath::Power( 10, xBins[iBin] );
-
-                    }
 
                 }
 
@@ -69,11 +66,7 @@ Fittino::Simple2DHistogramMaker::Simple2DHistogramMaker( ModelBase* model, const
 
                 if ( _logScale[iQuantity2] ) {
 
-                    if ( _lowerBound[iQuantity2] > 0. ) {
-
                         yBins[iBin] = TMath::Power( 10, yBins[iBin] );
-
-                    }
 
                 }
 
@@ -86,34 +79,16 @@ Fittino::Simple2DHistogramMaker::Simple2DHistogramMaker( ModelBase* model, const
 
             // Histogram axes' titles.
 
-            if ( _logScale[iQuantity1] ) {
 
-                histogram->GetXaxis()->SetTitle( ( "Log_{10}(" + _plotName[iQuantity1] + ")" ).c_str() );
-
-            }
-            else {
-
-                histogram->GetXaxis()->SetTitle( _plotName[iQuantity1].c_str() );
-
-            }
-
-            if ( _logScale[iQuantity2] ) {
-
-                histogram->GetYaxis()->SetTitle( ( "Log_{10}(" + _plotName[iQuantity2] + ")" ).c_str() );
-
-            }
-            else {
-
-                histogram->GetYaxis()->SetTitle( _plotName[iQuantity2].c_str() );
-
-            }
-
+            histogram->GetXaxis()->SetTitle( _plotName[iQuantity1].c_str() );
+            histogram->GetYaxis()->SetTitle( _plotName[iQuantity2].c_str() );
             histogram->GetZaxis()->SetTitle( "Number of entries" );
 
             histogram->SetTitle( 0 );
             histogram->SetStats( 0 );
 
             _histogramVector.push_back( histogram );
+            _plotter->AddHistogram( histogram );
 
         }
 
@@ -143,32 +118,8 @@ void Fittino::Simple2DHistogramMaker::UpdateModel() {
 
             TH1* histogram = _histogramVector[iHistogram];
 
-            // Fill the histogram.
-
-            if ( _logScale[iQuantity1] && _logScale[iQuantity1] ) {
-
-                histogram->Fill( TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue() ),
-                                 TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() ) );
-
-            }
-            else if ( _logScale[iQuantity1] && !_logScale[iQuantity1] ) {
-
-                histogram->Fill( TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue() ),
+            histogram->Fill( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue(),
                                  _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() );
-
-            }
-            else if ( !_logScale[iQuantity1] && _logScale[iQuantity1] ) {
-
-                histogram->Fill( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue(),
-                                 TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() ) );
-
-            }
-            else if ( !_logScale[iQuantity1] && !_logScale[iQuantity1] ) {
-
-                histogram->Fill( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue(),
-                                 _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() );
-
-            }
 
             iHistogram++;
 

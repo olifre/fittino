@@ -101,32 +101,8 @@ void Fittino::ContourHistogramMaker::UpdateModel() {
 
             // Find the bin associated to the current tree entry.
 
-            int bin;
-
-            if ( _logScale[iQuantity1] && _logScale[iQuantity2] ) {
-
-                bin = histogram->FindBin( TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue() ),
-                                          TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() ) );
-
-            }
-            else if ( _logScale[iQuantity1] && !_logScale[iQuantity2] ) {
-
-                bin = histogram->FindBin( TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue() ),
+            int bin = histogram->FindBin( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue(),
                                           _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() );
-
-            }
-            else if ( !_logScale[iQuantity1] && _logScale[iQuantity2] ) {
-
-                bin = histogram->FindBin( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue(),
-                                          TMath::Log10( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() ) );
-
-            }
-            else {
-
-                bin = histogram->FindBin( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue(),
-                                          _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() );
-
-            }
 
             // Check if the current normalized chi2 is smaller than the previous bin content so far.
 

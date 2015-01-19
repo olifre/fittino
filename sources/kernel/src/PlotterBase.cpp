@@ -73,10 +73,6 @@ Fittino::PlotterBase::PlotterBase( std::vector<TH1*>& histogramVector, const boo
 
     _pad = ( TPad* )_canvas->cd();
 
-    if ( _logScaleX ) _pad->SetLogx( 1 );
-    if ( _logScaleY ) _pad->SetLogy( 1 );
-    if ( _logScaleZ ) _pad->SetLogz( 1 );
-
     // Global style settings.
 
     _fittinoStyle->SetOptTitle( 0 );
@@ -185,6 +181,10 @@ void Fittino::PlotterBase::MakePlots() {
 //        line->SetLineColor( kBlack ); // Black
 //        line->DrawLine( firstPoint, firstPoint, secondPoint, secondPoint );
 
+        if ( _logScaleX ) _pad->SetLogx( 1 );
+        if ( _logScaleY ) _pad->SetLogy( 1 );
+        if ( _logScaleZ ) _pad->SetLogz( 1 );
+
         _canvas->Update();
 
         Redirector redirector( "/dev/null" );
@@ -204,6 +204,10 @@ void Fittino::PlotterBase::MakePlots() {
         }
 
     }
+
+    _pad->SetLogx( 0 );
+    _pad->SetLogy( 0 );
+    _pad->SetLogz( 0 );
 
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
