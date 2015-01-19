@@ -25,6 +25,7 @@
 #include "TImage.h"
 #include "TStyle.h"
 #include "TText.h"
+#include "TLine.h"
 
 #include "ConfigurationException.h"
 #include "Messenger.h"
@@ -134,6 +135,12 @@ void Fittino::PlotterBase::AddGraph( TGraph* graph ) {
     
 }
 
+void Fittino::PlotterBase::AddHistogram( TH1* histogram ) {
+    
+    _histogramVector.push_back( histogram );
+    
+}
+
 void Fittino::PlotterBase::MakePlots() {
 
     Messenger& messenger = Messenger::GetInstance();
@@ -147,7 +154,7 @@ void Fittino::PlotterBase::MakePlots() {
 
     for ( unsigned int iHistogram = 0; iHistogram < _histogramVector.size(); ++iHistogram ) {
 
-        messenger << "    Plotting " << _histogramVector[iHistogram]->GetName() << Messenger::Endl;
+        messenger << Messenger::ALWAYS<<"    Plotting " << _histogramVector[iHistogram]->GetName() << Messenger::Endl;
 
         Plot( iHistogram );
 
@@ -162,6 +169,21 @@ void Fittino::PlotterBase::MakePlots() {
             DrawLogo();
             
         }
+        
+//        TLine* line = new TLine();
+//
+//        double xmin =_histogramVector.at( iHistogram )->GetXaxis()->GetXmin();
+//        double xmax =_histogramVector.at( iHistogram )->GetXaxis()->GetXmax();
+//
+//        double ymin =_histogramVector.at( iHistogram )->GetYaxis()->GetXmin();
+//        double ymax =_histogramVector.at( iHistogram )->GetYaxis()->GetXmax();
+//
+//        double firstPoint = TMath::Max( xmin, ymin );
+//        double secondPoint = TMath::Min( xmax, ymax );
+//
+//        line->SetLineStyle( 2 );      // Dashed
+//        line->SetLineColor( kBlack ); // Black
+//        line->DrawLine( firstPoint, firstPoint, secondPoint, secondPoint );
 
         _canvas->Update();
 

@@ -53,6 +53,7 @@ namespace Fittino {
        */
       ~PlotterBase();
       void               AddGraph( TGraph* graph );
+      void               AddHistogram(TH1* histogram );
       void               MakePlots();
 
     protected:
