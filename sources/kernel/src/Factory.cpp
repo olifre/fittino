@@ -176,13 +176,13 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     }
     else if ( type == "HDim6Calculator" ) {
 
-#if defined LHAPDF_FOUND  && defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND && defined GSL
+#if defined LHAPDF_FOUND  && defined GSL
 
         return new HDim6Calculator( model, ptree );
 
 #else
 
-        throw ConfigurationException( "Trying to use HDim6Calculator but Fittino was built without LHAPDF." );
+        throw ConfigurationException( "Trying to use HDim6Calculator but Fittino was built without LHAPDF or GSL." );
 
 #endif
 
