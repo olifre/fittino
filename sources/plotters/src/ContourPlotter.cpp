@@ -60,26 +60,6 @@ Fittino::ContourPlotter::~ContourPlotter() {
 
 void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
 
-    // Calculate the minimum bin.
-
-    Int_t minimumBinX = 0;
-    Int_t minimumBinY = 0;
-
-    for ( Int_t iBinX = 0; iBinX <= _histogramVector[iHistogram]->GetNbinsX(); ++iBinX ) {
-
-        for ( Int_t iBinY = 0; iBinY <= _histogramVector[iHistogram]->GetNbinsY(); ++iBinY ) {
-
-            if ( _histogramVector[iHistogram]->GetBinContent( iBinX, iBinY ) <= 0. ) {
-
-                minimumBinX = iBinX;
-                minimumBinY = iBinY;
-
-            }
-
-        }
-
-    }
-
     // Prepare histogram contours.
 
     TH1* contourHistogram = ( TH1* )_histogramVector[iHistogram]->Clone();
@@ -143,6 +123,8 @@ void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
             if ( contour1 ) contour1->SetLineColor( _contour2SigmaLineColor );
             if ( contour1 ) contour1->SetFillColor( _contour2SigmaFillColor );
 
+            if ( contour1->GetN() < 6 ) continue;
+
             if ( _style == "Classic" ) {
 
                 if ( contour1 ) contour1->Draw( "F" );
@@ -171,6 +153,8 @@ void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
             if ( contour2 ) contour2->SetLineColor( _contour1SigmaLineColor );
             if ( contour2 ) contour2->SetFillColor( _contour1SigmaFillColor );
 
+            if ( contour2->GetN() < 6 ) continue;
+
             if ( _style == "Classic" ) {
 
                 if ( contour2 ) contour2->Draw( "F" );
@@ -187,16 +171,6 @@ void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
 
     }
 
-    // Draw the best fit value.
-
-    Double_t bestFitValueX = _histogramVector[iHistogram]->GetXaxis()->GetBinCenter( minimumBinX );
-    Double_t bestFitValueY = _histogramVector[iHistogram]->GetYaxis()->GetBinCenter( minimumBinY );
-
-    TMarker* bestFitValue = new TMarker( bestFitValueX, bestFitValueY, 29 );
-    bestFitValue->SetMarkerColor( kBlack );
-
-    bestFitValue->Draw( "PSAME" );
-
     // Draw the legend.
 
     _legend = new TLegend( _legendX1, _legendY1, _legendX2, _legendY2 );
@@ -211,7 +185,7 @@ void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
     if ( _legendFrame ) _legend->SetLineColor( kBlack );
     else _legend->SetLineColor( 0 );
 
-    _legend->AddEntry( bestFitValue, "Best Fit Point", "p" );
+    _legend->AddEntry( _graphVector.at( iHistogram ), "Best Fit Point", "p" );
     _legend->AddEntry( contour2, "1D 68% CL", _legendOption );
     _legend->AddEntry( contour1, "2D 95% CL", _legendOption );
 
@@ -220,6 +194,9 @@ void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
     // Draw axis again.
 
     _histogramVector[iHistogram]->Draw( "AXISSAME" );
+
+    _graphVector.at( iHistogram )->SetMarkerStyle( 29 );
+    _graphVector.at( iHistogram )->Draw("PSAME");
 
 }
 
@@ -239,8 +216,10 @@ void Fittino::ContourPlotter::SetClassicStyle() {
     // Contour settings.
 
     _contour1SigmaLineStyle = 1;
-    _contour1SigmaLineColor = kBlue - 2;
-    _contour1SigmaFillColor = kBlue - 9;
+//    _contour1SigmaLineColor = kBlue - 2;
+//    _contour1SigmaFillColor = kBlue - 9;
+    _contour1SigmaLineColor = kRed - 2;
+    _contour1SigmaFillColor = kRed - 8;
 
     _contour2SigmaLineStyle = 1;
     _contour2SigmaLineColor = kBlue - 2;
