@@ -17,6 +17,7 @@
 *                                                                              *
 *******************************************************************************/
 
+#include "TGraph.h"
 #include "TH2D.h"
 #include "TMath.h"
 
@@ -79,7 +80,6 @@ Fittino::Simple2DHistogramMaker::Simple2DHistogramMaker( ModelBase* model, const
 
             // Histogram axes' titles.
 
-
             histogram->GetXaxis()->SetTitle( _plotName[iQuantity1].c_str() );
             histogram->GetYaxis()->SetTitle( _plotName[iQuantity2].c_str() );
             histogram->GetZaxis()->SetTitle( "Number of entries" );
@@ -89,6 +89,13 @@ Fittino::Simple2DHistogramMaker::Simple2DHistogramMaker( ModelBase* model, const
 
             _histogramVector.push_back( histogram );
             _plotter->AddHistogram( histogram );
+
+            double bestFitX = _model->GetCollectionOfQuantities().At( _quantityName[iQuantity1] )->GetValue();
+            double bestFitY = _model->GetCollectionOfQuantities().At( _quantityName[iQuantity2] )->GetValue();
+
+            TGraph* graph = new TGraph( 1 );
+            graph->SetPoint( 0, bestFitX, bestFitY );
+            _plotter->AddGraph( graph );
 
         }
 
