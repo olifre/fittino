@@ -23,6 +23,7 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include "CalculatorBase.h"
+#include <map>
 
 class TTree;
 class TFile;
@@ -33,6 +34,8 @@ class TF1;
  *  \brief Fittino namespace.
  */
 namespace Fittino {
+
+  class Quantity;
 
   /*!
    *  \defgroup calculators
@@ -57,7 +60,7 @@ namespace Fittino {
       virtual void        CalculatePredictions();
       virtual void        Initialize();
       virtual void        SetupMeasuredValues();
-
+      
     private:
  
       const double&         _fH;
@@ -73,6 +76,8 @@ namespace Fittino {
        * 
        */
       const double&        _cBB;
+
+      std::map<std::string, const Quantity*> _input;
       
 
   };

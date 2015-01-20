@@ -54,7 +54,23 @@ Fittino::MadGraphCalculator::MadGraphCalculator( const ModelBase* model, const b
   messenger << Messenger::ALWAYS << "remember to change verbosity levels" << Messenger::Endl;
   messenger << Messenger::ALWAYS << Messenger::Endl;
   
-  std::string configurationOption1 = ptree.get<std::string>( "MyFirstConfigurationOption" );
+  // std::string configurationOption1 = ptree.get<std::string>( "MyFirstConfigurationOption" );
+
+  BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree ) {
+
+    if( node.first == "Parameter" ) {
+
+      std::string parameterName    = node.second.get<std::string>( "Name"     );
+      std::string quantityName = node.second.get<std::string>( "Quantity" );
+
+      const Quantity* quantity  = _model->GetCollectionOfQuantities().At( quantityName );
+
+      _input[parameterName] = quantity;
+            
+    }
+        
+  }
+
 }
 
 
@@ -78,16 +94,33 @@ void Fittino::MadGraphCalculator::CalculatePredictions() {
 
   std::ofstream myfile;
   myfile.open ( inputfile.c_str(), std::ios::app ) ;
-  myfile << "set cHW "<<_cHW<<std::endl;
+
+  // loop over _input Collection and set all contained parameters
+
+  for(std::map<std::string, const Quantity*>::iterator i = _input.begin(); i != _input.end(); ++i)
+    {
+      std::string name = i->first;
+      const Quantity* quantity = i->second;
+      double value = quantity->GetValue();
+      myfile <<"set " + name + " " <<value<<std::endl;
+    }
+  
   myfile.close();
   
   
   Executor executor("/lustre/user/thakur/programs/Madgraph_v2_1_1/bin/mg5_aMC", "mg5_aMC");
   executor.AddArgument(inputfile);
   executor.Execute();
-  
+
+  std::string zipfile = "/lustre/user/thakur/programs/fittino/bin/testprocess/Events/run_01/tag_1_pythia_events.hep.gz";
+  Executor unzip("/bin/gunzip", "gunzip");
+  unzip.AddArgument(zipfile);
+  unzip.Execute();
+
 }
 
+              
+                                                                                                                                                     
 void Fittino::MadGraphCalculator::SetupMeasuredValues() {
   
   
