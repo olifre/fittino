@@ -42,6 +42,8 @@ Fittino::AstroExclusion::AstroExclusion(Fittino::Measurement const *observable, 
 
 Fittino::AstroExclusion::~AstroExclusion() {
 
+    delete _graph;
+
 }
 
 void Fittino::AstroExclusion::Update() {

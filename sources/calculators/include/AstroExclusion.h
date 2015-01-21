@@ -25,7 +25,6 @@
 
 class TGraph;
 
-
 /*!
  *  \brief Fittino namespace.
  */
@@ -53,7 +52,6 @@ namespace Fittino {
         const Quantity* _mass;
 
     };
-
 
 }
 #endif
