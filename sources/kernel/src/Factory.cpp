@@ -19,7 +19,7 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <UncertaintyBase.h>
+#include "AbsoluteUncertainty.h"
 #include "Alpine2Model.h"
 #include "AstroCalculator.h"
 #include "AstroExclusion.h"
@@ -676,6 +676,8 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
 Fittino::UncertaintyBase *Fittino::Factory::CreateUncertainty(const std::string &type, Fittino::Measurement const *measurement, const boost::property_tree::ptree &ptree) const {
 
     if ( type == "AbsoluteUncertainty") {
+
+        return new AbsoluteUncertainty( measurement, ptree );
 
     }
     else if ( type == "RelativeTheoryUncertainty") {

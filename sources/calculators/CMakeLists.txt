@@ -30,6 +30,8 @@ INCLUDE_DIRECTORIES(../kernel/include)
 INCLUDE_DIRECTORIES(../variables/include)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
+LIST( APPEND sources "src/AbsoluteUncertainty.cpp" )
+
 IF(FEYNHIGGS_FOUND)
 
     INCLUDE_DIRECTORIES(${FEYNHIGGS_INCLUDE_DIRS})
