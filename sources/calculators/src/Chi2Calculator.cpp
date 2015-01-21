@@ -45,10 +45,17 @@ Fittino::Chi2Calculator::Chi2Calculator( const Fittino::ModelBase* model, const 
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree.get_child( "Observables" ) ) {
 
+                    Measurement* measurement = new Measurement(node.first, model, node.second);
 
-                    _measurements.push_back( new Measurement( node.first, model, node.second ) );
+                    for (unsigned int iQuantity = 0; iQuantity < measurement->GetCollectionOfQuantities().GetNumberOfElements(); iQuantity++) {
+
+                        AddQuantity( measurement->GetCollectionOfQuantities().At( iQuantity ) );
 
                     }
+
+                    _measurements.push_back(measurement);
+
+                }
 
     _initialPredictions.ResizeTo( _measurements.size() );
     _initialUncertainties.resize( _measurements.size() );

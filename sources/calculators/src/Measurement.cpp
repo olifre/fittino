@@ -31,6 +31,7 @@
 #include "Factory.h"
 #include "Measurement.h"
 #include "ModelBase.h"
+#include "SimplePrediction.h"
 #include "UncertaintyBase.h"
 
 
@@ -78,6 +79,11 @@ Fittino::Measurement::Measurement( std::string type, const Fittino::ModelBase* m
                     }
 
                 }
+
+    AddQuantity( new SimplePrediction( "Chi2", "", _chi2  ) );
+    AddQuantity( new SimplePrediction( "Measurement", "", _measuredValue  ) );
+    AddQuantity( new SimplePrediction( "Deviation", "", _deviation  ) );
+    AddQuantity( new SimplePrediction( "Pull", "", _pull  ) );
 
 }
 
