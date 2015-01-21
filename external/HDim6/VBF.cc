@@ -7,7 +7,7 @@ void vbf_init_cs_( sminputs * smpar )
   effinputs temp;
   temp.fbb = 0; temp.fww = 0; temp.fgg = 0; temp.fb = 0; temp.fw = 0; 
   temp.fuph = 0; temp.fdoh = 0; temp.fchh = 0; temp.fsth = 0; temp.fboh = 0; temp.ftoh = 0; temp.felh = 0; temp.fmuh = 0; temp.ftah = 0;
- printf("ALEX vbf init call");
+ //printf("ALEX vbf init call");
   udcsb_jjh_(   smpar, &temp, &cs_5flavorSM, &err_5flavorSM, &chi_5flavorSM );
 };
 
@@ -16,14 +16,14 @@ void vbf_init_2flav_sm_( sminputs * smpar )
   effinputs temp;
   temp.fbb = 0; temp.fww = 0; temp.fgg = 0; temp.fb = 0; temp.fw = 0; 
   temp.fuph = 0; temp.fdoh = 0; temp.fchh = 0; temp.fsth = 0; temp.fboh = 0; temp.ftoh = 0; temp.felh = 0; temp.fmuh = 0; temp.ftah = 0;
- printf("ALEX vbf 2flav sm call");
+ //printf("ALEX vbf 2flav sm call");
   ud_jjh_(   smpar, &temp, &cs_2flavorSM, &err_2flavorSM, &chi_2flavorSM );
 };
 
 void ratio_vbf_5flav_( sminputs * smpar, effinputs * effpar, double * ratio, double * error, double * chisq )
 {
   double result, err, chi;
-  printf("ALEX 2flav params:\n fbb: %10.10f\n fww: %10.10f\n fgg: %10.10f\n fb: %10.10f\n fw: %10.10f\n",effpar->fbb,effpar->fww, effpar->fgg, effpar->fb, effpar->fw);
+  //printf("ALEX 2flav params:\n fbb: %10.10f\n fww: %10.10f\n fgg: %10.10f\n fb: %10.10f\n fw: %10.10f\n",effpar->fbb,effpar->fww, effpar->fgg, effpar->fb, effpar->fw);
   udcsb_jjh_( smpar, effpar, &result, &err, &chi );
   *ratio = result / cs_5flavorSM;
   *error = err / cs_5flavorSM + result / pow( cs_5flavorSM, 2 ) * err_5flavorSM;
@@ -33,7 +33,7 @@ void ratio_vbf_5flav_( sminputs * smpar, effinputs * effpar, double * ratio, dou
 void ratio_vbf_2flav_( sminputs * smpar, effinputs * effpar, double * ratio, double * error, double * chisq )
 {
   double result, err, chi;
-  printf("ALEX 2flav params:\n fbb: %10.10f\n fww: %10.10f\n fgg: %10.10f\n fb: %10.10f\n fw: %10.10f\n",effpar->fbb,effpar->fww, effpar->fgg, effpar->fb, effpar->fw);
+  //printf("ALEX 2flav params:\n fbb: %10.10f\n fww: %10.10f\n fgg: %10.10f\n fb: %10.10f\n fw: %10.10f\n",effpar->fbb,effpar->fww, effpar->fgg, effpar->fb, effpar->fw);
   ud_jjh_( smpar, effpar, &result, &err, &chi );
   *ratio = result / cs_5flavorSM;
   *error = err / cs_2flavorSM + result / pow( cs_2flavorSM, 2 ) * err_2flavorSM;
@@ -54,7 +54,7 @@ void udcsb_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err
   const gsl_rng_type * T;
   gsl_rng * r;
   size_t calls = VBFCALLS;
-   printf("ALEX 5flav params:\n fbb: %10.10f\n fww: %10.10f\n fgg: %10.10f\n fb: %10.10f\n fw: %10.10f\n",effpar->fbb,effpar->fww, effpar->fgg, effpar->fb, effpar->fw);
+   //printf("ALEX 5flav params:\n fbb: %10.10f\n fww: %10.10f\n fgg: %10.10f\n fb: %10.10f\n fw: %10.10f\n",effpar->fbb,effpar->fww, effpar->fgg, effpar->fb, effpar->fw);
  
   gsl_monte_function G = {udcsb_jjh, dim, &par};
   gsl_rng_env_setup();
@@ -66,7 +66,7 @@ void udcsb_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err
     do
     {    
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
-	printf("\n ALEX, chisquare of VBF udscb:run %i, chi2 %f \n",k,(double)gsl_monte_vegas_chisq(s));
+	//printf("\n ALEX, chisquare of VBF udscb:run %i, chi2 %f \n",k,(double)gsl_monte_vegas_chisq(s));
       k++;
     }
 //    while ((fabs (gsl_monte_vegas_chisq (s) - 1.0) > 0.4) && ( k < VBFRUN ));
@@ -85,7 +85,7 @@ double udcsb_jjh( double * x, size_t dim, void * params )
   double ckm[] = { smpar.vud, smpar.vus, smpar.vub, smpar.vcd, smpar.vcs, smpar.vcb };
   int    pdg[] = { 1, 2, 3, 4, 5 };
   double mh = smpar.mh;
-  
+  //printf("ALEX x[0...3]: %f,%f,%f,%f \n", x[0],x[1],x[2],x[3]);// -------------------------------------------
   double x1 = x[4]*(1-pow(smpar.mh,2)/smpar.s) + pow(smpar.mh,2)/smpar.s;
   double x2 = x[5]*(1-pow(smpar.mh,2)/smpar.s/x1) + pow(smpar.mh,2)/smpar.s/x1;
   
@@ -192,7 +192,7 @@ void ud_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err, d
   VBFParam par;
   par.sm = *smpar;
   par.eff = *effpar;
-  printf("ALEX 2flav params:\n fbb: %10.10f\n fww: %10.10f\n fgg: %10.10f\n fb: %10.10f\n fw: %10.10f\n",effpar->fbb,effpar->fww, effpar->fgg, effpar->fb, effpar->fw);
+  //printf("ALEX 2flav params:\n fbb: %10.10f\n fww: %10.10f\n fgg: %10.10f\n fb: %10.10f\n fw: %10.10f\n",effpar->fbb,effpar->fww, effpar->fgg, effpar->fb, effpar->fw);
 
   double xl[] = {0,0,0,0,0,0};
   double xu[] = {1,1,1,1,1,1};
@@ -213,7 +213,7 @@ void ud_jjh_( sminputs * smpar, effinputs * effpar, double * cs, double * err, d
     do
     {    
       gsl_monte_vegas_integrate( &G, xl, xu, dim, calls, r, s, &result, &error );
-	printf("\n ALEX, chisquare of VBF ud:run %i, chi2 %f \n",k,(double)gsl_monte_vegas_chisq(s));
+	//printf("\n ALEX, chisquare of VBF ud:run %i, chi2 %f \n",k,(double)gsl_monte_vegas_chisq(s));
       k++;
     }
 while (((gsl_monte_vegas_chisq (s) - 1.0) > 0.4) && ( k < VBFRUN ));
@@ -357,13 +357,7 @@ par.eff.fp4=0;
 
 // xelA
 
-  double g1hzz = g1hzz_( &par.sm, &par.eff, s );
-  double g2hzz = g2hzz_( &par.sm, &par.eff, s ); 
-  double g3hzz = g3hzz_( &par.sm, &par.eff, s );
-  double g1hzy = g1hzy_( &par.sm, &par.eff, s );
-  double g2hzy = g2hzy_( &par.sm, &par.eff, s );
-  double ghyy  = ghyy_(  &par.sm, &par.eff, s );
- 
+
   /* Daraus berechnet */
   double cw   = sqrt(1-pow(sw,2));
   double mw   = mz*cw;
@@ -404,11 +398,24 @@ par.eff.fp4=0;
 #endif
 
   /* Berechnung der kinematischen Invarianten */
+//ALEX1
   double x14	= k30*E1 - k3v*pi*(ctheta*cXi-stheta*cos(eta)*sXi);
   double x24	= k30*E2 + k3v*pi*(ctheta*cXi-stheta*cos(eta)*sXi);
   double x13	= k40*E1 - k4v*pi*ctheta;
   double x23	= k40*E2 + k4v*pi*ctheta;
   double x34	= k40*k30- k3v*k4v*cXi;
+
+//printf("ALEX x14 x24 x13 x23 x34: %f| %f| %f| %f| %f \n",x14, x24, x13, x23, x34);
+//printf("->SQ x14 x24 x13 x23 x34: %f| %f| %f| %f| %f \n",sqrt(x14), sqrt(x24), sqrt(x13), sqrt(x23), sqrt(x34));
+
+  double vbfdampingscale=fmax(2*abs(x13),2*abs(x24));
+
+  double g1hzz = g1hzz_( &par.sm, &par.eff, vbfdampingscale );
+  double g2hzz = g2hzz_( &par.sm, &par.eff, vbfdampingscale ); 
+  double g3hzz = g3hzz_( &par.sm, &par.eff, vbfdampingscale );
+  double g1hzy = g1hzy_( &par.sm, &par.eff, vbfdampingscale );
+  double g2hzy = g2hzy_( &par.sm, &par.eff, vbfdampingscale );
+  double ghyy  = ghyy_(  &par.sm, &par.eff, vbfdampingscale );
  
 #include "matrixelements/production_vbf_dd_ddh_massless.cc"
  
@@ -441,12 +448,6 @@ par.eff.fp4=0;
 
 
 
-  double g1hzz = g1hzz_( &par.sm, &par.eff, s );
-  double g2hzz = g2hzz_( &par.sm, &par.eff, s );
-  double g3hzz = g3hzz_( &par.sm, &par.eff, s );
-  double g1hzy = g1hzy_( &par.sm, &par.eff, s );
-  double g2hzy = g2hzy_( &par.sm, &par.eff, s );
-  double ghyy  = ghyy_(  &par.sm, &par.eff, s );
   double mh   = m5;
   /* Daraus berechnet */
   double cw   = sqrt(1-pow(sw,2));
@@ -488,11 +489,21 @@ par.eff.fp4=0;
 #endif
 
   /* Berechnung der kinematischen Invarianten */
+//ALEX2
   double x14	= k30*E1 - k3v*pi*(ctheta*cXi-stheta*cos(eta)*sXi);
   double x24	= k30*E2 + k3v*pi*(ctheta*cXi-stheta*cos(eta)*sXi);
   double x13	= k40*E1 - k4v*pi*ctheta;
   double x23	= k40*E2 + k4v*pi*ctheta;
   double x34	= k40*k30- k3v*k4v*cXi;
+
+  double vbfdampingscale=fmax(2*abs(x13),2*abs(x24));
+
+  double g1hzz = g1hzz_( &par.sm, &par.eff, vbfdampingscale );
+  double g2hzz = g2hzz_( &par.sm, &par.eff, vbfdampingscale );
+  double g3hzz = g3hzz_( &par.sm, &par.eff, vbfdampingscale );
+  double g1hzy = g1hzy_( &par.sm, &par.eff, vbfdampingscale );
+  double g2hzy = g2hzy_( &par.sm, &par.eff, vbfdampingscale );
+  double ghyy  = ghyy_(  &par.sm, &par.eff, vbfdampingscale );
 
 #include "matrixelements/production_vbf_uu_uuh_massless.cc"
 
@@ -525,12 +536,6 @@ par.eff.fp4=0;
 
 
 
-  double g1hzz = g1hzz_( &par.sm, &par.eff, s );
-  double g2hzz = g2hzz_( &par.sm, &par.eff, s );
-  double g3hzz = g3hzz_( &par.sm, &par.eff, s );
-  double g1hzy = g1hzy_( &par.sm, &par.eff, s );
-  double g2hzy = g2hzy_( &par.sm, &par.eff, s );
-  double ghyy  = ghyy_(  &par.sm, &par.eff, s );
   double mh   = m5;
   /* Daraus berechnet */
   double cw   = sqrt(1-pow(sw,2));
@@ -570,11 +575,21 @@ par.eff.fp4=0;
 #endif
 
   /* Berechnung der kinematischen Invarianten */
+//ALEX3
   double x14	= k30*E1 - k3v*pi*(ctheta*cXi-stheta*cos(eta)*sXi);
   double x24	= k30*E2 + k3v*pi*(ctheta*cXi-stheta*cos(eta)*sXi);
   double x13	= k40*E1 - k4v*pi*ctheta;
   double x23	= k40*E2 + k4v*pi*ctheta;
   double x34	= k40*k30- k3v*k4v*cXi;
+
+  double vbfdampingscale=fmax(2*abs(x13),2*abs(x24));
+
+  double g1hzz = g1hzz_( &par.sm, &par.eff, vbfdampingscale );
+  double g2hzz = g2hzz_( &par.sm, &par.eff, vbfdampingscale );
+  double g3hzz = g3hzz_( &par.sm, &par.eff, vbfdampingscale );
+  double g1hzy = g1hzy_( &par.sm, &par.eff, vbfdampingscale );
+  double g2hzy = g2hzy_( &par.sm, &par.eff, vbfdampingscale );
+  double ghyy  = ghyy_(  &par.sm, &par.eff, vbfdampingscale );
 
 #include "matrixelements/production_ud_duh_NoCKM_massless.cc"
 
@@ -605,15 +620,6 @@ par.eff.fp4=0;
 
 
 
-  double g1hww = g1hww_( &par.sm, &par.eff, s );
-  double g2hww = g2hww_( &par.sm, &par.eff, s );
-  double g3hww = g3hww_( &par.sm, &par.eff, s );
-  double g1hzz = g1hzz_( &par.sm, &par.eff, s );
-  double g2hzz = g2hzz_( &par.sm, &par.eff, s );
-  double g3hzz = g3hzz_( &par.sm, &par.eff, s );
-  double g1hzy = g1hzy_( &par.sm, &par.eff, s );
-  double g2hzy = g2hzy_( &par.sm, &par.eff, s );
-  double ghyy  = ghyy_(  &par.sm, &par.eff, s );
   double mh   = m5;
   double vud  = 1;
   /* Daraus berechnet */
@@ -654,11 +660,24 @@ par.eff.fp4=0;
 #endif
 
   /* Berechnung der kinematischen Invarianten */
+//ALEX4
   double x14	= k30*E1 - k3v*pi*(ctheta*cXi-stheta*cos(eta)*sXi);
   double x24	= k30*E2 + k3v*pi*(ctheta*cXi-stheta*cos(eta)*sXi);
   double x13	= k40*E1 - k4v*pi*ctheta;
   double x23	= k40*E2 + k4v*pi*ctheta;
   double x34	= k40*k30- k3v*k4v*cXi;
+
+  double vbfdampingscale=fmax(2*abs(x13),2*abs(x24));
+
+  double g1hww = g1hww_( &par.sm, &par.eff, vbfdampingscale );
+  double g2hww = g2hww_( &par.sm, &par.eff, vbfdampingscale );
+  double g3hww = g3hww_( &par.sm, &par.eff, vbfdampingscale );
+  double g1hzz = g1hzz_( &par.sm, &par.eff, vbfdampingscale );
+  double g2hzz = g2hzz_( &par.sm, &par.eff, vbfdampingscale );
+  double g3hzz = g3hzz_( &par.sm, &par.eff, vbfdampingscale );
+  double g1hzy = g1hzy_( &par.sm, &par.eff, vbfdampingscale );
+  double g2hzy = g2hzy_( &par.sm, &par.eff, vbfdampingscale );
+  double ghyy  = ghyy_(  &par.sm, &par.eff, vbfdampingscale );
 
 #include "matrixelements/production_ud_duh_CKMsq_massless.cc"
 
@@ -692,9 +711,6 @@ par.eff.fp4=0;
 
 
 
-  double g1hww = g1hww_( &par.sm, &par.eff, s );
-  double g2hww = g2hww_( &par.sm, &par.eff, s );
-  double g3hww = g3hww_( &par.sm, &par.eff, s );
   double mh   = m5;
   /* Daraus berechnet */
   double cw   = sqrt(1-pow(sw,2));
@@ -737,11 +753,18 @@ par.eff.fp4=0;
 #endif
 
   /* Berechnung der kinematischen Invarianten */
+//ALEX5
   double x14	= k30*E1 - k3v*pi*(ctheta*cXi-stheta*cos(eta)*sXi);
   double x24	= k30*E2 + k3v*pi*(ctheta*cXi-stheta*cos(eta)*sXi);
   double x13	= k40*E1 - k4v*pi*ctheta;
   double x23	= k40*E2 + k4v*pi*ctheta;
   double x34	= k40*k30- k3v*k4v*cXi;
+
+  double vbfdampingscale=fmax(2*abs(x13),2*abs(x24));
+
+  double g1hww = g1hww_( &par.sm, &par.eff, vbfdampingscale );
+  double g2hww = g2hww_( &par.sm, &par.eff, vbfdampingscale );
+  double g3hww = g3hww_( &par.sm, &par.eff, vbfdampingscale );
 
 #include "matrixelements/production_ud_dpuph_massless.cc"
 

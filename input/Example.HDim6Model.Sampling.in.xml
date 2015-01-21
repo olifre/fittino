@@ -107,7 +107,7 @@
           <calculate_Gamma_hWW>true</calculate_Gamma_hWW>
           <calculate_Gamma_hZZ>true</calculate_Gamma_hZZ>
           <calculate_xs_qqh_2flavor>true</calculate_xs_qqh_2flavor>
-          <calculate_xs_qqh_5flavor>false</calculate_xs_qqh_5flavor>
+          <calculate_xs_qqh_5flavor>true</calculate_xs_qqh_5flavor>
           <calculate_xs_Wh>true</calculate_xs_Wh>
           <calculate_xs_Zh>true</calculate_xs_Zh>
         </HDim6Calculator>
