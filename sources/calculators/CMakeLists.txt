@@ -31,6 +31,8 @@ INCLUDE_DIRECTORIES(../variables/include)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 LIST( APPEND sources "src/AbsoluteUncertainty.cpp" )
+LIST( APPEND sources "src/RelativeTheoryUncertainty.cpp" )
+
 
 IF(FEYNHIGGS_FOUND)
 

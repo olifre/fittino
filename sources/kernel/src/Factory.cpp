@@ -72,6 +72,7 @@
 #include "ProfileHistogramMaker.h"
 #include "ProfilePlotter.h"
 #include "RegressionCalculator.h"
+#include "RelativeTheoryUncertainty.h"
 #include "RosenbrockModel.h"
 #include "Shubert3Model.h"
 #include "Simple1DHistogramMaker.h"
@@ -682,6 +683,7 @@ Fittino::UncertaintyBase *Fittino::Factory::CreateUncertainty(const std::string 
     }
     else if ( type == "RelativeTheoryUncertainty") {
 
+        return new RelativeTheoryUncertainty( measurement, ptree );
 
     }
     else if ( type == "AstroExclusion") {
