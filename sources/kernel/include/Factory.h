@@ -32,15 +32,17 @@ class TH1;
  */
 namespace Fittino {
 
-  class CalculatorBase;
-  class CutBase;
-  class ModelBase;
-  class Observable;
-  class PhysicsModel;
-  class PlotterBase;
-  class PredictionBase;
-  class SLHADataStorageBase;
-  class Tool;
+    class CalculatorBase;
+    class CutBase;
+    class Measurement;
+    class ModelBase;
+    class Observable;
+    class PhysicsModel;
+    class PlotterBase;
+    class PredictionBase;
+    class SLHADataStorageBase;
+    class Tool;
+    class UncertaintyBase;
     class Quantity;
 
   /*!
@@ -115,6 +117,7 @@ namespace Fittino {
        *  </ul>
        */
       PlotterBase* const         CreatePlotter( const std::string& type, std::vector<TH1*>& histogramVector, const boost::property_tree::ptree& ptree ) const;
+      UncertaintyBase* CreateUncertainty( const std::string& type, const Measurement* measurement, const boost::property_tree::ptree& ptree   ) const;
       SLHADataStorageBase* const CreateSLHAeaSLHADataStorage() const;
       /*!
        *  Returns a concrete tool.\n

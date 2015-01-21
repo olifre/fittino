@@ -31,6 +31,7 @@ namespace Fittino {
 
     class ModelBase;
     class Quantity;
+    class UncertaintyBase;
 
 /*!
  *  \ingroup calculators
@@ -65,6 +66,8 @@ namespace Fittino {
         double  _chi2;
         double  _pull;
         double _totalUncertainty;
+
+        std::map<std::string, UncertaintyBase*> _uncertainties;
 
         const ModelBase* _model;
 

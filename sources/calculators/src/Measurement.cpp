@@ -28,62 +28,56 @@
 
 #include "CalculatorBase.h"
 #include "ConfigurationException.h"
+#include "Factory.h"
 #include "Measurement.h"
 #include "ModelBase.h"
 #include "UncertaintyBase.h"
 
 
 Fittino::Measurement::Measurement( std::string type, const Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
-:CalculatorBase( model ){
+:CalculatorBase( model ) {
 
     _lowerLimit = false;
     _upperLimit = false;
 
-    if ( type == "LowerLimit" ) {
+    if (type == "LowerLimit") {
 
         _lowerLimit = true;
 
     }
-    else if ( type == "UpperLimit" ) {
+    else if (type == "UpperLimit") {
 
         _upperLimit = true;
 
     }
-    else if ( type != "Measurement" ) {
+    else if (type != "Measurement") {
 
-        throw ConfigurationException( "Type " + type + " not known." );
-
-    }
-
-    std::string name = ptree.get<std::string>( "Name" );
-
-    _measuredValue = ptree.get<double>( "Measurement" );
-    std::string predictionName = ptree.get<std::string>( "Prediction" );
-    _prediction = model->GetCollectionOfQuantities().At( predictionName );
-
-    _lowerBound = ptree.get<double>( "LowerBound", - std::numeric_limits<double>::infinity() );
-    _upperBound = ptree.get<double>( "UpperBound", + std::numeric_limits<double>::infinity() );
-
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree.get_child("Uncertainties")  ) {
-
-                    UncertaintyBase* uncertainty;
-
-                    if ( node.first == "AbsoluteUncertainty" ) {
-
-
-                    }
-                    else if ( node.first == "RelativeTheoryUncertainty" ) {
-
-
-                    }
-                    else if ( node.first == "AstroExclusion" ) {
-
-
-                    }
+        throw ConfigurationException("Type " + type + " not known.");
 
     }
 
+    std::string name = ptree.get<std::string>("Name");
 
+    _measuredValue = ptree.get<double>("Measurement");
+    std::string predictionName = ptree.get<std::string>("Prediction");
+    _prediction = model->GetCollectionOfQuantities().At(predictionName);
+
+    _lowerBound = ptree.get<double>("LowerBound", -std::numeric_limits<double>::infinity());
+    _upperBound = ptree.get<double>("UpperBound", +std::numeric_limits<double>::infinity());
+
+    Factory factory;
+
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree.get_child("Uncertainties") ) {
+
+                    UncertaintyBase *uncertainty = factory.CreateUncertainty( node.first, this, node.second );
+
+                    if (!_uncertainties.insert( std::make_pair( uncertainty->GetName(), uncertainty ) ).second ) {
+
+                        throw ConfigurationException("Several uncertainties with same name " + uncertainty->GetName() + ".");
+
+                    }
+
+                }
 
 }
 
@@ -102,7 +96,18 @@ void Fittino::Measurement::CalculatePredictions()  {
 
     }
 
-    // update all the uncertainties and get their values and calculate the total uncertainty
+    _totalUncertainty = 0;
+
+    std::map<std::string, UncertaintyBase* >::iterator it;
+
+    for (  it = _uncertainties.begin(); it != _uncertainties.end(); it++ ) {
+
+        it->second->Update();
+        _totalUncertainty += TMath::Power( it->second->GetValue(), 2 );
+
+    }
+
+    _totalUncertainty = TMath::Sqrt( _totalUncertainty );
 
     _pull = _deviation / _totalUncertainty;
 

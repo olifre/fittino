@@ -19,8 +19,10 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <UncertaintyBase.h>
 #include "Alpine2Model.h"
 #include "AstroCalculator.h"
+#include "AstroExclusion.h"
 #include "AstroFitCalculator.h"
 #include "CheckMATECalculator.h"
 #include "CheckVacuumCalculator.h"
@@ -666,6 +668,28 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
     else {
 
         throw ConfigurationException( "Tool type " + type + " not known." );
+
+    }
+
+}
+
+Fittino::UncertaintyBase *Fittino::Factory::CreateUncertainty(const std::string &type, Fittino::Measurement const *measurement, const boost::property_tree::ptree &ptree) const {
+
+    if ( type == "AbsoluteUncertainty") {
+
+    }
+    else if ( type == "RelativeTheoryUncertainty") {
+
+
+    }
+    else if ( type == "AstroExclusion") {
+
+        return new AstroExclusion( measurement, ptree );
+
+    }
+    else {
+
+        throw ConfigurationException( "Uncertainty of type " + type + " not known."  );
 
     }
 
