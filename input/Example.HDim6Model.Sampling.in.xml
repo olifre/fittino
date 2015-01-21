@@ -110,6 +110,9 @@
           <calculate_xs_qqh_5flavor>true</calculate_xs_qqh_5flavor>
           <calculate_xs_Wh>true</calculate_xs_Wh>
           <calculate_xs_Zh>true</calculate_xs_Zh>
+          <UnitarityCoefficientR>1.0</UnitarityCoefficientR>
+          <UnitarityCoefficientN>1.0</UnitarityCoefficientN>
+          <OverrideUnitarity>true</OverrideUnitarity>
         </HDim6Calculator>
 
         <HiggsSignalsCalculator>

@@ -65,6 +65,36 @@ Fittino::HDim6Calculator::HDim6Calculator( const ModelBase* model, const boost::
 
     _name = "HDim6Calculator";
 
+    double r = ptree.get<double>( "UnitarityCoefficientR", 1 );
+    _effvalues->rbb  = r;
+    _effvalues->rww  = r;
+    _effvalues->rgg  = r;
+    _effvalues->rb   = r;
+    _effvalues->rw   = r;
+    _effvalues->rbw  = r;
+    _effvalues->rp1  = r;
+    _effvalues->rp2  = r;
+    _effvalues->rp4  = r;
+    _effvalues->rtop = r;
+    _effvalues->rbot = r;
+    _effvalues->rtau = r;
+
+    double n = ptree.get<double>( "UnitarityCoefficientN", 1 );
+    _effvalues->nbb  = n;
+    _effvalues->nww  = n;
+    _effvalues->ngg  = n;
+    _effvalues->nb   = n;
+    _effvalues->nw   = n;
+    _effvalues->nbw  = n;
+    _effvalues->np1  = n;
+    _effvalues->np2  = n;
+    _effvalues->np4  = n;
+    _effvalues->ntop = n;
+    _effvalues->nbot = n;
+    _effvalues->ntau = n;
+
+    _effvalues->override_unitarity = ptree.get<bool>( "OverrideUnitarity", true );
+
     AddQuantity( new SimplePrediction( "f_BB",                       "TeV-2", _f_BB                 ) );
     AddQuantity( new SimplePrediction( "f_WW",                       "TeV-2", _f_WW                 ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_g_g",         "",      _normSM_Gamma_hgg     ) );
