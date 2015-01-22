@@ -56,6 +56,7 @@ FIND_PACKAGE( HIGGSSIGNALS                                              )
 FIND_PACKAGE( FEYNHIGGS                                                 )
 FIND_PACKAGE( GFORTRANLIB                                               )
 FIND_PACKAGE( IFORTLIB                                                  )
+FIND_PACKAGE( LIBXML2                                                   )
 
 ADD_SUBDIRECTORY( external )
 ADD_SUBDIRECTORY( sources  )
