@@ -33,7 +33,6 @@
  *
  *  \todo <B> xml: </B> \n
  *  Update the xml definition file. \n
- *  Integrate xml input file validation to fittino.\n
  *  Find a way to use xml style files online. (Peter?)\n
  *
  *  \todo <B> Calculators: </B> \n
@@ -65,10 +64,7 @@
  *  When RandomSampler is implemented, use parameter limits as hard limits in markovchain. Discuss what to do when limit is reached (new random point? mirror point?).\n
  *
  *  \todo <B> Models: </B>\n
- *  Update Observable - Prediction relation.\n
- *  MeasuredErrors: Allow arbitrary number. Give names.\n
  *  Introduce parameter point dependent errors, correlations, covariances.\n
- *  Allow asymmetric errors.\n
  *  Make chi2 a model quantitiy?\n
  */
 
