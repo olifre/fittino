@@ -79,7 +79,7 @@ Fittino::HDim6Calculator::HDim6Calculator( const ModelBase* model, const boost::
     _effvalues->rbot = r*r;
     _effvalues->rtau = r*r;
 
-    double n = ptree.get<double>( "UnitarityCoefficientN", 1 );
+    double n = ptree.get<double>( "UnitarityCoefficientN", 0 );
     _effvalues->nbb  = n;
     _effvalues->nww  = n;
     _effvalues->ngg  = n;
