@@ -53,6 +53,8 @@ TARGET_LINK_LIBRARIES( fittino plotters        )
 TARGET_LINK_LIBRARIES( fittino samplers        )
 TARGET_LINK_LIBRARIES( fittino tools           )
 
+ADD_DEFINITIONS( -DPROJECT_SOURCE_DIR="${PROJECT_SOURCE_DIR}" )
+
 IF( Boost_FOUND )
 
     INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIRS} )
@@ -64,6 +66,13 @@ IF( ROOT_FOUND )
 
     SET( compile_flags "${compile_flags} ${ROOT_COMPILE_FLAGS}" )
     SET( link_flags    "${link_flags} ${ROOT_LINK_FLAGS}"       )
+
+ENDIF()
+
+IF( LIBXML2_FOUND )
+
+    ADD_DEFINITIONS( -DLIBXML2 )
+    ADD_DEFINITIONS( -DLIBXML2_XMLLINT_EXECUTABLE="${LIBXML2_XMLLINT_EXECUTABLE}" )
 
 ENDIF()
 
