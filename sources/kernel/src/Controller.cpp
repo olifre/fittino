@@ -30,6 +30,7 @@
 #include <boost/property_tree/xml_parser.hpp>
 
 #include "Controller.h"
+#include "Executor.h"
 #include "Factory.h"
 #include "InputException.h"
 #include "ModelBase.h"
@@ -61,6 +62,7 @@ void Fittino::Controller::ExecuteFittino() const {
 
         if ( !_lockFileName.empty() ) {
 
+	  //	  settings = boost::property_tree::xml_writer_make_settings<std::string> ('\t', 1);
             boost::property_tree::xml_writer_settings<char> settings( '\t', 1 );
             boost::property_tree::write_xml( _inputFileName, *_inputPtree, std::locale(), settings );
 
@@ -127,6 +129,56 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
         }
 
+        std::string project = PROJECT_SOURCE_DIR;
+
+        if ( _validate ) {
+
+
+#ifdef LIBXML2
+
+
+            std::string xmllint = LIBXML2_XMLLINT_EXECUTABLE;
+            std::string xmlValidationFile = project + "/input/definitions/InputFile.xsd";
+
+            std::cout << "LibXML executable is at " << xmllint << std::endl;
+            std::cout << "Validation file is at " << xmlValidationFile << std::endl;
+
+            Messenger::GetInstance() << Messenger::ALWAYS << "Validating the input file using xmllint..." << Messenger::Endl;
+            Executor validation(xmllint, "xmllint");
+            validation.AddArgument("--noout");
+            validation.AddArgument("--schema");
+            validation.AddArgument(xmlValidationFile);
+            validation.AddArgument(_inputFileName);
+            int rc = validation.Execute();
+            Messenger::GetInstance() << Messenger::ALWAYS << "Xmllint returned " << rc << "." << Messenger::Endl;
+
+            std::vector<std::string> xmllintrc(10);
+            xmllintrc[0] = "No Error";
+            xmllintrc[1] = "Unclassified";
+            xmllintrc[2] = "Error in DTD";
+            xmllintrc[3] = "Validation error";
+            xmllintrc[4] = "Error in schema";
+            xmllintrc[5] = "Error in schema compilation";
+            xmllintrc[6] = "Error in writing output";
+            xmllintrc[7] = "Error in pattern";
+            xmllintrc[8] = "Error in Reader registration";
+            xmllintrc[9] = "Out of memory error.";
+
+            if (rc) {
+
+                throw ConfigurationException("Input file failed validation: " + xmllintrc.at(rc) + ".");
+
+            }
+
+#else
+
+               throw ConfigurationException( "Requested validation but Fittino was build without libxml2." );
+
+
+        #endif
+
+        }
+
         boost::property_tree::read_xml( _inputFileName,
                                         *_inputPtree,
                                         boost::property_tree::xml_parser::trim_whitespace |
@@ -179,6 +231,7 @@ Fittino::Controller::Controller()
     _fileLock = 0;
     _scopedLock = 0;
     _lockFileName = "";
+    _validate = false;
 
 }
 
@@ -223,10 +276,11 @@ void Fittino::Controller::HandleOptions( int argc, char** argv ) {
 
     static struct option options[] = {
 
-        {"help",       no_argument,       0, 'h'},
-        {"input-file", required_argument, 0, 'i'},
-        {"lock-file",  required_argument, 0, 'l'},
-        {0,            0,                 0,  0 }
+            {"help",       no_argument,       0, 'h'},
+            {"input-file", required_argument, 0, 'i'},
+            {"lock-file",  required_argument, 0, 'l'},
+            {"validate",    no_argument,      0, 'v'},
+            {0,            0,                 0,  0 }
 
     };
 
@@ -236,7 +290,7 @@ void Fittino::Controller::HandleOptions( int argc, char** argv ) {
 
     while ( true ) {
 
-        optionCode = getopt_long( argc, argv, ":hi:l:", options, &optionIndex );
+        optionCode = getopt_long( argc, argv, ":hi:l:v", options, &optionIndex );
 
         if ( optionCode == -1 ) break;
 
@@ -252,6 +306,10 @@ void Fittino::Controller::HandleOptions( int argc, char** argv ) {
 
             case 'l':
                 _lockFileName = std::string( optarg );
+                continue;
+
+            case 'v' :
+                _validate = true;
                 continue;
 
             case ':':
@@ -282,6 +340,8 @@ void Fittino::Controller::PrintHelp() const {
     messenger << Messenger::ALWAYS << "      be .xml (XML format)." << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  -l FILE, --lock-file=FILE" << Messenger::Endl;
     messenger << Messenger::ALWAYS << "      Fittino uses the file FILE for inter process locking." << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  -v, --validate" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "      Fittino validates the input file using the libxml2 library." << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
 }

@@ -137,6 +137,7 @@ namespace Fittino {
       static Controller*                                                _instance;
 
     private:
+      bool                                                              _validate;
       /*!
        *  The name of the input file.
        */
