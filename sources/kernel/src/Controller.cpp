@@ -172,7 +172,7 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
 #else
 
-               throw ConfigurationException( "Requested validation but Fittino was build without libxml2." );
+               throw ConfigurationException( "Requested validation but Fittino was built without libxml2." );
 
 
         #endif
