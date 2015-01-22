@@ -12,7 +12,7 @@
 
       <ModelParameter>
         <Name>f_B</Name>
-        <Value>0</Value>
+        <Value>5</Value>
         <Error>1</Error>
         <LowerBound>-1000</LowerBound>
         <UpperBound>+1000</UpperBound>
@@ -21,7 +21,7 @@
 
       <ModelParameter>
         <Name>f_VV_plus</Name>
-        <Value>0</Value>
+        <Value>5</Value>
         <Error>1</Error>
         <LowerBound>-1000</LowerBound>
         <UpperBound>+1000</UpperBound>
@@ -30,7 +30,7 @@
 
       <ModelParameter>
         <Name>f_VV_minus</Name>
-        <Value>0</Value>
+        <Value>5</Value>
         <Error>1</Error>
         <LowerBound>-1000</LowerBound>
         <UpperBound>+1000</UpperBound>
@@ -39,7 +39,7 @@
 
       <ModelParameter>
         <Name>f_W</Name>
-        <Value>0</Value>
+        <Value>5</Value>
         <Error>1</Error>
         <LowerBound>-1000</LowerBound>
         <UpperBound>+1000</UpperBound>
@@ -57,7 +57,7 @@
 
       <ModelParameter>
         <Name>f_Phi_2</Name>
-        <Value>0.000001</Value>
+        <Value>0</Value>
         <Error>1</Error>
         <LowerBound>-1000</LowerBound>
         <UpperBound>+1000</UpperBound>
@@ -110,7 +110,7 @@
           <calculate_xs_qqh_5flavor>true</calculate_xs_qqh_5flavor>
           <calculate_xs_Wh>true</calculate_xs_Wh>
           <calculate_xs_Zh>true</calculate_xs_Zh>
-          <UnitarityCoefficientR>1.0</UnitarityCoefficientR>
+          <UnitarityCoefficientR>1000.0</UnitarityCoefficientR>
           <UnitarityCoefficientN>1.0</UnitarityCoefficientN>
           <OverrideUnitarity>true</OverrideUnitarity>
         </HDim6Calculator>

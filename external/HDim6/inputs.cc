@@ -110,18 +110,18 @@ effinputs::effinputs() {
     // Effekte der folgenden Variablen AUS
     this->override_unitarity = 1;
 
-    this->nbb  = 1;
-    this->nww  = 1;
-    this->ngg  = 1;
-    this->nb   = 1;
-    this->nw   = 1;
-    this->nbw  = 1;
-    this->np1  = 1;
-    this->np2  = 1;
-    this->np4  = 1;
-    this->ntop = 1;
-    this->nbot = 1;
-    this->ntau = 1;
+    this->nbb  = 0; //Alex: Hier stand ueberall 1, ich hab zur Sicherheit mal 0 hin getan
+    this->nww  = 0;
+    this->ngg  = 0;
+    this->nb   = 0;
+    this->nw   = 0;
+    this->nbw  = 0;
+    this->np1  = 0;
+    this->np2  = 0;
+    this->np4  = 0;
+    this->ntop = 0;
+    this->nbot = 0;
+    this->ntau = 0;
 
     this->rbb  = 1;
     this->rww  = 1;
