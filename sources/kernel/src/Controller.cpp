@@ -140,10 +140,10 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
             std::string xmllint = LIBXML2_XMLLINT_EXECUTABLE;
             std::string xmlValidationFile = project + "/input/definitions/InputFile.xsd";
 
-            std::cout << "LibXML executable is at " << xmllint << std::endl;
-            std::cout << "Validation file is at " << xmlValidationFile << std::endl;
+            Messenger::GetInstance() << Messenger::ALWAYS << "Validating the input..." << Messenger::Endl;
+            Messenger::GetInstance() << Messenger::ALWAYS << "Using xmllint at " <<xmllint<<"."<<Messenger::Endl;
+            Messenger::GetInstance() << Messenger::ALWAYS << "Using xsd file at " <<xmlValidationFile<<"."<<Messenger::Endl;
 
-            Messenger::GetInstance() << Messenger::ALWAYS << "Validating the input file using xmllint..." << Messenger::Endl;
             Executor validation(xmllint, "xmllint");
             validation.AddArgument("--noout");
             validation.AddArgument("--schema");
