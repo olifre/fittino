@@ -117,6 +117,11 @@ Fittino::HDim6Calculator::HDim6Calculator( const ModelBase* model, const boost::
     if ( _calculate_xs_Wh          ) AddQuantity( new SimplePrediction( "NormSM_xs_Wh",          "", _normSM_xs_Wh          ) );
     if ( _calculate_xs_Zh          ) AddQuantity( new SimplePrediction( "NormSM_xs_Zh",          "", _normSM_xs_Zh          ) );
 
+    Messenger::GetInstance()<<Messenger::ALWAYS<<" HDim6Calculator configured with the following unitarity settings: "<<Messenger::Endl;
+    Messenger::GetInstance()<<Messenger::ALWAYS<<" OverrideUnitarity: "<<_effvalues->override_unitarity<<Messenger::Endl;
+    Messenger::GetInstance()<<Messenger::ALWAYS<<" UnitarityCoefficientR: "<<_effvalues->rbb<<Messenger::Endl;
+    Messenger::GetInstance()<<Messenger::ALWAYS<<" UnitarityCoefficientN: "<<_effvalues->nbb<<Messenger::Endl;
+
 }
 
 Fittino::HDim6Calculator::~HDim6Calculator() {
