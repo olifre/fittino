@@ -69,12 +69,6 @@ namespace Fittino {
 
         std::map<std::string, UncertaintyBase*> _uncertainties;
 
-        const ModelBase* _model;
-
-
-    private:
-        void AddUncertainty( double& variable,  double uncertainty  );
-
     };
 
 }

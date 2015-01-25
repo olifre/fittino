@@ -128,14 +128,6 @@ const Fittino::Quantity* Fittino::Measurement::GetPrediction() const {
     return _prediction;
 }
 
-void Fittino::Measurement::AddUncertainty( double &variable, double uncertainty ) {
-
-    variable = TMath::Power( variable, 2 );
-    variable += TMath::Power( uncertainty, 2);
-    variable = TMath::Sqrt( variable );
-
-}
-
 Fittino::ModelBase const *Fittino::Measurement::GetModel() const {
 
     return _model;
