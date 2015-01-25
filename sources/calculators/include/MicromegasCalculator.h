@@ -20,6 +20,7 @@
 #ifndef FITTINO_MICROMEGASCALCULATOR_H
 #define FITTINO_MICROMEGASCALCULATOR_H
 
+#include "CalculatorBase.h"
 #include "MicromegasWrapper.h"
 
 /*!
@@ -31,11 +32,12 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Wrapper class for Micromegas.
    */
-  class MicromegasCalculator : public MicromegasWrapper {
+  class MicromegasCalculator : public MicromegasWrapper, public CalculatorBase {
 
     public:
       MicromegasCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree );
       ~MicromegasCalculator();
+      void CalculatePredictions();
 
   };
 

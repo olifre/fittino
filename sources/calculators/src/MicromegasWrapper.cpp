@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include <iostream>
+#include <vector>
 
 #include <complex>
 
@@ -26,12 +27,14 @@
 #include "pmodel.h"
 #include "micromegas.h"
 #include "micromegas_aux.h"
-
+#include "ConfigurationException.h"
 #include "CalculatorException.h"
 #include "MicromegasWrapper.h"
 
-Fittino::MicromegasWrapper::MicromegasWrapper( const ModelBase* model )
-    : CalculatorBase( model ) {
+Fittino::MicromegasWrapper::MicromegasWrapper( std::string name )
+    {
+
+        _mcname = name;
 
 }
 
@@ -53,7 +56,7 @@ void Fittino::MicromegasWrapper::CalculatePredictions() {
 
     if ( sortOddParticles( lspName ) ) {
 
-        throw CalculatorException( _name, "LSP" );
+        throw CalculatorException( _mcname, "LSP" );
 
     }
 
@@ -68,7 +71,7 @@ void Fittino::MicromegasWrapper::CalculatePredictions() {
 
     if ( _omegah2 < 0 ) {
 
-        throw CalculatorException( _name, "Negative omega." );
+        throw CalculatorException( _mcname, "Negative omega." );
 
     }
 

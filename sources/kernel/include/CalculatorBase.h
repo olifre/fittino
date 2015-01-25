@@ -21,6 +21,7 @@
 #define FITTINO_CALCULATORBASE_H
 
 #include "Collection.h"
+#include <boost/property_tree/ptree_fwd.hpp>
 
 /*!
  *  \brief Fittino namespace.
@@ -44,6 +45,8 @@ namespace Fittino {
        *  Standard constructor.
        */
       CalculatorBase( const ModelBase* model );
+      CalculatorBase( const ModelBase* model, const boost::property_tree::ptree& ptree  );
+
       /*!
        *  Standard destructor.
        */

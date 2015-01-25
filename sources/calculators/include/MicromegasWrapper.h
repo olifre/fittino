@@ -20,8 +20,6 @@
 #ifndef FITTINO_MICROMEGASWRAPPER_H
 #define FITTINO_MICROMEGASWRAPPER_H
 
-#include "CalculatorBase.h"
-
 /*!
  *  \brief Fittino namespace.
  */
@@ -35,16 +33,17 @@ namespace Fittino {
    *  MicromegasCalculator. It is needed because Micromegas uses a function boost conflicting with\n
    *  the boost namespace used in MicromegasCalculator.
    */
-  class MicromegasWrapper: public CalculatorBase {
+  class MicromegasWrapper {
 
     public:
-      MicromegasWrapper( const ModelBase* model );
+      MicromegasWrapper( std::string name  );
       void        CalculatePredictions();
 
-    public:
+  public:
       virtual     ~MicromegasWrapper();
 
     protected:
+      std::string  _mcname;
       double      _omegah2;
       double      _gmin2;
       std::string _inputFile;

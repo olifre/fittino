@@ -20,7 +20,7 @@
 #include "CalculatorBase.h"
 #include "PredictionBase.h"
 #include "VariableBase.h"
-#include "PhysicsModel.h"
+#include "ModelBase.h"
 
 Fittino::CalculatorBase::CalculatorBase( const ModelBase* model )
     : _name( "" ),
@@ -80,5 +80,13 @@ void  Fittino::CalculatorBase::AddStringVariable( Fittino::VariableBase<std::str
     }
 
     _collectionOfStringVariables.AddElement( variable );
+
+}
+
+Fittino::CalculatorBase::CalculatorBase(Fittino::ModelBase const *model, const boost::property_tree::ptree &ptree) {
+
+    _model = model;
+    _name = ptree.get<std::string>( "Name", "" );
+    _tag = ptree.get<std::string>( "Tag", "" ); // todo: Decide if tag should be equal to name by default
 
 }
