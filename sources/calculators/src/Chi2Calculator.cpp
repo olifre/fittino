@@ -36,7 +36,8 @@
 Fittino::Chi2Calculator::Chi2Calculator( const Fittino::ModelBase* model, const boost::property_tree::ptree &ptree )
         : CalculatorBase( model ) {
 
-    _name = ptree.get<std::string>( "Name", "Chi2Calculator" );
+    if ( _name == "" )  _name = "Chi2Calculator";
+    if ( _tag == "" ) _tag = "Chi2Calculator";
 
     _chi2 = new Quantity( "Chi2", "", 0, 0, 0 );
     AddQuantity( _chi2 );
