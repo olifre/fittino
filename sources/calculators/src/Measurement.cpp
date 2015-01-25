@@ -81,10 +81,10 @@ Fittino::Measurement::Measurement( std::string type, const Fittino::ModelBase* m
 
                 }
 
-    AddQuantity( new SimplePrediction( "Chi2", "", _chi2  ) );
-    AddQuantity( new SimplePrediction( "Measurement", "", _measuredValue  ) );
-    AddQuantity( new SimplePrediction( "Deviation", "", _deviation  ) );
-    AddQuantity( new SimplePrediction( "Pull", "", _pull  ) );
+    AddQuantity( "Chi2", new SimplePrediction( "Chi2", "", _chi2  ) );
+    AddQuantity( "Measurement", new SimplePrediction( "Measurement", "", _measuredValue  ) );
+    AddQuantity( "Deviation", new SimplePrediction( "Deviation", "", _deviation  ) );
+    AddQuantity( "Pull", new SimplePrediction( "Pull", "", _pull  ) );
 
 }
 
