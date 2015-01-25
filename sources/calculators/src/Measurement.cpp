@@ -41,6 +41,9 @@ Fittino::Measurement::Measurement( std::string type, const Fittino::ModelBase* m
     _lowerLimit = false;
     _upperLimit = false;
 
+    if ( _name == "" ) _name = "Measurement";
+    if ( _tag == "" ) _tag = "Measurement";
+
     if (type == "LowerLimit") {
 
         _lowerLimit = true;
@@ -56,8 +59,6 @@ Fittino::Measurement::Measurement( std::string type, const Fittino::ModelBase* m
         throw ConfigurationException("Type " + type + " not known.");
 
     }
-
-    std::string name = ptree.get<std::string>("Name");
 
     _measuredValue = ptree.get<double>("Measurement");
     std::string predictionName = ptree.get<std::string>("Prediction");
