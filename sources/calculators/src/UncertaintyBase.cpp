@@ -25,7 +25,7 @@ Fittino::UncertaintyBase::UncertaintyBase( const Measurement* observable, const 
 
     _observable = observable;
 
-    _name = ptree.get<std::string>( "Name" );
+    _name = ptree.get<std::string>( "Name", "" );
 }
 
 Fittino::UncertaintyBase::~UncertaintyBase() {

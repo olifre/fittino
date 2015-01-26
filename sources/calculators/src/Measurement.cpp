@@ -73,7 +73,7 @@ Fittino::Measurement::Measurement( std::string type, const Fittino::ModelBase* m
 
                     UncertaintyBase *uncertainty = factory.CreateUncertainty( node.first, this, node.second );
 
-                    if (!_namedUncertainties.insert( std::make_pair( uncertainty->GetName(), uncertainty ) ).second ) {
+                    if ( !uncertainty->GetName().empty() && !_namedUncertainties.insert( std::make_pair( uncertainty->GetName(), uncertainty ) ).second ) {
 
                         throw ConfigurationException("Several uncertainties with same name " + uncertainty->GetName() + ".");
 
