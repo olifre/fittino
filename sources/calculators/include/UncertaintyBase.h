@@ -32,6 +32,7 @@
 namespace Fittino {
 
     class Measurement;
+    class ModelBase;
 
 /*!
  *  \ingroup calculators
@@ -41,7 +42,7 @@ namespace Fittino {
     class UncertaintyBase {
 
     public:
-        UncertaintyBase( const Measurement* observable, const boost::property_tree::ptree& ptree );
+        UncertaintyBase(ModelBase const *model, const Measurement *observable, const boost::property_tree::ptree &ptree);
         virtual ~UncertaintyBase();
 
         virtual void Update() = 0;

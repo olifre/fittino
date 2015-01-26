@@ -20,19 +20,20 @@
 #include "AstroExclusion.h"
 #include "Quantity.h"
 #include <boost/property_tree/ptree.hpp>
+#include <cstddef>
 #include "TGraph.h"
 #include "TMath.h"
 #include "ModelBase.h"
 
-Fittino::AstroExclusion::AstroExclusion(Fittino::Measurement const *observable, const boost::property_tree::ptree &ptree)
-:UncertaintyBase( observable, ptree ) {
+Fittino::AstroExclusion::AstroExclusion(ModelBase const *model, const Measurement *observable, const boost::property_tree::ptree &ptree)
+: UncertaintyBase(model, observable, ptree) {
 
 
     std::string fileName = ptree.get<std::string>( "File" );
     _graph = new TGraph( fileName.c_str() );
 
     std::string massName = ptree.get<std::string>( "WimpMass" );
-    _mass = observable->GetModel()->GetCollectionOfQuantities().At( massName );
+    _mass = model->GetCollectionOfQuantities().At( massName );
 
 
     double confidenceLevel = ptree.get<double>( "ConfidenceLevel" );

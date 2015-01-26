@@ -40,7 +40,7 @@ namespace Fittino {
     class AstroExclusion : public UncertaintyBase {
 
     public:
-        AstroExclusion( const Measurement* measurement , const boost::property_tree::ptree& ptree );
+        AstroExclusion(ModelBase const *model, const Measurement *measurement, const boost::property_tree::ptree &ptree);
         ~AstroExclusion();
 
         void Update();

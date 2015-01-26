@@ -21,7 +21,7 @@
 #include <boost/property_tree/ptree.hpp>
 
 
-Fittino::UncertaintyBase::UncertaintyBase( const Measurement* observable, const boost::property_tree::ptree& ptree ){
+Fittino::UncertaintyBase::UncertaintyBase(ModelBase const *model, const Measurement *observable, const boost::property_tree::ptree &ptree) {
 
     _observable = observable;
 

@@ -21,8 +21,8 @@
 #include "RelativeTheoryUncertainty.h"
 #include "Quantity.h"
 
-Fittino::RelativeTheoryUncertainty::RelativeTheoryUncertainty(Fittino::Measurement const *observable, const boost::property_tree::ptree &ptree)
-:UncertaintyBase( observable, ptree ) {
+Fittino::RelativeTheoryUncertainty::RelativeTheoryUncertainty(ModelBase const *model, const Measurement *observable, const boost::property_tree::ptree &ptree)
+: UncertaintyBase(model, observable, ptree) {
 
     _relativeValue =  ptree.get<double>( "Value" );
 

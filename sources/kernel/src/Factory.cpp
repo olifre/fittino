@@ -674,21 +674,21 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
 
 }
 
-Fittino::UncertaintyBase *Fittino::Factory::CreateUncertainty(const std::string &type, Fittino::Measurement const *measurement, const boost::property_tree::ptree &ptree) const {
+Fittino::UncertaintyBase *Fittino::Factory::CreateUncertainty(const std::string &type, const ModelBase *model, const Measurement *measurement, const boost::property_tree::ptree &ptree) const {
 
     if ( type == "AbsoluteUncertainty") {
 
-        return new AbsoluteUncertainty( measurement, ptree );
+        return new AbsoluteUncertainty(model, measurement, ptree);
 
     }
     else if ( type == "RelativeTheoryUncertainty") {
 
-        return new RelativeTheoryUncertainty( measurement, ptree );
+        return new RelativeTheoryUncertainty(model, measurement, ptree);
 
     }
     else if ( type == "AstroExclusion") {
 
-        return new AstroExclusion( measurement, ptree );
+        return new AstroExclusion(model, measurement, ptree);
 
     }
     else {

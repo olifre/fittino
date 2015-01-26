@@ -71,7 +71,7 @@ Fittino::Measurement::Measurement( std::string type, const Fittino::ModelBase* m
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree.get_child("Uncertainties") ) {
 
-                    UncertaintyBase *uncertainty = factory.CreateUncertainty( node.first, this, node.second );
+                    UncertaintyBase *uncertainty = factory.CreateUncertainty(node.first, model, this, node.second);
 
                     if ( !uncertainty->GetName().empty() && !_namedUncertainties.insert( std::make_pair( uncertainty->GetName(), uncertainty ) ).second ) {
 

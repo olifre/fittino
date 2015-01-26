@@ -35,7 +35,7 @@ namespace Fittino {
     class AbsoluteUncertainty : public UncertaintyBase {
 
     public:
-        AbsoluteUncertainty( const Measurement* measurement , const boost::property_tree::ptree& ptree );
+        AbsoluteUncertainty(ModelBase const *model, const Measurement *measurement, const boost::property_tree::ptree &ptree);
         ~AbsoluteUncertainty();
 
         void Update();

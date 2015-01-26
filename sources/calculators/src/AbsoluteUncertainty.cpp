@@ -21,8 +21,8 @@
 #include "AbsoluteUncertainty.h"
 #include "Quantity.h"
 
-Fittino::AbsoluteUncertainty::AbsoluteUncertainty(Fittino::Measurement const *observable, const boost::property_tree::ptree &ptree)
-:UncertaintyBase( observable, ptree ) {
+Fittino::AbsoluteUncertainty::AbsoluteUncertainty(ModelBase const *model, const Measurement *observable, const boost::property_tree::ptree &ptree)
+: UncertaintyBase(model, observable, ptree) {
 
     double value =  ptree.get<double>( "Value", 0 );
     _valueMinus = ptree.get<double>( "ValueMinus", value );

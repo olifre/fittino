@@ -35,7 +35,7 @@ namespace Fittino {
     class RelativeTheoryUncertainty : public UncertaintyBase {
 
     public:
-        RelativeTheoryUncertainty( const Measurement* measurement , const boost::property_tree::ptree& ptree );
+        RelativeTheoryUncertainty(ModelBase const *model, const Measurement *measurement, const boost::property_tree::ptree &ptree);
         ~RelativeTheoryUncertainty();
 
         void Update();
