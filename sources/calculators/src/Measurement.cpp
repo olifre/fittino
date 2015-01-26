@@ -35,11 +35,13 @@
 #include "UncertaintyBase.h"
 
 
-Fittino::Measurement::Measurement( std::string type, const Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
+Fittino::Measurement::Measurement(std::string type, unsigned int index, const ModelBase *model, const boost::property_tree::ptree &ptree)
 :CalculatorBase( model ) {
 
     _lowerLimit = false;
     _upperLimit = false;
+
+    _index = index;
 
     if ( _name == "" ) _name = "Measurement";
     if ( _tag == "" ) _tag = "Measurement";

@@ -21,7 +21,6 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/foreach.hpp>
-#include <TVectorDfwd.h>
 
 #include "TMath.h"
 
@@ -46,7 +45,7 @@ Fittino::Chi2Calculator::Chi2Calculator( const Fittino::ModelBase* model, const 
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree.get_child( "Observables" ) ) {
 
-                    Measurement* measurement = new Measurement(node.first, model, node.second);
+                    Measurement* measurement = new Measurement(node.first, _measurements.size(), model, node.second);
 
                     for (unsigned int iQuantity = 0; iQuantity < measurement->GetCollectionOfQuantities().GetNumberOfElements(); iQuantity++) {
 

@@ -41,7 +41,7 @@ namespace Fittino {
     class Measurement : public CalculatorBase {
 
     public:
-        Measurement( std::string type, const ModelBase* model, const boost::property_tree::ptree& ptree );
+        Measurement(std::string type, unsigned int index, const ModelBase *model, const boost::property_tree::ptree &ptree);
         ~Measurement();
 
         void CalculatePredictions();
@@ -55,6 +55,8 @@ namespace Fittino {
 
         bool _lowerLimit;
         bool _upperLimit;
+
+        unsigned int _index;
 
         const  Quantity* _prediction;
 
