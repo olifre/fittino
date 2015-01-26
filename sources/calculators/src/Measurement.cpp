@@ -129,12 +129,6 @@ const Fittino::Quantity* Fittino::Measurement::GetPrediction() const {
     return _prediction;
 }
 
-Fittino::ModelBase const *Fittino::Measurement::GetModel() const {
-
-    return _model;
-
-}
-
 double Fittino::Measurement::GetTotalUncertainty() const {
 
     return _totalUncertainty;

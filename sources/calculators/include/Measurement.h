@@ -46,7 +46,6 @@ namespace Fittino {
 
         void CalculatePredictions();
         const Quantity* GetPrediction() const;
-        const ModelBase* GetModel() const;
         double GetTotalUncertainty() const;
         void SetMeasuredValue(double value);
         bool IsWithinBounds();
