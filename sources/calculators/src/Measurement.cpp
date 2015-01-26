@@ -73,12 +73,13 @@ Fittino::Measurement::Measurement( std::string type, const Fittino::ModelBase* m
 
                     UncertaintyBase *uncertainty = factory.CreateUncertainty( node.first, this, node.second );
 
-                    if (!_uncertainties.insert( std::make_pair( uncertainty->GetName(), uncertainty ) ).second ) {
+                    if (!_namedUncertainties.insert( std::make_pair( uncertainty->GetName(), uncertainty ) ).second ) {
 
                         throw ConfigurationException("Several uncertainties with same name " + uncertainty->GetName() + ".");
 
                     }
 
+                    _uncertainties.push_back( uncertainty );
                 }
 
     AddQuantity( "Chi2", new SimplePrediction( "Chi2", "", _chi2  ) );
@@ -105,12 +106,12 @@ void Fittino::Measurement::CalculatePredictions()  {
 
     _totalUncertainty = 0;
 
-    std::map<std::string, UncertaintyBase* >::iterator it;
+    std::vector< UncertaintyBase* >::iterator it;
 
-    for (  it = _uncertainties.begin(); it != _uncertainties.end(); it++ ) {
+    for (  it = _uncertainties.begin(); it != _uncertainties.end(); ++it ) {
 
-        it->second->Update();
-        _totalUncertainty += TMath::Power( it->second->GetValue(), 2 );
+        (*it)->Update();
+        _totalUncertainty += TMath::Power( (*it)->GetValue(), 2 );
 
     }
 
@@ -157,5 +158,11 @@ bool Fittino::Measurement::IsWithinBounds() {
         return false;
 
     }
+
+}
+
+const std::map<std::string, const Fittino::UncertaintyBase *> &Fittino::Measurement::GetNamedUncertainties() const {
+
+    return _namedUncertainties;
 
 }

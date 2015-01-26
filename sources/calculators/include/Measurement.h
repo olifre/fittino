@@ -50,6 +50,7 @@ namespace Fittino {
         double GetTotalUncertainty() const;
         void SetMeasuredValue(double value);
         bool IsWithinBounds();
+        const std::map<std::string, const UncertaintyBase*>& GetNamedUncertainties() const;
 
     private:
 
@@ -67,7 +68,8 @@ namespace Fittino {
         double  _pull;
         double _totalUncertainty;
 
-        std::map<std::string, UncertaintyBase*> _uncertainties;
+        std::vector<UncertaintyBase*> _uncertainties;
+        std::map<std::string, const UncertaintyBase*> _namedUncertainties;
 
     };
 
