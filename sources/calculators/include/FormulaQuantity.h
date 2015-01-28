@@ -39,7 +39,7 @@ namespace Fittino {
 
     public:
 
-      FormulaQuantity( std::string name, std::string formula, ModelBase* model );
+      FormulaQuantity( std::string name, std::string formula, const ModelBase* model );
 
       ~FormulaQuantity();
 

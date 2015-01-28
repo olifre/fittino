@@ -27,7 +27,7 @@
 #include "ModelBase.h"
 
 
-Fittino::FormulaQuantity::FormulaQuantity(std::string name, std::string formula, Fittino::ModelBase *model)
+Fittino::FormulaQuantity::FormulaQuantity(std::string name, std::string formula, const Fittino::ModelBase *model)
 : Quantity( name ){
 
     int begin = formula.find( "[" );
