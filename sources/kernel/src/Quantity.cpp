@@ -154,3 +154,9 @@ void Fittino::Quantity::SetValue( double value ) {
 void Fittino::Quantity::Update() {
 
 }
+
+Fittino::Quantity::Quantity(std::string name) {
+
+    _name  = name;
+
+}

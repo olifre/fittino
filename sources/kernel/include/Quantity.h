@@ -53,9 +53,9 @@ namespace Fittino {
                 std::string plotUnit,
                 double      lowerBound,
                 double      upperBound );
-      /*!
-       *  Standard constructor
-       */
+
+      Quantity( std::string name );
+
       Quantity( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
