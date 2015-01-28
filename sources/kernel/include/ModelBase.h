@@ -171,7 +171,7 @@ namespace Fittino {
        *  Setup all parameters using a ptree.
        */
       void                                                InitializeParameters( boost::property_tree::ptree& ptree );
-      void                                                InitializeCalculators( const boost::property_tree::ptree& ptree );
+      void                                                InitializeCalculators(boost::property_tree::ptree &ptree);
 
 
   private:

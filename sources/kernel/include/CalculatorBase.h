@@ -21,6 +21,7 @@
 #define FITTINO_CALCULATORBASE_H
 
 #include "Collection.h"
+#include "PtreeForwardDeclaration.h"
 #include <boost/property_tree/ptree_fwd.hpp>
 
 /*!
@@ -31,6 +32,7 @@ namespace Fittino {
   class ModelBase;
   class PhysicsModel;
     class Quantity;
+    class FormulaQuantity;
 
   template<class T> class VariableBase;
 
@@ -45,7 +47,7 @@ namespace Fittino {
        *  Standard constructor.
        */
       CalculatorBase( const ModelBase* model );
-      CalculatorBase( const ModelBase* model, const boost::property_tree::ptree& ptree  );
+      CalculatorBase(const ModelBase *model, boost::property_tree::ptree &ptree);
 
       /*!
        *  Standard destructor.
@@ -67,16 +69,22 @@ namespace Fittino {
       std::string                                   _name;
       std::string                                   _tag;
       const ModelBase*                              _model;
+      boost::property_tree::ptree*                  _ptree;
 
     protected:
       void                                          AddQuantity( Quantity* prediction );
       void                                          AddQuantity( std::string key, Quantity* prediction );
       void                                          AddStringVariable( VariableBase<std::string>* variable );
+      void                                          AddInput( std::string name, std::string path );
+      void                                          UpdateInput();
+      const double&                                 GetInput( std::string name );
 
       /*! \cond UML */
     private:
       Collection<Quantity*>                         _collectionOfQuantities;
       Collection<VariableBase<std::string>*>        _collectionOfStringVariables;
+      std::map< std::string, FormulaQuantity* >     _input;
+
 
       /*! \endcond UML */
 

@@ -18,6 +18,7 @@
 *******************************************************************************/
 
 #include "CalculatorBase.h"
+#include "FormulaQuantity.h"
 #include "PredictionBase.h"
 #include "VariableBase.h"
 #include "ModelBase.h"
@@ -26,6 +27,8 @@ Fittino::CalculatorBase::CalculatorBase( const ModelBase* model )
     : _name( "" ),
       _tag( "" ),
       _model( model ) {
+
+    _ptree = 0;
 
 }
 
@@ -77,11 +80,12 @@ void  Fittino::CalculatorBase::AddStringVariable( Fittino::VariableBase<std::str
 
 }
 
-Fittino::CalculatorBase::CalculatorBase(Fittino::ModelBase const *model, const boost::property_tree::ptree &ptree) {
+Fittino::CalculatorBase::CalculatorBase(Fittino::ModelBase const *model, boost::property_tree::ptree &ptree) {
 
     _model = model;
     _name = ptree.get<std::string>( "Name", "" );
     _tag = ptree.get<std::string>( "Tag", "" ); // todo: Decide if tag should be equal to name by default
+    _ptree = &ptree;
 
 }
 
@@ -94,5 +98,33 @@ void Fittino::CalculatorBase::AddQuantity(std::string key, Fittino::Quantity *pr
     }
 
     _collectionOfQuantities.AddElement( key, prediction );
+
+}
+
+void Fittino::CalculatorBase::AddInput(std::string name, std::string path) {
+
+    FormulaQuantity* quantity = new FormulaQuantity( name, _ptree->get<std::string>( path ), _model );
+
+    _input.insert( std::make_pair( name, quantity ) );
+
+    AddQuantity( quantity ); // todo: Make configurable if quantities are written to the ntuple.
+
+}
+
+void Fittino::CalculatorBase::UpdateInput() {
+
+    std::map<std::string, FormulaQuantity*>::const_iterator it;
+
+    for ( it = _input.begin(); it != _input.end(); ++it ) {
+
+        it->second->Update();
+
+    }
+
+}
+
+const double &Fittino::CalculatorBase::GetInput(std::string name) {
+
+    return _input.at( name )->GetValue() ;
 
 }

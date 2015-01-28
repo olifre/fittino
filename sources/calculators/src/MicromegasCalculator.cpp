@@ -22,7 +22,7 @@
 #include "MicromegasCalculator.h"
 #include "SimplePrediction.h"
 
-Fittino::MicromegasCalculator::MicromegasCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
+Fittino::MicromegasCalculator::MicromegasCalculator(const ModelBase *model, boost::property_tree::ptree &ptree)
     : MicromegasWrapper( ptree.get<std::string>( "Name", "MicrOMMEGAs") ), CalculatorBase( model, ptree ) {
 
     _name = "MicrOMEGAs";
