@@ -16,7 +16,7 @@
 *                                                                              *
 *******************************************************************************/
 
-
+#include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/foreach.hpp>
 #include "TMath.h"
@@ -74,6 +74,7 @@ Fittino::MadGraphCalculator::MadGraphCalculator( const ModelBase* model, const b
 }
 
 
+
 Fittino::MadGraphCalculator::~MadGraphCalculator() {
   
 }
@@ -83,7 +84,7 @@ void Fittino::MadGraphCalculator::CalculatePredictions() {
 
   std::cout<<"USING _cHW = "<<_cHW<<std::endl;
   
-  std::string originalinputfile = "/lustre/user/thakur/programs/Madgraph_v2_1_1/runmadgraph.txt";
+  std::string originalinputfile = "/lustre/user/thakur/programs/madgraph_aMC_v2_2_2/runmadgraph.txt";
   std::string inputfile = "fittino_madgraph_in.txt"; 
 
   std::ifstream infile( originalinputfile.c_str(), std::ios::binary );
@@ -108,11 +109,11 @@ void Fittino::MadGraphCalculator::CalculatePredictions() {
   myfile.close();
   
   
-  Executor executor("/lustre/user/thakur/programs/Madgraph_v2_1_1/bin/mg5_aMC", "mg5_aMC");
+  Executor executor("./mg5_aMC", "mg5_aMC");
   executor.AddArgument(inputfile);
   executor.Execute();
 
-  std::string zipfile = "/lustre/user/thakur/programs/fittino/bin/testprocess/Events/run_01/tag_1_pythia_events.hep.gz";
+  std::string zipfile = "./testprocess/Events/run_01/tag_1_pythia_events.hep.gz";
   Executor unzip("/bin/gunzip", "gunzip");
   unzip.AddArgument(zipfile);
   unzip.Execute();

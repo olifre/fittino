@@ -19,6 +19,8 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include <boost/foreach.hpp>
+#include <boost/lexical_cast.hpp>
+
 #include "TMath.h"
 #include "CheckMATECalculator.h"
 #include "ConfigurationException.h"
@@ -37,6 +39,7 @@ Fittino::CheckMATECalculator::CheckMATECalculator( const ModelBase* model, const
     _cHW  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cHW.Name", "cHW" ) )->GetValue() )
 {
   
+ 
   std::cout<<"USING _cHW = "<<_cHW<<std::endl;
   std::string originalinputfile = "/lustre/user/thakur/programs/CheckMATE/CheckMATE-1.1.14/runfittino.txt";
   std::string inputfile = "fittino_checkmate_in.txt";
@@ -52,7 +55,7 @@ Fittino::CheckMATECalculator::CheckMATECalculator( const ModelBase* model, const
   myfile.close();
   
   
-  Executor executor("/lustre/user/thakur/programs/CheckMATE/CheckMATE-1.1.14/bin/CheckMATE", "CheckMATE");
+  Executor executor("./CheckMATE", "CheckMATE");
   executor.AddArgument(inputfile);
   
   std::cout<<"Start CheckMATE execution "<<std::endl;
@@ -105,7 +108,7 @@ Fittino::CheckMATECalculator::CheckMATECalculator( const ModelBase* model, const
   }
   
   _name = "CheckMATE";
-  
+
   
   Messenger& messenger = Messenger::GetInstance();
   
@@ -140,7 +143,7 @@ void Fittino::CheckMATECalculator::CalculatePredictions() {
   myfile.close();
   
   
-  Executor executor("/lustre/user/thakur/programs/CheckMATE/CheckMATE-1.1.14/bin/CheckMATE", "CheckMATE");
+  Executor executor("./CheckMATE", "CheckMATE");
   executor.AddArgument(inputfile);
 
   std::cout<<"Start ChekMATE execution "<<std::endl;
@@ -149,7 +152,7 @@ void Fittino::CheckMATECalculator::CalculatePredictions() {
   
   //Storing the cutflow in doubles.
 
-  std::ifstream file( "/lustre/user/thakur/programs/CheckMATE/CheckMATE-1.1.14/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_signal.dat" );
+  std::ifstream file( "./results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_signal.dat" );
   std::string line;
 
   TString character;
@@ -180,8 +183,16 @@ void Fittino::CheckMATECalculator::CalculatePredictions() {
     
   }
   
+  
+  
+  
+  // if ( boost::filesystem::exists( "/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_signal.dat" ) ) {
+      
+  // boost::filesystem::rename( "/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_signal.dat", "/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_signal.dat" + ".last" );
+     
+  // }
+  
 }
-
 void Fittino::CheckMATECalculator::SetupMeasuredValues() {
   
   
