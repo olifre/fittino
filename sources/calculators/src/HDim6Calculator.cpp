@@ -52,48 +52,47 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
     if ( _name.empty() )  _name = "HDim6Calculator";
     if ( _tag.empty() ) _tag = "HDim6";
 
+    _effvalues->override_unitarity = ! ptree.get<bool>( "UseDampingCoefficients" );
+
     AddInput( "Mass_h" );
+
+    AddInput( "f_GG" );
+    AddInput( "f_BB" );
+    AddInput( "f_WW" );
+    AddInput( "f_B" );
+    AddInput( "f_W" );
     AddInput( "f_t" );
     AddInput( "f_b" );
     AddInput( "f_tau" );
-    AddInput( "f_GG" );
-    AddInput( "f_W" );
-    AddInput( "f_B" );
-    AddInput( "f_BB" );
-    AddInput( "f_WW" );
     AddInput( "f_Phi_1" );
     AddInput( "f_Phi_2" );
     AddInput( "f_Phi_4" );
 
-    double r = ptree.get<double>( "UnitarityCoefficientR", 1 );
-    _effvalues->rbb  = r*r; //ALEX: I now put r*r instead of r so we can use GeV units in the input file while effvalues->r__ is GeV^2 like s 
-    _effvalues->rww  = r*r;
-    _effvalues->rgg  = r*r;
-    _effvalues->rb   = r*r;
-    _effvalues->rw   = r*r;
-    _effvalues->rbw  = r*r;
-    _effvalues->rp1  = r*r;
-    _effvalues->rp2  = r*r;
-    _effvalues->rp4  = r*r;
-    _effvalues->rtop = r*r;
-    _effvalues->rbot = r*r;
-    _effvalues->rtau = r*r;
+    AddInput( "r_GG", "1" );
+    AddInput( "r_BB", "1" );
+    AddInput( "r_WW", "1" );
+    AddInput( "r_BW", "1" );
+    AddInput( "r_B", "1" );
+    AddInput( "r_W", "1" );
+    AddInput( "r_t", "1" );
+    AddInput( "r_b", "1" );
+    AddInput( "r_tau", "1" );
+    AddInput( "r_Phi_1", "1" );
+    AddInput( "r_Phi_2", "1" );
+    AddInput( "r_Phi_4", "1" );
 
-    double n = ptree.get<double>( "UnitarityCoefficientN", 0 );
-    _effvalues->nbb  = n;
-    _effvalues->nww  = n;
-    _effvalues->ngg  = n;
-    _effvalues->nb   = n;
-    _effvalues->nw   = n;
-    _effvalues->nbw  = n;
-    _effvalues->np1  = n;
-    _effvalues->np2  = n;
-    _effvalues->np4  = n;
-    _effvalues->ntop = n;
-    _effvalues->nbot = n;
-    _effvalues->ntau = n;
-
-    _effvalues->override_unitarity = ptree.get<bool>( "OverrideUnitarity", true );
+    AddInput( "n_GG", "0" );
+    AddInput( "n_BB", "0" );
+    AddInput( "n_WW", "0" );
+    AddInput( "n_BW", "0" );
+    AddInput( "n_B", "0" );
+    AddInput( "n_W", "0" );
+    AddInput( "n_t", "0" );
+    AddInput( "n_b", "0" );
+    AddInput( "n_tau", "0" );
+    AddInput( "n_Phi_1", "0" );
+    AddInput( "n_Phi_2", "0" );
+    AddInput( "n_Phi_4", "0" );
 
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_g_g",         "",      _normSM_Gamma_hgg     ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_tau_tau",     "",      _normSM_Gamma_htautau ) );
@@ -276,20 +275,45 @@ void Fittino::HDim6Calculator::ConfigureInput() {
 
     UpdateInput();
 
-    _effvalues->fb   = 1e-6 * GetInput( "f_B" );
-    _effvalues->fbb  = 1e-6 * GetInput( "f_BB" );
-    _effvalues->fw   = 1e-6 * GetInput( "f_W" );
-    _effvalues->fww  = 1e-6 * GetInput( "f_WW" );
+    _smvalues ->mh   = GetInput( "Mass_h" );
+    _f_g  =  - GetInput( "f_GG" ) * 8 * TMath::Pi() / ( _smvalues->alphas ); // f_g as defined in 1211.4580v4.pdf eq 38 but without factor of vev ( because of units ).
+
     _effvalues->fgg  = 1e-6 * GetInput( "f_GG" );
+    _effvalues->fbb  = 1e-6 * GetInput( "f_BB" );
+    _effvalues->fww  = 1e-6 * GetInput( "f_WW" );
+    _effvalues->fb   = 1e-6 * GetInput( "f_B" );
+    _effvalues->fw   = 1e-6 * GetInput( "f_W" );
+    _effvalues->ftoh = 1e-6 * GetInput( "f_t" );
+    _effvalues->fboh = 1e-6 * GetInput( "f_b" );
+    _effvalues->ftah = 1e-6 * GetInput( "f_tau" );
     _effvalues->fp1  = 1e-6 * GetInput( "f_Phi_1" );
     _effvalues->fp2  = 1e-6 * GetInput( "f_Phi_2" );
     _effvalues->fp4  = 1e-6 * GetInput( "f_Phi_4" );
-    _effvalues->fboh = 1e-6 * GetInput( "f_b" );
-    _effvalues->ftoh = 1e-6 * GetInput( "f_t" );
-    _effvalues->ftah = 1e-6 * GetInput( "f_tau" );
 
-    _smvalues ->mh   = GetInput( "Mass_h" );
+    _effvalues->rgg  = TMath::Power( GetInput( "r_GG"    ), 2 );
+    _effvalues->rbb  = TMath::Power( GetInput( "r_BB"    ), 2 );
+    _effvalues->rww  = TMath::Power( GetInput( "r_WW"    ), 2 );
+    _effvalues->rbw  = TMath::Power( GetInput( "r_BW"    ), 2 );
+    _effvalues->rb   = TMath::Power( GetInput( "r_B"     ), 2 );
+    _effvalues->rw   = TMath::Power( GetInput( "r_W"     ), 2 );
+    _effvalues->rtop = TMath::Power( GetInput( "r_t"     ), 2 );
+    _effvalues->rbot = TMath::Power( GetInput( "r_b"     ), 2 );
+    _effvalues->rtau = TMath::Power( GetInput( "r_tau"   ), 2 );
+    _effvalues->rp1  = TMath::Power( GetInput( "r_Phi_1" ), 2 );
+    _effvalues->rp2  = TMath::Power( GetInput( "r_Phi_2" ), 2 );
+    _effvalues->rp4  = TMath::Power( GetInput( "r_Phi_4" ), 2 );
 
-    _f_g  =  - GetInput( "f_GG" ) * 8 * TMath::Pi() / ( _smvalues->alphas ); // f_g as defined in 1211.4580v4.pdf eq 38 but without factor of vev ( because of units ).
+    _effvalues->ngg  = GetInput( "n_GG" );
+    _effvalues->nbb  = GetInput( "n_BB" );
+    _effvalues->nww  = GetInput( "n_WW" );
+    _effvalues->nbw  = GetInput( "n_BW" );
+    _effvalues->nb   = GetInput( "n_B" );
+    _effvalues->nw   = GetInput( "n_W" );
+    _effvalues->ntop = GetInput( "n_t" );
+    _effvalues->nbot = GetInput( "n_b" );
+    _effvalues->ntau = GetInput( "n_tau" );
+    _effvalues->np1  = GetInput( "n_Phi_1" );
+    _effvalues->np2  = GetInput( "n_Phi_2" );
+    _effvalues->np4  = GetInput( "n_Phi_4" );
 
-}
+};

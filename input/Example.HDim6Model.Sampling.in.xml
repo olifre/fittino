@@ -103,27 +103,56 @@
       <Calculators>
 
         <HDim6Calculator>
+
             <calculate_Gamma_hWW>true</calculate_Gamma_hWW>
             <calculate_Gamma_hZZ>true</calculate_Gamma_hZZ>
             <calculate_xs_qqh_2flavor>true</calculate_xs_qqh_2flavor>
-          <calculate_xs_qqh_5flavor>true</calculate_xs_qqh_5flavor>
+            <calculate_xs_qqh_5flavor>true</calculate_xs_qqh_5flavor>
             <calculate_xs_Wh>true</calculate_xs_Wh>
             <calculate_xs_Zh>true</calculate_xs_Zh>
-            <UnitarityCoefficientR>1000.0</UnitarityCoefficientR>
-            <UnitarityCoefficientN>1.0</UnitarityCoefficientN>
-            <OverrideUnitarity>true</OverrideUnitarity>
+
+            <UseDampingCoefficients>false</UseDampingCoefficients>
+
             <Mass_h>[Mass_h]</Mass_h>
+
             <f_GG>[f_GG]</f_GG>
-            <f_W>[f_W]</f_W>
-            <f_B>[f_B]</f_B>
-            <f_tau>[f_tau]</f_tau>
-            <f_b>[f_b]</f_b>
-            <f_t>[f_t]</f_t>
-            <f_WW>[f_VV_plus]+[f_VV_minus]</f_WW>
             <f_BB>[f_VV_plus]-[f_VV_minus]</f_BB>
+            <f_WW>[f_VV_plus]+[f_VV_minus]</f_WW>
+            <f_B>[f_B]</f_B>
+            <f_W>[f_W]</f_W>
+            <f_t>[f_t]</f_t>
+            <f_b>[f_b]</f_b>
+            <f_tau>[f_tau]</f_tau>
             <f_Phi_1>0</f_Phi_1>
             <f_Phi_2>[f_Phi_2]</f_Phi_2>
             <f_Phi_4>0</f_Phi_4>
+
+            <r_GG>1000.</r_GG>
+            <r_BB>1000.</r_BB>
+            <r_WW>1000.</r_WW>
+            <r_BW>1000.</r_BW>
+            <r_B>1000.</r_B>
+            <r_W>1000.</r_W>
+            <r_t>1000.</r_t>
+            <r_b>1000.</r_b>
+            <r_tau>1000.</r_tau>
+            <r_Phi_1>1000.</r_Phi_1>
+            <r_Phi_2>1000.</r_Phi_2>
+            <r_Phi_4>1000.</r_Phi_4>
+
+            <n_GG>1.</n_GG>
+            <n_BB>1.</n_BB>
+            <n_WW>1.</n_WW>
+            <n_BW>1.</n_BW>
+            <n_B>1.</n_B>
+            <n_W>1.</n_W>
+            <n_t>1.</n_t>
+            <n_b>1.</n_b>
+            <n_tau>1.</n_tau>
+            <n_Phi_1>1.</n_Phi_1>
+            <n_Phi_2>1.</n_Phi_2>
+            <n_Phi_4>1.</n_Phi_4>
+
         </HDim6Calculator>
 
         <HiggsSignalsCalculator>
