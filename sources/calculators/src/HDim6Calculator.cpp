@@ -21,21 +21,17 @@
 #include <boost/foreach.hpp>
 
 #include "TMath.h"
-#include "TStopwatch.h"
 
 #include <LHAPDF/LHAPDF.h>
 
-#include "HDim6/CrossSection.h"
 #include "HDim6/CrossSection_had.h"
 #include "HDim6/decay.h"
 #include "HDim6/gaugecpl.h"
-#include "HDim6/inputs.h"
 #include "HDim6/VBF.h"
 
 #include "HDim6Calculator.h"
-#include "ModelParameter.h"
-#include "PhysicsModel.h"
-#include "SimpleDataStorage.h"
+#include "Quantity.h"
+#include "ModelBase.h"
 #include "SimplePrediction.h"
 
 Fittino::HDim6Calculator::HDim6Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
@@ -153,29 +149,29 @@ void Fittino::HDim6Calculator::Initialize() {
 
 void Fittino::HDim6Calculator::CallFunction() {
 
-    bool new_mh = ( _first || _previous_mass_h != _mass_h );
+    bool new_mh = ( _first || _previous_mass_h != _smvalues ->mh );
 
     bool new_gridParameters = (
                                   _first
                                   || new_mh
-                                  || _previous_f_B        != _f_B
-                                  || _previous_f_VV_plus  != _f_VV_plus
-                                  || _previous_f_VV_minus != _f_VV_minus
-                                  || _previous_f_W        != _f_W
-                                  || _previous_f_Phi_2    != _f_Phi_2
+                                  || _previous_f_B     != _effvalues->fb
+                                  || _previous_f_BB    != _effvalues->fbb
+                                  || _previous_f_WW    != _effvalues->fww
+                                  || _previous_f_W     != _effvalues->fw
+                                  || _previous_f_Phi_2 != _effvalues->fp2
                               );
 
     if ( _first )  _first = false;
 
-    if ( new_mh )  _previous_mass_h = _mass_h;
+    if ( new_mh )  _previous_mass_h = _smvalues ->mh;
 
     if ( new_gridParameters ) {
 
-        _previous_f_B     = _f_B;
-        _previous_f_W     = _f_W;
-        _previous_f_VV_plus = _f_VV_plus;
-        _previous_f_VV_minus = _f_VV_minus;
-        _previous_f_Phi_2 = _f_Phi_2;
+        _previous_f_B     = _effvalues->fb;
+        _previous_f_W     = _effvalues->fw;
+        _previous_f_BB    = _effvalues->fbb;
+        _previous_f_WW    = _effvalues->fww;
+        _previous_f_Phi_2 = _effvalues->fp2;
 
     }
 

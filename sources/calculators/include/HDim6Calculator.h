@@ -105,9 +105,9 @@ namespace Fittino {
       double        _normSM_xs_Wh;
       double        _normSM_xs_Zh;
       double        _previous_f_B;
-      double        _previous_f_VV_plus;
+      double        _previous_f_BB;
       double        _previous_f_W;
-      double        _previous_f_VV_minus;
+      double        _previous_f_WW;
       double        _previous_f_Phi_2;
       double        _previous_mass_h;
       double        _SM_Gamma_hbb;
