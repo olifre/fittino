@@ -34,8 +34,8 @@
 #include "ModelBase.h"
 #include "SimplePrediction.h"
 
-Fittino::HDim6Calculator::HDim6Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
-    : CalculatorBase( model ),
+Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::property_tree::ptree &ptree)
+    : CalculatorBase( model, ptree ),
       _calculate_Gamma_hWW     ( ptree.get<bool>( "calculate_Gamma_hWW"      ) ),
       _calculate_Gamma_hZZ     ( ptree.get<bool>( "calculate_Gamma_hZZ"      ) ),
       _calculate_xs_qqh_2flavor( ptree.get<bool>( "calculate_xs_qqh_2flavor" ) ),
@@ -45,21 +45,24 @@ Fittino::HDim6Calculator::HDim6Calculator( const ModelBase* model, const boost::
       _effsmvalues ( new effinputs() ),
       _effvalues   ( new effinputs() ),
       _first       ( true ),
-      _f_B         ( _model->GetCollectionOfQuantities().At( "f_B"        )->GetValue() ),
-      _f_VV_plus   ( _model->GetCollectionOfQuantities().At( "f_VV_plus"  )->GetValue() ),
-      _f_W         ( _model->GetCollectionOfQuantities().At( "f_W"        )->GetValue() ),
-      _f_VV_minus  ( _model->GetCollectionOfQuantities().At( "f_VV_minus" )->GetValue() ),
-      _f_GG        ( _model->GetCollectionOfQuantities().At( "f_GG"       )->GetValue() ),
-      _f_Phi_2     ( _model->GetCollectionOfQuantities().At( "f_Phi_2"    )->GetValue() ),
-      _f_t         ( _model->GetCollectionOfQuantities().At( "f_t"        )->GetValue() ),
-      _f_b         ( _model->GetCollectionOfQuantities().At( "f_b"        )->GetValue() ),
-      _f_tau       ( _model->GetCollectionOfQuantities().At( "f_tau"      )->GetValue() ),
-      _mass_h      ( _model->GetCollectionOfQuantities().At( "mass_h"     )->GetValue() ),
       _pdfSet      ( "CT10" ),  // lhapdf-getdata CT10.LHgrid
       _pdfDirectory( "" ),
       _smvalues ( new sminputs() ) {
 
-    _name = "HDim6Calculator";
+    if ( _name.empty() )  _name = "HDim6Calculator";
+    if ( _tag.empty() ) _tag = "HDim6";
+
+    AddInput( "Mass_h", "Mass_h" );
+    AddInput( "f_t", "f_t" );
+    AddInput( "f_b", "f_b" );
+    AddInput( "f_tau", "f_tau" );
+    AddInput( "f_GG", "f_GG" );
+    AddInput( "f_W", "f_W" );
+    AddInput( "f_B", "f_B" );
+    AddInput( "f_BB", "f_BB" );
+    AddInput( "f_WW", "f_WW" );
+    AddInput( "f_Phi_2", "f_Phi_2" );
+
 
     double r = ptree.get<double>( "UnitarityCoefficientR", 1 );
     _effvalues->rbb  = r*r; //ALEX: I now put r*r instead of r so we can use GeV units in the input file while effvalues->r__ is GeV^2 like s 
@@ -91,8 +94,6 @@ Fittino::HDim6Calculator::HDim6Calculator( const ModelBase* model, const boost::
 
     _effvalues->override_unitarity = ptree.get<bool>( "OverrideUnitarity", true );
 
-    AddQuantity( new SimplePrediction( "f_BB",                       "TeV-2", _f_BB                 ) );
-    AddQuantity( new SimplePrediction( "f_WW",                       "TeV-2", _f_WW                 ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_g_g",         "",      _normSM_Gamma_hgg     ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_tau_tau",     "",      _normSM_Gamma_htautau ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_mu_mu",       "",      _normSM_Gamma_hmumu   ) );
@@ -270,31 +271,22 @@ void Fittino::HDim6Calculator::CallFunction() {
 
 }
 
-void Fittino::HDim6Calculator::ComparePreviousEffValues() {
-
-}
-
-void Fittino::HDim6Calculator::ComparePreviousSMValues() {
-
-}
-
 void Fittino::HDim6Calculator::ConfigureInput() {
 
-    _f_BB = _f_VV_plus - _f_VV_minus;
-    _f_WW = _f_VV_plus + _f_VV_minus;
+    UpdateInput();
 
-    _f_g  =  - _f_GG * 8 * TMath::Pi() / ( _smvalues->alphas ); // f_g as defined in 1211.4580v4.pdf eq 38 but without factor of vev ( because of units ).
+    _effvalues->fb   = 1e-6 * GetInput( "f_B" );
+    _effvalues->fbb  = 1e-6 * GetInput( "f_BB" );
+    _effvalues->fw   = 1e-6 * GetInput( "f_W" );
+    _effvalues->fww  = 1e-6 * GetInput( "f_WW" );
+    _effvalues->fgg  = 1e-6 * GetInput( "f_GG" );
+    _effvalues->fp2  = 1e-6 * GetInput( "f_Phi_2" );
+    _effvalues->fboh = 1e-6 * GetInput( "f_b" );
+    _effvalues->ftoh = 1e-6 * GetInput( "f_t" );
+    _effvalues->ftah = 1e-6 * GetInput( "f_tau" );
 
-    _effvalues->fb   = 1e-6 * _f_B;
-    _effvalues->fbb  = 1e-6 * _f_BB;
-    _effvalues->fw   = 1e-6 * _f_W;
-    _effvalues->fww  = 1e-6 * _f_WW;
-    _effvalues->fgg  = 1e-6 * _f_GG;
-    _effvalues->fp2  = 1e-6 * _f_Phi_2;
-    _effvalues->fboh = 1e-6 * _f_b;
-    _effvalues->ftoh = 1e-6 * _f_t;
-    _effvalues->ftah = 1e-6 * _f_tau;
+    _smvalues ->mh   = GetInput( "Mass_h" );
 
-    _smvalues ->mh   = _mass_h;
+    _f_g  =  - GetInput( "f_GG" ) * 8 * TMath::Pi() / ( _smvalues->alphas ); // f_g as defined in 1211.4580v4.pdf eq 38 but without factor of vev ( because of units ).
 
 }

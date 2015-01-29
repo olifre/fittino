@@ -43,7 +43,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      HDim6Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree );
+      HDim6Calculator(const ModelBase *model, boost::property_tree::ptree &ptree);
 
     public:
       /*!
@@ -73,9 +73,7 @@ namespace Fittino {
       double        _Delta_g2_ZZ;
       double        _Delta_kappa_Gamma;
       double        _Delta_kappa_Z;
-      double        _f_BB;
       double        _f_g;
-      double        _f_WW;
       double        _Gamma_hbb;
       double        _Gamma_hcc;
       double        _Gamma_hgaga;
@@ -134,21 +132,6 @@ namespace Fittino {
       effinputs*    _effvalues;
       sminputs*     _smvalues;
 
-    private:
-      const double& _f_B;
-      const double& _f_b;
-      const double& _f_VV_plus;
-      const double& _f_VV_minus;
-      const double& _f_GG;
-      const double& _f_Phi_2;
-      const double& _f_t;
-      const double& _f_tau;
-      const double& _f_W;
-      const double& _mass_h;
-
-    private:
-      void          ComparePreviousEffValues();
-      void          ComparePreviousSMValues();
 
     private:
       virtual void  CallFunction();
