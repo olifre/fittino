@@ -62,6 +62,8 @@ Fittino::FormulaQuantity::FormulaQuantity(std::string name, std::string formula,
 
     }
 
+    Update();
+
 }
 
 
