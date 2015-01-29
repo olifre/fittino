@@ -75,6 +75,7 @@ namespace Fittino {
       void                                          AddQuantity( Quantity* prediction );
       void                                          AddQuantity( std::string key, Quantity* prediction );
       void                                          AddStringVariable( VariableBase<std::string>* variable );
+      void                                          AddInput( std::string name, std::string path, std::string defaultValue );
       void                                          AddInput( std::string name, std::string path );
       void                                          UpdateInput();
       const double&                                 GetInput( std::string name );

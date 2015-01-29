@@ -101,9 +101,22 @@ void Fittino::CalculatorBase::AddQuantity(std::string key, Fittino::Quantity *pr
 
 }
 
-void Fittino::CalculatorBase::AddInput(std::string name, std::string path) {
+void Fittino::CalculatorBase::AddInput(std::string name, std::string path, std::string defaultValue ) {
 
-    FormulaQuantity* quantity = new FormulaQuantity( name, _ptree->get<std::string>( path ), _model );
+    std::string formula;
+
+    if ( defaultValue.empty() ) {
+
+        formula = _ptree->get<std::string>(path);
+
+    }
+    else {
+
+        formula = _ptree->get<std::string>( path, defaultValue );
+
+    }
+
+    FormulaQuantity* quantity = new FormulaQuantity( name, formula , _model );
 
     _input.insert( std::make_pair( name, quantity ) );
 
@@ -123,8 +136,14 @@ void Fittino::CalculatorBase::UpdateInput() {
 
 }
 
-const double &Fittino::CalculatorBase::GetInput(std::string name) {
+const double &Fittino::CalculatorBase::GetInput( std::string name ) {
 
     return _input.at( name )->GetValue() ;
+
+}
+
+void Fittino::CalculatorBase::AddInput( std::string name, std::string path ) {
+
+    AddInput( name, path, "" );
 
 }
