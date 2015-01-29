@@ -61,7 +61,9 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
     AddInput( "f_B" );
     AddInput( "f_BB" );
     AddInput( "f_WW" );
+    AddInput( "f_Phi_1" );
     AddInput( "f_Phi_2" );
+    AddInput( "f_Phi_4" );
 
     double r = ptree.get<double>( "UnitarityCoefficientR", 1 );
     _effvalues->rbb  = r*r; //ALEX: I now put r*r instead of r so we can use GeV units in the input file while effvalues->r__ is GeV^2 like s 
@@ -279,7 +281,9 @@ void Fittino::HDim6Calculator::ConfigureInput() {
     _effvalues->fw   = 1e-6 * GetInput( "f_W" );
     _effvalues->fww  = 1e-6 * GetInput( "f_WW" );
     _effvalues->fgg  = 1e-6 * GetInput( "f_GG" );
+    _effvalues->fp1  = 1e-6 * GetInput( "f_Phi_1" );
     _effvalues->fp2  = 1e-6 * GetInput( "f_Phi_2" );
+    _effvalues->fp4  = 1e-6 * GetInput( "f_Phi_4" );
     _effvalues->fboh = 1e-6 * GetInput( "f_b" );
     _effvalues->ftoh = 1e-6 * GetInput( "f_t" );
     _effvalues->ftah = 1e-6 * GetInput( "f_tau" );

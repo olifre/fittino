@@ -103,7 +103,6 @@
       <Calculators>
 
         <HDim6Calculator>
-
             <calculate_Gamma_hWW>true</calculate_Gamma_hWW>
             <calculate_Gamma_hZZ>true</calculate_Gamma_hZZ>
             <calculate_xs_qqh_2flavor>true</calculate_xs_qqh_2flavor>
@@ -122,7 +121,9 @@
             <f_t>[f_t]</f_t>
             <f_WW>[f_VV_plus]+[f_VV_minus]</f_WW>
             <f_BB>[f_VV_plus]-[f_VV_minus]</f_BB>
+            <f_Phi_1>0</f_Phi_1>
             <f_Phi_2>[f_Phi_2]</f_Phi_2>
+            <f_Phi_4>0</f_Phi_4>
         </HDim6Calculator>
 
         <HiggsSignalsCalculator>
