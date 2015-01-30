@@ -52,24 +52,24 @@ namespace Fittino {
 
       /*! \endcond UML */
     private:
-      bool     _labelsLeft;
-      double   _labelOffset;
-      double   _labelSize;
-      int      _color1;
-      int      _color2;
-      int      _ndivisions;
-      std::string _title;
+      bool               _labelsLeft;
+      double             _labelOffset;
+      double             _labelSize;
+      int                _color1;
+      int                _color2;
+      int                _ndivisions;
+      std::string        _title;
       TGraphAsymmErrors* _data;
-      TH2D*  _emptyHistogram;
-      TLegend* _legend;
-      TLegend* _legend2;
-      TLine*   _line;
-      TMarker* _bestFitValue;
-      
+      TH2D*              _emptyHistogram;
+      TLegend*           _legend;
+      TLegend*           _legend2;
+      TLine*             _line;
+      TMarker*           _bestFitValue;
+
 
     private:
-      void     Plot( unsigned int iHistogram );
-      void     PrintSteeringParameters() const;
+      void               Plot( unsigned int iHistogram );
+      void               PrintSteeringParameters() const;
 
       /*! \endcond UML */
 
