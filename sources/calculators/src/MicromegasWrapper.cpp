@@ -31,10 +31,9 @@
 #include "CalculatorException.h"
 #include "MicromegasWrapper.h"
 
-Fittino::MicromegasWrapper::MicromegasWrapper( std::string name )
-    {
+Fittino::MicromegasWrapper::MicromegasWrapper( std::string name ) {
 
-        _mcname = name;
+    _mcname = name;
 
 }
 

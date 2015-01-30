@@ -34,7 +34,7 @@ Fittino::TreeCalculator::TreeCalculator( const ModelBase* model, const boost::pr
     : CalculatorBase         ( model ),
       _numberOfTreeIterations( 0. ),
       _inputFileName         ( ptree.get<std::string>( "InputFileName", "Fittino.old.root" ) ),
-      _excludeAllLeaves(  ptree.get<bool>("ExcludeAllLeaves", false ) ),
+      _excludeAllLeaves      ( ptree.get<bool>( "ExcludeAllLeaves", false ) ),
       _inputFile             ( 0 ),
       _inputTree             ( 0 ) {
 
@@ -48,24 +48,23 @@ Fittino::TreeCalculator::TreeCalculator( const ModelBase* model, const boost::pr
 
         }
         else if ( node.first == "IncludeLeaf" ) {
-            
+
             _includedLeaves.push_back( node.second.get_value<std::string>() );
-            
+
         }
         else if ( node.first == "InputTreeName" ) {
-            
+
             _inputTreeName.push_back( node.second.get_value<std::string>() );
-            
+
         }
 
     }
-         
+
     if ( _inputTreeName.empty() ) {
-    
-        _inputTreeName.push_back("Tree");
-              
+
+        _inputTreeName.push_back( "Tree" );
+
     }
-          
 
     OpenInputFile();
     AddPredictions();
@@ -90,10 +89,10 @@ void Fittino::TreeCalculator::CalculatePredictions() {
 }
 
 void Fittino::TreeCalculator::AddPredictions( ) {
-    
+
     TIterator *iter = _inputTree->GetIteratorOnAllLeaves();
-    
-    while ( TObject* obj = (*iter)() ) {
+
+    while ( TObject* obj = ( *iter )() ) {
 
         TLeaf *leaf = ( TLeaf* ) obj;
 
@@ -108,26 +107,25 @@ void Fittino::TreeCalculator::AddPredictions( ) {
             }
 
         }
-        
+
         if ( _excludeAllLeaves ) excludeLeaf = true;
-        
+
         for ( unsigned int j = 0; j < _includedLeaves.size(); ++j ) {
-            
+
             if ( !strcmp( leaf->GetName(), _includedLeaves.at( j ).c_str() ) ) {
-                
+
                 excludeLeaf = false;
-                
+
             }
-            
+
         }
-        
 
         if ( excludeLeaf ) continue;
 
         if ( !strcmp( leaf->GetTypeName(), "Double_t" ) ) {
 
             _predictionMap.insert( std::make_pair( leaf->GetName(), 0. ) );
-            _inputTree->SetBranchStatus(leaf->GetName(), 1) ;
+            _inputTree->SetBranchStatus( leaf->GetName(), 1 ) ;
             _inputTree->SetBranchAddress( leaf->GetName(), &_predictionMap.at( leaf->GetName() ) );
 
             AddQuantity( new SimplePrediction( leaf->GetName(), "", _predictionMap.at( leaf->GetName() ) ) );
@@ -152,17 +150,17 @@ void Fittino::TreeCalculator::AddPredictions( ) {
 
 void Fittino::TreeCalculator::OpenInputFile() {
 
-    _inputTree = new TChain( _inputTreeName.at(0).c_str() );
+    _inputTree = new TChain( _inputTreeName.at( 0 ).c_str() );
     _inputTree->Add( _inputFileName.c_str() );
-    
+
     for ( unsigned int i = 1; i < _inputTreeName.size(); i++ ) {
 
-        TChain* chain = new TChain( _inputTreeName.at(i).c_str() );
+        TChain* chain = new TChain( _inputTreeName.at( i ).c_str() );
         chain->Add( _inputFileName.c_str() );
         _inputTree->AddFriend( chain );
-        
+
     }
-    
-    _inputTree->SetBranchStatus( "*", 0) ;
+
+    _inputTree->SetBranchStatus( "*", 0 ) ;
 
 }

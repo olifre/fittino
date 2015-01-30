@@ -36,17 +36,17 @@ namespace Fittino {
   class MicromegasWrapper {
 
     public:
-      MicromegasWrapper( std::string name  );
+      MicromegasWrapper( std::string name );
       void        CalculatePredictions();
 
-  public:
+    public:
       virtual     ~MicromegasWrapper();
 
     protected:
-      std::string  _mcname;
-      double      _omegah2;
       double      _gmin2;
+      double      _omegah2;
       std::string _inputFile;
+      std::string _mcname;
 
   };
 

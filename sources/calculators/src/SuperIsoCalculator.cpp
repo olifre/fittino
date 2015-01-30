@@ -35,8 +35,6 @@ extern "C" {
 #include "SimplePrediction.h"
 #include "SuperIsoCalculator.h"
 
-
-
 Fittino::SuperIsoCalculator::SuperIsoCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model ) {
 
@@ -45,11 +43,11 @@ Fittino::SuperIsoCalculator::SuperIsoCalculator( const ModelBase* model, const b
 
     _slhafile = "SPheno.spc";
 
-    _requireNeutralinoLSP = ptree.get<bool>("RequireNeutralinoLSP", false );
+    _requireNeutralinoLSP = ptree.get<bool>( "RequireNeutralinoLSP", false );
 
     if ( _requireNeutralinoLSP ) {
 
-      Messenger::GetInstance() << Messenger::ALWAYS << "SuperIsoCalculator requires neutralino LSP."<< Messenger::Endl;
+        Messenger::GetInstance() << Messenger::ALWAYS << "SuperIsoCalculator requires neutralino LSP." << Messenger::Endl;
 
     }
 
