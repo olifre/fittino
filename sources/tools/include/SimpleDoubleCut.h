@@ -6,7 +6,7 @@
 *                                                                              *
 * File        SimpleDoubleCut.h                                                *
 *                                                                              *
-* Description Base class for spline cuts                                       *
+* Description Class for cuts on floating point variables                       *
 *                                                                              *
 * Authors     Matthias Hamer  <mhamer@cbpf.br>                                 *
 *                                                                              *
@@ -20,18 +20,17 @@
 #ifndef FITTINO_SIMPLEDOUBLECUT_H
 #define FITTINO_SIMPLEDOUBLECUT_H
 
-#include "ModelBase.h"
-#include "PtreeForwardDeclaration.h"
 #include "CutBase.h"
+#include "ModelBase.h"
 
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
-    
+
   /*!
    *  \ingroup tools
-   *  \brief Base class for spline cuts.
+   *  \brief Class for cuts on floating point variables.
    */
   class SimpleDoubleCut : public CutBase {
 
@@ -45,17 +44,16 @@ namespace Fittino {
       /*!
        *  Standard destructor.
        */
-      virtual      ~SimpleDoubleCut();
-
+      virtual       ~SimpleDoubleCut();
       /*!
        * Determines whether a cut is passed or not.
        */
-      virtual bool        IsPassed();
-      
-      const double&       _testValue;
-      double              _lowerBound;
-      double              _upperBound;
-       
+      virtual bool  IsPassed();
+
+    private:
+      const double& _testValue;
+      double        _lowerBound;
+      double        _upperBound;
 
   };
 

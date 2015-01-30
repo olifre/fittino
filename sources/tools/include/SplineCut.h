@@ -6,7 +6,7 @@
 *                                                                              *
 * File        SplineCut.h                                                      *
 *                                                                              *
-* Description Base class for spline cuts                                       *
+* Description Class for cuts on splines                                        *
 *                                                                              *
 * Authors     Matthias Hamer  <mhamer@cbpf.br>                                 *
 *                                                                              *
@@ -20,9 +20,8 @@
 #ifndef FITTINO_SPLINECUT_H
 #define FITTINO_SPLINECUT_H
 
-#include "ModelBase.h"
-#include "PtreeForwardDeclaration.h"
 #include "CutBase.h"
+#include "ModelBase.h"
 
 class TSpline3;
 
@@ -30,10 +29,10 @@ class TSpline3;
  *  \brief Fittino namespace.
  */
 namespace Fittino {
-    
+
   /*!
    *  \ingroup tools
-   *  \brief Base class for spline cuts.
+   *  \brief Class for cuts on splines.
    */
   class SplineCut : public CutBase {
 
@@ -47,17 +46,17 @@ namespace Fittino {
       /*!
        *  Standard destructor.
        */
-      virtual      ~SplineCut();
-
+      virtual       ~SplineCut();
       /*!
        * Determines whether a cut is passed or not.
        */
-      virtual bool        IsPassed();
+      virtual bool  IsPassed();
 
-      const double&       _xValue;
-      const double&       _yValue;
-      TSpline3*           _spline;
-      bool                _isUpperBound;
+    private:
+      const double& _xValue;
+      const double& _yValue;
+      bool          _isUpperBound;
+      TSpline3*     _spline;
 
   };
 

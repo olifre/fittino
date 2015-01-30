@@ -6,7 +6,7 @@
 *                                                                              *
 * File        SimpleStringCut.h                                                *
 *                                                                              *
-* Description Base class for spline cuts                                       *
+* Description Class for cuts on string variables                               *
 *                                                                              *
 * Authors     Matthias Hamer  <mhamer@cbpf.br>                                 *
 *                                                                              *
@@ -20,18 +20,17 @@
 #ifndef FITTINO_SIMPLESTRINGCUT_H
 #define FITTINO_SIMPLESTRINGCUT_H
 
-#include "ModelBase.h"
-#include "PtreeForwardDeclaration.h"
 #include "CutBase.h"
+#include "ModelBase.h"
 
 /*!
  *  \brief Fittino namespace.
  */
 namespace Fittino {
-    
+
   /*!
    *  \ingroup tools
-   *  \brief Base class for spline cuts.
+   *  \brief Class for cuts on string variables.
    */
   class SimpleStringCut : public CutBase {
 
@@ -45,16 +44,16 @@ namespace Fittino {
       /*!
        *  Standard destructor.
        */
-      virtual      ~SimpleStringCut();
-
+      virtual                  ~SimpleStringCut();
       /*!
        * Determines whether a cut is passed or not.
        */
-      virtual bool        IsPassed();
-      
-      const std::string&        _testValue;
-      std::vector<std::string>  _cutValues;
-      bool                      _mustMatch;
+      virtual bool             IsPassed();
+
+    private:
+      const std::string&       _testValue;
+      bool                     _mustMatch;
+      std::vector<std::string> _cutValues;
 
   };
 

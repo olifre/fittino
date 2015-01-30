@@ -6,7 +6,7 @@
 *                                                                              *
 * File        SimpleStringCut.cpp                                              *
 *                                                                              *
-* Description Base class for cuts                                              *
+* Description Class for cuts on string variables                               *
 *                                                                              *
 * Authors     Matthias Hamer  <mhamer@cbpf.br>                                 *
 *                                                                              *
@@ -17,30 +17,30 @@
 *                                                                              *
 *******************************************************************************/
 
+#include "boost/foreach.hpp"
+
+#include "TDirectory.h"
 #include "TFile.h"
 #include "TSpline.h"
-#include "TDirectory.h"
-
-#include "boost/foreach.hpp"
 
 #include "SimpleStringCut.h"
 
-Fittino::SimpleStringCut::SimpleStringCut( ModelBase* model, const boost::property_tree::ptree& ptree ) 
+Fittino::SimpleStringCut::SimpleStringCut( ModelBase* model, const boost::property_tree::ptree& ptree )
     : CutBase( ptree ),
-      _testValue    ( model->GetCollectionOfStringVariables().At( ptree.get<std::string>( "Quantity" ) )->GetValue() ) {
-      
-    _mustMatch  =   ptree.get<bool>( "MustMatch", false );
-        
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type &subnode, ptree ) {
-        
-        if( subnode.first == "CutValue" ) {
-            
+      _testValue( model->GetCollectionOfStringVariables().At( ptree.get<std::string>( "Quantity" ) )->GetValue() ) {
+
+    _mustMatch = ptree.get<bool>( "MustMatch", false );
+
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & subnode, ptree ) {
+
+        if ( subnode.first == "CutValue" ) {
+
             _cutValues.push_back( subnode.second.data() );
-        
+
         }
-    
+
     }
-    
+
 }
 
 Fittino::SimpleStringCut::~SimpleStringCut() {
@@ -48,22 +48,23 @@ Fittino::SimpleStringCut::~SimpleStringCut() {
 }
 
 bool Fittino::SimpleStringCut::IsPassed() {
-    
-    bool isMatch = false; 
-    for( unsigned int i = 0; i < _cutValues.size(); ++i ) {
-        
-        if( _testValue == _cutValues.at(i) ) {
-        
+
+    bool isMatch = false;
+
+    for ( unsigned int i = 0; i < _cutValues.size(); ++i ) {
+
+        if ( _testValue == _cutValues.at( i ) ) {
+
             isMatch = true;
             break;
-        
+
         }
-    
+
     }
-    
-    if( isMatch && !_mustMatch ) return false;
-    if( !isMatch && _mustMatch ) return false;
-    
+
+    if ( isMatch && !_mustMatch ) return false;
+    if ( !isMatch && _mustMatch ) return false;
+
     return true;
 
 }

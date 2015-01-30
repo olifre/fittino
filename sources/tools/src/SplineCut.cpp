@@ -3,11 +3,11 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        SplineCut.cpp                                              *
+* File        SplineCut.cpp                                                    *
 *                                                                              *
-* Description Base class for cuts                                     *
+* Description Class for cuts on splines                                        *
 *                                                                              *
-* Authors     Matthias Hamer      <mhamer@cbpf.br>                             *
+* Authors     Matthias Hamer  <mhamer@cbpf.br>                                 *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -16,39 +16,42 @@
 *                                                                              *
 *******************************************************************************/
 
+#include "TDirectory.h"
 #include "TFile.h"
 #include "TSpline.h"
-#include "TDirectory.h"
 
 #include "SplineCut.h"
 
-Fittino::SplineCut::SplineCut( ModelBase* model, const boost::property_tree::ptree& ptree ) 
+Fittino::SplineCut::SplineCut( ModelBase* model, const boost::property_tree::ptree& ptree )
     : CutBase( ptree ),
-      _xValue ( model->GetCollectionOfQuantities().At( ptree.get<std::string>( "XValue" ) )->GetValue() ),
-      _yValue ( model->GetCollectionOfQuantities().At( ptree.get<std::string>( "YValue" ) )->GetValue() ) {
+      _xValue( model->GetCollectionOfQuantities().At( ptree.get<std::string>( "XValue" ) )->GetValue() ),
+      _yValue( model->GetCollectionOfQuantities().At( ptree.get<std::string>( "YValue" ) )->GetValue() ) {
 
-    std::string fileName        = ptree.get<std::string>( "InputFileName" );
-    std::string splineName      = ptree.get<std::string>( "SplineName" );
-    _isUpperBound               = ptree.get<bool>       ( "IsUpperBound", false );
+    std::string fileName   = ptree.get<std::string>( "InputFileName" );
+    std::string splineName = ptree.get<std::string>( "SplineName" );
+    _isUpperBound          = ptree.get<bool>       ( "IsUpperBound", false );
 
     TDirectory *tempDirectory = gDirectory;
 
     TFile *inputFile = new TFile( fileName.c_str() );
-    if( !inputFile ) {
+
+    if ( !inputFile ) {
 
         std::string message = "Could not open input file " + fileName + " for SplineCut object";
         throw ConfigurationException( message );
 
     }
 
-    TSpline3 *spline = (TSpline3*)inputFile->Get( splineName.c_str() );
-    if( !spline ) {
+    TSpline3 *spline = ( TSpline3* )inputFile->Get( splineName.c_str() );
+
+    if ( !spline ) {
 
         std::string message = "Could not read TSpline3 with name " + splineName + " in file " + fileName;
         throw ConfigurationException( message );
 
     }
-    _spline = (TSpline3*)spline->Clone("");
+
+    _spline = ( TSpline3* )spline->Clone( "" );
 
     delete spline;
     inputFile->Close();
@@ -67,9 +70,10 @@ Fittino::SplineCut::~SplineCut() {
 bool Fittino::SplineCut::IsPassed() {
 
     bool passed = true;
-    if( _isUpperBound ) {
-        
-        if( _yValue > _spline->Eval( _xValue ) ) {
+
+    if ( _isUpperBound ) {
+
+        if ( _yValue > _spline->Eval( _xValue ) ) {
 
             passed = false;
 
@@ -78,7 +82,7 @@ bool Fittino::SplineCut::IsPassed() {
     }
     else {
 
-        if( _yValue < _spline->Eval( _xValue ) ) {
+        if ( _yValue < _spline->Eval( _xValue ) ) {
 
             passed = false;
 

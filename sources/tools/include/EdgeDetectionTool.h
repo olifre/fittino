@@ -23,7 +23,6 @@
 
 #include "Tool.h"
 
-
 class TFile;
 class TH2D;
 class TSpline;
@@ -43,7 +42,6 @@ namespace Fittino {
   class EdgeDetectionTool : public Tool {
 
     public:
-      
       EdgeDetectionTool( ModelBase* model, const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.
@@ -51,27 +49,26 @@ namespace Fittino {
       ~EdgeDetectionTool();
 
     protected:
-      void                        UpdateModel(); 
+      void                     UpdateModel();
 
       /*! \cond UML */
-    
+
     private:
-      void                        Execute();
-      void                        InitializeTool();
-      
-      void                        PrintResult() const;
-      
-      void                        PrintSteeringParameters() const;
-      void                        Terminate();
-      void                        WriteResultToFile() const;
+      void                     Execute();
+      void                     InitializeTool();
+      void                     PrintResult() const;
+      void                     PrintSteeringParameters() const;
+      void                     Terminate();
+      void                     WriteResultToFile() const;
+
+    private:
+      unsigned int             _numberOfCleaningSteps;
+      std::string              _histogramFileName;
+      std::vector<std::string> _histogramNameVector;
+      std::vector<TH2D*>       _histogramVector;
+      std::vector<TSpline*>    _splineVector;
 
       /*! \endcond UML */
-
-      std::vector<TH2D*>          _histogramVector;
-      std::vector<std::string>    _histogramNameVector;
-      std::string                 _histogramFileName;
-      std::vector<TSpline*>       _splineVector;
-      unsigned int                _numberOfCleaningSteps;
 
   };
 
