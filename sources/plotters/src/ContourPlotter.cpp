@@ -196,7 +196,7 @@ void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
     _histogramVector[iHistogram]->Draw( "AXISSAME" );
 
     _graphVector.at( iHistogram )->SetMarkerStyle( 29 );
-    _graphVector.at( iHistogram )->Draw("PSAME");
+    _graphVector.at( iHistogram )->Draw( "PSAME" );
 
 }
 
@@ -216,8 +216,8 @@ void Fittino::ContourPlotter::SetClassicStyle() {
     // Contour settings.
 
     _contour1SigmaLineStyle = 1;
-//    _contour1SigmaLineColor = kBlue - 2;
-//    _contour1SigmaFillColor = kBlue - 9;
+    //_contour1SigmaLineColor = kBlue - 2;
+    //_contour1SigmaFillColor = kBlue - 9;
     _contour1SigmaLineColor = kRed - 2;
     _contour1SigmaFillColor = kRed - 8;
 
