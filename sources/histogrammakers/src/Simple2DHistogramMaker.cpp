@@ -51,7 +51,7 @@ Fittino::Simple2DHistogramMaker::Simple2DHistogramMaker( ModelBase* model, const
 
                 if ( _logScale[iQuantity1] ) {
 
-                        xBins[iBin] = TMath::Power( 10, xBins[iBin] );
+                    xBins[iBin] = TMath::Power( 10, xBins[iBin] );
 
                 }
 
@@ -67,7 +67,7 @@ Fittino::Simple2DHistogramMaker::Simple2DHistogramMaker( ModelBase* model, const
 
                 if ( _logScale[iQuantity2] ) {
 
-                        yBins[iBin] = TMath::Power( 10, yBins[iBin] );
+                    yBins[iBin] = TMath::Power( 10, yBins[iBin] );
 
                 }
 
@@ -126,7 +126,7 @@ void Fittino::Simple2DHistogramMaker::UpdateModel() {
             TH1* histogram = _histogramVector[iHistogram];
 
             histogram->Fill( _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity1] )->GetValue(),
-                                 _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() );
+                             _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity2] )->GetValue() );
 
             iHistogram++;
 

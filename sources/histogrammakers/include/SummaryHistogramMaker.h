@@ -65,9 +65,9 @@ namespace Fittino {
        *  Stores the upper bound of the histogram.
        */
       double                    _upperBound;
-       /*!
-       *  Stores the number of histogram bins.
-       */
+      /*!
+      *  Stores the number of histogram bins.
+      */
       unsigned int              _numberOfBins;
       /*!
        *  Stores the index of a quantity in the model's list of quantities.
@@ -83,17 +83,17 @@ namespace Fittino {
       std::vector<std::string>  _quantityName;
       TH2D*                     _histogram1Sigma;
       TH2D*                     _histogram2Sigma;
+      std::vector<TGraph*>      _graphVector;
       /*!
        *  Stores the histogram to be made. Needed for compatibility with plotters.
        */
       std::vector<TH1*>         _histogramVector;
-      std::vector<TGraph*>       _graphVector;
       PlotterBase*              _plotter;
 
       /*! \cond UML */
     private:
-      bool                      _spacing;
       bool                      _borders;
+      bool                      _spacing;
       double                    _lowestChi2;
       unsigned int              _bestFitEntry;
       TGaxis*                   _globalAxis;

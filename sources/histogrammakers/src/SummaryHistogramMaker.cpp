@@ -34,8 +34,8 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
     : Tool         ( model, ptree ),
       _logScale    ( ptree.get<bool>( "LogScale", false ) ),
       _numberOfBins( ptree.get<unsigned int>( "NumberOfBins", 35 ) ),
-      _spacing( ptree.get<bool>("Spacing", true ) ),
-      _borders( ptree.get<bool>("Borders", true ) ),
+      _spacing     ( ptree.get<bool>( "Spacing", true ) ),
+      _borders     ( ptree.get<bool>( "Borders", true ) ),
       _globalAxis  ( new TGaxis() ) {
 
     _globalAxis->SetMaxDigits( ptree.get<int>( "AxisMaxDigits", 3 ) );
@@ -48,7 +48,6 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
 
             _quantityName.push_back( node.second.get<std::string> ( "Name"     ) );
             _plotName.push_back    ( node.second.get<std::string> ( "PlotName" ) );
-
 
         }
 
@@ -102,14 +101,13 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
         }
 
     }
-          
-          
+
     int nybins = _quantityName.size();
-          
+
     if ( _spacing ) nybins = 2 * nybins - 1;
-          
+
     if ( _borders ) nybins += 2;
-          
+
     _histogram2Sigma = new TH2D( histogramName.c_str(),
                                  histogramName.c_str(),
                                  _numberOfBins, xBins, nybins , 0., nybins );
@@ -132,7 +130,7 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
     // labels.
 
     for ( unsigned int iScheduledQuantity = 0; iScheduledQuantity < _quantityName.size(); ++iScheduledQuantity ) {
-        
+
         _model->GetCollectionOfQuantities().At( _quantityName[iScheduledQuantity] );
 
         for ( unsigned int iQuantity = 0; iQuantity < _model->GetCollectionOfQuantities().GetNumberOfElements(); ++iQuantity ) {
@@ -146,43 +144,42 @@ Fittino::SummaryHistogramMaker::SummaryHistogramMaker( ModelBase* model, const b
         }
 
         // Y-axis bin labels.
-        
+
         int ybin = FindBinY( iScheduledQuantity );
-        
-        _histogram1Sigma->GetYaxis()->SetBinLabel(ybin , _plotName[iScheduledQuantity].c_str() );
-        _histogram2Sigma->GetYaxis()->SetBinLabel(ybin, _plotName[iScheduledQuantity].c_str() );
+
+        _histogram1Sigma->GetYaxis()->SetBinLabel( ybin , _plotName[iScheduledQuantity].c_str() );
+        _histogram2Sigma->GetYaxis()->SetBinLabel( ybin, _plotName[iScheduledQuantity].c_str() );
 
     }
-    
+
     const Factory factory;
-          
-    const boost::property_tree::ptree::value_type& plotterNode =  *(ptree.get_child( "Plotter" ).begin());
-          std::string plotterType = plotterNode.first;
+
+    const boost::property_tree::ptree::value_type& plotterNode =  *( ptree.get_child( "Plotter" ).begin() );
+    std::string plotterType = plotterNode.first;
 
     _plotter = factory.CreatePlotter( plotterType, _histogramVector, plotterNode.second );
-          
-          
-    _bestFitEntry = model->GetCollectionOfParameters().At(0)->GetValue();
+
+    _bestFitEntry = model->GetCollectionOfParameters().At( 0 )->GetValue();
     _lowestChi2 = _model->GetChi2();
-          
+
     for ( unsigned int iQuantity = 0; iQuantity < _quantityName.size(); ++iQuantity ) {
-                
+
         double bestFitValue = _model->GetCollectionOfQuantities().At( _quantityIndex[iQuantity] )->GetValue();
-        
+
         int bin = FindBinY( iQuantity );
-        
+
         double low = _histogram2Sigma->GetYaxis()->GetBinLowEdge( bin );
         double up = _histogram2Sigma->GetYaxis()->GetBinUpEdge( bin );
-        TGraph* graph = new TGraph(2);
-        graph->SetPoint(0, bestFitValue, low);
-        graph->SetPoint(1, bestFitValue, up);
+        TGraph* graph = new TGraph( 2 );
+        graph->SetPoint( 0, bestFitValue, low );
+        graph->SetPoint( 1, bestFitValue, up );
         _plotter->AddGraph( graph );
-        
+
     }
-          
+
     int lowerBound = model->GetCollectionOfParameters().At( 0 )->GetLowerBound();
-    _model->GetCollectionOfParameters().At( 0 )->SetValue( lowerBound);
- 
+    _model->GetCollectionOfParameters().At( 0 )->SetValue( lowerBound );
+
 }
 
 Fittino::SummaryHistogramMaker::~SummaryHistogramMaker() {
@@ -192,35 +189,53 @@ Fittino::SummaryHistogramMaker::~SummaryHistogramMaker() {
 
 }
 
-void Fittino::SummaryHistogramMaker::PrintSteeringParameters() const {
+int Fittino::SummaryHistogramMaker::FindBin( double value ) {
 
-    PrintItem( "BestFitEntry", _bestFitEntry );
+    int bin;
 
-    for ( unsigned int iQuantity = 0; iQuantity < _quantityName.size(); ++iQuantity ) {
+    if ( _logScale ) {
 
-        PrintItem( "Quantity", _quantityName[iQuantity] );
+        bin = _histogram1Sigma->ProjectionX()->FindBin( TMath::Log10( value ) );
 
     }
+    else {
+
+        bin = _histogram1Sigma->ProjectionX()->FindBin( value );
+
+    }
+
+    return bin;
+
+}
+
+int Fittino::SummaryHistogramMaker::FindBinY( int iQuantity ) {
+
+    int ybin = _quantityName.size() - iQuantity;
+
+    if ( _spacing ) ybin = 2 * ybin - 1 ;
+    if ( _borders ) ybin += 1;
+
+    return ybin;
 
 }
 
 void Fittino::SummaryHistogramMaker::Execute() {
-    
-    _iterationCounter = _model->GetCollectionOfParameters().At(0)->GetLowerBound();
-    
-    int upperBound = _model->GetCollectionOfParameters().At(0)->GetUpperBound();
-    
+
+    _iterationCounter = _model->GetCollectionOfParameters().At( 0 )->GetLowerBound();
+
+    int upperBound = _model->GetCollectionOfParameters().At( 0 )->GetUpperBound();
+
     while ( _iterationCounter < upperBound ) {
-        
+
         if (  _iterationCounter % 100000 == 0 ) {
-            Messenger::GetInstance()<<Messenger::ALWAYS<<"Heartbeat: IterationCounter = "<<_iterationCounter<<Messenger::Endl;
-            
+            Messenger::GetInstance() << Messenger::ALWAYS << "Heartbeat: IterationCounter = " << _iterationCounter << Messenger::Endl;
+
         }
 
         UpdateModel();
 
         Tool::PrintStatus();
-        
+
         _iterationCounter++;
 
     }
@@ -246,44 +261,20 @@ void Fittino::SummaryHistogramMaker::PrintResult() const {
 
 }
 
+void Fittino::SummaryHistogramMaker::PrintSteeringParameters() const {
+
+    PrintItem( "BestFitEntry", _bestFitEntry );
+
+    for ( unsigned int iQuantity = 0; iQuantity < _quantityName.size(); ++iQuantity ) {
+
+        PrintItem( "Quantity", _quantityName[iQuantity] );
+
+    }
+
+}
+
 void Fittino::SummaryHistogramMaker::Terminate() {
 
-}
-
-void Fittino::SummaryHistogramMaker::WriteResultToFile() const {
-
-    _histogram2Sigma->Write();
-
-}
-
-int Fittino::SummaryHistogramMaker::FindBin( double value ) {
-    
-    int bin;
-
-    if ( _logScale ) {
-    
-        bin = _histogram1Sigma->ProjectionX()->FindBin( TMath::Log10( value ) );
-    
-    }
-    else {
-    
-        bin = _histogram1Sigma->ProjectionX()->FindBin( value );
-    
-    }
-    
-    return bin;
-    
-}
-
-int Fittino::SummaryHistogramMaker::FindBinY( int iQuantity ) {
-    
-    int ybin = _quantityName.size() - iQuantity;
-    
-    if ( _spacing ) ybin = 2 * ybin - 1 ;
-    if ( _borders ) ybin += 1;
-    
-    return ybin;
-    
 }
 
 void Fittino::SummaryHistogramMaker::UpdateModel() {
@@ -320,5 +311,11 @@ void Fittino::SummaryHistogramMaker::UpdateModel() {
         }
 
     }
+
+}
+
+void Fittino::SummaryHistogramMaker::WriteResultToFile() const {
+
+    _histogram2Sigma->Write();
 
 }
