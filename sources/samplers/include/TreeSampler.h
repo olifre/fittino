@@ -12,8 +12,8 @@
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
-*	      published by the Free Software Foundation; either version 3 of       *
-*	      the License, or (at your option) any later version.                  *
+*             published by the Free Software Foundation; either version 3 of   *
+*             the License, or (at your option) any later version.              *
 *                                                                              *
 *******************************************************************************/
 
@@ -21,8 +21,9 @@
 #define FITTINO_TREESAMPLER_H
 
 #include <boost/property_tree/ptree.hpp>
-#include "TTree.h"
+
 #include "TFile.h"
+#include "TTree.h"
 
 #include "SamplerBase.h"
 
@@ -45,22 +46,21 @@ namespace Fittino {
       /*!
        *  Standard destructor.
        */
-                             ~TreeSampler();
+      ~TreeSampler();
 
       /*! \cond UML */
     private:
+      int          _firstIteration;
       /*!
        *  Stores the configured maximal number of iteration steps.
        */
-      unsigned int           _numberOfIterations;
-      
-      int                    _firstIteration;
+      unsigned int _numberOfIterations;
 
     private:
-      virtual void           Execute();
-      virtual void           PrintSteeringParameters() const;
-      virtual void           UpdateModel();
-    
+      virtual void Execute();
+      virtual void PrintSteeringParameters() const;
+      virtual void UpdateModel();
+
       /*! \endcond UML */
 
   };
