@@ -1,4 +1,4 @@
-#include "LHCChi2Calculator.h"/* $Id$ */
+/* $Id$ */
 
 /*******************************************************************************
 *                                                                              *
@@ -31,6 +31,7 @@
 #include "RandomGenerator.h"
 #include "SimplePrediction.h"
 #include "ConfigurationException.h"
+#include "LHCChi2Calculator.h"
 
 Fittino::Chi2Calculator::Chi2Calculator( const Fittino::ModelBase* model, const boost::property_tree::ptree &ptree )
         : CalculatorBase( model ) {
