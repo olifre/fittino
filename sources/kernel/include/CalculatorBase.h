@@ -78,6 +78,7 @@ namespace Fittino {
       void                                          AddInput( std::string name, std::string defaultValue = "" );
       void                                          UpdateInput();
       const double&                                 GetInput( std::string name );
+      void                                          PrintInput();
 
       /*! \cond UML */
     private:

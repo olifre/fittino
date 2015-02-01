@@ -120,8 +120,6 @@ void Fittino::CalculatorBase::AddInput(std::string name, std::string defaultValu
 
     _input.insert( std::make_pair( name, quantity ) );
 
-    AddQuantity( quantity ); // todo: Make configurable if quantities are written to the ntuple.
-
 }
 
 void Fittino::CalculatorBase::UpdateInput() {
@@ -142,4 +140,14 @@ const double &Fittino::CalculatorBase::GetInput( std::string name ) {
 
 }
 
+void Fittino::CalculatorBase::PrintInput() {
 
+    std::map<std::string, FormulaQuantity*>::const_iterator it;
+
+    for ( it = _input.begin(); it != _input.end(); ++it ) {
+
+        it->second->PrintStatus();
+
+    }
+
+}
