@@ -19,8 +19,11 @@
 
 #ifndef FITTINO_CHECKMATECALCULATOR_H
 #define FITTINO_CHECKMATECALCULATOR_H
-
+#include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/foreach.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include "CalculatorBase.h"
 #include <map> 
@@ -82,7 +85,7 @@ namespace Fittino {
       int           _cBB;
 
 
-                                                                                                                                                    
+      std::string  _dirname;
                                                                                                                                                                                                                                                                                                                                               
                                                                                                                                                                                                                                                                                                                                       
                                                                                                                                                                                       

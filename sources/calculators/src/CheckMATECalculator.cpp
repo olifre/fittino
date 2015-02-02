@@ -16,7 +16,7 @@
 *                                                                              *
 *******************************************************************************/
 
-
+#include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
@@ -39,7 +39,9 @@ Fittino::CheckMATECalculator::CheckMATECalculator( const ModelBase* model, const
     _cHW  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cHW.Name", "cHW" ) )->GetValue() )
 {
   
- 
+  
+
+
   std::cout<<"USING _cHW = "<<_cHW<<std::endl;
   std::string originalinputfile = "/lustre/user/thakur/programs/CheckMATE/CheckMATE-1.1.14/runfittino.txt";
   std::string inputfile = "fittino_checkmate_in.txt";
@@ -53,7 +55,8 @@ Fittino::CheckMATECalculator::CheckMATECalculator( const ModelBase* model, const
   std::ofstream myfile;
   myfile.open ( inputfile.c_str(), std::ios::app ) ;
   myfile.close();
-  
+
+  _dirname = "results";  
   
   Executor executor("./CheckMATE", "CheckMATE");
   executor.AddArgument(inputfile);
@@ -186,11 +189,11 @@ void Fittino::CheckMATECalculator::CalculatePredictions() {
   
   
   
-  // if ( boost::filesystem::exists( "/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_signal.dat" ) ) {
-      
-  // boost::filesystem::rename( "/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_signal.dat", "/results/atlas_conf_2013_079/analysis/000_atlas_conf_2013_079_signal.dat" + ".last" );
-     
-  // }
+  if ( boost::filesystem::exists( _dirname )) {
+    
+    boost::filesystem::rename( _dirname,  _dirname + ".last");
+    
+  }
   
 }
 void Fittino::CheckMATECalculator::SetupMeasuredValues() {
