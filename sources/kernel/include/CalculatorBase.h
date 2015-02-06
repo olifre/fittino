@@ -20,9 +20,9 @@
 #ifndef FITTINO_CALCULATORBASE_H
 #define FITTINO_CALCULATORBASE_H
 
-#include "Collection.h"
-#include "PtreeForwardDeclaration.h"
 #include <boost/property_tree/ptree_fwd.hpp>
+
+#include "Collection.h"
 
 /*!
  *  \brief Fittino namespace.

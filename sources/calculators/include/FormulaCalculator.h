@@ -21,7 +21,6 @@
 #define FITTINO_FORMULACALCULATOR_H
 
 #include "CalculatorBase.h"
-#include "PtreeForwardDeclaration.h"
 
 class TFormula;
 

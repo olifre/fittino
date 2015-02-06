@@ -23,7 +23,6 @@
 #include "TMVA/Reader.h"
 
 #include "CalculatorBase.h"
-#include "PtreeForwardDeclaration.h"
 
 /*!
  *  \brief Fittino namespace.

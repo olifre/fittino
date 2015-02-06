@@ -25,7 +25,6 @@
 #include "THnSparse.h"
 
 #include "CalculatorBase.h"
-#include "PtreeForwardDeclaration.h"
 
 class TH1D;
 /*!

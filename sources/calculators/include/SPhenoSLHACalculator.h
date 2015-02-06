@@ -21,7 +21,6 @@
 #define FITTINO_SPHENOSLHACALCULATOR_H
 
 #include "Executor.h"
-#include "PtreeForwardDeclaration.h"
 #include "SLHACalculatorBase.h"
 
 /*!

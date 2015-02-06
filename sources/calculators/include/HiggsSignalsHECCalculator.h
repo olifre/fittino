@@ -21,7 +21,6 @@
 #define FITTINO_HIGGSSIGNALSHECCALCULATOR_H
 
 #include "CalculatorBase.h"
-#include "PtreeForwardDeclaration.h"
 
 /*!
  *  \brief Fittino namespace.

@@ -22,7 +22,6 @@
 #define FITTINO_HIGGSSIGNALSSLHACALCULATOR_H
 
 #include "SLHACalculatorBase.h"
-#include "PtreeForwardDeclaration.h"
 
 /*!
  *  \brief Fittino namespace.

@@ -25,7 +25,6 @@
 #include "TVectorT.h"
 
 #include "CalculatorBase.h"
-#include "PtreeForwardDeclaration.h"
 
 /*!
  *  \brief Fittino namespace.

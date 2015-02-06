@@ -21,10 +21,7 @@
 #ifndef FITTINO_UNCERTAINTYBASE_H
 #define FITTINO_UNCERTAINTYBASE_H
 
-#include <string>
-
 #include "Measurement.h"
-#include "PtreeForwardDeclaration.h"
 
 /*!
  *  \brief Fittino namespace.

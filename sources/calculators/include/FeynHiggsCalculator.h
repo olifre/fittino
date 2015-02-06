@@ -23,7 +23,6 @@
 #include "FeynHiggsTypes.h"
 #include "CalculatorBase.h"
 #include "Collection.h"
-#include "PtreeForwardDeclaration.h"
 #include "FeynHiggsCrossSection.h"
 
 

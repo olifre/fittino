@@ -73,10 +73,10 @@
 
 #include <string>
 
-#include "boost/interprocess/interprocess_fwd.hpp"
+#include <boost/interprocess/interprocess_fwd.hpp>
+#include <boost/property_tree/ptree_fwd.hpp>
 
 #include "FileLockForwardDeclaration.h"
-#include "PtreeForwardDeclaration.h"
 
 /*!
  *  \brief Fittino namespace.

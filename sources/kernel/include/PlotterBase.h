@@ -23,7 +23,7 @@
 #include <string>
 #include <vector>
 
-#include "PtreeForwardDeclaration.h"
+#include <boost/property_tree/ptree_fwd.hpp>
 
 class TCanvas;
 class TGraph;

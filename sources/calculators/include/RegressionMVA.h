@@ -22,7 +22,6 @@
 #define FITTINO_REGRESSIONMVA_H
 
 #include "Collection.h"
-#include "PtreeForwardDeclaration.h"
 
 /*!
  *  \brief TMVA namespace.

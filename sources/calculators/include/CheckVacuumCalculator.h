@@ -21,7 +21,6 @@
 #define FITTINO_CHECKVACUUMCALCULATOR_H
 
 #include "CalculatorBase.h"
-#include "PtreeForwardDeclaration.h"
 
 class CheckVacuum;
 

@@ -22,7 +22,6 @@
 #define FITTINO_HDIM6CALCULATOR_H
 
 #include "CalculatorBase.h"
-#include "PtreeForwardDeclaration.h"
 
 struct effinputs;
 struct pominput;

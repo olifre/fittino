@@ -22,7 +22,6 @@
 
 #include "CalculatorBase.h"
 #include "Executor.h"
-#include "PtreeForwardDeclaration.h"
 
 /*!
  *  \brief Fittino namespace.

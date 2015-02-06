@@ -25,8 +25,6 @@
 #include "TMatrixDSym.h"
 
 #include "ModelBase.h"
-#include "PtreeForwardDeclaration.h"
-
 
 /*!
  *  \brief Fittino namespace.

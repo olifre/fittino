@@ -23,7 +23,7 @@
 #include <limits>
 #include <string>
 
-#include "PtreeForwardDeclaration.h"
+#include <boost/property_tree/ptree_fwd.hpp>
 
 /*!
  *  \brief Fittino namespace.

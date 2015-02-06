@@ -21,7 +21,6 @@
 #define FITTINO_TREECALCULATOR_H
 
 #include "CalculatorBase.h"
-#include "PtreeForwardDeclaration.h"
 
 class TChain;
 class TFile;

@@ -22,8 +22,9 @@
 #ifndef FITTINO_FACTORY_H
 #define FITTINO_FACTORY_H
 
+#include <boost/property_tree/ptree_fwd.hpp>
+
 #include "Collection.h"
-#include "PtreeForwardDeclaration.h"
 
 class TH1;
 

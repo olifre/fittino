@@ -21,7 +21,6 @@
 #define FITTINO_HIGGSBOUNDSHECCALCULATOR_H
 
 #include "HiggsBoundsCalculator.h"
-#include "PtreeForwardDeclaration.h"
 
 /*!
  *  \brief Fittino namespace.
