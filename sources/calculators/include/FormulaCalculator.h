@@ -23,8 +23,6 @@
 #include "CalculatorBase.h"
 #include <vector>
 
-class TFormula;
-
 /*!
  *  \brief Fittino namespace.
  */
@@ -35,8 +33,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup calculators
-   *  \brief Wrapper class for TFormula.
-   *  \todo Add support for parameters.
+   *  \brief Wrapper class for FormulaQuantity
    */
   class FormulaCalculator : public CalculatorBase {
 
