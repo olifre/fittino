@@ -130,6 +130,20 @@ namespace Fittino {
       std::vector<double>        _normSM_xs_Wh;
       std::vector<double>        _normSM_xs_Zh;
 
+      std::vector<double>        _error_xs_qqh_2flavor;
+      std::vector<double>        _error_xs_qqh_5flavor;
+      std::vector<double>        _error_xs_Wh;
+      std::vector<double>        _error_xs_Zh;
+      double                     _error_Gamma_hWW;
+      double                     _error_Gamma_hZZ;
+
+      std::vector<double>        _chi2_xs_qqh_2flavor;
+      std::vector<double>        _chi2_xs_qqh_5flavor;
+      std::vector<double>        _chi2_xs_Wh;
+      std::vector<double>        _chi2_xs_Zh;
+      double                     _chi2_Gamma_hWW;
+      double                     _chi2_Gamma_hZZ;
+
       std::string   _pdfDirectory;
       std::string   _pdfSet;
       effinputs*    _effsmvalues;

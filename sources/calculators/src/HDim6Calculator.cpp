@@ -109,8 +109,23 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_c_c",         "",      _normSM_Gamma_hcc     ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_s_s",         "",      _normSM_Gamma_hss     ) );
 
-    if ( _calculate_Gamma_hZZ      ) AddQuantity( new SimplePrediction( "NormSM_Gamma_h_Z_Z",    "", _normSM_Gamma_hZZ      ) );
-    if ( _calculate_Gamma_hWW      ) AddQuantity( new SimplePrediction( "NormSM_Gamma_h_W_W",    "", _normSM_Gamma_hWW      ) );
+    if ( _calculate_Gamma_hZZ      ) {
+
+        AddQuantity( new SimplePrediction( "NormSM_Gamma_h_Z_Z",    "", _normSM_Gamma_hZZ      ) );
+        AddQuantity( new SimplePrediction( "Error_Gamma_h_Z_Z",    "", _error_Gamma_hZZ      ) );
+        AddQuantity( new SimplePrediction( "Chi2_Gamma_h_Z_Z",    "", _chi2_Gamma_hZZ      ) );
+
+
+    }
+
+    if ( _calculate_Gamma_hWW      )  {
+
+        AddQuantity( new SimplePrediction( "NormSM_Gamma_h_W_W",    "", _normSM_Gamma_hWW      ) );
+        AddQuantity( new SimplePrediction( "Error_Gamma_h_W_W",    "", _error_Gamma_hWW      ) );
+        AddQuantity( new SimplePrediction( "Chi2_Gamma_h_W_W",    "", _chi2_Gamma_hWW      ) );
+
+
+    }
 
     unsigned int nEnergies = ptree.count( "CenterOfMassEnergy" );
 
@@ -132,6 +147,16 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
     _xs_Wh.resize( nEnergies );
     _xs_Zh.resize( nEnergies );
 
+    _error_xs_qqh_2flavor.resize( nEnergies );
+    _error_xs_qqh_5flavor.resize( nEnergies );
+    _error_xs_Wh.resize( nEnergies );
+    _error_xs_Zh.resize( nEnergies );
+
+    _chi2_xs_qqh_2flavor.resize( nEnergies );
+    _chi2_xs_qqh_5flavor.resize( nEnergies );
+    _chi2_xs_Wh.resize( nEnergies );
+    _chi2_xs_Zh.resize( nEnergies );
+
     unsigned int iEnergy = 0;
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree ) {
@@ -142,7 +167,12 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
 
                         std::string energyname = node.second.get<std::string>( "Name" );
                         std::string xstag = "NormSM_xs_";
+                        std::string errortag = "Error_xs_";
+                        std::string chi2tag = "Chi2_xs_";
+
                         xstag += energyname + "_";
+                        errortag += energyname + "_";
+                        chi2tag += energyname + "_";
 
                         _energies.at( iEnergy ) = energy;
                         Messenger::GetInstance()<<Messenger::ALWAYS<<"    CenterOfMassEnergy: "<<energy<<" GeV"<<Messenger::Endl;
@@ -152,10 +182,37 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
                         AddQuantity( new SimplePrediction( xstag + "tth", "", _normSM_xs_tth.at( iEnergy ) ) );
                         AddQuantity( new SimplePrediction( xstag + "bh", "", _normSM_xs_bh.at( iEnergy ) ) );
 
-                        if ( _calculate_xs_qqh_2flavor ) AddQuantity( new SimplePrediction( xstag + "qqh_2flavor", "", _normSM_xs_qqh_2flavor.at( iEnergy ) ) );
-                        if ( _calculate_xs_qqh_5flavor ) AddQuantity( new SimplePrediction( xstag + "qqh_5flavor", "", _normSM_xs_qqh_5flavor.at( iEnergy ) ) );
-                        if ( _calculate_xs_Wh ) AddQuantity( new SimplePrediction( xstag + "Wh", "", _normSM_xs_Wh.at( iEnergy ) ) );
-                        if ( _calculate_xs_Zh ) AddQuantity( new SimplePrediction( xstag + "Zh", "", _normSM_xs_Zh.at( iEnergy ) ) );
+                        if ( _calculate_xs_qqh_2flavor ) {
+
+                            AddQuantity( new SimplePrediction( xstag + "qqh_2flavor", "", _normSM_xs_qqh_2flavor.at( iEnergy ) ) );
+                            AddQuantity( new SimplePrediction( errortag + "qqh_2flavor", "", _error_xs_qqh_2flavor.at( iEnergy ) ) );
+                            AddQuantity( new SimplePrediction( chi2tag + "qqh_2flavor", "", _chi2_xs_qqh_2flavor.at( iEnergy ) ) );
+
+
+                        }
+                        if ( _calculate_xs_qqh_5flavor ) {
+
+                                AddQuantity( new SimplePrediction( xstag + "qqh_5flavor", "", _normSM_xs_qqh_5flavor.at( iEnergy ) ) );
+                                AddQuantity( new SimplePrediction( errortag + "qqh_5flavor", "", _error_xs_qqh_5flavor.at( iEnergy ) ) );
+                                AddQuantity( new SimplePrediction( chi2tag + "qqh_5flavor", "", _chi2_xs_qqh_5flavor.at( iEnergy ) ) );
+
+
+                        }
+                        if ( _calculate_xs_Wh ) {
+
+                            AddQuantity( new SimplePrediction( xstag + "Wh", "", _normSM_xs_Wh.at( iEnergy ) ) );
+                            AddQuantity( new SimplePrediction( errortag + "Wh", "", _error_xs_Wh.at( iEnergy ) ) );
+                            AddQuantity( new SimplePrediction( chi2tag + "Wh", "", _chi2_xs_Wh.at( iEnergy ) ) );
+
+                        }
+                        if ( _calculate_xs_Zh ) {
+
+                            AddQuantity( new SimplePrediction( xstag + "Zh", "", _normSM_xs_Zh.at( iEnergy ) ) );
+                            AddQuantity( new SimplePrediction( errortag + "Zh", "", _error_xs_Zh.at( iEnergy ) ) );
+                            AddQuantity( new SimplePrediction( chi2tag + "Zh", "", _chi2_xs_Zh.at( iEnergy ) ) );
+
+
+                        }
 
                         ++iEnergy;
 
@@ -286,14 +343,13 @@ void Fittino::HDim6Calculator::CallFunction() {
 
         }
 
-        if ( _calculate_Gamma_hZZ ) hzz_( _smvalues, _effvalues, &_Gamma_hZZ, &error, &chi2 );
-        if ( _calculate_Gamma_hWW ) hww_( _smvalues, _effvalues, &_Gamma_hWW, &error, &chi2 );
+        if ( _calculate_Gamma_hZZ ) hzz_( _smvalues, _effvalues, &_Gamma_hZZ, &_error_Gamma_hZZ, &_chi2_Gamma_hZZ );
+        if ( _calculate_Gamma_hWW ) hww_( _smvalues, _effvalues, &_Gamma_hWW, &_error_Gamma_hWW, &_chi2_Gamma_hWW );
 
         if ( _calculate_Gamma_hZZ ) _normSM_Gamma_hZZ = _Gamma_hZZ / _SM_Gamma_hZZ;
         if ( _calculate_Gamma_hWW ) _normSM_Gamma_hWW = _Gamma_hWW / _SM_Gamma_hWW;
 
     }
-
 
     for (unsigned int iEnergy = 0; iEnergy < _energies.size(); ++iEnergy) {
 
@@ -315,10 +371,10 @@ void Fittino::HDim6Calculator::CallFunction() {
 
             }
 
-            if (_calculate_xs_Wh) HWRadiation_(_smvalues, _effvalues, &_xs_Wh.at( iEnergy ), &error, &chi2);
-            if (_calculate_xs_Zh) HZRadiation_(_smvalues, _effvalues, &_xs_Zh.at( iEnergy ), &error, &chi2);
-            if (_calculate_xs_qqh_2flavor) ud_jjh_(_smvalues, _effvalues, &_xs_qqh_2flavor.at( iEnergy ), &error, &chi2);
-            if (_calculate_xs_qqh_5flavor) udcsb_jjh_(_smvalues, _effvalues, &_xs_qqh_5flavor.at( iEnergy ), &error, &chi2);
+            if (_calculate_xs_Wh) HWRadiation_(_smvalues, _effvalues, &_xs_Wh.at( iEnergy ), &_error_xs_Wh.at( iEnergy ), &_chi2_xs_Wh.at( iEnergy ) );
+            if (_calculate_xs_Zh) HZRadiation_(_smvalues, _effvalues, &_xs_Zh.at( iEnergy ), &_error_xs_Zh.at( iEnergy ), &_chi2_xs_Zh.at( iEnergy ) );
+            if (_calculate_xs_qqh_2flavor) ud_jjh_(_smvalues, _effvalues, &_xs_qqh_2flavor.at( iEnergy ), &_error_xs_qqh_2flavor.at( iEnergy ), &_chi2_xs_qqh_2flavor.at( iEnergy ) );
+            if (_calculate_xs_qqh_5flavor) udcsb_jjh_(_smvalues, _effvalues, &_xs_qqh_5flavor.at( iEnergy ), &_error_xs_qqh_5flavor.at( iEnergy ), &_chi2_xs_qqh_5flavor.at( iEnergy ) );
 
             if (_calculate_xs_Wh) _normSM_xs_Wh.at( iEnergy ) = _xs_Wh.at( iEnergy ) / _SM_xs_Wh.at( iEnergy );
             if (_calculate_xs_Zh) _normSM_xs_Zh.at( iEnergy ) = _xs_Zh.at( iEnergy ) / _SM_xs_Zh.at( iEnergy );
