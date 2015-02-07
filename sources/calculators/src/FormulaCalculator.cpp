@@ -17,61 +17,49 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "TFormula.h"
+#include <string>
+
+#include <boost/foreach.hpp>
 
 #include "FormulaCalculator.h"
-#include "PhysicsModel.h"
-#include "SimplePrediction.h"
+#include "FormulaQuantity.h"
+#include "ModelBase.h"
 
 Fittino::FormulaCalculator::FormulaCalculator( const Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
-    : CalculatorBase( model ),
-      _defaultValue( 0 ),
-      _result( 0 ),
-      _unit( ptree.get<std::string>( "Unit", "" ) ),
-      _x( &_defaultValue ),
-      _y( &_defaultValue ),
-      _z( &_defaultValue ),
-      _t( &_defaultValue ),
-      _ptree( ptree ),
-      _formula( new TFormula( ptree.get<std::string>( "Name" ).c_str(), ptree.get<std::string>( "Formula" ).c_str() ) ) {
+    : CalculatorBase( model ) {
 
-    InitializeVariable( "x", _x );
-    InitializeVariable( "y", _y );
-    InitializeVariable( "z", _z );
-    InitializeVariable( "t", _t );
+    _name = ptree.get<std::string>( _name, "FormulaCalculator" );
+    _tag = ptree.get<std::string>( _tag, "" );
 
-    _name = _formula->GetName();
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree ) {
 
-    if ( _formula->GetNdim() < 1 ) {
+        if ( node.first == "Quantity" ) {
 
-        throw ConfigurationException( "Invalid formula." );
+            std::string name = node.second.get<std::string>( "Name" );
+            std::string formula = node.second.get<std::string>( "Formula" );
+            FormulaQuantity* quantity = new FormulaQuantity( name, formula, model );
+            _formulas.push_back( quantity );
+            AddQuantity( quantity );
+
+        }
 
     }
 
-    AddQuantity( new SimplePrediction( _name, _unit , _result ) );
+    CalculatePredictions();
 
 }
 
 Fittino::FormulaCalculator::~FormulaCalculator() {
 
-    delete _formula;
-
 }
 
-void Fittino::FormulaCalculator::InitializeVariable( std::string name, const double*& variable ) {
-
-    if ( _ptree.count( name ) < 1 ) return;
-
-    variable = &_model->GetCollectionOfQuantities().At( _ptree.get<std::string>( name ) )->GetValue();
-
-}
 
 void Fittino::FormulaCalculator::CalculatePredictions() {
 
-    _result = _formula->Eval( *_x, *_y, *_z, *_t );
+    for ( unsigned int i = 0; i < _formulas.size(); i++ ) {
 
-}
+        _formulas[i]->Update();
 
-void Fittino::FormulaCalculator::Initialize() {
+    }
 
 }

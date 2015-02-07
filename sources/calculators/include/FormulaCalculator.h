@@ -21,6 +21,7 @@
 #define FITTINO_FORMULACALCULATOR_H
 
 #include "CalculatorBase.h"
+#include <vector>
 
 class TFormula;
 
@@ -29,6 +30,7 @@ class TFormula;
  */
 namespace Fittino {
 
+  class FormulaQuantity;
   class PhysicsModel;
 
   /*!
@@ -48,22 +50,10 @@ namespace Fittino {
        */
       ~FormulaCalculator();
       void                               CalculatePredictions();
-      void                               Initialize();
 
       /*! \cond UML */
     private:
-      double                             _defaultValue;
-      double                             _result;
-      const double*                      _t;
-      const double*                      _x;
-      const double*                      _y;
-      const double*                      _z;
-      std::string                        _unit;
-      const boost::property_tree::ptree& _ptree;
-      TFormula*                          _formula;
-
-    private:
-      void                               InitializeVariable( std::string name, const double*& variable );
+      std::vector<FormulaQuantity*>      _formulas;
 
       /*! \endcond UML */
 
