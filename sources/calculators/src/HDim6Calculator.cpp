@@ -49,8 +49,8 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
       _pdfDirectory( "" ),
       _smvalues ( new sminputs() ) {
 
-    if ( _name.empty() )  _name = "HDim6Calculator";
-    if ( _tag.empty() ) _tag = "HDim6";
+     _name = ptree.get<std::string>( "Name", "HDim6Calculator" );
+     _tag = ptree.get<std::string>( "Tag" , "HDim6" );
 
     _effvalues->override_unitarity = ! ptree.get<bool>( "UseDampingCoefficients" );
 
@@ -108,17 +108,60 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_b_b",         "",      _normSM_Gamma_hbb     ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_c_c",         "",      _normSM_Gamma_hcc     ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_s_s",         "",      _normSM_Gamma_hss     ) );
-    AddQuantity( new SimplePrediction( "NormSM_xs_ggh",              "",      _normSM_xs_ggh        ) );
-    AddQuantity( new SimplePrediction( "NormSM_xs_bbh",              "",      _normSM_xs_bbh        ) );
-    AddQuantity( new SimplePrediction( "NormSM_xs_tth",              "",      _normSM_xs_tth        ) );
-    AddQuantity( new SimplePrediction( "NormSM_xs_bh",               "",      _normSM_xs_bh         ) );
 
     if ( _calculate_Gamma_hZZ      ) AddQuantity( new SimplePrediction( "NormSM_Gamma_h_Z_Z",    "", _normSM_Gamma_hZZ      ) );
     if ( _calculate_Gamma_hWW      ) AddQuantity( new SimplePrediction( "NormSM_Gamma_h_W_W",    "", _normSM_Gamma_hWW      ) );
-    if ( _calculate_xs_qqh_2flavor ) AddQuantity( new SimplePrediction( "NormSM_xs_qqh_2flavor", "", _normSM_xs_qqh_2flavor ) );
-    if ( _calculate_xs_qqh_5flavor ) AddQuantity( new SimplePrediction( "NormSM_xs_qqh_5flavor", "", _normSM_xs_qqh_5flavor ) );
-    if ( _calculate_xs_Wh          ) AddQuantity( new SimplePrediction( "NormSM_xs_Wh",          "", _normSM_xs_Wh          ) );
-    if ( _calculate_xs_Zh          ) AddQuantity( new SimplePrediction( "NormSM_xs_Zh",          "", _normSM_xs_Zh          ) );
+
+    unsigned int nEnergies = ptree.count( "CenterOfMassEnergy" );
+
+    _energies.resize( nEnergies );
+    _normSM_xs_ggh.resize( nEnergies );
+    _normSM_xs_bbh.resize( nEnergies );
+    _normSM_xs_tth.resize( nEnergies );
+    _normSM_xs_bh.resize( nEnergies );
+    _normSM_xs_qqh_2flavor.resize( nEnergies );
+    _normSM_xs_qqh_5flavor.resize( nEnergies );
+    _normSM_xs_Wh.resize( nEnergies );
+    _normSM_xs_Zh.resize( nEnergies );
+    _SM_xs_qqh_2flavor.resize( nEnergies );
+    _SM_xs_qqh_5flavor.resize( nEnergies );
+    _SM_xs_Wh.resize( nEnergies );
+    _SM_xs_Zh.resize( nEnergies );
+    _xs_qqh_2flavor.resize( nEnergies );
+    _xs_qqh_5flavor.resize( nEnergies );
+    _xs_Wh.resize( nEnergies );
+    _xs_Zh.resize( nEnergies );
+
+    unsigned int iEnergy = 0;
+
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree ) {
+
+                    if ( node.first == "CenterOfMassEnergy" ) {
+
+                        double energy = node.second.get<double>( "Value" );
+
+                        std::string energyname = node.second.get<std::string>( "Name" );
+                        std::string xstag = "NormSM_xs_";
+                        xstag += energyname + "_";
+
+                        _energies.at( iEnergy ) = energy;
+                        Messenger::GetInstance()<<Messenger::ALWAYS<<"    CenterOfMassEnergy: "<<energy<<" GeV"<<Messenger::Endl;
+
+                        AddQuantity( new SimplePrediction( xstag + "ggh", "", _normSM_xs_ggh.at( iEnergy ) ) );
+                        AddQuantity( new SimplePrediction( xstag + "bbh", "", _normSM_xs_bbh.at( iEnergy ) ) );
+                        AddQuantity( new SimplePrediction( xstag + "tth", "", _normSM_xs_tth.at( iEnergy ) ) );
+                        AddQuantity( new SimplePrediction( xstag + "bh", "", _normSM_xs_bh.at( iEnergy ) ) );
+
+                        if ( _calculate_xs_qqh_2flavor ) AddQuantity( new SimplePrediction( xstag + "qqh_2flavor", "", _normSM_xs_qqh_2flavor.at( iEnergy ) ) );
+                        if ( _calculate_xs_qqh_5flavor ) AddQuantity( new SimplePrediction( xstag + "qqh_5flavor", "", _normSM_xs_qqh_5flavor.at( iEnergy ) ) );
+                        if ( _calculate_xs_Wh ) AddQuantity( new SimplePrediction( xstag + "Wh", "", _normSM_xs_Wh.at( iEnergy ) ) );
+                        if ( _calculate_xs_Zh ) AddQuantity( new SimplePrediction( xstag + "Zh", "", _normSM_xs_Zh.at( iEnergy ) ) );
+
+                        ++iEnergy;
+
+                    }
+
+                }
 
 }
 
@@ -251,33 +294,38 @@ void Fittino::HDim6Calculator::CallFunction() {
 
     }
 
-    // todo: calc xs in own class, possible to set E
 
-    k_ggh_      ( _smvalues, _effvalues, &_normSM_xs_ggh, &error, &chi2 );
-    ratio_bb_h_ ( _smvalues, _effvalues, &_normSM_xs_bbh, &error, &chi2 );
-    ratio_tth_  ( _smvalues, _effvalues, &_normSM_xs_tth, &error, &chi2 );
-    ratio_bg_bh_( _smvalues, _effvalues, &_normSM_xs_bh,  &error, &chi2 );
+    for (unsigned int iEnergy = 0; iEnergy < _energies.size(); ++iEnergy) {
 
-    if ( new_gridParameters ) {
+        _smvalues->s = TMath::Power(_energies.at( iEnergy ), 2);
 
-        if ( new_mh ) {
+        k_ggh_(_smvalues, _effvalues, &_normSM_xs_ggh.at( iEnergy ), &error, &chi2);
+        ratio_bb_h_(_smvalues, _effvalues, &_normSM_xs_bbh.at( iEnergy ), &error, &chi2);
+        ratio_tth_(_smvalues, _effvalues, &_normSM_xs_tth.at( iEnergy ), &error, &chi2);
+        ratio_bg_bh_(_smvalues, _effvalues, &_normSM_xs_bh.at( iEnergy ), &error, &chi2);
 
-            if ( _calculate_xs_Wh )          HWRadiation_( _smvalues, _effsmvalues, &_SM_xs_Wh,          &error, &chi2 );
-            if ( _calculate_xs_Zh )          HZRadiation_( _smvalues, _effsmvalues, &_SM_xs_Zh,          &error, &chi2 );
-            if ( _calculate_xs_qqh_2flavor ) ud_jjh_     ( _smvalues, _effsmvalues, &_SM_xs_qqh_2flavor, &error, &chi2 );
-            if ( _calculate_xs_qqh_5flavor ) udcsb_jjh_  ( _smvalues, _effsmvalues, &_SM_xs_qqh_5flavor, &error, &chi2 );
+        if (new_gridParameters) {
+
+            if (new_mh) {
+
+                if (_calculate_xs_Wh) HWRadiation_(_smvalues, _effsmvalues, &_SM_xs_Wh.at( iEnergy), &error, &chi2);
+                if (_calculate_xs_Zh) HZRadiation_(_smvalues, _effsmvalues, &_SM_xs_Zh.at( iEnergy ), &error, &chi2);
+                if (_calculate_xs_qqh_2flavor) ud_jjh_(_smvalues, _effsmvalues, &_SM_xs_qqh_2flavor.at( iEnergy ), &error, &chi2);
+                if (_calculate_xs_qqh_5flavor) udcsb_jjh_(_smvalues, _effsmvalues, &_SM_xs_qqh_5flavor.at( iEnergy ), &error, &chi2);
+
+            }
+
+            if (_calculate_xs_Wh) HWRadiation_(_smvalues, _effvalues, &_xs_Wh.at( iEnergy ), &error, &chi2);
+            if (_calculate_xs_Zh) HZRadiation_(_smvalues, _effvalues, &_xs_Zh.at( iEnergy ), &error, &chi2);
+            if (_calculate_xs_qqh_2flavor) ud_jjh_(_smvalues, _effvalues, &_xs_qqh_2flavor.at( iEnergy ), &error, &chi2);
+            if (_calculate_xs_qqh_5flavor) udcsb_jjh_(_smvalues, _effvalues, &_xs_qqh_5flavor.at( iEnergy ), &error, &chi2);
+
+            if (_calculate_xs_Wh) _normSM_xs_Wh.at( iEnergy ) = _xs_Wh.at( iEnergy ) / _SM_xs_Wh.at( iEnergy );
+            if (_calculate_xs_Zh) _normSM_xs_Zh.at( iEnergy ) = _xs_Zh.at( iEnergy ) / _SM_xs_Zh.at( iEnergy );
+            if (_calculate_xs_qqh_2flavor) _normSM_xs_qqh_2flavor.at( iEnergy ) = _xs_qqh_2flavor.at( iEnergy ) / _SM_xs_qqh_2flavor.at( iEnergy );
+            if (_calculate_xs_qqh_5flavor) _normSM_xs_qqh_5flavor.at( iEnergy ) = _xs_qqh_5flavor.at( iEnergy ) / _SM_xs_qqh_5flavor.at( iEnergy );
 
         }
-
-        if ( _calculate_xs_Wh )          HWRadiation_( _smvalues, _effvalues, &_xs_Wh,          &error, &chi2 );
-        if ( _calculate_xs_Zh )          HZRadiation_( _smvalues, _effvalues, &_xs_Zh,          &error, &chi2 );
-        if ( _calculate_xs_qqh_2flavor ) ud_jjh_     ( _smvalues, _effvalues, &_xs_qqh_2flavor, &error, &chi2 );
-        if ( _calculate_xs_qqh_5flavor ) udcsb_jjh_  ( _smvalues, _effvalues, &_xs_qqh_5flavor, &error, &chi2 );
-
-        if ( _calculate_xs_Wh )          _normSM_xs_Wh          = _xs_Wh          / _SM_xs_Wh;
-        if ( _calculate_xs_Zh )          _normSM_xs_Zh          = _xs_Zh          / _SM_xs_Zh;
-        if ( _calculate_xs_qqh_2flavor ) _normSM_xs_qqh_2flavor = _xs_qqh_2flavor / _SM_xs_qqh_2flavor;
-        if ( _calculate_xs_qqh_5flavor ) _normSM_xs_qqh_5flavor = _xs_qqh_5flavor / _SM_xs_qqh_5flavor;
 
     }
 
@@ -288,19 +336,18 @@ void Fittino::HDim6Calculator::ConfigureInput() {
     UpdateInput();
 
     _smvalues ->mh   = GetInput( "Mass_h" );
-    _f_g  =  - GetInput( "f_GG" ) * 8 * TMath::Pi() / ( _smvalues->alphas ); // f_g as defined in 1211.4580v4.pdf eq 38 but without factor of vev ( because of units ).
 
-    _effvalues->fgg  = 1e-6 * GetInput( "f_GG" );
-    _effvalues->fbb  = 1e-6 * GetInput( "f_BB" );
-    _effvalues->fww  = 1e-6 * GetInput( "f_WW" );
-    _effvalues->fb   = 1e-6 * GetInput( "f_B" );
-    _effvalues->fw   = 1e-6 * GetInput( "f_W" );
-    _effvalues->ftoh = 1e-6 * GetInput( "f_t" );
-    _effvalues->fboh = 1e-6 * GetInput( "f_b" );
-    _effvalues->ftah = 1e-6 * GetInput( "f_tau" );
-    _effvalues->fp1  = 1e-6 * GetInput( "f_Phi_1" );
-    _effvalues->fp2  = 1e-6 * GetInput( "f_Phi_2" );
-    _effvalues->fp4  = 1e-6 * GetInput( "f_Phi_4" );
+    _effvalues->fgg  = GetInput( "f_GG" );
+    _effvalues->fbb  = GetInput( "f_BB" );
+    _effvalues->fww  = GetInput( "f_WW" );
+    _effvalues->fb   = GetInput( "f_B" );
+    _effvalues->fw   = GetInput( "f_W" );
+    _effvalues->ftoh = GetInput( "f_t" );
+    _effvalues->fboh = GetInput( "f_b" );
+    _effvalues->ftah = GetInput( "f_tau" );
+    _effvalues->fp1  = GetInput( "f_Phi_1" );
+    _effvalues->fp2  = GetInput( "f_Phi_2" );
+    _effvalues->fp4  = GetInput( "f_Phi_4" );
 
     _effvalues->rgg  = TMath::Power( GetInput( "r_GG"    ), 2 );
     _effvalues->rbb  = TMath::Power( GetInput( "r_BB"    ), 2 );
@@ -327,5 +374,8 @@ void Fittino::HDim6Calculator::ConfigureInput() {
     _effvalues->np1  = GetInput( "n_Phi_1" );
     _effvalues->np2  = GetInput( "n_Phi_2" );
     _effvalues->np4  = GetInput( "n_Phi_4" );
+
+    _f_g  =  - _effvalues->fgg * 8 * TMath::Pi() / ( _smvalues->alphas ); // f_g as defined in 1211.4580v4.pdf eq 38 but without factor of vev ( because of units ).
+
 
 };

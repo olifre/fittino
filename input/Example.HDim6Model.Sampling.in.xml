@@ -113,18 +113,23 @@
 
             <UseDampingCoefficients>false</UseDampingCoefficients>
 
+            <CenterOfMassEnergy>
+                <Name>8TeV</Name>
+                <Value>8000</Value>
+            </CenterOfMassEnergy>
+
             <Mass_h>[Mass_h]</Mass_h>
 
-            <f_GG>[f_GG]</f_GG>
-            <f_BB>[f_VV_plus]-[f_VV_minus]</f_BB>
-            <f_WW>[f_VV_plus]+[f_VV_minus]</f_WW>
-            <f_B>[f_B]</f_B>
-            <f_W>[f_W]</f_W>
-            <f_t>[f_t]</f_t>
-            <f_b>[f_b]</f_b>
-            <f_tau>[f_tau]</f_tau>
+            <f_GG>1e-6*[f_GG]</f_GG>
+            <f_BB>1e-6*([f_VV_plus]-[f_VV_minus])</f_BB>
+            <f_WW>1e-6*([f_VV_plus]+[f_VV_minus])</f_WW>
+            <f_B>1e-6*([f_B])</f_B>
+            <f_W>1e-6*([f_W])</f_W>
+            <f_t>1e-6*([f_t])</f_t>
+            <f_b>1e-6*([f_b])</f_b>
+            <f_tau>1e-6*([f_tau])</f_tau>
             <f_Phi_1>0</f_Phi_1>
-            <f_Phi_2>[f_Phi_2]</f_Phi_2>
+            <f_Phi_2>1e-6*([f_Phi_2])</f_Phi_2>
             <f_Phi_4>0</f_Phi_4>
 
             <r_GG>1000.</r_GG>
