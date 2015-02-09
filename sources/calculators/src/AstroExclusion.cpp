@@ -38,6 +38,7 @@ Fittino::AstroExclusion::AstroExclusion(ModelBase const *model, const Measuremen
 
     double confidenceLevel = ptree.get<double>( "ConfidenceLevel" );
     _quantile = TMath::NormQuantile( confidenceLevel );
+    // _quantile = TMath::Sqrt( 1.64 ); this reproduces the former result
 
 }
 
