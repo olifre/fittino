@@ -76,17 +76,21 @@ Fittino::Measurement::Measurement(std::string type, unsigned int index, const Mo
 
     Factory factory;
 
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree.get_child("Uncertainties") ) {
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree ) {
 
-                    UncertaintyBase *uncertainty = factory.CreateUncertainty(node.first, model, this, node.second);
+                    if (node.first == "AstroExclusion" || node.first == "AbsoluteUncertainty" || node.first == "RelativeTheoryUncertainty") {
 
-                    if ( !uncertainty->GetName().empty() && !_namedUncertainties.insert( std::make_pair( uncertainty->GetName(), uncertainty ) ).second ) {
+                        UncertaintyBase *uncertainty = factory.CreateUncertainty(node.first, model, this, node.second);
 
-                        throw ConfigurationException("Several uncertainties with same name " + uncertainty->GetName() + ".");
+                        if (!uncertainty->GetName().empty() && !_namedUncertainties.insert(std::make_pair(uncertainty->GetName(), uncertainty)).second) {
 
+                            throw ConfigurationException("Several uncertainties with same name " + uncertainty->GetName() + ".");
+
+                        }
+
+                        _uncertainties.push_back(uncertainty);
                     }
 
-                    _uncertainties.push_back( uncertainty );
                 }
 
 }

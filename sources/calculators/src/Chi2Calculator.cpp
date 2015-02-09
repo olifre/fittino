@@ -44,17 +44,21 @@ Fittino::Chi2Calculator::Chi2Calculator( const Fittino::ModelBase* model, const 
 
     Factory factory;
 
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree.get_child( "Observables" ) ) {
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree ) {
 
-                    Measurement* measurement = new Measurement(node.first, _measurements.size(), model, node.second);
+                    if ( node.first == "UpperLimit" || node.first == "LowerLimit" || node.first == "Measurement" ) {
 
-                    for (unsigned int iQuantity = 0; iQuantity < measurement->GetCollectionOfQuantities().GetNumberOfElements(); iQuantity++) {
+                        Measurement *measurement = new Measurement(node.first, _measurements.size(), model, node.second);
 
-                        AddQuantity( measurement->GetCollectionOfQuantities().At( iQuantity ) );
+                        for (unsigned int iQuantity = 0; iQuantity < measurement->GetCollectionOfQuantities().GetNumberOfElements(); iQuantity++) {
+
+                            AddQuantity(measurement->GetCollectionOfQuantities().At(iQuantity));
+
+                        }
+
+                        _measurements.push_back(measurement);
 
                     }
-
-                    _measurements.push_back(measurement);
 
                 }
 
