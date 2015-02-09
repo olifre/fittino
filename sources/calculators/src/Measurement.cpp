@@ -38,13 +38,10 @@
 Fittino::Measurement::Measurement(std::string type, unsigned int index, const ModelBase *model, const boost::property_tree::ptree &ptree)
 :CalculatorBase( model ) {
 
-    _lowerLimit = false;
-    _upperLimit = false;
-
     _index = index;
 
-    if ( _name == "" ) _name = "Measurement";
-    if ( _tag == "" ) _tag = "Measurement";
+    _lowerLimit = false;
+    _upperLimit = false;
 
     if (type == "LowerLimit") {
 
@@ -62,12 +59,20 @@ Fittino::Measurement::Measurement(std::string type, unsigned int index, const Mo
 
     }
 
-    _measuredValue = ptree.get<double>("Measurement");
+    _measuredValue = ptree.get<double>("Value");
     std::string predictionName = ptree.get<std::string>("Prediction");
     _prediction = model->GetCollectionOfQuantities().At(predictionName);
 
+    _name = ptree.get<std::string>( "Name" );
+    _tag = ptree.get<std::string>( "Tag", _name );
+
     _lowerBound = ptree.get<double>("LowerBound", -std::numeric_limits<double>::infinity());
     _upperBound = ptree.get<double>("UpperBound", +std::numeric_limits<double>::infinity());
+
+    AddQuantity( "Chi2", new SimplePrediction( "Chi2", "", _chi2  ) );
+    AddQuantity( "Measurement", new SimplePrediction( "Value", "", _measuredValue  ) );
+    AddQuantity( "Deviation", new SimplePrediction( "Deviation", "", _deviation  ) );
+    AddQuantity( "Pull", new SimplePrediction( "Pull", "", _pull  ) );
 
     Factory factory;
 
@@ -83,11 +88,6 @@ Fittino::Measurement::Measurement(std::string type, unsigned int index, const Mo
 
                     _uncertainties.push_back( uncertainty );
                 }
-
-    AddQuantity( "Chi2", new SimplePrediction( "Chi2", "", _chi2  ) );
-    AddQuantity( "Measurement", new SimplePrediction( "Measurement", "", _measuredValue  ) );
-    AddQuantity( "Deviation", new SimplePrediction( "Deviation", "", _deviation  ) );
-    AddQuantity( "Pull", new SimplePrediction( "Pull", "", _pull  ) );
 
 }
 
@@ -144,16 +144,7 @@ void Fittino::Measurement::SetMeasuredValue(double value) {
 
 bool Fittino::Measurement::IsWithinBounds() {
 
-    if ( _measuredValue < _upperBound && _measuredValue > _lowerBound ) {
-
-        return true;
-
-    }
-    else {
-
-        return false;
-
-    }
+    return _measuredValue <= _upperBound && _measuredValue >= _lowerBound;
 
 }
 
