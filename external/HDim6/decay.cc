@@ -768,9 +768,16 @@ void hzelel_( sminputs * smpar, effinputs * effpar, double * pWidth, double * pE
 //printf("\n mHZlL-g1hzy: %f", g1hzy); 
 //printf("\n mHZlL-g2hzy: %f", g2hzy); 
 
- 
-  double par[] = { smpar->mh, smpar->mz, smpar->mel, smpar->mel, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
+// Here: insert larger fake electron mass to ensure stability. 
+// Original definition:
+//  double par[] = { smpar->mh, smpar->mz, smpar->mel, smpar->mel, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
+//                   g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy };
+// New definition:
+  double par[] = { smpar->mh, smpar->mz, 0.10, 0.10, sqrt( smpar->alphae*4*M_PI ), smpar->sw, 0,
                    g1hzz, g2hzz, g3hzz, g1hww, g2hww, g3hww, g1hzy, g2hzy }; 
+//
+//
+
   double result, error;
   
   double xl[] = { 0, 0 };
