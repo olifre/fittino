@@ -27,7 +27,6 @@
 #include "TMath.h"
 
 #include "CalculatorBase.h"
-#include "ConfigurationException.h"
 #include "Factory.h"
 #include "Measurement.h"
 #include "ModelBase.h"
@@ -37,8 +36,6 @@
 
 Fittino::Measurement::Measurement(std::string type, unsigned int index, const ModelBase *model, const boost::property_tree::ptree &ptree)
 :CalculatorBase( model ) {
-
-    _index = index;
 
     _lowerLimit = false;
     _upperLimit = false;
@@ -59,12 +56,15 @@ Fittino::Measurement::Measurement(std::string type, unsigned int index, const Mo
 
     }
 
-    _measuredValue = ptree.get<double>("Value");
-    std::string predictionName = ptree.get<std::string>("Prediction");
-    _prediction = model->GetCollectionOfQuantities().At(predictionName);
+    _index = index;
 
     _name = ptree.get<std::string>( "Name" );
     _tag = ptree.get<std::string>( "Tag", _name );
+
+    _measuredValue = ptree.get<double>("Value");
+
+    std::string predictionName = ptree.get<std::string>("Prediction");
+    _prediction = model->GetCollectionOfQuantities().At(predictionName);
 
     _lowerBound = ptree.get<double>("LowerBound", -std::numeric_limits<double>::infinity());
     _upperBound = ptree.get<double>("UpperBound", +std::numeric_limits<double>::infinity());
