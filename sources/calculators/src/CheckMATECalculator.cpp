@@ -36,13 +36,14 @@
 Fittino::CheckMATECalculator::CheckMATECalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
   : CalculatorBase( model ),
     
-    _cHW  ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cHW.Name", "cHW" ) )->GetValue() )
-{
-  
+
+    _cWW ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cWW.Name","cWW" ) )->GetValue() ),
+    _cHW ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cHW.Name", "cHW" ) )->GetValue() ),
+    _cHB ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cHB.Name", "cHB" ) )->GetValue() ),
+    _cBB ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cBB.Name", "cBB" ) )->GetValue() ) {
   
 
 
-  std::cout<<"USING _cHW = "<<_cHW<<std::endl;
   std::string originalinputfile = "/lustre/user/thakur/programs/CheckMATE/CheckMATE-1.1.14/runfittino.txt";
   std::string inputfile = "fittino_checkmate_in.txt";
   
@@ -145,6 +146,13 @@ void Fittino::CheckMATECalculator::CalculatePredictions() {
   myfile.open ( inputfile.c_str(), std::ios::app ) ;
   myfile.close();
   
+
+  // if ( boost::filesystem::exists( _dirname )) {
+
+  // boost::filesystem::rename( _dirname,  _dirname + ".last");
+
+  //  }
+
   
   Executor executor("./CheckMATE", "CheckMATE");
   executor.AddArgument(inputfile);
@@ -186,16 +194,11 @@ void Fittino::CheckMATECalculator::CalculatePredictions() {
     
   }
   
-  
-  
-  
-  if ( boost::filesystem::exists( _dirname )) {
+ 
     
-    boost::filesystem::rename( _dirname,  _dirname + ".last");
-    
-  }
-  
 }
+
+
 void Fittino::CheckMATECalculator::SetupMeasuredValues() {
   
   

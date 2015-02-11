@@ -70,19 +70,19 @@ namespace Fittino {
                                                                                                                                                             
   private:
 
-      int            _fH;
+      const double&            _cWW;
       /*!                                                                                                                                                                                                    
        *                                                                                                                                                                                                     
        */
-      int           _cHW;
+      const double&           _cHW;
       /*!                                                                                                                                                                                                    
        *                                                                                                                                                                                                     
        */
-      int           _cHB;
+      const double&           _cHB;
       /*!                                                                                                                                                                                                    
        *                                                                                                                                                                                                     
        */
-      int           _cBB;
+      const double&           _cBB;
 
 
       std::string  _dirname;

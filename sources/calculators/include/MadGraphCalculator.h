@@ -63,7 +63,7 @@ namespace Fittino {
       
     private:
  
-      const double&         _fH;
+      const double&         _cWW;
       /*!
        *
        */

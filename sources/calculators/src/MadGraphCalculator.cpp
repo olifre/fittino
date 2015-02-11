@@ -36,7 +36,7 @@
 Fittino::MadGraphCalculator::MadGraphCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
   : CalculatorBase( model ),
     // Initialize input quantities.                                                                                                                                                      
-    _fH ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "fH.Name","fH" ) )->GetValue() ),
+    _cWW ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cWW.Name","cWW" ) )->GetValue() ),
     _cHW ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cHW.Name", "cHW" ) )->GetValue() ),
     _cHB ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cHB.Name", "cHB" ) )->GetValue() ),
     _cBB ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cBB.Name", "cBB" ) )->GetValue() ) {
@@ -81,8 +81,6 @@ Fittino::MadGraphCalculator::~MadGraphCalculator() {
 
 
 void Fittino::MadGraphCalculator::CalculatePredictions() {
-
-  std::cout<<"USING _cHW = "<<_cHW<<std::endl;
   
   std::string originalinputfile = "/lustre/user/thakur/programs/madgraph_aMC_v2_2_2/runmadgraph.txt";
   std::string inputfile = "fittino_madgraph_in.txt"; 
