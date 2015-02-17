@@ -93,6 +93,8 @@ Fittino::Measurement::Measurement(std::string type, unsigned int index, const Mo
 
                 }
 
+    CalculatePredictions();
+
 }
 
 Fittino::Measurement::~Measurement() {
