@@ -78,7 +78,7 @@ Fittino::Chi2Calculator::Chi2Calculator( const Fittino::ModelBase* model, const 
     while ( smear ) {
 
         SmearMeasurements();
-        smear = MeasurementsAreWithinBounds();
+        smear = ! MeasurementsAreWithinBounds();
 
     }
 
