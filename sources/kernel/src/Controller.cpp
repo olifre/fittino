@@ -189,20 +189,19 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
         std::string verbosityLevel = _inputPtree->get<std::string>( "InputFile.VerbosityLevel" );
         Messenger::GetInstance().SetVerbosityLevel( verbosityLevel );
 
-        double randomSeed = _inputPtree->get<double>( "InputFile.RandomSeed", -1 );
+        if ( _inputPtree->get_child( "InputFile" ).count( "RandomSeed" ) ) {
 
-
-        if ( randomSeed >=0 ) {
+            unsigned int randomSeed = _inputPtree->get<unsigned int>( "InputFile.RandomSeed" );
 
             RandomGenerator::GetInstance()->SetSeed( randomSeed );
 
+            if ( randomSeed == 0 ) {
+
+                Messenger::GetInstance() << Messenger::ALWAYS << "RandomSeed was set to 0 in the input file. A random random seed of "<< RandomGenerator::GetInstance()->GetSeed()<< " is used." << Messenger::Endl;
+
+            }
+
         }
-
-	if ( randomSeed ==0 ) {
-
-	  Messenger::GetInstance() << Messenger::ALWAYS << "RandomSeed was set to 0 in the input file. A random random seed of "<< RandomGenerator::GetInstance()->GetSeed()<< " is used." << Messenger::Endl;
-
-	}
 
     }
     catch ( const InputException& inputException ) {
