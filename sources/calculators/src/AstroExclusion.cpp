@@ -40,6 +40,8 @@ Fittino::AstroExclusion::AstroExclusion(ModelBase const *model, const Measuremen
     _quantile = TMath::NormQuantile( confidenceLevel );
     // _quantile = TMath::Sqrt( 1.64 ); this reproduces the former result
 
+    Update();
+
 }
 
 Fittino::AstroExclusion::~AstroExclusion() {
