@@ -78,7 +78,7 @@ Fittino::Measurement::Measurement(std::string type, unsigned int index, const Mo
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree ) {
 
-                    if (node.first == "AstroExclusion" || node.first == "AbsoluteUncertainty" || node.first == "RelativeTheoryUncertainty") {
+                    if (node.first == "AstroUncertainty" || node.first == "AbsoluteUncertainty" || node.first == "RelativeTheoryUncertainty") {
 
                         UncertaintyBase *uncertainty = factory.CreateUncertainty(node.first, model, this, node.second);
 

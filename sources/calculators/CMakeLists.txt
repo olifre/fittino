@@ -33,6 +33,7 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 LIST( APPEND sources "src/AbsoluteUncertainty.cpp" )
 LIST( APPEND sources "src/FormulaQuantity.cpp" )
 LIST( APPEND sources "src/RelativeTheoryUncertainty.cpp" )
+LIST( APPEND sources "src/AstroUncertainty.cpp" )
 
 
 IF(FEYNHIGGS_FOUND)

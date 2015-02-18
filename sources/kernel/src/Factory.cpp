@@ -22,7 +22,7 @@
 #include "AbsoluteUncertainty.h"
 #include "Alpine2Model.h"
 #include "AstroCalculator.h"
-#include "AstroExclusion.h"
+#include "AstroUncertainty.h"
 #include "AstroFitCalculator.h"
 #include "CheckMATECalculator.h"
 #include "CheckVacuumCalculator.h"
@@ -686,9 +686,9 @@ Fittino::UncertaintyBase *Fittino::Factory::CreateUncertainty(const std::string 
         return new RelativeTheoryUncertainty(model, measurement, ptree);
 
     }
-    else if ( type == "AstroExclusion") {
+    else if ( type == "AstroUncertainty") {
 
-        return new AstroExclusion(model, measurement, ptree);
+        return new AstroUncertainty(model, measurement, ptree);
 
     }
     else {

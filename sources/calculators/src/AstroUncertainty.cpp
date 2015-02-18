@@ -17,15 +17,14 @@
 *                                                                              *
 *******************************************************************************/
 
-#include "AstroExclusion.h"
+#include "AstroUncertainty.h"
 #include "Quantity.h"
 #include <boost/property_tree/ptree.hpp>
-#include <cstddef>
 #include "TGraph.h"
 #include "TMath.h"
 #include "ModelBase.h"
 
-Fittino::AstroExclusion::AstroExclusion(ModelBase const *model, const Measurement *observable, const boost::property_tree::ptree &ptree)
+Fittino::AstroUncertainty::AstroUncertainty(ModelBase const *model, const Measurement *observable, const boost::property_tree::ptree &ptree)
 : UncertaintyBase(model, observable, ptree) {
 
 
@@ -44,13 +43,13 @@ Fittino::AstroExclusion::AstroExclusion(ModelBase const *model, const Measuremen
 
 }
 
-Fittino::AstroExclusion::~AstroExclusion() {
+Fittino::AstroUncertainty::~AstroUncertainty() {
 
     delete _graph;
 
 }
 
-void Fittino::AstroExclusion::Update() {
+void Fittino::AstroUncertainty::Update() {
 
     _value = _graph->Eval( _mass->GetValue() ) / _quantile;
 
