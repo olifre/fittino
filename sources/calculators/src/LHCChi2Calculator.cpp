@@ -37,8 +37,10 @@ Fittino::LHCChi2Calculator::LHCChi2Calculator( const ModelBase* model, const boo
     : CalculatorBase( model ) {
 
   _name = ptree.get<std::string>( "Name", "LHCChi2Calculator" );
+  _tag = ptree.get<std::string>( "Tag", _name );
 
-  AddQuantity( new SimplePrediction( _name + "_Chi2" , "", "", "", 0., 1.e6, _chi2 ) );
+
+  AddQuantity( new SimplePrediction(  "Chi2" , "", "", "", 0., 1.e6, _chi2 ) );
 
   BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree ) {
 
