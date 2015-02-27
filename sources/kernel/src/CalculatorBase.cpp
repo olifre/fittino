@@ -134,13 +134,13 @@ void Fittino::CalculatorBase::UpdateInput() {
 
 }
 
-const double &Fittino::CalculatorBase::GetInput( std::string name ) {
+const double &Fittino::CalculatorBase::GetInput( std::string name ) const {
 
     return _input.at( name )->GetValue() ;
 
 }
 
-void Fittino::CalculatorBase::PrintInput() {
+void Fittino::CalculatorBase::PrintInput() const {
 
     std::map<std::string, FormulaQuantity*>::const_iterator it;
 
