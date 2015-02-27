@@ -77,8 +77,8 @@ namespace Fittino {
       void                                          AddStringVariable( VariableBase<std::string>* variable );
       void                                          AddInput( std::string name, std::string defaultValue = "" );
       void                                          UpdateInput();
-      const double&                                 GetInput( std::string name );
-      void                                          PrintInput();
+      const double&                                 GetInput( std::string name ) const;
+      void                                          PrintInput() const;
 
       /*! \cond UML */
     private:
