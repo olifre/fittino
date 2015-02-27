@@ -64,7 +64,13 @@ void Fittino::CalculatorBase::SetupMeasuredValues() {
 
 void  Fittino::CalculatorBase::AddQuantity( Fittino::Quantity* prediction ) {
 
-    AddQuantity( prediction->GetName(), prediction );
+    if ( _tag != "" ) {
+
+        prediction->SetName( _tag + "_" + prediction->GetName() );
+
+    }
+
+    _collectionOfQuantities.AddElement( prediction->GetName(), prediction );
 
 }
 
@@ -86,18 +92,6 @@ Fittino::CalculatorBase::CalculatorBase(Fittino::ModelBase const *model, boost::
     _name = ptree.get<std::string>( "Name", "" );
     _tag = ptree.get<std::string>( "Tag", "" ); // todo: Decide if tag should be equal to name by default
     _ptree = &ptree;
-
-}
-
-void Fittino::CalculatorBase::AddQuantity(std::string key, Fittino::Quantity *prediction) {
-
-    if ( _tag != "" ) {
-
-        prediction->SetName( _tag + "_" + prediction->GetName() );
-
-    }
-
-    _collectionOfQuantities.AddElement( key, prediction );
 
 }
 

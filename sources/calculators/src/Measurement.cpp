@@ -56,10 +56,10 @@ Fittino::Measurement::Measurement(std::string type, unsigned int index, const Mo
 
     AddInput( "Prediction" );
 
-    AddQuantity( "Chi2"       , new SimplePrediction( "Chi2"     , "", _chi2          ) );
-    AddQuantity( "Measurement", new SimplePrediction( "Value"    , "", _measuredValue ) );
-    AddQuantity( "Deviation"  , new SimplePrediction( "Deviation", "", _deviation     ) );
-    AddQuantity( "Pull"       , new SimplePrediction( "Pull"     , "", _pull          ) );
+    AddQuantity( new SimplePrediction( "MeasuredValue"    , "", _measuredValue ) );
+    AddQuantity( new SimplePrediction( "Deviation", "", _deviation     ) );
+    AddQuantity( new SimplePrediction( "Pull"     , "", _pull          ) );
+    AddQuantity( new SimplePrediction( "Chi2"     , "", _chi2          ) );
 
     Factory factory;
 
