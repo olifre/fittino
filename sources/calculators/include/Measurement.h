@@ -43,13 +43,15 @@ namespace Fittino {
         Measurement(std::string type, unsigned int index, const ModelBase *model, const boost::property_tree::ptree &ptree);
         ~Measurement();
 
-        const double& GetTotalUncertainty() const;
-        const double& GetPredictedValue() const;
-        const std::map<std::string, const UncertaintyBase*>& GetNamedUncertainties() const;
-
         bool IsWithinBounds() const;
         void CalculatePredictions();
         void SetMeasuredValue( double value );
+
+        const double& GetTotalUncertainty() const;
+        const double& GetPredictedValue() const;
+        const double& GetMeasuredValue() const;
+        const double& GetChi2() const;
+        const std::map<std::string, const UncertaintyBase*>& GetNamedUncertainties() const;
 
     private:
 

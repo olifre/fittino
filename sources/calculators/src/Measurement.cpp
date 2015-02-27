@@ -149,3 +149,15 @@ const std::map<std::string, const Fittino::UncertaintyBase *>& Fittino::Measurem
     return _namedUncertainties;
 
 }
+
+const double& Fittino::Measurement::GetMeasuredValue() const {
+
+    return _measuredValue;
+
+}
+
+const double& Fittino::Measurement::GetChi2() const {
+
+    return _chi2;
+
+}

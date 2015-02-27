@@ -97,7 +97,7 @@ void Fittino::Chi2Calculator::CalculatePredictions() {
     for ( unsigned int i = 0; i < _measurements.size(); i++ ) {
 
         _measurements[i]->CalculatePredictions();
-        chi2 += _measurements[i]->GetCollectionOfQuantities().At( "Chi2" )->GetValue();
+        chi2 += _measurements[i]->GetChi2();
 
     }
 
