@@ -66,7 +66,7 @@ Fittino::Chi2Calculator::Chi2Calculator( const Fittino::ModelBase* model, const 
 
     for ( unsigned int i = 0; i < _measurements.size(); i++ ) {
 
-        _initialPredictions[i] = _measurements.at( i )->GetPrediction()->GetValue();
+        _initialPredictions[i] = _measurements.at(i)->GetPredictedValue();
         _initialUncertainties[i] = _measurements.at(i)->GetTotalUncertainty();
 
     }
