@@ -23,7 +23,6 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/foreach.hpp>
 
-#include "TGraph.h"
 #include "TMath.h"
 
 #include "CalculatorBase.h"
