@@ -43,12 +43,6 @@ const Fittino::Collection<Fittino::Quantity*>& Fittino::CalculatorBase::GetColle
 
 }
 
-const Fittino::Collection<Fittino::VariableBase<std::string>*>& Fittino::CalculatorBase::GetCollectionOfStringVariables() const {
-
-    return _collectionOfStringVariables;
-
-}
-
 Fittino::CalculatorBase::~CalculatorBase() {
 
 }
@@ -70,18 +64,6 @@ void  Fittino::CalculatorBase::AddQuantity( Fittino::Quantity* prediction ) {
     }
 
     _collectionOfQuantities.AddElement( prediction->GetName(), prediction );
-
-}
-
-void  Fittino::CalculatorBase::AddStringVariable( Fittino::VariableBase<std::string>* variable ) {
-
-    if ( _tag != "" ) {
-
-        variable->SetName( _tag + "_" + variable->GetName() );
-
-    }
-
-    _collectionOfStringVariables.AddElement( variable );
 
 }
 

@@ -29,12 +29,10 @@
  */
 namespace Fittino {
 
-  class ModelBase;
-  class PhysicsModel;
+    class ModelBase;
+    class PhysicsModel;
     class Quantity;
     class FormulaQuantity;
-
-  template<class T> class VariableBase;
 
   /*!
    *  \ingroup kernel
@@ -46,16 +44,15 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      CalculatorBase( const ModelBase* model, boost::property_tree::ptree* ptree = 0);
+      CalculatorBase( const ModelBase* model, boost::property_tree::ptree* ptree = 0 );
 
       /*!
        *  Standard destructor.
        */
       std::string                                   GetName() const;
       const Collection<Quantity*>&                  GetCollectionOfQuantities() const;
-      const Collection<VariableBase<std::string>*>& GetCollectionOfStringVariables() const;
 
-    public:
+  public:
       virtual                                       ~CalculatorBase();
       virtual void                                  CalculatePredictions() = 0;
       virtual void                                  Initialize();
@@ -71,19 +68,16 @@ namespace Fittino {
       boost::property_tree::ptree*                  _ptree;
 
     protected:
-      void                                          AddQuantity( Quantity* prediction );
-      void                                          AddStringVariable( VariableBase<std::string>* variable );
-      void                                          AddInput( std::string name, std::string defaultValue = "" );
-      void                                          UpdateInput();
       const double&                                 GetInput( std::string name ) const;
+      void                                          AddInput( std::string name, std::string defaultValue = "" );
+      void                                          AddQuantity( Quantity* prediction );
+      void                                          UpdateInput();
       void                                          PrintInput() const;
 
       /*! \cond UML */
     private:
-      Collection<Quantity*>                         _collectionOfQuantities;
-      Collection<VariableBase<std::string>*>        _collectionOfStringVariables;
       std::map< std::string, FormulaQuantity* >     _input;
-
+      Collection<Quantity*>                         _collectionOfQuantities;
 
       /*! \endcond UML */
 
