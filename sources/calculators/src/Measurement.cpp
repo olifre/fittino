@@ -63,8 +63,7 @@ Fittino::Measurement::Measurement(std::string type, unsigned int index, const Mo
 
     _measuredValue = ptree.get<double>("Value");
 
-    std::string predictionName = ptree.get<std::string>("Prediction");
-    _prediction = model->GetCollectionOfQuantities().At(predictionName);
+    AddInput( "Prediction" );
 
     _lowerBound = ptree.get<double>("LowerBound", -std::numeric_limits<double>::infinity());
     _upperBound = ptree.get<double>("UpperBound", +std::numeric_limits<double>::infinity());
@@ -104,7 +103,9 @@ Fittino::Measurement::~Measurement() {
 
 void Fittino::Measurement::CalculatePredictions()  {
 
-    _deviation = _prediction->GetValue() - _measuredValue;
+    UpdateInput();
+
+    _deviation = GetInput( "Prediction" ) - _measuredValue;
 
     if ( ( _lowerLimit && _deviation > 0 ) || ( _upperLimit && _deviation < 0 )  ) {
 
@@ -132,9 +133,10 @@ void Fittino::Measurement::CalculatePredictions()  {
 }
 
 
-const Fittino::Quantity* Fittino::Measurement::GetPrediction() const {
+double const & Fittino::Measurement::GetPredictedValue() const {
 
-    return _prediction;
+    return GetInput( "Prediction" );
+    
 }
 
 double Fittino::Measurement::GetTotalUncertainty() const {

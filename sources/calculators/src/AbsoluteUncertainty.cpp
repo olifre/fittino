@@ -39,7 +39,7 @@ Fittino::AbsoluteUncertainty::~AbsoluteUncertainty() {
 
 void Fittino::AbsoluteUncertainty::Update() {
 
-    if ( _observable->GetPrediction()->GetValue() < _observable->GetCollectionOfQuantities().At("Measurement")->GetValue() ) {
+    if (_observable->GetPredictedValue() < _observable->GetCollectionOfQuantities().At("Measurement")->GetValue() ) {
 
         _value = _valueMinus;
 
