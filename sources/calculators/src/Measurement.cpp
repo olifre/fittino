@@ -37,17 +37,17 @@
 Fittino::Measurement::Measurement(std::string type, unsigned int index, const ModelBase *model, const boost::property_tree::ptree &ptree)
 :CalculatorBase( model ) {
 
-    _lowerLimit = false;
-    _upperLimit = false;
+    _isLowerLimit = false;
+    _isUpperLimit = false;
 
     if (type == "LowerLimit") {
 
-        _lowerLimit = true;
+        _isLowerLimit = true;
 
     }
     else if (type == "UpperLimit") {
 
-        _upperLimit = true;
+        _isUpperLimit = true;
 
     }
     else if (type != "Measurement") {
@@ -107,7 +107,7 @@ void Fittino::Measurement::CalculatePredictions()  {
 
     _deviation = GetInput( "Prediction" ) - _measuredValue;
 
-    if ( ( _lowerLimit && _deviation > 0 ) || ( _upperLimit && _deviation < 0 )  ) {
+    if ( ( _isLowerLimit && _deviation > 0 ) || ( _isUpperLimit && _deviation < 0 )  ) {
 
         _deviation = 0;
 
@@ -150,7 +150,7 @@ void Fittino::Measurement::SetMeasuredValue(double value) {
     _measuredValue = value;
 }
 
-bool Fittino::Measurement::IsWithinBounds() {
+bool Fittino::Measurement::IsWithinBounds() const {
 
     return _measuredValue <= _upperBound && _measuredValue >= _lowerBound;
 

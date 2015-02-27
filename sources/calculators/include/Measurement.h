@@ -52,8 +52,8 @@ namespace Fittino {
 
     private:
 
-        bool _lowerLimit;
-        bool _upperLimit;
+        bool _isLowerLimit;
+        bool _isUpperLimit;
 
         unsigned int _index;
 
