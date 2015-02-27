@@ -36,41 +36,30 @@
 Fittino::Measurement::Measurement(std::string type, unsigned int index, const ModelBase *model, const boost::property_tree::ptree &ptree)
 :CalculatorBase( model ) {
 
-    _isLowerLimit = false;
-    _isUpperLimit = false;
-
-    if (type == "LowerLimit") {
-
-        _isLowerLimit = true;
-
-    }
-    else if (type == "UpperLimit") {
-
-        _isUpperLimit = true;
-
-    }
-    else if (type != "Measurement") {
-
-        throw ConfigurationException("Type " + type + " not known.");
-
-    }
-
-    _index = index;
-
     _name = ptree.get<std::string>( "Name" );
     _tag = ptree.get<std::string>( "Tag", _name );
 
-    _measuredValue = ptree.get<double>("Value");
+    _index = index;
+
+    _measuredValue = ptree.get<double>( "Value" );
+    _lowerBound = ptree.get<double>( "LowerBound", -std::numeric_limits<double>::infinity() );
+    _upperBound = ptree.get<double>( "UpperBound", +std::numeric_limits<double>::infinity() );
+
+    _isLowerLimit = ptree.get<bool>( "IsLowerLimit", false );
+    _isUpperLimit = ptree.get<bool>( "IsUpperLimit", false );
+
+    if ( _isLowerLimit && _isUpperLimit ) {
+
+        throw ConfigurationException( "Observable " + _name + " declared as both lower limit and upper limit." );
+
+    }
 
     AddInput( "Prediction" );
 
-    _lowerBound = ptree.get<double>("LowerBound", -std::numeric_limits<double>::infinity());
-    _upperBound = ptree.get<double>("UpperBound", +std::numeric_limits<double>::infinity());
-
-    AddQuantity( "Chi2", new SimplePrediction( "Chi2", "", _chi2  ) );
-    AddQuantity( "Measurement", new SimplePrediction( "Value", "", _measuredValue  ) );
-    AddQuantity( "Deviation", new SimplePrediction( "Deviation", "", _deviation  ) );
-    AddQuantity( "Pull", new SimplePrediction( "Pull", "", _pull  ) );
+    AddQuantity( "Chi2"       , new SimplePrediction( "Chi2"     , "", _chi2          ) );
+    AddQuantity( "Measurement", new SimplePrediction( "Value"    , "", _measuredValue ) );
+    AddQuantity( "Deviation"  , new SimplePrediction( "Deviation", "", _deviation     ) );
+    AddQuantity( "Pull"       , new SimplePrediction( "Pull"     , "", _pull          ) );
 
     Factory factory;
 
@@ -80,9 +69,9 @@ Fittino::Measurement::Measurement(std::string type, unsigned int index, const Mo
 
                         UncertaintyBase *uncertainty = factory.CreateUncertainty(node.first, model, this, node.second);
 
-                        if (!uncertainty->GetName().empty() && !_namedUncertainties.insert(std::make_pair(uncertainty->GetName(), uncertainty)).second) {
+                        if ( !uncertainty->GetName().empty() && !_namedUncertainties.insert( std::make_pair( uncertainty->GetName(), uncertainty ) ).second ) {
 
-                            throw ConfigurationException("Several uncertainties with same name " + uncertainty->GetName() + ".");
+                            throw ConfigurationException("Several uncertainties with same name " + uncertainty->GetName() + "." );
 
                         }
 
@@ -138,13 +127,13 @@ double const & Fittino::Measurement::GetPredictedValue() const {
     
 }
 
-double Fittino::Measurement::GetTotalUncertainty() const {
+const double& Fittino::Measurement::GetTotalUncertainty() const {
 
     return _totalUncertainty;
 
 }
 
-void Fittino::Measurement::SetMeasuredValue(double value) {
+void Fittino::Measurement::SetMeasuredValue( double value ) {
 
     _measuredValue = value;
 }
@@ -155,7 +144,7 @@ bool Fittino::Measurement::IsWithinBounds() const {
 
 }
 
-const std::map<std::string, const Fittino::UncertaintyBase *> &Fittino::Measurement::GetNamedUncertainties() const {
+const std::map<std::string, const Fittino::UncertaintyBase *>& Fittino::Measurement::GetNamedUncertainties() const {
 
     return _namedUncertainties;
 
