@@ -47,7 +47,7 @@ namespace Fittino {
         const double& GetPredictedValue() const;
         double GetTotalUncertainty() const;
         void SetMeasuredValue(double value);
-        bool IsWithinBounds();
+        bool IsWithinBounds() const;
         const std::map<std::string, const UncertaintyBase*>& GetNamedUncertainties() const;
 
     private:
