@@ -131,15 +131,6 @@ void Fittino::TreeCalculator::AddPredictions( ) {
             AddQuantity( new SimplePrediction( leaf->GetName(), "", _predictionMap.at( leaf->GetName() ) ) );
 
         }
-        else if ( !strcmp( leaf->GetTypeName(), "string" ) ) {
-
-            _strings.insert( std::make_pair( leaf->GetName(), new std::string() ) );
-
-            _inputTree->SetBranchAddress( leaf->GetName(), &_strings.at( leaf->GetName() ) );
-
-            AddStringVariable( new ReferenceVariable<std::string> ( leaf->GetName(),  *_strings.at( leaf->GetName() ) ) );
-
-        }
 
     }
 
