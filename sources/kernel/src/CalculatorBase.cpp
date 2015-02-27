@@ -23,12 +23,11 @@
 #include "VariableBase.h"
 #include "ModelBase.h"
 
-Fittino::CalculatorBase::CalculatorBase( const ModelBase* model )
+Fittino::CalculatorBase::CalculatorBase( const ModelBase* model, boost::property_tree::ptree* ptree )
     : _name( "" ),
       _tag( "" ),
-      _model( model ) {
-
-    _ptree = 0;
+      _model( model ),
+      _ptree( ptree ) {
 
 }
 
@@ -86,22 +85,13 @@ void  Fittino::CalculatorBase::AddStringVariable( Fittino::VariableBase<std::str
 
 }
 
-Fittino::CalculatorBase::CalculatorBase(Fittino::ModelBase const *model, boost::property_tree::ptree &ptree) {
-
-    _model = model;
-    _name = ptree.get<std::string>( "Name", "" );
-    _tag = ptree.get<std::string>( "Tag", "" ); // todo: Decide if tag should be equal to name by default
-    _ptree = &ptree;
-
-}
-
-void Fittino::CalculatorBase::AddInput(std::string name, std::string defaultValue ) {
+void Fittino::CalculatorBase::AddInput( std::string name, std::string defaultValue ) {
 
     std::string formula;
 
     if ( defaultValue.empty() ) {
 
-        formula = _ptree->get<std::string>(name);
+        formula = _ptree->get<std::string>( name );
 
     }
     else {

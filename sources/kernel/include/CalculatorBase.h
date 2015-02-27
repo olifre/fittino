@@ -46,8 +46,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      CalculatorBase( const ModelBase* model );
-      CalculatorBase(const ModelBase *model, boost::property_tree::ptree &ptree);
+      CalculatorBase( const ModelBase* model, boost::property_tree::ptree* ptree = 0);
 
       /*!
        *  Standard destructor.
@@ -73,7 +72,6 @@ namespace Fittino {
 
     protected:
       void                                          AddQuantity( Quantity* prediction );
-
       void                                          AddStringVariable( VariableBase<std::string>* variable );
       void                                          AddInput( std::string name, std::string defaultValue = "" );
       void                                          UpdateInput();
