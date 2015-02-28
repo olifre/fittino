@@ -20,7 +20,12 @@
 INCLUDE_DIRECTORIES(./include)
 INCLUDE_DIRECTORIES(../kernel/include)
 
-FILE( GLOB includes ./include/*.h ) 
+FILE( GLOB includes ./include/*.h )
+#LIST( APPEND includes include/Error.h )
+LIST( APPEND includes include/LogicException.h )
+
+
 AUX_SOURCE_DIRECTORY(src sources)
+LIST( APPEND sources "src/LogicException.cpp" )
 
 ADD_LIBRARY(exceptions ${includes} ${sources})
