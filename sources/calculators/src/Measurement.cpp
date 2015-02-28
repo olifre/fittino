@@ -34,7 +34,7 @@
 
 
 Fittino::Measurement::Measurement(std::string type, unsigned int index, const ModelBase *model, const boost::property_tree::ptree &ptree)
-:CalculatorBase( model ) {
+:CalculatorBase( model, &ptree ) {
 
     _name = ptree.get<std::string>( "Name" );
     _tag = ptree.get<std::string>( "Tag", _name );
