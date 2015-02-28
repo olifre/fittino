@@ -24,6 +24,6 @@ Fittino::LogicException::LogicException( const std::string& message )
 
 }
 
-Fittino::LogicException::~LogicException() {
+Fittino::LogicException::~LogicException() throw() {
 
 }
