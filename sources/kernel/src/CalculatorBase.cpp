@@ -19,11 +19,10 @@
 
 #include "CalculatorBase.h"
 #include "FormulaQuantity.h"
-#include "PredictionBase.h"
-#include "VariableBase.h"
+#include "LogicException.h"
 #include "ModelBase.h"
 
-Fittino::CalculatorBase::CalculatorBase( const ModelBase* model, boost::property_tree::ptree* ptree )
+Fittino::CalculatorBase::CalculatorBase( const ModelBase* model, const boost::property_tree::ptree* ptree )
     : _name( "" ),
       _tag( "" ),
       _model( model ),
@@ -31,7 +30,7 @@ Fittino::CalculatorBase::CalculatorBase( const ModelBase* model, boost::property
 
 }
 
-std::string Fittino::CalculatorBase::GetName() const {
+const std::string& Fittino::CalculatorBase::GetName() const {
 
     return _name;
 
@@ -73,12 +72,12 @@ void Fittino::CalculatorBase::AddInput( std::string name, std::string defaultVal
 
     if ( defaultValue.empty() ) {
 
-        formula = _ptree->get<std::string>( name );
+        formula = GetConfiguration()->get<std::string>( name );
 
     }
     else {
 
-        formula = _ptree->get<std::string>( name, defaultValue );
+        formula = GetConfiguration()->get<std::string>( name, defaultValue );
 
     }
 
@@ -100,7 +99,7 @@ void Fittino::CalculatorBase::UpdateInput() {
 
 }
 
-const double &Fittino::CalculatorBase::GetInput( std::string name ) const {
+const double& Fittino::CalculatorBase::GetInput( std::string name ) const {
 
     return _input.at( name )->GetValue() ;
 
@@ -113,6 +112,21 @@ void Fittino::CalculatorBase::PrintInput() const {
     for ( it = _input.begin(); it != _input.end(); ++it ) {
 
         it->second->PrintStatus();
+
+    }
+
+}
+
+const boost::property_tree::ptree* Fittino::CalculatorBase::GetConfiguration() const {
+
+    if ( _ptree ) {
+
+        return _ptree;
+
+    }
+    else {
+
+        throw LogicException( "Trying to access non existing configuration object of calculator " + _name + "." );
 
     }
 

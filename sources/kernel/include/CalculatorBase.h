@@ -44,16 +44,16 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      CalculatorBase( const ModelBase* model, boost::property_tree::ptree* ptree = 0 );
-
+      CalculatorBase( const ModelBase* model, const boost::property_tree::ptree* ptree = 0 );
       /*!
        *  Standard destructor.
        */
-      std::string                                   GetName() const;
+      virtual                                       ~CalculatorBase();
+
+      const std::string&                            GetName() const;
       const Collection<Quantity*>&                  GetCollectionOfQuantities() const;
 
   public:
-      virtual                                       ~CalculatorBase();
       virtual void                                  CalculatePredictions() = 0;
       virtual void                                  Initialize();
       /*!
@@ -65,10 +65,10 @@ namespace Fittino {
       std::string                                   _name;
       std::string                                   _tag;
       const ModelBase*                              _model;
-      boost::property_tree::ptree*                  _ptree;
 
     protected:
       const double&                                 GetInput( std::string name ) const;
+      const boost::property_tree::ptree*            GetConfiguration() const;
       void                                          AddInput( std::string name, std::string defaultValue = "" );
       void                                          AddQuantity( Quantity* prediction );
       void                                          UpdateInput();
@@ -77,6 +77,7 @@ namespace Fittino {
       /*! \cond UML */
     private:
       std::map< std::string, FormulaQuantity* >     _input;
+      const boost::property_tree::ptree*            _ptree;
       Collection<Quantity*>                         _collectionOfQuantities;
 
       /*! \endcond UML */
