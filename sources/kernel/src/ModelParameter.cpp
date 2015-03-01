@@ -66,7 +66,7 @@ double Fittino::ModelParameter::GetError() const {
 
 void Fittino::ModelParameter::Initialize() const {
 
-    ConsistencyCheck();
+    // ConsistencyCheck();
 
     PrintStatus();
 
