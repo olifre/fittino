@@ -36,7 +36,9 @@ namespace Fittino {
   class CalculatorBase;
   class ModelParameter;
   class PredictionBase;
-    class Observable;
+
+  /* Currently needed by some calculators, should be removed! */
+  class Observable;
 
   /*!
    *  \ingroup kernel
@@ -63,7 +65,7 @@ namespace Fittino {
        */
       int                                                 GetNumberOfParameters() const;
       /*!
-       * Update the property tree.
+       *  Updates the property tree.
        */
       void                                                UpdatePropertyTree();
       /*!
@@ -78,28 +80,22 @@ namespace Fittino {
        *  Returns the parameters as a collection.
        */
       const Collection<ModelParameter*>&                  GetCollectionOfParameters() const;
-      /*!
-       *  \todo Move to PhysicsModel (Matthias).
-       */
       const Collection<Quantity*>&                        GetCollectionOfPredictions() const;
       const Collection<const Quantity*>&                  GetCollectionOfQuantities() const;
       const Collection<const VariableBase<double>*>&      GetCollectionOfMetaDataDoubleVariables() const;
       const Collection<const VariableBase<std::string>*>& GetCollectionOfStringVariables() const;
 
-      /* Currently needed by AstroCalculator, should be removed! */
-      virtual const std::vector<Observable*>*             GetObservableVector() const;
-
-
-  public:
+    public:
       virtual void                                        PrintStatus() const;
       /*!
        *  Returns a pointer to a copy of the model.
+       *  \todo Discuss what this function should actually do...
        */
       virtual ModelBase*                                  Clone();
-      /*!
-       *  \todo Remove when no longer used by derived classes (Matthias).
-       */
       virtual const Collection<CalculatorBase*>&          GetCollectionOfCalculators() const;
+
+      /* Currently needed by some calculators, should be removed! */
+      virtual const std::vector<Observable*>*             GetObservableVector() const;
 
     protected:
       /*!
@@ -108,29 +104,26 @@ namespace Fittino {
       std::string                                         _name;
       boost::property_tree::ptree&                        _ptree;
       /*!
-       *  Stores the predictions.
-       *  \todo Move to PhysicsModel (Matthias).
-       */
-      Collection<Quantity*>                         _collectionOfPredictions;
-      Collection<const VariableBase<double>*>             _collectionOfMetaDataDoubleVariables;
-      Collection<const VariableBase<std::string>*>        _collectionOfStringVariables;
-      std::vector<Observable*>                   _observableVector;
-      /*!
        *  Stores the calculators.
        */
-      Collection<CalculatorBase*>                _collectionOfCalculators;
+      Collection<CalculatorBase*>                         _collectionOfCalculators;
+      /*!
+       *  Stores the predictions.
+       */
+      Collection<Quantity*>                               _collectionOfPredictions;
+      Collection<const VariableBase<double>*>             _collectionOfMetaDataDoubleVariables;
+      Collection<const VariableBase<std::string>*>        _collectionOfStringVariables;
 
+      /* Currently needed by some calculators, should be removed! */
+      std::vector<Observable*>                            _observableVector;
 
-
-  protected:
+    protected:
       /*!
        *  Adds a prediction to the model.
-       *  \todo Move to PhysicsModel (Matthias).
        */
       void                                                AddPrediction( Quantity* prediction );
 
-
-  protected:
+    protected:
       /*!
        *  This function is mainly used to provide a dedicated command to print the model\n
        *  configuration to the screen and is usually called at the end of the model constructor\n
@@ -138,6 +131,7 @@ namespace Fittino {
        *  not be used to alter the state of the model. However, since third party code (like e.g.\n
        *  model calculators) sometimes does not differ between initialization and printing, this\n
        *  is also the place where third party code is initialized.
+       *  \todo This function should not be needed. For the moment implement an empty version.
        */
       virtual void                                        Initialize() ;
 
@@ -156,27 +150,26 @@ namespace Fittino {
     private:
       /*!
        *  Returns the number of predictions of the model.
-       *  \todo Move to PhysicsModel (Matthias).
        */
       int                                                 GetNumberOfPredictions() const;
       /*!
-      *  Adds a calculator to the model.
-      */
+       *  Adds a calculator to the model.
+       */
       void                                                AddCalculator( CalculatorBase *calculator );
-    /*!
+      /*!
        *  Adds a parameter to the model.
        */
       void                                                AddParameter( ModelParameter* parameter );
+      void                                                InitializeCalculators( boost::property_tree::ptree &ptree );
       /*!
        *  Setup all parameters using a ptree.
        */
       void                                                InitializeParameters( boost::property_tree::ptree& ptree );
-      void                                                InitializeCalculators(boost::property_tree::ptree &ptree);
 
-
-  private:
+    private:
       /*!
        *  Evaluates the chi2 function.
+       *  \todo: Discuss this function, should return value of Chi2Quantity and set error branch.
        */
       virtual double                                      Evaluate();
 

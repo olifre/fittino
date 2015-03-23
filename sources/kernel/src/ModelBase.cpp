@@ -128,99 +128,6 @@ const Fittino::Collection<const Fittino::VariableBase<std::string>*>& Fittino::M
 
 }
 
-const std::vector<Fittino::Observable*>* Fittino::ModelBase::GetObservableVector() const {
-
-    return &_observableVector;
-
-}
-
-void Fittino::ModelBase::AddPrediction( Quantity* prediction ) {
-
-    _collectionOfPredictions.AddElement( prediction );
-    _collectionOfQuantities.AddElement( prediction );
-
-}
-
-void Fittino::ModelBase::AddCalculator( CalculatorBase* calculator ) {
-
-    _collectionOfCalculators.AddElement( calculator->GetName(), calculator );
-
-    const Collection<Quantity*>& col = calculator->GetCollectionOfQuantities();
-
-    for ( unsigned int i = 0; i < col.GetNumberOfElements(); i++ ) {
-
-        AddPrediction( col.At( i ) );
-
-    }
-
-}
-
-int Fittino::ModelBase::GetNumberOfPredictions() const {
-
-    return _collectionOfPredictions.GetNumberOfElements();
-
-}
-
-void Fittino::ModelBase::AddParameter( ModelParameter* parameter ) {
-
-  if ( ! parameter->IsFixed() ) {
-
-      _collectionOfParameters.AddElement( parameter->GetName(), parameter );
-
-  }
-
-  _collectionOfQuantities.AddElement( parameter->GetName(), parameter );
-
-}
-
-void Fittino::ModelBase::InitializeParameters( boost::property_tree::ptree& ptree ) {
-
-    BOOST_FOREACH( boost::property_tree::ptree::value_type & node, ptree ) {
-
-        if ( node.first == "ModelParameter" ) {
-
-            AddParameter( new ModelParameter( node.second ) );
-
-        }
-
-    }
-
-}
-
-void Fittino::ModelBase::InitializeCalculators(boost::property_tree::ptree &ptree) {
-
-    Factory factory;
-
-    BOOST_FOREACH( boost::property_tree::ptree::value_type & node, ptree.get_child( "Calculators" ) ) {
-
-                    AddCalculator( factory.CreateCalculator( node.first, this, node.second ) );
-
-                }
-
-}
-
-// todo: discuss this function, should return value of Chi2Quantity and set error branch
-double Fittino::ModelBase::Evaluate() {
-
-    try {
-
-        for ( unsigned int i = 0; i < _collectionOfCalculators.GetNumberOfElements(); ++i ) {
-
-            _collectionOfCalculators.At( i )->CalculatePredictions();
-
-        }
-
-    }
-    catch( const CalculatorException& exception ) {
-
-        return std::numeric_limits<double>::max();
-
-    }
-
-    return 0;
-
-}
-
 void Fittino::ModelBase::PrintStatus() const {
 
     Messenger& messenger = Messenger::GetInstance();
@@ -251,8 +158,9 @@ void Fittino::ModelBase::PrintStatus() const {
 
 }
 
-// todo this function should not be needed. For the moment implement an empty version.
-void Fittino::ModelBase::Initialize() {
+Fittino::ModelBase *Fittino::ModelBase::Clone() {
+
+    return new ModelBase( *this );
 
 }
 
@@ -262,9 +170,98 @@ const Fittino::Collection<Fittino::CalculatorBase*>& Fittino::ModelBase::GetColl
 
 }
 
-// todo: discuss what this function should actually do...
-Fittino::ModelBase *Fittino::ModelBase::Clone() {
+const std::vector<Fittino::Observable*>* Fittino::ModelBase::GetObservableVector() const {
 
-    return new ModelBase( *this );
+    return &_observableVector;
+
+}
+
+void Fittino::ModelBase::AddPrediction( Quantity* prediction ) {
+
+    _collectionOfPredictions.AddElement( prediction );
+    _collectionOfQuantities.AddElement( prediction );
+
+}
+
+void Fittino::ModelBase::Initialize() {
+
+}
+
+int Fittino::ModelBase::GetNumberOfPredictions() const {
+
+    return _collectionOfPredictions.GetNumberOfElements();
+
+}
+
+void Fittino::ModelBase::AddCalculator( CalculatorBase* calculator ) {
+
+    _collectionOfCalculators.AddElement( calculator->GetName(), calculator );
+
+    const Collection<Quantity*>& col = calculator->GetCollectionOfQuantities();
+
+    for ( unsigned int i = 0; i < col.GetNumberOfElements(); i++ ) {
+
+        AddPrediction( col.At( i ) );
+
+    }
+
+}
+
+void Fittino::ModelBase::AddParameter( ModelParameter* parameter ) {
+
+    if ( ! parameter->IsFixed() ) {
+
+        _collectionOfParameters.AddElement( parameter->GetName(), parameter );
+
+    }
+
+    _collectionOfQuantities.AddElement( parameter->GetName(), parameter );
+
+}
+
+void Fittino::ModelBase::InitializeCalculators( boost::property_tree::ptree &ptree ) {
+
+    Factory factory;
+
+    BOOST_FOREACH( boost::property_tree::ptree::value_type & node, ptree.get_child( "Calculators" ) ) {
+
+        AddCalculator( factory.CreateCalculator( node.first, this, node.second ) );
+
+    }
+
+}
+
+void Fittino::ModelBase::InitializeParameters( boost::property_tree::ptree& ptree ) {
+
+    BOOST_FOREACH( boost::property_tree::ptree::value_type & node, ptree ) {
+
+        if ( node.first == "ModelParameter" ) {
+
+            AddParameter( new ModelParameter( node.second ) );
+
+        }
+
+    }
+
+}
+
+double Fittino::ModelBase::Evaluate() {
+
+    try {
+
+        for ( unsigned int i = 0; i < _collectionOfCalculators.GetNumberOfElements(); ++i ) {
+
+            _collectionOfCalculators.At( i )->CalculatePredictions();
+
+        }
+
+    }
+    catch ( const CalculatorException& exception ) {
+
+        return std::numeric_limits<double>::max();
+
+    }
+
+    return 0;
 
 }
