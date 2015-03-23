@@ -33,18 +33,18 @@ class TH1;
  */
 namespace Fittino {
 
-    class CalculatorBase;
-    class CutBase;
-    class Measurement;
-    class ModelBase;
-    class Observable;
-    class PhysicsModel;
-    class PlotterBase;
-    class PredictionBase;
-    class SLHADataStorageBase;
-    class Tool;
-    class UncertaintyBase;
-    class Quantity;
+  class CalculatorBase;
+  class CutBase;
+  class Measurement;
+  class ModelBase;
+  class Observable;
+  class PhysicsModel;
+  class PlotterBase;
+  class PredictionBase;
+  class SLHADataStorageBase;
+  class Tool;
+  class UncertaintyBase;
+  class Quantity;
 
   /*!
    *  \ingroup kernel
@@ -84,7 +84,7 @@ namespace Fittino {
        *    <li>TreeCalculator\n
        *  </ul>
        */
-      CalculatorBase* const      CreateCalculator(const std::string &type, const ModelBase *model, boost::property_tree::ptree &ptree) const;
+      CalculatorBase* const      CreateCalculator( const std::string& type, const ModelBase* model, boost::property_tree::ptree& ptree ) const;
       /*!
        *  Returns a cut object. So far the only supported type is a SplineCut.
        */
@@ -118,7 +118,6 @@ namespace Fittino {
        *  </ul>
        */
       PlotterBase* const         CreatePlotter( const std::string& type, std::vector<TH1*>& histogramVector, const boost::property_tree::ptree& ptree ) const;
-      UncertaintyBase *CreateUncertainty(const std::string &type, const ModelBase *model, const Measurement *measurement, const boost::property_tree::ptree &ptree) const;
       SLHADataStorageBase* const CreateSLHAeaSLHADataStorage() const;
       /*!
        *  Returns a concrete tool.\n
@@ -135,6 +134,7 @@ namespace Fittino {
        *  </ul>
        */
       Tool* const                CreateTool( const std::string& type, ModelBase* model, const boost::property_tree::ptree& ptree ) const;
+      UncertaintyBase* const     CreateUncertainty( const std::string& type, const ModelBase* model, const Measurement* measurement, const boost::property_tree::ptree& ptree ) const;
 
   };
 

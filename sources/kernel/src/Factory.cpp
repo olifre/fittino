@@ -29,11 +29,9 @@
 #include "Chi2Calculator.h"
 #include "ContourHistogramMaker.h"
 #include "ContourPlotter.h"
-//#include "CorrelatedSampler.h"
 #include "CovariantSampler.h"
 #include "DamavandiModel.h"
 #include "EdgeDetectionTool.h"
-//#include "EvolutionarySampler.h"
 #include "Factory.h"
 
 #ifdef FEYNHIGGS
@@ -67,12 +65,12 @@
 #include "Paraboloid.h"
 #include "ParaboloidModel.h"
 #include "ParticleSwarmOptimizer.h"
-//#include "ParticleSwarmSampler.h"
 #include "PhysicsModel.h"
 #include "ProfileHistogramMaker.h"
 #include "ProfilePlotter.h"
 #include "RegressionCalculator.h"
 #include "RelativeTheoryUncertainty.h"
+#include "RosenbrockCalculator.h"
 #include "RosenbrockModel.h"
 #include "Shubert3Model.h"
 #include "Simple1DHistogramMaker.h"
@@ -106,7 +104,7 @@ Fittino::Factory::~Factory() {
 
 }
 
-Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator(const std::string &type, const ModelBase *model, boost::property_tree::ptree &ptree) const {
+Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::string& type, const ModelBase* model, boost::property_tree::ptree& ptree ) const {
 
     if ( type == "AstroCalculator" ) {
 
@@ -152,9 +150,9 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator(const std::str
 
         return new FeynHiggsRescalingCalculator( model, ptree );
 
-#else 
+#else
 
-	throw ConfigurationException( "Trying to use FeynHiggsRescalingCalculator but Fittino was built without HiggsBounds." );
+        throw ConfigurationException( "Trying to use FeynHiggsRescalingCalculator but Fittino was built without HiggsBounds." );
 
 #endif
 
@@ -319,6 +317,11 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator(const std::str
         return new RegressionCalculator( model, ptree );
 
     }
+    else if ( type == "RosenbrockCalculator" ) {
+
+        return new RosenbrockCalculator( model, ptree );
+
+    }
     else if ( type == "SPhenoCalculator" ) {
 
 #ifdef SLHAEA
@@ -405,6 +408,11 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
         return new HosakiModel( ptree );
 
     }
+    else if ( type == "ModelBase" ) {
+
+        return new ModelBase( ptree );
+
+    }
     else if ( type == "ModifiedRosenbrockModel" ) {
 
         return new ModifiedRosenbrockModel( ptree );
@@ -455,11 +463,6 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
         return new VincentModel( ptree );
 
     }
-    else if ( type == "ModelBase" ) {
-
-        return new ModelBase( ptree );
-
-    }
     else {
 
         throw ConfigurationException( "Model type " + type + " not known." );
@@ -494,11 +497,6 @@ Fittino::Observable* const Fittino::Factory::CreateObservable( const boost::prop
         }
 
     }
-    //else if ( type == "NONE" ) {
-
-    //    return new Observable( ptree, NULL );
-
-    //}
     else {
 
         throw ConfigurationException( "Prediction type" + type + " not known." );
@@ -581,11 +579,6 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
         return new EdgeDetectionTool( model, ptree );
 
     }
-    // else if ( type == "EvolutionarySampler" ) {
-
-    //     return new EvolutionarySampler( model, ptree );
-
-    // }
     else if ( type == "GeneticAlgorithmOptimizer" ) {
 
         return new GeneticAlgorithmOptimizer( model, ptree );
@@ -616,11 +609,6 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
         return new ParticleSwarmOptimizer( model, ptree );
 
     }
-    // else if ( type == "ParticleSwarmSampler" ) {
-
-    //     return new ParticleSwarmSampler( model, ptree );
-
-    // }
     else if ( type == "ProfileHistogramMaker" ) {
 
         return new ProfileHistogramMaker( model, ptree );
@@ -674,26 +662,26 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
 
 }
 
-Fittino::UncertaintyBase *Fittino::Factory::CreateUncertainty(const std::string &type, const ModelBase *model, const Measurement *measurement, const boost::property_tree::ptree &ptree) const {
+Fittino::UncertaintyBase* const Fittino::Factory::CreateUncertainty( const std::string& type, const ModelBase* model, const Measurement* measurement, const boost::property_tree::ptree& ptree ) const {
 
-    if ( type == "AbsoluteUncertainty") {
+    if ( type == "AbsoluteUncertainty" ) {
 
-        return new AbsoluteUncertainty(model, measurement, ptree);
-
-    }
-    else if ( type == "RelativeTheoryUncertainty") {
-
-        return new RelativeTheoryUncertainty(model, measurement, ptree);
+        return new AbsoluteUncertainty( model, measurement, ptree );
 
     }
-    else if ( type == "AstroUncertainty") {
+    else if ( type == "AstroUncertainty" ) {
 
-        return new AstroUncertainty(model, measurement, ptree);
+        return new AstroUncertainty( model, measurement, ptree );
+
+    }
+    else if ( type == "RelativeTheoryUncertainty" ) {
+
+        return new RelativeTheoryUncertainty( model, measurement, ptree );
 
     }
     else {
 
-        throw ConfigurationException( "Uncertainty of type " + type + " not known."  );
+        throw ConfigurationException( "Uncertainty of type " + type + " not known." );
 
     }
 
