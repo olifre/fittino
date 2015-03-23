@@ -38,13 +38,11 @@ namespace Fittino {
   class Measurement;
   class ModelBase;
   class Observable;
-  class PhysicsModel;
   class PlotterBase;
-  class PredictionBase;
+  class Quantity;
   class SLHADataStorageBase;
   class Tool;
   class UncertaintyBase;
-  class Quantity;
 
   /*!
    *  \ingroup kernel
