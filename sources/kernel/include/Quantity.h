@@ -37,6 +37,7 @@ namespace Fittino {
   class Quantity {
 
     public:
+      Quantity( std::string name );
       /*!
        *  Takes as input the name and value of the quantity as well as
        *  information for plotting.
@@ -53,9 +54,6 @@ namespace Fittino {
                 std::string plotUnit,
                 double      lowerBound,
                 double      upperBound );
-
-      Quantity( std::string name );
-
       Quantity( const boost::property_tree::ptree& ptree );
       /*!
        *  Standard destructor.

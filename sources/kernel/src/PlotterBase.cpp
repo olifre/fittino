@@ -23,9 +23,9 @@
 #include "TGraph.h"
 #include "TH1.h"
 #include "TImage.h"
+#include "TLine.h"
 #include "TStyle.h"
 #include "TText.h"
-#include "TLine.h"
 
 #include "ConfigurationException.h"
 #include "Messenger.h"
@@ -79,40 +79,39 @@ Fittino::PlotterBase::PlotterBase( std::vector<TH1*>& histogramVector, const boo
     _fittinoStyle->SetOptStat( 0 );
 
     _fittinoStyle->SetTextFont( _textFont );
-    _fittinoStyle->SetLabelFont(_textFont,"x");
-    _fittinoStyle->SetTitleFont(_textFont,"x");
-    _fittinoStyle->SetLabelFont(_textFont,"y");
-    _fittinoStyle->SetTitleFont(_textFont,"y");
-    _fittinoStyle->SetLabelFont(_textFont,"z");
-    _fittinoStyle->SetTitleFont(_textFont,"z");
-          
+    _fittinoStyle->SetLabelFont( _textFont, "x" );
+    _fittinoStyle->SetTitleFont( _textFont, "x" );
+    _fittinoStyle->SetLabelFont( _textFont, "y" );
+    _fittinoStyle->SetTitleFont( _textFont, "y" );
+    _fittinoStyle->SetLabelFont( _textFont, "z" );
+    _fittinoStyle->SetTitleFont( _textFont, "z" );
+
     _fittinoStyle->SetTextSize( _textSize );
-    _fittinoStyle->SetLabelSize(_textSize,"x");
-    _fittinoStyle->SetTitleSize(_textSize,"x");
-    _fittinoStyle->SetLabelSize(_textSize,"y");
-    _fittinoStyle->SetTitleSize(_textSize,"y");
-    _fittinoStyle->SetLabelSize(_textSize,"z");
-    _fittinoStyle->SetTitleSize(_textSize,"z");
+    _fittinoStyle->SetLabelSize( _textSize, "x" );
+    _fittinoStyle->SetTitleSize( _textSize, "x" );
+    _fittinoStyle->SetLabelSize( _textSize, "y" );
+    _fittinoStyle->SetTitleSize( _textSize, "y" );
+    _fittinoStyle->SetLabelSize( _textSize, "z" );
+    _fittinoStyle->SetTitleSize( _textSize, "z" );
 
     _fittinoStyle->SetTitleOffset( 1.3, "x" );
     _fittinoStyle->SetTitleOffset( 1.3, "y" );
     _fittinoStyle->SetTitleOffset( 1.3, "z" );
 
     _fittinoStyle->SetFrameBorderMode( 0 );
-          
-          
-    std::string logoPath = ptree.get<std::string>( "LogoPath", ""  );
-          
+
+    std::string logoPath = ptree.get<std::string>( "LogoPath", "" );
+
     if ( ! logoPath.empty() ) {
-              
+
         _fittinoLogo = TImage::Open( logoPath.c_str() );
-              
+
         if ( !_fittinoLogo->IsValid() ) {
-              
+
             throw ConfigurationException( "Could not open the fittino logo at " + logoPath );
-                  
+
         }
-   
+
     }
 
 }
@@ -125,16 +124,15 @@ Fittino::PlotterBase::~PlotterBase() {
 }
 
 void Fittino::PlotterBase::AddGraph( TGraph* graph ) {
-    
-    
+
     _graphVector.push_back( graph );
-    
+
 }
 
 void Fittino::PlotterBase::AddHistogram( TH1* histogram ) {
-    
+
     _histogramVector.push_back( histogram );
-    
+
 }
 
 void Fittino::PlotterBase::MakePlots() {
@@ -150,7 +148,7 @@ void Fittino::PlotterBase::MakePlots() {
 
     for ( unsigned int iHistogram = 0; iHistogram < _histogramVector.size(); ++iHistogram ) {
 
-        messenger << Messenger::ALWAYS<<"    Plotting " << _histogramVector[iHistogram]->GetName() << Messenger::Endl;
+        messenger << Messenger::ALWAYS << "    Plotting " << _histogramVector[iHistogram]->GetName() << Messenger::Endl;
 
         Plot( iHistogram );
 
@@ -159,27 +157,27 @@ void Fittino::PlotterBase::MakePlots() {
             AddVersion();
 
         }
-        
+
         if ( _fittinoLogo ) {
 
             DrawLogo();
-            
+
         }
-        
-//        TLine* line = new TLine();
-//
-//        double xmin =_histogramVector.at( iHistogram )->GetXaxis()->GetXmin();
-//        double xmax =_histogramVector.at( iHistogram )->GetXaxis()->GetXmax();
-//
-//        double ymin =_histogramVector.at( iHistogram )->GetYaxis()->GetXmin();
-//        double ymax =_histogramVector.at( iHistogram )->GetYaxis()->GetXmax();
-//
-//        double firstPoint = TMath::Max( xmin, ymin );
-//        double secondPoint = TMath::Min( xmax, ymax );
-//
-//        line->SetLineStyle( 2 );      // Dashed
-//        line->SetLineColor( kBlack ); // Black
-//        line->DrawLine( firstPoint, firstPoint, secondPoint, secondPoint );
+
+        //TLine* line = new TLine();
+
+        //double xmin =_histogramVector.at( iHistogram )->GetXaxis()->GetXmin();
+        //double xmax =_histogramVector.at( iHistogram )->GetXaxis()->GetXmax();
+
+        //double ymin =_histogramVector.at( iHistogram )->GetYaxis()->GetXmin();
+        //double ymax =_histogramVector.at( iHistogram )->GetYaxis()->GetXmax();
+
+        //double firstPoint = TMath::Max( xmin, ymin );
+        //double secondPoint = TMath::Min( xmax, ymax );
+
+        //line->SetLineStyle( 2 );      // Dashed
+        //line->SetLineColor( kBlack ); // Black
+        //line->DrawLine( firstPoint, firstPoint, secondPoint, secondPoint );
 
         if ( _logScaleX ) _pad->SetLogx( 1 );
         if ( _logScaleY ) _pad->SetLogy( 1 );
@@ -188,19 +186,21 @@ void Fittino::PlotterBase::MakePlots() {
         _canvas->Update();
 
         Redirector redirector( "/dev/null" );
-        
+
         if ( messenger.GetVerbosityLevel() > Messenger::ALWAYS ) {
+
             /* \todo Rearrange verbosity levels. At the moment, the following will never be executed. */
+
             redirector.Start();
-            
+
         }
 
         _canvas->SaveAs( static_cast<TString>( _histogramVector[iHistogram]->GetName() ) + "." + _fileFormat, "RECREATE" );
-        
+
         if ( messenger.GetVerbosityLevel() > Messenger::ALWAYS ) {
-        
+
             redirector.Stop();
-            
+
         }
 
     }
@@ -217,51 +217,50 @@ void Fittino::PlotterBase::PrintSteeringParameters() const {
 
 }
 
-void Fittino::PlotterBase::DrawLogo() {
-    
-    _fittinoLogo->SetConstRatio(1);
-    _fittinoLogo->SetImageQuality(TAttImage::kImgBest);
-    _fittinoLogo->SetImageCompression(0);
-    
-    const float canvasHeight   = _canvas->GetWindowHeight();
-    const float canvasWidth    = _canvas->GetWindowWidth();
-    const float canvasAspectRatio = canvasHeight/canvasWidth;
-    const float width          = 0.19;
-    const float xLowerEdge     = 0.02;
-    const float yLowerEdge     = 0.853;
-    const float xUpperEdge     = xLowerEdge+width;
-    const float yUpperEdge     = yLowerEdge+width*_fittinoLogo->GetHeight()/_fittinoLogo->GetWidth()/canvasAspectRatio;
-
-    TPad *fittinoLogoPad = new TPad("fittinoLogoPad", "fittinoLogoPad", xLowerEdge, yLowerEdge, xUpperEdge, yUpperEdge);
-    fittinoLogoPad->Draw("same");
-    fittinoLogoPad->cd();
-    _fittinoLogo->Draw("xxx");
-    _canvas->cd();
-    
-}
-
 void Fittino::PlotterBase::AddVersion() {
-    
-        
+
     TText fittinoVersion;
     fittinoVersion.SetTextFont( 82 );
     std::string versionText = "Fittino Version " + _version;
-    
+
     if ( _pageFormat == "Landscape" ) {
-        
+
         fittinoVersion.DrawTextNDC( 0.570, 0.95, versionText.c_str() );
-        
+
     }
     else if ( _pageFormat == "Square" ) {
-        
+
         fittinoVersion.DrawTextNDC( 0.460, 0.95, versionText.c_str() );
-        
+
     }
     else if ( _pageFormat == "Summary" ) {
-        
+
         fittinoVersion.SetTextSize( 0.035 );
         fittinoVersion.DrawTextNDC( 0.05, 0.035, versionText.c_str() );
-        
+
     }
-    
+
+}
+
+void Fittino::PlotterBase::DrawLogo() {
+
+    _fittinoLogo->SetConstRatio( 1 );
+    _fittinoLogo->SetImageQuality( TAttImage::kImgBest );
+    _fittinoLogo->SetImageCompression( 0 );
+
+    const float canvasHeight   = _canvas->GetWindowHeight();
+    const float canvasWidth    = _canvas->GetWindowWidth();
+    const float canvasAspectRatio = canvasHeight / canvasWidth;
+    const float width          = 0.19;
+    const float xLowerEdge     = 0.02;
+    const float yLowerEdge     = 0.853;
+    const float xUpperEdge     = xLowerEdge + width;
+    const float yUpperEdge     = yLowerEdge + width * _fittinoLogo->GetHeight() / _fittinoLogo->GetWidth() / canvasAspectRatio;
+
+    TPad *fittinoLogoPad = new TPad( "fittinoLogoPad", "fittinoLogoPad", xLowerEdge, yLowerEdge, xUpperEdge, yUpperEdge );
+    fittinoLogoPad->Draw( "same" );
+    fittinoLogoPad->cd();
+    _fittinoLogo->Draw( "xxx" );
+    _canvas->cd();
+
 }

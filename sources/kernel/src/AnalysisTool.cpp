@@ -94,12 +94,6 @@ void Fittino::AnalysisTool::FillTree() {
 
     }
 
-    //    double m0 = _model->GetCollectionOfQuantities().At("P_M0")->GetValue(); 
-    //    double hschi2 = _model->GetCollectionOfQuantities().At("Chi2_AbsUnc_MCTopMass_NoHB_PDGHiggsMass_NoHiggsRates")->GetValue(); 
-    //    if ( ( m0<3500 && m0>2500 && hschi2<20.5) || ( hschi2<16.5 && m0>7000 && m0<8000 )  ) { 
-    //      fillTree = false; 
-    //    }
-
     if ( fillTree ) {
 
         _tree->Fill();
@@ -135,7 +129,7 @@ void Fittino::AnalysisTool::AddBranch( TTree* tree, std::string name, const doub
 
     CheckUniqueness( tree, name );
 
-    TBranch* branch = tree->Branch( name.c_str(), &const_cast<double&>( value )  );
+    TBranch* branch = tree->Branch( name.c_str(), &const_cast<double&>( value ) );
 
     branch->GetLeaf( name.c_str() )->SetTitle( "" ) ;
 
@@ -145,7 +139,7 @@ void Fittino::AnalysisTool::AddBranch( TTree* tree, std::string name, const std:
 
     CheckUniqueness( tree, name );
 
-    TBranch* branch = tree->Branch( name.c_str(), &const_cast<std::string&>( value )  );
+    TBranch* branch = tree->Branch( name.c_str(), &const_cast<std::string&>( value ) );
 
     branch->GetLeaf( name.c_str() )->SetTitle( "" ) ;
 

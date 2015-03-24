@@ -119,7 +119,6 @@ void Fittino::Executor::Child() {
 
         }
 
-
         if ( fcntl( _pipefds[1], F_SETFD, fcntl( _pipefds[1], F_GETFD ) | FD_CLOEXEC ) ) {
 
             perror( "fcntl" );
@@ -129,7 +128,7 @@ void Fittino::Executor::Child() {
 
         char* argv[_args.size() + 1];
 
-        for ( int i = 0;  i < _args.size();  ++i )   {
+        for ( int i = 0; i < _args.size(); ++i ) {
 
             argv [i] = const_cast<char*>( _args[i].c_str() );
 
@@ -137,11 +136,11 @@ void Fittino::Executor::Child() {
 
         argv[_args.size()] = NULL;
 
-        execv( _path.c_str(), &argv[0]);
+        execv( _path.c_str(), &argv[0] );
         perror( "execv" );
 
     }
-    catch ( const std::exception& exception  ) {
+    catch ( const std::exception& exception ) {
 
         messenger << Messenger::ALWAYS << " Exception in child process: " << Messenger::Endl;
         messenger << Messenger::ALWAYS << exception.what() << Messenger::Endl;

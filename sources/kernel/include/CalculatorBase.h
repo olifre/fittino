@@ -29,10 +29,10 @@
  */
 namespace Fittino {
 
-    class ModelBase;
-    class PhysicsModel;
-    class Quantity;
-    class FormulaQuantity;
+  class FormulaQuantity;
+  class ModelBase;
+  class PhysicsModel;
+  class Quantity;
 
   /*!
    *  \ingroup kernel
@@ -48,37 +48,36 @@ namespace Fittino {
       /*!
        *  Standard destructor.
        */
-      virtual                                       ~CalculatorBase();
+      const std::string&                      GetName() const;
+      const Collection<Quantity*>&            GetCollectionOfQuantities() const;
 
-      const std::string&                            GetName() const;
-      const Collection<Quantity*>&                  GetCollectionOfQuantities() const;
-
-  public:
-      virtual void                                  CalculatePredictions() = 0;
-      virtual void                                  Initialize();
+    public:
+      virtual                                 ~CalculatorBase();
+      virtual void                            CalculatePredictions() = 0;
+      virtual void                            Initialize();
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
-      virtual void                                  SetupMeasuredValues();
+      virtual void                            SetupMeasuredValues();
 
     protected:
-      std::string                                   _name;
-      std::string                                   _tag;
-      const ModelBase*                              _model;
+      std::string                             _name;
+      std::string                             _tag;
+      const ModelBase*                        _model;
 
     protected:
-      const double&                                 GetInput( std::string name ) const;
-      const boost::property_tree::ptree*            GetConfiguration() const;
-      void                                          AddInput( std::string name, std::string defaultValue = "" );
-      void                                          AddQuantity( Quantity* prediction );
-      void                                          UpdateInput();
-      void                                          PrintInput() const;
+      const double&                           GetInput( std::string name ) const;
+      void                                    AddInput( std::string name, std::string defaultValue = "" );
+      void                                    AddQuantity( Quantity* prediction );
+      void                                    PrintInput() const;
+      void                                    UpdateInput();
+      const boost::property_tree::ptree*      GetConfiguration() const;
 
       /*! \cond UML */
     private:
-      std::map< std::string, FormulaQuantity* >     _input;
-      const boost::property_tree::ptree*            _ptree;
-      Collection<Quantity*>                         _collectionOfQuantities;
+      std::map<std::string, FormulaQuantity*> _input;
+      const boost::property_tree::ptree*      _ptree;
+      Collection<Quantity*>                   _collectionOfQuantities;
 
       /*! \endcond UML */
 

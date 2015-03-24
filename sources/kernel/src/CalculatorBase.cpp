@@ -54,15 +54,9 @@ void Fittino::CalculatorBase::SetupMeasuredValues() {
 
 }
 
-void  Fittino::CalculatorBase::AddQuantity( Fittino::Quantity* prediction ) {
+const double& Fittino::CalculatorBase::GetInput( std::string name ) const {
 
-    if ( _tag != "" ) {
-
-        prediction->SetName( _tag + "_" + prediction->GetName() );
-
-    }
-
-    _collectionOfQuantities.AddElement( prediction->GetName(), prediction );
+    return _input.at( name )->GetValue() ;
 
 }
 
@@ -87,21 +81,15 @@ void Fittino::CalculatorBase::AddInput( std::string name, std::string defaultVal
 
 }
 
-void Fittino::CalculatorBase::UpdateInput() {
+void  Fittino::CalculatorBase::AddQuantity( Fittino::Quantity* prediction ) {
 
-    std::map<std::string, FormulaQuantity*>::const_iterator it;
+    if ( _tag != "" ) {
 
-    for ( it = _input.begin(); it != _input.end(); ++it ) {
-
-        it->second->Update();
+        prediction->SetName( _tag + "_" + prediction->GetName() );
 
     }
 
-}
-
-const double& Fittino::CalculatorBase::GetInput( std::string name ) const {
-
-    return _input.at( name )->GetValue() ;
+    _collectionOfQuantities.AddElement( prediction->GetName(), prediction );
 
 }
 
@@ -112,6 +100,18 @@ void Fittino::CalculatorBase::PrintInput() const {
     for ( it = _input.begin(); it != _input.end(); ++it ) {
 
         it->second->PrintStatus();
+
+    }
+
+}
+
+void Fittino::CalculatorBase::UpdateInput() {
+
+    std::map<std::string, FormulaQuantity*>::const_iterator it;
+
+    for ( it = _input.begin(); it != _input.end(); ++it ) {
+
+        it->second->Update();
 
     }
 

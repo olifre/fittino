@@ -113,12 +113,12 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-      const TString               _outputFileName;
       /*!
        *  A ROOT file which stores the tool's output. The default name of the file is\n
        *  "Fittino.out.root".
        */
       TFile*                      _outputFile;
+      const TString               _outputFileName;
 
     private:
       /*!

@@ -52,40 +52,40 @@ namespace Fittino {
        *  Standard destructor.
        */
       ~PlotterBase();
-      void               AddGraph( TGraph* graph );
-      void               AddHistogram(TH1* histogram );
-      void               MakePlots();
+      void                 AddGraph( TGraph* graph );
+      void                 AddHistogram( TH1* histogram );
+      void                 MakePlots();
 
     protected:
-      bool               _logScaleX;
-      bool               _logScaleY;
-      bool               _logScaleZ;
-      double             _textSize;
-      int                _textFont;
-      std::string        _fileFormat;
-      std::string        _pageFormat;
-      std::string        _name;
-      std::string        _version;
-      TCanvas*           _canvas;
-      TPad*              _pad;
-      TStyle*            _fittinoStyle;
-      std::vector<TH1*> _histogramVector;
+      bool                 _logScaleX;
+      bool                 _logScaleY;
+      bool                 _logScaleZ;
+      double               _textSize;
+      int                  _textFont;
+      std::string          _fileFormat;
+      std::string          _name;
+      std::string          _pageFormat;
+      std::string          _version;
+      TCanvas*             _canvas;
+      TPad*                _pad;
+      TStyle*              _fittinoStyle;
+      std::vector<TH1*>    _histogramVector;
       std::vector<TGraph*> _graphVector;
-      
+
     private:
-      TImage*            _fittinoLogo;
-      
+      TImage*              _fittinoLogo;
+
     protected:
-      void               PrintSteeringParameters() const;
+      void                 PrintSteeringParameters() const;
 
       /*! \endcond UML */
     private:
-      virtual void       Plot( unsigned int iHistogram ) = 0;
-      
+      void                 AddVersion();
+      void                 DrawLogo();
+
     private:
-      void               AddVersion();
-      void               DrawLogo();
-      
+      virtual void         Plot( unsigned int iHistogram ) = 0;
+
       /*! \endcond UML */
 
   };

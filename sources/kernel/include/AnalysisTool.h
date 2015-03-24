@@ -22,8 +22,6 @@
 #ifndef FITTINO_ANALYSISTOOL_H
 #define FITTINO_ANALYSISTOOL_H
 
-#include <vector>
-
 #include "Tool.h"
 
 class TTree;

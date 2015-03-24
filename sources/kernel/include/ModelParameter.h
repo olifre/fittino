@@ -42,49 +42,49 @@ namespace Fittino {
        *  Standard destructor.
        */
       ~ModelParameter();
-      bool   IsFixed() const;
+      bool                         IsFixed() const;
       /*!
        *  Returns true when the parameter value has been set.
        */
-      bool   IsUpdated() const;
+      bool                         IsUpdated() const;
       /*!
        *  Returns the error of the parameter.
        */
-      double GetError() const;
-      void   Initialize() const;
-      void   PrintStatus() const;
+      double                       GetError() const;
+      void                         Initialize() const;
+      void                         PrintStatus() const;
       /*!
        *  Sets the return value of IsUpdated().
        */
-      void   SetUpdated( bool updated );
+      void                         SetUpdated( bool updated );
       /*!
         *  Sets the value of the parameter.
         */
-      void   SetValue( double value );
+      void                         SetValue( double value );
       /*!
-        *  Update property tree. 
+        *  Update property tree.
         */
-      void   UpdatePropertyTree();
+      void                         UpdatePropertyTree();
 
     protected:
       /*!
        *  If true, the parameter value is not updated by the analysis tool. Per default it is set\n
        *  to false.
        */
-      bool   _fixed;
+      bool                         _fixed;
       /*!
        *  Error of the parameter. Analysis tools use this value as the parameter-dependent\n
        *  "stepwidth".
        */
-      bool   _updated;
-      double _error;
+      bool                         _updated;
+      double                       _error;
 
       /*! \cond UML */
     private:
       boost::property_tree::ptree& _ptree;
 
     private:
-      void   ConsistencyCheck() const;
+      void                         ConsistencyCheck() const;
 
       /*! \endcond UML */
 

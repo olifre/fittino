@@ -18,12 +18,17 @@
 *******************************************************************************/
 
 #include <iomanip>
-#include <limits>
 
 #include <boost/property_tree/ptree.hpp>
 
 #include "Messenger.h"
 #include "Quantity.h"
+
+Fittino::Quantity::Quantity( std::string name ) {
+
+    _name  = name;
+
+}
 
 Fittino::Quantity::Quantity( std::string name,
                              std::string plotName,
@@ -56,8 +61,8 @@ Fittino::Quantity::Quantity( std::string name,
 }
 
 Fittino::Quantity::Quantity( const boost::property_tree::ptree& ptree )
-    : _lowerBound( ptree.get<double>     ( "LowerBound", - std::numeric_limits<double>::infinity()  ) ),
-      _upperBound( ptree.get<double>     ( "UpperBound",  std::numeric_limits<double>::infinity()  ) ),
+    : _lowerBound( ptree.get<double>     ( "LowerBound", - std::numeric_limits<double>::infinity() ) ),
+      _upperBound( ptree.get<double>     ( "UpperBound",   std::numeric_limits<double>::infinity() ) ),
       _value     ( ptree.get<double>     ( "Value", 0.    ) ),
       _name      ( ptree.get<std::string>( "Name"         ) ),
       _unit      ( ptree.get<std::string>( "Unit", ""     ) ),
@@ -72,9 +77,9 @@ Fittino::Quantity::~Quantity() {
 
 bool Fittino::Quantity::IsInBounds() const {
 
-  if (  GetValue() <= GetUpperBound() && GetValue() >= GetLowerBound() ) return true;
+    if ( GetValue() <= GetUpperBound() && GetValue() >= GetLowerBound() ) return true;
 
-  return false;
+    return false;
 
 }
 
@@ -152,11 +157,5 @@ void Fittino::Quantity::SetValue( double value ) {
 }
 
 void Fittino::Quantity::Update() {
-
-}
-
-Fittino::Quantity::Quantity(std::string name) {
-
-    _name  = name;
 
 }

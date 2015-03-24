@@ -46,10 +46,10 @@ namespace Fittino {
 
     private:
       double                   _completionTimeout;
-      pid_t                    _pid;
       int                      _pipefds[2];
       int                      _rc;
       int                      _status;
+      pid_t                    _pid;
       timespec*                _creationTimeout;
       std::string              _path;
       std::vector<std::string> _args;

@@ -39,9 +39,34 @@ Fittino::Messenger& Fittino::Messenger::GetInstance() {
 
 }
 
-void Fittino::Messenger::SetVerbosityLevel( const VerbosityLevel& verbosityLevel ) {
+void Fittino::Messenger::SetVerbosityLevel( const std::string& verbosityLevel ) {
 
-    _verbosityLevel = verbosityLevel;
+    if ( verbosityLevel == "DEBUG" ) {
+
+        SetVerbosityLevel( DEBUG );
+
+    }
+    else if ( verbosityLevel == "INFO" ) {
+
+        SetVerbosityLevel( INFO );
+
+    }
+    else if ( verbosityLevel == "ALWAYS" ) {
+
+        SetVerbosityLevel( ALWAYS );
+
+    }
+    else {
+
+        throw ConfigurationException( "Verbosity level unknown." );
+
+    }
+
+}
+
+Fittino::Messenger::VerbosityLevel Fittino::Messenger::GetVerbosityLevel() const {
+
+    return _verbosityLevel;
 
 }
 
@@ -96,33 +121,8 @@ void Fittino::Messenger::Send() {
 
 }
 
-void Fittino::Messenger::SetVerbosityLevel( const std::string& verbosityLevel ) {
+void Fittino::Messenger::SetVerbosityLevel( const VerbosityLevel& verbosityLevel ) {
 
-    if ( verbosityLevel == "DEBUG" ) {
+    _verbosityLevel = verbosityLevel;
 
-        SetVerbosityLevel( DEBUG );
-
-    }
-    else if ( verbosityLevel == "INFO" ) {
-
-        SetVerbosityLevel( INFO );
-
-    }
-    else if ( verbosityLevel == "ALWAYS" ) {
-
-        SetVerbosityLevel( ALWAYS );
-
-    }
-    else {
-
-        throw ConfigurationException( "Verbosity level unknown." );
-
-    }
-
-}
-
-Fittino::Messenger::VerbosityLevel Fittino::Messenger::GetVerbosityLevel() const {
-    
-    return _verbosityLevel;
-    
 }

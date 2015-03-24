@@ -59,7 +59,7 @@ double Fittino::RandomGenerator::Uniform( double x1, double x2 ) {
 
 unsigned int Fittino::RandomGenerator::GetSeed() {
 
-  return _generator->GetSeed();
+    return _generator->GetSeed();
 
 }
 
@@ -84,8 +84,7 @@ TRandom3* Fittino::RandomGenerator::GetGenerator() {
 Fittino::RandomGenerator* Fittino::RandomGenerator::_instance = 0;
 
 Fittino::RandomGenerator::RandomGenerator()
-  : _generator( new TRandom3()  ){
-
+    : _generator( new TRandom3() ) {
 
 }
 
