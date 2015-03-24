@@ -8,8 +8,8 @@
 *                                                                              *
 * Description Class for Markov chain parameter sampler                         *
 *                                                                              *
-* Authors     Matthias  Hamer     <mhamer@gwdg.de>                             *
-*             Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
+* Authors     Matthias Hamer       <mhamer@gwdg.de>                            *
+*             Mathias  Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>             *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -46,45 +46,43 @@ namespace Fittino {
        */
       ~MarkovChainSampler();
 
+    protected:
+      const std::vector<double>& GetParameterValuesOfLastAcceptedPoint() const;
+
+    protected:
+      virtual void               FinalizeStatus();
+      virtual void               InitializeMemory();
+      virtual void               PrintSteeringParameters() const;
+      virtual void               UpdateMemory();
+      virtual void               UpdateParameterValues( double scalefactor );
+
       /*! \cond UML */
     private:
-      bool                   _pointAccepted;
-      bool                   _strictBounds;
-      double                 _chi2OfLastAcceptedPoint;
-      double                 _firstPointScalefactor;
+      bool                       _pointAccepted;
+      bool                       _strictBounds;
+      double                     _chi2OfLastAcceptedPoint;
+      double                     _firstPointScalefactor;
       /*!
        *  Stores the configured maximal number of iteration steps.
        */
-      unsigned int           _numberOfIterations;
-      std::vector<double>    _parameterValuesOfLastAcceptedPoint;
-      unsigned int           _weight;
-      unsigned int           _numberOfRejectedPoints;
-
+      unsigned int               _numberOfIterations;
+      unsigned int               _numberOfRejectedPoints;
+      unsigned int               _weight;
+      std::vector<double>        _parameterValuesOfLastAcceptedPoint;
       /*!
        *  Used to count how often a point is accepted.
        */
-      TBranch*               _branchPointAccepted;
+      TBranch*                   _branchPointAccepted;
 
     private:
-      bool                   IsAccepted();
-      bool                   IsInBounds();
-      void                   CompareChi2();
-      void                   Execute();
-      void                   FillBranchPointAccepted();
-      void                   ResetParameters();
-      void                   UpdateModel();
-      void                   UpdateParameterValuesConsideringBounds( double scalefactor );
-
-    protected:
-      virtual void           InitializeMemory();
-      virtual void           UpdateMemory();
-      virtual void           UpdateParameterValues( double scalefactor );
-      virtual void           FinalizeStatus();
-      virtual void           PrintSteeringParameters() const;
-
-    protected:  
-      const std::vector<double>&  GetParameterValuesOfLastAcceptedPoint() const;
-
+      bool                       IsAccepted();
+      bool                       IsInBounds();
+      void                       CompareChi2();
+      void                       Execute();
+      void                       FillBranchPointAccepted();
+      void                       ResetParameters();
+      void                       UpdateModel();
+      void                       UpdateParameterValuesConsideringBounds( double scalefactor );
 
       /*! \endcond UML */
 
