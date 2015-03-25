@@ -34,8 +34,8 @@
 #include "Factory.h"
 #include "InputException.h"
 #include "ModelBase.h"
-#include "Tool.h"
 #include "RandomGenerator.h"
+#include "Tool.h"
 
 Fittino::Controller& Fittino::Controller::GetInstance() {
 
@@ -62,7 +62,6 @@ void Fittino::Controller::ExecuteFittino() const {
 
         if ( !_lockFileName.empty() ) {
 
-	  //	  settings = boost::property_tree::xml_writer_make_settings<std::string> ('\t', 1);
             boost::property_tree::xml_writer_settings<char> settings( '\t', 1 );
             boost::property_tree::write_xml( _inputFileName, *_inputPtree, std::locale(), settings );
 
@@ -72,16 +71,16 @@ void Fittino::Controller::ExecuteFittino() const {
 
         tool->PerformTask();
 
-	if ( _inputPtree->get_child( "InputFile").count( "RandomSeed" ) ) {
-	
-	    _outputPtree->put( "InputFile.RandomSeed", _inputPtree->get<std::string>( "InputFile.RandomSeed" ) );
+        if ( _inputPtree->get_child( "InputFile" ).count( "RandomSeed" ) ) {
 
-	}
+            _outputPtree->put( "InputFile.RandomSeed", _inputPtree->get<std::string>( "InputFile.RandomSeed" ) );
+
+        }
 
         _outputPtree->put( "InputFile.VerbosityLevel", _inputPtree->get<std::string>( "InputFile.VerbosityLevel" ) );
         _outputPtree->put_child( "InputFile.Model." + modelType, model->GetPropertyTree() );
         _outputPtree->put_child( "InputFile.Tool." + toolType , tool->GetPropertyTree() );
-        
+
         delete tool;
         delete model;
 
@@ -129,53 +128,9 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
         }
 
-        std::string project = PROJECT_SOURCE_DIR;
-
         if ( _validate ) {
 
-
-#ifdef LIBXML2
-
-
-            std::string xmllint = LIBXML2_XMLLINT_EXECUTABLE;
-            std::string xmlValidationFile = project + "/input/definitions/InputFile.xsd";
-
-            Messenger::GetInstance() << Messenger::ALWAYS << "Validating the input..." << Messenger::Endl;
-            Messenger::GetInstance() << Messenger::ALWAYS << "Using xmllint at " <<xmllint<<"."<<Messenger::Endl;
-            Messenger::GetInstance() << Messenger::ALWAYS << "Using xsd file at " <<xmlValidationFile<<"."<<Messenger::Endl;
-
-            Executor validation(xmllint, "xmllint");
-            validation.AddArgument("--noout");
-            validation.AddArgument("--schema");
-            validation.AddArgument(xmlValidationFile);
-            validation.AddArgument(_inputFileName);
-            int rc = validation.Execute();
-            Messenger::GetInstance() << Messenger::ALWAYS << "Xmllint returned " << rc << "." << Messenger::Endl;
-
-            std::vector<std::string> xmllintrc(10);
-            xmllintrc[0] = "No Error";
-            xmllintrc[1] = "Unclassified";
-            xmllintrc[2] = "Error in DTD";
-            xmllintrc[3] = "Validation error";
-            xmllintrc[4] = "Error in schema";
-            xmllintrc[5] = "Error in schema compilation";
-            xmllintrc[6] = "Error in writing output";
-            xmllintrc[7] = "Error in pattern";
-            xmllintrc[8] = "Error in Reader registration";
-            xmllintrc[9] = "Out of memory error.";
-
-            if (rc) {
-
-                throw ConfigurationException("Input file failed validation: " + xmllintrc.at(rc) + ".");
-
-            }
-
-#else
-
-               throw ConfigurationException( "Requested validation but Fittino was built without libxml2." );
-
-
-        #endif
+            Controller::ValidateInputFile();
 
         }
 
@@ -197,7 +152,7 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
             if ( randomSeed == 0 ) {
 
-                Messenger::GetInstance() << Messenger::ALWAYS << "RandomSeed was set to 0 in the input file. A random random seed of "<< RandomGenerator::GetInstance()->GetSeed()<< " is used." << Messenger::Endl;
+                Messenger::GetInstance() << Messenger::ALWAYS << "RandomSeed was set to 0 in the input file. A random random seed of " << RandomGenerator::GetInstance()->GetSeed() << " is used." << Messenger::Endl;
 
             }
 
@@ -223,14 +178,13 @@ void Fittino::Controller::TerminateFittino() const {
 Fittino::Controller* Fittino::Controller::_instance = 0;
 
 Fittino::Controller::Controller()
-    : _inputFileName( "" ),
+    : _validate( false ),
+      _inputFileName( "" ),
+      _lockFileName( "" ),
+      _fileLock( 0 ),
+      _scopedLock( 0 ),
       _inputPtree( new boost::property_tree::ptree() ),
       _outputPtree( new boost::property_tree::ptree() ) {
-
-    _fileLock = 0;
-    _scopedLock = 0;
-    _lockFileName = "";
-    _validate = false;
 
 }
 
@@ -275,11 +229,11 @@ void Fittino::Controller::HandleOptions( int argc, char** argv ) {
 
     static struct option options[] = {
 
-            {"help",       no_argument,       0, 'h'},
-            {"input-file", required_argument, 0, 'i'},
-            {"lock-file",  required_argument, 0, 'l'},
-            {"validate",    no_argument,      0, 'v'},
-            {0,            0,                 0,  0 }
+        {"help",       no_argument,       0, 'h'},
+        {"input-file", required_argument, 0, 'i'},
+        {"lock-file",  required_argument, 0, 'l'},
+        {"validate",    no_argument,      0, 'v'},
+        {0,            0,                 0,  0 }
 
     };
 
@@ -353,5 +307,61 @@ void Fittino::Controller::PrintLogo() const {
     messenger << Messenger::ALWAYS << Messenger::Endl;
     messenger << Messenger::ALWAYS << "  Welcome to Fittino" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
+
+}
+
+void Fittino::Controller::ValidateInputFile() const {
+
+#ifdef LIBXML2
+
+    std::string project = PROJECT_SOURCE_DIR;
+
+    std::string xmllint = LIBXML2_XMLLINT_EXECUTABLE;
+    std::string xmlValidationFile = project + "/input/definitions/InputFile.xsd";
+
+    Messenger& messenger = Messenger::GetInstance();
+
+    messenger << Messenger::ALWAYS << Messenger::_dashedLine << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "  Validating the input file" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "   Using xmllint at " << xmllint << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "   Using xsd file at input/definitions/InputFile.xsd" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+
+    Executor validation( xmllint, "xmllint" );
+    validation.AddArgument( "--noout" );
+    validation.AddArgument( "--schema" );
+    validation.AddArgument( xmlValidationFile );
+    validation.AddArgument( _inputFileName );
+    int rc = validation.Execute();
+
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "   Xmllint returned " << rc << Messenger::Endl;
+    messenger << Messenger::ALWAYS << Messenger::Endl;
+
+    std::vector<std::string> xmllintrc( 10 );
+    xmllintrc[0] = "No Error";
+    xmllintrc[1] = "Unclassified";
+    xmllintrc[2] = "Error in DTD";
+    xmllintrc[3] = "Validation error";
+    xmllintrc[4] = "Error in schema";
+    xmllintrc[5] = "Error in schema compilation";
+    xmllintrc[6] = "Error in writing output";
+    xmllintrc[7] = "Error in pattern";
+    xmllintrc[8] = "Error in Reader registration";
+    xmllintrc[9] = "Out of memory error.";
+
+    if ( rc ) {
+
+        throw ConfigurationException( "Input file failed validation: " + xmllintrc.at( rc ) + "." );
+
+    }
+
+#else
+
+    throw ConfigurationException( "Requested validation but Fittino was built without libxml2." );
+
+#endif
 
 }

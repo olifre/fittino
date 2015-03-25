@@ -176,6 +176,7 @@ namespace Fittino {
        *  Prints a welcome logo.
        */
       void                                                              PrintLogo() const;
+      void                                                              ValidateInputFile() const;
 
       /*! \endcond UML */
 
