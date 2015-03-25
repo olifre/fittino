@@ -26,10 +26,10 @@
 
   <xsl:template match="Model">
     <!-- Specify here the existing model templates -->
-    <xsl:apply-templates select="PhysicsModel | RosenbrockModel"/>
+    <xsl:apply-templates select="ModelBase | PhysicsModel | RosenbrockModel"/>
   </xsl:template>
   
-  <xsl:template match="PhysicsModel | RosenbrockModel">
+  <xsl:template match="ModelBase | PhysicsModel | RosenbrockModel">
     <!-- Prints a headline with the model's name and its various associated lists -->
     <p>
       <!-- Headline -->
