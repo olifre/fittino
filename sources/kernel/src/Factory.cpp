@@ -20,7 +20,6 @@
 *******************************************************************************/
 
 #include "AbsoluteUncertainty.h"
-#include "Alpine2Model.h"
 #include "AstroCalculator.h"
 #include "AstroUncertainty.h"
 #include "AstroFitCalculator.h"
@@ -29,8 +28,6 @@
 #include "Chi2Calculator.h"
 #include "ContourHistogramMaker.h"
 #include "ContourPlotter.h"
-#include "CovariantSampler.h"
-#include "DamavandiModel.h"
 #include "EdgeDetectionTool.h"
 #include "Factory.h"
 
@@ -41,7 +38,6 @@
 #include "FeynHiggsRescalingCalculator.h"
 #include "FormulaCalculator.h"
 #include "GeneticAlgorithmOptimizer.h"
-#include "GiuntaModel.h"
 #include "HDim6Calculator.h"
 #include "HECCalculator.h"
 #include "HiggsBoundsHadXSCalculator.h"
@@ -51,19 +47,14 @@
 #include "HiggsSignalsPartXSCalculator.h"
 #include "HiggsSignalsSLHACalculator.h"
 #include "HigherOrderMarkovChainSampler.h"
-#include "HosakiModel.h"
 #include "LHCChi2Calculator.h"
 #include "LHCLimitCalculator.h"
 #include "MadGraphCalculator.h"
 #include "MarkovChainSampler.h"
 #include "MicromegasCalculator.h"
 #include "MinuitOptimizer.h"
-#include "ModifiedRosenbrockModel.h"
-#include "NewCorrelatedSampler.h"
 #include "NewHiggsSignalsHadXSCalculator.h"
 #include "Observable.h"
-#include "Paraboloid.h"
-#include "ParaboloidModel.h"
 #include "ParticleSwarmOptimizer.h"
 #include "PhysicsModel.h"
 #include "ProfileHistogramMaker.h"
@@ -72,7 +63,6 @@
 #include "RelativeTheoryUncertainty.h"
 #include "RosenbrockCalculator.h"
 #include "RosenbrockModel.h"
-#include "Shubert3Model.h"
 #include "Simple1DHistogramMaker.h"
 #include "Simple2DHistogramMaker.h"
 #include "Simple3DHistogramMaker.h"
@@ -83,7 +73,6 @@
 #include "SimpleSampler.h"
 #include "SimpleStringCut.h"
 #include "SimulatedAnnealingOptimizer.h"
-#include "SlideModel.h"
 #include "SLHAeaSLHADataStorage.h"
 #include "SPhenoSLHACalculator.h"
 #include "SplineCut.h"
@@ -92,9 +81,6 @@
 #include "SuperIsoCalculator.h"
 #include "TreeCalculator.h"
 #include "TreeSampler.h"
-#include "Univariate10Model.h"
-#include "Univariate2Model.h"
-#include "VincentModel.h"
 
 Fittino::Factory::Factory() {
 
@@ -388,44 +374,9 @@ Fittino::CutBase* const Fittino::Factory::CreateCut( const std::string& type, Fi
 
 Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type,  boost::property_tree::ptree& ptree ) const {
 
-    if ( type == "Alpine2Model" ) {
-
-        return new Alpine2Model( ptree );
-
-    }
-    else if ( type == "DamavandiModel" ) {
-
-        return new DamavandiModel( ptree );
-
-    }
-    else if ( type == "GiuntaModel" ) {
-
-        return new GiuntaModel( ptree );
-
-    }
-    else if ( type == "HosakiModel" ) {
-
-        return new HosakiModel( ptree );
-
-    }
-    else if ( type == "ModelBase" ) {
+    if ( type == "ModelBase" ) {
 
         return new ModelBase( ptree );
-
-    }
-    else if ( type == "ModifiedRosenbrockModel" ) {
-
-        return new ModifiedRosenbrockModel( ptree );
-
-    }
-    else if ( type == "Paraboloid" ) {
-
-        return new Paraboloid( ptree );
-
-    }
-    else if ( type == "ParaboloidModel" ) {
-
-        return new ParaboloidModel( ptree );
 
     }
     else if ( type == "PhysicsModel" ) {
@@ -436,31 +387,6 @@ Fittino::ModelBase* const Fittino::Factory::CreateModel( const std::string& type
     else if ( type == "RosenbrockModel" ) {
 
         return new RosenbrockModel( ptree );
-
-    }
-    else if ( type == "Shubert3Model" ) {
-
-        return new Shubert3Model( ptree );
-
-    }
-    else if ( type == "SlideModel" ) {
-
-        return new SlideModel( ptree );
-
-    }
-    else if ( type == "Univariate10Model" ) {
-
-        return new Univariate10Model( ptree );
-
-    }
-    else if ( type == "Univariate2Model" ) {
-
-        return new Univariate2Model( ptree );
-
-    }
-    else if ( type == "VincentModel" ) {
-
-        return new VincentModel( ptree );
 
     }
     else {
@@ -597,11 +523,6 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
     else if ( type == "MinuitOptimizer" ) {
 
         return new MinuitOptimizer( model, ptree );
-
-    }
-    else if ( type == "NewCorrelatedSampler" ) {
-
-        return new NewCorrelatedSampler( model, ptree );
 
     }
     else if ( type == "ParticleSwarmOptimizer" ) {
