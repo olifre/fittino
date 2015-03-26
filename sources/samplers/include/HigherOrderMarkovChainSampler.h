@@ -30,6 +30,9 @@
 namespace Fittino {
 
   /*!
+   *  \defgroup samplers
+   */
+  /*!
    *  \ingroup samplers
    */
   class HigherOrderMarkovChainSampler : public MarkovChainSampler {
