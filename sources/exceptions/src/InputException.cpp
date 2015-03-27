@@ -6,7 +6,7 @@
 *                                                                              *
 * File        InputException.cpp                                               *
 *                                                                              *
-* Description Thrown if Fittino is called with formally invalid input          * 
+* Description Thrown if Fittino is called with formally invalid input          *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
