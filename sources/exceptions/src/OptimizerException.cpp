@@ -6,8 +6,7 @@
 *                                                                              *
 * File        OptimizerException.cpp                                           *
 *                                                                              *
-* Description Fittino optimizer exception class. It is thrown in case of       *
-*             problems with optimizers                                         *
+* Description Thrown in case of problems with an optimizer                     *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *

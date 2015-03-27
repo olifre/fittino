@@ -7,7 +7,7 @@
 * File        CalculatorException.cpp                                          *
 *                                                                              *
 * Description Thrown in case of problems with calculations performed by one of *
-*             the Calculators                                                  *
+*             the calculators                                                  *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *

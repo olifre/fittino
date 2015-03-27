@@ -6,7 +6,7 @@
 *                                                                              *
 * File        RedirectorException.cpp                                          *
 *                                                                              *
-* Description Indicates a problem with redirection                             *
+* Description Thrown in case of problems with output redirection               *
 *                                                                              *
 * Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
 *                                                                              *

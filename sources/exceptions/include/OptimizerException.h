@@ -6,8 +6,7 @@
 *                                                                              *
 * File        OptimizerException.h                                             *
 *                                                                              *
-* Description Fittino optimizer exception class. It is thrown in case of       *
-*             problems with optimizers                                         *
+* Description Thrown in case of problems with an optimizer                     *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *             Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
@@ -31,7 +30,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup exceptions
-   *  \brief Fittino optimizer exception class.
+   *  \brief Thrown in case of problems with an optimizer.
    */
   class OptimizerException : public ExceptionBase {
 

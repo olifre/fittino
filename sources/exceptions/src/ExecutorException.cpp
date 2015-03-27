@@ -6,7 +6,8 @@
 *                                                                              *
 * File        ExecutorException.cpp                                            *
 *                                                                              *
-* Description Indicates a problem with the execution of an external program    *
+* Description Thrown in case of problems with the execution of an external     *
+*             program                                                          *
 *                                                                              *
 * Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
 *                                                                              *

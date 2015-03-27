@@ -6,7 +6,8 @@
 *                                                                              *
 * File        TimeoutExecutorException.h                                       *
 *                                                                              *
-* Description Indicates a problem with the execution of an external program    *
+* Description Thrown if the execution of an external program is taking too     *
+*             long                                                             *
 *                                                                              *
 * Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
 *                                                                              *
@@ -29,7 +30,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup exceptions
-   *  \brief Indicated a problem with the execution of an external program.
+   *  \brief Thrown if the execution of an external program is taking too long.
    */
   class TimeoutExecutorException : public ExecutorException {
 

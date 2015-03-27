@@ -6,8 +6,7 @@
 *                                                                              *
 * File        ConfigurationException.h                                         *
 *                                                                              *
-* Description Fittino configuration exception class. It is thrown in case of   *
-*             problems with the user configuration                             *
+* Description Thrown in case of problems with the configuration of Fittino     *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -33,7 +32,7 @@ namespace Fittino {
    */
   /*!
    *  \ingroup exceptions
-   *  \brief Fittino configuration exception class.
+   *  \brief Thrown in case of problems with the configuration of Fittino.
    *
    *  Configuration exceptions are thrown if an inconsistent configuration is detected, e.g.\n
    *  steering parameters unknown to Fittino.

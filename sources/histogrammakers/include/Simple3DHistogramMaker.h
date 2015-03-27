@@ -6,7 +6,7 @@
 *                                                                              *
 * File        Simple3DHistogramMaker.h                                         *
 *                                                                              *
-* Description Class for simple 2D histogram maker                              *
+* Description Class for simple 3D histogram maker                              *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *
@@ -29,7 +29,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup histogrammakers
-   *  \brief Class for simple 2D histogram maker.
+   *  \brief Class for simple 3D histogram maker.
    */
   class Simple3DHistogramMaker : public HistogramMakerBase {
 

@@ -6,7 +6,7 @@
 *                                                                              *
 * File        RedirectorException.h                                            *
 *                                                                              *
-* Description Indicates a problem with redirection                             *
+* Description Thrown in case of problems with output redirection               *
 *                                                                              *
 * Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
 *                                                                              *
@@ -29,7 +29,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup exceptions
-   *  \brief Fittino model calculator exception class.
+   *  \brief Thrown in case of problems with output redirection.
    */
   class RedirectorException : public ExceptionBase {
 

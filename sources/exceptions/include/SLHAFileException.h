@@ -6,8 +6,7 @@
 *                                                                              *
 * File        SLHAFileException.h                                              *
 *                                                                              *
-* Description Fittino SLHA file exception class. It is thrown in case of       *
-*             problems with the SLHA file (syntax errors, etc.)                *
+* Description Thrown in case of problems with reading or writing a SLHA file   *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *             Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
@@ -31,7 +30,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup exceptions
-   *  \brief Fittino SLHA file exception class.
+   *  \brief Thrown in case of problems with reading or writing a SLHA file.
    */
   class SLHAFileException : public ExceptionBase {
 

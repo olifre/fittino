@@ -6,8 +6,7 @@
 *                                                                              *
 * File        ConfigurationException.cpp                                       *
 *                                                                              *
-* Description Fittino configuration exception class. It is thrown in case of   *
-*             problems with the user configuration                             *
+* Description Thrown in case of problems with the configuration of Fittino     *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *                                                                              *

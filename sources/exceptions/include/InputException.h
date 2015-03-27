@@ -6,8 +6,7 @@
 *                                                                              *
 * File        InputException.h                                                 *
 *                                                                              *
-* Description Fittino input exception class. It is thrown in case of erroneous *
-*             input                                                            *
+* Description Thrown if Fittino is called with formally invalid input          * 
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *             Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
@@ -31,7 +30,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup exceptions
-   *  \brief Fittino input exception class.
+   *  \brief Thrown if Fittino is called with formally invalid input.
    *
    *  Input exceptions are thrown if Fittino is called with formally invalid input of any kind e.g\n
    *  with unknown options, an invalid combination of options or if there are missing option\n

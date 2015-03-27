@@ -6,7 +6,8 @@
 *                                                                              *
 * File        ExecutorException.h                                              *
 *                                                                              *
-* Description Indicates a problem with the execution of an external program    *
+* Description Thrown in case of problems with the execution of an external     *
+*             program                                                          *
 *                                                                              *
 * Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
 *                                                                              *
@@ -29,7 +30,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup exceptions
-   *  \brief Indicated a problem with the execution of an external program.
+   *  \brief Thrown in case of problems with the execution of an external program.
    */
   class ExecutorException : public ExceptionBase {
 

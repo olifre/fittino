@@ -6,7 +6,8 @@
 *                                                                              *
 * File        TimeoutExecutorException.cpp                                     *
 *                                                                              *
-* Description Indicates a problem with the execution of an external program    *
+* Description Thrown if the execution of an external program is taking too     *
+*             long                                                             *
 *                                                                              *
 * Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
 *                                                                              *

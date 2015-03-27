@@ -6,7 +6,8 @@
 *                                                                              *
 * File        HigherOrderMarkovChainSampler.h                                  *
 *                                                                              *
-* Description Class for correlated covariant parameter sampler                 *
+* Description Extends plain Markov Chain sampling by additionally exploiting   *
+*             parameter correlations                                           *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -34,6 +35,7 @@ namespace Fittino {
    */
   /*!
    *  \ingroup samplers
+   *  \brief Extends plain Markov Chain sampling by additionally exploiting parameter correlations.
    */
   class HigherOrderMarkovChainSampler : public MarkovChainSampler {
 

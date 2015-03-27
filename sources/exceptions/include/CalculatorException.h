@@ -7,7 +7,7 @@
 * File        CalculatorException.h                                            *
 *                                                                              *
 * Description Thrown in case of problems with calculations performed by one of *
-*             the Calculators                                                  *
+*             the calculators                                                  *
 *                                                                              *
 * Authors     Mathias Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>              *
 *             Peter   Wienemann   <wienemann@physik.uni-bonn.de>               *
@@ -31,7 +31,7 @@ namespace Fittino {
 
   /*!
    *  \ingroup exceptions
-   *  \brief Thrown in case of problems with calculations performed by one of the Calculators.
+   *  \brief Thrown in case of problems with calculations performed by one of the calculators.
    */
   class CalculatorException : public ExceptionBase {
 
