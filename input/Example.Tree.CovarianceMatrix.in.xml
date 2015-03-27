@@ -119,8 +119,6 @@
         </Observable>
 
       </Observables>
-      <Chi2Contributions>
-      </Chi2Contributions>
       <CovarianceMatrices>
         <CovarianceMatrix>
             <Row> <ObservableName>O_massNeutralino1</ObservableName><Col>1406.25</Col><Col>200.00</Col> </Row>

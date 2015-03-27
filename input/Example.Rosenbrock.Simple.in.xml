@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding='UTF-8'?>
 <?xml-stylesheet type="text/xsl" href="style/InputFile.xsl"?>
 
-<!-- $Id$ -->
-
 <!--#########################################################################-->
 <!--                                                                         -->
 <!-- Project     Fittino - A SUSY Parameter Fitting Package                  -->
@@ -23,11 +21,13 @@
 
 <InputFile>
 
-  <VerbosityLevel>INFO</VerbosityLevel>
+  <VerbosityLevel>ALWAYS</VerbosityLevel>
 
   <Model>
 
     <RosenbrockModel>
+
+      <Name>2D RosenbrockModel</Name>
 
       <ModelParameter>
         <Name>X1</Name>
@@ -42,6 +42,8 @@
         <LowerBound>-2</LowerBound>
         <UpperBound>2</UpperBound>
       </ModelParameter>
+
+      <Calculators></Calculators>
 
     </RosenbrockModel>
 

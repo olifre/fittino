@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding='UTF-8'?>
 <?xml-stylesheet type="text/xsl" href="style/InputFile.xsl"?>
 
-<!-- $Id$ -->
-
 <!--#########################################################################-->
 <!--                                                                         -->
 <!-- Project     Fittino - A SUSY Parameter Fitting Package                  -->
@@ -51,6 +49,8 @@
         <UpperBound>4.</UpperBound>
         <Fixed>false</Fixed>
       </ModelParameter>
+
+      <Calculators></Calculators>
 
     </RosenbrockModel>
 
