@@ -75,6 +75,7 @@
 #include "SimpleStringCut.h"
 #include "SimulatedAnnealingOptimizer.h"
 #include "SLHAeaSLHADataStorage.h"
+#include "SModelSCalculator.h"
 #include "SPhenoSLHACalculator.h"
 #include "SplineCut.h"
 #include "SummaryHistogramMaker.h"
@@ -314,6 +315,20 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
         return new RosenbrockCalculator( model, ptree );
 
     }
+    else if ( type == "SModelSCalculator" ) {
+
+#ifdef PYTHON
+
+      return new SModelSCalculator( model, ptree );
+
+#else 
+
+      throw ConfigurationException( "Trying to use SModelSCalculator but Fittino was built without Python." );
+
+#endif
+
+    }
+
     else if ( type == "SPhenoCalculator" ) {
 
 #ifdef SLHAEA

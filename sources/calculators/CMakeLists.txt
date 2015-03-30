@@ -21,6 +21,7 @@
 FILE(GLOB includes ./include/*.h)
 LIST( APPEND includes "include/LinearInterpolationCalculator.h" )
 LIST( APPEND includes "include/LinearInterpolationCalculatorBase.h" )
+LIST( APPEND includes "include/SModelSCalculator.h" )
 
 
 AUX_SOURCE_DIRECTORY(src sources)
@@ -34,13 +35,26 @@ INCLUDE_DIRECTORIES(../kernel/include)
 INCLUDE_DIRECTORIES(../variables/include)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
+
 LIST( APPEND sources "src/AbsoluteUncertainty.cpp" )
 LIST( APPEND sources "src/FormulaQuantity.cpp" )
 LIST( APPEND sources "src/RelativeTheoryUncertainty.cpp" )
 LIST( APPEND sources "src/LinearInterpolationCalculator.cpp" )
 LIST( APPEND sources "src/LinearInterpolationCalculatorBase.cpp" )
 LIST( APPEND sources "src/AstroUncertainty.cpp" )
+LIST( APPEND sources "src/SModelSCalculator.cpp" )
+#LIST( APPEND sources "src/CheckMATE2Calculator.cpp" )
+#LIST( APPEND sources "src/HerwigppCalculator.cpp" )
 
+IF(PYTHONLIBS_FOUND AND Boost_PYTHON_FOUND)
+
+    INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS})
+
+ELSE()
+
+    LIST(REMOVE_ITEM sources "src/SModelSCalculator.cpp")
+
+ENDIF()
 
 IF(FEYNHIGGS_FOUND)
 

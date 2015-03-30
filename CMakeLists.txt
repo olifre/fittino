@@ -58,5 +58,13 @@ FIND_PACKAGE( GFORTRANLIB                                               )
 FIND_PACKAGE( IFORTLIB                                                  )
 FIND_PACKAGE( LIBXML2                                                   )
 
+FIND_PACKAGE( PythonLibs ) 
+
+IF( PYTHONLIBS_FOUND )
+
+    FIND_PACKAGE( Boost 1.47.0 COMPONENTS filesystem system thread python  )
+
+ENDIF()
+
 ADD_SUBDIRECTORY( external )
 ADD_SUBDIRECTORY( sources  )
