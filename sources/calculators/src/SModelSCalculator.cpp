@@ -1,6 +1,6 @@
-#include <iostream>
-#include <boost/python.hpp>
 #include <Python.h>
+
+#include <boost/python.hpp>
 
 #include "SModelSCalculator.h"
 
