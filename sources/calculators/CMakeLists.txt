@@ -19,6 +19,10 @@
 ################################################################################
 
 FILE(GLOB includes ./include/*.h)
+LIST( APPEND includes "include/LinearInterpolationCalculator.h" )
+LIST( APPEND includes "include/LinearInterpolationCalculatorBase.h" )
+
+
 AUX_SOURCE_DIRECTORY(src sources)
 
 INCLUDE_DIRECTORIES(../../external)
@@ -33,6 +37,8 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 LIST( APPEND sources "src/AbsoluteUncertainty.cpp" )
 LIST( APPEND sources "src/FormulaQuantity.cpp" )
 LIST( APPEND sources "src/RelativeTheoryUncertainty.cpp" )
+LIST( APPEND sources "src/LinearInterpolationCalculator.cpp" )
+LIST( APPEND sources "src/LinearInterpolationCalculatorBase.cpp" )
 LIST( APPEND sources "src/AstroUncertainty.cpp" )
 
 

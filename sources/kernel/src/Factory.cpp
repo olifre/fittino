@@ -49,6 +49,7 @@
 #include "HigherOrderMarkovChainSampler.h"
 #include "LHCChi2Calculator.h"
 #include "LHCLimitCalculator.h"
+#include "LinearInterpolationCalculator.h"
 #include "MadGraphCalculator.h"
 #include "MarkovChainSampler.h"
 #include "MicromegasCalculator.h"
@@ -265,6 +266,11 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     else if ( type == "LHCChi2Calculator" ) {
 
         return new LHCChi2Calculator( model, ptree );
+
+    }
+    else if ( type == "LinearInterpolationCalculator" ) {
+
+        return new LinearInterpolationCalculator( model, ptree );
 
     }
     else if ( type == "MadGraphCalculator" ) {

@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        LHCChi2Calculator.h                                            *
+* File        LinearInterpolationCalculator.h                                  *
 *                                                                              *
 * Description                                                                  *
 *                                                                              *
@@ -17,8 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_LHCCHI2CALCULATOR_H
-#define FITTINO_LHCCHI2CALCULATOR_H
+#ifndef FITTINO_LINEARINTERPOLATIONCALCULATOR_H
+#define FITTINO_LINEARINTERPOLATIONCALCULATOR_H
 
 #include <vector>
 
@@ -38,12 +38,13 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief
    */
-  class LHCChi2Calculator : public LinearInterpolationCalculatorBase {
+  class LinearInterpolationCalculator : public LinearInterpolationCalculatorBase {
 
     public:
 
-                           LHCChi2Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree );
-                           ~LHCChi2Calculator();
+                           LinearInterpolationCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree );
+                           ~LinearInterpolationCalculator();
+
   };
 
 }

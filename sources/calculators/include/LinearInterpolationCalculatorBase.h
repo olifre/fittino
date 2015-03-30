@@ -1,10 +1,10 @@
-/* $Id$ */
+/* $Id: LHCChi2Calculator.h 2462 2015-02-06 11:59:42Z uhlenbrock@PHYSIK.UNI-BONN.DE $ */
 
 /*******************************************************************************
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        LHCChi2Calculator.h                                            *
+* File        LinearInterpolationCalculatorBase.h                              *
 *                                                                              *
 * Description                                                                  *
 *                                                                              *
@@ -17,14 +17,14 @@
 *                                                                              *
 *******************************************************************************/
 
-#ifndef FITTINO_LHCCHI2CALCULATOR_H
-#define FITTINO_LHCCHI2CALCULATOR_H
+#ifndef FITTINO_LINEARINTERPOLATIONCALCULATORBASE_H
+#define FITTINO_LINEARINTERPOLATIONCALCULATORBASE_H
 
 #include <vector>
 
 #include "THnSparse.h"
 
-#include "LinearInterpolationCalculatorBase.h"
+#include "CalculatorBase.h"
 
 class TH1D;
 /*!
@@ -38,13 +38,31 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief
    */
-  class LHCChi2Calculator : public LinearInterpolationCalculatorBase {
+  class LinearInterpolationCalculatorBase : public CalculatorBase {
 
     public:
 
-                           LHCChi2Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree );
-                           ~LHCChi2Calculator();
-  };
+                           LinearInterpolationCalculatorBase( const ModelBase* model, const boost::property_tree::ptree& ptree );
+                           ~LinearInterpolationCalculatorBase();
+    
+    public:
+      virtual void        CalculatePredictions();
+
+  protected:
+      double                   _chi2;
+      TH1D*                    _chi2Histogram;
+      THnSparseD*              _chi2HistogramnD;
+      std::vector<const Quantity*>   _variables;
+
+  protected:
+      void                GetHistogram( std::string name );
+
+
+  private:
+      double              InterpolateND( THnSparse* histogram, std::vector<double> interpolationPoint);
+
+
+      };
 
 }
 
