@@ -1,10 +1,12 @@
 <?xml version="1.0"?>
 
-<!-- $Id$ -->
-
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-<xs:element name="InputFile" type="InputFile" />
+<xs:include schemaLocation="Model.xsd"/>
+<xs:include schemaLocation="Tool.xsd"/>
+<xs:include schemaLocation="VerbosityLevel.xsd"/>
+
+<xs:element name="InputFile" type="InputFile"/>
 
 <xs:complexType name="InputFile">
   <xs:sequence>
@@ -12,163 +14,6 @@
     <xs:element name="Model"          type="Model"         />
     <xs:element name="Tool"           type="Tool"          />
   </xs:sequence>
-</xs:complexType>
-
-<xs:simpleType name="VerbosityLevel">
-  <xs:restriction base="xs:string">
-    <xs:enumeration value="ALWAYS"/>
-    <xs:enumeration value="INFO"  />
-  </xs:restriction>
-</xs:simpleType>
-
-<xs:complexType name="Model">
-  <xs:choice>
-    <xs:element name="RosenbrockModel" type="RosenbrockModel"/>
-    <xs:element name="PhysicsModel"    type="PhysicsModel"   />
-  </xs:choice>
-</xs:complexType>
-
-<xs:complexType name="Tool">
-  <xs:choice>
-    <xs:element name="GeneticAlgorithmOptimizer" type="GeneticAlgorithmOptimizer" />
-    <xs:element name="SimpleSampler"             type="SimpleSampler"             />
-    <xs:element name="MarkovChainSampler"        type="MarkovChainSampler"        />
-  </xs:choice>
-</xs:complexType>
-
-<xs:complexType name="GeneticAlgorithmOptimizer">
-  <xs:complexContent>
-    <xs:extension base="AnalysisTool">
-    <xs:sequence>
-      <xs:element name="AbortCriterion"     type="xs:double"  />
-      <xs:element name="MutationRate"       type="xs:double"  />
-      <xs:element name="Name"               type="xs:string"  />
-      <xs:element name="NumberOfIterations" type="xs:integer" />
-      <xs:element name="RandomSeed"         type="xs:integer" />
-      <xs:element name="SizeOfPopulation"   type="xs:integer" />
-    </xs:sequence>
-    </xs:extension>
-  </xs:complexContent>
-</xs:complexType>
-
-<xs:complexType name="SimpleSampler">
-  <xs:complexContent>
-    <xs:extension base="AnalysisTool">
-    </xs:extension>
-  </xs:complexContent>
-</xs:complexType>
-
-<xs:complexType name="MarkovChainSampler">
-  <xs:complexContent>
-    <xs:extension base="AnalysisTool">
-    <xs:sequence>
-      <xs:element name="NumberOfIterations" type="xs:integer" />
-      <xs:element name="RandomSeed" type="xs:integer"  />
-    </xs:sequence>
-    </xs:extension>
-  </xs:complexContent>
-</xs:complexType>
-
-<xs:complexType name="AnalysisTool">
-</xs:complexType>
-
-<xs:complexType name="RosenbrockModel">
-  <xs:sequence>
-    <xs:element name="Name"           type="xs:string"      minOccurs="0"                      />
-    <xs:element name="ModelParameter" type="ModelParameter" minOccurs="1" maxOccurs="unbounded"/>
-  </xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="PhysicsModel">
-  <xs:sequence>
-    <xs:element name="ModelParameter"     type="ModelParameter" minOccurs="0" maxOccurs="unbounded"/>
-    <xs:element name="Calculators"        type="Calculators"                                       />
-    <xs:element name="Observables"        type="Observables"                                       />
-    <xs:element name="CovarianceMatrices" type="CovarianceMatrices"                                />
-    <xs:element name="Chi2Contribution"   type="xs:string"      minOccurs="0" maxOccurs="unbounded"/>
-  </xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="CovarianceMatrices">
-</xs:complexType>
-
-<xs:complexType name="ModelParameter">
-  <xs:sequence>
-    <xs:element name="Name"       type="xs:string"                />
-    <xs:element name="PlotName"   type="xs:string"  minOccurs="0" />
-    <xs:element name="Value"      type="xs:double"  minOccurs="0" />
-    <xs:element name="Error"      type="xs:double"  minOccurs="0" />
-    <xs:element name="LowerBound" type="xs:double"  minOccurs="0" />
-    <xs:element name="UpperBound" type="xs:double"  minOccurs="0" />
-    <xs:element name="Fixed"      type="xs:boolean" minOccurs="0" />
-  </xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="Calculators">
-  <xs:choice minOccurs="0" maxOccurs="unbounded">
-    <xs:element name="FeynHiggsCalculator"    type="FeynHiggsCalculator"    />
-    <xs:element name="HDim6Calculator"        type="HDim6Calculator"        />
-    <xs:element name="HiggsSignalsCalculator" type="HiggsSignalsCalculator" />
-    <xs:element name="RegressionCalculator"   type="RegressionCalculator"   />
-  </xs:choice>
-</xs:complexType>
-
-<xs:complexType name="FeynHiggsCalculator">
-  <xs:sequence>
-    <xs:element name="Name"  type="xs:string"  />
-    <xs:element name="Parameter" minOccurs="0" maxOccurs="unbounded" >
-      <xs:complexType>
-        <xs:sequence>
-          <xs:element name="Name"     type="xs:string" />
-          <xs:element name="Quantity" type="xs:string" />
-        </xs:sequence>
-      </xs:complexType>
-    </xs:element>
-  </xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="HDim6Calculator">
-  <xs:sequence>
-    <xs:element name="Name"                     type="xs:string"  />
-    <xs:element name="calculate_Gamma_hWW"      type="xs:boolean" />
-    <xs:element name="calculate_Gamma_hZZ"      type="xs:boolean" />
-    <xs:element name="calculate_xs_qqh_2flavor" type="xs:boolean" />
-    <xs:element name="calculate_xs_qqh_5flavor" type="xs:boolean" />
-    <xs:element name="calculate_xs_Wh"          type="xs:boolean" />
-    <xs:element name="calculate_xs_Zh"          type="xs:boolean" />
-  </xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="HiggsSignalsCalculator">
-  <xs:sequence>
-    <xs:element name="Name" type="xs:string" />
-    <xs:element name="ExpData" type="xs:string" />
-  </xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="RegressionCalculator">
-  <xs:sequence>
-    <xs:element name="Name" type="xs:string" />
-     <xs:element name="Variable" type="Variable" minOccurs="0" maxOccurs="unbounded" />
-     <xs:element name="MVA" type="MVA" minOccurs="0" maxOccurs="unbounded" />
-  </xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="Variable">
-  <xs:sequence>
-    <xs:element name="Name" type="xs:string" />
-    <xs:element name="NameInWeightFiles" type="xs:string" />
-  </xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="MVA">
-  <xs:sequence>
-    <xs:element name="WeightFile" type="xs:string"  />
-    <xs:element name="Target" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
-  </xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="Observables">
 </xs:complexType>
 
 </xs:schema>

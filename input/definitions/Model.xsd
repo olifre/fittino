@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:include schemaLocation="PhysicsModel.xsd"/>
+<xs:include schemaLocation="RosenbrockModel.xsd"/>
+
+<xs:complexType name="Model">
+  <xs:choice>
+    <xs:element name="ModelBase"       type="ModelBase"      />
+    <xs:element name="PhysicsModel"    type="PhysicsModel"   />
+    <xs:element name="RosenbrockModel" type="RosenbrockModel"/>
+  </xs:choice>
+</xs:complexType>
+
+</xs:schema>

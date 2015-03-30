@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:include schemaLocation="ModelParameter.xsd"/>
+<xs:include schemaLocation="Calculators.xsd"/>
+
+<xs:complexType name="ModelBase">
+  <xs:sequence>
+    <xs:element name="Name"           type="xs:string"                                         />
+    <xs:element name="ModelParameter" type="ModelParameter" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:element name="Calculators"    type="Calculators"                                       />
+  </xs:sequence>
+</xs:complexType>
+
+</xs:schema>

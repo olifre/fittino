@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:include schemaLocation="FeynHiggsCalculator.xsd"/>
+<xs:include schemaLocation="HDim6Calculator.xsd"/>
+
+<xs:complexType name="Calculators">
+  <xs:choice minOccurs="0" maxOccurs="unbounded">
+    <xs:element name="FeynHiggsCalculator"    type="FeynHiggsCalculator"   />
+    <xs:element name="HDim6Calculator"        type="HDim6Calculator"       />
+    <xs:element name="HiggsSignalsCalculator" type="HiggsSignalsCalculator"/>
+    <xs:element name="RegressionCalculator"   type="RegressionCalculator"  />
+    <xs:element name="SPhenoCalculator"       type="SPhenoCalculator"      />
+    <xs:element name="TreeCalculator"         type="TreeCalculator"        />
+  </xs:choice>
+</xs:complexType>
+
+<xs:complexType name="HiggsSignalsCalculator">
+  <xs:sequence>
+    <xs:element name="Name"    type="xs:string"/>
+    <xs:element name="ExpData" type="xs:string"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="RegressionCalculator">
+  <xs:sequence>
+    <xs:element name="Name"      type="xs:string"/>
+     <xs:element name="Variable" type="Variable" minOccurs="0" maxOccurs="unbounded"/>
+     <xs:element name="MVA"      type="MVA"      minOccurs="0" maxOccurs="unbounded"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SPhenoCalculator">
+  <xs:sequence>
+    <xs:element name="Name"     type="xs:string"                     />
+    <xs:element name="SLHALine" type="SLHALine" maxOccurs="unbounded"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="TreeCalculator">
+  <xs:sequence>
+    <xs:element name="InputFileName" type="xs:string"              />
+    <xs:element name="InputTreeName" type="xs:string" minOccurs="0"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Variable">
+  <xs:sequence>
+    <xs:element name="Name"              type="xs:string"/>
+    <xs:element name="NameInWeightFiles" type="xs:string"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="SLHALine">
+  <xs:sequence>
+    <xs:element name="Block" type="xs:string" />
+    <xs:element name="Index" type="xs:integer"/>
+    <xs:element name="Value" type="xs:string" />
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="MVA">
+  <xs:sequence>
+    <xs:element name="WeightFile" type="xs:string"                                     />
+    <xs:element name="Target"     type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+  </xs:sequence>
+</xs:complexType>
+
+</xs:schema>
