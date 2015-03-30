@@ -36,7 +36,6 @@
 #include "ModelBase.h"
 #include "ModelParameter.h"
 #include "Observable.h"
-#include "SimpleDataStorage.h"
 #include "TreeCalculator.h"
 #include "TreeSampler.h"
 

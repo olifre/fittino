@@ -25,7 +25,6 @@
 #include "HiggsSignalsHECCalculator.h"
 #include "ModelParameter.h"
 #include "PhysicsModel.h"
-#include "SimpleDataStorage.h"
 #include "SimplePrediction.h"
 
 Fittino::HiggsSignalsHECCalculator::HiggsSignalsHECCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )

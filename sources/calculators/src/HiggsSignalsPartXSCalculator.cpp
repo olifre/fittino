@@ -27,7 +27,6 @@
 #include "HiggsSignalsPartXSCalculator.h"
 #include "ModelParameter.h"
 #include "PhysicsModel.h"
-#include "SimpleDataStorage.h"
 #include "SimplePrediction.h"
 #include "Observable.h"
 

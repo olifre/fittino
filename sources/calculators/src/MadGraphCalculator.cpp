@@ -26,7 +26,6 @@
 #include "ModelParameter.h"
 #include "Factory.h"
 #include "SimplePrediction.h"
-#include "SimpleDataStorage.h"
 #include "Executor.h"
 #include <iostream>
 #include <fstream>

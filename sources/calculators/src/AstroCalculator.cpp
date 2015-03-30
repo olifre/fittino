@@ -40,7 +40,6 @@
 #include "Factory.h"
 #include "SimplePrediction.h"
 #include "Observable.h"
-#include "SimpleDataStorage.h"
 
 Fittino::AstroCalculator::AstroCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model ),

@@ -38,7 +38,6 @@
 #include "PhysicsModel.h"
 #include "ModelParameter.h"
 #include "LHCLimitCalculator.h"
-#include "SimpleDataStorage.h"
 #include "SimplePrediction.h"
 #include "ConfigurationException.h"
 #include "Observable.h"

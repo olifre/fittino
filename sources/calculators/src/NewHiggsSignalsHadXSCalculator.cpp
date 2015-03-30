@@ -4,7 +4,7 @@
 *                                                                              *
 * Project     Fittino - A SUSY Parameter Fitting Package                       *
 *                                                                              *
-* File        NewHiggsSignalsHadXSCalculator.cpp                                  *
+* File        NewHiggsSignalsHadXSCalculator.cpp                               *
 *                                                                              *
 * Description Wrapper class for HiggsSignals using whichinput=hadr             *
                                                                                *
@@ -27,7 +27,6 @@
 #include "NewHiggsSignalsHadXSCalculator.h"
 #include "ModelParameter.h"
 #include "PhysicsModel.h"
-#include "SimpleDataStorage.h"
 #include "SimplePrediction.h"
 #include "Observable.h"
 
