@@ -106,6 +106,10 @@ namespace Fittino {
 
     protected:
       /*!
+       *  Prints the steering parameters of a particuar analysis tool.
+       */
+      virtual void                PrintSteeringParameters() const;
+      /*!
        *  Causes the tool to propose a new model. How this is done has to be specified by any\n
        *  concrete analysis tool.
        */
@@ -142,10 +146,6 @@ namespace Fittino {
        *  because the result output is different for optimizers and samplers.
        */
       virtual void                PrintResult() const = 0;
-      /*!
-       *  Prints the steering parameters of a particuar analysis tool.
-       */
-      virtual void                PrintSteeringParameters() const = 0;
       virtual void                Terminate() = 0;
       virtual void                WriteResultToFile() const = 0;
 

@@ -319,11 +319,11 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 
 #ifdef PYTHON
 
-      return new SModelSCalculator( model, ptree );
+        return new SModelSCalculator( model, ptree );
 
-#else 
+#else
 
-      throw ConfigurationException( "Trying to use SModelSCalculator but Fittino was built without Python." );
+        throw ConfigurationException( "Trying to use SModelSCalculator but Fittino was built without Python." );
 
 #endif
 

@@ -34,13 +34,13 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tre
       _writeAllModelQuantities( ptree.get<bool>       ( "WriteAllModelQuantities", true               ) ),
       _chi2Name               ( ptree.get<std::string>( "Chi2Name",                "Chi2"             ) ),
       _iterationCounterName   ( ptree.get<std::string>( "IterationCounterName",    "IterationCounter" ) ),
-      _metaDataTreeName       ( ptree.get<std::string>( "MetaDataTree",            "MetaDataTree"     ) ),
-      _treeName               ( ptree.get<std::string>( "OutputTree",              "Tree"             ) ),
+      _metaDataTreeName       ( ptree.get<std::string>( "MetaDataTreeName",        "MetaDataTree"     ) ),
+      _treeName               ( ptree.get<std::string>( "OutputTreeName",          "Tree"             ) ),
       _metaDataTree           ( new TTree( _metaDataTreeName, _metaDataTreeName ) ),
       _tree                   ( new TTree( _treeName, _treeName ) ) {
 
-    _chi2             = ptree.get<double>      ( "Chi2",             std::numeric_limits<double>::max() );
-    _iterationCounter = ptree.get<unsigned int>( "IterationCounter", 0                                  );
+    _chi2             = ptree.get<double>      ( "InitialChi2Value",             std::numeric_limits<double>::max() );
+    _iterationCounter = ptree.get<unsigned int>( "InitialIterationCounterValue", 0                                  );
 
     _statusParameterVector.push_back( new Quantity( _chi2Name,             "#chi^2",           _chi2,             0., 100.  ) );
     _statusParameterVector.push_back( new Quantity( _iterationCounterName, "IterationCounter", _iterationCounter, 0., 1.e10 ) );
@@ -104,12 +104,15 @@ void Fittino::AnalysisTool::FillTree() {
 
 void Fittino::AnalysisTool::PrintSteeringParameters() const {
 
-    PrintItem( "Chi2Name",                     _chi2Name             );
-    PrintItem( "InitialChi2Value",             _chi2                 );
-    PrintItem( "IterationCounterName",         _iterationCounterName );
-    PrintItem( "InitialIterationCounterValue", _iterationCounter     );
-    PrintItem( "OutputTreeName",               _treeName             );
-    PrintItem( "OutputMetaDataTreeName",       _metaDataTreeName     );
+    Tool::PrintSteeringParameters();
+
+    PrintItem( "WriteAllModelQuantities",      _writeAllModelQuantities );
+    PrintItem( "Chi2Name",                     _chi2Name                );
+    PrintItem( "InitialChi2Value",             _chi2                    );
+    PrintItem( "IterationCounterName",         _iterationCounterName    );
+    PrintItem( "InitialIterationCounterValue", _iterationCounter        );
+    PrintItem( "OutputTreeName",               _treeName                );
+    PrintItem( "MetaDataTreeName",             _metaDataTreeName        );
 
 }
 

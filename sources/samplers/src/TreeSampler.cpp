@@ -53,16 +53,16 @@ Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, const boost::prope
     }
 
     // Still ugly...
-    std::string filename = ptree.get<std::string>( "InputFileName", "Fittino.old.root" );
-    std::string treename = ptree.get<std::string>( "InputTreeName", "Tree1" );
+    _inputFileName = ptree.get<std::string>( "InputFileName", "Fittino.old.root" );
+    _inputTreeName = ptree.get<std::string>( "InputTreeName", "Tree1" );
 
     if ( _numberOfIterations == -1 ) {
 
         TDirectory *tempDirectory = gDirectory;
-        TFile *f = new TFile( filename.c_str(), "READ" );
-        if ( ( TTree* )f->Get( treename.c_str() ) ) {
+        TFile *f = new TFile( _inputFileName.c_str(), "READ" );
+        if ( ( TTree* )f->Get( _inputTreeName.c_str() ) ) {
 
-            _numberOfIterations = ( ( TTree* )f->Get( treename.c_str() ) )->GetEntries();
+            _numberOfIterations = ( ( TTree* )f->Get( _inputTreeName.c_str() ) )->GetEntries();
 
         }
         else {
@@ -101,7 +101,11 @@ void Fittino::TreeSampler::Execute() {
 
 void Fittino::TreeSampler::PrintSteeringParameters() const {
 
+    AnalysisTool::PrintSteeringParameters();
+
     PrintItem( "NumberOfIterations", _numberOfIterations );
+    PrintItem( "InputFileName",      _inputFileName      );
+    PrintItem( "InputTreeName",      _inputTreeName      );
 
 }
 

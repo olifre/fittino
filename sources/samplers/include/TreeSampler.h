@@ -55,6 +55,8 @@ namespace Fittino {
        *  Stores the configured maximal number of iteration steps.
        */
       unsigned int _numberOfIterations;
+      std::string  _inputFileName;
+      std::string  _inputTreeName;
 
     private:
       virtual void Execute();

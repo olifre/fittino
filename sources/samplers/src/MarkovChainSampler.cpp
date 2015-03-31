@@ -83,7 +83,9 @@ void Fittino::MarkovChainSampler::PrintSteeringParameters() const {
 
     AnalysisTool::PrintSteeringParameters();
 
-    PrintItem( "NumberOfIterations", _numberOfIterations );
+    PrintItem( "FirstPointScaleFactor", _firstPointScalefactor );
+    PrintItem( "StrictBounds",          _strictBounds          );
+    PrintItem( "NumberOfIterations",    _numberOfIterations    );
 
 }
 

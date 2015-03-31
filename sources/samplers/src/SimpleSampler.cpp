@@ -24,7 +24,7 @@
 Fittino::SimpleSampler::SimpleSampler( ModelBase* model, const boost::property_tree::ptree& ptree )
     : SamplerBase( model, ptree ) {
 
-    _name = "simple parameter sampler";
+    _name = "Simple parameter sampler";
 
     for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
 
@@ -95,6 +95,8 @@ void Fittino::SimpleSampler::Execute() {
 }
 
 void Fittino::SimpleSampler::PrintSteeringParameters() const {
+
+    AnalysisTool::PrintSteeringParameters();
 
 }
 

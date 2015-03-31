@@ -106,6 +106,13 @@ void Fittino::Tool::PrintStatus() const {
 
 }
 
+void Fittino::Tool::PrintSteeringParameters() const {
+
+    PrintItem( "Name",           _name );
+    PrintItem( "OutputFileName", _outputFileName );
+
+}
+
 void Fittino::Tool::ExecuteTool() {
 
     Messenger& messenger = Messenger::GetInstance();
@@ -125,8 +132,6 @@ void Fittino::Tool::PrintConfiguration() const {
 
     messenger << Messenger::ALWAYS << "   Configuration" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
-
-    PrintItem( "OutputFileName", _outputFileName );
 
     this->PrintSteeringParameters();
 

@@ -30,7 +30,7 @@ Fittino::SimulatedAnnealingOptimizer::SimulatedAnnealingOptimizer( Fittino::Mode
       _temperature( _initialTemperature ),
       OptimizerBase( model, ptree ) {
 
-    _name = ptree.get<std::string>( "Name", "simulated annealing optimization algorithm" );
+    _name = ptree.get<std::string>( "Name", "Simulated annealing optimization algorithm" );
 
     throw ConfigurationException( "WARNING: Optimizer does not work because of broken Model::Clone(). Fix that first!" );
 
