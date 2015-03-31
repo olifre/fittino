@@ -5,6 +5,22 @@
 <!-- Todo: Eventually remove this node. -->
 
 <xs:complexType name="CovarianceMatrices">
+  <xs:sequence>
+    <xs:element name="CovarianceMatrix" type="CovarianceMatrix" minOccurs="0" maxOccurs="unbounded"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="CovarianceMatrix">
+  <xs:sequence>
+    <xs:element name="Row" type="Row" minOccurs="1" maxOccurs="unbounded"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Row">
+  <xs:sequence>
+    <xs:element name="ObservableName" type="xs:string" minOccurs="1"                      />
+    <xs:element name="Col"            type="xs:double" minOccurs="1" maxOccurs="unbounded"/>
+  </xs:sequence>
 </xs:complexType>
 
 </xs:schema>
