@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:include schemaLocation="OptimizerBase.xsd"/>
+
+<xs:complexType name="GeneticAlgorithmOptimizer">
+  <xs:complexContent>
+    <xs:extension base="OptimizerBase">
+      <xs:sequence>
+        <xs:element name="MutationRate"     type="xs:double"  minOccurs="0"/>
+        <xs:element name="SizeOfPopulation" type="xs:integer" minOccurs="0"/>
+      </xs:sequence>
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+</xs:schema>

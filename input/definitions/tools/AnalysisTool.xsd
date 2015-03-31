@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:complexType name="AnalysisTool">
+  <xs:sequence>
+    <xs:element name="Name"                         type="xs:string"  minOccurs="0"/> <!-- Tool -->
+    <xs:element name="OutputFileName"               type="xs:string"  minOccurs="0"/> <!-- Tool -->
+    <!--<xs:element name="Cuts"                     type="Cuts"       minOccurs="0"/>      Tool -->
+    <xs:element name="WriteAllModelQuantities"      type="xs:boolean" minOccurs="0"/> <!-- AnalysisTool -->
+    <xs:element name="Chi2Name"                     type="xs:string"  minOccurs="0"/> <!-- AnalysisTool -->
+    <xs:element name="InitialChi2Value"             type="xs:double"  minOccurs="0"/> <!-- AnalysisTool -->
+    <xs:element name="IterationCounterName"         type="xs:string"  minOccurs="0"/> <!-- AnalysisTool -->
+    <xs:element name="InitialIterationCounterValue" type="xs:integer" minOccurs="0"/> <!-- AnalysisTool -->
+    <xs:element name="OutputTreeName"               type="xs:string"  minOccurs="0"/> <!-- AnalysisTool -->
+    <xs:element name="MetaDataTreeName"             type="xs:string"  minOccurs="0"/> <!-- AnalysisTool -->
+  </xs:sequence>
+</xs:complexType>
+
+</xs:schema>

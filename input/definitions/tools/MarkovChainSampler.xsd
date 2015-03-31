@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:include schemaLocation="SamplerBase.xsd"/>
+
+<xs:complexType name="MarkovChainSampler">
+  <xs:complexContent>
+    <xs:extension base="SamplerBase">
+      <xs:sequence>
+        <xs:element name="FirstPointScaleFactor" type="xs:double"  minOccurs="0"/>
+        <xs:element name="StrictBounds"          type="xs:boolean" minOccurs="0"/>
+        <xs:element name="NumberOfIterations"    type="xs:integer"              />
+      </xs:sequence>
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+</xs:schema>

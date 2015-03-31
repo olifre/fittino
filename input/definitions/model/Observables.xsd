@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<!-- Todo: Eventually remove this node. -->
+
+<xs:complexType name="Observables">
+  <xs:sequence>
+    <xs:element name="Observable" type="Observable" minOccurs="0" maxOccurs="unbounded"/>
+  </xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="Observable">
+  <xs:sequence>
+    <xs:element name="Name"              type="xs:string"               />
+    <xs:element name="CalculatorName"    type="xs:string"               />
+    <xs:element name="MeasuredValue"     type="xs:double"               />
+    <xs:element name="MeasuredError1"    type="xs:double"               />
+    <xs:element name="MeasuredError2"    type="xs:double"  minOccurs="0"/>
+    <xs:element name="BestFitPrediction" type="xs:double"               />
+    <xs:element name="PredictionType"    type="xs:string"               />
+    <xs:element name="Unit"              type="xs:string"               />
+    <xs:element name="PlotUnit"          type="xs:string"               />
+    <xs:element name="PlotName"          type="xs:string"               />
+    <xs:element name="PlotLowerBound"    type="xs:string"               />
+    <xs:element name="PlotUpperBound"    type="xs:double"               />
+    <xs:element name="NoFit"             type="xs:boolean" minOccurs="0"/>
+  </xs:sequence>
+</xs:complexType>
+
+</xs:schema>

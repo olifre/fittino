@@ -3,6 +3,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
 <xs:include schemaLocation="Model.xsd"/>
+<xs:include schemaLocation="RandomSeed.xsd"/>
 <xs:include schemaLocation="Tool.xsd"/>
 <xs:include schemaLocation="VerbosityLevel.xsd"/>
 
@@ -10,9 +11,12 @@
 
 <xs:complexType name="InputFile">
   <xs:sequence>
-    <xs:element name="VerbosityLevel" type="VerbosityLevel"/>
-    <xs:element name="Model"          type="Model"         />
-    <xs:element name="Tool"           type="Tool"          />
+    <!-- Todo: Make VerbosityLevel optional? -->
+    <!-- Todo: Move (optional) VerbosityLevel and RandomSeed behind Model? -->
+    <xs:element name="VerbosityLevel" type="VerbosityLevel"          />
+    <xs:element name="RandomSeed"     type="RandomSeed" minOccurs="0"/>
+    <xs:element name="Model"          type="Model"                   />
+    <xs:element name="Tool"           type="Tool"                    />
   </xs:sequence>
 </xs:complexType>
 

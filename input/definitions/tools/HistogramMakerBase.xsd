@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:include schemaLocation="AnalysisTool.xsd"/>
+
+<xs:complexType name="HistogramMakerBase">
+  <xs:complexContent>
+    <xs:extension base="AnalysisTool">
+      <xs:sequence>
+        <xs:element name="AxisMaxDigits" type="xs:integer" minOccurs="0"/>
+        <xs:element name="Plotter"       type="Plotter"    minOccurs="0"/>
+      </xs:sequence>
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+</xs:schema>

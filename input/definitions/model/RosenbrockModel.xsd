@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:include schemaLocation="ModelBase.xsd"/>
+
+<!-- Todo: Eventually remove this node. -->
+
+<xs:complexType name="RosenbrockModel">
+  <xs:complexContent>
+    <xs:extension base="ModelBase">
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+</xs:schema>

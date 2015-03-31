@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:include schemaLocation="SamplerBase.xsd"/>
+
+<xs:complexType name="TreeSampler">
+  <xs:complexContent>
+    <xs:extension base="SamplerBase">
+      <xs:sequence>
+        <xs:element name="NumberOfIterations" type="xs:integer"/>
+        <xs:element name="InputFileName"      type="xs:string" />
+        <xs:element name="InputTreeName"      type="xs:string" />
+      </xs:sequence>
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+</xs:schema>

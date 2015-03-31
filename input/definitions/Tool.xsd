@@ -2,61 +2,30 @@
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
+<xs:include schemaLocation="tools/GeneticAlgorithmOptimizer.xsd"/>
+<xs:include schemaLocation="tools/HigherOrderMarkovChainSampler.xsd"/>
+<xs:include schemaLocation="tools/MarkovChainSampler.xsd"/>
+<xs:include schemaLocation="tools/MinuitOptimizer.xsd"/>
+<xs:include schemaLocation="tools/ParticleSwarmOptimizer.xsd"/>
+<xs:include schemaLocation="tools/SimpleOptimizer.xsd"/>
+<xs:include schemaLocation="tools/SimpleSampler.xsd"/>
+<xs:include schemaLocation="tools/SimulatedAnnealingOptimizer.xsd"/>
+<xs:include schemaLocation="tools/SummaryHistogramMaker.xsd"/>
+<xs:include schemaLocation="tools/TreeSampler.xsd"/>
+
 <xs:complexType name="Tool">
   <xs:choice>
-    <xs:element name="GeneticAlgorithmOptimizer" type="GeneticAlgorithmOptimizer"/>
-    <xs:element name="SimpleOptimizer"           type="SimpleOptimizer"          />
-    <xs:element name="SimpleSampler"             type="SimpleSampler"            />
-    <xs:element name="MarkovChainSampler"        type="MarkovChainSampler"       />
+    <xs:element name="GeneticAlgorithmOptimizer"     type="GeneticAlgorithmOptimizer"    />
+    <xs:element name="HigherOrderMarkovChainSampler" type="HigherOrderMarkovChainSampler"/>
+    <xs:element name="MarkovChainSampler"            type="MarkovChainSampler"           />
+    <xs:element name="MinuitOptimizer"               type="MinuitOptimizer"              />
+    <xs:element name="ParticleSwarmOptimizer"        type="ParticleSwarmOptimizer"       />
+    <xs:element name="SimpleOptimizer"               type="SimpleOptimizer"              />
+    <xs:element name="SimpleSampler"                 type="SimpleSampler"                />
+    <xs:element name="SimulatedAnnealingOptimizer"   type="SimulatedAnnealingOptimizer"  />
+    <xs:element name="SummaryHistogramMaker"         type="SummaryHistogramMaker"        />
+    <xs:element name="TreeSampler"                   type="TreeSampler"                  />
   </xs:choice>
-</xs:complexType>
-
-<xs:complexType name="AnalysisTool">
-</xs:complexType>
-
-<xs:complexType name="GeneticAlgorithmOptimizer">
-  <xs:complexContent>
-    <xs:extension base="AnalysisTool">
-    <xs:sequence>
-      <xs:element name="Name"               type="xs:string" />
-      <xs:element name="RandomSeed"         type="xs:integer"/>
-      <xs:element name="NumberOfIterations" type="xs:integer"/>
-      <xs:element name="AbortCriterion"     type="xs:double" />
-      <xs:element name="MutationRate"       type="xs:double" />
-      <xs:element name="SizeOfPopulation"   type="xs:integer"/>
-    </xs:sequence>
-    </xs:extension>
-  </xs:complexContent>
-</xs:complexType>
-
-<xs:complexType name="SimpleOptimizer">
-  <xs:complexContent>
-    <xs:extension base="AnalysisTool">
-    <xs:sequence>
-      <xs:element name="Chi2Name"             type="xs:string"/>
-      <xs:element name="IterationCounterName" type="xs:string"/>
-      <xs:element name="AbortCriterion"       type="xs:double"/>
-    </xs:sequence>
-    </xs:extension>
-  </xs:complexContent>
-</xs:complexType>
-
-<xs:complexType name="SimpleSampler">
-  <xs:complexContent>
-    <xs:extension base="AnalysisTool">
-    </xs:extension>
-  </xs:complexContent>
-</xs:complexType>
-
-<xs:complexType name="MarkovChainSampler">
-  <xs:complexContent>
-    <xs:extension base="AnalysisTool">
-    <xs:sequence>
-      <xs:element name="NumberOfIterations" type="xs:integer"/>
-      <xs:element name="RandomSeed"         type="xs:integer"/>
-    </xs:sequence>
-    </xs:extension>
-  </xs:complexContent>
 </xs:complexType>
 
 </xs:schema>

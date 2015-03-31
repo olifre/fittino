@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:include schemaLocation="SamplerBase.xsd"/>
+
+<xs:complexType name="SimpleSampler">
+  <xs:complexContent>
+    <xs:extension base="SamplerBase">
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+</xs:schema>

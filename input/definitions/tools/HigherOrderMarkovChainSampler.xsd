@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:include schemaLocation="MarkovChainSampler.xsd"/>
+
+<xs:complexType name="HigherOrderMarkovChainSampler">
+  <xs:complexContent>
+    <xs:extension base="MarkovChainSampler">
+      <xs:sequence>
+        <xs:element name="ScalingFactor"     type="xs:double"  minOccurs="0"/>
+        <xs:element name="MinimalMemorySize" type="xs:integer" minOccurs="0"/>
+        <xs:element name="MaximalMemorySize" type="xs:integer" minOccurs="0"/>
+        <!--<xs:element name="Queue" type="Queue"/>-->
+      </xs:sequence>
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+</xs:schema>

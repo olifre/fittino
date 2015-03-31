@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:include schemaLocation="calculators/FeynHiggsCalculator.xsd"/>
+<xs:include schemaLocation="calculators/HDim6Calculator.xsd"/>
+<xs:include schemaLocation="calculators/HiggsSignalsCalculator.xsd"/>
+<xs:include schemaLocation="calculators/RegressionCalculator.xsd"/>
+<xs:include schemaLocation="calculators/RosenbrockCalculator.xsd"/>
+<xs:include schemaLocation="calculators/SPhenoCalculator.xsd"/>
+<xs:include schemaLocation="calculators/TreeCalculator.xsd"/>
+
+<!-- Todo: Eventually remove this node. -->
+
+<xs:complexType name="Calculators">
+  <xs:choice minOccurs="0" maxOccurs="unbounded">
+    <xs:element name="FeynHiggsCalculator"    type="FeynHiggsCalculator"   />
+    <xs:element name="HDim6Calculator"        type="HDim6Calculator"       />
+    <xs:element name="HiggsSignalsCalculator" type="HiggsSignalsCalculator"/>
+    <xs:element name="RegressionCalculator"   type="RegressionCalculator"  />
+    <xs:element name="RosenbrockCalculator"   type="RosenbrockCalculator"  />
+    <xs:element name="SPhenoCalculator"       type="SPhenoCalculator"      />
+    <xs:element name="TreeCalculator"         type="TreeCalculator"        />
+  </xs:choice>
+</xs:complexType>
+
+</xs:schema>

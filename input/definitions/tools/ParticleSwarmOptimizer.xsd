@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:include schemaLocation="OptimizerBase.xsd"/>
+
+<xs:complexType name="ParticleSwarmOptimizer">
+  <xs:complexContent>
+    <xs:extension base="OptimizerBase">
+      <xs:sequence>
+        <xs:element name="NumberOfParticles" type="xs:integer" minOccurs="0"/>
+        <xs:element name="C1"                type="xs:double"  minOccurs="0"/>
+        <xs:element name="C2"                type="xs:double"  minOccurs="0"/>
+      </xs:sequence>
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+</xs:schema>
