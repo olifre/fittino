@@ -24,6 +24,8 @@
 
   <VerbosityLevel>ALWAYS</VerbosityLevel>
 
+  <RandomSeed>2</RandomSeed>
+
   <Model>
 
     <RosenbrockModel>
@@ -60,7 +62,6 @@
 
     <GeneticAlgorithmOptimizer>
       <Name>Genetic Algorithm optimizer example</Name>
-      <RandomSeed>2</RandomSeed>
       <NumberOfIterations>500</NumberOfIterations>
       <AbortCriterion>0.000001</AbortCriterion>
       <MutationRate>0.5</MutationRate>

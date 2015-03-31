@@ -6,101 +6,121 @@
   <VerbosityLevel>ALWAYS</VerbosityLevel>
 
   <Model>
+
     <ModelBase>
+
       <Name>CMSSM</Name>
 
-			<ModelParameter>
-				<Name>P_M0</Name>
-				<Error>1</Error>
-				<Value>500</Value>
-				<Fixed>false</Fixed>
-				<LowerBound>0</LowerBound>
-				<UpperBound>10000</UpperBound>
-			</ModelParameter>
-			<ModelParameter>
-				<Name>P_M12</Name>
-				<Error>1</Error>
-				<Value>300</Value>
-				<Fixed>false</Fixed>
-				<LowerBound>0</LowerBound>
-				<UpperBound>10000</UpperBound>
-			</ModelParameter>
-			<ModelParameter>
-				<Name>P_A0</Name>
-				<Error>1</Error>
-				<Value>1000</Value>
-				<Fixed>false</Fixed>
-				<LowerBound>-10000</LowerBound>
-				<UpperBound>10000</UpperBound>
-			</ModelParameter>
-			<ModelParameter>
-				<Name>P_TanBeta</Name>
-				<Error>1</Error>
-				<Value>10</Value>
-				<Fixed>false</Fixed>
-				<LowerBound>0</LowerBound>
-				<UpperBound>100</UpperBound>
-			</ModelParameter>
-			<ModelParameter>
-				<Name>P_massTop</Name>
-				<Error>0.1</Error>
-				<Value>173.0</Value>
-				<Fixed>false</Fixed>
-				<LowerBound>0</LowerBound>
-				<UpperBound>1000</UpperBound>
-			</ModelParameter>
-			<ModelParameter>
-				<Name>SignMu</Name>
-				<Error>1</Error>
-				<Value>1</Value>
-				<Fixed>true</Fixed>
-				<LowerBound>1</LowerBound>
-				<UpperBound>2</UpperBound>
-			</ModelParameter>    
+      <ModelParameter>
+        <Name>P_M0</Name>
+        <Value>500</Value>
+        <Error>1</Error>
+        <LowerBound>0</LowerBound>
+        <UpperBound>10000</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+      <ModelParameter>
+        <Name>P_M12</Name>
+        <Value>300</Value>
+        <Error>1</Error>
+        <LowerBound>0</LowerBound>
+        <UpperBound>10000</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+      <ModelParameter>
+        <Name>P_A0</Name>
+        <Value>1000</Value>
+        <Error>1</Error>
+        <LowerBound>-10000</LowerBound>
+        <UpperBound>10000</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+      <ModelParameter>
+        <Name>P_TanBeta</Name>
+        <Value>10</Value>
+        <Error>1</Error>
+        <LowerBound>0</LowerBound>
+        <UpperBound>100</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+      <ModelParameter>
+        <Name>P_massTop</Name>
+        <Value>173.0</Value>
+        <Error>0.1</Error>
+        <LowerBound>0</LowerBound>
+        <UpperBound>1000</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+      <ModelParameter>
+        <Name>SignMu</Name>
+        <Value>1</Value>
+        <Error>1</Error>
+        <LowerBound>1</LowerBound>
+        <UpperBound>2</UpperBound>
+        <Fixed>true</Fixed>
+      </ModelParameter>    
   
       <Calculators>
-				<SPhenoCalculator>
-					<Name>SPhenoCalculator</Name>
-					<SLHALine>
-						<Block>MINPAR</Block>
-						<Index>1</Index>
-						<Value>P_M0</Value>
-					</SLHALine>
-					<SLHALine>
-						<Block>MINPAR</Block>
-						<Index>2</Index>
-						<Value>P_M12</Value>
-					</SLHALine>
-					<SLHALine>
-						<Block>MINPAR</Block>
-						<Index>3</Index>
-						<Value>P_TanBeta</Value>
-					</SLHALine>
-					<SLHALine>
-						<Block>MINPAR</Block>
-						<Index>4</Index>
-						<Value>SignMu</Value>
-					</SLHALine>
-					<SLHALine>
-						<Block>MINPAR</Block>
-						<Index>5</Index>
-						<Value>P_A0</Value>
-					</SLHALine>
-					<SLHALine>
-						<Block>SMINPUTS</Block>
-						<Index>6</Index>
-						<Value>P_massTop</Value>
-					</SLHALine>
-				</SPhenoCalculator>
+
+        <SPhenoCalculator>
+
+          <Name>SPhenoCalculator</Name>
+
+          <SLHALine>
+            <Block>MINPAR</Block>
+            <Index>1</Index>
+            <Value>P_M0</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>MINPAR</Block>
+            <Index>2</Index>
+            <Value>P_M12</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>MINPAR</Block>
+            <Index>3</Index>
+            <Value>P_TanBeta</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>MINPAR</Block>
+            <Index>4</Index>
+            <Value>SignMu</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>MINPAR</Block>
+            <Index>5</Index>
+            <Value>P_A0</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>SMINPUTS</Block>
+            <Index>6</Index>
+            <Value>P_massTop</Value>
+          </SLHALine>
+
+        </SPhenoCalculator>
+
       </Calculators>
 
     </ModelBase>
+
   </Model>
 
   <Tool>
+
     <MarkovChainSampler>
       <NumberOfIterations>1</NumberOfIterations>
     </MarkovChainSampler>
+
   </Tool>
 
 </InputFile>

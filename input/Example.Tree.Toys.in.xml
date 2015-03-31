@@ -5,8 +5,12 @@
 
   <VerbosityLevel>ALWAYS</VerbosityLevel>
 
+  <RandomSeed>1</RandomSeed>
+
   <Model>
+
     <PhysicsModel>
+
       <Name>CMSSMPseudoModel</Name>
     
       <ModelParameter>
@@ -17,13 +21,16 @@
       </ModelParameter>
   
       <Calculators>
+
         <TreeCalculator>
           <InputFileName>Fittino.old.root</InputFileName>
           <InputTreeName>Tree1</InputTreeName>
         </TreeCalculator>
+
       </Calculators>
 
       <Observables>
+
         <Observable>
           <Name>P_M0</Name>
           <CalculatorName>TreeCalculator</CalculatorName>
@@ -38,6 +45,7 @@
           <PlotUpperBound>10000</PlotUpperBound>
           <NoFit>1</NoFit>
         </Observable>
+
         <Observable>
           <Name>P_M12</Name>
           <CalculatorName>TreeCalculator</CalculatorName>
@@ -52,6 +60,7 @@
           <PlotUpperBound>10000</PlotUpperBound>
           <NoFit>1</NoFit>
         </Observable>
+
         <Observable>
           <Name>O_massNeutralino1</Name>
           <CalculatorName>TreeCalculator</CalculatorName>
@@ -65,6 +74,7 @@
           <PlotLowerBound>0</PlotLowerBound>
           <PlotUpperBound>10000</PlotUpperBound>
         </Observable>
+
         <Observable>
           <Name>O_massNeutralino2</Name>
           <CalculatorName>TreeCalculator</CalculatorName>
@@ -78,6 +88,7 @@
           <PlotLowerBound>0</PlotLowerBound>
           <PlotUpperBound>10000</PlotUpperBound>
         </Observable>
+
         <Observable>
           <Name>O_massNeutralino3</Name>
           <CalculatorName>TreeCalculator</CalculatorName>
@@ -91,6 +102,7 @@
           <PlotLowerBound>0</PlotLowerBound>
           <PlotUpperBound>10000</PlotUpperBound>
         </Observable>
+
         <Observable>
           <Name>O_massNeutralino4</Name>
           <CalculatorName>TreeCalculator</CalculatorName>
@@ -104,6 +116,7 @@
           <PlotLowerBound>0</PlotLowerBound>
           <PlotUpperBound>10000</PlotUpperBound>
         </Observable>
+
         <Observable>
           <Name>O_massStop1</Name>
           <CalculatorName>TreeCalculator</CalculatorName>
@@ -119,18 +132,23 @@
         </Observable>
 
       </Observables>
+
+      <CovarianceMatrices></CovarianceMatrices>
+
+      <PerformToyRun>1</PerformToyRun>
+
     </PhysicsModel>
+
   </Model>
 
   <Tool>
+
     <TreeSampler>
       <NumberOfIterations>-1</NumberOfIterations>
-      <PerformToyRun>1</PerformToyRun>
-      <RandomSeed>1</RandomSeed>
       <InputFileName>Fittino.old.root</InputFileName>
       <InputTreeName>Tree1</InputTreeName>
     </TreeSampler>
+
   </Tool>
 
 </InputFile>
-

@@ -70,7 +70,6 @@
 
     <MarkovChainSampler>
       <NumberOfIterations>5</NumberOfIterations>
-      <RandomSeed>2</RandomSeed>
     </MarkovChainSampler>
 
   </Tool>
