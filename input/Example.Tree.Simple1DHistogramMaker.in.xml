@@ -36,17 +36,17 @@
         <UpperBound>1.e99</UpperBound>
       </ModelParameter>
 
-      <Observables></Observables>
-
-      <CovarianceMatrices></CovarianceMatrices>
-
-      <Chi2Contribution>Chi2</Chi2Contribution>
-
       <Calculators>
         <TreeCalculator>
           <InputFileName>Fittino.in.root</InputFileName>
         </TreeCalculator>
       </Calculators>
+
+      <Observables></Observables>
+
+      <CovarianceMatrices></CovarianceMatrices>
+
+      <Chi2Contribution>Chi2</Chi2Contribution>
 
     </PhysicsModel>
 

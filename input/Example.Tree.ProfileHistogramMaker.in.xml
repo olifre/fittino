@@ -38,17 +38,17 @@
         <UpperBound>1.e99</UpperBound>
       </ModelParameter>
 
-      <Observables></Observables>
-
-      <CovarianceMatrices></CovarianceMatrices>
-
-      <Chi2Contribution>Chi2</Chi2Contribution>
-
       <Calculators>
         <TreeCalculator>
           <InputFileName>Fittino.in.root</InputFileName>
         </TreeCalculator>
       </Calculators>
+
+      <Observables></Observables>
+
+      <CovarianceMatrices></CovarianceMatrices>
+
+      <Chi2Contribution>Chi2</Chi2Contribution>
 
     </PhysicsModel>
 
@@ -61,8 +61,8 @@
       <Histogram>
         <Name>X1</Name>
         <PlotName>x_{1}</PlotName>
-        <NumberOfBins>200</NumberOfBins>
         <LogScale>true</LogScale>
+        <NumberOfBins>200</NumberOfBins>
         <LowerBound>0.1</LowerBound>
         <UpperBound>10.</UpperBound>
       </Histogram>
