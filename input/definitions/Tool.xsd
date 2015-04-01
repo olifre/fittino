@@ -2,11 +2,16 @@
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
+<xs:include schemaLocation="tools/ContourHistogramMaker.xsd"/>
 <xs:include schemaLocation="tools/GeneticAlgorithmOptimizer.xsd"/>
 <xs:include schemaLocation="tools/HigherOrderMarkovChainSampler.xsd"/>
 <xs:include schemaLocation="tools/MarkovChainSampler.xsd"/>
 <xs:include schemaLocation="tools/MinuitOptimizer.xsd"/>
 <xs:include schemaLocation="tools/ParticleSwarmOptimizer.xsd"/>
+<xs:include schemaLocation="tools/ProfileHistogramMaker.xsd"/>
+<xs:include schemaLocation="tools/Simple1DHistogramMaker.xsd"/>
+<xs:include schemaLocation="tools/Simple2DHistogramMaker.xsd"/>
+<xs:include schemaLocation="tools/Simple3DHistogramMaker.xsd"/>
 <xs:include schemaLocation="tools/SimpleOptimizer.xsd"/>
 <xs:include schemaLocation="tools/SimpleSampler.xsd"/>
 <xs:include schemaLocation="tools/SimulatedAnnealingOptimizer.xsd"/>
@@ -15,11 +20,16 @@
 
 <xs:complexType name="Tool">
   <xs:choice>
+    <xs:element name="ContourHistogramMaker"         type="ContourHistogramMaker"        />
     <xs:element name="GeneticAlgorithmOptimizer"     type="GeneticAlgorithmOptimizer"    />
     <xs:element name="HigherOrderMarkovChainSampler" type="HigherOrderMarkovChainSampler"/>
     <xs:element name="MarkovChainSampler"            type="MarkovChainSampler"           />
     <xs:element name="MinuitOptimizer"               type="MinuitOptimizer"              />
     <xs:element name="ParticleSwarmOptimizer"        type="ParticleSwarmOptimizer"       />
+    <xs:element name="ProfileHistogramMaker"         type="ProfileHistogramMaker"        />
+    <xs:element name="Simple1DHistogramMaker"        type="Simple1DHistogramMaker"       />
+    <xs:element name="Simple2DHistogramMaker"        type="Simple3DHistogramMaker"       />
+    <xs:element name="Simple3DHistogramMaker"        type="Simple3DHistogramMaker"       />
     <xs:element name="SimpleOptimizer"               type="SimpleOptimizer"              />
     <xs:element name="SimpleSampler"                 type="SimpleSampler"                />
     <xs:element name="SimulatedAnnealingOptimizer"   type="SimulatedAnnealingOptimizer"  />

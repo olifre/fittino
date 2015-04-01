@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:include schemaLocation="PlotterBase.xsd"/>
+
+<xs:complexType name="ContourPlotter">
+  <xs:complexContent>
+    <xs:extension base="PlotterBase">
+      <xs:sequence>
+        <xs:element name="LegendFrame"     type="xs:boolean" minOccurs="0"/>
+        <xs:element name="LegendPositioon" type="xs:string"  minOccurs="0"/>
+        <xs:element name="Style"           type="xs:string"  minOccurs="0"/>
+      </xs:sequence>
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:include schemaLocation="PlotterBase.xsd"/>
+
+<xs:complexType name="SimplePlotter">
+  <xs:complexContent>
+    <xs:extension base="PlotterBase">
+      <xs:sequence>
+        <xs:element name="FillColor" type="xs:integer" minOccurs="0"/>
+        <xs:element name="FillStyle" type="xs:integer" minOccurs="0"/>
+        <xs:element name="LineColor" type="xs:integer" minOccurs="0"/>
+        <xs:element name="Option"    type="xs:string"  minOccurs="0"/>
+      </xs:sequence>
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+</xs:schema>

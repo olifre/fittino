@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:include schemaLocation="ContourPlotter.xsd"/>
+<xs:include schemaLocation="ProfilePlotter.xsd"/>
+<xs:include schemaLocation="SimplePlotter.xsd"/>
+<xs:include schemaLocation="SummaryPlotter.xsd"/>
+<xs:include schemaLocation="ToyFitPlotter.xsd"/>
+
+<xs:complexType name="Plotter">
+  <xs:choice>
+    <xs:element name="ContourPlotter" type="ContourPlotter"/>
+    <xs:element name="ProfilePlotter" type="ProfilePlotter"/>
+    <xs:element name="SimplePlotter"  type="SimplePlotter" />
+    <xs:element name="SummaryPlotter" type="SummaryPlotter"/>
+    <xs:element name="ToyFitPlotter"  type="ToyFitPlotter" />
+  </xs:choice>
+</xs:complexType>
+
+</xs:schema>

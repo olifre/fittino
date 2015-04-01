@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:include schemaLocation="Simple1DHistogramMaker.xsd"/>
+
+<xs:complexType name="ProfileHistogramMaker">
+  <xs:complexContent>
+    <xs:extension base="Simple1DHistogramMaker">
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+</xs:schema>

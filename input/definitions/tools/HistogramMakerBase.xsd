@@ -2,17 +2,29 @@
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-<xs:include schemaLocation="AnalysisTool.xsd"/>
+<xs:include schemaLocation="plotters/Plotter.xsd"/>
 
 <xs:complexType name="HistogramMakerBase">
   <xs:complexContent>
     <xs:extension base="AnalysisTool">
       <xs:sequence>
-        <xs:element name="AxisMaxDigits" type="xs:integer" minOccurs="0"/>
-        <xs:element name="Plotter"       type="Plotter"    minOccurs="0"/>
+        <xs:element name="AxisMaxDigits" type="xs:integer" minOccurs="0"                      />
+        <xs:element name="Histogram"     type="Histogram"  minOccurs="1" maxOccurs="unbounded"/>
+        <xs:element name="Plotter"       type="Plotter"    minOccurs="0"                      />
       </xs:sequence>
     </xs:extension>
   </xs:complexContent>
+</xs:complexType>
+
+<xs:complexType name="Histogram">
+  <xs:sequence>
+    <xs:element name="Name"         type="xs:string"  minOccurs="0"/>
+    <xs:element name="PlotName"     type="xs:string"  minOccurs="0"/>
+    <xs:element name="LogScale"     type="xs:boolean" minOccurs="0"/>
+    <xs:element name="NumberOfBins" type="xs:integer" minOccurs="0"/>
+    <xs:element name="LowerBound"   type="xs:double"  minOccurs="0"/>
+    <xs:element name="UpperBound"   type="xs:double"  minOccurs="0"/>
+  </xs:sequence>
 </xs:complexType>
 
 </xs:schema>

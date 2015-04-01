@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:include schemaLocation="PlotterBase.xsd"/>
+
+<xs:complexType name="SummaryPlotter">
+  <xs:complexContent>
+    <xs:extension base="PlotterBase">
+      <xs:sequence>
+        <xs:element name="LabelsLeft" type="xs:boolean" minOccurs="0"/>
+        <xs:element name="NDivisions" type="xs:integer" minOccurs="0"/>
+        <xs:element name="Title"      type="xs:string"  minOccurs="0"/>
+        <xs:element name="LowerBound" type="xs:double"  minOccurs="0"/>
+        <xs:element name="UpperBound" type="xs:double"  minOccurs="0"/>
+      </xs:sequence>
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+</xs:schema>

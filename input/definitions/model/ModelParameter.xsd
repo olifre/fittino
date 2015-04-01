@@ -8,6 +8,8 @@
     <xs:element name="PlotName"   type="xs:string"  minOccurs="0"/>
     <xs:element name="Value"      type="xs:double"  minOccurs="0"/>
     <xs:element name="Error"      type="xs:double"  minOccurs="0"/>
+    <xs:element name="Unit"       type="xs:string"  minOccurs="0"/>
+    <xs:element name="PlotUnit"   type="xs:string"  minOccurs="0"/>
     <xs:element name="LowerBound" type="xs:double"  minOccurs="0"/>
     <xs:element name="UpperBound" type="xs:double"  minOccurs="0"/>
     <xs:element name="Fixed"      type="xs:boolean" minOccurs="0"/>

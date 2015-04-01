@@ -12,7 +12,7 @@
 <xs:complexType name="InputFile">
   <xs:sequence>
     <!-- Todo: Make VerbosityLevel optional? -->
-    <!-- Todo: Move (optional) VerbosityLevel and RandomSeed behind Model? -->
+    <!-- Todo: Move (optional) VerbosityLevel and RandomSeed behind Tool? -->
     <xs:element name="VerbosityLevel" type="VerbosityLevel"          />
     <xs:element name="RandomSeed"     type="RandomSeed" minOccurs="0"/>
     <xs:element name="Model"          type="Model"                   />

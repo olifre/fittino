@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+<xs:include schemaLocation="HistogramMakerBase.xsd"/>
+
+<xs:complexType name="Simple3DHistogramMaker">
+  <xs:complexContent>
+    <xs:extension base="HistogramMakerBase">
+    </xs:extension>
+  </xs:complexContent>
+</xs:complexType>
+
+</xs:schema>
