@@ -37,11 +37,11 @@ Fittino::LinearInterpolationCalculator::LinearInterpolationCalculator( const Mod
     : LinearInterpolationCalculatorBase( model, ptree ) {
 
   _name = ptree.get<std::string>( "Name", "LinearInterpolationCalculator" );
-  _tag = ptree.get<std::string>( "Tag", _name );
+  _tag = ptree.get<std::string>( "Tag", "" );
 
-  AddQuantity( new SimplePrediction(  "" , "", "", "", 0., 1.e6, _chi2 ) );
+  AddQuantity( new SimplePrediction(  _name , "", "", "", 0., 1.e6, _chi2 ) );
 
-  std::string histogramName = ptree.get<std::string>( "HistogramName" );
+  std::string histogramName = ptree.get<std::string>( "Histogram" );
 
   GetHistogram( histogramName );
 
