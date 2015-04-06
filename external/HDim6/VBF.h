@@ -20,12 +20,12 @@ typedef struct {
    effinputs eff;
 }VBFParam;
 
-#define VBFCALLS 50000
+#define VBFCALLS 150000
 #define VBFRUN   10
 
 // Cuts
-#define pt3min 5
-#define pt4min 5
+#define pt3min 15
+#define pt4min 15
 #define CUTS
 
 static double cs_5flavorSM, err_5flavorSM, chi_5flavorSM;
