@@ -19,7 +19,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/foreach.hpp>
-#include <boost/lexical_cast.hpp>
+
 
 #include "TMath.h"
 #include "CheckMATECalculator.h"
@@ -116,9 +116,7 @@ Fittino::CheckMATECalculator::CheckMATECalculator( const ModelBase* model, const
   Messenger& messenger = Messenger::GetInstance();
   
   messenger << Messenger::ALWAYS << Messenger::Endl;
-  messenger << Messenger::ALWAYS << "Test line 1" << Messenger::Endl;
-  messenger << Messenger::ALWAYS << Messenger::Endl;
-  messenger << Messenger::ALWAYS << "test line 2" << Messenger::Endl;
+  messenger << Messenger::ALWAYS << "Test line" << Messenger::Endl;
   messenger << Messenger::ALWAYS << Messenger::Endl;
   std::string configurationOption1 = ptree.get<std::string>( "MyFirstConfigurationOption" );
 
@@ -131,7 +129,6 @@ Fittino::CheckMATECalculator::~CheckMATECalculator() {
 }
 
 void Fittino::CheckMATECalculator::CalculatePredictions() {
-  std::cout<<"USING _cHW = "<<_cHW<<std::endl;
   std::string originalinputfile = "/lustre/user/thakur/programs/CheckMATE/CheckMATE-1.1.14/runfittino.txt";
   std::string inputfile = "fittino_checkmate_in.txt";
   
@@ -146,13 +143,7 @@ void Fittino::CheckMATECalculator::CalculatePredictions() {
   myfile.close();
   
 
-  // if ( boost::filesystem::exists( _dirname )) {
-
-  // boost::filesystem::rename( _dirname,  _dirname + ".last");
-
-  //  }
-
-  
+    
   Executor executor("./CheckMATE", "CheckMATE");
   executor.AddArgument(inputfile);
 

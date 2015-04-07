@@ -67,15 +67,15 @@ namespace Fittino {
       /*!
        *
        */
-      const double&           _cHW;
+      const double&         _cHW;
       /*!
        *
        */
-      const double&           _cHB;
+      const double&         _cHB;
       /*!
        * 
        */
-      const double&        _cBB;
+      const double&         _cBB;
 
       std::map<std::string, const Quantity*> _input;
       
