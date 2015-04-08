@@ -2,37 +2,42 @@
 
 sminputs::sminputs() {
 
-	this->alphae = 0.0078186;
-	this->alphas = 0.11819;
-	this->Gf     = 1.16637e-5;
+	this->alphae = 1./128.952;
+	this->alphas = 0.1185;
+	this->Gf     = 1.1663787e-5;
 	this->mz     = 91.1876;
-	this->mh     = 125;
+	this->mh     = 125.09;
 
-  	this->mel    = 0.511e-3;
-	this->mmu    = 0.10565;
-	this->mta    = 1.777;
+  	this->mel    = 0.510998928e-3;
+	this->mmu    = 105.6583715e-3;
+	this->mta    = 1776.82e-3;
 	this->mup    = 0.0023;
 	this->mdo    = 0.0048;
 	this->mch    = 1.275;
 	this->mst    = 0.095;
-	this->mto    = 173.5;
+	this->mto    = 173.34;
 	this->mbo    = 4.18;
 
-	this->vud    = 0.97483;
-	this->vus    = 0.2229;
-	this->vub    = 0.0036;
-	this->vcd    = 0.23;
-	this->vcs    = 0.97389;
-	this->vcb    = 40.9e-3;
-	this->vtd    = 8.4e-3;
-	this->vts    = 42.9e-3;
-	this->vtb    = 0.89;
+	this->vud    = 0.97427;
+    this->vus    = 0.22536;
+	this->vub    = 0.00355;
+	this->vcd    = 0.22522;
+	this->vcs    = 0.97343;
+	this->vcb    = 0.0414;
+	this->vtd    = 0.00886;
+	this->vts    = 0.0405;
+	this->vtb    = 0.99914;
 
 	this->s      = pow( 8000,2 );
 
-	this->sw     = sqrt( ( 1 - sqrt( 1-pow(2,1.5)*M_PI*this->alphae/pow(this->mz,2)/this->Gf ) )/2.0 );
-	this->mw     = this->mz*sqrt(1-this->sw*this->sw);
-	this->vev    = this->mw*this->sw/sqrt(4.0*3.14159*this->alphae)*2.0;
+    double vev2 = 1. / ( sqrt( 2 ) * this->Gf );
+    this->vev = sqrt( vev2 );
+
+    double sin2theta2 = 2. * sqrt( 2. ) * M_PI * this->alphae / ( this->Gf * pow( this->mz, 2 )  );
+    double costheta2 = sqrt( 1 - sin2theta2 );
+    this->sw = sqrt( ( 1 - costheta2 ) / 2. );
+
+    this->mw = this->mz * sqrt( 1 - pow( this->sw, 2 ) );
 
 }
 
