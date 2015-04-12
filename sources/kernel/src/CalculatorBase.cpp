@@ -65,15 +65,31 @@ void Fittino::CalculatorBase::AddInput( std::string name ) {
 
     std::string formula = GetConfiguration()->get<std::string>( name );
 
-    FormulaQuantity* quantity = new FormulaQuantity( name, formula , _model );
+    AddInput( name, formula );
+
+}
+
+void Fittino::CalculatorBase::AddInput( std::string name, std::string value ) {
+
+    FormulaQuantity* quantity = new FormulaQuantity( name, value , _model );
 
     _input.insert( std::make_pair( name, quantity ) );
 
 }
 
-void Fittino::CalculatorBase::AddOutput(std::string name, const double &value) {
+void Fittino::CalculatorBase::AddOutput( std::string name, const double &value ) {
 
     AddQuantity( new SimplePrediction( name, "", value ) );
+
+}
+
+void Fittino::CalculatorBase::AddOutput( std::string name ) {
+
+    Quantity* quantity = new Quantity( name );
+
+    _settableOutput.insert( std::make_pair( name, quantity ) ) ;
+
+    AddQuantity( quantity );
 
 }
 
@@ -134,8 +150,15 @@ void Fittino::CalculatorBase::SetName( std::string defaultName ) {
 
 }
 
+void Fittino::CalculatorBase::SetOutput( std::string name, const double &value ) {
+
+    _settableOutput.at( name )->SetValue( value );
+
+}
+
 void Fittino::CalculatorBase::SetTag( std::string defaultTag ) {
 
     _tag  = _ptree->get<std::string>( "Tag", defaultTag );
 
 }
+

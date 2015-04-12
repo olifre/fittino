@@ -68,10 +68,13 @@ namespace Fittino {
     protected:
       const double&                           GetInput( std::string name ) const;
       void                                    AddInput( std::string name );
+      void                                    AddInput( std::string name, std::string value );
       void                                    AddOutput( std::string name, const double& value );
+      void                                    AddOutput( std::string name );
       void                                    AddQuantity( Quantity* prediction );
       void                                    PrintInput() const;
       void                                    SetName( std::string defaultName );
+      void                                    SetOutput( std::string name, const double& value );
       void                                    SetTag( std::string defaultTag );
       void                                    UpdateInput();
       const boost::property_tree::ptree*      GetConfiguration() const;
@@ -79,6 +82,7 @@ namespace Fittino {
       /*! \cond UML */
     private:
       std::map<std::string, FormulaQuantity*> _input;
+      std::map<std::string, Quantity* >       _settableOutput;
       const boost::property_tree::ptree*      _ptree;
       Collection<Quantity*>                   _collectionOfQuantities;
 
