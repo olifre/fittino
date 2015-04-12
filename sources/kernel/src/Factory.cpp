@@ -23,6 +23,7 @@
 #include "AstroCalculator.h"
 #include "AstroUncertainty.h"
 #include "AstroFitCalculator.h"
+#include "BRCalculator.h"
 #include "CheckMATECalculator.h"
 #include "CheckVacuumCalculator.h"
 #include "Chi2Calculator.h"
@@ -103,6 +104,11 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     else if ( type == "AstroFitCalculator" ) {
 
         return new AstroFitCalculator( model, ptree );
+
+    }
+    else if ( type == "BRCalculator" ) {
+
+        return new BRCalculator( model, ptree );
 
     }
     else if ( type == "CheckMATECalculator" ) {
