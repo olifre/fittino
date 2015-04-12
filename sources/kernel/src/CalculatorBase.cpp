@@ -61,20 +61,9 @@ const double& Fittino::CalculatorBase::GetInput( std::string name ) const {
 
 }
 
-void Fittino::CalculatorBase::AddInput( std::string name, std::string defaultValue ) {
+void Fittino::CalculatorBase::AddInput( std::string name ) {
 
-    std::string formula;
-
-    if ( defaultValue.empty() ) {
-
-        formula = GetConfiguration()->get<std::string>( name );
-
-    }
-    else {
-
-        formula = GetConfiguration()->get<std::string>( name, defaultValue );
-
-    }
+    std::string formula = GetConfiguration()->get<std::string>( name );
 
     FormulaQuantity* quantity = new FormulaQuantity( name, formula , _model );
 
