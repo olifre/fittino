@@ -33,8 +33,8 @@ Fittino::HiggsSignalsSMCalculator::HiggsSignalsSMCalculator( const ModelBase* mo
 
     __theory_brfunctions_MOD_setup_brsm();
 
-    AddInput( "Mass_h" );
-    AddInput( "Mass_t" );
+    AddInput("Mass_h");
+    AddInput("Mass_t");
 
     AddOutput( "BR_h_W_W"        , _BR_h_W_W         );
     AddOutput( "BR_h_Z_Z"        , _BR_h_Z_Z         );
@@ -60,15 +60,15 @@ Fittino::HiggsSignalsSMCalculator::HiggsSignalsSMCalculator( const ModelBase* mo
     AddOutput( "xs_TEV_bh" , _xs_TEV_bh  );
     AddOutput( "xs_TEV_tth", _xs_TEV_tth );
 
-    AddOutput( "xs_LHC_7TeV_hW" , _xs_LHC_7TeV_Wh);
-    AddOutput( "xs_LHC_7TeV_hZ" , _xs_LHC_7TeV_Zh);
+    AddOutput( "xs_LHC_7TeV_hW" , _xs_LHC_7TeV_Wh  );
+    AddOutput( "xs_LHC_7TeV_hZ" , _xs_LHC_7TeV_Zh  );
     AddOutput( "xs_LHC_7TeV_ggh", _xs_LHC_7TeV_ggh );
     AddOutput( "xs_LHC_7TeV_bbh", _xs_LHC_7TeV_bbh );
     AddOutput( "xs_LHC_7TeV_qqh", _xs_LHC_7TeV_qqh );
     AddOutput( "xs_LHC_7TeV_tth", _xs_LHC_7TeV_tth );
 
-    AddOutput( "xs_LHC_8TeV_hW" , _xs_LHC_8TeV_Wh);
-    AddOutput( "xs_LHC_8TeV_hZ" , _xs_LHC_8TeV_Zh);
+    AddOutput( "xs_LHC_8TeV_hW" , _xs_LHC_8TeV_Wh  );
+    AddOutput( "xs_LHC_8TeV_hZ" , _xs_LHC_8TeV_Zh  );
     AddOutput( "xs_LHC_8TeV_ggh", _xs_LHC_8TeV_ggh );
     AddOutput( "xs_LHC_8TeV_bbh", _xs_LHC_8TeV_bbh );
     AddOutput( "xs_LHC_8TeV_qqh", _xs_LHC_8TeV_qqh );
