@@ -21,6 +21,7 @@
 #include "FormulaQuantity.h"
 #include "LogicException.h"
 #include "ModelBase.h"
+#include "SimplePrediction.h"
 
 Fittino::CalculatorBase::CalculatorBase( const ModelBase* model, const boost::property_tree::ptree* ptree )
     : _name( "" ),
@@ -81,6 +82,12 @@ void Fittino::CalculatorBase::AddInput( std::string name, std::string defaultVal
 
 }
 
+void Fittino::CalculatorBase::AddOutput(std::string name, const double &value) {
+
+    AddQuantity( new SimplePrediction( name, "", value ) );
+
+}
+
 void  Fittino::CalculatorBase::AddQuantity( Fittino::Quantity* prediction ) {
 
     if ( _tag != "" ) {
@@ -129,5 +136,17 @@ const boost::property_tree::ptree* Fittino::CalculatorBase::GetConfiguration() c
         throw LogicException( "Trying to access non existing configuration object of calculator " + _name + "." );
 
     }
+
+}
+
+void Fittino::CalculatorBase::SetName( std::string defaultName ) {
+
+    _name = _ptree->get<std::string>( "Name", defaultName );
+
+}
+
+void Fittino::CalculatorBase::SetTag( std::string defaultTag ) {
+
+    _tag  = _ptree->get<std::string>( "Tag", defaultTag );
 
 }

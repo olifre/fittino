@@ -68,8 +68,11 @@ namespace Fittino {
     protected:
       const double&                           GetInput( std::string name ) const;
       void                                    AddInput( std::string name, std::string defaultValue = "" );
+      void                                    AddOutput( std::string name, const double& value );
       void                                    AddQuantity( Quantity* prediction );
       void                                    PrintInput() const;
+      void                                    SetName( std::string defaultName );
+      void                                    SetTag( std::string defaultTag );
       void                                    UpdateInput();
       const boost::property_tree::ptree*      GetConfiguration() const;
 
