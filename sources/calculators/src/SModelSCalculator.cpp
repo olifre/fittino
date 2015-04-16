@@ -1,5 +1,10 @@
 #include <Python.h>
+#include <boost/lexical_cast.hpp>
 #include <boost/python.hpp>
+#include <fstream>
+#include <string>
+#include <boost/algorithm/string.hpp>
+
 #include "SModelSCalculator.h"
 #include "Executor.h"
 
@@ -41,10 +46,34 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
 
   Py_Finalize();
 
+  
+  std::fstream myfile;
+  std::string line;
+
+  myfile.open("/lustre/user/range/fittino/bin/summary.txt");
+  
+  while(getline (myfile, line)){
+
+      typedef std::vector< std::string > split_vector_type;
+
+      split_vector_type SplitVec;
+      split( SplitVec, line, boost::is_any_of(" "), boost::token_compress_on);
+      
+	if(SplitVec.size() > 5) {
+	  if(SplitVec[3] == "value"){
+
+	   std::string R = SplitVec[6];
+	   double r = boost::lexical_cast<double>(R);
+	   std::cout << "The highest r value is = " << r << std::endl;
+	   
+	  break;
+	  }
+      }
+      else continue;
+  }
+
+    myfile.close();
 }
-
-
-
 void Fittino::SModelSCalculator::Initialize() {
 
 }
