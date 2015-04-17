@@ -5,10 +5,13 @@
 #include <string>
 #include <boost/algorithm/string.hpp>
 
+#include "SimplePrediction.h"
 #include "SModelSCalculator.h"
 #include "Executor.h"
 
 Fittino::SModelSCalculator::SModelSCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree) : CalculatorBase( model ) {
+
+  AddQuantity( new SimplePrediction( "r", "", _r ));
 
 }
 Fittino::SModelSCalculator::~SModelSCalculator() {
@@ -63,9 +66,11 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
 	  if(SplitVec[3] == "value"){
 
 	   std::string R = SplitVec[6];
-	   double r = boost::lexical_cast<double>(R);
-	   std::cout << "The highest r value is = " << r << std::endl;
+	   _r = boost::lexical_cast<double>(R);
 	   
+	   std::cout << "The highest r value is = " << _r << std::endl;
+	   
+
 	  break;
 	  }
       }
@@ -73,7 +78,9 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
   }
 
     myfile.close();
+
 }
+
 void Fittino::SModelSCalculator::Initialize() {
 
 }
