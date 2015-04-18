@@ -33,7 +33,8 @@ Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model,
     SetName( "HiggsSignalsCalculator" );
     SetTag( "" );
 
-    _whichAnalyses      = ptree.get<std::string>( "WhichAnalyses",      "LandH"                 );
+    ResizeInputArrays();
+
     _mode               = 1;
     _HBresult           = -1;
     _channel            = 0;
@@ -50,9 +51,7 @@ Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model,
     AddQuantity( new SimplePrediction( "HB_chi2WithoutTheory",  "HB_chi2WithoutTheory",  "",    "",    -1.e4,    1.e4, _chi2WithoutTheory  ) ); 
     AddQuantity( new SimplePrediction( "HB_bestChannelChi2",    "HB_bestChannelChi2",    "",    "",    -1.e4,    1.e4, _bestChannelChi2_double  ) );
 
-    AddQuantity( new SimplePrediction( "HS_weight_xs_ggh"       , "", _weight_xs_ggh       ) );
-    AddQuantity( new SimplePrediction( "HS_weight_xs_bbh"       , "", _weight_xs_bbh       ) );
-    AddQuantity( new SimplePrediction( "HS_chi2"                , "", _chi2                ) );  
+    AddQuantity( new SimplePrediction( "HS_chi2"                , "", _chi2                ) );
     AddQuantity( new SimplePrediction( "HS_chi2_mass_h"         , "", _chi2_mass_h         ) );
     AddQuantity( new SimplePrediction( "HS_chi2_mu"             , "", _chi2_mu             ) );
     AddQuantity( new SimplePrediction( "HS_pvalue"              , "", _pvalue              ) ); 
@@ -63,11 +62,15 @@ Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model,
     AddQuantity( new SimplePrediction( "HS_R_H_ZZ"              , "", _R_H_ZZ              ) ); 
     AddQuantity( new SimplePrediction( "HS_R_VH_bb"             , "", _R_VH_bb             ) ); 
 
-    initialize_higgsbounds_chisqtables_();
-    initialize_higgsbounds_( &_nHzero, &_nHplus, _whichAnalyses.c_str(), _whichAnalyses.length() );
 
+    int nHzero = _h0.size();
+    int nHplus = _hp.size();
+    std::string whichAnalyses      = ptree.get<std::string>( "WhichAnalyses",      "LandH"                 );
     std::string expdata = ptree.get<std::string>( "ExpData" );
-    initialize_higgssignals_( &_nHzero, &_nHplus, expdata.c_str(), expdata.size() );
+
+    initialize_higgsbounds_chisqtables_();
+    initialize_higgsbounds_( &nHzero, &nHplus, whichAnalyses.c_str(), whichAnalyses.length() );
+    initialize_higgssignals_( &nHzero, &nHplus, expdata.c_str(), expdata.size() );
     
     int output_level = 0;
     setup_output_level_( &output_level );
@@ -286,7 +289,7 @@ void Fittino::HiggsSignalsCalculator::CalculatePredictions() {
                   &_R_VH_bb );
 
 
-    for( int i = 1; i <= _nHzero; ++i ) {
+    for( int i = 1; i <= _h0.size(); ++i ) {
 
         __pc_chisq_MOD_print_cov_mh_to_file( &i );
 
@@ -480,7 +483,6 @@ void Fittino::HiggsSignalsCalculator::ShiftHiggsMass() {
 
     }
 
-
     for( unsigned int j = 0; j < _hp.size(); ++j ) {
 
         _chargedInput_MHplus[j] += _mass_h_charged_shift[j];
@@ -491,18 +493,73 @@ void Fittino::HiggsSignalsCalculator::ShiftHiggsMass() {
 
 void Fittino::HiggsSignalsCalculator::RestoreHiggsMass() {
 
-
     for( unsigned int j = 0; j < _h0.size(); ++j ) {
 
         _neutralInput_Mh[j] =  GetHiggsInput( "Mh", _h0[j] );
 
     }
 
-
     for( unsigned int j = 0; j < _hp.size(); ++j ) {
 
         _chargedInput_MHplus[j] = GetHiggsInput( "MHplus", _hp[j] );
 
     }
+
+}
+
+void Fittino::HiggsSignalsCalculator::ResizeInputArrays() {
+
+    _chargedInput_MHplus             .resize( _hp.size() );
+    _chargedInput_GammaTot           .resize( _hp.size() );
+    _chargedInput_CS_lep_HpjHmj_ratio.resize( _hp.size() );
+    _chargedInput_BR_tWpb            .resize( _hp.size() );
+    _chargedInput_BR_tHpjb           .resize( _hp.size() );
+    _chargedInput_BR_Hpjcs           .resize( _hp.size() );
+    _chargedInput_BR_Hpjcb           .resize( _hp.size() );
+    _chargedInput_BR_Hptaunu         .resize( _hp.size() );
+
+    // arguments for HiggsBounds_neutral_input_hadr, in the order required by this function
+    _neutralInput_Mh                   .resize( _h0.size()              ) ;
+    _neutralInput_GammaTot             .resize( _h0.size()              );
+    _neutralInput_CP                   .resize( _h0.size()              );
+    _neutralInput_CS_lep_hjZ_ratio     .resize( _h0.size()              );
+    _neutralInput_CS_lep_bbhj_ratio    .resize( _h0.size()              );
+    _neutralInput_CS_lep_tautauhj_ratio.resize( _h0.size()              );
+    _neutralInput_CS_lep_hjhi_ratio    .resize( _h0.size() * _h0.size() );
+    _neutralInput_CS_tev_hj_ratio      .resize( _h0.size()              );
+    _neutralInput_CS_tev_hjb_ratio     .resize( _h0.size()              );
+    _neutralInput_CS_tev_hjW_ratio     .resize( _h0.size()              );
+    _neutralInput_CS_tev_hjZ_ratio     .resize( _h0.size()              );
+    _neutralInput_CS_tev_vbf_ratio     .resize( _h0.size()              );
+    _neutralInput_CS_tev_tthj_ratio    .resize( _h0.size()              );
+    _neutralInput_CS_lhc7_hj_ratio     .resize( _h0.size()              );
+    _neutralInput_CS_lhc7_hjb_ratio    .resize( _h0.size()              );
+    _neutralInput_CS_lhc7_hjW_ratio    .resize( _h0.size()              );
+    _neutralInput_CS_lhc7_hjZ_ratio    .resize( _h0.size()              );
+    _neutralInput_CS_lhc7_vbf_ratio    .resize( _h0.size()              );
+    _neutralInput_CS_lhc7_tthj_ratio   .resize( _h0.size()              );
+    _neutralInput_CS_lhc8_hj_ratio     .resize( _h0.size()              );
+    _neutralInput_CS_lhc8_hjb_ratio    .resize( _h0.size()              );
+    _neutralInput_CS_lhc8_hjW_ratio    .resize( _h0.size()              );
+    _neutralInput_CS_lhc8_hjZ_ratio    .resize( _h0.size()              );
+    _neutralInput_CS_lhc8_vbf_ratio    .resize( _h0.size()              );
+    _neutralInput_CS_lhc8_tthj_ratio   .resize( _h0.size()              );
+    _neutralInput_BR_hjss              .resize( _h0.size()              );
+    _neutralInput_BR_hjcc              .resize( _h0.size()              );
+    _neutralInput_BR_hjbb              .resize( _h0.size()              );
+    _neutralInput_BR_hjmumu            .resize( _h0.size()              );
+    _neutralInput_BR_hjtautau          .resize( _h0.size()              );
+    _neutralInput_BR_hjWW              .resize( _h0.size()              );
+    _neutralInput_BR_hjZZ              .resize( _h0.size()              );
+    _neutralInput_BR_hjZga             .resize( _h0.size()              );
+    _neutralInput_BR_hjgaga            .resize( _h0.size()              );
+    _neutralInput_BR_hjgg              .resize( _h0.size()              );
+    _neutralInput_BR_hjinvisible       .resize( _h0.size()              );
+    _neutralInput_BR_hjhihi            .resize( _h0.size() * _h0.size() );
+
+    _massUncertainty_HB_neutral.resize( _h0.size() );
+    _massUncertainty_HB_charged.resize( _hp.size() );
+
+    _massUncertainty_HS_neutral.resize( _h0.size() );
 
 }

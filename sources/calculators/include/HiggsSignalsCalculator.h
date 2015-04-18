@@ -129,7 +129,6 @@ namespace Fittino {
       double        _chi2WithoutTheory;
       int           _bestChannelChi2;
       double        _bestChannelChi2_double;
-      std::string   _whichAnalyses;
 
       double        _chi2;
       double        _chi2_mass_h;
@@ -141,13 +140,8 @@ namespace Fittino {
       double        _R_H_bb;
       double        _R_H_tautau;
       double        _R_VH_bb;
-      double        _weight_xs_bbh;
-      double        _weight_xs_ggh;
       int           _mode;
       int           _nobs;
-      
-      int           _nHplus;
-      int           _nHzero;
 
       std::vector<double>      _predicted_mu_fromHSresult;
       std::vector<double>      _dominant_higgs_fromHSresult;
@@ -167,6 +161,7 @@ namespace Fittino {
       void         PrepareChargedInput();
       void         PrepareMassUncertainties();
       void         PrepareNeutralInput();
+      void         ResizeInputArrays();
       void         SetChargedInput();
       void         SetMassUncertainties();
       void         SetNeutralInput();
