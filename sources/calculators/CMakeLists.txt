@@ -25,6 +25,7 @@ LIST( APPEND includes "include/LinearInterpolationCalculatorBase.h" )
 LIST( APPEND includes "include/SModelSCalculator.h" )
 LIST( APPEND includes "include/HiggsSignalsSMCalculator.h" )
 LIST( APPEND includes "include/HiggsSignalsCalculator.h" )
+LIST( APPEND includes "include/CheckMATE2Calculator.h" )
 
 
 AUX_SOURCE_DIRECTORY(src sources)
@@ -49,7 +50,7 @@ LIST( APPEND sources "src/AstroUncertainty.cpp" )
 LIST( APPEND sources "src/SModelSCalculator.cpp" )
 LIST( APPEND sources "src/HiggsSignalsSMCalculator.cpp" )
 LIST( APPEND sources "src/HiggsSignalsCalculator.cpp" )
-#LIST( APPEND sources "src/CheckMATE2Calculator.cpp" )
+LIST( APPEND sources "src/CheckMATE2Calculator.cpp" )
 #LIST( APPEND sources "src/HerwigppCalculator.cpp" )
 
 IF(PYTHONLIBS_FOUND AND Boost_PYTHON_FOUND)
