@@ -2,6 +2,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/python.hpp>
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <boost/algorithm/string.hpp>
 
