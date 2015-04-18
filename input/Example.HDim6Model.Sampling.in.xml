@@ -9,7 +9,7 @@
 
   <Model>
 
-    <PhysicsModel>
+    <ModelBase>
 
       <Name>HDim6Model</Name>
 
@@ -163,20 +163,11 @@
 
         </HDim6Calculator>
 
-        <HiggsSignalsCalculator>
-          <Name>HiggsSignalsCalculator</Name>
-          <ExpData>LHC_latestresults-1.2.0-CMSgaga125p7</ExpData>
-        </HiggsSignalsCalculator>
 
       </Calculators>
 
-      <Observables></Observables>
 
-      <CovarianceMatrices></CovarianceMatrices>
-
-      <Chi2Contribution>HS_chi2_mu</Chi2Contribution>
-
-    </PhysicsModel>
+    </ModelBase>
 
   </Model>
 
