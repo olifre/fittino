@@ -4,9 +4,9 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
 
+#include "Executor.h"
 #include "SimplePrediction.h"
 #include "CheckMATE2Calculator.h"
-#include "HerwigppCalculator.h"
 
 Fittino::CheckMATE2Calculator::CheckMATE2Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
   :CalculatorBase( model ) {
