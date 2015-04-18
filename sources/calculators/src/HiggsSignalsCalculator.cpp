@@ -37,7 +37,18 @@ Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model,
 
     ResizeInputArrays();
 
+    // todo: make this configurable
     _mode               = 1;
+    int output_level = 0;
+    int pdf = 2;
+    double range = 20.;
+
+    // todo: introduce flag to swich on/off HB/HS
+
+    std::string whichAnalyses = ptree.get<std::string>( "WhichAnalyses",      "LandH"                 );
+    std::string expdata = ptree.get<std::string>( "ExpData" );
+
+    // todo: review these HB quantities
     _HBresult           = -1;
     _channel            = 0;
     _obsratio           = 0.;
@@ -45,13 +56,13 @@ Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model,
     _chi2WithTheory     = 0.;
     _chi2WithoutTheory  = 0.;
     _bestChannelChi2    = 0;
-
     AddQuantity( new SimplePrediction( "HB_result",             "HB_result",             "",    "",    -1.e4,    1.e4, _HBresult_double  ) );
     AddQuantity( new SimplePrediction( "HB_obsratio",           "HB_obsratio",           "",    "",    -1.e4,    1.e4, _obsratio  ) ); 
     AddQuantity( new SimplePrediction( "HB_channel",            "HB_channel",            "",    "",    -1.e4,    1.e4, _channel_double  ) ); 
     AddQuantity( new SimplePrediction( "HB_chi2WithTheory",     "HB_chi2WithTheory",     "",    "",    -1.e4,    1.e4, _chi2WithTheory  ) ); 
     AddQuantity( new SimplePrediction( "HB_chi2WithoutTheory",  "HB_chi2WithoutTheory",  "",    "",    -1.e4,    1.e4, _chi2WithoutTheory  ) ); 
     AddQuantity( new SimplePrediction( "HB_bestChannelChi2",    "HB_bestChannelChi2",    "",    "",    -1.e4,    1.e4, _bestChannelChi2_double  ) );
+
 
     AddQuantity( new SimplePrediction( "HS_chi2"                , "", _chi2                ) );
     AddQuantity( new SimplePrediction( "HS_chi2_mass_h"         , "", _chi2_mass_h         ) );
@@ -62,27 +73,22 @@ Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model,
     AddQuantity( new SimplePrediction( "HS_R_H_tautau"          , "", _R_H_tautau          ) ); 
     AddQuantity( new SimplePrediction( "HS_R_H_WW"              , "", _R_H_WW              ) ); 
     AddQuantity( new SimplePrediction( "HS_R_H_ZZ"              , "", _R_H_ZZ              ) ); 
-    AddQuantity( new SimplePrediction( "HS_R_VH_bb"             , "", _R_VH_bb             ) ); 
+    AddQuantity( new SimplePrediction( "HS_R_VH_bb"             , "", _R_VH_bb             ) );
 
+    // todo: loop over input higgs here. Add an AddHiggsInput() private function for that
 
     int nHzero = _h0.size();
     int nHplus = _hp.size();
-    std::string whichAnalyses      = ptree.get<std::string>( "WhichAnalyses",      "LandH"                 );
-    std::string expdata = ptree.get<std::string>( "ExpData" );
 
     initialize_higgsbounds_chisqtables_();
     initialize_higgsbounds_( &nHzero, &nHplus, whichAnalyses.c_str(), whichAnalyses.length() );
     initialize_higgssignals_( &nHzero, &nHplus, expdata.c_str(), expdata.size() );
-    
-    int output_level = 0;
+
     setup_output_level_( &output_level );
-
-    int pdf = 2; 
     setup_pdf_( &pdf );
-
-    double range = 20.;
     setup_assignmentrange_( &range );
 
+    //todo: instead of a dummy run, do the first proper run...
     // A first dummy run of HS is necessary to initialize all HS internal observable/variables (required in SetupMeasuredValues());
     SetNeutralInput();
     run_higgssignals_( &_mode, &_chi2_mu, &_chi2_mass_h, &_chi2, &_nobs, &_pvalue );
@@ -91,6 +97,7 @@ Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model,
     int ntotal, npeakmu, npeakmh, nmpred, nanalyses;
     __io_MOD_get_number_of_observables( &ntotal, &npeakmu, &npeakmh, &nmpred, &nanalyses );
 
+    // todo: resize instead of push_back
     for ( int i = 1; i <= npeakmu; ++i ) {
         
         _predicted_mu_fromHSresult.push_back(0.);
@@ -118,7 +125,6 @@ Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model,
         AddQuantity( new SimplePrediction( "HS_chi2_mh_ObsID_" + s_index       , "HS_chi2_mh_ObsID_" + s_index        , "", "", 0.   , 1.e5, _chi2_mh_from_peak.at(i-1) ) );
         AddQuantity( new SimplePrediction( "HS_chi2_max_ObsID_" + s_index      , "HS_chi2_max_ObsID_" + s_index       , "", "", 0.   , 1.e5, _chi2_max_from_peak.at(i-1) ) );
         AddQuantity( new SimplePrediction( "HS_chi2_tot_ObsID_" + s_index      , "HS_chi2_tot_ObsID_" + s_index       , "", "", 0.   , 1.e5, _chi2_tot_from_peak.at(i-1) ) );
-        
 
      }
 
@@ -251,30 +257,26 @@ void Fittino::HiggsSignalsCalculator::CalculatePredictions() {
 
     run_higgssignals_( &_mode, &_chi2_mu, &_chi2_mass_h, &_chi2, &_nobs, &_pvalue );
 
-    // get peak info from HS for output ntuple
+    // todo: move this to the constructor
     int ntotal, npeakmu, npeakmh, nmpred, nanalyses;
     __io_MOD_get_number_of_observables( &ntotal, &npeakmu, &npeakmh, &nmpred, &nanalyses );
+
+    int obsID, nHcomb, domH;
+
     for ( int i = 1; i <= npeakmu; ++i ) {
 
-        int obsID = 0;
         __io_MOD_get_id_of_peakobservable( &i, &obsID );
-        int ncomb, higgsindex;
-        double mupred;
-        __io_MOD_get_peakinfo_from_hsresults( &obsID, &mupred, &higgsindex, &ncomb );
-        _predicted_mu_fromHSresult.at(i-1) = mupred;
-        _dominant_higgs_fromHSresult.at(i-1) = (double)higgsindex;
-        _ncombined_fromHSresult.at(i-1) = (double)ncomb;
-        double peak_chi2_mu  = 0.;
-        double peak_chi2_mh  = 0.;
-        double peak_chi2_max = 0.;
-        double peak_chi2_tot = 0.;;
-        __pc_chisq_MOD_get_peakchi2( &obsID, &peak_chi2_mu, &peak_chi2_mh, &peak_chi2_max, &peak_chi2_tot );
-        
-        _chi2_mu_from_peak.at(i-1)  = peak_chi2_mu;
-        _chi2_mh_from_peak.at(i-1)  = peak_chi2_mh;
-        _chi2_max_from_peak.at(i-1) = peak_chi2_max;
-        _chi2_tot_from_peak.at(i-1) = peak_chi2_tot;
 
+        __io_MOD_get_peakinfo_from_hsresults( &obsID, &_predicted_mu_fromHSresult[i-1], &domH, &nHcomb);
+
+        __pc_chisq_MOD_get_peakchi2( &obsID,
+                                     &_chi2_mu_from_peak.at(i-1),
+                                     &_chi2_mh_from_peak.at(i-1),
+                                     &_chi2_max_from_peak.at(i-1),
+                                     &_chi2_tot_from_peak.at(i-1) );
+
+        _dominant_higgs_fromHSresult.at(i-1) = domH;
+        _ncombined_fromHSresult.at(i-1) = nHcomb;
 
     }
 
@@ -520,7 +522,6 @@ void Fittino::HiggsSignalsCalculator::ResizeInputArrays() {
     _chargedInput_BR_Hpjcb           .resize( _hp.size() );
     _chargedInput_BR_Hptaunu         .resize( _hp.size() );
 
-    // arguments for HiggsBounds_neutral_input_hadr, in the order required by this function
     _neutralInput_Mh                   .resize( _h0.size()              ) ;
     _neutralInput_GammaTot             .resize( _h0.size()              );
     _neutralInput_CP                   .resize( _h0.size()              );
