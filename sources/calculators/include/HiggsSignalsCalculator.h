@@ -49,13 +49,17 @@ namespace Fittino {
 
     public:
       virtual void CalculatePredictions();
-      virtual void Initialize();
-      virtual void SetupMeasuredValues();
-      double       RunHiggsBounds();
-      void         CallHiggsBounds();
-      void         UpdateNeutralInput(bool shiftHiggsMas = false);
-      void         UpdateChargedInput(bool shiftHiggsMas = false);
-      void         UpdateMassUncertainties();
+      void         PrepareChargedInput();
+      void         PrepareMassUncertainties();
+      void         PrepareNeutralInput();
+      void         SetChargedInput();
+      void         SetMassUncertainties();
+      void         SetNeutralInput();
+
+    // todo: review these functions
+    virtual void SetupMeasuredValues();
+    double       RunHiggsBounds();
+    void         CallHiggsBounds();
 
 
   private:
@@ -108,8 +112,30 @@ namespace Fittino {
       std::vector<double> _neutralInput_BR_hjinvisible;
       std::vector<double> _neutralInput_BR_hjhihi;
 
+      // arguments for higgsbounds_set_mass_uncertainties_, in the order required by this function
+      std::vector<double> _massUncertainty_HB_neutral;
+      std::vector<double> _massUncertainty_HB_charged;
+
+     // argument for higgssignals_neutral_input_massuncertainty_
+      std::vector<double> _massUncertainty_HS_neutral;
+
       std::vector<std::string> _h0;
       std::vector<std::string> _hp;
+
+    // todo: review these HB variables:
+      double        _globalHiggsBoundsChi2;
+      int           _HBresult;
+      double        _HBresult_double;
+      int           _channel;
+      double        _channel_double;
+      double        _obsratio;
+      int           _ncombined;
+      double        _theoryUncertainty1s;
+      double        _chi2WithTheory;
+      double        _chi2WithoutTheory;
+      int           _bestChannelChi2;
+      double        _bestChannelChi2_double;
+      std::string   _whichAnalyses;
 
       double        _chi2;
       double        _chi2_mass_h;
@@ -128,20 +154,7 @@ namespace Fittino {
       
       int           _nHplus;
       int           _nHzero;
-      double        _globalHiggsBoundsChi2;
-      int           _HBresult;
-      double        _HBresult_double;
-      int           _channel;
-      double        _channel_double;
-      double        _obsratio;
-      int           _ncombined;
-      double        _theoryUncertainty1s;
-      double        _chi2WithTheory;
-      double        _chi2WithoutTheory;
-      int           _bestChannelChi2;
-      double        _bestChannelChi2_double;
-      std::string   _whichAnalyses;
-      
+
       std::vector<double>      _predicted_mu_fromHSresult;
       std::vector<double>      _dominant_higgs_fromHSresult;
       std::vector<double>      _ncombined_fromHSresult;
