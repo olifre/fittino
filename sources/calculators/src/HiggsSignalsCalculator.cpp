@@ -17,6 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <algorithm>
+
 #include <boost/property_tree/ptree.hpp>
 #include <boost/thread.hpp>
 
@@ -557,8 +559,8 @@ void Fittino::HiggsSignalsCalculator::ResizeInputArrays() {
     _neutralInput_BR_hjinvisible       .resize( _h0.size()              );
     _neutralInput_BR_hjhihi            .resize( _h0.size() * _h0.size() );
 
-    _massUncertainty_HB_neutral.resize( _h0.size() );
-    _massUncertainty_HB_charged.resize( _hp.size() );
+    _massUncertainty_HB_neutral.resize( std::max<unsigned int>( _h0.size(), 1 ) );
+    _massUncertainty_HB_charged.resize( std::max<unsigned int>( _hp.size(), 1 ) );
 
     _massUncertainty_HS_neutral.resize( _h0.size() );
 
