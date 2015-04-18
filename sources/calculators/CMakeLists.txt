@@ -24,6 +24,7 @@ LIST( APPEND includes "include/LinearInterpolationCalculator.h" )
 LIST( APPEND includes "include/LinearInterpolationCalculatorBase.h" )
 LIST( APPEND includes "include/SModelSCalculator.h" )
 LIST( APPEND includes "include/HiggsSignalsSMCalculator.h" )
+LIST( APPEND includes "include/HiggsSignalsCalculator.h" )
 
 
 AUX_SOURCE_DIRECTORY(src sources)
@@ -47,6 +48,7 @@ LIST( APPEND sources "src/LinearInterpolationCalculatorBase.cpp" )
 LIST( APPEND sources "src/AstroUncertainty.cpp" )
 LIST( APPEND sources "src/SModelSCalculator.cpp" )
 LIST( APPEND sources "src/HiggsSignalsSMCalculator.cpp" )
+LIST( APPEND sources "src/HiggsSignalsCalculator.cpp" )
 #LIST( APPEND sources "src/CheckMATE2Calculator.cpp" )
 #LIST( APPEND sources "src/HerwigppCalculator.cpp" )
 
@@ -91,6 +93,8 @@ ENDIF()
 IF( NOT HIGGSSIGNALS_FOUND )
 
     LIST(REMOVE_ITEM sources "src/HiggsSignalsSMCalculator.cpp")
+    LIST(REMOVE_ITEM sources "src/HiggsSignalsCalculator.cpp")
+
 
 ENDIF()
 

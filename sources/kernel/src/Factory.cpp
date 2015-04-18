@@ -44,6 +44,7 @@
 #include "HiggsBoundsHadXSCalculator.h"
 #include "HiggsBoundsHECCalculator.h"
 #include "HiggsBoundsSLHACalculator.h"
+#include "HiggsSignalsCalculator.h"
 #include "HiggsSignalsHadXSCalculator.h"
 #include "HiggsSignalsPartXSCalculator.h"
 #include "HiggsSignalsSLHACalculator.h"
@@ -227,7 +228,7 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 #endif
 
     }
-    else if ( type == "HiggsSignalsCalculator" ) {
+    else if ( type == "HiggsSignalsHadXSCalculator" ) {
 
 #if defined HIGGSBOUNDS_FOUND && defined HIGGSSIGNALS_FOUND
 
@@ -236,6 +237,19 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 #else
 
         throw ConfigurationException( "Trying to use HiggsSignalsHadXSCalculator but Fittino was built without HiggsBounds or HiggsSignals." );
+
+#endif
+
+    }
+    else if ( type == "HiggsSignalsCalculator" ) {
+
+#if defined HIGGSSIGNALS_FOUND
+
+        return new HiggsSignalsCalculator( model, ptree );
+
+#else
+
+        throw ConfigurationException( "Trying to use HiggsSignalsCalculator but Fittino was built without HiggsSignals." );
 
 #endif
 
