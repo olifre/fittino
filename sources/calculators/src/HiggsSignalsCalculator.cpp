@@ -220,14 +220,14 @@ double Fittino::HiggsSignalsCalculator::RunHiggsBounds() {
 
 void Fittino::HiggsSignalsCalculator::CalculatePredictions() {
 
-    PrepareMassUncertainties();
-    SetMassUncertainties    ();
     PrepareChargedInput     ();
+    PrepareMassUncertainties();
     PrepareNeutralInput     ();
-    //ShiftHiggsMass();
-    SetChargedInput  ();
-    SetNeutralInput         ();
+    SetMassUncertainties    ();
 
+//    ShiftHiggsMass          ();
+//    SetChargedInput         ();
+//    SetNeutralInput         ();
 //    _globalHiggsBoundsChi2 = -1.;
 //    boost::thread threadHB( boost::bind( &Fittino::HiggsSignalsCalculator::CallHiggsBounds, this ) );
 //    threadHB.join();
@@ -239,10 +239,10 @@ void Fittino::HiggsSignalsCalculator::CalculatePredictions() {
 //
 //    }
 //
+//    RestoreHiggsMass();
 
-    //RestoreHiggsMass();
-    SetChargedInput ();
-    SetNeutralInput ();
+    SetChargedInput();
+    SetNeutralInput();
 
     run_higgssignals_( &_mode, &_chi2_mu, &_chi2_mass_h, &_chi2, &_nobs, &_pvalue );
 
@@ -467,6 +467,41 @@ void Fittino::HiggsSignalsCalculator::PrepareMassUncertainties() {
     for( unsigned int i = 0; i < _hp.size(); ++i ) {
 
         _massUncertainty_HB_charged[i] = GetHiggsInput( "dMh", _hp[i] );
+
+    }
+
+}
+
+void Fittino::HiggsSignalsCalculator::ShiftHiggsMass() {
+
+    for( unsigned int j = 0; j < _h0.size(); ++j ) {
+
+        _neutralInput_Mh[j] += _mass_h_neutral_shift[j];
+
+    }
+
+
+    for( unsigned int j = 0; j < _hp.size(); ++j ) {
+
+        _chargedInput_MHplus[j] += _mass_h_charged_shift[j];
+
+    }
+
+}
+
+void Fittino::HiggsSignalsCalculator::RestoreHiggsMass() {
+
+
+    for( unsigned int j = 0; j < _h0.size(); ++j ) {
+
+        _neutralInput_Mh[j] =  GetHiggsInput( "Mh", _h0[j] );
+
+    }
+
+
+    for( unsigned int j = 0; j < _hp.size(); ++j ) {
+
+        _chargedInput_MHplus[j] = GetHiggsInput( "MHplus", _hp[j] );
 
     }
 

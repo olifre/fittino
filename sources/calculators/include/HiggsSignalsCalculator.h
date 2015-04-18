@@ -170,6 +170,8 @@ namespace Fittino {
       void         SetChargedInput();
       void         SetMassUncertainties();
       void         SetNeutralInput();
+      void         ShiftHiggsMass();
+      void         RestoreHiggsMass();
 
 
   };
