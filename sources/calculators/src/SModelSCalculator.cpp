@@ -12,7 +12,10 @@
 
 Fittino::SModelSCalculator::SModelSCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree) : CalculatorBase( model ) {
 
-  AddQuantity( new SimplePrediction( "r_SModelS", "", _r_SModelS ));
+  SetName( "SModelSCalculator" );
+  SetTag( "SModels" );
+
+  AddQuantity( new SimplePrediction( "r", "", _r_SModelS ));
 
 }
 Fittino::SModelSCalculator::~SModelSCalculator() {
