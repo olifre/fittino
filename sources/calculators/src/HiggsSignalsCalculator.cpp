@@ -29,8 +29,10 @@
 
 Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     :CalculatorBase       ( model                                                                         ) {
-    
-    _name               = ptree.get<std::string>( "Name",               "HiggsSignalsCalculator" );
+
+    SetName( "HiggsSignalsCalculator" );
+    SetTag( "" );
+
     _whichAnalyses      = ptree.get<std::string>( "WhichAnalyses",      "LandH"                 );
     _mode               = 1;
     _HBresult           = -1;

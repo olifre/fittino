@@ -49,12 +49,6 @@ namespace Fittino {
 
     public:
       virtual void CalculatePredictions();
-      void         PrepareChargedInput();
-      void         PrepareMassUncertainties();
-      void         PrepareNeutralInput();
-      void         SetChargedInput();
-      void         SetMassUncertainties();
-      void         SetNeutralInput();
 
     // todo: review these functions
     virtual void SetupMeasuredValues();
@@ -167,8 +161,16 @@ namespace Fittino {
 
      private:
 
-     const double& GetHiggsInput( std::string name, std::string higgs );
-     const double& GetHiggsInput( std::string name, std::string higgs1, std::string higgs2 );
+       const double& GetHiggsInput( std::string name, std::string higgs );
+       const double& GetHiggsInput( std::string name, std::string higgs1, std::string higgs2 );
+
+      void         PrepareChargedInput();
+      void         PrepareMassUncertainties();
+      void         PrepareNeutralInput();
+      void         SetChargedInput();
+      void         SetMassUncertainties();
+      void         SetNeutralInput();
+
 
   };
 
