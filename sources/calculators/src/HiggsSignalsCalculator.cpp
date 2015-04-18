@@ -131,43 +131,6 @@ void Fittino::HiggsSignalsCalculator::UpdateNeutralInput(bool shiftHiggsMass) {
 
     if ( !_h0.size() ) return;
 
-    std::vector<double> _neutralInput_Mh;
-    std::vector<double> _neutralInput_GammaTot;
-    std::vector<double> _neutralInput_CP;
-    std::vector<double> _neutralInput_CS_lep_hjZ_ratio;
-    std::vector<double> _neutralInput_CS_lep_bbhj_ratio;
-    std::vector<double> _neutralInput_CS_lep_tautauhj_ratio;
-    std::vector<double> _neutralInput_CS_lep_hjhi_ratio;
-    std::vector<double> _neutralInput_CS_tev_hj_ratio;
-    std::vector<double> _neutralInput_CS_tev_hjb_ratio;
-    std::vector<double> _neutralInput_CS_tev_hjW_ratio;
-    std::vector<double> _neutralInput_CS_tev_hjZ_ratio;
-    std::vector<double> _neutralInput_CS_tev_vbf_ratio;
-    std::vector<double> _neutralInput_CS_tev_tthj_ratio;
-    std::vector<double> _neutralInput_CS_lhc7_hj_ratio;
-    std::vector<double> _neutralInput_CS_lhc7_hjb_ratio;
-    std::vector<double> _neutralInput_CS_lhc7_hjW_ratio;
-    std::vector<double> _neutralInput_CS_lhc7_hjZ_ratio;
-    std::vector<double> _neutralInput_CS_lhc7_vbf_ratio;
-    std::vector<double> _neutralInput_CS_lhc7_tthj_ratio;
-    std::vector<double> _neutralInput_CS_lhc8_hj_ratio;
-    std::vector<double> _neutralInput_CS_lhc8_hjb_ratio;
-    std::vector<double> _neutralInput_CS_lhc8_hjW_ratio;
-    std::vector<double> _neutralInput_CS_lhc8_hjZ_ratio;
-    std::vector<double> _neutralInput_CS_lhc8_vbf_ratio;
-    std::vector<double> _neutralInput_CS_lhc8_tthj_ratio;
-    std::vector<double> _neutralInput_BR_hjss;
-    std::vector<double> _neutralInput_BR_hjcc;
-    std::vector<double> _neutralInput_BR_hjbb;
-    std::vector<double> _neutralInput_BR_hjmumu;
-    std::vector<double> _neutralInput_BR_hjtautau;
-    std::vector<double> _neutralInput_BR_hjWW;
-    std::vector<double> _neutralInput_BR_hjZZ;
-    std::vector<double> _neutralInput_BR_hjZga;
-    std::vector<double> _neutralInput_BR_hjgaga;
-    std::vector<double> _neutralInput_BR_hjgg;
-    std::vector<double> _neutralInput_BR_hjinvisible;
-    std::vector<double> _neutralInput_BR_hjhihi;
 
     for( unsigned int j = 0; j < _h0.size(); ++j ) {
 
@@ -442,42 +405,31 @@ void Fittino::HiggsSignalsCalculator::UpdateChargedInput(bool shiftHiggsMas) {
 
     if ( ! _hp.size() ) return;
 
-    std::vector<double> CS_lep_HpjHmj_ratio;
-    std::vector<double> BR_tWpb;
-    std::vector<double> BR_tHpjb;
-    std::vector<double> BR_Hpjcs;
-    std::vector<double> BR_Hpjcb;
-    std::vector<double> BR_Hptaunu;
-
-    std::vector<double> mass_h_charged;
-    std::vector<double> Gamma_Total_charged;
-
-
     for( int i = 0; i < _hp.size(); ++i ) {
 
-        mass_h_charged[i] =  GetHiggsInput( "MHplus", _hp[i] ) + _mass_h_charged_shift.at(i);
+        _chargedInput_MHplus[i] =  GetHiggsInput( "MHplus", _hp[i] ) + _mass_h_charged_shift.at(i);
 
-        Gamma_Total_charged[i] = GetHiggsInput( "GammaTot", _hp[i] );
+        _chargedInput_GammaTot[i] = GetHiggsInput( "GammaTot", _hp[i] );
 
-        CS_lep_HpjHmj_ratio[i] = GetHiggsInput( "CS_lep_HpjHmj_ratio", _hp[i] );
+        _chargedInput_CS_lep_HpjHmj_ratio[i] = GetHiggsInput( "CS_lep_HpjHmj_ratio", _hp[i] );
 
-        BR_tWpb[i]  = GetHiggsInput( "BR_tWpb" , _hp[i] );
-        BR_tHpjb[i] = GetHiggsInput( "BR_tHpjb", _hp[i] );
+        _chargedInput_BR_tWpb[i]  = GetHiggsInput( "_chargedInput_BR_tWpb" , _hp[i] );
+        _chargedInput_BR_tHpjb[i] = GetHiggsInput( "_chargedInput_BR_tHpjb", _hp[i] );
 
-        BR_Hpjcs[i]   = GetHiggsInput( "BR_Hpjcs"  , _hp[i] );
-        BR_Hpjcb[i]   = GetHiggsInput( "BR_Hpjcb"  , _hp[i] );
-        BR_Hptaunu[i] = GetHiggsInput( "BR_Hptaunu", _hp[i] );
+        _chargedInput_BR_Hpjcs[i]   = GetHiggsInput( "BR_Hpjcs"  , _hp[i] );
+        _chargedInput_BR_Hpjcb[i]   = GetHiggsInput( "BR_Hpjcb"  , _hp[i] );
+        _chargedInput_BR_Hptaunu[i] = GetHiggsInput( "BR_Hptaunu", _hp[i] );
 
     }
 
-    higgsbounds_charged_input_(     &mass_h_charged.at(0),
-                                        &Gamma_Total_charged.at(0),
-                                        &CS_lep_HpjHmj_ratio.at(0),
-                                        &BR_tWpb.at(0),
-                                        &BR_tHpjb.at(0),
-                                        &BR_Hpjcs.at(0),
-                                        &BR_Hpjcb.at(0),
-                                        &BR_Hptaunu.at(0) );
+    higgsbounds_charged_input_(     &_chargedInput_MHplus.at(0),
+                                        &_chargedInput_GammaTot.at(0),
+                                        &_chargedInput_CS_lep_HpjHmj_ratio.at(0),
+                                        &_chargedInput_BR_tWpb.at(0),
+                                        &_chargedInput_BR_tHpjb.at(0),
+                                        &_chargedInput_BR_Hpjcs.at(0),
+                                        &_chargedInput_BR_Hpjcb.at(0),
+                                        &_chargedInput_BR_Hptaunu.at(0) );
 
 }
 

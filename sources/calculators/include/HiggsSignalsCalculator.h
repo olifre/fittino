@@ -58,7 +58,56 @@ namespace Fittino {
       void         UpdateMassUncertainties();
 
 
-    private:
+  private:
+   // arguments for HiggsBounds_charged_input, in the order required by this function
+    std::vector<double> _chargedInput_MHplus;
+    std::vector<double> _chargedInput_GammaTot;
+    std::vector<double> _chargedInput_CS_lep_HpjHmj_ratio;
+    std::vector<double> _chargedInput_BR_tWpb;
+    std::vector<double> _chargedInput_BR_tHpjb;
+    std::vector<double> _chargedInput_BR_Hpjcs;
+    std::vector<double> _chargedInput_BR_Hpjcb;
+    std::vector<double> _chargedInput_BR_Hptaunu;
+
+    // arguments for HiggsBounds_neutral_input_hadr, in the order required by this function
+      std::vector<double> _neutralInput_Mh;
+      std::vector<double> _neutralInput_GammaTot;
+      std::vector<double> _neutralInput_CP;
+      std::vector<double> _neutralInput_CS_lep_hjZ_ratio;
+      std::vector<double> _neutralInput_CS_lep_bbhj_ratio;
+      std::vector<double> _neutralInput_CS_lep_tautauhj_ratio;
+      std::vector<double> _neutralInput_CS_lep_hjhi_ratio;
+      std::vector<double> _neutralInput_CS_tev_hj_ratio;
+      std::vector<double> _neutralInput_CS_tev_hjb_ratio;
+      std::vector<double> _neutralInput_CS_tev_hjW_ratio;
+      std::vector<double> _neutralInput_CS_tev_hjZ_ratio;
+      std::vector<double> _neutralInput_CS_tev_vbf_ratio;
+      std::vector<double> _neutralInput_CS_tev_tthj_ratio;
+      std::vector<double> _neutralInput_CS_lhc7_hj_ratio;
+      std::vector<double> _neutralInput_CS_lhc7_hjb_ratio;
+      std::vector<double> _neutralInput_CS_lhc7_hjW_ratio;
+      std::vector<double> _neutralInput_CS_lhc7_hjZ_ratio;
+      std::vector<double> _neutralInput_CS_lhc7_vbf_ratio;
+      std::vector<double> _neutralInput_CS_lhc7_tthj_ratio;
+      std::vector<double> _neutralInput_CS_lhc8_hj_ratio;
+      std::vector<double> _neutralInput_CS_lhc8_hjb_ratio;
+      std::vector<double> _neutralInput_CS_lhc8_hjW_ratio;
+      std::vector<double> _neutralInput_CS_lhc8_hjZ_ratio;
+      std::vector<double> _neutralInput_CS_lhc8_vbf_ratio;
+      std::vector<double> _neutralInput_CS_lhc8_tthj_ratio;
+      std::vector<double> _neutralInput_BR_hjss;
+      std::vector<double> _neutralInput_BR_hjcc;
+      std::vector<double> _neutralInput_BR_hjbb;
+      std::vector<double> _neutralInput_BR_hjmumu;
+      std::vector<double> _neutralInput_BR_hjtautau;
+      std::vector<double> _neutralInput_BR_hjWW;
+      std::vector<double> _neutralInput_BR_hjZZ;
+      std::vector<double> _neutralInput_BR_hjZga;
+      std::vector<double> _neutralInput_BR_hjgaga;
+      std::vector<double> _neutralInput_BR_hjgg;
+      std::vector<double> _neutralInput_BR_hjinvisible;
+      std::vector<double> _neutralInput_BR_hjhihi;
+
       std::vector<std::string> _h0;
       std::vector<std::string> _hp;
 
