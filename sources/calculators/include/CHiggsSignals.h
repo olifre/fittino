@@ -70,6 +70,7 @@ extern "C" {
   void __io_MOD_get_number_of_observables( int* ntotal, int* npeakmu, int* npeakmh, int* nmpred, int* nanalyses );
   void __io_MOD_get_peakinfo_from_hsresults( int* ID, double* mupred, int* domH, int* nHcomb );
   void __io_MOD_get_peakinfo( int* obsID, double* muobs, double* dmuup, double *dmulow, double* mpeak, double* dm );
+  void __io_MOD_get_more_peakinfo( int* obsID, int* mhchisq);
   // void __io_MOD_higgssignals_create_slha_output_default( int* detailed );
 
   void __pc_chisq_MOD_get_peakchi2( int* obsID, double* csqmu, double* csqmh, double* csqmax, double* csqtot );
