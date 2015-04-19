@@ -50,24 +50,24 @@ namespace Fittino {
     public:
       virtual void CalculatePredictions();
 
-    // todo: review these functions
-    virtual void SetupMeasuredValues();
-    double       RunHiggsBounds();
-    void         CallHiggsBounds();
+      // todo: review these functions. why are they public?
+      virtual void SetupMeasuredValues();
+      double       RunHiggsBounds();
+      void         CallHiggsBounds();
 
 
   private:
-   // arguments for HiggsBounds_charged_input, in the order required by this function
-    std::vector<double> _chargedInput_MHplus;
-    std::vector<double> _chargedInput_GammaTot;
-    std::vector<double> _chargedInput_CS_lep_HpjHmj_ratio;
-    std::vector<double> _chargedInput_BR_tWpb;
-    std::vector<double> _chargedInput_BR_tHpjb;
-    std::vector<double> _chargedInput_BR_Hpjcs;
-    std::vector<double> _chargedInput_BR_Hpjcb;
-    std::vector<double> _chargedInput_BR_Hptaunu;
+     // arguments for HiggsBounds_charged_input, in the order required by this function
+      std::vector<double> _chargedInput_MHplus;
+      std::vector<double> _chargedInput_GammaTot;
+      std::vector<double> _chargedInput_CS_lep_HpjHmj_ratio;
+      std::vector<double> _chargedInput_BR_tWpb;
+      std::vector<double> _chargedInput_BR_tHpjb;
+      std::vector<double> _chargedInput_BR_Hpjcs;
+      std::vector<double> _chargedInput_BR_Hpjcb;
+      std::vector<double> _chargedInput_BR_Hptaunu;
 
-    // arguments for HiggsBounds_neutral_input_hadr, in the order required by this function
+      // arguments for HiggsBounds_neutral_input_hadr, in the order required by this function
       std::vector<double> _neutralInput_Mh;
       std::vector<double> _neutralInput_GammaTot;
       std::vector<double> _neutralInput_CP;
@@ -106,17 +106,34 @@ namespace Fittino {
       std::vector<double> _neutralInput_BR_hjinvisible;
       std::vector<double> _neutralInput_BR_hjhihi;
 
-      // arguments for higgsbounds_set_mass_uncertainties_, in the order required by this function
+      // arguments for higgsbounds_set_mass_uncertainties, in the order required by this function
       std::vector<double> _massUncertainty_HB_neutral;
       std::vector<double> _massUncertainty_HB_charged;
 
-     // argument for higgssignals_neutral_input_massuncertainty_
+     // argument for higgssignals_neutral_input_massuncertainty
       std::vector<double> _massUncertainty_HS_neutral;
 
+    // for HB shift the higgs mass prediction instead of the measurement, when doing toys
+      std::vector<double>  _mass_h_neutral_shift;
+      std::vector<double>  _mass_h_charged_shift;
+
+    // arguments for get_peakinfo_from_hsresults, in the order required by this function
+      std::vector<double> _peakInfoFromHSresults_mupred;
+      std::vector<double> _peakInfoFromHSresults_domH;
+      std::vector<double> _peakInfoFromHSresults_nHcomb;
+
+      // arguments for get_peakchi2, in the order required by this function
+      std::vector<double> _peakChi2_mu;
+      std::vector<double> _peakChi2_mh;
+      std::vector<double> _peakChi2_max;
+      std::vector<double> _peakChi2_tot;
+
+      // names of the Higgs bosons
       std::vector<std::string> _h0;
       std::vector<std::string> _hp;
 
-    // todo: review these HB variables:
+
+     // todo: review these HB variables:
       double        _globalHiggsBoundsChi2;
       int           _HBresult;
       double        _HBresult_double;
@@ -130,6 +147,7 @@ namespace Fittino {
       int           _bestChannelChi2;
       double        _bestChannelChi2_double;
 
+    // todo: review these HS variables
       double        _chi2;
       double        _chi2_mass_h;
       double        _chi2_mu;
@@ -143,31 +161,30 @@ namespace Fittino {
       int           _mode;
       int           _nobs;
 
-      std::vector<double>      _predicted_mu_fromHSresult;
-      std::vector<double>      _dominant_higgs_fromHSresult;
-      std::vector<double>      _ncombined_fromHSresult;
-      std::vector<double>      _chi2_mu_from_peak;
-      std::vector<double>      _chi2_mh_from_peak;
-      std::vector<double>      _chi2_max_from_peak;
-      std::vector<double>      _chi2_tot_from_peak;
-      std::vector<double>      _mass_h_neutral_shift;
-      std::vector<double>      _mass_h_charged_shift;
+      int           _npeakmu;
+      bool          _runHiggsBounds;
 
      private:
 
-       const double& GetHiggsInput( std::string name, std::string higgs );
-       const double& GetHiggsInput( std::string name, std::string higgs1, std::string higgs2 );
-
-      void         PrepareChargedInput();
-      void         PrepareMassUncertainties();
-      void         PrepareNeutralInput();
+      void         AddInputQuantities();
+      void         AddOutputQuantities();
+      void         DetermineNumberOfObservables();
+      void         InitializeAndSetup();
+      void         UpdateInputArraysCharged();
+      void         UpdateInputArraysMassUncertainties();
+      void         UpdateInputArraysNeutral();
       void         ResizeInputArrays();
+      void         ResizePeakArrays();
+      void         RestoreHiggsMass();
+      void         Run();
       void         SetChargedInput();
       void         SetMassUncertainties();
       void         SetNeutralInput();
       void         ShiftHiggsMass();
-      void         RestoreHiggsMass();
+      void         UpdatePeakArrays();
 
+      const double& GetHiggsInput( std::string name, std::string higgs );
+      const double& GetHiggsInput( std::string name, std::string higgs1, std::string higgs2 );
 
   };
 
