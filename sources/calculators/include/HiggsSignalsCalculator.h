@@ -61,7 +61,7 @@ namespace Fittino {
       std::vector<double> _chargedInput_MHplus;
       std::vector<double> _chargedInput_GammaTot;
       std::vector<double> _chargedInput_CS_lep_HpjHmj_ratio;
-      std::vector<double> _chargedInput_BR_tWpb;
+      double              _chargedInput_BR_tWpb;
       std::vector<double> _chargedInput_BR_tHpjb;
       std::vector<double> _chargedInput_BR_Hpjcs;
       std::vector<double> _chargedInput_BR_Hpjcb;
@@ -110,14 +110,14 @@ namespace Fittino {
       std::vector<double> _massUncertainty_HB_neutral;
       std::vector<double> _massUncertainty_HB_charged;
 
-     // argument for higgssignals_neutral_input_massuncertainty
+      // argument for higgssignals_neutral_input_massuncertainty
       std::vector<double> _massUncertainty_HS_neutral;
 
-    // for HB shift the higgs mass prediction instead of the measurement, when doing toys
+      // for HB shift the higgs mass prediction instead of the measurement, when doing toys
       std::vector<double>  _mass_h_neutral_shift;
       std::vector<double>  _mass_h_charged_shift;
 
-    // arguments for get_peakinfo_from_hsresults, in the order required by this function
+      // arguments for get_peakinfo_from_hsresults, in the order required by this function
       std::vector<double> _peakInfoFromHSresults_mupred;
       std::vector<double> _peakInfoFromHSresults_domH;
       std::vector<double> _peakInfoFromHSresults_nHcomb;
@@ -166,25 +166,19 @@ namespace Fittino {
 
      private:
 
-      void         AddInputQuantities();
-      void         AddOutputQuantities();
+      void         AddInputs();
+      void         AddChargedHiggs( const boost::property_tree::ptree &ptree );
+      void         AddNeutralHiggs( const boost::property_tree::ptree &ptree );
+      void         AddNeutralHiggsMatrices( const boost::property_tree::ptree &ptree );
+      void         AddOutputs();
       void         DetermineNumberOfObservables();
       void         InitializeAndSetup();
-      void         UpdateInputArraysCharged();
-      void         UpdateInputArraysMassUncertainties();
-      void         UpdateInputArraysNeutral();
       void         ResizeInputArrays();
-      void         ResizePeakArrays();
-      void         RestoreHiggsMass();
       void         Run();
-      void         SetChargedInput();
-      void         SetMassUncertainties();
-      void         SetNeutralInput();
-      void         ShiftHiggsMass();
-      void         UpdatePeakArrays();
-
-      const double& GetHiggsInput( std::string name, std::string higgs );
-      const double& GetHiggsInput( std::string name, std::string higgs1, std::string higgs2 );
+      void         UpdateChargedInput( bool shiftHiggsMass );
+      void         UpdateNeutralInput( bool shiftHiggsMass );
+      void         UpdateOutput();
+      void         UpdateMassUncertainties();
 
   };
 
