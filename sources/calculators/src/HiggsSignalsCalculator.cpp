@@ -37,6 +37,7 @@ Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model,
     SetTag( "" );
 
     _runHiggsBounds = GetConfiguration()->get<bool>( "RunHiggsBounds" );
+    _mode = GetConfiguration()->get<int>( "Mode" );
 
     AddInputQuantities();
     ResizeInputArrays();
@@ -56,26 +57,29 @@ void Fittino::HiggsSignalsCalculator::InitializeAndSetup() {
     int nHzero = _h0.size();
     int nHplus = _hp.size();
 
-    std::string whichAnalyses = GetConfiguration()->get<std::string>( "WhichAnalyses", "LandH" );
-    std::string expdata = GetConfiguration()->get<std::string>( "ExpData" );
-
-    // todo: make this configurable
-    _mode = 1;
-    int output_level = 0;
-    int pdf = 2;
-    double range = 20.;
+    std::string expData         = GetConfiguration()->get<std::string>( "ExpData"         );
+    int         outputLevel     = GetConfiguration()->get<int>        ( "OutputLevel"     );
+    int         pdf             = GetConfiguration()->get<int>        ( "PDF"             );
+    double      assignmentRange = GetConfiguration()->get<double>     ( "AssignmentRange" );
 
     if ( _runHiggsBounds ) {
 
+        if ( !GetConfiguration()->count( "WhichAnalyses" ) ) {
+
+            throw ConfigurationException( _name + ": RunHiggsBounds is set to true but WhichAnalyses not specified." );
+
+        }
+        std::string whichAnalyses = GetConfiguration()->get<std::string>( "WhichAnalyses"   );
+
         initialize_higgsbounds_chisqtables_();
-        initialize_higgsbounds_(&nHzero, &nHplus, whichAnalyses.c_str(), whichAnalyses.length());
+        initialize_higgsbounds_( &nHzero, &nHplus, whichAnalyses.c_str(), whichAnalyses.length() );
 
     }
 
-    initialize_higgssignals_( &nHzero, &nHplus, expdata.c_str(), expdata.size() );
-    setup_output_level_( &output_level );
+    initialize_higgssignals_( &nHzero, &nHplus, expData.c_str(), expData.size() );
+    setup_output_level_( &outputLevel);
     setup_pdf_( &pdf );
-    setup_assignmentrange_( &range );
+    setup_assignmentrange_( &assignmentRange);
 
 }
 
@@ -584,7 +588,7 @@ void Fittino::HiggsSignalsCalculator::UpdatePeakArrays() {
                                      &_peakChi2_max[i-1],
                                      &_peakChi2_tot[i-1] );
 
-        _peakInfoFromHSresults_domH[i-1] = domH;
+        _peakInfoFromHSresults_domH  [i-1] = domH;
         _peakInfoFromHSresults_nHcomb[i-1] = nHcomb;
 
     }
