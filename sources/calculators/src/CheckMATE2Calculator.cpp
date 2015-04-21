@@ -27,9 +27,9 @@ void Fittino::CheckMATE2Calculator::CalculatePredictions() {
 
   std::string inputfile = "/lustre/user/range/fittino/bin/LHC-MSSM.hepmc";
  
-  Executor executor("/lustre/fittino/group/external/SL6/CheckMATE/CheckMATE-1.1.16/bin/CheckMATE","CheckMATE");
+  Executor executor( "/lustre/fittino/group/external/SL6/CheckMATE/CheckMATE-1.1.16/bin/CheckMATE","CheckMATE");
   executor.AddArgument( "-n" );
-  executor.AddArgument( "/lustre/user/range/fittino/bin/New_Run" );
+  executor.AddArgument( "/lustre/user/range/fittino/bin/Last_Run" );
   executor.AddArgument( "-a" );
   executor.AddArgument( "atlas_conf_2013_047" );
   executor.AddArgument( "-p" );
@@ -41,21 +41,32 @@ void Fittino::CheckMATE2Calculator::CalculatePredictions() {
   executor.AddArgument( inputfile );
   executor.Execute();
 
-  // std::ifstream file;
-  //std::string line;
+  std::ifstream myfile;
+  std::string line;
 
-  //file.open("evaluation/best_signal_regions.txt");
+  myfile.open("/lustre/user/range/fittino/bin/Last_Run/result.txt");
   
-  //while(getline(file, line)) {
+  while(getline(myfile, line)) {
 
-  //typedef std::vector< std::string> split_vector_type;
+  typedef std::vector< std::string> split_vector_type;
     
-    //split_vector_type SplitVec;
-    //split( SplitVec, line, boost::is_any_of(" "), boost::token_compress_on);
+    split_vector_type SplitVec;
+    split( SplitVec, line, boost::is_any_of(" "), boost::token_compress_on);
 
-    //}
+    if(SplitVec.size() > 4) {
+      if(SplitVec[3] == "r_max") {
+	
+	std::string R = SplitVec[5]; 
+	_r = boost::lexical_cast <double>(R);
 
-  // file.close();
+	break;
+      }
+    }
+    else continue;
+    
+  }
+
+  myfile.close();
 
 
 }
