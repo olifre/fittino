@@ -22,6 +22,7 @@
 
 #include "ModelBase.h"
 #include "ModelParameter.h"
+#include "PlotterBase.h"
 #include "Simple1DHistogramMaker.h"
 
 Fittino::Simple1DHistogramMaker::Simple1DHistogramMaker( ModelBase* model, const boost::property_tree::ptree& ptree )
@@ -80,6 +81,7 @@ Fittino::Simple1DHistogramMaker::Simple1DHistogramMaker( ModelBase* model, const
         histogram->SetStats( 0 );
 
         _histogramVector.push_back( histogram );
+        _plotter->AddHistogram( histogram );
 
     }
 
