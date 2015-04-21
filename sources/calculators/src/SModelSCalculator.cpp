@@ -10,10 +10,11 @@
 #include "SModelSCalculator.h"
 #include "Executor.h"
 
-Fittino::SModelSCalculator::SModelSCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree) : CalculatorBase( model ) {
+Fittino::SModelSCalculator::SModelSCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree)
+    : CalculatorBase( model, &ptree ) {
 
   SetName( "SModelSCalculator" );
-  SetTag( "SModels" );
+  SetTag( "SModelS" );
 
   AddQuantity( new SimplePrediction( "r", "", _r_SModelS ));
 
