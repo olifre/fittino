@@ -24,53 +24,53 @@
 
 extern "C" {
 
-    void __theory_brfunctions_MOD_setup_brsm();
+  void __theory_brfunctions_MOD_setup_brsm();
 
-    double smbr_hww_    ( const double* massh );
-    double smbr_hzz_    ( const double* massh );
-    double smbr_hbb_    ( const double* massh );
-    double smbr_htautau_( const double* massh );
-    double smbr_hgamgam_( const double* massh );
-    double smbr_hgg_    ( const double* massh );
-    double smbr_htoptop_( const double* massh );
-    double smbr_hcc_    ( const double* massh );
-    double smbr_hss_    ( const double* massh );
-    double smbr_hmumu_  ( const double* massh );
-    double smbr_hzgam_  ( const double* massh );
+  double smbr_hww_    ( const double* massh );
+  double smbr_hzz_    ( const double* massh );
+  double smbr_hbb_    ( const double* massh );
+  double smbr_htautau_( const double* massh );
+  double smbr_hgamgam_( const double* massh );
+  double smbr_hgg_    ( const double* massh );
+  double smbr_htoptop_( const double* massh );
+  double smbr_hcc_    ( const double* massh );
+  double smbr_hss_    ( const double* massh );
+  double smbr_hmumu_  ( const double* massh );
+  double smbr_hzgam_  ( const double* massh );
 
-    double smgamma_h_   ( const double* massh );
-    double smgamma_twpb_( const double* masst );
+  double smgamma_h_   ( const double* massh );
+  double smgamma_twpb_( const double* masst );
 
-    double smcs_tev_hw_   ( const double* massh );
-    double smcs_tev_hz_   ( const double* massh );
-    double smcs_tev_gg_h_ ( const double* massh );
-    double smcs_tev_bb_h_ ( const double* massh );
-    double smcs_tev_vbf_h_( const double* massh );
-    double smcs_tev_bg_hb_( const double* massh );
-    double smcs_tev_tth_  ( const double* massh );
+  double smcs_tev_hw_   ( const double* massh );
+  double smcs_tev_hz_   ( const double* massh );
+  double smcs_tev_gg_h_ ( const double* massh );
+  double smcs_tev_bb_h_ ( const double* massh );
+  double smcs_tev_vbf_h_( const double* massh );
+  double smcs_tev_bg_hb_( const double* massh );
+  double smcs_tev_tth_  ( const double* massh );
 
-    double smcs_lhc7_hw_   ( const double* massh );
-    double smcs_lhc7_hz_   ( const double* massh );
-    double smcs_lhc7_gg_h_ ( const double* massh );
-    double smcs_lhc7_bb_h_ ( const double* massh );
-    double smcs_lhc7_vbf_h_( const double* massh );
-    double smcs_lhc7_tth_  ( const double* massh );
+  double smcs_lhc7_hw_   ( const double* massh );
+  double smcs_lhc7_hz_   ( const double* massh );
+  double smcs_lhc7_gg_h_ ( const double* massh );
+  double smcs_lhc7_bb_h_ ( const double* massh );
+  double smcs_lhc7_vbf_h_( const double* massh );
+  double smcs_lhc7_tth_  ( const double* massh );
 
-    double smcs_lhc8_hw_   ( const double* massh );
-    double smcs_lhc8_hz_   ( const double* massh );
-    double smcs_lhc8_gg_h_ ( const double* massh );
-    double smcs_lhc8_bb_h_ ( const double* massh );
-    double smcs_lhc8_vbf_h_( const double* massh );
-    double smcs_lhc8_tth_  ( const double* massh );
+  double smcs_lhc8_hw_   ( const double* massh );
+  double smcs_lhc8_hz_   ( const double* massh );
+  double smcs_lhc8_gg_h_ ( const double* massh );
+  double smcs_lhc8_bb_h_ ( const double* massh );
+  double smcs_lhc8_vbf_h_( const double* massh );
+  double smcs_lhc8_tth_  ( const double* massh );
 
-// double __theory_collidersfunctions_MOD_lhc8_rh_bb( const double* massh );
-// double __theory_collidersfunctions_MOD_lhc8_rh_gg( const double* massh );
+  //double __theory_collidersfunctions_MOD_lhc8_rh_bb( const double* massh );
+  //double __theory_collidersfunctions_MOD_lhc8_rh_gg( const double* massh );
 
   void __io_MOD_get_id_of_peakobservable( int* ii, int* ID );
   void __io_MOD_get_number_of_observables( int* ntotal, int* npeakmu, int* npeakmh, int* nmpred, int* nanalyses );
   void __io_MOD_get_peakinfo_from_hsresults( int* ID, double* mupred, int* domH, int* nHcomb );
   void __io_MOD_get_peakinfo( int* obsID, double* muobs, double* dmuup, double *dmulow, double* mpeak, double* dm );
-  void __io_MOD_get_more_peakinfo( int* obsID, int* mhchisq);
+  void __io_MOD_get_more_peakinfo( int* obsID, int* mhchisq );
   // void __io_MOD_higgssignals_create_slha_output_default( int* detailed );
 
   void __pc_chisq_MOD_get_peakchi2( int* obsID, double* csqmu, double* csqmh, double* csqmax, double* csqtot );
