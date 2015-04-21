@@ -9,9 +9,13 @@
 #include "CheckMATE2Calculator.h"
 
 Fittino::CheckMATE2Calculator::CheckMATE2Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
-  :CalculatorBase( model ) {
+  :CalculatorBase( model, &ptree ) {
 
-  AddQuantity(new SimplePrediction( "r_CheckMATE", "", _r_CheckMATE));
+  SetName( "CheckMATE2Calculator" );
+  SetTag( "CheckMATE2" );
+
+
+  AddQuantity(new SimplePrediction( "r", "", _r));
 
 }
 
@@ -36,31 +40,31 @@ void Fittino::CheckMATE2Calculator::CalculatePredictions() {
     myfile << "## Process Information\n";
     myfile << "XSect: \n";
     myfile << "XSectErr: \n";
-    myfile << "Events: EventInputfile.hepmc\n";
+    myfile << "Events: LHC-MSSM.hepmc\n";
   myfile.close();
   
-  std::string inputfile = "Parameter.txt";
+  //std::string inputfile = "/lustre/user/range/fittino/bin/Parameter.txt";
 
-  Executor executor("./CheckMATE","CheckMATE");
-  executor.AddArgument(inputfile);
+  //Executor executor("./CheckMATE","CheckMATE");
+  //executor.AddArgument(inputfile);
 
-  executor.Execute();
+  //executor.Execute();
 
-  std::ifstream file;
-  std::string line;
+  // std::ifstream file;
+  //std::string line;
 
-  file.open("evaluation/best_signal_regions.txt");
+  //file.open("evaluation/best_signal_regions.txt");
   
-  while(getline(file, line)) {
+  //while(getline(file, line)) {
 
-    typedef std::vector< std::string> split_vector_type;
+  //typedef std::vector< std::string> split_vector_type;
     
-    split_vector_type SplitVec;
-    split( SplitVec, line, boost::is_any_of(" "), boost::token_compress_on);
+    //split_vector_type SplitVec;
+    //split( SplitVec, line, boost::is_any_of(" "), boost::token_compress_on);
 
-  }
+    //}
 
- file.close();
+  // file.close();
 
 
 }

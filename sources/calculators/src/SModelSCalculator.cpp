@@ -16,7 +16,7 @@ Fittino::SModelSCalculator::SModelSCalculator( const ModelBase* model, const boo
   SetName( "SModelSCalculator" );
   SetTag( "SModelS" );
 
-  AddQuantity( new SimplePrediction( "r", "", _r_SModelS ));
+  AddQuantity( new SimplePrediction( "r", "", _r ));
 
 }
 Fittino::SModelSCalculator::~SModelSCalculator() {
@@ -71,9 +71,9 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
 	  if(SplitVec[3] == "value"){
 
 	   std::string R = SplitVec[6];
-	   _r_SModelS = boost::lexical_cast<double>(R);
+	   _r = boost::lexical_cast<double>(R);
 	   
-	   std::cout << "The highest r value is = " << _r_SModelS << std::endl;
+	   std::cout << "The highest r value is = " << _r << std::endl;
 	   
 
 	  break;

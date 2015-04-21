@@ -21,7 +21,7 @@ namespace Fittino{
     virtual void Initialize();
 
   private:
-    double _r_CheckMATE;
+    double _r;
 
   };
 

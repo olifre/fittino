@@ -18,7 +18,7 @@ namespace Fittino {
 
   private:
 
-    double _r_SModelS;
+    double _r;
 
   };
 
