@@ -17,26 +17,8 @@
 *                                                                              *
 *******************************************************************************/
 
-#include <stdlib.h>
-
-#include <cmath>
-#include <iostream>
-
-#include <boost/foreach.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
-
-#include "TBranch.h"
-#include "TDirectory.h"
-#include "TTree.h"
-
-#include "CalculatorBase.h"
-#include "ConfigurationException.h"
-#include "Messenger.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
-#include "Observable.h"
-#include "TreeCalculator.h"
 #include "TreeSampler.h"
 
 Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )

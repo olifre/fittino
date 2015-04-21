@@ -20,11 +20,6 @@
 #ifndef FITTINO_TREESAMPLER_H
 #define FITTINO_TREESAMPLER_H
 
-#include <boost/property_tree/ptree.hpp>
-
-#include "TFile.h"
-#include "TTree.h"
-
 #include "SamplerBase.h"
 
 /*!
