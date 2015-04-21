@@ -44,12 +44,12 @@ namespace Fittino {
       /*!
        *  Standard destructor.
        */
-      virtual      ~SamplerBase();
+      virtual ~SamplerBase();
 
       /*! \cond UML */
     private:
-      void         PrintResult() const;
-      void         Terminate();
+      void    PrintResult() const;
+      void    Terminate();
 
       /*! \endcond UML */
 
