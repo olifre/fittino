@@ -25,9 +25,9 @@
 #include "OptimizerBase.h"
 
 Fittino::OptimizerBase::OptimizerBase( ModelBase* model, const boost::property_tree::ptree& ptree )
-    : AnalysisTool       ( model, ptree ),
-      _abortCriterion    ( ptree.get<double>( "AbortCriterion",     0.000001 ) ),
-      _numberOfIterations( ptree.get<int>   ( "NumberOfIterations", 10000    ) ) {
+    : AnalysisTool          ( model, ptree ),
+      _abortCriterion       ( ptree.get<double>( "AbortCriterion",        0.000001 ) ),
+      _maxNumberOfIterations( ptree.get<int>   ( "MaxNumberOfIterations", 10000    ) ) {
 
     _name = ptree.get<std::string>( "Name", "optimizer" );
 
@@ -41,8 +41,8 @@ void Fittino::OptimizerBase::PrintSteeringParameters() const {
 
     AnalysisTool::PrintSteeringParameters();
 
-    PrintItem( "NumberOfIterations", _numberOfIterations );
-    PrintItem( "AbortCriterion",     _abortCriterion     );
+    PrintItem( "MaxNumberOfIterations", _maxNumberOfIterations );
+    PrintItem( "AbortCriterion",        _abortCriterion        );
 
 }
 
@@ -50,13 +50,13 @@ void Fittino::OptimizerBase::Execute() {
 
     this->FillMetaDataTree();
 
-    while ( _chi2 > _abortCriterion && _iterationCounter < _numberOfIterations ) {
-
-        _iterationCounter++;
+    while ( _chi2 > _abortCriterion && _iterationCounter < _maxNumberOfIterations ) {
 
         _chi2 = _model->GetChi2();
 
         AnalysisTool::PrintStatus();
+
+        _iterationCounter++;
 
         this->UpdateModel();
 

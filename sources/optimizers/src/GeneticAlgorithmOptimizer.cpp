@@ -28,9 +28,9 @@ Fittino::GeneticAlgorithmOptimizer::GeneticAlgorithmOptimizer( Fittino::ModelBas
       _sizeOfPopulation( ptree.get<int>   ( "SizeOfPopulation", 20  ) ),
       OptimizerBase    ( model, ptree ) {
 
-    _abortCriterion     = ptree.get<double>     ( "AbortCriterion",     0.00001                       );
-    _name               = ptree.get<std::string>( "Name",               "Genetic Algorithm optimizer" );
-    _numberOfIterations = ptree.get<int>        ( "NumberOfIterations", 500                           );
+    _abortCriterion        = ptree.get<double>     ( "AbortCriterion",        0.00001                       );
+    _name                  = ptree.get<std::string>( "Name",                  "Genetic Algorithm optimizer" );
+    _maxNumberOfIterations = ptree.get<int>        ( "MaxNumberOfIterations", 500                           );
 
     _numberOfFamilies = ( unsigned int )( double( _sizeOfPopulation ) / 4 );
     _numberOfSurvivors = _sizeOfPopulation - 2 * _numberOfFamilies;

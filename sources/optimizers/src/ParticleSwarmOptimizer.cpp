@@ -21,7 +21,6 @@
 *******************************************************************************/
 
 #include "ConfigurationException.h"
-#include "Messenger.h"
 #include "ParticleSwarmOptimizer.h"
 #include "RandomGenerator.h"
 
@@ -56,9 +55,9 @@ void Fittino::ParticleSwarmOptimizer::PrintSteeringParameters() const {
 
     OptimizerBase::PrintSteeringParameters();
 
-    PrintItem( "NumberOfParticles",  _numberOfParticles  );
-    PrintItem( "C1",                 _c1                 );
-    PrintItem( "C2",                 _c2                 );
+    PrintItem( "NumberOfParticles", _numberOfParticles );
+    PrintItem( "C1",                _c1                );
+    PrintItem( "C2",                _c2                );
 
 }
 

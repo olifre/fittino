@@ -62,7 +62,7 @@
 
     <GeneticAlgorithmOptimizer>
       <Name>Genetic Algorithm optimizer example</Name>
-      <NumberOfIterations>500</NumberOfIterations>
+      <MaxNumberOfIterations>500</MaxNumberOfIterations>
       <AbortCriterion>0.000001</AbortCriterion>
       <MutationRate>0.5</MutationRate>
       <SizeOfPopulation>100</SizeOfPopulation>

@@ -29,7 +29,7 @@ Fittino::SimpleOptimizer::SimpleOptimizer( Fittino::ModelBase* model, const boos
 
     _name = ptree.get<std::string>( "Name", "Simple optimizer" );
 
-    _numberOfIterations = static_cast<unsigned int>( _model->GetCollectionOfQuantities().At( "TreeIterations" )->GetValue() );
+    _maxNumberOfIterations = static_cast<unsigned int>( _model->GetCollectionOfQuantities().At( "TreeIterations" )->GetValue() );
 
 }
 
