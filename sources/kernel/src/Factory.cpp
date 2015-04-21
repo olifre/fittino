@@ -25,6 +25,7 @@
 #include "AstroFitCalculator.h"
 #include "BRCalculator.h"
 #include "CheckMATECalculator.h"
+#include "CheckMATE2Calculator.h"
 #include "CheckVacuumCalculator.h"
 #include "Chi2Calculator.h"
 #include "ContourHistogramMaker.h"
@@ -41,6 +42,7 @@
 #include "GeneticAlgorithmOptimizer.h"
 #include "HDim6Calculator.h"
 #include "HECCalculator.h"
+#include "HerwigppCalculator.h"
 #include "HiggsBoundsHadXSCalculator.h"
 #include "HiggsBoundsHECCalculator.h"
 #include "HiggsBoundsSLHACalculator.h"
@@ -115,8 +117,13 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     else if ( type == "CheckMATECalculator" ) {
 
         return new CheckMATECalculator( model, ptree );
-
     }
+    
+    else if ( type == "CheckMATE2Calculator" ) {
+
+        return new CheckMATE2Calculator( model, ptree );
+    }
+
     else if ( type == "CheckVacuumCalculator" ) {
 
         return new CheckVacuumCalculator( model, ptree );
@@ -189,6 +196,14 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
         return new HECCalculator( model, ptree );
 
     }
+
+    else if ( type == "HerwigppCalculator" ) {
+
+      return new HerwigppCalculator( model, ptree );
+
+    }
+
+
     else if ( type == "HiggsBoundsHadXSCalculator" ) {
 
 #if defined HIGGSBOUNDS_FOUND
@@ -364,6 +379,7 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     }
 
     else if ( type == "SPhenoCalculator" ) {
+
 
 #ifdef SLHAEA
 
