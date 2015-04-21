@@ -60,6 +60,7 @@
 #include "MicromegasCalculator.h"
 #include "MinuitOptimizer.h"
 #include "NewHiggsSignalsHadXSCalculator.h"
+#include "NLLFastCalculator.h"
 #include "Observable.h"
 #include "ParticleSwarmOptimizer.h"
 #include "PhysicsModel.h"
@@ -352,6 +353,12 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
         throw ConfigurationException( "Trying to use NewHiggsSignalsHadXSCalculator but Fittino was built without HiggsBounds or HiggsSignals." );
 
 #endif
+
+    }
+
+    else if ( type == "NLLFastCalculator" ) {
+      
+      return new NLLFastCalculator( model, ptree );
 
     }
     else if ( type == "RegressionCalculator" ) {

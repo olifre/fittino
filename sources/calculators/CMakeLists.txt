@@ -27,7 +27,7 @@ LIST( APPEND includes "include/SModelSCalculator.h" )
 LIST( APPEND includes "include/HiggsSignalsSMCalculator.h" )
 LIST( APPEND includes "include/HiggsSignalsCalculator.h" )
 LIST( APPEND includes "include/CheckMATE2Calculator.h" )
-
+LIST( APPEND includes "include/NLLFastCalculator.h" )
 
 AUX_SOURCE_DIRECTORY(src sources)
 
