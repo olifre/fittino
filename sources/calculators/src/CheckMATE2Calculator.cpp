@@ -25,30 +25,21 @@ Fittino::CheckMATE2Calculator::~CheckMATE2Calculator() {
 
 void Fittino::CheckMATE2Calculator::CalculatePredictions() {
 
-  double XSect;
-  double XSectErr;
-
-  std::ofstream myfile;
-  myfile.open("Parameter.txt");
-    myfile << "##General Options\n";
-    myfile << "[Manodatory Parameters]\n";
-    myfile << "Name: Last_Run\n";
-    myfile << "Analyses: atlas_conf_2013_047\n";
-    myfile << "\n";
-    myfile << "[Optional Parameters]";
-    myfile << "\n";
-    myfile << "## Process Information\n";
-    myfile << "XSect: \n";
-    myfile << "XSectErr: \n";
-    myfile << "Events: LHC-MSSM.hepmc\n";
-  myfile.close();
-  
-  //std::string inputfile = "/lustre/user/range/fittino/bin/Parameter.txt";
-
-  //Executor executor("./CheckMATE","CheckMATE");
-  //executor.AddArgument(inputfile);
-
-  //executor.Execute();
+  std::string inputfile = "/lustre/user/range/fittino/bin/LHC-MSSM.hepmc";
+ 
+  Executor executor("/lustre/fittino/group/external/SL6/CheckMATE/CheckMATE-1.1.16/bin/CheckMATE","CheckMATE");
+  executor.AddArgument( "-n" );
+  executor.AddArgument( "/lustre/user/range/fittino/bin/New_Run" );
+  executor.AddArgument( "-a" );
+  executor.AddArgument( "atlas_conf_2013_047" );
+  executor.AddArgument( "-p" );
+  executor.AddArgument( "gluinogluino" );
+  executor.AddArgument( "-xs" );
+  executor.AddArgument( "3.53*FB" );
+  executor.AddArgument( "-xse" );
+  executor.AddArgument( "1e-5*PB" );
+  executor.AddArgument( inputfile );
+  executor.Execute();
 
   // std::ifstream file;
   //std::string line;
