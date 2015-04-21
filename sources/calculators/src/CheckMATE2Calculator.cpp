@@ -32,6 +32,8 @@ void Fittino::CheckMATE2Calculator::CalculatePredictions() {
   executor.AddArgument( "/lustre/user/range/fittino/bin/Last_Run" );
   executor.AddArgument( "-a" );
   executor.AddArgument( "atlas_conf_2013_047" );
+  executor.AddArgument( "-oe" );
+  executor.AddArgument( "overwrite" );
   executor.AddArgument( "-p" );
   executor.AddArgument( "gluinogluino" );
   executor.AddArgument( "-xs" );
