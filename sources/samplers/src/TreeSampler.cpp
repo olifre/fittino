@@ -17,6 +17,10 @@
 *                                                                              *
 *******************************************************************************/
 
+#include "TDirectory.h"
+#include "TFile.h"
+#include "TTree.h"
+
 #include "ModelBase.h"
 #include "ModelParameter.h"
 #include "TreeSampler.h"
