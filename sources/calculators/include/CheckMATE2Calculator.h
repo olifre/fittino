@@ -22,6 +22,7 @@ namespace Fittino{
 
   private:
     double _r;
+    double _cl;
 
   };
 

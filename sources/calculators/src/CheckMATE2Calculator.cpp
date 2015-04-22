@@ -16,6 +16,7 @@ Fittino::CheckMATE2Calculator::CheckMATE2Calculator( const ModelBase* model, con
 
 
   AddQuantity(new SimplePrediction( "r", "", _r));
+  AddQuantity(new SimplePrediction("cl", "", _cl));
 
 }
 
@@ -32,6 +33,7 @@ void Fittino::CheckMATE2Calculator::CalculatePredictions() {
   executor.AddArgument( "/lustre/user/range/fittino/bin/Last_Run" );
   executor.AddArgument( "-a" );
   executor.AddArgument( "atlas_conf_2013_047" );
+  executor.AddArgument( "-cl" );
   executor.AddArgument( "-oe" );
   executor.AddArgument( "overwrite" );
   executor.AddArgument( "-p" );
@@ -54,7 +56,7 @@ void Fittino::CheckMATE2Calculator::CalculatePredictions() {
     
     split_vector_type SplitVec;
     split( SplitVec, line, boost::is_any_of(" "), boost::token_compress_on);
-
+    
     if(SplitVec.size() > 4) {
       if(SplitVec[3] == "r_max") {
 	
@@ -66,6 +68,16 @@ void Fittino::CheckMATE2Calculator::CalculatePredictions() {
     }
     else continue;
     
+    if(SplitVec.size() > 4) {
+      if (SplitVec[3] == "cls_min") {
+	
+	std::string CL = SplitVec[5];
+	_cl = boost::lexical_cast <double>(CL);
+
+      }
+    }
+    else continue;
+
   }
 
   myfile.close();
