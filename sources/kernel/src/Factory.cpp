@@ -42,6 +42,7 @@
 #include "GeneticAlgorithmOptimizer.h"
 #include "HDim6Calculator.h"
 #include "HECCalculator.h"
+#include "HepMCSplitCalculator.h"
 #include "HerwigppCalculator.h"
 #include "HiggsBoundsHadXSCalculator.h"
 #include "HiggsBoundsHECCalculator.h"
@@ -195,6 +196,12 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     else if ( type == "HECCalculator" ) {
 
         return new HECCalculator( model, ptree );
+
+    }
+
+    else if ( type == "HepMCSplitCalculator" ) {
+
+      return new HepMCSplitCalculator( model, ptree );
 
     }
 
