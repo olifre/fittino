@@ -13,8 +13,8 @@
 #                                                                              #
 # Licence     This program is free software; you can redistribute it and/or    #
 #             modify it under the terms of the GNU General Public License as   #
-#	      published by the Free Software Foundation; either version 3 of   #
-#	      the License, or (at your option) any later version.              #
+#             published by the Free Software Foundation; either version 3 of   #
+#             the License, or (at your option) any later version.              #
 #                                                                              #
 ################################################################################
 
@@ -62,9 +62,11 @@ FIND_PACKAGE( PythonLibs )
 
 IF( PYTHONLIBS_FOUND )
 
-    FIND_PACKAGE( Boost 1.47.0 COMPONENTS filesystem system thread python  )
+    FIND_PACKAGE( Boost 1.47.0 COMPONENTS filesystem system thread python )
 
 ENDIF()
 
 ADD_SUBDIRECTORY( external )
 ADD_SUBDIRECTORY( sources  )
+
+ADD_CUSTOM_TARGET( stylish ../devel/apply_style_guidelines.sh )
