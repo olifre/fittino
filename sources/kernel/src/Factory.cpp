@@ -119,13 +119,13 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     else if ( type == "CheckMATECalculator" ) {
 
         return new CheckMATECalculator( model, ptree );
+
     }
-    
     else if ( type == "CheckMATE2Calculator" ) {
 
         return new CheckMATE2Calculator( model, ptree );
-    }
 
+    }
     else if ( type == "CheckVacuumCalculator" ) {
 
         return new CheckVacuumCalculator( model, ptree );
@@ -198,20 +198,16 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
         return new HECCalculator( model, ptree );
 
     }
-
     else if ( type == "HepMCSplitCalculator" ) {
 
-      return new HepMCSplitCalculator( model, ptree );
+        return new HepMCSplitCalculator( model, ptree );
 
     }
-
     else if ( type == "HerwigppCalculator" ) {
 
-      return new HerwigppCalculator( model, ptree );
+        return new HerwigppCalculator( model, ptree );
 
     }
-
-
     else if ( type == "HiggsBoundsHadXSCalculator" ) {
 
 #if defined HIGGSBOUNDS_FOUND
@@ -362,10 +358,9 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 #endif
 
     }
-
     else if ( type == "NLLFastCalculator" ) {
-      
-      return new NLLFastCalculator( model, ptree );
+
+        return new NLLFastCalculator( model, ptree );
 
     }
     else if ( type == "RegressionCalculator" ) {

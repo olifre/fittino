@@ -48,7 +48,9 @@ namespace Fittino {
       /*!
        *  \todo Remove when no longer used by derived classes (Matthias).
        */
-      virtual const Collection<CalculatorBase*>& GetCollectionOfCalculators() const { return *(new Collection<CalculatorBase*>); }
+      virtual const Collection<CalculatorBase*>& GetCollectionOfCalculators() const {
+        return *( new Collection<CalculatorBase*> );
+      }
 
     protected:
       virtual void                               Initialize();
