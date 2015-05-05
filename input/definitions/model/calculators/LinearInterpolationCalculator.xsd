@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:complexType name="LinearInterpolationCalculator">
+    <xs:sequence>
+      <xs:element name="Name"      type="xs:string" minOccurs="0"                       />
+      <xs:element name="Tag"       type="xs:string" minOccurs="0"                       />
+      <xs:element name="File"      type="xs:string"                                     />
+      <xs:element name="Histogram" type="xs:string"                                     />
+      <xs:element name="Variable"  type="xs:string"               maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

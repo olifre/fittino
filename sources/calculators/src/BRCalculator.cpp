@@ -29,31 +29,18 @@ Fittino::BRCalculator::BRCalculator( const ModelBase* model, const boost::proper
     :CalculatorBase( model, &ptree ) {
 
     SetName( "BRCalculator" );
-    SetTag ( "" );
+    SetTag ( ""             );
 
-    AddOutput( "Gamma_" + ptree.get<std::string>( "Mother" ) + "_Total", _GammaTotal );
+    _parent = ptree.get<std::string>( "Parent" );
+
+    AddOutput( "Gamma_" + _parent + "_Total", _GammaTotal );
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
 
-        if ( node.first != "Channel") continue;
+        if ( node.first != "Channel" ) continue;
 
-        std::string name = ptree.get<std::string>( "Mother" );
+                    AddChannel( node.second );
 
-        BOOST_FOREACH( const boost::property_tree::ptree::value_type & daughternode, node.second ) {
-
-                        if ( daughternode.first != "Daughter" ) continue;
-
-                        name += "_" + daughternode.second.get_value<std::string>();
-
-        }
-
-        std::string value = node.second.get<std::string>( "Gamma" );
-
-        _channels.push_back( name );
-
-        AddInput( name, value );
-
-        AddOutput( "BR_" + name  );
 
     }
 
@@ -80,5 +67,28 @@ void Fittino::BRCalculator::CalculatePredictions() {
         SetOutput( "BR_" + _channels[i], GetInput( _channels[i] ) / _GammaTotal );
 
     }
+
+}
+
+void Fittino::BRCalculator::AddChannel( const boost::property_tree::ptree& ptree ) {
+
+    std::string gamma = ptree.get<std::string>( "Gamma" );
+
+    std::string name = _parent;
+
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
+
+                    if ( node.first != "Child" ) continue;
+
+                    name += "_" + node.second.get_value<std::string>();
+
+                }
+
+
+    _channels.push_back( name );
+
+    AddInput( name, gamma );
+
+    AddOutput( "BR_" + name  );
 
 }

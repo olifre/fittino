@@ -2,11 +2,136 @@
 
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-<xs:complexType name="HiggsSignalsCalculator">
-  <xs:sequence>
-    <xs:element name="Name"    type="xs:string"/>
-    <xs:element name="ExpData" type="xs:string"/>
-  </xs:sequence>
-</xs:complexType>
+  <xs:complexType name="HiggsSignalsCalculator">
+    <xs:sequence>
+      <xs:element name="Name"                           type="xs:string"         minOccurs="0"                       />
+      <xs:element name="Tag"                            type="xs:string"         minOccurs="0"                       />
+      <xs:element name="OutputLevel"                    type="OutputLevel"                                           />
+      <xs:element name="RunHiggsBounds"                 type="xs:boolean"                                            />
+      <xs:element name="WhichAnalyses"                  type="WhichAnalyses"                                         />
+      <xs:element name="ExpData"                        type="xs:string"                                             />
+      <xs:element name="Mode"                           type="Mode"                                                  />
+      <xs:element name="PDF"                            type="PDF"                                                   />
+      <xs:element name="AssignmentRange"                type="xs:double"                                             />
+      <xs:element name="AssignmentRangeMassObservables" type="xs:double"                                             />
+      <xs:element name="BR_t_W_b"                       type="xs:string"                                             />
+      <xs:element name="NeutralHiggsBoson"              type="NeutralHiggsBoson"               maxOccurs="9"         />
+      <xs:element name="ChargedHiggsBoson"              type="ChargedHiggsBoson" minOccurs="0" maxOccurs="9"         />
+      <xs:element name="NormSM_xs_LEP_hH"               type="NormSM_xs_LEP_hH"                maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <!-- see arXiv:1305.1933v2, p 30 -->
+  <xs:simpleType name="OutputLevel">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="0"/>
+      <xs:maxInclusive value="3"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- see arXiv:1311.0055v1, p 29, Table 4-->
+  <xs:simpleType name="WhichAnalyses">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="onlyL"/>
+      <xs:enumeration value="onlyH"/>
+      <xs:enumeration value="LandH"/>
+      <xs:enumeration value="onlyP"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- see arXiv:1305.1933v2, p 26 -->
+  <xs:simpleType name="Mode">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="3"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- see arXiv:1305.1933v2, p 24 -->
+  <xs:simpleType name="PDF">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="1"/>
+      <xs:maxInclusive value="3"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="NeutralHiggsBoson">
+    <xs:sequence>
+      <xs:element name="Name"                   type="xs:string"                      />
+      <xs:element name="Mass_h"                 type="xs:string"                      />
+      <xs:element name="Error_Mass_h_HB"        type="xs:string"                      />
+      <xs:element name="Error_Mass_h_HS"        type="xs:string"                      />
+      <xs:element name="Gamma_h_Total"          type="xs:string"                      />
+      <xs:element name="CP"                     type="CP"                             />
+      <xs:element name="NormSM_xs_LEP_Zh"       type="xs:string"                      />
+      <xs:element name="NormSM_xs_LEP_bbh"      type="xs:string"                      />
+      <xs:element name="NormSM_xs_LEP_tautauh"  type="xs:string"                      />
+      <xs:element name="NormSM_xs_TEV_h"        type="xs:string"                      />
+      <xs:element name="NormSM_xs_TEV_bh"       type="xs:string"                      />
+      <xs:element name="NormSM_xs_TEV_Wh"       type="xs:string"                      />
+      <xs:element name="NormSM_xs_TEV_Zh"       type="xs:string"                      />
+      <xs:element name="NormSM_xs_TEV_qqh"      type="xs:string"                      />
+      <xs:element name="NormSM_xs_TEV_tth"      type="xs:string"                      />
+      <xs:element name="NormSM_xs_LHC_7TeV_h"   type="xs:string"                      />
+      <xs:element name="NormSM_xs_LHC_7TeV_bh"  type="xs:string"                      />
+      <xs:element name="NormSM_xs_LHC_7TeV_Wh"  type="xs:string"                      />
+      <xs:element name="NormSM_xs_LHC_7TeV_Zh"  type="xs:string"                      />
+      <xs:element name="NormSM_xs_LHC_7TeV_qqh" type="xs:string"                      />
+      <xs:element name="NormSM_xs_LHC_7TeV_tth" type="xs:string"                      />
+      <xs:element name="NormSM_xs_LHC_8TeV_h"   type="xs:string"                      />
+      <xs:element name="NormSM_xs_LHC_8TeV_bh"  type="xs:string"                      />
+      <xs:element name="NormSM_xs_LHC_8TeV_Wh"  type="xs:string"                      />
+      <xs:element name="NormSM_xs_LHC_8TeV_Zh"  type="xs:string"                      />
+      <xs:element name="NormSM_xs_LHC_8TeV_qqh" type="xs:string"                      />
+      <xs:element name="NormSM_xs_LHC_8TeV_tth" type="xs:string"                      />
+      <xs:element name="BR_h_s_s"               type="xs:string"                      />
+      <xs:element name="BR_h_c_c"               type="xs:string"                      />
+      <xs:element name="BR_h_b_b"               type="xs:string"                      />
+      <xs:element name="BR_h_mu_mu"             type="xs:string"                      />
+      <xs:element name="BR_h_tau_tau"           type="xs:string"                      />
+      <xs:element name="BR_h_W_W"               type="xs:string"                      />
+      <xs:element name="BR_h_Z_Z"               type="xs:string"                      />
+      <xs:element name="BR_h_Z_gamma"           type="xs:string"                      />
+      <xs:element name="BR_h_gamma_gamma"       type="xs:string"                      />
+      <xs:element name="BR_h_g_g"               type="xs:string"                      />
+      <xs:element name="BR_h_Invisible"         type="xs:string"                      />
+      <xs:element name="BR_h_H_H"               type="BR_h_H_H" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="CP">
+    <xs:restriction base="xs:integer">
+      <xs:minInclusive value="-1"/>
+      <xs:maxInclusive value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="BR_h_H_H">
+    <xs:sequence>
+      <xs:element name="Child" type="xs:string" />
+      <xs:element name="Value" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ChargedHiggsBoson">
+    <xs:sequence>
+      <xs:element name="Name"             type="xs:string" />
+      <xs:element name="Mass_h"           type="xs:string" />
+      <xs:element name="Error_Mass_h"     type="xs:string" />
+      <xs:element name="Gamma_h_Total"    type="xs:string" />
+      <xs:element name="NormSM_xs_LEP_hh" type="xs:string" />
+      <xs:element name="BR_t_h_b"         type="xs:string" />
+      <xs:element name="BR_h_c_s"         type="xs:string" />
+      <xs:element name="BR_h_c_b"         type="xs:string" />
+      <xs:element name="BR_h_tau_nu"      type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="NormSM_xs_LEP_hH">
+    <xs:sequence>
+      <xs:element name="NeutralHiggsBoson" type="xs:string" minOccurs="2" maxOccurs="2"/>
+      <xs:element name="Value"             type="xs:string"                            />
+    </xs:sequence>
+  </xs:complexType>
 
 </xs:schema>

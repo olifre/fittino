@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:complexType name="HiggsSignalsSMCalculator">
+    <xs:sequence>
+      <xs:element name="Name"   type="xs:string" minOccurs="0" />
+      <xs:element name="Tag"    type="xs:string" minOccurs="0" />
+      <xs:element name="Mass_h" type="xs:string"               />
+      <xs:element name="Mass_t" type="xs:string"               />
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

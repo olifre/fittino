@@ -51,7 +51,10 @@ namespace Fittino {
      private:
       double _GammaTotal;
       std::vector<std::string> _channels;
+      std::string _parent;
 
+    private:
+        void AddChannel( const boost::property_tree::ptree& ptree );
 
   };
 
