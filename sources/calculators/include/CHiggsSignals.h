@@ -234,6 +234,7 @@ extern "C" {
                           double*    Pvalue );
 
   void setup_assignmentrange_( const double* range );
+  void setup_assignmentrange_massobservables_( const double* lambda );
   void setup_correlations_( const int* corr_mu, const int* corr_mh );
   void setup_higgs_to_peaks_assignment_iterations_( const int* iterations );
   void setup_output_level_( const int* output_level );
