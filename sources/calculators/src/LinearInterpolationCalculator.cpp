@@ -18,32 +18,22 @@
 *******************************************************************************/
 
 #include <string>
-#include <bitset>
 
 #include <boost/property_tree/ptree.hpp>
-#include <boost/foreach.hpp>
-
-#include "TFile.h"
-#include "TH1D.h"
-#include "TMath.h"
 
 #include "ModelBase.h"
 #include "LinearInterpolationCalculator.h"
-#include "RandomGenerator.h"
 #include "SimplePrediction.h"
-#include "ConfigurationException.h"
 
 Fittino::LinearInterpolationCalculator::LinearInterpolationCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : LinearInterpolationCalculatorBase( model, ptree ) {
 
-  _name = ptree.get<std::string>( "Name", "LinearInterpolationCalculator" );
-  _tag = ptree.get<std::string>( "Tag", "" );
+  SetName( "LinearInterpolationCalculator" );
+  SetTag ( "LinearInterpolation"           );
 
-  AddQuantity( new SimplePrediction(  _name , "", "", "", 0., 1.e6, _chi2 ) );
+  AddQuantity( new SimplePrediction( "Value" , "", "", "", 0., 1.e6, _value ) );
 
-  std::string histogramName = ptree.get<std::string>( "Histogram" );
-
-  GetHistogram( histogramName );
+  GetHistogram();
 
   CalculatePredictions();
 

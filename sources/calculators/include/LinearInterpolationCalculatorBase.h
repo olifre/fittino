@@ -27,6 +27,10 @@
 #include "CalculatorBase.h"
 
 class TH1D;
+class TH2D;
+class TH3D;
+class TFile;
+
 /*!
  *  \brief Fittino namespace.
  */
@@ -43,24 +47,30 @@ namespace Fittino {
     public:
 
                            LinearInterpolationCalculatorBase( const ModelBase* model, const boost::property_tree::ptree& ptree );
-                           ~LinearInterpolationCalculatorBase();
+      virtual              ~LinearInterpolationCalculatorBase();
     
     public:
       virtual void        CalculatePredictions();
 
   protected:
-      double                   _chi2;
-      TH1D*                    _chi2Histogram;
-      THnSparseD*              _chi2HistogramnD;
-      std::vector<const Quantity*>   _variables;
+      double                       _value;
+      std::string                  _filePath;
+      std::string                  _histogramName;
+      std::vector<double>          _interpolationPoint;
+      TH1D*                        _histogram1D;
+      TH2D*                        _histogram2D;
+      TH3D*                        _histogram3D;
+      THnSparseD*                  _histogramnD;
 
   protected:
-      void                GetHistogram( std::string name );
-
+      void                GetHistogram();
 
   private:
-      double              InterpolateND( THnSparse* histogram, std::vector<double> interpolationPoint);
+      void                InterpolateND();
 
+  private:
+      unsigned int         _nDimensions;
+      TFile*               _file;
 
       };
 

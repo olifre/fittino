@@ -20,133 +20,169 @@
 #include <string>
 #include <bitset>
 
+#include <boost/lexical_cast.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/foreach.hpp>
 
 #include "TFile.h"
 #include "TH1D.h"
+#include "TH2D.h"
+#include "TH3D.h"
 #include "TMath.h"
 
 #include "ModelBase.h"
 #include "LinearInterpolationCalculatorBase.h"
-#include "RandomGenerator.h"
 #include "SimplePrediction.h"
-#include "ConfigurationException.h"
 
 Fittino::LinearInterpolationCalculatorBase::LinearInterpolationCalculatorBase( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model, &ptree ) {
 
+  _filePath      = GetConfiguration()->get<std::string>( "File"      );
+  _histogramName = GetConfiguration()->get<std::string>( "Histogram" );
+
+  _nDimensions = 0;
+
   BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree ) {
 
-          if( node.first == "Variable" ) {
+          if( node.first != "Variable" ) continue;
 
-            std::string variableName = node.second.get_value<std::string>();
-            const Quantity* variable = model->GetCollectionOfQuantities().At( variableName );
-            _variables.push_back( variable );
+          std::string variableName = node.second.get_value<std::string>();
 
-          }
+          AddInput( boost::lexical_cast<std::string>( _nDimensions ), variableName );
+
+          ++_nDimensions;
 
         }
+
+  _interpolationPoint.resize( _nDimensions );
+
+  _file = TFile::Open( _filePath.c_str(), "READ" );
 
 }
 
 Fittino::LinearInterpolationCalculatorBase::~LinearInterpolationCalculatorBase() {
 
-}
+  if ( _nDimensions == 1 ) {
 
-void Fittino::LinearInterpolationCalculatorBase::GetHistogram( std::string name ) {
-
-  std::string filePath = GetConfiguration()->get<std::string>( "File" );
-
-  TFile* file = TFile::Open( filePath.c_str(), "READ" );
-  TObject* object =  file->Get( name.c_str() );
-
-  if ( ! object ) {
-
-    throw ConfigurationException( "Histogram " + name + " does not exist."  );
+      delete _histogram1D;
 
   }
+  else if ( _nDimensions == 2 ) {
 
-  if ( _variables.size() <= 3 ) {
+      delete _histogram2D;
 
-    _chi2Histogram = dynamic_cast< TH1D* >( object->Clone( "" ) );
+  }
+  else if ( _nDimensions == 3 ) {
+
+      delete _histogram3D;
 
   }
   else {
 
-    _chi2HistogramnD = dynamic_cast< THnSparseD* >( object->Clone( "" ) );
+      delete _histogramnD;
 
   }
 
-  delete object;
-  file->Close();
+  _file->Close();
+  delete _file;
+
+}
+
+void Fittino::LinearInterpolationCalculatorBase::GetHistogram() {
+
+  TObject* object = _file->Get( _histogramName.c_str() );
+
+  if ( ! object ) {
+
+    throw ConfigurationException( "Histogram " + _histogramName + " does not exist."  );
+
+  }
+
+  if ( _nDimensions == 1 ) {
+
+    _histogram1D = dynamic_cast< TH1D* >( object );
+
+  }
+    else if ( _nDimensions ==2 ) {
+
+    _histogram2D = dynamic_cast< TH2D* >( object );
+
+  }
+  else if ( _nDimensions ==3 ) {
+
+    _histogram3D = dynamic_cast< TH3D* >( object );
+
+  }
+  else {
+
+    _histogramnD = dynamic_cast< THnSparseD* >( object );
+
+  }
 
 }
 
 void Fittino::LinearInterpolationCalculatorBase::CalculatePredictions() {
 
-  std::vector<double> interpolationPoint( _variables.size() );
+  UpdateInput();
 
-  for (unsigned int i = 0; i < _variables.size(); i++ ) {
+  for (unsigned int i = 0; i < _nDimensions; i++ ) {
 
-    interpolationPoint[i] = _variables[i]->GetValue();
-
-  }
-
-  if ( _variables.size() == 1 ) {
-
-    _chi2 = _chi2Histogram->Interpolate( interpolationPoint[0] );
+    _interpolationPoint[i] = GetInput( boost::lexical_cast<std::string>( i ) );
 
   }
-  else if ( _variables.size() == 2 ) {
 
-    _chi2 = _chi2Histogram->Interpolate( interpolationPoint[0], interpolationPoint[1] );
+  if ( _nDimensions == 1 ) {
+
+    _value = _histogram1D->Interpolate( _interpolationPoint[0] );
 
   }
-  else if ( _variables.size() == 3 ) {
+  else if ( _nDimensions == 2 ) {
 
-    _chi2 = _chi2Histogram->Interpolate( interpolationPoint[0], interpolationPoint[1], interpolationPoint[2] );
+    _value = _histogram2D->Interpolate( _interpolationPoint[0], _interpolationPoint[1] );
+
+  }
+  else if ( _nDimensions == 3 ) {
+
+    _value = _histogram3D->Interpolate( _interpolationPoint[0], _interpolationPoint[1], _interpolationPoint[2] );
 
   }
   else {
 
-    _chi2 = InterpolateND( _chi2HistogramnD, interpolationPoint );
+    InterpolateND();
 
   }
 
 }
 
-double Fittino::LinearInterpolationCalculatorBase::InterpolateND( THnSparse *histogram, std::vector<double> interpolationPoint) {
-
-  unsigned int nDimensions = interpolationPoint.size();
+void Fittino::LinearInterpolationCalculatorBase::InterpolateND() {
 
   // first step : find the nearest bins
 
-  std::vector<int> closestHigherBinIndices( nDimensions );
-  std::vector<int> closestLowerBinIndices( nDimensions );
+  std::vector<int> closestHigherBinIndices( _nDimensions );
+  std::vector<int> closestLowerBinIndices( _nDimensions );
 
-  for( unsigned int iDimension = 0; iDimension < nDimensions; ++iDimension) {
+  for( unsigned int iDimension = 0; iDimension < _nDimensions; ++iDimension) {
 
     bool underFlow = false;
-    double maxValue = histogram->GetAxis( iDimension )->GetBinCenter( histogram->GetAxis( iDimension )->GetNbins() );
-    double minValue = histogram->GetAxis( iDimension )->GetBinCenter( 1 );
+    double maxValue = _histogramnD->GetAxis( iDimension )->GetBinCenter( _histogramnD->GetAxis( iDimension )->GetNbins() );
+    double minValue = _histogramnD->GetAxis( iDimension )->GetBinCenter( 1 );
 
-    if( interpolationPoint.at( iDimension ) > maxValue ) {
+    if( _interpolationPoint.at( iDimension ) > maxValue ) {
 
-      interpolationPoint.at( iDimension ) = maxValue;
+      _interpolationPoint.at( iDimension ) = maxValue;
       
     }
-    if( interpolationPoint.at( iDimension ) <= minValue ) {
+    if( _interpolationPoint.at( iDimension ) <= minValue ) {
 
-      interpolationPoint.at( iDimension ) = minValue;
+      _interpolationPoint.at( iDimension ) = minValue;
       underFlow = true;
 
     }
 
-    int binIndex = histogram->GetAxis( iDimension )->FindFixBin( interpolationPoint.at( iDimension ) );
-    double binCenter = histogram->GetAxis( iDimension )->GetBinCenter( binIndex );
+    int binIndex = _histogramnD->GetAxis( iDimension )->FindFixBin( _interpolationPoint.at( iDimension ) );
+    double binCenter = _histogramnD->GetAxis( iDimension )->GetBinCenter( binIndex );
 
-    if( binCenter >= interpolationPoint.at( iDimension ) && !underFlow ) {
+    if( binCenter >= _interpolationPoint.at( iDimension ) && !underFlow ) {
 
       closestHigherBinIndices.at( iDimension ) = binIndex;
       closestLowerBinIndices.at( iDimension ) =  binIndex - 1;
@@ -176,7 +212,7 @@ double Fittino::LinearInterpolationCalculatorBase::InterpolateND( THnSparse *his
   // 1 1 1 0 . . .
   // 0 0 0 1 . . .
 
-  unsigned int nReferencePoints = TMath::Power( 2, static_cast<int>( nDimensions ) );
+  unsigned int nReferencePoints = TMath::Power( 2, static_cast<int>( _nDimensions ) );
   std::vector<double> referenceFunctionValues( nReferencePoints );
 
   for( unsigned int iReferencePoint = 0; iReferencePoint < nReferencePoints; ++iReferencePoint) {
@@ -184,7 +220,7 @@ double Fittino::LinearInterpolationCalculatorBase::InterpolateND( THnSparse *his
     std::bitset<100> bits(iReferencePoint);
     std::vector<int> binIndices;
 
-    for( unsigned int iDimension = 0; iDimension < nDimensions; ++iDimension ) {
+    for( unsigned int iDimension = 0; iDimension < _nDimensions; ++iDimension ) {
 
       int binIndex;
 
@@ -203,7 +239,7 @@ double Fittino::LinearInterpolationCalculatorBase::InterpolateND( THnSparse *his
 
     }
 
-    referenceFunctionValues.at( iReferencePoint ) = histogram->GetBinContent ( &binIndices.at(0) );
+    referenceFunctionValues.at( iReferencePoint ) = _histogramnD->GetBinContent ( &binIndices.at(0) );
 
   }
 
@@ -211,13 +247,13 @@ double Fittino::LinearInterpolationCalculatorBase::InterpolateND( THnSparse *his
   // combine the ith and (i+1)th entry from the vector referenceValues to the interpolated value for the nth dimension, until
   // the n equals the number of dimensions from the input histogram and the new referenceValues has only 1 entry left.
 
-  for ( unsigned int iDimension = 0; iDimension < nDimensions; iDimension++ ) {
+  for ( unsigned int iDimension = 0; iDimension < _nDimensions; iDimension++ ) {
 
     std::vector<double> referenceValuesTemp;
 
-    double x = interpolationPoint.at( iDimension );
-    double x0 = histogram->GetAxis( iDimension )->GetBinCenter( closestLowerBinIndices.at( iDimension ) );
-    double x1 = histogram->GetAxis( iDimension )->GetBinCenter( closestHigherBinIndices.at( iDimension ) );
+    double x = _interpolationPoint.at( iDimension );
+    double x0 = _histogramnD->GetAxis( iDimension )->GetBinCenter( closestLowerBinIndices.at( iDimension ) );
+    double x1 = _histogramnD->GetAxis( iDimension )->GetBinCenter( closestHigherBinIndices.at( iDimension ) );
 
     for( unsigned int i = 0; i < referenceFunctionValues.size(); i += 2 ) {
 
@@ -234,7 +270,6 @@ double Fittino::LinearInterpolationCalculatorBase::InterpolateND( THnSparse *his
 
   }
 
-  // all done. return interpolated value:
-  return referenceFunctionValues.at( 0 );
+  _value = referenceFunctionValues.at( 0 );
 
 }
