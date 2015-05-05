@@ -36,15 +36,12 @@
 Fittino::LHCChi2Calculator::LHCChi2Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : LinearInterpolationCalculatorBase( model, ptree ) {
 
-  _name = ptree.get<std::string>( "Name", "LHCChi2Calculator" );
-  _tag = ptree.get<std::string>( "Tag", _name );
+  SetName( "LHCChi2Calculator" );
+  SetTag ( "LHCChi2" );
 
-  AddQuantity( new SimplePrediction(  "Chi2" , "", "", "", 0., 1.e6, _chi2 ) );
+  AddQuantity( new SimplePrediction( "Value" , "", "", "", 0., 1.e6, _value ) );
 
   int numberOfObservedEvents = ptree.get<int>( "NumberOfObservedEvents", 0 );
-  std::string filePath = ptree.get<std::string>( "File" );
-  std::string histogramBaseName = ptree.get<std::string>( "HistogramBaseName" );
-
   bool toyrun = ptree.get<bool>( "ToyRun", false );
 
   if ( toyrun ) {
@@ -64,8 +61,8 @@ Fittino::LHCChi2Calculator::LHCChi2Calculator( const ModelBase* model, const boo
 
   std::stringstream ss;
   ss << numberOfObservedEvents;
-  std::string histogramName = histogramBaseName + "_nObs_" + ss.str();
-  GetHistogram( histogramName );
+  _histogramName = _histogramName + "_nObs_" + ss.str();
+  GetHistogram();
 
   CalculatePredictions();
 
