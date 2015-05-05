@@ -26,24 +26,14 @@
 #include "ModelBase.h"
 
 Fittino::FormulaCalculator::FormulaCalculator( const Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
-    : CalculatorBase( model ) {
+    : CalculatorBase( model, &ptree ) {
 
-    _name = ptree.get<std::string>( _name, "FormulaCalculator" );
-    _tag = ptree.get<std::string>( _tag, "" );
+    SetName( "FormulaCalculator" );
+    SetTag ( ""                  );
 
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree ) {
-
-        if ( node.first == "Quantity" ) {
-
-            std::string name = node.second.get<std::string>( "Name" );
-            std::string formula = node.second.get<std::string>( "Formula" );
-            FormulaQuantity* quantity = new FormulaQuantity( name, formula, model );
-            _formulas.push_back( quantity );
-            AddQuantity( quantity );
-
-        }
-
-    }
+    std::string formula = ptree.get<std::string>( "Formula" );
+    _formula = new FormulaQuantity( "Value", formula, model );
+    AddQuantity( _formula );
 
     CalculatePredictions();
 
@@ -53,13 +43,8 @@ Fittino::FormulaCalculator::~FormulaCalculator() {
 
 }
 
-
 void Fittino::FormulaCalculator::CalculatePredictions() {
 
-    for ( unsigned int i = 0; i < _formulas.size(); i++ ) {
-
-        _formulas[i]->Update();
-
-    }
+    _formula->Update();
 
 }

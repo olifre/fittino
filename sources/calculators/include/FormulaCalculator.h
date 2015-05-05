@@ -50,7 +50,7 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-      std::vector<FormulaQuantity*>      _formulas;
+      FormulaQuantity*     _formula;
 
       /*! \endcond UML */
 
