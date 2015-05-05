@@ -24,7 +24,9 @@ PROJECT( fittino NONE )
 
 INCLUDE( build/CMakeLists.txt OPTIONAL )
 
-SET( CMAKE_CXX_FLAGS                   "${CMAKE_CXX_FLAGS} -std=c++03"  )
+#SET( CMAKE_CXX_FLAGS                   "${CMAKE_CXX_FLAGS} -std=c++11"  )
+# todo: When cmake 3.1 is available in all supported environments, use CXX_STANDARD_REQUIRED instead.
+# alternatively use target_compile_features together with CMAKE_CXX_COMPILE_FEATURES
 SET( CMAKE_INSTALL_PREFIX              ${CMAKE_SOURCE_DIR}              )
 SET( CMAKE_FIND_LIBRARY_PREFIXES       "lib" ""                         )
 SET( CMAKE_MODULE_PATH                 ${CMAKE_SOURCE_DIR}/CMakeModules )
@@ -69,4 +71,4 @@ ENDIF()
 ADD_SUBDIRECTORY( external )
 ADD_SUBDIRECTORY( sources  )
 
-ADD_CUSTOM_TARGET( stylish ../devel/apply_style_guidelines.sh )
+ADD_CUSTOM_TARGET( stylish ALL ${PROJECT_SOURCE_DIR}/devel/apply_style_guidelines.sh ${PROJECT_SOURCE_DIR}  )

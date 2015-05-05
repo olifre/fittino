@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ROOT_DIR=$1
+
 apply_style_guidelines() {
 
     MODULENAME=$1
@@ -8,17 +10,17 @@ apply_style_guidelines() {
 
     # Check if include directory exists.
 
-    if [ -d "../sources/${MODULENAME}/include" ]; then
+    if [ -d "$ROOT_DIR/sources/${MODULENAME}/include" ]; then
 
         # Loop over all files.
 
-        for file in ../sources/${MODULENAME}/include/*; do
+        for file in $ROOT_DIR/sources/${MODULENAME}/include/*; do
 
             # If there are files in the directory, apply style guidelines via astyle.
 
             if [ -e "$file" ]; then
 
-                astyle --options=../devel/astyle-header-options $file
+                astyle --options=$ROOT_DIR/devel/astyle-header-options $file
 
             fi
 
@@ -26,7 +28,7 @@ apply_style_guidelines() {
 
         # Remove .orig files if there are any.
 
-        for file in ../sources/${MODULENAME}/include/*.orig; do
+        for file in $ROOT_DIR/sources/${MODULENAME}/include/*.orig; do
 
             if [ -e "$file" ]; then
 
@@ -40,19 +42,19 @@ apply_style_guidelines() {
 
     # Do the same with source files.
 
-    if [ -d "../sources/${MODULENAME}/src" ]; then
+    if [ -d "$ROOT_DIR/sources/${MODULENAME}/src" ]; then
 
-        for file in ../sources/${MODULENAME}/src/*; do
+        for file in $ROOT_DIR/sources/${MODULENAME}/src/*; do
 
             if [ -e "$file" ]; then
 
-                astyle --options=../devel/astyle-options $file
+                astyle --options=$ROOT_DIR/devel/astyle-options $file
 
             fi
 
         done
 
-        for file in ../sources/${MODULENAME}/src/*.orig; do
+        for file in $ROOT_DIR/sources/${MODULENAME}/src/*.orig; do
 
             if [ -e "$file" ]; then
 
