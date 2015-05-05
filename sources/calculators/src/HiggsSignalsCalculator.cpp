@@ -35,41 +35,36 @@ Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model,
     :CalculatorBase       ( model, &ptree                                                                         ) {
 
     SetName( "HiggsSignalsCalculator" );
-    SetTag( "" );
-
-    _runHiggsBounds = GetConfiguration()->get<bool>( "RunHiggsBounds" );
-    _mode           = GetConfiguration()->get<int >( "Mode"           );
+    SetTag ( "" );
 
     AddInputs();
-    InitializeAndSetup();
+    CheckMatrices();
     ResizeInputArrays();
+    InitializeAndSetup();
     Run();
     DetermineNumberOfObservables();
     AddOutputs();
     UpdateOutput();
-
     // SetupMeasuredValues();
 
 }
 
 void Fittino::HiggsSignalsCalculator::InitializeAndSetup() {
 
+    _runHiggsBounds = GetConfiguration()->get<bool>( "RunHiggsBounds" );
+    _mode           = GetConfiguration()->get<int >( "Mode"           );
+
+    int         outputLevel                    = GetConfiguration()->get<int>        ( "OutputLevel"                    );
+    int         pdf                            = GetConfiguration()->get<int>        ( "PDF"                            );
+    double      assignmentRange                = GetConfiguration()->get<double>     ( "AssignmentRange"                );
+    double      assignmentRangeMassObservables = GetConfiguration()->get<double>     ( "AssignmentRangeMassObservables" );
+    std::string expData                        = GetConfiguration()->get<std::string>( "ExpData"                        );
+    std::string whichAnalyses                  = GetConfiguration()->get<std::string>( "WhichAnalyses"                  );
+
     int nHzero = _h0.size();
     int nHplus = _hp.size();
 
-    std::string expData         = GetConfiguration()->get<std::string>( "ExpData"         );
-    int         outputLevel     = GetConfiguration()->get<int>        ( "OutputLevel"     );
-    int         pdf             = GetConfiguration()->get<int>        ( "PDF"             );
-    double      assignmentRange = GetConfiguration()->get<double>     ( "AssignmentRange" );
-
     if ( _runHiggsBounds ) {
-
-        if ( !GetConfiguration()->count( "WhichAnalyses" ) ) {
-
-            throw ConfigurationException( _name + ": RunHiggsBounds is set to true but WhichAnalyses not specified." );
-
-        }
-        std::string whichAnalyses = GetConfiguration()->get<std::string>( "WhichAnalyses" );
 
         initialize_higgsbounds_chisqtables_();
         initialize_higgsbounds_( &nHzero, &nHplus, whichAnalyses.c_str(), whichAnalyses.length() );
@@ -79,60 +74,12 @@ void Fittino::HiggsSignalsCalculator::InitializeAndSetup() {
     initialize_higgssignals_( &nHzero, &nHplus, expData.c_str(), expData.size() );
     setup_output_level_( &outputLevel);
     setup_pdf_( &pdf );
-    setup_assignmentrange_( &assignmentRange);
+    setup_assignmentrange_( &assignmentRange );
+    setup_assignmentrange_massobservables_( &assignmentRangeMassObservables );
 
 }
 
 Fittino::HiggsSignalsCalculator::~HiggsSignalsCalculator() {
-
-}
-
-void Fittino::HiggsSignalsCalculator::CallHiggsBounds() {
-
-    _globalHiggsBoundsChi2 = RunHiggsBounds();
-
-}
-
-double Fittino::HiggsSignalsCalculator::RunHiggsBounds() {
-
-    run_higgsbounds_( &_HBresult, &_channel, &_obsratio, &_ncombined );
-    _HBresult_double = _HBresult;
-    _channel_double  = _channel;
-
-    if( _HBresult < 0 || _HBresult > 1 ) {
-        
-        return -1.0;
-
-    }
-    
-    _theoryUncertainty1s = 3.;
-    hb_calc_stats_( &_theoryUncertainty1s, &_chi2WithoutTheory, &_chi2WithTheory, &_bestChannelChi2 );
-    _bestChannelChi2_double = (double)_bestChannelChi2;
-    
-    if( _chi2WithoutTheory < 0. ) {
-        
-        return -1.0;
-    
-    }
-
-    if( _chi2WithTheory < 0. && _chi2WithoutTheory > 0. ) {
-
-        return -1.0;
-
-    }
-
-    if( _channel != _bestChannelChi2 ) {
-
-        if( _HBresult == 0 ) {
-            
-            _chi2WithoutTheory += 10000.;
-            _chi2WithTheory += 10000.;
-        
-        }
-
-    }
-
-    return _chi2WithTheory;
 
 }
 
@@ -143,94 +90,46 @@ void Fittino::HiggsSignalsCalculator::CalculatePredictions() {
 
 }
 
-
-void Fittino::HiggsSignalsCalculator::SetupMeasuredValues() {
-
-    // todo: do the smearing here. Also set mass shift
-
-    for ( int i = 1; i <= _npeakmu; ++i ) {
-
-        double measuredValue_mh = -1.e9;
-        double measuredValue_mu = -1.e9;
-        int obsID = 0;
-        __io_MOD_get_id_of_peakobservable( &i, &obsID );
-        std::ostringstream ss_index;
-        ss_index << obsID;
-        std::string s_index = ss_index.str();
-        std::string fittinoName_mh = "HiggsSignalsObservable_" + s_index + "_mh";
-        std::string fittinoName_mu = "HiggsSignalsObservable_" + s_index + "_mu";
-
-        // get measured values from the model
-        for ( int j = 0; j < _model->GetObservableVector()->size(); ++j ) {
-
-            if ( _model->GetObservableVector()->at(j)->GetPrediction()->GetName() == fittinoName_mh ) {
-
-                measuredValue_mh = _model->GetObservableVector()->at(j)->GetMeasuredValue();
-
-            }
-
-            if ( _model->GetObservableVector()->at(j)->GetPrediction()->GetName() == fittinoName_mu ) {
-
-                measuredValue_mu = _model->GetObservableVector()->at(j)->GetMeasuredValue();
-
-            }
-
-        }
-
-        // test if all observable were acutally defined
-        if ( measuredValue_mh < -1.e8 || measuredValue_mu < -1.e8 ) {
-
-            throw ConfigurationException( "Incomplete set of HiggsSignals Observables: Missing at least one (mu, mh) for HiggsSignalsObservable_" + s_index );
-
-        }
-
-        // assign the new values
-        assign_toyvalues_to_peak_( &obsID, &measuredValue_mu, &measuredValue_mh );
-    
-    }
-
-}
-
 void Fittino::HiggsSignalsCalculator::UpdateNeutralInput( bool shiftHiggsMass ) {
 
     if ( !_h0.size() ) return;
 
     for( unsigned int j = 0; j < _h0.size(); ++j ) {
 
-        _neutralInput_Mh                [j] = GetInput( _h0[j] + ".Mh"                 );
-        _neutralInput_GammaTot          [j] = GetInput( _h0[j] + ".GammaTot"           );
-        _neutralInput_CP                [j] = GetInput( _h0[j] + ".CP"                 );
-        _neutralInput_CS_lep_hjZ_ratio  [j] = GetInput( _h0[j] + ".CS_lep_hjZ_ratio"   );
-        _neutralInput_CS_lep_bbhj_ratio [j] = GetInput( _h0[j] + ".CS_lep_bbhj_ratio"  );
-        _neutralInput_CS_lhc7_hj_ratio  [j] = GetInput( _h0[j] + ".CS_tev_hj_ratio"    );
-        _neutralInput_CS_lhc7_hjb_ratio [j] = GetInput( _h0[j] + ".CS_tev_hjb_ratio"   );
-        _neutralInput_CS_lhc7_hjW_ratio [j] = GetInput( _h0[j] + ".CS_tev_hjW_ratio"   );
-        _neutralInput_CS_lhc7_hjZ_ratio [j] = GetInput( _h0[j] + ".CS_tev_hjZ_ratio"   );
-        _neutralInput_CS_lhc7_vbf_ratio [j] = GetInput( _h0[j] + ".CS_tev_vbf_ratio"   );
-        _neutralInput_CS_lhc7_tthj_ratio[j] = GetInput( _h0[j] + ".CS_tev_tthj_ratio"  );
-        _neutralInput_CS_lhc7_hj_ratio  [j] = GetInput( _h0[j] + ".CS_lhc7_hj_ratio"   );
-        _neutralInput_CS_lhc7_hjb_ratio [j] = GetInput( _h0[j] + ".CS_lhc7_hjb_ratio"  );
-        _neutralInput_CS_lhc7_hjW_ratio [j] = GetInput( _h0[j] + ".CS_lhc7_hjW_ratio"  );
-        _neutralInput_CS_lhc7_hjZ_ratio [j] = GetInput( _h0[j] + ".CS_lhc7_hjZ_ratio"  );
-        _neutralInput_CS_lhc7_vbf_ratio [j] = GetInput( _h0[j] + ".CS_lhc7_vbf_ratio"  );
-        _neutralInput_CS_lhc7_tthj_ratio[j] = GetInput( _h0[j] + ".CS_lhc7_tthj_ratio" );
-        _neutralInput_CS_lhc8_hj_ratio  [j] = GetInput( _h0[j] + ".CS_lhc8_hj_ratio"   );
-        _neutralInput_CS_lhc8_hjb_ratio [j] = GetInput( _h0[j] + ".CS_lhc8_hjb_ratio"  );
-        _neutralInput_CS_lhc8_hjW_ratio [j] = GetInput( _h0[j] + ".CS_lhc8_hjW_ratio"  );
-        _neutralInput_CS_lhc8_hjZ_ratio [j] = GetInput( _h0[j] + ".CS_lhc8_hjZ_ratio"  );
-        _neutralInput_CS_lhc8_vbf_ratio [j] = GetInput( _h0[j] + ".CS_lhc8_vbf_ratio"  );
-        _neutralInput_CS_lhc8_tthj_ratio[j] = GetInput( _h0[j] + ".CS_lhc8_tthj_ratio" );
-        _neutralInput_BR_hjss           [j] = GetInput( _h0[j] + ".BR_hjss"            );
-        _neutralInput_BR_hjcc           [j] = GetInput( _h0[j] + ".BR_hjcc"            );
-        _neutralInput_BR_hjbb           [j] = GetInput( _h0[j] + ".BR_hjbb"            );
-        _neutralInput_BR_hjmumu         [j] = GetInput( _h0[j] + ".BR_hjmumu"          );
-        _neutralInput_BR_hjtautau       [j] = GetInput( _h0[j] + ".BR_hjtautau"        );
-        _neutralInput_BR_hjWW           [j] = GetInput( _h0[j] + ".BR_hjWW"            );
-        _neutralInput_BR_hjZZ           [j] = GetInput( _h0[j] + ".BR_hjZZ"            );
-        _neutralInput_BR_hjZga          [j] = GetInput( _h0[j] + ".BR_hjZga"           );
-        _neutralInput_BR_hjgaga         [j] = GetInput( _h0[j] + ".BR_hjgaga"          );
-        _neutralInput_BR_hjgg           [j] = GetInput( _h0[j] + ".BR_hjgg"            );
-        _neutralInput_BR_hjinvisible    [j] = GetInput( _h0[j] + ".BR_hjinvisible"     );
+        _neutralInput_Mh                [j] = GetInput( _h0[j] + ".Mass_h"                 );
+        _neutralInput_GammaTot          [j] = GetInput( _h0[j] + ".Gamma_h_Total"          );
+        _neutralInput_CP                [j] = GetInput( _h0[j] + ".CP"                     );
+        _neutralInput_CS_lep_hjZ_ratio  [j] = GetInput( _h0[j] + ".NormSM_xs_LEP_Zh"       );
+        _neutralInput_CS_lep_bbhj_ratio [j] = GetInput( _h0[j] + ".NormSM_xs_LEP_bbh"      );
+        _neutralInput_CS_tev_hj_ratio   [j] = GetInput( _h0[j] + ".NormSM_xs_TEV_h"        );
+        _neutralInput_CS_tev_hjb_ratio  [j] = GetInput( _h0[j] + ".NormSM_xs_TEV_bh"       );
+        _neutralInput_CS_tev_hjW_ratio  [j] = GetInput( _h0[j] + ".NormSM_xs_TEV_Wh"       );
+        _neutralInput_CS_tev_hjZ_ratio  [j] = GetInput( _h0[j] + ".NormSM_xs_TEV_Zh"       );
+        _neutralInput_CS_tev_vbf_ratio  [j] = GetInput( _h0[j] + ".NormSM_xs_TEV_qqh"      );
+        _neutralInput_CS_tev_tthj_ratio [j] = GetInput( _h0[j] + ".NormSM_xs_TEV_tth"      );
+        _neutralInput_CS_lhc7_hj_ratio  [j] = GetInput( _h0[j] + ".NormSM_xs_LHC_7TeV_h"   );
+        _neutralInput_CS_lhc7_hjb_ratio [j] = GetInput( _h0[j] + ".NormSM_xs_LHC_7TeV_bh"  );
+        _neutralInput_CS_lhc7_hjW_ratio [j] = GetInput( _h0[j] + ".NormSM_xs_LHC_7TeV_Wh"  );
+        _neutralInput_CS_lhc7_hjZ_ratio [j] = GetInput( _h0[j] + ".NormSM_xs_LHC_7TeV_Zh"  );
+        _neutralInput_CS_lhc7_vbf_ratio [j] = GetInput( _h0[j] + ".NormSM_xs_LHC_7TeV_qqh" );
+        _neutralInput_CS_lhc7_tthj_ratio[j] = GetInput( _h0[j] + ".NormSM_xs_LHC_7TeV_tth" );
+        _neutralInput_CS_lhc8_hj_ratio  [j] = GetInput( _h0[j] + ".NormSM_xs_LHC_8TeV_h"   );
+        _neutralInput_CS_lhc8_hjb_ratio [j] = GetInput( _h0[j] + ".NormSM_xs_LHC_8TeV_bh"  );
+        _neutralInput_CS_lhc8_hjW_ratio [j] = GetInput( _h0[j] + ".NormSM_xs_LHC_8TeV_Wh"  );
+        _neutralInput_CS_lhc8_hjZ_ratio [j] = GetInput( _h0[j] + ".NormSM_xs_LHC_8TeV_Zh"  );
+        _neutralInput_CS_lhc8_vbf_ratio [j] = GetInput( _h0[j] + ".NormSM_xs_LHC_8TeV_qqh" );
+        _neutralInput_CS_lhc8_tthj_ratio[j] = GetInput( _h0[j] + ".NormSM_xs_LHC_8TeV_tth" );
+        _neutralInput_BR_hjss           [j] = GetInput( _h0[j] + ".BR_h_s_s"               );
+        _neutralInput_BR_hjcc           [j] = GetInput( _h0[j] + ".BR_h_c_c"               );
+        _neutralInput_BR_hjbb           [j] = GetInput( _h0[j] + ".BR_h_b_b"               );
+        _neutralInput_BR_hjmumu         [j] = GetInput( _h0[j] + ".BR_h_mu_mu"             );
+        _neutralInput_BR_hjtautau       [j] = GetInput( _h0[j] + ".BR_h_tau_tau"           );
+        _neutralInput_BR_hjWW           [j] = GetInput( _h0[j] + ".BR_h_W_W"               );
+        _neutralInput_BR_hjZZ           [j] = GetInput( _h0[j] + ".BR_h_Z_Z"               );
+        _neutralInput_BR_hjZga          [j] = GetInput( _h0[j] + ".BR_h_Z_gamma"           );
+        _neutralInput_BR_hjgaga         [j] = GetInput( _h0[j] + ".BR_h_gamma_gamma"       );
+        _neutralInput_BR_hjgg           [j] = GetInput( _h0[j] + ".BR_h_g_g"               );
+        _neutralInput_BR_hjinvisible    [j] = GetInput( _h0[j] + ".BR_h_Invisible"         );
 
         if ( shiftHiggsMass ) {
 
@@ -244,8 +143,14 @@ void Fittino::HiggsSignalsCalculator::UpdateNeutralInput( bool shiftHiggsMass ) 
 
             for( unsigned int j = 0; j < _h0.size(); ++j ) {
 
-                _neutralInput_CS_lep_hjhi_ratio[index] = GetInput( _h0[j] + "_" + _h0[i] + ".CS_lep_hjhi_ratio" );
-                _neutralInput_BR_hjhihi        [index] = GetInput( _h0[j] + "_" + _h0[i] + ".BR_hjhihi"         );
+                // To get the order of the matrix elements right, one needs to take into account:
+                // 1. The elements of BR hjhihi are ordered such that BR hjhihi(j,i)= BR(hj -> hihi)
+                //    ( arXiv:1311.0055v1, p47, caption of Table B3 )
+                // 2. Fortran uses column-major order
+                //    ( http://en.wikipedia.org/wiki/Row-major_order )
+
+                _neutralInput_CS_lep_hjhi_ratio[index] = GetInput( _h0[j] + "." + _h0[i] + ".NormSM_xs_LEP_hH" );
+                _neutralInput_BR_hjhihi        [index] = GetInput( _h0[j] + "." + _h0[i] + ".BR_h_H_H"         );
 
                 ++index;
 
@@ -299,17 +204,17 @@ void Fittino::HiggsSignalsCalculator::UpdateChargedInput( bool shiftHiggsMass ) 
 
     if ( ! _hp.size() ) return;
 
-    _chargedInput_BR_tWpb = GetInput( "BR_tWpb" );
+    _chargedInput_BR_tWpb = GetInput( "BR_t_W_b" );
 
     for( int i = 0; i < _hp.size(); ++i ) {
 
-        _chargedInput_MHplus             [i] = GetInput( _hp[i] + ".MHplus"              );
-        _chargedInput_GammaTot           [i] = GetInput( _hp[i] + ".GammaTot"            );
-        _chargedInput_CS_lep_HpjHmj_ratio[i] = GetInput( _hp[i] + ".CS_lep_HpjHmj_ratio" );
-        _chargedInput_BR_tHpjb           [i] = GetInput( _hp[i] + ".BR_tHpjb"            );
-        _chargedInput_BR_Hpjcs           [i] = GetInput( _hp[i] + ".BR_Hpjcs"            );
-        _chargedInput_BR_Hpjcb           [i] = GetInput( _hp[i] + ".BR_Hpjcb"            );
-        _chargedInput_BR_Hptaunu         [i] = GetInput( _hp[i] + ".BR_Hptaunu"          );
+        _chargedInput_MHplus             [i] = GetInput( _hp[i] + ".Mass_h"         );
+        _chargedInput_GammaTot           [i] = GetInput( _hp[i] + ".Gamma_h_Total"  );
+        _chargedInput_CS_lep_HpjHmj_ratio[i] = GetInput( _hp[i] + ".Norm_xs_LEP_hh" );
+        _chargedInput_BR_tHpjb           [i] = GetInput( _hp[i] + ".BR_t_h_b"       );
+        _chargedInput_BR_Hpjcs           [i] = GetInput( _hp[i] + ".BR_h_c_s"       );
+        _chargedInput_BR_Hpjcb           [i] = GetInput( _hp[i] + ".BR_h_c_b"       );
+        _chargedInput_BR_Hptaunu         [i] = GetInput( _hp[i] + ".BR_h_tau_nu"    );
 
         if ( shiftHiggsMass ) {
 
@@ -335,23 +240,29 @@ void Fittino::HiggsSignalsCalculator::UpdateMassUncertainties() {
 
     for( unsigned int i = 0; i < _h0.size(); ++i ) {
 
-        _massUncertainty_HB_neutral[i] = GetInput( _h0[i] + ".MassUncertaintyHB" );
-        _massUncertainty_HS_neutral[i] = GetInput( _h0[i] + ".MassUncertaintyHS" );
+        _massUncertainty_HB_neutral[i] = GetInput( _h0[i] + ".Error_Mass_h_HB" );
+        _massUncertainty_HS_neutral[i] = GetInput( _h0[i] + ".Error_Mass_h_HS" );
 
     }
 
     for( unsigned int i = 0; i < _hp.size(); ++i ) {
 
-        _massUncertainty_HB_charged[i] = GetInput( _hp[i] + ".MassUncertainty" );
+        _massUncertainty_HB_charged[i] = GetInput( _hp[i] + ".Error_Mass_h" );
 
     }
 
-    higgsbounds_set_mass_uncertainties_( &_massUncertainty_HB_neutral[0],
-                                         &_massUncertainty_HB_charged[0] );
+    if ( _runHiggsBounds ) {
 
-    if ( !_h0.size() ) return;
+        higgsbounds_set_mass_uncertainties_( &_massUncertainty_HB_neutral[0],
+                                             &_massUncertainty_HB_charged[0] );
 
-    higgssignals_neutral_input_massuncertainty_( &_massUncertainty_HS_neutral[0] );
+    }
+
+    if ( _h0.size() ) {
+
+        higgssignals_neutral_input_massuncertainty_( &_massUncertainty_HS_neutral[0] );
+
+    }
 
 }
 
@@ -365,7 +276,7 @@ void Fittino::HiggsSignalsCalculator::ResizeInputArrays() {
     _chargedInput_BR_Hpjcb           .resize( _hp.size() );
     _chargedInput_BR_Hptaunu         .resize( _hp.size() );
 
-    _neutralInput_Mh                   .resize( _h0.size()              ) ;
+    _neutralInput_Mh                   .resize( _h0.size()              );
     _neutralInput_GammaTot             .resize( _h0.size()              );
     _neutralInput_CP                   .resize( _h0.size()              );
     _neutralInput_CS_lep_hjZ_ratio     .resize( _h0.size()              );
@@ -405,8 +316,7 @@ void Fittino::HiggsSignalsCalculator::ResizeInputArrays() {
 
     _massUncertainty_HB_neutral.resize( std::max( _h0.size(), 1UL ) );
     _massUncertainty_HB_charged.resize( std::max( _hp.size(), 1UL ) );
-
-    _massUncertainty_HS_neutral.resize( _h0.size() );
+    _massUncertainty_HS_neutral.resize( _h0.size()                  );
 
     _mass_h_neutral_shift.resize( _h0.size() );
     _mass_h_charged_shift.resize( _hp.size() );
@@ -477,7 +387,6 @@ void Fittino::HiggsSignalsCalculator::AddOutputs() {
     AddQuantity( new SimplePrediction( "HS_R_H_ZZ"              , "", _R_H_ZZ                   ) );
     AddQuantity( new SimplePrediction( "HS_R_VH_bb"             , "", _R_VH_bb                  ) );
 
-
     for ( int i = 1; i <= _npeakmu; ++i ) {
 
         int obsID, mhchisq;
@@ -499,20 +408,20 @@ void Fittino::HiggsSignalsCalculator::AddOutputs() {
 
 }
 
-
 void Fittino::HiggsSignalsCalculator::AddChargedHiggs(const boost::property_tree::ptree &ptree) {
 
     std::string name = ptree.get<std::string>( "Name" );
 
     _hp.push_back( name );
 
-    AddInput( name + ".MHplus"             , ptree.get<std::string>( "MHplus"              ) );
-    AddInput( name + ".GammaTot"           , ptree.get<std::string>( "GammaTot"            ) );
-    AddInput( name + ".CS_lep_HpjHmj_ratio", ptree.get<std::string>( "CS_lep_HpjHmj_ratio" ) );
-    AddInput( name + ".BR_tHpjcs"          , ptree.get<std::string>( "BR_tHpjcs"           ) );
-    AddInput( name + ".BR_tHpjcb"          , ptree.get<std::string>( "BR_tHpjcb"           ) );
-    AddInput( name + ".BR_Hptaunu"         , ptree.get<std::string>( "BR_Hptaunu"          ) );
-    AddInput( name + ".MassUncertainty"    , ptree.get<std::string>( "MassUncertainty"     ) );
+    AddInput( name + ".Mass_h"        , ptree.get<std::string>( "Mass_h"         ) );
+    AddInput( name + ".Error_Mass_h"  , ptree.get<std::string>( "Error_Mass_h"   ) );
+    AddInput( name + ".Gamma_h_Total" , ptree.get<std::string>( "Gamma_h_Total"  ) );
+    AddInput( name + ".Norm_xs_LEP_hh", ptree.get<std::string>( "Norm_xs_LEP_hh" ) );
+    AddInput( name + ".BR_t_h_b"      , ptree.get<std::string>( "BR_t_h_b"       ) );
+    AddInput( name + ".BR_h_c_s"      , ptree.get<std::string>( "BR_h_c_s"       ) );
+    AddInput( name + ".BR_h_c_b"      , ptree.get<std::string>( "BR_h_c_b"       ) );
+    AddInput( name + ".BR_h_tau_nu"   , ptree.get<std::string>( "BR_h_tau_nu"    ) );
 
 }
 
@@ -522,92 +431,54 @@ void Fittino::HiggsSignalsCalculator::AddNeutralHiggs( const boost::property_tre
 
     _h0.push_back( name );
 
-    AddInput( name + ".Mh"                   , ptree.get<std::string>( "Mh"                    ) );
-    AddInput( name + ".GammaTot"             , ptree.get<std::string>( "GammaTot"              ) );
-    AddInput( name + ".CP"                   , ptree.get<std::string>( "CP"                    ) );
-    AddInput( name + ".CS_lep_hjZ_ratio"     , ptree.get<std::string>( "CS_lep_hjZ_ratio"      ) );
-    AddInput( name + ".CS_lep_bbhj_ratio"    , ptree.get<std::string>( "CS_lep_bbhj_ratio"     ) );
-    AddInput( name + ".CS_lep_tautauhj_ratio", ptree.get<std::string>( "CS_lep_tautauhj_ratio" ) );
-    AddInput( name + ".CS_tev_hj_ratio"      , ptree.get<std::string>( "CS_tev_hj_ratio"       ) );
-    AddInput( name + ".CS_tev_hjb_ratio"     , ptree.get<std::string>( "CS_tev_hjb_ratio"      ) );
-    AddInput( name + ".CS_tev_hjW_ratio"     , ptree.get<std::string>( "CS_tev_hjW_ratio"      ) );
-    AddInput( name + ".CS_tev_hjZ_ratio"     , ptree.get<std::string>( "CS_tev_hjZ_ratio"      ) );
-    AddInput( name + ".CS_tev_vbf_ratio"     , ptree.get<std::string>( "CS_tev_vbf_ratio"      ) );
-    AddInput( name + ".CS_tev_tthj_ratio"    , ptree.get<std::string>( "CS_tev_tthj_ratio"     ) );
-    AddInput( name + ".CS_lhc7_hj_ratio"     , ptree.get<std::string>( "CS_lhc7_hj_ratio"      ) );
-    AddInput( name + ".CS_lhc7_hjb_ratio"    , ptree.get<std::string>( "CS_lhc7_hjb_ratio"     ) );
-    AddInput( name + ".CS_lhc7_hjW_ratio"    , ptree.get<std::string>( "CS_lhc7_hjW_ratio"     ) );
-    AddInput( name + ".CS_lhc7_hjZ_ratio"    , ptree.get<std::string>( "CS_lhc7_hjZ_ratio"     ) );
-    AddInput( name + ".CS_lhc7_vbf_ratio"    , ptree.get<std::string>( "CS_lhc7_vbf_ratio"     ) );
-    AddInput( name + ".CS_lhc7_tthj_ratio"   , ptree.get<std::string>( "CS_lhc7_tthj_ratio"    ) );
-    AddInput( name + ".CS_lhc8_hj_ratio"     , ptree.get<std::string>( "CS_lhc8_hj_ratio"      ) );
-    AddInput( name + ".CS_lhc8_hjb_ratio"    , ptree.get<std::string>( "CS_lhc8_hjb_ratio"     ) );
-    AddInput( name + ".CS_lhc8_hjW_ratio"    , ptree.get<std::string>( "CS_lhc8_hjW_ratio"     ) );
-    AddInput( name + ".CS_lhc8_hjZ_ratio"    , ptree.get<std::string>( "CS_lhc8_hjZ_ratio"     ) );
-    AddInput( name + ".CS_lhc8_vbf_ratio"    , ptree.get<std::string>( "CS_lhc8_vbf_ratio"     ) );
-    AddInput( name + ".CS_lhc8_tthj_ratio"   , ptree.get<std::string>( "CS_lhc8_tthj_ratio"    ) );
-    AddInput( name + ".BR_hjss"              , ptree.get<std::string>( "BR_hjss"               ) );
-    AddInput( name + ".BR_hjcc"              , ptree.get<std::string>( "BR_hjcc"               ) );
-    AddInput( name + ".BR_hjbb"              , ptree.get<std::string>( "BR_hjbb"               ) );
-    AddInput( name + ".BR_hjmumu"            , ptree.get<std::string>( "BR_hjmumu"             ) );
-    AddInput( name + ".BR_hjtautau"          , ptree.get<std::string>( "BR_hjtautau"           ) );
-    AddInput( name + ".BR_hjWW"              , ptree.get<std::string>( "BR_hjWW"               ) );
-    AddInput( name + ".BR_hjZZ"              , ptree.get<std::string>( "BR_hjZZ"               ) );
-    AddInput( name + ".BR_hjZga"             , ptree.get<std::string>( "BR_hjZga"              ) );
-    AddInput( name + ".BR_hjgaga"            , ptree.get<std::string>( "BR_hjgaga"             ) );
-    AddInput( name + ".BR_hjgg"              , ptree.get<std::string>( "BR_hjgg"               ) );
-    AddInput( name + ".BR_hjinvisible"       , ptree.get<std::string>( "BR_hjinvisible"        ) );
-    AddInput( name + ".MassUncertaintyHB"    , ptree.get<std::string>( "MassUncertaintyHB"     ) );
-    AddInput( name + ".MassUncertaintyHS"    , ptree.get<std::string>( "MassUncertaintyHS"     ) );
+    AddInput( name + ".Mass_h"                , ptree.get<std::string>( "Mass_h"                 ) );
+    AddInput( name + ".Error_Mass_h_HB"       , ptree.get<std::string>( "Error_Mass_h_HB"        ) );
+    AddInput( name + ".Error_Mass_h_HS"       , ptree.get<std::string>( "Error_Mass_h_HS"        ) );
+    AddInput( name + ".Gamma_h_Total"         , ptree.get<std::string>( "Gamma_h_Total"          ) );
+    AddInput( name + ".CP"                    , ptree.get<std::string>( "CP"                     ) );
+    AddInput( name + ".NormSM_xs_LEP_Zh"      , ptree.get<std::string>( "NormSM_xs_LEP_Zh"       ) );
+    AddInput( name + ".NormSM_xs_LEP_bbh"     , ptree.get<std::string>( "NormSM_xs_LEP_bbh"      ) );
+    AddInput( name + ".NormSM_xs_LEP_tautauh" , ptree.get<std::string>( "NormSM_xs_LEP_tautauh"  ) );
+    AddInput( name + ".NormSM_xs_TEV_h"       , ptree.get<std::string>( "NormSM_xs_TEV_h"        ) );
+    AddInput( name + ".NormSM_xs_TEV_bh"      , ptree.get<std::string>( "NormSM_xs_TEV_bh"       ) );
+    AddInput( name + ".NormSM_xs_TEV_Wh"      , ptree.get<std::string>( "NormSM_xs_TEV_Wh"       ) );
+    AddInput( name + ".NormSM_xs_TEV_Zh"      , ptree.get<std::string>( "NormSM_xs_TEV_Zh"       ) );
+    AddInput( name + ".NormSM_xs_TEV_qqh"     , ptree.get<std::string>( "NormSM_xs_TEV_qqh"      ) );
+    AddInput( name + ".NormSM_xs_TEV_tth"     , ptree.get<std::string>( "NormSM_xs_TEV_tth"      ) );
+    AddInput( name + ".NormSM_xs_LHC_7TeV_h"  , ptree.get<std::string>( "NormSM_xs_LHC_7TeV_h"   ) );
+    AddInput( name + ".NormSM_xs_LHC_7TeV_bh" , ptree.get<std::string>( "NormSM_xs_LHC_7TeV_bh"  ) );
+    AddInput( name + ".NormSM_xs_LHC_7TeV_Wh" , ptree.get<std::string>( "NormSM_xs_LHC_7TeV_Wh"  ) );
+    AddInput( name + ".NormSM_xs_LHC_7TeV_Zh" , ptree.get<std::string>( "NormSM_xs_LHC_7TeV_Zh"  ) );
+    AddInput( name + ".NormSM_xs_LHC_7TeV_qqh", ptree.get<std::string>( "NormSM_xs_LHC_7TeV_qqh" ) );
+    AddInput( name + ".NormSM_xs_LHC_7TeV_tth", ptree.get<std::string>( "NormSM_xs_LHC_7TeV_tth" ) );
+    AddInput( name + ".NormSM_xs_LHC_8TeV_h"  , ptree.get<std::string>( "NormSM_xs_LHC_8TeV_h"   ) );
+    AddInput( name + ".NormSM_xs_LHC_8TeV_bh" , ptree.get<std::string>( "NormSM_xs_LHC_8TeV_bh"  ) );
+    AddInput( name + ".NormSM_xs_LHC_8TeV_Wh" , ptree.get<std::string>( "NormSM_xs_LHC_8TeV_Wh"  ) );
+    AddInput( name + ".NormSM_xs_LHC_8TeV_Zh" , ptree.get<std::string>( "NormSM_xs_LHC_8TeV_Zh"  ) );
+    AddInput( name + ".NormSM_xs_LHC_8TeV_qqh", ptree.get<std::string>( "NormSM_xs_LHC_8TeV_qqh" ) );
+    AddInput( name + ".NormSM_xs_LHC_8TeV_tth", ptree.get<std::string>( "NormSM_xs_LHC_8TeV_tth" ) );
+    AddInput( name + ".BR_h_s_s"              , ptree.get<std::string>( "BR_h_s_s"               ) );
+    AddInput( name + ".BR_h_c_c"              , ptree.get<std::string>( "BR_h_c_c"               ) );
+    AddInput( name + ".BR_h_b_b"              , ptree.get<std::string>( "BR_h_b_b"               ) );
+    AddInput( name + ".BR_h_mu_mu"            , ptree.get<std::string>( "BR_h_mu_mu"             ) );
+    AddInput( name + ".BR_h_tau_tau"          , ptree.get<std::string>( "BR_h_tau_tau"           ) );
+    AddInput( name + ".BR_h_W_W"              , ptree.get<std::string>( "BR_h_W_W"               ) );
+    AddInput( name + ".BR_h_Z_Z"              , ptree.get<std::string>( "BR_h_Z_Z"               ) );
+    AddInput( name + ".BR_h_Z_gamma"          , ptree.get<std::string>( "BR_h_Z_gamma"           ) );
+    AddInput( name + ".BR_h_gamma_gamma"      , ptree.get<std::string>( "BR_h_gamma_gamma"       ) );
+    AddInput( name + ".BR_h_g_g"              , ptree.get<std::string>( "BR_h_g_g"               ) );
+    AddInput( name + ".BR_h_Invisible"        , ptree.get<std::string>( "BR_h_Invisible"         ) );
 
-}
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree ) {
 
-void Fittino::HiggsSignalsCalculator::AddNeutralHiggsMatrices(const boost::property_tree::ptree &ptree) {
+                    if ( node.first != "BR_h_H_H" ) continue;
 
-    std::string hj = ptree.get<std::string>("Name");
-
-    BOOST_FOREACH(const boost::property_tree::ptree::value_type &node, ptree) {
-
-                    if (node.first != "CS_lep_hjhi_ratio" && node.first != "BR_hjhihi") continue;
-
-                    std::string hi    = node.second.get<std::string>( "hi"    );
+                    std::string child = node.second.get<std::string>( "Child" );
                     std::string value = node.second.get<std::string>( "Value" );
 
-                    if ( std::find( _h0.begin(), _h0.end(), hi ) == _h0.end() ) {
-
-                        throw ConfigurationException(_name + ": Higgs with name " + hi + " not known.");
-
-                    }
-
-                    AddInput( hj + "_" + hi + "." + node.first, value);
+                    AddInput( name + "." + child + ".BR_h_H_H", value );
 
                 }
-
-    for ( unsigned int i = 0; i < _h0.size(); ++i ) {
-
-        try {
-
-           GetInput( hj + _h0[i] + ".CS_lep_hjhi_ratio" );
-
-        }
-        catch( const std::out_of_range& e) {
-
-            throw ConfigurationException( _name + ": CS_lep_hjhi_ratio missing for hj=" + hj + ", hi=" + _h0[i] );
-
-        }
-
-        try {
-
-            GetInput( hj + _h0[i] + ".BR_hj_hihi" );
-
-        }
-        catch( const std::out_of_range& e) {
-
-            throw ConfigurationException( _name + ": BR_hj_hihi missing for hj=" + hj + ", hi=" + _h0[i] );
-
-        }
-
-    }
 
 }
 
@@ -635,32 +506,26 @@ void Fittino::HiggsSignalsCalculator::UpdateOutput() {
 
     int obsID, nHcomb, domH;
 
-    for (int i = 1; i <= _npeakmu; ++i) {
+    for ( int i = 1; i <= _npeakmu; ++i ) {
 
-        __io_MOD_get_id_of_peakobservable(&i, &obsID);
+        __io_MOD_get_id_of_peakobservable( &i, &obsID );
 
-        __io_MOD_get_peakinfo_from_hsresults(&obsID, &_peakInfoFromHSresults_mupred[i - 1], &domH, &nHcomb);
+        __io_MOD_get_peakinfo_from_hsresults( &obsID, &_peakInfoFromHSresults_mupred[i - 1], &domH, &nHcomb );
 
-        __pc_chisq_MOD_get_peakchi2(&obsID,
-                                    &_peakChi2_mu[i - 1],
-                                    &_peakChi2_mh[i - 1],
-                                    &_peakChi2_max[i - 1],
-                                    &_peakChi2_tot[i - 1]);
-
-        _peakInfoFromHSresults_domH[i - 1] = domH;
+        _peakInfoFromHSresults_domH  [i - 1] = domH;
         _peakInfoFromHSresults_nHcomb[i - 1] = nHcomb;
 
+        __pc_chisq_MOD_get_peakchi2( &obsID,
+                                     &_peakChi2_mu[i - 1],
+                                     &_peakChi2_mh[i - 1],
+                                     &_peakChi2_max[i - 1],
+                                     &_peakChi2_tot[i - 1] );
 
     }
 
-
-    for( int i = 1; i <= _h0.size(); ++i ) {
-
-        __pc_chisq_MOD_print_cov_mh_to_file( &i );
-
-    }
-
-    __pc_chisq_MOD_print_cov_mu_to_file();
+    int dummy;
+    __pc_chisq_MOD_print_cov_mh_to_file( &dummy );
+    __pc_chisq_MOD_print_cov_mu_to_file(        );
 
 }
 
@@ -675,35 +540,171 @@ void Fittino::HiggsSignalsCalculator::AddInputs() {
                     }
                     else if ( node.first == "ChargedHiggsBoson" ) {
 
+                        AddChargedHiggs( node.second );
 
-                        AddChargedHiggs(node.second);
+                    }
+                    else if ( node.first == "NormSM_xs_LEP_hH" ) {
+
+                        AddHiggsPairProductionLEP( node.second );
 
                     }
 
                 }
 
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, *GetConfiguration() ) {
+    AddInput( "BR_t_W_b" );
 
-                    if ( node.first == "NeutralHiggsBoson" ) {
+}
 
-                        AddNeutralHiggsMatrices( node.second );
+void Fittino::HiggsSignalsCalculator::CheckMatrices() {
 
-                    }
+    for ( unsigned int i = 0; i < _h0.size(); ++i ) {
+
+        for ( unsigned int j = 0; j < _h0.size(); ++j ) {
+
+            try {
+
+                GetInput( _h0[i] + "." + _h0[j] + ".NormSM_xs_LEP_hH");
+
+            }
+            catch( const std::out_of_range& exception ) {
+
+                throw ConfigurationException( _name + ": NormSM_xs_LEP_hH missing for h=" + _h0[i] + ", H=" + _h0[j] );
+
+            }
+
+            try {
+
+                GetInput( _h0[i] + "." + _h0[j] + ".BR_h_H_H" );
+
+            }
+            catch( const std::out_of_range& exception ) {
+
+                throw ConfigurationException( _name + ": BR_h_H_H missing for h=" + _h0[i] + ", H=" + _h0[j] );
+
+            }
+
+        }
+
+    }
+
+}
+
+void Fittino::HiggsSignalsCalculator::AddHiggsPairProductionLEP( const boost::property_tree::ptree &ptree ) {
+
+    std::vector<std::string> neutralHiggsBosons;
+
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree ) {
+
+                    if ( node.first != "NeutralHiggsBoson" ) continue;
+
+                    neutralHiggsBosons.push_back( node.second.get_value<std::string>() );
 
                 }
 
-    if ( _hp.size() ) {
+    std::string value = ptree.get<std::string>( "Value" );
 
-        if (!GetConfiguration()->count("BR_tWpb")) {
+    AddInput( neutralHiggsBosons.at( 0 ) + "." + neutralHiggsBosons.at( 1 ) + "." + "NormSM_xs_LEP_hH", value );
 
-            throw ConfigurationException(_name + ": Charged Higgs bosons are used but BR_tWpb is not specified.");
+    if ( neutralHiggsBosons.at( 0 ) == neutralHiggsBosons.at( 1 ) ) return;
+
+    AddInput( neutralHiggsBosons.at( 1 ) + "." + neutralHiggsBosons.at( 0 ) + "." + "NormSM_xs_LEP_hH", value );
+
+}
+
+// todo: review the following 3 functions
+
+void Fittino::HiggsSignalsCalculator::CallHiggsBounds() {
+
+    _globalHiggsBoundsChi2 = RunHiggsBounds();
+
+}
+
+double Fittino::HiggsSignalsCalculator::RunHiggsBounds() {
+
+    // todo: consider using run_higgsbounds_full
+    run_higgsbounds_( &_HBresult, &_channel, &_obsratio, &_ncombined );
+    _HBresult_double = _HBresult;
+    _channel_double  = _channel;
+
+    if( _HBresult < 0 || _HBresult > 1 ) {
+
+        return -1.0;
+
+    }
+
+    _theoryUncertainty1s = 3.;
+    hb_calc_stats_( &_theoryUncertainty1s, &_chi2WithoutTheory, &_chi2WithTheory, &_bestChannelChi2 );
+    _bestChannelChi2_double = (double)_bestChannelChi2;
+
+    if( _chi2WithoutTheory < 0. ) {
+
+        return -1.0;
+
+    }
+
+    if( _chi2WithTheory < 0. && _chi2WithoutTheory > 0. ) {
+
+        return -1.0;
+
+    }
+
+    if( _channel != _bestChannelChi2 ) {
+
+        if( _HBresult == 0 ) {
+
+            _chi2WithoutTheory += 10000.;
+            _chi2WithTheory += 10000.;
 
         }
-        else {
 
-            AddInput("BR_tWpb");
+    }
+
+    return _chi2WithTheory;
+
+}
+
+void Fittino::HiggsSignalsCalculator::SetupMeasuredValues() {
+
+    // todo: do the smearing here. Also set mass shift
+
+    for ( int i = 1; i <= _npeakmu; ++i ) {
+
+        double measuredValue_mh = -1.e9;
+        double measuredValue_mu = -1.e9;
+        int obsID = 0;
+        __io_MOD_get_id_of_peakobservable( &i, &obsID );
+        std::ostringstream ss_index;
+        ss_index << obsID;
+        std::string s_index = ss_index.str();
+        std::string fittinoName_mh = "HiggsSignalsObservable_" + s_index + "_mh";
+        std::string fittinoName_mu = "HiggsSignalsObservable_" + s_index + "_mu";
+
+        // get measured values from the model
+        for ( int j = 0; j < _model->GetObservableVector()->size(); ++j ) {
+
+            if ( _model->GetObservableVector()->at(j)->GetPrediction()->GetName() == fittinoName_mh ) {
+
+                measuredValue_mh = _model->GetObservableVector()->at(j)->GetMeasuredValue();
+
+            }
+
+            if ( _model->GetObservableVector()->at(j)->GetPrediction()->GetName() == fittinoName_mu ) {
+
+                measuredValue_mu = _model->GetObservableVector()->at(j)->GetMeasuredValue();
+
+            }
 
         }
+
+        // test if all observable were acutally defined
+        if ( measuredValue_mh < -1.e8 || measuredValue_mu < -1.e8 ) {
+
+            throw ConfigurationException( "Incomplete set of HiggsSignals Observables: Missing at least one (mu, mh) for HiggsSignalsObservable_" + s_index );
+
+        }
+
+        // assign the new values
+        assign_toyvalues_to_peak_( &obsID, &measuredValue_mu, &measuredValue_mh );
 
     }
 

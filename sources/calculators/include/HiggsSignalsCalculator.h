@@ -113,10 +113,6 @@ namespace Fittino {
       // argument for higgssignals_neutral_input_massuncertainty
       std::vector<double> _massUncertainty_HS_neutral;
 
-      // for HB shift the higgs mass prediction instead of the measurement, when doing toys
-      std::vector<double>  _mass_h_neutral_shift;
-      std::vector<double>  _mass_h_charged_shift;
-
       // arguments for get_peakinfo_from_hsresults, in the order required by this function
       std::vector<double> _peakInfoFromHSresults_mupred;
       std::vector<double> _peakInfoFromHSresults_domH;
@@ -128,12 +124,32 @@ namespace Fittino {
       std::vector<double> _peakChi2_max;
       std::vector<double> _peakChi2_tot;
 
+      // for HB shift the higgs mass prediction instead of the measurement, when doing toys
+      std::vector<double>  _mass_h_neutral_shift;
+      std::vector<double>  _mass_h_charged_shift;
+
       // names of the Higgs bosons
       std::vector<std::string> _h0;
       std::vector<std::string> _hp;
 
+      bool          _runHiggsBounds;
+      int           _mode;
+      int           _npeakmu;
 
-     // todo: review these HB variables:
+    // todo: review these HS variables
+      double        _chi2;
+      double        _chi2_mass_h;
+      double        _chi2_mu;
+      double        _pvalue;
+      double        _R_H_WW;
+      double        _R_H_ZZ;
+      double        _R_H_gaga;
+      double        _R_H_bb;
+      double        _R_H_tautau;
+      double        _R_VH_bb;
+      int           _nobs;
+
+      // todo: review these HB variables:
       double        _globalHiggsBoundsChi2;
       int           _HBresult;
       double        _HBresult_double;
@@ -147,29 +163,13 @@ namespace Fittino {
       int           _bestChannelChi2;
       double        _bestChannelChi2_double;
 
-    // todo: review these HS variables
-      double        _chi2;
-      double        _chi2_mass_h;
-      double        _chi2_mu;
-      double        _pvalue;
-      double        _R_H_WW;
-      double        _R_H_ZZ;
-      double        _R_H_gaga;
-      double        _R_H_bb;
-      double        _R_H_tautau;
-      double        _R_VH_bb;
-      int           _mode;
-      int           _nobs;
-
-      int           _npeakmu;
-      bool          _runHiggsBounds;
-
      private:
 
       void         AddInputs();
       void         AddChargedHiggs( const boost::property_tree::ptree &ptree );
       void         AddNeutralHiggs( const boost::property_tree::ptree &ptree );
-      void         AddNeutralHiggsMatrices( const boost::property_tree::ptree &ptree );
+      void         AddHiggsPairProductionLEP( const boost::property_tree::ptree &ptree );
+      void         CheckMatrices();
       void         AddOutputs();
       void         DetermineNumberOfObservables();
       void         InitializeAndSetup();
