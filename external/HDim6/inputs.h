@@ -103,30 +103,20 @@ struct effinputs {
   double ngg;
   double nb;
   double nw;
-  double nbw;
 
   double np1;
   double np2;
   double np4;
-
-  double ntop;
-  double nbot;
-  double ntau;
 
   double rbb;
   double rww;
   double rgg;
   double rb;
   double rw;
-  double rbw;
 
   double rp1;
   double rp2;
   double rp4;
-
-  double rtop;
-  double rbot;
-  double rtau;
 
   // set to one to neglect effects of unitarity_coefficients
   int override_unitarity;

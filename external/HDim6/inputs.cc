@@ -120,26 +120,18 @@ effinputs::effinputs() {
     this->ngg  = 0;
     this->nb   = 0;
     this->nw   = 0;
-    this->nbw  = 0;
     this->np1  = 0;
     this->np2  = 0;
     this->np4  = 0;
-    this->ntop = 0;
-    this->nbot = 0;
-    this->ntau = 0;
 
     this->rbb  = 1;
     this->rww  = 1;
     this->rgg  = 1;
     this->rb   = 1;
     this->rw   = 1;
-    this->rbw  = 1;
     this->rp1  = 1;
     this->rp2  = 1;
     this->rp4  = 1;
-    this->rtop = 1;
-    this->rbot = 1;
-    this->rtau = 1;
 
 }
 

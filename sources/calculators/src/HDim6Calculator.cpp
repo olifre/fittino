@@ -414,12 +414,8 @@ void Fittino::HDim6Calculator::ConfigureInput() {
     _effvalues->rgg  = TMath::Power( GetInput( "r_GG"    ), 2 );
     _effvalues->rbb  = TMath::Power( GetInput( "r_BB"    ), 2 );
     _effvalues->rww  = TMath::Power( GetInput( "r_WW"    ), 2 );
-    _effvalues->rbw  = TMath::Power( GetInput( "r_BW"    ), 2 );
     _effvalues->rb   = TMath::Power( GetInput( "r_B"     ), 2 );
     _effvalues->rw   = TMath::Power( GetInput( "r_W"     ), 2 );
-    _effvalues->rtop = TMath::Power( GetInput( "r_t"     ), 2 );
-    _effvalues->rbot = TMath::Power( GetInput( "r_b"     ), 2 );
-    _effvalues->rtau = TMath::Power( GetInput( "r_tau"   ), 2 );
     _effvalues->rp1  = TMath::Power( GetInput( "r_Phi_1" ), 2 );
     _effvalues->rp2  = TMath::Power( GetInput( "r_Phi_2" ), 2 );
     _effvalues->rp4  = TMath::Power( GetInput( "r_Phi_4" ), 2 );
@@ -427,12 +423,8 @@ void Fittino::HDim6Calculator::ConfigureInput() {
     _effvalues->ngg  = GetInput( "n_GG" );
     _effvalues->nbb  = GetInput( "n_BB" );
     _effvalues->nww  = GetInput( "n_WW" );
-    _effvalues->nbw  = GetInput( "n_BW" );
     _effvalues->nb   = GetInput( "n_B" );
     _effvalues->nw   = GetInput( "n_W" );
-    _effvalues->ntop = GetInput( "n_t" );
-    _effvalues->nbot = GetInput( "n_b" );
-    _effvalues->ntau = GetInput( "n_tau" );
     _effvalues->np1  = GetInput( "n_Phi_1" );
     _effvalues->np2  = GetInput( "n_Phi_2" );
     _effvalues->np4  = GetInput( "n_Phi_4" );
