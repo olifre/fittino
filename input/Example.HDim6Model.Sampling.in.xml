@@ -138,12 +138,8 @@
           <r_GG>1000.</r_GG>
           <r_BB>1000.</r_BB>
           <r_WW>1000.</r_WW>
-          <r_BW>1000.</r_BW>
           <r_B>1000.</r_B>
           <r_W>1000.</r_W>
-          <r_t>1000.</r_t>
-          <r_b>1000.</r_b>
-          <r_tau>1000.</r_tau>
           <r_Phi_1>1000.</r_Phi_1>
           <r_Phi_2>1000.</r_Phi_2>
           <r_Phi_4>1000.</r_Phi_4>
@@ -151,12 +147,8 @@
           <n_GG>1.</n_GG>
           <n_BB>1.</n_BB>
           <n_WW>1.</n_WW>
-          <n_BW>1.</n_BW>
           <n_B>1.</n_B>
           <n_W>1.</n_W>
-          <n_t>1.</n_t>
-          <n_b>1.</n_b>
-          <n_tau>1.</n_tau>
           <n_Phi_1>1.</n_Phi_1>
           <n_Phi_2>1.</n_Phi_2>
           <n_Phi_4>1.</n_Phi_4>

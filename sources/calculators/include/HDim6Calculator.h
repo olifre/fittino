@@ -50,7 +50,6 @@ namespace Fittino {
        */
       virtual       ~HDim6Calculator();
       virtual void  CalculatePredictions();
-      virtual void  Initialize();
 
     private:
       bool          _calculate_Gamma_hWW ;

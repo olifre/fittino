@@ -77,12 +77,8 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
     AddInput("r_GG");
     AddInput("r_BB");
     AddInput("r_WW");
-    AddInput("r_BW");
     AddInput("r_B");
     AddInput("r_W");
-    AddInput("r_t");
-    AddInput("r_b");
-    AddInput("r_tau");
     AddInput("r_Phi_1");
     AddInput("r_Phi_2");
     AddInput("r_Phi_4");
@@ -90,12 +86,8 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
     AddInput("n_GG");
     AddInput("n_BB");
     AddInput("n_WW");
-    AddInput("n_BW");
     AddInput("n_B");
     AddInput("n_W");
-    AddInput("n_t");
-    AddInput("n_b");
-    AddInput("n_tau");
     AddInput("n_Phi_1");
     AddInput("n_Phi_2");
     AddInput("n_Phi_4");
@@ -225,6 +217,14 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
 
                 }
 
+    if ( _pdfDirectory != "" ) {
+
+        LHAPDF::setPDFPath( _pdfDirectory );
+
+    }
+
+    LHAPDF::initPDFSet( _pdfSet, LHAPDF::LHGRID, 0 );
+
 }
 
 Fittino::HDim6Calculator::~HDim6Calculator() {
@@ -251,18 +251,6 @@ void Fittino::HDim6Calculator::CalculatePredictions() {
     _f_g  =  - _effvalues->fgg * 8 * TMath::Pi() / ( _smvalues->alphas ); // f_g as defined in 1211.4580v4.pdf eq 38 but without factor of vev ( because of units ).
 
     CallFunction();
-
-}
-
-void Fittino::HDim6Calculator::Initialize() {
-
-    if ( _pdfDirectory != "" ) {
-
-        LHAPDF::setPDFPath( _pdfDirectory );
-
-    }
-
-    LHAPDF::initPDFSet( _pdfSet, LHAPDF::LHGRID, 0 );
 
 }
 
