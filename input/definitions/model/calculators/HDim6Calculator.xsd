@@ -29,24 +29,16 @@
     <xs:element name="r_GG"                     type="xs:double"         />
     <xs:element name="r_BB"                     type="xs:double"         />
     <xs:element name="r_WW"                     type="xs:double"         />
-    <xs:element name="r_BW"                     type="xs:double"         />
     <xs:element name="r_B"                      type="xs:double"         />
     <xs:element name="r_W"                      type="xs:double"         />
-    <xs:element name="r_t"                      type="xs:double"         />
-    <xs:element name="r_b"                      type="xs:double"         />
-    <xs:element name="r_tau"                    type="xs:double"         />
     <xs:element name="r_Phi_1"                  type="xs:double"         />
     <xs:element name="r_Phi_2"                  type="xs:double"         />
     <xs:element name="r_Phi_4"                  type="xs:double"         />
     <xs:element name="n_GG"                     type="xs:double"         />
     <xs:element name="n_BB"                     type="xs:double"         />
     <xs:element name="n_WW"                     type="xs:double"         />
-    <xs:element name="n_BW"                     type="xs:double"         />
     <xs:element name="n_B"                      type="xs:double"         />
     <xs:element name="n_W"                      type="xs:double"         />
-    <xs:element name="n_t"                      type="xs:double"         />
-    <xs:element name="n_b"                      type="xs:double"         />
-    <xs:element name="n_tau"                    type="xs:double"         />
     <xs:element name="n_Phi_1"                  type="xs:double"         />
     <xs:element name="n_Phi_2"                  type="xs:double"         />
     <xs:element name="n_Phi_4"                  type="xs:double"         />
