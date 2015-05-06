@@ -49,8 +49,8 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
       _pdfDirectory( "" ),
       _smvalues ( new sminputs() ) {
 
-     _name = ptree.get<std::string>( "Name", "HDim6Calculator" );
-     _tag = ptree.get<std::string>( "Tag" , "HDim6" );
+    SetName( "HDim6Calculator" );
+    SetTag( "HDim6" );
 
     _effvalues->override_unitarity = ! ptree.get<bool>( "UseDampingCoefficients" );
 
@@ -60,51 +60,59 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
     Messenger::GetInstance()<<Messenger::ALWAYS<<Messenger::Endl;
     Messenger::GetInstance()<<Messenger::ALWAYS<<"    UseDampingCoefficients: "<<!_effvalues->override_unitarity<<Messenger::Endl;
 
-    AddInput( "Mass_h" );
+    AddInput("Mass_h");
 
-    AddInput( "f_GG" );
-    AddInput( "f_BB" );
-    AddInput( "f_WW" );
-    AddInput( "f_B" );
-    AddInput( "f_W" );
-    AddInput( "f_t" );
-    AddInput( "f_b" );
-    AddInput( "f_tau" );
-    AddInput( "f_Phi_1" );
-    AddInput( "f_Phi_2" );
-    AddInput( "f_Phi_4" );
+    AddInput("f_GG");
+    AddInput("f_BB");
+    AddInput("f_WW");
+    AddInput("f_B");
+    AddInput("f_W");
+    AddInput("f_t");
+    AddInput("f_b");
+    AddInput("f_tau");
+    AddInput("f_Phi_1");
+    AddInput("f_Phi_2");
+    AddInput("f_Phi_4");
 
-    AddInput( "r_GG", "1" );
-    AddInput( "r_BB", "1" );
-    AddInput( "r_WW", "1" );
-    AddInput( "r_BW", "1" );
-    AddInput( "r_B", "1" );
-    AddInput( "r_W", "1" );
-    AddInput( "r_t", "1" );
-    AddInput( "r_b", "1" );
-    AddInput( "r_tau", "1" );
-    AddInput( "r_Phi_1", "1" );
-    AddInput( "r_Phi_2", "1" );
-    AddInput( "r_Phi_4", "1" );
+    AddInput("r_GG");
+    AddInput("r_BB");
+    AddInput("r_WW");
+    AddInput("r_BW");
+    AddInput("r_B");
+    AddInput("r_W");
+    AddInput("r_t");
+    AddInput("r_b");
+    AddInput("r_tau");
+    AddInput("r_Phi_1");
+    AddInput("r_Phi_2");
+    AddInput("r_Phi_4");
 
-    AddInput( "n_GG", "0" );
-    AddInput( "n_BB", "0" );
-    AddInput( "n_WW", "0" );
-    AddInput( "n_BW", "0" );
-    AddInput( "n_B", "0" );
-    AddInput( "n_W", "0" );
-    AddInput( "n_t", "0" );
-    AddInput( "n_b", "0" );
-    AddInput( "n_tau", "0" );
-    AddInput( "n_Phi_1", "0" );
-    AddInput( "n_Phi_2", "0" );
-    AddInput( "n_Phi_4", "0" );
+    AddInput("n_GG");
+    AddInput("n_BB");
+    AddInput("n_WW");
+    AddInput("n_BW");
+    AddInput("n_B");
+    AddInput("n_W");
+    AddInput("n_t");
+    AddInput("n_b");
+    AddInput("n_tau");
+    AddInput("n_Phi_1");
+    AddInput("n_Phi_2");
+    AddInput("n_Phi_4");
+
+    AddOutput( "vev"       );
+    AddOutput( "sin2theta" );
+    AddOutput( "Mass_W"    );
+
+    SetOutput( "vev"      , _smvalues->vev                   );
+    SetOutput( "sin2theta", TMath::Power( _smvalues->sw, 2 ) );
+    SetOutput( "Mass_W"   , _smvalues->mw                    );
 
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_g_g",         "",      _normSM_Gamma_hgg     ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_tau_tau",     "",      _normSM_Gamma_htautau ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_mu_mu",       "",      _normSM_Gamma_hmumu   ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_gamma_gamma", "",      _normSM_Gamma_hgaga   ) );
-    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_Z_ga",        "",      _normSM_Gamma_hZga    ) );
+    AddQuantity( new SimplePrediction( "NormSM_Gamma_h_Z_gamma",     "",      _normSM_Gamma_hZga    ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_b_b",         "",      _normSM_Gamma_hbb     ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_c_c",         "",      _normSM_Gamma_hcc     ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_s_s",         "",      _normSM_Gamma_hss     ) );
@@ -166,13 +174,10 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
                         double energy = node.second.get<double>( "Value" );
 
                         std::string energyname = node.second.get<std::string>( "Name" );
-                        std::string xstag = "NormSM_xs_";
-                        std::string errortag = "Error_xs_";
-                        std::string chi2tag = "Chi2_xs_";
 
-                        xstag += energyname + "_";
-                        errortag += energyname + "_";
-                        chi2tag += energyname + "_";
+                        std::string xstag   ( "NormSM_xs_LHC_" + energyname + "_" );
+                        std::string errortag( "Error_xs_"  + energyname + "_" );
+                        std::string chi2tag ( "Chi2_xs_"   + energyname + "_" );
 
                         _energies.at( iEnergy ) = energy;
                         Messenger::GetInstance()<<Messenger::ALWAYS<<"    CenterOfMassEnergy: "<<energy<<" GeV"<<Messenger::Endl;
@@ -241,8 +246,9 @@ void Fittino::HDim6Calculator::CalculatePredictions() {
 
     messenger << Messenger::INFO << "  Using the following input:"<< Messenger::Endl;
     messenger << Messenger::Endl;
-
     PrintInput();
+
+    _f_g  =  - _effvalues->fgg * 8 * TMath::Pi() / ( _smvalues->alphas ); // f_g as defined in 1211.4580v4.pdf eq 38 but without factor of vev ( because of units ).
 
     CallFunction();
 
@@ -430,8 +436,5 @@ void Fittino::HDim6Calculator::ConfigureInput() {
     _effvalues->np1  = GetInput( "n_Phi_1" );
     _effvalues->np2  = GetInput( "n_Phi_2" );
     _effvalues->np4  = GetInput( "n_Phi_4" );
-
-    _f_g  =  - _effvalues->fgg * 8 * TMath::Pi() / ( _smvalues->alphas ); // f_g as defined in 1211.4580v4.pdf eq 38 but without factor of vev ( because of units ).
-
 
 };
