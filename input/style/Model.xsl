@@ -306,15 +306,26 @@
       </table>
       <p>
         <table>
-          <xsl:for-each select="*[not(self::Name)]">
-            <!-- Create a new row for every configuration item -->
-            <tr>
-              <td></td><td></td><td><xsl:value-of select="local-name()"/></td><td class="cell-value"><xsl:value-of select="."/></td>
-            </tr>
-          </xsl:for-each>
+          <xsl:apply-templates/>
         </table>
       </p>
     </p>
+  </xsl:template>
+
+  <xsl:template match="*[ not(*) and ancestor::*[substring(name(), string-length(name()) - 9) = 'Calculator' ] ]">
+  <tr>
+      <td></td><td></td><td><xsl:value-of select="local-name()"/></td><td class="cell-value"><xsl:value-of select="."/></td>
+    </tr>
+  </xsl:template>
+
+  <xsl:template match="*[ * and ancestor::*[substring(name(), string-length(name()) - 9) = 'Calculator' ] ]">
+  <tr>
+      <td></td><td></td><td><xsl:value-of select="local-name()"/></td><td>
+      <table>
+        <xsl:apply-templates/>
+      </table>
+    </td>
+    </tr>
   </xsl:template>
 
 </xsl:stylesheet>
