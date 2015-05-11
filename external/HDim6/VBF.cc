@@ -126,9 +126,9 @@ double udcsb_jjh( double * x, size_t dim, void * params )
       };
       if( !(pdg[i]%2) && !(pdg[j]%2)) // Beide sind up-Quarks, aber nicht notwendigerweise gleich
 	{
-	  for( int k = 0; k < 3; k++ ) // Summiert über das erste mögliche d-quark im Endzustand
+	  for( int k = 0; k < 3; k++ ) // Summiert ï¿½ber das erste mï¿½gliche d-quark im Endzustand
 	    {
-	      for( int l = 0; l < 3; l++) // Summiert über das zweite mögliche d-Quark im Endzustand
+	      for( int l = 0; l < 3; l++) // Summiert ï¿½ber das zweite mï¿½gliche d-Quark im Endzustand
 		{
 		  double ckm1 = ckm[(pdg[i]==4)*3+k];
 		  double ckm2 = ckm[(pdg[j]==4)*3+k];
@@ -273,9 +273,9 @@ double ud_jjh( double * x, size_t dim, void * params )
       };
       if( !(pdg[i]%2) && !(pdg[j]%2)) // Beide sind up-Quarks, aber nicht notwendigerweise gleich
 	{
-	  for( int k = 0; k < 3; k++ ) // Summiert über das erste mögliche d-quark im Endzustand
+	  for( int k = 0; k < 3; k++ ) // Summiert ï¿½ber das erste mï¿½gliche d-quark im Endzustand
 	    {
-	      for( int l = 0; l < 3; l++) // Summiert über das zweite mögliche d-Quark im Endzustand
+	      for( int l = 0; l < 3; l++) // Summiert ï¿½ber das zweite mï¿½gliche d-Quark im Endzustand
 		{
 		  double ckm1 = ckm[(pdg[i]==4)*3+k];
 		  double ckm2 = ckm[(pdg[j]==4)*3+k];
@@ -408,7 +408,7 @@ par.eff.fp4=0;
 //printf("ALEX x14 x24 x13 x23 x34: %f| %f| %f| %f| %f \n",x14, x24, x13, x23, x34);
 //printf("->SQ x14 x24 x13 x23 x34: %f| %f| %f| %f| %f \n",sqrt(x14), sqrt(x24), sqrt(x13), sqrt(x23), sqrt(x34));
 
-  double vbfdampingscale=fmax(2*abs(x13),2*abs(x24));
+  double vbfdampingscale=fmax(2*fabs(x13),2*fabs(x24));
 
   double g1hzz = g1hzz_( &par.sm, &par.eff, vbfdampingscale );
   double g2hzz = g2hzz_( &par.sm, &par.eff, vbfdampingscale ); 
@@ -496,7 +496,7 @@ par.eff.fp4=0;
   double x23	= k40*E2 + k4v*pi*ctheta;
   double x34	= k40*k30- k3v*k4v*cXi;
 
-  double vbfdampingscale=fmax(2*abs(x13),2*abs(x24));
+  double vbfdampingscale=fmax(2*fabs(x13),2*fabs(x24));
 
   double g1hzz = g1hzz_( &par.sm, &par.eff, vbfdampingscale );
   double g2hzz = g2hzz_( &par.sm, &par.eff, vbfdampingscale );
@@ -582,7 +582,7 @@ par.eff.fp4=0;
   double x23	= k40*E2 + k4v*pi*ctheta;
   double x34	= k40*k30- k3v*k4v*cXi;
 
-  double vbfdampingscale=fmax(2*abs(x13),2*abs(x24));
+  double vbfdampingscale=fmax(2*fabs(x13),2*fabs(x24));
 
   double g1hzz = g1hzz_( &par.sm, &par.eff, vbfdampingscale );
   double g2hzz = g2hzz_( &par.sm, &par.eff, vbfdampingscale );
@@ -667,7 +667,7 @@ par.eff.fp4=0;
   double x23	= k40*E2 + k4v*pi*ctheta;
   double x34	= k40*k30- k3v*k4v*cXi;
 
-  double vbfdampingscale=fmax(2*abs(x13),2*abs(x24));
+  double vbfdampingscale=fmax(2*fabs(x13),2*fabs(x24));
 
   double g1hww = g1hww_( &par.sm, &par.eff, vbfdampingscale );
   double g2hww = g2hww_( &par.sm, &par.eff, vbfdampingscale );
@@ -760,7 +760,7 @@ par.eff.fp4=0;
   double x23	= k40*E2 + k4v*pi*ctheta;
   double x34	= k40*k30- k3v*k4v*cXi;
 
-  double vbfdampingscale=fmax(2*abs(x13),2*abs(x24));
+  double vbfdampingscale=fmax(2*fabs(x13),2*fabs(x24));
 
   double g1hww = g1hww_( &par.sm, &par.eff, vbfdampingscale );
   double g2hww = g2hww_( &par.sm, &par.eff, vbfdampingscale );
