@@ -67,8 +67,8 @@ void Fittino::TestModelBase::Initialize() {
 
 }
 
-double Fittino::TestModelBase::Evaluate() {
+void Fittino::TestModelBase::Evaluate() {
 
-    return this->TestModelFunction();
+    _chi2 = this->TestModelFunction();
 
 }

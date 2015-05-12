@@ -56,8 +56,7 @@ namespace Fittino {
        */
       ~ModelBase();
       /*!
-       *  Returns the chi2 of the comparison between the predicted observables of the model and\n
-       *  the measured observables. In the case of a test model simply returns the function value.
+       *  \todo: Should just do what it says...
        */
       double                                              GetChi2();
       /*!
@@ -117,7 +116,9 @@ namespace Fittino {
       /* Currently needed by some calculators, should be removed! */
       std::vector<Observable*>                            _observableVector;
 
-    protected:
+    double                                              _chi2;
+
+  protected:
       /*!
        *  Adds a prediction to the model.
        */
@@ -137,10 +138,6 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-      /*!
-       *  Value returned by Evaluate().
-       */
-      double                                              _chi2;
       /*!
        *  Stores the parameters.
        */
@@ -167,11 +164,7 @@ namespace Fittino {
       void                                                InitializeParameters( boost::property_tree::ptree& ptree );
 
     private:
-      /*!
-       *  Evaluates the chi2 function.
-       *  \todo: Discuss this function, should return value of Chi2Quantity and set error branch.
-       */
-      virtual double                                      Evaluate();
+      virtual void Evaluate();
 
       /*! \endcond UML */
 

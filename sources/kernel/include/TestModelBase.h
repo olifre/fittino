@@ -57,7 +57,7 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-      virtual double                             Evaluate();
+      virtual void Evaluate();
       virtual double                             TestModelFunction() = 0;
 
       /*! \endcond UML */

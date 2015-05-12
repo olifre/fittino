@@ -61,7 +61,7 @@ double Fittino::ModelBase::GetChi2() {
 
     if ( evaluate ) {
 
-        _chi2 = Evaluate();
+        Evaluate();
 
     }
 
@@ -245,7 +245,7 @@ void Fittino::ModelBase::InitializeParameters( boost::property_tree::ptree& ptre
 
 }
 
-double Fittino::ModelBase::Evaluate() {
+void Fittino::ModelBase::Evaluate() {
 
     try {
 
@@ -258,10 +258,11 @@ double Fittino::ModelBase::Evaluate() {
     }
     catch ( const CalculatorException& exception ) {
 
-        return std::numeric_limits<double>::max();
+        _chi2 = std::numeric_limits<double>::max();
+        return;
 
     }
 
-    return 0;
+    _chi2 = 0;
 
 }

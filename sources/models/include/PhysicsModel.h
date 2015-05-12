@@ -94,7 +94,7 @@ namespace Fittino {
       bool                                       _performToyRun;
 
     private:
-      virtual double                             Evaluate();
+      virtual void Evaluate();
 
       void                                       InitializeObservables( const boost::property_tree::ptree& ptree );
       void                                       InitializeCovarianceMatrix( const boost::property_tree::ptree& ptree );

@@ -145,7 +145,7 @@ void Fittino::PhysicsModel::AddChi2Contribution( const std::string& name ) {
 }
 
 
-double Fittino::PhysicsModel::Evaluate() {
+void Fittino::PhysicsModel::Evaluate() {
 
     _calculator = "";
     _error      = "";
@@ -165,7 +165,8 @@ double Fittino::PhysicsModel::Evaluate() {
         _calculator = exception.GetCalculator();
         _error       = exception.GetError();
 
-        return std::numeric_limits<double>::max();
+        _chi2 = std::numeric_limits<double>::max();
+        return;
 
     }
 
@@ -192,7 +193,7 @@ double Fittino::PhysicsModel::Evaluate() {
 
     // Calculate and return the resulting chi2.
 
-    return PhysicsModel::CalculateChi2();
+    _chi2 = PhysicsModel::CalculateChi2();
 
 }
 
