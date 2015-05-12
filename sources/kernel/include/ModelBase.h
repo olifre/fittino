@@ -117,7 +117,7 @@ namespace Fittino {
 
       double                                              _chi2;
 
-  protected:
+    protected:
       /*!
        *  Adds a prediction to the model.
        */
@@ -137,6 +137,7 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
+      double                                              _errorCode;
       /*!
        *  Stores the parameters.
        */

@@ -32,7 +32,12 @@ Fittino::ModelBase::ModelBase( boost::property_tree::ptree& ptree )
       _ptree ( ptree ) {
 
     InitializeParameters( ptree );
+
+    //todo initialize the last evaluated parameter values
+
     InitializeCalculators( ptree );
+
+    //todo add errorcode and chi2 quantity with configurable names
 
 }
 
@@ -46,7 +51,7 @@ Fittino::ModelBase::~ModelBase() {
 
 double Fittino::ModelBase::GetChi2() {
 
-    // todo remove the Update() call
+    // todo remove the Update() call when all tools call Update() properly
     Update();
     return _chi2;
 
@@ -230,6 +235,8 @@ void Fittino::ModelBase::InitializeParameters( boost::property_tree::ptree& ptre
 
 void Fittino::ModelBase::Evaluate() {
 
+    _errorCode = 0;
+
     try {
 
         for ( unsigned int i = 0; i < _collectionOfCalculators.GetNumberOfElements(); ++i ) {
@@ -241,17 +248,20 @@ void Fittino::ModelBase::Evaluate() {
     }
     catch ( const CalculatorException& exception ) {
 
-        _chi2 = std::numeric_limits<double>::max();
+        _errorCode = 1;
+        _chi2 = std::numeric_limits<double>::infinity();
         return;
 
     }
 
+    // todo: add chi2 contributions
     _chi2 = 0;
 
 }
 
 void Fittino::ModelBase::Update() {
 
+    // todo: When all calculators are properly initialized, this should be decided by comparing to the last evaluated parameter point
     bool evaluate = false;
 
     for ( unsigned int i = 0; i < GetNumberOfParameters(); i++ ) {
