@@ -55,9 +55,7 @@ namespace Fittino {
        *  Standard destructor.
        */
       ~ModelBase();
-      /*!
-       *  \todo: Should just do what it says...
-       */
+
       double                                              GetChi2();
       /*!
        *  Returns the number of parameters of the model.
@@ -86,6 +84,7 @@ namespace Fittino {
 
     public:
       virtual void                                        PrintStatus() const;
+      void                                                Update();
       /*!
        *  Returns a pointer to a copy of the model.
        *  \todo Discuss what this function should actually do...
@@ -116,7 +115,7 @@ namespace Fittino {
       /* Currently needed by some calculators, should be removed! */
       std::vector<Observable*>                            _observableVector;
 
-    double                                              _chi2;
+      double                                              _chi2;
 
   protected:
       /*!

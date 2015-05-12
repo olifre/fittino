@@ -46,25 +46,8 @@ Fittino::ModelBase::~ModelBase() {
 
 double Fittino::ModelBase::GetChi2() {
 
-    bool evaluate = false;
-
-    for ( unsigned int i = 0; i < GetNumberOfParameters(); i++ ) {
-
-        if ( GetCollectionOfParameters().At( i )->IsUpdated() ) {
-
-            evaluate = true;
-            GetCollectionOfParameters().At( i )->SetUpdated( false );
-
-        }
-
-    }
-
-    if ( evaluate ) {
-
-        Evaluate();
-
-    }
-
+    // todo remove the Update() call
+    Update();
     return _chi2;
 
 }
@@ -264,5 +247,28 @@ void Fittino::ModelBase::Evaluate() {
     }
 
     _chi2 = 0;
+
+}
+
+void Fittino::ModelBase::Update() {
+
+    bool evaluate = false;
+
+    for ( unsigned int i = 0; i < GetNumberOfParameters(); i++ ) {
+
+        if ( GetCollectionOfParameters().At( i )->IsUpdated() ) {
+
+            evaluate = true;
+            GetCollectionOfParameters().At( i )->SetUpdated( false );
+
+        }
+
+    }
+
+    if ( evaluate ) {
+
+        Evaluate();
+
+    }
 
 }
