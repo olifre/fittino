@@ -4,7 +4,7 @@
 #include <fstream>
 #include <boost/algorithm/string.hpp>
 
-
+#include "ModelBase.h"
 #include "NLLFastCalculator.h"
 #include "Executor.h"
 
@@ -78,13 +78,76 @@ Fittino::NLLFastCalculator::~NLLFastCalculator() {
 
 void Fittino::NLLFastCalculator::CalculatePredictions() {
 
-  
+  double G = _model->GetCollectionOfQuantities().At("SPheno_Mass_~g")->GetValue();
+  std::string g;
+  g = boost::lexical_cast<std::string>(G);
+  std::cout << "SPheno_Mass_~g: " << g << std::endl;
+
+  double T1 = _model->GetCollectionOfQuantities().At("SPheno_Mass_~t1")->GetValue();
+  std::string t1;
+  t1 = boost::lexical_cast<std::string>(T1);
+  std::cout << "SPheno_Mass_~t1: " << t1 << std::endl;
+
+  double T2 = _model->GetCollectionOfQuantities().At("SPheno_Mass_~t2")->GetValue();
+  std::string t2;
+  t2 = boost::lexical_cast<std::string>(T2);
+  std::cout << "SPheno_Mass_~t2: " << t2 << std::endl;
+
+  double B1 = _model->GetCollectionOfQuantities().At("SPheno_Mass_~b1")->GetValue();
+  std::string b1;
+  b1 = boost::lexical_cast<std::string>(B1);
+  std::cout << "SPheno_Mass_~b1: " << b1 << std::endl;
+
+  double B2 = _model->GetCollectionOfQuantities().At("SPheno_Mass_~b2")->GetValue();
+  std::string b2;
+  b2 = boost::lexical_cast<std::string>(B2);
+  std::cout << "SPheno_Mass_~b2: " << b2 << std::endl;
+
+  double CR = _model->GetCollectionOfQuantities().At("SPheno_Mass_~cR")->GetValue();
+  std::string cR;
+  cR = boost::lexical_cast<std::string>(CR);
+  std::cout << "SPheno_Mass_~cR: " << cR << std::endl;
+
+  double CL = _model->GetCollectionOfQuantities().At("SPheno_Mass_~cL")->GetValue();
+  std::string cL;
+  cL = boost::lexical_cast<std::string>(CL);
+  std::cout << "SPheno_Mass_~cL: " << cL << std::endl;
+
+  double SR = _model->GetCollectionOfQuantities().At("SPheno_Mass_~sR")->GetValue();
+  std::string sR;
+  sR = boost::lexical_cast<std::string>(SR);
+  std::cout << "SPheno_Mass_~sR: " << sR << std::endl;
+
+  double SL = _model->GetCollectionOfQuantities().At("SPheno_Mass_~sL")->GetValue();
+  std::string sL;
+  sL = boost::lexical_cast<std::string>(SL);
+  std::cout << "SPheno_Mass_~sL: " << sL << std::endl;
+
+  double DR = _model->GetCollectionOfQuantities().At("SPheno_Mass_~dR")->GetValue();
+  std::string dR;
+  dR = boost::lexical_cast<std::string>(DR);
+  std::cout << "SPheno_Mass_~dR: " << dR << std::endl;
+
+  double DL = _model->GetCollectionOfQuantities().At("SPheno_Mass_~dL")->GetValue();
+  std::string dL;
+  dL = boost::lexical_cast<std::string>(DL);
+  std::cout << "SPheno_Mass_~dL: " << dL << std::endl;
+
+  double UR = _model->GetCollectionOfQuantities().At("SPheno_Mass_~uR")->GetValue();
+  std::string uR;
+  uR = boost::lexical_cast<std::string>(UR);
+  std::cout << "SPheno_Mass_~uR: " << uR << std::endl;
+
+  double UL = _model->GetCollectionOfQuantities().At("SPheno_Mass_~uL")->GetValue();
+  std::string uL;
+  uL = boost::lexical_cast<std::string>(UL);
+  std::cout << "SPheno_Mass_~uL: " << uL << std::endl;
 
   Executor executorGG("/lustre/fittino/group/external/SL6/NLL-fast/NLL-fast-2.1/nllfast-2.1", "nllfast_gg");
   executorGG.AddArgument("gg");
   executorGG.AddArgument("cteq");
-  executorGG.AddArgument("500");
-  executorGG.AddArgument("500");
+  executorGG.AddArgument( g );
+  executorGG.AddArgument( g );
   executorGG.Execute();
 
   Executor executorSB("/lustre/fittino/group/external/SL6/NLL-fast/NLL-fast-2.1/nllfast-2.1", "nllfast_sb");
@@ -105,7 +168,7 @@ void Fittino::NLLFastCalculator::CalculatePredictions() {
   executorSG.AddArgument("sg");
   executorSG.AddArgument("cteq");
   executorSG.AddArgument("500");
-  executorSG.AddArgument("500");
+  executorSG.AddArgument( g );
   executorSG.Execute();
 
 
