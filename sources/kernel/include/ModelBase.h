@@ -36,6 +36,7 @@ namespace Fittino {
   class CalculatorBase;
   class ModelParameter;
   class PredictionBase;
+  class FormulaQuantity;
 
   /* Currently needed by some calculators, should be removed! */
   class Observable;
@@ -143,6 +144,7 @@ namespace Fittino {
        */
       Collection<ModelParameter*>                         _collectionOfParameters;
       Collection<const Quantity*>                         _collectionOfQuantities;
+      std::vector<FormulaQuantity*>                       _chi2Contributions;
 
     private:
       /*!
@@ -158,9 +160,11 @@ namespace Fittino {
        */
       void                                                AddParameter( ModelParameter* parameter );
       void                                                InitializeCalculators( boost::property_tree::ptree &ptree );
+      void                                                InitializeChi2Contributions();
+
       /*!
-       *  Setup all parameters using a ptree.
-       */
+         *  Setup all parameters using a ptree.
+         */
       void                                                InitializeParameters( boost::property_tree::ptree& ptree );
 
     private:

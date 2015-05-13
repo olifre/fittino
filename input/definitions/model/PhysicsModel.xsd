@@ -14,7 +14,6 @@
       <xs:sequence>
         <xs:element name="Observables"        type="Observables"                                           />
         <xs:element name="CovarianceMatrices" type="CovarianceMatrices"                                    />
-        <xs:element name="Chi2Contribution"   type="xs:string"          minOccurs="0" maxOccurs="unbounded"/>
         <xs:element name="PerformToyRun"      type="xs:boolean"         minOccurs="0"                      />
       </xs:sequence>
     </xs:extension>

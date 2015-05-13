@@ -56,12 +56,13 @@
       </table>
     </p>
     <xsl:apply-templates select="Observables"/>
-      <table>
+    <xsl:apply-templates select="CovarianceMatrices"/>
+    <xsl:apply-templates select="Calculators"/>
+
+    <table>
         <tr><td></td><td><b>Chi2Contributions</b></td></tr>
         <xsl:apply-templates select="Chi2Contribution"/>
       </table>
-    <xsl:apply-templates select="CovarianceMatrices"/>
-    <xsl:apply-templates select="Calculators"/>
   </xsl:template>
   
   <!-- ModelParameters -->

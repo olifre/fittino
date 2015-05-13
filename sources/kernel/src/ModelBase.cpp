@@ -24,6 +24,7 @@
 #include "CalculatorBase.h"
 #include "CalculatorException.h"
 #include "Factory.h"
+#include "FormulaQuantity.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
 
@@ -36,6 +37,8 @@ Fittino::ModelBase::ModelBase( boost::property_tree::ptree& ptree )
     //todo initialize the last evaluated parameter values
 
     InitializeCalculators( ptree );
+
+    InitializeChi2Contributions();
 
     //todo add errorcode and chi2 quantity with configurable names
 
@@ -235,6 +238,7 @@ void Fittino::ModelBase::InitializeParameters( boost::property_tree::ptree& ptre
 
 void Fittino::ModelBase::Evaluate() {
 
+    _chi2 = 0;
     _errorCode = 0;
 
     try {
@@ -254,8 +258,12 @@ void Fittino::ModelBase::Evaluate() {
 
     }
 
-    // todo: add chi2 contributions
-    _chi2 = 0;
+    for ( unsigned int i = 0; i < _chi2Contributions.size(); ++i ) {
+
+        _chi2Contributions[i]->Update();
+        _chi2 += _chi2Contributions[i]->GetValue();
+
+    }
 
 }
 
@@ -278,6 +286,20 @@ void Fittino::ModelBase::Update() {
     if ( evaluate ) {
 
         Evaluate();
+
+    }
+
+}
+
+void Fittino::ModelBase::InitializeChi2Contributions() {
+
+    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, _ptree ) {
+
+        if ( node.first == "Chi2Contribution" ) {
+
+            _chi2Contributions.push_back( new FormulaQuantity( "", node.second.get_value<std::string>(), this ) );
+
+        }
 
     }
 
