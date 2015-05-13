@@ -32,6 +32,9 @@ Fittino::ModelBase::ModelBase( boost::property_tree::ptree& ptree )
     : _name( "" ),
       _ptree ( ptree ) {
 
+    _chi2 = 0;
+    _errorCode = 0;
+
     InitializeParameters( ptree );
 
     //todo initialize the last evaluated parameter values
@@ -295,11 +298,12 @@ void Fittino::ModelBase::InitializeChi2Contributions() {
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, _ptree ) {
 
-        if ( node.first == "Chi2Contribution" ) {
+        if ( node.first != "Chi2Contribution" ) continue;
 
-            _chi2Contributions.push_back( new FormulaQuantity( "", node.second.get_value<std::string>(), this ) );
+        FormulaQuantity* contribution = new FormulaQuantity( "", node.second.get_value<std::string>(), this );
 
-        }
+        _chi2 += contribution->GetValue();
+        _chi2Contributions.push_back( contribution );
 
     }
 
