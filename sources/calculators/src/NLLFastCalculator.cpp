@@ -3,6 +3,7 @@
 #include <boost/lexical_cast.hpp>
 #include <fstream>
 #include <boost/algorithm/string.hpp>
+#include <math.h>
 
 #include "ModelBase.h"
 #include "NLLFastCalculator.h"
@@ -142,6 +143,11 @@ void Fittino::NLLFastCalculator::CalculatePredictions() {
   std::string uL;
   uL = boost::lexical_cast<std::string>(UL);
   std::cout << "SPheno_Mass_~uL: " << uL << std::endl;
+
+  double SQUARK = ((B1 + B2 + CR + CL + SR + SL + DR + DL + UR +UL) / 10);
+  std::string squark;
+  squark = boost::lexical_cast<std::string>(SQUARK);
+  std::cout << "squark_mass: " << squark << std::endl;
 
   Executor executorGG("/lustre/fittino/group/external/SL6/NLL-fast/NLL-fast-2.1/nllfast-2.1", "nllfast_gg");
   executorGG.AddArgument("gg");
