@@ -39,9 +39,10 @@ Fittino::AnalysisTool::AnalysisTool( ModelBase *model, const boost::property_tre
       _metaDataTree           ( new TTree( _metaDataTreeName, _metaDataTreeName ) ),
       _tree                   ( new TTree( _treeName, _treeName ) ) {
 
-    _chi2             = ptree.get<double>      ( "InitialChi2Value",             std::numeric_limits<double>::max() );
-    _iterationCounter = ptree.get<unsigned int>( "InitialIterationCounterValue", 0                                  );
+    _chi2             = ptree.get<double>      ( "InitialChi2Value",             std::numeric_limits<double>::infinity() );
+    _iterationCounter = ptree.get<unsigned int>( "InitialIterationCounterValue", 0                                       );
 
+    // todo: Remove  _chi2Name and chi2 quantity when the StatusParameters are a map and no longer accessed by index
     _statusParameterVector.push_back( new Quantity( _chi2Name,             "#chi^2",           _chi2,             0., 100.  ) );
     _statusParameterVector.push_back( new Quantity( _iterationCounterName, "IterationCounter", _iterationCounter, 0., 1.e10 ) );
 

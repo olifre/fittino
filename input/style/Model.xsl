@@ -37,11 +37,18 @@
         <tr><td><b>Model</b></td><td><xsl:value-of select="Name"/></td></tr>
       </table>
     </p>
-    <p>
+    <xsl:if test="Tag">
+      <p>
+        <table>
+        <tr><td></td><td><b>Tag</b></td><td><xsl:value-of select="Tag"/></td></tr>
+        </table>
+      </p>
+    </xsl:if>
       <!-- A model consists of the following lists -->
       <!-- TODO: Add tag for list of parameters -->
       <!-- TODO: Leading empty cells still have to be inserted manually -->
       <!-- Define a table containing the model parameter configuration information -->
+    <p>
       <table>
         <tr>
           <td></td>
@@ -271,32 +278,12 @@
       </table>
     </p>
     <!-- Specify here the existing calculator templates -->
-    <xsl:apply-templates select="AstroCalculator |
-                                 FeynHiggsCalculator |
-                                 FeynHiggsSLHACalculator |
-                                 HDim6Calculator |
-                                 HECCalculator |
-                                 HiggsSignalsCalculator |
-                                 HiggsSignalsSLHACalculator |
-                                 LHCCalculator |
-                                 RegressionCalculator |
-                                 SPhenoCalculator |
-                                 TreeCalculator"/>
+    <xsl:apply-templates select="*[ substring(name(), string-length(name()) - 9) = 'Calculator' ]"/>
   </xsl:template>
   
   <!-- Individual configuration of the calculators -->
   
-  <xsl:template match="AstroCalculator |
-                       FeynHiggsCalculator |
-                       FeynHiggsSLHACalculator |
-                       HDim6Calculator |
-                       HECCalculator |
-                       HiggsSignalsCalculator |
-                       HiggsSignalsSLHACalculator |
-                       LHCCalculator |
-                       RegressionCalculator |
-                       SPhenoCalculator |
-                       TreeCalculator">
+  <xsl:template match="*[ substring(name(), string-length(name()) - 9) = 'Calculator' ]">
     <!-- Prints a headline and a list of the individual configuration items -->
     <p>
       <!-- Headline -->
@@ -306,8 +293,14 @@
         </tr>
       </table>
       <p>
-        <table>
-          <xsl:apply-templates/>
+        <table><tr ><td></td><td></td>
+          <!--<td style="border-bottom: 1px solid black;border-top: 1px solid black; border-color black transparent">-->
+          <td>
+          <table style="padding: 0px">
+              <xsl:apply-templates/>
+            </table>
+          </td>
+        </tr>
         </table>
       </p>
     </p>
@@ -315,14 +308,14 @@
 
   <xsl:template match="*[ not(*) and ancestor::*[substring(name(), string-length(name()) - 9) = 'Calculator' ] ]">
   <tr>
-      <td></td><td></td><td><xsl:value-of select="local-name()"/></td><td class="cell-value"><xsl:value-of select="."/></td>
+      <td align="left" style="padding: 0px; border-left: 0px; border-right: 15px solid; white-space:nowrap; border-right: 15px solid; border-color: black transparent;"><xsl:value-of select="local-name()"/></td><td style="border-left: 0px; white-space:nowrap; padding: 0px;"><xsl:value-of select="."/></td>
     </tr>
   </xsl:template>
 
   <xsl:template match="*[ * and ancestor::*[substring(name(), string-length(name()) - 9) = 'Calculator' ] ]">
   <tr>
-      <td></td><td></td><td><xsl:value-of select="local-name()"/></td><td>
-      <table>
+      <td align="left" style=" border-top: 1px solid; border-bottom: 1px solid; border-left: 0px; border-right: 15px solid; border-color: black transparent; padding: 0px;"><xsl:value-of select="local-name()"/></td><td  style=" border-left: 0px; border-top: 1px solid; border-bottom: 1px solid; padding: 0.0px" >
+      <table align="left" border="0"  >
         <xsl:apply-templates/>
       </table>
     </td>

@@ -27,6 +27,7 @@
 #include "FormulaQuantity.h"
 #include "ModelBase.h"
 #include "ModelParameter.h"
+#include "SimplePrediction.h"
 
 Fittino::ModelBase::ModelBase( boost::property_tree::ptree& ptree )
     : _name( "" ),
@@ -43,7 +44,20 @@ Fittino::ModelBase::ModelBase( boost::property_tree::ptree& ptree )
 
     InitializeChi2Contributions();
 
-    //todo add errorcode and chi2 quantity with configurable names
+    std::string tag = ptree.get<std::string>( "Tag", "" );
+
+    std::string chi2      = "Chi2";
+    std::string errorCode = "ErrorCode";
+
+    if ( !tag.empty() ) {
+
+        chi2 = tag + "_" + chi2;
+        errorCode = tag + "_" + errorCode;
+
+    }
+
+    AddPrediction( new SimplePrediction( errorCode, "", _errorCode ) );
+    AddPrediction( new SimplePrediction( chi2     , "", _chi2      ) );
 
 }
 

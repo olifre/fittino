@@ -45,6 +45,7 @@
           td { border-left: 50px solid white; }
           <!-- Align cells of this class to  the right -->
           td.cell-value { text-align: right; }
+          table { border-collapse: collapse; border-spacing: 0 0;}
         </style>
       </head>
       <body>

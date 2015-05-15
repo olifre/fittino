@@ -28,7 +28,7 @@
 #include "Tool.h"
 
 Fittino::Tool::Tool( ModelBase *model, const boost::property_tree::ptree& ptree )
-    : _chi2            ( std::numeric_limits<double>::max() ),
+    : _chi2            ( std::numeric_limits<double>::infinity() ),
       _iterationCounter( 0 ),
       _name            ( ptree.get<std::string>( "Name", "" ) ),
       _model           ( model ),

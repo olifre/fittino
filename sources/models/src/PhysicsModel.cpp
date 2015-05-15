@@ -165,7 +165,7 @@ void Fittino::PhysicsModel::Evaluate() {
         _calculator = exception.GetCalculator();
         _error       = exception.GetError();
 
-        _chi2 = std::numeric_limits<double>::max();
+        _chi2 = std::numeric_limits<double>::infinity();
         return;
 
     }
