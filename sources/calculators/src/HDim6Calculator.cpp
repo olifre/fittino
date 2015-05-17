@@ -100,6 +100,8 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
     SetOutput( "sin2theta", TMath::Power( _smvalues->sw, 2 ) );
     SetOutput( "Mass_W"   , _smvalues->mw                    );
 
+    AddOutput( "f_g", _f_g );
+
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_g_g",         "",      _normSM_Gamma_hgg     ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_tau_tau",     "",      _normSM_Gamma_htautau ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_mu_mu",       "",      _normSM_Gamma_hmumu   ) );
