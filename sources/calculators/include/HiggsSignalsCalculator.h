@@ -118,12 +118,6 @@ namespace Fittino {
       std::vector<double> _peakInfoFromHSresults_domH;
       std::vector<double> _peakInfoFromHSresults_nHcomb;
 
-      // arguments for get_peakchi2, in the order required by this function
-      std::vector<double> _peakChi2_mu;
-      std::vector<double> _peakChi2_mh;
-      std::vector<double> _peakChi2_max;
-      std::vector<double> _peakChi2_tot;
-
       // for HB shift the higgs mass prediction instead of the measurement, when doing toys
       std::vector<double>  _mass_h_neutral_shift;
       std::vector<double>  _mass_h_charged_shift;

@@ -362,12 +362,6 @@ void Fittino::HiggsSignalsCalculator::AddOutputs() {
     _peakInfoFromHSresults_mupred.resize( _npeakmu );
     _peakInfoFromHSresults_domH  .resize( _npeakmu );
     _peakInfoFromHSresults_nHcomb.resize( _npeakmu );
-    _peakChi2_mu                 .resize( _npeakmu );
-    _peakChi2_mh                 .resize( _npeakmu ); // npeakmh?
-    _peakChi2_max                .resize( _npeakmu ); // used for mu or mass or tot? npeakmh?
-    _peakChi2_tot                .resize( _npeakmu ); // trivial sum?
-
-    // consider dropping the _peakChi outputs if they can easily be recomputed with just 1 HS call of peak_info and the stored mupred and smeared mu meas etc. from the ntuple
 
     // todo: review these HB and HS quantities
     AddQuantity( new SimplePrediction( "HB_result"              , "",  _HBresult_double         ) );
@@ -399,10 +393,6 @@ void Fittino::HiggsSignalsCalculator::AddOutputs() {
         AddQuantity( new SimplePrediction( "HS_peakInfo_mupred_" + s_index, "", _peakInfoFromHSresults_mupred[i-1] ) );
         AddQuantity( new SimplePrediction( "HS_peakInfo_domH_"   + s_index, "", _peakInfoFromHSresults_domH  [i-1] ) );
         AddQuantity( new SimplePrediction( "HS_peakInfo_nHcomb_" + s_index, "", _peakInfoFromHSresults_nHcomb[i-1] ) );
-        AddQuantity( new SimplePrediction( "HS_peakChi2_mu_"     + s_index, "", _peakChi2_mu                 [i-1] ) );
-        AddQuantity( new SimplePrediction( "HS_peakChi2_mh_"     + s_index, "", _peakChi2_mh                 [i-1] ) );
-        AddQuantity( new SimplePrediction( "HS_peakChi2_max_"    + s_index, "", _peakChi2_max                [i-1] ) );
-        AddQuantity( new SimplePrediction( "HS_peakChi2_tot_"    + s_index, "", _peakChi2_tot                [i-1] ) );
 
     }
 
@@ -514,12 +504,6 @@ void Fittino::HiggsSignalsCalculator::UpdateOutput() {
 
         _peakInfoFromHSresults_domH  [i - 1] = domH;
         _peakInfoFromHSresults_nHcomb[i - 1] = nHcomb;
-
-        __pc_chisq_MOD_get_peakchi2( &obsID,
-                                     &_peakChi2_mu[i - 1],
-                                     &_peakChi2_mh[i - 1],
-                                     &_peakChi2_max[i - 1],
-                                     &_peakChi2_tot[i - 1] );
 
     }
 
