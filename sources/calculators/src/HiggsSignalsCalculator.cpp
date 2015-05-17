@@ -507,7 +507,7 @@ void Fittino::HiggsSignalsCalculator::UpdateOutput() {
 
     }
 
-    int dummy;
+    int dummy = 1;
     __pc_chisq_MOD_print_cov_mh_to_file( &dummy );
     __pc_chisq_MOD_print_cov_mu_to_file(        );
 
