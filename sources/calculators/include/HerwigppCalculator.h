@@ -19,6 +19,10 @@ namespace Fittino {
     virtual void CalculatePredictions();    
     virtual void Initialize();
 
+  public:
+
+    double _Total_Xsec;
+
   };
 
 

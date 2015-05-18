@@ -1,5 +1,8 @@
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include "HerwigppCalculator.h"
 #include "Executor.h"
@@ -8,6 +11,8 @@ Fittino::HerwigppCalculator::HerwigppCalculator( const ModelBase* model, const b
 
   SetName( "HerwigppCalculator" );
   SetTag( "Herwigpp" );
+
+  AddOutput("Total_Xsec", _Total_Xsec);
 
 }
 
@@ -32,6 +37,40 @@ void Fittino::HerwigppCalculator::CalculatePredictions() {
   executorRun.AddArgument( "-N50" );
   executorRun.AddArgument( "-d1" );
   executorRun.Execute();
+
+  std::fstream file;
+  std::string line;
+
+  file.open( "/lustre/user/range/fittino/bin/LHC-MSSM.out" ); 
+  while( getline( file, line ) ){
+
+    typedef std::vector< std::string > split_vector_type;
+      
+      split_vector_type SplitVec;
+      split( SplitVec, line, boost::is_any_of(" "), boost::token_compress_on);
+
+      if( SplitVec.size() > 5 ){
+	if ( SplitVec[0] == "Total" ){
+	  if( SplitVec[2] == "unweighted" ){
+	    
+	    std::string Total_Xsec = SplitVec[6]; 
+	    split_vector_type SplitVecNumber;
+	    split( SplitVecNumber, Total_Xsec, boost::is_any_of("()"), boost::token_compress_on);
+	    std::string number1 = SplitVecNumber[0];
+	    std::string number2 = SplitVecNumber[1];
+	    std::string number3 = SplitVecNumber[2];
+	    std::string total_xsec = number1 + number2 + number3;  
+	    _Total_Xsec = boost::lexical_cast<double>(total_xsec);
+	    std::cout << "Total crossection: " << _Total_Xsec << std::endl;
+	    
+	  }
+	}
+      }
+  }
+
+    
+
+  file.close();
 
 }
 
