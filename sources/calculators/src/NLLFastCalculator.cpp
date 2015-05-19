@@ -69,6 +69,32 @@ Fittino::NLLFastCalculator::NLLFastCalculator( const ModelBase* model, const boo
   AddOutput( "k_nlo_st2", _k_nlo_st2 );
   AddOutput( "k_nll_st2", _k_nll_st2 );
 
+  AddOutput( "ms_sb1", _ms_sb1 );
+  AddOutput( "lo_sb1", _lo_sb1 );
+  AddOutput( "nlo_sb1", _nlo_sb1 );
+  AddOutput( "nll_nlo_sb1", _nll_nlo_sb1 );
+  AddOutput( "d_mu_plus_sb1", _d_mu_plus_sb1 );
+  AddOutput( "d_mu_minus_sb1", _d_mu_minus_sb1 );
+  AddOutput( "d_pdf_plus_sb1", _d_pdf_plus_sb1 );
+  AddOutput( "d_pdf_minus_sb1", _d_pdf_minus_sb1 );
+  AddOutput( "d_as_plus_sb1", _d_as_plus_sb1 );
+  AddOutput( "d_as_minus_sb1", _d_as_minus_sb1 );
+  AddOutput( "k_nlo_sb1", _k_nlo_sb1 );
+  AddOutput( "k_nll_sb1", _k_nll_sb1 );
+
+  AddOutput( "ms_sb2", _ms_sb2 );
+  AddOutput( "lo_sb2", _lo_sb2 );
+  AddOutput( "nlo_sb2", _nlo_sb2 );
+  AddOutput( "nll_nlo_sb2", _nll_nlo_sb2 );
+  AddOutput( "d_mu_plus_sb2", _d_mu_plus_sb2 );
+  AddOutput( "d_mu_minus_sb2", _d_mu_minus_sb2 );
+  AddOutput( "d_pdf_plus_sb2", _d_pdf_plus_sb2 );
+  AddOutput( "d_pdf_minus_sb2", _d_pdf_minus_sb2 );
+  AddOutput( "d_as_plus_sb2", _d_as_plus_sb2 );
+  AddOutput( "d_as_minus_sb2", _d_as_minus_sb2 );
+  AddOutput( "k_nlo_sb2", _k_nlo_sb2 );
+  AddOutput( "k_nll_sb2", _k_nll_sb2 );
+
   AddOutput( "ms_ss", _ms_ss );
   AddOutput( "mg_ss", _mg_ss );
   AddOutput( "lo_ss", _lo_ss );
@@ -444,6 +470,128 @@ void Fittino::NLLFastCalculator::CalculatePredictions() {
   }
   }
   myfileST2.close();
+
+  Executor executorSB1("/lustre/fittino/group/external/SL6/NLL-fast/NLL-fast-2.1/nllfast-2.1", "nllfast_sb1");
+  executorSB1.AddArgument("st");
+  executorSB1.AddArgument("cteq");
+  executorSB1.AddArgument( b1 );
+  executorSB1.Execute();
+
+  std::fstream myfileSB1;
+
+  myfileSB1.open("/lustre/user/range/fittino/bin/st.out");
+
+  while( getline (myfileSB1, line) ){
+
+    typedef std::vector< std::string > split_vector_type;
+
+    split_vector_type SplitVecSB1;
+    split( SplitVecSB1, line, boost::is_any_of(" "), boost::token_compress_on);
+
+    if( SplitVecSB1.size() > 12 ) {
+      if( SplitVecSB1[1] != "#" ) {
+
+	std::string MS_SB1 = SplitVecSB1[1];
+        _ms_sb1 = boost::lexical_cast<double>(MS_SB1);
+
+	std::string LO_SB1 = SplitVecSB1[2];
+        _lo_sb1 = boost::lexical_cast<double>(LO_SB1);
+
+	std::string NLO_SB1 = SplitVecSB1[3];
+        _nlo_sb1 = boost::lexical_cast<double>(NLO_SB1);
+
+	std::string NLL_NLO_SB1 = SplitVecSB1[4];
+        _nll_nlo_sb1 = boost::lexical_cast<double>(NLL_NLO_SB1);
+	
+	std::string D_MU_PLUS_SB1 = SplitVecSB1[5];
+        _d_mu_plus_sb1 = boost::lexical_cast<double>(D_MU_PLUS_SB1);
+
+	std::string D_MU_MINUS_SB1 = SplitVecSB1[6];
+        _d_mu_minus_sb1 = boost::lexical_cast<double>(D_MU_MINUS_SB1);
+
+	std::string D_PDF_PLUS_SB1 = SplitVecSB1[7];
+        _d_pdf_plus_sb1 = boost::lexical_cast<double>(D_PDF_PLUS_SB1);
+
+	std::string D_PDF_MINUS_SB1 = SplitVecSB1[8];
+        _d_pdf_minus_sb1 = boost::lexical_cast<double>(D_PDF_MINUS_SB1);
+
+	std::string D_AS_PLUS_SB1 = SplitVecSB1[9];
+        _d_as_plus_sb1 = boost::lexical_cast<double>(D_AS_PLUS_SB1);
+
+	std::string D_AS_MINUS_SB1 = SplitVecSB1[10];
+        _d_as_minus_sb1 = boost::lexical_cast<double>(D_AS_MINUS_SB1);
+
+	std::string K_NLO_SB1 = SplitVecSB1[11];
+        _k_nlo_sb1 = boost::lexical_cast<double>(K_NLO_SB1);
+
+	std::string K_NLL_SB1 = SplitVecSB1[12];
+        _k_nll_sb1 = boost::lexical_cast<double>(K_NLL_SB1);
+
+      }
+    }
+  }
+  myfileSB1.close();
+
+  Executor executorSB2("/lustre/fittino/group/external/SL6/NLL-fast/NLL-fast-2.1/nllfast-2.1", "nllfast_sb2");
+  executorSB2.AddArgument("st");
+  executorSB2.AddArgument("cteq");
+  executorSB2.AddArgument( b2 );
+  executorSB2.Execute();
+
+  std::fstream myfileSB2;
+
+  myfileSB2.open("/lustre/user/range/fittino/bin/st.out");
+
+  while( getline (myfileSB2, line) ){
+
+    typedef std::vector< std::string > split_vector_type;
+
+    split_vector_type SplitVecSB2;
+    split( SplitVecSB2, line, boost::is_any_of(" "), boost::token_compress_on);
+
+    if( SplitVecSB2.size() > 12 ) {
+      if( SplitVecSB2[1] != "#" ) {
+
+	std::string MS_SB2 = SplitVecSB2[1];
+        _ms_sb2 = boost::lexical_cast<double>(MS_SB2);
+
+	std::string LO_SB2 = SplitVecSB2[2];
+        _lo_sb2 = boost::lexical_cast<double>(LO_SB2);
+
+	std::string NLO_SB2 = SplitVecSB2[3];
+        _nlo_sb2 = boost::lexical_cast<double>(NLO_SB2);
+	
+	std::string NLL_NLO_SB2 = SplitVecSB2[4];
+        _nll_nlo_sb2 = boost::lexical_cast<double>(NLL_NLO_SB2);
+
+	std::string D_MU_PLUS_SB2 = SplitVecSB2[5];
+        _d_mu_plus_sb2 = boost::lexical_cast<double>(D_MU_PLUS_SB2);
+
+	std::string D_MU_MINUS_SB2 = SplitVecSB2[6];
+        _d_mu_minus_sb2 = boost::lexical_cast<double>(D_MU_MINUS_SB2);
+
+	std::string D_PDF_PLUS_SB2 = SplitVecSB2[7];
+        _d_pdf_plus_sb2 = boost::lexical_cast<double>(D_PDF_PLUS_SB2);
+
+	std::string D_PDF_MINUS_SB2 = SplitVecSB2[8];
+        _d_pdf_minus_sb2 = boost::lexical_cast<double>(D_PDF_MINUS_SB2);
+
+	std::string D_AS_PLUS_SB2 = SplitVecSB2[9];
+        _d_as_plus_sb2 = boost::lexical_cast<double>(D_AS_PLUS_SB2);
+
+	std::string D_AS_MINUS_SB2 = SplitVecSB2[10];
+        _d_as_minus_sb2 = boost::lexical_cast<double>(D_AS_MINUS_SB2);
+
+	std::string K_NLO_SB2 = SplitVecSB2[11];
+        _k_nlo_sb2 = boost::lexical_cast<double>(K_NLO_SB2);
+
+	std::string K_NLL_SB2 = SplitVecSB2[12];
+        _k_nll_sb2 = boost::lexical_cast<double>(K_NLL_SB2);
+
+      }
+    }
+  }
+  myfileSB2.close();
 
   Executor executorSS("/lustre/fittino/group/external/SL6/NLL-fast/NLL-fast-2.1/nllfast-2.1", "nllfast_ss");
   executorSS.AddArgument("ss");

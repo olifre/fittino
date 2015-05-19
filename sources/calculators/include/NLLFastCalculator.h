@@ -72,6 +72,31 @@ namespace Fittino {
     double _k_nlo_st2;
     double _k_nll_st2;
 
+    double _ms_sb1;
+    double _lo_sb1;
+    double _nlo_sb1;
+    double _nll_nlo_sb1;
+    double _d_mu_plus_sb1;
+    double _d_mu_minus_sb1;
+    double _d_pdf_plus_sb1;
+    double _d_pdf_minus_sb1;
+    double _d_as_plus_sb1;
+    double _d_as_minus_sb1;
+    double _k_nlo_sb1;
+    double _k_nll_sb1;
+
+    double _ms_sb2;
+    double _lo_sb2;
+    double _nlo_sb2;
+    double _nll_nlo_sb2;
+    double _d_mu_plus_sb2;
+    double _d_mu_minus_sb2;
+    double _d_pdf_plus_sb2;
+    double _d_pdf_minus_sb2;
+    double _d_as_plus_sb2;
+    double _d_as_minus_sb2;
+    double _k_nlo_sb2;
+    double _k_nll_sb2;
 
     double _ms_ss;
     double _mg_ss;
