@@ -24,6 +24,9 @@ namespace Fittino {
     double _obs;
     double _exp;
     double _chi2;
+    
+    double _value1;
+    double _value0;
 
     std::string name1;
     std::string name2;

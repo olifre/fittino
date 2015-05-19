@@ -57,9 +57,8 @@ void Fittino::HerwigppCalculator::CalculatePredictions() {
 	    split_vector_type SplitVecNumber;
 	    split( SplitVecNumber, Total_Xsec, boost::is_any_of("()"), boost::token_compress_on);
 	    std::string number1 = SplitVecNumber[0];
-	    std::string number2 = SplitVecNumber[1];
 	    std::string number3 = SplitVecNumber[2];
-	    std::string total_xsec = number1 + number2 + number3;  
+	    std::string total_xsec = number1 + number3;  
 	    _Total_Xsec = boost::lexical_cast<double>(total_xsec);
 	    std::cout << "Total crossection: " << _Total_Xsec << std::endl;
 	    

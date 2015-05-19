@@ -229,7 +229,7 @@ Fittino::SModelSCalculator::SModelSCalculator( const ModelBase* model, const boo
   AddOutput( "ATLAS_CONF_2013_061_T1ttttobs" );
   AddOutput( "ATLAS_CONF_2013_061_T1ttttexp" );
   AddOutput( "ATLAS_CONF_2013_061_T1ttttchi2" );
-
+ 
 }
 Fittino::SModelSCalculator::~SModelSCalculator() {
 
@@ -244,6 +244,7 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
   executorTools.AddArgument( "-f" );
   executorTools.AddArgument( inputrunTools );
   executorTools.AddArgument( "-p" );
+  executorTools.AddArgument( "-N" );
   executorTools.Execute();
   
   std::string inputSModelS = "SPheno.spc";
@@ -278,8 +279,223 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
   //}
 
   //Py_Finalize();
-
   
+  _value0 = 0.00;
+  _value1 = -1.00;
+
+  SetOutput( "ATLAS_SUSY_2013_02_T1theo", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_02_T1obs", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_02_T1exp", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_02_T1chi2", _value0 );
+  SetOutput( "ATLAS_SUSY_2013_05_T2bbtheo", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_05_T2bbobs", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_05_T2bbexp", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_05_T2bbchi2", _value0 );
+  SetOutput( "ATLAS_SUSY_2013_11_TSlepSleptheo", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_11_TSlepSlepobs", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_11_TSlepSlepexp", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_11_TSlepSlepchi2", _value0 );
+  SetOutput( "ATLAS_SUSY_2013_12_TChiWHtheo", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_12_TChiWHobs", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_12_TChiWHexp", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_12_TChiWHchi2", _value0 );
+  SetOutput( "ATLAS_SUSY_2013_14_TStauStautheo", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_14_TStauStauobs", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_14_TStauStauexp", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_14_TStauStauchi2", _value0 );
+  SetOutput( "ATLAS_SUSY_2013_15_T2bbWWtheo", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_15_T2bbWWobs", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_15_T2bbWWexp", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_15_T2bbWWchi2", _value0 );
+  SetOutput( "ATLAS_SUSY_2013_19_T2tttheo", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_19_T2ttobs", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_19_T2ttexp", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_19_T2ttchi2", _value0 );
+  SetOutput( "ATLAS_SUSY_2013_19_T2bbWWtheo", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_19_T2bbWWobs", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_19_T2bbWWexp", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_19_T2bbWWchi2", _value0 );
+  SetOutput( "ATLAS_CONF_2013_061_T1bbbbtheo", _value1 );
+  SetOutput( "ATLAS_CONF_2013_061_T1bbbbobs", _value1 );
+  SetOutput( "ATLAS_CONF_2013_061_T1bbbbexp", _value1 );
+  SetOutput( "ATLAS_CONF_2013_061_T1bbbbchi2", _value0 );
+  SetOutput( "ATLAS_CONF_2013_065_T2tttheo", _value1 );
+  SetOutput( "ATLAS_CONF_2013_065_T2ttobs", _value1 );
+  SetOutput( "ATLAS_CONF_2013_065_T2ttexp", _value1 );
+  SetOutput( "ATLAS_CONF_2013_065_T2ttchi2", _value0 );
+  SetOutput( "CMS_SUS_12_024_T1bbbbtheo", _value1 );
+  SetOutput( "CMS_SUS_12_024_T1bbbbobs", _value1 );
+  SetOutput( "CMS_SUS_12_024_T1bbbbexp", _value1 );
+  SetOutput( "CMS_SUS_12_024_T1bbbbchi2", _value0 );
+  SetOutput( "CMS_SUS_12_024_T5tttttheo", _value1 );
+  SetOutput( "CMS_SUS_12_024_T5ttttobs", _value1 );
+  SetOutput( "CMS_SUS_12_024_T5ttttexp", _value1 );
+  SetOutput( "CMS_SUS_12_024_T5ttttchi2", _value0 );
+  SetOutput( "CMS_SUS_12_028_T1theo", _value1 );
+  SetOutput( "CMS_SUS_12_028_T1obs", _value1 );
+  SetOutput( "CMS_SUS_12_028_T1exp", _value1 );
+  SetOutput( "CMS_SUS_12_028_T1chi2", _value0 );
+  SetOutput( "CMS_SUS_12_028_T1bbbbtheo", _value1 );
+  SetOutput( "CMS_SUS_12_028_T1bbbbobs", _value1 );
+  SetOutput( "CMS_SUS_12_028_T1bbbbexp", _value1 );
+  SetOutput( "CMS_SUS_12_028_T1bbbbchi2", _value0 );
+  SetOutput( "CMS_SUS_13_006_TChiWZtheo", _value1 );
+  SetOutput( "CMS_SUS_13_006_TChiWZobs", _value1 );
+  SetOutput( "CMS_SUS_13_006_TChiWZexp", _value1 );
+  SetOutput( "CMS_SUS_13_006_TChiWZchi2", _value0 );
+  SetOutput( "CMS_SUS_13_006_TSlepSleptheo", _value1 );
+  SetOutput( "CMS_SUS_13_006_TSlepSlepobs", _value1 );
+  SetOutput( "CMS_SUS_13_006_TSlepSlepexp", _value1 );
+  SetOutput( "CMS_SUS_13_006_TSlepSlepchi2", _value0 );
+  SetOutput( "CMS_SUS_13_006_TChiChipmSlepLtheo", _value1 );
+  SetOutput( "CMS_SUS_13_006_TChiChipmSlepLobs", _value1 );
+  SetOutput( "CMS_SUS_13_006_TChiChipmSlepLexp", _value1 );
+  SetOutput( "CMS_SUS_13_006_TChiChipmSlepLchi2", _value0 );
+  SetOutput( "CMS_SUS_13_006_TChiChipmSlepStautheo", _value1 );
+  SetOutput( "CMS_SUS_13_006_TChiChipmSlepStauobs", _value1 );
+  SetOutput( "CMS_SUS_13_006_TChiChipmSlepStauexp", _value1 );
+  SetOutput( "CMS_SUS_13_006_TChiChipmSlepStauchi2", _value0 );
+  SetOutput( "CMS_SUS_13_011_T6bbWWtheo", _value1 );
+  SetOutput( "CMS_SUS_13_011_T6bbWWobs", _value1 );
+  SetOutput( "CMS_SUS_13_011_T6bbWWexp", _value1 );
+  SetOutput( "CMS_SUS_13_011_T6bbWWchi2", _value0 );
+  SetOutput( "CMS_SUS_13_012_T1theo", _value1 );
+  SetOutput( "CMS_SUS_13_012_T1obs", _value1 );
+  SetOutput( "CMS_SUS_13_012_T1exp", _value1 );
+  SetOutput( "CMS_SUS_13_012_T1chi2", _value0 );
+  SetOutput( "CMS_PAS_SUS_13_008_T6ttWWtheo", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_008_T6ttWWobs", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_008_T6ttWWexp", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_008_T6ttWWchi2", _value0 );
+  SetOutput( "CMS_PAS_SUS_13_018_T2bbtheo", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_018_T2bbobs", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_018_T2bbexp", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_018_T2bbchi2", _value0 );
+  SetOutput( "CMS_PAS_SUS_13_019_T1theo", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_019_T1obs", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_019_T1exp", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_019_T1chi2", _value0 );
+  SetOutput( "CMS_PAS_SUS_13_019_T1bbbbtheo", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_019_T1bbbbobs", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_019_T1bbbbexp", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_019_T1bbbbchi2", _value0 );
+  SetOutput( "CMS_PAS_SUS_13_019_T2bbtheo", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_019_T2bbobs", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_019_T2bbexp", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_019_T2bbchi2", _value0 );
+  SetOutput( "CMS_PAS_SUS_14_011_T1bbbbtheo", _value1 );
+  SetOutput( "CMS_PAS_SUS_14_011_T1bbbbobs", _value1 );
+  SetOutput( "CMS_PAS_SUS_14_011_T1bbbbexp", _value1 );
+  SetOutput( "CMS_PAS_SUS_14_011_T1bbbbchi2", _value0 );
+  SetOutput( "CMS_SUS_12_024_T1tttttheo", _value1 );
+  SetOutput( "CMS_SUS_12_024_T1ttttobs", _value1 );
+  SetOutput( "CMS_SUS_12_024_T1ttttexp", _value1 );
+  SetOutput( "CMS_SUS_12_024_T1ttttchi2", _value0 );
+  SetOutput( "CMS_SUS_12_028_T1tttttheo", _value1 );
+  SetOutput( "CMS_SUS_12_028_T1ttttobs", _value1 );
+  SetOutput( "CMS_SUS_12_028_T1ttttexp", _value1 );
+  SetOutput( "CMS_SUS_12_028_T1ttttchi2", _value0 );
+  SetOutput( "CMS_SUS_12_028_T2theo", _value1 );
+  SetOutput( "CMS_SUS_12_028_T2obs", _value1 );
+  SetOutput( "CMS_SUS_12_028_T2exp", _value1 );
+  SetOutput( "CMS_SUS_12_028_T2chi2", _value0 );
+  SetOutput( "CMS_SUS_12_028_T2bbtheo", _value1 );
+  SetOutput( "CMS_SUS_12_028_T2bbobs", _value1 );
+  SetOutput( "CMS_SUS_12_028_T2bbexp", _value1 );
+  SetOutput( "CMS_SUS_12_028_T2bbchi2", _value0 );
+  SetOutput( "ATLAS_CONF_2012_105_T1tttttheo", _value1 );
+  SetOutput( "ATLAS_CONF_2012_105_T1ttttobs", _value1 );
+  SetOutput( "ATLAS_CONF_2012_105_T1ttttexp", _value1 );
+  SetOutput( "ATLAS_CONF_2012_105_T1ttttchi2", _value0 );
+  SetOutput( "ATLAS_CONF_2013_007_T1tttttheo", _value1 );
+  SetOutput( "ATLAS_CONF_2013_007_T1ttttobs", _value1 );
+  SetOutput( "ATLAS_CONF_2013_007_T1ttttexp", _value1 );
+  SetOutput( "ATLAS_CONF_2013_007_T1ttttchi2", _value0 );
+  SetOutput( "ATLAS_SUSY_2013_12_TChiWZtheo", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_12_TChiWZobs", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_12_TChiWZexp", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_12_TChiWZchi2", _value0 );
+  SetOutput( "ATLAS_SUSY_2013_11_TChiWZtheo", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_11_TChiWZobs", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_11_TChiWZexp", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_11_TChiWZchi2", _value0 );
+  SetOutput( "ATLAS_SUSY_2013_15_T2tttheo", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_15_T2ttobs", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_15_T2ttexp", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_15_T2ttchi2", _value0 );
+  SetOutput( "CMS_SUS_13_012_T1tttttheo", _value1 );
+  SetOutput( "CMS_SUS_13_012_T1ttttobs", _value1 );
+  SetOutput( "CMS_SUS_13_012_T1ttttexp", _value1 );
+  SetOutput( "CMS_SUS_13_012_T1ttttchi2", _value0 );
+  SetOutput( "CMS_SUS_13_012_T2theo", _value1 );
+  SetOutput( "CMS_SUS_13_012_T2obs", _value1 );
+  SetOutput( "CMS_SUS_13_012_T2exp", _value1 );
+  SetOutput( "CMS_SUS_13_012_T2chi2", _value0 );
+  SetOutput( "CMS_SUS_13_013_T1tttttheo", _value1 );
+  SetOutput( "CMS_SUS_13_013_T1ttttobs", _value1 );
+  SetOutput( "CMS_SUS_13_013_T1ttttexp", _value1 );
+  SetOutput( "CMS_SUS_13_013_T1ttttchi2", _value0 );
+  SetOutput( "ATLAS_SUSY_2013_19_T6bbWWtheo", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_19_T6bbWWobs", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_19_T6bbWWexp", _value1 ); 
+  SetOutput( "ATLAS_SUSY_2013_19_T6bbWWchi2", _value0 );
+  SetOutput( "CMS_SUS_13_011_T2tttheo", _value1 );
+  SetOutput( "CMS_SUS_13_011_T2ttobs", _value1 );
+  SetOutput( "CMS_SUS_13_011_T2ttexp", _value1 );
+  SetOutput( "CMS_SUS_13_011_T2ttchi2", _value0 );
+  SetOutput( "ATLAS_CONF_2013_024_T2tttheo", _value1 );
+  SetOutput( "ATLAS_CONF_2013_024_T2ttobs", _value1 );
+  SetOutput( "ATLAS_CONF_2013_024_T2ttexp", _value1 );
+  SetOutput( "ATLAS_CONF_2013_024_T2ttchi2", _value0 );
+  SetOutput( "CMS_PAS_SUS_13_019_T1tttttheo", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_019_T1ttttobs", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_019_T1ttttexp", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_019_T1ttttchi2", _value0 );
+  SetOutput( "CMS_PAS_SUS_13_019_T2tttheo", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_019_T2ttobs", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_019_T2ttexp", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_019_T2ttchi2", _value0 ); 
+  SetOutput( "CMS_PAS_SUS_13_019_T2theo", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_019_T2obs", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_019_T2exp", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_019_T2chi2", _value0 );
+  SetOutput( "CMS_SUS_13_002_T1tttttheo", _value1 );
+  SetOutput( "CMS_SUS_13_002_T1ttttobs", _value1 );
+  SetOutput( "CMS_SUS_13_002_T1ttttexp", _value1 );
+  SetOutput( "CMS_SUS_13_002_T1ttttchi2", _value0 );
+  SetOutput( "ATLAS_SUSY_2013_04_T1tttttheo", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_04_T1ttttobs", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_04_T1ttttexp", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_04_T1ttttchi2", _value0 );
+  SetOutput( "ATLAS_SUSY_2013_02_T2theo", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_02_T2obs", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_02_T2exp", _value1 );
+  SetOutput( "ATLAS_SUSY_2013_02_T2chi2", _value0 );
+  SetOutput( "CMS_PAS_SUS_13_008_T1tttttheo", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_008_T1ttttobs", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_008_T1ttttexp", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_008_T1ttttchi2", _value0 );
+  SetOutput( "CMS_SUS_13_007_T1tttttheo", _value1 );
+  SetOutput( "CMS_SUS_13_007_T1ttttobs", _value1 );
+  SetOutput( "CMS_SUS_13_007_T1ttttexp", _value1 );
+  SetOutput( "CMS_SUS_13_007_T1ttttchi2", _value0 );
+  SetOutput( "CMS_PAS_SUS_14_011_T2tttheo", _value1 );
+  SetOutput( "CMS_PAS_SUS_14_011_T2ttobs", _value1 );
+  SetOutput( "CMS_PAS_SUS_14_011_T2ttexp", _value1 );
+  SetOutput( "CMS_PAS_SUS_14_011_T2ttchi2", _value0 );
+  SetOutput( "CMS_PAS_SUS_14_011_T1tttttheo", _value1 );
+  SetOutput( "CMS_PAS_SUS_14_011_T1ttttobs", _value1 );
+  SetOutput( "CMS_PAS_SUS_14_011_T1ttttexp", _value1 );
+  SetOutput( "CMS_PAS_SUS_14_011_T1ttttchi2", _value0 );
+  SetOutput( "CMS_PAS_SUS_13_016_T1tttttheo", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_016_T1ttttobs", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_016_T1ttttexp", _value1 );
+  SetOutput( "CMS_PAS_SUS_13_016_T1ttttchi2", _value0 );
+  SetOutput( "ATLAS_CONF_2013_061_T1tttttheo", _value1 );
+  SetOutput( "ATLAS_CONF_2013_061_T1ttttobs", _value1 );
+  SetOutput( "ATLAS_CONF_2013_061_T1ttttexp", _value1 );
+  SetOutput( "ATLAS_CONF_2013_061_T1ttttchi2", _value0 );
+   
   std::fstream myfile;
   std::string line;
 
@@ -308,32 +524,60 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
 	split( SplitVecAnalyse2, analysevec2, boost::is_any_of("-"), boost::token_compress_on);
 	
 	if( SplitVecAnalyse2.size() > 3 ){
-	  if( SplitVecAnalyse2.size() < 4 ){
+	  if( SplitVecAnalyse2.size() < 5 ){
 	  
 	      std::string analyse1 = SplitVecAnalyse2[0];
 	      std::string analyse2 = SplitVecAnalyse2[1];
 	      std::string analyse3 = SplitVecAnalyse2[2];
 	      std::string analyse4 = SplitVecAnalyse2[3];
+	      std::cout << "!!!" << analyse1 << analyse2 << analyse3 << analyse4 << "!!!" << std::endl;
 	      analyse = analyse1 + "_" + analyse2 + "_" + analyse3 + "_" + analyse4 + "_" + analyse0; 
 	      std::cout << "analyse: " << analyse << std::endl;
-	
+	      
+	      name1 = analyse + "theo";
+	      name2 = analyse + "obs";
+	      name3 = analyse + "exp";
+	      name4 = analyse + "chi2";
+	      std::cout << name1 << name2 << name3 << name4 << std::endl;
+
+	      std::string Theo = SplitVecTable[1];
+	      _theo = boost::lexical_cast<double>(Theo);
+	      std::cout<< "theo = " << _theo << " pb" << std::endl;
+	      SetOutput( name1, _theo );
+
+
+	      std::string Obs = SplitVecTable[3];
+	      _obs = boost::lexical_cast<double>(Obs);
+	      std::cout<< "obs = " << _obs << " pb" << std::endl;
+	      SetOutput( name2, _obs );
+
+
+	      std::string Exp = SplitVecTable[5];
+	      _exp = boost::lexical_cast<double>(Exp);
+	      std::cout<< "exp = " << _exp  << " pb"  << std::endl;
+	      SetOutput( name3, _exp );
+
+
+	      std::string Chi2 = SplitVecTable[8];
+	      _chi2 = boost::lexical_cast<double>(Chi2);
+	      std::cout<< "chi2 = " << _chi2  << std::endl;
+	      SetOutput( name4, _chi2 );
+	      
 	      }
 	}   
 	else continue;
 
-	if( SplitVecAnalyse2.size() > 5 ){
+	if( SplitVecAnalyse2.size() > 4 ){
 	  
 	  std::string analyse1 = SplitVecAnalyse2[0];
 	  std::string analyse2 = SplitVecAnalyse2[1];
 	  std::string analyse3 = SplitVecAnalyse2[2];
 	  std::string analyse4 = SplitVecAnalyse2[3];
 	  std::string analyse5 = SplitVecAnalyse2[4];
+	  std::cout << "!!!" << analyse1 << analyse2 << analyse3 << analyse4 << analyse4 << "!!!" << std::endl;
 	  analyse = analyse1 + "_" + analyse2 + "_" + analyse3 + "_" + analyse4 + "_" + analyse5 + "_" + analyse0;
 	  std::cout << "analyse: " << analyse << std::endl;
 
-	}
-	else continue;
-   
             name1 = analyse + "theo";
             name2 = analyse + "obs";
             name3 = analyse + "exp";
@@ -362,7 +606,8 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
           _chi2 = boost::lexical_cast<double>(Chi2);    
           std::cout<< "chi2 = " << _chi2  << std::endl;
           SetOutput( name4, _chi2 );
-	    	     
+	}
+	else continue;
        }
       }
       else continue;
