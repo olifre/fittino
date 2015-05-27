@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <boost/algorithm/string.hpp>
+#include <math.h>
 
 #include "SimplePrediction.h"
 #include "SModelSCalculator.h"
@@ -17,6 +18,8 @@ Fittino::SModelSCalculator::SModelSCalculator( const ModelBase* model, const boo
   SetTag( "SModelS" );
 
   AddQuantity( new SimplePrediction( "r", "", _r ));
+  AddQuantity( new SimplePrediction( "chi2", "", _Chi2));
+
   AddOutput( "ATLAS_SUSY_2013_02_T1theo" );
   AddOutput( "ATLAS_SUSY_2013_02_T1obs" );
   AddOutput( "ATLAS_SUSY_2013_02_T1exp" );
@@ -530,42 +533,35 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
 	      std::string analyse2 = SplitVecAnalyse2[1];
 	      std::string analyse3 = SplitVecAnalyse2[2];
 	      std::string analyse4 = SplitVecAnalyse2[3];
-	      std::cout << "!!!" << analyse1 << analyse2 << analyse3 << analyse4 << "!!!" << std::endl;
-	      analyse = analyse1 + "_" + analyse2 + "_" + analyse3 + "_" + analyse4 + "_" + analyse0; 
-	      std::cout << "analyse: " << analyse << std::endl;
 	      
+	      analyse = analyse1 + "_" + analyse2 + "_" + analyse3 + "_" + analyse4 + "_" + analyse0; 
+	      	      
 	      name1 = analyse + "theo";
 	      name2 = analyse + "obs";
 	      name3 = analyse + "exp";
 	      name4 = analyse + "chi2";
-	      std::cout << name1 << name2 << name3 << name4 << std::endl;
-
+	      
 	      std::string Theo = SplitVecTable[1];
 	      _theo = boost::lexical_cast<double>(Theo);
-	      std::cout<< "theo = " << _theo << " pb" << std::endl;
 	      SetOutput( name1, _theo );
 
 
 	      std::string Obs = SplitVecTable[3];
 	      _obs = boost::lexical_cast<double>(Obs);
-	      std::cout<< "obs = " << _obs << " pb" << std::endl;
 	      SetOutput( name2, _obs );
 
 
 	      std::string Exp = SplitVecTable[5];
 	      _exp = boost::lexical_cast<double>(Exp);
-	      std::cout<< "exp = " << _exp  << " pb"  << std::endl;
 	      SetOutput( name3, _exp );
 
 
 	      std::string Chi2 = SplitVecTable[8];
 	      _chi2 = boost::lexical_cast<double>(Chi2);
-	      std::cout<< "chi2 = " << _chi2  << std::endl;
 	      SetOutput( name4, _chi2 );
 	      
 	      }
-	}   
-	else continue;
+	} else continue;
 
 	if( SplitVecAnalyse2.size() > 4 ){
 	  
@@ -574,64 +570,155 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
 	  std::string analyse3 = SplitVecAnalyse2[2];
 	  std::string analyse4 = SplitVecAnalyse2[3];
 	  std::string analyse5 = SplitVecAnalyse2[4];
-	  std::cout << "!!!" << analyse1 << analyse2 << analyse3 << analyse4 << analyse4 << "!!!" << std::endl;
+	  
 	  analyse = analyse1 + "_" + analyse2 + "_" + analyse3 + "_" + analyse4 + "_" + analyse5 + "_" + analyse0;
-	  std::cout << "analyse: " << analyse << std::endl;
-
+	  
             name1 = analyse + "theo";
             name2 = analyse + "obs";
             name3 = analyse + "exp";
             name4 = analyse + "chi2";
-            std::cout << name1 << name2 << name3 << name4 << std::endl;
-
+            
           std::string Theo = SplitVecTable[1];
           _theo = boost::lexical_cast<double>(Theo);
-          std::cout<< "theo = " << _theo << " pb" << std::endl; 
           SetOutput( name1, _theo );
 	    
 
           std::string Obs = SplitVecTable[3];
           _obs = boost::lexical_cast<double>(Obs);
-          std::cout<< "obs = " << _obs << " pb" << std::endl;
           SetOutput( name2, _obs );
 	    
 
           std::string Exp = SplitVecTable[5];
           _exp = boost::lexical_cast<double>(Exp);
-          std::cout<< "exp = " << _exp  << " pb"  << std::endl;
           SetOutput( name3, _exp );
 	    
 
           std::string Chi2 = SplitVecTable[8];
           _chi2 = boost::lexical_cast<double>(Chi2);    
-          std::cout<< "chi2 = " << _chi2  << std::endl;
           SetOutput( name4, _chi2 );
-	}
-	else continue;
+	
+	} else continue;
        }
-      }
-      else continue;
+      } else continue;
 
       split_vector_type SplitVec;
       split( SplitVec, line, boost::is_any_of(" "), boost::token_compress_on);
-
-
+          
       if( SplitVec.size() > 5 ) {
       if( SplitVec[3] == "value" ){
 
-       std::string R = SplitVec[6];
+       R = SplitVec[6];
        _r = boost::lexical_cast<double>(R);
 	   
 	 std::cout << "The highest r value is = " << _r << std::endl;
-	   
 
-	  break;
 	  }
+      } else continue;
       }
-      else continue;
+
+  myfile.close();
+
+  myfile.open("/lustre/user/range/fittino/bin/summary.txt");
+
+  while( getline (myfile, line) ){
+
+    typedef std::vector< std::string > split_vector_type;
+    split_vector_type SplitVecTable;
+    split( SplitVecTable, line, boost::is_any_of(" \t"), boost::token_compress_on);       
+	
+    std::string r;
+    std::string R_SModelS;
+
+	if( SplitVecTable.size() > 7 ) {
+
+	  std::string number = SplitVecTable[7];
+	  	  
+	  split_vector_type SplitVecNumber;
+	  split( SplitVecNumber, number, boost::is_any_of("E"), boost::token_compress_on);
+	  
+	  
+	  if( SplitVecNumber.size() > 1 ) {
+
+	    std::string R1 = SplitVecNumber[0];
+	    std::string R2 = SplitVecNumber[1];
+	     
+	    float r11 = boost::lexical_cast<float>(R1);
+	    int r12 = r11* 100.0;
+	    int r13;
+	    int r121 = r11 * 1000.0;
+	    int r122 = r121 + 5;
+	    int r1211 = r121 / 10.0;
+	    int r1221 = r122 / 10.0;
+	    	    
+	    if ( r1221 > r1211 ) { 
+	    
+	      r13 = r12 + 1;
+	    
+	    }
+	    
+	    else {
+	      
+	      r13 = r12;
+	    
+	    }
+
+	    float r1 = r13 / 100.0;
+	    std::string R11 = boost::lexical_cast<std::string>(r1);
+	    r = R11 + R2;
+	    	    	  
+	  }
+
+	  split_vector_type SplitVecR;
+          split( SplitVecR, R, boost::is_any_of("E"), boost::token_compress_on);
+	  
+	  if( SplitVecR.size() > 1) {
+	    
+	    std::string R1 = SplitVecR[0];
+	    std::string R2 = SplitVecR[1];
+	    
+	    float r11_SModelS = boost::lexical_cast<float>(R);
+	    int R12_SModelS = r11_SModelS * 100.0;
+	    float R13_SModelS = R12_SModelS / 100.0;
+	    std::string R11_SModelS = boost::lexical_cast<std::string>(R13_SModelS);
+	    R_SModelS = R11_SModelS + R2;
+	    	    
+	  }
+
+	  if( r == R_SModelS ) {
+    
+	    std::string string1 = SplitVecTable[1];
+	    std::string string2 = SplitVecTable[2];
+	    string = string1 + ":" + string2;
+	  
+	  }
+	  	      
+	}
   }
 
-    myfile.close();
+ myfile.close();
+
+ myfile.open("/lustre/user/range/fittino/bin/summary.txt");
+ while( getline (myfile, line) ){
+
+   typedef std::vector< std::string > split_vector_type;
+   split_vector_type SplitVecTable;
+   split( SplitVecTable, line, boost::is_any_of(" \t"), boost::token_compress_on);
+   
+   if( SplitVecTable.size() > 7 ) {
+
+   std::string analyse = SplitVecTable[0];
+   
+   if( analyse == string ) {
+     
+     std::string Chi2 = SplitVecTable[8];
+     _Chi2 = boost::lexical_cast<double>(Chi2);
+      
+       }
+   }
+ }
+
+ myfile.close();
+
 
 }
 

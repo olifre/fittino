@@ -19,7 +19,8 @@ namespace Fittino {
   private:
 
     double _r;
-    
+    double _Chi2;
+
     double _theo;
     double _obs;
     double _exp;
@@ -27,7 +28,10 @@ namespace Fittino {
     
     double _value1;
     double _value0;
-
+    
+    std::string R; 
+    std::string string;
+    
     std::string name1;
     std::string name2;
     std::string name3;
