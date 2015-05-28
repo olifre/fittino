@@ -625,11 +625,27 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
     typedef std::vector< std::string > split_vector_type;
     split_vector_type SplitVecTable;
     split( SplitVecTable, line, boost::is_any_of(" \t"), boost::token_compress_on);       
-	
-    std::string r;
-    std::string R_SModelS;
+     
+    double r1_SModelS_compare;
+    double r1_rounded_compare;
 
-	if( SplitVecTable.size() > 7 ) {
+    double r2_SModelS_compare;
+    double r2_compare;
+
+    split_vector_type SplitVecR;
+    split( SplitVecR, R, boost::is_any_of("E"), boost::token_compress_on);
+
+    if( SplitVecR.size() > 1) {
+
+      std::string R1_SModelS = SplitVecR[0];
+      std::string R2_SModelS = SplitVecR[1];
+      
+      r1_SModelS_compare = boost::lexical_cast<double>(R1_SModelS);
+      r2_SModelS_compare = boost::lexical_cast<double>(R2_SModelS);
+     
+    }
+
+    	if( SplitVecTable.size() > 7 ) {
 
 	  std::string number = SplitVecTable[7];
 	  	  
@@ -641,18 +657,23 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
 
 	    std::string R1 = SplitVecNumber[0];
 	    std::string R2 = SplitVecNumber[1];
-	     
-	    float r11 = boost::lexical_cast<float>(R1);
-	    int r12 = r11* 100.0;
-	    int r13;
-	    int r121 = r11 * 1000.0;
-	    int r122 = r121 + 5;
+	    
+	    double r1 = boost::lexical_cast<double>(R1); 
+	    r2_compare = boost::lexical_cast<double>(R2);
+	   	    
+	    int r12;
+	    int r121;
+	    	      
+	    r12 = r1 * 100.0;
+	    r121 = r1 * 1000.0;
+	    
 	    int r1211 = r121 / 10.0;
-	    int r1221 = r122 / 10.0;
-	    	    
+	    int r1221 = (r121 + 5) / 10.0;
+	    int r13;
+	        
 	    if ( r1221 > r1211 ) { 
 	    
-	      r13 = r12 + 1;
+	      r13 = r12 + 1.0;
 	    
 	    }
 	    
@@ -662,34 +683,18 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
 	    
 	    }
 
-	    float r1 = r13 / 100.0;
-	    std::string R11 = boost::lexical_cast<std::string>(r1);
-	    r = R11 + R2;
-	    	    	  
+	    r1_rounded_compare = r13 / 100.0;
+	    	    	    	    	  
 	  }
-
-	  split_vector_type SplitVecR;
-          split( SplitVecR, R, boost::is_any_of("E"), boost::token_compress_on);
 	  
-	  if( SplitVecR.size() > 1) {
+	  if( r2_compare == r2_SModelS_compare ) {
+	      if( r1_rounded_compare == r1_SModelS_compare ) {
 	    
-	    std::string R1 = SplitVecR[0];
-	    std::string R2 = SplitVecR[1];
-	    
-	    float r11_SModelS = boost::lexical_cast<float>(R);
-	    int R12_SModelS = r11_SModelS * 100.0;
-	    float R13_SModelS = R12_SModelS / 100.0;
-	    std::string R11_SModelS = boost::lexical_cast<std::string>(R13_SModelS);
-	    R_SModelS = R11_SModelS + R2;
-	    	    
-	  }
-
-	  if( r == R_SModelS ) {
-    
 	    std::string string1 = SplitVecTable[1];
 	    std::string string2 = SplitVecTable[2];
 	    string = string1 + ":" + string2;
-	  
+	      
+	      }
 	  }
 	  	      
 	}
@@ -712,7 +717,8 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
      
      std::string Chi2 = SplitVecTable[8];
      _Chi2 = boost::lexical_cast<double>(Chi2);
-      
+     std::cout << "Chi2: " << _Chi2 << std::endl;
+
        }
    }
  }
