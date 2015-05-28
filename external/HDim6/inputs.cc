@@ -154,7 +154,77 @@ pominput::~pominput() {
 
 }
 
+// Calculate the *loop* contributions to the oblique Peskin-Takeuchi parameters
+// while we assume the tree level contributions to be absent
+// Taken from arXiv:1211.4580
+double s_parameter(effinputs * effdata, sminputs * smdata, double cutoff)
+{
+// Calculates S without alpha
+double log_lam_higgs=2*log(cutoff/smdata->mh);
+double log_lam_z=2*log(cutoff/smdata->mz);
+
+double mhlam=pow(smdata->mh/cutoff,2);
+double mzlam=pow(smdata->mz/cutoff,2);
+double vevlam=pow(smdata->vev/cutoff,2);
+double cw=sqrt(1-pow(smdata->sw,2));
+double sw=smdata->sw;
+
+double prefactor=1.0/(6.0*4.0*(3.1415));
+
+double part1=3*(effdata->fw + effdata->fb)*mhlam*log_lam_higgs;
+double part2=2*((5*cw*cw-2)*effdata->fw - (5*cw*cw-3)*effdata->fb)*mzlam*log_lam_higgs;
+double part3=-((22*cw*cw -1)*effdata->fw - (30*cw*cw +1)*effdata->fb)*mzlam*log_lam_z;
+double part4=-24*(cw*cw*effdata->fww+ sw*sw*effdata->fbb)*mzlam*log_lam_higgs;
+double part5=2*effdata->fp2*vevlam*log_lam_higgs;
+
+return prefactor*(part1+part2+part3+part4+part5);
+}
+
+double t_parameter(effinputs * effdata, sminputs * smdata, double cutoff)
+{
+// Calculates T without alpha
+double log_lam_higgs=2*log(cutoff/smdata->mh);
+double log_lam_z=2*log(cutoff/smdata->mz);
+
+double mhlam=pow(smdata->mh/cutoff,2);
+double mzlam=pow(smdata->mz/cutoff,2);
+double vevlam=pow(smdata->vev/cutoff,2);
+double cw=sqrt(1-pow(smdata->sw,2));
+double sw=smdata->sw;
+
+double prefactor=3.0/(4.0*cw*cw*4.0*(3.1415));
+
+double part1=effdata->fb*mhlam*log_lam_higgs;
+double part2=(cw*cw*effdata->fw + effdata->fb)*mzlam*log_lam_higgs;
+double part3=(2*cw*cw*effdata->fw+(3*cw*cw-1)*effdata->fb)*mzlam*log_lam_z;
+double part4=-effdata->fp2*vevlam*log_lam_higgs;
+
+return prefactor*(part1+part2+part3+part4);
+}
+
+double u_parameter(effinputs * effdata, sminputs * smdata, double cutoff)
+{
+// Calculates T without alpha
+double log_lam_higgs=2*log(cutoff/smdata->mh);
+double log_lam_z=2*log(cutoff/smdata->mz);
+
+double mhlam=pow(smdata->mh/cutoff,2);
+double mzlam=pow(smdata->mz/cutoff,2);
+double vevlam=pow(smdata->vev/cutoff,2);
+double cw=sqrt(1-pow(smdata->sw,2));
+double sw=smdata->sw;
+
+double prefactor=-1.0*sw*sw/(3.0*4.0*(3.1415));
+
+double part1=(-4*effdata->fw+5*effdata->fb)*mzlam*log_lam_higgs;
+double part2=(2*effdata->fw-5*effdata->fb)*mzlam*log_lam_z;
+
+return prefactor*(part1+part2);
+}
+
+
 // Calculate the vertex factors for effective interactions
+
 
 void pom_to_eboli( pominput * pomdata, effinputs * effdata, sminputs * smdata )
 {

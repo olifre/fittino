@@ -41,7 +41,7 @@ Fittino::SimplePlotter::SimplePlotter( std::vector<TH1*>& histogramVector, const
     _fittinoStyle->SetHistFillColor( _fillColor );
     _fittinoStyle->SetHistFillStyle( _fillStyle );
     _fittinoStyle->SetHistLineColor( _lineColor );
-    _fittinoStyle->SetTitleOffset( 1.7, "y" );
+    _fittinoStyle->SetTitleOffset( 1.7, "y" ); 
 
     _option.ToLower();
 
@@ -65,7 +65,7 @@ Fittino::SimplePlotter::SimplePlotter( std::vector<TH1*>& histogramVector, const
     _pad->SetTicks( 1, 1 );
 
     gStyle->SetPalette( 1 );
-    TGaxis::SetExponentOffset(+0.02, -0.06, "x");
+    TGaxis::SetExponentOffset(+0.02, -0.06, "x"); 
     gROOT->SetStyle( "FITTINO" );
     gROOT->ForceStyle();
 
