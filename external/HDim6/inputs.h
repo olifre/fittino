@@ -154,6 +154,14 @@ struct pominput{
 
 void pom_to_eboli( pominput * pomdata, effinputs * effdata, sminputs * smdata );
 
+// Calculate Peskin-Takeuchi parameters
+
+
+double s_parameter(effinputs * effdata, sminputs * smdata, double cutoff);
+double t_parameter(effinputs * effdata, sminputs * smdata, double cutoff);
+double u_parameter(effinputs * effdata, sminputs * smdata, double cutoff);
+
+
 // Calculate the vertex factors for effective interactions
 
 double ghyy_(  sminputs * smpar, effinputs * effpar, double s );
