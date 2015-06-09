@@ -138,7 +138,7 @@ Fittino::SummaryPlotter::SummaryPlotter( std::vector<TH1*>& histogramVector, con
     _emptyHistogram->GetYaxis()->SetLabelSize( _labelSize );
     _emptyHistogram->GetYaxis()->SetLabelOffset( _labelOffset );
 
-    _emptyHistogram->GetYaxis()->SetTickSize(0); 
+    _emptyHistogram->GetYaxis()->SetTickLength(0); 
 
     std::string option = "COL";
 
