@@ -58,7 +58,7 @@ Fittino::FormulaQuantity::FormulaQuantity(std::string name, std::string formula,
 
     _formula = new TFormula( "", formula.c_str() );
 
-    if ( _formula->GetNdim() != 1 ) {
+    if ( ( _formula->GetNdim() != 1 && _formula->GetNdim()!= 0 ) || _formula->GetNpar() != set.size() ) {
 
         throw ConfigurationException( "Invalid formula." );
 
