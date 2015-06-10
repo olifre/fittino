@@ -49,11 +49,18 @@ void Fittino::Controller::ExecuteFittino() const {
     try {
 
         const Factory factory;
+        ModelBase* model = 0;
+        std::string modelType;
 
-        boost::property_tree::ptree::value_type& modelNode = *( _inputPtree->get_child( "InputFile.Model" ).begin() );
-        std::string modelType = modelNode.first;
-        boost::property_tree::ptree& modelTree = modelNode.second;
-        ModelBase* model = factory.CreateModel( modelType, modelTree );
+        if ( _inputPtree->get_child( "InputFile" ).count( "Model" ) ) {
+
+            boost::property_tree::ptree::value_type &modelNode = *( _inputPtree->get_child( "InputFile.Model" ).begin() );
+            modelType = modelNode.first;
+            boost::property_tree::ptree &modelTree = modelNode.second;
+            model = factory.CreateModel( modelType, modelTree );
+
+        }
+
 
         boost::property_tree::ptree::value_type& toolNode = *( _inputPtree->get_child( "InputFile.Tool" ).begin() );
         std::string toolType = toolNode.first;
@@ -78,7 +85,13 @@ void Fittino::Controller::ExecuteFittino() const {
         }
 
         _outputPtree->put( "InputFile.VerbosityLevel", _inputPtree->get<std::string>( "InputFile.VerbosityLevel" ) );
-        _outputPtree->put_child( "InputFile.Model." + modelType, model->GetPropertyTree() );
+
+        if ( _inputPtree->get_child( "InputFile" ).count( "Model" ) ) {
+
+            _outputPtree->put_child( "InputFile.Model." + modelType, model->GetPropertyTree() );
+
+        }
+
         _outputPtree->put_child( "InputFile.Tool." + toolType , tool->GetPropertyTree() );
 
         delete tool;

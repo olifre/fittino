@@ -15,7 +15,7 @@
     <!-- Todo: Move (optional) VerbosityLevel and RandomSeed behind Tool? -->
     <xs:element name="VerbosityLevel" type="VerbosityLevel"          />
     <xs:element name="RandomSeed"     type="RandomSeed" minOccurs="0"/>
-    <xs:element name="Model"          type="Model"                   />
+    <xs:element name="Model"          type="Model"      minOccurs="0"/>
     <xs:element name="Tool"           type="Tool"                    />
   </xs:sequence>
 </xs:complexType>
