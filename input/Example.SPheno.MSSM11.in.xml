@@ -119,6 +119,15 @@
         <Fixed>false</Fixed>
       </ModelParameter>
 
+      <ModelParameter>
+        <Name>M_Top</Name>
+        <Value>173.3</Value>
+        <Error>1</Error>
+        <LowerBound>130</LowerBound>
+        <UpperBound>215</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
       <Observables>
       </Observables>
       <CovarianceMatrices>
@@ -280,6 +289,11 @@
             <Value>TanBeta</Value>
           </SLHALine>
 
+          <SLHALine>
+            <Block>SMINPUTS</Block>
+            <Index>6</Index>
+            <Value>M_Top</Value>
+          </SLHALine>
 
         </SPhenoCalculator>
 
