@@ -33,8 +33,6 @@
 
 #include "ContourPlotter.h"
 
-#include <stdlib.h>
-
 Fittino::ContourPlotter::ContourPlotter( std::vector<TH1*>& histogramVector, const boost::property_tree::ptree& ptree )
     : PlotterBase    ( histogramVector, ptree ),
       _legendFrame   ( ptree.get<bool>       ( "LegendFrame",    false         ) ),
@@ -70,8 +68,7 @@ void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
     Double_t levels[2] = { 1., 6. };
     contourHistogram->SetContour( 2, levels );
     contourHistogram->Draw( "CONT LIST" );
-    std::cout<<"Hist name: "<<contourHistogram->GetName()<<std::endl;
-    
+
     _canvas->Update();
 
     // Draw the histogram.
@@ -112,18 +109,16 @@ void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
     if ( contours ) listOfGraphsPerContour1 = ( TList* )contours->At( 1 );
     if ( contours ) listOfGraphsPerContour2 = ( TList* )contours->At( 0 );
 
-    //    TFile* file = new TFile("Contours.root", "RECREATE");
-
     TGraph* contour1 = 0;
     TGraph* contour2 = 0;
 
     if ( listOfGraphsPerContour1 ) {
 
-      int nGraphsPerContour = listOfGraphsPerContour1->GetSize();
+        int nGraphsPerContour = listOfGraphsPerContour1->GetSize();
 
-      for ( int iGraph = 0; iGraph < nGraphsPerContour; iGraph++ ) {
+        for ( int iGraph = 0; iGraph < nGraphsPerContour; iGraph++ ) {
 
-        contour1 = ( TGraph* ) listOfGraphsPerContour1->At( iGraph );
+            contour1 = ( TGraph* ) listOfGraphsPerContour1->At( iGraph );
 
             if ( contour1 ) contour1->SetLineStyle( _contour2SigmaLineStyle );
             if ( contour1 ) contour1->SetLineColor( _contour2SigmaLineColor );
@@ -133,8 +128,8 @@ void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
 
             if ( contour1 ) {
 
-              contour1->SetName( (std::string( _histogramVector[iHistogram]->GetName() ) + "_1D1s_" + boost::lexical_cast<std::string>(iGraph ) ).c_str() );
-              contour1->Write();
+                contour1->SetName( ( std::string( _histogramVector[iHistogram]->GetName() ) + "_1D1s_" + boost::lexical_cast<std::string>( iGraph ) ).c_str() );
+                contour1->Write();
 
 
             }
@@ -171,8 +166,8 @@ void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
 
             if ( contour2 ) {
 
-              contour2->SetName( (std::string( _histogramVector[iHistogram]->GetName() ) + "_2D2s_" + boost::lexical_cast<std::string>(iGraph ) ).c_str() );
-              contour2->Write();
+                contour2->SetName( ( std::string( _histogramVector[iHistogram]->GetName() ) + "_2D2s_" + boost::lexical_cast<std::string>( iGraph ) ).c_str() );
+                contour2->Write();
 
             }
 
@@ -192,6 +187,13 @@ void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
 
     }
 
+    //TGraph* graph = new TGraph( "dd_lux_2013_1310.8214Fig5.txt" );
+    //graph->Draw( "Csame" );
+
+    //TGraph* graph2 = new TGraph( "ourGraph.txt" );
+    //graph2->SetLineStyle( kDashed );
+    //graph2->Draw( "Csame" );
+
     // Draw the legend.
 
     _legend = new TLegend( _legendX1, _legendY1, _legendX2, _legendY2 );
@@ -209,6 +211,9 @@ void Fittino::ContourPlotter::Plot( unsigned int iHistogram ) {
     _legend->AddEntry( _graphVector.at( iHistogram ), "Best Fit Point", "p" );
     _legend->AddEntry( contour2, "1D 68% CL", _legendOption );
     _legend->AddEntry( contour1, "2D 95% CL", _legendOption );
+    // _legend->AddEntry( graph, "LUX 90% CL", "l" );
+    //_legend->AddEntry( graph2, "#chi^{2}_{LUX} = 1.64", "l" );
+
 
     _legend->Draw( "SAME" );
 
