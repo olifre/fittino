@@ -69,7 +69,16 @@ void Fittino::Controller::ExecuteFittino() const {
 
         if ( !_lockFileName.empty() ) {
 
+#if Boost_MINOR_VERSION<56
+
             boost::property_tree::xml_writer_settings<char> settings( '\t', 1 );
+
+#else
+
+            auto settings = boost::property_tree::xml_writer_make_settings<std::string> ( '\t', 1 );
+
+#endif
+
             boost::property_tree::write_xml( _inputFileName, *_inputPtree, std::locale(), settings );
 
             _scopedLock->unlock();
@@ -183,7 +192,16 @@ void Fittino::Controller::InitializeFittino( int argc, char** argv ) {
 
 void Fittino::Controller::TerminateFittino() const {
 
+#if Boost_MINOR_VERSION<56
+
     boost::property_tree::xml_writer_settings<char> settings( '\t', 1 );
+
+#else
+
+    auto settings = boost::property_tree::xml_writer_make_settings<std::string> ( '\t', 1 );
+
+#endif
+
     boost::property_tree::write_xml( "FittinoInterfaceFile.xml", *_outputPtree, std::locale(), settings );
 
 }
