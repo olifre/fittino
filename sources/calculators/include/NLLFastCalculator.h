@@ -1,3 +1,20 @@
+/* $Id: NLLFastCalculator.h 2528 2015-04-07 10:54:29Z range@PHYSIK.UNI-BONN.DE $ */
+
+/*******************************************************************************                             
+ *                                                                              *                                          
+ * Project     Fittino - A SUSY Parameter Fitting Package                       *                                            
+ *                                                                              *                                                      
+ * File        NLLFastCalculator.h                                              *                                                 
+ * Description: Wrapper class for NLL-Fast                                      *                                           
+ * Authors:     Nanette Range                                                   *                               
+ *                                                                              *                              
+ * Licence     This program is free software; you can redistribute it and/or    *                                   
+ *             modify it under the terms of the GNU General Public License as   *                            
+ *             published by the Free Software Foundation; either version 3 of   *               
+ *             the License, or (at your option) any later version.              *             
+ *                                                                              *
+ *******************************************************************************/
+
 #ifndef FITTINO_NLLFASTCALCULATOR_H
 #define FITTINO_NLLFASTCALCULATOR_H
 

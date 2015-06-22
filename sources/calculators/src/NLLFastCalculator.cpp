@@ -1,3 +1,20 @@
+/* $Id: NLLFastCalculator.cpp 2528 2015-04-07 10:54:29Z range@PHYSIK.UNI-BONN.DE $ */
+
+/*******************************************************************************
+ *                                                                              *
+ * Project     Fittino - A SUSY Parameter Fitting Package                       *
+ *                                                                              *
+ * File        NLLFastCalculator.cpp                                            *
+ * Description: Wrapper around NLL-Fast                                         *
+ * Authors:     Nanette Range                                                   *
+ *                                                                              *
+ * Licence     This program is free software; you can redistribute it and/or    *
+ *             modify it under the terms of the GNU General Public License as   *
+ *             published by the Free Software Foundation; either version 3 of   *
+ *             the License, or (at your option) any later version.              * 
+ *                                                                              *
+ *******************************************************************************/
+
 #include <iostream>
 #include <string>
 #include <boost/lexical_cast.hpp>
@@ -134,73 +151,59 @@ void Fittino::NLLFastCalculator::CalculatePredictions() {
   double G = _model->GetCollectionOfQuantities().At("SPheno_Mass_~g")->GetValue();
   std::string g;
   g = boost::lexical_cast<std::string>(G);
-  std::cout << "SPheno_Mass_~g: " << g << std::endl;
-
+ 
   double T1 = _model->GetCollectionOfQuantities().At("SPheno_Mass_~t1")->GetValue();
   std::string t1;
   t1 = boost::lexical_cast<std::string>(T1);
-  std::cout << "SPheno_Mass_~t1: " << t1 << std::endl;
-
+  
   double T2 = _model->GetCollectionOfQuantities().At("SPheno_Mass_~t2")->GetValue();
   std::string t2;
   t2 = boost::lexical_cast<std::string>(T2);
-  std::cout << "SPheno_Mass_~t2: " << t2 << std::endl;
-
+  
   double B1 = _model->GetCollectionOfQuantities().At("SPheno_Mass_~b1")->GetValue();
   std::string b1;
   b1 = boost::lexical_cast<std::string>(B1);
-  std::cout << "SPheno_Mass_~b1: " << b1 << std::endl;
-
+  
   double B2 = _model->GetCollectionOfQuantities().At("SPheno_Mass_~b2")->GetValue();
   std::string b2;
   b2 = boost::lexical_cast<std::string>(B2);
-  std::cout << "SPheno_Mass_~b2: " << b2 << std::endl;
-
+  
   double CR = _model->GetCollectionOfQuantities().At("SPheno_Mass_~cR")->GetValue();
   std::string cR;
   cR = boost::lexical_cast<std::string>(CR);
-  std::cout << "SPheno_Mass_~cR: " << cR << std::endl;
-
+  
   double CL = _model->GetCollectionOfQuantities().At("SPheno_Mass_~cL")->GetValue();
   std::string cL;
   cL = boost::lexical_cast<std::string>(CL);
-  std::cout << "SPheno_Mass_~cL: " << cL << std::endl;
-
+  
   double SR = _model->GetCollectionOfQuantities().At("SPheno_Mass_~sR")->GetValue();
   std::string sR;
   sR = boost::lexical_cast<std::string>(SR);
-  std::cout << "SPheno_Mass_~sR: " << sR << std::endl;
-
+  
   double SL = _model->GetCollectionOfQuantities().At("SPheno_Mass_~sL")->GetValue();
   std::string sL;
   sL = boost::lexical_cast<std::string>(SL);
-  std::cout << "SPheno_Mass_~sL: " << sL << std::endl;
-
+  
   double DR = _model->GetCollectionOfQuantities().At("SPheno_Mass_~dR")->GetValue();
   std::string dR;
   dR = boost::lexical_cast<std::string>(DR);
-  std::cout << "SPheno_Mass_~dR: " << dR << std::endl;
-
+  
   double DL = _model->GetCollectionOfQuantities().At("SPheno_Mass_~dL")->GetValue();
   std::string dL;
   dL = boost::lexical_cast<std::string>(DL);
-  std::cout << "SPheno_Mass_~dL: " << dL << std::endl;
-
+  
   double UR = _model->GetCollectionOfQuantities().At("SPheno_Mass_~uR")->GetValue();
   std::string uR;
   uR = boost::lexical_cast<std::string>(UR);
-  std::cout << "SPheno_Mass_~uR: " << uR << std::endl;
-
+  
   double UL = _model->GetCollectionOfQuantities().At("SPheno_Mass_~uL")->GetValue();
   std::string uL;
   uL = boost::lexical_cast<std::string>(UL);
-  std::cout << "SPheno_Mass_~uL: " << uL << std::endl;
-
-  double SQUARK = ((B1 + B2 + CR + CL + SR + SL + DR + DL + UR +UL) / 10);
+  
+  double SQUARK = (( CR + CL + SR + SL + DR + DL + UR +UL) / 8);
   std::string squark;
   squark = boost::lexical_cast<std::string>(SQUARK);
-  std::cout << "squark_Mass: " << squark << std::endl;
-
+  
   Executor executorGG("/lustre/fittino/group/external/SL6/NLL-fast/NLL-fast-2.1/nllfast-2.1", "nllfast_gg");
   executorGG.AddArgument("gg");
   executorGG.AddArgument("cteq");
@@ -225,55 +228,43 @@ void Fittino::NLLFastCalculator::CalculatePredictions() {
 
 	std::string MS_GG = SplitVecGG[1];
         _ms_gg = boost::lexical_cast<double>(MS_GG);
-	std::cout << "MS_GG =" << _ms_gg  << std::endl;
-
+	
 	std::string MG_GG = SplitVecGG[2];
         _mg_gg = boost::lexical_cast<double>(MG_GG);
-	std::cout << "MG_GG = " << _mg_gg << std::endl;
-
+	
 	std::string LO_GG = SplitVecGG[3];
         _lo_gg = boost::lexical_cast<double>(LO_GG);
-	std::cout << "LO_GG = " << _lo_gg << std::endl;
-
+	
 	std::string NLO_GG = SplitVecGG[4];
         _nlo_gg = boost::lexical_cast<double>(NLO_GG);
-	std::cout << "NLO_GG = " << _nlo_gg << std::endl;
-
+	
 	std::string NLL_NLO_GG = SplitVecGG[5];
         _nll_nlo_gg = boost::lexical_cast<double>(NLL_NLO_GG);
-	std::cout << "NLL_NLO_GG = " << _nll_nlo_gg << std::endl;
-
+	
 	std::string D_MU_PLUS_GG = SplitVecGG[6];
         _d_mu_plus_gg = boost::lexical_cast<double>(D_MU_PLUS_GG);
-	std::cout << "d_mu+_gg = " << _d_mu_plus_gg << std::endl;
-
+	
 	std::string D_MU_MINUS_GG = SplitVecGG[7];
         _d_mu_minus_gg = boost::lexical_cast<double>(D_MU_MINUS_GG);
-	std::cout << "d_mu-_gg = " << _d_mu_minus_gg << std::endl;
-
+	
 	std::string D_PDF_PLUS_GG = SplitVecGG[8];
         _d_pdf_plus_gg = boost::lexical_cast<double>(D_PDF_PLUS_GG);
-	std::cout << "d_pdf+_gg = " << _d_pdf_plus_gg << std::endl;
-
+	
 	std::string D_PDF_MINUS_GG = SplitVecGG[9];
 	_d_pdf_minus_gg = boost::lexical_cast<double>(D_PDF_MINUS_GG);
-	std::cout << "d_pdf-_gg = " << _d_pdf_minus_gg << std::endl;
-
+	
 	std::string D_AS_PLUS_GG = SplitVecGG[10];
         _d_as_plus_gg = boost::lexical_cast<double>(D_AS_PLUS_GG);
-	std::cout << "d_as+_gg = " << _d_as_plus_gg << std::endl;
-
+	
 	std::string D_AS_MINUS_GG = SplitVecGG[11];
         _d_as_minus_gg = boost::lexical_cast<double>(D_AS_MINUS_GG);
-	std::cout << "d_as-_gg = " << _d_as_minus_gg << std::endl;
-
+	
 	std::string K_NLO_GG = SplitVecGG[12];
         _k_nlo_gg = boost::lexical_cast<double>(K_NLO_GG);
-	std::cout << "k_nlo_gg = " << _k_nlo_gg << std::endl;
-
+	
 	std::string K_NLL_GG = SplitVecGG[13];
         _k_nll_gg = boost::lexical_cast<double>(K_NLL_GG);
-	std::cout << "k_nll_gg = " << _k_nll_gg << std::endl;
+	
       }
 
     }

@@ -1,17 +1,18 @@
 /* $Id: HerwigppCalculator.cpp 2528 2015-04-07 10:54:29Z range@PHYSIK.UNI-BONN.DE $ */
 
-/*******************************************************************************                                                                                                        
- *                                                                              *                                                                                                        
- * Project     Fittino - A SUSY Parameter Fitting Package                       *                                                                                                       
- *                                                                              *                                                                                                       
- * File        HerwigppCalculator.cpp                                           *                                                                                                        * Description: Wrapper around Herwig++                                         *                                                                                                      
- * Authors:     Nanette Range                                                   *                                                                                                       
- *                                                                              *                                                                                                       
- * Licence     This program is free software; you can redistribute it and/or    *                                                                                                       
- *             modify it under the terms of the GNU General Public License as   *                                                                                                       
- *             published by the Free Software Foundation; either version 3 of   *                                                                                                       
- *             the License, or (at your option) any later version.              *                                                                                                       
- *                                                                              *                                                                                                       
+/******************************************************************************* 
+ *                                                                              *
+ * Project     Fittino - A SUSY Parameter Fitting Package                       *
+ *                                                                              *  
+ * File        HerwigppCalculator.cpp                                           *
+ * Description: Wrapper around Herwig++                                         *
+ * Authors:     Nanette Range                                                   *
+ *                                                                              *
+ * Licence     This program is free software; you can redistribute it and/or    *
+ *             modify it under the terms of the GNU General Public License as   *
+ *             published by the Free Software Foundation; either version 3 of   *
+ *             the License, or (at your option) any later version.              *
+ *                                                                              *
  *******************************************************************************/
 
 #include <iostream>
@@ -79,13 +80,11 @@ void Fittino::HerwigppCalculator::CalculatePredictions() {
 	    std::string number3 = SplitVecNumber[2];
 	    std::string total_xsec = number1 + number3;  
 	    _Total_Xsec = boost::lexical_cast<double>(total_xsec);
-	    std::cout << "Total crossection: " << _Total_Xsec << std::endl;
-	    
+	    	    
 	    std::string number2 = SplitVecNumber[1];
 	    std::string total_xsec_error = number2 + number3;
 	    _Total_Xsec_error = boost::lexical_cast<double>(total_xsec_error);
-	    std::cout << "Error: " << _Total_Xsec_error << std::endl;
-
+	    
 	  }
 	}
       }
@@ -127,7 +126,6 @@ void Fittino::HerwigppCalculator::CalculatePredictions() {
 	    if( SplitVector[5] == "performed" ) {
 	    
 	      Event_Number = SplitVector[2]; 
-	      std::cout << "Event_Number: " << Event_Number << std::endl;
 	      event_number = boost::lexical_cast<double>(Event_Number);
 	    
 	    }
@@ -139,11 +137,9 @@ void Fittino::HerwigppCalculator::CalculatePredictions() {
 	    if( SplitVector[2] == "performed" ) {
 	    
 	      Matrix_Element = SplitVector[4];
-	      std::cout << "Matrix_Element: " << Matrix_Element << std::endl;   
- 
+	       
 	      if( event_number != last_event_number ) {
 	      
-		std::cout << "last_event_number: " << last_event_number << ", Last_Matrix_Element: " << Last_Matrix_Element << std::endl; 
 		tree->Fill();
 	  
 	      }
