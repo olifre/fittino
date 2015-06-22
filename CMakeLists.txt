@@ -24,9 +24,6 @@ PROJECT( fittino NONE )
 
 INCLUDE( build/CMakeLists.txt OPTIONAL )
 
-#SET( CMAKE_CXX_FLAGS                   "${CMAKE_CXX_FLAGS} -std=c++11"  )
-# todo: When cmake 3.1 is available in all supported environments, use CXX_STANDARD_REQUIRED instead.
-# alternatively use target_compile_features together with CMAKE_CXX_COMPILE_FEATURES
 SET( CMAKE_INSTALL_PREFIX              ${CMAKE_SOURCE_DIR}              )
 SET( CMAKE_FIND_LIBRARY_PREFIXES       "lib" ""                         )
 SET( CMAKE_MODULE_PATH                 ${CMAKE_SOURCE_DIR}/CMakeModules )
@@ -58,7 +55,7 @@ FIND_PACKAGE( HIGGSSIGNALS                                              )
 FIND_PACKAGE( FEYNHIGGS                                                 )
 FIND_PACKAGE( GFORTRANLIB                                               )
 FIND_PACKAGE( IFORTLIB                                                  )
-FIND_PACKAGE( LIBXML2                                                   )
+FIND_PACKAGE( LibXml2                                                   )
 
 FIND_PACKAGE( PythonLibs ) 
 
