@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding='UTF-8'?>
 <?xml-stylesheet type="text/xsl" href="style/InputFile.xsl"?>
 
@@ -26,23 +25,22 @@
 
   <Model>
 
-    <ModelBase>
+    <PhysicsModel>
 
       <Name>Tree</Name>
-      <Tag>Plot</Tag>
 
       <ModelParameter>
         <Name>Entry</Name>
         <!-- Set Value to the best fit entry, determined e.g. by running SimpleOptimizer. -->
-        <Value>681180</Value>
+        <Value>884192</Value>
         <Error>1</Error>
         <LowerBound>0</LowerBound>
-        <UpperBound>4316375</UpperBound>
+        <UpperBound>1.e99</UpperBound>
       </ModelParameter>
 
       <Calculators>
         <TreeCalculator>
-          <InputFileName>/nfs/dust/atlas/user/sarrazin/HDim6/Fit/2/Skimmed4.root</InputFileName>
+          <InputFileName>Fittino.in.root</InputFileName>
         </TreeCalculator>
       </Calculators>
 
@@ -50,9 +48,9 @@
 
       <CovarianceMatrices></CovarianceMatrices>
 
-      <Chi2Contribution>[Chi2]</Chi2Contribution>
+      <Chi2Contribution>Chi2</Chi2Contribution>
 
-    </ModelBase>
+    </PhysicsModel>
 
   </Model>
 
@@ -61,35 +59,28 @@
     <ContourHistogramMaker>
 
       <Histogram>
-        <Name>f_WW_Value</Name>
-        <PlotName>f_WW</PlotName>
+        <Name>X1</Name>
+        <PlotName>x_{1}</PlotName>
+        <LogScale>true</LogScale>
         <NumberOfBins>200</NumberOfBins>
-        <LowerBound>-50.</LowerBound>
-        <UpperBound>+50.</UpperBound>
+        <LowerBound>0.1</LowerBound>
+        <UpperBound>10.</UpperBound>
       </Histogram>
 
       <Histogram>
-        <Name>f_BB_Value</Name>
-        <PlotName>f_BB</PlotName>
+        <Name>X2</Name>
+        <PlotName>x_{2}</PlotName>
         <NumberOfBins>200</NumberOfBins>
-        <LowerBound>-50.</LowerBound>
-        <UpperBound>50.</UpperBound>
+        <LowerBound>-4.</LowerBound>
+        <UpperBound>4.</UpperBound>
       </Histogram>
 
       <Histogram>
-        <Name>f_W</Name>
-        <PlotName>f_W</PlotName>
-        <NumberOfBins>50</NumberOfBins>
-        <LowerBound>-55.</LowerBound>
-        <UpperBound>+55.</UpperBound>
-      </Histogram>
-
-      <Histogram>
-        <Name>f_B</Name>
-        <PlotName>f_B</PlotName>
-        <NumberOfBins>50</NumberOfBins>
-        <LowerBound>-110.</LowerBound>
-        <UpperBound>+110.</UpperBound>
+        <Name>X3</Name>
+        <PlotName>x_{3}</PlotName>
+        <NumberOfBins>200</NumberOfBins>
+        <LowerBound>-4.</LowerBound>
+        <UpperBound>4.</UpperBound>
       </Histogram>
 
       <Plotter>
