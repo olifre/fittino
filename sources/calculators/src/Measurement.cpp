@@ -37,7 +37,12 @@ Fittino::Measurement::Measurement(std::string type, unsigned int index, const Mo
 :CalculatorBase( model, &ptree ) {
 
     _name = ptree.get<std::string>( "Name" );
-    _tag = ptree.get<std::string>( "Tag", _name );
+
+    if ( _name.empty() ) {
+
+        throw ConfigurationException( "Measurement with empty name." );
+
+    }
 
     _index = index;
 
@@ -69,13 +74,14 @@ Fittino::Measurement::Measurement(std::string type, unsigned int index, const Mo
 
                         UncertaintyBase *uncertainty = factory.CreateUncertainty(node.first, model, this, node.second);
 
-                        if ( !uncertainty->GetName().empty() && !_namedUncertainties.insert( std::make_pair( uncertainty->GetName(), uncertainty ) ).second ) {
+                        if ( !uncertainty->GetName().empty() && !_namedUncertainties.insert( std::make_pair( _name + "_" + uncertainty->GetName(), uncertainty ) ).second ) {
 
                             throw ConfigurationException("Several uncertainties with same name " + uncertainty->GetName() + "." );
 
                         }
 
                         _uncertainties.push_back(uncertainty);
+
                     }
 
                 }
