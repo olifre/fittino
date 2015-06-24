@@ -56,6 +56,7 @@ namespace Fittino {
       T*                        At( int index ) const;
       T*                        At( std::string name ) const;
       unsigned int              GetNumberOfElements() const;
+      int                       Count( std::string key ) const;
 
     public:
       virtual                   ~Collection();
@@ -153,6 +154,13 @@ void Fittino::Collection<T*>::Delete()  {
 
   _vector.clear();
   _map.clear();
+
+}
+
+template<class T>
+int Fittino::Collection<T*>::Count( std::string key ) const {
+
+  return _map.count( key );
 
 }
 
