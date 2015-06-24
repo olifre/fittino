@@ -21,24 +21,13 @@
 #include <boost/property_tree/ptree.hpp>
 
 
-Fittino::UncertaintyBase::UncertaintyBase(ModelBase const *model, const Measurement *observable, const boost::property_tree::ptree &ptree) {
+Fittino::UncertaintyBase::UncertaintyBase(ModelBase const *model, const Measurement *observable, const boost::property_tree::ptree &ptree)
+: Quantity( ptree.get<std::string>( "Name", "" ) ) {
 
     _observable = observable;
 
-    _name = ptree.get<std::string>( "Name", "" );
 }
 
 Fittino::UncertaintyBase::~UncertaintyBase() {
 
-}
-
-double Fittino::UncertaintyBase::GetValue() const {
-
-    return _value;
-
-}
-
-const std::string& Fittino::UncertaintyBase::GetName() const {
-
-    return _name;
 }

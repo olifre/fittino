@@ -22,6 +22,7 @@
 #define FITTINO_UNCERTAINTYBASE_H
 
 #include "Measurement.h"
+#include "Quantity.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -36,22 +37,17 @@ namespace Fittino {
  *  \brief .
  */
 
-    class UncertaintyBase {
+    class UncertaintyBase : public Quantity {
 
     public:
         UncertaintyBase(ModelBase const *model, const Measurement *observable, const boost::property_tree::ptree &ptree);
         virtual ~UncertaintyBase();
 
         virtual void Update() = 0;
-        double GetValue() const;
-        const std::string& GetName() const;
 
     protected:
         const Measurement* _observable;
         double _value;
-
-    private:
-        std::string _name;
 
     };
 
