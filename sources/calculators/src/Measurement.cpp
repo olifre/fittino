@@ -103,7 +103,7 @@ void Fittino::Measurement::CalculatePredictions()  {
 
     _totalUncertainty = 0;
 
-    std::vector< UncertaintyBase* >::iterator it;
+    std::vector< Quantity* >::iterator it;
 
     for (  it = _uncertainties.begin(); it != _uncertainties.end(); ++it ) {
 
@@ -144,7 +144,7 @@ bool Fittino::Measurement::IsWithinBounds() const {
 
 }
 
-const std::map<std::string, const Fittino::UncertaintyBase *>& Fittino::Measurement::GetNamedUncertainties() const {
+const std::map<std::string, const Fittino::Quantity *>& Fittino::Measurement::GetNamedUncertainties() const {
 
     return _namedUncertainties;
 

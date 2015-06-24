@@ -51,7 +51,7 @@ namespace Fittino {
         const double& GetPredictedValue() const;
         const double& GetMeasuredValue() const;
         const double& GetChi2() const;
-        const std::map<std::string, const UncertaintyBase*>& GetNamedUncertainties() const;
+        const std::map<std::string, const Quantity*>& GetNamedUncertainties() const;
 
     private:
 
@@ -69,8 +69,8 @@ namespace Fittino {
         double _pull;
         double _chi2;
 
-        std::vector<UncertaintyBase*> _uncertainties;
-        std::map<std::string, const UncertaintyBase*> _namedUncertainties;
+        std::vector<Quantity*> _uncertainties;
+        std::map<std::string, const Quantity*> _namedUncertainties;
 
     };
 
