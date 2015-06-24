@@ -21,6 +21,7 @@
 #define FITTINO_FORMULAQUANTITY_H
 
 #include <vector>
+#include <map>
 
 #include "Quantity.h"
 
@@ -41,7 +42,7 @@ namespace Fittino {
 
     public:
 
-      FormulaQuantity( std::string name, std::string formula, const ModelBase* model );
+      FormulaQuantity( std::string name, std::string formula, const ModelBase* model, std::map<std::string, const Quantity*> map = std::map<std::string, const Quantity*>() );
 
       ~FormulaQuantity();
 

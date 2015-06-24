@@ -29,8 +29,18 @@
 #include "ModelBase.h"
 
 
-Fittino::FormulaQuantity::FormulaQuantity(std::string name, std::string formula, const Fittino::ModelBase *model)
+Fittino::FormulaQuantity::FormulaQuantity(std::string name, std::string formula, const Fittino::ModelBase *model, std::map<std::string, const Quantity*> map)
 : Quantity( name ){
+
+    for ( const auto& kv : map ) {
+
+        if ( model->GetCollectionOfQuantities().Count( kv.first ) ) {
+
+            throw ConfigurationException( "Reserved name " + kv.first + " used for a model quantity." );
+
+        }
+
+    }
 
     int begin = formula.find( "[" );
 
@@ -52,7 +62,17 @@ Fittino::FormulaQuantity::FormulaQuantity(std::string name, std::string formula,
 
         std::string index = boost::lexical_cast<std::string>( _parameters.size() );
         boost::replace_all( formula, "[" + *it + "]", "[" + index + "]" );
-        _parameters.push_back( model->GetCollectionOfQuantities().At( *it ) );
+
+        if ( map.count(*it) ) {
+
+            _parameters.push_back( map.at( *it ) );
+
+        }
+        else {
+
+            _parameters.push_back( model->GetCollectionOfQuantities().At(*it) );
+
+        }
 
     }
 
