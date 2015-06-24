@@ -20,6 +20,7 @@
 
 FILE(GLOB includes ./include/*.h)
 LIST( APPEND includes "include/BRCalculator.h" )
+LIST( APPEND includes "include/Correlation.h" )
 LIST( APPEND includes "include/LinearInterpolationCalculator.h" )
 LIST( APPEND includes "include/LinearInterpolationCalculatorBase.h" )
 LIST( APPEND includes "include/HerwigppCalculator.h" )
@@ -44,6 +45,7 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 
 LIST( APPEND sources "src/AbsoluteUncertainty.cpp" )
 LIST( APPEND sources "src/BRCalculator.cpp" )
+LIST( APPEND sources "src/Correlation.cpp" )
 LIST( APPEND sources "src/FormulaQuantity.cpp" )
 LIST( APPEND sources "src/RelativeTheoryUncertainty.cpp" )
 LIST( APPEND sources "src/LinearInterpolationCalculator.cpp" )
