@@ -47,6 +47,7 @@ namespace Fittino {
         void CalculatePredictions();
         void SetMeasuredValue( double value );
 
+        const double& GetDeviation() const;
         const double& GetTotalUncertainty() const;
         const double& GetPredictedValue() const;
         const double& GetMeasuredValue() const;

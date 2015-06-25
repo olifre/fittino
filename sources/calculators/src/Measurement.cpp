@@ -139,6 +139,13 @@ const double& Fittino::Measurement::GetTotalUncertainty() const {
 
 }
 
+
+const double& Fittino::Measurement::GetDeviation() const {
+
+    return _deviation;
+
+}
+
 void Fittino::Measurement::SetMeasuredValue( double value ) {
 
     _measuredValue = value;
