@@ -29,10 +29,10 @@ Fittino::FormulaCalculator::FormulaCalculator( const Fittino::ModelBase* model, 
     : CalculatorBase( model, &ptree ) {
 
     SetName( "FormulaCalculator" );
-    SetTag ( ""                  );
+    SetTag ( "Formula"           );
 
     std::string formula = ptree.get<std::string>( "Formula" );
-    _formula = new FormulaQuantity( "Value", formula, model );
+    _formula = new FormulaQuantity( "", formula, model );
     AddQuantity( _formula );
 
     CalculatePredictions();

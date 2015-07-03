@@ -31,7 +31,7 @@ Fittino::LinearInterpolationCalculator::LinearInterpolationCalculator( const Mod
   SetName( "LinearInterpolationCalculator" );
   SetTag ( "LinearInterpolation"           );
 
-  AddQuantity( new SimplePrediction( "Value" , "", "", "", 0., 1.e6, _value ) );
+  AddQuantity( new SimplePrediction( "" , "", "", "", 0., 1.e6, _value ) );
 
   GetHistogram();
 
