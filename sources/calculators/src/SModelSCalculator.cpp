@@ -1,3 +1,20 @@
+/* $Id: SModelSCalculator.cpp 2528 2015-04-07 10:54:29Z range@PHYSIK.UNI-BONN.DE $ */
+
+/******************************************************************************* 
+ *                                                                              *
+ * Project     Fittino - A SUSY Parameter Fitting Package                       *    
+ *                                                                              * 
+ * File        SModelSCalculator.cpp                                            *                  
+ * Description: Wrapper around SModelS                                          *                                                    
+ * Authors:     Nanette Range                                                   *
+ *                                                                              *
+ * Licence     This program is free software; you can redistribute it and/or    *    
+ *             modify it under the terms of the GNU General Public License as   *        
+ *             published by the Free Software Foundation; either version 3 of   *          
+ *             the License, or (at your option) any later version.              *
+ *                                                                              *
+ *******************************************************************************/
+
 #include <Python.h>
 #include <boost/lexical_cast.hpp>
 #include <boost/python.hpp>

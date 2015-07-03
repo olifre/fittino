@@ -54,7 +54,7 @@ void Fittino::HerwigppCalculator::CalculatePredictions() {
   Executor executorRun( "/cvmfs/sft.cern.ch/lcg/external/MCGenerators_lcgcmt65a/herwig++/2.7.0/x86_64-slc6-gcc47-opt/bin/Herwig++", "Herwig++ run" );
   executorRun.AddArgument( "run" );
   executorRun.AddArgument( inputfileRun );
-  executorRun.AddArgument( "-N50" );
+  executorRun.AddArgument( "-N1000" );
   executorRun.AddArgument( "-d1" );
   executorRun.Execute();
 
@@ -140,16 +140,24 @@ void Fittino::HerwigppCalculator::CalculatePredictions() {
 	       
 	      if( event_number != last_event_number ) {
 	      
+		split_vector_type SplitMatrixElement;
+		split( SplitMatrixElement, Matrix_Element, boost::is_any_of("~"), boost::token_compress_on );
+		
+		std::string sparticle1 = SplitMatrixElement[1];
+		std::string sparticle2 = SplitMatrixElement[2];
+
+		std::cout << "sparticle1: " << sparticle1 << ", sparticle2: " << sparticle2 << std::endl; 
+		
 		tree->Fill();
 	  
 	      }
 
-	    last_event_number = event_number;
-	    Last_Matrix_Element = Matrix_Element;
+	      last_event_number = event_number;
+	      Last_Matrix_Element = Matrix_Element;
 	    
 	    }
-	  }
-	}  
+  	  }
+  	}  
       } 
     }
     
