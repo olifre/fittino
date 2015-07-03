@@ -57,7 +57,17 @@ void Fittino::CalculatorBase::SetupMeasuredValues() {
 
 const double& Fittino::CalculatorBase::GetInput( std::string name ) const {
 
-    return _input.at( name )->GetValue() ;
+    try {
+
+        return _input.at( name )->GetValue();
+
+    }
+    catch ( const std::out_of_range& e ) {
+
+        std::cout << _name << ": No input " << name << std::endl;
+        throw;
+
+    }
 
 }
 
@@ -95,13 +105,32 @@ void Fittino::CalculatorBase::AddOutput( std::string name ) {
 
 void  Fittino::CalculatorBase::AddQuantity( Fittino::Quantity* prediction ) {
 
-    if ( _tag != "" ) {
+    std::string name;
 
-        prediction->SetName( _tag + "_" + prediction->GetName() );
+    if ( _tag.empty() && prediction->GetName().empty() ) {
+
+        throw ConfigurationException( "Name and tag of a quantity empty at the same time." );
 
     }
 
-    _collectionOfQuantities.AddElement( prediction->GetName(), prediction );
+    if ( _tag.empty() ) {
+
+        name = prediction->GetName();
+
+    }
+    else if ( prediction->GetName().empty() ) {
+
+        name = _tag;
+
+    }
+    else {
+
+        name = _tag + "_" + prediction->GetName();
+
+    }
+
+    prediction->SetName( name );
+    _collectionOfQuantities.AddElement( name, prediction );
 
 }
 
