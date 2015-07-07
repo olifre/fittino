@@ -87,7 +87,9 @@ namespace Fittino {
       int           _bestChannelChi2;
       double        _bestChannelChi2_double;
       std::string   _whichAnalyses;
-      
+      bool          _initializeHiggsBounds;
+
+
       std::vector<double>      _predicted_mu_fromHSresult;
       std::vector<double>      _dominant_higgs_fromHSresult;
       std::vector<double>      _ncombined_fromHSresult;

@@ -65,7 +65,7 @@ Fittino::SimplePlotter::SimplePlotter( std::vector<TH1*>& histogramVector, const
     _pad->SetTicks( 1, 1 );
 
     gStyle->SetPalette( 1 );
-    TGaxis::SetExponentOffset(+0.02, -0.06, "x");
+    TGaxis::SetExponentOffset( +0.02, -0.06, "x" );
     gROOT->SetStyle( "FITTINO" );
     gROOT->ForceStyle();
 

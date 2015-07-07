@@ -325,6 +325,10 @@ namespace Fittino {
 
       const double& _i_FeynHiggs_Mass_h0;
 
+      int          _nHzero;
+      int          _nHplus;
+      std::string  _whichAnalyses;
+
       /*! \endcond UML */
 
   };

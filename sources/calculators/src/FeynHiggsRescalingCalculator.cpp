@@ -122,6 +122,9 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Model
     _i_normSM_g_Abs2_h_tau_tau( model->GetCollectionOfQuantities().At("FeynHiggs_NormSM_g_Abs2h0_tau_tau"          )->GetValue() ),
     _i_FeynHiggs_Mass_h0      ( model->GetCollectionOfQuantities().At("FeynHiggs_Mass_h0"                          )->GetValue() ) {
 
+    _nHzero             = ptree.get<int>        ( "NHzero",             3                       );
+    _nHplus             = ptree.get<int>        ( "NHPlus",             1                       );
+    _whichAnalyses      = ptree.get<std::string>( "WhichAnalyses",      "LandH"                 );
     _name = "FeynHiggsRescaling";
     _tag = "FeynHiggsRescaling";
     _zero = 0;
@@ -300,12 +303,7 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Model
 
     // intialize HiggsBounds for getting SMBRs later.
     initialize_higgsbounds_chisqtables_();
-    //char whichAnalyses[256];
-    std::string ana( "LandH" );
-    int nHzero = 3;
-    int nHplus = 1;
-    //sprintf( whichAnalyses, "%s", ana.c_str() );
-    initialize_higgsbounds_( &nHzero, &nHplus, ana.c_str(), ana.length() );
+    initialize_higgsbounds_( &_nHzero, &_nHplus, _whichAnalyses.c_str(), _whichAnalyses.length() );
 
 }
 

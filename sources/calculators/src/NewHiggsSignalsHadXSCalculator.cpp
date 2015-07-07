@@ -47,7 +47,9 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const M
     _chi2WithTheory     = 0.;
     _chi2WithoutTheory  = 0.;
     _bestChannelChi2    = 0;
-    
+    _initializeHiggsBounds = ptree.get<bool> ( "InitializeHiggsBounds", true );
+
+
     for( unsigned int i = 0; i < _nHzero; ++i ) {
         char nodeName[100];
         double defaultValue = (i==0) ? 0.024 : 0.003;
@@ -247,10 +249,12 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const M
         std::cout << "USING " << _name_BR_hjnutaunutau.at(i) << std::endl;
 
    } 
-
-    initialize_higgsbounds_chisqtables_();
-    initialize_higgsbounds_( &_nHzero, &_nHplus, _whichAnalyses.c_str(), _whichAnalyses.length() );
-
+    
+    if( _initializeHiggsBounds ) {
+        initialize_higgsbounds_chisqtables_();
+        initialize_higgsbounds_( &_nHzero, &_nHplus, _whichAnalyses.c_str(), _whichAnalyses.length() );
+    }
+    
     //std::string expdata = "LHC_mail_14_07_2013_HS_new_observable_set";
     std::string expdata = ptree.get<std::string>( "ExpData" );
     std::cout<<"Using ExpData = "<<expdata<<std::endl;
