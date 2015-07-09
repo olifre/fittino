@@ -57,6 +57,7 @@
 #include "LHCLimitCalculator.h"
 #include "LinearInterpolationCalculator.h"
 #include "MadGraphCalculator.h"
+#include "MadGraph2Calculator.h"
 #include "MarkovChainSampler.h"
 #include "MicromegasCalculator.h"
 #include "MinuitOptimizer.h"
@@ -331,6 +332,11 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 
         return new MadGraphCalculator( model, ptree );
 
+    }
+
+    else if ( type == "MadGraph2Calculator" ) {
+  
+        return new MadGraph2Calculator( model, ptree );
     }
     else if ( type == "MicromegasCalculator" ) {
 

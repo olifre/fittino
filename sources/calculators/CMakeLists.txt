@@ -30,6 +30,7 @@ LIST( APPEND includes "include/HiggsSignalsCalculator.h" )
 LIST( APPEND includes "include/CheckMATE2Calculator.h" )
 LIST( APPEND includes "include/NLLFastCalculator.h" )
 LIST( APPEND includes "include/HepMCSplitCalculator.h" )
+LIST( APPEND includes "include/MadGraph2Calculator.h" )
 
 AUX_SOURCE_DIRECTORY(src sources)
 
@@ -58,6 +59,7 @@ LIST( APPEND sources "src/CheckMATE2Calculator.cpp" )
 LIST( APPEND sources "src/HerwigppCalculator.cpp" )
 LIST( APPEND sources "src/NLLFastCalculator.cpp" )
 LIST( APPEND sources "src/HepMCSplitCalculator.cpp" ) 
+LIST( APPEND sources "src/MadGraph2Calculator.cpp" ) 
 
 IF(PYTHONLIBS_FOUND AND Boost_PYTHON_FOUND)
 
