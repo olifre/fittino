@@ -49,7 +49,7 @@ Fittino::MadGraph2Calculator::MadGraph2Calculator( const ModelBase* model, const
 
 
 
-fstream datei("madgraphrun.txt", std::ios::out);
+std::fstream datei("madgraphrun.txt", std::ios::out);
 datei << "import model ./HIGGSFIT2_UFO" << std::endl;
 datei << "generate p p > z h NP=4" << std::endl;
 datei << "output dummydir" << std::endl;
@@ -67,14 +67,12 @@ datei << "set nevents=" << _nevents << std::endl;
 
   //redirector.Stop();
 
-using boost::property_tree::ptree;
-ptree pt;
-read_xml("dummydir/Events/run_01/run_01_tag_1_banner.txt",pt);
+boost::property_tree::ptree pt;
+boost::property_tree::read_xml("dummydir/Events/run_01/run_01_tag_1_banner.txt",pt);
 std::string tag = pt.get<std::string>("LesHouchesEvents.header.MGGenerationInfo");
 std::string line1=tag.substr(5,tag.find("\n",5));
 std::string line2=tag.substr(43,tag.length());
  std::string  cross=boost::regex_replace(line2,boost::regex("[^0-9]*([0-9,.]+).*"),std::string("\\1"));
- using Fittino::MadGraph2Calculator;
  _SMxs = atof(cross.c_str());
 
 
@@ -98,7 +96,7 @@ void Fittino::MadGraph2Calculator::CalculatePredictions() {
 
 
 
-fstream datei("madgraphrun.txt", std::ios::out);
+std::fstream datei("madgraphrun.txt", std::ios::out);
 datei << "import model ./HIGGSFIT2_UFO" << std::endl;
 datei << "generate p p > z h NP=4" << std::endl;
 datei << "output dummydir" << std::endl;
@@ -121,9 +119,8 @@ datei << "set nevents=" << _nevents << std::endl;
   //redirector.Stop();
 
 
-using boost::property_tree::ptree;
-ptree pt;
-read_xml("dummydir/Events/run_01/run_01_tag_1_banner.txt",pt);
+boost::property_tree::ptree pt;
+boost::property_tree::read_xml("dummydir/Events/run_01/run_01_tag_1_banner.txt",pt);
 std::string tag = pt.get<std::string>("LesHouchesEvents.header.MGGenerationInfo");
 std::string line1=tag.substr(5,tag.find("\n",5));
 std::string line2=tag.substr(43,tag.length());
@@ -133,7 +130,6 @@ std::string line2=tag.substr(43,tag.length());
  _crossSection = atof(cross.c_str()); 
  _nevents = atof(events.c_str());
  _normxs=_crossSection/_SMxs;
- using Fittino::MadGraph2Calculator;
  //std::cout << "beam energy      : " << beamenergy << " MeV" << std::endl;
  std::cout << "Number of Events : " << events               << std::endl;
  std::cout << "Cross section    : " << cross      << " pb"  << std::endl;
