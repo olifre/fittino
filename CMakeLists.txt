@@ -41,7 +41,7 @@ ENABLE_LANGUAGE( CXX )
 ENABLE_LANGUAGE( C )
 # ENABLE_LANGUAGE( Fortran )
 
-FIND_PACKAGE( Boost 1.47.0 COMPONENTS filesystem system thread REQUIRED )
+FIND_PACKAGE( Boost 1.47.0 COMPONENTS filesystem system thread regex REQUIRED )
 FIND_PACKAGE( ROOT 5.20.00 REQUIRED                                     )
 FIND_PACKAGE( GSL                                                       )
 FIND_PACKAGE( LHAPDF 5.8.9 EXACT                                        )
@@ -61,7 +61,7 @@ FIND_PACKAGE( PythonLibs )
 
 IF( PYTHONLIBS_FOUND )
 
-    FIND_PACKAGE( Boost 1.47.0 COMPONENTS filesystem system thread python )
+    FIND_PACKAGE( Boost 1.47.0 COMPONENTS filesystem system thread python regex )
 
 ENDIF()
 
