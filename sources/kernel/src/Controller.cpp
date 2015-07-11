@@ -345,10 +345,10 @@ void Fittino::Controller::ValidateInputFile() const {
 
 #ifdef LIBXML2
 
-    std::string project = PROJECT_SOURCE_DIR;
+    std::string xmlValidationFile = REALPATH_INSTALL_PREFIX;
+    xmlValidationFile += "/share/fittino/input/definitions/InputFile.xsd";
 
     std::string xmllint = LIBXML2_XMLLINT_EXECUTABLE;
-    std::string xmlValidationFile = project + "/input/definitions/InputFile.xsd";
 
     Messenger& messenger = Messenger::GetInstance();
 
@@ -357,7 +357,7 @@ void Fittino::Controller::ValidateInputFile() const {
     messenger << Messenger::ALWAYS << "  Validating the input file" << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
     messenger << Messenger::ALWAYS << "   Using xmllint at " << xmllint << Messenger::Endl;
-    messenger << Messenger::ALWAYS << "   Using xsd file at input/definitions/InputFile.xsd" << Messenger::Endl;
+    messenger << Messenger::ALWAYS << "   Using xsd file at " << xmlValidationFile << Messenger::Endl;
     messenger << Messenger::ALWAYS << Messenger::Endl;
 
     Executor validation( xmllint, "xmllint" );
