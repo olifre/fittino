@@ -13,7 +13,7 @@
     <xs:element name="calculate_xs_Wh"          type="xs:boolean"        />
     <xs:element name="calculate_xs_Zh"          type="xs:boolean"        />
     <xs:element name="UseDampingCoefficients"   type="xs:boolean"        />
-    <xs:element name="CenterOfMassEnergy"       type="CenterOfMassEnergy"/>
+    <xs:element name="CenterOfMassEnergy"       type="CenterOfMassEnergy" minOccurs="0" maxOccurs="unbounded"/>
     <xs:element name="Mass_h"                   type="xs:string"         />
     <xs:element name="f_GG"                     type="xs:string"         />
     <xs:element name="f_BB"                     type="xs:string"         />
