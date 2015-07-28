@@ -37,6 +37,6 @@ Fittino::RelativeTheoryUncertainty::~RelativeTheoryUncertainty() {
 
 void Fittino::RelativeTheoryUncertainty::Update() {
 
-    _value = _relativeValue * _observable->GetPredictedValue();
+    _value = _relativeValue * _observable->GetPrediction();
 
 }

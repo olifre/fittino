@@ -37,7 +37,7 @@ Fittino::AstroUncertainty::AstroUncertainty(ModelBase const *model, const Measur
 
     double confidenceLevel = ptree.get<double>( "ConfidenceLevel" );
     _quantile = TMath::NormQuantile( confidenceLevel );
-    // _quantile = TMath::Sqrt( 1.64 ); this reproduces the former result
+     _quantile = TMath::Sqrt( 1.64 ); //this reproduces the former result
 
     Update();
 

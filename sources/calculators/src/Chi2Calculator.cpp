@@ -17,57 +17,62 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <set>
 #include <string>
 
 #include <boost/property_tree/ptree.hpp>
-#include <boost/foreach.hpp>
 
+#include "TDecompBK.h"
 #include "TMath.h"
 
+#include "CalculatorException.h"
+#include "Chi2Calculator.h"
+#include "Correlation.h"
 #include "Factory.h"
 #include "ModelBase.h"
-#include "Chi2Calculator.h"
 #include "Measurement.h"
 #include "RandomGenerator.h"
 #include "SimplePrediction.h"
-#include "LHCChi2Calculator.h"
 
 Fittino::Chi2Calculator::Chi2Calculator( const Fittino::ModelBase* model, const boost::property_tree::ptree &ptree )
-        : CalculatorBase( model ) {
+        : CalculatorBase( model, &ptree ) {
 
-    _name = ptree.get<std::string>( "Name", "Chi2Calculator" );
-    _tag = ptree.get<std::string>( "Tag", _name );
+    SetName( "Chi2Calculator" );
+    SetTag ( "Chi2"           );
 
-    _chi2 = new Quantity( "Chi2", "", 0, 0, 0 );
-    AddQuantity( _chi2 );
+    AddOutput( "Chi2"          , _chi2);
+    AddOutput( "CorrelatedChi2",  _correlatedChi2 );
 
-    Factory factory;
+    for ( const auto& node : *GetConfiguration() ) {
 
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree ) {
+        if ( node.first != "Observable" ) continue;
 
-                    if ( node.first == "UpperLimit" || node.first == "LowerLimit" || node.first == "Measurement" ) {
+        AddObservable( node.second );
 
-                        Measurement *measurement = new Measurement(node.first, _measurements.size(), model, node.second);
+    }
 
-                        for (unsigned int iQuantity = 0; iQuantity < measurement->GetCollectionOfQuantities().GetNumberOfElements(); iQuantity++) {
+    for ( const auto& node : *GetConfiguration() ) {
 
-                            AddQuantity(measurement->GetCollectionOfQuantities().At(iQuantity));
+        if ( node.first != "Correlation" ) continue;
 
-                        }
+        AddCorrelation( node.second );
 
-                        _measurements.push_back(measurement);
+    }
 
-                    }
+    _inverted = false;
 
-                }
+    _cov                 .ResizeTo( _observables.size(), _observables.size() );
+    _invCov              .ResizeTo( _observables.size(), _observables.size() );
+    _lastCov             .ResizeTo( _observables.size(), _observables.size() );
+    _deviations          .ResizeTo( _observables.size()                       );
+    _deviationsTransposed.ResizeTo( _observables.size()                       );
+    _initialPredictions  .ResizeTo( _observables.size()                       );
+    _initialUncertainties.resize  ( _observables.size()                       );
 
-    _initialPredictions.ResizeTo( _measurements.size() );
-    _initialUncertainties.resize( _measurements.size() );
+    for ( unsigned int i = 0; i < _observables.size(); ++i ) {
 
-    for ( unsigned int i = 0; i < _measurements.size(); i++ ) {
-
-        _initialPredictions[i] = _measurements.at(i)->GetPredictedValue();
-        _initialUncertainties[i] = _measurements.at(i)->GetTotalUncertainty();
+        _initialPredictions  [i] = _observables.at(i)->GetPrediction();
+        _initialUncertainties[i] = _observables.at(i)->GetTotalUncertainty();
 
     }
 
@@ -92,27 +97,57 @@ Fittino::Chi2Calculator::~Chi2Calculator() {
 
 void Fittino::Chi2Calculator::CalculatePredictions() {
 
-    double chi2 = 0;
+    _lastCov = _cov;
+    _cov.Zero();
 
-    for ( unsigned int i = 0; i < _measurements.size(); i++ ) {
+    _chi2 = 0;
 
-        _measurements[i]->CalculatePredictions();
-        chi2 += _measurements[i]->GetChi2();
+    for ( unsigned int i = 0; i < _observables.size(); i++ ) {
+
+        auto obs = _observables[i];
+
+        obs->Update();
+
+        _chi2 += obs->GetChi2();
+
+        _deviations[i] = obs->GetDeviation();
+        _cov[i][i] = TMath::Power( obs->GetTotalUncertainty(), 2 );
 
     }
 
-    _chi2->SetValue( chi2 );
+    _correlatedChi2 = _chi2;
+
+    if ( _correlations.empty() ) return;
+
+    for ( auto correlation : _correlations ) {
+
+        correlation->Update();
+
+        auto i = correlation->GetID().second.first;
+        auto j = correlation->GetID().second.second;
+
+        _cov[i][j] += correlation->GetCovariance();
+        _cov[j][i] += _cov[i][j];
+
+    }
+
+    _inverted = _inverted && _cov == _lastCov;
+    if ( !_inverted ) InvertCovarianceMatrix();
+    _inverted = true;
+
+    _deviationsTransposed = _deviations;
+    _deviationsTransposed *= _invCov;
+    _correlatedChi2 = _deviationsTransposed * _deviations;
 
 }
 
 void Fittino::Chi2Calculator::SmearMeasurements() {
 
-
-    for ( unsigned int i = 0; i < _measurements.size(); i++ ) {
+    for ( unsigned int i = 0; i < _observables.size(); i++ ) {
 
         double smearedMeasurement = RandomGenerator::GetInstance()->Gaus(_initialPredictions[i], _initialUncertainties[i]);
 
-        _measurements[i]->SetMeasuredValue( smearedMeasurement );
+        _observables[i]->SetMeasurement(smearedMeasurement);
 
     }
 
@@ -120,15 +155,61 @@ void Fittino::Chi2Calculator::SmearMeasurements() {
 
 bool Fittino::Chi2Calculator::MeasurementsAreWithinBounds() {
 
-    for ( unsigned int i = 0; i < _measurements.size(); i ++ ) {
+    for ( unsigned int i = 0; i < _observables.size(); i ++ ) {
 
-        if ( ! _measurements.at( i )->IsWithinBounds() ) {
-
-            return false;
-        }
+        if ( ! _observables.at( i )->IsWithinBounds() ) return false;
 
     }
 
     return true;
+
+}
+
+void Fittino::Chi2Calculator::AddCorrelation(boost::property_tree::ptree ptree) {
+
+    auto correlation = new Correlation( _constObservables, ptree );
+
+    _correlations.push_back( correlation );
+
+    auto id = correlation->GetID();
+
+    if ( _correlationIDs.insert( id ).second ) return;
+
+    std::string message = "Correlation " + id.first + " configured multiple times between the observables ";
+    message+= _observables[ id.second.first ]->GetName() + " and " + _observables[ id.second.second ]->GetName() + ".";
+
+    throw ConfigurationException( message );
+
+}
+
+void Fittino::Chi2Calculator::AddObservable( boost::property_tree::ptree ptree ) {
+
+    auto observable = new Measurement( _model, ptree );
+
+    if ( !_observableNames.insert( observable->GetName() ).second ) {
+
+        throw ConfigurationException( "Measurement with name " + observable->GetName() + " declared multiple times." );
+
+    }
+
+    AddOutput(  "Measurement_" + observable->GetName(), observable->GetMeasurement() );
+    AddOutput(  "Deviation_" + observable->GetName(), observable->GetDeviation() );
+    AddOutput(  "Pull_" + observable->GetName(), observable->GetPull() );
+    AddOutput(  "Chi2_" + observable->GetName(), observable->GetChi2() );
+
+    _observables.push_back(observable);
+    _constObservables.push_back( observable );
+
+}
+
+void Fittino::Chi2Calculator::InvertCovarianceMatrix() {
+
+    TDecompBK decomp( _cov );
+
+    if ( !decomp.Invert( _invCov ) ) {
+
+        throw CalculatorException( _name, "Matrix inversion failed.");
+
+    }
 
 }

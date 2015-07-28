@@ -21,20 +21,16 @@
 #include <string>
 
 #include <boost/property_tree/ptree.hpp>
-#include <boost/foreach.hpp>
 
 #include "TMath.h"
 
 #include "CalculatorBase.h"
-#include "Factory.h"
+#include "FormulaQuantity.h"
 #include "Measurement.h"
 #include "ModelBase.h"
-#include "SimplePrediction.h"
 #include "UncertaintyBase.h"
 
-
-Fittino::Measurement::Measurement(std::string type, unsigned int index, const ModelBase *model, const boost::property_tree::ptree &ptree)
-:CalculatorBase( model, &ptree ) {
+Fittino::Measurement::Measurement(const ModelBase *model, const boost::property_tree::ptree &ptree) {
 
     _name = ptree.get<std::string>( "Name" );
 
@@ -44,14 +40,12 @@ Fittino::Measurement::Measurement(std::string type, unsigned int index, const Mo
 
     }
 
-    _index = index;
-
-    _measuredValue = ptree.get<double>( "Value" );
-    _lowerBound = ptree.get<double>( "LowerBound", -std::numeric_limits<double>::infinity() );
-    _upperBound = ptree.get<double>( "UpperBound", +std::numeric_limits<double>::infinity() );
-
+    _prediction = new FormulaQuantity( "Prediction", ptree.get<std::string>( "Prediction" ), model );
+    _measurement = new Quantity( "Measurement", "", ptree.get<double>( "Measurement" ) );
     _isLowerLimit = ptree.get<bool>( "IsLowerLimit", false );
     _isUpperLimit = ptree.get<bool>( "IsUpperLimit", false );
+    _lowerBound = ptree.get<double>( "LowerBound", -std::numeric_limits<double>::infinity() );
+    _upperBound = ptree.get<double>( "UpperBound", +std::numeric_limits<double>::infinity() );
 
     if ( _isLowerLimit && _isUpperLimit ) {
 
@@ -59,34 +53,15 @@ Fittino::Measurement::Measurement(std::string type, unsigned int index, const Mo
 
     }
 
-    AddInput( "Prediction" );
+    for( const auto& node : ptree ) {
 
-    AddQuantity( new SimplePrediction( "MeasuredValue"    , "", _measuredValue ) );
-    AddQuantity( new SimplePrediction( "Deviation", "", _deviation     ) );
-    AddQuantity( new SimplePrediction( "Pull"     , "", _pull          ) );
-    AddQuantity( new SimplePrediction( "Chi2"     , "", _chi2          ) );
+        if ( node.first != "Uncertainty" ) continue;
 
-    Factory factory;
+        AddUncertainty( model, node.second );
 
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type &node, ptree ) {
+    }
 
-                    if (node.first == "AstroUncertainty" || node.first == "AbsoluteUncertainty" || node.first == "RelativeTheoryUncertainty") {
-
-                        UncertaintyBase *uncertainty = factory.CreateUncertainty(node.first, model, this, node.second);
-
-                        if ( !uncertainty->GetName().empty() && !_namedUncertainties.insert( std::make_pair( _name + "_" + uncertainty->GetName(), uncertainty ) ).second ) {
-
-                            throw ConfigurationException("Several uncertainties with same name " + uncertainty->GetName() + "." );
-
-                        }
-
-                        _uncertainties.push_back(uncertainty);
-
-                    }
-
-                }
-
-    CalculatePredictions();
+    Update();
 
 }
 
@@ -94,12 +69,11 @@ Fittino::Measurement::~Measurement() {
 
 }
 
+void Fittino::Measurement::Update()  {
 
-void Fittino::Measurement::CalculatePredictions()  {
+    _prediction->Update();
 
-    UpdateInput();
-
-    _deviation = GetInput( "Prediction" ) - _measuredValue;
+    _deviation = _prediction->GetValue() - _measurement->GetValue();
 
     if ( ( _isLowerLimit && _deviation > 0 ) || ( _isUpperLimit && _deviation < 0 )  ) {
 
@@ -126,10 +100,9 @@ void Fittino::Measurement::CalculatePredictions()  {
 
 }
 
+double const & Fittino::Measurement::GetPrediction() const {
 
-double const & Fittino::Measurement::GetPredictedValue() const {
-
-    return GetInput( "Prediction" );
+    return _prediction->GetValue();
     
 }
 
@@ -139,38 +112,80 @@ const double& Fittino::Measurement::GetTotalUncertainty() const {
 
 }
 
-
 const double& Fittino::Measurement::GetDeviation() const {
 
     return _deviation;
 
 }
 
-void Fittino::Measurement::SetMeasuredValue( double value ) {
+void Fittino::Measurement::SetMeasurement(double value) {
 
-    _measuredValue = value;
+    _measurement->SetValue( value );
 }
 
 bool Fittino::Measurement::IsWithinBounds() const {
 
-    return _measuredValue <= _upperBound && _measuredValue >= _lowerBound;
+    return ( _measurement->GetValue() <= _upperBound ) && ( _measurement->GetValue() >= _lowerBound );
 
 }
 
-const std::map<std::string, const Fittino::Quantity *>& Fittino::Measurement::GetNamedUncertainties() const {
+const double& Fittino::Measurement::GetMeasurement() const {
 
-    return _namedUncertainties;
-
-}
-
-const double& Fittino::Measurement::GetMeasuredValue() const {
-
-    return _measuredValue;
+    return _measurement->GetValue();
 
 }
 
 const double& Fittino::Measurement::GetChi2() const {
 
     return _chi2;
+
+}
+
+const double &Fittino::Measurement::GetUncertainty( std::string name ) const {
+
+    try {
+
+        return _namedUncertainties.at( name )->GetValue();
+
+    }
+    catch ( const std::out_of_range& e ) {
+
+        throw ConfigurationException( "Observable " + _name + " does not have an uncertainty with name " + name + " ." );
+
+    }
+
+}
+
+const double &Fittino::Measurement::GetPull() const {
+
+    return _pull;
+
+}
+
+void Fittino::Measurement::AddUncertainty( const ModelBase* model, const boost::property_tree::ptree &ptree) {
+
+    auto name = ptree.get<std::string>( "Name", "" );
+
+    auto formula = ptree.get<std::string>( "Value" );
+
+    std::map<std::string, const Quantity*> map;
+    map[ "Prediction" ] = _prediction;
+    map[ "Measurement" ] = _measurement;
+
+    Quantity* uncertainty= new FormulaQuantity( name, formula, model, map );
+
+    if ( !uncertainty->GetName().empty() && !_namedUncertainties.insert( std::make_pair( name, uncertainty ) ).second ) {
+
+        throw ConfigurationException( "Several uncertainties with same name " + uncertainty->GetName() + "." );
+
+    }
+
+    _uncertainties.push_back( uncertainty );
+
+}
+
+const std::string &Fittino::Measurement::GetName() const {
+
+    return _name;
 
 }

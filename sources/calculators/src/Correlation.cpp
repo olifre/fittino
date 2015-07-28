@@ -21,97 +21,79 @@
 
 #include <boost/property_tree/ptree.hpp>
 
+#include "ConfigurationException.h"
 #include "Correlation.h"
 #include "Quantity.h"
 #include "Measurement.h"
 
-Fittino::Correlation::Correlation( const std::vector<Measurement *> &measurements,
-                                  const boost::property_tree::ptree &ptree )
-: _measurements( measurements ) {
+Fittino::Correlation::Correlation( const std::vector<const Fittino::Measurement*> &observables,
+                                   const boost::property_tree::ptree &ptree )
+: _observables( observables ) {
+
+    _id.first = ptree.get<std::string>( "Name" );
 
     _correlation = ptree.get<double>( "Value" );
 
+    std::vector<unsigned int> indices;
+
     for ( const auto& node : ptree ) {
 
-        if ( node.first != "Uncertainty" ) continue;
+        if ( node.first != "Observable") continue;
 
-        std::string name = node.second.get_value<std::string>();
+        std::string observableName = node.second.get_value<std::string>();
 
-        AddUncertainty( name );
-
-    }
-
-    if ( _indices.size() != 2 ) {
-
-        throw ConfigurationException( "Correlation must be specified with two uncertainties." );
+        indices.push_back( GetIndex( observableName ) );
 
     }
 
-    if ( _indices[0] == _indices[1] ) {
+    if ( indices[0] == indices[1] ) {
 
-        throw ConfigurationException( "Correlation between uncertainties of the same measurement are not allowed.");
+        throw ConfigurationException( "Correlation " + _id.first + " configured to be between one and the same observable " + _observables[indices[0]]->GetName() + "." );
 
     }
 
-    std::sort( _uncertainties.begin(), _uncertainties.end() );
-    std::sort( _indices      .begin(), _indices      .end() );
+    std::sort( indices.begin(), indices.end() );
+
+    _id.second.first = indices[0];
+    _id.second.second = indices[1];
+
+    Update();
 
 }
-
 
 Fittino::Correlation::~Correlation() {
 
 }
 
-void Fittino::Correlation::AddUncertainty( std::string name ) {
+const double& Fittino::Correlation::GetCovariance() const {
 
-    bool found = false;
-
-    for ( unsigned int i = 0; i < _measurements.size(); i++ ) {
-
-        auto uncertainties = _measurements[i]->GetNamedUncertainties();
-
-        auto it = uncertainties.find( name );
-
-        if ( it == uncertainties.end() ) continue;
-
-        _uncertainties.push_back( it->second );
-        _indices.push_back( i );
-        found = true;
-        break;
-
-    }
-
-    if ( !found ) {
-
-        throw ConfigurationException( "Uncertainty " + name + " is specified in correlation but does not exists." );
-
-    }
+    return _covariance;
 
 }
 
-double Fittino::Correlation::GetCovariance() const {
+unsigned int Fittino::Correlation::GetIndex( std::string observable ) const {
 
-    double covariance = _correlation;
+    for ( unsigned int i = 0; i < _observables.size(); ++i ) {
 
-    for ( const auto& uncertainty : _uncertainties ) {
-
-        covariance *= uncertainty->GetValue();
+        if ( _observables[i]->GetName() == observable ) return i;
 
     }
 
-    return covariance;
+    throw ConfigurationException( "Correlation " + _id.first + " configured with an observable " + observable + " which does not exist." );
 
 }
 
-const std::vector<const Fittino::Quantity *>& Fittino::Correlation::GetUncertainties() const {
+const std::pair<std::string, std::pair<unsigned int, unsigned int>> &Fittino::Correlation::GetID() const {
 
-    return _uncertainties;
+    return _id;
 
 }
 
-const std::vector<unsigned int>& Fittino::Correlation::GetIndices() const {
+void Fittino::Correlation::Update() {
 
-    return _indices;
+    _covariance = _correlation;
+
+    _covariance *= _observables.at( _id.second.first  )->GetUncertainty( _id.first );
+    _covariance *= _observables.at( _id.second.second )->GetUncertainty( _id.first );
 
 }
