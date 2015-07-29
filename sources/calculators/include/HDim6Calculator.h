@@ -60,7 +60,7 @@ namespace Fittino {
       bool          _calculate_xs_Zh;
       bool          _first;
       double        _Delta_g1_gaga;
-      double        _Delta_g1_Gamma;
+      double        _Delta_g1_gamma;
       double        _Delta_g1_WW;
       double        _Delta_g1_Z;
       double        _Delta_g1_Zga;
@@ -71,7 +71,6 @@ namespace Fittino {
       double        _Delta_g2_ZZ;
       double        _Delta_kappa_Gamma;
       double        _Delta_kappa_Z;
-      double        _f_g;
       double        _Gamma_hbb;
       double        _Gamma_hcc;
       double        _Gamma_hgaga;
@@ -150,7 +149,6 @@ namespace Fittino {
       sminputs*     _smvalues;
 
       std::vector< double > _energies;
-
 
     private:
       virtual void  CallFunction();

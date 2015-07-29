@@ -98,19 +98,17 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
 
     _Delta_kappa_Gamma = HDim6::d_kappa_y( _smvalues, _effvalues );
     _Delta_kappa_Z     = HDim6::d_kappa_z( _smvalues, _effvalues );
-    _Delta_g1_Gamma    = HDim6::d_g1_y   ( _smvalues, _effvalues );
+    _Delta_g1_gamma = HDim6::d_g1_y   ( _smvalues, _effvalues );
     _Delta_g1_Z        = HDim6::d_g1_z   ( _smvalues, _effvalues );
 
     AddOutput( "Delta_kappa_gamma", _Delta_kappa_Gamma );
     AddOutput( "Delta_kappa_Z", _Delta_kappa_Z ); 
-    AddOutput( "Delta_g1_gamma", _Delta_g1_Gamma ); 
+    AddOutput( "Delta_g1_gamma", _Delta_g1_gamma);
     AddOutput( "Delta_g1_Z", _Delta_g1_Z ); 
 
     SetOutput( "vev"      , _smvalues->vev                   );
     SetOutput( "sin2theta", TMath::Power( _smvalues->sw, 2 ) );
     SetOutput( "Mass_W"   , _smvalues->mw                    );
-
-    AddOutput( "f_g", _f_g );
 
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_g_g",         "",      _normSM_Gamma_hgg     ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_tau_tau",     "",      _normSM_Gamma_htautau ) );
@@ -260,7 +258,6 @@ void Fittino::HDim6Calculator::CalculatePredictions() {
     messenger << Messenger::Endl;
     PrintInput();
 
-    _f_g  =  - _effvalues->fgg * 8 * TMath::Pi() / ( _smvalues->alphas ); // f_g as defined in 1211.4580v4.pdf eq 38 but without factor of vev ( because of units ).
 
     CallFunction();
 
@@ -304,7 +301,7 @@ void Fittino::HDim6Calculator::CallFunction() {
     _Delta_g2_Zga      = HDim6::d_g2_zy  ( _smvalues, _effvalues );
     _Delta_kappa_Gamma = HDim6::d_kappa_y( _smvalues, _effvalues );
     _Delta_kappa_Z     = HDim6::d_kappa_z( _smvalues, _effvalues );
-    _Delta_g1_Gamma    = HDim6::d_g1_y   ( _smvalues, _effvalues );
+    _Delta_g1_gamma = HDim6::d_g1_y   ( _smvalues, _effvalues );
     _Delta_g1_Z        = HDim6::d_g1_z   ( _smvalues, _effvalues );
 
     double error, chi2;
