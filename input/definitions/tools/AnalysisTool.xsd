@@ -5,7 +5,7 @@
 <xs:complexType name="AnalysisTool">
   <xs:sequence>
     <xs:element name="Name"                         type="xs:string"  minOccurs="0"/> <!-- Tool -->
-    <xs:element name="OutputFileName"               type="xs:string"  minOccurs="0"/> <!-- Tool -->
+    <xs:element name="OutputFile"                   type="xs:string"  minOccurs="0"/> <!-- Tool -->
     <!--<xs:element name="Cuts"                     type="Cuts"       minOccurs="0"/>      Tool -->
     <xs:element name="WriteAllModelQuantities"      type="xs:boolean" minOccurs="0"/> <!-- AnalysisTool -->
     <xs:element name="Chi2Name"                     type="xs:string"  minOccurs="0"/> <!-- AnalysisTool -->
