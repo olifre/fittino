@@ -87,13 +87,13 @@ void Fittino::Controller::ExecuteFittino() const {
 
         tool->PerformTask();
 
+        _outputPtree->put( "InputFile.VerbosityLevel", _inputPtree->get<std::string>( "InputFile.VerbosityLevel" ) );
+
         if ( _inputPtree->get_child( "InputFile" ).count( "RandomSeed" ) ) {
 
             _outputPtree->put( "InputFile.RandomSeed", _inputPtree->get<std::string>( "InputFile.RandomSeed" ) );
 
         }
-
-        _outputPtree->put( "InputFile.VerbosityLevel", _inputPtree->get<std::string>( "InputFile.VerbosityLevel" ) );
 
         if ( _inputPtree->get_child( "InputFile" ).count( "Model" ) ) {
 
