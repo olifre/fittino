@@ -38,6 +38,7 @@ namespace Fittino {
     public:
       MicromegasWrapper( std::string name );
       void        CalculatePredictions();
+      void        CallMicromegas();
 
     public:
       virtual     ~MicromegasWrapper();
@@ -47,6 +48,7 @@ namespace Fittino {
       double      _omegah2;
       std::string _inputFile;
       std::string _mcname;
+      int         _errorCode;
 
   };
 

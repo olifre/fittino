@@ -18,9 +18,12 @@
 *******************************************************************************/
 
 #include <boost/property_tree/ptree.hpp>
+#include <boost/thread.hpp>
+#include <boost/chrono.hpp>
 
 #include "MicromegasCalculator.h"
 #include "SimplePrediction.h"
+#include "CalculatorException.h"
 
 Fittino::MicromegasCalculator::MicromegasCalculator( const ModelBase* model, boost::property_tree::ptree &ptree )
     : MicromegasWrapper( ptree.get<std::string>( "Name", "MicrOMMEGAs" ) ), CalculatorBase( model, &ptree ) {
@@ -41,6 +44,29 @@ Fittino::MicromegasCalculator::~MicromegasCalculator() {
 
 void Fittino::MicromegasCalculator::CalculatePredictions() {
 
-    MicromegasWrapper::CalculatePredictions();
+    boost::thread threadMO( boost::bind( &Fittino::MicromegasWrapper::CalculatePredictions, this ) );
+    if( ! (threadMO.try_join_for( boost::chrono::milliseconds(30000))) ) {
+        
+        throw CalculatorException( _mcname, "timeout");
 
+    }
+    std::cout << "omega is " << _omegah2 << std::endl;
+
+    if( _errorCode != 0 ) {
+        if( _errorCode == 1 ) {
+
+            throw ConfigurationException( "Micromegas: Problem with input file." );
+    
+        }
+        else if( _errorCode == 2 ) {
+
+            throw CalculatorException( _mcname, "LSP" );
+
+        }
+        else if( _errorCode == 3 ) {
+        
+            throw CalculatorException( _mcname, "Negative omega." );
+    
+        }
+    }
 }

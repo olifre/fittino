@@ -42,20 +42,23 @@ Fittino::MicromegasWrapper::~MicromegasWrapper() {
 }
 
 void Fittino::MicromegasWrapper::CalculatePredictions() {
+    
+    _errorCode = 0;
 
     std::vector<char> te( _inputFile.c_str(), _inputFile.c_str() + _inputFile.size() + 1 );
 
     if ( lesHinput( &te[0] ) ) {
 
-        throw ConfigurationException( "Micromegas: Problem with input file." );
-
+        _errorCode = 1;
+        return;
     }
 
     char lspName[128];
 
     if ( sortOddParticles( lspName ) ) {
 
-        throw CalculatorException( _mcname, "LSP" );
+        _errorCode = 2;
+        return;
 
     }
 
@@ -70,8 +73,9 @@ void Fittino::MicromegasWrapper::CalculatePredictions() {
 
     if ( _omegah2 < 0 ) {
 
-        throw CalculatorException( _mcname, "Negative omega." );
+        _errorCode = 3;
 
     }
+    return;
 
 }
