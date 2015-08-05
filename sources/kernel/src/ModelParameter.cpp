@@ -32,14 +32,6 @@ Fittino::ModelParameter::ModelParameter( boost::property_tree::ptree& ptree )
       _ptree  ( ptree ),
       _error  ( ptree.get<double>( "Error", 0.1   ) ) {
 
-    if ( !_fixed ) {
-
-        ptree.put( "Value" ,      GetUpperBound() );
-        ptree.put( "LowerBound" , GetUpperBound() );
-        ptree.put( "UpperBound" , 2 * GetUpperBound() - GetLowerBound() );
-
-    }
-
 }
 
 Fittino::ModelParameter::~ModelParameter() {
@@ -136,8 +128,6 @@ void Fittino::ModelParameter::SetValue( double value ) {
 void Fittino::ModelParameter::UpdatePropertyTree() {
 
     _ptree.put( "Value", GetValue() );
-    _ptree.put( "LowerBound", GetLowerBound() );
-    _ptree.put( "UpperBound", GetUpperBound() );
 
 }
 
