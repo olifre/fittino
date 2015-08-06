@@ -124,7 +124,7 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
         AddQuantity( new SimplePrediction( "NormSM_Gamma_h_Z_Z",    "", _normSM_Gamma_hZZ      ) );
         AddQuantity( new SimplePrediction( "Error_Gamma_h_Z_Z",    "", _error_Gamma_hZZ      ) );
         AddQuantity( new SimplePrediction( "Chi2_Gamma_h_Z_Z",    "", _chi2_Gamma_hZZ      ) );
-
+        AddOutput( "Gamma_h_Z_Z", _Gamma_hZZ );
 
     }
 
@@ -133,7 +133,7 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
         AddQuantity( new SimplePrediction( "NormSM_Gamma_h_W_W",    "", _normSM_Gamma_hWW      ) );
         AddQuantity( new SimplePrediction( "Error_Gamma_h_W_W",    "", _error_Gamma_hWW      ) );
         AddQuantity( new SimplePrediction( "Chi2_Gamma_h_W_W",    "", _chi2_Gamma_hWW      ) );
-
+        AddOutput( "Gamma_h_W_W", _Gamma_hWW );
 
     }
 
@@ -177,47 +177,49 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
 
                         std::string energyname = node.second.get<std::string>( "Name" );
 
-                        std::string xstag   ( "NormSM_xs_LHC_" + energyname + "_" );
+                        std::string normtag( "NormSM_xs_LHC_" + energyname + "_" );
+                        std::string xstag( "xs_LHC_" + energyname + "_" );
                         std::string errortag( "Error_xs_"  + energyname + "_" );
                         std::string chi2tag ( "Chi2_xs_"   + energyname + "_" );
 
                         _energies.at( iEnergy ) = energy;
                         Messenger::GetInstance()<<Messenger::ALWAYS<<"    CenterOfMassEnergy: "<<energy<<" GeV"<<Messenger::Endl;
 
-                        AddQuantity( new SimplePrediction( xstag + "ggh", "", _normSM_xs_ggh.at( iEnergy ) ) );
-                        AddQuantity( new SimplePrediction( xstag + "bbh", "", _normSM_xs_bbh.at( iEnergy ) ) );
-                        AddQuantity( new SimplePrediction( xstag + "tth", "", _normSM_xs_tth.at( iEnergy ) ) );
-                        AddQuantity( new SimplePrediction( xstag + "bh", "", _normSM_xs_bh.at( iEnergy ) ) );
+                        AddQuantity( new SimplePrediction( normtag + "ggh", "", _normSM_xs_ggh.at( iEnergy ) ) );
+                        AddQuantity( new SimplePrediction( normtag + "bbh", "", _normSM_xs_bbh.at( iEnergy ) ) );
+                        AddQuantity( new SimplePrediction( normtag + "tth", "", _normSM_xs_tth.at( iEnergy ) ) );
+                        AddQuantity( new SimplePrediction( normtag + "bh", "", _normSM_xs_bh.at( iEnergy ) ) );
 
                         if ( _calculate_xs_qqh_2flavor ) {
 
-                            AddQuantity( new SimplePrediction( xstag + "qqh_2flavor", "", _normSM_xs_qqh_2flavor.at( iEnergy ) ) );
+                            AddQuantity( new SimplePrediction( normtag + "qqh_2flavor", "", _normSM_xs_qqh_2flavor.at( iEnergy ) ) );
                             AddQuantity( new SimplePrediction( errortag + "qqh_2flavor", "", _error_xs_qqh_2flavor.at( iEnergy ) ) );
                             AddQuantity( new SimplePrediction( chi2tag + "qqh_2flavor", "", _chi2_xs_qqh_2flavor.at( iEnergy ) ) );
-
+                            AddOutput( xstag + "qqh_2flavor", _xs_qqh_2flavor.at( iEnergy ) );
 
                         }
                         if ( _calculate_xs_qqh_5flavor ) {
 
-                                AddQuantity( new SimplePrediction( xstag + "qqh_5flavor", "", _normSM_xs_qqh_5flavor.at( iEnergy ) ) );
+                                AddQuantity( new SimplePrediction( normtag + "qqh_5flavor", "", _normSM_xs_qqh_5flavor.at( iEnergy ) ) );
                                 AddQuantity( new SimplePrediction( errortag + "qqh_5flavor", "", _error_xs_qqh_5flavor.at( iEnergy ) ) );
                                 AddQuantity( new SimplePrediction( chi2tag + "qqh_5flavor", "", _chi2_xs_qqh_5flavor.at( iEnergy ) ) );
-
+                                AddOutput( xstag + "qqh_5flavor", _xs_qqh_5flavor.at( iEnergy ) );
 
                         }
                         if ( _calculate_xs_Wh ) {
 
-                            AddQuantity( new SimplePrediction( xstag + "Wh", "", _normSM_xs_Wh.at( iEnergy ) ) );
+                            AddQuantity( new SimplePrediction( normtag + "Wh", "", _normSM_xs_Wh.at( iEnergy ) ) );
                             AddQuantity( new SimplePrediction( errortag + "Wh", "", _error_xs_Wh.at( iEnergy ) ) );
                             AddQuantity( new SimplePrediction( chi2tag + "Wh", "", _chi2_xs_Wh.at( iEnergy ) ) );
+                            AddOutput( xstag + "Wh", _xs_Wh.at( iEnergy ) );
 
                         }
                         if ( _calculate_xs_Zh ) {
 
-                            AddQuantity( new SimplePrediction( xstag + "Zh", "", _normSM_xs_Zh.at( iEnergy ) ) );
+                            AddQuantity( new SimplePrediction( normtag + "Zh", "", _normSM_xs_Zh.at( iEnergy ) ) );
                             AddQuantity( new SimplePrediction( errortag + "Zh", "", _error_xs_Zh.at( iEnergy ) ) );
                             AddQuantity( new SimplePrediction( chi2tag + "Zh", "", _chi2_xs_Zh.at( iEnergy ) ) );
-
+                            AddOutput( xstag + "Zh", _xs_Zh.at( iEnergy ) );
 
                         }
 
