@@ -60,18 +60,23 @@ namespace Fittino {
       bool          _calculate_xs_Wh;
       bool          _calculate_xs_Zh;
       bool          _first;
-      double        _Delta_g1_gaga;
+
       double        _Delta_g1_gamma;
-      double        _Delta_g1_WW;
       double        _Delta_g1_Z;
+
+      double        _Delta_kappa_gamma;
+      double        _Delta_kappa_Z;
+
+      double        _Delta_g1_gaga;
+      double        _Delta_g1_WW;
       double        _Delta_g1_Zga;
       double        _Delta_g1_ZZ;
+
       double        _Delta_g2_gaga;
       double        _Delta_g2_WW;
       double        _Delta_g2_Zga;
       double        _Delta_g2_ZZ;
-      double        _Delta_kappa_Gamma;
-      double        _Delta_kappa_Z;
+
       double        _Gamma_hbb;
       double        _Gamma_hcc;
       double        _Gamma_hgaga;

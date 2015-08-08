@@ -97,24 +97,29 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
     AddOutput( "vev"       );
     AddOutput( "sin2theta" );
     AddOutput( "Mass_W"    );
+    SetOutput( "vev"      , _smvalues->vev                   );
+    SetOutput( "sin2theta", TMath::Power( _smvalues->sw, 2 ) );
+    SetOutput( "Mass_W"   , _smvalues->mw                    );
 
     AddOutput( "S_Parameter", _s_paramater );
     AddOutput( "T_Parameter", _t_paramater );
     AddOutput( "U_Parameter", _u_parameter );
 
-    _Delta_kappa_Gamma = HDim6::d_kappa_y( _smvalues, _effvalues );
-    _Delta_kappa_Z     = HDim6::d_kappa_z( _smvalues, _effvalues );
-    _Delta_g1_gamma = HDim6::d_g1_y   ( _smvalues, _effvalues );
-    _Delta_g1_Z        = HDim6::d_g1_z   ( _smvalues, _effvalues );
+    AddOutput( "Delta_g1_gamma"      , _Delta_g1_gamma );
+    AddOutput( "Delta_g1_Z"          , _Delta_g1_Z     );
 
-    AddOutput( "Delta_kappa_gamma", _Delta_kappa_Gamma );
-    AddOutput( "Delta_kappa_Z", _Delta_kappa_Z ); 
-    AddOutput( "Delta_g1_gamma", _Delta_g1_gamma);
-    AddOutput( "Delta_g1_Z", _Delta_g1_Z ); 
+    AddOutput( "Delta_kappa_gamma", _Delta_kappa_gamma);
+    AddOutput( "Delta_kappa_Z"    , _Delta_kappa_Z     );
 
-    SetOutput( "vev"      , _smvalues->vev                   );
-    SetOutput( "sin2theta", TMath::Power( _smvalues->sw, 2 ) );
-    SetOutput( "Mass_W"   , _smvalues->mw                    );
+    AddOutput( "Delta_g1_gamma_gamma", _Delta_g1_gaga  );
+    AddOutput( "Delta_g1_W_W"        , _Delta_g1_WW    );
+    AddOutput( "Delta_g1_Z_gamma"    , _Delta_g1_Zga   );
+    AddOutput( "Delta_g1_Z_Z"        , _Delta_g1_ZZ    );
+
+    AddOutput( "Delta_g2_gamma_gamma", _Delta_g2_gaga  );
+    AddOutput( "Delta_g2_W_W"        , _Delta_g2_WW    );
+    AddOutput( "Delta_g2_Z_gamma"    , _Delta_g2_Zga   );
+    AddOutput( "Delta_g2_Z_Z"        , _Delta_g2_ZZ    );
 
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_g_g",         "",      _normSM_Gamma_hgg     ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_tau_tau",     "",      _normSM_Gamma_htautau ) );
@@ -124,6 +129,15 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_b_b",         "",      _normSM_Gamma_hbb     ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_c_c",         "",      _normSM_Gamma_hcc     ) );
     AddQuantity( new SimplePrediction( "NormSM_Gamma_h_s_s",         "",      _normSM_Gamma_hss     ) );
+
+    AddOutput( "Gamma_h_g_g"        , _Gamma_hgg     );
+    AddOutput( "Gamma_h_tau_tau"    , _Gamma_htautau );
+    AddOutput( "Gamma_h_mu_mu"      , _Gamma_hmumu   );
+    AddOutput( "Gamma_h_gamma_gamma", _Gamma_hgaga   );
+    AddOutput( "Gamma_h_Z_gamma"    , _Gamma_hZga    );
+    AddOutput( "Gamma_h_b_b"        , _Gamma_hbb     );
+    AddOutput( "Gamma_h_c_c"        , _Gamma_hcc     );
+    AddOutput( "Gamma_h_s_s"        , _Gamma_hss     );
 
     if ( _calculate_Gamma_hZZ      ) {
 
@@ -299,18 +313,21 @@ void Fittino::HDim6Calculator::CallFunction() {
 
     }
 
-    _Delta_g1_WW       = HDim6::d_g1_ww  ( _smvalues, _effvalues );
-    _Delta_g2_WW       = HDim6::d_g2_ww  ( _smvalues, _effvalues );
-    _Delta_g1_gaga     = HDim6::d_g1_yy  ( _smvalues, _effvalues );
-    _Delta_g2_gaga     = HDim6::d_g2_yy  ( _smvalues, _effvalues );
-    _Delta_g1_ZZ       = HDim6::d_g1_zz  ( _smvalues, _effvalues );
-    _Delta_g2_ZZ       = HDim6::d_g2_zz  ( _smvalues, _effvalues );
-    _Delta_g1_Zga      = HDim6::d_g1_zy  ( _smvalues, _effvalues );
-    _Delta_g2_Zga      = HDim6::d_g2_zy  ( _smvalues, _effvalues );
-    _Delta_kappa_Gamma = HDim6::d_kappa_y( _smvalues, _effvalues );
-    _Delta_kappa_Z     = HDim6::d_kappa_z( _smvalues, _effvalues );
-    _Delta_g1_gamma = HDim6::d_g1_y   ( _smvalues, _effvalues );
+    _Delta_g1_gamma    = HDim6::d_g1_y   ( _smvalues, _effvalues );
     _Delta_g1_Z        = HDim6::d_g1_z   ( _smvalues, _effvalues );
+
+    _Delta_kappa_gamma = HDim6::d_kappa_y( _smvalues, _effvalues );
+    _Delta_kappa_Z     = HDim6::d_kappa_z( _smvalues, _effvalues );
+
+    _Delta_g1_gaga     = HDim6::d_g1_yy  ( _smvalues, _effvalues );
+    _Delta_g1_WW       = HDim6::d_g1_ww  ( _smvalues, _effvalues );
+    _Delta_g1_Zga      = HDim6::d_g1_zy  ( _smvalues, _effvalues );
+    _Delta_g1_ZZ       = HDim6::d_g1_zz  ( _smvalues, _effvalues );
+
+    _Delta_g2_WW       = HDim6::d_g2_ww  ( _smvalues, _effvalues );
+    _Delta_g2_gaga     = HDim6::d_g2_yy  ( _smvalues, _effvalues );
+    _Delta_g2_Zga      = HDim6::d_g2_zy  ( _smvalues, _effvalues );
+    _Delta_g2_ZZ       = HDim6::d_g2_zz  ( _smvalues, _effvalues );
 
     _s_paramater = s_parameter( _effvalues, _smvalues, GetInput( "Cutoff" ) );
     _t_paramater = t_parameter( _effvalues, _smvalues, GetInput( "Cutoff" ) );
