@@ -60,6 +60,8 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
     Messenger::GetInstance()<<Messenger::ALWAYS<<Messenger::Endl;
     Messenger::GetInstance()<<Messenger::ALWAYS<<"    UseDampingCoefficients: "<<!_effvalues->override_unitarity<<Messenger::Endl;
 
+    AddInput( "Cutoff" );
+
     AddInput("Mass_h");
 
     AddInput("f_GG");
@@ -95,6 +97,10 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
     AddOutput( "vev"       );
     AddOutput( "sin2theta" );
     AddOutput( "Mass_W"    );
+
+    AddOutput( "S_Parameter", _s_paramater );
+    AddOutput( "T_Parameter", _t_paramater );
+    AddOutput( "U_Parameter", _u_parameter );
 
     _Delta_kappa_Gamma = HDim6::d_kappa_y( _smvalues, _effvalues );
     _Delta_kappa_Z     = HDim6::d_kappa_z( _smvalues, _effvalues );
@@ -305,6 +311,10 @@ void Fittino::HDim6Calculator::CallFunction() {
     _Delta_kappa_Z     = HDim6::d_kappa_z( _smvalues, _effvalues );
     _Delta_g1_gamma = HDim6::d_g1_y   ( _smvalues, _effvalues );
     _Delta_g1_Z        = HDim6::d_g1_z   ( _smvalues, _effvalues );
+
+    _s_paramater = s_parameter( _effvalues, _smvalues, GetInput( "Cutoff" ) );
+    _t_paramater = t_parameter( _effvalues, _smvalues, GetInput( "Cutoff" ) );
+    _u_parameter = u_parameter( _effvalues, _smvalues, GetInput( "Cutoff" ) );
 
     double error, chi2;
 

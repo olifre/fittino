@@ -121,6 +121,8 @@
             <Value>8000</Value>
           </CenterOfMassEnergy>
 
+          <Cutoff>1000.</Cutoff>
+
           <Mass_h>[Mass_h]</Mass_h>
 
           <f_GG>1e-6*[f_GG]</f_GG>

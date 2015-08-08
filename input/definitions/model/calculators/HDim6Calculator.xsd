@@ -14,6 +14,7 @@
     <xs:element name="calculate_xs_Zh"          type="xs:boolean"        />
     <xs:element name="UseDampingCoefficients"   type="xs:boolean"        />
     <xs:element name="CenterOfMassEnergy"       type="CenterOfMassEnergy" minOccurs="0" maxOccurs="unbounded"/>
+    <xs:element name="Cutoff"                   type="xs:string"         />
     <xs:element name="Mass_h"                   type="xs:string"         />
     <xs:element name="f_GG"                     type="xs:string"         />
     <xs:element name="f_WW"                     type="xs:string"         />

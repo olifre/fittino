@@ -22,6 +22,7 @@
 #define FITTINO_HDIM6CALCULATOR_H
 
 #include "CalculatorBase.h"
+#include "FormulaQuantity.h"
 
 struct effinputs;
 struct pominput;
@@ -108,6 +109,10 @@ namespace Fittino {
       double        _SM_Gamma_hWW;
       double        _SM_Gamma_hZga;
       double        _SM_Gamma_hZZ;
+
+      double        _s_paramater;
+      double        _t_paramater;
+      double        _u_parameter;
 
       std::vector<double>        _SM_xs_qqh_2flavor;
       std::vector<double>        _SM_xs_qqh_5flavor;
