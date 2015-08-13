@@ -19,6 +19,7 @@
 
 #include <iostream>
 #include <vector>
+#include <pthread.h>
 
 #include <complex>
 
@@ -43,6 +44,7 @@ Fittino::MicromegasWrapper::~MicromegasWrapper() {
 
 void Fittino::MicromegasWrapper::CalculatePredictions() {
     
+    pthread_setcanceltype( PTHREAD_CANCEL_ASYNCHRONOUS,NULL);
     _errorCode = 0;
 
     std::vector<char> te( _inputFile.c_str(), _inputFile.c_str() + _inputFile.size() + 1 );
@@ -65,10 +67,10 @@ void Fittino::MicromegasWrapper::CalculatePredictions() {
     int spin2, charge3, cdim;
     qNumbers( lspName, &spin2, &charge3, &cdim );
 
-    double Xf;
+    double *Xf = new double(0);
     int fast = 1;
     double Beps = 1e-6;
-    _omegah2 = darkOmega( &Xf, fast, Beps );
+    _omegah2 = darkOmega( Xf, fast, Beps );
     _gmin2 = gmuon();
 
     if ( _omegah2 < 0 ) {
@@ -76,6 +78,7 @@ void Fittino::MicromegasWrapper::CalculatePredictions() {
         _errorCode = 3;
 
     }
+    delete Xf;
     return;
 
 }

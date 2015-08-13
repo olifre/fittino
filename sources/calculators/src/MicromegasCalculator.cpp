@@ -20,6 +20,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/thread.hpp>
 #include <boost/chrono.hpp>
+#include <pthread.h>
 
 #include "MicromegasCalculator.h"
 #include "SimplePrediction.h"
@@ -47,10 +48,11 @@ void Fittino::MicromegasCalculator::CalculatePredictions() {
     boost::thread threadMO( boost::bind( &Fittino::MicromegasWrapper::CalculatePredictions, this ) );
     if( ! (threadMO.try_join_for( boost::chrono::milliseconds(30000))) ) {
         
+        pthread_t native_thread = threadMO.native_handle();
+        pthread_cancel( native_thread );
         throw CalculatorException( _mcname, "timeout");
 
     }
-    std::cout << "omega is " << _omegah2 << std::endl;
 
     if( _errorCode != 0 ) {
         if( _errorCode == 1 ) {
