@@ -81,6 +81,7 @@ extern "C" {
 
   void assign_toyvalues_to_peak_( int* obsID, double* mu_obs, double* mh_obs );
 
+  void finish_higgsbounds_();
   void finish_higgssignals_();
 
   void get_rates_( const int* ii,

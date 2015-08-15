@@ -57,6 +57,19 @@ namespace Fittino {
 
 
   private:
+      bool _runHiggsBounds;
+      bool _runHiggsSignals;
+      std::vector<std::string> _names_h0;
+      std::vector<std::string> _names_hp;
+      int _npeakmu;
+
+      static bool _HBisInitialized;
+      static bool _HSisInitialized;
+      static unsigned int _initialized_nHzero;
+      static unsigned int _initialized_nHplus;
+      static std::string _initialized_whichAnalyses;
+      static std::string _initialized_expData;
+
      // arguments for HiggsBounds_charged_input, in the order required by this function
       std::vector<double> _chargedInput_MHplus;
       std::vector<double> _chargedInput_GammaTot;
@@ -119,16 +132,8 @@ namespace Fittino {
       std::vector<double> _peakInfoFromHSresults_nHcomb;
 
       // for HB shift the higgs mass prediction instead of the measurement, when doing toys
-      std::vector<double>  _mass_h_neutral_shift;
-      std::vector<double>  _mass_h_charged_shift;
-
-      // names of the Higgs bosons
-      std::vector<std::string> _h0;
-      std::vector<std::string> _hp;
-
-      bool          _runHiggsBounds;
-      int           _mode;
-      int           _npeakmu;
+      std::vector<double> _mass_h_neutral_shift;
+      std::vector<double> _mass_h_charged_shift;
 
     // todo: review these HS variables
       double        _chi2;
@@ -158,7 +163,6 @@ namespace Fittino {
       double        _bestChannelChi2_double;
 
      private:
-
       void         AddInputs();
       void         AddChargedHiggs( const boost::property_tree::ptree &ptree );
       void         AddNeutralHiggs( const boost::property_tree::ptree &ptree );
