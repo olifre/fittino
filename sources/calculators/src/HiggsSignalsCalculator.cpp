@@ -44,10 +44,14 @@ Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model,
     SetName( "HiggsSignalsCalculator" );
     SetTag ( "" );
 
+    _runHiggsBounds  = GetConfiguration()->get<bool>( "RunHiggsBounds"  );
+    _runHiggsSignals = GetConfiguration()->get<bool>( "RunHiggsSignals" );
+
     AddInputs();
     CheckMatrices();
     ResizeInputArrays();
-    InitializeAndSetup();
+    InitializeHBandHS();
+    Setup();
     Run();
     DetermineNumberOfObservables();
     AddOutputs();
@@ -56,17 +60,11 @@ Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model,
 
 }
 
-void Fittino::HiggsSignalsCalculator::InitializeAndSetup() {
+void Fittino::HiggsSignalsCalculator::InitializeHBandHS() {
 
-    _runHiggsBounds  = GetConfiguration()->get<bool>( "RunHiggsBounds"  );
-    _runHiggsSignals = GetConfiguration()->get<bool>( "RunHiggsSignals" );
 
-    int         outputLevel                    = GetConfiguration()->get<int>        ( "OutputLevel"                    );
-    int         pdf                            = GetConfiguration()->get<int>        ( "PDF"                            );
-    double      assignmentRange                = GetConfiguration()->get<double>     ( "AssignmentRange"                );
-    double      assignmentRangeMassObservables = GetConfiguration()->get<double>     ( "AssignmentRangeMassObservables" );
-    std::string expData                        = GetConfiguration()->get<std::string>( "ExpData"                        );
-    std::string whichAnalyses                  = GetConfiguration()->get<std::string>( "WhichAnalyses"                  );
+    std::string expData = GetConfiguration()->get<std::string>( "ExpData" );
+    std::string whichAnalyses = GetConfiguration()->get<std::string>( "WhichAnalyses" );
 
     int nHzero = _names_h0.size();
     int nHplus = _names_hp.size();
@@ -81,14 +79,14 @@ void Fittino::HiggsSignalsCalculator::InitializeAndSetup() {
     bool finishHS_becauseOfRunningHS = _HSisInitialized && _runHiggsSignals && ( changed_nHiggs || changed_ExpData );
     bool finishHS_becauseOfRunningHB = _HSisInitialized && _runHiggsBounds && changed_nHiggs;
 
-    if ( finishHB_becauseOfRunningHB || finishHB_becauseOfRunningHS)  {
+    if ( finishHB_becauseOfRunningHB || finishHB_becauseOfRunningHS )  {
 
         finish_higgsbounds_();
         _HBisInitialized = false;
 
     }
 
-    if ( finishHS_becauseOfRunningHS || finishHS_becauseOfRunningHB) {
+    if ( finishHS_becauseOfRunningHS || finishHS_becauseOfRunningHB ) {
 
         finish_higgssignals_();
         _HSisInitialized = false;
@@ -116,15 +114,6 @@ void Fittino::HiggsSignalsCalculator::InitializeAndSetup() {
 
     }
 
-    if ( _runHiggsSignals ) {
-
-        setup_output_level_(&outputLevel);
-        setup_pdf_(&pdf);
-        setup_assignmentrange_(&assignmentRange);
-        setup_assignmentrange_massobservables_(&assignmentRangeMassObservables);
-
-    }
-
 }
 
 Fittino::HiggsSignalsCalculator::~HiggsSignalsCalculator() {
@@ -133,7 +122,8 @@ Fittino::HiggsSignalsCalculator::~HiggsSignalsCalculator() {
 
 void Fittino::HiggsSignalsCalculator::CalculatePredictions() {
 
-    InitializeAndSetup();
+    InitializeHBandHS();
+    Setup();
     Run();
     UpdateOutput();
 
@@ -743,6 +733,24 @@ void Fittino::HiggsSignalsCalculator::SetupMeasuredValues() {
 
         // assign the new values
         assign_toyvalues_to_peak_( &obsID, &measuredValue_mu, &measuredValue_mh );
+
+    }
+
+}
+
+void Fittino::HiggsSignalsCalculator::Setup() {
+
+    if ( _runHiggsSignals ) {
+
+        int         outputLevel                    = GetConfiguration()->get<int>        ( "OutputLevel"                    );
+        int         pdf                            = GetConfiguration()->get<int>        ( "PDF"                            );
+        double      assignmentRange                = GetConfiguration()->get<double>     ( "AssignmentRange"                );
+        double      assignmentRangeMassObservables = GetConfiguration()->get<double>     ( "AssignmentRangeMassObservables" );
+
+        setup_output_level_(&outputLevel);
+        setup_pdf_(&pdf);
+        setup_assignmentrange_(&assignmentRange);
+        setup_assignmentrange_massobservables_(&assignmentRangeMassObservables);
 
     }
 

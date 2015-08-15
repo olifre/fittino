@@ -170,7 +170,8 @@ namespace Fittino {
       void         CheckMatrices();
       void         AddOutputs();
       void         DetermineNumberOfObservables();
-      void         InitializeAndSetup();
+      void         InitializeHBandHS();
+      void         Setup();
       void         ResizeInputArrays();
       void         Run();
       void         UpdateChargedInput( bool shiftHiggsMass );
