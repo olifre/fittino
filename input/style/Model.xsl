@@ -257,26 +257,6 @@
   <!-- Calculator chain -->
   
   <xsl:template match="Calculators">
-    <!-- Prints a headline and the chain of sequenced calculators -->
-    <p>
-      <table>
-      <!-- Headline -->
-        <tr>
-          <td></td><td><b>CalculatorChain</b></td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>
-            <!-- Creates cell which displays the calculator chain -->
-            Input ->
-            <xsl:for-each select="*">
-              <xsl:value-of select="local-name()"/> ->
-            </xsl:for-each>
-            Output
-          </td>
-        </tr>
-      </table>
-    </p>
     <!-- Specify here the existing calculator templates -->
     <xsl:apply-templates select="*[ substring(name(), string-length(name()) - 9) = 'Calculator' ]"/>
   </xsl:template>
@@ -289,7 +269,7 @@
       <!-- Headline -->
       <table>
         <tr>
-          <td></td><td><b><xsl:value-of select="local-name()"/></b></td><td><xsl:value-of select="Name"/></td>
+          <td></td><td><b><xsl:value-of select="local-name()"/></b></td>
         </tr>
       </table>
       <p>
