@@ -8,9 +8,12 @@
   <xs:complexContent>
     <xs:extension base="SamplerBase">
       <xs:sequence>
-        <xs:element name="FirstPointScaleFactor" type="xs:double"  minOccurs="0"/>
-        <xs:element name="StrictBounds"          type="xs:boolean" minOccurs="0"/>
-        <xs:element name="NumberOfIterations"    type="xs:integer"              />
+        <xs:element name="FirstPointScaleFactor" type="xs:double"   minOccurs="0"/>
+        <xs:element name="StrictBounds"          type="xs:boolean"  minOccurs="0"/>
+        <xs:element name="NumberOfIterations"    type="xs:integer"               />
+        <xs:element name="Chi2"                  type="xs:double"   minOccurs="0"/>
+        <xs:element name="IterationCounter"      type="xs:integer"  minOccurs="0"/>
+
       </xs:sequence>
     </xs:extension>
   </xs:complexContent>
