@@ -60,6 +60,8 @@ namespace Fittino {
       void                                       AddChi2Contribution( const std::string& name );
 
 
+    virtual const Collection<CalculatorBase*>&          GetCollectionOfCalculators() const;
+
     public:
       virtual void                               PrintStatus() const;
       virtual void                               SetupForToyRun( );
@@ -73,6 +75,10 @@ namespace Fittino {
     protected:
       virtual void                               Initialize();
 
+    /*!
+     *  Stores the calculators.
+     */
+    Collection<CalculatorBase*>                         _collectionOfCalculators;
     protected:
       Collection<const Quantity*>                _collectionOfChi2Quantities;
       TMatrixDSym*                               _observableCovarianceMatrix;
@@ -100,8 +106,6 @@ namespace Fittino {
       void                                       InitializeCovarianceMatrix( const boost::property_tree::ptree& ptree );
       void                                       UpdateCovarianceMatrix();
       /*! \endcond UML */
-
-    private:
 
   };
 

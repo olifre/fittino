@@ -32,12 +32,6 @@ Fittino::TreeSampler::TreeSampler( Fittino::ModelBase* model, const boost::prope
     _firstIteration = _model->GetCollectionOfParameters().At( 0 )->GetValue();
     _name = "Tree Sampler";
 
-    if ( _model->GetCollectionOfCalculators().GetNumberOfElements() == 0 ) {
-
-        throw ConfigurationException( "Could not find a calculator associated to specified model." );
-
-    }
-
     // Still ugly...
     _inputFileName = ptree.get<std::string>( "InputFileName", "Fittino.old.root" );
     _inputTreeName = ptree.get<std::string>( "InputTreeName", "Tree1" );

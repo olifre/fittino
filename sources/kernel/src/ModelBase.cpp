@@ -28,6 +28,7 @@
 #include "ModelBase.h"
 #include "ModelParameter.h"
 #include "SimplePrediction.h"
+#include "PhysicsModel.h"
 
 Fittino::ModelBase::ModelBase( boost::property_tree::ptree& ptree )
     : _name( "" ),
@@ -172,12 +173,6 @@ Fittino::ModelBase *Fittino::ModelBase::Clone() {
 
 }
 
-const Fittino::Collection<Fittino::CalculatorBase*>& Fittino::ModelBase::GetCollectionOfCalculators() const {
-
-    return _collectionOfCalculators;
-
-}
-
 const std::vector<Fittino::Observable*>* Fittino::ModelBase::GetObservableVector() const {
 
     return &_observableVector;
@@ -203,7 +198,7 @@ int Fittino::ModelBase::GetNumberOfPredictions() const {
 
 void Fittino::ModelBase::AddCalculator( CalculatorBase* calculator ) {
 
-    _collectionOfCalculators.AddElement( calculator->GetName(), calculator );
+    _calculators.push_back( calculator );
 
     const Collection<Quantity*>& col = calculator->GetCollectionOfQuantities();
 
@@ -260,9 +255,9 @@ void Fittino::ModelBase::Evaluate() {
 
     try {
 
-        for ( unsigned int i = 0; i < _collectionOfCalculators.GetNumberOfElements(); ++i ) {
+        for ( unsigned int i = 0; i < _calculators.size(); ++i ) {
 
-            _collectionOfCalculators.At( i )->CalculatePredictions();
+            _calculators[i]->CalculatePredictions();
 
         }
 

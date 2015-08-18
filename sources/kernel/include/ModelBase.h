@@ -91,9 +91,8 @@ namespace Fittino {
        *  \todo Discuss what this function should actually do...
        */
       virtual ModelBase*                                  Clone();
-      virtual const Collection<CalculatorBase*>&          GetCollectionOfCalculators() const;
 
-      /* Currently needed by some calculators, should be removed! */
+    /* Currently needed by some calculators, should be removed! */
       virtual const std::vector<Observable*>*             GetObservableVector() const;
 
     protected:
@@ -102,10 +101,7 @@ namespace Fittino {
        */
       std::string                                         _name;
       boost::property_tree::ptree&                        _ptree;
-      /*!
-       *  Stores the calculators.
-       */
-      Collection<CalculatorBase*>                         _collectionOfCalculators;
+      std::vector<CalculatorBase*>                        _calculators;
       /*!
        *  Stores the predictions.
        */

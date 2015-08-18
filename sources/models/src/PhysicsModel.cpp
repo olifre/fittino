@@ -19,6 +19,7 @@
 *                                                                              *
 *******************************************************************************/
 
+#include "ModelBase.h"
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
@@ -53,6 +54,12 @@ Fittino::PhysicsModel::PhysicsModel( boost::property_tree::ptree& ptree )
 
     std::string nameOfErrorVariable = "Error";
     std::string nameOfCalculatorVariable = "Calculator";
+
+    for ( auto calculator: _calculators ) {
+
+        _collectionOfCalculators.AddElement( calculator->GetName(), calculator );
+
+    }
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
 
@@ -712,4 +719,10 @@ void Fittino::PhysicsModel::InitializeCovarianceMatrix( const boost::property_tr
     _fitObservableCovarianceMatrix->SetTol( 1.e-40 );
     // create the inverted matrix for the calculation of the chi2:
     _invertedFitObservableCovarianceMatrix = new TMatrixDSym( _fitObservableCovarianceMatrix->Invert() );
+}
+
+const Fittino::Collection<Fittino::CalculatorBase*>&Fittino::PhysicsModel::GetCollectionOfCalculators() const {
+
+    return _collectionOfCalculators;
+
 }
