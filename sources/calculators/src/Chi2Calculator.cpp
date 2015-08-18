@@ -37,9 +37,6 @@
 Fittino::Chi2Calculator::Chi2Calculator( const Fittino::ModelBase* model, const boost::property_tree::ptree &ptree )
         : CalculatorBase( model, &ptree ) {
 
-    SetName( "Chi2Calculator" );
-    SetTag ( "Chi2"           );
-
     AddOutput( "Chi2"          , _chi2);
     AddOutput( "CorrelatedChi2",  _correlatedChi2 );
 

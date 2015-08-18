@@ -28,9 +28,6 @@
 Fittino::FormulaCalculator::FormulaCalculator( const Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model, &ptree ) {
 
-    SetName( "FormulaCalculator" );
-    SetTag ( "Formula"           );
-
     std::string formula = ptree.get<std::string>( "Formula" );
     _formula = new FormulaQuantity( "", formula, model );
     AddQuantity( _formula );

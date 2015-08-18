@@ -29,10 +29,6 @@
 Fittino::CheckMATE2Calculator::CheckMATE2Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
   :CalculatorBase( model, &ptree ) {
 
-  SetName( "CheckMATE2Calculator" );
-  SetTag( "CheckMATE2" );
-
-
   AddQuantity(new SimplePrediction( "r", "", _r));
   AddQuantity(new SimplePrediction("cl", "", _cl));
   AddQuantity(new SimplePrediction( "r_cl", "", _r_cl));

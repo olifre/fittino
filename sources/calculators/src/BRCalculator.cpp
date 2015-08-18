@@ -28,9 +28,6 @@
 Fittino::BRCalculator::BRCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     :CalculatorBase( model, &ptree ) {
 
-    SetName( "BRCalculator" );
-    SetTag ( ""             );
-
     _parent = ptree.get<std::string>( "Parent" );
 
     AddOutput( "Gamma_" + _parent + "_Total", _GammaTotal );

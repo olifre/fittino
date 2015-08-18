@@ -36,9 +36,6 @@
 Fittino::LHCChi2Calculator::LHCChi2Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : LinearInterpolationCalculatorBase( model, ptree ) {
 
-  SetName( "LHCChi2Calculator" );
-  SetTag ( "LHCChi2" );
-
   AddQuantity( new SimplePrediction( "Value" , "", "", "", 0., 1.e6, _value ) );
 
   int numberOfObservedEvents = ptree.get<int>( "NumberOfObservedEvents", 0 );

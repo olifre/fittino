@@ -41,9 +41,6 @@ std::string  Fittino::HiggsSignalsCalculator::_initialized_expData       = ""   
 Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     :CalculatorBase       ( model, &ptree                                                                         ) {
 
-    SetName( "HiggsSignalsCalculator" );
-    SetTag ( "" );
-
     _runHiggsBounds  = GetConfiguration()->get<bool>( "RunHiggsBounds"  );
     _runHiggsSignals = GetConfiguration()->get<bool>( "RunHiggsSignals" );
 

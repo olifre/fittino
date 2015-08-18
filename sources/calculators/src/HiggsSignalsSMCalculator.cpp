@@ -27,9 +27,6 @@
 Fittino::HiggsSignalsSMCalculator::HiggsSignalsSMCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     :CalculatorBase( model, &ptree ) {
 
-    SetName( "HiggsSignalsSMCalculator" );
-    SetTag ( "HS"                       );
-
     AddInput( "Mass_h" );
     AddInput( "Mass_t" );
 

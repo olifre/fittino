@@ -28,9 +28,6 @@
 
 Fittino::HerwigppCalculator::HerwigppCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree ) : CalculatorBase( model, &ptree ) {
 
-  SetName( "HerwigppCalculator" );
-  SetTag( "Herwigpp" );
-
   AddOutput("Total_Xsec", _Total_Xsec);
   AddOutput("Total_Xsec_error", _Total_Xsec_error);
 

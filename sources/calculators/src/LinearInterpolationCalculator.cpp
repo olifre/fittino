@@ -28,9 +28,6 @@
 Fittino::LinearInterpolationCalculator::LinearInterpolationCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : LinearInterpolationCalculatorBase( model, ptree ) {
 
-  SetName( "LinearInterpolationCalculator" );
-  SetTag ( "LinearInterpolation"           );
-
   AddQuantity( new SimplePrediction( "" , "", "", "", 0., 1.e6, _value ) );
 
   GetHistogram();

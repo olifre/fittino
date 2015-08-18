@@ -29,6 +29,13 @@ Fittino::CalculatorBase::CalculatorBase( const ModelBase* model, const boost::pr
       _model( model ),
       _ptree( ptree ) {
 
+    if ( ptree != nullptr ) {
+
+        _name = _ptree->get<std::string>("Name", "" );
+        _tag = _name;
+
+    }
+
 }
 
 const std::string& Fittino::CalculatorBase::GetName() const {
@@ -173,21 +180,9 @@ const boost::property_tree::ptree* Fittino::CalculatorBase::GetConfiguration() c
 
 }
 
-void Fittino::CalculatorBase::SetName( std::string defaultName ) {
-
-    _name = _ptree->get<std::string>( "Name", defaultName );
-
-}
-
 void Fittino::CalculatorBase::SetOutput( std::string name, const double &value ) {
 
     _settableOutput.at( name )->SetValue( value );
-
-}
-
-void Fittino::CalculatorBase::SetTag( std::string defaultTag ) {
-
-    _tag  = _ptree->get<std::string>( "Tag", defaultTag );
 
 }
 

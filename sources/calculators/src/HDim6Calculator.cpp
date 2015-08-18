@@ -49,9 +49,6 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
       _pdfDirectory( "" ),
       _smvalues ( new sminputs() ) {
 
-    SetName( "HDim6Calculator" );
-    SetTag( "HDim6" );
-
     _effvalues->override_unitarity = ! ptree.get<bool>( "UseDampingCoefficients" );
 
     Messenger::GetInstance()<<Messenger::ALWAYS<<"Building calculator "<<_name<<Messenger::Endl;

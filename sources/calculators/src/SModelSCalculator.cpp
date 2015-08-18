@@ -31,9 +31,6 @@
 Fittino::SModelSCalculator::SModelSCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree)
     : CalculatorBase( model, &ptree ) {
 
-  SetName( "SModelSCalculator" );
-  SetTag( "SModelS" );
-
   AddQuantity( new SimplePrediction( "r", "", _r ));
   AddQuantity( new SimplePrediction( "chi2", "", _Chi2));
 

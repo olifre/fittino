@@ -73,10 +73,10 @@ namespace Fittino {
       void                                    AddOutput( std::string name );
       void                                    AddQuantity( Quantity* prediction );
       void                                    PrintInput() const;
-      void                                    SetName( std::string defaultName );
-      void                                    SetOutput( std::string name, const double& value );
-      void                                    SetTag( std::string defaultTag );
-      void                                    UpdateInput();
+
+    void                                    SetOutput( std::string name, const double& value );
+
+    void                                    UpdateInput();
       const boost::property_tree::ptree*      GetConfiguration() const;
 
       /*! \cond UML */

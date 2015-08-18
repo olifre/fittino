@@ -29,9 +29,6 @@
 
 Fittino::NLLFastCalculator::NLLFastCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree ) : CalculatorBase( model, &ptree ) {
 
-  SetName( "NLLFastCalculator" );
-  SetTag( "NLLFast" );
-
   AddOutput( "ms_gg", _ms_gg );
   AddOutput( "mg_gg", _mg_gg );
   AddOutput( "lo_gg", _lo_gg );
