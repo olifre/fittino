@@ -5,7 +5,6 @@
   <xs:complexType name="FormulaCalculator">
     <xs:sequence>
       <xs:element name="Name"     type="xs:string" minOccurs="0"/>
-      <xs:element name="Tag"      type="xs:string" minOccurs="0"/>
       <xs:element name="Formula"  type="xs:string"              />
     </xs:sequence>
   </xs:complexType>

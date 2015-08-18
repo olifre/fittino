@@ -5,7 +5,6 @@
   <xs:complexType name="Chi2Calculator">
     <xs:sequence>
       <xs:element name="Name"       type="xs:string" minOccurs="0"                      />
-      <xs:element name="Tag"        type="xs:string" minOccurs="0"                      />
       <xs:element name="Observable"                  minOccurs="0" maxOccurs="unbounded" >
         <xs:complexType>
           <xs:sequence>

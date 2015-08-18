@@ -5,7 +5,6 @@
   <xs:complexType name="LinearInterpolationCalculator">
     <xs:sequence>
       <xs:element name="Name"      type="xs:string" minOccurs="0"                       />
-      <xs:element name="Tag"       type="xs:string" minOccurs="0"                       />
       <xs:element name="File"      type="xs:string"                                     />
       <xs:element name="Histogram" type="xs:string"                                     />
       <xs:element name="Variable"  type="xs:string"               maxOccurs="unbounded" />
