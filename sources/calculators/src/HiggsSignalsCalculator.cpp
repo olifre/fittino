@@ -400,27 +400,33 @@ void Fittino::HiggsSignalsCalculator::Run() {
 
 void Fittino::HiggsSignalsCalculator::AddOutputs() {
 
+    if ( _runHiggsBounds ) {
+
+        AddQuantity(new SimplePrediction("HB_result", "", _HBresult_double));
+        AddQuantity(new SimplePrediction("HB_obsratio", "", _obsratio));
+        AddQuantity(new SimplePrediction("HB_channel", "", _channel_double));
+        AddQuantity(new SimplePrediction("HB_chi2WithTheory", "", _chi2WithTheory));
+        AddQuantity(new SimplePrediction("HB_chi2WithoutTheory", "", _chi2WithoutTheory));
+        AddQuantity(new SimplePrediction("HB_bestChannelChi2", "", _bestChannelChi2_double));
+
+    }
+
+    if ( !_runHiggsSignals ) return;
+
     _peakInfoFromHSresults_mupred.resize( _npeakmu );
     _peakInfoFromHSresults_domH  .resize( _npeakmu );
     _peakInfoFromHSresults_nHcomb.resize( _npeakmu );
 
-    // todo: review these HB and HS quantities
-    AddQuantity( new SimplePrediction( "HB_result"              , "",  _HBresult_double         ) );
-    AddQuantity( new SimplePrediction( "HB_obsratio"            , "",  _obsratio                ) );
-    AddQuantity( new SimplePrediction( "HB_channel"             , "",  _channel_double          ) );
-    AddQuantity( new SimplePrediction( "HB_chi2WithTheory"      , "", _chi2WithTheory           ) );
-    AddQuantity( new SimplePrediction( "HB_chi2WithoutTheory"   , "", _chi2WithoutTheory        ) );
-    AddQuantity( new SimplePrediction( "HB_bestChannelChi2"     , "",  _bestChannelChi2_double  ) );
-    AddQuantity( new SimplePrediction( "HS_chi2"                , "", _chi2                     ) );
-    AddQuantity( new SimplePrediction( "HS_chi2_mass_h"         , "", _chi2_mass_h              ) );
-    AddQuantity( new SimplePrediction( "HS_chi2_mu"             , "", _chi2_mu                  ) );
-    AddQuantity( new SimplePrediction( "HS_pvalue"              , "", _pvalue                   ) );
-    AddQuantity( new SimplePrediction( "HS_R_H_bb"              , "", _R_H_bb                   ) );
-    AddQuantity( new SimplePrediction( "HS_R_H_gaga"            , "", _R_H_gaga                 ) );
-    AddQuantity( new SimplePrediction( "HS_R_H_tautau"          , "", _R_H_tautau               ) );
-    AddQuantity( new SimplePrediction( "HS_R_H_WW"              , "", _R_H_WW                   ) );
-    AddQuantity( new SimplePrediction( "HS_R_H_ZZ"              , "", _R_H_ZZ                   ) );
-    AddQuantity( new SimplePrediction( "HS_R_VH_bb"             , "", _R_VH_bb                  ) );
+    AddQuantity( new SimplePrediction( "Chi2"                , "", _chi2                     ) );
+    AddQuantity( new SimplePrediction( "Chi2_mass"           , "", _chi2_mass_h              ) );
+    AddQuantity( new SimplePrediction( "Chi2_mu"             , "", _chi2_mu                  ) );
+    AddQuantity( new SimplePrediction( "Pvalue"              , "", _pvalue                   ) );
+    AddQuantity( new SimplePrediction( "R_h_b_b"             , "", _R_H_bb                   ) );
+    AddQuantity( new SimplePrediction( "R_h_gamma_gamma"     , "", _R_H_gaga                 ) );
+    AddQuantity( new SimplePrediction( "R_h_tau_tau"         , "", _R_H_tautau               ) );
+    AddQuantity( new SimplePrediction( "R_h_W_W"             , "", _R_H_WW                   ) );
+    AddQuantity( new SimplePrediction( "R_h_Z_Z"             , "", _R_H_ZZ                   ) );
+    AddQuantity( new SimplePrediction( "R_Vh_b_b"            , "", _R_VH_bb                  ) );
 
     for ( int i = 1; i <= _npeakmu; ++i ) {
 
@@ -428,12 +434,11 @@ void Fittino::HiggsSignalsCalculator::AddOutputs() {
         __io_MOD_get_id_of_peakobservable( &i, &obsID );
         __io_MOD_get_more_peakinfo( &obsID, &mhchisq ); // only needed if npeakmh is used above
 
-        //std::string s_index = std::to_string( obsID );
-        std::string s_index = boost::lexical_cast<std::string>( obsID );
+        std::string s_index = std::to_string( obsID );
 
-        AddQuantity( new SimplePrediction( "HS_peakInfo_mupred_" + s_index, "", _peakInfoFromHSresults_mupred[i-1] ) );
-        AddQuantity( new SimplePrediction( "HS_peakInfo_domH_"   + s_index, "", _peakInfoFromHSresults_domH  [i-1] ) );
-        AddQuantity( new SimplePrediction( "HS_peakInfo_nHcomb_" + s_index, "", _peakInfoFromHSresults_nHcomb[i-1] ) );
+        AddQuantity( new SimplePrediction( "Prediction_mu_"         + s_index, "", _peakInfoFromHSresults_mupred[i-1] ) );
+        AddQuantity( new SimplePrediction( "DominantHiggs_"         + s_index, "", _peakInfoFromHSresults_domH  [i-1] ) );
+        AddQuantity( new SimplePrediction( "NumberOfCombinedHiggs_" + s_index, "", _peakInfoFromHSresults_nHcomb[i-1] ) );
 
     }
 
