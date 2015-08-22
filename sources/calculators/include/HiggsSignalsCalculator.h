@@ -54,11 +54,13 @@ namespace Fittino {
       virtual void SetupMeasuredValues();
       double       RunHiggsBounds();
       void         CallHiggsBounds();
+      void         AssignMeasurements();
 
 
   private:
       bool _runHiggsBounds;
       bool _runHiggsSignals;
+      bool _useInitialPredictionsAsMeasurements;
       std::vector<std::string> _names_h0;
       std::vector<std::string> _names_hp;
       int _npeakmu;
@@ -162,13 +164,21 @@ namespace Fittino {
       int           _bestChannelChi2;
       double        _bestChannelChi2_double;
 
-     private:
+      // measured values
+      std::vector<double> _measurement_mu;
+      std::vector<double> _measurement_mass;
+      std::vector<double> _error_mass;
+      std::vector<double> _error_up_mu;
+      std::vector<double> _error_down_mu;
+
+
+  private:
       void         AddInputs();
       void         AddChargedHiggs( const boost::property_tree::ptree &ptree );
       void         AddNeutralHiggs( const boost::property_tree::ptree &ptree );
       void         AddHiggsPairProductionLEP( const boost::property_tree::ptree &ptree );
       void         CheckMatrices();
-      void         AddOutputs();
+      void         AddOutputsAndInitializeMeasurements();
       void         DetermineNumberOfObservables();
       void         InitializeHBandHS();
       void         Setup();
