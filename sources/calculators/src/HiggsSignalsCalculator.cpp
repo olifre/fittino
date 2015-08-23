@@ -66,10 +66,12 @@ Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model,
     InitializeHBandHS();
     Setup();
     Run();
-    DetermineNumberOfObservables();
-    AddOutputs();
+    DetermineNumberOfPeaks();
+    ResizePeakArrays();
+    DetermineObsIDs();
     UpdateOutput();
     InitializeMeasurements();
+    AddOutputs();
     CalculatePredictions(); // recalculate with maybe changed measurements
 
 }
@@ -429,11 +431,7 @@ void Fittino::HiggsSignalsCalculator::AddOutputs() {
 
     }
 
-    if ( !_runHiggsSignals ) return;
-
-    _peakInfoFromHSresults_mupred.resize( _npeakmu );
-    _peakInfoFromHSresults_domH  .resize( _npeakmu );
-    _peakInfoFromHSresults_nHcomb.resize( _npeakmu );
+    if (!_runHiggsSignals ) return;
 
     AddQuantity( new SimplePrediction( "Chi2"                , "", _chi2                     ) );
     AddQuantity( new SimplePrediction( "Chi2_mass"           , "", _chi2_mass_h              ) );
@@ -448,13 +446,7 @@ void Fittino::HiggsSignalsCalculator::AddOutputs() {
 
     for ( int i = 1; i <= _npeakmu; ++i ) {
 
-        int obsID, domH, nHcomb;
-        __io_MOD_get_id_of_peakobservable( &i, &obsID );
-        __io_MOD_get_peakinfo_from_hsresults( &obsID, &_peakInfoFromHSresults_mupred[i - 1], &domH, &nHcomb );
-
-        // todo: this function does a few things which also updateoutput does. check for better arrangement.
-
-        std::string s_index = std::to_string( obsID );
+        std::string s_index = std::to_string( _obsID[i-1] );
 
         AddQuantity( new SimplePrediction( "Prediction_mu_"         + s_index, "", _peakInfoFromHSresults_mupred[i-1] ) );
         AddQuantity( new SimplePrediction( "DominantHiggs_"         + s_index, "", _peakInfoFromHSresults_domH  [i-1] ) );
@@ -538,7 +530,7 @@ void Fittino::HiggsSignalsCalculator::AddNeutralHiggs( const boost::property_tre
 
 }
 
-void Fittino::HiggsSignalsCalculator::DetermineNumberOfObservables() {
+void Fittino::HiggsSignalsCalculator::DetermineNumberOfPeaks() {
 
     int ntotal, npeakmh, nmpred, nanalyses;
     __io_MOD_get_number_of_observables( &ntotal, &_npeakmu, &npeakmh, &nmpred, &nanalyses );
@@ -560,13 +552,11 @@ void Fittino::HiggsSignalsCalculator::UpdateOutput() {
                  &_R_H_bb,
                  &_R_VH_bb);
 
-    int obsID, nHcomb, domH;
+    int nHcomb, domH;
 
     for ( int i = 1; i <= _npeakmu; ++i ) {
 
-        __io_MOD_get_id_of_peakobservable( &i, &obsID );
-
-        __io_MOD_get_peakinfo_from_hsresults( &obsID, &_peakInfoFromHSresults_mupred[i - 1], &domH, &nHcomb );
+        __io_MOD_get_peakinfo_from_hsresults( &_obsID[i], &_peakInfoFromHSresults_mupred[i - 1], &domH, &nHcomb );
 
         _peakInfoFromHSresults_domH  [i - 1] = domH;
         _peakInfoFromHSresults_nHcomb[i - 1] = nHcomb;
@@ -733,12 +723,11 @@ void Fittino::HiggsSignalsCalculator::Setup() {
 
 void Fittino::HiggsSignalsCalculator::AssignMeasurements() {
 
+    if (!_runHiggsSignals ) return;
+
     for ( int i = 1; i <= _npeakmu; ++i ) {
 
-        int obsID;
-        __io_MOD_get_id_of_peakobservable(&i, &obsID);
-
-        assign_toyvalues_to_peak_(&obsID, &_measurement_mu[i-1], &_measurement_mass[i-1] );
+        assign_toyvalues_to_peak_(&_obsID[i-1], &_measurement_mu[i-1], &_measurement_mass[i-1] );
 
     }
 
@@ -748,20 +737,12 @@ void Fittino::HiggsSignalsCalculator::InitializeMeasurements() {
 
     if ( !_runHiggsSignals ) return;
 
-    _measurement_mass.resize( _npeakmu );
-    _measurement_mu.resize  ( _npeakmu );
-    _error_down_mu.resize( _npeakmu );
-    _error_up_mu.resize( _npeakmu );
-    _error_mass.resize( _npeakmu );
-
     for ( int i = 1; i <= _npeakmu; ++i ) {
 
-        int obsID;
-        __io_MOD_get_id_of_peakobservable( &i, &obsID );
-        __io_MOD_get_peakinfo( &obsID, &_measurement_mu[i-1], &_error_up_mu[i-1], &_error_down_mu[i-1], &_measurement_mass[i-1], &_error_mass[i-1] );
+        __io_MOD_get_peakinfo( &_obsID[i-1], &_measurement_mu[i-1], &_error_up_mu[i-1], &_error_down_mu[i-1], &_measurement_mass[i-1], &_error_mass[i-1] );
 
         int mhchisq;
-        __io_MOD_get_more_peakinfo( &obsID, &mhchisq ); // currently not needed
+        __io_MOD_get_more_peakinfo( &_obsID[i-1], &mhchisq ); // currently not needed
 
         if ( _useInitialPredictionsAsMeasurements ) {
 
@@ -775,3 +756,36 @@ void Fittino::HiggsSignalsCalculator::InitializeMeasurements() {
     }
 
 }
+
+void Fittino::HiggsSignalsCalculator::ResizePeakArrays() {
+
+    if ( !_runHiggsSignals ) return;
+
+    _peakInfoFromHSresults_mupred.resize( _npeakmu );
+    _peakInfoFromHSresults_domH  .resize( _npeakmu );
+    _peakInfoFromHSresults_nHcomb.resize( _npeakmu );
+    _obsID.resize( _npeakmu);
+    _measurement_mass.resize( _npeakmu );
+    _measurement_mu.resize  ( _npeakmu );
+    _error_down_mu.resize( _npeakmu );
+    _error_up_mu.resize( _npeakmu );
+    _error_mass.resize( _npeakmu );
+
+}
+
+void Fittino::HiggsSignalsCalculator::DetermineObsIDs() {
+
+    if ( !_runHiggsSignals ) return;
+
+    for (int i = 1; i <= _npeakmu; ++i) {
+
+        int obsID;
+        __io_MOD_get_id_of_peakobservable(&i, &obsID);
+
+        _obsID[i - 1] = obsID;
+
+    }
+
+}
+
+

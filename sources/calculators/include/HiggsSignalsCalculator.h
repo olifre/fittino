@@ -168,6 +168,7 @@ namespace Fittino {
       std::vector<double> _error_mass;
       std::vector<double> _error_up_mu;
       std::vector<double> _error_down_mu;
+      std::vector<int>    _obsID;
 
   private:
       void         AddInputs();
@@ -177,10 +178,12 @@ namespace Fittino {
       void         CheckMatrices();
       void         AddOutputs();
       void         InitializeMeasurements();
-      void         DetermineNumberOfObservables();
+      void         DetermineNumberOfPeaks();
+      void         DetermineObsIDs();
       void         InitializeHBandHS();
       void         Setup();
       void         ResizeInputArrays();
+      void         ResizePeakArrays();
       void         Run();
       void         UpdateChargedInput( bool shiftHiggsMass );
       void         UpdateNeutralInput( bool shiftHiggsMass );
