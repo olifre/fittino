@@ -46,6 +46,17 @@ Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, cons
 
     _iterationCounter == 0 ? _weight = 1 : _weight = 0;
 
+    for ( const auto& node : ptree ) {
+
+        if ( node.first != "Parameter" ) continue;
+
+        std::string name = node.second.get<std::string>( "Name" );
+        double value = node.second.get<double>( "Value" );
+
+        _model->GetCollectionOfParameters().At( name )->SetValue( value );
+
+    }
+
 }
 
 Fittino::MarkovChainSampler::~MarkovChainSampler() {
