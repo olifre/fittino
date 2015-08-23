@@ -5,6 +5,7 @@
 <xs:complexType name="HDim6Calculator">
   <xs:sequence>
     <xs:element name="Name"                     type="xs:string"          minOccurs="0"/>
+    <xs:element name="LazyInitialization"       type="xs:boolean"        />
     <xs:element name="calculate_Gamma_hWW"      type="xs:boolean"        />
     <xs:element name="calculate_Gamma_hZZ"      type="xs:boolean"        />
     <xs:element name="calculate_xs_qqh_2flavor" type="xs:boolean"        />

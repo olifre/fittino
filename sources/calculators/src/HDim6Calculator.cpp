@@ -254,6 +254,12 @@ Fittino::HDim6Calculator::HDim6Calculator(const ModelBase *model, boost::propert
 
     LHAPDF::initPDFSet( _pdfSet, LHAPDF::LHGRID, 0 );
 
+    if (! ptree.get<bool>( "LazyInitialization") ) {
+
+        CalculatePredictions();
+
+    }
+
 }
 
 Fittino::HDim6Calculator::~HDim6Calculator() {
