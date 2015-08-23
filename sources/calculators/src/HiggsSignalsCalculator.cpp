@@ -556,7 +556,7 @@ void Fittino::HiggsSignalsCalculator::UpdateOutput() {
 
     for ( int i = 1; i <= _npeakmu; ++i ) {
 
-        __io_MOD_get_peakinfo_from_hsresults( &_obsID[i], &_peakInfoFromHSresults_mupred[i - 1], &domH, &nHcomb );
+        __io_MOD_get_peakinfo_from_hsresults( &_obsID[i-1], &_peakInfoFromHSresults_mupred[i - 1], &domH, &nHcomb );
 
         _peakInfoFromHSresults_domH  [i - 1] = domH;
         _peakInfoFromHSresults_nHcomb[i - 1] = nHcomb;
