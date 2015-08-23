@@ -65,6 +65,7 @@ Fittino::HiggsSignalsSMCalculator::HiggsSignalsSMCalculator( const ModelBase* mo
     AddOutput( "SM_xs_LHC_8TeV_tth" , _xs_LHC_8TeV_tth  );
 
     __theory_brfunctions_MOD_setup_brsm();
+    CalculatePredictions();
 
 }
 
