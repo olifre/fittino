@@ -45,6 +45,21 @@ Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model,
     _runHiggsSignals = GetConfiguration()->get<bool>( "RunHiggsSignals" );
     _useInitialPredictionsAsMeasurements = GetConfiguration()->get<bool>( "UseInitialPredictionsAsMeasurements" );
 
+    //  to make sure that the measurements HS provides are the real measurements, shut HS and HB down in any case
+    if ( _HBisInitialized )  {
+
+        finish_higgsbounds_();
+        _HBisInitialized = false;
+
+    }
+
+    if ( _HSisInitialized ) {
+
+        finish_higgssignals_();
+        _HSisInitialized = false;
+
+    }
+
     AddInputs();
     CheckMatrices();
     ResizeInputArrays();
@@ -52,10 +67,10 @@ Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model,
     Setup();
     Run();
     DetermineNumberOfObservables();
-    AddOutputsAndInitializeMeasurements();
+    AddOutputs();
     UpdateOutput();
-    // todo Run calculatepredictions here?
-    // SetupMeasuredValues();
+    InitializeMeasurements();
+    CalculatePredictions(); // recalculate with maybe changed measurements
 
 }
 
@@ -401,7 +416,7 @@ void Fittino::HiggsSignalsCalculator::Run() {
 
 }
 
-void Fittino::HiggsSignalsCalculator::AddOutputsAndInitializeMeasurements() {
+void Fittino::HiggsSignalsCalculator::AddOutputs() {
 
     if ( _runHiggsBounds ) {
 
@@ -420,11 +435,6 @@ void Fittino::HiggsSignalsCalculator::AddOutputsAndInitializeMeasurements() {
     _peakInfoFromHSresults_domH  .resize( _npeakmu );
     _peakInfoFromHSresults_nHcomb.resize( _npeakmu );
 
-    _measurement_mass.resize( _npeakmu );
-    _measurement_mu.resize  ( _npeakmu );
-    _error_down_mu.resize( _npeakmu );
-    _error_up_mu.resize( _npeakmu );
-
     AddQuantity( new SimplePrediction( "Chi2"                , "", _chi2                     ) );
     AddQuantity( new SimplePrediction( "Chi2_mass"           , "", _chi2_mass_h              ) );
     AddQuantity( new SimplePrediction( "Chi2_mu"             , "", _chi2_mu                  ) );
@@ -438,10 +448,8 @@ void Fittino::HiggsSignalsCalculator::AddOutputsAndInitializeMeasurements() {
 
     for ( int i = 1; i <= _npeakmu; ++i ) {
 
-        int obsID, mhchisq, domH, nHcomb;
+        int obsID, domH, nHcomb;
         __io_MOD_get_id_of_peakobservable( &i, &obsID );
-        __io_MOD_get_peakinfo( &obsID, &_measurement_mu[i-1], &_error_up_mu[i-1], &_error_down_mu[i-1], &_measurement_mass[i-1], &_error_mass[i-1] );
-        __io_MOD_get_more_peakinfo( &obsID, &mhchisq ); // only needed if npeakmh is used above
         __io_MOD_get_peakinfo_from_hsresults( &obsID, &_peakInfoFromHSresults_mupred[i - 1], &domH, &nHcomb );
 
         // todo: this function does a few things which also updateoutput does. check for better arrangement.
@@ -451,13 +459,6 @@ void Fittino::HiggsSignalsCalculator::AddOutputsAndInitializeMeasurements() {
         AddQuantity( new SimplePrediction( "Prediction_mu_"         + s_index, "", _peakInfoFromHSresults_mupred[i-1] ) );
         AddQuantity( new SimplePrediction( "DominantHiggs_"         + s_index, "", _peakInfoFromHSresults_domH  [i-1] ) );
         AddQuantity( new SimplePrediction( "NumberOfCombinedHiggs_" + s_index, "", _peakInfoFromHSresults_nHcomb[i-1] ) );
-
-        if ( _useInitialPredictionsAsMeasurements ) {
-
-            _measurement_mu[i-1] = _peakInfoFromHSresults_mupred[i-1];
-            _measurement_mass[i-1] = _neutralInput_Mh[domH-1];  //todo: use the weighted mass average?
-
-        }
 
     }
 
@@ -712,53 +713,6 @@ double Fittino::HiggsSignalsCalculator::RunHiggsBounds() {
 
 }
 
-void Fittino::HiggsSignalsCalculator::SetupMeasuredValues() {
-
-    // todo: do the smearing here. Also set mass shift
-
-    for ( int i = 1; i <= _npeakmu; ++i ) {
-
-        double measuredValue_mh = -1.e9;
-        double measuredValue_mu = -1.e9;
-        int obsID = 0;
-        __io_MOD_get_id_of_peakobservable( &i, &obsID );
-        std::ostringstream ss_index;
-        ss_index << obsID;
-        std::string s_index = ss_index.str();
-        std::string fittinoName_mh = "HiggsSignalsObservable_" + s_index + "_mh";
-        std::string fittinoName_mu = "HiggsSignalsObservable_" + s_index + "_mu";
-
-        // get measured values from the model
-        for ( int j = 0; j < _model->GetObservableVector()->size(); ++j ) {
-
-            if ( _model->GetObservableVector()->at(j)->GetPrediction()->GetName() == fittinoName_mh ) {
-
-                measuredValue_mh = _model->GetObservableVector()->at(j)->GetMeasuredValue();
-
-            }
-
-            if ( _model->GetObservableVector()->at(j)->GetPrediction()->GetName() == fittinoName_mu ) {
-
-                measuredValue_mu = _model->GetObservableVector()->at(j)->GetMeasuredValue();
-
-            }
-
-        }
-
-        // test if all observable were acutally defined
-        if ( measuredValue_mh < -1.e8 || measuredValue_mu < -1.e8 ) {
-
-            throw ConfigurationException( "Incomplete set of HiggsSignals Observables: Missing at least one (mu, mh) for HiggsSignalsObservable_" + s_index );
-
-        }
-
-        // assign the new values
-        assign_toyvalues_to_peak_( &obsID, &measuredValue_mu, &measuredValue_mh );
-
-    }
-
-}
-
 void Fittino::HiggsSignalsCalculator::Setup() {
 
     if ( _runHiggsSignals ) {
@@ -785,6 +739,37 @@ void Fittino::HiggsSignalsCalculator::AssignMeasurements() {
         __io_MOD_get_id_of_peakobservable(&i, &obsID);
 
         assign_toyvalues_to_peak_(&obsID, &_measurement_mu[i-1], &_measurement_mass[i-1] );
+
+    }
+
+}
+
+void Fittino::HiggsSignalsCalculator::InitializeMeasurements() {
+
+    if ( !_runHiggsSignals ) return;
+
+    _measurement_mass.resize( _npeakmu );
+    _measurement_mu.resize  ( _npeakmu );
+    _error_down_mu.resize( _npeakmu );
+    _error_up_mu.resize( _npeakmu );
+
+    for ( int i = 1; i <= _npeakmu; ++i ) {
+
+        int obsID;
+        __io_MOD_get_id_of_peakobservable( &i, &obsID );
+        __io_MOD_get_peakinfo( &obsID, &_measurement_mu[i-1], &_error_up_mu[i-1], &_error_down_mu[i-1], &_measurement_mass[i-1], &_error_mass[i-1] );
+
+        int mhchisq;
+        __io_MOD_get_more_peakinfo( &obsID, &mhchisq ); // currently not needed
+
+        if ( _useInitialPredictionsAsMeasurements ) {
+
+            _measurement_mu[i-1] = _peakInfoFromHSresults_mupred[i-1];
+
+            int domH = _peakInfoFromHSresults_domH[i-1];
+            _measurement_mass[i-1] = _neutralInput_Mh[domH-1];  //todo: use the weighted mass average? Make sure mass chi2 is zero!
+
+        }
 
     }
 
