@@ -3,7 +3,6 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <xs:include schemaLocation="calculators/Chi2Calculator.xsd"               />
-  <xs:include schemaLocation="calculators/BRCalculator.xsd"                 />
   <xs:include schemaLocation="calculators/FeynHiggsCalculator.xsd"          />
   <xs:include schemaLocation="calculators/FormulaCalculator.xsd"            />
   <xs:include schemaLocation="calculators/HDim6Calculator.xsd"              />
@@ -18,7 +17,6 @@
   <!-- Todo: Eventually remove this node. -->
   <xs:complexType name="Calculators">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element name="BRCalculator"                  type="BRCalculator"                 />
       <xs:element name="Chi2Calculator"                type="Chi2Calculator"               />
       <xs:element name="FeynHiggsCalculator"           type="FeynHiggsCalculator"          />
       <xs:element name="FormulaCalculator"             type="FormulaCalculator"            />
