@@ -752,6 +752,7 @@ void Fittino::HiggsSignalsCalculator::InitializeMeasurements() {
     _measurement_mu.resize  ( _npeakmu );
     _error_down_mu.resize( _npeakmu );
     _error_up_mu.resize( _npeakmu );
+    _error_mass.resize( _npeakmu );
 
     for ( int i = 1; i <= _npeakmu; ++i ) {
 
