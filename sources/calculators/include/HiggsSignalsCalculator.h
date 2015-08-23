@@ -51,11 +51,9 @@ namespace Fittino {
       virtual void CalculatePredictions();
 
       // todo: review these functions. why are they public?
-      virtual void SetupMeasuredValues();
       double       RunHiggsBounds();
       void         CallHiggsBounds();
       void         AssignMeasurements();
-
 
   private:
       bool _runHiggsBounds;
@@ -171,14 +169,14 @@ namespace Fittino {
       std::vector<double> _error_up_mu;
       std::vector<double> _error_down_mu;
 
-
   private:
       void         AddInputs();
       void         AddChargedHiggs( const boost::property_tree::ptree &ptree );
       void         AddNeutralHiggs( const boost::property_tree::ptree &ptree );
       void         AddHiggsPairProductionLEP( const boost::property_tree::ptree &ptree );
       void         CheckMatrices();
-      void         AddOutputsAndInitializeMeasurements();
+      void         AddOutputs();
+      void         InitializeMeasurements();
       void         DetermineNumberOfObservables();
       void         InitializeHBandHS();
       void         Setup();
