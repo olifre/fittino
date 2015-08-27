@@ -60,18 +60,37 @@ namespace Fittino {
       virtual void        CalculatePredictions();
       virtual void        Initialize();
       virtual void        SetupMeasuredValues();
-      
+
     private:
       double     _crossSection;
-      double     _SMxs;
-      double     _normxs;
+      double     _SMxs_zh;
+      double     _SMxs_wh;
+      double     _SMxs_qqh;
+      double     _SMxs_hww;
+      double     _SMxs_hzz;
+      double     _xs_zh;
+      double     _xs_wh;
+      double     _xs_qqh;
+      double     _xs_hww;
+      double     _xs_hzz;
+      double     _normxs_zh;
+      double     _normxs_wh;
+      double     _normxs_qqh;
+      double     _normxs_hww;
+      double     _normxs_hzz;
       double     _nevents;
-      double     _f_BB;
-      double     _f_WW;
       double     _f_B;
       double     _f_W;
-      
-      
+      double     _f_BB;
+      double     _f_WW;
+      bool       _calculate_xs_Zh;
+      bool       _calculate_xs_Wh;
+      bool       _calculate_xs_qqh;
+      bool       _calculate_xs_hWW;
+      bool       _calculate_xs_hZZ;
+
+
+
   };
 
 }

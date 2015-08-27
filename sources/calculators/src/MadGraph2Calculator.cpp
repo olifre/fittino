@@ -31,120 +31,200 @@
 #include "Executor.h"
 #include <iostream>
 #include <fstream>
+#include <string>
 #include "Redirector.h"
+
+double readout()
+{
+    boost::property_tree::ptree pt;
+    boost::property_tree::read_xml("Prozess/Events/run_01/run_01_tag_1_banner.txt",pt);
+    std::string tag = pt.get<std::string>("LesHouchesEvents.header.MGGenerationInfo");
+    std::string line1=tag.substr(5,tag.find("\n",5));
+    std::string line2=tag.substr(70,tag.length());
+    std::string  cross=boost::regex_replace(line2,boost::regex("[^0-9]*([0-9,.,e,-]+).*"),std::string("\\1"));
+    //DEBUG
+    std::cout << line1 << std::endl;
+    std::cout << "____________________________________"<< std::endl;
+    std::cout << line2 << std::endl;
+    std::cout << "____________________________________"<< std::endl;
+    std::cout << cross << std::endl;
+    std::cout << "____________________________________"<< std::endl;
+    std::cout << atof(cross.c_str())<< std::endl;
+    std::cout << "____________________________________"<< std::endl;
+    // DEBUG end
+    return atof(cross.c_str());
+}
+
 
 
 Fittino::MadGraph2Calculator::MadGraph2Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
   : CalculatorBase( model, &ptree ),
-    _nevents ( ptree.get<double>( "nevents",10000 ) )                                                                                
-
+    _nevents           ( ptree.get<double>( "nevents",10000  ) ),
+    _calculate_xs_Zh   ( ptree.get<bool>  ("calculate_xs_Zh" ) ),
+    _calculate_xs_Wh   ( ptree.get<bool>  ("calculate_xs_Wh" ) ),
+    _calculate_xs_qqh  ( ptree.get<bool>  ("calculate_xs_qqh") ),
+    _calculate_xs_hWW  ( ptree.get<bool>  ("calculate_xs_hWW") ),
+    _calculate_xs_hZZ  ( ptree.get<bool>  ("calculate_xs_hZZ") )
  {
-  AddOutput("CrossSection", _crossSection);
-  AddOutput("Normalized_xs", _normxs);
-  AddOutput("Number_of_Events", _nevents);
-  AddInput("f_BB");
-  AddInput("f_WW");
+  //AddOutput("CrossSection"        , _crossSection);
+  if (_calculate_xs_Zh)  {AddOutput("Normalized_xs_zh"    , _normxs_zh);}
+  if (_calculate_xs_Wh)  {AddOutput("Normalized_xs_wh"    , _normxs_wh);}
+  if (_calculate_xs_qqh) {AddOutput("Normalized_xs_qqh"   , _normxs_qqh);}
+  if (_calculate_xs_hWW) {AddOutput("Normalized_width_hww", _normxs_hww);}
+  if (_calculate_xs_hZZ) {AddOutput("Normalized_width_hzz", _normxs_hzz);}
+  if (_calculate_xs_Zh)  {AddOutput("xs_zh"               , _xs_zh);}    // for debuging
+  if (_calculate_xs_Wh)  {AddOutput("xs_wh"               , _xs_wh);}    // for debuging
+  if (_calculate_xs_qqh) {AddOutput("xs_qqh"              , _xs_qqh);}   // for debuging
+  if (_calculate_xs_hWW) {AddOutput("width_hww"           , _xs_hww);}   // for debuging
+  if (_calculate_xs_hZZ) {AddOutput("width_hzz"           , _xs_hzz);}   // for debuging
+  if (_calculate_xs_Zh)  {AddOutput("SM_xs_zh"            , _SMxs_zh);}    // for debuging
+  if (_calculate_xs_Wh)  {AddOutput("SM_xs_wh"            , _SMxs_wh);}    // for debuging
+  if (_calculate_xs_qqh) {AddOutput("SM_xs_qqh"           , _SMxs_qqh);}   // for debuging
+  if (_calculate_xs_hWW) {AddOutput("SM_width_hww"        , _SMxs_hww);}   // for debuging
+  if (_calculate_xs_hZZ) {AddOutput("SM_width_hzz"        , _SMxs_hzz);}   // for debuging
+ // AddOutput("xs_hww"              , _xs_hww);     // for debuging
+  AddOutput("Number_of_Events"    , _nevents);
   AddInput("f_B");
   AddInput("f_W");
-
-
-
-std::fstream datei("madgraphrun.txt", std::ios::out);
-datei << "import model ./HIGGSFIT2_UFO" << std::endl;
-datei << "generate p p > z h NP=4" << std::endl;
-datei << "output dummydir" << std::endl;
-datei << "launch dummydir" << std::endl;
-datei << "set ebeam1=4000.0" << std::endl;
-datei << "set ebeam2=4000.0" << std::endl;
-datei << "set nevents=" << _nevents << std::endl;
+  AddInput("f_BB");
+  AddInput("f_WW");
 
 //Redirector redirector("dummyfile" );
 //redirector.Start();
+// ------------------------------ PROZESS 1 -----------------------------------------
 
+if (_calculate_xs_Zh) {
   Executor executor("./MG5/bin/mg5_aMC","mg5_aMC");
-  executor.AddArgument("madgraphrun.txt");
+  executor.AddArgument("mg5_Template_zh.txt");
   executor.Execute();
+_SMxs_zh = readout();}
 
-  //redirector.Stop();
+// ------------------------------ PROZESS 2 -----------------------------------------
+if (_calculate_xs_Wh) {
+  Executor executor2("./MG5/bin/mg5_aMC","mg5_aMC");
+  executor2.AddArgument("mg5_Template_wh.txt");
+  executor2.Execute();
+_SMxs_wh = readout();}
 
-boost::property_tree::ptree pt;
-boost::property_tree::read_xml("dummydir/Events/run_01/run_01_tag_1_banner.txt",pt);
-std::string tag = pt.get<std::string>("LesHouchesEvents.header.MGGenerationInfo");
-std::string line1=tag.substr(5,tag.find("\n",5));
-std::string line2=tag.substr(43,tag.length());
- std::string  cross=boost::regex_replace(line2,boost::regex("[^0-9]*([0-9,.]+).*"),std::string("\\1"));
- _SMxs = atof(cross.c_str());
+// ------------------------------ PROZESS 3 -----------------------------------------
+if (_calculate_xs_qqh) {
+  Executor executor3("./MG5/bin/mg5_aMC","mg5_aMC");
+  executor3.AddArgument("mg5_Template_qqh.txt");
+  executor3.Execute();
+_SMxs_qqh = readout();}
 
+// ------------------------------ PROZESS 4 -----------------------------------------
+if (_calculate_xs_hWW) {
+  Executor executor4("./MG5/bin/mg5_aMC","mg5_aMC");
+  executor4.AddArgument("mg5_Template_hww.txt");
+  executor4.Execute();
+_SMxs_hww = readout();}
 
- std::cout << "SM cross section: " << _SMxs << "\n\n" << std::endl;
+// ------------------------------ PROZESS 5 -----------------------------------------
+if (_calculate_xs_hZZ) {
+  Executor executor5("./MG5/bin/mg5_aMC","mg5_aMC");
+  executor5.AddArgument("mg5_Template_hzz.txt");
+  executor5.Execute();
+_SMxs_hzz = readout();}
+
+// ----------------------------------------------------------------------------------
+//redirector.Stop();
  }
 
 
 Fittino::MadGraph2Calculator::~MadGraph2Calculator() {
-  
+
 }
 
 
 void Fittino::MadGraph2Calculator::CalculatePredictions() {
   UpdateInput();
- 
-
-  //std::cout << GetInput("f_BB") << std::endl;
-  //std::cout << GetInput("f_WW") << std::endl;
-  //std::cout << GetInput("f_B") << std::endl;
-  //std::cout << GetInput("f_W") << std::endl;
-
-
-
-std::fstream datei("madgraphrun.txt", std::ios::out);
-datei << "import model ./HIGGSFIT2_UFO" << std::endl;
-datei << "generate p p > z h NP=4" << std::endl;
-datei << "output dummydir" << std::endl;
-datei << "launch dummydir" << std::endl;
-datei << "set ebeam1=4000" << std::endl;
-datei << "set ebeam2=4000" << std::endl;
-datei << "set cBB=" << GetInput("f_BB") << std::endl;
-datei << "set cWW=" << GetInput("f_WW") << std::endl;
-datei << "set cHB=" << GetInput("f_B") << std::endl;
-datei << "set cHW=" << GetInput("f_W") << std::endl;
-datei << "set nevents=" << _nevents << std::endl;
 
 //Redirector redirector("dummyfile" );
 //redirector.Start();
-
+std::ofstream outfile;
+// ------------------------------ PROZESS 1 -----------------------------------------------------
+if (_calculate_xs_Zh) {
+boost::filesystem::remove("mg5_Run_zh.txt");
+boost::filesystem::copy("mg5_Template_zh.txt","mg5_Run_zh.txt");
+outfile.open("mg5_Run_zh.txt", std::ios_base::app);
+outfile << "set cBB=" << GetInput("f_BB") << std::endl;
+outfile << "set cWW=" << GetInput("f_WW") << std::endl;
+outfile << "set cHB=" << GetInput("f_B") << std::endl;
+outfile << "set cHW=" << GetInput("f_W") << std::endl;
   Executor executor("./MG5/bin/mg5_aMC","mg5_aMC");
-  executor.AddArgument("madgraphrun.txt");
+  executor.AddArgument("mg5_Run_zh.txt");
   executor.Execute();
+  _xs_zh=readout();
+_normxs_zh=_xs_zh/_SMxs_zh;}
 
-  //redirector.Stop();
+// ------------------------------ PROZESS 2 -------------------------------------------------------
+if (_calculate_xs_Wh) {
+boost::filesystem::remove("mg5_Run_wh.txt");
+boost::filesystem::copy("mg5_Template_wh.txt","mg5_Run_wh.txt");
+outfile.open("mg5_Run_wh.txt", std::ios_base::app);
+outfile << "set cBB=" << GetInput("f_BB") << std::endl;
+outfile << "set cWW=" << GetInput("f_WW") << std::endl;
+outfile << "set cHB=" << GetInput("f_B") << std::endl;
+outfile << "set cHW=" << GetInput("f_W") << std::endl;
+  Executor executor2("./MG5/bin/mg5_aMC","mg5_aMC");
+  executor2.AddArgument("mg5_Run_wh.txt");
+  executor2.Execute();
+  _xs_wh=readout();
+_normxs_wh=_xs_wh/_SMxs_wh;}
 
+// ------------------------------ PROZESS 3 -------------------------------------------------------
+if (_calculate_xs_qqh) {
+boost::filesystem::remove("mg5_Run_qqh.txt");
+boost::filesystem::copy("mg5_Template_qqh.txt","mg5_Run_qqh.txt");
+outfile.open("mg5_Run_qqh.txt", std::ios_base::app);
+outfile << "set cBB=" << GetInput("f_BB") << std::endl;
+outfile << "set cWW=" << GetInput("f_WW") << std::endl;
+outfile << "set cHB=" << GetInput("f_B") << std::endl;
+outfile << "set cHW=" << GetInput("f_W") << std::endl;
+  Executor executor3("./MG5/bin/mg5_aMC","mg5_aMC");
+  executor3.AddArgument("mg5_Run_qqh.txt");
+  executor3.Execute();
+   _xs_qqh=readout();
+_normxs_qqh=_xs_qqh/_SMxs_qqh;}
 
-boost::property_tree::ptree pt;
-boost::property_tree::read_xml("dummydir/Events/run_01/run_01_tag_1_banner.txt",pt);
-std::string tag = pt.get<std::string>("LesHouchesEvents.header.MGGenerationInfo");
-std::string line1=tag.substr(5,tag.find("\n",5));
-std::string line2=tag.substr(43,tag.length());
+// ------------------------------ PROZESS 4 -------------------------------------------------------
+if (_calculate_xs_hWW) {
+boost::filesystem::remove("mg5_Run_hww.txt");
+boost::filesystem::copy("mg5_Template_hww.txt","mg5_Run_hww.txt");
+outfile.open("mg5_Run_hww.txt", std::ios_base::app);
+outfile << "set cBB=" << GetInput("f_BB") << std::endl;
+outfile << "set cWW=" << GetInput("f_WW") << std::endl;
+outfile << "set cHB=" << GetInput("f_B") << std::endl;
+outfile << "set cHW=" << GetInput("f_W") << std::endl;
+  Executor executor4("./MG5/bin/mg5_aMC","mg5_aMC");
+  executor4.AddArgument("mg5_Run_hww.txt");
+  executor4.Execute();
+  _xs_hww=readout();
+_normxs_hww=_xs_hww/_SMxs_hww;}
 
- std::string events=boost::regex_replace(line1,boost::regex("[^0-9]*([0-9,.]+).*"),std::string("\\1"));
- std::string  cross=boost::regex_replace(line2,boost::regex("[^0-9]*([0-9,.]+).*"),std::string("\\1"));
- _crossSection = atof(cross.c_str()); 
- _nevents = atof(events.c_str());
- _normxs=_crossSection/_SMxs;
- //std::cout << "beam energy      : " << beamenergy << " MeV" << std::endl;
- std::cout << "Number of Events : " << events               << std::endl;
- std::cout << "Cross section    : " << cross      << " pb"  << std::endl;
- std::cout << "normalized xs    : " << _crossSection/_SMxs      << " pb"  << std::endl;
- std::cout << "--------------------------------------------"<< std::endl;
+// ------------------------------ PROZESS 5 -------------------------------------------------------
+if (_calculate_xs_hZZ) {
+boost::filesystem::remove("mg5_Run_hzz.txt");
+boost::filesystem::copy("mg5_Template_hzz.txt","mg5_Run_hzz.txt");
+outfile.open("mg5_Run_hzz.txt", std::ios_base::app);
+outfile << "set cBB=" << GetInput("f_BB") << std::endl;
+outfile << "set cWW=" << GetInput("f_WW") << std::endl;
+outfile << "set cHB=" << GetInput("f_B") << std::endl;
+outfile << "set cHW=" << GetInput("f_W") << std::endl;
+  Executor executor4("./MG5/bin/mg5_aMC","mg5_aMC");
+  executor4.AddArgument("mg5_Run_hzz.txt");
+  executor4.Execute();
+  _xs_hzz=readout();
+_normxs_hzz=_xs_hzz/_SMxs_hzz;}
+//redirector.Stop();
+}
 
-
-
-}              
-                                                                                                                                                     
 void Fittino::MadGraph2Calculator::SetupMeasuredValues() {
-  
-  
+
+
 }
 
 void Fittino::MadGraph2Calculator::Initialize() {
-  
+
 }
