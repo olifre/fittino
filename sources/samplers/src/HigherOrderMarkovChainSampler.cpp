@@ -217,25 +217,33 @@ void Fittino::HigherOrderMarkovChainSampler::UpdateParameterValues( double scale
 
 void Fittino::HigherOrderMarkovChainSampler::UpdateParameterValuesUsingCovariance( double scalefactor ) {
 
-    TMatrixDSymEigen covariantEigen( _covarianceMatrix );
+    bool isInBounds = false;
 
-    TVectorD y( _model->GetNumberOfParameters() );
+    while ( !isInBounds ) {
 
-    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
+        TMatrixDSymEigen covariantEigen( _covarianceMatrix );
 
-        double width = scalefactor * TMath::Sqrt( covariantEigen.GetEigenValues()[i] );
+        TVectorD y( _model->GetNumberOfParameters() );
 
-        y[i] = _randomGenerator->Gaus( 0., width );
+        for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
-    }
+            double width = scalefactor * TMath::Sqrt( covariantEigen.GetEigenValues()[i] );
 
-    y = covariantEigen.GetEigenVectors() * y;
+            y[i] = _randomGenerator->Gaus( 0., width );
 
-    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
+        }
 
-        y[i] += GetParameterValuesOfLastAcceptedPoint()[i];
+        y = covariantEigen.GetEigenVectors() * y;
 
-        _model->GetCollectionOfParameters().At( i )->SetValue( y[i] );
+        for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
+
+            y[i] += GetParameterValuesOfLastAcceptedPoint()[i];
+
+            _model->GetCollectionOfParameters().At( i )->SetValue( y[i] );
+
+        }
+
+        _strictBounds ? isInBounds = IsInBounds() : isInBounds = true;
 
     }
 

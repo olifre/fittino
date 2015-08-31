@@ -46,7 +46,7 @@ Fittino::MarkovChainSampler::MarkovChainSampler( Fittino::ModelBase* model, cons
 
     _iterationCounter == 0 ? _weight = 1 : _weight = 0;
 
-    for ( const auto& node : ptree ) {
+    for ( const auto & node : ptree ) {
 
         if ( node.first != "Parameter" ) continue;
 

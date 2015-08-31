@@ -56,10 +56,13 @@ namespace Fittino {
       virtual void               UpdateMemory();
       virtual void               UpdateParameterValues( double scalefactor );
 
+    protected:
+      bool                       IsInBounds();
+      bool                       _strictBounds;
+
       /*! \cond UML */
     private:
       bool                       _pointAccepted;
-      bool                       _strictBounds;
       double                     _chi2OfLastAcceptedPoint;
       double                     _firstPointScalefactor;
       /*!
@@ -76,7 +79,6 @@ namespace Fittino {
 
     private:
       bool                       IsAccepted();
-      bool                       IsInBounds();
       void                       CompareChi2();
       void                       Execute();
       void                       FillBranchPointAccepted();
