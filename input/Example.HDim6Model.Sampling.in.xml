@@ -107,12 +107,15 @@
 
         <HDim6Calculator>
 
-          <calculate_Gamma_hWW>true</calculate_Gamma_hWW>
-          <calculate_Gamma_hZZ>true</calculate_Gamma_hZZ>
-          <calculate_xs_qqh_2flavor>true</calculate_xs_qqh_2flavor>
-          <calculate_xs_qqh_5flavor>true</calculate_xs_qqh_5flavor>
-          <calculate_xs_Wh>true</calculate_xs_Wh>
-          <calculate_xs_Zh>true</calculate_xs_Zh>
+          <Name>HDim6</Name>
+          <LazyInitialization>true</LazyInitialization>
+
+          <calculate_Gamma_hWW>false</calculate_Gamma_hWW>
+          <calculate_Gamma_hZZ>false</calculate_Gamma_hZZ>
+          <calculate_xs_qqh_2flavor>false</calculate_xs_qqh_2flavor>
+          <calculate_xs_qqh_5flavor>false</calculate_xs_qqh_5flavor>
+          <calculate_xs_Wh>false</calculate_xs_Wh>
+          <calculate_xs_Zh>false</calculate_xs_Zh>
 
           <UseDampingCoefficients>false</UseDampingCoefficients>
 
@@ -146,14 +149,14 @@
           <r_Phi_2>1000.</r_Phi_2>
           <r_Phi_4>1000.</r_Phi_4>
 
-          <n_GG>1.</n_GG>
-          <n_BB>1.</n_BB>
-          <n_WW>1.</n_WW>
-          <n_B>1.</n_B>
-          <n_W>1.</n_W>
-          <n_Phi_1>1.</n_Phi_1>
-          <n_Phi_2>1.</n_Phi_2>
-          <n_Phi_4>1.</n_Phi_4>
+          <n_GG>0.</n_GG>
+          <n_BB>2.</n_BB>
+          <n_WW>2.</n_WW>
+          <n_B>2.</n_B>
+          <n_W>2.</n_W>
+          <n_Phi_1>0.</n_Phi_1>
+          <n_Phi_2>0.</n_Phi_2>
+          <n_Phi_4>0.</n_Phi_4>
 
         </HDim6Calculator>
 
