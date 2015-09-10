@@ -31,7 +31,7 @@ Fittino::CalculatorBase::CalculatorBase( const ModelBase* model, const boost::pr
 
     if ( ptree != nullptr ) {
 
-        _name = _ptree->get<std::string>("Name", "" );
+        _name = _ptree->get<std::string>( "Name", "" );
         _tag = _name;
 
     }

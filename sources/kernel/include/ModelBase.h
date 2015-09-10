@@ -92,7 +92,7 @@ namespace Fittino {
        */
       virtual ModelBase*                                  Clone();
 
-    /* Currently needed by some calculators, should be removed! */
+      /* Currently needed by some calculators, should be removed! */
       virtual const std::vector<Observable*>*             GetObservableVector() const;
 
     protected:

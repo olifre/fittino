@@ -21,6 +21,8 @@
 #define FITTINO_HIGGSSIGNALSCALCULATOR_H
 
 #include "CalculatorBase.h"
+#include "Redirector.h"
+
 
 /*!
  *  \brief Fittino namespace.
@@ -56,6 +58,7 @@ namespace Fittino {
       void         AssignMeasurements();
 
   private:
+      Redirector _redirector;
       bool _runHiggsBounds;
       bool _runHiggsSignals;
       bool _useInitialPredictionsAsMeasurements;
@@ -180,8 +183,8 @@ namespace Fittino {
       void         InitializeMeasurements();
       void         DetermineNumberOfPeaks();
       void         DetermineObsIDs();
-      void         InitializeHBandHS();
-      void         Setup();
+      void InitializeHBandHS(bool print);
+      void Setup(bool print);
       void         ResizeInputArrays();
       void         ResizePeakArrays();
       void         Run();

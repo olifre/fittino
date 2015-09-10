@@ -39,7 +39,9 @@ std::string  Fittino::HiggsSignalsCalculator::_initialized_whichAnalyses = ""   
 std::string  Fittino::HiggsSignalsCalculator::_initialized_expData       = ""   ;
 
 Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
-    :CalculatorBase       ( model, &ptree                                                                         ) {
+    :CalculatorBase       ( model, &ptree                                                                         ),
+    _redirector("/dev/null")
+{
 
     _runHiggsBounds  = GetConfiguration()->get<bool>( "RunHiggsBounds"  );
     _runHiggsSignals = GetConfiguration()->get<bool>( "RunHiggsSignals" );
@@ -63,8 +65,8 @@ Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model,
     AddInputs();
     CheckMatrices();
     ResizeInputArrays();
-    InitializeHBandHS();
-    Setup();
+    InitializeHBandHS( true );
+    Setup( true );
     Run();
     DetermineNumberOfPeaks();
     ResizePeakArrays();
@@ -76,7 +78,7 @@ Fittino::HiggsSignalsCalculator::HiggsSignalsCalculator( const ModelBase* model,
 
 }
 
-void Fittino::HiggsSignalsCalculator::InitializeHBandHS() {
+void Fittino::HiggsSignalsCalculator::InitializeHBandHS(bool print) {
 
 
     std::string expData = GetConfiguration()->get<std::string>( "ExpData" );
@@ -111,8 +113,11 @@ void Fittino::HiggsSignalsCalculator::InitializeHBandHS() {
 
     if ( _runHiggsBounds && !_HBisInitialized ) {
 
+        if ( !print ) _redirector.Start();
         initialize_higgsbounds_chisqtables_();
         initialize_higgsbounds_( &nHzero, &nHplus, whichAnalyses.c_str(), whichAnalyses.length() );
+        if ( !print ) _redirector.Stop();
+
         _HBisInitialized = true;
         _initialized_nHzero = nHzero;
         _initialized_nHplus = nHplus;
@@ -122,7 +127,12 @@ void Fittino::HiggsSignalsCalculator::InitializeHBandHS() {
 
     if ( _runHiggsSignals && !_HSisInitialized ) {
 
+        if ( !print ) _redirector.Start();
+
         initialize_higgssignals_( &nHzero, &nHplus, expData.c_str(), expData.size() );
+
+        if ( !print ) _redirector.Stop();
+
         _HSisInitialized = true;
         _initialized_nHzero = nHzero;
         _initialized_nHplus = nHplus;
@@ -138,8 +148,8 @@ Fittino::HiggsSignalsCalculator::~HiggsSignalsCalculator() {
 
 void Fittino::HiggsSignalsCalculator::CalculatePredictions() {
 
-    InitializeHBandHS();
-    Setup();
+    InitializeHBandHS( false );
+    Setup( false );
     AssignMeasurements();
     Run();
     UpdateOutput();
@@ -703,7 +713,7 @@ double Fittino::HiggsSignalsCalculator::RunHiggsBounds() {
 
 }
 
-void Fittino::HiggsSignalsCalculator::Setup() {
+void Fittino::HiggsSignalsCalculator::Setup(bool print) {
 
     if ( _runHiggsSignals ) {
 
@@ -712,10 +722,14 @@ void Fittino::HiggsSignalsCalculator::Setup() {
         double      assignmentRange                = GetConfiguration()->get<double>     ( "AssignmentRange"                );
         double      assignmentRangeMassObservables = GetConfiguration()->get<double>     ( "AssignmentRangeMassObservables" );
 
+        if ( !print ) _redirector.Start();
+
         setup_output_level_(&outputLevel);
         setup_pdf_(&pdf);
         setup_assignmentrange_(&assignmentRange);
         setup_assignmentrange_massobservables_(&assignmentRangeMassObservables);
+
+        if ( !print ) _redirector.Stop();
 
     }
 

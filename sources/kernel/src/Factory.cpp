@@ -329,7 +329,7 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     }
 
     else if ( type == "MadGraph2Calculator" ) {
-  
+
         return new MadGraph2Calculator( model, ptree );
     }
     else if ( type == "MicromegasCalculator" ) {
