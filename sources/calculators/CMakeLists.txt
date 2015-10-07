@@ -20,6 +20,7 @@
 
 FILE(GLOB includes ./include/*.h)
 LIST( APPEND includes "include/Correlation.h" )
+  LIST( APPEND includes "include/GM2CalcCalculator.h" )
 LIST( APPEND includes "include/LinearInterpolationCalculator.h" )
 LIST( APPEND includes "include/LinearInterpolationCalculatorBase.h" )
 LIST( APPEND includes "include/HerwigppCalculator.h" )
@@ -57,7 +58,8 @@ LIST( APPEND sources "src/CheckMATE2Calculator.cpp" )
 LIST( APPEND sources "src/HerwigppCalculator.cpp" )
 LIST( APPEND sources "src/NLLFastCalculator.cpp" )
 LIST( APPEND sources "src/HepMCSplitCalculator.cpp" ) 
-LIST( APPEND sources "src/MadGraph2Calculator.cpp" ) 
+LIST( APPEND sources "src/MadGraph2Calculator.cpp" )
+LIST( APPEND sources "src/GM2CalcCalculator.cpp" )
 
 IF(PYTHONLIBS_FOUND AND Boost_PYTHON_FOUND)
 
@@ -89,6 +91,18 @@ ELSE()
     LIST(REMOVE_ITEM sources "src/FeynHiggsNeutralHiggsCrossSection.cpp")
 
 ENDIF()
+
+  IF( GM2CALC_FOUND AND EIGEN3_FOUND )
+
+      INCLUDE_DIRECTORIES( ${GM2CALC_INCLUDE_DIRS} )
+      INCLUDE_DIRECTORIES( ${EIGEN3_INCLUDE_DIR}   )
+
+  ELSE()
+
+      LIST( REMOVE_ITEM sources "src/GM2CalcCalculator.cpp")
+
+  ENDIF()
+
 
 IF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND)
 

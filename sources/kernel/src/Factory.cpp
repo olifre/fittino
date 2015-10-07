@@ -39,6 +39,7 @@
 #include "FeynHiggsRescalingCalculator.h"
 #include "FormulaCalculator.h"
 #include "GeneticAlgorithmOptimizer.h"
+#include "GM2CalcCalculator.h"
 #include "HDim6Calculator.h"
 #include "HECCalculator.h"
 #include "HepMCSplitCalculator.h"
@@ -173,6 +174,19 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     else if ( type == "FormulaCalculator" ) {
 
         return new FormulaCalculator( model, ptree );
+
+    }
+    else if ( type == "GM2CalcCalculator" ) {
+
+#if defined GM2CALC && defined EIGEN3
+
+        return new GM2CalcCalculator( model, ptree );
+
+#else
+
+        throw ConfigurationException( "Trying to use GM2CalcCalculator but Fittino was built without GM2Calc or Eigen3." );
+
+#endif
 
     }
     else if ( type == "HDim6Calculator" ) {
