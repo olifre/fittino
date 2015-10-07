@@ -69,6 +69,8 @@ FIND_PACKAGE( IFORTLIB                                                          
 FIND_PACKAGE( LibXml2                                                                )
 FIND_PACKAGE( PythonLibs                                                             )
 FIND_PACKAGE( Doxygen                                                                )
+FIND_PACKAGE( GM2Calc                                                                )
+FIND_PACKAGE( Eigen3 3.1                                                             )
 
 IF( PYTHONLIBS_FOUND )
 
@@ -92,4 +94,4 @@ INSTALL( DIRECTORY "${PROJECT_SOURCE_DIR}/input" DESTINATION share/fittino PATTE
 ADD_SUBDIRECTORY( external )
 ADD_SUBDIRECTORY( sources  )
 
-#ADD_CUSTOM_TARGET( myinstall COMMAND ${CMAKE_MAKE_PROGRAM} install )
+ADD_CUSTOM_TARGET( Install COMMAND ${CMAKE_MAKE_PROGRAM} install )
