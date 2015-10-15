@@ -36,7 +36,12 @@ namespace Fittino {
     virtual void CalculatePredictions();    
     virtual void Initialize();
 
-  public:
+  private:
+    std::string _executable;
+    std::string _inFile;
+    std::string _outFile;
+    std::string _logFile;
+    std::string _runFile;
 
     double _Total_Xsec;
     double _Total_Xsec_error;

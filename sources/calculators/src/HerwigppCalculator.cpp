@@ -20,6 +20,7 @@
 #include <fstream>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/filesystem.hpp>
 
 #include "TFile.h"
 #include "TTree.h"
@@ -27,6 +28,13 @@
 #include "Executor.h"
 
 Fittino::HerwigppCalculator::HerwigppCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree ) : CalculatorBase( model, &ptree ) {
+
+  _executable = ptree.get<std::string>( "Executable" );
+  _inFile = ptree.get<std::string>( "InputFile" );
+  boost::filesystem::path p( _inFile );
+  _runFile = p.stem().string() + ".run";
+  _logFile = p.stem().string() + ".log";
+  _outFile = p.stem().string() + ".out";
 
   AddOutput("Total_Xsec", _Total_Xsec);
   AddOutput("Total_Xsec_error", _Total_Xsec_error);
@@ -39,26 +47,25 @@ Fittino::HerwigppCalculator::~HerwigppCalculator() {
 
 void Fittino::HerwigppCalculator::CalculatePredictions() {
 
-  std::string inputfileRead = "/lustre/user/range/fittino/bin/LHC-MSSM.in";
-
-  Executor executorRead( "/cvmfs/sft.cern.ch/lcg/external/MCGenerators_lcgcmt65a/herwig++/2.7.0/x86_64-slc6-gcc47-opt/bin/Herwig++", "Herwig++ read" );
+  Executor executorRead( _executable, "Herwig++" ); 
   executorRead.AddArgument( "read" );
-  executorRead.AddArgument( inputfileRead );
+  executorRead.AddArgument( _inFile );
+  std::cout<<"Read"<<std::endl;
   executorRead.Execute();
 
-  std::string inputfileRun = "/lustre/user/range/fittino/bin/LHC-MSSM.run";
-
-  Executor executorRun( "/cvmfs/sft.cern.ch/lcg/external/MCGenerators_lcgcmt65a/herwig++/2.7.0/x86_64-slc6-gcc47-opt/bin/Herwig++", "Herwig++ run" );
+  Executor executorRun( _executable, "Herwig++" ); 
   executorRun.AddArgument( "run" );
-  executorRun.AddArgument( inputfileRun );
+  executorRun.AddArgument( _runFile );
   executorRun.AddArgument( "-N1000" );
   executorRun.AddArgument( "-d1" );
+  std::cout<<"Run"<<std::endl;
   executorRun.Execute();
+  std::cout<<"Finished"<<std::endl;
 
   std::fstream fileOUT;
   std::string line;
 
-  fileOUT.open( "/lustre/user/range/fittino/bin/LHC-MSSM.out" ); 
+  fileOUT.open( _outFile ); 
   while( getline( fileOUT, line ) ){
 
     typedef std::vector< std::string > split_vector_type;
@@ -108,7 +115,7 @@ void Fittino::HerwigppCalculator::CalculatePredictions() {
     tree-> Branch ( "Matrix_Element", &Last_Matrix_Element );
 
 
-    fileLOG.open( "/lustre/user/range/fittino/bin/LHC-MSSM.log");
+    fileLOG.open( _logFile );
   
     while( getline( fileLOG, line )) {
  
