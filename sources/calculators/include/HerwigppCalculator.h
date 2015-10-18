@@ -18,6 +18,9 @@
 #ifndef FITTINO_HERWIGPPCALCULATOR_H
 #define FITTINO_HERWIGPPCALCULATOR_H
 
+#include <map>
+#include <string>
+
 #include <boost/property_tree/ptree.hpp>
 
 #include "Executor.h"
@@ -35,6 +38,8 @@ namespace Fittino {
 
     virtual void CalculatePredictions();    
     virtual void Initialize();
+    void InitializeParticleMaps();
+    void AddParticle( std::map<std::string, int>& map, std::string name, int id, bool addAntiParticle = true );
 
   private:
     std::string _executable;
@@ -42,6 +47,14 @@ namespace Fittino {
     std::string _outFile;
     std::string _logFile;
     std::string _runFile;
+    
+    std::string _line;
+    std::vector<std::string> _words;
+    std::istream& GetLine(std::istream& is);
+    int GetPDGID(std::istream& is, int expectedRunningID);
+
+    std::map<std::string, int> _sm;
+    std::map<std::string, int> _susy;
 
     double _Total_Xsec;
     double _Total_Xsec_error;
