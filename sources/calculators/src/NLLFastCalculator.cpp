@@ -20,6 +20,7 @@
 #include <boost/lexical_cast.hpp>
 #include <fstream>
 #include <boost/algorithm/string.hpp>
+#include "boost/filesystem.hpp"
 #include <math.h>
 
 #include "ModelBase.h"
@@ -28,6 +29,8 @@
 
 
 Fittino::NLLFastCalculator::NLLFastCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree ) : CalculatorBase( model, &ptree ) {
+
+  _griddir = GetConfiguration()->get<std::string>( "GridDirectory" );
 
   AddOutput( "ms_gg", _ms_gg );
   AddOutput( "mg_gg", _mg_gg );
@@ -144,6 +147,9 @@ Fittino::NLLFastCalculator::~NLLFastCalculator() {
 }
 
 void Fittino::NLLFastCalculator::CalculatePredictions() {
+
+  boost::filesystem::path cwd( boost::filesystem::current_path() );
+  boost::filesystem::current_path( _griddir );
 
   double G = _model->GetCollectionOfQuantities().At("SPheno_Mass_~g")->GetValue();
   std::string g;
@@ -711,6 +717,8 @@ void Fittino::NLLFastCalculator::CalculatePredictions() {
   }
 
   myfileSG.close();
+
+  boost::filesystem::current_path( cwd );
 
 
 }
