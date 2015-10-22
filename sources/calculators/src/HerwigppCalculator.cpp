@@ -163,7 +163,6 @@ void Fittino::HerwigppCalculator::CalculatePredictions() {
     Executor executorRead( _executable, "Herwig++" ); 
     executorRead.AddArgument( "read" );
     executorRead.AddArgument( _inFile );
-    std::cout<<"Read"<<std::endl;
     //  executorRead.Execute();
 
     Executor executorRun( _executable, "Herwig++" ); 
@@ -171,10 +170,7 @@ void Fittino::HerwigppCalculator::CalculatePredictions() {
     executorRun.AddArgument( _runFile );
     executorRun.AddArgument( "-N1000" );
     executorRun.AddArgument( "-d1" );
-    std::cout<<"Run"<<std::endl;
     // executorRun.Execute();
-    std::cout<<"Finished"<<std::endl;
-    std::cout<<"Finished"<<std::endl;
 
     std::fstream fileOUT;
 
@@ -214,50 +210,76 @@ void Fittino::HerwigppCalculator::CalculatePredictions() {
     unsigned int eventNumber = 1;
     std::string matrixElement;
     bool primarySubprocess( false );  
+    int colliding1;
+    int colliding2;
     int incoming1;
     int incoming2;
+    int intermediate;
+    int outgoing1;
+    int outgoing2;
+
     TDirectory* pwd = gDirectory;
-
     TFile *MyFile = new TFile( "MatrixElements.root", "RECREATE" );
-
     TTree *tree = new TTree( "Tree", "Tree" );
     tree-> Branch ( "EventNumber", &eventNumber );
     tree-> Branch ( "MatrixElement", &matrixElement );
-    tree->Branch("IncomingParticle1", &incoming1 );
-    tree->Branch("IncomingParticle2", &incoming2 );
-
+    tree->Branch( "Incoming1", &incoming1 );
+    tree->Branch( "Incoming2", &incoming2 );
+    tree->Branch( "Intermediate", &intermediate );
+    tree->Branch( "Outgoing1", &outgoing1 );
+    tree->Branch( "Outgoing2", &outgoing2 );
 
     fileLOG.open( _logFile );
 
     while( GetLine( fileLOG ) ) {
 
-        if( _words.size() > 6 && _words[0] == "Event" && _words[1]=="number" && _words[5] == "performed" && _words[6] == "by" ) {
+        if ( _line != "******************************************************************************" ) continue;
 
-            unsigned int thisEventNumber = std::stoi( _words[2] );
+        GetLine( fileLOG );
+        if( _words.size() != 8 || _words[0] != "Event" || _words[1]!="number" || _words[5] != "performed" || _words[6] != "by" ) throw LogicException( "Unexpected line, expected event number.!" );
+        unsigned int thisEventNumber = std::stoi( _words[2] );
+        if( thisEventNumber == eventNumber + 1 ) tree->Fill(); 
+        else if ( thisEventNumber != eventNumber ) throw LogicException( "Event missing!" );
+        eventNumber = thisEventNumber;
 
-            if( thisEventNumber == eventNumber + 1 ) tree->Fill(); 
-            else if ( thisEventNumber != eventNumber ) throw LogicException( "Event missing!" );
+        GetLine( fileLOG );
+        if( _line != "==============================================================================") throw LogicException( "Unexpected line!" );
 
-            eventNumber = thisEventNumber;
+        GetLine( fileLOG );
+        if( _line != "" ) throw LogicException( "Unexpected line, expected empty line.!" );
 
-            for ( unsigned int i = 0; i < 9; i++ ) GetLine( fileLOG );
+        GetLine( fileLOG );
+        if( _line != "--- Colliding particles:" ) throw LogicException( "Unexpected line, expected colliding particles.!" );
+        colliding1 = GetPDGID( fileLOG, 1 );
+        colliding2 = GetPDGID( fileLOG, 2 );
 
-            if ( _words.size() !=5 || _words[0] != "Primary" || _words[1] != "sub-process" || _words[2] != "performed" || _words[3] != "by" ) {
+        GetLine( fileLOG );
+        if( _line != "------------------------------------------------------------------------------" ) throw LogicException( "Unexpected line, expected seperating line." );
 
-                throw LogicException( "Unexpected line!" );
+        GetLine( fileLOG );
+        if ( _words.size() !=5 || _words[0] != "Primary" || _words[1] != "sub-process" || _words[2] != "performed" || _words[3] != "by" ) {
 
-            }
-
-            matrixElement = _words[4];
-
-            GetLine( fileLOG );
-
-            if( _line != "--- incoming:" ) throw LogicException( "Unexpected line!" );
-            
-            incoming1 = GetPDGID( fileLOG, 3 );
-            incoming2 = GetPDGID( fileLOG, 4 );
+            throw LogicException( "Unexpected line, expected primary sub-process.!" );
 
         }
+        matrixElement = _words[4];
+
+        GetLine( fileLOG );
+        if( _line != "--- incoming:" ) throw LogicException( "Unexpected line, expected incoming particles.!" );
+        incoming1 = GetPDGID( fileLOG, 3 );
+        incoming2 = GetPDGID( fileLOG, 4 );
+
+        GetLine( fileLOG );
+        if( _line != "--- intermediates:" ) throw LogicException( "Unexpected line, expected intermediate particles.!" );
+        intermediate = GetPDGID( fileLOG, 5 );
+
+        GetLine( fileLOG );
+        if( _line != "--- outgoing:" ) throw LogicException( "Unexpected line, expected outgoing particles.!" );
+        outgoing1 = GetPDGID( fileLOG, 6 );
+        outgoing2 = GetPDGID( fileLOG, 7 );
+
+        GetLine( fileLOG );
+        if( _line != "------------------------------------------------------------------------------" ) throw LogicException( "Unexpected line, expected seperating line!" );
 
     }
 
@@ -275,13 +297,20 @@ void Fittino::HerwigppCalculator::CalculatePredictions() {
 
 int Fittino::HerwigppCalculator::GetPDGID(std::istream& is, int expectedRunningID) {
 
+    std::string strExpectedRunningID = std::to_string( expectedRunningID );  
     GetLine( is );
 
-    int runningID = std::stoi( _words[1] );
-    if ( runningID != expectedRunningID ) throw LogicException( "Unexpected running ID." );
+    if ( !boost::starts_with(_words[1], strExpectedRunningID ) ) throw LogicException( "Unexpected running ID." );
+
+    if ( _words[1] != strExpectedRunningID ) {
+
+        _words.insert( _words.begin() + 2, _words[1].substr(strExpectedRunningID.size(), _words[1].size() )  );
+        _words[1] = strExpectedRunningID; 
+
+    }
 
     int id = std::stoi( _words[3] );
-    
+
     GetLine( is );
 
     return id;
