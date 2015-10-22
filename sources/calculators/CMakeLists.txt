@@ -31,6 +31,7 @@ LIST( APPEND includes "include/CheckMATE2Calculator.h" )
 LIST( APPEND includes "include/NLLFastCalculator.h" )
 LIST( APPEND includes "include/HepMCSplitCalculator.h" )
 LIST( APPEND includes "include/MadGraph2Calculator.h" )
+LIST( APPEND includes "include/HepMCSplitCalculator.h" )
 
 AUX_SOURCE_DIRECTORY(src sources)
 
@@ -47,6 +48,7 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
 LIST( APPEND sources "src/AbsoluteUncertainty.cpp" )
 LIST( APPEND sources "src/Correlation.cpp" )
 LIST( APPEND sources "src/FormulaQuantity.cpp" )
+LIST( APPEND sources "src/HepMCSplitCalculator.cpp" )
 LIST( APPEND sources "src/RelativeTheoryUncertainty.cpp" )
 LIST( APPEND sources "src/LinearInterpolationCalculator.cpp" )
 LIST( APPEND sources "src/LinearInterpolationCalculatorBase.cpp" )
@@ -103,6 +105,15 @@ ENDIF()
 
   ENDIF()
 
+IF( HEPMC_FOUND )
+
+    INCLUDE_DIRECTORIES( ${HEPMC_INCLUDE_DIRS} )
+
+ELSE()
+
+    LIST(REMOVE_ITEM sources "src/HepMCSplitCalculator.cpp" )
+
+ENDIF()
 
 IF(NOT HIGGSBOUNDS_FOUND OR NOT HIGGSSIGNALS_FOUND)
 

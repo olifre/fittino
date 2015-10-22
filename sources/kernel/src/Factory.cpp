@@ -42,7 +42,11 @@
 #include "GM2CalcCalculator.h"
 #include "HDim6Calculator.h"
 #include "HECCalculator.h"
+
+#ifdef HEPMC
 #include "HepMCSplitCalculator.h"
+#endif
+
 #include "HerwigppCalculator.h"
 #include "HiggsBoundsHadXSCalculator.h"
 #include "HiggsBoundsHECCalculator.h"
@@ -209,7 +213,15 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     }
     else if ( type == "HepMCSplitCalculator" ) {
 
+#if defined HEPMC
+
         return new HepMCSplitCalculator( model, ptree );
+
+#else 
+
+        throw ConfigurationException( "Trying to use HepMCSplitCalculator but Fittino was built without HepMC." );
+
+#endif
 
     }
     else if ( type == "HerwigppCalculator" ) {
