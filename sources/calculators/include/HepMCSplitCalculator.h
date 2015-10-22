@@ -1,6 +1,8 @@
 #ifndef FITTINO_HEPMCSPLITCALCULATOR_H
 #define FITTINO_HEPMCSPLITCALCULATOR_H
 
+#include <set>
+
 #include "CalculatorBase.h"
 
 namespace Fittino {
@@ -15,6 +17,9 @@ namespace Fittino {
 
     virtual void CalculatePredictions();
     virtual void Initialize();
+
+ private:
+    std::set<int> _squarks;
 
   };
 }
