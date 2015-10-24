@@ -36,6 +36,7 @@ namespace Fittino {
   private:
 
     std::string _griddir;
+    std::string _executable;
 
     double _ms_gg;
     double _mg_gg;

@@ -31,6 +31,7 @@
 Fittino::NLLFastCalculator::NLLFastCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree ) : CalculatorBase( model, &ptree ) {
 
   _griddir = GetConfiguration()->get<std::string>( "GridDirectory" );
+  _executable = GetConfiguration()->get<std::string>( "Executable" );
 
   AddOutput( "ms_gg", _ms_gg );
   AddOutput( "mg_gg", _mg_gg );
@@ -207,7 +208,7 @@ void Fittino::NLLFastCalculator::CalculatePredictions() {
   std::string squark;
   squark = boost::lexical_cast<std::string>(SQUARK);
   
-  Executor executorGG("/lustre/fittino/group/external/SL6/NLL-fast/NLL-fast-2.1/nllfast-2.1", "nllfast_gg");
+  Executor executorGG( _executable, "nllfast_gg");
   executorGG.AddArgument("gg");
   executorGG.AddArgument("cteq");
   executorGG.AddArgument( squark );
@@ -276,7 +277,7 @@ void Fittino::NLLFastCalculator::CalculatePredictions() {
   myfileGG.close();
 
 
-  Executor executorSB("/lustre/fittino/group/external/SL6/NLL-fast/NLL-fast-2.1/nllfast-2.1", "nllfast_sb");
+  Executor executorSB( _executable, "nllfast_sb");
   executorSB.AddArgument("sb");
   executorSB.AddArgument("cteq");
   executorSB.AddArgument( squark );
@@ -342,7 +343,7 @@ void Fittino::NLLFastCalculator::CalculatePredictions() {
   }
   myfileSB.close();
  
-  Executor executorST1("/lustre/fittino/group/external/SL6/NLL-fast/NLL-fast-2.1/nllfast-2.1", "nllfast_st1");
+  Executor executorST1( _executable, "nllfast_st1");
   executorST1.AddArgument("st");
   executorST1.AddArgument("cteq");
   executorST1.AddArgument( t1 );
@@ -404,7 +405,7 @@ void Fittino::NLLFastCalculator::CalculatePredictions() {
   myfileST1.close();
 
 
-  Executor executorST2("/lustre/fittino/group/external/SL6/NLL-fast/NLL-fast-2.1/nllfast-2.1", "nllfast_st2");
+  Executor executorST2( _executable, "nllfast_st2");
   executorST2.AddArgument("st");
   executorST2.AddArgument("cteq");
   executorST2.AddArgument( t2 );
@@ -465,7 +466,7 @@ void Fittino::NLLFastCalculator::CalculatePredictions() {
   }
   myfileST2.close();
 
-  Executor executorSB1("/lustre/fittino/group/external/SL6/NLL-fast/NLL-fast-2.1/nllfast-2.1", "nllfast_sb1");
+  Executor executorSB1( _executable, "nllfast_sb1");
   executorSB1.AddArgument("st");
   executorSB1.AddArgument("cteq");
   executorSB1.AddArgument( b1 );
@@ -526,7 +527,7 @@ void Fittino::NLLFastCalculator::CalculatePredictions() {
   }
   myfileSB1.close();
 
-  Executor executorSB2("/lustre/fittino/group/external/SL6/NLL-fast/NLL-fast-2.1/nllfast-2.1", "nllfast_sb2");
+  Executor executorSB2( _executable, "nllfast_sb2");
   executorSB2.AddArgument("st");
   executorSB2.AddArgument("cteq");
   executorSB2.AddArgument( b2 );
@@ -587,7 +588,7 @@ void Fittino::NLLFastCalculator::CalculatePredictions() {
   }
   myfileSB2.close();
 
-  Executor executorSS("/lustre/fittino/group/external/SL6/NLL-fast/NLL-fast-2.1/nllfast-2.1", "nllfast_ss");
+  Executor executorSS( _executable, "nllfast_ss");
   executorSS.AddArgument("ss");
   executorSS.AddArgument("cteq");
   executorSS.AddArgument( squark );
@@ -652,7 +653,7 @@ void Fittino::NLLFastCalculator::CalculatePredictions() {
   }
   myfileSS.close();
 
-  Executor executorSG("/lustre/fittino/group/external/SL6/NLL-fast/NLL-fast-2.1/nllfast-2.1", "nllfast_sg");
+  Executor executorSG( _executable, "nllfast_sg");
   executorSG.AddArgument("sg");
   executorSG.AddArgument("cteq");
   executorSG.AddArgument( squark );
