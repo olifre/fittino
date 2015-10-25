@@ -1,5 +1,3 @@
-/* $Id: CheckMATE2Calculator.cpp 2528 2015-04-07 10:54:29Z range@PHYSIK.UNI-BONN.DE $ */
-
 /*******************************************************************************  
  *                                                                              *                      
  * Project     Fittino - A SUSY Parameter Fitting Package                       *             
@@ -29,10 +27,17 @@
 Fittino::CheckMATE2Calculator::CheckMATE2Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
   :CalculatorBase( model, &ptree ) {
 
+  for ( const auto& node : *GetConfiguration() ) {
+
+    if ( node.first != "Process" ) continue; 
+
+    AddProcess( node.second );
+
+  }
+
   AddQuantity(new SimplePrediction( "r", "", _r));
   AddQuantity(new SimplePrediction("cl", "", _cl));
   AddQuantity(new SimplePrediction( "r_cl", "", _r_cl));
-
   
 }
 
@@ -40,52 +45,35 @@ Fittino::CheckMATE2Calculator::~CheckMATE2Calculator() {
 
 } 
 
+void Fittino::CheckMATE2Calculator::AddProcess( const boost::property_tree::ptree& ptree ) {
+
+   std::string name = ptree.get<std::string>( "Name" );
+
+   if( std::count( _processes.begin(), _processes.end(), name ) ) {
+
+       throw ConfigurationException( "CheckMATE2Calculator: Process " + name + " is configured multiple times." );
+
+   }
+
+   _processes.push_back( name );
+
+   // todo: get crosssection and crosssection errors
+
+   for ( const auto& node : ptree ) {
+    
+      if ( node.first != "Events" ) continue;
+
+      _events[name].push_back( node.second.get_value<std::string>() );
+
+  }
+
+}
+
 void Fittino::CheckMATE2Calculator::CalculatePredictions() {
-
-  //double Xsec_gg = _model->GetCollectionOfQuantities().At("NLLFast_nll_nlo_gg")->GetValue();
-  //std::string xsec_gg = boost::lexical_cast<std::string>(Xsec_gg) + "*FB";
-  //std::string xsec_error_gg  = "0*PB";
-  //std::string gg = "/lustre/user/range/fittino/bin/gg.hepmc";
-
-  //double Xsec_sb = _model->GetCollectionOfQuantities().At("NLLFast_nll_nlo_sb")->GetValue();
-  //std::string xsec_sb = boost::lexical_cast<std::string>(Xsec_sb) + "*FB";
-  //std::string xsec_error_sb = "0*PB";
-  //std::string sb = "/lustre/user/range/fittino/bin/sb.hepmc";
-
-  //double Xsec_ss = _model->GetCollectionOfQuantities().At("NLLFast_nll_nlo_ss")->GetValue();
-  //std::string xsec_ss = boost::lexical_cast<std::string>(Xsec_ss) + "*FB";
-  //std::string xsec_error_ss = "0*PB";
-  //std::string ss = "/lustre/user/range/fittino/bin/ss.hepmc";
-
-  //double Xsec_sg = _model->GetCollectionOfQuantities().At("NLLFast_nll_nlo_sg")->GetValue();
-  //std::string xsec_sg = boost::lexical_cast<std::string>(Xsec_sg) + "*FB";
-  //std::string xsec_error_sg = "0*PB";
-  //std::string sg = "/lustre/user/range/fittino/bin/sg.hepmc";
-
-  //double Xsec_sb1 = _model->GetCollectionOfQuantities().At("NLLFast_nll_nlo_sb1")->GetValue();
-  //std::string xsec_sb1 = boost::lexical_cast<std::string>(Xsec_sb1) + "*FB";
-  //std::string xsec_error_sb1 = "0*PB";
-  //std::string sb1 = "/lustre/user/range/fittino/bin/sb1.hepmc";
-
-  //double Xsec_sb2 = _model->GetCollectionOfQuantities().At("NLLFast_nll_nlo_sb2")->GetValue();
-  //std::string xsec_sb2 = boost::lexical_cast<std::string>(Xsec_sb2) + "*FB";
-  //std::string xsec_error_sb2 = "0*PB";
-  //std::string sb2 = "/lustre/user/range/fittino/bin/sb2.hepmc";
-
-  //double Xsec_st1 = _model->GetCollectionOfQuantities().At("NLLFast_nll_nlo_st1")->GetValue();
-  //std::string xsec_st1 = boost::lexical_cast<std::string>(Xsec_st1) + "*FB";
-  //std::string xsec_error_st1 = "0*PB";
-  //std::string st1 = "/lustre/user/range/fittino/bin/st1.hepmc";
-
-  //double Xsec_st2 = _model->GetCollectionOfQuantities().At("NLLFast_nll_nlo_st2")->GetValue();
-  //std::string xsec_st2 = boost::lexical_cast<std::string>(Xsec_st2) + "*FB";
-  //std::string xsec_error_st2 = "0*PB";
-  //std::string st2 = "/lustre/user/range/fittino/bin/st2.hepmc";
 
   double xsec = _model->GetCollectionOfQuantities().At("Herwigpp_Total_Xsec")->GetValue();
   std::string Xsec = boost::lexical_cast<std::string>(xsec);
   std::string Xsec_unit = Xsec + "*NB";
-  
   //double xsec_error = _model->GetCollectionOfQuantities().At("Herwigpp_Total_Xsec_error")->GetValue();
   //std::string Xsec_error = boost::lexical_cast<std::string>(xsec_error);
   //std::string Xsec_error_unit = Xsec_error + "*NB";
@@ -109,70 +97,6 @@ void Fittino::CheckMATE2Calculator::CalculatePredictions() {
   executor.AddArgument( "-xse" );
   executor.AddArgument( "0*NB" );
   executor.AddArgument( inputfile );
-
-  //executor.AddArgument( "-p" );
-  //executor.AddArgument( "gg" );
-  //executor.AddArgument( "-xs" );
-  //executor.AddArgument( xsec_gg );
-  //executor.AddArgument( "-xse" );
-  //executor.AddArgument( xsec_error_gg );
-  //executor.AddArgument( gg );
-
-  //executor.AddArgument( "-p" );
-  //executor.AddArgument("sb" );
-  //executor.AddArgument( "-xs" );
-  //executor.AddArgument( xsec_sb );
-  //executor.AddArgument( "-xse" );
-  //executor.AddArgument( xsec_error_sb );
-  //executor.AddArgument( sb ); 
-
-  //executor.AddArgument( "-p" );
-  //executor.AddArgument("ss" );
-  //executor.AddArgument( "-xs" );
-  //executor.AddArgument( xsec_ss );
-  //executor.AddArgument( "-xse" );
-  //executor.AddArgument( xsec_error_ss );
-  //executor.AddArgument( ss ); 
-
-  //executor.AddArgument( "-p" );
-  //executor.AddArgument("sg" );
-  //executor.AddArgument( "-xs" );
-  //executor.AddArgument( xsec_sg );
-  //executor.AddArgument( "-xse" );
-  //executor.AddArgument( xsec_error_sg );
-  //executor.AddArgument( sg ); 
-  
-  //executor.AddArgument( "-p" );
-  //executor.AddArgument("sb1" );
-  //executor.AddArgument( "-xs" );
-  //executor.AddArgument( xsec_sb1 );
-  //executor.AddArgument( "-xse" );
-  //executor.AddArgument( xsec_error_sb1 );
-  //executor.AddArgument( sb1 ); 
-
-  //executor.AddArgument( "-p" );
-  //executor.AddArgument("sb2" );
-  //executor.AddArgument( "-xs" );
-  //executor.AddArgument( xsec_sb2 );
-  //executor.AddArgument( "-xse" );
-  //executor.AddArgument( xsec_error_sb2 );
-  //executor.AddArgument( sb2 ); 
-
-  //executor.AddArgument( "-p" );
-  //executor.AddArgument("st1" );
-  //executor.AddArgument( "-xs" );
-  //executor.AddArgument( xsec_st1 );
-  //executor.AddArgument( "-xse" );
-  //executor.AddArgument( xsec_error_st1 );
-  //executor.AddArgument( st1 ); 
-
-  //executor.AddArgument( "-p" );
-  //executor.AddArgument("st2" );
-  //executor.AddArgument( "-xs" );
-  //executor.AddArgument( xsec_st2 );
-  //executor.AddArgument( "-xse" );
-  // executor.AddArgument( xsec_error_st2 );
-  //executor.AddArgument( st2 ); 
 
   executor.Execute();
 

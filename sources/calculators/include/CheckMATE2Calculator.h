@@ -18,11 +18,16 @@
 #ifndef FITTINO_CHECKMATE2CALCULATOR_H
 #define FITTINO_CHECKMATE2CALCULATOR_H
 
+#include <string>
+#include <vector>
+#include <map>
+
 #include <boost/property_tree/ptree.hpp>
 
 #include "CalculatorBase.h"
 
 namespace Fittino{
+
   class CheckMATE2Calculator : public CalculatorBase {
 
   public:
@@ -35,11 +40,20 @@ namespace Fittino{
     virtual void Initialize();
 
   private:
+
     double _r;
     double _cl;
     double _r_cl;
+
+   std::vector<std::string> _processes;
+   std::map<std::string, std::vector<std::string> > _events;
+   std::map<std::string, std::string> _unitOfCrossSection;
+   std::map<std::string, std::string> _unitOfCrossSectionError;
+
+  private:
+    void AddProcess( const boost::property_tree::ptree& ptree );
     
   };
 
 }
-#endif //Fittino_CheckMATE2CALCULATOR_H
+#endif 
