@@ -47,107 +47,6 @@ Fittino::HerwigppCalculator::~HerwigppCalculator() {
 
 }
 
-void Fittino::HerwigppCalculator::AddParticle( std::map<std::string, int>& map,std::string name, int id, bool addAntiParticle ) {
-
-    if ( !map.insert( std::make_pair( name, id ) ).second ) {
-
-        throw LogicException("Particle " + name + " has already been added." );
-
-    }     
-
-    if ( !addAntiParticle ) return;
-
-    if ( name.back() == '-' ) {
-
-        name.pop_back();
-        name += "+";
-
-    }
-    else if ( name.back() == '+' ) {
-
-        name.pop_back();
-        name += "-";
-
-    }
-    else {
-        name += "bar";
-    }
-
-    if ( !map.insert( std::make_pair( name, id ) ).second ) {
-
-        throw LogicException( "Antiparticle " + name + "has already been added." );
-
-    }     
-
-
-
-}
-
-void Fittino::HerwigppCalculator::InitializeParticleMaps(){
-
-    AddParticle( _sm, "e-"   ,  11 );
-    AddParticle( _sm, "nu_e" ,  12 );
-    AddParticle( _sm, "mu-"  ,  13 );
-    AddParticle( _sm, "nu_mu",  14 );
-    AddParticle( _sm, "tau"  ,  15 );
-    AddParticle( _sm, "nu_tau", 16 );
-
-    AddParticle( _sm, "d", 1 );
-    AddParticle( _sm, "u", 2 );
-    AddParticle( _sm, "s", 3 );
-    AddParticle( _sm, "c", 4 );
-    AddParticle( _sm, "b", 5 );
-    AddParticle( _sm, "t", 6 );
-
-    AddParticle( _sm, "g", 21, false );
-    AddParticle( _sm, "gamma", 22, false );
-    AddParticle( _sm, "Z0", 23, false );
-    AddParticle( _sm, "W+", 24, true );
-    AddParticle( _sm, "h0", 25, false );
-
-    _susy = _sm;
-
-    AddParticle( _susy, "H0", 35, false );  
-    AddParticle( _susy, "A0", 36, false );  
-    AddParticle( _susy, "H+", 37, true );  
-
-    AddParticle( _susy, "~d_L", 1000001 );
-    AddParticle( _susy, "~u_L", 1000002 );
-    AddParticle( _susy, "~s_L", 1000003 );
-    AddParticle( _susy, "~c_L", 1000004 );
-    AddParticle( _susy, "~b_L", 1000005 );
-    AddParticle( _susy, "~t_L", 1000006 );
-
-    AddParticle( _susy, "~e_L-", 1000011 );
-    AddParticle( _susy, "~nu_eL", 1000012 );
-    AddParticle( _susy, "~mu_L-", 1000013 );
-    AddParticle( _susy, "~nu_muL", 1000014 );
-    AddParticle( _susy, "~tau_1-", 1000015 );
-    AddParticle( _susy, "~nu_tauL", 1000016 );
-
-    AddParticle( _susy, "~g", 1000021, false );
-    AddParticle( _susy, "~chi_10", 1000022, false );
-    AddParticle( _susy, "~chi_20", 1000023, false );
-    AddParticle( _susy, "~chi_1+", 1000024, true );
-    AddParticle( _susy, "~chi_30", 1000025, false );
-    AddParticle( _susy, "~chi_40", 1000035, false );
-    AddParticle( _susy, "~chi_2+", 1000037, true );
-    AddParticle( _susy, "~gravitino", 1000039, false );
-
-    AddParticle( _susy, "~d_R", 2000001 );
-    AddParticle( _susy, "~u_R", 2000002 );
-    AddParticle( _susy, "~s_R", 2000003 );
-    AddParticle( _susy, "~c_R", 2000004 );
-    AddParticle( _susy, "~b_R", 2000005 );
-    AddParticle( _susy, "~t_R", 2000006 );
-
-    AddParticle( _susy, "~e_R-", 2000011 );
-    AddParticle( _susy, "~mu_R-", 2000013 );
-    AddParticle( _susy, "~tau_2-", 2000015 );
-
-
-}
-
 std::istream& Fittino::HerwigppCalculator::GetLine(std::istream& is){
 
     std::getline( is, _line );
@@ -157,20 +56,19 @@ std::istream& Fittino::HerwigppCalculator::GetLine(std::istream& is){
 
 }
 
-
 void Fittino::HerwigppCalculator::CalculatePredictions() {
 
     Executor executorRead( _executable, "Herwig++" ); 
     executorRead.AddArgument( "read" );
     executorRead.AddArgument( _inFile );
-    //  executorRead.Execute();
+    executorRead.Execute();
 
     Executor executorRun( _executable, "Herwig++" ); 
     executorRun.AddArgument( "run" );
     executorRun.AddArgument( _runFile );
     executorRun.AddArgument( "-N1000" );
     executorRun.AddArgument( "-d1" );
-    // executorRun.Execute();
+    executorRun.Execute();
 
     std::fstream fileOUT;
 
@@ -209,7 +107,6 @@ void Fittino::HerwigppCalculator::CalculatePredictions() {
 
     unsigned int eventNumber = 1;
     std::string matrixElement;
-    bool primarySubprocess( false );  
     int colliding1;
     int colliding2;
     int incoming1;
@@ -221,8 +118,8 @@ void Fittino::HerwigppCalculator::CalculatePredictions() {
     TDirectory* pwd = gDirectory;
     TFile *MyFile = new TFile( "MatrixElements.root", "RECREATE" );
     TTree *tree = new TTree( "Tree", "Tree" );
-    tree-> Branch ( "EventNumber", &eventNumber );
-    tree-> Branch ( "MatrixElement", &matrixElement );
+    tree->Branch ( "EventNumber", &eventNumber );
+    tree->Branch ( "MatrixElement", &matrixElement );
     tree->Branch( "Incoming1", &incoming1 );
     tree->Branch( "Incoming2", &incoming2 );
     tree->Branch( "Intermediate", &intermediate );
@@ -236,14 +133,14 @@ void Fittino::HerwigppCalculator::CalculatePredictions() {
         if ( _line != "******************************************************************************" ) continue;
 
         GetLine( fileLOG );
-        if( _words.size() != 8 || _words[0] != "Event" || _words[1]!="number" || _words[5] != "performed" || _words[6] != "by" ) throw LogicException( "Unexpected line, expected event number.!" );
+        if( _words.size() != 8 || _words[0] != "Event" || _words[1]!="number" || _words[5] != "performed" || _words[6] != "by" ) throw LogicException( "Unexpected line, expected event number!" );
         unsigned int thisEventNumber = std::stoi( _words[2] );
         if( thisEventNumber == eventNumber + 1 ) tree->Fill(); 
         else if ( thisEventNumber != eventNumber ) throw LogicException( "Event missing!" );
         eventNumber = thisEventNumber;
 
         GetLine( fileLOG );
-        if( _line != "==============================================================================") throw LogicException( "Unexpected line!" );
+        if( _line != "==============================================================================") throw LogicException( "Unexpected line, expected seperating line!" );
 
         GetLine( fileLOG );
         if( _line != "" ) throw LogicException( "Unexpected line, expected empty line.!" );
@@ -302,6 +199,7 @@ int Fittino::HerwigppCalculator::GetPDGID(std::istream& is, int expectedRunningI
 
     if ( !boost::starts_with(_words[1], strExpectedRunningID ) ) throw LogicException( "Unexpected running ID." );
 
+    // if the particle name is to long, the empty space between the running ID and and the particle name is missing
     if ( _words[1] != strExpectedRunningID ) {
 
         _words.insert( _words.begin() + 2, _words[1].substr(strExpectedRunningID.size(), _words[1].size() )  );
