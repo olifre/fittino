@@ -57,7 +57,11 @@ void Fittino::CheckMATE2Calculator::AddProcess( const boost::property_tree::ptre
 
    _processes.push_back( name );
 
-   // todo: get crosssection and crosssection errors
+   AddInput( name + ".CrossSection",      ptree.get<std::string>( "CrossSection.Value"      ) );   
+   AddInput( name + ".CrossSectionError", ptree.get<std::string>( "CrossSectionError.Value" ) );   
+
+   _unitOfCrossSection[name] = ptree.get<std::string>( "CrossSection.Unit" );  
+   _unitOfCrossSectionError[name] = ptree.get<std::string>( "CrossSectionError.Unit" );  
 
    for ( const auto& node : ptree ) {
     
