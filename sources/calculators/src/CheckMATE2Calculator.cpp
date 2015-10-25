@@ -27,11 +27,13 @@
 Fittino::CheckMATE2Calculator::CheckMATE2Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
   :CalculatorBase( model, &ptree ) {
 
+  _inputFileName = GetConfiguration()->get<std::string>( "InputFile" );
+  _run = GetConfiguration()->get<std::string>( "Run" );
+
   for ( const auto& node : *GetConfiguration() ) {
 
-    if ( node.first != "Process" ) continue; 
-
-    AddProcess( node.second );
+    if ( node.first == "Analysis" ) _analyses.push_back( node.second.get_value<std::string>() );
+    else if ( node.first == "Process" ) AddProcess( node.second );
 
   }
 
@@ -73,35 +75,52 @@ void Fittino::CheckMATE2Calculator::AddProcess( const boost::property_tree::ptre
 
 }
 
+void Fittino::CheckMATE2Calculator::WriteInputFile() {
+
+  std::ofstream infile( _inputFileName );
+  if ( !infile.is_open() ) throw ConfigurationException( "Can't create input file for CheckMATE." );
+
+  infile << "[Mandatory Parameters]" << std::endl; 
+  infile << "Name: " << _run << std::endl; 
+  infile << "Analyses: ";
+
+  for ( const auto& analysis : _analyses ) {
+
+     infile << analysis;
+     if( std::addressof( analysis ) != std::addressof( _analyses.back() ) ) infile << ", ";
+
+  } 
+
+  infile << std::endl << std::endl;
+
+  infile << "[Optional Parameters]" << std::endl << std::endl;
+  infile << std::endl;
+ 
+  for ( const auto& process : _processes ) {
+ 
+     infile << "[" << process << "]" << std::endl; 
+     infile << "XSect: " << GetInput( process + ".CrossSection" ) << "*" << _unitOfCrossSection.at( process ) << std::endl;
+     infile << "Events: ";
+     
+    for ( const auto& file : _events.at( process ) ) {
+
+        infile << file;
+        if( std::addressof(file) != std::addressof( _events.at( process ).back() ) ) infile << ", ";
+
+    }
+
+   infile << std::endl;
+
+  }
+
+}
+
 void Fittino::CheckMATE2Calculator::CalculatePredictions() {
 
-  double xsec = _model->GetCollectionOfQuantities().At("Herwigpp_Total_Xsec")->GetValue();
-  std::string Xsec = boost::lexical_cast<std::string>(xsec);
-  std::string Xsec_unit = Xsec + "*NB";
-  //double xsec_error = _model->GetCollectionOfQuantities().At("Herwigpp_Total_Xsec_error")->GetValue();
-  //std::string Xsec_error = boost::lexical_cast<std::string>(xsec_error);
-  //std::string Xsec_error_unit = Xsec_error + "*NB";
-
-  std::string inputfile = "/lustre/user/range/fittino/bin/LHC-MSSM.hepmc";
-   
+  UpdateInput();
+  
   Executor executor( "/lustre/fittino/group/external/SL6/CheckMATE/CheckMATE-1.2.0/bin/CheckMATE","CheckMATE");
-  executor.AddArgument( "-n" );
-  executor.AddArgument( "/lustre/user/range/fittino/bin/Last_Run" );
-  executor.AddArgument( "-a" );
-  executor.AddArgument( "atlas" );
-  executor.AddArgument( "-cl" );
-  executor.AddArgument( "-q" );
-  executor.AddArgument( "-t" );
-  executor.AddArgument( "-oe" );
-  executor.AddArgument( "overwrite" );
-  executor.AddArgument( "-p" );
-  executor.AddArgument( "gluinogluino" );
-  executor.AddArgument( "-xs" );
-  executor.AddArgument( Xsec_unit );
-  executor.AddArgument( "-xse" );
-  executor.AddArgument( "0*NB" );
-  executor.AddArgument( inputfile );
-
+  executor.AddArgument( _inputFileName );
   executor.Execute();
 
   std::ifstream file1;
@@ -138,60 +157,6 @@ void Fittino::CheckMATE2Calculator::CalculatePredictions() {
       
   file1.close();  
 
-  Executor executorR( "/lustre/fittino/group/external/SL6/CheckMATE/CheckMATE-1.2.0/bin/CheckMATE","CheckMATE");
-  executorR.AddArgument( "-n" );
-  executorR.AddArgument( "/lustre/user/range/fittino/bin/Last_Run" );
-  executorR.AddArgument( "-a" );
-  executorR.AddArgument( "atlas" ); 
-  executorR.AddArgument( "-cl" );
-  executorR.AddArgument( "-q" );
-  executorR.AddArgument( "-t" );
-  executorR.AddArgument( "-oe" );
-  executorR.AddArgument( "overwrite" );
-  executorR.AddArgument( "-p" );
-  executorR.AddArgument( "total" );
-  executorR.AddArgument( "-xs" );
-  executorR.AddArgument( Xsec_unit );
-  executorR.AddArgument( "-xse" );
-  executorR.AddArgument( "0*NB" );
-  executorR.AddArgument( inputfile );
-  executorR.Execute();
-
-
-  std::ifstream file2;
-  std::string line2;
- 
-  file2.open("/lustre/user/range/fittino/bin/Last_Run/result.txt");
-
-  while(getline(file2, line2)) {
-
-    typedef std::vector< std::string> split_vector_type;
-
-    split_vector_type SplitVec;
-    split( SplitVec, line2, boost::is_any_of(" "), boost::token_compress_on);
-
-    if(SplitVec.size() > 4) {
-      if(SplitVec[3] == "r_max") {
-	
-	std::string R = SplitVec[5]; 
-	_r = boost::lexical_cast <double>(R);
-	
-       }
-
-      else continue;
-      
-     }
-  }
- 
-  file2.close();
-
 
 }
 
-void Fittino::CheckMATE2Calculator::SetupMeasuredValues() {
-
-}
-
-void Fittino::CheckMATE2Calculator::Initialize() {
-
-}

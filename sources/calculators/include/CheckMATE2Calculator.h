@@ -36,8 +36,6 @@ namespace Fittino{
     
   public:
     virtual void CalculatePredictions();
-    virtual void SetupMeasuredValues();
-    virtual void Initialize();
 
   private:
 
@@ -45,6 +43,9 @@ namespace Fittino{
     double _cl;
     double _r_cl;
 
+   std::string _inputFileName;
+   std::vector<std::string> _analyses;
+   std::string _run;
    std::vector<std::string> _processes;
    std::map<std::string, std::vector<std::string> > _events;
    std::map<std::string, std::string> _unitOfCrossSection;
@@ -52,6 +53,7 @@ namespace Fittino{
 
   private:
     void AddProcess( const boost::property_tree::ptree& ptree );
+    void WriteInputFile();
     
   };
 
