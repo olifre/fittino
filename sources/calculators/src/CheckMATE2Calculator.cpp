@@ -118,6 +118,7 @@ void Fittino::CheckMATE2Calculator::WriteInputFile() {
 void Fittino::CheckMATE2Calculator::CalculatePredictions() {
 
   UpdateInput();
+  WriteInputFile();
   
   Executor executor( "/lustre/fittino/group/external/SL6/CheckMATE/CheckMATE-1.2.0/bin/CheckMATE","CheckMATE");
   executor.AddArgument( _inputFileName );
@@ -130,33 +131,27 @@ void Fittino::CheckMATE2Calculator::CalculatePredictions() {
   
   while(getline(file1, line1)) {
 
-    typedef std::vector< std::string> split_vector_type;
+    std::vector< std::string> words; 
    
-    split_vector_type SplitVec;
-    split( SplitVec, line1, boost::is_any_of(" "), boost::token_compress_on);
+    split( words, line1, boost::is_any_of(" "), boost::token_compress_on);
   
-    if(SplitVec.size() > 4) {
+    if( words.size() > 4) {
       
-      if (SplitVec[3] == "cls_min") {
+      if ( words[3] == "cls_min") {
 
-	std::string CL = SplitVec[5];
-	_cl = boost::lexical_cast <double>(CL);
+	_cl = std::stod( words[5] );
+
       }
+      else if (  words[3] == "r_max" ) {
+
+	_r_cl = std::stod( words[5] );
+
     }
 
-    if(SplitVec.size() > 4) {
-      if(SplitVec[3] == "r_max") {
-
-	std::string R = SplitVec[5];
-	_r_cl = boost::lexical_cast <double>(R);
-
-      }
     }  
 
   }
       
   file1.close();  
 
-
 }
-
