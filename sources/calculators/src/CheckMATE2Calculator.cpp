@@ -115,6 +115,35 @@ void Fittino::CheckMATE2Calculator::WriteInputFile() {
 
 }
 
+void Fittino::CheckMATE2Calculator::ReadResults() {
+  
+  std::ifstream file;
+  std::string line;
+
+  file.open("/lustre/user/range/fittino/bin/Last_Run/result.txt");
+  
+  for ( unsigned int i = 0; i < 4 ) getline(file, line);
+
+  std::string clsid = "Result for CLs: cls_min = "; 
+  std::string rid = "Result for r: r_max = ";
+
+  if ( _fullCLs ) {
+
+    if ( !boost::starts_with( line, clsid ) ) throw LogicException( "CheckMATECalculator: Expected CLs in result.txt." );
+     boost::algorithm::erase_first( line, clsid );
+     _cl = std::stod( line );
+     getline( file, line );
+
+  }
+   
+    if ( !boost::starts_with( line, rid ) ) throw LogicException( "CheckMATECalculator: Expected r in result.txt." );
+     boost::algorithm::erase_first( line, rid );
+     _r_cl = std::stod( line );
+
+  file.close();  
+
+}
+
 void Fittino::CheckMATE2Calculator::CalculatePredictions() {
 
   UpdateInput();
@@ -123,35 +152,5 @@ void Fittino::CheckMATE2Calculator::CalculatePredictions() {
   Executor executor( "/lustre/fittino/group/external/SL6/CheckMATE/CheckMATE-1.2.0/bin/CheckMATE","CheckMATE");
   executor.AddArgument( _inputFileName );
   executor.Execute();
-
-  std::ifstream file1;
-  std::string line1;
-
-  file1.open("/lustre/user/range/fittino/bin/Last_Run/result.txt");
-  
-  while(getline(file1, line1)) {
-
-    std::vector< std::string> words; 
-   
-    split( words, line1, boost::is_any_of(" "), boost::token_compress_on);
-  
-    if( words.size() > 4) {
-      
-      if ( words[3] == "cls_min") {
-
-	_cl = std::stod( words[5] );
-
-      }
-      else if (  words[3] == "r_max" ) {
-
-	_r_cl = std::stod( words[5] );
-
-    }
-
-    }  
-
-  }
-      
-  file1.close();  
 
 }

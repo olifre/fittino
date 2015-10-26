@@ -44,6 +44,7 @@ namespace Fittino{
     double _r_cl;
 
    std::string _inputFileName;
+   bool _fullCLs;
    std::vector<std::string> _analyses;
    std::string _run;
    std::vector<std::string> _processes;
@@ -54,6 +55,7 @@ namespace Fittino{
   private:
     void AddProcess( const boost::property_tree::ptree& ptree );
     void WriteInputFile();
+    void ReadResult();
     
   };
 
