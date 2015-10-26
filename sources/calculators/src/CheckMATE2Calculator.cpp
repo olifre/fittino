@@ -21,6 +21,7 @@
 
 #include "ModelBase.h"
 #include "Executor.h"
+#include "LogicException.h"
 #include "SimplePrediction.h"
 #include "CheckMATE2Calculator.h"
 
@@ -115,14 +116,14 @@ void Fittino::CheckMATE2Calculator::WriteInputFile() {
 
 }
 
-void Fittino::CheckMATE2Calculator::ReadResults() {
+void Fittino::CheckMATE2Calculator::ReadResult() {
   
   std::ifstream file;
   std::string line;
 
   file.open("/lustre/user/range/fittino/bin/Last_Run/result.txt");
   
-  for ( unsigned int i = 0; i < 4 ) getline(file, line);
+  for ( unsigned int i = 0; i < 4; ++i ) getline(file, line);
 
   std::string clsid = "Result for CLs: cls_min = "; 
   std::string rid = "Result for r: r_max = ";
