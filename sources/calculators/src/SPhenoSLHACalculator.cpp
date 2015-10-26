@@ -29,6 +29,7 @@
 #include "SLHAPrediction.h"
 #include "SPhenoSLHACalculator.h"
 #include "TimeoutExecutorException.h"
+#include "SLHAFileException.h"
 
 Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : SLHACalculatorBase( model ),
@@ -212,7 +213,16 @@ void Fittino::SPhenoSLHACalculator::CalculatePredictions() {
     }
 
     _slhaOutputDataStorage->Clear();
-    _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
+    try {
+        
+        _slhaOutputDataStorage->ReadFile( _slhaOutputFileName );
+    
+    }
+    catch ( const SLHAFileException& e ) {
+        
+        throw CalculatorException( _name, "Could not read SLHA File" );
+
+    }
 
     for ( unsigned int i = 0; i < GetCollectionOfQuantities().GetNumberOfElements(); ++i ) {
 
