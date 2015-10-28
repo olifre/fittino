@@ -29,32 +29,32 @@ namespace Fittino {
   class HerwigppCalculator : public CalculatorBase {
     
   public:
-    
     HerwigppCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree );
     ~HerwigppCalculator();
-
-  public:
-
     virtual void CalculatePredictions();    
-    virtual void Initialize();
 
   private:
+    double _xs_weighted;
+    double _xs_unweighted;
+    double _error_xs_weighted;
+    double _error_xs_unweighted;
+    unsigned int _numberOfEvents;
     std::string _executable;
     std::string _inFile;
     std::string _outFile;
     std::string _logFile;
     std::string _runFile;
-    
     std::string _line;
     std::vector<std::string> _words;
-    std::istream& GetLine(std::istream& is);
-    int GetPDGID(std::istream& is, int expectedRunningID);
 
-    double _Total_Xsec;
-    double _Total_Xsec_error;
+  private:
+    int GetPDGID(std::istream& is, int expectedRunningID);
+    void GetCrossSectionAndUncertainty( std::string input, double& crossSection, double& uncertainty );
+    void ReadLogFile();
+    void ReadOutFile();
+    std::istream& GetLine(std::istream& is);
 
  };
-
 
 }
 
