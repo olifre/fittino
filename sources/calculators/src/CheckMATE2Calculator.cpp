@@ -26,21 +26,15 @@
 #include "CheckMATE2Calculator.h"
 
 Fittino::CheckMATE2Calculator::CheckMATE2Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
-  :CalculatorBase( model, &ptree ) {
+  :CalculatorBase( model, &ptree )
+  ,_inputFile( ptree.get_child("InputFile"), model ) {
 
-  _inputFileName = GetConfiguration()->get<std::string>( "InputFile" );
-  _run = GetConfiguration()->get<std::string>( "Run" );
-
-  for ( const auto& node : *GetConfiguration() ) {
-
-    if ( node.first == "Analysis" ) _analyses.push_back( node.second.get_value<std::string>() );
-    else if ( node.first == "Process" ) AddProcess( node.second );
-
-  }
+  _executable = ptree.get<std::string>( "Executable" );
+  _fullCLs = false; // todo determine value
+  _directory = ptree.get<std::string>( "Directory" ); 
 
   AddQuantity(new SimplePrediction( "r", "", _r));
-  AddQuantity(new SimplePrediction("cl", "", _cl));
-  AddQuantity(new SimplePrediction( "r_cl", "", _r_cl));
+  AddQuantity(new SimplePrediction("CLs", "", _cls));
   
 }
 
@@ -48,82 +42,15 @@ Fittino::CheckMATE2Calculator::~CheckMATE2Calculator() {
 
 } 
 
-void Fittino::CheckMATE2Calculator::AddProcess( const boost::property_tree::ptree& ptree ) {
-
-   std::string name = ptree.get<std::string>( "Name" );
-
-   if( std::count( _processes.begin(), _processes.end(), name ) ) {
-
-       throw ConfigurationException( "CheckMATE2Calculator: Process " + name + " is configured multiple times." );
-
-   }
-
-   _processes.push_back( name );
-
-   AddInput( name + ".CrossSection",      ptree.get<std::string>( "CrossSection.Value"      ) );   
-   AddInput( name + ".CrossSectionError", ptree.get<std::string>( "CrossSectionError.Value" ) );   
-
-   _unitOfCrossSection[name] = ptree.get<std::string>( "CrossSection.Unit" );  
-   _unitOfCrossSectionError[name] = ptree.get<std::string>( "CrossSectionError.Unit" );  
-
-   for ( const auto& node : ptree ) {
-    
-      if ( node.first != "Events" ) continue;
-
-      _events[name].push_back( node.second.get_value<std::string>() );
-
-  }
-
-}
-
-void Fittino::CheckMATE2Calculator::WriteInputFile() {
-
-  std::ofstream infile( _inputFileName );
-  if ( !infile.is_open() ) throw ConfigurationException( "Can't create input file for CheckMATE." );
-
-  infile << "[Mandatory Parameters]" << std::endl; 
-  infile << "Name: " << _run << std::endl; 
-  infile << "Analyses: ";
-
-  for ( const auto& analysis : _analyses ) {
-
-     infile << analysis;
-     if( std::addressof( analysis ) != std::addressof( _analyses.back() ) ) infile << ", ";
-
-  } 
-
-  infile << std::endl << std::endl;
-
-  infile << "[Optional Parameters]" << std::endl << std::endl;
-  infile << std::endl;
- 
-  for ( const auto& process : _processes ) {
- 
-     infile << "[" << process << "]" << std::endl; 
-     infile << "XSect: " << GetInput( process + ".CrossSection" ) << "*" << _unitOfCrossSection.at( process ) << std::endl;
-     infile << "Events: ";
-     
-    for ( const auto& file : _events.at( process ) ) {
-
-        infile << file;
-        if( std::addressof(file) != std::addressof( _events.at( process ).back() ) ) infile << ", ";
-
-    }
-
-   infile << std::endl;
-
-  }
-
-}
 
 void Fittino::CheckMATE2Calculator::ReadResult() {
   
-  std::ifstream file;
+  std::ifstream file( _directory + "/result.txt" );
+  if( !file.is_open() ) throw LogicException("Cannot open result.txt.");
+
   std::string line;
 
-  file.open("/lustre/user/range/fittino/bin/Last_Run/result.txt");
-  
-  for ( unsigned int i = 0; i < 4; ++i ) getline(file, line);
+  for ( unsigned int i = 0; i < 5; ++i ) getline(file, line);
 
   std::string clsid = "Result for CLs: cls_min = "; 
   std::string rid = "Result for r: r_max = ";
@@ -132,14 +59,14 @@ void Fittino::CheckMATE2Calculator::ReadResult() {
 
     if ( !boost::starts_with( line, clsid ) ) throw LogicException( "CheckMATECalculator: Expected CLs in result.txt." );
      boost::algorithm::erase_first( line, clsid );
-     _cl = std::stod( line );
+     _cls = std::stod( line );
      getline( file, line );
 
   }
    
-    if ( !boost::starts_with( line, rid ) ) throw LogicException( "CheckMATECalculator: Expected r in result.txt." );
+    if ( !boost::starts_with( line, rid ) ) throw LogicException( "CheckMATECalculator: Expected r in result.txt, got " + line );
      boost::algorithm::erase_first( line, rid );
-     _r_cl = std::stod( line );
+     _r = std::stod( line );
 
   file.close();  
 
@@ -147,11 +74,12 @@ void Fittino::CheckMATE2Calculator::ReadResult() {
 
 void Fittino::CheckMATE2Calculator::CalculatePredictions() {
 
-  UpdateInput();
-  WriteInputFile();
+  _inputFile.Write();
   
-  Executor executor( "/lustre/fittino/group/external/SL6/CheckMATE/CheckMATE-1.2.0/bin/CheckMATE","CheckMATE");
-  executor.AddArgument( _inputFileName );
+  Executor executor( _executable, "CheckMATE" );
+  executor.AddArgument( _inputFile.GetName() );
   executor.Execute();
+
+  ReadResult();
 
 }

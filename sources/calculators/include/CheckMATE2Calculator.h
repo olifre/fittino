@@ -25,39 +25,29 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include "CalculatorBase.h"
+#include "InputFile.h"
 
 namespace Fittino{
 
-  class CheckMATE2Calculator : public CalculatorBase {
+    class CheckMATE2Calculator : public CalculatorBase {
 
-  public:
-    CheckMATE2Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree);
-    ~CheckMATE2Calculator();
-    
-  public:
-    virtual void CalculatePredictions();
+        public:
+            CheckMATE2Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree);
+            ~CheckMATE2Calculator();
+            virtual void CalculatePredictions();
 
-  private:
+        private:
+            bool _fullCLs;
+            double _r;
+            double _cls;
+            std::string _executable;
+            std::string _directory;
+            InputFile _inputFile;
 
-    double _r;
-    double _cl;
-    double _r_cl;
+        private:
+            void ReadResult();
 
-   std::string _inputFileName;
-   bool _fullCLs;
-   std::vector<std::string> _analyses;
-   std::string _run;
-   std::vector<std::string> _processes;
-   std::map<std::string, std::vector<std::string> > _events;
-   std::map<std::string, std::string> _unitOfCrossSection;
-   std::map<std::string, std::string> _unitOfCrossSectionError;
-
-  private:
-    void AddProcess( const boost::property_tree::ptree& ptree );
-    void WriteInputFile();
-    void ReadResult();
-    
-  };
+    };
 
 }
 #endif 
