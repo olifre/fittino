@@ -222,7 +222,7 @@ void Fittino::Executor::Parent() {
 
         }
 
-        if ( waitpid( -1, &_status, 0 ) == -1 ) {
+        if ( waitpid( -1, &_status, 0 ) == -1 && errno != ECHILD ) {
 
             perror( "waitpid" );
             throw ExecutorException( "Waitpid after kill." );
@@ -300,6 +300,12 @@ void Fittino::Executor::Wait() {
                 return;
 
             }
+            else if ( WIFSIGNALED( _status ) ) {
+
+                unsigned int signal = WTERMSIG( _status );
+                throw ExecutorException( "Child terminated due to the receipt of the uncaught signal " + std::to_string( signal ) + "."  );
+
+            } 
             else {
 
                 throw ExecutorException( "Child didn't terminate normally." );
