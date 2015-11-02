@@ -38,8 +38,12 @@ namespace Fittino{
 
         private:
             bool _fullCLs;
+            bool _first;
             double _r;
+            double _warningStats;
             double _cls;
+            double _excluded;
+            std::string _sr;
             std::string _executable;
             std::string _directory;
             InputFile _inputFile;
