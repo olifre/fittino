@@ -38,7 +38,6 @@ namespace Fittino {
     double _xs_unweighted;
     double _error_xs_weighted;
     double _error_xs_unweighted;
-    unsigned int _numberOfEvents;
     std::string _executable;
     std::string _inFile;
     std::string _outFile;

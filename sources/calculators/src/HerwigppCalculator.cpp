@@ -35,7 +35,6 @@ Fittino::HerwigppCalculator::HerwigppCalculator( const ModelBase* model, const b
     _executable = ptree.get<std::string>( "Executable" );
     _inFile = ptree.get<std::string>( "InputFile" );
     std::string run = ptree.get<std::string>( "Run" );
-    _numberOfEvents = ptree.get<unsigned int>( "NumberOfEvents" ); 
     
     _runFile = run + ".run";
     _logFile = run + ".log";
@@ -73,7 +72,6 @@ void Fittino::HerwigppCalculator::CalculatePredictions() {
     Executor executorRun( _executable, "Herwig++" ); 
     executorRun.AddArgument( "run" );
     executorRun.AddArgument( _runFile );
-    executorRun.AddArgument( "-N" + std::to_string( _numberOfEvents ) );
     executorRun.AddArgument( "-d1" );
     executorRun.Execute();
 
