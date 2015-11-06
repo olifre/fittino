@@ -36,7 +36,8 @@ Fittino::HigherOrderMarkovChainSampler::HigherOrderMarkovChainSampler( Fittino::
       _maximalMemorySize( ptree.get<int>( "MaximalMemorySize", 10000 ) ),
       _scalingFactor( ptree.get<double>( "ScalingFactor", 1 ) ),
       _memorySize( 0 ),
-      _memory() {
+      _memory(),
+      _maxCorrelationFactor( ptree.get<double>( "MaxCorrelationFactor", 0.9 ) ) {
 
     _name = "Correlated parameter sampler";
 
@@ -49,6 +50,17 @@ Fittino::HigherOrderMarkovChainSampler::HigherOrderMarkovChainSampler( Fittino::
     }
 
     _statusParameterVector.push_back( new SimplePrediction( "MemorySize", "", _memorySize ) );
+
+    // add the covariance matrix to the vector of status parameters:
+    _covarianceMatrixFirstIndex = _statusParameterVector.size();
+    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
+        std::string parameterName1 = _model->GetCollectionOfParameters().At( i )->GetName();
+        for ( unsigned int k = 0; k <= i; ++k ) {
+            std::string parameterName2 = _model->GetCollectionOfParameters().At( k )->GetName();
+            _statusParameterVector.push_back( new SimplePrediction( "Cov_" + parameterName1 + "_" + parameterName2, "", _covarianceMatrix[i][k] ) );
+        }
+    }
+    _covarianceMatrixLastIndex = _statusParameterVector.size() - 1;
 
 }
 
@@ -189,6 +201,80 @@ void Fittino::HigherOrderMarkovChainSampler::UpdateCovarianceMatrix() {
 
     }
 
+    // now check if any correlation factor is > larger than the max allowed;
+    int nAboveLimit = 0;
+    int nIteration = 0;
+    do {
+
+        //std::cout << "in iteration " << nIteration << " for checking" << std::endl;
+        nIteration += 1;
+        nAboveLimit = 0;
+        double maxDeviation = 0.;
+
+        //std::cout << "correlation matrix is " << std::endl;
+        //for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
+        //    for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); k++ ) {
+        //        std::cout << _covarianceMatrix[i][k] / sqrt( _covarianceMatrix[i][i] * _covarianceMatrix[k][k] ) << " ";
+        //    }
+        //    std::cout << std::endl;
+        //}
+
+        for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
+            for ( unsigned int k = 0; k < i; k++ ) {
+                double thisRho = _covarianceMatrix[i][k] / sqrt( _covarianceMatrix[i][i] * _covarianceMatrix[k][k] );
+                if ( fabs( thisRho ) > _maxCorrelationFactor ) {
+                    nAboveLimit += 1;
+                    if ( ( fabs( thisRho ) - _maxCorrelationFactor ) > maxDeviation ) maxDeviation = fabs( thisRho ) - _maxCorrelationFactor ;
+                }
+            }
+        }
+
+        if ( nAboveLimit == 0 ) break;
+        if ( nAboveLimit == 1 && maxDeviation < 1.e-5 ) break;
+        //std::cout << "need to fix the matrix because " << nAboveLimit << " are above the limit with maxDeviation " << maxDeviation  << std::endl;
+        // assume the smallest eigenvalue is linear in the maximal correlation factor;
+        // EV_min ~ 1 - rho_max
+        // ==> change rho_max to rho_max - maxDeviation -> change EV_min to 1 - rho_max + maxDeviation = EV_min_old + maxDeviation;
+        int nDim = _model->GetNumberOfParameters();
+        TMatrixDSym oldCorrelationMatrix( nDim );
+        for ( unsigned int i = 0; i < nDim; ++i ) {
+            for ( unsigned int k = 0; k < nDim; ++k ) {
+                oldCorrelationMatrix[i][k] = _covarianceMatrix[i][k] / sqrt( _covarianceMatrix[i][i] * _covarianceMatrix[k][k] );
+            }
+        }
+
+        TMatrixDSymEigen eigenMatrix( oldCorrelationMatrix );
+        TMatrixDSym eigenValMatrix( nDim );
+        for ( unsigned int i = 0; i < nDim; ++i ) {
+            for ( unsigned int k = 0; k < nDim; ++k ) {
+                eigenValMatrix[i][k] = ( i == k ) ? eigenMatrix.GetEigenValues()[i] : 0.;
+            }
+        }
+
+        // change the smallest eigenvalue
+        eigenValMatrix[nDim - 1][nDim - 1] = eigenValMatrix[nDim - 1][nDim - 1] + maxDeviation;
+        // keep the sum constant;
+        for ( unsigned int i = 0; i < nDim - 1; ++i ) {
+            eigenValMatrix[i][i] = eigenValMatrix[i][i] - maxDeviation / ( float )( nDim - 1 );
+        }
+
+        // now get the old eigenVectors
+        TMatrixD eigenVectors = eigenMatrix.GetEigenVectors();
+        TMatrixD eigenVectorsInverse = eigenMatrix.GetEigenVectors();
+        eigenVectorsInverse.Invert();
+        TMatrixD newCorrelationMatrix = eigenVectors * eigenValMatrix * eigenVectorsInverse;
+
+        for ( unsigned int i = 0; i < nDim; ++i ) {
+            for ( unsigned int k = i + 1; k < nDim; ++k ) {
+                _covarianceMatrix[i][k] = newCorrelationMatrix[i][k] * sqrt( _covarianceMatrix[i][i] * _covarianceMatrix[k][k] );
+                _covarianceMatrix[k][i] = _covarianceMatrix[i][k];
+            }
+        }
+
+    }
+    while ( nAboveLimit > 0 );
+
+
 }
 
 void Fittino::HigherOrderMarkovChainSampler::UpdateMemory() {
@@ -226,9 +312,7 @@ void Fittino::HigherOrderMarkovChainSampler::UpdateParameterValuesUsingCovarianc
         TVectorD y( _model->GetNumberOfParameters() );
 
         for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
-
             double width = scalefactor * TMath::Sqrt( covariantEigen.GetEigenValues()[i] );
-
             y[i] = _randomGenerator->Gaus( 0., width );
 
         }
