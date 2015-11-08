@@ -40,7 +40,8 @@ namespace Fittino{
             bool _fullCLs;
             bool _first;
             double _r;
-            double _warningStats;
+            double _errorIsDominatedByMonteCarloStatistics;
+            double _theModelCouldBeExcludedIfYouProvidedMoreInputEvents;
             double _cls;
             double _excluded;
             std::string _sr;

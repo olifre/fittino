@@ -34,7 +34,8 @@
         _first = true;
 
         AddQuantity(new SimplePrediction( "r", "", _r));
-        AddOutput( "LowStatistics", _warningStats );
+        AddOutput( "ErrorIsDominatedByMonteCarloStatistics", _errorIsDominatedByMonteCarloStatistics );
+        AddOutput( "TheModelCouldBeExcludedIfYouProvidedMoreInputEvents", _theModelCouldBeExcludedIfYouProvidedMoreInputEvents );
 
         //todo: only add if CLs is turned on
         AddQuantity(new SimplePrediction( "CLs", "", _cls ) );
@@ -66,11 +67,13 @@ void Fittino::CheckMATE2Calculator::ReadResult() {
     else if ( !_fullCLs && line !=rid ) throw LogicException( "Expected r test." ); 
 
     getline( file, line );
-    _warningStats = 0;
+    _errorIsDominatedByMonteCarloStatistics = 0;
+    _theModelCouldBeExcludedIfYouProvidedMoreInputEvents = 0;
 
     while( boost::starts_with( line, "Warning:" ) ) {
 
-        if ( line == "Warning: Error is dominated by Monte Carlo statistics!" ) _warningStats = 1; 
+        if ( line == "Warning: Error is dominated by Monte Carlo statistics!" ) _errorIsDominatedByMonteCarloStatistics = 1; 
+        else if ( line == "Warning: The model could be excluded if you provided more input events!" ) _theModelCouldBeExcludedIfYouProvidedMoreInputEvents = 1; 
         else throw LogicException( "CheckMATE2Calculator: Unknown warning: " + line );
         getline( file, line );
 
