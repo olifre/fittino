@@ -72,7 +72,6 @@ void Fittino::HerwigppCalculator::CalculatePredictions() {
     Executor executorRun( _executable, "Herwig++" ); 
     executorRun.AddArgument( "run" );
     executorRun.AddArgument( _runFile );
-    executorRun.AddArgument( "-d1" );
     executorRun.Execute();
 
     ReadOutFile();
