@@ -71,7 +71,6 @@ Fittino::NLLFastCalculator::~NLLFastCalculator() {
 }
 
 void Fittino::NLLFastCalculator::SetToZero( std::string process ) {
-    std::cout<<"set process "<<process<<" to zero "<<std::endl;
 
  for ( const auto& pdf : _pdfs ) {
 
@@ -88,7 +87,6 @@ void Fittino::NLLFastCalculator::SetToZero( std::string process ) {
   SetOutput( "k_NLL_" + pdf + "_" + process, 1 );
 
  } 
- std::cout<<"finished setting to zero."<<std::endl;
 
 }
 
@@ -107,7 +105,6 @@ void Fittino::NLLFastCalculator::CallSquarkGluino( std::string process, std::str
 
 void Fittino::NLLFastCalculator::ReadFile( std::string file, std::string process, std::string pdf, unsigned int offset ) {
 
-    std::cout<<"reading file "<<file<<std::endl;
 
   std::ifstream stream( file );
   std::string line;
@@ -129,7 +126,6 @@ void Fittino::NLLFastCalculator::ReadFile( std::string file, std::string process
   ++offset;
   }
 
-  std::cout<<"Finished reading."<<std::endl;
 
 }
 
