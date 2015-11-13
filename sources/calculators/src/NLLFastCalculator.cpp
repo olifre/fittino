@@ -194,6 +194,8 @@ try {
   CallStopAndDecoupling( "st" , "sb1", "cteq", mass_sb1, 2000 );
   CallStopAndDecoupling( "st" , "sb2", "cteq", mass_sb2, 2000 );
 
+  boost::filesystem::current_path( cwd );
+
 }
 catch(...) {
 
