@@ -2,6 +2,9 @@
 #define FITTINO_HEPMCSPLITCALCULATOR_H
 
 #include <set>
+#include <vector>
+#include <string>
+#include "boost/filesystem.hpp"
 
 #include "CalculatorBase.h"
 
@@ -16,12 +19,16 @@ namespace Fittino {
   public:
 
     virtual void CalculatePredictions();
-    virtual void Initialize();
 
  private:
     std::set<int> _squarks;
+    boost::filesystem::path _hepMCFile;
+    std::string _rootFile;
+    std::string _tree;
+    std::string _eventNumber;
+    std::vector<std::string> _pdgIDs;
 
   };
 }
 
-#endif // FITTINO_HEPMCSPLITCALCULATOR_H
+#endif 
