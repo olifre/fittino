@@ -44,6 +44,7 @@ namespace Fittino {
     std::vector<std::string> _pdfs;
     std::string _mass_s;
     std::string _mass_g;
+    double _outOfBounds;
 
   };
 

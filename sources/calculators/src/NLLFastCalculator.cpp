@@ -1,12 +1,10 @@
-/* $Id: NLLFastCalculator.cpp 2528 2015-04-07 10:54:29Z range@PHYSIK.UNI-BONN.DE $ */
-
 /*******************************************************************************
  *                                                                              *
  * Project     Fittino - A SUSY Parameter Fitting Package                       *
  *                                                                              *
  * File        NLLFastCalculator.cpp                                            *
+ *
  * Description: Wrapper around NLL-Fast                                         *
- * Authors:     Nanette Range                                                   *
  *                                                                              *
  * Licence     This program is free software; you can redistribute it and/or    *
  *             modify it under the terms of the GNU General Public License as   *
@@ -36,12 +34,14 @@ Fittino::NLLFastCalculator::NLLFastCalculator( const ModelBase* model, const boo
 
   AddInput("Mass_s");
   AddInput("Mass_g");
-  AddInput("Mass_st1");
-  AddInput("Mass_st2");
   AddInput("Mass_sb1");
   AddInput("Mass_sb2");
+  AddInput("Mass_st1");
+  AddInput("Mass_st2");
 
   _pdfs.push_back( "cteq" );
+
+  AddOutput( "OutOfBounds", _outOfBounds );
 
   std::vector<std::string> processes = { "sb", "ss", "gg", "sg", "st1", "st2", "sb1", "sb2" };
   
@@ -72,11 +72,13 @@ Fittino::NLLFastCalculator::~NLLFastCalculator() {
 
 void Fittino::NLLFastCalculator::SetToZero( std::string process ) {
 
+    double zero = 0; 
+
  for ( const auto& pdf : _pdfs ) {
 
-  SetOutput( "xs_LO_" + pdf + "_" + process, 0 );
-  SetOutput( "xs_NLO_" + pdf + "_" + process, 0 );
-  SetOutput( "xs_NLL_" + pdf + "_" + process, 0 );
+  SetOutput( "xs_LO_" + pdf + "_" + process, zero );
+  SetOutput( "xs_NLO_" + pdf + "_" + process, zero );
+  SetOutput( "xs_NLL_" + pdf + "_" + process, zero );
   SetOutput( "Error_mu_plus_" + pdf + "_" + process, 0 );
   SetOutput( "Error_mu_minus_" + pdf + "_" + process, 0 );
   SetOutput( "Error_pdf_plus_" + pdf + "_" + process, 0 );
@@ -104,7 +106,6 @@ void Fittino::NLLFastCalculator::CallSquarkGluino( std::string process, std::str
 }
 
 void Fittino::NLLFastCalculator::ReadFile( std::string file, std::string process, std::string pdf, unsigned int offset ) {
-
 
   std::ifstream stream( file );
   std::string line;
@@ -154,12 +155,16 @@ void Fittino::NLLFastCalculator::CalculatePredictions() {
 
     UpdateInput();
 
-    double mass_s =  GetInput( "Mass_s" );
-    double mass_g =  GetInput( "Mass_g" );
+    double mass_s   =  GetInput( "Mass_s" );
+    double mass_g   =  GetInput( "Mass_g" );
     double mass_st1 =  GetInput( "Mass_st1" );
     double mass_st2 =  GetInput( "Mass_st2" );
     double mass_sb1 =  GetInput( "Mass_sb1" );
     double mass_sb2 =  GetInput( "Mass_sb2" );
+
+  _outOfBounds = 0;
+  if ( mass_g < 200 || mass_s < 200 || mass_st1 < 100 || mass_st2 < 100 ) _outOfBounds = 1;
+  if ( mass_g > 2500 || mass_s > 2500 || mass_st1 > 2000 || mass_st2 > 2000  ) _outOfBounds = 1;
 
   if ( mass_g < 200 ) mass_g = 200;
   if ( mass_s < 200 ) mass_s = 200;
