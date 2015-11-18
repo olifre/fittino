@@ -27,12 +27,31 @@ namespace Fittino {
     std::string _tree;
     std::string _eventNumber;
     std::vector<std::string> _pdgIDs;
-    double _n_ss;
+    double index;
     double _n_gg;
     double _n_sg;
-    double _n_st1;
-    double _n_st2;
+    double _n_ss;
     double _n_sb;
+    double _n_tb1;
+    double _n_tb2;
+
+    double _n_ng1;
+    double _n_ng2;
+    double _n_ng3;
+    double _n_ng4;
+    double _n_ng5;
+    double _n_ng6;
+    double _n_ng7;
+    double _n_ng8;
+
+    double _n_ns1;
+    double _n_ns2;
+    double _n_ns3;
+    double _n_ns4;
+    double _n_ns5;
+    double _n_ns6;
+    double _n_ns7;
+    double _n_ns8;
 
   };
 }

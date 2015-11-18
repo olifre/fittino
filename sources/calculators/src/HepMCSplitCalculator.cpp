@@ -32,6 +32,31 @@
 
         }
 
+        AddOutput("NumberOfEvents_total", index );
+        AddOutput("NumberOfEvents_gg", _n_gg );
+        AddOutput("NumberOfEvents_sg", _n_sg );
+        AddOutput("NumberOfEvents_ss", _n_ss );
+        AddOutput("NumberOfEvents_sb", _n_sb );
+        AddOutput("NumberOfEvents_tb1", _n_tb1 );
+        AddOutput("NumberOfEvents_tb2", _n_tb2 );
+
+        AddOutput("NumberOfEvents_ns1", _n_ns1 );
+        AddOutput("NumberOfEvents_ns2", _n_ns2 );
+        AddOutput("NumberOfEvents_ns3", _n_ns3 );
+        AddOutput("NumberOfEvents_ns4", _n_ns4 );
+        AddOutput("NumberOfEvents_ns5", _n_ns5 );
+        AddOutput("NumberOfEvents_ns6", _n_ns6 );
+        AddOutput("NumberOfEvents_ns7", _n_ns7 );
+        AddOutput("NumberOfEvents_ns8", _n_ns8 );
+
+        AddOutput("NumberOfEvents_ng1", _n_ng1 );
+        AddOutput("NumberOfEvents_ng2", _n_ng2 );
+        AddOutput("NumberOfEvents_ng3", _n_ng3 );
+        AddOutput("NumberOfEvents_ng4", _n_ng4 );
+        AddOutput("NumberOfEvents_ng5", _n_ng5 );
+        AddOutput("NumberOfEvents_ng6", _n_ng6 );
+        AddOutput("NumberOfEvents_ng7", _n_ng7 );
+        AddOutput("NumberOfEvents_ng8", _n_ng8 );
     }
 
 Fittino::HepMCSplitCalculator::~HepMCSplitCalculator() {
@@ -44,8 +69,26 @@ void Fittino::HepMCSplitCalculator::CalculatePredictions() {
     _n_sg = 0;
     _n_ss = 0;
     _n_sb = 0;
-    _n_st1 = 0;
-    _n_st2 = 0;
+    _n_tb1 = 0;
+    _n_tb2 = 0;
+
+    _n_ns1 = 0;
+    _n_ns2 = 0;
+    _n_ns3 = 0;
+    _n_ns4 = 0;
+    _n_ns5 = 0;
+    _n_ns6 = 0;
+    _n_ns7 = 0;
+    _n_ns8 = 0;
+
+    _n_ng1 = 0;
+    _n_ng2 = 0;
+    _n_ng3 = 0;
+    _n_ng4 = 0;
+    _n_ng5 = 0;
+    _n_ng6 = 0;
+    _n_ng7 = 0;
+    _n_ng8 = 0;
 
     HepMC::IO_GenEvent in( _hepMCFile.string(),std::ios::in);
 
@@ -53,8 +96,8 @@ void Fittino::HepMCSplitCalculator::CalculatePredictions() {
     HepMC::IO_GenEvent out_sg( _hepMCFile.stem().string() + "_" + "sg"  + _hepMCFile.extension().string(), std::ios::out );
     HepMC::IO_GenEvent out_ss( _hepMCFile.stem().string() + "_" + "ss"  + _hepMCFile.extension().string(), std::ios::out );
     HepMC::IO_GenEvent out_sb( _hepMCFile.stem().string() + "_" + "sb"  + _hepMCFile.extension().string(), std::ios::out );
-    HepMC::IO_GenEvent out_st1( _hepMCFile.stem().string() + "_" + "st1" + _hepMCFile.extension().string(), std::ios::out );
-    HepMC::IO_GenEvent out_st2( _hepMCFile.stem().string() + "_" + "st2" + _hepMCFile.extension().string(), std::ios::out );
+    HepMC::IO_GenEvent out_tb1( _hepMCFile.stem().string() + "_" + "tb1" + _hepMCFile.extension().string(), std::ios::out );
+    HepMC::IO_GenEvent out_tb2( _hepMCFile.stem().string() + "_" + "tb2" + _hepMCFile.extension().string(), std::ios::out );
 
     TDirectory* pwd = gDirectory;
     TFile* f = TFile::Open( _rootFile.c_str(), "READ" );
@@ -62,7 +105,6 @@ void Fittino::HepMCSplitCalculator::CalculatePredictions() {
 
     int id1, id2;
     unsigned int eventNumber;
-    unsigned int index = 0;
     tree->SetBranchAddress( _pdgIDs.at( 0 ).c_str(), &id1 );
     tree->SetBranchAddress( _pdgIDs.at( 1 ).c_str(), &id2 );
     tree->SetBranchAddress( _eventNumber.c_str(), &eventNumber );
@@ -90,23 +132,20 @@ void Fittino::HepMCSplitCalculator::CalculatePredictions() {
             ++_n_gg;
         }
 
-        if ( _squarks.count( TMath::Abs( id1 ) ) && id2 == 1000021 ) {
-            out_sg << evt;
-            ++_n_sg;
-        }
-        if ( _squarks.count( TMath::Abs( id2 ) ) && id1 == 1000021 ){
+        if ( _squarks.count( TMath::Abs( id1 ) ) && id2 == 1000021 ||
+                _squarks.count( TMath::Abs( id2 ) ) && id1 == 1000021   ) {
             out_sg << evt;
             ++_n_sg;
         }
 
         if ( TMath::Abs( id1 ) == 1000006 && TMath::Abs( id2 ) == 1000006 && TMath::Sign( id1, id2 ) != id1 ) {
-            out_st1 << evt;
-            ++_n_st1;
+            out_tb1 << evt;
+            ++_n_tb1;
         }
 
         if ( TMath::Abs( id1 ) == 2000006 && TMath::Abs( id2 ) == 2000006 && TMath::Sign( id1, id2 ) != id1 ) {
-            out_st2 << evt;
-            ++_n_st2;
+            out_tb2 << evt;
+            ++_n_tb2;
         }
 
         delete evt;
