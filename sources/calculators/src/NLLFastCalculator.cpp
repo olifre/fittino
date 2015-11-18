@@ -2,7 +2,7 @@
  *                                                                              *
  * Project     Fittino - A SUSY Parameter Fitting Package                       *
  *                                                                              *
- * File        NLLFastCalculator.cpp                                            *
+ o* File        NLLFastCalculator.cpp                                            *
  *
  * Description: Wrapper around NLL-Fast                                         *
  *                                                                              *
@@ -10,6 +10,7 @@
  *             modify it under the terms of the GNU General Public License as   *
  *             published by the Free Software Foundation; either version 3 of   *
  *             the License, or (at your option) any later version.              * 
+ *
  *                                                                              *
  *******************************************************************************/
 
@@ -41,9 +42,28 @@ Fittino::NLLFastCalculator::NLLFastCalculator( const ModelBase* model, const boo
 
   _pdfs.push_back( "cteq" );
 
-  AddOutput( "OutOfBounds", _outOfBounds );
+  _lowerBounds["gg"] = { 200, 200 };
+  _upperBounds["gg"] = { 4500, 2500 };
 
-  std::vector<std::string> processes = { "sb", "ss", "gg", "sg", "tb1", "tb2", "bb1", "bb2" };
+  _lowerBounds["sg"] = { 200, 200 };
+  _upperBounds["sg"] = { 4500, 2500 };
+
+  _lowerBounds["ss"] = { 200, 200 };
+  _upperBounds["ss"] = { 2500, 2500 };
+
+  _lowerBounds["sb"] = { 200, 200 };
+  _upperBounds["sb"] = { 2500, 2500 };
+
+  _lowerBounds["st"] = { 100 };
+  _upperBounds["st"] = { 2000 };
+  
+  _lowerBounds["gdcpl"] = { 200 };
+  _upperBounds["gdcpl"] = { 2500 };
+
+  _lowerBounds["sdcpl"] = { 200 };
+  _upperBounds["sdcpl"] = { 2500 };
+
+  std::vector<std::string> processes = { "sb", "ss", "gg", "sg", "sdcpl", "gdcpl", "tb1", "tb2", "bb1", "bb2" };
   
  for( const auto& process :processes  ) {
 
@@ -92,16 +112,28 @@ void Fittino::NLLFastCalculator::SetToZero( std::string process ) {
 
 }
 
-void Fittino::NLLFastCalculator::CallSquarkGluino( std::string process, std::string pdf ) {
+void Fittino::NLLFastCalculator::Call( std::string process, std::string outputProcess, std::string pdf, std::vector<double> masses ) {
 
   Executor executor( _executable, "nllfast");
   executor.AddArgument( process );
   executor.AddArgument( pdf  );
-  executor.AddArgument( _mass_s );
-  executor.AddArgument( _mass_g );
+  
+    for (unsigned int i = 0; i < masses.size(); i++ ) {
+
+        if( masses[i] < _lowerBounds[process][i] ||
+                masses[i] > _upperBounds[process][i] ||
+                process == "st" && masses[0] > GetInput("Mass_gluino") ) {
+
+            SetToZero(outputProcess);
+            return;
+
+        }
+
+  executor.AddArgument( std::to_string( masses[i] ) );
+    }
   executor.Execute();
 
-  ReadFile( process + ".out", process, pdf, 2 ); 
+  ReadFile( process + ".out", outputProcess, pdf, masses.size() ); 
 
 }
 
@@ -130,27 +162,6 @@ void Fittino::NLLFastCalculator::ReadFile( std::string file, std::string process
 
 }
 
-
-void Fittino::NLLFastCalculator::CallStopAndDecoupling( std::string process, std::string outputProcess, std::string pdf, double mass, double massBound ) {
-
-    if ( mass > massBound ) {
-
-        SetToZero( outputProcess );
-        return;
-
-    }
-
-  Executor executor( _executable, "nllfast" );
-  executor.AddArgument( process );
-  executor.AddArgument( pdf );
-  executor.AddArgument(  std::to_string( mass ) );
-  executor.Execute();
-
-  ReadFile( process + ".out", outputProcess, pdf, 1 ); 
-
-}
-
-
 void Fittino::NLLFastCalculator::CalculatePredictions() {
 
     UpdateInput();
@@ -162,42 +173,22 @@ void Fittino::NLLFastCalculator::CalculatePredictions() {
     double mass_b1  =  GetInput( "Mass_sbottom1" );
     double mass_b2  =  GetInput( "Mass_sbottom2" );
 
-  _outOfBounds = 0;
-  if ( mass_g < 200 || mass_s < 200 || mass_t1 < 100 || mass_t2 < 100 ) _outOfBounds = 1;
-  if ( mass_g > 2500 || mass_s > 2500 || mass_t1 > 2000 || mass_t2 > 2000  ) _outOfBounds = 1;
-
-  if ( mass_g < 200 ) mass_g = 200;
-  if ( mass_s < 200 ) mass_s = 200;
-  if ( mass_t1 < 100 ) mass_t1 = 100;
-  if ( mass_t2 < 100 ) mass_t2 = 100;
-  if ( mass_b1 < 100 ) mass_b1 = 100;
-  if ( mass_b2 < 100 ) mass_b2 = 100;
-
-    _mass_s = std::to_string( mass_s );
-    _mass_g = std::to_string( mass_g );
-
   boost::filesystem::path cwd( boost::filesystem::current_path() );
 
 try {
 
   boost::filesystem::current_path( _griddir );
 
-  if ( mass_g <= 2500 && mass_s <= 4500 ) CallSquarkGluino( "gg", "cteq" );
-  else CallStopAndDecoupling("gdcpl", "gg", "cteq", mass_g, 2500. );
-
-  if ( mass_g <= 2500 && mass_s <= 2500 ) CallSquarkGluino( "sb", "cteq" );
-  else CallStopAndDecoupling( "sdcpl", "sb", "cteq", mass_s, 2500. ); 
-
-  if ( mass_g <= 2500 && mass_s <= 4500 ) CallSquarkGluino( "sg", "cteq" );
-  else SetToZero( "sg" );
-  
-  if ( mass_g <= 2500 && mass_s <= 2500 ) CallSquarkGluino( "ss", "cteq" );
-  else SetToZero( "ss" );
-
-  CallStopAndDecoupling( "st" , "tb1", "cteq", mass_t1, 2000. );
-  CallStopAndDecoupling( "st" , "tb2", "cteq", mass_t2, 2000. );
-  CallStopAndDecoupling( "st" , "bb1", "cteq", mass_b1, 2000 );
-  CallStopAndDecoupling( "st" , "bb2", "cteq", mass_b2, 2000 );
+  Call( "gg", "gg", "cteq", { mass_s, mass_g } );
+  Call( "sg", "sg", "cteq", { mass_s, mass_g } );
+  Call( "ss", "ss", "cteq", { mass_s, mass_g } );
+  Call( "sb", "sb", "cteq", { mass_s, mass_g } );
+  Call( "gdcpl", "gdcpl", "cteq", { mass_g } );
+  Call( "sdcpl", "sdcpl", "cteq", { mass_s } );
+  Call( "st" , "tb1", "cteq", { mass_t1 } );
+  Call( "st" , "tb2", "cteq", { mass_t2 } );
+  Call( "st" , "bb1", "cteq", { mass_b1 } );
+  Call( "st" , "bb2", "cteq", { mass_b2 } );
 
   boost::filesystem::current_path( cwd );
 

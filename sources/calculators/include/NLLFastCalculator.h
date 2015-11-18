@@ -33,8 +33,7 @@ namespace Fittino {
 
     virtual void CalculatePredictions();
     void SetToZero( std::string process );
-    void CallSquarkGluino( std::string process, std::string pdf );
-    void CallStopAndDecoupling( std::string process, std::string outputProcess, std::string pdf, double mass, double massBound );
+    void Call( std::string process, std::string outputProcess, std::string pdf, std::vector<double> masses );
     void ReadFile( std::string file, std::string process, std::string pdf, unsigned int offset );
     
   private:
@@ -42,13 +41,11 @@ namespace Fittino {
     std::string _griddir;
     std::string _executable;
     std::vector<std::string> _pdfs;
-    std::string _mass_s;
-    std::string _mass_g;
-    double _outOfBounds;
+    std::map<std::string, std::vector<double> > _lowerBounds;
+    std::map<std::string, std::vector<double> > _upperBounds;
 
   };
 
 }
-
 
 #endif 
