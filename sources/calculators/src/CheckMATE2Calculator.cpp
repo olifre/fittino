@@ -18,6 +18,7 @@
 #include <fstream>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
+#include "boost/filesystem.hpp"
 
 #include "ModelBase.h"
 #include "Executor.h"
@@ -36,6 +37,7 @@
         AddQuantity(new SimplePrediction( "r", "", _r));
         AddOutput( "ErrorIsDominatedByMonteCarloStatistics", _errorIsDominatedByMonteCarloStatistics );
         AddOutput( "TheModelCouldBeExcludedIfYouProvidedMoreInputEvents", _theModelCouldBeExcludedIfYouProvidedMoreInputEvents );
+        AddOutput( "Excluded", _excluded ); 
 
         //todo: only add if CLs is turned on
         AddQuantity(new SimplePrediction( "CLs", "", _cls ) );
@@ -113,6 +115,9 @@ void Fittino::CheckMATE2Calculator::ReadResult() {
 }
 
 void Fittino::CheckMATE2Calculator::CalculatePredictions() {
+
+    if ( boost::filesystem::exists( _inputFile.GetName() ) ) boost::filesystem::remove( _inputFile.GetName() );
+    if ( boost::filesystem::exists( _directory ) ) boost::filesystem::remove_all( _directory );
 
     _inputFile.Write();
 
