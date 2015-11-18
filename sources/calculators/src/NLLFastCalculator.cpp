@@ -32,18 +32,18 @@ Fittino::NLLFastCalculator::NLLFastCalculator( const ModelBase* model, const boo
   _griddir = GetConfiguration()->get<std::string>( "Directory" );
   _executable = GetConfiguration()->get<std::string>( "Executable" );
 
-  AddInput("Mass_s");
-  AddInput("Mass_g");
-  AddInput("Mass_sb1");
-  AddInput("Mass_sb2");
-  AddInput("Mass_st1");
-  AddInput("Mass_st2");
+  AddInput("Mass_squark");
+  AddInput("Mass_gluino");
+  AddInput("Mass_sbottom1");
+  AddInput("Mass_sbottom2");
+  AddInput("Mass_stop1");
+  AddInput("Mass_stop2");
 
   _pdfs.push_back( "cteq" );
 
   AddOutput( "OutOfBounds", _outOfBounds );
 
-  std::vector<std::string> processes = { "sb", "ss", "gg", "sg", "st1", "st2", "sb1", "sb2" };
+  std::vector<std::string> processes = { "sb", "ss", "gg", "sg", "tb1", "tb2", "bb1", "bb2" };
   
  for( const auto& process :processes  ) {
 
@@ -155,23 +155,23 @@ void Fittino::NLLFastCalculator::CalculatePredictions() {
 
     UpdateInput();
 
-    double mass_s   =  GetInput( "Mass_s" );
-    double mass_g   =  GetInput( "Mass_g" );
-    double mass_st1 =  GetInput( "Mass_st1" );
-    double mass_st2 =  GetInput( "Mass_st2" );
-    double mass_sb1 =  GetInput( "Mass_sb1" );
-    double mass_sb2 =  GetInput( "Mass_sb2" );
+    double mass_s   =  GetInput( "Mass_squark" );
+    double mass_g   =  GetInput( "Mass_gluino" );
+    double mass_t1  =  GetInput( "Mass_stop1" );
+    double mass_t2  =  GetInput( "Mass_stop2" );
+    double mass_b1  =  GetInput( "Mass_sbottom1" );
+    double mass_b2  =  GetInput( "Mass_sbottom2" );
 
   _outOfBounds = 0;
-  if ( mass_g < 200 || mass_s < 200 || mass_st1 < 100 || mass_st2 < 100 ) _outOfBounds = 1;
-  if ( mass_g > 2500 || mass_s > 2500 || mass_st1 > 2000 || mass_st2 > 2000  ) _outOfBounds = 1;
+  if ( mass_g < 200 || mass_s < 200 || mass_t1 < 100 || mass_t2 < 100 ) _outOfBounds = 1;
+  if ( mass_g > 2500 || mass_s > 2500 || mass_t1 > 2000 || mass_t2 > 2000  ) _outOfBounds = 1;
 
   if ( mass_g < 200 ) mass_g = 200;
   if ( mass_s < 200 ) mass_s = 200;
-  if ( mass_st1 < 100 ) mass_st1 = 100;
-  if ( mass_st2 < 100 ) mass_st2 = 100;
-  if ( mass_sb1 < 100 ) mass_sb1 = 100;
-  if ( mass_sb2 < 100 ) mass_sb2 = 100;
+  if ( mass_t1 < 100 ) mass_t1 = 100;
+  if ( mass_t2 < 100 ) mass_t2 = 100;
+  if ( mass_b1 < 100 ) mass_b1 = 100;
+  if ( mass_b2 < 100 ) mass_b2 = 100;
 
     _mass_s = std::to_string( mass_s );
     _mass_g = std::to_string( mass_g );
@@ -194,10 +194,10 @@ try {
   if ( mass_g <= 2500 && mass_s <= 2500 ) CallSquarkGluino( "ss", "cteq" );
   else SetToZero( "ss" );
 
-  CallStopAndDecoupling( "st" , "st1", "cteq", mass_st1, 2000. );
-  CallStopAndDecoupling( "st" , "st2", "cteq", mass_st1, 2000. );
-  CallStopAndDecoupling( "st" , "sb1", "cteq", mass_sb1, 2000 );
-  CallStopAndDecoupling( "st" , "sb2", "cteq", mass_sb2, 2000 );
+  CallStopAndDecoupling( "st" , "tb1", "cteq", mass_t1, 2000. );
+  CallStopAndDecoupling( "st" , "tb2", "cteq", mass_t2, 2000. );
+  CallStopAndDecoupling( "st" , "bb1", "cteq", mass_b1, 2000 );
+  CallStopAndDecoupling( "st" , "bb2", "cteq", mass_b2, 2000 );
 
   boost::filesystem::current_path( cwd );
 
