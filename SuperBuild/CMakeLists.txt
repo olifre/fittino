@@ -25,9 +25,12 @@ ENABLE_LANGUAGE( Fortran C )
 
 SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../CMakeModules)
 
+SET(SuperIso_URL ~/superiso_v3.4.tar) # todo: improve this 
+
 OPTION( BUILTIN_SLHAEA "" OFF )
-OPTION( BUILTIN_SPHENO "" ON )
-OPTION( BUILTIN_HIGGSSIGNALS "" ON )
+OPTION( BUILTIN_SPHENO "" OFF )
+OPTION( BUILTIN_HIGGSSIGNALS "" OFF )
+OPTION( BUILTIN_SuperIso "" ON )
 OPTION( BUILD_FITTINO "" OFF )
 
 SET(FITTINO_DEPENDENCIES)
@@ -115,6 +118,21 @@ IF(BUILTIN_HIGGSSIGNALS)
 
 
 ENDIF()
+
+IF(BUILTIN_SuperIso)
+        EXTERNALPROJECT_ADD(
+            SuperIso
+            PREFIX external/SuperIso
+            URL ${SuperIso_URL}
+            BUILD_IN_SOURCE 1
+            CONFIGURE_COMMAND "" 
+            BUILD_COMMAND $(MAKE) CC=${CMAKE_C_COMPILER}
+            COMMAND $(MAKE) slha CC=${CMAKE_C_COMPILER}
+            INSTALL_COMMAND ${CMAKE_COMMAND} -E copy src/libisospin.a ${CMAKE_INSTALL_FULL_LIBDIR}/libisospin.a
+            COMMAND ${CMAKE_COMMAND} -E copy src/include.h ${CMAKE_INSTALL_FULL_INCLUDEDIR}/SuperIso/include.h
+            COMMAND ${CMAKE_COMMAND} -E copy slha.x ${CMAKE_INSTALL_FULL_BINDIR}/slha.x
+           ) 
+   ENDIF()
 
 IF(BUILD_FITTINO)
 
