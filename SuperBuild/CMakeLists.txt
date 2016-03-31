@@ -17,84 +17,117 @@
 #                                                                              #
 ################################################################################
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.7 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED( VERSION 2.8.7 FATAL_ERROR )
 
 
-PROJECT(fittino_superbuild CXX)
-ENABLE_LANGUAGE(Fortran C)
-
-SET(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
+PROJECT( Fittino_Superbuild CXX )
+ENABLE_LANGUAGE( Fortran C )
 
 SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../CMakeModules)
 
+OPTION( BUILTIN_SLHAEA "" OFF )
+OPTION( BUILTIN_SPHENO "" ON )
+OPTION( BUILTIN_HIGGSSIGNALS "" ON )
+OPTION( BUILD_FITTINO "" OFF )
+
 SET(FITTINO_DEPENDENCIES)
 
+INCLUDE(GNUInstallDirs)
 INCLUDE(ExternalProject)
 
-FIND_PACKAGE(Boost 1.47.0 REQUIRED)
+#FIND_PACKAGE(Boost 1.47.0 REQUIRED)
 
 IF( BUILTIN_SLHAEA )	
 
   EXTERNALPROJECT_ADD(
-    slhaea
-    PREFIX "external/slhaea"
-#    GIT_REPOSITORY https://github.com/fthomas/slhaea
-#     GIT_TAG "v0.1"
-DOWNLOAD_NAME slhaea.tar.gz
-URL http://github.com/fthomas/slhaea/tarball/master
+    SLHAea
+    PREFIX external/SLHAea
+    GIT_REPOSITORY https://github.com/fthomas/slhaea
+    GIT_TAG "v0.1"
     CONFIGURE_COMMAND ""
     UPDATE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND ""
-    CMAKE_ARGS -DBOOST_ROOT=${BOOST_ROOT}
   )
 
-  EXTERNALPROJECT_GET_PROPERTY(slhaea SOURCE_DIR)
+  EXTERNALPROJECT_GET_PROPERTY(SLHAea SOURCE_DIR)
   SET(SLHAEA_INSTALLATION_PATH  ${SOURCE_DIR})
-  LIST(APPEND FITTINO_DEPENDENCIES slhaea)
+
+  LIST(APPEND FITTINO_DEPENDENCIES SLHAea)
 
 ENDIF()
 
-IF(BUILTIN_SPHENO)
+IF( BUILTIN_SPHENO )
 
 EXTERNALPROJECT_ADD(
-    spheno 
-    PREFIX "external/spheno"
-    URL http://www.hepforge.org/archive/spheno/SPheno-3.2.4.tar.gz
-    URL_MD5 970f523b967afcade5cf779bbff98df8
+    SPheno 
+    PREFIX external/SPheno
+    URL http://www.hepforge.org/archive/spheno/SPheno-3.3.8.tar.gz
     UPDATE_COMMAND ""
-#    DOWNLOAD_COMMAND "curl -LO http://www.hepforge.org/archive/spheno/SPheno-3.2.4.tar.gz; cmake -E tar xvf http://www.hepforge.org/archive/spheno/SPheno-3.2.4.tar.gz"
+    PATCH_COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_SPheno.cmake
     BUILD_IN_SOURCE 1
-    BUILD_COMMAND $(MAKE) F90=ifort2013 
     CONFIGURE_COMMAND ""
-    INSTALL_COMMAND ""
+    BUILD_COMMAND $(MAKE) F90=${CMAKE_Fortran_COMPILER}
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E copy lib/libSPheno.a ${CMAKE_INSTALL_FULL_LIBDIR}/libSPheno.a
+    COMMAND ${CMAKE_COMMAND} -E copy bin/SPheno ${CMAKE_INSTALL_FULL_BINDIR}/SPheno
+    COMMAND ${CMAKE_COMMAND} -E copy_directory doc ${CMAKE_INSTALL_FULL_DATAROOTDIR}/doc/SPheno
+    COMMAND ${CMAKE_COMMAND} -E copy_directory input ${CMAKE_INSTALL_FULL_DATADIR}/SPheno/input
 )  
+
+ENDIF()
+
+IF(BUILTIN_HIGGSSIGNALS)
+
+    EXTERNALPROJECT_ADD(
+        HiggsBounds_LEP-chisq
+        PREFIX external/HiggsBounds_LEP-chisq
+        URL http://www.hepforge.org/archive/higgsbounds/csboutput_trans_binary.tar.gz
+        BUILD_IN_SOURCE 1 # simplifies the INSTALL_COMMAND
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ""
+        INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory . ${CMAKE_INSTALL_FULL_DATADIR}/HiggsBounds/csboutput_trans_binary 
+        )
+  
+        EXTERNALPROJECT_ADD(
+            HiggsBounds
+            DEPENDS HiggsBounds_LEP-chisq
+            PREFIX external/HiggsBounds
+            URL http://www.hepforge.org/archive/higgsbounds/HiggsBounds-4.3.1.tar.gz
+            BUILD_IN_SOURCE 1
+            CONFIGURE_COMMAND ./configure-with-chisq
+            PATCH_COMMAND ${CMAKE_COMMAND} -DHiggsBounds_DATADIR=${CMAKE_INSTALL_FULL_DATADIR}/HiggsBounds -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_HiggsBounds.cmake
+            BUILD_COMMAND $(MAKE) F90C=gfortran
+            INSTALL_COMMAND ${CMAKE_COMMAND} -E copy libHB.a ${CMAKE_INSTALL_FULL_LIBDIR}/libHB.a
+            COMMAND ${CMAKE_COMMAND} -E copy HiggsBounds ${CMAKE_INSTALL_FULL_BINDIR}/HiggsBounds
+            COMMAND ${CMAKE_COMMAND} -E copy_directory Expt_tables ${CMAKE_INSTALL_FULL_DATADIR}/HiggsBounds/Expt_tables
+           ) 
+    #
+    #    EXTERNALPROJECT_ADD(
+    #        HiggsSignals
+    #        DEPENDS HiggsBounds
+    #        PREFIX "external/HiggsSignals"
+    #        URL http://www.hepforge.org/archive/higgsbounds/HiggsSignals-1.4.0.tar.gz
+    #        BUILD_IN_SOURCE 1
+    #        CONFIGURE_COMMAND ./configure
+    #        BUILD_COMMAND $(MAKE) F90C=${CMAKE_Fortran_COMPILER} 
+    #        INSTALL_COMMAND ""
+    #        )
+
 
 ENDIF()
 
 IF(BUILD_FITTINO)
 
 EXTERNALPROJECT_ADD(
-  fittino
+  Fittino
   DEPENDS ${FITTINO_DEPENDENCIES}
   PREFIX "./fittino"
   SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..
+  BUILD_ALWAYS ON
   # BINARY_DIR ${CMAKE_CURRENTSOURCE_DIR}/build
   DOWNLOAD_COMMAND ""
   UPDATE_COMMAND ""
   CMAKE_ARGS -DSLHAEA_INSTALLATION_PATH=${SLHAEA_INSTALLATION_PATH} -DBOOST_ROOT=${BOOST_ROOT}
   )
-
-# ExternalProject_Add_Step(fittino "forceconfigure"
-#     COMMAND ${CMAKE_COMMAND} -E echo "Force configure of fittino."
-#     DEPENDEES update
-#     DEPENDERS configure
-#     ALWAYS 1)
-
-EXTERNALPROJECT_ADD_STEP(fittino "forcebuild"
-    COMMAND ${CMAKE_COMMAND} -E echo "Force build of fittino."
-    DEPENDEES configure
-    DEPENDERS build
-    ALWAYS 1)
 
 ENDIF()
