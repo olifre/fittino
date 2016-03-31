@@ -27,11 +27,15 @@ SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../CMakeModules)
 
 SET(SuperIso_URL ~/superiso_v3.4.tar) # todo: improve this 
 
+SET_PROPERTY( DIRECTORY PROPERTY "EP_BASE" ${PROJECT_BINARY_DIR}  )
+SET(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/Install  ) # todo: only if not defined
+
 OPTION( BUILTIN_SLHAEA "" OFF )
 OPTION( BUILTIN_SPHENO "" OFF )
 OPTION( BUILTIN_HIGGSSIGNALS "" OFF )
-OPTION( BUILTIN_SuperIso "" ON )
+OPTION( BUILTIN_SuperIso "" OFF )
 OPTION( BUILD_FITTINO "" OFF )
+OPTION( BUILTIN_MicrOMEGAs "" ON )
 
 SET(FITTINO_DEPENDENCIES)
 
@@ -134,6 +138,22 @@ IF(BUILTIN_SuperIso)
            ) 
    ENDIF()
 
+
+   IF(BUILTIN_MicrOMEGAs)
+        EXTERNALPROJECT_ADD(
+            MicrOMEGAs
+            BINARY_DIR ${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/MicrOMEGAs
+            URL https://lapth.cnrs.fr/micromegas/downloadarea/code/micromegas_4.2.5.tgz 
+            PATCH_COMMAND ${CMAKE_COMMAND} -E copy_directory . ${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/MicrOMEGAs 
+            CONFIGURE_COMMAND ""
+            BUILD_COMMAND $(MAKE) CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} FC=${CMAKE_FORTRAN_COMPILER}
+            COMMAND ${CMAKE_COMMAND} -E chdir MSSM $(MAKE) main=main.cpp 
+            INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
+            INSTALL_COMMAND "" 
+           ) 
+   ENDIF()
+
+   
 IF(BUILD_FITTINO)
 
 EXTERNALPROJECT_ADD(
