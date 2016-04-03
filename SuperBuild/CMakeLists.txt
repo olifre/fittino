@@ -15,10 +15,9 @@
 #	      published by the Free Software Foundation; either version 3 of   #
 #	      the License, or (at your option) any later version.              #
 #                                                                              #
-################################################################################
+###############################################################################
 
 CMAKE_MINIMUM_REQUIRED( VERSION 2.8.7 FATAL_ERROR )
-
 
 PROJECT( Fittino_Superbuild CXX )
 ENABLE_LANGUAGE( Fortran C )
@@ -27,24 +26,32 @@ SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../CMakeModules)
 
 SET(SuperIso_URL ~/superiso_v3.4.tar) # todo: improve this 
 
-SET_PROPERTY( DIRECTORY PROPERTY "EP_BASE" ${PROJECT_BINARY_DIR}  )
 SET(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/Install  ) # todo: only if not defined
 
-OPTION( BUILTIN_SLHAEA "" OFF )
-OPTION( BUILTIN_SPHENO "" OFF )
-OPTION( BUILTIN_HIGGSSIGNALS "" OFF )
-OPTION( BUILTIN_SuperIso "" OFF )
-OPTION( BUILD_FITTINO "" OFF )
-OPTION( BUILTIN_MicrOMEGAs "" ON )
+INCLUDE(GNUInstallDirs)
+SET( BINDIR ${CMAKE_INSTALL_FULL_BINDIR} )
+SET( DATADIR ${CMAKE_INSTALL_FULL_DATADIR} )
+SET( LIBDIR ${CMAKE_INSTALL_FULL_LIBDIR} )
+SET( INCLUDEDIR ${CMAKE_INSTALL_FULL_INCLUDEDIR} )
+SET( LOCALSTATEDIR ${CMAKE_INSTALL_FULL_LOCALSTATEDIR} )
+SET( InstallDirs -DDATADIR=${DATADIR} -DBINDIR=${BINDIR} -DLIBDIR=${LIBDIR} ) 
+
+SET_PROPERTY( DIRECTORY PROPERTY "EP_BASE" ${PROJECT_BINARY_DIR}  )
+
+OPTION( INSTALL_SLHAea "" OFF )
+OPTION( INSTALL_SPheno "" OFF )
+OPTION( INSTALL_HiggsSignals "" ON )
+OPTION( INSTALL_SuperIso "" OFF )
+OPTION( INSTALL_Fittino "" OFF )
+OPTION( INSTALL_MicrOMEGAs "" OFF )
+OPTION( INSTALL_FeynHiggs "" OFF )
 
 SET(FITTINO_DEPENDENCIES)
 
-INCLUDE(GNUInstallDirs)
 INCLUDE(ExternalProject)
 
 #FIND_PACKAGE(Boost 1.47.0 REQUIRED)
-
-IF( BUILTIN_SLHAEA )	
+IF( INSTALL_SLHAea )	
 
   EXTERNALPROJECT_ADD(
     SLHAea
@@ -64,7 +71,7 @@ IF( BUILTIN_SLHAEA )
 
 ENDIF()
 
-IF( BUILTIN_SPHENO )
+IF( INSTALL_SPheno )
 
 EXTERNALPROJECT_ADD(
     SPheno 
@@ -75,19 +82,18 @@ EXTERNALPROJECT_ADD(
     BUILD_IN_SOURCE 1
     CONFIGURE_COMMAND ""
     BUILD_COMMAND $(MAKE) F90=${CMAKE_Fortran_COMPILER}
-    INSTALL_COMMAND ${CMAKE_COMMAND} -E copy lib/libSPheno.a ${CMAKE_INSTALL_FULL_LIBDIR}/libSPheno.a
-    COMMAND ${CMAKE_COMMAND} -E copy bin/SPheno ${CMAKE_INSTALL_FULL_BINDIR}/SPheno
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E copy lib/libSPheno.a ${CMAKE_INSTALL_FULL_LIBDIR}
+    COMMAND ${CMAKE_COMMAND} -E copy bin/SPheno ${CMAKE_INSTALL_FULL_BINDIR}
     COMMAND ${CMAKE_COMMAND} -E copy_directory doc ${CMAKE_INSTALL_FULL_DATAROOTDIR}/doc/SPheno
     COMMAND ${CMAKE_COMMAND} -E copy_directory input ${CMAKE_INSTALL_FULL_DATADIR}/SPheno/input
 )  
 
 ENDIF()
 
-IF(BUILTIN_HIGGSSIGNALS)
+IF(INSTALL_HiggsSignals)
 
     EXTERNALPROJECT_ADD(
         HiggsBounds_LEP-chisq
-        PREFIX external/HiggsBounds_LEP-chisq
         URL http://www.hepforge.org/archive/higgsbounds/csboutput_trans_binary.tar.gz
         BUILD_IN_SOURCE 1 # simplifies the INSTALL_COMMAND
         CONFIGURE_COMMAND ""
@@ -98,32 +104,29 @@ IF(BUILTIN_HIGGSSIGNALS)
         EXTERNALPROJECT_ADD(
             HiggsBounds
             DEPENDS HiggsBounds_LEP-chisq
-            PREFIX external/HiggsBounds
             URL http://www.hepforge.org/archive/higgsbounds/HiggsBounds-4.3.1.tar.gz
             BUILD_IN_SOURCE 1
             CONFIGURE_COMMAND ./configure-with-chisq
-            PATCH_COMMAND ${CMAKE_COMMAND} -DHiggsBounds_DATADIR=${CMAKE_INSTALL_FULL_DATADIR}/HiggsBounds -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_HiggsBounds.cmake
+            PATCH_COMMAND ${CMAKE_COMMAND} ${InstallDirs} -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_HiggsBounds.cmake
             BUILD_COMMAND $(MAKE) F90C=gfortran
-            INSTALL_COMMAND ${CMAKE_COMMAND} -E copy libHB.a ${CMAKE_INSTALL_FULL_LIBDIR}/libHB.a
-            COMMAND ${CMAKE_COMMAND} -E copy HiggsBounds ${CMAKE_INSTALL_FULL_BINDIR}/HiggsBounds
-            COMMAND ${CMAKE_COMMAND} -E copy_directory Expt_tables ${CMAKE_INSTALL_FULL_DATADIR}/HiggsBounds/Expt_tables
+            INSTALL_COMMAND ${CMAKE_COMMAND} ${InstallDirs} -P ${CMAKE_CURRENT_SOURCE_DIR}/install_HiggsBounds.cmake
            ) 
-    #
-    #    EXTERNALPROJECT_ADD(
-    #        HiggsSignals
-    #        DEPENDS HiggsBounds
-    #        PREFIX "external/HiggsSignals"
-    #        URL http://www.hepforge.org/archive/higgsbounds/HiggsSignals-1.4.0.tar.gz
-    #        BUILD_IN_SOURCE 1
-    #        CONFIGURE_COMMAND ./configure
-    #        BUILD_COMMAND $(MAKE) F90C=${CMAKE_Fortran_COMPILER} 
-    #        INSTALL_COMMAND ""
-    #        )
+    
+        EXTERNALPROJECT_ADD(
+            HiggsSignals
+            DEPENDS HiggsBounds
+            URL http://www.hepforge.org/archive/higgsbounds/HiggsSignals-1.4.0.tar.gz
+            BUILD_IN_SOURCE 1
+            CONFIGURE_COMMAND ./configure
+            PATCH_COMMAND ${CMAKE_COMMAND} ${InstallDirs} -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_HiggsSignals.cmake
+            BUILD_COMMAND $(MAKE) F90C=gfortran HBLIBS=-L${CMAKE_INSTALL_FULL_LIBDIR} HBINCLUDE=-I${LIBDIR}/fortran/HiggsBounds
+            INSTALL_COMMAND ${CMAKE_COMMAND} ${InstallDirs} -P ${CMAKE_CURRENT_SOURCE_DIR}/install_HiggsSignals.cmake 
+            )
 
 
 ENDIF()
 
-IF(BUILTIN_SuperIso)
+IF(INSTALL_SuperIso)
         EXTERNALPROJECT_ADD(
             SuperIso
             PREFIX external/SuperIso
@@ -139,10 +142,10 @@ IF(BUILTIN_SuperIso)
    ENDIF()
 
 
-   IF(BUILTIN_MicrOMEGAs)
+   IF(INSTALL_MicrOMEGAs)
         EXTERNALPROJECT_ADD(
             MicrOMEGAs
-            BINARY_DIR ${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/MicrOMEGAs
+            BINARY_DIR ${LOCALSTATEDIR}/MicrOMEGAs
             URL https://lapth.cnrs.fr/micromegas/downloadarea/code/micromegas_4.2.5.tgz 
             PATCH_COMMAND ${CMAKE_COMMAND} -E copy_directory . ${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/MicrOMEGAs 
             CONFIGURE_COMMAND ""
@@ -153,8 +156,16 @@ IF(BUILTIN_SuperIso)
            ) 
    ENDIF()
 
+   IF( INSTALL_FeynHiggs )
+        EXTERNALPROJECT_ADD(
+            FeynHiggs
+            URL http://wwwth.mpp.mpg.de/members/heinemey/feynhiggs/newversion/FeynHiggs-2.11.3.tar.gz 
+            BUILD_COMMAND $(MAKE) CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} FC=${CMAKE_FORTRAN_COMPILER}
+           ) 
+   ENDIF()
+
    
-IF(BUILD_FITTINO)
+   IF(INSTALL_Fittino)
 
 EXTERNALPROJECT_ADD(
   Fittino

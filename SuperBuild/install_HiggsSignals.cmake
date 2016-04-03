@@ -1,0 +1,5 @@
+FILE( GLOB modFiles "*.mod" )
+FILE( COPY ${modFiles} DESTINATION ${LIBDIR}/fortran/HiggsSignals )
+FILE( COPY libHS.a DESTINATION ${LIBDIR} )
+FILE( COPY HiggsSignals DESTINATION ${BINDIR} )
+FILE( COPY Expt_tables DESTINATION ${DATADIR}/HiggsSignals )
