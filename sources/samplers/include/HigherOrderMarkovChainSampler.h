@@ -47,12 +47,15 @@ namespace Fittino {
     private:
       double                            _memorySize;
       double                            _scalingFactor;
+      double                            _maxCorrelationFactor;
       int                               _maximalMemorySize;
       int                               _minimalMemorySize;
       std::queue< std::vector<double> > _memory;
       std::vector<double>               _expectationValues;
       TMatrixDSym                       _covarianceMatrix;
       TMatrixDSym                       _expectationMatrix;
+      int                               _covarianceMatrixFirstIndex;
+      int                               _covarianceMatrixLastIndex;
 
     private:
       void                              DepopulateQueue();
