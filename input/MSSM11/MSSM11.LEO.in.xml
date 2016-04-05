@@ -302,8 +302,8 @@
             <RequireNeutralinoLSP>1</RequireNeutralinoLSP>
         </SuperIsoCalculator>
         
-        <FeynHiggsCalculator>
-        </FeynHiggsCalculator>
+        <FeynHiggsSLHACalculator>
+        </FeynHiggsSLHACalculator>
 
         <FeynHiggsRescalingCalculator>
         </FeynHiggsRescalingCalculator>
@@ -822,9 +822,9 @@
           <NoSmear>0</NoSmear>
         </Observable>
       </Observables>
-      <Chi2Contribution>HS_chi2</Chi2Contribution>
-      <Chi2Contribution>HB_chi2WithTheory</Chi2Contribution>
-      <Chi2Contribution>LUX</Chi2Contribution>
+      <Chi2Contribution>[HS_chi2]</Chi2Contribution>
+      <Chi2Contribution>[HB_chi2WithTheory]</Chi2Contribution>
+      <Chi2Contribution>[LUX]</Chi2Contribution>
       <CovarianceMatrices>
       </CovarianceMatrices>
 
