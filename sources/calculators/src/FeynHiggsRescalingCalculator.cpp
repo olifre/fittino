@@ -301,9 +301,7 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Model
     AddQuantity( new SimplePrediction( "NormSM_g_Abs2_h0_b_b"           , "", _normSM_g_Abs2_h_b_b          ) );
     AddQuantity( new SimplePrediction( "NormSM_g_Abs2_h0_Z0_Z0"         , "", _normSM_g_Abs2_h_Z0_Z0        ) );
 
-    // intialize HiggsBounds for getting SMBRs later.
-    initialize_higgsbounds_chisqtables_();
-    initialize_higgsbounds_( &_nHzero, &_nHplus, _whichAnalyses.c_str(), _whichAnalyses.length() );
+    __theory_brfunctions_MOD_setup_brsm();
 
 }
 
