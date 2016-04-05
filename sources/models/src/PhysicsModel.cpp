@@ -125,7 +125,7 @@ Fittino::PhysicsModel::PhysicsModel( boost::property_tree::ptree& ptree )
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
 
-        if ( node.first == "Chi2Contribution" ) AddChi2Contribution( node.second.get_value<std::string>() );
+//        if ( node.first == "Chi2Contribution" ) AddChi2Contribution( node.second.get_value<std::string>() );
 
     }
     
