@@ -13,7 +13,7 @@
 
       <ModelParameter>
         <Name>M_Input</Name>
-        <Value>-1</Value>
+        <Value>1500</Value>
         <Error>1</Error>
         <LowerBound>-10</LowerBound>
         <UpperBound>10000</UpperBound>

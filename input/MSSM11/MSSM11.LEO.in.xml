@@ -1,0 +1,843 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<?xml-stylesheet type="text/xsl" href="style/InputFile.xsl"?>
+
+<InputFile>
+
+  <VerbosityLevel>ALWAYS</VerbosityLevel>
+
+  <Model>
+
+    <PhysicsModel>
+
+      <Name>MSSM</Name>
+
+      <ModelParameter>
+        <Name>M_Input</Name>
+        <Value>1500</Value>
+        <Error>1</Error>
+        <LowerBound>-10</LowerBound>
+        <UpperBound>10000</UpperBound>
+        <Fixed>true</Fixed>
+      </ModelParameter>
+      
+      <ModelParameter>
+        <Name>M_1</Name>
+        <Value>170</Value>
+        <Error>1</Error>
+        <LowerBound>-1000</LowerBound>
+        <UpperBound>1000</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+      
+      <ModelParameter>
+        <Name>M_2</Name>
+        <Value>170</Value>
+        <Error>1</Error>
+        <LowerBound>0</LowerBound>
+        <UpperBound>4000</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+      <ModelParameter>
+        <Name>M_3</Name>
+        <Value>2600</Value>
+        <Error>1</Error>
+        <LowerBound>-4000</LowerBound>
+        <UpperBound>4000</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+      <ModelParameter>
+        <Name>M_Q1</Name>
+        <Value>2880</Value>
+        <Error>1</Error>
+        <LowerBound>0</LowerBound>
+        <UpperBound>4000</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+      <ModelParameter>
+        <Name>M_Q3</Name>
+        <Value>4360</Value>
+        <Error>1</Error>
+        <LowerBound>0</LowerBound>
+        <UpperBound>4000</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+      <ModelParameter>
+        <Name>M_L1</Name>
+        <Value>440</Value>
+        <Error>1</Error>
+        <LowerBound>0</LowerBound>
+        <UpperBound>2000</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+      <ModelParameter>
+        <Name>M_L3</Name>
+        <Value>440</Value>
+        <Error>1</Error>
+        <LowerBound>0</LowerBound>
+        <UpperBound>4000</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+      <ModelParameter>
+        <Name>M_A0</Name>
+        <Value>2070</Value>
+        <Error>1</Error>
+        <LowerBound>0</LowerBound>
+        <UpperBound>4000</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+      <ModelParameter>
+        <Name>A</Name>
+        <Value>790</Value>
+        <Error>1</Error>
+        <LowerBound>-5000</LowerBound>
+        <UpperBound>5000</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+      <ModelParameter>
+        <Name>mu</Name>
+        <Value>550</Value>
+        <Error>1</Error>
+        <LowerBound>-5000</LowerBound>
+        <UpperBound>5000</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+      <ModelParameter>
+        <Name>TanBeta</Name>
+        <Value>37.6</Value>
+        <Error>1</Error>
+        <LowerBound>0</LowerBound>
+        <UpperBound>60</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+      <ModelParameter>
+        <Name>M_Top</Name>
+        <Value>173.3</Value>
+        <Error>1</Error>
+        <LowerBound>130</LowerBound>
+        <UpperBound>215</UpperBound>
+        <Fixed>false</Fixed>
+      </ModelParameter>
+
+      
+      
+      
+      <Calculators>
+
+        
+        
+        <SPhenoCalculator>
+
+          <Name>SPhenoCalculator</Name>
+
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>0</Index>
+            <Value>M_Input</Value>
+          </SLHALine>
+          
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>1</Index>
+            <Value>M_1</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>2</Index>
+            <Value>M_2</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>3</Index>
+            <Value>M_3</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>11</Index>
+            <Value>A</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>12</Index>
+            <Value>A</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>13</Index>
+            <Value>A</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>23</Index>
+            <Value>mu</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>26</Index>
+            <Value>M_A0</Value>
+          </SLHALine>
+          
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>31</Index>
+            <Value>M_L1</Value>
+          </SLHALine>
+          
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>32</Index>
+            <Value>M_L1</Value>
+          </SLHALine>
+          
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>33</Index>
+            <Value>M_L3</Value>
+          </SLHALine>
+          
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>34</Index>
+            <Value>M_L1</Value>
+          </SLHALine>
+          
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>35</Index>
+            <Value>M_L1</Value>
+          </SLHALine>
+          
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>36</Index>
+            <Value>M_L3</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>41</Index>
+            <Value>M_Q1</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>42</Index>
+            <Value>M_Q1</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>43</Index>
+            <Value>M_Q3</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>44</Index>
+            <Value>M_Q1</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>45</Index>
+            <Value>M_Q1</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>46</Index>
+            <Value>M_Q3</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>47</Index>
+            <Value>M_Q1</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>48</Index>
+            <Value>M_Q1</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>49</Index>
+            <Value>M_Q3</Value>
+          </SLHALine>
+          
+          <SLHALine>
+            <Block>EXTPAR</Block>
+            <Index>25</Index>
+            <Value>TanBeta</Value>
+          </SLHALine>
+
+          <SLHALine>
+            <Block>SMINPUTS</Block>
+            <Index>6</Index>
+            <Value>M_Top</Value>
+          </SLHALine>
+
+        </SPhenoCalculator>
+        
+        
+        <SuperIsoCalculator>
+            <RequireNeutralinoLSP>1</RequireNeutralinoLSP>
+        </SuperIsoCalculator>
+        
+        <FeynHiggsCalculator>
+        </FeynHiggsCalculator>
+
+        <FeynHiggsRescalingCalculator>
+        </FeynHiggsRescalingCalculator>
+        
+        <AstroFitCalculator>
+        </AstroFitCalculator>
+        
+        
+        <AstroCalculator>
+            <Chi2Contribution>
+                <Name>LUX</Name>
+                <XValue>SPheno_Mass_~chi10</XValue>
+                <YValue>AstroFit_direct</YValue>
+                <FileName>dd_lux_2013_1310.8214Fig5.txt</FileName>
+                <TheoryUncertainty>0.5</TheoryUncertainty>
+                <WidthFormula>TMath::Sqrt([0]*[0]/1.64+[1]*[1]*[2]*[2])</WidthFormula>
+                <LimitFormula>TMath::Power([0]/[1], 2)</LimitFormula>
+            </Chi2Contribution>
+        </AstroCalculator>
+        
+        
+        
+        
+        
+        <NewHiggsSignalsHadXSCalculator>
+          <NHzero>3</NHzero>
+          <NHPlus>1</NHPlus>
+          <ExpData>Feb2014_incl</ExpData>
+          <GammaTotQName_0>FeynHiggsRescaling_GammaTotal_h0</GammaTotQName_0>
+          <CS_lep_tautauhj_ratioQName_0>FeynHiggsRescaling_NormSM_g_Abs2_h0_tau_tau</CS_lep_tautauhj_ratioQName_0>
+          <CS_lep_hjZ_ratioQName_0>FeynHiggsRescaling_NormSM_g_Abs2_h0_Z0_Z0</CS_lep_hjZ_ratioQName_0>
+          <CS_lep_bbhj_ratioQName_0>FeynHiggsRescaling_NormSM_g_Abs2_h0_b_b</CS_lep_bbhj_ratioQName_0>
+          <CS_tev_gghj_modelQName_0>FeynHiggsRescaling_CrossSection_1.96TeV_h0_ggh</CS_tev_gghj_modelQName_0>
+          <CS_tev_bbhj_modelQName_0>FeynHiggsRescaling_CrossSection_1.96TeV_h0_bbh</CS_tev_bbhj_modelQName_0>
+          <CS_tev_hjb_ratioQName_0>FeynHiggsRescaling_NormSM_CrossSection_1.96TeV_h0_btagbh</CS_tev_hjb_ratioQName_0>
+          <CS_tev_hjW_ratioQName_0>FeynHiggsRescaling_NormSM_CrossSection_1.96TeV_h0_Wh</CS_tev_hjW_ratioQName_0>
+          <CS_tev_hjZ_ratioQName_0>FeynHiggsRescaling_NormSM_CrossSection_1.96TeV_h0_Zh</CS_tev_hjZ_ratioQName_0>
+          <CS_tev_vbf_ratioQName_0>FeynHiggsRescaling_NormSM_CrossSection_1.96TeV_h0_qqh</CS_tev_vbf_ratioQName_0>
+          <CS_tev_tthj_ratioQName_0>FeynHiggsRescaling_NormSM_CrossSection_1.96TeV_h0_tth</CS_tev_tthj_ratioQName_0>
+          <CS_lhc7_gghj_modelQName_0>FeynHiggsRescaling_CrossSection_7TeV_h0_ggh</CS_lhc7_gghj_modelQName_0>
+          <CS_lhc7_bbhj_modelQName_0>FeynHiggsRescaling_CrossSection_7TeV_h0_bbh</CS_lhc7_bbhj_modelQName_0>
+          <CS_lhc7_hjb_ratioQName_0>FeynHiggsRescaling_NormSM_CrossSection_7TeV_h0_btagbh</CS_lhc7_hjb_ratioQName_0>
+          <CS_lhc7_hjW_ratioQName_0>FeynHiggsRescaling_NormSM_CrossSection_7TeV_h0_Wh</CS_lhc7_hjW_ratioQName_0>
+          <CS_lhc7_hjZ_ratioQName_0>FeynHiggsRescaling_NormSM_CrossSection_7TeV_h0_Zh</CS_lhc7_hjZ_ratioQName_0>
+          <CS_lhc7_vbf_ratioQName_0>FeynHiggsRescaling_NormSM_CrossSection_7TeV_h0_qqh</CS_lhc7_vbf_ratioQName_0>
+          <CS_lhc7_tthj_ratioQName_0>FeynHiggsRescaling_NormSM_CrossSection_7TeV_h0_tth</CS_lhc7_tthj_ratioQName_0>
+          <CS_lhc8_gghj_modelQName_0>FeynHiggsRescaling_CrossSection_8TeV_h0_ggh</CS_lhc8_gghj_modelQName_0>
+          <CS_lhc8_bbhj_modelQName_0>FeynHiggsRescaling_CrossSection_8TeV_h0_bbh</CS_lhc8_bbhj_modelQName_0>
+          <CS_lhc8_hjb_ratioQName_0>FeynHiggsRescaling_NormSM_CrossSection_8TeV_h0_btagbh</CS_lhc8_hjb_ratioQName_0>
+          <CS_lhc8_hjW_ratioQName_0>FeynHiggsRescaling_NormSM_CrossSection_8TeV_h0_Wh</CS_lhc8_hjW_ratioQName_0>
+          <CS_lhc8_hjZ_ratioQName_0>FeynHiggsRescaling_NormSM_CrossSection_8TeV_h0_Zh</CS_lhc8_hjZ_ratioQName_0>
+          <CS_lhc8_vbf_ratioQName_0>FeynHiggsRescaling_NormSM_CrossSection_8TeV_h0_qqh</CS_lhc8_vbf_ratioQName_0>
+          <CS_lhc8_tthj_ratioQName_0>FeynHiggsRescaling_NormSM_CrossSection_8TeV_h0_tth</CS_lhc8_tthj_ratioQName_0>
+          <BR_hjssQName_0>FeynHiggsRescaling_NormHB_BR_h0_to_s_s</BR_hjssQName_0>
+          <BR_hjccQName_0>FeynHiggsRescaling_NormHB_BR_h0_to_c_c</BR_hjccQName_0>
+          <BR_hjbbQName_0>FeynHiggsRescaling_NormHB_BR_h0_to_b_b</BR_hjbbQName_0>
+          <BR_hjmumuQName_0>FeynHiggsRescaling_NormHB_BR_h0_to_mu_mu</BR_hjmumuQName_0>
+          <BR_hjtautauQName_0>FeynHiggsRescaling_NormHB_BR_h0_to_tau_tau</BR_hjtautauQName_0>
+          <BR_hjWWQName_0>FeynHiggsRescaling_NormHB_BR_h0_to_Wp_Wm</BR_hjWWQName_0>
+          <BR_hjZZQName_0>FeynHiggsRescaling_NormHB_BR_h0_to_Z0_Z0</BR_hjZZQName_0>
+          <BR_hjZgaQName_0>FeynHiggsRescaling_NormHB_BR_h0_to_Z0_gamma</BR_hjZgaQName_0>
+          <BR_hjgagaQName_0>FeynHiggsRescaling_NormHB_BR_h0_to_gamma_gamma</BR_hjgagaQName_0>
+          <BR_hjggQName_0>FeynHiggsRescaling_NormHB_BR_h0_to_g_g</BR_hjggQName_0>
+          <BR_hjnuenueQName_0>FeynHiggsRescaling_BR_h0_to_nue_nue</BR_hjnuenueQName_0>
+          <BR_hjnumunumuQName_0>FeynHiggsRescaling_BR_h0_to_numu_numu</BR_hjnumunumuQName_0>
+          <BR_hjnutaunutauQName_0>FeynHiggsRescaling_BR_h0_to_nutau_nutau</BR_hjnutaunutauQName_0>
+          <BR_hjchi10chi10QName_0>FeynHiggsRescaling_BR_h0_to_~chi10_~chi10</BR_hjchi10chi10QName_0>
+          <BR_hjggQName_1>FeynHiggsRescaling_BR_H0_to_g_g</BR_hjggQName_1>
+          <BR_hjggQName_2>FeynHiggsRescaling_BR_A0_to_g_g</BR_hjggQName_2>
+        </NewHiggsSignalsHadXSCalculator>
+      
+      </Calculators>
+
+      
+      <Observables>
+        <Observable>
+            <Name>AstroFit_direct</Name>
+            <MeasuredValue>0</MeasuredValue>
+            <MeasuredError1>6.613e-9</MeasuredError1>
+            <BestFitPrediction>5.984e-11</BestFitPrediction>
+            <Unit></Unit>
+            <PlotName>LUX</PlotName>
+            <PlotUnit></PlotUnit>
+            <PlotLowerBound>0</PlotLowerBound>
+            <PlotUpperBound>10000</PlotUpperBound>
+            <PredictionType>Simple</PredictionType>
+            <NoFit>1</NoFit>
+        </Observable>
+        
+        <Observable>
+          <Name>SuperIso_BR_Bs_to_mu_mu</Name>
+          <MeasuredValue>2.90e-9</MeasuredValue>
+          <MeasuredError1>0.70e-9</MeasuredError1>
+          <RelativeError>0.26</RelativeError>
+          <BestFitPrediction>3.822e-9</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName>SuperIso_BR_Bs_to_mu_mu</PlotName>
+          <PlotLowerBound>0</PlotLowerBound>
+          <PlotUpperBound>10000</PlotUpperBound>
+        </Observable>
+        
+        <Observable>
+          <Name>SuperIso_BR_b_to_s_gamma</Name>
+          <MeasuredValue>3.43e-4</MeasuredValue>
+          <MeasuredError1>0.21e-4</MeasuredError1>
+          <MeasuredError2>0.07e-4</MeasuredError2>
+          <RelativeError>0.14</RelativeError>
+          <BestFitPrediction>2.98e-4</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit>GeV</Unit>
+          <PlotUnit>GeV></PlotUnit>
+          <PlotName>SuperIso_BR_b_to_s_gamma</PlotName>
+          <PlotLowerBound>0</PlotLowerBound>
+          <PlotUpperBound>10000</PlotUpperBound>
+        </Observable>
+        
+        <Observable>
+          <Name>SuperIso_BR_B_to_tau_nu</Name>
+          <MeasuredValue>1.05e-4</MeasuredValue>
+          <MeasuredError1>0.25e-4</MeasuredError1>
+          <RelativeError>0.20</RelativeError>
+          <BestFitPrediction>7.88e-5</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit>GeV</Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName>SuperIso_BR_B_to_tau_nu</PlotName>
+          <PlotLowerBound>0</PlotLowerBound>
+          <PlotUpperBound>10000</PlotUpperBound>
+        </Observable>
+        
+        <Observable>
+          <Name>FeynHiggs_Delta_Mass_Bs</Name>
+          <MeasuredValue>17.719</MeasuredValue>
+          <MeasuredError1>0.036</MeasuredError1>
+          <MeasuredError2>0.023</MeasuredError2>
+          <RelativeError>0.24</RelativeError>
+          <BestFitPrediction>21.237</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit>ps-1</Unit>
+          <PlotUnit>ps-1</PlotUnit>
+          <PlotName>FeynHiggs_Delta_Mass_Bs</PlotName>
+          <PlotLowerBound>0</PlotLowerBound>
+          <PlotUpperBound>10000</PlotUpperBound>
+        </Observable>
+
+        <Observable>
+          <Name>FeynHiggs_DiffSM_a_mu</Name>
+          <MeasuredValue>28.7e-10</MeasuredValue>
+          <MeasuredError1>8.0e-10</MeasuredError1>
+          <RelativeError>0.07</RelativeError>
+          <BestFitPrediction>5.528e-10</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName>FeynHiggs_DiffSM_a_mu</PlotName>
+          <PlotLowerBound>0</PlotLowerBound>
+          <PlotUpperBound>10000</PlotUpperBound>
+        </Observable>
+        
+        <Observable>
+          <Name>FeynHiggs_Mass_Wp</Name>
+          <MeasuredValue>80.385</MeasuredValue>
+          <MeasuredError1>0.015</MeasuredError1>
+          <RelativeError>0.0001</RelativeError>
+          <BestFitPrediction>80.370</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit>GeV</Unit>
+          <PlotUnit>GeV</PlotUnit>
+          <PlotName>FeynHiggs_Mass_Wp</PlotName>
+          <PlotLowerBound>0</PlotLowerBound>
+          <PlotUpperBound>10000</PlotUpperBound>
+        </Observable>
+
+        <Observable>
+          <Name>FeynHiggs_sin2_thetaEff</Name>
+          <MeasuredValue>0.23113</MeasuredValue>
+          <MeasuredError1>0.00021</MeasuredError1>
+          <RelativeError>0.0005</RelativeError>
+          <BestFitPrediction>0.23147</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName>FeynHiggs_sin2_thetaEff</PlotName>
+          <PlotLowerBound>0</PlotLowerBound>
+          <PlotUpperBound>1</PlotUpperBound>
+        </Observable>
+        
+        <Observable>
+          <Name>SPheno_Mass_t</Name>
+          <MeasuredValue>173.34</MeasuredValue>
+          <MeasuredError1>0.71</MeasuredError1>
+          <MeasuredError2>0.27</MeasuredError2>
+          <MeasuredError3>1.00</MeasuredError3>
+          <BestFitPrediction>174.32</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit>GeV</Unit>
+          <PlotUnit>GeV</PlotUnit>
+          <PlotName>SPheno_Mass_t</PlotName>
+          <PlotLowerBound>0</PlotLowerBound>
+          <PlotUpperBound>10000</PlotUpperBound>
+        </Observable>
+
+        <Observable>
+          <Name>MicrOMEGAs_Omega_h2</Name>
+          <MeasuredValue>0.1187</MeasuredValue>
+          <MeasuredError1>0.0017</MeasuredError1>
+          <RelativeError>0.10</RelativeError>
+          <BestFitPrediction>0.1188</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName>MicrOMEGAs_Omega_h2</PlotName>
+          <PlotLowerBound>0</PlotLowerBound>
+          <PlotUpperBound>10000</PlotUpperBound>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_7268831_mu</Name>
+          <MeasuredValue>1.55</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_7268831_mh</Name>
+          <MeasuredValue>126.8</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_20131081_mu</Name>
+          <MeasuredValue>1.44</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_20131081_mh</Name>
+          <MeasuredValue>125.5</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_7268811_mu</Name>
+          <MeasuredValue>0.99</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_7268811_mh</Name>
+          <MeasuredValue>125.5</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_7268821_mu</Name>
+          <MeasuredValue>1.43</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_7268821_mh</Name>
+          <MeasuredValue>124.3</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_2013079101_mu</Name>
+          <MeasuredValue>0.17</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_2013079101_mh</Name>
+          <MeasuredValue>125.5</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_13005103_mu</Name>
+          <MeasuredValue>0.77</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_13005103_mh</Name>
+          <MeasuredValue>125.4</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_1401652711_mu</Name>
+          <MeasuredValue>0.78</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_1401652711_mh</Name>
+          <MeasuredValue>125.0</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_1312112911_mu</Name>
+          <MeasuredValue>0.72</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_1312112911_mh</Name>
+          <MeasuredValue>125.6</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_1312535311_mu</Name>
+          <MeasuredValue>0.93</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_1312535311_mh</Name>
+          <MeasuredValue>125.6</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_1401652721_mu</Name>
+          <MeasuredValue>1.0</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+        
+        <Observable>
+          <Name>HiggsSignalsObservable_1401652721_mh</Name>
+          <MeasuredValue>125.0</MeasuredValue>
+          <MeasuredError1>0.1</MeasuredError1>
+          <BestFitPrediction>1</BestFitPrediction>
+          <PredictionType>Simple</PredictionType>
+          <Unit></Unit>
+          <PlotUnit></PlotUnit>
+          <PlotName></PlotName>
+          <LowerBound>-10000</LowerBound>
+          <UpperBound>10000</UpperBound>
+          <NoFit>1</NoFit>
+          <NoSmear>0</NoSmear>
+        </Observable>
+      </Observables>
+      <Chi2Contribution>HS_chi2</Chi2Contribution>
+      <Chi2Contribution>HB_chi2WithTheory</Chi2Contribution>
+      <Chi2Contribution>LUX</Chi2Contribution>
+      <CovarianceMatrices>
+      </CovarianceMatrices>
+
+    </PhysicsModel>
+
+  </Model>
+
+  <Tool>
+
+    <MarkovChainSampler>
+      <NumberOfIterations>1</NumberOfIterations>
+    </MarkovChainSampler>
+
+  </Tool>
+
+</InputFile>
