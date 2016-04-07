@@ -301,7 +301,12 @@ Fittino::FeynHiggsRescalingCalculator::FeynHiggsRescalingCalculator( const Model
     AddQuantity( new SimplePrediction( "NormSM_g_Abs2_h0_b_b"           , "", _normSM_g_Abs2_h_b_b          ) );
     AddQuantity( new SimplePrediction( "NormSM_g_Abs2_h0_Z0_Z0"         , "", _normSM_g_Abs2_h_Z0_Z0        ) );
 
-    __theory_brfunctions_MOD_setup_brsm();
+    // FIXME: commenting this out again, as it seems to set nHZero/nHPlus to 1/0 in HB.
+    //__theory_brfunctions_MOD_setup_brsm();
+    
+    // FIXME: maybe this is not neccessary, but not doing this results in an out-of-range for the pMSSM, due to HB apparently being initialized with a false number of Higgs bosons
+    initialize_higgsbounds_chisqtables_();
+    initialize_higgsbounds_( &_nHzero, &_nHplus, _whichAnalyses.c_str(), _whichAnalyses.length() );
 
 }
 
