@@ -329,6 +329,7 @@
         
         
         <NewHiggsSignalsHadXSCalculator>
+	      <InitializeHiggsBounds>0</InitializeHiggsBounds>
           <NHzero>3</NHzero>
           <NHPlus>1</NHPlus>
           <ExpData>Feb2014_incl</ExpData>
