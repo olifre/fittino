@@ -195,6 +195,10 @@ void Fittino::HigherOrderMarkovChainSampler::UpdateCovarianceMatrix() {
         for ( unsigned int k = 0; k <= i; k++ ) {
 
             _covarianceMatrix[i][k] = _expectationMatrix[i][k] - ( _expectationValues[i] * _expectationValues[k] );
+            if ( fabs( _covarianceMatrix[i][k] - 0. ) < std::numeric_limits<double>::min() || ( i == k && _covarianceMatrix[i][k] < 0. ) ) {
+                int log = ( int )log10( _expectationMatrix[i][k] );
+                _covarianceMatrix[i][k] = pow( 10., 1 + log - std::numeric_limits<double>::digits10 );
+            }
             _covarianceMatrix[k][i] = _covarianceMatrix[i][k];
 
         }
