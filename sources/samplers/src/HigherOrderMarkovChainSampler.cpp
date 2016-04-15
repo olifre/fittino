@@ -308,7 +308,6 @@ void Fittino::HigherOrderMarkovChainSampler::UpdateParameterValues( double scale
 void Fittino::HigherOrderMarkovChainSampler::UpdateParameterValuesUsingCovariance( double scalefactor ) {
 
     bool isInBounds = false;
-    _covarianceMatrix.Print();
 
     while ( !isInBounds ) {
 
