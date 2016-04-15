@@ -581,12 +581,6 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
 
     }
 
-#if QUAD
-    std::cout << "using quadruple precision" << std::endl;
-#else
-    std::cout << "not using quadruple precision " << std::endl;
-#endif
-
     _mass_h0 = MHiggs[0];
     _mass_H0 = MHiggs[1];
     _mass_A0 = MHiggs[2];
