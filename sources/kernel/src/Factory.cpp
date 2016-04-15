@@ -89,6 +89,7 @@
 #include "SLHAeaSLHADataStorage.h"
 #include "SModelSCalculator.h"
 #include "SPhenoSLHACalculator.h"
+#include "GCECalculator.h"
 #include "SplineCut.h"
 #include "SummaryHistogramMaker.h"
 #include "SummaryPlotter.h"
@@ -217,7 +218,7 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 
         return new HepMCSplitCalculator( model, ptree );
 
-#else 
+#else
 
         throw ConfigurationException( "Trying to use HepMCSplitCalculator but Fittino was built without HepMC." );
 
@@ -440,6 +441,12 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 #endif
 
     }
+    else if ( type == "GCECalculator" ) {
+
+        return new GCECalculator( model, ptree );
+
+    }
+
     else if ( type == "TreeCalculator" ) {
 
         return new TreeCalculator( model, ptree );

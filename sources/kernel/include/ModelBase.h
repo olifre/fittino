@@ -140,6 +140,8 @@ namespace Fittino {
        */
       Collection<ModelParameter*>                         _collectionOfParameters;
       Collection<const Quantity*>                         _collectionOfQuantities;
+
+    protected:
       std::vector<FormulaQuantity*>                       _chi2Contributions;
 
     private:

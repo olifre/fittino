@@ -252,7 +252,6 @@ void Fittino::ModelBase::Evaluate() {
 
     _chi2 = 0;
     _errorCode = 0;
-
     try {
 
         for ( unsigned int i = 0; i < _calculators.size(); ++i ) {
@@ -271,7 +270,6 @@ void Fittino::ModelBase::Evaluate() {
     }
 
     for ( unsigned int i = 0; i < _chi2Contributions.size(); ++i ) {
-
         _chi2Contributions[i]->Update();
         _chi2 += _chi2Contributions[i]->GetValue();
 
@@ -294,6 +292,7 @@ void Fittino::ModelBase::Update() {
         }
 
     }
+
 
     if ( evaluate ) {
 

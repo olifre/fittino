@@ -44,7 +44,7 @@
 #include "TVectorD.h"
 #include "RandomGenerator.h"
 #include "RandomGenerator.h"
-
+#include "FormulaQuantity.h"
 
 Fittino::PhysicsModel::PhysicsModel( boost::property_tree::ptree& ptree )
     : ModelBase( ptree ) {
@@ -123,12 +123,6 @@ Fittino::PhysicsModel::PhysicsModel( boost::property_tree::ptree& ptree )
     std::cout << "Covariance Matrix" << std::endl;
     _observableCovarianceMatrix->Print();
 
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
-
-//        if ( node.first == "Chi2Contribution" ) AddChi2Contribution( node.second.get_value<std::string>() );
-
-    }
-    
     if( _performToyRun ) {
         
         SetupForToyRun();
@@ -141,13 +135,6 @@ Fittino::PhysicsModel::PhysicsModel( boost::property_tree::ptree& ptree )
 }
 
 Fittino::PhysicsModel::~PhysicsModel() {
-
-}
-
-
-void Fittino::PhysicsModel::AddChi2Contribution( const std::string& name ) {
-
-    _collectionOfChi2Quantities.AddElement( GetCollectionOfQuantities().At( name ) );
 
 }
 
@@ -192,12 +179,10 @@ void Fittino::PhysicsModel::Evaluate() {
         }
 
     }
-
     // Now update the covariance matrix, if there are any relative Uncertainties;
     if( hasObsWithRelativeError ) {
         UpdateCovarianceMatrix();
     }
-
     // Calculate and return the resulting chi2.
 
     _chi2 = PhysicsModel::CalculateChi2();
@@ -335,13 +320,11 @@ double Fittino::PhysicsModel::CalculateChi2() {
         tDeviationVector2 *= *( _invertedFitObservableCovarianceMatrix );
         chi2 += tDeviationVector2 * tDeviationVector;
     }
-
     // Add additional chi2 terms.
 
-    for ( unsigned int i = 0; i < _collectionOfChi2Quantities.GetNumberOfElements(); i++ ) {
-
-        chi2 += _collectionOfChi2Quantities.At( i )->GetValue();
-
+    for ( unsigned int i = 0; i < _chi2Contributions.size(); ++i ) {
+        _chi2Contributions[i]->Update();
+        chi2 += _chi2Contributions[i]->GetValue();
     }
 
     return chi2;

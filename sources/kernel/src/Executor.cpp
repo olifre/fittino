@@ -305,7 +305,7 @@ void Fittino::Executor::Wait() {
                 unsigned int signal = WTERMSIG( _status );
                 throw ExecutorException( "Child terminated due to the receipt of the uncaught signal " + std::to_string( signal ) + "."  );
 
-            } 
+            }
             else {
 
                 throw ExecutorException( "Child didn't terminate normally." );
