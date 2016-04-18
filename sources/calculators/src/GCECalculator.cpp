@@ -37,9 +37,15 @@ Fittino::GCECalculator::GCECalculator( const ModelBase* model, const boost::prop
     _tag  = "GCE";
     _name = "GCECalculator";
 
-    AddQuantity( new SimplePrediction( "chi2",                                  "", _chi2                 ) );
-    AddQuantity( new SimplePrediction( "jbar",                                  "", _jbar                 ) );
-
+    AddQuantity( new SimplePrediction( "ll_gce",    "", _ll_gce   ) );
+    AddQuantity( new SimplePrediction( "chi2_gce",  "", _chi2_gce ) );
+    AddQuantity( new SimplePrediction( "ll_li3",    "", _ll_li3   ) );
+    AddQuantity( new SimplePrediction( "chi2_li3",  "", _chi2_li3 ) );
+    AddQuantity( new SimplePrediction( "ll_j",      "", _ll_j     ) );
+    AddQuantity( new SimplePrediction( "chi2_j",    "", _chi2_j   ) );
+    AddQuantity( new SimplePrediction( "ll_dw",     "", _ll_dw    ) );
+    AddQuantity( new SimplePrediction( "chi2_dw",   "", _chi2_dw  ) );
+    AddQuantity( new SimplePrediction( "jfactor",   "", _jfactor  ) );
 }
 
 Fittino::GCECalculator::~GCECalculator() {
@@ -54,8 +60,25 @@ void Fittino::GCECalculator::CalculatePredictions() {
     redirector.Start();
     
     ofstream inputFile( "GCEInput.txt", std::ofstream::out );
-    inputFile << _model->GetCollectionOfQuantities().At("MicrOMEGAs_Omega_h2"          )->GetValue() << std::endl;
-    inputFile << 1.e10*_model->GetCollectionOfQuantities().At("MicrOMEGAs_DiffSM_a_mu"       )->GetValue() << std::endl;
+    inputFile << "vSigma  " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma")->GetValue() << std::endl;
+    inputFile << "Cont_gg " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_GG")->GetValue() << std::endl;
+    inputFile << "Cont_aa " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_AA")->GetValue() << std::endl;
+    inputFile << "Cont_ww " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_WpWm")->GetValue() << std::endl;
+    inputFile << "Cont_zz " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_ZZ")->GetValue() << std::endl;
+    inputFile << "Cont_zh " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_Zh")->GetValue() << std::endl;
+    inputFile << "Cont_hh " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_hh")->GetValue() << std::endl;
+    inputFile << "Cont_tt " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_tT")->GetValue() << std::endl;
+    inputFile << "Cont_bb " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_bB")->GetValue() << std::endl;
+    inputFile << "Cont_cc " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_cC")->GetValue() << std::endl;
+    inputFile << "Cont_ss " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_sS")->GetValue() << std::endl;
+    inputFile << "Cont_dd " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_dD")->GetValue() << std::endl;
+    inputFile << "Cont_uu " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_uU")->GetValue() << std::endl;
+    inputFile << "Cont_ee " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_eE")->GetValue() << std::endl;
+    inputFile << "Cont_mm " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_mM")->GetValue() << std::endl;
+    inputFile << "Cont_ll " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_lL")->GetValue() << std::endl;
+    inputFile << "Cont_nene " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_neNe")->GetValue() << std::endl;
+    inputFile << "Cont_nmnm " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_nmNm")->GetValue() << std::endl;
+    inputFile << "Cont_nlnl " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_nlNl")->GetValue() << std::endl;
     
 
     try {
@@ -77,8 +100,15 @@ void Fittino::GCECalculator::CalculatePredictions() {
     while( outputFile.good() ) {
         outputFile >> key >> std::ws >> value;
         if( outputFile.eof() ) break;
-        if     ( key == "Chi2" ) _chi2 = atof( value.c_str() );
-        else if( key == "jbar" ) _jbar = atof( value.c_str() );
+        if     ( key == "ll_gce"   ) _ll_gce   = atof( value.c_str() );
+        else if( key == "chi2_gce" ) _chi2_gce = atof( value.c_str() );
+        else if( key == "ll_li3"   ) _ll_li3   = atof( value.c_str() );
+        else if( key == "chi2_li3" ) _chi2_li3 = atof( value.c_str() );
+        else if( key == "ll_j"     ) _ll_j     = atof( value.c_str() );
+        else if( key == "chi2_j"   ) _chi2_j   = atof( value.c_str() );
+        else if( key == "ll_dw"    ) _ll_dw    = atof( value.c_str() );
+        else if( key == "chi2_dw"  ) _chi2_dw  = atof( value.c_str() );
+        else if( key == "jfactor"  ) _jfactor  = atof( value.c_str() );
     }
 
 

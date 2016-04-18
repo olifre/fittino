@@ -45,8 +45,15 @@ namespace Fittino {
       void     CalculatePredictions();
     
     private:
-      double _chi2;
-      double _jbar;
+      double _ll_gce;
+      double _chi2_gce;
+      double _ll_li3;
+      double _chi2_li3;
+      double _ll_j;
+      double _chi2_j;
+      double _ll_dw;
+      double _chi2_dw;
+      double _jfactor;
 
   };
 
