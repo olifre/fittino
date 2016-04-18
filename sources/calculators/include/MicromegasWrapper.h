@@ -46,6 +46,26 @@ namespace Fittino {
     protected:
       double      _gmin2;
       double      _omegah2;
+      double      _vSigma;
+      double      _vSigma_Contribution_WpWm;
+      double      _vSigma_Contribution_ZZ;
+      double      _vSigma_Contribution_GG;
+      double      _vSigma_Contribution_AA;
+      double      _vSigma_Contribution_hh;
+      double      _vSigma_Contribution_Zh;
+      double      _vSigma_Contribution_tT;
+      double      _vSigma_Contribution_bB;
+      double      _vSigma_Contribution_cC;
+      double      _vSigma_Contribution_sS;
+      double      _vSigma_Contribution_dD;
+      double      _vSigma_Contribution_uU;
+      double      _vSigma_Contribution_lL;
+      double      _vSigma_Contribution_eE;
+      double      _vSigma_Contribution_mM;
+      double      _vSigma_Contribution_nlNl;
+      double      _vSigma_Contribution_nmNm;
+      double      _vSigma_Contribution_neNe;
+
       std::string _inputFile;
       std::string _mcname;
       int         _errorCode;
