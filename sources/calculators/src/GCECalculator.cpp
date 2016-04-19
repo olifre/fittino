@@ -60,25 +60,25 @@ void Fittino::GCECalculator::CalculatePredictions() {
     redirector.Start();
     
     ofstream inputFile( "GCEInput.txt", std::ofstream::out );
-    inputFile << "vSigma  " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma")->GetValue() << std::endl;
-    inputFile << "Cont_gg " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_GG")->GetValue() << std::endl;
-    inputFile << "Cont_aa " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_AA")->GetValue() << std::endl;
-    inputFile << "Cont_ww " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_WpWm")->GetValue() << std::endl;
-    inputFile << "Cont_zz " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_ZZ")->GetValue() << std::endl;
-    inputFile << "Cont_zh " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_Zh")->GetValue() << std::endl;
-    inputFile << "Cont_hh " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_hh")->GetValue() << std::endl;
-    inputFile << "Cont_tt " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_tT")->GetValue() << std::endl;
-    inputFile << "Cont_bb " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_bB")->GetValue() << std::endl;
-    inputFile << "Cont_cc " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_cC")->GetValue() << std::endl;
-    inputFile << "Cont_ss " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_sS")->GetValue() << std::endl;
-    inputFile << "Cont_dd " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_dD")->GetValue() << std::endl;
-    inputFile << "Cont_uu " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_uU")->GetValue() << std::endl;
-    inputFile << "Cont_ee " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_eE")->GetValue() << std::endl;
-    inputFile << "Cont_mm " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_mM")->GetValue() << std::endl;
-    inputFile << "Cont_ll " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_lL")->GetValue() << std::endl;
-    inputFile << "Cont_nene " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_neNe")->GetValue() << std::endl;
-    inputFile << "Cont_nmnm " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_nmNm")->GetValue() << std::endl;
-    inputFile << "Cont_nlnl " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_nlNl")->GetValue() << std::endl;
+    inputFile << "sigmav  " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma")->GetValue() << std::endl;
+    inputFile << "con_gg " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_GG")->GetValue() << std::endl;
+    inputFile << "con_aa " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_AA")->GetValue() << std::endl;
+    inputFile << "con_ww " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_WpWm")->GetValue() << std::endl;
+    inputFile << "con_zz " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_ZZ")->GetValue() << std::endl;
+    inputFile << "con_zh " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_Zh")->GetValue() << std::endl;
+    inputFile << "con_hh " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_hh")->GetValue() << std::endl;
+    inputFile << "con_tt " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_tT")->GetValue() << std::endl;
+    inputFile << "con_bb " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_bB")->GetValue() << std::endl;
+    inputFile << "con_cc " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_cC")->GetValue() << std::endl;
+    inputFile << "con_ss " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_sS")->GetValue() << std::endl;
+    inputFile << "con_dd " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_dD")->GetValue() << std::endl;
+    inputFile << "con_uu " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_uU")->GetValue() << std::endl;
+    inputFile << "con_ee " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_eE")->GetValue() << std::endl;
+    inputFile << "con_mm " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_mM")->GetValue() << std::endl;
+    inputFile << "con_tatau " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_lL")->GetValue() << std::endl;
+    inputFile << "con_nene " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_neNe")->GetValue() << std::endl;
+    inputFile << "con_nmnm " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_nmNm")->GetValue() << std::endl;
+    inputFile << "con_ntnt " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_nlNl")->GetValue() << std::endl;
     
 
     try {
