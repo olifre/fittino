@@ -64,7 +64,7 @@ void Fittino::GCECalculator::CalculatePredictions() {
     redirector.Start();
     
     ofstream inputFile( "GCEInput.txt", std::ofstream::out );
-    inputFile << "sigmav  " << 2.99792458*1.e-26*_model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma")->GetValue() << std::endl;
+    inputFile << "sigmav  " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma")->GetValue() << std::endl;
     inputFile << "mDM "    << _model->GetCollectionOfQuantities().At("SPheno_Mass_~chi10")->GetValue() << std::endl;
     inputFile << "con_gg " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_GG")->GetValue() << std::endl;
     inputFile << "con_aa " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_AA")->GetValue() << std::endl;

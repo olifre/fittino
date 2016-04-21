@@ -71,11 +71,13 @@ void Fittino::MicromegasWrapper::CalculatePredictions() {
     double *Xf = new double(0);
     int fast = 1;
     double Beps = 1e-6;
-    double Temperature = 2.726/1.1605 * 1.e-13;
+    //double Temperature = 2.726/1.1605 * 1.e-13;
     _omegah2 = darkOmega( Xf, fast, Beps );
     _gmin2 = gmuon();
-    _vSigma = vSigma( Temperature, Beps, fast );
-   
+    //_vSigma = vSigma( Temperature, Beps, fast );
+    int err = 0;
+    _vSigma = calcSpectrum( 7, NULL, NULL, NULL, NULL, NULL, NULL, &err );
+
     _vSigma_Contribution_WpWm = 0.;;
     _vSigma_Contribution_ZZ = 0.;;
     _vSigma_Contribution_GG = 0.;;
@@ -96,57 +98,57 @@ void Fittino::MicromegasWrapper::CalculatePredictions() {
     _vSigma_Contribution_neNe = 0.;;
 
     int channel = 0;
-    while( vSigmaTCh[channel].weight > 0. ) {
-        if( !strcmp( vSigmaTCh[channel].prtcl[0], "~o1" ) && !strcmp( vSigmaTCh[channel].prtcl[1], "~o1" ) ) {
-            if( ( !strcmp( vSigmaTCh[channel].prtcl[2], "W+" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "W-" ) )
-             || ( !strcmp( vSigmaTCh[channel].prtcl[2], "W-" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "W+" ) ) ) _vSigma_Contribution_WpWm = vSigmaTCh[channel].weight;
+    while( vSigmaCh[channel].weight > 0. ) {
+        if( !strcmp( vSigmaCh[channel].prtcl[0], "~o1" ) && !strcmp( vSigmaCh[channel].prtcl[1], "~o1" ) ) {
+            if( ( !strcmp( vSigmaCh[channel].prtcl[2], "W+" ) && !strcmp( vSigmaCh[channel].prtcl[3], "W-" ) )
+             || ( !strcmp( vSigmaCh[channel].prtcl[2], "W-" ) && !strcmp( vSigmaCh[channel].prtcl[3], "W+" ) ) ) _vSigma_Contribution_WpWm += vSigmaCh[channel].weight;
             
-            if( ( !strcmp( vSigmaTCh[channel].prtcl[2], "Z" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "Z" ) ) )   _vSigma_Contribution_ZZ   = vSigmaTCh[channel].weight;
+            if( ( !strcmp( vSigmaCh[channel].prtcl[2], "Z" ) && !strcmp( vSigmaCh[channel].prtcl[3], "Z" ) ) )   _vSigma_Contribution_ZZ   += vSigmaCh[channel].weight;
             
-            if( ( !strcmp( vSigmaTCh[channel].prtcl[2], "G" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "G" ) ) )   _vSigma_Contribution_GG   = vSigmaTCh[channel].weight;
+            if( ( !strcmp( vSigmaCh[channel].prtcl[2], "G" ) && !strcmp( vSigmaCh[channel].prtcl[3], "G" ) ) )   _vSigma_Contribution_GG   += vSigmaCh[channel].weight;
             
-            if( ( !strcmp( vSigmaTCh[channel].prtcl[2], "A" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "A" ) ) )   _vSigma_Contribution_AA   = vSigmaTCh[channel].weight;
+            if( ( !strcmp( vSigmaCh[channel].prtcl[2], "A" ) && !strcmp( vSigmaCh[channel].prtcl[3], "A" ) ) )   _vSigma_Contribution_AA   += vSigmaCh[channel].weight;
             
-            if( ( !strcmp( vSigmaTCh[channel].prtcl[2], "h" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "h" ) ) )   _vSigma_Contribution_hh   = vSigmaTCh[channel].weight;
+            if( ( !strcmp( vSigmaCh[channel].prtcl[2], "h" ) && !strcmp( vSigmaCh[channel].prtcl[3], "h" ) ) )   _vSigma_Contribution_hh   += vSigmaCh[channel].weight;
             
-            if( ( !strcmp( vSigmaTCh[channel].prtcl[2], "Z" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "h" ) )
-             || ( !strcmp( vSigmaTCh[channel].prtcl[2], "h" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "Z" ) ) ) _vSigma_Contribution_Zh     = vSigmaTCh[channel].weight;
+            if( ( !strcmp( vSigmaCh[channel].prtcl[2], "Z" ) && !strcmp( vSigmaCh[channel].prtcl[3], "h" ) )
+             || ( !strcmp( vSigmaCh[channel].prtcl[2], "h" ) && !strcmp( vSigmaCh[channel].prtcl[3], "Z" ) ) ) _vSigma_Contribution_Zh     += vSigmaCh[channel].weight;
             
-            if( ( !strcmp( vSigmaTCh[channel].prtcl[2], "t" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "T" ) )
-             || ( !strcmp( vSigmaTCh[channel].prtcl[2], "T" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "t" ) ) ) _vSigma_Contribution_tT     = vSigmaTCh[channel].weight;
+            if( ( !strcmp( vSigmaCh[channel].prtcl[2], "t" ) && !strcmp( vSigmaCh[channel].prtcl[3], "T" ) )
+             || ( !strcmp( vSigmaCh[channel].prtcl[2], "T" ) && !strcmp( vSigmaCh[channel].prtcl[3], "t" ) ) ) _vSigma_Contribution_tT     += vSigmaCh[channel].weight;
             
-            if( ( !strcmp( vSigmaTCh[channel].prtcl[2], "b" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "B" ) )
-             || ( !strcmp( vSigmaTCh[channel].prtcl[2], "B" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "b" ) ) ) _vSigma_Contribution_bB     = vSigmaTCh[channel].weight;
+            if( ( !strcmp( vSigmaCh[channel].prtcl[2], "b" ) && !strcmp( vSigmaCh[channel].prtcl[3], "B" ) )
+             || ( !strcmp( vSigmaCh[channel].prtcl[2], "B" ) && !strcmp( vSigmaCh[channel].prtcl[3], "b" ) ) ) _vSigma_Contribution_bB     += vSigmaCh[channel].weight;
             
-            if( ( !strcmp( vSigmaTCh[channel].prtcl[2], "c" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "C" ) )
-             || ( !strcmp( vSigmaTCh[channel].prtcl[2], "C" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "c" ) ) ) _vSigma_Contribution_cC     = vSigmaTCh[channel].weight;
+            if( ( !strcmp( vSigmaCh[channel].prtcl[2], "c" ) && !strcmp( vSigmaCh[channel].prtcl[3], "C" ) )
+             || ( !strcmp( vSigmaCh[channel].prtcl[2], "C" ) && !strcmp( vSigmaCh[channel].prtcl[3], "c" ) ) ) _vSigma_Contribution_cC     += vSigmaCh[channel].weight;
             
-            if( ( !strcmp( vSigmaTCh[channel].prtcl[2], "s" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "S" ) )
-             || ( !strcmp( vSigmaTCh[channel].prtcl[2], "S" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "s" ) ) ) _vSigma_Contribution_sS     = vSigmaTCh[channel].weight;
+            if( ( !strcmp( vSigmaCh[channel].prtcl[2], "s" ) && !strcmp( vSigmaCh[channel].prtcl[3], "S" ) )
+             || ( !strcmp( vSigmaCh[channel].prtcl[2], "S" ) && !strcmp( vSigmaCh[channel].prtcl[3], "s" ) ) ) _vSigma_Contribution_sS     += vSigmaCh[channel].weight;
             
-            if( ( !strcmp( vSigmaTCh[channel].prtcl[2], "u" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "U" ) )
-             || ( !strcmp( vSigmaTCh[channel].prtcl[2], "U" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "u" ) ) ) _vSigma_Contribution_uU     = vSigmaTCh[channel].weight;
+            if( ( !strcmp( vSigmaCh[channel].prtcl[2], "u" ) && !strcmp( vSigmaCh[channel].prtcl[3], "U" ) )
+             || ( !strcmp( vSigmaCh[channel].prtcl[2], "U" ) && !strcmp( vSigmaCh[channel].prtcl[3], "u" ) ) ) _vSigma_Contribution_uU     += vSigmaCh[channel].weight;
             
-            if( ( !strcmp( vSigmaTCh[channel].prtcl[2], "d" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "D" ) )
-             || ( !strcmp( vSigmaTCh[channel].prtcl[2], "D" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "d" ) ) ) _vSigma_Contribution_dD     = vSigmaTCh[channel].weight;
+            if( ( !strcmp( vSigmaCh[channel].prtcl[2], "d" ) && !strcmp( vSigmaCh[channel].prtcl[3], "D" ) )
+             || ( !strcmp( vSigmaCh[channel].prtcl[2], "D" ) && !strcmp( vSigmaCh[channel].prtcl[3], "d" ) ) ) _vSigma_Contribution_dD     += vSigmaCh[channel].weight;
             
-            if( ( !strcmp( vSigmaTCh[channel].prtcl[2], "l" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "L" ) )
-             || ( !strcmp( vSigmaTCh[channel].prtcl[2], "L" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "l" ) ) ) _vSigma_Contribution_lL     = vSigmaTCh[channel].weight;
+            if( ( !strcmp( vSigmaCh[channel].prtcl[2], "l" ) && !strcmp( vSigmaCh[channel].prtcl[3], "L" ) )
+             || ( !strcmp( vSigmaCh[channel].prtcl[2], "L" ) && !strcmp( vSigmaCh[channel].prtcl[3], "l" ) ) ) _vSigma_Contribution_lL     += vSigmaCh[channel].weight;
             
-            if( ( !strcmp( vSigmaTCh[channel].prtcl[2], "e" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "E" ) )
-             || ( !strcmp( vSigmaTCh[channel].prtcl[2], "E" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "e" ) ) ) _vSigma_Contribution_eE     = vSigmaTCh[channel].weight;
+            if( ( !strcmp( vSigmaCh[channel].prtcl[2], "e" ) && !strcmp( vSigmaCh[channel].prtcl[3], "E" ) )
+             || ( !strcmp( vSigmaCh[channel].prtcl[2], "E" ) && !strcmp( vSigmaCh[channel].prtcl[3], "e" ) ) ) _vSigma_Contribution_eE     += vSigmaCh[channel].weight;
             
-            if( ( !strcmp( vSigmaTCh[channel].prtcl[2], "m" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "M" ) )
-             || ( !strcmp( vSigmaTCh[channel].prtcl[2], "M" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "m" ) ) ) _vSigma_Contribution_mM     = vSigmaTCh[channel].weight;
+            if( ( !strcmp( vSigmaCh[channel].prtcl[2], "m" ) && !strcmp( vSigmaCh[channel].prtcl[3], "M" ) )
+             || ( !strcmp( vSigmaCh[channel].prtcl[2], "M" ) && !strcmp( vSigmaCh[channel].prtcl[3], "m" ) ) ) _vSigma_Contribution_mM     += vSigmaCh[channel].weight;
             
-            if( ( !strcmp( vSigmaTCh[channel].prtcl[2], "nl" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "Nl" ) )
-             || ( !strcmp( vSigmaTCh[channel].prtcl[2], "Nl" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "nl" ) ) ) _vSigma_Contribution_nlNl = vSigmaTCh[channel].weight;
+            if( ( !strcmp( vSigmaCh[channel].prtcl[2], "nl" ) && !strcmp( vSigmaCh[channel].prtcl[3], "Nl" ) )
+             || ( !strcmp( vSigmaCh[channel].prtcl[2], "Nl" ) && !strcmp( vSigmaCh[channel].prtcl[3], "nl" ) ) ) _vSigma_Contribution_nlNl += vSigmaCh[channel].weight;
             
-            if( ( !strcmp( vSigmaTCh[channel].prtcl[2], "ne" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "Ne" ) )
-             || ( !strcmp( vSigmaTCh[channel].prtcl[2], "Ne" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "ne" ) ) ) _vSigma_Contribution_neNe = vSigmaTCh[channel].weight;
+            if( ( !strcmp( vSigmaCh[channel].prtcl[2], "ne" ) && !strcmp( vSigmaCh[channel].prtcl[3], "Ne" ) )
+             || ( !strcmp( vSigmaCh[channel].prtcl[2], "Ne" ) && !strcmp( vSigmaCh[channel].prtcl[3], "ne" ) ) ) _vSigma_Contribution_neNe += vSigmaCh[channel].weight;
             
-            if( ( !strcmp( vSigmaTCh[channel].prtcl[2], "nm" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "nM" ) )
-             || ( !strcmp( vSigmaTCh[channel].prtcl[2], "Nm" ) && !strcmp( vSigmaTCh[channel].prtcl[3], "nm" ) ) ) _vSigma_Contribution_nmNm = vSigmaTCh[channel].weight;
+            if( ( !strcmp( vSigmaCh[channel].prtcl[2], "nm" ) && !strcmp( vSigmaCh[channel].prtcl[3], "nM" ) )
+             || ( !strcmp( vSigmaCh[channel].prtcl[2], "Nm" ) && !strcmp( vSigmaCh[channel].prtcl[3], "nm" ) ) ) _vSigma_Contribution_nmNm += vSigmaCh[channel].weight;
 
         }
         channel += 1;
