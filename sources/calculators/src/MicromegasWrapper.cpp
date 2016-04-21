@@ -71,7 +71,7 @@ void Fittino::MicromegasWrapper::CalculatePredictions() {
     double *Xf = new double(0);
     int fast = 1;
     double Beps = 1e-6;
-    double Temperature = 2.726/1.2 * 1.e-13;
+    double Temperature = 2.726/1.1605 * 1.e-13;
     _omegah2 = darkOmega( Xf, fast, Beps );
     _gmin2 = gmuon();
     _vSigma = vSigma( Temperature, Beps, fast );

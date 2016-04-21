@@ -47,13 +47,17 @@ namespace Fittino {
     private:
       double _ll_gce;
       double _chi2_gce;
-      double _ll_li3;
-      double _chi2_li3;
+      double _ll_R3;
+      double _chi2_R3;
+      double _ll_R16;
+      double _chi2_R16;
       double _ll_j;
       double _chi2_j;
-      double _ll_dw;
-      double _chi2_dw;
+      double _ll_dSph;
+      double _chi2_dSph;
       double _jfactor;
+      double _jres;
+      double _GCEERROR;
 
   };
 

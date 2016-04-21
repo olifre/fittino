@@ -32,20 +32,24 @@
 
 Fittino::GCECalculator::GCECalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model ),
-      _executor( "./GCECalculator.py", "GCECalculator.py" ) {
+      _executor( "./GCE_master.py", "GCE_master.py" ) {
      
     _tag  = "GCE";
     _name = "GCECalculator";
 
     AddQuantity( new SimplePrediction( "ll_gce",    "", _ll_gce   ) );
     AddQuantity( new SimplePrediction( "chi2_gce",  "", _chi2_gce ) );
-    AddQuantity( new SimplePrediction( "ll_li3",    "", _ll_li3   ) );
-    AddQuantity( new SimplePrediction( "chi2_li3",  "", _chi2_li3 ) );
     AddQuantity( new SimplePrediction( "ll_j",      "", _ll_j     ) );
     AddQuantity( new SimplePrediction( "chi2_j",    "", _chi2_j   ) );
-    AddQuantity( new SimplePrediction( "ll_dw",     "", _ll_dw    ) );
-    AddQuantity( new SimplePrediction( "chi2_dw",   "", _chi2_dw  ) );
+    AddQuantity( new SimplePrediction( "ll_R3",    "", _ll_R3   ) );
+    AddQuantity( new SimplePrediction( "chi2_R3",  "", _chi2_R3 ) );
+    AddQuantity( new SimplePrediction( "ll_R16",    "", _ll_R16   ) );
+    AddQuantity( new SimplePrediction( "chi2_R16",  "", _chi2_R16 ) );
+    AddQuantity( new SimplePrediction( "ll_dSph",     "", _ll_dSph    ) );
+    AddQuantity( new SimplePrediction( "chi2_dSph",   "", _chi2_dSph  ) );
     AddQuantity( new SimplePrediction( "jfactor",   "", _jfactor  ) );
+    AddQuantity( new SimplePrediction( "jres",   "", _jres  ) );
+    AddQuantity( new SimplePrediction( "GCEERROR", "", _GCEERROR ) );
 }
 
 Fittino::GCECalculator::~GCECalculator() {
@@ -60,7 +64,8 @@ void Fittino::GCECalculator::CalculatePredictions() {
     redirector.Start();
     
     ofstream inputFile( "GCEInput.txt", std::ofstream::out );
-    inputFile << "sigmav  " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma")->GetValue() << std::endl;
+    inputFile << "sigmav  " << 2.99792458*1.e-26*_model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma")->GetValue() << std::endl;
+    inputFile << "mDM "    << _model->GetCollectionOfQuantities().At("SPheno_Mass_~chi10")->GetValue() << std::endl;
     inputFile << "con_gg " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_GG")->GetValue() << std::endl;
     inputFile << "con_aa " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_AA")->GetValue() << std::endl;
     inputFile << "con_ww " << _model->GetCollectionOfQuantities().At("MicrOMEGAs_vSigma_Contribution_WpWm")->GetValue() << std::endl;
@@ -100,15 +105,19 @@ void Fittino::GCECalculator::CalculatePredictions() {
     while( outputFile.good() ) {
         outputFile >> key >> std::ws >> value;
         if( outputFile.eof() ) break;
-        if     ( key == "ll_gce"   ) _ll_gce   = atof( value.c_str() );
-        else if( key == "chi2_gce" ) _chi2_gce = atof( value.c_str() );
-        else if( key == "ll_li3"   ) _ll_li3   = atof( value.c_str() );
-        else if( key == "chi2_li3" ) _chi2_li3 = atof( value.c_str() );
-        else if( key == "ll_j"     ) _ll_j     = atof( value.c_str() );
-        else if( key == "chi2_j"   ) _chi2_j   = atof( value.c_str() );
-        else if( key == "ll_dw"    ) _ll_dw    = atof( value.c_str() );
-        else if( key == "chi2_dw"  ) _chi2_dw  = atof( value.c_str() );
-        else if( key == "jfactor"  ) _jfactor  = atof( value.c_str() );
+        if     ( key == "ll_gce"   ) _ll_gce    = atof( value.c_str() );
+        else if( key == "chi2_gce" ) _chi2_gce  = atof( value.c_str() );
+        else if( key == "ll_R3"    ) _ll_R3     = atof( value.c_str() );
+        else if( key == "chi2_R3"  ) _chi2_R3   = atof( value.c_str() );
+        else if( key == "ll_R16"   ) _ll_R16    = atof( value.c_str() );
+        else if( key == "chi2_R16" ) _chi2_R16  = atof( value.c_str() );
+        else if( key == "ll_j"     ) _ll_j      = atof( value.c_str() );
+        else if( key == "chi2_j"   ) _chi2_j    = atof( value.c_str() );
+        else if( key == "ll_dSph"  ) _ll_dSph   = atof( value.c_str() );
+        else if( key == "chi2_dSph") _chi2_dSph = atof( value.c_str() );
+        else if( key == "jfactor"  ) _jfactor   = atof( value.c_str() );
+        else if( key == "jres"     ) _jres      = atof( value.c_str() );
+        else if( key == "error"    ) _GCEERROR  = atof( value.c_str() );
     }
 
 
