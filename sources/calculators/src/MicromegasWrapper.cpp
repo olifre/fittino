@@ -76,7 +76,7 @@ void Fittino::MicromegasWrapper::CalculatePredictions() {
     _gmin2 = gmuon();
     //_vSigma = vSigma( Temperature, Beps, fast );
     int err = 0;
-    _vSigma = calcSpectrum( 7, NULL, NULL, NULL, NULL, NULL, NULL, &err );
+    _vSigma = calcSpectrum( 3, NULL, NULL, NULL, NULL, NULL, NULL, &err );
 
     _vSigma_Contribution_WpWm = 0.;;
     _vSigma_Contribution_ZZ = 0.;;
