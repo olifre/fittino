@@ -96,6 +96,11 @@ void Fittino::AstroFitCalculator::CalculatePredictions() {
         throw CalculatorException( _name, "Timeout" );
 
     }
+    catch ( const ExecutorException& e ) {
+        
+        throw CalculatorException( _name, e.what() );
+    
+    }
 
     redirector.Stop();
 
