@@ -194,7 +194,7 @@ void Fittino::HigherOrderMarkovChainSampler::UpdateCovarianceMatrix() {
 
         for ( unsigned int k = 0; k <= i; k++ ) {
 
-            std::cout << "calculating new covariance matrix entry " << i << " " << k << " from " << _expectationMatrix[i][k] << " and " << _expectationValues[i] << " * " << _expectationValues[k] << std::endl;
+//            std::cout << "calculating new covariance matrix entry " << i << " " << k << " from " << _expectationMatrix[i][k] << " and " << _expectationValues[i] << " * " << _expectationValues[k] << std::endl;
             _covarianceMatrix[i][k] = _expectationMatrix[i][k] - ( _expectationValues[i] * _expectationValues[k] );
             if ( i == k && ( fabs( _covarianceMatrix[i][k] - 0. ) < std::numeric_limits<double>::min() || _covarianceMatrix[i][k] < 0. ) ) {
                 int log = ( int )log10( _expectationMatrix[i][k] );
@@ -205,10 +205,25 @@ void Fittino::HigherOrderMarkovChainSampler::UpdateCovarianceMatrix() {
         }
 
     }
+    /*
     _covarianceMatrix.Print();
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
         std::cout << std::setprecision( 15 ) << "error for parameter " << i << " is " << _covarianceMatrix[i][i] << " which gives " << 1. / sqrt( _covarianceMatrix[i][i] ) << std::endl;
     }
+    */
+    // first: check if a single uncertainty is smaller than the MinError for that Parameter. If yes, set the uncertainty for that Parameter to the minimum value. keep all correlations factors as is
+    for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
+        if ( sqrt(_covarianceMatrix[i][i]) < _model->GetCollectionOfParameters().At( i )->GetMinError() ) {
+            for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); ++k ) {
+                if ( k == i ) continue;
+                _covarianceMatrix[i][k] /= sqrt( _covarianceMatrix[i][i] );
+                _covarianceMatrix[i][k] *= _model->GetCollectionOfParameters().At( i )->GetMinError();
+                _covarianceMatrix[k][i] = _covarianceMatrix[i][k];
+            }
+            _covarianceMatrix[i][i] = _model->GetCollectionOfParameters().At( i )->GetMinError() * _model->GetCollectionOfParameters().At( i )->GetMinError();
+        }
+    }
+
     // now check if any correlation factor is > larger than the max allowed;
     int nAboveLimit = 0;
     int nIteration = 0;
@@ -239,7 +254,7 @@ void Fittino::HigherOrderMarkovChainSampler::UpdateCovarianceMatrix() {
 
         if ( nAboveLimit == 0 ) break;
         if ( nAboveLimit == 1 && maxDeviation < 1.e-5 ) break;
-        std::cout << "need to fix the matrix because " << nAboveLimit << " are above the limit with maxDeviation " << maxDeviation  << std::endl;
+        //std::cout << "need to fix the matrix because " << nAboveLimit << " are above the limit with maxDeviation " << maxDeviation  << std::endl;
         // assume the smallest eigenvalue is linear in the maximal correlation factor;
         // EV_min ~ 1 - rho_max
         // ==> change rho_max to rho_max - maxDeviation -> change EV_min to 1 - rho_max + maxDeviation = EV_min_old + maxDeviation;
@@ -321,10 +336,10 @@ void Fittino::HigherOrderMarkovChainSampler::UpdateParameterValuesUsingCovarianc
         TVectorD y( _model->GetNumberOfParameters() );
 
         for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
-            std::cout << std::setprecision( 15 ) << "for parameter " << i << " calculating width from " << scalefactor << " * " << covariantEigen.GetEigenValues()[i] << std::endl;
+            //std::cout << std::setprecision( 15 ) << "for parameter " << i << " calculating width from " << scalefactor << " * " << covariantEigen.GetEigenValues()[i] << std::endl;
             double width = scalefactor * TMath::Sqrt( covariantEigen.GetEigenValues()[i] );
             y[i] = _randomGenerator->Gaus( 0., width );
-            std::cout << std::setprecision( 15 ) << "threw random number : " << y[i] << std::endl;
+            //std::cout << std::setprecision( 15 ) << "threw random number : " << y[i] << std::endl;
         }
 
         y = covariantEigen.GetEigenVectors() * y;
@@ -332,7 +347,7 @@ void Fittino::HigherOrderMarkovChainSampler::UpdateParameterValuesUsingCovarianc
         for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); i++ ) {
 
             y[i] += GetParameterValuesOfLastAcceptedPoint()[i];
-            std::cout << std::setprecision( 15 ) << "setting parameter " << i << " to value " << y[i] << std::endl;
+            //std::cout << std::setprecision( 15 ) << "setting parameter " << i << " to value " << y[i] << std::endl;
             _model->GetCollectionOfParameters().At( i )->SetValue( y[i] );
 
         }
