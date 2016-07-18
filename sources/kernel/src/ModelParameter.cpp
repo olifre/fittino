@@ -26,11 +26,12 @@
 #include "ModelParameter.h"
 
 Fittino::ModelParameter::ModelParameter( boost::property_tree::ptree& ptree )
-    : Quantity( ptree ),
-      _fixed  ( ptree.get<bool>  ( "Fixed", false ) ),
-      _updated( true ),
-      _ptree  ( ptree ),
-      _error  ( ptree.get<double>( "Error", 0.1   ) ) {
+    : Quantity ( ptree ),
+      _fixed   ( ptree.get<bool>  ( "Fixed", false ) ),
+      _updated ( true ),
+      _ptree   ( ptree ),
+      _error   ( ptree.get<double>( "Error", 0.1   ) ),
+      _minError( ptree.get<double>( "MinError", 0. ) ) {
 
 }
 
@@ -53,6 +54,12 @@ bool Fittino::ModelParameter::IsUpdated() const {
 double Fittino::ModelParameter::GetError() const {
 
     return _error;
+
+}
+
+double Fittino::ModelParameter::GetMinError() const {
+
+    return _minError;
 
 }
 

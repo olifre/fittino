@@ -51,6 +51,7 @@ namespace Fittino {
        *  Returns the error of the parameter.
        */
       double                       GetError() const;
+      double                       GetMinError() const;
       void                         Initialize() const;
       void                         PrintStatus() const;
       /*!
@@ -78,6 +79,7 @@ namespace Fittino {
        */
       bool                         _updated;
       double                       _error;
+      double                       _minError;
 
       /*! \cond UML */
     private:
