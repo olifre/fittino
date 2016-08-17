@@ -17,6 +17,7 @@
  *                                                                              *
  *******************************************************************************/
 
+
 #include "TMath.h"
 
 #include "CFeynHiggs.h"
@@ -25,6 +26,7 @@
 #include "CalculatorException.h"
 #include "FeynHiggsBosonicChannel.h"
 #include "SimplePrediction.h"
+
 
 Fittino::FeynHiggsBosonicChannel::FeynHiggsBosonicChannel( FHRealType* gammas, FHRealType* gammasms, FHComplexType* couplings, FHComplexType* couplingsms, std::string higgsName, std::string channelName, int channelNumber, bool SM )
 : FeynHiggsChannel( gammas, gammasms, couplings, couplingsms, higgsName, channelName, channelNumber, SM ) {

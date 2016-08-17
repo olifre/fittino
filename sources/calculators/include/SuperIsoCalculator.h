@@ -9,6 +9,7 @@
 * Description Wrapper class for HDim6                                          *
 *                                                                              *
 * Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
+*             Matthias Hamer   <Matthias.Hamer@cern.ch>                        *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
@@ -20,6 +21,7 @@
 #ifndef FITTINO_SUPERISOCALCULATOR_H
 #define FITTINO_SUPERISOCALCULATOR_H
 
+#include "Executor.h"
 #include "CalculatorBase.h"
 
 /*!
@@ -45,6 +47,12 @@ namespace Fittino {
        */
       virtual      ~SuperIsoCalculator();
       virtual void CalculatePredictions();
+    
+
+    /*! \cond UML */
+    private:
+      int                    _returnValue;
+      Executor               _executor;
 
       /*! \cond UML */
     private:
@@ -59,6 +67,8 @@ namespace Fittino {
       double       _normSM_btaunu;
       double       _bdtaunu;
       double       _bdtaunu_bdenu;
+      double       _bdstartaunu;
+      double       _bdstartaunu_bdstarenu;
       double       _dmunu;
       double       _dsmunu;
       double       _dstaunu;
