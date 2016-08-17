@@ -606,16 +606,7 @@ void Fittino::FeynHiggsCalculator::CalculatePredictions() {
     }
 
     int fast  = 1;
-    std::cout << "calling FHCouplings with " << sizeof(_error)/sizeof(int) << " " << sizeof(_couplings)/sizeof(double) << " " << sizeof(_couplingsms)/sizeof(double) << " " << sizeof(gammas)/sizeof(double) << " " << sizeof(gammasms)/sizeof(double) << std::endl;
-    std::cout << "with values " << _error << std::endl;
-    std::cout << "        and " << _couplings[0] << std::endl;
-    std::cout << "        and " << _couplingsms[0] << std::endl;
-    std::cout << "        and " << gammas[0] << std::endl;
-    std::cout << "        and " << gammasms[0] << std::endl;
-    std::cout << "        and " << MHiggs[0] << std::endl;
-    std::cout << "        and " << MHiggs[2] << std::endl;
     FHCouplings( &_error, _couplings, _couplingsms, gammas, gammasms, fast );
-    std::cout << "done it" << std::endl;
 
     if ( _error != 0 ) {
 
