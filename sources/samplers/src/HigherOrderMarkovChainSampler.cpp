@@ -213,7 +213,7 @@ void Fittino::HigherOrderMarkovChainSampler::UpdateCovarianceMatrix() {
     */
     // first: check if a single uncertainty is smaller than the MinError for that Parameter. If yes, set the uncertainty for that Parameter to the minimum value. keep all correlations factors as is
     for ( unsigned int i = 0; i < _model->GetNumberOfParameters(); ++i ) {
-        if ( sqrt(_covarianceMatrix[i][i]) < _model->GetCollectionOfParameters().At( i )->GetMinError() ) {
+        if ( sqrt( _covarianceMatrix[i][i] ) < _model->GetCollectionOfParameters().At( i )->GetMinError() ) {
             for ( unsigned int k = 0; k < _model->GetNumberOfParameters(); ++k ) {
                 if ( k == i ) continue;
                 _covarianceMatrix[i][k] /= sqrt( _covarianceMatrix[i][i] );
