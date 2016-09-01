@@ -148,7 +148,7 @@ void Fittino::PhysicsModel::Evaluate() {
     try {
 
         for ( unsigned int i = 0; i < _collectionOfCalculators.GetNumberOfElements(); ++i ) {
-            std::cout << "calling " << _collectionOfCalculators.At(i)->GetName() << std::endl; 
+            
             _collectionOfCalculators.At( i )->CalculatePredictions();
 
         }
