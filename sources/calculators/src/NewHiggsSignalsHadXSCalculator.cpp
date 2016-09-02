@@ -201,6 +201,7 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const M
         _name_BR_Hptaunu.push_back           ( ptree.get<std::string>( "BR_HptaunuQName_"          + number.str(), "FeynHiggs_BR_" + namesHplus.at(i) + "_to_nutau_tau" ) );
 
     }
+    /*
     for( int i = 0; i < _nHzero; ++i ) {
         std::cout << "USING " << _name_mass_h_neutral.at(i) << std::endl;
         std::cout << "USING " << _name_Gamma_Total_neutral.at(i) << std::endl;
@@ -248,15 +249,11 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const M
         std::cout << "USING " << _name_BR_hjnumunumu.at(i) << std::endl;
         std::cout << "USING " << _name_BR_hjnutaunutau.at(i) << std::endl;
 
-   } 
+   } */
    
-   std::cout << "checking if I have to init HB" << std::endl;
     if( _initializeHiggsBounds ) {
-        std::cout << "have to init hb...initing chi2 tables" << std::endl;
         initialize_higgsbounds_chisqtables_();
-        std::cout << "initing hb" << std::endl;
         initialize_higgsbounds_( &_nHzero, &_nHplus, _whichAnalyses.c_str(), _whichAnalyses.length() );
-        std::cout << "done all done" << std::endl;
     }
     
     //std::string expdata = "LHC_mail_14_07_2013_HS_new_observable_set";
