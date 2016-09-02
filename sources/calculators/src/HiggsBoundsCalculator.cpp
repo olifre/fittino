@@ -62,7 +62,9 @@ Fittino::HiggsBoundsCalculator::~HiggsBoundsCalculator() {
 
 void Fittino::HiggsBoundsCalculator::Initialize() {
 
+    std::cout << "initing hb chi2 tables" << std::endl;
     initialize_higgsbounds_chisqtables_();
+    std::cout << "initing hb" << std::endl;
     initialize_higgsbounds_( &_nH, &_nHplus, _whichAnalyses.c_str(), _whichAnalyses.length() );
 
 }

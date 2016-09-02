@@ -249,10 +249,14 @@ Fittino::NewHiggsSignalsHadXSCalculator::NewHiggsSignalsHadXSCalculator( const M
         std::cout << "USING " << _name_BR_hjnutaunutau.at(i) << std::endl;
 
    } 
-    
+   
+   std::cout << "checking if I have to init HB" << std::endl;
     if( _initializeHiggsBounds ) {
+        std::cout << "have to init hb...initing chi2 tables" << std::endl;
         initialize_higgsbounds_chisqtables_();
+        std::cout << "initing hb" << std::endl;
         initialize_higgsbounds_( &_nHzero, &_nHplus, _whichAnalyses.c_str(), _whichAnalyses.length() );
+        std::cout << "done all done" << std::endl;
     }
     
     //std::string expdata = "LHC_mail_14_07_2013_HS_new_observable_set";

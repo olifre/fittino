@@ -29,7 +29,7 @@
 
 Fittino::SuperIsoCalculator::SuperIsoCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model ),
-      _executor( "./SuperIsoWrapper", "SuperIsoWrapper" ) {
+      _executor( "./SuperIsoWrapper.x", "SuperIsoWrapper.x" ) {
 
     _name = "SuperIso";
     _tag = "SuperIso";
