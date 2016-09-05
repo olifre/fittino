@@ -94,6 +94,5 @@ void Fittino::LHCNeuralNetCalculator::CalculatePredictions() {
             _lhcNNChi2 = atof( key.c_str() );
         }
     }
-    std::cout << "LHC nn chi2 is " << _lhcNNChi2 << std::endl;
 
 }
