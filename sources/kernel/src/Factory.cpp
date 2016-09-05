@@ -430,15 +430,7 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     }
     else if ( type == "SuperIsoCalculator" ) {
 
-#ifdef SUPERISO
-
         return new SuperIsoCalculator( model, ptree );
-
-#else
-
-        throw ConfigurationException( "Trying to use SuperIsoCalculator but Fittino was built without SuperIso." );
-
-#endif
 
     }
     else if ( type == "GCECalculator" ) {
