@@ -41,6 +41,7 @@ namespace Fittino {
       ~Executor();
       int                      Execute();
       void                     AddArgument( std::string argument );
+      void                     ResetArguments( );
       void                     SetCompletionTimeout( double timeout );
       void                     SetCreationTimeout( double timeout );
 

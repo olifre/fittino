@@ -92,6 +92,14 @@ void Fittino::Executor::AddArgument( std::string arg ) {
 
 }
 
+void Fittino::Executor::ResetArguments( ) {
+
+    std::string arg0 = _args.at( 0 );
+    _args.clear();
+    _args.push_back( arg0 );
+
+}
+
 void Fittino::Executor::SetCompletionTimeout( double timeout ) {
 
     _completionTimeout = timeout;

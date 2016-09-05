@@ -90,6 +90,7 @@
 #include "SModelSCalculator.h"
 #include "SPhenoSLHACalculator.h"
 #include "GCECalculator.h"
+#include "LHCNeuralNetCalculator.h"
 #include "SplineCut.h"
 #include "SummaryHistogramMaker.h"
 #include "SummaryPlotter.h"
@@ -442,6 +443,11 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     else if ( type == "TreeCalculator" ) {
 
         return new TreeCalculator( model, ptree );
+
+    }
+    else if ( type == "LHCNeuralNetCalculator" ) {
+
+        return new LHCNeuralNetCalculator( model, ptree );
 
     }
     else {
