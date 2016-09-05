@@ -54,7 +54,6 @@ FIND_PACKAGE( SLHAEA                                                            
 FIND_PACKAGE( X11                                                                    )
 FIND_PACKAGE( MICROMEGAS                                                             )
 FIND_PACKAGE( FORTRANFLUSH                                                           )
-FIND_PACKAGE( SUPERISO                                                               )
 FIND_PACKAGE( HIGGSBOUNDS                                                            )
 FIND_PACKAGE( HIGGSSIGNALS                                                           )
 FIND_PACKAGE( FEYNHIGGS                                                              )
