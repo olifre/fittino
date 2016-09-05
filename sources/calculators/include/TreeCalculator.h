@@ -60,6 +60,8 @@ namespace Fittino {
       std::vector<std::string>            _excludedLeaves;
       TChain*                             _inputTree;
       TFile*                              _inputFile;
+      
+      std::vector<std::pair<std::string, std::string> >              _exchangeLeaves;
 
     private:
       void                                AddPredictions();

@@ -52,6 +52,15 @@ Fittino::TreeCalculator::TreeCalculator( const ModelBase* model, const boost::pr
             _includedLeaves.push_back( node.second.get_value<std::string>() );
 
         }
+        else if ( node.first == "ExchangeLeaf" ) {
+            
+            std::stringstream leafNames;
+            leafNames << node.second.get_value<std::string>();
+            std::string oldName, newName;
+            leafNames >> oldName >> std::ws >> newName;
+            _exchangeLeaves.push_back( std::pair<std::string,std::string>(oldName, newName ) );
+
+        }
         else if ( node.first == "InputTreeName" ) {
 
             _inputTreeName.push_back( node.second.get_value<std::string>() );
@@ -128,7 +137,25 @@ void Fittino::TreeCalculator::AddPredictions( ) {
             _inputTree->SetBranchStatus( leaf->GetName(), 1 ) ;
             _inputTree->SetBranchAddress( leaf->GetName(), &_predictionMap.at( leaf->GetName() ) );
 
-            AddQuantity( new SimplePrediction( leaf->GetName(), "", _predictionMap.at( leaf->GetName() ) ) );
+            bool exchangeLeaf = false;
+            std::string newName;
+            for( unsigned int j = 0; j < _exchangeLeaves.size(); ++j ) {
+                
+                if( !strcmp( leaf->GetName(), _exchangeLeaves.at(j).first.c_str() ) ) {
+                    
+                    exchangeLeaf = true;
+                    newName = _exchangeLeaves.at(j).second;
+
+                }
+            }
+           
+            if( exchangeLeaf ) {
+                std::cout << "replacing " << leaf->GetName() << " with " << newName << std::endl;
+                AddQuantity( new SimplePrediction( newName.c_str(), "", _predictionMap.at( leaf->GetName() ) ) );               
+            }
+            else {
+                AddQuantity( new SimplePrediction( leaf->GetName(), "", _predictionMap.at( leaf->GetName() ) ) );
+            }
 
         }
 
