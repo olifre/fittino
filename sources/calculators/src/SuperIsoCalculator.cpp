@@ -9,6 +9,7 @@
 * Description Wrapper class for SuperIso                                       *
 *                                                                              *
 * Authors     Bjoern Sarrazin  <sarrazin@physik.uni-bonn.de>                   *
+*             Matthias Hamer   <matthias.hamer@cern.ch>                        *
 *                                                                              *
 * Licence     This program is free software; you can redistribute it and/or    *
 *             modify it under the terms of the GNU General Public License as   *
