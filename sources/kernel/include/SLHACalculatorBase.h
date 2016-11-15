@@ -39,7 +39,7 @@ namespace Fittino {
       /*!
        *  Standard constructor.
        */
-      SLHACalculatorBase( const ModelBase* model );
+      SLHACalculatorBase( const ModelBase* model, const boost::property_tree::ptree* ptree = 0 );
       /*!
        *  Standard destructor.
        */

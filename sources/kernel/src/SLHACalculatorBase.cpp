@@ -20,8 +20,8 @@
 #include "Factory.h"
 #include "SLHACalculatorBase.h"
 
-Fittino::SLHACalculatorBase::SLHACalculatorBase( const ModelBase* model )
-    : CalculatorBase( model ),
+Fittino::SLHACalculatorBase::SLHACalculatorBase( const ModelBase* model, const boost::property_tree::ptree* ptree  )
+    : CalculatorBase( model, ptree ),
       _slhaInputFileName( "" ),
       _slhaOutputFileName( "" ) {
 
