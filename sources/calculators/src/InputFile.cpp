@@ -3,7 +3,7 @@
 #include "FormulaQuantity.h"
 #include "boost/property_tree/ptree.hpp"
 #include <boost/algorithm/string.hpp>
-
+#include <limits>
 #include <fstream>
 #include <sstream>
 #include <set>
@@ -53,7 +53,7 @@ void Fittino::InputFile::Write() {
         formula->Update();
 
         std::ostringstream ss;
-        ss << std::scientific << formula->GetValue();
+        ss << std::scientific << std::setprecision( std::numeric_limits<double>::max_digits10 ) << formula->GetValue();
 
         values[formula->GetName()] = ss.str();
 
