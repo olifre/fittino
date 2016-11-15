@@ -78,6 +78,21 @@ const double& Fittino::CalculatorBase::GetInput( std::string name ) const {
 
 }
 
+const double& Fittino::CalculatorBase::GetOutput( std::string name ) const {
+
+    try {
+
+        return _settableOutput.at( name )->GetValue();
+
+    }
+    catch ( const std::out_of_range& e ) {
+
+        std::cout << _name << ": No output " << name << std::endl;
+        throw;
+
+    }
+
+}
 void Fittino::CalculatorBase::AddInput( std::string name ) {
 
     std::string formula = GetConfiguration()->get<std::string>( name );

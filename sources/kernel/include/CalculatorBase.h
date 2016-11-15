@@ -67,6 +67,7 @@ namespace Fittino {
 
     protected:
       const double&                           GetInput( std::string name ) const;
+      const double&                           GetOutput( std::string name ) const;
       void                                    AddInput( std::string name );
       void                                    AddInput( std::string name, std::string value );
       void                                    AddOutput( std::string name, const double& value );
