@@ -53,6 +53,9 @@ namespace Fittino {
     double _n_ns7;
     double _n_ns8;
 
+ private:
+    std::string GetProcess( int id1, int id2 );
+
   };
 }
 

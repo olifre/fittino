@@ -63,6 +63,26 @@ Fittino::HepMCSplitCalculator::~HepMCSplitCalculator() {
 
 }
 
+std::string Fittino::HepMCSplitCalculator::GetProcess( int id1, int id2 ) {
+    std::string process;
+
+        if ( id1 == 1000021 && id2 == 1000021 ) process = "gg";
+
+        if ( _squarks.count( TMath::Abs( id1 ) ) && id2 == 1000021 ||
+                _squarks.count( TMath::Abs( id2 ) ) && id1 == 1000021   ) process = "sg";
+
+        if ( _squarks.count( TMath::Abs( id1 ) ) && _squarks.count( TMath::Abs( id2 ) ) && TMath::Sign( id1, id2 ) == id1 ) process = "ss";
+
+        if ( _squarks.count( TMath::Abs( id1 ) ) && _squarks.count( TMath::Abs( id2 ) ) && TMath::Sign( id1, id2 ) != id1 ) process = "sb";
+
+        if ( TMath::Abs( id1 ) == 1000006 && TMath::Abs( id2 ) == 1000006 && TMath::Sign( id1, id2 ) != id1 ) process = "tb1";
+
+        if ( TMath::Abs( id1 ) == 2000006 && TMath::Abs( id2 ) == 2000006 && TMath::Sign( id1, id2 ) != id1 ) process = "tb2";
+
+        return process;
+
+}
+
 void Fittino::HepMCSplitCalculator::CalculatePredictions() {
 
     _n_gg = 0;
@@ -92,6 +112,18 @@ void Fittino::HepMCSplitCalculator::CalculatePredictions() {
 
     HepMC::IO_GenEvent in( _hepMCFile.string(),std::ios::in);
 
+    std::map<std::string, HepMC::IO_GenEvent*> _outFiles;  
+
+    for ( std::string process : { "gg", "sg", "ss", "sb", "tb1", "tb2" } ) {
+    
+        HepMC::IO_GenEvent* file= new HepMC::IO_GenEvent( _hepMCFile.stem().string() + "_" + process  + _hepMCFile.extension().string(), std::ios::out );
+
+        _outFiles.insert( { process, file } );
+
+        AddOutput( "NumberOfEvents_" + process );
+
+    }
+
     HepMC::IO_GenEvent out_gg( _hepMCFile.stem().string() + "_" + "gg"  + _hepMCFile.extension().string(), std::ios::out );
     HepMC::IO_GenEvent out_sg( _hepMCFile.stem().string() + "_" + "sg"  + _hepMCFile.extension().string(), std::ios::out );
     HepMC::IO_GenEvent out_ss( _hepMCFile.stem().string() + "_" + "ss"  + _hepMCFile.extension().string(), std::ios::out );
@@ -117,36 +149,10 @@ void Fittino::HepMCSplitCalculator::CalculatePredictions() {
 
         if ( evt->event_number() != eventNumber ) throw ConfigurationException( "Event numbers do not match." );
 
-        if ( _squarks.count( TMath::Abs( id1 ) ) && _squarks.count( TMath::Abs( id2 ) ) && TMath::Sign( id1, id2 ) != id1 ){
-            out_sb << evt;
-            ++_n_sb;
-        }
-
-        if ( _squarks.count( TMath::Abs( id1 ) ) && _squarks.count( TMath::Abs( id2 ) ) && TMath::Sign( id1, id2 ) == id1 ){
-            out_ss << evt;
-            ++_n_ss;
-        }
-
-        if ( id1 == 1000021 && id2 == 1000021 ){
-            out_gg << evt;
-            ++_n_gg;
-        }
-
-        if ( _squarks.count( TMath::Abs( id1 ) ) && id2 == 1000021 ||
-                _squarks.count( TMath::Abs( id2 ) ) && id1 == 1000021   ) {
-            out_sg << evt;
-            ++_n_sg;
-        }
-
-        if ( TMath::Abs( id1 ) == 1000006 && TMath::Abs( id2 ) == 1000006 && TMath::Sign( id1, id2 ) != id1 ) {
-            out_tb1 << evt;
-            ++_n_tb1;
-        }
-
-        if ( TMath::Abs( id1 ) == 2000006 && TMath::Abs( id2 ) == 2000006 && TMath::Sign( id1, id2 ) != id1 ) {
-            out_tb2 << evt;
-            ++_n_tb2;
-        }
+        std::string process = GetProcess( id1, id2 );
+        *_outFiles.at( process ) << evt;
+        std::string name = "NumberOfEvents_" + process;
+        SetOutput( name, GetOutput( name ) + 1 ); 
 
         delete evt;
         in >> evt;
