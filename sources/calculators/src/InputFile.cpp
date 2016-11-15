@@ -17,13 +17,17 @@ Fittino::InputFile::InputFile( const boost::property_tree::ptree& ptree, const M
 
     for( const auto& node : ptree ) {
 
-        if( node.first != "Formula" ) continue;
+        if( node.first != "Quantity" ) continue;
 
         std::string name = node.second.get<std::string>( "Name" );
         std::string value = node.second.get<std::string>( "Value" );
         FormulaQuantity* f = new FormulaQuantity( name, value, model );
 
-        if( names.count( name ) ) throw ConfigurationException( "Formula with name " + name + " configured multiple times." );
+        if( ! names.insert(name).second )  {
+
+            throw ConfigurationException( "Quantity with name " + name + " configured multiple times." );
+
+        }
 
         _formulas.push_back( f );
 
