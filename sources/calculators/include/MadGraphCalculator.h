@@ -22,7 +22,9 @@
 
 #include <boost/property_tree/ptree.hpp>
 
-#include "CalculatorBase.h"
+#include "Executor.h"
+#include "InputFile.h"
+#include "SLHACalculatorBase.h"
 #include <map>
 
 class TTree;
@@ -44,7 +46,7 @@ namespace Fittino {
    *  \ingroup calculators
    *  \brief Wrapper class for MadGraph
    */
-  class MadGraphCalculator : public CalculatorBase {
+  class MadGraphCalculator : public SLHACalculatorBase {
 
     public:
       /*!
@@ -62,23 +64,14 @@ namespace Fittino {
       virtual void        SetupMeasuredValues();
       
     private:
- 
-      const double&         _cWW;
-      /*!
-       *
-       */
-      const double&         _cHW;
-      /*!
-       *
-       */
-      const double&         _cHB;
-      /*!
-       * 
-       */
-      const double&         _cBB;
 
-      std::map<std::string, const Quantity*> _input;
-      
+      InputFile _inputFile;
+      Executor  _executor;
+      std::string _bannerFileName;
+      double _weight;
+      double _nevents;
+
+      std::map<std::string, int> _pdgIds;
 
   };
 

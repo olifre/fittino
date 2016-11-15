@@ -16,8 +16,10 @@
 *                                                                              *
 *******************************************************************************/
 
+#include <boost/algorithm/string.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
 #include "TMath.h"
 #include "MadGraphCalculator.h"
@@ -26,102 +28,84 @@
 #include "ModelParameter.h"
 #include "Factory.h"
 #include "SimplePrediction.h"
+#include "SLHADataStorageBase.h"
 #include "Executor.h"
 #include <iostream>
 #include <fstream>
-
-
+#include <CalculatorException.h>
 
 Fittino::MadGraphCalculator::MadGraphCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
-  : CalculatorBase( model ),
-    // Initialize input quantities.                                                                                                                                                      
-    _cWW ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cWW.Name","cWW" ) )->GetValue() ),
-    _cHW ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cHW.Name", "cHW" ) )->GetValue() ),
-    _cHB ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cHB.Name", "cHB" ) )->GetValue() ),
-    _cBB ( _model->GetCollectionOfQuantities().At( ptree.get<std::string>( "cBB.Name", "cBB" ) )->GetValue() ) {
-  
-  
-  
-  _name = "MadGraph";
-  
-  
-  Messenger& messenger = Messenger::GetInstance();
-  
-  messenger << Messenger::ALWAYS << Messenger::Endl;
-  messenger << Messenger::ALWAYS << "Testing messenger" << Messenger::Endl;
-  messenger << Messenger::ALWAYS << Messenger::Endl;
-  messenger << Messenger::ALWAYS << "remember to change verbosity levels" << Messenger::Endl;
-  messenger << Messenger::ALWAYS << Messenger::Endl;
-  
-  // std::string configurationOption1 = ptree.get<std::string>( "MyFirstConfigurationOption" );
+  : SLHACalculatorBase( model, &ptree ),
+    _inputFile( ptree.get_child( "InputFile" ), model ),
+    _executor(ptree.get<std::string>("Executable"), "mg5_aMC" ),
+    _bannerFileName( ptree.get<std::string>("BannerFile") )
+{
 
-  BOOST_FOREACH( const boost::property_tree::ptree::value_type& node, ptree ) {
+  _executor.AddArgument( _inputFile.GetName() );
 
-    if( node.first == "Parameter" ) {
+  AddOutput( "IntegratedWeight", _weight  );
+  AddOutput( "NumberOfEvents", _nevents );
 
-      std::string parameterName    = node.second.get<std::string>( "Name"     );
-      std::string quantityName = node.second.get<std::string>( "Quantity" );
+  for ( const auto& node : ptree ) {
 
-      const Quantity* quantity  = _model->GetCollectionOfQuantities().At( quantityName );
+    if ( node.first != "Particle" ) continue;
 
-      _input[parameterName] = quantity;
-            
-    }
-        
+    std::string name = node.second.get<std::string>( "Name" );
+    int id           = node.second.get<int>( "PDGID" );
+
+    AddOutput("Width_" + name );
+    _pdgIds[name] = id;
+
   }
 
 }
-
-
 
 Fittino::MadGraphCalculator::~MadGraphCalculator() {
   
 }
 
-
 void Fittino::MadGraphCalculator::CalculatePredictions() {
-  
-  std::string originalinputfile = "/lustre/user/thakur/programs/madgraph_aMC_v2_2_2/runmadgraph.txt";
-  std::string inputfile = "fittino_madgraph_in.txt"; 
 
-  std::ifstream infile( originalinputfile.c_str(), std::ios::binary );
-  std::ofstream outfile( inputfile.c_str(),    std::ios::binary );
-  outfile << infile.rdbuf();
-  infile.close();
-  outfile.close();
+  _inputFile.Write();
 
-  std::ofstream myfile;
-  myfile.open ( inputfile.c_str(), std::ios::app ) ;
+  _executor.Execute();
 
-  // loop over _input Collection and set all contained parameters
+  boost::property_tree::ptree bannerFile;
+  boost::property_tree::read_xml( _bannerFileName, bannerFile );
 
-  for(std::map<std::string, const Quantity*>::iterator i = _input.begin(); i != _input.end(); ++i)
-    {
-      std::string name = i->first;
-      const Quantity* quantity = i->second;
-      double value = quantity->GetValue();
-      myfile <<"set " + name + " " <<value<<std::endl;
-    }
-  
-  myfile.close();
-  
-  
-  Executor executor("./mg5_aMC", "mg5_aMC");
-  executor.AddArgument(inputfile);
-  executor.Execute();
+  std::string info = bannerFile.get<std::string>( "LesHouchesEvents.header.MGGenerationInfo" );
+  std::vector<std::string> parts;
+  boost::split( parts, info, boost::is_any_of( "\n,:" ) );
 
-  std::string zipfile = "./testprocess/Events/run_01/tag_1_pythia_events.hep.gz";
-  Executor unzip("/bin/gunzip", "gunzip");
-  unzip.AddArgument(zipfile);
-  unzip.Execute();
+  if ( parts.size() != 6 || parts[0] != "" ||  parts[1] != "#  Number of Events        " || parts[3] != "#  Integrated weight (pb)  " || parts[5] != "" ){
+
+    throw CalculatorException( _name, "BannerFile" );
+
+  }
+
+  _weight = stod( parts[4] );
+  _nevents = stod( parts[2] );
+
+  std::string slha = bannerFile.get<std::string>("LesHouchesEvents.header.slha");
+  _slhaOutputDataStorage->Clear();
+  _slhaOutputDataStorage->ReadString( slha );
+
+  for( const auto& id : _pdgIds ) {
+
+    double width = _slhaOutputDataStorage->GetEntry( std::to_string( id.second ) , 2, "DECAY", "", "", "");
+    SetOutput( "Width_" + id.first, width  );
+
+  }
+
+  //std::string zipfile = "./testprocess/Events/run_01/tag_1_pythia_events.hep.gz";
+  //Executor unzip("/bin/gunzip", "gunzip");
+  //unzip.AddArgument(zipfile);
+  //unzip.Execute();
 
 }
 
-              
-                                                                                                                                                     
 void Fittino::MadGraphCalculator::SetupMeasuredValues() {
-  
-  
+
 }
 
 void Fittino::MadGraphCalculator::Initialize() {
