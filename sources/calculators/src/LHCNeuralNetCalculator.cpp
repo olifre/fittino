@@ -22,6 +22,7 @@
 #include <fstream>
 
 #include "boost/filesystem.hpp"
+#include <boost/python.hpp>
 
 #include "LHCNeuralNetCalculator.h"
 #include "CalculatorException.h"
@@ -31,6 +32,10 @@
 #include "TimeoutExecutorException.h"
 #include "ModelParameter.h"
 
+#include "Python.h"
+#include <boost/python/object.hpp>
+#include <assert.h>
+
 Fittino::LHCNeuralNetCalculator::LHCNeuralNetCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model ),
       _executor( "./chi2_LHCNN.py", "chi2_LHCNN.py" ) {
@@ -39,6 +44,37 @@ Fittino::LHCNeuralNetCalculator::LHCNeuralNetCalculator( const ModelBase* model,
     _name = "LHCNeuralNetCalculator";
     
     AddQuantity( new SimplePrediction( "TotalChi2",                                   "", _lhcNNChi2                  ) );
+
+    Py_Initialize();
+
+    //PyObject* myModuleString = PyString_FromString( (char*) "scynet.scynet" );
+    //PyObject* scynet_module = PyImport_Import(myModuleString);
+    //PyObject* scynet_class = PyObject_GetAttrString(scynet_module, "SCYNet");
+    //PyObject* scynet_instance = PyInstance_New( scynet_class, NULL, NULL); 
+    //PyObject *ret = PyObject_CallMethod(scynet_instance, "startSession", "i", 8);
+    //assert( ret != NULL );
+
+    boost::python::object scynet_module = boost::python::import("scynet.scynet");
+    boost::python::object scynet_class = scynet_module.attr( "SCYNet" );
+    PyObject* scynet_instance = PyInstance_New( scynet_class.ptr(), NULL, NULL); 
+    boost::python::handle<> handle(scynet_instance);
+    boost::python::object scynet(handle);
+    scynet.attr("startSession")(8);
+    double chi2 = -199;
+    boost::python::list point = boost::python::list();
+    point.append(-1682.23027931);
+    point.append(3465.09031358);
+    point.append(1237.59831623);
+    point.append(2429.59820408);
+    point.append(3450.31039446);
+    point.append(2169.17885836);
+    point.append(1800.49227919);
+    point.append(1271.54318728);
+    point.append(-4832.47899659);
+    point.append(-610.85511464);
+    point.append(33.96309872);
+    chi2 = boost::python::extract<double>( scynet.attr("chi2")(point) );
+    std::cout<<chi2<<std::endl;
 
     _arguments.push_back( "M_1" );
     _arguments.push_back( "M_2" );
@@ -51,6 +87,23 @@ Fittino::LHCNeuralNetCalculator::LHCNeuralNetCalculator( const ModelBase* model,
     _arguments.push_back( "A" );
     _arguments.push_back( "mu" );
     _arguments.push_back( "TanBeta" );
+
+   // AddInput( "M1"  );
+   // AddInput( "M2"  );
+    //AddInput( "M3"  );
+   // AddInput( "MQ1" );
+   // AddInput( "MQ3" );
+   // AddInput( "ML1" );
+   // AddInput( "ML3" );
+   // AddInput( "MA0" );
+   // AddInput( "A" );
+   // AddInput( "Mu" );
+   // AddInput( "TanBeta" );
+    
+    
+
+
+
 }
 
 Fittino::LHCNeuralNetCalculator::~LHCNeuralNetCalculator() {
@@ -58,41 +111,10 @@ Fittino::LHCNeuralNetCalculator::~LHCNeuralNetCalculator() {
 }
 
 void Fittino::LHCNeuralNetCalculator::CalculatePredictions() {
+
+   UpdateInput();
+   //PyObject_CallMethod(scynet, "Chi2", "(ddddddddddd)", 
    
-    _executor.ResetArguments();
-    std::ostringstream arg;
-    for( unsigned int i = 0; i < _arguments.size(); ++i ) {
-        arg << _model->GetCollectionOfQuantities().At(_arguments.at(i))->GetValue();
-        _executor.AddArgument( arg.str() );
-        arg.str(std::string());
-    }
 
-    std::string outputFileName = _name + ".out"; 
-    Redirector redirector( outputFileName );
-  
-    redirector.Start();
-    
-    try {
-
-        _executor.Execute();
-
-    }
-    catch ( const TimeoutExecutorException& e ) {
-
-        throw CalculatorException( _name, "Timeout" );
-
-    }
-
-    redirector.Stop();
-    
-    std::ifstream outputFile( _name + ".out", std::ifstream::in );
-    std::string key, value;
-    while( outputFile.good() ) {
-        outputFile >> key;
-        if( outputFile.eof() ) break;
-        else {
-            _lhcNNChi2 = atof( key.c_str() );
-        }
-    }
 
 }
