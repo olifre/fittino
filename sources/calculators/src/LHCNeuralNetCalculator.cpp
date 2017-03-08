@@ -19,31 +19,29 @@
 
 #define BOOST_NO_CXX11_SCOPED_ENUMS
 
-#include <fstream>
-
-#include "boost/filesystem.hpp"
 #include <boost/python.hpp>
 
 #include "LHCNeuralNetCalculator.h"
 #include "CalculatorException.h"
 #include "PhysicsModel.h"
-#include "Redirector.h"
 #include "SimplePrediction.h"
-#include "TimeoutExecutorException.h"
 #include "ModelParameter.h"
 
 #include "Python.h"
 #include <boost/python/object.hpp>
-#include <assert.h>
 
 Fittino::LHCNeuralNetCalculator::LHCNeuralNetCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
-    : CalculatorBase( model ),
-      _executor( "./chi2_LHCNN.py", "chi2_LHCNN.py" ) {
-     
-    _tag  = "LHCNN";
-    _name = "LHCNeuralNetCalculator";
+    : CalculatorBase( model, &ptree ) 
+{
     
-    AddQuantity( new SimplePrediction( "TotalChi2",                                   "", _lhcNNChi2                  ) );
+    if ( _name.empty() ) { 
+
+    _tag  = "SCYNet";
+    _name = "SCYNet";
+
+   }
+    
+    AddOutput( "Chi2_8TeV", _chi2_8TeV );
 
     Py_Initialize();
 
@@ -58,63 +56,60 @@ Fittino::LHCNeuralNetCalculator::LHCNeuralNetCalculator( const ModelBase* model,
     boost::python::object scynet_class = scynet_module.attr( "SCYNet" );
     PyObject* scynet_instance = PyInstance_New( scynet_class.ptr(), NULL, NULL); 
     boost::python::handle<> handle(scynet_instance);
-    boost::python::object scynet(handle);
-    scynet.attr("startSession")(8);
-    double chi2 = -199;
-    boost::python::list point = boost::python::list();
-    point.append(-1682.23027931);
-    point.append(3465.09031358);
-    point.append(1237.59831623);
-    point.append(2429.59820408);
-    point.append(3450.31039446);
-    point.append(2169.17885836);
-    point.append(1800.49227919);
-    point.append(1271.54318728);
-    point.append(-4832.47899659);
-    point.append(-610.85511464);
-    point.append(33.96309872);
-    chi2 = boost::python::extract<double>( scynet.attr("chi2")(point) );
-    std::cout<<chi2<<std::endl;
+    _scynet_8TeV = new boost::python::object(handle);
+    _scynet_8TeV->attr("startSession")(8);
 
-    _arguments.push_back( "M_1" );
-    _arguments.push_back( "M_2" );
-    _arguments.push_back( "M_3" );
-    _arguments.push_back( "M_Q1" );
-    _arguments.push_back( "M_Q3" );
-    _arguments.push_back( "M_L1" );
-    _arguments.push_back( "M_L3" );
-    _arguments.push_back( "M_A0" );
-    _arguments.push_back( "A" );
-    _arguments.push_back( "mu" );
-    _arguments.push_back( "TanBeta" );
-
-   // AddInput( "M1"  );
-   // AddInput( "M2"  );
-    //AddInput( "M3"  );
-   // AddInput( "MQ1" );
-   // AddInput( "MQ3" );
-   // AddInput( "ML1" );
-   // AddInput( "ML3" );
-   // AddInput( "MA0" );
-   // AddInput( "A" );
-   // AddInput( "Mu" );
-   // AddInput( "TanBeta" );
-    
-    
-
-
+    AddInput( "M1"  );
+    AddInput( "M2"  );
+    AddInput( "M3"  );
+    AddInput( "MQ1" );
+    AddInput( "MQ3" );
+    AddInput( "ML1" );
+    AddInput( "ML3" );
+    AddInput( "MA0" );
+    AddInput( "Mu" );
+    AddInput( "TanBeta" );
+    AddInput( "A" );
 
 }
 
 Fittino::LHCNeuralNetCalculator::~LHCNeuralNetCalculator() {
+
+//  _scynet_8TeV->closeSession();
+  delete _scynet_8TeV;
 
 }
 
 void Fittino::LHCNeuralNetCalculator::CalculatePredictions() {
 
    UpdateInput();
-   //PyObject_CallMethod(scynet, "Chi2", "(ddddddddddd)", 
-   
 
+    boost::python::list point = boost::python::list();
+
+//    point.append(-1682.23027931);
+ //   point.append(3465.09031358);
+ //   point.append(1237.59831623);
+ //   point.append(2429.59820408);
+ //   point.append(3450.31039446);
+ //   point.append(2169.17885836);
+ //   point.append(1800.49227919);
+ //   point.append(1271.54318728);
+ //   point.append(-4832.47899659);
+ //   point.append(-610.85511464);
+ //   point.append(33.96309872);
+
+    point.append( GetInput( "M1" ) );
+    point.append( GetInput( "M2" ) );
+    point.append( GetInput( "M3" ) );
+    point.append( GetInput( "MQ1" ) );
+    point.append( GetInput( "MQ3" ) );
+    point.append( GetInput( "ML1" ) );
+    point.append( GetInput( "ML3" ) );
+    point.append( GetInput( "MA0" ) );
+    point.append( GetInput( "A" ) );
+    point.append( GetInput( "Mu" ) );
+    point.append( GetInput( "TanBeta" ) );
+
+    _chi2_8TeV = boost::python::extract<double>( _scynet_8TeV->attr("chi2")(point) );
 
 }

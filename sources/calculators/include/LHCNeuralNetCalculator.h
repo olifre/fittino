@@ -21,7 +21,17 @@
 #define FITTINO_LHCNEURALNETCALCULATOR_H
 
 #include "CalculatorBase.h"
-#include "Executor.h"
+
+namespace boost {
+
+  namespace python {
+
+    class object;
+
+  }
+
+}
+
 
 /*!
  *  \brief Fittino namespace.
@@ -38,15 +48,14 @@ namespace Fittino {
       LHCNeuralNetCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree  );
       ~LHCNeuralNetCalculator();
 
-    private:
-      Executor _executor;
 
     private:
       void     CalculatePredictions();
     
     private:
-      double _lhcNNChi2;
-      std::vector<std::string> _arguments;
+      double _chi2_8TeV;
+      boost::python::object* _scynet_8TeV;
+
   };
 
 }
