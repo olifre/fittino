@@ -1,5 +1,3 @@
-# $Id$ #
-
 ################################################################################
 #                                                                              #
 # Project     Fittino - A SUSY Parameter Fitting Package                       #
@@ -12,171 +10,422 @@
 #                                                                              #
 # Licence     This program is free software; you can redistribute it and/or    #
 #             modify it under the terms of the GNU General Public License as   #
-#	      published by the Free Software Foundation; either version 3 of   #
-#	      the License, or (at your option) any later version.              #
+#	          published by the Free Software Foundation; either version 3 of   #
+#	          the License, or (at your option) any later version.              #
 #                                                                              #
 ###############################################################################
 
-CMAKE_MINIMUM_REQUIRED( VERSION 2.8.7 FATAL_ERROR )
+cmake_minimum_required( VERSION 2.8.7 FATAL_ERROR )
 
-PROJECT( Fittino_Superbuild CXX )
-ENABLE_LANGUAGE( Fortran C )
+project( Fittino_Superbuild LANGUAGES CXX C Fortran )
 
-SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../CMakeModules)
+set( CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../CMakeModules )
 
-SET(SuperIso_URL ~/superiso_v3.4.tar) # todo: improve this 
+include( ExternalProject )
 
-SET(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/Install  ) # todo: only if not defined
+set_property( DIRECTORY PROPERTY "EP_BASE" ${PROJECT_BINARY_DIR} )
 
-INCLUDE(GNUInstallDirs)
-SET( BINDIR ${CMAKE_INSTALL_FULL_BINDIR} )
-SET( DATADIR ${CMAKE_INSTALL_FULL_DATADIR} )
-SET( LIBDIR ${CMAKE_INSTALL_FULL_LIBDIR} )
-SET( INCLUDEDIR ${CMAKE_INSTALL_FULL_INCLUDEDIR} )
-SET( LOCALSTATEDIR ${CMAKE_INSTALL_FULL_LOCALSTATEDIR} )
-SET( InstallDirs -DDATADIR=${DATADIR} -DBINDIR=${BINDIR} -DLIBDIR=${LIBDIR} ) 
+option( INSTALL_SLHAea "" ON )
 
-SET_PROPERTY( DIRECTORY PROPERTY "EP_BASE" ${PROJECT_BINARY_DIR}  )
+if( INSTALL_SLHAea )
 
-OPTION( INSTALL_SLHAea "" OFF )
-OPTION( INSTALL_SPheno "" OFF )
-OPTION( INSTALL_HiggsSignals "" ON )
-OPTION( INSTALL_SuperIso "" OFF )
-OPTION( INSTALL_Fittino "" OFF )
-OPTION( INSTALL_MicrOMEGAs "" OFF )
-OPTION( INSTALL_FeynHiggs "" OFF )
+    set( slhaea SLHAea-0.1 )
 
-SET(FITTINO_DEPENDENCIES)
+    externalproject_add(
 
-INCLUDE(ExternalProject)
+            ${slhaea}
+            URL https://github.com/fthomas/slhaea/archive/v0.1.tar.gz
+            URL_MD5 167da979fe62ebbfde09eabb28543cf9
+            CONFIGURE_COMMAND ""
+            BUILD_COMMAND ""
+            INSTALL_COMMAND ""
 
-#FIND_PACKAGE(Boost 1.47.0 REQUIRED)
-IF( INSTALL_SLHAea )	
+    )
 
-  EXTERNALPROJECT_ADD(
-    SLHAea
-    PREFIX external/SLHAea
-    GIT_REPOSITORY https://github.com/fthomas/slhaea
-    GIT_TAG "v0.1"
-    CONFIGURE_COMMAND ""
-    UPDATE_COMMAND ""
-    BUILD_COMMAND ""
-    INSTALL_COMMAND ""
-  )
+    externalproject_get_property( ${slhaea} source_dir )
+    set( SLHAEA_INSTALLATION_PATH ${source_dir} )
 
-  EXTERNALPROJECT_GET_PROPERTY(SLHAea SOURCE_DIR)
-  SET(SLHAEA_INSTALLATION_PATH  ${SOURCE_DIR})
+    list( APPEND fittino_dependencies ${slhaea} )
 
-  LIST(APPEND FITTINO_DEPENDENCIES SLHAea)
+endif()
 
-ENDIF()
+option( INSTALL_SPheno "" ON )
 
-IF( INSTALL_SPheno )
+if( INSTALL_SPheno )
 
-EXTERNALPROJECT_ADD(
-    SPheno 
-    PREFIX external/SPheno
-    URL http://www.hepforge.org/archive/spheno/SPheno-3.3.8.tar.gz
-    UPDATE_COMMAND ""
-    PATCH_COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_SPheno.cmake
-    BUILD_IN_SOURCE 1
-    CONFIGURE_COMMAND ""
-    BUILD_COMMAND $(MAKE) F90=${CMAKE_Fortran_COMPILER}
-    INSTALL_COMMAND ${CMAKE_COMMAND} -E copy lib/libSPheno.a ${CMAKE_INSTALL_FULL_LIBDIR}
-    COMMAND ${CMAKE_COMMAND} -E copy bin/SPheno ${CMAKE_INSTALL_FULL_BINDIR}
-    COMMAND ${CMAKE_COMMAND} -E copy_directory doc ${CMAKE_INSTALL_FULL_DATAROOTDIR}/doc/SPheno
-    COMMAND ${CMAKE_COMMAND} -E copy_directory input ${CMAKE_INSTALL_FULL_DATADIR}/SPheno/input
-)  
+    set( spheno SPheno-4.0.2 )
 
-ENDIF()
+    externalproject_add(
 
-IF(INSTALL_HiggsSignals)
+            ${spheno}
+            URL http://www.hepforge.org/archive/spheno/SPheno-4.0.2.tar.gz
+            URL_MD5 3a758101fdf8a4711524d70437c8f1bc
+            PATCH_COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_SPheno.cmake
+            BUILD_IN_SOURCE 1
+            CONFIGURE_COMMAND ""
+            BUILD_COMMAND $(MAKE) F90=${CMAKE_Fortran_COMPILER}
+            INSTALL_COMMAND ""
 
-    EXTERNALPROJECT_ADD(
-        HiggsBounds_LEP-chisq
-        URL http://www.hepforge.org/archive/higgsbounds/csboutput_trans_binary.tar.gz
-        BUILD_IN_SOURCE 1 # simplifies the INSTALL_COMMAND
-        CONFIGURE_COMMAND ""
-        BUILD_COMMAND ""
-        INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory . ${CMAKE_INSTALL_FULL_DATADIR}/HiggsBounds/csboutput_trans_binary 
-        )
-  
-        EXTERNALPROJECT_ADD(
-            HiggsBounds
-            DEPENDS HiggsBounds_LEP-chisq
+    )
+
+    list( APPEND fittino_dependencies ${spheno} )
+
+endif()
+
+option( INSTALL_FeynHiggs "" ON )
+
+if( INSTALL_FeynHiggs )
+
+    set( feynhiggs FeynHiggs-2.11.3 )
+
+    externalproject_add(
+
+            ${feynhiggs}
+            URL http://wwwth.mpp.mpg.de/members/heinemey/feynhiggs/newversion/FeynHiggs-2.11.3.tar.gz
+            URL_MD5 49f5ea1838cb233baffd85bbc1b0d87d
+            CONFIGURE_COMMAND ./configure --quad --enable-slhapara --disable-vt100 --prefix=<INSTALL_DIR> CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} FC=${CMAKE_Fortran_COMPILER} MAKE=$(MAKE)
+            BUILD_COMMAND $(MAKE)
+            BUILD_IN_SOURCE 1
+            INSTALL_COMMAND $(MAKE) install
+    )
+
+    list( APPEND fittino_dependencies ${feynhiggs} )
+
+endif()
+
+option( INSTALL_HiggsSignals "" ON )
+
+if( INSTALL_HiggsSignals )
+
+    set( higgsboundslepchisq HiggsBounds_LEP-chisq )
+
+    externalproject_add(
+
+            ${higgsboundslepchisq}
+            URL http://www.hepforge.org/archive/higgsbounds/csboutput_trans_binary.tar.gz
+            URL_MD5 004decca30335ddad95654a04dd034a6
+            CONFIGURE_COMMAND ""
+            BUILD_COMMAND ""
+            INSTALL_COMMAND ""
+
+    )
+
+    externalproject_get_property( ${higgsboundslepchisq} source_dir )
+
+    set( higgsbounds HiggsBounds-4.3.1 )
+
+    externalproject_add(
+
+            ${higgsbounds}
+            DEPENDS ${higgsboundslepchisq}
             URL http://www.hepforge.org/archive/higgsbounds/HiggsBounds-4.3.1.tar.gz
+            URL_MD5 c1667613f814a9f0297d1f11a8b3ef34
             BUILD_IN_SOURCE 1
             CONFIGURE_COMMAND ./configure-with-chisq
-            PATCH_COMMAND ${CMAKE_COMMAND} ${InstallDirs} -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_HiggsBounds.cmake
-            BUILD_COMMAND $(MAKE) F90C=gfortran
-            INSTALL_COMMAND ${CMAKE_COMMAND} ${InstallDirs} -P ${CMAKE_CURRENT_SOURCE_DIR}/install_HiggsBounds.cmake
-           ) 
-    
-        EXTERNALPROJECT_ADD(
-            HiggsSignals
-            DEPENDS HiggsBounds
+            PATCH_COMMAND ${CMAKE_COMMAND} -Dclsbtablesdir=${source_dir} -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_HiggsBounds.cmake
+            BUILD_COMMAND $(MAKE) F90C=${CMAKE_Fortran_COMPILER}
+            INSTALL_COMMAND ""
+
+    )
+
+    externalproject_get_property( ${higgsbounds} source_dir )
+
+    set( higgssignals HiggsSignals-1.4.0 )
+
+    externalproject_add(
+
+            ${higgssignals}
+            DEPENDS ${higgsbounds}
             URL http://www.hepforge.org/archive/higgsbounds/HiggsSignals-1.4.0.tar.gz
+            URL_MD5 00b8ac655e357c7cba9ca786f8f2ddee
             BUILD_IN_SOURCE 1
             CONFIGURE_COMMAND ./configure
-            PATCH_COMMAND ${CMAKE_COMMAND} ${InstallDirs} -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_HiggsSignals.cmake
-            BUILD_COMMAND $(MAKE) F90C=gfortran HBLIBS=-L${CMAKE_INSTALL_FULL_LIBDIR} HBINCLUDE=-I${LIBDIR}/fortran/HiggsBounds
-            INSTALL_COMMAND ${CMAKE_COMMAND} ${InstallDirs} -P ${CMAKE_CURRENT_SOURCE_DIR}/install_HiggsSignals.cmake 
-            )
+            PATCH_COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_HiggsSignals.cmake
+            BUILD_COMMAND $(MAKE) F90C=${CMAKE_Fortran_COMPILER} HBLIBS=-L${source_dir} HBINCLUDE=-I${source_dir}
+            INSTALL_COMMAND ""
 
+    )
 
-ENDIF()
+    list( APPEND fittino_dependencies ${higgssignals} )
 
-IF(INSTALL_SuperIso)
-        EXTERNALPROJECT_ADD(
-            SuperIso
-            PREFIX external/SuperIso
+endif()
+
+option( INSTALL_SuperIso "" ON )
+
+if( INSTALL_SuperIso )
+
+    set( superiso SuperIso-3.4 )
+    set( SuperIso_URL "~/Downloads/superiso_v3.4.tar" CACHE PATH "" )
+
+    externalproject_add(
+
+            ${superiso}
             URL ${SuperIso_URL}
+            URL_MD5 fa6b41e70c34e8ab40c81ad126fb7248
             BUILD_IN_SOURCE 1
-            CONFIGURE_COMMAND "" 
+            CONFIGURE_COMMAND ""
             BUILD_COMMAND $(MAKE) CC=${CMAKE_C_COMPILER}
             COMMAND $(MAKE) slha CC=${CMAKE_C_COMPILER}
-            INSTALL_COMMAND ${CMAKE_COMMAND} -E copy src/libisospin.a ${CMAKE_INSTALL_FULL_LIBDIR}/libisospin.a
-            COMMAND ${CMAKE_COMMAND} -E copy src/include.h ${CMAKE_INSTALL_FULL_INCLUDEDIR}/SuperIso/include.h
-            COMMAND ${CMAKE_COMMAND} -E copy slha.x ${CMAKE_INSTALL_FULL_BINDIR}/slha.x
-           ) 
-   ENDIF()
+            INSTALL_COMMAND ""
 
+    )
 
-   IF(INSTALL_MicrOMEGAs)
-        EXTERNALPROJECT_ADD(
-            MicrOMEGAs
-            BINARY_DIR ${LOCALSTATEDIR}/MicrOMEGAs
-            URL https://lapth.cnrs.fr/micromegas/downloadarea/code/micromegas_4.2.5.tgz 
-            PATCH_COMMAND ${CMAKE_COMMAND} -E copy_directory . ${CMAKE_INSTALL_FULL_LOCALSTATEDIR}/MicrOMEGAs 
+    list( APPEND fittino_dependencies ${superiso} )
+
+endif()
+
+option( INSTALL_MicrOMEGAs "" ON )
+
+if( INSTALL_MicrOMEGAs )
+
+    set( micromegas MicrOMEGAs-4.2.5 )
+
+    externalproject_add(
+
+            ${micromegas}
+            URL https://lapth.cnrs.fr/micromegas/downloadarea/code/micromegas_4.2.5.tgz
+            URL_MD5 1b9afd0f0f5c5467b0f5e87783031c8c
             CONFIGURE_COMMAND ""
-            BUILD_COMMAND $(MAKE) CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} FC=${CMAKE_FORTRAN_COMPILER}
-            COMMAND ${CMAKE_COMMAND} -E chdir MSSM $(MAKE) main=main.cpp 
-            INSTALL_DIR ${CMAKE_INSTALL_PREFIX}
-            INSTALL_COMMAND "" 
-           ) 
-   ENDIF()
+            BUILD_COMMAND $(MAKE) CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} FC=${CMAKE_Fortran_COMPILER} CPLUS_INCLUDE_PATH=/usr/include
+            COMMAND ${CMAKE_COMMAND} -E chdir MSSM $(MAKE) CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} FC=${CMAKE_Fortran_COMPILER} CPLUS_INCLUDE_PATH=/usr/include main=main.cpp
+            BUILD_IN_SOURCE 1
+            INSTALL_COMMAND ""
 
-   IF( INSTALL_FeynHiggs )
-        EXTERNALPROJECT_ADD(
-            FeynHiggs
-            URL http://wwwth.mpp.mpg.de/members/heinemey/feynhiggs/newversion/FeynHiggs-2.11.3.tar.gz 
-            BUILD_COMMAND $(MAKE) CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} FC=${CMAKE_FORTRAN_COMPILER}
-           ) 
-   ENDIF()
+    )
 
-   
-   IF(INSTALL_Fittino)
+    list( APPEND fittino_dependencies ${micromegas} )
 
-EXTERNALPROJECT_ADD(
-  Fittino
-  DEPENDS ${FITTINO_DEPENDENCIES}
-  PREFIX "./fittino"
-  SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..
-  BUILD_ALWAYS ON
-  # BINARY_DIR ${CMAKE_CURRENTSOURCE_DIR}/build
-  DOWNLOAD_COMMAND ""
-  UPDATE_COMMAND ""
-  CMAKE_ARGS -DSLHAEA_INSTALLATION_PATH=${SLHAEA_INSTALLATION_PATH} -DBOOST_ROOT=${BOOST_ROOT}
-  )
+endif()
 
-ENDIF()
+option( INSTALL_LHAPDF "" ON )
+
+if( INSTALL_LHAPDF )
+
+    set( lhapdf5 LHAPDF-5.8.9 )
+
+    externalproject_add(
+
+            ${lhapdf5}
+            URL https://www.hepforge.org/archive/lhapdf/lhapdf-5.8.9.tar.gz
+            URL_MD5 51e61fa316957abd13d1b76b44e665cf
+            CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} FC=${CMAKE_Fortran_COMPILER}
+            BUILD_COMMAND $(MAKE)
+            BUILD_IN_SOURCE 1
+            INSTALL_COMMAND $(MAKE) install
+
+    )
+
+    list( APPEND fittino_dependencies ${lhapdf} )
+
+endif()
+
+option( INSTALL_Minconda2 "" ON )
+option( INSTALL_SModelS "" ON )
+option( INSTALL_SCYNet "" ON )
+option( INSTALL_CheckMATE "" ON )
+
+if( INSTALL_Miniconda2 OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_CheckMATE )
+
+    set( miniconda2 Miniconda2-4.3.11 )
+
+    if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "x86_64" )
+
+        set( miniconda2_url https://repo.continuum.io/miniconda/Miniconda2-4.3.11-MacOSX-x86_64.sh )
+        set( miniconda2_url_md5 d2edb7d4f3f55c35b9a25fd2d0ef6856 )
+
+    elseif( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND ${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "x86_64" )
+
+        set( miniconda2_url https://repo.continuum.io/miniconda/Miniconda2-4.3.11-Linux-x86_64.sh )
+        set( miniconda2_url_md5 d573980fe3b5cdf80485add2466463f5 )
+
+    elseif( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND ${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "x86" )
+
+        set( miniconda2_url https://repo.continuum.io/miniconda/Miniconda2-4.3.11-Linux-x86.sh )
+        set( miniconda2_url_md5 09e9780288d29e46f3dd7eaa7ce280bc )
+
+    else()
+
+        message( FATAL_ERROR "CMAKE_SYSTEM_NAME is ${CMAKE_SYSTEM_NAME} and CMAKE_HOST_SYSTEM_PROCESSOR is ${CMAKE_HOST_SYSTEM_PROCESSOR}." )
+
+    endif()
+
+    find_package( UnixCommands REQUIRED )
+
+    set( miniconda2_install_command HOME=<INSTALL_DIR> ${BASH} <DOWNLOADED_FILE> -b -f -p <INSTALL_DIR> )
+    list( APPEND miniconda2_install_command COMMAND <INSTALL_DIR>/bin/conda update -y conda )
+
+    if( "${CMAKE_SYSTEM_NAME}" MATCHES "Linux" )
+
+        list( APPEND miniconda2_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${Conda_ROOT_DIR}/bin/conda install tensorflow )
+
+    endif()
+
+    externalproject_add(
+
+            ${miniconda2}
+            URL ${miniconda2_url}
+            URL_MD5 ${miniconda2_url_md5}
+            CONFIGURE_COMMAND ""
+            DOWNLOAD_NO_EXTRACT 1
+            BUILD_COMMAND ""
+            INSTALL_COMMAND ${miniconda2_install_command}
+
+    )
+
+    externalproject_get_property( ${miniconda2} install_dir )
+    set( Conda_ROOT_DIR ${install_dir} )
+    find_library( PYTHON_LIBRARY NAMES python PATHS ${Conda_ROOT_DIR}/lib NO_DEFAULT_PATH NO_CMAKE_ENVIRONMENT_PATH NO_CMAKE_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_SYSTEM_PATH NO_CMAKE_FIND_ROOT_PATH )
+
+    list( APPEND fittino_dependencies ${miniconda2} )
+
+endif()
+
+option( INSTALL_SModelS "" ON )
+
+if( INSTALL_SModelS )
+
+    set( smodels SModelS-1.1.0patch1 )
+    set( SModelS_URL "~/Downloads/smodels-v1.1.0patch1.tar" CACHE PATH "" )
+
+    externalproject_add(
+
+            ${smodels}
+            DEPENDS ${miniconda2}
+            URL ${SModelS_URL}
+            URL_MD5 396d3a28d1bebd1cbe3123100475108a
+            CONFIGURE_COMMAND ""
+            BUILD_COMMAND $(MAKE) FCC=${CMAKE_Fortran_COMPILER}
+            BUILD_IN_SOURCE 1
+            INSTALL_COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${Conda_ROOT_DIR}/bin/pip install .
+
+    )
+
+    list( APPEND fittino_dependencies ${smodels} )
+
+    externalproject_get_property( ${smodels} source_dir )
+
+    set( smodelsfastlimdatabase SModelSFastlimDatabase-1.1_1.0 )
+    set( SModelSFastlimDatabase_URL "~/Downloads/smodels-v1.1-fastlim-1.0.tar" CACHE PATH "" )
+
+    externalproject_add(
+
+            ${smodelsfastlimdatabase}
+            DEPENDS ${smodels}
+            URL ${SModelSFastlimDatabase_URL}
+            URL_MD5 5a67af22ee5a578038cd90409ed72e79
+            DOWNLOAD_NO_EXTRACT 1
+            CONFIGURE_COMMAND ""
+            BUILD_COMMAND ""
+            INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${source_dir}/smodels-database <INSTALL_DIR>
+            COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR> ${CMAKE_COMMAND} -E tar xf <DOWNLOADED_FILE>
+
+    )
+
+    list( APPEND fittino_dependencies ${smodelsfastlimdatabase} )
+
+endif()
+
+option( INSTALL_SCYNet "" ON )
+
+if( INSTALL_SCYNet )
+
+    set( scynet SCYNet )
+
+    externalproject_add(
+
+            ${scynet}
+            DEPENDS ${miniconda2}
+            SVN_REPOSITORY https://svn.physik.uni-bonn.de/basic/fittino-protected/trunk/SCYNet
+            CONFIGURE_COMMAND ""
+            BUILD_COMMAND ""
+            INSTALL_COMMAND ""
+
+    )
+
+    list( APPEND fittino_dependencies ${scynet} )
+
+endif()
+
+option( INSTALL_HepMC2 "" ON )
+option( INSTALL_CheckMATE "" ON )
+
+if( INSTALL_HepMC2 OR INSTALL_CheckMATE )
+
+    set( hepmc2 HepMC-2.6.9 )
+
+    externalproject_add(
+
+            ${hepmc2}
+            URL http://hepmc.web.cern.ch/hepmc/releases/hepmc2.06.09.tgz
+            URL_MD5 52518437a64f6b4284e9acc2ecad6212
+            CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR> -Dmomentum:STRING=GEV -Dlength:STRING=MM -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER} -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+
+    )
+
+    list( APPEND fittino_dependencies ${hepmc2} )
+
+    externalproject_get_property( ${hepmc2} INSTALL_DIR )
+    set( HepMC_ROOT_DIR ${INSTALL_DIR} )
+
+endif()
+
+option( INSTALL_Pythia8 "" ON )
+
+if( INSTALL_Pythia8 OR INSTALL_CheckMATE )
+
+    find_package( ZLIB REQUIRED )
+    get_filename_component( zlib_library_dir ${ZLIB_LIBRARIES} DIRECTORY )
+
+    set( pythia8 PYTHIA-8.2.23 )
+
+    externalproject_add(
+
+            ${pythia8}
+            DEPENDS ${hepmc2}
+            URL http://home.thep.lu.se/~torbjorn/pythia8/pythia8223.tgz
+            URL_MD5 ccb52b9172ffcdc426732a95f7bf4dbb
+            CONFIGURE_COMMAND ./configure --cxx=${CMAKE_CXX_COMPILER} --prefix=<INSTALL_DIR> --with-hepmc2=${HepMC_ROOT_DIR} --with-gzip-lib=${zlib_library_dir} --with-gzip-include=${ZLIB_INCLUDE_DIRS}
+            BUILD_COMMAND $(MAKE)
+            BUILD_IN_SOURCE 1
+            INSTALL_COMMAND $(MAKE) install
+
+    )
+
+endif()
+
+# TODO: ADD MADGRAPH AND DELPHES required by checkmate
+#    EXTERNALPROJECT_ADD(
+#            ${checkmate}
+#            DEPENDS ${hepmc2} ${pythia8} ${madgraph} ${delphes}
+#            URL
+#            URL_MD5
+#            CONFIGURE_COMMAND ./configure --cxx=${CMAKE_CXX_COMPILER}  --with-hepmc2=${HepMC_ROOT_DIR}  --with-gziplib=${zlib_library_dir} --with-gzipinc=${ZLIB_INCLUDE_DIRS}
+#            BUILD_COMMAND $(MAKE)
+#            BUILD_IN_SOURCE 1
+#            INSTALL_COMMAND ""
+#    )
+
+option( INSTALL_Fittino "" ON )
+
+if( INSTALL_Fittino )
+
+    set( fittino Fittino )
+
+    externalproject_add(
+
+            ${fittino}
+            DEPENDS ${fittino_dependencies}
+            SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..
+            BUILD_ALWAYS ON
+            BUILD_COMMAND ""
+            # BINARY_DIR ${CMAKE_CURRENTSOURCE_DIR}/build
+            CMAKE_ARGS -C${CMAKE_CURRENT_BINARY_DIR}/myconfig.txt -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+
+    )
+
+endif()
+
+externalproject_get_property( ${fittino} INSTALL_DIR )
+set( Fitttino_ROOT_DIR INSTALL_DIR )
+
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/config.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/myconfig.txt )

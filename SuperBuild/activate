@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+unset PYTHONPATH
+export PYTHONNOUSERSITE=1
+# 

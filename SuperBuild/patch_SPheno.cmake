@@ -6,4 +6,6 @@ FOREACH( COMPILER "ifortg" "gfortran" "g95" "lf95" "nagfor" )
 
 ENDFOREACH()
 
+STRING( REPLACE "ar -ruc -U" "ar -ruc" fileContent ${fileContent} )
+
 FILE ( WRITE src/Makefile ${fileContent} )
