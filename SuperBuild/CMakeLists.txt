@@ -15,7 +15,8 @@
 #                                                                              #
 ###############################################################################
 
-cmake_minimum_required( VERSION 2.8.7 FATAL_ERROR )
+# because of DOWNLOAD_NO_EXTRACT: https://cmake.org/cmake/help/v3.6/release/3.6.html?highlight=download_no_extract#modules
+cmake_minimum_required( VERSION 3.6 FATAL_ERROR )
 
 project( Fittino_Superbuild LANGUAGES CXX C Fortran )
 
@@ -89,11 +90,15 @@ if( INSTALL_FeynHiggs )
             INSTALL_COMMAND $(MAKE) install
     )
 
+    externalproject_get_property( ${feynhiggs} install_dir )
+    set( FeynHiggs_ROOT_DIR ${install_dir} )
+
+    list( APPEND prefixPath ${FeynHiggs_ROOT_DIR} )
     list( APPEND fittino_dependencies ${feynhiggs} )
 
 endif()
 
-option( INSTALL_HiggsSignals "" ON )
+option( INSTALL_HiggsSignals "" OFF )
 
 if( INSTALL_HiggsSignals )
 
@@ -150,7 +155,7 @@ if( INSTALL_HiggsSignals )
 
 endif()
 
-option( INSTALL_SuperIso "" ON )
+option( INSTALL_SuperIso "" OFF )
 
 if( INSTALL_SuperIso )
 
@@ -174,7 +179,7 @@ if( INSTALL_SuperIso )
 
 endif()
 
-option( INSTALL_MicrOMEGAs "" ON )
+option( INSTALL_MicrOMEGAs "" OFF )
 
 if( INSTALL_MicrOMEGAs )
 
@@ -197,7 +202,7 @@ if( INSTALL_MicrOMEGAs )
 
 endif()
 
-option( INSTALL_LHAPDF "" ON )
+option( INSTALL_LHAPDF "" OFF )
 
 if( INSTALL_LHAPDF )
 
@@ -222,7 +227,7 @@ endif()
 option( INSTALL_Minconda2 "" ON )
 option( INSTALL_SModelS "" ON )
 option( INSTALL_SCYNet "" ON )
-option( INSTALL_CheckMATE "" ON )
+option( INSTALL_CheckMATE "" OFF )
 
 if( INSTALL_Miniconda2 OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_CheckMATE )
 
@@ -251,12 +256,12 @@ if( INSTALL_Miniconda2 OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_CheckMATE
 
     find_package( UnixCommands REQUIRED )
 
-    set( miniconda2_install_command HOME=<INSTALL_DIR> ${BASH} <DOWNLOADED_FILE> -b -f -p <INSTALL_DIR> )
-    list( APPEND miniconda2_install_command COMMAND <INSTALL_DIR>/bin/conda update -y conda )
+    set( miniconda2_install_command ${CMAKE_COMMAND} -E env HOME=<INSTALL_DIR> PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${BASH} <DOWNLOADED_FILE> -b -f -p <INSTALL_DIR> )
+    #list( APPEND miniconda2_install_command COMMAND <INSTALL_DIR>/bin/conda update -y conda )
 
     if( "${CMAKE_SYSTEM_NAME}" MATCHES "Linux" )
 
-        list( APPEND miniconda2_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${Conda_ROOT_DIR}/bin/conda install tensorflow )
+        list( APPEND miniconda2_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH <INSTALL_DIR>/bin/conda install -y tensorflow=0.10.0rc0 )
 
     endif()
 
@@ -274,25 +279,24 @@ if( INSTALL_Miniconda2 OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_CheckMATE
 
     externalproject_get_property( ${miniconda2} install_dir )
     set( Conda_ROOT_DIR ${install_dir} )
-    find_library( PYTHON_LIBRARY NAMES python PATHS ${Conda_ROOT_DIR}/lib NO_DEFAULT_PATH NO_CMAKE_ENVIRONMENT_PATH NO_CMAKE_PATH NO_SYSTEM_ENVIRONMENT_PATH NO_CMAKE_SYSTEM_PATH NO_CMAKE_FIND_ROOT_PATH )
 
+    list( APPEND prefixPath ${Conda_ROOT_DIR} )
     list( APPEND fittino_dependencies ${miniconda2} )
 
 endif()
 
-option( INSTALL_SModelS "" ON )
-
 if( INSTALL_SModelS )
 
     set( smodels SModelS-1.1.0patch1 )
-    set( SModelS_URL "~/Downloads/smodels-v1.1.0patch1.tar" CACHE PATH "" )
+    set( SModelS_URL "~/Downloads/smodels-v1.1.0patch1.tgz" CACHE PATH "" )
 
     externalproject_add(
 
             ${smodels}
             DEPENDS ${miniconda2}
             URL ${SModelS_URL}
-            URL_MD5 396d3a28d1bebd1cbe3123100475108a
+            #URL_MD5 396d3a28d1bebd1cbe3123100475108a
+            URL_MD5 093757506db0823cf3ce13007720f79a
             CONFIGURE_COMMAND ""
             BUILD_COMMAND $(MAKE) FCC=${CMAKE_Fortran_COMPILER}
             BUILD_IN_SOURCE 1
@@ -305,14 +309,15 @@ if( INSTALL_SModelS )
     externalproject_get_property( ${smodels} source_dir )
 
     set( smodelsfastlimdatabase SModelSFastlimDatabase-1.1_1.0 )
-    set( SModelSFastlimDatabase_URL "~/Downloads/smodels-v1.1-fastlim-1.0.tar" CACHE PATH "" )
+    set( SModelSFastlimDatabase_URL "~/Downloads/smodels-v1.1-fastlim-1.0.tgz" CACHE PATH "" )
 
     externalproject_add(
 
             ${smodelsfastlimdatabase}
             DEPENDS ${smodels}
             URL ${SModelSFastlimDatabase_URL}
-            URL_MD5 5a67af22ee5a578038cd90409ed72e79
+            #URL_MD5 5a67af22ee5a578038cd90409ed72e79
+            URL_MD5 55a2b8b7eeebd06b065315c8b2dc96d2
             DOWNLOAD_NO_EXTRACT 1
             CONFIGURE_COMMAND ""
             BUILD_COMMAND ""
@@ -325,8 +330,6 @@ if( INSTALL_SModelS )
 
 endif()
 
-option( INSTALL_SCYNet "" ON )
-
 if( INSTALL_SCYNet )
 
     set( scynet SCYNet )
@@ -336,6 +339,7 @@ if( INSTALL_SCYNet )
             ${scynet}
             DEPENDS ${miniconda2}
             SVN_REPOSITORY https://svn.physik.uni-bonn.de/basic/fittino-protected/trunk/SCYNet
+            SVN_REVISION -r194
             CONFIGURE_COMMAND ""
             BUILD_COMMAND ""
             INSTALL_COMMAND ""
@@ -346,8 +350,7 @@ if( INSTALL_SCYNet )
 
 endif()
 
-option( INSTALL_HepMC2 "" ON )
-option( INSTALL_CheckMATE "" ON )
+option( INSTALL_HepMC2 "" OFF )
 
 if( INSTALL_HepMC2 OR INSTALL_CheckMATE )
 
@@ -369,7 +372,7 @@ if( INSTALL_HepMC2 OR INSTALL_CheckMATE )
 
 endif()
 
-option( INSTALL_Pythia8 "" ON )
+option( INSTALL_Pythia8 "" OFF )
 
 if( INSTALL_Pythia8 OR INSTALL_CheckMATE )
 
