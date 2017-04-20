@@ -26,9 +26,68 @@ include( ExternalProject )
 
 set_property( DIRECTORY PROPERTY "EP_BASE" ${PROJECT_BINARY_DIR} )
 
-option( INSTALL_SLHAea "" ON )
+option( INSTALL_SLHAea       "" ON  )
+option( INSTALL_SPheno       "" ON  )
+option( INSTALL_FeynHiggs    "" OFF )
+option( INSTALL_HiggsSignals "" OFF )
+option( INSTALL_SuperIso     "" OFF )
+option( INSTALL_LHAPDF       "" OFF )
+option( INSTALL_MicrOMEGAs   "" OFF )
+option( INSTALL_HepMC2       "" OFF )
+option( INSTALL_Pythia8      "" OFF )
+option( INSTALL_Minconda2    "" ON  )
+option( INSTALL_SModelS      "" ON  )
+option( INSTALL_SCYNet       "" ON  )
+option( INSTALL_CheckMATE    "" OFF )
+option( INSTALL_Fittino      "" ON  )
 
-if( INSTALL_SLHAea )
+# START CACHE VARIABLES
+
+set( SuperIso_URL "~/Downloads/superiso_v3.4.tar" CACHE FILEPATH "" )
+
+if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
+
+    set( SModelS_URL "~/Downloads/smodels-v1.1.0patch1.tar" CACHE FILEPATH "" )
+    set( SModelSFastlimDatabase_URL "~/Downloads/smodels-v1.1-fastlim-1.0.tar" CACHE FILEPATH "" )
+
+else()
+
+    set( SModelS_URL "~/Downloads/smodels-v1.1.0patch1.tgz" CACHE FILEPATH "" )
+    set( SModelSFastlimDatabase_URL "~/Downloads/smodels-v1.1-fastlim-1.0.tgz" CACHE FILEPATH "" )
+
+endif()
+
+if( SModelS_URL MATCHES "\\.tar$" )
+
+    set( SModelS_URL_MD5 396d3a28d1bebd1cbe3123100475108a CACHE STRING "" )
+
+elseif( SModelS_URL MATCHES "\\.tgz$" )
+
+    set( SModelS_URL_MD5 093757506db0823cf3ce13007720f79a CACHE STRING "" )
+
+elseif( NOT DEFINED SModelS_URL_MD5 )
+
+    message( WARNING "Unexpected extension of SModelS_URL and SModelS_URL_MD5 not defined." )
+
+endif()
+
+if( SModelSFastlimDatabase_URL MATCHES "\\.tar$" )
+
+    set( SModelSFastlimDatabase_URL_MD5 5a67af22ee5a578038cd90409ed72e79 CACHE STRING "" )
+
+elseif( SModelSFastlimDatabase_URL MATCHES "\\.tgz$" )
+
+    set( SModelSFastlimDatabase_URL_MD5 55a2b8b7eeebd06b065315c8b2dc96d2 CACHE STRING "" )
+
+elseif( NOT DEFINED SModelSFastlimDatabase_URL_MD5 )
+
+    message( WARNING "Unexpected extension of SModelSFastlimDatabase_URL and SModelSFastlimDatabase_URL_MD5 not defined." )
+
+endif()
+
+# END CACHE VARIABLES
+
+if( INSTALL_SLHAea OR INSTALL_SPheno )
 
     set( slhaea SLHAea-0.1 )
 
@@ -50,8 +109,6 @@ if( INSTALL_SLHAea )
 
 endif()
 
-option( INSTALL_SPheno "" ON )
-
 if( INSTALL_SPheno )
 
     set( spheno SPheno-4.0.2 )
@@ -59,6 +116,7 @@ if( INSTALL_SPheno )
     externalproject_add(
 
             ${spheno}
+            DEPENDS ${slhaea}
             URL http://www.hepforge.org/archive/spheno/SPheno-4.0.2.tar.gz
             URL_MD5 3a758101fdf8a4711524d70437c8f1bc
             PATCH_COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_SPheno.cmake
@@ -72,8 +130,6 @@ if( INSTALL_SPheno )
     list( APPEND fittino_dependencies ${spheno} )
 
 endif()
-
-option( INSTALL_FeynHiggs "" ON )
 
 if( INSTALL_FeynHiggs )
 
@@ -97,8 +153,6 @@ if( INSTALL_FeynHiggs )
     list( APPEND fittino_dependencies ${feynhiggs} )
 
 endif()
-
-option( INSTALL_HiggsSignals "" OFF )
 
 if( INSTALL_HiggsSignals )
 
@@ -155,12 +209,9 @@ if( INSTALL_HiggsSignals )
 
 endif()
 
-option( INSTALL_SuperIso "" OFF )
-
 if( INSTALL_SuperIso )
 
     set( superiso SuperIso-3.4 )
-    set( SuperIso_URL "~/Downloads/superiso_v3.4.tar" CACHE PATH "" )
 
     externalproject_add(
 
@@ -178,8 +229,6 @@ if( INSTALL_SuperIso )
     list( APPEND fittino_dependencies ${superiso} )
 
 endif()
-
-option( INSTALL_MicrOMEGAs "" OFF )
 
 if( INSTALL_MicrOMEGAs )
 
@@ -202,8 +251,6 @@ if( INSTALL_MicrOMEGAs )
 
 endif()
 
-option( INSTALL_LHAPDF "" OFF )
-
 if( INSTALL_LHAPDF )
 
     set( lhapdf5 LHAPDF-5.8.9 )
@@ -223,11 +270,6 @@ if( INSTALL_LHAPDF )
     list( APPEND fittino_dependencies ${lhapdf} )
 
 endif()
-
-option( INSTALL_Minconda2 "" ON )
-option( INSTALL_SModelS "" ON )
-option( INSTALL_SCYNet "" ON )
-option( INSTALL_CheckMATE "" OFF )
 
 if( INSTALL_Miniconda2 OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_CheckMATE )
 
@@ -257,11 +299,14 @@ if( INSTALL_Miniconda2 OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_CheckMATE
     find_package( UnixCommands REQUIRED )
 
     set( miniconda2_install_command ${CMAKE_COMMAND} -E env HOME=<INSTALL_DIR> PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${BASH} <DOWNLOADED_FILE> -b -f -p <INSTALL_DIR> )
-    #list( APPEND miniconda2_install_command COMMAND <INSTALL_DIR>/bin/conda update -y conda )
 
     if( "${CMAKE_SYSTEM_NAME}" MATCHES "Linux" )
 
-        list( APPEND miniconda2_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH <INSTALL_DIR>/bin/conda install -y tensorflow=0.10.0rc0 )
+        list( APPEND miniconda2_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH <INSTALL_DIR>/bin/conda install -y tensorflow==0.10.0rc0 )
+
+    else()
+
+        list( APPEND miniconda2_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH <INSTALL_DIR>/bin/pip install tensorflow==0.12.0rc0 )
 
     endif()
 
@@ -288,15 +333,13 @@ endif()
 if( INSTALL_SModelS )
 
     set( smodels SModelS-1.1.0patch1 )
-    set( SModelS_URL "~/Downloads/smodels-v1.1.0patch1.tgz" CACHE PATH "" )
 
-    externalproject_add(
+        externalproject_add(
 
             ${smodels}
             DEPENDS ${miniconda2}
             URL ${SModelS_URL}
-            #URL_MD5 396d3a28d1bebd1cbe3123100475108a
-            URL_MD5 093757506db0823cf3ce13007720f79a
+            URL_MD5 ${SModelS_URL_MD5}
             CONFIGURE_COMMAND ""
             BUILD_COMMAND $(MAKE) FCC=${CMAKE_Fortran_COMPILER}
             BUILD_IN_SOURCE 1
@@ -309,15 +352,13 @@ if( INSTALL_SModelS )
     externalproject_get_property( ${smodels} source_dir )
 
     set( smodelsfastlimdatabase SModelSFastlimDatabase-1.1_1.0 )
-    set( SModelSFastlimDatabase_URL "~/Downloads/smodels-v1.1-fastlim-1.0.tgz" CACHE PATH "" )
 
     externalproject_add(
 
             ${smodelsfastlimdatabase}
             DEPENDS ${smodels}
             URL ${SModelSFastlimDatabase_URL}
-            #URL_MD5 5a67af22ee5a578038cd90409ed72e79
-            URL_MD5 55a2b8b7eeebd06b065315c8b2dc96d2
+            URL_MD5 ${SModelSFastlimDatabase_URL_MD5}
             DOWNLOAD_NO_EXTRACT 1
             CONFIGURE_COMMAND ""
             BUILD_COMMAND ""
@@ -346,11 +387,12 @@ if( INSTALL_SCYNet )
 
     )
 
+    externalproject_get_property( ${scynet} SOURCE_DIR )
+    set( SCYNet_ROOT_DIR ${SOURCE_DIR} )
+
     list( APPEND fittino_dependencies ${scynet} )
 
 endif()
-
-option( INSTALL_HepMC2 "" OFF )
 
 if( INSTALL_HepMC2 OR INSTALL_CheckMATE )
 
@@ -371,8 +413,6 @@ if( INSTALL_HepMC2 OR INSTALL_CheckMATE )
     set( HepMC_ROOT_DIR ${INSTALL_DIR} )
 
 endif()
-
-option( INSTALL_Pythia8 "" OFF )
 
 if( INSTALL_Pythia8 OR INSTALL_CheckMATE )
 
@@ -408,8 +448,6 @@ endif()
 #            INSTALL_COMMAND ""
 #    )
 
-option( INSTALL_Fittino "" ON )
-
 if( INSTALL_Fittino )
 
     set( fittino Fittino )
@@ -422,7 +460,7 @@ if( INSTALL_Fittino )
             BUILD_ALWAYS ON
             BUILD_COMMAND ""
             # BINARY_DIR ${CMAKE_CURRENTSOURCE_DIR}/build
-            CMAKE_ARGS -C${CMAKE_CURRENT_BINARY_DIR}/myconfig.txt -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+            CMAKE_ARGS -C${CMAKE_CURRENT_BINARY_DIR}/init.cmake -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 
     )
 
@@ -431,4 +469,5 @@ endif()
 externalproject_get_property( ${fittino} INSTALL_DIR )
 set( Fitttino_ROOT_DIR INSTALL_DIR )
 
-configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/config.cmake.in ${CMAKE_CURRENT_BINARY_DIR}/myconfig.txt )
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/init.cmake ${CMAKE_CURRENT_BINARY_DIR}/init.cmake )
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/activate ${CMAKE_CURRENT_BINARY_DIR}/activate )
