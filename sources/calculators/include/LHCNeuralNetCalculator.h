@@ -26,7 +26,11 @@ namespace boost {
 
   namespace python {
 
-    class object;
+      namespace api {
+
+          class object;
+
+      }
 
   }
 
@@ -54,7 +58,7 @@ namespace Fittino {
     
     private:
       double _chi2_8TeV;
-      boost::python::object* _scynet_8TeV;
+      boost::python::api::object* _scynet_8TeV;
 
   };
 
