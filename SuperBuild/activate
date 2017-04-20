@@ -5,3 +5,4 @@ export PYTHONPATH=@SCYNet_ROOT_DIR@
 export PYTHONNOUSERSITE=1
 source @Conda_ROOT_DIR@/bin/activate
 export PYTHONHOME=@Conda_ROOT_DIR@
+export PATH=@SPheno_ROOT_DIR@/bin/:$PATH

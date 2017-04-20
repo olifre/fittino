@@ -127,6 +127,9 @@ if( INSTALL_SPheno )
 
     )
 
+    externalproject_get_property( ${spheno} source_dir )
+    set( SPheno_ROOT_DIR ${source_dir} )
+
     list( APPEND fittino_dependencies ${spheno} )
 
 endif()
@@ -448,6 +451,9 @@ endif()
 #            INSTALL_COMMAND ""
 #    )
 
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/activate ${CMAKE_CURRENT_BINARY_DIR}/activate )
+
+
 if( INSTALL_Fittino )
 
     set( fittino Fittino )
@@ -464,10 +470,15 @@ if( INSTALL_Fittino )
 
     )
 
+    externalproject_get_property( ${fittino} install_dir )
+    set( Fittino_ROOT_DIR ${install_dir} )
+
+    file( APPEND ${CMAKE_CURRENT_BINARY_DIR}/activate "export PATH=${Fittino_ROOT_DIR}/bin/:$PATH\n" )
+    file( APPEND ${CMAKE_CURRENT_BINARY_DIR}/activate "export FITTINO_ROOT_DIR=${Fittino_ROOT_DIR}\n" )
+
 endif()
 
-externalproject_get_property( ${fittino} INSTALL_DIR )
-set( Fitttino_ROOT_DIR INSTALL_DIR )
+
 
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/init.cmake ${CMAKE_CURRENT_BINARY_DIR}/init.cmake )
-configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/activate ${CMAKE_CURRENT_BINARY_DIR}/activate )
+
