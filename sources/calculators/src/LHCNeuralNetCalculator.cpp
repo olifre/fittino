@@ -45,6 +45,9 @@ Fittino::LHCNeuralNetCalculator::LHCNeuralNetCalculator( const ModelBase* model,
 
     Py_Initialize();
 
+    PyRun_SimpleString("import sys");
+    PyRun_SimpleString("sys.argv = ['']");
+
     //PyObject* myModuleString = PyString_FromString( (char*) "scynet.scynet" );
     //PyObject* scynet_module = PyImport_Import(myModuleString);
     //PyObject* scynet_class = PyObject_GetAttrString(scynet_module, "SCYNet");
