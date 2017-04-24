@@ -50,7 +50,7 @@ namespace Fittino {
       /*! \cond UML */
     private:
       int                    _returnValue;
-      Executor               _executor;
+      Executor*              _executor;
       std::vector<SLHALine*> _lines;
 
     private:

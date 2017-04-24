@@ -131,6 +131,8 @@ if( INSTALL_SPheno )
     set( SPheno_ROOT_DIR ${source_dir} )
 
     list( APPEND fittino_dependencies ${spheno} )
+    list( APPEND prefixPath ${SPheno_ROOT_DIR} )
+
 
 endif()
 
@@ -385,6 +387,7 @@ if( INSTALL_SCYNet )
             SVN_REPOSITORY https://svn.physik.uni-bonn.de/basic/fittino-protected/trunk/SCYNet
             SVN_REVISION -r194
             CONFIGURE_COMMAND ""
+            UPDATE_COMMAND ""
             BUILD_COMMAND ""
             INSTALL_COMMAND ""
 

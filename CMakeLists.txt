@@ -51,6 +51,7 @@ FIND_PACKAGE( GSL                                                               
 FIND_PACKAGE( HepMC                                                                  )
 FIND_PACKAGE( LHAPDF 5.8.9 EXACT                                                     )
 FIND_PACKAGE( SLHAEA                                                                 )
+find_package( SPheno                                                                 )
 FIND_PACKAGE( X11                                                                    )
 FIND_PACKAGE( MICROMEGAS                                                             )
 FIND_PACKAGE( FORTRANFLUSH                                                           )
@@ -81,6 +82,13 @@ If( DOXYGEN_FOUND )
     INSTALL( DIRECTORY "${PROJECT_BINARY_DIR}/html" DESTINATION share/doc/fittino OPTIONAL )
 
 ENDIF( DOXYGEN_FOUND )
+
+IF( SPHENO_FOUND )
+
+    add_definitions( -DSPHENO_EXECUTABLE="${SPHENO_EXECUTABLE}" )
+
+endif()
+
 
 INSTALL( DIRECTORY "${PROJECT_SOURCE_DIR}/input" DESTINATION share/fittino PATTERN ".svn" EXCLUDE )
 

@@ -32,15 +32,36 @@
 #include "SLHAFileException.h"
 
 Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
-    : SLHACalculatorBase( model ),
-      _executor( "./SPheno", "SPheno" ) {
+    : SLHACalculatorBase( model )//,
+      //_executor( "./SPheno", "SPheno" )
+      {
 
     _name               = "SPheno";
     _tag                = "SPheno";
     _slhaInputFileName  = "LesHouches.in";
     _slhaOutputFileName = "SPheno.spc";
 
-    _executor.SetCompletionTimeout( 20 );
+     std::string executable;
+
+#ifdef SPHENO_EXECUTABLE
+
+    executable = ptree.get<std::string>( "Executable", SPHENO_EXECUTABLE );
+
+#else
+
+    if ( ptree.count("Executable") == 0 ) {
+
+        throw ConfigurationException( "SPheno was not found, please set the path in the input file." );
+
+    }
+
+    executable = ptree.get<std::string>( "Executable" );
+
+#endif
+
+    _executor = new Executor( executable, "SPheno" );
+
+    _executor->SetCompletionTimeout( 20 );
 
     BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
 
@@ -175,6 +196,8 @@ Fittino::SPhenoSLHACalculator::~SPhenoSLHACalculator() {
 
     }
 
+    delete _executor;
+
 }
 
 void Fittino::SPhenoSLHACalculator::CalculatePredictions() {
@@ -197,7 +220,7 @@ void Fittino::SPhenoSLHACalculator::CalculatePredictions() {
 
     try {
 
-        _returnValue = _executor.Execute();
+        _returnValue = _executor->Execute();
 
     }
     catch ( const TimeoutExecutorException& e ) {
