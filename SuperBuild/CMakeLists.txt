@@ -377,6 +377,9 @@ if( INSTALL_SModelS )
 
     )
 
+    externalproject_get_property( ${smodelsfastlimdatabase} install_dir )
+    set( SModelSDatabase_ROOT_DIR ${install_dir} )
+
     list( APPEND fittino_dependencies ${smodelsfastlimdatabase} )
 
 endif()

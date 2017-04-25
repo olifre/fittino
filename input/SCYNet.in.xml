@@ -311,6 +311,8 @@
                     <A>[A]</A>
                 </LHCNeuralNetCalculator>
                 <SModelSCalculator>
+                    <FileName>SPheno.spc</FileName>
+                    <ParameterFile>@Fittino_INPUT_DIR@/parameters.ini</ParameterFile>
                 </SModelSCalculator>
 
             </Calculators>

@@ -53,6 +53,7 @@ FIND_PACKAGE( LHAPDF 5.8.9 EXACT                                                
 FIND_PACKAGE( SLHAEA                                                                 )
 find_package( SPheno                                                                 )
 find_package( SModelSTools                                                           )
+find_package( SModelSDatabase                                                        )
 FIND_PACKAGE( X11                                                                    )
 FIND_PACKAGE( MICROMEGAS                                                             )
 FIND_PACKAGE( FORTRANFLUSH                                                           )
@@ -96,8 +97,14 @@ IF( SMODELSTOOLS_FOUND )
 
 endif()
 
+set( indir ${PROJECT_BINARY_DIR}/input/ )
+file( COPY ${PROJECT_SOURCE_DIR}/input DESTINATION ${indir} PATTERN ".svn" EXCLUDE )
 
-INSTALL( DIRECTORY "${PROJECT_SOURCE_DIR}/input" DESTINATION share/fittino PATTERN ".svn" EXCLUDE )
+set( Fittino_INPUT_DIR ${CMAKE_INSTALL_PREFIX}/share/fittino/input )
+configure_file( ${PROJECT_SOURCE_DIR}/input/SCYNet.in.xml ${indir} )
+configure_file( ${PROJECT_SOURCE_DIR}/input/parameters.ini ${indir} )
+
+install( DIRECTORY ${indir} DESTINATION ${Fittino_INPUT_DIR} )
 
 ADD_SUBDIRECTORY( external )
 ADD_SUBDIRECTORY( sources  )
