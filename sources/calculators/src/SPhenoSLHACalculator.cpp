@@ -41,21 +41,21 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const ModelBase* model, con
     _slhaInputFileName  = "LesHouches.in";
     _slhaOutputFileName = "SPheno.spc";
 
-     std::string executable;
+    std::string exename = "Executable";
 
 #ifdef SPHENO_EXECUTABLE
 
-    executable = ptree.get<std::string>( "Executable", SPHENO_EXECUTABLE );
+    std::string executable = ptree.get<std::string>( exename, SPHENO_EXECUTABLE );
 
 #else
 
-    if ( ptree.count("Executable") == 0 ) {
+    if ( ptree.count( exename ) == 0 ) {
 
-        throw ConfigurationException( "SPheno was not found, please set the path in the input file." );
+        throw ConfigurationException( "SPheno was not found. Please set " + exename + " in the input file." );
 
     }
 
-    executable = ptree.get<std::string>( "Executable" );
+    std::string executable = ptree.get<std::string>( exename );
 
 #endif
 

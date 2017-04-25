@@ -18,6 +18,7 @@
 #include <Python.h>
 #include <boost/lexical_cast.hpp>
 #include <boost/python.hpp>
+#include <boost/property_tree/ptree.hpp>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -36,15 +37,42 @@ Fittino::SModelSCalculator::SModelSCalculator( const ModelBase* model, const boo
 
   std::string parameterFile = "parameters.ini";
 
-  Py_Initialize();
-  PyRun_SimpleString( ( "parameterFile = '" + parameterFile + "'" ).c_str() );
-  PyRun_SimpleString("from smodels.tools import modelTester");
-  PyRun_SimpleString( "parser = modelTester.getParameters( parameterFile )" );
-  PyRun_SimpleString( "database, databaseVersion = modelTester.loadDatabase(parser, None )" );
-  PyRun_SimpleString( "listOfExpRes = modelTester.loadDatabaseResults(parser, database)" );
-  PyRun_SimpleString( "print '[smodels.cpp] %d experimental results found.' % len(listOfExpRes) " );
+    std::string exename = "SModelSToolsExecutable";
 
-  PyRun_SimpleString("from smodels.tools import smodelsLogging");
+#ifdef SModelSTools_EXECUTABLE
+
+    std::string executable = ptree.get<std::string>( exename, SModelSTools_EXECUTABLE );
+
+#else
+
+    if ( ptree.count( exename ) == 0 ) {
+
+        throw ConfigurationException( "SModelSTools was not found. Please set " + exename + " in the input file." );
+
+    }
+
+    std::string executable = ptree.get<std::string>( exename );
+
+#endif
+
+   std::string inputrunTools = "SPheno.spc";
+
+    _executor = new Executor( executable, "smodelsTools.py" );
+    _executor->AddArgument( "xseccomputer" );
+    _executor->AddArgument( "-f" );
+    _executor->AddArgument( inputrunTools );
+    _executor->AddArgument( "-p" );
+    _executor->AddArgument( "-N" );
+
+//  Py_Initialize();
+//  PyRun_SimpleString( ( "parameterFile = '" + parameterFile + "'" ).c_str() );
+//  PyRun_SimpleString("from smodels.tools import modelTester");
+//  PyRun_SimpleString( "parser = modelTester.getParameters( parameterFile )" );
+//  PyRun_SimpleString( "database, databaseVersion = modelTester.loadDatabase(parser, None )" );
+//  PyRun_SimpleString( "listOfExpRes = modelTester.loadDatabaseResults(parser, database)" );
+//  PyRun_SimpleString( "print '[smodels.cpp] %d experimental results found.' % len(listOfExpRes) " );
+//
+//  PyRun_SimpleString("from smodels.tools import smodelsLogging");
  
 }
 Fittino::SModelSCalculator::~SModelSCalculator() {
@@ -53,21 +81,13 @@ Fittino::SModelSCalculator::~SModelSCalculator() {
 
 void Fittino::SModelSCalculator::CalculatePredictions() {
 
-  std::string parameterFile = "parameters.ini";
+    _executor->Execute();
 
-  std::string inputrunTools = "SPheno.spc";
-  Executor executorTools( "./smodelsTools.py", "smodelsTools" );
-  executorTools.AddArgument( "xseccomputer" );
-  executorTools.AddArgument( "-f" );
-  executorTools.AddArgument( inputrunTools );
-  executorTools.AddArgument( "-p" );
-  executorTools.AddArgument( "-N" );
-  executorTools.Execute();
-  
-  std::string inFile = "SPheno.spc";
-  PyRun_SimpleString( ( "inFile = '" + inFile  + "'" ).c_str() );
-  PyRun_SimpleString( "fileList = modelTester.getAllInputFiles( inFile )" );
-  PyRun_SimpleString( "modelTester.testPoints( fileList, inFile, 'results', parser, databaseVersion, listOfExpRes, 900, False, parameterFile )" );
+//    std::string parameterFile = "parameters.ini";
+//    std::string inFile = "SPheno.spc";
+//  PyRun_SimpleString( ( "inFile = '" + inFile  + "'" ).c_str() );
+//  PyRun_SimpleString( "fileList = modelTester.getAllInputFiles( inFile )" );
+//  PyRun_SimpleString( "modelTester.testPoints( fileList, inFile, 'results', parser, databaseVersion, listOfExpRes, 900, False, parameterFile )" );
 
 }
 

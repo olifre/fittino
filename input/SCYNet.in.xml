@@ -3,326 +3,331 @@
 
 <InputFile>
 
-  <VerbosityLevel>INFO</VerbosityLevel>
+    <VerbosityLevel>INFO</VerbosityLevel>
 
-  <Model>
+    <Model>
 
-    <PhysicsModel>
+        <PhysicsModel>
 
-      <Name>MSSM</Name>
+            <Name>MSSM</Name>
 
-      <ModelParameter>
-        <Name>Minput</Name>
-        <Value>1000</Value>
-        <Error>1</Error>
-        <LowerBound>-10</LowerBound>
-        <UpperBound>10000</UpperBound>
-        <Fixed>true</Fixed>
-      </ModelParameter>
-      
-      <ModelParameter>
-        <Name>M1</Name>
-        <Value>170</Value>
-        <Error>1</Error>
-        <LowerBound>-1000</LowerBound>
-        <UpperBound>1000</UpperBound>
-        <Fixed>false</Fixed>
-      </ModelParameter>
-      
-      <ModelParameter>
-        <Name>M2</Name>
-        <Value>170</Value>
-        <Error>1</Error>
-        <LowerBound>0</LowerBound>
-        <UpperBound>4000</UpperBound>
-        <Fixed>false</Fixed>
-      </ModelParameter>
+            <ModelParameter>
+                <Name>Minput</Name>
+                <Value>1000</Value>
+                <Error>1</Error>
+                <LowerBound>-10</LowerBound>
+                <UpperBound>10000</UpperBound>
+                <Fixed>true</Fixed>
+            </ModelParameter>
 
-      <ModelParameter>
-        <Name>M3</Name>
-        <Value>2600</Value>
-        <Error>1</Error>
-        <LowerBound>-4000</LowerBound>
-        <UpperBound>4000</UpperBound>
-        <Fixed>false</Fixed>
-      </ModelParameter>
+            <ModelParameter>
+                <Name>M1</Name>
+                <Value>170</Value>
+                <Error>1</Error>
+                <LowerBound>-1000</LowerBound>
+                <UpperBound>1000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
 
-      <ModelParameter>
-        <Name>MQ1</Name>
-        <Value>2880</Value>
-        <Error>1</Error>
-        <LowerBound>0</LowerBound>
-        <UpperBound>4000</UpperBound>
-        <Fixed>false</Fixed>
-      </ModelParameter>
+            <ModelParameter>
+                <Name>M2</Name>
+                <Value>170</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
 
-      <ModelParameter>
-        <Name>MQ3</Name>
-        <Value>4360</Value>
-        <Error>1</Error>
-        <LowerBound>0</LowerBound>
-        <UpperBound>4000</UpperBound>
-        <Fixed>false</Fixed>
-      </ModelParameter>
+            <ModelParameter>
+                <Name>M3</Name>
+                <Value>2600</Value>
+                <Error>1</Error>
+                <LowerBound>-4000</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
 
-      <ModelParameter>
-        <Name>ML1</Name>
-        <Value>440</Value>
-        <Error>1</Error>
-        <LowerBound>0</LowerBound>
-        <UpperBound>2000</UpperBound>
-        <Fixed>false</Fixed>
-      </ModelParameter>
+            <ModelParameter>
+                <Name>MQ1</Name>
+                <Value>2880</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
 
-      <ModelParameter>
-        <Name>ML3</Name>
-        <Value>440</Value>
-        <Error>1</Error>
-        <LowerBound>0</LowerBound>
-        <UpperBound>4000</UpperBound>
-        <Fixed>false</Fixed>
-      </ModelParameter>
+            <ModelParameter>
+                <Name>MQ3</Name>
+                <Value>4360</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
 
-      <ModelParameter>
-        <Name>MA0</Name>
-        <Value>2070</Value>
-        <Error>1</Error>
-        <LowerBound>0</LowerBound>
-        <UpperBound>4000</UpperBound>
-        <Fixed>false</Fixed>
-      </ModelParameter>
+            <ModelParameter>
+                <Name>ML1</Name>
+                <Value>440</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>2000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
 
-      <ModelParameter>
-        <Name>A</Name>
-        <Value>790</Value>
-        <Error>1</Error>
-        <LowerBound>-5000</LowerBound>
-        <UpperBound>5000</UpperBound>
-        <Fixed>false</Fixed>
-      </ModelParameter>
+            <ModelParameter>
+                <Name>ML3</Name>
+                <Value>440</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
 
-      <ModelParameter>
-        <Name>Mu</Name>
-        <Value>550</Value>
-        <Error>1</Error>
-        <LowerBound>-5000</LowerBound>
-        <UpperBound>5000</UpperBound>
-        <Fixed>false</Fixed>
-      </ModelParameter>
+            <ModelParameter>
+                <Name>MA0</Name>
+                <Value>2070</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
 
-      <ModelParameter>
-        <Name>TanBeta</Name>
-        <Value>37.6</Value>
-        <Error>1</Error>
-        <LowerBound>0</LowerBound>
-        <UpperBound>60</UpperBound>
-        <Fixed>false</Fixed>
-      </ModelParameter>
+            <ModelParameter>
+                <Name>A</Name>
+                <Value>790</Value>
+                <Error>1</Error>
+                <LowerBound>-5000</LowerBound>
+                <UpperBound>5000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
 
-      <ModelParameter>
-        <Name>Mt</Name>
-        <Value>173.3</Value>
-        <Error>1</Error>
-        <LowerBound>130</LowerBound>
-        <UpperBound>215</UpperBound>
-        <Fixed>false</Fixed>
-      </ModelParameter>
+            <ModelParameter>
+                <Name>Mu</Name>
+                <Value>550</Value>
+                <Error>1</Error>
+                <LowerBound>-5000</LowerBound>
+                <UpperBound>5000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
 
-      <Observables>
-      </Observables>
-      <CovarianceMatrices>
-      </CovarianceMatrices>
+            <ModelParameter>
+                <Name>TanBeta</Name>
+                <Value>37.6</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>60</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
 
-      <Calculators>
+            <ModelParameter>
+                <Name>Mt</Name>
+                <Value>173.3</Value>
+                <Error>1</Error>
+                <LowerBound>130</LowerBound>
+                <UpperBound>215</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
 
-        <SPhenoCalculator>
+            <Observables>
+            </Observables>
+            <CovarianceMatrices>
+            </CovarianceMatrices>
 
-          <Name>SPhenoCalculator</Name>
+            <Calculators>
 
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>0</Index>
-            <Value>Minput</Value>
-          </SLHALine>
-          
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>1</Index>
-            <Value>M1</Value>
-          </SLHALine>
+                <SPhenoCalculator>
 
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>2</Index>
-            <Value>M2</Value>
-          </SLHALine>
+                    <Name>SPhenoCalculator</Name>
 
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>3</Index>
-            <Value>M3</Value>
-          </SLHALine>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>0</Index>
+                        <Value>Minput</Value>
+                    </SLHALine>
 
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>11</Index>
-            <Value>A</Value>
-          </SLHALine>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>1</Index>
+                        <Value>M1</Value>
+                    </SLHALine>
 
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>12</Index>
-            <Value>A</Value>
-          </SLHALine>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>2</Index>
+                        <Value>M2</Value>
+                    </SLHALine>
 
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>13</Index>
-            <Value>A</Value>
-          </SLHALine>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>3</Index>
+                        <Value>M3</Value>
+                    </SLHALine>
 
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>23</Index>
-            <Value>Mu</Value>
-          </SLHALine>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>11</Index>
+                        <Value>A</Value>
+                    </SLHALine>
 
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>26</Index>
-            <Value>MA0</Value>
-          </SLHALine>
-          
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>31</Index>
-            <Value>ML1</Value>
-          </SLHALine>
-          
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>32</Index>
-            <Value>ML1</Value>
-          </SLHALine>
-          
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>33</Index>
-            <Value>ML3</Value>
-          </SLHALine>
-          
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>34</Index>
-            <Value>ML1</Value>
-          </SLHALine>
-          
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>35</Index>
-            <Value>ML1</Value>
-          </SLHALine>
-          
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>36</Index>
-            <Value>ML3</Value>
-          </SLHALine>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>12</Index>
+                        <Value>A</Value>
+                    </SLHALine>
 
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>41</Index>
-            <Value>MQ1</Value>
-          </SLHALine>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>13</Index>
+                        <Value>A</Value>
+                    </SLHALine>
 
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>42</Index>
-            <Value>MQ1</Value>
-          </SLHALine>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>23</Index>
+                        <Value>Mu</Value>
+                    </SLHALine>
 
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>43</Index>
-            <Value>MQ3</Value>
-          </SLHALine>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>26</Index>
+                        <Value>MA0</Value>
+                    </SLHALine>
 
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>44</Index>
-            <Value>MQ1</Value>
-          </SLHALine>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>31</Index>
+                        <Value>ML1</Value>
+                    </SLHALine>
 
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>45</Index>
-            <Value>MQ1</Value>
-          </SLHALine>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>32</Index>
+                        <Value>ML1</Value>
+                    </SLHALine>
 
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>46</Index>
-            <Value>MQ3</Value>
-          </SLHALine>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>33</Index>
+                        <Value>ML3</Value>
+                    </SLHALine>
 
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>47</Index>
-            <Value>MQ1</Value>
-          </SLHALine>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>34</Index>
+                        <Value>ML1</Value>
+                    </SLHALine>
 
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>48</Index>
-            <Value>MQ1</Value>
-          </SLHALine>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>35</Index>
+                        <Value>ML1</Value>
+                    </SLHALine>
 
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>49</Index>
-            <Value>MQ3</Value>
-          </SLHALine>
-          
-          <SLHALine>
-            <Block>EXTPAR</Block>
-            <Index>25</Index>
-            <Value>TanBeta</Value>
-          </SLHALine>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>36</Index>
+                        <Value>ML3</Value>
+                    </SLHALine>
 
-          <SLHALine>
-            <Block>SMINPUTS</Block>
-            <Index>6</Index>
-            <Value>Mt</Value>
-          </SLHALine>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>41</Index>
+                        <Value>MQ1</Value>
+                    </SLHALine>
 
-        </SPhenoCalculator>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>42</Index>
+                        <Value>MQ1</Value>
+                    </SLHALine>
 
-        <LHCNeuralNetCalculator>
-          <M1>[M1]</M1>
-          <M2>[M2]</M2>
-          <M3>[M3]</M3>
-          <MQ1>[MQ1]</MQ1>
-          <MQ3>[MQ3]</MQ3>
-          <ML1>[ML1]</ML1>
-          <ML3>[ML3]</ML3>
-          <MA0>[MA0]</MA0>
-          <TanBeta>[TanBeta]</TanBeta>
-          <Mu>[Mu]</Mu>
-          <A>[A]</A>
-        </LHCNeuralNetCalculator>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>43</Index>
+                        <Value>MQ3</Value>
+                    </SLHALine>
 
-      </Calculators>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>44</Index>
+                        <Value>MQ1</Value>
+                    </SLHALine>
 
-    </PhysicsModel>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>45</Index>
+                        <Value>MQ1</Value>
+                    </SLHALine>
 
-  </Model>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>46</Index>
+                        <Value>MQ3</Value>
+                    </SLHALine>
 
-  <Tool>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>47</Index>
+                        <Value>MQ1</Value>
+                    </SLHALine>
 
-    <MarkovChainSampler>
-      <NumberOfIterations>1</NumberOfIterations>
-    </MarkovChainSampler>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>48</Index>
+                        <Value>MQ1</Value>
+                    </SLHALine>
 
-  </Tool>
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>49</Index>
+                        <Value>MQ3</Value>
+                    </SLHALine>
+
+                    <SLHALine>
+                        <Block>EXTPAR</Block>
+                        <Index>25</Index>
+                        <Value>TanBeta</Value>
+                    </SLHALine>
+
+                    <SLHALine>
+                        <Block>SMINPUTS</Block>
+                        <Index>6</Index>
+                        <Value>Mt</Value>
+                    </SLHALine>
+
+                </SPhenoCalculator>
+
+                <LHCNeuralNetCalculator>
+                    <M1>[M1]</M1>
+                    <M2>[M2]</M2>
+                    <M3>[M3]</M3>
+                    <MQ1>[MQ1]</MQ1>
+                    <MQ3>[MQ3]</MQ3>
+                    <ML1>[ML1]</ML1>
+                    <ML3>[ML3]</ML3>
+                    <MA0>[MA0]</MA0>
+                    <TanBeta>[TanBeta]</TanBeta>
+                    <Mu>[Mu]</Mu>
+                    <A>[A]</A>
+                </LHCNeuralNetCalculator>
+                <SModelSCalculator>
+                </SModelSCalculator>
+
+            </Calculators>
+
+        </PhysicsModel>
+
+    </Model>
+
+    <Tool>
+
+        <MarkovChainSampler>
+            <NumberOfIterations>1</NumberOfIterations>
+        </MarkovChainSampler>
+
+    </Tool>
+
+
 
 </InputFile>
+

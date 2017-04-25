@@ -52,6 +52,7 @@ FIND_PACKAGE( HepMC                                                             
 FIND_PACKAGE( LHAPDF 5.8.9 EXACT                                                     )
 FIND_PACKAGE( SLHAEA                                                                 )
 find_package( SPheno                                                                 )
+find_package( SModelSTools                                                           )
 FIND_PACKAGE( X11                                                                    )
 FIND_PACKAGE( MICROMEGAS                                                             )
 FIND_PACKAGE( FORTRANFLUSH                                                           )
@@ -86,6 +87,12 @@ ENDIF( DOXYGEN_FOUND )
 IF( SPHENO_FOUND )
 
     add_definitions( -DSPHENO_EXECUTABLE="${SPHENO_EXECUTABLE}" )
+
+endif()
+
+IF( SMODELSTOOLS_FOUND )
+
+    add_definitions( -DSModelSTools_EXECUTABLE="${SModelSTools_EXECUTABLE}" )
 
 endif()
 

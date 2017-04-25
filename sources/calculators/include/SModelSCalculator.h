@@ -21,6 +21,9 @@
 #include "CalculatorBase.h"
 
 namespace Fittino {
+
+    class Executor;
+
   class SModelSCalculator : public CalculatorBase {
     
   public:
@@ -34,6 +37,8 @@ namespace Fittino {
     virtual void Initialize();
 
   private:
+
+      Executor* _executor;
 
     double _r;
     double _Chi2;
