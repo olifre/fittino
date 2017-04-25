@@ -305,6 +305,9 @@ if( INSTALL_Miniconda2 OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_CheckMATE
 
     set( miniconda2_install_command ${CMAKE_COMMAND} -E env HOME=<INSTALL_DIR> PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${BASH} <DOWNLOADED_FILE> -b -f -p <INSTALL_DIR> )
 
+    list( APPEND miniconda2_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH <INSTALL_DIR>/bin/conda install -y numpy scipy )
+
+
     if( "${CMAKE_SYSTEM_NAME}" MATCHES "Linux" )
 
         list( APPEND miniconda2_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH <INSTALL_DIR>/bin/conda install -y tensorflow==0.10.0rc0 )
@@ -348,7 +351,9 @@ if( INSTALL_SModelS )
             CONFIGURE_COMMAND ""
             BUILD_COMMAND $(MAKE) FCC=${CMAKE_Fortran_COMPILER}
             BUILD_IN_SOURCE 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${Conda_ROOT_DIR}/bin/pip install .
+            INSTALL_COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${Conda_ROOT_DIR}/bin/pip install unum docutils pyslha argparse
+            COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${Conda_ROOT_DIR}/bin/python setup.py install
+
 
     )
 
