@@ -38,12 +38,28 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
     std::string fileName = ptree.get<std::string>( "FileName" );
     std::string parameterFile = ptree.get<std::string>( "ParameterFile" );
 
-    _executor = new Executor(executable, "smodelsTools.py");
-    _executor->AddArgument("xseccomputer");
-    _executor->AddArgument("-f");
-    _executor->AddArgument(fileName);
-    _executor->AddArgument("-p");
-   // _executor->AddArgument("-N");
+    _crossSections_LO = new Executor( executable, "smodelsTools.py" );
+    _crossSections_LO->AddArgument("xseccomputer");
+    _crossSections_LO->AddArgument("-s");
+    _crossSections_LO->AddArgument("8");
+    _crossSections_LO->AddArgument("13");
+    _crossSections_LO->AddArgument("-e");
+    _crossSections_LO->AddArgument("10000");
+    _crossSections_LO->AddArgument("-p");
+    _crossSections_LO->AddArgument("-f");
+    _crossSections_LO->AddArgument(fileName);
+
+    _crossSections_NLL = new Executor( executable, "smodelsTools.py" );
+    _crossSections_NLL->AddArgument("xseccomputer");
+    _crossSections_NLL->AddArgument("-s");
+    _crossSections_NLL->AddArgument("8");
+    _crossSections_NLL->AddArgument("13");
+    _crossSections_NLL->AddArgument("-p");
+    _crossSections_NLL->AddArgument("-N");
+    _crossSections_NLL->AddArgument("-O");
+    _crossSections_NLL->AddArgument("-f");
+    _crossSections_NLL->AddArgument(fileName);
+
 
     Py_Initialize();
     PyRun_SimpleString(("parameterFile = '" + parameterFile + "'").c_str());
@@ -63,7 +79,7 @@ Fittino::SModelSCalculator::~SModelSCalculator() {
 
 void Fittino::SModelSCalculator::CalculatePredictions() {
 
-    _executor->Execute();
+    _crossSections_LO->Execute();
 
     PyRun_SimpleString(
             "modelTester.testPoints( fileList, fileName, 'results', parser, databaseVersion, listOfExpRes, 900, False, parameterFile )");

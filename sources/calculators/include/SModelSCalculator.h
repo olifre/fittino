@@ -1,20 +1,3 @@
-/* $Id: SModelSCalculator.h 2528 2015-04-07 10:54:29Z range@PHYSIK.UNI-BONN.DE $ */
-
-/******************************************************************************* 
- *                                                                              *
- * Project     Fittino - A SUSY Parameter Fitting Package                       *      
- *                                                                              *      
- * File        SModelSCalculator.h                                              * 
- * Description: Wrapper class for SModelS                                       *  
- * Authors:     Nanette Range                                                   *   
- *                                                                              *                      
- * Licence     This program is free software; you can redistribute it and/or    *              
- *             modify it under the terms of the GNU General Public License as   *     
- *             published by the Free Software Foundation; either version 3 of   *
- *             the License, or (at your option) any later version.              *            
- *                                                                              *
- *******************************************************************************/
-
 #ifndef FITTINO_SMODELSCALCULATOR_H
 #define FITTINO_SMODELSCALCULATOR_H
 
@@ -38,7 +21,8 @@ namespace Fittino {
 
   private:
 
-      Executor* _executor;
+      Executor* _crossSections_LO;
+      Executor* _crossSections_NLL;
 
     double _r;
     double _Chi2;
@@ -63,5 +47,6 @@ namespace Fittino {
 
 
 }
+
 #endif // FITTINO_SMODELSCALCULATOR_H
 
