@@ -1,21 +1,11 @@
-#include <Python.h>
-#include <boost/lexical_cast.hpp>
 #include <boost/python.hpp>
 #include <boost/property_tree/ptree.hpp>
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <boost/algorithm/string.hpp>
-
-#include "SimplePrediction.h"
-#include "SModelSCalculator.h"
+#include <Python.h>
 #include "Executor.h"
+#include "SModelSCalculator.h"
 
 Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boost::property_tree::ptree &ptree)
         : CalculatorBase(model, &ptree) {
-
-    AddQuantity(new SimplePrediction("r", "", _r));
-    AddQuantity(new SimplePrediction("chi2", "", _Chi2));
 
     std::string exename = "SModelSToolsExecutable";
 
@@ -25,7 +15,7 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
 
 #else
 
-    if (ptree.count(exename) == 0) {
+    if ( ptree.count(exename) == 0 ) {
 
         throw ConfigurationException("SModelSTools was not found. Please set " + exename + " in the input file.");
 
@@ -60,8 +50,8 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
     _crossSections_NLL->AddArgument("-f");
     _crossSections_NLL->AddArgument(fileName);
 
-
     Py_Initialize();
+
     PyRun_SimpleString(("parameterFile = '" + parameterFile + "'").c_str());
     PyRun_SimpleString("from smodels.tools import modelTester");
     PyRun_SimpleString("parser = modelTester.getParameters( parameterFile )");
