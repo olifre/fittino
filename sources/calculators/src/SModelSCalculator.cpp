@@ -70,6 +70,7 @@ Fittino::SModelSCalculator::~SModelSCalculator() {
 void Fittino::SModelSCalculator::CalculatePredictions() {
 
     _crossSections_LO->Execute();
+    _crossSections_NLL->Execute();
 
     PyRun_SimpleString(
             "modelTester.testPoints( fileList, fileName, 'results', parser, databaseVersion, listOfExpRes, 900, False, parameterFile )");
