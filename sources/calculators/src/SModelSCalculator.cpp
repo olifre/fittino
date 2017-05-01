@@ -2,11 +2,14 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <Python.h>
+#include <iostream>
 #include "Executor.h"
 #include "SModelSCalculator.h"
 
 Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boost::property_tree::ptree &ptree)
         : CalculatorBase(model, &ptree) {
+
+    AddOutput( "R-Value", _rValue );
 
     std::string exename = "SModelSToolsExecutable";
 
@@ -93,6 +96,20 @@ void Fittino::SModelSCalculator::ReadXML() {
                                     ptree,
                                     boost::property_tree::xml_parser::trim_whitespace |
                                     boost::property_tree::xml_parser::no_comments );
+
+    _rValue = 0;
+
+    double ul, tp, r;
+
+    for ( const auto res : ptree.get_child("smodelsOutput.ExptRes_List") ){
+
+         ul = res.second.get<double>( "upper_limit_fb" );
+         tp = res.second.get<double>( "theory_prediction_fb" );
+         r = tp / ul;
+
+        if ( r > _rValue ) _rValue = r;
+
+    }
 
 }
 

@@ -25,6 +25,7 @@ namespace Fittino {
       Executor* _crossSections_NLL;
 
       std::string _xmlFile;
+      double _rValue;
 
       void ReadXML();
 
