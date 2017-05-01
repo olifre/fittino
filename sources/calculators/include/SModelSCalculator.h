@@ -24,7 +24,11 @@ namespace Fittino {
       Executor* _crossSections_LO;
       Executor* _crossSections_NLL;
 
-    };
+      std::string _xmlFile;
+
+      void ReadXML();
+
+  };
 
 }
 

@@ -1,5 +1,6 @@
 #include <boost/python.hpp>
 #include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
 #include <Python.h>
 #include "Executor.h"
 #include "SModelSCalculator.h"
@@ -26,6 +27,9 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
 #endif
 
     std::string fileName = ptree.get<std::string>( "FileName" );
+
+    _xmlFile = "results/" + fileName + ".xml";
+
     std::string parameterFile = ptree.get<std::string>( "ParameterFile" );
 
     _crossSections_LO = new Executor( executable, "smodelsTools.py" );
@@ -74,6 +78,21 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
 
     PyRun_SimpleString(
             "modelTester.testPoints( fileList, fileName, 'results', parser, databaseVersion, listOfExpRes, 900, False, parameterFile )");
+
+
+    ReadXML();
+
+
+}
+
+void Fittino::SModelSCalculator::ReadXML() {
+
+    boost::property_tree::ptree ptree;
+
+    boost::property_tree::read_xml( _xmlFile,
+                                    ptree,
+                                    boost::property_tree::xml_parser::trim_whitespace |
+                                    boost::property_tree::xml_parser::no_comments );
 
 }
 
