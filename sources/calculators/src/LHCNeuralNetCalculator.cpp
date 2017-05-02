@@ -1,34 +1,13 @@
-/* $Id: LHCNeuralNetCalculator.cpp 2383 2014-12-29 13:52:26Z sarrazin $ */
-
-/*******************************************************************************
-*                                                                              *
-* Project     Fittino - A SUSY Parameter Fitting Package                       *
-*                                                                              *
-* File        LHCNeuralNetCalculator.cpp                                       *
-*                                                                              *
-* Description Calculator for python scripts                                    *          
-*                                                                              *
-* Authors     Matthias Hamer <matthias.hamer@cern.ch>                          *
-*                                                                              *
-* Licence     This program is free software; you can redistribute it and/or    *
-*             modify it under the terms of the GNU General Public License as   *
-*             published by the Free Software Foundation; either version 3 of   *
-*             the License, or (at your option) any later version.              *
-*                                                                              *
-*******************************************************************************/
-
 #define BOOST_NO_CXX11_SCOPED_ENUMS
 
+#include "Python.h"
 #include <boost/python.hpp>
-
+#include <boost/python/object.hpp>
 #include "LHCNeuralNetCalculator.h"
 #include "CalculatorException.h"
 #include "PhysicsModel.h"
 #include "SimplePrediction.h"
 #include "ModelParameter.h"
-
-#include "Python.h"
-#include <boost/python/object.hpp>
 
 Fittino::LHCNeuralNetCalculator::LHCNeuralNetCalculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model, &ptree ) 
@@ -41,7 +20,11 @@ Fittino::LHCNeuralNetCalculator::LHCNeuralNetCalculator( const ModelBase* model,
 
    }
     
-    AddOutput( "Chi2_8TeV", _chi2_8TeV );
+    AddOutput( "Chi2_8TeV", _chi2_8 );
+    AddOutput( "Chi2_13TeV", _chi2_13 );
+    AddOutput( "Chi2_Total", _chi2_total );
+
+
 
     Py_Initialize();
 
@@ -49,18 +32,24 @@ Fittino::LHCNeuralNetCalculator::LHCNeuralNetCalculator( const ModelBase* model,
     PyRun_SimpleString("sys.argv = ['']");
 
     //PyObject* myModuleString = PyString_FromString( (char*) "scynet.scynet" );
-    //PyObject* scynet_module = PyImport_Import(myModuleString);
-    //PyObject* scynet_class = PyObject_GetAttrString(scynet_module, "SCYNet");
-    //PyObject* scynet_instance = PyInstance_New( scynet_class, NULL, NULL); 
-    //PyObject *ret = PyObject_CallMethod(scynet_instance, "startSession", "i", 8);
+    //PyObject* module = PyImport_Import(myModuleString);
+    //PyObject* scynetClass = PyObject_GetAttrString(module, "SCYNet");
+    //PyObject* instance_8 = PyInstance_New( scynetClass, NULL, NULL);
+    //PyObject *ret = PyObject_CallMethod(instance_8, "startSession", "i", 8);
     //assert( ret != NULL );
 
-    boost::python::object scynet_module = boost::python::import("scynet.scynet");
-    boost::python::object scynet_class = scynet_module.attr( "SCYNet" );
-    PyObject* scynet_instance = PyInstance_New( scynet_class.ptr(), NULL, NULL); 
-    boost::python::handle<> handle(scynet_instance);
-    _scynet_8TeV = new boost::python::object(handle);
-    _scynet_8TeV->attr("startSession")(8);
+    boost::python::object scynetModule = boost::python::import("scynet.scynet");
+    boost::python::object scynetClass = scynetModule.attr( "SCYNet" );
+
+    PyObject* instance_8 = PyInstance_New( scynetClass.ptr(), NULL, NULL);
+    boost::python::handle<> handle_8(instance_8);
+    _scynet_8 = new boost::python::object(handle_8);
+    _scynet_8->attr("startSession")(8);
+
+    PyObject* instance_13 = PyInstance_New( scynetClass.ptr(), NULL, NULL);
+    boost::python::handle<> handle_13(instance_13);
+    _scynet_13 = new boost::python::object(handle_13);
+    _scynet_13->attr("startSession")(13);
 
     AddInput( "M1"  );
     AddInput( "M2"  );
@@ -78,8 +67,8 @@ Fittino::LHCNeuralNetCalculator::LHCNeuralNetCalculator( const ModelBase* model,
 
 Fittino::LHCNeuralNetCalculator::~LHCNeuralNetCalculator() {
 
-//  _scynet_8TeV->closeSession();
-  delete _scynet_8TeV;
+    delete _scynet_8;
+    delete _scynet_13;
 
 }
 
@@ -113,6 +102,8 @@ void Fittino::LHCNeuralNetCalculator::CalculatePredictions() {
     point.append( GetInput( "Mu" ) );
     point.append( GetInput( "TanBeta" ) );
 
-    _chi2_8TeV = boost::python::extract<double>( _scynet_8TeV->attr("chi2")(point) );
+    _chi2_8 = boost::python::extract<double>( _scynet_8->attr("chi2")(point) );
+    _chi2_13 = boost::python::extract<double>( _scynet_13->attr("chi2")(point) );
+    _chi2_total = _chi2_8 + _chi2_13;
 
 }
