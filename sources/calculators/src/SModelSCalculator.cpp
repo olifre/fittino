@@ -9,7 +9,7 @@
 Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boost::property_tree::ptree &ptree)
         : CalculatorBase(model, &ptree) {
 
-    AddOutput( "R-Value", _rValue );
+    AddOutput( "R_Value", _rValue );
 
     std::string exename = "SModelSToolsExecutable";
 
