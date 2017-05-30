@@ -22,6 +22,7 @@
 #include <boost/lexical_cast.hpp>
 
 #include "CalculatorException.h"
+#include "InputFile.h"
 #include "Database.h"
 #include "PhysicsModel.h"
 #include "SLHADataStorageBase.h"
@@ -38,10 +39,12 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const ModelBase* model, con
 
     _name               = "SPheno";
     _tag                = "SPheno";
-    _slhaInputFileName  = "LesHouches.in";
-    _slhaOutputFileName = "SPheno.spc";
+    _slhaOutputFileName = ptree.get<std::string>("OutputFile");
+          _inputFile = new InputFile( ptree.get_child("InputFile"), model );
+          _slhaInputFileName  = _inputFile->GetName();
 
-    std::string exename = "Executable";
+
+          std::string exename = "Executable";
 
 #ifdef SPHENO_EXECUTABLE
 
@@ -60,18 +63,9 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const ModelBase* model, con
 #endif
 
     _executor = new Executor( executable, "SPheno" );
+    _executor->AddArgument( _slhaInputFileName );
 
-    _executor->SetCompletionTimeout( 20 );
-
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
-
-        if ( node.first == "SLHALine" ) {
-
-            _lines.push_back( new SLHALine( node.second, model ) );
-
-        }
-
-    }
+    _executor->SetCompletionTimeout( 60 );
 
     Database& database = Database::GetInstance();
 
@@ -87,13 +81,13 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const ModelBase* model, con
     AddParticle( "Hp" );
     AddParticle( "A0" );
 
-    AddQuantity( new SLHAPrediction( "sinAlpha" , "", _slhaOutputDataStorage, "alpha", 0, "(any)", "# alpha", "", "" ) );
+   // AddQuantity( new SLHAPrediction( "sinAlpha" , "", _slhaOutputDataStorage, "alpha", 0, "(any)", "# alpha", "", "" ) ); not in contained in output of SARAH_SPHENO
 
     AddQuantity( new SLHAPrediction( "HMIX_Q"      , "", _slhaOutputDataStorage, "HMIX", 3, "BLOCK", "", "", "" ) );
     AddQuantity( new SLHAPrediction( "HMIX_mu"     , "", _slhaOutputDataStorage, "HMIX", 1, "1", "", "", ""     ) );
-    AddQuantity( new SLHAPrediction( "HMIX_TanBeta", "", _slhaOutputDataStorage, "HMIX", 1, "2", "", "", ""     ) );
+ //   AddQuantity( new SLHAPrediction( "HMIX_TanBeta", "", _slhaOutputDataStorage, "HMIX", 1, "2", "", "", ""     ) );
     AddQuantity( new SLHAPrediction( "HMIX_VEV"    , "", _slhaOutputDataStorage, "HMIX", 1, "3", "", "", ""     ) );
-    AddQuantity( new SLHAPrediction( "HMIX_m2A"    , "", _slhaOutputDataStorage, "HMIX", 1, "4", "", "", ""     ) );
+  //  AddQuantity( new SLHAPrediction( "HMIX_m2A"    , "", _slhaOutputDataStorage, "HMIX", 1, "4", "", "", ""     ) );
 
     std::vector<std::string> susyparticles = database.GetSUSYParticles();
 
@@ -190,33 +184,14 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const ModelBase* model, con
 
 Fittino::SPhenoSLHACalculator::~SPhenoSLHACalculator() {
 
-    for ( unsigned int i = 0; i < _lines.size(); i++ ) {
-
-        delete _lines[i];
-
-    }
-
+    delete _inputFile;
     delete _executor;
 
 }
 
 void Fittino::SPhenoSLHACalculator::CalculatePredictions() {
 
-    if ( boost::filesystem::exists( _slhaInputFileName ) ) {
-
-        boost::filesystem::rename( _slhaInputFileName, _slhaInputFileName + ".last" );
-
-    }
-
-    if ( boost::filesystem::exists( _slhaOutputFileName ) ) {
-
-        boost::filesystem::rename( _slhaOutputFileName, _slhaOutputFileName + ".last" );
-
-    }
-
-    ConfigureInput();
-
-    _slhaInputDataStorage->WriteFile( _slhaInputFileName );
+    _inputFile->Write();
 
     try {
 
@@ -297,69 +272,4 @@ void Fittino::SPhenoSLHACalculator::AddWidth( std::string particle ) {
 
 }
 
-void Fittino::SPhenoSLHACalculator::ConfigureInput() {
 
-    _slhaInputDataStorage->Clear();
-
-    // Write block "MODSEL".
-
-    _slhaInputDataStorage->AddBlock( "MODSEL:BLOCK MODSEL:#Model selection" );
-    if( _model->GetName() == "MSSM" ) {
-        _slhaInputDataStorage->AddLine( "MODSEL:1:0:# " + _model->GetName() );
-        
-        // Write block EXTPAR
-        
-        _slhaInputDataStorage->AddBlock("EXTPAR:BLOCK EXTPAR:# Soft SUSY Breaking Parameters" );
-    }
-    else {
-        _slhaInputDataStorage->AddLine( "MODSEL:1:1:# " + _model->GetName() );
-        //_slhaInputDataStorage->AddLine( "MODSEL:12:1000:# Q_EWSB (fixed)" );
-        
-
-
-        // Write block "MINPAR".
-
-        _slhaInputDataStorage->AddBlock( "MINPAR:BLOCK MINPAR:# Input parameters" );
-    }
-
-
-    // Write block "SMINPUTS".
-
-    _slhaInputDataStorage->AddBlock( "SMINPUTS:BLOCK SMINPUTS:# Standard model inputs" );
-    _slhaInputDataStorage->AddLine( "SMINPUTS:1:1.28952e+02:# 1/alpha_em (fixed)" );
-    _slhaInputDataStorage->AddLine( "SMINPUTS:2:1.1663787e-05:# G_F (fixed)" );
-    _slhaInputDataStorage->AddLine( "SMINPUTS:3:1.184e-01:# alpha_s (fixed)" );
-    _slhaInputDataStorage->AddLine( "SMINPUTS:4:9.11876e+01:# mZ (fixed)" );
-    _slhaInputDataStorage->AddLine( "SMINPUTS:5:4.18e+00:# mb(mb) (fixed)" );
-    _slhaInputDataStorage->AddLine( "SMINPUTS:7:1.77682e+00:# mtau (fixed)" );
-    _slhaInputDataStorage->AddLine( "SMINPUTS:13:1.056583715e-01:# mmu (fixed)" );
-    _slhaInputDataStorage->AddLine( "SMINPUTS:23:9.5e-02:# ms(2GeV) (fixed)" );
-    _slhaInputDataStorage->AddLine( "SMINPUTS:24:1.275e+00:# mc(mc) (fixed)" );
-
-    
-    // Write block "SPHENOINPUT".
-
-    _slhaInputDataStorage->AddBlock( "SPHENOINPUT:BLOCK SPHENOINPUT:# SPheno specific input" );
-    _slhaInputDataStorage->AddLine( "SPHENOINPUT:1:0:# error level" );
-    _slhaInputDataStorage->AddLine( "SPHENOINPUT:2:0:# if 1, then SPA conventions are used" );
-    _slhaInputDataStorage->AddLine( "SPHENOINPUT:11:1:# calculate branching ratios" );
-    _slhaInputDataStorage->AddLine( "SPHENOINPUT:12:1.00000000E-04:# write only branching ratios larger than this value" );
-    _slhaInputDataStorage->AddLine( "SPHENOINPUT:21:0:# calculate cross section" );
-    _slhaInputDataStorage->AddLine( "SPHENOINPUT:22:1.000000e+03:# cms energy in GeV" );
-    _slhaInputDataStorage->AddLine( "SPHENOINPUT:23:0.000000e+00:# polarisation of incoming e- beam" );
-    _slhaInputDataStorage->AddLine( "SPHENOINPUT:24:0.000000e+00:# polarisation of incoming e+ beam" );
-    _slhaInputDataStorage->AddLine( "SPHENOINPUT:25:1:# ISR is calculated" );
-    _slhaInputDataStorage->AddLine( "SPHENOINPUT:26:1.00000000E-05:# write only cross sections larger than this value [fb]" );
-    _slhaInputDataStorage->AddLine( "SPHENOINPUT:31:-1.00000000E+00:# m_GUT, if < 0 than it determined via g_1=g_2" );
-    _slhaInputDataStorage->AddLine( "SPHENOINPUT:32:0:# require strict unification g_1=g_2=g_3 if '1' is set" );
-    _slhaInputDataStorage->AddLine( "SPHENOINPUT:80:1:# SPheno exits with non-zero value for sure" );
-
-    // Add parameter point dependent lines to block "MINPAR".
-
-    for ( unsigned int i = 0; i < _lines.size(); i++ ) {
-
-        _slhaInputDataStorage->AddLine( *_lines.at( i ) );
-
-    }
-
-}
