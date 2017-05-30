@@ -72,6 +72,7 @@ IF(PYTHONLIBS_FOUND AND Boost_PYTHON_FOUND)
 ELSE()
 
     LIST(REMOVE_ITEM sources "src/SModelSCalculator.cpp")
+    LIST(REMOVE_ITEM sources "src/LHCNeuralNetCalculator.cpp")
 
 ENDIF()
 

@@ -409,7 +409,7 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 
 #else
 
-        throw ConfigurationException( "Trying to use SModelSCalculator but Fittino was built without Python." );
+        throw ConfigurationException( "Trying to use SModelSCalculator but Fittino was built without Python or Boost.Python." );
 
 #endif
 
@@ -447,7 +447,16 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     }
     else if ( type == "LHCNeuralNetCalculator" ) {
 
+#ifdef PYTHON
+
         return new LHCNeuralNetCalculator( model, ptree );
+
+#else
+
+        throw ConfigurationException( "Trying to use LHCNeuralNetCalculator but Fittino was built without Python or Boost.Python." );
+
+#endif
+
 
     }
     else {
