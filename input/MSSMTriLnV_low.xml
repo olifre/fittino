@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<?xml-stylesheet type="text/xsl" href="style/InputFile.xsl"?>
+
+<InputFile>
+
+    <VerbosityLevel>INFO</VerbosityLevel>
+
+    <Model>
+
+        <PhysicsModel>
+
+            <Name>MSSM</Name>
+
+            <ModelParameter>
+                <Name>lambda'_232</Name>
+                <Value>0.05</Value>
+                <Error>0.05</Error>
+                <LowerBound>0.05</LowerBound>
+                <UpperBound>0.5</UpperBound>
+                <Fixed>true</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>lambda'_233</Name>
+                <Value>0.05</Value>
+                <Error>0.05</Error>
+                <LowerBound>0.05</LowerBound>
+                <UpperBound>0.5</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>md2_33</Name>
+                <Value>5e5</Value>
+                <Error>1e5</Error>
+                <LowerBound>5e5</LowerBound>
+                <UpperBound>2e6</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>mq2_33</Name>
+                <Value>5e5</Value>
+                <Error>1e5</Error>
+                <LowerBound>5e5</LowerBound>
+                <UpperBound>2e6</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <Observables>
+            </Observables>
+            <CovarianceMatrices>
+            </CovarianceMatrices>
+
+            <Calculators>
+
+                <SPhenoCalculator>
+                    <Executable>@SPheno_ROOT_DIR@/bin/SPhenoMSSMTriLnV</Executable>
+                    <InputFile>
+                        <Template>@Fittino_INPUT_DIR@/LesHouches.in.MSSMTriLnV_low</Template>
+                        <Name>LesHouches.in.MSSMTriLnV_low</Name>
+                        <Quantity>
+                            <Name>lambda'_232</Name>
+                            <Value>[lambda'_232]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>lambda'_233</Name>
+                            <Value>[lambda'_233]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>md2_33</Name>
+                            <Value>[md2_33]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>mq2_33</Name>
+                            <Value>[mq2_33]</Value>
+                        </Quantity>
+                    </InputFile>
+                    <OutputFile>SPheno.spc.MSSMTriLnV</OutputFile>
+                </SPhenoCalculator>
+
+            </Calculators>
+
+        </PhysicsModel>
+
+    </Model>
+
+    <Tool>
+
+        <MarkovChainSampler>
+            <NumberOfIterations>1</NumberOfIterations>
+        </MarkovChainSampler>
+
+    </Tool>
+
+
+
+</InputFile>
+

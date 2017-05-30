@@ -97,12 +97,14 @@ IF( SMODELSTOOLS_FOUND )
 
 endif()
 
-set( indir ${PROJECT_BINARY_DIR}/input/ )
-file( COPY ${PROJECT_SOURCE_DIR}/input DESTINATION ${indir} PATTERN ".svn" EXCLUDE )
+#file( COPY ${PROJECT_SOURCE_DIR}/input DESTINATION ${indir} PATTERN ".svn" EXCLUDE )
 
 set( Fittino_INPUT_DIR ${CMAKE_INSTALL_PREFIX}/share/fittino/input )
+set( indir ${PROJECT_BINARY_DIR}/input/ )
 configure_file( ${PROJECT_SOURCE_DIR}/input/SCYNet.in.xml ${indir} )
 configure_file( ${PROJECT_SOURCE_DIR}/input/parameters.ini ${indir} )
+configure_file( ${PROJECT_SOURCE_DIR}/input/MSSMTriLnV_low.xml ${indir} )
+configure_file( ${PROJECT_SOURCE_DIR}/input/LesHouches.in.MSSMTriLnV_low ${indir} )
 
 install( DIRECTORY ${indir} DESTINATION ${Fittino_INPUT_DIR} )
 

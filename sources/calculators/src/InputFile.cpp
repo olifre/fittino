@@ -17,7 +17,7 @@ Fittino::InputFile::InputFile( const boost::property_tree::ptree& ptree, const M
 
     for( const auto& node : ptree ) {
 
-        if( node.first != "Replacement" ) continue;
+        if( node.first != "Quantity" ) continue;
 
         std::string name = node.second.get<std::string>( "Name" );
         std::string value = node.second.get<std::string>( "Value" );
@@ -25,7 +25,7 @@ Fittino::InputFile::InputFile( const boost::property_tree::ptree& ptree, const M
 
         if( ! names.insert(name).second )  {
 
-            throw ConfigurationException( "Replacement of " + name + " configured multiple times." );
+            throw ConfigurationException( "Quantity of " + name + " configured multiple times." );
 
         }
 
