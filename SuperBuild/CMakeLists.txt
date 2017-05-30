@@ -46,6 +46,8 @@ option( INSTALL_Fittino      "" ON  )
 
 set( SuperIso_URL "~/Downloads/superiso_v3.4.tar" CACHE FILEPATH "" )
 
+set( MSSMTriLnV_URL "~/Downloads/MSSMTriLnV.tgz" CACHE FILEPATH "" )
+
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
 
     set( SModelS_URL "~/Downloads/smodels-v1.1.0patch1.tar" CACHE FILEPATH "" )
@@ -88,7 +90,7 @@ endif()
 
 # END CACHE VARIABLES
 
-if( INSTALL_SLHAea OR INSTALL_SPheno )
+if( INSTALL_SLHAea OR INSTALL_SPheno OR INSTALL_MSSMTriLnV )
 
     set( slhaea SLHAea-0.1 )
 
@@ -110,16 +112,16 @@ if( INSTALL_SLHAea OR INSTALL_SPheno )
 
 endif()
 
-if( INSTALL_SPheno )
+if( INSTALL_SPheno OR INSTALL_MSSMTriLnV )
 
-    set( spheno SPheno-4.0.2 )
+    set( spheno SPheno-4.0.3 )
 
     externalproject_add(
 
             ${spheno}
             DEPENDS ${slhaea}
-            URL http://www.hepforge.org/archive/spheno/SPheno-4.0.2.tar.gz
-            URL_MD5 3a758101fdf8a4711524d70437c8f1bc
+            URL http://www.hepforge.org/archive/spheno/SPheno-4.0.3.tar.gz
+            URL_MD5 64787d6c8ce03cac38aec53d34ac46ad
             PATCH_COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_SPheno.cmake
             BUILD_IN_SOURCE 1
             CONFIGURE_COMMAND ""
@@ -489,8 +491,6 @@ if( INSTALL_Fittino )
     file( APPEND ${CMAKE_CURRENT_BINARY_DIR}/activate "export FITTINO_ROOT_DIR=${Fittino_ROOT_DIR}\n" )
 
 endif()
-
-
 
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/init.cmake ${CMAKE_CURRENT_BINARY_DIR}/init.cmake )
 

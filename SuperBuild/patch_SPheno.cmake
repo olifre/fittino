@@ -6,6 +6,6 @@ FOREACH( COMPILER "ifortg" "gfortran" "g95" "lf95" "nagfor" )
 
 ENDFOREACH()
 
-STRING( REPLACE "ar -ruc -U" "ar -ruc" fileContent ${fileContent} )
+# STRING( REPLACE "ar -ruc -U" "ar -ruc" fileContent ${fileContent} ) needed for SPheno 4.0.X X<3, see http://stauby.de/sarah_userforum/viewtopic.php?f=4&t=213
 
 FILE ( WRITE src/Makefile ${fileContent} )
