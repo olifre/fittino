@@ -122,7 +122,7 @@ if( INSTALL_SPheno OR INSTALL_MSSMTriLnV )
             DEPENDS ${slhaea}
             URL http://www.hepforge.org/archive/spheno/SPheno-4.0.3.tar.gz
             URL_MD5 64787d6c8ce03cac38aec53d34ac46ad
-            PATCH_COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_SPheno.cmake
+            PATCH_COMMAND ${CMAKE_COMMAND} -DMAKEFILE=src/Makefile -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_SPheno.cmake
             BUILD_IN_SOURCE 1
             CONFIGURE_COMMAND ""
             BUILD_COMMAND $(MAKE) F90=${CMAKE_Fortran_COMPILER}
@@ -135,6 +135,36 @@ if( INSTALL_SPheno OR INSTALL_MSSMTriLnV )
 
     list( APPEND fittino_dependencies ${spheno} )
     list( APPEND prefixPath ${SPheno_ROOT_DIR} )
+
+
+endif()
+
+if( INSTALL_MSSMTriLnV )
+
+    set( mssmtrilnv mssmtrilnv )
+
+# see https://sarah.hepforge.org/sarah_in_a_nutshell.pdf
+
+    externalproject_add(
+
+            ${mssmtrilnv}
+            DEPENDS ${spheno}
+            URL ${MSSMTriLnV_URL}
+            URL_MD5 eb54d22459a6f9482fd4e959c69ff00e
+            PATCH_COMMAND ${CMAKE_COMMAND} -DMAKEFILE=Makefile -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_SPheno.cmake
+            BUILD_IN_SOURCE 0
+            CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${SPheno_ROOT_DIR}/MSSMTriLnV
+            BINARY_DIR ${SPheno_ROOT_DIR}
+            BUILD_COMMAND $(MAKE) Model=MSSMTriLnV F90=${CMAKE_Fortran_COMPILER}
+            INSTALL_COMMAND ""
+
+    )
+
+    #externalproject_get_property( ${spheno} source_dir )
+    #set( SPheno_ROOT_DIR ${source_dir} )
+
+    list( APPEND fittino_dependencies ${mssmtrilnv} )
+    #list( APPEND prefixPath ${SPheno_ROOT_DIR} )
 
 
 endif()
