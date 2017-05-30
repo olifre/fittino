@@ -19,7 +19,7 @@ Block EXTPAR      # Input parameters
 25 1.0000000E+01    # TanBeta
 26 2.000000E+03    # MAinput
 Block SPhenoInput   # SPheno specific input 
-  1 -1              # error level 
+  1 0              # error level
   2  0              # SPA conventions 
   7  0              # Skip 2-loop Higgs corrections 
   8  3              # Method used for two-loop calculation 
@@ -48,7 +48,8 @@ Block SPhenoInput   # SPheno specific input
  75 1               # Write WHIZARD files 
  76 1               # Write HiggsBounds file   
  77 0               # Output for MicrOmegas (running masses for light quarks; real mixing matrices)   
- 78 0               # Output for MadGraph (writes also vanishing blocks)   
+ 78 0               # Output for MadGraph (writes also vanishing blocks)
+ 80  1              # SPheno exits with non-zero value for sure
  86 0.              # Maximal width to be counted as invisible in Higgs decays; -1: only LSP 
 510 0.              # Write tree level values for tadpole solutions 
 515 0               # Write parameter values at GUT scale 
