@@ -63,7 +63,7 @@ FIND_PACKAGE( FEYNHIGGS                                                         
 FIND_PACKAGE( GFORTRANLIB                                                            )
 FIND_PACKAGE( IFORTLIB                                                               )
 FIND_PACKAGE( LibXml2                                                                )
-FIND_PACKAGE( PythonLibs                                                             )
+FIND_PACKAGE( PythonLibs 2.7                                                         )
 FIND_PACKAGE( Doxygen                                                                )
 FIND_PACKAGE( GM2Calc                                                                )
 FIND_PACKAGE( Eigen3 3.1                                                             )
