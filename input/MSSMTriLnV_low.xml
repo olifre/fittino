@@ -79,7 +79,21 @@
                     <OutputFile>SPheno.spc.MSSMTriLnV</OutputFile>
                 </SPhenoCalculator>
 
+                <Chi2Calculator>
+                    <Name>Chi2Calc</Name>
+                    <Observable>
+                        <Name>Mass_W</Name>
+                        <Prediction>[SPheno_Mass_Wp]</Prediction>
+                        <Measurement>80.0</Measurement>
+                        <Uncertainty>
+                            <Value>0.1</Value>
+                        </Uncertainty>
+                    </Observable>
+                </Chi2Calculator>
+
             </Calculators>
+
+            <Chi2Contribution>[Chi2Calc_Chi2]</Chi2Contribution>
 
         </PhysicsModel>
 
