@@ -90,6 +90,8 @@ endif()
 
 # END CACHE VARIABLES
 
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/activate "#!/usr/bin/env bash\n")
+
 if( INSTALL_SLHAea OR INSTALL_SPheno OR INSTALL_MSSMTriLnV )
 
     set( slhaea SLHAea-0.1 )
@@ -135,7 +137,7 @@ if( INSTALL_SPheno OR INSTALL_MSSMTriLnV )
 
     list( APPEND fittino_dependencies ${spheno} )
     list( APPEND prefixPath ${SPheno_ROOT_DIR} )
-
+    file( APPEND ${CMAKE_CURRENT_BINARY_DIR}/activate "export PATH=${SPheno_ROOT_DIR}/bin/:$PATH\n" )
 
 endif()
 
@@ -368,6 +370,10 @@ if( INSTALL_Miniconda2 OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_CheckMATE
 
     list( APPEND prefixPath ${Conda_ROOT_DIR} )
     list( APPEND fittino_dependencies ${miniconda2} )
+    file( APPEND ${CMAKE_CURRENT_BINARY_DIR}/activate "unset PYTHONPATH\n" )
+    file( APPEND ${CMAKE_CURRENT_BINARY_DIR}/activate "export PYTHONNOUSERSITE=1\n" )
+    file( APPEND ${CMAKE_CURRENT_BINARY_DIR}/activate "source ${Conda_ROOT_DIR}/bin/activate\n" )
+    file( APPEND ${CMAKE_CURRENT_BINARY_DIR}/activate "export PYTHONHOME=${Conda_ROOT_DIR}\n" )
 
 endif()
 
@@ -438,6 +444,7 @@ if( INSTALL_SCYNet )
     set( SCYNet_ROOT_DIR ${SOURCE_DIR} )
 
     list( APPEND fittino_dependencies ${scynet} )
+# export PYTHONPATH=@SCYNet_ROOT_DIR@
 
 endif()
 
@@ -495,7 +502,7 @@ endif()
 #            INSTALL_COMMAND ""
 #    )
 
-configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/activate ${CMAKE_CURRENT_BINARY_DIR}/activate )
+#configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/activate ${CMAKE_CURRENT_BINARY_DIR}/activate )
 
 
 if( INSTALL_Fittino )
@@ -519,6 +526,7 @@ if( INSTALL_Fittino )
 
     file( APPEND ${CMAKE_CURRENT_BINARY_DIR}/activate "export PATH=${Fittino_ROOT_DIR}/bin/:$PATH\n" )
     file( APPEND ${CMAKE_CURRENT_BINARY_DIR}/activate "export FITTINO_ROOT_DIR=${Fittino_ROOT_DIR}\n" )
+    file( COPY ${CMAKE_CURRENT_BINARY_DIR}/activate DESTINATION ${Fittino_ROOT_DIR}/bin/  )
 
 endif()
 
