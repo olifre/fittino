@@ -17,7 +17,7 @@
                 <Error>0.05</Error>
                 <LowerBound>0.05</LowerBound>
                 <UpperBound>0.5</UpperBound>
-                <Fixed>true</Fixed>
+                <Fixed>false</Fixed>
             </ModelParameter>
 
             <ModelParameter>
@@ -35,7 +35,7 @@
                 <Error>1e5</Error>
                 <LowerBound>5e5</LowerBound>
                 <UpperBound>2e6</UpperBound>
-                <Fixed>false</Fixed>
+                <Fixed>true</Fixed>
             </ModelParameter>
 
             <ModelParameter>
@@ -44,7 +44,7 @@
                 <Error>1e5</Error>
                 <LowerBound>5e5</LowerBound>
                 <UpperBound>2e6</UpperBound>
-                <Fixed>false</Fixed>
+                <Fixed>true</Fixed>
             </ModelParameter>
 
             <Observables>
@@ -91,6 +91,9 @@
                     </Observable>
                 </Chi2Calculator>
 
+                <FlavioCalculator>
+                </FlavioCalculator>
+
             </Calculators>
 
             <Chi2Contribution>[Chi2Calc_Chi2]</Chi2Contribution>
@@ -101,9 +104,9 @@
 
     <Tool>
 
-        <MarkovChainSampler>
-            <NumberOfIterations>1</NumberOfIterations>
-        </MarkovChainSampler>
+        <SimpleSampler>
+            <NumberOfIterations>10</NumberOfIterations>
+        </SimpleSampler>
 
     </Tool>
 

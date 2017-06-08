@@ -26,21 +26,22 @@ include( ExternalProject )
 
 set_property( DIRECTORY PROPERTY "EP_BASE" ${PROJECT_BINARY_DIR} )
 
-option( INSTALL_SLHAea       "" ON  )
-option( INSTALL_SPheno       "" ON  )
-option( INSTALL_FeynHiggs    "" OFF )
+option( INSTALL_SLHAea "" OFF )
+option( INSTALL_SPheno "" OFF )
+option( INSTALL_FeynHiggs "" OFF )
 option( INSTALL_HiggsSignals "" OFF )
-option( INSTALL_SuperIso     "" OFF )
-option( INSTALL_LHAPDF       "" OFF )
-option( INSTALL_MicrOMEGAs   "" OFF )
-option( INSTALL_HepMC2       "" OFF )
-option( INSTALL_Pythia8      "" OFF )
-option( INSTALL_Minconda2    "" ON  )
-option( INSTALL_MSSMTriLnV   "" OFF )
-option( INSTALL_SModelS      "" ON  )
-option( INSTALL_SCYNet       "" ON  )
-option( INSTALL_CheckMATE    "" OFF )
-option( INSTALL_Fittino      "" ON  )
+option( INSTALL_SuperIso "" OFF )
+option( INSTALL_LHAPDF "" OFF )
+option( INSTALL_MicrOMEGAs "" OFF )
+option( INSTALL_HepMC2 "" OFF )
+option( INSTALL_Pythia8 "" OFF )
+option( INSTALL_Python "" OFF )
+option( INSTALL_MSSMTriLnV "" OFF )
+option( INSTALL_SModelS "" OFF )
+option( INSTALL_SCYNet "" OFF )
+option( INSTALL_CheckMATE "" OFF )
+option( INSTALL_Fittino_Python2 "" OFF )
+option( INSTALL_Fittino_Python3 "" OFF )
 
 # START CACHE VARIABLES
 
@@ -90,7 +91,9 @@ endif()
 
 # END CACHE VARIABLES
 
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/activate "#!/usr/bin/env bash\n")
+set( script ${CMAKE_CURRENT_BINARY_DIR}/activate.in )
+
+file( WRITE ${script} "#!/usr/bin/env bash\n" )
 
 if( INSTALL_SLHAea OR INSTALL_SPheno OR INSTALL_MSSMTriLnV )
 
@@ -132,12 +135,12 @@ if( INSTALL_SPheno OR INSTALL_MSSMTriLnV )
 
     )
 
+    list( APPEND fittino_dependencies ${spheno} )
+
     externalproject_get_property( ${spheno} source_dir )
     set( SPheno_ROOT_DIR ${source_dir} )
-
-    list( APPEND fittino_dependencies ${spheno} )
     list( APPEND prefixPath ${SPheno_ROOT_DIR} )
-    file( APPEND ${CMAKE_CURRENT_BINARY_DIR}/activate "export PATH=${SPheno_ROOT_DIR}/bin/:$PATH\n" )
+    file( APPEND ${script} "export PATH=${SPheno_ROOT_DIR}/bin/:$PATH\n" )
 
 endif()
 
@@ -145,7 +148,7 @@ if( INSTALL_MSSMTriLnV )
 
     set( mssmtrilnv mssmtrilnv )
 
-# see https://sarah.hepforge.org/sarah_in_a_nutshell.pdf
+    # see https://sarah.hepforge.org/sarah_in_a_nutshell.pdf
 
     externalproject_add(
 
@@ -162,12 +165,7 @@ if( INSTALL_MSSMTriLnV )
 
     )
 
-    #externalproject_get_property( ${spheno} source_dir )
-    #set( SPheno_ROOT_DIR ${source_dir} )
-
     list( APPEND fittino_dependencies ${mssmtrilnv} )
-    #list( APPEND prefixPath ${SPheno_ROOT_DIR} )
-
 
 endif()
 
@@ -186,11 +184,11 @@ if( INSTALL_FeynHiggs )
             INSTALL_COMMAND $(MAKE) install
     )
 
+    list( APPEND fittino_dependencies ${feynhiggs} )
+
     externalproject_get_property( ${feynhiggs} install_dir )
     set( FeynHiggs_ROOT_DIR ${install_dir} )
-
     list( APPEND prefixPath ${FeynHiggs_ROOT_DIR} )
-    list( APPEND fittino_dependencies ${feynhiggs} )
 
 endif()
 
@@ -311,24 +309,24 @@ if( INSTALL_LHAPDF )
 
 endif()
 
-if( INSTALL_Miniconda2 OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_CheckMATE )
+if( INSTALL_Python OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_CheckMATE )
 
-    set( miniconda2 Miniconda2-4.3.11 )
+    set( miniconda Miniconda2-4.3.11 )
 
     if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" AND ${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "x86_64" )
 
-        set( miniconda2_url https://repo.continuum.io/miniconda/Miniconda2-4.3.11-MacOSX-x86_64.sh )
-        set( miniconda2_url_md5 d2edb7d4f3f55c35b9a25fd2d0ef6856 )
+        set( miniconda_url https://repo.continuum.io/miniconda/Miniconda2-4.3.11-MacOSX-x86_64.sh )
+        set( miniconda_url_md5 d2edb7d4f3f55c35b9a25fd2d0ef6856 )
 
     elseif( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND ${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "x86_64" )
 
-        set( miniconda2_url https://repo.continuum.io/miniconda/Miniconda2-4.3.11-Linux-x86_64.sh )
-        set( miniconda2_url_md5 d573980fe3b5cdf80485add2466463f5 )
+        set( miniconda_url https://repo.continuum.io/miniconda/Miniconda2-4.3.11-Linux-x86_64.sh )
+        set( miniconda_url_md5 d573980fe3b5cdf80485add2466463f5 )
 
     elseif( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" AND ${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "x86" )
 
-        set( miniconda2_url https://repo.continuum.io/miniconda/Miniconda2-4.3.11-Linux-x86.sh )
-        set( miniconda2_url_md5 09e9780288d29e46f3dd7eaa7ce280bc )
+        set( miniconda_url https://repo.continuum.io/miniconda/Miniconda2-4.3.11-Linux-x86.sh )
+        set( miniconda_url_md5 09e9780288d29e46f3dd7eaa7ce280bc )
 
     else()
 
@@ -338,42 +336,62 @@ if( INSTALL_Miniconda2 OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_CheckMATE
 
     find_package( UnixCommands REQUIRED )
 
-    set( miniconda2_install_command ${CMAKE_COMMAND} -E env HOME=<INSTALL_DIR> PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${BASH} <DOWNLOADED_FILE> -b -f -p <INSTALL_DIR> )
+    set( miniconda_install_command ${CMAKE_COMMAND} -E env HOME=<INSTALL_DIR> PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${BASH} <DOWNLOADED_FILE> -b -f -p <INSTALL_DIR> )
 
-    list( APPEND miniconda2_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH <INSTALL_DIR>/bin/conda install -y numpy scipy )
-
+    set( conda2_packages numpy scipy docutils )
+    set( pip2_packages unum pyslha argparse )
 
     if( "${CMAKE_SYSTEM_NAME}" MATCHES "Linux" )
 
-        list( APPEND miniconda2_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH <INSTALL_DIR>/bin/conda install -y tensorflow==0.10.0rc0 )
+        set( conda2_packages ${conda2_packages} tensorflow==0.10.0rc0 )
 
     else()
 
-        list( APPEND miniconda2_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH <INSTALL_DIR>/bin/pip install tensorflow==0.12.0rc0 )
+        set( pip2_packages ${pip2_packages} tensorflow==0.12.0rc0 )
 
     endif()
 
+    set( python2_v 2.7 )
+    set( python2_env Python-2.7 )
+
+    set( python3_v 3.6 )
+    set( python3_env Python-3.6 )
+
+
+    list( APPEND miniconda_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH <INSTALL_DIR>/bin/conda create -y --name ${python2_env} python=${python2_v} ${conda2_packages} )
+    list( APPEND miniconda_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH <INSTALL_DIR>/envs/${python2_env}/bin/pip install ${pip2_packages} )
+
+    set( conda3_packages numpy scipy matplotlib nose )
+    set( pip3_packages flavio )
+
+    list( APPEND miniconda_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH <INSTALL_DIR>/bin/conda create -y --name ${python3_env} python=${python3_v} ${conda3_packages} )
+    list( APPEND miniconda_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH <INSTALL_DIR>/envs/${python3_env}/bin/pip install ${pip3_packages} )
+
     externalproject_add(
 
-            ${miniconda2}
-            URL ${miniconda2_url}
-            URL_MD5 ${miniconda2_url_md5}
+            ${miniconda}
+            URL ${miniconda_url}
+            URL_MD5 ${miniconda_url_md5}
             CONFIGURE_COMMAND ""
             DOWNLOAD_NO_EXTRACT 1
             BUILD_COMMAND ""
-            INSTALL_COMMAND ${miniconda2_install_command}
+            INSTALL_COMMAND ${miniconda_install_command}
 
     )
 
-    externalproject_get_property( ${miniconda2} install_dir )
-    set( Conda_ROOT_DIR ${install_dir} )
+    list( APPEND fittino_dependencies ${miniconda} )
 
-    list( APPEND prefixPath ${Conda_ROOT_DIR} )
-    list( APPEND fittino_dependencies ${miniconda2} )
-    file( APPEND ${CMAKE_CURRENT_BINARY_DIR}/activate "unset PYTHONPATH\n" )
-    file( APPEND ${CMAKE_CURRENT_BINARY_DIR}/activate "export PYTHONNOUSERSITE=1\n" )
-    file( APPEND ${CMAKE_CURRENT_BINARY_DIR}/activate "source ${Conda_ROOT_DIR}/bin/activate\n" )
-    file( APPEND ${CMAKE_CURRENT_BINARY_DIR}/activate "export PYTHONHOME=${Conda_ROOT_DIR}\n" )
+    externalproject_get_property( ${miniconda} install_dir )
+
+    set( python2_dir ${install_dir}/envs/${python2_env} )
+    set( python3_dir ${install_dir}/envs/${python3_env} )
+
+    file( APPEND ${script} "unset PYTHONPATH\n" )
+    file( APPEND ${script} "export PYTHONNOUSERSITE=1\n" )
+    file( APPEND ${script} "source ${install_dir}/bin/activate @python_env@ \n" )
+
+    #file( APPEND ${script} "export PYTHONHOME=@python_dir@\n" )
+
 
 endif()
 
@@ -381,18 +399,16 @@ if( INSTALL_SModelS )
 
     set( smodels SModelS-1.1.0patch1 )
 
-        externalproject_add(
+    externalproject_add(
 
             ${smodels}
-            DEPENDS ${miniconda2}
+            DEPENDS ${miniconda}
             URL ${SModelS_URL}
             URL_MD5 ${SModelS_URL_MD5}
             CONFIGURE_COMMAND ""
             BUILD_COMMAND $(MAKE) FCC=${CMAKE_Fortran_COMPILER}
             BUILD_IN_SOURCE 1
-            INSTALL_COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${Conda_ROOT_DIR}/bin/pip install unum docutils pyslha argparse
-            COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${Conda_ROOT_DIR}/bin/python setup.py install
-
+            INSTALL_COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${python2_dir}/bin/python setup.py install
 
     )
 
@@ -430,7 +446,7 @@ if( INSTALL_SCYNet )
     externalproject_add(
 
             ${scynet}
-            DEPENDS ${miniconda2}
+            DEPENDS ${miniconda}
             SVN_REPOSITORY https://svn.physik.uni-bonn.de/basic/fittino-protected/trunk/SCYNet
             SVN_REVISION -r194
             CONFIGURE_COMMAND ""
@@ -444,7 +460,6 @@ if( INSTALL_SCYNet )
     set( SCYNet_ROOT_DIR ${SOURCE_DIR} )
 
     list( APPEND fittino_dependencies ${scynet} )
-# export PYTHONPATH=@SCYNet_ROOT_DIR@
 
 endif()
 
@@ -504,31 +519,64 @@ endif()
 
 #configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/activate ${CMAKE_CURRENT_BINARY_DIR}/activate )
 
+if( INSTALL_Fittino_Python2 )
 
-if( INSTALL_Fittino )
-
-    set( fittino Fittino )
+    set( fittino_py2 Fittino_Python2 )
 
     externalproject_add(
 
-            ${fittino}
+            ${fittino_py2}
             DEPENDS ${fittino_dependencies}
             SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..
             BUILD_ALWAYS ON
             BUILD_COMMAND ""
-            # BINARY_DIR ${CMAKE_CURRENTSOURCE_DIR}/build
-            CMAKE_ARGS -C${CMAKE_CURRENT_BINARY_DIR}/init.cmake -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+            CMAKE_ARGS -C${CMAKE_CURRENT_BINARY_DIR}/init-python2.cmake -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
 
     )
 
-    externalproject_get_property( ${fittino} install_dir )
-    set( Fittino_ROOT_DIR ${install_dir} )
+    externalproject_get_property( ${fittino_py2} install_dir )
+    set( Fittino_ROOT_DIR_py2 ${install_dir} )
 
-    file( APPEND ${CMAKE_CURRENT_BINARY_DIR}/activate "export PATH=${Fittino_ROOT_DIR}/bin/:$PATH\n" )
-    file( APPEND ${CMAKE_CURRENT_BINARY_DIR}/activate "export FITTINO_ROOT_DIR=${Fittino_ROOT_DIR}\n" )
-    file( COPY ${CMAKE_CURRENT_BINARY_DIR}/activate DESTINATION ${Fittino_ROOT_DIR}/bin/  )
+    file( APPEND ${script} "export PATH=@Fittino_ROOT_DIR@/bin/:$PATH\n" )
+    file( APPEND ${script} "export FITTINO_ROOT_DIR=@Fittino_ROOT_DIR@\n" )
 
 endif()
 
-configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/init.cmake ${CMAKE_CURRENT_BINARY_DIR}/init.cmake )
+if( INSTALL_Fittino_Python3 )
 
+    set( fittino_py3 Fittino_Python3 )
+
+    externalproject_add(
+
+            ${fittino_py3}
+            DEPENDS ${fittino_dependencies}
+            SOURCE_DIR ${CMAKE_CURRENT_LIST_DIR}/..
+            BUILD_ALWAYS ON
+            BUILD_COMMAND ""
+            CMAKE_ARGS -C${CMAKE_CURRENT_BINARY_DIR}/init-python3.cmake -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
+
+    )
+
+    externalproject_get_property( ${fittino_py3} install_dir )
+    set( Fittino_ROOT_DIR_py3 ${install_dir} )
+
+endif()
+
+set( USE_PYTHON3 1)
+set( totalPrefixPath ${prefixPath} )
+list( APPEND totalPrefixPath ${python3_dir} )
+set( Fittino_ROOT_DIR ${Fittino_ROOT_DIR_py3} )
+set( python_env ${python3_env} )
+set( python_dir ${python3_dir} )
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/init.cmake ${CMAKE_CURRENT_BINARY_DIR}/init-python3.cmake )
+configure_file( ${CMAKE_CURRENT_BINARY_DIR}/activate.in ${CMAKE_CURRENT_BINARY_DIR}/activate-python3 )
+
+set( USE_PYTHON3 0)
+file( APPEND ${script} "export PYTHONPATH=@SCYNet_ROOT_DIR@\n" )
+set( totalPrefixPath ${prefixPath} )
+list( APPEND totalPrefixPath ${python2_dir} )
+set( Fittino_ROOT_DIR ${Fittino_ROOT_DIR_py2} )
+set( python_env ${python2_env} )
+set( python_dir ${python2_dir} )
+configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/init.cmake ${CMAKE_CURRENT_BINARY_DIR}/init-python2.cmake )
+configure_file( ${CMAKE_CURRENT_BINARY_DIR}/activate.in ${CMAKE_CURRENT_BINARY_DIR}/activate-python2 )

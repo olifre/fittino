@@ -31,6 +31,7 @@
 #include "ContourPlotter.h"
 #include "EdgeDetectionTool.h"
 #include "Factory.h"
+#include "FlavioCalculator.h"
 
 #ifdef FEYNHIGGS
 #include "FeynHiggsCalculator.h"
@@ -173,6 +174,19 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 #else
 
         throw ConfigurationException( "Trying to use FeynHiggsSLHACalculator but Fittino was built without FeynHiggs." );
+
+#endif
+
+    }
+    else if ( type == "FlavioCalculator" ) {
+
+#ifdef PYTHON3
+
+        return new FlavioCalculator( model, ptree );
+
+#else
+
+        throw ConfigurationException( "Trying to use FlavioCalculator but Fittino was built without Python 3." );
 
 #endif
 
@@ -403,13 +417,13 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     }
     else if ( type == "SModelSCalculator" ) {
 
-#ifdef PYTHON
+#ifdef PYTHON2
 
         return new SModelSCalculator( model, ptree );
 
 #else
 
-        throw ConfigurationException( "Trying to use SModelSCalculator but Fittino was built without Python or Boost.Python." );
+        throw ConfigurationException( "Trying to use SModelSCalculator but Fittino was built without Python 2 or Boost.Python." );
 
 #endif
 
@@ -447,13 +461,13 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     }
     else if ( type == "LHCNeuralNetCalculator" ) {
 
-#ifdef PYTHON
+#ifdef PYTHON2
 
         return new LHCNeuralNetCalculator( model, ptree );
 
 #else
 
-        throw ConfigurationException( "Trying to use LHCNeuralNetCalculator but Fittino was built without Python or Boost.Python." );
+        throw ConfigurationException( "Trying to use LHCNeuralNetCalculator but Fittino was built without Python 2 or Boost.Python." );
 
 #endif
 

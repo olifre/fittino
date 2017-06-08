@@ -36,6 +36,8 @@ SET( CMAKE_SKIP_BUILD_RPATH            FALSE                            )
 SET( CMAKE_BUILD_WITH_INSTALL_RPATH    FALSE                            ) 
 SET( CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE                             )
 
+option(USE_PYTHON3 "" OFF )
+
 IF( NOT DEFINED FEYNHIGGS_QUAD )
 
     SET( FEYNHIGGS_QUAD TRUE )
@@ -63,16 +65,36 @@ FIND_PACKAGE( FEYNHIGGS                                                         
 FIND_PACKAGE( GFORTRANLIB                                                            )
 FIND_PACKAGE( IFORTLIB                                                               )
 FIND_PACKAGE( LibXml2                                                                )
-FIND_PACKAGE( PythonLibs 2.7                                                         )
 FIND_PACKAGE( Doxygen                                                                )
 FIND_PACKAGE( GM2Calc                                                                )
 FIND_PACKAGE( Eigen3 3.1                                                             )
 
-IF( PYTHONLIBS_FOUND )
+if( USE_PYTHON3 )
+
+    find_package(PythonInterp 3)
+    FIND_PACKAGE( PythonLibs 3                                                     )
+
+    IF( PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND AND PYTHON_VERSION_STRING EQUAL PYTHONLIBS_VERSION_STRING  )
+
+        set( PYTHON3_FOUND 1 )
+
+    ENDIF()
+
+else(  )
+
+    find_package(PythonInterp 2.7 EXACT )
+    FIND_PACKAGE( PythonLibs 2.7                                                     )
 
     FIND_PACKAGE( Boost 1.47.0 COMPONENTS filesystem system thread python chrono regex )
 
-ENDIF()
+    IF( PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND AND Boost_PYTHON_FOUND AND PYTHON_VERSION_STRING EQUAL PYTHONLIBS_VERSION_STRING  )
+
+        set( PYTHON2_FOUND 1 )
+
+    ENDIF()
+
+endif()
+
 
 # todo look for astyle
 ADD_CUSTOM_TARGET( stylish ALL ${PROJECT_SOURCE_DIR}/devel/apply_style_guidelines.sh ${PROJECT_SOURCE_DIR}  )

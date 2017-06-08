@@ -65,16 +65,24 @@ LIST( APPEND sources "src/HepMCSplitCalculator.cpp" )
 LIST( APPEND sources "src/MadGraph2Calculator.cpp" )
 LIST( APPEND sources "src/GM2CalcCalculator.cpp" )
 
-IF(PYTHONLIBS_FOUND AND Boost_PYTHON_FOUND)
+IF(PYTHON2_FOUND OR PYTHON3_FOUND)
 
     INCLUDE_DIRECTORIES(${PYTHON_INCLUDE_DIRS})
 
-ELSE()
+ENDIF()
+
+  IF( NOT PYTHON2_FOUND)
 
     LIST(REMOVE_ITEM sources "src/SModelSCalculator.cpp")
     LIST(REMOVE_ITEM sources "src/LHCNeuralNetCalculator.cpp")
 
 ENDIF()
+
+  IF( NOT PYTHON3_FOUND)
+
+      LIST(REMOVE_ITEM sources "src/FlavioCalculator.cpp" )
+
+  ENDIF()
 
 IF(FEYNHIGGS_FOUND)
 

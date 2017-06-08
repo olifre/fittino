@@ -33,7 +33,27 @@
 
 #include "Controller.h"
 
+#ifdef PYTHON
+
+#include "Python.h"
+
+#endif
+
 int main( int argc, char** argv ) {
+
+#ifdef PYTHON2
+
+    Py_SetProgramName( (char*) PYTHON_EXECUTABLE );
+    Py_Initialize();
+
+#endif
+
+#ifdef PYTHON3
+
+    Py_SetProgramName( Py_DecodeLocale( PYTHON_EXECUTABLE, NULL ) );
+    Py_Initialize();
+
+#endif
 
     Fittino::Controller& controller = Fittino::Controller::GetInstance();
 
