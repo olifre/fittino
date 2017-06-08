@@ -85,6 +85,8 @@ Fittino::FlavioCalculator::FlavioCalculator( const ModelBase* model, const boost
    // AddBinnedPrediction( "BR_B0_Kstar0_mu_mu_LHCb_centralq2", "<BR>(B0->K*mumu)", 1.1, 6.0 );
    // AddBinnedPrediction( "BR_B0_Kstar0_e_e_LHCb_centralq2", "<BR>(B0->K*ee)", 1.1, 6.0 );
 
+    AddInclusivePrediction( "R_D", "Rtaul(B->Dlnu)" );
+    AddInclusivePrediction( "R_Dstar", "Rtaul(B->D*lnu)" );
 
 }
 
@@ -152,6 +154,26 @@ void Fittino::FlavioCalculator::AddBinnedPrediction( std::string name, std::stri
     PyTuple_SetItem(smargs, 0, p_id);
     PyTuple_SetItem(smargs, 1, p_q2min);
     PyTuple_SetItem(smargs, 2, p_q2max);
+    _smargs.push_back(smargs);
+
+    AddOutput( name );
+    AddOutput( "SM_" + name );
+
+
+}
+
+void Fittino::FlavioCalculator::AddInclusivePrediction( std::string name, std::string id) {
+
+    _predictions.push_back(name);
+
+    auto p_id = PyUnicode_DecodeFSDefault( id.c_str() );
+
+    PyObject* npargs = PyTuple_New(2);
+    PyTuple_SetItem(npargs, 0, p_id);
+    _npargs.push_back(npargs);
+
+    PyObject* smargs = PyTuple_New(1);
+    PyTuple_SetItem(smargs, 0, p_id);
     _smargs.push_back(smargs);
 
     AddOutput( name );

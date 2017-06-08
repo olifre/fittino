@@ -33,7 +33,7 @@ namespace Fittino {
       void     CalculatePredictions();
       void     ReadSLHAFile();
       void     AddBinnedPrediction(std::string name, std::string id, double qmin, double qmax );
-     // void     AddInclusivePrediction();
+      void     AddInclusivePrediction(std::string name, std::string id);
     
     private:
 
