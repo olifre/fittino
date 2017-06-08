@@ -39,6 +39,8 @@ namespace Fittino {
 
       PyObject* _readWilson;
       PyObject* _npPrediction;
+      PyObject* _smPrediction;
+
       PyObject* _wc;
 
       std::vector<PyObject*> _npargs;
