@@ -13,19 +13,28 @@
 
             <ModelParameter>
                 <Name>lambda'_232</Name>
-                <Value>0.05</Value>
-                <Error>0.05</Error>
-                <LowerBound>0.05</LowerBound>
-                <UpperBound>0.5</UpperBound>
+                <Value>0.0</Value>
+                <Error>1.0</Error>
+                <LowerBound>0.0</LowerBound>
+                <UpperBound>3.00</UpperBound>
                 <Fixed>false</Fixed>
             </ModelParameter>
 
             <ModelParameter>
                 <Name>lambda'_233</Name>
-                <Value>0.05</Value>
-                <Error>0.05</Error>
-                <LowerBound>0.05</LowerBound>
-                <UpperBound>0.5</UpperBound>
+                <Value>0.0</Value>
+                <Error>1.0</Error>
+                <LowerBound>0.0</LowerBound>
+                <UpperBound>3.00</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>lambda'_323</Name>
+                <Value>0.1</Value>
+                <Error>1.0</Error>
+                <LowerBound>0.0</LowerBound>
+                <UpperBound>3.00</UpperBound>
                 <Fixed>false</Fixed>
             </ModelParameter>
 
@@ -41,9 +50,9 @@
             <ModelParameter>
                 <Name>mq2_33</Name>
                 <Value>5e5</Value>
-                <Error>1e5</Error>
+                <Error>5e5</Error>
                 <LowerBound>5e5</LowerBound>
-                <UpperBound>2e6</UpperBound>
+                <UpperBound>2.001e6</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
 
@@ -66,6 +75,10 @@
                         <Quantity>
                             <Name>lambda'_233</Name>
                             <Value>[lambda'_233]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>lambda'_323</Name>
+                            <Value>[lambda'_323]</Value>
                         </Quantity>
                         <Quantity>
                             <Name>md2_33</Name>
