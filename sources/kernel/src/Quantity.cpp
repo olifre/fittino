@@ -63,7 +63,7 @@ Fittino::Quantity::Quantity( std::string name,
 Fittino::Quantity::Quantity( const boost::property_tree::ptree& ptree )
     : _lowerBound( ptree.get<double>     ( "LowerBound", - std::numeric_limits<double>::infinity() ) ),
       _upperBound( ptree.get<double>     ( "UpperBound",   std::numeric_limits<double>::infinity() ) ),
-      _value     ( ptree.get<double>     ( "Value", 0.    ) ),
+      _value     ( ptree.get<double>     ( "Value" ) ),
       _name      ( ptree.get<std::string>( "Name"         ) ),
       _unit      ( ptree.get<std::string>( "Unit", ""     ) ),
       _plotName  ( ptree.get<std::string>( "PlotName", "" ) ),
