@@ -83,7 +83,7 @@ Fittino::SPhenoSLHACalculator::SPhenoSLHACalculator( const ModelBase* model, con
 
    // AddQuantity( new SLHAPrediction( "sinAlpha" , "", _slhaOutputDataStorage, "alpha", 0, "(any)", "# alpha", "", "" ) ); not in contained in output of SARAH_SPHENO
 
-    AddQuantity( new SLHAPrediction( "BR_B_tau_nu"      , "", _slhaOutputDataStorage, "FlavorKitQFV", 1, "502", "", "", "" ) );
+ //   AddQuantity( new SLHAPrediction( "BR_B_tau_nu"      , "", _slhaOutputDataStorage, "FlavorKitQFV", 1, "502", "", "", "" ) );
 
 
     AddQuantity( new SLHAPrediction( "HMIX_Q"      , "", _slhaOutputDataStorage, "HMIX", 3, "BLOCK", "", "", "" ) );

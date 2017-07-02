@@ -1,31 +1,31 @@
 BLOCK MODSEL #Model selection
     1   0   # MSSM
 BLOCK EXTPAR # Soft SUSY Breaking Parameters
-    0   1.00000000e+03  # Minput
-    1   1.70000000e+02  # M1
-    2   1.70000000e+02  # M2
-    3   2.60000000e+03  # M3
-    11  7.90000000e+02  # A
-    12  7.90000000e+02  # A
-    13  7.90000000e+02  # A
-    23  5.50000000e+02  # Mu
-    26  2.07000000e+03  # MA0
-    31  4.40000000e+02  # ML1
-    32  4.40000000e+02  # ML1
-    33  4.40000000e+02  # ML3
-    34  4.40000000e+02  # ML1
-    35  4.40000000e+02  # ML1
-    36  4.40000000e+02  # ML3
-    41  2.88000000e+03  # MQ1
-    42  2.88000000e+03  # MQ1
-    43  4.36000000e+03  # MQ3
-    44  2.88000000e+03  # MQ1
-    45  2.88000000e+03  # MQ1
-    46  4.36000000e+03  # MQ3
-    47  2.88000000e+03  # MQ1
-    48  2.88000000e+03  # MQ1
-    49  4.36000000e+03  # MQ3
-    25  3.76000000e+01  # TanBeta
+    0   [Minput]    # Minput
+    1   [M1]  # M1
+    2   [M2]  # M2
+    3   [M3]  # M3
+    11  [A]  # A
+    12  [A]  # A
+    13  [A]  # A
+    23  [Mu]  # Mu
+    26  [MA0]  # MA0
+    31  [ML1]  # ML1
+    32  [ML1]  # ML1
+    33  [ML3]  # ML3
+    34  [ML1]  # ML1
+    35  [ML1]  # ML1
+    36  [ML3]  # ML3
+    41  [MQ1]  # MQ1
+    42  [MQ1]  # MQ1
+    43  [MQ3]  # MQ3
+    44  [MQ1]  # MQ1
+    45  [MQ1]  # MQ1
+    46  [MQ3]  # MQ3
+    47  [MQ1]  # MQ1
+    48  [MQ1]  # MQ1
+    49  [MQ3]  # MQ3
+    25  [TanBeta]  # TanBeta
 BLOCK SMINPUTS # Standard model inputs
     1   1.28952e+02     # 1/alpha_em (fixed)
     2   1.1663787e-05   # G_F (fixed)

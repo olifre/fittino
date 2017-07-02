@@ -139,162 +139,60 @@
 
                     <Name>SPhenoCalculator</Name>
 
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>0</Index>
-                        <Value>Minput</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>1</Index>
-                        <Value>M1</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>2</Index>
-                        <Value>M2</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>3</Index>
-                        <Value>M3</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>11</Index>
-                        <Value>A</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>12</Index>
-                        <Value>A</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>13</Index>
-                        <Value>A</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>23</Index>
-                        <Value>Mu</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>26</Index>
-                        <Value>MA0</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>31</Index>
-                        <Value>ML1</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>32</Index>
-                        <Value>ML1</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>33</Index>
-                        <Value>ML3</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>34</Index>
-                        <Value>ML1</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>35</Index>
-                        <Value>ML1</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>36</Index>
-                        <Value>ML3</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>41</Index>
-                        <Value>MQ1</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>42</Index>
-                        <Value>MQ1</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>43</Index>
-                        <Value>MQ3</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>44</Index>
-                        <Value>MQ1</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>45</Index>
-                        <Value>MQ1</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>46</Index>
-                        <Value>MQ3</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>47</Index>
-                        <Value>MQ1</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>48</Index>
-                        <Value>MQ1</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>49</Index>
-                        <Value>MQ3</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>EXTPAR</Block>
-                        <Index>25</Index>
-                        <Value>TanBeta</Value>
-                    </SLHALine>
-
-                    <SLHALine>
-                        <Block>SMINPUTS</Block>
-                        <Index>6</Index>
-                        <Value>Mt</Value>
-                    </SLHALine>
-
+                    <Executable>@SPheno_ROOT_DIR@/bin/SPheno</Executable>
+                    <InputFile>
+                        <Template>@Fittino_INPUT_DIR@/pMSSM11.slha</Template>
+                        <Name>pMSSM11.slha</Name>
+                        <Quantity>
+                            <Name>[Minput]</Name>
+                            <Value>[Minput]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[M1]</Name>
+                            <Value>[M1]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[M2]</Name>
+                            <Value>[M2]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[M3]</Name>
+                            <Value>[M3]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[A]</Name>
+                            <Value>[A]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[Mu]</Name>
+                            <Value>[Mu]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[MA0]</Name>
+                            <Value>[MA0]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[ML1]</Name>
+                            <Value>[ML1]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[ML3]</Name>
+                            <Value>[ML3]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[MQ1]</Name>
+                            <Value>[MQ1]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[MQ3]</Name>
+                            <Value>[MQ3]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[TanBeta]</Name>
+                            <Value>[TanBeta]</Value>
+                        </Quantity>
+                    </InputFile>
+                    <OutputFile>SPheno.spc</OutputFile>
                 </SPhenoCalculator>
 
                 <LHCNeuralNetCalculator>
