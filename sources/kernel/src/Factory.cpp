@@ -77,6 +77,7 @@
 #include "RelativeTheoryUncertainty.h"
 #include "RosenbrockCalculator.h"
 #include "RosenbrockModel.h"
+#include "RPVCalculator.h"
 #include "Simple1DHistogramMaker.h"
 #include "Simple2DHistogramMaker.h"
 #include "Simple3DHistogramMaker.h"
@@ -413,6 +414,11 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
     else if ( type == "RosenbrockCalculator" ) {
 
         return new RosenbrockCalculator( model, ptree );
+
+    }
+    else if ( type == "RPVCalculator" ) {
+
+        return new RPVCalculator( model, ptree );
 
     }
     else if ( type == "SModelSCalculator" ) {

@@ -33,8 +33,10 @@ LIST( APPEND includes "include/NLLFastCalculator.h" )
 LIST( APPEND includes "include/HepMCSplitCalculator.h" )
 LIST( APPEND includes "include/MadGraph2Calculator.h" )
 LIST( APPEND includes "include/HepMCSplitCalculator.h" )
+  LIST( APPEND includes "include/RPVCalculator.h" )
 
-AUX_SOURCE_DIRECTORY(src sources)
+
+  AUX_SOURCE_DIRECTORY(src sources)
 
 INCLUDE_DIRECTORIES(../../external)
 INCLUDE_DIRECTORIES(./include)
@@ -64,6 +66,7 @@ LIST( APPEND sources "src/NLLFastCalculator.cpp" )
 LIST( APPEND sources "src/HepMCSplitCalculator.cpp" ) 
 LIST( APPEND sources "src/MadGraph2Calculator.cpp" )
 LIST( APPEND sources "src/GM2CalcCalculator.cpp" )
+  LIST( APPEND sources "src/RPVCalculator.cpp" )
 
 IF(PYTHON2_FOUND OR PYTHON3_FOUND)
 
