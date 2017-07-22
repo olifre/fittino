@@ -225,6 +225,7 @@ if( INSTALL_MSSMTriLnV )
             URL ${MSSMTriLnV_URL}
             URL_MD5 ${MSSMTriLnV_MD5}
             PATCH_COMMAND ${CMAKE_COMMAND} -DMAKEFILE=Makefile -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_SPheno.cmake
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/MSSMTriLnV_patch <SOURCE_DIR>
             BUILD_IN_SOURCE 0
             CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${SPheno_ROOT_DIR}/MSSMTriLnV
             BINARY_DIR ${SPheno_ROOT_DIR}
