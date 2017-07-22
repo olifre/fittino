@@ -7,35 +7,53 @@
 
     <Model>
 
-        <PhysicsModel>
+        <ModelBase>
 
             <Name>MSSM</Name>
 
             <ModelParameter>
                 <Name>lambda'_232</Name>
                 <Value>0.0</Value>
-                <Error>1.0</Error>
-                <LowerBound>0.0</LowerBound>
-                <UpperBound>3.00</UpperBound>
-                <Fixed>false</Fixed>
+                <Error>0.01</Error>
+                <LowerBound>-0.5</LowerBound>
+                <UpperBound>0.5001</UpperBound>
+                <Fixed>true</Fixed>
             </ModelParameter>
 
             <ModelParameter>
                 <Name>lambda'_233</Name>
                 <Value>0.0</Value>
-                <Error>1.0</Error>
-                <LowerBound>0.0</LowerBound>
-                <UpperBound>3.00</UpperBound>
-                <Fixed>false</Fixed>
+                <Error>0.01</Error>
+                <LowerBound>-0.5</LowerBound>
+                <UpperBound>0.5001</UpperBound>
+                <Fixed>true</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>lambda'_313</Name>
+                <Value>0.0</Value>
+                <Error>0.01</Error>
+                <LowerBound>-0.5</LowerBound>
+                <UpperBound>0.5001</UpperBound>
+                <Fixed>true</Fixed>
             </ModelParameter>
 
             <ModelParameter>
                 <Name>lambda'_323</Name>
-                <Value>0.1</Value>
-                <Error>1.0</Error>
-                <LowerBound>0.0</LowerBound>
-                <UpperBound>3.00</UpperBound>
+                <Value>1</Value>
+                <Error>0.1</Error>
+                <LowerBound>-0.5</LowerBound>
+                <UpperBound>50000</UpperBound>
                 <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>lambda'_333</Name>
+                <Value>1</Value>
+                <Error>0.1</Error>
+                <LowerBound>-0.5</LowerBound>
+                <UpperBound>5000</UpperBound>
+                <Fixed>true</Fixed>
             </ModelParameter>
 
             <ModelParameter>
@@ -43,7 +61,7 @@
                 <Value>5e5</Value>
                 <Error>1e5</Error>
                 <LowerBound>5e5</LowerBound>
-                <UpperBound>2e6</UpperBound>
+                <UpperBound>2.001e6</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
 
@@ -77,8 +95,16 @@
                             <Value>[lambda'_233]</Value>
                         </Quantity>
                         <Quantity>
+                            <Name>lambda'_313</Name>
+                            <Value>[lambda'_313]</Value>
+                        </Quantity>
+                        <Quantity>
                             <Name>lambda'_323</Name>
                             <Value>[lambda'_323]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>lambda'_333</Name>
+                            <Value>[lambda'_333]</Value>
                         </Quantity>
                         <Quantity>
                             <Name>md2_33</Name>
@@ -92,6 +118,9 @@
                     <OutputFile>SPheno.spc.MSSMTriLnV</OutputFile>
                 </SPhenoCalculator>
 
+                <FlavioCalculator>
+                </FlavioCalculator>
+
                 <Chi2Calculator>
                     <Name>Chi2Calc</Name>
                     <Observable>
@@ -104,25 +133,22 @@
                     </Observable>
                 </Chi2Calculator>
 
-                <FlavioCalculator>
-                </FlavioCalculator>
 
             </Calculators>
 
             <Chi2Contribution>[Chi2Calc_Chi2]</Chi2Contribution>
 
-        </PhysicsModel>
+        </ModelBase>
 
     </Model>
 
     <Tool>
 
-        <SimpleSampler>
-            <NumberOfIterations>10</NumberOfIterations>
-        </SimpleSampler>
+        <MarkovChainSampler>
+            <NumberOfIterations>1</NumberOfIterations>
+        </MarkovChainSampler>
 
     </Tool>
-
 
 
 </InputFile>
