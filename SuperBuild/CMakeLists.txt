@@ -48,6 +48,8 @@ option( INSTALL_Fittino_Python3 "" OFF )
 set( SuperIso_URL "~/Downloads/superiso_v3.4.tar" CACHE FILEPATH "" )
 
 set( MSSMTriLnV_URL "~/Downloads/MSSMTriLnV.tgz" CACHE FILEPATH "" )
+set( MSSMTriLnV_MD5 eb54d22459a6f9482fd4e959c69ff00e )
+#set( MSSMTriLnV_MD5 bd08220ea64540f209f384a6e65c30b4 )
 
 if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
 
@@ -117,6 +119,7 @@ if( INSTALL_SLHAea OR INSTALL_SPheno OR INSTALL_MSSMTriLnV )
 
 endif()
 
+#if( INSTALL_SPheno OR INSTALL_MSSMTriLnV OR INSTALL_SARAH )
 if( INSTALL_SPheno OR INSTALL_MSSMTriLnV )
 
     set( spheno SPheno-4.0.3 )
@@ -144,10 +147,75 @@ if( INSTALL_SPheno OR INSTALL_MSSMTriLnV )
 
 endif()
 
+if ( INSTALL_SARAH )
+
+    set( sarah SARAH-4.11.0 )
+
+    # see https://sarah.hepforge.org/sarah_in_a_nutshell.pdf
+
+    externalproject_add(
+
+            ${sarah}
+            DEPENDS ${spheno}
+            URL http://www.hepforge.org/archive/sarah/SARAH-4.11.0.tar.gz
+            URL_MD5 e8cef704101f7e1c2e400ca49da26c36
+            CONFIGURE_COMMAND ""
+            BUILD_COMMAND ""
+            INSTALL_COMMAND ""
+
+    )
+
+    list( APPEND fittino_dependencies ${sarah} )
+
+    externalproject_get_property( ${sarah} source_dir )
+    set( SARAH_ROOT_DIR ${source_dir} )
+
+endif()
+
+if ( INSTALL_MSSMTriLnVsrc)
+
+    set( sarahmssmtrilnv MSSMTriLnVsrc )
+
+    # see https://sarah.hepforge.org/sarah_in_a_nutshell.pdf
+
+    externalproject_add(
+
+            ${sarahmssmtrilnv}
+            DEPENDS ${sarah}
+            DOWNLOAD_COMMAND ""
+            CONFIGURE_COMMAND ""
+            BUILD_COMMAND /Applications/Mathematica.app/Contents/MacOS/MathKernel -script ${CMAKE_CURRENT_SOURCE_DIR}/createSource_MSSMTriLnV.m
+            BINARY_DIR ${SARAH_ROOT_DIR}
+            INSTALL_COMMAND ""
+
+    )
+
+    set( mssmtrilnv MSSMTriLnV )
+
+    externalproject_add(
+
+            ${mssmtrilnv}
+            DEPENDS ${sarahmssmtrilnv} ${spheno}
+            DOWNLOAD_COMMAND ${CMAKE_COMMAND} -E copy_directory ${SARAH_ROOT_DIR}/Output/MSSM-RpV-TriLnV/EWSB/SPheno <SOURCE_DIR>
+            DOWNLOAD_NO_EXTRACT 1
+            PATCH_COMMAND ${CMAKE_COMMAND} -DMAKEFILE=Makefile -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_SPheno.cmake
+            CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${SPheno_ROOT_DIR}/MSSMTriLnV
+            BINARY_DIR ${SPheno_ROOT_DIR}
+            BUILD_COMMAND $(MAKE) Model=MSSMTriLnV F90=${CMAKE_Fortran_COMPILER}
+            INSTALL_COMMAND ""
+
+    )
+
+    list( APPEND fittino_dependencies ${sarahmssmtrilnv} )
+    list( APPEND fittino_dependencies ${mssmtrilnv} )
+
+    #  list(APPEND MSSMTriLnV_DEPENDS ${sarah})
+
+endif()
+
 if( INSTALL_MSSMTriLnV )
 
-    set( mssmtrilnv mssmtrilnv )
-
+    set( mssmtrilnv MSSMTriLnV )
     # see https://sarah.hepforge.org/sarah_in_a_nutshell.pdf
 
     externalproject_add(
@@ -155,7 +223,7 @@ if( INSTALL_MSSMTriLnV )
             ${mssmtrilnv}
             DEPENDS ${spheno}
             URL ${MSSMTriLnV_URL}
-            URL_MD5 eb54d22459a6f9482fd4e959c69ff00e
+            URL_MD5 ${MSSMTriLnV_MD5}
             PATCH_COMMAND ${CMAKE_COMMAND} -DMAKEFILE=Makefile -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_SPheno.cmake
             BUILD_IN_SOURCE 0
             CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${SPheno_ROOT_DIR}/MSSMTriLnV
@@ -559,6 +627,9 @@ if( INSTALL_Fittino_Python3 )
 
     externalproject_get_property( ${fittino_py3} install_dir )
     set( Fittino_ROOT_DIR_py3 ${install_dir} )
+
+    file( APPEND ${script} "export PATH=@Fittino_ROOT_DIR@/bin/:$PATH\n" )
+    file( APPEND ${script} "export FITTINO_ROOT_DIR=@Fittino_ROOT_DIR@\n" )
 
 endif()
 
