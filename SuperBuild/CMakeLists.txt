@@ -43,56 +43,6 @@ option( INSTALL_CheckMATE "" OFF )
 option( INSTALL_Fittino_Python2 "" OFF )
 option( INSTALL_Fittino_Python3 "" OFF )
 
-# START CACHE VARIABLES
-
-set( SuperIso_URL "~/Downloads/superiso_v3.4.tar" CACHE FILEPATH "" )
-
-set( MSSMTriLnV_URL "~/Downloads/MSSMTriLnV.tgz" CACHE FILEPATH "" )
-set( MSSMTriLnV_MD5 eb54d22459a6f9482fd4e959c69ff00e )
-#set( MSSMTriLnV_MD5 bd08220ea64540f209f384a6e65c30b4 )
-
-if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
-
-    set( SModelS_URL "~/Downloads/smodels-v1.1.0patch1.tar" CACHE FILEPATH "" )
-    set( SModelSFastlimDatabase_URL "~/Downloads/smodels-v1.1-fastlim-1.0.tar" CACHE FILEPATH "" )
-
-else()
-
-    set( SModelS_URL "~/Downloads/smodels-v1.1.0patch1.tgz" CACHE FILEPATH "" )
-    set( SModelSFastlimDatabase_URL "~/Downloads/smodels-v1.1-fastlim-1.0.tgz" CACHE FILEPATH "" )
-
-endif()
-
-if( SModelS_URL MATCHES "\\.tar$" )
-
-    set( SModelS_URL_MD5 396d3a28d1bebd1cbe3123100475108a CACHE STRING "" )
-
-elseif( SModelS_URL MATCHES "\\.tgz$" )
-
-    set( SModelS_URL_MD5 093757506db0823cf3ce13007720f79a CACHE STRING "" )
-
-elseif( NOT DEFINED SModelS_URL_MD5 )
-
-    message( WARNING "Unexpected extension of SModelS_URL and SModelS_URL_MD5 not defined." )
-
-endif()
-
-if( SModelSFastlimDatabase_URL MATCHES "\\.tar$" )
-
-    set( SModelSFastlimDatabase_URL_MD5 5a67af22ee5a578038cd90409ed72e79 CACHE STRING "" )
-
-elseif( SModelSFastlimDatabase_URL MATCHES "\\.tgz$" )
-
-    set( SModelSFastlimDatabase_URL_MD5 55a2b8b7eeebd06b065315c8b2dc96d2 CACHE STRING "" )
-
-elseif( NOT DEFINED SModelSFastlimDatabase_URL_MD5 )
-
-    message( WARNING "Unexpected extension of SModelSFastlimDatabase_URL and SModelSFastlimDatabase_URL_MD5 not defined." )
-
-endif()
-
-# END CACHE VARIABLES
-
 set( script ${CMAKE_CURRENT_BINARY_DIR}/activate.in )
 
 file( WRITE ${script} "#!/usr/bin/env bash\n" )
@@ -215,6 +165,10 @@ endif()
 
 if( INSTALL_MSSMTriLnV )
 
+    set( MSSMTriLnV_URL "~/Downloads/MSSMTriLnV.tgz" CACHE FILEPATH "" )
+    set( MSSMTriLnV_MD5 eb54d22459a6f9482fd4e959c69ff00e )
+    #set( MSSMTriLnV_MD5 bd08220ea64540f209f384a6e65c30b4 )
+
     set( mssmtrilnv MSSMTriLnV )
     # see https://sarah.hepforge.org/sarah_in_a_nutshell.pdf
 
@@ -319,6 +273,7 @@ endif()
 if( INSTALL_SuperIso )
 
     set( superiso SuperIso-3.4 )
+    set( SuperIso_URL "~/Downloads/superiso_v3.4.tar" CACHE FILEPATH "" )
 
     externalproject_add(
 
@@ -466,16 +421,60 @@ endif()
 
 if( INSTALL_SModelS )
 
-    set( smodels SModelS-1.1.0patch1 )
+#    if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
+#
+#        set( SModelS_URL "~/Downloads/smodels-v1.1.0patch1.tar" CACHE FILEPATH "" )
+#        set( SModelSFastlimDatabase_URL "~/Downloads/smodels-v1.1-fastlim-1.0.tar" CACHE FILEPATH "" )
+#
+#    else()
+#
+#        set( SModelS_URL "~/Downloads/smodels-v1.1.0patch1.tgz" CACHE FILEPATH "" )
+#        set( SModelSFastlimDatabase_URL "~/Downloads/smodels-v1.1.1-fastlim-1.0.tgz" CACHE FILEPATH "" )
+#
+#    endif()
+#
+#    if( SModelS_URL MATCHES "\\.tar$" )
+#
+#        set( SModelS_URL_MD5 396d3a28d1bebd1cbe3123100475108a CACHE STRING "" )
+#
+#    elseif( SModelS_URL MATCHES "\\.tgz$" )
+#
+#        set( SModelS_URL_MD5 093757506db0823cf3ce13007720f79a CACHE STRING "" )
+#
+#    elseif( NOT DEFINED SModelS_URL_MD5 )
+#
+#        message( WARNING "Unexpected extension of SModelS_URL and SModelS_URL_MD5 not defined." )
+#
+#    endif()
+#
+#    if( SModelSFastlimDatabase_URL MATCHES "\\.tar$" )
+#
+#        set( SModelSFastlimDatabase_URL_MD5 46315d796042dee35ce9e2dc9b8bd97a CACHE STRING "" )
+#
+#    elseif( SModelSFastlimDatabase_URL MATCHES "\\.tgz$" )
+#
+#        # needs update
+#        set( SModelSFastlimDatabase_URL_MD5 55a2b8b7eeebd06b065315c8b2dc96d2 CACHE STRING "" )
+#
+#    elseif( NOT DEFINED SModelSFastlimDatabase_URL_MD5 )
+#
+#        message( WARNING "Unexpected extension of SModelSFastlimDatabase_URL and SModelSFastlimDatabase_URL_MD5 not defined." )
+#
+#    endif()
+
+
+    set( smodels SModelS )
 
     externalproject_add(
 
             ${smodels}
             DEPENDS ${miniconda}
-            URL ${SModelS_URL}
-            URL_MD5 ${SModelS_URL_MD5}
+#            URL ${SModelS_URL}
+#            URL_MD5 ${SModelS_URL_MD5}
+            GIT_REPOSITORY https://github.com/SModelS/smodels.git
+            GIT_TAG missing
             CONFIGURE_COMMAND ""
-            BUILD_COMMAND $(MAKE) FCC=${CMAKE_Fortran_COMPILER}
+            BUILD_COMMAND $(MAKE) FCC=${CMAKE_Fortran_COMPILER} CXX=${CMake_CXX_COMPILER}
             BUILD_IN_SOURCE 1
             INSTALL_COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${python2_dir}/bin/python setup.py install
 
@@ -483,26 +482,34 @@ if( INSTALL_SModelS )
 
     list( APPEND fittino_dependencies ${smodels} )
 
-    externalproject_get_property( ${smodels} source_dir )
+    #externalproject_get_property( ${smodels} source_dir )
 
-    set( smodelsfastlimdatabase SModelSFastlimDatabase-1.1_1.0 )
+   # set( smodelsfastlimdatabase SModelSFastlimDatabase-1.1.1_1.0 )
+    set( smodelsfastlimdatabase SModelSDatabase )
 
     externalproject_add(
 
             ${smodelsfastlimdatabase}
             DEPENDS ${smodels}
-            URL ${SModelSFastlimDatabase_URL}
-            URL_MD5 ${SModelSFastlimDatabase_URL_MD5}
-            DOWNLOAD_NO_EXTRACT 1
             CONFIGURE_COMMAND ""
             BUILD_COMMAND ""
-            INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${source_dir}/smodels-database <INSTALL_DIR>
-            COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR> ${CMAKE_COMMAND} -E tar xf <DOWNLOADED_FILE>
+            GIT_REPOSITORY git@smodels.hephy.at:smodels-database
+            GIT_TAG develop
+            INSTALL_COMMAND ""
+            #URL ${SModelSFastlimDatabase_URL}
+            #URL_MD5 ${SModelSFastlimDatabase_URL_MD5}
+            #DOWNLOAD_NO_EXTRACT 1
+            #INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${source_dir}/smodels-database <INSTALL_DIR>
+            #COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR> ${CMAKE_COMMAND} -E tar xf <DOWNLOADED_FILE>
+
 
     )
 
-    externalproject_get_property( ${smodelsfastlimdatabase} install_dir )
-    set( SModelSDatabase_ROOT_DIR ${install_dir} )
+    #externalproject_get_property( ${smodelsfastlimdatabase} install_dir )
+    #set( SModelSDatabase_ROOT_DIR ${install_dir} )
+
+    externalproject_get_property( ${smodelsfastlimdatabase} source_dir )
+    set( SModelSDatabase_ROOT_DIR ${source_dir} )
 
     list( APPEND fittino_dependencies ${smodelsfastlimdatabase} )
 
