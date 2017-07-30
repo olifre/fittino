@@ -24,13 +24,6 @@ Fittino::LHCNeuralNetCalculator::LHCNeuralNetCalculator( const ModelBase* model,
     AddOutput( "Chi2_13TeV", _chi2_13 );
     AddOutput( "Chi2_Total", _chi2_total );
 
-
-
-    Py_Initialize();
-
-    PyRun_SimpleString("import sys");
-    PyRun_SimpleString("sys.argv = ['']");
-
     //PyObject* myModuleString = PyString_FromString( (char*) "scynet.scynet" );
     //PyObject* module = PyImport_Import(myModuleString);
     //PyObject* scynetClass = PyObject_GetAttrString(module, "SCYNet");

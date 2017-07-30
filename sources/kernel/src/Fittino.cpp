@@ -46,6 +46,15 @@ int main( int argc, char** argv ) {
     Py_SetProgramName( (char*) PYTHON_EXECUTABLE );
     Py_Initialize();
 
+    char * args[] = { (char*) "", nullptr };
+
+  //  wchar_t *args2[] = { L"", nullptr };
+
+    PySys_SetArgvEx(0, args, 0);
+
+
+
+
 #endif
 
 #ifdef PYTHON3
