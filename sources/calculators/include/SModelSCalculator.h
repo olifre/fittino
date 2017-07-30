@@ -2,6 +2,7 @@
 #define FITTINO_SMODELSCALCULATOR_H
 
 #include "CalculatorBase.h"
+#include "boost/python.hpp"
 
 namespace Fittino {
 
@@ -25,7 +26,14 @@ namespace Fittino {
       Executor* _crossSections_NLL;
 
       std::string _xmlFile;
+      std::string _fileName;
+      std::string _databaseVersion;
+      std::string _parameterFile;
       double _rValue;
+      boost::python::object _parser;
+      boost::python::object _fileList;
+      boost::python::object _listOfExpRes;
+      boost::python::object _testPoints;
 
       void ReadXML();
 

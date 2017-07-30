@@ -3,6 +3,7 @@
 #include <boost/property_tree/xml_parser.hpp>
 #include <Python.h>
 #include <iostream>
+#include <CalculatorException.h>
 #include "Executor.h"
 #include "SModelSCalculator.h"
 
@@ -29,11 +30,12 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
 
 #endif
 
-    std::string fileName = ptree.get<std::string>( "FileName" );
+     _fileName = ptree.get<std::string>( "FileName" );
 
-    _xmlFile = "results/" + fileName + ".xml";
+    _xmlFile = "results/" + _fileName + ".xml";
+    _xmlFile= "/Users/sarrazin/Desktop/lightEWinos.slha.xml"; // TODO remove when fixed on SModelS side (when Malte's work is in missing branch)
 
-    std::string parameterFile = ptree.get<std::string>( "ParameterFile" );
+    _parameterFile = ptree.get<std::string>( "ParameterFile" );
 
     _crossSections_LO = new Executor( executable, "smodelsTools.py" );
     _crossSections_LO->AddArgument("xseccomputer");
@@ -44,7 +46,7 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
     _crossSections_LO->AddArgument("10000");
     _crossSections_LO->AddArgument("-p");
     _crossSections_LO->AddArgument("-f");
-    _crossSections_LO->AddArgument(fileName);
+    _crossSections_LO->AddArgument(_fileName);
 
     _crossSections_NLL = new Executor( executable, "smodelsTools.py" );
     _crossSections_NLL->AddArgument("xseccomputer");
@@ -55,18 +57,48 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
     _crossSections_NLL->AddArgument("-N");
     _crossSections_NLL->AddArgument("-O");
     _crossSections_NLL->AddArgument("-f");
-    _crossSections_NLL->AddArgument(fileName);
+    _crossSections_NLL->AddArgument(_fileName);
 
-    Py_Initialize();
 
-    PyRun_SimpleString(("parameterFile = '" + parameterFile + "'").c_str());
-    PyRun_SimpleString("from smodels.tools import modelTester");
-    PyRun_SimpleString("parser = modelTester.getParameters( parameterFile )");
-    PyRun_SimpleString("database, databaseVersion = modelTester.loadDatabase(parser, None )");
-    PyRun_SimpleString("listOfExpRes = modelTester.loadDatabaseResults(parser, database)");
-    PyRun_SimpleString("print '[smodels.cpp] %d experimental results found.' % len(listOfExpRes) ");
-    PyRun_SimpleString(("fileName = '" + fileName + "'").c_str());
-    PyRun_SimpleString("fileList = modelTester.getAllInputFiles( fileName )");
+//    PyRun_SimpleString(("parameterFile = '" + parameterFile + "'").c_str());
+//    PyRun_SimpleString("from smodels.tools import modelTester");
+//    PyRun_SimpleString("parser = modelTester.getParameters( parameterFile )");
+//    PyRun_SimpleString("database, databaseVersion = modelTester.loadDatabase(parser, None )");
+//    PyRun_SimpleString("listOfExpRes = modelTester.loadDatabaseResults(parser, database)");
+//    PyRun_SimpleString("print '[smodels.cpp] %d experimental results found.' % len(listOfExpRes) ");
+//    PyRun_SimpleString(("fileName = '" + fileName + "'").c_str());
+//    PyRun_SimpleString("fileList = modelTester.getAllInputFiles( fileName )");
+
+//    auto modelTesterString = PyString_FromString( (char*) "smodels.tools.modelTester" );
+//    auto modelTester = PyImport_Import( modelTesterString );
+//    if ( modelTester == nullptr) throw ConfigurationException( "Import of modelTester failed." );
+//    auto getParameters = PyObject_GetAttrString(modelTester, "getParameters");
+//    auto py_parameterFile = PyString_FromString( parameterFile.c_str() );
+//    auto args =  PyTuple_New( 1 );
+//    PyTuple_SetItem( args, 0, py_parameterFile);
+//    auto parser = PyObject_CallObject( getParameters, args);
+
+    auto modelTester = boost::python::import("smodels.tools.modelTester");
+    auto getParameters = modelTester.attr( "getParameters" );
+    auto loadDatabase = modelTester.attr( "loadDatabase" );
+    auto loadDatabaseResults = modelTester.attr( "loadDatabaseResults" );
+    auto getAllInputFiles = modelTester.attr( "getAllInputFiles" );
+    _testPoints = modelTester.attr( "testPoints" );
+
+    _fileList = getAllInputFiles( _fileName );
+
+    _parser = getParameters( _parameterFile );
+
+    auto databaseTuple = loadDatabase( _parser, boost::python::object() );
+    boost::python::object database = databaseTuple[0];
+    _databaseVersion = boost::python::extract<std::string>(databaseTuple[1] );
+
+    _listOfExpRes = loadDatabaseResults( _parser, database );
+    //auto listOfExpRes = boost::python::extract<boost::python::list>( listOfExpRes_pyObject );
+
+    std::cout<<"SModelS database version: "<<_databaseVersion<<std::endl;
+    std::cout<<"SModelS number of results: "<<boost::python::len( _listOfExpRes )<<std::endl;
+
 
 }
 
@@ -76,11 +108,14 @@ Fittino::SModelSCalculator::~SModelSCalculator() {
 
 void Fittino::SModelSCalculator::CalculatePredictions() {
 
-    _crossSections_LO->Execute();
-    _crossSections_NLL->Execute();
+    // TODO: comment in when fixed on SModelS side (missing merged with master)
+   // _crossSections_LO->Execute();
+   // _crossSections_NLL->Execute();
 
-    PyRun_SimpleString(
-            "modelTester.testPoints( fileList, fileName, 'results', parser, databaseVersion, listOfExpRes, 900, False, parameterFile )");
+ //   PyRun_SimpleString(
+ //           "modelTester.testPoints( fileList, fileName, 'results', parser, databaseVersion, listOfExpRes, 900, False, parameterFile )");
+
+    auto result = _testPoints( _fileList, _fileName, "results", _parser, _databaseVersion, _listOfExpRes, 900, false, _parameterFile );
 
 
     ReadXML();

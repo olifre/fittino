@@ -89,7 +89,11 @@
 #include "SimpleStringCut.h"
 #include "SimulatedAnnealingOptimizer.h"
 #include "SLHAeaSLHADataStorage.h"
+
+#ifdef PYTHON2
 #include "SModelSCalculator.h"
+#endif
+
 #include "SPhenoSLHACalculator.h"
 #include "GCECalculator.h"
 #include "LHCNeuralNetCalculator.h"
