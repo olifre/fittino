@@ -4,6 +4,7 @@
 #include <Python.h>
 #include <iostream>
 #include <CalculatorException.h>
+#include <LogicException.h>
 #include "Executor.h"
 #include "SModelSCalculator.h"
 #include "Messenger.h"
@@ -84,6 +85,7 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
     auto loadDatabase = modelTester.attr( "loadDatabase" );
     auto loadDatabaseResults = modelTester.attr( "loadDatabaseResults" );
     auto getAllInputFiles = modelTester.attr( "getAllInputFiles" );
+
     _testPoints = modelTester.attr( "testPoints" );
 
     _fileList = getAllInputFiles( _fileName );
@@ -119,6 +121,14 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
     messenger << Messenger::INFO << "SModelS database contains " <<nResults<<" results."<< Messenger::Endl;
     std::cout<<"SModelS database contains "<<_txNames.size()<<" TxNames."<<std::endl;
 
+    _txNames.insert( "None" );
+
+    for ( auto txName : _txNames ) {
+
+        AddOutput( "MissingWeight_" + txName );
+
+    }
+
 }
 
 Fittino::SModelSCalculator::~SModelSCalculator() {
@@ -126,6 +136,13 @@ Fittino::SModelSCalculator::~SModelSCalculator() {
 }
 
 void Fittino::SModelSCalculator::CalculatePredictions() {
+
+    for( auto txName : _txNames ) {
+
+        SetOutput( "MissingWeight_" + txName, 0  );
+
+    }
+
 
     // TODO: comment in when missing branch merged with master
    // _crossSections_LO->Execute();
@@ -161,6 +178,20 @@ void Fittino::SModelSCalculator::ReadXML() {
          r = tp / ul;
 
         if ( r > _rValue ) _rValue = r;
+
+    }
+
+    for( auto node : ptree.get_child( "smodelsOutput.Missing_Topologies" ) ) {
+
+        std::string txName = node.first;
+
+        if ( _txNames.count( txName ) == 0 ) {
+
+            throw LogicException("txName " + txName + "appears in Missing_Topologies but is unknown." );
+
+        }
+
+        SetOutput( "MissingWeight_" + txName, node.second.get<double>("TopoWeight_pb")  );
 
     }
 
