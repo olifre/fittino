@@ -6,6 +6,7 @@
 #include <CalculatorException.h>
 #include "Executor.h"
 #include "SModelSCalculator.h"
+#include "Messenger.h"
 
 Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boost::property_tree::ptree &ptree)
         : CalculatorBase(model, &ptree) {
@@ -33,7 +34,7 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
      _fileName = ptree.get<std::string>( "FileName" );
 
     _xmlFile = "results/" + _fileName + ".xml";
-    _xmlFile= "/Users/sarrazin/Desktop/lightEWinos.slha.xml"; // TODO remove when fixed on SModelS side (when Malte's work is in missing branch)
+    _xmlFile= "/Users/sarrazin/Desktop/lightEWinos.slha.xml"; // TODO remove when Malte's work is in missing branch)
 
     _parameterFile = ptree.get<std::string>( "ParameterFile" );
 
@@ -94,11 +95,29 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
     _databaseVersion = boost::python::extract<std::string>(databaseTuple[1] );
 
     _listOfExpRes = loadDatabaseResults( _parser, database );
-    //auto listOfExpRes = boost::python::extract<boost::python::list>( listOfExpRes_pyObject );
 
-    std::cout<<"SModelS database version: "<<_databaseVersion<<std::endl;
-    std::cout<<"SModelS number of results: "<<boost::python::len( _listOfExpRes )<<std::endl;
+    unsigned int nResults = boost::python::len( _listOfExpRes );
 
+    for( unsigned int i = 0; i < nResults; ++i ) {
+
+        auto txNamesPerResult = _listOfExpRes[i].attr( "getTxNames" )();
+
+        unsigned int nTxNames = boost::python::len( txNamesPerResult );
+
+        for( unsigned int j = 0; j < nTxNames; ++j ) {
+
+            std::string txName = boost::python::extract<std::string>( txNamesPerResult[j].attr( "txName" ) );
+
+            _txNames.insert( txName );
+
+        }
+
+    }
+
+    Messenger& messenger = Messenger::GetInstance();
+    messenger << Messenger::INFO << "SModelS database version: " <<_databaseVersion<< Messenger::Endl;
+    messenger << Messenger::INFO << "SModelS database contains " <<nResults<<" results."<< Messenger::Endl;
+    std::cout<<"SModelS database contains "<<_txNames.size()<<" TxNames."<<std::endl;
 
 }
 
@@ -108,7 +127,7 @@ Fittino::SModelSCalculator::~SModelSCalculator() {
 
 void Fittino::SModelSCalculator::CalculatePredictions() {
 
-    // TODO: comment in when fixed on SModelS side (missing merged with master)
+    // TODO: comment in when missing branch merged with master
    // _crossSections_LO->Execute();
    // _crossSections_NLL->Execute();
 
@@ -116,7 +135,6 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
  //           "modelTester.testPoints( fileList, fileName, 'results', parser, databaseVersion, listOfExpRes, 900, False, parameterFile )");
 
     auto result = _testPoints( _fileList, _fileName, "results", _parser, _databaseVersion, _listOfExpRes, 900, false, _parameterFile );
-
 
     ReadXML();
 

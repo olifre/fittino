@@ -3,6 +3,7 @@
 
 #include "CalculatorBase.h"
 #include "boost/python.hpp"
+#include <set>
 
 namespace Fittino {
 
@@ -34,6 +35,8 @@ namespace Fittino {
       boost::python::object _fileList;
       boost::python::object _listOfExpRes;
       boost::python::object _testPoints;
+
+      std::set<std::string> _txNames;
 
       void ReadXML();
 
