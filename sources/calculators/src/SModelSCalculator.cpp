@@ -110,7 +110,7 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
 
             std::string txName = boost::python::extract<std::string>( txNamesPerResult[j].attr( "txName" ) );
 
-            _txNames.insert( txName );
+            _txNamesWithResults.insert( txName );
 
         }
 
@@ -119,7 +119,28 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
     Messenger& messenger = Messenger::GetInstance();
     messenger << Messenger::INFO << "SModelS database version: " <<_databaseVersion<< Messenger::Endl;
     messenger << Messenger::INFO << "SModelS database contains " <<nResults<<" results."<< Messenger::Endl;
-    std::cout<<"SModelS database contains "<<_txNames.size()<<" TxNames."<<std::endl;
+    messenger << Messenger::INFO << "SModelS database uses "<<_txNamesWithResults.size()<<" TxNames."<<Messenger::Endl;
+
+
+  //  _txNamesWithResults.insert( "None" );
+
+
+    auto tdict = boost::python::import("smodels.tools.tdict");
+
+    auto dictionary = tdict.attr( "txnames" );
+
+    auto iter = dictionary.attr("itervalues")();
+
+    for ( int i=0; i< boost::python::len(dictionary); ++i ) {
+
+        std::string name = boost::python::extract<std::string> ( iter.attr("next")() );
+
+        _txNames.insert( name  );
+
+    }
+
+
+    messenger << Messenger::INFO << "SModelS knows "<<_txNames.size()<<" TxNames."<<Messenger::Endl;
 
     _txNames.insert( "None" );
 

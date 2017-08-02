@@ -36,6 +36,7 @@ namespace Fittino {
       boost::python::object _listOfExpRes;
       boost::python::object _testPoints;
 
+      std::set<std::string> _txNamesWithResults;
       std::set<std::string> _txNames;
 
       void ReadXML();
