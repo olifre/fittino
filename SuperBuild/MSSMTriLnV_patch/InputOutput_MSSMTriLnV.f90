@@ -3948,9 +3948,19 @@ Write(io_L,222) "03050305" , "4142" , "00", "0", Real(coeffBsBs_VLRSM,dp),  " # 
 Write(io_L,222) "03050305" , "4343" , "00", "0", Real(coeffBsBs_TLLSM,dp),  " # coeffBsBs_TLLSM"  
 Write(io_L,222) "03050305" , "4444" , "00", "0", Real(coeffBsBs_TRRSM,dp),  " # coeffBsBs_TRRSM"  
 ! hack Werner
-Write(io_L,222) "04051516" , "4141" , "00", "2", Real(coeffBDtaunu,dp),  " # coeffBDtaunu"  
-Write(io_L,222) "04051516" , "4141" , "00", "0", Real(coeffBDtaunuSM,dp),  " # coeffBDtaunuSM"  
-Write(io_L,222) "04051516" , "4141" , "00", "1", Real(coeffBDtaunuNP,dp),  " # coeffBDtaunuNP"  
+Write(io_L,222) "04051516" , "4141" , "00", "2", Real(coeff_V_BDtaunu,dp),  " # coeff_V_BDtaunu"  
+Write(io_L,222) "04051516" , "4141" , "00", "0", Real(coeff_V_BDtaunuSM,dp),  " # coeff_V_BDtaunuSM"  
+Write(io_L,222) "04051516" , "4141" , "00", "1", Real(coeff_V_BDtaunuNP,dp),  " # coeff_V_BDtaunuNP"  
+Write(io_L,222) "04051516" , "4241" , "00", "2", Real(coeff_V_BDtaunuP,dp),  " # coeff_V_BDtaunu'"  
+Write(io_L,222) "04051516" , "4241" , "00", "0", Real(coeff_V_BDtaunuSMP,dp),  " # coeff_V_BDtaunuSM'"  
+Write(io_L,222) "04051516" , "4241" , "00", "1", Real(coeff_V_BDtaunuNPP,dp),  " # coeff_V_BDtaunuNP'"  
+
+Write(io_L,222) "04051516" , "3131" , "00", "2", Real(coeff_S_BDtaunu,dp),  " # coeff_S_BDtaunu"  
+Write(io_L,222) "04051516" , "3131" , "00", "0", Real(coeff_S_BDtaunuSM,dp),  " # coeff_S_BDtaunuSM"  
+Write(io_L,222) "04051516" , "3131" , "00", "1", Real(coeff_S_BDtaunuNP,dp),  " # coeff_S_BDtaunuNP"  
+Write(io_L,222) "04051516" , "3231" , "00", "2", Real(coeff_S_BDtaunuP,dp),  " # coeff_S_BDtaunu'"  
+Write(io_L,222) "04051516" , "3231" , "00", "0", Real(coeff_S_BDtaunuSMP,dp),  " # coeff_S_BDtaunuSM'"  
+Write(io_L,222) "04051516" , "3231" , "00", "1", Real(coeff_S_BDtaunuNPP,dp),  " # coeff_S_BDtaunuNP'"  
 ! end hack Werner
 Write(io_L,100) "Block IMFWCOEF Q=  1.60000000E+02  # Im(Wilson coefficients) at scale Q " 
 Write(io_L,222) "    0305" , "4422" , "00", "0", Aimag(coeffC7sm),  " # coeffC7sm"  
@@ -4086,9 +4096,19 @@ Write(io_L,222) "03050305" , "4142" , "00", "0", Aimag(coeffBsBs_VLRSM),  " # co
 Write(io_L,222) "03050305" , "4343" , "00", "0", Aimag(coeffBsBs_TLLSM),  " # coeffBsBs_TLLSM"  
 Write(io_L,222) "03050305" , "4444" , "00", "0", Aimag(coeffBsBs_TRRSM),  " # coeffBsBs_TRRSM"  
 ! hack Werner
-Write(io_L,222) "04051516" , "4141" , "00", "2", Aimag(coeffBDtaunu),  " # coeffBDtaunu"  
-Write(io_L,222) "04051516" , "4141" , "00", "0", Aimag(coeffBDtaunuSM),  " # coeffBDtaunuSM"  
-Write(io_L,222) "04051516" , "4141" , "00", "1", Aimag(coeffBDtaunuNP),  " # coeffBDtaunuNP"  
+Write(io_L,222) "04051516" , "4141" , "00", "2", Aimag(coeff_V_BDtaunu),  " # coeff_V_BDtaunu"  
+Write(io_L,222) "04051516" , "4141" , "00", "0", Aimag(coeff_V_BDtaunuSM),  " # coeff_V_BDtaunuSM"  
+Write(io_L,222) "04051516" , "4141" , "00", "1", Aimag(coeff_V_BDtaunuNP),  " # coeff_V_BDtaunuNP"  
+Write(io_L,222) "04051516" , "4241" , "00", "2", Aimag(coeff_V_BDtaunuP),  " # coeff_V_BDtaunu'"  
+Write(io_L,222) "04051516" , "4241" , "00", "0", Aimag(coeff_V_BDtaunuSMP),  " # coeff_V_BDtaunuSM'"  
+Write(io_L,222) "04051516" , "4241" , "00", "1", Aimag(coeff_V_BDtaunuNPP),  " # coeff_V_BDtaunuNP'"  
+
+Write(io_L,222) "04051516" , "3131" , "00", "2", Aimag(coeff_S_BDtaunu),  " # coeff_S_BDtaunu"  
+Write(io_L,222) "04051516" , "3131" , "00", "0", Aimag(coeff_S_BDtaunuSM),  " # coeff_S_BDtaunuSM"  
+Write(io_L,222) "04051516" , "3131" , "00", "1", Aimag(coeff_S_BDtaunuNP),  " # coeff_S_BDtaunuNP"  
+Write(io_L,222) "04051516" , "3231" , "00", "2", Aimag(coeff_S_BDtaunuP),  " # coeff_S_BDtaunu'"  
+Write(io_L,222) "04051516" , "3231" , "00", "0", Aimag(coeff_S_BDtaunuSMP),  " # coeff_S_BDtaunuSM'"  
+Write(io_L,222) "04051516" , "3231" , "00", "1", Aimag(coeff_S_BDtaunuNPP),  " # coeff_S_BDtaunuNP'"  
 ! end hack Werner
 
  

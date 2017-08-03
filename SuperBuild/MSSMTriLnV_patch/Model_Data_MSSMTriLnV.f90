@@ -199,9 +199,18 @@ Complex(dp) :: coeffBsBs_VLRSM = 0._dp
 Complex(dp) :: coeffBsBs_TLLSM = 0._dp
 Complex(dp) :: coeffBsBs_TRRSM = 0._dp
 ! hack Werner
-Complex(dp) :: coeffBDtaunu =  0._dp
-Complex(dp) :: coeffBDtaunuSM =  0._dp
-Complex(dp) :: coeffBDtaunuNP =  0._dp
+Complex(dp) :: coeff_V_BDtaunu =  0._dp
+Complex(dp) :: coeff_V_BDtaunuSM =  0._dp
+Complex(dp) :: coeff_V_BDtaunuNP =  0._dp
+Complex(dp) :: coeff_V_BDtaunup =  0._dp
+Complex(dp) :: coeff_V_BDtaunuSMp =  0._dp
+Complex(dp) :: coeff_V_BDtaunuNPp =  0._dp
+Complex(dp) :: coeff_S_BDtaunu =  0._dp
+Complex(dp) :: coeff_S_BDtaunuSM =  0._dp
+Complex(dp) :: coeff_S_BDtaunuNP =  0._dp
+Complex(dp) :: coeff_S_BDtaunup =  0._dp
+Complex(dp) :: coeff_S_BDtaunuSMp =  0._dp
+Complex(dp) :: coeff_S_BDtaunuNPp =  0._dp
 ! end hack Werner
 Real(dp) :: MW_SM 
 Real(dp) :: Alpha_160, AlphaS_160, SinW2_160, sinW2_MZ 

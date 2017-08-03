@@ -693,7 +693,7 @@ Complex(dp) :: c7,c7p,c8,c8p
 Real(dp) :: ResultMuE(6), ResultTauMeson(3), ResultTemp(99) 
 Complex(dp), Dimension(3,3) :: Yu_save, Yd_save, Ye_save, CKMsave 
 Real(dp) :: g1D(431), tz, dt 
-Real(dp) ::Qin,vev2,sinw2, mzsave, scalein, scale_save, gSM(11),Qinsave, maxdiff =0._dp 
+Real(dp) ::Qin,vev2,sinw2, mzsave, scalein, scale_save, gSM(11),Qinsave, maxdiff =0._dp, norm
 Integer :: i1, i2, i3, gt1, gt2, gt3, gt4,iQTEST, iQFinal 
 Integer :: IndexArray4(99,4), IndexArray3(99,3), IndexArray2(99,2)   
 Complex(dp) :: BOllddSLL(3,3,3,3),BOllddSRR(3,3,3,3),BOllddSRL(3,3,3,3),BOllddSLR(3,3,3,3),          & 
@@ -3850,9 +3850,19 @@ coeffBsBs_VLRSM = O4dVLRSM(3,2,3,2) + O4dVRLSM(3,2,3,2)
 coeffBsBs_TLLSM = O4dTLLSM(3,2,3,2)/2._dp
 coeffBsBs_TRRSM = O4dTRRSM(3,2,3,2)/2._dp
 ! hack Werner
-coeffBDtaunu = OdulvVLR(3,2,3,3)
-coeffBDtaunuSM = OdulvVLRSM(3,2,3,3)
-coeffBDtaunuNP = coeffBDtaunu - coeffBDtaunuSM 
+norm = sqrt2 /(4._dp*G_F*CKM(2,3))
+coeff_V_BDtaunu = norm*OdulvVLR(3,2,3,3)
+coeff_V_BDtaunuSM = norm*OdulvVLRSM(3,2,3,3)
+coeff_V_BDtaunuNP = coeff_V_BDtaunu - coeff_V_BDtaunuSM 
+coeff_V_BDtaunuP = norm*OdulvVRL(3,2,3,3)
+coeff_V_BDtaunuSMP = norm*OdulvVRLSM(3,2,3,3)
+coeff_V_BDtaunuNPP = coeff_V_BDtaunuP - coeff_V_BDtaunuSMP 
+coeff_S_BDtaunu = norm*OdulvSLL(3,2,3,3)
+coeff_S_BDtaunuSM = norm*OdulvSLLSM(3,2,3,3)
+coeff_S_BDtaunuNP = coeff_S_BDtaunu - coeff_S_BDtaunuSM 
+coeff_S_BDtaunuP = norm*OdulvSRL(3,2,3,3)
+coeff_S_BDtaunuSMP = norm*OdulvSRLSM(3,2,3,3)
+coeff_S_BDtaunuNPP = coeff_S_BDtaunuP - coeff_S_BDtaunuSMP 
 ! end hack Werner
 CKM = CKMsave 
 !-------------------------------------
