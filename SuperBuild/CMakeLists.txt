@@ -381,7 +381,6 @@ if( INSTALL_Python OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_CheckMATE )
     set( python3_v 3.6 )
     set( python3_env Python-3.6 )
 
-
     list( APPEND miniconda_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH <INSTALL_DIR>/bin/conda create -y --name ${python2_env} python=${python2_v} ${conda2_packages} )
     list( APPEND miniconda_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH <INSTALL_DIR>/envs/${python2_env}/bin/pip install ${pip2_packages} )
 
@@ -390,6 +389,7 @@ if( INSTALL_Python OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_CheckMATE )
 
     list( APPEND miniconda_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH <INSTALL_DIR>/bin/conda create -y --name ${python3_env} python=${python3_v} ${conda3_packages} )
     list( APPEND miniconda_install_command COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH <INSTALL_DIR>/envs/${python3_env}/bin/pip install ${pip3_packages} )
+    list( APPEND miniconda_install_command COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/Flavio_patch/flha.py <INSTALL_DIR>/envs/${python3_env}/lib/python${python3_v}/site-packages/flavio/io/flha.py   )
 
     externalproject_add(
 
@@ -641,7 +641,7 @@ if( INSTALL_Fittino_Python3 )
 
 endif()
 
-set( USE_PYTHON3 1)
+set( USE_PYTHON3 1 )
 set( totalPrefixPath ${prefixPath} )
 list( APPEND totalPrefixPath ${python3_dir} )
 set( Fittino_ROOT_DIR ${Fittino_ROOT_DIR_py3} )
@@ -650,7 +650,7 @@ set( python_dir ${python3_dir} )
 configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/init.cmake ${CMAKE_CURRENT_BINARY_DIR}/init-python3.cmake )
 configure_file( ${CMAKE_CURRENT_BINARY_DIR}/activate.in ${CMAKE_CURRENT_BINARY_DIR}/activate-python3 )
 
-set( USE_PYTHON3 0)
+set( USE_PYTHON3 0 )
 file( APPEND ${script} "export PYTHONPATH=@SCYNet_ROOT_DIR@\n" )
 set( totalPrefixPath ${prefixPath} )
 list( APPEND totalPrefixPath ${python2_dir} )
