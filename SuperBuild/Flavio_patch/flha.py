@@ -63,10 +63,10 @@ _flha_dict ={
 (3051414, 4241): 'CR_bsnumunumu',
 (3051616, 4141): 'CL_bsnutaunutau',
 (3051616, 4241): 'CR_bsnutaunutau',
-(04051516, 4141): 'CV_bctaunu',
-(04051516, 4241): 'CVp_bctaunu',
-(04051516, 3131): 'CS_bctaunu',
-(04051516, 3231): 'CSp_bctaunu',
+(4051516, 4141): 'CV_bctaunu',
+(4051516, 4241): 'CVp_bctaunu',
+(4051516, 3131): 'CS_bctaunu',
+(4051516, 3231): 'CSp_bctaunu',
 }
 
 def read_wilson(filename):
