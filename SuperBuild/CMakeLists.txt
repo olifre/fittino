@@ -18,6 +18,7 @@
 # because of DOWNLOAD_NO_EXTRACT: https://cmake.org/cmake/help/v3.6/release/3.6.html?highlight=download_no_extract#modules
 cmake_minimum_required( VERSION 3.6 FATAL_ERROR )
 
+set( CMAKE_VERBOSE_MAKEFILE ON CACHE BOOL "" )
 project( Fittino_Superbuild LANGUAGES CXX C Fortran )
 
 set( CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../CMakeModules )
@@ -41,6 +42,7 @@ option( INSTALL_MSSMTriLnV "" OFF )
 option( INSTALL_SModelS "" OFF )
 option( INSTALL_SCYNet "" OFF )
 option( INSTALL_CheckMATE "" OFF )
+option( INSTALL_GM2Calc "" OFF )
 option( INSTALL_Fittino_Python2 "" OFF )
 option( INSTALL_Fittino_Python3 "" OFF )
 
@@ -559,7 +561,36 @@ endif()
 #            INSTALL_COMMAND ""
 #    )
 
-#configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/activate ${CMAKE_CURRENT_BINARY_DIR}/activate )
+
+if( INSTALL_GM2Calc )
+
+    set( gm2calc GM2Calc-1.3.3 )
+
+    find_package( Eigen3 3.1 REQUIRED )
+    find_package( Boost 1.37 REQUIRED )
+
+    externalproject_add(
+
+            ${gm2calc}
+            URL http://www.hepforge.org/archive/gm2calc/gm2calc-1.3.3.tar.gz
+            URL_MD5 c641daba1dcad77c34d2acca02bc575c
+            BUILD_IN_SOURCE 1
+            CONFIGURE_COMMAND ""
+            BUILD_COMMAND $(MAKE) CXX=${CMAKE_CXX_COMPILER} BOOSTFLAGS=-I${Boost_INCLUDE_DIRS} EIGENFLAGS=-I${EIGEN3_INCLUDE_DIR}
+            INSTALL_COMMAND ""
+
+    )
+
+    list( APPEND fittino_dependencies ${gm2calc} )
+
+    externalproject_get_property( ${gm2calc} source_dir )
+    set( GM2Calc_ROOT_DIR ${source_dir} )
+    list( APPEND libraryPath ${GM2Calc_ROOT_DIR}/src )
+    list( APPEND includePath ${GM2Calc_ROOT_DIR}/src )
+
+    file( APPEND ${script} "export PATH=${GM2Calc_ROOT_DIR}/bin/:$PATH\n" )
+
+endif()
 
 if( INSTALL_Fittino_Python2 )
 
