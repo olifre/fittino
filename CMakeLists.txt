@@ -126,7 +126,7 @@ file(MAKE_DIRECTORY ${indir} )
 
 set( Fittino_INPUT_DIR ${CMAKE_INSTALL_PREFIX}/share/fittino/input )
 
-configure_file( ${PROJECT_SOURCE_DIR}/input/SCYNet.in.xml ${indir} )
+configure_file( ${PROJECT_SOURCE_DIR}/input/SModelS.in.xml ${indir} )
 configure_file( ${PROJECT_SOURCE_DIR}/input/pMSSM11.slha ${indir} )
 configure_file( ${PROJECT_SOURCE_DIR}/input/parameters.ini ${indir} )
 configure_file( ${PROJECT_SOURCE_DIR}/input/MSSMTriLnV_low.xml ${indir} )
