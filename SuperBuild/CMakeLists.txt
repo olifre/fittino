@@ -25,6 +25,7 @@ set( CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../CMakeModules )
 include( ExternalProject )
 
 set_property( DIRECTORY PROPERTY "EP_BASE" ${PROJECT_BINARY_DIR} )
+set_property( DIRECTORY PROPERTY "EP_UPDATE_DISCONNECTED" ${PROJECT_BINARY_DIR} )
 
 option( INSTALL_SLHAea "" OFF )
 option( INSTALL_SPheno "" OFF )
