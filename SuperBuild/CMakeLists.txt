@@ -431,7 +431,7 @@ if( INSTALL_SModelS )
             ${smodels}
             DEPENDS ${miniconda}
             GIT_REPOSITORY https://github.com/SModelS/smodels.git
-            GIT_TAG 317859dd370ff893a7c2c89dec36f589a506f787
+            GIT_TAG 96d3cb69d62f49590dcd2d3f98a4e5d9b02601b6
             BUILD_IN_SOURCE 1
             CONFIGURE_COMMAND ""
             BUILD_COMMAND $(MAKE) FCC=${CMAKE_Fortran_COMPILER} CXX=${CMAKE_CXX_COMPILER}
