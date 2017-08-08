@@ -35,7 +35,6 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
      _fileName = ptree.get<std::string>( "FileName" );
 
     _xmlFile = "results/" + _fileName + ".xml";
-    _xmlFile= "/Users/sarrazin/Desktop/lightEWinos.slha.xml"; // TODO remove when Malte's work is in missing branch)
 
     _parameterFile = ptree.get<std::string>( "ParameterFile" );
 
@@ -60,25 +59,6 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
     _crossSections_NLL->AddArgument("-O");
     _crossSections_NLL->AddArgument("-f");
     _crossSections_NLL->AddArgument(_fileName);
-
-
-//    PyRun_SimpleString(("parameterFile = '" + parameterFile + "'").c_str());
-//    PyRun_SimpleString("from smodels.tools import modelTester");
-//    PyRun_SimpleString("parser = modelTester.getParameters( parameterFile )");
-//    PyRun_SimpleString("database, databaseVersion = modelTester.loadDatabase(parser, None )");
-//    PyRun_SimpleString("listOfExpRes = modelTester.loadDatabaseResults(parser, database)");
-//    PyRun_SimpleString("print '[smodels.cpp] %d experimental results found.' % len(listOfExpRes) ");
-//    PyRun_SimpleString(("fileName = '" + fileName + "'").c_str());
-//    PyRun_SimpleString("fileList = modelTester.getAllInputFiles( fileName )");
-
-//    auto modelTesterString = PyString_FromString( (char*) "smodels.tools.modelTester" );
-//    auto modelTester = PyImport_Import( modelTesterString );
-//    if ( modelTester == nullptr) throw ConfigurationException( "Import of modelTester failed." );
-//    auto getParameters = PyObject_GetAttrString(modelTester, "getParameters");
-//    auto py_parameterFile = PyString_FromString( parameterFile.c_str() );
-//    auto args =  PyTuple_New( 1 );
-//    PyTuple_SetItem( args, 0, py_parameterFile);
-//    auto parser = PyObject_CallObject( getParameters, args);
 
     auto modelTester = boost::python::import("smodels.tools.modelTester");
     auto getParameters = modelTester.attr( "getParameters" );
@@ -121,10 +101,6 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
     messenger << Messenger::INFO << "SModelS database contains " <<nResults<<" results."<< Messenger::Endl;
     messenger << Messenger::INFO << "SModelS database uses "<<_txNamesWithResults.size()<<" TxNames."<<Messenger::Endl;
 
-
-  //  _txNamesWithResults.insert( "None" );
-
-
     auto tdict = boost::python::import("smodels.tools.tdict");
 
     auto dictionary = tdict.attr( "txnames" );
@@ -138,7 +114,6 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
         _txNames.insert( name  );
 
     }
-
 
     messenger << Messenger::INFO << "SModelS knows "<<_txNames.size()<<" TxNames."<<Messenger::Endl;
 
@@ -164,13 +139,8 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
 
     }
 
-
-    // TODO: comment in when missing branch merged with master
-   // _crossSections_LO->Execute();
-   // _crossSections_NLL->Execute();
-
- //   PyRun_SimpleString(
- //           "modelTester.testPoints( fileList, fileName, 'results', parser, databaseVersion, listOfExpRes, 900, False, parameterFile )");
+    _crossSections_LO->Execute();
+    _crossSections_NLL->Execute();
 
     auto result = _testPoints( _fileList, _fileName, "results", _parser, _databaseVersion, _listOfExpRes, 900, false, _parameterFile );
 
@@ -208,7 +178,7 @@ void Fittino::SModelSCalculator::ReadXML() {
 
         if ( _txNames.count( txName ) == 0 ) {
 
-            throw LogicException("txName " + txName + "appears in Missing_Topologies but is unknown." );
+            throw LogicException("txName " + txName + " appears in Missing_Topologies in xml file but is unknown." );
 
         }
 
