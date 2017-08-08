@@ -472,9 +472,9 @@ if( INSTALL_SModelS )
 #            URL ${SModelS_URL}
 #            URL_MD5 ${SModelS_URL_MD5}
             GIT_REPOSITORY https://github.com/SModelS/smodels.git
-            GIT_TAG missing
+            GIT_TAG missing # 317859d # 317859dd370ff893a7c2c89dec36f589a506f787
             CONFIGURE_COMMAND ""
-            BUILD_COMMAND $(MAKE) FCC=${CMAKE_Fortran_COMPILER} CXX=${CMake_CXX_COMPILER}
+            BUILD_COMMAND $(MAKE) FCC=${CMAKE_Fortran_COMPILER} CXX=${CMAKE_CXX_COMPILER}
             BUILD_IN_SOURCE 1
             INSTALL_COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${python2_dir}/bin/python setup.py install
 
