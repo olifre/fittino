@@ -421,95 +421,60 @@ endif()
 
 if( INSTALL_SModelS )
 
-#    if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
-#
-#        set( SModelS_URL "~/Downloads/smodels-v1.1.0patch1.tar" CACHE FILEPATH "" )
-#        set( SModelSFastlimDatabase_URL "~/Downloads/smodels-v1.1-fastlim-1.0.tar" CACHE FILEPATH "" )
-#
-#    else()
-#
-#        set( SModelS_URL "~/Downloads/smodels-v1.1.0patch1.tgz" CACHE FILEPATH "" )
-#        set( SModelSFastlimDatabase_URL "~/Downloads/smodels-v1.1.1-fastlim-1.0.tgz" CACHE FILEPATH "" )
-#
-#    endif()
-#
-#    if( SModelS_URL MATCHES "\\.tar$" )
-#
-#        set( SModelS_URL_MD5 396d3a28d1bebd1cbe3123100475108a CACHE STRING "" )
-#
-#    elseif( SModelS_URL MATCHES "\\.tgz$" )
-#
-#        set( SModelS_URL_MD5 093757506db0823cf3ce13007720f79a CACHE STRING "" )
-#
-#    elseif( NOT DEFINED SModelS_URL_MD5 )
-#
-#        message( WARNING "Unexpected extension of SModelS_URL and SModelS_URL_MD5 not defined." )
-#
-#    endif()
-#
-#    if( SModelSFastlimDatabase_URL MATCHES "\\.tar$" )
-#
-#        set( SModelSFastlimDatabase_URL_MD5 46315d796042dee35ce9e2dc9b8bd97a CACHE STRING "" )
-#
-#    elseif( SModelSFastlimDatabase_URL MATCHES "\\.tgz$" )
-#
-#        # needs update
-#        set( SModelSFastlimDatabase_URL_MD5 55a2b8b7eeebd06b065315c8b2dc96d2 CACHE STRING "" )
-#
-#    elseif( NOT DEFINED SModelSFastlimDatabase_URL_MD5 )
-#
-#        message( WARNING "Unexpected extension of SModelSFastlimDatabase_URL and SModelSFastlimDatabase_URL_MD5 not defined." )
-#
-#    endif()
-
-
     set( smodels SModelS )
 
     externalproject_add(
 
             ${smodels}
             DEPENDS ${miniconda}
-#            URL ${SModelS_URL}
-#            URL_MD5 ${SModelS_URL_MD5}
             GIT_REPOSITORY https://github.com/SModelS/smodels.git
-            GIT_TAG missing # 317859d # 317859dd370ff893a7c2c89dec36f589a506f787
+            GIT_TAG 317859dd370ff893a7c2c89dec36f589a506f787
+            BUILD_IN_SOURCE 1
             CONFIGURE_COMMAND ""
             BUILD_COMMAND $(MAKE) FCC=${CMAKE_Fortran_COMPILER} CXX=${CMAKE_CXX_COMPILER}
-            BUILD_IN_SOURCE 1
             INSTALL_COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${python2_dir}/bin/python setup.py install
 
     )
 
     list( APPEND fittino_dependencies ${smodels} )
 
-    #externalproject_get_property( ${smodels} source_dir )
+    set( smodelstarball SModelS-1.1.1 )
 
-   # set( smodelsfastlimdatabase SModelSFastlimDatabase-1.1.1_1.0 )
-    set( smodelsfastlimdatabase SModelSDatabase )
+    externalproject_add(
+
+            ${smodelstarball}
+            DEPENDS ${miniconda}
+            URL http://smodels.hephy.at/downloads/v1.1.1/smodels-v1.1.1.tgz
+            URL_MD5 d2aeda4815e2764386886ca019f5de16
+            BUILD_IN_SOURCE 1
+            CONFIGURE_COMMAND ""
+            BUILD_COMMAND ""
+            INSTALL_COMMAND ""
+
+    )
+
+    list( APPEND fittino_dependencies ${smodelstarball} )
+
+    externalproject_get_property( ${smodelstarball} source_dir )
+
+    set( smodelsfastlimdatabase SModelS-1.1.1-Fastlim-1.0-Database )
 
     externalproject_add(
 
             ${smodelsfastlimdatabase}
-            DEPENDS ${smodels}
+            DEPENDS ${smodelstarball}
             CONFIGURE_COMMAND ""
             BUILD_COMMAND ""
-            GIT_REPOSITORY git@smodels.hephy.at:smodels-database
-            GIT_TAG develop
-            INSTALL_COMMAND ""
-            #URL ${SModelSFastlimDatabase_URL}
-            #URL_MD5 ${SModelSFastlimDatabase_URL_MD5}
-            #DOWNLOAD_NO_EXTRACT 1
-            #INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${source_dir}/smodels-database <INSTALL_DIR>
-            #COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR> ${CMAKE_COMMAND} -E tar xf <DOWNLOADED_FILE>
-
+            URL http://smodels.hephy.at/downloads/v1.1.1/smodels-v1.1.1-fastlim-1.0.tgz
+            URL_MD5 e58b08ecd24160563fd38c7a832907a2
+            DOWNLOAD_NO_EXTRACT 1
+            INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory ${source_dir}/smodels-database <INSTALL_DIR>
+            COMMAND ${CMAKE_COMMAND} -E chdir <INSTALL_DIR> ${CMAKE_COMMAND} -E tar xf <DOWNLOADED_FILE>
 
     )
 
-    #externalproject_get_property( ${smodelsfastlimdatabase} install_dir )
-    #set( SModelSDatabase_ROOT_DIR ${install_dir} )
-
-    externalproject_get_property( ${smodelsfastlimdatabase} source_dir )
-    set( SModelSDatabase_ROOT_DIR ${source_dir} )
+    externalproject_get_property( ${smodelsfastlimdatabase} install_dir )
+    set( SModelSDatabase_ROOT_DIR ${install_dir} )
 
     list( APPEND fittino_dependencies ${smodelsfastlimdatabase} )
 
