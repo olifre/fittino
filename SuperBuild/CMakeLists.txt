@@ -46,6 +46,19 @@ option( INSTALL_GM2Calc "" OFF )
 option( INSTALL_Fittino_Python2 "" OFF )
 option( INSTALL_Fittino_Python3 "" OFF )
 
+SET( FEYNHIGGS_QUAD TRUE CACHE BOOL "" )
+
+
+if( INSTALL_GM2Calc )
+
+    set( eigen3_requirement REQUIRED  )
+
+
+endif()
+
+FIND_PACKAGE( Eigen3 3.1 ${eigen3_requirement} )
+FIND_PACKAGE( Boost 1.47.0 COMPONENTS filesystem system thread regex chrono REQUIRED )
+
 set( script ${CMAKE_CURRENT_BINARY_DIR}/activate.in )
 
 file( WRITE ${script} "#!/usr/bin/env bash\n" )
@@ -199,12 +212,20 @@ if( INSTALL_FeynHiggs )
 
     set( feynhiggs FeynHiggs-2.11.3 )
 
+    SET( feynhiggs_configure_command ./configure --enable-slhapara --disable-vt100 --prefix=<INSTALL_DIR> )
+
+    if( FEYNHIGGS_QUAD )
+        LIST( APPEND feynhiggs_configure_command --quad )
+    endif()
+
+    LIST( APPEND feynhiggs_configure_command CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} FC=${CMAKE_Fortran_COMPILER} MAKE=$(MAKE) )
+
     externalproject_add(
 
             ${feynhiggs}
             URL http://wwwth.mpp.mpg.de/members/heinemey/feynhiggs/newversion/FeynHiggs-2.11.3.tar.gz
             URL_MD5 49f5ea1838cb233baffd85bbc1b0d87d
-            CONFIGURE_COMMAND ./configure --quad --enable-slhapara --disable-vt100 --prefix=<INSTALL_DIR> CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} FC=${CMAKE_Fortran_COMPILER} MAKE=$(MAKE)
+            CONFIGURE_COMMAND ${feynhiggs_configure_command}
             BUILD_COMMAND $(MAKE)
             BUILD_IN_SOURCE 1
             INSTALL_COMMAND $(MAKE) install
@@ -565,9 +586,6 @@ endif()
 if( INSTALL_GM2Calc )
 
     set( gm2calc GM2Calc-1.3.3 )
-
-    find_package( Eigen3 3.1 REQUIRED )
-    find_package( Boost 1.37 REQUIRED )
 
     externalproject_add(
 
