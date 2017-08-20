@@ -46,6 +46,7 @@ INCLUDE_DIRECTORIES(../models/include)
 INCLUDE_DIRECTORIES(../kernel/include)
 INCLUDE_DIRECTORIES(../variables/include)
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${ROOT_INCLUDE_DIRS})
 
 
 LIST( APPEND sources "src/AbsoluteUncertainty.cpp" )
@@ -190,10 +191,6 @@ ENDIF()
 #ENDIF()
 
 ADD_LIBRARY(calculators ${includes} ${sources})
-
-GET_PROPERTY(compile_flags TARGET calculators PROPERTY COMPILE_FLAGS)
-
-SET(compile_flags "${compile_flags} ${ROOT_COMPILE_FLAGS}")
 
 IF(LHAPDF_FOUND)
 

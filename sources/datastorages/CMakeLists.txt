@@ -36,4 +36,3 @@ ENDIF()
 
 ADD_LIBRARY(datastorages ${includes} ${sources})
 
-SET_TARGET_PROPERTIES( datastorages PROPERTIES COMPILE_FLAGS ${ROOT_COMPILE_FLAGS} )

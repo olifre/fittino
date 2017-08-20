@@ -1,57 +1,204 @@
-# $Id$ #
+# - Finds ROOT instalation
+# This module sets up ROOT information
+# It defines:
+# ROOT_FOUND             If the ROOT is found
+# ROOT_INCLUDE_DIR       PATH to the include directory
+# ROOT_INCLUDE_DIRS      PATH to the include directories (not cached)
+# ROOT_LIBRARIES         Most common libraries
+# ROOT_<name>_LIBRARY    Full path to the library <name>
+# ROOT_LIBRARY_DIR       PATH to the library directory
+# ROOT_ETC_DIR           PATH to the etc directory
+# ROOT_DEFINITIONS       Compiler definitions
+# ROOT_CXX_FLAGS         Compiler flags to used by client packages
+# ROOT_C_FLAGS           Compiler flags to used by client packages
+# ROOT_EXE_LINKER_FLAGS  Linker flags to used by client packages
+# ROOT_EXE_LINKER_FLAGS  Linker flags to used by client packages
+#
+# Updated by K. Smith (ksmith37@nd.edu) to properly handle
+#  dependencies in ROOT_GENERATE_DICTIONARY
 
-################################################################################
-#                                                                              #
-# Project     Fittino - A SUSY Parameter Fitting Package                       #
-#                                                                              #
-# File        FindROOT.cmake                                                   #
-#                                                                              #
-# Description This macro tries to find a local ROOT installation.              #
-#             If successful, it adds ROOT to Fittino as a cmake module.        #
-#                                                                              #
-# Authors     Matthias Hamer       <mhamer@gwdg.de>                            #
-#             Mathias  Uhlenbrock  <uhlenbrock@physik.uni-bonn.de>             #
-#             Bjoern   Sarrazin    <sarrazin@physik.uni-bonn.de>               #
-#             Peter    Wienemann   <wienemann@physik.uni-bonn.de>              # 
-#                                                                              #
-# Licence     This program is free software; you can redistribute it and/or    #
-#             modify it under the terms of the GNU General Public License as   #
-#	      published by the Free Software Foundation; either version 3 of   #
-#	      the License, or (at your option) any later version.              #
-#                                                                              #
-################################################################################
+find_program(ROOT_CONFIG_EXECUTABLE root-config
+  HINTS $ENV{ROOTSYS}/bin)
 
-INCLUDE( FindPackageHandleStandardArgs )
+execute_process(
+    COMMAND ${ROOT_CONFIG_EXECUTABLE} --prefix
+    OUTPUT_VARIABLE ROOTSYS
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-FIND_PROGRAM( ROOT_CONFIG_EXECUTABLE root-config PATHS ${ROOT_CONFIG_DIR} $ENV{ROOTSYS}/bin )
+execute_process(
+    COMMAND ${ROOT_CONFIG_EXECUTABLE} --version
+    OUTPUT_VARIABLE ROOT_VERSION
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-IF( ROOT_CONFIG_EXECUTABLE )
+execute_process(
+    COMMAND ${ROOT_CONFIG_EXECUTABLE} --incdir
+    OUTPUT_VARIABLE ROOT_INCLUDE_DIR
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+set(ROOT_INCLUDE_DIRS ${ROOT_INCLUDE_DIR})
 
-    EXECUTE_PROCESS( COMMAND ${ROOT_CONFIG_EXECUTABLE} --version OUTPUT_VARIABLE ROOT_VERSION OUTPUT_STRIP_TRAILING_WHITESPACE )
-    EXECUTE_PROCESS( COMMAND ${ROOT_CONFIG_EXECUTABLE} --cflags  OUTPUT_VARIABLE ROOT_CFLAGS  OUTPUT_STRIP_TRAILING_WHITESPACE )
-    EXECUTE_PROCESS( COMMAND ${ROOT_CONFIG_EXECUTABLE} --ldflags OUTPUT_VARIABLE ROOT_LDFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE )
-    EXECUTE_PROCESS( COMMAND ${ROOT_CONFIG_EXECUTABLE} --libs    OUTPUT_VARIABLE ROOT_LIBS    OUTPUT_STRIP_TRAILING_WHITESPACE )
-    EXECUTE_PROCESS( COMMAND ${ROOT_CONFIG_EXECUTABLE} --libdir  OUTPUT_VARIABLE ROOT_LIBDIR  OUTPUT_STRIP_TRAILING_WHITESPACE )
+execute_process(
+    COMMAND ${ROOT_CONFIG_EXECUTABLE} --etcdir
+    OUTPUT_VARIABLE ROOT_ETC_DIR
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+set(ROOT_ETC_DIRS ${ROOT_ETC_DIR})
 
-    FIND_LIBRARY( ROOT_FOAM_LIBRARY        NAMES Foam       PATHS ${ROOT_LIBDIR} NO_DEFAULT_PATH )
-    FIND_LIBRARY( ROOT_MINUIT_LIBRARY      NAMES Minuit     PATHS ${ROOT_LIBDIR} NO_DEFAULT_PATH )
-    FIND_LIBRARY( ROOT_MINUIT2_LIBRARY     NAMES Minuit2    PATHS ${ROOT_LIBDIR} NO_DEFAULT_PATH )
-    FIND_LIBRARY( ROOT_ROOFIT_LIBRARY      NAMES RooFit     PATHS ${ROOT_LIBDIR} NO_DEFAULT_PATH )
-    FIND_LIBRARY( ROOT_ROOFITCORE_LIBRARY  NAMES RooFitCore PATHS ${ROOT_LIBDIR} NO_DEFAULT_PATH )
-    FIND_LIBRARY( ROOT_MATHMORE_LIBRARY    NAMES MathMore   PATHS ${ROOT_LIBDIR} NO_DEFAULT_PATH )
-    FIND_LIBRARY( ROOT_TREEPLAYER_LIBRARY  NAMES TreePlayer PATHS ${ROOT_LIBDIR} NO_DEFAULT_PATH )
-    FIND_LIBRARY( ROOT_MLP_LIBRARY         NAMES MLP        PATHS ${ROOT_LIBDIR} NO_DEFAULT_PATH )
-    FIND_LIBRARY( ROOT_TMVA_LIBRARY        NAMES TMVA       PATHS ${ROOT_LIBDIR} NO_DEFAULT_PATH )
+execute_process(
+    COMMAND ${ROOT_CONFIG_EXECUTABLE} --libdir
+    OUTPUT_VARIABLE ROOT_LIBRARY_DIR
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+set(ROOT_LIBRARY_DIRS ${ROOT_LIBRARY_DIR})
 
-    STRING( REGEX REPLACE "^([0-9]+)\\.[0-9][0-9]+\\/[0-9][0-9]+"   "\\1" ROOT_VERSION_MAJOR "${ROOT_VERSION}" )
-    STRING( REGEX REPLACE "^[0-9]+\\.([0-9][0-9])+\\/[0-9][0-9]+.*" "\\1" ROOT_VERSION_MINOR "${ROOT_VERSION}" )
-    STRING( REGEX REPLACE "^[0-9]+\\.[0-9][0-9]+\\/([0-9][0-9]+)"   "\\1" ROOT_VERSION_PATCH "${ROOT_VERSION}" )
+set(rootlibs Core RIO Net Hist Graf Graf3d Gpad Tree Rint Postscript Matrix Physics MathCore Thread MultiProc Minuit2 TMVA)
+set(ROOT_LIBRARIES)
+foreach(_cpt ${rootlibs} ${ROOT_FIND_COMPONENTS})
+  find_library(ROOT_${_cpt}_LIBRARY ${_cpt} HINTS ${ROOT_LIBRARY_DIR})
+  if(ROOT_${_cpt}_LIBRARY)
+    mark_as_advanced(ROOT_${_cpt}_LIBRARY)
+    list(APPEND ROOT_LIBRARIES ${ROOT_${_cpt}_LIBRARY})
+    if(ROOT_FIND_COMPONENTS)
+      list(REMOVE_ITEM ROOT_FIND_COMPONENTS ${_cpt})
+    endif()
+  endif()
+endforeach()
+if(ROOT_LIBRARIES)
+  list(REMOVE_DUPLICATES ROOT_LIBRARIES)
+endif()
 
-    SET( ROOT_VERSION_STRING "${ROOT_VERSION_MAJOR}.${ROOT_VERSION_MINOR}.${ROOT_VERSION_PATCH}" ) 
-    SET( ROOT_COMPILE_FLAGS  "${ROOT_CFLAGS}" )
-    SET( ROOT_LINK_FLAGS     "${ROOT_LIBS} -lFoam -lMinuit -lMinuit2 -lRooFit -lRooFitCore -lMathMore -lTreePlayer -lMLP -lTMVA ${ROOT_LDFLAGS}" )
-    SET( ROOT_LIBRARY_DIRS   "${ROOT_LIBDIR}" )
+execute_process(
+    COMMAND ${ROOT_CONFIG_EXECUTABLE} --cflags
+    OUTPUT_VARIABLE __cflags
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+string(REGEX MATCHALL "-(D|U)[^ ]*" ROOT_DEFINITIONS "${__cflags}")
+string(REGEX REPLACE "(^|[ ]*)-I[^ ]*" "" ROOT_CXX_FLAGS "${__cflags}")
+string(REGEX REPLACE "(^|[ ]*)-I[^ ]*" "" ROOT_C_FLAGS "${__cflags}")
 
-ENDIF()
+execute_process(
+    COMMAND ${ROOT_CONFIG_EXECUTABLE} --ldflags
+    OUTPUT_VARIABLE __ldflags
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+set(ROOT_EXE_LINKER_FLAGS "${__ldflags}")
 
-FIND_PACKAGE_HANDLE_STANDARD_ARGS( ROOT REQUIRED_VARS ROOT_CONFIG_EXECUTABLE ROOT_FOAM_LIBRARY ROOT_MINUIT_LIBRARY ROOT_MINUIT2_LIBRARY ROOT_ROOFIT_LIBRARY ROOT_ROOFITCORE_LIBRARY ROOT_MATHMORE_LIBRARY ROOT_TREEPLAYER_LIBRARY ROOT_MLP_LIBRARY ROOT_TMVA_LIBRARY VERSION_VAR ROOT_VERSION_STRING )
+set(ROOT_USE_FILE ${CMAKE_CURRENT_LIST_DIR}/RootUseFile.cmake)
+
+execute_process(
+  COMMAND ${ROOT_CONFIG_EXECUTABLE} --features
+  OUTPUT_VARIABLE _root_options
+  OUTPUT_STRIP_TRAILING_WHITESPACE)
+separate_arguments(_root_options)
+foreach(_opt ${_root_options})
+  set(ROOT_${_opt}_FOUND TRUE)
+endforeach()
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(ROOT DEFAULT_MSG ROOT_CONFIG_EXECUTABLE
+    ROOTSYS ROOT_VERSION ROOT_INCLUDE_DIR ROOT_LIBRARIES ROOT_LIBRARY_DIR)
+
+mark_as_advanced(ROOT_CONFIG_EXECUTABLE)
+
+include(CMakeParseArguments)
+find_program(ROOTCLING_EXECUTABLE rootcling HINTS $ENV{ROOTSYS}/bin)
+find_program(GENREFLEX_EXECUTABLE genreflex HINTS $ENV{ROOTSYS}/bin)
+find_package(GCCXML)
+
+#----------------------------------------------------------------------------
+# function ROOT_GENERATE_DICTIONARY( dictionary
+#                                    header1 header2 ...
+#                                    LINKDEF linkdef1 ...
+#                                    OPTIONS opt1...)
+function(ROOT_GENERATE_DICTIONARY dictionary)
+  CMAKE_PARSE_ARGUMENTS(ARG "" "" "LINKDEF;OPTIONS" "" ${ARGN})
+  #---Get the list of include directories------------------
+  get_directory_property(incdirs INCLUDE_DIRECTORIES)
+  set(includedirs)
+  foreach( d ${incdirs})
+     set(includedirs ${includedirs} -I${d})
+  endforeach()
+  #---Get the list of header files-------------------------
+  set(headerfiles)
+  foreach(fp ${ARG_UNPARSED_ARGUMENTS})
+    if(${fp} MATCHES "[*?]") # Is this header a globbing expression?
+      file(GLOB files ${fp})
+      foreach(f ${files})
+        if(NOT f MATCHES LinkDef) # skip LinkDefs from globbing result
+          set(headerfiles ${headerfiles} ${f})
+        endif()
+      endforeach()
+    else()
+      find_file(headerFile ${fp} HINTS ${incdirs})
+      set(headerfiles ${headerfiles} ${headerFile})
+      unset(headerFile CACHE)
+    endif()
+  endforeach()
+  #---Get LinkDef.h file------------------------------------
+  set(linkdefs)
+  foreach( f ${ARG_LINKDEF})
+    find_file(linkFile ${f} HINTS ${incdirs})
+    set(linkdefs ${linkdefs} ${linkFile})
+    unset(linkFile CACHE)
+  endforeach()
+  #---call rootcling------------------------------------------
+  add_custom_command(OUTPUT ${dictionary}.cxx
+                     COMMAND ${ROOTCLING_EXECUTABLE} -f ${dictionary}.cxx
+                                          -c ${ARG_OPTIONS} ${includedirs} ${headerfiles} ${linkdefs}
+                     DEPENDS ${headerfiles} ${linkdefs} VERBATIM)
+endfunction()
+
+#----------------------------------------------------------------------------
+# function REFLEX_GENERATE_DICTIONARY(dictionary
+#                                     header1 header2 ...
+#                                     SELECTION selectionfile ...
+#                                     OPTIONS opt1...)
+function(REFLEX_GENERATE_DICTIONARY dictionary)
+  CMAKE_PARSE_ARGUMENTS(ARG "" "" "SELECTION;OPTIONS" "" ${ARGN})
+  #---Get the list of header files-------------------------
+  set(headerfiles)
+  foreach(fp ${ARG_UNPARSED_ARGUMENTS})
+    file(GLOB files ${fp})
+    if(files)
+      foreach(f ${files})
+        set(headerfiles ${headerfiles} ${f})
+      endforeach()
+    else()
+      set(headerfiles ${headerfiles} ${fp})
+    endif()
+  endforeach()
+  #---Get Selection file------------------------------------
+  if(IS_ABSOLUTE ${ARG_SELECTION})
+    set(selectionfile ${ARG_SELECTION})
+  else()
+    set(selectionfile ${CMAKE_CURRENT_SOURCE_DIR}/${ARG_SELECTION})
+  endif()
+  #---Get the list of include directories------------------
+  get_directory_property(incdirs INCLUDE_DIRECTORIES)
+  set(includedirs)
+  foreach( d ${incdirs})
+    set(includedirs ${includedirs} -I${d})
+  endforeach()
+  #---Get preprocessor definitions--------------------------
+  get_directory_property(defs COMPILE_DEFINITIONS)
+  foreach( d ${defs})
+   set(definitions ${definitions} -D${d})
+  endforeach()
+  #---Nanes and others---------------------------------------
+  set(gensrcdict ${dictionary}.cpp)
+  if(MSVC)
+    set(gccxmlopts "--gccxmlopt=\"--gccxml-compiler cl\"")
+  else()
+    #set(gccxmlopts "--gccxmlopt=\'--gccxml-cxxflags -m64 \'")
+    set(gccxmlopts)
+  endif()
+  #set(rootmapname ${dictionary}Dict.rootmap)
+  #set(rootmapopts --rootmap=${rootmapname} --rootmap-lib=${libprefix}${dictionary}Dict)
+  #---Check GCCXML and get path-----------------------------
+  if(GCCXML)
+    get_filename_component(gccxmlpath ${GCCXML} PATH)
+  else()
+    message(WARNING "GCCXML not found. Install and setup your environment to find 'gccxml' executable")
+  endif()
+  #---Actual command----------------------------------------
+  add_custom_command(OUTPUT ${gensrcdict} ${rootmapname}
+                     COMMAND ${GENREFLEX_EXECUTABLE} ${headerfiles} -o ${gensrcdict} ${gccxmlopts} ${rootmapopts} --select=${selectionfile}
+                             --gccxmlpath=${gccxmlpath} ${ARG_OPTIONS} ${includedirs} ${definitions}
+                     DEPENDS ${headerfiles} ${selectionfile})
+endfunction()
+

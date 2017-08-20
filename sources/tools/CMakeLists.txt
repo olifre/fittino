@@ -18,6 +18,7 @@
 ################################################################################
 
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS})
+INCLUDE_DIRECTORIES(${ROOT_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(./include)
 INCLUDE_DIRECTORIES(../exceptions/include)
 INCLUDE_DIRECTORIES(../kernel/include)
@@ -31,4 +32,4 @@ FILE( GLOB includes ./include/*.h )
 AUX_SOURCE_DIRECTORY(src sources)
 
 ADD_LIBRARY(tools ${includes} ${sources})
-SET_TARGET_PROPERTIES(tools PROPERTIES COMPILE_FLAGS ${ROOT_COMPILE_FLAGS})
+SET_TARGET_PROPERTIES(tools PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON  )

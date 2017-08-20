@@ -18,18 +18,10 @@
 #                                                                              #
 ################################################################################
 
-IF( ROOT_FOUND )
-
-    LINK_DIRECTORIES( ${ROOT_LIBRARY_DIRS} )
-
-ENDIF()
 
 FILE( GLOB includes ./include/*.h )
 AUX_SOURCE_DIRECTORY( ./src sources )
 ADD_EXECUTABLE( fittino ${includes} ${sources} )
-
-GET_PROPERTY( compile_flags TARGET fittino PROPERTY COMPILE_FLAGS )
-GET_PROPERTY( link_flags    TARGET fittino PROPERTY LINK_FLAGS    )
 
 INCLUDE_DIRECTORIES( ./include                  )
 INCLUDE_DIRECTORIES( ../calculators/include     )
@@ -87,8 +79,8 @@ ENDIF()
 
 IF( ROOT_FOUND )
 
-    SET( compile_flags "${compile_flags} ${ROOT_COMPILE_FLAGS}" )
-    SET( link_flags    "${link_flags} ${ROOT_LINK_FLAGS}"       )
+    INCLUDE_DIRECTORIES( ${ROOT_INCLUDE_DIRS} )
+    target_link_libraries( fittino ${ROOT_LIBRARIES})
 
 ENDIF()
 
@@ -134,9 +126,7 @@ ENDIF()
 
 IF ( EIGEN3_FOUND AND GM2CALC_FOUND )
 
-    ADD_LIBRARY( gm2calc STATIC IMPORTED )
-    SET_TARGET_PROPERTIES( gm2calc PROPERTIES IMPORTED_LOCATION ${GM2CALC_LIBRARIES} )
-    TARGET_LINK_LIBRARIES( fittino gm2calc )
+    TARGET_LINK_LIBRARIES( fittino ${GM2CALC_LINRARIES}  )
 
 ENDIF()
 
@@ -218,6 +208,6 @@ IF( X11_FOUND AND MICROMEGAS_FOUND )
 
 ENDIF()
 
-SET_TARGET_PROPERTIES( fittino PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON COMPILE_FLAGS ${compile_flags} LINK_FLAGS ${link_flags} )
+SET_TARGET_PROPERTIES( fittino PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON  )
 
 INSTALL(TARGETS fittino RUNTIME DESTINATION bin)
