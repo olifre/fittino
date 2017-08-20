@@ -46,6 +46,17 @@ option( INSTALL_GM2Calc "" OFF )
 option( INSTALL_Fittino_Python2 "" OFF )
 option( INSTALL_Fittino_Python3 "" OFF )
 
+if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
+
+set( ldLibraryPathName "DYLD_LIBRARY_PATH" )
+
+elseif( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" )
+
+    set( ldLibraryPathName "LD_LIBRARY_PATH" )
+else()
+    message( FATAL_ERROR "CMAKE_SYSTEM_NAME is ${CMAKE_SYSTEM_NAME} but only Darwin and Linux are supported." )
+        endif()
+
 SET( FEYNHIGGS_QUAD TRUE CACHE BOOL "" )
 
 
@@ -79,7 +90,7 @@ if( INSTALL_SLHAea OR INSTALL_SPheno OR INSTALL_MSSMTriLnV )
     )
 
     externalproject_get_property( ${slhaea} source_dir )
-    set( SLHAEA_INSTALLATION_PATH ${source_dir} )
+    list( APPEND includePath ${source_dir} )
 
     list( APPEND fittino_dependencies ${slhaea} )
 
@@ -211,11 +222,22 @@ endif()
 if( INSTALL_FeynHiggs )
 
     set( feynhiggs FeynHiggs-2.11.3 )
+    set( feynhiggs_install_command  $(MAKE) install )
 
     SET( feynhiggs_configure_command ./configure --enable-slhapara --disable-vt100 --prefix=<INSTALL_DIR> )
 
     if( FEYNHIGGS_QUAD )
         LIST( APPEND feynhiggs_configure_command --quad )
+    endif()
+
+    if ( ${CMAKE_HOST_SYSTEM_PROCESSOR} MATCHES "x86_64" )
+
+        list(APPEND feynhiggs_configure_command --64  )
+
+    else()
+
+        list(APPEND feynhiggs_configure_command --32  )
+
     endif()
 
     LIST( APPEND feynhiggs_configure_command CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} FC=${CMAKE_Fortran_COMPILER} MAKE=$(MAKE) )
@@ -227,15 +249,18 @@ if( INSTALL_FeynHiggs )
             URL_MD5 49f5ea1838cb233baffd85bbc1b0d87d
             CONFIGURE_COMMAND ${feynhiggs_configure_command}
             BUILD_COMMAND $(MAKE)
+            COMMAND ${CMAKE_Fortran_COMPILER} -c src/Frontend/fortranflush.F
+            COMMAND ${CMAKE_AR} rcs libfortranflush.a fortranflush.o
             BUILD_IN_SOURCE 1
-            INSTALL_COMMAND $(MAKE) install
+            INSTALL_COMMAND ${feynhiggs_install_command}
     )
 
     list( APPEND fittino_dependencies ${feynhiggs} )
 
     externalproject_get_property( ${feynhiggs} install_dir )
-    set( FeynHiggs_ROOT_DIR ${install_dir} )
-    list( APPEND prefixPath ${FeynHiggs_ROOT_DIR} )
+    list( APPEND prefixPath ${install_dir} )
+    externalproject_get_property( ${feynhiggs} source_dir )
+    list( APPEND libraryPath ${source_dir} )
 
 endif()
 
@@ -273,6 +298,9 @@ if( INSTALL_HiggsSignals )
     )
 
     externalproject_get_property( ${higgsbounds} source_dir )
+    list( APPEND libraryPath ${source_dir} )
+
+    externalproject_get_property( ${higgsbounds} source_dir )
 
     set( higgssignals HiggsSignals-1.4.0 )
 
@@ -290,6 +318,9 @@ if( INSTALL_HiggsSignals )
 
     )
 
+    externalproject_get_property( ${higgssignals} source_dir )
+    list( APPEND libraryPath ${source_dir} )
+
     list( APPEND fittino_dependencies ${higgssignals} )
 
 endif()
@@ -298,6 +329,7 @@ if( INSTALL_SuperIso )
 
     set( superiso SuperIso-3.4 )
     set( SuperIso_URL "~/Downloads/superiso_v3.4.tar" CACHE FILEPATH "" )
+        #todo update to http://superiso.in2p3.fr/download/superiso_v3.6.tgz
 
     externalproject_add(
 
@@ -311,6 +343,9 @@ if( INSTALL_SuperIso )
             INSTALL_COMMAND ""
 
     )
+
+    externalproject_get_property( ${superiso} source_dir )
+    set( SUPERISO_ROOT_DIR ${source_dir} )
 
     list( APPEND fittino_dependencies ${superiso} )
 
@@ -333,31 +368,15 @@ if( INSTALL_MicrOMEGAs )
 
     )
 
+    externalproject_get_property( ${micromegas} source_dir )
+    set( MICROMEGAS_ROOT_DIR ${source_dir} )
+
     list( APPEND fittino_dependencies ${micromegas} )
 
 endif()
 
-if( INSTALL_LHAPDF )
 
-    set( lhapdf5 LHAPDF-5.8.9 )
-
-    externalproject_add(
-
-            ${lhapdf5}
-            URL https://www.hepforge.org/archive/lhapdf/lhapdf-5.8.9.tar.gz
-            URL_MD5 51e61fa316957abd13d1b76b44e665cf
-            CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} FC=${CMAKE_Fortran_COMPILER}
-            BUILD_COMMAND $(MAKE)
-            BUILD_IN_SOURCE 1
-            INSTALL_COMMAND $(MAKE) install
-
-    )
-
-    list( APPEND fittino_dependencies ${lhapdf} )
-
-endif()
-
-if( INSTALL_Python OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_CheckMATE )
+if( INSTALL_Python OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_CheckMATE OR INSTALL_LHAPDF )
 
     set( miniconda Miniconda2-4.3.11 )
 
@@ -443,6 +462,30 @@ if( INSTALL_Python OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_CheckMATE )
 
 endif()
 
+if( INSTALL_LHAPDF )
+
+    set( lhapdf5 LHAPDF-5.8.9 )
+
+    externalproject_add(
+
+            ${lhapdf5}
+            DEPENDS ${miniconda}
+            URL https://www.hepforge.org/archive/lhapdf/lhapdf-5.8.9.tar.gz
+            URL_MD5 51e61fa316957abd13d1b76b44e665cf
+            CONFIGURE_COMMAND ./configure --prefix=<INSTALL_DIR> CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} FC=${CMAKE_Fortran_COMPILER} PYTHON=${python2_dir}/bin/python
+            BUILD_COMMAND $(MAKE)
+            BUILD_IN_SOURCE 1
+            INSTALL_COMMAND $(MAKE) install
+
+    )
+
+    externalproject_get_property( ${lhapdf5} install_dir )
+    list( APPEND prefixPath ${install_dir} )
+
+    list( APPEND fittino_dependencies ${lhapdf5} )
+
+endif()
+
 if( INSTALL_SModelS )
 
     set( smodels SModelS )
@@ -499,6 +542,7 @@ if( INSTALL_SModelS )
 
     externalproject_get_property( ${smodelsfastlimdatabase} install_dir )
     set( SModelSDatabase_ROOT_DIR ${install_dir} )
+    list( APPEND includePath ${SModelSDatabase_ROOT_DIR} )
 
     list( APPEND fittino_dependencies ${smodelsfastlimdatabase} )
 
@@ -515,7 +559,6 @@ if( INSTALL_SCYNet )
             SVN_REPOSITORY https://svn.physik.uni-bonn.de/basic/fittino-protected/trunk/SCYNet
             SVN_REVISION -r194
             CONFIGURE_COMMAND ""
-            UPDATE_COMMAND ""
             BUILD_COMMAND ""
             INSTALL_COMMAND ""
 
@@ -543,8 +586,10 @@ if( INSTALL_HepMC2 OR INSTALL_CheckMATE )
 
     list( APPEND fittino_dependencies ${hepmc2} )
 
-    externalproject_get_property( ${hepmc2} INSTALL_DIR )
-    set( HepMC_ROOT_DIR ${INSTALL_DIR} )
+    externalproject_get_property( ${hepmc2} install_dir )
+    set( HepMC_ROOT_DIR ${install_dir} )
+    list( APPEND prefixPath ${HepMC_ROOT_DIR} )
+    string( APPEND ldLibraryPathValue "${HepMC_ROOT_DIR}/lib/:" )
 
 endif()
 
@@ -607,6 +652,7 @@ if( INSTALL_GM2Calc )
     list( APPEND includePath ${GM2Calc_ROOT_DIR}/src )
 
     file( APPEND ${script} "export PATH=${GM2Calc_ROOT_DIR}/bin/:$PATH\n" )
+    string( APPEND ldLibraryPathValue "${GM2Calc_ROOT_DIR}/src/:" )
 
 endif()
 
@@ -655,6 +701,11 @@ if( INSTALL_Fittino_Python3 )
     file( APPEND ${script} "export FITTINO_ROOT_DIR=@Fittino_ROOT_DIR@\n" )
 
 endif()
+
+if( ldLibraryPathValue )
+    string( APPEND ldLibraryPathValue "$${ldLibraryPathName}" )
+file( APPEND ${script} "export ${ldLibraryPathName}=${ldLibraryPathValue}\n" )
+    endif()
 
 set( USE_PYTHON3 1 )
 set( totalPrefixPath ${prefixPath} )
