@@ -23,6 +23,7 @@
 #include <boost/property_tree/ptree_fwd.hpp>
 
 #include "Collection.h"
+#include "VariableBase.h"
 
 /*!
  *  \brief Fittino namespace.
@@ -50,6 +51,7 @@ namespace Fittino {
        */
       const std::string&                      GetName() const;
       const Collection<Quantity*>&            GetCollectionOfQuantities() const;
+      const Collection<const VariableBase<std::string>*>& GetCollectionOfStringVariables() const;
 
     public:
       virtual                                 ~CalculatorBase();
@@ -73,6 +75,8 @@ namespace Fittino {
       void                                    AddOutput( std::string name, const double& value );
       void                                    AddOutput( std::string name );
       void                                    AddQuantity( Quantity* prediction );
+      void                                    AddStringVariable( const std::string& name, const std::string& value);
+
       void                                    PrintInput() const;
 
       void                                    SetOutput( std::string name, const double& value );
@@ -86,7 +90,11 @@ namespace Fittino {
       std::map<std::string, Quantity* >       _settableOutput;
       const boost::property_tree::ptree*      _ptree;
       Collection<Quantity*>                   _collectionOfQuantities;
+      Collection<const VariableBase<std::string>*>        _collectionOfStringVariables;
 
+      template<class T>
+      void ModifyVariableName(VariableBase<T>* );
+      void                                    AddStringVariable( VariableBase<std::string>* variable );
       /*! \endcond UML */
 
   };

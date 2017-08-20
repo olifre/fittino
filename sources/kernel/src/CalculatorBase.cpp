@@ -22,6 +22,7 @@
 #include "LogicException.h"
 #include "ModelBase.h"
 #include "SimplePrediction.h"
+#include "../../variables/include/ReferenceVariable.h"
 
 Fittino::CalculatorBase::CalculatorBase( const ModelBase* model, const boost::property_tree::ptree* ptree )
     : _name( "" ),
@@ -201,3 +202,51 @@ void Fittino::CalculatorBase::SetOutput( std::string name, const double &value )
 
 }
 
+const Fittino::Collection<const Fittino::VariableBase<std::string> *> &
+Fittino::CalculatorBase::GetCollectionOfStringVariables() const {
+
+    return _collectionOfStringVariables;
+
+}
+
+template<class T>
+void Fittino::CalculatorBase::ModifyVariableName( VariableBase<T>* prediction ) {
+
+    std::string name;
+
+    if (_tag.empty() && prediction->GetName().empty()) {
+
+        throw ConfigurationException("Name and tag of a quantity empty at the same time.");
+
+    }
+
+    if (_tag.empty()) {
+
+        name = prediction->GetName();
+
+    } else if (prediction->GetName().empty()) {
+
+        name = _tag;
+
+    } else {
+
+        name = _tag + "_" + prediction->GetName();
+
+    }
+
+    prediction->SetName(name);
+
+}
+
+void Fittino::CalculatorBase::AddStringVariable(Fittino::VariableBase<std::string> *variable) {
+
+    ModifyVariableName( variable );
+    _collectionOfStringVariables.AddElement( variable );
+
+}
+
+void Fittino::CalculatorBase::AddStringVariable(const std::string& name, const std::string& value) {
+
+    AddStringVariable( new ReferenceVariable<std::string>( name, value ) );
+
+}
