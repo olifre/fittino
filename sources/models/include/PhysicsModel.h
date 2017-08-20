@@ -57,10 +57,8 @@ namespace Fittino {
        */
       void                                       AddObservable( Observable *observable );
 
-      void                                       AddChi2Contribution( const std::string& name );
 
-
-    virtual const Collection<CalculatorBase*>&          GetCollectionOfCalculators() const;
+      virtual const Collection<CalculatorBase*>&          GetCollectionOfCalculators() const;
 
     public:
       virtual void                               PrintStatus() const;
