@@ -48,6 +48,11 @@ namespace Fittino {
       */
       void               PrintStatus() const;
       const std::string& GetName() const;
+      void  SetName( std::string name ) {
+
+          _name  = name;
+
+      }
 
     public:
       /*!
