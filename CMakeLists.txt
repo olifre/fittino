@@ -33,7 +33,7 @@ GET_FILENAME_COMPONENT( REALPATH_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} REALPATH
 SET( CMAKE_FIND_LIBRARY_PREFIXES       "lib" ""                         )
 SET( CMAKE_MODULE_PATH                 ${CMAKE_SOURCE_DIR}/CMakeModules )
 SET( CMAKE_SKIP_BUILD_RPATH            FALSE                            )
-SET( CMAKE_BUILD_WITH_INSTALL_RPATH    FALSE                            ) 
+SET( CMAKE_BUILD_WITH_INSTALL_RPATH    FALSE                            )
 SET( CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE                             )
 
 option( USE_PYTHON3 "" OFF )
@@ -42,6 +42,7 @@ SET( FEYNHIGGS_QUAD TRUE CACHE BOOL "" )
 
 ENABLE_LANGUAGE( CXX )
 ENABLE_LANGUAGE( C )
+ENABLE_LANGUAGE( Fortran )
 
 FIND_PACKAGE( Boost 1.47.0 COMPONENTS filesystem system thread regex chrono REQUIRED )
 FIND_PACKAGE( ROOT 5.20.00 REQUIRED                                                  )
@@ -64,6 +65,7 @@ FIND_PACKAGE( LibXml2                                                           
 FIND_PACKAGE( Doxygen                                                                )
 FIND_PACKAGE( GM2Calc                                                                )
 FIND_PACKAGE( Eigen3 3.1                                                             )
+FIND_PACKAGE( SUPERISO                                                               )
 
 if( USE_PYTHON3 )
 
