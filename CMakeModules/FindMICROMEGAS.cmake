@@ -19,11 +19,7 @@
 
 INCLUDE( FindPackageHandleStandardArgs )
 
-IF( NOT MICROMEGAS_ROOT_DIR )
-
-    FIND_PATH( MICROMEGAS_ROOT_DIR sources/micromegas.h )
-
-ENDIF()    
+FIND_PATH( MICROMEGAS_ROOT_DIR sources/micromegas.h )
 
 FIND_LIBRARY( MICROMEGAS_LIBRARY                   NAMES micromegas   HINTS ${MICROMEGAS_ROOT_DIR}/sources         NO_DEFAULT_PATH )
 FIND_LIBRARY( MICROMEGAS_MSSM_WORKAUX_LIBRARY      NAMES work_aux     HINTS ${MICROMEGAS_ROOT_DIR}/MSSM/work       NO_DEFAULT_PATH )
