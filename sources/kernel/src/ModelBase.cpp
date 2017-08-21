@@ -208,6 +208,14 @@ void Fittino::ModelBase::AddCalculator( CalculatorBase* calculator ) {
 
     }
 
+    const auto& stringCol = calculator->GetCollectionOfStringVariables();
+
+    for( unsigned int i = 0; i < stringCol.GetNumberOfElements(); ++i ){
+
+        _collectionOfStringVariables.AddElement( stringCol.At(i) );
+
+    }
+
 }
 
 void Fittino::ModelBase::AddParameter( ModelParameter* parameter ) {
