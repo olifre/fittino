@@ -12,7 +12,7 @@
 Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boost::property_tree::ptree &ptree)
         : CalculatorBase(model, &ptree) {
 
-    AddOutput( "R_Value", _rValue );
+    AddOutput( "RValue", _rValue );
 
     std::string exename = "SModelSToolsExecutable";
 
@@ -33,6 +33,8 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
 #endif
 
      _fileName = ptree.get<std::string>( "FileName" );
+
+    _individualMissingWeights = ptree.get<bool>( "MissingWeights", false );
 
     _xmlFile = "results/" + _fileName + ".xml";
 
@@ -119,11 +121,30 @@ Fittino::SModelSCalculator::SModelSCalculator(const ModelBase *model, const boos
 
     _txNames.insert( "None" );
 
-    for ( auto txName : _txNames ) {
 
-        AddOutput( "MissingWeight_" + txName );
+if( _individualMissingWeights ) {
+
+    for (auto txName : _txNames) {
+
+        AddOutput("MissingWeight_" + txName);
 
     }
+
+}
+
+    _numberOfMissingModelsConsidered =  ptree.get<unsigned int>( "NumberOfMissingModels", 20 );
+
+    _missingModels_TxNames.resize( _numberOfMissingModelsConsidered );
+    _missingModels_Weights.resize( _numberOfMissingModelsConsidered );
+
+    for( unsigned int i = 0; i< _numberOfMissingModelsConsidered ; ++i ) {
+
+        AddOutput( "MissingModels_Weight_" + std::to_string(i), _missingModels_Weights[i]  );
+        AddStringVariable("MissingModels_TxName_" + std::to_string(i), _missingModels_TxNames[i] );
+
+    }
+
+    AddOutput( "MissingModels_Number", _numberOfMissingModelsDetermined );
 
 }
 
@@ -133,9 +154,14 @@ Fittino::SModelSCalculator::~SModelSCalculator() {
 
 void Fittino::SModelSCalculator::CalculatePredictions() {
 
-    for( auto txName : _txNames ) {
 
-        SetOutput( "MissingWeight_" + txName, 0  );
+    if( _individualMissingWeights ) {
+
+        for (auto txName : _txNames) {
+
+            SetOutput("MissingWeight_" + txName, 0);
+
+        }
 
     }
 
@@ -172,9 +198,12 @@ void Fittino::SModelSCalculator::ReadXML() {
 
     }
 
+    unsigned int iMissingModel = 0;
+
     for( auto node : ptree.get_child( "smodelsOutput.Missing_Topologies" ) ) {
 
         std::string txName = node.first;
+        double weight = node.second.get<double>("TopoWeight_pb");
 
         if ( _txNames.count( txName ) == 0 ) {
 
@@ -182,9 +211,24 @@ void Fittino::SModelSCalculator::ReadXML() {
 
         }
 
-        SetOutput( "MissingWeight_" + txName, node.second.get<double>("TopoWeight_pb")  );
+        if( _individualMissingWeights ) {
+
+            SetOutput("MissingWeight_" + txName, weight );
+
+        }
+
+        if( iMissingModel < _numberOfMissingModelsConsidered ) {
+
+            _missingModels_TxNames.at(iMissingModel) = txName;
+            _missingModels_Weights.at(iMissingModel) = weight;
+
+        }
+
+        ++iMissingModel;
 
     }
+
+    _numberOfMissingModelsDetermined = iMissingModel;
 
 }
 

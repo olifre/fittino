@@ -39,7 +39,14 @@ namespace Fittino {
       std::set<std::string> _txNamesWithResults;
       std::set<std::string> _txNames;
 
+      std::vector<std::string> _missingModels_TxNames;
+      std::vector<double> _missingModels_Weights;
+      bool _individualMissingWeights;
+
       void ReadXML();
+
+      unsigned int _numberOfMissingModelsConsidered;
+      double _numberOfMissingModelsDetermined;
 
   };
 
