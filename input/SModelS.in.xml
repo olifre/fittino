@@ -7,7 +7,7 @@
 
     <Model>
 
-        <PhysicsModel>
+        <ModelBase>
 
             <Name>MSSM</Name>
 
@@ -195,6 +195,10 @@
                     <OutputFile>SPheno.spc</OutputFile>
                 </SPhenoCalculator>
 
+                <MicromegasCalculator>
+                    <InputFile>SPheno.spc</InputFile>
+                </MicromegasCalculator>
+
                 <LHCNeuralNetCalculator>
                     <M1>[M1]</M1>
                     <M2>[M2]</M2>
@@ -210,13 +214,49 @@
                 </LHCNeuralNetCalculator>
 
                 <SModelSCalculator>
+                    <Name>SModelS</Name>
                     <FileName>SPheno.spc</FileName>
                     <ParameterFile>@Fittino_INPUT_DIR@/parameters.ini</ParameterFile>
                 </SModelSCalculator>
 
+                <Chi2Calculator>
+                    <Name>SModelS</Name>
+                    <Observable>
+                        <Name>Rvalue</Name>
+                        <Measurement>1.0</Measurement>
+                        <Prediction>[SModelS_RValue]</Prediction>
+                        <IsUpperLimit>true</IsUpperLimit>
+                    </Observable>
+                </Chi2Calculator>
+
+                <Chi2Calculator>
+                    <Name>LEO</Name>
+                    <Observable>
+                        <Name>Mass_h0</Name>
+                        <Prediction>[SPheno_Mass_h0]</Prediction>
+                        <Measurement>125.09</Measurement>
+                        <Uncertainty>
+                            <Value>0.21</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>0.11</Value>
+                        </Uncertainty>
+                    </Observable>
+                    <Observable>
+                        <Name>Mass_W</Name>
+                        <Prediction>[SPheno_Mass_Wp]</Prediction>
+                        <Measurement>80.385</Measurement>
+                        <Uncertainty>
+                            <Value>0.015</Value>
+                        </Uncertainty>
+                    </Observable>
+                </Chi2Calculator>
+
             </Calculators>
 
-        </PhysicsModel>
+            <Chi2Contribution>[LEO_Chi2]-[SCYNet_Chi2_Total]+[SModelS_Chi2]</Chi2Contribution>
+
+        </ModelBase>
 
     </Model>
 
@@ -227,8 +267,6 @@
         </MarkovChainSampler>
 
     </Tool>
-
-
 
 </InputFile>
 
