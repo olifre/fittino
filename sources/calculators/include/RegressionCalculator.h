@@ -29,7 +29,6 @@
  */
 namespace Fittino {
 
-  class PhysicsModel;
   class RegressionMVA;
   class RegressionVariable;
 

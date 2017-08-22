@@ -32,7 +32,6 @@ namespace Fittino {
 
   class FormulaQuantity;
   class ModelBase;
-  class PhysicsModel;
   class Quantity;
 
   /*!

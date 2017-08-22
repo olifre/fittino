@@ -29,7 +29,6 @@
 namespace Fittino {
 
   class FormulaQuantity;
-  class PhysicsModel;
 
   /*!
    *  \ingroup calculators
