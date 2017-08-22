@@ -96,6 +96,12 @@ void Fittino::Measurement::Update()  {
 
     _pull = _deviation / _totalUncertainty;
 
+    if ( _totalUncertainty == 0 && _deviation == 0 ) {
+
+        _pull = 0;
+
+    }
+
     _chi2 = TMath::Power( _pull, 2 );
 
 }
