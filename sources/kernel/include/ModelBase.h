@@ -134,7 +134,6 @@ namespace Fittino {
 
       /*! \cond UML */
     private:
-      double                                              _errorCode;
       /*!
        *  Stores the parameters.
        */
@@ -143,6 +142,8 @@ namespace Fittino {
 
     protected:
       std::vector<FormulaQuantity*>                       _chi2Contributions;
+      std::string                                _terminator;
+      std::string                                _error;
 
     private:
       /*!

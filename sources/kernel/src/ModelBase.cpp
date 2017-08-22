@@ -29,13 +29,13 @@
 #include "ModelParameter.h"
 #include "SimplePrediction.h"
 #include "PhysicsModel.h"
+#include "../../variables/include/ReferenceVariable.h"
 
 Fittino::ModelBase::ModelBase( boost::property_tree::ptree& ptree )
     : _name( "" ),
       _ptree ( ptree ) {
 
     _chi2 = 0;
-    _errorCode = 0;
 
     InitializeParameters( ptree );
 
@@ -47,18 +47,23 @@ Fittino::ModelBase::ModelBase( boost::property_tree::ptree& ptree )
 
     std::string tag = ptree.get<std::string>( "Tag", "" );
 
-    std::string chi2      = "Chi2";
-    std::string errorCode = "ErrorCode";
+    std::string chi2Name       = "Chi2";
+    std::string errorName      = "Error";
+    std::string terminatorName = "Terminator";
 
     if ( !tag.empty() ) {
 
-        chi2 = tag + "_" + chi2;
-        errorCode = tag + "_" + errorCode;
+        chi2Name = tag + "_" + chi2Name;
+        terminatorName = tag + "_" + terminatorName;
+        errorName = tag + "_" + errorName;
 
     }
 
-    AddPrediction( new SimplePrediction( errorCode, "", _errorCode ) );
-    AddPrediction( new SimplePrediction( chi2     , "", _chi2      ) );
+    AddPrediction( new SimplePrediction( chi2Name     , "", _chi2      ) );
+
+
+        _collectionOfStringVariables.AddElement( errorName     , new ReferenceVariable<std::string>( errorName, _error ) );
+        _collectionOfStringVariables.AddElement( terminatorName, new ReferenceVariable<std::string>( terminatorName, _terminator ) );
 
 }
 
@@ -165,6 +170,20 @@ void Fittino::ModelBase::PrintStatus() const {
 
     }
 
+    if ( _collectionOfStringVariables.GetNumberOfElements() != 0 ) {
+
+        messenger << Messenger::Endl;
+        messenger << Messenger::INFO << "   Summary of string variables:"  << Messenger::Endl;
+        messenger << Messenger::Endl;
+
+        for ( unsigned int i = 0; i < _collectionOfStringVariables.GetNumberOfElements(); ++i ) {
+
+            _collectionOfStringVariables.At( i )->PrintStatus();
+
+        }
+
+    }
+
 }
 
 Fittino::ModelBase *Fittino::ModelBase::Clone() {
@@ -258,8 +277,11 @@ void Fittino::ModelBase::InitializeParameters( boost::property_tree::ptree& ptre
 
 void Fittino::ModelBase::Evaluate() {
 
+    _terminator = "";
+    _error      = "";
+
     _chi2 = 0;
-    _errorCode = 0;
+
     try {
 
         for ( unsigned int i = 0; i < _calculators.size(); ++i ) {
@@ -271,8 +293,9 @@ void Fittino::ModelBase::Evaluate() {
     }
     catch ( const CalculatorException& exception ) {
 
-        _errorCode = 1;
         _chi2 = std::numeric_limits<double>::infinity();
+        _terminator = exception.GetCalculator();
+        _error       = exception.GetError();
         return;
 
     }

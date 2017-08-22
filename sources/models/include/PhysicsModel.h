@@ -93,8 +93,6 @@ namespace Fittino {
        *  observables.
        */
       double                                     CalculateChi2();
-      std::string                                _calculator;
-      std::string                                _error;
       bool                                       _performToyRun;
 
     private:

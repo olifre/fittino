@@ -52,51 +52,9 @@ Fittino::PhysicsModel::PhysicsModel( boost::property_tree::ptree& ptree )
     _name       = ptree.get<std::string>( "Name" );
     _performToyRun = ptree.get<bool>    ( "PerformToyRun", false );
 
-    std::string nameOfErrorVariable = "Error";
-    std::string nameOfCalculatorVariable = "Calculator";
-
     for ( auto calculator: _calculators ) {
 
         _collectionOfCalculators.AddElement( calculator->GetName(), calculator );
-
-    }
-
-    BOOST_FOREACH( const boost::property_tree::ptree::value_type & node, ptree ) {
-
-      if ( node.first == "Variable" ) {
-
-        std::string type = node.second.get<std::string>("Type");
-        std::string name = node.second.get<std::string>("Name");
-
-        if ( type == "Error" ) {
-
-          nameOfErrorVariable = name;
-
-        }
-        else if ( type == "Calculator" ) {
-          
-          nameOfCalculatorVariable = name;
-
-        }
-        else {
-
-          throw ConfigurationException("Unknown variable type: " + type  );
-
-        }
-
-      }
-
-    }
-
-    if ( nameOfErrorVariable != "" ) {
-
-        _collectionOfStringVariables.AddElement( "Error"     , new ReferenceVariable<std::string>( nameOfErrorVariable, _error ) );
-
-    }
-    
-    if ( nameOfCalculatorVariable != "" ) {
-
-        _collectionOfStringVariables.AddElement( "Calculator", new ReferenceVariable<std::string>( nameOfCalculatorVariable, _calculator ) );     
 
     }
 
@@ -141,7 +99,7 @@ Fittino::PhysicsModel::~PhysicsModel() {
 
 void Fittino::PhysicsModel::Evaluate() {
 
-    _calculator = "";
+    _terminator = "";
     _error      = "";
 
     // Let the calculators calculate the model predictions.
@@ -156,7 +114,7 @@ void Fittino::PhysicsModel::Evaluate() {
     }
     catch( const CalculatorException& exception ) {
 
-        _calculator = exception.GetCalculator();
+        _terminator = exception.GetCalculator();
         _error       = exception.GetError();
 
         _chi2 = std::numeric_limits<double>::infinity();
