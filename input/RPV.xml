@@ -2,108 +2,133 @@
 <?xml-stylesheet type="text/xsl" href="style/InputFile.xsl"?>
 
 <InputFile>
-
+    
     <VerbosityLevel>INFO</VerbosityLevel>
-
+    
     <Model>
-
+        
         <ModelBase>
-
+            
             <Name>MSSM</Name>
-
-            <ModelParameter>
-                <Name>lambda'_232</Name>
-                <Value>0.0</Value>
-                <Error>0.01</Error>
-                <LowerBound>-0.5</LowerBound>
-                <UpperBound>0.5001</UpperBound>
-                <Fixed>true</Fixed>
-            </ModelParameter>
-
-            <ModelParameter>
-                <Name>lambda'_233</Name>
-                <Value>0.0</Value>
-                <Error>0.01</Error>
-                <LowerBound>-0.5</LowerBound>
-                <UpperBound>0.5001</UpperBound>
-                <Fixed>true</Fixed>
-            </ModelParameter>
-
-            <ModelParameter>
-                <Name>lambda'_313</Name>
-                <Value>0.0</Value>
-                <Error>0.01</Error>
-                <LowerBound>-0.5</LowerBound>
-                <UpperBound>0.5001</UpperBound>
-                <Fixed>true</Fixed>
-            </ModelParameter>
-
-            <ModelParameter>
-                <Name>lambda'_323</Name>
-                <Value>1</Value>
-                <Error>0.1</Error>
-                <LowerBound>-0.5</LowerBound>
-                <UpperBound>50000</UpperBound>
-                <Fixed>false</Fixed>
-            </ModelParameter>
-
+            
             <ModelParameter>
                 <Name>lambda'_333</Name>
-                <Value>1</Value>
-                <Error>0.1</Error>
-                <LowerBound>-0.5</LowerBound>
-                <UpperBound>5000</UpperBound>
-                <Fixed>true</Fixed>
+                <Value>-1</Value>
+                <Error>0.001</Error>
+                <LowerBound>-3.8</LowerBound>
+                <UpperBound>3.8</UpperBound>
+                <Fixed>false</Fixed>
             </ModelParameter>
-
+            
+            <ModelParameter>
+                <Name>lambda'_323</Name>
+                <Value>-0.01</Value>
+                <Error>0.001</Error>
+                <LowerBound>-0.055</LowerBound>
+                <UpperBound>0.055</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+            
+            <ModelParameter>
+                <Name>lambda'_313</Name>
+                <Value>0.1</Value>
+                <Error>0.001</Error>
+                <LowerBound>-0.2</LowerBound>
+                <UpperBound>0.2</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+            
             <ModelParameter>
                 <Name>mbR</Name>
-                <Value>5e5</Value>
-                <Error>1e5</Error>
-                <LowerBound>5e5</LowerBound>
-                <UpperBound>2.001e6</UpperBound>
-                <Fixed>true</Fixed>
+                <Value>2500</Value>
+                <Error>1</Error>
+                <LowerBound>2400</LowerBound>
+                <UpperBound>2800</UpperBound>
+                <Fixed>false</Fixed>
             </ModelParameter>
-
+            
+            
             <Observables>
             </Observables>
             <CovarianceMatrices>
             </CovarianceMatrices>
-
+            
             <Calculators>
-
+                
                 <RPVCalculator></RPVCalculator>
-
-
-                <!--<Chi2Calculator>-->
-                    <!--<Name>Chi2Calc</Name>-->
-                    <!--<Observable>-->
-                        <!--<Name>Mass_W</Name>-->
-                        <!--<Prediction>[SPheno_Mass_Wp]</Prediction>-->
-                        <!--<Measurement>80.0</Measurement>-->
-                        <!--<Uncertainty>-->
-                            <!--<Value>0.1</Value>-->
-                        <!--</Uncertainty>-->
-                    <!--</Observable>-->
-                <!--</Chi2Calculator>-->
-
-
+                
+                
+                <Chi2Calculator>
+                    <Name>Chi2Calc</Name>
+                    <Observable>
+                        <Name>R_D_Relation</Name>
+                        <Prediction>[R_D_Relation]</Prediction>
+                        <Measurement>1.25</Measurement>
+                        <Uncertainty>
+                            <Value>0.06</Value>
+                        </Uncertainty>
+                    </Observable>
+                    <Observable>
+                        <Name>B_tau_nu_relation</Name>
+                        <Prediction>[B_tau_nu_relation]</Prediction>
+                        <Measurement>1.119</Measurement>
+                        <Uncertainty>
+                            <Value>0.294</Value>
+                        </Uncertainty>
+                    </Observable>
+                    <Observable>
+                        <IsUpperLimit>true</IsUpperLimit>
+                        <Name>B_K_relation</Name>
+                        <Prediction>[B_K_relation]</Prediction>
+                        <Measurement>4.020</Measurement>
+                        <Uncertainty>
+                            <Value>0.475</Value>
+                        </Uncertainty>
+                    </Observable>
+                    <Observable>
+                        <IsUpperLimit>true</IsUpperLimit>
+                        <Name>B_pi_relation</Name>
+                        <Prediction>[B_pi_relation]</Prediction>
+                        <Measurement>671.233</Measurement>
+                        <Uncertainty>
+                            <Value>64.365</Value>
+                        </Uncertainty>
+                    </Observable>
+                    <Observable>
+                        <Name>Z_coupling_relation</Name>
+                        <Prediction>[Z_coupling_relation]</Prediction>
+                        <Measurement>1.0013</Measurement>
+                        <Uncertainty>
+                            <Value>0.0019</Value>
+                        </Uncertainty>
+                    </Observable>
+                    <Observable>
+                        <Name>W_coupling_relation</Name>
+                        <Prediction>[W_coupling_relation]</Prediction>
+                        <Measurement>1.0007</Measurement>
+                        <Uncertainty>
+                            <Value>0.0013</Value>
+                        </Uncertainty>
+                    </Observable>
+                </Chi2Calculator>
+                
+                
             </Calculators>
-
-            <!--<Chi2Contribution>[Chi2Calc_Chi2]</Chi2Contribution>-->
-
+            
+            <Chi2Contribution>[Chi2Calc_Chi2]</Chi2Contribution>
+            
         </ModelBase>
-
+        
     </Model>
-
+    
     <Tool>
-
+        
         <MarkovChainSampler>
-            <NumberOfIterations>1</NumberOfIterations>
+            <NumberOfIterations>3000000</NumberOfIterations>
         </MarkovChainSampler>
-
+        
     </Tool>
-
-
+    
+    
 </InputFile>
 
