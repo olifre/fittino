@@ -56,21 +56,20 @@
             <Calculators>
                 
                 <RPVCalculator></RPVCalculator>
-                
-                
+
                 <Chi2Calculator>
                     <Name>Chi2Calc</Name>
                     <Observable>
-                        <Name>R_D_Relation</Name>
-                        <Prediction>[R_D_Relation]</Prediction>
+                        <Name>NormSM_RD</Name>
+                        <Prediction>[NormSM_RD]</Prediction>
                         <Measurement>1.25</Measurement>
                         <Uncertainty>
                             <Value>0.06</Value>
                         </Uncertainty>
                     </Observable>
                     <Observable>
-                        <Name>B_tau_nu_relation</Name>
-                        <Prediction>[B_tau_nu_relation]</Prediction>
+                        <Name>NormSM_BR_B_tau_nu</Name>
+                        <Prediction>[NormSM_BR_B_tau_nu]</Prediction>
                         <Measurement>1.119</Measurement>
                         <Uncertainty>
                             <Value>0.294</Value>
@@ -78,8 +77,8 @@
                     </Observable>
                     <Observable>
                         <IsUpperLimit>true</IsUpperLimit>
-                        <Name>B_K_relation</Name>
-                        <Prediction>[B_K_relation]</Prediction>
+                        <Name>NormSM_BR_B_K_nu_nu</Name>
+                        <Prediction>[NormSM_BR_B_K_nu_nu]</Prediction>
                         <Measurement>4.020</Measurement>
                         <Uncertainty>
                             <Value>0.475</Value>
@@ -87,24 +86,24 @@
                     </Observable>
                     <Observable>
                         <IsUpperLimit>true</IsUpperLimit>
-                        <Name>B_pi_relation</Name>
-                        <Prediction>[B_pi_relation]</Prediction>
+                        <Name>NormSM_BR_B_pi_nu_nu</Name>
+                        <Prediction>[NormSM_BR_B_pi_nu_nu]</Prediction>
                         <Measurement>671.233</Measurement>
                         <Uncertainty>
                             <Value>64.365</Value>
                         </Uncertainty>
                     </Observable>
                     <Observable>
-                        <Name>Z_coupling_relation</Name>
-                        <Prediction>[Z_coupling_relation]</Prediction>
+                        <Name>Ratio_gZtautau_gZll</Name>
+                        <Prediction>[Ratio_gZtautau_gZll]</Prediction>
                         <Measurement>1.0013</Measurement>
                         <Uncertainty>
                             <Value>0.0019</Value>
                         </Uncertainty>
                     </Observable>
                     <Observable>
-                        <Name>W_coupling_relation</Name>
-                        <Prediction>[W_coupling_relation]</Prediction>
+                        <Name>Ratio_gWtaunu_gWlnu</Name>
+                        <Prediction>[Ratio_gWtaunu_gWlnu]</Prediction>
                         <Measurement>1.0007</Measurement>
                         <Uncertainty>
                             <Value>0.0013</Value>
@@ -124,7 +123,7 @@
     <Tool>
         
         <MarkovChainSampler>
-            <NumberOfIterations>3000000</NumberOfIterations>
+            <NumberOfIterations>3</NumberOfIterations>
         </MarkovChainSampler>
         
     </Tool>

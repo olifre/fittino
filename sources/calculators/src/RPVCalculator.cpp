@@ -8,13 +8,13 @@
 
 Fittino::RPVCalculator::RPVCalculator(const ModelBase *model, const boost::property_tree::ptree &ptree)
 : CalculatorBase(model, &ptree) {
-    AddOutput("R_D_Relation",R_D_Relation);
-    AddOutput("R_Dstar_Relation",R_Dstar_Relation);
-    AddOutput("B_tau_nu_relation",B_tau_nu_relation);
-    AddOutput("B_K_relation",B_K_relation);
-    AddOutput("B_pi_relation",B_pi_relation);
-    AddOutput("Z_coupling_relation",Z_coupling_relation);
-    AddOutput("W_coupling_relation",W_coupling_relation);
+    AddOutput("NormSM_RD",R_D_Relation);
+    AddOutput("NormSM_RDstar",R_Dstar_Relation);
+    AddOutput("NormSM_BR_B_tau_nu",B_tau_nu_relation);
+    AddOutput("NormSM_BR_B_K_nu_nu",B_K_relation);
+    AddOutput("NormSM_BR_B_pi_nu_nu",B_pi_relation);
+    AddOutput("Ratio_gZtautau_gZll",Z_coupling_relation);
+    AddOutput("Ratio_gWtaunu_gWlnu",W_coupling_relation);
     v = 246.0;
     X_t = 1.469;
     Vud = 0.97434;
@@ -69,11 +69,8 @@ void Fittino::RPVCalculator::CalculatePredictions() {
     
     f_W = 1./(pow(m_t/mbR,2)-1.) - (2.-pow(m_t/mbR,2))*log10(pow(m_t/mbR,2))/pow((pow(m_t/mbR,2)-1.),2);
     W_coupling_relation = 1. - 3.*pow(lambda_333/M_PI,2)*pow(m_t/mbR,2)*f_W/(16.*4.);
-    
-    
-    
-    //std::cout<<"Callng RPV Caculator: mbr="<<mbR<<std::endl;
-    
+
+
 }
 
 void Fittino::RPVCalculator::Initialize() {
