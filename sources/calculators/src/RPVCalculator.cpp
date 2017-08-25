@@ -8,7 +8,7 @@
 
 Fittino::RPVCalculator::RPVCalculator(const ModelBase *model, const boost::property_tree::ptree &ptree)
 : CalculatorBase(model, &ptree),
- _mbR ( _model->GetCollectionOfQuantities().At( ( "mbR" ) )->GetValue() ),
+ _mbR ( _model->GetCollectionOfQuantities().At( ( "Mass_~bR" ) )->GetValue() ),
  _lambda_333 (  _model->GetCollectionOfQuantities().At("lambda'_333")->GetValue() ),
  _lambda_323 ( _model->GetCollectionOfQuantities().At("lambda'_323")->GetValue() ),
  _lambda_313 ( _model->GetCollectionOfQuantities().At("lambda'_313")->GetValue() )

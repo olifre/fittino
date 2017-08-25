@@ -39,7 +39,7 @@
             </ModelParameter>
             
             <ModelParameter>
-                <Name>mbR</Name>
+                <Name>Mass_~bR</Name>
                 <Value>2500</Value>
                 <Error>1</Error>
                 <LowerBound>2400</LowerBound>
