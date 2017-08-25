@@ -7,7 +7,13 @@
 #include "RPVCalculator.h"
 
 Fittino::RPVCalculator::RPVCalculator(const ModelBase *model, const boost::property_tree::ptree &ptree)
-: CalculatorBase(model, &ptree) {
+: CalculatorBase(model, &ptree),
+ _mbR ( _model->GetCollectionOfQuantities().At( ( "mbR" ) )->GetValue() ),
+ _lambda_333 (  _model->GetCollectionOfQuantities().At("lambda'_333")->GetValue() ),
+ _lambda_323 ( _model->GetCollectionOfQuantities().At("lambda'_323")->GetValue() ),
+ _lambda_313 ( _model->GetCollectionOfQuantities().At("lambda'_313")->GetValue() )
+
+{
     AddOutput("NormSM_RD",R_D_Relation);
     AddOutput("NormSM_RDstar",R_Dstar_Relation);
     AddOutput("NormSM_BR_B_tau_nu",B_tau_nu_relation);
@@ -38,38 +44,30 @@ Fittino::RPVCalculator::RPVCalculator(const ModelBase *model, const boost::prope
     
 }
 
-
-
 Fittino::RPVCalculator::~RPVCalculator() {
     
 }
 
 void Fittino::RPVCalculator::CalculatePredictions() {
-    
-    double mbR = _model->GetCollectionOfQuantities().At("mbR")->GetValue();
-    double lambda_333 = _model->GetCollectionOfQuantities().At("lambda'_333")->GetValue();
-    double lambda_323 = _model->GetCollectionOfQuantities().At("lambda'_323")->GetValue();
-    double lambda_313 = _model->GetCollectionOfQuantities().At("lambda'_313")->GetValue();
-    
-    R_D_Relation = 1. + 0.5*pow(v/mbR,2)*(pow(lambda_333,2) + lambda_333*lambda_323*Vcs/Vcb + lambda_333*lambda_313*Vcd/Vcb);
+
+    R_D_Relation = 1. + 0.5*pow(v/_mbR,2)*(pow(_lambda_333,2) + _lambda_333*_lambda_323*Vcs/Vcb + _lambda_333*_lambda_313*Vcd/Vcb);
     R_D_Relation = pow(R_D_Relation,2);
     R_Dstar_Relation = R_D_Relation;
     
-    B_tau_nu_relation = 1. + 0.5*pow(v/mbR,2)*(pow(lambda_333,2) + lambda_333*lambda_323*Vus/Vub + lambda_333*lambda_313*Vud/Vub);
+    B_tau_nu_relation = 1. + 0.5*pow(v/_mbR,2)*(pow(_lambda_333,2) + _lambda_333*_lambda_323*Vus/Vub + _lambda_333*_lambda_313*Vud/Vub);
     B_tau_nu_relation = pow(B_tau_nu_relation,2);
     
-    B_K_relation = 1. + pow(v/mbR,2)*M_PI*s_Wsq*lambda_333*lambda_323/(alpha_em*Vtb*Vts*X_t);
+    B_K_relation = 1. + pow(v/_mbR,2)*M_PI*s_Wsq*_lambda_333*_lambda_323/(alpha_em*Vtb*Vts*X_t);
     B_K_relation = 2./3 + 1./3.*pow(B_K_relation,2);
     
-    B_pi_relation = 1. + pow(v/mbR,2)*M_PI*s_Wsq*lambda_333*lambda_313/(alpha_em*Vtb*Vts*X_t);
+    B_pi_relation = 1. + pow(v/_mbR,2)*M_PI*s_Wsq*_lambda_333*_lambda_313/(alpha_em*Vtb*Vts*X_t);
     B_pi_relation = 2./3. + 1./3.*pow(B_pi_relation,2);
     
-    f_Z = 1./(pow(m_t/mbR,2)-1.) - log10(pow(m_t/mbR,2))/pow((pow(m_t/mbR,2)-1.),2);
-    Z_coupling_relation = 1. - 3.*pow(lambda_333/M_PI,2)*pow(m_t/mbR,2)*f_Z/(16.*(1.-2.*s_Wsq));
+    f_Z = 1./(pow(m_t/_mbR,2)-1.) - log10(pow(m_t/_mbR,2))/pow((pow(m_t/_mbR,2)-1.),2);
+    Z_coupling_relation = 1. - 3.*pow(_lambda_333/M_PI,2)*pow(m_t/_mbR,2)*f_Z/(16.*(1.-2.*s_Wsq));
     
-    f_W = 1./(pow(m_t/mbR,2)-1.) - (2.-pow(m_t/mbR,2))*log10(pow(m_t/mbR,2))/pow((pow(m_t/mbR,2)-1.),2);
-    W_coupling_relation = 1. - 3.*pow(lambda_333/M_PI,2)*pow(m_t/mbR,2)*f_W/(16.*4.);
-
+    f_W = 1./(pow(m_t/_mbR,2)-1.) - (2.-pow(m_t/_mbR,2))*log10(pow(m_t/_mbR,2))/pow((pow(m_t/_mbR,2)-1.),2);
+    W_coupling_relation = 1. - 3.*pow(_lambda_333/M_PI,2)*pow(m_t/_mbR,2)*f_W/(16.*4.);
 
 }
 
