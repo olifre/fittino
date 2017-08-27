@@ -12,7 +12,7 @@
             <Name>MSSM</Name>
             
             <ModelParameter>
-                <Name>lambda'_333</Name>
+                <Name>lambdaPrime_333</Name>
                 <Value>-1</Value>
                 <Error>0.001</Error>
                 <LowerBound>-3.8</LowerBound>
@@ -21,7 +21,7 @@
             </ModelParameter>
             
             <ModelParameter>
-                <Name>lambda'_323</Name>
+                <Name>lambdaPrime_323</Name>
                 <Value>-0.01</Value>
                 <Error>0.001</Error>
                 <LowerBound>-0.055</LowerBound>
@@ -30,7 +30,7 @@
             </ModelParameter>
             
             <ModelParameter>
-                <Name>lambda'_313</Name>
+                <Name>lambdaPrime_313</Name>
                 <Value>0.1</Value>
                 <Error>0.001</Error>
                 <LowerBound>-0.2</LowerBound>
@@ -39,7 +39,7 @@
             </ModelParameter>
             
             <ModelParameter>
-                <Name>Mass_~bR</Name>
+                <Name>Mass_sbottomR</Name>
                 <Value>2500</Value>
                 <Error>1</Error>
                 <LowerBound>2400</LowerBound>
@@ -55,7 +55,12 @@
             
             <Calculators>
                 
-                <RPVCalculator></RPVCalculator>
+                <RPVCalculator>
+                    <Mass_sbottomR>[Mass_sbottomR]</Mass_sbottomR>
+                    <lambdaPrime_313>[lambdaPrime_313]</lambdaPrime_313>
+                    <lambdaPrime_323>[lambdaPrime_323]</lambdaPrime_323>
+                    <lambdaPrime_333>[lambdaPrime_333]</lambdaPrime_333>
+                </RPVCalculator>
 
                 <Chi2Calculator>
                     <Name>Chi2Calc</Name>

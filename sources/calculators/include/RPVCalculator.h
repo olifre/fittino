@@ -37,10 +37,8 @@ namespace Fittino {
         double          Z_coupling_relation;
         double          f_W;
         double          W_coupling_relation;
-        const double&   _mbR;
-        const double&   _lambda_313;
-        const double&   _lambda_323;
-        const double&   _lambda_333;
+
+
         
         public:
         
