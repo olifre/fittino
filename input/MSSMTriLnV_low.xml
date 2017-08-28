@@ -12,6 +12,60 @@
             <Name>MSSM</Name>
 
             <ModelParameter>
+                <Name>M1</Name>
+                <Value>500</Value>
+                <Error>0.1</Error>
+                <LowerBound>-5000.</LowerBound>
+                <UpperBound>5000.</UpperBound>
+                <Fixed>true</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>M2</Name>
+                <Value>2000</Value>
+                <Error>0.1</Error>
+                <LowerBound>-5000.</LowerBound>
+                <UpperBound>5000.</UpperBound>
+                <Fixed>true</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>M3</Name>
+                <Value>3000</Value>
+                <Error>0.1</Error>
+                <LowerBound>-5000.</LowerBound>
+                <UpperBound>5000.</UpperBound>
+                <Fixed>true</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>Mu</Name>
+                <Value>1200</Value>
+                <Error>0.1</Error>
+                <LowerBound>-5000.</LowerBound>
+                <UpperBound>5000.</UpperBound>
+                <Fixed>true</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>MA</Name>
+                <Value>2000</Value>
+                <Error>0.1</Error>
+                <LowerBound>-5000.</LowerBound>
+                <UpperBound>5000.</UpperBound>
+                <Fixed>true</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>TanBeta</Name>
+                <Value>10</Value>
+                <Error>0.1</Error>
+                <LowerBound>0.</LowerBound>
+                <UpperBound>100.</UpperBound>
+                <Fixed>true</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
                 <Name>lambda'_232</Name>
                 <Value>0.0</Value>
                 <Error>0.01</Error>
@@ -35,7 +89,7 @@
                 <Error>0.01</Error>
                 <LowerBound>-0.5</LowerBound>
                 <UpperBound>0.5001</UpperBound>
-                <Fixed>true</Fixed>
+                <Fixed>false</Fixed>
             </ModelParameter>
 
             <ModelParameter>
@@ -53,7 +107,7 @@
                 <Error>0.1</Error>
                 <LowerBound>-0.5</LowerBound>
                 <UpperBound>5000</UpperBound>
-                <Fixed>true</Fixed>
+                <Fixed>false</Fixed>
             </ModelParameter>
 
             <ModelParameter>
@@ -62,12 +116,12 @@
                 <Error>1e5</Error>
                 <LowerBound>5e5</LowerBound>
                 <UpperBound>2.001e6</UpperBound>
-                <Fixed>true</Fixed>
+                <Fixed>false</Fixed>
             </ModelParameter>
 
             <ModelParameter>
                 <Name>mq2_33</Name>
-                <Value>5e5</Value>
+                <Value>9e6</Value>
                 <Error>5e5</Error>
                 <LowerBound>5e5</LowerBound>
                 <UpperBound>2.001e6</UpperBound>
@@ -81,11 +135,35 @@
 
             <Calculators>
 
-                <SPhenoCalculator>
+                <SARAHSPhenoCalculator>
                     <Executable>@SPheno_ROOT_DIR@/bin/SPhenoMSSMTriLnV</Executable>
                     <InputFile>
                         <Template>@Fittino_INPUT_DIR@/LesHouches.in.MSSMTriLnV_low</Template>
                         <Name>LesHouches.in.MSSMTriLnV_low</Name>
+                        <Quantity>
+                            <Name>_M1_</Name>
+                            <Value>[M1]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>_M2_</Name>
+                            <Value>[M2]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>_M3_</Name>
+                            <Value>[M3]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>_MA_</Name>
+                            <Value>[MA]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>_Mu_</Name>
+                            <Value>[Mu]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>_TanBeta_</Name>
+                            <Value>[TanBeta]</Value>
+                        </Quantity>
                         <Quantity>
                             <Name>lambda'_232</Name>
                             <Value>[lambda'_232]</Value>
@@ -116,27 +194,13 @@
                         </Quantity>
                     </InputFile>
                     <OutputFile>SPheno.spc.MSSMTriLnV</OutputFile>
-                </SPhenoCalculator>
+                </SARAHSPhenoCalculator>
 
                 <FlavioCalculator>
                 </FlavioCalculator>
 
-                <Chi2Calculator>
-                    <Name>Chi2Calc</Name>
-                    <Observable>
-                        <Name>Mass_W</Name>
-                        <Prediction>[SPheno_Mass_Wp]</Prediction>
-                        <Measurement>80.0</Measurement>
-                        <Uncertainty>
-                            <Value>0.1</Value>
-                        </Uncertainty>
-                    </Observable>
-                </Chi2Calculator>
-
-
             </Calculators>
 
-            <Chi2Contribution>[Chi2Calc_Chi2]</Chi2Contribution>
 
         </ModelBase>
 
