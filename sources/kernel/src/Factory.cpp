@@ -78,6 +78,7 @@
 #include "RosenbrockCalculator.h"
 #include "RosenbrockModel.h"
 #include "RPVCalculator.h"
+#include "SARAHSPhenoSLHACalculator.h"
 #include "Simple1DHistogramMaker.h"
 #include "Simple2DHistogramMaker.h"
 #include "Simple3DHistogramMaker.h"
@@ -449,6 +450,20 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 #else
 
         throw ConfigurationException( " Trying to use SPhenoSLHACalculator but Fittino was built without SLHAea." );
+
+#endif
+
+    }
+    else if ( type == "SARAHSPhenoCalculator" ) {
+
+
+#ifdef SLHAEA
+
+        return new SARAHSPhenoSLHACalculator( model, ptree );
+
+#else
+
+        throw ConfigurationException( " Trying to use SARAHSPhenoSLHACalculator but Fittino was built without SLHAea." );
 
 #endif
 
