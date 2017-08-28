@@ -260,11 +260,11 @@ void Fittino::SPhenoSLHACalculator::AddMass( std::string particle ) {
 void Fittino::SPhenoSLHACalculator::AddParticle( std::string particle ) {
 
     AddMass ( particle );
-    AddWidth( particle );
+    AddTotalWidth( particle );
 
 }
 
-void Fittino::SPhenoSLHACalculator::AddWidth( std::string particle ) {
+void Fittino::SPhenoSLHACalculator::AddTotalWidth(std::string particle) {
 
     std::string name = "GammaTotal_" + particle;
 

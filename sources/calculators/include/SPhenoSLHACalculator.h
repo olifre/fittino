@@ -57,7 +57,7 @@ namespace Fittino {
       void                   AddBR( std::string mother, std::string daughter1, std::string daughter2 );
       void                   AddMass( std::string particle );
       void                   AddParticle( std::string particle );
-      void                   AddWidth( std::string particle );
+      void                   AddTotalWidth(std::string particle);
 
       /*! \endcond UML */
 
