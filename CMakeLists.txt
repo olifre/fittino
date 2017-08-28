@@ -130,7 +130,7 @@ configure_file( ${PROJECT_SOURCE_DIR}/input/parameters.ini ${indir} )
 configure_file( ${PROJECT_SOURCE_DIR}/input/MSSMTriLnV_low.xml ${indir} )
 configure_file( ${PROJECT_SOURCE_DIR}/input/RPV.xml ${indir} )
 #configure_file( ${PROJECT_SOURCE_DIR}/input/MSSMTriLnV_RK.xml ${indir} )
-#configure_file( ${PROJECT_SOURCE_DIR}/input/MSSMTriLnV_RD.xml ${indir} )
+configure_file( ${PROJECT_SOURCE_DIR}/input/MSSMTriLnV_RD.xml ${indir} )
 
 configure_file( ${PROJECT_SOURCE_DIR}/input/LesHouches.in.MSSMTriLnV_low ${indir} )
 
