@@ -31,7 +31,7 @@
 
             <ModelParameter>
                 <Name>M3</Name>
-                <Value>3000</Value>
+                <Value>3000.</Value>
                 <Error>0.1</Error>
                 <LowerBound>-5000.</LowerBound>
                 <UpperBound>5000.</UpperBound>
@@ -40,7 +40,7 @@
 
             <ModelParameter>
                 <Name>Mu</Name>
-                <Value>1200</Value>
+                <Value>1200.</Value>
                 <Error>0.1</Error>
                 <LowerBound>-5000.</LowerBound>
                 <UpperBound>5000.</UpperBound>
@@ -49,7 +49,7 @@
 
             <ModelParameter>
                 <Name>MA</Name>
-                <Value>2000</Value>
+                <Value>2000.</Value>
                 <Error>0.1</Error>
                 <LowerBound>-5000.</LowerBound>
                 <UpperBound>5000.</UpperBound>
@@ -58,7 +58,7 @@
 
             <ModelParameter>
                 <Name>TanBeta</Name>
-                <Value>10</Value>
+                <Value>10.</Value>
                 <Error>0.1</Error>
                 <LowerBound>0.</LowerBound>
                 <UpperBound>100.</UpperBound>

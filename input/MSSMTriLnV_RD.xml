@@ -196,6 +196,13 @@
                     <OutputFile>SPheno.spc.MSSMTriLnV</OutputFile>
                 </SARAHSPhenoCalculator>
 
+                <RPVCalculator>
+                    <Mass_sbottomR>[SPheno_Mass_~bR]</Mass_sbottomR>
+                    <lambdaPrime_313>[lambda'_313]</lambdaPrime_313>
+                    <lambdaPrime_323>[lambda'_323]</lambdaPrime_323>
+                    <lambdaPrime_333>[lambda'_333]</lambdaPrime_333>
+                </RPVCalculator>
+
                 <FlavioCalculator>
                 </FlavioCalculator>
 
