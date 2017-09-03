@@ -41,10 +41,12 @@ namespace Fittino {
     public:
       int                             GetPID( std::string particle );
       std::string                     GetPIDString( std::string particle );
+      std::string                     GetName( int pid );
       const std::vector<std::string>& GetSUSYParticles();
 
     private:
       std::map<std::string, int>      _pid;
+      std::map<int, std::string>      _names;
       std::vector<std::string>        _susyparticles;
 
     private:

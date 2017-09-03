@@ -142,6 +142,7 @@ void Fittino::Database::AddSinglePID( int pid, std::string particle ) {
     /* \todo Check if PID already exists. */
 
     _pid[particle] = pid;
+    _names[pid] = particle;
 
 }
 
@@ -150,5 +151,11 @@ void Fittino::Database::AddSUSYParticle( int pid, std::string particle, std::str
     AddPID( pid, particle, antiparticle );
 
     _susyparticles.push_back( particle );
+
+}
+
+std::string Fittino::Database::GetName(int pid) {
+
+    return _names[pid];
 
 }
