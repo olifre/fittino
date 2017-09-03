@@ -113,6 +113,8 @@ void Fittino::FlavioCalculator::CalculatePredictions() {
         auto smValue = PyObject_CallObject(_smPrediction, _smargs.at(i) );
         SetOutput( "SM_" + _predictions.at(i), PyFloat_AsDouble( smValue ) );
 
+        SetOutput( "NormSM_" + _predictions.at(i), PyFloat_AsDouble( npValue )  / PyFloat_AsDouble( smValue )   );
+
         Py_DECREF(npValue);
 
     }
@@ -161,6 +163,7 @@ void Fittino::FlavioCalculator::AddBinnedPrediction( std::string name, std::stri
 
     AddOutput( name );
     AddOutput( "SM_" + name );
+    AddOutput( "NormSM_" + name );
 
 
 }
@@ -181,6 +184,7 @@ void Fittino::FlavioCalculator::AddInclusivePrediction( std::string name, std::s
 
     AddOutput( name );
     AddOutput( "SM_" + name );
+    AddOutput( "NormSM_" + name );
 
 
 }
