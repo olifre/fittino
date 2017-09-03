@@ -19,6 +19,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
 #include <boost/lexical_cast.hpp>
+#include <TMath.h>
 
 #include "CalculatorException.h"
 #include "InputFile.h"
@@ -39,11 +40,11 @@ Fittino::SARAHSPhenoSLHACalculator::SARAHSPhenoSLHACalculator( const ModelBase* 
     _name               = "SPheno";
     _tag                = "SPheno";
     _slhaOutputFileName = ptree.get<std::string>("OutputFile");
-          _inputFile = new InputFile( ptree.get_child("InputFile"), model );
-          _slhaInputFileName  = _inputFile->GetName();
+    _inputFile = new InputFile( ptree.get_child("InputFile"), model );
+    _slhaInputFileName  = _inputFile->GetName();
 
 
-          std::string exename = "Executable";
+    std::string exename = "Executable";
 
 #ifdef SPHENO_EXECUTABLE
 
@@ -68,9 +69,18 @@ Fittino::SARAHSPhenoSLHACalculator::SARAHSPhenoSLHACalculator( const ModelBase* 
 
     Database& database = Database::GetInstance();
 
-
     AddQuantity( new SLHAPrediction( "BR_B_tau_nu"      , "", _slhaOutputDataStorage, "FlavorKitQFV", 1, "502", "", "", "" ) );
 
+    _dsquarkPIDs = { 1000001, 1000003, 1000005, 2000001, 2000003, 2000005 };
+    _dsquarkNames = { "~dL", "~sL", "~bL", "~dR", "~sR", "~bR"  };
+
+    for ( const auto& name : _dsquarkNames ) {
+
+        AddOutput( "Index_" + name );
+        AddOutput( "Mass_" + name );
+        AddOutput( "Fraction_" + name );
+
+    }
 
 }
 
@@ -120,6 +130,57 @@ void Fittino::SARAHSPhenoSLHACalculator::CalculatePredictions() {
 
     }
 
+    TestUnitarity();
+
+    for( unsigned int j = 0; j < 6; j++ ) {
+
+        DetermineMass("DSQMIX", _dsquarkPIDs, _dsquarkNames, j );
+
+    }
+
+}
+
+void Fittino::SARAHSPhenoSLHACalculator::DetermineMass(std::string block, const std::vector<int> pids, std::vector<std::string> names, int j )  {
+
+
+    int index = -1;
+    double maxFraction = 0;
+    double mass = 0;
+
+    for (int i=0; i<6; ++i ) {
+
+        double block_ij = _slhaOutputDataStorage->GetEntry( block, 2, std::to_string(i + 1), std::to_string(j + 1), "" , "" );
+        double fraction = TMath::Power( block_ij, 2 );
+
+        if( fraction > maxFraction ){
+
+            index = i;
+            maxFraction = fraction;
+
+
+        }
+        else if( fraction == maxFraction ){
+
+            index = -1;
+
+        }
+
+    }
+
+    if ( index >= 0 ) {
+
+        int pid = pids.at(index);
+        mass = _slhaOutputDataStorage->GetEntry("MASS", 1, std::to_string(pid), "", "", "");
+
+    }
+
+
+    std::string name = names.at( j );
+
+    SetOutput( "Mass_" + name, mass  );
+    SetOutput( "Index_" + name, index  );
+    SetOutput( "Fraction_" + name, maxFraction  );
+
 }
 
 void Fittino::SARAHSPhenoSLHACalculator::AddBR( std::string mother, std::string daughter1, std::string daughter2 ) {
@@ -164,4 +225,25 @@ void Fittino::SARAHSPhenoSLHACalculator::AddWidth( std::string particle ) {
 
 }
 
+void Fittino::SARAHSPhenoSLHACalculator::TestUnitarity() {
 
+    for (int i=1; i<7; i=i+1 ) {
+
+        double sum = 0;
+
+        for (int j = 1; j < 7; j = j + 1) {
+
+            sum += TMath::Power(
+                    _slhaOutputDataStorage->GetEntry("DSQMIX", 2, std::to_string(i), std::to_string(j), "", ""), 2);
+
+        }
+
+        if (TMath::Abs(sum - 1) > 1e-4) {
+
+            throw CalculatorException("SPheno", "SPHENO_NONUNITARITY_DSQMIX");
+
+        }
+
+    }
+
+}

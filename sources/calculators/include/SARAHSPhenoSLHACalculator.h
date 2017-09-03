@@ -51,15 +51,19 @@ namespace Fittino {
       int                    _returnValue;
       Executor*              _executor;
       InputFile*             _inputFile;
+      std::vector<int>       _dsquarkPIDs;
+      std::vector<std::string> _dsquarkNames;
 
     private:
       void                   AddBR( std::string mother, std::string daughter1, std::string daughter2 );
       void                   AddMass( std::string particle );
       void                   AddParticle( std::string particle );
       void                   AddWidth( std::string particle );
-
+      void TestUnitarity();
       /*! \endcond UML */
 
+
+      void DetermineMass(std::string block, const std::vector<int> pids, const std::vector<std::string> names, int j) ;
   };
 
 }
