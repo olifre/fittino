@@ -82,6 +82,8 @@ Fittino::SARAHSPhenoSLHACalculator::SARAHSPhenoSLHACalculator( const ModelBase* 
 
     }
 
+    AddQuantity( new SLHAPrediction( "HMIX_Vev"    , "", _slhaOutputDataStorage, "HMIX", 1, "3", "", "", ""     ) );
+
 }
 
 Fittino::SARAHSPhenoSLHACalculator::~SARAHSPhenoSLHACalculator() {
