@@ -23,7 +23,6 @@ namespace Fittino {
         double          Vtd;
         double          Vts;
         double          Vtb;
-        double          v;
         double          s_Wsq;
         double          alpha_em;
         double          X_t;

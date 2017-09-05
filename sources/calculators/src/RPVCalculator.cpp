@@ -15,6 +15,7 @@ Fittino::RPVCalculator::RPVCalculator(const ModelBase *model, const boost::prope
     AddInput( "lambdaPrime_313" );
     AddInput( "lambdaPrime_323" );
     AddInput( "lambdaPrime_333" );
+    AddInput( "Vev" );
 
     AddOutput("NormSM_RD",R_D_Relation);
     AddOutput("NormSM_RDstar",R_Dstar_Relation);
@@ -23,7 +24,6 @@ Fittino::RPVCalculator::RPVCalculator(const ModelBase *model, const boost::prope
     AddOutput("NormSM_BR_B_pi_nu_nu",B_pi_relation);
     AddOutput("Ratio_gZtautau_gZll",Z_coupling_relation);
     AddOutput("Ratio_gWtaunu_gWlnu",W_coupling_relation);
-    v = 246.0;
     X_t = 1.469;
     Vud = 0.97434;
     Vus = 0.22506;
@@ -58,18 +58,19 @@ void Fittino::RPVCalculator::CalculatePredictions() {
     const double& lambda_313 = GetInput( "lambdaPrime_313" );
     const double& lambda_323 = GetInput( "lambdaPrime_323" );
     const double& lambda_333 = GetInput( "lambdaPrime_333" );
+    const double& vev = GetInput( "Vev" );
 
-    R_D_Relation = 1. + 0.5*pow(v/mbR,2)*(pow(lambda_333,2) + lambda_333*lambda_323*Vcs/Vcb + lambda_333*lambda_313*Vcd/Vcb);
+    R_D_Relation = 1. + 0.5*pow(vev/mbR,2)*(pow(lambda_333,2) + lambda_333*lambda_323*Vcs/Vcb + lambda_333*lambda_313*Vcd/Vcb);
     R_D_Relation = pow(R_D_Relation,2);
     R_Dstar_Relation = R_D_Relation;
     
-    B_tau_nu_relation = 1. + 0.5*pow(v/mbR,2)*(pow(lambda_333,2) + lambda_333*lambda_323*Vus/Vub + lambda_333*lambda_313*Vud/Vub);
+    B_tau_nu_relation = 1. + 0.5*pow(vev/mbR,2)*(pow(lambda_333,2) + lambda_333*lambda_323*Vus/Vub + lambda_333*lambda_313*Vud/Vub);
     B_tau_nu_relation = pow(B_tau_nu_relation,2);
     
-    B_K_relation = 1. + pow(v/mbR,2)*M_PI*s_Wsq*lambda_333*lambda_323/(alpha_em*Vtb*Vts*X_t);
+    B_K_relation = 1. + pow(vev/mbR,2)*M_PI*s_Wsq*lambda_333*lambda_323/(alpha_em*Vtb*Vts*X_t);
     B_K_relation = 2./3 + 1./3.*pow(B_K_relation,2);
     
-    B_pi_relation = 1. + pow(v/mbR,2)*M_PI*s_Wsq*lambda_333*lambda_313/(alpha_em*Vtb*Vts*X_t);
+    B_pi_relation = 1. + pow(vev/mbR,2)*M_PI*s_Wsq*lambda_333*lambda_313/(alpha_em*Vtb*Vts*X_t);
     B_pi_relation = 2./3. + 1./3.*pow(B_pi_relation,2);
     
     f_Z = 1./(pow(m_t/mbR,2)-1.) - log10(pow(m_t/mbR,2))/pow((pow(m_t/mbR,2)-1.),2);
