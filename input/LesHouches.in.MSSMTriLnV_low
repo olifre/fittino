@@ -28,8 +28,8 @@ Block SPhenoInput   # SPheno specific input
  11 1               # calculate branching ratios 
  13 1               # 3-Body decays: none (0), fermion (1), scalar (2), both (3) 
  14 0               # Run couplings to scale of decaying particle 
- 12 -1       # write only branching ratios larger than this value
- 15 -1       # write only decay if width larger than this value
+ 12 1.000E-04       # write only branching ratios larger than this value
+ 15 1.000E-30       # write only decay if width larger than this value
  31 -1              # fixed GUT scale (-1: dynamical GUT scale) 
  32 0               # Strict unification 
  34 1.000E-04       # Precision of mass calculation 
@@ -122,55 +122,55 @@ Block RVLAMLQDIN    #
 3 3 2   0.000000E+00         # lambda'(3,3,2)
 3 3 3   lambda'_333          # lambda'(3,3,3)
 Block MSD2IN    #  
-1 1   9.000000E+06         # md2(1,1)
+1 1   25.000000E+06         # md2(1,1)
 1 2   0.000000E+00         # md2(1,2)
 1 3   0.000000E+00         # md2(1,3)
 2 1   0.000000E+00         # md2(2,1)
-2 2   9.000000E+06         # md2(2,2)
+2 2   25.000000E+06         # md2(2,2)
 2 3   0.000000E+00         # md2(2,3)
 3 1   0.000000E+00         # md2(3,1)
 3 2   0.000000E+00         # md2(3,2)
 3 3   md2_33         # md2(3,3) Bereich 5E+05 bis 2E+06
 Block MSE2IN    #  
-1 1   9.000000E+06         # me2(1,1)
+1 1   25.000000E+06         # me2(1,1)
 1 2   0.000000E+00         # me2(1,2)
 1 3   0.000000E+00         # me2(1,3)
 2 1   0.000000E+00         # me2(2,1)
-2 2   9.000000E+06         # me2(2,2)
+2 2   25.000000E+06         # me2(2,2)
 2 3   0.000000E+00         # me2(2,3)
 3 1   0.000000E+00         # me2(3,1)
 3 2   0.000000E+00         # me2(3,2)
-3 3   9.000000E+06         # me2(3,3)
+3 3   25.000000E+06         # me2(3,3)
 Block MSL2IN    #  
-1 1   9.000000E+06         # ml2(1,1)
+1 1   25.000000E+06         # ml2(1,1)
 1 2   0.000000E+00         # ml2(1,2)
 1 3   0.000000E+00         # ml2(1,3)
 2 1   0.000000E+00         # ml2(2,1)
-2 2   9.000000E+06         # ml2(2,2)
+2 2   25.000000E+06         # ml2(2,2)
 2 3   0.000000E+00         # ml2(2,3)
 3 1   0.000000E+00         # ml2(3,1)
 3 2   0.000000E+00         # ml2(3,2)
-3 3   9.000000E+06         # ml2(3,3)
+3 3   25.000000E+06         # ml2(3,3)
 Block MSQ2IN    #  
-1 1   9.000000E+06         # mq2(1,1)
+1 1   25.000000E+06         # mq2(1,1)
 1 2   0.000000E+00         # mq2(1,2)
 1 3   0.000000E+00         # mq2(1,3)
 2 1   0.000000E+00         # mq2(2,1)
-2 2   9.000000E+06         # mq2(2,2)
+2 2   25.000000E+06         # mq2(2,2)
 2 3   0.000000E+00         # mq2(2,3)
 3 1   0.000000E+00         # mq2(3,1)
 3 2   0.000000E+00         # mq2(3,2)
 3 3   mq2_33         # mq2(3,3) Bereich 5E+05 bis 2E+06
 Block MSU2IN    #  
-1 1   9.000000E+06         # mu2(1,1)
+1 1   25.000000E+06         # mu2(1,1)
 1 2   0.000000E+00         # mu2(1,2)
 1 3   0.000000E+00         # mu2(1,3)
 2 1   0.000000E+00         # mu2(2,1)
-2 2   9.000000E+06         # mu2(2,2)
+2 2   25.000000E+06         # mu2(2,2)
 2 3   0.000000E+00         # mu2(2,3)
 3 1   0.000000E+00         # mu2(3,1)
 3 2   0.000000E+00         # mu2(3,2)
-3 3   9.000000E+06         # mu2(3,3)
+3 3   25.000000E+06         # mu2(3,3)
 Block RVTLLEIN    #  
 1 1 1   0.000000E+00         # T1(1,1,1)
 1 1 2   0.000000E+00         # T1(1,1,2)

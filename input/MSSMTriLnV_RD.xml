@@ -13,7 +13,7 @@
 
             <ModelParameter>
                 <Name>M1</Name>
-                <Value>3000.</Value>
+                <Value>5000.</Value>
                 <Error>0.1</Error>
                 <LowerBound>-5000.</LowerBound>
                 <UpperBound>5000.</UpperBound>
@@ -22,7 +22,7 @@
 
             <ModelParameter>
                 <Name>M2</Name>
-                <Value>3000.</Value>
+                <Value>5000.</Value>
                 <Error>0.1</Error>
                 <LowerBound>-5000.</LowerBound>
                 <UpperBound>5000.</UpperBound>
@@ -31,7 +31,7 @@
 
             <ModelParameter>
                 <Name>M3</Name>
-                <Value>3000.</Value>
+                <Value>5000.</Value>
                 <Error>0.1</Error>
                 <LowerBound>-5000.</LowerBound>
                 <UpperBound>5000.</UpperBound>
@@ -40,7 +40,7 @@
 
             <ModelParameter>
                 <Name>Mu</Name>
-                <Value>3000.</Value>
+                <Value>5000.</Value>
                 <Error>0.1</Error>
                 <LowerBound>-5000.</LowerBound>
                 <UpperBound>5000.</UpperBound>
@@ -49,7 +49,7 @@
 
             <ModelParameter>
                 <Name>MA</Name>
-                <Value>2000.</Value>
+                <Value>5000.</Value>
                 <Error>0.1</Error>
                 <LowerBound>-5000.</LowerBound>
                 <UpperBound>5000.</UpperBound>
@@ -86,42 +86,42 @@
             <ModelParameter>
                 <Name>lambda'_313</Name>
                 <Value>0.0</Value>
-                <Error>0.01</Error>
-                <LowerBound>-0.5</LowerBound>
-                <UpperBound>0.5001</UpperBound>
+                <Error>1.0</Error>
+                <LowerBound>-1.0</LowerBound>
+                <UpperBound>+1.0</UpperBound>
                 <Fixed>false</Fixed>
             </ModelParameter>
 
             <ModelParameter>
                 <Name>lambda'_323</Name>
-                <Value>1</Value>
-                <Error>0.1</Error>
-                <LowerBound>-0.5</LowerBound>
-                <UpperBound>50000</UpperBound>
+                <Value>0.0</Value>
+                <Error>1.0</Error>
+                <LowerBound>-1.0</LowerBound>
+                <UpperBound>+1.0</UpperBound>
                 <Fixed>false</Fixed>
             </ModelParameter>
 
             <ModelParameter>
                 <Name>lambda'_333</Name>
-                <Value>1</Value>
-                <Error>0.1</Error>
-                <LowerBound>-0.5</LowerBound>
-                <UpperBound>5000</UpperBound>
+                <Value>0.0</Value>
+                <Error>1.0</Error>
+                <LowerBound>-1.0</LowerBound>
+                <UpperBound>+1.0</UpperBound>
                 <Fixed>false</Fixed>
             </ModelParameter>
 
             <ModelParameter>
                 <Name>md2_33</Name>
-                <Value>5e5</Value>
-                <Error>1e5</Error>
+                <Value>12.5e5</Value>
+                <Error>7.5e5</Error>
                 <LowerBound>5e5</LowerBound>
-                <UpperBound>2.001e6</UpperBound>
+                <UpperBound>20.0e5</UpperBound>
                 <Fixed>false</Fixed>
             </ModelParameter>
 
             <ModelParameter>
                 <Name>mq2_33</Name>
-                <Value>9e6</Value>
+                <Value>25e6</Value>
                 <Error>5e5</Error>
                 <LowerBound>5e5</LowerBound>
                 <UpperBound>2.001e6</UpperBound>
@@ -201,6 +201,7 @@
                     <lambdaPrime_313>[lambda'_313]</lambdaPrime_313>
                     <lambdaPrime_323>[lambda'_323]</lambdaPrime_323>
                     <lambdaPrime_333>[lambda'_333]</lambdaPrime_333>
+                    <Vev>[SPheno_HMIX_Vev]</Vev>
                 </RPVCalculator>
 
                 <FlavioCalculator>
@@ -216,7 +217,8 @@
     <Tool>
 
         <MarkovChainSampler>
-            <NumberOfIterations>1</NumberOfIterations>
+            <NumberOfIterations>10</NumberOfIterations>
+            <StrictBounds>true</StrictBounds>
         </MarkovChainSampler>
 
     </Tool>
