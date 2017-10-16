@@ -26,7 +26,7 @@ set( CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../CMakeModules )
 include( ExternalProject )
 
 set_property( DIRECTORY PROPERTY "EP_BASE" ${PROJECT_BINARY_DIR} )
-set_property( DIRECTORY PROPERTY "EP_UPDATE_DISCONNECTED" ${PROJECT_BINARY_DIR} )
+#set_property( DIRECTORY PROPERTY "EP_UPDATE_DISCONNECTED" ${PROJECT_BINARY_DIR} )
 
 option( INSTALL_SLHAea "" OFF )
 option( INSTALL_SPheno "" OFF )
@@ -42,6 +42,7 @@ option( INSTALL_MSSMTriLnV "" OFF )
 option( INSTALL_SModelS "" OFF )
 option( INSTALL_SCYNet "" OFF )
 option( INSTALL_CheckMATE "" OFF )
+option( INSTALL_MadGraph5 "" ON )
 option( INSTALL_GM2Calc "" OFF )
 option( INSTALL_Fittino_Python2 "" OFF )
 option( INSTALL_Fittino_Python3 "" OFF )
@@ -108,6 +109,7 @@ if( INSTALL_SPheno OR INSTALL_MSSMTriLnV )
             URL http://www.hepforge.org/archive/spheno/SPheno-4.0.3.tar.gz
             URL_MD5 64787d6c8ce03cac38aec53d34ac46ad
             PATCH_COMMAND ${CMAKE_COMMAND} -DMAKEFILE=src/Makefile -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_SPheno.cmake
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/SPheno_patch <SOURCE_DIR>/src
             BUILD_IN_SOURCE 1
             CONFIGURE_COMMAND ""
             BUILD_COMMAND $(MAKE) F90=${CMAKE_Fortran_COMPILER}
@@ -376,7 +378,7 @@ if( INSTALL_MicrOMEGAs )
 endif()
 
 
-if( INSTALL_Python OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_CheckMATE OR INSTALL_LHAPDF )
+if( INSTALL_Python OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_LHAPDF )
 
     set( miniconda Miniconda2-4.3.11 )
 
@@ -598,34 +600,88 @@ if( INSTALL_Pythia8 OR INSTALL_CheckMATE )
     find_package( ZLIB REQUIRED )
     get_filename_component( zlib_library_dir ${ZLIB_LIBRARIES} DIRECTORY )
 
-    set( pythia8 PYTHIA-8.2.23 )
+    set( pythia8 PYTHIA-8.2.30 )
 
     externalproject_add(
 
             ${pythia8}
             DEPENDS ${hepmc2}
-            URL http://home.thep.lu.se/~torbjorn/pythia8/pythia8223.tgz
-            URL_MD5 ccb52b9172ffcdc426732a95f7bf4dbb
+            URL http://home.thep.lu.se/~torbjorn/pythia8/pythia8230.tgz
+            URL_MD5 5362429333f43bd1f7621a599bae5a24
             CONFIGURE_COMMAND ./configure --cxx=${CMAKE_CXX_COMPILER} --prefix=<INSTALL_DIR> --with-hepmc2=${HepMC_ROOT_DIR} --with-gzip-lib=${zlib_library_dir} --with-gzip-include=${ZLIB_INCLUDE_DIRS}
             BUILD_COMMAND $(MAKE)
             BUILD_IN_SOURCE 1
             INSTALL_COMMAND $(MAKE) install
 
     )
+    externalproject_get_property( ${pythia8} install_dir )
+    set( Pythia8_ROOT_DIR ${install_dir} )
+
 
 endif()
 
-# TODO: ADD MADGRAPH AND DELPHES required by checkmate
-#    EXTERNALPROJECT_ADD(
-#            ${checkmate}
-#            DEPENDS ${hepmc2} ${pythia8} ${madgraph} ${delphes}
-#            URL
-#            URL_MD5
-#            CONFIGURE_COMMAND ./configure --cxx=${CMAKE_CXX_COMPILER}  --with-hepmc2=${HepMC_ROOT_DIR}  --with-gziplib=${zlib_library_dir} --with-gzipinc=${ZLIB_INCLUDE_DIRS}
-#            BUILD_COMMAND $(MAKE)
-#            BUILD_IN_SOURCE 1
-#            INSTALL_COMMAND ""
-#    )
+if(INSTALL_Delphes OR INSTALL_CheckMATE) 
+
+        set( delphes Delphes-3.4.1 ) 
+
+       EXTERNALPROJECT_ADD(
+            ${delphes}
+           # DEPENDS ${hepmc2} ${pythia8} ${delphes}
+            URL http://cp3.irmp.ucl.ac.be/downloads/Delphes-3.4.1.tar.gz
+            URL_MD5 13118b71efa4eb4ba1b6baeab2c471f2
+            CMAKE_CACHE_ARGS -DCMAKE_CXX_COMPILER:filepath=${CMAKE_CXX_COMPILER} -DCMAKE_INSTALL_PREFIX:path=<INSTALL_DIR>
+            BUILD_IN_SOURCE 1 
+            UPDATE_COMMAND ""
+    )
+
+    externalproject_get_property( ${delphes} source_dir )
+    set( Delphes_SOURCE_DIR ${source_dir} )
+
+endif()
+
+if( INSTALL_MADGRAPH5 OR INSTALL_CheckMATE )
+
+      set( madgraph5 MadGraph5-2.6.0 )
+
+  
+       EXTERNALPROJECT_ADD(
+            ${madgraph5}
+           # DEPENDS ${hepmc2} ${pythia8} ${delphes}
+            URL https://launchpad.net/mg5amcnlo/2.0/2.6.x/+download/MG5_aMC_v2.6.0.tar.gz 
+            URL_MD5 739d2107ea976dae3c6b3e38984f951a
+            CONFIGURE_COMMAND ""
+            BUILD_COMMAND ""
+            INSTALL_COMMAND ""
+            BUILD_IN_SOURCE 1 
+
+)
+
+    externalproject_get_property( ${madgraph5} source_dir )
+    set( MadGraph_ROOT_DIR ${source_dir} )
+
+endif()
+
+
+if( INSTALL_CheckMATE )
+
+    set( checkmate CheckMATE-2.0.11 )
+
+    EXTERNALPROJECT_ADD(
+            ${checkmate}
+            DEPENDS ${hepmc2} ${pythia8} ${delphes} ${madgraph5}
+            URL http://www.hepforge.org/archive/checkmate/CheckMATE-2.0.11.tar.gz 
+            URL_MD5 2ba417d2483e86c4334df18c9c44b74a
+            CONFIGURE_COMMAND ${CMAKE_COMMAND} -E env CXX=${CMAKE_CXX_COMPILER} ./configure --with-hepmc=${HepMC_ROOT_DIR}  --with-gziplib=${zlib_library_dir} --with-gzipinc=${ZLIB_INCLUDE_DIRS} --with-pythia=${Pythia8_ROOT_DIR} --with-delphes=${Delphes_SOURCE_DIR} --with-madgraph=${MadGraph_ROOT_DIR}
+            BUILD_COMMAND $(MAKE)
+            #PATCH_COMMAND ${CMAKE_COMMAND} -DFILE=tools/analysis/include/base/AnalysisBase.h -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_CheckMATE.cmake
+            #COMMAND ${CMAKE_COMMAND} -DFILE=tools/fritz/include/delpheshandler/DelphesHandler.h -P ${CMAKE_CURRENT_SOURCE_DIR}/patch_CheckMATE.cmake
+# TODO: add  --with-python=EXE --with-rootsys=DIR
+            BUILD_IN_SOURCE 1
+            INSTALL_COMMAND $(MAKE) install 
+
+    )
+
+endif()
 
 
 if( INSTALL_GM2Calc )
