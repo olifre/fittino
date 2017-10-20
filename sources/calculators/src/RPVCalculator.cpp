@@ -60,7 +60,8 @@ void Fittino::RPVCalculator::CalculatePredictions() {
     const double& lambda_333 = GetInput( "lambdaPrime_333" );
     const double& vev = GetInput( "Vev" );
 
-    R_D_Relation = 1. + 0.5*pow(vev/mbR,2)*(pow(lambda_333,2) + lambda_333*lambda_323*Vcs/Vcb + lambda_333*lambda_313*Vcd/Vcb);
+    // 0.25 instead of 0.5 in literature
+    R_D_Relation = 1. + 0.25*pow(vev/mbR,2)*(pow(lambda_333,2) + lambda_333*lambda_323*Vcs/Vcb + lambda_333*lambda_313*Vcd/Vcb);
     R_D_Relation = pow(R_D_Relation,2);
     R_Dstar_Relation = R_D_Relation;
     
