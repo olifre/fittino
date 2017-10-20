@@ -65,7 +65,7 @@ Fittino::SARAHSPhenoSLHACalculator::SARAHSPhenoSLHACalculator( const ModelBase* 
     _executor = new Executor( executable, "SPheno" );
     _executor->AddArgument( _slhaInputFileName );
 
-    _executor->SetCompletionTimeout( 60 );
+    _executor->SetCompletionTimeout( 120 );
 
     Database& database = Database::GetInstance();
 
