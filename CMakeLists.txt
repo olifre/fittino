@@ -124,22 +124,29 @@ file(MAKE_DIRECTORY ${indir} )
 
 set( Fittino_INPUT_DIR ${CMAKE_INSTALL_PREFIX}/share/fittino/input )
 
-configure_file( ${PROJECT_SOURCE_DIR}/input/SModelS.in.xml ${indir} )
-configure_file( ${PROJECT_SOURCE_DIR}/input/pMSSM11.slha ${indir} )
-configure_file( ${PROJECT_SOURCE_DIR}/input/parameters.ini ${indir} )
-configure_file( ${PROJECT_SOURCE_DIR}/input/MSSMTriLnV_low.xml ${indir} )
-configure_file( ${PROJECT_SOURCE_DIR}/input/RPV.xml ${indir} )
-configure_file( ${PROJECT_SOURCE_DIR}/input/MSSMTriLnV_RK_stop.xml ${indir} )
-configure_file( ${PROJECT_SOURCE_DIR}/input/MSSMTriLnV_RD.xml ${indir} )
-configure_file( ${PROJECT_SOURCE_DIR}/input/MSSMTriLnV_RD_313.xml ${indir} )
-configure_file( ${PROJECT_SOURCE_DIR}/input/MSSMTriLnV_RD_323.xml ${indir} )
-configure_file( ${PROJECT_SOURCE_DIR}/input/MSSMTriLnV_RD_333.xml ${indir} )
+list( APPEND inputFiles ${PROJECT_SOURCE_DIR}/input/SModelS.in.xml )
+list( APPEND inputFiles ${PROJECT_SOURCE_DIR}/input/pMSSM11.slha )
+list( APPEND inputFiles ${PROJECT_SOURCE_DIR}/input/parameters.ini )
+list( APPEND inputFiles ${PROJECT_SOURCE_DIR}/input/MSSMTriLnV_low.xml  )
+list( APPEND inputFiles ${PROJECT_SOURCE_DIR}/input/RPV.xml )
+list( APPEND inputFiles ${PROJECT_SOURCE_DIR}/input/MSSMTriLnV_RK_stop.xml )
+list( APPEND inputFiles ${PROJECT_SOURCE_DIR}/input/MSSMTriLnV_RD_313.xml )
+list( APPEND inputFiles ${PROJECT_SOURCE_DIR}/input/MSSMTriLnV_RD_323.xml )
+list( APPEND inputFiles ${PROJECT_SOURCE_DIR}/input/MSSMTriLnV_RD_333.xml )
 
-configure_file( ${PROJECT_SOURCE_DIR}/input/LesHouches.in.MSSMTriLnV_low ${indir} )
+foreach( f ${inputFiles} )
+set_source_files_properties(${f} PROPERTIES HEADER_FILE_ONLY TRUE)
+configure_file( ${f} ${indir} )
+endforeach()
+
+add_custom_target( inputs SOURCES ${inputFiles} )
 
 install( DIRECTORY ${indir} DESTINATION ${Fittino_INPUT_DIR} )
 
 ADD_SUBDIRECTORY( external )
 ADD_SUBDIRECTORY( sources  )
 
-ADD_CUSTOM_TARGET( Install COMMAND ${CMAKE_MAKE_PROGRAM} install )
+# ADD_CUSTOM_TARGET( Install COMMAND ${CMAKE_MAKE_PROGRAM} install )
+
+
+
