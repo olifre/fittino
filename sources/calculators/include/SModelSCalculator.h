@@ -40,7 +40,12 @@ namespace Fittino {
       std::set<std::string> _txNames;
 
       std::vector<std::string> _missingModels_TxNames;
-      std::vector<double> _missingModels_Weights;
+      std::vector<std::string> _missingModels_Brackets;
+
+      std::vector<double> _missingModels_Weights_Total;
+      std::vector<double> _missingModels_Fractions_OutsideGrid;
+      std::vector<double> _missingModels_Fractions_InsideGrid;
+
       bool _individualMissingWeights;
 
       void ReadXML();

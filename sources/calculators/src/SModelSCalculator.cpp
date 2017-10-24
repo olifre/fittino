@@ -132,15 +132,25 @@ if( _individualMissingWeights ) {
 
 }
 
-    _numberOfMissingModelsConsidered =  ptree.get<unsigned int>( "NumberOfMissingModels", 20 );
+    _numberOfMissingModelsConsidered =  ptree.get<unsigned int>( "NumberOfMissingModels", 10 );
 
     _missingModels_TxNames.resize( _numberOfMissingModelsConsidered );
-    _missingModels_Weights.resize( _numberOfMissingModelsConsidered );
+    _missingModels_Brackets.resize( _numberOfMissingModelsConsidered );
+
+    _missingModels_Weights_Total.resize( _numberOfMissingModelsConsidered );
+    _missingModels_Fractions_OutsideGrid.resize( _numberOfMissingModelsConsidered );
+    _missingModels_Fractions_InsideGrid.resize( _numberOfMissingModelsConsidered );
+
+
 
     for( unsigned int i = 0; i< _numberOfMissingModelsConsidered ; ++i ) {
 
-        AddOutput( "MissingModels_Weight_" + std::to_string(i), _missingModels_Weights[i]  );
+        AddOutput( "MissingModels_Weight_" + std::to_string(i), _missingModels_Weights_Total[i]  );
+        AddOutput( "MissingModels_Fraction_OutsideGrid_" + std::to_string(i), _missingModels_Fractions_OutsideGrid[i]  );
+            AddOutput( "MissingModels_Fraction_InsideGrid_" + std::to_string(i), _missingModels_Fractions_InsideGrid[i]  );
+
         AddStringVariable("MissingModels_TxName_" + std::to_string(i), _missingModels_TxNames[i] );
+        AddStringVariable("MissingModels_Bracket_" + std::to_string(i), _missingModels_Brackets[i] );
 
     }
 
@@ -204,6 +214,9 @@ void Fittino::SModelSCalculator::ReadXML() {
 
         std::string txName = node.first;
         double weight = node.second.get<double>("TopoWeight_pb");
+        std::string bracket = node.second.get<std::string>("Finalstate");
+        double fractionOutsideGrid = node.second.get<double>("Outside_grid_pb") / weight;
+        double fractionInsideGrid = node.second.get<double>("No_OS_pb") / weight;
 
         if ( _txNames.count( txName ) == 0 ) {
 
@@ -220,7 +233,11 @@ void Fittino::SModelSCalculator::ReadXML() {
         if( iMissingModel < _numberOfMissingModelsConsidered ) {
 
             _missingModels_TxNames.at(iMissingModel) = txName;
-            _missingModels_Weights.at(iMissingModel) = weight;
+            _missingModels_Brackets.at(iMissingModel) = bracket;
+
+            _missingModels_Weights_Total.at(iMissingModel) = weight;
+            _missingModels_Fractions_InsideGrid.at(iMissingModel) = fractionInsideGrid;
+            _missingModels_Fractions_OutsideGrid.at(iMissingModel) = fractionOutsideGrid;
 
         }
 
