@@ -3,7 +3,7 @@
 
 <InputFile>
 
-    <VerbosityLevel>INFO</VerbosityLevel>
+    <VerbosityLevel>DEBUG</VerbosityLevel>
 
 
     <Model>
