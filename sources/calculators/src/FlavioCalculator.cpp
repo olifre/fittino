@@ -87,6 +87,14 @@ Fittino::FlavioCalculator::FlavioCalculator( const ModelBase* model, const boost
 
     AddInclusivePrediction( "R_D", "Rtaul(B->Dlnu)" );
     AddInclusivePrediction( "R_Dstar", "Rtaul(B->D*lnu)" );
+    
+    AddInclusivePrediction( "BR_Bp_K_nu_nu", "BR(B+->Knunu)" );
+    AddInclusivePrediction( "BR_Bp_pi_nu_nu", "BR(B+->pinunu)" );
+    AddInclusivePrediction( "BR_Bp_tau_nu", "BR(B+->taunu)" );
+
+
+
+    
 
     //AddInclusivePrediction( "R_K", "Rmue(B+->Kll)" );
     //AddInclusivePrediction( "R_Kstar0", "Rmue(B0->K*ll)" );
