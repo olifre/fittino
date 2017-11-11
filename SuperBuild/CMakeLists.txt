@@ -28,6 +28,7 @@ include( ExternalProject )
 set_property( DIRECTORY PROPERTY "EP_BASE" ${PROJECT_BINARY_DIR} )
 #set_property( DIRECTORY PROPERTY "EP_UPDATE_DISCONNECTED" ${PROJECT_BINARY_DIR} )
 
+option( BUILD_OFFLINE "" OFF )
 option( INSTALL_SLHAea "" OFF )
 option( INSTALL_SPheno "" OFF )
 option( INSTALL_FeynHiggs "" OFF )
@@ -37,7 +38,8 @@ option( INSTALL_LHAPDF "" OFF )
 option( INSTALL_MicrOMEGAs "" OFF )
 option( INSTALL_HepMC2 "" OFF )
 option( INSTALL_Pythia8 "" OFF )
-option( INSTALL_Python "" OFF )
+option( INSTALL_PYTHON2 "" OFF )
+option( INSTALL_PYTHON3 "Overwritten if INSTALL_PYTHON3 is ON." OFF )
 option( INSTALL_MSSMTriLnV "" OFF )
 option( INSTALL_SModelS "" OFF )
 option( INSTALL_SCYNet "" OFF )
@@ -377,8 +379,14 @@ if( INSTALL_MicrOMEGAs )
 
 endif()
 
+if( INSTALL_PYTHON2 OR INSTALL_PYTHON3 )
 
-if( INSTALL_Python OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_LHAPDF )
+    include( Add_Miniconda.cmake )
+    include( Add_CondaPackages.cmake )
+
+endif()
+
+if( INSTALL_PythonBLA OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_LHAPDF )
 
     set( miniconda Miniconda2-4.3.11 )
 
@@ -407,8 +415,8 @@ if( INSTALL_Python OR INSTALL_SModelS OR INSTALL_SCYNet OR INSTALL_LHAPDF )
 
     set( miniconda_install_command ${CMAKE_COMMAND} -E env HOME=<INSTALL_DIR> PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${BASH} <DOWNLOADED_FILE> -b -f -p <INSTALL_DIR> )
 
-    set( conda2_packages numpy scipy docutils )
-    set( pip2_packages unum pyslha argparse )
+    set( conda2_packages numpy scipy docutils argparse tensorflow )
+    set( pip2_packages unum pyslha  )
 
     if( "${CMAKE_SYSTEM_NAME}" MATCHES "Linux" )
 
