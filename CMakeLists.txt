@@ -141,7 +141,17 @@ endforeach()
 
 add_custom_target( inputs SOURCES ${inputFiles} )
 
+
 install( DIRECTORY ${indir} DESTINATION ${Fittino_INPUT_DIR} )
+
+file(GLOB_RECURSE superbuildfiles ${PROJECT_SOURCE_DIR}/SuperBuild/*  )
+
+foreach( f ${superbuildfiles} )
+set_source_files_properties(${f} PROPERTIES HEADER_FILE_ONLY TRUE)
+endforeach()
+
+add_custom_target( SuperBuild SOURCES ${superbuildfiles} )
+
 
 ADD_SUBDIRECTORY( external )
 ADD_SUBDIRECTORY( sources  )
