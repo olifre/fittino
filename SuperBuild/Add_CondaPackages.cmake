@@ -10,7 +10,7 @@ else()
 
 endif()
 
-set( install_command COMMAND ${CMAKE_COMMAND} -E env CONDA_PKGS_DIRS=. PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${miniconda_root_dir}/bin/conda remove  -y  --prefix <INSTALL_DIR> --all )
+set( install_command ${CMAKE_COMMAND} -E env CONDA_PKGS_DIRS=. PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${miniconda_root_dir}/bin/conda remove  -y  --prefix <INSTALL_DIR> --all )
 
 list( APPEND install_command COMMAND ${CMAKE_COMMAND} -E env CONDA_PKGS_DIRS=. PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${miniconda_root_dir}/bin/conda create -y --no-deps --no-update-deps --prefix <INSTALL_DIR> --file ${requirements} )
 
@@ -31,3 +31,6 @@ externalproject_add(
     INSTALL_COMMAND ""
 
 )
+
+externalproject_get_property( ${condapackages} install_dir )
+set( condapackages_root_dir ${install_dir} )

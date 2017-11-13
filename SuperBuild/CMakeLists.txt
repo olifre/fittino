@@ -67,7 +67,6 @@ if( INSTALL_GM2Calc )
 
     set( eigen3_requirement REQUIRED  )
 
-
 endif()
 
 FIND_PACKAGE( Eigen3 3.1 ${eigen3_requirement} )
@@ -383,6 +382,7 @@ if( INSTALL_PYTHON2 OR INSTALL_PYTHON3 )
 
     include( Add_Miniconda.cmake )
     include( Add_CondaPackages.cmake )
+    include( Add_PipPackages.cmake )
 
 endif()
 
