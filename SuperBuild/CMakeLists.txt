@@ -383,6 +383,7 @@ if( INSTALL_PYTHON2 OR INSTALL_PYTHON3 )
     include( Add_Miniconda.cmake )
     include( Add_CondaPackages.cmake )
     include( Add_PipPackages.cmake )
+    include( Add_SModelS.cmake )
 
 endif()
 
