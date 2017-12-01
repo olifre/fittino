@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<?xml-stylesheet type="text/xsl" href="style/InputFile.xsl"?>
+
+<InputFile>
+
+    <VerbosityLevel>INFO</VerbosityLevel>
+
+    <Model>
+
+        <ModelBase>
+
+            <Name>MSSM</Name>
+
+            <ModelParameter>
+                <Name>Minput</Name>
+                <Value>1000</Value>
+                <Error>1</Error>
+                <LowerBound>-10</LowerBound>
+                <UpperBound>10000</UpperBound>
+                <Fixed>true</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>M1</Name>
+                <Value>100</Value>
+                <Error>1</Error>
+                <LowerBound>-1000</LowerBound>
+                <UpperBound>1000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>M2</Name>
+                <Value>100</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>M3</Name>
+                <Value>2000</Value>
+                <Error>1</Error>
+                <LowerBound>-4000</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>MQ1</Name>
+                <Value>2000</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>MQ3</Name>
+                <Value>4000</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>ML1</Name>
+                <Value>440</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>2000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>ML3</Name>
+                <Value>440</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>MA0</Name>
+                <Value>2070</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>A</Name>
+                <Value>790</Value>
+                <Error>1</Error>
+                <LowerBound>-5000</LowerBound>
+                <UpperBound>5000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>Mu</Name>
+                <Value>550</Value>
+                <Error>1</Error>
+                <LowerBound>-5000</LowerBound>
+                <UpperBound>5000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>TanBeta</Name>
+                <Value>37.6</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>60</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>Mt</Name>
+                <Value>173.3</Value>
+                <Error>1</Error>
+                <LowerBound>130</LowerBound>
+                <UpperBound>215</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <Observables>
+            </Observables>
+            <CovarianceMatrices>
+            </CovarianceMatrices>
+
+            <Calculators>
+
+                <SPhenoCalculator>
+
+                    <Name>SPhenoCalculator</Name>
+
+                    <Executable>/lustre/user/bruegge/buildfittino/Source/SPheno-4.0.3/bin/SPheno</Executable>
+                    <InputFile>
+                        <Template>/lustre/user/bruegge/buildfittino/Install/Fittino_Python2/share/fittino/input/pMSSM11.slha</Template>
+                        <Name>pMSSM11.slha</Name>
+                        <Quantity>
+                            <Name>[Minput]</Name>
+                            <Value>[Minput]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[M1]</Name>
+                            <Value>[M1]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[M2]</Name>
+                            <Value>[M2]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[M3]</Name>
+                            <Value>[M3]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[A]</Name>
+                            <Value>[A]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[Mu]</Name>
+                            <Value>[Mu]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[MA0]</Name>
+                            <Value>[MA0]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[ML1]</Name>
+                            <Value>[ML1]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[ML3]</Name>
+                            <Value>[ML3]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[MQ1]</Name>
+                            <Value>[MQ1]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[MQ3]</Name>
+                            <Value>[MQ3]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[TanBeta]</Name>
+                            <Value>[TanBeta]</Value>
+                        </Quantity>
+                    </InputFile>
+                    <OutputFile>SPheno.spc</OutputFile>
+                </SPhenoCalculator>
+
+               <MadGraph5Calculator>
+
+                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>
+	        	<MGinputFile>/lustre/user/bruegge/fittinorun/MGgogo.txt</MGinputFile>	       
+	        	<BannerFile>/lustre/user/bruegge/fittinorun/pmssm11_gogo/Events/run_01/run_01_tag_1_banner.txt</BannerFile>
+			<EventFile>/lustre/user/bruegge/fittinorun/pmssm11_gogo/Events/run_01/unweighted_events.lhe.gz</EventFile>	       
+			<SLHAFile>SPheno.spc</SLHAFile>	       
+                </MadGraph5Calculator>
+                <MadGraph5Calculator>
+
+                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>
+	        	<MGinputFile>/lustre/user/bruegge/fittinorun/MGb1b1~.txt</MGinputFile>	       
+	        	<BannerFile>/lustre/user/bruegge/fittinorun/pmssm11_b1b1~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>	       
+			<SLHAFile>SPheno.spc</SLHAFile>	       
+			<EventFile>/lustre/user/bruegge/fittinorun/pmssm11_b1b1/Events/run_01/unweighted_events.lhe.gz</EventFile>	       
+                </MadGraph5Calculator>
+
+                <MadGraph5Calculator>
+
+                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>
+	        	<MGinputFile>/lustre/user/bruegge/fittinorun/MGb2b2~.txt</MGinputFile>	       
+	        	<BannerFile>/lustre/user/bruegge/fittinorun/pmssm11_b2b2~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>	       
+			<SLHAFile>SPheno.spc</SLHAFile>	       
+			<EventFile>/lustre/user/bruegge/fittinorun/pmssm11_b2b2~/Events/run_01/unweighted_events.lhe.gz</EventFile>	       
+                </MadGraph5Calculator>
+                <MadGraph5Calculator>
+
+                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>
+	        	<MGinputFile>/lustre/user/bruegge/fittinorun/MGt1t1~.txt</MGinputFile>	       
+	        	<BannerFile>/lustre/user/bruegge/fittinorun/pmssm11_t1t1~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>	       
+			<SLHAFile>SPheno.spc</SLHAFile>	       
+			<EventFile>/lustre/user/bruegge/fittinorun/pmssm11_t1t1~/Events/run_01/unweighted_events.lhe.gz</EventFile>	       
+                </MadGraph5Calculator>
+                <MadGraph5Calculator>
+
+                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>
+	        	<MGinputFile>/lustre/user/bruegge/fittinorun/MGt2t2~.txt</MGinputFile>	       
+	        	<BannerFile>/lustre/user/bruegge/fittinorun/pmssm11_t2t2~/Events/run_01/run_01_tag_1_banner.txt</BannerFile>	       
+			<SLHAFile>SPheno.spc</SLHAFile>	       
+			<EventFile>/lustre/user/bruegge/fittinorun/pmssm11_t2t2~/Events/run_01/unweighted_events.lhe.gz</EventFile>	       
+                </MadGraph5Calculator>
+                <MadGraph5Calculator>
+
+                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>
+	        	<MGinputFile>/lustre/user/bruegge/fittinorun/MGgosq.txt</MGinputFile>	       
+	        	<BannerFile>/lustre/user/bruegge/fittinorun/pmssm11_gosq/Events/run_01/run_01_tag_1_banner.txt</BannerFile>	       
+			<SLHAFile>SPheno.spc</SLHAFile>	       
+			<EventFile>/lustre/user/bruegge/fittinorun/pmssm11_gosq/Events/run_01/unweighted_events.lhe.gz</EventFile>	       
+                </MadGraph5Calculator>
+                <MadGraph5Calculator>
+
+                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>
+	        	<MGinputFile>/lustre/user/bruegge/fittinorun/MGsqasq.txt</MGinputFile>	       
+	        	<BannerFile>/lustre/user/bruegge/fittinorun/pmssm11_sqasq/Events/run_01/run_01_tag_1_banner.txt</BannerFile>	       
+			<SLHAFile>SPheno.spc</SLHAFile>	       
+			<EventFile>/lustre/user/bruegge/fittinorun/pmssm11_sqasq/Events/run_01/unweighted_events.lhe.gz</EventFile>	       
+                </MadGraph5Calculator>
+                <MadGraph5Calculator>
+
+                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC</Executable>
+	        	<MGinputFile>/lustre/user/bruegge/fittinorun/MGsqsq.txt</MGinputFile>	       
+	        	<BannerFile>/lustre/user/bruegge/fittinorun/pmssm11_sqsq/Events/run_01/run_01_tag_1_banner.txt</BannerFile>	       
+			<SLHAFile>SPheno.spc</SLHAFile>	       
+			<EventFile>/lustre/user/bruegge/fittinorun/pmssm11_sqsq/Events/run_01/unweighted_events.lhe.gz</EventFile>	       
+                </MadGraph5Calculator>   
+	
+   <!--             <Prospino>
+			<Executable>/lustre/user/bruegge/prospino/prospino_2.run</Executable>
+			<ProOutput>/luste/user/bruegge/prospino/prospino.dat</ProOutput>
+			<SLHAFile>SPheno.spc</SLHAFile>
+                </Prospino>   -->
+
+   <!--		<NLLFast2Calculator>
+			<Directory>/lustre/user/bruegge/fittinoprotected/tools/nll-Fast</Directory>
+			<Executable>/lustre/user/bruegge/fittinoprotected/tools/nll-Fast/nllfast-3.1</Executable>
+			<Mass_g>[SPheno_Mass_~g]</Mass_g>
+			<Mass_s>[SPheno_Mass_~uR]</Mass_s>
+			<Mass_b1>[SPheno_Mass_~b1]</Mass_b1>
+			<Mass_b2>[SPheno_Mass_~b2]</Mass_b2>
+			<Mass_t1>[SPheno_Mass_~t1]</Mass_t1>
+			<Mass_t2>[SPheno_Mass_~t2]</Mass_t2>
+		</NLLFast2Calculator>   -->
+
+
+  <!--              <CheckMATE3Calculator>
+
+                    
+		    <old_result>/lustre/user/bruegge/fittinorun/checkmate/evaluation/total_results.txt</old_result>
+		    <results>/lustre/user/bruegge/fittinorun/checkmate/evaluation/total_results.txt</results>
+                    <Executable>/lustre/user/bruegge/fittinoprotected/tools/CheckMATE/CheckMATE-2.0.11/bin/CheckMATE</Executable>
+                    <InputFile>
+                        <Template>/lustre/user/bruegge/cm_input</Template>
+                        <Name>cm_input</Name>
+                        <Quantity>
+                            <Name>[XSect_sqsq]</Name>
+                            <Value>[XSsqsq]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[XSect_sqsq_err]</Name>
+                            <Value>0</Value>
+                        </Quantity>  
+                        <Quantity>   
+                            <Name>[XSgogo]</Name>
+                            <Value>[XSgogo]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[XSect_gogo_err]</Name>
+                            <Value>3</Value>
+                        </Quantity>
+                         <Quantity>
+                            <Name>[XSect_sqasq]</Name>
+                            <Value>[XSsqasq]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[XSect_sqasq_err]</Name>
+                            <Value>0</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[XSect_gosq]</Name>
+                            <Value>[XSgosq]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[XSect_gosq_err]</Name>
+                            <Value>0</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[XSect_st1ast1]</Name>
+                            <Value>[XSt1t1~]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[XSect_st1ast1_err]</Name>
+                            <Value>0</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[XSect_st2ast2]</Name>
+                            <Value>[XSt2t2~]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[XSect_st2ast2_err]</Name>
+                            <Value>0</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[XSect_sb1asb1]</Name>
+                            <Value>[XSb1b1~]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[XSect_sb1asb1_err]</Name>
+                            <Value>0</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[XSect_sb2asb2]</Name>
+                            <Value>[XSb2b2~]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[XSect_sb2asb2_err]</Name>
+                            <Value>0</Value>
+                        </Quantity>  
+                    </InputFile>
+                </CheckMATE3Calculator>    -->
+
+
+            </Calculators>
+
+
+        </ModelBase>
+
+    </Model>
+
+    <Tool>
+
+        <MarkovChainSampler>
+            <NumberOfIterations>1</NumberOfIterations>
+        </MarkovChainSampler>
+
+    </Tool>
+
+</InputFile>
+
