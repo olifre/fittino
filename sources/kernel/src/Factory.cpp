@@ -63,6 +63,10 @@
 #include "LinearInterpolationCalculator.h"
 #include "MadGraphCalculator.h"
 #include "MadGraph2Calculator.h"
+#include "MadGraph5Calculator.h"
+#include "ProspinoCalculator.h"
+#include "CheckMATE3Calculator.h"
+#include "NLLFast2Calculator.h"
 #include "MarkovChainSampler.h"
 #include "MicromegasCalculator.h"
 #include "MinuitOptimizer.h"
@@ -380,6 +384,26 @@ Fittino::CalculatorBase* const Fittino::Factory::CreateCalculator( const std::st
 
         return new MadGraph2Calculator( model, ptree );
     }
+
+    else if ( type == "MadGraph5Calculator" ) {
+
+        return new MadGraph5Calculator( model, ptree );
+   }
+    else if ( type == "NLLFast2Calculator" ) {
+
+        return new NLLFast2Calculator( model, ptree );
+   }
+ 
+   else if ( type == "ProspinoCalculator" ) {
+
+        return new ProspinoCalculator( model, ptree );
+    }
+   
+   else if ( type == "CheckMATE3Calculator" ) {
+
+        return new CheckMATE3Calculator( model, ptree );
+    }
+
     else if ( type == "MicromegasCalculator" ) {
 
 #ifdef MICROMEGAS
