@@ -1,0 +1,6 @@
+import model mssm_v4
+generate p p > t1 t1~
+output pmssm11_t1t1~
+launch
+/lustre/user/bruegge/fittinorun/SPheno.spc
+

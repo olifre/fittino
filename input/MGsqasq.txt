@@ -1,0 +1,9 @@
+import model mssm_v4
+define sqa = ul ur dl dr cl cr sl sr b1 b2 t1 t2
+define asqa = ul~ ur~ dl~ dr~ cl~ cr~ sl~ sr~ b1~ b2~ t1~ t2~
+generate p p > sqa asqa
+
+output pmssm11_sqasq
+launch
+/lustre/user/bruegge/fittinorun/SPheno.spc
+
