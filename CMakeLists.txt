@@ -36,15 +36,13 @@ SET( CMAKE_SKIP_BUILD_RPATH            FALSE                            )
 SET( CMAKE_BUILD_WITH_INSTALL_RPATH    FALSE                            )
 SET( CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE                             )
 
-option( USE_PYTHON3 "" OFF )
-
 SET( FEYNHIGGS_QUAD TRUE CACHE BOOL "" )
 
 ENABLE_LANGUAGE( CXX )
 ENABLE_LANGUAGE( C )
 ENABLE_LANGUAGE( Fortran )
 
-FIND_PACKAGE( Boost 1.47.0 COMPONENTS filesystem system thread regex chrono REQUIRED )
+FIND_PACKAGE( Boost 1.47.0 REQUIRED COMPONENTS filesystem system thread regex chrono )
 FIND_PACKAGE( ROOT 5.20.00 REQUIRED                                                  )
 FIND_PACKAGE( GSL                                                                    )
 FIND_PACKAGE( HepMC                                                                  )
@@ -66,30 +64,26 @@ FIND_PACKAGE( Doxygen                                                           
 FIND_PACKAGE( GM2Calc                                                                )
 FIND_PACKAGE( Eigen3 3.1                                                             )
 FIND_PACKAGE( SUPERISO                                                               )
+find_package( PythonInterp )
+FIND_PACKAGE( PythonLibs )
 
-if( USE_PYTHON3 )
+if( PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND AND PYTHON_VERSION_STRING EQUAL PYTHONLIBS_VERSION_STRING )
 
-    find_package(PythonInterp 3)
-    FIND_PACKAGE( PythonLibs 3                                                     )
+    if( PYTHON_VERSION_MAJOR EQUAL "2" AND PYTHON_VERSION_MINOR EQUAL "7" )
 
-    IF( PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND AND PYTHON_VERSION_STRING EQUAL PYTHONLIBS_VERSION_STRING  )
+        FIND_PACKAGE( Boost 1.47.0 REQUIRED COMPONENTS filesystem system thread regex chrono OPTIONAL_COMPONENTS python )
+
+        if( Boost_PYTHON_FOUND )
+
+            set( PYTHON2_FOUND 1 )
+
+        endif()
+
+    elseif( PYTHON_VERSION_MAJOR EQUAL "3" )
 
         set( PYTHON3_FOUND 1 )
 
-    ENDIF()
-
-else(  )
-
-    find_package(PythonInterp 2.7 EXACT )
-    FIND_PACKAGE( PythonLibs 2.7                                                     )
-
-    FIND_PACKAGE( Boost 1.47.0 COMPONENTS filesystem system thread python chrono regex )
-
-    IF( PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND AND Boost_PYTHON_FOUND AND PYTHON_VERSION_STRING EQUAL PYTHONLIBS_VERSION_STRING  )
-
-        set( PYTHON2_FOUND 1 )
-
-    ENDIF()
+    endif()
 
 endif()
 
