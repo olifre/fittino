@@ -32,37 +32,45 @@
      {
 
         _executable = ptree.get<std::string>( "Executable" );
+//	_executable2 = ptree.get<std::string>( "Executable" );
 //        _inputFile = ptree.get<std::string>( "InputFile" );
         _first = true;
+	_inputfile_test = ptree.get<std::string> ( "InputFileTest" );
 	_CM_tot_result = ptree.get<std::string>( "results" );
 	_old_result = ptree.get<std::string>( "old_result" );
     //    AddOutput( "ErrorIsDominatedByMonteCarloStatistics", _errorIsDominatedByMonteCarloStatistics );
     //    AddOutput( "TheModelCouldBeExcludedIfYouProvidedMoreInputEvents", _theModelCouldBeExcludedIfYouProvidedMoreInputEvents );
     //    AddOutput( "Excluded", _excluded ); 
+         
+    	Executor executor2( _executable, "CheckMATE" );
+    	executor2.AddArgument( _inputfile_test );
 
+       executor2.Execute();
 
   
         std::string dummy, temp1, temp2;
         std::string line;
-        double temp3 = 0, temp4=0, temp5=0, temp6=0, temp7=0, temp8=0, temp9=0;
+        double temp3 = 0, temp4=0, temp5=0, temp6=0, temp7=0, temp8=0, temp9=0, temp10=0;
          std::vector<std::string> analysis;
          std::vector<std::string> sr;
-         std::ifstream infile(_old_result);
+//     	 std::string analysis_selection;
+//std::vector<std::string> parts;
+//std::ifstream inputfile( _inputFile.GetName() ); 
+//boost::split( parts, inputfile, boost::is_any_of("  ") );
+        std::ifstream infile(_old_result);
         int n = 0;
               while(std::getline(infile, line)){
                   if(n>=1){
                     if(line.empty())  break ;
         
            std::istringstream ss(line);
-         ss>>temp1>>temp2>>temp3>>temp4>>dummy>>dummy>>dummy>>dummy>>temp5>>temp6>>temp7>>temp8>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>temp9;
+         ss>>temp1>>temp2>>temp3>>temp4>>dummy>>dummy>>dummy>>dummy>>temp5>>temp9>>dummy;
          analysis.push_back(temp1);
          sr.push_back(temp2);
-            
             }
           n+=1;
          }                                                                                                                                                                                                                                                                                             infile.close();
        
-
 std::string output;
 int u=0;
 for(const auto& elem : analysis ) {
@@ -75,8 +83,23 @@ for(const auto& elem : analysis ) {
     AddOutput( output + "_si_er_tot" );
     AddOutput( output + "_tot_mc_ev"   );
     AddOutput( output + "_likelihood"   );
-   std::cout<< output << std::endl;
+    AddOutput( output + "_r_value"   );
+
+       SetOutput( output + "_tot_mc_ev"  , 0  );
+    SetOutput( output + "_tot_norm_ev"  , 0 );
+    SetOutput( output + "_si_norm_ev"  , 0  );
+    SetOutput( output + "_si_er_stat"  , 0  );
+    SetOutput( output + "_si_er_syst"  , 0  );
+    SetOutput( output + "_si_er_tot"  , 0  );
+    SetOutput( output + "_likelihood"  , 0  );
+    SetOutput( output + "_r_value"  , 0  );
+
+
+
 u +=1;
+
+    
+
 }
 
 
@@ -91,7 +114,7 @@ void Fittino::CheckMATE3Calculator::ReadResult() {
 
 	std::string dummy, temp1, temp2;
         std::string line;
-        double temp3 = 0, temp4=0, temp5=0, temp6=0, temp7=0, temp8=0, temp9=0;
+        double temp3 = 0, temp4=0, temp5=0, temp6=0, temp7=0, temp8=0, temp9=0, temp10=0;
         //int temp4 =0;
         std::vector<std::string> analysis;
         std::vector<std::string> sr;
@@ -102,6 +125,7 @@ void Fittino::CheckMATE3Calculator::ReadResult() {
         std::vector<double> si_er_syst;
         std::vector<double> si_er_tot;
         std::vector<double> likelihood;
+	std::vector<double> r_value;
         //std::vector<int> SQFam;
         std::ifstream infile(_CM_tot_result);
 	int n = 0;
@@ -110,7 +134,7 @@ void Fittino::CheckMATE3Calculator::ReadResult() {
          if(line.empty())  break ;
 
             std::istringstream ss(line);
-            ss>>temp1>>temp2>>temp3>>temp4>>dummy>>dummy>>dummy>>dummy>>temp5>>temp6>>temp7>>temp8>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>temp9;
+            ss>>temp1>>temp2>>temp3>>temp4>>dummy>>dummy>>dummy>>dummy>>temp5>>temp6>>temp7>>temp8>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>temp10>>dummy>>temp9;
             analysis.push_back(temp1);
             sr.push_back(temp2);
             tot_mc_ev.push_back(temp3);
@@ -120,6 +144,7 @@ void Fittino::CheckMATE3Calculator::ReadResult() {
 	    si_er_syst.push_back(temp7);
 	    si_er_tot.push_back(temp8);
 	    likelihood.push_back(temp9);
+	    r_value.push_back(temp10);
 	   }
             n+=1;
 }
@@ -162,6 +187,7 @@ for(const auto& elem : analysis ) {
     SetOutput( output3 + "_si_er_syst"  , si_er_syst[p]  );
     SetOutput( output3 + "_si_er_tot"  , si_er_tot[p]  );
     SetOutput( output3 + "_likelihood"  , likelihood[p]  ); 
+    SetOutput( output3 + "_r_value"  , r_value[p]  ); 
    std::cout<< tot_mc_ev[p] << std::endl;
   p+=1 ;
 }
@@ -181,7 +207,7 @@ void Fittino::CheckMATE3Calculator::CalculatePredictions() {
     Executor executor( _executable, "CheckMATE" );
     executor.AddArgument( _inputFile.GetName() );
 //    executor.AddArgument( _inputFile );
-//    executor.Execute();
+   executor.Execute();
 
     ReadResult();
 

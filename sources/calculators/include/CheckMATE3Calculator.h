@@ -29,8 +29,7 @@
 
 namespace Fittino{
 
-    class CheckMATE3Calculator : public CalculatorBase {
-
+   class CheckMATE3Calculator : public CalculatorBase{
         public:
             CheckMATE3Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree);
             ~CheckMATE3Calculator();
@@ -50,6 +49,7 @@ namespace Fittino{
             InputFile _inputFile;
             std::string _CM_tot_result;
             std::string _old_result;
+	    std::string _inputfile_test;
         private:
             void ReadResult();
 

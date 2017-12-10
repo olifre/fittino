@@ -47,12 +47,12 @@ Fittino::MadGraph5Calculator::MadGraph5Calculator( const ModelBase* model, const
 
 
 {
-//  _inputFile = new InputFile( ptree.get_child("InputFile"), model );
     _BannerFile = ptree.get<std::string>("BannerFile");
     _MGinputFile = ptree.get<std::string>("MGinputFile");
    _executor.AddArgument(_MGinputFile);
 
-
+AddOutput("XS", _XS);
+/*
 
 boost::regex gogo (".*gogo.*");
 
@@ -131,7 +131,7 @@ AddOutput("XSsqasq", _XSsqasq);
 
 
 }
-
+*/
 
 }
 
@@ -140,11 +140,7 @@ Fittino::MadGraph5Calculator::~MadGraph5Calculator() {
 }
 
 void Fittino::MadGraph5Calculator::CalculatePredictions() {
-// _inputFile.Write();
   _executor.Execute();
-Executor executor2("/lustre/user/bruegge/fittinoprotected/tools/MG5_aMC_v2_6_0/bin/mg5_aMC","mg5_aMC");
-executor2.AddArgument("/lustre/user/bruegge/fittinoprotected/tools/MadGraphtest/SMtest.txt");
-//executor2.Execute();
 
   boost::property_tree::ptree bannerFile;
   boost::property_tree::read_xml( _BannerFile, bannerFile );
@@ -154,7 +150,14 @@ executor2.AddArgument("/lustre/user/bruegge/fittinoprotected/tools/MadGraphtest/
   boost::split( parts, info, boost::is_any_of( "\n,:" ) );
 
 
+  _XS = stod( parts[4] );
+  _nevents = stod( parts[2] );
+std:: string gunzipfile;
+gunzipfile = "gunzip " + _EventFile;
+const char *cstr = gunzipfile.c_str();
 
+std::system(cstr);
+/*
 boost::regex gogo (".*gogo.*");
 
 
@@ -278,6 +281,7 @@ const char *cstr = gunzipfile.c_str();
 
 std::system(cstr);
 }
+*/
 /*
   std::string slha = bannerFile.get<std::string>("LesHouchesEvents.header.slha");
   _slhaOutputDataStorage->Clear();

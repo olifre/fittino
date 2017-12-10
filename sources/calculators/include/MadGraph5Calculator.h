@@ -71,7 +71,7 @@ namespace Fittino {
      std::string _BannerFile;
       double _weight;
       double _nevents;
-      double _XSgogo;
+      double _XS;
       double _XSb1b1;
       double _XSb2b2;
       double _XSt1t1;
