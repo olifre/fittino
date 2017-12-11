@@ -78,7 +78,7 @@ if( PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND AND PYTHON_VERSION_STRING EQUAL PYTH
 
         endif()
 
-    elseif( PYTHON_VERSION_MAJOR EQUAL "3" )
+    elseif( PYTHON_VERSION_MAJOR EQUAL "3" AND PYTHON_VERSION_MINOR GREATER_EQUAL "5" )
 
         set( PYTHON3_FOUND 1 )
 
@@ -109,6 +109,7 @@ add_subdirectory( logo )
 add_custom_target( README SOURCES README )
 
 set( sbsrc )
+list( APPEND sbsrc SuperBuild/CMakeLists.txt )
 list( APPEND sbsrc SuperBuild/CMake )
 list( APPEND sbsrc SuperBuild/createSource_MSSMTriLnV.m )
 list( APPEND sbsrc SuperBuild/Flavio_patch )
