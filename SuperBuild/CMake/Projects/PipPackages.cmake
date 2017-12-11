@@ -31,11 +31,12 @@ externalproject_add(
     DOWNLOAD_COMMAND ${download_command}
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
-    INSTALL_COMMAND ""
+    INSTALL_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/Flavio_patch/flha.py <INSTALL_DIR>/${libs}/flavio/io/flha.py
 
 )
 
 ExternalProject_Add_StepDependencies( ${PipPackages} download ${requirements} )
+ExternalProject_Add_StepDependencies( ${PipPackages} install ${CMAKE_CURRENT_SOURCE_DIR}/Flavio_patch/flha.py )
 
 externalproject_get_property( ${PipPackages} install_dir )
 
