@@ -5,7 +5,6 @@ enable_language( Fortran )
 externalproject_add(
 
     ${SPheno}
-    DEPENDS ${SLHAea}
     URL http://www.hepforge.org/archive/spheno/SPheno-4.0.3.tar.gz
     URL_MD5 64787d6c8ce03cac38aec53d34ac46ad
     PATCH_COMMAND ${CMAKE_COMMAND} -DMAKEFILE=src/Makefile -P ${CMAKE_SOURCE_DIR}/CMake/Scripts/patch_SPheno.cmake
