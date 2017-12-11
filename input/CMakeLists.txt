@@ -4,12 +4,9 @@ list( APPEND src style )
 list( APPEND src external )
 list( APPEND src steering )
 list( APPEND src prospino_main.f90 )
-
 add_custom_target( input SOURCES ${src} )
 
-set( builddir ${PROJECT_BINARY_DIR}/input )
-
-file( COPY ${PROJECT_SOURCE_DIR}/input DESTINATION ${builddir} PATTERN ".svn" EXCLUDE )
+file( COPY ${PROJECT_SOURCE_DIR}/input DESTINATION ${PROJECT_BINARY_DIR} PATTERN ".svn" EXCLUDE )
 #file(MAKE_DIRECTORY ${builddir} )
 
 list( APPEND inputFiles steering/SModelS.in.xml )
@@ -23,13 +20,13 @@ list( APPEND inputFiles steering/MSSMTriLnV_RD_333.xml )
 list( APPEND inputFiles external/SModelS/parameters.ini )
 list( APPEND inputFiles external/SPheno/pMSSM11.slha )
 
+set( Fittino_INPUT_DIR ${CMAKE_INSTALL_PREFIX}/share/fittino/input )
+
 foreach( f ${inputFiles} )
 
     set_source_files_properties(${f} PROPERTIES HEADER_FILE_ONLY TRUE)
-    configure_file( ${f} ${builddir}/${f} )
+    configure_file( ${f} ${PROJECT_BINARY_DIR}/input/${f} )
 
 endforeach()
 
-install( DIRECTORY ${builddir} DESTINATION share/fittino/input )
-
-set( Fittino_INPUT_DIR ${CMAKE_INSTALL_PREFIX}/share/fittino/input )
+install( DIRECTORY ${PROJECT_BINARY_DIR}/input DESTINATION share/fittino )
