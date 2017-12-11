@@ -31,6 +31,12 @@ if( INSTALL_SPheno )
 
 endif()
 
+if( INSTALL_MSSMTriLnV )
+
+    include( Projects/MSSMTriLnV )
+
+endif()
+
 if( INSTALL_Fittino )
 
 include( Projects/Fittino)

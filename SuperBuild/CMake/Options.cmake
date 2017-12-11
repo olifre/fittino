@@ -14,6 +14,9 @@ add_feature_info( INSTALL_SLHAea INSTALL_SLHAea "SLHAea is required for using th
 option( INSTALL_SPheno "Install SPheno" OFF )
 add_feature_info( INSTALL_SPheno INSTALL_SPheno "SPheno is used by the SPhenoCalculator of Fittino." )
 
+cmake_dependent_option( INSTALL_MSSMTriLnV "Install MSSMTriLnV" OFF "INSTALL_SPheno" OFF )
+add_feature_info( INSTALL_MSSMTriLnV INSTALL_MSSMTriLnV "This option depends on the option INSTALL_SPheno to be ON." )
+
 cmake_dependent_option( INSTALL_SModelS "Install SModelS" OFF "INSTALL_Python2" OFF )
 add_feature_info( INSTALL_SModelS INSTALL_SModelS "SModelS is used by the SModelsCalculator of Fittino. This option depends on the option INSTALL_Python2 to be ON. It requires the package UnixCommands to be found in order to untar the database of SModelS." )
 
@@ -21,5 +24,5 @@ cmake_dependent_option( INSTALL_SCYNet "Install SCYNet" OFF "INSTALL_Python2" OF
 add_feature_info( INSTALL_SCYNet INSTALL_SCYNet "SCYNet is used by the SCYNetCalculator of Fittino. This option depends on the option INSTALL_Python2 to be ON.")
 
 
-option( INSTALL_Fittino "Install Fittino" ON )
+option( INSTALL_Fittino "Install Fittino" OFF )
 add_feature_info( INSTALL_Fittino INSTALL_Fittino "" )
