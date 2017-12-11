@@ -102,19 +102,14 @@ add_subdirectory( external )
 add_subdirectory( sources )
 add_subdirectory( input )
 add_subdirectory( doc )
-
-# todo look for astyle
-add_custom_target( stylish ${PROJECT_SOURCE_DIR}/devel/apply_style_guidelines.sh ${PROJECT_SOURCE_DIR}  )
+add_subdirectory( devel )
 
 # make sure that all directories & files show up in IDEs
 add_custom_target( CMakeModules SOURCES CMakeModules )
 add_custom_target( SuperBuild SOURCES SuperBuild )
-add_custom_target( input SOURCES ${PROJECT_SOURCE_DIR}/input )
-add_custom_target( doc SOURCES doc )
-add_custom_target( devel SOURCES devel )
 add_custom_target( logo SOURCES logo )
-add_custom_target( README SOURCES README )
 add_custom_target( external SOURCES external )
+add_custom_target( README SOURCES README )
 
 # maybe needed for some IDEs in order to be able to run install command
 # add_custom_target( Install COMMAND ${CMAKE_MAKE_PROGRAM} install )

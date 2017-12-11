@@ -1,3 +1,5 @@
+add_custom_target( input SOURCES ${PROJECT_SOURCE_DIR}/input )
+
 set( builddir ${PROJECT_BINARY_DIR}/input )
 
 file( COPY ${PROJECT_SOURCE_DIR}/input DESTINATION ${builddir} PATTERN ".svn" EXCLUDE )

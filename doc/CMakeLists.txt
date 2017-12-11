@@ -1,3 +1,5 @@
+add_custom_target( doc SOURCES ${PROJECT_SOURCE_DIR}/doc )
+
 If( DOXYGEN_FOUND )
 
     CONFIGURE_FILE( ${PROJECT_SOURCE_DIR}/doc/Doxyfile.in ${PROJECT_BINARY_DIR}/Doxyfile @ONLY )
