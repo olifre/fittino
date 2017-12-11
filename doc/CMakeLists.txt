@@ -1,4 +1,12 @@
-add_custom_target( doc SOURCES ${PROJECT_SOURCE_DIR}/doc )
+set( src )
+
+list( APPEND src Doxyfile )
+list( APPEND src Doxyfile.in )
+list( APPEND src html )
+list( APPEND src images )
+list( APPEND src StyleGuide.dox )
+
+add_custom_target( doc SOURCES ${src} )
 
 If( DOXYGEN_FOUND )
 

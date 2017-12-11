@@ -98,18 +98,25 @@ IF( SMODELSTOOLS_FOUND )
 
 endif()
 
-add_subdirectory( external )
+add_subdirectory( CMakeModules )
 add_subdirectory( sources )
+add_subdirectory( external )
 add_subdirectory( input )
 add_subdirectory( doc )
 add_subdirectory( devel )
+add_subdirectory( logo )
 
-# make sure that all directories & files show up in IDEs
-add_custom_target( CMakeModules SOURCES CMakeModules )
-add_custom_target( SuperBuild SOURCES SuperBuild )
-add_custom_target( logo SOURCES logo )
-add_custom_target( external SOURCES external )
 add_custom_target( README SOURCES README )
+
+set( sbsrc )
+list( APPEND sbsrc SuperBuild/CMake )
+list( APPEND sbsrc SuperBuild/createSource_MSSMTriLnV.m )
+list( APPEND sbsrc SuperBuild/Flavio_patch )
+list( APPEND sbsrc SuperBuild/MSSMTriLnV_patch )
+list( APPEND sbsrc SuperBuild/Requirements )
+list( APPEND sbsrc SuperBuild/SPheno_patch )
+list( APPEND sbsrc SuperBuild/init.cmake )
+add_custom_target( SuperBuild SOURCES ${sbsrc} )
 
 # maybe needed for some IDEs in order to be able to run install command
 # add_custom_target( Install COMMAND ${CMAKE_MAKE_PROGRAM} install )

@@ -9,4 +9,4 @@ list( APPEND dev_src FittinoClassTemplate.cpp )
 list( APPEND dev_src FittinoOptimizerTemplate.h )
 list( APPEND dev_src FittinoOptimizerTemplate.cpp )
 
-add_custom_target( dev SOURCES  ${dev_src} )
+add_custom_target( dev SOURCES ${dev_src} )
