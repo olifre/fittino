@@ -1,4 +1,4 @@
-# $Id$ #
+# $Id: FindSPHENO.cmake 2790 2017-04-24 13:50:25Z sarrazin $ #
 
 ################################################################################
 #                                                                              #
@@ -20,9 +20,20 @@
 
 INCLUDE(FindPackageHandleStandardArgs)
 
-FIND_PROGRAM(SPHENO_EXECUTABLE SPheno HINTS ${SPHENO_INSTALLATION_PATH} )
+FIND_PROGRAM(SPheno_EXECUTABLE NAMES SPheno HINTS ${SPheno_ROOT_DIR}/bin )
+FIND_PROGRAM(SPheno_MSSMTriLnV_EXECUTABLE NAMES SPhenoMSSMTriLnV HINTS ${SPheno_ROOT_DIR}/bin )
 
-FIND_PACKAGE_HANDLE_STANDARD_ARGS(SPHENO DEFAULT_MSG SPHENO_EXECUTABLE )
+if( SPheno_MSSMTriLnV_EXECUTABLE )
+
+    set( SPheno_MSSMTriLnV_FOUND TRUE )
+
+else()
+
+    set( SPheno_MSSMTriLnV_FOUND FALSE )
+
+endif()
+
+FIND_PACKAGE_HANDLE_STANDARD_ARGS( SPheno REQUIRED_VARS SPheno_EXECUTABLE HANDLE_COMPONENTS )
 
 
 
