@@ -86,18 +86,6 @@ if( PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND AND PYTHON_VERSION_STRING EQUAL PYTH
 
 endif()
 
-
-# todo look for astyle
-ADD_CUSTOM_TARGET( stylish ALL ${PROJECT_SOURCE_DIR}/devel/apply_style_guidelines.sh ${PROJECT_SOURCE_DIR}  )
-
-If( DOXYGEN_FOUND )
-
-    CONFIGURE_FILE( ${PROJECT_SOURCE_DIR}/doc/Doxyfile.in ${PROJECT_BINARY_DIR}/Doxyfile @ONLY )
-    ADD_CUSTOM_TARGET( doc ${DOXYGEN_EXECUTABLE} WORKING_DIRECTORY ${PROJECT_BINARY_DIR} )
-    INSTALL( DIRECTORY "${PROJECT_BINARY_DIR}/html" DESTINATION share/doc/fittino OPTIONAL )
-
-ENDIF( DOXYGEN_FOUND )
-
 IF( SPHENO_FOUND )
 
     add_definitions( -DSPHENO_EXECUTABLE="${SPHENO_EXECUTABLE}" )
@@ -110,20 +98,24 @@ IF( SMODELSTOOLS_FOUND )
 
 endif()
 
-file( GLOB superbuildfiles ${PROJECT_SOURCE_DIR}/SuperBuild/* )
-
-foreach( f ${superbuildfiles} )
-set_source_files_properties(${f} PROPERTIES HEADER_FILE_ONLY TRUE)
-message(STATUS "superbuildfile=${f}" )
-endforeach()
-
-add_custom_target( SuperBuild SOURCES ${superbuildfiles} )
-
-
 add_subdirectory( external )
 add_subdirectory( sources )
 add_subdirectory( input )
+add_subdirectory( doc )
 
-# ADD_CUSTOM_TARGET( Install COMMAND ${CMAKE_MAKE_PROGRAM} install )
+# todo look for astyle
+add_custom_target( stylish ${PROJECT_SOURCE_DIR}/devel/apply_style_guidelines.sh ${PROJECT_SOURCE_DIR}  )
 
+# make sure that all directories & files show up in IDEs
+add_custom_target( CMakeModules SOURCES CMakeModules )
+add_custom_target( SuperBuild SOURCES SuperBuild )
+add_custom_target( input SOURCES ${PROJECT_SOURCE_DIR}/input )
+add_custom_target( doc SOURCES doc )
+add_custom_target( devel SOURCES devel )
+add_custom_target( logo SOURCES logo )
+add_custom_target( README SOURCES README )
+add_custom_target( external SOURCES external )
+
+# maybe needed for some IDEs in order to be able to run install command
+# add_custom_target( Install COMMAND ${CMAKE_MAKE_PROGRAM} install )
 

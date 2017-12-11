@@ -1,11 +1,7 @@
-add_custom_target( input SOURCES ${PROJECT_SOURCE_DIR}/input )
-
 set( builddir ${PROJECT_BINARY_DIR}/input )
 
 file( COPY ${PROJECT_SOURCE_DIR}/input DESTINATION ${builddir} PATTERN ".svn" EXCLUDE )
 #file(MAKE_DIRECTORY ${builddir} )
-
-set( Fittino_INPUT_DIR ${CMAKE_INSTALL_PREFIX}/share/fittino/input )
 
 list( APPEND inputFiles steering/SModelS.in.xml )
 list( APPEND inputFiles steering/MSSMTriLnV_low.xml  )
@@ -25,4 +21,6 @@ foreach( f ${inputFiles} )
 
 endforeach()
 
-install( DIRECTORY ${builddir} DESTINATION ${Fittino_INPUT_DIR} )
+install( DIRECTORY ${builddir} DESTINATION share/fittino/input )
+
+set( Fittino_INPUT_DIR ${CMAKE_INSTALL_PREFIX}/share/fittino/input )
