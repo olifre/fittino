@@ -136,9 +136,9 @@
             <Calculators>
 
                 <SARAHSPhenoCalculator>
-                    <Executable>@SPheno_ROOT_DIR@/bin/SPhenoMSSMTriLnV</Executable>
+                    <Executable>@SPheno_MSSMTriLnV_EXECUTABLE@</Executable>
                     <InputFile>
-                        <Template>@Fittino_INPUT_DIR@/LesHouches.in.MSSMTriLnV_low</Template>
+                        <Template>@Fittino_INPUT_DIR@/external/SPheno/LesHouches.in.MSSMTriLnV_low</Template>
                         <Name>LesHouches.in.MSSMTriLnV_low</Name>
                         <Quantity>
                             <Name>_M1_</Name>

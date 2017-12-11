@@ -139,7 +139,7 @@
 
                     <Name>SPhenoCalculator</Name>
 
-                    <Executable>@SPHENO_EXECUTABLE@</Executable>
+                    <Executable>@SPheno_EXECUTABLE@</Executable>
                     <InputFile>
                         <Template>@Fittino_INPUT_DIR@/external/SPheno/pMSSM11.slha</Template>
                         <Name>pMSSM11.slha</Name>
@@ -213,7 +213,7 @@
                     <Name>SModelSCalculator</Name>
                     <SModelSToolsExecutable>@SModelS_Tools_EXECUTABLE@</SModelSToolsExecutable>
                     <FileName>SPheno.spc</FileName>
-                    <ParameterFile>@Fittino_INPUT_DIR@/parameters.ini</ParameterFile>
+                    <ParameterFile>@Fittino_INPUT_DIR@/external/SModelS/parameters.ini</ParameterFile>
                 </SModelSCalculator>
 
                 <Chi2Calculator>

@@ -48,14 +48,14 @@ FIND_PACKAGE( GSL                                                               
 FIND_PACKAGE( HepMC                                                                  )
 FIND_PACKAGE( LHAPDF 5.8.9 EXACT                                                     )
 FIND_PACKAGE( SLHAEA                                                                 )
-find_package( SPheno                                                                 )
+find_package( SPheno OPTIONAL_COMPONENTS MSSMTriLnV                                  )
 find_package( SModelS                                                                )
 FIND_PACKAGE( X11                                                                    )
 FIND_PACKAGE( MICROMEGAS                                                             )
 FIND_PACKAGE( FORTRANFLUSH                                                           )
 FIND_PACKAGE( HIGGSBOUNDS                                                            )
 FIND_PACKAGE( HIGGSSIGNALS                                                           )
-#FIND_PACKAGE( FEYNHIGGS                                                              )
+#FIND_PACKAGE( FEYNHIGGS                                                             )
 FIND_PACKAGE( GFORTRANLIB                                                            )
 FIND_PACKAGE( IFORTLIB                                                               )
 FIND_PACKAGE( LibXml2                                                                )
@@ -86,9 +86,9 @@ if( PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND AND PYTHON_VERSION_STRING EQUAL PYTH
 
 endif()
 
-IF( SPHENO_FOUND )
+IF( SPheno_FOUND )
 
-    add_definitions( -DSPHENO_EXECUTABLE="${SPHENO_EXECUTABLE}" )
+    add_definitions( -DSPHENO_EXECUTABLE="${SPheno_EXECUTABLE}" )
 
 endif()
 
