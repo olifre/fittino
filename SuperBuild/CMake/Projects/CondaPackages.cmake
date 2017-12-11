@@ -34,6 +34,8 @@ externalproject_add(
 
 )
 
+ExternalProject_Add_StepDependencies( ${CondaPackages} download ${requirements} )
+
 externalproject_get_property( ${CondaPackages} install_dir )
 
 # set filepath according to https://cmake.org/cmake/help/v3.10/module/FindPythonInterp.html
