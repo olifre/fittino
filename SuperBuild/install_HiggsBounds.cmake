@@ -1,5 +1,0 @@
-FILE( GLOB modFiles "*.mod" )
-FILE( COPY ${modFiles} DESTINATION ${LIBDIR}/fortran/HiggsBounds )
-FILE( COPY libHB.a DESTINATION ${LIBDIR} )
-FILE( COPY HiggsBounds DESTINATION ${BINDIR} )
-FILE( COPY Expt_tables DESTINATION ${DATADIR}/HiggsBounds )

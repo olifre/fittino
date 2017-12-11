@@ -13,10 +13,15 @@ call system('rm -f HS_analyses.txt')
 
 end subroutine finish_HiggsSignals_only
 !------------------------------------------------------------")
-FILE( READ HiggsSignals_subroutines.F90 srcfile ) 
+
+FILE( READ HiggsSignals_subroutines.F90 srcfile )
+
 STRING( FIND "${srcfile}" "subroutine finish_HiggsSignals_only" pos )
+
 IF( pos EQUAL -1 )
-FILE( APPEND HiggsSignals_subroutines.F90 ${subroutine} )
+
+    FILE( APPEND HiggsSignals_subroutines.F90 ${subroutine} )
+
 ENDIF()
 
 #FILE( READ create_store_pathname_HS.bat fileContent )
