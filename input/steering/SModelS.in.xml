@@ -139,9 +139,9 @@
 
                     <Name>SPhenoCalculator</Name>
 
-                    <Executable>@SPheno_ROOT_DIR@/bin/SPheno</Executable>
+                    <Executable>@SPHENO_EXECUTABLE@</Executable>
                     <InputFile>
-                        <Template>@Fittino_INPUT_DIR@/pMSSM11.slha</Template>
+                        <Template>@Fittino_INPUT_DIR@/external/SPheno/pMSSM11.slha</Template>
                         <Name>pMSSM11.slha</Name>
                         <Quantity>
                             <Name>[Minput]</Name>
@@ -195,10 +195,6 @@
                     <OutputFile>SPheno.spc</OutputFile>
                 </SPhenoCalculator>
 
-                <MicromegasCalculator>
-                    <InputFile>SPheno.spc</InputFile>
-                </MicromegasCalculator>
-
                 <LHCNeuralNetCalculator>
                     <M1>[M1]</M1>
                     <M2>[M2]</M2>
@@ -214,7 +210,8 @@
                 </LHCNeuralNetCalculator>
 
                 <SModelSCalculator>
-                    <Name>SModelS</Name>
+                    <Name>SModelSCalculator</Name>
+                    <SModelSToolsExecutable>@SModelS_Tools_EXECUTABLE@</SModelSToolsExecutable>
                     <FileName>SPheno.spc</FileName>
                     <ParameterFile>@Fittino_INPUT_DIR@/parameters.ini</ParameterFile>
                 </SModelSCalculator>
@@ -224,7 +221,7 @@
                     <Observable>
                         <Name>Rvalue</Name>
                         <Measurement>1.0</Measurement>
-                        <Prediction>[SModelS_RValue]</Prediction>
+                        <Prediction>[SModelSCalculator_RValue]</Prediction>
                         <IsUpperLimit>true</IsUpperLimit>
                     </Observable>
                 </Chi2Calculator>
