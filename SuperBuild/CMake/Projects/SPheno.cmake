@@ -22,4 +22,6 @@ list( APPEND CACHE_ARGS -DSPHENO_EXECUTABLE:FILEPATH=${source_dir}/bin/SPheno )
 
 list( APPEND PATH ${source_dir}/bin )
 
+set( SPheno_ROOT_DIR ${source_dir} )
+
 list( APPEND Fittino_DEPENDENCIES ${SPheno} )
