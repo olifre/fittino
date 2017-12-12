@@ -12,7 +12,7 @@ else()
 
 endif()
 
-set( script ${CMAKE_CURRENT_BINARY_DIR}/activate )
+set( script ${CMAKE_CURRENT_BINARY_DIR}/activate.sh )
 
 file( WRITE ${script} "#!/usr/bin/env bash\n\n" )
 
