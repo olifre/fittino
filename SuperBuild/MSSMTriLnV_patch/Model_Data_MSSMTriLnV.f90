@@ -126,6 +126,8 @@ Complex(dp) :: coeffCRnu3nu3 = 0._dp
 Complex(dp) :: coeffCRPnu3nu3 = 0._dp
 Complex(dp) :: coeffCRnu3nu3NP = 0._dp
 Complex(dp) :: coeffCRPnu3nu3NP = 0._dp
+Real(dp) :: ratio_Z_tau_l  = 0._dp
+Real(dp) :: ratio_W_tau_l  = 0._dp
 Complex(dp) :: coeffKK_SLL = 0._dp
 Complex(dp) :: coeffKK_SRR = 0._dp
 Complex(dp) :: coeffKK_SLR = 0._dp
@@ -199,6 +201,18 @@ Complex(dp) :: coeffBsBs_VLRSM = 0._dp
 Complex(dp) :: coeffBsBs_TLLSM = 0._dp
 Complex(dp) :: coeffBsBs_TRRSM = 0._dp
 ! hack Werner
+Complex(dp) :: coeff_V_Bptaunu =  0._dp
+Complex(dp) :: coeff_V_BptaunuSM =  0._dp
+Complex(dp) :: coeff_V_BptaunuNP =  0._dp
+Complex(dp) :: coeff_V_Bptaunup =  0._dp
+Complex(dp) :: coeff_V_BptaunuSMp =  0._dp
+Complex(dp) :: coeff_V_BptaunuNPp =  0._dp
+Complex(dp) :: coeff_S_Bptaunu =  0._dp
+Complex(dp) :: coeff_S_BptaunuSM =  0._dp
+Complex(dp) :: coeff_S_BptaunuNP =  0._dp
+Complex(dp) :: coeff_S_Bptaunup =  0._dp
+Complex(dp) :: coeff_S_BptaunuSMp =  0._dp
+Complex(dp) :: coeff_S_BptaunuNPp =  0._dp
 Complex(dp) :: coeff_V_BDtaunu =  0._dp
 Complex(dp) :: coeff_V_BDtaunuSM =  0._dp
 Complex(dp) :: coeff_V_BDtaunuNP =  0._dp
@@ -211,6 +225,38 @@ Complex(dp) :: coeff_S_BDtaunuNP =  0._dp
 Complex(dp) :: coeff_S_BDtaunup =  0._dp
 Complex(dp) :: coeff_S_BDtaunuSMp =  0._dp
 Complex(dp) :: coeff_S_BDtaunuNPp =  0._dp
+
+Complex(dp) :: coeffCLbdnu1nu1SM = 0._dp
+Complex(dp) :: coeffCLbdnu1nu1 = 0._dp
+Complex(dp) :: coeffCLPbdnu1nu1 = 0._dp
+Complex(dp) :: coeffCLbdnu1nu1NP = 0._dp
+Complex(dp) :: coeffCLPbdnu1nu1NP = 0._dp
+Complex(dp) :: coeffCLbdnu2nu2SM = 0._dp
+Complex(dp) :: coeffCLbdnu2nu2 = 0._dp
+Complex(dp) :: coeffCLPbdnu2nu2 = 0._dp
+Complex(dp) :: coeffCLbdnu2nu2NP = 0._dp
+Complex(dp) :: coeffCLPbdnu2nu2NP = 0._dp
+Complex(dp) :: coeffCLbdnu3nu3SM = 0._dp
+Complex(dp) :: coeffCLbdnu3nu3 = 0._dp
+Complex(dp) :: coeffCLPbdnu3nu3 = 0._dp
+Complex(dp) :: coeffCLbdnu3nu3NP = 0._dp
+Complex(dp) :: coeffCLPbdnu3nu3NP = 0._dp
+Complex(dp) :: coeffCRbdnu1nu1SM = 0._dp
+Complex(dp) :: coeffCRbdnu1nu1 = 0._dp
+Complex(dp) :: coeffCRPbdnu1nu1 = 0._dp
+Complex(dp) :: coeffCRbdnu1nu1NP = 0._dp
+Complex(dp) :: coeffCRPbdnu1nu1NP = 0._dp
+Complex(dp) :: coeffCRbdnu2nu2SM = 0._dp
+Complex(dp) :: coeffCRbdnu2nu2 = 0._dp
+Complex(dp) :: coeffCRPbdnu2nu2 = 0._dp
+Complex(dp) :: coeffCRbdnu2nu2NP = 0._dp
+Complex(dp) :: coeffCRPbdnu2nu2NP = 0._dp
+Complex(dp) :: coeffCRbdnu3nu3SM = 0._dp
+Complex(dp) :: coeffCRbdnu3nu3 = 0._dp
+Complex(dp) :: coeffCRPbdnu3nu3 = 0._dp
+Complex(dp) :: coeffCRbdnu3nu3NP = 0._dp
+Complex(dp) :: coeffCRPbdnu3nu3NP = 0._dp
+
 ! end hack Werner
 Real(dp) :: MW_SM 
 Real(dp) :: Alpha_160, AlphaS_160, SinW2_160, sinW2_MZ 

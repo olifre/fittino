@@ -380,7 +380,8 @@ Call LesHouches_Out(67,11,kont,MGUT,ae,amu,atau,EDMe,EDMmu,EDMtau,dRho,         
 & epsK,ratioepsK,GenerationMixing)
 
 End if 
-Write(*,*) "Finished!" 
+Write(*,*) "Finished!", kont 
+if (kont.ne.0) stop 99
 Contains 
  
 Subroutine Switch_from_superCKM(Y_d, Y_u, Ad_in, Au_in, MD_in, MQ_in, MU_in &
@@ -587,6 +588,9 @@ Call TerminateProgram
 End If
 End Subroutine ReadingData
 
+!include "CalculateLowEnergyConstraints.f90" 
+!include "CalculateLowEnergyConstraints_org.f90" 
+
  
 Subroutine CalculateLowEnergyConstraints(g1input,g2input,g3input,Ydinput,             & 
 & Yeinput,L1input,L2input,Yuinput,Muinput,Tdinput,Teinput,T1input,T2input,               & 
@@ -696,6 +700,9 @@ Real(dp) :: ResultMuE(6), ResultTauMeson(3), ResultTemp(99)
 Complex(dp), Dimension(3,3) :: Yu_save, Yd_save, Ye_save, CKMsave 
 Real(dp) :: g1D(431), tz, dt 
 Real(dp) ::Qin,vev2,sinw2, mzsave, scalein, scale_save, gSM(11),Qinsave, maxdiff =0._dp, norm
+! hack Werner
+real(dp) :: xtb
+! end hack Werner
 Integer :: i1, i2, i3, gt1, gt2, gt3, gt4,iQTEST, iQFinal 
 Integer :: IndexArray4(99,4), IndexArray3(99,3), IndexArray2(99,2)   
 Complex(dp) :: BOllddSLL(3,3,3,3),BOllddSRR(3,3,3,3),BOllddSRL(3,3,3,3),BOllddSLR(3,3,3,3),          & 
@@ -4952,9 +4959,9 @@ coeffC9eeNP = (OddllVLL(3,2,1,1) - OddllVLLSM(3,2,1,1) + OddllVLR(3,2,1,1) - Odd
 coeffC9PeeNP = (OddllVRL(3,2,1,1) + OddllVRR(3,2,1,1))/2._dp
 coeffC10eeSM = (-OddllVLLSM(3,2,1,1) + OddllVLRSM(3,2,1,1))/2._dp
 coeffC10ee = (-OddllVLL(3,2,1,1) + OddllVLR(3,2,1,1))/2._dp
-coeffC10Pee = (OddllVRL(3,2,1,1) - OddllVRR(3,2,1,1))/2._dp
+coeffC10Pee = -(OddllVRL(3,2,1,1) - OddllVRR(3,2,1,1))/2._dp
 coeffC10eeNP = (-OddllVLL(3,2,1,1) + OddllVLLSM(3,2,1,1) + OddllVLR(3,2,1,1) - OddllVLRSM(3,2,1,1))/2._dp
-coeffC10PeeNP = (OddllVRL(3,2,1,1) - OddllVRR(3,2,1,1))/2._dp
+coeffC10PeeNP = -(OddllVRL(3,2,1,1) - OddllVRR(3,2,1,1))/2._dp
 coeffC9mumuSM = (OddllVLLSM(3,2,2,2) + OddllVLRSM(3,2,2,2))/2._dp
 coeffC9mumu = (OddllVLL(3,2,2,2) + OddllVLR(3,2,2,2))/2._dp
 coeffC9Pmumu = (OddllVRL(3,2,2,2) + OddllVRR(3,2,2,2))/2._dp
@@ -4962,9 +4969,9 @@ coeffC9mumuNP = (OddllVLL(3,2,2,2) - OddllVLLSM(3,2,2,2) + OddllVLR(3,2,2,2) - O
 coeffC9PmumuNP = (OddllVRL(3,2,2,2) + OddllVRR(3,2,2,2))/2._dp
 coeffC10mumuSM = (-OddllVLLSM(3,2,2,2) + OddllVLRSM(3,2,2,2))/2._dp
 coeffC10mumu = (-OddllVLL(3,2,2,2) + OddllVLR(3,2,2,2))/2._dp
-coeffC10Pmumu = (OddllVRL(3,2,2,2) - OddllVRR(3,2,2,2))/2._dp
+coeffC10Pmumu = -(OddllVRL(3,2,2,2) - OddllVRR(3,2,2,2))/2._dp
 coeffC10mumuNP = (-OddllVLL(3,2,2,2) + OddllVLLSM(3,2,2,2) + OddllVLR(3,2,2,2) - OddllVLRSM(3,2,2,2))/2._dp
-coeffC10PmumuNP = (OddllVRL(3,2,2,2) - OddllVRR(3,2,2,2))/2._dp
+coeffC10PmumuNP = -(OddllVRL(3,2,2,2) - OddllVRR(3,2,2,2))/2._dp
 coeffCLnu1nu1SM = OddvvVLLSM(3,2,1,1)
 coeffCLnu1nu1 = OddvvVLL(3,2,1,1)
 coeffCLPnu1nu1 = OddvvVRL(3,2,1,1)
@@ -5068,7 +5075,7 @@ coeffBsBs_VLRSM = O4dVLRSM(3,2,3,2) + O4dVRLSM(3,2,3,2)
 coeffBsBs_TLLSM = O4dTLLSM(3,2,3,2)/2._dp
 coeffBsBs_TRRSM = O4dTRRSM(3,2,3,2)/2._dp
 ! hack Werner
-norm = sqrt2 /(4._dp*G_F*CKM(2,3))
+norm = sqrt2 /(4._dp*G_F*Conjg(CKM(2,3))*CKM(3,3)) 
 coeff_V_BDtaunu = norm*OdulvVLR(3,2,3,3)
 coeff_V_BDtaunuSM = norm*OdulvVLRSM(3,2,3,3)
 coeff_V_BDtaunuNP = coeff_V_BDtaunu - coeff_V_BDtaunuSM 
@@ -5083,6 +5090,95 @@ coeff_S_BDtaunuP = norm*OdulvSRL(3,2,3,3)
 coeff_S_BDtaunuSMP = norm*OdulvSRLSM(3,2,3,3)
 coeff_S_BDtaunuNPP = coeff_S_BDtaunuP - coeff_S_BDtaunuSMP 
 
+norm = sqrt2 /(4._dp*G_F*Conjg(CKM(1,3))*CKM(3,3)) 
+coeff_V_Bptaunu = norm*OdulvVLR(3,1,3,3)
+coeff_V_BptaunuSM = norm*OdulvVLRSM(3,1,3,3)
+coeff_V_BptaunuNP = coeff_V_BDtaunu - coeff_V_BDtaunuSM 
+coeff_V_BptaunuP = norm*OdulvVRL(3,2,3,3)
+coeff_V_BptaunuSMP = norm*OdulvVRLSM(3,2,3,3)
+coeff_V_BptaunuNPP = coeff_V_BDtaunuP - coeff_V_BDtaunuSMP 
+
+coeff_S_Bptaunu = norm*OdulvSLL(3,1,3,3)
+coeff_S_BptaunuSM = norm*OdulvSLLSM(3,1,3,3)
+coeff_S_BptaunuNP = coeff_S_BDtaunu - coeff_S_BDtaunuSM 
+coeff_S_BptaunuP = norm*OdulvSRL(3,1,3,3)
+coeff_S_BptaunuSMP = norm*OdulvSRLSM(3,1,3,3)
+coeff_S_BptaunuNPP = coeff_S_BDtaunuP - coeff_S_BDtaunuSMP 
+
+
+! the following factor sqrt(2) stems from the fact, that here Majorana neutrinos
+! are used (implying left and right neutrino states), whereas flavio uses 
+! Weyl neutrinos (only left handed states). Apart from effects proportional to
+! powers of neutrino masses, this is completely equivalent
+coeffCLbdnu1nu1SM = sqrt2 * OddvvVLLSM(3,1,1,1)
+coeffCLbdnu1nu1 = sqrt2 * OddvvVLL(3,1,1,1)
+coeffCLPbdnu1nu1 = sqrt2 * OddvvVRL(3,1,1,1)
+coeffCLbdnu1nu1NP = sqrt2 * (OddvvVLL(3,1,1,1) - OddvvVLLSM(3,1,1,1))
+coeffCLPbdnu1nu1NP = sqrt2 * OddvvVRL(3,1,1,1)
+coeffCLbdnu2nu2SM = sqrt2 * OddvvVLLSM(3,1,2,2)
+coeffCLbdnu2nu2 = sqrt2 * OddvvVLL(3,1,2,2)
+coeffCLPbdnu2nu2 = sqrt2 * OddvvVRL(3,1,2,2)
+coeffCLbdnu2nu2NP = sqrt2 * (OddvvVLL(3,1,2,2) - OddvvVLLSM(3,1,2,2))
+coeffCLPbdnu2nu2NP = sqrt2 * OddvvVRL(3,1,2,2)
+coeffCLbdnu3nu3SM = sqrt2 * OddvvVLLSM(3,1,3,3)
+coeffCLbdnu3nu3 = sqrt2 * OddvvVLL(3,1,3,3)
+coeffCLPbdnu3nu3 = sqrt2 * OddvvVRL(3,1,3,3)
+coeffCLbdnu3nu3NP = sqrt2 * (OddvvVLL(3,1,3,3) - OddvvVLLSM(3,1,3,3))
+coeffCLPbdnu3nu3NP = sqrt2 * OddvvVRL(3,1,3,3)
+coeffCRbdnu1nu1SM = 0
+coeffCRbdnu1nu1 = sqrt2 * OddvvVLR(3,1,1,1)
+coeffCRPbdnu1nu1 = sqrt2 * OddvvVRR(3,1,1,1)
+coeffCRbdnu1nu1NP = sqrt2 * OddvvVLR(3,1,1,1)
+coeffCRPbdnu1nu1NP = sqrt2 * OddvvVRR(3,1,1,1)
+coeffCRbdnu2nu2SM = 0
+coeffCRbdnu2nu2 = sqrt2 * OddvvVLR(3,1,2,2)
+coeffCRPbdnu2nu2 = sqrt2 * OddvvVRR(3,1,2,2)
+coeffCRbdnu2nu2NP = sqrt2 * OddvvVLR(3,1,2,2)
+coeffCRPbdnu2nu2NP = sqrt2 * OddvvVRR(3,1,2,2)
+coeffCRbdnu3nu3SM = 0
+coeffCRbdnu3nu3 = sqrt2 * OddvvVLR(3,1,3,3)
+coeffCRPbdnu3nu3 = sqrt2 * OddvvVRR(3,1,3,3)
+coeffCRbdnu3nu3NP = sqrt2 * OddvvVLR(3,1,3,3)
+coeffCRPbdnu3nu3NP = sqrt2 * OddvvVRR(3,1,3,3)
+
+coeffCLnu1nu1SM = sqrt2 * OddvvVLLSM(3,2,1,1)
+coeffCLnu1nu1 = sqrt2 * OddvvVLL(3,2,1,1)
+coeffCLPnu1nu1 = sqrt2 * OddvvVRL(3,2,1,1)
+coeffCLnu1nu1NP = sqrt2 * (OddvvVLL(3,2,1,1) - OddvvVLLSM(3,2,1,1))
+coeffCLPnu1nu1NP = sqrt2 * OddvvVRL(3,2,1,1)
+coeffCLnu2nu2SM = sqrt2 * OddvvVLLSM(3,2,2,2)
+coeffCLnu2nu2 = sqrt2 * OddvvVLL(3,2,2,2)
+coeffCLPnu2nu2 = sqrt2 * OddvvVRL(3,2,2,2)
+coeffCLnu2nu2NP = sqrt2 * (OddvvVLL(3,2,2,2) - OddvvVLLSM(3,2,2,2))
+coeffCLPnu2nu2NP = sqrt2 * OddvvVRL(3,2,2,2)
+coeffCLnu3nu3SM = sqrt2 * OddvvVLLSM(3,2,3,3)
+coeffCLnu3nu3 = sqrt2 * OddvvVLL(3,2,3,3)
+coeffCLPnu3nu3 = sqrt2 * OddvvVRL(3,2,3,3)
+coeffCLnu3nu3NP = sqrt2 * (OddvvVLL(3,2,3,3) - OddvvVLLSM(3,2,3,3))
+coeffCLPnu3nu3NP = sqrt2 * OddvvVRL(3,2,3,3)
+coeffCRnu1nu1SM = 0
+coeffCRnu1nu1 = sqrt2 * OddvvVLR(3,2,1,1)
+coeffCRPnu1nu1 = sqrt2 * OddvvVRR(3,2,1,1)
+coeffCRnu1nu1NP = sqrt2 * OddvvVLR(3,2,1,1)
+coeffCRPnu1nu1NP = sqrt2 * OddvvVRR(3,2,1,1)
+coeffCRnu2nu2SM = 0
+coeffCRnu2nu2 = sqrt2 * OddvvVLR(3,2,2,2)
+coeffCRPnu2nu2 = sqrt2 * OddvvVRR(3,2,2,2)
+coeffCRnu2nu2NP = sqrt2 * OddvvVLR(3,2,2,2)
+coeffCRPnu2nu2NP = sqrt2 * OddvvVRR(3,2,2,2)
+coeffCRnu3nu3SM = 0
+coeffCRnu3nu3 = sqrt2 * OddvvVLR(3,2,3,3)
+coeffCRPnu3nu3 = sqrt2 * OddvvVRR(3,2,3,3)
+coeffCRnu3nu3NP = sqrt2 * OddvvVLR(3,2,3,3)
+coeffCRPnu3nu3NP = sqrt2 * OddvvVRR(3,2,3,3)
+
+xtb = mf_u2_160(3) / mD2input(3,3)
+ratio_Z_tau_l = 1._dp - 3._dp * oo16pi2 * Abs(l2input(3,3,3))**2       &
+    &                         * xtb * (1._dp - log(xtb) /(xtb-1._dp))  &
+    &                         / ((xtb-1._dp) * (1._dp - 2._dp *sinW2))
+ratio_W_tau_l = 1._dp - 3._dp * oo16pi2 * Abs(l2input(3,3,3))**2       &
+    &                         * xtb * (1._dp - (2._dp-xtb) * Log(xtb) /(xtb-1._dp))  &
+    &                         / (4._dp*(xtb-1._dp))
 ! end hack Werner
 CKM = CKMsave 
 !-------------------------------------
