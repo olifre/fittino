@@ -40,7 +40,6 @@ externalproject_get_property( ${CondaPackages} install_dir )
 
 # set filepath according to https://cmake.org/cmake/help/v3.10/module/FindPythonInterp.html
 set( PYTHON_EXECUTABLE ${install_dir}/bin/python )
-set( CondaPackages_ROOT_DIR ${install_dir} )
 
 list( APPEND CACHE_ARGS -DPYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE} )
 

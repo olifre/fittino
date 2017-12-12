@@ -20,7 +20,6 @@ if( INSTALL_Python2 OR INSTALL_Python3 )
 
     file( APPEND ${script} "unset PYTHONPATH\n" )
     file( APPEND ${script} "export PYTHONNOUSERSITE=1\n" )
-    #file( APPEND ${script} "source ${CondaPackages_ROOT_DIR}/bin/activate ${CondaPackages_ROOT_DIR}\n" )
 
 endif()
 

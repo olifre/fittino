@@ -15,7 +15,7 @@ externalproject_add(
     PATCH_COMMAND ${CMAKE_COMMAND} -E copy ${Pythia8Download_FILE} <SOURCE_DIR>/smodels/lib/pythia8/.pythia8226.tgz
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> $(MAKE) FCC=${CMAKE_Fortran_COMPILER} CXX=${CMAKE_CXX_COMPILER} PYTHIAVER=8226
-    #INSTALL_COMMAND ${CMAKE_COMMAND} -E env PYTHONPATH=${pippackages_root_dir}/lib/python2.7/site-packages ${condapackages_root_dir}/bin/python <SOURCE_DIR>/setup.py install --prefix=<INSTALL_DIR>
+
     COMMAND ${CMAKE_COMMAND} -E env PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${PYTHON_EXECUTABLE} -m pip install <SOURCE_DIR> --prefix=<INSTALL_DIR> --no-cache-dir -b <BINARY_DIR> --no-deps --no-index
     INSTALL_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR>/smodels-database <INSTALL_DIR>/smodels-database
     # see http://smodels.readthedocs.io/en/latest/Installation.html#adding-fastlim-data
