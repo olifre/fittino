@@ -23,6 +23,8 @@ externalproject_add(
 
 )
 
-list( APPEND CACHE_ARGS -DSPheno_MSSMTriLnV_EXECUTABLE=${SPheno_ROOT_DIR}/bin/SPhenoMSSMTriLnV )
+ExternalProject_Add_StepDependencies( ${MSSMTriLnV} patch ${CMAKE_CURRENT_SOURCE_DIR}/CMake/Scripts/patch_SPheno.cmake ${CMAKE_CURRENT_SOURCE_DIR}/MSSMTriLnV_patch/InputOutput_MSSMTriLnV.f90 ${CMAKE_CURRENT_SOURCE_DIR}/MSSMTriLnV_patch/Model_Data_MSSMTriLnV.f90 ${CMAKE_CURRENT_SOURCE_DIR}/MSSMTriLnV_patch/SPhenoMSSMTriLnV.f90   )
+
+list( APPEND CACHE_ARGS -DSPheno_MSSMTriLnV_EXECUTABLE:FILEPATH=${SPheno_ROOT_DIR}/bin/SPhenoMSSMTriLnV )
 
 list( APPEND Fittino_DEPENDENCIES ${MSSMTriLnV} )
