@@ -59,7 +59,8 @@ void Fittino::RPVCalculator::CalculatePredictions() {
     R_D_Relation = std::norm( 1. + 0.25 * pow( vev / mbR, 2 ) * ( pow( lambda_333, 2 ) + lambda_333 * lambda_323 * Vcs / Vcb + lambda_333 * lambda_313 * Vcd / Vcb ) );
     R_Dstar_Relation = R_D_Relation;
     
-    B_tau_nu_relation = std::norm( 1. + 0.5 * pow( vev / mbR, 2 ) * ( pow( lambda_333, 2 ) + lambda_333 * lambda_323 * Vus / Vub + lambda_333 * lambda_313 * Vud / Vub ) );
+    // 0.25 instead of 0.5 in literature
+    B_tau_nu_relation = std::norm( 1. + 0.25 * pow( vev / mbR, 2 ) * ( pow( lambda_333, 2 ) + lambda_333 * lambda_323 * Vus / Vub + lambda_333 * lambda_313 * Vud / Vub ) );
     
     B_K_relation  = 2./3. + 1./3. * std::norm( 1. + pow( vev / mbR, 2 ) * M_PI * s_Wsq * lambda_333 * lambda_323 / ( alpha_em * Vtb * std::conj( Vts ) * X_t ) );
     
