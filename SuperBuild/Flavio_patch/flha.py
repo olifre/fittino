@@ -1,7 +1,6 @@
 """Functions for reading a set of Wilson coefficients from an FLHA file.
 This assumes the normalization convention used by SPheno modules generated
-by FlavorKit with SARAH 4.8.1+ and should not be used with other FLHA-compa
-tible
+by FlavorKit with SARAH 4.8.1+ and should not be used with other FLHA-compatible
 files, as the normalization is not fixed by the accord."""
 
 
@@ -16,8 +15,7 @@ log.setLevel('WARNING')
 
 def _prefactors_bsll(par, scale):
     GF = par['GF']
-    alpha_e = flavio.physics.running.running.get_alpha(par, scale)['a
-lpha_e']
+    alpha_e = flavio.physics.running.running.get_alpha(par, scale)['alpha_e']
     xi_t = flavio.physics.ckm.xi('t', 'bs')(par)
     pre_all = -4*GF/sqrt(2)*xi_t
     pre_910 = pre_all * alpha_e/(4*pi)
@@ -91,16 +89,13 @@ _flha_dict ={
 }
 
 def read_wilson(filename):
-    r"""Read new physics contributions to Wilson coefficients from an outpu
-t file
+    r"""Read new physics contributions to Wilson coefficients from an output file
     in FLHA format produced by a SPheno module generated with SARAH 4.9.0+
     with FlavorKit.
 
-    *Caution*: this function should not be used with FLHA files produced by
- any
+    *Caution*: this function should not be used with FLHA files produced by any
     other code, in particular not the default version of SPheno or older
-    SARAH/FlavorKit versions, as they use different normalization conventio
-ns
+    SARAH/FlavorKit versions, as they use different normalization conventions
     for the Wilson coefficients.
 
     Input
@@ -123,8 +118,7 @@ ns
         if k[-1] != 1: # only look at NP-only Wilson coefficients
             continue
         if k[:2] not in _flha_dict:
-            log.warning('Wilson coefficient ' + str(k[:2]) + ' unknown to f
-lavio; ignored.')
+            log.warning('Wilson coefficient ' + str(k[:2]) + ' unknown to flavio; ignored.')
             continue
         wc_name = _flha_dict[k[:2]]
         if wc_name not in prefac:
@@ -143,8 +137,7 @@ def read_ckm(filename, par_constraints):
     -----
 
     - `filename`: the path to the file as a string
-    - `par_constraints`: an instance of `flavio.ParameterConstraints`, e.
-g.
+    - `par_constraints`: an instance of `flavio.ParameterConstraints`, e.g.
     `flavio.default_parameters`
 
     Note that you have to set the config option
@@ -157,8 +150,7 @@ g.
     if not os.path.exists(filename):
         raise ValueError("File " + filename + " not found.")
     if flavio.config['implementation']['CKM matrix'] != 'Wolfenstein':
-        log.warning('CKM matrix parametrization is not set to "Wolfenstein"
-. read_ckm will have no effect!')
+        log.warning('CKM matrix parametrization is not set to "Wolfenstein". read_ckm will have no effect!')
     card = flavio.io.slha.read(filename)
     try:
         wc_flha = card.blocks['vckmin']
@@ -168,7 +160,6 @@ g.
             par_constraints.set_constraint('rhobar', wc_flha[3])
             par_constraints.set_constraint('etabar', wc_flha[4])
         except KeyError:
-            raise KeyError("One of the Wolfenstein parameters seems to be m
-issing from the VCKMIN block")
+            raise KeyError("One of the Wolfenstein parameters seems to be missing from the VCKMIN block")
     except KeyError:
         raise ValueError("This file does not contain a VCKMIN block")
