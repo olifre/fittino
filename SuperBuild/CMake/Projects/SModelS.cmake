@@ -1,4 +1,4 @@
-set( SModelS SModelS-2236cf372eec70f568fbf072a5ddb9dcfdbc7e2a )
+set( SModelS SModelS-96678044200a7bcd5de33469d2f59e31e70bfe23 )
 
 enable_language( Fortran ) # for Pythia6 & NLL_FAST
 enable_language( CXX ) # for Pythia8
@@ -10,8 +10,8 @@ externalproject_add(
 
     ${SModelS}
     DEPENDS ${PipPackages} ${Pythia8Download}
-    URL https://github.com/smodels/smodels/archive/2236cf372eec70f568fbf072a5ddb9dcfdbc7e2a.zip
-    URL_MD5 837b5cf541b70491c8143d1680eb0d40
+    URL https://github.com/smodels/smodels/archive/96678044200a7bcd5de33469d2f59e31e70bfe23.zip
+    URL_MD5 7c5370674e348fe4470b00ee005aa7d9
     PATCH_COMMAND ${CMAKE_COMMAND} -E copy ${Pythia8Download_FILE} <SOURCE_DIR>/smodels/lib/pythia8/.pythia8226.tgz
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ${CMAKE_COMMAND} -E chdir <SOURCE_DIR> $(MAKE) FCC=${CMAKE_Fortran_COMPILER} CXX=${CMAKE_CXX_COMPILER} PYTHIAVER=8226
