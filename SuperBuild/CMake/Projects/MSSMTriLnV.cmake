@@ -15,7 +15,6 @@ externalproject_add(
     #URL_MD5 ${MSSMTriLnV_MD5}
     PATCH_COMMAND ${CMAKE_COMMAND} -DMAKEFILE=Makefile -P ${CMAKE_CURRENT_SOURCE_DIR}/CMake/Scripts/patch_SPheno.cmake
     #COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/MSSMTriLnV_patch <SOURCE_DIR>
-    BUILD_IN_SOURCE 0
     CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy_directory <SOURCE_DIR> ${SPheno_ROOT_DIR}/MSSMTriLnV
     BINARY_DIR ${SPheno_ROOT_DIR}
     BUILD_COMMAND $(MAKE) Model=MSSMTriLnV F90=${CMAKE_Fortran_COMPILER}
@@ -23,7 +22,7 @@ externalproject_add(
 
 )
 
-ExternalProject_Add_StepDependencies( ${MSSMTriLnV} patch ${CMAKE_CURRENT_SOURCE_DIR}/CMake/Scripts/patch_SPheno.cmake ${CMAKE_CURRENT_SOURCE_DIR}/MSSMTriLnV_patch/InputOutput_MSSMTriLnV.f90 ${CMAKE_CURRENT_SOURCE_DIR}/MSSMTriLnV_patch/Model_Data_MSSMTriLnV.f90 ${CMAKE_CURRENT_SOURCE_DIR}/MSSMTriLnV_patch/SPhenoMSSMTriLnV.f90   )
+ExternalProject_Add_StepDependencies( ${MSSMTriLnV} patch ${CMAKE_CURRENT_SOURCE_DIR}/CMake/Scripts/patch_SPheno.cmake ${CMAKE_CURRENT_SOURCE_DIR}/MSSMTriLnV )
 
 list( APPEND CACHE_ARGS -DSPheno_MSSMTriLnV_EXECUTABLE:FILEPATH=${SPheno_ROOT_DIR}/bin/SPhenoMSSMTriLnV )
 
