@@ -40250,6 +40250,7 @@ End if
    End Do 
   End Do 
 End Do 
+!If ((gt3.Eq.3).And.(gt4.Eq.3)) Write(26,*) "Su C",gt1,gt2,cmplx(PSOddvvVLL),cmplx(PSOddvvVRR)
 
  ! Propagator: Sd, Loop particles: Chi,conj[Sd], Internal fermion: Fd
 ! Generic diagram: FSF,  InsertionOrder: 9
@@ -40302,6 +40303,8 @@ End if
    End Do 
   End Do 
 End Do 
+!If ((gt3.Eq.3).And.(gt4.Eq.3)) Write(26,*) "Sd N",gt1,gt2,cmplx(PSOddvvVLL),cmplx(PSOddvvVRR)
+
 
  ! Propagator: Sd, Loop particles: Fd,hh, Internal fermion: Fd
 ! Generic diagram: FSF,  InsertionOrder: 9
@@ -40407,6 +40410,7 @@ End if
    End Do 
   End Do 
 End Do 
+!If ((gt3.Eq.3).And.(gt4.Eq.3)) Write(26,*) "Snu d",gt1,gt2,cmplx(PSOddvvVLL),cmplx(PSOddvvVRR)
 
 
  ! Propagator: Sd, Loop particles: Fd,VZ, Internal fermion: Fd
@@ -40564,6 +40568,7 @@ End if
    End Do 
   End Do 
 End Do 
+!If ((gt3.Eq.3).And.(gt4.Eq.3)) Write(26,*) "Su l",gt1,gt2,cmplx(PSOddvvVLL),cmplx(PSOddvvVRR)
 
 
  ! Propagator: Sd, Loop particles: Fu,conj[Hpm], Internal fermion: Fd
@@ -40670,6 +40675,7 @@ End if
    End Do 
   End Do 
 End Do 
+!If ((gt3.Eq.3).And.(gt4.Eq.3)) Write(26,*) "Sl u",gt1,gt2,cmplx(PSOddvvVLL),cmplx(PSOddvvVRR)
 
 
  ! Propagator: Sd, Loop particles: Fu,conj[VWm], Internal fermion: Fd
@@ -40772,6 +40778,7 @@ End if
    End Do 
   End Do 
 End Do 
+!If ((gt3.Eq.3).And.(gt4.Eq.3)) Write(26,*) "Sd G",gt1,gt2,cmplx(PSOddvvVLL),cmplx(PSOddvvVRR)
 
 
  ! Propagator: Sd, Loop particles: Se,Cha, Internal fermion: Fv

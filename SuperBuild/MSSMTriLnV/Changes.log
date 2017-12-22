@@ -1,0 +1,11 @@
+22.12.2017:
+- SPhenoMSSMTriLnV.f90:
+  - changing variable norm from real(dp) to complex(dp)
+    as it contains also CKM elements
+  - extending formulas for the ratios of vector boson couplings to leptons 
+    to include also the first two generation of d_R-squarks
+- InputOutput_MSSMTriLnV.f90:
+  - adding imaginary parts for the Wilson coefficients for B -> tau nu
+- Observables/FlavorKit_QFV_MSSMTriLnV.f90:
+  taking out write-statements which were remanents of the debugging
+ 

@@ -696,9 +696,10 @@ Complex(dp) :: c7,c7p,c8,c8p
 Real(dp) :: ResultMuE(6), ResultTauMeson(3), ResultTemp(99) 
 Complex(dp), Dimension(3,3) :: Yu_save, Yd_save, Ye_save, CKMsave 
 Real(dp) :: g1D(431), tz, dt 
-Real(dp) ::Qin,vev2,sinw2, mzsave, scalein, scale_save, gSM(11),Qinsave, maxdiff =0._dp, norm
+Real(dp) ::Qin,vev2,sinw2, mzsave, scalein, scale_save, gSM(11),Qinsave, maxdiff =0._dp
 ! hack Werner
-Real(dp) :: xtb, sum_lam
+Real(dp) :: xtb, sum_lam, fact, fact_loop, RD, RBtaunu, RBK2nu, RBp2nu, RBK2nuA, RBp2nuA
+Complex(dp) :: norm
 ! end hack Werner
 Integer :: i1, i2, i3, gt1, gt2, gt3, gt4,iQTEST, iQFinal 
 Integer :: IndexArray4(99,4), IndexArray3(99,3), IndexArray2(99,2)   
@@ -1039,10 +1040,6 @@ Call SolveTadpoleEquations(g1,g2,g3,Yd,Ye,L1,L2,Yu,Mu,Td,Te,T1,T2,Tu,Bmu,       
 & mq2,ml2,mHd2,mHu2,md2,mu2,me2,M1,M2,M3,vd,vu,(/ ZeroC, ZeroC /))
 
 
-yd=0
-yd(1,1)=1.e-6
-yd(2,2)=1.e-4
-yd(3,3)=1.e-2
 Call TreeMasses(MAh,MAh2,MCha,MCha2,MChi,MChi2,MFd,MFd2,MFe,MFe2,MFu,MFu2,            & 
 & MGlu,MGlu2,Mhh,Mhh2,MHpm,MHpm2,MSd,MSd2,MSe,MSe2,MSu,MSu2,MSv,MSv2,MVWm,               & 
 & MVWm2,MVZ,MVZ2,pG,TW,UM,UP,v,ZA,ZD,ZDL,ZDR,ZE,ZEL,ZER,ZH,ZN,ZP,ZU,ZUL,ZUR,             & 
@@ -3552,18 +3549,19 @@ OddllTRRSM = BOddllTRRSM + PSOddllTRRSM + PVOddllTRRSM + TSOddllTRRSM + TVOddllT
 OddllTRR = OddllTRR - OddllTRRSM
 
  ! ***** Combine operators for 2d2nu
-OddvvVRR = BOddvvVRR + PSOddvvVRR + PVOddvvVRR + TSOddvvVRR + TVOddvvVRR
-OddvvVRRSM = BOddvvVRRSM + PSOddvvVRRSM + PVOddvvVRRSM + TSOddvvVRRSM + TVOddvvVRRSM
+fact_loop = 1
+OddvvVRR = fact_loop*BOddvvVRR + fact_loop*PSOddvvVRR + fact_loop*PVOddvvVRR + TSOddvvVRR + TVOddvvVRR
+OddvvVRRSM = fact_loop*BOddvvVRRSM + fact_loop*PSOddvvVRRSM + fact_loop*PVOddvvVRRSM + TSOddvvVRRSM + TVOddvvVRRSM
 OddvvVRR = OddvvVRR - OddvvVRRSM
-OddvvVLL = BOddvvVLL + PSOddvvVLL + PVOddvvVLL + TSOddvvVLL + TVOddvvVLL
-OddvvVLLSM = BOddvvVLLSM + PSOddvvVLLSM + PVOddvvVLLSM + TSOddvvVLLSM + TVOddvvVLLSM
+OddvvVLL = fact_loop*BOddvvVLL + fact_loop*PSOddvvVLL + fact_loop*PVOddvvVLL + TSOddvvVLL + TVOddvvVLL
+OddvvVLLSM = fact_loop*BOddvvVLLSM + fact_loop*PSOddvvVLLSM + fact_loop*PVOddvvVLLSM + TSOddvvVLLSM + TVOddvvVLLSM
 OddvvVLL = OddvvVLL - OddvvVLLSM
-OddvvVRL = BOddvvVRL + PSOddvvVRL + PVOddvvVRL + TSOddvvVRL + TVOddvvVRL
-OddvvVRLSM = BOddvvVRLSM + PSOddvvVRLSM + PVOddvvVRLSM + TSOddvvVRLSM + TVOddvvVRLSM
+OddvvVRL = fact_loop*BOddvvVRL + fact_loop*PSOddvvVRL + fact_loop*PVOddvvVRL + TSOddvvVRL + TVOddvvVRL
+OddvvVRLSM = fact_loop*BOddvvVRLSM + fact_loop*PSOddvvVRLSM + fact_loop*PVOddvvVRLSM + TSOddvvVRLSM + TVOddvvVRLSM
 
 OddvvVRL = OddvvVRL - OddvvVRLSM
-OddvvVLR = BOddvvVLR + PSOddvvVLR + PVOddvvVLR + TSOddvvVLR + TVOddvvVLR
-OddvvVLRSM = BOddvvVLRSM + PSOddvvVLRSM + PVOddvvVLRSM + TSOddvvVLRSM + TVOddvvVLRSM
+OddvvVLR = fact_loop*BOddvvVLR + fact_loop*PSOddvvVLR + fact_loop*PVOddvvVLR + TSOddvvVLR + TVOddvvVLR
+OddvvVLRSM = fact_loop*BOddvvVLRSM + fact_loop*PSOddvvVLRSM + fact_loop*PVOddvvVLRSM + TSOddvvVLRSM + TVOddvvVLRSM
 OddvvVLR = OddvvVLR - OddvvVLRSM
 
  ! ***** Combine operators for 4d
@@ -5080,7 +5078,7 @@ coeffBsBs_VLRSM = O4dVLRSM(3,2,3,2) + O4dVRLSM(3,2,3,2)
 coeffBsBs_TLLSM = O4dTLLSM(3,2,3,2)/2._dp
 coeffBsBs_TRRSM = O4dTRRSM(3,2,3,2)/2._dp
 ! hack Werner
-norm = sqrt2 /(4._dp*G_F*Conjg(CKM(2,3))*CKM(3,3)) 
+norm = sqrt2 /(4._dp*G_F*CKM_160(2,3)) 
 coeff_V_BDtaunu = norm*OdulvVLR(3,2,3,3)
 coeff_V_BDtaunuSM = norm*OdulvVLRSM(3,2,3,3)
 coeff_V_BDtaunuNP = coeff_V_BDtaunu - coeff_V_BDtaunuSM 
@@ -5088,6 +5086,7 @@ coeff_V_BDtaunuP = norm*OdulvVRL(3,2,3,3)
 coeff_V_BDtaunuSMP = norm*OdulvVRLSM(3,2,3,3)
 coeff_V_BDtaunuNPP = coeff_V_BDtaunuP - coeff_V_BDtaunuSMP 
 
+norm = norm / mf_d_160(3)
 coeff_S_BDtaunu = norm*OdulvSLL(3,2,3,3)
 coeff_S_BDtaunuSM = norm*OdulvSLLSM(3,2,3,3)
 coeff_S_BDtaunuNP = coeff_S_BDtaunu - coeff_S_BDtaunuSM 
@@ -5095,7 +5094,7 @@ coeff_S_BDtaunuP = norm*OdulvSRL(3,2,3,3)
 coeff_S_BDtaunuSMP = norm*OdulvSRLSM(3,2,3,3)
 coeff_S_BDtaunuNPP = coeff_S_BDtaunuP - coeff_S_BDtaunuSMP 
 
-norm = sqrt2 /(4._dp*G_F*Conjg(CKM(1,3))*CKM(3,3)) 
+norm = sqrt2 /(4._dp*G_F*CKM_160(1,3)) 
 coeff_V_Bptaunu = norm*OdulvVLR(3,1,3,3)
 coeff_V_BptaunuSM = norm*OdulvVLRSM(3,1,3,3)
 coeff_V_BptaunuNP = coeff_V_Bptaunu - coeff_V_BptaunuSM 
@@ -5103,6 +5102,7 @@ coeff_V_BptaunuP = norm*OdulvVRL(3,2,3,3)
 coeff_V_BptaunuSMP = norm*OdulvVRLSM(3,2,3,3)
 coeff_V_BptaunuNPP = coeff_V_BptaunuP - coeff_V_BptaunuSMP 
 
+norm = norm / mf_d_160(3)
 coeff_S_Bptaunu = norm*OdulvSLL(3,1,3,3)
 coeff_S_BptaunuSM = norm*OdulvSLLSM(3,1,3,3)
 coeff_S_BptaunuNP = coeff_S_Bptaunu - coeff_S_BptaunuSM 
@@ -5111,72 +5111,75 @@ coeff_S_BptaunuSMP = norm*OdulvSRLSM(3,1,3,3)
 coeff_S_BptaunuNPP = coeff_S_BptaunuP - coeff_S_BptaunuSMP 
 
 
-
 ! the following factor sqrt(2) stems from the fact, that here Majorana neutrinos
 ! are used (implying left and right neutrino states), whereas flavio uses 
 ! Weyl neutrinos (only left handed states). Apart from effects proportional to
 ! powers of neutrino masses, this is completely equivalent
-coeffCLbdnu1nu1SM = sqrt2 * OddvvVLLSM(3,1,1,1)
-coeffCLbdnu1nu1 = sqrt2 * OddvvVLL(3,1,1,1)
-coeffCLPbdnu1nu1 = sqrt2 * OddvvVRL(3,1,1,1)
-coeffCLbdnu1nu1NP = sqrt2 * (OddvvVLL(3,1,1,1) - OddvvVLLSM(3,1,1,1))
-coeffCLPbdnu1nu1NP = sqrt2 * OddvvVRL(3,1,1,1)
-coeffCLbdnu2nu2SM = sqrt2 * OddvvVLLSM(3,1,2,2)
-coeffCLbdnu2nu2 = sqrt2 * OddvvVLL(3,1,2,2)
-coeffCLPbdnu2nu2 = sqrt2 * OddvvVRL(3,1,2,2)
-coeffCLbdnu2nu2NP = sqrt2 * (OddvvVLL(3,1,2,2) - OddvvVLLSM(3,1,2,2))
-coeffCLPbdnu2nu2NP = sqrt2 * OddvvVRL(3,1,2,2)
-coeffCLbdnu3nu3SM = sqrt2 * OddvvVLLSM(3,1,3,3)
-coeffCLbdnu3nu3 = sqrt2 * OddvvVLL(3,1,3,3)
-coeffCLPbdnu3nu3 = sqrt2 * OddvvVRL(3,1,3,3)
-coeffCLbdnu3nu3NP = sqrt2 * (OddvvVLL(3,1,3,3) - OddvvVLLSM(3,1,3,3))
-coeffCLPbdnu3nu3NP = sqrt2 * OddvvVRL(3,1,3,3)
-coeffCRbdnu1nu1SM = 0
-coeffCRbdnu1nu1 = sqrt2 * OddvvVLR(3,1,1,1)
-coeffCRPbdnu1nu1 = sqrt2 * OddvvVRR(3,1,1,1)
-coeffCRbdnu1nu1NP = sqrt2 * OddvvVLR(3,1,1,1)
-coeffCRPbdnu1nu1NP = sqrt2 * OddvvVRR(3,1,1,1)
-coeffCRbdnu2nu2SM = 0
-coeffCRbdnu2nu2 = sqrt2 * OddvvVLR(3,1,2,2)
-coeffCRPbdnu2nu2 = sqrt2 * OddvvVRR(3,1,2,2)
-coeffCRbdnu2nu2NP = sqrt2 * OddvvVLR(3,1,2,2)
-coeffCRPbdnu2nu2NP = sqrt2 * OddvvVRR(3,1,2,2)
-coeffCRbdnu3nu3SM = 0
-coeffCRbdnu3nu3 = sqrt2 * OddvvVLR(3,1,3,3)
-coeffCRPbdnu3nu3 = sqrt2 * OddvvVRR(3,1,3,3)
-coeffCRbdnu3nu3NP = sqrt2 * OddvvVLR(3,1,3,3)
-coeffCRPbdnu3nu3NP = sqrt2 * OddvvVRR(3,1,3,3)
+fact = sqrt2 
+fact = 1._dp
 
-coeffCLnu1nu1SM = sqrt2 * OddvvVLLSM(3,2,1,1)
-coeffCLnu1nu1 = sqrt2 * OddvvVLL(3,2,1,1)
-coeffCLPnu1nu1 = sqrt2 * OddvvVRL(3,2,1,1)
-coeffCLnu1nu1NP = sqrt2 * (OddvvVLL(3,2,1,1) - OddvvVLLSM(3,2,1,1))
-coeffCLPnu1nu1NP = sqrt2 * OddvvVRL(3,2,1,1)
-coeffCLnu2nu2SM = sqrt2 * OddvvVLLSM(3,2,2,2)
-coeffCLnu2nu2 = sqrt2 * OddvvVLL(3,2,2,2)
-coeffCLPnu2nu2 = sqrt2 * OddvvVRL(3,2,2,2)
-coeffCLnu2nu2NP = sqrt2 * (OddvvVLL(3,2,2,2) - OddvvVLLSM(3,2,2,2))
-coeffCLPnu2nu2NP = sqrt2 * OddvvVRL(3,2,2,2)
-coeffCLnu3nu3SM = sqrt2 * OddvvVLLSM(3,2,3,3)
-coeffCLnu3nu3 = sqrt2 * OddvvVLL(3,2,3,3)
-coeffCLPnu3nu3 = sqrt2 * OddvvVRL(3,2,3,3)
-coeffCLnu3nu3NP = sqrt2 * (OddvvVLL(3,2,3,3) - OddvvVLLSM(3,2,3,3))
-coeffCLPnu3nu3NP = sqrt2 * OddvvVRL(3,2,3,3)
+coeffCLbdnu1nu1SM = fact * OddvvVLLSM(3,1,1,1)
+coeffCLbdnu1nu1 = fact * OddvvVLL(3,1,1,1)
+coeffCLPbdnu1nu1 = fact * OddvvVRL(3,1,1,1)
+coeffCLbdnu1nu1NP = fact * (OddvvVLL(3,1,1,1) - OddvvVLLSM(3,1,1,1))
+coeffCLPbdnu1nu1NP = fact * OddvvVRL(3,1,1,1)
+coeffCLbdnu2nu2SM = fact * OddvvVLLSM(3,1,2,2)
+coeffCLbdnu2nu2 = fact * OddvvVLL(3,1,2,2)
+coeffCLPbdnu2nu2 = fact * OddvvVRL(3,1,2,2)
+coeffCLbdnu2nu2NP = fact * (OddvvVLL(3,1,2,2) - OddvvVLLSM(3,1,2,2))
+coeffCLPbdnu2nu2NP = fact * OddvvVRL(3,1,2,2)
+coeffCLbdnu3nu3SM = fact * OddvvVLLSM(3,1,3,3)
+coeffCLbdnu3nu3 = fact * OddvvVLL(3,1,3,3)
+coeffCLPbdnu3nu3 = fact * OddvvVRL(3,1,3,3)
+coeffCLbdnu3nu3NP = fact * (OddvvVLL(3,1,3,3) - OddvvVLLSM(3,1,3,3))
+coeffCLPbdnu3nu3NP = fact * OddvvVRL(3,1,3,3)
+coeffCRbdnu1nu1SM = 0
+coeffCRbdnu1nu1 = fact * OddvvVLR(3,1,1,1)
+coeffCRPbdnu1nu1 = fact * OddvvVRR(3,1,1,1)
+coeffCRbdnu1nu1NP = fact * OddvvVLR(3,1,1,1)
+coeffCRPbdnu1nu1NP = fact * OddvvVRR(3,1,1,1)
+coeffCRbdnu2nu2SM = 0
+coeffCRbdnu2nu2 = fact * OddvvVLR(3,1,2,2)
+coeffCRPbdnu2nu2 = fact * OddvvVRR(3,1,2,2)
+coeffCRbdnu2nu2NP = fact * OddvvVLR(3,1,2,2)
+coeffCRPbdnu2nu2NP = fact * OddvvVRR(3,1,2,2)
+coeffCRbdnu3nu3SM = 0
+coeffCRbdnu3nu3 = fact * OddvvVLR(3,1,3,3)
+coeffCRPbdnu3nu3 = fact * OddvvVRR(3,1,3,3)
+coeffCRbdnu3nu3NP = fact * OddvvVLR(3,1,3,3)
+coeffCRPbdnu3nu3NP = fact * OddvvVRR(3,1,3,3)
+
+coeffCLnu1nu1SM = fact * OddvvVLLSM(3,2,1,1)
+coeffCLnu1nu1 = fact * OddvvVLL(3,2,1,1)
+coeffCLPnu1nu1 = fact * OddvvVRL(3,2,1,1)
+coeffCLnu1nu1NP = fact * (OddvvVLL(3,2,1,1) - OddvvVLLSM(3,2,1,1))
+coeffCLPnu1nu1NP = fact * OddvvVRL(3,2,1,1)
+coeffCLnu2nu2SM = fact * OddvvVLLSM(3,2,2,2)
+coeffCLnu2nu2 = fact * OddvvVLL(3,2,2,2)
+coeffCLPnu2nu2 = fact * OddvvVRL(3,2,2,2)
+coeffCLnu2nu2NP = fact * (OddvvVLL(3,2,2,2) - OddvvVLLSM(3,2,2,2))
+coeffCLPnu2nu2NP = fact * OddvvVRL(3,2,2,2)
+coeffCLnu3nu3SM = fact * OddvvVLLSM(3,2,3,3)
+coeffCLnu3nu3 = fact * OddvvVLL(3,2,3,3)
+coeffCLPnu3nu3 = fact * OddvvVRL(3,2,3,3)
+coeffCLnu3nu3NP = fact * (OddvvVLL(3,2,3,3) - OddvvVLLSM(3,2,3,3))
+coeffCLPnu3nu3NP = fact * OddvvVRL(3,2,3,3)
 coeffCRnu1nu1SM = 0
-coeffCRnu1nu1 = sqrt2 * OddvvVLR(3,2,1,1)
-coeffCRPnu1nu1 = sqrt2 * OddvvVRR(3,2,1,1)
-coeffCRnu1nu1NP = sqrt2 * OddvvVLR(3,2,1,1)
-coeffCRPnu1nu1NP = sqrt2 * OddvvVRR(3,2,1,1)
+coeffCRnu1nu1 = fact * OddvvVLR(3,2,1,1)
+coeffCRPnu1nu1 = fact * OddvvVRR(3,2,1,1)
+coeffCRnu1nu1NP = fact * OddvvVLR(3,2,1,1)
+coeffCRPnu1nu1NP = fact * OddvvVRR(3,2,1,1)
 coeffCRnu2nu2SM = 0
-coeffCRnu2nu2 = sqrt2 * OddvvVLR(3,2,2,2)
-coeffCRPnu2nu2 = sqrt2 * OddvvVRR(3,2,2,2)
-coeffCRnu2nu2NP = sqrt2 * OddvvVLR(3,2,2,2)
-coeffCRPnu2nu2NP = sqrt2 * OddvvVRR(3,2,2,2)
+coeffCRnu2nu2 = fact * OddvvVLR(3,2,2,2)
+coeffCRPnu2nu2 = fact * OddvvVRR(3,2,2,2)
+coeffCRnu2nu2NP = fact * OddvvVLR(3,2,2,2)
+coeffCRPnu2nu2NP = fact * OddvvVRR(3,2,2,2)
 coeffCRnu3nu3SM = 0
-coeffCRnu3nu3 = sqrt2 * OddvvVLR(3,2,3,3)
-coeffCRPnu3nu3 = sqrt2 * OddvvVRR(3,2,3,3)
-coeffCRnu3nu3NP = sqrt2 * OddvvVLR(3,2,3,3)
-coeffCRPnu3nu3NP = sqrt2 * OddvvVRR(3,2,3,3)
+coeffCRnu3nu3 = fact * OddvvVLR(3,2,3,3)
+coeffCRPnu3nu3 = fact * OddvvVRR(3,2,3,3)
+coeffCRnu3nu3NP = fact * OddvvVLR(3,2,3,3)
+coeffCRPnu3nu3NP = fact * OddvvVRR(3,2,3,3)
+
 
 xtb = mf_u2_160(3) / mD2input(3,3)
 ratio_Z_tau_l = 1._dp - 3._dp * oo16pi2 * Abs(l2input(3,3,3))**2       &
@@ -7246,8 +7249,11 @@ End if
 mz2 = mzsave**2 
 mz = mzsave 
 g1input = Sqrt(3._dp/5._dp)*g1input 
+
+
+
 End subroutine CalculateLowEnergyConstraints 
- 
+
  
 End Program SPhenoMSSMTriLnV 
 
