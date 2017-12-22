@@ -18,7 +18,7 @@ externalproject_add(
 
 externalproject_get_property( ${SPheno} source_dir )
 
-list( APPEND CACHE_ARGS -DSPHENO_EXECUTABLE:FILEPATH=${source_dir}/bin/SPheno )
+list( APPEND CACHE_ARGS "-DSPheno_EXECUTABLE:FILEPATH=${source_dir}/bin/SPheno" )
 
 list( APPEND PATH ${source_dir}/bin )
 
