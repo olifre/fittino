@@ -7,6 +7,5 @@ set( INSTALL_Fittino ON CACHE BOOL "" FORCE )
 
 # possible compiler settings for mac
 # set( CMAKE_Fortran_COMPILER /opt/local/bin/gfortran-mp-7  CACHE PATH "" )
-# set( GFORTRAN_LIBRARY_DIR /opt/local/lib/gcc7 CACHE PATH "" )
 # set( CMAKE_CXX_COMPILER /usr/bin/clang++ CACHE PATH "" )
-# set( CMAKE_C_COMPILER /usr/bin/clang CACHE PATH "" )
+#set( CMAKE_C_COMPILER /usr/bin/clang CACHE PATH "" )
