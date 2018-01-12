@@ -83,7 +83,9 @@ Fittino::SARAHSPhenoSLHACalculator::SARAHSPhenoSLHACalculator( const ModelBase* 
     }
 
     AddQuantity( new SLHAPrediction( "HMIX_Vev"    , "", _slhaOutputDataStorage, "HMIX", 1, "3", "", "", ""     ) );
-
+    AddQuantity( new SLHAPrediction( "Ratio_gZtautau_gZll"    , "", _slhaOutputDataStorage, "GRATIOS", 1, "1", "", "", ""     ) );
+    AddQuantity( new SLHAPrediction( "Ratio_gWtaunu_gWlnu"    , "", _slhaOutputDataStorage, "GRATIOS", 1, "2", "", "", ""     ) );
+          
 }
 
 Fittino::SARAHSPhenoSLHACalculator::~SARAHSPhenoSLHACalculator() {
