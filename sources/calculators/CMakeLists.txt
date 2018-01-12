@@ -90,9 +90,9 @@ ENDIF()
 
 ENDIF()
 
-  IF( NOT PYTHON3_FOUND)
+  IF( NOT PYTHON3_FOUND )
 
-      LIST(REMOVE_ITEM sources "src/FlavioCalculator.cpp" )
+      set_source_files_properties( "src/FlavioCalculator.cpp" PROPERTIES HEADER_FILE_ONLY TRUE )
 
   ENDIF()
 
