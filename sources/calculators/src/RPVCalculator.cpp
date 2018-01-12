@@ -26,18 +26,11 @@ Fittino::RPVCalculator::RPVCalculator(const ModelBase *model, const boost::prope
     AddOutput("Ratio_gWtaunu_gWlnu",W_coupling_relation);
     
     X_t = 1.469;
-    
-    InitializeCKMMatrix();
-    
-    //at W_Z & m_t direct measurement
     s_Wsq = 0.22336;
     alpha_em = 1./128.;
     m_t = 173.21;
     
-    //s_Wsq = 0.23129;
-    //alpha_em = 0.0078155529503712;
-    //m_t = 160;
-    
+    InitializeCKMMatrix();
     
 }
 
@@ -66,12 +59,15 @@ void Fittino::RPVCalculator::CalculatePredictions() {
     
     B_pi_relation = 2./3. + 1./3. * std::norm( 1. + pow( vev / mbR, 2 ) * M_PI * s_Wsq * lambda_333 * lambda_313 / ( alpha_em * Vtb * std::conj( Vtd ) * X_t ) );
     
-    f_Z = 1./(pow(m_t/mbR,2)-1.) - log10(pow(m_t/mbR,2))/pow((pow(m_t/mbR,2)-1.),2);
-    Z_coupling_relation = 1. - 3.*pow(lambda_333/M_PI,2)*pow(m_t/mbR,2)*f_Z/(16.*(1.-2.*s_Wsq));
+    double x = pow( m_t / mbR, 2 );
+    double D =  16. * pow( M_PI, 2 );
     
-    f_W = 1./(pow(m_t/mbR,2)-1.) - (2.-pow(m_t/mbR,2))*log10(pow(m_t/mbR,2))/pow((pow(m_t/mbR,2)-1.),2);
-    W_coupling_relation = 1. - 3.*pow(lambda_333/M_PI,2)*pow(m_t/mbR,2)*f_W/(16.*4.);
-
+    f_Z = 1. / ( x - 1. ) - log( x ) / pow( x - 1., 2 );
+    Z_coupling_relation = 1. - 3. * pow( lambda_333, 2) / D / ( 1. - 2. * s_Wsq ) * x * f_Z ;
+    
+    f_W = 1. / ( x - 1. ) - ( 2. - x ) * log( x ) / pow( x - 1., 2 );
+    W_coupling_relation = 1. - 3. * pow( lambda_333, 2) / D / 4.  * x * f_W;
+    
 }
 
 void Fittino::RPVCalculator::Initialize() {
