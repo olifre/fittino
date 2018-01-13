@@ -6,7 +6,7 @@ list( APPEND src html )
 list( APPEND src images )
 list( APPEND src StyleGuide.dox )
 
-add_custom_target( doc SOURCES ${src} )
+add_custom_target( docfiles SOURCES ${src} )
 
 If( DOXYGEN_FOUND )
 
