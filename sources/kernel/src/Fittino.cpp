@@ -39,6 +39,12 @@
 
 #endif
 
+#ifdef PYTHON2
+
+#include <boost/python.hpp>
+
+#endif
+
 int main( int argc, char** argv ) {
 
 #ifdef PYTHON2
@@ -66,9 +72,25 @@ int main( int argc, char** argv ) {
 
     Fittino::Controller& controller = Fittino::Controller::GetInstance();
 
+#ifdef PYTHON2
+
+try {
+
+#endif
+
     controller.InitializeFittino( argc, argv );
     controller.ExecuteFittino();
     controller.TerminateFittino();
+
+
+#ifdef PYTHON2
+}
+catch (boost::python::error_already_set&) {
+     PyErr_Print();
+     throw;
+ }
+
+#endif
 
     return 0;
 
