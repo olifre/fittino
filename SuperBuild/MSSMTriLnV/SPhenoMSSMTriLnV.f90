@@ -5184,21 +5184,21 @@ coeffCRPnu3nu3NP = fact * OddvvVRR(3,2,3,3)
 xtb = mf_u2_160(3) / mD2input(3,3)
 ratio_Z_tau_l = 1._dp - 3._dp * oo16pi2 * Abs(l2input(3,3,3))**2       &
     &                         * xtb * (1._dp - log(xtb) /(xtb-1._dp))  &
-    &                         / ((xtb-1._dp) * (1._dp - 2._dp *sinW2))
+    &                         / ((xtb-1._dp) * (1._dp - 2._dp *sinW2_160))
 ratio_W_tau_l = 1._dp - 3._dp * oo16pi2 * Abs(l2input(3,3,3))**2       &
     &                         * xtb * (1._dp - (2._dp-xtb) * Log(xtb) /(xtb-1._dp))  &
     &                         / (4._dp*(xtb-1._dp))
 xtb = mf_u2_160(3) / mD2input(2,2)
 ratio_Z_tau_l = ratio_Z_tau_l - 3._dp * oo16pi2 * Abs(l2input(3,3,2))**2       &
     &                         * xtb * (1._dp - log(xtb) /(xtb-1._dp))  &
-    &                         / ((xtb-1._dp) * (1._dp - 2._dp *sinW2))
+    &                         / ((xtb-1._dp) * (1._dp - 2._dp *sinW2_160))
 ratio_W_tau_l = ratio_W_tau_l - 3._dp * oo16pi2 * Abs(l2input(3,3,2))**2       &
     &                         * xtb * (1._dp - (2._dp-xtb) * Log(xtb) /(xtb-1._dp))  &
     &                         / (4._dp*(xtb-1._dp))
 xtb = mf_u2_160(3) / mD2input(1,1)
 ratio_Z_tau_l = ratio_Z_tau_l - 3._dp * oo16pi2 * Abs(l2input(3,3,1))**2       &
     &                         * xtb * (1._dp - log(xtb) /(xtb-1._dp))  &
-    &                         / ((xtb-1._dp) * (1._dp - 2._dp *sinW2))
+    &                         / ((xtb-1._dp) * (1._dp - 2._dp *sinW2_160))
 ratio_W_tau_l = ratio_W_tau_l - 3._dp * oo16pi2 * Abs(l2input(3,3,1))**2       &
     &                         * xtb * (1._dp - (2._dp-xtb) * Log(xtb) /(xtb-1._dp))  &
     &                         / (4._dp*(xtb-1._dp))
