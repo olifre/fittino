@@ -55,10 +55,10 @@ Fittino::NLLFast2Calculator::NLLFast2Calculator( const ModelBase* model, const b
   _upperBounds["sb"] = { 2500, 2500 };
 
   _lowerBounds["st"] = { 100 };
-  _upperBounds["st"] = { 2000 };
+  _upperBounds["st"] = { 2000};
   
 
-  std::vector<std::string> processes = { "sb", "ss", "gg", "sg", "tb1", "tb2", "bb1", "bb2" };
+  std::vector<std::string> processes = { "sb", "ss", "gg", "sg", "st1", "st2", "sb1", "sb2" };
   
  for( const auto& process :processes  ) {
 
@@ -109,7 +109,7 @@ void Fittino::NLLFast2Calculator::SetToZero( std::string process ) {
 
 void Fittino::NLLFast2Calculator::Call( std::string process, std::string outputProcess, std::string pdf, std::vector<double> masses ) {
 
-  Executor executor( _executable, "nllfast");
+  Executor executor( _executable, "nllfast2_1");
   executor.AddArgument( process );
   executor.AddArgument( pdf  );
   
@@ -117,7 +117,7 @@ void Fittino::NLLFast2Calculator::Call( std::string process, std::string outputP
 
         if( masses[i] < _lowerBounds[process][i] ||
                 masses[i] > _upperBounds[process][i] ||
-                process == "st" && masses[0] > GetInput("Mass_gluino") ) {
+                process == "st" && masses[0] > GetInput("Mass_g") ) {
 
             SetToZero(outputProcess);
             return;
@@ -181,10 +181,10 @@ try {
   Call( "sg", "sg", "cteq", { mass_s, mass_g } );
   Call( "ss", "ss", "cteq", { mass_s, mass_g } );
   Call( "sb", "sb", "cteq", { mass_s, mass_g } );
-  Call( "st" , "tb1", "cteq", { mass_t1 } );
-  Call( "st" , "tb2", "cteq", { mass_t2 } );
-  Call( "st" , "bb1", "cteq", { mass_b1 } );
-  Call( "st" , "bb2", "cteq", { mass_b2 } );
+  Call( "st" , "st1", "cteq", { mass_t1 } );
+  Call( "st" , "st2", "cteq", { mass_t2 } );
+ Call( "st" , "sb1", "cteq", { mass_b1 } );
+  Call( "st" , "sb2", "cteq", { mass_b2 } );
 
   boost::filesystem::current_path( cwd );
 

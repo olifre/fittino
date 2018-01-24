@@ -28,8 +28,6 @@
 #include "ModelParameter.h"
 #include "Factory.h"
 #include "SimplePrediction.h"
-//#include "SLHADataStorageBase.h"
-//#include "Executor.h"
 #include <iostream>
 #include <fstream>
 #include <CalculatorException.h>
@@ -44,8 +42,7 @@ Fittino::ProspinoCalculator::ProspinoCalculator( const ModelBase* model, const b
     
     _ProsOldSLHAFile ( ptree.get<std::string>("ProOldSLHAFile") ),	
     _SLHAFile( ptree.get<std::string>("SLHAFile") ),
-    _executor(ptree.get<std::string>("Executable"), "prospino_2.run" )
-    
+    _executable ( ptree.get<std::string>("Executable") ) 
 
 {
 
@@ -122,20 +119,22 @@ std:: string copypaste;
 copypaste = "cp " + _SLHAFile + " " + _ProsOldSLHAFile ;
 const char *cstrr = copypaste.c_str();
 
+std:: string execute;
+execute = "cd " + _executable + " ; ./prospino_2.run" ; 
+const char *cstrrr = execute.c_str();
 
 
 std:: system( cstr );
 std:: system ( cstrr );
-/*
-std::ifstream in (fileNameFrom.c_str());
-     std::ofstream out (fileNameTo.c_str());
-     out << in.rdbuf();
-     out.close();
-     in.close();
-*/
 
-std:: system(" cd /lustre/user/bruegge/prospino ; ./prospino_2.run");
 
+std:: system( cstrrr );
+ReadFile();
+
+}
+void Fittino::ProspinoCalculator::ReadFile() {
+ 
+        std::cout<<"testtestetst"<<std::endl; 
         std::string dummy, temp1, temp5, temp6;
 	std::string line;
         double temp2 = 0, temp3=0;
@@ -146,25 +145,22 @@ std:: system(" cd /lustre/user/bruegge/prospino ; ./prospino_2.run");
 	std::vector<int> SQFam;
 	std::ifstream infile(_ProOutput);
 	while(std::getline(infile, line)){
-         if(line.empty())  break ;
-	 
+         if(line.empty()) break  ;
 	    std::istringstream ss(line); 	
 	    ss>>temp1>>temp4>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>dummy>>temp2>>dummy>>temp3>>dummy>>dummy>>dummy>>dummy;
 	    process.push_back(temp1);
 	    XSLO.push_back(temp2);
 	    XSNLO.push_back(temp3);
 	    SQFam.push_back(temp4);
-	    
+	    std::cout<<temp4<<std::endl; 
 
 }
        infile.close();
        std::map<std::string, double> proXSLO05m;
    for (int i=0 ; i<process.size() ; i+=3){
      if(process[i]=="bb"|| process[i]=="tb"){
-	 std::cout << SQFam[i] << std::endl;
 	 temp5 = std::to_string(SQFam[i]); 	
          temp6 = process[i] + temp5;	
-          std::cout << temp6 << std::endl;
           proXSLO05m[temp6]=XSLO[i];
 	}
       else{
@@ -176,10 +172,8 @@ std:: system(" cd /lustre/user/bruegge/prospino ; ./prospino_2.run");
        std::map<std::string, double> proXSLO1m;
    for (int i=1 ; i<process.size() ; i+=3){
      if(process[i]=="bb"|| process[i]=="tb"){
-	 std::cout << SQFam[i] << std::endl;
 	 temp5 = std::to_string(SQFam[i]); 	
          temp6 = process[i] + temp5;	
-          std::cout << temp6 << std::endl;
           proXSLO1m[temp6]=XSLO[i];
 		}
       else{
@@ -190,10 +184,8 @@ std:: system(" cd /lustre/user/bruegge/prospino ; ./prospino_2.run");
        std::map<std::string, double> proXSLO2m;
    for (int i=2 ; i<process.size() ; i+=3){
      if(process[i]=="bb"|| process[i]=="tb"){
-	 std::cout << SQFam[i] << std::endl;
 	 temp5 = std::to_string(SQFam[i]); 	
          temp6 = process[i] + temp5;	
-          std::cout << temp6 << std::endl;
           proXSLO2m[temp6]=XSLO[i];
 		}
       else{
@@ -206,7 +198,6 @@ std:: system(" cd /lustre/user/bruegge/prospino ; ./prospino_2.run");
 
    
     SetOutput( "Pro_XSLO_05m_" + elem.first, elem.second  );
-   std::cout<< elem.first <<"   "<< elem.second << std::endl;
   }
   for( const auto& elem : proXSLO1m ) {
 
@@ -222,10 +213,8 @@ std:: system(" cd /lustre/user/bruegge/prospino ; ./prospino_2.run");
        std::map<std::string, double> proXSNLO05m;
    for (int i=0 ; i<process.size() ; i+=3){
      if(process[i]=="bb"|| process[i]=="tb"){
-	 std::cout << SQFam[i] << std::endl;
 	 temp5 = std::to_string(SQFam[i]); 	
          temp6 = process[i] + temp5;	
-          std::cout << temp6 << std::endl;
           proXSNLO05m[temp6]=XSNLO[i];
 	}
       else{
@@ -237,10 +226,8 @@ std:: system(" cd /lustre/user/bruegge/prospino ; ./prospino_2.run");
        std::map<std::string, double> proXSNLO1m;
    for (int i=1 ; i<process.size() ; i+=3){
      if(process[i]=="bb"|| process[i]=="tb"){
-	 std::cout << SQFam[i] << std::endl;
 	 temp5 = std::to_string(SQFam[i]); 	
          temp6 = process[i] + temp5;	
-          std::cout << temp6 << std::endl;
           proXSNLO1m[temp6]=XSNLO[i];
 		}
       else{
@@ -251,10 +238,8 @@ std:: system(" cd /lustre/user/bruegge/prospino ; ./prospino_2.run");
        std::map<std::string, double> proXSNLO2m;
    for (int i=2 ; i<process.size() ; i+=3){
      if(process[i]=="bb"|| process[i]=="tb"){
-	 std::cout << SQFam[i] << std::endl;
 	 temp5 = std::to_string(SQFam[i]); 	
          temp6 = process[i] + temp5;	
-          std::cout << temp6 << std::endl;
           proXSNLO2m[temp6]=XSNLO[i];
 		}
       else{
@@ -267,7 +252,6 @@ std:: system(" cd /lustre/user/bruegge/prospino ; ./prospino_2.run");
 
    
     SetOutput( "Pro_XSNLO_05m_" + elem.first, elem.second  );
-   std::cout<< elem.first <<"   "<< elem.second << std::endl;
   }
   for( const auto& elem : proXSNLO1m ) {
 
@@ -280,6 +264,7 @@ std:: system(" cd /lustre/user/bruegge/prospino ; ./prospino_2.run");
     SetOutput( "Pro_XSNLO_2m_" + elem.first, elem.second  );
   }
 }
+
 
 void Fittino::ProspinoCalculator::SetupMeasuredValues() {
 

@@ -63,14 +63,15 @@ namespace Fittino {
       virtual void        CalculatePredictions();
       virtual void        Initialize();
       virtual void        SetupMeasuredValues();
-    
+      void                ReadFile();
      private:
     InputFile*             _inputFile;
 
      //InputFile _inputFile;
-     Executor  _executor;
+   //  Executor  _executor;
     std::string _ProOutput;
-    std::string _ProsOldSLHAFile; 
+    std::string _ProsOldSLHAFile;
+    std::string _executable; 
      double _weight;
       double _nevents;
       double _XSgogo;
