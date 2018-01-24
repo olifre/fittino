@@ -48,11 +48,14 @@ namespace Fittino{
             std::string _directory;
             InputFile _inputFile;
             std::string _CM_tot_result;
+            std::string _CM_r_result;
+ //           std::string _inputFile;
+
             std::string _old_result;
 	    std::string _inputfile_test;
         private:
             void ReadResult();
-
+            void ReadrResult();
     };
 
 }
