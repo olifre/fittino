@@ -36,6 +36,8 @@
 #include <boost/regex.hpp>
 
 
+
+
 Fittino::MadGraph5Calculator::MadGraph5Calculator( const ModelBase* model, const boost::property_tree::ptree& ptree )
   : SLHACalculatorBase( model, &ptree ),
 
@@ -52,86 +54,6 @@ Fittino::MadGraph5Calculator::MadGraph5Calculator( const ModelBase* model, const
    _executor.AddArgument(_MGinputFile);
 
 AddOutput("XS", _XS);
-/*
-
-boost::regex gogo (".*gogo.*");
-
-
-if(boost::regex_match(_MGinputFile, gogo)){
-
-AddOutput("XSgogo", _XSgogo);
-
-}
-
-boost::regex b1b1 (".*b1b1.*");
-
-
-if(boost::regex_match(_MGinputFile, b1b1)){
-
-AddOutput("XSb1b1~", _XSb1b1);
-
-
-
-}
-
-boost::regex b2b2 (".*b2b2.*");
-
-
-if(boost::regex_match(_MGinputFile, b2b2)){
-
-AddOutput("XSb2b2~", _XSb2b2);
-
-
-}
-boost::regex t1t1 (".*t1t1.*");
-
-
-if(boost::regex_match(_MGinputFile, t1t1)){
-
-AddOutput("XSt1t1~", _XSt1t1);
-
-
-
-}
-boost::regex t2t2 (".*t2t2.*");
-
-
-if(boost::regex_match(_MGinputFile, t2t2)){
-
-AddOutput("XSt2t2~", _XSt2t2);
-
-
-
-}
-boost::regex gosq (".*gosq.*");
-
-
-if(boost::regex_match(_MGinputFile, gosq)){
-
-AddOutput("XSgosq", _XSgosq);
-
-
-}
-boost::regex sqsq (".*sqsq.*");
-
-
-if(boost::regex_match(_MGinputFile, sqsq)){
-
-AddOutput("XSsqsq", _XSsqsq);
-
-
-}
-boost::regex sqasq (".*sqasq.*");
-
-
-if(boost::regex_match(_MGinputFile, sqasq)){
-
-AddOutput("XSsqasq", _XSsqasq);
-
-
-
-}
-*/
 
 }
 
@@ -142,6 +64,12 @@ Fittino::MadGraph5Calculator::~MadGraph5Calculator() {
 void Fittino::MadGraph5Calculator::CalculatePredictions() {
   _executor.Execute();
 
+if (!boost::filesystem::exists (_BannerFile)){
+  throw CalculatorException(_name, "MadGraphError"); 
+
+}
+
+else{
   boost::property_tree::ptree bannerFile;
   boost::property_tree::read_xml( _BannerFile, bannerFile );
 
@@ -157,141 +85,8 @@ gunzipfile = "gunzip " + _EventFile;
 const char *cstr = gunzipfile.c_str();
 
 std::system(cstr);
-/*
-boost::regex gogo (".*gogo.*");
-
-
-if(boost::regex_match(_MGinputFile, gogo)){
-
-//AddOutput("XSgogo", _XSgogo);
-  _XSgogo = stod( parts[4] );
-  _nevents = stod( parts[2] );
-std:: string gunzipfile;
-gunzipfile = "gunzip " + _EventFile;
-const char *cstr = gunzipfile.c_str();
-
-std::system(cstr);
-
-
 
 }
-
-boost::regex b1b1 (".*b1b1.*");
-
-
-if(boost::regex_match(_MGinputFile, b1b1)){
-
-//AddOutput("XSb1b1~", _XSb1b1);
-  _XSb1b1 = stod( parts[4] );
-  _nevents = stod( parts[2] );
-
-std:: string gunzipfile;
-gunzipfile = "gunzip " + _EventFile;
-const char *cstr = gunzipfile.c_str();
-
-std::system(cstr);
-}
-boost::regex b2b2 (".*b2b2.*");
-
-
-if(boost::regex_match(_MGinputFile, b2b2)){
-
-//AddOutput("XSb2b2~", _XSb2b2);
-  _XSb2b2 = stod( parts[4] );
-  _nevents = stod( parts[2] );
-
-std:: string gunzipfile;
-gunzipfile = "gunzip " + _EventFile;
-const char *cstr = gunzipfile.c_str();
-
-std::system(cstr);
-}
-boost::regex t1t1 (".*t1t1.*");
-
-
-if(boost::regex_match(_MGinputFile, t1t1)){
-
-//AddOutput("XSt1t1~", _XSt1t1);
-  _XSt1t1 = stod( parts[4] );
-  _nevents = stod( parts[2] );
-
-std:: string gunzipfile;
-gunzipfile = "gunzip " + _EventFile;
-const char *cstr = gunzipfile.c_str();
-
-std::system(cstr);
-}
-boost::regex t2t2 (".*t2t2.*");
-
-
-if(boost::regex_match(_MGinputFile, t2t2)){
-
-//AddOutput("XSt2t2~", _XSt2t2);
-  _XSt2t2 = stod( parts[4] );
-  _nevents = stod( parts[2] );
-
-std:: string gunzipfile;
-gunzipfile = "gunzip " + _EventFile;
-const char *cstr = gunzipfile.c_str();
-
-std::system(cstr);
-}
-boost::regex gosq (".*gosq.*");
-
-
-if(boost::regex_match(_MGinputFile, gosq)){
-
-//AddOutput("XSgosq", _XSgosq);
-  _XSgosq = stod( parts[4] );
-  _nevents = stod( parts[2] );
-
-std:: string gunzipfile;
-gunzipfile = "gunzip " + _EventFile;
-const char *cstr = gunzipfile.c_str();
-
-std::system(cstr);
-}
-boost::regex sqsq (".*sqsq.*");
-
-
-if(boost::regex_match(_MGinputFile, sqsq)){
-
-//AddOutput("XSsqsq", _XSsqsq);
-  _XSsqsq = stod( parts[4] );
-  _nevents = stod( parts[2] );
-
-std:: string gunzipfile;
-gunzipfile = "gunzip " + _EventFile;
-const char *cstr = gunzipfile.c_str();
-
-std::system(cstr);
-}
-boost::regex sqasq (".*sqasq.*");
-
-
-if(boost::regex_match(_MGinputFile, sqasq)){
-
-//AddOutput("XSsqasq", _XSsqasq);
-  _XSsqasq = stod( parts[4] );
-  _nevents = stod( parts[2] );
-
-std:: string gunzipfile;
-gunzipfile = "gunzip " + _EventFile;
-const char *cstr = gunzipfile.c_str();
-
-std::system(cstr);
-}
-*/
-/*
-  std::string slha = bannerFile.get<std::string>("LesHouchesEvents.header.slha");
-  _slhaOutputDataStorage->Clear();
-  _slhaOutputDataStorage->ReadString( slha );
-
-  for( const auto& id : _pdgIds ) {
-
-    double width = _slhaOutputDataStorage->GetEntry( std::to_string( id.second ) , 2, "DECAY", "", "", "");
-    SetOutput( "Width_" + id.first, width  );
-*/
 }
 
 void Fittino::MadGraph5Calculator::SetupMeasuredValues() {
