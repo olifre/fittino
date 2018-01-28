@@ -10,6 +10,7 @@ file( COPY ${PROJECT_SOURCE_DIR}/input DESTINATION ${PROJECT_BINARY_DIR} PATTERN
 #file(MAKE_DIRECTORY ${builddir} )
 
 list( APPEND inputFiles steering/SModelS.in.xml )
+list( APPEND inputFiles steering/SCYNet.xml )
 list( APPEND inputFiles steering/MSSMTriLnV_low.xml  )
 list( APPEND inputFiles steering/RPV.xml )
 list( APPEND inputFiles steering/MSSMTriLnV_RK_stop.xml )

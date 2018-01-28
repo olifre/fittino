@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<?xml-stylesheet type="text/xsl" href="style/InputFile.xsl"?>
+
+<InputFile>
+
+    <VerbosityLevel>INFO</VerbosityLevel>
+
+    <Model>
+
+        <ModelBase>
+
+            <Name>MSSM</Name>
+
+            <ModelParameter>
+                <Name>Minput</Name>
+                <Value>1000</Value>
+                <Error>1</Error>
+                <LowerBound>-10</LowerBound>
+                <UpperBound>10000</UpperBound>
+                <Fixed>true</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>M1</Name>
+                <Value>170</Value>
+                <Error>1</Error>
+                <LowerBound>-1000</LowerBound>
+                <UpperBound>1000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>M2</Name>
+                <Value>170</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>M3</Name>
+                <Value>2600</Value>
+                <Error>1</Error>
+                <LowerBound>-4000</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>MQ1</Name>
+                <Value>2880</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>MQ3</Name>
+                <Value>4360</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>ML1</Name>
+                <Value>440</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>2000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>ML3</Name>
+                <Value>440</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>MA0</Name>
+                <Value>2070</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>4000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>A</Name>
+                <Value>790</Value>
+                <Error>1</Error>
+                <LowerBound>-5000</LowerBound>
+                <UpperBound>5000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>Mu</Name>
+                <Value>550</Value>
+                <Error>1</Error>
+                <LowerBound>-5000</LowerBound>
+                <UpperBound>5000</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>TanBeta</Name>
+                <Value>37.6</Value>
+                <Error>1</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>60</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>Mt</Name>
+                <Value>173.3</Value>
+                <Error>1</Error>
+                <LowerBound>130</LowerBound>
+                <UpperBound>215</UpperBound>
+                <Fixed>false</Fixed>
+            </ModelParameter>
+
+            <Observables>
+            </Observables>
+            <CovarianceMatrices>
+            </CovarianceMatrices>
+
+            <Calculators>
+
+                <SPhenoCalculator>
+
+                    <Name>SPhenoCalculator</Name>
+
+                    <Executable>@SPheno_EXECUTABLE@</Executable>
+                    <InputFile>
+                        <Template>@Fittino_INPUT_DIR@/external/SPheno/pMSSM11.slha</Template>
+                        <Name>pMSSM11.slha</Name>
+                        <Quantity>
+                            <Name>[Minput]</Name>
+                            <Value>[Minput]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[M1]</Name>
+                            <Value>[M1]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[M2]</Name>
+                            <Value>[M2]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[M3]</Name>
+                            <Value>[M3]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[A]</Name>
+                            <Value>[A]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[Mu]</Name>
+                            <Value>[Mu]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[MA0]</Name>
+                            <Value>[MA0]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[ML1]</Name>
+                            <Value>[ML1]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[ML3]</Name>
+                            <Value>[ML3]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[MQ1]</Name>
+                            <Value>[MQ1]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[MQ3]</Name>
+                            <Value>[MQ3]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>[TanBeta]</Name>
+                            <Value>[TanBeta]</Value>
+                        </Quantity>
+                    </InputFile>
+                    <OutputFile>SPheno.spc</OutputFile>
+                </SPhenoCalculator>
+
+                <LHCNeuralNetCalculator>
+                    <M1>[M1]</M1>
+                    <M2>[M2]</M2>
+                    <M3>[M3]</M3>
+                    <MQ1>[MQ1]</MQ1>
+                    <MQ3>[MQ3]</MQ3>
+                    <ML1>[ML1]</ML1>
+                    <ML3>[ML3]</ML3>
+                    <MA0>[MA0]</MA0>
+                    <TanBeta>[TanBeta]</TanBeta>
+                    <Mu>[Mu]</Mu>
+                    <A>[A]</A>
+                </LHCNeuralNetCalculator>
+
+
+                <Chi2Calculator>
+                    <Name>LEO</Name>
+                    <Observable>
+                        <Name>Mass_h0</Name>
+                        <Prediction>[SPheno_Mass_h0]</Prediction>
+                        <Measurement>125.09</Measurement>
+                        <Uncertainty>
+                            <Value>0.21</Value>
+                        </Uncertainty>
+                        <Uncertainty>
+                            <Value>0.11</Value>
+                        </Uncertainty>
+                    </Observable>
+                    <Observable>
+                        <Name>Mass_W</Name>
+                        <Prediction>[SPheno_Mass_Wp]</Prediction>
+                        <Measurement>80.385</Measurement>
+                        <Uncertainty>
+                            <Value>0.015</Value>
+                        </Uncertainty>
+                    </Observable>
+                </Chi2Calculator>
+
+            </Calculators>
+
+            <Chi2Contribution>[LEO_Chi2]-[SCYNet_Chi2_Total]</Chi2Contribution>
+
+        </ModelBase>
+
+    </Model>
+
+    <Tool>
+
+        <MarkovChainSampler>
+            <NumberOfIterations>100</NumberOfIterations>
+        </MarkovChainSampler>
+
+    </Tool>
+
+</InputFile>
+
