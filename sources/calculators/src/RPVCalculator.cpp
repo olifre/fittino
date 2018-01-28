@@ -26,9 +26,11 @@ Fittino::RPVCalculator::RPVCalculator(const ModelBase *model, const boost::prope
     AddOutput("Ratio_gWtaunu_gWlnu",W_coupling_relation);
     
     X_t = 1.469;
-    s_Wsq = 0.22336;
+    // s_Wsq = 0.22336;
+    s_Wsq = 0.2252;
     alpha_em = 1./128.;
-    m_t = 173.21;
+    // m_t = 173.21;
+    m_t = 167.7;
     
     InitializeCKMMatrix();
     
