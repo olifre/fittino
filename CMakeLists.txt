@@ -43,7 +43,7 @@ ENABLE_LANGUAGE( C )
 ENABLE_LANGUAGE( Fortran )
 
 FIND_PACKAGE( Boost 1.47.0 REQUIRED COMPONENTS filesystem system thread regex chrono )
-FIND_PACKAGE( ROOT 5.20.00 REQUIRED                                                  )
+FIND_PACKAGE( ROOT 5.20.00 REQUIRED COMPONENTS Minuit2 TMVA                                                 )
 FIND_PACKAGE( GSL                                                                    )
 FIND_PACKAGE( HepMC                                                                  )
 FIND_PACKAGE( LHAPDF 5.8.9 EXACT                                                     )
@@ -65,6 +65,13 @@ FIND_PACKAGE( Eigen3 3.1                                                        
 FIND_PACKAGE( SUPERISO                                                               )
 find_package( PythonInterp )
 FIND_PACKAGE( PythonLibs )
+
+if( ROOT_VERSION STREQUAL "6.12/04")
+
+    find_package( VecCore REQUIRED )
+    list( APPEND ROOT_INCLUDE_DIRS ${VecCore_INCLUDE_DIRS} )
+
+endif()
 
 if( PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND AND PYTHON_VERSION_STRING EQUAL PYTHONLIBS_VERSION_STRING )
 
