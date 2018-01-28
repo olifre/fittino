@@ -25,6 +25,8 @@ endif()
 enable_language( CXX )
 list( APPEND CACHE_ARGS "-DCMAKE_CXX_COMPILER:FILEPATH=${CMAKE_CXX_COMPILER}" )
 
+list( APPEND CACHE_ARGS "-DCMAKE_DISABLE_FIND_PACKAGE_PythonLibs:BOOL=${CMAKE_DISABLE_FIND_PACKAGE_PythonLibs}" )
+
 externalproject_add(
 
     ${Fittino}
@@ -33,6 +35,7 @@ externalproject_add(
     BUILD_ALWAYS ON
     #BUILD_COMMAND ""
     CMAKE_CACHE_ARGS ${CACHE_ARGS}
+# CMAKE_GENERATOR Xcode
 
 )
 
