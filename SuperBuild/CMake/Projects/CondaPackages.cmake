@@ -2,11 +2,43 @@ if( INSTALL_Python2 )
 
     set( CondaPackages "CondaPackages2-1" )
     set( requirements "${CMAKE_CURRENT_SOURCE_DIR}/Requirements/CondaPackages2.txt" )
+    set( pythonIncludeDir include/python2.7 )
+
+    if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
+
+        set( pythonLibrary lib/libpython2.7.dylib )
+
+    elseif( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" )
+
+        set( pythonLibrary lib/libpython2.7.so )
+
+    else()
+
+        message( FATAL_ERROR "CMAKE_SYSTEM_NAME is ${CMAKE_SYSTEM_NAME} but only Darwin and Linux are supported." )
+
+    endif()
+
 
 elseif( INSTALL_Python3 )
 
     set( CondaPackages "CondaPackages3-1" )
     set( requirements "${CMAKE_CURRENT_SOURCE_DIR}/Requirements/CondaPackages3.txt" )
+    set( pythonIncludeDir include/python3.6m )
+
+    if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
+
+        set( pythonLibrary lib/libpython3.6m.dylib )
+
+    elseif( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" )
+
+        set( pythonLibrary lib/libpython3.6m.so )
+
+    else()
+
+        message( FATAL_ERROR "CMAKE_SYSTEM_NAME is ${CMAKE_SYSTEM_NAME} but only Darwin and Linux are supported." )
+
+    endif()
+
 
 endif()
 
@@ -42,6 +74,8 @@ externalproject_get_property( ${CondaPackages} install_dir )
 set( PYTHON_EXECUTABLE ${install_dir}/bin/python )
 
 list( APPEND CACHE_ARGS -DPYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE} )
+list( APPEND CACHE_ARGS -DPYTHON_LIBRARY:FILEPATH=${install_dir}/${pythonLibrary} )
+list( APPEND CACHE_ARGS -DPYTHON_INCLUDE_DIR:PATH=${install_dir}/${pythonIncludeDir} )
 
 list( APPEND PATH ${install_dir}/bin )
 

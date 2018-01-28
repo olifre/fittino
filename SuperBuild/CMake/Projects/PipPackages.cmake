@@ -8,7 +8,7 @@ elseif( INSTALL_Python3 )
 
     set( PipPackages "PipPackages3-1")
     set( requirements "${CMAKE_CURRENT_SOURCE_DIR}/Requirements/PipPackages3.txt" )
-    set( libs "lib/python3.5/site-packages" )
+    set( libs "lib/python3.6/site-packages" )
 
 endif()
 
