@@ -132,29 +132,48 @@ if( _individualMissingWeights ) {
 
 }
 
-    _numberOfMissingModelsConsidered =  ptree.get<unsigned int>( "NumberOfMissingModels", 10 );
-
+    _numberOfMissingModelsConsidered =  ptree.get<unsigned int>( "NumberOfUnusedModels", 10 );
     _missingModels_TxNames.resize( _numberOfMissingModelsConsidered );
     _missingModels_Brackets.resize( _numberOfMissingModelsConsidered );
-
     _missingModels_Weights_Total.resize( _numberOfMissingModelsConsidered );
     _missingModels_Fractions_OutsideGrid.resize( _numberOfMissingModelsConsidered );
     _missingModels_Fractions_InsideGrid.resize( _numberOfMissingModelsConsidered );
-
-
-
+            
     for( unsigned int i = 0; i< _numberOfMissingModelsConsidered ; ++i ) {
-
-        AddOutput( "MissingModels_Weight_" + std::to_string(i), _missingModels_Weights_Total[i]  );
-        AddOutput( "MissingModels_Fraction_OutsideGrid_" + std::to_string(i), _missingModels_Fractions_OutsideGrid[i]  );
-            AddOutput( "MissingModels_Fraction_InsideGrid_" + std::to_string(i), _missingModels_Fractions_InsideGrid[i]  );
-
-        AddStringVariable("MissingModels_TxName_" + std::to_string(i), _missingModels_TxNames[i] );
-        AddStringVariable("MissingModels_Bracket_" + std::to_string(i), _missingModels_Brackets[i] );
+        
+            AddStringVariable("UnusedModel_" + std::to_string(i) + "_Bracket", _missingModels_Brackets[i] );
+            AddStringVariable("UnusedModel_" + std::to_string(i) + "_TxName", _missingModels_TxNames[i] );
+            AddOutput( "UnusedModel_" + std::to_string(i) + "_Weight", _missingModels_Weights_Total[i]  );
+            AddOutput( "UnusedModel" + std::to_string(i) + "_FractionMissing", _missingModels_Fractions_InsideGrid[i]  );
+            AddOutput( "UnusedModel_" + std::to_string(i) + "_FractionOutsideGrid", _missingModels_Fractions_OutsideGrid[i]  );
+        
+    }
+            
+    _constraintsMissing_NumberConsidered = 10;
+    _constraintsMissing_Weights.resize( _constraintsMissing_NumberConsidered );
+    _constraintsMissing_Brackets.resize( _constraintsMissing_NumberConsidered );
+            
+    for( unsigned int i = 0; i< _constraintsMissing_NumberConsidered ; ++i ) {
+        
+        AddOutput( "MissingConstraint_" + std::to_string(i) + "_Weight", _constraintsMissing_Weights[i]  );
+        AddStringVariable( "MissingConstraint_" + std::to_string(i) + "_Bracket", _constraintsMissing_Brackets[i] );
 
     }
+            
+    _constraintsOutsideGrid_NumberConsidered = 10;
+    _constraintsOutsideGrid_Weights.resize( _constraintsOutsideGrid_NumberConsidered );
+    _constraintsOutsideGrid_Brackets.resize( _constraintsOutsideGrid_NumberConsidered );
 
-    AddOutput( "MissingModels_Number", _numberOfMissingModelsDetermined );
+    for( unsigned int i = 0; i< _constraintsOutsideGrid_NumberConsidered ; ++i ) {
+                
+        AddOutput( "ConstraintOutsideGrid_" + std::to_string(i) + "_Weight", _constraintsOutsideGrid_Weights[i]  );
+        AddStringVariable("ConstraintOutsideGrid_" + std::to_string(i) + "_Bracket", _constraintsOutsideGrid_Brackets[i] );
+                
+    }
+
+    AddOutput( "NumberOfUnusedModels", _numberOfMissingModelsDetermined );
+    AddOutput( "NumberOfMissingConstraints", _constraintsMissing_NumberDetermined );
+    AddOutput( "NumberOfConstraintsOutsideGrid", _constraintsOutsideGrid_NumberDetermined );
 
 }
 
@@ -174,13 +193,40 @@ void Fittino::SModelSCalculator::CalculatePredictions() {
         }
 
     }
+    
+    for( unsigned int iMissingModel = 0; iMissingModel < _numberOfMissingModelsConsidered; ++iMissingModel ) {
+
+        _missingModels_TxNames.at(iMissingModel) = "";
+        _missingModels_Brackets.at(iMissingModel) = "";
+        
+        _missingModels_Weights_Total.at(iMissingModel) = 0;
+        _missingModels_Fractions_InsideGrid.at(iMissingModel) = 0;
+        _missingModels_Fractions_OutsideGrid.at(iMissingModel) = 0;
+        
+    }
+    
+    for( unsigned int i = 0; i < _constraintsMissing_NumberConsidered; ++i ) {
+    
+        _constraintsMissing_Brackets.at( i ) = "";
+        _constraintsMissing_Weights.at( i ) = 0;
+        
+    }
+    
+    for( unsigned int i = 0; i < _constraintsOutsideGrid_NumberConsidered; ++i ) {
+        
+        _constraintsOutsideGrid_Brackets.at( i ) = "";
+        _constraintsOutsideGrid_Weights.at( i ) = 0;
+        
+    }
 
     _crossSections_LO->Execute();
     _crossSections_NLL->Execute();
-
+    
     auto result = _testPoints( _fileList, _fileName, "results", _parser, _databaseVersion, _listOfExpRes, 900, false, _parameterFile );
 
     ReadXML();
+    ReadMissingConstraints();
+    // TODO: read in constraints outside grid. but let's wait for malte's update
 
 
 }
@@ -246,10 +292,60 @@ void Fittino::SModelSCalculator::ReadXML() {
     }
 
     _numberOfMissingModelsDetermined = iMissingModel;
-
+    
 }
 
 void Fittino::SModelSCalculator::Initialize() {
 
 
+}
+
+void Fittino::SModelSCalculator::ReadMissingConstraints() {
+    
+    boost::property_tree::ptree ptree;
+    
+    // TODO: avoid reading the file twice
+    
+    boost::property_tree::read_xml( _xmlFile,
+                                   ptree,
+                                   boost::property_tree::xml_parser::trim_whitespace |
+                                   boost::property_tree::xml_parser::no_comments );
+    
+
+    unsigned int iMissingConstraint = 0;
+    
+    for( auto node : ptree.get_child( "smodelsOutput.Missing_Constraints.Missing.Constraints_List" ) ) {
+        
+        if( node.first != "Constraints" ) throw LogicException("Expected node Constraints in SModelS xml file.");
+        
+        if( iMissingConstraint < _constraintsMissing_NumberConsidered ) {
+            
+            _constraintsMissing_Brackets.at( iMissingConstraint ) = node.second.get_value<std::string>();
+            
+        }
+        
+        ++iMissingConstraint;
+        
+    }
+    
+    _constraintsMissing_NumberDetermined = iMissingConstraint;
+    
+    iMissingConstraint = 0;
+    
+    for( auto node : ptree.get_child( "smodelsOutput.Missing_Constraints.Missing.Weight_pb_List" ) ) {
+        
+        if( node.first != "Weight_pb" ) throw LogicException("Expected node Weight_pb in SModelS xml file.");
+        
+        if( iMissingConstraint < _constraintsMissing_NumberConsidered ) {
+        
+            _constraintsMissing_Weights.at( iMissingConstraint ) = node.second.get_value<double>();
+               
+        }
+        
+        ++iMissingConstraint;
+        
+    }
+    
+    // TODO: here one would need to check that iMissingConstraint ==constraintsMissing_NumberDetermined  but let's wait for Malte's update
+    
 }

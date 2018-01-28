@@ -36,22 +36,30 @@ namespace Fittino {
       boost::python::object _listOfExpRes;
       boost::python::object _testPoints;
 
+      bool _individualMissingWeights;
       std::set<std::string> _txNamesWithResults;
       std::set<std::string> _txNames;
 
       std::vector<std::string> _missingModels_TxNames;
       std::vector<std::string> _missingModels_Brackets;
-
       std::vector<double> _missingModels_Weights_Total;
       std::vector<double> _missingModels_Fractions_OutsideGrid;
       std::vector<double> _missingModels_Fractions_InsideGrid;
-
-      bool _individualMissingWeights;
-
-      void ReadXML();
-
       unsigned int _numberOfMissingModelsConsidered;
       double _numberOfMissingModelsDetermined;
+      
+      std::vector<std::string> _constraintsMissing_Brackets;
+      std::vector<double> _constraintsMissing_Weights;
+      unsigned int _constraintsMissing_NumberConsidered;
+      double _constraintsMissing_NumberDetermined;
+      
+      std::vector<std::string> _constraintsOutsideGrid_Brackets;
+      std::vector<double> _constraintsOutsideGrid_Weights;
+      unsigned int _constraintsOutsideGrid_NumberConsidered;
+      double _constraintsOutsideGrid_NumberDetermined;
+
+      void ReadXML();
+      void ReadMissingConstraints();
 
   };
 
