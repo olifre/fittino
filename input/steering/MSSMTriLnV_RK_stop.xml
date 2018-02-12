@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding='UTF-8'?>
+<?xml version='1.0' encoding='UTF-8'?>
 <?xml-stylesheet type="text/xsl" href="style/InputFile.xsl"?>
-
 <InputFile>
 
-    <VerbosityLevel>DEBUG</VerbosityLevel>
-
+    <VerbosityLevel>INFO</VerbosityLevel>
 
     <Model>
 
@@ -70,7 +68,7 @@
                 <Name>lambda'_232</Name>
                 <Value>0.0</Value>
                 <Error>0.1</Error>
-                <LowerBound>-0.1</LowerBound>
+                <LowerBound>-0.10</LowerBound>
                 <UpperBound>+0.11</UpperBound>
                 <Fixed>false</Fixed>
             </ModelParameter>
@@ -79,7 +77,7 @@
                 <Name>lambda'_233</Name>
                 <Value>0.0</Value>
                 <Error>0.1</Error>
-                <LowerBound>-0.1</LowerBound>
+                <LowerBound>-0.10</LowerBound>
                 <UpperBound>+0.11</UpperBound>
                 <Fixed>false</Fixed>
             </ModelParameter>
@@ -101,6 +99,15 @@
                 <UpperBound>+1.1</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+            
+            <ModelParameter>
+                <Name>lambda'_332</Name>
+                <Value>0.0</Value>
+                <Error>1.0</Error>
+                <LowerBound>-2.0</LowerBound>
+                <UpperBound>+2.1</UpperBound>
+                <Fixed>true</Fixed>
+            </ModelParameter>
 
             <ModelParameter>
                 <Name>lambda'_333</Name>
@@ -110,10 +117,19 @@
                 <UpperBound>+1.1</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+            
+            <ModelParameter>
+                <Name>lambda_322</Name>
+                <Value>1.0</Value>
+                <Error>1.0</Error>
+                <LowerBound>-1.0</LowerBound>
+                <UpperBound>+1.1</UpperBound>
+                <Fixed>true</Fixed>
+            </ModelParameter>
 
             <ModelParameter>
-                <Name>mq2_33</Name>
-                <Value>12.5e5</Value>
+                <Name>md2_33</Name>
+                <Value>16e6</Value>
                 <Error>7.5e5</Error>
                 <LowerBound>5e5</LowerBound>
                 <UpperBound>20.1e5</UpperBound>
@@ -121,10 +137,19 @@
             </ModelParameter>
 
             <ModelParameter>
-                <Name>md2_33</Name>
-                <Value>16e6</Value>
+                <Name>mq2_33</Name>
+                <Value>12.5e5</Value>
                 <Error>5e5</Error>
                 <LowerBound>5e5</LowerBound>
+                <UpperBound>2.001e6</UpperBound>
+                <Fixed>true</Fixed>
+            </ModelParameter>
+
+            <ModelParameter>
+                <Name>ml2_33</Name>
+                <Value>16e6</Value>
+                <Error>5e5</Error>
+                <LowerBound>0</LowerBound>
                 <UpperBound>2.001e6</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
@@ -182,8 +207,16 @@
                             <Value>[lambda'_323]</Value>
                         </Quantity>
                         <Quantity>
+                            <Name>lambda'_332</Name>
+                            <Value>[lambda'_332]</Value>
+                        </Quantity>
+                        <Quantity>
                             <Name>lambda'_333</Name>
                             <Value>[lambda'_333]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>lambda_322</Name>
+                            <Value>[lambda_322]</Value>
                         </Quantity>
                         <Quantity>
                             <Name>md2_33</Name>
@@ -192,6 +225,10 @@
                         <Quantity>
                             <Name>mq2_33</Name>
                             <Value>[mq2_33]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>ml2_33</Name>
+                            <Value>[ml2_33]</Value>
                         </Quantity>
                     </InputFile>
                     <OutputFile>SPheno.spc.MSSMTriLnV</OutputFile>
@@ -218,11 +255,10 @@
     <Tool>
 
         <SimpleSampler>
-            <OutputFile>RK.root</OutputFile>
+            <OutputFile>MSSMTriLnV_RK_stop.root</OutputFile>
         </SimpleSampler>
 
     </Tool>
 
 
 </InputFile>
-
