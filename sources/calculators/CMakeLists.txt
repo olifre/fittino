@@ -212,6 +212,13 @@ IF(MICROMEGAS_FOUND)
 
 ENDIF()
 
+if ( USE_WCxf )
+
+    add_definitions( -DWCxf )
+
+endif()
+
 SET_TARGET_PROPERTIES(calculators PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON )
+
 
 

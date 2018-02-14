@@ -39,7 +39,7 @@ SET( CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE                             )
 
 SET( FEYNHIGGS_QUAD TRUE CACHE BOOL "" )
 
-option( USE_WCxf "" ON)
+option( USE_WCxf "" ON )
 
 ENABLE_LANGUAGE( CXX )
 ENABLE_LANGUAGE( C )
