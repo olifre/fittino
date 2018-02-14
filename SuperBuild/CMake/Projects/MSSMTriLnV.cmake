@@ -6,11 +6,11 @@ enable_language( Fortran )
 
 if( USE_WCxf )
 
-    set( MSSMTriLnV_url ${CMAKE_CURRENT_SOURCE_DIR}/MSSMTriLnV )
+    set( MSSMTriLnV_url ${CMAKE_CURRENT_SOURCE_DIR}/SPhenoMSSMTriLnV )
 
 else()
 
-    set( MSSMTriLnV_url ${CMAKE_CURRENT_SOURCE_DIR}/SPhenoMSSMTriLnV )
+    set( MSSMTriLnV_url ${CMAKE_CURRENT_SOURCE_DIR}/MSSMTriLnV )
 
 endif()
 
