@@ -4,11 +4,21 @@ enable_language( Fortran )
 
 # see https://sarah.hepforge.org/sarah_in_a_nutshell.pdf
 
+if( USE_WCxf )
+
+    set( MSSMTriLnV_url ${CMAKE_CURRENT_SOURCE_DIR}/MSSMTriLnV )
+
+else()
+
+    set( MSSMTriLnV_url ${CMAKE_CURRENT_SOURCE_DIR}/SPhenoMSSMTriLnV )
+
+endif()
+
 externalproject_add(
 
     ${MSSMTriLnV}
     DEPENDS ${SPheno}
-    URL ${CMAKE_CURRENT_SOURCE_DIR}/MSSMTriLnV
+    URL ${MSSMTriLnV_url}
     SOURCE_DIR ${SPheno_ROOT_DIR}/MSSMTriLnV
     PATCH_COMMAND ${CMAKE_COMMAND} -DMAKEFILE=Makefile -P ${CMAKE_CURRENT_SOURCE_DIR}/CMake/Scripts/patch_SPheno.cmake
     CONFIGURE_COMMAND ""
