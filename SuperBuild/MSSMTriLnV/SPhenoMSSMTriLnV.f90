@@ -1055,7 +1055,7 @@ Do i1=1,3
   Do i3 = 1,3
    Do gt2 = 1,3
     Do gt3 = 1,3
-     L2p(i1,i2,i3) = L2p(i1,i2,i3) + L2(i1,gt2,gt3) * ZdL(i2,gt2) * ZdR(i3,gt3)
+     L2p(i1,i2,i3) = L2p(i1,i2,i3) + L2(i1,gt2,gt3) * ZdL(gt2,i2) * ZdR(gt3,i3)
     end Do
    end Do
   end Do
