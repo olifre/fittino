@@ -1,6 +1,7 @@
 # install flavio and its dependencies which are not available via conda
 ckmutil==0.3.1
-flavio==0.27.2
+flavio==0.24
 rundec==0.5
 wcxf==1.2.1
 wetrunner==0.1
+
