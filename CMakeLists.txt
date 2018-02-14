@@ -18,7 +18,8 @@
 #                                                                              #
 ################################################################################
 
-CMAKE_MINIMUM_REQUIRED( VERSION 3.2 FATAL_ERROR )
+CMAKE_MINIMUM_REQUIRED( VERSION 3.3 FATAL_ERROR )
+cmake_policy(SET CMP0057 NEW)
 
 PROJECT( fittino NONE )
 
@@ -66,7 +67,9 @@ FIND_PACKAGE( SUPERISO                                                          
 find_package( PythonInterp )
 FIND_PACKAGE( PythonLibs )
 
-if( ROOT_VERSION STREQUAL "6.12/04")
+set( veccoreVersions "6.12/04;6.12/06" )
+
+if( "${ROOT_VERSION}" IN_LIST veccoreVersions  )
 
     find_package( VecCore REQUIRED )
     list( APPEND ROOT_INCLUDE_DIRS ${VecCore_INCLUDE_DIRS} )
@@ -121,6 +124,7 @@ list( APPEND sbsrc SuperBuild/CMake )
 list( APPEND sbsrc SuperBuild/createSource_MSSMTriLnV.m )
 list( APPEND sbsrc SuperBuild/Flavio_patch )
 list( APPEND sbsrc SuperBuild/MSSMTriLnV )
+list( APPEND sbsrc SuperBuild/SPhenoMSSMTriLnV )
 list( APPEND sbsrc SuperBuild/Requirements )
 list( APPEND sbsrc SuperBuild/SPheno_patch )
 list( APPEND sbsrc SuperBuild/init.cmake )
