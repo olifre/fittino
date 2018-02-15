@@ -21,6 +21,7 @@ list( APPEND inputFiles steering/MSSMTriLnV_gRatios.xml )
 
 list( APPEND inputFiles external/SModelS/parameters.ini )
 list( APPEND inputFiles external/SPheno/pMSSM11.slha )
+list( APPEND inputFiles external/SPheno/LesHouches.in.MSSMTriLnV_low )
 
 set( Fittino_INPUT_DIR ${CMAKE_INSTALL_PREFIX}/share/fittino/input )
 
