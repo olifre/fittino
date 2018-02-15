@@ -72,6 +72,62 @@ Fittino::FlavioCalculator::FlavioCalculator( const ModelBase* model, const boost
 
 
     }
+    
+    
+#ifdef WCxf
+    
+    _wilsonCoefficients = PyObject_GetAttrString(flavio, "WilsonCoefficients");
+    
+    if ( !_wilsonCoefficients || !PyCallable_Check(_wilsonCoefficients ) ) {
+        
+        
+        if (PyErr_Occurred())
+        PyErr_Print();
+        std::cout<<"Failed to load WilsonCoefficients class from flavio"<<std::endl;
+        
+        
+    }
+    
+    auto wcxf_name = PyUnicode_DecodeFSDefault( "wcxf" );
+    auto wcxf_module = PyImport_Import( wcxf_name );
+    
+    if ( wcxf_module == NULL ) {
+        
+        PyErr_Print();
+        std::cout<<"Falied to load wcxf"<<std::endl;
+        
+    }
+    
+    auto wcxf_wc = PyObject_GetAttrString (wcxf_module, "WC" );
+
+    if ( wcxf_wc == NULL ) {
+        
+        PyErr_Print();
+        std::cout<<"Falied to load wcxf.WC"<<std::endl;
+        
+    }
+    
+    _loadWilson = PyObject_GetAttrString (wcxf_wc, "load" );
+
+    if ( _loadWilson == NULL ) {
+        
+        PyErr_Print();
+        std::cout<<"Falied to load wcxf.WC.load"<<std::endl;
+        
+    }
+    
+    
+    _io_module = PyImport_ImportModule("io");
+    
+    if ( _io_module == NULL ) {
+        
+        PyErr_Print();
+        std::cout<<"Falied to import io module."<<std::endl;
+        
+    }
+    
+
+#endif
 
     AddBinnedPrediction( "R_K_LHCb", "<Rmue>(B+->Kll)", 1.0, 6.0 );
    // AddBinnedPrediction( "BR_B_K_mu_mu_LHCb", "<BR>(B+->Kmumu)", 1.0, 6.0 );
@@ -109,7 +165,15 @@ Fittino::FlavioCalculator::~FlavioCalculator() {
 
 void Fittino::FlavioCalculator::CalculatePredictions() {
 
+#ifdef WCxf
+    
+    ReadWCxfFiles();
+    
+#else
+
     ReadSLHAFile();
+    
+#endif
 
     for( unsigned int i = 0 ; i < _predictions.size(); i++ ) {
 
@@ -147,6 +211,34 @@ void Fittino::FlavioCalculator::ReadSLHAFile() {
 
     Py_DECREF( pArgs );
 
+}
+
+PyObject* Fittino::FlavioCalculator::ReadWCxfFile( std::string file ) {
+    
+    auto json = PyObject_CallMethod( _io_module, "open", "ss", file.c_str(), "r" );
+    
+    auto pArgs = PyTuple_New(1);
+    PyTuple_SetItem( pArgs, 0, json );
+    
+    auto wcxf_wc = PyObject_CallObject( _loadWilson, pArgs );
+    
+    PyObject_CallMethod(  json, "close", NULL );
+    
+    return wcxf_wc;
+    
+}
+
+void Fittino::FlavioCalculator::ReadWCxfFiles() {
+    
+    _wc = PyObject_CallObject( _wilsonCoefficients, NULL );
+    
+    auto wcxf1 = ReadWCxfFile( "WC.MSSMTriLnV_1.json" );
+    PyObject_CallMethod( _wc, "set_initial_wcxf", "O", wcxf1 );
+    
+    auto wcxf2 = ReadWCxfFile( "WC.MSSMTriLnV_2.json" );
+    //PyObject_CallMethod( _wc, "set_initial_wcxf", "O", wcxf2 );
+
+    
 }
 
 void Fittino::FlavioCalculator::AddBinnedPrediction( std::string name, std::string id, double q2min, double q2max  ) {

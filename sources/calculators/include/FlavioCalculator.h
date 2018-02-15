@@ -32,12 +32,18 @@ namespace Fittino {
 
       void     CalculatePredictions();
       void     ReadSLHAFile();
+      PyObject* ReadWCxfFile( std::string file );
+      void     ReadWCxfFiles();
       void     AddBinnedPrediction(std::string name, std::string id, double qmin, double qmax );
       void     AddInclusivePrediction(std::string name, std::string id);
     
     private:
 
       PyObject* _readWilson;
+      PyObject* _loadWilson;
+      PyObject* _io_module;
+      PyObject* _wilsonCoefficients;
+
       PyObject* _npPrediction;
       PyObject* _smPrediction;
 
