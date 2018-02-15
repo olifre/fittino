@@ -49,6 +49,7 @@ Block SPhenoInput   # SPheno specific input
  76 1               # Write HiggsBounds file   
  77 0               # Output for MicrOmegas (running masses for light quarks; real mixing matrices)   
  78 0               # Output for MadGraph (writes also vanishing blocks)
+ 79 1               # Output for MadGraph (writes also vanishing blocks)
  80  1              # SPheno exits with non-zero value for sure
  86 0.              # Maximal width to be counted as invisible in Higgs decays; -1: only LSP 
 510 0.              # Write tree level values for tadpole solutions 
