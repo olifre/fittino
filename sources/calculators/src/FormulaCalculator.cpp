@@ -28,9 +28,13 @@
 Fittino::FormulaCalculator::FormulaCalculator( const Fittino::ModelBase* model, const boost::property_tree::ptree& ptree )
     : CalculatorBase( model, &ptree ) {
 
-    std::string formula = ptree.get<std::string>( "Formula" );
-    _formula = new FormulaQuantity( "", formula, model );
-    AddQuantity( _formula );
+        SetName( "FormulaCalculator" );
+        
+        for ( const auto& node : *GetConfiguration() ) {
+                
+                if ( node.first == "Quantity" ) AddFormula( node.second );
+            
+            }
 
     CalculatePredictions();
 
@@ -42,6 +46,21 @@ Fittino::FormulaCalculator::~FormulaCalculator() {
 
 void Fittino::FormulaCalculator::CalculatePredictions() {
 
-    _formula->Update();
+    for( auto formula : _formulas ) {
+    
+        formula->Update();
+        
+    }
+
+}
+
+void Fittino::FormulaCalculator::AddFormula( boost::property_tree::ptree ptree ) {
+    
+    std::string name = ptree.get<std::string>( "Name" );
+    std::string value = ptree.get<std::string>( "Value" );
+    auto formula = new FormulaQuantity( name, value, _model );
+
+    _formulas.push_back( formula );
+    AddQuantity( formula );
 
 }
