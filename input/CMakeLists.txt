@@ -18,6 +18,8 @@ list( APPEND inputFiles steering/MSSMTriLnV_RD_313.xml )
 list( APPEND inputFiles steering/MSSMTriLnV_RD_323.xml )
 list( APPEND inputFiles steering/MSSMTriLnV_RD_333.xml )
 list( APPEND inputFiles steering/MSSMTriLnV_gRatios.xml )
+list( APPEND inputFiles steering/MSSMTriLnV_Decoupling_01.xml )
+list( APPEND inputFiles steering/MSSMTriLnV_Decoupling_10.xml )
 
 list( APPEND inputFiles external/SModelS/parameters.ini )
 list( APPEND inputFiles external/SPheno/pMSSM11.slha )
