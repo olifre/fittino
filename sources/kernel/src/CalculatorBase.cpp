@@ -250,3 +250,12 @@ void Fittino::CalculatorBase::AddStringVariable(const std::string& name, const s
     AddStringVariable( new ReferenceVariable<std::string>( name, value ) );
 
 }
+
+
+void Fittino::CalculatorBase::SetName( std::string name ) {
+    
+    _className = name;
+    _name = _ptree->get<std::string>( "Name", name );
+    _tag = _ptree->get<std::string>( "Prefix", name );
+    
+}

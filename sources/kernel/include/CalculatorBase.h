@@ -79,12 +79,14 @@ namespace Fittino {
       void                                    PrintInput() const;
 
       void                                    SetOutput( std::string name, const double& value );
-
+      void                                    SetName( std::string name );
+    
       void                                    UpdateInput();
       const boost::property_tree::ptree*      GetConfiguration() const;
 
       /*! \cond UML */
     private:
+      std::string                             _className;
       std::map<std::string, FormulaQuantity*> _input;
       std::map<std::string, Quantity* >       _settableOutput;
       const boost::property_tree::ptree*      _ptree;
