@@ -46,7 +46,15 @@ set( install_command ${CMAKE_COMMAND} -E env CONDA_PKGS_DIRS=. PYTHONNOUSERSITE=
 
 # TODO: when conda 4.4 is released containing the --download-only flag (see https://github.com/conda/conda/commit/962eae0eb1c14d0b23c388b2a218b95379fb32d8 ) and cmake substitutes download_dir (in CMake 3.11.0-rc1 ), this can be split into download and install step (compare PipPackages)
 
-list( APPEND install_command COMMAND ${CMAKE_COMMAND} -E env CONDA_PKGS_DIRS=. PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${Miniconda_EXECUTABLE} create -y --no-deps --no-update-deps --prefix <INSTALL_DIR> --file ${requirements} )
+list( APPEND install_command COMMAND ${CMAKE_COMMAND} -E env CONDA_PKGS_DIRS=. PYTHONNOUSERSITE=1 --unset=PYTHONPATH ${Miniconda_EXECUTABLE} create -y --prefix <INSTALL_DIR> )
+
+if( Conda_REQUIREMENTSFILE )
+
+ list(APPEND install_command ---no-deps --no-update-deps -file ${requirements} )
+
+else()
+list( APPEND install_command numpy scipy matplotlib nose pyyaml mpmath )
+endif()
 
 if( BUILD_OFFLINE )
 
