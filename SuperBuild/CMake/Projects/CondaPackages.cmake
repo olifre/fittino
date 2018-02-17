@@ -22,16 +22,17 @@ if( INSTALL_Python2 )
 elseif( INSTALL_Python3 )
 
     set( CondaPackages "CondaPackages3-1" )
-    set( requirements "${CMAKE_CURRENT_SOURCE_DIR}/Requirements/CondaPackages3.txt" )
     set( pythonIncludeDir include/python3.6m )
 
     if( ${CMAKE_SYSTEM_NAME} MATCHES "Darwin" )
 
         set( pythonLibrary lib/libpython3.6m.dylib )
+        set( requirements "${CMAKE_CURRENT_SOURCE_DIR}/Requirements/CondaPackages3.txt" )
 
     elseif( ${CMAKE_SYSTEM_NAME} MATCHES "Linux" )
 
         set( pythonLibrary lib/libpython3.6m.so )
+        set( requirements "${CMAKE_CURRENT_SOURCE_DIR}/Requirements/CondaPackages3_Linux.txt" )
 
     else()
 
@@ -50,7 +51,7 @@ list( APPEND install_command COMMAND ${CMAKE_COMMAND} -E env CONDA_PKGS_DIRS=. P
 
 if( Conda_REQUIREMENTSFILE )
 
- list(APPEND install_command ---no-deps --no-update-deps --file ${requirements} )
+ list(APPEND install_command --no-deps --no-update-deps --file ${requirements} )
 
 else()
 list( APPEND install_command numpy scipy matplotlib nose pyyaml mpmath )
