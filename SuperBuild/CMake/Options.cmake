@@ -13,7 +13,7 @@ set( installPython ON)
 else()
 set (installPython OFF)
 endif()
-cmake_dependent_option( Conda_REQUIREMENTSFILE ) "Create Conda environment as specified in requiremts file." ON "installPython" OFF )
+cmake_dependent_option( Conda_REQUIREMENTSFILE  "Create Conda environment as specified in requiremts file." ON "installPython" OFF )
 
 option( INSTALL_SLHAea "Install SLHAea" OFF )
 add_feature_info( INSTALL_SLHAea INSTALL_SLHAea "SLHAea is required for using the SPhenoCalculator of Fittino." )
