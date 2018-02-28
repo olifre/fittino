@@ -103,7 +103,7 @@
             </ModelParameter>
             <ModelParameter>
                 <Name>lambda_322</Name>
-                <Value>1.0</Value>
+                <Value>0.0</Value>
                 <Error>1.0</Error>
                 <LowerBound>-1.0</LowerBound>
                 <UpperBound>+1.1</UpperBound>
