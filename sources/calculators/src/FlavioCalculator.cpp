@@ -231,14 +231,14 @@ PyObject* Fittino::FlavioCalculator::ReadWCxfFile( std::string file ) {
 void Fittino::FlavioCalculator::ReadWCxfFiles() {
     
     _wc = PyObject_CallObject( _wilsonCoefficients, NULL );
-    
     auto wcxf1 = ReadWCxfFile( "WC.MSSMTriLnV_1.json" );
     PyObject_CallMethod( _wc, "set_initial_wcxf", "O", wcxf1 );
     
-    // auto wcxf2 = ReadWCxfFile( "WC.MSSMTriLnV_2.json" );
-    //PyObject_CallMethod( _wc, "set_initial_wcxf", "O", wcxf2 );
+    _wcSM = PyObject_CallObject( _wilsonCoefficients, NULL );
+    auto wcxf2 = ReadWCxfFile( "WC.MSSMTriLnV_SM_1.json" );
+    PyObject_CallMethod( _wcSM, "set_initial_wcxf", "O", wcxf2 );
 
-    
+
 }
 
 void Fittino::FlavioCalculator::AddBinnedPrediction( std::string name, std::string id, double q2min, double q2max  ) {
