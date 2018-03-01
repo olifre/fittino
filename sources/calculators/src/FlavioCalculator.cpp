@@ -235,7 +235,7 @@ void Fittino::FlavioCalculator::ReadWCxfFiles() {
     auto wcxf1 = ReadWCxfFile( "WC.MSSMTriLnV_1.json" );
     PyObject_CallMethod( _wc, "set_initial_wcxf", "O", wcxf1 );
     
-    auto wcxf2 = ReadWCxfFile( "WC.MSSMTriLnV_2.json" );
+    // auto wcxf2 = ReadWCxfFile( "WC.MSSMTriLnV_2.json" );
     //PyObject_CallMethod( _wc, "set_initial_wcxf", "O", wcxf2 );
 
     
