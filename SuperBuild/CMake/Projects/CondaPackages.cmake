@@ -51,10 +51,12 @@ list( APPEND install_command COMMAND ${CMAKE_COMMAND} -E env CONDA_PKGS_DIRS=. P
 
 if( Conda_REQUIREMENTSFILE )
 
- list(APPEND install_command --no-deps --no-update-deps --file ${requirements} )
+    list(APPEND install_command --no-deps --no-update-deps --file ${requirements} )
 
 else()
-list( APPEND install_command numpy scipy matplotlib nose pyyaml mpmath )
+
+    list( APPEND install_command numpy scipy matplotlib nose pyyaml )
+
 endif()
 
 if( BUILD_OFFLINE )
