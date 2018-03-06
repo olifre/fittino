@@ -133,6 +133,14 @@
                 <UpperBound>2.001e6</UpperBound>
                 <Fixed>true</Fixed>
             </ModelParameter>
+            <ModelParameter>
+                <Name>mf2_high</Name>
+                <Value>16e6</Value>
+                <Error>5e5</Error>
+                <LowerBound>0</LowerBound>
+                <UpperBound>2.001e23</UpperBound>
+                <Fixed>true</Fixed>
+            </ModelParameter>
             <Observables>
             </Observables>
             <CovarianceMatrices>
@@ -206,6 +214,10 @@
                         <Quantity>
                             <Name>ml2_33</Name>
                             <Value>[ml2_33]</Value>
+                        </Quantity>
+                        <Quantity>
+                            <Name>mf2_high</Name>
+                            <Value>[mf2_high]</Value>
                         </Quantity>
                     </InputFile>
                     <OutputFile>SPheno.spc.MSSMTriLnV</OutputFile>
