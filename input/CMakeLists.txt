@@ -14,6 +14,8 @@ list( APPEND inputFiles steering/SCYNet.xml )
 list( APPEND inputFiles steering/MSSMTriLnV_low.xml  )
 list( APPEND inputFiles steering/RPV.xml )
 list( APPEND inputFiles steering/MSSMTriLnV_RK_stop.xml )
+list( APPEND inputFiles steering/MSSMTriLnV_RK_stop_233.xml )
+
 list( APPEND inputFiles steering/MSSMTriLnV_RD_313.xml )
 list( APPEND inputFiles steering/MSSMTriLnV_RD_323.xml )
 list( APPEND inputFiles steering/MSSMTriLnV_RD_333.xml )
