@@ -7,7 +7,7 @@
             <Name>MSSM</Name>
             <ModelParameter>
                 <Name>M1</Name>
-                <Value>4000.</Value>
+                <Value>4000</Value>
                 <Error>0.1</Error>
                 <LowerBound>-5000.</LowerBound>
                 <UpperBound>5000.</UpperBound>
@@ -15,7 +15,7 @@
             </ModelParameter>
             <ModelParameter>
                 <Name>M2</Name>
-                <Value>4000.</Value>
+                <Value>4000</Value>
                 <Error>0.1</Error>
                 <LowerBound>-5000.</LowerBound>
                 <UpperBound>5000.</UpperBound>
@@ -23,7 +23,7 @@
             </ModelParameter>
             <ModelParameter>
                 <Name>M3</Name>
-                <Value>4000.</Value>
+                <Value>4000</Value>
                 <Error>0.1</Error>
                 <LowerBound>-5000.</LowerBound>
                 <UpperBound>5000.</UpperBound>
@@ -31,7 +31,7 @@
             </ModelParameter>
             <ModelParameter>
                 <Name>Mu</Name>
-                <Value>4000.</Value>
+                <Value>4000</Value>
                 <Error>0.1</Error>
                 <LowerBound>-5000.</LowerBound>
                 <UpperBound>5000.</UpperBound>
@@ -39,7 +39,7 @@
             </ModelParameter>
             <ModelParameter>
                 <Name>MA</Name>
-                <Value>4000.</Value>
+                <Value>4000</Value>
                 <Error>0.1</Error>
                 <LowerBound>-5000.</LowerBound>
                 <UpperBound>5000.</UpperBound>
@@ -110,20 +110,12 @@
                 <Fixed>true</Fixed>
             </ModelParameter>
             <ModelParameter>
-                <Name>m</Name>
+                <Name>logm</Name>
                 <Value>16e6</Value>
-                <Error>1000</Error>
-                <LowerBound>1500</LowerBound>
-                <UpperBound>10501</UpperBound>
+                <Error>1</Error>
+                <LowerBound>3.1</LowerBound>
+                <UpperBound>5.2</UpperBound>
                 <Fixed>false</Fixed>
-            </ModelParameter>
-            <ModelParameter>
-                <Name>mf2_high</Name>
-                <Value>16e6</Value>
-                <Error>5e5</Error>
-                <LowerBound>0</LowerBound>
-                <UpperBound>2.001e23</UpperBound>
-                <Fixed>true</Fixed>
             </ModelParameter>
             <Observables>
             </Observables>
@@ -134,15 +126,19 @@
                     <Prefix/>
                     <Quantity>
                         <Name>md2_33</Name>
-                        <Value>TMath::Power( [m], 2 )</Value>
+                        <Value>TMath::Power( 10, 2*[logm] )</Value>
                     </Quantity>
                     <Quantity>
                         <Name>mq2_33</Name>
-                        <Value>TMath::Power( [m], 2 )</Value>
+                        <Value>TMath::Power( 10, 2*[logm] )</Value>
                     </Quantity>
                     <Quantity>
                         <Name>ml2_33</Name>
-                        <Value>TMath::Power( [m], 2 )</Value>
+                        <Value>TMath::Power(10, 2*[logm] )</Value>
+                    </Quantity>
+                    <Quantity>
+                        <Name>mf2_high</Name>
+                        <Value>TMath::Power( 10, 2*[logm] )</Value>
                     </Quantity>
                 </FormulaCalculator>
                 <SARAHSPhenoCalculator>
