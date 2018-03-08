@@ -866,8 +866,8 @@ Complex(dp) :: OddllSLL(3,3,3,3),OddllSRR(3,3,3,3),OddllSRL(3,3,3,3),OddllSLR(3,
 !------------------------------------
 ! hack Werner, additional variables
 !------------------------------------
-Real(dp) :: fact_loop, xtb
-Complex(dp) :: L2p(3,3,3)
+Real(dp) :: fact_loop, xtb, fact
+Complex(dp) :: L2p(3,3,3), norm
 
 Write(*,*) "Calculating low energy constraints" 
 g1input = Sqrt(5._dp/3._dp)*g1input 
@@ -3140,6 +3140,7 @@ OddllTRR = OddllTRR - OddllTRRSM
 
  ! ***** Combine operators for 2d2nu
 fact_loop = 1
+
 OddvvVRR = fact_loop*BOddvvVRR + fact_loop*PSOddvvVRR + fact_loop*PVOddvvVRR + TSOddvvVRR + TVOddvvVRR
 OddvvVRRSM = fact_loop*BOddvvVRRSM + fact_loop*PSOddvvVRRSM + fact_loop*PVOddvvVRRSM + TSOddvvVRRSM + TVOddvvVRRSM
 OddvvVRR = OddvvVRR - OddvvVRRSM
@@ -4436,8 +4437,7 @@ If(ratioB0dTauTau.ne.ratioB0dTauTau) ratioB0dTauTau = 0._dp
 If(BrB0sTauTau.ne.BrB0sTauTau) BrB0sTauTau = 0._dp 
 If(ratioB0sTauTau.ne.ratioB0sTauTau) ratioB0sTauTau = 0._dp 
 
- ! **** bsGamma **** 
- 
+ ! **** bsGamma ****  
 Call Calculate_bsGamma(CC7,CC7p,CC8,CC8p,CC7SM,CC7pSM,CC8SM,CC8pSM,BrBsGamma,         & 
 & ratioBsGamma)
 
@@ -5323,6 +5323,71 @@ ETRR_2132 = OddllTRR(2,1,3,2)
 
 
 ! hack Werner
+norm = sqrt2 /(4._dp*G_F*CKM_160(2,3)) 
+coeff_V_BDtaunu = norm*OdulvVLR(3,2,3,3)
+coeff_V_BDtaunuSM = norm*OdulvVLRSM(3,2,3,3)
+coeff_V_BDtaunuNP = coeff_V_BDtaunu - coeff_V_BDtaunuSM 
+coeff_V_BDtaunuP = norm*OdulvVRL(3,2,3,3)
+coeff_V_BDtaunuSMP = norm*OdulvVRLSM(3,2,3,3)
+coeff_V_BDtaunuNPP = coeff_V_BDtaunuP - coeff_V_BDtaunuSMP 
+
+norm = norm / mf_d_160(3)
+coeff_S_BDtaunu = norm*OdulvSLL(3,2,3,3)
+coeff_S_BDtaunuSM = norm*OdulvSLLSM(3,2,3,3)
+coeff_S_BDtaunuNP = coeff_S_BDtaunu - coeff_S_BDtaunuSM 
+coeff_S_BDtaunuP = norm*OdulvSRL(3,2,3,3)
+coeff_S_BDtaunuSMP = norm*OdulvSRLSM(3,2,3,3)
+coeff_S_BDtaunuNPP = coeff_S_BDtaunuP - coeff_S_BDtaunuSMP 
+
+norm = sqrt2 /(4._dp*G_F*CKM_160(1,3)) 
+coeff_V_Bptaunu = norm*OdulvVLR(3,1,3,3)
+coeff_V_BptaunuSM = norm*OdulvVLRSM(3,1,3,3)
+coeff_V_BptaunuNP = coeff_V_Bptaunu - coeff_V_BptaunuSM 
+coeff_V_BptaunuP = norm*OdulvVRL(3,2,3,3)
+coeff_V_BptaunuSMP = norm*OdulvVRLSM(3,2,3,3)
+coeff_V_BptaunuNPP = coeff_V_BptaunuP - coeff_V_BptaunuSMP 
+
+norm = norm / mf_d_160(3)
+coeff_S_Bptaunu = norm*OdulvSLL(3,1,3,3)
+coeff_S_BptaunuSM = norm*OdulvSLLSM(3,1,3,3)
+coeff_S_BptaunuNP = coeff_S_Bptaunu - coeff_S_BptaunuSM 
+coeff_S_BptaunuP = norm*OdulvSRL(3,1,3,3)
+coeff_S_BptaunuSMP = norm*OdulvSRLSM(3,1,3,3)
+coeff_S_BptaunuNPP = coeff_S_BptaunuP - coeff_S_BptaunuSMP 
+
+fact = 1._dp
+
+coeffCLbdnu1nu1SM = fact * OddvvVLLSM(3,1,1,1)
+coeffCLbdnu1nu1 = fact * OddvvVLL(3,1,1,1)
+coeffCLPbdnu1nu1 = fact * OddvvVRL(3,1,1,1)
+coeffCLbdnu1nu1NP = fact * (OddvvVLL(3,1,1,1) - OddvvVLLSM(3,1,1,1))
+coeffCLPbdnu1nu1NP = fact * OddvvVRL(3,1,1,1)
+coeffCLbdnu2nu2SM = fact * OddvvVLLSM(3,1,2,2)
+coeffCLbdnu2nu2 = fact * OddvvVLL(3,1,2,2)
+coeffCLPbdnu2nu2 = fact * OddvvVRL(3,1,2,2)
+coeffCLbdnu2nu2NP = fact * (OddvvVLL(3,1,2,2) - OddvvVLLSM(3,1,2,2))
+coeffCLPbdnu2nu2NP = fact * OddvvVRL(3,1,2,2)
+coeffCLbdnu3nu3SM = fact * OddvvVLLSM(3,1,3,3)
+coeffCLbdnu3nu3 = fact * OddvvVLL(3,1,3,3)
+coeffCLPbdnu3nu3 = fact * OddvvVRL(3,1,3,3)
+coeffCLbdnu3nu3NP = fact * (OddvvVLL(3,1,3,3) - OddvvVLLSM(3,1,3,3))
+coeffCLPbdnu3nu3NP = fact * OddvvVRL(3,1,3,3)
+coeffCRbdnu1nu1SM = 0
+coeffCRbdnu1nu1 = fact * OddvvVLR(3,1,1,1)
+coeffCRPbdnu1nu1 = fact * OddvvVRR(3,1,1,1)
+coeffCRbdnu1nu1NP = fact * OddvvVLR(3,1,1,1)
+coeffCRPbdnu1nu1NP = fact * OddvvVRR(3,1,1,1)
+coeffCRbdnu2nu2SM = 0
+coeffCRbdnu2nu2 = fact * OddvvVLR(3,1,2,2)
+coeffCRPbdnu2nu2 = fact * OddvvVRR(3,1,2,2)
+coeffCRbdnu2nu2NP = fact * OddvvVLR(3,1,2,2)
+coeffCRPbdnu2nu2NP = fact * OddvvVRR(3,1,2,2)
+coeffCRbdnu3nu3SM = 0
+coeffCRbdnu3nu3 = fact * OddvvVLR(3,1,3,3)
+coeffCRPbdnu3nu3 = fact * OddvvVRR(3,1,3,3)
+coeffCRbdnu3nu3NP = fact * OddvvVLR(3,1,3,3)
+coeffCRPbdnu3nu3NP = fact * OddvvVRR(3,1,3,3)
+
 DVLL_2323_SM = O4dVLLSM(2,3,2,3)
 DVRR_2323_SM = O4dVRRSM(2,3,2,3)
 DVLR_2323_SM = O4dVLRSM(2,3,2,3)
@@ -7555,7 +7620,7 @@ mz = mzsave
 g1input = Sqrt(3._dp/5._dp)*g1input 
 End subroutine CalculateLowEnergyConstraints 
  
- 
+
 
 Subroutine Switch_from_superCKM(Y_d, Y_u, Ad_in, Au_in, MD_in, MQ_in, MU_in &
                       &, Ad_out, Au_out, MD_out, MQ_out, MU_out, tr        &
