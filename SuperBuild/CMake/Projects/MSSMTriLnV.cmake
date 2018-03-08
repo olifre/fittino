@@ -4,15 +4,7 @@ enable_language( Fortran )
 
 # see https://sarah.hepforge.org/sarah_in_a_nutshell.pdf
 
-if( USE_WCxf )
-
-    set( MSSMTriLnV_url ${CMAKE_CURRENT_SOURCE_DIR}/SPhenoMSSMTriLnV )
-
-else()
-
-    set( MSSMTriLnV_url ${CMAKE_CURRENT_SOURCE_DIR}/MSSMTriLnV )
-
-endif()
+set( MSSMTriLnV_url ${CMAKE_CURRENT_SOURCE_DIR}/SPhenoMSSMTriLnV )
 
 externalproject_add(
 
