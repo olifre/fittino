@@ -75,6 +75,7 @@
 #include "Observable.h"
 #include "ParticleSwarmOptimizer.h"
 #include "PhysicsModel.h"
+#include "Plotter.h"
 #include "ProfileHistogramMaker.h"
 #include "ProfilePlotter.h"
 #include "RegressionCalculator.h"
@@ -712,6 +713,11 @@ Fittino::Tool* const Fittino::Factory::CreateTool( const std::string& type, Mode
 
         return new ParticleSwarmOptimizer( model, ptree );
 
+    }
+    else if ( type == "Plotter" ) {
+        
+        return new Plotter( ptree );
+        
     }
     else if ( type == "ProfileHistogramMaker" ) {
 

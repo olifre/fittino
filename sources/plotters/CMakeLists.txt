@@ -27,7 +27,21 @@ INCLUDE_DIRECTORIES(../exceptions/include)
 FILE( GLOB includes ./include/*.h )
 AUX_SOURCE_DIRECTORY(src sources)
 
+list( APPEND includes "include/Plotter.h" )
+list( APPEND includes "include/Plot.h" )
+list( APPEND includes "include/PlotData.h" )
+list( APPEND includes "include/ScatterData.h" )
+
+
+
 LIST( APPEND sources "src/ToyFitPlotter.cpp" )
+LIST( APPEND sources "src/Plot.cpp" )
+LIST( APPEND sources "src/Plotter.cpp" )
+LIST( APPEND sources "src/PlotData.cpp" )
+LIST( APPEND sources "src/ScatterData.cpp" )
+
+
+
 
 ADD_LIBRARY(plotters ${includes} ${sources})
 SET_TARGET_PROPERTIES(plotters PROPERTIES CXX_STANDARD 11 CXX_STANDARD_REQUIRED ON  )
