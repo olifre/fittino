@@ -130,30 +130,23 @@ Fittino::FlavioCalculator::FlavioCalculator( const ModelBase* model, const boost
 #endif
 
     AddBinnedPrediction( "R_K_LHCb", "<Rmue>(B+->Kll)", 1.0, 6.0 );
-   // AddBinnedPrediction( "BR_B_K_mu_mu_LHCb", "<BR>(B+->Kmumu)", 1.0, 6.0 );
-  //  AddBinnedPrediction( "BR_B_K_e_e_LHCb", "<BR>(B+->Kee)", 1.0, 6.0 );
-
     AddBinnedPrediction( "R_Kstar0_LHCb_lowq2", "<Rmue>(B0->K*ll)", 0.045, 1.1 );
-   // AddBinnedPrediction( "BR_B0_Kstar0_mu_mu_LHCb_lowq2", "<BR>(B0->K*mumu)", 0.045, 1.1 );
-   // AddBinnedPrediction( "BR_B0_Kstar0_e_e_LHCb_lowq2", "<BR>(B0->K*ee)", 0.045, 1.1 );
-
     AddBinnedPrediction( "R_Kstar0_LHCb_centralq2", "<Rmue>(B0->K*ll)", 1.1, 6.0 );
-   // AddBinnedPrediction( "BR_B0_Kstar0_mu_mu_LHCb_centralq2", "<BR>(B0->K*mumu)", 1.1, 6.0 );
-   // AddBinnedPrediction( "BR_B0_Kstar0_e_e_LHCb_centralq2", "<BR>(B0->K*ee)", 1.1, 6.0 );
 
     AddInclusivePrediction( "R_D", "Rtaul(B->Dlnu)" );
     AddInclusivePrediction( "R_Dstar", "Rtaul(B->D*lnu)" );
     
+    AddInclusivePrediction( "BR_Bp_tau_nu", "BR(B+->taunu)" );
     AddInclusivePrediction( "BR_Bp_K_nu_nu", "BR(B+->Knunu)" );
     AddInclusivePrediction( "BR_Bp_pi_nu_nu", "BR(B+->pinunu)" );
-    AddInclusivePrediction( "BR_Bp_tau_nu", "BR(B+->taunu)" );
-
-
-
     
-
-    //AddInclusivePrediction( "R_K", "Rmue(B+->Kll)" );
-    //AddInclusivePrediction( "R_Kstar0", "Rmue(B0->K*ll)" );
+    AddInclusivePrediction( "BR_Bs_mu_mu", "BR(Bs->mumu)" );
+    AddInclusivePrediction( "BR_B0_mu_mu", "BR(B0->mumu)" );
+    
+    AddInclusivePrediction( "Delta_Ms", "DeltaM_s" );
+    AddInclusivePrediction( "Delta_Md", "DeltaM_d" );
+    
+    AddInclusivePrediction( "BR_B_Xs_gamma", "BR(B->Xsgamma)" );
 
 }
 
@@ -229,6 +222,8 @@ PyObject* Fittino::FlavioCalculator::ReadWCxfFile( std::string file ) {
 }
 
 void Fittino::FlavioCalculator::ReadWCxfFiles() {
+    
+    std::cout<<"Reading WCxf files "<<std::endl;
     
     _wc = PyObject_CallObject( _wilsonCoefficients, NULL );
     auto wcxf1 = ReadWCxfFile( "WC.MSSMTriLnV_1.json" );
