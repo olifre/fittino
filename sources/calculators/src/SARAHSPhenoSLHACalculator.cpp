@@ -69,8 +69,7 @@ Fittino::SARAHSPhenoSLHACalculator::SARAHSPhenoSLHACalculator( const ModelBase* 
 
     Database& database = Database::GetInstance();
 
-    AddQuantity( new SLHAPrediction( "BR_B_tau_nu"      , "", _slhaOutputDataStorage, "FlavorKitQFV", 1, "502", "", "", "" ) );
-
+          // todo: use database to get these
     _dsquarkPIDs = { 1000001, 1000003, 1000005, 2000001, 2000003, 2000005 };
     _dsquarkNames = { "~dL", "~sL", "~bL", "~dR", "~sR", "~bR"  };
 
@@ -81,10 +80,32 @@ Fittino::SARAHSPhenoSLHACalculator::SARAHSPhenoSLHACalculator( const ModelBase* 
         AddOutput( "Fraction_" + name );
 
     }
+          
+    AddMass( "Wp" );
+    AddMass( "Z0" );
+
+    AddMass( "t" );
+//    AddBR( "t", "b", "Wp" );
+//    AddBR( "t", "b", "Hp" );
+//
+   AddMass( "h0" );
+//    AddParticle( "H0" );
+//    AddParticle( "Hp" );
+//    AddParticle( "A0" );
 
     AddQuantity( new SLHAPrediction( "HMIX_Vev"    , "", _slhaOutputDataStorage, "HMIX", 1, "3", "", "", ""     ) );
+          
     AddQuantity( new SLHAPrediction( "Ratio_gZtautau_gZll"    , "", _slhaOutputDataStorage, "GRATIOS", 1, "1", "", "", ""     ) );
     AddQuantity( new SLHAPrediction( "Ratio_gWtaunu_gWlnu"    , "", _slhaOutputDataStorage, "GRATIOS", 1, "2", "", "", ""     ) );
+          
+    AddQuantity( new SLHAPrediction( "BR_B_tau_nu"      , "", _slhaOutputDataStorage, "FlavorKitQFV", 1, "502", "", "", "" ) );
+
+    AddQuantity( new SLHAPrediction( "Delta_T"    , "", _slhaOutputDataStorage, "SPhenoLowEnergy", 1, "1", "", "", ""     ) );
+    AddQuantity( new SLHAPrediction( "Delta_S"    , "", _slhaOutputDataStorage, "SPhenoLowEnergy", 1, "2", "", "", ""     ) );
+    AddQuantity( new SLHAPrediction( "Delta_U"    , "", _slhaOutputDataStorage, "SPhenoLowEnergy", 1, "3", "", "", ""     ) );
+    AddQuantity( new SLHAPrediction( "Delta_amu"    , "", _slhaOutputDataStorage, "SPhenoLowEnergy", 1, "21", "", "", ""     ) );
+    AddQuantity( new SLHAPrediction( "Delta_rho"    , "", _slhaOutputDataStorage, "SPhenoLowEnergy", 1, "39", "", "", ""     ) );
+
           
 }
 
